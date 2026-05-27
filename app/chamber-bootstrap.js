@@ -7,6 +7,21 @@
     /(?:[?&](?:test-flight|fixtures|retrieval-fixtures)=)/i.test(query) ||
     /(?:test-flight|retrieval-fixtures)/i.test(hash);
 
+  function appendStylesheet(hrefPrefix, href) {
+    if (document.querySelector('link[href^="' + hrefPrefix + '"]')) return;
+    var link = document.createElement('link');
+    link.rel = 'stylesheet';
+    link.href = href;
+    document.head.appendChild(link);
+  }
+
+  function appendModule(src) {
+    var script = document.createElement('script');
+    script.type = 'module';
+    script.src = src;
+    document.head.appendChild(script);
+  }
+
   if (pageKind === 'gateway') {
     var gatewayPhase32Style = document.createElement('style');
     gatewayPhase32Style.id = 'td613-gateway-phase32-prune';
@@ -39,110 +54,23 @@
   }
 
   if (pageKind === 'adversarial-bench') {
-    var visualHref = './hush-visual-system.css?v=' + (V.hushVisualSystem || V.main || '');
-    var existingVisual = document.querySelector('link[href^="./hush-visual-system.css"]');
-    if (!existingVisual) {
-      var visualLink = document.createElement('link');
-      visualLink.rel = 'stylesheet';
-      visualLink.href = visualHref;
-      document.head.appendChild(visualLink);
-    }
-    var compactHref = './hush-compact.css?v=' + (V.hushCompact || V.main || '');
-    var existingCompact = document.querySelector('link[href^="./hush-compact.css"]');
-    if (!existingCompact) {
-      var compactLink = document.createElement('link');
-      compactLink.rel = 'stylesheet';
-      compactLink.href = compactHref;
-      document.head.appendChild(compactLink);
-    }
-    var invisibleHref = './hush-invisible.css?v=' + (V.hushInvisible || V.main || '');
-    var existingInvisible = document.querySelector('link[href^="./hush-invisible.css"]');
-    if (!existingInvisible) {
-      var invisibleLink = document.createElement('link');
-      invisibleLink.rel = 'stylesheet';
-      invisibleLink.href = invisibleHref;
-      document.head.appendChild(invisibleLink);
-    }
-    var alienHref = './hush-alien-console.css?v=' + (V.hushAlienConsole || V.main || '');
-    var existingAlien = document.querySelector('link[href^="./hush-alien-console.css"]');
-    if (!existingAlien) {
-      var alienLink = document.createElement('link');
-      alienLink.rel = 'stylesheet';
-      alienLink.href = alienHref;
-      document.head.appendChild(alienLink);
-    }
-    var fieldHref = './hush-field-instrument.css?v=' + (V.hushFieldInstrument || V.hushAlienConsole || V.main || '');
-    var existingField = document.querySelector('link[href^="./hush-field-instrument.css"]');
-    if (!existingField) {
-      var fieldLink = document.createElement('link');
-      fieldLink.rel = 'stylesheet';
-      fieldLink.href = fieldHref;
-      document.head.appendChild(fieldLink);
-    }
-    var mobileFixHref = './hush-mobile-viewport-fix.css?v=' + (V.hushMobileViewportFix || V.hushFieldInstrument || V.hushAlienConsole || V.main || '');
-    var existingMobileFix = document.querySelector('link[href^="./hush-mobile-viewport-fix.css"]');
-    if (!existingMobileFix) {
-      var mobileFixLink = document.createElement('link');
-      mobileFixLink.rel = 'stylesheet';
-      mobileFixLink.href = mobileFixHref;
-      document.head.appendChild(mobileFixLink);
-    }
-    var phase32Href = './hush-phase32.css?v=' + (V.hushPhase32 || V.main || '');
-    var existingPhase32 = document.querySelector('link[href^="./hush-phase32.css"]');
-    if (!existingPhase32) {
-      var phase32Link = document.createElement('link');
-      phase32Link.rel = 'stylesheet';
-      phase32Link.href = phase32Href;
-      document.head.appendChild(phase32Link);
-    }
-    var customizerBoot = document.createElement('script');
-    customizerBoot.type = 'module';
-    customizerBoot.src = './hush-customizer-card-fields-boot.js?v=' + (V.hushCustomizerCardFields || V.main || '');
-    document.head.appendChild(customizerBoot);
-    var phase32Boot = document.createElement('script');
-    phase32Boot.type = 'module';
-    phase32Boot.src = './hush-phase32.js?v=' + (V.hushPhase32 || V.main || '');
-    document.head.appendChild(phase32Boot);
-    var patch38Boot = document.createElement('script');
-    patch38Boot.type = 'module';
-    patch38Boot.src = './hush-patch38.js?v=' + (V.hushPatch38 || V.hushPhase32 || V.main || '');
-    document.head.appendChild(patch38Boot);
-    var pr75Boot = document.createElement('script');
-    pr75Boot.type = 'module';
-    pr75Boot.src = './hush-pr75-rescue.js?v=' + (V.hushPr75 || V.hushPatch38 || V.hushPhase32 || V.main || '');
-    document.head.appendChild(pr75Boot);
-    var pr76Boot = document.createElement('script');
-    pr76Boot.type = 'module';
-    pr76Boot.src = './hush-pr76-mask-recommender.js?v=' + (V.hushPr76 || V.hushPr75 || V.hushPatch38 || V.hushPhase32 || V.main || '');
-    document.head.appendChild(pr76Boot);
-    var pr77Boot = document.createElement('script');
-    pr77Boot.type = 'module';
-    pr77Boot.src = './hush-pr77-flight-controls.js?v=' + (V.hushPr77 || V.hushPr76 || V.hushPatch38 || V.main || '');
-    document.head.appendChild(pr77Boot);
-    var pr78Boot = document.createElement('script');
-    pr78Boot.type = 'module';
-    pr78Boot.src = './hush-pr78-runtime-trace.js?v=' + (V.hushPr78 || V.hushPr77 || V.hushPatch38 || V.main || '');
-    document.head.appendChild(pr78Boot);
-    var pr79Boot = document.createElement('script');
-    pr79Boot.type = 'module';
-    pr79Boot.src = './hush-pr79-coverage-floor.js?v=' + (V.hushPr79 || V.hushPr78 || V.hushPatch38 || V.main || '');
-    document.head.appendChild(pr79Boot);
-    var pr82Boot = document.createElement('script');
-    pr82Boot.type = 'module';
-    pr82Boot.src = './hush-pr82-mobile-state-hotfix.js?v=' + (V.hushPr82 || V.hushPr76 || V.hushPatch38 || V.main || '');
-    document.head.appendChild(pr82Boot);
-    var pr86Boot = document.createElement('script');
-    pr86Boot.type = 'module';
-    pr86Boot.src = './hush-pr86-profile-rescue.js?v=' + (V.hushPr86 || V.hushPr82 || V.hushPr76 || V.hushPatch38 || V.main || '');
-    document.head.appendChild(pr86Boot);
-    var pr87Boot = document.createElement('script');
-    pr87Boot.type = 'module';
-    pr87Boot.src = './hush-pr87-profile-hardstop.js?v=' + (V.hushPr87 || V.hushPr86 || V.hushPatch38 || V.main || '');
-    document.head.appendChild(pr87Boot);
-    var pr88Boot = document.createElement('script');
-    pr88Boot.type = 'module';
-    pr88Boot.src = './hush-pr88-transform-copy-guard.js?v=' + (V.hushPr88 || V.hushPr87 || V.hushPatch38 || V.main || '');
-    document.head.appendChild(pr88Boot);
+    appendStylesheet('./hush-visual-system.css', './hush-visual-system.css?v=' + (V.hushVisualSystem || V.main || ''));
+    appendStylesheet('./hush-compact.css', './hush-compact.css?v=' + (V.hushCompact || V.main || ''));
+    appendStylesheet('./hush-invisible.css', './hush-invisible.css?v=' + (V.hushInvisible || V.main || ''));
+    appendStylesheet('./hush-alien-console.css', './hush-alien-console.css?v=' + (V.hushAlienConsole || V.main || ''));
+    appendStylesheet('./hush-field-instrument.css', './hush-field-instrument.css?v=' + (V.hushFieldInstrument || V.hushAlienConsole || V.main || ''));
+    appendStylesheet('./hush-mobile-viewport-fix.css', './hush-mobile-viewport-fix.css?v=' + (V.hushMobileViewportFix || V.hushFieldInstrument || V.hushAlienConsole || V.main || ''));
+    appendStylesheet('./hush-phase32.css', './hush-phase32.css?v=' + (V.hushPhase32 || V.main || ''));
+
+    appendModule('./hush-customizer-card-fields-boot.js?v=' + (V.hushCustomizerCardFields || V.main || ''));
+    appendModule('./hush-phase32.js?v=' + (V.hushPhase32 || V.main || ''));
+    appendModule('./hush-patch38.js?v=' + (V.hushPatch38 || V.hushPhase32 || V.main || ''));
+    appendModule('./hush-pr75-rescue.js?v=' + (V.hushPr75 || V.hushPatch38 || V.hushPhase32 || V.main || ''));
+    appendModule('./hush-pr76-mask-recommender.js?v=' + (V.hushPr76 || V.hushPr75 || V.hushPatch38 || V.hushPhase32 || V.main || ''));
+    appendModule('./hush-pr77-flight-controls.js?v=' + (V.hushPr77 || V.hushPr76 || V.hushPatch38 || V.main || ''));
+    appendModule('./hush-pr78-runtime-trace.js?v=' + (V.hushPr78 || V.hushPr77 || V.hushPatch38 || V.main || ''));
+    appendModule('./hush-pr79-coverage-floor.js?v=' + (V.hushPr79 || V.hushPr78 || V.hushPatch38 || V.main || ''));
+    appendModule('./hush-pr82-mobile-state-hotfix.js?v=' + (V.hushPr82 || V.hushPr76 || V.hushPatch38 || V.main || ''));
   }
 
   var srcs = [
