@@ -13,14 +13,16 @@
     hushFieldInstrument: '202605200002',
     hushMobileViewportFix: '202605200003',
     hushPhase32: '202605250101',
-    hushPatch38: '202605252010',
+    hushPatch38: '202605252015',
     hushPr75: '202605250326',
     hushPr77: '202605251735',
     hushPr78: '202605250311',
     hushPr79: '202605250312',
     hushPr82: '202605251746',
     hushPr92: '202605252000',
-    hushPr93: '202605252010'
+    hushPr93: '202605252010',
+    hushPr94: '202605252015',
+    hushPr95: '202605252015'
   };
   var V = window.TD613_ASSET_VERSIONS;
   document.write('<link rel="stylesheet" href="./styles.css?v=' + V.styles + '" />');
