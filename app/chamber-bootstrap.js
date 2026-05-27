@@ -71,6 +71,7 @@
     appendModule('./hush-pr78-runtime-trace.js?v=' + (V.hushPr78 || V.hushPr77 || V.hushPatch38 || V.main || ''));
     appendModule('./hush-pr79-coverage-floor.js?v=' + (V.hushPr79 || V.hushPr78 || V.hushPatch38 || V.main || ''));
     appendModule('./hush-pr82-mobile-state-hotfix.js?v=' + (V.hushPr82 || V.hushPr76 || V.hushPatch38 || V.main || ''));
+    appendModule('./hush-pr90-stability.js?v=' + (V.hushPr90 || V.hushPr76 || V.hushPatch38 || V.main || ''));
   }
 
   var srcs = [
