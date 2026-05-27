@@ -22,6 +22,13 @@
     document.head.appendChild(script);
   }
 
+  function appendScript(src) {
+    if (document.querySelector('script[src^="' + src.split('?')[0] + '"]')) return;
+    var script = document.createElement('script');
+    script.src = src;
+    document.head.appendChild(script);
+  }
+
   if (pageKind === 'gateway') {
     var gatewayPhase32Style = document.createElement('style');
     gatewayPhase32Style.id = 'td613-gateway-phase32-prune';
@@ -70,7 +77,7 @@
     appendModule('./hush-pr78-runtime-trace.js?v=' + (V.hushPr78 || V.hushPr77 || V.hushPatch38 || V.main || ''));
     appendModule('./hush-pr79-coverage-floor.js?v=' + (V.hushPr79 || V.hushPr78 || V.hushPatch38 || V.main || ''));
     appendModule('./hush-pr82-mobile-state-hotfix.js?v=' + (V.hushPr82 || V.hushPatch38 || V.main || ''));
-    appendModule('./hush-pr91-analysis-owner.js?v=' + (V.hushPr91 || V.hushPatch38 || V.main || ''));
+    appendScript('./hush-pr92-dom-owner.js?v=' + (V.hushPr92 || V.hushPatch38 || V.main || ''));
   }
 
   var srcs = [
