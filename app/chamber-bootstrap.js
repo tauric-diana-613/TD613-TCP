@@ -66,12 +66,11 @@
     appendModule('./hush-phase32.js?v=' + (V.hushPhase32 || V.main || ''));
     appendModule('./hush-patch38.js?v=' + (V.hushPatch38 || V.hushPhase32 || V.main || ''));
     appendModule('./hush-pr75-rescue.js?v=' + (V.hushPr75 || V.hushPatch38 || V.hushPhase32 || V.main || ''));
-    appendModule('./hush-pr76-mask-recommender.js?v=' + (V.hushPr76 || V.hushPr75 || V.hushPatch38 || V.hushPhase32 || V.main || ''));
-    appendModule('./hush-pr77-flight-controls.js?v=' + (V.hushPr77 || V.hushPr76 || V.hushPatch38 || V.main || ''));
+    appendModule('./hush-pr77-flight-controls.js?v=' + (V.hushPr77 || V.hushPatch38 || V.main || ''));
     appendModule('./hush-pr78-runtime-trace.js?v=' + (V.hushPr78 || V.hushPr77 || V.hushPatch38 || V.main || ''));
     appendModule('./hush-pr79-coverage-floor.js?v=' + (V.hushPr79 || V.hushPr78 || V.hushPatch38 || V.main || ''));
-    appendModule('./hush-pr82-mobile-state-hotfix.js?v=' + (V.hushPr82 || V.hushPr76 || V.hushPatch38 || V.main || ''));
-    appendModule('./hush-pr90-stability.js?v=' + (V.hushPr90 || V.hushPr76 || V.hushPatch38 || V.main || ''));
+    appendModule('./hush-pr82-mobile-state-hotfix.js?v=' + (V.hushPr82 || V.hushPatch38 || V.main || ''));
+    appendModule('./hush-pr91-analysis-owner.js?v=' + (V.hushPr91 || V.hushPatch38 || V.main || ''));
   }
 
   var srcs = [
