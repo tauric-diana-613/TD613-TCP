@@ -78,6 +78,7 @@
     appendModule('./hush-pr79-coverage-floor.js?v=' + (V.hushPr79 || V.hushPr78 || V.hushPatch38 || V.main || ''));
     appendModule('./hush-pr82-mobile-state-hotfix.js?v=' + (V.hushPr82 || V.hushPatch38 || V.main || ''));
     appendScript('./hush-pr92-dom-owner.js?v=' + (V.hushPr92 || V.hushPatch38 || V.main || ''));
+    appendScript('./hush-pr93-mask-eligibility.js?v=' + (V.hushPr93 || V.hushPr92 || V.hushPatch38 || V.main || ''));
   }
 
   var srcs = [
@@ -89,10 +90,6 @@
     './browser-main.js?v='        + (V.main        || ''),
     './chamber-chrome.js?v='      + (V.chrome      || '')
   ];
-  if (needsRetrievalFixtures) {
-    srcs.splice(4, 0, './retrieval-fixtures.js?v=' + (V.fixtures || ''));
-  }
-  for (var i = 0; i < srcs.length; i++) {
-    document.write('<script src="' + srcs[i] + '"><\/script>');
-  }
+  if (needsRetrievalFixtures) srcs.splice(4, 0, './retrieval-fixtures.js?v=' + (V.fixtures || ''));
+  for (var i = 0; i < srcs.length; i++) document.write('<script src="' + srcs[i] + '"><\/script>');
 }());
