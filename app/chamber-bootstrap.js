@@ -79,6 +79,8 @@
     appendModule('./hush-pr82-mobile-state-hotfix.js?v=' + (V.hushPr82 || V.hushPatch38 || V.main || ''));
     appendScript('./hush-pr92-dom-owner.js?v=' + (V.hushPr92 || V.hushPatch38 || V.main || ''));
     appendScript('./hush-pr93-mask-eligibility.js?v=' + (V.hushPr93 || V.hushPr92 || V.hushPatch38 || V.main || ''));
+    appendScript('./hush-pr94-analysis-debouncer.js?v=' + (V.hushPr94 || V.hushPr93 || V.hushPr92 || V.hushPatch38 || V.main || ''));
+    appendScript('./hush-pr95-remote-rescue.js?v=' + (V.hushPr95 || V.hushPr94 || V.hushPr93 || V.hushPatch38 || V.main || ''));
   }
 
   var srcs = [
