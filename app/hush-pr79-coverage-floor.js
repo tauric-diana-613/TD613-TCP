@@ -1,51 +1,38 @@
 import { deriveApertureApprovalTransparency } from './engine/aperture-approval-transparency.js';
 
-export const HUSH_PR79_COVERAGE_FLOOR_VERSION = 'pr79-coverage-floor-approval-transparency';
+export const HUSH_PR79_COVERAGE_FLOOR_VERSION = 'pr79.2-deferred-coverage-floor-no-premature-output';
 
 const $ = (id, doc = document) => doc.getElementById(id);
 const clean = (value) => String(value ?? '').trim();
 
-function softenLine(line = '') {
-  return clean(line)
-    .replace(/^That’s sounds\b/i, 'That sounds')
-    .replace(/^Thats sounds\b/i, 'That sounds')
-    .replace(/\bas like\b/gi, 'like')
-    .replace(/\bgives it to other people\b/gi, 'gives them to other people')
-    .replace(/\bI thought, epistemically, maybe it came from you\b/i, 'I wondered, epistemically, whether it maybe came from you')
-    .replace(/\s+/g, ' ')
-    .trim();
-}
-
-function sourcePreservingDraft(source = '') {
-  const lines = clean(source).split(/\n+/).map(softenLine).filter(Boolean);
-  return lines.join('\n\n');
-}
-
-function setStatus(message = '', doc = document) {
+function setStatus(message = '', doc = document, tone = 'info') {
   const status = $('hushGeneratorStatus', doc);
   if (status) {
-    status.dataset.tone = 'warn';
+    status.dataset.tone = tone;
     status.textContent = message;
   }
+}
+
+function setWarning(message = '', doc = document) {
   const warning = $('acceptWarning', doc);
   if (warning) {
-    warning.hidden = false;
+    warning.hidden = !message;
     warning.textContent = message;
   }
   const accept = $('acceptOutputBtn', doc);
-  if (accept) accept.disabled = true;
+  if (accept && message) accept.disabled = true;
 }
 
 function buildCoverageFloorPacket({ input = '', output = '' } = {}) {
   const sourceChars = clean(input).length;
   const outputChars = clean(output).length;
   return {
-    routeState: 'coverage_floor_used',
-    sealStatus: 'blocked',
+    routeState: 'coverage_floor_deferred',
+    sealStatus: 'pending',
     selectedCandidate: null,
-    hardStops: ['selector_no_approved_candidate'],
+    hardStops: [],
     humanReclosure: {
-      required: true,
+      required: false,
       confirmed: false,
       rejected_routes_visible: true
     },
@@ -59,34 +46,54 @@ function buildCoverageFloorPacket({ input = '', output = '' } = {}) {
 
 function formatCoverageFloorMessage(transparency) {
   const blockers = transparency?.approvalDiagnostics?.blockers || [];
-  const visibleReason = blockers.length
-    ? blockers.join(' | ')
-    : transparency?.approvalReason || 'coverage floor applied';
-  return `Coverage floor engaged — not an error. Hush preserved every source unit because approval is blocked: ${visibleReason}. Review/edit, then hit Analyze before Accept.`;
+  const visibleReason = blockers.length ? blockers.join(' | ') : transparency?.approvalReason || 'generation still pending';
+  return `Generation is still pending — output remains blank until Hush receives an approved candidate. ${visibleReason}`;
 }
 
-function maybeApplyCoverageFloor(doc = document) {
+function isTransformPending(doc = document) {
+  const pending = window.__TD613_HUSH_TRANSFORM_PENDING__;
+  if (!pending?.startedAt) return false;
+  const output = $('protectedOutputInput', doc);
+  if (output && clean(output.value)) return false;
+  return Date.now() - Number(pending.startedAt) < 30000;
+}
+
+function markPending(doc = document) {
+  window.__TD613_HUSH_TRANSFORM_PENDING__ = {
+    version: HUSH_PR79_COVERAGE_FLOOR_VERSION,
+    startedAt: Date.now()
+  };
+  const output = $('protectedOutputInput', doc);
+  if (output) {
+    output.value = '';
+    output.dispatchEvent(new Event('input', { bubbles: true }));
+  }
+  setWarning('', doc);
+  setStatus('Generating mask output…', doc, 'info');
+}
+
+function maybeReportDeferredCoverage(doc = document) {
   const input = $('messageDraftInput', doc);
   const output = $('protectedOutputInput', doc);
   if (!input || !output || clean(output.value)) return;
-  const draft = sourcePreservingDraft(input.value);
-  if (!draft) return;
-  output.value = draft;
-  output.dispatchEvent(new Event('input', { bubbles: true }));
+  if (isTransformPending(doc)) {
+    setStatus('Generating mask output…', doc, 'info');
+    setWarning('', doc);
+    return;
+  }
   const approvalPacket = buildCoverageFloorPacket({ input: input.value, output: output.value });
   const transparency = deriveApertureApprovalTransparency(approvalPacket);
-  setStatus(formatCoverageFloorMessage(transparency), doc);
-  if (typeof window !== 'undefined') {
-    window.__TD613_HUSH_COVERAGE_FLOOR__ = {
-      version: HUSH_PR79_COVERAGE_FLOOR_VERSION,
-      appliedAt: new Date().toISOString(),
-      sourceChars: approvalPacket.sourceChars,
-      outputChars: approvalPacket.outputChars,
-      approvalStatus: transparency.approvalStatus,
-      approvalReason: transparency.approvalReason,
-      approvalDiagnostics: transparency.approvalDiagnostics
-    };
-  }
+  setStatus(formatCoverageFloorMessage(transparency), doc, 'info');
+  setWarning('', doc);
+  window.__TD613_HUSH_COVERAGE_FLOOR__ = {
+    version: HUSH_PR79_COVERAGE_FLOOR_VERSION,
+    deferredAt: new Date().toISOString(),
+    sourceChars: approvalPacket.sourceChars,
+    outputChars: approvalPacket.outputChars,
+    approvalStatus: transparency.approvalStatus,
+    approvalReason: transparency.approvalReason,
+    approvalDiagnostics: transparency.approvalDiagnostics
+  };
 }
 
 function bind(doc = document) {
@@ -95,8 +102,15 @@ function bind(doc = document) {
   const transform = $('generateMaskedOutputBtn', doc);
   if (!transform) return;
   transform.addEventListener('click', () => {
-    [900, 1800, 3200, 5200].forEach((delay) => window.setTimeout(() => maybeApplyCoverageFloor(doc), delay));
+    markPending(doc);
+    [1200, 3200, 7000, 12000, 20000, 31000].forEach((delay) => window.setTimeout(() => maybeReportDeferredCoverage(doc), delay));
   }, true);
+  const output = $('protectedOutputInput', doc);
+  if (output) {
+    output.addEventListener('input', () => {
+      if (clean(output.value)) window.__TD613_HUSH_TRANSFORM_PENDING__ = null;
+    }, true);
+  }
 }
 
 if (typeof document !== 'undefined') {
