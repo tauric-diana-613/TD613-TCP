@@ -22,7 +22,8 @@
     hushPr92: '202605252000',
     hushPr93: '202605252010',
     hushPr94: '202605252015',
-    hushPr95: '202605252015'
+    hushPr95: '202605252015',
+    hushPr96: '202605252030'
   };
   var V = window.TD613_ASSET_VERSIONS;
   document.write('<link rel="stylesheet" href="./styles.css?v=' + V.styles + '" />');
