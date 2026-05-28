@@ -81,6 +81,7 @@
     appendScript('./hush-pr93-mask-eligibility.js?v=' + (V.hushPr93 || V.hushPr92 || V.hushPatch38 || V.main || ''));
     appendScript('./hush-pr94-analysis-debouncer.js?v=' + (V.hushPr94 || V.hushPr93 || V.hushPr92 || V.hushPatch38 || V.main || ''));
     appendScript('./hush-pr95-remote-rescue.js?v=' + (V.hushPr95 || V.hushPr94 || V.hushPr93 || V.hushPatch38 || V.main || ''));
+    appendScript('./hush-pr96-cockpit-stabilizer.js?v=' + (V.hushPr96 || V.hushPr95 || V.hushPatch38 || V.main || ''));
   }
 
   var srcs = [
