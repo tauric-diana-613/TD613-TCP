@@ -69,6 +69,7 @@
     appendStylesheet('./hush-mobile-viewport-fix.css', './hush-mobile-viewport-fix.css?v=' + (V.hushMobileViewportFix || V.hushFieldInstrument || V.hushAlienConsole || V.main || ''));
     appendStylesheet('./hush-phase32.css', './hush-phase32.css?v=' + (V.hushPhase32 || V.main || ''));
 
+    appendScript('./hush-pr98-aperture-intake.js?v=' + (V.hushPr98 || V.hushPatch38 || V.main || ''));
     appendModule('./hush-customizer-card-fields-boot.js?v=' + (V.hushCustomizerCardFields || V.main || ''));
     appendModule('./hush-phase32.js?v=' + (V.hushPhase32 || V.main || ''));
     appendModule('./hush-patch38.js?v=' + (V.hushPatch38 || V.hushPhase32 || V.main || ''));
