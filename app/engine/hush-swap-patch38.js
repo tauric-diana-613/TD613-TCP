@@ -4,7 +4,7 @@ import { attachPropositionIntegrity } from './hush-proposition-integrity.js';
 
 export * from './hush-swap-phase34.js';
 export const HUSH_SWAP_PATCH38_VERSION = 'patch-38-hybrid-candidate-generator';
-export const HUSH_SWAP_PATCH38_INTERNAL_VERSION = 'phase-37.4-copy-safe-question-fallback-selector';
+export const HUSH_SWAP_PATCH38_INTERNAL_VERSION = 'phase-37.5-real-candidate-review-selector';
 
 const asArray = (value) => Array.isArray(value) ? value.filter(Boolean) : [];
 const safe = (value) => String(value ?? '');
@@ -72,9 +72,10 @@ function sourceCopyRisk(candidateText = '', sourceText = '') {
   const longestRun = longestSourceRun(candidateText, sourceText);
   const exactCopy = candidateNorm === sourceNorm;
   const wrapperCopy = !exactCopy && sourceNorm.length >= 24 && candidateNorm.includes(sourceNorm);
-  const longVerbatimRun = longestRun >= Math.min(9, Math.max(6, Math.floor(sourceWords * 0.55)));
-  const nearCopy = !exactCopy && !wrapperCopy && overlap >= 0.9 && syntax <= 0.48 && lengthRatio >= 0.82 && lengthRatio <= 1.25;
-  const score = exactCopy || wrapperCopy ? 1 : round4(Math.min(1, overlap * 0.58 + (1 - Math.min(1, syntax)) * 0.22 + Math.min(0.2, longestRun / Math.max(10, sourceWords))));
+  const longThreshold = Math.min(12, Math.max(8, Math.floor(sourceWords * 0.68)));
+  const longVerbatimRun = longestRun >= longThreshold;
+  const nearCopy = !exactCopy && !wrapperCopy && overlap >= 0.94 && syntax <= 0.42 && lengthRatio >= 0.9 && lengthRatio <= 1.16 && longestRun >= Math.min(8, Math.max(5, Math.floor(sourceWords * 0.38)));
+  const score = exactCopy || wrapperCopy ? 1 : round4(Math.min(1, overlap * 0.46 + (1 - Math.min(1, syntax)) * 0.2 + Math.min(0.16, longestRun / Math.max(14, sourceWords))));
   return { exactCopy, wrapperCopy, nearCopy, longVerbatimRun, tokenOverlap: round4(overlap), syntaxDistance: syntax, lengthRatio: round4(lengthRatio), longestRun, score };
 }
 
@@ -94,18 +95,25 @@ function maskFidelity(candidate = {}, input = {}) {
   const value = safe(candidate.text).toLowerCase();
   const mask = input.mask || {};
   const vector = input.phase37Telemetry?.flightPacket?.mask_style_vector || {};
+  const diversity = mask.diversity || {};
+  const profileTargets = mask.profileTargets?.diversityAxisTargets || mask.profileTargets || {};
   const hints = [
     ...asArray(mask.dictionHints),
     ...asArray(mask.transitionBank),
     ...asArray(mask.transformHints?.desiredMoves),
+    ...asArray(mask.diversity?.openingMoves),
+    ...asArray(mask.diversity?.lexicalSignature),
+    ...asArray(mask.diversity?.requiredMoves),
     ...asArray(vector.diction_hints),
     ...asArray(vector.transition_bank),
     ...asArray(vector.desired_moves)
-  ].map((item) => safe(item).toLowerCase()).filter((item) => item.length > 2).slice(0, 24);
+  ].map((item) => Array.isArray(item) ? safe(item[1] || item[0]) : safe(item).toLowerCase()).filter((item) => item.length > 2).slice(0, 36);
   const hintScore = hints.length ? hints.filter((hint) => value.includes(hint)).length / hints.length : 0.35;
   const notes = candidate.mask_surface_notes || candidate.providerTelemetry?.mask_surface_notes || {};
   const notesScore = notes && typeof notes === 'object' ? Math.min(0.22, Object.keys(notes).length * 0.055) : 0;
-  return round4(Math.min(1, hintScore * 0.32 + operationCompleteness(candidate) * 0.34 + notesScore + 0.12));
+  const styleText = safe(`${diversity.sentenceArchitecture || ''} ${diversity.punctuationSignature || ''} ${JSON.stringify(profileTargets)}`).toLowerCase();
+  const explicitTargetScore = styleText && styleOperation(candidate) !== 'operation-unreported' ? 0.12 : 0;
+  return round4(Math.min(1, hintScore * 0.38 + operationCompleteness(candidate) * 0.28 + notesScore + explicitTargetScore + 0.1));
 }
 
 function humanTexture(candidate = {}) {
@@ -124,9 +132,13 @@ function providerPenalty(candidate = {}) {
   return Math.min(0.9, added * 0.18 + dropped * 0.14 + changed * 0.14);
 }
 
-function isSourceCopy(candidate = {}, sourceText = '') {
+function hardCopyBlocked(candidate = {}, sourceText = '') {
   const copy = candidate.sourceCopyRisk || sourceCopyRisk(candidate.text || '', sourceText);
-  return Boolean(copy.exactCopy || copy.wrapperCopy || copy.nearCopy || copy.longVerbatimRun);
+  return Boolean(copy.exactCopy || copy.wrapperCopy || (copy.longVerbatimRun && !providerSource(candidate)) || (copy.nearCopy && !providerSource(candidate)));
+}
+
+function isSourceCopy(candidate = {}, sourceText = '') {
+  return hardCopyBlocked(candidate, sourceText);
 }
 
 function questionFallbackEligible(candidate = {}, sourceText = '') {
@@ -136,14 +148,32 @@ function questionFallbackEligible(candidate = {}, sourceText = '') {
     && /\?/.test(output)
     && /tech/i.test(output)
     && /signal[- ]reading|signal/i.test(output)
-    && collapseSurfaceScore(output) < 0.34
+    && collapseSurfaceScore(output) < 0.48
     && !isSourceCopy(candidate, sourceText);
+}
+
+function reviewReleaseEligible(candidate = {}, sourceText = '') {
+  if (!providerSource(candidate) || !safe(candidate.text)) return false;
+  const copy = candidate.sourceCopyRisk || sourceCopyRisk(candidate.text || '', sourceText);
+  if (copy.exactCopy || copy.wrapperCopy) return false;
+  const audit = candidate.propositionIntegrity || {};
+  const coverage = audit.coverage || {};
+  const newClaimRisk = Number(audit.newClaimRisk?.score ?? 0);
+  const averageCoverage = Number(coverage.averageCoverage ?? 0);
+  const sourceTermCoverage = Number(coverage.sourceTermCoverage ?? 0);
+  const lengthRatio = Number(coverage.lengthRatio ?? 1);
+  const questionOk = Number(audit.questionFormScore ?? 1) >= 0.5;
+  const claimOk = !audit.answeredQuestion && !audit.inventedAdvice && !audit.strengthenedClaim && newClaimRisk < 0.48;
+  const meaningOk = averageCoverage >= 0.42 || sourceTermCoverage >= 0.38;
+  const shapeOk = lengthRatio >= 0.32 && lengthRatio <= 2.4 && collapseSurfaceScore(candidate.text || '') < 0.72;
+  return questionOk && claimOk && meaningOk && shapeOk && operationCompleteness(candidate) >= 0.42;
 }
 
 function release(candidate = {}, sourceText = '') {
   if (!candidate?.text?.trim()) return false;
   if (isSourceCopy(candidate, sourceText)) return false;
   if (questionFallbackEligible(candidate, sourceText)) return true;
+  if (reviewReleaseEligible(candidate, sourceText)) return true;
   if (candidate.payloadIntegrity?.passed === false) return false;
   if (candidate.claimIntegrity?.passed === false) return false;
   if (candidate.releasePolicy?.hardBlocked === true) return false;
@@ -160,17 +190,17 @@ function score(candidate = {}, sourceText = '', mode = GENERATOR_MODES.OFFLINE_E
   const remote = remoteSource(candidate);
   const offline = offlineSource(candidate);
   const providerBonus = providerSource(candidate) ? 0.3 : 0;
-  const remoteModeBonus = mode === GENERATOR_MODES.REMOTE_LLM_PROXY && remote ? 0.46 : 0;
-  const hybridRemoteBonus = mode === GENERATOR_MODES.HYBRID && remote ? 0.16 : 0;
-  const offlinePenaltyInRemote = mode === GENERATOR_MODES.REMOTE_LLM_PROXY && offline ? 0.45 : 0;
+  const remoteModeBonus = mode === GENERATOR_MODES.REMOTE_LLM_PROXY && remote ? 0.56 : 0;
+  const hybridRemoteBonus = mode === GENERATOR_MODES.HYBRID && remote ? 0.22 : 0;
+  const offlinePenaltyInRemote = mode === GENERATOR_MODES.REMOTE_LLM_PROXY && offline ? 0.65 : 0;
   const questionBonus = genericQuestionActive(sourceText) && providerSource(candidate) ? 0.18 : 0;
   const coverage = Number(candidate.propositionIntegrity?.coverage?.averageCoverage || 0);
   const length = Math.min(1.15, Number(candidate.propositionIntegrity?.coverage?.lengthRatio || 0));
-  const warningPenalty = asArray(candidate.propositionIntegrity?.warnings).length * 0.055;
+  const warningPenalty = reviewReleaseEligible(candidate, sourceText) ? asArray(candidate.propositionIntegrity?.warnings).length * 0.025 : asArray(candidate.propositionIntegrity?.warnings).length * 0.055;
   const copy = sourceCopyRisk(candidate.text, sourceText);
-  const copyPenalty = copy.exactCopy || copy.wrapperCopy ? 4 : copy.nearCopy || copy.longVerbatimRun ? 2.2 : copy.score > 0.9 ? 0.7 : 0;
+  const copyPenalty = copy.exactCopy || copy.wrapperCopy ? 4 : !providerSource(candidate) && (copy.nearCopy || copy.longVerbatimRun) ? 2.2 : copy.score > 0.94 ? 0.35 : 0;
   const base = Number(candidate.finalScore || 0.45);
-  return round4(base + providerBonus + remoteModeBonus + hybridRemoteBonus + questionBonus + coverage * 0.5 + length * 0.18 + operationCompleteness(candidate) * 0.34 + maskFidelity(candidate, input) * 0.32 + syntaxDistance(candidate.text, sourceText) * 0.22 + humanTexture(candidate) * 0.16 - offlinePenaltyInRemote - collapse * 1.05 - warningPenalty - providerPenalty(candidate) - copyPenalty);
+  return round4(base + providerBonus + remoteModeBonus + hybridRemoteBonus + questionBonus + coverage * 0.5 + length * 0.18 + operationCompleteness(candidate) * 0.34 + maskFidelity(candidate, input) * 0.44 + syntaxDistance(candidate.text, sourceText) * 0.22 + humanTexture(candidate) * 0.16 - offlinePenaltyInRemote - collapse * 0.72 - warningPenalty - providerPenalty(candidate) - copyPenalty);
 }
 
 function auditFallback(candidate = {}, error = null) {
@@ -200,7 +230,7 @@ function normalize(candidate = {}, sourceText = '') {
   try {
     const audited = attachPropositionIntegrity(prepared, sourceText);
     const copy = sourceCopyRisk(audited.text || '', sourceText);
-    if (copy.exactCopy || copy.wrapperCopy || copy.nearCopy || copy.longVerbatimRun) {
+    if (copy.exactCopy || copy.wrapperCopy || ((copy.nearCopy || copy.longVerbatimRun) && !providerSource(audited))) {
       const warnings = [...new Set([...(audited.warnings || []), copy.wrapperCopy ? 'source-wrapper-copy-output' : copy.longVerbatimRun ? 'source-verbatim-run-output' : 'source-copy-output'])];
       return {
         ...audited,
@@ -209,6 +239,10 @@ function normalize(candidate = {}, sourceText = '') {
         releasePolicy: { mayPopulateOutput: false, hardBlocked: true, state: 'hold' },
         warnings
       };
+    }
+    if (providerSource(audited) && (copy.nearCopy || copy.longVerbatimRun)) {
+      const warnings = [...new Set([...(audited.warnings || []), copy.longVerbatimRun ? 'provider-source-run-review' : 'provider-near-source-review'])];
+      return { ...audited, sourceCopyRisk: copy, warnings, releaseSummary: { status: 'review', warnings }, releasePolicy: { mayPopulateOutput: true, hardBlocked: false, state: 'review' } };
     }
     return { ...audited, sourceCopyRisk: copy };
   } catch (error) {
@@ -222,14 +256,16 @@ function withPatch38Version(version = '') {
 }
 
 function apply(result = {}, selected = null, diagnostics = {}) {
-  if (!selected) return {
-    ...result,
-    version: withPatch38Version(result.version),
-    selectedOutput: '',
-    selectedCandidateId: '',
-    patch38Diagnostics: diagnostics,
-    warnings: [...new Set([...asArray(result.warnings), ...(diagnostics.warning ? [diagnostics.warning] : [])])]
-  };
+  if (!selected) {
+    return {
+      ...result,
+      version: withPatch38Version(result.version),
+      selectedOutput: '',
+      selectedCandidateId: '',
+      patch38Diagnostics: diagnostics,
+      warnings: [...new Set([...asArray(result.warnings), ...(diagnostics.warning ? [diagnostics.warning] : [])])]
+    };
+  }
   return {
     ...result,
     version: withPatch38Version(result.version),
@@ -271,6 +307,7 @@ export function buildHushSwap(input = {}) {
       syntaxDistance: syntaxDistance(candidate.text, sourceText),
       humanTexture: humanTexture(candidate),
       operationCompleteness: operationCompleteness(candidate),
+      reviewRelease: reviewReleaseEligible(candidate, sourceText),
       provider: providerSource(candidate),
       remote: remoteSource(candidate),
       offline: offlineSource(candidate)
@@ -278,10 +315,10 @@ export function buildHushSwap(input = {}) {
   }).sort((a, b) => b.score - a.score);
 
   const selected = mode === GENERATOR_MODES.REMOTE_LLM_PROXY
-    ? (ranked.find((row) => row.remote && row.collapse < 0.34 && row.maskFidelity >= 0.32)?.candidate || ranked.find((row) => row.remote)?.candidate || null)
+    ? (ranked.find((row) => row.remote && row.maskFidelity >= 0.28)?.candidate || ranked.find((row) => row.remote)?.candidate || null)
     : mode === GENERATOR_MODES.HYBRID
-      ? (ranked.find((row) => row.remote && row.collapse < 0.24)?.candidate || ranked.find((row) => row.provider && row.collapse < 0.24)?.candidate || ranked[0]?.candidate || null)
-      : (ranked.find((row) => row.offline && row.collapse < 0.24)?.candidate || ranked[0]?.candidate || null);
+      ? (ranked.find((row) => row.remote && row.maskFidelity >= 0.24)?.candidate || ranked.find((row) => row.provider)?.candidate || ranked[0]?.candidate || null)
+      : (ranked.find((row) => row.offline && row.collapse < 0.42)?.candidate || ranked[0]?.candidate || null);
 
   const blockedRows = merged.filter((candidate) => !release(candidate, sourceText)).slice(0, 10).map((candidate) => ({
     id: candidate.id,
@@ -297,6 +334,7 @@ export function buildHushSwap(input = {}) {
   const selectedRow = ranked.find((row) => row.candidate === selected) || null;
   const spread = operationSpread(ranked);
   const blockedCopyCount = blockedRows.filter((row) => row.sourceCopyRisk?.exactCopy || row.sourceCopyRisk?.wrapperCopy || row.sourceCopyRisk?.nearCopy || row.sourceCopyRisk?.longVerbatimRun).length;
+  const providerBlockedCount = blockedRows.filter((row) => /remote-llm-candidate|patch38-offline-provider|phase34-expressive-generator/i.test(row.source || row.id || '')).length;
   const diagnostics = {
     version: HUSH_SWAP_PATCH38_VERSION,
     internalVersion: HUSH_SWAP_PATCH38_INTERNAL_VERSION,
@@ -326,19 +364,22 @@ export function buildHushSwap(input = {}) {
     selectedSyntaxDistance: selectedRow?.syntaxDistance ?? 0,
     selectedHumanTexture: selectedRow?.humanTexture ?? 0,
     selectedOperationCompleteness: selectedRow?.operationCompleteness ?? 0,
+    selectedReviewRelease: selectedRow?.reviewRelease ?? false,
     selectedSourceCopyRisk: selectedRow?.sourceCopyRisk || null,
     selectedCollapseSurfaceScore: round4(collapseSurfaceScore(selected?.text || '')),
     selectedScore: selectedRow?.score || 0,
-    selectorRows: ranked.slice(0, 10).map((row) => ({ id: row.candidate.id, source: row.candidate.source, strategy: row.candidate.strategy, operation: row.operation, score: row.score, collapse: row.collapse, coverage: row.coverage, lengthRatio: row.lengthRatio, maskFidelity: row.maskFidelity, syntaxDistance: row.syntaxDistance, humanTexture: row.humanTexture, operationCompleteness: row.operationCompleteness, sourceCopyRisk: row.sourceCopyRisk, provider: row.provider, remote: row.remote, offline: row.offline })),
+    selectorRows: ranked.slice(0, 10).map((row) => ({ id: row.candidate.id, source: row.candidate.source, strategy: row.candidate.strategy, operation: row.operation, score: row.score, collapse: row.collapse, coverage: row.coverage, lengthRatio: row.lengthRatio, maskFidelity: row.maskFidelity, syntaxDistance: row.syntaxDistance, humanTexture: row.humanTexture, operationCompleteness: row.operationCompleteness, reviewRelease: row.reviewRelease, sourceCopyRisk: row.sourceCopyRisk, provider: row.provider, remote: row.remote, offline: row.offline })),
     mergedCandidates: merged,
-    warning: blockedCopyCount && !selected
-      ? 'all-candidates-copied-source'
-      : blockedCopyCount ? 'source-copy-candidates-blocked'
-        : mode === GENERATOR_MODES.REMOTE_LLM_PROXY && !providerCandidates.some(remoteSource)
-          ? 'remote-mode-produced-no-remote-candidates'
-          : !selected && blockedRows.length ? 'all-candidates-failed-proposition-coverage'
-            : spread.length <= 1 && providerCandidates.length > 1 ? 'phase37-operation-diversity-low'
-              : collapseSurfaceScore(selected?.text || '') >= 0.34 ? 'patch38-custody-collapse-risk' : ''
+    warning: !selected && mode === GENERATOR_MODES.REMOTE_LLM_PROXY && providerCandidates.filter(remoteSource).length === 0
+      ? 'remote-mode-produced-no-remote-candidates'
+      : !selected && providerBlockedCount
+        ? 'provider-candidates-failed-review-release'
+        : !selected && blockedCopyCount
+          ? 'all-candidates-copied-source'
+          : blockedCopyCount ? 'source-copy-candidates-blocked'
+            : !selected && blockedRows.length ? 'all-candidates-failed-proposition-coverage'
+              : spread.length <= 1 && providerCandidates.length > 1 ? 'phase37-operation-diversity-low'
+                : collapseSurfaceScore(selected?.text || '') >= 0.48 ? 'patch38-custody-collapse-risk' : ''
   };
   return apply(result, selected, diagnostics);
 }
