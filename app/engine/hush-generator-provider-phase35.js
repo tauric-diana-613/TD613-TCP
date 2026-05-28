@@ -1,6 +1,7 @@
 import { buildHushLlmPromptContract, HUSH_GENERATOR_PROVIDER_VERSION, buildProtectedLiteralList } from './hush-generator-provider.js';
 import { buildPropositionMap } from './hush-proposition-map.js';
 import { buildOntologyRoute, compileRemoteRoutePayload } from './hush-ontology-route.js';
+import { extractCadenceProfile, cadenceModFromProfile, StylometricDeepMetrics } from './stylometry.js';
 
 export const HUSH_PROVIDER_PHASE35_VERSION = 'phase-35-provider-contract-v2';
 export const HUSH_PROVIDER_PHASE37_VERSION = 'phase-37-ontology-carrying-generator-flight';
@@ -23,6 +24,12 @@ export const HUSH_STYLE_OPERATIONS = Object.freeze([
 const asArray = (value) => Array.isArray(value) ? value.filter(Boolean) : [];
 const safe = (value) => String(value ?? '').trim();
 const uniq = (values = []) => [...new Set(asArray(values).map((value) => safe(value)).filter(Boolean))];
+const round3 = (value) => Number(Number(value || 0).toFixed(3));
+
+function compactNumber(value, fallback = 0) {
+  const n = Number(value);
+  return Number.isFinite(n) ? round3(n) : fallback;
+}
 
 function sourceUnitText(propositionMap = {}, sourceText = '') {
   const propositionUnits = asArray(propositionMap.propositions).map((p) => safe(p.text)).filter(Boolean);
@@ -83,7 +90,95 @@ function maskStyleVector(mask = {}) {
   };
 }
 
-function flightControls(input = {}, ontologyRoute = {}) {
+function compactCadenceProfile(profile = {}) {
+  return {
+    register_mode: profile.registerMode || 'plain',
+    word_count: Number(profile.wordCount || 0),
+    sentence_count: Number(profile.sentenceCount || 0),
+    avg_sentence_length: compactNumber(profile.avgSentenceLength),
+    sentence_length_spread: compactNumber(profile.sentenceLengthSpread),
+    punctuation_density: compactNumber(profile.punctuationDensity),
+    contraction_density: compactNumber(profile.contractionDensity),
+    line_break_density: compactNumber(profile.lineBreakDensity),
+    recurrence_pressure: compactNumber(profile.recurrencePressure),
+    repeated_bigram_pressure: compactNumber(profile.repeatedBigramPressure),
+    lexical_dispersion: compactNumber(profile.lexicalDispersion),
+    content_word_complexity: compactNumber(profile.contentWordComplexity),
+    modifier_density: compactNumber(profile.modifierDensity),
+    hedge_density: compactNumber(profile.hedgeDensity),
+    abstraction_posture: compactNumber(profile.abstractionPosture),
+    directness: compactNumber(profile.directness),
+    latinate_preference: compactNumber(profile.latinatePreference),
+    abbreviation_density: compactNumber(profile.abbreviationDensity),
+    orthographic_looseness: compactNumber(profile.orthographicLooseness),
+    fragment_pressure: compactNumber(profile.fragmentPressure),
+    conversational_posture: compactNumber(profile.conversationalPosture),
+    syntactic_branching_depth: compactNumber(profile.syntacticBranchingDepth),
+    structural_friction: compactNumber(profile.structuralFriction),
+    lexical_entropy_score: compactNumber(profile.lexicalEntropyScore),
+    transition_variance: compactNumber(profile.transitionVariance),
+    acoustic_weight: compactNumber(profile.acousticWeight),
+    punctuation_mix: profile.punctuationMix || {},
+    surface_marker_profile: profile.surfaceMarkerProfile || {},
+    word_length_profile: profile.wordLengthProfile || {},
+    function_word_profile: profile.functionWordProfile || {}
+  };
+}
+
+function compactDeepMetrics(metrics = {}) {
+  return {
+    structural_friction: compactNumber(metrics.structuralFriction),
+    acoustic_weight: compactNumber(metrics.acousticWeight),
+    composite_density: compactNumber(metrics.compositeDensity),
+    syntactic_branching: metrics.syntacticBranchingDepth || {},
+    lexical_entropy: metrics.lexicalEntropyScore || {},
+    transition_variance: metrics.transitionVariance || {}
+  };
+}
+
+function stylometryAudit(sourceProfile = {}, maskProfile = {}, sourceDeep = {}) {
+  const warnings = [];
+  if (!sourceProfile.word_count && !sourceProfile.wordCount) warnings.push('source-profile-empty');
+  if (compactNumber(sourceProfile.sentence_length_spread ?? sourceProfile.sentenceLengthSpread) > 45) warnings.push('sentence-spread-outlier-check-units');
+  if (compactNumber(sourceProfile.punctuation_density ?? sourceProfile.punctuationDensity) > 0.45) warnings.push('punctuation-density-outlier-check-character-denominator');
+  if (compactNumber(sourceDeep.composite_density ?? sourceDeep.compositeDensity) > 0.92) warnings.push('deep-density-near-ceiling');
+  if (!maskProfile.register_mode && !maskProfile.registerMode) warnings.push('mask-reference-profile-missing-or-sparse');
+  return warnings;
+}
+
+function stylometryEnginePacket({ sourceText = '', mask = {}, maskReferenceText = '' } = {}) {
+  const sourceProfileRaw = extractCadenceProfile(sourceText);
+  const maskText = safe(maskReferenceText || mask.sampleSeed || '');
+  const maskProfileRaw = mask.profile && Object.keys(mask.profile).length ? mask.profile : extractCadenceProfile(maskText);
+  const sourceProfile = compactCadenceProfile(sourceProfileRaw);
+  const maskReferenceProfile = compactCadenceProfile(maskProfileRaw);
+  const sourceDeep = compactDeepMetrics(StylometricDeepMetrics.analyze(sourceText));
+  const cadenceShell = cadenceModFromProfile(sourceProfileRaw);
+  const targetShell = maskProfileRaw && !maskProfileRaw.empty ? cadenceModFromProfile(maskProfileRaw) : null;
+  return {
+    engine_version: 'hush-stylometry-engine/v1',
+    source_profile: sourceProfile,
+    mask_reference_profile: maskReferenceProfile,
+    source_deep_metrics: sourceDeep,
+    cadence_shell: cadenceShell,
+    target_shell: targetShell,
+    generator_constraints: {
+      preserve_register_mode: false,
+      move_toward_mask_register: Boolean(targetShell),
+      avoid_exact_surface_copy: true,
+      require_sentence_boundary_movement: true,
+      require_visible_axis_movement: true,
+      axis_targets: targetShell || cadenceShell,
+      source_axes: cadenceShell
+    },
+    audit: {
+      warnings: stylometryAudit(sourceProfile, maskReferenceProfile, sourceDeep),
+      note: 'Compact stylometry packet only; no private ledger, mask memory, or iteration history included.'
+    }
+  };
+}
+
+function flightControls(input = {}, ontologyRoute = {}, stylometryPacket = {}) {
   const hints = ontologyRoute.ontologyHints || {};
   return {
     candidate_count: Math.max(4, Math.min(8, Number(input.candidateCount || input.options?.candidateCount || 8))),
@@ -96,7 +191,10 @@ function flightControls(input = {}, ontologyRoute = {}) {
     do_not_strengthen_claims: true,
     avoid_collapse_surface: true,
     semantic_risk: hints.semanticRisk || 'medium',
-    transformation_depth: hints.transformationDepth || 'medium'
+    transformation_depth: hints.transformationDepth || 'medium',
+    stylometry_engine_required: true,
+    stylometry_axis_targets: stylometryPacket.generator_constraints?.axis_targets || {},
+    source_axis_signature: stylometryPacket.generator_constraints?.source_axes || {}
   };
 }
 
@@ -147,6 +245,7 @@ export function buildHushFlightPacketV3(input = {}) {
   const units = sourceUnitText(propositionMap, sourceText);
   const requiredTerms = termBank(propositionMap, sourceText);
   const protectedLiterals = asArray(input.protectedLiterals).length ? asArray(input.protectedLiterals) : buildProtectedLiteralList(sourceText);
+  const stylometryPacket = stylometryEnginePacket({ sourceText, mask, maskReferenceText: input.maskReferenceText || input.referenceText || '' });
 
   return {
     packet_version: HUSH_FLIGHT_PACKET_VERSION,
@@ -171,7 +270,8 @@ export function buildHushFlightPacketV3(input = {}) {
       cadence_pressure: routePayload.ontologyHints?.cadencePressure || routePayload.routeType
     },
     mask_style_vector: maskStyleVector(mask),
-    flight_controls: flightControls(input, ontologyRoute),
+    stylometry_engine: stylometryPacket,
+    flight_controls: flightControls(input, ontologyRoute, stylometryPacket),
     privacy_boundary: {
       sends_private_ledger: false,
       sends_mask_memory: false,
@@ -189,6 +289,7 @@ export function compileFlightPacketForProvider(packet = {}) {
     source_manifest: packet.source_manifest || {},
     ontology_route: packet.ontology_route || {},
     mask_style_vector: packet.mask_style_vector || {},
+    stylometry_engine: packet.stylometry_engine || {},
     flight_controls: packet.flight_controls || {},
     privacy_boundary: packet.privacy_boundary || {}
   };
@@ -219,10 +320,12 @@ export function buildHushLlmPromptContractV3(input = {}) {
     },
     rules: [
       'Use the Hush Flight Packet as active control, not decorative context.',
+      'Use flightPacket.stylometry_engine as active control for cadence, register, surface marker, structural friction, entropy, and transition movement.',
       'Generate candidates across distinct style_operation values; do not produce one voice with cosmetic variants.',
       'Preserve source_manifest.source_units and source_manifest.required_terms unless a term can only be paraphrased safely.',
       'Each candidate must declare preserved_propositions, dropped_propositions, changed_questions, new_claims, and mask_surface_notes.',
-      'Follow ontology_route.route_type, semantic_risk, and transformation_depth when choosing operations.',
+      'Follow ontology_route.route_type, semantic_risk, transformation_depth, and stylometry_engine.generator_constraints when choosing operations.',
+      'Move the surface away from the source_axis_signature while moving toward stylometry_axis_targets when a target shell is available.',
       ...(base.rules || [])
     ].filter((rule, index, arr) => arr.indexOf(rule) === index)
   };
@@ -251,6 +354,7 @@ export function buildPhase37ProviderTelemetry(input = {}) {
     flightPacket,
     propositionMap: flightPacket.source_manifest?.proposition_summary || {},
     ontologyRoute: flightPacket.ontology_route || {},
+    stylometryEngine: flightPacket.stylometry_engine || {},
     operationTaxonomy: HUSH_STYLE_OPERATIONS,
     remotePayloadIsCompact: false,
     remotePayloadIsPrivacyBounded: true,
