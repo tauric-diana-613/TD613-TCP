@@ -1,0 +1,65 @@
+name: Flight Mobile Patch
+
+on:
+  push:
+    branches:
+      - main
+    paths:
+      - scripts/patch-td613-flight-ios-input-guard.mjs
+      - .github/workflows/flight-mobile-patch.yml
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+concurrency:
+  group: flight-mobile-patch-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  apply:
+    name: Apply TD613 Flight mobile input guard
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+
+      - name: Apply iOS input guard patch
+        run: node scripts/patch-td613-flight-ios-input-guard.mjs
+
+      - name: Verify patch markers
+        run: |
+          grep -q 'TD613 Flight PR86 iOS thumb input guard' app/safe-harbor/td613-flight.html
+          grep -q 'TD613_FLIGHT_IOS_INPUT_GUARD' app/safe-harbor/td613-flight.html
+
+      - name: Commit patched Flight HTML
+        run: |
+          if git diff --quiet -- app/safe-harbor/td613-flight.html; then
+            echo 'Flight HTML already patched.'
+            exit 0
+          fi
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add app/safe-harbor/td613-flight.html
+          git commit -m 'fix(flight): apply iOS input zoom guard [skip ci]'
+          git push
+
+      - name: Patch summary
+        if: always()
+        run: |
+          {
+            echo '## Flight Mobile Patch'
+            echo ''
+            echo '- Applies PR86 iOS thumb input guard to TD613 Flight.'
+            echo '- Prevents Safari text-area focus zoom by forcing 16px editable controls on touch screens.'
+            echo '- Keeps double-tap paste reachable while preserving the fixed cockpit scale.'
+          } >> "$GITHUB_STEP_SUMMARY"
