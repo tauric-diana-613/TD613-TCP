@@ -6,8 +6,9 @@ let html = fs.readFileSync(path, 'utf8');
 const marker = 'PR85_FINAL_SENTINEL TD613 Flight mobile repair';
 
 const viewport = '<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no, viewport-fit=cover" />';
-if (html.includes('<meta name="viewport"')) html = html.replace(/<meta name="viewport"[^>]*>/i, viewport);
-else html = html.replace('<head>', `<head>\n${viewport}`);
+const viewportMeta = /\n?<meta\b(?=[^>]*\bname=["']viewport["'])[^>]*>/gi;
+html = html.replace(viewportMeta, '');
+html = html.replace(/<head>/i, `<head>\n${viewport}`);
 
 const cssMarkers = [
   'PR80_SENTINEL TD613 Flight PR80 mobile chrome restoration',
