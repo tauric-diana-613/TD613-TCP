@@ -1,0 +1,68 @@
+name: Flight iOS Visual Scale Input Shim
+
+on:
+  push:
+    branches:
+      - main
+    paths:
+      - scripts/patch-td613-flight-ios-visual-scale.mjs
+      - .github/workflows/flight-ios-visual-scale.yml
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+concurrency:
+  group: flight-ios-visual-scale-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  apply:
+    name: Apply iOS visual-scale input shim
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+
+      - name: Apply surgical visual-scale input shim
+        run: node scripts/patch-td613-flight-ios-visual-scale.mjs
+
+      - name: Verify surgical patch only
+        run: |
+          grep -q 'PR87_SENTINEL TD613 Flight iOS visual-scale input shim' app/safe-harbor/td613-flight.html
+          grep -q -- '--flight-ios-visual-scale' app/safe-harbor/td613-flight.html
+          ! grep -q 'TD613_FLIGHT_IOS_INPUT_GUARD' app/safe-harbor/td613-flight.html
+          ! grep -q 'scrollIntoView' app/safe-harbor/td613-flight.html
+
+      - name: Commit patched Flight HTML
+        run: |
+          if git diff --quiet -- app/safe-harbor/td613-flight.html scripts/patch-td613-flight-mobile-pr85-final.mjs; then
+            echo 'Flight visual-scale shim already applied.'
+            exit 0
+          fi
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add app/safe-harbor/td613-flight.html scripts/patch-td613-flight-mobile-pr85-final.mjs
+          git commit -m 'fix(flight): prevent iOS input zoom with visual-scale shim [skip ci]'
+          git push
+
+      - name: Shim summary
+        if: always()
+        run: |
+          {
+            echo '## Flight iOS Visual Scale Input Shim'
+            echo ''
+            echo '- Only targets Flight lane textareas/text inputs.'
+            echo '- Uses computed 16px font to stop iOS focus zoom, then scales the control back to PR85 visual size.'
+            echo '- Does not touch banner/header, drag surface, buttons, selects, or global inputs.'
+            echo '- Does not use scrollIntoView.'
+          } >> "$GITHUB_STEP_SUMMARY"
