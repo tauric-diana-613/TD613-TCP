@@ -1,7 +1,7 @@
 (function () {
   'use strict';
 
-  var VERSION = 'pr98.4-aperture-bridge-route-profile-drawer-loader';
+  var VERSION = 'pr98.5-aperture-bridge-events';
   var STORAGE_KEY = 'td613:aperture:hush-packet';
   var LEGACY_KEY = 'TD613_APERTURE_HUSH_PACKET';
   var fetchPatched = false;
@@ -13,6 +13,10 @@
   function asArray(value) { return Array.isArray(value) ? value.filter(Boolean) : []; }
   function numeric(value) { var parsed = Number(String(value == null ? '' : value).replace(/[^0-9.-]/g, '')); return Number.isFinite(parsed) ? parsed : 0; }
   function unique(values) { return Array.from(new Set((values || []).filter(Boolean))); }
+  function emit(name, detail) {
+    try { window.dispatchEvent(new CustomEvent(name, { detail: detail || {} })); }
+    catch (error) { window.__TD613_HUSH_APERTURE_EVENT_ERROR = String(error && error.message || error); }
+  }
 
   function readPacket() {
     var memory = window.__TD613_HUSH_APERTURE_HANDOFF || null;
@@ -93,13 +97,14 @@
     if (baseline && packet.source_trace && !clean(baseline.value)) { baseline.value = JSON.stringify(packet.source_trace, null, 2); baseline.dispatchEvent(new Event('input', { bubbles: true })); }
     ensureStatus(packet);
     document.body.dataset.hushApertureIntake = 'true';
+    emit('td613:hush:aperture-packet-applied', { packet: packet, bridge: compactApertureBridge(packet), version: VERSION });
     return true;
   }
 
   function loadDrawer() {
     if (document.querySelector('script[data-pr99-route-assist="true"]')) return;
     var script = document.createElement('script');
-    script.src = './hush-pr99-rupture-assist-drawer.js?v=202605281850';
+    script.src = './hush-pr99-rupture-assist-drawer.js?v=202605281855';
     script.dataset.pr99RouteAssist = 'true';
     document.head.appendChild(script);
   }
@@ -123,9 +128,13 @@
           parsed.contract.flightPacket.flight_controls = Object.assign({}, parsed.contract.flightPacket.flight_controls || {}, bridge.repair_controls);
           init = Object.assign({}, init, { body: JSON.stringify(parsed) });
           window.__TD613_HUSH_APERTURE_LAST_REMOTE_CONTRACT = parsed.contract;
+          emit('td613:hush:aperture-contract-injected', { contract: parsed.contract, bridge: bridge, packet: packet, version: VERSION });
         }
       }
-      return originalFetch(resource, init);
+      return originalFetch(resource, init).then(function (response) {
+        if (/hush-generate/i.test(url)) emit('td613:hush:remote-response-observed', { status: response.status, ok: response.ok, version: VERSION });
+        return response;
+      });
     };
   }
 
