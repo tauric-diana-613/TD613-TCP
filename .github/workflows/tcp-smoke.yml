@@ -1,0 +1,48 @@
+name: TCP Smoke
+
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+    branches:
+      - main
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: tcp-smoke-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  smoke:
+    name: TCP / Aperture / Hush smoke
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+          cache: npm
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Verify package scripts
+        run: node -e "const p=require('./package.json'); if(!p.scripts?.test || !p.scripts?.['test:hush']) throw new Error('Expected npm test scripts are missing'); console.log('package scripts visible')"
+
+      - name: Aperture approval transparency smoke
+        run: node tests/aperture-approval-transparency.test.mjs
+
+      - name: Hush Phase 37 flight packet smoke
+        run: node tests/hush-phase37-flight-packet.test.mjs
+
+      - name: Hush Mask Studio smoke
+        run: node tests/hush-mask-studio.test.mjs
