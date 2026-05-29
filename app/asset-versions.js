@@ -7,7 +7,7 @@
     fixtures:    '202604230045',
     receipt:     '202605010945',
     main:        '202604230045',
-    aperture:    '202604192040',
+    aperture:    '202605281835',
     chrome:      '202605250312',
     hushAlienConsole: '202605250326',
     hushFieldInstrument: '202605200002',
@@ -24,7 +24,8 @@
     hushPr94: '202605252015',
     hushPr95: '202605252015',
     hushPr96: '202605252030',
-    hushPr97: '202605252045'
+    hushPr97: '202605252045',
+    hushPr98: '202605281835'
   };
   var V = window.TD613_ASSET_VERSIONS;
   document.write('<link rel="stylesheet" href="./styles.css?v=' + V.styles + '" />');
