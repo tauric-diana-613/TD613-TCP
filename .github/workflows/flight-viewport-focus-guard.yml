@@ -1,0 +1,94 @@
+name: Flight Viewport Focus Guard
+
+on:
+  push:
+    branches:
+      - main
+    paths:
+      - .github/workflows/flight-viewport-focus-guard.yml
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+concurrency:
+  group: flight-viewport-focus-guard-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  guard:
+    name: Dedupe Flight viewport only
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+
+      - name: Apply surgical viewport guard
+        run: |
+          node --input-type=module <<'NODE'
+          import fs from 'node:fs';
+
+          const viewport = '<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no, viewport-fit=cover" />';
+          const viewportMeta = /\n?<meta\b(?=[^>]*\bname=["']viewport["'])[^>]*>/gi;
+
+          const htmlPath = 'app/safe-harbor/td613-flight.html';
+          let html = fs.readFileSync(htmlPath, 'utf8');
+          html = html.replace(viewportMeta, '');
+          html = html.replace(/<head>/i, `<head>\n${viewport}`);
+          fs.writeFileSync(htmlPath, html);
+
+          const scriptPath = 'scripts/patch-td613-flight-mobile-pr85-final.mjs';
+          let script = fs.readFileSync(scriptPath, 'utf8');
+          const oldBlock = `const viewport = '<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no, viewport-fit=cover" />';\nif (html.includes('<meta name="viewport"')) html = html.replace(/<meta name="viewport"[^>]*>/i, viewport);\nelse html = html.replace('<head>', \`<head>\\n\${viewport}\`);`;
+          const newBlock = `const viewport = '<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no, viewport-fit=cover" />';\nconst viewportMeta = /\\n?<meta\\b(?=[^>]*\\bname=["']viewport["'])[^>]*>/gi;\nhtml = html.replace(viewportMeta, '');\nhtml = html.replace(/<head>/i, \`<head>\\n\${viewport}\`);`;
+          if (script.includes(oldBlock)) script = script.replace(oldBlock, newBlock);
+          else if (!script.includes('const viewportMeta = /\\n?<meta\\b')) {
+            throw new Error('PR85 viewport block not found; refusing broad mutation');
+          }
+          fs.writeFileSync(scriptPath, script);
+          NODE
+
+      - name: Verify one canonical viewport and no PR86 guard
+        run: |
+          node --input-type=module <<'NODE'
+          import fs from 'node:fs';
+          const html = fs.readFileSync('app/safe-harbor/td613-flight.html', 'utf8');
+          const matches = html.match(/<meta\b(?=[^>]*\bname=["']viewport["'])[^>]*>/gi) || [];
+          if (matches.length !== 1) throw new Error(`Expected exactly one viewport meta, found ${matches.length}`);
+          if (!/maximum-scale=1/.test(matches[0]) || !/user-scalable=no/.test(matches[0])) throw new Error('Viewport missing focus-zoom guard');
+          if (/PR86 iOS thumb input guard|TD613_FLIGHT_IOS_INPUT_GUARD/.test(html)) throw new Error('Rejected PR86 guard is present');
+          console.log(matches[0]);
+          NODE
+
+      - name: Commit viewport guard
+        run: |
+          if git diff --quiet -- app/safe-harbor/td613-flight.html scripts/patch-td613-flight-mobile-pr85-final.mjs; then
+            echo 'Flight viewport already canonical.'
+            exit 0
+          fi
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add app/safe-harbor/td613-flight.html scripts/patch-td613-flight-mobile-pr85-final.mjs
+          git commit -m 'fix(flight): dedupe viewport to stop iOS focus zoom [skip ci]'
+          git push
+
+      - name: Guard summary
+        if: always()
+        run: |
+          {
+            echo '## Flight Viewport Focus Guard'
+            echo ''
+            echo '- Only dedupes viewport metadata.'
+            echo '- No global input font-size changes.'
+            echo '- No scrollIntoView focus script.'
+            echo '- Keeps PR85 mobile surface and drag layout intact.'
+          } >> "$GITHUB_STEP_SUMMARY"
