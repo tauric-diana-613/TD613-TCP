@@ -1,7 +1,7 @@
 (function () {
   'use strict';
 
-  var VERSION = 'pr98.3-aperture-bridge-route-profile';
+  var VERSION = 'pr98.4-aperture-bridge-route-profile-drawer-loader';
   var STORAGE_KEY = 'td613:aperture:hush-packet';
   var LEGACY_KEY = 'TD613_APERTURE_HUSH_PACKET';
   var fetchPatched = false;
@@ -96,6 +96,14 @@
     return true;
   }
 
+  function loadDrawer() {
+    if (document.querySelector('script[data-pr99-route-assist="true"]')) return;
+    var script = document.createElement('script');
+    script.src = './hush-pr99-rupture-assist-drawer.js?v=202605281850';
+    script.dataset.pr99RouteAssist = 'true';
+    document.head.appendChild(script);
+  }
+
   function patchFetch() {
     if (fetchPatched || typeof window.fetch !== 'function') return;
     fetchPatched = true;
@@ -126,6 +134,7 @@
     if (document.body.dataset.pr98ApertureIntake === 'true') return;
     document.body.dataset.pr98ApertureIntake = 'true';
     patchFetch();
+    loadDrawer();
     var packet = readPacket();
     if (packet) applyPacket(packet);
     window.setTimeout(function () { var later = readPacket(); if (later) applyPacket(later); }, 600);
