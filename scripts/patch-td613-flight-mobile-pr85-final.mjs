@@ -113,6 +113,7 @@ const css = `
 }
 
 
+
 /* PR88_SENTINEL TD613 Flight focus stability micro patch */
 @media (hover: none), (pointer: coarse), (max-width: 820px) {
   .flight-lane textarea,
