@@ -3181,6 +3181,81 @@ select {
   }
 }
 
+
+/* PR90_SENTINEL TD613 Flight seal side-by-side target/zwnj repair */
+@media (hover: none), (pointer: coarse), (max-width: 820px) {
+  .flight-lane .seal-card .section-split-row {
+    display: grid !important;
+    grid-template-columns: minmax(0, .92fr) minmax(0, 1.08fr) !important;
+    grid-template-areas: "target zwnj" !important;
+    gap: 7px !important;
+    align-items: stretch !important;
+  }
+
+  .flight-lane .seal-card .section-split-row > div:first-child {
+    grid-area: zwnj !important;
+    align-self: stretch !important;
+    margin-top: 0 !important;
+    transform: none !important;
+    -webkit-transform: none !important;
+  }
+
+  .flight-lane .seal-card .section-split-row > div:nth-child(2) {
+    grid-area: target !important;
+    align-self: stretch !important;
+    min-height: 100% !important;
+    transform: none !important;
+    -webkit-transform: none !important;
+  }
+
+  .flight-lane .seal-card .section-split-row > div {
+    min-width: 0 !important;
+    padding: 7px 8px !important;
+  }
+
+  .flight-lane .seal-card .section-split-row .small-label {
+    font-size: 6px !important;
+    line-height: 1.1 !important;
+    letter-spacing: .09em !important;
+  }
+
+  .flight-lane .seal-card #sealTargetWord {
+    width: 100% !important;
+    max-width: 100% !important;
+  }
+
+  .flight-lane .seal-card .section-split-row .radio-row {
+    display: flex !important;
+    flex-wrap: wrap !important;
+    gap: 4px 5px !important;
+    align-content: flex-start !important;
+  }
+
+  .flight-lane .seal-card .section-split-row .radio-row label {
+    flex: 0 1 auto !important;
+    min-width: 0 !important;
+    max-width: 100% !important;
+    min-height: 15px !important;
+    padding: 2px 5px !important;
+    font-size: 5px !important;
+    line-height: 1.08 !important;
+    white-space: normal !important;
+  }
+}
+
+@media (hover: none) and (pointer: coarse) and (max-width: 520px) {
+  .flight-lane .seal-card .section-split-row {
+    grid-template-columns: minmax(0, .92fr) minmax(0, 1.08fr) !important;
+    grid-template-areas: "target zwnj" !important;
+  }
+
+  .flight-lane .seal-card .section-split-row > div:first-child,
+  .flight-lane .seal-card .section-split-row > div:nth-child(2) {
+    transform: none !important;
+    -webkit-transform: none !important;
+  }
+}
+
 </style>
 </head>
 <body class="flight-locked">
