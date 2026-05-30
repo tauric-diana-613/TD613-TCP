@@ -8,23 +8,21 @@ const css = `
 /* ${marker} */
 @media (hover: none), (pointer: coarse), (max-width: 820px) {
   .flight-lane textarea,
-  .flight-lane #taskText {
-    --flight-ios-visual-scale: .5625;
-    --flight-ios-visual-h: 86px;
-    --flight-ios-visual-min-h: 74px;
-    --flight-ios-visual-max-h: 150px;
-    width: calc(100% / var(--flight-ios-visual-scale)) !important;
-    max-width: calc(100% / var(--flight-ios-visual-scale)) !important;
-    min-height: calc(var(--flight-ios-visual-min-h) / var(--flight-ios-visual-scale)) !important;
-    height: calc(var(--flight-ios-visual-h) / var(--flight-ios-visual-scale)) !important;
-    max-height: calc(var(--flight-ios-visual-max-h) / var(--flight-ios-visual-scale)) !important;
-    margin-right: calc(100% - (100% / var(--flight-ios-visual-scale))) !important;
-    margin-bottom: calc(var(--flight-ios-visual-h) - (var(--flight-ios-visual-h) / var(--flight-ios-visual-scale))) !important;
+  .flight-lane #taskText,
+  .flight-lane #outputText {
+    width: 177.777777% !important;
+    max-width: 177.777777% !important;
+    min-height: 131.5556px !important;
+    height: 152.8889px !important;
+    max-height: 266.6667px !important;
+    margin-right: -77.777777% !important;
+    margin-bottom: -66.8889px !important;
     font-size: 16px !important;
     line-height: 1.18 !important;
-    transform: scale(var(--flight-ios-visual-scale)) !important;
+    letter-spacing: .004em !important;
+    transform: scale(.5625) !important;
     transform-origin: left top !important;
-    -webkit-transform: scale(var(--flight-ios-visual-scale)) !important;
+    -webkit-transform: scale(.5625) !important;
     -webkit-transform-origin: left top !important;
     touch-action: auto !important;
     -webkit-user-select: text !important;
@@ -34,31 +32,48 @@ const css = `
   }
 
   .flight-lane .dev-drawer textarea {
-    --flight-ios-visual-scale: .5;
-    --flight-ios-visual-h: 62px;
-    --flight-ios-visual-min-h: 54px;
-    --flight-ios-visual-max-h: 112px;
+    width: 200% !important;
+    max-width: 200% !important;
+    min-height: 108px !important;
+    height: 124px !important;
+    max-height: 224px !important;
+    margin-right: -100% !important;
+    margin-bottom: -62px !important;
     font-size: 16px !important;
     line-height: 1.12 !important;
+    transform: scale(.5) !important;
+    transform-origin: left top !important;
+    -webkit-transform: scale(.5) !important;
+    -webkit-transform-origin: left top !important;
   }
 
-  .flight-lane input[type="text"],
-  .flight-lane input[type="number"],
-  .flight-lane input[type="date"] {
-    --flight-ios-input-scale: .5;
-    --flight-ios-input-w: clamp(8rem, 42vw, 18rem);
-    --flight-ios-input-h: 18px;
-    width: calc(var(--flight-ios-input-w) / var(--flight-ios-input-scale)) !important;
-    max-width: calc(var(--flight-ios-input-w) / var(--flight-ios-input-scale)) !important;
-    height: calc(var(--flight-ios-input-h) / var(--flight-ios-input-scale)) !important;
-    min-height: calc(var(--flight-ios-input-h) / var(--flight-ios-input-scale)) !important;
-    margin-right: calc(var(--flight-ios-input-w) - (var(--flight-ios-input-w) / var(--flight-ios-input-scale))) !important;
-    margin-bottom: calc(var(--flight-ios-input-h) - (var(--flight-ios-input-h) / var(--flight-ios-input-scale))) !important;
+  #sealVerbCustom,
+  #sealVerbWithCustom,
+  #sealTargetWord,
+  #authFragment,
+  #authSac,
+  #authShi,
+  #authAuthority,
+  #authOntology,
+  #authSchema,
+  #authRoutePath,
+  #authTribunal,
+  #authSimFlag,
+  #rotationSeed,
+  #routeJurisdiction,
+  #routeCitationStandard,
+  #routeUnit {
+    width: 200% !important;
+    max-width: 200% !important;
+    height: 36px !important;
+    min-height: 36px !important;
+    margin-right: -100% !important;
+    margin-bottom: -18px !important;
     font-size: 16px !important;
     line-height: 1 !important;
-    transform: scale(var(--flight-ios-input-scale)) !important;
+    transform: scale(.5) !important;
     transform-origin: left center !important;
-    -webkit-transform: scale(var(--flight-ios-input-scale)) !important;
+    -webkit-transform: scale(.5) !important;
     -webkit-transform-origin: left center !important;
     touch-action: auto !important;
     -webkit-user-select: text !important;
@@ -67,12 +82,81 @@ const css = `
     text-size-adjust: 100% !important;
   }
 
-  .flight-lane label input[type="text"],
-  .flight-lane label input[type="number"],
-  .flight-lane label input[type="date"] {
-    --flight-ios-input-scale: .4375;
-    --flight-ios-input-w: clamp(4rem, 16vw, 6.2rem);
-    --flight-ios-input-h: 14px;
+  .seal-custom-label #sealVerbCustom,
+  .seal-custom-label #sealVerbWithCustom {
+    width: 228.571429% !important;
+    max-width: 228.571429% !important;
+    height: 32px !important;
+    min-height: 32px !important;
+    margin-right: -128.571429% !important;
+    margin-bottom: -18px !important;
+    transform: scale(.4375) !important;
+    -webkit-transform: scale(.4375) !important;
+  }
+
+  #authPayload,
+  #authDate {
+    width: 200% !important;
+    max-width: 200% !important;
+    height: 36px !important;
+    min-height: 36px !important;
+    margin-right: -100% !important;
+    margin-bottom: -18px !important;
+    font-size: 16px !important;
+    line-height: 1 !important;
+    transform: scale(.5) !important;
+    transform-origin: left center !important;
+    -webkit-transform: scale(.5) !important;
+    -webkit-transform-origin: left center !important;
+  }
+
+  .output-toolbar {
+    align-items: center !important;
+    gap: 8px !important;
+  }
+
+  .payload-stepper {
+    flex: 0 0 auto !important;
+    width: auto !important;
+    min-width: 112px !important;
+    max-width: 156px !important;
+    min-height: 30px !important;
+    height: 30px !important;
+    padding: 3px 6px !important;
+    gap: 6px !important;
+    margin-left: auto !important;
+    transform: scale(.78) !important;
+    transform-origin: right center !important;
+  }
+
+  .payload-stepper-label {
+    font-size: 7px !important;
+    line-height: 1 !important;
+    letter-spacing: .12em !important;
+  }
+
+  .payload-stepper-value {
+    font-size: 10px !important;
+    line-height: 1 !important;
+    min-width: 1.1rem !important;
+  }
+
+  .payload-stepper-btn,
+  .payload-stepper .icon-btn {
+    width: 24px !important;
+    min-width: 24px !important;
+    height: 24px !important;
+    min-height: 24px !important;
+    padding: 0 !important;
+    font-size: 12px !important;
+    line-height: 1 !important;
+  }
+
+  @media (max-width: 390px) {
+    .payload-stepper {
+      transform: scale(.7) !important;
+      max-width: 140px !important;
+    }
   }
 }
 `;
@@ -99,4 +183,4 @@ if (!pr85.includes(cssInjectionPoint)) throw new Error('PR85 css template not fo
 pr85 = pr85.replace(cssInjectionPoint, `${cssInjectionPoint}${css}\n`);
 fs.writeFileSync(pr85Path, pr85);
 
-console.log('TD613 Flight PR87 iOS visual-scale input shim applied');
+console.log('TD613 Flight PR87 iOS visual-scale input shim applied with Safari-safe fixed math');
