@@ -3193,6 +3193,9 @@ select {
 
 
 
+
+
+
 /* PR90_SENTINEL TD613 Flight seal side-by-side target/zwnj repair */
 @media (hover: none), (pointer: coarse), (max-width: 820px) {
   .flight-lane .seal-card .section-split-row {
@@ -3402,7 +3405,36 @@ select {
 
 
 /* PR92_SENTINEL TD613 Flight dashboard polish: shelves, rail, payload */
+/* PR93_SENTINEL TD613 Flight mobile heading/rail/footer correction */
 @media (hover: none) and (max-width: 820px), (pointer: coarse) and (max-width: 820px) {
+  .flight-lane .card h2,
+  .flight-lane-prompt .card h2,
+  .flight-lane-output .card h2,
+  .dev-drawer .card h2 {
+    font-size: clamp(18px, 6vw, 24px) !important;
+    line-height: .92 !important;
+    letter-spacing: .075em !important;
+    overflow-wrap: anywhere !important;
+  }
+
+  .flight-lane-output .output-card h2,
+  .flight-lane-output .seal-card h2,
+  .flight-lane-output .copy-bin-card h2 {
+    font-size: clamp(18px, 5.8vw, 23px) !important;
+  }
+
+  .dev-drawer .card h2 {
+    font-size: clamp(17px, 5.4vw, 22px) !important;
+  }
+
+  .flight-lane-prompt > .card:nth-of-type(3),
+  .flight-lane-prompt > .card:nth-of-type(4) {
+    transform: translate(5px, 6px) !important;
+    -webkit-transform: translate(5px, 6px) !important;
+    max-width: calc(100% - 7px) !important;
+    margin-bottom: 9px !important;
+  }
+
   .flight-lane-prompt .card .checkbox-row,
   .flight-lane-prompt .card .radio-row {
     display: flex !important;
@@ -3484,9 +3516,9 @@ select {
 
   .flight-lane-output .seal-card .section-note,
   .flight-lane-output .copy-bin-card .section-note {
-    font-size: 9px !important;
-    line-height: 1.18 !important;
-    margin: 5px 0 8px !important;
+    font-size: 8px !important;
+    line-height: 1.15 !important;
+    margin: 4px 0 7px !important;
   }
 
   .mobile-prompt-rail.mobile-prompt-rail-top {
@@ -3498,34 +3530,58 @@ select {
     bottom: auto !important;
     left: auto !important;
     z-index: auto !important;
-    width: auto !important;
-    max-width: min(88vw, 22rem) !important;
-    min-height: 24px !important;
-    margin: 8px auto 10px !important;
-    padding: 4px 8px !important;
-    gap: 6px !important;
-    justify-content: center !important;
+    width: fit-content !important;
+    min-width: 0 !important;
+    max-width: min(66vw, 15.5rem) !important;
+    min-height: 20px !important;
+    margin: 7px 0 10px auto !important;
+    padding: 3px 7px !important;
+    gap: 5px !important;
+    justify-content: flex-end !important;
     align-items: center !important;
-    border-color: rgba(255, 210, 98, .64) !important;
+    border-color: rgba(255, 210, 98, .66) !important;
     background:
-      linear-gradient(180deg, rgba(116, 67, 17, .96), rgba(34, 16, 5, .96)) !important;
-    box-shadow: 0 0 18px rgba(255, 177, 59, .2), inset 0 1px 0 rgba(255, 239, 196, .16) !important;
+      linear-gradient(180deg, rgba(118, 69, 18, .96), rgba(34, 16, 5, .96)) !important;
+    box-shadow: 0 0 16px rgba(255, 177, 59, .18), inset 0 1px 0 rgba(255, 239, 196, .14) !important;
   }
 
   .mobile-prompt-rail.mobile-prompt-rail-top span:first-child {
-    font-size: 6px !important;
+    font-size: 5px !important;
     line-height: 1 !important;
+    letter-spacing: .12em !important;
     color: rgba(255, 239, 196, .92) !important;
     white-space: nowrap !important;
   }
 
   .mobile-prompt-rail.mobile-prompt-rail-top .mobile-prompt-rail-pill {
-    padding: 2px 6px !important;
-    font-size: 5.5px !important;
+    min-width: 13px !important;
+    padding: 1px 5px !important;
+    font-size: 7px !important;
     line-height: 1 !important;
     color: rgba(255, 229, 133, .96) !important;
-    border-color: rgba(255, 210, 98, .48) !important;
+    border-color: rgba(255, 210, 98, .5) !important;
     background: rgba(72, 38, 10, .78) !important;
+  }
+
+  .dev-drawer .section-split-row {
+    display: grid !important;
+    grid-template-columns: minmax(0, 1fr) !important;
+    gap: 10px !important;
+  }
+
+  .dev-drawer .section-split-row > div {
+    min-width: 0 !important;
+    width: 100% !important;
+    max-width: 100% !important;
+    overflow: visible !important;
+  }
+
+  .dev-drawer .section-split-row input,
+  .dev-drawer .section-split-row .date-field {
+    width: 100% !important;
+    max-width: 100% !important;
+    min-width: 0 !important;
+    box-sizing: border-box !important;
   }
 
   .output-card .status-bar {
@@ -3715,7 +3771,7 @@ For U+10D613, \uDBF5\uDE13 functions as the single canonical surrogate pair in U
 </div>
 <!-- Control & refactor macros -->
 <div class="card">
-<h2>Control &amp; refactor macros</h2>
+<h2>Macros</h2>
 <div class="section-note">
 Use these when the task needs routing, evidence discipline, summarization, or audit behavior layered into the generated prompt.
 </div>
@@ -3790,7 +3846,7 @@ Soft closers and lane directions that finish the body before the Seal. Canonical
 </div>
 <button class="mobile-prompt-rail mobile-prompt-rail-top" data-flight-lane-target="output" type="button">
 <span>Seal payload to begin Flight</span>
-<span class="mobile-prompt-rail-pill">Sealed Output &rarr;</span>
+<span class="mobile-prompt-rail-pill" aria-hidden="true">→</span>
 </button>
 <div class="dev-divider"></div><details class="dev-drawer" id="devSettingsDrawer"><summary><span>Dev Settings<span class="drawer-kicker">Flightplan, rotation, and provenance controls are collapsed by default.</span></span></summary><div class="drawer-body"><div class="card flightplan-card">
 <h2>Flightplan Builder</h2>
