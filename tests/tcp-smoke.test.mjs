@@ -9,6 +9,12 @@ const exists = (filePath) => fs.existsSync(path.join(root, filePath));
 const requiredFiles = [
   'package.json',
   'app/index.html',
+  'app/adversarial-bench.html',
+  'app/hush-phase39.css',
+  'app/hush-phase39-engine.js',
+  'app/hush-phase39-ui.js',
+  'tests/hush-phase39-engine.test.mjs',
+  'tests/hush-phase39-ui.test.mjs',
   'app/safe-harbor/index.html',
   'app/safe-harbor/td613-flight.html',
   'scripts/patch-td613-flight-seal-side-by-side.mjs',
@@ -25,6 +31,22 @@ assert.equal(pkg.type, 'module', 'package must stay ESM-compatible');
 assert.ok(pkg.scripts?.test, 'package must expose the full test command');
 assert.ok(pkg.scripts?.['test:hush'], 'package must expose the deep Hush regression command');
 assert.ok(pkg.scripts?.['test:safe-harbor'], 'package must expose the Safe Harbor regression command');
+
+const hushManifest = read('app/asset-versions.js');
+assert.ok(hushManifest.includes('hushPhase39'), 'asset manifest must expose Hush Phase 39 version');
+assert.ok(hushManifest.includes('hush-phase39.css'), 'asset manifest must load Phase 39 CSS');
+assert.ok(hushManifest.includes('hush-phase39-ui.js'), 'asset manifest must load Phase 39 UI');
+
+const hushEngine = read('app/hush-phase39-engine.js');
+for (const marker of ['detectEpistemicide', 'protectedMeaningResults', 'registerDrift', 'phase39Receipt', 'runPhase39']) {
+  assert.ok(hushEngine.includes(`export function ${marker}`), `Phase 39 engine missing export: ${marker}`);
+}
+assert.ok(hushEngine.includes('privateTextExcluded: true'), 'Phase 39 receipts must exclude private text');
+
+const hushUi = read('app/hush-phase39-ui.js');
+for (const marker of ['hushPhase39Panel', 'Meaning Survives the Mask', 'Protected meaning lockbox', 'Clean Receipt']) {
+  assert.ok(hushUi.includes(marker), `Phase 39 UI missing marker: ${marker}`);
+}
 
 const flight = read('app/safe-harbor/td613-flight.html');
 const flightNeedles = [
@@ -62,4 +84,4 @@ assert.ok(harborIndex.includes('Safe Harbor') || harborIndex.includes('safe-harb
 const gateway = read('app/index.html');
 assert.ok(gateway.includes('<html'), 'Gateway must remain an HTML document');
 
-console.log('TCP smoke passed: static surfaces, Flight sentinels, and lightweight package contracts are intact.');
+console.log('TCP smoke passed: static surfaces, Flight sentinels, and Hush Phase 39 assets are intact.');
