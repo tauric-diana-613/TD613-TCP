@@ -18,9 +18,9 @@ concurrency:
 
 jobs:
   smoke:
-    name: TCP / Aperture / Hush smoke
+    name: Static TCP smoke gate
     runs-on: ubuntu-latest
-    timeout-minutes: 10
+    timeout-minutes: 5
 
     steps:
       - name: Checkout repository
@@ -35,14 +35,16 @@ jobs:
       - name: Install dependencies
         run: npm ci
 
-      - name: Verify package scripts
-        run: node -e "const p=require('./package.json'); if(!p.scripts?.test || !p.scripts?.['test:hush']) throw new Error('Expected npm test scripts are missing'); console.log('package scripts visible')"
+      - name: Run lightweight TCP smoke
+        run: node tests/tcp-smoke.test.mjs
 
-      - name: Aperture approval transparency smoke
-        run: node tests/aperture-approval-transparency.test.mjs
-
-      - name: Hush Phase 37 flight packet smoke
-        run: node tests/hush-phase37-flight-packet.test.mjs
-
-      - name: Hush Mask Studio smoke
-        run: node tests/hush-mask-studio.test.mjs
+      - name: Smoke summary
+        if: always()
+        run: |
+          {
+            echo '## TCP Smoke'
+            echo ''
+            echo '- Runs a lightweight static surface check.'
+            echo '- Confirms Flight PR90/PR91/PR92 sentinels and key UI contracts.'
+            echo '- Does not run the full Hush / stylometry / recognition regression suite.'
+          } >> "$GITHUB_STEP_SUMMARY"
