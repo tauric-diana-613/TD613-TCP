@@ -22,7 +22,7 @@ ${marker}
     align-items: flex-start !important;
     align-content: flex-start !important;
     justify-content: flex-start !important;
-    gap: 4px 6px !important;
+    gap: 4px 5px !important;
     width: 100% !important;
     max-width: 100% !important;
     overflow: visible !important;
@@ -35,17 +35,17 @@ ${marker}
     flex: 0 1 auto !important;
     align-items: center !important;
     justify-content: flex-start !important;
-    gap: 5px !important;
-    width: auto !important;
-    min-width: min(9.2rem, calc(50% - 4px)) !important;
-    max-width: min(18.4rem, 100%) !important;
-    min-height: 19px !important;
+    gap: 4px !important;
+    width: fit-content !important;
+    min-width: 0 !important;
+    max-width: min(10.4rem, 44vw) !important;
+    min-height: 18px !important;
     height: auto !important;
     padding: 2px 6px !important;
     border-radius: 999px !important;
-    font-size: 7px !important;
+    font-size: 6.5px !important;
     line-height: 1.06 !important;
-    letter-spacing: .004em !important;
+    letter-spacing: .002em !important;
     white-space: normal !important;
     overflow: visible !important;
     overflow-wrap: anywhere !important;
@@ -53,34 +53,44 @@ ${marker}
     text-align: left !important;
   }
 
+  .flight-lane-prompt .card .checkbox-row > label:nth-child(3n+1),
+  .flight-lane-prompt .card .radio-row > label:nth-child(3n+1) {
+    max-width: min(8.8rem, 39vw) !important;
+  }
+
+  .flight-lane-prompt .card .checkbox-row > label:nth-child(3n+2),
+  .flight-lane-prompt .card .radio-row > label:nth-child(3n+2) {
+    max-width: min(11.2rem, 47vw) !important;
+  }
+
   .flight-lane-prompt .card .checkbox-row > label > input[type="checkbox"],
   .flight-lane-prompt .card .radio-row > label > input[type="radio"] {
     flex: 0 0 auto !important;
-    width: 9px !important;
-    min-width: 9px !important;
-    height: 9px !important;
-    min-height: 9px !important;
+    width: 8px !important;
+    min-width: 8px !important;
+    height: 8px !important;
+    min-height: 8px !important;
     margin: 0 !important;
   }
 
   .flight-lane-prompt .card .checkbox-row > label:has(input[type="text"]),
   .flight-lane-prompt .card .radio-row > label:has(input[type="text"]) {
     flex: 0 1 auto !important;
-    width: auto !important;
-    min-width: min(11rem, calc(50% - 4px)) !important;
-    max-width: min(16.4rem, 100%) !important;
+    width: fit-content !important;
+    min-width: 0 !important;
+    max-width: min(10.8rem, 45vw) !important;
     border-radius: 14px !important;
   }
 
   .flight-lane-prompt .card .checkbox-row > label input[type="text"],
   .flight-lane-prompt .card .radio-row > label input[type="text"] {
-    width: clamp(4.6rem, 22vw, 7.2rem) !important;
+    width: clamp(3.8rem, 18vw, 5.8rem) !important;
     min-width: 0 !important;
     max-width: 100% !important;
-    height: 14px !important;
-    min-height: 14px !important;
-    padding: 1px 5px !important;
-    font-size: 7px !important;
+    height: 13px !important;
+    min-height: 13px !important;
+    padding: 1px 4px !important;
+    font-size: 6.5px !important;
     line-height: 1 !important;
   }
 
@@ -101,33 +111,33 @@ ${marker}
     left: auto !important;
     z-index: auto !important;
     width: auto !important;
-    max-width: min(92vw, 26rem) !important;
-    min-height: 28px !important;
-    margin: 10px auto 12px !important;
-    padding: 6px 10px !important;
-    gap: 8px !important;
+    max-width: min(88vw, 22rem) !important;
+    min-height: 24px !important;
+    margin: 8px auto 10px !important;
+    padding: 4px 8px !important;
+    gap: 6px !important;
     justify-content: center !important;
     align-items: center !important;
-    border-color: rgba(255, 210, 98, .58) !important;
+    border-color: rgba(255, 210, 98, .64) !important;
     background:
-      linear-gradient(180deg, rgba(101, 61, 16, .96), rgba(30, 15, 5, .96)) !important;
-    box-shadow: 0 0 22px rgba(255, 177, 59, .18), inset 0 1px 0 rgba(255, 239, 196, .15) !important;
+      linear-gradient(180deg, rgba(116, 67, 17, .96), rgba(34, 16, 5, .96)) !important;
+    box-shadow: 0 0 18px rgba(255, 177, 59, .2), inset 0 1px 0 rgba(255, 239, 196, .16) !important;
   }
 
   .mobile-prompt-rail.mobile-prompt-rail-top span:first-child {
-    font-size: 7px !important;
+    font-size: 6px !important;
     line-height: 1 !important;
     color: rgba(255, 239, 196, .92) !important;
     white-space: nowrap !important;
   }
 
   .mobile-prompt-rail.mobile-prompt-rail-top .mobile-prompt-rail-pill {
-    padding: 3px 8px !important;
-    font-size: 6px !important;
+    padding: 2px 6px !important;
+    font-size: 5.5px !important;
     line-height: 1 !important;
     color: rgba(255, 229, 133, .96) !important;
-    border-color: rgba(255, 210, 98, .45) !important;
-    background: rgba(62, 33, 9, .78) !important;
+    border-color: rgba(255, 210, 98, .48) !important;
+    background: rgba(72, 38, 10, .78) !important;
   }
 
   .output-card .status-bar {
@@ -243,6 +253,7 @@ function injectCss(source) {
   if (!out.includes(marker)) throw new Error('PR92 CSS injection failed');
   if (!out.includes('flex-flow: row wrap !important;')) throw new Error('PR92 shelf layout missing');
   if (!out.includes('grid-template-areas: "counts auth" ". payload" !important;')) throw new Error('PR92 payload stepper grid missing');
+  if (!out.includes('width: fit-content !important;')) throw new Error('PR92 mosaic tile width cap missing');
   return out;
 }
 
@@ -257,4 +268,4 @@ function injectIntoPr85(source) {
 fs.writeFileSync(htmlPath, injectIntoHtml(fs.readFileSync(htmlPath, 'utf8')));
 fs.writeFileSync(pr85Path, injectIntoPr85(fs.readFileSync(pr85Path, 'utf8')));
 
-console.log('Applied TD613 Flight PR92 dashboard polish: left shelves, quote labels, rail, and payload stepper.');
+console.log('Applied TD613 Flight PR92 dashboard polish: mosaic tiles, quote labels, rail, and payload stepper.');
