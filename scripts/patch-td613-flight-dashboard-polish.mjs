@@ -12,8 +12,6 @@ const payloadStepperBlock = `<div class="payload-stepper" id="payloadStepper" ar
 <button class="icon-btn payload-stepper-btn" id="payloadUp" type="button" aria-label="Increase payload number">+</button>
 </div>`;
 
-const authToggleBlock = `<label class="output-auth-toggle" id="statusAuth">authorship wrap: <input checked="" id="authOutputToggle" type="checkbox" aria-label="Toggle authorship binding footer"/></label>`;
-
 const css = `
 ${marker}
 @media (hover: none) and (max-width: 820px), (pointer: coarse) and (max-width: 820px) {
@@ -221,37 +219,39 @@ function applyMarkupRepairs(source) {
     '<label><input id="bodyPhraseAcademicSpeculation" type="checkbox"/>“When authoring, stay academically rigorous yet grounded in high speculation.”</label>'
   );
 
-  out = out.split(payloadStepperBlock).join('');
-  const statusNeedle = `${authToggleBlock}\n</div>\n<div class="output-toolbar">`;
-  const statusReplacement = `${authToggleBlock}\n${payloadStepperBlock}\n</div>\n<div class="output-toolbar">`;
-  if (!out.includes(statusNeedle)) throw new Error('Output status bar insertion point not found');
-  out = out.replace(statusNeedle, statusReplacement);
+  out = out.replace(/\n?<div class="payload-stepper" id="payloadStepper" aria-label="Payload number controls">[\s\S]*?<\/div>/g, '');
+  const authTogglePattern = /(<label class="output-auth-toggle" id="statusAuth">authorship wrap: <input[^>]*id="authOutputToggle"[^>]*><\/label>)\s*\n<\/div>\s*\n<div class="output-toolbar">/;
+  if (!authTogglePattern.test(out)) throw new Error('Output status bar insertion point not found');
+  out = out.replace(authTogglePattern, `$1\n${payloadStepperBlock}\n</div>\n<div class="output-toolbar">`);
 
   if (!out.includes('“I was broken encasing a circle.”')) throw new Error('Quoted encasing label missing');
   if (!out.includes('“When authoring, stay academically rigorous yet grounded in high speculation.”')) throw new Error('Quoted academic-speculation label missing');
   if (out.includes('phrases.push("“I was broken encasing a circle.”")')) throw new Error('Output value accidentally gained quotes');
+  if (!out.includes('id="payloadStepper"')) throw new Error('Payload stepper was not reinserted');
+  return out;
+}
+
+function injectCss(source) {
+  let out = stripPrior(source);
+  const cssInjectionPoint = 'const css = `\n';
+  if (out.includes(cssInjectionPoint)) {
+    out = out.replace(cssInjectionPoint, `${cssInjectionPoint}${css}\n`);
+  } else {
+    if (!out.includes('</style>')) throw new Error('Missing CSS injection point');
+    out = out.replace('</style>', `${css}\n</style>`);
+  }
+  if (!out.includes(marker)) throw new Error('PR92 CSS injection failed');
+  if (!out.includes('flex-flow: row wrap !important;')) throw new Error('PR92 shelf layout missing');
+  if (!out.includes('grid-template-areas: "counts auth" ". payload" !important;')) throw new Error('PR92 payload stepper grid missing');
   return out;
 }
 
 function injectIntoHtml(source) {
-  let out = applyMarkupRepairs(stripPrior(source));
-  if (!out.includes('</style>')) throw new Error('Missing </style> in Flight HTML');
-  out = out.replace('</style>', `${css}\n</style>`);
-  if (!out.includes(marker)) throw new Error('PR92 CSS injection failed in Flight HTML');
-  if (!out.includes('flex-flow: row wrap !important;')) throw new Error('PR92 shelf layout missing in Flight HTML');
-  if (!out.includes('grid-template-areas: "counts auth" ". payload" !important;')) throw new Error('PR92 payload stepper grid missing in Flight HTML');
-  return out;
+  return injectCss(applyMarkupRepairs(source));
 }
 
 function injectIntoPr85(source) {
-  let out = applyMarkupRepairs(stripPrior(source));
-  const cssInjectionPoint = 'const css = `\n';
-  if (!out.includes(cssInjectionPoint)) throw new Error('PR85 CSS template not found');
-  out = out.replace(cssInjectionPoint, `${cssInjectionPoint}${css}\n`);
-  if (!out.includes(marker)) throw new Error('PR92 CSS injection failed in PR85 patch script');
-  if (!out.includes('flex-flow: row wrap !important;')) throw new Error('PR92 shelf layout missing in PR85 patch script');
-  if (!out.includes('grid-template-areas: "counts auth" ". payload" !important;')) throw new Error('PR92 payload stepper grid missing in PR85 patch script');
-  return out;
+  return injectCss(source);
 }
 
 fs.writeFileSync(htmlPath, injectIntoHtml(fs.readFileSync(htmlPath, 'utf8')));
