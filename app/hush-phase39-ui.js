@@ -20,7 +20,7 @@ function buildPanel() {
   panel.className = 'hush-phase39-panel';
   panel.innerHTML = `
     <div class="hush-phase39-head">
-      <div><div class="hush-phase39-kicker">Phase 39 · reader</div><h2 class="hush-phase39-title">Meaning Survives the Mask</h2></div>
+      <div><div class="hush-phase39-kicker">Adversarial reader</div><h2 class="hush-phase39-title">Meaning Survives the Mask</h2></div>
       <p class="hush-phase39-copy">Audit claim drift, meaning loss, audience pressure, over-polish, and receipt custody.</p>
     </div>
     <div class="hush-phase39-controls">
@@ -28,15 +28,15 @@ function buildPanel() {
       <label>Protected meaning lockbox<textarea id="hushPhase39Lockbox" placeholder="One protected meaning per line: dates, claims, refusals, sacred phrases, boundaries."></textarea></label>
     </div>
     <div class="hush-phase39-actions">
-      <button id="hushPhase39RunBtn" class="primary" type="button">Run Phase 39</button>
+      <button id="hushPhase39RunBtn" class="primary" type="button">Run Reader</button>
       <button id="hushPhase39ReceiptBtn" type="button">Export Receipt</button>
     </div>
     <div class="hush-phase39-grid">
       <article class="hush-phase39-card"><h4>Reader Warnings</h4><div id="hushPhase39Reader" class="hush-phase39-chiprow"></div></article>
       <article class="hush-phase39-card"><h4>Protected Meaning</h4><div id="hushPhase39LockboxResults" class="hush-phase39-chiprow"></div></article>
-      <article class="hush-phase39-card"><h4>Epistemicide Alarm</h4><div id="hushPhase39Epistemicide" class="hush-phase39-chiprow"></div></article>
+      <article class="hush-phase39-card"><h4>Knowledge-Loss Alarm</h4><div id="hushPhase39Epistemicide" class="hush-phase39-chiprow"></div></article>
       <article class="hush-phase39-card"><h4>Register Drift</h4><div id="hushPhase39Drift" class="hush-phase39-chiprow"></div><div class="hush-phase39-meter"><i id="hushPhase39PrettyBar"></i></div><div id="hushPhase39PrettyText" class="hush-phase39-small">Beauty is not admissibility.</div></article>
-      <article class="hush-phase39-card"><h4>Plain Speech Recovery</h4><div id="hushPhase39Plain" class="hush-phase39-output">Run Phase 39 after generating output.</div></article>
+      <article class="hush-phase39-card"><h4>Plain Speech Recovery</h4><div id="hushPhase39Plain" class="hush-phase39-output">Run the reader after generating output.</div></article>
       <article class="hush-phase39-card"><h4>Clean Receipt</h4><div id="hushPhase39Receipt" class="hush-phase39-output">Receipt excludes source/output text and carries hashes only.</div></article>
     </div>`;
   const anchor = byId('hushComparePanel') || byId('hushPressureRibbon') || byId('protectedOutputHeading')?.closest('.hush-output-card');
