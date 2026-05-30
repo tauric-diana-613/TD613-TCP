@@ -27,21 +27,24 @@
     hushPr97: '202605252045',
     hushPr98: '202605281855',
     hushPr99: '202605281855',
-    hushPhase39: '202605301720'
+    hushPhase39: '202605301750'
   };
   var V = window.TD613_ASSET_VERSIONS;
   document.write('<link rel="stylesheet" href="./styles.css?v=' + V.styles + '" />');
   document.write('<link rel="stylesheet" href="./hush-phase39.css?v=' + V.hushPhase39 + '" />');
+  function ensureReaderScript() {
+    if (document.querySelector('script[src*="hush-phase39-ui.js"],script[data-td613-hush-phase39="ui"]')) return;
+    var script = document.createElement('script');
+    script.type = 'module';
+    script.src = './hush-phase39-ui.js?v=' + V.hushPhase39;
+    script.dataset.td613HushPhase39 = 'ui';
+    document.body.appendChild(script);
+  }
   if (document.body && document.body.dataset && document.body.dataset.pageKind === 'adversarial-bench') {
-    document.write('<script type="module" src="./hush-phase39-ui.js?v=' + V.hushPhase39 + '"><\/script>');
+    document.write('<script type="module" data-td613-hush-phase39="ui" src="./hush-phase39-ui.js?v=' + V.hushPhase39 + '"><\/script>');
   } else {
     window.addEventListener('DOMContentLoaded', function () {
-      if (document.body && document.body.dataset && document.body.dataset.pageKind === 'adversarial-bench') {
-        var script = document.createElement('script');
-        script.type = 'module';
-        script.src = './hush-phase39-ui.js?v=' + V.hushPhase39;
-        document.body.appendChild(script);
-      }
+      if (document.body && document.body.dataset && document.body.dataset.pageKind === 'adversarial-bench') ensureReaderScript();
     });
   }
 }());
