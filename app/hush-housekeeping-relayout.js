@@ -1,3 +1,22 @@
+const TD613_HUSH_PHASE39_VERSION = '202605301720';
+
+const ensureHushPhase39Assets = () => {
+  if (!document.querySelector('link[data-td613-hush-phase39="css"]')) {
+    const link = document.createElement('link');
+    link.rel = 'stylesheet';
+    link.href = `./hush-phase39.css?v=${TD613_HUSH_PHASE39_VERSION}`;
+    link.dataset.td613HushPhase39 = 'css';
+    document.head.appendChild(link);
+  }
+  if (!document.querySelector('script[data-td613-hush-phase39="ui"]')) {
+    const script = document.createElement('script');
+    script.type = 'module';
+    script.src = `./hush-phase39-ui.js?v=${TD613_HUSH_PHASE39_VERSION}`;
+    script.dataset.td613HushPhase39 = 'ui';
+    document.body.appendChild(script);
+  }
+};
+
 const relocateHushCustodyPanel = () => {
   const panel = document.getElementById('hushHousekeepingPanel');
   const outputCard = document.getElementById('protectedOutputHeading')?.closest('.hush-output-card') || document.getElementById('protectedOutputInput')?.closest('section');
@@ -32,6 +51,7 @@ const relocateHushCustodyPanel = () => {
 };
 
 function bindRelayout() {
+  ensureHushPhase39Assets();
   let tries = 0;
   const tick = () => {
     tries += 1;
@@ -41,12 +61,18 @@ function bindRelayout() {
   tick();
 
   const observer = new MutationObserver(() => {
-    window.requestAnimationFrame(relocateHushCustodyPanel);
+    window.requestAnimationFrame(() => {
+      relocateHushCustodyPanel();
+      ensureHushPhase39Assets();
+    });
   });
   observer.observe(document.documentElement, { childList: true, subtree: true });
 }
 
 if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', bindRelayout);
 else bindRelayout();
-window.addEventListener('load', () => window.setTimeout(relocateHushCustodyPanel, 160));
-window.__TD613_HUSH_HOUSEKEEPING_RELAYOUT__ = { relocateHushCustodyPanel };
+window.addEventListener('load', () => window.setTimeout(() => {
+  relocateHushCustodyPanel();
+  ensureHushPhase39Assets();
+}, 160));
+window.__TD613_HUSH_HOUSEKEEPING_RELAYOUT__ = { relocateHushCustodyPanel, ensureHushPhase39Assets };
