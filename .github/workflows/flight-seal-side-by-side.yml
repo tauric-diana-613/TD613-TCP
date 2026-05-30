@@ -13,7 +13,7 @@ on:
       - scripts/patch-td613-flight-pr97-dev-title-header-center.mjs
       - scripts/patch-td613-flight-pr99-swipe-rollback.mjs
       - scripts/patch-td613-flight-pr100-lane-touch-repair.mjs
-      - scripts/patch-td613-flight-pr101-state-lanes.mjs
+      - scripts/patch-td613-flight-pr102-restore-output-lane.mjs
       - .github/workflows/flight-seal-side-by-side.yml
   workflow_dispatch:
 
@@ -26,7 +26,7 @@ concurrency:
 
 jobs:
   apply:
-    name: Apply PR90-PR97 plus PR99-PR101 Flight mobile repairs
+    name: Apply PR90-PR97 plus PR99/PR100/PR102 Flight mobile repairs
     runs-on: ubuntu-latest
     timeout-minutes: 10
 
@@ -65,8 +65,8 @@ jobs:
       - name: Apply native lane touch repair
         run: node scripts/patch-td613-flight-pr100-lane-touch-repair.mjs
 
-      - name: Apply state lane model
-        run: node scripts/patch-td613-flight-pr101-state-lanes.mjs
+      - name: Restore visible Output lane
+        run: node scripts/patch-td613-flight-pr102-restore-output-lane.mjs
 
       - name: Verify Flight mobile repairs
         run: |
@@ -79,12 +79,12 @@ jobs:
           grep -q 'PR97_SENTINEL TD613 Flight dev title shrink + Header control centering' app/safe-harbor/td613-flight.html
           grep -q 'PR99_SENTINEL TD613 Flight rollback PR98 swipe lock to native lanes' app/safe-harbor/td613-flight.html
           grep -q 'PR100_SENTINEL TD613 Flight native lane touch repair' app/safe-harbor/td613-flight.html
-          grep -q 'PR101_SENTINEL TD613 Flight mobile state lanes no horizontal trap' app/safe-harbor/td613-flight.html
-          grep -q 'td613-pr101-state-lanes' app/safe-harbor/td613-flight.html
-          grep -q 'scroll-snap-type: none !important;' app/safe-harbor/td613-flight.html
-          grep -q 'html\[data-td613-lane="output"\] .grid > div:last-child' app/safe-harbor/td613-flight.html
+          grep -q 'PR102_SENTINEL TD613 Flight restore visible Output lane after PR101 rollback' app/safe-harbor/td613-flight.html
+          grep -q 'scroll-snap-type: x proximity !important;' app/safe-harbor/td613-flight.html
           ! grep -q 'td613-pr98-swipe-lock' app/safe-harbor/td613-flight.html
           ! grep -q 'PR98_SENTINEL TD613 Flight symmetric lane swipe lock' app/safe-harbor/td613-flight.html
+          ! grep -q 'td613-pr101-state-lanes' app/safe-harbor/td613-flight.html
+          ! grep -q 'PR101_SENTINEL TD613 Flight mobile state lanes no horizontal trap' app/safe-harbor/td613-flight.html
           grep -q 'font-size: clamp(10px, 2.65vw, 13px) !important;' app/safe-harbor/td613-flight.html
           grep -q 'font-size: clamp(9.5px, 2.35vw, 12px) !important;' app/safe-harbor/td613-flight.html
           grep -q 'min-height: 72px !important;' app/safe-harbor/td613-flight.html
@@ -100,29 +100,30 @@ jobs:
           grep -q 'PR97_SENTINEL TD613 Flight dev title shrink + Header control centering' scripts/patch-td613-flight-mobile-pr85-final.mjs
           grep -q 'PR99_SENTINEL TD613 Flight rollback PR98 swipe lock to native lanes' scripts/patch-td613-flight-mobile-pr85-final.mjs
           grep -q 'PR100_SENTINEL TD613 Flight native lane touch repair' scripts/patch-td613-flight-mobile-pr85-final.mjs
-          grep -q 'PR101_SENTINEL TD613 Flight mobile state lanes no horizontal trap' scripts/patch-td613-flight-mobile-pr85-final.mjs
+          grep -q 'PR102_SENTINEL TD613 Flight restore visible Output lane after PR101 rollback' scripts/patch-td613-flight-mobile-pr85-final.mjs
           ! grep -q 'PR98_SENTINEL TD613 Flight symmetric lane swipe lock' scripts/patch-td613-flight-mobile-pr85-final.mjs
+          ! grep -q 'PR101_SENTINEL TD613 Flight mobile state lanes no horizontal trap' scripts/patch-td613-flight-mobile-pr85-final.mjs
 
       - name: Commit patched Flight surface
         run: |
           if git diff --quiet -- app/safe-harbor/td613-flight.html scripts/patch-td613-flight-mobile-pr85-final.mjs; then
-            echo 'PR90-PR97 + PR99-PR101 Flight mobile repairs already applied.'
+            echo 'PR90-PR97 + PR99/PR100/PR102 Flight mobile repairs already applied.'
             exit 0
           fi
           git config user.name 'github-actions[bot]'
           git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
           git add app/safe-harbor/td613-flight.html scripts/patch-td613-flight-mobile-pr85-final.mjs
-          git commit -m 'fix(flight): apply mobile state lane model'
+          git commit -m 'fix(flight): restore visible output lane'
           git push
 
-      - name: PR101 summary
+      - name: PR102 summary
         if: always()
         run: |
           {
-            echo '## Flight PR90-PR97 + PR99-PR101 mobile layout repair'
+            echo '## Flight PR90-PR97 + PR99/PR100/PR102 mobile layout repair'
             echo ''
             echo '- Keeps prior visual repairs.'
             echo '- Keeps PR98 runtime removed.'
-            echo '- Removes mobile horizontal lane scrolling entirely.'
-            echo '- Uses state-based Prompt/Output lanes controlled by tabs and rails.'
+            echo '- Removes PR101 state-lane blanking.'
+            echo '- Restores Output lane visibility immediately.'
           } >> "$GITHUB_STEP_SUMMARY"
