@@ -10,6 +10,7 @@ on:
       - scripts/patch-td613-flight-dashboard-polish.mjs
       - scripts/patch-td613-flight-pr95-final-mobile.mjs
       - scripts/patch-td613-flight-pr96-dev-density.mjs
+      - scripts/patch-td613-flight-pr97-dev-title-header-center.mjs
       - .github/workflows/flight-seal-side-by-side.yml
   workflow_dispatch:
 
@@ -22,7 +23,7 @@ concurrency:
 
 jobs:
   apply:
-    name: Apply PR90-PR96 Flight mobile layout repairs
+    name: Apply PR90-PR97 Flight mobile layout repairs
     runs-on: ubuntu-latest
     timeout-minutes: 10
 
@@ -52,6 +53,9 @@ jobs:
       - name: Apply dev density and H1 shrink repair
         run: node scripts/patch-td613-flight-pr96-dev-density.mjs
 
+      - name: Apply dev title and Header centering repair
+        run: node scripts/patch-td613-flight-pr97-dev-title-header-center.mjs
+
       - name: Verify Flight mobile repairs
         run: |
           grep -q 'PR90_SENTINEL TD613 Flight seal side-by-side target/zwnj repair' app/safe-harbor/td613-flight.html
@@ -60,7 +64,9 @@ jobs:
           grep -q 'PR92_SENTINEL TD613 Flight dashboard polish: shelves, rail, payload' app/safe-harbor/td613-flight.html
           grep -q 'PR95_SENTINEL TD613 Flight final mobile centering/heading/path fix' app/safe-harbor/td613-flight.html
           grep -q 'PR96_SENTINEL TD613 Flight mobile H1 + dev field density fix' app/safe-harbor/td613-flight.html
+          grep -q 'PR97_SENTINEL TD613 Flight dev title shrink + Header control centering' app/safe-harbor/td613-flight.html
           grep -q 'font-size: clamp(10px, 2.65vw, 13px) !important;' app/safe-harbor/td613-flight.html
+          grep -q 'font-size: clamp(9.5px, 2.35vw, 12px) !important;' app/safe-harbor/td613-flight.html
           grep -q 'min-height: 72px !important;' app/safe-harbor/td613-flight.html
           grep -q 'td613-pr95-route-path-default' app/safe-harbor/td613-flight.html
           grep -q 'shoreline∴zero-trust.boundary ⇒ flatten_titles→stranger' app/safe-harbor/td613-flight.html
@@ -71,30 +77,32 @@ jobs:
           grep -q 'PR92_SENTINEL TD613 Flight dashboard polish: shelves, rail, payload' scripts/patch-td613-flight-mobile-pr85-final.mjs
           grep -q 'PR95_SENTINEL TD613 Flight final mobile centering/heading/path fix' scripts/patch-td613-flight-mobile-pr85-final.mjs
           grep -q 'PR96_SENTINEL TD613 Flight mobile H1 + dev field density fix' scripts/patch-td613-flight-mobile-pr85-final.mjs
+          grep -q 'PR97_SENTINEL TD613 Flight dev title shrink + Header control centering' scripts/patch-td613-flight-mobile-pr85-final.mjs
 
       - name: Commit patched Flight surface
         run: |
           if git diff --quiet -- app/safe-harbor/td613-flight.html scripts/patch-td613-flight-mobile-pr85-final.mjs; then
-            echo 'PR90-PR96 Flight mobile layout repairs already applied.'
+            echo 'PR90-PR97 Flight mobile layout repairs already applied.'
             exit 0
           fi
           git config user.name 'github-actions[bot]'
           git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
           git add app/safe-harbor/td613-flight.html scripts/patch-td613-flight-mobile-pr85-final.mjs
-          git commit -m 'fix(flight): apply dev density and H1 shrink repairs'
+          git commit -m 'fix(flight): apply dev title and header centering repairs'
           git push
 
-      - name: PR96 summary
+      - name: PR97 summary
         if: always()
         run: |
           {
-            echo '## Flight PR90-PR96 mobile layout repair'
+            echo '## Flight PR90-PR97 mobile layout repair'
             echo ''
             echo '- Keeps Target Word and ZWNJ Behavior side-by-side.'
             echo '- Restores mosaic prompt controls instead of rigid grids or wide strips.'
             echo '- Shrinks mobile section titles with a harsher final override.'
             echo '- Extends Flightplan Builder text fields and route metrics textarea.'
             echo '- Forces Variation Intensity / rotation controls into two rows.'
-            echo '- Forces routing.path to render as real visible value text.'
+            echo '- Shrinks the two escaping Dev Settings titles.'
+            echo '- Centers Header section controls without touching Macros.'
             echo '- Commits patched HTML so GitHub Pages and Vercel serve the same surface.'
           } >> "$GITHUB_STEP_SUMMARY"
