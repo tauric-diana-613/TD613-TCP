@@ -1,0 +1,68 @@
+name: Flight Seal Side-by-Side Repair
+
+on:
+  push:
+    branches:
+      - main
+    paths:
+      - scripts/patch-td613-flight-seal-side-by-side.mjs
+      - .github/workflows/flight-seal-side-by-side.yml
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+concurrency:
+  group: flight-seal-side-by-side-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  apply:
+    name: Apply PR90 seal target-zwnj side-by-side repair
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+
+      - name: Apply side-by-side Seal repair
+        run: node scripts/patch-td613-flight-seal-side-by-side.mjs
+
+      - name: Verify Seal target and ZWNJ are side-by-side
+        run: |
+          grep -q 'PR90_SENTINEL TD613 Flight seal side-by-side target/zwnj repair' app/safe-harbor/td613-flight.html
+          grep -q 'grid-template-areas: "target zwnj" !important;' app/safe-harbor/td613-flight.html
+          grep -q 'PR90_SENTINEL TD613 Flight seal side-by-side target/zwnj repair' scripts/patch-td613-flight-mobile-pr85-final.mjs
+          grep -q 'grid-template-areas: "target zwnj" !important;' scripts/patch-td613-flight-mobile-pr85-final.mjs
+
+      - name: Commit patched Flight surface
+        run: |
+          if git diff --quiet -- app/safe-harbor/td613-flight.html scripts/patch-td613-flight-mobile-pr85-final.mjs; then
+            echo 'PR90 seal side-by-side repair already applied.'
+            exit 0
+          fi
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add app/safe-harbor/td613-flight.html scripts/patch-td613-flight-mobile-pr85-final.mjs
+          git commit -m 'fix(flight): keep seal target and zwnj controls side-by-side'
+          git push
+
+      - name: PR90 summary
+        if: always()
+        run: |
+          {
+            echo '## Flight PR90 Seal side-by-side repair'
+            echo ''
+            echo '- Places Target Word and ZWNJ Behavior in the same mobile row.'
+            echo '- Target Word sits left; ZWNJ Behavior sits right.'
+            echo '- Keeps transforms neutral so the row stops looking swapped or horizontally stacked.'
+            echo '- Mirrors the repair into the PR85 final patch source so future patch runs preserve it.'
+          } >> "$GITHUB_STEP_SUMMARY"
