@@ -4,6 +4,7 @@ const htmlPath = 'app/safe-harbor/td613-flight.html';
 const pr85Path = 'scripts/patch-td613-flight-mobile-pr85-final.mjs';
 
 const marker = '/* PR92_SENTINEL TD613 Flight dashboard polish: shelves, rail, payload */';
+const routePathValue = 'shoreline∴zero-trust.boundary ⇒ flatten_titles→stranger';
 
 const payloadStepperBlock = `<div class="payload-stepper" id="payloadStepper" aria-label="Payload number controls">
 <span class="payload-stepper-label">payload #</span>
@@ -15,33 +16,40 @@ const payloadStepperBlock = `<div class="payload-stepper" id="payloadStepper" ar
 const css = `
 ${marker}
 /* PR93_SENTINEL TD613 Flight mobile heading/rail/footer correction */
+/* PR94_SENTINEL TD613 Flight mobile correction replay */
 @media (hover: none) and (max-width: 820px), (pointer: coarse) and (max-width: 820px) {
-  .flight-lane .card h2,
-  .flight-lane-prompt .card h2,
-  .flight-lane-output .card h2,
-  .dev-drawer .card h2 {
-    font-size: clamp(18px, 6vw, 24px) !important;
-    line-height: .92 !important;
-    letter-spacing: .075em !important;
+  header h1,
+  .flight-lane .card > h2,
+  .flight-lane-prompt .card > h2,
+  .flight-lane-output .card > h2,
+  .dev-drawer .card > h2 {
+    font-size: clamp(15px, 4.8vw, 20px) !important;
+    line-height: .94 !important;
+    letter-spacing: .065em !important;
     overflow-wrap: anywhere !important;
   }
 
-  .flight-lane-output .output-card h2,
+  .flight-lane-output .output-card > h2,
   .flight-lane-output .seal-card h2,
   .flight-lane-output .copy-bin-card h2 {
-    font-size: clamp(18px, 5.8vw, 23px) !important;
+    font-size: clamp(15px, 4.7vw, 19px) !important;
   }
 
-  .dev-drawer .card h2 {
-    font-size: clamp(17px, 5.4vw, 22px) !important;
+  .dev-drawer .card > h2 {
+    font-size: clamp(14px, 4.5vw, 18px) !important;
+    letter-spacing: .055em !important;
+  }
+
+  .dev-drawer .card > h2:has(+ .section-note) {
+    font-size: clamp(14px, 4.4vw, 18px) !important;
   }
 
   .flight-lane-prompt > .card:nth-of-type(3),
   .flight-lane-prompt > .card:nth-of-type(4) {
-    transform: translate(5px, 6px) !important;
-    -webkit-transform: translate(5px, 6px) !important;
-    max-width: calc(100% - 7px) !important;
-    margin-bottom: 9px !important;
+    transform: translate(8px, 8px) !important;
+    -webkit-transform: translate(8px, 8px) !important;
+    max-width: calc(100% - 10px) !important;
+    margin-bottom: 11px !important;
   }
 
   .flight-lane-prompt .card .checkbox-row,
@@ -132,7 +140,7 @@ ${marker}
 
   .mobile-prompt-rail.mobile-prompt-rail-top {
     position: static !important;
-    display: inline-flex !important;
+    display: flex !important;
     float: none !important;
     inset: auto !important;
     right: auto !important;
@@ -141,21 +149,21 @@ ${marker}
     z-index: auto !important;
     width: fit-content !important;
     min-width: 0 !important;
-    max-width: min(66vw, 15.5rem) !important;
-    min-height: 20px !important;
+    max-width: min(60vw, 14rem) !important;
+    min-height: 18px !important;
     margin: 7px 0 10px auto !important;
-    padding: 3px 7px !important;
-    gap: 5px !important;
+    padding: 2px 6px !important;
+    gap: 4px !important;
     justify-content: flex-end !important;
     align-items: center !important;
     border-color: rgba(255, 210, 98, .66) !important;
     background:
       linear-gradient(180deg, rgba(118, 69, 18, .96), rgba(34, 16, 5, .96)) !important;
-    box-shadow: 0 0 16px rgba(255, 177, 59, .18), inset 0 1px 0 rgba(255, 239, 196, .14) !important;
+    box-shadow: 0 0 14px rgba(255, 177, 59, .18), inset 0 1px 0 rgba(255, 239, 196, .14) !important;
   }
 
   .mobile-prompt-rail.mobile-prompt-rail-top span:first-child {
-    font-size: 5px !important;
+    font-size: 4.5px !important;
     line-height: 1 !important;
     letter-spacing: .12em !important;
     color: rgba(255, 239, 196, .92) !important;
@@ -163,9 +171,9 @@ ${marker}
   }
 
   .mobile-prompt-rail.mobile-prompt-rail-top .mobile-prompt-rail-pill {
-    min-width: 13px !important;
-    padding: 1px 5px !important;
-    font-size: 7px !important;
+    min-width: 11px !important;
+    padding: 1px 4px !important;
+    font-size: 6px !important;
     line-height: 1 !important;
     color: rgba(255, 229, 133, .96) !important;
     border-color: rgba(255, 210, 98, .5) !important;
@@ -174,8 +182,9 @@ ${marker}
 
   .dev-drawer .section-split-row {
     display: grid !important;
-    grid-template-columns: minmax(0, 1fr) !important;
-    gap: 10px !important;
+    grid-template-columns: minmax(0, .96fr) minmax(0, 1.04fr) !important;
+    gap: 7px !important;
+    align-items: start !important;
   }
 
   .dev-drawer .section-split-row > div {
@@ -183,6 +192,19 @@ ${marker}
     width: 100% !important;
     max-width: 100% !important;
     overflow: visible !important;
+    padding: 7px !important;
+    box-sizing: border-box !important;
+  }
+
+  .dev-drawer .section-split-row h3 {
+    font-size: 9px !important;
+    line-height: 1.02 !important;
+  }
+
+  .dev-drawer .section-split-row .small-label {
+    font-size: 6px !important;
+    line-height: 1.05 !important;
+    letter-spacing: .07em !important;
   }
 
   .dev-drawer .section-split-row input,
@@ -191,6 +213,38 @@ ${marker}
     max-width: 100% !important;
     min-width: 0 !important;
     box-sizing: border-box !important;
+    font-size: 7px !important;
+    min-height: 18px !important;
+    height: 18px !important;
+    padding: 2px 6px !important;
+  }
+
+  .dev-drawer .section-split-row .date-field {
+    display: grid !important;
+    grid-template-columns: minmax(0, 1fr) auto !important;
+    gap: 3px !important;
+    height: auto !important;
+    padding: 0 !important;
+  }
+
+  .dev-drawer .section-split-row .date-field .icon-btn {
+    width: 18px !important;
+    height: 18px !important;
+    min-width: 18px !important;
+    min-height: 18px !important;
+    padding: 2px !important;
+  }
+
+  .dev-drawer .section-split-row .row {
+    gap: 4px !important;
+    align-items: start !important;
+  }
+
+  .dev-drawer .section-split-row .checkbox-row > label {
+    max-width: min(7.4rem, 43vw) !important;
+    font-size: 5.7px !important;
+    line-height: 1.04 !important;
+    padding: 2px 5px !important;
   }
 
   .output-card .status-bar {
@@ -286,8 +340,12 @@ function applyMarkupRepairs(source) {
     '<label><input id="bodyPhraseAcademicSpeculation" type="checkbox"/>“When authoring, stay academically rigorous yet grounded in high speculation.”</label>'
   );
   out = out.replace(
-    /<span class="mobile-prompt-rail-pill">[^<]*<\/span>/,
+    /<span class="mobile-prompt-rail-pill"(?: aria-hidden="true")?>[^<]*<\/span>/,
     '<span class="mobile-prompt-rail-pill" aria-hidden="true">→</span>'
+  );
+  out = out.replace(
+    /<input id="authRoutePath" placeholder="[^"]*" type="text" value="[^"]*"\/>/,
+    `<input id="authRoutePath" placeholder="e.g., ${routePathValue}" type="text" value="${routePathValue}"/>`
   );
 
   out = out.replace(/\n?<div class="payload-stepper" id="payloadStepper" aria-label="Payload number controls">[\s\S]*?<\/div>/g, '');
@@ -300,6 +358,7 @@ function applyMarkupRepairs(source) {
   if (!out.includes('“When authoring, stay academically rigorous yet grounded in high speculation.”')) throw new Error('Quoted academic-speculation label missing');
   if (out.includes('phrases.push("“I was broken encasing a circle.”")')) throw new Error('Output value accidentally gained quotes');
   if (!out.includes('mobile-prompt-rail-pill" aria-hidden="true">→</span>')) throw new Error('Rail arrow-only pill missing');
+  if (!out.includes(`id="authRoutePath" placeholder="e.g., ${routePathValue}" type="text" value="${routePathValue}"`)) throw new Error('Routing path value missing');
   if (!out.includes('id="payloadStepper"')) throw new Error('Payload stepper was not reinserted');
   return out;
 }
@@ -314,11 +373,11 @@ function injectCss(source) {
     out = out.replace('</style>', `${css}\n</style>`);
   }
   if (!out.includes(marker)) throw new Error('PR92 CSS injection failed');
-  if (!out.includes('PR93_SENTINEL TD613 Flight mobile heading/rail/footer correction')) throw new Error('PR93 correction missing');
-  if (!out.includes('flex-flow: row wrap !important;')) throw new Error('PR92 shelf layout missing');
-  if (!out.includes('grid-template-areas: "counts auth" ". payload" !important;')) throw new Error('PR92 payload stepper grid missing');
-  if (!out.includes('width: fit-content !important;')) throw new Error('PR92 mosaic tile width cap missing');
-  if (!out.includes('grid-template-columns: minmax(0, 1fr) !important;')) throw new Error('PR93 dev footer anti-cutoff stack missing');
+  if (!out.includes('PR94_SENTINEL TD613 Flight mobile correction replay')) throw new Error('PR94 correction missing');
+  if (!out.includes('font-size: clamp(15px, 4.8vw, 20px) !important;')) throw new Error('PR94 smaller heading rule missing');
+  if (!out.includes('transform: translate(8px, 8px) !important;')) throw new Error('PR94 Header/Macros nudge missing');
+  if (!out.includes('max-width: min(60vw, 14rem) !important;')) throw new Error('PR94 slim right rail missing');
+  if (!out.includes('grid-template-columns: minmax(0, .96fr) minmax(0, 1.04fr) !important;')) throw new Error('PR94 side-by-side dev footer layout missing');
   return out;
 }
 
@@ -333,4 +392,4 @@ function injectIntoPr85(source) {
 fs.writeFileSync(htmlPath, injectIntoHtml(fs.readFileSync(htmlPath, 'utf8')));
 fs.writeFileSync(pr85Path, injectIntoPr85(fs.readFileSync(pr85Path, 'utf8')));
 
-console.log('Applied TD613 Flight PR93: smaller headings, arrow rail, macro rename, and uncut authorship footer.');
+console.log('Applied TD613 Flight PR94: replayed heading shrink, nudge, right rail, side-by-side footer, and routing path value.');
