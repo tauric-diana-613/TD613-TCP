@@ -1,5 +1,6 @@
 {
   "version": 2,
+  "buildCommand": "node scripts/patch-td613-flight-seal-side-by-side.mjs",
   "rewrites": [
     {
       "source": "/api/(.*)",
