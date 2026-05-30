@@ -28,11 +28,14 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
-      - run: node scripts/patch-td613-flight-mobile.mjs
-      - run: node scripts/patch-td613-flight-mobile-pr80.mjs
-      - run: node scripts/patch-td613-flight-mobile-pr81.mjs
-      - run: node scripts/patch-td613-flight-mobile-pr82.mjs
-      - run: node scripts/patch-td613-flight-mobile-pr84.mjs
+      - name: Verify checked-in Flight mobile surface
+        run: |
+          test -f app/safe-harbor/td613-flight.html
+          grep -q 'PR85_FINAL_SENTINEL TD613 Flight mobile repair' app/safe-harbor/td613-flight.html
+          grep -q 'PR88_SENTINEL TD613 Flight focus stability micro patch' app/safe-harbor/td613-flight.html
+          grep -q 'PR89_SENTINEL TD613 Flight seal layout + payload micro patch' app/safe-harbor/td613-flight.html
+          ! grep -q 'function prepNoZoom' app/safe-harbor/td613-flight.html
+          ! grep -q 'data-td613-prev-font' app/safe-harbor/td613-flight.html
       - uses: actions/configure-pages@v5
       - uses: actions/upload-pages-artifact@v3
         with:
