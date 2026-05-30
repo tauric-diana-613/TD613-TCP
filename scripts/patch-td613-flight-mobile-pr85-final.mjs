@@ -39,12 +39,26 @@ for (const id of oldScriptIds) {
 const css = `
 
 /* PR91_SENTINEL TD613 Flight mobile tile controls restoration */
-@media (hover: none), (pointer: coarse), (max-width: 820px) {
+@media (hover: none) and (max-width: 820px), (pointer: coarse) and (max-width: 820px) {
+  .flight-lane-prompt .card .section-note {
+    font-size: 8px !important;
+    line-height: 1.16 !important;
+    margin: 4px 0 7px !important;
+    max-width: 100% !important;
+  }
+
+  .flight-lane-prompt .card h3 {
+    margin-top: 10px !important;
+    margin-bottom: 5px !important;
+    font-size: 9px !important;
+    line-height: 1.05 !important;
+  }
+
   .flight-lane-prompt .card .checkbox-row,
   .flight-lane-prompt .card .radio-row {
     display: grid !important;
     grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
-    gap: 5px 7px !important;
+    gap: 4px 6px !important;
     align-items: stretch !important;
     align-content: stretch !important;
     justify-content: stretch !important;
@@ -59,17 +73,17 @@ const css = `
     grid-template-columns: auto minmax(0, 1fr) !important;
     align-items: center !important;
     justify-content: start !important;
-    column-gap: 6px !important;
+    column-gap: 5px !important;
     width: 100% !important;
     min-width: 0 !important;
     max-width: 100% !important;
-    min-height: 25px !important;
+    min-height: 21px !important;
     height: auto !important;
-    padding: 4px 7px !important;
+    padding: 3px 6px !important;
     border-radius: 999px !important;
-    font-size: 9px !important;
-    line-height: 1.08 !important;
-    letter-spacing: .01em !important;
+    font-size: 7px !important;
+    line-height: 1.06 !important;
+    letter-spacing: .005em !important;
     white-space: normal !important;
     overflow: visible !important;
     overflow-wrap: anywhere !important;
@@ -81,18 +95,18 @@ const css = `
   .flight-lane-prompt .card .radio-row > label > input[type="radio"] {
     grid-column: 1 !important;
     flex: 0 0 auto !important;
-    width: 10px !important;
-    min-width: 10px !important;
-    height: 10px !important;
-    min-height: 10px !important;
+    width: 9px !important;
+    min-width: 9px !important;
+    height: 9px !important;
+    min-height: 9px !important;
     margin: 0 !important;
   }
 
   .flight-lane-prompt .card .checkbox-row > label:has(input[type="text"]),
   .flight-lane-prompt .card .radio-row > label:has(input[type="text"]) {
-    grid-column: span 2 !important;
+    grid-column: auto !important;
     grid-template-columns: auto minmax(0, 1fr) !important;
-    border-radius: 16px !important;
+    border-radius: 14px !important;
   }
 
   .flight-lane-prompt .card .checkbox-row > label input[type="text"],
@@ -100,10 +114,10 @@ const css = `
     width: 100% !important;
     min-width: 0 !important;
     max-width: 100% !important;
-    height: 17px !important;
-    min-height: 17px !important;
-    padding: 2px 6px !important;
-    font-size: 8px !important;
+    height: 15px !important;
+    min-height: 15px !important;
+    padding: 1px 5px !important;
+    font-size: 7px !important;
     line-height: 1 !important;
   }
 
@@ -111,19 +125,48 @@ const css = `
   .flight-lane-prompt .card .radio-row > label:has(input:only-child) {
     grid-template-columns: auto minmax(0, 1fr) !important;
   }
+
+  .flight-lane-prompt .card .mobile-prompt-rail,
+  .mobile-prompt-rail.mobile-prompt-rail-top {
+    margin: 6px auto 12px !important;
+    padding: 5px 9px !important;
+    min-height: 26px !important;
+    gap: 8px !important;
+    border-radius: 999px !important;
+    width: auto !important;
+    max-width: min(92vw, 25rem) !important;
+  }
+
+  .mobile-prompt-rail span:first-child {
+    font-size: 7px !important;
+    line-height: 1 !important;
+    white-space: nowrap !important;
+  }
+
+  .mobile-prompt-rail-pill {
+    padding: 3px 7px !important;
+    font-size: 6px !important;
+    line-height: 1 !important;
+  }
 }
 
-@media (hover: none), (pointer: coarse) and (max-width: 460px) {
+@media (hover: none) and (max-width: 460px), (pointer: coarse) and (max-width: 460px) {
   .flight-lane-prompt .card .checkbox-row,
   .flight-lane-prompt .card .radio-row {
     grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
+    gap: 3px 5px !important;
   }
 
   .flight-lane-prompt .card .checkbox-row > label,
   .flight-lane-prompt .card .radio-row > label {
-    min-height: 23px !important;
-    padding: 3px 6px !important;
-    font-size: 8px !important;
+    min-height: 19px !important;
+    padding: 2px 5px !important;
+    font-size: 6px !important;
+  }
+
+  .flight-lane-prompt .card .section-note {
+    font-size: 7px !important;
+    line-height: 1.14 !important;
   }
 }
 
