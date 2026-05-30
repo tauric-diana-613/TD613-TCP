@@ -1,4 +1,4 @@
-name: Flight Retire Failed iOS Visual Scale Shim
+name: Flight Focus Stability Micro Patch
 
 on:
   push:
@@ -13,12 +13,12 @@ permissions:
   contents: write
 
 concurrency:
-  group: flight-ios-visual-scale-${{ github.ref }}
+  group: flight-focus-stability-${{ github.ref }}
   cancel-in-progress: true
 
 jobs:
   apply:
-    name: Remove failed PR87 visual-scale shim
+    name: Apply PR88 focus stability micro patch
     runs-on: ubuntu-latest
     timeout-minutes: 10
 
@@ -33,36 +33,41 @@ jobs:
         with:
           node-version: '22'
 
-      - name: Remove failed visual-scale input shim
+      - name: Apply focus-stability micro patch
         run: node scripts/patch-td613-flight-ios-visual-scale.mjs
 
-      - name: Verify failed shim is absent
+      - name: Verify PR88 and absence of failed shims
         run: |
+          grep -q 'PR88_SENTINEL TD613 Flight focus stability micro patch' app/safe-harbor/td613-flight.html
           ! grep -q 'PR87_SENTINEL TD613 Flight iOS visual-scale input shim' app/safe-harbor/td613-flight.html
           ! grep -q -- '--flight-ios-visual-scale' app/safe-harbor/td613-flight.html
           ! grep -q 'transform: scale(.5625)' app/safe-harbor/td613-flight.html
+          ! grep -q 'function prepNoZoom' app/safe-harbor/td613-flight.html
+          ! grep -q 'data-td613-prev-font' app/safe-harbor/td613-flight.html
           ! grep -q 'TD613_FLIGHT_IOS_INPUT_GUARD' app/safe-harbor/td613-flight.html
           ! grep -q 'scrollIntoView' app/safe-harbor/td613-flight.html
 
-      - name: Commit restored Flight HTML
+      - name: Commit patched Flight HTML
         run: |
           if git diff --quiet -- app/safe-harbor/td613-flight.html scripts/patch-td613-flight-mobile-pr85-final.mjs; then
-            echo 'Failed visual-scale shim already absent.'
+            echo 'PR88 focus-stability patch already applied.'
             exit 0
           fi
           git config user.name 'github-actions[bot]'
           git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
           git add app/safe-harbor/td613-flight.html scripts/patch-td613-flight-mobile-pr85-final.mjs
-          git commit -m 'revert(flight): remove failed iOS visual-scale shim from Flight page [skip ci]'
+          git commit -m 'fix(flight): apply focus-stable textarea micro patch'
           git push
 
-      - name: Shim removal summary
+      - name: PR88 summary
         if: always()
         run: |
           {
-            echo '## Flight visual-scale shim retired'
+            echo '## Flight PR88 focus stability micro patch'
             echo ''
-            echo '- Removes the failed PR87 visual-scale block.'
-            echo '- Leaves PR85 mobile layout intact.'
-            echo '- No replacement scaling, no scrollIntoView, no global input override.'
+            echo '- Removes the touch/focus font-size mutation that caused the visible text pop.'
+            echo '- Restores textarea width/height to PR85 dimensions.'
+            echo '- Compacts the payload stepper only.'
+            echo '- No transform scaling, no global input override, no scrollIntoView.'
+            echo '- Commit intentionally avoids skip-ci so GitHub Pages can update.'
           } >> "$GITHUB_STEP_SUMMARY"
