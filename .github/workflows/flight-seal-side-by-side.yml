@@ -8,6 +8,7 @@ on:
       - scripts/patch-td613-flight-seal-side-by-side.mjs
       - scripts/patch-td613-flight-mobile-tiles.mjs
       - scripts/patch-td613-flight-dashboard-polish.mjs
+      - scripts/patch-td613-flight-pr95-final-mobile.mjs
       - .github/workflows/flight-seal-side-by-side.yml
   workflow_dispatch:
 
@@ -20,7 +21,7 @@ concurrency:
 
 jobs:
   apply:
-    name: Apply PR90/PR91/PR92 Flight mobile layout repairs
+    name: Apply PR90-PR95 Flight mobile layout repairs
     runs-on: ubuntu-latest
     timeout-minutes: 10
 
@@ -44,43 +45,50 @@ jobs:
       - name: Apply dashboard polish repairs
         run: node scripts/patch-td613-flight-dashboard-polish.mjs
 
+      - name: Apply final mobile heading and route path repair
+        run: node scripts/patch-td613-flight-pr95-final-mobile.mjs
+
       - name: Verify Flight mobile repairs
         run: |
           grep -q 'PR90_SENTINEL TD613 Flight seal side-by-side target/zwnj repair' app/safe-harbor/td613-flight.html
           grep -q 'grid-template-areas: "target zwnj" !important;' app/safe-harbor/td613-flight.html
           grep -q 'PR91_SENTINEL TD613 Flight mobile tile controls restoration' app/safe-harbor/td613-flight.html
-          grep -q 'font-size: 7px !important;' app/safe-harbor/td613-flight.html
-          grep -q 'width: 9px !important;' app/safe-harbor/td613-flight.html
           grep -q 'PR92_SENTINEL TD613 Flight dashboard polish: shelves, rail, payload' app/safe-harbor/td613-flight.html
-          grep -q 'flex-flow: row wrap !important;' app/safe-harbor/td613-flight.html
-          grep -q 'grid-template-areas: "counts auth" ". payload" !important;' app/safe-harbor/td613-flight.html
+          grep -q 'PR95_SENTINEL TD613 Flight final mobile centering/heading/path fix' app/safe-harbor/td613-flight.html
+          grep -q 'font-size: clamp(12px, 3.6vw, 15.5px) !important;' app/safe-harbor/td613-flight.html
+          grep -q 'width: calc(100% - 18px) !important;' app/safe-harbor/td613-flight.html
+          grep -q 'td613-pr95-route-path-default' app/safe-harbor/td613-flight.html
+          grep -q 'shoreline∴zero-trust.boundary ⇒ flatten_titles→stranger' app/safe-harbor/td613-flight.html
           grep -q '“I was broken encasing a circle.”' app/safe-harbor/td613-flight.html
           grep -q '“When authoring, stay academically rigorous yet grounded in high speculation.”' app/safe-harbor/td613-flight.html
           grep -q 'PR90_SENTINEL TD613 Flight seal side-by-side target/zwnj repair' scripts/patch-td613-flight-mobile-pr85-final.mjs
           grep -q 'PR91_SENTINEL TD613 Flight mobile tile controls restoration' scripts/patch-td613-flight-mobile-pr85-final.mjs
           grep -q 'PR92_SENTINEL TD613 Flight dashboard polish: shelves, rail, payload' scripts/patch-td613-flight-mobile-pr85-final.mjs
+          grep -q 'PR95_SENTINEL TD613 Flight final mobile centering/heading/path fix' scripts/patch-td613-flight-mobile-pr85-final.mjs
 
       - name: Commit patched Flight surface
         run: |
           if git diff --quiet -- app/safe-harbor/td613-flight.html scripts/patch-td613-flight-mobile-pr85-final.mjs; then
-            echo 'PR90/PR91/PR92 Flight mobile layout repairs already applied.'
+            echo 'PR90-PR95 Flight mobile layout repairs already applied.'
             exit 0
           fi
           git config user.name 'github-actions[bot]'
           git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
           git add app/safe-harbor/td613-flight.html scripts/patch-td613-flight-mobile-pr85-final.mjs
-          git commit -m 'fix(flight): apply dashboard polish mobile repairs'
+          git commit -m 'fix(flight): apply final mobile heading route path repairs'
           git push
 
-      - name: PR92 summary
+      - name: PR95 summary
         if: always()
         run: |
           {
-            echo '## Flight PR90/PR91/PR92 mobile layout repair'
+            echo '## Flight PR90-PR95 mobile layout repair'
             echo ''
             echo '- Keeps Target Word and ZWNJ Behavior side-by-side.'
-            echo '- Restores left-shelved prompt controls instead of rigid two-column stacks.'
+            echo '- Restores mosaic prompt controls instead of rigid grids or wide strips.'
             echo '- Adds quoted dashboard labels without changing output phrase values.'
             echo '- Moves payload controls under authorship wrap and brightens the mobile rail.'
+            echo '- Shrinks mobile section headers harder and centers the Header section card.'
+            echo '- Forces routing.path to render as real visible value text.'
             echo '- Commits patched HTML so GitHub Pages and Vercel serve the same surface.'
           } >> "$GITHUB_STEP_SUMMARY"
