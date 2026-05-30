@@ -45,8 +45,9 @@ jobs:
           grep -q 'PR90_SENTINEL TD613 Flight seal side-by-side target/zwnj repair' app/safe-harbor/td613-flight.html
           grep -q 'grid-template-areas: "target zwnj" !important;' app/safe-harbor/td613-flight.html
           grep -q 'PR91_SENTINEL TD613 Flight mobile tile controls restoration' app/safe-harbor/td613-flight.html
-          grep -q 'font-size: 9px !important;' app/safe-harbor/td613-flight.html
-          grep -q 'width: 10px !important;' app/safe-harbor/td613-flight.html
+          grep -q 'font-size: 7px !important;' app/safe-harbor/td613-flight.html
+          grep -q 'width: 9px !important;' app/safe-harbor/td613-flight.html
+          grep -q 'grid-column: auto !important;' app/safe-harbor/td613-flight.html
           grep -q 'PR90_SENTINEL TD613 Flight seal side-by-side target/zwnj repair' scripts/patch-td613-flight-mobile-pr85-final.mjs
           grep -q 'PR91_SENTINEL TD613 Flight mobile tile controls restoration' scripts/patch-td613-flight-mobile-pr85-final.mjs
 
@@ -70,6 +71,6 @@ jobs:
             echo ''
             echo '- Keeps Target Word and ZWNJ Behavior side-by-side.'
             echo '- Restores prompt controls as two-column tiles.'
-            echo '- Compacts tile font and checkbox scale so controls stop yelling.'
+            echo '- Compacts section notes, tile font, custom inputs, and checkbox scale.'
             echo '- Commits patched HTML so GitHub Pages and Vercel serve the same surface.'
           } >> "$GITHUB_STEP_SUMMARY"
