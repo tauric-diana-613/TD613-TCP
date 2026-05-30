@@ -4,6 +4,7 @@ const htmlPath = 'app/safe-harbor/td613-flight.html';
 const pr85Path = 'scripts/patch-td613-flight-mobile-pr85-final.mjs';
 const pr87Marker = '/* PR87_SENTINEL TD613 Flight iOS visual-scale input shim */';
 const pr88Marker = '/* PR88_SENTINEL TD613 Flight focus stability micro patch */';
+const pr89Marker = '/* PR89_SENTINEL TD613 Flight seal layout + payload micro patch */';
 
 const pr88Css = `
 ${pr88Marker}
@@ -34,37 +35,107 @@ ${pr88Marker}
     transform: none !important;
     -webkit-transform: none !important;
   }
+}
+`;
 
-  .payload-stepper {
+const pr89Css = `
+${pr89Marker}
+@media (hover: none), (pointer: coarse) {
+  .flight-lane .output-toolbar {
+    align-items: center !important;
+    gap: 6px !important;
+  }
+
+  .flight-lane .payload-stepper {
     flex: 0 0 auto !important;
-    min-height: 24px !important;
-    height: 24px !important;
-    padding: 2px 5px !important;
-    gap: 5px !important;
+    width: auto !important;
+    min-width: 88px !important;
+    max-width: 118px !important;
+    min-height: 20px !important;
+    height: 20px !important;
+    padding: 1px 4px !important;
+    gap: 3px !important;
+    margin-left: auto !important;
     transform: none !important;
     -webkit-transform: none !important;
+    clip-path: polygon(0 0, calc(100% - 6px) 0, 100% 6px, 100% 100%, 6px 100%, 0 calc(100% - 6px)) !important;
   }
 
-  .payload-stepper-label {
-    font-size: 6px !important;
+  .flight-lane .payload-stepper-label {
+    font-size: 5px !important;
     line-height: 1 !important;
     letter-spacing: .08em !important;
+    max-width: 42px !important;
+    white-space: normal !important;
   }
 
-  .payload-stepper-value {
+  .flight-lane .payload-stepper-value {
+    font-size: 7px !important;
+    line-height: 1 !important;
+    min-width: .65rem !important;
+  }
+
+  .flight-lane .payload-stepper-btn,
+  .flight-lane .payload-stepper .icon-btn {
+    width: 14px !important;
+    min-width: 14px !important;
+    height: 14px !important;
+    min-height: 14px !important;
+    padding: 0 !important;
     font-size: 8px !important;
     line-height: 1 !important;
-    min-width: .85rem !important;
+    clip-path: polygon(0 0, calc(100% - 4px) 0, 100% 4px, 100% 100%, 4px 100%, 0 calc(100% - 4px)) !important;
   }
 
-  .payload-stepper-btn {
-    width: 18px !important;
-    min-width: 18px !important;
-    height: 18px !important;
-    min-height: 18px !important;
-    padding: 0 !important;
-    font-size: 10px !important;
-    line-height: 1 !important;
+  .flight-lane .seal-card .section-split-row {
+    display: grid !important;
+    grid-template-columns: minmax(0, 1fr) minmax(210px, .88fr) !important;
+    grid-template-areas: "zwnj target" !important;
+    gap: 7px !important;
+    align-items: end !important;
+  }
+
+  .flight-lane .seal-card .section-split-row > div:first-child {
+    grid-area: zwnj !important;
+    align-self: end !important;
+    margin-top: 12px !important;
+    transform: translateX(-2px) translateY(6px) !important;
+    -webkit-transform: translateX(-2px) translateY(6px) !important;
+  }
+
+  .flight-lane .seal-card .section-split-row > div:nth-child(2) {
+    grid-area: target !important;
+    align-self: stretch !important;
+    min-height: 100% !important;
+    transform: translateX(8px) !important;
+    -webkit-transform: translateX(8px) !important;
+  }
+
+  .flight-lane .seal-card .section-split-row > div {
+    padding: 7px 8px !important;
+    min-width: 0 !important;
+  }
+
+  .flight-lane .seal-card .section-split-row .radio-row {
+    gap: 4px 5px !important;
+  }
+
+  .flight-lane .seal-card #sealTargetWord {
+    width: min(100%, 14rem) !important;
+    max-width: 100% !important;
+  }
+}
+
+@media (hover: none) and (pointer: coarse) and (max-width: 520px) {
+  .flight-lane .seal-card .section-split-row {
+    grid-template-columns: 1fr !important;
+    grid-template-areas: "target" "zwnj" !important;
+  }
+
+  .flight-lane .seal-card .section-split-row > div:first-child,
+  .flight-lane .seal-card .section-split-row > div:nth-child(2) {
+    transform: none !important;
+    -webkit-transform: none !important;
   }
 }
 `;
@@ -118,29 +189,31 @@ function removePrepNoZoom(source) {
   return out;
 }
 
-function injectPr88Css(source) {
+function injectFlightCss(source) {
   let out = removeCssBlock(source, pr87Marker);
   out = removeCssBlock(out, pr88Marker);
+  out = removeCssBlock(out, pr89Marker);
   if (!out.includes('</style>')) throw new Error('Missing </style> in Flight HTML');
-  return out.replace('</style>', `${pr88Css}\n</style>`);
+  return out.replace('</style>', `${pr88Css}\n${pr89Css}\n</style>`);
 }
 
-function injectPr88IntoPatchScript(source) {
+function injectIntoPatchScript(source) {
   let out = removeCssBlock(source, pr87Marker);
   out = removeCssBlock(out, pr88Marker);
+  out = removeCssBlock(out, pr89Marker);
   const cssInjectionPoint = 'const css = `\n';
   if (!out.includes(cssInjectionPoint)) throw new Error('PR85 css template not found');
-  return out.replace(cssInjectionPoint, `${cssInjectionPoint}${pr88Css}\n`);
+  return out.replace(cssInjectionPoint, `${cssInjectionPoint}${pr88Css}\n${pr89Css}\n`);
 }
 
 let html = fs.readFileSync(htmlPath, 'utf8');
-html = injectPr88Css(html);
+html = injectFlightCss(html);
 html = removePrepNoZoom(html);
 fs.writeFileSync(htmlPath, html);
 
 let pr85 = fs.readFileSync(pr85Path, 'utf8');
-pr85 = injectPr88IntoPatchScript(pr85);
+pr85 = injectIntoPatchScript(pr85);
 pr85 = removePrepNoZoom(pr85);
 fs.writeFileSync(pr85Path, pr85);
 
-console.log('Applied TD613 Flight PR88 focus-stability micro patch: removed prepNoZoom, restored textarea dimensions, compacted payload stepper.');
+console.log('Applied TD613 Flight PR88/PR89 micro patch: stable textareas, compact payload stepper, Seal split-row layout.');
