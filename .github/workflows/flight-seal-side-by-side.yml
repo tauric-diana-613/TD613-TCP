@@ -11,9 +11,7 @@ on:
       - scripts/patch-td613-flight-pr95-final-mobile.mjs
       - scripts/patch-td613-flight-pr96-dev-density.mjs
       - scripts/patch-td613-flight-pr97-dev-title-header-center.mjs
-      - scripts/patch-td613-flight-pr99-swipe-rollback.mjs
-      - scripts/patch-td613-flight-pr100-lane-touch-repair.mjs
-      - scripts/patch-td613-flight-pr102-restore-output-lane.mjs
+      - scripts/patch-td613-flight-pr103-restore-pre-swipe-lanes.mjs
       - .github/workflows/flight-seal-side-by-side.yml
   workflow_dispatch:
 
@@ -26,7 +24,7 @@ concurrency:
 
 jobs:
   apply:
-    name: Apply PR90-PR97 plus PR99/PR100/PR102 Flight mobile repairs
+    name: Apply PR90-PR97 plus PR103 Flight mobile repairs
     runs-on: ubuntu-latest
     timeout-minutes: 10
 
@@ -59,14 +57,8 @@ jobs:
       - name: Apply dev title and Header centering repair
         run: node scripts/patch-td613-flight-pr97-dev-title-header-center.mjs
 
-      - name: Roll back glitchy swipe lock
-        run: node scripts/patch-td613-flight-pr99-swipe-rollback.mjs
-
-      - name: Apply native lane touch repair
-        run: node scripts/patch-td613-flight-pr100-lane-touch-repair.mjs
-
-      - name: Restore visible Output lane
-        run: node scripts/patch-td613-flight-pr102-restore-output-lane.mjs
+      - name: Restore pre-swipe lane behavior
+        run: node scripts/patch-td613-flight-pr103-restore-pre-swipe-lanes.mjs
 
       - name: Verify Flight mobile repairs
         run: |
@@ -77,14 +69,14 @@ jobs:
           grep -q 'PR95_SENTINEL TD613 Flight final mobile centering/heading/path fix' app/safe-harbor/td613-flight.html
           grep -q 'PR96_SENTINEL TD613 Flight mobile H1 + dev field density fix' app/safe-harbor/td613-flight.html
           grep -q 'PR97_SENTINEL TD613 Flight dev title shrink + Header control centering' app/safe-harbor/td613-flight.html
-          grep -q 'PR99_SENTINEL TD613 Flight rollback PR98 swipe lock to native lanes' app/safe-harbor/td613-flight.html
-          grep -q 'PR100_SENTINEL TD613 Flight native lane touch repair' app/safe-harbor/td613-flight.html
-          grep -q 'PR102_SENTINEL TD613 Flight restore visible Output lane after PR101 rollback' app/safe-harbor/td613-flight.html
-          grep -q 'scroll-snap-type: x proximity !important;' app/safe-harbor/td613-flight.html
           ! grep -q 'td613-pr98-swipe-lock' app/safe-harbor/td613-flight.html
-          ! grep -q 'PR98_SENTINEL TD613 Flight symmetric lane swipe lock' app/safe-harbor/td613-flight.html
+          ! grep -q 'td613-pr100-lane-tabs' app/safe-harbor/td613-flight.html
           ! grep -q 'td613-pr101-state-lanes' app/safe-harbor/td613-flight.html
+          ! grep -q 'PR98_SENTINEL TD613 Flight symmetric lane swipe lock' app/safe-harbor/td613-flight.html
+          ! grep -q 'PR99_SENTINEL TD613 Flight rollback PR98 swipe lock to native lanes' app/safe-harbor/td613-flight.html
+          ! grep -q 'PR100_SENTINEL TD613 Flight native lane touch repair' app/safe-harbor/td613-flight.html
           ! grep -q 'PR101_SENTINEL TD613 Flight mobile state lanes no horizontal trap' app/safe-harbor/td613-flight.html
+          ! grep -q 'PR102_SENTINEL TD613 Flight restore visible Output lane after PR101 rollback' app/safe-harbor/td613-flight.html
           grep -q 'font-size: clamp(10px, 2.65vw, 13px) !important;' app/safe-harbor/td613-flight.html
           grep -q 'font-size: clamp(9.5px, 2.35vw, 12px) !important;' app/safe-harbor/td613-flight.html
           grep -q 'min-height: 72px !important;' app/safe-harbor/td613-flight.html
@@ -98,32 +90,31 @@ jobs:
           grep -q 'PR95_SENTINEL TD613 Flight final mobile centering/heading/path fix' scripts/patch-td613-flight-mobile-pr85-final.mjs
           grep -q 'PR96_SENTINEL TD613 Flight mobile H1 + dev field density fix' scripts/patch-td613-flight-mobile-pr85-final.mjs
           grep -q 'PR97_SENTINEL TD613 Flight dev title shrink + Header control centering' scripts/patch-td613-flight-mobile-pr85-final.mjs
-          grep -q 'PR99_SENTINEL TD613 Flight rollback PR98 swipe lock to native lanes' scripts/patch-td613-flight-mobile-pr85-final.mjs
-          grep -q 'PR100_SENTINEL TD613 Flight native lane touch repair' scripts/patch-td613-flight-mobile-pr85-final.mjs
-          grep -q 'PR102_SENTINEL TD613 Flight restore visible Output lane after PR101 rollback' scripts/patch-td613-flight-mobile-pr85-final.mjs
           ! grep -q 'PR98_SENTINEL TD613 Flight symmetric lane swipe lock' scripts/patch-td613-flight-mobile-pr85-final.mjs
+          ! grep -q 'PR99_SENTINEL TD613 Flight rollback PR98 swipe lock to native lanes' scripts/patch-td613-flight-mobile-pr85-final.mjs
+          ! grep -q 'PR100_SENTINEL TD613 Flight native lane touch repair' scripts/patch-td613-flight-mobile-pr85-final.mjs
           ! grep -q 'PR101_SENTINEL TD613 Flight mobile state lanes no horizontal trap' scripts/patch-td613-flight-mobile-pr85-final.mjs
+          ! grep -q 'PR102_SENTINEL TD613 Flight restore visible Output lane after PR101 rollback' scripts/patch-td613-flight-mobile-pr85-final.mjs
 
       - name: Commit patched Flight surface
         run: |
           if git diff --quiet -- app/safe-harbor/td613-flight.html scripts/patch-td613-flight-mobile-pr85-final.mjs; then
-            echo 'PR90-PR97 + PR99/PR100/PR102 Flight mobile repairs already applied.'
+            echo 'PR90-PR97 + PR103 Flight mobile repairs already applied.'
             exit 0
           fi
           git config user.name 'github-actions[bot]'
           git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
           git add app/safe-harbor/td613-flight.html scripts/patch-td613-flight-mobile-pr85-final.mjs
-          git commit -m 'fix(flight): restore visible output lane'
+          git commit -m 'fix(flight): restore pre-swipe lane behavior'
           git push
 
-      - name: PR102 summary
+      - name: PR103 summary
         if: always()
         run: |
           {
-            echo '## Flight PR90-PR97 + PR99/PR100/PR102 mobile layout repair'
+            echo '## Flight PR90-PR97 + PR103 mobile layout repair'
             echo ''
             echo '- Keeps prior visual repairs.'
-            echo '- Keeps PR98 runtime removed.'
-            echo '- Removes PR101 state-lane blanking.'
-            echo '- Restores Output lane visibility immediately.'
+            echo '- Removes all swipe-tuning experiments PR98-PR102.'
+            echo '- Restores pre-swipe lane behavior.'
           } >> "$GITHUB_STEP_SUMMARY"
