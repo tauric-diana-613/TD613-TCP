@@ -30,6 +30,8 @@ jobs:
       - uses: actions/checkout@v4
       - name: Apply Flight Seal side-by-side repair
         run: node scripts/patch-td613-flight-seal-side-by-side.mjs
+      - name: Restore mobile tile controls
+        run: node scripts/patch-td613-flight-mobile-tiles.mjs
       - name: Verify Flight mobile surface
         run: |
           test -f app/safe-harbor/td613-flight.html
@@ -37,7 +39,9 @@ jobs:
           grep -q 'PR88_SENTINEL TD613 Flight focus stability micro patch' app/safe-harbor/td613-flight.html
           grep -q 'PR89_SENTINEL TD613 Flight seal layout + payload micro patch' app/safe-harbor/td613-flight.html
           grep -q 'PR90_SENTINEL TD613 Flight seal side-by-side target/zwnj repair' app/safe-harbor/td613-flight.html
+          grep -q 'PR91_SENTINEL TD613 Flight mobile tile controls restoration' app/safe-harbor/td613-flight.html
           grep -q 'grid-template-areas: "target zwnj" !important;' app/safe-harbor/td613-flight.html
+          grep -q 'grid-template-columns: repeat(2, minmax(0, 1fr)) !important;' app/safe-harbor/td613-flight.html
           ! grep -q 'function prepNoZoom' app/safe-harbor/td613-flight.html
           ! grep -q 'data-td613-prev-font' app/safe-harbor/td613-flight.html
       - uses: actions/configure-pages@v5
