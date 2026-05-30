@@ -81,13 +81,19 @@ ${marker}
 }
 `;
 
-function escapeRegExp(value) {
-  return value.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
-}
-
 function stripPrior(source) {
-  const escaped = escapeRegExp(marker);
-  return source.replace(new RegExp('\\n?' + escaped + '[\\s\\S]*?(?=\\n<\\/style>|\\n`|\\n\/\\* PR|\\n@media)', 'g'), '');
+  let out = source;
+  while (out.includes(marker)) {
+    const start = out.indexOf(marker);
+    const nextPr = out.indexOf('\n/* PR', start + marker.length);
+    const styleEnd = out.indexOf('\n</style>', start + marker.length);
+    const templateEnd = out.indexOf('\n`;', start + marker.length);
+    const candidates = [nextPr, styleEnd, templateEnd].filter((value) => value > start);
+    if (!candidates.length) throw new Error('Could not find end of PR90 CSS block');
+    const end = Math.min(...candidates);
+    out = out.slice(0, start) + out.slice(end);
+  }
+  return out;
 }
 
 function injectIntoHtml(source) {
