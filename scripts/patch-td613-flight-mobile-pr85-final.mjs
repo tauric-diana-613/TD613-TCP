@@ -38,6 +38,133 @@ for (const id of oldScriptIds) {
 
 const css = `
 
+/* PR96_SENTINEL TD613 Flight mobile H1 + dev field density fix */
+@media (max-width: 920px) {
+  header h1,
+  .app-shell h1,
+  .flight-lane h1,
+  .flight-lane .card > h2,
+  .flight-lane-prompt .card > h2,
+  .flight-lane-output .card > h2,
+  .dev-drawer .card > h2,
+  .card > h2,
+  .flightplan-card > h2 {
+    font-size: clamp(10px, 2.65vw, 13px) !important;
+    line-height: .94 !important;
+    letter-spacing: .035em !important;
+    word-spacing: 0 !important;
+    transform: none !important;
+    -webkit-transform: none !important;
+  }
+
+  .flight-lane .card > h2::first-letter,
+  .flight-lane-prompt .card > h2::first-letter,
+  .flight-lane-output .card > h2::first-letter,
+  .dev-drawer .card > h2::first-letter {
+    font-size: inherit !important;
+  }
+
+  .flight-lane-prompt > .card:nth-of-type(3) {
+    width: calc(100% - 22px) !important;
+    max-width: calc(100% - 22px) !important;
+    margin-left: auto !important;
+    margin-right: auto !important;
+    transform: translateX(0) translateY(6px) !important;
+    -webkit-transform: translateX(0) translateY(6px) !important;
+  }
+
+  .dev-drawer .flightplan-card input[type="text"],
+  .dev-drawer .flightplan-card textarea,
+  .dev-drawer .flightplan-card select {
+    width: 100% !important;
+    max-width: 100% !important;
+    min-width: 0 !important;
+    box-sizing: border-box !important;
+    font-size: 8px !important;
+    line-height: 1.12 !important;
+  }
+
+  .dev-drawer .flightplan-card input[type="text"],
+  .dev-drawer .flightplan-card select {
+    height: 25px !important;
+    min-height: 25px !important;
+    padding: 4px 8px !important;
+  }
+
+  .dev-drawer .flightplan-card #routeJurisdiction,
+  .dev-drawer .flightplan-card #routeCitationStandard,
+  .dev-drawer .flightplan-card #routeUnit {
+    display: block !important;
+    width: 100% !important;
+    max-width: none !important;
+  }
+
+  .dev-drawer .flightplan-card #routeMetrics {
+    display: block !important;
+    width: 100% !important;
+    max-width: none !important;
+    min-height: 72px !important;
+    height: 72px !important;
+    padding: 6px 8px !important;
+    overflow: auto !important;
+    resize: vertical !important;
+  }
+
+  .dev-drawer .flightplan-card .small-label {
+    display: block !important;
+    margin-top: 7px !important;
+    margin-bottom: 3px !important;
+    font-size: 7px !important;
+    line-height: 1.05 !important;
+  }
+
+  .dev-drawer .flightplan-card .diagnostic-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
+    gap: 7px !important;
+  }
+
+  .dev-drawer .flightplan-card .diagnostic-grid .metric-chip {
+    min-width: 0 !important;
+    width: 100% !important;
+  }
+
+  .dev-drawer .card:has(#rotationSeed) .radio-row,
+  .dev-drawer .card:has(#rotationSeed) .checkbox-row {
+    display: grid !important;
+    grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
+    gap: 5px 7px !important;
+    align-items: stretch !important;
+  }
+
+  .dev-drawer .card:has(#rotationSeed) .radio-row > label,
+  .dev-drawer .card:has(#rotationSeed) .checkbox-row > label {
+    width: 100% !important;
+    max-width: 100% !important;
+    min-width: 0 !important;
+    justify-content: flex-start !important;
+    padding: 3px 7px !important;
+    font-size: 7px !important;
+    line-height: 1.06 !important;
+    min-height: 20px !important;
+  }
+}
+
+@media (max-width: 420px) {
+  header h1,
+  .app-shell h1,
+  .flight-lane h1,
+  .flight-lane .card > h2,
+  .flight-lane-prompt .card > h2,
+  .flight-lane-output .card > h2,
+  .dev-drawer .card > h2,
+  .card > h2,
+  .flightplan-card > h2 {
+    font-size: clamp(9.5px, 2.45vw, 12px) !important;
+    letter-spacing: .03em !important;
+  }
+}
+
+
 /* PR95_SENTINEL TD613 Flight final mobile centering/heading/path fix */
 @media (max-width: 920px) {
   header h1,
@@ -610,6 +737,302 @@ const css = `
   .flight-lane .seal-card .section-split-row > div:nth-child(2) {
     transform: none !important;
     -webkit-transform: none !important;
+  }
+}
+
+
+
+/* PR93_SENTINEL TD613 Flight mobile heading/rail/footer correction */
+/* PR94_SENTINEL TD613 Flight mobile correction replay */
+@media (hover: none) and (max-width: 820px), (pointer: coarse) and (max-width: 820px) {
+  header h1,
+  .flight-lane .card > h2,
+  .flight-lane-prompt .card > h2,
+  .flight-lane-output .card > h2,
+  .dev-drawer .card > h2 {
+    font-size: clamp(15px, 4.8vw, 20px) !important;
+    line-height: .94 !important;
+    letter-spacing: .065em !important;
+    overflow-wrap: anywhere !important;
+  }
+
+  .flight-lane-output .output-card > h2,
+  .flight-lane-output .seal-card h2,
+  .flight-lane-output .copy-bin-card h2 {
+    font-size: clamp(15px, 4.7vw, 19px) !important;
+  }
+
+  .dev-drawer .card > h2 {
+    font-size: clamp(14px, 4.5vw, 18px) !important;
+    letter-spacing: .055em !important;
+  }
+
+  .dev-drawer .card > h2:has(+ .section-note) {
+    font-size: clamp(14px, 4.4vw, 18px) !important;
+  }
+
+  .flight-lane-prompt > .card:nth-of-type(3),
+  .flight-lane-prompt > .card:nth-of-type(4) {
+    transform: translate(8px, 8px) !important;
+    -webkit-transform: translate(8px, 8px) !important;
+    max-width: calc(100% - 10px) !important;
+    margin-bottom: 11px !important;
+  }
+
+  .flight-lane-prompt .card .checkbox-row,
+  .flight-lane-prompt .card .radio-row {
+    display: flex !important;
+    flex-flow: row wrap !important;
+    align-items: flex-start !important;
+    align-content: flex-start !important;
+    justify-content: flex-start !important;
+    gap: 4px 5px !important;
+    width: 100% !important;
+    max-width: 100% !important;
+    overflow: visible !important;
+    grid-template-columns: none !important;
+  }
+
+  .flight-lane-prompt .card .checkbox-row > label,
+  .flight-lane-prompt .card .radio-row > label {
+    display: inline-flex !important;
+    flex: 0 1 auto !important;
+    align-items: center !important;
+    justify-content: flex-start !important;
+    gap: 4px !important;
+    width: fit-content !important;
+    min-width: 0 !important;
+    max-width: min(10.4rem, 44vw) !important;
+    min-height: 18px !important;
+    height: auto !important;
+    padding: 2px 6px !important;
+    border-radius: 999px !important;
+    font-size: 6.5px !important;
+    line-height: 1.06 !important;
+    letter-spacing: .002em !important;
+    white-space: normal !important;
+    overflow: visible !important;
+    overflow-wrap: anywhere !important;
+    text-overflow: clip !important;
+    text-align: left !important;
+  }
+
+  .flight-lane-prompt .card .checkbox-row > label:nth-child(3n+1),
+  .flight-lane-prompt .card .radio-row > label:nth-child(3n+1) {
+    max-width: min(8.8rem, 39vw) !important;
+  }
+
+  .flight-lane-prompt .card .checkbox-row > label:nth-child(3n+2),
+  .flight-lane-prompt .card .radio-row > label:nth-child(3n+2) {
+    max-width: min(11.2rem, 47vw) !important;
+  }
+
+  .flight-lane-prompt .card .checkbox-row > label > input[type="checkbox"],
+  .flight-lane-prompt .card .radio-row > label > input[type="radio"] {
+    flex: 0 0 auto !important;
+    width: 8px !important;
+    min-width: 8px !important;
+    height: 8px !important;
+    min-height: 8px !important;
+    margin: 0 !important;
+  }
+
+  .flight-lane-prompt .card .checkbox-row > label:has(input[type="text"]),
+  .flight-lane-prompt .card .radio-row > label:has(input[type="text"]) {
+    flex: 0 1 auto !important;
+    width: fit-content !important;
+    min-width: 0 !important;
+    max-width: min(10.8rem, 45vw) !important;
+    border-radius: 14px !important;
+  }
+
+  .flight-lane-prompt .card .checkbox-row > label input[type="text"],
+  .flight-lane-prompt .card .radio-row > label input[type="text"] {
+    width: clamp(3.8rem, 18vw, 5.8rem) !important;
+    min-width: 0 !important;
+    max-width: 100% !important;
+    height: 13px !important;
+    min-height: 13px !important;
+    padding: 1px 4px !important;
+    font-size: 6.5px !important;
+    line-height: 1 !important;
+  }
+
+  .flight-lane-output .seal-card .section-note,
+  .flight-lane-output .copy-bin-card .section-note {
+    font-size: 8px !important;
+    line-height: 1.15 !important;
+    margin: 4px 0 7px !important;
+  }
+
+  .mobile-prompt-rail.mobile-prompt-rail-top {
+    position: static !important;
+    display: flex !important;
+    float: none !important;
+    inset: auto !important;
+    right: auto !important;
+    bottom: auto !important;
+    left: auto !important;
+    z-index: auto !important;
+    width: fit-content !important;
+    min-width: 0 !important;
+    max-width: min(60vw, 14rem) !important;
+    min-height: 18px !important;
+    margin: 7px 0 10px auto !important;
+    padding: 2px 6px !important;
+    gap: 4px !important;
+    justify-content: flex-end !important;
+    align-items: center !important;
+    border-color: rgba(255, 210, 98, .66) !important;
+    background:
+      linear-gradient(180deg, rgba(118, 69, 18, .96), rgba(34, 16, 5, .96)) !important;
+    box-shadow: 0 0 14px rgba(255, 177, 59, .18), inset 0 1px 0 rgba(255, 239, 196, .14) !important;
+  }
+
+  .mobile-prompt-rail.mobile-prompt-rail-top span:first-child {
+    font-size: 4.5px !important;
+    line-height: 1 !important;
+    letter-spacing: .12em !important;
+    color: rgba(255, 239, 196, .92) !important;
+    white-space: nowrap !important;
+  }
+
+  .mobile-prompt-rail.mobile-prompt-rail-top .mobile-prompt-rail-pill {
+    min-width: 11px !important;
+    padding: 1px 4px !important;
+    font-size: 6px !important;
+    line-height: 1 !important;
+    color: rgba(255, 229, 133, .96) !important;
+    border-color: rgba(255, 210, 98, .5) !important;
+    background: rgba(72, 38, 10, .78) !important;
+  }
+
+  .dev-drawer .section-split-row {
+    display: grid !important;
+    grid-template-columns: minmax(0, .96fr) minmax(0, 1.04fr) !important;
+    gap: 7px !important;
+    align-items: start !important;
+  }
+
+  .dev-drawer .section-split-row > div {
+    min-width: 0 !important;
+    width: 100% !important;
+    max-width: 100% !important;
+    overflow: visible !important;
+    padding: 7px !important;
+    box-sizing: border-box !important;
+  }
+
+  .dev-drawer .section-split-row h3 {
+    font-size: 9px !important;
+    line-height: 1.02 !important;
+  }
+
+  .dev-drawer .section-split-row .small-label {
+    font-size: 6px !important;
+    line-height: 1.05 !important;
+    letter-spacing: .07em !important;
+  }
+
+  .dev-drawer .section-split-row input,
+  .dev-drawer .section-split-row .date-field {
+    width: 100% !important;
+    max-width: 100% !important;
+    min-width: 0 !important;
+    box-sizing: border-box !important;
+    font-size: 7px !important;
+    min-height: 18px !important;
+    height: 18px !important;
+    padding: 2px 6px !important;
+  }
+
+  .dev-drawer .section-split-row .date-field {
+    display: grid !important;
+    grid-template-columns: minmax(0, 1fr) auto !important;
+    gap: 3px !important;
+    height: auto !important;
+    padding: 0 !important;
+  }
+
+  .dev-drawer .section-split-row .date-field .icon-btn {
+    width: 18px !important;
+    height: 18px !important;
+    min-width: 18px !important;
+    min-height: 18px !important;
+    padding: 2px !important;
+  }
+
+  .dev-drawer .section-split-row .row {
+    gap: 4px !important;
+    align-items: start !important;
+  }
+
+  .dev-drawer .section-split-row .checkbox-row > label {
+    max-width: min(7.4rem, 43vw) !important;
+    font-size: 5.7px !important;
+    line-height: 1.04 !important;
+    padding: 2px 5px !important;
+  }
+
+  .output-card .status-bar {
+    display: grid !important;
+    grid-template-columns: minmax(0, 1fr) auto !important;
+    grid-template-areas: "counts auth" ". payload" !important;
+    gap: 4px 8px !important;
+    align-items: center !important;
+  }
+
+  .output-card #statusCounts {
+    grid-area: counts !important;
+  }
+
+  .output-card .output-auth-toggle {
+    grid-area: auth !important;
+    justify-self: end !important;
+    margin-left: 0 !important;
+  }
+
+  .output-card .status-bar .payload-stepper {
+    grid-area: payload !important;
+    justify-self: end !important;
+    align-self: start !important;
+    width: auto !important;
+    min-width: 76px !important;
+    max-width: 96px !important;
+    height: 18px !important;
+    min-height: 18px !important;
+    margin: -1px 0 0 !important;
+    padding: 1px 4px !important;
+    gap: 3px !important;
+    transform: none !important;
+    -webkit-transform: none !important;
+  }
+
+  .output-card .status-bar .payload-stepper-label {
+    font-size: 5px !important;
+    line-height: 1 !important;
+    max-width: 34px !important;
+  }
+
+  .output-card .status-bar .payload-stepper-value {
+    font-size: 7px !important;
+    line-height: 1 !important;
+  }
+
+  .output-card .status-bar .payload-stepper-btn,
+  .output-card .status-bar .payload-stepper .icon-btn {
+    width: 14px !important;
+    min-width: 14px !important;
+    height: 14px !important;
+    min-height: 14px !important;
+    padding: 0 !important;
+    font-size: 8px !important;
+    line-height: 1 !important;
+  }
+
+  .output-card .output-toolbar {
+    margin-top: 6px !important;
+    gap: 6px !important;
   }
 }
 
