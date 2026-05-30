@@ -12,7 +12,7 @@ ${marker}
   .flight-lane-prompt .card .radio-row {
     display: grid !important;
     grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
-    gap: 8px 10px !important;
+    gap: 5px 7px !important;
     align-items: stretch !important;
     align-content: stretch !important;
     justify-content: stretch !important;
@@ -27,17 +27,17 @@ ${marker}
     grid-template-columns: auto minmax(0, 1fr) !important;
     align-items: center !important;
     justify-content: start !important;
-    column-gap: 8px !important;
+    column-gap: 6px !important;
     width: 100% !important;
     min-width: 0 !important;
     max-width: 100% !important;
-    min-height: 34px !important;
+    min-height: 25px !important;
     height: auto !important;
-    padding: 7px 10px !important;
+    padding: 4px 7px !important;
     border-radius: 999px !important;
-    font-size: 12px !important;
-    line-height: 1.1 !important;
-    letter-spacing: .02em !important;
+    font-size: 9px !important;
+    line-height: 1.08 !important;
+    letter-spacing: .01em !important;
     white-space: normal !important;
     overflow: visible !important;
     overflow-wrap: anywhere !important;
@@ -49,10 +49,10 @@ ${marker}
   .flight-lane-prompt .card .radio-row > label > input[type="radio"] {
     grid-column: 1 !important;
     flex: 0 0 auto !important;
-    width: 14px !important;
-    min-width: 14px !important;
-    height: 14px !important;
-    min-height: 14px !important;
+    width: 10px !important;
+    min-width: 10px !important;
+    height: 10px !important;
+    min-height: 10px !important;
     margin: 0 !important;
   }
 
@@ -60,7 +60,7 @@ ${marker}
   .flight-lane-prompt .card .radio-row > label:has(input[type="text"]) {
     grid-column: span 2 !important;
     grid-template-columns: auto minmax(0, 1fr) !important;
-    border-radius: 18px !important;
+    border-radius: 16px !important;
   }
 
   .flight-lane-prompt .card .checkbox-row > label input[type="text"],
@@ -68,11 +68,11 @@ ${marker}
     width: 100% !important;
     min-width: 0 !important;
     max-width: 100% !important;
-    height: 22px !important;
-    min-height: 22px !important;
-    padding: 3px 8px !important;
-    font-size: 11px !important;
-    line-height: 1.1 !important;
+    height: 17px !important;
+    min-height: 17px !important;
+    padding: 2px 6px !important;
+    font-size: 8px !important;
+    line-height: 1 !important;
   }
 
   .flight-lane-prompt .card .checkbox-row > label:has(input:only-child),
@@ -89,9 +89,9 @@ ${marker}
 
   .flight-lane-prompt .card .checkbox-row > label,
   .flight-lane-prompt .card .radio-row > label {
-    min-height: 32px !important;
-    padding: 6px 8px !important;
-    font-size: 11px !important;
+    min-height: 23px !important;
+    padding: 3px 6px !important;
+    font-size: 8px !important;
   }
 }
 `;
@@ -116,7 +116,7 @@ function injectIntoHtml(source) {
   if (!out.includes('</style>')) throw new Error('Missing </style> in Flight HTML');
   out = out.replace('</style>', `${css}\n</style>`);
   if (!out.includes(marker)) throw new Error('PR91 CSS injection failed in Flight HTML');
-  if (!out.includes('grid-template-columns: repeat(2, minmax(0, 1fr)) !important;')) throw new Error('PR91 tile grid missing in Flight HTML');
+  if (!out.includes('font-size: 9px !important;')) throw new Error('PR91 compact tile font missing in Flight HTML');
   return out;
 }
 
@@ -126,11 +126,11 @@ function injectIntoPr85(source) {
   if (!out.includes(cssInjectionPoint)) throw new Error('PR85 CSS template not found');
   out = out.replace(cssInjectionPoint, `${cssInjectionPoint}${css}\n`);
   if (!out.includes(marker)) throw new Error('PR91 CSS injection failed in PR85 patch script');
-  if (!out.includes('grid-template-columns: repeat(2, minmax(0, 1fr)) !important;')) throw new Error('PR91 tile grid missing in PR85 patch script');
+  if (!out.includes('font-size: 9px !important;')) throw new Error('PR91 compact tile font missing in PR85 patch script');
   return out;
 }
 
 fs.writeFileSync(htmlPath, injectIntoHtml(fs.readFileSync(htmlPath, 'utf8')));
 fs.writeFileSync(pr85Path, injectIntoPr85(fs.readFileSync(pr85Path, 'utf8')));
 
-console.log('Applied TD613 Flight PR91 mobile tile controls restoration.');
+console.log('Applied TD613 Flight PR91 mobile tile controls restoration with compact tile typography.');
