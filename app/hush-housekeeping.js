@@ -1,4 +1,5 @@
 const HUSH_HOUSEKEEPING_VERSION = 'phase-32-housekeeping';
+const HUSH_ADVERSARIAL_READER_VERSION = '202605301750';
 const $ = (id) => document.getElementById(id);
 const text = (value) => String(value ?? '').trim();
 const words = (value) => (text(value).match(/[A-Za-z0-9][A-Za-z0-9'-]*/g) || []);
@@ -16,6 +17,76 @@ function ensureAfter(anchor, node) {
   if (!anchor || !anchor.parentNode || !node) return;
   if (node.parentNode) return;
   anchor.parentNode.insertBefore(node, anchor.nextSibling);
+}
+
+function ensureAdversarialReaderAssets() {
+  const hasCss = document.querySelector('link[href*="hush-phase39.css"],link[data-td613-hush-phase39="css"]');
+  const hasUi = document.querySelector('script[src*="hush-phase39-ui.js"],script[data-td613-hush-phase39="ui"]');
+  if (!hasCss) {
+    const link = document.createElement('link');
+    link.rel = 'stylesheet';
+    link.href = `./hush-phase39.css?v=${HUSH_ADVERSARIAL_READER_VERSION}`;
+    link.dataset.td613HushPhase39 = 'css';
+    document.head.appendChild(link);
+  }
+  if (!hasUi) {
+    const script = document.createElement('script');
+    script.type = 'module';
+    script.src = `./hush-phase39-ui.js?v=${HUSH_ADVERSARIAL_READER_VERSION}`;
+    script.dataset.td613HushPhase39 = 'ui';
+    document.body.appendChild(script);
+  }
+}
+
+function relocateCustodyPanel() {
+  const panel = $('hushHousekeepingPanel');
+  const outputCard = $('protectedOutputHeading')?.closest('.hush-output-card') || $('protectedOutputInput')?.closest('section');
+  if (!panel || !outputCard || !outputCard.parentNode) return false;
+
+  panel.classList.add('hush-housekeeping-compact');
+  panel.setAttribute('aria-label', 'Compact private text custody controls');
+
+  const kicker = panel.querySelector('.hush-housekeeping-kicker');
+  const title = panel.querySelector('.hush-housekeeping-title');
+  const copy = panel.querySelector('.hush-housekeeping-copy');
+  const details = panel.querySelector('.hush-housekeeping-details summary');
+  if (kicker) kicker.textContent = 'Private text';
+  if (title) title.textContent = 'Custody';
+  if (copy) copy.textContent = 'Receipts only; private passages stay out.';
+  if (details) details.textContent = 'Mask anatomy';
+
+  const labels = {
+    hushClearSamplesBtn: 'Clear samples',
+    hushClearCustomMaskBtn: 'Clear mask',
+    hushExportCleanReceiptBtn: 'Export receipt',
+    hushCopyCleanReceiptBtn: 'Copy receipt'
+  };
+  for (const [id, label] of Object.entries(labels)) {
+    const button = $(id);
+    if (button) button.textContent = label;
+  }
+
+  if (panel.previousElementSibling === outputCard) return true;
+  outputCard.parentNode.insertBefore(panel, outputCard.nextSibling);
+  return true;
+}
+
+function installCustodyRelocationLoop() {
+  let tries = 0;
+  const tick = () => {
+    tries += 1;
+    relocateCustodyPanel();
+    ensureAdversarialReaderAssets();
+    if (tries < 100) window.setTimeout(tick, 75);
+  };
+  tick();
+  const observer = new MutationObserver(() => {
+    window.requestAnimationFrame(() => {
+      relocateCustodyPanel();
+      ensureAdversarialReaderAssets();
+    });
+  });
+  observer.observe(document.documentElement, { childList: true, subtree: true });
 }
 
 function buildHousekeepingPanel() {
@@ -38,6 +109,8 @@ function buildHousekeepingPanel() {
     <div id="hushCustodyStatus" class="hush-custody-status">Custody pass ready. Private text excluded from clean receipts.</div>`;
   const path = $('hushOperatorPath');
   ensureAfter(path, panel);
+  window.setTimeout(relocateCustodyPanel, 0);
+  window.setTimeout(relocateCustodyPanel, 180);
   return panel;
 }
 
@@ -237,6 +310,9 @@ function bind() {
   buildIdentPanel();
   buildActiveMaskBadge();
   improveLabels();
+  ensureAdversarialReaderAssets();
+  relocateCustodyPanel();
+  installCustodyRelocationLoop();
   $('hushClearSamplesBtn')?.addEventListener('click', clearSamples);
   $('hushClearCustomMaskBtn')?.addEventListener('click', clearCustomMask);
   $('hushExportCleanReceiptBtn')?.addEventListener('click', () => exportCleanReceipt(false));
@@ -244,7 +320,7 @@ function bind() {
   $('maskFieldSelect')?.addEventListener('change', () => setTimeout(updateActiveMask, 0));
   for (const id of ['hushVoiceReferenceSamplesSaved','hushCustomMaskSampleInput','maskReferenceInput']) $(id)?.addEventListener('input', updateQuality);
   for (const id of ['messageDraftInput','protectedOutputInput']) $(id)?.addEventListener('input', updateCompareAndResidual);
-  for (const id of ['generateMaskedOutputBtn','analyzeOutputBtn','copyHushOutputBtn','acceptOutputBtn']) $(id)?.addEventListener('click', () => setTimeout(() => { updateCompareAndResidual(); updateActiveMask(); }, 80));
+  for (const id of ['generateMaskedOutputBtn','analyzeOutputBtn','copyHushOutputBtn','acceptOutputBtn']) $(id)?.addEventListener('click', () => setTimeout(() => { updateCompareAndResidual(); updateActiveMask(); relocateCustodyPanel(); }, 80));
   try {
     const saved = localStorage.getItem('td613-hush-selected-mask');
     if (saved && $('maskFieldSelect') && typeof bench().selectHushMask === 'function') {
@@ -255,7 +331,8 @@ function bind() {
   updateQuality();
   updateCompareAndResidual();
   updateActiveMask();
-  window.__TD613_HUSH_HOUSEKEEPING__ = { version: HUSH_HOUSEKEEPING_VERSION, cleanReceipt, clearSamples, clearCustomMask, updateQuality, updateCompareAndResidual };
+  relocateCustodyPanel();
+  window.__TD613_HUSH_HOUSEKEEPING__ = { version: HUSH_HOUSEKEEPING_VERSION, cleanReceipt, clearSamples, clearCustomMask, updateQuality, updateCompareAndResidual, relocateCustodyPanel, ensureAdversarialReaderAssets };
 }
 
 if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', () => setTimeout(bind, 120));
