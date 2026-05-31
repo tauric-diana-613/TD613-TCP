@@ -1,7 +1,7 @@
 (function () {
   'use strict';
 
-  var VERSION = 'pr107-selector-recovery-provider-candidate';
+  var VERSION = 'pr107.1-selector-recovery-before-approval-block';
 
   function $(id) { return document.getElementById(id); }
   function text(value) { return String(value == null ? '' : value).trim(); }
@@ -93,9 +93,10 @@
   function sourceTextFromPage() { return $('messageDraftInput') ? $('messageDraftInput').value : ''; }
   function recover(event) {
     var result = event && event.detail && event.detail.result || window.__TD613_HUSH_PATCH38_LAST_RESULT || null;
-    if (!result || text(result.selectedOutput)) return;
+    if (!result || text(result.selectedOutput)) return false;
+    if (result.pr107SelectorRecovery && result.pr107SelectorRecovery.recovered) return true;
     var diagnostics = result.patch38Diagnostics || {};
-    if (!/provider-candidates-failed-review-release|all-candidates-failed-proposition-coverage|selector_no_approved_candidate/.test([diagnostics.warning, asArray(result.warnings).join(' ')].join(' '))) return;
+    if (!/provider-candidates-failed-review-release|all-candidates-failed-proposition-coverage|selector_no_approved_candidate/.test([diagnostics.warning, asArray(result.warnings).join(' ')].join(' '))) return false;
     var sourceText = sourceTextFromPage();
     var candidates = asArray(diagnostics.mergedCandidates || result.candidates);
     var ranked = candidates.filter(function (candidate) { return promotable(candidate, result, sourceText); }).map(function (candidate) {
@@ -103,8 +104,8 @@
     }).sort(function (a, b) { return b.score - a.score; });
     var selected = ranked[0] && ranked[0].candidate;
     if (!selected) {
-      window.__TD613_HUSH_PR107_LAST = { version: VERSION, recovered: false, reason: 'no-promotable-provider-candidate', at: new Date().toISOString(), blockedCount: candidates.length };
-      return;
+      window.__TD613_HUSH_PR107_LAST = { version: VERSION, recovered: false, reason: 'no-promotable-provider-candidate', at: new Date().toISOString(), blockedCount: candidates.length, warning: diagnostics.warning || '', mergedCandidateCount: candidates.length };
+      return false;
     }
     var output = $('protectedOutputInput');
     if (output) {
@@ -116,7 +117,7 @@
     result.selectedCandidateId = selected.id || 'pr107-recovered-candidate';
     result.releasePolicy = { mayPopulateOutput: true, hardBlocked: false, state: 'review' };
     result.releaseSummary = { status: 'review', warnings: ['pr107-selector-recovery-applied'] };
-    result.warnings = Array.from(new Set(asArray(result.warnings).filter(function (item) { return item !== 'provider-candidates-failed-review-release'; }).concat(['pr107-selector-recovery-applied'])));
+    result.warnings = Array.from(new Set(asArray(result.warnings).filter(function (item) { return item !== 'provider-candidates-failed-review-release' && item !== 'selector_no_approved_candidate'; }).concat(['pr107-selector-recovery-applied'])));
     diagnostics.selectedCandidateId = result.selectedCandidateId;
     diagnostics.selectedProviderCandidate = providerSource(selected);
     diagnostics.selectedRemoteCandidate = remoteSource(selected);
@@ -132,11 +133,11 @@
     diagnostics.releasableCount = Math.max(1, Number(diagnostics.releasableCount || 0));
     diagnostics.warning = 'pr107-selector-recovery-applied';
     result.patch38Diagnostics = diagnostics;
-    result.pr107SelectorRecovery = { version: VERSION, recovered: true, selectedCandidateId: result.selectedCandidateId, score: ranked[0].score, at: new Date().toISOString() };
+    result.pr107SelectorRecovery = { version: VERSION, recovered: true, selectedCandidateId: result.selectedCandidateId, score: ranked[0].score, at: new Date().toISOString(), eventType: event && event.type || 'manual' };
     var status = $('hushGeneratorStatus') || $('hushOutputStatusText');
     if (status) {
       status.dataset.tone = 'ok';
-      status.textContent = 'Selector recovery applied: provider candidate promoted for review after passing copy, ontology, and stylometry-adjacent checks.';
+      status.textContent = 'Selector recovery applied: provider candidate promoted for review before generic approval block.';
     }
     var warning = $('acceptWarning');
     if (warning) {
@@ -144,12 +145,16 @@
       warning.textContent = '';
     }
     window.__TD613_HUSH_PR107_LAST = result.pr107SelectorRecovery;
-    try { window.dispatchEvent(new CustomEvent('td613:hush:patch38-result', { detail: { result: result, recovered: true } })); } catch (error) {}
+    if (event && event.type !== 'td613:hush:patch38-result') {
+      try { window.dispatchEvent(new CustomEvent('td613:hush:patch38-result', { detail: { result: result, recovered: true } })); } catch (error) {}
+    }
+    return true;
   }
   function boot() {
     if (!document.body || document.body.dataset.pageKind !== 'adversarial-bench') return;
     if (document.body.dataset.pr107SelectorRecovery === VERSION) return;
     document.body.dataset.pr107SelectorRecovery = VERSION;
+    window.addEventListener('td613:hush:patch38-result', recover);
     window.addEventListener('td613:hush:patch38-approval', recover);
     window.TD613_HUSH_PR107 = { version: VERSION, recover: recover, promotable: promotable };
   }
