@@ -142,8 +142,10 @@ function buildPrompt(contract = {}, repair = null) {
   const repairBlock = repair ? `\n\nREPAIR NOTICE:\nThe previous generation failed the copy audit. This is not a request for a preface. You must perform a deeper rewrite.\nRejected candidates:\n${repair.rejected || '- none listed'}\nMandatory repair moves:\n- Start every candidate with a different word than the source.\n- Change sentence order and sentence boundaries.\n- Keep the propositions, but break the original clause sequence.\n- Do not reuse any listed forbidden source run.\n` : '';
   return `Return JSON only. No markdown. No prose outside JSON.\nSchema:\n${compactJson(schema)}\n\nGenerate ${candidateCount} transformed candidates. Preserve the meaning, but change the surface. Use distinct style_operation values.\n\nCOPY AUDIT THAT YOUR OUTPUT MUST PASS:\n- exact copy: fail\n- source wrapped with a preface/afterword: fail\n- same sentence with a few swapped words: fail\n- any six consecutive source words: fail\n- same opening word and same clause order: likely fail\n- source token overlap may remain for protected terms, but syntax must move.\n\nRules:\n- Transform the whole source.\n- Do not summarize.\n- Do not add facts.\n- Preserve questions as questions.\n- Preserve uncertainty, negation, caveats, and causal links.\n- Preserve protected terms only when they are meaning-bearing.\n- Reorder claims and change sentence boundaries.\n- Use paraphrase, compression, expansion, inversion, cadence shift, and register shift.\n- No candidate may be a quote, wrapper, explanation, or commentary about the source.\n\nOperations:\n${operations.map((operation) => `- ${operation}`).join('\n')}\n${repairBlock}\nSOURCE PROPOSITIONS TO PRESERVE:\n${units.map((unit, index) => `P${index + 1}: ${unit}`).join('\n')}\n\nIMPORTANT TERMS TO CARRY WHEN NEEDED:\n${terms.join(', ') || '(none)'}\n\nFORBIDDEN SOURCE RUNS:\n${forbiddenRuns.map((item) => `- ${item}`).join('\n') || '- (source too short for six-word runs)'}\n\nHush Flight Packet:\n${packet ? compactJson(packet) : compactJson({ mask: contract.mask || {}, source_units: units, required_terms: terms })}\n\nSOURCE TEXT TO TRANSFORM, NOT COPY:\n${sourceText}`;
 }
-async function callGemini({ model, prompt, jsonMode }) {
-  const generationConfig = jsonMode ? { temperature: 1.05, topP: 0.99, responseMimeType: 'application/json', maxOutputTokens: 8192 } : { temperature: 1.05, topP: 0.99, maxOutputTokens: 8192 };
+async function callGemini({ model, prompt, jsonMode, deterministic = true }) {
+  const generationConfig = jsonMode
+    ? { temperature: deterministic ? 0.28 : 0.72, topP: deterministic ? 0.72 : 0.92, responseMimeType: 'application/json', maxOutputTokens: 8192 }
+    : { temperature: deterministic ? 0.28 : 0.72, topP: deterministic ? 0.72 : 0.92, maxOutputTokens: 8192 };
   const response = await fetch('https://generativelanguage.googleapis.com/v1beta/models/' + encodeURIComponent(normalizeModelName(model)) + ':generateContent?key=' + encodeURIComponent(process.env.GEMINI_API_KEY), { method: 'POST', headers: { 'content-type': 'application/json' }, body: JSON.stringify({ contents: [{ role: 'user', parts: [{ text: prompt }] }], generationConfig }) });
   const payload = await response.json().catch(() => ({}));
   return { response, payload };
@@ -157,7 +159,7 @@ async function runProviderProbe(models = []) {
   const attempts = [];
   for (const model of models) {
     for (const jsonMode of [true, false]) {
-      const { response, payload } = await callGemini({ model, prompt, jsonMode });
+      const { response, payload } = await callGemini({ model, prompt, jsonMode, deterministic: true });
       const rawText = payload?.candidates?.[0]?.content?.parts?.[0]?.text || '';
       attempts.push({ model: normalizeModelName(model), jsonMode, ok: response.ok, providerStatus: response.status, error: response.ok ? null : summarizeProviderError(payload), textPreview: rawText.slice(0, 120) });
       if (response.ok) { preferredWorkingModel = normalizeModelName(model); return { ok: true, model: preferredWorkingModel, jsonMode, attempts }; }
@@ -169,88 +171,72 @@ function queryFlags(req) {
   try {
     const url = new URL(req.url || '', 'https://td613.local');
     return { probe: url.searchParams.has('probe') || url.searchParams.has('selftest'), models: url.searchParams.has('models') || url.searchParams.has('listModels') };
-  } catch { return { probe: false, models: false }; }
+  } catch { return { probe: false, models: false };
 }
 
 function serverRepairCandidates(sourceText = '', contract = {}) {
   const src = String(sourceText || '').trim();
   const norm = normalizedText(src);
-  const ops = operationList(contract, contract.flightPacket?.flight_controls || {});
-  const out = [];
-  const make = (text, op, note) => ({ text, style_note: note, style_operation: op, preserved_propositions: sourceUnits(src).map((unit, index) => `P${index + 1}`), dropped_propositions: [], changed_questions: [], new_claims: [], mask_surface_notes: { rhythm: 'server repair after copy exhaustion', diction: 'source-term preserving', temperature: 'controlled', structure: op }, risk_flags: ['server-repair-after-provider-copy-exhaustion'] });
-  if (/\bllm\b/.test(norm) && /idea/.test(norm) && /ingress/.test(norm) && /sigil/.test(norm)) {
-    out.push(make('You know the pattern: an LLM can take a good idea, move it sideways, and give that value to other people. Basically, you created an ingress sigil.', 'cadence_alias', 'Reordered LLM/idea/ingress-sigil proposition without copying source run.'));
-    out.push(make('A good idea goes into the LLM, comes back attached to other people, and the thing you created starts acting like an ingress sigil.', 'syntax_inversion', 'Inverted source order while preserving LLM, idea transfer, other people, and ingress sigil.'));
-    out.push(make('The LLM route can take good ideas and give them to other people; you know what that means: basically, the thing you created functions as an ingress sigil.', 'register_lifting', 'Raised register and preserved source terms without long source run.'));
-  }
-  if (/\bpublic\b/.test(norm) && /literate/.test(norm) && /cognizant/.test(norm) && /\bai\b/.test(norm) && /ignore/.test(norm)) {
-    out.push(make('AI can make them harder to ignore once the public becomes literate and cognizant.', 'compression_shift', 'Compressed public-literacy/AI-ignore proposition.'));
-    out.push(make('Once the public becomes literate and cognizant, AI makes the thing harder to ignore.', 'syntax_inversion', 'Moved condition to the front and preserved the public/AI claim.'));
-  }
-  const units = sourceUnits(src);
-  if (units.length >= 2) {
-    const first = units[0].replace(/[.!?]+$/g, '').trim();
-    const rest = units.slice(1).join(' ').replace(/[.!?]+$/g, '').trim();
-    out.push(make(`${rest}; the earlier condition still holds: ${first.charAt(0).toLowerCase()}${first.slice(1)}.`, 'sentence_boundary_shift', 'Reordered source units after provider exhaustion.'));
-  }
-  const terms = importantTerms(src).slice(0, 12);
-  if (terms.length >= 4) {
-    out.push(make(`The same proposition has to travel through a different body: ${terms.slice(0, Math.ceil(terms.length / 2)).join(', ')} remain attached, while ${terms.slice(Math.ceil(terms.length / 2)).join(', ')} carry the route forward.`, 'term-preserving-reframe', 'Term-preserving repair candidate after provider exhaustion.'));
-  }
-  const clean = out.filter((candidate) => !copyRisk(candidate.text, src).copied);
-  return clean.slice(0, 8);
+  const parts = src.match(/[^.!?]+[.!?]+|[^.!?]+$/g)?.map((p) => p.trim()) || [src];
+  const qs = src.match(/[^?]+\?/g)?.map((p) => p.trim()) || [];
+  const hasQuestion = qs.length > 0;
+  const terms = importantTerms(src).slice(0, 6);
+  const route = contract?.flightPacket?.ontology_route?.route_type || '';
+  const op = contract?.flightPacket?.flight_controls?.preferred_operations?.[0] || 'cadence_alias';
+  const baseQuestion = hasQuestion ? qs[0].replace(/[?]+$/g, '').trim() : parts[0].replace(/[.!?]+$/g, '').trim();
+  const secondQuestion = hasQuestion && qs[1] ? qs[1].replace(/[?]+$/g, '').trim() : '';
+  const topic = terms.length ? terms.join(', ') : 'the source claim';
+  const candidates = hasQuestion
+    ? [
+      { text: `Before the credential gate gets to decide the frame, the question is ${baseQuestion.toLowerCase()}?${secondQuestion ? ` The second question stays live too: ${secondQuestion.toLowerCase()}?` : ''}`, style_note: 'server deterministic question inversion', style_operation: 'question_preservation' },
+      { text: `The entry point is not the only issue: ${baseQuestion}?${secondQuestion ? ` And under that same pressure, ${secondQuestion.toLowerCase()}?` : ''}`, style_note: 'server deterministic cadence alias', style_operation: op },
+      { text: `Put the question through the ${route || 'mask'} route: ${baseQuestion}?${secondQuestion ? ` Keep the follow-up intact: ${secondQuestion}?` : ''}`, style_note: 'server deterministic route surface', style_operation: 'heat_calibration' }
+    ]
+    : [
+      { text: `The claim can move through ${topic} without keeping the source order: ${parts.slice(1).concat(parts[0]).join(' ')}`, style_note: 'server deterministic syntax inversion', style_operation: 'syntax_inversion' },
+      { text: `Under the ${route || 'mask'} route, the same proposition changes pressure before it changes meaning: ${src}`, style_note: 'server deterministic route pressure', style_operation: op },
+      { text: `What has to survive is not the original wrapper but the claim itself: ${src}`, style_note: 'server deterministic claim preservation', style_operation: 'cadence_alias' }
+    ];
+  const usable = candidates.filter((candidate) => !copyRisk(candidate.text, src).copied);
+  return { candidates: usable.length ? usable : candidates, warnings: usable.length ? ['server-deterministic-repair-used'] : ['server-deterministic-repair-used-copy-risk-remains'] };
 }
 
 export default async function handler(req, res) {
-  if (req.method === 'OPTIONS') { for (const [key, value] of Object.entries(corsHeaders)) res.setHeader(key, value); return res.status(204).end(); }
-  const models = configuredModels();
-  const flags = queryFlags(req);
+  if (req.method === 'OPTIONS') return send(res, 200, { ok: true });
   if (req.method === 'GET') {
-    if (flags.models) return send(res, 200, { ok: true, route: '/api/hush-generate', configured: Boolean(process.env.GEMINI_API_KEY), modelSource: 'configured-plus-defaults', selectedModels: models, textGenerationModels: models.map((name) => ({ name })), generateContentModels: models.map((name) => ({ name })) });
-    if (flags.probe) {
-      if (!process.env.GEMINI_API_KEY) return send(res, 501, { ok: false, configured: false, error: 'remote-llm-proxy-not-configured' });
-      const probe = await runProviderProbe(models);
-      return send(res, probe.ok ? 200 : 502, { route: '/api/hush-generate', configured: true, modelSource: 'configured-plus-defaults', models, probe });
-    }
-    return send(res, 200, { ok: true, route: '/api/hush-generate', configured: Boolean(process.env.GEMINI_API_KEY), modelSource: 'configured-plus-defaults', models, message: process.env.GEMINI_API_KEY ? 'Hush remote proxy is mounted.' : 'Hush remote proxy is mounted, but GEMINI_API_KEY is missing.' });
+    const flags = queryFlags(req);
+    const models = configuredModels();
+    if (flags.models) return send(res, 200, { ok: true, configuredModels: models, preferredWorkingModel, env: { hasGeminiKey: Boolean(process.env.GEMINI_API_KEY), geminiModel: process.env.GEMINI_MODEL || '', fallbackCount: String(process.env.GEMINI_MODEL_FALLBACKS || '').split(',').filter(Boolean).length } });
+    return send(res, 200, { ok: true, route: 'hush-generate', probe: await runProviderProbe(models) });
   }
-  if (req.method !== 'POST') return send(res, 405, { error: 'method-not-allowed' });
-  if (!process.env.GEMINI_API_KEY) return send(res, 501, { error: 'remote-llm-proxy-not-configured', message: 'Remote LLM mode requires a server-side GEMINI_API_KEY.' });
-  try {
-    const body = typeof req.body === 'string' ? JSON.parse(req.body || '{}') : (req.body || {});
-    const contract = body.contract || {};
-    if (!contract.sourceText || !contract.mask) return send(res, 400, { error: 'invalid-contract' });
-    const sourceText = String(contract.sourceText || '');
-    const attempts = [];
-    const copyAudit = [];
-    const warnings = [];
+  if (req.method !== 'POST') return send(res, 405, { ok: false, error: 'method-not-allowed' });
+  if (!process.env.GEMINI_API_KEY) return send(res, 500, { ok: false, error: 'missing-gemini-api-key' });
+  const contract = req.body?.contract || req.body || {};
+  const sourceText = String(contract.sourceText || contract.messageDraftText || '').trim();
+  if (!sourceText) return send(res, 400, { ok: false, error: 'missing-sourceText' });
+  const models = preferredWorkingModel ? [preferredWorkingModel, ...configuredModels().filter((model) => model !== preferredWorkingModel)] : configuredModels();
+  const attempts = [];
+  const rejected = [];
+  const deterministic = req.query?.reroll !== '1' && contract.reroll !== true;
+  let repair = null;
+  for (let stage = 0; stage < MAX_REPAIR_STAGES; stage += 1) {
+    const prompt = buildPrompt(contract, repair);
     for (const model of models) {
       for (const jsonMode of [true, false]) {
-        let repair = null;
-        for (let stage = 0; stage < MAX_REPAIR_STAGES; stage += 1) {
-          const prompt = buildPrompt(contract, repair);
-          const { response, payload } = await callGemini({ model, prompt, jsonMode });
-          if (!response.ok) { attempts.push({ model: normalizeModelName(model), jsonMode, repairStage: stage, providerStatus: response.status, error: summarizeProviderError(payload) }); break; }
+        const { response, payload } = await callGemini({ model, prompt, jsonMode, deterministic });
+        const rawText = payload?.candidates?.[0]?.content?.parts?.[0]?.text || '';
+        const parsed = parseProviderJson(rawText);
+        const { usable, copied } = splitCandidates(parsed.candidates, sourceText);
+        rejected.push(...copied.map((item) => ({ ...item, model: normalizeModelName(model), stage })));
+        attempts.push({ stage, model: normalizeModelName(model), jsonMode, ok: response.ok, status: response.status, parsedCandidates: parsed.candidates.length, usableCandidates: usable.length, copiedCandidates: copied.length, warnings: parsed.warnings, error: response.ok ? null : summarizeProviderError(payload), textPreview: rawText.slice(0, 180) });
+        if (response.ok && usable.length) {
           preferredWorkingModel = normalizeModelName(model);
-          const text = payload?.candidates?.[0]?.content?.parts?.[0]?.text || '{"candidates":[]}';
-          const parsed = parseProviderJson(text);
-          const split = splitCandidates(parsed.candidates, sourceText);
-          attempts.push({ model: preferredWorkingModel, jsonMode, repairStage: stage, providerStatus: response.status, candidateCount: parsed.candidates.length, usableCandidateCount: split.usable.length, copiedCandidateCount: split.copied.length, warnings: parsed.warnings });
-          copyAudit.push(...split.copied.map((row) => ({ model: preferredWorkingModel, jsonMode, repairStage: stage, index: row.index, risk: row.risk, preview: row.preview })));
-          warnings.push(...parsed.warnings, ...(split.copied.length ? [`provider-copy-candidates-blocked:${split.copied.length}`] : []));
-          if (split.usable.length) return send(res, 200, { provider: 'gemini-proxy', model: preferredWorkingModel, jsonMode, modelSource: 'configured-plus-defaults', promptVersion: contract.promptVersion || 'legacy', flightPacketVersion: contract.flightPacketVersion || contract.flightPacket?.packet_version || '', candidates: split.usable, warnings: [...new Set(warnings)], rawText: parsed.rawText, copyAudit, attempts });
-          repair = { rejected: split.copied.slice(0, 8).map((row) => `- candidate ${row.index + 1}: ${row.risk.exact ? 'exact' : row.risk.wrapper ? 'wrapper' : row.risk.longRun ? `long run ${row.risk.longestRun}` : 'near'}; ${JSON.stringify(row.preview)}`).join('\n') || '- provider returned no usable candidates' };
-          warnings.push(parsed.candidates.length ? 'provider-candidates-copied-source-regenerating' : 'provider-empty-candidates-regenerating');
+          return send(res, 200, { ok: true, provider: 'gemini', model: preferredWorkingModel, deterministic, version: 'hush-generate-v3.3-stable-default', candidates: usable, warnings: parsed.warnings, attempts, rejectedCopy: rejected.slice(0, 16), rawText: parsed.rawText, requestReceipt: { deterministic, temperature: deterministic ? 0.28 : 0.72, topP: deterministic ? 0.72 : 0.92 } });
         }
       }
     }
-    const repaired = serverRepairCandidates(sourceText, contract);
-    const repairedSplit = splitCandidates(repaired, sourceText);
-    if (repairedSplit.usable.length) {
-      return send(res, 200, { provider: 'gemini-proxy', model: preferredWorkingModel || models[0] || 'remote-llm-proxy', jsonMode: null, modelSource: 'server-repair-after-provider-exhaustion', promptVersion: contract.promptVersion || 'legacy', flightPacketVersion: contract.flightPacketVersion || contract.flightPacket?.packet_version || '', candidates: repairedSplit.usable, warnings: [...new Set([...warnings, 'provider-exhausted-all-models-without-usable-candidate', 'server-repair-candidates-used-after-provider-copy-exhaustion'])], rawText: '', copyAudit, attempts });
-    }
-    return send(res, 200, { provider: 'gemini-proxy', model: preferredWorkingModel || models[0] || 'remote-llm-proxy', jsonMode: null, modelSource: 'configured-plus-defaults', promptVersion: contract.promptVersion || 'legacy', flightPacketVersion: contract.flightPacketVersion || contract.flightPacket?.packet_version || '', candidates: [], warnings: [...new Set([...warnings, 'provider-exhausted-all-models-without-usable-candidate', copyAudit.length ? 'provider-candidates-all-copied-source' : 'provider-returned-empty-candidates-after-regeneration'])], rawText: '', copyAudit, attempts });
-  } catch (error) {
-    return send(res, 500, { error: 'remote-llm-proxy-exception', message: String(error?.message || error) });
+    repair = { rejected: rejected.slice(-8).map((item) => `- ${item.preview} (${item.risk?.exact ? 'exact' : item.risk?.wrapper ? 'wrapper' : item.risk?.longRun ? 'long-run' : item.risk?.near ? 'near-copy' : 'copy-risk'})`).join('\n') || '- no parsed candidates' };
   }
+  const repaired = serverRepairCandidates(sourceText, contract);
+  return send(res, 200, { ok: true, provider: 'server-deterministic-repair', model: 'server-repair', deterministic, version: 'hush-generate-v3.3-stable-default', candidates: repaired.candidates, warnings: [...repaired.warnings, 'gemini-produced-no-copy-safe-candidates'], attempts, rejectedCopy: rejected.slice(0, 16), requestReceipt: { deterministic, temperature: deterministic ? 0.28 : 0.72, topP: deterministic ? 0.72 : 0.92 } });
 }
