@@ -1,53 +1,13 @@
 (function () {
   'use strict';
 
-  var VERSION = 'pr96.1-cockpit-stabilizer';
+  var VERSION = 'pr96.2-analyze-stabilizer-no-generator-wait-loop';
   var analyzeTimer = 0;
   var analyzeSource = '';
-  var pendingUntil = 0;
 
   function $(id) { return document.getElementById(id); }
   function txt(value) { return String(value == null ? '' : value); }
   function clean(value) { return txt(value).trim(); }
-
-  function setStatus(message, tone) {
-    var status = $('hushGeneratorStatus') || $('hushOutputStatusText');
-    if (!status) return;
-    status.dataset.tone = tone || 'info';
-    status.textContent = message;
-  }
-
-  function clearWarning() {
-    var warning = $('acceptWarning');
-    if (!warning) return;
-    warning.hidden = true;
-    warning.textContent = '';
-  }
-
-  function quietPending() {
-    var output = $('protectedOutputInput');
-    if (output && clean(output.value)) return;
-    if (Date.now() <= pendingUntil) {
-      clearWarning();
-      setStatus('Generating mask output…', 'info');
-      window.setTimeout(quietPending, 750);
-      return;
-    }
-    clearWarning();
-    setStatus('Still waiting for an approved generator candidate…', 'info');
-  }
-
-  function beginPending() {
-    pendingUntil = Date.now() + 45000;
-    var output = $('protectedOutputInput');
-    if (output) {
-      output.value = '';
-      output.dispatchEvent(new Event('input', { bubbles: true }));
-    }
-    clearWarning();
-    setStatus('Generating mask output…', 'info');
-    window.setTimeout(quietPending, 650);
-  }
 
   function finishAnalyze() {
     document.body.dataset.pr96Analyzing = 'false';
@@ -73,21 +33,26 @@
 
   function boot() {
     if (!document.body || document.body.dataset.pageKind !== 'adversarial-bench') return;
-    if (document.body.dataset.pr96CockpitStabilizer === 'true') return;
-    document.body.dataset.pr96CockpitStabilizer = 'true';
+    if (document.body.dataset.pr96CockpitStabilizer === VERSION) return;
+    document.body.dataset.pr96CockpitStabilizer = VERSION;
     installStyle();
     document.addEventListener('click', function (event) {
       if (event.target && event.target.closest && event.target.closest('#analyzeOutputBtn')) beginAnalyze();
-      if (event.target && event.target.closest && event.target.closest('#generateMaskedOutputBtn')) beginPending();
     }, true);
-    var output = $('protectedOutputInput');
-    if (output) output.addEventListener('input', function () { if (clean(output.value)) pendingUntil = 0; }, true);
     var input = $('messageDraftInput');
-    if (input) input.addEventListener('input', function () { if (analyzeTimer) window.clearTimeout(analyzeTimer); document.body.dataset.pr96Analyzing = 'false'; }, true);
+    if (input) input.addEventListener('input', function () {
+      if (analyzeTimer) window.clearTimeout(analyzeTimer);
+      document.body.dataset.pr96Analyzing = 'false';
+    }, true);
+    window.__TD613_HUSH_PR96_STATE__ = {
+      version: VERSION,
+      generatorWaitLoop: 'disabled',
+      reason: 'Patch38/PR106 now own generator approval and hold states.'
+    };
   }
 
   if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', boot, { once: true });
   else boot();
   window.setTimeout(boot, 500);
-  window.TD613_HUSH_PR96 = { version: VERSION, beginAnalyze: beginAnalyze, beginPending: beginPending };
+  window.TD613_HUSH_PR96 = { version: VERSION, beginAnalyze: beginAnalyze, beginPending: function () {} };
 }());
