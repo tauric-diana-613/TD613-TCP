@@ -5,9 +5,10 @@ const corsHeaders = {
   'access-control-max-age': '86400'
 };
 
-const FALLBACK_TEXT_MODELS = ['gemini-2.5-flash-lite', 'gemini-2.5-flash', 'gemini-flash-lite-latest', 'gemini-flash-latest', 'gemini-2.5-pro', 'gemini-pro-latest'];
-const MAX_MODEL_ATTEMPTS = 8;
-const MAX_REPAIR_STAGES = 5;
+const FALLBACK_TEXT_MODELS = ['gemini-2.5-flash-lite', 'gemini-2.5-flash', 'gemini-flash-lite-latest'];
+const MAX_MODEL_ATTEMPTS = 3;
+const GEMINI_TIMEOUT_MS = 8500;
+const WALL_TIMEOUT_MS = 18000;
 let preferredWorkingModel = null;
 
 function send(res, status, payload) {
@@ -25,9 +26,15 @@ function cleanJsonText(text = '') { return String(text || '').trim().replace(/^`
 function words(value = '') { return String(value || '').toLowerCase().match(/[a-z0-9][a-z0-9'-]*/g) || []; }
 function normalizedText(value = '') { return words(value).join(' '); }
 function stringArray(value) { return Array.isArray(value) ? value.map((item) => String(item || '').trim()).filter(Boolean) : []; }
+function safe(value = '') { return String(value ?? '').trim(); }
+function compactJson(value = {}) { return JSON.stringify(value || {}, null, 2); }
+function truncate(value = '', limit = 2600) {
+  const text = safe(value).replace(/\s+/g, ' ');
+  return text.length > limit ? `${text.slice(0, limit).trim()}…` : text;
+}
 function candidateText(candidate = {}) {
   if (typeof candidate === 'string') return candidate;
-  return String(candidate.text || candidate.output || candidate.candidate || candidate.rewrite || '').trim();
+  return safe(candidate.text || candidate.output || candidate.candidate || candidate.rewrite || '');
 }
 function normalizeProviderCandidates(value) {
   const source = Array.isArray(value) ? value : Array.isArray(value?.candidates) ? value.candidates : value?.text || value?.output || value?.candidate || value?.rewrite ? [value] : [];
@@ -85,7 +92,7 @@ function longestSourceRun(candidateText = '', sourceText = '') {
 function copyRisk(candidateText = '', sourceText = '') {
   const candidateNorm = normalizedText(candidateText);
   const sourceNorm = normalizedText(sourceText);
-  if (!candidateNorm || !sourceNorm) return { copied: false, exact: false, wrapper: false, longRun: false, near: false, longestRun: 0, overlap: 0, lengthRatio: 1 };
+  if (!candidateNorm || !sourceNorm) return { copied: false, longestRun: 0, overlap: 0, lengthRatio: 1 };
   const candidateWords = words(candidateText);
   const sourceWords = words(sourceText);
   const sourceSet = new Set(sourceWords.filter((word) => word.length > 2));
@@ -111,7 +118,6 @@ function splitCandidates(candidates = [], sourceText = '') {
   });
   return { usable, copied };
 }
-function compactJson(value = {}) { return JSON.stringify(value || {}, null, 2); }
 function sourceUnits(sourceText = '') {
   const lines = String(sourceText || '').split(/\n+/).map((line) => line.trim()).filter(Boolean);
   return lines.length ? lines : String(sourceText || '').match(/[^.!?]+[.!?]+|[^.!?]+$/g)?.map((line) => line.trim()).filter(Boolean) || [];
@@ -124,31 +130,76 @@ function sourceNgrams(sourceText = '', n = 6) {
   const list = words(sourceText);
   const grams = [];
   for (let i = 0; i <= list.length - n; i += 1) grams.push(list.slice(i, i + n).join(' '));
-  return grams.slice(0, 18);
+  return grams.slice(0, 12);
 }
 function operationList(contract = {}, controls = {}) {
-  return Array.isArray(contract.operationTaxonomy) && contract.operationTaxonomy.length ? contract.operationTaxonomy : controls.required_operations || ['syntax_inversion', 'cadence_alias', 'register_lowering', 'register_lifting', 'lyric_pressure', 'friction_insert', 'heat_calibration', 'witness_plainness'];
+  return Array.isArray(contract.operationTaxonomy) && contract.operationTaxonomy.length ? contract.operationTaxonomy.slice(0, 8) : controls.required_operations || ['syntax_inversion', 'cadence_alias', 'register_lowering', 'register_lifting', 'lyric_pressure', 'friction_insert', 'heat_calibration', 'witness_plainness'];
+}
+function compactFlightPacket(packet = {}) {
+  const style = packet.mask_style_vector || {};
+  const engine = packet.stylometry_engine || {};
+  return {
+    packet_version: packet.packet_version || '',
+    ontology_route: packet.ontology_route || {},
+    mask_style_vector: {
+      mask_id: style.mask_id || '',
+      display_name: style.display_name || '',
+      register: style.register || '',
+      intended_use: style.intended_use || '',
+      risk_tell: style.risk_tell || '',
+      sentence_length_target: style.sentence_length_target || '',
+      rhythm_target: style.rhythm_target || '',
+      formality_target: style.formality_target || '',
+      warmth_target: style.warmth_target || '',
+      compression_target: style.compression_target || '',
+      diction_hints: (style.diction_hints || []).slice(0, 8),
+      transition_bank: (style.transition_bank || []).slice(0, 8),
+      desired_moves: (style.desired_moves || []).slice(0, 8),
+      enrichment_applied: Boolean(style.enrichment_applied),
+      canonical_seed_hash: style.canonical_seed_hash || '',
+      sample_seed_excerpt: truncate(style.sample_seed_excerpt || '', 900)
+    },
+    stylometry_engine: {
+      source_profile: engine.source_profile || {},
+      mask_reference_profile: engine.mask_reference_profile || {},
+      target_shell: engine.target_shell || null,
+      cadence_shell: engine.cadence_shell || null,
+      generator_constraints: engine.generator_constraints || {},
+      audit: { warnings: engine.audit?.warnings || [], enrichment: engine.audit?.enrichment ? { version: engine.audit.enrichment.version, applied: engine.audit.enrichment.applied, canonicalSeedHash: engine.audit.enrichment.canonicalSeedHash } : null }
+    },
+    flight_controls: packet.flight_controls || {},
+    source_manifest: { proposition_summary: packet.source_manifest?.proposition_summary || {}, question_map: packet.source_manifest?.question_map || [], claim_map: packet.source_manifest?.claim_map || [] }
+  };
 }
 function buildPrompt(contract = {}, repair = null) {
-  const sourceText = String(contract.sourceText || '').slice(0, 7000);
+  const sourceText = String(contract.sourceText || '').slice(0, 5000);
   const packet = contract.flightPacket || null;
+  const compactPacket = packet ? compactFlightPacket(packet) : { mask: contract.mask || {} };
   const controls = packet?.flight_controls || {};
   const operations = operationList(contract, controls);
-  const candidateCount = Math.max(6, Math.min(8, Number(controls.candidate_count || contract.candidateCount || 8)));
-  const units = sourceUnits(sourceText);
+  const candidateCount = Math.max(4, Math.min(6, Number(controls.candidate_count || contract.candidateCount || 6)));
+  const units = sourceUnits(sourceText).slice(0, 12);
   const terms = importantTerms(sourceText);
   const forbiddenRuns = sourceNgrams(sourceText, 6);
   const schema = { candidates: [{ text: 'string', style_note: 'string', style_operation: operations[0] || 'cadence_alias', preserved_propositions: ['p1'], dropped_propositions: [], changed_questions: [], new_claims: [], risk_flags: [], mask_surface_notes: { rhythm: 'string', diction: 'string', temperature: 'string', structure: 'string' } }] };
-  const repairBlock = repair ? `\n\nREPAIR NOTICE:\nThe previous generation failed the copy audit. This is not a request for a preface. You must perform a deeper rewrite.\nRejected candidates:\n${repair.rejected || '- none listed'}\nMandatory repair moves:\n- Start every candidate with a different word than the source.\n- Change sentence order and sentence boundaries.\n- Keep the propositions, but break the original clause sequence.\n- Do not reuse any listed forbidden source run.\n` : '';
-  return `Return JSON only. No markdown. No prose outside JSON.\nSchema:\n${compactJson(schema)}\n\nGenerate ${candidateCount} transformed candidates. Preserve the meaning, but change the surface. Use distinct style_operation values.\n\nCOPY AUDIT THAT YOUR OUTPUT MUST PASS:\n- exact copy: fail\n- source wrapped with a preface/afterword: fail\n- same sentence with a few swapped words: fail\n- any six consecutive source words: fail\n- same opening word and same clause order: likely fail\n- source token overlap may remain for protected terms, but syntax must move.\n\nRules:\n- Transform the whole source.\n- Do not summarize.\n- Do not add facts.\n- Preserve questions as questions.\n- Preserve uncertainty, negation, caveats, and causal links.\n- Preserve protected terms only when they are meaning-bearing.\n- Reorder claims and change sentence boundaries.\n- Use paraphrase, compression, expansion, inversion, cadence shift, and register shift.\n- No candidate may be a quote, wrapper, explanation, or commentary about the source.\n\nOperations:\n${operations.map((operation) => `- ${operation}`).join('\n')}\n${repairBlock}\nSOURCE PROPOSITIONS TO PRESERVE:\n${units.map((unit, index) => `P${index + 1}: ${unit}`).join('\n')}\n\nIMPORTANT TERMS TO CARRY WHEN NEEDED:\n${terms.join(', ') || '(none)'}\n\nFORBIDDEN SOURCE RUNS:\n${forbiddenRuns.map((item) => `- ${item}`).join('\n') || '- (source too short for six-word runs)'}\n\nHush Flight Packet:\n${packet ? compactJson(packet) : compactJson({ mask: contract.mask || {}, source_units: units, required_terms: terms })}\n\nSOURCE TEXT TO TRANSFORM, NOT COPY:\n${sourceText}`;
+  const repairBlock = repair ? `\n\nREPAIR NOTICE: previous candidates failed copy audit. Change openings, clause order, and sentence boundaries. Rejected: ${repair.rejected || 'none'}.` : '';
+  return `Return JSON only. No markdown. No prose outside JSON.\nSchema:\n${compactJson(schema)}\n\nGenerate ${candidateCount} transformed candidates. Preserve meaning, questions, caveats, negations, uncertainty, and causal links. Do not answer questions. Do not add facts. Use distinct style_operation values. Move the source surface toward the mask target shell without quoting the canonical seed.\n\nCOPY AUDIT:\n- exact copy: fail\n- source wrapped with a preface/afterword: fail\n- same sentence with swapped words: fail\n- any six consecutive source words: fail\n- same opening word and same clause order: likely fail\n${repairBlock}\n\nOperations:\n${operations.map((operation) => `- ${operation}`).join('\n')}\n\nSOURCE PROPOSITIONS TO PRESERVE:\n${units.map((unit, index) => `P${index + 1}: ${unit}`).join('\n')}\n\nIMPORTANT TERMS:\n${terms.join(', ') || '(none)'}\n\nFORBIDDEN SOURCE RUNS:\n${forbiddenRuns.map((item) => `- ${item}`).join('\n') || '- (source too short for six-word runs)'}\n\nCOMPACT HUSH FLIGHT PACKET:\n${compactJson(compactPacket)}\n\nSOURCE TEXT TO TRANSFORM, NOT COPY:\n${sourceText}`;
 }
 async function callGemini({ model, prompt, jsonMode, deterministic = true }) {
+  const controller = new AbortController();
+  const timer = setTimeout(() => controller.abort(), GEMINI_TIMEOUT_MS);
   const generationConfig = jsonMode
-    ? { temperature: deterministic ? 0.28 : 0.72, topP: deterministic ? 0.72 : 0.92, responseMimeType: 'application/json', maxOutputTokens: 8192 }
-    : { temperature: deterministic ? 0.28 : 0.72, topP: deterministic ? 0.72 : 0.92, maxOutputTokens: 8192 };
-  const response = await fetch('https://generativelanguage.googleapis.com/v1beta/models/' + encodeURIComponent(normalizeModelName(model)) + ':generateContent?key=' + encodeURIComponent(process.env.GEMINI_API_KEY), { method: 'POST', headers: { 'content-type': 'application/json' }, body: JSON.stringify({ contents: [{ role: 'user', parts: [{ text: prompt }] }], generationConfig }) });
-  const payload = await response.json().catch(() => ({}));
-  return { response, payload };
+    ? { temperature: deterministic ? 0.24 : 0.64, topP: deterministic ? 0.68 : 0.88, responseMimeType: 'application/json', maxOutputTokens: 4096 }
+    : { temperature: deterministic ? 0.24 : 0.64, topP: deterministic ? 0.68 : 0.88, maxOutputTokens: 4096 };
+  try {
+    const response = await fetch('https://generativelanguage.googleapis.com/v1beta/models/' + encodeURIComponent(normalizeModelName(model)) + ':generateContent?key=' + encodeURIComponent(process.env.GEMINI_API_KEY), { method: 'POST', headers: { 'content-type': 'application/json' }, body: JSON.stringify({ contents: [{ role: 'user', parts: [{ text: prompt }] }], generationConfig }), signal: controller.signal });
+    const payload = await response.json().catch(() => ({}));
+    return { response, payload, timedOut: false };
+  } catch (error) {
+    return { response: { ok: false, status: error?.name === 'AbortError' ? 408 : 599 }, payload: { error: { message: String(error?.message || error), status: error?.name || 'FETCH_ERROR' } }, timedOut: error?.name === 'AbortError' };
+  } finally {
+    clearTimeout(timer);
+  }
 }
 function summarizeProviderError(payload = {}) {
   const error = payload.error || payload;
@@ -157,13 +208,11 @@ function summarizeProviderError(payload = {}) {
 async function runProviderProbe(models = []) {
   const prompt = 'Return JSON only. Schema: {"candidates":[{"text":"probe ok","style_note":"probe","risk_flags":[]}]}';
   const attempts = [];
-  for (const model of models) {
-    for (const jsonMode of [true, false]) {
-      const { response, payload } = await callGemini({ model, prompt, jsonMode, deterministic: true });
-      const rawText = payload?.candidates?.[0]?.content?.parts?.[0]?.text || '';
-      attempts.push({ model: normalizeModelName(model), jsonMode, ok: response.ok, providerStatus: response.status, error: response.ok ? null : summarizeProviderError(payload), textPreview: rawText.slice(0, 120) });
-      if (response.ok) { preferredWorkingModel = normalizeModelName(model); return { ok: true, model: preferredWorkingModel, jsonMode, attempts }; }
-    }
+  for (const model of models.slice(0, 2)) {
+    const { response, payload, timedOut } = await callGemini({ model, prompt, jsonMode: true, deterministic: true });
+    const rawText = payload?.candidates?.[0]?.content?.parts?.[0]?.text || '';
+    attempts.push({ model: normalizeModelName(model), jsonMode: true, ok: response.ok, providerStatus: response.status, timedOut, error: response.ok ? null : summarizeProviderError(payload), textPreview: rawText.slice(0, 120) });
+    if (response.ok) { preferredWorkingModel = normalizeModelName(model); return { ok: true, model: preferredWorkingModel, jsonMode: true, attempts }; }
   }
   return { ok: false, attempts };
 }
@@ -171,12 +220,10 @@ function queryFlags(req) {
   try {
     const url = new URL(req.url || '', 'https://td613.local');
     return { probe: url.searchParams.has('probe') || url.searchParams.has('selftest'), models: url.searchParams.has('models') || url.searchParams.has('listModels') };
-  } catch { return { probe: false, models: false };
+  } catch { return { probe: false, models: false }; }
 }
-
 function serverRepairCandidates(sourceText = '', contract = {}) {
-  const src = String(sourceText || '').trim();
-  const norm = normalizedText(src);
+  const src = safe(sourceText);
   const parts = src.match(/[^.!?]+[.!?]+|[^.!?]+$/g)?.map((p) => p.trim()) || [src];
   const qs = src.match(/[^?]+\?/g)?.map((p) => p.trim()) || [];
   const hasQuestion = qs.length > 0;
@@ -200,7 +247,6 @@ function serverRepairCandidates(sourceText = '', contract = {}) {
   const usable = candidates.filter((candidate) => !copyRisk(candidate.text, src).copied);
   return { candidates: usable.length ? usable : candidates, warnings: usable.length ? ['server-deterministic-repair-used'] : ['server-deterministic-repair-used-copy-risk-remains'] };
 }
-
 export default async function handler(req, res) {
   if (req.method === 'OPTIONS') return send(res, 200, { ok: true });
   if (req.method === 'GET') {
@@ -211,32 +257,38 @@ export default async function handler(req, res) {
   }
   if (req.method !== 'POST') return send(res, 405, { ok: false, error: 'method-not-allowed' });
   if (!process.env.GEMINI_API_KEY) return send(res, 500, { ok: false, error: 'missing-gemini-api-key' });
+  const startedAt = Date.now();
   const contract = req.body?.contract || req.body || {};
-  const sourceText = String(contract.sourceText || contract.messageDraftText || '').trim();
+  const sourceText = safe(contract.sourceText || contract.messageDraftText || '');
   if (!sourceText) return send(res, 400, { ok: false, error: 'missing-sourceText' });
-  const models = preferredWorkingModel ? [preferredWorkingModel, ...configuredModels().filter((model) => model !== preferredWorkingModel)] : configuredModels();
+  const configured = configuredModels();
+  const models = preferredWorkingModel ? [preferredWorkingModel, ...configured.filter((model) => model !== preferredWorkingModel)] : configured;
   const attempts = [];
   const rejected = [];
   const deterministic = req.query?.reroll !== '1' && contract.reroll !== true;
+  const jsonModes = deterministic ? [true] : [true, false];
   let repair = null;
-  for (let stage = 0; stage < MAX_REPAIR_STAGES; stage += 1) {
+  for (let stage = 0; stage < 2; stage += 1) {
+    if (Date.now() - startedAt > WALL_TIMEOUT_MS) break;
     const prompt = buildPrompt(contract, repair);
-    for (const model of models) {
-      for (const jsonMode of [true, false]) {
-        const { response, payload } = await callGemini({ model, prompt, jsonMode, deterministic });
+    for (const model of models.slice(0, deterministic ? 2 : 3)) {
+      if (Date.now() - startedAt > WALL_TIMEOUT_MS) break;
+      for (const jsonMode of jsonModes) {
+        if (Date.now() - startedAt > WALL_TIMEOUT_MS) break;
+        const { response, payload, timedOut } = await callGemini({ model, prompt, jsonMode, deterministic });
         const rawText = payload?.candidates?.[0]?.content?.parts?.[0]?.text || '';
         const parsed = parseProviderJson(rawText);
         const { usable, copied } = splitCandidates(parsed.candidates, sourceText);
         rejected.push(...copied.map((item) => ({ ...item, model: normalizeModelName(model), stage })));
-        attempts.push({ stage, model: normalizeModelName(model), jsonMode, ok: response.ok, status: response.status, parsedCandidates: parsed.candidates.length, usableCandidates: usable.length, copiedCandidates: copied.length, warnings: parsed.warnings, error: response.ok ? null : summarizeProviderError(payload), textPreview: rawText.slice(0, 180) });
+        attempts.push({ stage, model: normalizeModelName(model), jsonMode, ok: response.ok, status: response.status, timedOut, parsedCandidates: parsed.candidates.length, usableCandidates: usable.length, copiedCandidates: copied.length, warnings: parsed.warnings, error: response.ok ? null : summarizeProviderError(payload), textPreview: rawText.slice(0, 180) });
         if (response.ok && usable.length) {
           preferredWorkingModel = normalizeModelName(model);
-          return send(res, 200, { ok: true, provider: 'gemini', model: preferredWorkingModel, deterministic, version: 'hush-generate-v3.3-stable-default', candidates: usable, warnings: parsed.warnings, attempts, rejectedCopy: rejected.slice(0, 16), rawText: parsed.rawText, requestReceipt: { deterministic, temperature: deterministic ? 0.28 : 0.72, topP: deterministic ? 0.72 : 0.92 } });
+          return send(res, 200, { ok: true, provider: 'gemini', model: preferredWorkingModel, deterministic, version: 'hush-generate-v3.4-fast-bounded', candidates: usable, warnings: parsed.warnings, attempts, rejectedCopy: rejected.slice(0, 16), rawText: parsed.rawText, requestReceipt: { deterministic, temperature: deterministic ? 0.24 : 0.64, topP: deterministic ? 0.68 : 0.88, bounded: true, elapsedMs: Date.now() - startedAt } });
         }
       }
     }
-    repair = { rejected: rejected.slice(-8).map((item) => `- ${item.preview} (${item.risk?.exact ? 'exact' : item.risk?.wrapper ? 'wrapper' : item.risk?.longRun ? 'long-run' : item.risk?.near ? 'near-copy' : 'copy-risk'})`).join('\n') || '- no parsed candidates' };
+    repair = { rejected: rejected.slice(-6).map((item) => `- ${item.preview} (${item.risk?.exact ? 'exact' : item.risk?.wrapper ? 'wrapper' : item.risk?.longRun ? 'long-run' : item.risk?.near ? 'near-copy' : 'copy-risk'})`).join('\n') || '- no parsed candidates' };
   }
   const repaired = serverRepairCandidates(sourceText, contract);
-  return send(res, 200, { ok: true, provider: 'server-deterministic-repair', model: 'server-repair', deterministic, version: 'hush-generate-v3.3-stable-default', candidates: repaired.candidates, warnings: [...repaired.warnings, 'gemini-produced-no-copy-safe-candidates'], attempts, rejectedCopy: rejected.slice(0, 16), requestReceipt: { deterministic, temperature: deterministic ? 0.28 : 0.72, topP: deterministic ? 0.72 : 0.92 } });
+  return send(res, 200, { ok: true, provider: 'server-deterministic-repair', model: 'server-repair', deterministic, version: 'hush-generate-v3.4-fast-bounded', candidates: repaired.candidates, warnings: [...repaired.warnings, 'gemini-fast-path-fallback-before-timeout'], attempts, rejectedCopy: rejected.slice(0, 16), requestReceipt: { deterministic, temperature: deterministic ? 0.24 : 0.64, topP: deterministic ? 0.68 : 0.88, bounded: true, elapsedMs: Date.now() - startedAt } });
 }
