@@ -84,6 +84,7 @@
     appendScript('./hush-pr95-remote-rescue.js?v=' + (V.hushPr95 || V.hushPr94 || V.hushPatch38 || V.main || ''));
     appendScript('./hush-pr96-cockpit-stabilizer.js?v=' + (V.hushPr96 || V.hushPr95 || V.hushPatch38 || V.main || ''));
     appendScript('./hush-pr97-mobile-drawer-watchdog.js?v=' + (V.hushPr97 || V.hushPr96 || V.hushPatch38 || V.main || ''));
+    appendScript('./hush-pr104-rigor-amplifier.js?v=' + (V.hushPr104 || V.hushPr97 || V.hushPatch38 || V.main || ''));
   }
 
   var srcs = [
