@@ -85,6 +85,7 @@
     appendScript('./hush-pr96-cockpit-stabilizer.js?v=' + (V.hushPr96 || V.hushPr95 || V.hushPatch38 || V.main || ''));
     appendScript('./hush-pr97-mobile-drawer-watchdog.js?v=' + (V.hushPr97 || V.hushPr96 || V.hushPatch38 || V.main || ''));
     appendScript('./hush-pr104-rigor-amplifier.js?v=' + (V.hushPr104 || V.hushPr97 || V.hushPatch38 || V.main || ''));
+    appendScript('./hush-pr106-stylometry-ontology-release-guard.js?v=' + (V.hushPr106 || V.hushPr104 || V.hushPatch38 || V.main || ''));
   }
 
   var srcs = [
