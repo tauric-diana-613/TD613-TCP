@@ -4,6 +4,7 @@ import { GENERATOR_MODES, normalizeRemoteProviderResponse } from './engine/hush-
 import { buildHushLlmPromptContractV2, buildHushLlmPromptContractV3, buildPhase37ProviderTelemetry } from './engine/hush-generator-provider-phase35.js';
 import { auditPropositionIntegrity } from './engine/hush-proposition-integrity.js';
 import { deriveApertureApprovalTransparency } from './engine/aperture-approval-transparency.js';
+import { extractCadenceProfile } from './engine/stylometry.js';
 
 const $ = (id, doc = document) => doc.getElementById(id);
 const text = (value) => String(value ?? '').trim();
@@ -15,6 +16,8 @@ const PATCH38_REMOTE_CACHE_TTL_MS = 10 * 60 * 1000;
 const PATCH38_REMOTE_CACHE_LIMIT = 24;
 const patch38RemoteReportCache = new Map();
 const patch38RemoteReportInflight = new Map();
+let patch38RunSeq = 0;
+let activePatch38RunId = 0;
 void buildHushLlmPromptContractV2;
 
 function emitHushEvent(name, detail = {}) {
@@ -73,9 +76,67 @@ function selectedMask(state = bench.benchState || {}) {
   return masks.find((mask) => mask.id === state.selectedHushMaskId) || state.selectedHushMask || masks[0] || null;
 }
 
-function activeField(state = bench.benchState || {}) {
-  const mask = selectedMask(state) || {};
-  return state.profiles?.maskReference || mask.profile || {};
+function resolveMaskFromDom(doc = document, state = bench.benchState || {}) {
+  const selectId = $('maskFieldSelect', doc)?.value || state.selectedHushMaskId || '';
+  const masks = [...(state.hushMasks || []), ...(state.customMasks || [])];
+  return masks.find((mask) => mask.id === selectId) || state.selectedHushMask || masks.find((mask) => mask.id === state.selectedHushMaskId) || masks[0] || null;
+}
+
+function syncBenchStateFromDom(doc = document) {
+  const state = bench.benchState || {};
+  const selectId = $('maskFieldSelect', doc)?.value || state.selectedHushMaskId || '';
+  const currentId = state.selectedHushMask?.id || state.selectedHushMaskId || '';
+  if (selectId && selectId !== currentId && typeof bench.selectHushMask === 'function') {
+    bench.selectHushMask(selectId);
+  }
+  const mask = resolveMaskFromDom(doc, state);
+  state.selectedHushMaskId = mask?.id || selectId || state.selectedHushMaskId || '';
+  state.selectedPersonaId = state.selectedHushMaskId;
+  state.selectedHushMask = mask || state.selectedHushMask || null;
+  state.protectedBaselineText = $('protectedBaselineInput', doc)?.value || '';
+  state.maskReferenceText = $('maskReferenceInput', doc)?.value || '';
+  state.messageDraftText = $('messageDraftInput', doc)?.value || '';
+  state.protectedOutputText = $('protectedOutputInput', doc)?.value || '';
+  state.recognitionContextType = $('recognitionContextType', doc)?.value || state.recognitionContextType || 'group-chat';
+  state.recognitionIntentMode = $('recognitionIntentMode', doc)?.value || state.recognitionIntentMode || 'neutralize';
+  state.recognitionExposureDuration = $('recognitionExposureDuration', doc)?.value || state.recognitionExposureDuration || 'single-use';
+  state.profiles = state.profiles || {};
+  state.profiles.maskReference = extractCadenceProfile(state.maskReferenceText || mask?.sampleSeed || mask?.description || '');
+  state.profiles.messageDraft = extractCadenceProfile(state.messageDraftText || '');
+  state.profiles.protectedBaseline = extractCadenceProfile(state.protectedBaselineText || '');
+  state.profiles.protectedOutput = extractCadenceProfile(state.protectedOutputText || '');
+  return { state, mask };
+}
+
+function activeField(state = bench.benchState || {}, mask = null) {
+  return state.profiles?.maskReference || mask?.profile || selectedMask(state)?.profile || {};
+}
+
+function captureTransformSnapshot(doc = document) {
+  const { state, mask } = syncBenchStateFromDom(doc);
+  const mode = $('hushGeneratorMode', doc)?.value || DEFAULT_GENERATOR_MODE;
+  const maskReferenceText = $('maskReferenceInput', doc)?.value || mask?.sampleSeed || mask?.samples?.map((sample) => sample.text).filter(Boolean).join('\n\n') || mask?.description || '';
+  const sourceText = $('messageDraftInput', doc)?.value || '';
+  const protectedBaselineText = $('protectedBaselineInput', doc)?.value || '';
+  const referenceProfile = extractCadenceProfile(maskReferenceText || mask?.sampleSeed || mask?.description || '');
+  const runId = ++patch38RunSeq;
+  const identity = hashString(stableStringify({ sourceText, maskId: mask?.id || '', maskReferenceText, mode, recognitionIntentMode: state.recognitionIntentMode, recognitionContextType: state.recognitionContextType, recognitionExposureDuration: state.recognitionExposureDuration }));
+  activePatch38RunId = runId;
+  return { runId, identity, state, mask, mode, sourceText, protectedBaselineText, maskReferenceText, referenceProfile, recognitionIntentMode: state.recognitionIntentMode || 'neutralize', recognitionContextType: state.recognitionContextType || 'group-chat', recognitionExposureDuration: state.recognitionExposureDuration || 'single-use' };
+}
+
+function snapshotStillCurrent(snapshot = {}, doc = document) {
+  const current = {
+    sourceText: $('messageDraftInput', doc)?.value || '',
+    maskId: $('maskFieldSelect', doc)?.value || bench.benchState?.selectedHushMaskId || '',
+    maskReferenceText: $('maskReferenceInput', doc)?.value || '',
+    mode: $('hushGeneratorMode', doc)?.value || DEFAULT_GENERATOR_MODE,
+    recognitionIntentMode: $('recognitionIntentMode', doc)?.value || bench.benchState?.recognitionIntentMode || 'neutralize',
+    recognitionContextType: $('recognitionContextType', doc)?.value || bench.benchState?.recognitionContextType || 'group-chat',
+    recognitionExposureDuration: $('recognitionExposureDuration', doc)?.value || bench.benchState?.recognitionExposureDuration || 'single-use'
+  };
+  const identity = hashString(stableStringify(current));
+  return snapshot.runId === activePatch38RunId && identity === snapshot.identity;
 }
 
 function ensureGeneratorStatus(doc = document) {
@@ -157,17 +218,12 @@ function configuredRemoteEndpoint() {
 function remoteEndpointCandidates() {
   const loc = typeof window !== 'undefined' ? window.location : null;
   const origin = loc?.origin || '';
-  const pathname = loc?.pathname || '';
-  const pageDir = pathname.endsWith('/') ? pathname : pathname.replace(/\/[^/]*$/, '/');
   const candidates = [];
   const configured = configuredRemoteEndpoint();
   if (configured) candidates.push(configured);
-  if (origin) candidates.push(`${origin}/api/hush-generate`);
+  if (origin && !origin.includes('github.io')) candidates.push(`${origin}/api/hush-generate`);
   candidates.push(PRODUCTION_HUSH_API_ENDPOINT);
-  if (pageDir && pageDir !== '/') candidates.push(`${pageDir}api/hush-generate`);
-  if (pathname.startsWith('/app/')) candidates.push('/app/api/hush-generate');
   candidates.push('/api/hush-generate');
-  candidates.push('./api/hush-generate');
   return [...new Set(candidates.filter(Boolean))];
 }
 
@@ -250,7 +306,7 @@ function renderDiagnostics(result = {}, doc = document) {
   const endpointLine = receipt.endpoint ? `<span>Endpoint: <code>${esc(receipt.endpoint)}</code></span>` : receipt.triedEndpoints?.length ? `<span>Tried: <code>${esc(receipt.triedEndpoints.join(', '))}</code></span>` : receipt.cacheHit ? `<span>Endpoint: <code>session-cache</code></span>` : '';
   const operationSpread = Array.isArray(p.operationSpread) ? p.operationSpread.join(', ') : 'none';
   const apertureLine = packet.aperture_bridge ? `<span>Aperture: <code>${esc(packet.aperture_bridge.route_intent || 'bridge')}</code></span><span>Repair: <code>${esc((packet.repair_controls?.aperture_repair_operations || packet.aperture_bridge.repair_controls?.aperture_repair_operations || []).join(', ') || 'none')}</code></span>` : '';
-  target.innerHTML = `<strong>Phase 37 ontology-carrying generator flight</strong><span hidden>${PHASE35_COMPATIBILITY_LABEL}</span><div class="hush-phase32-diagnostic-grid"><span>Mode: <code>${esc(p.providerMode || 'offline-expressive')}</code></span><span>Packet: <code>${esc(phase37.flightPacketVersion || packet.packet_version || 'n/a')}</code></span><span>Prompt: <code>${esc(phase37.promptVersion || receipt.promptVersion || 'n/a')}</code></span>${apertureLine}<span>Route: <code>${esc(route.route_type || route.routeType || 'n/a')}</code></span><span>Source: <code>${esc(route.source_type || route.sourceType || 'n/a')}</code></span><span>Risk: <code>${esc(route.semantic_risk || 'n/a')}</code></span><span>Depth: <code>${esc(route.transformation_depth || 'n/a')}</code></span>${endpointLine}<span>Cache: <code>${esc(receipt.cacheHit ? 'hit' : receipt.cacheKey ? 'stored' : 'n/a')}</code></span><span>Operations: <code>${esc(operationSpread)}</code></span><span>Selected op: <code>${esc(p.selectedStyleOperation || 'n/a')}</code></span><span>Generated: <code>${esc(p.generatedCount ?? 0)}</code></span><span>Merged: <code>${esc(p.mergedCount ?? 0)}</code></span><span>Coverage: <code>${esc(p.selectedCoverage ?? 'n/a')}</code></span><span>Question score: <code>${esc(prop.questionFormScore ?? 'n/a')}</code></span><span>New claim risk: <code>${esc(prop.newClaimRisk?.score ?? 'n/a')}</code></span><span>Collapse: <code>${esc(p.selectedCollapseSurfaceScore ?? 0)}</code></span><span>Warning: <code>${esc(p.warning || prop.warnings?.join(', ') || 'none')}</code></span></div>${rows.length ? `<details><summary>Phase 37 candidates</summary>${rows.map((row) => `<div><code>${esc(row.id)}</code> ${esc(row.operation || row.strategy || '')} · score ${esc(row.score)} · mask ${esc(row.maskFidelity ?? 'n/a')} · syntax ${esc(row.syntaxDistance ?? 'n/a')} · collapse ${esc(row.collapse)}</div>`).join('')}</details>` : ''}`;
+  target.innerHTML = `<strong>Phase 37 ontology-carrying generator flight</strong><span hidden>${PHASE35_COMPATIBILITY_LABEL}</span><div class="hush-phase32-diagnostic-grid"><span>Mode: <code>${esc(p.providerMode || 'offline-expressive')}</code></span><span>Packet: <code>${esc(phase37.flightPacketVersion || packet.packet_version || 'n/a')}</code></span><span>Prompt: <code>${esc(phase37.promptVersion || receipt.promptVersion || 'n/a')}</code></span>${apertureLine}<span>Route: <code>${esc(route.route_type || route.routeType || 'n/a')}</code></span><span>Source: <code>${esc(route.source_type || route.sourceType || 'n/a')}</code></span><span>Risk: <code>${esc(route.semantic_risk || 'n/a')}</code></span><span>Depth: <code>${esc(route.transformation_depth || 'n/a')}</code></span>${endpointLine}<span>Cache: <code>${esc(receipt.cacheHit ? 'hit' : receipt.cacheKey ? 'stored' : 'n/a')}</code></span><span>Snapshot: <code>${esc(result.patch38Snapshot?.identity || 'n/a')}</code></span><span>Operations: <code>${esc(operationSpread)}</code></span><span>Selected op: <code>${esc(p.selectedStyleOperation || 'n/a')}</code></span><span>Generated: <code>${esc(p.generatedCount ?? 0)}</code></span><span>Merged: <code>${esc(p.mergedCount ?? 0)}</code></span><span>Coverage: <code>${esc(p.selectedCoverage ?? 'n/a')}</code></span><span>Question score: <code>${esc(prop.questionFormScore ?? 'n/a')}</code></span><span>New claim risk: <code>${esc(prop.newClaimRisk?.score ?? 'n/a')}</code></span><span>Collapse: <code>${esc(p.selectedCollapseSurfaceScore ?? 0)}</code></span><span>Warning: <code>${esc(p.warning || prop.warnings?.join(', ') || 'none')}</code></span></div>${rows.length ? `<details><summary>Phase 37 candidates</summary>${rows.map((row) => `<div><code>${esc(row.id)}</code> ${esc(row.operation || row.strategy || '')} · score ${esc(row.score)} · mask ${esc(row.maskFidelity ?? 'n/a')} · syntax ${esc(row.syntaxDistance ?? 'n/a')} · collapse ${esc(row.collapse)}</div>`).join('')}</details>` : ''}`;
 }
 
 function buildPatch38ApprovalPacket({ reason = '', result = {}, warnings = [] } = {}) {
@@ -280,45 +336,65 @@ function renderGateFailure(reason = '', doc = document, transparency = null) {
   if (transparency) { const status = ensureGeneratorStatus(doc); if (status) status.dataset.approvalStatus = transparency.approvalStatus; }
 }
 
+function renderStaleTransformDiscard(snapshot = {}, doc = document) {
+  setGeneratorStatus('Stale transform discarded: source, mask, reference, or routing changed before the provider result returned. Transform again from the current state.', 'warning', doc);
+  emitHushEvent('td613:hush:patch38-stale-discard', { snapshot });
+}
+
 async function runPatch38Transform(doc = document) {
-  const state = bench.benchState || {};
-  const sourceText = $('messageDraftInput', doc)?.value || '';
   const select = installGeneratorMode(doc);
-  if (!text(sourceText)) {
+  const snapshot = captureTransformSnapshot(doc);
+  const button = $('generateMaskedOutputBtn', doc);
+  if (button) button.disabled = true;
+  if (!text(snapshot.sourceText)) {
     const transparency = deriveApertureApprovalTransparency(buildPatch38ApprovalPacket({ reason: 'empty source text' }));
     recordPatch38ApprovalBlock(transparency, {});
     renderGateFailure(formatPatch38ApprovalBlock(transparency), doc, transparency);
+    if (button) button.disabled = false;
     return null;
   }
-  const mask = selectedMask(state);
-  const mode = select?.value || $('hushGeneratorMode', doc)?.value || DEFAULT_GENERATOR_MODE;
-  setGeneratorStatus(`Generator mode: ${mode}. Building Phase 37 candidates...`, 'info', doc);
-  const phase37Telemetry = buildPhase37ProviderTelemetry({ sourceText, mask, candidateCount: 8 });
-  const providerReports = [];
-  if (mode === GENERATOR_MODES.HYBRID || mode === GENERATOR_MODES.REMOTE_LLM_PROXY) providerReports.push(await fetchRemoteReport({ sourceText, mask, candidateCount: 8, flightPacket: phase37Telemetry.flightPacket }, doc));
-  const result = buildHushSwap({ sourceText, protectedBaselineText: $('protectedBaselineInput', doc)?.value || '', mask, maskProfile: activeField(state) || mask?.profile || {}, maskReferenceText: $('maskReferenceInput', doc)?.value || mask?.sampleSeed || '', generatorMode: mode, providerReports, protectedLiterals: [], phase37Telemetry, operatorMode: $('recognitionIntentMode', doc)?.value || 'neutralize', contextType: state.recognitionContextType || 'group-chat', exposureDuration: state.recognitionExposureDuration || 'single-use', options: { candidateCount: 30, includePrivateText: false } });
-  result.phase37Telemetry = phase37Telemetry;
-  result.phase35Telemetry = phase37Telemetry;
-  result.propositionIntegrity = auditPropositionIntegrity(sourceText, result.selectedOutput || '');
-  state.hushSwapResult = result;
-  state.protectedOutputText = result.selectedOutput || '';
-  if (typeof window !== 'undefined') window.__TD613_HUSH_PATCH38_LAST_RESULT = result;
-  const output = $('protectedOutputInput', doc);
-  if (output) output.value = state.protectedOutputText;
-  renderDiagnostics(result, doc);
-  emitHushEvent('td613:hush:patch38-result', { result, phase37Telemetry });
-  if (!text(state.protectedOutputText)) {
-    const reports = result.patch38Diagnostics?.providerReports || [];
-    const reportWarnings = reports.flatMap((report) => report.warnings || []);
-    const transparency = deriveApertureApprovalTransparency(buildPatch38ApprovalPacket({ reason: 'candidate selector produced no releasable output', result, warnings: reportWarnings }));
-    recordPatch38ApprovalBlock(transparency, result);
-    renderGateFailure(formatPatch38ApprovalBlock(transparency), doc, transparency);
-  } else {
-    const selected = result.patch38Diagnostics?.selectedCandidateId || result.selectedCandidateId || 'candidate';
-    const op = result.patch38Diagnostics?.selectedStyleOperation || 'operation-unreported';
-    setGeneratorStatus(`Output produced from ${selected} via ${op}. Review/edit if needed; Analyze is optional before Accept.`, 'ok', doc);
+  setGeneratorStatus(`Generator mode: ${snapshot.mode}. Building one coherent Phase 37 retrieval snapshot...`, 'info', doc);
+  try {
+    const phase37Telemetry = buildPhase37ProviderTelemetry({ sourceText: snapshot.sourceText, mask: snapshot.mask, maskReferenceText: snapshot.maskReferenceText, referenceText: snapshot.maskReferenceText, candidateCount: 8 });
+    const providerReports = [];
+    if (snapshot.mode === GENERATOR_MODES.HYBRID || snapshot.mode === GENERATOR_MODES.REMOTE_LLM_PROXY) {
+      providerReports.push(await fetchRemoteReport({ sourceText: snapshot.sourceText, mask: snapshot.mask, maskReferenceText: snapshot.maskReferenceText, referenceText: snapshot.maskReferenceText, candidateCount: 8, flightPacket: phase37Telemetry.flightPacket }, doc));
+    }
+    if (!snapshotStillCurrent(snapshot, doc)) {
+      renderStaleTransformDiscard(snapshot, doc);
+      return null;
+    }
+    const result = buildHushSwap({ sourceText: snapshot.sourceText, protectedBaselineText: snapshot.protectedBaselineText, mask: snapshot.mask, maskProfile: snapshot.referenceProfile || activeField(snapshot.state, snapshot.mask) || snapshot.mask?.profile || {}, maskReferenceText: snapshot.maskReferenceText, generatorMode: snapshot.mode, providerReports, protectedLiterals: [], phase37Telemetry, operatorMode: snapshot.recognitionIntentMode, contextType: snapshot.recognitionContextType, exposureDuration: snapshot.recognitionExposureDuration, options: { candidateCount: 30, includePrivateText: false } });
+    if (!snapshotStillCurrent(snapshot, doc)) {
+      renderStaleTransformDiscard(snapshot, doc);
+      return null;
+    }
+    result.phase37Telemetry = phase37Telemetry;
+    result.phase35Telemetry = phase37Telemetry;
+    result.patch38Snapshot = { runId: snapshot.runId, identity: snapshot.identity, maskId: snapshot.mask?.id || '', sourceHash: hashString(snapshot.sourceText), referenceHash: hashString(snapshot.maskReferenceText) };
+    result.propositionIntegrity = auditPropositionIntegrity(snapshot.sourceText, result.selectedOutput || '');
+    snapshot.state.hushSwapResult = result;
+    snapshot.state.protectedOutputText = result.selectedOutput || '';
+    if (typeof window !== 'undefined') window.__TD613_HUSH_PATCH38_LAST_RESULT = result;
+    const output = $('protectedOutputInput', doc);
+    if (output) output.value = snapshot.state.protectedOutputText;
+    renderDiagnostics(result, doc);
+    emitHushEvent('td613:hush:patch38-result', { result, phase37Telemetry, snapshot: result.patch38Snapshot });
+    if (!text(snapshot.state.protectedOutputText)) {
+      const reports = result.patch38Diagnostics?.providerReports || [];
+      const reportWarnings = reports.flatMap((report) => report.warnings || []);
+      const transparency = deriveApertureApprovalTransparency(buildPatch38ApprovalPacket({ reason: 'candidate selector produced no releasable output', result, warnings: reportWarnings }));
+      recordPatch38ApprovalBlock(transparency, result);
+      renderGateFailure(formatPatch38ApprovalBlock(transparency), doc, transparency);
+    } else {
+      const selected = result.patch38Diagnostics?.selectedCandidateId || result.selectedCandidateId || 'candidate';
+      const op = result.patch38Diagnostics?.selectedStyleOperation || 'operation-unreported';
+      setGeneratorStatus(`Output produced from ${selected} via ${op}. Snapshot ${result.patch38Snapshot.identity}. Review/edit if needed; Analyze is optional before Accept.`, 'ok', doc);
+    }
+    return result;
+  } finally {
+    if (button && snapshot.runId === activePatch38RunId) button.disabled = false;
   }
-  return result;
 }
 
 export function initHushPatch38(doc = document) {
@@ -332,7 +408,7 @@ export function initHushPatch38(doc = document) {
     button.dataset.patch38 = 'true';
     button.addEventListener('click', (event) => { event.preventDefault(); event.stopImmediatePropagation(); runPatch38Transform(doc); }, true);
   }
-  if (typeof window !== 'undefined') window.__TD613_HUSH_PATCH38__ = { version: HUSH_SWAP_PATCH38_VERSION, phase35: true, phase37: true, runPatch38Transform, installGeneratorMode, remoteEndpointCandidates, remoteCacheStats: () => ({ size: patch38RemoteReportCache.size, inflight: patch38RemoteReportInflight.size, ttlMs: PATCH38_REMOTE_CACHE_TTL_MS }), clearRemoteCache: () => { patch38RemoteReportCache.clear(); patch38RemoteReportInflight.clear(); } };
+  if (typeof window !== 'undefined') window.__TD613_HUSH_PATCH38__ = { version: HUSH_SWAP_PATCH38_VERSION, phase35: true, phase37: true, runPatch38Transform, installGeneratorMode, remoteEndpointCandidates, remoteCacheStats: () => ({ size: patch38RemoteReportCache.size, inflight: patch38RemoteReportInflight.size, ttlMs: PATCH38_REMOTE_CACHE_TTL_MS, activeRunId: activePatch38RunId }), clearRemoteCache: () => { patch38RemoteReportCache.clear(); patch38RemoteReportInflight.clear(); }, captureTransformSnapshot: () => captureTransformSnapshot(document) };
   return { installed: true, version: HUSH_SWAP_PATCH38_VERSION };
 }
 
