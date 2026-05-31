@@ -1,7 +1,7 @@
 import { generateExpressiveCandidates } from './hush-expressive-generator.js';
 import { extractCadenceProfile } from './stylometry.js';
 
-export const HUSH_GENERATOR_PROVIDER_VERSION = 'patch-38-generator-provider-phase37-telemetry+generic-transposition';
+export const HUSH_GENERATOR_PROVIDER_VERSION = 'patch-38-generator-provider-phase37-telemetry+generic-transposition+session-cache';
 export const TECH_JOB_SIGNAL_SAMPLE = 'How do you find a tech job with no prior experience in the sector? Is signal reading fluency really that much of a skill asset?';
 
 const safe = (value) => String(value ?? '').trim();
@@ -12,6 +12,70 @@ const truncate = (value = '', limit = 1800) => {
   const text = safe(value).replace(/\s+/g, ' ');
   return text.length > limit ? `${text.slice(0, limit).trim()}…` : text;
 };
+
+const REMOTE_PROVIDER_CACHE_TTL_MS = 5 * 60 * 1000;
+const REMOTE_PROVIDER_CACHE_LIMIT = 32;
+const remoteProviderCache = new Map();
+const remoteProviderInflight = new Map();
+
+function stableStringify(value) {
+  if (value === null || typeof value !== 'object') return JSON.stringify(value);
+  if (Array.isArray(value)) return `[${value.map(stableStringify).join(',')}]`;
+  return `{${Object.keys(value).sort().map((key) => `${JSON.stringify(key)}:${stableStringify(value[key])}`).join(',')}}`;
+}
+
+function hashString(value = '') {
+  let hash = 2166136261;
+  for (const ch of safe(value)) {
+    hash ^= ch.codePointAt(0);
+    hash = Math.imul(hash, 16777619);
+  }
+  return (hash >>> 0).toString(16).padStart(8, '0');
+}
+
+function cloneReport(value) {
+  return JSON.parse(JSON.stringify(value || {}));
+}
+
+function remoteProviderCacheKey(endpoint = '', contract = {}) {
+  return hashString(stableStringify({ endpoint, contract }));
+}
+
+function getCachedRemoteProviderReport(key) {
+  const entry = remoteProviderCache.get(key);
+  if (!entry) return null;
+  if (Date.now() - entry.createdAt > REMOTE_PROVIDER_CACHE_TTL_MS) {
+    remoteProviderCache.delete(key);
+    return null;
+  }
+  const report = cloneReport(entry.report);
+  report.cache = { hit: true, key, ageMs: Date.now() - entry.createdAt, scope: 'browser-session' };
+  report.warnings = [...new Set([...(report.warnings || []), 'remote-provider-session-cache-hit'])];
+  return report;
+}
+
+function setCachedRemoteProviderReport(key, report) {
+  if (!key || !report) return;
+  remoteProviderCache.set(key, { createdAt: Date.now(), report: cloneReport(report) });
+  while (remoteProviderCache.size > REMOTE_PROVIDER_CACHE_LIMIT) {
+    const oldestKey = remoteProviderCache.keys().next().value;
+    remoteProviderCache.delete(oldestKey);
+  }
+}
+
+export function clearRemoteProviderCache() {
+  remoteProviderCache.clear();
+  remoteProviderInflight.clear();
+}
+
+export function remoteProviderCacheStats() {
+  return {
+    size: remoteProviderCache.size,
+    inflight: remoteProviderInflight.size,
+    ttlMs: REMOTE_PROVIDER_CACHE_TTL_MS,
+    limit: REMOTE_PROVIDER_CACHE_LIMIT
+  };
+}
 
 export const GENERATOR_MODES = Object.freeze({
   OFFLINE_SAFE: 'offline-safe',
@@ -227,14 +291,38 @@ export function generateOfflineProviderCandidates(input = {}) {
 export async function requestRemoteProviderCandidates(input = {}, options = {}) {
   const endpoint = options.endpoint || '/api/hush-generate';
   const contract = buildHushLlmPromptContract(input);
-  const response = await fetch(endpoint, {
-    method: 'POST',
-    headers: { 'content-type': 'application/json' },
-    body: JSON.stringify({ contract })
-  });
-  if (!response.ok) throw new Error(`remote-llm-proxy-failed:${response.status}`);
-  const payload = await response.json();
-  return normalizeRemoteProviderResponse(payload, contract);
+  const cacheKey = remoteProviderCacheKey(endpoint, contract);
+  if (options.cache !== false) {
+    const cached = getCachedRemoteProviderReport(cacheKey);
+    if (cached) return cached;
+    if (remoteProviderInflight.has(cacheKey)) {
+      const report = await remoteProviderInflight.get(cacheKey);
+      const clone = cloneReport(report);
+      clone.cache = { hit: true, key: cacheKey, scope: 'inflight-request-reuse' };
+      clone.warnings = [...new Set([...(clone.warnings || []), 'remote-provider-inflight-reused'])];
+      return clone;
+    }
+  }
+  const request = (async () => {
+    const response = await fetch(endpoint, {
+      method: 'POST',
+      headers: { 'content-type': 'application/json' },
+      body: JSON.stringify({ contract }),
+      signal: options.signal
+    });
+    if (!response.ok) throw new Error(`remote-llm-proxy-failed:${response.status}`);
+    const payload = await response.json();
+    const report = normalizeRemoteProviderResponse(payload, contract);
+    report.cache = { hit: false, key: cacheKey, scope: 'browser-session' };
+    setCachedRemoteProviderReport(cacheKey, report);
+    return report;
+  })();
+  if (options.cache !== false) remoteProviderInflight.set(cacheKey, request);
+  try {
+    return cloneReport(await request);
+  } finally {
+    remoteProviderInflight.delete(cacheKey);
+  }
 }
 
 function providerTelemetry(item = {}, contract = {}) {
