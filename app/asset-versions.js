@@ -13,7 +13,7 @@
     hushFieldInstrument: '202605250326',
     hushMobileViewportFix: '202605200003',
     hushPhase32: '202605250101',
-    hushPatch38: '202605301945',
+    hushPatch38: '202605302005',
     hushPr75: '202605250326',
     hushPr77: '202605251735',
     hushPr78: '202605250311',
