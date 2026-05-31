@@ -1,9 +1,51 @@
 {
   "version": 2,
+  "headers": [
+    {
+      "source": "/adversarial-bench.html",
+      "headers": [
+        { "key": "Cache-Control", "value": "no-store, max-age=0" }
+      ]
+    },
+    {
+      "source": "/app/adversarial-bench.html",
+      "headers": [
+        { "key": "Cache-Control", "value": "no-store, max-age=0" }
+      ]
+    },
+    {
+      "source": "/hush-(.*)",
+      "headers": [
+        { "key": "Cache-Control", "value": "no-store, max-age=0" }
+      ]
+    },
+    {
+      "source": "/app/hush-(.*)",
+      "headers": [
+        { "key": "Cache-Control", "value": "no-store, max-age=0" }
+      ]
+    },
+    {
+      "source": "/asset-versions.js",
+      "headers": [
+        { "key": "Cache-Control", "value": "no-store, max-age=0" }
+      ]
+    },
+    {
+      "source": "/app/asset-versions.js",
+      "headers": [
+        { "key": "Cache-Control", "value": "no-store, max-age=0" }
+      ]
+    }
+  ],
   "rewrites": [
     {
       "source": "/api/(.*)",
       "destination": "/api/$1"
+    },
+    {
+      "source": "/app/(.*)",
+      "destination": "/app/$1"
     },
     {
       "source": "/(.*)",
