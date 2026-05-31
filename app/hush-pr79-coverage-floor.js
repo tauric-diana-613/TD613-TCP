@@ -1,6 +1,6 @@
 import { deriveApertureApprovalTransparency } from './engine/aperture-approval-transparency.js';
 
-export const HUSH_PR79_COVERAGE_FLOOR_VERSION = 'pr79.2-deferred-coverage-floor-no-premature-output';
+export const HUSH_PR79_COVERAGE_FLOOR_VERSION = 'pr79.3-observer-only-no-pending-loop';
 
 const $ = (id, doc = document) => doc.getElementById(id);
 const clean = (value) => String(value ?? '').trim();
@@ -13,26 +13,30 @@ function setStatus(message = '', doc = document, tone = 'info') {
   }
 }
 
-function setWarning(message = '', doc = document) {
-  const warning = $('acceptWarning', doc);
-  if (warning) {
-    warning.hidden = !message;
-    warning.textContent = message;
-  }
-  const accept = $('acceptOutputBtn', doc);
-  if (accept && message) accept.disabled = true;
+function currentPatch38Result() {
+  return window.__TD613_HUSH_PATCH38_LAST_RESULT || null;
 }
 
-function buildCoverageFloorPacket({ input = '', output = '' } = {}) {
+function currentReleaseHeld(result = currentPatch38Result()) {
+  return Boolean(
+    result?.releasePolicy?.hardBlocked ||
+    result?.releasePolicy?.state === 'hold' ||
+    result?.releaseSummary?.status === 'hold' ||
+    result?.pr106ReleaseGuard?.blocked
+  );
+}
+
+function buildCoverageFloorPacket({ input = '', output = '', result = null } = {}) {
   const sourceChars = clean(input).length;
   const outputChars = clean(output).length;
+  const diagnostics = result?.patch38Diagnostics || {};
   return {
-    routeState: 'coverage_floor_deferred',
-    sealStatus: 'pending',
-    selectedCandidate: null,
-    hardStops: [],
+    routeState: currentReleaseHeld(result) ? 'coverage_floor_held_by_release_guard' : 'coverage_floor_observer',
+    sealStatus: currentReleaseHeld(result) ? 'blocked' : outputChars ? 'available' : 'quiet',
+    selectedCandidate: result?.selectedCandidateId || diagnostics.selectedCandidateId || null,
+    hardStops: currentReleaseHeld(result) ? (result?.releaseSummary?.warnings || result?.warnings || []) : [],
     humanReclosure: {
-      required: false,
+      required: currentReleaseHeld(result),
       confirmed: false,
       rejected_routes_visible: true
     },
@@ -44,73 +48,40 @@ function buildCoverageFloorPacket({ input = '', output = '' } = {}) {
   };
 }
 
-function formatCoverageFloorMessage(transparency) {
-  const blockers = transparency?.approvalDiagnostics?.blockers || [];
-  const visibleReason = blockers.length ? blockers.join(' | ') : transparency?.approvalReason || 'generation still pending';
-  return `Generation is still pending — output remains blank until Hush receives an approved candidate. ${visibleReason}`;
-}
-
-function isTransformPending(doc = document) {
-  const pending = window.__TD613_HUSH_TRANSFORM_PENDING__;
-  if (!pending?.startedAt) return false;
-  const output = $('protectedOutputInput', doc);
-  if (output && clean(output.value)) return false;
-  return Date.now() - Number(pending.startedAt) < 30000;
-}
-
-function markPending(doc = document) {
-  window.__TD613_HUSH_TRANSFORM_PENDING__ = {
-    version: HUSH_PR79_COVERAGE_FLOOR_VERSION,
-    startedAt: Date.now()
-  };
-  const output = $('protectedOutputInput', doc);
-  if (output) {
-    output.value = '';
-    output.dispatchEvent(new Event('input', { bubbles: true }));
-  }
-  setWarning('', doc);
-  setStatus('Generating mask output…', doc, 'info');
-}
-
-function maybeReportDeferredCoverage(doc = document) {
+function inspectCoverageFloor(doc = document) {
   const input = $('messageDraftInput', doc);
   const output = $('protectedOutputInput', doc);
-  if (!input || !output || clean(output.value)) return;
-  if (isTransformPending(doc)) {
-    setStatus('Generating mask output…', doc, 'info');
-    setWarning('', doc);
-    return;
-  }
-  const approvalPacket = buildCoverageFloorPacket({ input: input.value, output: output.value });
+  const result = currentPatch38Result();
+  if (!input || !output) return;
+  const approvalPacket = buildCoverageFloorPacket({ input: input.value, output: output.value, result });
   const transparency = deriveApertureApprovalTransparency(approvalPacket);
-  setStatus(formatCoverageFloorMessage(transparency), doc, 'info');
-  setWarning('', doc);
   window.__TD613_HUSH_COVERAGE_FLOOR__ = {
     version: HUSH_PR79_COVERAGE_FLOOR_VERSION,
-    deferredAt: new Date().toISOString(),
+    inspectedAt: new Date().toISOString(),
     sourceChars: approvalPacket.sourceChars,
     outputChars: approvalPacket.outputChars,
+    selectedCandidate: approvalPacket.selectedCandidate,
     approvalStatus: transparency.approvalStatus,
     approvalReason: transparency.approvalReason,
-    approvalDiagnostics: transparency.approvalDiagnostics
+    approvalDiagnostics: transparency.approvalDiagnostics,
+    observerOnly: true
   };
+  if (!clean(output.value) && currentReleaseHeld(result)) {
+    const blockers = result?.releaseSummary?.warnings || result?.warnings || transparency?.approvalDiagnostics?.blockers || [];
+    setStatus(`Release held by generator guard. ${blockers.slice(0, 6).join(' | ') || 'Inspect PR106/Patch38 diagnostics.'}`, doc, 'error');
+  }
 }
 
 function bind(doc = document) {
-  if (!doc?.body || doc.body.dataset.pageKind !== 'adversarial-bench' || doc.body.dataset.hushPr79 === 'true') return;
-  doc.body.dataset.hushPr79 = 'true';
-  const transform = $('generateMaskedOutputBtn', doc);
-  if (!transform) return;
-  transform.addEventListener('click', () => {
-    markPending(doc);
-    [1200, 3200, 7000, 12000, 20000, 31000].forEach((delay) => window.setTimeout(() => maybeReportDeferredCoverage(doc), delay));
-  }, true);
-  const output = $('protectedOutputInput', doc);
-  if (output) {
-    output.addEventListener('input', () => {
-      if (clean(output.value)) window.__TD613_HUSH_TRANSFORM_PENDING__ = null;
-    }, true);
-  }
+  if (!doc?.body || doc.body.dataset.pageKind !== 'adversarial-bench' || doc.body.dataset.hushPr79 === HUSH_PR79_COVERAGE_FLOOR_VERSION) return;
+  doc.body.dataset.hushPr79 = HUSH_PR79_COVERAGE_FLOOR_VERSION;
+  window.addEventListener('td613:hush:patch38-result', () => inspectCoverageFloor(doc));
+  window.addEventListener('td613:hush:patch38-approval', () => inspectCoverageFloor(doc));
+  window.TD613_HUSH_PR79 = {
+    version: HUSH_PR79_COVERAGE_FLOOR_VERSION,
+    mode: 'observer-only',
+    inspectCoverageFloor: () => inspectCoverageFloor(doc)
+  };
 }
 
 if (typeof document !== 'undefined') {
