@@ -11,12 +11,61 @@ const esc = (value = '') => String(value ?? '').replaceAll('&', '&amp;').replace
 const PRODUCTION_HUSH_API_ENDPOINT = 'https://td613.vercel.app/api/hush-generate';
 const DEFAULT_GENERATOR_MODE = GENERATOR_MODES.REMOTE_LLM_PROXY;
 const PHASE35_COMPATIBILITY_LABEL = 'Phase 35 ontology-routed generator';
+const PATCH38_REMOTE_CACHE_TTL_MS = 10 * 60 * 1000;
+const PATCH38_REMOTE_CACHE_LIMIT = 24;
+const patch38RemoteReportCache = new Map();
+const patch38RemoteReportInflight = new Map();
 void buildHushLlmPromptContractV2;
 
 function emitHushEvent(name, detail = {}) {
   if (typeof window === 'undefined') return;
   try { window.dispatchEvent(new CustomEvent(name, { detail })); }
   catch (error) { window.__TD613_HUSH_PATCH38_EVENT_ERROR = String(error?.message || error); }
+}
+
+function stableStringify(value) {
+  if (value === null || typeof value !== 'object') return JSON.stringify(value);
+  if (Array.isArray(value)) return `[${value.map(stableStringify).join(',')}]`;
+  return `{${Object.keys(value).sort().map((key) => `${JSON.stringify(key)}:${stableStringify(value[key])}`).join(',')}}`;
+}
+
+function hashString(value = '') {
+  let hash = 2166136261;
+  for (const ch of String(value || '')) {
+    hash ^= ch.codePointAt(0);
+    hash = Math.imul(hash, 16777619);
+  }
+  return (hash >>> 0).toString(16).padStart(8, '0');
+}
+
+function cloneReport(report = {}) {
+  return JSON.parse(JSON.stringify(report || {}));
+}
+
+function remoteReportCacheKey(contract = {}) {
+  return hashString(stableStringify({ promptVersion: contract.promptVersion, sourceText: contract.sourceText, flightPacket: contract.flightPacket, candidateCount: contract.candidateCount, operatorMode: contract.operatorMode }));
+}
+
+function getCachedRemoteReport(cacheKey = '') {
+  const entry = patch38RemoteReportCache.get(cacheKey);
+  if (!entry) return null;
+  if (Date.now() - entry.createdAt > PATCH38_REMOTE_CACHE_TTL_MS) {
+    patch38RemoteReportCache.delete(cacheKey);
+    return null;
+  }
+  const report = cloneReport(entry.report);
+  report.cache = { hit: true, key: cacheKey, ageMs: Date.now() - entry.createdAt, scope: 'patch38-session' };
+  report.warnings = [...new Set([...(report.warnings || []), 'patch38-remote-report-cache-hit'])];
+  report.requestReceipt = { ...(report.requestReceipt || {}), cacheHit: true, cacheKey };
+  return report;
+}
+
+function setCachedRemoteReport(cacheKey = '', report = {}) {
+  if (!cacheKey || !report?.candidates?.length) return;
+  patch38RemoteReportCache.set(cacheKey, { createdAt: Date.now(), report: cloneReport(report) });
+  while (patch38RemoteReportCache.size > PATCH38_REMOTE_CACHE_LIMIT) {
+    patch38RemoteReportCache.delete(patch38RemoteReportCache.keys().next().value);
+  }
 }
 
 function selectedMask(state = bench.benchState || {}) {
@@ -122,8 +171,7 @@ function remoteEndpointCandidates() {
   return [...new Set(candidates.filter(Boolean))];
 }
 
-async function fetchRemoteReport(input = {}, doc = document) {
-  const contract = buildHushLlmPromptContractV3(input);
+async function fetchRemoteReportUncached(contract = {}, doc = document) {
   const tried = [];
   for (const endpoint of remoteEndpointCandidates()) {
     try {
@@ -152,6 +200,36 @@ async function fetchRemoteReport(input = {}, doc = document) {
   return { provider: 'remote-llm-proxy', model: 'remote-llm-proxy', candidates: [], warnings: ['remote-provider-route-not-found', ...tried.map((item) => `tried:${item}`)], requestReceipt: { sentPrivateLedger: false, sentMaskMemory: false, redactionApplied: true, promptVersion: 'hush-llm-candidate-v3', triedEndpoints: tried } };
 }
 
+async function fetchRemoteReport(input = {}, doc = document) {
+  const contract = buildHushLlmPromptContractV3(input);
+  const cacheKey = remoteReportCacheKey(contract);
+  const cached = getCachedRemoteReport(cacheKey);
+  if (cached) {
+    setGeneratorStatus('Remote provider cache hit: same source + same mask + same Phase37 packet. Reusing stable candidate report.', 'ok', doc);
+    return cached;
+  }
+  if (patch38RemoteReportInflight.has(cacheKey)) {
+    setGeneratorStatus('Remote provider request already in flight for this exact packet. Reusing the same request.', 'info', doc);
+    const reused = cloneReport(await patch38RemoteReportInflight.get(cacheKey));
+    reused.cache = { hit: true, key: cacheKey, scope: 'patch38-inflight-reuse' };
+    reused.warnings = [...new Set([...(reused.warnings || []), 'patch38-remote-inflight-reused'])];
+    reused.requestReceipt = { ...(reused.requestReceipt || {}), cacheHit: true, inflightReused: true, cacheKey };
+    return reused;
+  }
+  const request = fetchRemoteReportUncached(contract, doc).then((report) => {
+    if (report?.candidates?.length) setCachedRemoteReport(cacheKey, report);
+    return report;
+  });
+  patch38RemoteReportInflight.set(cacheKey, request);
+  try {
+    const report = cloneReport(await request);
+    report.requestReceipt = { ...(report.requestReceipt || {}), cacheKey, cacheHit: false };
+    return report;
+  } finally {
+    patch38RemoteReportInflight.delete(cacheKey);
+  }
+}
+
 function renderDiagnostics(result = {}, doc = document) {
   let target = $('hushPhase32Diagnostics', doc);
   if (!target) {
@@ -169,10 +247,10 @@ function renderDiagnostics(result = {}, doc = document) {
   const packet = phase37.flightPacket || {};
   const rows = Array.isArray(p.selectorRows) ? p.selectorRows.slice(0, 6) : [];
   const receipt = p.providerReports?.[0]?.requestReceipt || {};
-  const endpointLine = receipt.endpoint ? `<span>Endpoint: <code>${esc(receipt.endpoint)}</code></span>` : receipt.triedEndpoints?.length ? `<span>Tried: <code>${esc(receipt.triedEndpoints.join(', '))}</code></span>` : '';
+  const endpointLine = receipt.endpoint ? `<span>Endpoint: <code>${esc(receipt.endpoint)}</code></span>` : receipt.triedEndpoints?.length ? `<span>Tried: <code>${esc(receipt.triedEndpoints.join(', '))}</code></span>` : receipt.cacheHit ? `<span>Endpoint: <code>session-cache</code></span>` : '';
   const operationSpread = Array.isArray(p.operationSpread) ? p.operationSpread.join(', ') : 'none';
   const apertureLine = packet.aperture_bridge ? `<span>Aperture: <code>${esc(packet.aperture_bridge.route_intent || 'bridge')}</code></span><span>Repair: <code>${esc((packet.repair_controls?.aperture_repair_operations || packet.aperture_bridge.repair_controls?.aperture_repair_operations || []).join(', ') || 'none')}</code></span>` : '';
-  target.innerHTML = `<strong>Phase 37 ontology-carrying generator flight</strong><span hidden>${PHASE35_COMPATIBILITY_LABEL}</span><div class="hush-phase32-diagnostic-grid"><span>Mode: <code>${esc(p.providerMode || 'offline-expressive')}</code></span><span>Packet: <code>${esc(phase37.flightPacketVersion || packet.packet_version || 'n/a')}</code></span><span>Prompt: <code>${esc(phase37.promptVersion || receipt.promptVersion || 'n/a')}</code></span>${apertureLine}<span>Route: <code>${esc(route.route_type || route.routeType || 'n/a')}</code></span><span>Source: <code>${esc(route.source_type || route.sourceType || 'n/a')}</code></span><span>Risk: <code>${esc(route.semantic_risk || 'n/a')}</code></span><span>Depth: <code>${esc(route.transformation_depth || 'n/a')}</code></span>${endpointLine}<span>Operations: <code>${esc(operationSpread)}</code></span><span>Selected op: <code>${esc(p.selectedStyleOperation || 'n/a')}</code></span><span>Generated: <code>${esc(p.generatedCount ?? 0)}</code></span><span>Merged: <code>${esc(p.mergedCount ?? 0)}</code></span><span>Coverage: <code>${esc(p.selectedCoverage ?? 'n/a')}</code></span><span>Question score: <code>${esc(prop.questionFormScore ?? 'n/a')}</code></span><span>New claim risk: <code>${esc(prop.newClaimRisk?.score ?? 'n/a')}</code></span><span>Collapse: <code>${esc(p.selectedCollapseSurfaceScore ?? 0)}</code></span><span>Warning: <code>${esc(p.warning || prop.warnings?.join(', ') || 'none')}</code></span></div>${rows.length ? `<details><summary>Phase 37 candidates</summary>${rows.map((row) => `<div><code>${esc(row.id)}</code> ${esc(row.operation || row.strategy || '')} · score ${esc(row.score)} · mask ${esc(row.maskFidelity ?? 'n/a')} · syntax ${esc(row.syntaxDistance ?? 'n/a')} · collapse ${esc(row.collapse)}</div>`).join('')}</details>` : ''}`;
+  target.innerHTML = `<strong>Phase 37 ontology-carrying generator flight</strong><span hidden>${PHASE35_COMPATIBILITY_LABEL}</span><div class="hush-phase32-diagnostic-grid"><span>Mode: <code>${esc(p.providerMode || 'offline-expressive')}</code></span><span>Packet: <code>${esc(phase37.flightPacketVersion || packet.packet_version || 'n/a')}</code></span><span>Prompt: <code>${esc(phase37.promptVersion || receipt.promptVersion || 'n/a')}</code></span>${apertureLine}<span>Route: <code>${esc(route.route_type || route.routeType || 'n/a')}</code></span><span>Source: <code>${esc(route.source_type || route.sourceType || 'n/a')}</code></span><span>Risk: <code>${esc(route.semantic_risk || 'n/a')}</code></span><span>Depth: <code>${esc(route.transformation_depth || 'n/a')}</code></span>${endpointLine}<span>Cache: <code>${esc(receipt.cacheHit ? 'hit' : receipt.cacheKey ? 'stored' : 'n/a')}</code></span><span>Operations: <code>${esc(operationSpread)}</code></span><span>Selected op: <code>${esc(p.selectedStyleOperation || 'n/a')}</code></span><span>Generated: <code>${esc(p.generatedCount ?? 0)}</code></span><span>Merged: <code>${esc(p.mergedCount ?? 0)}</code></span><span>Coverage: <code>${esc(p.selectedCoverage ?? 'n/a')}</code></span><span>Question score: <code>${esc(prop.questionFormScore ?? 'n/a')}</code></span><span>New claim risk: <code>${esc(prop.newClaimRisk?.score ?? 'n/a')}</code></span><span>Collapse: <code>${esc(p.selectedCollapseSurfaceScore ?? 0)}</code></span><span>Warning: <code>${esc(p.warning || prop.warnings?.join(', ') || 'none')}</code></span></div>${rows.length ? `<details><summary>Phase 37 candidates</summary>${rows.map((row) => `<div><code>${esc(row.id)}</code> ${esc(row.operation || row.strategy || '')} · score ${esc(row.score)} · mask ${esc(row.maskFidelity ?? 'n/a')} · syntax ${esc(row.syntaxDistance ?? 'n/a')} · collapse ${esc(row.collapse)}</div>`).join('')}</details>` : ''}`;
 }
 
 function buildPatch38ApprovalPacket({ reason = '', result = {}, warnings = [] } = {}) {
@@ -254,7 +332,7 @@ export function initHushPatch38(doc = document) {
     button.dataset.patch38 = 'true';
     button.addEventListener('click', (event) => { event.preventDefault(); event.stopImmediatePropagation(); runPatch38Transform(doc); }, true);
   }
-  if (typeof window !== 'undefined') window.__TD613_HUSH_PATCH38__ = { version: HUSH_SWAP_PATCH38_VERSION, phase35: true, phase37: true, runPatch38Transform, installGeneratorMode, remoteEndpointCandidates };
+  if (typeof window !== 'undefined') window.__TD613_HUSH_PATCH38__ = { version: HUSH_SWAP_PATCH38_VERSION, phase35: true, phase37: true, runPatch38Transform, installGeneratorMode, remoteEndpointCandidates, remoteCacheStats: () => ({ size: patch38RemoteReportCache.size, inflight: patch38RemoteReportInflight.size, ttlMs: PATCH38_REMOTE_CACHE_TTL_MS }), clearRemoteCache: () => { patch38RemoteReportCache.clear(); patch38RemoteReportInflight.clear(); } };
   return { installed: true, version: HUSH_SWAP_PATCH38_VERSION };
 }
 
