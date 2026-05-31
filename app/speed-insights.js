@@ -3,8 +3,8 @@
 // Documentation: https://vercel.com/docs/speed-insights/quickstart
 
 // Initialize the Speed Insights queue
-window.si = window.si || function(...params) {
-  (window.siq = window.siq || []).push(params);
+window.si = window.si || function () {
+  (window.siq = window.siq || []).push(arguments);
 };
 
 // Load the Vercel Speed Insights script
