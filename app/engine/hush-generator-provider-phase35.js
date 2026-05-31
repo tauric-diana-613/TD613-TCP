@@ -7,6 +7,7 @@ export const HUSH_PROVIDER_PHASE35_VERSION = 'phase-35-provider-contract-v2';
 export const HUSH_PROVIDER_PHASE37_VERSION = 'phase-37-ontology-carrying-generator-flight';
 export const HUSH_FLIGHT_PACKET_VERSION = 'hush-flight-packet/v3';
 export const HUSH_LLM_CANDIDATE_V3 = 'hush-llm-candidate-v3';
+export const HUSH_MASK_ENRICHMENT_VERSION = 'hush-mask-stylometry-enrichment/v1';
 
 export const HUSH_STYLE_OPERATIONS = Object.freeze([
   'syntax_inversion',
@@ -29,6 +30,83 @@ const round3 = (value) => Number(Number(value || 0).toFixed(3));
 function compactNumber(value, fallback = 0) {
   const n = Number(value);
   return Number.isFinite(n) ? round3(n) : fallback;
+}
+
+function wordList(value = '') {
+  return safe(value).toLowerCase().match(/[a-z0-9][a-z0-9'-]*/g) || [];
+}
+
+function hashSeed(value = '') {
+  let hash = 2166136261;
+  for (const ch of safe(value)) {
+    hash ^= ch.codePointAt(0);
+    hash = Math.imul(hash, 16777619);
+  }
+  return (hash >>> 0).toString(16).padStart(8, '0');
+}
+
+function maskProfileSparse(profile = {}, referenceText = '') {
+  const keys = Object.keys(profile || {});
+  const words = Number(profile.wordCount || profile.word_count || 0) || wordList(referenceText).length;
+  const hasAxes = Boolean(profile.registerMode || profile.avgSentenceLength || profile.averageSentenceLength || profile.punctuationDensity || profile.rhythm || profile.sentenceRhythm || profile.structuralFriction || profile.lexicalEntropyScore);
+  return !keys.length || profile.empty || words < 28 || !hasAxes;
+}
+
+function canonicalSeedLines(mask = {}, referenceText = '') {
+  const writingTraits = mask.writingTraits || {};
+  const transformHints = mask.transformHints || {};
+  const lines = [
+    safe(referenceText || mask.sampleSeed || ''),
+    `Mask voice: ${safe(mask.label || mask.name || mask.id || 'unnamed mask')}.`,
+    mask.family ? `Register lane: ${safe(mask.family)}.` : '',
+    mask.description ? `Scene pressure: ${safe(mask.description)}.` : '',
+    mask.intendedUse ? `Use condition: ${safe(mask.intendedUse)}.` : '',
+    mask.riskTell ? `Risk tell: ${safe(mask.riskTell)}.` : '',
+    writingTraits.sentenceLength ? `Sentence length tendency: ${safe(writingTraits.sentenceLength)}.` : '',
+    writingTraits.rhythm ? `Rhythm tendency: ${safe(writingTraits.rhythm)}.` : '',
+    writingTraits.diction ? `Diction tendency: ${safe(writingTraits.diction)}.` : '',
+    writingTraits.emotionalTemperature ? `Heat tendency: ${safe(writingTraits.emotionalTemperature)}.` : '',
+    asArray(mask.dictionHints).length ? `Diction anchors: ${uniq(mask.dictionHints).slice(0, 14).join('; ')}.` : '',
+    asArray(mask.transitionBank).length ? `Transition anchors: ${uniq(mask.transitionBank).slice(0, 14).join('; ')}.` : '',
+    asArray(transformHints.desiredMoves).length ? `Desired movement: ${uniq(transformHints.desiredMoves).slice(0, 12).join('; ')}.` : '',
+    asArray(mask.exampleTransformPairs).length ? `Example transform pressure: ${asArray(mask.exampleTransformPairs).slice(0, 3).map((pair) => Array.isArray(pair) ? pair.join(' → ') : safe(pair)).join(' | ')}.` : '',
+    'Canonical mask rule: the user source supplies propositions; this mask supplies sentence architecture, register pressure, cadence movement, and diction weather.'
+  ].filter(Boolean);
+  return lines;
+}
+
+export function buildCanonicalMaskSeed(mask = {}, referenceText = '') {
+  const joined = canonicalSeedLines(mask, referenceText).join('\n');
+  if (wordList(joined).length >= 48) return joined;
+  const name = safe(mask.label || mask.name || mask.id || 'Selected mask');
+  const family = safe(mask.family || 'mask-surface');
+  return `${joined}\n${name} repeats as a stable public instrument in the ${family} lane. It should not borrow the source voice. It should move openings, sentence boundaries, transitions, pressure, and cadence while preserving the propositions. It should show a consistent signature across users without becoming generic assistant prose.`;
+}
+
+export function enrichMaskForStylometry(mask = {}, referenceText = '') {
+  const seedText = buildCanonicalMaskSeed(mask, referenceText);
+  const existingProfile = mask.profile || {};
+  const sparse = maskProfileSparse(existingProfile, referenceText || mask.sampleSeed || '');
+  const generatedProfile = sparse ? extractCadenceProfile(seedText) : existingProfile;
+  const generatedDeep = StylometricDeepMetrics.analyze(seedText);
+  const targetShell = generatedProfile && !generatedProfile.empty ? cadenceModFromProfile(generatedProfile) : null;
+  return {
+    ...mask,
+    profile: generatedProfile,
+    sampleSeed: safe(mask.sampleSeed || referenceText) || seedText,
+    canonicalMaskSeed: seedText,
+    __td613MaskEnrichment: {
+      version: HUSH_MASK_ENRICHMENT_VERSION,
+      applied: sparse,
+      sparseBeforeEnrichment: sparse,
+      canonicalSeedHash: hashSeed(seedText),
+      canonicalSeedWordCount: wordList(seedText).length,
+      profileWordCount: Number(generatedProfile.wordCount || 0),
+      targetShell,
+      deepMetrics: compactDeepMetrics(generatedDeep),
+      source: sparse ? 'generated-from-canonical-mask-fields-via-stylometry-engine' : 'existing-mask-profile'
+    }
+  };
 }
 
 function sourceUnitText(propositionMap = {}, sourceText = '') {
@@ -69,6 +147,7 @@ function compactFlagMap(propositionMap = {}, key = 'uncertainty') {
 function maskStyleVector(mask = {}) {
   const profile = mask.profile || {};
   const writingTraits = mask.writingTraits || {};
+  const enrichment = mask.__td613MaskEnrichment || {};
   return {
     mask_id: mask.id || '',
     display_name: mask.label || mask.name || '',
@@ -86,7 +165,11 @@ function maskStyleVector(mask = {}) {
     avoid_list: uniq(mask.avoidList || []).slice(0, 24),
     desired_moves: uniq(mask.transformHints?.desiredMoves || []).slice(0, 16),
     example_transform_pairs: asArray(mask.exampleTransformPairs).slice(0, 5),
-    sample_seed_excerpt: safe(mask.sampleSeed || '').slice(0, 2200)
+    sample_seed_excerpt: safe(mask.canonicalMaskSeed || mask.sampleSeed || '').slice(0, 2200),
+    enrichment_version: enrichment.version || '',
+    enrichment_applied: Boolean(enrichment.applied),
+    canonical_seed_hash: enrichment.canonicalSeedHash || '',
+    target_shell: enrichment.targetShell || null
   };
 }
 
@@ -136,32 +219,39 @@ function compactDeepMetrics(metrics = {}) {
   };
 }
 
-function stylometryAudit(sourceProfile = {}, maskProfile = {}, sourceDeep = {}) {
+function stylometryAudit(sourceProfile = {}, maskProfile = {}, sourceDeep = {}, enrichment = {}) {
   const warnings = [];
   if (!sourceProfile.word_count && !sourceProfile.wordCount) warnings.push('source-profile-empty');
   if (compactNumber(sourceProfile.sentence_length_spread ?? sourceProfile.sentenceLengthSpread) > 45) warnings.push('sentence-spread-outlier-check-units');
   if (compactNumber(sourceProfile.punctuation_density ?? sourceProfile.punctuationDensity) > 0.45) warnings.push('punctuation-density-outlier-check-character-denominator');
   if (compactNumber(sourceDeep.composite_density ?? sourceDeep.compositeDensity) > 0.92) warnings.push('deep-density-near-ceiling');
   if (!maskProfile.register_mode && !maskProfile.registerMode) warnings.push('mask-reference-profile-missing-or-sparse');
+  if (enrichment.applied) warnings.push('mask-profile-enriched-from-canonical-fields');
+  if (!enrichment.targetShell && !maskProfile.word_count) warnings.push('mask-target-shell-unavailable');
   return warnings;
 }
 
 function stylometryEnginePacket({ sourceText = '', mask = {}, maskReferenceText = '' } = {}) {
   const sourceProfileRaw = extractCadenceProfile(sourceText);
-  const maskText = safe(maskReferenceText || mask.sampleSeed || '');
-  const maskProfileRaw = mask.profile && Object.keys(mask.profile).length ? mask.profile : extractCadenceProfile(maskText);
+  const enrichedMask = enrichMaskForStylometry(mask, maskReferenceText);
+  const maskText = safe(maskReferenceText || enrichedMask.canonicalMaskSeed || enrichedMask.sampleSeed || '');
+  const maskProfileRaw = enrichedMask.profile && Object.keys(enrichedMask.profile).length ? enrichedMask.profile : extractCadenceProfile(maskText);
   const sourceProfile = compactCadenceProfile(sourceProfileRaw);
   const maskReferenceProfile = compactCadenceProfile(maskProfileRaw);
   const sourceDeep = compactDeepMetrics(StylometricDeepMetrics.analyze(sourceText));
+  const maskDeep = compactDeepMetrics(StylometricDeepMetrics.analyze(maskText));
   const cadenceShell = cadenceModFromProfile(sourceProfileRaw);
-  const targetShell = maskProfileRaw && !maskProfileRaw.empty ? cadenceModFromProfile(maskProfileRaw) : null;
+  const targetShell = maskProfileRaw && !maskProfileRaw.empty ? cadenceModFromProfile(maskProfileRaw) : enrichedMask.__td613MaskEnrichment?.targetShell || null;
   return {
     engine_version: 'hush-stylometry-engine/v1',
+    enrichment_version: HUSH_MASK_ENRICHMENT_VERSION,
     source_profile: sourceProfile,
     mask_reference_profile: maskReferenceProfile,
     source_deep_metrics: sourceDeep,
+    mask_deep_metrics: maskDeep,
     cadence_shell: cadenceShell,
     target_shell: targetShell,
+    canonical_mask_seed_hash: enrichedMask.__td613MaskEnrichment?.canonicalSeedHash || hashSeed(maskText),
     generator_constraints: {
       preserve_register_mode: false,
       move_toward_mask_register: Boolean(targetShell),
@@ -172,7 +262,8 @@ function stylometryEnginePacket({ sourceText = '', mask = {}, maskReferenceText 
       source_axes: cadenceShell
     },
     audit: {
-      warnings: stylometryAudit(sourceProfile, maskReferenceProfile, sourceDeep),
+      warnings: stylometryAudit(sourceProfile, maskReferenceProfile, sourceDeep, enrichedMask.__td613MaskEnrichment || {}),
+      enrichment: enrichedMask.__td613MaskEnrichment || null,
       note: 'Compact stylometry packet only; no private ledger, mask memory, or iteration history included.'
     }
   };
@@ -193,8 +284,10 @@ function flightControls(input = {}, ontologyRoute = {}, stylometryPacket = {}) {
     semantic_risk: hints.semanticRisk || 'medium',
     transformation_depth: hints.transformationDepth || 'medium',
     stylometry_engine_required: true,
+    mask_enrichment_required: true,
     stylometry_axis_targets: stylometryPacket.generator_constraints?.axis_targets || {},
-    source_axis_signature: stylometryPacket.generator_constraints?.source_axes || {}
+    source_axis_signature: stylometryPacket.generator_constraints?.source_axes || {},
+    mask_target_shell_available: Boolean(stylometryPacket.target_shell)
   };
 }
 
@@ -238,14 +331,15 @@ export function buildHushLlmPromptContractV2(input = {}) {
 
 export function buildHushFlightPacketV3(input = {}) {
   const sourceText = input.sourceText || input.messageDraftText || '';
-  const mask = input.mask || {};
+  const rawMask = input.mask || {};
+  const enrichedMask = enrichMaskForStylometry(rawMask, input.maskReferenceText || input.referenceText || '');
   const propositionMap = input.propositionMap || buildPropositionMap(sourceText);
-  const ontologyRoute = input.ontologyRoute || buildOntologyRoute({ ...input, propositionMap });
+  const ontologyRoute = input.ontologyRoute || buildOntologyRoute({ ...input, mask: enrichedMask, propositionMap });
   const routePayload = compileRemoteRoutePayload(ontologyRoute);
   const units = sourceUnitText(propositionMap, sourceText);
   const requiredTerms = termBank(propositionMap, sourceText);
   const protectedLiterals = asArray(input.protectedLiterals).length ? asArray(input.protectedLiterals) : buildProtectedLiteralList(sourceText);
-  const stylometryPacket = stylometryEnginePacket({ sourceText, mask, maskReferenceText: input.maskReferenceText || input.referenceText || '' });
+  const stylometryPacket = stylometryEnginePacket({ sourceText, mask: enrichedMask, maskReferenceText: input.maskReferenceText || input.referenceText || '' });
 
   return {
     packet_version: HUSH_FLIGHT_PACKET_VERSION,
@@ -269,7 +363,7 @@ export function buildHushFlightPacketV3(input = {}) {
       forbidden_moves: asArray(routePayload.ontologyHints?.forbiddenMoves),
       cadence_pressure: routePayload.ontologyHints?.cadencePressure || routePayload.routeType
     },
-    mask_style_vector: maskStyleVector(mask),
+    mask_style_vector: maskStyleVector(enrichedMask),
     stylometry_engine: stylometryPacket,
     flight_controls: flightControls(input, ontologyRoute, stylometryPacket),
     privacy_boundary: {
@@ -321,6 +415,8 @@ export function buildHushLlmPromptContractV3(input = {}) {
     rules: [
       'Use the Hush Flight Packet as active control, not decorative context.',
       'Use flightPacket.stylometry_engine as active control for cadence, register, surface marker, structural friction, entropy, and transition movement.',
+      'Use flightPacket.mask_style_vector as the canonical public mask voice; every built-in mask must remain stable across users while source propositions change.',
+      'When stylometry_engine.audit.enrichment.applied is true, treat the canonical mask seed as a compact target surface, not as content to quote.',
       'Generate candidates across distinct style_operation values; do not produce one voice with cosmetic variants.',
       'Preserve source_manifest.source_units and source_manifest.required_terms unless a term can only be paraphrased safely.',
       'Each candidate must declare preserved_propositions, dropped_propositions, changed_questions, new_claims, and mask_surface_notes.',
@@ -333,11 +429,13 @@ export function buildHushLlmPromptContractV3(input = {}) {
 
 export function buildPhase35ProviderTelemetry(input = {}) {
   const propositionMap = input.propositionMap || buildPropositionMap(input.sourceText || input.messageDraftText || '');
-  const ontologyRoute = input.ontologyRoute || buildOntologyRoute({ ...input, propositionMap });
+  const enrichedMask = enrichMaskForStylometry(input.mask || {}, input.maskReferenceText || input.referenceText || '');
+  const ontologyRoute = input.ontologyRoute || buildOntologyRoute({ ...input, mask: enrichedMask, propositionMap });
   return {
     version: HUSH_PROVIDER_PHASE35_VERSION,
     propositionMap,
     ontologyRoute: compileRemoteRoutePayload(ontologyRoute),
+    maskEnrichment: enrichedMask.__td613MaskEnrichment || null,
     remotePayloadIsCompact: true,
     sendsLedger: false,
     sendsMaskMemory: false,
@@ -355,6 +453,7 @@ export function buildPhase37ProviderTelemetry(input = {}) {
     propositionMap: flightPacket.source_manifest?.proposition_summary || {},
     ontologyRoute: flightPacket.ontology_route || {},
     stylometryEngine: flightPacket.stylometry_engine || {},
+    maskEnrichment: flightPacket.stylometry_engine?.audit?.enrichment || null,
     operationTaxonomy: HUSH_STYLE_OPERATIONS,
     remotePayloadIsCompact: false,
     remotePayloadIsPrivacyBounded: true,
