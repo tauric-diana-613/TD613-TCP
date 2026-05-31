@@ -1,7 +1,7 @@
 (function () {
   'use strict';
 
-  var VERSION = 'pr95.1-direct-remote-rescue-after-selector-block';
+  var VERSION = 'pr95.2-rescue-only-after-empty-selector';
   var originalAlert = null;
   var inflight = false;
 
@@ -50,7 +50,30 @@
     status.textContent = message;
   }
 
-  function blankOutput() {
+  function hasUsableOutput() {
+    var output = trim($('protectedOutputInput') && $('protectedOutputInput').value);
+    var last = window.__TD613_HUSH_PATCH38_LAST_RESULT || null;
+    var stateOutput = trim(window.__TD613_HUSH_BENCH__ && window.__TD613_HUSH_BENCH__.benchState && window.__TD613_HUSH_BENCH__.benchState.protectedOutputText);
+    return Boolean(output || stateOutput || trim(last && last.selectedOutput));
+  }
+
+  function lastSelectorActuallyBlocked() {
+    var last = window.__TD613_HUSH_PATCH38_LAST_RESULT || null;
+    if (!last) return false;
+    if (trim(last.selectedOutput)) return false;
+    var diagnostics = last.patch38Diagnostics || {};
+    var warning = text(diagnostics.warning || last.failureReason || (last.warnings || []).join(' '));
+    return /no_approved_candidate|no approved candidate|failed|blocked|remote-mode-produced-no-remote-candidates|provider-candidates-failed-review-release|all-candidates/i.test(warning) || Number(diagnostics.releasableCount || 0) === 0;
+  }
+
+  function rescueAllowed(reason) {
+    var msg = text(reason);
+    if (hasUsableOutput()) return false;
+    if (!/Candidate approval blocked|all-candidates-copied-source|selector_no_approved_candidate|no candidate available|no approved candidate|remote-mode-produced-no-remote-candidates|provider-candidates-failed-review-release/i.test(msg)) return false;
+    return lastSelectorActuallyBlocked() || /selector_no_approved_candidate|no candidate available|no approved candidate/i.test(msg);
+  }
+
+  function blankOutputOnlyForConfirmedRescue() {
     var output = $('protectedOutputInput');
     if (!output) return;
     output.value = '';
@@ -64,7 +87,7 @@
     if (!output) return false;
     output.value = candidateText;
     output.dispatchEvent(new Event('input', { bubbles: true }));
-    setStatus('Remote rescue candidate produced. Review/edit before Accept.', 'warning');
+    setStatus('Remote rescue candidate produced after selector block. Review/edit before Accept.', 'warning');
     var warning = $('acceptWarning');
     if (warning) {
       warning.hidden = true;
@@ -93,11 +116,15 @@
 
   async function remoteRescue(reason) {
     if (inflight) return;
+    if (!rescueAllowed(reason)) {
+      window.TD613_HUSH_PR95_SKIPPED = { reason: text(reason), hasUsableOutput: hasUsableOutput(), lastBlocked: lastSelectorActuallyBlocked(), at: new Date().toISOString() };
+      return;
+    }
     var source = $('messageDraftInput') ? $('messageDraftInput').value : '';
     if (!trim(source)) return;
     inflight = true;
-    blankOutput();
-    setStatus('Selector blocked local candidates. Requesting direct remote rescue…', 'warning');
+    blankOutputOnlyForConfirmedRescue();
+    setStatus('Selector produced no releasable output. Requesting direct remote rescue…', 'warning');
     try {
       var response = await fetch('/api/hush-generate?rescue=1', {
         method: 'POST',
@@ -110,11 +137,11 @@
         var candidateText = candidates[i] && (candidates[i].text || candidates[i].output || candidates[i].candidate || candidates[i].rewrite);
         if (acceptCandidate(candidateText, payload)) return;
       }
-      blankOutput();
+      blankOutputOnlyForConfirmedRescue();
       setStatus('Remote rescue returned no usable candidate. Check TD613_HUSH_PR95_LAST / API attempts.', 'error');
       window.TD613_HUSH_PR95_LAST = payload;
     } catch (error) {
-      blankOutput();
+      blankOutputOnlyForConfirmedRescue();
       setStatus('Remote rescue failed before producing a candidate.', 'error');
       window.TD613_HUSH_PR95_LAST = { error: String(error && error.message || error) };
     } finally {
@@ -128,7 +155,7 @@
     originalAlert = window.alert ? window.alert.bind(window) : null;
     window.alert = function (message) {
       var msg = text(message);
-      if (/Candidate approval blocked|all-candidates-copied-source|selector_no_approved_candidate|no candidate available/i.test(msg)) {
+      if (rescueAllowed(msg)) {
         window.setTimeout(function () { remoteRescue(msg); }, 0);
         return undefined;
       }
@@ -138,13 +165,12 @@
 
   function boot() {
     if (!document.body || document.body.dataset.pageKind !== 'adversarial-bench') return;
-    if (document.body.dataset.pr95RemoteRescue === 'true') return;
-    document.body.dataset.pr95RemoteRescue = 'true';
+    if (document.body.dataset.pr95RemoteRescue === VERSION) return;
+    document.body.dataset.pr95RemoteRescue = VERSION;
     installAlertBridge();
     document.addEventListener('click', function (event) {
       var transform = event.target && event.target.closest && event.target.closest('#generateMaskedOutputBtn');
       if (!transform) return;
-      blankOutput();
       setStatus('Generating mask output…', 'info');
     }, true);
   }
@@ -152,5 +178,5 @@
   if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', boot, { once: true });
   else boot();
   window.setTimeout(boot, 500);
-  window.TD613_HUSH_PR95 = { version: VERSION, remoteRescue: remoteRescue };
+  window.TD613_HUSH_PR95 = { version: VERSION, remoteRescue: remoteRescue, rescueAllowed: rescueAllowed };
 }());
