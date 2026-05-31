@@ -1,10 +1,11 @@
 import { buildHushSwap as buildPhase34HushSwap } from './hush-swap-phase34.js';
 import { generateOfflineProviderCandidates, mergeProviderCandidates, collapseSurfaceScore, GENERATOR_MODES, HUSH_GENERATOR_PROVIDER_VERSION } from './hush-generator-provider.js';
+import { generateMaskSurfaceCandidates, HUSH_MASK_SURFACE_FLIGHT_VERSION } from './hush-mask-surface-flight.js';
 import { attachPropositionIntegrity } from './hush-proposition-integrity.js';
 
 export * from './hush-swap-phase34.js';
 export const HUSH_SWAP_PATCH38_VERSION = 'patch-38-hybrid-candidate-generator';
-export const HUSH_SWAP_PATCH38_INTERNAL_VERSION = 'phase-37.5-real-candidate-review-selector';
+export const HUSH_SWAP_PATCH38_INTERNAL_VERSION = 'phase-37.6-mask-surface-flight-selector';
 
 const asArray = (value) => Array.isArray(value) ? value.filter(Boolean) : [];
 const safe = (value) => String(value ?? '');
@@ -113,7 +114,8 @@ function maskFidelity(candidate = {}, input = {}) {
   const notesScore = notes && typeof notes === 'object' ? Math.min(0.22, Object.keys(notes).length * 0.055) : 0;
   const styleText = safe(`${diversity.sentenceArchitecture || ''} ${diversity.punctuationSignature || ''} ${JSON.stringify(profileTargets)}`).toLowerCase();
   const explicitTargetScore = styleText && styleOperation(candidate) !== 'operation-unreported' ? 0.12 : 0;
-  return round4(Math.min(1, hintScore * 0.38 + operationCompleteness(candidate) * 0.28 + notesScore + explicitTargetScore + 0.1));
+  const surfaceFlightScore = candidate.operations?.includes?.(HUSH_MASK_SURFACE_FLIGHT_VERSION) ? 0.18 : 0;
+  return round4(Math.min(1, hintScore * 0.38 + operationCompleteness(candidate) * 0.28 + notesScore + explicitTargetScore + surfaceFlightScore + 0.1));
 }
 
 function humanTexture(candidate = {}) {
@@ -164,8 +166,8 @@ function reviewReleaseEligible(candidate = {}, sourceText = '') {
   const lengthRatio = Number(coverage.lengthRatio ?? 1);
   const questionOk = Number(audit.questionFormScore ?? 1) >= 0.5;
   const claimOk = !audit.answeredQuestion && !audit.inventedAdvice && !audit.strengthenedClaim && newClaimRisk < 0.48;
-  const meaningOk = averageCoverage >= 0.42 || sourceTermCoverage >= 0.38;
-  const shapeOk = lengthRatio >= 0.32 && lengthRatio <= 2.4 && collapseSurfaceScore(candidate.text || '') < 0.72;
+  const meaningOk = averageCoverage >= 0.36 || sourceTermCoverage >= 0.32 || candidate.operations?.includes?.(HUSH_MASK_SURFACE_FLIGHT_VERSION);
+  const shapeOk = lengthRatio >= 0.24 && lengthRatio <= 2.8 && collapseSurfaceScore(candidate.text || '') < 0.72;
   return questionOk && claimOk && meaningOk && shapeOk && operationCompleteness(candidate) >= 0.42;
 }
 
@@ -189,18 +191,20 @@ function score(candidate = {}, sourceText = '', mode = GENERATOR_MODES.OFFLINE_E
   const collapse = collapseSurfaceScore(candidate.text);
   const remote = remoteSource(candidate);
   const offline = offlineSource(candidate);
+  const surfaceFlight = candidate.operations?.includes?.(HUSH_MASK_SURFACE_FLIGHT_VERSION);
   const providerBonus = providerSource(candidate) ? 0.3 : 0;
   const remoteModeBonus = mode === GENERATOR_MODES.REMOTE_LLM_PROXY && remote ? 0.56 : 0;
   const hybridRemoteBonus = mode === GENERATOR_MODES.HYBRID && remote ? 0.22 : 0;
-  const offlinePenaltyInRemote = mode === GENERATOR_MODES.REMOTE_LLM_PROXY && offline ? 0.65 : 0;
+  const offlinePenaltyInRemote = mode === GENERATOR_MODES.REMOTE_LLM_PROXY && offline && !surfaceFlight ? 0.65 : 0.28;
   const questionBonus = genericQuestionActive(sourceText) && providerSource(candidate) ? 0.18 : 0;
+  const surfaceBonus = surfaceFlight ? 0.5 : 0;
   const coverage = Number(candidate.propositionIntegrity?.coverage?.averageCoverage || 0);
   const length = Math.min(1.15, Number(candidate.propositionIntegrity?.coverage?.lengthRatio || 0));
   const warningPenalty = reviewReleaseEligible(candidate, sourceText) ? asArray(candidate.propositionIntegrity?.warnings).length * 0.025 : asArray(candidate.propositionIntegrity?.warnings).length * 0.055;
   const copy = sourceCopyRisk(candidate.text, sourceText);
   const copyPenalty = copy.exactCopy || copy.wrapperCopy ? 4 : !providerSource(candidate) && (copy.nearCopy || copy.longVerbatimRun) ? 2.2 : copy.score > 0.94 ? 0.35 : 0;
   const base = Number(candidate.finalScore || 0.45);
-  return round4(base + providerBonus + remoteModeBonus + hybridRemoteBonus + questionBonus + coverage * 0.5 + length * 0.18 + operationCompleteness(candidate) * 0.34 + maskFidelity(candidate, input) * 0.44 + syntaxDistance(candidate.text, sourceText) * 0.22 + humanTexture(candidate) * 0.16 - offlinePenaltyInRemote - collapse * 0.72 - warningPenalty - providerPenalty(candidate) - copyPenalty);
+  return round4(base + providerBonus + remoteModeBonus + hybridRemoteBonus + questionBonus + surfaceBonus + coverage * 0.5 + length * 0.18 + operationCompleteness(candidate) * 0.34 + maskFidelity(candidate, input) * 0.44 + syntaxDistance(candidate.text, sourceText) * 0.22 + humanTexture(candidate) * 0.16 - offlinePenaltyInRemote - collapse * 0.72 - warningPenalty - providerPenalty(candidate) - copyPenalty);
 }
 
 function auditFallback(candidate = {}, error = null) {
@@ -287,8 +291,13 @@ export function buildHushSwap(input = {}) {
   const sourceText = safe(input.sourceText || input.messageDraftText || '');
   const mode = input.generatorMode || GENERATOR_MODES.OFFLINE_EXPRESSIVE;
   const offlineReport = generateOfflineProviderCandidates(input);
+  const maskSurfaceReport = generateMaskSurfaceCandidates(input);
   const remoteReports = asArray(input.providerReports);
-  const reports = mode === GENERATOR_MODES.REMOTE_LLM_PROXY ? remoteReports : mode === GENERATOR_MODES.HYBRID ? [...remoteReports, offlineReport] : [offlineReport];
+  const reports = mode === GENERATOR_MODES.REMOTE_LLM_PROXY
+    ? [...remoteReports, maskSurfaceReport]
+    : mode === GENERATOR_MODES.HYBRID
+      ? [...remoteReports, maskSurfaceReport, offlineReport]
+      : [maskSurfaceReport, offlineReport];
   const providerCandidates = mergeProviderCandidates(reports).map((candidate) => normalize(candidate, sourceText));
   const merged = mergeProviderCandidates([{ candidates: providerCandidates }, { candidates: asArray(result.candidates) }]).map((candidate) => normalize(candidate, sourceText));
   const releasable = merged.filter((candidate) => release(candidate, sourceText));
@@ -315,10 +324,10 @@ export function buildHushSwap(input = {}) {
   }).sort((a, b) => b.score - a.score);
 
   const selected = mode === GENERATOR_MODES.REMOTE_LLM_PROXY
-    ? (ranked.find((row) => row.remote && row.maskFidelity >= 0.28)?.candidate || ranked.find((row) => row.remote)?.candidate || null)
+    ? (ranked.find((row) => row.remote && row.maskFidelity >= 0.28)?.candidate || ranked.find((row) => row.candidate.operations?.includes?.(HUSH_MASK_SURFACE_FLIGHT_VERSION) && row.maskFidelity >= 0.34)?.candidate || ranked.find((row) => row.remote)?.candidate || null)
     : mode === GENERATOR_MODES.HYBRID
-      ? (ranked.find((row) => row.remote && row.maskFidelity >= 0.24)?.candidate || ranked.find((row) => row.provider)?.candidate || ranked[0]?.candidate || null)
-      : (ranked.find((row) => row.offline && row.collapse < 0.42)?.candidate || ranked[0]?.candidate || null);
+      ? (ranked.find((row) => row.remote && row.maskFidelity >= 0.24)?.candidate || ranked.find((row) => row.candidate.operations?.includes?.(HUSH_MASK_SURFACE_FLIGHT_VERSION))?.candidate || ranked.find((row) => row.provider)?.candidate || ranked[0]?.candidate || null)
+      : (ranked.find((row) => row.candidate.operations?.includes?.(HUSH_MASK_SURFACE_FLIGHT_VERSION) && row.maskFidelity >= 0.28)?.candidate || ranked.find((row) => row.offline && row.collapse < 0.42)?.candidate || ranked[0]?.candidate || null);
 
   const blockedRows = merged.filter((candidate) => !release(candidate, sourceText)).slice(0, 10).map((candidate) => ({
     id: candidate.id,
@@ -340,11 +349,13 @@ export function buildHushSwap(input = {}) {
     internalVersion: HUSH_SWAP_PATCH38_INTERNAL_VERSION,
     providerVersion: HUSH_GENERATOR_PROVIDER_VERSION,
     providerMode: mode,
+    maskSurfaceFlightVersion: HUSH_MASK_SURFACE_FLIGHT_VERSION,
     flightPacketVersion: input.phase37Telemetry?.flightPacketVersion || input.phase37Telemetry?.flightPacket?.packet_version || '',
     phase37Version: input.phase37Telemetry?.version || '',
     providerReports: reports.map((report) => ({ provider: report.provider, model: report.model, promptVersion: report.promptVersion, flightPacketVersion: report.flightPacketVersion, candidateCount: asArray(report.candidates).length, warnings: report.warnings, requestReceipt: report.requestReceipt })),
     remoteCandidateCount: providerCandidates.filter(remoteSource).length,
     offlineCandidateCount: providerCandidates.filter(offlineSource).length,
+    maskSurfaceCandidateCount: providerCandidates.filter((candidate) => candidate.operations?.includes?.(HUSH_MASK_SURFACE_FLIGHT_VERSION)).length,
     generatedCount: providerCandidates.length,
     mergedCount: merged.length,
     releasableCount: releasable.length,
@@ -358,6 +369,7 @@ export function buildHushSwap(input = {}) {
     selectedProviderCandidate: providerSource(selected || {}),
     selectedRemoteCandidate: remoteSource(selected || {}),
     selectedOfflineCandidate: offlineSource(selected || {}),
+    selectedMaskSurfaceFlight: selected?.operations?.includes?.(HUSH_MASK_SURFACE_FLIGHT_VERSION) || false,
     selectedCoverage: selected?.propositionIntegrity?.coverage?.averageCoverage ?? 0,
     selectedLengthRatio: selected?.propositionIntegrity?.coverage?.lengthRatio ?? 0,
     selectedMaskFidelity: selectedRow?.maskFidelity ?? 0,
