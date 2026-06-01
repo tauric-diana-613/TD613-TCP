@@ -1,4 +1,4 @@
-/* PR128 / Gateway restraint pass
+/* PR129 / Gateway portrait card repair
    Scope: Cadence Playground gateway only. No engine/API behavior. */
 
 body[data-page-kind="gateway"] {
@@ -154,10 +154,56 @@ body[data-page-kind="gateway"] .gateway-grid-six .gateway-card:active {
 
   body[data-page-kind="gateway"] .gateway-grid-six {
     grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: clamp(0.75rem, 3vw, 1rem);
   }
 
   body[data-page-kind="gateway"] .gateway-grid-six .gateway-card {
-    min-height: unset;
-    padding-bottom: inherit;
+    display: flex !important;
+    flex-direction: column !important;
+    justify-content: flex-start !important;
+    align-items: flex-start !important;
+    min-height: 126px !important;
+    height: auto !important;
+    padding: 18px 16px 15px !important;
+    overflow: hidden;
+  }
+
+  body[data-page-kind="gateway"] .gateway-grid-six .gateway-card .gateway-card-kicker,
+  body[data-page-kind="gateway"] .gateway-grid-six .gateway-card h3,
+  body[data-page-kind="gateway"] .gateway-grid-six .gateway-card p {
+    position: relative;
+    z-index: 2;
+    width: 100%;
+  }
+
+  body[data-page-kind="gateway"] .gateway-grid-six .gateway-card .gateway-card-kicker {
+    margin: 0 0 0.88rem !important;
+    line-height: 1.15 !important;
+  }
+
+  body[data-page-kind="gateway"] .gateway-grid-six .gateway-card h3 {
+    margin: 0 !important;
+    line-height: 1.12 !important;
+  }
+
+  body[data-page-kind="gateway"] .gateway-grid-six .gateway-card p {
+    display: block !important;
+    visibility: visible !important;
+    opacity: 1 !important;
+    max-height: none !important;
+    margin: 0.72rem 0 0 !important;
+    overflow: visible !important;
+    line-height: 1.25 !important;
+  }
+}
+
+@media (max-width: 390px) {
+  body[data-page-kind="gateway"] .gateway-grid-six .gateway-card {
+    min-height: 134px !important;
+    padding: 16px 14px 14px !important;
+  }
+
+  body[data-page-kind="gateway"] .gateway-grid-six .gateway-card p {
+    font-size: 0.82em;
   }
 }
