@@ -1,4 +1,4 @@
-/* PR125 / Gateway housekeeping pass
+/* PR127 / Gateway cleanup pass
    Scope: Cadence Playground gateway only. No engine/API behavior. */
 
 body[data-page-kind="gateway"] {
@@ -11,19 +11,21 @@ body[data-page-kind="gateway"] .gateway-preview-shell {
 }
 
 body[data-page-kind="gateway"] .gateway-preview-head {
-  padding-right: clamp(148px, 18vw, 214px);
+  position: relative;
+  padding-right: clamp(156px, 20vw, 236px);
 }
 
 body[data-page-kind="gateway"] #gatewayApertureOpenFull.gateway-aperture-open-top {
-  position: absolute;
-  top: 12px;
-  right: 14px;
-  z-index: 4;
+  position: absolute !important;
+  top: 12px !important;
+  right: 14px !important;
+  left: auto !important;
+  z-index: 6;
   min-height: 32px;
   padding: 0 13px;
-  border: 1px solid rgba(var(--gateway-click-cyan), 0.38);
+  border: 1px solid rgba(var(--gateway-click-cyan), 0.42);
   background:
-    linear-gradient(180deg, rgba(var(--gateway-click-cyan), 0.16) 0%, rgba(8, 28, 38, 0.86) 100%);
+    linear-gradient(180deg, rgba(var(--gateway-click-cyan), 0.18) 0%, rgba(8, 28, 38, 0.86) 100%);
   color: rgb(var(--gateway-click-cyan));
   box-shadow:
     inset 0 1px 0 rgba(255, 255, 255, 0.08),
@@ -34,10 +36,34 @@ body[data-page-kind="gateway"] #gatewayApertureOpenFull.gateway-aperture-open-to
 body[data-page-kind="gateway"] #gatewayApertureOpenFull.gateway-aperture-open-top:focus-visible {
   border-color: rgba(var(--gateway-click-cyan), 0.7);
   background:
-    linear-gradient(180deg, rgba(var(--gateway-click-cyan), 0.26) 0%, rgba(8, 34, 44, 0.94) 100%);
+    linear-gradient(180deg, rgba(var(--gateway-click-cyan), 0.28) 0%, rgba(8, 34, 44, 0.94) 100%);
   color: #f7ffff;
   transform: translateY(-1px);
   outline: none;
+}
+
+body[data-page-kind="gateway"] #gatewayPreviewPhaseStatus,
+body[data-page-kind="gateway"] #gatewayDoorReadout {
+  display: none !important;
+}
+
+body[data-page-kind="gateway"] .gateway-preview-actions {
+  align-items: center;
+  gap: .55rem;
+}
+
+body[data-page-kind="gateway"] .gateway-preview-actions > * {
+  min-height: 2.35rem;
+}
+
+body[data-page-kind="gateway"] #gatewayPreviewBounceStatus {
+  flex: 1 1 10rem;
+}
+
+body[data-page-kind="gateway"] #gatewayPreviewPropagate,
+body[data-page-kind="gateway"] #gatewayPreviewMoire,
+body[data-page-kind="gateway"] #gatewayPreviewReset {
+  flex: 1 1 8.2rem;
 }
 
 body[data-page-kind="gateway"] .gateway-grid-six {
@@ -46,15 +72,16 @@ body[data-page-kind="gateway"] .gateway-grid-six {
 
 body[data-page-kind="gateway"] .gateway-grid-six .gateway-card {
   isolation: isolate;
-  min-height: 112px;
-  padding: 13px 12px 34px;
-  border-color: rgba(var(--gateway-click-cyan), 0.2);
+  min-height: 108px;
+  padding: 13px 12px 14px;
+  border-color: rgba(var(--gateway-click-cyan), 0.18);
   background:
-    radial-gradient(circle at 92% 6%, rgba(var(--gateway-click-cyan), 0.12), transparent 36%),
-    linear-gradient(180deg, rgba(5, 16, 24, 0.96) 0%, rgba(2, 6, 12, 0.99) 100%);
+    radial-gradient(circle at 92% 6%, rgba(var(--gateway-click-cyan), 0.08), transparent 36%),
+    linear-gradient(180deg, rgba(5, 16, 24, 0.94) 0%, rgba(2, 6, 12, 0.98) 100%);
   box-shadow:
-    0 18px 38px rgba(0, 0, 0, 0.38),
-    inset 0 0 0 1px rgba(var(--gateway-click-cyan), 0.055);
+    0 14px 30px rgba(0, 0, 0, 0.32),
+    inset 0 0 0 1px rgba(var(--gateway-click-cyan), 0.04);
+  cursor: pointer;
   transition:
     transform 150ms ease,
     border-color 150ms ease,
@@ -63,52 +90,29 @@ body[data-page-kind="gateway"] .gateway-grid-six .gateway-card {
 }
 
 body[data-page-kind="gateway"] .gateway-grid-six .gateway-card::before {
-  content: "Open";
-  position: absolute;
-  right: 10px;
-  bottom: 9px;
-  z-index: 2;
-  display: inline-flex;
-  align-items: center;
-  min-height: 18px;
-  padding: 0 8px;
-  border: 1px solid rgba(var(--gateway-click-cyan), 0.22);
-  background: rgba(var(--gateway-click-cyan), 0.07);
-  color: rgba(var(--gateway-click-cyan), 0.88);
-  font-family: var(--mono);
-  font-size: 0.52rem;
-  letter-spacing: 0.16em;
-  line-height: 1;
-  text-transform: uppercase;
+  content: none !important;
 }
 
 body[data-page-kind="gateway"] .gateway-grid-six .gateway-card:hover,
 body[data-page-kind="gateway"] .gateway-grid-six .gateway-card:focus-visible {
-  transform: translateY(-2px);
-  border-color: rgba(var(--gateway-click-cyan), 0.56);
+  transform: translateY(-1px);
+  border-color: rgba(var(--gateway-click-cyan), 0.44);
   background:
-    radial-gradient(circle at 92% 6%, rgba(var(--gateway-click-cyan), 0.18), transparent 38%),
-    linear-gradient(180deg, rgba(8, 24, 34, 0.98) 0%, rgba(2, 7, 13, 0.99) 100%);
+    radial-gradient(circle at 92% 6%, rgba(var(--gateway-click-cyan), 0.13), transparent 38%),
+    linear-gradient(180deg, rgba(8, 24, 34, 0.96) 0%, rgba(2, 7, 13, 0.99) 100%);
   box-shadow:
-    0 24px 46px rgba(0, 0, 0, 0.42),
-    0 0 0 1px rgba(var(--gateway-click-cyan), 0.12),
-    0 0 26px rgba(var(--gateway-click-cyan), 0.16),
-    inset 0 0 0 1px rgba(var(--gateway-click-cyan), 0.08);
+    0 18px 36px rgba(0, 0, 0, 0.36),
+    0 0 0 1px rgba(var(--gateway-click-cyan), 0.08),
+    0 0 20px rgba(var(--gateway-click-cyan), 0.10),
+    inset 0 0 0 1px rgba(var(--gateway-click-cyan), 0.06);
   outline: none;
-}
-
-body[data-page-kind="gateway"] .gateway-grid-six .gateway-card:hover::before,
-body[data-page-kind="gateway"] .gateway-grid-six .gateway-card:focus-visible::before {
-  border-color: rgba(var(--gateway-click-cyan), 0.48);
-  background: rgba(var(--gateway-click-cyan), 0.14);
-  color: #f7ffff;
 }
 
 body[data-page-kind="gateway"] .gateway-grid-six .gateway-card:active {
   transform: translateY(0);
   box-shadow:
-    0 14px 30px rgba(0, 0, 0, 0.36),
-    inset 0 0 0 1px rgba(var(--gateway-click-cyan), 0.1);
+    0 10px 22px rgba(0, 0, 0, 0.34),
+    inset 0 0 0 1px rgba(var(--gateway-click-cyan), 0.08);
 }
 
 body[data-page-kind="gateway"] .gateway-grid-six .gateway-card h3,
@@ -126,11 +130,6 @@ body[data-page-kind="gateway"] .gateway-grid-six .gateway-card p {
   color: rgba(220, 230, 244, 0.72);
 }
 
-body[data-page-kind="gateway"] #gatewayDoorReadout,
-body[data-page-kind="gateway"] #gatewayPreviewPhaseStatus {
-  display: none !important;
-}
-
 @media (max-width: 1120px) {
   body[data-page-kind="gateway"] .gateway-grid-six {
     grid-template-columns: repeat(4, minmax(0, 1fr));
@@ -140,13 +139,31 @@ body[data-page-kind="gateway"] #gatewayPreviewPhaseStatus {
 @media (max-width: 760px) {
   body[data-page-kind="gateway"] .gateway-preview-head {
     padding-right: 10px;
-    padding-top: 48px;
+    padding-top: 52px;
   }
 
   body[data-page-kind="gateway"] #gatewayApertureOpenFull.gateway-aperture-open-top {
-    top: 10px;
-    left: 10px;
-    right: auto;
+    top: 10px !important;
+    right: 10px !important;
+    left: auto !important;
+  }
+
+  body[data-page-kind="gateway"] .gateway-preview-actions {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: .45rem;
+  }
+
+  body[data-page-kind="gateway"] #gatewayPreviewBounceStatus,
+  body[data-page-kind="gateway"] #gatewayPreviewPropagate,
+  body[data-page-kind="gateway"] #gatewayPreviewMoire,
+  body[data-page-kind="gateway"] #gatewayPreviewReset {
+    width: 100%;
+    min-width: 0;
+  }
+
+  body[data-page-kind="gateway"] #gatewayPreviewBounceStatus {
+    grid-column: 1 / -1;
   }
 
   body[data-page-kind="gateway"] .gateway-grid-six {
@@ -154,7 +171,7 @@ body[data-page-kind="gateway"] #gatewayPreviewPhaseStatus {
   }
 
   body[data-page-kind="gateway"] .gateway-grid-six .gateway-card {
-    min-height: 96px;
-    padding-bottom: 30px;
+    min-height: 94px;
+    padding-bottom: 13px;
   }
 }
