@@ -9,6 +9,7 @@ const DEFAULT_MODELS = ['gemini-2.5-flash-lite', 'gemini-2.5-flash', 'gemini-fla
 const GEMINI_TIMEOUT_MS = 12000;
 const WALL_TIMEOUT_MS = 18000;
 const STRICT_CANDIDATE_COUNT = 4;
+const STRICT_PROVIDER_VERSION = 'hush-generate-strict-v3-coverage-locks';
 
 function send(res, status, payload) {
   for (const [key, value] of Object.entries(corsHeaders)) res.setHeader(key, value);
@@ -35,7 +36,7 @@ function normalizeCandidates(value) {
       dropped_propositions: stringArray(c.dropped_propositions || c.droppedPropositions),
       changed_questions: stringArray(c.changed_questions || c.changedQuestions),
       new_claims: stringArray(c.new_claims || c.newClaims),
-      mask_surface_notes: c.mask_surface_notes && typeof c.mask_surface_notes === 'object' ? c.mask_surface_notes : {},
+      mask_surface_notes: c.mask_surface_notes && typeof c === 'object' ? c.mask_surface_notes : {},
       risk_flags: stringArray(c.risk_flags || c.riskFlags)
     };
   }).filter(Boolean).slice(0, STRICT_CANDIDATE_COUNT);
@@ -157,12 +158,55 @@ function compactPacket(packet = {}, candidateCount = STRICT_CANDIDATE_COUNT) {
     }
   };
 }
+function minLengthRatioFor(contract = {}) {
+  const tier = safe(contract.packetTier || '').toLowerCase();
+  const evidence = safe(contract.maskEvidenceState || '').toLowerCase();
+  if (tier.includes('chat_cadence')) return evidence === 'thin' ? 0.66 : 0.58;
+  if (tier.includes('low_signature')) return 0.42;
+  return 0.52;
+}
+function coverageLock(contract = {}, units = []) {
+  const minRatio = minLengthRatioFor(contract);
+  const tier = safe(contract.packetTier || 'standard_packet');
+  const evidence = safe(contract.maskEvidenceState || 'unknown');
+  return `COVERAGE LOCKS:
+- Packet tier: ${tier}. Mask evidence: ${evidence}.
+- Source-unit count: ${units.length}. Every candidate must preserve every source unit P1-P${Math.max(1, units.length)} unless a unit is truly empty.
+- Put each preserved unit label in preserved_propositions. Example: ["P1","P2","P3"].
+- dropped_propositions must be [] unless a source unit is impossible to preserve without adding facts.
+- Candidate text must be at least ${Math.round(minRatio * 100)}% of the source word count and must not feel like a summary.
+- For chat cadence packets, preserve social function, warmth/softening, uncertainty, sequence, and conversational relationship cues.
+- Do not compress multiple separate ideas into one vague sentence.
+- Do not produce aphorisms, taglines, captions, or wrapper notes.
+- Better to make a slightly longer mask-shaped message than a stylish message that drops source units.`;
+}
 function prompt(contract = {}) {
   const source = safe(contract.sourceText || contract.messageDraftText || '').slice(0, 5000);
   const candidateCount = Math.min(STRICT_CANDIDATE_COUNT, Math.max(2, Number(contract.candidateCount || STRICT_CANDIDATE_COUNT) || STRICT_CANDIDATE_COUNT));
   const packet = compactPacket(contract.flightPacket || {}, candidateCount);
   const units = splitSourceUnits(source);
-  return `Return JSON only. No markdown. Schema: {"candidates":[{"text":"string","style_note":"string","style_operation":"string","preserved_propositions":["p1"],"dropped_propositions":[],"changed_questions":[],"new_claims":[],"risk_flags":[],"mask_surface_notes":{"rhythm":"string","diction":"string","structure":"string"}}]}\n\nSTRICT RULES:\n- Generate ${candidateCount} candidates.\n- Preserve meaning, caveats, questions, negations, uncertainty, and causal links.\n- Do not answer questions.\n- Do not add facts or strengthen claims.\n- Do not copy the source opening, closing, sentence order, punctuation skeleton, or any six-word run.\n- Use the provider packet as active stylometric control.\n- Each candidate must have a distinct style_operation.\n\nSOURCE UNITS:\n${units.map((u, i) => `P${i + 1}: ${u}`).join('\n')}\n\nPROVIDER PACKET:\n${JSON.stringify(packet, null, 2)}\n\nSOURCE TEXT:\n${source}`;
+  return `Return JSON only. No markdown. Schema: {"candidates":[{"text":"string","style_note":"string","style_operation":"string","preserved_propositions":["P1"],"dropped_propositions":[],"changed_questions":[],"new_claims":[],"risk_flags":[],"mask_surface_notes":{"rhythm":"string","diction":"string","structure":"string"}}]}
+
+STRICT RULES:
+- Generate ${candidateCount} candidates.
+- Preserve meaning, caveats, questions, negations, uncertainty, sequence, relationship cues, and causal links.
+- Do not answer questions.
+- Do not add facts or strengthen claims.
+- Do not copy the source opening, closing, sentence order, punctuation skeleton, or any six-word run.
+- Use the provider packet as active stylometric control.
+- Each candidate must have a distinct style_operation.
+- If the source has multiple sentences or clauses, the transformed message must still carry those separate units.
+
+${coverageLock(contract, units)}
+
+SOURCE UNITS:
+${units.map((u, i) => `P${i + 1}: ${u}`).join('\n')}
+
+PROVIDER PACKET:
+${JSON.stringify(packet, null, 2)}
+
+SOURCE TEXT:
+${source}`;
 }
 async function callGemini(model, bodyPrompt, jsonMode) {
   const controller = new AbortController();
@@ -170,7 +214,7 @@ async function callGemini(model, bodyPrompt, jsonMode) {
   try {
     const response = await fetch('https://generativelanguage.googleapis.com/v1beta/models/' + encodeURIComponent(model) + ':generateContent?key=' + encodeURIComponent(process.env.GEMINI_API_KEY), {
       method: 'POST', headers: { 'content-type': 'application/json' }, signal: controller.signal,
-      body: JSON.stringify({ contents: [{ role: 'user', parts: [{ text: bodyPrompt }] }], generationConfig: jsonMode ? { temperature: 0.72, topP: 0.9, responseMimeType: 'application/json', maxOutputTokens: 3072 } : { temperature: 0.72, topP: 0.9, maxOutputTokens: 3072 } })
+      body: JSON.stringify({ contents: [{ role: 'user', parts: [{ text: bodyPrompt }] }], generationConfig: jsonMode ? { temperature: 0.68, topP: 0.88, responseMimeType: 'application/json', maxOutputTokens: 4096 } : { temperature: 0.68, topP: 0.88, maxOutputTokens: 4096 } })
     });
     const payload = await response.json().catch(() => ({}));
     return { response, payload, timedOut: false };
@@ -192,7 +236,7 @@ function attemptRecord(model, jsonMode, response, payload, timedOut, parsed = nu
 }
 export default async function handler(req, res) {
   if (req.method === 'OPTIONS') return send(res, 200, { ok: true });
-  if (req.method === 'GET') return send(res, 200, { ok: true, route: 'hush-generate-strict', hasGeminiKey: Boolean(process.env.GEMINI_API_KEY), models: models(), version: 'hush-generate-strict-v2' });
+  if (req.method === 'GET') return send(res, 200, { ok: true, route: 'hush-generate-strict', hasGeminiKey: Boolean(process.env.GEMINI_API_KEY), models: models(), version: STRICT_PROVIDER_VERSION });
   if (req.method !== 'POST') return send(res, 405, { ok: false, error: 'method-not-allowed' });
   if (!process.env.GEMINI_API_KEY) return send(res, 500, { ok: false, error: 'missing-gemini-api-key', candidates: [], warnings: ['provider_key_missing'] });
   const startedAt = Date.now();
@@ -210,7 +254,7 @@ export default async function handler(req, res) {
         const rec = attemptRecord(model, jsonMode, response, payload, timedOut);
         attempts.push(rec);
         if (rec.warning === 'provider_quota_exhausted') {
-          return send(res, 429, { ok: false, provider: 'gemini-strict', model, strict: true, noFallback: true, error: 'provider_quota_exhausted', candidates: [], warnings: ['provider_quota_exhausted', 'no-server-repair', 'no-local-fallback'], attempts, rejectedCopy: [], requestReceipt: { strict: true, noFallback: true, elapsedMs: Date.now() - startedAt, retryAfterSeconds: rec.retryAfterSeconds } });
+          return send(res, 429, { ok: false, provider: 'gemini-strict', model, strict: true, noFallback: true, error: 'provider_quota_exhausted', candidates: [], warnings: ['provider_quota_exhausted', 'no-server-repair', 'no-local-fallback'], attempts, rejectedCopy: [], requestReceipt: { strict: true, noFallback: true, providerVersion: STRICT_PROVIDER_VERSION, elapsedMs: Date.now() - startedAt, retryAfterSeconds: rec.retryAfterSeconds } });
         }
         continue;
       }
@@ -223,9 +267,9 @@ export default async function handler(req, res) {
         else usable.push(c);
       }
       attempts.push(attemptRecord(model, jsonMode, response, payload, timedOut, parsed, usable, parsed.candidates.length - usable.length));
-      if (usable.length) return send(res, 200, { ok: true, provider: 'gemini-strict', model, deterministic: false, strict: true, version: 'hush-generate-strict-v2', candidates: usable, warnings: parsed.warnings, attempts, rejectedCopy: rejectedCopy.slice(0, 8), rawText: parsed.rawText, requestReceipt: { strict: true, noFallback: true, elapsedMs: Date.now() - startedAt } });
+      if (usable.length) return send(res, 200, { ok: true, provider: 'gemini-strict', model, deterministic: false, strict: true, version: STRICT_PROVIDER_VERSION, candidates: usable, warnings: parsed.warnings, attempts, rejectedCopy: rejectedCopy.slice(0, 8), rawText: parsed.rawText, requestReceipt: { strict: true, noFallback: true, providerVersion: STRICT_PROVIDER_VERSION, minLengthRatio: minLengthRatioFor(contract), packetTier: safe(contract.packetTier || ''), maskEvidenceState: safe(contract.maskEvidenceState || ''), elapsedMs: Date.now() - startedAt } });
     }
   }
   const lastWarning = attempts.at(-1)?.warning || 'strict-api-no-usable-candidates';
-  return send(res, 504, { ok: false, provider: 'gemini-strict', model: 'none', strict: true, noFallback: true, error: lastWarning === 'provider_timeout' ? 'provider_timeout' : 'no-usable-api-candidates', candidates: [], warnings: [lastWarning, 'strict-api-no-usable-candidates', 'no-server-repair', 'no-local-fallback'], attempts, rejectedCopy: rejectedCopy.slice(0, 8), requestReceipt: { strict: true, noFallback: true, elapsedMs: Date.now() - startedAt } });
+  return send(res, 504, { ok: false, provider: 'gemini-strict', model: 'none', strict: true, noFallback: true, error: lastWarning === 'provider_timeout' ? 'provider_timeout' : 'no-usable-api-candidates', candidates: [], warnings: [lastWarning, 'strict-api-no-usable-candidates', 'no-server-repair', 'no-local-fallback'], attempts, rejectedCopy: rejectedCopy.slice(0, 8), requestReceipt: { strict: true, noFallback: true, providerVersion: STRICT_PROVIDER_VERSION, minLengthRatio: minLengthRatioFor(contract), packetTier: safe(contract.packetTier || ''), maskEvidenceState: safe(contract.maskEvidenceState || ''), elapsedMs: Date.now() - startedAt } });
 }
