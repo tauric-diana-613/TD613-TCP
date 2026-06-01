@@ -9,7 +9,7 @@ const DEFAULT_MODELS = ['gemini-2.5-flash-lite', 'gemini-2.5-flash', 'gemini-fla
 const GEMINI_TIMEOUT_MS = 12000;
 const WALL_TIMEOUT_MS = 18000;
 const STRICT_CANDIDATE_COUNT = 4;
-const STRICT_PROVIDER_VERSION = 'hush-generate-strict-v4-authorship-locks';
+const STRICT_PROVIDER_VERSION = 'hush-generate-strict-v5-quota-diagnostics';
 
 function send(res, status, payload) {
   for (const [key, value] of Object.entries(corsHeaders)) res.setHeader(key, value);
@@ -97,9 +97,42 @@ function retrySeconds(payload = {}, response) {
   const match = message.match(/retry\s+in\s+([\d.]+)s/i);
   return match ? Math.ceil(Number(match[1])) : null;
 }
-function summarize(payload = {}, response) {
+function quotaDiagnostic(payload = {}, response = {}, model = '', jsonMode = null) {
+  const error = payload.error || payload || {};
+  const message = safe(error.message || payload.message || '');
+  const details = Array.isArray(error.details) ? error.details : [];
+  const violations = [];
+  for (const detail of details) {
+    const arr = Array.isArray(detail?.violations) ? detail.violations : [];
+    for (const violation of arr) {
+      violations.push({
+        subject: safe(violation.subject).slice(0, 220),
+        description: safe(violation.description).slice(0, 360)
+      });
+    }
+  }
+  const metricFromMessage = (message.match(/Quota exceeded for metric:\s*([^,\n*]+)/i) || [])[1] || '';
+  const limitFromMessage = (message.match(/limit:\s*([0-9.]+)/i) || [])[1] || '';
+  const modelFromMessage = (message.match(/model:\s*([a-z0-9_.-]+)/i) || [])[1] || '';
+  const metricFromViolation = violations.map((v) => v.description.match(/metric:\s*([^,\n*]+)/i)?.[1] || v.subject.match(/quotas\/([^/]+)\//i)?.[1] || '').find(Boolean) || '';
+  const limitFromViolation = violations.map((v) => v.description.match(/limit:\s*([0-9.]+)/i)?.[1] || '').find(Boolean) || '';
+  return {
+    version: 'pr140-quota-diagnostics/v2',
+    code: error.code || response?.status || '',
+    status: error.status || '',
+    metric: safe(metricFromMessage || metricFromViolation),
+    limit: safe(limitFromMessage || limitFromViolation),
+    model: safe(modelFromMessage || model),
+    retryAfterSeconds: retrySeconds(payload, response),
+    jsonMode,
+    violationCount: violations.length,
+    violations: violations.slice(0, 5),
+    messagePreview: message.slice(0, 1200)
+  };
+}
+function summarize(payload = {}, response, model = '', jsonMode = null) {
   const e = payload.error || payload;
-  return { code: e.code || response?.status || '', status: e.status || '', message: safe(e.message || '').slice(0, 360) };
+  return { code: e.code || response?.status || '', status: e.status || '', message: safe(e.message || '').slice(0, 360), quota: quotaDiagnostic(payload, response, model, jsonMode) };
 }
 function rootWarning(payload = {}, response = {}, timedOut = false) {
   const msg = safe(payload?.error?.message || payload?.message || '').toLowerCase();
@@ -222,7 +255,8 @@ async function callGemini(model, bodyPrompt, jsonMode) {
 }
 function attemptRecord(model, jsonMode, response, payload, timedOut, parsed = null, usable = [], copied = 0) {
   const warning = response.ok ? (parsed?.warnings?.[0] || '') : rootWarning(payload, response, timedOut);
-  return { model, jsonMode, ok: response.ok, status: response.status, warning, retryAfterSeconds: warning === 'provider_quota_exhausted' ? retrySeconds(payload, response) : null, parsedCandidates: parsed ? parsed.candidates.length : 0, usableCandidates: usable.length, copiedCandidates: copied, timedOut: !!timedOut, error: response.ok ? null : summarize(payload, response) };
+  const quota = quotaDiagnostic(payload, response, model, jsonMode);
+  return { model, jsonMode, ok: response.ok, status: response.status, warning, retryAfterSeconds: warning === 'provider_quota_exhausted' ? quota.retryAfterSeconds : null, parsedCandidates: parsed ? parsed.candidates.length : 0, usableCandidates: usable.length, copiedCandidates: copied, timedOut: !!timedOut, quota: warning === 'provider_quota_exhausted' ? quota : null, error: response.ok ? null : summarize(payload, response, model, jsonMode) };
 }
 export default async function handler(req, res) {
   if (req.method === 'OPTIONS') return send(res, 200, { ok: true });
@@ -244,7 +278,7 @@ export default async function handler(req, res) {
         const rec = attemptRecord(model, jsonMode, response, payload, timedOut);
         attempts.push(rec);
         if (rec.warning === 'provider_quota_exhausted') {
-          return send(res, 429, { ok: false, provider: 'gemini-strict', model, strict: true, noFallback: true, error: 'provider_quota_exhausted', candidates: [], warnings: ['provider_quota_exhausted', 'no-server-repair', 'no-local-fallback'], attempts, rejectedCopy: [], requestReceipt: { strict: true, noFallback: true, providerVersion: STRICT_PROVIDER_VERSION, elapsedMs: Date.now() - startedAt, retryAfterSeconds: rec.retryAfterSeconds } });
+          return send(res, 429, { ok: false, provider: 'gemini-strict', model, strict: true, noFallback: true, error: 'provider_quota_exhausted', candidates: [], warnings: ['provider_quota_exhausted', 'no-server-repair', 'no-local-fallback'], attempts, rejectedCopy: [], providerQuota: rec.quota, providerErrorMessage: rec.quota?.messagePreview || '', requestReceipt: { strict: true, noFallback: true, providerVersion: STRICT_PROVIDER_VERSION, quotaDiagnosticVersion: rec.quota?.version || 'pr140-quota-diagnostics/v2', elapsedMs: Date.now() - startedAt, retryAfterSeconds: rec.retryAfterSeconds, packetTier: safe(contract.packetTier || ''), maskEvidenceState: safe(contract.maskEvidenceState || ''), providerQuota: rec.quota } });
         }
         continue;
       }
@@ -257,9 +291,10 @@ export default async function handler(req, res) {
         else usable.push(c);
       }
       attempts.push(attemptRecord(model, jsonMode, response, payload, timedOut, parsed, usable, parsed.candidates.length - usable.length));
-      if (usable.length) return send(res, 200, { ok: true, provider: 'gemini-strict', model, deterministic: false, strict: true, version: STRICT_PROVIDER_VERSION, candidates: usable, warnings: parsed.warnings, attempts, rejectedCopy: rejectedCopy.slice(0, 8), rawText: parsed.rawText, requestReceipt: { strict: true, noFallback: true, providerVersion: STRICT_PROVIDER_VERSION, minLengthRatio: minLengthRatioFor(contract), packetTier: safe(contract.packetTier || ''), maskEvidenceState: safe(contract.maskEvidenceState || ''), authorshipKernelVersion: 'pr134-authorship-kernel/v1', elapsedMs: Date.now() - startedAt } });
+      if (usable.length) return send(res, 200, { ok: true, provider: 'gemini-strict', model, deterministic: false, strict: true, version: STRICT_PROVIDER_VERSION, candidates: usable, warnings: parsed.warnings, attempts, rejectedCopy: rejectedCopy.slice(0, 8), rawText: parsed.rawText, requestReceipt: { strict: true, noFallback: true, providerVersion: STRICT_PROVIDER_VERSION, minLengthRatio: minLengthRatioFor(contract), packetTier: safe(contract.packetTier || ''), maskEvidenceState: safe(contract.maskEvidenceState || ''), authorshipKernelVersion: 'pr134-authorship-kernel/v1', quotaDiagnosticVersion: 'pr140-quota-diagnostics/v2', elapsedMs: Date.now() - startedAt } });
     }
   }
   const lastWarning = attempts.at(-1)?.warning || 'strict-api-no-usable-candidates';
-  return send(res, 504, { ok: false, provider: 'gemini-strict', model: 'none', strict: true, noFallback: true, error: lastWarning === 'provider_timeout' ? 'provider_timeout' : 'no-usable-api-candidates', candidates: [], warnings: [lastWarning, 'strict-api-no-usable-candidates', 'no-server-repair', 'no-local-fallback'], attempts, rejectedCopy: rejectedCopy.slice(0, 8), requestReceipt: { strict: true, noFallback: true, providerVersion: STRICT_PROVIDER_VERSION, minLengthRatio: minLengthRatioFor(contract), packetTier: safe(contract.packetTier || ''), maskEvidenceState: safe(contract.maskEvidenceState || ''), authorshipKernelVersion: 'pr134-authorship-kernel/v1', elapsedMs: Date.now() - startedAt } });
+  const quota = attempts.map((attempt) => attempt.quota || attempt.error?.quota).find(Boolean) || null;
+  return send(res, 504, { ok: false, provider: 'gemini-strict', model: 'none', strict: true, noFallback: true, error: lastWarning === 'provider_timeout' ? 'provider_timeout' : 'no-usable-api-candidates', candidates: [], warnings: [lastWarning, 'strict-api-no-usable-candidates', 'no-server-repair', 'no-local-fallback'], attempts, rejectedCopy: rejectedCopy.slice(0, 8), providerQuota: quota, requestReceipt: { strict: true, noFallback: true, providerVersion: STRICT_PROVIDER_VERSION, minLengthRatio: minLengthRatioFor(contract), packetTier: safe(contract.packetTier || ''), maskEvidenceState: safe(contract.maskEvidenceState || ''), authorshipKernelVersion: 'pr134-authorship-kernel/v1', quotaDiagnosticVersion: 'pr140-quota-diagnostics/v2', providerQuota: quota, elapsedMs: Date.now() - startedAt } });
 }
