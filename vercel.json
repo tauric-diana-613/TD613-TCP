@@ -16,8 +16,8 @@
   ],
   "rewrites": [
     { "source": "/api/(.*)", "destination": "/api/$1" },
-    { "source": "/safe-harbor/td613-flight.html", "has": [{ "type": "header", "key": "user-agent", "value": "Android" }], "destination": "/api/flight-html" },
-    { "source": "/app/safe-harbor/td613-flight.html", "has": [{ "type": "header", "key": "user-agent", "value": "Android" }], "destination": "/api/flight-html" },
+    { "source": "/safe-harbor/td613-flight.html", "destination": "/api/flight-html" },
+    { "source": "/app/safe-harbor/td613-flight.html", "destination": "/api/flight-html" },
     { "source": "/app/(.*)", "destination": "/app/$1" },
     { "source": "/(.*)", "destination": "/app/$1" }
   ]
