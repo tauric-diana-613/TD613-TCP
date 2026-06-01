@@ -1,0 +1,201 @@
+/* PR147 Safe Harbor housekeeping: scroll, desktop shell, and recall ergonomics. */
+html.safe-harbor-pr147,
+html.safe-harbor-pr147 body {
+  min-height: 100%;
+  height: auto !important;
+  overflow-y: auto !important;
+  overscroll-behavior-y: auto;
+}
+
+html.safe-harbor-pr147 body {
+  touch-action: pan-y;
+  -webkit-overflow-scrolling: touch;
+}
+
+html.safe-harbor-pr147 body.vault-sealed {
+  overflow-y: auto !important;
+}
+
+html.safe-harbor-pr147 .ingress-membrane:not(.is-hidden) {
+  position: relative !important;
+  inset: auto !important;
+  min-height: 100dvh;
+  max-height: none !important;
+  display: block !important;
+  overflow: visible !important;
+  padding: clamp(18px, 3vw, 36px) clamp(14px, 4vw, 42px) clamp(32px, 5vw, 64px) !important;
+}
+
+html.safe-harbor-pr147 .ingress-shell {
+  width: min(1180px, calc(100vw - 32px));
+  margin-inline: auto;
+  padding: clamp(18px, 2.4vw, 30px);
+  overflow: visible;
+}
+
+html.safe-harbor-pr147 .ingress-shell::after {
+  opacity: 0.42;
+}
+
+html.safe-harbor-pr147 .ingress-head {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  align-items: start;
+  gap: 18px 24px;
+  margin-bottom: 18px;
+}
+
+html.safe-harbor-pr147 .ingress-head .title-group {
+  min-width: 0;
+}
+
+html.safe-harbor-pr147 .ingress-head h1,
+html.safe-harbor-pr147 .masthead h1 {
+  font-size: clamp(2.45rem, 5vw, 4.85rem);
+  line-height: 0.9;
+  letter-spacing: 0.1em;
+  text-wrap: balance;
+}
+
+html.safe-harbor-pr147 .ingress-head-actions {
+  justify-content: flex-end;
+  align-items: flex-start;
+  gap: 8px;
+  margin-left: 0;
+}
+
+html.safe-harbor-pr147 .ingress-status {
+  grid-column: 1 / -1;
+  display: flex;
+  justify-content: flex-start;
+  gap: 8px;
+  width: 100%;
+  padding: 10px 0 0;
+}
+
+html.safe-harbor-pr147 .ingress-status .status-pill {
+  min-width: 0;
+  width: auto;
+  padding-inline: 10px;
+}
+
+html.safe-harbor-pr147 .ingress-stage-rail {
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 10px;
+  margin-bottom: 14px;
+}
+
+html.safe-harbor-pr147 .ingress-stage-chip {
+  min-height: 42px;
+  padding: 9px 12px;
+  border-radius: 14px;
+  font-size: 0.62rem;
+}
+
+html.safe-harbor-pr147 .ingress-handshake-grid {
+  grid-template-columns: minmax(0, 1fr) minmax(280px, 360px);
+  gap: 16px;
+}
+
+html.safe-harbor-pr147 .ingress-step-panel,
+html.safe-harbor-pr147 .ingress-console-panel {
+  padding: clamp(16px, 2vw, 22px);
+  overflow: visible;
+}
+
+html.safe-harbor-pr147 .ingress-textarea {
+  min-height: clamp(180px, 26vh, 260px);
+}
+
+html.safe-harbor-pr147 .ingress-rings {
+  opacity: 0.24;
+  pointer-events: none;
+}
+
+html.safe-harbor-pr147 .ingress-bypass[data-pr147-ready="false"] .ingress-bypass-summary,
+html.safe-harbor-pr147 .ingress-bypass[data-pr147-ready="false"] .ingress-bypass-body {
+  opacity: 0.72;
+}
+
+html.safe-harbor-pr147 .safe-harbor-pr147-note {
+  margin-top: 8px;
+  color: var(--gold);
+  font-family: var(--font-mono);
+  font-size: 0.68rem;
+  line-height: 1.5;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+html.safe-harbor-pr147 .chrome-grid {
+  width: min(1500px, 100%);
+  margin-inline: auto;
+}
+
+html.safe-harbor-pr147 .main-grid {
+  grid-template-rows: auto auto;
+  align-items: start;
+}
+
+html.safe-harbor-pr147 .panel,
+html.safe-harbor-pr147 .dock {
+  min-height: 0;
+  overflow: visible;
+}
+
+@media (max-width: 1100px) {
+  html.safe-harbor-pr147 .ingress-head,
+  html.safe-harbor-pr147 .masthead {
+    grid-template-columns: 1fr;
+    display: grid;
+  }
+
+  html.safe-harbor-pr147 .ingress-head-actions,
+  html.safe-harbor-pr147 .status-strip {
+    justify-content: flex-start;
+  }
+
+  html.safe-harbor-pr147 .ingress-handshake-grid,
+  html.safe-harbor-pr147 .main-grid,
+  html.safe-harbor-pr147 .witness-grid,
+  html.safe-harbor-pr147 .forge-grid {
+    grid-template-columns: 1fr !important;
+    grid-template-areas: none !important;
+  }
+
+  html.safe-harbor-pr147 .panel-left,
+  html.safe-harbor-pr147 .panel-center,
+  html.safe-harbor-pr147 .panel-right,
+  html.safe-harbor-pr147 .dock-left,
+  html.safe-harbor-pr147 .dock-right {
+    grid-column: auto !important;
+    grid-row: auto !important;
+  }
+}
+
+@media (max-width: 720px) {
+  html.safe-harbor-pr147 .ingress-shell {
+    width: 100%;
+    border-radius: 24px;
+  }
+
+  html.safe-harbor-pr147 .ingress-head h1,
+  html.safe-harbor-pr147 .masthead h1 {
+    font-size: clamp(2rem, 13vw, 3.4rem);
+    letter-spacing: 0.07em;
+  }
+
+  html.safe-harbor-pr147 .ingress-stage-rail {
+    grid-template-columns: 1fr 1fr;
+  }
+
+  html.safe-harbor-pr147 .ingress-status,
+  html.safe-harbor-pr147 .ingress-head-actions {
+    display: grid;
+    grid-template-columns: 1fr;
+  }
+
+  html.safe-harbor-pr147 .flight-launch {
+    width: 100%;
+  }
+}
