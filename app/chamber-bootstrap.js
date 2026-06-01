@@ -30,10 +30,11 @@
   }
 
   if (pageKind === 'gateway') {
-    var gatewayPhase32Style = document.createElement('style');
-    gatewayPhase32Style.id = 'td613-gateway-phase32-prune';
-    gatewayPhase32Style.textContent = '#gatewayDoorDeck,#gatewayDoorHomebase{display:none!important}';
-    document.head.appendChild(gatewayPhase32Style);
+    appendStylesheet('./gateway-housekeeping.css', './gateway-housekeeping.css?v=' + (V.gatewayHousekeeping || V.chrome || V.main || ''));
+    var gatewayHousekeepingStyle = document.createElement('style');
+    gatewayHousekeepingStyle.id = 'td613-gateway-housekeeping-prune';
+    gatewayHousekeepingStyle.textContent = '#gatewayDoorDeck,#gatewayDoorHomebase,#gatewayDoorReadout,#gatewayPreviewPhaseStatus{display:none!important}';
+    document.head.appendChild(gatewayHousekeepingStyle);
     var installFlightDoor = function () {
       var rail = document.querySelector('.gateway-grid');
       if (!rail) return;
@@ -41,6 +42,8 @@
       var harbor = document.getElementById('gatewayDoorHarbor');
       var trainer = document.getElementById('gatewayDoorTrainer');
       var readout = document.getElementById('gatewayDoorReadout');
+      var openFull = document.getElementById('gatewayApertureOpenFull');
+      var phaseStatus = document.getElementById('gatewayPreviewPhaseStatus');
       var flight = document.getElementById('gatewayDoorFlight');
       if (!flight) {
         flight = document.createElement('a');
@@ -51,10 +54,14 @@
         flight.rel = 'noopener';
         flight.innerHTML = '<div class="gateway-card-kicker"><span class="glyph glyph-cyan" aria-hidden="true">&#x27D0;</span> Flight</div><h3>Seal cockpit</h3><p>Payload route. Prompt steering.</p>';
       }
-      [hush, flight, harbor, trainer, readout].forEach(function (node) {
+      if (readout) readout.remove();
+      if (phaseStatus) phaseStatus.remove();
+      if (openFull) openFull.classList.add('gateway-aperture-open-top');
+      [hush, flight, harbor, trainer].forEach(function (node) {
         if (node) rail.appendChild(node);
       });
-      rail.setAttribute('data-phase32-visible-order', 'hush flight safe-harbor trainer readout');
+      rail.setAttribute('data-phase32-visible-order', 'hush flight safe-harbor trainer');
+      rail.setAttribute('data-gateway-housekeeping', 'pr125');
     };
     if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', installFlightDoor, { once: true });
     else installFlightDoor();
