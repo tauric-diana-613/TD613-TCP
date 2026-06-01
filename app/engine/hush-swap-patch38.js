@@ -5,7 +5,7 @@ import { attachPropositionIntegrity } from './hush-proposition-integrity.js';
 
 export * from './hush-swap-phase34.js';
 export const HUSH_SWAP_PATCH38_VERSION = 'patch-38-hybrid-candidate-generator';
-export const HUSH_SWAP_PATCH38_INTERNAL_VERSION = 'phase-37.7-strict-remote-only-selector';
+export const HUSH_SWAP_PATCH38_INTERNAL_VERSION = 'phase-37.8-authorship-selector';
 
 const asArray = (value) => Array.isArray(value) ? value.filter(Boolean) : [];
 const safe = (value) => String(value ?? '');
@@ -89,7 +89,8 @@ function operationCompleteness(candidate = {}) {
   const preserved = asArray(candidate.preserved_propositions || candidate.providerTelemetry?.preserved_propositions).length;
   const notes = candidate.mask_surface_notes || candidate.providerTelemetry?.mask_surface_notes || {};
   const hasNotes = notes && typeof notes === 'object' && Object.keys(notes).length > 0;
-  return round4((hasOp ? 0.42 : 0) + Math.min(0.34, preserved * 0.08) + (hasNotes ? 0.24 : 0));
+  const authorMoves = asArray(candidate.authorship_moves || candidate.providerTelemetry?.authorship_moves).length;
+  return round4((hasOp ? 0.36 : 0) + Math.min(0.32, preserved * 0.08) + (hasNotes ? 0.2 : 0) + Math.min(0.12, authorMoves * 0.06));
 }
 
 function maskFidelity(candidate = {}, input = {}) {
@@ -116,6 +117,51 @@ function maskFidelity(candidate = {}, input = {}) {
   const explicitTargetScore = styleText && styleOperation(candidate) !== 'operation-unreported' ? 0.12 : 0;
   const surfaceFlightScore = candidate.operations?.includes?.(HUSH_MASK_SURFACE_FLIGHT_VERSION) ? 0.18 : 0;
   return round4(Math.min(1, hintScore * 0.38 + operationCompleteness(candidate) * 0.28 + notesScore + explicitTargetScore + surfaceFlightScore + 0.1));
+}
+
+function kernelFromInput(input = {}) {
+  const kernel = input.authorshipKernel || input.phase37Telemetry?.authorshipKernel || input.phase37Telemetry?.flightPacket?.authorship_kernel || input.phase37Telemetry?.flightPacket?.mask_style_vector?.authorship_kernel || {};
+  const mask = input.mask || {};
+  const diversity = mask.diversity || {};
+  return {
+    maskId: kernel.mask_id || mask.id || '',
+    displayName: kernel.display_name || mask.label || mask.name || '',
+    lexicalSignature: [
+      ...asArray(kernel.lexical_signature),
+      ...asArray(diversity.lexicalSignature),
+      ...asArray(mask.dictionHints).map((item) => Array.isArray(item) ? item[1] || item[0] : item)
+    ].map((item) => safe(item).toLowerCase()).filter((item) => item.length > 2).slice(0, 28),
+    openingMoves: [...asArray(kernel.opening_moves), ...asArray(diversity.openingMoves), ...asArray(mask.transitionBank)].map((item) => safe(item).toLowerCase()).filter((item) => item.length > 2).slice(0, 16),
+    signatureMoves: [...asArray(kernel.signature_moves), ...asArray(diversity.requiredMoves), ...asArray(mask.transformHints?.desiredMoves)].map((item) => safe(item).toLowerCase()).filter((item) => item.length > 2).slice(0, 18),
+    genericAvoid: [...asArray(kernel.generic_avoid), ...asArray(kernel.banned_generic_moves), ...asArray(mask.avoidList), 'here is', 'in summary', 'to clarify', 'this version', 'this rewrite', 'the message is', 'the point is'].map((item) => safe(item).toLowerCase()).filter((item) => item.length > 2).slice(0, 28),
+    sentenceArchitecture: safe(kernel.sentence_architecture || kernel.rhythmic_law || diversity.sentenceArchitecture || mask.writingTraits?.clauseShape || ''),
+    dictionWeather: safe(kernel.diction_weather || mask.writingTraits?.diction || mask.family || '')
+  };
+}
+
+function authorshipSignal(candidate = {}, input = {}) {
+  const kernel = kernelFromInput(input);
+  const text = safe(candidate.text).toLowerCase();
+  const authorMoves = asArray(candidate.authorship_moves || candidate.providerTelemetry?.authorship_moves).map((move) => safe(move).toLowerCase()).filter(Boolean);
+  const noteText = safe(JSON.stringify(candidate.mask_surface_notes || candidate.providerTelemetry?.mask_surface_notes || {})).toLowerCase();
+  const lexicalHits = [...new Set(kernel.lexicalSignature.filter((hint) => text.includes(hint)))].slice(0, 8);
+  const openingHits = [...new Set(kernel.openingMoves.filter((hint) => text.slice(0, 140).includes(hint)))].slice(0, 4);
+  const signatureHits = [...new Set(kernel.signatureMoves.filter((hint) => noteText.includes(hint) || authorMoves.some((move) => move.includes(hint) || hint.includes(move))))].slice(0, 6);
+  const genericHits = [...new Set(kernel.genericAvoid.filter((hint) => text.includes(hint)))].slice(0, 6);
+  const authorMoveScore = Math.min(0.22, authorMoves.length * 0.08);
+  const lexicalScore = kernel.lexicalSignature.length ? Math.min(0.28, lexicalHits.length / Math.max(4, kernel.lexicalSignature.length) * 0.56) : 0.1;
+  const openingScore = openingHits.length ? 0.12 : 0;
+  const signatureScore = signatureHits.length ? Math.min(0.18, signatureHits.length * 0.07) : 0;
+  const notesScore = noteText.length > 8 ? 0.08 : 0;
+  const architectureScore = kernel.sentenceArchitecture && styleOperation(candidate) !== 'operation-unreported' ? 0.08 : 0;
+  const genericPenalty = Math.min(0.42, genericHits.length * 0.14);
+  const score = round4(Math.max(0, Math.min(1, lexicalScore + openingScore + signatureScore + authorMoveScore + notesScore + architectureScore - genericPenalty)));
+  const warnings = [];
+  if (score < 0.24) warnings.push('authorship-signal-low');
+  if (genericHits.length) warnings.push('authorship-generic-surface-hit');
+  if (!authorMoves.length && providerSource(candidate)) warnings.push('authorship-moves-missing');
+  if (!lexicalHits.length && kernel.lexicalSignature.length >= 3) warnings.push('authorship-lexical-signature-missing');
+  return { score, lexicalHits, openingHits, signatureHits, genericHits, authorMoves, warnings, kernelId: kernel.maskId, kernelName: kernel.displayName };
 }
 
 function humanTexture(candidate = {}) {
@@ -203,8 +249,9 @@ function score(candidate = {}, sourceText = '', mode = GENERATOR_MODES.OFFLINE_E
   const warningPenalty = reviewReleaseEligible(candidate, sourceText) ? asArray(candidate.propositionIntegrity?.warnings).length * 0.025 : asArray(candidate.propositionIntegrity?.warnings).length * 0.055;
   const copy = sourceCopyRisk(candidate.text, sourceText);
   const copyPenalty = copy.exactCopy || copy.wrapperCopy ? 4 : !providerSource(candidate) && (copy.nearCopy || copy.longVerbatimRun) ? 2.2 : copy.score > 0.94 ? 0.35 : 0;
+  const authorship = authorshipSignal(candidate, input);
   const base = Number(candidate.finalScore || 0.45);
-  return round4(base + providerBonus + remoteModeBonus + hybridRemoteBonus + questionBonus + surfaceBonus + coverage * 0.5 + length * 0.18 + operationCompleteness(candidate) * 0.34 + maskFidelity(candidate, input) * 0.44 + syntaxDistance(candidate.text, sourceText) * 0.22 + humanTexture(candidate) * 0.16 - offlinePenaltyInRemote - collapse * 0.72 - warningPenalty - providerPenalty(candidate) - copyPenalty);
+  return round4(base + providerBonus + remoteModeBonus + hybridRemoteBonus + questionBonus + surfaceBonus + coverage * 0.5 + length * 0.18 + operationCompleteness(candidate) * 0.3 + maskFidelity(candidate, input) * 0.32 + authorship.score * 0.58 + syntaxDistance(candidate.text, sourceText) * 0.2 + humanTexture(candidate) * 0.14 - offlinePenaltyInRemote - collapse * 0.72 - warningPenalty - providerPenalty(candidate) - copyPenalty - Math.min(0.18, authorship.genericHits.length * 0.06));
 }
 
 function auditFallback(candidate = {}, error = null) {
@@ -309,15 +356,19 @@ export function buildHushSwap(input = {}) {
   const ranked = releasable.map((candidate) => {
     const operation = styleOperation(candidate);
     const copy = sourceCopyRisk(candidate.text, sourceText);
+    const author = authorshipSignal(candidate, input);
+    const fidelity = maskFidelity(candidate, input);
     return {
       candidate,
       operation,
       sourceCopyRisk: copy,
+      authorship: author,
+      authorshipScore: author.score,
       score: score(candidate, sourceText, mode, input),
       collapse: collapseSurfaceScore(candidate.text),
       coverage: candidate.propositionIntegrity?.coverage?.averageCoverage ?? 0,
       lengthRatio: candidate.propositionIntegrity?.coverage?.lengthRatio ?? 0,
-      maskFidelity: maskFidelity(candidate, input),
+      maskFidelity: fidelity,
       syntaxDistance: syntaxDistance(candidate.text, sourceText),
       humanTexture: humanTexture(candidate),
       operationCompleteness: operationCompleteness(candidate),
@@ -329,29 +380,36 @@ export function buildHushSwap(input = {}) {
   }).sort((a, b) => b.score - a.score);
 
   let selected = mode === GENERATOR_MODES.REMOTE_LLM_PROXY && strictRemoteOnly
-    ? (ranked.find((row) => row.remote && row.maskFidelity >= 0.18)?.candidate || ranked.find((row) => row.remote)?.candidate || null)
+    ? (ranked.find((row) => row.remote && row.authorshipScore >= 0.22 && row.maskFidelity >= 0.16)?.candidate || ranked.find((row) => row.remote && row.maskFidelity >= 0.18)?.candidate || ranked.find((row) => row.remote)?.candidate || null)
     : mode === GENERATOR_MODES.REMOTE_LLM_PROXY
-      ? (ranked.find((row) => row.remote && row.maskFidelity >= 0.28)?.candidate || ranked.find((row) => row.candidate.operations?.includes?.(HUSH_MASK_SURFACE_FLIGHT_VERSION) && row.maskFidelity >= 0.34)?.candidate || ranked.find((row) => row.remote)?.candidate || null)
+      ? (ranked.find((row) => row.remote && row.authorshipScore >= 0.24 && row.maskFidelity >= 0.24)?.candidate || ranked.find((row) => row.remote && row.maskFidelity >= 0.28)?.candidate || ranked.find((row) => row.candidate.operations?.includes?.(HUSH_MASK_SURFACE_FLIGHT_VERSION) && row.maskFidelity >= 0.34)?.candidate || ranked.find((row) => row.remote)?.candidate || null)
       : mode === GENERATOR_MODES.HYBRID
-        ? (ranked.find((row) => row.remote && row.maskFidelity >= 0.24)?.candidate || ranked.find((row) => row.candidate.operations?.includes?.(HUSH_MASK_SURFACE_FLIGHT_VERSION))?.candidate || ranked.find((row) => row.provider)?.candidate || ranked[0]?.candidate || null)
+        ? (ranked.find((row) => row.remote && row.authorshipScore >= 0.22 && row.maskFidelity >= 0.2)?.candidate || ranked.find((row) => row.remote && row.maskFidelity >= 0.24)?.candidate || ranked.find((row) => row.candidate.operations?.includes?.(HUSH_MASK_SURFACE_FLIGHT_VERSION))?.candidate || ranked.find((row) => row.provider)?.candidate || ranked[0]?.candidate || null)
         : (ranked.find((row) => row.candidate.operations?.includes?.(HUSH_MASK_SURFACE_FLIGHT_VERSION) && row.maskFidelity >= 0.28)?.candidate || ranked.find((row) => row.offline && row.collapse < 0.42)?.candidate || ranked[0]?.candidate || null);
   if (strictRemoteOnly && selected && !remoteSource(selected)) selected = null;
 
-  const blockedRows = merged.filter((candidate) => !release(candidate, sourceText)).slice(0, 10).map((candidate) => ({
-    id: candidate.id,
-    source: candidate.source,
-    operation: styleOperation(candidate),
-    warnings: candidate.propositionIntegrity?.warnings || candidate.warnings || [],
-    coverage: candidate.propositionIntegrity?.coverage?.averageCoverage ?? 0,
-    lengthRatio: candidate.propositionIntegrity?.coverage?.lengthRatio ?? 0,
-    missingUnitCount: candidate.propositionIntegrity?.coverage?.missingUnitCount ?? 0,
-    sourceCopyRisk: candidate.sourceCopyRisk || sourceCopyRisk(candidate.text || '', sourceText)
-  }));
+  const blockedRows = merged.filter((candidate) => !release(candidate, sourceText)).slice(0, 10).map((candidate) => {
+    const author = authorshipSignal(candidate, input);
+    return {
+      id: candidate.id,
+      source: candidate.source,
+      operation: styleOperation(candidate),
+      warnings: [...new Set([...(candidate.propositionIntegrity?.warnings || candidate.warnings || []), ...author.warnings])],
+      coverage: candidate.propositionIntegrity?.coverage?.averageCoverage ?? 0,
+      lengthRatio: candidate.propositionIntegrity?.coverage?.lengthRatio ?? 0,
+      missingUnitCount: candidate.propositionIntegrity?.coverage?.missingUnitCount ?? 0,
+      authorshipScore: author.score,
+      authorshipWarnings: author.warnings,
+      authorMoves: author.authorMoves,
+      sourceCopyRisk: candidate.sourceCopyRisk || sourceCopyRisk(candidate.text || '', sourceText)
+    };
+  });
 
   const selectedRow = ranked.find((row) => row.candidate === selected) || null;
   const spread = operationSpread(ranked);
   const blockedCopyCount = blockedRows.filter((row) => row.sourceCopyRisk?.exactCopy || row.sourceCopyRisk?.wrapperCopy || row.sourceCopyRisk?.nearCopy || row.sourceCopyRisk?.longVerbatimRun).length;
   const providerBlockedCount = blockedRows.filter((row) => /remote-llm-candidate|patch38-offline-provider|phase34-expressive-generator/i.test(row.source || row.id || '')).length;
+  const authorshipScores = ranked.map((row) => row.authorshipScore).filter((value) => Number.isFinite(Number(value)));
   const diagnostics = {
     version: HUSH_SWAP_PATCH38_VERSION,
     internalVersion: HUSH_SWAP_PATCH38_INTERNAL_VERSION,
@@ -375,6 +433,9 @@ export function buildHushSwap(input = {}) {
     blockedCopyCount,
     operationSpread: spread,
     operationSpreadCount: spread.length,
+    authorshipSelectorVersion: HUSH_SWAP_PATCH38_INTERNAL_VERSION,
+    authorshipKernelId: kernelFromInput(input).maskId,
+    authorshipScoreRange: authorshipScores.length ? { min: round4(Math.min(...authorshipScores)), max: round4(Math.max(...authorshipScores)), average: round4(authorshipScores.reduce((sum, value) => sum + value, 0) / authorshipScores.length) } : { min: 0, max: 0, average: 0 },
     blockedRows,
     selectedCandidateId: selected?.id || '',
     selectedStyleOperation: selected ? styleOperation(selected) : '',
@@ -385,6 +446,8 @@ export function buildHushSwap(input = {}) {
     selectedCoverage: selected?.propositionIntegrity?.coverage?.averageCoverage ?? 0,
     selectedLengthRatio: selected?.propositionIntegrity?.coverage?.lengthRatio ?? 0,
     selectedMaskFidelity: selectedRow?.maskFidelity ?? 0,
+    selectedAuthorshipScore: selectedRow?.authorshipScore ?? 0,
+    selectedAuthorship: selectedRow?.authorship || null,
     selectedSyntaxDistance: selectedRow?.syntaxDistance ?? 0,
     selectedHumanTexture: selectedRow?.humanTexture ?? 0,
     selectedOperationCompleteness: selectedRow?.operationCompleteness ?? 0,
@@ -392,7 +455,7 @@ export function buildHushSwap(input = {}) {
     selectedSourceCopyRisk: selectedRow?.sourceCopyRisk || null,
     selectedCollapseSurfaceScore: round4(collapseSurfaceScore(selected?.text || '')),
     selectedScore: selectedRow?.score || 0,
-    selectorRows: ranked.slice(0, 10).map((row) => ({ id: row.candidate.id, source: row.candidate.source, strategy: row.candidate.strategy, operation: row.operation, score: row.score, collapse: row.collapse, coverage: row.coverage, lengthRatio: row.lengthRatio, maskFidelity: row.maskFidelity, syntaxDistance: row.syntaxDistance, humanTexture: row.humanTexture, operationCompleteness: row.operationCompleteness, reviewRelease: row.reviewRelease, sourceCopyRisk: row.sourceCopyRisk, provider: row.provider, remote: row.remote, offline: row.offline })),
+    selectorRows: ranked.slice(0, 10).map((row) => ({ id: row.candidate.id, source: row.candidate.source, strategy: row.candidate.strategy, operation: row.operation, score: row.score, collapse: row.collapse, coverage: row.coverage, lengthRatio: row.lengthRatio, maskFidelity: row.maskFidelity, authorshipScore: row.authorshipScore, authorshipWarnings: row.authorship?.warnings || [], authorMoves: row.authorship?.authorMoves || [], syntaxDistance: row.syntaxDistance, humanTexture: row.humanTexture, operationCompleteness: row.operationCompleteness, reviewRelease: row.reviewRelease, sourceCopyRisk: row.sourceCopyRisk, provider: row.provider, remote: row.remote, offline: row.offline })),
     mergedCandidates: merged,
     warning: strictRemoteOnly && !selected && providerCandidates.filter(remoteSource).length === 0
       ? 'strict-remote-only-no-approved-remote-candidate'
@@ -407,7 +470,8 @@ export function buildHushSwap(input = {}) {
               : blockedCopyCount ? 'source-copy-candidates-blocked'
                 : !selected && blockedRows.length ? 'all-candidates-failed-proposition-coverage'
                   : spread.length <= 1 && providerCandidates.length > 1 ? 'phase37-operation-diversity-low'
-                    : collapseSurfaceScore(selected?.text || '') >= 0.48 ? 'patch38-custody-collapse-risk' : ''
+                    : authorshipScores.length && Math.max(...authorshipScores) < 0.22 ? 'authorship-signal-low-across-candidates'
+                      : collapseSurfaceScore(selected?.text || '') >= 0.48 ? 'patch38-custody-collapse-risk' : ''
   };
   return apply(result, selected, diagnostics);
 }
