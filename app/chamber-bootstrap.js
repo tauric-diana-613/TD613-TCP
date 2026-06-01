@@ -109,6 +109,8 @@
     appendScript('./hush-pr123-stable-transform.js?v=' + (V.hushPr123 || V.hushPr122 || V.hushPatch38 || V.main || ''));
   }
 
+  appendScript('./tcp-copy-hygiene.js?v=' + (V.copyHygiene || V.chrome || V.main || '202606010455'));
+
   var srcs = [
     './td613-constants.js',
     './browser-data.js?v='        + (V.data        || ''),
