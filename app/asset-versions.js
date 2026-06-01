@@ -31,6 +31,7 @@
     hushPr106: '202605302105',
     hushPr107: '202605302150',
     hushPr108: '202605302215',
+    hushPr110: '202605302305',
     hushPhase39: '202605301720'
   };
   var V = window.TD613_ASSET_VERSIONS;
