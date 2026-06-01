@@ -89,9 +89,10 @@
     appendScript('./hush-pr107-selector-recovery.js?v=' + (V.hushPr107 || V.hushPr106 || V.hushPatch38 || V.main || ''));
     appendModule('./hush-pr108-live-state-recovery-bridge.js?v=' + (V.hushPr108 || V.hushPr107 || V.hushPatch38 || V.main || ''));
     appendScript('./hush-pr110-recovered-output-rehydrator.js?v=' + (V.hushPr110 || V.hushPr108 || V.hushPatch38 || V.main || ''));
+    appendScript('./hush-pr114-no-fallback-receipt.js?v=' + (V.hushPr114 || V.hushPr112 || V.hushPatch38 || V.main || ''));
+    appendScript('./hush-pr115-local-fallback-kill.js?v=' + (V.hushPr115 || V.hushPr114 || V.hushPr112 || V.hushPatch38 || V.main || ''));
     appendScript('./hush-pr111-review-candidate-bridge.js?v=' + (V.hushPr111 || V.hushPr110 || V.hushPatch38 || V.main || ''));
     appendScript('./hush-pr112-cadence-bridge.js?v=' + (V.hushPr112 || V.hushPr111 || V.hushPatch38 || V.main || ''));
-    appendScript('./hush-pr114-no-fallback-receipt.js?v=' + (V.hushPr114 || V.hushPr112 || V.hushPatch38 || V.main || ''));
   }
 
   var srcs = [
