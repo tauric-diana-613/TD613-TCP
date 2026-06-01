@@ -9,7 +9,7 @@ const DEFAULT_MODELS = ['gemini-2.5-flash-lite', 'gemini-2.5-flash', 'gemini-fla
 const GEMINI_TIMEOUT_MS = 12000;
 const WALL_TIMEOUT_MS = 18000;
 const STRICT_CANDIDATE_COUNT = 4;
-const STRICT_PROVIDER_VERSION = 'hush-generate-strict-v5-quota-diagnostics';
+const STRICT_PROVIDER_VERSION = 'hush-generate-strict-v6-access-denied-diagnostics';
 
 function send(res, status, payload) {
   for (const [key, value] of Object.entries(corsHeaders)) res.setHeader(key, value);
@@ -97,6 +97,12 @@ function retrySeconds(payload = {}, response) {
   const match = message.match(/retry\s+in\s+([\d.]+)s/i);
   return match ? Math.ceil(Number(match[1])) : null;
 }
+function accessDenied(payload = {}, response = {}) {
+  const error = payload.error || payload || {};
+  const status = Number(response.status || error.code || 0);
+  const body = `${safe(error.status)} ${safe(error.message || payload.message || '')}`.toLowerCase();
+  return status === 403 || /permission_denied|denied access|project has been denied|access denied|contact support/.test(body);
+}
 function quotaDiagnostic(payload = {}, response = {}, model = '', jsonMode = null) {
   const error = payload.error || payload || {};
   const message = safe(error.message || payload.message || '');
@@ -117,13 +123,14 @@ function quotaDiagnostic(payload = {}, response = {}, model = '', jsonMode = nul
   const metricFromViolation = violations.map((v) => v.description.match(/metric:\s*([^,\n*]+)/i)?.[1] || v.subject.match(/quotas\/([^/]+)\//i)?.[1] || '').find(Boolean) || '';
   const limitFromViolation = violations.map((v) => v.description.match(/limit:\s*([0-9.]+)/i)?.[1] || '').find(Boolean) || '';
   return {
-    version: 'pr140-quota-diagnostics/v2',
+    version: 'pr141-provider-access-diagnostics/v1',
+    accessDenied: accessDenied(payload, response),
     code: error.code || response?.status || '',
     status: error.status || '',
     metric: safe(metricFromMessage || metricFromViolation),
     limit: safe(limitFromMessage || limitFromViolation),
     model: safe(modelFromMessage || model),
-    retryAfterSeconds: retrySeconds(payload, response),
+    retryAfterSeconds: accessDenied(payload, response) ? null : retrySeconds(payload, response),
     jsonMode,
     violationCount: violations.length,
     violations: violations.slice(0, 5),
@@ -136,7 +143,8 @@ function summarize(payload = {}, response, model = '', jsonMode = null) {
 }
 function rootWarning(payload = {}, response = {}, timedOut = false) {
   const msg = safe(payload?.error?.message || payload?.message || '').toLowerCase();
-  const status = Number(response.status || 0);
+  const status = Number(response.status || payload?.error?.code || 0);
+  if (accessDenied(payload, response)) return 'provider_access_denied';
   if (status === 429 || /quota|resource_exhausted|rate[-\s]?limit/.test(msg)) return 'provider_quota_exhausted';
   if (timedOut || status === 408) return 'provider_timeout';
   if (status >= 500) return 'provider_http_' + status;
@@ -256,7 +264,7 @@ async function callGemini(model, bodyPrompt, jsonMode) {
 function attemptRecord(model, jsonMode, response, payload, timedOut, parsed = null, usable = [], copied = 0) {
   const warning = response.ok ? (parsed?.warnings?.[0] || '') : rootWarning(payload, response, timedOut);
   const quota = quotaDiagnostic(payload, response, model, jsonMode);
-  return { model, jsonMode, ok: response.ok, status: response.status, warning, retryAfterSeconds: warning === 'provider_quota_exhausted' ? quota.retryAfterSeconds : null, parsedCandidates: parsed ? parsed.candidates.length : 0, usableCandidates: usable.length, copiedCandidates: copied, timedOut: !!timedOut, quota: warning === 'provider_quota_exhausted' ? quota : null, error: response.ok ? null : summarize(payload, response, model, jsonMode) };
+  return { model, jsonMode, ok: response.ok, status: response.status, warning, retryAfterSeconds: warning === 'provider_quota_exhausted' ? quota.retryAfterSeconds : null, parsedCandidates: parsed ? parsed.candidates.length : 0, usableCandidates: usable.length, copiedCandidates: copied, timedOut: !!timedOut, quota: warning === 'provider_quota_exhausted' || warning === 'provider_access_denied' ? quota : null, error: response.ok ? null : summarize(payload, response, model, jsonMode) };
 }
 export default async function handler(req, res) {
   if (req.method === 'OPTIONS') return send(res, 200, { ok: true });
@@ -277,8 +285,11 @@ export default async function handler(req, res) {
       if (!response.ok) {
         const rec = attemptRecord(model, jsonMode, response, payload, timedOut);
         attempts.push(rec);
+        if (rec.warning === 'provider_access_denied') {
+          return send(res, 403, { ok: false, provider: 'gemini-strict', model, strict: true, noFallback: true, error: 'provider_access_denied', candidates: [], warnings: ['provider_access_denied', 'no-server-repair', 'no-local-fallback'], attempts, rejectedCopy: [], providerQuota: rec.quota, providerErrorMessage: rec.quota?.messagePreview || '', requestReceipt: { strict: true, noFallback: true, providerVersion: STRICT_PROVIDER_VERSION, quotaDiagnosticVersion: rec.quota?.version || 'pr141-provider-access-diagnostics/v1', elapsedMs: Date.now() - startedAt, retryAfterSeconds: null, packetTier: safe(contract.packetTier || ''), maskEvidenceState: safe(contract.maskEvidenceState || ''), providerQuota: rec.quota } });
+        }
         if (rec.warning === 'provider_quota_exhausted') {
-          return send(res, 429, { ok: false, provider: 'gemini-strict', model, strict: true, noFallback: true, error: 'provider_quota_exhausted', candidates: [], warnings: ['provider_quota_exhausted', 'no-server-repair', 'no-local-fallback'], attempts, rejectedCopy: [], providerQuota: rec.quota, providerErrorMessage: rec.quota?.messagePreview || '', requestReceipt: { strict: true, noFallback: true, providerVersion: STRICT_PROVIDER_VERSION, quotaDiagnosticVersion: rec.quota?.version || 'pr140-quota-diagnostics/v2', elapsedMs: Date.now() - startedAt, retryAfterSeconds: rec.retryAfterSeconds, packetTier: safe(contract.packetTier || ''), maskEvidenceState: safe(contract.maskEvidenceState || ''), providerQuota: rec.quota } });
+          return send(res, 429, { ok: false, provider: 'gemini-strict', model, strict: true, noFallback: true, error: 'provider_quota_exhausted', candidates: [], warnings: ['provider_quota_exhausted', 'no-server-repair', 'no-local-fallback'], attempts, rejectedCopy: [], providerQuota: rec.quota, providerErrorMessage: rec.quota?.messagePreview || '', requestReceipt: { strict: true, noFallback: true, providerVersion: STRICT_PROVIDER_VERSION, quotaDiagnosticVersion: rec.quota?.version || 'pr141-provider-access-diagnostics/v1', elapsedMs: Date.now() - startedAt, retryAfterSeconds: rec.retryAfterSeconds, packetTier: safe(contract.packetTier || ''), maskEvidenceState: safe(contract.maskEvidenceState || ''), providerQuota: rec.quota } });
         }
         continue;
       }
@@ -291,10 +302,11 @@ export default async function handler(req, res) {
         else usable.push(c);
       }
       attempts.push(attemptRecord(model, jsonMode, response, payload, timedOut, parsed, usable, parsed.candidates.length - usable.length));
-      if (usable.length) return send(res, 200, { ok: true, provider: 'gemini-strict', model, deterministic: false, strict: true, version: STRICT_PROVIDER_VERSION, candidates: usable, warnings: parsed.warnings, attempts, rejectedCopy: rejectedCopy.slice(0, 8), rawText: parsed.rawText, requestReceipt: { strict: true, noFallback: true, providerVersion: STRICT_PROVIDER_VERSION, minLengthRatio: minLengthRatioFor(contract), packetTier: safe(contract.packetTier || ''), maskEvidenceState: safe(contract.maskEvidenceState || ''), authorshipKernelVersion: 'pr134-authorship-kernel/v1', quotaDiagnosticVersion: 'pr140-quota-diagnostics/v2', elapsedMs: Date.now() - startedAt } });
+      if (usable.length) return send(res, 200, { ok: true, provider: 'gemini-strict', model, deterministic: false, strict: true, version: STRICT_PROVIDER_VERSION, candidates: usable, warnings: parsed.warnings, attempts, rejectedCopy: rejectedCopy.slice(0, 8), rawText: parsed.rawText, requestReceipt: { strict: true, noFallback: true, providerVersion: STRICT_PROVIDER_VERSION, minLengthRatio: minLengthRatioFor(contract), packetTier: safe(contract.packetTier || ''), maskEvidenceState: safe(contract.maskEvidenceState || ''), authorshipKernelVersion: 'pr134-authorship-kernel/v1', quotaDiagnosticVersion: 'pr141-provider-access-diagnostics/v1', elapsedMs: Date.now() - startedAt } });
     }
   }
   const lastWarning = attempts.at(-1)?.warning || 'strict-api-no-usable-candidates';
   const quota = attempts.map((attempt) => attempt.quota || attempt.error?.quota).find(Boolean) || null;
-  return send(res, 504, { ok: false, provider: 'gemini-strict', model: 'none', strict: true, noFallback: true, error: lastWarning === 'provider_timeout' ? 'provider_timeout' : 'no-usable-api-candidates', candidates: [], warnings: [lastWarning, 'strict-api-no-usable-candidates', 'no-server-repair', 'no-local-fallback'], attempts, rejectedCopy: rejectedCopy.slice(0, 8), providerQuota: quota, requestReceipt: { strict: true, noFallback: true, providerVersion: STRICT_PROVIDER_VERSION, minLengthRatio: minLengthRatioFor(contract), packetTier: safe(contract.packetTier || ''), maskEvidenceState: safe(contract.maskEvidenceState || ''), authorshipKernelVersion: 'pr134-authorship-kernel/v1', quotaDiagnosticVersion: 'pr140-quota-diagnostics/v2', providerQuota: quota, elapsedMs: Date.now() - startedAt } });
+  const access = lastWarning === 'provider_access_denied' || quota?.accessDenied;
+  return send(res, access ? 403 : 504, { ok: false, provider: 'gemini-strict', model: 'none', strict: true, noFallback: true, error: access ? 'provider_access_denied' : lastWarning === 'provider_timeout' ? 'provider_timeout' : 'no-usable-api-candidates', candidates: [], warnings: [access ? 'provider_access_denied' : lastWarning, 'strict-api-no-usable-candidates', 'no-server-repair', 'no-local-fallback'], attempts, rejectedCopy: rejectedCopy.slice(0, 8), providerQuota: quota, providerErrorMessage: quota?.messagePreview || '', requestReceipt: { strict: true, noFallback: true, providerVersion: STRICT_PROVIDER_VERSION, minLengthRatio: minLengthRatioFor(contract), packetTier: safe(contract.packetTier || ''), maskEvidenceState: safe(contract.maskEvidenceState || ''), authorshipKernelVersion: 'pr134-authorship-kernel/v1', quotaDiagnosticVersion: 'pr141-provider-access-diagnostics/v1', providerQuota: quota, elapsedMs: Date.now() - startedAt } });
 }
