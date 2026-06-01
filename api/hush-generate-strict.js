@@ -9,7 +9,7 @@ const DEFAULT_MODELS = ['gemini-2.5-flash-lite', 'gemini-2.5-flash', 'gemini-fla
 const GEMINI_TIMEOUT_MS = 12000;
 const WALL_TIMEOUT_MS = 18000;
 const STRICT_CANDIDATE_COUNT = 4;
-const STRICT_PROVIDER_VERSION = 'hush-generate-strict-v3-coverage-locks';
+const STRICT_PROVIDER_VERSION = 'hush-generate-strict-v4-authorship-locks';
 
 function send(res, status, payload) {
   for (const [key, value] of Object.entries(corsHeaders)) res.setHeader(key, value);
@@ -36,6 +36,7 @@ function normalizeCandidates(value) {
       dropped_propositions: stringArray(c.dropped_propositions || c.droppedPropositions),
       changed_questions: stringArray(c.changed_questions || c.changedQuestions),
       new_claims: stringArray(c.new_claims || c.newClaims),
+      authorship_moves: stringArray(c.authorship_moves || c.authorshipMoves),
       mask_surface_notes: c.mask_surface_notes && typeof c === 'object' ? c.mask_surface_notes : {},
       risk_flags: stringArray(c.risk_flags || c.riskFlags)
     };
@@ -112,8 +113,29 @@ function rootWarning(payload = {}, response = {}, timedOut = false) {
 function forbiddenMoves(route = {}) {
   return stringArray(route.forbidden_moves).filter((x) => !/preserve uncertainty|do not add new factual claims/i.test(x)).slice(0, 12);
 }
+function authorKernel(packet = {}, s = {}) {
+  const fromPacket = packet.authorship_kernel || s.authorship_kernel || {};
+  const seed = safe(s.sample_seed_excerpt || '');
+  const lexical = uniq([...(stringArray(fromPacket.lexical_signature)), ...stringArray(s.diction_hints).map((x) => x.includes(',') ? x.split(',').pop() : x), ...stringArray(s.transition_bank)]).slice(0, 14);
+  return {
+    version: fromPacket.version || 'pr134-authorship-kernel/v1',
+    mask_id: fromPacket.mask_id || s.mask_id || '',
+    display_name: fromPacket.display_name || s.display_name || '',
+    sentence_architecture: fromPacket.sentence_architecture || fromPacket.rhythmic_law || safe(seed.match(/Sentence length tendency:[^\n.]+/i)?.[0] || '').replace(/^Sentence length tendency:\s*/i, '') || 'mask-specific sentence architecture',
+    diction_weather: fromPacket.diction_weather || s.formality_target || s.register || '',
+    social_posture: fromPacket.social_posture || s.warmth_target || '',
+    punctuation_law: fromPacket.punctuation_law || '',
+    opening_moves: uniq([...(stringArray(fromPacket.opening_moves)), ...stringArray(s.transition_bank)]).slice(0, 10),
+    lexical_signature: lexical,
+    signature_moves: uniq([...(stringArray(fromPacket.signature_moves)), ...stringArray(s.desired_moves)]).slice(0, 12),
+    contrast_against: stringArray(fromPacket.contrast_against).slice(0, 8),
+    generic_avoid: uniq([...(stringArray(fromPacket.generic_avoid || fromPacket.banned_generic_moves)), ...stringArray(s.avoid_list), 'Here is', 'In summary', 'To clarify', 'This version', 'This rewrite']).slice(0, 18),
+    release_requirements: uniq([...(stringArray(fromPacket.release_requirements)), 'preserve source units before style flourish', 'make this mask audibly different from the other masks', 'put concrete rhythm/diction choices in mask_surface_notes']).slice(0, 8)
+  };
+}
 function compactPacket(packet = {}, candidateCount = STRICT_CANDIDATE_COUNT) {
   const route = packet.ontology_route || {}, s = packet.mask_style_vector || {}, e = packet.stylometry_engine || {}, controls = packet.flight_controls || {};
+  const authorship = authorKernel(packet, s);
   return {
     packet_version: packet.packet_version || '',
     ontology_route: {
@@ -136,6 +158,7 @@ function compactPacket(packet = {}, candidateCount = STRICT_CANDIDATE_COUNT) {
       desired_moves: stringArray(s.desired_moves).slice(0, 8),
       sample_seed_excerpt: safe(s.sample_seed_excerpt || '').slice(0, 900)
     },
+    authorship_kernel: authorship,
     stylometry_engine: {
       target_shell: e.target_shell || s.target_shell || null,
       cadence_shell: e.cadence_shell || null,
@@ -154,7 +177,8 @@ function compactPacket(packet = {}, candidateCount = STRICT_CANDIDATE_COUNT) {
       do_not_add_facts: controls.do_not_add_facts !== false,
       do_not_strengthen_claims: controls.do_not_strengthen_claims !== false,
       avoid_collapse_surface: controls.avoid_collapse_surface !== false,
-      preferred_operations: stringArray(controls.preferred_operations).slice(0, 6)
+      preferred_operations: stringArray(controls.preferred_operations).slice(0, 6),
+      authorship_kernel_required: true
     }
   };
 }
@@ -169,44 +193,18 @@ function coverageLock(contract = {}, units = []) {
   const minRatio = minLengthRatioFor(contract);
   const tier = safe(contract.packetTier || 'standard_packet');
   const evidence = safe(contract.maskEvidenceState || 'unknown');
-  return `COVERAGE LOCKS:
-- Packet tier: ${tier}. Mask evidence: ${evidence}.
-- Source-unit count: ${units.length}. Every candidate must preserve every source unit P1-P${Math.max(1, units.length)} unless a unit is truly empty.
-- Put each preserved unit label in preserved_propositions. Example: ["P1","P2","P3"].
-- dropped_propositions must be [] unless a source unit is impossible to preserve without adding facts.
-- Candidate text must be at least ${Math.round(minRatio * 100)}% of the source word count and must not feel like a summary.
-- For chat cadence packets, preserve social function, warmth/softening, uncertainty, sequence, and conversational relationship cues.
-- Do not compress multiple separate ideas into one vague sentence.
-- Do not produce aphorisms, taglines, captions, or wrapper notes.
-- Better to make a slightly longer mask-shaped message than a stylish message that drops source units.`;
+  return `COVERAGE LOCKS:\n- Packet tier: ${tier}. Mask evidence: ${evidence}.\n- Source-unit count: ${units.length}. Every candidate must preserve every source unit P1-P${Math.max(1, units.length)} unless a unit is truly empty.\n- Put each preserved unit label in preserved_propositions. Example: ["P1","P2","P3"].\n- dropped_propositions must be [] unless a source unit is impossible to preserve without adding facts.\n- Candidate text must be at least ${Math.round(minRatio * 100)}% of the source word count and must not feel like a summary.\n- For chat cadence packets, preserve social function, warmth/softening, uncertainty, sequence, and conversational relationship cues.\n- Do not compress multiple separate ideas into one vague sentence.\n- Do not produce aphorisms, taglines, captions, or wrapper notes.\n- Better to make a slightly longer mask-shaped message than a stylish message that drops source units.`;
+}
+function authorshipLock(packet = {}) {
+  const k = packet.authorship_kernel || {};
+  return `AUTHORSHIP LOCKS:\n- Mask voice: ${k.display_name || k.mask_id || 'selected mask'}.\n- Sentence architecture: ${k.sentence_architecture || 'follow mask architecture'}.\n- Diction weather: ${k.diction_weather || 'follow mask diction'}.\n- Social posture: ${k.social_posture || 'follow mask posture'}.\n- Punctuation law: ${k.punctuation_law || 'follow mask punctuation'}.\n- Preferred opening moves: ${stringArray(k.opening_moves).join('; ') || 'derive from mask, not source'}.\n- Lexical signature: ${stringArray(k.lexical_signature).join('; ') || 'use mask diction hints concretely'}.\n- Signature moves: ${stringArray(k.signature_moves).join('; ') || 'show mask-specific architecture and rhythm'}.\n- Avoid generic surface moves: ${stringArray(k.generic_avoid).join('; ') || 'generic assistant framing'}.\n- Contrast rules: ${stringArray(k.contrast_against).join('; ') || 'do not sound interchangeable with adjacent masks'}.\n- Each candidate must list authorship_moves naming two concrete mask-specific choices it used.\n- mask_surface_notes must describe rhythm, diction, and structure with concrete language, not boilerplate.`;
 }
 function prompt(contract = {}) {
   const source = safe(contract.sourceText || contract.messageDraftText || '').slice(0, 5000);
   const candidateCount = Math.min(STRICT_CANDIDATE_COUNT, Math.max(2, Number(contract.candidateCount || STRICT_CANDIDATE_COUNT) || STRICT_CANDIDATE_COUNT));
   const packet = compactPacket(contract.flightPacket || {}, candidateCount);
   const units = splitSourceUnits(source);
-  return `Return JSON only. No markdown. Schema: {"candidates":[{"text":"string","style_note":"string","style_operation":"string","preserved_propositions":["P1"],"dropped_propositions":[],"changed_questions":[],"new_claims":[],"risk_flags":[],"mask_surface_notes":{"rhythm":"string","diction":"string","structure":"string"}}]}
-
-STRICT RULES:
-- Generate ${candidateCount} candidates.
-- Preserve meaning, caveats, questions, negations, uncertainty, sequence, relationship cues, and causal links.
-- Do not answer questions.
-- Do not add facts or strengthen claims.
-- Do not copy the source opening, closing, sentence order, punctuation skeleton, or any six-word run.
-- Use the provider packet as active stylometric control.
-- Each candidate must have a distinct style_operation.
-- If the source has multiple sentences or clauses, the transformed message must still carry those separate units.
-
-${coverageLock(contract, units)}
-
-SOURCE UNITS:
-${units.map((u, i) => `P${i + 1}: ${u}`).join('\n')}
-
-PROVIDER PACKET:
-${JSON.stringify(packet, null, 2)}
-
-SOURCE TEXT:
-${source}`;
+  return `Return JSON only. No markdown. Schema: {"candidates":[{"text":"string","style_note":"string","style_operation":"string","preserved_propositions":["P1"],"dropped_propositions":[],"changed_questions":[],"new_claims":[],"authorship_moves":["string"],"risk_flags":[],"mask_surface_notes":{"rhythm":"string","diction":"string","structure":"string"}}]}\n\nSTRICT RULES:\n- Generate ${candidateCount} candidates.\n- Preserve meaning, caveats, questions, negations, uncertainty, sequence, relationship cues, and causal links.\n- Do not answer questions.\n- Do not add facts or strengthen claims.\n- Do not copy the source opening, closing, sentence order, punctuation skeleton, or any six-word run.\n- Use the provider packet as active stylometric control.\n- Use authorship_kernel as a release-critical author surface, not decorative context.\n- Each candidate must have a distinct style_operation.\n- If the source has multiple sentences or clauses, the transformed message must still carry those separate units.\n\n${coverageLock(contract, units)}\n\n${authorshipLock(packet)}\n\nSOURCE UNITS:\n${units.map((u, i) => `P${i + 1}: ${u}`).join('\n')}\n\nPROVIDER PACKET:\n${JSON.stringify(packet, null, 2)}\n\nSOURCE TEXT:\n${source}`;
 }
 async function callGemini(model, bodyPrompt, jsonMode) {
   const controller = new AbortController();
@@ -214,7 +212,7 @@ async function callGemini(model, bodyPrompt, jsonMode) {
   try {
     const response = await fetch('https://generativelanguage.googleapis.com/v1beta/models/' + encodeURIComponent(model) + ':generateContent?key=' + encodeURIComponent(process.env.GEMINI_API_KEY), {
       method: 'POST', headers: { 'content-type': 'application/json' }, signal: controller.signal,
-      body: JSON.stringify({ contents: [{ role: 'user', parts: [{ text: bodyPrompt }] }], generationConfig: jsonMode ? { temperature: 0.68, topP: 0.88, responseMimeType: 'application/json', maxOutputTokens: 4096 } : { temperature: 0.68, topP: 0.88, maxOutputTokens: 4096 } })
+      body: JSON.stringify({ contents: [{ role: 'user', parts: [{ text: bodyPrompt }] }], generationConfig: jsonMode ? { temperature: 0.7, topP: 0.9, responseMimeType: 'application/json', maxOutputTokens: 4096 } : { temperature: 0.7, topP: 0.9, maxOutputTokens: 4096 } })
     });
     const payload = await response.json().catch(() => ({}));
     return { response, payload, timedOut: false };
@@ -224,15 +222,7 @@ async function callGemini(model, bodyPrompt, jsonMode) {
 }
 function attemptRecord(model, jsonMode, response, payload, timedOut, parsed = null, usable = [], copied = 0) {
   const warning = response.ok ? (parsed?.warnings?.[0] || '') : rootWarning(payload, response, timedOut);
-  return {
-    model, jsonMode, ok: response.ok, status: response.status, warning,
-    retryAfterSeconds: warning === 'provider_quota_exhausted' ? retrySeconds(payload, response) : null,
-    parsedCandidates: parsed ? parsed.candidates.length : 0,
-    usableCandidates: usable.length,
-    copiedCandidates: copied,
-    timedOut: !!timedOut,
-    error: response.ok ? null : summarize(payload, response)
-  };
+  return { model, jsonMode, ok: response.ok, status: response.status, warning, retryAfterSeconds: warning === 'provider_quota_exhausted' ? retrySeconds(payload, response) : null, parsedCandidates: parsed ? parsed.candidates.length : 0, usableCandidates: usable.length, copiedCandidates: copied, timedOut: !!timedOut, error: response.ok ? null : summarize(payload, response) };
 }
 export default async function handler(req, res) {
   if (req.method === 'OPTIONS') return send(res, 200, { ok: true });
@@ -267,9 +257,9 @@ export default async function handler(req, res) {
         else usable.push(c);
       }
       attempts.push(attemptRecord(model, jsonMode, response, payload, timedOut, parsed, usable, parsed.candidates.length - usable.length));
-      if (usable.length) return send(res, 200, { ok: true, provider: 'gemini-strict', model, deterministic: false, strict: true, version: STRICT_PROVIDER_VERSION, candidates: usable, warnings: parsed.warnings, attempts, rejectedCopy: rejectedCopy.slice(0, 8), rawText: parsed.rawText, requestReceipt: { strict: true, noFallback: true, providerVersion: STRICT_PROVIDER_VERSION, minLengthRatio: minLengthRatioFor(contract), packetTier: safe(contract.packetTier || ''), maskEvidenceState: safe(contract.maskEvidenceState || ''), elapsedMs: Date.now() - startedAt } });
+      if (usable.length) return send(res, 200, { ok: true, provider: 'gemini-strict', model, deterministic: false, strict: true, version: STRICT_PROVIDER_VERSION, candidates: usable, warnings: parsed.warnings, attempts, rejectedCopy: rejectedCopy.slice(0, 8), rawText: parsed.rawText, requestReceipt: { strict: true, noFallback: true, providerVersion: STRICT_PROVIDER_VERSION, minLengthRatio: minLengthRatioFor(contract), packetTier: safe(contract.packetTier || ''), maskEvidenceState: safe(contract.maskEvidenceState || ''), authorshipKernelVersion: 'pr134-authorship-kernel/v1', elapsedMs: Date.now() - startedAt } });
     }
   }
   const lastWarning = attempts.at(-1)?.warning || 'strict-api-no-usable-candidates';
-  return send(res, 504, { ok: false, provider: 'gemini-strict', model: 'none', strict: true, noFallback: true, error: lastWarning === 'provider_timeout' ? 'provider_timeout' : 'no-usable-api-candidates', candidates: [], warnings: [lastWarning, 'strict-api-no-usable-candidates', 'no-server-repair', 'no-local-fallback'], attempts, rejectedCopy: rejectedCopy.slice(0, 8), requestReceipt: { strict: true, noFallback: true, providerVersion: STRICT_PROVIDER_VERSION, minLengthRatio: minLengthRatioFor(contract), packetTier: safe(contract.packetTier || ''), maskEvidenceState: safe(contract.maskEvidenceState || ''), elapsedMs: Date.now() - startedAt } });
+  return send(res, 504, { ok: false, provider: 'gemini-strict', model: 'none', strict: true, noFallback: true, error: lastWarning === 'provider_timeout' ? 'provider_timeout' : 'no-usable-api-candidates', candidates: [], warnings: [lastWarning, 'strict-api-no-usable-candidates', 'no-server-repair', 'no-local-fallback'], attempts, rejectedCopy: rejectedCopy.slice(0, 8), requestReceipt: { strict: true, noFallback: true, providerVersion: STRICT_PROVIDER_VERSION, minLengthRatio: minLengthRatioFor(contract), packetTier: safe(contract.packetTier || ''), maskEvidenceState: safe(contract.maskEvidenceState || ''), authorshipKernelVersion: 'pr134-authorship-kernel/v1', elapsedMs: Date.now() - startedAt } });
 }
