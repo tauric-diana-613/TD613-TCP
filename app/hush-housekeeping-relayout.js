@@ -1,4 +1,5 @@
 const TD613_HUSH_PHASE39_VERSION = '202605301720';
+const TD613_HUSH_HOUSEKEEPING_RELAYOUT_VERSION = '202606010329';
 
 const ensureHushPhase39Assets = () => {
   if (!document.querySelector('link[data-td613-hush-phase39="css"]')) {
@@ -17,13 +18,19 @@ const ensureHushPhase39Assets = () => {
   }
 };
 
+const outputCardAnchor = () =>
+  document.getElementById('protectedOutputInput')?.closest('.hush-output-card') ||
+  document.getElementById('protectedOutputHeading')?.closest('.hush-output-card') ||
+  document.querySelector('.hush-output-card');
+
 const relocateHushCustodyPanel = () => {
   const panel = document.getElementById('hushHousekeepingPanel');
-  const outputCard = document.getElementById('protectedOutputHeading')?.closest('.hush-output-card') || document.getElementById('protectedOutputInput')?.closest('section');
+  const outputCard = outputCardAnchor();
   if (!panel || !outputCard || !outputCard.parentNode) return false;
 
   panel.classList.add('hush-housekeeping-compact');
-  panel.setAttribute('aria-label', 'Compact private text custody controls');
+  panel.dataset.hushCustodyLocation = 'below-output-chamber';
+  panel.setAttribute('aria-label', 'Private text custody controls');
 
   const kicker = panel.querySelector('.hush-housekeeping-kicker');
   const title = panel.querySelector('.hush-housekeeping-title');
@@ -45,9 +52,10 @@ const relocateHushCustodyPanel = () => {
     if (button) button.textContent = label;
   }
 
-  if (panel.previousElementSibling === outputCard) return true;
-  outputCard.parentNode.insertBefore(panel, outputCard.nextSibling);
-  return true;
+  if (panel.parentNode !== outputCard.parentNode || panel.previousElementSibling !== outputCard) {
+    outputCard.insertAdjacentElement('afterend', panel);
+  }
+  return panel.previousElementSibling === outputCard;
 };
 
 function bindRelayout() {
@@ -55,24 +63,14 @@ function bindRelayout() {
   let tries = 0;
   const tick = () => {
     tries += 1;
-    relocateHushCustodyPanel();
-    if (tries < 80) window.setTimeout(tick, 75);
+    const moved = relocateHushCustodyPanel();
+    if (!moved && tries < 120) window.setTimeout(tick, 100);
   };
   tick();
-
-  const observer = new MutationObserver(() => {
-    window.requestAnimationFrame(() => {
-      relocateHushCustodyPanel();
-      ensureHushPhase39Assets();
-    });
-  });
-  observer.observe(document.documentElement, { childList: true, subtree: true });
+  window.addEventListener('load', () => window.setTimeout(relocateHushCustodyPanel, 160));
+  window.addEventListener('td613:hush:patch38-result', () => window.setTimeout(relocateHushCustodyPanel, 80));
 }
 
-if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', bindRelayout);
+if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', bindRelayout, { once: true });
 else bindRelayout();
-window.addEventListener('load', () => window.setTimeout(() => {
-  relocateHushCustodyPanel();
-  ensureHushPhase39Assets();
-}, 160));
-window.__TD613_HUSH_HOUSEKEEPING_RELAYOUT__ = { relocateHushCustodyPanel, ensureHushPhase39Assets };
+window.__TD613_HUSH_HOUSEKEEPING_RELAYOUT__ = { version: TD613_HUSH_HOUSEKEEPING_RELAYOUT_VERSION, relocateHushCustodyPanel, ensureHushPhase39Assets };
