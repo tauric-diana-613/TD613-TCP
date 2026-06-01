@@ -11,6 +11,8 @@
     { "source": "/app/gateway-housekeeping.css", "headers": [{ "key": "Cache-Control", "value": "no-store, max-age=0" }] },
     { "source": "/hush-(.*)", "headers": [{ "key": "Cache-Control", "value": "no-store, max-age=0" }] },
     { "source": "/app/hush-(.*)", "headers": [{ "key": "Cache-Control", "value": "no-store, max-age=0" }] },
+    { "source": "/app/engine/(.*)", "headers": [{ "key": "Cache-Control", "value": "no-store, max-age=0" }] },
+    { "source": "/engine/(.*)", "headers": [{ "key": "Cache-Control", "value": "no-store, max-age=0" }] },
     { "source": "/asset-versions.js", "headers": [{ "key": "Cache-Control", "value": "no-store, max-age=0" }] },
     { "source": "/app/asset-versions.js", "headers": [{ "key": "Cache-Control", "value": "no-store, max-age=0" }] }
   ],
