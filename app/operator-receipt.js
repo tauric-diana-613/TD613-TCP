@@ -211,4 +211,39 @@
     render,
     ensureMount
   });
+
+  (function bootstrapSafeHarborHousekeeping() {
+    const path = String((window.location && window.location.pathname) || '');
+    if (!/safe-harbor/i.test(path)) return;
+    const version = '20260601-pr147';
+    const sessionKey = 'td613.safe-harbor.session.v1';
+    const mirrorKey = 'td613.safe-harbor.session.mirror.v1';
+    try {
+      const sessionRaw = sessionStorage.getItem(sessionKey);
+      const mirrorRaw = localStorage.getItem(mirrorKey);
+      if (!sessionRaw && mirrorRaw) {
+        sessionStorage.setItem(sessionKey, mirrorRaw);
+        const saved = JSON.parse(mirrorRaw);
+        const ingress = saved && saved.ingress;
+        if (ingress && (ingress.vaultOpen || ingress.operatorShellOpen)) {
+          document.documentElement.dataset.safeHarborSessionOpen = 'true';
+        }
+      }
+    } catch (error) {}
+    document.documentElement.classList.add('safe-harbor-pr147');
+    const cssHref = 'app/safe-harbor-housekeeping.css?v=' + version;
+    if (!document.querySelector('link[href*="safe-harbor-housekeeping.css"]')) {
+      const link = document.createElement('link');
+      link.rel = 'stylesheet';
+      link.href = cssHref;
+      document.head.appendChild(link);
+    }
+    const jsSrc = 'app/safe-harbor-housekeeping.js?v=' + version;
+    if (!document.querySelector('script[src*="safe-harbor-housekeeping.js"]')) {
+      const script = document.createElement('script');
+      script.src = jsSrc;
+      script.defer = true;
+      document.head.appendChild(script);
+    }
+  }());
 }());
