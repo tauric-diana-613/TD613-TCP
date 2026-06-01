@@ -5,7 +5,7 @@ import { attachPropositionIntegrity } from './hush-proposition-integrity.js';
 
 export * from './hush-swap-phase34.js';
 export const HUSH_SWAP_PATCH38_VERSION = 'patch-38-hybrid-candidate-generator';
-export const HUSH_SWAP_PATCH38_INTERNAL_VERSION = 'phase-37.6-mask-surface-flight-selector';
+export const HUSH_SWAP_PATCH38_INTERNAL_VERSION = 'phase-37.7-strict-remote-only-selector';
 
 const asArray = (value) => Array.isArray(value) ? value.filter(Boolean) : [];
 const safe = (value) => String(value ?? '');
@@ -290,16 +290,21 @@ export function buildHushSwap(input = {}) {
   const result = buildPhase34HushSwap(input);
   const sourceText = safe(input.sourceText || input.messageDraftText || '');
   const mode = input.generatorMode || GENERATOR_MODES.OFFLINE_EXPRESSIVE;
-  const offlineReport = generateOfflineProviderCandidates(input);
-  const maskSurfaceReport = generateMaskSurfaceCandidates(input);
+  const strictRemoteOnly = Boolean(input.options?.strictRemoteOnly);
+  const offlineReport = strictRemoteOnly ? { provider: 'strict-remote-only', candidates: [], warnings: ['offline-disabled-by-strict-remote-only'] } : generateOfflineProviderCandidates(input);
+  const maskSurfaceReport = strictRemoteOnly ? { provider: 'strict-remote-only', candidates: [], warnings: ['mask-surface-disabled-by-strict-remote-only'] } : generateMaskSurfaceCandidates(input);
   const remoteReports = asArray(input.providerReports);
-  const reports = mode === GENERATOR_MODES.REMOTE_LLM_PROXY
-    ? [...remoteReports, maskSurfaceReport]
-    : mode === GENERATOR_MODES.HYBRID
-      ? [...remoteReports, maskSurfaceReport, offlineReport]
-      : [maskSurfaceReport, offlineReport];
+  const reports = mode === GENERATOR_MODES.REMOTE_LLM_PROXY && strictRemoteOnly
+    ? remoteReports
+    : mode === GENERATOR_MODES.REMOTE_LLM_PROXY
+      ? [...remoteReports, maskSurfaceReport]
+      : mode === GENERATOR_MODES.HYBRID
+        ? [...remoteReports, maskSurfaceReport, offlineReport]
+        : [maskSurfaceReport, offlineReport];
   const providerCandidates = mergeProviderCandidates(reports).map((candidate) => normalize(candidate, sourceText));
-  const merged = mergeProviderCandidates([{ candidates: providerCandidates }, { candidates: asArray(result.candidates) }]).map((candidate) => normalize(candidate, sourceText));
+  const merged = strictRemoteOnly
+    ? providerCandidates
+    : mergeProviderCandidates([{ candidates: providerCandidates }, { candidates: asArray(result.candidates) }]).map((candidate) => normalize(candidate, sourceText));
   const releasable = merged.filter((candidate) => release(candidate, sourceText));
   const ranked = releasable.map((candidate) => {
     const operation = styleOperation(candidate);
@@ -323,11 +328,14 @@ export function buildHushSwap(input = {}) {
     };
   }).sort((a, b) => b.score - a.score);
 
-  const selected = mode === GENERATOR_MODES.REMOTE_LLM_PROXY
-    ? (ranked.find((row) => row.remote && row.maskFidelity >= 0.28)?.candidate || ranked.find((row) => row.candidate.operations?.includes?.(HUSH_MASK_SURFACE_FLIGHT_VERSION) && row.maskFidelity >= 0.34)?.candidate || ranked.find((row) => row.remote)?.candidate || null)
-    : mode === GENERATOR_MODES.HYBRID
-      ? (ranked.find((row) => row.remote && row.maskFidelity >= 0.24)?.candidate || ranked.find((row) => row.candidate.operations?.includes?.(HUSH_MASK_SURFACE_FLIGHT_VERSION))?.candidate || ranked.find((row) => row.provider)?.candidate || ranked[0]?.candidate || null)
-      : (ranked.find((row) => row.candidate.operations?.includes?.(HUSH_MASK_SURFACE_FLIGHT_VERSION) && row.maskFidelity >= 0.28)?.candidate || ranked.find((row) => row.offline && row.collapse < 0.42)?.candidate || ranked[0]?.candidate || null);
+  let selected = mode === GENERATOR_MODES.REMOTE_LLM_PROXY && strictRemoteOnly
+    ? (ranked.find((row) => row.remote && row.maskFidelity >= 0.18)?.candidate || ranked.find((row) => row.remote)?.candidate || null)
+    : mode === GENERATOR_MODES.REMOTE_LLM_PROXY
+      ? (ranked.find((row) => row.remote && row.maskFidelity >= 0.28)?.candidate || ranked.find((row) => row.candidate.operations?.includes?.(HUSH_MASK_SURFACE_FLIGHT_VERSION) && row.maskFidelity >= 0.34)?.candidate || ranked.find((row) => row.remote)?.candidate || null)
+      : mode === GENERATOR_MODES.HYBRID
+        ? (ranked.find((row) => row.remote && row.maskFidelity >= 0.24)?.candidate || ranked.find((row) => row.candidate.operations?.includes?.(HUSH_MASK_SURFACE_FLIGHT_VERSION))?.candidate || ranked.find((row) => row.provider)?.candidate || ranked[0]?.candidate || null)
+        : (ranked.find((row) => row.candidate.operations?.includes?.(HUSH_MASK_SURFACE_FLIGHT_VERSION) && row.maskFidelity >= 0.28)?.candidate || ranked.find((row) => row.offline && row.collapse < 0.42)?.candidate || ranked[0]?.candidate || null);
+  if (strictRemoteOnly && selected && !remoteSource(selected)) selected = null;
 
   const blockedRows = merged.filter((candidate) => !release(candidate, sourceText)).slice(0, 10).map((candidate) => ({
     id: candidate.id,
@@ -349,9 +357,13 @@ export function buildHushSwap(input = {}) {
     internalVersion: HUSH_SWAP_PATCH38_INTERNAL_VERSION,
     providerVersion: HUSH_GENERATOR_PROVIDER_VERSION,
     providerMode: mode,
+    strictRemoteOnly,
+    fallbackReleased: !strictRemoteOnly,
     maskSurfaceFlightVersion: HUSH_MASK_SURFACE_FLIGHT_VERSION,
     flightPacketVersion: input.phase37Telemetry?.flightPacketVersion || input.phase37Telemetry?.flightPacket?.packet_version || '',
     phase37Version: input.phase37Telemetry?.version || '',
+    packetTier: input.phase37Telemetry?.packetTier || input.phase37Telemetry?.flightPacket?.packet_tier || '',
+    maskEvidenceState: input.phase37Telemetry?.maskEvidence?.maskEvidenceState || input.phase37Telemetry?.flightPacket?.mask_evidence?.maskEvidenceState || '',
     providerReports: reports.map((report) => ({ provider: report.provider, model: report.model, promptVersion: report.promptVersion, flightPacketVersion: report.flightPacketVersion, candidateCount: asArray(report.candidates).length, warnings: report.warnings, requestReceipt: report.requestReceipt })),
     remoteCandidateCount: providerCandidates.filter(remoteSource).length,
     offlineCandidateCount: providerCandidates.filter(offlineSource).length,
@@ -382,16 +394,20 @@ export function buildHushSwap(input = {}) {
     selectedScore: selectedRow?.score || 0,
     selectorRows: ranked.slice(0, 10).map((row) => ({ id: row.candidate.id, source: row.candidate.source, strategy: row.candidate.strategy, operation: row.operation, score: row.score, collapse: row.collapse, coverage: row.coverage, lengthRatio: row.lengthRatio, maskFidelity: row.maskFidelity, syntaxDistance: row.syntaxDistance, humanTexture: row.humanTexture, operationCompleteness: row.operationCompleteness, reviewRelease: row.reviewRelease, sourceCopyRisk: row.sourceCopyRisk, provider: row.provider, remote: row.remote, offline: row.offline })),
     mergedCandidates: merged,
-    warning: !selected && mode === GENERATOR_MODES.REMOTE_LLM_PROXY && providerCandidates.filter(remoteSource).length === 0
-      ? 'remote-mode-produced-no-remote-candidates'
-      : !selected && providerBlockedCount
-        ? 'provider-candidates-failed-review-release'
-        : !selected && blockedCopyCount
-          ? 'all-candidates-copied-source'
-          : blockedCopyCount ? 'source-copy-candidates-blocked'
-            : !selected && blockedRows.length ? 'all-candidates-failed-proposition-coverage'
-              : spread.length <= 1 && providerCandidates.length > 1 ? 'phase37-operation-diversity-low'
-                : collapseSurfaceScore(selected?.text || '') >= 0.48 ? 'patch38-custody-collapse-risk' : ''
+    warning: strictRemoteOnly && !selected && providerCandidates.filter(remoteSource).length === 0
+      ? 'strict-remote-only-no-approved-remote-candidate'
+      : strictRemoteOnly && !selected
+        ? 'strict-remote-only-remote-candidates-failed-review-release'
+        : !selected && mode === GENERATOR_MODES.REMOTE_LLM_PROXY && providerCandidates.filter(remoteSource).length === 0
+          ? 'remote-mode-produced-no-remote-candidates'
+          : !selected && providerBlockedCount
+            ? 'provider-candidates-failed-review-release'
+            : !selected && blockedCopyCount
+              ? 'all-candidates-copied-source'
+              : blockedCopyCount ? 'source-copy-candidates-blocked'
+                : !selected && blockedRows.length ? 'all-candidates-failed-proposition-coverage'
+                  : spread.length <= 1 && providerCandidates.length > 1 ? 'phase37-operation-diversity-low'
+                    : collapseSurfaceScore(selected?.text || '') >= 0.48 ? 'patch38-custody-collapse-risk' : ''
   };
   return apply(result, selected, diagnostics);
 }
