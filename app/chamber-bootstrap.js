@@ -95,6 +95,7 @@
     appendScript('./hush-pr116-approval-alert-receipt.js?v=' + (V.hushPr116 || V.hushPr115 || V.hushPr114 || V.hushPr112 || V.hushPatch38 || V.main || ''));
     appendScript('./hush-pr111-review-candidate-bridge.js?v=' + (V.hushPr111 || V.hushPr110 || V.hushPatch38 || V.main || ''));
     appendScript('./hush-pr112-cadence-bridge.js?v=' + (V.hushPr112 || V.hushPr111 || V.hushPatch38 || V.main || ''));
+    appendScript('./hush-pr119-user-facing-ui-polish.js?v=' + (V.hushPr119 || V.hushPr118 || V.hushPatch38 || V.main || ''));
   }
 
   var srcs = [
