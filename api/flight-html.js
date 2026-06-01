@@ -1,7 +1,7 @@
 import { readFile } from 'node:fs/promises';
 import path from 'node:path';
 
-const VERSION = 'pr137-flight-android-scroll-route/v1';
+const VERSION = 'pr138-flight-android-swipe-smooth/v1';
 
 function isAndroidRequest(req) {
   return /Android/i.test(String(req?.headers?.['user-agent'] || ''));
@@ -66,25 +66,46 @@ function androidInlinePatch() {
   }
 
   .grid {
-    display: grid !important;
+    display: flex !important;
+    grid-template-columns: none !important;
+    align-items: stretch !important;
     width: 100% !important;
     max-width: 100% !important;
     min-width: 0 !important;
-    grid-template-columns: 100% 100% !important;
+    height: auto !important;
+    min-height: 0 !important;
     gap: 0 !important;
-    overflow: visible !important;
-    touch-action: pan-y pinch-zoom !important;
+    overflow-x: auto !important;
+    overflow-y: visible !important;
+    scroll-snap-type: x proximity !important;
+    scroll-behavior: auto !important;
+    scrollbar-width: none !important;
+    overscroll-behavior-x: contain !important;
+    touch-action: pan-x pan-y pinch-zoom !important;
     -webkit-overflow-scrolling: touch !important;
+    transform: translate3d(0, 0, 0) !important;
+    backface-visibility: hidden !important;
+    will-change: scroll-position;
+  }
+
+  .grid::-webkit-scrollbar {
+    display: none !important;
   }
 
   .grid > div,
   .flight-lane-prompt,
   .flight-lane-output {
+    flex: 0 0 100% !important;
     width: 100% !important;
     max-width: 100% !important;
     min-width: 100% !important;
+    height: auto !important;
+    min-height: 0 !important;
     overflow: visible !important;
-    touch-action: pan-y pinch-zoom !important;
+    scroll-snap-align: start !important;
+    transform: translate3d(0, 0, 0) !important;
+    backface-visibility: hidden !important;
+    touch-action: pan-x pan-y pinch-zoom !important;
   }
 
   .card,
@@ -94,7 +115,17 @@ function androidInlinePatch() {
   .seal-card,
   .copy-bin-card {
     max-width: 100% !important;
-    touch-action: pan-y pinch-zoom !important;
+    content-visibility: visible !important;
+    contain-intrinsic-size: auto !important;
+    transform: translateZ(0) !important;
+    backface-visibility: hidden !important;
+    touch-action: pan-x pan-y pinch-zoom !important;
+  }
+
+  body::before,
+  body::after,
+  .page-wrap::before {
+    will-change: auto !important;
   }
 
   textarea,
