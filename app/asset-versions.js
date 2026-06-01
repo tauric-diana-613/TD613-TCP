@@ -8,12 +8,12 @@
     receipt:     '202605010945',
     main:        '202604230045',
     aperture:    '202605281835',
-    chrome:      '202605250312',
+    chrome:      '202606010222',
     hushAlienConsole: '202605250326',
     hushFieldInstrument: '202605250326',
     hushMobileViewportFix: '202605200003',
     hushPhase32: '202605250101',
-    hushPatch38: '202605310058',
+    hushPatch38: '202606010222',
     hushPr75: '202605250326',
     hushPr77: '202605251735',
     hushPr78: '202605250311',
@@ -33,7 +33,11 @@
     hushPr108: '202605302215',
     hushPr110: '202605302305',
     hushPr111: '202605310058',
-    hushPr112: '202606010132',
+    hushPr112: '202606010146',
+    hushPr114: '202606010205',
+    hushPr115: '202606010218',
+    hushPr116: '202606010221',
+    hushPr117: '202606010222',
     hushPhase39: '202605301720'
   };
   var V = window.TD613_ASSET_VERSIONS;
