@@ -1,5 +1,5 @@
 (function () {
-  var VERSION = 'pr126-copy-hygiene/v1';
+  var VERSION = 'pr126-copy-hygiene/v1+pr130-loader';
   var REPLACEMENTS = [
     [/\bPhase\s*37\b/gi, 'provider packet'],
     [/\bPhase\s*38\b/gi, 'selector route'],
@@ -51,6 +51,15 @@
     });
   }
 
+  function loadLowSignatureGate() {
+    if (!document.body || document.body.dataset.pageKind !== 'adversarial-bench') return;
+    if (document.querySelector('script[src^="./hush-pr130-low-signature-selector-gate.js"]')) return;
+    var script = document.createElement('script');
+    script.src = './hush-pr130-low-signature-selector-gate.js?v=202606010610';
+    script.dataset.td613Pr130Loader = VERSION;
+    document.head.appendChild(script);
+  }
+
   function run() {
     if (!document.body) return;
     document.body.dataset.copyHygiene = VERSION;
@@ -71,9 +80,10 @@
   function boot() {
     run();
     observe();
+    loadLowSignatureGate();
   }
 
-  window.TD613_COPY_HYGIENE = { version: VERSION, run: run, cleanText: cleanText };
+  window.TD613_COPY_HYGIENE = { version: VERSION, run: run, cleanText: cleanText, loadLowSignatureGate: loadLowSignatureGate };
   if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', boot, { once: true });
   else boot();
 }());
