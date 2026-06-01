@@ -73,7 +73,7 @@
     appendModule('./hush-customizer-card-fields-boot.js?v=' + (V.hushCustomizerCardFields || V.main || ''));
     appendModule('./hush-phase32.js?v=' + (V.hushPhase32 || V.main || ''));
     appendModule('./hush-patch38.js?v=' + (V.hushPatch38 || V.hushPhase32 || V.main || ''));
-    appendModule('./hush-pr75-rescue.js?v=' + (V.hushPr75 || V.hushPatch38 || V.main || ''));
+    appendModule('./hush-pr75-rescue.js?v=' + (V.hushPr75 || V.hushPatch38 || V.hushPhase32 || V.main || ''));
     appendModule('./hush-pr77-flight-controls.js?v=' + (V.hushPr77 || V.hushPatch38 || V.main || ''));
     appendModule('./hush-pr78-runtime-trace.js?v=' + (V.hushPr78 || V.hushPr77 || V.hushPatch38 || V.main || ''));
     appendModule('./hush-pr79-coverage-floor.js?v=' + (V.hushPr79 || V.hushPr78 || V.hushPatch38 || V.main || ''));
@@ -98,6 +98,8 @@
     appendScript('./hush-pr119-user-facing-ui-polish.js?v=' + (V.hushPr119 || V.hushPr118 || V.hushPatch38 || V.main || ''));
     appendScript('./hush-pr120-ui-hotfix.js?v=' + (V.hushPr120 || V.hushPr119 || V.hushPr118 || V.hushPatch38 || V.main || ''));
     appendScript('./hush-pr121-final-ui-surgery.js?v=' + (V.hushPr121 || V.hushPr120 || V.hushPr119 || V.hushPr118 || V.hushPatch38 || V.main || ''));
+    appendScript('./hush-pr122-receipt-compactor.js?v=' + (V.hushPr122 || V.hushPr121 || V.hushPatch38 || V.main || ''));
+    appendScript('./hush-pr123-stable-transform.js?v=' + (V.hushPr123 || V.hushPr122 || V.hushPatch38 || V.main || ''));
   }
 
   var srcs = [
