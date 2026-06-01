@@ -1,99 +1,24 @@
 {
   "version": 2,
   "headers": [
-    {
-      "source": "/adversarial-bench.html",
-      "headers": [
-        { "key": "Cache-Control", "value": "no-store, max-age=0" }
-      ]
-    },
-    {
-      "source": "/app/adversarial-bench.html",
-      "headers": [
-        { "key": "Cache-Control", "value": "no-store, max-age=0" }
-      ]
-    },
-    {
-      "source": "/safe-harbor/td613-flight.html",
-      "headers": [
-        { "key": "Cache-Control", "value": "no-store, max-age=0" }
-      ]
-    },
-    {
-      "source": "/app/safe-harbor/td613-flight.html",
-      "headers": [
-        { "key": "Cache-Control", "value": "no-store, max-age=0" }
-      ]
-    },
-    {
-      "source": "/app/safe-harbor/td613-flight-android-scroll-fix.js",
-      "headers": [
-        { "key": "Cache-Control", "value": "no-store, max-age=0" }
-      ]
-    },
-    {
-      "source": "/safe-harbor/td613-flight-android-scroll-fix.js",
-      "headers": [
-        { "key": "Cache-Control", "value": "no-store, max-age=0" }
-      ]
-    },
-    {
-      "source": "/gateway-housekeeping.css",
-      "headers": [
-        { "key": "Cache-Control", "value": "no-store, max-age=0" }
-      ]
-    },
-    {
-      "source": "/app/gateway-housekeeping.css",
-      "headers": [
-        { "key": "Cache-Control", "value": "no-store, max-age=0" }
-      ]
-    },
-    {
-      "source": "/hush-(.*)",
-      "headers": [
-        { "key": "Cache-Control", "value": "no-store, max-age=0" }
-      ]
-    },
-    {
-      "source": "/app/hush-(.*)",
-      "headers": [
-        { "key": "Cache-Control", "value": "no-store, max-age=0" }
-      ]
-    },
-    {
-      "source": "/asset-versions.js",
-      "headers": [
-        { "key": "Cache-Control", "value": "no-store, max-age=0" }
-      ]
-    },
-    {
-      "source": "/app/asset-versions.js",
-      "headers": [
-        { "key": "Cache-Control", "value": "no-store, max-age=0" }
-      ]
-    }
+    { "source": "/adversarial-bench.html", "headers": [{ "key": "Cache-Control", "value": "no-store, max-age=0" }] },
+    { "source": "/app/adversarial-bench.html", "headers": [{ "key": "Cache-Control", "value": "no-store, max-age=0" }] },
+    { "source": "/safe-harbor/td613-flight.html", "headers": [{ "key": "Cache-Control", "value": "no-store, max-age=0" }] },
+    { "source": "/app/safe-harbor/td613-flight.html", "headers": [{ "key": "Cache-Control", "value": "no-store, max-age=0" }] },
+    { "source": "/app/safe-harbor/td613-flight-android-scroll-fix.js", "headers": [{ "key": "Cache-Control", "value": "no-store, max-age=0" }] },
+    { "source": "/safe-harbor/td613-flight-android-scroll-fix.js", "headers": [{ "key": "Cache-Control", "value": "no-store, max-age=0" }] },
+    { "source": "/gateway-housekeeping.css", "headers": [{ "key": "Cache-Control", "value": "no-store, max-age=0" }] },
+    { "source": "/app/gateway-housekeeping.css", "headers": [{ "key": "Cache-Control", "value": "no-store, max-age=0" }] },
+    { "source": "/hush-(.*)", "headers": [{ "key": "Cache-Control", "value": "no-store, max-age=0" }] },
+    { "source": "/app/hush-(.*)", "headers": [{ "key": "Cache-Control", "value": "no-store, max-age=0" }] },
+    { "source": "/asset-versions.js", "headers": [{ "key": "Cache-Control", "value": "no-store, max-age=0" }] },
+    { "source": "/app/asset-versions.js", "headers": [{ "key": "Cache-Control", "value": "no-store, max-age=0" }] }
   ],
   "rewrites": [
-    {
-      "source": "/api/(.*)",
-      "destination": "/api/$1"
-    },
-    {
-      "source": "/safe-harbor/td613-flight.html",
-      "destination": "/api/flight-html"
-    },
-    {
-      "source": "/app/safe-harbor/td613-flight.html",
-      "destination": "/api/flight-html"
-    },
-    {
-      "source": "/app/(.*)",
-      "destination": "/app/$1"
-    },
-    {
-      "source": "/(.*)",
-      "destination": "/app/$1"
-    }
+    { "source": "/api/(.*)", "destination": "/api/$1" },
+    { "source": "/safe-harbor/td613-flight.html", "has": [{ "type": "header", "key": "user-agent", "value": "Android" }], "destination": "/api/flight-html" },
+    { "source": "/app/safe-harbor/td613-flight.html", "has": [{ "type": "header", "key": "user-agent", "value": "Android" }], "destination": "/api/flight-html" },
+    { "source": "/app/(.*)", "destination": "/app/$1" },
+    { "source": "/(.*)", "destination": "/app/$1" }
   ]
 }
