@@ -1,7 +1,7 @@
 import { generateExpressiveCandidates } from './hush-expressive-generator.js';
 import { extractCadenceProfile } from './stylometry.js';
 
-export const HUSH_GENERATOR_PROVIDER_VERSION = 'patch-38-generator-provider-phase37-telemetry+generic-transposition+session-cache';
+export const HUSH_GENERATOR_PROVIDER_VERSION = 'patch-38-generator-provider-phase37-telemetry+generic-transposition+session-cache+pr135-authorship-moves';
 export const TECH_JOB_SIGNAL_SAMPLE = 'How do you find a tech job with no prior experience in the sector? Is signal reading fluency really that much of a skill asset?';
 
 const safe = (value) => String(value ?? '').trim();
@@ -160,7 +160,7 @@ export function buildHushLlmPromptContract(input = {}) {
       'Avoid repeating the source sentence structure line by line; transpose cadence while preserving propositions.',
       'Return JSON only with a candidates array.'
     ],
-    outputSchema: { candidates: [{ text: 'string', style_note: 'string', risk_flags: ['string'] }] },
+    outputSchema: { candidates: [{ text: 'string', style_note: 'string', authorship_moves: ['string'], risk_flags: ['string'] }] },
     sourceText: safe(input.sourceText || input.messageDraftText || ''),
     mask: compactMaskForRemote(mask),
     maskReferenceExcerpt: truncate(maskReferenceText, 1800),
@@ -188,6 +188,7 @@ function candidate(id, text, strategy = 'offline-generic-question') {
     dropped_propositions: [],
     changed_questions: [],
     new_claims: [],
+    authorship_moves: [],
     mask_surface_notes: {},
     profile: extractCadenceProfile(text),
     naturalness: { naturalnessScore: 0.72, fluencyWarnings: [] },
@@ -336,6 +337,7 @@ function providerTelemetry(item = {}, contract = {}) {
     dropped_propositions: safeArray(item.dropped_propositions || item.droppedPropositions),
     changed_questions: safeArray(item.changed_questions || item.changedQuestions),
     new_claims: safeArray(item.new_claims || item.newClaims),
+    authorship_moves: safeArray(item.authorship_moves || item.authorshipMoves),
     mask_surface_notes: notes
   };
 }
@@ -362,17 +364,18 @@ export function normalizeRemoteProviderResponse(payload = {}, contract = {}) {
         dropped_propositions: telemetry.dropped_propositions,
         changed_questions: telemetry.changed_questions,
         new_claims: telemetry.new_claims,
+        authorship_moves: telemetry.authorship_moves,
         mask_surface_notes: telemetry.mask_surface_notes,
         providerTelemetry: telemetry,
         warnings: asArray(item.risk_flags || item.riskFlags),
-        operations: ['patch38-generator-provider', 'remote-llm-proxy', slug(telemetry.style_operation || styleNote)],
-        scoreBreakdown: { naturalness: 0.78, semanticFidelity: 0.8, remoteProviderCandidate: 1, phase37Telemetry: telemetry.style_operation ? 1 : 0 },
-        finalScore: telemetry.style_operation ? 0.86 : 0.8
+        operations: ['patch38-generator-provider', 'remote-llm-proxy', slug(telemetry.style_operation || styleNote), ...telemetry.authorship_moves.map((move) => `author-${slug(move)}`).slice(0, 3)],
+        scoreBreakdown: { naturalness: 0.78, semanticFidelity: 0.8, remoteProviderCandidate: 1, phase37Telemetry: telemetry.style_operation ? 1 : 0, authorshipMoves: Math.min(1, telemetry.authorship_moves.length / 2) },
+        finalScore: telemetry.style_operation ? 0.86 + Math.min(0.04, telemetry.authorship_moves.length * 0.02) : 0.8
       };
     }).filter((item) => item.text),
     warnings: asArray(payload.warnings),
     rawText: payload.rawText || '',
-    requestReceipt: { sentPrivateLedger: false, sentMaskMemory: false, redactionApplied: true, promptVersion: contract.promptVersion, flightPacketVersion: contract.flightPacketVersion || contract.flightPacket?.packet_version || '' }
+    requestReceipt: { sentPrivateLedger: false, sentMaskMemory: false, redactionApplied: true, promptVersion: contract.promptVersion, flightPacketVersion: contract.flightPacketVersion || contract.flightPacket?.packet_version || '', authorshipKernelVersion: contract.flightPacket?.authorship_kernel?.version || contract.authorshipKernel?.version || '' }
   };
 }
 
