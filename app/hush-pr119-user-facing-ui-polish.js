@@ -1,16 +1,19 @@
 (function(){'use strict';
-var V='pr119-safe-noop-2';
-function boot(){
-  if(!document.body||document.body.dataset.pageKind!=='adversarial-bench')return;
-  document.body.dataset.pr119UserFacingUiPolish=V;
-  var old=document.getElementById('hushPr119Style');
-  if(old)old.remove();
-  var s=document.createElement('style');
-  s.id='hushPr119Style';
-  s.textContent='.hush-output-chamber .hush-kicker,#protectedOutputHeading,.hush-output-card .hush-kicker,.hush-output-card .hush-card-kicker{margin-left:clamp(.75rem,2.5vw,2rem)!important}.hush-output-chamber .hush-card-head,.hush-output-card .hush-card-head{padding-left:clamp(.5rem,1.5vw,1.25rem)!important}';
-  document.head.appendChild(s);
-  window.TD613_HUSH_PR119={version:V,disabled:true,tick:function(){},copyReceipt:function(){return null}};
-}
-if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',boot,{once:true});else boot();
-setTimeout(boot,500);
+var V='pr119-surgical-ui-polish';
+function $(id){return document.getElementById(id)}
+function txt(v){return String(v==null?'':v)}
+function bench(){return window.__TD613_HUSH_BENCH__||{}}
+function state(){return bench().benchState||{}}
+function receipt(){return window.__TD613_HUSH_NO_FALLBACK_RECEIPT||window.__TD613_HUSH_PR118_LAST||null}
+function copy(v){if(navigator.clipboard&&navigator.clipboard.writeText)return navigator.clipboard.writeText(v);var x=document.createElement('textarea');x.value=v;document.body.appendChild(x);x.select();document.execCommand('copy');x.remove();return Promise.resolve()}
+function style(){var old=$('hushPr119Style');if(old)old.remove();var s=document.createElement('style');s.id='hushPr119Style';s.textContent='.hush-output-chamber .hush-kicker,#protectedOutputHeading,.hush-output-card .hush-kicker,.hush-output-card .hush-card-kicker{margin-left:clamp(.55rem,1.8vw,1.35rem)!important}.hush-output-chamber .hush-card-head,.hush-output-card .hush-card-head{padding-left:clamp(.35rem,1vw,.9rem)!important}.hush-receipt-copy-row{display:flex;justify-content:flex-end;margin:.6rem 0 .25rem}.hush-receipt-copy-btn{border:1px solid rgba(184,255,122,.68);border-radius:999px;padding:.58rem .95rem;background:linear-gradient(135deg,rgba(184,255,122,.34),rgba(154,235,255,.22));color:#fff;font-weight:850;letter-spacing:.02em}.hush-custom-action-row{display:grid!important;grid-template-columns:1fr 1fr!important;gap:.7rem!important}.hush-log-sample-bright{background:linear-gradient(135deg,rgba(184,255,122,.42),rgba(154,235,255,.25))!important;border-color:rgba(184,255,122,.75)!important;color:#fff!important;font-weight:900!important}.hush-save-mask-secondary{opacity:.86}.hush-route-card[aria-selected="true"]::before{content:"Active Mask";display:inline-flex;margin:0 0 .38rem 0;border:1px solid rgba(184,255,122,.62);border-radius:999px;padding:.14rem .48rem;font-size:.66rem;font-weight:900;letter-spacing:.06em;text-transform:uppercase;color:#dfff91;background:rgba(184,255,122,.10)}';document.head.appendChild(s)}
+function addCopy(){if(!receipt()||$('hushReceiptCopyBtn'))return;var host=$('hushPhase32Diagnostics')||$('hushSwapWarningsPanel')||$('acceptWarning');if(!host)return;var row=document.createElement('div');row.className='hush-receipt-copy-row';row.innerHTML='<button id="hushReceiptCopyBtn" class="hush-receipt-copy-btn" type="button">Copy diagnostic receipt</button>';host.id==='acceptWarning'?host.insertAdjacentElement('afterend',row):host.appendChild(row);$('hushReceiptCopyBtn').onclick=function(){copy(JSON.stringify(receipt()||{},null,2)).then(function(){var b=$('hushReceiptCopyBtn');if(b)b.textContent='Copied';setTimeout(function(){var b=$('hushReceiptCopyBtn');if(b)b.textContent='Copy diagnostic receipt'},1300)})}}
+function moveCustody(){var p=$('hushHousekeepingPanel'),o=$('protectedOutputInput')&&$('protectedOutputInput').closest('.hush-output-card');if(p&&o&&o.parentNode&&p.previousElementSibling!==o)o.parentNode.insertBefore(p,o.nextSibling)}
+function buttons(){var a=$('hushAddSampleBtn'),s=$('hushSaveCustomMaskBtn');if(a){a.textContent='Log Sample';a.classList.add('hush-log-sample-bright')}if(s){s.textContent='Save Mask';s.classList.add('hush-save-mask-secondary')}var row=a&&a.closest('.hush-action-row');if(row)row.classList.add('hush-custom-action-row')}
+function mark(id){document.querySelectorAll('.hush-route-card').forEach(function(c){var on=c.getAttribute('data-mask-id')===id;c.setAttribute('aria-selected',on?'true':'false');c.classList.toggle('is-active',on)})}
+function activate(id){if(!id)return;var sel=$('maskFieldSelect');if(sel)sel.value=id;if(typeof bench().selectHushMask==='function')bench().selectHushMask(id);state().selectedHushMaskId=id;state().selectedPersonaId=id;mark(id)}
+function bind(){if(document.body.dataset.pr119SurgicalBound==='true')return;document.body.dataset.pr119SurgicalBound='true';document.addEventListener('click',function(e){var c=e.target&&e.target.closest&&e.target.closest('.hush-route-card');if(c)activate(c.getAttribute('data-mask-id'))},true);var sel=$('maskFieldSelect');if(sel)sel.addEventListener('change',function(){mark(sel.value||'')},true)}
+function tick(){style();addCopy();moveCustody();buttons();mark(($('maskFieldSelect')||{}).value||state().selectedHushMaskId||'')}
+function boot(){if(!document.body||document.body.dataset.pageKind!=='adversarial-bench')return;document.body.dataset.pr119UserFacingUiPolish=V;bind();tick();window.TD613_HUSH_PR119={version:V,tick:tick,activateMask:activate,copyReceipt:function(){return copy(JSON.stringify(receipt()||{},null,2))}};[250,900,2000,4500,8500].forEach(function(ms){setTimeout(tick,ms)});window.addEventListener('td613:hush:patch38-result',function(){setTimeout(tick,80)},true)}
+if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',boot,{once:true});else boot();setTimeout(boot,500);
 }());
