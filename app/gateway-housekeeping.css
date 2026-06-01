@@ -1,4 +1,4 @@
-/* PR127 / Gateway cleanup pass
+/* PR128 / Gateway restraint pass
    Scope: Cadence Playground gateway only. No engine/API behavior. */
 
 body[data-page-kind="gateway"] {
@@ -47,46 +47,52 @@ body[data-page-kind="gateway"] #gatewayDoorReadout {
   display: none !important;
 }
 
+/* Aperture controls: compact cluster, not one giant warning slab. */
+body[data-page-kind="gateway"] .gateway-preview-controls,
 body[data-page-kind="gateway"] .gateway-preview-actions {
-  align-items: center;
+  align-items: stretch;
   gap: .55rem;
 }
 
+body[data-page-kind="gateway"] .gateway-preview-controls > *,
 body[data-page-kind="gateway"] .gateway-preview-actions > * {
   min-height: 2.35rem;
 }
 
-body[data-page-kind="gateway"] #gatewayPreviewBounceStatus {
-  flex: 1 1 10rem;
+body[data-page-kind="gateway"] #gatewayPreviewBounceStatus,
+body[data-page-kind="gateway"] #gatewayPreviewRun,
+body[data-page-kind="gateway"] #gatewayPreviewPropagate,
+body[data-page-kind="gateway"] #gatewayPreviewMoire,
+body[data-page-kind="gateway"] #gatewayPreviewReset {
+  min-width: 0;
 }
 
+body[data-page-kind="gateway"] #gatewayPreviewBounceStatus {
+  flex: 0 1 10.5rem;
+}
+
+body[data-page-kind="gateway"] #gatewayPreviewRun,
 body[data-page-kind="gateway"] #gatewayPreviewPropagate,
 body[data-page-kind="gateway"] #gatewayPreviewMoire,
 body[data-page-kind="gateway"] #gatewayPreviewReset {
   flex: 1 1 8.2rem;
 }
 
+/* Chamber cards: keep clickable affordance, remove the arcade-tile glow-up. */
 body[data-page-kind="gateway"] .gateway-grid-six {
   grid-template-columns: repeat(2, minmax(0, 1fr));
 }
 
 body[data-page-kind="gateway"] .gateway-grid-six .gateway-card {
-  isolation: isolate;
-  min-height: 108px;
-  padding: 13px 12px 14px;
-  border-color: rgba(var(--gateway-click-cyan), 0.18);
-  background:
-    radial-gradient(circle at 92% 6%, rgba(var(--gateway-click-cyan), 0.08), transparent 36%),
-    linear-gradient(180deg, rgba(5, 16, 24, 0.94) 0%, rgba(2, 6, 12, 0.98) 100%);
-  box-shadow:
-    0 14px 30px rgba(0, 0, 0, 0.32),
-    inset 0 0 0 1px rgba(var(--gateway-click-cyan), 0.04);
   cursor: pointer;
+  isolation: auto;
+  min-height: unset;
+  padding-bottom: var(--gateway-card-pad, inherit);
   transition:
-    transform 150ms ease,
-    border-color 150ms ease,
-    box-shadow 150ms ease,
-    background 150ms ease;
+    transform 140ms ease,
+    border-color 140ms ease,
+    box-shadow 140ms ease,
+    background-color 140ms ease;
 }
 
 body[data-page-kind="gateway"] .gateway-grid-six .gateway-card::before {
@@ -96,38 +102,19 @@ body[data-page-kind="gateway"] .gateway-grid-six .gateway-card::before {
 body[data-page-kind="gateway"] .gateway-grid-six .gateway-card:hover,
 body[data-page-kind="gateway"] .gateway-grid-six .gateway-card:focus-visible {
   transform: translateY(-1px);
-  border-color: rgba(var(--gateway-click-cyan), 0.44);
-  background:
-    radial-gradient(circle at 92% 6%, rgba(var(--gateway-click-cyan), 0.13), transparent 38%),
-    linear-gradient(180deg, rgba(8, 24, 34, 0.96) 0%, rgba(2, 7, 13, 0.99) 100%);
+  border-color: rgba(var(--gateway-click-cyan), 0.34);
   box-shadow:
-    0 18px 36px rgba(0, 0, 0, 0.36),
-    0 0 0 1px rgba(var(--gateway-click-cyan), 0.08),
-    0 0 20px rgba(var(--gateway-click-cyan), 0.10),
-    inset 0 0 0 1px rgba(var(--gateway-click-cyan), 0.06);
+    0 12px 26px rgba(0, 0, 0, 0.26),
+    0 0 0 1px rgba(var(--gateway-click-cyan), 0.055),
+    0 0 14px rgba(var(--gateway-click-cyan), 0.075);
   outline: none;
 }
 
 body[data-page-kind="gateway"] .gateway-grid-six .gateway-card:active {
   transform: translateY(0);
   box-shadow:
-    0 10px 22px rgba(0, 0, 0, 0.34),
-    inset 0 0 0 1px rgba(var(--gateway-click-cyan), 0.08);
-}
-
-body[data-page-kind="gateway"] .gateway-grid-six .gateway-card h3,
-body[data-page-kind="gateway"] .gateway-grid-six .gateway-card p,
-body[data-page-kind="gateway"] .gateway-card-kicker {
-  position: relative;
-  z-index: 2;
-}
-
-body[data-page-kind="gateway"] .gateway-grid-six .gateway-card h3 {
-  color: var(--silver);
-}
-
-body[data-page-kind="gateway"] .gateway-grid-six .gateway-card p {
-  color: rgba(220, 230, 244, 0.72);
+    0 8px 18px rgba(0, 0, 0, 0.24),
+    inset 0 0 0 1px rgba(var(--gateway-click-cyan), 0.06);
 }
 
 @media (max-width: 1120px) {
@@ -139,7 +126,7 @@ body[data-page-kind="gateway"] .gateway-grid-six .gateway-card p {
 @media (max-width: 760px) {
   body[data-page-kind="gateway"] .gateway-preview-head {
     padding-right: 10px;
-    padding-top: 52px;
+    padding-top: 50px;
   }
 
   body[data-page-kind="gateway"] #gatewayApertureOpenFull.gateway-aperture-open-top {
@@ -148,22 +135,21 @@ body[data-page-kind="gateway"] .gateway-grid-six .gateway-card p {
     left: auto !important;
   }
 
+  body[data-page-kind="gateway"] .gateway-preview-controls,
   body[data-page-kind="gateway"] .gateway-preview-actions {
     display: grid;
-    grid-template-columns: 1fr 1fr;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
     gap: .45rem;
   }
 
   body[data-page-kind="gateway"] #gatewayPreviewBounceStatus,
+  body[data-page-kind="gateway"] #gatewayPreviewRun,
   body[data-page-kind="gateway"] #gatewayPreviewPropagate,
   body[data-page-kind="gateway"] #gatewayPreviewMoire,
   body[data-page-kind="gateway"] #gatewayPreviewReset {
     width: 100%;
     min-width: 0;
-  }
-
-  body[data-page-kind="gateway"] #gatewayPreviewBounceStatus {
-    grid-column: 1 / -1;
+    grid-column: auto !important;
   }
 
   body[data-page-kind="gateway"] .gateway-grid-six {
@@ -171,7 +157,7 @@ body[data-page-kind="gateway"] .gateway-grid-six .gateway-card p {
   }
 
   body[data-page-kind="gateway"] .gateway-grid-six .gateway-card {
-    min-height: 94px;
-    padding-bottom: 13px;
+    min-height: unset;
+    padding-bottom: inherit;
   }
 }
