@@ -1,6 +1,6 @@
-/* PR156 Safe Harbor mobile focus stability + compact right-hug button typography.
-   Text inputs keep the real 16px surface iOS needs. Buttons are not text-entry
-   controls, so only their text/alignment is compacted; shape language stays. */
+/* PR157 Safe Harbor mobile focus stability + compact header cluster.
+   Text inputs keep the real 16px surface iOS needs. Header controls stay
+   visually compact, right-hugging, and on one row. */
 @media (max-width: 720px) {
   html,
   body {
@@ -31,12 +31,15 @@
 
   .ingress-head-actions {
     display: flex !important;
-    flex-wrap: wrap !important;
+    flex-wrap: nowrap !important;
     justify-content: flex-end !important;
     align-items: center !important;
-    gap: 8px !important;
-    width: 100% !important;
+    gap: 6px !important;
+    width: max-content !important;
+    max-width: 100% !important;
     margin-left: auto !important;
+    align-self: flex-end !important;
+    overflow: visible !important;
   }
 
   .ingress-head-actions .ingress-flight-launch,
@@ -45,22 +48,41 @@
     width: auto !important;
     min-width: 0 !important;
     max-width: max-content !important;
-    justify-self: end !important;
-    padding-inline: 11px !important;
-    padding-block: 8px !important;
-    min-height: 34px !important;
-    font-size: clamp(0.48rem, 2vw, 0.6rem) !important;
+    padding-inline: 9px !important;
+    padding-block: 7px !important;
+    min-height: 30px !important;
+    font-size: clamp(0.44rem, 1.9vw, 0.56rem) !important;
     line-height: 1 !important;
-    letter-spacing: 0.12em !important;
+    letter-spacing: 0.1em !important;
     white-space: nowrap !important;
   }
 
   .ingress-head-actions .signout-launch {
-    flex-basis: 100% !important;
-    margin-left: auto !important;
-    padding-inline: 12px !important;
-    font-size: clamp(0.54rem, 2.25vw, 0.66rem) !important;
-    letter-spacing: 0.15em !important;
+    flex-basis: auto !important;
+    margin-left: 0 !important;
+    padding-inline: 9px !important;
+    font-size: clamp(0.44rem, 1.9vw, 0.56rem) !important;
+    letter-spacing: 0.1em !important;
+  }
+
+  .ingress-head-actions a.ingress-flight-launch {
+    font-size: 0 !important;
+    letter-spacing: 0 !important;
+  }
+
+  .ingress-head-actions a.ingress-flight-launch::after {
+    display: inline-block;
+    font-size: clamp(0.44rem, 1.9vw, 0.56rem) !important;
+    line-height: 1 !important;
+    letter-spacing: 0.1em !important;
+  }
+
+  .ingress-head-actions a.ingress-flight-launch[href*="index"]::after {
+    content: 'Gateway';
+  }
+
+  .ingress-head-actions a.ingress-flight-launch[href*="td613-flight"]::after {
+    content: 'Flight';
   }
 
   button,
@@ -103,6 +125,17 @@
     min-height: 38px !important;
     font-size: clamp(0.58rem, 2.35vw, 0.72rem) !important;
     letter-spacing: 0.08em !important;
+  }
+
+  #ingressContinue,
+  .ingress-step-nav #ingressContinue {
+    width: 136px !important;
+    max-width: 136px !important;
+    white-space: normal !important;
+    text-align: center !important;
+    line-height: 1.18 !important;
+    word-break: normal !important;
+    overflow-wrap: normal !important;
   }
 
   textarea,
@@ -179,16 +212,20 @@
     padding: 8px 9px !important;
   }
 
-  .ingress-head-actions .ingress-flight-launch,
-  .ingress-head-actions .signout-launch {
-    padding-inline: 10px !important;
-    padding-block: 7px !important;
-    min-height: 32px !important;
-    font-size: clamp(0.46rem, 2.05vw, 0.56rem) !important;
+  .ingress-head-actions {
+    gap: 5px !important;
   }
 
+  .ingress-head-actions .ingress-flight-launch,
   .ingress-head-actions .signout-launch {
-    font-size: clamp(0.5rem, 2.25vw, 0.62rem) !important;
+    padding-inline: 8px !important;
+    padding-block: 7px !important;
+    min-height: 30px !important;
+    font-size: clamp(0.42rem, 1.8vw, 0.52rem) !important;
+  }
+
+  .ingress-head-actions a.ingress-flight-launch::after {
+    font-size: clamp(0.42rem, 1.8vw, 0.52rem) !important;
   }
 
   .ingress-stage-chip,
@@ -196,5 +233,11 @@
   .ingress-final-actions .control,
   .button-grid .control {
     font-size: clamp(0.52rem, 2.25vw, 0.66rem) !important;
+  }
+
+  #ingressContinue,
+  .ingress-step-nav #ingressContinue {
+    width: 128px !important;
+    max-width: 128px !important;
   }
 }
