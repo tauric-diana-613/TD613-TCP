@@ -215,3 +215,76 @@ html.safe-harbor-pr149 #packetVaultFold .fold-toggle-word {
     text-align: center;
   }
 }
+
+/* PR153: iOS focus-zoom guard without giant textarea rendering.
+   Safari still gets 16px computed form controls; the operator sees a compact field. */
+@media (max-width: 720px) {
+  html.safe-harbor-pr153 {
+    --safe-harbor-field-visual-scale: 0.76;
+  }
+
+  html.safe-harbor-pr153 input,
+  html.safe-harbor-pr153 textarea,
+  html.safe-harbor-pr153 select,
+  html.safe-harbor-pr153 .code-area,
+  html.safe-harbor-pr153 .ingress-textarea {
+    font-size: 16px !important;
+    -webkit-text-size-adjust: 100% !important;
+    text-size-adjust: 100% !important;
+    touch-action: manipulation !important;
+  }
+
+  html.safe-harbor-pr153 textarea,
+  html.safe-harbor-pr153 .code-area,
+  html.safe-harbor-pr153 .ingress-textarea {
+    zoom: var(--safe-harbor-field-visual-scale) !important;
+    width: calc(100% / var(--safe-harbor-field-visual-scale)) !important;
+    max-width: calc(100% / var(--safe-harbor-field-visual-scale)) !important;
+    line-height: 1.34 !important;
+    letter-spacing: 0.005em !important;
+    padding: 12px 13px !important;
+  }
+
+  html.safe-harbor-pr153 .ingress-textarea {
+    height: clamp(210px, 43dvh, 300px) !important;
+    min-height: 210px !important;
+  }
+
+  html.safe-harbor-pr153 .code-area {
+    min-height: 220px !important;
+  }
+
+  html.safe-harbor-pr153 input:not([type="checkbox"]):not([type="radio"]),
+  html.safe-harbor-pr153 select {
+    zoom: 0.82 !important;
+    width: calc(100% / 0.82) !important;
+    max-width: calc(100% / 0.82) !important;
+    min-height: 42px !important;
+    line-height: 1.25 !important;
+    padding: 10px 12px !important;
+  }
+
+  html.safe-harbor-pr153 input[type="file"] {
+    min-height: 48px !important;
+  }
+
+  html.safe-harbor-pr153 input[type="checkbox"],
+  html.safe-harbor-pr153 input[type="radio"] {
+    zoom: 1 !important;
+    width: auto !important;
+    max-width: none !important;
+  }
+}
+
+@supports not (zoom: 1) {
+  @media (max-width: 720px) {
+    html.safe-harbor-pr153 textarea,
+    html.safe-harbor-pr153 .code-area,
+    html.safe-harbor-pr153 .ingress-textarea {
+      transform: scale(var(--safe-harbor-field-visual-scale));
+      transform-origin: top left;
+      width: calc(100% / var(--safe-harbor-field-visual-scale)) !important;
+      margin-bottom: calc((1 - var(--safe-harbor-field-visual-scale)) * -1 * 12px);
+    }
+  }
+}
