@@ -1,7 +1,7 @@
 (function () {
   'use strict';
 
-  var VERSION = 'pr141-receipt-truth-normalizer/v1';
+  var VERSION = 'pr141-receipt-truth-normalizer/v2-demote-quota-surface';
   var TRUE_REASON = 'strict_anti_compression_held';
 
   function $(id) { return document.getElementById(id); }
@@ -16,14 +16,18 @@
 
   function hasAntiCompressionHold(receipt) {
     var warnings = asArray(receipt && receipt.warnings).join(' ');
-    var hay = [warnings, receipt && receipt.message, receipt && receipt.nextStep, receipt && receipt.providerQuota && receipt.providerQuota.messagePreview].map(text).join(' ');
-    return /strict-anti-compression-held|server-deterministic-repair-used|no-server-repair|server-repair|anti-compression/i.test(hay);
+    var hay = [warnings, receipt && receipt.message, receipt && receipt.nextStep, receipt && receipt.providerQuota && receipt.providerQuota.messagePreview, receipt && receipt.quotaDiagnosticReason].map(text).join(' ');
+    return /strict[_-]anti[_-]compression[_-]held|server-deterministic-repair-used|no-server-repair|server-repair|anti-compression/i.test(hay);
   }
 
-  function isFalseQuotaHeadline(receipt) {
+  function needsNormalization(receipt) {
     if (!receipt || receipt.status !== 'held') return false;
-    if (!/quota/i.test(text(receipt.reason))) return false;
-    return hasAntiCompressionHold(receipt);
+    if (!hasAntiCompressionHold(receipt)) return false;
+    return /quota/i.test(text(receipt.reason))
+      || Number(receipt.httpStatus || 0) === 429
+      || Boolean(receipt.providerError)
+      || Number(receipt.retryAfterSeconds || 0) > 0
+      || text(receipt.model) === text(receipt.providerQuota && receipt.providerQuota.model);
   }
 
   function normalizeProviderQuota(providerQuota) {
@@ -42,19 +46,26 @@
   }
 
   function normalizeReceipt(receipt) {
-    if (!isFalseQuotaHeadline(receipt)) return receipt;
+    if (!needsNormalization(receipt)) return receipt;
     var quota = normalizeProviderQuota(receipt.providerQuota || {});
+    var diagnostic = receipt.providerError || null;
     return {
       ...receipt,
       status: 'held',
       reason: TRUE_REASON,
-      quotaDiagnosticReason: receipt.reason,
+      quotaDiagnosticReason: /quota/i.test(text(receipt.reason)) ? receipt.reason : (receipt.quotaDiagnosticReason || ''),
+      provider: receipt.provider || 'gemini-strict',
+      model: 'strict-anti-compression-review',
+      httpStatus: 504,
+      retryAfterSeconds: null,
       message: 'Output held. Strict anti-compression review found no acceptable remote candidate; server-repair fallback was suppressed, so no weak fallback could be released.',
-      nextStep: 'Inspect the receipt, revise source or mask pressure, then Transform again. The embedded quota entry is diagnostic only unless all configured provider models show quota failure.',
+      nextStep: 'Inspect the receipt, revise source or mask pressure, then Transform again. Any embedded quota entry is diagnostic only unless all configured provider models show quota failure.',
       fallbackReleased: false,
       outputReleased: false,
       providerQuota: quota,
-      warnings: uniq(asArray(receipt.warnings).concat([TRUE_REASON, 'quota-diagnostic-not-headline'])),
+      providerError: null,
+      providerQuotaDiagnosticError: diagnostic,
+      warnings: uniq(asArray(receipt.warnings).concat([TRUE_REASON, 'quota-diagnostic-not-headline', 'quota-status-demoted-from-top-level'])),
       truthNormalizedBy: VERSION
     };
   }
@@ -71,7 +82,7 @@
 
   function normalize(label) {
     var current = window.__TD613_HUSH_NO_FALLBACK_RECEIPT || window.__TD613_HUSH_PR123_LAST || null;
-    if (!isFalseQuotaHeadline(current)) return false;
+    if (!needsNormalization(current)) return false;
     var receipt = normalizeReceipt(current);
     window.__TD613_HUSH_NO_FALLBACK_RECEIPT = receipt;
     window.__TD613_HUSH_PR123_LAST = receipt;
@@ -92,6 +103,8 @@
       normalized: true,
       reason: TRUE_REASON,
       previousReason: current.reason,
+      previousHttpStatus: current.httpStatus,
+      previousModel: current.model,
       label: label || 'normalize',
       popupRendered: Boolean($('hushReceiptPopup')),
       at: new Date().toISOString()
