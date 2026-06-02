@@ -1,5 +1,5 @@
 (function () {
-  var VERSION = 'pr126-copy-hygiene/v1+pr130-loader';
+  var VERSION = 'pr126-copy-hygiene/v2+pr130-asset-version-loader';
   var REPLACEMENTS = [
     [/\bPhase\s*37\b/gi, 'provider packet'],
     [/\bPhase\s*38\b/gi, 'selector route'],
@@ -54,8 +54,9 @@
   function loadLowSignatureGate() {
     if (!document.body || document.body.dataset.pageKind !== 'adversarial-bench') return;
     if (document.querySelector('script[src^="./hush-pr130-low-signature-selector-gate.js"]')) return;
+    var V = window.TD613_ASSET_VERSIONS || {};
     var script = document.createElement('script');
-    script.src = './hush-pr130-low-signature-selector-gate.js?v=202606010610';
+    script.src = './hush-pr130-low-signature-selector-gate.js?v=' + (V.hushPr130 || V.copyHygiene || V.hushPr123 || '202606011230');
     script.dataset.td613Pr130Loader = VERSION;
     document.head.appendChild(script);
   }
