@@ -106,6 +106,7 @@
     appendScript('./hush-pr120-ui-hotfix.js?v=' + (V.hushPr120 || V.hushPr119 || V.hushPr118 || V.hushPatch38 || V.main || ''));
     appendScript('./hush-pr121-final-ui-surgery.js?v=' + (V.hushPr121 || V.hushPr120 || V.hushPr119 || V.hushPr118 || V.hushPatch38 || V.main || ''));
     appendScript('./hush-pr122-receipt-compactor.js?v=' + (V.hushPr122 || V.hushPr121 || V.hushPatch38 || V.main || ''));
+    appendScript('./hush-pr132-strict-endpoint-router.js?v=' + (V.hushPr132 || V.hushPr123 || V.hushPatch38 || V.main || ''));
     appendScript('./hush-pr123-stable-transform.js?v=' + (V.hushPr123 || V.hushPr122 || V.hushPatch38 || V.main || ''));
     appendScript('./hush-pr131-suppress-pr130-rescue-release.js?v=' + (V.hushPr131 || V.hushPr123 || V.hushPatch38 || V.main || ''));
   }
