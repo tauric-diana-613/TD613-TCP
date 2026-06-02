@@ -9,6 +9,7 @@
     main:        '202604230045',
     aperture:    '202605281835',
     chrome:      '202606010430',
+    copyHygiene: '202606011235',
     hushAlienConsole: '202605250326',
     hushFieldInstrument: '202605250326',
     hushMobileViewportFix: '202605200003',
@@ -45,6 +46,7 @@
     hushPr122: '202606010350',
     hushPr123: '202606011755',
     hushPr124: '202606011755',
+    hushPr130: '202606011235',
     hushPhase39: '202605301720'
   };
   var V = window.TD613_ASSET_VERSIONS;
