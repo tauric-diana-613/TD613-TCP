@@ -107,6 +107,7 @@
     appendScript('./hush-pr121-final-ui-surgery.js?v=' + (V.hushPr121 || V.hushPr120 || V.hushPr119 || V.hushPr118 || V.hushPatch38 || V.main || ''));
     appendScript('./hush-pr122-receipt-compactor.js?v=' + (V.hushPr122 || V.hushPr121 || V.hushPatch38 || V.main || ''));
     appendScript('./hush-pr123-stable-transform.js?v=' + (V.hushPr123 || V.hushPr122 || V.hushPatch38 || V.main || ''));
+    appendScript('./hush-pr131-suppress-pr130-rescue-release.js?v=' + (V.hushPr131 || V.hushPr123 || V.hushPatch38 || V.main || ''));
   }
 
   appendScript('./tcp-copy-hygiene.js?v=' + (V.copyHygiene || V.chrome || V.main || '202606010455'));
