@@ -108,15 +108,32 @@ function copyRisk(candidateText = '', sourceText = '') {
   const near = overlap >= 0.9 && lengthRatio >= 0.82 && lengthRatio <= 1.35 && longestRun >= Math.min(8, Math.max(5, Math.floor(sourceWords.length * 0.4)));
   return { copied: Boolean(exact || wrapper || longRun || near), exact, wrapper, longRun, near, longestRun, overlap: Number(overlap.toFixed(4)), lengthRatio: Number(lengthRatio.toFixed(4)) };
 }
+function minLengthRatio(sourceText = '') {
+  const count = words(sourceText).length;
+  if (count < 80) return 0.42;
+  if (count < 220) return 0.36;
+  if (count < 520) return 0.30;
+  return 0.24;
+}
+function compressionRisk(candidateText = '', sourceText = '') {
+  const candidateWords = words(candidateText).length;
+  const sourceWords = Math.max(1, words(sourceText).length);
+  const ratio = candidateWords / sourceWords;
+  const floor = minLengthRatio(sourceText);
+  return { compressed: sourceWords >= 42 && ratio < floor, candidateWords, sourceWords, lengthRatio: Number(ratio.toFixed(4)), floor };
+}
 function splitCandidates(candidates = [], sourceText = '') {
   const usable = [];
   const copied = [];
+  const compressed = [];
   candidates.forEach((candidate, index) => {
     const risk = copyRisk(candidate.text || '', sourceText);
+    const compression = compressionRisk(candidate.text || '', sourceText);
     if (risk.copied) copied.push({ index, risk, preview: String(candidate.text || '').slice(0, 180) });
+    else if (compression.compressed) compressed.push({ index, risk: compression, preview: String(candidate.text || '').slice(0, 180) });
     else usable.push(candidate);
   });
-  return { usable, copied };
+  return { usable, copied, compressed };
 }
 function sourceUnits(sourceText = '') {
   const lines = String(sourceText || '').split(/\n+/).map((line) => line.trim()).filter(Boolean);
@@ -155,6 +172,7 @@ function compactFlightPacket(packet = {}) {
       diction_hints: (style.diction_hints || []).slice(0, 8),
       transition_bank: (style.transition_bank || []).slice(0, 8),
       desired_moves: (style.desired_moves || []).slice(0, 8),
+      human_sample_residue_version: style.human_sample_residue_version || '',
       enrichment_applied: Boolean(style.enrichment_applied),
       canonical_seed_hash: style.canonical_seed_hash || '',
       sample_seed_excerpt: truncate(style.sample_seed_excerpt || '', 900)
@@ -173,24 +191,28 @@ function compactFlightPacket(packet = {}) {
 }
 function buildPrompt(contract = {}, repair = null) {
   const sourceText = String(contract.sourceText || '').slice(0, 5000);
+  const sourceWordCount = words(sourceText).length;
   const packet = contract.flightPacket || null;
   const compactPacket = packet ? compactFlightPacket(packet) : { mask: contract.mask || {} };
   const controls = packet?.flight_controls || {};
   const operations = operationList(contract, controls);
-  const candidateCount = Math.max(4, Math.min(6, Number(controls.candidate_count || contract.candidateCount || 6)));
-  const units = sourceUnits(sourceText).slice(0, 12);
+  const requestedCount = Number(controls.candidate_count || contract.candidateCount || 6);
+  const candidateCount = sourceWordCount > 220 ? 3 : Math.max(4, Math.min(6, requestedCount));
+  const units = sourceUnits(sourceText).slice(0, sourceWordCount > 220 ? 48 : 28);
   const terms = importantTerms(sourceText);
   const forbiddenRuns = sourceNgrams(sourceText, 6);
+  const floorRatio = minLengthRatio(sourceText);
+  const minWords = Math.max(32, Math.floor(sourceWordCount * floorRatio));
   const schema = { candidates: [{ text: 'string', style_note: 'string', style_operation: operations[0] || 'cadence_alias', preserved_propositions: ['p1'], dropped_propositions: [], changed_questions: [], new_claims: [], risk_flags: [], mask_surface_notes: { rhythm: 'string', diction: 'string', temperature: 'string', structure: 'string' } }] };
-  const repairBlock = repair ? `\n\nREPAIR NOTICE: previous candidates failed copy audit. Change openings, clause order, and sentence boundaries. Rejected: ${repair.rejected || 'none'}.` : '';
-  return `Return JSON only. No markdown. No prose outside JSON.\nSchema:\n${compactJson(schema)}\n\nGenerate ${candidateCount} transformed candidates. Preserve meaning, questions, caveats, negations, uncertainty, and causal links. Do not answer questions. Do not add facts. Use distinct style_operation values. Move the source surface toward the mask target shell without quoting the canonical seed.\n\nCOPY AUDIT:\n- exact copy: fail\n- source wrapped with a preface/afterword: fail\n- same sentence with swapped words: fail\n- any six consecutive source words: fail\n- same opening word and same clause order: likely fail\n${repairBlock}\n\nOperations:\n${operations.map((operation) => `- ${operation}`).join('\n')}\n\nSOURCE PROPOSITIONS TO PRESERVE:\n${units.map((unit, index) => `P${index + 1}: ${unit}`).join('\n')}\n\nIMPORTANT TERMS:\n${terms.join(', ') || '(none)'}\n\nFORBIDDEN SOURCE RUNS:\n${forbiddenRuns.map((item) => `- ${item}`).join('\n') || '- (source too short for six-word runs)'}\n\nCOMPACT HUSH FLIGHT PACKET:\n${compactJson(compactPacket)}\n\nSOURCE TEXT TO TRANSFORM, NOT COPY:\n${sourceText}`;
+  const repairBlock = repair ? `\n\nREPAIR NOTICE: previous candidates failed ${repair.kind || 'copy/compression'} audit. ${repair.kind === 'compression' ? 'They were too short and dropped source units. Expand every candidate, preserve questions as questions, and cover the listed propositions before changing surface style.' : 'Change openings, clause order, and sentence boundaries.'} Rejected:\n${repair.rejected || '- none'}.` : '';
+  return `Return JSON only. No markdown. No prose outside JSON.\nSchema:\n${compactJson(schema)}\n\nGenerate ${candidateCount} transformed candidates. Preserve meaning, questions, caveats, negations, uncertainty, and causal links. Do not answer questions. Do not add facts. Use distinct style_operation values. Move the source surface toward the mask target shell without quoting the canonical seed.\n\nANTI-COMPRESSION FLOOR:\n- Do not summarize. Do not produce captions, abstracts, or gist-only rewrites.\n- Each candidate must be at least ${minWords} words unless the source itself is shorter.\n- Each candidate must keep at least ${(floorRatio * 100).toFixed(0)}% of the source word-count pressure.\n- Every listed proposition unit below must appear in transformed form unless it is genuinely duplicate.\n- Questions must remain questions. If the source has multiple questions, keep them live as questions.\n\nCOPY AUDIT:\n- exact copy: fail\n- source wrapped with a preface/afterword: fail\n- same sentence with swapped words: fail\n- any six consecutive source words: fail\n- same opening word and same clause order: likely fail\n${repairBlock}\n\nOperations:\n${operations.map((operation) => `- ${operation}`).join('\n')}\n\nSOURCE PROPOSITIONS TO PRESERVE:\n${units.map((unit, index) => `P${index + 1}: ${unit}`).join('\n')}\n\nIMPORTANT TERMS:\n${terms.join(', ') || '(none)'}\n\nFORBIDDEN SOURCE RUNS:\n${forbiddenRuns.map((item) => `- ${item}`).join('\n') || '- (source too short for six-word runs)'}\n\nCOMPACT HUSH FLIGHT PACKET:\n${compactJson(compactPacket)}\n\nSOURCE TEXT TO TRANSFORM, NOT COPY:\n${sourceText}`;
 }
 async function callGemini({ model, prompt, jsonMode, deterministic = true }) {
   const controller = new AbortController();
   const timer = setTimeout(() => controller.abort(), GEMINI_TIMEOUT_MS);
   const generationConfig = jsonMode
-    ? { temperature: deterministic ? 0.24 : 0.64, topP: deterministic ? 0.68 : 0.88, responseMimeType: 'application/json', maxOutputTokens: 4096 }
-    : { temperature: deterministic ? 0.24 : 0.64, topP: deterministic ? 0.68 : 0.88, maxOutputTokens: 4096 };
+    ? { temperature: deterministic ? 0.24 : 0.64, topP: deterministic ? 0.68 : 0.88, responseMimeType: 'application/json', maxOutputTokens: 8192 }
+    : { temperature: deterministic ? 0.24 : 0.64, topP: deterministic ? 0.68 : 0.88, maxOutputTokens: 8192 };
   try {
     const response = await fetch('https://generativelanguage.googleapis.com/v1beta/models/' + encodeURIComponent(normalizeModelName(model)) + ':generateContent?key=' + encodeURIComponent(process.env.GEMINI_API_KEY), { method: 'POST', headers: { 'content-type': 'application/json' }, body: JSON.stringify({ contents: [{ role: 'user', parts: [{ text: prompt }] }], generationConfig }), signal: controller.signal });
     const payload = await response.json().catch(() => ({}));
@@ -265,6 +287,7 @@ export default async function handler(req, res) {
   const models = preferredWorkingModel ? [preferredWorkingModel, ...configured.filter((model) => model !== preferredWorkingModel)] : configured;
   const attempts = [];
   const rejected = [];
+  const compressedRejected = [];
   const deterministic = req.query?.reroll !== '1' && contract.reroll !== true;
   const jsonModes = deterministic ? [true] : [true, false];
   let repair = null;
@@ -278,17 +301,20 @@ export default async function handler(req, res) {
         const { response, payload, timedOut } = await callGemini({ model, prompt, jsonMode, deterministic });
         const rawText = payload?.candidates?.[0]?.content?.parts?.[0]?.text || '';
         const parsed = parseProviderJson(rawText);
-        const { usable, copied } = splitCandidates(parsed.candidates, sourceText);
+        const { usable, copied, compressed } = splitCandidates(parsed.candidates, sourceText);
         rejected.push(...copied.map((item) => ({ ...item, model: normalizeModelName(model), stage })));
-        attempts.push({ stage, model: normalizeModelName(model), jsonMode, ok: response.ok, status: response.status, timedOut, parsedCandidates: parsed.candidates.length, usableCandidates: usable.length, copiedCandidates: copied.length, warnings: parsed.warnings, error: response.ok ? null : summarizeProviderError(payload), textPreview: rawText.slice(0, 180) });
+        compressedRejected.push(...compressed.map((item) => ({ ...item, model: normalizeModelName(model), stage })));
+        attempts.push({ stage, model: normalizeModelName(model), jsonMode, ok: response.ok, status: response.status, timedOut, parsedCandidates: parsed.candidates.length, usableCandidates: usable.length, copiedCandidates: copied.length, compressedCandidates: compressed.length, warnings: parsed.warnings, error: response.ok ? null : summarizeProviderError(payload), textPreview: rawText.slice(0, 180) });
         if (response.ok && usable.length) {
           preferredWorkingModel = normalizeModelName(model);
-          return send(res, 200, { ok: true, provider: 'gemini', model: preferredWorkingModel, deterministic, version: 'hush-generate-v3.4-fast-bounded', candidates: usable, warnings: parsed.warnings, attempts, rejectedCopy: rejected.slice(0, 16), rawText: parsed.rawText, requestReceipt: { deterministic, temperature: deterministic ? 0.24 : 0.64, topP: deterministic ? 0.68 : 0.88, bounded: true, elapsedMs: Date.now() - startedAt } });
+          return send(res, 200, { ok: true, provider: 'gemini', model: preferredWorkingModel, deterministic, version: 'hush-generate-v3.5-anti-compression', candidates: usable, warnings: parsed.warnings, attempts, rejectedCopy: rejected.slice(0, 16), rejectedCompressed: compressedRejected.slice(0, 16), rawText: parsed.rawText, requestReceipt: { deterministic, temperature: deterministic ? 0.24 : 0.64, topP: deterministic ? 0.68 : 0.88, antiCompression: true, minLengthRatio: minLengthRatio(sourceText), bounded: true, elapsedMs: Date.now() - startedAt } });
         }
       }
     }
-    repair = { rejected: rejected.slice(-6).map((item) => `- ${item.preview} (${item.risk?.exact ? 'exact' : item.risk?.wrapper ? 'wrapper' : item.risk?.longRun ? 'long-run' : item.risk?.near ? 'near-copy' : 'copy-risk'})`).join('\n') || '- no parsed candidates' };
+    const recentCompressed = compressedRejected.slice(-6).map((item) => `- ${item.preview} (ratio ${item.risk?.lengthRatio}, floor ${item.risk?.floor})`).join('\n');
+    const recentCopied = rejected.slice(-6).map((item) => `- ${item.preview} (${item.risk?.exact ? 'exact' : item.risk?.wrapper ? 'wrapper' : item.risk?.longRun ? 'long-run' : item.risk?.near ? 'near-copy' : 'copy-risk'})`).join('\n');
+    repair = compressedRejected.length ? { kind: 'compression', rejected: recentCompressed || '- parsed candidates were too compressed' } : { kind: 'copy', rejected: recentCopied || '- no parsed candidates' };
   }
   const repaired = serverRepairCandidates(sourceText, contract);
-  return send(res, 200, { ok: true, provider: 'server-deterministic-repair', model: 'server-repair', deterministic, version: 'hush-generate-v3.4-fast-bounded', candidates: repaired.candidates, warnings: [...repaired.warnings, 'gemini-fast-path-fallback-before-timeout'], attempts, rejectedCopy: rejected.slice(0, 16), requestReceipt: { deterministic, temperature: deterministic ? 0.24 : 0.64, topP: deterministic ? 0.68 : 0.88, bounded: true, elapsedMs: Date.now() - startedAt } });
+  return send(res, 200, { ok: true, provider: 'server-deterministic-repair', model: 'server-repair', deterministic, version: 'hush-generate-v3.5-anti-compression', candidates: repaired.candidates, warnings: [...repaired.warnings, 'gemini-fast-path-fallback-before-timeout'], attempts, rejectedCopy: rejected.slice(0, 16), rejectedCompressed: compressedRejected.slice(0, 16), requestReceipt: { deterministic, temperature: deterministic ? 0.24 : 0.64, topP: deterministic ? 0.68 : 0.88, antiCompression: true, minLengthRatio: minLengthRatio(sourceText), bounded: true, elapsedMs: Date.now() - startedAt } });
 }
