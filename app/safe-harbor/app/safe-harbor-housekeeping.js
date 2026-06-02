@@ -1,7 +1,7 @@
 (function () {
   'use strict';
 
-  var VERSION = 'pr147-safe-harbor-housekeeping/v1';
+  var VERSION = 'pr148-safe-harbor-session-persistence/v1';
   var STORAGE_KEY = 'td613.safe-harbor.session.v1';
   var MIRROR_KEY = 'td613.safe-harbor.session.mirror.v1';
   var SHI_PATTERN = /^TD613-SH-9B07D8B-[A-F0-9]{8}$/i;
@@ -26,21 +26,109 @@
     try { return raw ? JSON.parse(raw) : null; } catch (error) { return null; }
   }
 
+  function hasIssuedShi(saved) {
+    var issuance = saved && saved.packet && saved.packet.issuance ? saved.packet.issuance : null;
+    var covenant = saved && saved.covenant ? saved.covenant : null;
+    return Boolean(
+      (issuance && SHI_PATTERN.test(text(issuance.badge_number))) ||
+      (covenant && SHI_PATTERN.test(text(covenant.badgeNumber)))
+    );
+  }
+
+  function sessionLooksOpen(saved) {
+    var ingress = saved && saved.ingress ? saved.ingress : null;
+    if (!saved || !ingress) return false;
+    return Boolean(
+      ingress.vaultOpen ||
+      ingress.operatorShellOpen ||
+      ingress.packetId ||
+      ingress.receiptId ||
+      saved.packet ||
+      saved.sealed ||
+      hasIssuedShi(saved)
+    );
+  }
+
+  function normalizeOpenSession(saved) {
+    if (!sessionLooksOpen(saved)) return { saved: saved, changed: false, open: false };
+    if (!saved.ingress || typeof saved.ingress !== 'object') saved.ingress = {};
+    var changed = false;
+    if (!saved.ingress.operatorShellOpen && !saved.ingress.vaultOpen) {
+      saved.ingress.vaultOpen = true;
+      changed = true;
+    }
+    if (saved.ingress.recovered !== true && (saved.packet || saved.sealed || hasIssuedShi(saved))) {
+      saved.ingress.recovered = true;
+      changed = true;
+    }
+    return { saved: saved, changed: changed, open: true };
+  }
+
+  function writeNormalized(storage, key, saved) {
+    if (!saved) return;
+    write(storage, key, JSON.stringify(saved));
+  }
+
+  function applyOpenDataset(open) {
+    if (open) document.documentElement.dataset.safeHarborSessionOpen = 'true';
+    else delete document.documentElement.dataset.safeHarborSessionOpen;
+  }
+
+  function activeSessionSnapshot() {
+    return parse(read(window.sessionStorage, STORAGE_KEY)) || parse(read(window.localStorage, MIRROR_KEY));
+  }
+
+  function normalizeActiveSession() {
+    var sessionRaw = read(window.sessionStorage, STORAGE_KEY);
+    var mirrorRaw = read(window.localStorage, MIRROR_KEY);
+    var saved = parse(sessionRaw) || parse(mirrorRaw);
+    if (!saved) {
+      applyOpenDataset(false);
+      return null;
+    }
+    var result = normalizeOpenSession(saved);
+    if (result.open) {
+      writeNormalized(window.sessionStorage, STORAGE_KEY, result.saved);
+      writeNormalized(window.localStorage, MIRROR_KEY, result.saved);
+      applyOpenDataset(true);
+      return result.saved;
+    }
+    applyOpenDataset(false);
+    return result.saved;
+  }
+
   function mirrorSession() {
     var raw = read(window.sessionStorage, STORAGE_KEY);
-    if (raw) write(window.localStorage, MIRROR_KEY, raw);
+    var saved = parse(raw);
+    if (!saved) return;
+    var normalized = normalizeOpenSession(saved);
+    if (normalized.changed) writeNormalized(window.sessionStorage, STORAGE_KEY, normalized.saved);
+    writeNormalized(window.localStorage, MIRROR_KEY, normalized.saved);
+    applyOpenDataset(normalized.open);
   }
 
   function restoreSessionMirror() {
     var sessionRaw = read(window.sessionStorage, STORAGE_KEY);
-    if (sessionRaw) return;
     var mirrorRaw = read(window.localStorage, MIRROR_KEY);
-    if (!mirrorRaw) return;
-    write(window.sessionStorage, STORAGE_KEY, mirrorRaw);
-    var saved = parse(mirrorRaw);
-    var ingress = saved && saved.ingress;
-    if (ingress && (ingress.vaultOpen || ingress.operatorShellOpen)) {
-      document.documentElement.dataset.safeHarborSessionOpen = 'true';
+    var saved = parse(sessionRaw) || parse(mirrorRaw);
+    if (!saved) return;
+    var normalized = normalizeOpenSession(saved);
+    writeNormalized(window.sessionStorage, STORAGE_KEY, normalized.saved);
+    if (normalized.open || !mirrorRaw) writeNormalized(window.localStorage, MIRROR_KEY, normalized.saved);
+    applyOpenDataset(normalized.open);
+  }
+
+  function enforceOpenMembrane() {
+    var saved = normalizeActiveSession();
+    var open = sessionLooksOpen(saved);
+    var membrane = $('ingressMembrane');
+    if (open && membrane) {
+      membrane.hidden = true;
+      membrane.classList.add('is-hidden');
+    }
+    if (document.body) {
+      document.body.classList.toggle('vault-sealed', !open);
+      document.body.classList.toggle('vault-open', open);
     }
   }
 
@@ -96,7 +184,7 @@
   }
 
   function savedTriadReady() {
-    var saved = parse(read(window.sessionStorage, STORAGE_KEY)) || parse(read(window.localStorage, MIRROR_KEY));
+    var saved = activeSessionSnapshot();
     var segments = saved && saved.ingress && saved.ingress.segments ? saved.ingress.segments : {};
     return ['future_self', 'past_self', 'higher_self'].every(function (key) {
       return text(segments[key]).split(/\s+/).filter(Boolean).length >= 40;
@@ -104,7 +192,7 @@
   }
 
   function hasMintedPacket() {
-    var saved = parse(read(window.sessionStorage, STORAGE_KEY)) || parse(read(window.localStorage, MIRROR_KEY));
+    var saved = activeSessionSnapshot();
     var issuance = saved && saved.packet && saved.packet.issuance ? saved.packet.issuance : null;
     return Boolean(issuance && SHI_PATTERN.test(text(issuance.badge_number)) && saved.packet);
   }
@@ -132,18 +220,21 @@
       if (body) body.appendChild(note);
     }
     if (note) {
-      note.textContent = canRecall
-        ? 'Recall requires both the minted SHI and the exported sealed packet file.'
-        : 'Recall stays locked until the triad is completed and a packet is minted/exported.';
+      note.textContent = surfaceOpen
+        ? 'Safe Harbor session is open. Ingress membrane remains bypassed until Sign Out or Clear Session.'
+        : canRecall
+          ? 'Recall requires both the minted SHI and the exported sealed packet file.'
+          : 'Recall stays locked until the triad is completed and a packet is minted/exported.';
     }
   }
 
   function wrapSignOut() {
-    Array.from(document.querySelectorAll('#signOutIngress,#signOutVault,#railSignOut')).forEach(function (button) {
+    Array.from(document.querySelectorAll('#signOutIngress,#signOutVault,#railSignOut,#clearIngress')).forEach(function (button) {
       if (!button || button.dataset.pr147Signout) return;
       button.dataset.pr147Signout = VERSION;
       button.addEventListener('click', function () {
         remove(window.localStorage, MIRROR_KEY);
+        applyOpenDataset(false);
       }, true);
     });
   }
@@ -154,6 +245,7 @@
     fixFlightLinks();
     hookProgrammaticInput();
     wrapSignOut();
+    enforceOpenMembrane();
     updateRecallGate();
     mirrorSession();
   }
@@ -167,9 +259,15 @@
   setInterval(function () {
     fixFlightLinks();
     hookProgrammaticInput();
+    enforceOpenMembrane();
     updateRecallGate();
     mirrorSession();
   }, 900);
 
-  window.TD613_SAFE_HARBOR_PR147 = Object.freeze({ version: VERSION, boot: boot });
+  window.TD613_SAFE_HARBOR_PR147 = Object.freeze({
+    version: VERSION,
+    boot: boot,
+    normalizeActiveSession: normalizeActiveSession,
+    sessionLooksOpen: sessionLooksOpen
+  });
 }());
