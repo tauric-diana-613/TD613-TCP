@@ -215,17 +215,43 @@
   (function bootstrapSafeHarborHousekeeping() {
     const path = String((window.location && window.location.pathname) || '');
     if (!/safe-harbor/i.test(path)) return;
-    const version = '20260601-pr147';
+    const version = '20260602-pr148-session-persistence';
     const sessionKey = 'td613.safe-harbor.session.v1';
     const mirrorKey = 'td613.safe-harbor.session.mirror.v1';
+    const shiPattern = /^TD613-SH-9B07D8B-[A-F0-9]{8}$/i;
+    const normalizeText = (value) => String(value == null ? '' : value).trim();
+    const sessionLooksOpen = (saved) => {
+      const ingress = saved && saved.ingress;
+      const issuance = saved && saved.packet && saved.packet.issuance;
+      const covenant = saved && saved.covenant;
+      const hasShi = Boolean(
+        (issuance && shiPattern.test(normalizeText(issuance.badge_number))) ||
+        (covenant && shiPattern.test(normalizeText(covenant.badgeNumber)))
+      );
+      return Boolean(ingress && (
+        ingress.vaultOpen ||
+        ingress.operatorShellOpen ||
+        ingress.packetId ||
+        ingress.receiptId ||
+        saved.packet ||
+        saved.sealed ||
+        hasShi
+      ));
+    };
     try {
       const sessionRaw = sessionStorage.getItem(sessionKey);
       const mirrorRaw = localStorage.getItem(mirrorKey);
-      if (!sessionRaw && mirrorRaw) {
-        sessionStorage.setItem(sessionKey, mirrorRaw);
-        const saved = JSON.parse(mirrorRaw);
+      const raw = sessionRaw || mirrorRaw;
+      if (raw) {
+        const saved = JSON.parse(raw);
         const ingress = saved && saved.ingress;
-        if (ingress && (ingress.vaultOpen || ingress.operatorShellOpen)) {
+        if (!sessionRaw && mirrorRaw) sessionStorage.setItem(sessionKey, mirrorRaw);
+        if (sessionLooksOpen(saved)) {
+          if (ingress && !ingress.vaultOpen && !ingress.operatorShellOpen) ingress.vaultOpen = true;
+          if (ingress && (saved.packet || saved.sealed)) ingress.recovered = true;
+          const normalized = JSON.stringify(saved);
+          sessionStorage.setItem(sessionKey, normalized);
+          localStorage.setItem(mirrorKey, normalized);
           document.documentElement.dataset.safeHarborSessionOpen = 'true';
         }
       }
