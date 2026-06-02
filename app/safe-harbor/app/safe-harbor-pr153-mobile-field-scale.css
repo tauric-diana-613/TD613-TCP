@@ -1,59 +1,62 @@
-/* PR153b Safe Harbor mobile field scale.
-   Do not use CSS zoom on focused controls. iOS can treat zoomed fields as small
-   and trigger the very focus zoom this patch is meant to stop. Keep computed
-   form text at 16px, then compact the chamber through line-height, padding,
-   field height, and transform-based visual scale for textarea surfaces. */
+/* PR154 Safe Harbor mobile focus stability.
+   Stop scaling the focused control itself. iOS focus zoom only stays calm when
+   the real textarea/input surface is unscaled and computes to at least 16px.
+   Compact the experience with height, padding, and surrounding layout instead. */
 @media (max-width: 720px) {
-  html.safe-harbor-pr152 {
-    --safe-harbor-field-visual-scale: 0.88;
-  }
-
   html.safe-harbor-pr152 input,
   html.safe-harbor-pr152 textarea,
   html.safe-harbor-pr152 select,
   html.safe-harbor-pr152 .code-area,
-  html.safe-harbor-pr152 .ingress-textarea {
+  html.safe-harbor-pr152 .ingress-textarea,
+  html.safe-harbor-pr152 .safe-field {
     box-sizing: border-box !important;
+    width: 100% !important;
+    max-width: 100% !important;
+    min-width: 0 !important;
     font-size: 16px !important;
     -webkit-text-size-adjust: 100% !important;
     text-size-adjust: 100% !important;
     touch-action: manipulation !important;
-    -webkit-transform: translateZ(0);
-    transform: translateZ(0);
+    zoom: 1 !important;
+    -webkit-transform: none !important;
+    transform: none !important;
+    -webkit-transform-origin: initial !important;
+    transform-origin: initial !important;
   }
 
   html.safe-harbor-pr152 textarea,
   html.safe-harbor-pr152 .code-area,
-  html.safe-harbor-pr152 .ingress-textarea {
-    line-height: 1.18 !important;
+  html.safe-harbor-pr152 .ingress-textarea,
+  html.safe-harbor-pr152 .safe-field {
+    line-height: 1.12 !important;
     letter-spacing: 0 !important;
-    padding: 9px 10px !important;
-    width: calc(100% / var(--safe-harbor-field-visual-scale)) !important;
-    max-width: calc(100% / var(--safe-harbor-field-visual-scale)) !important;
-    -webkit-transform: scale(var(--safe-harbor-field-visual-scale)) translateZ(0) !important;
-    transform: scale(var(--safe-harbor-field-visual-scale)) translateZ(0) !important;
-    -webkit-transform-origin: top left !important;
-    transform-origin: top left !important;
+    padding: 8px 9px !important;
+    resize: vertical;
   }
 
   html.safe-harbor-pr152 .ingress-textarea {
-    height: clamp(188px, 38dvh, 260px) !important;
-    min-height: 188px !important;
-    margin-bottom: calc((var(--safe-harbor-field-visual-scale) - 1) * 188px) !important;
+    min-height: 156px !important;
+    height: clamp(156px, 32dvh, 216px) !important;
+    margin-bottom: 0 !important;
+  }
+
+  html.safe-harbor-pr152 .safe-field {
+    min-height: 116px !important;
+    height: clamp(116px, 24dvh, 168px) !important;
+    margin-bottom: 0 !important;
   }
 
   html.safe-harbor-pr152 .code-area {
-    min-height: 198px !important;
-    margin-bottom: -24px !important;
+    min-height: 156px !important;
+    height: clamp(156px, 30dvh, 216px) !important;
+    margin-bottom: 0 !important;
   }
 
   html.safe-harbor-pr152 input:not([type="checkbox"]):not([type="radio"]),
   html.safe-harbor-pr152 select {
     min-height: 40px !important;
-    line-height: 1.15 !important;
+    line-height: 1.12 !important;
     padding: 8px 10px !important;
-    width: 100% !important;
-    max-width: 100% !important;
   }
 
   html.safe-harbor-pr152 input[type="file"] {
@@ -62,28 +65,43 @@
 
   html.safe-harbor-pr152 input[type="checkbox"],
   html.safe-harbor-pr152 input[type="radio"] {
+    appearance: auto;
+    -webkit-appearance: auto;
     width: auto !important;
     max-width: none !important;
+    min-width: 0 !important;
+    font-size: initial !important;
+    zoom: 1 !important;
     -webkit-transform: none !important;
     transform: none !important;
+  }
+
+  html.safe-harbor-pr152 .ingress-step-panel,
+  html.safe-harbor-pr152 .ingress-console-panel,
+  html.safe-harbor-pr152 .surface-card,
+  html.safe-harbor-pr152 .forge-card,
+  html.safe-harbor-pr152 .panel,
+  html.safe-harbor-pr152 .dock {
+    overflow: visible !important;
+  }
+
+  html.safe-harbor-pr152 .ingress-step-support {
+    max-height: 2.6em;
+    overflow: hidden;
   }
 }
 
 @media (max-width: 430px) {
-  html.safe-harbor-pr152 {
-    --safe-harbor-field-visual-scale: 0.84;
-  }
-
   html.safe-harbor-pr152 .ingress-textarea {
-    height: clamp(176px, 35dvh, 238px) !important;
-    min-height: 176px !important;
-    margin-bottom: calc((var(--safe-harbor-field-visual-scale) - 1) * 176px) !important;
+    min-height: 148px !important;
+    height: clamp(148px, 30dvh, 202px) !important;
   }
 
   html.safe-harbor-pr152 textarea,
   html.safe-harbor-pr152 .code-area,
-  html.safe-harbor-pr152 .ingress-textarea {
-    line-height: 1.12 !important;
-    padding: 8px 9px !important;
+  html.safe-harbor-pr152 .ingress-textarea,
+  html.safe-harbor-pr152 .safe-field {
+    line-height: 1.08 !important;
+    padding: 7px 8px !important;
   }
 }

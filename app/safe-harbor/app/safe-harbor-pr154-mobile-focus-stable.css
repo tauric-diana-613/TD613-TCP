@@ -1,0 +1,113 @@
+/* PR154 Safe Harbor mobile focus stability.
+   This file is intended to load from the document head, not from the late
+   housekeeping bootstrap. iOS needs the focused control itself to be real,
+   unscaled, and at least 16px before the first tap lands. */
+@media (max-width: 720px) {
+  html,
+  body {
+    -webkit-text-size-adjust: 100% !important;
+    text-size-adjust: 100% !important;
+  }
+
+  input,
+  textarea,
+  select,
+  button {
+    font-size: 16px !important;
+  }
+
+  input,
+  textarea,
+  select,
+  .ingress-textarea,
+  .safe-field,
+  .code-area {
+    appearance: none;
+    -webkit-appearance: none;
+    box-sizing: border-box !important;
+    min-width: 0 !important;
+    max-width: 100% !important;
+    width: 100% !important;
+    font-size: 16px !important;
+    -webkit-text-size-adjust: 100% !important;
+    text-size-adjust: 100% !important;
+    touch-action: manipulation !important;
+    transform: none !important;
+    -webkit-transform: none !important;
+    zoom: 1 !important;
+  }
+
+  textarea,
+  .ingress-textarea,
+  .safe-field,
+  .code-area {
+    line-height: 1.18 !important;
+    letter-spacing: 0 !important;
+    padding: 9px 10px !important;
+    resize: vertical;
+  }
+
+  .ingress-textarea {
+    min-height: 168px !important;
+    height: clamp(168px, 34dvh, 232px) !important;
+  }
+
+  .safe-field {
+    min-height: 118px !important;
+    height: clamp(118px, 26dvh, 180px) !important;
+  }
+
+  .code-area {
+    min-height: 168px !important;
+    height: clamp(168px, 32dvh, 228px) !important;
+  }
+
+  input:not([type="checkbox"]):not([type="radio"]),
+  select {
+    min-height: 42px !important;
+    line-height: 1.15 !important;
+    padding: 8px 10px !important;
+  }
+
+  input[type="checkbox"],
+  input[type="radio"] {
+    appearance: auto;
+    -webkit-appearance: auto;
+    width: auto !important;
+    max-width: none !important;
+    min-width: 0 !important;
+    font-size: initial !important;
+    transform: none !important;
+    -webkit-transform: none !important;
+    zoom: 1 !important;
+  }
+
+  .ingress-step-panel,
+  .ingress-console-panel,
+  .surface-card,
+  .forge-card,
+  .panel,
+  .dock {
+    overflow: visible !important;
+  }
+
+  .ingress-step-support {
+    max-height: 2.6em;
+    overflow: hidden;
+  }
+}
+
+@media (max-width: 430px) {
+  .ingress-textarea {
+    min-height: 156px !important;
+    height: clamp(156px, 32dvh, 216px) !important;
+  }
+
+  textarea,
+  .ingress-textarea,
+  .safe-field,
+  .code-area {
+    line-height: 1.12 !important;
+    padding: 8px 9px !important;
+  }
+}
