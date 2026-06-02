@@ -215,7 +215,7 @@
   (function bootstrapSafeHarborHousekeeping() {
     const path = String((window.location && window.location.pathname) || '');
     if (!/safe-harbor/i.test(path)) return;
-    const version = '20260602-pr152-viewport-no-focus-zoom';
+    const version = '20260602-pr153-mobile-field-scale';
     const sessionKey = 'td613.safe-harbor.session.v1';
     const mirrorKey = 'td613.safe-harbor.session.mirror.v1';
     const shiPattern = /^TD613-SH-9B07D8B-[A-F0-9]{8}$/i;
@@ -261,6 +261,7 @@
     document.documentElement.classList.add('safe-harbor-pr150');
     document.documentElement.classList.add('safe-harbor-pr151');
     document.documentElement.classList.add('safe-harbor-pr152');
+    document.documentElement.classList.add('safe-harbor-pr153');
     const cssHref = 'app/safe-harbor-housekeeping.css?v=' + version;
     if (!document.querySelector('link[href*="safe-harbor-housekeeping.css"]')) {
       const link = document.createElement('link');
@@ -274,6 +275,13 @@
       pr149Link.rel = 'stylesheet';
       pr149Link.href = pr149CssHref;
       document.head.appendChild(pr149Link);
+    }
+    const pr153CssHref = 'app/safe-harbor-pr153-mobile-field-scale.css?v=' + version;
+    if (!document.querySelector('link[href*="safe-harbor-pr153-mobile-field-scale.css"]')) {
+      const pr153Link = document.createElement('link');
+      pr153Link.rel = 'stylesheet';
+      pr153Link.href = pr153CssHref;
+      document.head.appendChild(pr153Link);
     }
     const jsSrc = 'app/safe-harbor-housekeeping.js?v=' + version;
     if (!document.querySelector('script[src*="safe-harbor-housekeeping.js"]')) {
