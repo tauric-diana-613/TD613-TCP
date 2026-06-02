@@ -1,7 +1,7 @@
 (function () {
   'use strict';
 
-  var VERSION = 'pr149-safe-harbor-mobile-recall-hotfix/v1';
+  var VERSION = 'pr150-safe-harbor-mobile-textarea-vault-hint/v1';
   var STORAGE_KEY = 'td613.safe-harbor.session.v1';
   var MIRROR_KEY = 'td613.safe-harbor.session.mirror.v1';
   var SHI_PATTERN = /^TD613-SH-9B07D8B-[A-F0-9]{8}$/i;
@@ -149,6 +149,7 @@
   function hardenScroll() {
     document.documentElement.classList.add('safe-harbor-pr147');
     document.documentElement.classList.add('safe-harbor-pr149');
+    document.documentElement.classList.add('safe-harbor-pr150');
     loadPr149Css();
     document.documentElement.style.overflowY = 'auto';
     document.body.style.overflowY = 'auto';
@@ -253,6 +254,7 @@
       reopenReady: !button.disabled,
       at: new Date().toISOString()
     };
+    window.__TD613_SAFE_HARBOR_PR150_LAST = window.__TD613_SAFE_HARBOR_PR149_LAST;
   }
 
   function wrapSignOut() {
@@ -298,6 +300,11 @@
     sessionLooksOpen: sessionLooksOpen
   });
   window.TD613_SAFE_HARBOR_PR149 = Object.freeze({
+    version: VERSION,
+    boot: boot,
+    updateRecallGate: updateRecallGate
+  });
+  window.TD613_SAFE_HARBOR_PR150 = Object.freeze({
     version: VERSION,
     boot: boot,
     updateRecallGate: updateRecallGate
