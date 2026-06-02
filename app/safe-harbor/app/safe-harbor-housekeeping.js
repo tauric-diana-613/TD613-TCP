@@ -1,7 +1,7 @@
 (function () {
   'use strict';
 
-  var VERSION = 'pr150-safe-harbor-mobile-textarea-vault-hint/v1';
+  var VERSION = 'pr151-safe-harbor-inline-no-focus-zoom/v1';
   var STORAGE_KEY = 'td613.safe-harbor.session.v1';
   var MIRROR_KEY = 'td613.safe-harbor.session.mirror.v1';
   var SHI_PATTERN = /^TD613-SH-9B07D8B-[A-F0-9]{8}$/i;
@@ -146,11 +146,41 @@
     document.head.appendChild(link);
   }
 
+  function installNoZoomStyle() {
+    if ($('safeHarborPr151NoZoomStyle')) return;
+    var style = document.createElement('style');
+    style.id = 'safeHarborPr151NoZoomStyle';
+    style.textContent = 'input, textarea, select, .code-area, .ingress-textarea { font-size: 16px !important; line-height: 1.55 !important; -webkit-text-size-adjust: 100%; text-size-adjust: 100%; } textarea, .code-area, .ingress-textarea { letter-spacing: 0.01em; }';
+    document.head.appendChild(style);
+  }
+
+  function forceNoZoomControls() {
+    installNoZoomStyle();
+    var nodes = Array.from(document.querySelectorAll('input, textarea, select, .code-area, .ingress-textarea'));
+    nodes.forEach(function (node) {
+      if (!node || !node.style) return;
+      node.style.fontSize = '16px';
+      node.style.lineHeight = '1.55';
+      node.style.webkitTextSizeAdjust = '100%';
+      node.style.textSizeAdjust = '100%';
+      if (node.tagName === 'TEXTAREA' || node.classList.contains('code-area') || node.classList.contains('ingress-textarea')) node.style.letterSpacing = '0.01em';
+      node.dataset.pr151NoFocusZoom = 'true';
+    });
+    window.__TD613_SAFE_HARBOR_PR151_LAST = {
+      version: VERSION,
+      controlsPatched: nodes.length,
+      activeElement: document.activeElement && document.activeElement.id || '',
+      at: new Date().toISOString()
+    };
+  }
+
   function hardenScroll() {
     document.documentElement.classList.add('safe-harbor-pr147');
     document.documentElement.classList.add('safe-harbor-pr149');
     document.documentElement.classList.add('safe-harbor-pr150');
+    document.documentElement.classList.add('safe-harbor-pr151');
     loadPr149Css();
+    forceNoZoomControls();
     document.documentElement.style.overflowY = 'auto';
     document.body.style.overflowY = 'auto';
     document.body.style.touchAction = 'pan-y';
@@ -255,6 +285,7 @@
       at: new Date().toISOString()
     };
     window.__TD613_SAFE_HARBOR_PR150_LAST = window.__TD613_SAFE_HARBOR_PR149_LAST;
+    window.__TD613_SAFE_HARBOR_PR151_LAST = { ...(window.__TD613_SAFE_HARBOR_PR151_LAST || {}), version: VERSION, recallGateUpdated: true, at: new Date().toISOString() };
   }
 
   function wrapSignOut() {
@@ -282,16 +313,23 @@
   if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', boot, { once: true });
   else boot();
   window.addEventListener('load', boot);
+  window.addEventListener('focusin', function (event) {
+    if (event.target && event.target.matches && event.target.matches('input, textarea, select, .code-area, .ingress-textarea')) forceNoZoomControls();
+  }, true);
+  window.addEventListener('touchstart', function (event) {
+    if (event.target && event.target.closest && event.target.closest('input, textarea, select, .code-area, .ingress-textarea')) forceNoZoomControls();
+  }, true);
   window.addEventListener('storage', function (event) {
     if (!event.key || event.key === STORAGE_KEY || event.key === MIRROR_KEY) boot();
   });
   setInterval(function () {
     fixFlightLinks();
     hookProgrammaticInput();
+    forceNoZoomControls();
     enforceOpenMembrane();
     updateRecallGate();
     mirrorSession();
-  }, 900);
+  }, 700);
 
   window.TD613_SAFE_HARBOR_PR147 = Object.freeze({
     version: VERSION,
@@ -307,6 +345,12 @@
   window.TD613_SAFE_HARBOR_PR150 = Object.freeze({
     version: VERSION,
     boot: boot,
+    updateRecallGate: updateRecallGate
+  });
+  window.TD613_SAFE_HARBOR_PR151 = Object.freeze({
+    version: VERSION,
+    boot: boot,
+    forceNoZoomControls: forceNoZoomControls,
     updateRecallGate: updateRecallGate
   });
 }());
