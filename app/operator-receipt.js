@@ -215,7 +215,7 @@
   (function bootstrapSafeHarborHousekeeping() {
     const path = String((window.location && window.location.pathname) || '');
     if (!/safe-harbor/i.test(path)) return;
-    const version = '20260602-pr151-inline-no-focus-zoom';
+    const version = '20260602-pr152-viewport-no-focus-zoom';
     const sessionKey = 'td613.safe-harbor.session.v1';
     const mirrorKey = 'td613.safe-harbor.session.mirror.v1';
     const shiPattern = /^TD613-SH-9B07D8B-[A-F0-9]{8}$/i;
@@ -260,6 +260,7 @@
     document.documentElement.classList.add('safe-harbor-pr149');
     document.documentElement.classList.add('safe-harbor-pr150');
     document.documentElement.classList.add('safe-harbor-pr151');
+    document.documentElement.classList.add('safe-harbor-pr152');
     const cssHref = 'app/safe-harbor-housekeeping.css?v=' + version;
     if (!document.querySelector('link[href*="safe-harbor-housekeeping.css"]')) {
       const link = document.createElement('link');
