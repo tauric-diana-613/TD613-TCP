@@ -1,7 +1,7 @@
 (function () {
   'use strict';
 
-  var VERSION = 'pr148-safe-harbor-session-persistence/v1';
+  var VERSION = 'pr149-safe-harbor-mobile-recall-hotfix/v1';
   var STORAGE_KEY = 'td613.safe-harbor.session.v1';
   var MIRROR_KEY = 'td613.safe-harbor.session.mirror.v1';
   var SHI_PATTERN = /^TD613-SH-9B07D8B-[A-F0-9]{8}$/i;
@@ -138,8 +138,18 @@
     });
   }
 
+  function loadPr149Css() {
+    if (document.querySelector('link[href*="safe-harbor-pr149-recall-hotfix.css"]')) return;
+    var link = document.createElement('link');
+    link.rel = 'stylesheet';
+    link.href = 'app/safe-harbor-pr149-recall-hotfix.css?v=' + encodeURIComponent(VERSION);
+    document.head.appendChild(link);
+  }
+
   function hardenScroll() {
     document.documentElement.classList.add('safe-harbor-pr147');
+    document.documentElement.classList.add('safe-harbor-pr149');
+    loadPr149Css();
     document.documentElement.style.overflowY = 'auto';
     document.body.style.overflowY = 'auto';
     document.body.style.touchAction = 'pan-y';
@@ -207,10 +217,17 @@
     var canRecall = hasMintedPacket() || savedTriadReady();
     var fileOk = file && file.files && file.files.length > 0;
     var shiOk = SHI_PATTERN.test(text(pass.value));
+    var recallInputsOpen = !surfaceOpen;
     fold.dataset.pr147Ready = canRecall ? 'true' : 'false';
-    pass.disabled = surfaceOpen || !canRecall;
-    if (file) file.disabled = surfaceOpen || !canRecall;
-    button.disabled = surfaceOpen || !canRecall || !shiOk || !fileOk;
+    fold.dataset.pr149RecallOpen = recallInputsOpen ? 'true' : 'false';
+    pass.disabled = !recallInputsOpen;
+    pass.setAttribute('aria-disabled', pass.disabled ? 'true' : 'false');
+    if (file) {
+      file.disabled = !recallInputsOpen;
+      file.setAttribute('aria-disabled', file.disabled ? 'true' : 'false');
+    }
+    button.disabled = !recallInputsOpen || !shiOk || !fileOk;
+    button.setAttribute('aria-disabled', button.disabled ? 'true' : 'false');
     var note = $('safeHarborPr147RecallNote');
     if (!note) {
       note = document.createElement('div');
@@ -223,9 +240,19 @@
       note.textContent = surfaceOpen
         ? 'Safe Harbor session is open. Ingress membrane remains bypassed until Sign Out or Clear Session.'
         : canRecall
-          ? 'Recall requires both the minted SHI and the exported sealed packet file.'
-          : 'Recall stays locked until the triad is completed and a packet is minted/exported.';
+          ? 'Recall fields are open. Reopen requires both the minted SHI and the exported sealed packet file.'
+          : 'Recall fields are open for an exported packet. Minting a new packet still requires the completed triad.';
     }
+    window.__TD613_SAFE_HARBOR_PR149_LAST = {
+      version: VERSION,
+      surfaceOpen: surfaceOpen,
+      recallInputsOpen: recallInputsOpen,
+      canRecallFromLocalSession: canRecall,
+      shiOk: shiOk,
+      fileOk: Boolean(fileOk),
+      reopenReady: !button.disabled,
+      at: new Date().toISOString()
+    };
   }
 
   function wrapSignOut() {
@@ -269,5 +296,10 @@
     boot: boot,
     normalizeActiveSession: normalizeActiveSession,
     sessionLooksOpen: sessionLooksOpen
+  });
+  window.TD613_SAFE_HARBOR_PR149 = Object.freeze({
+    version: VERSION,
+    boot: boot,
+    updateRecallGate: updateRecallGate
   });
 }());
