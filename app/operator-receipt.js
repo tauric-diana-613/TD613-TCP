@@ -215,7 +215,7 @@
   (function bootstrapSafeHarborHousekeeping() {
     const path = String((window.location && window.location.pathname) || '');
     if (!/safe-harbor/i.test(path)) return;
-    const version = '20260602-pr156-mobile-header-actions';
+    const version = '20260602-pr158-header-row-real-labels';
     const sessionKey = 'td613.safe-harbor.session.v1';
     const mirrorKey = 'td613.safe-harbor.session.mirror.v1';
     const shiPattern = /^TD613-SH-9B07D8B-[A-F0-9]{8}$/i;
@@ -243,15 +243,15 @@
       headerLinks.forEach((link) => {
         const href = String(link.getAttribute('href') || '');
         if (/index\.html|\.\.\/index/.test(href)) {
-          link.textContent = '← Gateway';
+          link.textContent = 'Gateway';
           link.setAttribute('aria-label', 'Gateway');
         }
         if (/td613-flight\.html/.test(href)) {
-          link.textContent = 'Flight →';
+          link.textContent = 'Flight';
           link.setAttribute('aria-label', 'Flight');
         }
       });
-      window.__TD613_SAFE_HARBOR_PR156_LAST = {
+      window.__TD613_SAFE_HARBOR_PR158_LAST = {
         version,
         compactedHeaderActions: headerLinks.length,
         at: new Date().toISOString()
@@ -284,6 +284,7 @@
     document.documentElement.classList.add('safe-harbor-pr154');
     document.documentElement.classList.add('safe-harbor-pr155');
     document.documentElement.classList.add('safe-harbor-pr156');
+    document.documentElement.classList.add('safe-harbor-pr158');
     compactSafeHarborHeaderActions();
     window.setTimeout(compactSafeHarborHeaderActions, 80);
     window.setTimeout(compactSafeHarborHeaderActions, 600);
