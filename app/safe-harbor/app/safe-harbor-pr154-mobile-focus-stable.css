@@ -1,7 +1,6 @@
-/* PR155 Safe Harbor mobile focus stability + compact button typography.
+/* PR156 Safe Harbor mobile focus stability + compact right-hug button typography.
    Text inputs keep the real 16px surface iOS needs. Buttons are not text-entry
-   controls, so their typography can return to compact UI scale without bringing
-   the focus zoom bug back. */
+   controls, so only their text/alignment is compacted; shape language stays. */
 @media (max-width: 720px) {
   html,
   body {
@@ -30,35 +29,80 @@
     zoom: 1 !important;
   }
 
+  .ingress-head-actions {
+    display: flex !important;
+    flex-wrap: wrap !important;
+    justify-content: flex-end !important;
+    align-items: center !important;
+    gap: 8px !important;
+    width: 100% !important;
+    margin-left: auto !important;
+  }
+
+  .ingress-head-actions .ingress-flight-launch,
+  .ingress-head-actions .signout-launch {
+    flex: 0 0 auto !important;
+    width: auto !important;
+    min-width: 0 !important;
+    max-width: max-content !important;
+    justify-self: end !important;
+    padding-inline: 11px !important;
+    padding-block: 8px !important;
+    min-height: 34px !important;
+    font-size: clamp(0.48rem, 2vw, 0.6rem) !important;
+    line-height: 1 !important;
+    letter-spacing: 0.12em !important;
+    white-space: nowrap !important;
+  }
+
+  .ingress-head-actions .signout-launch {
+    flex-basis: 100% !important;
+    margin-left: auto !important;
+    padding-inline: 12px !important;
+    font-size: clamp(0.54rem, 2.25vw, 0.66rem) !important;
+    letter-spacing: 0.15em !important;
+  }
+
   button,
   .control,
   .flight-launch,
   .ingress-stage-chip {
-    font-size: clamp(0.68rem, 2.35vw, 0.82rem) !important;
-    line-height: 1.15 !important;
-    letter-spacing: 0.14em !important;
+    font-size: clamp(0.56rem, 2.15vw, 0.68rem) !important;
+    line-height: 1.08 !important;
+    letter-spacing: 0.1em !important;
   }
 
-  .ingress-head-actions .ingress-flight-launch:not(.signout-launch) {
-    font-size: clamp(0.58rem, 2.35vw, 0.68rem) !important;
-    letter-spacing: 0.14em !important;
-  }
-
-  .ingress-head-actions .signout-launch {
-    font-size: clamp(0.72rem, 3vw, 0.88rem) !important;
-    letter-spacing: 0.18em !important;
+  .ingress-stage-rail {
+    display: flex !important;
+    gap: 8px !important;
+    overflow-x: auto !important;
+    padding-bottom: 6px !important;
+    scroll-snap-type: x proximity;
   }
 
   .ingress-stage-chip {
-    font-size: clamp(0.72rem, 3vw, 0.9rem) !important;
-    letter-spacing: 0.08em !important;
+    flex: 0 0 auto !important;
+    width: auto !important;
+    min-width: max-content !important;
+    padding-inline: 13px !important;
+    padding-block: 8px !important;
+    min-height: 34px !important;
+    font-size: clamp(0.58rem, 2.35vw, 0.72rem) !important;
+    letter-spacing: 0.06em !important;
+    scroll-snap-align: start;
   }
 
   .ingress-step-nav .control,
   .ingress-final-actions .control,
   .button-grid .control {
-    font-size: clamp(0.7rem, 2.8vw, 0.86rem) !important;
-    letter-spacing: 0.12em !important;
+    width: auto !important;
+    min-width: 0 !important;
+    max-width: 100% !important;
+    padding-inline: 12px !important;
+    padding-block: 9px !important;
+    min-height: 38px !important;
+    font-size: clamp(0.58rem, 2.35vw, 0.72rem) !important;
+    letter-spacing: 0.08em !important;
   }
 
   textarea,
@@ -135,18 +179,22 @@
     padding: 8px 9px !important;
   }
 
-  button,
-  .control,
-  .flight-launch,
-  .ingress-stage-chip {
-    font-size: clamp(0.62rem, 2.65vw, 0.76rem) !important;
+  .ingress-head-actions .ingress-flight-launch,
+  .ingress-head-actions .signout-launch {
+    padding-inline: 10px !important;
+    padding-block: 7px !important;
+    min-height: 32px !important;
+    font-size: clamp(0.46rem, 2.05vw, 0.56rem) !important;
   }
 
   .ingress-head-actions .signout-launch {
-    font-size: clamp(0.68rem, 3.1vw, 0.82rem) !important;
+    font-size: clamp(0.5rem, 2.25vw, 0.62rem) !important;
   }
 
-  .ingress-stage-chip {
-    font-size: clamp(0.68rem, 3vw, 0.82rem) !important;
+  .ingress-stage-chip,
+  .ingress-step-nav .control,
+  .ingress-final-actions .control,
+  .button-grid .control {
+    font-size: clamp(0.52rem, 2.25vw, 0.66rem) !important;
   }
 }
