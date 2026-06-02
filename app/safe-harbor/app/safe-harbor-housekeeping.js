@@ -1,11 +1,12 @@
 (function () {
   'use strict';
 
-  var VERSION = 'pr151-safe-harbor-inline-no-focus-zoom/v1';
+  var VERSION = 'pr152-safe-harbor-viewport-no-focus-zoom/v1';
   var STORAGE_KEY = 'td613.safe-harbor.session.v1';
   var MIRROR_KEY = 'td613.safe-harbor.session.mirror.v1';
   var SHI_PATTERN = /^TD613-SH-9B07D8B-[A-F0-9]{8}$/i;
   var lastInputValue = '';
+  var VIEWPORT_CONTENT = 'width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no, viewport-fit=cover';
 
   function $(id) { return document.getElementById(id); }
   function text(value) { return String(value == null ? '' : value).trim(); }
@@ -146,6 +147,23 @@
     document.head.appendChild(link);
   }
 
+  function installViewportGuard() {
+    var meta = document.querySelector('meta[name="viewport"]');
+    if (!meta) {
+      meta = document.createElement('meta');
+      meta.setAttribute('name', 'viewport');
+      document.head.insertBefore(meta, document.head.firstChild || null);
+    }
+    meta.setAttribute('content', VIEWPORT_CONTENT);
+    meta.dataset.pr152NoFocusZoom = VERSION;
+    document.documentElement.style.webkitTextSizeAdjust = '100%';
+    document.documentElement.style.textSizeAdjust = '100%';
+    if (document.body) {
+      document.body.style.webkitTextSizeAdjust = '100%';
+      document.body.style.textSizeAdjust = '100%';
+    }
+  }
+
   function installNoZoomStyle() {
     if ($('safeHarborPr151NoZoomStyle')) return;
     var style = document.createElement('style');
@@ -155,6 +173,7 @@
   }
 
   function forceNoZoomControls() {
+    installViewportGuard();
     installNoZoomStyle();
     var nodes = Array.from(document.querySelectorAll('input, textarea, select, .code-area, .ingress-textarea'));
     nodes.forEach(function (node) {
@@ -165,13 +184,16 @@
       node.style.textSizeAdjust = '100%';
       if (node.tagName === 'TEXTAREA' || node.classList.contains('code-area') || node.classList.contains('ingress-textarea')) node.style.letterSpacing = '0.01em';
       node.dataset.pr151NoFocusZoom = 'true';
+      node.dataset.pr152ViewportGuard = 'true';
     });
     window.__TD613_SAFE_HARBOR_PR151_LAST = {
       version: VERSION,
       controlsPatched: nodes.length,
       activeElement: document.activeElement && document.activeElement.id || '',
+      viewport: (document.querySelector('meta[name="viewport"]') || {}).content || '',
       at: new Date().toISOString()
     };
+    window.__TD613_SAFE_HARBOR_PR152_LAST = window.__TD613_SAFE_HARBOR_PR151_LAST;
   }
 
   function hardenScroll() {
@@ -179,7 +201,9 @@
     document.documentElement.classList.add('safe-harbor-pr149');
     document.documentElement.classList.add('safe-harbor-pr150');
     document.documentElement.classList.add('safe-harbor-pr151');
+    document.documentElement.classList.add('safe-harbor-pr152');
     loadPr149Css();
+    installViewportGuard();
     forceNoZoomControls();
     document.documentElement.style.overflowY = 'auto';
     document.body.style.overflowY = 'auto';
@@ -286,6 +310,7 @@
     };
     window.__TD613_SAFE_HARBOR_PR150_LAST = window.__TD613_SAFE_HARBOR_PR149_LAST;
     window.__TD613_SAFE_HARBOR_PR151_LAST = { ...(window.__TD613_SAFE_HARBOR_PR151_LAST || {}), version: VERSION, recallGateUpdated: true, at: new Date().toISOString() };
+    window.__TD613_SAFE_HARBOR_PR152_LAST = window.__TD613_SAFE_HARBOR_PR151_LAST;
   }
 
   function wrapSignOut() {
@@ -325,6 +350,7 @@
   setInterval(function () {
     fixFlightLinks();
     hookProgrammaticInput();
+    installViewportGuard();
     forceNoZoomControls();
     enforceOpenMembrane();
     updateRecallGate();
@@ -350,6 +376,13 @@
   window.TD613_SAFE_HARBOR_PR151 = Object.freeze({
     version: VERSION,
     boot: boot,
+    forceNoZoomControls: forceNoZoomControls,
+    updateRecallGate: updateRecallGate
+  });
+  window.TD613_SAFE_HARBOR_PR152 = Object.freeze({
+    version: VERSION,
+    boot: boot,
+    installViewportGuard: installViewportGuard,
     forceNoZoomControls: forceNoZoomControls,
     updateRecallGate: updateRecallGate
   });
