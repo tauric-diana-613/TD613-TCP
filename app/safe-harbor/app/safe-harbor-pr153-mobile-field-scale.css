@@ -1,0 +1,73 @@
+/* PR153 Safe Harbor mobile field scale.
+   Keep iOS Safari computed form text at 16px to prevent focus zoom;
+   visually miniaturize textareas/inputs so the chamber stops looking huge. */
+@media (max-width: 720px) {
+  html.safe-harbor-pr152 {
+    --safe-harbor-field-visual-scale: 0.76;
+    --safe-harbor-input-visual-scale: 0.82;
+  }
+
+  html.safe-harbor-pr152 input,
+  html.safe-harbor-pr152 textarea,
+  html.safe-harbor-pr152 select,
+  html.safe-harbor-pr152 .code-area,
+  html.safe-harbor-pr152 .ingress-textarea {
+    font-size: 16px !important;
+    -webkit-text-size-adjust: 100% !important;
+    text-size-adjust: 100% !important;
+    touch-action: manipulation !important;
+  }
+
+  html.safe-harbor-pr152 textarea,
+  html.safe-harbor-pr152 .code-area,
+  html.safe-harbor-pr152 .ingress-textarea {
+    zoom: var(--safe-harbor-field-visual-scale) !important;
+    width: calc(100% / var(--safe-harbor-field-visual-scale)) !important;
+    max-width: calc(100% / var(--safe-harbor-field-visual-scale)) !important;
+    line-height: 1.34 !important;
+    letter-spacing: 0.005em !important;
+    padding: 12px 13px !important;
+  }
+
+  html.safe-harbor-pr152 .ingress-textarea {
+    height: clamp(210px, 43dvh, 300px) !important;
+    min-height: 210px !important;
+  }
+
+  html.safe-harbor-pr152 .code-area {
+    min-height: 220px !important;
+  }
+
+  html.safe-harbor-pr152 input:not([type="checkbox"]):not([type="radio"]),
+  html.safe-harbor-pr152 select {
+    zoom: var(--safe-harbor-input-visual-scale) !important;
+    width: calc(100% / var(--safe-harbor-input-visual-scale)) !important;
+    max-width: calc(100% / var(--safe-harbor-input-visual-scale)) !important;
+    min-height: 42px !important;
+    line-height: 1.25 !important;
+    padding: 10px 12px !important;
+  }
+
+  html.safe-harbor-pr152 input[type="file"] {
+    min-height: 48px !important;
+  }
+
+  html.safe-harbor-pr152 input[type="checkbox"],
+  html.safe-harbor-pr152 input[type="radio"] {
+    zoom: 1 !important;
+    width: auto !important;
+    max-width: none !important;
+  }
+}
+
+@supports not (zoom: 1) {
+  @media (max-width: 720px) {
+    html.safe-harbor-pr152 textarea,
+    html.safe-harbor-pr152 .code-area,
+    html.safe-harbor-pr152 .ingress-textarea {
+      transform: scale(var(--safe-harbor-field-visual-scale));
+      transform-origin: top left;
+      width: calc(100% / var(--safe-harbor-field-visual-scale)) !important;
+    }
+  }
+}
