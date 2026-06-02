@@ -1,0 +1,76 @@
+/* PR149 Safe Harbor mobile recall hotfix: two-up ingress nav + clickable recall controls. */
+html.safe-harbor-pr149 .ingress-bypass,
+html.safe-harbor-pr149 .ingress-bypass summary,
+html.safe-harbor-pr149 .ingress-bypass-body,
+html.safe-harbor-pr149 .ingress-bypass-grid,
+html.safe-harbor-pr149 #bypassPassword,
+html.safe-harbor-pr149 #bypassSealedPacketFile,
+html.safe-harbor-pr149 #bypassIngress {
+  position: relative;
+  z-index: 8;
+  pointer-events: auto !important;
+  touch-action: manipulation;
+}
+
+html.safe-harbor-pr149 .ingress-bypass input:not(:disabled),
+html.safe-harbor-pr149 .ingress-bypass button:not(:disabled) {
+  opacity: 1 !important;
+  filter: none !important;
+}
+
+html.safe-harbor-pr149 .ingress-bypass[data-pr149-recall-open="true"] .ingress-bypass-body {
+  opacity: 1 !important;
+}
+
+html.safe-harbor-pr149 #bypassPassword,
+html.safe-harbor-pr149 #bypassSealedPacketFile {
+  min-height: 48px;
+  cursor: text;
+}
+
+html.safe-harbor-pr149 #bypassSealedPacketFile {
+  cursor: pointer;
+}
+
+@media (max-width: 720px) {
+  html.safe-harbor-pr149 .ingress-head-actions {
+    display: grid !important;
+    grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
+    align-items: stretch !important;
+    gap: 10px !important;
+    width: 100% !important;
+    margin-left: 0 !important;
+  }
+
+  html.safe-harbor-pr149 .ingress-head-actions .ingress-flight-launch:not(.signout-launch) {
+    width: 100% !important;
+    min-width: 0 !important;
+    padding-inline: 8px !important;
+    font-size: clamp(0.52rem, 2.5vw, 0.64rem) !important;
+    letter-spacing: 0.12em !important;
+  }
+
+  html.safe-harbor-pr149 .ingress-head-actions .signout-launch {
+    grid-column: 1 / -1 !important;
+    justify-self: center !important;
+    width: auto !important;
+    min-height: 32px !important;
+  }
+
+  html.safe-harbor-pr149 .ingress-status {
+    grid-template-columns: 1fr !important;
+  }
+
+  html.safe-harbor-pr149 .ingress-bypass .field-grid,
+  html.safe-harbor-pr149 .ingress-bypass-grid {
+    display: grid !important;
+    grid-template-columns: 1fr !important;
+    gap: 12px !important;
+  }
+
+  html.safe-harbor-pr149 .ingress-bypass input[type="text"],
+  html.safe-harbor-pr149 .ingress-bypass input[type="file"] {
+    width: 100% !important;
+    max-width: 100% !important;
+  }
+}
