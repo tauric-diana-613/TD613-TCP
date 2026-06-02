@@ -215,7 +215,7 @@
   (function bootstrapSafeHarborHousekeeping() {
     const path = String((window.location && window.location.pathname) || '');
     if (!/safe-harbor/i.test(path)) return;
-    const version = '20260602-pr158-header-row-real-labels';
+    const version = '20260602-pr159-header-actions-row';
     const sessionKey = 'td613.safe-harbor.session.v1';
     const mirrorKey = 'td613.safe-harbor.session.mirror.v1';
     const shiPattern = /^TD613-SH-9B07D8B-[A-F0-9]{8}$/i;
@@ -239,7 +239,9 @@
       ));
     };
     const compactSafeHarborHeaderActions = () => {
+      const actions = document.querySelector('.ingress-head-actions');
       const headerLinks = Array.from(document.querySelectorAll('.ingress-head-actions .ingress-flight-launch:not(.signout-launch)'));
+      const signOut = document.querySelector('.ingress-head-actions .signout-launch');
       headerLinks.forEach((link) => {
         const href = String(link.getAttribute('href') || '');
         if (/index\.html|\.\.\/index/.test(href)) {
@@ -251,9 +253,27 @@
           link.setAttribute('aria-label', 'Flight');
         }
       });
-      window.__TD613_SAFE_HARBOR_PR158_LAST = {
+      if (actions) {
+        actions.style.setProperty('display', 'inline-flex', 'important');
+        actions.style.setProperty('flex-direction', 'row', 'important');
+        actions.style.setProperty('flex-wrap', 'nowrap', 'important');
+        actions.style.setProperty('justify-content', 'flex-end', 'important');
+        actions.style.setProperty('align-items', 'center', 'important');
+        actions.style.setProperty('gap', '5px', 'important');
+        actions.style.setProperty('width', 'auto', 'important');
+        actions.style.setProperty('margin-left', 'auto', 'important');
+      }
+      if (actions && signOut && signOut.parentElement === actions) actions.appendChild(signOut);
+      if (signOut) {
+        signOut.style.setProperty('grid-column', 'auto', 'important');
+        signOut.style.setProperty('justify-self', 'auto', 'important');
+        signOut.style.setProperty('flex-basis', 'auto', 'important');
+        signOut.style.setProperty('order', '3', 'important');
+      }
+      window.__TD613_SAFE_HARBOR_PR159_LAST = {
         version,
         compactedHeaderActions: headerLinks.length,
+        signOutRehomed: Boolean(signOut),
         at: new Date().toISOString()
       };
     };
@@ -285,6 +305,7 @@
     document.documentElement.classList.add('safe-harbor-pr155');
     document.documentElement.classList.add('safe-harbor-pr156');
     document.documentElement.classList.add('safe-harbor-pr158');
+    document.documentElement.classList.add('safe-harbor-pr159');
     compactSafeHarborHeaderActions();
     window.setTimeout(compactSafeHarborHeaderActions, 80);
     window.setTimeout(compactSafeHarborHeaderActions, 600);
