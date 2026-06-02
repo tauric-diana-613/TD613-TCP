@@ -215,7 +215,7 @@
   (function bootstrapSafeHarborHousekeeping() {
     const path = String((window.location && window.location.pathname) || '');
     if (!/safe-harbor/i.test(path)) return;
-    const version = '20260602-pr155-mobile-button-type';
+    const version = '20260602-pr156-mobile-header-actions';
     const sessionKey = 'td613.safe-harbor.session.v1';
     const mirrorKey = 'td613.safe-harbor.session.mirror.v1';
     const shiPattern = /^TD613-SH-9B07D8B-[A-F0-9]{8}$/i;
@@ -237,6 +237,25 @@
         saved.sealed ||
         hasShi
       ));
+    };
+    const compactSafeHarborHeaderActions = () => {
+      const headerLinks = Array.from(document.querySelectorAll('.ingress-head-actions .ingress-flight-launch:not(.signout-launch)'));
+      headerLinks.forEach((link) => {
+        const href = String(link.getAttribute('href') || '');
+        if (/index\.html|\.\.\/index/.test(href)) {
+          link.textContent = '← Gateway';
+          link.setAttribute('aria-label', 'Gateway');
+        }
+        if (/td613-flight\.html/.test(href)) {
+          link.textContent = 'Flight →';
+          link.setAttribute('aria-label', 'Flight');
+        }
+      });
+      window.__TD613_SAFE_HARBOR_PR156_LAST = {
+        version,
+        compactedHeaderActions: headerLinks.length,
+        at: new Date().toISOString()
+      };
     };
     try {
       const sessionRaw = sessionStorage.getItem(sessionKey);
@@ -264,6 +283,10 @@
     document.documentElement.classList.add('safe-harbor-pr153');
     document.documentElement.classList.add('safe-harbor-pr154');
     document.documentElement.classList.add('safe-harbor-pr155');
+    document.documentElement.classList.add('safe-harbor-pr156');
+    compactSafeHarborHeaderActions();
+    window.setTimeout(compactSafeHarborHeaderActions, 80);
+    window.setTimeout(compactSafeHarborHeaderActions, 600);
     const cssHref = 'app/safe-harbor-housekeeping.css?v=' + version;
     if (!document.querySelector('link[href*="safe-harbor-housekeeping.css"]')) {
       const link = document.createElement('link');
