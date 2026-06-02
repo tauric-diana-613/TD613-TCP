@@ -13,7 +13,7 @@
   }
 
   function escapeHtml(value) {
-    return String(value == null ? '' : value)
+    return String(value == null ? '')
       .replace(/&/g, '&amp;')
       .replace(/</g, '&lt;')
       .replace(/>/g, '&gt;')
@@ -215,7 +215,7 @@
   (function bootstrapSafeHarborHousekeeping() {
     const path = String((window.location && window.location.pathname) || '');
     if (!/safe-harbor/i.test(path)) return;
-    const version = '20260602-pr148-session-persistence';
+    const version = '20260602-pr149-mobile-recall-hotfix';
     const sessionKey = 'td613.safe-harbor.session.v1';
     const mirrorKey = 'td613.safe-harbor.session.mirror.v1';
     const shiPattern = /^TD613-SH-9B07D8B-[A-F0-9]{8}$/i;
@@ -257,12 +257,20 @@
       }
     } catch (error) {}
     document.documentElement.classList.add('safe-harbor-pr147');
+    document.documentElement.classList.add('safe-harbor-pr149');
     const cssHref = 'app/safe-harbor-housekeeping.css?v=' + version;
     if (!document.querySelector('link[href*="safe-harbor-housekeeping.css"]')) {
       const link = document.createElement('link');
       link.rel = 'stylesheet';
       link.href = cssHref;
       document.head.appendChild(link);
+    }
+    const pr149CssHref = 'app/safe-harbor-pr149-recall-hotfix.css?v=' + version;
+    if (!document.querySelector('link[href*="safe-harbor-pr149-recall-hotfix.css"]')) {
+      const pr149Link = document.createElement('link');
+      pr149Link.rel = 'stylesheet';
+      pr149Link.href = pr149CssHref;
+      document.head.appendChild(pr149Link);
     }
     const jsSrc = 'app/safe-harbor-housekeeping.js?v=' + version;
     if (!document.querySelector('script[src*="safe-harbor-housekeeping.js"]')) {
