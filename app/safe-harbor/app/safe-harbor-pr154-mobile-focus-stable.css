@@ -1,19 +1,12 @@
-/* PR154 Safe Harbor mobile focus stability.
-   This file is intended to load from the document head, not from the late
-   housekeeping bootstrap. iOS needs the focused control itself to be real,
-   unscaled, and at least 16px before the first tap lands. */
+/* PR155 Safe Harbor mobile focus stability + compact button typography.
+   Text inputs keep the real 16px surface iOS needs. Buttons are not text-entry
+   controls, so their typography can return to compact UI scale without bringing
+   the focus zoom bug back. */
 @media (max-width: 720px) {
   html,
   body {
     -webkit-text-size-adjust: 100% !important;
     text-size-adjust: 100% !important;
-  }
-
-  input,
-  textarea,
-  select,
-  button {
-    font-size: 16px !important;
   }
 
   input,
@@ -35,6 +28,37 @@
     transform: none !important;
     -webkit-transform: none !important;
     zoom: 1 !important;
+  }
+
+  button,
+  .control,
+  .flight-launch,
+  .ingress-stage-chip {
+    font-size: clamp(0.68rem, 2.35vw, 0.82rem) !important;
+    line-height: 1.15 !important;
+    letter-spacing: 0.14em !important;
+  }
+
+  .ingress-head-actions .ingress-flight-launch:not(.signout-launch) {
+    font-size: clamp(0.58rem, 2.35vw, 0.68rem) !important;
+    letter-spacing: 0.14em !important;
+  }
+
+  .ingress-head-actions .signout-launch {
+    font-size: clamp(0.72rem, 3vw, 0.88rem) !important;
+    letter-spacing: 0.18em !important;
+  }
+
+  .ingress-stage-chip {
+    font-size: clamp(0.72rem, 3vw, 0.9rem) !important;
+    letter-spacing: 0.08em !important;
+  }
+
+  .ingress-step-nav .control,
+  .ingress-final-actions .control,
+  .button-grid .control {
+    font-size: clamp(0.7rem, 2.8vw, 0.86rem) !important;
+    letter-spacing: 0.12em !important;
   }
 
   textarea,
@@ -109,5 +133,20 @@
   .code-area {
     line-height: 1.12 !important;
     padding: 8px 9px !important;
+  }
+
+  button,
+  .control,
+  .flight-launch,
+  .ingress-stage-chip {
+    font-size: clamp(0.62rem, 2.65vw, 0.76rem) !important;
+  }
+
+  .ingress-head-actions .signout-launch {
+    font-size: clamp(0.68rem, 3.1vw, 0.82rem) !important;
+  }
+
+  .ingress-stage-chip {
+    font-size: clamp(0.68rem, 3vw, 0.82rem) !important;
   }
 }
