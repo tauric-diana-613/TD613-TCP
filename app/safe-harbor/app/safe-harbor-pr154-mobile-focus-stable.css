@@ -1,25 +1,17 @@
-/* PR157 Safe Harbor mobile focus stability + compact header cluster.
-   Text inputs keep the real 16px surface iOS needs. Header controls stay
-   visually compact, right-hugging, and on one row. */
+/* PR158 mobile Safe Harbor polish. Existing loaded file, no pseudo labels. */
 @media (max-width: 720px) {
-  html,
-  body {
+  html, body {
     -webkit-text-size-adjust: 100% !important;
     text-size-adjust: 100% !important;
   }
 
-  input,
-  textarea,
-  select,
-  .ingress-textarea,
-  .safe-field,
-  .code-area {
+  input, textarea, select, .ingress-textarea, .safe-field, .code-area {
     appearance: none;
     -webkit-appearance: none;
     box-sizing: border-box !important;
-    min-width: 0 !important;
-    max-width: 100% !important;
     width: 100% !important;
+    max-width: 100% !important;
+    min-width: 0 !important;
     font-size: 16px !important;
     -webkit-text-size-adjust: 100% !important;
     text-size-adjust: 100% !important;
@@ -29,108 +21,86 @@
     zoom: 1 !important;
   }
 
+  textarea, .ingress-textarea, .safe-field, .code-area {
+    line-height: 1.18 !important;
+    letter-spacing: 0 !important;
+    padding: 9px 10px !important;
+    resize: vertical;
+  }
+
+  .ingress-textarea { min-height: 168px !important; height: clamp(168px, 34dvh, 232px) !important; }
+  .safe-field { min-height: 118px !important; height: clamp(118px, 26dvh, 180px) !important; }
+  .code-area { min-height: 168px !important; height: clamp(168px, 32dvh, 228px) !important; }
+  input:not([type="checkbox"]):not([type="radio"]), select { min-height: 42px !important; line-height: 1.15 !important; padding: 8px 10px !important; }
+  input[type="checkbox"], input[type="radio"] { appearance: auto !important; -webkit-appearance: auto !important; width: auto !important; max-width: none !important; min-width: 0 !important; font-size: initial !important; transform: none !important; -webkit-transform: none !important; zoom: 1 !important; }
+
+  .ingress-head {
+    display: grid !important;
+    grid-template-columns: minmax(0, 1fr) !important;
+    justify-items: stretch !important;
+  }
+
   .ingress-head-actions {
-    display: flex !important;
+    display: inline-flex !important;
+    flex-direction: row !important;
     flex-wrap: nowrap !important;
-    justify-content: flex-end !important;
     align-items: center !important;
-    gap: 6px !important;
-    width: max-content !important;
+    justify-content: flex-end !important;
+    gap: 5px !important;
+    width: auto !important;
+    min-width: 0 !important;
     max-width: 100% !important;
-    margin-left: auto !important;
-    align-self: flex-end !important;
+    margin: 0 0 0 auto !important;
+    justify-self: end !important;
+    align-self: start !important;
+    grid-template-columns: none !important;
+    grid-auto-flow: column !important;
     overflow: visible !important;
   }
 
   .ingress-head-actions .ingress-flight-launch,
   .ingress-head-actions .signout-launch {
     flex: 0 0 auto !important;
+    grid-column: auto !important;
+    grid-row: auto !important;
     width: auto !important;
     min-width: 0 !important;
     max-width: max-content !important;
-    padding-inline: 9px !important;
-    padding-block: 7px !important;
-    min-height: 30px !important;
-    font-size: clamp(0.44rem, 1.9vw, 0.56rem) !important;
+    min-height: 28px !important;
+    padding: 6px 8px !important;
+    margin: 0 !important;
+    font-size: clamp(0.42rem, 1.7vw, 0.54rem) !important;
     line-height: 1 !important;
-    letter-spacing: 0.1em !important;
+    letter-spacing: 0.08em !important;
     white-space: nowrap !important;
+  }
+
+  .ingress-head-actions a.ingress-flight-launch {
+    color: #d9ffe7 !important;
+    font-size: clamp(0.42rem, 1.7vw, 0.54rem) !important;
+    letter-spacing: 0.08em !important;
+  }
+
+  .ingress-head-actions a.ingress-flight-launch::after {
+    content: none !important;
+    display: none !important;
   }
 
   .ingress-head-actions .signout-launch {
     flex-basis: auto !important;
-    margin-left: 0 !important;
-    padding-inline: 9px !important;
-    font-size: clamp(0.44rem, 1.9vw, 0.56rem) !important;
-    letter-spacing: 0.1em !important;
+    color: rgba(190, 255, 214, 0.92) !important;
+    background: transparent !important;
+    border-color: transparent !important;
+    box-shadow: none !important;
+    clip-path: none !important;
   }
 
-  .ingress-head-actions a.ingress-flight-launch {
-    font-size: 0 !important;
-    letter-spacing: 0 !important;
-  }
+  .ingress-stage-rail { display: flex !important; gap: 8px !important; overflow-x: auto !important; padding-bottom: 6px !important; }
+  .ingress-stage-chip { flex: 0 0 auto !important; width: auto !important; min-width: max-content !important; min-height: 34px !important; padding: 8px 13px !important; font-size: clamp(0.58rem, 2.35vw, 0.72rem) !important; letter-spacing: 0.06em !important; }
 
-  .ingress-head-actions a.ingress-flight-launch::after {
-    display: inline-block;
-    font-size: clamp(0.44rem, 1.9vw, 0.56rem) !important;
-    line-height: 1 !important;
-    letter-spacing: 0.1em !important;
-  }
-
-  .ingress-head-actions a.ingress-flight-launch[href*="index"]::after {
-    content: 'Gateway';
-  }
-
-  .ingress-head-actions a.ingress-flight-launch[href*="td613-flight"]::after {
-    content: 'Flight';
-  }
-
-  button,
-  .control,
-  .flight-launch,
-  .ingress-stage-chip {
-    font-size: clamp(0.56rem, 2.15vw, 0.68rem) !important;
-    line-height: 1.08 !important;
-    letter-spacing: 0.1em !important;
-  }
-
-  .ingress-stage-rail {
-    display: flex !important;
-    gap: 8px !important;
-    overflow-x: auto !important;
-    padding-bottom: 6px !important;
-    scroll-snap-type: x proximity;
-  }
-
-  .ingress-stage-chip {
-    flex: 0 0 auto !important;
-    width: auto !important;
-    min-width: max-content !important;
-    padding-inline: 13px !important;
-    padding-block: 8px !important;
-    min-height: 34px !important;
-    font-size: clamp(0.58rem, 2.35vw, 0.72rem) !important;
-    letter-spacing: 0.06em !important;
-    scroll-snap-align: start;
-  }
-
-  .ingress-step-nav .control,
-  .ingress-final-actions .control,
-  .button-grid .control {
-    width: auto !important;
-    min-width: 0 !important;
-    max-width: 100% !important;
-    padding-inline: 12px !important;
-    padding-block: 9px !important;
-    min-height: 38px !important;
-    font-size: clamp(0.58rem, 2.35vw, 0.72rem) !important;
-    letter-spacing: 0.08em !important;
-  }
-
-  #ingressContinue,
-  .ingress-step-nav #ingressContinue {
-    width: 136px !important;
-    max-width: 136px !important;
+  #ingressNext, .ingress-step-nav #ingressNext {
+    width: 132px !important;
+    max-width: 132px !important;
     white-space: normal !important;
     text-align: center !important;
     line-height: 1.18 !important;
@@ -138,106 +108,19 @@
     overflow-wrap: normal !important;
   }
 
-  textarea,
-  .ingress-textarea,
-  .safe-field,
-  .code-area {
-    line-height: 1.18 !important;
-    letter-spacing: 0 !important;
-    padding: 9px 10px !important;
-    resize: vertical;
-  }
-
-  .ingress-textarea {
-    min-height: 168px !important;
-    height: clamp(168px, 34dvh, 232px) !important;
-  }
-
-  .safe-field {
-    min-height: 118px !important;
-    height: clamp(118px, 26dvh, 180px) !important;
-  }
-
-  .code-area {
-    min-height: 168px !important;
-    height: clamp(168px, 32dvh, 228px) !important;
-  }
-
-  input:not([type="checkbox"]):not([type="radio"]),
-  select {
-    min-height: 42px !important;
-    line-height: 1.15 !important;
-    padding: 8px 10px !important;
-  }
-
-  input[type="checkbox"],
-  input[type="radio"] {
-    appearance: auto;
-    -webkit-appearance: auto;
+  .ingress-step-nav .control, .ingress-final-actions .control, .button-grid .control {
     width: auto !important;
-    max-width: none !important;
     min-width: 0 !important;
-    font-size: initial !important;
-    transform: none !important;
-    -webkit-transform: none !important;
-    zoom: 1 !important;
-  }
-
-  .ingress-step-panel,
-  .ingress-console-panel,
-  .surface-card,
-  .forge-card,
-  .panel,
-  .dock {
-    overflow: visible !important;
-  }
-
-  .ingress-step-support {
-    max-height: 2.6em;
-    overflow: hidden;
+    max-width: 100% !important;
+    min-height: 38px !important;
+    padding: 9px 12px !important;
+    font-size: clamp(0.58rem, 2.35vw, 0.72rem) !important;
+    letter-spacing: 0.08em !important;
   }
 }
 
 @media (max-width: 430px) {
-  .ingress-textarea {
-    min-height: 156px !important;
-    height: clamp(156px, 32dvh, 216px) !important;
-  }
-
-  textarea,
-  .ingress-textarea,
-  .safe-field,
-  .code-area {
-    line-height: 1.12 !important;
-    padding: 8px 9px !important;
-  }
-
-  .ingress-head-actions {
-    gap: 5px !important;
-  }
-
-  .ingress-head-actions .ingress-flight-launch,
-  .ingress-head-actions .signout-launch {
-    padding-inline: 8px !important;
-    padding-block: 7px !important;
-    min-height: 30px !important;
-    font-size: clamp(0.42rem, 1.8vw, 0.52rem) !important;
-  }
-
-  .ingress-head-actions a.ingress-flight-launch::after {
-    font-size: clamp(0.42rem, 1.8vw, 0.52rem) !important;
-  }
-
-  .ingress-stage-chip,
-  .ingress-step-nav .control,
-  .ingress-final-actions .control,
-  .button-grid .control {
-    font-size: clamp(0.52rem, 2.25vw, 0.66rem) !important;
-  }
-
-  #ingressContinue,
-  .ingress-step-nav #ingressContinue {
-    width: 128px !important;
-    max-width: 128px !important;
-  }
+  .ingress-textarea { min-height: 156px !important; height: clamp(156px, 32dvh, 216px) !important; }
+  textarea, .ingress-textarea, .safe-field, .code-area { line-height: 1.12 !important; padding: 8px 9px !important; }
+  #ingressNext, .ingress-step-nav #ingressNext { width: 126px !important; max-width: 126px !important; }
 }
