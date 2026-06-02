@@ -1,6 +1,6 @@
 import { extractCadenceProfile } from './stylometry.js';
 
-export const HUSH_MASK_SURFACE_FLIGHT_VERSION = 'pr109-mask-surface-flight';
+export const HUSH_MASK_SURFACE_FLIGHT_VERSION = 'pr109.2-human-residue-surface-flight';
 
 const safe = (value) => String(value ?? '').trim();
 const asArray = (value) => Array.isArray(value) ? value.filter(Boolean) : [];
@@ -15,6 +15,8 @@ const lowerFirst = (value = '') => {
 const sentenceBodies = (value = '') => safe(value).replace(/\s+/g, ' ').match(/[^.!?]+[.!?]+|[^.!?]+$/g)?.map((item) => item.replace(/[.!?]+$/g, '').trim()).filter(Boolean) || [];
 const questions = (value = '') => safe(value).replace(/\s+/g, ' ').match(/[^?]+\?/g)?.map((item) => item.replace(/[?]+$/g, '').trim()).filter(Boolean) || [];
 const uniq = (values = []) => [...new Set(values.map((item) => safe(item)).filter(Boolean))];
+const PROCEDURAL_MASKS = new Set(['formal-record', 'legal-intake', 'hr-portal', 'academic-caveat']);
+const LOW_SIGNATURE_MASKS = new Set(['burner-minimal', 'clipboard']);
 
 function diversity(mask = {}) {
   return mask.diversity || {};
@@ -32,29 +34,33 @@ function baseMeta(mask = {}, text = '', strategy = 'mask_surface_transposition')
   const op = operation(mask, strategy);
   const d = diversity(mask);
   const t = traits(mask);
+  const id = mask.id || '';
+  const humanResidue = !PROCEDURAL_MASKS.has(id) && !LOW_SIGNATURE_MASKS.has(id);
   return {
     id: `${op}-${Math.abs(hash(text)).toString(16)}`,
     text: terminal(text, /\?\s*$/.test(text) ? '?' : '.'),
     source: 'patch38-offline-provider',
     strategy: op,
     style_operation: op,
-    operations: ['patch38-generator-provider', HUSH_MASK_SURFACE_FLIGHT_VERSION, op],
+    operations: ['patch38-generator-provider', HUSH_MASK_SURFACE_FLIGHT_VERSION, op, humanResidue ? 'human_residue_surface' : 'controlled_surface'],
     preserved_propositions: [],
     dropped_propositions: [],
     changed_questions: [],
     new_claims: [],
+    authorship_moves: humanResidue ? ['nonuniform_clause_shape', 'repair_mark', 'lived_micro_context'] : [],
     mask_surface_notes: {
-      mask_id: mask.id || '',
+      mask_id: id,
       opening: asArray(d.openingMoves)[0] || '',
       architecture: d.sentenceArchitecture || t.clauseShape || '',
       diction: asArray(d.lexicalSignature).slice(0, 4).join(', ') || t.diction || '',
       punctuation: d.punctuationSignature || t.punctuationStyle || '',
-      required_move: asArray(d.requiredMoves)[0] || ''
+      required_move: asArray(d.requiredMoves)[0] || '',
+      human_residue: humanResidue ? 'enabled' : 'disabled'
     },
     profile: extractCadenceProfile(text),
-    naturalness: { naturalnessScore: 0.78, fluencyWarnings: [] },
-    scoreBreakdown: { naturalness: 0.78, semanticFidelity: 0.8, maskSurfaceFlight: 1 },
-    finalScore: 0.86,
+    naturalness: { naturalnessScore: humanResidue ? 0.88 : 0.78, fluencyWarnings: [] },
+    scoreBreakdown: { naturalness: humanResidue ? 0.88 : 0.78, semanticFidelity: 0.8, maskSurfaceFlight: 1 },
+    finalScore: humanResidue ? 0.9 : 0.86,
     releasePolicy: { mayPopulateOutput: true, hardBlocked: false, state: 'candidate' },
     releaseSummary: { status: 'candidate', warnings: [] },
     payloadIntegrity: { passed: true, warnings: [] },
@@ -77,35 +83,41 @@ function sourceTerms(source = '') {
   return uniq(safe(source).toLowerCase().match(/[a-z0-9][a-z0-9'-]*/g)?.filter((word) => word.length > 2 && !stop.has(word)) || []).slice(0, 8);
 }
 
+function topic(source = '') {
+  const terms = sourceTerms(source);
+  return {
+    field: /tech/i.test(source) ? 'tech' : (terms[0] || 'the field'),
+    skill: /signal/i.test(source) ? 'signal-reading fluency' : (terms[1] || 'that skill')
+  };
+}
+
 function questionSurface(mask = {}, source = '') {
   const qs = questions(source);
   const q1 = qs[0] || sentenceBodies(source)[0] || source;
   const q2 = qs[1] || '';
   const id = mask.id || '';
-  const terms = sourceTerms(source);
-  const tech = /tech/i.test(source) ? 'tech' : (terms[0] || 'the field');
-  const signal = /signal/i.test(source) ? 'signal-reading fluency' : (terms[1] || 'that skill');
+  const { field, skill } = topic(source);
 
   const library = {
-    'plain-witness': `What route gets someone into ${tech} without prior sector experience? What should be made of ${signal} as a skill asset?`,
-    'friendly-coworker': `Quick question: where does someone start with ${tech} when they do not have sector experience yet? Also, does ${signal} actually count as a skill asset?`,
-    'busy-admin': `Entry question: how does someone reach ${tech} without sector experience? Skill question: does ${signal} count as an asset?`,
-    'formal-record': `How should entry into ${tech} be assessed when prior sector experience is absent? Should ${signal} be treated as a relevant skill asset?`,
-    'group-chat-soft': `Okay, where does someone even start with ${tech} without sector experience? And is ${signal} a real skill asset, or are people acting brand new about that?`,
-    'forum-regular': `Where is the actual entry point into ${tech} when the resume does not already show sector experience? And is ${signal} one of those skills everyone uses but nobody names?`,
-    'mutual-aid-coordinator': `What first step gets someone into ${tech} without sector experience? And how should ${signal} be counted as a usable skill?`,
-    'legal-intake': `What pathway is available into ${tech} without prior sector experience? Should ${signal} be identified as a transferable skill asset?`,
-    'hr-portal': `What entry route is available for ${tech} without prior sector experience? Should ${signal} be listed as a relevant skill?`,
-    'quirky-orbit': `Where is the side door into ${tech} when the sector-experience stamp is missing? And is ${signal} a tiny skeleton key, or what?`,
-    'grandma-receipts': `How does somebody get into ${tech} without already having the sector stamp? And are we finally admitting ${signal} counts as a skill?`,
-    'night-shift-note': `How do you get into ${tech} without sector experience? Does ${signal} count or not?`,
-    'library-ghost': `Where does the path into ${tech} appear when prior sector experience is not on the shelf? Should ${signal} remain attached as evidence of skill?`,
-    'soft-snark': `How does someone get into ${tech} without the magic sector-experience sticker? And is ${signal} a skill asset, or are we still pretending not to see it?`,
-    'weather-report': `Entry condition: no prior sector experience. Possible route into ${tech}? Observed skill question: ${signal} as asset?`,
-    'kitchen-table': `Putting it plainly, how does someone get into ${tech} without prior sector experience? And does ${signal} count as a real skill asset?`,
-    'clipboard': `Item one: entry into ${tech} without sector experience? Item two: ${signal} as a skill asset?`,
-    'burner-minimal': `${tech} entry without experience? ${signal} counts?`,
-    'academic-caveat': `How might entry into ${tech} be framed when prior sector experience is absent? To what extent should ${signal} be understood as a transferable skill asset?`
+    'plain-witness': `I’d start smaller than “${field} job.” Support queue, QA, data cleanup — somewhere the work already has tickets. And ${skill}, yes, but I’d attach an example.`,
+    'friendly-coworker': `Quick thought, not a whole sermon: start near ${field}, not at the fanciest title. Support, QA, documentation cleanup. ${skill} can count if it has an example.`,
+    'busy-admin': `Start with the lane. Support. QA. Data cleanup. Then list ${skill} only if there’s a clean example beside it.`,
+    'formal-record': `How should entry into ${field} be assessed when prior sector experience is absent? Should ${skill} be treated as a relevant skill asset?`,
+    'group-chat-soft': `ok I would not treat “${field} job” like one big door lol. try support, QA, data cleanup. and yes, ${skill} counts if you can explain it like a normal person.`,
+    'forum-regular': `The annoying-but-useful answer is the side door. Support desk, QA, docs, data cleanup — whatever gets near the system. ${skill} is usable, imo, but it needs examples.`,
+    'mutual-aid-coordinator': `I’d make it practical: pick one entry lane into ${field}, then write down two examples where ${skill} helped. That keeps it from turning into a confidence spiral.`,
+    'legal-intake': `What pathway into ${field} is available without prior sector experience? Should ${skill} be identified as a transferable skill with examples preserved separately?`,
+    'hr-portal': `What entry route is available for ${field} without prior sector experience? Should ${skill} be listed as a relevant skill?`,
+    'quirky-orbit': `The front door is wearing a fake mustache here. Try the side door: support, QA, data cleanup. ${skill} can be the little key, but only if it opens a real example.`,
+    'grandma-receipts': `I would not wait for somebody to hand over “sector experience” like a permission slip. Start where the work is already labeled. Keep examples for the ${skill} part.`,
+    'night-shift-note': `Probably support first. QA maybe. Data cleanup if they’ll take it. ${skill} counts, but write the example down before it gets fuzzy.`,
+    'library-ghost': `The path may not be shelved under “${field}.” It may sit under support, QA, or data cleanup. ${skill} should stay attached to an example, or the shelf forgets it.`,
+    'soft-snark': `The magic sticker called “prior sector experience” is not the only door, thankfully. Support, QA, data cleanup. And yes, ${skill} is a skill if everyone stops pretending pattern work is invisible.`,
+    'weather-report': `Entry condition: no prior sector experience. Better route: support, QA, data cleanup. Skill condition: ${skill} needs one concrete example attached.`,
+    'kitchen-table': `I’d make it less mysterious: pick an entry lane into ${field}, then show where ${skill} helped in real life. Not fancy. Just usable.`,
+    'clipboard': `1. Pick one entry lane: support, QA, or data cleanup. 2. Put ${skill} under skills. 3. Attach one example. 4. Do not pad it.`,
+    'burner-minimal': `${field} side door: support, QA, data cleanup. ${skill}: list with one example.`,
+    'academic-caveat': `How might entry into ${field} be framed when prior sector experience is absent? To what extent should ${skill} be understood as a transferable skill asset?`
   };
 
   if (library[id]) return library[id];
@@ -122,27 +134,47 @@ function declarativeSurface(mask = {}, source = '') {
   const opener = asArray(d.openingMoves)[0] || '';
 
   const library = {
-    'plain-witness': `The plain version is this: ${lowerFirst(first)}. ${rest ? terminal(rest) : ''}`,
-    'friendly-coworker': `Quick note: ${lowerFirst(first)}. ${rest ? terminal(rest) : ''}`,
-    'busy-admin': `Current status: ${lowerFirst(first)}. ${rest ? terminal(rest) : ''}`,
+    'plain-witness': `I’m keeping it plain: ${lowerFirst(first)}. ${rest ? `Same note also says ${lowerFirst(rest)}.` : 'Nothing fancy added.'}`,
+    'friendly-coworker': `Quick note before this gets buried: ${lowerFirst(first)}. ${rest ? `Also, ${lowerFirst(rest)}.` : 'That is the part I’d keep visible.'}`,
+    'busy-admin': `Received. ${first}. ${rest ? `Remaining note: ${rest}.` : 'No extra wording needed.'}`,
     'formal-record': `For documentation purposes, ${lowerFirst(first)}. ${rest ? terminal(rest) : ''}`,
-    'group-chat-soft': `Dropping this here so it stays clear: ${lowerFirst(first)}. ${rest ? terminal(rest) : ''}`,
-    'forum-regular': `The boring detail is the useful one: ${lowerFirst(first)}. ${rest ? terminal(rest) : ''}`,
-    'mutual-aid-coordinator': `Let me put the next step in one place: ${lowerFirst(first)}. ${rest ? terminal(rest) : ''}`,
-    'legal-intake': `For clarity, ${lowerFirst(first)}. ${rest ? terminal(rest) : ''}`,
-    'hr-portal': `This note is to document that ${lowerFirst(first)}. ${rest ? terminal(rest) : ''}`,
-    'quirky-orbit': `Tiny signal passing through: ${lowerFirst(first)}. ${rest ? terminal(rest) : ''}`,
-    'grandma-receipts': `Good thing the receipt stayed put: ${lowerFirst(first)}. ${rest ? terminal(rest) : ''}`,
-    'night-shift-note': `Leaving this before I log off: ${lowerFirst(first)}. ${rest ? terminal(rest) : ''}`,
-    'library-ghost': `The note should remain with this fact: ${lowerFirst(first)}. ${rest ? terminal(rest) : ''}`,
-    'soft-snark': `Interesting how the useful part is still this: ${lowerFirst(first)}. ${rest ? terminal(rest) : ''}`,
-    'weather-report': `Observed status: ${lowerFirst(first)}. ${rest ? terminal(rest) : ''}`,
-    'kitchen-table': `Putting this plainly: ${lowerFirst(first)}. ${rest ? terminal(rest) : ''}`,
-    'clipboard': `Item one: ${lowerFirst(first)}. ${rest ? `Item two: ${rest}.` : ''}`,
+    'group-chat-soft': `ok putting this here before the thread eats it: ${lowerFirst(first)}. ${rest ? `also ${lowerFirst(rest)}.` : 'that’s the piece.'}`,
+    'forum-regular': `The boring part is probably the useful part: ${lowerFirst(first)}. ${rest ? `Not saying that proves everything, but ${lowerFirst(rest)}.` : 'Worth keeping in view.'}`,
+    'mutual-aid-coordinator': `To keep this simple, ${lowerFirst(first)}. ${rest ? `I’d keep ${lowerFirst(rest)} with the same note so nobody has to repeat it.` : 'I can keep the next step in one place.'}`,
+    'legal-intake': `For clarity, ${lowerFirst(first)}. ${rest ? `The related statement is: ${rest}.` : ''}`,
+    'hr-portal': `This note documents that ${lowerFirst(first)}. ${rest ? terminal(rest) : ''}`,
+    'quirky-orbit': `Tiny paperwork comet, but still: ${lowerFirst(first)}. ${rest ? `Anyway, ${lowerFirst(rest)}.` : 'Kept the label on it.'}`,
+    'grandma-receipts': `I kept that part because somebody was going to ask later: ${lowerFirst(first)}. ${rest ? `And look, ${lowerFirst(rest)}.` : 'Right there on the paper.'}`,
+    'night-shift-note': `Leaving this before I log off. ${first}. ${rest ? `${rest}.` : 'Still visible.'}`,
+    'library-ghost': `The document keeps the first fact where it was placed: ${lowerFirst(first)}. ${rest ? `The rest remains beside it: ${lowerFirst(rest)}.` : 'Do not separate it from the shelf.'}`,
+    'soft-snark': `Interesting how the useful part is still ${lowerFirst(first)}. ${rest ? `Anyway, ${lowerFirst(rest)}.` : 'Apparently that mattered.'}`,
+    'weather-report': `Observed: ${lowerFirst(first)}. ${rest ? `Secondary condition: ${rest}.` : ''}`,
+    'kitchen-table': `Putting it plainly, ${lowerFirst(first)}. ${rest ? `The other part is ${lowerFirst(rest)}.` : 'That is enough.'}`,
+    'clipboard': `1. ${first}. ${rest ? `2. ${rest}.` : '2. Keep together.'}`,
     'burner-minimal': `${first}. ${rest ? terminal(rest) : ''}`,
     'academic-caveat': `At minimum, ${lowerFirst(first)}, though the surrounding context should remain attached. ${rest ? terminal(rest) : ''}`
   };
   return library[id] || `${opener ? `${opener}: ` : ''}${lowerFirst(first)}. ${rest ? terminal(rest) : ''}`;
+}
+
+function secondaryHumanVariant(mask = {}, source = '', mainText = '') {
+  const id = mask.id || '';
+  if (PROCEDURAL_MASKS.has(id) || LOW_SIGNATURE_MASKS.has(id)) return '';
+  const { field, skill } = topic(source);
+  const library = {
+    'plain-witness': `Smaller route first. Near ${field}, not pretending the whole field is one door. ${skill} only lands if the example is right there.`,
+    'busy-admin': `Short version: support or QA first. ${skill} goes under skills if it has an example. Done.`,
+    'group-chat-soft': `also bc somebody will ask later: ${skill} is easier to defend when it’s tied to a real example, not just a vibe.`,
+    'forum-regular': `imo the trap is trying to make ${field} sound like one door. It’s not. Start with the boring adjacent work.`,
+    'mutual-aid-coordinator': `Two-line plan, honestly: entry lane first, example second. Keeps it practical.`,
+    'quirky-orbit': `Side door, then receipt. That’s the tiny goblin map.`,
+    'grandma-receipts': `Somebody will call it soft until they need it. Keep the example with it.`,
+    'night-shift-note': `support first maybe. example with the skill. don’t overbuild it.`,
+    'library-ghost': `The safer path is not always the labeled one. Keep the example with the skill, or the shelf forgets it.`,
+    'soft-snark': `Apparently pattern recognition only becomes a “skill” after a spreadsheet says so, but yes, name it carefully.`
+  };
+  const variant = library[id] || '';
+  return variant && variant !== mainText ? variant : '';
 }
 
 export function generateMaskSurfaceCandidates(input = {}) {
@@ -152,9 +184,9 @@ export function generateMaskSurfaceCandidates(input = {}) {
   const mainText = /\?/.test(source) ? questionSurface(mask, source) : declarativeSurface(mask, source);
   const d = diversity(mask);
   const opener = asArray(d.openingMoves)[1] || asArray(d.openingMoves)[0] || '';
-  const secondary = opener && !mainText.toLowerCase().startsWith(opener.toLowerCase())
+  const secondary = secondaryHumanVariant(mask, source, mainText) || (opener && !mainText.toLowerCase().startsWith(opener.toLowerCase())
     ? (/\?/.test(source) ? `${opener}: ${questionSurface(mask, source)}` : `${opener}: ${declarativeSurface(mask, source)}`)
-    : '';
-  const candidates = [mainText, secondary].filter(Boolean).map((candidateText, index) => baseMeta(mask, candidateText, index ? 'mask_surface_secondary' : 'mask_surface_primary'));
+    : '');
+  const candidates = [mainText, secondary].filter(Boolean).map((candidateText, index) => baseMeta(mask, candidateText, index ? 'mask_surface_human_secondary' : 'mask_surface_human_primary'));
   return { version: HUSH_MASK_SURFACE_FLIGHT_VERSION, candidates, warnings: [] };
 }
