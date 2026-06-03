@@ -105,3 +105,151 @@
     padding: 7px 8px !important;
   }
 }
+
+/* PR100 Safe Harbor containment pass: membrane scroll boundary + opened masthead compactness. */
+html.safe-harbor-pr147:not([data-safe-harbor-session-open="true"]) body.vault-sealed:not(.vault-open),
+html.safe-harbor-pr147 body.vault-sealed:not(.vault-open):has(.ingress-membrane:not(.is-hidden)) {
+  height: 100dvh !important;
+  min-height: 100dvh !important;
+  max-height: 100dvh !important;
+  overflow: hidden !important;
+  overscroll-behavior: contain !important;
+}
+
+html.safe-harbor-pr147:not([data-safe-harbor-session-open="true"]) .ingress-membrane:not(.is-hidden),
+html.safe-harbor-pr147 body.vault-sealed:not(.vault-open) .ingress-membrane:not(.is-hidden) {
+  position: fixed !important;
+  inset: 0 !important;
+  display: grid !important;
+  place-items: start center !important;
+  width: 100vw !important;
+  height: 100dvh !important;
+  min-height: 100dvh !important;
+  max-height: 100dvh !important;
+  overflow-x: hidden !important;
+  overflow-y: auto !important;
+  overscroll-behavior: contain !important;
+  -webkit-overflow-scrolling: touch !important;
+  touch-action: pan-y !important;
+}
+
+html.safe-harbor-pr147 body.vault-sealed:not(.vault-open) .chrome-grid {
+  max-height: 100dvh !important;
+  overflow: hidden !important;
+}
+
+html.safe-harbor-pr147 .chrome-grid > .masthead .status-strip .status-pill {
+  flex: 0 1 auto !important;
+  width: max-content !important;
+  min-width: 0 !important;
+  max-width: 100% !important;
+}
+
+@media (max-width: 720px) {
+  html.safe-harbor-pr147 body:not(.vault-sealed) .chrome-grid > .masthead,
+  html.safe-harbor-pr147 body.vault-open .chrome-grid > .masthead,
+  html.safe-harbor-pr147[data-safe-harbor-session-open="true"] body .chrome-grid > .masthead {
+    display: grid !important;
+    grid-template-columns: minmax(0, 1fr) !important;
+    gap: 14px !important;
+    align-items: stretch !important;
+  }
+
+  html.safe-harbor-pr147 body:not(.vault-sealed) .chrome-grid > .masthead .status-strip,
+  html.safe-harbor-pr147 body.vault-open .chrome-grid > .masthead .status-strip,
+  html.safe-harbor-pr147[data-safe-harbor-session-open="true"] body .chrome-grid > .masthead .status-strip {
+    position: relative !important;
+    display: block !important;
+    min-height: 174px !important;
+    padding: 0 0 38px !important;
+    margin: 0 !important;
+    overflow: visible !important;
+  }
+
+  html.safe-harbor-pr147 .chrome-grid > .masthead .status-strip .coherence-sigil {
+    position: absolute !important;
+    top: 1px !important;
+    left: 0 !important;
+    width: 22px !important;
+    min-width: 22px !important;
+    height: 22px !important;
+    display: inline-grid !important;
+    place-items: center !important;
+    margin: 0 !important;
+    font-size: 0.68rem !important;
+    line-height: 1 !important;
+  }
+
+  html.safe-harbor-pr147 .chrome-grid > .masthead .status-strip .status-pill {
+    display: block !important;
+    width: max-content !important;
+    max-width: calc(100vw - 84px) !important;
+    min-height: 28px !important;
+    margin: 0 0 8px 28px !important;
+    padding: 6px 10px !important;
+    line-height: 1.15 !important;
+    text-align: left !important;
+    white-space: nowrap !important;
+  }
+
+  html.safe-harbor-pr147 .chrome-grid > .masthead .status-strip .flight-launch.flight-launch-compact,
+  html.safe-harbor-pr147 .chrome-grid > .masthead .status-strip .signout-launch {
+    position: absolute !important;
+    bottom: 0 !important;
+    top: auto !important;
+    width: auto !important;
+    min-width: 0 !important;
+    max-width: max-content !important;
+    min-height: 30px !important;
+    margin: 0 !important;
+    padding: 7px 10px !important;
+    font-size: clamp(0.48rem, 1.9vw, 0.62rem) !important;
+    line-height: 1 !important;
+    letter-spacing: 0.08em !important;
+    white-space: nowrap !important;
+    text-align: center !important;
+  }
+
+  html.safe-harbor-pr147 .chrome-grid > .masthead .status-strip a.flight-launch-compact[href*="index"] {
+    right: 148px !important;
+    font-size: 0 !important;
+    letter-spacing: 0 !important;
+  }
+
+  html.safe-harbor-pr147 .chrome-grid > .masthead .status-strip a.flight-launch-compact[href*="index"]::before {
+    content: '← Gateway' !important;
+    display: inline !important;
+    font-size: clamp(0.48rem, 1.9vw, 0.62rem) !important;
+    letter-spacing: 0.08em !important;
+  }
+
+  html.safe-harbor-pr147 .chrome-grid > .masthead .status-strip a.flight-launch-compact[href*="td613-flight"] {
+    right: 72px !important;
+  }
+
+  html.safe-harbor-pr147 .chrome-grid > .masthead .status-strip .signout-launch {
+    right: 0 !important;
+  }
+}
+
+@media (max-width: 430px) {
+  html.safe-harbor-pr147 .chrome-grid > .masthead .status-strip .status-pill {
+    max-width: calc(100vw - 70px) !important;
+    font-size: clamp(0.48rem, 2.3vw, 0.58rem) !important;
+    letter-spacing: 0.11em !important;
+  }
+
+  html.safe-harbor-pr147 .chrome-grid > .masthead .status-strip a.flight-launch-compact[href*="index"] {
+    right: 134px !important;
+  }
+
+  html.safe-harbor-pr147 .chrome-grid > .masthead .status-strip a.flight-launch-compact[href*="td613-flight"] {
+    right: 66px !important;
+  }
+
+  html.safe-harbor-pr147 .chrome-grid > .masthead .status-strip .flight-launch.flight-launch-compact,
+  html.safe-harbor-pr147 .chrome-grid > .masthead .status-strip .signout-launch {
+    padding-inline: 8px !important;
+    letter-spacing: 0.06em !important;
+  }
+}
