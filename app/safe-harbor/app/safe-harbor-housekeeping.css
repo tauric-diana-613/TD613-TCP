@@ -348,3 +348,53 @@ html.safe-harbor-pr147 .dock {
     overflow-x: hidden !important;
   }
 }
+
+/* PR99 opened Safe Harbor mobile correction: handshake before buffered intake + compact nav cluster. */
+@media (max-width: 720px) {
+  html.safe-harbor-pr147 .witness-grid > .reliquary-card { order: 1 !important; }
+  html.safe-harbor-pr147 .witness-grid > .render-face-card { order: 2 !important; }
+  html.safe-harbor-pr147 .witness-grid > .batch-intake-card { order: 3 !important; }
+
+  html.safe-harbor-pr147 .masthead .status-strip {
+    display: flex !important;
+    flex-flow: row wrap !important;
+    align-items: center !important;
+    justify-content: flex-start !important;
+    gap: 8px !important;
+    grid-template-columns: none !important;
+  }
+
+  html.safe-harbor-pr147 .masthead .status-strip .status-pill {
+    flex: 1 1 100% !important;
+    width: 100% !important;
+    max-width: 100% !important;
+  }
+
+  html.safe-harbor-pr147 .masthead .status-strip .flight-launch.flight-launch-compact,
+  html.safe-harbor-pr147 .masthead .status-strip .signout-launch {
+    flex: 0 0 auto !important;
+    width: auto !important;
+    min-width: 0 !important;
+    max-width: max-content !important;
+    min-height: 30px !important;
+    padding: 7px 10px !important;
+    margin: 0 !important;
+    font-size: clamp(0.48rem, 1.9vw, 0.62rem) !important;
+    line-height: 1 !important;
+    letter-spacing: 0.08em !important;
+    white-space: nowrap !important;
+    text-align: center !important;
+  }
+
+  html.safe-harbor-pr147 .masthead .status-strip a.flight-launch-compact[href*="index"] {
+    font-size: 0 !important;
+    letter-spacing: 0 !important;
+  }
+
+  html.safe-harbor-pr147 .masthead .status-strip a.flight-launch-compact[href*="index"]::before {
+    content: '← Gateway' !important;
+    display: inline !important;
+    font-size: clamp(0.48rem, 1.9vw, 0.62rem) !important;
+    letter-spacing: 0.08em !important;
+  }
+}
