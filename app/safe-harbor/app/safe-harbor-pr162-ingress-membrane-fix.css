@@ -1,0 +1,74 @@
+/* PR162: Safe Harbor ingress membrane mobile field containment.
+   Scope: continue button line-break support + recall field width guard. */
+@media (max-width: 720px) {
+  #ingressNext,
+  .ingress-step-nav #ingressNext {
+    display: inline-flex !important;
+    flex-direction: column !important;
+    align-items: center !important;
+    justify-content: center !important;
+    gap: 2px !important;
+    width: auto !important;
+    min-width: 112px !important;
+    max-width: 122px !important;
+    white-space: normal !important;
+    text-align: center !important;
+    line-height: 1.12 !important;
+  }
+
+  #ingressNext .continue-line {
+    display: block !important;
+    width: 100% !important;
+    text-align: center !important;
+    white-space: nowrap !important;
+  }
+
+  .ingress-bypass,
+  .ingress-bypass-body,
+  .ingress-bypass-grid,
+  .ingress-bypass .field,
+  .ingress-bypass .field-wide {
+    box-sizing: border-box !important;
+    width: 100% !important;
+    max-width: 100% !important;
+    min-width: 0 !important;
+    overflow: hidden !important;
+  }
+
+  .ingress-bypass-grid {
+    display: grid !important;
+    grid-template-columns: minmax(0, 1fr) !important;
+    gap: 12px !important;
+  }
+
+  .ingress-bypass input,
+  .ingress-bypass input[type="text"],
+  .ingress-bypass input[type="file"],
+  #bypassPassword,
+  #bypassSealedPacketFile {
+    box-sizing: border-box !important;
+    display: block !important;
+    width: 100% !important;
+    max-width: 100% !important;
+    min-width: 0 !important;
+    overflow: hidden !important;
+  }
+
+  #bypassPassword {
+    text-overflow: ellipsis !important;
+    white-space: nowrap !important;
+  }
+
+  #bypassSealedPacketFile {
+    font-size: 16px !important;
+    color: rgba(232, 239, 255, 0.84) !important;
+  }
+}
+
+@media (max-width: 430px) {
+  #ingressNext,
+  .ingress-step-nav #ingressNext {
+    min-width: 108px !important;
+    max-width: 118px !important;
+  }
+}
