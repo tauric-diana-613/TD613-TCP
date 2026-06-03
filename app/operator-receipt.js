@@ -215,7 +215,7 @@
   (function bootstrapSafeHarborHousekeeping() {
     const path = String((window.location && window.location.pathname) || '');
     if (!/safe-harbor/i.test(path)) return;
-    const version = '20260602-pr161-header-actions-cluster';
+    const version = '20260602-pr162-ingress-membrane-fix';
     const sessionKey = 'td613.safe-harbor.session.v1';
     const mirrorKey = 'td613.safe-harbor.session.mirror.v1';
     const shiPattern = /^TD613-SH-9B07D8B-[A-F0-9]{8}$/i;
@@ -279,6 +279,34 @@
         at: new Date().toISOString()
       };
     };
+    const splitIngressContinueButton = () => {
+      const button = document.getElementById('ingressContinue');
+      if (!button || button.hidden) return;
+      const raw = String(button.textContent || '').replace(/\s+/g, ' ').trim();
+      let target = '';
+      if (/^Continue to Past Self$/i.test(raw)) target = 'Past Self';
+      if (/^Continue to Higher Self$/i.test(raw)) target = 'Higher Self';
+      if (!target) return;
+      button.dataset.td613ContinueSplit = 'true';
+      button.innerHTML = '<span class="continue-line">Continue to</span><span class="continue-line">' + target + '</span>';
+    };
+    const installIngressContinueObserver = () => {
+      const button = document.getElementById('ingressContinue');
+      if (!button || button.dataset.td613ContinueObserver === 'true' || !window.MutationObserver) return;
+      button.dataset.td613ContinueObserver = 'true';
+      const observer = new MutationObserver(() => window.requestAnimationFrame(splitIngressContinueButton));
+      observer.observe(button, { childList: true, characterData: true, subtree: true, attributes: true, attributeFilter: ['hidden'] });
+    };
+    const polishSafeHarborIngressMembrane = () => {
+      compactSafeHarborHeaderActions();
+      splitIngressContinueButton();
+      installIngressContinueObserver();
+      window.__TD613_SAFE_HARBOR_PR162_LAST = {
+        version,
+        continueSplit: Boolean(document.querySelector('#ingressContinue[data-td613-continue-split="true"]')),
+        at: new Date().toISOString()
+      };
+    };
     try {
       const sessionRaw = sessionStorage.getItem(sessionKey);
       const mirrorRaw = localStorage.getItem(mirrorKey);
@@ -308,9 +336,10 @@
     document.documentElement.classList.add('safe-harbor-pr156');
     document.documentElement.classList.add('safe-harbor-pr158');
     document.documentElement.classList.add('safe-harbor-pr161');
-    compactSafeHarborHeaderActions();
-    window.setTimeout(compactSafeHarborHeaderActions, 80);
-    window.setTimeout(compactSafeHarborHeaderActions, 600);
+    document.documentElement.classList.add('safe-harbor-pr162');
+    polishSafeHarborIngressMembrane();
+    window.setTimeout(polishSafeHarborIngressMembrane, 80);
+    window.setTimeout(polishSafeHarborIngressMembrane, 600);
     const cssHref = 'app/safe-harbor-housekeeping.css?v=' + version;
     if (!document.querySelector('link[href*="safe-harbor-housekeeping.css"]')) {
       const link = document.createElement('link');
