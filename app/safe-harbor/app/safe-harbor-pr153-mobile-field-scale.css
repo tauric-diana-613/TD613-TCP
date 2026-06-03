@@ -106,6 +106,21 @@
   }
 }
 
+/* PR100 ingress scroll containment.
+   Preserve the visible membrane geometry; collapse only the hidden Safe Harbor underlayer. */
+html.safe-harbor-pr147 body.vault-sealed:not(.vault-open) .ingress-membrane:not(.is-hidden) ~ .chrome-grid,
+html.safe-harbor-pr147 body.vault-sealed:not(.vault-open):has(.ingress-membrane:not(.is-hidden)) .chrome-grid {
+  height: 0 !important;
+  max-height: 0 !important;
+  overflow: hidden !important;
+  pointer-events: none !important;
+  visibility: hidden !important;
+}
+
+html.safe-harbor-pr147 body.vault-sealed:not(.vault-open) {
+  overflow-x: hidden !important;
+}
+
 /* PR100 opened Safe Harbor masthead only.
    Keep ingress visuals on the proven pre-PR100 path. */
 html.safe-harbor-pr147 .chrome-grid > .masthead .status-strip .status-pill {
