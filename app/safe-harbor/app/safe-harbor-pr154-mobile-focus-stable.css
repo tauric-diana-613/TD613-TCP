@@ -1,4 +1,4 @@
-/* PR158 mobile Safe Harbor polish. Existing loaded file, no pseudo labels. */
+/* PR160 mobile Safe Harbor polish. Existing loaded file, no pseudo labels. */
 @media (max-width: 720px) {
   html, body {
     -webkit-text-size-adjust: 100% !important;
@@ -95,6 +95,56 @@
     clip-path: none !important;
   }
 
+  .status-strip.ingress-status {
+    display: flex !important;
+    flex-flow: row nowrap !important;
+    align-items: center !important;
+    justify-content: flex-start !important;
+    gap: 5px !important;
+    width: auto !important;
+    max-width: 100% !important;
+    margin: 8px 0 0 !important;
+    padding: 0 !important;
+    overflow-x: auto !important;
+    overscroll-behavior-x: contain !important;
+    -webkit-overflow-scrolling: touch;
+    scrollbar-width: none;
+  }
+
+  .status-strip.ingress-status::-webkit-scrollbar {
+    display: none;
+  }
+
+  .status-strip.ingress-status .coherence-sigil {
+    flex: 0 0 auto !important;
+    display: inline-grid !important;
+    place-items: center !important;
+    width: 24px !important;
+    min-width: 24px !important;
+    height: 24px !important;
+    margin: 0 !important;
+    font-size: 0.72rem !important;
+    line-height: 1 !important;
+    text-align: center !important;
+  }
+
+  .status-strip.ingress-status .status-pill {
+    flex: 0 0 auto !important;
+    display: inline-flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    min-width: 0 !important;
+    width: auto !important;
+    min-height: 24px !important;
+    padding: 0 8px !important;
+    margin: 0 !important;
+    text-align: center !important;
+    line-height: 1 !important;
+    font-size: clamp(0.42rem, 1.65vw, 0.52rem) !important;
+    letter-spacing: 0.06em !important;
+    white-space: nowrap !important;
+  }
+
   .ingress-stage-rail { display: flex !important; gap: 8px !important; overflow-x: auto !important; padding-bottom: 6px !important; }
   .ingress-stage-chip { flex: 0 0 auto !important; width: auto !important; min-width: max-content !important; min-height: 34px !important; padding: 8px 13px !important; font-size: clamp(0.58rem, 2.35vw, 0.72rem) !important; letter-spacing: 0.06em !important; }
 
@@ -123,4 +173,7 @@
   .ingress-textarea { min-height: 156px !important; height: clamp(156px, 32dvh, 216px) !important; }
   textarea, .ingress-textarea, .safe-field, .code-area { line-height: 1.12 !important; padding: 8px 9px !important; }
   #ingressNext, .ingress-step-nav #ingressNext { width: 126px !important; max-width: 126px !important; }
+  .status-strip.ingress-status { gap: 4px !important; margin-top: 7px !important; }
+  .status-strip.ingress-status .coherence-sigil { width: 22px !important; min-width: 22px !important; height: 22px !important; font-size: 0.66rem !important; }
+  .status-strip.ingress-status .status-pill { min-height: 22px !important; padding: 0 6px !important; font-size: clamp(0.38rem, 1.55vw, 0.48rem) !important; letter-spacing: 0.05em !important; }
 }
