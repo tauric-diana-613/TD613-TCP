@@ -199,3 +199,152 @@ html.safe-harbor-pr147 .dock {
     width: 100%;
   }
 }
+
+/* PR164 opened Safe Harbor mobile flow: keep vault panels in document flow and contain canon fields. */
+@media (max-width: 720px) {
+  html.safe-harbor-pr147 body:not(.vault-sealed) .chrome-grid,
+  html.safe-harbor-pr147 body.vault-open .chrome-grid,
+  html.safe-harbor-pr147[data-safe-harbor-session-open="true"] body .chrome-grid {
+    display: block !important;
+    width: 100% !important;
+    max-width: 100vw !important;
+    min-width: 0 !important;
+    padding-inline: max(8px, env(safe-area-inset-left, 0px)) max(8px, env(safe-area-inset-right, 0px)) !important;
+    overflow-x: hidden !important;
+  }
+
+  html.safe-harbor-pr147 .main-grid,
+  html.safe-harbor-pr147 .panel,
+  html.safe-harbor-pr147 .panel-center,
+  html.safe-harbor-pr147 .chamber-panel,
+  html.safe-harbor-pr147 .witness-surface,
+  html.safe-harbor-pr147 .witness-grid {
+    box-sizing: border-box !important;
+    display: block !important;
+    width: 100% !important;
+    max-width: 100% !important;
+    min-width: 0 !important;
+    height: auto !important;
+    min-height: 0 !important;
+    overflow: visible !important;
+  }
+
+  html.safe-harbor-pr147 .main-grid {
+    display: flex !important;
+    flex-direction: column !important;
+    gap: 14px !important;
+  }
+
+  html.safe-harbor-pr147 .panel,
+  html.safe-harbor-pr147 .dock {
+    overflow-x: hidden !important;
+    overflow-y: visible !important;
+  }
+
+  html.safe-harbor-pr147 .witness-grid {
+    display: flex !important;
+    flex-direction: column !important;
+    gap: 16px !important;
+    grid-template-columns: none !important;
+    grid-template-areas: none !important;
+    align-items: stretch !important;
+  }
+
+  html.safe-harbor-pr147 .witness-grid > .surface-card,
+  html.safe-harbor-pr147 .witness-grid > .batch-intake-card,
+  html.safe-harbor-pr147 .witness-grid > .render-face-card,
+  html.safe-harbor-pr147 .witness-grid > .reliquary-card {
+    box-sizing: border-box !important;
+    position: relative !important;
+    display: block !important;
+    grid-area: auto !important;
+    width: 100% !important;
+    max-width: 100% !important;
+    min-width: 0 !important;
+    height: auto !important;
+    min-height: 0 !important;
+    margin: 0 !important;
+    overflow: hidden !important;
+    opacity: 1 !important;
+    transform: none !important;
+  }
+
+  html.safe-harbor-pr147 .witness-grid > .reliquary-card { order: 1 !important; }
+  html.safe-harbor-pr147 .witness-grid > .batch-intake-card { order: 2 !important; }
+  html.safe-harbor-pr147 .witness-grid > .render-face-card { order: 3 !important; }
+
+  html.safe-harbor-pr147 .metric-block,
+  html.safe-harbor-pr147 .proof-stack,
+  html.safe-harbor-pr147 .triad-summary,
+  html.safe-harbor-pr147 .intake-canon-card,
+  html.safe-harbor-pr147 .footer-template,
+  html.safe-harbor-pr147 .code-panel,
+  html.safe-harbor-pr147 .code-area,
+  html.safe-harbor-pr147 .dynamic-target,
+  html.safe-harbor-pr147 .forge-card,
+  html.safe-harbor-pr147 .field-grid,
+  html.safe-harbor-pr147 .field,
+  html.safe-harbor-pr147 .field-wide {
+    box-sizing: border-box !important;
+    width: 100% !important;
+    max-width: 100% !important;
+    min-width: 0 !important;
+    overflow-x: hidden !important;
+  }
+
+  html.safe-harbor-pr147 .metric-row,
+  html.safe-harbor-pr147 .summary-row,
+  html.safe-harbor-pr147 .proof-row,
+  html.safe-harbor-pr147 .data-row {
+    box-sizing: border-box !important;
+    display: grid !important;
+    grid-template-columns: minmax(0, 0.72fr) minmax(0, 1fr) !important;
+    gap: 8px !important;
+    align-items: start !important;
+    width: 100% !important;
+    max-width: 100% !important;
+    min-width: 0 !important;
+  }
+
+  html.safe-harbor-pr147 .label,
+  html.safe-harbor-pr147 .data-label,
+  html.safe-harbor-pr147 .summary-label,
+  html.safe-harbor-pr147 .proof-label,
+  html.safe-harbor-pr147 .value,
+  html.safe-harbor-pr147 .data-value,
+  html.safe-harbor-pr147 .summary-value,
+  html.safe-harbor-pr147 .proof-value {
+    box-sizing: border-box !important;
+    min-width: 0 !important;
+    max-width: 100% !important;
+    overflow-wrap: anywhere !important;
+    word-break: break-word !important;
+    white-space: normal !important;
+  }
+
+  html.safe-harbor-pr147 .value,
+  html.safe-harbor-pr147 .data-value,
+  html.safe-harbor-pr147 .summary-value,
+  html.safe-harbor-pr147 .proof-value {
+    text-align: right !important;
+  }
+
+  html.safe-harbor-pr147 .intake-canon-card .field-grid,
+  html.safe-harbor-pr147 .intake-canon-grid {
+    display: grid !important;
+    grid-template-columns: minmax(0, 1fr) !important;
+  }
+
+  html.safe-harbor-pr147 .intake-canon-card input,
+  html.safe-harbor-pr147 .intake-canon-card textarea,
+  html.safe-harbor-pr147 .intake-canon-card select,
+  html.safe-harbor-pr147 .field input,
+  html.safe-harbor-pr147 .field textarea,
+  html.safe-harbor-pr147 .field select {
+    box-sizing: border-box !important;
+    width: 100% !important;
+    max-width: 100% !important;
+    min-width: 0 !important;
+    overflow-x: hidden !important;
+  }
+}
