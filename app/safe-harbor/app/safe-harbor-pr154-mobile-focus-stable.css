@@ -94,7 +94,17 @@
   html.safe-harbor-pr158 .ingress-head-actions a.ingress-flight-launch::before,
   html.safe-harbor-pr158 .ingress-head-actions a.ingress-flight-launch::after {
     content: none !important;
-    display: none !important;
+    display: inline !important;
+  }
+
+  html.safe-harbor-pr161 .ingress-head-actions a.ingress-flight-launch[href*="index"]::before,
+  html.safe-harbor-pr158 .ingress-head-actions a.ingress-flight-launch[href*="index"]::before {
+    content: '← ' !important;
+  }
+
+  html.safe-harbor-pr161 .ingress-head-actions a.ingress-flight-launch[href*="td613-flight"]::after,
+  html.safe-harbor-pr158 .ingress-head-actions a.ingress-flight-launch[href*="td613-flight"]::after {
+    content: ' →' !important;
   }
 
   html.safe-harbor-pr161 .ingress-head-actions .signout-launch,
