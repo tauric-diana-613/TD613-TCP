@@ -1,4 +1,4 @@
-/* PR162 mobile Safe Harbor polish. Preserve header/status fixes; patch ingress continue + recall fields. */
+/* PR163 mobile Safe Harbor polish. Preserve header/status/recall fixes; lock continue label as two full rows. */
 @media (max-width: 720px) {
   html, body {
     -webkit-text-size-adjust: 100% !important;
@@ -172,14 +172,33 @@
   .ingress-stage-rail { display: flex !important; gap: 8px !important; overflow-x: auto !important; padding-bottom: 6px !important; }
   .ingress-stage-chip { flex: 0 0 auto !important; width: auto !important; min-width: max-content !important; min-height: 34px !important; padding: 8px 13px !important; font-size: clamp(0.58rem, 2.35vw, 0.72rem) !important; letter-spacing: 0.06em !important; }
 
+  #ingressContinue, .ingress-step-nav #ingressContinue,
   #ingressNext, .ingress-step-nav #ingressNext {
-    width: 92px !important;
-    max-width: 92px !important;
+    display: inline-grid !important;
+    grid-template-columns: minmax(0, 1fr) !important;
+    grid-auto-rows: min-content !important;
+    place-items: center !important;
+    row-gap: 2px !important;
+    width: 146px !important;
+    min-width: 146px !important;
+    max-width: 146px !important;
     white-space: normal !important;
     text-align: center !important;
-    line-height: 1.16 !important;
+    line-height: 1.12 !important;
     word-break: normal !important;
     overflow-wrap: normal !important;
+  }
+
+  #ingressContinue .continue-line,
+  .ingress-step-nav #ingressContinue .continue-line,
+  #ingressNext .continue-line,
+  .ingress-step-nav #ingressNext .continue-line {
+    display: block !important;
+    width: 100% !important;
+    min-width: 0 !important;
+    max-width: 100% !important;
+    text-align: center !important;
+    white-space: nowrap !important;
   }
 
   .ingress-step-nav .control, .ingress-final-actions .control, .button-grid .control {
@@ -237,7 +256,7 @@
 @media (max-width: 430px) {
   .ingress-textarea { min-height: 156px !important; height: clamp(156px, 32dvh, 216px) !important; }
   textarea, .ingress-textarea, .safe-field, .code-area { line-height: 1.12 !important; padding: 8px 9px !important; }
-  #ingressNext, .ingress-step-nav #ingressNext { width: 88px !important; max-width: 88px !important; }
+  #ingressContinue, .ingress-step-nav #ingressContinue, #ingressNext, .ingress-step-nav #ingressNext { width: 138px !important; min-width: 138px !important; max-width: 138px !important; }
   .status-strip.ingress-status { gap: 4px !important; margin-top: 7px !important; }
   .status-strip.ingress-status .coherence-sigil { width: 22px !important; min-width: 22px !important; height: 22px !important; font-size: 0.66rem !important; }
   .status-strip.ingress-status .status-pill { min-height: 22px !important; padding: 0 6px !important; font-size: clamp(0.38rem, 1.55vw, 0.48rem) !important; letter-spacing: 0.05em !important; }
