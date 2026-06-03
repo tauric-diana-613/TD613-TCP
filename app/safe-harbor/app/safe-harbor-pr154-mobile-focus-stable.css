@@ -1,4 +1,4 @@
-/* PR161 mobile Safe Harbor polish. Preserve text-entry focus guard + status rail; fix header action cluster. */
+/* PR162 mobile Safe Harbor polish. Preserve header/status fixes; patch ingress continue + recall fields. */
 @media (max-width: 720px) {
   html, body {
     -webkit-text-size-adjust: 100% !important;
@@ -173,11 +173,11 @@
   .ingress-stage-chip { flex: 0 0 auto !important; width: auto !important; min-width: max-content !important; min-height: 34px !important; padding: 8px 13px !important; font-size: clamp(0.58rem, 2.35vw, 0.72rem) !important; letter-spacing: 0.06em !important; }
 
   #ingressNext, .ingress-step-nav #ingressNext {
-    width: 132px !important;
-    max-width: 132px !important;
+    width: 92px !important;
+    max-width: 92px !important;
     white-space: normal !important;
     text-align: center !important;
-    line-height: 1.18 !important;
+    line-height: 1.16 !important;
     word-break: normal !important;
     overflow-wrap: normal !important;
   }
@@ -191,12 +191,53 @@
     font-size: clamp(0.58rem, 2.35vw, 0.72rem) !important;
     letter-spacing: 0.08em !important;
   }
+
+  .ingress-bypass,
+  .ingress-bypass-body,
+  .ingress-bypass-grid,
+  .ingress-bypass .field,
+  .ingress-bypass .field-wide {
+    box-sizing: border-box !important;
+    width: 100% !important;
+    max-width: 100% !important;
+    min-width: 0 !important;
+    overflow: hidden !important;
+  }
+
+  .ingress-bypass-grid {
+    display: grid !important;
+    grid-template-columns: minmax(0, 1fr) !important;
+    gap: 12px !important;
+  }
+
+  .ingress-bypass input,
+  .ingress-bypass input[type="text"],
+  .ingress-bypass input[type="file"],
+  #bypassPassword,
+  #bypassSealedPacketFile {
+    box-sizing: border-box !important;
+    display: block !important;
+    width: 100% !important;
+    max-width: 100% !important;
+    min-width: 0 !important;
+    overflow: hidden !important;
+  }
+
+  #bypassPassword {
+    text-overflow: ellipsis !important;
+    white-space: nowrap !important;
+  }
+
+  #bypassSealedPacketFile {
+    font-size: 16px !important;
+    color: rgba(232, 239, 255, 0.84) !important;
+  }
 }
 
 @media (max-width: 430px) {
   .ingress-textarea { min-height: 156px !important; height: clamp(156px, 32dvh, 216px) !important; }
   textarea, .ingress-textarea, .safe-field, .code-area { line-height: 1.12 !important; padding: 8px 9px !important; }
-  #ingressNext, .ingress-step-nav #ingressNext { width: 126px !important; max-width: 126px !important; }
+  #ingressNext, .ingress-step-nav #ingressNext { width: 88px !important; max-width: 88px !important; }
   .status-strip.ingress-status { gap: 4px !important; margin-top: 7px !important; }
   .status-strip.ingress-status .coherence-sigil { width: 22px !important; min-width: 22px !important; height: 22px !important; font-size: 0.66rem !important; }
   .status-strip.ingress-status .status-pill { min-height: 22px !important; padding: 0 6px !important; font-size: clamp(0.38rem, 1.55vw, 0.48rem) !important; letter-spacing: 0.05em !important; }
