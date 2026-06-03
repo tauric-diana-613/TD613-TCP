@@ -1,4 +1,4 @@
-/* PR163 mobile Safe Harbor polish. Preserve header/status/recall fixes; lock continue label as two full rows. */
+/* PR164 mobile Safe Harbor polish. Preserve ingress fixes; repair opened-vault mobile flow. */
 @media (max-width: 720px) {
   html, body {
     -webkit-text-size-adjust: 100% !important;
@@ -250,6 +250,152 @@
   #bypassSealedPacketFile {
     font-size: 16px !important;
     color: rgba(232, 239, 255, 0.84) !important;
+  }
+
+  html.safe-harbor-pr164 body:not(.vault-sealed) .chrome-grid,
+  html.safe-harbor-pr164 body.vault-open .chrome-grid,
+  html.safe-harbor-pr164 html[data-safe-harbor-session-open="true"] body .chrome-grid {
+    display: block !important;
+    width: 100% !important;
+    max-width: 100vw !important;
+    min-width: 0 !important;
+    padding-inline: max(8px, env(safe-area-inset-left, 0px)) max(8px, env(safe-area-inset-right, 0px)) !important;
+    overflow-x: hidden !important;
+  }
+
+  html.safe-harbor-pr164 .main-grid,
+  html.safe-harbor-pr164 .panel,
+  html.safe-harbor-pr164 .panel-center,
+  html.safe-harbor-pr164 .chamber-panel,
+  html.safe-harbor-pr164 .witness-surface,
+  html.safe-harbor-pr164 .witness-grid {
+    box-sizing: border-box !important;
+    display: block !important;
+    width: 100% !important;
+    max-width: 100% !important;
+    min-width: 0 !important;
+    height: auto !important;
+    min-height: 0 !important;
+    overflow: visible !important;
+  }
+
+  html.safe-harbor-pr164 .main-grid {
+    display: flex !important;
+    flex-direction: column !important;
+    gap: 14px !important;
+  }
+
+  html.safe-harbor-pr164 .panel,
+  html.safe-harbor-pr164 .dock {
+    overflow-x: hidden !important;
+    overflow-y: visible !important;
+  }
+
+  html.safe-harbor-pr164 .witness-grid {
+    display: flex !important;
+    flex-direction: column !important;
+    gap: 16px !important;
+    grid-template-columns: none !important;
+    grid-template-areas: none !important;
+    align-items: stretch !important;
+  }
+
+  html.safe-harbor-pr164 .witness-grid > .surface-card,
+  html.safe-harbor-pr164 .witness-grid > .batch-intake-card,
+  html.safe-harbor-pr164 .witness-grid > .render-face-card,
+  html.safe-harbor-pr164 .witness-grid > .reliquary-card {
+    box-sizing: border-box !important;
+    position: relative !important;
+    display: block !important;
+    grid-area: auto !important;
+    width: 100% !important;
+    max-width: 100% !important;
+    min-width: 0 !important;
+    height: auto !important;
+    min-height: 0 !important;
+    margin: 0 !important;
+    overflow: hidden !important;
+    opacity: 1 !important;
+    transform: none !important;
+  }
+
+  html.safe-harbor-pr164 .witness-grid > .reliquary-card { order: 1 !important; }
+  html.safe-harbor-pr164 .witness-grid > .batch-intake-card { order: 2 !important; }
+  html.safe-harbor-pr164 .witness-grid > .render-face-card { order: 3 !important; }
+
+  html.safe-harbor-pr164 .metric-block,
+  html.safe-harbor-pr164 .proof-stack,
+  html.safe-harbor-pr164 .triad-summary,
+  html.safe-harbor-pr164 .intake-canon-card,
+  html.safe-harbor-pr164 .footer-template,
+  html.safe-harbor-pr164 .code-panel,
+  html.safe-harbor-pr164 .code-area,
+  html.safe-harbor-pr164 .dynamic-target,
+  html.safe-harbor-pr164 .forge-card,
+  html.safe-harbor-pr164 .field-grid,
+  html.safe-harbor-pr164 .field,
+  html.safe-harbor-pr164 .field-wide {
+    box-sizing: border-box !important;
+    width: 100% !important;
+    max-width: 100% !important;
+    min-width: 0 !important;
+    overflow-x: hidden !important;
+  }
+
+  html.safe-harbor-pr164 .metric-row,
+  html.safe-harbor-pr164 .summary-row,
+  html.safe-harbor-pr164 .proof-row,
+  html.safe-harbor-pr164 .data-row {
+    box-sizing: border-box !important;
+    display: grid !important;
+    grid-template-columns: minmax(0, 0.72fr) minmax(0, 1fr) !important;
+    gap: 8px !important;
+    align-items: start !important;
+    width: 100% !important;
+    max-width: 100% !important;
+    min-width: 0 !important;
+  }
+
+  html.safe-harbor-pr164 .label,
+  html.safe-harbor-pr164 .data-label,
+  html.safe-harbor-pr164 .summary-label,
+  html.safe-harbor-pr164 .proof-label,
+  html.safe-harbor-pr164 .value,
+  html.safe-harbor-pr164 .data-value,
+  html.safe-harbor-pr164 .summary-value,
+  html.safe-harbor-pr164 .proof-value {
+    box-sizing: border-box !important;
+    min-width: 0 !important;
+    max-width: 100% !important;
+    overflow-wrap: anywhere !important;
+    word-break: break-word !important;
+    white-space: normal !important;
+  }
+
+  html.safe-harbor-pr164 .value,
+  html.safe-harbor-pr164 .data-value,
+  html.safe-harbor-pr164 .summary-value,
+  html.safe-harbor-pr164 .proof-value {
+    text-align: right !important;
+  }
+
+  html.safe-harbor-pr164 .intake-canon-card .field-grid,
+  html.safe-harbor-pr164 .intake-canon-grid {
+    display: grid !important;
+    grid-template-columns: minmax(0, 1fr) !important;
+  }
+
+  html.safe-harbor-pr164 .intake-canon-card input,
+  html.safe-harbor-pr164 .intake-canon-card textarea,
+  html.safe-harbor-pr164 .intake-canon-card select,
+  html.safe-harbor-pr164 .field input,
+  html.safe-harbor-pr164 .field textarea,
+  html.safe-harbor-pr164 .field select {
+    box-sizing: border-box !important;
+    width: 100% !important;
+    max-width: 100% !important;
+    min-width: 0 !important;
+    overflow-x: hidden !important;
   }
 }
 
