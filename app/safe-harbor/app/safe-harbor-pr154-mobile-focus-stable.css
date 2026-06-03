@@ -1,4 +1,4 @@
-/* PR160 mobile Safe Harbor polish. Existing loaded file, no pseudo labels. */
+/* PR161 mobile Safe Harbor polish. Preserve text-entry focus guard + status rail; fix header action cluster. */
 @media (max-width: 720px) {
   html, body {
     -webkit-text-size-adjust: 100% !important;
@@ -34,13 +34,15 @@
   input:not([type="checkbox"]):not([type="radio"]), select { min-height: 42px !important; line-height: 1.15 !important; padding: 8px 10px !important; }
   input[type="checkbox"], input[type="radio"] { appearance: auto !important; -webkit-appearance: auto !important; width: auto !important; max-width: none !important; min-width: 0 !important; font-size: initial !important; transform: none !important; -webkit-transform: none !important; zoom: 1 !important; }
 
-  .ingress-head {
+  html.safe-harbor-pr161 .ingress-head,
+  html.safe-harbor-pr158 .ingress-head {
     display: grid !important;
     grid-template-columns: minmax(0, 1fr) !important;
     justify-items: stretch !important;
   }
 
-  .ingress-head-actions {
+  html.safe-harbor-pr161 .ingress-head-actions,
+  html.safe-harbor-pr158 .ingress-head-actions {
     display: inline-flex !important;
     flex-direction: row !important;
     flex-wrap: nowrap !important;
@@ -58,11 +60,15 @@
     overflow: visible !important;
   }
 
-  .ingress-head-actions .ingress-flight-launch,
-  .ingress-head-actions .signout-launch {
+  html.safe-harbor-pr161 .ingress-head-actions .ingress-flight-launch,
+  html.safe-harbor-pr161 .ingress-head-actions .signout-launch,
+  html.safe-harbor-pr158 .ingress-head-actions .ingress-flight-launch,
+  html.safe-harbor-pr158 .ingress-head-actions .signout-launch {
     flex: 0 0 auto !important;
     grid-column: auto !important;
     grid-row: auto !important;
+    justify-self: auto !important;
+    align-self: center !important;
     width: auto !important;
     min-width: 0 !important;
     max-width: max-content !important;
@@ -73,21 +79,31 @@
     line-height: 1 !important;
     letter-spacing: 0.08em !important;
     white-space: nowrap !important;
+    text-align: center !important;
   }
 
-  .ingress-head-actions a.ingress-flight-launch {
+  html.safe-harbor-pr161 .ingress-head-actions a.ingress-flight-launch,
+  html.safe-harbor-pr158 .ingress-head-actions a.ingress-flight-launch {
     color: #d9ffe7 !important;
     font-size: clamp(0.42rem, 1.7vw, 0.54rem) !important;
     letter-spacing: 0.08em !important;
   }
 
-  .ingress-head-actions a.ingress-flight-launch::after {
+  html.safe-harbor-pr161 .ingress-head-actions a.ingress-flight-launch::before,
+  html.safe-harbor-pr161 .ingress-head-actions a.ingress-flight-launch::after,
+  html.safe-harbor-pr158 .ingress-head-actions a.ingress-flight-launch::before,
+  html.safe-harbor-pr158 .ingress-head-actions a.ingress-flight-launch::after {
     content: none !important;
     display: none !important;
   }
 
-  .ingress-head-actions .signout-launch {
+  html.safe-harbor-pr161 .ingress-head-actions .signout-launch,
+  html.safe-harbor-pr158 .ingress-head-actions .signout-launch {
     flex-basis: auto !important;
+    grid-column: auto !important;
+    grid-row: auto !important;
+    justify-self: auto !important;
+    order: 3 !important;
     color: rgba(190, 255, 214, 0.92) !important;
     background: transparent !important;
     border-color: transparent !important;
@@ -111,9 +127,7 @@
     scrollbar-width: none;
   }
 
-  .status-strip.ingress-status::-webkit-scrollbar {
-    display: none;
-  }
+  .status-strip.ingress-status::-webkit-scrollbar { display: none; }
 
   .status-strip.ingress-status .coherence-sigil {
     flex: 0 0 auto !important;
