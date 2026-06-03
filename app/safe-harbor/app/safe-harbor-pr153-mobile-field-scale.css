@@ -106,38 +106,23 @@
   }
 }
 
-/* PR100 Safe Harbor containment pass: membrane scroll boundary + opened masthead compactness. */
-html.safe-harbor-pr147:not([data-safe-harbor-session-open="true"]) body.vault-sealed:not(.vault-open),
-html.safe-harbor-pr147 body.vault-sealed:not(.vault-open):has(.ingress-membrane:not(.is-hidden)) {
-  height: 100dvh !important;
-  min-height: 100dvh !important;
-  max-height: 100dvh !important;
+/* PR101 ingress scroll containment.
+   Preserve the visible membrane geometry; collapse only the hidden Safe Harbor underlayer. */
+html.safe-harbor-pr147 body.vault-sealed:not(.vault-open) .ingress-membrane:not(.is-hidden) ~ .chrome-grid,
+html.safe-harbor-pr147 body.vault-sealed:not(.vault-open):has(.ingress-membrane:not(.is-hidden)) .chrome-grid {
+  height: 0 !important;
+  max-height: 0 !important;
   overflow: hidden !important;
-  overscroll-behavior: contain !important;
+  pointer-events: none !important;
+  visibility: hidden !important;
 }
 
-html.safe-harbor-pr147:not([data-safe-harbor-session-open="true"]) .ingress-membrane:not(.is-hidden),
-html.safe-harbor-pr147 body.vault-sealed:not(.vault-open) .ingress-membrane:not(.is-hidden) {
-  position: fixed !important;
-  inset: 0 !important;
-  display: grid !important;
-  place-items: start center !important;
-  width: 100vw !important;
-  height: 100dvh !important;
-  min-height: 100dvh !important;
-  max-height: 100dvh !important;
+html.safe-harbor-pr147 body.vault-sealed:not(.vault-open) {
   overflow-x: hidden !important;
-  overflow-y: auto !important;
-  overscroll-behavior: contain !important;
-  -webkit-overflow-scrolling: touch !important;
-  touch-action: pan-y !important;
 }
 
-html.safe-harbor-pr147 body.vault-sealed:not(.vault-open) .chrome-grid {
-  max-height: 100dvh !important;
-  overflow: hidden !important;
-}
-
+/* PR101 opened Safe Harbor masthead only.
+   Keep ingress visuals on the proven path. */
 html.safe-harbor-pr147 .chrome-grid > .masthead .status-strip .status-pill {
   flex: 0 1 auto !important;
   width: max-content !important;
@@ -160,15 +145,15 @@ html.safe-harbor-pr147 .chrome-grid > .masthead .status-strip .status-pill {
   html.safe-harbor-pr147[data-safe-harbor-session-open="true"] body .chrome-grid > .masthead .status-strip {
     position: relative !important;
     display: block !important;
-    min-height: 174px !important;
-    padding: 0 0 38px !important;
+    min-height: 132px !important;
+    padding: 0 !important;
     margin: 0 !important;
     overflow: visible !important;
   }
 
   html.safe-harbor-pr147 .chrome-grid > .masthead .status-strip .coherence-sigil {
     position: absolute !important;
-    top: 1px !important;
+    top: 3px !important;
     left: 0 !important;
     width: 22px !important;
     min-width: 22px !important;
@@ -195,8 +180,8 @@ html.safe-harbor-pr147 .chrome-grid > .masthead .status-strip .status-pill {
   html.safe-harbor-pr147 .chrome-grid > .masthead .status-strip .flight-launch.flight-launch-compact,
   html.safe-harbor-pr147 .chrome-grid > .masthead .status-strip .signout-launch {
     position: absolute !important;
-    bottom: 0 !important;
-    top: auto !important;
+    top: 0 !important;
+    bottom: auto !important;
     width: auto !important;
     min-width: 0 !important;
     max-width: max-content !important;
