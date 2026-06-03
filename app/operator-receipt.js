@@ -215,7 +215,7 @@
   (function bootstrapSafeHarborHousekeeping() {
     const path = String((window.location && window.location.pathname) || '');
     if (!/safe-harbor/i.test(path)) return;
-    const version = '20260602-pr162-ingress-membrane-fix';
+    const version = '20260602-pr163-continue-stack';
     const sessionKey = 'td613.safe-harbor.session.v1';
     const mirrorKey = 'td613.safe-harbor.session.mirror.v1';
     const shiPattern = /^TD613-SH-9B07D8B-[A-F0-9]{8}$/i;
@@ -301,7 +301,7 @@
       compactSafeHarborHeaderActions();
       splitIngressContinueButton();
       installIngressContinueObserver();
-      window.__TD613_SAFE_HARBOR_PR162_LAST = {
+      window.__TD613_SAFE_HARBOR_PR163_LAST = {
         version,
         continueSplit: Boolean(document.querySelector('#ingressContinue[data-td613-continue-split="true"]')),
         at: new Date().toISOString()
@@ -337,6 +337,7 @@
     document.documentElement.classList.add('safe-harbor-pr158');
     document.documentElement.classList.add('safe-harbor-pr161');
     document.documentElement.classList.add('safe-harbor-pr162');
+    document.documentElement.classList.add('safe-harbor-pr163');
     polishSafeHarborIngressMembrane();
     window.setTimeout(polishSafeHarborIngressMembrane, 80);
     window.setTimeout(polishSafeHarborIngressMembrane, 600);
