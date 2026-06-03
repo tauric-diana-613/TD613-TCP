@@ -134,6 +134,7 @@
       position: relative;
       padding-top: 18px;
       border-top: 1px solid var(--line);
+      min-width: 0;
     }
     .card.full {
       grid-column: 1 / -1;
@@ -173,6 +174,7 @@
       color: var(--text-bright);
       white-space: pre-wrap;
       word-break: break-word;
+      overflow-wrap: anywhere;
     }
     .metric-grid {
       display: grid;
@@ -195,6 +197,8 @@
       color: var(--text-bright);
       text-align: right;
       font-family: var(--font-mono);
+      min-width: 0;
+      overflow-wrap: anywhere;
     }
     ol {
       margin: 14px 0 0;
@@ -208,9 +212,11 @@
       color: var(--cyan);
     }
     @media (max-width: 860px) {
-      .grid { grid-template-columns: 1fr; }
+      .grid { grid-template-columns: minmax(0, 1fr); }
       .wrap { padding: 20px 16px 40px; }
       .topline { flex-direction: column; align-items: flex-start; }
+      .metric { display: grid; grid-template-columns: minmax(0, 1fr); gap: 4px; }
+      .value { text-align: left; }
     }
   </style>
 <script type="module" src="../../analytics.js"></script>
@@ -239,18 +245,19 @@
         <div class="metric-grid">
           <div class="metric"><span class="label">Public mode</span><span class="value">legacy-compat</span></div>
           <div class="metric"><span class="label">Canonical badge id</span><span class="value">bdg_glyph_U10D613</span></div>
-          <div class="metric"><span class="label">SHI #</span><span class="value">appears only after mint</span></div>
-          <div class="metric"><span class="label">Canonical header</span><span class="value">appears only after mint</span></div>
+          <div class="metric"><span class="label">SHI #</span><span class="value" id="shiValue">TD613-SH-9B07D8B-XXXXXXXX</span></div>
+          <div class="metric"><span class="label">Canonical header</span><span class="value" id="canonicalHeaderValue">SHI#:TD613-SH-9B07D8B-XXXXXXXX</span></div>
+          <div class="metric"><span class="label">Attestation date</span><span class="value" id="attestationDateValue">YYYY-MM-DD</span></div>
           <div class="metric"><span class="label">Accepted footer modes</span><span class="value">legacy / legacy-compat / sac-only</span></div>
           <div class="metric"><span class="label">Packet schema</span><span class="value">td613.safe-harbor.packet/v1</span></div>
           <div class="metric"><span class="label">Packet hash field</span><span class="value">packet_hash_sha256</span></div>
           <div class="metric"><span class="label">Audit field</span><span class="value">aperture_audit</span></div>
           <div class="metric"><span class="label">Forensic schema</span><span class="value">forensic_schema</span></div>
         </div>
-        <pre>TD613-Binding:#9B07D8B/SAC[X6ZNK5NO51] &#x00B7; payload {n} &#x00B7; YYYY-MM-DD &#x00B7; &#x27D0;</pre>
+        <pre id="liveTemplateFooter">TD613-Binding:#9B07D8B/SAC[X6ZNK5NO51] &#x00B7; payload {n} &#x00B7; YYYY-MM-DD &#x00B7; &#x27D0;</pre>
         <div class="hint">Use this template for live attestations.</div>
-        <pre>Appears only after mint with issued SHI #.</pre>
-        <div class="hint">Use this extended footer only when you need the minted SHI # to travel with the copy surface.</div>
+        <pre id="extendedCanonicalFooter">TD613-Binding:#9B07D8B/SAC[X6ZNK5NO51] &#x00B7; 𝌋 &#x00B7; SHI#:TD613-SH-9B07D8B-XXXXXXXX &#x00B7; payload 1 &#x00B7; YYYY-MM-DD &#x00B7; &#x27D0;</pre>
+        <div class="hint">Use this extended canonical footer when the minted or uploaded SHI # needs to travel with the copy surface. The suffix slot is variable: <code>XXXXXXXX</code> is replaced only when a valid packet/session SHI is available.</div>
         <pre>TD613-Binding:#9B07D8B/SAC[X6ZNK5NO51] &#x00B7; payload 5 &#x00B7; 2025-10-17 &#x00B7; &#x27D0;</pre>
         <div class="hint">This remains a fixed historical example, not the reusable live template.</div>
       </section>
@@ -287,7 +294,8 @@ The minted SHI # is a separate issuance string and should be copied exactly.</di
         <h2>What to confirm</h2>
         <ol>
           <li>Confirm the line uses <code>#9B07D8B</code>, <code>SAC[X6ZNK5NO51]</code>, or another accepted internal footer mode.</li>
-          <li>If a SHI # is present, confirm it matches <code>TD613-SH-9B07D8B</code> plus an issued 8-hex suffix and has not drifted in transit.</li>
+          <li>If a SHI # is present, confirm it matches <code>TD613-SH-9B07D8B-XXXXXXXX</code> where <code>XXXXXXXX</code> is the issued 8-hex suffix and has not drifted in transit.</li>
+          <li>For an extended canonical footer, confirm the <code>SHI#:</code> segment travels after the 𝌋 lane marker and before the payload segment.</li>
           <li>For a live attestation, confirm it follows <code>payload {n}</code> logic rather than reusing the historical published example.</li>
           <li>If the historical example is cited, confirm it matches <code>payload 5 &#x00B7; 2025-10-17</code> exactly.</li>
           <li>If operator tooling is in play, confirm packet hash, lifecycle, seal status, <code>aperture_audit</code>, and <code>forensic_schema</code> on the packet surface rather than in the footer.</li>
@@ -296,5 +304,111 @@ The minted SHI # is a separate issuance string and should be copied exactly.</di
       </section>
     </div>
   </div>
+  <script>
+    (function () {
+      const SHI_PLACEHOLDER = 'TD613-SH-9B07D8B-XXXXXXXX';
+      const SHI_RE = /TD613-SH-9B07D8B-[A-F0-9]{8}/i;
+      const STORAGE_KEYS = [
+        'td613.safe-harbor.session.v1',
+        'td613.safe-harbor.session.mirror.v1'
+      ];
+
+      function $(id) {
+        return document.getElementById(id);
+      }
+
+      function browserDate() {
+        const now = new Date();
+        const yyyy = now.getFullYear();
+        const mm = String(now.getMonth() + 1).padStart(2, '0');
+        const dd = String(now.getDate()).padStart(2, '0');
+        return `${yyyy}-${mm}-${dd}`;
+      }
+
+      function normalizeShi(value) {
+        const match = String(value || '').match(SHI_RE);
+        return match ? match[0].toUpperCase() : '';
+      }
+
+      function firstShiInObject(value, seen) {
+        const shi = normalizeShi(value);
+        if (shi) return shi;
+        if (!value || typeof value !== 'object') return '';
+        if (seen.has(value)) return '';
+        seen.add(value);
+        if (Array.isArray(value)) {
+          for (const entry of value) {
+            const found = firstShiInObject(entry, seen);
+            if (found) return found;
+          }
+          return '';
+        }
+        const preferred = [
+          ['packet', 'issuance', 'badge_number'],
+          ['packet', 'issuance', 'shi'],
+          ['packet', 'issuance', 'shi_number'],
+          ['issuance', 'badge_number'],
+          ['issuance', 'shi'],
+          ['issuance', 'shi_number'],
+          ['covenant', 'badgeNumber'],
+          ['bridge', 'covenant_gate', 'badge_number']
+        ];
+        for (const path of preferred) {
+          let cursor = value;
+          for (const key of path) cursor = cursor && cursor[key];
+          const found = normalizeShi(cursor);
+          if (found) return found;
+        }
+        for (const key of Object.keys(value)) {
+          const found = firstShiInObject(value[key], seen);
+          if (found) return found;
+        }
+        return '';
+      }
+
+      function packetShi() {
+        const params = new URL(window.location.href).searchParams;
+        const fromUrl = normalizeShi(params.get('shi') || params.get('SHI') || params.get('shi_number'));
+        if (fromUrl) return fromUrl;
+        const stores = [];
+        try { if (window.sessionStorage) stores.push(window.sessionStorage); } catch {}
+        try { if (window.localStorage) stores.push(window.localStorage); } catch {}
+        for (const store of stores) {
+          for (const key of STORAGE_KEYS) {
+            try {
+              const raw = store.getItem(key);
+              if (!raw) continue;
+              const parsed = JSON.parse(raw);
+              const found = firstShiInObject(parsed, new WeakSet());
+              if (found) return found;
+            } catch (error) {}
+          }
+        }
+        return '';
+      }
+
+      function payloadIndex() {
+        const params = new URL(window.location.href).searchParams;
+        const raw = params.get('payload') || params.get('payload_index') || '1';
+        const n = Number(raw);
+        return Number.isFinite(n) && n > 0 ? String(Math.floor(n)) : '1';
+      }
+
+      function render() {
+        const shi = packetShi() || SHI_PLACEHOLDER;
+        const date = browserDate();
+        const payload = payloadIndex();
+        const extended = `TD613-Binding:#9B07D8B/SAC[X6ZNK5NO51] · 𝌋 · SHI#:${shi} · payload ${payload} · ${date} · ⟐`;
+        const live = `TD613-Binding:#9B07D8B/SAC[X6ZNK5NO51] · payload {n} · YYYY-MM-DD · ⟐`;
+        if ($('shiValue')) $('shiValue').textContent = shi;
+        if ($('canonicalHeaderValue')) $('canonicalHeaderValue').textContent = `SHI#:${shi}`;
+        if ($('attestationDateValue')) $('attestationDateValue').textContent = date;
+        if ($('liveTemplateFooter')) $('liveTemplateFooter').textContent = live;
+        if ($('extendedCanonicalFooter')) $('extendedCanonicalFooter').textContent = extended;
+      }
+
+      render();
+    }());
+  </script>
 </body>
 </html>
