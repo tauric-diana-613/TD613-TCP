@@ -5,22 +5,30 @@ const corsHeaders = {
   'access-control-max-age': '86400'
 };
 
-const FALLBACK_TEXT_MODELS = ['gemini-2.5-flash-lite', 'gemini-2.5-flash', 'gemini-flash-lite-latest'];
-const MAX_MODEL_ATTEMPTS = 3;
-const GEMINI_TIMEOUT_MS = 8500;
-const WALL_TIMEOUT_MS = 18000;
+const VERSION = 'hush-generate-v3.6-pr152-rotation-style-carry';
+const ROTATION_VERSION = 'pr152-anti-compression-full-model-rotation/v1';
+const DEFAULT_MODEL_ORDER = ['gemini-flash-lite-latest', 'gemini-2.5-flash', 'gemini-2.5-flash-lite'];
+const MAX_MODEL_ATTEMPTS = 4;
+const GEMINI_TIMEOUT_MS = 7200;
+const WALL_TIMEOUT_MS = 22000;
 let preferredWorkingModel = null;
 
 function send(res, status, payload) {
   for (const [key, value] of Object.entries(corsHeaders)) res.setHeader(key, value);
   return res.status(status).json(payload);
 }
-
 function normalizeModelName(value = '') { return String(value || '').trim().replace(/^models\//, ''); }
 function unique(values = []) { return [...new Set(values.map((value) => normalizeModelName(value)).filter(Boolean))]; }
 function configuredModels() {
   const configured = unique([...String(process.env.GEMINI_MODEL || '').split(','), ...String(process.env.GEMINI_MODEL_FALLBACKS || '').split(',')]);
-  return unique([...configured, ...FALLBACK_TEXT_MODELS]).slice(0, MAX_MODEL_ATTEMPTS);
+  const merged = unique([...DEFAULT_MODEL_ORDER, ...configured]);
+  return merged.sort((a, b) => {
+    const ai = DEFAULT_MODEL_ORDER.indexOf(a);
+    const bi = DEFAULT_MODEL_ORDER.indexOf(b);
+    const ar = ai === -1 ? 50 : ai;
+    const br = bi === -1 ? 50 : bi;
+    return ar - br;
+  }).slice(0, MAX_MODEL_ATTEMPTS);
 }
 function cleanJsonText(text = '') { return String(text || '').trim().replace(/^```(?:json)?\s*/i, '').replace(/```$/i, '').trim(); }
 function words(value = '') { return String(value || '').toLowerCase().match(/[a-z0-9][a-z0-9'-]*/g) || []; }
@@ -30,7 +38,7 @@ function safe(value = '') { return String(value ?? '').trim(); }
 function compactJson(value = {}) { return JSON.stringify(value || {}, null, 2); }
 function truncate(value = '', limit = 2600) {
   const text = safe(value).replace(/\s+/g, ' ');
-  return text.length > limit ? `${text.slice(0, limit).trim()}…` : text;
+  return text.length > limit ? `${text.slice(0, limit).trim()}...` : text;
 }
 function candidateText(candidate = {}) {
   if (typeof candidate === 'string') return candidate;
@@ -74,8 +82,7 @@ function parseProviderJson(text = '') {
   return { candidates: [], warnings: ['provider-returned-invalid-json'], rawText: cleaned.slice(0, 600) };
 }
 function longestSourceRun(candidateText = '', sourceText = '') {
-  const candidate = words(candidateText);
-  const source = words(sourceText);
+  const candidate = words(candidateText), source = words(sourceText);
   if (!candidate.length || !source.length) return 0;
   const positions = new Map();
   source.forEach((word, index) => { if (!positions.has(word)) positions.set(word, []); positions.get(word).push(index); });
@@ -90,11 +97,9 @@ function longestSourceRun(candidateText = '', sourceText = '') {
   return best;
 }
 function copyRisk(candidateText = '', sourceText = '') {
-  const candidateNorm = normalizedText(candidateText);
-  const sourceNorm = normalizedText(sourceText);
+  const candidateNorm = normalizedText(candidateText), sourceNorm = normalizedText(sourceText);
   if (!candidateNorm || !sourceNorm) return { copied: false, longestRun: 0, overlap: 0, lengthRatio: 1 };
-  const candidateWords = words(candidateText);
-  const sourceWords = words(sourceText);
+  const candidateWords = words(candidateText), sourceWords = words(sourceText);
   const sourceSet = new Set(sourceWords.filter((word) => word.length > 2));
   const candidateSet = new Set(candidateWords.filter((word) => word.length > 2));
   let hits = 0;
@@ -123,9 +128,7 @@ function compressionRisk(candidateText = '', sourceText = '') {
   return { compressed: sourceWords >= 42 && ratio < floor, candidateWords, sourceWords, lengthRatio: Number(ratio.toFixed(4)), floor };
 }
 function splitCandidates(candidates = [], sourceText = '') {
-  const usable = [];
-  const copied = [];
-  const compressed = [];
+  const usable = [], copied = [], compressed = [];
   candidates.forEach((candidate, index) => {
     const risk = copyRisk(candidate.text || '', sourceText);
     const compression = compressionRisk(candidate.text || '', sourceText);
@@ -144,8 +147,7 @@ function importantTerms(sourceText = '') {
   return [...new Set(words(sourceText).map((word) => word.replace(/^sig$/, 'sigil').replace(/^llms$/, 'llm')).filter((word) => word.length > 2 && !stop.has(word)))].slice(0, 28);
 }
 function sourceNgrams(sourceText = '', n = 6) {
-  const list = words(sourceText);
-  const grams = [];
+  const list = words(sourceText), grams = [];
   for (let i = 0; i <= list.length - n; i += 1) grams.push(list.slice(i, i + n).join(' '));
   return grams.slice(0, 12);
 }
@@ -155,9 +157,12 @@ function operationList(contract = {}, controls = {}) {
 function compactFlightPacket(packet = {}) {
   const style = packet.mask_style_vector || {};
   const engine = packet.stylometry_engine || {};
+  const stylePolicy = packet.style_diversity_policy || style.style_diversity || null;
   return {
     packet_version: packet.packet_version || '',
     ontology_route: packet.ontology_route || {},
+    protective_style_policy: packet.protective_style_policy || {},
+    style_diversity_policy: stylePolicy,
     mask_style_vector: {
       mask_id: style.mask_id || '',
       display_name: style.display_name || '',
@@ -169,13 +174,17 @@ function compactFlightPacket(packet = {}) {
       formality_target: style.formality_target || '',
       warmth_target: style.warmth_target || '',
       compression_target: style.compression_target || '',
-      diction_hints: (style.diction_hints || []).slice(0, 8),
-      transition_bank: (style.transition_bank || []).slice(0, 8),
-      desired_moves: (style.desired_moves || []).slice(0, 8),
-      human_sample_residue_version: style.human_sample_residue_version || '',
+      punctuation_law: style.punctuation_law || stylePolicy?.punctuation || '',
+      grammar_variance: style.grammar_variance || stylePolicy?.grammar || '',
+      typo_policy: style.typo_policy || stylePolicy?.typo_policy || stylePolicy?.typo || '',
+      chat_speak_profile: style.chat_speak_profile || stylePolicy?.chat_speak_profile || stylePolicy?.chat || '',
+      diction_hints: (style.diction_hints || []).slice(0, 16),
+      transition_bank: (style.transition_bank || []).slice(0, 16),
+      desired_moves: (style.desired_moves || []).slice(0, 16),
+      avoid_list: (style.avoid_list || []).slice(0, 20),
       enrichment_applied: Boolean(style.enrichment_applied),
       canonical_seed_hash: style.canonical_seed_hash || '',
-      sample_seed_excerpt: truncate(style.sample_seed_excerpt || '', 900)
+      sample_seed_excerpt: truncate(style.sample_seed_excerpt || '', 1200)
     },
     stylometry_engine: {
       source_profile: engine.source_profile || {},
@@ -183,7 +192,7 @@ function compactFlightPacket(packet = {}) {
       target_shell: engine.target_shell || null,
       cadence_shell: engine.cadence_shell || null,
       generator_constraints: engine.generator_constraints || {},
-      audit: { warnings: engine.audit?.warnings || [], enrichment: engine.audit?.enrichment ? { version: engine.audit.enrichment.version, applied: engine.audit.enrichment.applied, canonicalSeedHash: engine.audit.enrichment.canonicalSeedHash } : null }
+      audit: { warnings: engine.audit?.warnings || [], enrichment: engine.audit?.enrichment ? { version: engine.audit.enrichment.version, applied: engine.audit.enrichment.applied, canonicalSeedHash: engine.audit.enrichment.canonicalSeedHash, styleDiversityVersion: engine.audit.enrichment.styleDiversityVersion || '' } : null }
     },
     flight_controls: packet.flight_controls || {},
     source_manifest: { proposition_summary: packet.source_manifest?.proposition_summary || {}, question_map: packet.source_manifest?.question_map || [], claim_map: packet.source_manifest?.claim_map || [] }
@@ -204,24 +213,21 @@ function buildPrompt(contract = {}, repair = null) {
   const floorRatio = minLengthRatio(sourceText);
   const minWords = Math.max(32, Math.floor(sourceWordCount * floorRatio));
   const schema = { candidates: [{ text: 'string', style_note: 'string', style_operation: operations[0] || 'cadence_alias', preserved_propositions: ['p1'], dropped_propositions: [], changed_questions: [], new_claims: [], risk_flags: [], mask_surface_notes: { rhythm: 'string', diction: 'string', temperature: 'string', structure: 'string' } }] };
+  const stylePolicy = compactPacket.style_diversity_policy || {};
   const repairBlock = repair ? `\n\nREPAIR NOTICE: previous candidates failed ${repair.kind || 'copy/compression'} audit. ${repair.kind === 'compression' ? 'They were too short and dropped source units. Expand every candidate, preserve questions as questions, and cover the listed propositions before changing surface style.' : 'Change openings, clause order, and sentence boundaries.'} Rejected:\n${repair.rejected || '- none'}.` : '';
-  return `Return JSON only. No markdown. No prose outside JSON.\nSchema:\n${compactJson(schema)}\n\nGenerate ${candidateCount} transformed candidates. Preserve meaning, questions, caveats, negations, uncertainty, and causal links. Do not answer questions. Do not add facts. Use distinct style_operation values. Move the source surface toward the mask target shell without quoting the canonical seed.\n\nANTI-COMPRESSION FLOOR:\n- Do not summarize. Do not produce captions, abstracts, or gist-only rewrites.\n- Each candidate must be at least ${minWords} words unless the source itself is shorter.\n- Each candidate must keep at least ${(floorRatio * 100).toFixed(0)}% of the source word-count pressure.\n- Every listed proposition unit below must appear in transformed form unless it is genuinely duplicate.\n- Questions must remain questions. If the source has multiple questions, keep them live as questions.\n\nCOPY AUDIT:\n- exact copy: fail\n- source wrapped with a preface/afterword: fail\n- same sentence with swapped words: fail\n- any six consecutive source words: fail\n- same opening word and same clause order: likely fail\n${repairBlock}\n\nOperations:\n${operations.map((operation) => `- ${operation}`).join('\n')}\n\nSOURCE PROPOSITIONS TO PRESERVE:\n${units.map((unit, index) => `P${index + 1}: ${unit}`).join('\n')}\n\nIMPORTANT TERMS:\n${terms.join(', ') || '(none)'}\n\nFORBIDDEN SOURCE RUNS:\n${forbiddenRuns.map((item) => `- ${item}`).join('\n') || '- (source too short for six-word runs)'}\n\nCOMPACT HUSH FLIGHT PACKET:\n${compactJson(compactPacket)}\n\nSOURCE TEXT TO TRANSFORM, NOT COPY:\n${sourceText}`;
+  return `Return JSON only. No markdown. No prose outside JSON.\nSchema:\n${compactJson(schema)}\n\nGenerate ${candidateCount} transformed candidates. Preserve meaning, questions, caveats, negations, uncertainty, and causal links. Do not answer questions. Do not add facts. Use distinct style_operation values. Move the source surface toward the mask target shell without quoting the canonical seed.\n\nSTYLE DIVERSITY CONTROL:\n- Treat style_diversity_policy as active control, not decoration.\n- Selected surface: ${stylePolicy.surface || '(packet surface)'}.\n- Architecture: ${stylePolicy.architecture || compactPacket.mask_style_vector?.rhythm_target || '(packet architecture)'}.\n- Punctuation law: ${stylePolicy.punctuation || compactPacket.mask_style_vector?.punctuation_law || '(packet punctuation)'}.\n- Grammar texture: ${stylePolicy.grammar || compactPacket.mask_style_vector?.grammar_variance || '(packet grammar)'}.\n- Chat profile: ${stylePolicy.chat_speak_profile || stylePolicy.chat || compactPacket.mask_style_vector?.chat_speak_profile || '(none)'}.\n- Human looseness may shape rhythm, punctuation, and register only. It may not alter protected facts, dates, names, amounts, IDs, file labels, quotes, entities, or claims.\n- Preserve opacity and minimum necessary disclosure; do not polish into generic institutional prose.\n\nANTI-COMPRESSION FLOOR:\n- Do not summarize. Do not produce captions, abstracts, or gist-only rewrites.\n- Each candidate must be at least ${minWords} words unless the source itself is shorter.\n- Each candidate must keep at least ${(floorRatio * 100).toFixed(0)}% of the source word-count pressure.\n- Every listed proposition unit below must appear in transformed form unless it is genuinely duplicate.\n- Questions must remain questions. If the source has multiple questions, keep them live as questions.\n\nCOPY AUDIT:\n- exact copy: fail\n- source wrapped with a preface/afterword: fail\n- same sentence with swapped words: fail\n- any six consecutive source words: fail\n- same opening word and same clause order: likely fail\n${repairBlock}\n\nOperations:\n${operations.map((operation) => `- ${operation}`).join('\n')}\n\nSOURCE PROPOSITIONS TO PRESERVE:\n${units.map((unit, index) => `P${index + 1}: ${unit}`).join('\n')}\n\nIMPORTANT TERMS:\n${terms.join(', ') || '(none)'}\n\nFORBIDDEN SOURCE RUNS:\n${forbiddenRuns.map((item) => `- ${item}`).join('\n') || '- (source too short for six-word runs)'}\n\nCOMPACT HUSH FLIGHT PACKET:\n${compactJson(compactPacket)}\n\nSOURCE TEXT TO TRANSFORM, NOT COPY:\n${sourceText}`;
 }
 async function callGemini({ model, prompt, jsonMode, deterministic = true }) {
   const controller = new AbortController();
   const timer = setTimeout(() => controller.abort(), GEMINI_TIMEOUT_MS);
-  const generationConfig = jsonMode
-    ? { temperature: deterministic ? 0.24 : 0.64, topP: deterministic ? 0.68 : 0.88, responseMimeType: 'application/json', maxOutputTokens: 8192 }
-    : { temperature: deterministic ? 0.24 : 0.64, topP: deterministic ? 0.68 : 0.88, maxOutputTokens: 8192 };
+  const generationConfig = jsonMode ? { temperature: deterministic ? 0.24 : 0.64, topP: deterministic ? 0.68 : 0.88, responseMimeType: 'application/json', maxOutputTokens: 8192 } : { temperature: deterministic ? 0.24 : 0.64, topP: deterministic ? 0.68 : 0.88, maxOutputTokens: 8192 };
   try {
     const response = await fetch('https://generativelanguage.googleapis.com/v1beta/models/' + encodeURIComponent(normalizeModelName(model)) + ':generateContent?key=' + encodeURIComponent(process.env.GEMINI_API_KEY), { method: 'POST', headers: { 'content-type': 'application/json' }, body: JSON.stringify({ contents: [{ role: 'user', parts: [{ text: prompt }] }], generationConfig }), signal: controller.signal });
     const payload = await response.json().catch(() => ({}));
     return { response, payload, timedOut: false };
   } catch (error) {
     return { response: { ok: false, status: error?.name === 'AbortError' ? 408 : 599 }, payload: { error: { message: String(error?.message || error), status: error?.name || 'FETCH_ERROR' } }, timedOut: error?.name === 'AbortError' };
-  } finally {
-    clearTimeout(timer);
-  }
+  } finally { clearTimeout(timer); }
 }
 function summarizeProviderError(payload = {}) {
   const error = payload.error || payload;
@@ -230,7 +236,7 @@ function summarizeProviderError(payload = {}) {
 async function runProviderProbe(models = []) {
   const prompt = 'Return JSON only. Schema: {"candidates":[{"text":"probe ok","style_note":"probe","risk_flags":[]}]}';
   const attempts = [];
-  for (const model of models.slice(0, 2)) {
+  for (const model of models.slice(0, MAX_MODEL_ATTEMPTS)) {
     const { response, payload, timedOut } = await callGemini({ model, prompt, jsonMode: true, deterministic: true });
     const rawText = payload?.candidates?.[0]?.content?.parts?.[0]?.text || '';
     attempts.push({ model: normalizeModelName(model), jsonMode: true, ok: response.ok, providerStatus: response.status, timedOut, error: response.ok ? null : summarizeProviderError(payload), textPreview: rawText.slice(0, 120) });
@@ -255,17 +261,13 @@ function serverRepairCandidates(sourceText = '', contract = {}) {
   const baseQuestion = hasQuestion ? qs[0].replace(/[?]+$/g, '').trim() : parts[0].replace(/[.!?]+$/g, '').trim();
   const secondQuestion = hasQuestion && qs[1] ? qs[1].replace(/[?]+$/g, '').trim() : '';
   const topic = terms.length ? terms.join(', ') : 'the source claim';
-  const candidates = hasQuestion
-    ? [
-      { text: `Before the credential gate gets to decide the frame, the question is ${baseQuestion.toLowerCase()}?${secondQuestion ? ` The second question stays live too: ${secondQuestion.toLowerCase()}?` : ''}`, style_note: 'server deterministic question inversion', style_operation: 'question_preservation' },
-      { text: `The entry point is not the only issue: ${baseQuestion}?${secondQuestion ? ` And under that same pressure, ${secondQuestion.toLowerCase()}?` : ''}`, style_note: 'server deterministic cadence alias', style_operation: op },
-      { text: `Put the question through the ${route || 'mask'} route: ${baseQuestion}?${secondQuestion ? ` Keep the follow-up intact: ${secondQuestion}?` : ''}`, style_note: 'server deterministic route surface', style_operation: 'heat_calibration' }
-    ]
-    : [
-      { text: `The claim can move through ${topic} without keeping the source order: ${parts.slice(1).concat(parts[0]).join(' ')}`, style_note: 'server deterministic syntax inversion', style_operation: 'syntax_inversion' },
-      { text: `Under the ${route || 'mask'} route, the same proposition changes pressure before it changes meaning: ${src}`, style_note: 'server deterministic route pressure', style_operation: op },
-      { text: `What has to survive is not the original wrapper but the claim itself: ${src}`, style_note: 'server deterministic claim preservation', style_operation: 'cadence_alias' }
-    ];
+  const candidates = hasQuestion ? [
+    { text: `Before the frame gets to decide the question, keep this live: ${baseQuestion}?${secondQuestion ? ` The second question stays live too: ${secondQuestion}?` : ''}`, style_note: 'server deterministic question preservation', style_operation: 'question_preservation' },
+    { text: `The entry point is not the only issue: ${baseQuestion}?${secondQuestion ? ` And under that same pressure, ${secondQuestion.toLowerCase()}?` : ''}`, style_note: 'server deterministic cadence alias', style_operation: op }
+  ] : [
+    { text: `The claim can move through ${topic} without keeping the source order: ${parts.slice(1).concat(parts[0]).join(' ')}`, style_note: 'server deterministic syntax inversion', style_operation: 'syntax_inversion' },
+    { text: `Under the ${route || 'mask'} route, the same proposition changes pressure before it changes meaning: ${src}`, style_note: 'server deterministic route pressure', style_operation: op }
+  ];
   const usable = candidates.filter((candidate) => !copyRisk(candidate.text, src).copied);
   return { candidates: usable.length ? usable : candidates, warnings: usable.length ? ['server-deterministic-repair-used'] : ['server-deterministic-repair-used-copy-risk-remains'] };
 }
@@ -274,8 +276,8 @@ export default async function handler(req, res) {
   if (req.method === 'GET') {
     const flags = queryFlags(req);
     const models = configuredModels();
-    if (flags.models) return send(res, 200, { ok: true, configuredModels: models, preferredWorkingModel, env: { hasGeminiKey: Boolean(process.env.GEMINI_API_KEY), geminiModel: process.env.GEMINI_MODEL || '', fallbackCount: String(process.env.GEMINI_MODEL_FALLBACKS || '').split(',').filter(Boolean).length } });
-    return send(res, 200, { ok: true, route: 'hush-generate', probe: await runProviderProbe(models) });
+    if (flags.models) return send(res, 200, { ok: true, version: VERSION, rotationVersion: ROTATION_VERSION, configuredModels: models, preferredWorkingModel, env: { hasGeminiKey: Boolean(process.env.GEMINI_API_KEY), geminiModel: process.env.GEMINI_MODEL || '', fallbackCount: String(process.env.GEMINI_MODEL_FALLBACKS || '').split(',').filter(Boolean).length } });
+    return send(res, 200, { ok: true, route: 'hush-generate', version: VERSION, rotationVersion: ROTATION_VERSION, probe: await runProviderProbe(models) });
   }
   if (req.method !== 'POST') return send(res, 405, { ok: false, error: 'method-not-allowed' });
   if (!process.env.GEMINI_API_KEY) return send(res, 500, { ok: false, error: 'missing-gemini-api-key' });
@@ -285,16 +287,14 @@ export default async function handler(req, res) {
   if (!sourceText) return send(res, 400, { ok: false, error: 'missing-sourceText' });
   const configured = configuredModels();
   const models = preferredWorkingModel ? [preferredWorkingModel, ...configured.filter((model) => model !== preferredWorkingModel)] : configured;
-  const attempts = [];
-  const rejected = [];
-  const compressedRejected = [];
+  const attempts = [], rejected = [], compressedRejected = [];
   const deterministic = req.query?.reroll !== '1' && contract.reroll !== true;
   const jsonModes = deterministic ? [true] : [true, false];
   let repair = null;
   for (let stage = 0; stage < 2; stage += 1) {
     if (Date.now() - startedAt > WALL_TIMEOUT_MS) break;
     const prompt = buildPrompt(contract, repair);
-    for (const model of models.slice(0, deterministic ? 2 : 3)) {
+    for (const model of models.slice(0, deterministic ? MAX_MODEL_ATTEMPTS : MAX_MODEL_ATTEMPTS)) {
       if (Date.now() - startedAt > WALL_TIMEOUT_MS) break;
       for (const jsonMode of jsonModes) {
         if (Date.now() - startedAt > WALL_TIMEOUT_MS) break;
@@ -307,7 +307,7 @@ export default async function handler(req, res) {
         attempts.push({ stage, model: normalizeModelName(model), jsonMode, ok: response.ok, status: response.status, timedOut, parsedCandidates: parsed.candidates.length, usableCandidates: usable.length, copiedCandidates: copied.length, compressedCandidates: compressed.length, warnings: parsed.warnings, error: response.ok ? null : summarizeProviderError(payload), textPreview: rawText.slice(0, 180) });
         if (response.ok && usable.length) {
           preferredWorkingModel = normalizeModelName(model);
-          return send(res, 200, { ok: true, provider: 'gemini', model: preferredWorkingModel, deterministic, version: 'hush-generate-v3.5-anti-compression', candidates: usable, warnings: parsed.warnings, attempts, rejectedCopy: rejected.slice(0, 16), rejectedCompressed: compressedRejected.slice(0, 16), rawText: parsed.rawText, requestReceipt: { deterministic, temperature: deterministic ? 0.24 : 0.64, topP: deterministic ? 0.68 : 0.88, antiCompression: true, minLengthRatio: minLengthRatio(sourceText), bounded: true, elapsedMs: Date.now() - startedAt } });
+          return send(res, 200, { ok: true, provider: 'gemini', model: preferredWorkingModel, deterministic, version: VERSION, rotationVersion: ROTATION_VERSION, candidates: usable, warnings: parsed.warnings, attempts, rejectedCopy: rejected.slice(0, 16), rejectedCompressed: compressedRejected.slice(0, 16), rawText: parsed.rawText, requestReceipt: { deterministic, temperature: deterministic ? 0.24 : 0.64, topP: deterministic ? 0.68 : 0.88, antiCompression: true, modelOrder: models, minLengthRatio: minLengthRatio(sourceText), bounded: true, elapsedMs: Date.now() - startedAt } });
         }
       }
     }
@@ -316,5 +316,5 @@ export default async function handler(req, res) {
     repair = compressedRejected.length ? { kind: 'compression', rejected: recentCompressed || '- parsed candidates were too compressed' } : { kind: 'copy', rejected: recentCopied || '- no parsed candidates' };
   }
   const repaired = serverRepairCandidates(sourceText, contract);
-  return send(res, 200, { ok: true, provider: 'server-deterministic-repair', model: 'server-repair', deterministic, version: 'hush-generate-v3.5-anti-compression', candidates: repaired.candidates, warnings: [...repaired.warnings, 'gemini-fast-path-fallback-before-timeout'], attempts, rejectedCopy: rejected.slice(0, 16), rejectedCompressed: compressedRejected.slice(0, 16), requestReceipt: { deterministic, temperature: deterministic ? 0.24 : 0.64, topP: deterministic ? 0.68 : 0.88, antiCompression: true, minLengthRatio: minLengthRatio(sourceText), bounded: true, elapsedMs: Date.now() - startedAt } });
+  return send(res, 200, { ok: true, provider: 'server-deterministic-repair', model: 'server-repair', deterministic, version: VERSION, rotationVersion: ROTATION_VERSION, candidates: repaired.candidates, warnings: [...repaired.warnings, 'gemini-fast-path-fallback-before-timeout'], attempts, rejectedCopy: rejected.slice(0, 16), rejectedCompressed: compressedRejected.slice(0, 16), requestReceipt: { deterministic, temperature: deterministic ? 0.24 : 0.64, topP: deterministic ? 0.68 : 0.88, antiCompression: true, modelOrder: models, minLengthRatio: minLengthRatio(sourceText), bounded: true, elapsedMs: Date.now() - startedAt } });
 }
