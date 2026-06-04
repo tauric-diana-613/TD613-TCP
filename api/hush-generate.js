@@ -5,8 +5,8 @@ const corsHeaders = {
   'access-control-max-age': '86400'
 };
 
-const VERSION = 'hush-generate-v3.6-pr152-rotation-style-carry';
-const ROTATION_VERSION = 'pr152-anti-compression-full-model-rotation/v1';
+const VERSION = 'hush-generate-v3.7-pr156-coverage-authorship-rotation';
+const ROTATION_VERSION = 'pr156-coverage-authorship-multi-candidate/v1';
 const DEFAULT_MODEL_ORDER = ['gemini-flash-lite-latest', 'gemini-2.5-flash', 'gemini-2.5-flash-lite'];
 const MAX_MODEL_ATTEMPTS = 4;
 const GEMINI_TIMEOUT_MS = 7200;
@@ -44,11 +44,25 @@ function candidateText(candidate = {}) {
   if (typeof candidate === 'string') return candidate;
   return safe(candidate.text || candidate.output || candidate.candidate || candidate.rewrite || '');
 }
+function inferAuthorshipMoves(candidate = {}, index = 0) {
+  const direct = stringArray(candidate.authorship_moves || candidate.authorshipMoves);
+  if (direct.length) return direct;
+  const notes = candidate.mask_surface_notes && typeof candidate.mask_surface_notes === 'object' ? candidate.mask_surface_notes : {};
+  const moves = [
+    safe(notes.rhythm) && `rhythm:${safe(notes.rhythm)}`,
+    safe(notes.diction) && `diction:${safe(notes.diction)}`,
+    safe(notes.structure) && `structure:${safe(notes.structure)}`,
+    safe(candidate.style_operation || candidate.styleOperation || candidate.operation) && `operation:${safe(candidate.style_operation || candidate.styleOperation || candidate.operation)}`
+  ].filter(Boolean);
+  if (moves.length) return moves.slice(0, 4);
+  return [`candidate-${index + 1}:authorship-moves-unreported`];
+}
 function normalizeProviderCandidates(value) {
   const source = Array.isArray(value) ? value : Array.isArray(value?.candidates) ? value.candidates : value?.text || value?.output || value?.candidate || value?.rewrite ? [value] : [];
   return source.map((candidate, index) => {
     const text = candidateText(candidate);
     if (!text) return null;
+    const maskNotes = candidate.mask_surface_notes && typeof candidate.mask_surface_notes === 'object' ? candidate.mask_surface_notes : {};
     return {
       text,
       style_note: typeof candidate === 'object' && candidate.style_note ? String(candidate.style_note) : `provider-candidate-${index + 1}`,
@@ -57,7 +71,8 @@ function normalizeProviderCandidates(value) {
       dropped_propositions: stringArray(candidate.dropped_propositions || candidate.droppedPropositions),
       changed_questions: stringArray(candidate.changed_questions || candidate.changedQuestions),
       new_claims: stringArray(candidate.new_claims || candidate.newClaims),
-      mask_surface_notes: candidate.mask_surface_notes && typeof candidate.mask_surface_notes === 'object' ? candidate.mask_surface_notes : {},
+      authorship_moves: inferAuthorshipMoves(candidate, index),
+      mask_surface_notes: maskNotes,
       risk_flags: stringArray(candidate.risk_flags || candidate.riskFlags)
     };
   }).filter(Boolean).slice(0, 8);
@@ -78,7 +93,7 @@ function parseProviderJson(text = '') {
       return { candidates, warnings: [...(Array.isArray(parsed.warnings) ? parsed.warnings.map(String) : []), ...(candidates.length ? [] : ['provider-json-contained-no-usable-candidates'])], rawText: cleaned.slice(0, 600) };
     } catch {}
   }
-  if (cleaned.length > 20) return { candidates: [{ text: cleaned, style_note: 'Recovered raw provider text after invalid JSON.', style_operation: 'cadence_alias', preserved_propositions: [], dropped_propositions: [], changed_questions: [], new_claims: [], mask_surface_notes: {}, risk_flags: ['provider-returned-invalid-json-recovered-raw-candidate'] }], warnings: ['provider-returned-invalid-json', 'provider-invalid-json-recovered-as-raw-candidate'], rawText: cleaned.slice(0, 600) };
+  if (cleaned.length > 20) return { candidates: [{ text: cleaned, style_note: 'Recovered raw provider text after invalid JSON.', style_operation: 'cadence_alias', preserved_propositions: [], dropped_propositions: [], changed_questions: [], new_claims: [], authorship_moves: ['recovered-raw-provider-text'], mask_surface_notes: {}, risk_flags: ['provider-returned-invalid-json-recovered-raw-candidate'] }], warnings: ['provider-returned-invalid-json', 'provider-invalid-json-recovered-as-raw-candidate'], rawText: cleaned.slice(0, 600) };
   return { candidates: [], warnings: ['provider-returned-invalid-json'], rawText: cleaned.slice(0, 600) };
 }
 function longestSourceRun(candidateText = '', sourceText = '') {
@@ -115,10 +130,10 @@ function copyRisk(candidateText = '', sourceText = '') {
 }
 function minLengthRatio(sourceText = '') {
   const count = words(sourceText).length;
-  if (count < 80) return 0.42;
-  if (count < 220) return 0.36;
-  if (count < 520) return 0.30;
-  return 0.24;
+  if (count < 80) return 0.52;
+  if (count < 220) return 0.54;
+  if (count < 520) return 0.62;
+  return 0.56;
 }
 function compressionRisk(candidateText = '', sourceText = '') {
   const candidateWords = words(candidateText).length;
@@ -128,15 +143,17 @@ function compressionRisk(candidateText = '', sourceText = '') {
   return { compressed: sourceWords >= 42 && ratio < floor, candidateWords, sourceWords, lengthRatio: Number(ratio.toFixed(4)), floor };
 }
 function splitCandidates(candidates = [], sourceText = '') {
-  const usable = [], copied = [], compressed = [];
+  const usable = [], copied = [], compressed = [], missingMoves = [];
   candidates.forEach((candidate, index) => {
     const risk = copyRisk(candidate.text || '', sourceText);
     const compression = compressionRisk(candidate.text || '', sourceText);
+    const authorMoves = stringArray(candidate.authorship_moves || candidate.authorshipMoves);
     if (risk.copied) copied.push({ index, risk, preview: String(candidate.text || '').slice(0, 180) });
     else if (compression.compressed) compressed.push({ index, risk: compression, preview: String(candidate.text || '').slice(0, 180) });
+    else if (!authorMoves.length) missingMoves.push({ index, risk: { missingAuthorshipMoves: true }, preview: String(candidate.text || '').slice(0, 180) });
     else usable.push(candidate);
   });
-  return { usable, copied, compressed };
+  return { usable, copied, compressed, missingMoves };
 }
 function sourceUnits(sourceText = '') {
   const lines = String(sourceText || '').split(/\n+/).map((line) => line.trim()).filter(Boolean);
@@ -144,7 +161,7 @@ function sourceUnits(sourceText = '') {
 }
 function importantTerms(sourceText = '') {
   const stop = new Set('the a an and or but if is are was were be been being do does did how what why when where who whom with without into from that this those these much really very just like of in on to for no not before after you your yours i me my mine we our ours it its they them their there here some so sorry sounds sound going through have has had basically maybe came come from can could would should will as at by'.split(' '));
-  return [...new Set(words(sourceText).map((word) => word.replace(/^sig$/, 'sigil').replace(/^llms$/, 'llm')).filter((word) => word.length > 2 && !stop.has(word)))].slice(0, 28);
+  return [...new Set(words(sourceText).map((word) => word.replace(/^sig$/, 'sigil').replace(/^llms$/, 'llm')).filter((word) => word.length > 2 && !stop.has(word)))].slice(0, 44);
 }
 function sourceNgrams(sourceText = '', n = 6) {
   const list = words(sourceText), grams = [];
@@ -178,10 +195,10 @@ function compactFlightPacket(packet = {}) {
       grammar_variance: style.grammar_variance || stylePolicy?.grammar || '',
       typo_policy: style.typo_policy || stylePolicy?.typo_policy || stylePolicy?.typo || '',
       chat_speak_profile: style.chat_speak_profile || stylePolicy?.chat_speak_profile || stylePolicy?.chat || '',
-      diction_hints: (style.diction_hints || []).slice(0, 16),
-      transition_bank: (style.transition_bank || []).slice(0, 16),
-      desired_moves: (style.desired_moves || []).slice(0, 16),
-      avoid_list: (style.avoid_list || []).slice(0, 20),
+      diction_hints: (style.diction_hints || []).slice(0, 20),
+      transition_bank: (style.transition_bank || []).slice(0, 20),
+      desired_moves: (style.desired_moves || []).slice(0, 20),
+      avoid_list: (style.avoid_list || []).slice(0, 24),
       enrichment_applied: Boolean(style.enrichment_applied),
       canonical_seed_hash: style.canonical_seed_hash || '',
       sample_seed_excerpt: truncate(style.sample_seed_excerpt || '', 1200)
@@ -206,16 +223,16 @@ function buildPrompt(contract = {}, repair = null) {
   const controls = packet?.flight_controls || {};
   const operations = operationList(contract, controls);
   const requestedCount = Number(controls.candidate_count || contract.candidateCount || 6);
-  const candidateCount = sourceWordCount > 220 ? 3 : Math.max(4, Math.min(6, requestedCount));
+  const candidateCount = sourceWordCount > 220 ? Math.max(3, Math.min(4, requestedCount || 4)) : Math.max(4, Math.min(6, requestedCount || 6));
   const units = sourceUnits(sourceText).slice(0, sourceWordCount > 220 ? 48 : 28);
   const terms = importantTerms(sourceText);
   const forbiddenRuns = sourceNgrams(sourceText, 6);
   const floorRatio = minLengthRatio(sourceText);
   const minWords = Math.max(32, Math.floor(sourceWordCount * floorRatio));
-  const schema = { candidates: [{ text: 'string', style_note: 'string', style_operation: operations[0] || 'cadence_alias', preserved_propositions: ['p1'], dropped_propositions: [], changed_questions: [], new_claims: [], risk_flags: [], mask_surface_notes: { rhythm: 'string', diction: 'string', temperature: 'string', structure: 'string' } }] };
+  const schema = { candidates: [{ text: 'string', style_note: 'string', style_operation: operations[0] || 'cadence_alias', preserved_propositions: ['P1'], dropped_propositions: [], changed_questions: [], new_claims: [], authorship_moves: ['concrete mask-specific move used in this candidate'], risk_flags: [], mask_surface_notes: { rhythm: 'string', diction: 'string', temperature: 'string', structure: 'string', coverage: 'string' } }] };
   const stylePolicy = compactPacket.style_diversity_policy || {};
-  const repairBlock = repair ? `\n\nREPAIR NOTICE: previous candidates failed ${repair.kind || 'copy/compression'} audit. ${repair.kind === 'compression' ? 'They were too short and dropped source units. Expand every candidate, preserve questions as questions, and cover the listed propositions before changing surface style.' : 'Change openings, clause order, and sentence boundaries.'} Rejected:\n${repair.rejected || '- none'}.` : '';
-  return `Return JSON only. No markdown. No prose outside JSON.\nSchema:\n${compactJson(schema)}\n\nGenerate ${candidateCount} transformed candidates. Preserve meaning, questions, caveats, negations, uncertainty, and causal links. Do not answer questions. Do not add facts. Use distinct style_operation values. Move the source surface toward the mask target shell without quoting the canonical seed.\n\nSTYLE DIVERSITY CONTROL:\n- Treat style_diversity_policy as active control, not decoration.\n- Selected surface: ${stylePolicy.surface || '(packet surface)'}.\n- Architecture: ${stylePolicy.architecture || compactPacket.mask_style_vector?.rhythm_target || '(packet architecture)'}.\n- Punctuation law: ${stylePolicy.punctuation || compactPacket.mask_style_vector?.punctuation_law || '(packet punctuation)'}.\n- Grammar texture: ${stylePolicy.grammar || compactPacket.mask_style_vector?.grammar_variance || '(packet grammar)'}.\n- Chat profile: ${stylePolicy.chat_speak_profile || stylePolicy.chat || compactPacket.mask_style_vector?.chat_speak_profile || '(none)'}.\n- Human looseness may shape rhythm, punctuation, and register only. It may not alter protected facts, dates, names, amounts, IDs, file labels, quotes, entities, or claims.\n- Preserve opacity and minimum necessary disclosure; do not polish into generic institutional prose.\n\nANTI-COMPRESSION FLOOR:\n- Do not summarize. Do not produce captions, abstracts, or gist-only rewrites.\n- Each candidate must be at least ${minWords} words unless the source itself is shorter.\n- Each candidate must keep at least ${(floorRatio * 100).toFixed(0)}% of the source word-count pressure.\n- Every listed proposition unit below must appear in transformed form unless it is genuinely duplicate.\n- Questions must remain questions. If the source has multiple questions, keep them live as questions.\n\nCOPY AUDIT:\n- exact copy: fail\n- source wrapped with a preface/afterword: fail\n- same sentence with swapped words: fail\n- any six consecutive source words: fail\n- same opening word and same clause order: likely fail\n${repairBlock}\n\nOperations:\n${operations.map((operation) => `- ${operation}`).join('\n')}\n\nSOURCE PROPOSITIONS TO PRESERVE:\n${units.map((unit, index) => `P${index + 1}: ${unit}`).join('\n')}\n\nIMPORTANT TERMS:\n${terms.join(', ') || '(none)'}\n\nFORBIDDEN SOURCE RUNS:\n${forbiddenRuns.map((item) => `- ${item}`).join('\n') || '- (source too short for six-word runs)'}\n\nCOMPACT HUSH FLIGHT PACKET:\n${compactJson(compactPacket)}\n\nSOURCE TEXT TO TRANSFORM, NOT COPY:\n${sourceText}`;
+  const repairBlock = repair ? `\n\nREPAIR NOTICE: previous candidates failed ${repair.kind || 'copy/compression/authorship'} audit. ${repair.kind === 'compression' ? 'They were too short and dropped source units. Expand every candidate, preserve questions as questions, and cover the listed propositions before changing surface style.' : repair.kind === 'authorship' ? 'They omitted authorship_moves or did not explain the mask-specific moves. Add concrete authorship_moves for every candidate and keep the mask visible in the middle body.' : 'Change openings, clause order, and sentence boundaries.'} Rejected:\n${repair.rejected || '- none'}.` : '';
+  return `Return JSON only. No markdown. No prose outside JSON.\nSchema:\n${compactJson(schema)}\n\nGenerate exactly ${candidateCount} transformed candidates. Fewer than ${Math.min(2, candidateCount)} candidates is a failed response. Preserve meaning, questions, caveats, negations, uncertainty, and causal links. Do not answer questions. Do not add facts. Use distinct style_operation values. Move the source surface toward the mask target shell without quoting the canonical seed.\n\nSTYLE DIVERSITY CONTROL:\n- Treat style_diversity_policy as active control, not decoration.\n- Selected surface: ${stylePolicy.surface || '(packet surface)'}.\n- Architecture: ${stylePolicy.architecture || compactPacket.mask_style_vector?.rhythm_target || '(packet architecture)'}.\n- Punctuation law: ${stylePolicy.punctuation || compactPacket.mask_style_vector?.punctuation_law || '(packet punctuation)'}.\n- Grammar texture: ${stylePolicy.grammar || compactPacket.mask_style_vector?.grammar_variance || '(packet grammar)'}.\n- Chat profile: ${stylePolicy.chat_speak_profile || stylePolicy.chat || compactPacket.mask_style_vector?.chat_speak_profile || '(none)'}.\n- Human looseness may shape rhythm, punctuation, and register only. It may not alter protected facts, dates, names, amounts, IDs, file labels, quotes, entities, or claims.\n- Preserve opacity and minimum necessary disclosure; do not polish into generic institutional prose.\n- Every candidate must include at least two authorship_moves naming concrete mask choices, for example: architecture, punctuation law, grammar texture, lexicon, chat posture, or opacity move.\n\nANTI-COMPRESSION / COVERAGE FLOOR:\n- Do not summarize. Do not produce captions, abstracts, or gist-only rewrites.\n- Each candidate must be at least ${minWords} words unless the source itself is shorter.\n- Each candidate must keep at least ${(floorRatio * 100).toFixed(0)}% of the source word-count pressure.\n- Every listed proposition unit below must appear in transformed form unless it is genuinely duplicate.\n- Do not claim a proposition is preserved unless the candidate text actually carries it.\n- Questions must remain questions. If the source has multiple questions, keep them live as questions.\n\nCOPY AUDIT:\n- exact copy: fail\n- source wrapped with a preface/afterword: fail\n- same sentence with swapped words: fail\n- any six consecutive source words: fail\n- same opening word and same clause order: likely fail\n${repairBlock}\n\nOperations:\n${operations.map((operation) => `- ${operation}`).join('\n')}\n\nSOURCE PROPOSITIONS TO PRESERVE:\n${units.map((unit, index) => `P${index + 1}: ${unit}`).join('\n')}\n\nIMPORTANT TERMS:\n${terms.join(', ') || '(none)'}\n\nFORBIDDEN SOURCE RUNS:\n${forbiddenRuns.map((item) => `- ${item}`).join('\n') || '- (source too short for six-word runs)'}\n\nCOMPACT HUSH FLIGHT PACKET:\n${compactJson(compactPacket)}\n\nSOURCE TEXT TO TRANSFORM, NOT COPY:\n${sourceText}`;
 }
 async function callGemini({ model, prompt, jsonMode, deterministic = true }) {
   const controller = new AbortController();
@@ -262,11 +279,11 @@ function serverRepairCandidates(sourceText = '', contract = {}) {
   const secondQuestion = hasQuestion && qs[1] ? qs[1].replace(/[?]+$/g, '').trim() : '';
   const topic = terms.length ? terms.join(', ') : 'the source claim';
   const candidates = hasQuestion ? [
-    { text: `Before the frame gets to decide the question, keep this live: ${baseQuestion}?${secondQuestion ? ` The second question stays live too: ${secondQuestion}?` : ''}`, style_note: 'server deterministic question preservation', style_operation: 'question_preservation' },
-    { text: `The entry point is not the only issue: ${baseQuestion}?${secondQuestion ? ` And under that same pressure, ${secondQuestion.toLowerCase()}?` : ''}`, style_note: 'server deterministic cadence alias', style_operation: op }
+    { text: `Before the frame gets to decide the question, keep this live: ${baseQuestion}?${secondQuestion ? ` The second question stays live too: ${secondQuestion}?` : ''}`, style_note: 'server deterministic question preservation', style_operation: 'question_preservation', authorship_moves: ['server repair preserved question form', 'server repair changed frame without adding facts'] },
+    { text: `The entry point is not the only issue: ${baseQuestion}?${secondQuestion ? ` And under that same pressure, ${secondQuestion.toLowerCase()}?` : ''}`, style_note: 'server deterministic cadence alias', style_operation: op, authorship_moves: ['server repair shifted opening pressure', 'server repair preserved question relationship'] }
   ] : [
-    { text: `The claim can move through ${topic} without keeping the source order: ${parts.slice(1).concat(parts[0]).join(' ')}`, style_note: 'server deterministic syntax inversion', style_operation: 'syntax_inversion' },
-    { text: `Under the ${route || 'mask'} route, the same proposition changes pressure before it changes meaning: ${src}`, style_note: 'server deterministic route pressure', style_operation: op }
+    { text: `The claim can move through ${topic} without keeping the source order: ${parts.slice(1).concat(parts[0]).join(' ')}`, style_note: 'server deterministic syntax inversion', style_operation: 'syntax_inversion', authorship_moves: ['server repair inverted sentence order', 'server repair preserved core terms without new facts'] },
+    { text: `Under the ${route || 'mask'} route, the same proposition changes pressure before it changes meaning: ${src}`, style_note: 'server deterministic route pressure', style_operation: op, authorship_moves: ['server repair exposed route pressure', 'server repair preserved proposition sequence'] }
   ];
   const usable = candidates.filter((candidate) => !copyRisk(candidate.text, src).copied);
   return { candidates: usable.length ? usable : candidates, warnings: usable.length ? ['server-deterministic-repair-used'] : ['server-deterministic-repair-used-copy-risk-remains'] };
@@ -287,13 +304,14 @@ export default async function handler(req, res) {
   if (!sourceText) return send(res, 400, { ok: false, error: 'missing-sourceText' });
   const configured = configuredModels();
   const models = preferredWorkingModel ? [preferredWorkingModel, ...configured.filter((model) => model !== preferredWorkingModel)] : configured;
-  const attempts = [], rejected = [], compressedRejected = [];
+  const attempts = [], rejected = [], compressedRejected = [], movesRejected = [];
   const deterministic = req.query?.reroll !== '1' && contract.reroll !== true;
   const jsonModes = deterministic ? [true] : [true, false];
   let repair = null;
   for (let stage = 0; stage < 2; stage += 1) {
     if (Date.now() - startedAt > WALL_TIMEOUT_MS) break;
     const prompt = buildPrompt(contract, repair);
+    const minUsableRelease = words(sourceText).length > 220 ? 2 : 1;
     for (const model of models.slice(0, deterministic ? MAX_MODEL_ATTEMPTS : MAX_MODEL_ATTEMPTS)) {
       if (Date.now() - startedAt > WALL_TIMEOUT_MS) break;
       for (const jsonMode of jsonModes) {
@@ -301,20 +319,23 @@ export default async function handler(req, res) {
         const { response, payload, timedOut } = await callGemini({ model, prompt, jsonMode, deterministic });
         const rawText = payload?.candidates?.[0]?.content?.parts?.[0]?.text || '';
         const parsed = parseProviderJson(rawText);
-        const { usable, copied, compressed } = splitCandidates(parsed.candidates, sourceText);
+        const { usable, copied, compressed, missingMoves } = splitCandidates(parsed.candidates, sourceText);
         rejected.push(...copied.map((item) => ({ ...item, model: normalizeModelName(model), stage })));
         compressedRejected.push(...compressed.map((item) => ({ ...item, model: normalizeModelName(model), stage })));
-        attempts.push({ stage, model: normalizeModelName(model), jsonMode, ok: response.ok, status: response.status, timedOut, parsedCandidates: parsed.candidates.length, usableCandidates: usable.length, copiedCandidates: copied.length, compressedCandidates: compressed.length, warnings: parsed.warnings, error: response.ok ? null : summarizeProviderError(payload), textPreview: rawText.slice(0, 180) });
-        if (response.ok && usable.length) {
+        movesRejected.push(...missingMoves.map((item) => ({ ...item, model: normalizeModelName(model), stage })));
+        const tooFewCandidates = response.ok && usable.length > 0 && usable.length < minUsableRelease;
+        attempts.push({ stage, model: normalizeModelName(model), jsonMode, ok: response.ok, status: response.status, timedOut, parsedCandidates: parsed.candidates.length, usableCandidates: usable.length, copiedCandidates: copied.length, compressedCandidates: compressed.length, missingAuthorshipMovesCandidates: missingMoves.length, tooFewCandidates, minUsableRelease, warnings: [...parsed.warnings, ...(tooFewCandidates ? ['too-few-usable-candidates-for-long-source'] : [])], error: response.ok ? null : summarizeProviderError(payload), textPreview: rawText.slice(0, 180) });
+        if (response.ok && usable.length >= minUsableRelease) {
           preferredWorkingModel = normalizeModelName(model);
-          return send(res, 200, { ok: true, provider: 'gemini', model: preferredWorkingModel, deterministic, version: VERSION, rotationVersion: ROTATION_VERSION, candidates: usable, warnings: parsed.warnings, attempts, rejectedCopy: rejected.slice(0, 16), rejectedCompressed: compressedRejected.slice(0, 16), rawText: parsed.rawText, requestReceipt: { deterministic, temperature: deterministic ? 0.24 : 0.64, topP: deterministic ? 0.68 : 0.88, antiCompression: true, modelOrder: models, minLengthRatio: minLengthRatio(sourceText), bounded: true, elapsedMs: Date.now() - startedAt } });
+          return send(res, 200, { ok: true, provider: 'gemini', model: preferredWorkingModel, deterministic, version: VERSION, rotationVersion: ROTATION_VERSION, candidates: usable, warnings: parsed.warnings, attempts, rejectedCopy: rejected.slice(0, 16), rejectedCompressed: compressedRejected.slice(0, 16), rejectedMissingMoves: movesRejected.slice(0, 16), rawText: parsed.rawText, requestReceipt: { deterministic, temperature: deterministic ? 0.24 : 0.64, topP: deterministic ? 0.68 : 0.88, antiCompression: true, modelOrder: models, minLengthRatio: minLengthRatio(sourceText), minUsableRelease, bounded: true, elapsedMs: Date.now() - startedAt } });
         }
       }
     }
     const recentCompressed = compressedRejected.slice(-6).map((item) => `- ${item.preview} (ratio ${item.risk?.lengthRatio}, floor ${item.risk?.floor})`).join('\n');
+    const recentMoves = movesRejected.slice(-6).map((item) => `- ${item.preview} (authorship_moves missing)`).join('\n');
     const recentCopied = rejected.slice(-6).map((item) => `- ${item.preview} (${item.risk?.exact ? 'exact' : item.risk?.wrapper ? 'wrapper' : item.risk?.longRun ? 'long-run' : item.risk?.near ? 'near-copy' : 'copy-risk'})`).join('\n');
-    repair = compressedRejected.length ? { kind: 'compression', rejected: recentCompressed || '- parsed candidates were too compressed' } : { kind: 'copy', rejected: recentCopied || '- no parsed candidates' };
+    repair = compressedRejected.length ? { kind: 'compression', rejected: recentCompressed || '- parsed candidates were too compressed' } : movesRejected.length ? { kind: 'authorship', rejected: recentMoves || '- parsed candidates omitted authorship_moves' } : { kind: 'copy', rejected: recentCopied || '- no parsed candidates' };
   }
   const repaired = serverRepairCandidates(sourceText, contract);
-  return send(res, 200, { ok: true, provider: 'server-deterministic-repair', model: 'server-repair', deterministic, version: VERSION, rotationVersion: ROTATION_VERSION, candidates: repaired.candidates, warnings: [...repaired.warnings, 'gemini-fast-path-fallback-before-timeout'], attempts, rejectedCopy: rejected.slice(0, 16), rejectedCompressed: compressedRejected.slice(0, 16), requestReceipt: { deterministic, temperature: deterministic ? 0.24 : 0.64, topP: deterministic ? 0.68 : 0.88, antiCompression: true, modelOrder: models, minLengthRatio: minLengthRatio(sourceText), bounded: true, elapsedMs: Date.now() - startedAt } });
+  return send(res, 200, { ok: true, provider: 'server-deterministic-repair', model: 'server-repair', deterministic, version: VERSION, rotationVersion: ROTATION_VERSION, candidates: repaired.candidates, warnings: [...repaired.warnings, 'gemini-fast-path-fallback-before-timeout'], attempts, rejectedCopy: rejected.slice(0, 16), rejectedCompressed: compressedRejected.slice(0, 16), rejectedMissingMoves: movesRejected.slice(0, 16), requestReceipt: { deterministic, temperature: deterministic ? 0.24 : 0.64, topP: deterministic ? 0.68 : 0.88, antiCompression: true, modelOrder: models, minLengthRatio: minLengthRatio(sourceText), minUsableRelease: words(sourceText).length > 220 ? 2 : 1, bounded: true, elapsedMs: Date.now() - startedAt } });
 }
