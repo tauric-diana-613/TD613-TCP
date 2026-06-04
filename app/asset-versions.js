@@ -14,7 +14,7 @@
     hushFieldInstrument: '202605250326',
     hushMobileViewportFix: '202605200003',
     hushPhase32: '202605250101',
-    hushPatch38: '202606011229',
+    hushPatch38: '202606041958',
     hushPr75: '202605250326',
     hushPr77: '202605251735',
     hushPr78: '202605250311',
@@ -44,9 +44,11 @@
     hushPr120: '202606010320',
     hushPr121: '202606010350',
     hushPr122: '202606010350',
-    hushPr123: '202606011755',
-    hushPr124: '202606011755',
+    hushPr123: '202606041958',
+    hushPr124: '202606041958',
     hushPr130: '202606011235',
+    hushPr132: '202606041958',
+    hushPr141: '202606041958',
     hushPhase39: '202605301720'
   };
   var V = window.TD613_ASSET_VERSIONS;
