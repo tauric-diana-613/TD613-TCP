@@ -7,8 +7,8 @@ const corsHeaders = {
   'access-control-max-age': '86400'
 };
 
-const VERSION = 'strict-endpoint-pr159-reviewed-repair-release';
-const REVIEW_VERSION = 'pr159-strict-server-repair-review/v1';
+const VERSION = 'strict-endpoint-pr162-review-map-hold';
+const REVIEW_VERSION = 'pr162-review-map-hold/v1';
 
 function send(res, status, payload) {
   for (const [key, value] of Object.entries(corsHeaders)) res.setHeader(key, value);
@@ -63,18 +63,29 @@ function copyRisk(candidateTextValue = '', sourceTextValue = '') {
   return { copied: Boolean(exact || wrapper || longRun || near), exact, wrapper, longRun, near, longestRun, overlap: Number(overlap.toFixed(4)), lengthRatio: Number(lengthRatio.toFixed(4)) };
 }
 
+function isReviewMapRepair(payload = {}) {
+  const warnings = uniqueWarnings(payload.warnings || []);
+  const model = safe(payload.model);
+  const candidates = asArray(payload.candidates);
+  return model === 'server-repair-review-map'
+    || warnings.some((warning) => /review-map|deterministic-review-map/i.test(warning))
+    || candidates.some((candidate) => asArray(candidate.risk_flags).some((flag) => /review-map|deterministic-review-map/i.test(flag)));
+}
+
 function reviewServerRepair(payload = {}, contract = {}) {
   const sourceText = sourceTextFrom(contract);
   const warnings = uniqueWarnings(payload.warnings || []);
   const candidates = asArray(payload.candidates).filter((candidate) => candidateText(candidate));
   const riskRows = candidates.map((candidate, index) => ({ index, risk: copyRisk(candidateText(candidate), sourceText), wordCount: words(candidateText(candidate)).length }));
   const hasCopyRisk = riskRows.some((row) => row.risk.copied) || warnings.some((warning) => /copy-risk-remains|exact-copy|wrapper-copy|long-verbatim|near-copy/i.test(warning));
+  const reviewMapRepair = isReviewMapRepair(payload);
   const hasCandidate = candidates.length > 0;
-  const release = hasCandidate && !hasCopyRisk;
+  const release = hasCandidate && !hasCopyRisk && !reviewMapRepair;
   return {
     version: REVIEW_VERSION,
     release,
-    reason: release ? 'server-repair-passed-strict-copy-review' : hasCandidate ? 'server-repair-copy-risk-or-warning' : 'server-repair-empty',
+    reviewMapRepair,
+    reason: release ? 'server-repair-passed-strict-copy-review' : reviewMapRepair ? 'review-map-repair-held-not-transform' : hasCandidate ? 'server-repair-copy-risk-or-warning' : 'server-repair-empty',
     candidateCount: candidates.length,
     sourceWordCount: words(sourceText).length,
     warnings,
@@ -85,6 +96,7 @@ function reviewServerRepair(payload = {}, contract = {}) {
 function strictHold(payload = {}, contract = {}, startedAt = Date.now(), review = null) {
   const warnings = uniqueWarnings([
     ...(Array.isArray(payload.warnings) ? payload.warnings : []),
+    review?.reviewMapRepair ? 'review-map-repair-held-not-transform' : '',
     'strict-api-no-usable-candidates',
     'strict-anti-compression-held',
     'server-repair-not-auto-released',
@@ -96,7 +108,7 @@ function strictHold(payload = {}, contract = {}, startedAt = Date.now(), review 
     model: payload.model || 'strict-anti-compression-review',
     strict: true,
     noFallback: true,
-    error: 'strict_anti_compression_held',
+    error: review?.reviewMapRepair ? 'review_map_repair_held_not_transform' : 'strict_anti_compression_held',
     candidates: [],
     warnings,
     attempts: payload.attempts || [],
@@ -104,7 +116,7 @@ function strictHold(payload = {}, contract = {}, startedAt = Date.now(), review 
     rejectedCompressed: payload.rejectedCompressed || [],
     rejectedMissingMoves: payload.rejectedMissingMoves || [],
     strictRepairReview: review,
-    providerErrorMessage: 'Strict direct endpoint held output after anti-compression review found no releasable remote candidate. The UI should remain responsive; this is a held result, not a transport timeout.',
+    providerErrorMessage: review?.reviewMapRepair ? 'Review-map repair is diagnostic scaffolding and was not released as transformed output.' : 'Strict direct endpoint held output after anti-compression review found no releasable remote candidate. The UI should remain responsive; this is a held result, not a transport timeout.',
     requestReceipt: {
       ...(payload.requestReceipt || {}),
       strict: true,
@@ -113,9 +125,10 @@ function strictHold(payload = {}, contract = {}, startedAt = Date.now(), review 
       reviewVersion: REVIEW_VERSION,
       upstreamProviderVersion: payload.version || '',
       antiCompression: true,
+      reviewMapRepairHeld: Boolean(review?.reviewMapRepair),
       fallbackSuppressed: payload.provider === 'server-deterministic-repair',
       fallbackSuppressionReason: review?.reason || 'strict-mode-review-required',
-      endpointMetaVersion: 'pr159-strict-reviewed-repair-meta/v1',
+      endpointMetaVersion: 'pr162-review-map-hold-meta/v1',
       packetTier: safe(contract.packetTier || ''),
       maskEvidenceState: safe(contract.maskEvidenceState || ''),
       elapsedMs: Date.now() - startedAt
@@ -149,7 +162,7 @@ function strictReviewRelease(payload = {}, contract = {}, startedAt = Date.now()
       strictDirect: true,
       strictDirectVersion: VERSION,
       reviewVersion: REVIEW_VERSION,
-      endpointMetaVersion: 'pr159-strict-reviewed-repair-meta/v1',
+      endpointMetaVersion: 'pr162-review-map-hold-meta/v1',
       fallbackReleased: true,
       fallbackReleaseReason: review.reason,
       elapsedMs: Date.now() - startedAt
@@ -167,7 +180,7 @@ export default async function handler(req, res) {
       reviewVersion: REVIEW_VERSION,
       upstream: '/api/hush-generate',
       legacyProxy: false,
-      note: 'Strict endpoint calls the anti-compression generator directly and review-releases deterministic repair only when it passes copy-risk review.'
+      note: 'Strict endpoint calls the anti-compression generator directly and holds review-map repair as diagnostic scaffolding, not transformed output.'
     });
   }
   if (req.method !== 'POST') return send(res, 405, { ok: false, error: 'method-not-allowed', version: VERSION });
@@ -182,7 +195,7 @@ export default async function handler(req, res) {
       body: JSON.stringify({ contract })
     });
     const payload = await response.json().catch(() => ({}));
-    if (payload.provider === 'server-deterministic-repair' || payload.model === 'server-repair') {
+    if (payload.provider === 'server-deterministic-repair' || /^server-repair/.test(safe(payload.model))) {
       const review = reviewServerRepair(payload, contract);
       return send(res, 200, review.release ? strictReviewRelease(payload, contract, startedAt, review) : strictHold(payload, contract, startedAt, review));
     }
@@ -198,7 +211,7 @@ export default async function handler(req, res) {
         noFallback: true,
         strictDirect: true,
         strictDirectVersion: VERSION,
-        endpointMetaVersion: 'pr159-strict-reviewed-repair-meta/v1',
+        endpointMetaVersion: 'pr162-review-map-hold-meta/v1',
         elapsedMs: Date.now() - startedAt
       }
     }, contract, startedAt));
@@ -220,7 +233,7 @@ export default async function handler(req, res) {
         noFallback: true,
         strictDirect: true,
         strictDirectVersion: VERSION,
-        endpointMetaVersion: 'pr159-strict-reviewed-repair-meta/v1',
+        endpointMetaVersion: 'pr162-review-map-hold-meta/v1',
         elapsedMs: Date.now() - startedAt
       }
     }, contract, startedAt));
