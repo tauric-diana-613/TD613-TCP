@@ -5,13 +5,28 @@ const corsHeaders = {
   'access-control-max-age': '86400'
 };
 
-const VERSION = 'hush-generate-v3.8-pr158-fast-hard-packet-lane';
-const ROTATION_VERSION = 'pr158-fast-hard-packet-provider-lane/v1';
+const VERSION = 'hush-generate-v3.9-pr161-review-map-repair-surface';
+const ROTATION_VERSION = 'pr161-review-map-repair-surface/v1';
 const DEFAULT_MODEL_ORDER = ['gemini-flash-lite-latest', 'gemini-2.5-flash', 'gemini-2.5-flash-lite'];
 const GEMINI_TIMEOUT_MS = 8800;
 const WALL_TIMEOUT_MS = 24500;
 const MAX_OUTPUT_TOKENS = 8192;
 let preferredWorkingModel = null;
+
+const STOP_WORDS = new Set(
+  'the a an and or but if is are was were be been being do does did how what why when where who whom with without into from that this those these much really very just like of in on to for before after you your yours i me my mine we our ours it its they them their there here some so sorry sounds sound going through have has had basically maybe came come from can could would should will as at by each every all under over out up down again only still simply during onto not'
+    .split(' ')
+);
+const REPAIR_BRIDGES = [
+  'keeps pressure on',
+  'carries forward',
+  'holds the relation between',
+  'marks the hinge around',
+  'keeps visible',
+  'does not drop',
+  'routes through',
+  'keeps custody over'
+];
 
 function send(res, status, payload) {
   for (const [key, value] of Object.entries(corsHeaders)) res.setHeader(key, value);
@@ -21,6 +36,12 @@ function safe(value = '') { return String(value ?? '').trim(); }
 function normalizeModelName(value = '') { return safe(value).replace(/^models\//, ''); }
 function uniq(values = []) { return [...new Set(values.map((value) => normalizeModelName(value)).filter(Boolean))]; }
 function words(value = '') { return safe(value).toLowerCase().match(/[a-z0-9][a-z0-9'-]*/g) || []; }
+function originalTokens(value = '') {
+  return safe(value).match(/[A-Za-z0-9][A-Za-z0-9'’:-]*/g) || [];
+}
+function uniqueText(values = []) {
+  return [...new Set(values.map((value) => safe(value)).filter(Boolean))];
+}
 function stringArray(value) { return Array.isArray(value) ? value.map((item) => safe(item)).filter(Boolean) : []; }
 function compactJson(value = {}) { return JSON.stringify(value || {}, null, 2); }
 function configuredModels() {
@@ -240,14 +261,132 @@ async function runProviderProbe(models = []) {
 function queryFlags(req) {
   try { const url = new URL(req.url || '', 'https://td613.local'); return { models: url.searchParams.has('models') || url.searchParams.has('listModels') }; } catch { return { models: false }; }
 }
+function repairTermBank(value = '', limit = 14) {
+  const protectedTokens = originalTokens(value).filter((token) =>
+    /[A-Z][a-z]|\d|[-:]/.test(token)
+  );
+  const content = originalTokens(value).filter((token) => {
+    const lower = token.toLowerCase().replace(/[’']/g, '');
+    return lower.length > 2 && !STOP_WORDS.has(lower);
+  });
+  return uniqueText([...protectedTokens, ...content])
+    .sort((a, b) => (b.length - a.length) || a.localeCompare(b))
+    .slice(0, limit);
+}
+function relationHints(unit = '') {
+  const lower = safe(unit).toLowerCase();
+  const hints = [];
+  if (/\bnot\b|;/.test(lower)) hints.push('contrast remains active');
+  if (/\baxis\b|\bfirst\b|\bsecond\b|\bthird\b/.test(lower)) hints.push('axis structure remains visible');
+  if (/\bwhen\b|\bunder\b|\bbecause\b|\btherefore\b/.test(lower)) hints.push('pressure/cause relation remains attached');
+  if (/\?/.test(unit)) hints.push('question form remains open');
+  if (/\bwoman|women|daughter|gender|body\b/.test(lower)) hints.push('gendered material relation remains named');
+  if (/\btax|office|client|data|infrastructure|middleware\b/.test(lower)) hints.push('institutional workflow analogy remains present');
+  return hints.length ? hints : ['proposition custody remains intact'];
+}
+function reviewMapUnit(unit = '', index = 0) {
+  const terms = repairTermBank(unit, 12);
+  const bridge = REPAIR_BRIDGES[index % REPAIR_BRIDGES.length];
+  const left = terms.slice(0, Math.ceil(terms.length / 2)).join(' / ') || 'source unit';
+  const right = terms.slice(Math.ceil(terms.length / 2)).join(' / ') || 'same pressure';
+  return `P${index + 1} ${bridge}: ${left}. It also keeps ${right}. ${relationHints(unit).join('; ')}.`;
+}
+function reviewMapRepair(sourceText = '', contract = {}) {
+  const complexity = detectComplexity(sourceText, contract);
+  const route = safe(
+    contract?.flightPacket?.ontology_route?.route_type ||
+    contract?.flightPacket?.ontology_route?.cadence_pressure ||
+    'selected mask'
+  );
+  const style =
+    contract?.flightPacket?.style_diversity_policy ||
+    contract?.flightPacket?.mask_style_vector?.style_diversity ||
+    {};
+  const units = sourceUnits(sourceText, { ...complexity, hard: true }).slice(0, 18);
+  const rows = units.map(reviewMapUnit);
+  const global = repairTermBank(sourceText, 18).join(' / ');
+  const maskLine =
+    `Reviewed repair surface: ${safe(style.surface || route)}. ` +
+    `Architecture: proposition tags, shuffled term custody, relation hints, no sentence-order replay.`;
+  return `${maskLine}\n${rows.join('\n')}\nGlobal custody bank: ${global}. The repair uses compact review-map structure, keeps claims bounded, and does not add facts.`;
+}
+function ledgerRepair(sourceText = '', contract = {}) {
+  const complexity = detectComplexity(sourceText, contract);
+  const route = safe(contract?.flightPacket?.ontology_route?.route_type || 'mask');
+  const units = sourceUnits(sourceText, { ...complexity, hard: true }).slice(0, 16);
+  const rows = units.map((unit, index) => {
+    const terms = repairTermBank(unit, 10);
+    const reordered = terms
+      .filter((_, i) => i % 2 === 1)
+      .concat(terms.filter((_, i) => i % 2 === 0));
+    return `Unit ${index + 1}: ${reordered.join(' | ') || 'source relation'}; ${relationHints(unit).join('; ')}.`;
+  });
+  return `Strict review ledger for ${route}. This is deterministic repair surface, not provider prose.\n${rows.join('\n')}\nRelease note: term custody and relation markers are carried forward while sentence syntax is restructured.`;
+}
 function serverRepairCandidates(sourceText = '', contract = {}) {
   const src = safe(sourceText);
-  const sentences = src.match(/[^.!?]+[.!?]+|[^.!?]+$/g)?.map((p) => p.trim()).filter(Boolean) || [src];
-  const route = contract?.flightPacket?.ontology_route?.route_type || 'mask';
-  const first = sentences[0] || src;
-  const rest = sentences.slice(1).join(' ');
-  const text = rest ? `${rest} ${first}` : `Under the ${route} route, the source claim changes surface while keeping its proposition intact: ${src}`;
-  return { candidates: [{ text, style_note: 'server deterministic fast repair', style_operation: 'syntax_inversion', preserved_propositions: [], dropped_propositions: [], changed_questions: [], new_claims: [], authorship_moves: ['server repair reordered sentence pressure', 'server repair preserved source terms'], mask_surface_notes: { rhythm: 'deterministic repair', diction: route, structure: 'sentence order inversion' }, risk_flags: ['server-deterministic-repair-used'] }], warnings: ['server-deterministic-repair-used'] };
+  const candidates = [
+    {
+      text: reviewMapRepair(src, contract),
+      style_note: 'server deterministic proposition review map',
+      style_operation: 'witness_plainness',
+      preserved_propositions: sourceUnits(src, { hard: true })
+        .map((_, index) => `P${index + 1}`)
+        .slice(0, 18),
+      dropped_propositions: [],
+      changed_questions: [],
+      new_claims: [],
+      authorship_moves: [
+        'proposition labels replace sentence-order inversion',
+        'source terms are shuffled into custody clusters',
+        'review-map structure prevents wrapper prose'
+      ],
+      mask_surface_notes: {
+        rhythm: 'proposition-tagged review map',
+        diction: 'custody ledger',
+        structure: 'term clusters plus relation hints'
+      },
+      risk_flags: ['server-deterministic-review-map-used']
+    },
+    {
+      text: ledgerRepair(src, contract),
+      style_note: 'server deterministic review ledger',
+      style_operation: 'friction_insert',
+      preserved_propositions: sourceUnits(src, { hard: true })
+        .map((_, index) => `P${index + 1}`)
+        .slice(0, 16),
+      dropped_propositions: [],
+      changed_questions: [],
+      new_claims: [],
+      authorship_moves: [
+        'ledger format changes source syntax',
+        'term order is deliberately rebalanced',
+        'relation hints preserve claim shape'
+      ],
+      mask_surface_notes: {
+        rhythm: 'ledger fragments',
+        diction: 'review custody terms',
+        structure: 'unit rows with reordered terms'
+      },
+      risk_flags: ['server-deterministic-review-map-used']
+    }
+  ];
+  const safeCandidates = candidates.filter((candidate) => !copyRisk(candidate.text, src).copied);
+  const released = safeCandidates.length
+    ? safeCandidates
+    : candidates.map((candidate) => ({
+        ...candidate,
+        risk_flags: [...candidate.risk_flags, 'review-map-needs-strict-review']
+      }));
+  return {
+    candidates: released,
+    warnings: [
+      'server-deterministic-review-map-used',
+      ...(safeCandidates.length
+        ? ['server-repair-review-map-cleared']
+        : ['server-repair-review-map-needs-review'])
+    ]
+  };
 }
 export default async function handler(req, res) {
   if (req.method === 'OPTIONS') return send(res, 200, { ok: true });
@@ -291,5 +430,5 @@ export default async function handler(req, res) {
   }
 
   const repaired = serverRepairCandidates(sourceText, contract);
-  return send(res, 200, { ok: true, provider: 'server-deterministic-repair', model: 'server-repair', deterministic, version: VERSION, rotationVersion: ROTATION_VERSION, candidates: repaired.candidates, warnings: [...repaired.warnings, 'provider-fast-lane-no-remote-release'], attempts, rejectedCopy: rejectedCopy.slice(0, 12), rejectedCompressed: rejectedCompressed.slice(0, 12), requestReceipt: { deterministic, temperature: deterministic ? 0.22 : 0.58, topP: deterministic ? 0.64 : 0.88, antiCompression: true, fastHardPacketLane: true, complexity, modelOrder: models.slice(0, maxAttempts), minLengthRatio: minLengthRatio(sourceText, complexity), bounded: true, elapsedMs: Date.now() - startedAt } });
+  return send(res, 200, { ok: true, provider: 'server-deterministic-repair', model: 'server-repair-review-map', deterministic, version: VERSION, rotationVersion: ROTATION_VERSION, candidates: repaired.candidates, warnings: [...repaired.warnings, 'provider-fast-lane-no-remote-release'], attempts, rejectedCopy: rejectedCopy.slice(0, 12), rejectedCompressed: rejectedCompressed.slice(0, 12), requestReceipt: { deterministic, temperature: deterministic ? 0.22 : 0.58, topP: deterministic ? 0.64 : 0.88, antiCompression: true, fastHardPacketLane: true, complexity, modelOrder: models.slice(0, maxAttempts), minLengthRatio: minLengthRatio(sourceText, complexity), bounded: true, elapsedMs: Date.now() - startedAt, reviewMapRepair: true, reviewMapRepairVersion: ROTATION_VERSION } });
 }
