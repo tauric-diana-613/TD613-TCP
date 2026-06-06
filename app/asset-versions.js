@@ -11,4 +11,4 @@
     chrome:      '202606010430',
     copyHygiene: '202606011235',
     hushAlienConsole: '202605250326',
-    hushFieldInstrument:
+    hush
