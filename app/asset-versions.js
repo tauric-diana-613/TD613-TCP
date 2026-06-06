@@ -1,15 +1,1 @@
-(function () {
-  window.TD613_ASSET_VERSIONS = {
-    styles: '202604192040',
-    data: '202605281815',
-    diagnostics: '202604230045',
-    engine: '202605281855',
-    fixtures: '202604230045',
-    receipt: '202605010945',
-    main: '202604230045',
-    aperture: '202605281835',
-    chrome: '202606010430',
-    copyHygiene: '202606011235',
-    hushAlienConsole: '202605250326',
-    hushFieldInstrument: '202605250326',
-    hushMobileViewport
+(function(){window.TD613_ASSET_VERSIONS={styles:'202604192040',data:'202605281815',diagnostics:'202604230045',engine:'202605281855',fixtures:'202604230045',receipt:'202605010945',main:'202604230045',aperture:'202605281835',chrome:'202606010430',copyHygiene:'202606011235',hushAlienConsole:'202605250326',hushFieldInstrument:'202605250326',hushMobileViewportFix:'202605200003',hushPhase32:'202605250101',hushPatch38:'202606050009',hushPr75:'202605250326',hushPr77:'202605251735',hushPr78:'202
