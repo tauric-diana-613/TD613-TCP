@@ -5,8 +5,8 @@ const corsHeaders = {
   'access-control-max-age': '86400'
 };
 
-const VERSION = 'hush-generate-v4.2-pr172-full-model-sweep-no-lite-lock';
-const ROTATION_VERSION = 'pr172-full-model-sweep-no-lite-lock/v1';
+const VERSION = 'hush-generate-v4.3-pr173-quota-aware-repair-retry';
+const ROTATION_VERSION = 'pr173-quota-aware-repair-retry/v1';
 const DEFAULT_MODEL_ORDER = [
   'gemini-2.5-flash',
   'gemini-2.5-pro',
@@ -60,6 +60,40 @@ function envConfiguredModels() {
 function configuredModels() {
   const configured = envConfiguredModels();
   return uniq([...configured, ...DEFAULT_MODEL_ORDER]);
+}
+function retryAfterSeconds(response = {}, payload = {}) {
+  const headerValue = response?.headers?.get?.('retry-after');
+  const error = payload?.error || payload || {};
+  const raw = headerValue || error.retryAfterSeconds || payload.retryAfterSeconds || '';
+  const number = Number(raw);
+  return Number.isFinite(number) && number > 0 ? Math.ceil(number) : null;
+}
+function quotaSignal(response = {}, payload = {}) {
+  const error = payload?.error || payload || {};
+  const status = safe(error.status || payload.status);
+  const message = safe(error.message || payload.message);
+  const code = Number(error.code || payload.code || response.status || 0);
+  return response.status === 429 || code === 429 || /RESOURCE_EXHAUSTED|quota exceeded|rate[- ]?limit/i.test(`${status} ${message}`);
+}
+function recordQuotaBlock({ model, response, payload, stage, quotaBlockedModels, quotaRows }) {
+  const normalized = normalizeModelName(model);
+  if (!quotaSignal(response, payload)) return false;
+  quotaBlockedModels.add(normalized);
+  if (preferredWorkingModel === normalized) preferredWorkingModel = null;
+  const error = payload?.error || payload || {};
+  quotaRows.push({
+    model: normalized,
+    stage,
+    status: response.status || Number(error.code || 0) || '',
+    providerStatus: safe(error.status || payload.status || ''),
+    retryAfterSeconds: retryAfterSeconds(response, payload),
+    messagePreview: safe(error.message || payload.message || '').slice(0, 260)
+  });
+  return true;
+}
+function availableStageModels(models = [], quotaBlockedModels = new Set()) {
+  const filtered = models.filter((model) => !quotaBlockedModels.has(normalizeModelName(model)));
+  return filtered.length ? filtered : models;
 }
 function detectComplexity(sourceText = '', contract = {}) {
   const wc = words(sourceText).length;
@@ -322,12 +356,15 @@ function summarizeProviderError(payload = {}) {
 }
 async function runProviderProbe(models = []) {
   const attempts = [];
-  for (const model of models.slice(0, 3)) {
+  const quotaBlockedModels = new Set();
+  const quotaRows = [];
+  for (const model of models) {
     const { response, payload, timedOut } = await callGemini({ model, prompt: 'Return JSON only: {"candidates":[{"text":"probe ok","style_note":"probe"}]}', jsonMode: true });
-    attempts.push({ model: normalizeModelName(model), ok: response.ok, providerStatus: response.status, timedOut, error: response.ok ? null : summarizeProviderError(payload), textPreview: providerText(payload).slice(0, 120) });
-    if (response.ok) { preferredWorkingModel = normalizeModelName(model); return { ok: true, model: preferredWorkingModel, attempts }; }
+    const quotaBlocked = recordQuotaBlock({ model, response, payload, stage: 'probe', quotaBlockedModels, quotaRows });
+    attempts.push({ model: normalizeModelName(model), ok: response.ok, providerStatus: response.status, timedOut, quotaBlocked, error: response.ok ? null : summarizeProviderError(payload), textPreview: providerText(payload).slice(0, 120) });
+    if (response.ok) { preferredWorkingModel = normalizeModelName(model); return { ok: true, model: preferredWorkingModel, attempts, quotaBlockedModels: [...quotaBlockedModels], quotaRows }; }
   }
-  return { ok: false, attempts };
+  return { ok: false, attempts, quotaBlockedModels: [...quotaBlockedModels], quotaRows };
 }
 function queryFlags(req) {
   try { const url = new URL(req.url || '', 'https://td613.local'); return { models: url.searchParams.has('models') || url.searchParams.has('listModels') }; } catch { return { models: false }; }
@@ -416,30 +453,34 @@ export default async function handler(req, res) {
   const models = preferredWorkingModel ? [preferredWorkingModel, ...configured.filter((model) => model !== preferredWorkingModel)] : configured;
   const maxAttempts = Math.max(1, models.length);
   const attempts = [], rejectedCopy = [], rejectedCompressed = [];
+  const quotaBlockedModels = new Set();
+  const quotaRows = [];
   const deterministic = req.query?.reroll !== '1' && contract.reroll !== true;
   const stageCount = 2;
   let repair = null;
 
   for (let stage = 0; stage < stageCount; stage += 1) {
     const prompt = buildPrompt(contract, repair);
-    const stageModels = stage > 0 ? models.slice(0, Math.min(2, maxAttempts)) : models.slice(0, maxAttempts);
+    const availableModels = availableStageModels(models, quotaBlockedModels);
+    const stageModels = stage > 0 ? availableModels.slice(0, Math.min(2, availableModels.length)) : availableModels.slice(0, maxAttempts);
     for (const model of stageModels) {
       if (Date.now() - startedAt > WALL_TIMEOUT_MS) break;
       const { response, payload, timedOut } = await callGemini({ model, prompt, jsonMode: true, deterministic });
+      const quotaBlocked = recordQuotaBlock({ model, response, payload, stage, quotaBlockedModels, quotaRows });
       const rawText = providerText(payload);
       const parsed = parseProviderJson(rawText);
       const split = splitCandidates(parsed.candidates, sourceText, complexity);
       rejectedCopy.push(...split.copied.map((item) => ({ ...item, model: normalizeModelName(model), stage })));
       rejectedCompressed.push(...split.compressed.map((item) => ({ ...item, model: normalizeModelName(model), stage })));
-      attempts.push({ stage, model: normalizeModelName(model), jsonMode: true, ok: response.ok, status: response.status, timedOut, parsedCandidates: parsed.candidates.length, usableCandidates: split.usable.length, copiedCandidates: split.copied.length, compressedCandidates: split.compressed.length, warnings: parsed.warnings, error: response.ok ? null : summarizeProviderError(payload), textPreview: rawText.slice(0, 180) });
+      attempts.push({ stage, model: normalizeModelName(model), jsonMode: true, ok: response.ok, status: response.status, timedOut, quotaBlocked, parsedCandidates: parsed.candidates.length, usableCandidates: split.usable.length, copiedCandidates: split.copied.length, compressedCandidates: split.compressed.length, warnings: parsed.warnings, error: response.ok ? null : summarizeProviderError(payload), textPreview: rawText.slice(0, 180) });
       if (response.ok && split.usable.length) {
         preferredWorkingModel = normalizeModelName(model);
-        return send(res, 200, { ok: true, provider: 'gemini', model: preferredWorkingModel, deterministic, version: VERSION, rotationVersion: ROTATION_VERSION, candidates: split.usable, warnings: parsed.warnings, attempts, rejectedCopy: rejectedCopy.slice(0, 12), rejectedCompressed: rejectedCompressed.slice(0, 12), rawText: parsed.rawText, requestReceipt: { deterministic, temperature: deterministic ? 0.22 : 0.58, topP: deterministic ? 0.64 : 0.88, antiCompression: true, fastHardPacketLane: true, fullModelSweep: true, remoteRepairRetry: true, hardPacketRemoteRepairRetry: Boolean(complexity.hard), stageCount, attemptLimit: maxAttempts, envConfiguredModelCount: envConfiguredModels().length, configuredModelCount: configured.length, complexity, modelOrder: models, minLengthRatio: minLengthRatio(sourceText, complexity), bounded: true, elapsedMs: Date.now() - startedAt } });
+        return send(res, 200, { ok: true, provider: 'gemini', model: preferredWorkingModel, deterministic, version: VERSION, rotationVersion: ROTATION_VERSION, candidates: split.usable, warnings: parsed.warnings, attempts, rejectedCopy: rejectedCopy.slice(0, 12), rejectedCompressed: rejectedCompressed.slice(0, 12), rawText: parsed.rawText, requestReceipt: { deterministic, temperature: deterministic ? 0.22 : 0.58, topP: deterministic ? 0.64 : 0.88, antiCompression: true, fastHardPacketLane: true, fullModelSweep: true, quotaAwareRepairRetry: true, quotaBlockedModels: [...quotaBlockedModels], quotaRows, remoteRepairRetry: true, hardPacketRemoteRepairRetry: Boolean(complexity.hard), stageCount, attemptLimit: maxAttempts, envConfiguredModelCount: envConfiguredModels().length, configuredModelCount: configured.length, complexity, modelOrder: models, minLengthRatio: minLengthRatio(sourceText, complexity), bounded: true, elapsedMs: Date.now() - startedAt } });
       }
     }
     repair = rejectedCompressed.length ? { kind: 'compression', rejected: rejectedCompressed.slice(-3).map((item) => `- ${item.preview}`).join('\n') } : { kind: 'copy', rejected: rejectedCopy.slice(-3).map((item) => `- ${item.preview}`).join('\n') };
   }
 
   const repaired = serverRepairCandidates(sourceText, contract);
-  return send(res, 200, { ok: true, provider: 'server-deterministic-repair', model: 'server-repair-review-map', deterministic, version: VERSION, rotationVersion: ROTATION_VERSION, candidates: repaired.candidates, warnings: [...repaired.warnings, 'provider-fast-lane-no-remote-release'], attempts, rejectedCopy: rejectedCopy.slice(0, 12), rejectedCompressed: rejectedCompressed.slice(0, 12), requestReceipt: { deterministic, temperature: deterministic ? 0.22 : 0.58, topP: deterministic ? 0.64 : 0.88, antiCompression: true, fastHardPacketLane: true, reviewMapRepair: true, reviewMapRepairVersion: ROTATION_VERSION, fullModelSweep: true, remoteRepairRetry: true, hardPacketRemoteRepairRetry: Boolean(complexity.hard), stageCount, attemptLimit: maxAttempts, envConfiguredModelCount: envConfiguredModels().length, configuredModelCount: configured.length, complexity, modelOrder: models, minLengthRatio: minLengthRatio(sourceText, complexity), bounded: true, elapsedMs: Date.now() - startedAt } });
+  return send(res, 200, { ok: true, provider: 'server-deterministic-repair', model: 'server-repair-review-map', deterministic, version: VERSION, rotationVersion: ROTATION_VERSION, candidates: repaired.candidates, warnings: [...repaired.warnings, 'provider-fast-lane-no-remote-release'], attempts, rejectedCopy: rejectedCopy.slice(0, 12), rejectedCompressed: rejectedCompressed.slice(0, 12), requestReceipt: { deterministic, temperature: deterministic ? 0.22 : 0.58, topP: deterministic ? 0.64 : 0.88, antiCompression: true, fastHardPacketLane: true, reviewMapRepair: true, reviewMapRepairVersion: ROTATION_VERSION, fullModelSweep: true, quotaAwareRepairRetry: true, quotaBlockedModels: [...quotaBlockedModels], quotaRows, remoteRepairRetry: true, hardPacketRemoteRepairRetry: Boolean(complexity.hard), stageCount, attemptLimit: maxAttempts, envConfiguredModelCount: envConfiguredModels().length, configuredModelCount: configured.length, complexity, modelOrder: models, minLengthRatio: minLengthRatio(sourceText, complexity), bounded: true, elapsedMs: Date.now() - startedAt } });
 }
