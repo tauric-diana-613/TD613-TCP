@@ -1,13 +1,1 @@
-(function () {
-  window.TD613_ASSET_VERSIONS = {
-    styles:      '202604192040',
-    data:        '202605281815',
-    diagnostics: '202604230045',
-    engine:      '202605281855',
-    fixtures:    '202604230045',
-    receipt:     '202605010945',
-    main:        '202604230045',
-    aperture:    '202605281835',
-    chrome:      '202606010430',
-    copyHygiene: '202606011235',
-    gatewayHousekeeping:
+(function(){window.TD613_ASSET_VERSIONS={styles:'202604192040',data:'202605281815',diagnostics:'202604230045',engine:'202605281855',fixtures:'202604230045',receipt:'202605010945',main:'202604230045',aperture:'202605281835',chrome:'202606010430',copyHygiene:'202606011235',hushAlienConsole:'202605250326',hushFieldInstrument:'202605250326',hushMobileViewportFix:'202605200003',hushPhase32:'202605250101',hushPatch38:'202606050009',hushPr75:'202605250326',hushPr77:'202605251735',hushPr78:'202605250311',hushPr79:'202605302135',hushPr82:'202605251746',hushPr92:'202605252000',hushPr93:'202605252010',hushPr94:'202605252015',hushPr95:'202605301835',hushPr96:'202605302115',hushPr97:'202605301845',hushPr98:'202605281855',hushPr99:'202605281855',hushPr104:'202605301905',hushPr106:'202605302105',h
