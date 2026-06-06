@@ -1,4 +1,4 @@
-(function(){
+(function () {
   window.TD613_ASSET_VERSIONS = {
     styles: '202604192040',
     data: '202605281815',
@@ -11,6 +11,6 @@
     chrome: '202606010430',
     copyHygiene: '202606011235',
     gatewayHousekeeping: '202606010430',
-    hushVisualSystem: '202605250326',
-    hushCompact: '202605250326',
-    hushInvisible:
+
+    hushVisualSystem: '202606060425',
+    hushCompact:
