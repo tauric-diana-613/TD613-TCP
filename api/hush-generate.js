@@ -5,8 +5,8 @@ const corsHeaders = {
   'access-control-max-age': '86400'
 };
 
-const VERSION = 'hush-generate-v4.0-pr169-remote-transform-breathing-room';
-const ROTATION_VERSION = 'pr169-remote-transform-breathing-room/v1';
+const VERSION = 'hush-generate-v4.1-pr170-hard-packet-remote-repair-retry';
+const ROTATION_VERSION = 'pr170-hard-packet-remote-repair-retry/v1';
 const DEFAULT_MODEL_ORDER = ['gemini-flash-lite-latest', 'gemini-2.5-flash', 'gemini-2.5-flash-lite'];
 const GEMINI_TIMEOUT_MS = 18000;
 const WALL_TIMEOUT_MS = 42000;
@@ -408,11 +408,13 @@ export default async function handler(req, res) {
   const maxAttempts = complexity.hard ? 2 : 3;
   const attempts = [], rejectedCopy = [], rejectedCompressed = [];
   const deterministic = req.query?.reroll !== '1' && contract.reroll !== true;
+  const stageCount = 2;
   let repair = null;
 
-  for (let stage = 0; stage < (complexity.hard ? 1 : 2); stage += 1) {
+  for (let stage = 0; stage < stageCount; stage += 1) {
     const prompt = buildPrompt(contract, repair);
-    for (const model of models.slice(0, maxAttempts)) {
+    const stageModels = complexity.hard && stage > 0 ? models.slice(0, 1) : models.slice(0, maxAttempts);
+    for (const model of stageModels) {
       if (Date.now() - startedAt > WALL_TIMEOUT_MS) break;
       const { response, payload, timedOut } = await callGemini({ model, prompt, jsonMode: true, deterministic });
       const rawText = providerText(payload);
@@ -423,12 +425,12 @@ export default async function handler(req, res) {
       attempts.push({ stage, model: normalizeModelName(model), jsonMode: true, ok: response.ok, status: response.status, timedOut, parsedCandidates: parsed.candidates.length, usableCandidates: split.usable.length, copiedCandidates: split.copied.length, compressedCandidates: split.compressed.length, warnings: parsed.warnings, error: response.ok ? null : summarizeProviderError(payload), textPreview: rawText.slice(0, 180) });
       if (response.ok && split.usable.length) {
         preferredWorkingModel = normalizeModelName(model);
-        return send(res, 200, { ok: true, provider: 'gemini', model: preferredWorkingModel, deterministic, version: VERSION, rotationVersion: ROTATION_VERSION, candidates: split.usable, warnings: parsed.warnings, attempts, rejectedCopy: rejectedCopy.slice(0, 12), rejectedCompressed: rejectedCompressed.slice(0, 12), rawText: parsed.rawText, requestReceipt: { deterministic, temperature: deterministic ? 0.22 : 0.58, topP: deterministic ? 0.64 : 0.88, antiCompression: true, fastHardPacketLane: true, complexity, modelOrder: models.slice(0, maxAttempts), minLengthRatio: minLengthRatio(sourceText, complexity), bounded: true, elapsedMs: Date.now() - startedAt } });
+        return send(res, 200, { ok: true, provider: 'gemini', model: preferredWorkingModel, deterministic, version: VERSION, rotationVersion: ROTATION_VERSION, candidates: split.usable, warnings: parsed.warnings, attempts, rejectedCopy: rejectedCopy.slice(0, 12), rejectedCompressed: rejectedCompressed.slice(0, 12), rawText: parsed.rawText, requestReceipt: { deterministic, temperature: deterministic ? 0.22 : 0.58, topP: deterministic ? 0.64 : 0.88, antiCompression: true, fastHardPacketLane: true, remoteRepairRetry: true, hardPacketRemoteRepairRetry: Boolean(complexity.hard), stageCount, complexity, modelOrder: models.slice(0, maxAttempts), minLengthRatio: minLengthRatio(sourceText, complexity), bounded: true, elapsedMs: Date.now() - startedAt } });
       }
     }
     repair = rejectedCompressed.length ? { kind: 'compression', rejected: rejectedCompressed.slice(-3).map((item) => `- ${item.preview}`).join('\n') } : { kind: 'copy', rejected: rejectedCopy.slice(-3).map((item) => `- ${item.preview}`).join('\n') };
   }
 
   const repaired = serverRepairCandidates(sourceText, contract);
-  return send(res, 200, { ok: true, provider: 'server-deterministic-repair', model: 'server-repair-review-map', deterministic, version: VERSION, rotationVersion: ROTATION_VERSION, candidates: repaired.candidates, warnings: [...repaired.warnings, 'provider-fast-lane-no-remote-release'], attempts, rejectedCopy: rejectedCopy.slice(0, 12), rejectedCompressed: rejectedCompressed.slice(0, 12), requestReceipt: { deterministic, temperature: deterministic ? 0.22 : 0.58, topP: deterministic ? 0.64 : 0.88, antiCompression: true, fastHardPacketLane: true, reviewMapRepair: true, reviewMapRepairVersion: ROTATION_VERSION, complexity, modelOrder: models.slice(0, maxAttempts), minLengthRatio: minLengthRatio(sourceText, complexity), bounded: true, elapsedMs: Date.now() - startedAt } });
+  return send(res, 200, { ok: true, provider: 'server-deterministic-repair', model: 'server-repair-review-map', deterministic, version: VERSION, rotationVersion: ROTATION_VERSION, candidates: repaired.candidates, warnings: [...repaired.warnings, 'provider-fast-lane-no-remote-release'], attempts, rejectedCopy: rejectedCopy.slice(0, 12), rejectedCompressed: rejectedCompressed.slice(0, 12), requestReceipt: { deterministic, temperature: deterministic ? 0.22 : 0.58, topP: deterministic ? 0.64 : 0.88, antiCompression: true, fastHardPacketLane: true, reviewMapRepair: true, reviewMapRepairVersion: ROTATION_VERSION, remoteRepairRetry: true, hardPacketRemoteRepairRetry: Boolean(complexity.hard), stageCount, complexity, modelOrder: models.slice(0, maxAttempts), minLengthRatio: minLengthRatio(sourceText, complexity), bounded: true, elapsedMs: Date.now() - startedAt } });
 }
