@@ -5,11 +5,11 @@ const corsHeaders = {
   'access-control-max-age': '86400'
 };
 
-const VERSION = 'hush-generate-v3.9-pr161-review-map-repair-surface';
-const ROTATION_VERSION = 'pr161-review-map-repair-surface/v1';
+const VERSION = 'hush-generate-v4.0-pr169-remote-transform-breathing-room';
+const ROTATION_VERSION = 'pr169-remote-transform-breathing-room/v1';
 const DEFAULT_MODEL_ORDER = ['gemini-flash-lite-latest', 'gemini-2.5-flash', 'gemini-2.5-flash-lite'];
-const GEMINI_TIMEOUT_MS = 8800;
-const WALL_TIMEOUT_MS = 24500;
+const GEMINI_TIMEOUT_MS = 18000;
+const WALL_TIMEOUT_MS = 42000;
 const MAX_OUTPUT_TOKENS = 8192;
 let preferredWorkingModel = null;
 
@@ -184,83 +184,6 @@ function importantTerms(sourceText = '', complexity = {}) {
   const stop = new Set('the a an and or but if is are was were be been being do does did how what why when where who whom with without into from that this those these much really very just like of in on to for no not before after you your yours i me my mine we our ours it its they them their there here some so sorry sounds sound going through have has had basically maybe came come from can could would should will as at by'.split(' '));
   return [...new Set(words(sourceText).filter((word) => word.length > 2 && !stop.has(word)))].slice(0, complexity.hard ? 28 : 20);
 }
-function compactFlightPacket(packet = {}) {
-  const style = packet.mask_style_vector || {};
-  const stylePolicy = packet.style_diversity_policy || style.style_diversity || {};
-  return {
-    packet_version: packet.packet_version || '',
-    ontology_route: packet.ontology_route || {},
-    protective_style_policy: packet.protective_style_policy || {},
-    style_diversity_policy: {
-      surface: stylePolicy.surface || '',
-      architecture: stylePolicy.architecture || style.rhythm_target || '',
-      punctuation: stylePolicy.punctuation || style.punctuation_law || '',
-      grammar: stylePolicy.grammar || style.grammar_variance || '',
-      chat_speak_profile: stylePolicy.chat_speak_profile || stylePolicy.chat || style.chat_speak_profile || '',
-      typo_policy: stylePolicy.typo_policy || stylePolicy.typo || style.typo_policy || '',
-      lexicon: (stylePolicy.lexicon || style.diction_hints || []).slice(0, 12),
-      transitions: (stylePolicy.transitions || style.transition_bank || []).slice(0, 10)
-    },
-    mask_style_vector: {
-      mask_id: style.mask_id || '',
-      display_name: style.display_name || '',
-      rhythm_target: style.rhythm_target || '',
-      formality_target: style.formality_target || '',
-      diction_hints: (style.diction_hints || []).slice(0, 12),
-      transition_bank: (style.transition_bank || []).slice(0, 10),
-      avoid_list: (style.avoid_list || []).slice(0, 14)
-    },
-    flight_controls: packet.flight_controls || {}
-  };
-}
-function operationList(contract = {}, controls = {}) {
-  return Array.isArray(contract.operationTaxonomy) && contract.operationTaxonomy.length ? contract.operationTaxonomy.slice(0, 6) : controls.preferred_operations?.slice?.(0, 6) || controls.required_operations?.slice?.(0, 6) || ['cadence_alias', 'syntax_inversion', 'register_lowering', 'friction_insert', 'witness_plainness', 'heat_calibration'];
-}
-function buildPrompt(contract = {}, repair = null) {
-  const sourceText = safe(contract.sourceText || contract.messageDraftText || '').slice(0, 5000);
-  const complexity = detectComplexity(sourceText, contract);
-  const packet = contract.flightPacket || null;
-  const compactPacket = packet ? compactFlightPacket(packet) : { mask: contract.mask || {} };
-  const controls = packet?.flight_controls || {};
-  const operations = operationList(contract, controls);
-  const candidateCount = complexity.hard ? 2 : complexity.medium ? 3 : 4;
-  const units = sourceUnits(sourceText, complexity);
-  const terms = importantTerms(sourceText, complexity);
-  const floorRatio = minLengthRatio(sourceText, complexity);
-  const minWords = Math.max(28, Math.floor(words(sourceText).length * floorRatio));
-  const stylePolicy = compactPacket.style_diversity_policy || {};
-  const repairBlock = repair ? `\nREPAIR: Previous output failed ${repair.kind}. Correct only that failure. ${repair.rejected || ''}` : '';
-  return `Return JSON only. Schema: {"candidates":[{"text":"string","style_note":"string","style_operation":"${operations[0] || 'cadence_alias'}","preserved_propositions":["P1"],"dropped_propositions":[],"changed_questions":[],"new_claims":[],"authorship_moves":["specific mask move"],"risk_flags":[],"mask_surface_notes":{"rhythm":"string","diction":"string","structure":"string","coverage":"string"}}]}\n\nGenerate exactly ${candidateCount} candidates. Do not summarize. Each candidate must be at least ${minWords} words unless the source is shorter. Preserve meaning, questions, caveats, negations, uncertainty, and causal links. Do not answer questions. Do not add facts. Do not claim a proposition is preserved unless the text carries it. Use different style_operation values.\n\nSTYLE CONTROL: ${stylePolicy.surface || ''}; architecture=${stylePolicy.architecture || ''}; punctuation=${stylePolicy.punctuation || ''}; grammar=${stylePolicy.grammar || ''}; chat=${stylePolicy.chat_speak_profile || stylePolicy.chat || ''}; typo=${stylePolicy.typo_policy || stylePolicy.typo || ''}. Human texture may change rhythm/register/punctuation only, never facts, names, dates, amounts, IDs, file labels, quotes, entities, or claims. Preserve opacity; avoid generic institutional prose. Include two concrete authorship_moves per candidate.\n\nOPERATIONS: ${operations.join(', ')}\n\nSOURCE UNITS:\n${units.map((unit, index) => `P${index + 1}: ${unit}`).join('\n')}\n\nIMPORTANT TERMS: ${terms.join(', ') || '(none)'}\n\nCOMPACT PACKET:\n${compactJson(compactPacket)}\n${repairBlock}\n\nSOURCE TEXT:\n${sourceText}`;
-}
-async function callGemini({ model, prompt, jsonMode = true, deterministic = true }) {
-  const controller = new AbortController();
-  const timer = setTimeout(() => controller.abort(), GEMINI_TIMEOUT_MS);
-  const generationConfig = jsonMode ? { temperature: deterministic ? 0.22 : 0.58, topP: deterministic ? 0.64 : 0.88, responseMimeType: 'application/json', maxOutputTokens: MAX_OUTPUT_TOKENS } : { temperature: deterministic ? 0.22 : 0.58, topP: deterministic ? 0.64 : 0.88, maxOutputTokens: MAX_OUTPUT_TOKENS };
-  try {
-    const response = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/${encodeURIComponent(normalizeModelName(model))}:generateContent?key=${encodeURIComponent(process.env.GEMINI_API_KEY)}`, { method: 'POST', headers: { 'content-type': 'application/json' }, body: JSON.stringify({ contents: [{ role: 'user', parts: [{ text: prompt }] }], generationConfig }), signal: controller.signal });
-    const payload = await response.json().catch(() => ({}));
-    return { response, payload, timedOut: false };
-  } catch (error) {
-    return { response: { ok: false, status: error?.name === 'AbortError' ? 408 : 599 }, payload: { error: { message: safe(error?.message || error), status: error?.name || 'FETCH_ERROR' } }, timedOut: error?.name === 'AbortError' };
-  } finally { clearTimeout(timer); }
-}
-function providerText(payload = {}) { return payload?.candidates?.[0]?.content?.parts?.[0]?.text || ''; }
-function summarizeProviderError(payload = {}) {
-  const error = payload.error || payload;
-  return { code: error.code || payload.code || '', status: error.status || payload.status || '', message: safe(error.message || payload.message || '').slice(0, 900) };
-}
-async function runProviderProbe(models = []) {
-  const attempts = [];
-  for (const model of models.slice(0, 3)) {
-    const { response, payload, timedOut } = await callGemini({ model, prompt: 'Return JSON only: {"candidates":[{"text":"probe ok","style_note":"probe"}]}', jsonMode: true });
-    attempts.push({ model: normalizeModelName(model), ok: response.ok, providerStatus: response.status, timedOut, error: response.ok ? null : summarizeProviderError(payload), textPreview: providerText(payload).slice(0, 120) });
-    if (response.ok) { preferredWorkingModel = normalizeModelName(model); return { ok: true, model: preferredWorkingModel, attempts }; }
-  }
-  return { ok: false, attempts };
-}
-function queryFlags(req) {
-  try { const url = new URL(req.url || '', 'https://td613.local'); return { models: url.searchParams.has('models') || url.searchParams.has('listModels') }; } catch { return { models: false }; }
-}
 function repairTermBank(value = '', limit = 14) {
   const protectedTokens = originalTokens(value).filter((token) =>
     /[A-Z][a-z]|\d|[-:]/.test(token)
@@ -322,6 +245,83 @@ function ledgerRepair(sourceText = '', contract = {}) {
     return `Unit ${index + 1}: ${reordered.join(' | ') || 'source relation'}; ${relationHints(unit).join('; ')}.`;
   });
   return `Strict review ledger for ${route}. This is deterministic repair surface, not provider prose.\n${rows.join('\n')}\nRelease note: term custody and relation markers are carried forward while sentence syntax is restructured.`;
+}
+function compactFlightPacket(packet = {}) {
+  const style = packet.mask_style_vector || {};
+  const stylePolicy = packet.style_diversity_policy || style.style_diversity || {};
+  return {
+    packet_version: packet.packet_version || '',
+    ontology_route: packet.ontology_route || {},
+    protective_style_policy: packet.protective_style_policy || {},
+    style_diversity_policy: {
+      surface: stylePolicy.surface || '',
+      architecture: stylePolicy.architecture || style.rhythm_target || '',
+      punctuation: stylePolicy.punctuation || style.punctuation_law || '',
+      grammar: stylePolicy.grammar || style.grammar_variance || '',
+      chat_speak_profile: stylePolicy.chat_speak_profile || stylePolicy.chat || style.chat_speak_profile || '',
+      typo_policy: stylePolicy.typo_policy || stylePolicy.typo || style.typo_policy || '',
+      lexicon: (stylePolicy.lexicon || style.diction_hints || []).slice(0, 12),
+      transitions: (stylePolicy.transitions || style.transition_bank || []).slice(0, 10)
+    },
+    mask_style_vector: {
+      mask_id: style.mask_id || '',
+      display_name: style.display_name || '',
+      rhythm_target: style.rhythm_target || '',
+      formality_target: style.formality_target || '',
+      diction_hints: (style.diction_hints || []).slice(0, 12),
+      transition_bank: (style.transition_bank || []).slice(0, 10),
+      avoid_list: (style.avoid_list || []).slice(0, 14)
+    },
+    flight_controls: packet.flight_controls || {}
+  };
+}
+function operationList(contract = {}, controls = {}) {
+  return Array.isArray(contract.operationTaxonomy) && contract.operationTaxonomy.length ? contract.operationTaxonomy.slice(0, 6) : controls.preferred_operations?.slice?.(0, 6) || controls.required_operations?.slice?.(0, 6) || ['cadence_alias', 'syntax_inversion', 'register_lowering', 'friction_insert', 'witness_plainness', 'heat_calibration'];
+}
+function buildPrompt(contract = {}, repair = null) {
+  const sourceText = safe(contract.sourceText || contract.messageDraftText || '').slice(0, 5000);
+  const complexity = detectComplexity(sourceText, contract);
+  const packet = contract.flightPacket || null;
+  const compactPacket = packet ? compactFlightPacket(packet) : { mask: contract.mask || {} };
+  const controls = packet?.flight_controls || {};
+  const operations = operationList(contract, controls);
+  const candidateCount = complexity.hard ? 1 : complexity.medium ? 2 : 3;
+  const units = sourceUnits(sourceText, complexity);
+  const terms = importantTerms(sourceText, complexity);
+  const floorRatio = minLengthRatio(sourceText, complexity);
+  const minWords = Math.max(28, Math.floor(words(sourceText).length * floorRatio));
+  const stylePolicy = compactPacket.style_diversity_policy || {};
+  const repairBlock = repair ? `\nREPAIR: Previous output failed ${repair.kind}. Correct only that failure. ${repair.rejected || ''}` : '';
+  return `Return JSON only. Schema: {"candidates":[{"text":"string","style_note":"string","style_operation":"${operations[0] || 'cadence_alias'}","preserved_propositions":["P1"],"dropped_propositions":[],"changed_questions":[],"new_claims":[],"authorship_moves":["specific mask move"],"risk_flags":[],"mask_surface_notes":{"rhythm":"string","diction":"string","structure":"string","coverage":"string"}}]}\n\nGenerate exactly ${candidateCount} candidates. The candidate text field must contain final transformed prose only. Do not output review maps, ledgers, outlines, P-tags, diagnostic scaffolds, analysis notes, explanations, receipts, JSON outside the schema, or custody-bank language. Do not summarize. Each candidate must be at least ${minWords} words unless the source is shorter. Preserve meaning, questions, caveats, negations, uncertainty, and causal links. Do not answer questions. Do not add facts. Do not claim a proposition is preserved unless the text carries it. Use different style_operation values.\n\nSTYLE CONTROL: ${stylePolicy.surface || ''}; architecture=${stylePolicy.architecture || ''}; punctuation=${stylePolicy.punctuation || ''}; grammar=${stylePolicy.grammar || ''}; chat=${stylePolicy.chat_speak_profile || stylePolicy.chat || ''}; typo=${stylePolicy.typo_policy || stylePolicy.typo || ''}. Human texture may change rhythm/register/punctuation only, never facts, names, dates, amounts, IDs, file labels, quotes, entities, or claims. Preserve opacity; avoid generic institutional prose. Include two concrete authorship_moves per candidate.\n\nOPERATIONS: ${operations.join(', ')}\n\nSOURCE UNITS:\n${units.map((unit, index) => `P${index + 1}: ${unit}`).join('\n')}\n\nIMPORTANT TERMS: ${terms.join(', ') || '(none)'}\n\nCOMPACT PACKET:\n${compactJson(compactPacket)}\n${repairBlock}\n\nSOURCE TEXT:\n${sourceText}`;
+}
+async function callGemini({ model, prompt, jsonMode = true, deterministic = true }) {
+  const controller = new AbortController();
+  const timer = setTimeout(() => controller.abort(), GEMINI_TIMEOUT_MS);
+  const generationConfig = jsonMode ? { temperature: deterministic ? 0.22 : 0.58, topP: deterministic ? 0.64 : 0.88, responseMimeType: 'application/json', maxOutputTokens: MAX_OUTPUT_TOKENS } : { temperature: deterministic ? 0.22 : 0.58, topP: deterministic ? 0.64 : 0.88, maxOutputTokens: MAX_OUTPUT_TOKENS };
+  try {
+    const response = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/${encodeURIComponent(normalizeModelName(model))}:generateContent?key=${encodeURIComponent(process.env.GEMINI_API_KEY)}`, { method: 'POST', headers: { 'content-type': 'application/json' }, body: JSON.stringify({ contents: [{ role: 'user', parts: [{ text: prompt }] }], generationConfig }), signal: controller.signal });
+    const payload = await response.json().catch(() => ({}));
+    return { response, payload, timedOut: false };
+  } catch (error) {
+    return { response: { ok: false, status: error?.name === 'AbortError' ? 408 : 599 }, payload: { error: { message: safe(error?.message || error), status: error?.name || 'FETCH_ERROR' } }, timedOut: error?.name === 'AbortError' };
+  } finally { clearTimeout(timer); }
+}
+function providerText(payload = {}) { return payload?.candidates?.[0]?.content?.parts?.[0]?.text || ''; }
+function summarizeProviderError(payload = {}) {
+  const error = payload.error || payload;
+  return { code: error.code || payload.code || '', status: error.status || payload.status || '', message: safe(error.message || payload.message || '').slice(0, 900) };
+}
+async function runProviderProbe(models = []) {
+  const attempts = [];
+  for (const model of models.slice(0, 3)) {
+    const { response, payload, timedOut } = await callGemini({ model, prompt: 'Return JSON only: {"candidates":[{"text":"probe ok","style_note":"probe"}]}', jsonMode: true });
+    attempts.push({ model: normalizeModelName(model), ok: response.ok, providerStatus: response.status, timedOut, error: response.ok ? null : summarizeProviderError(payload), textPreview: providerText(payload).slice(0, 120) });
+    if (response.ok) { preferredWorkingModel = normalizeModelName(model); return { ok: true, model: preferredWorkingModel, attempts }; }
+  }
+  return { ok: false, attempts };
+}
+function queryFlags(req) {
+  try { const url = new URL(req.url || '', 'https://td613.local'); return { models: url.searchParams.has('models') || url.searchParams.has('listModels') }; } catch { return { models: false }; }
 }
 function serverRepairCandidates(sourceText = '', contract = {}) {
   const src = safe(sourceText);
@@ -430,5 +430,5 @@ export default async function handler(req, res) {
   }
 
   const repaired = serverRepairCandidates(sourceText, contract);
-  return send(res, 200, { ok: true, provider: 'server-deterministic-repair', model: 'server-repair-review-map', deterministic, version: VERSION, rotationVersion: ROTATION_VERSION, candidates: repaired.candidates, warnings: [...repaired.warnings, 'provider-fast-lane-no-remote-release'], attempts, rejectedCopy: rejectedCopy.slice(0, 12), rejectedCompressed: rejectedCompressed.slice(0, 12), requestReceipt: { deterministic, temperature: deterministic ? 0.22 : 0.58, topP: deterministic ? 0.64 : 0.88, antiCompression: true, fastHardPacketLane: true, complexity, modelOrder: models.slice(0, maxAttempts), minLengthRatio: minLengthRatio(sourceText, complexity), bounded: true, elapsedMs: Date.now() - startedAt, reviewMapRepair: true, reviewMapRepairVersion: ROTATION_VERSION } });
+  return send(res, 200, { ok: true, provider: 'server-deterministic-repair', model: 'server-repair-review-map', deterministic, version: VERSION, rotationVersion: ROTATION_VERSION, candidates: repaired.candidates, warnings: [...repaired.warnings, 'provider-fast-lane-no-remote-release'], attempts, rejectedCopy: rejectedCopy.slice(0, 12), rejectedCompressed: rejectedCompressed.slice(0, 12), requestReceipt: { deterministic, temperature: deterministic ? 0.22 : 0.58, topP: deterministic ? 0.64 : 0.88, antiCompression: true, fastHardPacketLane: true, reviewMapRepair: true, reviewMapRepairVersion: ROTATION_VERSION, complexity, modelOrder: models.slice(0, maxAttempts), minLengthRatio: minLengthRatio(sourceText, complexity), bounded: true, elapsedMs: Date.now() - startedAt } });
 }
