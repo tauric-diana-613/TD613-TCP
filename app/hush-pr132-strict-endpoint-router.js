@@ -1,11 +1,11 @@
 (function () {
   'use strict';
 
-  var VERSION = 'pr166-mobile-strict-watchdog-freeze-guard/v1';
-  var SHORT_TIMEOUT_MS = 12000;
-  var MEDIUM_TIMEOUT_MS = 18000;
-  var LONG_TIMEOUT_MS = 29000;
-  var MOBILE_HARD_TIMEOUT_MS = 10800;
+  var VERSION = 'pr167-mobile-strict-watchdog-reasonable-guard/v1';
+  var SHORT_TIMEOUT_MS = 22000;
+  var MEDIUM_TIMEOUT_MS = 45000;
+  var LONG_TIMEOUT_MS = 60000;
+  var MOBILE_HARD_TIMEOUT_MS = 45000;
 
   function rawUrl(input) {
     return typeof input === 'string' ? input : input && input.url ? input.url : '';
@@ -90,7 +90,7 @@
         strict: true,
         noFallback: true,
         providerVersion: VERSION,
-        endpointMetaVersion: 'pr166-mobile-strict-client-watchdog/v1',
+        endpointMetaVersion: 'pr167-mobile-strict-client-watchdog/v1',
         elapsedMs: Date.now() - startedAt,
         clientWatchdog: true,
         mobileFreezeGuard: Boolean(meta.mobileGuard),
