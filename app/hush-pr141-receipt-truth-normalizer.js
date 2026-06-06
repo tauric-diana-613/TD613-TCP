@@ -1,35 +1,24 @@
 (function () {
   'use strict';
 
-  var VERSION = 'pr141-receipt-truth-normalizer/v3-preserve-upstream-retry-diagnostics';
+  var VERSION = 'pr141-receipt-truth-normalizer/v4-u10d613-held-diagnostic-recovery';
   var TRUE_REASON = 'strict_anti_compression_held';
   var DIAGNOSTIC_KEYS = [
-    'upstreamProvider',
-    'upstreamModel',
-    'upstreamProviderVersion',
-    'upstreamRotationVersion',
-    'upstreamAttemptCount',
-    'upstreamAttemptStages',
-    'upstreamAttemptModels',
-    'upstreamTimedOutCount',
-    'remoteRepairRetry',
-    'hardPacketRemoteRepairRetry',
-    'quotaAwareRepairRetry',
-    'quotaBlockedModels',
-    'quotaRows',
-    'fullModelSweep',
-    'stageCount',
-    'attemptLimit',
-    'configuredModelCount',
-    'envConfiguredModelCount',
-    'modelOrder',
-    'upstreamElapsedMs'
+    'u10d613Route', 'u10d613Preserved', 'diagnosticRoute', 'providerNormalizerVersion',
+    'upstreamProvider', 'upstreamModel', 'upstreamProviderVersion', 'upstreamRotationVersion',
+    'upstreamPayloadVersion', 'upstreamPayloadRotationVersion', 'upstreamAttemptCount',
+    'upstreamAttemptStages', 'upstreamAttemptModels', 'upstreamTimedOutCount',
+    'remoteRepairRetry', 'hardPacketRemoteRepairRetry', 'quotaAwareRepairRetry',
+    'quotaBlockedModels', 'quotaRows', 'fullModelSweep', 'stageCount', 'attemptLimit',
+    'configuredModelCount', 'envConfiguredModelCount', 'modelOrder', 'upstreamElapsedMs',
+    'attempts', 'rejectedCopy', 'rejectedCompressed'
   ];
 
   function $(id) { return document.getElementById(id); }
   function text(value) { return String(value == null ? '' : value).trim(); }
   function asArray(value) { return Array.isArray(value) ? value.filter(Boolean) : []; }
   function uniq(values) { return Array.from(new Set(asArray(values).map(text).filter(Boolean))); }
+  function obj(value) { return value && typeof value === 'object' && !Array.isArray(value) ? value : {}; }
   function hasValue(value) {
     if (Array.isArray(value)) return value.length > 0;
     return value !== undefined && value !== null && value !== '';
@@ -71,13 +60,45 @@
     };
   }
 
+  function addFrom(target, key, sources) {
+    for (var i = 0; i < sources.length; i += 1) {
+      var value = sources[i] && sources[i][key];
+      if (hasValue(value)) {
+        target[key] = value;
+        return;
+      }
+    }
+  }
+
+  function addAttemptSummary(target, payload) {
+    var attempts = asArray(payload && payload.attempts);
+    if (!attempts.length) return;
+    if (!hasValue(target.attempts)) target.attempts = attempts;
+    if (!hasValue(target.upstreamAttemptCount)) target.upstreamAttemptCount = attempts.length;
+    if (!hasValue(target.upstreamAttemptStages)) target.upstreamAttemptStages = Array.from(new Set(attempts.map(function (attempt) { return Number.isFinite(Number(attempt && attempt.stage)) ? Number(attempt.stage) : null; }).filter(function (stage) { return stage !== null; }))).sort(function (a, b) { return a - b; });
+    if (!hasValue(target.upstreamAttemptModels)) target.upstreamAttemptModels = uniq(attempts.map(function (attempt) { return attempt && attempt.model; }));
+    if (!hasValue(target.upstreamTimedOutCount)) target.upstreamTimedOutCount = attempts.filter(function (attempt) { return attempt && attempt.timedOut; }).length;
+  }
+
   function pickDiagnostics(receipt) {
-    var requestReceipt = receipt && receipt.requestReceipt && typeof receipt.requestReceipt === 'object' ? receipt.requestReceipt : {};
+    var requestReceipt = obj(receipt && receipt.requestReceipt);
+    var full = obj(window.__TD613_HUSH_FULL_DEBUG_PACKET);
+    var payload = obj(full.payload);
+    var payloadReceipt = obj(payload.requestReceipt);
+    var debugReceipt = obj(full.requestReceipt);
+    var sources = [receipt || {}, requestReceipt, payload, payloadReceipt, full, debugReceipt];
     var diagnostic = {};
-    DIAGNOSTIC_KEYS.forEach(function (key) {
-      var value = hasValue(receipt && receipt[key]) ? receipt[key] : requestReceipt[key];
-      if (hasValue(value)) diagnostic[key] = value;
-    });
+    DIAGNOSTIC_KEYS.forEach(function (key) { addFrom(diagnostic, key, sources); });
+    addAttemptSummary(diagnostic, payload);
+    if (payload.version && !hasValue(diagnostic.upstreamProviderVersion)) diagnostic.upstreamProviderVersion = payload.version;
+    if (payload.rotationVersion && !hasValue(diagnostic.upstreamRotationVersion)) diagnostic.upstreamRotationVersion = payload.rotationVersion;
+    if (payload.provider && !hasValue(diagnostic.upstreamProvider)) diagnostic.upstreamProvider = payload.provider;
+    if (payload.model && !hasValue(diagnostic.upstreamModel)) diagnostic.upstreamModel = payload.model;
+    if (hasValue(diagnostic.upstreamProviderVersion) || hasValue(diagnostic.upstreamAttemptCount) || hasValue(diagnostic.quotaAwareRepairRetry)) {
+      diagnostic.u10d613Route = diagnostic.u10d613Route || 'U+10D613';
+      diagnostic.u10d613Preserved = true;
+      diagnostic.upstreamDiagnosticsSource = payload.version || payload.attempts ? 'full-debug-payload' : 'receipt-surface';
+    }
     return diagnostic;
   }
 
@@ -108,7 +129,7 @@
         ...upstream,
         truthNormalizedBy: VERSION
       },
-      warnings: uniq(asArray(receipt.warnings).concat([TRUE_REASON, 'quota-diagnostic-not-headline', 'quota-status-demoted-from-top-level', 'upstream-retry-diagnostics-preserved'])),
+      warnings: uniq(asArray(receipt.warnings).concat([TRUE_REASON, 'quota-diagnostic-not-headline', 'quota-status-demoted-from-top-level', 'upstream-retry-diagnostics-preserved', 'u10d613-held-diagnostics-recovered'])),
       truthNormalizedBy: VERSION
     };
   }
@@ -149,6 +170,7 @@
       previousHttpStatus: current.httpStatus,
       previousModel: current.model,
       preservedDiagnosticKeys: Object.keys(pickDiagnostics(receipt)),
+      fullDebugPacketAvailable: Boolean(window.__TD613_HUSH_FULL_DEBUG_PACKET),
       label: label || 'normalize',
       popupRendered: Boolean($('hushReceiptPopup')),
       at: new Date().toISOString()
@@ -157,7 +179,7 @@
   }
 
   function schedule(label) {
-    [0, 50, 150, 350, 700, 1200].forEach(function (delay) {
+    [0, 50, 150, 350, 700, 1200, 2000].forEach(function (delay) {
       window.setTimeout(function () { normalize(label); }, delay);
     });
   }
