@@ -236,8 +236,8 @@ export default async function handler(req, res) {
   const startedAt = Date.now();
   const contract = req.body?.contract || req.body || {};
   try {
-    const upstream = `${originFromReq(req)}/api/hush-generate`;
-    const response = await fetch(upstream, {
+    const upstreamUrl = `${originFromReq(req)}/api/hush-generate`;
+    const response = await fetch(upstreamUrl, {
       method: 'POST',
       headers: { 'content-type': 'application/json' },
       body: JSON.stringify({ contract })
