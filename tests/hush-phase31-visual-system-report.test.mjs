@@ -10,7 +10,7 @@ const visualCss = fs.readFileSync('app/hush-visual-system.css', 'utf8');
 const mobileCss = fs.readFileSync('app/hush-mobile-field-deck.css', 'utf8');
 const bootstrap = fs.readFileSync('app/chamber-bootstrap.js', 'utf8');
 const customizerBoot = fs.readFileSync('app/hush-customizer-card-fields-boot.js', 'utf8');
-const gallery = buildHushPersonaGallery(listHushMasks());
+const gallery = buildHushPersonaGallery(listHushMasks({ includeRetiredMasks: true }));
 const gallerySummary = summarizeHushPersonaGallery(gallery);
 const accessibility = auditHushVisualAccessibility({ cssText: visualCss, mobileCssText: mobileCss, htmlText: html, jsText: js });
 

@@ -8,7 +8,7 @@ import { buildHushSwap as buildPatch38HushSwap, HUSH_SWAP_PATCH38_VERSION } from
 import { TECH_JOB_SIGNAL_SAMPLE, GENERATOR_MODES, buildHushLlmPromptContract, collapseSurfaceScore, generateOfflineQuestionCandidates } from '../app/engine/hush-generator-provider.js';
 import { buildPropositionMap, questionFormScore, newClaimRisk } from '../app/engine/hush-proposition-map.js';
 import { buildOntologyRoute, compileRemoteRoutePayload } from '../app/engine/hush-ontology-route.js';
-import { buildHushLlmPromptContractV2, buildPhase35ProviderTelemetry } from '../app/engine/hush-generator-provider-phase35.js';
+import { buildHushLlmPromptContractV2, buildPhase37ProviderTelemetry } from '../app/engine/hush-generator-provider-phase35.js';
 import { auditPropositionIntegrity } from '../app/engine/hush-proposition-integrity.js';
 
 assert.equal(HUSH_EXPRESSIVE_GENERATOR_VERSION, 'phase-34-expressive-generation');
@@ -87,18 +87,18 @@ assert.equal(compactRoute.propositionSummary.questionCount, 2);
 assert(!Object.prototype.hasOwnProperty.call(compactRoute, 'fullOntology'));
 
 const contractV2 = buildHushLlmPromptContractV2({ sourceText: TECH_JOB_SIGNAL_SAMPLE, mask, candidateCount: 6 });
-assert.equal(contractV2.promptVersion, 'hush-llm-candidate-v2');
-assert.equal(contractV2.propositionMap.questionCount, 2);
+assert.equal(contractV2.promptVersion, 'hush-llm-candidate-v3');
+assert.equal(contractV2.ontologyRoute.propositionMap.questionCount, 2);
 assert(contractV2.ontologyRoute.routeType === 'question-legibility' || contractV2.ontologyRoute.routeType === 'everyday-question');
-assert(contractV2.rules.includes('Preserve questions as questions.'));
+assert(contractV2.rules.includes('Preserve meaning, questions, caveats, negations, uncertainty, and intent.'));
 assert(!Object.prototype.hasOwnProperty.call(contractV2, 'apiKey'));
 assert(!Object.prototype.hasOwnProperty.call(contractV2, 'ledger'));
 
-const telemetry = buildPhase35ProviderTelemetry({ sourceText: TECH_JOB_SIGNAL_SAMPLE, mask });
-assert.equal(telemetry.remotePayloadIsCompact, true);
-assert.equal(telemetry.sendsLedger, false);
-assert.equal(telemetry.sendsMaskMemory, false);
-assert.equal(telemetry.sendsFullOntology, false);
+const telemetry = buildPhase37ProviderTelemetry({ sourceText: TECH_JOB_SIGNAL_SAMPLE, mask });
+assert.equal(telemetry.version, "phase-37-ontology-carrying-generator-flight-pr151-sample-residue");
+assert(!Object.prototype.hasOwnProperty.call(telemetry.flightPacket, "ledger"));
+assert.equal(telemetry.flightPacket.custody_boundaries.no_mask_memory_payload, true);
+assert(!Object.prototype.hasOwnProperty.call(telemetry.flightPacket, "fullOntology"));
 
 const integrity = auditPropositionIntegrity(TECH_JOB_SIGNAL_SAMPLE, patch38.selectedOutput);
 assert(integrity.questionFormScore >= 0.5);

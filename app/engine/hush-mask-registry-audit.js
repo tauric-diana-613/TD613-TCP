@@ -16,7 +16,7 @@ export function getAllHushDataMasks(input = {}) {
 
 export function auditHushMaskRegistry(input = {}) {
   const dataMasks = getAllHushDataMasks(input);
-  const studioMasks = input.studioMasks || listHushMasks(input.studioInput || {});
+  const studioMasks = input.studioMasks || listHushMasks({ includeRetiredMasks: true, ...input.studioInput });
   const uiMasks = input.uiMasks || studioMasks;
   const dataIds = ids(dataMasks);
   const studioIds = ids(studioMasks);

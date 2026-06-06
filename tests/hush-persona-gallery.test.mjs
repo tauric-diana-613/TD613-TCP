@@ -2,7 +2,7 @@ import assert from 'assert';
 import { listHushMasks } from '../app/engine/hush-mask-studio.js';
 import { buildHushPersonaGallery, summarizeHushPersonaGallery } from '../app/hush-persona-gallery.js';
 
-const gallery = buildHushPersonaGallery(listHushMasks());
+const gallery = buildHushPersonaGallery(listHushMasks({ includeRetiredMasks: true }));
 assert.equal(gallery.version, 'phase-31');
 assert.equal(gallery.maskCount, 29);
 assert.equal(gallery.ready, true);
