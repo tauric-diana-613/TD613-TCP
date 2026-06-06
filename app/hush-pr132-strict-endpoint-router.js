@@ -1,11 +1,10 @@
 (function () {
   'use strict';
 
-  var VERSION = 'pr167-mobile-strict-watchdog-reasonable-guard/v1';
-  var SHORT_TIMEOUT_MS = 22000;
-  var MEDIUM_TIMEOUT_MS = 45000;
-  var LONG_TIMEOUT_MS = 60000;
-  var MOBILE_HARD_TIMEOUT_MS = 45000;
+  var VERSION = 'pr158-extended-adaptive-strict-watchdog/v1';
+  var SHORT_TIMEOUT_MS = 12000;
+  var MEDIUM_TIMEOUT_MS = 18000;
+  var LONG_TIMEOUT_MS = 29000;
 
   function rawUrl(input) {
     return typeof input === 'string' ? input : input && input.url ? input.url : '';
@@ -27,15 +26,6 @@
     return String(value || '').match(/[A-Za-z0-9][A-Za-z0-9'-]*/g)?.length || 0;
   }
 
-  function isMobileClient() {
-    try {
-      var ua = navigator && navigator.userAgent || '';
-      return /iPhone|iPad|iPod|Android|Mobile/i.test(ua) || Math.min(window.innerWidth || 9999, window.innerHeight || 9999) <= 820;
-    } catch (error) {
-      return false;
-    }
-  }
-
   function requestComplexity(init) {
     try {
       var payload = JSON.parse(String(init && init.body || '{}'));
@@ -55,10 +45,7 @@
 
   function timeoutFor(init) {
     var complexity = requestComplexity(init || {});
-    var baseTimeoutMs = complexity.hard ? LONG_TIMEOUT_MS : complexity.medium ? MEDIUM_TIMEOUT_MS : SHORT_TIMEOUT_MS;
-    var mobileGuard = isMobileClient() && (complexity.hard || complexity.medium);
-    var timeoutMs = mobileGuard ? Math.min(baseTimeoutMs, MOBILE_HARD_TIMEOUT_MS) : baseTimeoutMs;
-    return { timeoutMs: timeoutMs, baseTimeoutMs: baseTimeoutMs, mobileGuard: mobileGuard, complexity: complexity };
+    return { timeoutMs: complexity.hard ? LONG_TIMEOUT_MS : complexity.medium ? MEDIUM_TIMEOUT_MS : SHORT_TIMEOUT_MS, complexity: complexity };
   }
 
   function setStatus(message, tone) {
@@ -69,38 +56,30 @@
   }
 
   function syntheticHeldResponse(url, startedAt, meta, note) {
-    var warnings = [
-      meta.mobileGuard ? 'mobile-strict-watchdog-freeze-guard' : '',
-      'strict-client-watchdog-timeout',
-      'ui-released-before-page-freeze',
-      meta.complexity && meta.complexity.hard ? 'difficult-transform-watchdog-limit' : 'retry-with-shorter-source-or-lighter-mask'
-    ].filter(Boolean);
     var body = {
       ok: false,
       provider: 'gemini-strict',
-      model: meta.mobileGuard ? 'client-watchdog-mobile-freeze-guard' : 'client-watchdog',
+      model: 'client-watchdog',
       strict: true,
       noFallback: true,
-      error: meta.mobileGuard ? 'strict_mobile_client_watchdog_timeout' : 'strict_client_watchdog_timeout',
+      error: 'strict_client_watchdog_timeout',
       candidates: [],
-      warnings: warnings,
-      message: meta.mobileGuard ? 'Strict provider call was stopped by the mobile freeze guard before Safari could stall.' : 'Strict provider call was stopped by the extended adaptive client watchdog before the page could freeze.',
+      warnings: ['strict-client-watchdog-timeout', 'ui-released-before-page-freeze', meta.complexity && meta.complexity.hard ? 'difficult-transform-watchdog-limit' : 'retry-with-shorter-source-or-lighter-mask'],
+      message: 'Strict provider call was stopped by the extended adaptive client watchdog before the page could freeze.',
       triedEndpoints: [url + ':client-watchdog'],
       requestReceipt: {
         strict: true,
         noFallback: true,
         providerVersion: VERSION,
-        endpointMetaVersion: 'pr167-mobile-strict-client-watchdog/v1',
+        endpointMetaVersion: 'pr158-extended-adaptive-client-watchdog/v1',
         elapsedMs: Date.now() - startedAt,
         clientWatchdog: true,
-        mobileFreezeGuard: Boolean(meta.mobileGuard),
         clientWatchdogMs: meta.timeoutMs,
-        baseClientWatchdogMs: meta.baseTimeoutMs,
         originalEndpoint: meta.originalUrl || '',
         directEndpoint: url,
         rewrittenFromLegacyPr124: /hush-generate-strict-pr124/.test(meta.originalUrl || ''),
         requestComplexity: meta.complexity || {},
-        note: note || 'Mobile-aware watchdog returned a held receipt instead of allowing another endpoint loop.'
+        note: note || 'Extended adaptive watchdog returned a held receipt instead of allowing another endpoint loop.'
       }
     };
     return new Response(JSON.stringify(body), { status: 504, headers: { 'content-type': 'application/json' } });
@@ -131,15 +110,15 @@
       var nextInit = Object.assign({}, init || {}, { signal: mergeSignals(init || {}, controller) });
       var settled = false;
       var heartbeat = null;
-      var meta = { version: VERSION, originalUrl: originalUrl, timeoutMs: watch.timeoutMs, baseTimeoutMs: watch.baseTimeoutMs, mobileGuard: watch.mobileGuard, complexity: watch.complexity };
+      var meta = { version: VERSION, originalUrl: originalUrl, timeoutMs: watch.timeoutMs, complexity: watch.complexity };
 
-      window.__TD613_HUSH_PR132_LAST = { version: VERSION, from: originalUrl, to: rewritten, timeoutMs: watch.timeoutMs, baseTimeoutMs: watch.baseTimeoutMs, mobileGuard: watch.mobileGuard, complexity: watch.complexity, at: new Date().toISOString() };
-      setStatus(watch.mobileGuard ? 'Strict provider transform: mobile freeze guard active…' : watch.complexity.hard ? 'Strict provider transform: difficult packet, direct lane has extended watchdog…' : 'Strict provider transform: calling direct provider lane with extended watchdog…', 'info');
+      window.__TD613_HUSH_PR132_LAST = { version: VERSION, from: originalUrl, to: rewritten, timeoutMs: watch.timeoutMs, complexity: watch.complexity, at: new Date().toISOString() };
+      setStatus(watch.complexity.hard ? 'Strict provider transform: difficult packet, direct lane has extended watchdog…' : 'Strict provider transform: calling direct provider lane with extended watchdog…', 'info');
       heartbeat = window.setInterval(function () {
         if (settled) return;
         var elapsed = Date.now() - startedAt;
-        setStatus('Strict provider transform still working… ' + Math.round(elapsed / 1000) + 's / ' + Math.round(watch.timeoutMs / 1000) + 's watchdog' + (watch.mobileGuard ? ' · mobile guard' : ''), 'info');
-      }, 3200);
+        setStatus('Strict provider transform still working… ' + Math.round(elapsed / 1000) + 's / ' + Math.round(watch.timeoutMs / 1000) + 's watchdog', 'info');
+      }, 4200);
 
       var fetchPromise;
       try {
@@ -160,7 +139,7 @@
       }).catch(function (error) {
         if (heartbeat) window.clearInterval(heartbeat);
         if (error && error.name === 'AbortError' && window.__TD613_HUSH_PR132_TIMEOUT) {
-          return syntheticHeldResponse(target, startedAt, meta, 'Underlying strict fetch aborted by mobile-aware client watchdog.');
+          return syntheticHeldResponse(target, startedAt, meta, 'Underlying strict fetch aborted by extended adaptive client watchdog.');
         }
         throw error;
       });
@@ -168,11 +147,10 @@
       var timeoutPromise = new Promise(function (resolve) {
         window.setTimeout(function () {
           if (settled) return;
-          window.__TD613_HUSH_PR132_TIMEOUT = { version: VERSION, url: target, originalUrl: originalUrl, timeoutMs: watch.timeoutMs, baseTimeoutMs: watch.baseTimeoutMs, mobileGuard: watch.mobileGuard, complexity: watch.complexity, at: new Date().toISOString(), note: 'Mobile-aware watchdog returned a held response and aborted the long strict provider call.' };
+          window.__TD613_HUSH_PR132_TIMEOUT = { version: VERSION, url: target, originalUrl: originalUrl, timeoutMs: watch.timeoutMs, complexity: watch.complexity, at: new Date().toISOString(), note: 'Extended adaptive watchdog returned a held response and aborted the long strict provider call.' };
           try { controller.abort(); } catch (error) {}
           if (heartbeat) window.clearInterval(heartbeat);
-          settled = true;
-          setStatus(watch.mobileGuard ? 'Strict provider transform held by mobile freeze guard; receipt ready.' : 'Strict provider transform held by extended watchdog; receipt ready instead of page freeze.', 'error');
+          setStatus('Strict provider transform held by extended watchdog; receipt ready instead of page freeze.', 'error');
           resolve(syntheticHeldResponse(target, startedAt, meta));
         }, watch.timeoutMs);
       });
@@ -187,7 +165,7 @@
     if (!document.body || document.body.dataset.pageKind !== 'adversarial-bench') return;
     document.body.dataset.pr132StrictEndpointRouter = VERSION;
     install();
-    window.TD613_HUSH_PR132 = { version: VERSION, install: install, rewriteUrl: rewriteUrl, timeoutFor: timeoutFor, timeouts: { short: SHORT_TIMEOUT_MS, medium: MEDIUM_TIMEOUT_MS, long: LONG_TIMEOUT_MS, mobile: MOBILE_HARD_TIMEOUT_MS } };
+    window.TD613_HUSH_PR132 = { version: VERSION, install: install, rewriteUrl: rewriteUrl, timeoutFor: timeoutFor, timeouts: { short: SHORT_TIMEOUT_MS, medium: MEDIUM_TIMEOUT_MS, long: LONG_TIMEOUT_MS } };
   }
 
   if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', boot, { once: true });

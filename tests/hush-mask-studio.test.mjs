@@ -13,7 +13,7 @@ import {
 } from '../app/engine/hush-mask-studio.js';
 import { detectForbiddenClaims } from '../app/engine/claim-ladder.js';
 
-assert.equal(HUSH_MASK_STUDIO_VERSION, 'phase-16');
+assert.equal(HUSH_MASK_STUDIO_VERSION, 'phase-16-pr150-active-style-studio');
 assert(hushMasks.length >= 20);
 
 for (const mask of hushMasks) {
@@ -27,7 +27,7 @@ for (const mask of hushMasks) {
 
 const masks = listHushMasks();
 assert(masks.length >= 20);
-assert(masks.every((mask) => mask.version === 'phase-16'));
+assert(masks.every((mask) => mask.version === 'phase-16-pr150-active-style-studio'));
 assert(masks.every((mask) => mask.profile));
 assert(masks.every((mask) => mask.profileSummary));
 assert(masks.every((mask) => mask.distribution));
@@ -51,7 +51,7 @@ assert(Array.isArray(hydrated.warnings));
 assert(hydrated.transitionBank.length > 0);
 
 const profile = buildHushMaskProfile(plain);
-assert.equal(profile.version, 'phase-16');
+assert.equal(profile.version, 'phase-16-pr150-active-style-studio');
 assert.equal(profile.maskId, 'plain-witness');
 assert(profile.profileSummary.wordCount > 0);
 assert(profile.distribution.centroid);
@@ -62,7 +62,7 @@ assert(profile.dictionHints.length > 0);
 assert(profile.limitations.length);
 
 const dist = buildMaskDistribution(plain.profile);
-assert.equal(dist.version, 'phase-16');
+assert.equal(dist.version, 'phase-16-pr150-active-style-studio');
 assert(dist.centroid.avgSentenceLength !== undefined);
 assert(dist.variance.avgSentenceLength !== undefined);
 assert(dist.toleranceBands.avgSentenceLength);

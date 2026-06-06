@@ -47,7 +47,7 @@ for (const selector of [
 assert.ok(css.includes('font-size:13px'), 'custody title should be compact, not billboard-sized');
 assert.ok(css.includes('font-size:9px'), 'custody action buttons should be compact');
 assert.ok(relayout.includes('protectedOutputHeading'), 'relayout should anchor custody panel below Output Chamber');
-assert.ok(relayout.includes('insertBefore(panel, outputCard.nextSibling)'), 'relayout should place custody panel after output card');
+assert.ok(relayout.includes("outputCard.insertAdjacentElement('afterend', panel)"), 'relayout should place custody panel after output card');
 assert.ok(!js.includes('includePrivateText: true'), 'housekeeping clean receipt module must not request private text export');
 assert.ok(js.includes('td613-hush-selected-mask'), 'housekeeping should persist selected mask id only');
 

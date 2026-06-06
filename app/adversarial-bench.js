@@ -19,14 +19,14 @@ function escapeHtml(value = '') {
 }
 
 function isLiteralSafeFallbackCandidate(candidate = {}) {
-  return String(candidate.id || '').startsWith('literal-safe-candidate-') ||
-    candidate.source === 'literal-safe-fallback' ||
-    candidate.strategy === 'literal-safe-fallback' ||
-    candidate.family === 'literal-safe-fallback';
+  return String(candidate?.id || '').startsWith('literal-safe-candidate-') ||
+    candidate?.source === 'literal-safe-fallback' ||
+    candidate?.strategy === 'literal-safe-fallback' ||
+    candidate?.family === 'literal-safe-fallback';
 }
 
 function rescueFallbackIsActuallyNeeded(result = {}) {
-  const selected = (result.candidates || []).find((candidate) => candidate.id === result.selectedCandidateId) || null;
+  const selected = (result.candidates || []).find((candidate) => candidate?.id === result.selectedCandidateId) || null;
   const release = result.releasePolicy || {};
   return Boolean(
     result.allCandidatesFailed ||

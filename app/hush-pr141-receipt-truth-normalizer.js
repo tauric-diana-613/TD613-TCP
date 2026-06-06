@@ -1,7 +1,7 @@
 (function () {
   'use strict';
 
-  var VERSION = 'pr141-receipt-truth-normalizer/v4-u10d613-held-diagnostic-recovery';
+  var VERSION = 'pr141-receipt-truth-normalizer/v5-light-receipt-summary-bridge';
   var TRUE_REASON = 'strict_anti_compression_held';
   var DIAGNOSTIC_KEYS = [
     'u10d613Route', 'u10d613Preserved', 'diagnosticRoute', 'providerNormalizerVersion',
@@ -10,8 +10,7 @@
     'upstreamAttemptStages', 'upstreamAttemptModels', 'upstreamTimedOutCount',
     'remoteRepairRetry', 'hardPacketRemoteRepairRetry', 'quotaAwareRepairRetry',
     'quotaBlockedModels', 'quotaRows', 'fullModelSweep', 'stageCount', 'attemptLimit',
-    'configuredModelCount', 'envConfiguredModelCount', 'modelOrder', 'upstreamElapsedMs',
-    'attempts', 'rejectedCopy', 'rejectedCompressed'
+    'configuredModelCount', 'envConfiguredModelCount', 'modelOrder', 'upstreamElapsedMs'
   ];
 
   function $(id) { return document.getElementById(id); }
@@ -70,10 +69,20 @@
     }
   }
 
-  function addAttemptSummary(target, payload) {
-    var attempts = asArray(payload && payload.attempts);
+  function extractSummary(receipt, payload) {
+    return (
+      (receipt && receipt.attemptSummary) ||
+      (receipt && receipt.requestReceipt && receipt.requestReceipt.attemptSummary) ||
+      (payload && payload.attemptSummary) ||
+      (payload && payload.requestReceipt && payload.requestReceipt.attemptSummary) ||
+      (payload && payload.attempts) ||
+      []
+    );
+  }
+
+  function addAttemptSummary(target, payload, receipt) {
+    var attempts = asArray(extractSummary(receipt, payload));
     if (!attempts.length) return;
-    if (!hasValue(target.attempts)) target.attempts = attempts;
     if (!hasValue(target.upstreamAttemptCount)) target.upstreamAttemptCount = attempts.length;
     if (!hasValue(target.upstreamAttemptStages)) target.upstreamAttemptStages = Array.from(new Set(attempts.map(function (attempt) { return Number.isFinite(Number(attempt && attempt.stage)) ? Number(attempt.stage) : null; }).filter(function (stage) { return stage !== null; }))).sort(function (a, b) { return a - b; });
     if (!hasValue(target.upstreamAttemptModels)) target.upstreamAttemptModels = uniq(attempts.map(function (attempt) { return attempt && attempt.model; }));
@@ -89,7 +98,7 @@
     var sources = [receipt || {}, requestReceipt, payload, payloadReceipt, full, debugReceipt];
     var diagnostic = {};
     DIAGNOSTIC_KEYS.forEach(function (key) { addFrom(diagnostic, key, sources); });
-    addAttemptSummary(diagnostic, payload);
+    addAttemptSummary(diagnostic, payload, receipt);
     if (payload.version && !hasValue(diagnostic.upstreamProviderVersion)) diagnostic.upstreamProviderVersion = payload.version;
     if (payload.rotationVersion && !hasValue(diagnostic.upstreamRotationVersion)) diagnostic.upstreamRotationVersion = payload.rotationVersion;
     if (payload.provider && !hasValue(diagnostic.upstreamProvider)) diagnostic.upstreamProvider = payload.provider;
@@ -102,14 +111,17 @@
     return diagnostic;
   }
 
-  function normalizeReceipt(receipt) {
+  function normalizeReceipt(receipt, payload) {
     if (!needsNormalization(receipt)) return receipt;
     var quota = normalizeProviderQuota(receipt.providerQuota || {});
     var diagnostic = receipt.providerError || null;
     var upstream = pickDiagnostics(receipt);
+
+    var rejectedCopyCount = asArray(payload && payload.rejectedCopy).length || asArray(receipt && receipt.rejectedCopy).length || 0;
+    var rejectedCompressedCount = asArray(payload && payload.rejectedCompressed).length || asArray(receipt && receipt.rejectedCompressed).length || 0;
+
     return {
       ...receipt,
-      ...upstream,
       status: 'held',
       reason: TRUE_REASON,
       quotaDiagnosticReason: /quota/i.test(text(receipt.reason)) ? receipt.reason : (receipt.quotaDiagnosticReason || ''),
@@ -125,12 +137,16 @@
       providerError: null,
       providerQuotaDiagnosticError: diagnostic,
       requestReceipt: {
-        ...(receipt.requestReceipt || {}),
+        ...obj(receipt.requestReceipt),
         ...upstream,
         truthNormalizedBy: VERSION
       },
-      warnings: uniq(asArray(receipt.warnings).concat([TRUE_REASON, 'quota-diagnostic-not-headline', 'quota-status-demoted-from-top-level', 'upstream-retry-diagnostics-preserved', 'u10d613-held-diagnostics-recovered'])),
-      truthNormalizedBy: VERSION
+      warnings: uniq(asArray(receipt.warnings).concat([TRUE_REASON, 'quota-diagnostic-not-headline', 'quota-status-demoted-from-top-level', 'upstream-retry-diagnostics-preserved', 'u10d613-held-diagnostics-summarized', 'receipt-freeze-guard-active'])),
+      truthNormalizedBy: VERSION,
+      lightweightHeldReceipt: true,
+      rejectedCopyCount: rejectedCopyCount,
+      rejectedCompressedCount: rejectedCompressedCount,
+      upstreamAttemptCount: upstream.upstreamAttemptCount || 0
     };
   }
 
@@ -138,16 +154,27 @@
     var popup = $('hushReceiptPopup');
     if (!popup) return false;
     var pre = popup.querySelector && popup.querySelector('pre');
-    if (pre) pre.textContent = JSON.stringify(receipt, null, 2);
+    if (pre) {
+      // Create a shallow copy without full attempts, rejectedCopy, or rejectedCompressed
+      var safeReceipt = { ...receipt };
+      delete safeReceipt.attempts;
+      delete safeReceipt.rejectedCopy;
+      delete safeReceipt.rejectedCompressed;
+      if (safeReceipt.requestReceipt) {
+        safeReceipt.requestReceipt = { ...safeReceipt.requestReceipt };
+        delete safeReceipt.requestReceipt.attempts;
+      }
+      pre.textContent = JSON.stringify(safeReceipt, null, 2);
+    }
     var title = popup.querySelector && popup.querySelector('.hush-receipt-pop-title');
     if (title) title.textContent = 'Strict anti-compression receipt';
     return true;
   }
 
-  function normalize(label) {
+  function normalize(label, payload) {
     var current = window.__TD613_HUSH_NO_FALLBACK_RECEIPT || window.__TD613_HUSH_PR123_LAST || null;
     if (!needsNormalization(current)) return false;
-    var receipt = normalizeReceipt(current);
+    var receipt = normalizeReceipt(current, payload || current);
     window.__TD613_HUSH_NO_FALLBACK_RECEIPT = receipt;
     window.__TD613_HUSH_PR123_LAST = receipt;
 
@@ -178,9 +205,9 @@
     return true;
   }
 
-  function schedule(label) {
+  function schedule(label, payload) {
     [0, 50, 150, 350, 700, 1200, 2000].forEach(function (delay) {
-      window.setTimeout(function () { normalize(label); }, delay);
+      window.setTimeout(function () { normalize(label, payload); }, delay);
     });
   }
 
@@ -195,7 +222,7 @@
       var target = document.body;
       new MutationObserver(function () { normalize('dom-mutation'); }).observe(target, { childList: true, subtree: true, characterData: true });
     }
-    window.TD613_HUSH_PR141 = { version: VERSION, normalize: normalize, normalizeReceipt: normalizeReceipt, pickDiagnostics: pickDiagnostics };
+    window.TD613_HUSH_PR141 = { version: VERSION, normalize: normalize, normalizeReceipt: normalizeReceipt };
   }
 
   if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', boot, { once: true });
