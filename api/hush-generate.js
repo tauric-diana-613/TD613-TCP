@@ -5,9 +5,19 @@ const corsHeaders = {
   'access-control-max-age': '86400'
 };
 
-const VERSION = 'hush-generate-v4.1-pr170-hard-packet-remote-repair-retry';
-const ROTATION_VERSION = 'pr170-hard-packet-remote-repair-retry/v1';
-const DEFAULT_MODEL_ORDER = ['gemini-flash-lite-latest', 'gemini-2.5-flash', 'gemini-2.5-flash-lite'];
+const VERSION = 'hush-generate-v4.2-pr172-full-model-sweep-no-lite-lock';
+const ROTATION_VERSION = 'pr172-full-model-sweep-no-lite-lock/v1';
+const DEFAULT_MODEL_ORDER = [
+  'gemini-2.5-flash',
+  'gemini-2.5-pro',
+  'gemini-flash-lite-latest',
+  'gemini-2.5-flash-lite',
+  'gemini-2.0-flash',
+  'gemini-2.0-flash-lite',
+  'gemini-1.5-pro-002',
+  'gemini-1.5-flash'
+];
+const MODEL_ENV_KEYS = ['GEMINI_MODEL', 'GEMINI_MODEL_FALLBACKS', 'HUSH_REMOTE_MODEL', 'HUSH_REMOTE_MODEL_FALLBACKS'];
 const GEMINI_TIMEOUT_MS = 18000;
 const WALL_TIMEOUT_MS = 42000;
 const MAX_OUTPUT_TOKENS = 8192;
@@ -44,13 +54,12 @@ function uniqueText(values = []) {
 }
 function stringArray(value) { return Array.isArray(value) ? value.map((item) => safe(item)).filter(Boolean) : []; }
 function compactJson(value = {}) { return JSON.stringify(value || {}, null, 2); }
+function envConfiguredModels() {
+  return uniq(MODEL_ENV_KEYS.flatMap((key) => safe(process.env[key]).split(',')));
+}
 function configuredModels() {
-  const configured = uniq([...safe(process.env.GEMINI_MODEL).split(','), ...safe(process.env.GEMINI_MODEL_FALLBACKS).split(',')]);
-  return uniq([...DEFAULT_MODEL_ORDER, ...configured]).sort((a, b) => {
-    const ai = DEFAULT_MODEL_ORDER.indexOf(a);
-    const bi = DEFAULT_MODEL_ORDER.indexOf(b);
-    return (ai === -1 ? 50 : ai) - (bi === -1 ? 50 : bi);
-  }).slice(0, 4);
+  const configured = envConfiguredModels();
+  return uniq([...configured, ...DEFAULT_MODEL_ORDER]);
 }
 function detectComplexity(sourceText = '', contract = {}) {
   const wc = words(sourceText).length;
@@ -392,7 +401,7 @@ export default async function handler(req, res) {
   if (req.method === 'OPTIONS') return send(res, 200, { ok: true });
   if (req.method === 'GET') {
     const models = configuredModels();
-    if (queryFlags(req).models) return send(res, 200, { ok: true, version: VERSION, rotationVersion: ROTATION_VERSION, configuredModels: models, preferredWorkingModel, env: { hasGeminiKey: Boolean(process.env.GEMINI_API_KEY), geminiModel: process.env.GEMINI_MODEL || '', fallbackCount: safe(process.env.GEMINI_MODEL_FALLBACKS).split(',').filter(Boolean).length } });
+    if (queryFlags(req).models) return send(res, 200, { ok: true, version: VERSION, rotationVersion: ROTATION_VERSION, configuredModels: models, preferredWorkingModel, envConfiguredModels: envConfiguredModels(), defaultModelOrder: DEFAULT_MODEL_ORDER, env: { hasGeminiKey: Boolean(process.env.GEMINI_API_KEY), geminiModel: process.env.GEMINI_MODEL || '', hushRemoteModel: process.env.HUSH_REMOTE_MODEL || '', fallbackCount: safe(process.env.GEMINI_MODEL_FALLBACKS).split(',').filter(Boolean).length, hushFallbackCount: safe(process.env.HUSH_REMOTE_MODEL_FALLBACKS).split(',').filter(Boolean).length } });
     return send(res, 200, { ok: true, route: 'hush-generate', version: VERSION, rotationVersion: ROTATION_VERSION, probe: await runProviderProbe(models) });
   }
   if (req.method !== 'POST') return send(res, 405, { ok: false, error: 'method-not-allowed', version: VERSION });
@@ -405,7 +414,7 @@ export default async function handler(req, res) {
   const complexity = detectComplexity(sourceText, contract);
   const configured = configuredModels();
   const models = preferredWorkingModel ? [preferredWorkingModel, ...configured.filter((model) => model !== preferredWorkingModel)] : configured;
-  const maxAttempts = complexity.hard ? 2 : 3;
+  const maxAttempts = Math.max(1, models.length);
   const attempts = [], rejectedCopy = [], rejectedCompressed = [];
   const deterministic = req.query?.reroll !== '1' && contract.reroll !== true;
   const stageCount = 2;
@@ -413,7 +422,7 @@ export default async function handler(req, res) {
 
   for (let stage = 0; stage < stageCount; stage += 1) {
     const prompt = buildPrompt(contract, repair);
-    const stageModels = complexity.hard && stage > 0 ? models.slice(0, 1) : models.slice(0, maxAttempts);
+    const stageModels = stage > 0 ? models.slice(0, Math.min(2, maxAttempts)) : models.slice(0, maxAttempts);
     for (const model of stageModels) {
       if (Date.now() - startedAt > WALL_TIMEOUT_MS) break;
       const { response, payload, timedOut } = await callGemini({ model, prompt, jsonMode: true, deterministic });
@@ -425,12 +434,12 @@ export default async function handler(req, res) {
       attempts.push({ stage, model: normalizeModelName(model), jsonMode: true, ok: response.ok, status: response.status, timedOut, parsedCandidates: parsed.candidates.length, usableCandidates: split.usable.length, copiedCandidates: split.copied.length, compressedCandidates: split.compressed.length, warnings: parsed.warnings, error: response.ok ? null : summarizeProviderError(payload), textPreview: rawText.slice(0, 180) });
       if (response.ok && split.usable.length) {
         preferredWorkingModel = normalizeModelName(model);
-        return send(res, 200, { ok: true, provider: 'gemini', model: preferredWorkingModel, deterministic, version: VERSION, rotationVersion: ROTATION_VERSION, candidates: split.usable, warnings: parsed.warnings, attempts, rejectedCopy: rejectedCopy.slice(0, 12), rejectedCompressed: rejectedCompressed.slice(0, 12), rawText: parsed.rawText, requestReceipt: { deterministic, temperature: deterministic ? 0.22 : 0.58, topP: deterministic ? 0.64 : 0.88, antiCompression: true, fastHardPacketLane: true, remoteRepairRetry: true, hardPacketRemoteRepairRetry: Boolean(complexity.hard), stageCount, complexity, modelOrder: models.slice(0, maxAttempts), minLengthRatio: minLengthRatio(sourceText, complexity), bounded: true, elapsedMs: Date.now() - startedAt } });
+        return send(res, 200, { ok: true, provider: 'gemini', model: preferredWorkingModel, deterministic, version: VERSION, rotationVersion: ROTATION_VERSION, candidates: split.usable, warnings: parsed.warnings, attempts, rejectedCopy: rejectedCopy.slice(0, 12), rejectedCompressed: rejectedCompressed.slice(0, 12), rawText: parsed.rawText, requestReceipt: { deterministic, temperature: deterministic ? 0.22 : 0.58, topP: deterministic ? 0.64 : 0.88, antiCompression: true, fastHardPacketLane: true, fullModelSweep: true, remoteRepairRetry: true, hardPacketRemoteRepairRetry: Boolean(complexity.hard), stageCount, attemptLimit: maxAttempts, envConfiguredModelCount: envConfiguredModels().length, configuredModelCount: configured.length, complexity, modelOrder: models, minLengthRatio: minLengthRatio(sourceText, complexity), bounded: true, elapsedMs: Date.now() - startedAt } });
       }
     }
     repair = rejectedCompressed.length ? { kind: 'compression', rejected: rejectedCompressed.slice(-3).map((item) => `- ${item.preview}`).join('\n') } : { kind: 'copy', rejected: rejectedCopy.slice(-3).map((item) => `- ${item.preview}`).join('\n') };
   }
 
   const repaired = serverRepairCandidates(sourceText, contract);
-  return send(res, 200, { ok: true, provider: 'server-deterministic-repair', model: 'server-repair-review-map', deterministic, version: VERSION, rotationVersion: ROTATION_VERSION, candidates: repaired.candidates, warnings: [...repaired.warnings, 'provider-fast-lane-no-remote-release'], attempts, rejectedCopy: rejectedCopy.slice(0, 12), rejectedCompressed: rejectedCompressed.slice(0, 12), requestReceipt: { deterministic, temperature: deterministic ? 0.22 : 0.58, topP: deterministic ? 0.64 : 0.88, antiCompression: true, fastHardPacketLane: true, reviewMapRepair: true, reviewMapRepairVersion: ROTATION_VERSION, remoteRepairRetry: true, hardPacketRemoteRepairRetry: Boolean(complexity.hard), stageCount, complexity, modelOrder: models.slice(0, maxAttempts), minLengthRatio: minLengthRatio(sourceText, complexity), bounded: true, elapsedMs: Date.now() - startedAt } });
+  return send(res, 200, { ok: true, provider: 'server-deterministic-repair', model: 'server-repair-review-map', deterministic, version: VERSION, rotationVersion: ROTATION_VERSION, candidates: repaired.candidates, warnings: [...repaired.warnings, 'provider-fast-lane-no-remote-release'], attempts, rejectedCopy: rejectedCopy.slice(0, 12), rejectedCompressed: rejectedCompressed.slice(0, 12), requestReceipt: { deterministic, temperature: deterministic ? 0.22 : 0.58, topP: deterministic ? 0.64 : 0.88, antiCompression: true, fastHardPacketLane: true, reviewMapRepair: true, reviewMapRepairVersion: ROTATION_VERSION, fullModelSweep: true, remoteRepairRetry: true, hardPacketRemoteRepairRetry: Boolean(complexity.hard), stageCount, attemptLimit: maxAttempts, envConfiguredModelCount: envConfiguredModels().length, configuredModelCount: configured.length, complexity, modelOrder: models, minLengthRatio: minLengthRatio(sourceText, complexity), bounded: true, elapsedMs: Date.now() - startedAt } });
 }
