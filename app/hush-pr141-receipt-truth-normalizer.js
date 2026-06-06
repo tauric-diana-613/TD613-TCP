@@ -1,7 +1,7 @@
 (function () {
   'use strict';
 
-  var VERSION = 'pr141-receipt-truth-normalizer/v2-demote-quota-surface';
+  var VERSION = 'pr141-receipt-truth-normalizer/v5-light-receipt-summary-bridge';
   var TRUE_REASON = 'strict_anti_compression_held';
 
   function $(id) { return document.getElementById(id); }
@@ -45,10 +45,23 @@
     };
   }
 
-  function normalizeReceipt(receipt) {
+  function extractSummary(receipt, payload) {
+    return (
+      (receipt && receipt.attemptSummary) ||
+      (receipt && receipt.requestReceipt && receipt.requestReceipt.attemptSummary) ||
+      (payload && payload.attemptSummary) ||
+      (payload && payload.requestReceipt && payload.requestReceipt.attemptSummary) ||
+      (payload && payload.attempts) ||
+      []
+    );
+  }
+
+  function normalizeReceipt(receipt, payload) {
     if (!needsNormalization(receipt)) return receipt;
     var quota = normalizeProviderQuota(receipt.providerQuota || {});
     var diagnostic = receipt.providerError || null;
+    var summary = extractSummary(receipt, payload);
+
     return {
       ...receipt,
       status: 'held',
@@ -65,8 +78,12 @@
       providerQuota: quota,
       providerError: null,
       providerQuotaDiagnosticError: diagnostic,
-      warnings: uniq(asArray(receipt.warnings).concat([TRUE_REASON, 'quota-diagnostic-not-headline', 'quota-status-demoted-from-top-level'])),
-      truthNormalizedBy: VERSION
+      warnings: uniq(asArray(receipt.warnings).concat([TRUE_REASON, 'quota-diagnostic-not-headline', 'quota-status-demoted-from-top-level', 'u10d613-held-diagnostics-summarized', 'receipt-freeze-guard-active'])),
+      truthNormalizedBy: VERSION,
+      lightweightHeldReceipt: true,
+      rejectedCopyCount: asArray(payload && payload.rejectedCopy).length || asArray(receipt && receipt.rejectedCopy).length || 0,
+      rejectedCompressedCount: asArray(payload && payload.rejectedCompressed).length || asArray(receipt && receipt.rejectedCompressed).length || 0,
+      upstreamAttemptCount: asArray(summary).length
     };
   }
 
@@ -74,16 +91,27 @@
     var popup = $('hushReceiptPopup');
     if (!popup) return false;
     var pre = popup.querySelector && popup.querySelector('pre');
-    if (pre) pre.textContent = JSON.stringify(receipt, null, 2);
+    if (pre) {
+      // Create a shallow copy without full attempts, rejectedCopy, or rejectedCompressed
+      var safeReceipt = { ...receipt };
+      delete safeReceipt.attempts;
+      delete safeReceipt.rejectedCopy;
+      delete safeReceipt.rejectedCompressed;
+      if (safeReceipt.requestReceipt) {
+        safeReceipt.requestReceipt = { ...safeReceipt.requestReceipt };
+        delete safeReceipt.requestReceipt.attempts;
+      }
+      pre.textContent = JSON.stringify(safeReceipt, null, 2);
+    }
     var title = popup.querySelector && popup.querySelector('.hush-receipt-pop-title');
     if (title) title.textContent = 'Strict anti-compression receipt';
     return true;
   }
 
-  function normalize(label) {
+  function normalize(label, payload) {
     var current = window.__TD613_HUSH_NO_FALLBACK_RECEIPT || window.__TD613_HUSH_PR123_LAST || null;
     if (!needsNormalization(current)) return false;
-    var receipt = normalizeReceipt(current);
+    var receipt = normalizeReceipt(current, payload || current);
     window.__TD613_HUSH_NO_FALLBACK_RECEIPT = receipt;
     window.__TD613_HUSH_PR123_LAST = receipt;
 
@@ -112,9 +140,9 @@
     return true;
   }
 
-  function schedule(label) {
+  function schedule(label, payload) {
     [0, 50, 150, 350, 700, 1200].forEach(function (delay) {
-      window.setTimeout(function () { normalize(label); }, delay);
+      window.setTimeout(function () { normalize(label, payload); }, delay);
     });
   }
 
