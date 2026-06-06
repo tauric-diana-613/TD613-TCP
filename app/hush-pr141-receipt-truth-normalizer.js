@@ -1,13 +1,39 @@
 (function () {
   'use strict';
 
-  var VERSION = 'pr141-receipt-truth-normalizer/v2-demote-quota-surface';
+  var VERSION = 'pr141-receipt-truth-normalizer/v3-preserve-upstream-retry-diagnostics';
   var TRUE_REASON = 'strict_anti_compression_held';
+  var DIAGNOSTIC_KEYS = [
+    'upstreamProvider',
+    'upstreamModel',
+    'upstreamProviderVersion',
+    'upstreamRotationVersion',
+    'upstreamAttemptCount',
+    'upstreamAttemptStages',
+    'upstreamAttemptModels',
+    'upstreamTimedOutCount',
+    'remoteRepairRetry',
+    'hardPacketRemoteRepairRetry',
+    'quotaAwareRepairRetry',
+    'quotaBlockedModels',
+    'quotaRows',
+    'fullModelSweep',
+    'stageCount',
+    'attemptLimit',
+    'configuredModelCount',
+    'envConfiguredModelCount',
+    'modelOrder',
+    'upstreamElapsedMs'
+  ];
 
   function $(id) { return document.getElementById(id); }
   function text(value) { return String(value == null ? '' : value).trim(); }
   function asArray(value) { return Array.isArray(value) ? value.filter(Boolean) : []; }
   function uniq(values) { return Array.from(new Set(asArray(values).map(text).filter(Boolean))); }
+  function hasValue(value) {
+    if (Array.isArray(value)) return value.length > 0;
+    return value !== undefined && value !== null && value !== '';
+  }
 
   function providerModel(value) {
     var s = text(value);
@@ -45,12 +71,24 @@
     };
   }
 
+  function pickDiagnostics(receipt) {
+    var requestReceipt = receipt && receipt.requestReceipt && typeof receipt.requestReceipt === 'object' ? receipt.requestReceipt : {};
+    var diagnostic = {};
+    DIAGNOSTIC_KEYS.forEach(function (key) {
+      var value = hasValue(receipt && receipt[key]) ? receipt[key] : requestReceipt[key];
+      if (hasValue(value)) diagnostic[key] = value;
+    });
+    return diagnostic;
+  }
+
   function normalizeReceipt(receipt) {
     if (!needsNormalization(receipt)) return receipt;
     var quota = normalizeProviderQuota(receipt.providerQuota || {});
     var diagnostic = receipt.providerError || null;
+    var upstream = pickDiagnostics(receipt);
     return {
       ...receipt,
+      ...upstream,
       status: 'held',
       reason: TRUE_REASON,
       quotaDiagnosticReason: /quota/i.test(text(receipt.reason)) ? receipt.reason : (receipt.quotaDiagnosticReason || ''),
@@ -65,7 +103,12 @@
       providerQuota: quota,
       providerError: null,
       providerQuotaDiagnosticError: diagnostic,
-      warnings: uniq(asArray(receipt.warnings).concat([TRUE_REASON, 'quota-diagnostic-not-headline', 'quota-status-demoted-from-top-level'])),
+      requestReceipt: {
+        ...(receipt.requestReceipt || {}),
+        ...upstream,
+        truthNormalizedBy: VERSION
+      },
+      warnings: uniq(asArray(receipt.warnings).concat([TRUE_REASON, 'quota-diagnostic-not-headline', 'quota-status-demoted-from-top-level', 'upstream-retry-diagnostics-preserved'])),
       truthNormalizedBy: VERSION
     };
   }
@@ -105,6 +148,7 @@
       previousReason: current.reason,
       previousHttpStatus: current.httpStatus,
       previousModel: current.model,
+      preservedDiagnosticKeys: Object.keys(pickDiagnostics(receipt)),
       label: label || 'normalize',
       popupRendered: Boolean($('hushReceiptPopup')),
       at: new Date().toISOString()
@@ -129,7 +173,7 @@
       var target = document.body;
       new MutationObserver(function () { normalize('dom-mutation'); }).observe(target, { childList: true, subtree: true, characterData: true });
     }
-    window.TD613_HUSH_PR141 = { version: VERSION, normalize: normalize, normalizeReceipt: normalizeReceipt };
+    window.TD613_HUSH_PR141 = { version: VERSION, normalize: normalize, normalizeReceipt: normalizeReceipt, pickDiagnostics: pickDiagnostics };
   }
 
   if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', boot, { once: true });
