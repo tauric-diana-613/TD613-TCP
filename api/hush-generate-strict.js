@@ -7,9 +7,9 @@ const corsHeaders = {
   'access-control-max-age': '86400'
 };
 
-const VERSION = 'strict-endpoint-pr168-review-map-diagnostic-hold';
-const REVIEW_VERSION = 'pr168-review-map-diagnostic-hold/v1';
-const ENDPOINT_META_VERSION = 'pr168-review-map-diagnostic-hold-meta/v1';
+const VERSION = 'strict-endpoint-pr171-upstream-retry-visibility';
+const REVIEW_VERSION = 'pr171-upstream-retry-visibility/v1';
+const ENDPOINT_META_VERSION = 'pr171-upstream-retry-visibility-meta/v1';
 
 function send(res, status, payload) {
   for (const [key, value] of Object.entries(corsHeaders)) res.setHeader(key, value);
@@ -82,6 +82,26 @@ function reviewMapCleared(payload = {}) {
     || candidates.some((candidate) => asArray(candidate.risk_flags).includes('server-deterministic-review-map-used'));
 }
 
+function upstreamSummary(payload = {}) {
+  const receipt = payload.requestReceipt || {};
+  const attempts = asArray(payload.attempts);
+  const stages = [...new Set(attempts.map((attempt) => Number.isFinite(Number(attempt.stage)) ? Number(attempt.stage) : null).filter((stage) => stage !== null))].sort((a, b) => a - b);
+  return {
+    upstreamProvider: safe(payload.provider),
+    upstreamModel: safe(payload.model),
+    upstreamProviderVersion: safe(payload.version || receipt.upstreamProviderVersion || receipt.providerVersion),
+    upstreamRotationVersion: safe(payload.rotationVersion || receipt.rotationVersion || receipt.reviewMapRepairVersion),
+    upstreamAttemptCount: attempts.length,
+    upstreamAttemptStages: stages,
+    upstreamAttemptModels: uniqueWarnings(attempts.map((attempt) => attempt.model)),
+    upstreamTimedOutCount: attempts.filter((attempt) => attempt.timedOut).length,
+    remoteRepairRetry: Boolean(receipt.remoteRepairRetry),
+    hardPacketRemoteRepairRetry: Boolean(receipt.hardPacketRemoteRepairRetry),
+    stageCount: Number(receipt.stageCount || stages.length || 0),
+    upstreamElapsedMs: Number(receipt.elapsedMs || 0)
+  };
+}
+
 function reviewServerRepair(payload = {}, contract = {}) {
   const sourceText = sourceTextFrom(contract);
   const warnings = uniqueWarnings(payload.warnings || []);
@@ -118,7 +138,9 @@ function strictHold(payload = {}, contract = {}, startedAt = Date.now(), review 
     'server-repair-not-auto-released',
     'no-local-fallback'
   ]);
+  const upstream = upstreamSummary(payload);
   return attachStrictReceiptMeta({
+    ...upstream,
     ok: false,
     provider: 'gemini-strict',
     model: payload.model || 'strict-anti-compression-review',
@@ -135,11 +157,13 @@ function strictHold(payload = {}, contract = {}, startedAt = Date.now(), review 
     providerErrorMessage: review?.reviewMapRepair ? 'Review-map repair is diagnostic scaffolding and was not released as transformed text.' : 'Strict direct endpoint held output after anti-compression review found no releasable remote candidate. The UI should remain responsive; this is a held result, not a transport timeout.',
     requestReceipt: {
       ...(payload.requestReceipt || {}),
+      ...upstream,
       strict: true,
       noFallback: true,
       providerVersion: VERSION,
       reviewVersion: REVIEW_VERSION,
-      upstreamProviderVersion: payload.version || '',
+      upstreamProviderVersion: upstream.upstreamProviderVersion,
+      upstreamRotationVersion: upstream.upstreamRotationVersion,
       antiCompression: true,
       reviewMapRepairHeld: Boolean(review?.reviewMapRepair),
       reviewMapCleared: Boolean(review?.reviewMapCleared),
@@ -160,8 +184,10 @@ function strictReviewRelease(payload = {}, contract = {}, startedAt = Date.now()
     'remote-provider-no-usable-candidate',
     'server-repair-passed-copy-review'
   ]);
+  const upstream = upstreamSummary(payload);
   return attachStrictReceiptMeta({
     ...payload,
+    ...upstream,
     ok: true,
     provider: 'gemini-strict-reviewed-repair',
     model: 'server-repair-reviewed',
@@ -174,6 +200,7 @@ function strictReviewRelease(payload = {}, contract = {}, startedAt = Date.now()
     warnings,
     requestReceipt: {
       ...(payload.requestReceipt || {}),
+      ...upstream,
       strict: true,
       noFallback: false,
       strictDirect: true,
@@ -184,6 +211,8 @@ function strictReviewRelease(payload = {}, contract = {}, startedAt = Date.now()
       fallbackReleaseReason: review.reason,
       releaseClass: review.releaseClass,
       reviewMapRepairReleased: false,
+      upstreamProviderVersion: upstream.upstreamProviderVersion,
+      upstreamRotationVersion: upstream.upstreamRotationVersion,
       elapsedMs: Date.now() - startedAt
     }
   }, contract, startedAt);
@@ -199,7 +228,7 @@ export default async function handler(req, res) {
       reviewVersion: REVIEW_VERSION,
       upstream: '/api/hush-generate',
       legacyProxy: false,
-      note: 'Strict endpoint calls the anti-compression generator directly and keeps review-map repair as diagnostic scaffolding, not transformed output.'
+      note: 'Strict endpoint calls the anti-compression generator directly and keeps review-map repair diagnostic-only while exposing upstream retry fields.'
     });
   }
   if (req.method !== 'POST') return send(res, 405, { ok: false, error: 'method-not-allowed', version: VERSION });
@@ -218,19 +247,24 @@ export default async function handler(req, res) {
       const review = reviewServerRepair(payload, contract);
       return send(res, 200, review.release ? strictReviewRelease(payload, contract, startedAt, review) : strictHold(payload, contract, startedAt, review));
     }
+    const upstream = upstreamSummary(payload);
     return send(res, response.status, attachStrictReceiptMeta({
       ...payload,
+      ...upstream,
       strict: true,
       noFallback: true,
       strictDirect: true,
       strictDirectVersion: VERSION,
       requestReceipt: {
         ...(payload.requestReceipt || {}),
+        ...upstream,
         strict: true,
         noFallback: true,
         strictDirect: true,
         strictDirectVersion: VERSION,
         endpointMetaVersion: ENDPOINT_META_VERSION,
+        upstreamProviderVersion: upstream.upstreamProviderVersion,
+        upstreamRotationVersion: upstream.upstreamRotationVersion,
         elapsedMs: Date.now() - startedAt
       }
     }, contract, startedAt));
