@@ -41,32 +41,3 @@
     hushPr117: '202606011755',
     hushPr118: '202606010342',
     hushPr119: '202606010312',
-    hushPr120: '202606010320',
-    hushPr121: '202606010350',
-    hushPr122: '202606010350',
-    hushPr123: '202606050009',
-    hushPr124: '202606050009',
-    hushPr130: '202606011235',
-    hushPr132: '202606050009',
-    hushPr141: '202606060425',
-    hushCompact: '202606060425',
-    hushVisualSystem: '202606060425',
-    gatewayHousekeeping: '202606010430',
-    hushPhase39: '202605301720'
-  };
-  var V = window.TD613_ASSET_VERSIONS;
-  document.write('<link rel="stylesheet" href="./styles.css?v=' + V.styles + '" />');
-  document.write('<link rel="stylesheet" href="./hush-phase39.css?v=' + V.hushPhase39 + '" />');
-  if (document.body && document.body.dataset && document.body.dataset.pageKind === 'adversarial-bench') {
-    document.write('<script type="module" src="./hush-phase39-ui.js?v=' + V.hushPhase39 + '"><\/script>');
-  } else {
-    window.addEventListener('DOMContentLoaded', function () {
-      if (document.body && document.body.dataset && document.body.dataset.pageKind === 'adversarial-bench') {
-        var script = document.createElement('script');
-        script.type = 'module';
-        script.src = './hush-phase39-ui.js?v=' + V.hushPhase39;
-        document.body.appendChild(script);
-      }
-    });
-  }
-}());
