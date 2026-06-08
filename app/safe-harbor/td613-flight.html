@@ -6154,6 +6154,660 @@ select {
 
 
 
+
+
+
+/* PR93_SENTINEL TD613 Flight mobile heading/rail/footer correction */
+/* PR94_SENTINEL TD613 Flight mobile correction replay */
+@media (hover: none) and (max-width: 820px), (pointer: coarse) and (max-width: 820px) {
+  header h1,
+  .flight-lane .card > h2,
+  .flight-lane-prompt .card > h2,
+  .flight-lane-output .card > h2,
+  .dev-drawer .card > h2 {
+    font-size: clamp(15px, 4.8vw, 20px) !important;
+    line-height: .94 !important;
+    letter-spacing: .065em !important;
+    overflow-wrap: anywhere !important;
+  }
+
+  .flight-lane-output .output-card > h2,
+  .flight-lane-output .seal-card h2,
+  .flight-lane-output .copy-bin-card h2 {
+    font-size: clamp(15px, 4.7vw, 19px) !important;
+  }
+
+  .dev-drawer .card > h2 {
+    font-size: clamp(14px, 4.5vw, 18px) !important;
+    letter-spacing: .055em !important;
+  }
+
+  .dev-drawer .card > h2:has(+ .section-note) {
+    font-size: clamp(14px, 4.4vw, 18px) !important;
+  }
+
+  .flight-lane-prompt > .card:nth-of-type(3),
+  .flight-lane-prompt > .card:nth-of-type(4) {
+    transform: translate(8px, 8px) !important;
+    -webkit-transform: translate(8px, 8px) !important;
+    max-width: calc(100% - 10px) !important;
+    margin-bottom: 11px !important;
+  }
+
+  .flight-lane-prompt .card .checkbox-row,
+  .flight-lane-prompt .card .radio-row {
+    display: flex !important;
+    flex-flow: row wrap !important;
+    align-items: flex-start !important;
+    align-content: flex-start !important;
+    justify-content: flex-start !important;
+    gap: 4px 5px !important;
+    width: 100% !important;
+    max-width: 100% !important;
+    overflow: visible !important;
+    grid-template-columns: none !important;
+  }
+
+  .flight-lane-prompt .card .checkbox-row > label,
+  .flight-lane-prompt .card .radio-row > label {
+    display: inline-flex !important;
+    flex: 0 1 auto !important;
+    align-items: center !important;
+    justify-content: flex-start !important;
+    gap: 4px !important;
+    width: fit-content !important;
+    min-width: 0 !important;
+    max-width: min(10.4rem, 44vw) !important;
+    min-height: 18px !important;
+    height: auto !important;
+    padding: 2px 6px !important;
+    border-radius: 999px !important;
+    font-size: 6.5px !important;
+    line-height: 1.06 !important;
+    letter-spacing: .002em !important;
+    white-space: normal !important;
+    overflow: visible !important;
+    overflow-wrap: anywhere !important;
+    text-overflow: clip !important;
+    text-align: left !important;
+  }
+
+  .flight-lane-prompt .card .checkbox-row > label:nth-child(3n+1),
+  .flight-lane-prompt .card .radio-row > label:nth-child(3n+1) {
+    max-width: min(8.8rem, 39vw) !important;
+  }
+
+  .flight-lane-prompt .card .checkbox-row > label:nth-child(3n+2),
+  .flight-lane-prompt .card .radio-row > label:nth-child(3n+2) {
+    max-width: min(11.2rem, 47vw) !important;
+  }
+
+  .flight-lane-prompt .card .checkbox-row > label > input[type="checkbox"],
+  .flight-lane-prompt .card .radio-row > label > input[type="radio"] {
+    flex: 0 0 auto !important;
+    width: 8px !important;
+    min-width: 8px !important;
+    height: 8px !important;
+    min-height: 8px !important;
+    margin: 0 !important;
+  }
+
+  .flight-lane-prompt .card .checkbox-row > label:has(input[type="text"]),
+  .flight-lane-prompt .card .radio-row > label:has(input[type="text"]) {
+    flex: 0 1 auto !important;
+    width: fit-content !important;
+    min-width: 0 !important;
+    max-width: min(10.8rem, 45vw) !important;
+    border-radius: 14px !important;
+  }
+
+  .flight-lane-prompt .card .checkbox-row > label input[type="text"],
+  .flight-lane-prompt .card .radio-row > label input[type="text"] {
+    width: clamp(3.8rem, 18vw, 5.8rem) !important;
+    min-width: 0 !important;
+    max-width: 100% !important;
+    height: 13px !important;
+    min-height: 13px !important;
+    padding: 1px 4px !important;
+    font-size: 6.5px !important;
+    line-height: 1 !important;
+  }
+
+  .flight-lane-output .seal-card .section-note,
+  .flight-lane-output .copy-bin-card .section-note {
+    font-size: 8px !important;
+    line-height: 1.15 !important;
+    margin: 4px 0 7px !important;
+  }
+
+  .mobile-prompt-rail.mobile-prompt-rail-top {
+    position: static !important;
+    display: flex !important;
+    float: none !important;
+    inset: auto !important;
+    right: auto !important;
+    bottom: auto !important;
+    left: auto !important;
+    z-index: auto !important;
+    width: fit-content !important;
+    min-width: 0 !important;
+    max-width: min(60vw, 14rem) !important;
+    min-height: 18px !important;
+    margin: 7px 0 10px auto !important;
+    padding: 2px 6px !important;
+    gap: 4px !important;
+    justify-content: flex-end !important;
+    align-items: center !important;
+    border-color: rgba(255, 210, 98, .66) !important;
+    background:
+      linear-gradient(180deg, rgba(118, 69, 18, .96), rgba(34, 16, 5, .96)) !important;
+    box-shadow: 0 0 14px rgba(255, 177, 59, .18), inset 0 1px 0 rgba(255, 239, 196, .14) !important;
+  }
+
+  .mobile-prompt-rail.mobile-prompt-rail-top span:first-child {
+    font-size: 4.5px !important;
+    line-height: 1 !important;
+    letter-spacing: .12em !important;
+    color: rgba(255, 239, 196, .92) !important;
+    white-space: nowrap !important;
+  }
+
+  .mobile-prompt-rail.mobile-prompt-rail-top .mobile-prompt-rail-pill {
+    min-width: 11px !important;
+    padding: 1px 4px !important;
+    font-size: 6px !important;
+    line-height: 1 !important;
+    color: rgba(255, 229, 133, .96) !important;
+    border-color: rgba(255, 210, 98, .5) !important;
+    background: rgba(72, 38, 10, .78) !important;
+  }
+
+  .dev-drawer .section-split-row {
+    display: grid !important;
+    grid-template-columns: minmax(0, .96fr) minmax(0, 1.04fr) !important;
+    gap: 7px !important;
+    align-items: start !important;
+  }
+
+  .dev-drawer .section-split-row > div {
+    min-width: 0 !important;
+    width: 100% !important;
+    max-width: 100% !important;
+    overflow: visible !important;
+    padding: 7px !important;
+    box-sizing: border-box !important;
+  }
+
+  .dev-drawer .section-split-row h3 {
+    font-size: 9px !important;
+    line-height: 1.02 !important;
+  }
+
+  .dev-drawer .section-split-row .small-label {
+    font-size: 6px !important;
+    line-height: 1.05 !important;
+    letter-spacing: .07em !important;
+  }
+
+  .dev-drawer .section-split-row input,
+  .dev-drawer .section-split-row .date-field {
+    width: 100% !important;
+    max-width: 100% !important;
+    min-width: 0 !important;
+    box-sizing: border-box !important;
+    font-size: 7px !important;
+    min-height: 18px !important;
+    height: 18px !important;
+    padding: 2px 6px !important;
+  }
+
+  .dev-drawer .section-split-row .date-field {
+    display: grid !important;
+    grid-template-columns: minmax(0, 1fr) auto !important;
+    gap: 3px !important;
+    height: auto !important;
+    padding: 0 !important;
+  }
+
+  .dev-drawer .section-split-row .date-field .icon-btn {
+    width: 18px !important;
+    height: 18px !important;
+    min-width: 18px !important;
+    min-height: 18px !important;
+    padding: 2px !important;
+  }
+
+  .dev-drawer .section-split-row .row {
+    gap: 4px !important;
+    align-items: start !important;
+  }
+
+  .dev-drawer .section-split-row .checkbox-row > label {
+    max-width: min(7.4rem, 43vw) !important;
+    font-size: 5.7px !important;
+    line-height: 1.04 !important;
+    padding: 2px 5px !important;
+  }
+
+  .output-card .status-bar {
+    display: grid !important;
+    grid-template-columns: minmax(0, 1fr) auto !important;
+    grid-template-areas: "counts auth" ". payload" !important;
+    gap: 4px 8px !important;
+    align-items: center !important;
+  }
+
+  .output-card #statusCounts {
+    grid-area: counts !important;
+  }
+
+  .output-card .output-auth-toggle {
+    grid-area: auth !important;
+    justify-self: end !important;
+    margin-left: 0 !important;
+  }
+
+  .output-card .status-bar .payload-stepper {
+    grid-area: payload !important;
+    justify-self: end !important;
+    align-self: start !important;
+    width: auto !important;
+    min-width: 76px !important;
+    max-width: 96px !important;
+    height: 18px !important;
+    min-height: 18px !important;
+    margin: -1px 0 0 !important;
+    padding: 1px 4px !important;
+    gap: 3px !important;
+    transform: none !important;
+    -webkit-transform: none !important;
+  }
+
+  .output-card .status-bar .payload-stepper-label {
+    font-size: 5px !important;
+    line-height: 1 !important;
+    max-width: 34px !important;
+  }
+
+  .output-card .status-bar .payload-stepper-value {
+    font-size: 7px !important;
+    line-height: 1 !important;
+  }
+
+  .output-card .status-bar .payload-stepper-btn,
+  .output-card .status-bar .payload-stepper .icon-btn {
+    width: 14px !important;
+    min-width: 14px !important;
+    height: 14px !important;
+    min-height: 14px !important;
+    padding: 0 !important;
+    font-size: 8px !important;
+    line-height: 1 !important;
+  }
+
+  .output-card .output-toolbar {
+    margin-top: 6px !important;
+    gap: 6px !important;
+  }
+}
+
+
+
+
+
+/* PR80_SENTINEL TD613 Flight PR80 mobile chrome restoration */
+@media (max-width: 820px) {
+  html,
+  body {
+    -webkit-text-size-adjust: 100% !important;
+    text-size-adjust: 100% !important;
+  }
+
+  html body .page-wrap {
+    grid-template-rows: auto auto minmax(0, 1fr) !important;
+  }
+
+  html body .page-wrap header {
+    position: relative !important;
+    display: grid !important;
+    grid-template-areas: "title" "nav" "text" "tags" "howto" !important;
+    grid-template-columns: minmax(0, 1fr) !important;
+    gap: 8px !important;
+    padding: 14px 14px 12px !important;
+    margin-bottom: 10px !important;
+    overflow: hidden !important;
+    max-height: none !important;
+    opacity: 1 !important;
+    pointer-events: auto !important;
+    transform: none !important;
+    transition: none !important;
+  }
+
+  html body .page-wrap header h1 {
+    grid-area: title !important;
+    font-size: clamp(26px, 7.2vw, 38px) !important;
+    line-height: .98 !important;
+    max-width: 100% !important;
+    margin: 0 !important;
+  }
+
+  html body .page-wrap header h1::after {
+    content: "SAFE HARBOR ISSUE" !important;
+    display: block !important;
+    font-size: 8px !important;
+    line-height: 1.25 !important;
+    letter-spacing: .18em !important;
+    margin-top: 6px !important;
+  }
+
+  html body .page-wrap header .flight-quick-nav {
+    grid-area: nav !important;
+    position: static !important;
+    inset: auto !important;
+    display: flex !important;
+    flex-wrap: nowrap !important;
+    justify-content: flex-end !important;
+    align-items: center !important;
+    gap: 5px !important;
+    width: 100% !important;
+    max-width: 100% !important;
+    min-width: 0 !important;
+    padding: 0 !important;
+    margin: -2px 0 0 auto !important;
+    overflow: visible !important;
+    transform: none !important;
+    z-index: 3 !important;
+  }
+
+  html body .page-wrap header .flight-quick-nav > a,
+  html body .page-wrap header .flight-quick-nav > button {
+    flex: 0 0 auto !important;
+    width: auto !important;
+    min-width: 0 !important;
+    max-width: none !important;
+    min-height: 18px !important;
+    height: 18px !important;
+    padding: 3px 8px !important;
+    border: 1px solid rgba(137,255,240,.32) !important;
+    border-radius: 4px !important;
+    clip-path: polygon(0 4px, 4px 0, calc(100% - 4px) 0, 100% 4px, 100% 100%, 4px 100%, 0 calc(100% - 4px)) !important;
+    background: linear-gradient(180deg, rgba(13,55,49,.82), rgba(3,17,16,.95)) !important;
+    box-shadow: inset 0 1px 0 rgba(245,255,246,.10), 0 0 10px rgba(49,255,138,.08) !important;
+    color: rgba(232,255,242,.90) !important;
+    font-size: 7px !important;
+    line-height: 1 !important;
+    letter-spacing: .10em !important;
+    white-space: nowrap !important;
+    overflow-wrap: normal !important;
+    text-align: center !important;
+  }
+
+  html body .page-wrap header .flight-quick-nav > .flight-nav-signout,
+  html body .page-wrap header .flight-quick-nav > button.flight-nav-signout {
+    min-height: 0 !important;
+    height: auto !important;
+    padding: 2px !important;
+    border: 0 !important;
+    border-radius: 0 !important;
+    clip-path: none !important;
+    background: transparent !important;
+    box-shadow: none !important;
+    color: rgba(49,255,138,.82) !important;
+    font-size: 6px !important;
+    letter-spacing: .13em !important;
+  }
+
+  html body .page-wrap header .subtitle {
+    grid-area: text !important;
+    padding-top: 0 !important;
+    padding-left: 12px !important;
+    font-size: 10px !important;
+    line-height: 1.25 !important;
+    max-width: 100% !important;
+  }
+
+  html body .page-wrap header .pill-row {
+    grid-area: tags !important;
+    display: flex !important;
+    flex-wrap: wrap !important;
+    align-items: center !important;
+    justify-content: flex-start !important;
+    gap: 3px 8px !important;
+    width: 100% !important;
+    min-width: 0 !important;
+    overflow: visible !important;
+    padding: 0 0 3px !important;
+    white-space: normal !important;
+  }
+
+  html body .page-wrap header .pill-row > *,
+  html body .page-wrap header .pill-row .pill {
+    flex: 0 0 auto !important;
+    width: auto !important;
+    min-width: 0 !important;
+    max-width: 100% !important;
+    min-height: 0 !important;
+    margin: 0 !important;
+    padding: 0 8px 0 0 !important;
+    border: 0 !important;
+    border-right: 1px solid rgba(137,255,240,.25) !important;
+    border-radius: 0 !important;
+    clip-path: none !important;
+    background: transparent !important;
+    box-shadow: none !important;
+    color: rgba(190,255,223,.78) !important;
+    font-size: 6px !important;
+    line-height: 1.1 !important;
+    letter-spacing: .12em !important;
+    white-space: nowrap !important;
+    text-transform: uppercase !important;
+  }
+
+  html body .page-wrap header details.howto { grid-area: howto !important; }
+
+  html body .mobile-flight-switcher {
+    position: relative !important;
+    top: auto !important;
+    z-index: 20 !important;
+    overflow: visible !important;
+    margin-bottom: 8px !important;
+  }
+
+  html body .mobile-flight-switcher::after { content: none !important; }
+
+  html body .grid > .flight-lane {
+    transition: transform .34s cubic-bezier(.18,.82,.16,1) !important;
+  }
+
+  html body.flight-dragging .grid > .flight-lane {
+    transition: none !important;
+  }
+
+  html body .mobile-flight-switcher .mobile-lane-tab {
+    min-height: 24px !important;
+    padding: 3px 8px !important;
+    font-size: 8px !important;
+  }
+
+  html body .mobile-flight-switcher .mobile-lane-tab span { font-size: 8px !important; }
+  html body .mobile-flight-switcher .mobile-lane-tab small { font-size: 5px !important; }
+
+  html body .flight-lane .card,
+  html body .flight-lane .dev-drawer,
+  html body .flight-lane .output-card,
+  html body .flight-lane .seal-card,
+  html body .flight-lane .copy-bin-card {
+    padding: 10px 10px 11px 16px !important;
+    margin-bottom: 9px !important;
+    overflow: hidden !important;
+  }
+
+  html body .flight-lane .card h2,
+  html body .flight-lane .output-card h2,
+  html body .flight-lane .seal-card h2 {
+    font-size: 17px !important;
+    line-height: 1.05 !important;
+    letter-spacing: .12em !important;
+  }
+
+  html body .flight-lane p,
+  html body .flight-lane .muted,
+  html body .flight-lane .help,
+  html body .flight-lane .note,
+  html body .flight-lane .warning {
+    font-size: 11px !important;
+    line-height: 1.24 !important;
+  }
+
+  html body .flight-lane .checkbox-row,
+  html body .flight-lane .radio-row,
+  html body .flight-lane .copy-grid,
+  html body .flight-lane .seal-lozenge-row,
+  html body .flight-lane .row {
+    display: flex !important;
+    flex-direction: row !important;
+    flex-wrap: wrap !important;
+    align-items: flex-start !important;
+    justify-content: flex-start !important;
+    gap: 4px 5px !important;
+    overflow: visible !important;
+    width: 100% !important;
+    grid-template-columns: none !important;
+  }
+
+  html body .flight-lane .checkbox-row > label,
+  html body .flight-lane .radio-row > label,
+  html body .flight-lane .copy-chip,
+  html body .flight-lane .row > .btn,
+  html body .flight-lane .row > button,
+  html body .flight-lane button.btn,
+  html body .flight-lane button.primary,
+  html body .flight-lane button.secondary,
+  html body .flight-lane button.ghost {
+    display: inline-flex !important;
+    flex: 0 1 auto !important;
+    align-items: center !important;
+    justify-content: flex-start !important;
+    width: auto !important;
+    min-width: 0 !important;
+    max-width: 100% !important;
+    min-height: 18px !important;
+    max-height: none !important;
+    padding: 3px 7px !important;
+    border-radius: 999px !important;
+    font-size: 7px !important;
+    line-height: 1.06 !important;
+    letter-spacing: .025em !important;
+    white-space: normal !important;
+    overflow: hidden !important;
+    overflow-wrap: anywhere !important;
+    text-align: left !important;
+  }
+
+  html body .flight-lane-prompt .checkbox-row > label,
+  html body .flight-lane-prompt .radio-row > label {
+    max-width: calc(50% - 5px) !important;
+  }
+
+  html body .flight-lane-output .checkbox-row > label,
+  html body .flight-lane-output .radio-row > label,
+  html body .flight-lane-output .copy-chip {
+    max-width: 100% !important;
+  }
+
+  html body .flight-lane #btnGenerate,
+  html body .flight-lane #btnRandomizer,
+  html body .flight-lane #btnResetControls,
+  html body .flight-lane #btnClearInput,
+  html body .flight-lane #btnClear,
+  html body .flight-lane .output-toolbar button,
+  html body .flight-lane .payload-stepper button {
+    flex: 0 0 auto !important;
+    width: auto !important;
+    max-width: none !important;
+    min-height: 20px !important;
+    max-height: 28px !important;
+    padding: 3px 7px !important;
+    font-size: 7px !important;
+    text-align: center !important;
+    justify-content: center !important;
+    white-space: nowrap !important;
+    overflow: hidden !important;
+  }
+
+  html body .flight-lane input[type="checkbox"],
+  html body .flight-lane input[type="radio"] {
+    flex: 0 0 8px !important;
+    width: 8px !important;
+    min-width: 8px !important;
+    height: 8px !important;
+    margin: 0 4px 0 0 !important;
+  }
+
+  html body .flight-lane textarea,
+  html body .flight-lane .output,
+  html body .flight-lane #taskText {
+    font-size: 9px !important;
+    line-height: 1.18 !important;
+    letter-spacing: .005em !important;
+    padding: 8px 9px !important;
+  }
+
+  html body .flight-lane #taskText,
+  html body .flight-lane .output {
+    min-height: 74px !important;
+    height: clamp(74px, 9dvh, 102px) !important;
+    max-height: 120px !important;
+  }
+
+  html body .flight-lane input[type="text"],
+  html body .flight-lane input[type="number"],
+  html body .flight-lane select {
+    font-size: 9px !important;
+    line-height: 1.12 !important;
+    padding: 3px 6px !important;
+  }
+
+  html body .mobile-prompt-rail,
+  html body .mobile-prompt-rail.mobile-prompt-rail-top,
+  html body .mobile-prompt-rail.is-docked {
+    min-height: 22px !important;
+    padding: 4px 8px 4px 10px !important;
+    gap: 6px !important;
+    justify-content: flex-end !important;
+  }
+
+  html body .mobile-prompt-rail span:first-child { font-size: 7px !important; }
+  html body .mobile-prompt-rail-pill { font-size: 6px !important; padding: 2px 5px !important; }
+
+  .td613-swipe-intro {
+    position: fixed;
+    inset: 0;
+    z-index: 9999;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    pointer-events: none;
+    color: rgba(49,255,138,.92);
+    font-size: clamp(24px, 10vw, 48px);
+    line-height: 1;
+    letter-spacing: .16em;
+    text-shadow: 0 0 10px rgba(49,255,138,.72), 0 0 26px rgba(49,255,138,.35);
+    animation: td613SwipeIntro 2.35s ease-out forwards;
+  }
+
+  @keyframes td613SwipeIntro {
+    0% { opacity: 0; transform: translateX(18px); }
+    12% { opacity: 1; transform: translateX(0); }
+    28% { opacity: .28; transform: translateX(-14px); }
+    44% { opacity: 1; transform: translateX(0); }
+    60% { opacity: .28; transform: translateX(-14px); }
+    76% { opacity: 1; transform: translateX(0); }
+    100% { opacity: 0; transform: translateX(-28px); }
+  }
+}
+
+
 /* PR90_SENTINEL TD613 Flight seal side-by-side target/zwnj repair */
 @media (hover: none), (pointer: coarse), (max-width: 820px) {
   .flight-lane .seal-card .section-split-row {
@@ -6902,600 +7556,46 @@ select {
   }
 }
 
-
-
-
-/* === TD613 Flight PR78 absolute mobile lanes === */
+/* PR166_SENTINEL TD613 Flight mobile vertical scroll unlock */
 @media (max-width: 820px) {
   html,
-  body {
-    width: 100% !important;
-    max-width: 100% !important;
-    min-width: 0 !important;
-    height: 100dvh !important;
-    max-height: 100dvh !important;
-    overflow: hidden !important;
-    -webkit-text-size-adjust: 100% !important;
-    overscroll-behavior: none !important;
+  body,
+  html[data-flight-shi-cached="true"] body.flight-locked,
+  body.flight-locked {
+    height: auto !important;
+    min-height: 100dvh !important;
+    max-height: none !important;
+    overflow-x: hidden !important;
+    overflow-y: auto !important;
+    overscroll-behavior-y: auto !important;
   }
-
-  body { touch-action: pan-y !important; }
 
   .page-wrap {
-    display: grid !important;
-    grid-template-rows: auto auto minmax(0, 1fr) !important;
-    width: 100vw !important;
-    max-width: 100vw !important;
-    min-width: 0 !important;
-    height: 100dvh !important;
-    min-height: 0 !important;
-    overflow: hidden !important;
-    padding: .42rem !important;
-    gap: .34rem !important;
-  }
-
-  header,
-  .mobile-flight-switcher,
-  .grid,
-  .flight-lane,
-  .card,
-  .dev-drawer,
-  .output-card,
-  .seal-card,
-  .copy-bin-card,
-  .pill-row,
-  .flight-quick-nav {
-    width: 100% !important;
-    max-width: 100% !important;
-    min-width: 0 !important;
-    box-sizing: border-box !important;
-  }
-
-  header {
-    overflow: hidden !important;
-    padding: .58rem .58rem .56rem !important;
-    border-radius: 18px !important;
-  }
-
-  .pill-row,
-  .flight-quick-nav { overflow: hidden !important; }
-
-  .mobile-flight-switcher {
-    display: grid !important;
-    grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
-    gap: .28rem !important;
-  }
-
-  .mobile-lane-tab {
-    min-width: 0 !important;
-    min-height: 1.62rem !important;
-    padding: .18rem .3rem !important;
-    border-radius: 999px !important;
-  }
-
-  .grid,
-  body.flight-output-active .grid,
-  html[data-flight-mobile-lane="output"] .grid,
-  html[data-flight-mobile-lane="prompt"] .grid {
-    position: relative !important;
-    display: block !important;
-    width: 100% !important;
-    max-width: 100% !important;
-    min-width: 0 !important;
-    height: 100% !important;
-    min-height: 0 !important;
-    overflow: hidden !important;
-    transform: none !important;
-    transition: none !important;
-    touch-action: pan-y !important;
-  }
-
-  .grid > .flight-lane,
-  body.flight-output-active .grid > .flight-lane,
-  html[data-flight-mobile-lane="output"] .grid > .flight-lane,
-  html[data-flight-mobile-lane="prompt"] .grid > .flight-lane {
-    position: absolute !important;
-    inset: 0 !important;
-    display: block !important;
-    visibility: visible !important;
-    opacity: 1 !important;
-    width: 100% !important;
-    max-width: 100% !important;
-    min-width: 0 !important;
-    height: 100% !important;
-    min-height: 0 !important;
-    padding: .14rem .46rem 4.2rem !important;
-    box-sizing: border-box !important;
-    overflow-y: auto !important;
-    overflow-x: hidden !important;
-    -webkit-overflow-scrolling: touch !important;
-    scroll-snap-align: none !important;
-    transition: transform .34s cubic-bezier(.18,.82,.16,1) !important;
-    will-change: transform !important;
-  }
-
-  .grid > .flight-lane-prompt { transform: translate3d(0, 0, 0) !important; }
-  .grid > .flight-lane-output { transform: translate3d(100%, 0, 0) !important; }
-  html[data-flight-mobile-lane="output"] .grid > .flight-lane-prompt,
-  body.flight-output-active .grid > .flight-lane-prompt { transform: translate3d(-100%, 0, 0) !important; }
-  html[data-flight-mobile-lane="output"] .grid > .flight-lane-output,
-  body.flight-output-active .grid > .flight-lane-output { transform: translate3d(0, 0, 0) !important; }
-  body.flight-dragging .grid > .flight-lane { transition: none !important; }
-
-  .grid > :not(.flight-lane-prompt):not(.flight-lane-output) { display: none !important; }
-  .flight-lane * { max-width: 100% !important; box-sizing: border-box !important; }
-
-  .card,
-  .dev-drawer,
-  .output-card,
-  .seal-card,
-  .copy-bin-card {
-    overflow: hidden !important;
-    padding: .58rem .56rem .62rem .86rem !important;
-    margin-bottom: .48rem !important;
-    border-radius: 16px !important;
-  }
-
-  .checkbox-row,
-  .radio-row,
-  .copy-grid,
-  .row,
-  .seal-card .radio-row,
-  .seal-card .checkbox-row {
-    display: flex !important;
-    flex-direction: row !important;
-    flex-wrap: wrap !important;
-    align-items: flex-start !important;
-    justify-content: flex-start !important;
-    gap: .22rem .26rem !important;
-    grid-template-columns: none !important;
-    width: 100% !important;
-    min-width: 0 !important;
-    max-width: 100% !important;
-    overflow: hidden !important;
-  }
-
-  .checkbox-row label,
-  .radio-row label,
-  .copy-chip,
-  .row .btn,
-  .seal-card .radio-row label,
-  .seal-card .checkbox-row label {
-    flex: 0 1 auto !important;
-    width: auto !important;
-    min-width: 0 !important;
-    max-width: 100% !important;
-    min-height: 1.22rem !important;
-    padding: .2rem .42rem !important;
-    border-radius: 999px !important;
-    font-size: .44rem !important;
-    line-height: 1.08 !important;
-    white-space: normal !important;
-    overflow-wrap: anywhere !important;
-    text-align: left !important;
-    justify-content: flex-start !important;
-  }
-
-  .checkbox-row input[type="checkbox"],
-  .radio-row input[type="radio"] {
-    flex: 0 0 .48rem !important;
-    width: .48rem !important;
-    min-width: .48rem !important;
-    height: .48rem !important;
-    margin: 0 .18rem 0 0 !important;
-  }
-
-  .checkbox-row label:has(input[type="text"]),
-  .radio-row label:has(input[type="text"]) { flex: 1 1 9rem !important; }
-
-  textarea,
-  input,
-  select,
-  .output,
-  #taskText {
-    max-width: 100% !important;
-    font-size: 16px !important;
-    line-height: 1.2 !important;
-  }
-
-  #taskText,
-  .output {
-    min-height: 5.65rem !important;
-    height: clamp(5.8rem, 18dvh, 7.2rem) !important;
-    max-height: 20dvh !important;
-    padding: .58rem .62rem !important;
-  }
-
-  .output-toolbar {
-    display: flex !important;
-    flex-direction: row !important;
-    align-items: center !important;
-    justify-content: space-between !important;
-    gap: .2rem !important;
-    width: 100% !important;
-  }
-
-  .output-toolbar .row { width: auto !important; flex: 0 1 auto !important; }
-  .output-toolbar .row .btn { flex: 0 0 auto !important; }
-  .payload-stepper { align-self: center !important; margin-left: auto !important; }
-
-  .mobile-prompt-rail,
-  .mobile-prompt-rail.mobile-prompt-rail-top,
-  .mobile-prompt-rail.is-docked {
-    position: static !important;
-    display: flex !important;
-    align-items: center !important;
-    justify-content: flex-end !important;
-    width: max-content !important;
-    max-width: 100% !important;
-    min-height: 1.22rem !important;
-    margin: .64rem 0 .64rem auto !important;
-    padding: .3rem .42rem .3rem .62rem !important;
-    border-radius: 999px !important;
-    gap: .36rem !important;
-    float: none !important;
-    text-align: right !important;
-  }
-
-  .mobile-prompt-rail:not(.mobile-prompt-rail-top) { display: none !important; }
-  html[data-flight-mobile-lane="output"] .mobile-prompt-rail,
-  body.flight-output-active .mobile-prompt-rail { display: none !important; }
-  .mobile-prompt-rail span:first-child { font-size: .44rem !important; white-space: nowrap !important; }
-  .mobile-prompt-rail-pill { font-size: .32rem !important; padding: .12rem .24rem !important; white-space: nowrap !important; }
-  .mobile-output-return { display: inline-flex !important; }
-  .dev-drawer { margin-top: .42rem !important; margin-bottom: .72rem !important; }
-}
-
-
-/* PR80_SENTINEL TD613 Flight PR80 mobile chrome restoration */
-@media (max-width: 820px) {
-  html,
-  body {
-    -webkit-text-size-adjust: 100% !important;
-    text-size-adjust: 100% !important;
-  }
-
-  html body .page-wrap {
-    grid-template-rows: auto auto minmax(0, 1fr) !important;
-  }
-
-  html body .page-wrap header {
-    position: relative !important;
-    display: grid !important;
-    grid-template-areas: "title" "nav" "text" "tags" "howto" !important;
-    grid-template-columns: minmax(0, 1fr) !important;
-    gap: 8px !important;
-    padding: 14px 14px 12px !important;
-    margin-bottom: 10px !important;
-    overflow: hidden !important;
-    max-height: none !important;
-    opacity: 1 !important;
-    pointer-events: auto !important;
-    transform: none !important;
-    transition: none !important;
-  }
-
-  html body .page-wrap header h1 {
-    grid-area: title !important;
-    font-size: clamp(26px, 7.2vw, 38px) !important;
-    line-height: .98 !important;
-    max-width: 100% !important;
-    margin: 0 !important;
-  }
-
-  html body .page-wrap header h1::after {
-    content: "SAFE HARBOR ISSUE" !important;
-    display: block !important;
-    font-size: 8px !important;
-    line-height: 1.25 !important;
-    letter-spacing: .18em !important;
-    margin-top: 6px !important;
-  }
-
-  html body .page-wrap header .flight-quick-nav {
-    grid-area: nav !important;
-    position: static !important;
-    inset: auto !important;
-    display: flex !important;
-    flex-wrap: nowrap !important;
-    justify-content: flex-end !important;
-    align-items: center !important;
-    gap: 5px !important;
-    width: 100% !important;
-    max-width: 100% !important;
-    min-width: 0 !important;
-    padding: 0 !important;
-    margin: -2px 0 0 auto !important;
-    overflow: visible !important;
-    transform: none !important;
-    z-index: 3 !important;
-  }
-
-  html body .page-wrap header .flight-quick-nav > a,
-  html body .page-wrap header .flight-quick-nav > button {
-    flex: 0 0 auto !important;
-    width: auto !important;
-    min-width: 0 !important;
-    max-width: none !important;
-    min-height: 18px !important;
-    height: 18px !important;
-    padding: 3px 8px !important;
-    border: 1px solid rgba(137,255,240,.32) !important;
-    border-radius: 4px !important;
-    clip-path: polygon(0 4px, 4px 0, calc(100% - 4px) 0, 100% 4px, 100% 100%, 4px 100%, 0 calc(100% - 4px)) !important;
-    background: linear-gradient(180deg, rgba(13,55,49,.82), rgba(3,17,16,.95)) !important;
-    box-shadow: inset 0 1px 0 rgba(245,255,246,.10), 0 0 10px rgba(49,255,138,.08) !important;
-    color: rgba(232,255,242,.90) !important;
-    font-size: 7px !important;
-    line-height: 1 !important;
-    letter-spacing: .10em !important;
-    white-space: nowrap !important;
-    overflow-wrap: normal !important;
-    text-align: center !important;
-  }
-
-  html body .page-wrap header .flight-quick-nav > .flight-nav-signout,
-  html body .page-wrap header .flight-quick-nav > button.flight-nav-signout {
-    min-height: 0 !important;
     height: auto !important;
-    padding: 2px !important;
-    border: 0 !important;
-    border-radius: 0 !important;
-    clip-path: none !important;
-    background: transparent !important;
-    box-shadow: none !important;
-    color: rgba(49,255,138,.82) !important;
-    font-size: 6px !important;
-    letter-spacing: .13em !important;
-  }
-
-  html body .page-wrap header .subtitle {
-    grid-area: text !important;
-    padding-top: 0 !important;
-    padding-left: 12px !important;
-    font-size: 10px !important;
-    line-height: 1.25 !important;
-    max-width: 100% !important;
-  }
-
-  html body .page-wrap header .pill-row {
-    grid-area: tags !important;
-    display: flex !important;
-    flex-wrap: wrap !important;
-    align-items: center !important;
-    justify-content: flex-start !important;
-    gap: 3px 8px !important;
-    width: 100% !important;
-    min-width: 0 !important;
-    overflow: visible !important;
-    padding: 0 0 3px !important;
-    white-space: normal !important;
-  }
-
-  html body .page-wrap header .pill-row > *,
-  html body .page-wrap header .pill-row .pill {
-    flex: 0 0 auto !important;
-    width: auto !important;
-    min-width: 0 !important;
-    max-width: 100% !important;
-    min-height: 0 !important;
-    margin: 0 !important;
-    padding: 0 8px 0 0 !important;
-    border: 0 !important;
-    border-right: 1px solid rgba(137,255,240,.25) !important;
-    border-radius: 0 !important;
-    clip-path: none !important;
-    background: transparent !important;
-    box-shadow: none !important;
-    color: rgba(190,255,223,.78) !important;
-    font-size: 6px !important;
-    line-height: 1.1 !important;
-    letter-spacing: .12em !important;
-    white-space: nowrap !important;
-    text-transform: uppercase !important;
-  }
-
-  html body .page-wrap header details.howto { grid-area: howto !important; }
-
-  html body .mobile-flight-switcher {
-    position: relative !important;
-    top: auto !important;
-    z-index: 20 !important;
-    overflow: visible !important;
-    margin-bottom: 8px !important;
-  }
-
-  html body .mobile-flight-switcher::after { content: none !important; }
-
-  html body .grid > .flight-lane {
-    transition: transform .34s cubic-bezier(.18,.82,.16,1) !important;
-  }
-
-  html body.flight-dragging .grid > .flight-lane {
-    transition: none !important;
-  }
-
-  html body .mobile-flight-switcher .mobile-lane-tab {
-    min-height: 24px !important;
-    padding: 3px 8px !important;
-    font-size: 8px !important;
-  }
-
-  html body .mobile-flight-switcher .mobile-lane-tab span { font-size: 8px !important; }
-  html body .mobile-flight-switcher .mobile-lane-tab small { font-size: 5px !important; }
-
-  html body .flight-lane .card,
-  html body .flight-lane .dev-drawer,
-  html body .flight-lane .output-card,
-  html body .flight-lane .seal-card,
-  html body .flight-lane .copy-bin-card {
-    padding: 10px 10px 11px 16px !important;
-    margin-bottom: 9px !important;
-    overflow: hidden !important;
-  }
-
-  html body .flight-lane .card h2,
-  html body .flight-lane .output-card h2,
-  html body .flight-lane .seal-card h2 {
-    font-size: 17px !important;
-    line-height: 1.05 !important;
-    letter-spacing: .12em !important;
-  }
-
-  html body .flight-lane p,
-  html body .flight-lane .muted,
-  html body .flight-lane .help,
-  html body .flight-lane .note,
-  html body .flight-lane .warning {
-    font-size: 11px !important;
-    line-height: 1.24 !important;
-  }
-
-  html body .flight-lane .checkbox-row,
-  html body .flight-lane .radio-row,
-  html body .flight-lane .copy-grid,
-  html body .flight-lane .seal-lozenge-row,
-  html body .flight-lane .row {
-    display: flex !important;
-    flex-direction: row !important;
-    flex-wrap: wrap !important;
-    align-items: flex-start !important;
-    justify-content: flex-start !important;
-    gap: 4px 5px !important;
-    overflow: visible !important;
-    width: 100% !important;
-    grid-template-columns: none !important;
-  }
-
-  html body .flight-lane .checkbox-row > label,
-  html body .flight-lane .radio-row > label,
-  html body .flight-lane .copy-chip,
-  html body .flight-lane .row > .btn,
-  html body .flight-lane .row > button,
-  html body .flight-lane button.btn,
-  html body .flight-lane button.primary,
-  html body .flight-lane button.secondary,
-  html body .flight-lane button.ghost {
-    display: inline-flex !important;
-    flex: 0 1 auto !important;
-    align-items: center !important;
-    justify-content: flex-start !important;
-    width: auto !important;
-    min-width: 0 !important;
-    max-width: 100% !important;
-    min-height: 18px !important;
+    min-height: 100dvh !important;
     max-height: none !important;
-    padding: 3px 7px !important;
-    border-radius: 999px !important;
-    font-size: 7px !important;
-    line-height: 1.06 !important;
-    letter-spacing: .025em !important;
-    white-space: normal !important;
-    overflow: hidden !important;
-    overflow-wrap: anywhere !important;
-    text-align: left !important;
+    overflow: visible !important;
   }
 
-  html body .flight-lane-prompt .checkbox-row > label,
-  html body .flight-lane-prompt .radio-row > label {
-    max-width: calc(50% - 5px) !important;
+  .grid {
+    display: block !important;
+    height: auto !important;
+    min-height: 0 !important;
+    max-height: none !important;
+    overflow: visible !important;
+    scroll-snap-type: none !important;
   }
 
-  html body .flight-lane-output .checkbox-row > label,
-  html body .flight-lane-output .radio-row > label,
-  html body .flight-lane-output .copy-chip {
+  .grid > div:first-child,
+  .grid > div:last-child {
+    width: 100% !important;
+    min-width: 0 !important;
     max-width: 100% !important;
-  }
-
-  html body .flight-lane #btnGenerate,
-  html body .flight-lane #btnRandomizer,
-  html body .flight-lane #btnResetControls,
-  html body .flight-lane #btnClearInput,
-  html body .flight-lane #btnClear,
-  html body .flight-lane .output-toolbar button,
-  html body .flight-lane .payload-stepper button {
-    flex: 0 0 auto !important;
-    width: auto !important;
-    max-width: none !important;
-    min-height: 20px !important;
-    max-height: 28px !important;
-    padding: 3px 7px !important;
-    font-size: 7px !important;
-    text-align: center !important;
-    justify-content: center !important;
-    white-space: nowrap !important;
-    overflow: hidden !important;
-  }
-
-  html body .flight-lane input[type="checkbox"],
-  html body .flight-lane input[type="radio"] {
-    flex: 0 0 8px !important;
-    width: 8px !important;
-    min-width: 8px !important;
-    height: 8px !important;
-    margin: 0 4px 0 0 !important;
-  }
-
-  html body .flight-lane textarea,
-  html body .flight-lane .output,
-  html body .flight-lane #taskText {
-    font-size: 9px !important;
-    line-height: 1.18 !important;
-    letter-spacing: .005em !important;
-    padding: 8px 9px !important;
-  }
-
-  html body .flight-lane #taskText,
-  html body .flight-lane .output {
-    min-height: 74px !important;
-    height: clamp(74px, 9dvh, 102px) !important;
-    max-height: 120px !important;
-  }
-
-  html body .flight-lane input[type="text"],
-  html body .flight-lane input[type="number"],
-  html body .flight-lane select {
-    font-size: 9px !important;
-    line-height: 1.12 !important;
-    padding: 3px 6px !important;
-  }
-
-  html body .mobile-prompt-rail,
-  html body .mobile-prompt-rail.mobile-prompt-rail-top,
-  html body .mobile-prompt-rail.is-docked {
-    min-height: 22px !important;
-    padding: 4px 8px 4px 10px !important;
-    gap: 6px !important;
-    justify-content: flex-end !important;
-  }
-
-  html body .mobile-prompt-rail span:first-child { font-size: 7px !important; }
-  html body .mobile-prompt-rail-pill { font-size: 6px !important; padding: 2px 5px !important; }
-
-  .td613-swipe-intro {
-    position: fixed;
-    inset: 0;
-    z-index: 9999;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    pointer-events: none;
-    color: rgba(49,255,138,.92);
-    font-size: clamp(24px, 10vw, 48px);
-    line-height: 1;
-    letter-spacing: .16em;
-    text-shadow: 0 0 10px rgba(49,255,138,.72), 0 0 26px rgba(49,255,138,.35);
-    animation: td613SwipeIntro 2.35s ease-out forwards;
-  }
-
-  @keyframes td613SwipeIntro {
-    0% { opacity: 0; transform: translateX(18px); }
-    12% { opacity: 1; transform: translateX(0); }
-    28% { opacity: .28; transform: translateX(-14px); }
-    44% { opacity: 1; transform: translateX(0); }
-    60% { opacity: .28; transform: translateX(-14px); }
-    76% { opacity: 1; transform: translateX(0); }
-    100% { opacity: 0; transform: translateX(-28px); }
+    height: auto !important;
+    min-height: 0 !important;
+    max-height: none !important;
+    overflow: visible !important;
+    scroll-snap-align: none !important;
   }
 }
 
@@ -7701,7 +7801,7 @@ Soft closers and lane directions that finish the body before the Seal. Canonical
 </div>
 
 
-<button class="mobile-prompt-rail mobile-prompt-rail-top" data-flight-lane-target="output" type="button"><span>Seal payload to begin Flight</span><span class="mobile-prompt-rail-pill">Sealed Output &rarr;</span></button>
+<button class="mobile-prompt-rail mobile-prompt-rail-top" data-flight-lane-target="output" type="button"><span>Seal payload to begin Flight</span><span class="mobile-prompt-rail-pill" aria-hidden="true">→</span></button>
 <div class="dev-divider"></div><details class="dev-drawer" id="devSettingsDrawer"><summary><span>Dev Settings<span class="drawer-kicker">Flightplan, rotation, and provenance controls are collapsed by default.</span></span></summary><div class="drawer-body"><div class="card flightplan-card">
 <h2>Flightplan Builder</h2>
 <div class="module-marker">Route validation · v5</div>
@@ -9759,29 +9859,6 @@ version: TD613_V5.version
 })();
 </script>
 
-<script id="td613-pr95-route-path-default">
-(function () {
-  const routePathValue = "shoreline∴zero-trust.boundary ⇒ flatten_titles→stranger";
-  function ensureRoutePath() {
-    const input = document.getElementById('authRoutePath');
-    if (!input) return;
-    if (!input.value || input.value.trim() === '' || input.value.startsWith('e.g.,')) {
-      input.value = routePathValue;
-    }
-    input.style.color = 'rgba(244, 255, 248, .98)';
-    input.style.webkitTextFillColor = 'rgba(244, 255, 248, .98)';
-    input.style.opacity = '1';
-    input.dataset.td613Pr95RoutePath = 'visible-default';
-  }
-  if (document.readyState === 'loading') {
-    document.addEventListener('DOMContentLoaded', ensureRoutePath);
-  } else {
-    ensureRoutePath();
-  }
-  window.setTimeout(ensureRoutePath, 80);
-  window.setTimeout(ensureRoutePath, 400);
-})();
-</script>
 
 
 
@@ -9897,6 +9974,29 @@ version: TD613_V5.version
   }
   if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', showCue, { once: true });
   else showCue();
+})();
+</script>
+<script id="td613-pr95-route-path-default">
+(function () {
+  const routePathValue = "shoreline∴zero-trust.boundary ⇒ flatten_titles→stranger";
+  function ensureRoutePath() {
+    const input = document.getElementById('authRoutePath');
+    if (!input) return;
+    if (!input.value || input.value.trim() === '' || input.value.startsWith('e.g.,')) {
+      input.value = routePathValue;
+    }
+    input.style.color = 'rgba(244, 255, 248, .98)';
+    input.style.webkitTextFillColor = 'rgba(244, 255, 248, .98)';
+    input.style.opacity = '1';
+    input.dataset.td613Pr95RoutePath = 'visible-default';
+  }
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', ensureRoutePath);
+  } else {
+    ensureRoutePath();
+  }
+  window.setTimeout(ensureRoutePath, 80);
+  window.setTimeout(ensureRoutePath, 400);
 })();
 </script>
 </body>
