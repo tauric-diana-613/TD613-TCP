@@ -1,3 +1,4 @@
 import fs from 'node:fs';
-const targets=['app/safe-harbor/td613-flight.html','scripts/patch-td613-flight-mobile-pr85-final.mjs'];
-const markers=['PR98_SENTINEL TD613 Flight symmetric lane swipe lock','PR99_SENTINEL TD613 Flight rollback PR98 swipe lock to native lanes','PR100_SENTINEL TD613 Flight native lane touch repair','PR101_SENTINEL TD613 Flight mobile state lanes no horizontal trap','PR102_SENTINEL TD613 Flight restore visible Output lane after PR
+const files=['app/safe-harbor/td613-flight.html','scripts/patch-td613-flight-mobile-pr85-final.mjs'];
+const bad=/(td613-pr98-swipe-lock|td613-pr100-lane-tabs|td613-pr101-state-lanes|PR9[89]_SENTINEL|PR10[0-2]_SENTINEL|function prepNoZoom|data-td613-prev-font)/;
+function clean(s){s=s.replace(/\n?\/\* PR(?:9[89]|10[0-2])_SENTINEL[\s\S]*
