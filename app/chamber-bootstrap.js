@@ -110,6 +110,7 @@
     appendScript('./hush-pr123-stable-transform.js?v=' + (V.hushPr123 || V.hushPr122 || V.hushPatch38 || V.main || ''));
     appendScript('./hush-pr141-receipt-truth-normalizer.js?v=' + (V.hushPr141 || V.hushPr123 || V.hushPatch38 || V.main || ''));
     appendScript('./hush-pr131-suppress-pr130-rescue-release.js?v=' + (V.hushPr131 || V.hushPr141 || V.hushPr123 || V.hushPatch38 || V.main || ''));
+    appendScript('./hush-pr168-strict-transform-run-lock.js?v=' + (V.hushPr168 || V.hushPr131 || V.hushPr141 || V.hushPr123 || V.hushPatch38 || V.main || ''));
   }
 
   appendScript('./tcp-copy-hygiene.js?v=' + (V.copyHygiene || V.chrome || V.main || '202606010455'));
@@ -118,11 +119,16 @@
     './td613-constants.js',
     './browser-data.js?v='        + (V.data        || ''),
     './browser-diagnostics.js?v=' + (V.diagnostics || ''),
-    './browser-engine.js?v='      + (V.engine      || ''),
-    './operator-receipt.js?v='    + (V.receipt     || ''),
-    './browser-main.js?v='        + (V.main        || ''),
-    './chamber-chrome.js?v='      + (V.chrome      || '')
+    './browser-boot.js?v='        + (V.boot        || ''),
+    './browser-controller.js?v='  + (V.controller  || ''),
+    './browser-ui.js?v='          + (V.ui          || ''),
+    './browser-guardian.js?v='    + (V.guardian    || ''),
+    './browser-chambers.js?v='    + (V.chambers    || '')
   ];
-  if (needsRetrievalFixtures) srcs.splice(4, 0, './retrieval-fixtures.js?v=' + (V.fixtures || ''));
-  for (var i = 0; i < srcs.length; i++) document.write('<script src="' + srcs[i] + '"><\/script>');
+
+  if (needsRetrievalFixtures) {
+    srcs.splice(1, 0, './browser-retrieval-fixtures.js?v=' + (V.retrievalFixtures || V.diagnostics || ''));
+  }
+
+  srcs.forEach(appendScript);
 }());
