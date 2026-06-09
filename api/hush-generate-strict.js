@@ -1,3 +1,4 @@
+import generateHandler from './hush-generate.js';
 import { attachStrictReceiptMeta } from './hush-strict-receipt-meta.js';
 
 const C = {
@@ -6,8 +7,8 @@ const C = {
   'access-control-allow-headers': 'content-type',
   'access-control-max-age': '86400'
 };
-const VERSION = 'strict-endpoint-pr170-promise-race-watchdog';
-const META = 'pr170-promise-race-watchdog/v1';
+const VERSION = 'strict-endpoint-pr173-local-upstream-invoke';
+const META = 'pr173-local-upstream-invoke/v1';
 const STRICT_REVIEW_RETRY_BUDGET_MS = 15500;
 const STRICT_CLIENT_SAFE_MS = 28600;
 const STRICT_INITIAL_UPSTREAM_MS = 25500;
@@ -17,11 +18,6 @@ const STRICT_RESPONSE_MARGIN_MS = 900;
 function send(res, status, payload) {
   for (const [k, v] of Object.entries(C)) res.setHeader(k, v);
   return res.status(status).json(payload);
-}
-function origin(req) {
-  const p = req.headers['x-forwarded-proto'] || 'https';
-  const h = req.headers['x-forwarded-host'] || req.headers.host || 'td613.com';
-  return `${p}://${h}`;
 }
 function s(v = '') { return String(v ?? '').trim(); }
 function arr(v) { return Array.isArray(v) ? v : []; }
@@ -96,39 +92,47 @@ function timeoutResult(timeoutMs = 0, timeoutReason = 'strict_upstream_timeout')
       requestReceipt: {
         strictServerTimeout: timeoutReason === 'strict_initial_upstream_timeout',
         strictReviewLateRetryTimeout: timeoutReason !== 'strict_initial_upstream_timeout',
-        retryTimeoutMs: timeoutMs
+        retryTimeoutMs: timeoutMs,
+        localUpstreamInvoke: true
       }
     }
   };
 }
+function localGenerate(req, contract) {
+  return new Promise((resolve) => {
+    let done = false;
+    const headers = {};
+    function finish(status, payload) {
+      if (done) return;
+      done = true;
+      const code = Number(status) || 200;
+      resolve({ response: { ok: code >= 200 && code < 300, status: code, headers }, payload: payload || {} });
+    }
+    const res = {
+      statusCode: 200,
+      setHeader(k, v) { headers[String(k).toLowerCase()] = v; return this; },
+      status(code) { this.statusCode = Number(code) || 200; return this; },
+      json(payload) { finish(this.statusCode, payload); return payload; }
+    };
+    const localReq = { ...req, method: 'POST', query: {}, body: { contract } };
+    Promise.resolve(generateHandler(localReq, res)).then((value) => {
+      if (!done && value !== undefined) finish(res.statusCode, value);
+    }).catch((error) => finish(502, {
+      ok: false,
+      provider: 'gemini-strict',
+      model: 'local-generate-exception',
+      error: 'local-generate-exception',
+      warnings: ['local-generate-exception'],
+      proxyError: String(error?.message || error),
+      requestReceipt: { localUpstreamInvoke: true, localGenerateException: true }
+    }));
+  });
+}
 async function upstream(req, contract, timeoutMs = 0, timeoutReason = 'strict_upstream_timeout') {
-  const controller = timeoutMs > 0 ? new AbortController() : null;
-  let timer = null;
-  const request = fetch(`${origin(req)}/api/hush-generate`, {
-    method: 'POST',
-    headers: { 'content-type': 'application/json' },
-    body: JSON.stringify({ contract }),
-    signal: controller?.signal
-  }).then(async (r) => {
-    const p = await r.json().catch(() => ({}));
-    return { response: r, payload: p };
-  }).catch((error) => {
-    if (controller && error?.name === 'AbortError') return timeoutResult(timeoutMs, timeoutReason);
-    if (timeoutMs > 0) return timeoutResult(timeoutMs, timeoutReason);
-    throw error;
-  });
+  const request = localGenerate(req, contract);
   if (!(timeoutMs > 0)) return request;
-  const timeout = new Promise((resolve) => {
-    timer = setTimeout(() => {
-      try { controller.abort(); } catch {}
-      resolve(timeoutResult(timeoutMs, timeoutReason));
-    }, timeoutMs);
-  });
-  try {
-    return await Promise.race([request, timeout]);
-  } finally {
-    if (timer) clearTimeout(timer);
-  }
+  const timeout = new Promise((resolve) => setTimeout(() => resolve(timeoutResult(timeoutMs, timeoutReason)), timeoutMs));
+  return Promise.race([request, timeout]);
 }
 function releasable(payload = {}) {
   return !reviewMap(payload) &&
@@ -153,7 +157,7 @@ function timeoutHold(payload = {}, contract = {}, startedAt = Date.now()) {
     candidates: [],
     warnings: uniq([...(payload.warnings || []), 'strict-server-watchdog-timeout', 'strict-api-no-usable-candidates', 'no-local-fallback']),
     attempts: payload.attempts || [],
-    providerErrorMessage: 'Strict endpoint stopped the upstream request inside the client-safe window before the page watchdog could fire.',
+    providerErrorMessage: 'Strict endpoint stopped the local upstream handler inside the client-safe window before the page watchdog could fire.',
     requestReceipt: {
       ...(payload.requestReceipt || {}),
       strict: true,
@@ -162,6 +166,7 @@ function timeoutHold(payload = {}, contract = {}, startedAt = Date.now()) {
       reviewVersion: META,
       endpointMetaVersion: META,
       strictServerWatchdog: true,
+      localUpstreamInvoke: true,
       packetTier: s(contract.packetTier || ''),
       maskEvidenceState: s(contract.maskEvidenceState || ''),
       elapsedMs: Date.now() - startedAt
@@ -214,6 +219,7 @@ function hold(payload = {}, contract = {}, startedAt = Date.now(), reason = 'str
       providerVersion: VERSION,
       reviewVersion: META,
       endpointMetaVersion: META,
+      localUpstreamInvoke: true,
       antiCompression: true,
       reviewMapRepairHeld: isMap,
       strictReviewMapTransformRetry: extra.includes('review-map-transform-retry-attempted'),
@@ -242,6 +248,7 @@ function pass(payload = {}, contract = {}, startedAt = Date.now(), status = 200,
       strictDirect: true,
       strictDirectVersion: VERSION,
       endpointMetaVersion: META,
+      localUpstreamInvoke: true,
       strictReviewMapTransformRetry: extra.includes('review-map-transform-retry-success'),
       strictReviewMapLateRetry: extra.includes('review-map-transform-late-retry-success'),
       lowSignatureRichRetry: extra.includes('low-signature-rich-retry-success'),
@@ -257,8 +264,8 @@ export default async function handler(req, res) {
     route: 'hush-generate-strict',
     version: VERSION,
     reviewVersion: META,
-    upstream: '/api/hush-generate',
-    note: 'Strict endpoint uses Promise.race server watchdogs before the client watchdog and retries review-map diagnostics inside the safe window.'
+    upstream: 'local:/api/hush-generate',
+    note: 'Strict endpoint invokes the generator handler in-process instead of self-fetching its sibling API route.'
   });
   if (req.method !== 'POST') return send(res, 405, { ok: false, error: 'method-not-allowed', version: VERSION });
 
@@ -331,6 +338,7 @@ export default async function handler(req, res) {
         strictDirect: true,
         strictDirectVersion: VERSION,
         endpointMetaVersion: META,
+        localUpstreamInvoke: true,
         elapsedMs: Date.now() - startedAt
       }
     }, contract, startedAt));
