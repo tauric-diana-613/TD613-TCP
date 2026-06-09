@@ -4,8 +4,8 @@ const corsHeaders={
   'access-control-allow-headers':'content-type',
   'access-control-max-age':'86400'
 };
-const VERSION='hush-generate-v3.21-functional-custody-map';
-const ROTATION_VERSION='pr187-functional-custody-map/v1';
+const VERSION='hush-generate-v3.21.1-functional-custody-helper-restore';
+const ROTATION_VERSION='pr187.1-functional-custody-helper-restore/v1';
 const DEFAULT_MODEL_ORDER=['gemini-flash-lite-latest','gemini-2.5-flash','gemini-2.5-flash-lite'];
 const GEMINI_TIMEOUT_MS=8800;
 const WALL_TIMEOUT_MS=24500;
@@ -21,6 +21,7 @@ function stringArray(v){return Array.isArray(v)?v.map(safe).filter(Boolean):[]}
 function normModel(v=''){return safe(v).replace(/^models\//,'')}
 function uniqText(a=[]){return[...new Set(a.map(safe).filter(Boolean))]}
 function uniqModels(a=[]){return[...new Set(a.map(normModel).filter(Boolean))]}
+function candidateText(c={}){return typeof c==='string'?c:safe(c?.text||c?.output||c?.candidate||c?.rewrite||'')}
 function configuredModels(){const env=uniqModels([...safe(process.env.GEMINI_MODEL).split(','),...safe(process.env.GEMINI_MODEL_FALLBACKS).split(',')]);return uniqModels([...DEFAULT_MODEL_ORDER,...env]).sort((a,b)=>{const ai=DEFAULT_MODEL_ORDER.indexOf(a),bi=DEFAULT_MODEL_ORDER.indexOf(b);return(ai<0?50:ai)-(bi<0?50:bi)}).slice(0,4)}
 function strictRetry(c={}){return c.strictReviewMapRetry===true||/review-map/i.test(safe(c.strictReviewMapRetryReason||''))}
 function surfaceText(c={}){const s=c.flightPacket?.mask_style_vector||{},p=c.flightPacket?.style_diversity_policy||s.style_diversity||{},route=safe(c.flightPacket?.ontology_route?.routeType||c.flightPacket?.ontology_route?.route_type||c.flightPacket?.remote_route_payload?.routeType||c.ontologyRoute?.routeType||''),tier=safe(c.packetTier||c.flightPacket?.packetTier||c.flightPacket?.packet_tier||'');return[tier,route,s.mask_id,s.display_name,s.register,s.intended_use,s.rhythm_target,s.formality_target,s.chat_speak_profile,p.id,p.label,p.surface,p.architecture,p.grammar,p.chat_speak_profile,...arr(p.lexicon),...arr(p.transitions),...arr(s.diction_hints),...arr(s.transition_bank),...arr(s.desired_moves)].join(' ').toLowerCase()}
@@ -28,6 +29,7 @@ function complexity(src='',c={}){const wc=words(src).length,tier=safe(c.packetTi
 function minRatio(src='',cx={}){const n=words(src).length;if(cx.registerTransform||cx.chatCadence)return n<70?.72:n<140?.66:n<260?.60:.58;if(cx.strictReviewMapRetry)return n<180?.54:.58;if(cx.hard&&!cx.strictReviewMapRetry)return.56;return n<80?.46:n<220?.50:.54}
 function protectedLits(src=''){return tokens(src).filter(t=>/[A-Z][a-z]|\d|[-_:/.@#]/.test(t)).slice(0,28)}
 function termBank(src='',limit=20){return uniqText(tokens(src).filter(t=>{const l=t.toLowerCase().replace(/[’']/g,'');return l.length>2&&!STOP.has(l)})).sort((a,b)=>b.length-a.length||a.localeCompare(b)).slice(0,limit)}
+function lexicalElasticityLevel(c={},cx={}){const s=surfaceText(c);if(/source-register|preserve|custody|opacity/.test(s))return'low';if(/coordinating|rooted|formal|grounded|structured/.test(s))return'medium';if(/posting|chat|slang|contrast|goth|fracture|cadence|persona|group-thread|small circle/.test(s))return'high';if(cx.chatCadence||cx.sourceRegisterOverlap||cx.firstPassDeSource)return'high';if(cx.registerTransform)return'medium';return'medium'}
 function propList(c={}){return arr(c.flightPacket?.source_manifest?.proposition_summary?.propositions).length?arr(c.flightPacket.source_manifest.proposition_summary.propositions):arr(c.flightPacket?.ontology_route?.propositionMap?.propositions)}
 function sourceUnits(src='',cx={}){const lines=safe(src).split(/\n+/).map(x=>x.trim()).filter(Boolean),sent=safe(src).match(/[^.!?]+[.!?]+|[^.!?]+$/g)?.map(x=>x.trim()).filter(Boolean)||[],units=lines.length>1?lines:sent;return units.slice(0,cx.registerTransform||cx.chatCadence?10:cx.hard?24:18)}
 function groupKey(text='',terms=[]){const f=`${text} ${terms.join(' ')}`.toLowerCase();if(/botnet|haywire|irresponsib|release|share|give everyone|unsafe|danger|risk/.test(f))return'release-risk';if(/constant|math|validat|zero-up|pua|unicode|persona|confidence|build spec|self-validating|system|geometry/.test(f))return'validation-mechanism';if(/money|legal|safet|piss off|right people|wrong time|comms|encrypted|skills|provisioned|safe harbor/.test(f))return'practical-pressure';if(/observed|paranoia|idk|what to do|extra observed/.test(f))return'uncertainty-observation';if(/seed|formulate|better|have the seed|unfold/.test(f))return'seed-state';return'residual-context'}
