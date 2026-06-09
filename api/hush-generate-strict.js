@@ -1,4 +1,3 @@
-import generateHandler from './hush-generate.js';
 import { attachStrictReceiptMeta } from './hush-strict-receipt-meta.js';
 
 const C = {
@@ -7,8 +6,8 @@ const C = {
   'access-control-allow-headers': 'content-type',
   'access-control-max-age': '86400'
 };
-const VERSION = 'strict-endpoint-pr173-local-upstream-invoke';
-const META = 'pr173-local-upstream-invoke/v1';
+const VERSION = 'strict-endpoint-pr174-lazy-local-upstream-import';
+const META = 'pr174-lazy-local-upstream-import/v1';
 const STRICT_REVIEW_RETRY_BUDGET_MS = 15500;
 const STRICT_CLIENT_SAFE_MS = 28600;
 const STRICT_INITIAL_UPSTREAM_MS = 25500;
@@ -93,10 +92,15 @@ function timeoutResult(timeoutMs = 0, timeoutReason = 'strict_upstream_timeout')
         strictServerTimeout: timeoutReason === 'strict_initial_upstream_timeout',
         strictReviewLateRetryTimeout: timeoutReason !== 'strict_initial_upstream_timeout',
         retryTimeoutMs: timeoutMs,
-        localUpstreamInvoke: true
+        localUpstreamInvoke: true,
+        lazyLocalImport: true
       }
     }
   };
+}
+async function loadGenerateHandler() {
+  const mod = await import('./hush-generate.js');
+  return mod.default || mod.generateHandler || mod.handler || mod;
 }
 function localGenerate(req, contract) {
   return new Promise((resolve) => {
@@ -115,7 +119,7 @@ function localGenerate(req, contract) {
       json(payload) { finish(this.statusCode, payload); return payload; }
     };
     const localReq = { ...req, method: 'POST', query: {}, body: { contract } };
-    Promise.resolve(generateHandler(localReq, res)).then((value) => {
+    loadGenerateHandler().then((generateHandler) => Promise.resolve(generateHandler(localReq, res))).then((value) => {
       if (!done && value !== undefined) finish(res.statusCode, value);
     }).catch((error) => finish(502, {
       ok: false,
@@ -124,7 +128,7 @@ function localGenerate(req, contract) {
       error: 'local-generate-exception',
       warnings: ['local-generate-exception'],
       proxyError: String(error?.message || error),
-      requestReceipt: { localUpstreamInvoke: true, localGenerateException: true }
+      requestReceipt: { localUpstreamInvoke: true, lazyLocalImport: true, localGenerateException: true }
     }));
   });
 }
@@ -167,6 +171,7 @@ function timeoutHold(payload = {}, contract = {}, startedAt = Date.now()) {
       endpointMetaVersion: META,
       strictServerWatchdog: true,
       localUpstreamInvoke: true,
+      lazyLocalImport: true,
       packetTier: s(contract.packetTier || ''),
       maskEvidenceState: s(contract.maskEvidenceState || ''),
       elapsedMs: Date.now() - startedAt
@@ -220,6 +225,7 @@ function hold(payload = {}, contract = {}, startedAt = Date.now(), reason = 'str
       reviewVersion: META,
       endpointMetaVersion: META,
       localUpstreamInvoke: true,
+      lazyLocalImport: true,
       antiCompression: true,
       reviewMapRepairHeld: isMap,
       strictReviewMapTransformRetry: extra.includes('review-map-transform-retry-attempted'),
@@ -249,6 +255,7 @@ function pass(payload = {}, contract = {}, startedAt = Date.now(), status = 200,
       strictDirectVersion: VERSION,
       endpointMetaVersion: META,
       localUpstreamInvoke: true,
+      lazyLocalImport: true,
       strictReviewMapTransformRetry: extra.includes('review-map-transform-retry-success'),
       strictReviewMapLateRetry: extra.includes('review-map-transform-late-retry-success'),
       lowSignatureRichRetry: extra.includes('low-signature-rich-retry-success'),
@@ -265,7 +272,8 @@ export default async function handler(req, res) {
     version: VERSION,
     reviewVersion: META,
     upstream: 'local:/api/hush-generate',
-    note: 'Strict endpoint invokes the generator handler in-process instead of self-fetching its sibling API route.'
+    lazyLocalImport: true,
+    note: 'Strict endpoint lazily imports and invokes the generator handler in-process instead of self-fetching its sibling API route.'
   });
   if (req.method !== 'POST') return send(res, 405, { ok: false, error: 'method-not-allowed', version: VERSION });
 
@@ -339,6 +347,7 @@ export default async function handler(req, res) {
         strictDirectVersion: VERSION,
         endpointMetaVersion: META,
         localUpstreamInvoke: true,
+        lazyLocalImport: true,
         elapsedMs: Date.now() - startedAt
       }
     }, contract, startedAt));
