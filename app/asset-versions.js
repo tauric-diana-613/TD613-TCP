@@ -1,4 +1,5 @@
 (function () {
+  try { document.title = 'TD613 Hush'; } catch (error) {}
   window.TD613_ASSET_VERSIONS = {
     styles:      '202604192040',
     data:        '202605281815',
@@ -20,9 +21,9 @@
     hushPr78: '202605250311',
     hushPr79: '202605302135',
     hushPr82: '202605251746',
-    hushPr92: '202605252000',
-    hushPr93: '202605252010',
-    hushPr94: '202605252015',
+    hushPr92: '202606091846',
+    hushPr93: '202606091846',
+    hushPr94: '202606091846',
     hushPr95: '202605301835',
     hushPr96: '202605302115',
     hushPr97: '202605301845',
@@ -49,6 +50,7 @@
     hushPr130: '202606011235',
     hushPr132: '202606060224',
     hushPr141: '202606060322',
+    hushPr176: '202606091846',
     hushPhase39: '202605301720'
   };
   var V = window.TD613_ASSET_VERSIONS;
@@ -58,6 +60,7 @@
     document.write('<script type="module" src="./hush-phase39-ui.js?v=' + V.hushPhase39 + '"><\/script>');
   } else {
     window.addEventListener('DOMContentLoaded', function () {
+      try { document.title = 'TD613 Hush'; } catch (error) {}
       if (document.body && document.body.dataset && document.body.dataset.pageKind === 'adversarial-bench') {
         var script = document.createElement('script');
         script.type = 'module';
