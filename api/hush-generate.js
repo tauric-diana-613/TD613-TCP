@@ -5,7 +5,7 @@ const corsHeaders = {
   'access-control-max-age': '86400'
 };
 
-const VERSION = 'hush-generate-v3.15.1-register-selector-syntax-repair';
+const VERSION = 'hush-generate-v3.15.2-provider-probe-syntax-repair';
 const ROTATION_VERSION = 'pr181-register-selector-calibration/v1';
 const DEFAULT_MODEL_ORDER = ['gemini-flash-lite-latest', 'gemini-2.5-flash', 'gemini-2.5-flash-lite'];
 const GEMINI_TIMEOUT_MS = 8800;
@@ -325,7 +325,8 @@ function providerText(payload = {}) { return payload?.candidates?.[0]?.content?.
 function summarizeProviderError(payload = {}) {
   const error = payload.error || payload;
   return { code: error.code || payload.code || '', status: error.status || payload.status || '', message: safe(error.message || payload.message || '').slice(0, 900) };
-}\nasync function runProviderProbe(models = []) {
+}
+async function runProviderProbe(models = []) {
   const attempts = [];
   for (const model of models.slice(0, 3)) {
     const { response, payload, timedOut } = await callGemini({ model, prompt: 'Return JSON only: {"candidates":[{"text":"probe ok","style_note":"probe"}]}', jsonMode: true });
