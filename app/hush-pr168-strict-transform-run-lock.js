@@ -2,7 +2,7 @@
 (function () {
   'use strict';
 
-  var VERSION = 'pr179-strict-transform-click-gate/v1';
+  var VERSION = 'pr168-strict-transform-run-lock/v1';
 
   function byId(id) {
     return document.getElementById(id);
@@ -26,37 +26,6 @@
     }
   }
 
-  function stopEvent(event) {
-    if (!event) return;
-    if (typeof event.preventDefault === 'function') event.preventDefault();
-    if (typeof event.stopPropagation === 'function') event.stopPropagation();
-    if (typeof event.stopImmediatePropagation === 'function') event.stopImmediatePropagation();
-  }
-
-  function installButtonGate(api, baseRun) {
-    if (!document.body || document.body.dataset.pr179StrictTransformClickGate === VERSION) return;
-    document.body.dataset.pr179StrictTransformClickGate = VERSION;
-    document.addEventListener('click', function strictTransformClickGate(event) {
-      var target = event.target && event.target.closest && event.target.closest('#generateMaskedOutputBtn');
-      if (!target) return;
-      stopEvent(event);
-      if (window.__TD613_HUSH_STRICT_TRANSFORM_RUNNING) {
-        setStatus('Strict provider transform already running… waiting for the active watchdog.', 'info');
-        return;
-      }
-      window.__TD613_HUSH_STRICT_TRANSFORM_RUNNING = true;
-      setBusy(true);
-      Promise.resolve()
-        .then(function () {
-          return baseRun.call(api, event);
-        })
-        .finally(function () {
-          window.__TD613_HUSH_STRICT_TRANSFORM_RUNNING = false;
-          setBusy(false);
-        });
-    }, true);
-  }
-
   function install() {
     if (!document.body || document.body.dataset.pageKind !== 'adversarial-bench') return;
 
@@ -64,11 +33,9 @@
     if (!api || typeof api.run !== 'function') return;
 
     if (!api.__td613Pr168BaseRun) api.__td613Pr168BaseRun = api.run;
-    var baseRun = api.__td613Pr168BaseRun;
-
-    installButtonGate(api, baseRun);
-
     if (api.__td613Pr168Version === VERSION) return;
+
+    var baseRun = api.__td613Pr168BaseRun;
 
     api.run = function lockedStrictTransformRun() {
       var runThis = this;
@@ -76,8 +43,10 @@
 
       if (window.__TD613_HUSH_STRICT_TRANSFORM_RUNNING) {
         var maybeEvent = runArgs[0];
-        stopEvent(maybeEvent);
-        setStatus('Strict provider transform already running… waiting for the active watchdog.', 'info');
+        if (maybeEvent && typeof maybeEvent.preventDefault === 'function') maybeEvent.preventDefault();
+        if (maybeEvent && typeof maybeEvent.stopPropagation === 'function') maybeEvent.stopPropagation();
+        if (maybeEvent && typeof maybeEvent.stopImmediatePropagation === 'function') maybeEvent.stopImmediatePropagation();
+        setStatus('Strict provider transform already running… waiting for the active 29s watchdog.', 'info');
         return Promise.resolve(null);
       }
 
@@ -97,7 +66,6 @@
     api.__td613Pr168Version = VERSION;
     window.TD613_HUSH_PR168_RUN_LOCK = {
       version: VERSION,
-      clickGate: true,
       installedAt: new Date().toISOString()
     };
   }
