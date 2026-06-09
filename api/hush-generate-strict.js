@@ -6,8 +6,8 @@ const C = {
   'access-control-allow-headers': 'content-type',
   'access-control-max-age': '86400'
 };
-const VERSION = 'strict-endpoint-pr175-review-map-signal-gate';
-const META = 'pr175-review-map-signal-gate/v1';
+const VERSION = 'strict-endpoint-pr183-weak-density-reroute';
+const META = 'pr183-weak-density-reroute/v1';
 const STRICT_REVIEW_RETRY_BUDGET_MS = 15500;
 const STRICT_CLIENT_SAFE_MS = 28600;
 const STRICT_INITIAL_UPSTREAM_MS = 25500;
@@ -53,6 +53,17 @@ function lowSigRich(c = {}) {
 function timedOutModels(payload = {}) {
   return uniq(arr(payload.attempts).filter((a) => a && (a.timedOut || a.status === 408 || a.providerStatus === 408 || a.error?.status === 'AbortError')).map((a) => a.model));
 }
+function weakDensityCandidate(payload = {}, contract = {}) {
+  const candidates = arr(payload.candidates);
+  const sourceWords = words(source(contract)).length;
+  if (!candidates.length || sourceWords < 120) return false;
+  const ratioFloor = sourceWords >= 260 ? 0.58 : 0.56;
+  const weakLength = candidates.some((candidate) => words(ctext(candidate)).length / Math.max(1, sourceWords) < ratioFloor);
+  const logisticsWrapper = candidates.some((candidate) => /\b(next steps|keep this organized|nobody has to repeat|for the record|the main point is|just saying|this is basically about)\b/i.test(ctext(candidate)));
+  const placeholderMoves = candidates.some((candidate) => arr(candidate.authorship_moves || candidate.authorshipMoves).some((move) => /^specific (mask|register|cadence) move$/i.test(s(move))));
+  const summarySurface = candidates.some((candidate) => /\b(summary|summarize|recap|main point|coverage rather than craft|record note|administrative rewrite)\b/i.test(`${s(candidate.style_note || candidate.styleNote)} ${s(candidate.mask_surface_notes?.coverage)} ${s(candidate.mask_surface_notes?.structure)}`));
+  return weakLength || logisticsWrapper || placeholderMoves || summarySurface;
+}
 function retryContract(c = {}, reason = 'review-map-transform-retry', payload = {}, late = false) {
   const skipped = timedOutModels(payload);
   const requested = Number(c.candidateCount || c.flightPacket?.flight_controls?.candidate_count || 2) || 2;
@@ -77,6 +88,32 @@ function retryContract(c = {}, reason = 'review-map-transform-retry', payload = 
       flight_controls: {
         ...(c.flightPacket.flight_controls || {}),
         candidate_count: candidateCount
+      }
+    };
+  }
+  return n;
+}
+function densityRerouteContract(c = {}) {
+  const n = {
+    ...c,
+    reroll: true,
+    candidateCount: 3,
+    packetTier: 'interpretive_density_packet',
+    maskEvidenceState: 'detailed',
+    strictDensityReroute: true,
+    strictDensityRerouteReason: 'weak-candidate-density-reroute',
+    strictReviewRetryAttemptBudget: 3,
+    strictReviewRetryStageLimit: 2
+  };
+  if (c.flightPacket) {
+    n.flightPacket = {
+      ...c.flightPacket,
+      packetTier: 'interpretive_density_packet',
+      packet_tier: 'interpretive_density_packet',
+      maskEvidenceState: 'detailed',
+      flight_controls: {
+        ...(c.flightPacket.flight_controls || {}),
+        candidate_count: 3
       }
     };
   }
@@ -148,8 +185,7 @@ function releasable(payload = {}) {
     payload.provider !== 'server-deterministic-repair' &&
     !/^server-repair/.test(s(payload.model)) &&
     arr(payload.candidates).length > 0;
-}
-function timeoutHold(payload = {}, contract = {}, startedAt = Date.now()) {
+}\nfunction timeoutHold(payload = {}, contract = {}, startedAt = Date.now()) {
   return attachStrictReceiptMeta({
     ok: false,
     status: 'held',
@@ -236,6 +272,8 @@ function hold(payload = {}, contract = {}, startedAt = Date.now(), reason = 'str
       strictReviewMapTransformRetry: extra.includes('review-map-transform-retry-attempted'),
       strictReviewMapLateRetry: extra.includes('review-map-transform-late-retry-attempted'),
       lowSignatureRichRetry: extra.includes('low-signature-rich-retry-attempted'),
+      strictDensityReroute: extra.includes('weak-candidate-density-reroute-attempted'),
+      strictDensityRerouteStillHeld: extra.includes('weak-candidate-density-reroute-still-held'),
       fallbackSuppressed: payload.provider === 'server-deterministic-repair',
       fallbackSuppressionReason: reason,
       packetTier: s(contract.packetTier || ''),
@@ -264,6 +302,8 @@ function pass(payload = {}, contract = {}, startedAt = Date.now(), status = 200,
       strictReviewMapTransformRetry: extra.includes('review-map-transform-retry-success'),
       strictReviewMapLateRetry: extra.includes('review-map-transform-late-retry-success'),
       lowSignatureRichRetry: extra.includes('low-signature-rich-retry-success'),
+      strictDensityReroute: extra.includes('weak-candidate-density-reroute-attempted'),
+      strictDensityRerouteSuccess: extra.includes('weak-candidate-density-reroute-success'),
       reviewMapSignalGate: true,
       elapsedMs: Date.now() - startedAt
     }
@@ -280,7 +320,8 @@ export default async function handler(req, res) {
     upstream: 'local:/api/hush-generate',
     lazyLocalImport: true,
     reviewMapSignalGate: true,
-    note: 'Strict endpoint treats review-map retry success warnings as control metadata, not proof that candidate text is a review map.'
+    weakDensityReroute: true,
+    note: 'Strict endpoint reroutes weak long-form candidates before release while preserving review-map containment and no-fallback behavior.'
   });
   if (req.method !== 'POST') return send(res, 405, { ok: false, error: 'method-not-allowed', version: VERSION });
 
@@ -333,6 +374,26 @@ export default async function handler(req, res) {
     if (payload.provider === 'server-deterministic-repair' || /^server-repair/.test(s(payload.model))) {
       return send(res, 504, hold(payload, contract, startedAt, 'strict_anti_compression_held', retryExtra));
     }
+    if (releasable(payload) && weakDensityCandidate(payload, contract)) {
+      const densityExtra = uniq([...retryExtra, 'weak-candidate-density-reroute-attempted']);
+      const remaining = STRICT_CLIENT_SAFE_MS - elapsed();
+      if (remaining >= 1800) {
+        const retry = await upstream(req, densityRerouteContract(contract), Math.max(1000, remaining - STRICT_RESPONSE_MARGIN_MS), 'strict_density_reroute_timeout');
+        if (releasable(retry.payload) && !weakDensityCandidate(retry.payload, contract)) {
+          return send(res, retry.response.status, pass(retry.payload, contract, startedAt, retry.response.status, uniq([...densityExtra, 'weak-candidate-density-reroute-success'])));
+        }
+        payload = {
+          ...retry.payload,
+          warnings: uniq([...(retry.payload.warnings || []), ...densityExtra, 'weak-candidate-density-reroute-still-held'])
+        };
+      } else {
+        payload = {
+          ...payload,
+          warnings: uniq([...(payload.warnings || []), ...densityExtra, 'weak-candidate-density-reroute-still-held'])
+        };
+      }
+      return send(res, 504, hold(payload, contract, startedAt, 'strict_anti_compression_held', uniq([...densityExtra, 'weak-candidate-density-reroute-still-held'])));
+    }
     return send(res, response.status, pass(payload, contract, startedAt, response.status));
   } catch (error) {
     return send(res, 502, attachStrictReceiptMeta({
@@ -356,6 +417,7 @@ export default async function handler(req, res) {
         localUpstreamInvoke: true,
         lazyLocalImport: true,
         reviewMapSignalGate: true,
+        weakDensityReroute: true,
         elapsedMs: Date.now() - startedAt
       }
     }, contract, startedAt));
