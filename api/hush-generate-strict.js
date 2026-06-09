@@ -6,8 +6,8 @@ const C = {
   'access-control-allow-headers': 'content-type',
   'access-control-max-age': '86400'
 };
-const VERSION = 'strict-endpoint-pr169-server-watchdog-receipt';
-const META = 'pr169-server-watchdog-receipt/v1';
+const VERSION = 'strict-endpoint-pr170-promise-race-watchdog';
+const META = 'pr170-promise-race-watchdog/v1';
 const STRICT_REVIEW_RETRY_BUDGET_MS = 15500;
 const STRICT_CLIENT_SAFE_MS = 28600;
 const STRICT_INITIAL_UPSTREAM_MS = 25500;
@@ -82,35 +82,50 @@ function retryContract(c = {}, reason = 'review-map-transform-retry', payload = 
   }
   return n;
 }
+function timeoutResult(timeoutMs = 0, timeoutReason = 'strict_upstream_timeout') {
+  return {
+    response: { ok: false, status: 408 },
+    payload: {
+      ok: false,
+      provider: 'gemini-strict',
+      model: timeoutReason === 'strict_initial_upstream_timeout' ? 'strict-server-watchdog' : 'strict-review-map-late-retry-timeout',
+      error: timeoutReason,
+      reason: timeoutReason,
+      warnings: [timeoutReason === 'strict_initial_upstream_timeout' ? 'strict-server-watchdog-timeout' : 'review-map-transform-retry-timeout'],
+      attempts: [],
+      requestReceipt: {
+        strictServerTimeout: timeoutReason === 'strict_initial_upstream_timeout',
+        strictReviewLateRetryTimeout: timeoutReason !== 'strict_initial_upstream_timeout',
+        retryTimeoutMs: timeoutMs
+      }
+    }
+  };
+}
 async function upstream(req, contract, timeoutMs = 0, timeoutReason = 'strict_upstream_timeout') {
   const controller = timeoutMs > 0 ? new AbortController() : null;
-  const timer = controller ? setTimeout(() => controller.abort(), timeoutMs) : null;
-  try {
-    const r = await fetch(`${origin(req)}/api/hush-generate`, {
-      method: 'POST',
-      headers: { 'content-type': 'application/json' },
-      body: JSON.stringify({ contract }),
-      signal: controller?.signal
-    });
+  let timer = null;
+  const request = fetch(`${origin(req)}/api/hush-generate`, {
+    method: 'POST',
+    headers: { 'content-type': 'application/json' },
+    body: JSON.stringify({ contract }),
+    signal: controller?.signal
+  }).then(async (r) => {
     const p = await r.json().catch(() => ({}));
     return { response: r, payload: p };
-  } catch (error) {
-    if (controller && error?.name === 'AbortError') {
-      return {
-        response: { ok: false, status: 408 },
-        payload: {
-          ok: false,
-          provider: 'gemini-strict',
-          model: timeoutReason === 'strict_initial_upstream_timeout' ? 'strict-server-watchdog' : 'strict-review-map-late-retry-timeout',
-          error: timeoutReason,
-          reason: timeoutReason,
-          warnings: [timeoutReason === 'strict_initial_upstream_timeout' ? 'strict-server-watchdog-timeout' : 'review-map-transform-retry-timeout'],
-          attempts: [],
-          requestReceipt: { strictServerTimeout: timeoutReason === 'strict_initial_upstream_timeout', strictReviewLateRetryTimeout: timeoutReason !== 'strict_initial_upstream_timeout', retryTimeoutMs: timeoutMs }
-        }
-      };
-    }
+  }).catch((error) => {
+    if (controller && error?.name === 'AbortError') return timeoutResult(timeoutMs, timeoutReason);
+    if (timeoutMs > 0) return timeoutResult(timeoutMs, timeoutReason);
     throw error;
+  });
+  if (!(timeoutMs > 0)) return request;
+  const timeout = new Promise((resolve) => {
+    timer = setTimeout(() => {
+      try { controller.abort(); } catch {}
+      resolve(timeoutResult(timeoutMs, timeoutReason));
+    }, timeoutMs);
+  });
+  try {
+    return await Promise.race([request, timeout]);
   } finally {
     if (timer) clearTimeout(timer);
   }
@@ -243,7 +258,7 @@ export default async function handler(req, res) {
     version: VERSION,
     reviewVersion: META,
     upstream: '/api/hush-generate',
-    note: 'Strict endpoint returns a server-held receipt before the client watchdog and retries review-map diagnostics inside the safe window.'
+    note: 'Strict endpoint uses Promise.race server watchdogs before the client watchdog and retries review-map diagnostics inside the safe window.'
   });
   if (req.method !== 'POST') return send(res, 405, { ok: false, error: 'method-not-allowed', version: VERSION });
 
