@@ -5,7 +5,7 @@ const corsHeaders = {
   'access-control-max-age': '86400'
 };
 
-const VERSION = 'hush-generate-v3.15-register-selector-calibration';
+const VERSION = 'hush-generate-v3.15.1-register-selector-syntax-repair';
 const ROTATION_VERSION = 'pr181-register-selector-calibration/v1';
 const DEFAULT_MODEL_ORDER = ['gemini-flash-lite-latest', 'gemini-2.5-flash', 'gemini-2.5-flash-lite'];
 const GEMINI_TIMEOUT_MS = 8800;
@@ -54,7 +54,8 @@ function configuredModels() {
 }
 function strictReviewMapRetry(contract = {}) {
   return contract.strictReviewMapRetry === true || /review-map/i.test(safe(contract.strictReviewMapRetryReason || ''));
-}\nfunction detectComplexity(sourceText = '', contract = {}) {
+}
+function detectComplexity(sourceText = '', contract = {}) {
   const wc = words(sourceText).length;
   const tier = safe(contract.packetTier || contract.flightPacket?.packetTier || contract.flightPacket?.packet_tier || '');
   const maskEvidenceState = safe(contract.maskEvidenceState || contract.flightPacket?.maskEvidenceState || '');
@@ -324,8 +325,7 @@ function providerText(payload = {}) { return payload?.candidates?.[0]?.content?.
 function summarizeProviderError(payload = {}) {
   const error = payload.error || payload;
   return { code: error.code || payload.code || '', status: error.status || payload.status || '', message: safe(error.message || payload.message || '').slice(0, 900) };
-}
-async function runProviderProbe(models = []) {
+}\nasync function runProviderProbe(models = []) {
   const attempts = [];
   for (const model of models.slice(0, 3)) {
     const { response, payload, timedOut } = await callGemini({ model, prompt: 'Return JSON only: {"candidates":[{"text":"probe ok","style_note":"probe"}]}', jsonMode: true });
@@ -513,5 +513,5 @@ export default async function handler(req, res) {
   }
 
   const repaired = serverRepairCandidates(sourceText, contract);
-  return send(res, 200, { ok: true, provider: 'server-deterministic-repair', model: 'server-repair-review-map', deterministic, version: VERSION, rotationVersion: ROTATION_VERSION, candidates: repaired.candidates, warnings: [...repaired.warnings, 'provider-fast-lane-no-remote-release', ...(complexity.registerTransform ? ['register-transform-prompt-lane-exhausted'] : []), ...(strictReviewRetry ? ['strict-review-map-transform-lane-exhausted'] : []), ...(skippedModels.size ? ['strict-review-skip-models-applied'] : [])], attempts, rejectedCopy: rejectedCopy.slice(0, 12), rejectedCompressed: rejectedCompressed.slice(0, 12), requestReceipt: { deterministic, temperature: deterministic ? 0.22 : 0.58, topP: deterministic ? 0.22 : 0.88, antiCompression: true, fastHardPacketLane: !strictReviewRetry, registerTransformPromptLane: complexity.registerTransform, strictReviewMapRetry: strictReviewRetry, complexity, modelOrder: models.slice(0, maxAttempts), skippedModels: [...skippedModels], minLengthRatio: minLengthRatio(sourceText, complexity), bounded: true, elapsedMs: Date.now() - startedAt, reviewMapRepair: true, reviewMapRepairVersion: ROTATION_VERSION } });
+  return send(res, 200, { ok: true, provider: 'server-deterministic-repair', model: 'server-repair-review-map', deterministic, version: VERSION, rotationVersion: ROTATION_VERSION, candidates: repaired.candidates, warnings: [...repaired.warnings, 'provider-fast-lane-no-remote-release', ...(complexity.registerTransform ? ['register-transform-prompt-lane-exhausted'] : []), ...(strictReviewRetry ? ['strict-review-map-transform-lane-exhausted'] : []), ...(skippedModels.size ? ['strict-review-skip-models-applied'] : [])], attempts, rejectedCopy: rejectedCopy.slice(0, 12), rejectedCompressed: rejectedCompressed.slice(0, 12), requestReceipt: { deterministic, temperature: deterministic ? 0.22 : 0.58, topP: deterministic ? 0.64 : 0.88, antiCompression: true, fastHardPacketLane: !strictReviewRetry, registerTransformPromptLane: complexity.registerTransform, strictReviewMapRetry: strictReviewRetry, complexity, modelOrder: models.slice(0, maxAttempts), skippedModels: [...skippedModels], minLengthRatio: minLengthRatio(sourceText, complexity), bounded: true, elapsedMs: Date.now() - startedAt, reviewMapRepair: true, reviewMapRepairVersion: ROTATION_VERSION } });
 }
