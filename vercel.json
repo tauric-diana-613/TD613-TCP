@@ -1,5 +1,13 @@
 {
   "version": 2,
+  "functions": {
+    "api/hush-generate-strict.js": {
+      "maxDuration": 60
+    },
+    "api/hush-generate.js": {
+      "maxDuration": 60
+    }
+  },
   "headers": [
     { "source": "/adversarial-bench.html", "headers": [{ "key": "Cache-Control", "value": "no-store, max-age=0" }] },
     { "source": "/app/adversarial-bench.html", "headers": [{ "key": "Cache-Control", "value": "no-store, max-age=0" }] },
