@@ -81,13 +81,14 @@
     appendModule('./hush-phase32.js?v=' + (V.hushPhase32 || V.main || ''));
     appendModule('./hush-patch38.js?v=' + (V.hushPatch38 || V.hushPhase32 || V.main || ''));
     appendModule('./hush-pr75-rescue.js?v=' + (V.hushPr75 || V.hushPatch38 || V.hushPhase32 || V.main || ''));
-    appendModule('./hush-pr77-flight-controls.js?v=' + (V.hushPr77 || V.hushPatch38 || V.main || ''));
+    appendModule('./hush-pr77-flight-controls.js?v=' + (V.hushPr77 || V.hushPatch38 || V.hushPhase32 || V.main || ''));
     appendModule('./hush-pr78-runtime-trace.js?v=' + (V.hushPr78 || V.hushPr77 || V.hushPatch38 || V.main || ''));
     appendModule('./hush-pr79-coverage-floor.js?v=' + (V.hushPr79 || V.hushPr78 || V.hushPatch38 || V.main || ''));
     appendModule('./hush-pr82-mobile-state-hotfix.js?v=' + (V.hushPr82 || V.hushPatch38 || V.main || ''));
     appendScript('./hush-pr92-dom-owner.js?v=' + (V.hushPr92 || V.hushPatch38 || V.main || ''));
     appendScript('./hush-pr93-mask-eligibility.js?v=' + (V.hushPr93 || V.hushPr92 || V.hushPatch38 || V.main || ''));
     appendScript('./hush-pr94-analysis-debouncer.js?v=' + (V.hushPr94 || V.hushPr93 || V.hushPatch38 || V.main || ''));
+    appendScript('./hush-pr176-analysis-surface-stabilizer.js?v=' + (V.hushPr176 || V.hushPr94 || V.hushPr93 || V.hushPr92 || V.main || ''));
     appendScript('./hush-pr95-remote-rescue.js?v=' + (V.hushPr95 || V.hushPr94 || V.hushPatch38 || V.main || ''));
     appendScript('./hush-pr96-cockpit-stabilizer.js?v=' + (V.hushPr96 || V.hushPr95 || V.hushPatch38 || V.main || ''));
     appendScript('./hush-pr97-mobile-drawer-watchdog.js?v=' + (V.hushPr97 || V.hushPr96 || V.hushPatch38 || V.main || ''));
@@ -122,8 +123,7 @@
     './browser-boot.js?v='        + (V.boot        || ''),
     './browser-controller.js?v='  + (V.controller  || ''),
     './browser-ui.js?v='          + (V.ui          || ''),
-    './browser-guardian.js?v='    + (V.guardian    || ''),
-    './browser-chambers.js?v='    + (V.chambers    || '')
+    './browser-guardian.js?v='    + (V.guardian    || '')
   ];
 
   if (needsRetrievalFixtures) {
