@@ -1,6 +1,6 @@
 import { buildPropositionMap } from './hush-proposition-map.js';
 
-export const HUSH_PACKET_ROUTER_VERSION = 'pr124-packet-router/v1';
+export const HUSH_PACKET_ROUTER_VERSION = 'pr177-packet-router/register-transform/v1';
 
 const safe = (value) => String(value ?? '').trim();
 const lower = (value) => safe(value).toLowerCase();
@@ -8,6 +8,7 @@ const asArray = (value) => Array.isArray(value) ? value.filter(Boolean) : [];
 const uniq = (values = []) => [...new Set(asArray(values).map((v) => safe(v)).filter(Boolean))];
 const round3 = (value) => Number(Number(value || 0).toFixed(3));
 
+const REGISTER_RE = /\b(register custody|target register forge|register-preserve|aave-target-register|source-shaped|preserve register|target-register-generated|rooted simone|holding zora)\b/i;
 const CHAT_RE = /\b(chat|text|thread|threaded|group|casual|aave|blip|blips|marisol|keisha|dm|dms|small circle|internet|abbrev|abbreviation)\b/i;
 const PLAIN_RE = /\b(plain|witness|record|legal|intake|hr|portal|formal|official|compliance|procedural|clipboard|weather|facts first|low heat|flat compliance)\b/i;
 const LYRIC_RE = /\b(lyric|oracle|goth|alien|expressive|theory|archive|ghost|strange|playful|deflection|lulu|ophelia)\b/i;
@@ -23,6 +24,7 @@ function maskHaystack(mask = {}) {
     mask.description,
     mask.intendedUse,
     mask.riskTell,
+    JSON.stringify(mask.transformHints || {}),
     ...(asArray(mask.pressureWarnings)),
     ...(asArray(mask.dictionHints)),
     ...(asArray(mask.transitionBank)),
@@ -72,6 +74,7 @@ export function classifyMaskPacketTier({ mask = {}, ontologyRoute = {}, proposit
   const hasClaims = Boolean(propositionMap.claimCount || propositionMap.claim_count);
   let tier = 'general_mask_packet';
   if (LOW_SIG_RE.test(hay)) tier = 'low_signature_packet';
+  else if (REGISTER_RE.test(hay) || route === 'register-transform' || route === 'register-custody') tier = 'register_transform_packet';
   else if (hasClaims && PLAIN_RE.test(hay)) tier = 'legal_witness_packet';
   else if (CHAT_RE.test(hay) || route === 'casual-register') tier = 'chat_cadence_packet';
   else if (JAGGED_RE.test(hay) || route === 'jagged-disguise') tier = 'jagged_disguise_packet';
@@ -84,8 +87,8 @@ export function classifyMaskPacketTier({ mask = {}, ontologyRoute = {}, proposit
     includeDeepMetrics: ['lyric_pressure_packet', 'jagged_disguise_packet', 'chat_cadence_packet'].includes(tier),
     includeLegalMaps: ['legal_witness_packet', 'plain_record_packet'].includes(tier),
     includeSurfaceMarkers: tier === 'chat_cadence_packet',
-    semanticAnchorMode: ['plain_record_packet', 'legal_witness_packet', 'low_signature_packet'].includes(tier) ? 'strict' : 'balanced',
-    candidateCount: 4
+    semanticAnchorMode: ['plain_record_packet', 'legal_witness_packet', 'low_signature_packet', 'register_transform_packet'].includes(tier) ? 'strict' : 'balanced',
+    candidateCount: tier === 'register_transform_packet' ? 3 : 4
   };
 }
 
@@ -106,7 +109,7 @@ export function compactProfileForPacketTier(profile = {}, tier = 'general_mask_p
     transition_variance: compactNumber(profile.transition_variance ?? profile.transitionVariance),
     acoustic_weight: compactNumber(profile.acoustic_weight ?? profile.acousticWeight)
   };
-  if (tier === 'plain_record_packet' || tier === 'legal_witness_packet' || tier === 'low_signature_packet') {
+  if (tier === 'plain_record_packet' || tier === 'legal_witness_packet' || tier === 'low_signature_packet' || tier === 'register_transform_packet') {
     return {
       register_mode: base.register_mode,
       word_count: base.word_count,
@@ -149,15 +152,15 @@ function slimSourceManifest(manifest = {}, sourceText = '', tier = 'general_mask
   const propositionMap = manifest.proposition_summary || buildPropositionMap(sourceText);
   const softTerms = softTermsFromMap(propositionMap, sourceText, semanticAnchors);
   return {
-    source_units: asArray(manifest.source_units).slice(0, tier === 'low_signature_packet' ? 6 : 10),
-    protected_literals: protectedLiterals.slice(0, 24),
+    source_units: asArray(manifest.source_units).slice(0, tier === 'low_signature_packet' ? 6 : tier === 'register_transform_packet' ? 7 : 10),
+    protected_literals: protectedLiterals.slice(0, tier === 'register_transform_packet' ? 16 : 24),
     semantic_anchors: semanticAnchors,
-    soft_terms: softTerms,
-    question_map: asArray(manifest.question_map).slice(0, 8),
-    negation_map: asArray(manifest.negation_map).slice(0, 8),
-    uncertainty_map: asArray(manifest.uncertainty_map).slice(0, 8),
-    claim_map: asArray(manifest.claim_map).slice(0, 8),
-    proposition_summary: propositionMap
+    soft_terms: softTerms.slice(0, tier === 'register_transform_packet' ? 14 : 24),
+    question_map: asArray(manifest.question_map).slice(0, tier === 'register_transform_packet' ? 4 : 8),
+    negation_map: asArray(manifest.negation_map).slice(0, tier === 'register_transform_packet' ? 4 : 8),
+    uncertainty_map: asArray(manifest.uncertainty_map).slice(0, tier === 'register_transform_packet' ? 4 : 8),
+    claim_map: asArray(manifest.claim_map).slice(0, tier === 'register_transform_packet' ? 4 : 8),
+    proposition_summary: tier === 'register_transform_packet' ? null : propositionMap
   };
 }
 
@@ -213,14 +216,15 @@ export function buildRoutedProviderPacket({ flightPacket = {}, tier = 'general_m
           profileWordCount: styl.audit.enrichment.profileWordCount || 0,
           source: styl.audit.enrichment.source || ''
         } : null,
-        note: 'PR124 routed packet; profile fields are tier-gated.'
+        note: 'PR177 routed packet; register-transform profile fields are tier-gated.'
       }
     },
     flight_controls: {
       ...(flightPacket.flight_controls || {}),
-      candidate_count: 4,
+      candidate_count: tier === 'register_transform_packet' ? 3 : 4,
       packet_tier: tier,
-      chat_ontology_enabled: tier === 'chat_cadence_packet'
+      chat_ontology_enabled: tier === 'chat_cadence_packet',
+      register_transform_enabled: tier === 'register_transform_packet'
     }
   };
   if (tier !== 'chat_cadence_packet') {
