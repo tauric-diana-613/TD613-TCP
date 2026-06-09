@@ -5,8 +5,8 @@ const corsHeaders = {
   'access-control-max-age': '86400'
 };
 
-const VERSION = 'hush-generate-v3.11-strict-skip-model-budget';
-const ROTATION_VERSION = 'pr161-review-map-repair-surface/v3-strict-skip-model-budget';
+const VERSION = 'hush-generate-v3.12-gemini-promise-race-timeout';
+const ROTATION_VERSION = 'pr161-review-map-repair-surface/v4-gemini-promise-race-timeout';
 const DEFAULT_MODEL_ORDER = ['gemini-flash-lite-latest', 'gemini-2.5-flash', 'gemini-2.5-flash-lite'];
 const GEMINI_TIMEOUT_MS = 8800;
 const WALL_TIMEOUT_MS = 24500;
@@ -237,17 +237,31 @@ function buildPrompt(contract = {}, repair = null) {
   const repairBlock = repair ? `\nREPAIR: Previous output failed ${repair.kind}. Correct only that failure. ${repair.rejected || ''}` : '';
   return `Return JSON only. Schema: {"candidates":[{"text":"string","style_note":"string","style_operation":"${operations[0] || 'cadence_alias'}","preserved_propositions":["P1"],"dropped_propositions":[],"changed_questions":[],"new_claims":[],"authorship_moves":["specific mask move"],"risk_flags":[],"mask_surface_notes":{"rhythm":"string","diction":"string","structure":"string","coverage":"string"}}]}\n\nGenerate exactly ${candidateCount} candidates. Do not summarize. Each candidate must be at least ${minWords} words unless the source is shorter. Preserve meaning, questions, caveats, negations, uncertainty, and causal links. Do not answer questions. Do not add facts. Do not claim a proposition is preserved unless the text carries it. Use different style_operation values.${retryBan}\n\nSTYLE CONTROL: ${stylePolicy.surface || ''}; architecture=${stylePolicy.architecture || ''}; punctuation=${stylePolicy.punctuation || ''}; grammar=${stylePolicy.grammar || ''}; chat=${stylePolicy.chat_speak_profile || stylePolicy.chat || ''}; typo=${stylePolicy.typo_policy || stylePolicy.typo || ''}. Human texture may change rhythm/register/punctuation only, never facts, names, dates, amounts, IDs, file labels, quotes, entities, or claims. Preserve opacity; avoid generic institutional prose. Include two concrete authorship_moves per candidate.\n\nOPERATIONS: ${operations.join(', ')}\n\nSOURCE UNITS:\n${units.map((unit, index) => `P${index + 1}: ${unit}`).join('\n')}\n\nIMPORTANT TERMS: ${terms.join(', ') || '(none)'}\n\nCOMPACT PACKET:\n${compactJson(compactPacket)}\n${repairBlock}\n\nSOURCE TEXT:\n${sourceText}`;
 }
+function geminiTimeout(model) {
+  return {
+    response: { ok: false, status: 408 },
+    payload: { error: { message: 'Gemini call timed out under local Promise.race watchdog', status: 'AbortError', model: normalizeModelName(model), timeoutMs: GEMINI_TIMEOUT_MS } },
+    timedOut: true
+  };
+}
 async function callGemini({ model, prompt, jsonMode = true, deterministic = true }) {
   const controller = new AbortController();
-  const timer = setTimeout(() => controller.abort(), GEMINI_TIMEOUT_MS);
+  let timer = null;
   const generationConfig = jsonMode ? { temperature: deterministic ? 0.22 : 0.58, topP: deterministic ? 0.64 : 0.88, responseMimeType: 'application/json', maxOutputTokens: MAX_OUTPUT_TOKENS } : { temperature: deterministic ? 0.22 : 0.58, topP: deterministic ? 0.64 : 0.88, maxOutputTokens: MAX_OUTPUT_TOKENS };
+  const request = fetch(`https://generativelanguage.googleapis.com/v1beta/models/${encodeURIComponent(normalizeModelName(model))}:generateContent?key=${encodeURIComponent(process.env.GEMINI_API_KEY)}`, { method: 'POST', headers: { 'content-type': 'application/json' }, body: JSON.stringify({ contents: [{ role: 'user', parts: [{ text: prompt }] }], generationConfig }), signal: controller.signal })
+    .then(async (response) => ({ response, payload: await response.json().catch(() => ({})), timedOut: false }))
+    .catch((error) => error?.name === 'AbortError' ? geminiTimeout(model) : { response: { ok: false, status: 599 }, payload: { error: { message: safe(error?.message || error), status: error?.name || 'FETCH_ERROR' } }, timedOut: false });
+  const timeout = new Promise((resolve) => {
+    timer = setTimeout(() => {
+      try { controller.abort(); } catch {}
+      resolve(geminiTimeout(model));
+    }, GEMINI_TIMEOUT_MS);
+  });
   try {
-    const response = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/${encodeURIComponent(normalizeModelName(model))}:generateContent?key=${encodeURIComponent(process.env.GEMINI_API_KEY)}`, { method: 'POST', headers: { 'content-type': 'application/json' }, body: JSON.stringify({ contents: [{ role: 'user', parts: [{ text: prompt }] }], generationConfig }), signal: controller.signal });
-    const payload = await response.json().catch(() => ({}));
-    return { response, payload, timedOut: false };
-  } catch (error) {
-    return { response: { ok: false, status: error?.name === 'AbortError' ? 408 : 599 }, payload: { error: { message: safe(error?.message || error), status: error?.name || 'FETCH_ERROR' } }, timedOut: error?.name === 'AbortError' };
-  } finally { clearTimeout(timer); }
+    return await Promise.race([request, timeout]);
+  } finally {
+    if (timer) clearTimeout(timer);
+  }
 }
 function providerText(payload = {}) { return payload?.candidates?.[0]?.content?.parts?.[0]?.text || ''; }
 function summarizeProviderError(payload = {}) {
