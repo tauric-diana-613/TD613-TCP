@@ -36,11 +36,13 @@ async function run(ev){if(ev){ev.preventDefault();ev.stopImmediatePropagation()}
 function install(){
   var b=$('generateMaskedOutputBtn');
   if(!b)return false;
-  if(b.dataset.pr123Stable===V&&b.dataset.pr123OwnsClick==='true'&&b.dataset.patch38==='true')return false;
+  if(b.__td613Pr123OwnsClick===V&&b.dataset.pr123Stable===V&&b.dataset.pr75Bound==='true'&&b.dataset.patch38==='true')return false;
   var c=b.cloneNode(true);
   c.dataset.pr123Stable=V;
   c.dataset.pr123OwnsClick='true';
   c.dataset.patch38='true';
+  c.dataset.pr75Bound='true';
+  c.__td613Pr123OwnsClick=V;
   b.replaceWith(c);
   c.addEventListener('click',run,true);
   return true
