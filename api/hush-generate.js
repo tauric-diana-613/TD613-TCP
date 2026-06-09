@@ -5,8 +5,8 @@ const corsHeaders = {
   'access-control-max-age': '86400'
 };
 
-const VERSION = 'hush-generate-v3.14-register-transform-anti-copy-architecture';
-const ROTATION_VERSION = 'pr180-register-transform-anti-copy-architecture/v1';
+const VERSION = 'hush-generate-v3.15-register-selector-calibration';
+const ROTATION_VERSION = 'pr181-register-selector-calibration/v1';
 const DEFAULT_MODEL_ORDER = ['gemini-flash-lite-latest', 'gemini-2.5-flash', 'gemini-2.5-flash-lite'];
 const GEMINI_TIMEOUT_MS = 8800;
 const WALL_TIMEOUT_MS = 24500;
@@ -54,8 +54,7 @@ function configuredModels() {
 }
 function strictReviewMapRetry(contract = {}) {
   return contract.strictReviewMapRetry === true || /review-map/i.test(safe(contract.strictReviewMapRetryReason || ''));
-}
-function detectComplexity(sourceText = '', contract = {}) {
+}\nfunction detectComplexity(sourceText = '', contract = {}) {
   const wc = words(sourceText).length;
   const tier = safe(contract.packetTier || contract.flightPacket?.packetTier || contract.flightPacket?.packet_tier || '');
   const maskEvidenceState = safe(contract.maskEvidenceState || contract.flightPacket?.maskEvidenceState || '');
@@ -136,7 +135,7 @@ function longestSourceRun(candidateText = '', sourceText = '') {
   }
   return best;
 }
-function copyRisk(candidateText = '', sourceText = '') {
+function copyRisk(candidateText = '', sourceText = '', complexity = {}) {
   const candidateNorm = normalizedText(candidateText), sourceNorm = normalizedText(sourceText);
   if (!candidateNorm || !sourceNorm) return { copied: false, longestRun: 0, overlap: 0, lengthRatio: 1 };
   const candidateWords = words(candidateText), sourceWords = words(sourceText);
@@ -149,13 +148,22 @@ function copyRisk(candidateText = '', sourceText = '') {
   const lengthRatio = candidateWords.length / Math.max(1, sourceWords.length);
   const exact = candidateNorm === sourceNorm;
   const wrapper = !exact && sourceNorm.length >= 24 && candidateNorm.includes(sourceNorm);
-  const longRun = longestRun >= Math.min(9, Math.max(6, Math.floor(sourceWords.length * 0.55)));
-  const near = overlap >= 0.9 && lengthRatio >= 0.82 && lengthRatio <= 1.35 && longestRun >= Math.min(8, Math.max(5, Math.floor(sourceWords.length * 0.4)));
-  return { copied: Boolean(exact || wrapper || longRun || near), exact, wrapper, longRun, near, longestRun, overlap: Number(overlap.toFixed(4)), lengthRatio: Number(lengthRatio.toFixed(4)) };
+  const registerTransform = complexity && complexity.registerTransform === true;
+  const longRunFloor = registerTransform
+    ? Math.max(36, Math.floor(sourceWords.length * 0.18))
+    : Math.min(9, Math.max(6, Math.floor(sourceWords.length * 0.55)));
+  const nearRunFloor = registerTransform
+    ? Math.max(48, Math.floor(sourceWords.length * 0.22))
+    : Math.min(8, Math.max(5, Math.floor(sourceWords.length * 0.4)));
+  const longRun = longestRun >= longRunFloor;
+  const near = registerTransform
+    ? overlap >= 0.82 && lengthRatio >= 0.72 && lengthRatio <= 1.35 && longestRun >= nearRunFloor
+    : overlap >= 0.9 && lengthRatio >= 0.82 && lengthRatio <= 1.35 && longestRun >= nearRunFloor;
+  return { copied: Boolean(exact || wrapper || longRun || near), exact, wrapper, longRun, near, longestRun, overlap: Number(overlap.toFixed(4)), lengthRatio: Number(lengthRatio.toFixed(4)), longRunFloor, nearRunFloor };
 }
 function minLengthRatio(sourceText = '', complexity = {}) {
   const count = words(sourceText).length;
-  if (complexity.registerTransform) return count < 180 ? 0.36 : 0.42;
+  if (complexity.registerTransform) return count < 180 ? 0.34 : 0.40;
   if (complexity.hard && !complexity.strictReviewMapRetry) return 0.50;
   if (complexity.strictReviewMapRetry) return count < 180 ? 0.46 : 0.50;
   if (count < 80) return 0.46;
@@ -172,7 +180,7 @@ function compressionRisk(candidateText = '', sourceText = '', complexity = {}) {
 function splitCandidates(candidates = [], sourceText = '', complexity = {}) {
   const usable = [], copied = [], compressed = [];
   candidates.forEach((candidate, index) => {
-    const risk = copyRisk(candidate.text || '', sourceText);
+    const risk = copyRisk(candidate.text || '', sourceText, complexity);
     const compression = compressionRisk(candidate.text || '', sourceText, complexity);
     if (risk.copied) copied.push({ index, risk, preview: safe(candidate.text).slice(0, 180) });
     else if (compression.compressed) compressed.push({ index, risk: compression, preview: safe(candidate.text).slice(0, 180) });
@@ -505,5 +513,5 @@ export default async function handler(req, res) {
   }
 
   const repaired = serverRepairCandidates(sourceText, contract);
-  return send(res, 200, { ok: true, provider: 'server-deterministic-repair', model: 'server-repair-review-map', deterministic, version: VERSION, rotationVersion: ROTATION_VERSION, candidates: repaired.candidates, warnings: [...repaired.warnings, 'provider-fast-lane-no-remote-release', ...(complexity.registerTransform ? ['register-transform-prompt-lane-exhausted'] : []), ...(strictReviewRetry ? ['strict-review-map-transform-lane-exhausted'] : []), ...(skippedModels.size ? ['strict-review-skip-models-applied'] : [])], attempts, rejectedCopy: rejectedCopy.slice(0, 12), rejectedCompressed: rejectedCompressed.slice(0, 12), requestReceipt: { deterministic, temperature: deterministic ? 0.22 : 0.58, topP: deterministic ? 0.64 : 0.88, antiCompression: true, fastHardPacketLane: !strictReviewRetry, registerTransformPromptLane: complexity.registerTransform, strictReviewMapRetry: strictReviewRetry, complexity, modelOrder: models.slice(0, maxAttempts), skippedModels: [...skippedModels], minLengthRatio: minLengthRatio(sourceText, complexity), bounded: true, elapsedMs: Date.now() - startedAt, reviewMapRepair: true, reviewMapRepairVersion: ROTATION_VERSION } });
+  return send(res, 200, { ok: true, provider: 'server-deterministic-repair', model: 'server-repair-review-map', deterministic, version: VERSION, rotationVersion: ROTATION_VERSION, candidates: repaired.candidates, warnings: [...repaired.warnings, 'provider-fast-lane-no-remote-release', ...(complexity.registerTransform ? ['register-transform-prompt-lane-exhausted'] : []), ...(strictReviewRetry ? ['strict-review-map-transform-lane-exhausted'] : []), ...(skippedModels.size ? ['strict-review-skip-models-applied'] : [])], attempts, rejectedCopy: rejectedCopy.slice(0, 12), rejectedCompressed: rejectedCompressed.slice(0, 12), requestReceipt: { deterministic, temperature: deterministic ? 0.22 : 0.58, topP: deterministic ? 0.22 : 0.88, antiCompression: true, fastHardPacketLane: !strictReviewRetry, registerTransformPromptLane: complexity.registerTransform, strictReviewMapRetry: strictReviewRetry, complexity, modelOrder: models.slice(0, maxAttempts), skippedModels: [...skippedModels], minLengthRatio: minLengthRatio(sourceText, complexity), bounded: true, elapsedMs: Date.now() - startedAt, reviewMapRepair: true, reviewMapRepairVersion: ROTATION_VERSION } });
 }
