@@ -6,9 +6,11 @@ const C = {
   'access-control-allow-headers': 'content-type',
   'access-control-max-age': '86400'
 };
-const VERSION = 'strict-endpoint-pr167-low-signature-rich-retry';
-const META = 'pr167-low-signature-rich-retry/v1';
+const VERSION = 'strict-endpoint-pr168-late-review-map-retry';
+const META = 'pr168-late-review-map-retry/v1';
 const STRICT_REVIEW_RETRY_BUDGET_MS = 15500;
+const STRICT_CLIENT_SAFE_MS = 28600;
+const STRICT_LATE_RETRY_MIN_MS = 5600;
 
 function send(res, status, payload) {
   for (const [k, v] of Object.entries(C)) res.setHeader(k, v);
@@ -46,16 +48,25 @@ function lowSigRich(c = {}) {
   const st = s(c.maskEvidenceState || c.flightPacket?.maskEvidenceState);
   return /low_signature/i.test(tier) && /rich/i.test(st);
 }
-function retryContract(c = {}, reason = 'review-map-transform-retry') {
+function timedOutModels(payload = {}) {
+  return uniq(arr(payload.attempts).filter((a) => a && (a.timedOut || a.status === 408 || a.providerStatus === 408 || a.error?.status === 'AbortError')).map((a) => a.model));
+}
+function retryContract(c = {}, reason = 'review-map-transform-retry', payload = {}, late = false) {
+  const skipped = timedOutModels(payload);
   const requested = Number(c.candidateCount || c.flightPacket?.flight_controls?.candidate_count || 2) || 2;
-  const candidateCount = Math.max(2, Math.min(requested, 3));
+  const candidateCount = late ? 2 : Math.max(2, Math.min(requested, 3));
   const n = {
     ...c,
     reroll: true,
     candidateCount,
     maskEvidenceState: 'detailed',
     strictReviewMapRetry: true,
-    strictReviewMapRetryReason: reason
+    strictReviewMapRetryReason: reason,
+    strictReviewRetrySkipModels: skipped,
+    skipModels: uniq([...(arr(c.skipModels || c.avoidModels || c.strictReviewRetrySkipModels)), ...skipped]),
+    strictReviewRetryAttemptBudget: late ? 1 : 3,
+    strictReviewRetryStageLimit: late ? 1 : 2,
+    strictReviewLateRetry: late
   };
   if (c.flightPacket) {
     n.flightPacket = {
@@ -69,14 +80,37 @@ function retryContract(c = {}, reason = 'review-map-transform-retry') {
   }
   return n;
 }
-async function upstream(req, contract) {
-  const r = await fetch(`${origin(req)}/api/hush-generate`, {
-    method: 'POST',
-    headers: { 'content-type': 'application/json' },
-    body: JSON.stringify({ contract })
-  });
-  const p = await r.json().catch(() => ({}));
-  return { response: r, payload: p };
+async function upstream(req, contract, timeoutMs = 0) {
+  const controller = timeoutMs > 0 ? new AbortController() : null;
+  const timer = controller ? setTimeout(() => controller.abort(), timeoutMs) : null;
+  try {
+    const r = await fetch(`${origin(req)}/api/hush-generate`, {
+      method: 'POST',
+      headers: { 'content-type': 'application/json' },
+      body: JSON.stringify({ contract }),
+      signal: controller?.signal
+    });
+    const p = await r.json().catch(() => ({}));
+    return { response: r, payload: p };
+  } catch (error) {
+    if (controller && error?.name === 'AbortError') {
+      return {
+        response: { ok: false, status: 408 },
+        payload: {
+          ok: false,
+          provider: 'gemini-strict',
+          model: 'strict-review-map-late-retry-timeout',
+          error: 'strict_review_map_late_retry_timeout',
+          warnings: ['review-map-transform-retry-timeout'],
+          attempts: [],
+          requestReceipt: { strictReviewLateRetryTimeout: true, retryTimeoutMs: timeoutMs }
+        }
+      };
+    }
+    throw error;
+  } finally {
+    if (timer) clearTimeout(timer);
+  }
 }
 function releasable(payload = {}) {
   return !reviewMap(payload) &&
@@ -121,7 +155,7 @@ function hold(payload = {}, contract = {}, startedAt = Date.now(), reason = 'str
       sourceWordCount: words(source(contract)).length
     },
     providerErrorMessage: isMap ?
-      'Review-map diagnostics are custody reports, not transformed text, and were held after a strict transform retry failed to produce releasable text.' :
+      'Review-map diagnostics are custody reports, not transformed text, and were held after the strict retry lane failed to produce releasable text inside the client-safe window.' :
       'Strict endpoint held output after anti-compression review found no releasable remote candidate.',
     requestReceipt: {
       ...(payload.requestReceipt || {}),
@@ -133,6 +167,7 @@ function hold(payload = {}, contract = {}, startedAt = Date.now(), reason = 'str
       antiCompression: true,
       reviewMapRepairHeld: isMap,
       strictReviewMapTransformRetry: extra.includes('review-map-transform-retry-attempted'),
+      strictReviewMapLateRetry: extra.includes('review-map-transform-late-retry-attempted'),
       lowSignatureRichRetry: extra.includes('low-signature-rich-retry-attempted'),
       fallbackSuppressed: payload.provider === 'server-deterministic-repair',
       fallbackSuppressionReason: reason,
@@ -158,6 +193,7 @@ function pass(payload = {}, contract = {}, startedAt = Date.now(), status = 200,
       strictDirectVersion: VERSION,
       endpointMetaVersion: META,
       strictReviewMapTransformRetry: extra.includes('review-map-transform-retry-success'),
+      strictReviewMapLateRetry: extra.includes('review-map-transform-late-retry-success'),
       lowSignatureRichRetry: extra.includes('low-signature-rich-retry-success'),
       elapsedMs: Date.now() - startedAt
     }
@@ -172,7 +208,7 @@ export default async function handler(req, res) {
     version: VERSION,
     reviewVersion: META,
     upstream: '/api/hush-generate',
-    note: 'Strict endpoint retries review-map-only diagnostics once before final anti-compression hold.'
+    note: 'Strict endpoint retries review-map-only diagnostics, including a late low-signature/rich retry inside the client-safe window.'
   });
   if (req.method !== 'POST') return send(res, 405, { ok: false, error: 'method-not-allowed', version: VERSION });
 
@@ -181,30 +217,40 @@ export default async function handler(req, res) {
   try {
     let { response, payload } = await upstream(req, contract);
     let retryExtra = [];
+    const elapsed = () => Date.now() - startedAt;
 
-    if (reviewMap(payload) && Date.now() - startedAt < STRICT_REVIEW_RETRY_BUDGET_MS) {
+    if (reviewMap(payload)) {
       const lowRich = lowSigRich(contract);
-      retryExtra = uniq([
-        'review-map-transform-retry-attempted',
-        lowRich ? 'low-signature-rich-retry-attempted' : ''
-      ]);
-      const retry = await upstream(req, retryContract(contract, lowRich ? 'low-signature-rich-review-map' : 'review-map-only'));
-      if (releasable(retry.payload)) {
-        return send(res, retry.response.status, pass(retry.payload, contract, startedAt, retry.response.status, uniq([
-          ...retryExtra,
-          'review-map-transform-retry-success',
-          lowRich ? 'low-signature-rich-retry-success' : ''
-        ])));
+      const late = elapsed() >= STRICT_REVIEW_RETRY_BUDGET_MS;
+      const remaining = STRICT_CLIENT_SAFE_MS - elapsed();
+      const retryAllowed = elapsed() < STRICT_REVIEW_RETRY_BUDGET_MS || (lowRich && remaining >= STRICT_LATE_RETRY_MIN_MS);
+      if (retryAllowed) {
+        retryExtra = uniq([
+          'review-map-transform-retry-attempted',
+          late ? 'review-map-transform-late-retry-attempted' : '',
+          lowRich ? 'low-signature-rich-retry-attempted' : '',
+          timedOutModels(payload).length ? 'strict-retry-skipped-timedout-models' : ''
+        ]);
+        const timeoutMs = late ? Math.max(STRICT_LATE_RETRY_MIN_MS, remaining) : 0;
+        const retry = await upstream(req, retryContract(contract, lowRich ? (late ? 'low-signature-rich-review-map-late' : 'low-signature-rich-review-map') : 'review-map-only', payload, late), timeoutMs);
+        if (releasable(retry.payload)) {
+          return send(res, retry.response.status, pass(retry.payload, contract, startedAt, retry.response.status, uniq([
+            ...retryExtra,
+            'review-map-transform-retry-success',
+            late ? 'review-map-transform-late-retry-success' : '',
+            lowRich ? 'low-signature-rich-retry-success' : ''
+          ])));
+        }
+        payload = {
+          ...retry.payload,
+          warnings: uniq([
+            ...(retry.payload.warnings || []),
+            ...retryExtra,
+            late ? 'review-map-transform-late-retry-still-held' : 'review-map-transform-retry-still-held'
+          ])
+        };
+        response = retry.response;
       }
-      payload = {
-        ...retry.payload,
-        warnings: uniq([
-          ...(retry.payload.warnings || []),
-          ...retryExtra,
-          'review-map-transform-retry-still-held'
-        ])
-      };
-      response = retry.response;
     }
 
     if (reviewMap(payload)) return send(res, 504, hold(payload, contract, startedAt, 'review_map_not_transform', retryExtra));
