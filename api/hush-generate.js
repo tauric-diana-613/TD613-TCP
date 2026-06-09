@@ -5,8 +5,8 @@ const corsHeaders = {
   'access-control-max-age': '86400'
 };
 
-const VERSION = 'hush-generate-v3.13-register-transform-prompt-lane';
-const ROTATION_VERSION = 'pr178-register-transform-prompt-lane/v1';
+const VERSION = 'hush-generate-v3.14-register-transform-anti-copy-architecture';
+const ROTATION_VERSION = 'pr180-register-transform-anti-copy-architecture/v1';
 const DEFAULT_MODEL_ORDER = ['gemini-flash-lite-latest', 'gemini-2.5-flash', 'gemini-2.5-flash-lite'];
 const GEMINI_TIMEOUT_MS = 8800;
 const WALL_TIMEOUT_MS = 24500;
@@ -222,6 +222,10 @@ function compactFlightPacket(packet = {}) {
 function operationList(contract = {}, controls = {}) {
   return Array.isArray(contract.operationTaxonomy) && contract.operationTaxonomy.length ? contract.operationTaxonomy.slice(0, 6) : controls.preferred_operations?.slice?.(0, 6) || controls.required_operations?.slice?.(0, 6) || ['cadence_alias', 'syntax_inversion', 'register_lowering', 'friction_insert', 'witness_plainness', 'heat_calibration'];
 }
+function registerCopyRepairDirective(repairBlock = '') {
+  if (!/failed copy|copy/i.test(repairBlock)) return '';
+  return '\n\nCOPY REPAIR REQUIRED: The last register candidates preserved too much source order. Rewrite from the meaning, not the sentence sequence. Use a different opening, move the strongest later claim forward, merge or split source sentences, change clause order, and avoid more than six consecutive source words except names, quotes, IDs, or protected literals. Do not merely swap a few adjectives. Do not preserve the source paragraph path.';
+}
 function buildRegisterTransformPrompt({ sourceText = '', candidateCount = 3, minWords = 28, operations = [], stylePolicy = {}, compactPacket = {}, repairBlock = '', retryBan = '' } = {}) {
   const style = compactPacket.mask_style_vector || {};
   const lexicon = [
@@ -229,11 +233,14 @@ function buildRegisterTransformPrompt({ sourceText = '', candidateCount = 3, min
     ...(style.diction_hints || []),
     ...(style.transition_bank || [])
   ].filter(Boolean).slice(0, 18);
+  const copyRepair = registerCopyRepairDirective(repairBlock);
   return `Return JSON only. Schema: {"candidates":[{"text":"string","style_note":"string","style_operation":"register_transform","preserved_propositions":[],"dropped_propositions":[],"changed_questions":[],"new_claims":[],"authorship_moves":["specific register move"],"risk_flags":[],"mask_surface_notes":{"rhythm":"string","diction":"string","structure":"string","coverage":"string"}}]}
 
 REGISTER TRANSFORM LANE. Generate exactly ${candidateCount} sendable message candidates in the selected register. This is not analysis. Do not write review maps, ledgers, P1/P2 rows, architecture notes, custody reports, proposition reports, diagnostic notes, or explanations. Do not mention the source, the packet, the mask, the register lane, or preservation work inside candidate text. Candidate text must read like the message itself.
 
-Each candidate must be at least ${minWords} words unless the source is shorter. Preserve meaning, questions, caveats, negations, uncertainty, causal links, names, dates, amounts, IDs, file labels, quotes, entities, and claims. Do not answer questions. Do not add facts. Do not formalize unless the selected register asks for it.${retryBan}
+ANTI-COPY ARCHITECTURE: Surface preservation is not source-order preservation. Do not keep the original sentence sequence. Do not keep the source opener. Do not make a line-by-line paraphrase. Each candidate must use a different macro-order: start from a later pressure point, fold earlier context in afterward, combine at least two adjacent source ideas, split at least one long source idea, and vary sentence rhythm. Preserve meaning and relation, not the source path.
+
+Each candidate must be at least ${minWords} words unless the source is shorter. Preserve meaning, questions, caveats, negations, uncertainty, causal links, names, dates, amounts, IDs, file labels, quotes, entities, and claims. Do not answer questions. Do not add facts. Do not formalize unless the selected register asks for it.${retryBan}${copyRepair}
 
 REGISTER SURFACE: ${stylePolicy.surface || ''}; rhythm=${style.rhythm_target || stylePolicy.architecture || ''}; formality=${style.formality_target || ''}; punctuation=${stylePolicy.punctuation || ''}; grammar=${stylePolicy.grammar || ''}; diction hints=${lexicon.join(', ') || '(none)'}. Use register texture through rhythm, diction, sentence shape, contraction, and relation marks only. Avoid parody, caricature, generic institutional prose, and over-cleaning.
 
