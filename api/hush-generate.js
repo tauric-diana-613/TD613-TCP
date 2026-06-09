@@ -5,8 +5,8 @@ const corsHeaders = {
   'access-control-max-age': '86400'
 };
 
-const VERSION = 'hush-generate-v3.16.1-chat-cadence-syntax-repair';
-const ROTATION_VERSION = 'pr182-chat-cadence-prompt-lane/v1';
+const VERSION = 'hush-generate-v3.17-interpretive-density-restoration';
+const ROTATION_VERSION = 'pr183-interpretive-density-restoration/v1';
 const DEFAULT_MODEL_ORDER = ['gemini-flash-lite-latest', 'gemini-2.5-flash', 'gemini-2.5-flash-lite'];
 const GEMINI_TIMEOUT_MS = 8800;
 const WALL_TIMEOUT_MS = 24500;
@@ -27,6 +27,13 @@ const REPAIR_BRIDGES = [
   'routes through',
   'keeps custody over'
 ];
+const DEFAULT_AUTHORSHIP_MOVES = [
+  'moved the hinge forward',
+  'kept metaphor pressure while changing cadence',
+  'split a dense causal chain without reducing it',
+  'lowered formality while preserving interpretive force',
+  'preserved the strange image while changing sentence rhythm'
+];
 
 function send(res, status, payload) {
   for (const [key, value] of Object.entries(corsHeaders)) res.setHeader(key, value);
@@ -44,6 +51,13 @@ function uniqueText(values = []) {
 }
 function stringArray(value) { return Array.isArray(value) ? value.map((item) => safe(item)).filter(Boolean) : []; }
 function compactJson(value = {}) { return JSON.stringify(value || {}, null, 2); }
+function placeholderMove(value = '') {
+  return /^specific (mask|register|cadence) move$/i.test(safe(value)) ||
+    /^generic surface move$/i.test(safe(value));
+}
+function concreteAuthorshipMoves(values = []) {
+  return stringArray(values).filter((move) => !placeholderMove(move));
+}
 function configuredModels() {
   const configured = uniq([...safe(process.env.GEMINI_MODEL).split(','), ...safe(process.env.GEMINI_MODEL_FALLBACKS).split(',')]);
   return uniq([...DEFAULT_MODEL_ORDER, ...configured]).sort((a, b) => {
@@ -72,7 +86,7 @@ function candidateText(candidate = {}) {
   return safe(candidate.text || candidate.output || candidate.candidate || candidate.rewrite || '');
 }
 function inferMoves(candidate = {}, index = 0) {
-  const direct = stringArray(candidate.authorship_moves || candidate.authorshipMoves);
+  const direct = concreteAuthorshipMoves(candidate.authorship_moves || candidate.authorshipMoves);
   if (direct.length) return direct;
   const notes = candidate.mask_surface_notes && typeof candidate.mask_surface_notes === 'object' ? candidate.mask_surface_notes : {};
   const moves = [
@@ -80,8 +94,8 @@ function inferMoves(candidate = {}, index = 0) {
     notes.diction && `diction:${safe(notes.diction)}`,
     notes.structure && `structure:${safe(notes.structure)}`,
     (candidate.style_operation || candidate.styleOperation || candidate.operation) && `operation:${safe(candidate.style_operation || candidate.styleOperation || candidate.operation)}`
-  ].filter(Boolean);
-  return moves.length ? moves.slice(0, 4) : [`candidate-${index + 1}:authorship-move-inferred`];
+  ].filter(Boolean).filter((move) => !placeholderMove(move));
+  return moves.length ? moves.slice(0, 4) : DEFAULT_AUTHORSHIP_MOVES.slice();
 }
 function normalizeCandidates(value) {
   const source = Array.isArray(value) ? value : Array.isArray(value?.candidates) ? value.candidates : candidateText(value) ? [value] : [];
@@ -165,9 +179,14 @@ function copyRisk(candidateText = '', sourceText = '', complexity = {}) {
 }
 function minLengthRatio(sourceText = '', complexity = {}) {
   const count = words(sourceText).length;
-  if (complexity.registerTransform || complexity.chatCadence) return count < 180 ? 0.34 : 0.40;
-  if (complexity.hard && !complexity.strictReviewMapRetry) return 0.50;
-  if (complexity.strictReviewMapRetry) return count < 180 ? 0.46 : 0.50;
+  if (complexity.registerTransform || complexity.chatCadence) {
+    if (count < 70) return 0.72;
+    if (count < 140) return 0.66;
+    if (count < 260) return 0.60;
+    return 0.58;
+  }
+  if (complexity.strictReviewMapRetry) return count < 180 ? 0.54 : 0.58;
+  if (complexity.hard && !complexity.strictReviewMapRetry) return 0.56;
   if (count < 80) return 0.46;
   if (count < 220) return 0.50;
   return 0.54;
@@ -234,7 +253,7 @@ function operationList(contract = {}, controls = {}) {
 }
 function registerCopyRepairDirective(repairBlock = '') {
   if (!/failed copy|copy/i.test(repairBlock)) return '';
-  return '\n\nCOPY REPAIR REQUIRED: The last register candidates preserved too much source order. Rewrite from the meaning, not the sentence sequence. Use a different opening, move the strongest later claim forward, merge or split source sentences, change clause order, and avoid more than six consecutive source words except names, quotes, IDs, or protected literals. Do not merely swap a few adjectives. Do not preserve the source paragraph path.';
+  return '\n\nCOPY REPAIR REQUIRED: The last candidates preserved too much source order. Rewrite from the meaning, not the sentence sequence. Use a different opening, move the strongest later claim forward, merge or split source sentences, change clause order, and avoid more than six consecutive source words except names, quotes, IDs, or protected literals. Do not merely swap adjectives. Do not preserve the source paragraph path.';
 }
 function buildRegisterTransformPrompt({ sourceText = '', candidateCount = 3, minWords = 28, operations = [], stylePolicy = {}, compactPacket = {}, repairBlock = '', retryBan = '' } = {}) {
   const style = compactPacket.mask_style_vector || {};
@@ -246,7 +265,10 @@ function buildRegisterTransformPrompt({ sourceText = '', candidateCount = 3, min
   const copyRepair = registerCopyRepairDirective(repairBlock);
   return `Return JSON only. Schema: {"candidates":[{"text":"string","style_note":"string","style_operation":"register_transform","preserved_propositions":[],"dropped_propositions":[],"changed_questions":[],"new_claims":[],"authorship_moves":["describe one concrete register/cadence move"],"risk_flags":[],"mask_surface_notes":{"rhythm":"string","diction":"string","structure":"string","coverage":"string"}}]}
 
-REGISTER TRANSFORM LANE. Generate exactly ${candidateCount} sendable message candidates in the selected register. This is not analysis. Do not write review maps, ledgers, P1/P2 rows, architecture notes, custody reports, proposition reports, diagnostic notes, or explanations. Do not mention the source, the packet, the mask, the register lane, or preservation work inside candidate text. Candidate text must read like the message itself.
+REGISTER TRANSFORM LANE. Generate exactly ${candidateCount} transformed candidates in the selected register. This is not analysis. Do not write review maps, ledgers, P1/P2 rows, architecture notes, custody reports, proposition reports, diagnostic notes, or explanations. Do not mention the source, the packet, the mask, the register lane, or preservation work inside candidate text. Candidate text must read like the transformed message itself. Do not turn the passage into a report, summary, outline, record note, or administrative rewrite.
+
+INTERPRETIVE DENSITY LAW:
+Do not summarize, digest, outline, simplify, explain, or strip the source down to its safest thesis. Preserve the central hinge logic, metaphor pressure, causal architecture, contradiction, strange phrases, and authorial posture. Transformation means re-voicing and re-architecting the full pressure of the passage, not reducing it. A candidate that reads like a polite summary, record note, next-step wrapper, or generic commentary is a failure.
 
 ANTI-COPY ARCHITECTURE: Surface preservation is not source-order preservation. Do not keep the original sentence sequence. Do not keep the source opener. Do not make a line-by-line paraphrase. Each candidate must use a different macro-order: start from a later pressure point, fold earlier context in afterward, combine at least two adjacent source ideas, split at least one long source idea, and vary sentence rhythm. Preserve meaning and relation, not the source path.
 
@@ -269,15 +291,20 @@ function buildChatCadencePrompt({ sourceText = '', candidateCount = 3, minWords 
     ...(style.transition_bank || [])
   ].filter(Boolean).slice(0, 20);
   const avoid = (style.avoid_list || []).filter(Boolean).slice(0, 12);
+  const copyRepair = registerCopyRepairDirective(repairBlock);
   return `Return JSON only. Schema: {"candidates":[{"text":"string","style_note":"string","style_operation":"cadence_alias","preserved_propositions":[],"dropped_propositions":[],"changed_questions":[],"new_claims":[],"authorship_moves":["concrete cadence move, not a placeholder"],"risk_flags":[],"mask_surface_notes":{"rhythm":"string","diction":"string","structure":"string","coverage":"string"}}]}
 
-CHAT CADENCE LANE. Generate exactly ${candidateCount} sendable message candidates in the selected chat/cadence surface. This is not analysis. Do not write review maps, ledgers, P1/P2 rows, architecture notes, custody reports, proposition reports, diagnostic notes, or explanations. Do not mention the source, packet, mask, prompt, or preservation work inside candidate text. Candidate text must read like the message itself.
+CHAT CADENCE LANE. Generate exactly ${candidateCount} transformed candidates in the selected chat/cadence surface. This is not analysis. Do not write review maps, ledgers, P1/P2 rows, architecture notes, custody reports, proposition reports, diagnostic notes, or explanations. Do not mention the source, packet, mask, prompt, or preservation work inside candidate text. Candidate text must read like the transformed message itself.
+Chat cadence is not casual summary. Do not turn the passage into a blog recap, safe paraphrase, motivational note, logistics wrapper, or next-step message unless the source itself does that work.
 
-Do not preserve source sentence order. Do not keep the source opener or closer. Do not make a line-by-line paraphrase. Each candidate must use a distinct opening, cadence, sentence rhythm, and closure. Keep the meaning, questions, negations, uncertainty, causal links, names, dates, amounts, IDs, file labels, quotes, entities, and claims. Do not answer questions. Do not add facts. Do not whiten the cadence into institutional prose.${retryBan}
+INTERPRETIVE DENSITY LAW:
+Do not summarize, digest, outline, simplify, explain, or strip the source down to its safest thesis. Preserve the central hinge logic, metaphor pressure, causal architecture, contradiction, strange phrases, and authorial posture. Transformation means re-voicing and re-architecting the full pressure of the passage, not reducing it. A candidate that reads like a polite summary, record note, next-step wrapper, or generic commentary is a failure.
+
+Do not preserve source sentence order. Do not keep the source opener or closer. Do not make a line-by-line paraphrase. Each candidate must use a distinct opening, cadence, sentence rhythm, and closure. Keep the meaning, questions, negations, uncertainty, causal links, names, dates, amounts, IDs, file labels, quotes, entities, and claims. Do not answer questions. Do not add facts. Do not whiten the cadence into institutional prose.${retryBan}${copyRepair}
 
 Each candidate must be at least ${minWords} words unless the source is shorter. Use the chat/cadence surface lightly and specifically: rhythm=${style.rhythm_target || stylePolicy.architecture || ''}; surface=${stylePolicy.surface || ''}; punctuation=${stylePolicy.punctuation || ''}; grammar=${stylePolicy.grammar || ''}; chat=${stylePolicy.chat_speak_profile || stylePolicy.chat || ''}; typo=${stylePolicy.typo_policy || ''}; diction hints=${lexicon.join(', ') || '(none)'}; avoid=${avoid.join(', ') || '(none)'}.
 
-For authorship_moves, name actual moves such as "opened with a looser chat hinge," "split the institutional clause," "kept uncertainty without record-note framing," or "lowered formality while preserving the claim." Never return the literal phrase "specific mask move" or "specific register move."
+For authorship_moves, name actual moves such as "opened with a looser chat hinge," "split the institutional clause," "kept uncertainty without record-note framing," or "lowered formality while preserving the claim." Never return the literal phrase "specific mask move", "specific register move", "specific cadence move", or "generic surface move".
 
 OPERATIONS: ${operations.join(', ')}
 ${repairBlock}
@@ -298,7 +325,7 @@ function buildPrompt(contract = {}, repair = null) {
   const floorRatio = minLengthRatio(sourceText, complexity);
   const minWords = Math.max(24, Math.floor(words(sourceText).length * floorRatio));
   const stylePolicy = compactPacket.style_diversity_policy || {};
-  const retryBan = complexity.strictReviewMapRetry ? '\n\nSTRICT RETRY: The previous lane returned diagnostics instead of transformed text. Return only sendable transformed message candidates. No review maps, ledgers, P rows, architecture summaries, diagnostic notes, or analysis.' : '';
+  const retryBan = complexity.strictReviewMapRetry ? '\n\nSTRICT RETRY: The previous lane returned diagnostics instead of transformed text. Return only transformed candidate text. No review maps, ledgers, P rows, architecture summaries, diagnostic notes, or analysis.' : '';
   const repairBlock = repair ? `\nREPAIR: Previous output failed ${repair.kind}. Correct only that failure. ${repair.rejected || ''}` : '';
   if (complexity.registerTransform) return buildRegisterTransformPrompt({ sourceText, candidateCount, minWords, operations, stylePolicy, compactPacket, repairBlock, retryBan });
   if (complexity.chatCadence) return buildChatCadencePrompt({ sourceText, candidateCount, minWords, operations, stylePolicy, compactPacket, repairBlock, retryBan });
@@ -534,7 +561,7 @@ export default async function handler(req, res) {
       attempts.push({ stage, model: normalizeModelName(model), jsonMode: true, ok: response.ok, status: response.status, timedOut, parsedCandidates: parsed.candidates.length, usableCandidates: split.usable.length, copiedCandidates: split.copied.length, compressedCandidates: split.compressed.length, warnings: parsed.warnings, error: response.ok ? null : summarizeProviderError(payload), textPreview: rawText.slice(0, 180), strictReviewMapRetry: strictReviewRetry, registerTransform: complexity.registerTransform, chatCadence: complexity.chatCadence, skippedModels: [...skippedModels] });
       if (response.ok && split.usable.length) {
         preferredWorkingModel = normalizeModelName(model);
-        return send(res, 200, { ok: true, provider: 'gemini', model: preferredWorkingModel, deterministic, version: VERSION, rotationVersion: ROTATION_VERSION, candidates: split.usable, warnings: [...parsed.warnings, ...(complexity.registerTransform ? ['register-transform-prompt-lane-success'] : []), ...(complexity.chatCadence ? ['chat-cadence-prompt-lane-success'] : []), ...(strictReviewRetry ? ['strict-review-map-transform-lane-success'] : []), ...(skippedModels.size ? ['strict-review-skip-models-applied'] : [])], attempts, rejectedCopy: rejectedCopy.slice(0, 12), rejectedCompressed: rejectedCompressed.slice(0, 12), rawText: parsed.rawText, requestReceipt: { deterministic, temperature: deterministic ? 0.22 : 0.58, topP: deterministic ? 0.64 : 0.88, antiCompression: true, fastHardPacketLane: !strictReviewRetry, registerTransformPromptLane: complexity.registerTransform, chatCadencePromptLane: complexity.chatCadence, strictReviewMapRetry: strictReviewRetry, complexity, modelOrder: models.slice(0, maxAttempts), skippedModels: [...skippedModels], minLengthRatio: minLengthRatio(sourceText, complexity), bounded: true, elapsedMs: Date.now() - startedAt } });
+        return send(res, 200, { ok: true, provider: 'gemini', model: preferredWorkingModel, deterministic, version: VERSION, rotationVersion: ROTATION_VERSION, candidates: split.usable, warnings: [...parsed.warnings, 'interpretive-density-restored', ...(complexity.registerTransform ? ['register-transform-prompt-lane-success'] : []), ...(complexity.chatCadence ? ['chat-cadence-prompt-lane-success'] : []), ...(strictReviewRetry ? ['strict-review-map-transform-lane-success'] : []), ...(skippedModels.size ? ['strict-review-skip-models-applied'] : [])], attempts, rejectedCopy: rejectedCopy.slice(0, 12), rejectedCompressed: rejectedCompressed.slice(0, 12), rawText: parsed.rawText, requestReceipt: { deterministic, temperature: deterministic ? 0.22 : 0.58, topP: deterministic ? 0.64 : 0.88, antiCompression: true, fastHardPacketLane: !strictReviewRetry, registerTransformPromptLane: complexity.registerTransform, chatCadencePromptLane: complexity.chatCadence, strictReviewMapRetry: strictReviewRetry, complexity, modelOrder: models.slice(0, maxAttempts), skippedModels: [...skippedModels], minLengthRatio: minLengthRatio(sourceText, complexity), bounded: true, elapsedMs: Date.now() - startedAt } });
       }
     }
     repair = rejectedCompressed.length ? { kind: 'compression', rejected: rejectedCompressed.slice(-3).map((item) => `- ${item.preview}`).join('\n') } : { kind: 'copy', rejected: rejectedCopy.slice(-3).map((item) => `- ${item.preview}`).join('\n') };
