@@ -6,11 +6,13 @@ const C = {
   'access-control-allow-headers': 'content-type',
   'access-control-max-age': '86400'
 };
-const VERSION = 'strict-endpoint-pr168-late-review-map-retry';
-const META = 'pr168-late-review-map-retry/v1';
+const VERSION = 'strict-endpoint-pr169-server-watchdog-receipt';
+const META = 'pr169-server-watchdog-receipt/v1';
 const STRICT_REVIEW_RETRY_BUDGET_MS = 15500;
 const STRICT_CLIENT_SAFE_MS = 28600;
+const STRICT_INITIAL_UPSTREAM_MS = 25500;
 const STRICT_LATE_RETRY_MIN_MS = 5600;
+const STRICT_RESPONSE_MARGIN_MS = 900;
 
 function send(res, status, payload) {
   for (const [k, v] of Object.entries(C)) res.setHeader(k, v);
@@ -80,7 +82,7 @@ function retryContract(c = {}, reason = 'review-map-transform-retry', payload = 
   }
   return n;
 }
-async function upstream(req, contract, timeoutMs = 0) {
+async function upstream(req, contract, timeoutMs = 0, timeoutReason = 'strict_upstream_timeout') {
   const controller = timeoutMs > 0 ? new AbortController() : null;
   const timer = controller ? setTimeout(() => controller.abort(), timeoutMs) : null;
   try {
@@ -99,11 +101,12 @@ async function upstream(req, contract, timeoutMs = 0) {
         payload: {
           ok: false,
           provider: 'gemini-strict',
-          model: 'strict-review-map-late-retry-timeout',
-          error: 'strict_review_map_late_retry_timeout',
-          warnings: ['review-map-transform-retry-timeout'],
+          model: timeoutReason === 'strict_initial_upstream_timeout' ? 'strict-server-watchdog' : 'strict-review-map-late-retry-timeout',
+          error: timeoutReason,
+          reason: timeoutReason,
+          warnings: [timeoutReason === 'strict_initial_upstream_timeout' ? 'strict-server-watchdog-timeout' : 'review-map-transform-retry-timeout'],
           attempts: [],
-          requestReceipt: { strictReviewLateRetryTimeout: true, retryTimeoutMs: timeoutMs }
+          requestReceipt: { strictServerTimeout: timeoutReason === 'strict_initial_upstream_timeout', strictReviewLateRetryTimeout: timeoutReason !== 'strict_initial_upstream_timeout', retryTimeoutMs: timeoutMs }
         }
       };
     }
@@ -117,6 +120,38 @@ function releasable(payload = {}) {
     payload.provider !== 'server-deterministic-repair' &&
     !/^server-repair/.test(s(payload.model)) &&
     arr(payload.candidates).length > 0;
+}
+function timeoutHold(payload = {}, contract = {}, startedAt = Date.now()) {
+  return attachStrictReceiptMeta({
+    ok: false,
+    status: 'held',
+    held: true,
+    released: false,
+    provider: 'gemini-strict',
+    model: 'strict-server-watchdog',
+    strict: true,
+    noFallback: true,
+    fallbackReleased: false,
+    outputReleased: false,
+    error: 'strict_server_watchdog_timeout',
+    reason: 'strict_server_watchdog_timeout',
+    candidates: [],
+    warnings: uniq([...(payload.warnings || []), 'strict-server-watchdog-timeout', 'strict-api-no-usable-candidates', 'no-local-fallback']),
+    attempts: payload.attempts || [],
+    providerErrorMessage: 'Strict endpoint stopped the upstream request inside the client-safe window before the page watchdog could fire.',
+    requestReceipt: {
+      ...(payload.requestReceipt || {}),
+      strict: true,
+      noFallback: true,
+      providerVersion: VERSION,
+      reviewVersion: META,
+      endpointMetaVersion: META,
+      strictServerWatchdog: true,
+      packetTier: s(contract.packetTier || ''),
+      maskEvidenceState: s(contract.maskEvidenceState || ''),
+      elapsedMs: Date.now() - startedAt
+    }
+  }, contract, startedAt);
 }
 function hold(payload = {}, contract = {}, startedAt = Date.now(), reason = 'strict_anti_compression_held', extra = []) {
   const isMap = reason === 'review_map_not_transform';
@@ -208,16 +243,20 @@ export default async function handler(req, res) {
     version: VERSION,
     reviewVersion: META,
     upstream: '/api/hush-generate',
-    note: 'Strict endpoint retries review-map-only diagnostics, including a late low-signature/rich retry inside the client-safe window.'
+    note: 'Strict endpoint returns a server-held receipt before the client watchdog and retries review-map diagnostics inside the safe window.'
   });
   if (req.method !== 'POST') return send(res, 405, { ok: false, error: 'method-not-allowed', version: VERSION });
 
   const startedAt = Date.now();
   const contract = req.body?.contract || req.body || {};
   try {
-    let { response, payload } = await upstream(req, contract);
+    let { response, payload } = await upstream(req, contract, STRICT_INITIAL_UPSTREAM_MS, 'strict_initial_upstream_timeout');
     let retryExtra = [];
     const elapsed = () => Date.now() - startedAt;
+
+    if (payload.error === 'strict_initial_upstream_timeout') {
+      return send(res, 504, timeoutHold(payload, contract, startedAt));
+    }
 
     if (reviewMap(payload)) {
       const lowRich = lowSigRich(contract);
@@ -231,8 +270,8 @@ export default async function handler(req, res) {
           lowRich ? 'low-signature-rich-retry-attempted' : '',
           timedOutModels(payload).length ? 'strict-retry-skipped-timedout-models' : ''
         ]);
-        const timeoutMs = late ? Math.max(STRICT_LATE_RETRY_MIN_MS, remaining) : 0;
-        const retry = await upstream(req, retryContract(contract, lowRich ? (late ? 'low-signature-rich-review-map-late' : 'low-signature-rich-review-map') : 'review-map-only', payload, late), timeoutMs);
+        const timeoutMs = late ? Math.max(1200, remaining - STRICT_RESPONSE_MARGIN_MS) : 0;
+        const retry = await upstream(req, retryContract(contract, lowRich ? (late ? 'low-signature-rich-review-map-late' : 'low-signature-rich-review-map') : 'review-map-only', payload, late), timeoutMs, 'strict_review_map_late_retry_timeout');
         if (releasable(retry.payload)) {
           return send(res, retry.response.status, pass(retry.payload, contract, startedAt, retry.response.status, uniq([
             ...retryExtra,
