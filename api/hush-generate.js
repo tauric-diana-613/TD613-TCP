@@ -5,7 +5,7 @@ const corsHeaders = {
   'access-control-max-age': '86400'
 };
 
-const VERSION = 'hush-generate-v3.16-chat-cadence-prompt-lane';
+const VERSION = 'hush-generate-v3.16.1-chat-cadence-syntax-repair';
 const ROTATION_VERSION = 'pr182-chat-cadence-prompt-lane/v1';
 const DEFAULT_MODEL_ORDER = ['gemini-flash-lite-latest', 'gemini-2.5-flash', 'gemini-2.5-flash-lite'];
 const GEMINI_TIMEOUT_MS = 8800;
@@ -328,7 +328,8 @@ function geminiTimeout(model) {
     payload: { error: { message: 'Gemini call timed out under local Promise.race watchdog', status: 'AbortError', model: normalizeModelName(model), timeoutMs: GEMINI_TIMEOUT_MS } },
     timedOut: true
   };
-}\nasync function callGemini({ model, prompt, jsonMode = true, deterministic = true }) {
+}
+async function callGemini({ model, prompt, jsonMode = true, deterministic = true }) {
   const controller = new AbortController();
   let timer = null;
   const generationConfig = jsonMode ? { temperature: deterministic ? 0.22 : 0.58, topP: deterministic ? 0.64 : 0.88, responseMimeType: 'application/json', maxOutputTokens: MAX_OUTPUT_TOKENS } : { temperature: deterministic ? 0.22 : 0.58, topP: deterministic ? 0.64 : 0.88, maxOutputTokens: MAX_OUTPUT_TOKENS };
