@@ -5,8 +5,8 @@ const corsHeaders = {
   'access-control-max-age': '86400'
 };
 
-const VERSION = 'hush-generate-v3.18-semantic-elasticity';
-const ROTATION_VERSION = 'pr184-semantic-elasticity/v1';
+const VERSION = 'hush-generate-v3.18.1-semantic-elasticity-helper-repair';
+const ROTATION_VERSION = 'pr184.1-semantic-elasticity-helper-repair/v1';
 const DEFAULT_MODEL_ORDER = ['gemini-flash-lite-latest', 'gemini-2.5-flash', 'gemini-2.5-flash-lite'];
 const GEMINI_TIMEOUT_MS = 8800;
 const WALL_TIMEOUT_MS = 24500;
@@ -36,10 +36,9 @@ function words(value = '') { return safe(value).toLowerCase().match(/[a-z0-9][a-
 function originalTokens(value = '') { return safe(value).match(/[A-Za-z0-9][A-Za-z0-9'’:_/.@#-]*/g) || []; }
 function stringArray(value) { return Array.isArray(value) ? value.map((item) => safe(item)).filter(Boolean) : []; }
 function uniq(values = []) { return [...new Set(values.map((value) => normalizeModelName(value)).filter(Boolean))]; }
+function uniqueText(values = []) { return [...new Set(values.map((value) => safe(value)).filter(Boolean))]; }
 function compactJson(value = {}) { return JSON.stringify(value || {}, null, 2); }
-function placeholderMove(value = '') {
-  return /^specific (mask|register|cadence|semantic) move$/i.test(safe(value)) || /^generic surface move$/i.test(safe(value));
-}
+function placeholderMove(value = '') { return /^specific (mask|register|cadence|semantic) move$/i.test(safe(value)) || /^generic surface move$/i.test(safe(value)); }
 function configuredModels() {
   const envModels = uniq([...safe(process.env.GEMINI_MODEL).split(','), ...safe(process.env.GEMINI_MODEL_FALLBACKS).split(',')]);
   return uniq([...DEFAULT_MODEL_ORDER, ...envModels]).sort((a, b) => {
@@ -48,9 +47,7 @@ function configuredModels() {
     return (ai === -1 ? 50 : ai) - (bi === -1 ? 50 : bi);
   }).slice(0, 4);
 }
-function strictReviewMapRetry(contract = {}) {
-  return contract.strictReviewMapRetry === true || /review-map/i.test(safe(contract.strictReviewMapRetryReason || ''));
-}
+function strictReviewMapRetry(contract = {}) { return contract.strictReviewMapRetry === true || /review-map/i.test(safe(contract.strictReviewMapRetryReason || '')); }
 function detectComplexity(sourceText = '', contract = {}) {
   const wc = words(sourceText).length;
   const tier = safe(contract.packetTier || contract.flightPacket?.packetTier || contract.flightPacket?.packet_tier || '');
@@ -76,16 +73,12 @@ function minLengthRatio(sourceText = '', complexity = {}) {
   if (count < 220) return 0.50;
   return 0.54;
 }
-function protectedLiteralTokens(value = '') {
-  return originalTokens(value).filter((token) => /[A-Z][a-z]|\d|[-_:/.@#]/.test(token));
-}
+function protectedLiteralTokens(value = '') { return originalTokens(value).filter((token) => /[A-Z][a-z]|\d|[-_:/.@#]/.test(token)); }
 function importantTerms(sourceText = '', complexity = {}) {
   const found = words(sourceText).filter((word) => word.length > 2 && !STOP_WORDS.has(word));
   return [...new Set(found)].slice(0, complexity.registerTransform || complexity.chatCadence ? 24 : complexity.hard ? 28 : 20);
 }
-function semioticAnchorBank(sourceText = '', complexity = {}) {
-  return importantTerms(sourceText, complexity).slice(0, complexity.registerTransform || complexity.chatCadence ? 18 : 14);
-}
+function semioticAnchorBank(sourceText = '', complexity = {}) { return importantTerms(sourceText, complexity).slice(0, complexity.registerTransform || complexity.chatCadence ? 18 : 14); }
 function lexicalElasticityLevel(contract = {}, complexity = {}) {
   const style = contract.flightPacket?.mask_style_vector || {};
   const policy = contract.flightPacket?.style_diversity_policy || style.style_diversity || {};
@@ -98,10 +91,7 @@ function lexicalElasticityLevel(contract = {}, complexity = {}) {
   return 'medium';
 }
 function cleanJsonText(text = '') { return safe(text).replace(/^```(?:json)?\s*/i, '').replace(/```$/i, '').trim(); }
-function candidateText(candidate = {}) {
-  if (typeof candidate === 'string') return candidate;
-  return safe(candidate.text || candidate.output || candidate.candidate || candidate.rewrite || '');
-}
+function candidateText(candidate = {}) { return typeof candidate === 'string' ? candidate : safe(candidate.text || candidate.output || candidate.candidate || candidate.rewrite || ''); }
 function concreteMoves(values = [], index = 0) {
   const moves = stringArray(values).filter((move) => !placeholderMove(move));
   return moves.length ? moves.slice(0, 6) : [DEFAULT_AUTHORSHIP_MOVES[index % DEFAULT_AUTHORSHIP_MOVES.length], DEFAULT_AUTHORSHIP_MOVES[(index + 1) % DEFAULT_AUTHORSHIP_MOVES.length]];
@@ -141,7 +131,9 @@ function parseProviderJson(text = '') {
       return { candidates, warnings: [...stringArray(parsed.warnings), ...(candidates.length ? [] : ['provider-json-contained-no-usable-candidates'])], rawText: cleaned.slice(0, 700) };
     } catch {}
   }
-  if (cleaned.length > 20) return { candidates: normalizeCandidates([{ text: cleaned, style_note: 'Recovered raw provider text after invalid JSON.', style_operation: 'cadence_alias', authorship_moves: ['recovered raw provider text'], risk_flags: ['provider-returned-invalid-json-recovered-raw-candidate'] }]), warnings: ['provider-returned-invalid-json', 'provider-invalid-json-recovered-as-raw-candidate'], rawText: cleaned.slice(0, 700) };
+  if (cleaned.length > 20) {
+    return { candidates: normalizeCandidates([{ text: cleaned, style_note: 'Recovered raw provider text after invalid JSON.', style_operation: 'cadence_alias', authorship_moves: ['recovered raw provider text'], risk_flags: ['provider-returned-invalid-json-recovered-raw-candidate'] }]), warnings: ['provider-returned-invalid-json', 'provider-invalid-json-recovered-as-raw-candidate'], rawText: cleaned.slice(0, 700) };
+  }
   return { candidates: [], warnings: ['provider-returned-invalid-json'], rawText: cleaned.slice(0, 700) };
 }
 function normalizedText(value = '') { return words(value).join(' '); }
@@ -301,9 +293,7 @@ ${repairBlock}
 SOURCE TEXT:
 ${sourceText}`;
 }
-function geminiTimeout(model) {
-  return { response: { ok: false, status: 408 }, payload: { error: { message: 'Gemini call timed out under local Promise.race watchdog', status: 'AbortError', model: normalizeModelName(model), timeoutMs: GEMINI_TIMEOUT_MS } }, timedOut: true };
-}
+function geminiTimeout(model) { return { response: { ok: false, status: 408 }, payload: { error: { message: 'Gemini call timed out under local Promise.race watchdog', status: 'AbortError', model: normalizeModelName(model), timeoutMs: GEMINI_TIMEOUT_MS } }, timedOut: true }; }
 async function callGemini({ model, prompt, jsonMode = true, deterministic = true }) {
   const controller = new AbortController();
   let timer = null;
@@ -316,10 +306,7 @@ async function callGemini({ model, prompt, jsonMode = true, deterministic = true
   finally { if (timer) clearTimeout(timer); }
 }
 function providerText(payload = {}) { return payload?.candidates?.[0]?.content?.parts?.[0]?.text || ''; }
-function summarizeProviderError(payload = {}) {
-  const error = payload.error || payload;
-  return { code: error.code || payload.code || '', status: error.status || payload.status || '', message: safe(error.message || payload.message || '').slice(0, 900) };
-}
+function summarizeProviderError(payload = {}) { const error = payload.error || payload; return { code: error.code || payload.code || '', status: error.status || payload.status || '', message: safe(error.message || payload.message || '').slice(0, 900) }; }
 async function runProviderProbe(models = []) {
   const attempts = [];
   for (const model of models.slice(0, 3)) {
@@ -329,9 +316,7 @@ async function runProviderProbe(models = []) {
   }
   return { ok: false, attempts };
 }
-function queryFlags(req) {
-  try { const url = new URL(req.url || '', 'https://td613.local'); return { models: url.searchParams.has('models') || url.searchParams.has('listModels') }; } catch { return { models: false }; }
-}
+function queryFlags(req) { try { const url = new URL(req.url || '', 'https://td613.local'); return { models: url.searchParams.has('models') || url.searchParams.has('listModels') }; } catch { return { models: false }; } }
 function repairTermBank(value = '', limit = 14) {
   const protectedTokens = protectedLiteralTokens(value);
   const content = originalTokens(value).filter((token) => { const lower = token.toLowerCase().replace(/[’']/g, ''); return lower.length > 2 && !STOP_WORDS.has(lower); });
@@ -385,7 +370,6 @@ export default async function handler(req, res) {
   }
   if (req.method !== 'POST') return send(res, 405, { ok: false, error: 'method-not-allowed', version: VERSION });
   if (!process.env.GEMINI_API_KEY) return send(res, 500, { ok: false, error: 'missing-gemini-api-key', version: VERSION });
-
   const startedAt = Date.now();
   const contract = req.body?.contract || req.body || {};
   const sourceText = safe(contract.sourceText || contract.messageDraftText || '');
@@ -395,8 +379,7 @@ export default async function handler(req, res) {
   const configured = configuredModels();
   const baseModels = preferredWorkingModel ? [preferredWorkingModel, ...configured.filter((model) => model !== preferredWorkingModel)] : configured;
   const skippedModels = new Set(stringArray(contract.skipModels || contract.avoidModels || contract.strictReviewRetrySkipModels).map(normalizeModelName));
-  const filteredModels = baseModels.filter((model) => !skippedModels.has(normalizeModelName(model)));
-  const models = filteredModels.length ? filteredModels : baseModels;
+  const models = baseModels.filter((model) => !skippedModels.has(normalizeModelName(model))).length ? baseModels.filter((model) => !skippedModels.has(normalizeModelName(model))) : baseModels;
   const requestedAttemptBudget = Number(contract.strictReviewRetryAttemptBudget || 0);
   const requestedStageLimit = Number(contract.strictReviewRetryStageLimit || 0);
   const maxAttempts = strictReviewRetry ? Math.max(1, Math.min(requestedAttemptBudget || 3, models.length || 1)) : complexity.registerTransform || complexity.chatCadence ? Math.min(3, models.length || 1) : complexity.hard ? 2 : 3;
@@ -404,7 +387,6 @@ export default async function handler(req, res) {
   const attempts = [], rejectedCopy = [], rejectedCompressed = [];
   const deterministic = req.query?.reroll !== '1' && contract.reroll !== true;
   let repair = null;
-
   for (let stage = 0; stage < stageLimit; stage += 1) {
     const prompt = buildPrompt(contract, repair);
     for (const model of models.slice(0, maxAttempts)) {
@@ -424,7 +406,6 @@ export default async function handler(req, res) {
     }
     repair = rejectedCompressed.length ? { kind: 'compression', rejected: rejectedCompressed.slice(-3).map((item) => `- ${item.preview}`).join('\n') } : { kind: 'copy', rejected: rejectedCopy.slice(-3).map((item) => `- ${item.preview}`).join('\n') };
   }
-
   const repaired = serverRepairCandidates(sourceText, contract);
   const elasticity = lexicalElasticityLevel(contract, complexity);
   return send(res, 200, { ok: true, provider: 'server-deterministic-repair', model: 'server-repair-review-map', deterministic, version: VERSION, rotationVersion: ROTATION_VERSION, candidates: repaired.candidates, warnings: [...repaired.warnings, 'provider-fast-lane-no-remote-release', 'semantic-elasticity-applied', 'lexical-custody-split', ...(complexity.registerTransform ? ['register-transform-prompt-lane-exhausted'] : []), ...(complexity.chatCadence ? ['chat-cadence-prompt-lane-exhausted'] : []), ...(strictReviewRetry ? ['strict-review-map-transform-lane-exhausted'] : []), ...(skippedModels.size ? ['strict-review-skip-models-applied'] : [])], attempts, rejectedCopy: rejectedCopy.slice(0, 12), rejectedCompressed: rejectedCompressed.slice(0, 12), requestReceipt: { deterministic, temperature: deterministic ? 0.22 : 0.58, topP: deterministic ? 0.64 : 0.88, antiCompression: true, fastHardPacketLane: !strictReviewRetry, registerTransformPromptLane: complexity.registerTransform, chatCadencePromptLane: complexity.chatCadence, semanticElasticity: true, lexicalElasticityLevel: elasticity, rotationVersion: ROTATION_VERSION, strictReviewMapRetry: strictReviewRetry, complexity, modelOrder: models.slice(0, maxAttempts), skippedModels: [...skippedModels], minLengthRatio: minLengthRatio(sourceText, complexity), bounded: true, elapsedMs: Date.now() - startedAt, reviewMapRepair: true, reviewMapRepairVersion: ROTATION_VERSION } });
