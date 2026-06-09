@@ -6,8 +6,8 @@ const C = {
   'access-control-allow-headers': 'content-type',
   'access-control-max-age': '86400'
 };
-const VERSION = 'strict-endpoint-pr174-lazy-local-upstream-import';
-const META = 'pr174-lazy-local-upstream-import/v1';
+const VERSION = 'strict-endpoint-pr175-review-map-signal-gate';
+const META = 'pr175-review-map-signal-gate/v1';
 const STRICT_REVIEW_RETRY_BUDGET_MS = 15500;
 const STRICT_CLIENT_SAFE_MS = 28600;
 const STRICT_INITIAL_UPSTREAM_MS = 25500;
@@ -33,10 +33,15 @@ function leakText(v = '') {
     /review-map structure/i.test(v);
 }
 function reviewMap(payload = {}) {
-  const w = uniq(payload.warnings || []).join(' ');
+  const warnings = uniq(payload.warnings || []);
   const m = s(payload.model);
-  return /review-map|deterministic-review-map|server-repair-review-map/i.test(`${m} ${w}`) ||
-    arr(payload.candidates).some((c) => leakText(ctext(c)) || arr(c.risk_flags).some((f) => /review-map|deterministic-review-map/i.test(s(f))));
+  const repairModel = /server-repair-review-map|deterministic-review-map/i.test(m);
+  const heldWarning = warnings.some((w) => /server-deterministic-review-map-used|review-map-contained|review-map-not-transform|server-repair-review-map/i.test(w));
+  const candidateDiagnostics = arr(payload.candidates).some((c) =>
+    leakText(ctext(c)) ||
+    arr(c.risk_flags).some((f) => /server-deterministic-review-map|deterministic-review-map-used|review-map-needs-strict-review/i.test(s(f)))
+  );
+  return repairModel || heldWarning || candidateDiagnostics;
 }
 function words(v = '') { return s(v).toLowerCase().match(/[a-z0-9][a-z0-9'-]*/g) || []; }
 function source(contract = {}) { return s(contract.sourceText || contract.messageDraftText || ''); }
@@ -259,6 +264,7 @@ function pass(payload = {}, contract = {}, startedAt = Date.now(), status = 200,
       strictReviewMapTransformRetry: extra.includes('review-map-transform-retry-success'),
       strictReviewMapLateRetry: extra.includes('review-map-transform-late-retry-success'),
       lowSignatureRichRetry: extra.includes('low-signature-rich-retry-success'),
+      reviewMapSignalGate: true,
       elapsedMs: Date.now() - startedAt
     }
   }, contract, startedAt);
@@ -273,7 +279,8 @@ export default async function handler(req, res) {
     reviewVersion: META,
     upstream: 'local:/api/hush-generate',
     lazyLocalImport: true,
-    note: 'Strict endpoint lazily imports and invokes the generator handler in-process instead of self-fetching its sibling API route.'
+    reviewMapSignalGate: true,
+    note: 'Strict endpoint treats review-map retry success warnings as control metadata, not proof that candidate text is a review map.'
   });
   if (req.method !== 'POST') return send(res, 405, { ok: false, error: 'method-not-allowed', version: VERSION });
 
@@ -348,6 +355,7 @@ export default async function handler(req, res) {
         endpointMetaVersion: META,
         localUpstreamInvoke: true,
         lazyLocalImport: true,
+        reviewMapSignalGate: true,
         elapsedMs: Date.now() - startedAt
       }
     }, contract, startedAt));
