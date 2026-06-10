@@ -7,8 +7,8 @@ const CORS = {
   'access-control-max-age': '86400'
 };
 
-const VERSION = 'strict-endpoint-pr188.10-budgeted-upstream-route';
-const META = 'pr188.10-budgeted-upstream-route/v1';
+const VERSION = 'strict-endpoint-pr188.11-aave-two-fast-attempts';
+const META = 'pr188.11-aave-two-fast-attempts/v1';
 const STRICT_FAST_UPSTREAM_MS = 14200;
 const STRICT_NORMAL_UPSTREAM_MS = 25500;
 const BUDGETED_UPSTREAM_PATH = '/api/hush-generate-budgeted';
@@ -125,8 +125,8 @@ function budgetedStrictContract(contract = {}) {
 
   if (fast) {
     next.strictReviewMapRetry = true;
-    next.strictReviewMapRetryReason = isAaveRoute(next) ? 'strict-fast-aave-one-shot' : 'strict-fast-one-shot';
-    next.strictReviewRetryAttemptBudget = 1;
+    next.strictReviewMapRetryReason = isAaveRoute(next) ? 'strict-fast-aave-two-shot' : 'strict-fast-two-shot';
+    next.strictReviewRetryAttemptBudget = 2;
     next.strictReviewRetryStageLimit = 1;
     next.strictReviewLateRetry = false;
     next.packetTier = isAaveRoute(next) ? 'register_transform_strict_fast_packet' : (packetTierOf(next) || 'strict_fast_packet');
@@ -158,7 +158,7 @@ function budgetedStrictContract(contract = {}) {
       strict_budgeted_upstream: true,
       strict_upstream_budget_ms: next.strictUpstreamBudgetMs,
       strict_fast_upstream: fast,
-      ...(fast ? { max_model_attempts: 1, max_stage_attempts: 1 } : {})
+      ...(fast ? { max_model_attempts: 2, max_stage_attempts: 1 } : {})
     };
     next.flightPacket = fp;
   }
@@ -185,7 +185,7 @@ function strictMeta(payload = {}, contract = {}, startedAt = Date.now(), extraWa
     httpUpstreamInvoke: true,
     abortableHttpUpstream: true,
     strictUpstreamBudgetMs: timeoutBudget(contract),
-    strictAttemptBudget: fast ? 1 : payload.requestReceipt?.strictAttemptBudget || '',
+    strictAttemptBudget: fast ? 2 : payload.requestReceipt?.strictAttemptBudget || '',
     strictStageBudget: fast ? 1 : payload.requestReceipt?.strictStageBudget || '',
     packetTier: packetTierOf(contract),
     maskEvidenceState: maskEvidenceOf(contract),
@@ -301,8 +301,9 @@ export default async function handler(req, res) {
     conditionalFastUpstream: true,
     fastBudgetMs: STRICT_FAST_UPSTREAM_MS,
     normalBudgetMs: STRICT_NORMAL_UPSTREAM_MS,
+    aaveFastAttempts: 2,
     reviewMapIntercept: true,
-    note: 'Strict endpoint routes through budgeted upstream generation. Fast one-shot budget applies only for AAVE or explicit fast routes; other masks keep the normal strict budget.'
+    note: 'Strict endpoint routes through budgeted upstream generation. Fast AAVE routes get two model attempts in one stage; other masks keep the normal strict budget.'
   });
   if (req.method !== 'POST') return send(res, 405, { ok: false, error: 'method-not-allowed', version: VERSION });
 
