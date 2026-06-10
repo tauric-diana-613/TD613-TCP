@@ -1,4 +1,4 @@
-export const HUSH_STYLE_DIVERSITY_VERSION = 'pr188-mask-gallery-cull-reforge/v1';
+export const HUSH_STYLE_DIVERSITY_VERSION = 'pr188.1-mask-identity-refresh/v1';
 
 export const ACTIVE_MASK_IDS = Object.freeze([
   'group-chat-soft',
@@ -26,13 +26,13 @@ export const RETIRED_MASK_IDS = Object.freeze({
   'academic-caveat': 'retired-pr188; Caveating Soren caveat engine removed from active gallery',
   'friendly-coworker': 'retired-close-to-warm handoff lanes; no longer active',
   'weather-report': 'retired-close-to-detached record lanes; no longer active',
-  'kitchen-table': 'retired-close-to-grandma-receipts; intimate warmth preserved by Queenie',
+  'kitchen-table': 'retired-close-to-grandma-receipts; intimate warmth preserved by Receipts Queenie',
   'neighbor-note': 'retired-close-to-local handoff lane; no longer active',
   'phase24-clear-record': 'retired-close-to-record custody lanes; no longer active',
-  'phase27-clear-with-cadence': 'retired-close-to-register-preserve; clearer custody lane kept by Zora',
-  'phase27-chat-custody': 'retired-close-to-group-chat-soft/phase28-transform-to-chatspeak; chat custody lane kept by Keisha/Pixie',
-  'phase27-blip-bridge': 'retired-close-to-burner-minimal/phase28-transform-to-chatspeak; compact relay lane kept by Nico/Pixie',
-  'phase28-blip-amplified': 'retired-close-to-burner-minimal/phase28-transform-to-chatspeak; amplified shorthand lane kept by Pixie'
+  'phase27-clear-with-cadence': 'retired-close-to-register-preserve; clearer custody lane kept by Harbor Zora',
+  'phase27-chat-custody': 'retired-close-to-group-chat-soft/phase28-transform-to-chatspeak; chat custody lane kept by Keisha Soft Circle and Glitching Pixie',
+  'phase27-blip-bridge': 'retired-close-to-burner-minimal/phase28-transform-to-chatspeak; compact relay lane kept by Blooping Blip and Glitching Pixie',
+  'phase28-blip-amplified': 'retired-close-to-burner-minimal/phase28-transform-to-chatspeak; amplified shorthand lane kept by Glitching Pixie'
 });
 
 const DEFAULT_AVOID = [
@@ -89,9 +89,9 @@ const PROFILES = {
     sample: 'ok yall, small circle version: the date stays, the name stays, and i am not trying to make this louder than it needs to be.'
   }),
   'forum-regular': P({
-    label: 'Posting Miles',
-    surface: 'skeptical forum regular',
-    bio: 'Miles has seen page three eat the evidence before breakfast. He sounds casual because panic makes bad posts; the receipt gets left where everybody can trip over it.',
+    label: 'Paul Publica',
+    surface: 'public-forum skepticism with civic static',
+    bio: 'Paul has seen page three eat the evidence before breakfast. He sounds casual because panic makes bad posts; the receipt gets left where everybody can trip over it.',
     architecture: 'setup sentence, receipt sentence, sideways caveat; mild ramble allowed',
     punctuation: 'parentheses allowed; comma-heavy; no corporate bullets',
     grammar: 'forum casual; “imo”/“kinda” allowed when source can carry it',
@@ -103,8 +103,8 @@ const PROFILES = {
     sample: 'This is the boring-detail thing that usually matters later, imo. The date lines up, so keep both pieces together.'
   }),
   'quirky-orbit': P({
-    label: 'Orbiting Lulu',
-    surface: 'weird little deflection comet',
+    label: 'Lulu Quasar',
+    surface: 'weird little quasar deflection',
     bio: 'Lulu releases one strange little image so the room unclenches, then snaps back to the factual anchor before the image gets ideas. The joke is a mask; the custody remains bolted down.',
     architecture: 'one odd image, then practical factual anchor; varied sentence length; no metaphor pileup',
     punctuation: 'one dash or comma-play allowed; no extended metaphor chain',
@@ -118,7 +118,7 @@ const PROFILES = {
     sample: 'Tiny paperwork comet. Anyway, the date stays on it so the thing does not float off into nonsense.'
   }),
   'grandma-receipts': P({
-    label: 'Receipted Queenie',
+    label: 'Receipts Queenie',
     surface: 'cookie-tin receipt memory',
     bio: 'Queenie sounds sweet until the receipt slides out of the cookie tin with a date on it. Warmth is the velvet glove; custody is the ring underneath.',
     architecture: 'storylike sentence followed by plain fact; mild repetition allowed',
@@ -132,9 +132,9 @@ const PROFILES = {
     sample: 'I kept it because somebody was going to ask later. The date was right there.'
   }),
   'night-shift-note': P({
-    label: 'Tired Mateo',
-    surface: 'night-shift handoff with fatigue static',
-    bio: 'Mateo is typing under vending-machine light while the clock hums like a threat. His roughness is exhaustion, not incompetence; the facts stay awake.',
+    label: 'Cryo Cristiano',
+    surface: 'frozen night-shift handoff with fatigue static',
+    bio: 'Cristiano is typing under vending-machine light while the clock hums like a threat. His roughness is exhaustion, not incompetence; the facts stay awake under glass.',
     architecture: 'short fragments; one unfinished-feeling handoff; low ceremony',
     punctuation: 'periods, occasional missing comma; no polished arc',
     grammar: 'tired grammar allowed; one dropped subject allowed',
@@ -146,9 +146,9 @@ const PROFILES = {
     sample: 'Leaving this here before I log off. File attached. Date still visible. didnt change the name.'
   }),
   'library-ghost': P({
-    label: 'Shelved Ophelia',
-    surface: 'haunted archive distance',
-    bio: 'Ophelia speaks after closing, when the cart rolls by itself and the folder remembers more than the people do. Polite as dust. Persistent as mildew.',
+    label: 'Sol Stratigraphix',
+    surface: 'stratigraphic archive distance',
+    bio: 'Sol speaks after closing, when the cart rolls by itself and the folder remembers more than the people do. Polite as dust. Persistent as mildew.',
     architecture: 'formal but slightly haunted; object-first phrasing; medium still sentences',
     punctuation: 'periods and commas; one passive construction acceptable',
     grammar: 'standard grammar with eerie distance',
@@ -160,9 +160,9 @@ const PROFILES = {
     sample: 'The document remains where it was placed. Its label is still legible.'
   }),
   'soft-snark': P({
-    label: 'Needling Rochelle',
-    surface: 'receipt-bearing side-eye',
-    bio: 'Rochelle lets one eyebrow do community service. The shade walks in first, but the receipt is the thing holding the door.',
+    label: 'Nolan the Needler',
+    surface: 'receipt-bearing side-eye with a pinprick grin',
+    bio: 'Nolan lets one eyebrow do community service. His shade walks in first, but the receipt is the thing holding the door.',
     architecture: 'one eyebrow sentence, then factual anchor; medium clauses',
     punctuation: 'comma, period, occasional “anyway”; no all-caps',
     grammar: 'spoken sarcasm allowed; not sloppy',
@@ -174,9 +174,9 @@ const PROFILES = {
     sample: 'Interesting how the boring file name became important. Anyway, I kept the date where it was.'
   }),
   'clipboard': P({
-    label: 'Checking Ruth',
-    surface: 'ritual checklist with a pen click',
-    bio: 'Ruth believes a checklist can save a witness and ruin a liar’s morning. Annoying? Absolutely. Effective? The page is already numbered.',
+    label: 'Luz of the Index',
+    surface: 'indexed ritual checklist with a pen click',
+    bio: 'Luz believes an index can save a witness and ruin a liar’s morning. Annoying? Absolutely. Effective? The page is already numbered.',
     architecture: 'numbered steps or compact bullets; action-led fragments',
     punctuation: 'colons and periods; no lyrical punctuation',
     grammar: 'list fragments acceptable',
@@ -188,9 +188,9 @@ const PROFILES = {
     sample: '1. File attached. 2. Date visible. 3. Label unchanged. 4. Keep together.'
   }),
   'burner-minimal': P({
-    label: 'Spare Nico',
-    surface: 'low-signature burner whisper',
-    bio: 'Nico leaves four words where a speech tried to happen. The safest flourish is a locked door.',
+    label: 'Blooping Blip',
+    surface: 'low-signature blip whisper',
+    bio: 'Blooping Blip leaves four words where a speech tried to happen. Their safest flourish is a locked door.',
     architecture: 'fragments only; four to eight words where possible; no flourish',
     punctuation: 'periods only; no commas unless unavoidable',
     grammar: 'elliptical grammar acceptable',
@@ -202,9 +202,9 @@ const PROFILES = {
     sample: 'File attached. Date visible. Label unchanged.'
   }),
   'phase22-jagged-record': P({
-    label: 'Fractured Mina',
-    surface: 'rushed stairwell record flare',
-    bio: 'Mina is writing before memory gets laundered into “probably fine.” Slash marks, maybe-lines, little alarm sparks. She is the emergency flare mask.',
+    label: 'Rex Fractura',
+    surface: 'rushed stairwell fracture flare',
+    bio: 'Rex writes before memory gets laundered into “probably fine.” Slash marks, maybe-lines, little alarm sparks. He is the emergency flare mask.',
     architecture: 'jagged fragments, slash breaks, self-corrections, sequence hooks',
     punctuation: 'slashes, fragments, lowercase pressure; no polished paragraph arc',
     grammar: 'rushed grammar; compressed clauses; uncertainty visible',
@@ -216,8 +216,8 @@ const PROFILES = {
     sample: 'not polished bc this is a rushed note. maybe normal / maybe not. still writing it down before sequence gets mushy.'
   }),
   'phase27-register-preserve': P({
-    label: 'Holding Zora',
-    surface: 'right-to-opacity register custody',
+    label: 'Harbor Zora',
+    surface: 'right-to-opacity harbor custody',
     bio: 'Zora holds the speaker at the threshold without bleaching the voice or pretending the system is safer than the source says. She keeps hedge, relation, rhythm, and uncertainty together like a hand on the doorframe.',
     architecture: 'source-register preserving; relation marks stay; uncertainty remains open; no reassurance or security-spokesperson claims',
     punctuation: 'source-like punctuation; do not over-standardize',
@@ -231,9 +231,9 @@ const PROFILES = {
     sample: 'keep it how it moves. maybe the math holds, maybe that is exactly why i am not trying to toss the seed around.'
   }),
   'phase28-transform-to-aave': P({
-    label: 'Rooted Simone',
-    surface: 'target-register forge with cultural review light on',
-    bio: 'Simone is not seasoning. She is relation, pressure, memory, and review light. Use only when the operator explicitly chooses this register and will read it with care; the route must stay grounded, not institutional and not performative.',
+    label: 'Blackstar Shereé',
+    surface: 'Blackstar register forge with cultural review light on',
+    bio: 'Shereé is not seasoning. She is relation, pressure, memory, and review light. Use only when the operator explicitly chooses this register and will read it with care; the route must stay grounded, not institutional and not performative.',
     architecture: 'compact relational clauses; grounded pressure; technical mechanism stays visible; high review; source facts stay anchored',
     punctuation: 'source-compatible punctuation; no parody overmarking',
     grammar: 'target-register features allowed only by explicit operator choice; no dialect costume',
@@ -248,7 +248,7 @@ const PROFILES = {
   'phase28-transform-to-chatspeak': P({
     label: 'Glitching Pixie',
     surface: 'futurecore chat-sigil shorthand',
-    bio: 'Pixie is a cracked message bubble with a halo made of dead pixels. Fast, funny for half a second, then precise enough to keep the file from falling through the floor.',
+    bio: 'Glitching Pixie is a cracked message bubble with a halo made of dead pixels. Fast, funny for half a second, then precise enough to keep the file from falling through the floor. They keep claims intact while the surface stutters.',
     architecture: 'compact digital shorthand; fragments; plus signs and slash routes allowed',
     punctuation: 'slashes, plus signs, lowercase, clipped periods; no formal comma garden',
     grammar: 'chat grammar and abbreviation allowed, but claims remain intact',
