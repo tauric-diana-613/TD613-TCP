@@ -235,7 +235,8 @@ function timeoutPayload(contract = {}, startedAt = Date.now()) {
     warnings: uniq(['strict-server-watchdog-timeout', fast ? 'strict-fast-upstream-timeout' : 'strict-upstream-timeout', 'strict-api-no-usable-candidates', 'no-local-fallback']),
     attempts: []
   }, contract, startedAt);
-}\nasync function callUpstream(req, contract = {}, startedAt = Date.now()) {
+}
+async function callUpstream(req, contract = {}, startedAt = Date.now()) {
   const controller = typeof AbortController === 'function' ? new AbortController() : null;
   const timeoutMs = timeoutBudget(contract);
   const timeout = controller ? setTimeout(() => controller.abort(), timeoutMs) : null;
