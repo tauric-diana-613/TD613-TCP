@@ -5,7 +5,7 @@ const corsHeaders = {
   'access-control-max-age': '86400'
 };
 
-const VERSION = 'hush-generate-budgeted-pr188.12-aave-register-fidelity';
+const VERSION = 'hush-generate-budgeted-pr188.13-aave-compression-gate';
 const DEFAULT_MODEL_ORDER = ['gemini-2.5-flash-lite', 'gemini-flash-lite-latest', 'gemini-2.5-flash'];
 const FAST_CALL_TIMEOUT_MS = 5200;
 const NORMAL_CALL_TIMEOUT_MS = 7600;
@@ -41,10 +41,11 @@ function routeText(contract = {}) {
 function isAaveRoute(contract = {}) { return /\bAAVE\b/i.test(routeText(contract)) || /phase28-transform-to-aave/i.test(routeText(contract)); }
 function controls(contract = {}) { return contract.flightPacket?.flight_controls || {}; }
 function isFast(contract = {}) { return isAaveRoute(contract) || contract.strictFastUpstream === true || controls(contract).strict_fast_upstream === true; }
+function sourceTextOf(contract = {}) { return safe(contract.sourceText || contract.messageDraftText || ''); }
 function candidateBudget(contract = {}) {
   const n = Number(contract.candidateCount || controls(contract).candidate_count || 0);
   if (Number.isFinite(n) && n > 0) return Math.max(1, Math.min(n, 2));
-  return words(contract.sourceText || contract.messageDraftText || '').length >= 220 ? 1 : 2;
+  return words(sourceTextOf(contract)).length >= 220 ? 1 : 2;
 }
 function attemptBudget(contract = {}) {
   const n = Number(contract.strictReviewRetryAttemptBudget || controls(contract).max_model_attempts || 0);
@@ -85,20 +86,29 @@ function aaveAcademicDrift(text = '', contract = {}) {
   return /^(?:yuval noah harari|this paper aims|for instance|furthermore|moreover|in conclusion|seneca,|marcus aurelius,|the ancient greeks|the ancient romans)\b/i.test(lead)
     || /\b(?:posits|argues that|aims to demonstrate|for instance|furthermore|moreover|renowned|solely focusing|this enduring human cognition)\b/i.test(lead);
 }
+function aaveCompressionDrift(text = '', contract = {}) {
+  if (!isAaveRoute(contract)) return false;
+  const sourceWords = words(sourceTextOf(contract)).length;
+  const candidateWords = words(text).length;
+  if (sourceWords < 50) return false;
+  const ratio = candidateWords / Math.max(1, sourceWords);
+  return ratio < 0.58;
+}
 function buildPrompt(contract = {}) {
-  const sourceText = safe(contract.sourceText || contract.messageDraftText || '').slice(0, 5200);
+  const sourceText = sourceTextOf(contract).slice(0, 5200);
   const style = compactStyle(contract);
   const count = candidateBudget(contract);
   const aave = isAaveRoute(contract);
-  const minWords = Math.max(24, Math.floor(words(sourceText).length * (aave ? 0.58 : 0.54)));
+  const minWords = Math.max(24, Math.floor(words(sourceText).length * (aave ? 0.62 : 0.54)));
   const schemaOperation = aave ? 'register_transform' : 'string';
   const aaveRule = aave ? `AAVE TARGET-REGISTER LAW:
 - style_operation must be "register_transform".
 - Preserve every source proposition first, then move the sentence architecture into target register.
 - Do not open with academic-summary formulas such as "Yuval Noah Harari argues/posits," "This paper aims," "For instance," or "Furthermore" unless the source itself begins there.
 - Start from the paragraph's live pressure or continuity claim, not bibliography order. Keep Harari, Seneca, Aurelius, Greek sport, Roman arenas, Babylonian archaeology, Sumerians, and journals, but do not let citation language become the voice.
+- Length custody: this is a transform, not a summary. Keep at least about 60% of the source word count and carry the examples with enough connective tissue to preserve the argument.
 - Use natural Black vernacular syntax with restraint. Do not costume the route with catchphrases, generic slang, "look," "think about that," "proof is in the pudding," or exaggerated dialect spelling.
-- The output must sound transformed, not like a cleaned-up school paragraph.` : '';
+- The output must sound transformed, not like a cleaned-up school paragraph or a short note card.` : '';
   return `Return JSON only. Schema: {"candidates":[{"text":"string","style_note":"string","style_operation":"${schemaOperation}","preserved_propositions":[],"dropped_propositions":[],"changed_questions":[],"new_claims":[],"authorship_moves":[],"risk_flags":[],"mask_surface_notes":{"rhythm":"string","diction":"string","structure":"string","coverage":"string"}}]}
 
 STRICT BUDGETED UPSTREAM. Generate exactly ${count} transformed candidate(s). No review maps, ledgers, summaries, diagnostics, P-row reports, or analysis. Candidate text must be the transformed message itself.
@@ -207,7 +217,7 @@ export default async function handler(req, res) {
 
   const startedAt = Date.now();
   const contract = req.body?.contract || req.body || {};
-  const sourceText = safe(contract.sourceText || contract.messageDraftText || '');
+  const sourceText = sourceTextOf(contract);
   if (!sourceText) return send(res, 400, { ok: false, error: 'missing-sourceText', version: VERSION });
 
   const prompt = buildPrompt(contract);
@@ -227,11 +237,12 @@ export default async function handler(req, res) {
     const rawText = providerText(payload);
     const parsed = parseProviderJson(rawText, contract);
     const academicRejected = parsed.candidates.filter((candidate) => aaveAcademicDrift(candidate.text, contract));
-    const usable = parsed.candidates.filter((candidate) => !aaveAcademicDrift(candidate.text, contract));
-    attempts.push({ model: normModel(model), ok: response.ok, status: response.status, timedOut, parsedCandidates: parsed.candidates.length, usableCandidates: usable.length, aaveAcademicRejected: academicRejected.length, warnings: [...parsed.warnings, ...(academicRejected.length ? ['aave-academic-summary-drift'] : [])], error: response.ok ? null : summarizeProviderError(payload), textPreview: rawText.slice(0, 180), strictBudgetedUpstream: true, strictFastUpstream: isFast(contract), aaveRoute: isAaveRoute(contract) });
+    const compressedRejected = parsed.candidates.filter((candidate) => !aaveAcademicDrift(candidate.text, contract) && aaveCompressionDrift(candidate.text, contract));
+    const usable = parsed.candidates.filter((candidate) => !aaveAcademicDrift(candidate.text, contract) && !aaveCompressionDrift(candidate.text, contract));
+    attempts.push({ model: normModel(model), ok: response.ok, status: response.status, timedOut, parsedCandidates: parsed.candidates.length, usableCandidates: usable.length, aaveAcademicRejected: academicRejected.length, aaveCompressedRejected: compressedRejected.length, warnings: [...parsed.warnings, ...(academicRejected.length ? ['aave-academic-summary-drift'] : []), ...(compressedRejected.length ? ['aave-compression-drift'] : [])], error: response.ok ? null : summarizeProviderError(payload), textPreview: rawText.slice(0, 180), strictBudgetedUpstream: true, strictFastUpstream: isFast(contract), aaveRoute: isAaveRoute(contract) });
     if (response.ok && usable.length) {
       preferredWorkingModel = normModel(model);
-      return send(res, 200, { ok: true, provider: 'gemini', model: preferredWorkingModel, deterministic, version: VERSION, rotationVersion: VERSION, candidates: usable, warnings: [...parsed.warnings, 'strict-budgeted-upstream', 'strict-upstream-budget-honored', ...(isFast(contract) ? ['strict-fast-upstream-applied'] : ['strict-normal-upstream-budget-applied']), ...(isAaveRoute(contract) ? ['aave-route-budgeted-upstream', 'aave-register-fidelity-law-applied'] : [])], attempts, rawText: parsed.rawText, requestReceipt: { deterministic, strictDirect: true, strictNoFallback: true, strictBudgetedUpstream: true, strictBudgetHonored: true, strictUpstreamBudgetMs: wallMs, strictAttemptBudget: maxAttempts, strictFastUpstream: isFast(contract), aaveRoute: isAaveRoute(contract), aaveRegisterFidelityLaw: isAaveRoute(contract), elapsedMs: Date.now() - startedAt, rotationVersion: VERSION } });
+      return send(res, 200, { ok: true, provider: 'gemini', model: preferredWorkingModel, deterministic, version: VERSION, rotationVersion: VERSION, candidates: usable, warnings: [...parsed.warnings, 'strict-budgeted-upstream', 'strict-upstream-budget-honored', ...(isFast(contract) ? ['strict-fast-upstream-applied'] : ['strict-normal-upstream-budget-applied']), ...(isAaveRoute(contract) ? ['aave-route-budgeted-upstream', 'aave-register-fidelity-law-applied', 'aave-compression-gate-applied'] : [])], attempts, rawText: parsed.rawText, requestReceipt: { deterministic, strictDirect: true, strictNoFallback: true, strictBudgetedUpstream: true, strictBudgetHonored: true, strictUpstreamBudgetMs: wallMs, strictAttemptBudget: maxAttempts, strictFastUpstream: isFast(contract), aaveRoute: isAaveRoute(contract), aaveRegisterFidelityLaw: isAaveRoute(contract), aaveCompressionGate: isAaveRoute(contract), elapsedMs: Date.now() - startedAt, rotationVersion: VERSION } });
     }
   }
 
