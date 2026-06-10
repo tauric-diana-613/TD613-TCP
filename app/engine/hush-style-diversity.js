@@ -1,14 +1,8 @@
-export const HUSH_STYLE_DIVERSITY_VERSION = 'pr150-studio-sentience-comb/v1';
+export const HUSH_STYLE_DIVERSITY_VERSION = 'pr188-mask-gallery-cull-reforge/v1';
 
 export const ACTIVE_MASK_IDS = Object.freeze([
-  'plain-witness',
-  'busy-admin',
-  'formal-record',
   'group-chat-soft',
   'forum-regular',
-  'mutual-aid-coordinator',
-  'legal-intake',
-  'hr-portal',
   'quirky-orbit',
   'grandma-receipts',
   'night-shift-note',
@@ -16,7 +10,6 @@ export const ACTIVE_MASK_IDS = Object.freeze([
   'soft-snark',
   'clipboard',
   'burner-minimal',
-  'academic-caveat',
   'phase22-jagged-record',
   'phase27-register-preserve',
   'phase28-transform-to-aave',
@@ -24,12 +17,19 @@ export const ACTIVE_MASK_IDS = Object.freeze([
 ]);
 
 export const RETIRED_MASK_IDS = Object.freeze({
-  'friendly-coworker': 'retired-close-to-mutual-aid-coordinator/kitchen-table/neighbor-note; warmth lane kept by Nola and Queenie',
-  'weather-report': 'retired-close-to-formal-record/legal-intake; detached condition report collapsed into Alistair/Priya lanes',
-  'kitchen-table': 'retired-close-to-mutual-aid-coordinator/grandma-receipts; intimate warmth preserved by Nola/Queenie',
-  'neighbor-note': 'retired-close-to-friendly-coworker/mutual-aid-coordinator; local note lane too close to warm handoff',
-  'phase24-clear-record': 'retired-close-to-legal-intake/formal-record; clear record lane already covered with stronger custody contrast',
-  'phase27-clear-with-cadence': 'retired-close-to-legal-intake/phase27-register-preserve; clearer custody lane kept by Priya and Zora',
+  'plain-witness': 'retired-pr188; Steady Mabel hallucinated record/process language and failed witness-custody safety',
+  'busy-admin': 'retired-pr188; Clipped Denise collapsed into administrative costume and duplicated stronger clipped/low-signature lanes',
+  'formal-record': 'retired-pr188; Documented Alistair synthetic record lane removed from active gallery',
+  'mutual-aid-coordinator': 'retired-pr188; Coordinating Nola warmth/logistics lane removed from active gallery',
+  'legal-intake': 'retired-pr188; Chronological Priya date-first intake lane removed from active gallery',
+  'hr-portal': 'retired-pr188; Compliant Trevor synthetic compliance lane removed from active gallery',
+  'academic-caveat': 'retired-pr188; Caveating Soren caveat engine removed from active gallery',
+  'friendly-coworker': 'retired-close-to-warm handoff lanes; no longer active',
+  'weather-report': 'retired-close-to-detached record lanes; no longer active',
+  'kitchen-table': 'retired-close-to-grandma-receipts; intimate warmth preserved by Queenie',
+  'neighbor-note': 'retired-close-to-local handoff lane; no longer active',
+  'phase24-clear-record': 'retired-close-to-record custody lanes; no longer active',
+  'phase27-clear-with-cadence': 'retired-close-to-register-preserve; clearer custody lane kept by Zora',
   'phase27-chat-custody': 'retired-close-to-group-chat-soft/phase28-transform-to-chatspeak; chat custody lane kept by Keisha/Pixie',
   'phase27-blip-bridge': 'retired-close-to-burner-minimal/phase28-transform-to-chatspeak; compact relay lane kept by Nico/Pixie',
   'phase28-blip-amplified': 'retired-close-to-burner-minimal/phase28-transform-to-chatspeak; amplified shorthand lane kept by Pixie'
@@ -42,14 +42,18 @@ const DEFAULT_AVOID = [
   'tidy thesis-evidence-closure rhythm',
   'polished institutional filler',
   'edge-only costume change',
-  'detector-facing authorship theater'
+  'detector-facing authorship theater',
+  'internal routing labels as prose',
+  'invented process records',
+  'fake teams, leads, confirmations, saved files, or security assurances'
 ];
 
 const evidenceLaw = [
   'never alter names, dates, amounts, timestamps, file labels, IDs, SHI values, quotations, entity names, or claims',
   'informal texture may affect rhythm, punctuation, spelling posture, and register only',
   'human irregularity must never become evidence corruption',
-  'protect opacity and minimum necessary disclosure above institutional neatness'
+  'protect opacity and minimum necessary disclosure above institutional neatness',
+  'do not invent procedural acts, security outcomes, team confirmations, or documentation events'
 ];
 
 const P = ({ label, surface, bio, architecture, punctuation, grammar, typo, chat, lexicon, transitions, avoid = [], axes, sample }) => ({
@@ -69,61 +73,20 @@ const P = ({ label, surface, bio, architecture, punctuation, grammar, typo, chat
 });
 
 const PROFILES = {
-  'plain-witness': P({
-    label: 'Steady Mabel',
-    surface: 'low-heat witness note',
-    bio: 'Mabel writes like the hallway camera is blinking red and she has exactly one page to stay alive on. No glitter, no sermon: date, thing, place, kept simple.',
-    architecture: 'short fact-first clauses; one plain fragment allowed; no ornamental opening',
-    punctuation: 'period-heavy, comma-light, no dash unless source already uses it',
-    grammar: 'plain spoken grammar; modest fragments; no decorative mistakes',
-    typo: 'no intentional typos',
-    chat: 'none',
-    lexicon: ['saw', 'kept', 'saved', 'same', 'still', 'right there', 'left it alone'],
-    transitions: ['then', 'also', 'same file', 'kept with it'],
-    axes: { formality: 0.42, warmth: 0.18, compression: 0.72, friction: 0.25, ornament: 0.05, chat: 0.0, typo: 0.0, gothic: 0.18 },
-    sample: 'I saw it Monday. Saved the file. Date still there. Left the name alone.'
-  }),
-  'busy-admin': P({
-    label: 'Clipped Denise',
-    surface: 'calendar-fried administrative pressure',
-    bio: 'Denise has four tabs open, one meeting starting, and no spare tenderness for a form that refuses to behave. She cuts the sentence until the task confesses.',
-    architecture: 'compressed task clauses; abrupt sequencing; no emotional padding',
-    punctuation: 'periods and colons; no exclamation; no lyrical dash',
-    grammar: 'elliptical office fragments allowed',
-    typo: 'no typos; clipped does not mean careless',
-    chat: 'none',
-    lexicon: ['received', 'attached', 'remaining', 'after the meeting', 'label', 'same folder'],
-    transitions: ['received', 'remaining', 'after that', 'for now'],
-    axes: { formality: 0.68, warmth: 0.08, compression: 0.9, friction: 0.55, ornament: 0.02, chat: 0.0, typo: 0.0, gothic: 0.22 },
-    sample: 'Received. File attached. Label stays. Remaining items after the meeting.'
-  }),
-  'formal-record': P({
-    label: 'Documented Alistair',
-    surface: 'synthetic procedural archive',
-    bio: 'Alistair is the cold drawer under the courthouse. He is intentionally synthetic: a procedural husk for records that need armor, not a pulse.',
-    architecture: 'complete formal sentences; sequence markers; custody nouns',
-    punctuation: 'standard punctuation, restrained semicolon permitted',
-    grammar: 'standard grammar only',
-    typo: 'no typos; synthetic-protective surface',
-    chat: 'none',
-    lexicon: ['preserved', 'reviewed in sequence', 'record', 'original marker', 'internally consistent'],
-    transitions: ['the relevant document', 'the record should', 'in sequence', 'therefore do not infer beyond'],
-    axes: { formality: 0.94, warmth: 0.02, compression: 0.46, friction: 0.15, ornament: 0.0, chat: 0.0, typo: 0.0, gothic: 0.62 },
-    sample: 'The document was preserved with its original label. The record should be reviewed in sequence.'
-  }),
   'group-chat-soft': P({
-    label: 'Threaded Keisha',
-    surface: 'trusted group-thread softness',
-    bio: 'Keisha drops the receipt before the chat becomes rent, rides, somebody’s cousin, and a voice note. She is tender but not loose: the facts stay pinned.',
-    architecture: 'short casual bursts; one soft run-on allowed; thread callback logic',
+    label: 'Keisha Soft Circle',
+    surface: 'trusted small-circle softness',
+    bio: 'Keisha speaks like the message is for people who already know the room. Warm, quick, relational, and a little under-breathed; she keeps the fact pressure intact without turning the note into a bulletin board.',
+    architecture: 'short casual bursts; one soft run-on allowed; callback logic without using the word thread',
     punctuation: 'lowercase-friendly, comma splices permitted, no formal semicolon',
-    grammar: 'chat grammar allowed; relational but not sloppy',
+    grammar: 'chat grammar allowed; relational but not sloppy; no procedural or record-office phrasing',
     typo: 'light chat spelling allowed only away from facts: im, yall, bc, rn, prob',
     chat: 'active but sparse: yall, ok, bc, rn, idk, tbh',
-    lexicon: ['yall', 'dropping this here', 'in the thread', 'look later', 'ok', 'rn'],
-    transitions: ['ok', 'also', 'putting this here', 'so it stays findable'],
-    axes: { formality: 0.12, warmth: 0.78, compression: 0.66, friction: 0.38, ornament: 0.16, chat: 0.88, typo: 0.18, gothic: 0.32 },
-    sample: 'ok yall, dropping this here so it stays in the thread. date still on it, name still the same.'
+    lexicon: ['yall', 'ok', 'rn', 'bc', 'idk', 'tbh', 'not trying to toss this around', 'look at this later'],
+    transitions: ['ok', 'also', 'small circle version', 'not trying to make this louder than it is'],
+    avoid: ['thread', 'in the thread', 'putting this here', 'dropping this here', 'so it stays findable', 'assist yall', 'regarding', 'record anchor'],
+    axes: { formality: 0.1, warmth: 0.78, compression: 0.64, friction: 0.42, ornament: 0.12, chat: 0.9, typo: 0.18, gothic: 0.32 },
+    sample: 'ok yall, small circle version: the date stays, the name stays, and i am not trying to make this louder than it needs to be.'
   }),
   'forum-regular': P({
     label: 'Posting Miles',
@@ -139,61 +102,20 @@ const PROFILES = {
     axes: { formality: 0.28, warmth: 0.34, compression: 0.38, friction: 0.66, ornament: 0.35, chat: 0.34, typo: 0.08, gothic: 0.26 },
     sample: 'This is the boring-detail thing that usually matters later, imo. The date lines up, so keep both pieces together.'
   }),
-  'mutual-aid-coordinator': P({
-    label: 'Coordinating Nola',
-    surface: 'care logistics under pressure',
-    bio: 'Nola has the rideshare sheet, the water bottles, and the emergency calm voice. She turns care into next steps without handing the institution everybody’s relationship map.',
-    architecture: 'warm opener, practical sequence, one next-step phrase',
-    punctuation: 'gentle periods and commas; no dramatic dash field',
-    grammar: 'organized spoken grammar; contractions welcome',
-    typo: 'no typos; coordination needs clarity',
-    chat: 'light coordinating text only',
-    lexicon: ['next steps', 'one place', 'organized', 'repeat themselves', 'I can keep', 'check-in'],
-    transitions: ['for next steps', 'to keep this simple', 'so nobody has to repeat', 'I can keep'],
-    axes: { formality: 0.36, warmth: 0.86, compression: 0.42, friction: 0.28, ornament: 0.12, chat: 0.22, typo: 0.0, gothic: 0.2 },
-    sample: 'I can keep the next steps in one place so nobody has to repeat themselves.'
-  }),
-  'legal-intake': P({
-    label: 'Chronological Priya',
-    surface: 'date-first intake spine',
-    bio: 'Priya knows one missing date can eat a whole claim. She moves like a lighthouse in a filing storm: sequence first, caveat intact, exhibit leashed.',
-    architecture: 'date/sequence at front; clean declarative clauses; exhibit logic',
-    punctuation: 'commas for dates, periods for closure; no chat spellings',
-    grammar: 'standard but not ornate',
-    typo: 'no typos',
-    chat: 'none',
-    lexicon: ['on', 'after', 'before', 'same marker', 'did not alter', 'attachment', 'sequence'],
-    transitions: ['on that date', 'afterward', 'when reopened', 'same marker'],
-    axes: { formality: 0.82, warmth: 0.06, compression: 0.5, friction: 0.18, ornament: 0.02, chat: 0.0, typo: 0.0, gothic: 0.42 },
-    sample: 'On March 6, I saved the document. When I reopened it, the same marker was visible.'
-  }),
-  'hr-portal': P({
-    label: 'Compliant Trevor',
-    surface: 'synthetic hostile-portal shield',
-    bio: 'Trevor is a gray button that learned to survive HR software. He is not alive on purpose. He keeps the complaint passable inside a box designed to punish heat.',
-    architecture: 'plain complete sentences built for text boxes; purpose, attachment, record request',
-    punctuation: 'periods only unless list structure is necessary',
-    grammar: 'standard grammar, low warmth',
-    typo: 'no typos; synthetic-protective surface',
-    chat: 'none',
-    lexicon: ['submitting this note', 'document the issue', 'attachment includes', 'original submission', 'preserve the record'],
-    transitions: ['I am submitting', 'the attachment includes', 'please preserve'],
-    axes: { formality: 0.88, warmth: 0.01, compression: 0.58, friction: 0.04, ornament: 0.0, chat: 0.0, typo: 0.0, gothic: 0.36 },
-    sample: 'I am submitting this note to document the issue. The attachment includes the original date and file label.'
-  }),
   'quirky-orbit': P({
     label: 'Orbiting Lulu',
     surface: 'weird little deflection comet',
-    bio: 'Lulu releases a tiny neon bat into the room so everybody unclenches for half a second. The joke is a mask; the custody remains bolted down.',
-    architecture: 'one odd image, then practical factual anchor; varied sentence length',
-    punctuation: 'one dash or comma-play allowed; no metaphor pileup',
+    bio: 'Lulu releases one strange little image so the room unclenches, then snaps back to the factual anchor before the image gets ideas. The joke is a mask; the custody remains bolted down.',
+    architecture: 'one odd image, then practical factual anchor; varied sentence length; no metaphor pileup',
+    punctuation: 'one dash or comma-play allowed; no extended metaphor chain',
     grammar: 'eccentric but legible; fragments okay',
     typo: 'no typos; weirdness comes from image, not damage',
     chat: 'none',
-    lexicon: ['tiny', 'comet', 'seatbelt', 'float away', 'paperwork', 'little bat'],
-    transitions: ['tiny paperwork comet', 'anyway', 'so it does not float', 'kept the label'],
+    lexicon: ['tiny', 'paperwork', 'little bat', 'anyway', 'float away', 'kept the label'],
+    transitions: ['tiny paperwork comet', 'anyway', 'so it does not float off', 'back to the actual thing'],
+    avoid: ['new actors', 'new objects', 'new stakes', 'metaphor pileup', 'security claims'],
     axes: { formality: 0.22, warmth: 0.48, compression: 0.36, friction: 0.72, ornament: 0.84, chat: 0.05, typo: 0.0, gothic: 0.76 },
-    sample: 'Tiny paperwork comet. I kept the label on it so it would not float off into nonsense.'
+    sample: 'Tiny paperwork comet. Anyway, the date stays on it so the thing does not float off into nonsense.'
   }),
   'grandma-receipts': P({
     label: 'Receipted Queenie',
@@ -279,20 +201,6 @@ const PROFILES = {
     axes: { formality: 0.18, warmth: 0.0, compression: 0.98, friction: 0.48, ornament: 0.0, chat: 0.0, typo: 0.0, gothic: 0.58 },
     sample: 'File attached. Date visible. Label unchanged.'
   }),
-  'academic-caveat': P({
-    label: 'Caveating Soren',
-    surface: 'synthetic analytic caveat engine',
-    bio: 'Soren lives in the footnote where certainty goes to be supervised. Synthetic, careful, and slightly vampiric about qualifications.',
-    architecture: 'longer qualified sentences; dependent clauses; careful limitation',
-    punctuation: 'commas and semicolons allowed; no chat markers',
-    grammar: 'standard analytic grammar only',
-    typo: 'no typos; synthetic-protective surface',
-    chat: 'none',
-    lexicon: ['appears', 'relevant', 'additional review', 'continuity', 'without stronger conclusion'],
-    transitions: ['appears relevant', 'however', 'without additional review', 'I would avoid'],
-    axes: { formality: 0.97, warmth: 0.01, compression: 0.18, friction: 0.42, ornament: 0.12, chat: 0.0, typo: 0.0, gothic: 0.5 },
-    sample: 'The continuity appears relevant, though I would avoid a stronger conclusion without additional review.'
-  }),
   'phase22-jagged-record': P({
     label: 'Fractured Mina',
     surface: 'rushed stairwell record flare',
@@ -310,30 +218,32 @@ const PROFILES = {
   'phase27-register-preserve': P({
     label: 'Holding Zora',
     surface: 'right-to-opacity register custody',
-    bio: 'Zora refuses to bleach the speaker into institutional obedience. She keeps relation, hedge, rhythm, and event shape together like a hand on the doorframe.',
-    architecture: 'source-register preserving; relation marks stay; clarity without whitening',
+    bio: 'Zora holds the speaker at the threshold without bleaching the voice or pretending the system is safer than the source says. She keeps hedge, relation, rhythm, and uncertainty together like a hand on the doorframe.',
+    architecture: 'source-register preserving; relation marks stay; uncertainty remains open; no reassurance or security-spokesperson claims',
     punctuation: 'source-like punctuation; do not over-standardize',
     grammar: 'preserve meaningful dialect/chat/spoken grammar when source already carries it',
     typo: 'preserve source typos if meaningful and non-evidentiary; do not invent factual errors',
     chat: 'source-led; not decorative',
-    lexicon: ['keep the note how it moves', 'dont clean', 'maybe', 'source says', 'event shape'],
-    transitions: ['keep it how it moves', 'maybe', 'do not clean it into nothing', 'if the source says'],
-    axes: { formality: 0.1, warmth: 0.58, compression: 0.52, friction: 0.74, ornament: 0.2, chat: 0.46, typo: 0.12, gothic: 0.66 },
-    sample: 'girl keep the note how it moves. maybe template, cool, but dont clean the mismatch into nothing.'
+    lexicon: ['keep it how it moves', 'dont clean', 'idk', 'maybe', 'not trying to overstate it', 'the source is still unsure'],
+    transitions: ['keep it how it moves', 'idk', 'maybe', 'do not clean it into certainty'],
+    avoid: ['mitigate', 'ensure', 'core remains secure', 'the whole system fails', 'we have formulated', 'we provisioned', 'security assurance', 'stabilizing claim'],
+    axes: { formality: 0.08, warmth: 0.56, compression: 0.52, friction: 0.78, ornament: 0.18, chat: 0.5, typo: 0.12, gothic: 0.7 },
+    sample: 'keep it how it moves. maybe the math holds, maybe that is exactly why i am not trying to toss the seed around.'
   }),
   'phase28-transform-to-aave': P({
     label: 'Rooted Simone',
     surface: 'target-register forge with cultural review light on',
-    bio: 'Simone is not seasoning. She is a route with memory, relation, pressure, and review light. Use only when the operator explicitly chooses this register and will read it with care.',
-    architecture: 'compact relational clauses; high review; source facts stay anchored',
+    bio: 'Simone is not seasoning. She is relation, pressure, memory, and review light. Use only when the operator explicitly chooses this register and will read it with care; the route must stay grounded, not institutional and not performative.',
+    architecture: 'compact relational clauses; grounded pressure; technical mechanism stays visible; high review; source facts stay anchored',
     punctuation: 'source-compatible punctuation; no parody overmarking',
-    grammar: 'target-register features allowed only by explicit operator choice',
+    grammar: 'target-register features allowed only by explicit operator choice; no dialect costume',
     typo: 'no factual typos; preserve cultural weight and review human tone',
-    chat: 'medium if target route requires it',
-    lexicon: ['where it belong', 'dont act like', 'the record', 'mismatch', 'maybe template'],
-    transitions: ['keep the record', 'maybe template', 'dont act like', 'where it belong'],
-    axes: { formality: 0.06, warmth: 0.66, compression: 0.7, friction: 0.82, ornament: 0.38, chat: 0.48, typo: 0.08, gothic: 0.72 },
-    sample: 'girl keep the record where it belong. maybe template, fine, but dont act like the mismatch not there.'
+    chat: 'medium only if the target route requires it',
+    lexicon: ['dont act like', 'where it belong', 'the risk', 'that math still doing work', 'not random once it knows how to read it', 'keep the record'],
+    transitions: ['dont act like', 'the risk is', 'keep the record', 'where it belong'],
+    avoid: ['institutional standardization', 'parody overmarking', 'seasoning', 'corporate phrasing', 'fake dialect', 'HR voice'],
+    axes: { formality: 0.06, warmth: 0.66, compression: 0.68, friction: 0.86, ornament: 0.32, chat: 0.48, typo: 0.08, gothic: 0.72 },
+    sample: 'the risk is not that the constants magic. the risk is they not random once the system know how to read them.'
   }),
   'phase28-transform-to-chatspeak': P({
     label: 'Glitching Pixie',
@@ -369,7 +279,7 @@ export function getStyleDiversity(mask = {}) {
   const id = String(mask.id || '').trim();
   const profile = PROFILES[id];
   if (!profile) return null;
-  return { version: HUSH_STYLE_DIVERSITY_VERSION, id, active: has(id), retiredReason: retiredStyleMaskReason(id), ...profile, evidenceLaw, avoid: DEFAULT_AVOID };
+  return { version: HUSH_STYLE_DIVERSITY_VERSION, id, active: has(id), retiredReason: retiredStyleMaskReason(id), ...profile, evidenceLaw, avoid: uniq([...DEFAULT_AVOID, ...(profile.avoid || [])]) };
 }
 
 export function applyStyleDiversity(mask = {}) {
