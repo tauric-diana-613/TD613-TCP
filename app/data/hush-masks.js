@@ -2,7 +2,7 @@ const hushMasks = [
   {
     id: 'phase28-transform-to-chatspeak',
     label: 'Glitching Pixie',
-    family: 'chat-sigil shorthand',
+    family: 'chat shorthand',
     description: 'Glitching Pixie is a cracked message bubble with a halo made of dead pixels. Fast, funny for half a second, then precise enough to keep the file from falling through the floor. They keep claims intact while the surface stutters.',
     intendedUse: 'Compact futurecore chat transforms where the facts still need to survive the glitch.',
     riskTell: 'Too much glitch can start looking like damage instead of style.',
@@ -14,7 +14,7 @@ const hushMasks = [
   {
     id: 'phase28-transform-to-aave',
     label: 'Blackstar Shereé',
-    family: 'blackstar register',
+    family: 'target register',
     description: 'Shereé is relation, pressure, memory, and review light. She keeps the technical mechanism visible without letting the route turn institutional, performative, or fake-grounded.',
     intendedUse: 'Explicitly chosen target-register transforms with cultural review and strong fact custody.',
     riskTell: 'Never use as flavor. If the register is not chosen with care, the mask becomes costume.',
@@ -26,7 +26,7 @@ const hushMasks = [
   {
     id: 'phase27-register-preserve',
     label: 'Harbor Zora',
-    family: 'harbor custody',
+    family: 'source register',
     description: 'Zora holds the speaker at the threshold without bleaching the voice or pretending the system is safer than the source says. She keeps hedge, relation, rhythm, and uncertainty together like a hand on the doorframe.',
     intendedUse: 'Right-to-opacity transforms where uncertainty, register, and relation must remain intact.',
     riskTell: 'Can over-hold the source if asked for heavy transformation.',
@@ -38,7 +38,7 @@ const hushMasks = [
   {
     id: 'phase22-jagged-record',
     label: 'Rex Fractura',
-    family: 'fracture flare',
+    family: 'jagged note',
     description: 'Rex writes before memory gets laundered into “probably fine.” Slash marks, maybe-lines, little alarm sparks. He is the emergency flare mask.',
     intendedUse: 'Rushed notes where uncertainty and sequence pressure need to stay visible.',
     riskTell: 'Too much fracture can become transcription damage.',
@@ -62,7 +62,7 @@ const hushMasks = [
   {
     id: 'night-shift-note',
     label: 'Cryo Cristiano',
-    family: 'cryo handoff',
+    family: 'quick handoff',
     description: 'Cristiano is typing under vending-machine light while the clock hums like a threat. His roughness is exhaustion, not incompetence; the facts stay awake under glass.',
     intendedUse: 'Quick handoff messages that need to sound ordinary and tired without losing custody.',
     riskTell: 'Too much brevity can drop important context.',
@@ -74,7 +74,7 @@ const hushMasks = [
   {
     id: 'burner-minimal',
     label: 'Blooping Blip',
-    family: 'blip whisper',
+    family: 'low signature',
     description: 'Blooping Blip leaves four words where a speech tried to happen. Their safest flourish is a locked door.',
     intendedUse: 'Brief confirmations where little needs to be said and low signature matters.',
     riskTell: 'Can under-preserve facts.',
@@ -86,7 +86,7 @@ const hushMasks = [
   {
     id: 'quirky-orbit',
     label: 'Lulu Quasar',
-    family: 'quasar deflection',
+    family: 'strange distance',
     description: 'Lulu releases one strange little image so the room unclenches, then snaps back to the factual anchor before the image gets ideas. The joke is a mask; the custody remains bolted down.',
     intendedUse: 'Low-stakes masking where a little eccentricity is useful.',
     riskTell: 'Quirk can become a fingerprint if overused.',
@@ -98,7 +98,7 @@ const hushMasks = [
   {
     id: 'grandma-receipts',
     label: 'Receipts Queenie',
-    family: 'receipt memory',
+    family: 'warm receipts',
     description: 'Queenie sounds sweet until the receipt slides out of the cookie tin with a date on it. Warmth is the velvet glove; custody is the ring underneath.',
     intendedUse: 'Human notes where the record needs warmth without losing facts.',
     riskTell: 'Story warmth can add extra context.',
@@ -110,7 +110,7 @@ const hushMasks = [
   {
     id: 'soft-snark',
     label: 'Nolan the Needler',
-    family: 'pinprick side-eye',
+    family: 'low heat',
     description: 'Nolan lets one eyebrow do community service. His shade walks in first, but the receipt is the thing holding the door.',
     intendedUse: 'Messages that need edge without a full flare-up.',
     riskTell: 'Snark can expose speaker temperament.',
@@ -122,7 +122,7 @@ const hushMasks = [
   {
     id: 'forum-regular',
     label: 'Paul Publica',
-    family: 'public static',
+    family: 'forum pseudonym',
     description: 'Paul has seen page three eat the evidence before breakfast. He sounds casual because panic makes bad posts; the receipt gets left where everybody can trip over it.',
     intendedUse: 'Pseudonymous public notes that need ordinary legibility.',
     riskTell: 'Topic specificity can become more identifying than style.',
@@ -134,7 +134,7 @@ const hushMasks = [
   {
     id: 'clipboard',
     label: 'Luz of the Index',
-    family: 'index ritual',
+    family: 'checklist',
     description: 'Luz believes an index can save a witness and ruin a liar’s morning. Annoying? Absolutely. Effective? The page is already numbered.',
     intendedUse: 'Checklists, handoffs, and factual itemization.',
     riskTell: 'Can feel mechanical if used for sensitive messages.',
@@ -146,7 +146,7 @@ const hushMasks = [
   {
     id: 'library-ghost',
     label: 'Sol Stratigraphix',
-    family: 'stratigraphic archive',
+    family: 'document distance',
     description: 'Sol speaks after closing, when the cart rolls by itself and the folder remembers more than the people do. Polite as dust. Persistent as mildew.',
     intendedUse: 'Document-centered messages that need distance and custody.',
     riskTell: 'Strangeness can become memorable.',
