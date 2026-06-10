@@ -1,3 +1,4 @@
+# Manual workflow trigger: verify Pages deployment auth after repository settings reset.
 name: Test and deploy static app
 on:
   push:
