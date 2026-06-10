@@ -7,9 +7,10 @@ const CORS = {
   'access-control-max-age': '86400'
 };
 
-const VERSION = 'strict-endpoint-pr188.8-fast-upstream-budget';
-const META = 'pr188.8-fast-upstream-budget/v1';
-const STRICT_UPSTREAM_MS = 14200;
+const VERSION = 'strict-endpoint-pr188.9-conditional-fast-upstream';
+const META = 'pr188.9-conditional-fast-upstream/v1';
+const STRICT_FAST_UPSTREAM_MS = 14200;
+const STRICT_NORMAL_UPSTREAM_MS = 25500;
 
 function send(res, status, payload) {
   for (const [key, value] of Object.entries(CORS)) res.setHeader(key, value);
@@ -85,6 +86,9 @@ function routeIdText(contract = {}) {
 function isAaveRoute(contract = {}) {
   return /\bAAVE\b/i.test(internalRegisterOf(contract)) || /phase28-transform-to-aave/i.test(routeIdText(contract));
 }
+function wantsFastRoute(contract = {}) {
+  return isAaveRoute(contract) || contract.strictFastUpstream === true || contract.flightPacket?.flight_controls?.strict_fast_upstream === true;
+}
 function wordCount(contract = {}) {
   const text = safe(contract.sourceText || contract.messageDraftText || '');
   return (text.toLowerCase().match(/[a-z0-9][a-z0-9'-]*/g) || []).length;
@@ -92,23 +96,38 @@ function wordCount(contract = {}) {
 function clone(value = {}) {
   return JSON.parse(JSON.stringify(value || {}));
 }
-function fastStrictContract(contract = {}) {
+function reviewMap(payload = {}) {
+  const model = safe(payload.model);
+  const provider = safe(payload.provider);
+  const warnings = uniq(payload.warnings || []);
+  const candidates = arr(payload.candidates);
+  return /server-repair-review-map|deterministic-review-map/i.test(model)
+    || /server-deterministic-repair/i.test(provider)
+    || warnings.some((warning) => /server-deterministic-review-map-used|review-map-contained|review-map-not-transform|server-repair-review-map/i.test(warning))
+    || candidates.some((candidate) => /^Reviewed repair surface\./i.test(safe(candidate.text || candidate.output || candidate.candidate || '')));
+}
+function budgetedStrictContract(contract = {}) {
   const next = clone(contract);
   const fp = next.flightPacket ? clone(next.flightPacket) : null;
+  const fast = wantsFastRoute(next);
   const sourceWords = wordCount(next);
-  const candidateCount = sourceWords >= 220 ? 1 : 2;
+  const candidateCount = fast ? (sourceWords >= 220 ? 1 : 2) : Number(next.candidateCount || fp?.flight_controls?.candidate_count || 2) || 2;
 
-  next.strictFastUpstream = true;
   next.strictDirect = true;
   next.strictNoFallback = true;
-  next.strictReviewMapRetry = true;
-  next.strictReviewMapRetryReason = isAaveRoute(next) ? 'strict-fast-aave-one-shot' : 'strict-fast-one-shot';
-  next.strictReviewRetryAttemptBudget = 1;
-  next.strictReviewRetryStageLimit = 1;
-  next.strictReviewLateRetry = false;
+  next.strictFastUpstream = fast;
+  next.strictReviewRetrySkipModels = arr(next.strictReviewRetrySkipModels);
   next.candidateCount = candidateCount;
-  next.maskEvidenceState = maskEvidenceOf(next) || 'rich';
-  next.packetTier = isAaveRoute(next) ? 'register_transform_strict_fast_packet' : (packetTierOf(next) || 'strict_fast_packet');
+  next.maskEvidenceState = maskEvidenceOf(next) || (fast ? 'rich' : 'detailed');
+
+  if (fast) {
+    next.strictReviewMapRetry = true;
+    next.strictReviewMapRetryReason = isAaveRoute(next) ? 'strict-fast-aave-one-shot' : 'strict-fast-one-shot';
+    next.strictReviewRetryAttemptBudget = 1;
+    next.strictReviewRetryStageLimit = 1;
+    next.strictReviewLateRetry = false;
+    next.packetTier = isAaveRoute(next) ? 'register_transform_strict_fast_packet' : (packetTierOf(next) || 'strict_fast_packet');
+  }
 
   if (isAaveRoute(next)) {
     next.internalRegister = 'AAVE';
@@ -123,39 +142,49 @@ function fastStrictContract(contract = {}) {
   }
 
   if (fp) {
-    fp.packetTier = next.packetTier;
-    fp.packet_tier = next.packetTier;
+    fp.packetTier = next.packetTier || fp.packetTier;
+    fp.packet_tier = next.packetTier || fp.packet_tier;
     fp.maskEvidenceState = next.maskEvidenceState;
     fp.internalRegister = next.internalRegister || fp.internalRegister;
     fp.routeMetadata = { ...(fp.routeMetadata || {}), ...(next.routeMetadata || {}) };
     fp.packetHints = { ...(fp.packetHints || {}), ...(next.packetHints || {}) };
     fp.transformHints = { ...(fp.transformHints || {}), ...(next.transformHints || {}) };
-    fp.flight_controls = { ...(fp.flight_controls || {}), candidate_count: candidateCount, strict_fast_upstream: true, max_model_attempts: 1, max_stage_attempts: 1 };
+    fp.flight_controls = {
+      ...(fp.flight_controls || {}),
+      candidate_count: candidateCount,
+      strict_fast_upstream: fast,
+      ...(fast ? { max_model_attempts: 1, max_stage_attempts: 1 } : {})
+    };
     next.flightPacket = fp;
   }
 
   return next;
 }
+function timeoutBudget(contract = {}) {
+  return wantsFastRoute(contract) ? STRICT_FAST_UPSTREAM_MS : STRICT_NORMAL_UPSTREAM_MS;
+}
 function strictMeta(payload = {}, contract = {}, startedAt = Date.now(), extraWarnings = []) {
+  const fast = wantsFastRoute(contract);
   return {
     ...(payload.requestReceipt || {}),
     strict: true,
     noFallback: true,
     strictDirect: true,
-    strictFastUpstream: true,
+    strictFastUpstream: fast,
     strictDirectVersion: VERSION,
     providerVersion: VERSION,
     reviewVersion: META,
     endpointMetaVersion: META,
     httpUpstreamInvoke: true,
     abortableHttpUpstream: true,
-    strictUpstreamBudgetMs: STRICT_UPSTREAM_MS,
-    strictAttemptBudget: 1,
-    strictStageBudget: 1,
+    strictUpstreamBudgetMs: timeoutBudget(contract),
+    strictAttemptBudget: fast ? 1 : payload.requestReceipt?.strictAttemptBudget || '',
+    strictStageBudget: fast ? 1 : payload.requestReceipt?.strictStageBudget || '',
     packetTier: packetTierOf(contract),
     maskEvidenceState: maskEvidenceOf(contract),
     internalRegister: internalRegisterOf(contract),
     aaveRoute: isAaveRoute(contract),
+    reviewMapIntercept: reviewMap(payload),
     fallbackReleased: false,
     elapsedMs: Date.now() - startedAt,
     warnings: uniq([...(payload.requestReceipt?.warnings || []), ...extraWarnings])
@@ -168,12 +197,30 @@ function stamp(payload = {}, contract = {}, startedAt = Date.now(), extraWarning
     strict: true,
     noFallback: true,
     fallbackReleased: false,
-    outputReleased: Boolean(arr(payload.candidates).length),
+    outputReleased: Boolean(arr(payload.candidates).length) && !reviewMap(payload),
     warnings,
     requestReceipt: strictMeta(payload, contract, startedAt, warnings)
   }, contract, startedAt);
 }
+function heldReviewMap(payload = {}, contract = {}, startedAt = Date.now()) {
+  return stamp({
+    ok: false,
+    status: 'held',
+    held: true,
+    released: false,
+    provider: 'gemini-strict',
+    model: safe(payload.model || 'server-repair-review-map'),
+    error: 'review_map_not_transform',
+    reason: 'review_map_not_transform',
+    message: 'Strict endpoint intercepted a server review map before it could be treated as a releasable remote candidate.',
+    candidates: [],
+    warnings: uniq([...(payload.warnings || []), 'review-map-contained', 'review-map-not-transform', 'strict-api-no-usable-candidates', 'no-local-fallback']),
+    attempts: payload.attempts || [],
+    providerErrorMessage: 'Server repair maps are diagnostics, not transformed output.'
+  }, contract, startedAt, ['review-map-intercepted-at-strict-endpoint']);
+}
 function timeoutPayload(contract = {}, startedAt = Date.now()) {
+  const fast = wantsFastRoute(contract);
   return stamp({
     ok: false,
     status: 'held',
@@ -181,17 +228,17 @@ function timeoutPayload(contract = {}, startedAt = Date.now()) {
     released: false,
     provider: 'gemini-strict',
     model: 'strict-server-watchdog',
-    error: 'strict_fast_upstream_timeout',
+    error: fast ? 'strict_fast_upstream_timeout' : 'strict_upstream_timeout',
     reason: 'provider_timeout',
-    message: 'Strict endpoint stopped the fast upstream inside the client-safe window before the page watchdog could fire.',
+    message: fast ? 'Strict endpoint stopped the fast upstream inside the client-safe window before the page watchdog could fire.' : 'Strict endpoint stopped the upstream inside the client-safe window before the page watchdog could fire.',
     candidates: [],
-    warnings: ['strict-server-watchdog-timeout', 'strict-fast-upstream-timeout', 'strict-api-no-usable-candidates', 'no-local-fallback'],
+    warnings: uniq(['strict-server-watchdog-timeout', fast ? 'strict-fast-upstream-timeout' : 'strict-upstream-timeout', 'strict-api-no-usable-candidates', 'no-local-fallback']),
     attempts: []
   }, contract, startedAt);
-}
-async function callUpstream(req, contract = {}, startedAt = Date.now()) {
+}\nasync function callUpstream(req, contract = {}, startedAt = Date.now()) {
   const controller = typeof AbortController === 'function' ? new AbortController() : null;
-  const timeout = controller ? setTimeout(() => controller.abort(), STRICT_UPSTREAM_MS) : null;
+  const timeoutMs = timeoutBudget(contract);
+  const timeout = controller ? setTimeout(() => controller.abort(), timeoutMs) : null;
   try {
     const response = await fetch(`${originFromReq(req)}/api/hush-generate`, {
       method: 'POST',
@@ -242,20 +289,21 @@ export default async function handler(req, res) {
     reviewVersion: META,
     upstream: 'http:/api/hush-generate',
     abortableHttpUpstream: true,
-    strictFastUpstream: true,
-    strictAttemptBudget: 1,
-    strictStageBudget: 1,
-    strictUpstreamBudgetMs: STRICT_UPSTREAM_MS,
-    note: 'Strict endpoint uses a fast one-shot upstream budget so provider failures return stamped JSON instead of watchdog timeouts.'
+    conditionalFastUpstream: true,
+    fastBudgetMs: STRICT_FAST_UPSTREAM_MS,
+    normalBudgetMs: STRICT_NORMAL_UPSTREAM_MS,
+    reviewMapIntercept: true,
+    note: 'Strict endpoint uses fast one-shot budget only for AAVE or explicit fast routes; other masks keep the normal strict window. Server repair maps are held at strict.'
   });
   if (req.method !== 'POST') return send(res, 405, { ok: false, error: 'method-not-allowed', version: VERSION });
 
   const startedAt = Date.now();
   const original = req.body?.contract || req.body || {};
-  const contract = fastStrictContract(original);
+  const contract = budgetedStrictContract(original);
 
   try {
     const { status, payload } = await callUpstream(req, contract, startedAt);
+    if (reviewMap(payload)) return send(res, 504, heldReviewMap(payload, contract, startedAt));
     const stamped = payload?.requestReceipt?.endpointMetaVersion === META ? payload : stamp(payload, contract, startedAt);
     return send(res, status, stamped);
   } catch (error) {
