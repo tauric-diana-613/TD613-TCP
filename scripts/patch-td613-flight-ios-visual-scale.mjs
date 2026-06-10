@@ -5,6 +5,8 @@ const pr85Path = 'scripts/patch-td613-flight-mobile-pr85-final.mjs';
 const pr87Marker = '/* PR87_SENTINEL TD613 Flight iOS visual-scale input shim */';
 const pr88Marker = '/* PR88_SENTINEL TD613 Flight focus stability micro patch */';
 const pr89Marker = '/* PR89_SENTINEL TD613 Flight seal layout + payload micro patch */';
+const viewport = '<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no, viewport-fit=cover" />';
+const viewportMeta = /\n?<meta\b(?=[^>]*\bname=["']viewport["'])[^>]*>/gi;
 
 const pr88Css = `
 ${pr88Marker}
@@ -32,6 +34,7 @@ ${pr88Marker}
   .flight-lane #taskText:focus,
   .flight-lane #outputText:focus {
     font-size: 9px !important;
+    line-height: 1.18 !important;
     transform: none !important;
     -webkit-transform: none !important;
   }
@@ -155,6 +158,12 @@ function removeCssBlock(source, marker) {
   return out;
 }
 
+function restoreNoZoomViewport(source) {
+  let out = source.replace(viewportMeta, '');
+  if (!out.includes('<head>')) throw new Error('Missing <head> in Flight HTML');
+  return out.replace(/<head>/i, `<head>\n${viewport}`);
+}
+
 function removePrepNoZoom(source) {
   let out = source;
   const fn = `
@@ -190,7 +199,8 @@ function removePrepNoZoom(source) {
 }
 
 function injectFlightCss(source) {
-  let out = removeCssBlock(source, pr87Marker);
+  let out = restoreNoZoomViewport(source);
+  out = removeCssBlock(out, pr87Marker);
   out = removeCssBlock(out, pr88Marker);
   out = removeCssBlock(out, pr89Marker);
   if (!out.includes('</style>')) throw new Error('Missing </style> in Flight HTML');
@@ -216,4 +226,4 @@ pr85 = injectIntoPatchScript(pr85);
 pr85 = removePrepNoZoom(pr85);
 fs.writeFileSync(pr85Path, pr85);
 
-console.log('Applied TD613 Flight PR88/PR89 micro patch: stable textareas, compact payload stepper, Seal split-row layout.');
+console.log('Applied TD613 Flight PR88/PR89 micro patch: no-zoom viewport restored, stable tiny textareas, compact payload stepper, Seal split-row layout.');
