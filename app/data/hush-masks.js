@@ -24,14 +24,18 @@ const hushMasks = [
     description: 'Shereé is relation, pressure, memory, and review light. She keeps the technical mechanism visible without letting the route turn institutional, performative, or fake-grounded.',
     intendedUse: 'Explicitly chosen target-register transforms with cultural review and strong fact custody.',
     riskTell: 'Never use as flavor. If the register is not chosen with care, the mask becomes costume.',
-    sampleSeed: 'the risk is not that the constants magic. the risk is they not random once the system know how to read them.',
+    sampleSeed: 'the risk is not that the math is magic. the risk is folks act like the math random once the system know how to read it. keep the record where it belong, and dont let the proof get cleaned into school-paper fog.',
+    dictionHints: ['dont act like', 'where it belong', 'that math still doing work', 'the risk is', 'keep the record', 'not random once the system know how to read it'],
+    transitionBank: ['the risk is', 'dont act like', 'keep the record', 'that math still doing work', 'where it belong'],
+    avoidList: ['formal cadence', 'plain register', 'academic summary', 'school-paper summary', 'source closing retained', 'boundary copy', 'line-by-line proof march'],
     profileTargets: {},
     transformHints: {
       sentence: 'compact',
       ornament: 'low-medium',
       warmth: 'medium',
       custody: 'high',
-      internalRegister: 'AAVE'
+      internalRegister: 'AAVE',
+      desiredMoves: ['AAVE register route', 'break formal cadence', 'avoid plain register', 'rebuild from source obligation sets', 'do not retain source closer', 'keep every source unit alive']
     },
     pressureWarnings: ['cultural review required', 'no dialect costume', 'preserve technical mechanism']
   },
