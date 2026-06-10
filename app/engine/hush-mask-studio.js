@@ -8,21 +8,39 @@ import { extractCadenceProfile } from './stylometry.js';
 import { applyAuthorshipProtectionToMask, buildAuthorshipProtectionPolicy } from './hush-authorship-protection.js';
 import { applyStyleDiversity, isActiveStyleMask, retiredStyleMaskReason, activeStyleMaskIds } from './hush-style-diversity.js';
 
-export const HUSH_MASK_STUDIO_VERSION = 'phase-16-pr150-active-style-studio';
+export const HUSH_MASK_STUDIO_VERSION = 'pr188.2-deduped-mask-studio';
 
 const safeText = (value) => String(value ?? '');
 const asArray = (value) => Array.isArray(value) ? [...value] : [];
 const clamp = (value, min = 0, max = 1) => Number.isFinite(value) ? Math.max(min, Math.min(max, value)) : 0;
 const round = (value, digits = 4) => Number.isFinite(value) ? Number(value.toFixed(digits)) : 0;
 const DISTRIBUTION_KEYS = ['avgSentenceLength', 'punctuationDensity', 'contractionDensity', 'recurrencePressure', 'lexicalDensity', 'modifierDensity', 'lineBreakDensity', 'lexicalEntropy'];
-const BUILT_IN_MASKS = [...hushMasks, ...phase22HushMasks, ...phase24HushMasks, ...phase27HushMasks, ...phase28HushMasks];
+const RAW_BUILT_IN_MASKS = [...hushMasks, ...phase22HushMasks, ...phase24HushMasks, ...phase27HushMasks, ...phase28HushMasks];
+const CANONICAL_MASK_IDS = new Set(hushMasks.map((mask) => safeText(mask.id)));
+const BUILT_IN_MASKS = dedupeMasksById(RAW_BUILT_IN_MASKS);
 
+function dedupeMasksById(masks = []) {
+  const seen = new Set();
+  const ordered = [];
+  for (const mask of asArray(masks)) {
+    const id = safeText(mask?.id).trim();
+    if (!id || seen.has(id)) continue;
+    seen.add(id);
+    ordered.push(mask);
+  }
+  return ordered;
+}
 function wordCount(text = '') { return (safeText(text).match(/[A-Za-z0-9][A-Za-z0-9'-]*/g) || []).length; }
 function profileStatus(profile = {}, text = '') { const words = profile.wordCount ?? wordCount(text); if (!words) return 'empty'; if (words < 35) return 'thin'; if (words < 90) return 'usable'; return 'strong'; }
 function summarizeProfile(profile = {}) { return { wordCount: profile.wordCount ?? null, avgSentenceLength: Number.isFinite(profile.avgSentenceLength) ? round(profile.avgSentenceLength, 3) : null, punctuationDensity: Number.isFinite(profile.punctuationDensity) ? round(profile.punctuationDensity, 4) : null, contractionDensity: Number.isFinite(profile.contractionDensity) ? round(profile.contractionDensity, 4) : null, recurrencePressure: Number.isFinite(profile.recurrencePressure) ? round(profile.recurrencePressure, 4) : null, abstractionPosture: Number.isFinite(profile.lexicalDensity) ? round(profile.lexicalDensity, 4) : null, modifierDensity: Number.isFinite(profile.modifierDensity) ? round(profile.modifierDensity, 4) : null, lineBreakDensity: Number.isFinite(profile.lineBreakDensity) ? round(profile.lineBreakDensity, 4) : null, lexicalEntropy: Number.isFinite(profile.lexicalEntropy) ? round(profile.lexicalEntropy, 4) : null }; }
 function detectWeakProfile(profile = {}, seed = '') { const warnings = []; const words = profile.wordCount ?? wordCount(seed); if (!words) warnings.push('mask-reference-empty'); if (words > 0 && words < 35) warnings.push('mask-reference-short'); if (!profile || profile.empty) warnings.push('profile-missing'); if (words < 90) warnings.push('profile-low-evidence'); return warnings; }
 function toleranceFor(key, value) { const base = { avgSentenceLength: 4, punctuationDensity: 0.08, contractionDensity: 0.025, recurrencePressure: 0.12, lexicalDensity: 0.18, modifierDensity: 0.06, lineBreakDensity: 0.06, lexicalEntropy: 0.7 }[key] ?? 0.1; return round(Math.max(base, Math.abs(Number(value) || 0) * 0.18)); }
-function builtinMasks(input = {}) { const explicit = asArray(input.masks); if (explicit.length) return explicit; return input.includeRetiredMasks ? BUILT_IN_MASKS : BUILT_IN_MASKS.filter((mask) => isActiveStyleMask(mask)); }
+function builtinMasks(input = {}) {
+  const explicit = dedupeMasksById(asArray(input.masks));
+  if (explicit.length) return explicit;
+  const base = input.includeRetiredMasks ? BUILT_IN_MASKS : BUILT_IN_MASKS.filter((mask) => isActiveStyleMask(mask));
+  return dedupeMasksById(base).filter((mask) => input.includeRetiredMasks || CANONICAL_MASK_IDS.has(safeText(mask.id)));
+}
 
 export function buildMaskDistribution(profile = {}, options = {}) {
   const centroid = {}; const variance = {}; const toleranceBands = {}; const targetFeatureWeights = {};
