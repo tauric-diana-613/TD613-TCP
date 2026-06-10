@@ -19,25 +19,25 @@ const hushMasks = [
     packetHints: {
       internalRegister: 'AAVE',
       publicRegisterLabel: 'target register',
-      routeInstruction: 'Use AAVE register features when this mask is selected; keep public UI coded.'
+      routeInstruction: 'Use AAVE register features when this mask is selected; keep public UI coded. Source proposition coverage outranks phrase texture.'
     },
     description: 'Shereé is relation, pressure, memory, and review light. She keeps the technical mechanism visible without letting the route turn institutional, performative, or fake-grounded.',
     intendedUse: 'Explicitly chosen target-register transforms with cultural review and strong fact custody.',
     riskTell: 'Never use as flavor. If the register is not chosen with care, the mask becomes costume.',
-    sampleSeed: 'the risk is not that the math is magic. the risk is folks act like the math random once the system know how to read it. keep the record where it belong, and dont let the proof get cleaned into school-paper fog.',
-    dictionHints: ['dont act like', 'where it belong', 'that math still doing work', 'the risk is', 'keep the record', 'not random once the system know how to read it'],
-    transitionBank: ['the risk is', 'dont act like', 'keep the record', 'that math still doing work', 'where it belong'],
-    avoidList: ['formal cadence', 'plain register', 'academic summary', 'school-paper summary', 'source closing retained', 'boundary copy', 'line-by-line proof march'],
+    sampleSeed: 'the math can talk in a live register and still keep every unit on the table. recorded history, lifespans, millennia, festivals, retirement, significant others, old writings, and the human-change hypothesis all gotta survive before the sentence gets cute.',
+    dictionHints: ['source unit first', 'proof before flourish', 'register after coverage', 'every claim stays alive'],
+    transitionBank: ['source unit first', 'before the sentence gets cute', 'the proof still gotta carry', 'keep every unit on the table'],
+    avoidList: ['formal cadence', 'plain register', 'academic summary', 'school-paper summary', 'source closing retained', 'boundary copy', 'line-by-line proof march', 'repeating mask anchors', 'chorus phrases', 'dropping proposition units', 'turning register into catchphrase'],
     profileTargets: {},
     transformHints: {
       sentence: 'compact',
       ornament: 'low-medium',
       warmth: 'medium',
-      custody: 'high',
+      custody: 'very-high',
       internalRegister: 'AAVE',
-      desiredMoves: ['AAVE register route', 'break formal cadence', 'avoid plain register', 'rebuild from source obligation sets', 'do not retain source closer', 'keep every source unit alive']
+      desiredMoves: ['AAVE register route', 'source coverage before style texture', 'break formal cadence', 'avoid plain register', 'rebuild from source obligation sets', 'do not retain source closer', 'keep every source unit alive', 'use anchor phrases sparingly']
     },
-    pressureWarnings: ['cultural review required', 'no dialect costume', 'preserve technical mechanism']
+    pressureWarnings: ['cultural review required', 'no dialect costume', 'preserve technical mechanism', 'source coverage outranks register heat']
   },
   {
     id: 'phase27-register-preserve',
