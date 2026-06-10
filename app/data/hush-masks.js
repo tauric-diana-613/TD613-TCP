@@ -15,12 +15,24 @@ const hushMasks = [
     id: 'phase28-transform-to-aave',
     label: 'Blackstar Shereé',
     family: 'target register',
+    internalRegister: 'AAVE',
+    packetHints: {
+      internalRegister: 'AAVE',
+      publicRegisterLabel: 'target register',
+      routeInstruction: 'Use AAVE register features when this mask is selected; keep public UI coded.'
+    },
     description: 'Shereé is relation, pressure, memory, and review light. She keeps the technical mechanism visible without letting the route turn institutional, performative, or fake-grounded.',
     intendedUse: 'Explicitly chosen target-register transforms with cultural review and strong fact custody.',
     riskTell: 'Never use as flavor. If the register is not chosen with care, the mask becomes costume.',
     sampleSeed: 'the risk is not that the constants magic. the risk is they not random once the system know how to read them.',
     profileTargets: {},
-    transformHints: { sentence: 'compact', ornament: 'low-medium', warmth: 'medium', custody: 'high' },
+    transformHints: {
+      sentence: 'compact',
+      ornament: 'low-medium',
+      warmth: 'medium',
+      custody: 'high',
+      internalRegister: 'AAVE'
+    },
     pressureWarnings: ['cultural review required', 'no dialect costume', 'preserve technical mechanism']
   },
   {
