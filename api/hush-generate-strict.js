@@ -7,10 +7,11 @@ const CORS = {
   'access-control-max-age': '86400'
 };
 
-const VERSION = 'strict-endpoint-pr188.9-conditional-fast-upstream';
-const META = 'pr188.9-conditional-fast-upstream/v1';
+const VERSION = 'strict-endpoint-pr188.10-budgeted-upstream-route';
+const META = 'pr188.10-budgeted-upstream-route/v1';
 const STRICT_FAST_UPSTREAM_MS = 14200;
 const STRICT_NORMAL_UPSTREAM_MS = 25500;
+const BUDGETED_UPSTREAM_PATH = '/api/hush-generate-budgeted';
 
 function send(res, status, payload) {
   for (const [key, value] of Object.entries(CORS)) res.setHeader(key, value);
@@ -115,10 +116,12 @@ function budgetedStrictContract(contract = {}) {
 
   next.strictDirect = true;
   next.strictNoFallback = true;
+  next.strictBudgetedUpstream = true;
   next.strictFastUpstream = fast;
   next.strictReviewRetrySkipModels = arr(next.strictReviewRetrySkipModels);
   next.candidateCount = candidateCount;
   next.maskEvidenceState = maskEvidenceOf(next) || (fast ? 'rich' : 'detailed');
+  next.strictUpstreamBudgetMs = fast ? STRICT_FAST_UPSTREAM_MS : STRICT_NORMAL_UPSTREAM_MS;
 
   if (fast) {
     next.strictReviewMapRetry = true;
@@ -152,6 +155,8 @@ function budgetedStrictContract(contract = {}) {
     fp.flight_controls = {
       ...(fp.flight_controls || {}),
       candidate_count: candidateCount,
+      strict_budgeted_upstream: true,
+      strict_upstream_budget_ms: next.strictUpstreamBudgetMs,
       strict_fast_upstream: fast,
       ...(fast ? { max_model_attempts: 1, max_stage_attempts: 1 } : {})
     };
@@ -170,11 +175,13 @@ function strictMeta(payload = {}, contract = {}, startedAt = Date.now(), extraWa
     strict: true,
     noFallback: true,
     strictDirect: true,
+    strictBudgetedUpstream: true,
     strictFastUpstream: fast,
     strictDirectVersion: VERSION,
     providerVersion: VERSION,
     reviewVersion: META,
     endpointMetaVersion: META,
+    upstreamPath: BUDGETED_UPSTREAM_PATH,
     httpUpstreamInvoke: true,
     abortableHttpUpstream: true,
     strictUpstreamBudgetMs: timeoutBudget(contract),
@@ -230,9 +237,9 @@ function timeoutPayload(contract = {}, startedAt = Date.now()) {
     model: 'strict-server-watchdog',
     error: fast ? 'strict_fast_upstream_timeout' : 'strict_upstream_timeout',
     reason: 'provider_timeout',
-    message: fast ? 'Strict endpoint stopped the fast upstream inside the client-safe window before the page watchdog could fire.' : 'Strict endpoint stopped the upstream inside the client-safe window before the page watchdog could fire.',
+    message: fast ? 'Strict endpoint stopped the budgeted fast upstream inside the client-safe window before the page watchdog could fire.' : 'Strict endpoint stopped the budgeted upstream inside the client-safe window before the page watchdog could fire.',
     candidates: [],
-    warnings: uniq(['strict-server-watchdog-timeout', fast ? 'strict-fast-upstream-timeout' : 'strict-upstream-timeout', 'strict-api-no-usable-candidates', 'no-local-fallback']),
+    warnings: uniq(['strict-server-watchdog-timeout', fast ? 'strict-fast-upstream-timeout' : 'strict-upstream-timeout', 'strict-budgeted-upstream-timeout', 'strict-api-no-usable-candidates', 'no-local-fallback']),
     attempts: []
   }, contract, startedAt);
 }
@@ -241,7 +248,7 @@ async function callUpstream(req, contract = {}, startedAt = Date.now()) {
   const timeoutMs = timeoutBudget(contract);
   const timeout = controller ? setTimeout(() => controller.abort(), timeoutMs) : null;
   try {
-    const response = await fetch(`${originFromReq(req)}/api/hush-generate`, {
+    const response = await fetch(`${originFromReq(req)}${BUDGETED_UPSTREAM_PATH}`, {
       method: 'POST',
       headers: { 'content-type': 'application/json' },
       body: JSON.stringify({ contract }),
@@ -288,13 +295,14 @@ export default async function handler(req, res) {
     route: 'hush-generate-strict',
     version: VERSION,
     reviewVersion: META,
-    upstream: 'http:/api/hush-generate',
+    upstream: BUDGETED_UPSTREAM_PATH,
     abortableHttpUpstream: true,
+    budgetedUpstream: true,
     conditionalFastUpstream: true,
     fastBudgetMs: STRICT_FAST_UPSTREAM_MS,
     normalBudgetMs: STRICT_NORMAL_UPSTREAM_MS,
     reviewMapIntercept: true,
-    note: 'Strict endpoint uses fast one-shot budget only for AAVE or explicit fast routes; other masks keep the normal strict window. Server repair maps are held at strict.'
+    note: 'Strict endpoint routes through budgeted upstream generation. Fast one-shot budget applies only for AAVE or explicit fast routes; other masks keep the normal strict budget.'
   });
   if (req.method !== 'POST') return send(res, 405, { ok: false, error: 'method-not-allowed', version: VERSION });
 
