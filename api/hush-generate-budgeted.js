@@ -5,13 +5,13 @@ const corsHeaders = {
   'access-control-max-age': '86400'
 };
 
-const VERSION = 'hush-generate-budgeted-pr188.10-strict-upstream-budget';
-const DEFAULT_MODEL_ORDER = ['gemini-flash-lite-latest', 'gemini-2.5-flash-lite', 'gemini-2.5-flash'];
-const FAST_CALL_TIMEOUT_MS = 6200;
+const VERSION = 'hush-generate-budgeted-pr188.11-fast-model-order';
+const DEFAULT_MODEL_ORDER = ['gemini-2.5-flash-lite', 'gemini-flash-lite-latest', 'gemini-2.5-flash'];
+const FAST_CALL_TIMEOUT_MS = 5200;
 const NORMAL_CALL_TIMEOUT_MS = 7600;
 const FAST_WALL_MS = 12400;
 const NORMAL_WALL_MS = 21400;
-const MAX_OUTPUT_TOKENS = 8192;
+const MAX_OUTPUT_TOKENS = 3072;
 let preferredWorkingModel = null;
 
 function send(res, status, payload) {
@@ -48,7 +48,7 @@ function candidateBudget(contract = {}) {
 }
 function attemptBudget(contract = {}) {
   const n = Number(contract.strictReviewRetryAttemptBudget || controls(contract).max_model_attempts || 0);
-  return Math.max(1, Math.min(n || (isFast(contract) ? 1 : 2), 2));
+  return Math.max(1, Math.min(n || (isFast(contract) ? 2 : 2), 2));
 }
 function wallBudget(contract = {}) {
   const n = Number(contract.strictUpstreamBudgetMs || controls(contract).strict_upstream_budget_ms || 0);
