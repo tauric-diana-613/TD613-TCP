@@ -5,7 +5,7 @@ const corsHeaders = {
   'access-control-max-age': '86400'
 };
 
-const VERSION = 'hush-generate-budgeted-pr188.11-fast-model-order';
+const VERSION = 'hush-generate-budgeted-pr188.12-aave-register-fidelity';
 const DEFAULT_MODEL_ORDER = ['gemini-2.5-flash-lite', 'gemini-flash-lite-latest', 'gemini-2.5-flash'];
 const FAST_CALL_TIMEOUT_MS = 5200;
 const NORMAL_CALL_TIMEOUT_MS = 7600;
@@ -78,14 +78,28 @@ function sourceObligations(sourceText = '') {
   const units = sentences.length ? sentences : safe(sourceText).split(/\n+/).map((s) => s.trim()).filter(Boolean);
   return units.slice(0, 14).map((unit, index) => `P${index + 1}: ${unit}`);
 }
+function aaveAcademicDrift(text = '', contract = {}) {
+  if (!isAaveRoute(contract)) return false;
+  const clean = safe(text);
+  const lead = clean.slice(0, 360);
+  return /^(?:yuval noah harari|this paper aims|for instance|furthermore|moreover|in conclusion|seneca,|marcus aurelius,|the ancient greeks|the ancient romans)\b/i.test(lead)
+    || /\b(?:posits|argues that|aims to demonstrate|for instance|furthermore|moreover|renowned|solely focusing|this enduring human cognition)\b/i.test(lead);
+}
 function buildPrompt(contract = {}) {
   const sourceText = safe(contract.sourceText || contract.messageDraftText || '').slice(0, 5200);
   const style = compactStyle(contract);
   const count = candidateBudget(contract);
   const aave = isAaveRoute(contract);
   const minWords = Math.max(24, Math.floor(words(sourceText).length * (aave ? 0.58 : 0.54)));
-  const aaveRule = aave ? 'Internal route: AAVE. Use AAVE register features only where natural. Do not label the output as AAVE. Source proposition coverage outranks phrase texture; no chorus phrases.' : '';
-  return `Return JSON only. Schema: {"candidates":[{"text":"string","style_note":"string","style_operation":"string","preserved_propositions":[],"dropped_propositions":[],"changed_questions":[],"new_claims":[],"authorship_moves":[],"risk_flags":[],"mask_surface_notes":{"rhythm":"string","diction":"string","structure":"string","coverage":"string"}}]}
+  const schemaOperation = aave ? 'register_transform' : 'string';
+  const aaveRule = aave ? `AAVE TARGET-REGISTER LAW:
+- style_operation must be "register_transform".
+- Preserve every source proposition first, then move the sentence architecture into target register.
+- Do not open with academic-summary formulas such as "Yuval Noah Harari argues/posits," "This paper aims," "For instance," or "Furthermore" unless the source itself begins there.
+- Start from the paragraph's live pressure or continuity claim, not bibliography order. Keep Harari, Seneca, Aurelius, Greek sport, Roman arenas, Babylonian archaeology, Sumerians, and journals, but do not let citation language become the voice.
+- Use natural Black vernacular syntax with restraint. Do not costume the route with catchphrases, generic slang, "look," "think about that," "proof is in the pudding," or exaggerated dialect spelling.
+- The output must sound transformed, not like a cleaned-up school paragraph.` : '';
+  return `Return JSON only. Schema: {"candidates":[{"text":"string","style_note":"string","style_operation":"${schemaOperation}","preserved_propositions":[],"dropped_propositions":[],"changed_questions":[],"new_claims":[],"authorship_moves":[],"risk_flags":[],"mask_surface_notes":{"rhythm":"string","diction":"string","structure":"string","coverage":"string"}}]}
 
 STRICT BUDGETED UPSTREAM. Generate exactly ${count} transformed candidate(s). No review maps, ledgers, summaries, diagnostics, P-row reports, or analysis. Candidate text must be the transformed message itself.
 
@@ -128,17 +142,18 @@ async function callGemini({ model, prompt, timeoutMs, deterministic = true }) {
 function providerText(payload = {}) { return payload?.candidates?.[0]?.content?.parts?.[0]?.text || ''; }
 function summarizeProviderError(payload = {}) { const error = payload.error || payload; return { code: error.code || payload.code || '', status: error.status || payload.status || '', message: safe(error.message || payload.message || '').slice(0, 700) }; }
 function candidateText(candidate = {}) { return typeof candidate === 'string' ? candidate : safe(candidate?.text || candidate?.output || candidate?.candidate || candidate?.rewrite || ''); }
-function normalizeCandidates(value) {
+function normalizeCandidates(value, contract = {}) {
   let source = [];
   if (Array.isArray(value)) source = value.flatMap((item) => Array.isArray(item?.candidates) ? item.candidates : [item]);
   else if (Array.isArray(value?.candidates)) source = value.candidates;
   else if (candidateText(value)) source = [value];
+  const defaultOperation = isAaveRoute(contract) ? 'register_transform' : 'cadence_alias';
   return source.map((candidate, index) => {
     const text = candidateText(candidate);
     return text ? {
       text,
       style_note: safe(candidate.style_note || candidate.styleNote || `budgeted-provider-candidate-${index + 1}`),
-      style_operation: safe(candidate.style_operation || candidate.styleOperation || candidate.operation || 'cadence_alias'),
+      style_operation: safe(candidate.style_operation || candidate.styleOperation || candidate.operation || defaultOperation),
       preserved_propositions: arr(candidate.preserved_propositions || candidate.preservedPropositions).map(safe).filter(Boolean),
       dropped_propositions: arr(candidate.dropped_propositions || candidate.droppedPropositions).map(safe).filter(Boolean),
       changed_questions: arr(candidate.changed_questions || candidate.changedQuestions).map(safe).filter(Boolean),
@@ -149,7 +164,7 @@ function normalizeCandidates(value) {
     } : null;
   }).filter(Boolean).slice(0, 3);
 }
-function parseProviderJson(text = '') {
+function parseProviderJson(text = '', contract = {}) {
   const cleaned = safe(text).replace(/^```(?:json)?\s*/i, '').replace(/```$/i, '').trim();
   const attempts = [cleaned];
   const objectStart = cleaned.indexOf('{');
@@ -161,7 +176,7 @@ function parseProviderJson(text = '') {
   for (const attempt of [...new Set(attempts)].filter(Boolean)) {
     try {
       const parsed = JSON.parse(attempt);
-      const candidates = normalizeCandidates(parsed);
+      const candidates = normalizeCandidates(parsed, contract);
       return { candidates, warnings: [...arr(parsed.warnings).map(safe).filter(Boolean), ...(candidates.length ? [] : ['provider-json-contained-no-usable-candidates'])], rawText: cleaned.slice(0, 700) };
     } catch {}
   }
@@ -210,11 +225,13 @@ export default async function handler(req, res) {
     if (Date.now() - startedAt > wallMs - timeoutMs - 500) return send(res, 504, heldPayload({ contract, attempts, startedAt, reason: 'strict_budgeted_upstream_preflight_stop' }));
     const { response, payload, timedOut } = await callGemini({ model, prompt, timeoutMs, deterministic });
     const rawText = providerText(payload);
-    const parsed = parseProviderJson(rawText);
-    attempts.push({ model: normModel(model), ok: response.ok, status: response.status, timedOut, parsedCandidates: parsed.candidates.length, warnings: parsed.warnings, error: response.ok ? null : summarizeProviderError(payload), textPreview: rawText.slice(0, 180), strictBudgetedUpstream: true, strictFastUpstream: isFast(contract), aaveRoute: isAaveRoute(contract) });
-    if (response.ok && parsed.candidates.length) {
+    const parsed = parseProviderJson(rawText, contract);
+    const academicRejected = parsed.candidates.filter((candidate) => aaveAcademicDrift(candidate.text, contract));
+    const usable = parsed.candidates.filter((candidate) => !aaveAcademicDrift(candidate.text, contract));
+    attempts.push({ model: normModel(model), ok: response.ok, status: response.status, timedOut, parsedCandidates: parsed.candidates.length, usableCandidates: usable.length, aaveAcademicRejected: academicRejected.length, warnings: [...parsed.warnings, ...(academicRejected.length ? ['aave-academic-summary-drift'] : [])], error: response.ok ? null : summarizeProviderError(payload), textPreview: rawText.slice(0, 180), strictBudgetedUpstream: true, strictFastUpstream: isFast(contract), aaveRoute: isAaveRoute(contract) });
+    if (response.ok && usable.length) {
       preferredWorkingModel = normModel(model);
-      return send(res, 200, { ok: true, provider: 'gemini', model: preferredWorkingModel, deterministic, version: VERSION, rotationVersion: VERSION, candidates: parsed.candidates, warnings: [...parsed.warnings, 'strict-budgeted-upstream', 'strict-upstream-budget-honored', ...(isFast(contract) ? ['strict-fast-upstream-applied'] : ['strict-normal-upstream-budget-applied']), ...(isAaveRoute(contract) ? ['aave-route-budgeted-upstream'] : [])], attempts, rawText: parsed.rawText, requestReceipt: { deterministic, strictDirect: true, strictNoFallback: true, strictBudgetedUpstream: true, strictBudgetHonored: true, strictUpstreamBudgetMs: wallMs, strictAttemptBudget: maxAttempts, strictFastUpstream: isFast(contract), aaveRoute: isAaveRoute(contract), elapsedMs: Date.now() - startedAt, rotationVersion: VERSION } });
+      return send(res, 200, { ok: true, provider: 'gemini', model: preferredWorkingModel, deterministic, version: VERSION, rotationVersion: VERSION, candidates: usable, warnings: [...parsed.warnings, 'strict-budgeted-upstream', 'strict-upstream-budget-honored', ...(isFast(contract) ? ['strict-fast-upstream-applied'] : ['strict-normal-upstream-budget-applied']), ...(isAaveRoute(contract) ? ['aave-route-budgeted-upstream', 'aave-register-fidelity-law-applied'] : [])], attempts, rawText: parsed.rawText, requestReceipt: { deterministic, strictDirect: true, strictNoFallback: true, strictBudgetedUpstream: true, strictBudgetHonored: true, strictUpstreamBudgetMs: wallMs, strictAttemptBudget: maxAttempts, strictFastUpstream: isFast(contract), aaveRoute: isAaveRoute(contract), aaveRegisterFidelityLaw: isAaveRoute(contract), elapsedMs: Date.now() - startedAt, rotationVersion: VERSION } });
     }
   }
 
