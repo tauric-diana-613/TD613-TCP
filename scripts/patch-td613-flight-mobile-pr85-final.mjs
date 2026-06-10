@@ -171,6 +171,40 @@ const css = `
 }
 
 
+/* PR90_SENTINEL TD613 Flight eager lane render */
+.flight-lane .card,
+.flight-lane-prompt .card,
+.flight-lane-output .card,
+.flight-lane .output-card,
+.flight-lane .seal-card,
+.flight-lane .copy-bin-card,
+.grid > div:first-child > *,
+.grid > div:last-child > * {
+  content-visibility: visible !important;
+  contain-intrinsic-size: unset !important;
+}
+
+.flight-lane .grid > div:first-child,
+.flight-lane .grid > div:last-child,
+.grid > div:first-child,
+.grid > div:last-child {
+  contain: none !important;
+}
+
+@media (hover: none), (pointer: coarse), (max-width: 920px) {
+  .flight-lane .card,
+  .flight-lane-prompt .card,
+  .flight-lane-output .card,
+  .grid > div:first-child > *,
+  .grid > div:last-child > * {
+    content-visibility: visible !important;
+    contain-intrinsic-size: unset !important;
+  }
+}
+
+
+
+
 /* PR97_SENTINEL TD613 Flight dev title shrink + Header control centering */
 @media (max-width: 920px) {
   .dev-drawer .card:has(#rotationSeed) > h2,
