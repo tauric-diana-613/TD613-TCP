@@ -25,6 +25,7 @@
   function appendScript(src) {
     if (document.querySelector('script[src^="' + src.split('?')[0] + '"]')) return;
     var script = document.createElement('script');
+    script.async = false;
     script.src = src;
     document.head.appendChild(script);
   }
@@ -122,6 +123,7 @@
     './browser-diagnostics.js?v=' + (V.diagnostics || ''),
     './browser-engine.js?v='      + (V.engine      || ''),
     './browser-main.js?v='        + (V.main        || ''),
+    './tcp-gateway-rescue.js?v='  + (V.gatewayRescue || V.main || '202606110235'),
     './chamber-chrome.js?v='      + (V.chrome      || V.main || '')
   ];
 
