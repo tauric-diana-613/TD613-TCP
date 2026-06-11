@@ -17,6 +17,29 @@
     try { window.sessionStorage.setItem('tcp.gateway.ingress-rescue-passed', reason || 'manual'); } catch (error) {}
   }
 
+  function initGatewayDoorRescue() {
+    var pageMap = {
+      homebase: './homebase.html',
+      personas: './homebase.html',
+      readout: './readout.html',
+      deck: './deck.html',
+      play: './deck.html',
+      trainer: './trainer.html'
+    };
+    document.querySelectorAll('button[data-station-target]').forEach(function (button) {
+      if (button.dataset.gatewayRescueBound === 'true') return;
+      button.dataset.gatewayRescueBound = 'true';
+      button.disabled = false;
+      button.addEventListener('click', function (event) {
+        var target = String(button.getAttribute('data-station-target') || '').trim().toLowerCase();
+        var href = pageMap[target];
+        if (!href) return;
+        event.preventDefault();
+        window.location.href = href;
+      });
+    });
+  }
+
   function initIngressRescue() {
     var membrane = $('ingressMembrane');
     var core = $('ingressCore');
@@ -225,6 +248,7 @@
   }
 
   function init() {
+    initGatewayDoorRescue();
     initIngressRescue();
     initGatewayPreviewRescue();
   }
