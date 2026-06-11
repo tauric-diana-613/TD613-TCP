@@ -8,6 +8,7 @@
   function show(el) { if (el) el.hidden = false; }
   function hide(el) { if (el) el.hidden = true; }
   function css(el, name, value) { if (el) el.style.setProperty(name, value, 'important'); }
+  function now() { return window.performance && typeof window.performance.now === 'function' ? window.performance.now() : Date.now(); }
 
   function passIngress(reason) {
     var membrane = $('ingressMembrane');
@@ -40,10 +41,92 @@
     });
   }
 
-  function initIngressRescue() {
+  function nativeContainmentGateActive() {
+    var membrane = $('ingressMembrane');
+    if (!membrane || membrane.hidden) return false;
+    var cue = String(($('ingressCueLabel') || {}).textContent || '').toLowerCase();
+    var core = String(($('ingressCoreLabel') || {}).textContent || '').toLowerCase();
+    return cue.indexOf('collapse the ring stack') >= 0 || core.indexOf('stabilize') >= 0 || document.body.getAttribute('data-ingress-phase') === 'containment';
+  }
+
+  function initNativeIngressMeterSync() {
+    var holdMs = 1200;
+    var active = false;
+    var startedAt = 0;
+    var frame = 0;
+    var completionTimer = 0;
+
+    function bar() { return $('ingressProgressBar'); }
+    function paint(progress) {
+      var node = bar();
+      if (!node) return;
+      var value = Math.max(0, Math.min(1, progress));
+      node.style.setProperty('animation', 'none', 'important');
+      node.style.setProperty('transform-origin', 'left center', 'important');
+      node.style.setProperty('transform', 'scaleX(' + value.toFixed(4) + ')', 'important');
+      node.dataset.rescueProgress = String(Math.round(value * 100));
+    }
+    function stop(forceFull) {
+      if (frame) window.cancelAnimationFrame(frame);
+      if (completionTimer) window.clearTimeout(completionTimer);
+      frame = 0;
+      completionTimer = 0;
+      active = false;
+      if (forceFull) paint(1);
+    }
+    function tick() {
+      if (!active) return;
+      if (!nativeContainmentGateActive()) {
+        stop(true);
+        return;
+      }
+      var elapsed = now() - startedAt;
+      var progress = elapsed / holdMs;
+      paint(progress);
+      if (progress >= 1) {
+        stop(true);
+        return;
+      }
+      frame = window.requestAnimationFrame(tick);
+    }
+    function begin(event) {
+      var core = $('ingressCore');
+      if (!core || !event.target || !event.target.closest || event.target.closest('#ingressCore') !== core) return;
+      if (!nativeContainmentGateActive()) return;
+      startedAt = now();
+      active = true;
+      paint(0);
+      if (frame) window.cancelAnimationFrame(frame);
+      frame = window.requestAnimationFrame(tick);
+      if (completionTimer) window.clearTimeout(completionTimer);
+      completionTimer = window.setTimeout(function () { stop(true); }, holdMs + 70);
+    }
+    function maybeCancel(event) {
+      if (!active || !nativeContainmentGateActive()) return;
+      var core = $('ingressCore');
+      if (event && event.target && event.target.closest && event.target.closest('#ingressCore') === core) {
+        var elapsed = now() - startedAt;
+        if (elapsed < holdMs * 0.9) stop(false);
+      }
+    }
+
+    document.addEventListener('pointerdown', begin, true);
+    document.addEventListener('mousedown', begin, true);
+    document.addEventListener('touchstart', begin, true);
+    document.addEventListener('pointerup', maybeCancel, true);
+    document.addEventListener('pointercancel', maybeCancel, true);
+    document.addEventListener('mouseup', maybeCancel, true);
+    document.addEventListener('touchend', maybeCancel, true);
+    document.addEventListener('touchcancel', maybeCancel, true);
+  }
+
+  function installIngressFallback() {
     var membrane = $('ingressMembrane');
     var core = $('ingressCore');
     if (!membrane || !core || membrane.hidden || document.documentElement.dataset.ingressBypass === 'true') return;
+    if (nativeContainmentGateActive()) return;
+    var label = String(($('ingressCoreLabel') || {}).textContent || '').trim().toLowerCase();
+    if (label && label !== 'stand by' && label !== 'begin') return;
 
     var mirrorControls = $('ingressMirrorControls');
     var badgeControls = $('ingressBadgeControls');
@@ -68,7 +151,7 @@
     text('ingressPhaseText', 'Protocol // rescue ready');
     text('ingressCueLabel', 'custody handshake ready');
     text('ingressCueCopy', 'Four gates. Tap through; choices stay lightweight.');
-    css(progress, 'width', '8%');
+    if (progress) progress.style.setProperty('transform', 'scaleX(.08)', 'important');
 
     function markStage(id, active) {
       var node = $(id);
@@ -78,7 +161,7 @@
     }
 
     function render() {
-      css(progress, 'width', Math.min(100, 8 + phase * 24) + '%');
+      if (progress) progress.style.setProperty('transform', 'scaleX(' + Math.min(1, (8 + phase * 24) / 100) + ')', 'important');
       markStage('ingressStageContainment', phase >= 1);
       markStage('ingressStageMirror', phase >= 2);
       markStage('ingressStageBadge', phase >= 3);
@@ -140,6 +223,11 @@
       render();
     });
     render();
+  }
+
+  function initIngressRescue() {
+    initNativeIngressMeterSync();
+    window.setTimeout(installIngressFallback, 1100);
   }
 
   function initGatewayPreviewRescue() {
