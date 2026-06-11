@@ -11,6 +11,7 @@
     aperture:    '202605281835',
     chrome:      '202606010430',
     copyHygiene: '202606011235',
+    gatewayRescue: '202606110255',
     hushAlienConsole: '202605250326',
     hushFieldInstrument: '202605250326',
     hushMobileViewportFix: '202605200003',
