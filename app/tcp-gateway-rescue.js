@@ -7,7 +7,6 @@
   function text(id, value) { var el = $(id); if (el) el.textContent = value; }
   function show(el) { if (el) el.hidden = false; }
   function hide(el) { if (el) el.hidden = true; }
-  function css(el, name, value) { if (el) el.style.setProperty(name, value, 'important'); }
   function now() { return window.performance && typeof window.performance.now === 'function' ? window.performance.now() : Date.now(); }
 
   function passIngress(reason) {
@@ -49,75 +48,64 @@
     return cue.indexOf('collapse the ring stack') >= 0 || core.indexOf('stabilize') >= 0 || document.body.getAttribute('data-ingress-phase') === 'containment';
   }
 
-  function initNativeIngressMeterSync() {
+  function initNativeIngressMeterSnap() {
     var holdMs = 1200;
     var active = false;
     var startedAt = 0;
-    var frame = 0;
-    var completionTimer = 0;
+    var finishTimer = 0;
+    var cancelTimer = 0;
 
     function bar() { return $('ingressProgressBar'); }
-    function paint(progress) {
+    function snapFull() {
       var node = bar();
       if (!node) return;
-      var value = Math.max(0, Math.min(1, progress));
-      node.style.setProperty('animation', 'none', 'important');
       node.style.setProperty('transform-origin', 'left center', 'important');
-      node.style.setProperty('transform', 'scaleX(' + value.toFixed(4) + ')', 'important');
-      node.dataset.rescueProgress = String(Math.round(value * 100));
+      node.style.setProperty('transform', 'scaleX(1)', 'important');
+      node.dataset.rescueProgress = '100';
     }
-    function stop(forceFull) {
-      if (frame) window.cancelAnimationFrame(frame);
-      if (completionTimer) window.clearTimeout(completionTimer);
-      frame = 0;
-      completionTimer = 0;
-      active = false;
-      if (forceFull) paint(1);
-    }
-    function tick() {
-      if (!active) return;
-      if (!nativeContainmentGateActive()) {
-        stop(true);
-        return;
-      }
-      var elapsed = now() - startedAt;
-      var progress = elapsed / holdMs;
-      paint(progress);
-      if (progress >= 1) {
-        stop(true);
-        return;
-      }
-      frame = window.requestAnimationFrame(tick);
+    function clearTimers() {
+      if (finishTimer) window.clearTimeout(finishTimer);
+      if (cancelTimer) window.clearTimeout(cancelTimer);
+      finishTimer = 0;
+      cancelTimer = 0;
     }
     function begin(event) {
       var core = $('ingressCore');
       if (!core || !event.target || !event.target.closest || event.target.closest('#ingressCore') !== core) return;
       if (!nativeContainmentGateActive()) return;
-      startedAt = now();
+      clearTimers();
       active = true;
-      paint(0);
-      if (frame) window.cancelAnimationFrame(frame);
-      frame = window.requestAnimationFrame(tick);
-      if (completionTimer) window.clearTimeout(completionTimer);
-      completionTimer = window.setTimeout(function () { stop(true); }, holdMs + 70);
+      startedAt = now();
+      finishTimer = window.setTimeout(function () {
+        if (active && nativeContainmentGateActive()) snapFull();
+      }, holdMs - 90);
     }
     function maybeCancel(event) {
       if (!active || !nativeContainmentGateActive()) return;
       var core = $('ingressCore');
       if (event && event.target && event.target.closest && event.target.closest('#ingressCore') === core) {
         var elapsed = now() - startedAt;
-        if (elapsed < holdMs * 0.9) stop(false);
+        if (elapsed < holdMs * 0.9) {
+          active = false;
+          clearTimers();
+        }
+      }
+    }
+    function maybeComplete() {
+      if (!active) return;
+      if (!nativeContainmentGateActive()) {
+        snapFull();
+        active = false;
+        clearTimers();
       }
     }
 
     document.addEventListener('pointerdown', begin, true);
-    document.addEventListener('mousedown', begin, true);
-    document.addEventListener('touchstart', begin, true);
     document.addEventListener('pointerup', maybeCancel, true);
     document.addEventListener('pointercancel', maybeCancel, true);
-    document.addEventListener('mouseup', maybeCancel, true);
     document.addEventListener('touchend', maybeCancel, true);
     document.addEventListener('touchcancel', maybeCancel, true);
+    window.setInterval(maybeComplete, 250);
   }
 
   function installIngressFallback() {
@@ -226,113 +214,37 @@
   }
 
   function initIngressRescue() {
-    initNativeIngressMeterSync();
+    initNativeIngressMeterSnap();
     window.setTimeout(installIngressFallback, 1100);
+  }
+
+  function fallbackPreviewDraw() {
+    var run = $('gatewayPreviewRun');
+    var bounce = $('gatewayPreviewBounceStatus');
+    var phase = $('gatewayPreviewPhaseStatus');
+    if (!run) return;
+    var count = Number(run.dataset.rescueBounces || 0);
+    run.dataset.rescueBounces = String(count + 1);
+    if (bounce) bounce.textContent = 'BOUNCES: ' + (count + 1);
+    if (phase) phase.textContent = 'LIVE';
+    run.textContent = 'Ⅱ HOLD';
+    run.classList.add('gateway-preview-button-active');
   }
 
   function initGatewayPreviewRescue() {
     var run = $('gatewayPreviewRun');
-    var reset = $('gatewayPreviewReset');
-    var moire = $('gatewayPreviewMoire');
-    var bounce = $('gatewayPreviewBounceStatus');
-    var phase = $('gatewayPreviewPhaseStatus');
-    var canvas = $('gatewayPreviewCanvas');
-    var moireCanvas = $('gatewayPreviewMoireCanvas');
-    var traceCanvas = $('gatewayPreviewTraceCanvas');
     if (!run) return;
-
-    var running = false;
-    var showMoire = true;
-    var bounces = 0;
-    var tick = 0;
-    var frame = 0;
-
-    function context(node) {
-      if (!node || typeof node.getContext !== 'function') return null;
-      var parent = node.parentElement || node;
-      var w = Math.max(220, parent.clientWidth || 320);
-      var h = Math.max(120, parent.clientHeight || (node === canvas ? 420 : 160));
-      var ratio = Math.max(1, Math.min(2, Number(window.devicePixelRatio || 1)));
-      node.width = Math.round(w * ratio);
-      node.height = Math.round(h * ratio);
-      node.style.width = w + 'px';
-      node.style.height = h + 'px';
-      var ctx = node.getContext('2d');
-      if (!ctx) return null;
-      ctx.setTransform(ratio, 0, 0, ratio, 0, 0);
-      return { ctx: ctx, w: w, h: h };
-    }
-
-    function drawNode(node, seed) {
-      var pack = context(node);
-      if (!pack) return;
-      var ctx = pack.ctx, w = pack.w, h = pack.h;
-      ctx.clearRect(0, 0, w, h);
-      ctx.fillStyle = 'rgba(5,7,16,0.96)';
-      ctx.fillRect(0, 0, w, h);
-      for (var i = -w; i < w * 2; i += 18) {
-        ctx.globalAlpha = showMoire ? 0.18 : 0.06;
-        ctx.strokeStyle = seed % 2 ? '#8be9fd' : '#bd93f9';
-        ctx.beginPath();
-        ctx.moveTo(i + ((tick + seed) % 60), 0);
-        ctx.lineTo(i - w / 3, h);
-        ctx.stroke();
-      }
-      ctx.globalAlpha = 1;
-      ctx.strokeStyle = running ? '#50fa7b' : 'rgba(139,233,253,0.55)';
-      ctx.lineWidth = 1.4;
-      ctx.beginPath();
-      ctx.moveTo(w * 0.5, h * 0.18);
-      ctx.lineTo(w * 0.78, h * 0.72);
-      ctx.lineTo(w * 0.22, h * 0.72);
-      ctx.closePath();
-      ctx.stroke();
-      ctx.fillStyle = running ? 'rgba(80,250,123,0.74)' : 'rgba(220,230,244,0.54)';
-      ctx.font = '600 10px IBM Plex Mono, monospace';
-      ctx.fillText(running ? 'routing preview live' : 'routing preview latent', 12, 18);
-      ctx.fillText('bounces ' + bounces, 12, 34);
-    }
-
-    function draw() {
-      drawNode(canvas, 1);
-      drawNode(moireCanvas, 2);
-      drawNode(traceCanvas, 3);
-      if (bounce) bounce.textContent = 'BOUNCES: ' + bounces;
-      if (phase) phase.textContent = running ? 'LIVE' : 'STANDBY';
-      run.textContent = running ? 'Ⅱ HOLD' : '▶ PROPAGATE';
-      run.classList.toggle('gateway-preview-button-active', running);
-      if (moire) moire.classList.toggle('gateway-preview-button-active', showMoire);
-    }
-
-    function loop() {
-      if (running) {
-        tick += 3;
-        if (tick % 18 === 0) bounces += 1;
-      }
-      draw();
-      frame = window.requestAnimationFrame(loop);
-    }
-
-    run.addEventListener('click', function (event) {
-      event.preventDefault();
-      running = !running;
-      draw();
+    run.addEventListener('click', function () {
+      var beforeText = run.textContent;
+      var beforeBounce = String(($('gatewayPreviewBounceStatus') || {}).textContent || '');
+      window.setTimeout(function () {
+        var afterText = run.textContent;
+        var afterBounce = String(($('gatewayPreviewBounceStatus') || {}).textContent || '');
+        if (afterText === beforeText && afterBounce === beforeBounce) {
+          fallbackPreviewDraw();
+        }
+      }, 180);
     });
-    if (reset) reset.addEventListener('click', function (event) {
-      event.preventDefault();
-      running = false;
-      bounces = 0;
-      tick = 0;
-      draw();
-    });
-    if (moire) moire.addEventListener('click', function (event) {
-      event.preventDefault();
-      showMoire = !showMoire;
-      draw();
-    });
-    window.addEventListener('resize', draw, { passive: true });
-    draw();
-    if (!frame) frame = window.requestAnimationFrame(loop);
   }
 
   function init() {
