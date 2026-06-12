@@ -1,4 +1,4 @@
-const HUSH_HOUSEKEEPING_VERSION = 'phase-32-housekeeping';
+const HUSH_HOUSEKEEPING_VERSION = 'phase-32-housekeeping-packet-export';
 const $ = (id) => document.getElementById(id);
 const text = (value) => String(value ?? '').trim();
 const words = (value) => (text(value).match(/[A-Za-z0-9][A-Za-z0-9'-]*/g) || []);
@@ -31,11 +31,14 @@ function buildHousekeepingPanel() {
     <div class="hush-housekeeping-actions">
       <button id="hushClearSamplesBtn" type="button">Clear Samples</button>
       <button id="hushClearCustomMaskBtn" type="button">Clear Custom Mask</button>
-      <button id="hushExportCleanReceiptBtn" type="button">Export Clean Receipt</button>
-      <button id="hushCopyCleanReceiptBtn" type="button">Copy Receipt</button>
+      <button id="hushExportCleanReceiptBtn" type="button" disabled>Export Clean Receipt</button>
+      <button id="hushCopyCleanReceiptBtn" type="button" disabled>Copy Receipt</button>
     </div>
-    <details class="hush-housekeeping-details"><summary>More Mask Anatomy</summary><div class="hush-housekeeping-detail-body">Start with name, use-when, and risk-tell. Sentence shape, ornament, warmth, custody, and pressure warnings are advanced knobs; they are powerful but easy to overfit.</div></details>
-    <div id="hushCustodyStatus" class="hush-custody-status">Custody pass ready. Private text excluded from clean receipts.</div>`;
+    <div class="hush-housekeeping-secondary-actions">
+      <details class="hush-housekeeping-details"><summary>More Mask Anatomy</summary><div class="hush-housekeeping-detail-body">Start with name, use-when, and risk-tell. Sentence shape, surface texture, warmth, custody, and pressure warnings are advanced knobs; they are powerful but easy to overfit.</div></details>
+      <button id="hushExportPacketBtn" type="button" class="hush-export-packet-btn" disabled>Export Packet</button>
+    </div>
+    <div id="hushCustodyStatus" class="hush-custody-status">Transform before exporting a receipt or packet. Private text stays out of clean receipts.</div>`;
   const path = $('hushOperatorPath');
   ensureAfter(path, panel);
   return panel;
@@ -171,30 +174,134 @@ function updateActiveMask() {
   });
 }
 
+function currentHushResult() {
+  return state().hushSwapResult || window.__TD613_HUSH_PATCH38_LAST_RESULT || null;
+}
+
+function receiptReady() {
+  const s = state();
+  return Boolean(currentHushResult() || s.recognitionField || s.escapeVector || s.controllerDecision);
+}
+
+function currentPacketPayload() {
+  const result = currentHushResult();
+  const phase37 = result?.phase37Telemetry || result?.phase35Telemetry || {};
+  const packet = phase37.flightPacket || result?.flightPacket || null;
+  if (!packet) return null;
+  const diagnostics = result.patch38Diagnostics || {};
+  const providerReports = Array.isArray(diagnostics.providerReports) ? diagnostics.providerReports : [];
+  return {
+    schema: 'td613-hush-packet-export/v1',
+    createdAt: new Date().toISOString(),
+    exportKind: 'diagnostic-packet',
+    includesPrivateText: false,
+    privateTextExcluded: true,
+    note: 'This export carries the current Phase 37 Hush flight packet and diagnostic receipts. Source drafts, mask sample text, and transformed output text are excluded.',
+    promptVersion: phase37.promptVersion || providerReports[0]?.requestReceipt?.promptVersion || null,
+    flightPacketVersion: phase37.flightPacketVersion || packet.packet_version || null,
+    snapshot: result.patch38Snapshot || null,
+    packet,
+    ontologyRoute: phase37.ontologyRoute || packet.ontology_route || null,
+    diagnostics: {
+      providerMode: diagnostics.providerMode || null,
+      selectedCandidateId: diagnostics.selectedCandidateId || null,
+      selectedStyleOperation: diagnostics.selectedStyleOperation || null,
+      generatedCount: diagnostics.generatedCount ?? null,
+      mergedCount: diagnostics.mergedCount ?? null,
+      selectedCoverage: diagnostics.selectedCoverage ?? null,
+      selectedCollapseSurfaceScore: diagnostics.selectedCollapseSurfaceScore ?? null,
+      warning: diagnostics.warning || null,
+      approval: window.__TD613_HUSH_PATCH38_APPROVAL__ || null,
+      providerReceipts: providerReports.map((report) => report.requestReceipt || {}).filter((receipt) => Object.keys(receipt).length)
+    },
+    propositionIntegrity: result.propositionIntegrity || null
+  };
+}
+
+function updateCustodyButtons() {
+  const hasReceipt = receiptReady();
+  const hasPacket = Boolean(currentPacketPayload());
+  const receiptButtons = ['hushExportCleanReceiptBtn', 'hushCopyCleanReceiptBtn'];
+  for (const id of receiptButtons) {
+    const button = $(id);
+    if (!button) continue;
+    button.disabled = !hasReceipt;
+    button.setAttribute('aria-disabled', hasReceipt ? 'false' : 'true');
+  }
+  const packetButton = $('hushExportPacketBtn');
+  if (packetButton) {
+    packetButton.disabled = !hasPacket;
+    packetButton.setAttribute('aria-disabled', hasPacket ? 'false' : 'true');
+    packetButton.title = hasPacket ? 'Download the current Phase 37 Hush flight packet used by the latest Transform.' : 'Transform first to build a packet.';
+  }
+}
+
 function cleanReceipt() {
   const s = state();
   const mask = s.selectedHushMask || {};
+  const result = currentHushResult() || {};
   return {
     schema: 'td613-hush-receipt/v1',
     createdAt: new Date().toISOString(),
     includesPrivateText: false,
     privateTextExcluded: true,
     mask: { id: s.selectedHushMaskId || mask.id || null, label: mask.label || selectedMaskLabel(), source: mask.source || 'built-in' },
-    route: s.recognitionField?.classifications?.route || 'unrun',
+    route: s.recognitionField?.classifications?.route || result.phase37Telemetry?.ontologyRoute?.routeType || result.phase37Telemetry?.ontologyRoute?.route_type || 'unrun',
     controller: { state: s.controllerDecision?.state || 'waiting', action: s.controllerDecision?.action || 'waiting' },
     scores: s.escapeVector?.scores || null,
     claimCeiling: s.claimCeiling?.label || null,
-    warnings: [ ...(s.hushProfileMatch?.warnings || []), ...(s.recognitionField?.warnings || []), ...(s.controllerDecision?.warnings || []) ].slice(0, 20),
-    custody: 'Receipt carries metrics and route metadata only; source drafts, mask samples, and outputs are excluded.'
+    packet: result.phase37Telemetry?.flightPacketVersion || result.phase37Telemetry?.flightPacket?.packet_version || null,
+    snapshot: result.patch38Snapshot || null,
+    warnings: [ ...(s.hushProfileMatch?.warnings || []), ...(s.recognitionField?.warnings || []), ...(s.controllerDecision?.warnings || []), ...(result.patch38Diagnostics?.warning ? [result.patch38Diagnostics.warning] : []) ].slice(0, 20),
+    custody: 'Receipt carries metrics and route metadata only; source drafts, mask samples, transformed outputs, and the full packet are excluded.'
   };
 }
 
-function exportCleanReceipt(copy = false) {
-  const json = JSON.stringify(cleanReceipt(), null, 2);
+function writeExportOutput(json = '') {
   const out = $('ledgerExportOutput') || $('reportExportOutput');
   if (out) out.value = json;
+}
+
+function downloadJson(payload = {}, filename = 'hush-export.json') {
+  const json = JSON.stringify(payload, null, 2);
+  writeExportOutput(json);
+  const blob = new Blob([json], { type: 'application/json' });
+  const url = URL.createObjectURL(blob);
+  const link = document.createElement('a');
+  link.href = url;
+  link.download = filename;
+  document.body.appendChild(link);
+  link.click();
+  link.remove();
+  window.setTimeout(() => URL.revokeObjectURL(url), 1200);
+  return json;
+}
+
+function exportCleanReceipt(copy = false) {
+  if (!receiptReady()) {
+    if ($('hushCustodyStatus')) $('hushCustodyStatus').textContent = 'Transform or analyze first; no clean receipt is ready yet.';
+    updateCustodyButtons();
+    return null;
+  }
+  const json = JSON.stringify(cleanReceipt(), null, 2);
+  writeExportOutput(json);
   if (copy && navigator.clipboard) navigator.clipboard.writeText(json).catch(() => {});
   if ($('hushCustodyStatus')) $('hushCustodyStatus').textContent = copy ? 'Clean receipt copied. Private text excluded.' : 'Clean receipt exported. Private text excluded.';
+  updateCustodyButtons();
+  return json;
+}
+
+function exportPacket() {
+  const payload = currentPacketPayload();
+  if (!payload) {
+    if ($('hushCustodyStatus')) $('hushCustodyStatus').textContent = 'Transform first; no Hush packet is ready to export yet.';
+    updateCustodyButtons();
+    return null;
+  }
+  const suffix = payload.snapshot?.identity || Date.now().toString(36);
+  const json = downloadJson(payload, `hush-packet-${suffix}.json`);
+  if ($('hushCustodyStatus')) $('hushCustodyStatus').textContent = 'Hush packet exported. Receipt remains separate; private text excluded from this packet export.';
+  updateCustodyButtons();
   return json;
 }
 
@@ -204,6 +311,7 @@ function clearSamples() {
   s.activeCustomMask = null;
   if ($('hushCustodyStatus')) $('hushCustodyStatus').textContent = 'Reference samples cleared from visible fields and active custom-mask state.';
   updateQuality();
+  updateCustodyButtons();
 }
 
 function clearCustomMask() {
@@ -218,6 +326,7 @@ function clearCustomMask() {
   }
   if ($('hushCustodyStatus')) $('hushCustodyStatus').textContent = 'Custom masks cleared for this session. Built-in mask route restored.';
   updateActiveMask();
+  updateCustodyButtons();
 }
 
 function improveLabels() {
@@ -225,7 +334,10 @@ function improveLabels() {
     ['generateMaskedOutputBtn','Transform the message through the selected mask. Review before use.'],
     ['acceptOutputBtn','Accept only after review; accepted output enters local mask memory.'],
     ['includeLedgerTextsToggle','Off by default. Turning this on includes private text in export.'],
-    ['maskReferenceInput','Advanced: reference text can improve a mask but increases custody burden.']
+    ['maskReferenceInput','Advanced: reference text can improve a mask but increases custody burden.'],
+    ['hushExportCleanReceiptBtn','Export a clean receipt after Transform/analysis. This excludes private text and the full packet.'],
+    ['hushCopyCleanReceiptBtn','Copy a clean receipt after Transform/analysis. This excludes private text and the full packet.'],
+    ['hushExportPacketBtn','Download the current Hush packet after Transform for diagnostics.']
   ];
   for (const [id, title] of labels) { const el = $(id); if (el) el.title = title; }
 }
@@ -241,10 +353,13 @@ function bind() {
   $('hushClearCustomMaskBtn')?.addEventListener('click', clearCustomMask);
   $('hushExportCleanReceiptBtn')?.addEventListener('click', () => exportCleanReceipt(false));
   $('hushCopyCleanReceiptBtn')?.addEventListener('click', () => exportCleanReceipt(true));
-  $('maskFieldSelect')?.addEventListener('change', () => setTimeout(updateActiveMask, 0));
+  $('hushExportPacketBtn')?.addEventListener('click', exportPacket);
+  $('maskFieldSelect')?.addEventListener('change', () => setTimeout(() => { updateActiveMask(); updateCustodyButtons(); }, 0));
   for (const id of ['hushVoiceReferenceSamplesSaved','hushCustomMaskSampleInput','maskReferenceInput']) $(id)?.addEventListener('input', updateQuality);
   for (const id of ['messageDraftInput','protectedOutputInput']) $(id)?.addEventListener('input', updateCompareAndResidual);
-  for (const id of ['generateMaskedOutputBtn','analyzeOutputBtn','copyHushOutputBtn','acceptOutputBtn']) $(id)?.addEventListener('click', () => setTimeout(() => { updateCompareAndResidual(); updateActiveMask(); }, 80));
+  for (const id of ['generateMaskedOutputBtn','analyzeOutputBtn','copyHushOutputBtn','acceptOutputBtn']) $(id)?.addEventListener('click', () => setTimeout(() => { updateCompareAndResidual(); updateActiveMask(); updateCustodyButtons(); }, 120));
+  window.addEventListener('td613:hush:patch38-result', () => setTimeout(() => { updateCompareAndResidual(); updateActiveMask(); updateCustodyButtons(); }, 80));
+  window.addEventListener('td613:hush:patch38-approval', () => setTimeout(updateCustodyButtons, 80));
   try {
     const saved = localStorage.getItem('td613-hush-selected-mask');
     if (saved && $('maskFieldSelect') && typeof bench().selectHushMask === 'function') {
@@ -255,7 +370,8 @@ function bind() {
   updateQuality();
   updateCompareAndResidual();
   updateActiveMask();
-  window.__TD613_HUSH_HOUSEKEEPING__ = { version: HUSH_HOUSEKEEPING_VERSION, cleanReceipt, clearSamples, clearCustomMask, updateQuality, updateCompareAndResidual };
+  updateCustodyButtons();
+  window.__TD613_HUSH_HOUSEKEEPING__ = { version: HUSH_HOUSEKEEPING_VERSION, cleanReceipt, currentPacketPayload, exportPacket, clearSamples, clearCustomMask, updateQuality, updateCompareAndResidual, updateCustodyButtons };
 }
 
 if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', () => setTimeout(bind, 120));
