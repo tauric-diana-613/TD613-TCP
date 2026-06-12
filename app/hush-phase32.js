@@ -1,7 +1,7 @@
 import * as bench from './adversarial-bench.mjs';
 import { buildHushSwap, HUSH_SWAP_PHASE34_VERSION } from './engine/hush-swap-phase34.js';
 
-export const HUSH_PHASE32_UI_VERSION = 'phase-32-mask-surface-ui+phase-34-expressive-generation-ui';
+export const HUSH_PHASE32_UI_VERSION = 'phase-32-mask-surface-ui+phase-34-expressive-generation-ui+custom-mask-capsule';
 
 const $ = (id, doc = document) => doc.getElementById(id);
 const text = (value) => String(value ?? '').trim();
@@ -22,16 +22,34 @@ function activeField(state = bench.benchState || {}) {
   return state.profiles?.maskReference || mask.profile || {};
 }
 
+function customMaskLabel(state = bench.benchState || {}) {
+  const active = state.activeCustomMask || (state.selectedHushMask?.source === 'custom' ? state.selectedHushMask : null);
+  const label = text(active?.label || active?.name || '');
+  return label && !/^unsaved custom mask$/i.test(label) ? label : 'Custom Mask Empty';
+}
+
+function capsuleHtml(label = 'Custom Mask Empty') {
+  return `<span id="hushCustomMaskCapsuleName" class="hush-custom-mask-capsule-name">${esc(label)}</span><span class="hush-custom-mask-capsule-links"><button id="hushPhase31ImportMaskLink" type="button" class="hush-custom-mask-capsule-link">import</button><button id="hushPhase31ExportMaskLink" type="button" class="hush-custom-mask-capsule-link">export</button></span>`;
+}
+
+function renderCustomMaskCapsule(doc = document) {
+  const target = $('hushPhase32Diagnostics', doc);
+  if (!target) return;
+  target.classList.add('hush-custom-mask-capsule');
+  target.dataset.capsule = 'custom-mask';
+  if (!$('hushCustomMaskCapsuleName', doc) || !$('hushPhase31ImportMaskLink', doc) || !$('hushPhase31ExportMaskLink', doc)) target.innerHTML = capsuleHtml(customMaskLabel(bench.benchState || {}));
+  const label = $('hushCustomMaskCapsuleName', doc);
+  if (label) label.textContent = customMaskLabel(bench.benchState || {});
+}
+
 function renderDiagnostics(result = {}, doc = document) {
   const target = $('hushPhase32Diagnostics', doc);
   if (!target) return;
-  const d = result.phase32Diagnostics || {};
-  const e = result.phase33Diagnostics || {};
   const g = result.phase34Diagnostics || {};
-  const diff = d.differentiation || {};
-  const report = Array.isArray(g.selectorRows) ? g.selectorRows.slice(0, 4) : (Array.isArray(e.selectorRows) ? e.selectorRows.slice(0, 4) : (Array.isArray(d.candidateReport) ? d.candidateReport.slice(0, 4) : []));
-  const expressive = e.expressive || {};
-  target.innerHTML = `<strong>Phase 34 expressive generator</strong><div class="hush-phase32-diagnostic-grid"><span>Selected: <code>${esc(g.selectedCandidateId || e.selectedCandidateId || d.selectedCandidateId || 'none')}</code></span><span>Generated: <code>${esc(String(Boolean(g.selectedGenerated)))}</code></span><span>Generated candidates: <code>${esc(g.generatedCount ?? 'n/a')}</code></span><span>Retention: <code>${esc(g.selectedRetentionScore ?? e.selectedRetentionScore ?? e.selected?.retention?.retentionScore ?? 'n/a')}</code></span><span>Wrapper fatigue: <code>${esc(g.selectedWrapperFatigue ?? e.selectedWrapperFatigue ?? e.selected?.wrapperFatigue ?? 'n/a')}</code></span><span>Expressive score: <code>${esc(g.selectedExpressiveScore ?? e.phase33Score ?? 'n/a')}</code></span><span>Surface score: <code>${esc(d.selectedMaskSurfaceScore ?? 'n/a')}</code></span><span>Warning: <code>${esc(g.warning || e.warning || d.warning || 'none')}</code></span><span>Unique surfaces: <code>${esc(diff.uniqueSurfaceCount ?? 'n/a')}</code></span></div>${report.length ? `<details><summary>candidate report</summary>${report.map((row) => `<div><code>${esc(row.id)}</code> ${esc(row.source || '')} / ${esc(row.strategy || '')} · gen ${esc(row.generated ?? false)} · retain ${esc(row.retention ?? 'n/a')}</div>`).join('')}</details>` : ''}`;
+  renderCustomMaskCapsule(doc);
+  target.dataset.selectedCandidate = text(g.selectedCandidateId || 'none');
+  target.dataset.generatedCount = text(g.generatedCount ?? '');
+  target.dataset.warning = text(g.warning || '');
 }
 
 function readStateInputs(doc = document) {
@@ -91,8 +109,13 @@ function installClearInput(doc = document) {
 
 function installDiagnostics(doc = document) {
   const warnings = $('hushSwapWarningsPanel', doc);
-  if (!warnings || $('hushPhase32Diagnostics', doc)) return;
-  warnings.insertAdjacentHTML('afterend', '<div id="hushPhase32Diagnostics" class="hush-phase32-diagnostic-panel"><strong>Phase 34 expressive generator</strong><br>Awaiting transform.</div>');
+  if (!warnings) return;
+  let target = $('hushPhase32Diagnostics', doc);
+  if (!target) {
+    warnings.insertAdjacentHTML('afterend', `<div id="hushPhase32Diagnostics" class="hush-phase32-diagnostic-panel hush-custom-mask-capsule" data-capsule="custom-mask">${capsuleHtml()}</div>`);
+    target = $('hushPhase32Diagnostics', doc);
+  }
+  renderCustomMaskCapsule(doc);
 }
 
 function compactControls(doc = document) {
@@ -119,6 +142,7 @@ function installAutoMaskTransform(doc = document) {
   if (!select || select.dataset.phase32Auto === 'true') return;
   select.dataset.phase32Auto = 'true';
   select.addEventListener('change', () => {
+    renderCustomMaskCapsule(doc);
     if (suppressAuto || patch38OwnsTransform(doc)) return;
     window.setTimeout(() => { if (text($('messageDraftInput', doc)?.value) && !patch38OwnsTransform(doc)) runPhase32Transform(doc); }, 0);
   });
@@ -149,7 +173,7 @@ export function initHushPhase32(doc = document) {
   installAutoMaskTransform(doc);
   interceptTransforms(doc);
   fixLoaderDots(doc);
-  if (typeof window !== 'undefined') window.__TD613_HUSH_PHASE32__ = { version: HUSH_PHASE32_UI_VERSION, selectorVersion: HUSH_SWAP_PHASE34_VERSION, runPhase32Transform };
+  if (typeof window !== 'undefined') window.__TD613_HUSH_PHASE32__ = { version: HUSH_PHASE32_UI_VERSION, selectorVersion: HUSH_SWAP_PHASE34_VERSION, runPhase32Transform, renderCustomMaskCapsule };
   return { installed: true, version: HUSH_PHASE32_UI_VERSION };
 }
 
