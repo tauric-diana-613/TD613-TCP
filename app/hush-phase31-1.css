@@ -181,7 +181,7 @@
   display: grid;
   grid-template-columns: minmax(8rem, .8fr) minmax(0, 1.2fr);
   gap: .48rem;
-  margin-bottom: .5rem;
+  margin-bottom: .62rem;
   position: relative;
   z-index: 1;
 }
@@ -197,6 +197,29 @@
   color: rgba(226,255,236,.62);
   line-height: 1.32;
 }
+.hush-phase31-ledger-head {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  align-items: start;
+  column-gap: .75rem;
+  margin: .26rem 0 .56rem;
+  position: relative;
+  z-index: 2;
+}
+.hush-phase31-word-floor {
+  justify-self: end;
+  align-self: start;
+  min-width: 2.9rem;
+  padding-top: .08rem;
+  font-size: .48rem;
+  line-height: 1;
+  letter-spacing: .12em;
+  text-align: right;
+  color: rgba(202,255,223,.62);
+  text-transform: uppercase;
+  font-family: var(--font-mono, ui-monospace, monospace);
+}
+.hush-phase31-word-floor[data-state="ready"] { color: #31ff8a; }
 #hushPhase31SampleCategory,
 #hushPhase31ContextLabel,
 #hushVoiceReferenceSamplesSaved {
@@ -216,10 +239,15 @@
   box-shadow: 0 0 0 1px rgba(49,255,138,.14), 0 0 20px rgba(49,255,138,.08);
 }
 #hushVoiceReferenceSamplesSaved {
+  display: block;
+  width: 100%;
   min-height: 7.2rem;
   max-height: 11rem;
+  margin-top: .18rem;
   resize: vertical;
   overflow: auto;
+  position: relative;
+  z-index: 1;
 }
 .hush-phase31-actions {
   display: flex;
@@ -244,6 +272,57 @@
 }
 #hushPhase31Undo { color: #ffb86b; cursor: pointer; }
 #hushPhase31Undo[aria-disabled=true] { opacity: .42; cursor: not-allowed; }
+
+#hushPhase32Diagnostics.hush-custom-mask-capsule {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: .75rem;
+  min-height: 2.1rem;
+  margin: .72rem 0 .66rem;
+  padding: .46rem .64rem;
+  border: 1px solid rgba(137,255,240,.25);
+  border-radius: 14px;
+  background: linear-gradient(90deg, rgba(4,18,16,.68), rgba(9,5,18,.68));
+  box-shadow: inset 0 1px 0 rgba(255,255,255,.06), 0 0 18px rgba(49,255,138,.06);
+  font-family: var(--font-mono, ui-monospace, monospace);
+}
+.hush-custom-mask-capsule-name {
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  color: #caffdf;
+  font-size: .58rem;
+  font-weight: 800;
+  letter-spacing: .05em;
+}
+.hush-custom-mask-capsule-links {
+  display: inline-flex;
+  align-items: center;
+  gap: .48rem;
+  white-space: nowrap;
+}
+.hush-custom-mask-capsule-link {
+  appearance: none;
+  border: 0;
+  background: transparent;
+  padding: .1rem 0;
+  color: #7dffe1;
+  font: inherit;
+  font-size: .54rem;
+  letter-spacing: .08em;
+  text-transform: lowercase;
+  cursor: pointer;
+  opacity: .84;
+}
+.hush-custom-mask-capsule-link:hover,
+.hush-custom-mask-capsule-link:focus-visible {
+  opacity: 1;
+  color: #31ff8a;
+  outline: none;
+  text-shadow: 0 0 12px rgba(49,255,138,.28);
+}
 
 .hush-phase31-modal {
   position: fixed;
@@ -306,4 +385,6 @@ textarea, input, select { font-size: .72rem !important; line-height: 1.24 !impor
   .hush-phase31-status { white-space: normal; }
   .hush-phase31-stat-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
   .hush-phase31-meter-top,.hush-phase31-tier-row { align-items: stretch; flex-direction: column; }
+  .hush-phase31-ledger-head { grid-template-columns: 1fr; row-gap: .34rem; }
+  .hush-phase31-word-floor { justify-self: end; }
 }
