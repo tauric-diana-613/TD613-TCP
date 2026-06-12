@@ -1,4 +1,4 @@
-const HUSH_LAZY_ENHANCEMENTS_VERSION = 'hush-lazy-enhancements/v6-ready-hide-marker';
+const HUSH_LAZY_ENHANCEMENTS_VERSION = 'hush-lazy-enhancements/v7-fast-core-ready';
 
 const loaded = new Set();
 const loading = new Map();
@@ -19,15 +19,12 @@ function hasBox(id) {
 
 function coreUiReady() {
   const select = document.getElementById('maskFieldSelect');
-  const routeGrid = document.getElementById('hushMaskRouteGrid');
-  const hasMaskChoices = Boolean(select?.options?.length);
-  const hasRouteCards = Boolean(routeGrid?.children?.length);
   return Boolean(
     hasBox('consoleMasthead') &&
     hasBox('hushOperatorPath') &&
     hasBox('messageDraftInput') &&
     hasBox('generateMaskedOutputBtn') &&
-    (hasMaskChoices || hasRouteCards)
+    select
   );
 }
 
@@ -55,22 +52,22 @@ function hideLoadingOverlay(reason = 'lazy-loader') {
   return true;
 }
 
-function releaseLoadingWhenReady(startedAt = Date.now(), maxWait = 5200, reason = 'core-ui-ready') {
+function releaseLoadingWhenReady(startedAt = Date.now(), maxWait = 2800, reason = 'core-ui-ready') {
   if (coreUiReady()) return hideLoadingOverlay(reason);
   if (Date.now() - startedAt >= maxWait) return hideLoadingOverlay('max-wait');
   setLoadingVisible('core-ui-not-ready');
-  window.setTimeout(() => releaseLoadingWhenReady(startedAt, maxWait, reason), 120);
+  window.setTimeout(() => releaseLoadingWhenReady(startedAt, maxWait, reason), 80);
   return false;
 }
 
 function installLoadingFailsafe() {
-  releaseLoadingWhenReady(Date.now(), 5200, 'initial-core-ui-ready');
-  window.addEventListener('load', () => window.setTimeout(() => releaseLoadingWhenReady(Date.now(), 2600, 'load-core-ui-ready'), 80), { once: true });
+  releaseLoadingWhenReady(Date.now(), 2800, 'initial-core-ui-ready');
+  window.addEventListener('load', () => window.setTimeout(() => releaseLoadingWhenReady(Date.now(), 1400, 'load-core-ui-ready'), 40), { once: true });
 }
 
-function idle(callback, timeout = 1600) {
+function idle(callback, timeout = 2200) {
   if ('requestIdleCallback' in window) return window.requestIdleCallback(callback, { timeout });
-  return window.setTimeout(callback, Math.min(timeout, 700));
+  return window.setTimeout(callback, Math.min(timeout, 900));
 }
 
 function importOnce(key) {
@@ -104,8 +101,8 @@ function loadCustodyStack() {
 }
 
 function loadPostPaintEnhancements() {
-  idle(() => importOnce('compareLayout'), 1200);
-  idle(() => importOnce('housekeeping').then(() => importOnce('relayout')), 2200);
+  idle(() => importOnce('compareLayout'), 2200);
+  idle(() => importOnce('housekeeping').then(() => importOnce('relayout')), 3200);
 }
 
 function bindInteractionLoaders() {
@@ -126,10 +123,10 @@ function bindInteractionLoaders() {
 
 function boot() {
   bindInteractionLoaders();
-  releaseLoadingWhenReady(Date.now(), 5200, 'boot-core-ui-ready');
-  window.setTimeout(loadPostPaintEnhancements, 900);
-  window.setTimeout(bindInteractionLoaders, 300);
-  window.setTimeout(bindInteractionLoaders, 1000);
+  releaseLoadingWhenReady(Date.now(), 2800, 'boot-core-ui-ready');
+  window.setTimeout(loadPostPaintEnhancements, 1700);
+  window.setTimeout(bindInteractionLoaders, 220);
+  window.setTimeout(bindInteractionLoaders, 760);
 }
 
 installLoadingFailsafe();
