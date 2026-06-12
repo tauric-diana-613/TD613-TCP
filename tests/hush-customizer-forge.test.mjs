@@ -43,16 +43,21 @@ assert(html.includes('./hush-phase31-1.js'));
 
 assert(css.includes('td613-hush-loading-dots'));
 assert(css.includes('hush-phase31-customizer'));
+assert(css.includes('hush-phase31-corpus-meter'));
 assert(css.includes('hush-phase31-modal'));
 assert(css.includes('#hushVoiceReferenceSamplesSaved'));
-assert(css.includes('font-size:11px!important'));
+assert(css.includes('#hushPhase31SampleCategory'));
 assert(css.includes('#messageDraftInput,#protectedOutputInput'));
 assert(!css.includes('#hushVoiceReferenceSamplesSaved{font-size:16px!important'));
 
-assert(js.includes('MIN_SAMPLE_CHARS = 1200'));
-assert(js.includes('phase-31.1'));
+assert(js.includes('MIN_SAMPLE_WORDS'));
+assert(js.includes('phase-31.1-corpus'));
+assert(js.includes('HUSH_CUSTOM_MASK_CORPUS_POLICY'));
 assert(js.includes('hushPhase31CustomizerPanel'));
 assert(js.includes('hushVoiceReferenceSamplesSaved'));
+assert(js.includes('hushPhase31CorpusFill'));
+assert(js.includes('hushPhase31SampleCategory'));
+assert(js.includes('hushPhase31ContextLabel'));
 assert(js.includes('hushPhase31SaveMaskBtn'));
 assert(js.includes('hushPhase31LogSampleBtn'));
 assert(js.includes('hushPhase31SampleCount'));
@@ -71,5 +76,6 @@ assert(js.includes('selectHushMask'));
 assert(js.includes('setInterval'));
 assert(js.includes("['.', '..', '...']"));
 assert(js.includes('loaderArmed'));
+assert(!js.includes('MIN_SAMPLE_CHARS = 1200'));
 
 console.log('hush-customizer-forge tests passed');
