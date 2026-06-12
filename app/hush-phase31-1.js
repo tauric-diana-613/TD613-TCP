@@ -1,11 +1,12 @@
-import { createCustomMask, addCustomMaskSample, rebuildCustomMaskProfile, HUSH_CUSTOM_MASK_CORPUS_POLICY } from './engine/hush-custom-mask.js';
+import { createCustomMask, addCustomMaskSample, rebuildCustomMaskProfile, exportCustomMaskJson, importCustomMaskJson, HUSH_CUSTOM_MASK_CORPUS_POLICY } from './engine/hush-custom-mask.js';
 
-const VERSION = 'phase-31.1-corpus';
+const VERSION = 'phase-31.1-corpus-import-export';
 const MIN_SAMPLE_WORDS = HUSH_CUSTOM_MASK_CORPUS_POLICY.minWordsPerSample;
 const text = (value) => String(value ?? '').trim();
 const byId = (id, doc = document) => doc.getElementById(id);
 const words = (value = '') => (String(value).match(/[A-Za-z0-9][A-Za-z0-9'-]*/g) || []).length;
 const slug = (value = 'custom-mask') => text(value).toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, '') || 'custom-mask';
+const asArray = (value) => Array.isArray(value) ? value : [];
 
 let dotTimer = null;
 let loaderArmed = false;
@@ -44,6 +45,17 @@ function sampleTexts() {
   return samples.map(sampleText).filter(Boolean);
 }
 
+function displayMaskName(mask = activeMask) {
+  const label = text(mask?.label || mask?.name || '');
+  return label && !/^unsaved custom mask$/i.test(label) ? label : 'Custom Mask Empty';
+}
+
+function updateCapsule(doc = document) {
+  const node = byId('hushCustomMaskCapsuleName', doc);
+  if (node) node.textContent = displayMaskName();
+  if (typeof window !== 'undefined') window.__TD613_HUSH_PHASE32__?.renderCustomMaskCapsule?.(doc);
+}
+
 function shellHtml() {
   return `<section id="hushPhase31CustomizerPanel" class="hush-phase31-customizer" hidden>
     <div class="hush-phase31-head">
@@ -68,9 +80,12 @@ function shellHtml() {
       <label class="hush-phase31-label" for="hushPhase31SampleCategory"><span>Sample category</span><select id="hushPhase31SampleCategory"><option value="explanatory">explanatory</option><option value="argumentative">argumentative</option><option value="narrative">narrative</option><option value="procedural">procedural</option><option value="reflective">reflective / affective</option><option value="legal-forensic">legal / forensic</option><option value="casual">casual / conversational</option><option value="technical">technical / operational</option><option value="poetic-symbolic">poetic / symbolic</option><option value="repair">repair / correction</option></select></label>
       <label class="hush-phase31-label" for="hushPhase31ContextLabel"><span>Context label</span><input id="hushPhase31ContextLabel" autocomplete="off" placeholder="optional scene / pressure / prompt note"></label>
     </div>
-    <label class="hush-phase31-label" for="hushVoiceReferenceSamplesSaved"><span>Reference sample ledger</span><span>Paste a fresh sample, choose its category, then log it. Operational masks require 24 accepted samples and 1,800 words; rigorous masks require 40 and 3,000.</span></label>
+    <div class="hush-phase31-ledger-head">
+      <label class="hush-phase31-label" for="hushVoiceReferenceSamplesSaved"><span>Reference sample ledger</span><span>Paste a fresh sample, choose its category, then log it. Operational masks require 24 accepted samples and 1,800 words; rigorous masks require 40 and 3,000.</span></label>
+      <span id="hushPhase31WordFloorCounter" class="hush-phase31-word-floor">0/${MIN_SAMPLE_WORDS}</span>
+    </div>
     <textarea id="hushVoiceReferenceSamplesSaved" autocomplete="off" autocapitalize="off" autocorrect="off" spellcheck="false" placeholder="Paste one 75+ word voice reference sample, then tap Log Sample. The ledger updates after each accepted sample."></textarea>
-    <div class="hush-phase31-actions"><button id="hushPhase31SaveMaskBtn" type="button" class="secondary">Save Mask</button><button id="hushPhase31LogSampleBtn" type="button" class="secondary">Log Sample</button><button id="hushPhase31Undo" type="button" class="hush-phase31-mini hush-phase31-link" aria-disabled="true">undo last</button></div>
+    <div class="hush-phase31-actions"><button id="hushPhase31LogSampleBtn" type="button" class="secondary">Log Sample</button><button id="hushPhase31SaveMaskBtn" type="button" class="secondary">Save Mask</button><button id="hushPhase31Undo" type="button" class="hush-phase31-mini hush-phase31-link" aria-disabled="true">undo last</button></div>
     <div id="hushPhase31SampleStatus" class="persona-memory-summary">Corpus empty. Add 75+ word samples to begin.</div>
   </section>`;
 }
@@ -103,6 +118,20 @@ function formatStatus(status = 'empty') {
 function setTierState(id, passed, doc = document) {
   const el = byId(id, doc);
   if (el) el.dataset.state = passed ? 'passed' : 'pending';
+}
+
+function currentDraft(area) {
+  const value = text(area?.value || '');
+  return value.replace(/--- sample \d+[\s\S]*?(?=(?:\n\n)?--- sample \d+|$)/g, '').trim() || value;
+}
+
+function updateWordCounter(doc = document) {
+  const counter = byId('hushPhase31WordFloorCounter', doc);
+  const area = byId('hushVoiceReferenceSamplesSaved', doc);
+  if (!counter) return;
+  const count = words(currentDraft(area));
+  counter.textContent = `${count}/${MIN_SAMPLE_WORDS}`;
+  counter.dataset.state = count >= MIN_SAMPLE_WORDS ? 'ready' : 'building';
 }
 
 function renderLedger(doc = document) {
@@ -141,6 +170,8 @@ function renderLedger(doc = document) {
     else status.textContent = `Rigorous mask candidate: ${readiness.acceptedSampleCount} samples · ${readiness.acceptedWords} words · ${readiness.promptCategoryCount} contexts.`;
   }
   if (profile) profile.textContent = activeMask ? `${formatStatus(activeMask.profileStatus)} · ${activeMask.acceptedWords || 0} words` : 'empty';
+  updateWordCounter(doc);
+  updateCapsule(doc);
 }
 
 function syncBench(mask, doc = document) {
@@ -151,14 +182,10 @@ function syncBench(mask, doc = document) {
   state.selectedHushMask = mask;
   state.selectedHushMaskId = mask.id;
   const ref = byId('maskReferenceInput', doc);
-  if (ref) ref.value = sampleTexts().join('\n\n');
+  if (ref) ref.value = sampleTexts().join('\n\n') || mask.sampleSeed || '';
   if (typeof bench.renderHushMaskProfile === 'function') bench.renderHushMaskProfile();
   if (typeof bench.renderHushProfileMatch === 'function') bench.renderHushProfileMatch(null);
-}
-
-function currentDraft(area) {
-  const value = text(area?.value || '');
-  return value.replace(/--- sample \d+[\s\S]*?(?=(?:\n\n)?--- sample \d+|$)/g, '').trim() || value;
+  updateCapsule(doc);
 }
 
 function logSample(doc = document) {
@@ -168,6 +195,7 @@ function logSample(doc = document) {
   const sampleWords = words(raw);
   if (sampleWords < MIN_SAMPLE_WORDS) {
     if (status) status.textContent = `Sample too short: ${sampleWords}/${MIN_SAMPLE_WORDS} words. Hush logs samples only after they have enough architecture to measure.`;
+    updateWordCounter(doc);
     return null;
   }
   const promptCategory = text(byId('hushPhase31SampleCategory', doc)?.value) || 'uncategorized';
@@ -209,18 +237,169 @@ function readModal(doc = document) {
   };
 }
 
+function setValue(id, value, doc = document) {
+  const el = byId(id, doc);
+  if (el) el.value = text(value || '');
+}
+
+function hydrateModalFromMask(mask = activeMask, doc = document, { preserveTyped = true } = {}) {
+  if (!mask) return;
+  const hints = mask.transformHints || {};
+  const assign = (id, value) => {
+    const el = byId(id, doc);
+    if (!el) return;
+    if (preserveTyped && text(el.value)) return;
+    el.value = text(value || '');
+  };
+  assign('hushPhase31MaskName', displayMaskName(mask) === 'Custom Mask Empty' ? '' : displayMaskName(mask));
+  assign('hushPhase31MaskFamily', mask.family || 'custom field mask');
+  assign('hushPhase31MaskDescription', mask.description || '');
+  assign('hushPhase31MaskIntendedUse', mask.intendedUse || '');
+  assign('hushPhase31MaskRiskTell', mask.riskTell || '');
+  assign('hushPhase31MaskSentence', hints.sentence || hints.sentenceShape || mask.writingTraits?.sentenceLength || '');
+  assign('hushPhase31MaskOrnament', hints.ornament || hints.ornamentation || mask.writingTraits?.ornament || '');
+  assign('hushPhase31MaskWarmth', hints.warmth || mask.writingTraits?.emotionalTemperature || '');
+  assign('hushPhase31MaskCustody', hints.custody || mask.writingTraits?.custody || '');
+  assign('hushPhase31MaskWarnings', asArray(mask.pressureWarnings || mask.warnings).join('\n'));
+}
+
+function openSaveModal(doc = document) {
+  hydrateModalFromMask(activeMask, doc, { preserveTyped: true });
+  const modal = byId('hushPhase31SaveModal', doc);
+  if (modal) modal.hidden = false;
+}
+
+function prepareMaskForExchange(doc = document) {
+  const fields = readModal(doc);
+  const label = fields.label || displayMaskName(activeMask);
+  const base = activeMask || createCustomMask({ label, id: `custom-${slug(label)}` });
+  const rebuilt = rebuildCustomMaskProfile({ ...base, label, ...fields, source: 'custom', sampleSeed: sampleTexts().join('\n\n') || base.sampleSeed || '' }, { includePrivateText: true });
+  return Object.assign(rebuilt, fields, { label, source: 'custom', sampleSeed: sampleTexts().join('\n\n') || rebuilt.sampleSeed || '', profile: rebuilt.compositeProfile });
+}
+
+function exportMask(doc = document) {
+  const status = byId('hushPhase31SampleStatus', doc);
+  if (!activeMask && !samples.length) { if (status) status.textContent = 'Nothing to export yet. Log or import a custom mask first.'; return; }
+  const prepared = prepareMaskForExchange(doc);
+  const payload = JSON.parse(exportCustomMaskJson(prepared, { includePrivateText: true }));
+  Object.assign(payload, readModal(doc), {
+    family: prepared.family || 'custom field mask',
+    description: prepared.description || '',
+    intendedUse: prepared.intendedUse || '',
+    riskTell: prepared.riskTell || '',
+    transformHints: prepared.transformHints || {},
+    pressureWarnings: prepared.pressureWarnings || [],
+    sampleSeed: prepared.sampleSeed || '',
+    customMaskCard: {
+      family: prepared.family || 'custom field mask',
+      description: prepared.description || '',
+      intendedUse: prepared.intendedUse || '',
+      riskTell: prepared.riskTell || '',
+      transformHints: prepared.transformHints || {},
+      pressureWarnings: prepared.pressureWarnings || []
+    }
+  });
+  const blob = new Blob([JSON.stringify(payload, null, 2)], { type: 'application/json' });
+  const url = URL.createObjectURL(blob);
+  const link = doc.createElement('a');
+  link.href = url;
+  link.download = `${slug(payload.label || 'custom-mask')}.hush-mask.json`;
+  doc.body.appendChild(link);
+  link.click();
+  link.remove();
+  window.setTimeout(() => URL.revokeObjectURL(url), 1200);
+  if (status) status.textContent = `Exported ${payload.label || 'custom mask'} with corpus and save-card fields.`;
+}
+
+function normalizeImportedSamples(parsed = {}, imported = {}) {
+  const sourceSamples = asArray(parsed.samples).length ? parsed.samples : asArray(imported.samples);
+  const fromSamples = sourceSamples.map((sample) => ({
+    text: text(sample?.text || ''),
+    promptCategory: text(sample?.promptCategory || sample?.contextLabel || 'imported'),
+    contextLabel: text(sample?.contextLabel || sample?.promptCategory || 'imported')
+  })).filter((sample) => sample.text);
+  if (fromSamples.length) return fromSamples;
+  const seed = text(parsed.sampleSeed || imported.sampleSeed || '');
+  return seed ? [{ text: seed, promptCategory: 'imported', contextLabel: 'imported' }] : [];
+}
+
+async function importMaskFromFile(file, doc = document) {
+  const status = byId('hushPhase31SampleStatus', doc);
+  if (!file) return;
+  try {
+    const raw = await file.text();
+    const parsed = JSON.parse(raw);
+    const importedBase = importCustomMaskJson(parsed);
+    const importedSamples = normalizeImportedSamples(parsed, importedBase);
+    samples = importedSamples;
+    let next = createCustomMask({ id: importedBase.id || `custom-${slug(importedBase.label || 'imported-mask')}`, label: importedBase.label || parsed.label || 'Imported Custom Mask' });
+    for (const entry of samples) next = addCustomMaskSample(next, entry.text, { includePrivateText: true, promptCategory: entry.promptCategory, contextLabel: entry.contextLabel });
+    activeMask = Object.assign(next, importedBase, parsed, {
+      samples: next.samples,
+      compositeProfile: next.compositeProfile,
+      profile: next.compositeProfile,
+      corpusReadiness: next.corpusReadiness,
+      profileStatus: next.profileStatus,
+      acceptedWords: next.acceptedWords,
+      acceptedSampleCount: next.acceptedSampleCount,
+      sampleSeed: samples.map((entry) => entry.text).join('\n\n') || parsed.sampleSeed || importedBase.sampleSeed || ''
+    });
+    hydrateModalFromMask(activeMask, doc, { preserveTyped: false });
+    syncBench(activeMask, doc);
+    renderLedger(doc);
+    if (status) status.textContent = `Imported ${displayMaskName(activeMask)}. Save Mask will add it to the studio carousel.`;
+  } catch (error) {
+    if (status) status.textContent = `Import failed: ${error?.message || error}`;
+  }
+}
+
+function ensureImportInput(doc = document) {
+  let input = byId('hushPhase31ImportMaskInput', doc);
+  if (!input) {
+    input = doc.createElement('input');
+    input.id = 'hushPhase31ImportMaskInput';
+    input.type = 'file';
+    input.accept = 'application/json,.json,.hush-mask';
+    input.hidden = true;
+    doc.body.appendChild(input);
+  }
+  if (input.dataset.bound !== 'true') {
+    input.dataset.bound = 'true';
+    input.addEventListener('change', () => {
+      const [file] = input.files || [];
+      importMaskFromFile(file, doc).finally(() => { input.value = ''; });
+    });
+  }
+  return input;
+}
+
+function wireCapsuleIO(doc = document) {
+  const input = ensureImportInput(doc);
+  const importLink = byId('hushPhase31ImportMaskLink', doc);
+  const exportLink = byId('hushPhase31ExportMaskLink', doc);
+  if (importLink && importLink.dataset.bound !== 'true') {
+    importLink.dataset.bound = 'true';
+    importLink.addEventListener('click', () => input.click());
+  }
+  if (exportLink && exportLink.dataset.bound !== 'true') {
+    exportLink.dataset.bound = 'true';
+    exportLink.addEventListener('click', () => exportMask(doc));
+  }
+}
+
 function addToStudio(doc = document) {
   const bench = window.__TD613_HUSH_BENCH__ || {};
   const state = bench.benchState || {};
   const modalStatus = byId('hushPhase31ModalStatus', doc);
   const readiness = activeMask?.corpusReadiness || {};
-  if (!activeMask || !samples.length) { if (modalStatus) modalStatus.textContent = 'Log a corpus before saving. Minimum accepted sample: 75 words.'; return null; }
+  if (!activeMask || !samples.length) { if (modalStatus) modalStatus.textContent = 'Log or import a corpus before saving. Minimum accepted sample: 75 words.'; return null; }
   if (!readiness.generationAllowed) { if (modalStatus) modalStatus.textContent = `Not operational yet: ${readiness.acceptedSampleCount || 0}/${HUSH_CUSTOM_MASK_CORPUS_POLICY.operationalSamples} accepted samples · ${readiness.acceptedWords || 0}/${HUSH_CUSTOM_MASK_CORPUS_POLICY.operationalWords} words.`; return null; }
   const fields = readModal(doc);
   const missing = ['label', 'description', 'intendedUse', 'riskTell'].filter((key) => !fields[key]);
   if (missing.length) { if (modalStatus) modalStatus.textContent = `Missing: ${missing.join(', ')}`; return null; }
   const saved = rebuildCustomMaskProfile({ ...activeMask, id: `custom-${slug(fields.label)}-${Date.now().toString(36)}`, label: fields.label }, { includePrivateText: true });
   Object.assign(saved, fields, { source: 'custom', sampleSeed: sampleTexts().join('\n\n'), profile: saved.compositeProfile });
+  activeMask = saved;
   state.customMasks = [saved, ...(state.customMasks || []).filter((mask) => mask.id !== saved.id)];
   state.activeCustomMask = saved;
   state.selectedHushMask = saved;
@@ -231,6 +410,8 @@ function addToStudio(doc = document) {
   if (select) { select.value = saved.id; const option = select.querySelector(`option[value="${saved.id}"]`); if (option) select.prepend(option); }
   if (typeof bench.selectHushMask === 'function') bench.selectHushMask(saved.id);
   byId('hushPhase31SaveModal', doc).hidden = true;
+  renderLedger(doc);
+  updateCapsule(doc);
   return saved;
 }
 
@@ -267,10 +448,14 @@ export function initHushPhase311(doc = document) {
   byId('hushBuiltInTabBtn', doc)?.addEventListener('click', () => setTimeout(() => setCustomizerVisible(doc), 0));
   byId('hushPhase31LogSampleBtn', doc)?.addEventListener('click', () => logSample(doc));
   byId('hushPhase31Undo', doc)?.addEventListener('click', () => undoSample(doc));
-  byId('hushPhase31SaveMaskBtn', doc)?.addEventListener('click', () => { const modal = byId('hushPhase31SaveModal', doc); if (modal) modal.hidden = false; });
+  byId('hushPhase31SaveMaskBtn', doc)?.addEventListener('click', () => openSaveModal(doc));
   byId('hushPhase31CancelSave', doc)?.addEventListener('click', () => { const modal = byId('hushPhase31SaveModal', doc); if (modal) modal.hidden = true; });
   byId('hushPhase31AddToStudio', doc)?.addEventListener('click', () => addToStudio(doc));
+  byId('hushVoiceReferenceSamplesSaved', doc)?.addEventListener('input', () => updateWordCounter(doc));
+  wireCapsuleIO(doc);
   renderLedger(doc);
+  window.setTimeout(() => wireCapsuleIO(doc), 140);
+  window.setTimeout(() => wireCapsuleIO(doc), 520);
   return { version: VERSION, installed: true, corpusPolicy: HUSH_CUSTOM_MASK_CORPUS_POLICY };
 }
 
