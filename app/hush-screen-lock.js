@@ -1,4 +1,4 @@
-const HUSH_SCREEN_LOCK_VERSION = 'screen-lock/v2-inline-css';
+const HUSH_SCREEN_LOCK_VERSION = 'screen-lock/v3-no-scroll-jump';
 const $ = (id) => document.getElementById(id);
 const START = Date.now();
 let done = false;
@@ -55,8 +55,6 @@ function close(reason = 'ready') {
   node.hidden = true;
   node.setAttribute('aria-hidden', 'true');
   node.dataset.screenLock = reason;
-  try { window.scrollTo(0, 0); } catch (error) {}
-  setTimeout(() => { try { window.scrollTo(0, 0); } catch (error) {} }, 120);
   return true;
 }
 
