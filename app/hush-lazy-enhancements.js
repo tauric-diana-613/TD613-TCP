@@ -1,4 +1,4 @@
-const HUSH_LAZY_ENHANCEMENTS_VERSION = 'hush-lazy-enhancements/v5-core-loading-state';
+const HUSH_LAZY_ENHANCEMENTS_VERSION = 'hush-lazy-enhancements/v6-ready-hide-marker';
 
 const loaded = new Set();
 const loading = new Map();
@@ -38,6 +38,7 @@ function loadingLayer() {
 function setLoadingVisible(reason = 'core-ui-not-ready') {
   const node = loadingLayer();
   if (!node) return false;
+  node.dataset.readyToHide = 'false';
   node.hidden = false;
   node.setAttribute('aria-hidden', 'false');
   node.dataset.loadingState = reason;
@@ -47,6 +48,7 @@ function setLoadingVisible(reason = 'core-ui-not-ready') {
 function hideLoadingOverlay(reason = 'lazy-loader') {
   const node = loadingLayer();
   if (!node) return false;
+  node.dataset.readyToHide = 'true';
   node.hidden = true;
   node.setAttribute('aria-hidden', 'true');
   node.dataset.dismissedBy = reason;
