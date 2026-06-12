@@ -1,15 +1,16 @@
 import { generateExpressiveCandidates } from './hush-expressive-generator.js';
 import { extractCadenceProfile } from './stylometry.js';
 
-export const HUSH_GENERATOR_PROVIDER_VERSION = 'patch-38-generator-provider-phase37-telemetry+generic-transposition+session-cache+pr135-authorship-moves';
+export const HUSH_GENERATOR_PROVIDER_VERSION = 'patch-38-generator-provider-phase37-telemetry+generic-transposition+session-cache+pr135-authorship-moves+line-break-custody';
 export const TECH_JOB_SIGNAL_SAMPLE = 'How do you find a tech job with no prior experience in the sector? Is signal reading fluency really that much of a skill asset?';
 
 const safe = (value) => String(value ?? '').trim();
+const preserveLineBreaks = (value = '') => String(value ?? '').replace(/\r\n?/g, '\n').split('\n').map((line) => line.replace(/[\t ]+/g, ' ').trimEnd()).join('\n').replace(/^\n+|\n+$/g, '').trim();
 const asArray = (value) => Array.isArray(value) ? value.filter(Boolean) : [];
 const safeArray = (value) => Array.isArray(value) ? value.map((item) => safe(item)).filter(Boolean) : [];
 const slug = (value = 'candidate') => safe(value).toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, '') || 'candidate';
 const truncate = (value = '', limit = 1800) => {
-  const text = safe(value).replace(/\s+/g, ' ');
+  const text = preserveLineBreaks(value);
   return text.length > limit ? `${text.slice(0, limit).trim()}…` : text;
 };
 
@@ -117,6 +118,8 @@ export function compactMaskForRemote(mask = {}) {
     warmth: profile.warmth || writingTraits.emotionalTemperature || '',
     compression: profile.compression || writingTraits.verbosity || '',
     metaphorTolerance: profile.metaphorTolerance || writingTraits.metaphorTolerance || 'medium',
+    lineBreakDensity: profile.lineBreakDensity || 0,
+    punctuationDensity: profile.punctuationDensity || 0,
     writingTraits,
     transitionBank: asArray(mask.transitionBank).slice(0, 10),
     dictionHints: asArray(mask.dictionHints).slice(0, 10),
@@ -158,10 +161,11 @@ export function buildHushLlmPromptContract(input = {}) {
       'Do not use record/custody boilerplate unless the mask explicitly requires record style.',
       'Do not produce generic filler, academic summary, HR voice, or local fallback wording.',
       'Avoid repeating the source sentence structure line by line; transpose cadence while preserving propositions.',
+      'Treat paragraph breaks and line breaks as structure and cadence cues. Output does not have to copy them exactly, but should not flatten a paragraph-sensitive source or custom mask into one undifferentiated block.',
       'Return JSON only with a candidates array.'
     ],
     outputSchema: { candidates: [{ text: 'string', style_note: 'string', authorship_moves: ['string'], risk_flags: ['string'] }] },
-    sourceText: safe(input.sourceText || input.messageDraftText || ''),
+    sourceText: preserveLineBreaks(input.sourceText || input.messageDraftText || ''),
     mask: compactMaskForRemote(mask),
     maskReferenceExcerpt: truncate(maskReferenceText, 1800),
     protectedLiterals: asArray(input.protectedLiterals).length ? asArray(input.protectedLiterals) : buildProtectedLiteralList(input.sourceText || input.messageDraftText || ''),
@@ -170,7 +174,7 @@ export function buildHushLlmPromptContract(input = {}) {
     qualityBar: [
       'Every candidate should sound written by a human, not summarized by an assistant.',
       'Each candidate should have a different rhythm and opening move.',
-      'The selected mask should be visible in diction, sentence length, heat, and structure.',
+      'The selected mask should be visible in diction, sentence length, heat, line/paragraph pacing, punctuation, and structure.',
       'No candidate should begin with generic phrases such as "Here is", "Trying to", "Question one", or "No-sector-experience" unless the source itself requires that wording.'
     ]
   };
