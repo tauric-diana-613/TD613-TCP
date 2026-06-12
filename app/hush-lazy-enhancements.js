@@ -1,4 +1,4 @@
-const HUSH_LAZY_ENHANCEMENTS_VERSION = 'hush-lazy-enhancements/v4-core-readiness';
+const HUSH_LAZY_ENHANCEMENTS_VERSION = 'hush-lazy-enhancements/v5-core-loading-state';
 
 const loaded = new Set();
 const loading = new Map();
@@ -31,18 +31,32 @@ function coreUiReady() {
   );
 }
 
+function loadingLayer() {
+  return document.getElementById('td613HushLoading');
+}
+
+function setLoadingVisible(reason = 'core-ui-not-ready') {
+  const node = loadingLayer();
+  if (!node) return false;
+  node.hidden = false;
+  node.setAttribute('aria-hidden', 'false');
+  node.dataset.loadingState = reason;
+  return true;
+}
+
 function hideLoadingOverlay(reason = 'lazy-loader') {
-  const overlay = document.getElementById('td613HushLoading');
-  if (!overlay) return false;
-  overlay.hidden = true;
-  overlay.setAttribute('aria-hidden', 'true');
-  overlay.dataset.dismissedBy = reason;
+  const node = loadingLayer();
+  if (!node) return false;
+  node.hidden = true;
+  node.setAttribute('aria-hidden', 'true');
+  node.dataset.dismissedBy = reason;
   return true;
 }
 
 function releaseLoadingWhenReady(startedAt = Date.now(), maxWait = 5200, reason = 'core-ui-ready') {
   if (coreUiReady()) return hideLoadingOverlay(reason);
   if (Date.now() - startedAt >= maxWait) return hideLoadingOverlay('max-wait');
+  setLoadingVisible('core-ui-not-ready');
   window.setTimeout(() => releaseLoadingWhenReady(startedAt, maxWait, reason), 120);
   return false;
 }
