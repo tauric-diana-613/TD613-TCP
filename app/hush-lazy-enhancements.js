@@ -1,4 +1,4 @@
-const HUSH_LAZY_ENHANCEMENTS_VERSION = 'hush-lazy-enhancements/v3-loading-failsafe';
+const HUSH_LAZY_ENHANCEMENTS_VERSION = 'hush-lazy-enhancements/v4-core-readiness';
 
 const loaded = new Set();
 const loading = new Map();
@@ -10,6 +10,27 @@ const modules = {
   compareLayout: './hush-compare-layout-lite.js?v=202606121942'
 };
 
+function hasBox(id) {
+  const node = document.getElementById(id);
+  if (!node) return false;
+  const rect = node.getBoundingClientRect?.();
+  return Boolean(rect && rect.width > 12 && rect.height > 12);
+}
+
+function coreUiReady() {
+  const select = document.getElementById('maskFieldSelect');
+  const routeGrid = document.getElementById('hushMaskRouteGrid');
+  const hasMaskChoices = Boolean(select?.options?.length);
+  const hasRouteCards = Boolean(routeGrid?.children?.length);
+  return Boolean(
+    hasBox('consoleMasthead') &&
+    hasBox('hushOperatorPath') &&
+    hasBox('messageDraftInput') &&
+    hasBox('generateMaskedOutputBtn') &&
+    (hasMaskChoices || hasRouteCards)
+  );
+}
+
 function hideLoadingOverlay(reason = 'lazy-loader') {
   const overlay = document.getElementById('td613HushLoading');
   if (!overlay) return false;
@@ -19,10 +40,16 @@ function hideLoadingOverlay(reason = 'lazy-loader') {
   return true;
 }
 
+function releaseLoadingWhenReady(startedAt = Date.now(), maxWait = 5200, reason = 'core-ui-ready') {
+  if (coreUiReady()) return hideLoadingOverlay(reason);
+  if (Date.now() - startedAt >= maxWait) return hideLoadingOverlay('max-wait');
+  window.setTimeout(() => releaseLoadingWhenReady(startedAt, maxWait, reason), 120);
+  return false;
+}
+
 function installLoadingFailsafe() {
-  window.setTimeout(() => hideLoadingOverlay('first-paint-failsafe'), 450);
-  window.setTimeout(() => hideLoadingOverlay('one-second-failsafe'), 1000);
-  window.addEventListener('load', () => window.setTimeout(() => hideLoadingOverlay('window-load'), 80), { once: true });
+  releaseLoadingWhenReady(Date.now(), 5200, 'initial-core-ui-ready');
+  window.addEventListener('load', () => window.setTimeout(() => releaseLoadingWhenReady(Date.now(), 2600, 'load-core-ui-ready'), 80), { once: true });
 }
 
 function idle(callback, timeout = 1600) {
@@ -82,8 +109,8 @@ function bindInteractionLoaders() {
 }
 
 function boot() {
-  hideLoadingOverlay('boot');
   bindInteractionLoaders();
+  releaseLoadingWhenReady(Date.now(), 5200, 'boot-core-ui-ready');
   window.setTimeout(loadPostPaintEnhancements, 900);
   window.setTimeout(bindInteractionLoaders, 300);
   window.setTimeout(bindInteractionLoaders, 1000);
@@ -95,7 +122,9 @@ else boot();
 
 window.__TD613_HUSH_LAZY_ENHANCEMENTS__ = {
   version: HUSH_LAZY_ENHANCEMENTS_VERSION,
+  coreUiReady,
   hideLoadingOverlay,
+  releaseLoadingWhenReady,
   importOnce,
   loadCustomizerStack,
   loadCustodyStack,
