@@ -25,70 +25,47 @@ function emitHushEvent(name, detail = {}) {
   try { window.dispatchEvent(new CustomEvent(name, { detail })); }
   catch (error) { window.__TD613_HUSH_PATCH38_EVENT_ERROR = String(error?.message || error); }
 }
-
 function stableStringify(value) {
   if (value === null || typeof value !== 'object') return JSON.stringify(value);
   if (Array.isArray(value)) return `[${value.map(stableStringify).join(',')}]`;
   return `{${Object.keys(value).sort().map((key) => `${JSON.stringify(key)}:${stableStringify(value[key])}`).join(',')}}`;
 }
-
 function hashString(value = '') {
   let hash = 2166136261;
-  for (const ch of String(value || '')) {
-    hash ^= ch.codePointAt(0);
-    hash = Math.imul(hash, 16777619);
-  }
+  for (const ch of String(value || '')) { hash ^= ch.codePointAt(0); hash = Math.imul(hash, 16777619); }
   return (hash >>> 0).toString(16).padStart(8, '0');
 }
-
-function cloneReport(report = {}) {
-  return JSON.parse(JSON.stringify(report || {}));
-}
-
-function remoteReportCacheKey(contract = {}) {
-  return hashString(stableStringify({ promptVersion: contract.promptVersion, sourceText: contract.sourceText, flightPacket: contract.flightPacket, candidateCount: contract.candidateCount, operatorMode: contract.operatorMode }));
-}
-
+function cloneReport(report = {}) { return JSON.parse(JSON.stringify(report || {})); }
+function remoteReportCacheKey(contract = {}) { return hashString(stableStringify({ promptVersion: contract.promptVersion, sourceText: contract.sourceText, flightPacket: contract.flightPacket, candidateCount: contract.candidateCount, operatorMode: contract.operatorMode })); }
 function getCachedRemoteReport(cacheKey = '') {
   const entry = patch38RemoteReportCache.get(cacheKey);
   if (!entry) return null;
-  if (Date.now() - entry.createdAt > PATCH38_REMOTE_CACHE_TTL_MS) {
-    patch38RemoteReportCache.delete(cacheKey);
-    return null;
-  }
+  if (Date.now() - entry.createdAt > PATCH38_REMOTE_CACHE_TTL_MS) { patch38RemoteReportCache.delete(cacheKey); return null; }
   const report = cloneReport(entry.report);
   report.cache = { hit: true, key: cacheKey, ageMs: Date.now() - entry.createdAt, scope: 'patch38-session' };
   report.warnings = [...new Set([...(report.warnings || []), 'patch38-remote-report-cache-hit'])];
   report.requestReceipt = { ...(report.requestReceipt || {}), cacheHit: true, cacheKey };
   return report;
 }
-
 function setCachedRemoteReport(cacheKey = '', report = {}) {
   if (!cacheKey || !report?.candidates?.length) return;
   patch38RemoteReportCache.set(cacheKey, { createdAt: Date.now(), report: cloneReport(report) });
-  while (patch38RemoteReportCache.size > PATCH38_REMOTE_CACHE_LIMIT) {
-    patch38RemoteReportCache.delete(patch38RemoteReportCache.keys().next().value);
-  }
+  while (patch38RemoteReportCache.size > PATCH38_REMOTE_CACHE_LIMIT) patch38RemoteReportCache.delete(patch38RemoteReportCache.keys().next().value);
 }
-
 function selectedMask(state = bench.benchState || {}) {
   const masks = [...(state.hushMasks || []), ...(state.customMasks || [])];
   return masks.find((mask) => mask.id === state.selectedHushMaskId) || state.selectedHushMask || masks[0] || null;
 }
-
 function resolveMaskFromDom(doc = document, state = bench.benchState || {}) {
   const selectId = $('maskFieldSelect', doc)?.value || state.selectedHushMaskId || '';
   const masks = [...(state.hushMasks || []), ...(state.customMasks || [])];
   return masks.find((mask) => mask.id === selectId) || state.selectedHushMask || masks.find((mask) => mask.id === state.selectedHushMaskId) || masks[0] || null;
 }
-
 function syncBenchStateFromDom(doc = document) {
   const state = bench.benchState || {};
   const selectId = $('maskFieldSelect', doc)?.value || state.selectedHushMaskId || '';
   const currentId = state.selectedHushMask?.id || state.selectedHushMaskId || '';
-  if (selectId && selectId !== currentId && typeof bench.selectHushMask === 'function') {
-    bench.selectHushMask(selectId);
-  }
+  if (selectId && selectId !== currentId && typeof bench.selectHushMask === 'function') bench.selectHushMask(selectId);
   const mask = resolveMaskFromDom(doc, state);
   state.selectedHushMaskId = mask?.id || selectId || state.selectedHushMaskId || '';
   state.selectedPersonaId = state.selectedHushMaskId;
@@ -107,11 +84,7 @@ function syncBenchStateFromDom(doc = document) {
   state.profiles.protectedOutput = extractCadenceProfile(state.protectedOutputText || '');
   return { state, mask };
 }
-
-function activeField(state = bench.benchState || {}, mask = null) {
-  return state.profiles?.maskReference || mask?.profile || selectedMask(state)?.profile || {};
-}
-
+function activeField(state = bench.benchState || {}, mask = null) { return state.profiles?.maskReference || mask?.profile || selectedMask(state)?.profile || {}; }
 function captureTransformSnapshot(doc = document) {
   const { state, mask } = syncBenchStateFromDom(doc);
   const mode = $('hushGeneratorMode', doc)?.value || DEFAULT_GENERATOR_MODE;
@@ -124,21 +97,10 @@ function captureTransformSnapshot(doc = document) {
   activePatch38RunId = runId;
   return { runId, identity, state, mask, mode, sourceText, protectedBaselineText, maskReferenceText, referenceProfile, recognitionIntentMode: state.recognitionIntentMode || 'neutralize', recognitionContextType: state.recognitionContextType || 'group-chat', recognitionExposureDuration: state.recognitionExposureDuration || 'single-use' };
 }
-
 function snapshotStillCurrent(snapshot = {}, doc = document) {
-  const current = {
-    sourceText: $('messageDraftInput', doc)?.value || '',
-    maskId: $('maskFieldSelect', doc)?.value || bench.benchState?.selectedHushMaskId || '',
-    maskReferenceText: $('maskReferenceInput', doc)?.value || '',
-    mode: $('hushGeneratorMode', doc)?.value || DEFAULT_GENERATOR_MODE,
-    recognitionIntentMode: $('recognitionIntentMode', doc)?.value || bench.benchState?.recognitionIntentMode || 'neutralize',
-    recognitionContextType: $('recognitionContextType', doc)?.value || bench.benchState?.recognitionContextType || 'group-chat',
-    recognitionExposureDuration: $('recognitionExposureDuration', doc)?.value || bench.benchState?.recognitionExposureDuration || 'single-use'
-  };
-  const identity = hashString(stableStringify(current));
-  return snapshot.runId === activePatch38RunId && identity === snapshot.identity;
+  const current = { sourceText: $('messageDraftInput', doc)?.value || '', maskId: $('maskFieldSelect', doc)?.value || bench.benchState?.selectedHushMaskId || '', maskReferenceText: $('maskReferenceInput', doc)?.value || '', mode: $('hushGeneratorMode', doc)?.value || DEFAULT_GENERATOR_MODE, recognitionIntentMode: $('recognitionIntentMode', doc)?.value || bench.benchState?.recognitionIntentMode || 'neutralize', recognitionContextType: $('recognitionContextType', doc)?.value || bench.benchState?.recognitionContextType || 'group-chat', recognitionExposureDuration: $('recognitionExposureDuration', doc)?.value || bench.benchState?.recognitionExposureDuration || 'single-use' };
+  return snapshot.runId === activePatch38RunId && hashString(stableStringify(current)) === snapshot.identity;
 }
-
 function ensureGeneratorStatus(doc = document) {
   let status = $('hushGeneratorStatus', doc);
   if (status) return status;
@@ -152,43 +114,30 @@ function ensureGeneratorStatus(doc = document) {
   host.appendChild(status);
   return status;
 }
-
 function setGeneratorStatus(message = '', tone = 'info', doc = document) {
   const status = ensureGeneratorStatus(doc);
   if (!status) return;
   status.dataset.tone = tone;
   status.textContent = message || 'Generator mode ready.';
 }
-
 function generatorModeLabel(mode = '') {
   if (mode === GENERATOR_MODES.REMOTE_LLM_PROXY) return 'Remote LLM Candidate';
   if (mode === GENERATOR_MODES.HYBRID) return 'Hybrid fallback';
   if (mode === GENERATOR_MODES.OFFLINE_EXPRESSIVE) return 'Offline Expressive';
   return mode || 'Generator';
 }
-
 function configureGeneratorSelect(select, doc = document) {
   if (!select) return null;
   if (select.dataset.patch38Configured !== 'true') {
     select.dataset.patch38Configured = 'true';
-    select.addEventListener('change', () => {
-      select.dataset.operatorTouched = 'true';
-      setGeneratorStatus(`Generator mode selected: ${generatorModeLabel(select.value)}.`, 'info', doc);
-    });
+    select.addEventListener('change', () => { select.dataset.operatorTouched = 'true'; setGeneratorStatus(`Generator mode selected: ${generatorModeLabel(select.value)}.`, 'info', doc); });
   }
-  if (select.dataset.operatorTouched !== 'true') {
-    select.value = DEFAULT_GENERATOR_MODE;
-    setGeneratorStatus('Generator mode preset: Remote LLM Candidate. Hybrid and local modes remain available manually.', 'info', doc);
-  }
+  if (select.dataset.operatorTouched !== 'true') { select.value = DEFAULT_GENERATOR_MODE; setGeneratorStatus('Generator mode preset: Remote LLM Candidate. Hybrid and local modes remain available manually.', 'info', doc); }
   return select;
 }
-
 function installGeneratorMode(doc = document) {
   const existing = $('hushGeneratorMode', doc);
-  if (existing) {
-    ensureGeneratorStatus(doc);
-    return configureGeneratorSelect(existing, doc);
-  }
+  if (existing) { ensureGeneratorStatus(doc); return configureGeneratorSelect(existing, doc); }
   const host = $('hushGateStrip', doc)?.parentElement || $('generateMaskedOutputBtn', doc)?.closest('.hush-transform-gate') || $('hushBuiltInMaskPanel', doc) || $('maskFieldSelect', doc)?.parentElement || $('recognitionIntentMode', doc)?.closest('.recognition-field-controls') || null;
   if (!host) return null;
   const label = doc.createElement('label');
@@ -207,14 +156,12 @@ function installGeneratorMode(doc = document) {
   label.insertAdjacentElement('afterend', status);
   return configureGeneratorSelect($('hushGeneratorMode', doc), doc);
 }
-
 function configuredRemoteEndpoint() {
   if (typeof window === 'undefined') return '';
   const direct = window.TD613_HUSH_API_ENDPOINT || window.__TD613_HUSH_API_ENDPOINT__ || '';
   const stored = (() => { try { return window.localStorage?.getItem('td613:hush-api-endpoint') || ''; } catch { return ''; } })();
   return text(direct || stored);
 }
-
 function remoteEndpointCandidates() {
   const loc = typeof window !== 'undefined' ? window.location : null;
   const origin = loc?.origin || '';
@@ -226,7 +173,28 @@ function remoteEndpointCandidates() {
   candidates.push('/api/hush-generate');
   return [...new Set(candidates.filter(Boolean))];
 }
-
+function buildOutboundPacketExport({ contract = {}, snapshot = {}, phase37Telemetry = {}, mode = '' } = {}) {
+  return {
+    schema: 'td613-hush-outbound-packet/v1',
+    createdAt: new Date().toISOString(),
+    exportKind: 'outbound-generator-contract',
+    direction: 'outbound',
+    includesPrivateText: true,
+    privateTextIncluded: true,
+    note: 'This is the outbound Hush generator contract built at Transform time. It is not Gemini output and contains the source/mask payload that Hush sent or prepared to send for generation.',
+    mode,
+    promptVersion: contract.promptVersion || phase37Telemetry.promptVersion || null,
+    flightPacketVersion: contract.flightPacketVersion || phase37Telemetry.flightPacketVersion || contract.flightPacket?.packet_version || null,
+    snapshot: { runId: snapshot.runId || null, identity: snapshot.identity || null, maskId: snapshot.mask?.id || '', sourceHash: hashString(snapshot.sourceText || ''), referenceHash: hashString(snapshot.maskReferenceText || '') },
+    endpointCandidates: mode === GENERATOR_MODES.REMOTE_LLM_PROXY || mode === GENERATOR_MODES.HYBRID ? remoteEndpointCandidates() : [],
+    contract
+  };
+}
+function publishOutboundPacket(outboundPacket = null, state = bench.benchState || {}) {
+  if (typeof window !== 'undefined') window.__TD613_HUSH_PATCH38_LAST_OUTBOUND_PACKET = outboundPacket;
+  if (state) state.hushOutboundPacket = outboundPacket;
+  emitHushEvent('td613:hush:outbound-packet', { outboundPacket });
+}
 async function fetchRemoteReportUncached(contract = {}, doc = document) {
   const tried = [];
   for (const endpoint of remoteEndpointCandidates()) {
@@ -241,29 +209,19 @@ async function fetchRemoteReportUncached(contract = {}, doc = document) {
       }
       const normalized = normalizeRemoteProviderResponse(await response.json(), contract);
       normalized.requestReceipt = { ...(normalized.requestReceipt || {}), endpoint, triedEndpoints: tried, promptVersion: contract.promptVersion, flightPacketVersion: contract.flightPacketVersion };
-      if (!normalized.candidates?.length) {
-        normalized.warnings = [...new Set([...(normalized.warnings || []), 'remote-provider-empty-candidates', `endpoint:${endpoint}`])];
-        setGeneratorStatus(`Remote provider reached ${endpoint} but returned zero usable candidates. Inspect Phase 37 diagnostics.`, 'warning', doc);
-      } else {
-        setGeneratorStatus(`Remote provider reached ${endpoint} and returned ${normalized.candidates.length} Phase 37 candidate(s). Local audit still controls release.`, 'ok', doc);
-      }
+      if (!normalized.candidates?.length) { normalized.warnings = [...new Set([...(normalized.warnings || []), 'remote-provider-empty-candidates', `endpoint:${endpoint}`])]; setGeneratorStatus(`Remote provider reached ${endpoint} but returned zero usable candidates. Inspect Phase 37 diagnostics.`, 'warning', doc); }
+      else setGeneratorStatus(`Remote provider reached ${endpoint} and returned ${normalized.candidates.length} Phase 37 candidate(s). Local audit still controls release.`, 'ok', doc);
       return normalized;
-    } catch (error) {
-      tried.push(`${endpoint}:exception`);
-    }
+    } catch (error) { tried.push(`${endpoint}:exception`); }
   }
   setGeneratorStatus(`Remote provider route not found. Tried: ${tried.join(', ') || remoteEndpointCandidates().join(', ')}.`, 'error', doc);
   return { provider: 'remote-llm-proxy', model: 'remote-llm-proxy', candidates: [], warnings: ['remote-provider-route-not-found', ...tried.map((item) => `tried:${item}`)], requestReceipt: { sentPrivateLedger: false, sentMaskMemory: false, redactionApplied: true, promptVersion: 'hush-llm-candidate-v3', triedEndpoints: tried } };
 }
-
 async function fetchRemoteReport(input = {}, doc = document) {
-  const contract = buildHushLlmPromptContractV3(input);
+  const contract = input.contract || buildHushLlmPromptContractV3(input);
   const cacheKey = remoteReportCacheKey(contract);
   const cached = getCachedRemoteReport(cacheKey);
-  if (cached) {
-    setGeneratorStatus('Remote provider cache hit: same source + same mask + same Phase37 packet. Reusing stable candidate report.', 'ok', doc);
-    return cached;
-  }
+  if (cached) { setGeneratorStatus('Remote provider cache hit: same source + same mask + same Phase37 packet. Reusing stable candidate report.', 'ok', doc); return cached; }
   if (patch38RemoteReportInflight.has(cacheKey)) {
     setGeneratorStatus('Remote provider request already in flight for this exact packet. Reusing the same request.', 'info', doc);
     const reused = cloneReport(await patch38RemoteReportInflight.get(cacheKey));
@@ -272,29 +230,14 @@ async function fetchRemoteReport(input = {}, doc = document) {
     reused.requestReceipt = { ...(reused.requestReceipt || {}), cacheHit: true, inflightReused: true, cacheKey };
     return reused;
   }
-  const request = fetchRemoteReportUncached(contract, doc).then((report) => {
-    if (report?.candidates?.length) setCachedRemoteReport(cacheKey, report);
-    return report;
-  });
+  const request = fetchRemoteReportUncached(contract, doc).then((report) => { if (report?.candidates?.length) setCachedRemoteReport(cacheKey, report); return report; });
   patch38RemoteReportInflight.set(cacheKey, request);
-  try {
-    const report = cloneReport(await request);
-    report.requestReceipt = { ...(report.requestReceipt || {}), cacheKey, cacheHit: false };
-    return report;
-  } finally {
-    patch38RemoteReportInflight.delete(cacheKey);
-  }
+  try { const report = cloneReport(await request); report.requestReceipt = { ...(report.requestReceipt || {}), cacheKey, cacheHit: false }; return report; }
+  finally { patch38RemoteReportInflight.delete(cacheKey); }
 }
-
 function renderDiagnostics(result = {}, doc = document) {
   let target = $('hushPhase32Diagnostics', doc);
-  if (!target) {
-    target = doc.createElement('div');
-    target.id = 'hushPhase32Diagnostics';
-    target.className = 'hush-warning-panel hush-phase32-diagnostics';
-    const anchor = $('hushSwapWarningsPanel', doc) || $('acceptWarning', doc) || $('protectedOutputInput', doc);
-    if (anchor?.insertAdjacentElement) anchor.insertAdjacentElement('afterend', target);
-  }
+  if (!target) { target = doc.createElement('div'); target.id = 'hushPhase32Diagnostics'; target.className = 'hush-warning-panel hush-phase32-diagnostics'; const anchor = $('hushSwapWarningsPanel', doc) || $('acceptWarning', doc) || $('protectedOutputInput', doc); if (anchor?.insertAdjacentElement) anchor.insertAdjacentElement('afterend', target); }
   if (!target) return;
   const p = result.patch38Diagnostics || {};
   const phase37 = result.phase37Telemetry || result.phase35Telemetry || {};
@@ -308,24 +251,20 @@ function renderDiagnostics(result = {}, doc = document) {
   const apertureLine = packet.aperture_bridge ? `<span>Aperture: <code>${esc(packet.aperture_bridge.route_intent || 'bridge')}</code></span><span>Repair: <code>${esc((packet.repair_controls?.aperture_repair_operations || packet.aperture_bridge.repair_controls?.aperture_repair_operations || []).join(', ') || 'none')}</code></span>` : '';
   target.innerHTML = `<strong>Phase 37 ontology-carrying generator flight</strong><span hidden>${PHASE35_COMPATIBILITY_LABEL}</span><div class="hush-phase32-diagnostic-grid"><span>Mode: <code>${esc(p.providerMode || 'offline-expressive')}</code></span><span>Packet: <code>${esc(phase37.flightPacketVersion || packet.packet_version || 'n/a')}</code></span><span>Prompt: <code>${esc(phase37.promptVersion || receipt.promptVersion || 'n/a')}</code></span>${apertureLine}<span>Route: <code>${esc(route.route_type || route.routeType || 'n/a')}</code></span><span>Source: <code>${esc(route.source_type || route.sourceType || 'n/a')}</code></span><span>Risk: <code>${esc(route.semantic_risk || 'n/a')}</code></span><span>Depth: <code>${esc(route.transformation_depth || 'n/a')}</code></span>${endpointLine}<span>Cache: <code>${esc(receipt.cacheHit ? 'hit' : receipt.cacheKey ? 'stored' : 'n/a')}</code></span><span>Snapshot: <code>${esc(result.patch38Snapshot?.identity || 'n/a')}</code></span><span>Operations: <code>${esc(operationSpread)}</code></span><span>Selected op: <code>${esc(p.selectedStyleOperation || 'n/a')}</code></span><span>Generated: <code>${esc(p.generatedCount ?? 0)}</code></span><span>Merged: <code>${esc(p.mergedCount ?? 0)}</code></span><span>Coverage: <code>${esc(p.selectedCoverage ?? 'n/a')}</code></span><span>Question score: <code>${esc(prop.questionFormScore ?? 'n/a')}</code></span><span>New claim risk: <code>${esc(prop.newClaimRisk?.score ?? 'n/a')}</code></span><span>Collapse: <code>${esc(p.selectedCollapseSurfaceScore ?? 0)}</code></span><span>Warning: <code>${esc(p.warning || prop.warnings?.join(', ') || 'none')}</code></span></div>${rows.length ? `<details><summary>Phase 37 candidates</summary>${rows.map((row) => `<div><code>${esc(row.id)}</code> ${esc(row.operation || row.strategy || '')} · score ${esc(row.score)} · mask ${esc(row.maskFidelity ?? 'n/a')} · syntax ${esc(row.syntaxDistance ?? 'n/a')} · collapse ${esc(row.collapse)}</div>`).join('')}</details>` : ''}`;
 }
-
 function buildPatch38ApprovalPacket({ reason = '', result = {}, warnings = [] } = {}) {
   const diagnostics = result.patch38Diagnostics || {};
   return { routeState: 'patch38_no_approved_candidate', sealStatus: 'blocked', selectedCandidate: null, hardStops: ['selector_no_approved_candidate', ...warnings, ...(diagnostics.warning ? [diagnostics.warning] : [])].filter(Boolean), humanReclosure: { required: true, confirmed: false, rejected_routes_visible: true }, consentStatus: 'confirmed', claimCeiling: 'structural', sourceContext: 'hush_patch38_transform', approvalContext: reason || 'candidate selector produced no releasable output' };
 }
-
 function formatPatch38ApprovalBlock(transparency) {
   const blockers = transparency?.approvalDiagnostics?.blockers || [];
   const visibleReason = blockers.length ? blockers.join(' | ') : transparency?.approvalReason || 'candidate selector produced no releasable output';
   return `Candidate approval blocked — not an error. ${visibleReason}. Edit the source/mask or inspect Phase 37 diagnostics, then Transform again.`;
 }
-
 function recordPatch38ApprovalBlock(transparency, result = {}) {
   if (typeof window === 'undefined') return;
   window.__TD613_HUSH_PATCH38_APPROVAL__ = { version: HUSH_SWAP_PATCH38_VERSION, appliedAt: new Date().toISOString(), selectedCandidateId: result.patch38Diagnostics?.selectedCandidateId || null, generatedCount: result.patch38Diagnostics?.generatedCount ?? 0, mergedCount: result.patch38Diagnostics?.mergedCount ?? 0, approvalStatus: transparency.approvalStatus, approvalReason: transparency.approvalReason, approvalDiagnostics: transparency.approvalDiagnostics };
   emitHushEvent('td613:hush:patch38-approval', { approval: window.__TD613_HUSH_PATCH38_APPROVAL__, result });
 }
-
 function renderGateFailure(reason = '', doc = document, transparency = null) {
   const output = $('protectedOutputInput', doc);
   if (output) output.value = '';
@@ -335,17 +274,13 @@ function renderGateFailure(reason = '', doc = document, transparency = null) {
   if (warning) { warning.hidden = false; warning.textContent = message; }
   if (transparency) { const status = ensureGeneratorStatus(doc); if (status) status.dataset.approvalStatus = transparency.approvalStatus; }
 }
-
-function renderStaleTransformDiscard(snapshot = {}, doc = document) {
-  setGeneratorStatus('Stale transform discarded: source, mask, reference, or routing changed before the provider result returned. Transform again from the current state.', 'warning', doc);
-  emitHushEvent('td613:hush:patch38-stale-discard', { snapshot });
-}
-
+function renderStaleTransformDiscard(snapshot = {}, doc = document) { setGeneratorStatus('Stale transform discarded: source, mask, reference, or routing changed before the provider result returned. Transform again from the current state.', 'warning', doc); emitHushEvent('td613:hush:patch38-stale-discard', { snapshot }); }
 async function runPatch38Transform(doc = document) {
-  const select = installGeneratorMode(doc);
+  installGeneratorMode(doc);
   const snapshot = captureTransformSnapshot(doc);
   const button = $('generateMaskedOutputBtn', doc);
   if (button) button.disabled = true;
+  publishOutboundPacket(null, snapshot.state);
   if (!text(snapshot.sourceText)) {
     const transparency = deriveApertureApprovalTransparency(buildPatch38ApprovalPacket({ reason: 'empty source text' }));
     recordPatch38ApprovalBlock(transparency, {});
@@ -356,30 +291,28 @@ async function runPatch38Transform(doc = document) {
   setGeneratorStatus(`Generator mode: ${snapshot.mode}. Building one coherent Phase 37 retrieval snapshot...`, 'info', doc);
   try {
     const phase37Telemetry = buildPhase37ProviderTelemetry({ sourceText: snapshot.sourceText, mask: snapshot.mask, maskReferenceText: snapshot.maskReferenceText, referenceText: snapshot.maskReferenceText, candidateCount: 8 });
+    const outboundInput = { sourceText: snapshot.sourceText, mask: snapshot.mask, maskReferenceText: snapshot.maskReferenceText, referenceText: snapshot.maskReferenceText, candidateCount: 8, flightPacket: phase37Telemetry.flightPacket };
+    const outboundContract = buildHushLlmPromptContractV3(outboundInput);
+    const outboundPacket = buildOutboundPacketExport({ contract: outboundContract, snapshot, phase37Telemetry, mode: snapshot.mode });
+    publishOutboundPacket(outboundPacket, snapshot.state);
     const providerReports = [];
-    if (snapshot.mode === GENERATOR_MODES.HYBRID || snapshot.mode === GENERATOR_MODES.REMOTE_LLM_PROXY) {
-      providerReports.push(await fetchRemoteReport({ sourceText: snapshot.sourceText, mask: snapshot.mask, maskReferenceText: snapshot.maskReferenceText, referenceText: snapshot.maskReferenceText, candidateCount: 8, flightPacket: phase37Telemetry.flightPacket }, doc));
-    }
-    if (!snapshotStillCurrent(snapshot, doc)) {
-      renderStaleTransformDiscard(snapshot, doc);
-      return null;
-    }
+    if (snapshot.mode === GENERATOR_MODES.HYBRID || snapshot.mode === GENERATOR_MODES.REMOTE_LLM_PROXY) providerReports.push(await fetchRemoteReport({ contract: outboundContract }, doc));
+    if (!snapshotStillCurrent(snapshot, doc)) { renderStaleTransformDiscard(snapshot, doc); return null; }
     const result = buildHushSwap({ sourceText: snapshot.sourceText, protectedBaselineText: snapshot.protectedBaselineText, mask: snapshot.mask, maskProfile: snapshot.referenceProfile || activeField(snapshot.state, snapshot.mask) || snapshot.mask?.profile || {}, maskReferenceText: snapshot.maskReferenceText, generatorMode: snapshot.mode, providerReports, protectedLiterals: [], phase37Telemetry, operatorMode: snapshot.recognitionIntentMode, contextType: snapshot.recognitionContextType, exposureDuration: snapshot.recognitionExposureDuration, options: { candidateCount: 30, includePrivateText: false } });
-    if (!snapshotStillCurrent(snapshot, doc)) {
-      renderStaleTransformDiscard(snapshot, doc);
-      return null;
-    }
+    if (!snapshotStillCurrent(snapshot, doc)) { renderStaleTransformDiscard(snapshot, doc); return null; }
     result.phase37Telemetry = phase37Telemetry;
     result.phase35Telemetry = phase37Telemetry;
+    result.outboundPacket = outboundPacket;
     result.patch38Snapshot = { runId: snapshot.runId, identity: snapshot.identity, maskId: snapshot.mask?.id || '', sourceHash: hashString(snapshot.sourceText), referenceHash: hashString(snapshot.maskReferenceText) };
     result.propositionIntegrity = auditPropositionIntegrity(snapshot.sourceText, result.selectedOutput || '');
     snapshot.state.hushSwapResult = result;
+    snapshot.state.hushOutboundPacket = outboundPacket;
     snapshot.state.protectedOutputText = result.selectedOutput || '';
-    if (typeof window !== 'undefined') window.__TD613_HUSH_PATCH38_LAST_RESULT = result;
+    if (typeof window !== 'undefined') { window.__TD613_HUSH_PATCH38_LAST_RESULT = result; window.__TD613_HUSH_PATCH38_LAST_OUTBOUND_PACKET = outboundPacket; }
     const output = $('protectedOutputInput', doc);
     if (output) output.value = snapshot.state.protectedOutputText;
     renderDiagnostics(result, doc);
-    emitHushEvent('td613:hush:patch38-result', { result, phase37Telemetry, snapshot: result.patch38Snapshot });
+    emitHushEvent('td613:hush:patch38-result', { result, phase37Telemetry, snapshot: result.patch38Snapshot, outboundPacket });
     if (!text(snapshot.state.protectedOutputText)) {
       const reports = result.patch38Diagnostics?.providerReports || [];
       const reportWarnings = reports.flatMap((report) => report.warnings || []);
@@ -392,11 +325,8 @@ async function runPatch38Transform(doc = document) {
       setGeneratorStatus(`Output produced from ${selected} via ${op}. Snapshot ${result.patch38Snapshot.identity}. Review/edit if needed; Analyze is optional before Accept.`, 'ok', doc);
     }
     return result;
-  } finally {
-    if (button && snapshot.runId === activePatch38RunId) button.disabled = false;
-  }
+  } finally { if (button && snapshot.runId === activePatch38RunId) button.disabled = false; }
 }
-
 export function initHushPatch38(doc = document) {
   if (!doc?.body || doc.body.dataset.pageKind !== 'adversarial-bench') return { installed: false, version: HUSH_SWAP_PATCH38_VERSION };
   doc.body.dataset.hushPatch38 = 'true';
@@ -404,14 +334,10 @@ export function initHushPatch38(doc = document) {
   doc.body.dataset.hushPhase37 = 'true';
   installGeneratorMode(doc);
   const button = $('generateMaskedOutputBtn', doc);
-  if (button && button.dataset.patch38 !== 'true') {
-    button.dataset.patch38 = 'true';
-    button.addEventListener('click', (event) => { event.preventDefault(); event.stopImmediatePropagation(); runPatch38Transform(doc); }, true);
-  }
-  if (typeof window !== 'undefined') window.__TD613_HUSH_PATCH38__ = { version: HUSH_SWAP_PATCH38_VERSION, phase35: true, phase37: true, runPatch38Transform, installGeneratorMode, remoteEndpointCandidates, remoteCacheStats: () => ({ size: patch38RemoteReportCache.size, inflight: patch38RemoteReportInflight.size, ttlMs: PATCH38_REMOTE_CACHE_TTL_MS, activeRunId: activePatch38RunId }), clearRemoteCache: () => { patch38RemoteReportCache.clear(); patch38RemoteReportInflight.clear(); }, captureTransformSnapshot: () => captureTransformSnapshot(document) };
+  if (button && button.dataset.patch38 !== 'true') { button.dataset.patch38 = 'true'; button.addEventListener('click', (event) => { event.preventDefault(); event.stopImmediatePropagation(); runPatch38Transform(doc); }, true); }
+  if (typeof window !== 'undefined') window.__TD613_HUSH_PATCH38__ = { version: HUSH_SWAP_PATCH38_VERSION, phase35: true, phase37: true, runPatch38Transform, installGeneratorMode, remoteEndpointCandidates, lastOutboundPacket: () => window.__TD613_HUSH_PATCH38_LAST_OUTBOUND_PACKET || bench.benchState?.hushOutboundPacket || null, remoteCacheStats: () => ({ size: patch38RemoteReportCache.size, inflight: patch38RemoteReportInflight.size, ttlMs: PATCH38_REMOTE_CACHE_TTL_MS, activeRunId: activePatch38RunId }), clearRemoteCache: () => { patch38RemoteReportCache.clear(); patch38RemoteReportInflight.clear(); }, captureTransformSnapshot: () => captureTransformSnapshot(document) };
   return { installed: true, version: HUSH_SWAP_PATCH38_VERSION };
 }
-
 if (typeof document !== 'undefined') {
   const boot = () => initHushPatch38(document);
   if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', boot, { once: true });
