@@ -1,6 +1,6 @@
 import { createCustomMask, addCustomMaskSample, rebuildCustomMaskProfile, exportCustomMaskJson, importCustomMaskJson, HUSH_CUSTOM_MASK_CORPUS_POLICY } from './engine/hush-custom-mask.js';
 
-const VERSION = 'phase-31.1-corpus-import-export';
+const VERSION = 'phase-31.1-corpus-import-export-surface-texture-label';
 const MIN_SAMPLE_WORDS = HUSH_CUSTOM_MASK_CORPUS_POLICY.minWordsPerSample;
 const text = (value) => String(value ?? '').trim();
 const byId = (id, doc = document) => doc.getElementById(id);
@@ -100,7 +100,7 @@ function modalHtml() {
         <label class="wide">Use When<textarea id="hushPhase31MaskIntendedUse" placeholder="Where this mask should be used."></textarea></label>
         <label class="wide">Risk Tell<textarea id="hushPhase31MaskRiskTell" placeholder="What becomes identifying or unstable."></textarea></label>
         <label>Sentence Shape<input id="hushPhase31MaskSentence" placeholder="short / mid / long / jagged"></label>
-        <label>Ornament<input id="hushPhase31MaskOrnament" placeholder="low / medium / high"></label>
+        <label>Surface Texture<input id="hushPhase31MaskOrnament" placeholder="low / medium / high"></label>
         <label>Warmth<input id="hushPhase31MaskWarmth" placeholder="low / medium / high"></label>
         <label>Custody<input id="hushPhase31MaskCustody" placeholder="medium / high / very-high"></label>
         <label class="wide">Pressure Warnings<textarea id="hushPhase31MaskWarnings" placeholder="Comma or line separated warnings."></textarea></label>
