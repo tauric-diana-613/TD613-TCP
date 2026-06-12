@@ -132,6 +132,8 @@ assert(questionFormScore(TECH_JOB_SIGNAL_SAMPLE, patch38.selectedOutput) >= 0.5)
 assert(newClaimRisk(TECH_JOB_SIGNAL_SAMPLE, patch38.selectedOutput).score < 0.35);
 
 const ui = fs.readFileSync('app/hush-phase32.js', 'utf8');
+const phase31Ui = fs.readFileSync('app/hush-phase31-1.js', 'utf8');
+const phase31Css = fs.readFileSync('app/hush-phase31-1.css', 'utf8');
 const patch38Ui = fs.readFileSync('app/hush-patch38.js', 'utf8');
 const bootstrap = fs.readFileSync('app/chamber-bootstrap.js', 'utf8');
 const proxy = fs.readFileSync('api/hush-generate.js', 'utf8');
@@ -139,7 +141,16 @@ const budgetedProxy = fs.readFileSync('api/hush-generate-budgeted.js', 'utf8');
 const envExample = fs.readFileSync('.env.example', 'utf8');
 const setupDoc = fs.readFileSync('docs/hush-remote-provider-setup.md', 'utf8');
 assert(ui.includes('hush-swap-phase34.js'));
-assert(ui.includes('Phase 34 expressive generator'));
+assert(ui.includes('Custom Mask Empty'));
+assert(ui.includes('hushPhase31ImportMaskLink'));
+assert(ui.includes('hushPhase31ExportMaskLink'));
+assert(phase31Ui.includes('exportCustomMaskJson'));
+assert(phase31Ui.includes('importCustomMaskJson'));
+assert(phase31Ui.includes('hushPhase31WordFloorCounter'));
+assert(phase31Ui.includes('customMaskCard'));
+assert(phase31Css.includes('hush-phase31-ledger-head'));
+assert(phase31Css.includes('hush-phase31-word-floor'));
+assert(phase31Css.includes('hush-custom-mask-capsule'));
 assert(bootstrap.includes('hush-patch38.js'));
 assert(patch38Ui.includes('hush-swap-patch38.js'));
 assert(patch38Ui.includes('/api/hush-generate'));
