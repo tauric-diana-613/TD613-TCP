@@ -1,4 +1,4 @@
-const HUSH_HOUSEKEEPING_VERSION = 'phase-32-housekeeping-packet-export';
+const HUSH_HOUSEKEEPING_VERSION = 'phase-32-housekeeping-packet-provider-capsule-bridge';
 const $ = (id) => document.getElementById(id);
 const text = (value) => String(value ?? '').trim();
 const words = (value) => (text(value).match(/[A-Za-z0-9][A-Za-z0-9'-]*/g) || []);
@@ -7,15 +7,45 @@ const esc = (value) => String(value ?? '').replaceAll('&','&amp;').replaceAll('<
 
 function bench() { return window.__TD613_HUSH_BENCH__ || {}; }
 function state() { return bench().benchState || {}; }
+function chip(label, level = '') { return `<span class="hush-quality-chip ${level}">${esc(label)}</span>`; }
+function ensureAfter(anchor, node) { if (!anchor || !anchor.parentNode || !node || node.parentNode) return; anchor.parentNode.insertBefore(node, anchor.nextSibling); }
 
-function chip(label, level = '') {
-  return `<span class="hush-quality-chip ${level}">${esc(label)}</span>`;
+function selectedMaskLabel() {
+  const select = $('maskFieldSelect');
+  return select?.selectedOptions?.[0]?.textContent || state().activeCustomMask?.label || state().selectedHushMask?.label || 'pending';
+}
+function currentHushResult() { return state().hushSwapResult || window.__TD613_HUSH_PATCH38_LAST_RESULT || null; }
+function currentOutboundPacket() { return window.__TD613_HUSH_PATCH38_LAST_OUTBOUND_PACKET || window.__TD613_HUSH_PATCH38__?.lastOutboundPacket?.() || state().hushOutboundPacket || currentHushResult()?.outboundPacket || null; }
+function providerReports() { return currentHushResult()?.patch38Diagnostics?.providerReports || []; }
+function receiptReady() { const s = state(); return Boolean(currentHushResult() || s.recognitionField || s.escapeVector || s.controllerDecision); }
+function packetReady() { const packet = currentOutboundPacket(); return Boolean(packet?.contract || packet?.flightPacket || packet?.packet); }
+function providerLogReady() { return providerReports().length > 0; }
+
+function maskCapsuleLabel() {
+  const active = state().activeCustomMask || (state().selectedHushMask?.source === 'custom' ? state().selectedHushMask : null);
+  const label = text(active?.label || active?.name || '');
+  return label && !/^unsaved custom mask$/i.test(label) ? label : 'Custom Mask Empty';
 }
 
-function ensureAfter(anchor, node) {
-  if (!anchor || !anchor.parentNode || !node) return;
-  if (node.parentNode) return;
-  anchor.parentNode.insertBefore(node, anchor.nextSibling);
+function ensureCustomMaskCapsule() {
+  let target = $('hushPhase32Diagnostics');
+  const anchor = $('hushSwapWarningsPanel') || $('hushProfileMatchPanel') || $('maskMemorySummary');
+  if (!target && anchor?.insertAdjacentElement) {
+    target = document.createElement('div');
+    target.id = 'hushPhase32Diagnostics';
+    anchor.insertAdjacentElement('afterend', target);
+  }
+  if (!target) return null;
+  const isEmpty = !text(target.textContent);
+  const alreadyCapsule = target.dataset.capsule === 'custom-mask' || target.classList.contains('hush-custom-mask-capsule');
+  if (!alreadyCapsule || isEmpty || !$('hushCustomMaskCapsuleName')) {
+    target.className = `${target.className || ''} hush-custom-mask-capsule`.trim();
+    target.dataset.capsule = 'custom-mask';
+    target.innerHTML = `<span id="hushCustomMaskCapsuleName" class="hush-custom-mask-capsule-name">${esc(maskCapsuleLabel())}</span><span class="hush-custom-mask-capsule-links"><button id="hushPhase31ImportMaskLink" type="button" class="hush-custom-mask-capsule-link">import</button><button id="hushPhase31ExportMaskLink" type="button" class="hush-custom-mask-capsule-link">export</button></span>`;
+  }
+  const label = $('hushCustomMaskCapsuleName');
+  if (label) label.textContent = maskCapsuleLabel();
+  return target;
 }
 
 function buildHousekeepingPanel() {
@@ -24,10 +54,7 @@ function buildHousekeepingPanel() {
   panel.id = 'hushHousekeepingPanel';
   panel.className = 'hush-housekeeping-panel';
   panel.innerHTML = `
-    <div class="hush-housekeeping-head">
-      <div><div class="hush-housekeeping-kicker">Custody / housekeeping</div><h2 class="hush-housekeeping-title">Private Text Custody</h2></div>
-      <p class="hush-housekeeping-copy">Reference samples and draft text are local operator material. Export defaults should carry receipts, not private passages.</p>
-    </div>
+    <div class="hush-housekeeping-head"><div><div class="hush-housekeeping-kicker">Custody / housekeeping</div><h2 class="hush-housekeeping-title">Private Text Custody</h2></div><p class="hush-housekeeping-copy">Reference samples and draft text are local operator material. Export defaults should carry receipts, not private passages.</p></div>
     <div class="hush-housekeeping-actions">
       <button id="hushClearSamplesBtn" type="button">Clear Samples</button>
       <button id="hushClearCustomMaskBtn" type="button">Clear Custom Mask</button>
@@ -37,10 +64,10 @@ function buildHousekeepingPanel() {
     <div class="hush-housekeeping-secondary-actions">
       <details class="hush-housekeeping-details"><summary>More Mask Anatomy</summary><div class="hush-housekeeping-detail-body">Start with name, use-when, and risk-tell. Sentence shape, surface texture, warmth, custody, and pressure warnings are advanced knobs; they are powerful but easy to overfit.</div></details>
       <button id="hushExportPacketBtn" type="button" class="hush-export-packet-btn" disabled>Export Packet</button>
+      <button id="hushExportProviderLogBtn" type="button" class="hush-export-provider-log-btn" disabled>Export Provider Log</button>
     </div>
-    <div id="hushCustodyStatus" class="hush-custody-status">Transform before exporting a receipt or packet. Private text stays out of clean receipts.</div>`;
-  const path = $('hushOperatorPath');
-  ensureAfter(path, panel);
+    <div id="hushCustodyStatus" class="hush-custody-status">Transform before exporting a receipt, packet, or provider log. Private text stays out of clean receipts.</div>`;
+  ensureAfter($('hushOperatorPath'), panel);
   return panel;
 }
 
@@ -49,330 +76,31 @@ function buildComparePanel() {
   const panel = document.createElement('section');
   panel.id = 'hushComparePanel';
   panel.className = 'hush-compare-panel';
-  panel.innerHTML = `
-    <div class="hush-compare-head"><div><div class="hush-compare-kicker">Before / after / losses</div><h2 class="hush-compare-title">Transformation Check</h2></div><p class="hush-compare-copy">Inspect what moved, what held, and what still feels too source-shaped.</p></div>
-    <div class="hush-compare-grid">
-      <article class="hush-compare-cell"><h4>Before</h4><div id="hushCompareBefore" class="hush-compare-text">No message yet.</div></article>
-      <article class="hush-compare-cell"><h4>After</h4><div id="hushCompareAfter" class="hush-compare-text">No transformed message yet.</div></article>
-      <article class="hush-compare-cell"><h4>Losses / Preserved</h4><div id="hushCompareLosses" class="hush-compare-losses"></div></article>
-    </div>`;
+  panel.innerHTML = `<div class="hush-compare-head"><div><div class="hush-compare-kicker">Before / after / losses</div><h2 class="hush-compare-title">Transformation Check</h2></div><p class="hush-compare-copy">Inspect what moved, what held, and what still feels too source-shaped.</p></div><div class="hush-compare-grid"><article class="hush-compare-cell"><h4>Before</h4><div id="hushCompareBefore" class="hush-compare-text">No message yet.</div></article><article class="hush-compare-cell"><h4>After</h4><div id="hushCompareAfter" class="hush-compare-text">No transformed message yet.</div></article><article class="hush-compare-cell"><h4>Losses / Preserved</h4><div id="hushCompareLosses" class="hush-compare-losses"></div></article></div>`;
   ensureAfter($('hushPressureRibbon'), panel);
   return panel;
 }
+function buildQualityPanel() { if ($('hushQualityPanel')) return $('hushQualityPanel'); const panel = document.createElement('section'); panel.id = 'hushQualityPanel'; panel.className = 'hush-quality-panel'; panel.innerHTML = `<div class="hush-quality-head"><div><div class="hush-quality-kicker">Sample quality</div><h3 class="hush-quality-title">Reference Fitness</h3></div></div><div id="hushQualityList" class="hush-quality-list"></div>`; ensureAfter($('hushCustomizePanel') || $('hushBuiltInMaskPanel'), panel); return panel; }
+function buildIdentPanel() { if ($('hushIdentPanel')) return $('hushIdentPanel'); const panel = document.createElement('section'); panel.id = 'hushIdentPanel'; panel.className = 'hush-ident-panel'; panel.innerHTML = `<div class="hush-ident-head"><div><div class="hush-ident-kicker">Too-identifiable meter</div><h3 class="hush-ident-title">Source Residual</h3></div><span id="hushIdentScore" class="hush-ident-score">0%</span></div><div class="hush-ident-meter"><i id="hushIdentBar"></i></div><div id="hushIdentAdvice" class="hush-ident-advice"></div>`; ensureAfter($('hushProfileMatchPanel'), panel); return panel; }
+function buildActiveMaskBadge() { if ($('hushActiveMaskBadge')) return $('hushActiveMaskBadge'); const badge = document.createElement('div'); badge.id = 'hushActiveMaskBadge'; badge.className = 'hush-active-mask-badge'; badge.innerHTML = '<span>Active mask</span><strong id="hushActiveMaskName">pending</strong>'; ensureAfter($('maskFieldSelect'), badge); return badge; }
 
-function buildQualityPanel() {
-  if ($('hushQualityPanel')) return $('hushQualityPanel');
-  const panel = document.createElement('section');
-  panel.id = 'hushQualityPanel';
-  panel.className = 'hush-quality-panel';
-  panel.innerHTML = `<div class="hush-quality-head"><div><div class="hush-quality-kicker">Sample quality</div><h3 class="hush-quality-title">Reference Fitness</h3></div></div><div id="hushQualityList" class="hush-quality-list"></div>`;
-  const custom = $('hushCustomizePanel') || $('hushBuiltInMaskPanel');
-  ensureAfter(custom, panel);
-  return panel;
-}
+function sampleQuality(value) { const chars = text(value).length; const w = words(value); const s = sentences(value); const unique = new Set(w.map((item) => item.toLowerCase())).size; const variety = w.length ? unique / w.length : 0; const proper = (text(value).match(/\b[A-Z][a-z]+\b/g) || []).length; return { chars, wordCount: w.length, sentenceCount: s.length, variety, proper }; }
+function updateQuality() { buildQualityPanel(); const sample = $('hushVoiceReferenceSamplesSaved')?.value || $('hushCustomMaskSampleInput')?.value || $('maskReferenceInput')?.value || ''; const q = sampleQuality(sample); const list = $('hushQualityList'); if (!list) return; list.innerHTML = [chip(`${q.chars} chars`, q.chars >= 1200 ? 'good' : 'warn'), chip(`${q.wordCount} words`, q.wordCount >= 180 ? 'good' : 'warn'), chip(`${q.sentenceCount} sentences`, q.sentenceCount >= 8 ? 'good' : 'warn'), chip(`variety ${Math.round(q.variety * 100)}%`, q.variety > .38 ? 'good' : 'warn'), chip(`${q.proper} proper-name signals`, q.proper > 14 ? 'alert' : 'good')].join(''); }
+function overlapScore(a, b) { const aw = new Set(words(a).map((item) => item.toLowerCase()).filter((item) => item.length > 3)); const bw = new Set(words(b).map((item) => item.toLowerCase()).filter((item) => item.length > 3)); if (!aw.size || !bw.size) return 0; let both = 0; for (const item of aw) if (bw.has(item)) both += 1; return both / Math.max(aw.size, 1); }
+function updateCompareAndResidual() { buildComparePanel(); buildIdentPanel(); const source = $('messageDraftInput')?.value || ''; const output = $('protectedOutputInput')?.value || ''; if ($('hushCompareBefore')) $('hushCompareBefore').textContent = source || 'No message yet.'; if ($('hushCompareAfter')) $('hushCompareAfter').textContent = output || 'No transformed message yet.'; const overlap = overlapScore(source, output); const profileMatch = state().hushProfileMatch || {}; const summary = profileMatch.summary || profileMatch; const residual = Number(summary.sourceResidualRisk ?? summary.sourceResidual ?? overlap) || overlap; const pct = Math.max(0, Math.min(100, Math.round(residual * 100))); if ($('hushIdentScore')) $('hushIdentScore').textContent = `${pct}%`; if ($('hushIdentBar')) $('hushIdentBar').style.width = `${pct}%`; const advice = []; if (!output.trim()) advice.push(chip('waiting for output', 'warn')); else if (pct > 60) advice.push(chip('too source-shaped', 'alert')); else if (pct > 34) advice.push(chip('review rhythm', 'warn')); else advice.push(chip('source residual low', 'good')); if ($('hushIdentAdvice')) $('hushIdentAdvice').innerHTML = advice.join(''); const losses = [chip(`lexical overlap ${Math.round(overlap * 100)}%`, overlap > .55 ? 'alert' : overlap > .32 ? 'warn' : 'good'), chip(`before words ${words(source).length}`), chip(`after words ${words(output).length}`)]; if ($('hushCompareLosses')) $('hushCompareLosses').innerHTML = losses.join(''); }
+function updateActiveMask() { buildActiveMaskBadge(); const select = $('maskFieldSelect'); if ($('hushActiveMaskName')) $('hushActiveMaskName').textContent = selectedMaskLabel(); if (select) { select.classList.add('hush-selected'); try { localStorage.setItem('td613-hush-selected-mask', select.value || ''); } catch (error) {} } ensureCustomMaskCapsule(); }
 
-function buildIdentPanel() {
-  if ($('hushIdentPanel')) return $('hushIdentPanel');
-  const panel = document.createElement('section');
-  panel.id = 'hushIdentPanel';
-  panel.className = 'hush-ident-panel';
-  panel.innerHTML = `<div class="hush-ident-head"><div><div class="hush-ident-kicker">Too-identifiable meter</div><h3 class="hush-ident-title">Source Residual</h3></div><span id="hushIdentScore" class="hush-ident-score">0%</span></div><div class="hush-ident-meter"><i id="hushIdentBar"></i></div><div id="hushIdentAdvice" class="hush-ident-advice"></div>`;
-  ensureAfter($('hushProfileMatchPanel'), panel);
-  return panel;
-}
-
-function buildActiveMaskBadge() {
-  if ($('hushActiveMaskBadge')) return $('hushActiveMaskBadge');
-  const badge = document.createElement('div');
-  badge.id = 'hushActiveMaskBadge';
-  badge.className = 'hush-active-mask-badge';
-  badge.innerHTML = '<span>Active mask</span><strong id="hushActiveMaskName">pending</strong>';
-  ensureAfter($('maskFieldSelect'), badge);
-  return badge;
-}
-
-function sampleQuality(value) {
-  const chars = text(value).length;
-  const w = words(value);
-  const s = sentences(value);
-  const unique = new Set(w.map((item) => item.toLowerCase())).size;
-  const variety = w.length ? unique / w.length : 0;
-  const proper = (text(value).match(/\b[A-Z][a-z]+\b/g) || []).length;
-  return { chars, wordCount: w.length, sentenceCount: s.length, variety, proper };
-}
-
-function updateQuality() {
-  buildQualityPanel();
-  const sample = $('hushVoiceReferenceSamplesSaved')?.value || $('hushCustomMaskSampleInput')?.value || $('maskReferenceInput')?.value || '';
-  const q = sampleQuality(sample);
-  const list = $('hushQualityList');
-  if (!list) return;
-  list.innerHTML = [
-    chip(`${q.chars} chars`, q.chars >= 1200 ? 'good' : 'warn'),
-    chip(`${q.wordCount} words`, q.wordCount >= 180 ? 'good' : 'warn'),
-    chip(`${q.sentenceCount} sentences`, q.sentenceCount >= 8 ? 'good' : 'warn'),
-    chip(`variety ${Math.round(q.variety * 100)}%`, q.variety > .38 ? 'good' : 'warn'),
-    chip(`${q.proper} proper-name signals`, q.proper > 14 ? 'alert' : 'good')
-  ].join('');
-}
-
-function overlapScore(a, b) {
-  const aw = new Set(words(a).map((item) => item.toLowerCase()).filter((item) => item.length > 3));
-  const bw = new Set(words(b).map((item) => item.toLowerCase()).filter((item) => item.length > 3));
-  if (!aw.size || !bw.size) return 0;
-  let both = 0;
-  for (const item of aw) if (bw.has(item)) both += 1;
-  return both / Math.max(aw.size, 1);
-}
-
-function updateCompareAndResidual() {
-  buildComparePanel();
-  buildIdentPanel();
-  const source = $('messageDraftInput')?.value || '';
-  const output = $('protectedOutputInput')?.value || '';
-  if ($('hushCompareBefore')) $('hushCompareBefore').textContent = source || 'No message yet.';
-  if ($('hushCompareAfter')) $('hushCompareAfter').textContent = output || 'No transformed message yet.';
-  const overlap = overlapScore(source, output);
-  const profileMatch = state().hushProfileMatch || {};
-  const summary = profileMatch.summary || profileMatch;
-  const residual = Number(summary.sourceResidualRisk ?? summary.sourceResidual ?? overlap) || overlap;
-  const pct = Math.max(0, Math.min(100, Math.round(residual * 100)));
-  if ($('hushIdentScore')) $('hushIdentScore').textContent = `${pct}%`;
-  if ($('hushIdentBar')) $('hushIdentBar').style.width = `${pct}%`;
-  const advice = [];
-  if (!output.trim()) advice.push(chip('waiting for output', 'warn'));
-  else if (pct > 60) advice.push(chip('too source-shaped', 'alert'));
-  else if (pct > 34) advice.push(chip('review rhythm', 'warn'));
-  else advice.push(chip('source residual low', 'good'));
-  if ($('hushIdentAdvice')) $('hushIdentAdvice').innerHTML = advice.join('');
-  const losses = [];
-  losses.push(chip(`lexical overlap ${Math.round(overlap * 100)}%`, overlap > .55 ? 'alert' : overlap > .32 ? 'warn' : 'good'));
-  losses.push(chip(`before words ${words(source).length}`));
-  losses.push(chip(`after words ${words(output).length}`));
-  const protectedTokens = (source.match(/\b(?:TD613|SHI|SAC|REF|CASE|DOC|ID)[A-Z0-9:_#/-]*\b/g) || []).length;
-  losses.push(chip(`${protectedTokens} protected-token signals`, 'good'));
-  if ($('hushCompareLosses')) $('hushCompareLosses').innerHTML = losses.join('');
-}
-
-function selectedMaskLabel() {
-  const select = $('maskFieldSelect');
-  return select?.selectedOptions?.[0]?.textContent || state().selectedHushMask?.label || 'pending';
-}
-
-function updateActiveMask() {
-  buildActiveMaskBadge();
-  const select = $('maskFieldSelect');
-  if ($('hushActiveMaskName')) $('hushActiveMaskName').textContent = selectedMaskLabel();
-  if (select) {
-    select.classList.add('hush-selected');
-    try { localStorage.setItem('td613-hush-selected-mask', select.value || ''); } catch (error) {}
-  }
-  document.querySelectorAll('.persona-select').forEach((button) => {
-    const active = button.dataset.maskId && button.dataset.maskId === (select?.value || state().selectedHushMaskId);
-    button.classList.toggle('is-active', Boolean(active));
-    if (active) button.textContent = 'Selected';
-  });
-}
-
-function currentHushResult() {
-  return state().hushSwapResult || window.__TD613_HUSH_PATCH38_LAST_RESULT || null;
-}
-
-function receiptReady() {
-  const s = state();
-  return Boolean(currentHushResult() || s.recognitionField || s.escapeVector || s.controllerDecision);
-}
-
-function currentPacketPayload() {
-  const result = currentHushResult();
-  const phase37 = result?.phase37Telemetry || result?.phase35Telemetry || {};
-  const packet = phase37.flightPacket || result?.flightPacket || null;
-  if (!packet) return null;
-  const diagnostics = result.patch38Diagnostics || {};
-  const providerReports = Array.isArray(diagnostics.providerReports) ? diagnostics.providerReports : [];
-  return {
-    schema: 'td613-hush-packet-export/v1',
-    createdAt: new Date().toISOString(),
-    exportKind: 'diagnostic-packet',
-    includesPrivateText: false,
-    privateTextExcluded: true,
-    note: 'This export carries the current Phase 37 Hush flight packet and diagnostic receipts. Source drafts, mask sample text, and transformed output text are excluded.',
-    promptVersion: phase37.promptVersion || providerReports[0]?.requestReceipt?.promptVersion || null,
-    flightPacketVersion: phase37.flightPacketVersion || packet.packet_version || null,
-    snapshot: result.patch38Snapshot || null,
-    packet,
-    ontologyRoute: phase37.ontologyRoute || packet.ontology_route || null,
-    diagnostics: {
-      providerMode: diagnostics.providerMode || null,
-      selectedCandidateId: diagnostics.selectedCandidateId || null,
-      selectedStyleOperation: diagnostics.selectedStyleOperation || null,
-      generatedCount: diagnostics.generatedCount ?? null,
-      mergedCount: diagnostics.mergedCount ?? null,
-      selectedCoverage: diagnostics.selectedCoverage ?? null,
-      selectedCollapseSurfaceScore: diagnostics.selectedCollapseSurfaceScore ?? null,
-      warning: diagnostics.warning || null,
-      approval: window.__TD613_HUSH_PATCH38_APPROVAL__ || null,
-      providerReceipts: providerReports.map((report) => report.requestReceipt || {}).filter((receipt) => Object.keys(receipt).length)
-    },
-    propositionIntegrity: result.propositionIntegrity || null
-  };
-}
-
-function updateCustodyButtons() {
-  const hasReceipt = receiptReady();
-  const hasPacket = Boolean(currentPacketPayload());
-  const receiptButtons = ['hushExportCleanReceiptBtn', 'hushCopyCleanReceiptBtn'];
-  for (const id of receiptButtons) {
-    const button = $(id);
-    if (!button) continue;
-    button.disabled = !hasReceipt;
-    button.setAttribute('aria-disabled', hasReceipt ? 'false' : 'true');
-  }
-  const packetButton = $('hushExportPacketBtn');
-  if (packetButton) {
-    packetButton.disabled = !hasPacket;
-    packetButton.setAttribute('aria-disabled', hasPacket ? 'false' : 'true');
-    packetButton.title = hasPacket ? 'Download the current Phase 37 Hush flight packet used by the latest Transform.' : 'Transform first to build a packet.';
-  }
-}
-
-function cleanReceipt() {
-  const s = state();
-  const mask = s.selectedHushMask || {};
-  const result = currentHushResult() || {};
-  return {
-    schema: 'td613-hush-receipt/v1',
-    createdAt: new Date().toISOString(),
-    includesPrivateText: false,
-    privateTextExcluded: true,
-    mask: { id: s.selectedHushMaskId || mask.id || null, label: mask.label || selectedMaskLabel(), source: mask.source || 'built-in' },
-    route: s.recognitionField?.classifications?.route || result.phase37Telemetry?.ontologyRoute?.routeType || result.phase37Telemetry?.ontologyRoute?.route_type || 'unrun',
-    controller: { state: s.controllerDecision?.state || 'waiting', action: s.controllerDecision?.action || 'waiting' },
-    scores: s.escapeVector?.scores || null,
-    claimCeiling: s.claimCeiling?.label || null,
-    packet: result.phase37Telemetry?.flightPacketVersion || result.phase37Telemetry?.flightPacket?.packet_version || null,
-    snapshot: result.patch38Snapshot || null,
-    warnings: [ ...(s.hushProfileMatch?.warnings || []), ...(s.recognitionField?.warnings || []), ...(s.controllerDecision?.warnings || []), ...(result.patch38Diagnostics?.warning ? [result.patch38Diagnostics.warning] : []) ].slice(0, 20),
-    custody: 'Receipt carries metrics and route metadata only; source drafts, mask samples, transformed outputs, and the full packet are excluded.'
-  };
-}
-
-function writeExportOutput(json = '') {
-  const out = $('ledgerExportOutput') || $('reportExportOutput');
-  if (out) out.value = json;
-}
-
-function downloadJson(payload = {}, filename = 'hush-export.json') {
-  const json = JSON.stringify(payload, null, 2);
-  writeExportOutput(json);
-  const blob = new Blob([json], { type: 'application/json' });
-  const url = URL.createObjectURL(blob);
-  const link = document.createElement('a');
-  link.href = url;
-  link.download = filename;
-  document.body.appendChild(link);
-  link.click();
-  link.remove();
-  window.setTimeout(() => URL.revokeObjectURL(url), 1200);
-  return json;
-}
-
-function exportCleanReceipt(copy = false) {
-  if (!receiptReady()) {
-    if ($('hushCustodyStatus')) $('hushCustodyStatus').textContent = 'Transform or analyze first; no clean receipt is ready yet.';
-    updateCustodyButtons();
-    return null;
-  }
-  const json = JSON.stringify(cleanReceipt(), null, 2);
-  writeExportOutput(json);
-  if (copy && navigator.clipboard) navigator.clipboard.writeText(json).catch(() => {});
-  if ($('hushCustodyStatus')) $('hushCustodyStatus').textContent = copy ? 'Clean receipt copied. Private text excluded.' : 'Clean receipt exported. Private text excluded.';
-  updateCustodyButtons();
-  return json;
-}
-
-function exportPacket() {
-  const payload = currentPacketPayload();
-  if (!payload) {
-    if ($('hushCustodyStatus')) $('hushCustodyStatus').textContent = 'Transform first; no Hush packet is ready to export yet.';
-    updateCustodyButtons();
-    return null;
-  }
-  const suffix = payload.snapshot?.identity || Date.now().toString(36);
-  const json = downloadJson(payload, `hush-packet-${suffix}.json`);
-  if ($('hushCustodyStatus')) $('hushCustodyStatus').textContent = 'Hush packet exported. Receipt remains separate; private text excluded from this packet export.';
-  updateCustodyButtons();
-  return json;
-}
-
-function clearSamples() {
-  ['hushVoiceReferenceSamplesSaved','hushCustomMaskSampleInput','maskReferenceInput'].forEach((id) => { const el = $(id); if (el) el.value = ''; });
-  const s = state();
-  s.activeCustomMask = null;
-  if ($('hushCustodyStatus')) $('hushCustodyStatus').textContent = 'Reference samples cleared from visible fields and active custom-mask state.';
-  updateQuality();
-  updateCustodyButtons();
-}
-
-function clearCustomMask() {
-  const s = state();
-  s.activeCustomMask = null;
-  s.customMasks = [];
-  if (typeof bench().renderHushMaskOptions === 'function') bench().renderHushMaskOptions();
-  const select = $('maskFieldSelect');
-  if (select && select.options.length) {
-    select.value = select.options[0].value;
-    if (typeof bench().selectHushMask === 'function') bench().selectHushMask(select.value);
-  }
-  if ($('hushCustodyStatus')) $('hushCustodyStatus').textContent = 'Custom masks cleared for this session. Built-in mask route restored.';
-  updateActiveMask();
-  updateCustodyButtons();
-}
-
-function improveLabels() {
-  const labels = [
-    ['generateMaskedOutputBtn','Transform the message through the selected mask. Review before use.'],
-    ['acceptOutputBtn','Accept only after review; accepted output enters local mask memory.'],
-    ['includeLedgerTextsToggle','Off by default. Turning this on includes private text in export.'],
-    ['maskReferenceInput','Advanced: reference text can improve a mask but increases custody burden.'],
-    ['hushExportCleanReceiptBtn','Export a clean receipt after Transform/analysis. This excludes private text and the full packet.'],
-    ['hushCopyCleanReceiptBtn','Copy a clean receipt after Transform/analysis. This excludes private text and the full packet.'],
-    ['hushExportPacketBtn','Download the current Hush packet after Transform for diagnostics.']
-  ];
-  for (const [id, title] of labels) { const el = $(id); if (el) el.title = title; }
-}
-
-function bind() {
-  buildHousekeepingPanel();
-  buildComparePanel();
-  buildQualityPanel();
-  buildIdentPanel();
-  buildActiveMaskBadge();
-  improveLabels();
-  $('hushClearSamplesBtn')?.addEventListener('click', clearSamples);
-  $('hushClearCustomMaskBtn')?.addEventListener('click', clearCustomMask);
-  $('hushExportCleanReceiptBtn')?.addEventListener('click', () => exportCleanReceipt(false));
-  $('hushCopyCleanReceiptBtn')?.addEventListener('click', () => exportCleanReceipt(true));
-  $('hushExportPacketBtn')?.addEventListener('click', exportPacket);
-  $('maskFieldSelect')?.addEventListener('change', () => setTimeout(() => { updateActiveMask(); updateCustodyButtons(); }, 0));
-  for (const id of ['hushVoiceReferenceSamplesSaved','hushCustomMaskSampleInput','maskReferenceInput']) $(id)?.addEventListener('input', updateQuality);
-  for (const id of ['messageDraftInput','protectedOutputInput']) $(id)?.addEventListener('input', updateCompareAndResidual);
-  for (const id of ['generateMaskedOutputBtn','analyzeOutputBtn','copyHushOutputBtn','acceptOutputBtn']) $(id)?.addEventListener('click', () => setTimeout(() => { updateCompareAndResidual(); updateActiveMask(); updateCustodyButtons(); }, 120));
-  window.addEventListener('td613:hush:patch38-result', () => setTimeout(() => { updateCompareAndResidual(); updateActiveMask(); updateCustodyButtons(); }, 80));
-  window.addEventListener('td613:hush:patch38-approval', () => setTimeout(updateCustodyButtons, 80));
-  try {
-    const saved = localStorage.getItem('td613-hush-selected-mask');
-    if (saved && $('maskFieldSelect') && typeof bench().selectHushMask === 'function') {
-      $('maskFieldSelect').value = saved;
-      bench().selectHushMask(saved);
-    }
-  } catch (error) {}
-  updateQuality();
-  updateCompareAndResidual();
-  updateActiveMask();
-  updateCustodyButtons();
-  window.__TD613_HUSH_HOUSEKEEPING__ = { version: HUSH_HOUSEKEEPING_VERSION, cleanReceipt, currentPacketPayload, exportPacket, clearSamples, clearCustomMask, updateQuality, updateCompareAndResidual, updateCustodyButtons };
-}
-
-if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', () => setTimeout(bind, 120));
-else setTimeout(bind, 120);
+function outboundPacketExportPayload() { const packet = currentOutboundPacket(); if (!packet) return null; return { ...packet, schema: packet.schema || 'td613-hush-outbound-packet/v1', exportKind: 'outbound-generator-contract', direction: 'outbound', exportedAt: new Date().toISOString(), note: packet.note || 'Outbound Hush generator contract built at Transform time. This is not Gemini output.' }; }
+function providerLogPayload() { const reports = providerReports(); if (!reports.length) return null; const result = currentHushResult() || {}; return { schema: 'td613-hush-provider-log/v1', createdAt: new Date().toISOString(), exportKind: 'inbound-provider-log', direction: 'inbound', note: 'Provider/Gemini return diagnostics from the latest Transform. This is not the outbound Hush packet and not the clean receipt.', snapshot: result.patch38Snapshot || null, reports, diagnostics: result.patch38Diagnostics || null, propositionIntegrity: result.propositionIntegrity || null }; }
+function updateCustodyButtons() { const hasReceipt = receiptReady(); const hasPacket = packetReady(); const hasProviderLog = providerLogReady(); for (const id of ['hushExportCleanReceiptBtn', 'hushCopyCleanReceiptBtn']) { const button = $(id); if (!button) continue; button.disabled = !hasReceipt; button.setAttribute('aria-disabled', hasReceipt ? 'false' : 'true'); } const packetButton = $('hushExportPacketBtn'); if (packetButton) { packetButton.disabled = !hasPacket; packetButton.setAttribute('aria-disabled', hasPacket ? 'false' : 'true'); packetButton.title = hasPacket ? 'Download the outbound Hush generator contract built at the latest Transform.' : 'Transform first to build an outbound Hush packet.'; } const providerButton = $('hushExportProviderLogBtn'); if (providerButton) { providerButton.disabled = !hasProviderLog; providerButton.setAttribute('aria-disabled', hasProviderLog ? 'false' : 'true'); providerButton.title = hasProviderLog ? 'Download the latest Gemini/provider return log.' : 'Run a remote/hybrid Transform first to create a provider log.'; } }
+function cleanReceipt() { const s = state(); const mask = s.selectedHushMask || {}; const result = currentHushResult() || {}; return { schema: 'td613-hush-receipt/v1', createdAt: new Date().toISOString(), includesPrivateText: false, privateTextExcluded: true, mask: { id: s.selectedHushMaskId || mask.id || null, label: mask.label || selectedMaskLabel(), source: mask.source || 'built-in' }, route: s.recognitionField?.classifications?.route || result.phase37Telemetry?.ontologyRoute?.routeType || result.phase37Telemetry?.ontologyRoute?.route_type || 'unrun', controller: { state: s.controllerDecision?.state || 'waiting', action: s.controllerDecision?.action || 'waiting' }, scores: s.escapeVector?.scores || null, claimCeiling: s.claimCeiling?.label || null, packet: result.phase37Telemetry?.flightPacketVersion || result.phase37Telemetry?.flightPacket?.packet_version || null, snapshot: result.patch38Snapshot || null, warnings: [ ...(s.hushProfileMatch?.warnings || []), ...(s.recognitionField?.warnings || []), ...(s.controllerDecision?.warnings || []), ...(result.patch38Diagnostics?.warning ? [result.patch38Diagnostics.warning] : []) ].slice(0, 20), custody: 'Receipt carries metrics and route metadata only; source drafts, mask samples, transformed outputs, outbound packet body, and provider returns are excluded.' }; }
+function writeExportOutput(json = '') { const out = $('ledgerExportOutput') || $('reportExportOutput'); if (out) out.value = json; }
+function downloadJson(payload = {}, filename = 'hush-export.json') { const json = JSON.stringify(payload, null, 2); writeExportOutput(json); const blob = new Blob([json], { type: 'application/json' }); const url = URL.createObjectURL(blob); const link = document.createElement('a'); link.href = url; link.download = filename; document.body.appendChild(link); link.click(); link.remove(); window.setTimeout(() => URL.revokeObjectURL(url), 1200); return json; }
+function exportCleanReceipt(copy = false) { if (!receiptReady()) { if ($('hushCustodyStatus')) $('hushCustodyStatus').textContent = 'Transform or analyze first; no clean receipt is ready yet.'; updateCustodyButtons(); return null; } const json = JSON.stringify(cleanReceipt(), null, 2); writeExportOutput(json); if (copy && navigator.clipboard) navigator.clipboard.writeText(json).catch(() => {}); if ($('hushCustodyStatus')) $('hushCustodyStatus').textContent = copy ? 'Clean receipt copied. Private text excluded.' : 'Clean receipt exported. Private text excluded.'; updateCustodyButtons(); return json; }
+function exportPacket() { const payload = outboundPacketExportPayload(); if (!payload) { if ($('hushCustodyStatus')) $('hushCustodyStatus').textContent = 'Transform first; no outbound Hush packet is ready to export yet.'; updateCustodyButtons(); return null; } const suffix = payload.snapshot?.identity || Date.now().toString(36); const json = downloadJson(payload, `hush-outbound-packet-${suffix}.json`); if ($('hushCustodyStatus')) $('hushCustodyStatus').textContent = 'Outbound Hush packet exported. This is the Transform-time contract, not Gemini output.'; updateCustodyButtons(); return json; }
+function exportProviderLog() { const payload = providerLogPayload(); if (!payload) { if ($('hushCustodyStatus')) $('hushCustodyStatus').textContent = 'No provider log yet. Use Remote LLM or Hybrid Transform first.'; updateCustodyButtons(); return null; } const suffix = payload.snapshot?.identity || Date.now().toString(36); const json = downloadJson(payload, `hush-provider-log-${suffix}.json`); if ($('hushCustodyStatus')) $('hushCustodyStatus').textContent = 'Provider log exported. This is the inbound Gemini/provider return, not the outbound packet.'; updateCustodyButtons(); return json; }
+function clearSamples() { ['hushVoiceReferenceSamplesSaved','hushCustomMaskSampleInput','maskReferenceInput'].forEach((id) => { const el = $(id); if (el) el.value = ''; }); const s = state(); s.activeCustomMask = null; if ($('hushCustodyStatus')) $('hushCustodyStatus').textContent = 'Reference samples cleared from visible fields and active custom-mask state.'; updateQuality(); updateCustodyButtons(); }
+function clearCustomMask() { const s = state(); s.activeCustomMask = null; s.customMasks = []; if (typeof bench().renderHushMaskOptions === 'function') bench().renderHushMaskOptions(); const select = $('maskFieldSelect'); if (select && select.options.length) { select.value = select.options[0].value; if (typeof bench().selectHushMask === 'function') bench().selectHushMask(select.value); } if ($('hushCustodyStatus')) $('hushCustodyStatus').textContent = 'Custom masks cleared for this session. Built-in mask route restored.'; updateActiveMask(); updateCustodyButtons(); }
+function improveLabels() { const labels = [ ['generateMaskedOutputBtn','Transform the message through the selected mask. Review before use.'], ['acceptOutputBtn','Accept only after review; accepted output enters local mask memory.'], ['includeLedgerTextsToggle','Off by default. Turning this on includes private text in export.'], ['maskReferenceInput','Advanced: reference text can improve a mask but increases custody burden.'], ['hushExportCleanReceiptBtn','Export a clean receipt after Transform/analysis. This excludes private text, outbound packet body, and provider returns.'], ['hushCopyCleanReceiptBtn','Copy a clean receipt after Transform/analysis. This excludes private text, outbound packet body, and provider returns.'], ['hushExportPacketBtn','Download the outbound Hush packet after Transform.'], ['hushExportProviderLogBtn','Download the inbound Gemini/provider return log after a remote/hybrid Transform.'] ]; for (const [id, title] of labels) { const el = $(id); if (el) el.title = title; } }
+function bind() { buildHousekeepingPanel(); buildComparePanel(); buildQualityPanel(); buildIdentPanel(); buildActiveMaskBadge(); ensureCustomMaskCapsule(); improveLabels(); $('hushClearSamplesBtn')?.addEventListener('click', clearSamples); $('hushClearCustomMaskBtn')?.addEventListener('click', clearCustomMask); $('hushExportCleanReceiptBtn')?.addEventListener('click', () => exportCleanReceipt(false)); $('hushCopyCleanReceiptBtn')?.addEventListener('click', () => exportCleanReceipt(true)); $('hushExportPacketBtn')?.addEventListener('click', exportPacket); $('hushExportProviderLogBtn')?.addEventListener('click', exportProviderLog); $('maskFieldSelect')?.addEventListener('change', () => setTimeout(() => { updateActiveMask(); updateCustodyButtons(); }, 0)); for (const id of ['hushVoiceReferenceSamplesSaved','hushCustomMaskSampleInput','maskReferenceInput']) $(id)?.addEventListener('input', updateQuality); for (const id of ['messageDraftInput','protectedOutputInput']) $(id)?.addEventListener('input', updateCompareAndResidual); for (const id of ['generateMaskedOutputBtn','analyzeOutputBtn','copyHushOutputBtn','acceptOutputBtn']) $(id)?.addEventListener('click', () => setTimeout(() => { updateCompareAndResidual(); updateActiveMask(); ensureCustomMaskCapsule(); updateCustodyButtons(); }, 160)); for (const eventName of ['td613:hush:patch38-result','td613:hush:outbound-packet','td613:hush:patch38-approval']) window.addEventListener(eventName, () => setTimeout(() => { updateCompareAndResidual(); updateActiveMask(); ensureCustomMaskCapsule(); updateCustodyButtons(); }, 80)); try { const saved = localStorage.getItem('td613-hush-selected-mask'); if (saved && $('maskFieldSelect') && typeof bench().selectHushMask === 'function') { $('maskFieldSelect').value = saved; bench().selectHushMask(saved); } } catch (error) {} updateQuality(); updateCompareAndResidual(); updateActiveMask(); ensureCustomMaskCapsule(); updateCustodyButtons(); window.__TD613_HUSH_HOUSEKEEPING__ = { version: HUSH_HOUSEKEEPING_VERSION, cleanReceipt, outboundPacketExportPayload, providerLogPayload, exportPacket, exportProviderLog, clearSamples, clearCustomMask, updateQuality, updateCompareAndResidual, updateCustodyButtons, ensureCustomMaskCapsule }; }
+if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', () => setTimeout(bind, 120)); else setTimeout(bind, 120);
