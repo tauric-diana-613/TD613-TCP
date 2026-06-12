@@ -1,4 +1,4 @@
-const HUSH_LAZY_ENHANCEMENTS_VERSION = 'hush-lazy-enhancements/v1';
+const HUSH_LAZY_ENHANCEMENTS_VERSION = 'hush-lazy-enhancements/v2-lite';
 
 const loaded = new Set();
 const loading = new Map();
@@ -6,13 +6,13 @@ const modules = {
   customizer: './hush-phase31-1.js?v=202606121900',
   housekeeping: './hush-housekeeping.js?v=202606121846',
   relayout: './hush-housekeeping-relayout.js?v=202606121846',
-  capsuleScope: './hush-customizer-capsule-scope.js?v=202606121910',
-  compareLayout: './hush-compare-layout-custody.js?v=202606121924'
+  capsuleScope: './hush-customizer-tabs-lite.js?v=202606121942',
+  compareLayout: './hush-compare-layout-lite.js?v=202606121942'
 };
 
-function idle(callback, timeout = 900) {
+function idle(callback, timeout = 1600) {
   if ('requestIdleCallback' in window) return window.requestIdleCallback(callback, { timeout });
-  return window.setTimeout(callback, Math.min(timeout, 360));
+  return window.setTimeout(callback, Math.min(timeout, 700));
 }
 
 function importOnce(key) {
@@ -46,8 +46,8 @@ function loadCustodyStack() {
 }
 
 function loadPostPaintEnhancements() {
-  idle(() => loadCustodyStack(), 1000);
-  idle(() => importOnce('compareLayout'), 1400);
+  idle(() => importOnce('compareLayout'), 1200);
+  idle(() => importOnce('housekeeping').then(() => importOnce('relayout')), 2200);
 }
 
 function bindInteractionLoaders() {
@@ -68,7 +68,7 @@ function bindInteractionLoaders() {
 
 function boot() {
   bindInteractionLoaders();
-  loadPostPaintEnhancements();
+  window.setTimeout(loadPostPaintEnhancements, 900);
   window.setTimeout(bindInteractionLoaders, 300);
   window.setTimeout(bindInteractionLoaders, 1000);
 }
