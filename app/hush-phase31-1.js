@@ -1,6 +1,6 @@
 import { createCustomMask, addCustomMaskSample, rebuildCustomMaskProfile, exportCustomMaskJson, importCustomMaskJson, HUSH_CUSTOM_MASK_CORPUS_POLICY } from './engine/hush-custom-mask.js';
 
-const VERSION = 'phase-31.1-corpus-import-export-surface-texture-label';
+const VERSION = 'phase-31.1-corpus-import-export-reset-customizer';
 const MIN_SAMPLE_WORDS = HUSH_CUSTOM_MASK_CORPUS_POLICY.minWordsPerSample;
 const text = (value) => String(value ?? '').trim();
 const byId = (id, doc = document) => doc.getElementById(id);
@@ -54,6 +54,7 @@ function updateCapsule(doc = document) {
   const node = byId('hushCustomMaskCapsuleName', doc);
   if (node) node.textContent = displayMaskName();
   if (typeof window !== 'undefined') window.__TD613_HUSH_PHASE32__?.renderCustomMaskCapsule?.(doc);
+  if (typeof window !== 'undefined') window.__TD613_HUSH_HOUSEKEEPING__?.ensureCustomMaskCapsule?.();
 }
 
 function shellHtml() {
@@ -87,6 +88,7 @@ function shellHtml() {
     <textarea id="hushVoiceReferenceSamplesSaved" autocomplete="off" autocapitalize="off" autocorrect="off" spellcheck="false" placeholder="Paste one 75+ word voice reference sample, then tap Log Sample. The ledger updates after each accepted sample."></textarea>
     <div class="hush-phase31-actions"><button id="hushPhase31LogSampleBtn" type="button" class="secondary">Log Sample</button><button id="hushPhase31SaveMaskBtn" type="button" class="secondary">Save Mask</button><button id="hushPhase31Undo" type="button" class="hush-phase31-mini hush-phase31-link" aria-disabled="true">undo last</button></div>
     <div id="hushPhase31SampleStatus" class="persona-memory-summary">Corpus empty. Add 75+ word samples to begin.</div>
+    <button id="hushPhase31ResetCustomizer" type="button" class="hush-phase31-reset-customizer">reset customizer</button>
   </section>`;
 }
 
@@ -219,6 +221,38 @@ function undoSample(doc = document) {
   renderLedger(doc);
 }
 
+function resetCustomizer(doc = document) {
+  samples = [];
+  activeMask = null;
+  const bench = window.__TD613_HUSH_BENCH__ || {};
+  const state = bench.benchState || {};
+  const savedMasks = Array.isArray(state.customMasks) ? state.customMasks : [];
+  state.activeCustomMask = null;
+  state.hushOutboundPacket = null;
+  if (state.selectedHushMask?.id === 'custom-unsaved-phase31-1' || state.selectedHushMask?.source === 'custom-imported-unsaved') {
+    const fallback = (state.hushMasks || [])[0] || savedMasks[0] || null;
+    if (fallback) {
+      state.selectedHushMask = fallback;
+      state.selectedHushMaskId = fallback.id;
+      const select = byId('maskFieldSelect', doc);
+      if (select) select.value = fallback.id;
+    }
+  }
+  ['hushVoiceReferenceSamplesSaved', 'hushPhase31ContextLabel', 'maskReferenceInput'].forEach((id) => { const el = byId(id, doc); if (el) el.value = ''; });
+  ['hushPhase31MaskName', 'hushPhase31MaskDescription', 'hushPhase31MaskIntendedUse', 'hushPhase31MaskRiskTell', 'hushPhase31MaskSentence', 'hushPhase31MaskOrnament', 'hushPhase31MaskWarmth', 'hushPhase31MaskCustody', 'hushPhase31MaskWarnings'].forEach((id) => { const el = byId(id, doc); if (el) el.value = ''; });
+  const family = byId('hushPhase31MaskFamily', doc);
+  if (family) family.value = 'custom field mask';
+  try {
+    ['td613-hush-customizer-cache', 'td613-hush-customizer-draft', 'td613:hush-customizer-cache', 'td613:hush-customizer-draft'].forEach((key) => localStorage.removeItem(key));
+  } catch (error) {}
+  const status = byId('hushPhase31SampleStatus', doc);
+  if (status) status.textContent = 'Customizer reset. Saved masks were left alone.';
+  if (typeof bench.renderHushMaskOptions === 'function') bench.renderHushMaskOptions();
+  renderLedger(doc);
+  updateCapsule(doc);
+  window.__TD613_HUSH_HOUSEKEEPING__?.ensureCustomMaskCapsule?.();
+}
+
 function readModal(doc = document) {
   const warnings = text(byId('hushPhase31MaskWarnings', doc)?.value).split(/[\n,]+/).map((item) => item.trim()).filter(Boolean);
   return {
@@ -235,11 +269,6 @@ function readModal(doc = document) {
     },
     pressureWarnings: warnings
   };
-}
-
-function setValue(id, value, doc = document) {
-  const el = byId(id, doc);
-  if (el) el.value = text(value || '');
 }
 
 function hydrateModalFromMask(mask = activeMask, doc = document, { preserveTyped = true } = {}) {
@@ -342,6 +371,7 @@ async function importMaskFromFile(file, doc = document) {
       profileStatus: next.profileStatus,
       acceptedWords: next.acceptedWords,
       acceptedSampleCount: next.acceptedSampleCount,
+      source: parsed.source || 'custom-imported-unsaved',
       sampleSeed: samples.map((entry) => entry.text).join('\n\n') || parsed.sampleSeed || importedBase.sampleSeed || ''
     });
     hydrateModalFromMask(activeMask, doc, { preserveTyped: false });
@@ -451,11 +481,13 @@ export function initHushPhase311(doc = document) {
   byId('hushPhase31SaveMaskBtn', doc)?.addEventListener('click', () => openSaveModal(doc));
   byId('hushPhase31CancelSave', doc)?.addEventListener('click', () => { const modal = byId('hushPhase31SaveModal', doc); if (modal) modal.hidden = true; });
   byId('hushPhase31AddToStudio', doc)?.addEventListener('click', () => addToStudio(doc));
+  byId('hushPhase31ResetCustomizer', doc)?.addEventListener('click', () => resetCustomizer(doc));
   byId('hushVoiceReferenceSamplesSaved', doc)?.addEventListener('input', () => updateWordCounter(doc));
   wireCapsuleIO(doc);
   renderLedger(doc);
   window.setTimeout(() => wireCapsuleIO(doc), 140);
   window.setTimeout(() => wireCapsuleIO(doc), 520);
+  if (typeof window !== 'undefined') window.__TD613_HUSH_PHASE31_CUSTOMIZER__ = { version: VERSION, resetCustomizer };
   return { version: VERSION, installed: true, corpusPolicy: HUSH_CUSTOM_MASK_CORPUS_POLICY };
 }
 
