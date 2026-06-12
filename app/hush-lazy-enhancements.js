@@ -1,4 +1,4 @@
-const HUSH_LAZY_ENHANCEMENTS_VERSION = 'hush-lazy-enhancements/v2-lite';
+const HUSH_LAZY_ENHANCEMENTS_VERSION = 'hush-lazy-enhancements/v3-loading-failsafe';
 
 const loaded = new Set();
 const loading = new Map();
@@ -9,6 +9,21 @@ const modules = {
   capsuleScope: './hush-customizer-tabs-lite.js?v=202606121942',
   compareLayout: './hush-compare-layout-lite.js?v=202606121942'
 };
+
+function hideLoadingOverlay(reason = 'lazy-loader') {
+  const overlay = document.getElementById('td613HushLoading');
+  if (!overlay) return false;
+  overlay.hidden = true;
+  overlay.setAttribute('aria-hidden', 'true');
+  overlay.dataset.dismissedBy = reason;
+  return true;
+}
+
+function installLoadingFailsafe() {
+  window.setTimeout(() => hideLoadingOverlay('first-paint-failsafe'), 450);
+  window.setTimeout(() => hideLoadingOverlay('one-second-failsafe'), 1000);
+  window.addEventListener('load', () => window.setTimeout(() => hideLoadingOverlay('window-load'), 80), { once: true });
+}
 
 function idle(callback, timeout = 1600) {
   if ('requestIdleCallback' in window) return window.requestIdleCallback(callback, { timeout });
@@ -67,17 +82,20 @@ function bindInteractionLoaders() {
 }
 
 function boot() {
+  hideLoadingOverlay('boot');
   bindInteractionLoaders();
   window.setTimeout(loadPostPaintEnhancements, 900);
   window.setTimeout(bindInteractionLoaders, 300);
   window.setTimeout(bindInteractionLoaders, 1000);
 }
 
+installLoadingFailsafe();
 if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', boot, { once: true });
 else boot();
 
 window.__TD613_HUSH_LAZY_ENHANCEMENTS__ = {
   version: HUSH_LAZY_ENHANCEMENTS_VERSION,
+  hideLoadingOverlay,
   importOnce,
   loadCustomizerStack,
   loadCustodyStack,
