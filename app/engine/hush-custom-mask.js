@@ -17,9 +17,20 @@ export const HUSH_CUSTOM_MASK_CORPUS_POLICY = Object.freeze({
 
 const safeText = (value) => String(value ?? '');
 const asArray = (value) => Array.isArray(value) ? [...value] : [];
+const round3 = (value) => Number(Number(value || 0).toFixed(3));
 
 function slug(value = 'custom-mask') {
   return safeText(value).toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, '') || 'custom-mask';
+}
+
+function preserveLineBreaks(value = '') {
+  return safeText(value)
+    .replace(/\r\n?/g, '\n')
+    .split('\n')
+    .map((line) => line.replace(/[\t ]+/g, ' ').trimEnd())
+    .join('\n')
+    .replace(/^\n+|\n+$/g, '')
+    .trim();
 }
 
 function wordCount(text = '') {
@@ -55,6 +66,143 @@ function sampleId(text = '', index = 0) {
   return `sample-${index + 1}-${hashText(text).slice(1, 7)}`;
 }
 
+function average(values = []) {
+  const clean = values.map(Number).filter(Number.isFinite);
+  if (!clean.length) return 0;
+  return clean.reduce((sum, value) => sum + value, 0) / clean.length;
+}
+
+function mostCommon(values = [], fallback = '') {
+  const counts = new Map();
+  for (const value of values.filter(Boolean)) counts.set(value, (counts.get(value) || 0) + 1);
+  return [...counts.entries()].sort((left, right) => right[1] - left[1])[0]?.[0] || fallback;
+}
+
+function lineBreakTendency(summary = {}) {
+  if ((summary.paragraphBreakCount || 0) > 0 && (summary.averageParagraphWords || 0) >= 90) return 'long-paragraph-sensitive';
+  if ((summary.paragraphBreakCount || 0) > 0) return 'paragraph-sensitive';
+  if ((summary.lineBreakDensity || 0) >= 0.08 || (summary.nonEmptyLineCount || 0) >= 4) return 'line-broken';
+  if ((summary.lineBreakCount || 0) > 0) return 'light-breaks';
+  return 'flat';
+}
+
+function punctuationStyle(summary = {}) {
+  const density = summary.punctuationDensity || 0;
+  if (density <= 0.025) return 'sparse';
+  if ((summary.semicolonDensity || 0) + (summary.colonDensity || 0) + (summary.dashDensity || 0) >= 0.035) return 'jointed';
+  if ((summary.questionDensity || 0) + (summary.exclamationDensity || 0) + (summary.ellipsisDensity || 0) >= 0.035 || (summary.repeatedPunctuationCount || 0) > 0) return 'expressive';
+  return 'moderate';
+}
+
+function buildSurfaceCadence(text = '', profile = {}) {
+  const value = preserveLineBreaks(text);
+  const words = wordCount(value);
+  const chars = Math.max(1, value.length);
+  const lineBreakCount = (value.match(/\n/g) || []).length;
+  const paragraphBreakCount = (value.match(/\n{2,}/g) || []).length;
+  const lines = value.split('\n').map((line) => line.trim()).filter(Boolean);
+  const paragraphs = value.split(/\n{2,}/).map((paragraph) => paragraph.trim()).filter(Boolean);
+  const paragraphWordCounts = paragraphs.map(wordCount);
+  const lineWordCounts = lines.map(wordCount);
+  const sentenceChunks = value.match(/[^.!?]+[.!?]+|[^.!?]+$/g)?.map((item) => item.trim()).filter(Boolean) || [];
+  const terminalMissing = sentenceChunks.filter((chunk) => chunk && !/[.!?…]$/.test(chunk)).length;
+  const lowercaseStarts = value.match(/(^|[.!?]\s+|\n+)[a-z]/g) || [];
+  const repeatedPunctuation = value.match(/[!?.,;:]{2,}|…{2,}/g) || [];
+  const punctuationCount = (value.match(/[.,;:!?—–-]|\.\.\.|…/g) || []).length;
+  const punctuation = {
+    punctuationDensity: round3(profile.punctuationDensity ?? (punctuationCount / chars)),
+    commaDensity: round3((value.match(/,/g) || []).length / chars),
+    periodDensity: round3((value.match(/\./g) || []).length / chars),
+    semicolonDensity: round3((value.match(/;/g) || []).length / chars),
+    colonDensity: round3((value.match(/:/g) || []).length / chars),
+    dashDensity: round3((value.match(/[—–-]/g) || []).length / chars),
+    questionDensity: round3((value.match(/\?/g) || []).length / chars),
+    exclamationDensity: round3((value.match(/!/g) || []).length / chars),
+    ellipsisDensity: round3((value.match(/\.\.\.|…/g) || []).length / chars),
+    apostropheDensity: round3((value.match(/[’']/g) || []).length / chars),
+    repeatedPunctuationCount: repeatedPunctuation.length,
+    missingTerminalPunctuationRatio: round3(terminalMissing / Math.max(1, sentenceChunks.length)),
+    lowercaseSentenceStartRatio: round3(profile.surfaceMarkerProfile?.lowercaseLead ?? profile.lowercaseLead ?? (lowercaseStarts.length / Math.max(1, sentenceChunks.length)))
+  };
+  punctuation.style = punctuationStyle(punctuation);
+  const lineBreaks = {
+    lineBreakCount,
+    paragraphBreakCount,
+    nonEmptyLineCount: lines.length,
+    paragraphCount: paragraphs.length,
+    averageParagraphWords: round3(average(paragraphWordCounts)),
+    averageLineWords: round3(average(lineWordCounts)),
+    maxParagraphWords: paragraphWordCounts.length ? Math.max(...paragraphWordCounts) : 0,
+    minParagraphWords: paragraphWordCounts.length ? Math.min(...paragraphWordCounts) : 0,
+    lineBreakDensity: round3(profile.lineBreakDensity ?? (lineBreakCount / Math.max(1, words))),
+    paragraphBreakDensity: round3(paragraphBreakCount / Math.max(1, words)),
+    paragraphWordCounts,
+    tendency: ''
+  };
+  lineBreaks.tendency = lineBreakTendency(lineBreaks);
+  const markerProfile = profile.surfaceMarkerProfile || {};
+  return {
+    version: 'layout-cadence/v1',
+    lineBreaks,
+    punctuation,
+    surfaceMarkers: {
+      lowercaseLead: round3(markerProfile.lowercaseLead ?? profile.lowercaseLead ?? punctuation.lowercaseSentenceStartRatio),
+      apostropheDrop: round3(markerProfile.apostropheDrop ?? profile.apostropheDrop ?? 0),
+      abbreviationDensity: round3(profile.abbreviationDensity ?? profile.abbreviationPressure ?? 0),
+      conversationalPosture: round3(profile.conversationalPosture ?? profile.conversationalPressure ?? 0)
+    },
+    instruction: 'Line breaks, paragraph length, punctuation density, punctuation scarcity, repeated marks, lowercase starts, and apostrophe/contraction surface are cadence evidence when present; preserve meaning and protected literals first.'
+  };
+}
+
+function averageSurfaceCadence(samples = [], compositeProfile = {}) {
+  const profiles = samples.map((sample) => sample.surfaceCadence || sample.layoutCadence).filter(Boolean);
+  if (!profiles.length) return buildSurfaceCadence('', compositeProfile);
+  const lineBreaks = {
+    lineBreakCount: round3(average(profiles.map((item) => item.lineBreaks?.lineBreakCount))),
+    paragraphBreakCount: round3(average(profiles.map((item) => item.lineBreaks?.paragraphBreakCount))),
+    nonEmptyLineCount: round3(average(profiles.map((item) => item.lineBreaks?.nonEmptyLineCount))),
+    paragraphCount: round3(average(profiles.map((item) => item.lineBreaks?.paragraphCount))),
+    averageParagraphWords: round3(average(profiles.map((item) => item.lineBreaks?.averageParagraphWords))),
+    averageLineWords: round3(average(profiles.map((item) => item.lineBreaks?.averageLineWords))),
+    maxParagraphWords: Math.max(0, ...profiles.map((item) => Number(item.lineBreaks?.maxParagraphWords || 0))),
+    minParagraphWords: Math.min(...profiles.map((item) => Number(item.lineBreaks?.minParagraphWords || 0)).filter(Number.isFinite)),
+    lineBreakDensity: round3(average(profiles.map((item) => item.lineBreaks?.lineBreakDensity))),
+    paragraphBreakDensity: round3(average(profiles.map((item) => item.lineBreaks?.paragraphBreakDensity))),
+    paragraphWordCounts: profiles.flatMap((item) => asArray(item.lineBreaks?.paragraphWordCounts)).slice(0, 80),
+    tendency: mostCommon(profiles.map((item) => item.lineBreaks?.tendency), 'flat')
+  };
+  if (!Number.isFinite(lineBreaks.minParagraphWords)) lineBreaks.minParagraphWords = 0;
+  const punctuation = {
+    punctuationDensity: round3(average(profiles.map((item) => item.punctuation?.punctuationDensity))),
+    commaDensity: round3(average(profiles.map((item) => item.punctuation?.commaDensity))),
+    periodDensity: round3(average(profiles.map((item) => item.punctuation?.periodDensity))),
+    semicolonDensity: round3(average(profiles.map((item) => item.punctuation?.semicolonDensity))),
+    colonDensity: round3(average(profiles.map((item) => item.punctuation?.colonDensity))),
+    dashDensity: round3(average(profiles.map((item) => item.punctuation?.dashDensity))),
+    questionDensity: round3(average(profiles.map((item) => item.punctuation?.questionDensity))),
+    exclamationDensity: round3(average(profiles.map((item) => item.punctuation?.exclamationDensity))),
+    ellipsisDensity: round3(average(profiles.map((item) => item.punctuation?.ellipsisDensity))),
+    apostropheDensity: round3(average(profiles.map((item) => item.punctuation?.apostropheDensity))),
+    repeatedPunctuationCount: round3(average(profiles.map((item) => item.punctuation?.repeatedPunctuationCount))),
+    missingTerminalPunctuationRatio: round3(average(profiles.map((item) => item.punctuation?.missingTerminalPunctuationRatio))),
+    lowercaseSentenceStartRatio: round3(average(profiles.map((item) => item.punctuation?.lowercaseSentenceStartRatio))),
+    style: mostCommon(profiles.map((item) => item.punctuation?.style), 'moderate')
+  };
+  return {
+    version: 'layout-cadence/v1',
+    lineBreaks,
+    punctuation,
+    surfaceMarkers: {
+      lowercaseLead: round3(average(profiles.map((item) => item.surfaceMarkers?.lowercaseLead))),
+      apostropheDrop: round3(average(profiles.map((item) => item.surfaceMarkers?.apostropheDrop))),
+      abbreviationDensity: round3(average(profiles.map((item) => item.surfaceMarkers?.abbreviationDensity))),
+      conversationalPosture: round3(average(profiles.map((item) => item.surfaceMarkers?.conversationalPosture)))
+    },
+    instruction: profiles[0]?.instruction || buildSurfaceCadence('', compositeProfile).instruction
+  };
+}
+
 function buildSampleWarnings(value = '', metrics = {}) {
   const warnings = [];
   if (metrics.wordCount < HUSH_CUSTOM_MASK_CORPUS_POLICY.minWordsPerSample) warnings.push('below-75-word-floor');
@@ -71,7 +219,9 @@ function sampleEligibility(metrics = {}) {
 }
 
 function buildSample(text = '', index = 0, options = {}) {
-  const value = safeText(text).trim();
+  const value = preserveLineBreaks(text);
+  const profile = extractCadenceProfile(value);
+  const surfaceCadence = buildSurfaceCadence(value, profile);
   const metrics = {
     wordCount: wordCount(value),
     charCount: charCount(value),
@@ -90,7 +240,9 @@ function buildSample(text = '', index = 0, options = {}) {
     createdAt: options.createdAt || new Date().toISOString(),
     eligibility: sampleEligibility(metrics),
     warnings: buildSampleWarnings(value, metrics),
-    profile: extractCadenceProfile(value)
+    profile,
+    surfaceCadence,
+    layoutCadence: surfaceCadence
   };
 }
 
@@ -172,12 +324,20 @@ function statusFor(totalWords = 0, sampleCount = 0) {
 function corpusWarningsFor(mask = {}) {
   const warnings = [];
   const readiness = mask.corpusReadiness || buildCorpusReadiness(mask.samples || []);
+  const cadence = mask.surfaceCadence || mask.layoutCadence || {};
+  const lineBreaks = cadence.lineBreaks || {};
+  const punctuation = cadence.punctuation || {};
+  const markers = cadence.surfaceMarkers || {};
   if (!readiness.acceptedSampleCount) warnings.push('no-accepted-samples');
   if (readiness.status === 'corpus-building') warnings.push('mask-not-ready-corpus-building');
   if (readiness.status === 'provisional') warnings.push('provisional-mask-corpus');
   if (readiness.status === 'operational') warnings.push('operational-not-rigorous');
   if (readiness.promptCategoryCount > 0 && readiness.promptCategoryCount < 5) warnings.push('low-context-diversity');
   if (readiness.acceptedSampleCount > 0 && readiness.acceptedWords < HUSH_CUSTOM_MASK_CORPUS_POLICY.rigorousWords) warnings.push('under-rigorous-word-floor');
+  if (['line-broken', 'paragraph-sensitive', 'long-paragraph-sensitive'].includes(lineBreaks.tendency)) warnings.push('surface-line-break-sensitive');
+  if (punctuation.style === 'sparse') warnings.push('surface-punctuation-sparse');
+  if (['jointed', 'expressive'].includes(punctuation.style)) warnings.push('surface-punctuation-jointed');
+  if ((markers.lowercaseLead || 0) > 0.08 || (markers.apostropheDrop || 0) > 0.01 || (markers.abbreviationDensity || 0) > 0.08) warnings.push('surface-marker-variance');
   return warnings;
 }
 
@@ -216,6 +376,9 @@ function sampleVariance(samples = [], compositeProfile = {}) {
 export function createCustomMask(input = {}) {
   const label = safeText(input.label || input.name || 'Custom Mask').trim() || 'Custom Mask';
   const emptyProfile = extractCadenceProfile('');
+  const emptySurfaceCadence = buildSurfaceCadence('', emptyProfile);
+  const enrichedEmptyProfile = { ...emptyProfile, surfaceCadence: emptySurfaceCadence, layoutCadence: emptySurfaceCadence };
+  const emptyDistribution = buildMaskDistribution(enrichedEmptyProfile, { sampleCount: 0 });
   const corpusReadiness = buildCorpusReadiness([]);
   return {
     version: HUSH_CUSTOM_MASK_VERSION,
@@ -223,11 +386,13 @@ export function createCustomMask(input = {}) {
     label,
     source: 'custom',
     samples: [],
-    compositeProfile: emptyProfile,
-    profile: emptyProfile,
-    distribution: buildMaskDistribution(emptyProfile, { sampleCount: 0 }),
-    profileTargets: buildMaskDistribution(emptyProfile, { sampleCount: 0 }),
-    profileSummary: localProfileSummary(emptyProfile),
+    compositeProfile: enrichedEmptyProfile,
+    profile: enrichedEmptyProfile,
+    surfaceCadence: emptySurfaceCadence,
+    layoutCadence: emptySurfaceCadence,
+    distribution: { ...emptyDistribution, surfaceCadence: emptySurfaceCadence, layoutCadence: emptySurfaceCadence },
+    profileTargets: { ...emptyDistribution, surfaceCadence: emptySurfaceCadence, layoutCadence: emptySurfaceCadence },
+    profileSummary: localProfileSummary(enrichedEmptyProfile),
     sampleCount: 0,
     acceptedSampleCount: 0,
     totalWords: 0,
@@ -246,7 +411,7 @@ export function createCustomMask(input = {}) {
 
 export function addCustomMaskSample(mask = {}, sampleText = '', options = {}) {
   const base = mask.version ? { ...mask, samples: asArray(mask.samples) } : createCustomMask(mask);
-  const value = safeText(sampleText).trim();
+  const value = preserveLineBreaks(sampleText);
   if (!value) {
     const next = rebuildCustomMaskProfile(base, options);
     next.warnings = [...new Set([...next.warnings, 'empty-sample'])];
@@ -262,12 +427,19 @@ export function removeCustomMaskSample(mask = {}, sampleId = '') {
 }
 
 export function rebuildCustomMaskProfile(mask = {}, options = {}) {
-  const samples = asArray(mask.samples);
+  const samples = asArray(mask.samples).map((sample) => {
+    const profile = sample.profile || extractCadenceProfile(sample.text || '');
+    const surfaceCadence = sample.surfaceCadence || sample.layoutCadence || buildSurfaceCadence(sample.text || '', profile);
+    return { ...sample, profile, surfaceCadence, layoutCadence: surfaceCadence };
+  });
   const totalWords = samples.reduce((sum, sample) => sum + (sample.wordCount || 0), 0);
   const compositeText = samples.map((sample) => sample.text || '').filter(Boolean).join('\n\n');
-  const compositeProfile = compositeText ? extractCadenceProfile(compositeText) : averageProfiles(samples.map((sample) => sample.profile));
+  const baseProfile = compositeText ? extractCadenceProfile(compositeText) : averageProfiles(samples.map((sample) => sample.profile));
+  const surfaceCadence = compositeText ? buildSurfaceCadence(compositeText, baseProfile) : averageSurfaceCadence(samples, baseProfile);
+  const compositeProfile = { ...baseProfile, surfaceCadence, layoutCadence: surfaceCadence };
   const distribution = buildMaskDistribution(compositeProfile, { sampleCount: samples.length });
   const varianceSummary = sampleVariance(samples, compositeProfile);
+  const distributionWithSurface = { ...distribution, ...varianceSummary, surfaceCadence, layoutCadence: surfaceCadence };
   const corpusReadiness = buildCorpusReadiness(samples);
   const holdoutValidation = buildHoldoutValidation(samples, corpusReadiness);
   const promptSummary = promptCategorySummary(acceptedSamples(samples));
@@ -278,8 +450,10 @@ export function rebuildCustomMaskProfile(mask = {}, options = {}) {
     samples: samples.map((sample) => ({ ...sample, textIncluded: Boolean(sample.text), text: options.includePrivateText ? sample.text : null })),
     compositeProfile,
     profile: compositeProfile,
-    distribution: { ...distribution, ...varianceSummary },
-    profileTargets: { ...distribution, ...varianceSummary },
+    surfaceCadence,
+    layoutCadence: surfaceCadence,
+    distribution: distributionWithSurface,
+    profileTargets: distributionWithSurface,
     profileSummary: localProfileSummary(compositeProfile),
     sampleCount: samples.length,
     acceptedSampleCount: corpusReadiness.acceptedSampleCount,
@@ -300,7 +474,9 @@ export function rebuildCustomMaskProfile(mask = {}, options = {}) {
       lineUnitCount: sample.lineUnitCount || 0,
       promptCategory: sample.promptCategory || 'uncategorized',
       eligibility: sample.eligibility || ((sample.wordCount || 0) >= HUSH_CUSTOM_MASK_CORPUS_POLICY.minWordsPerSample ? 'accepted' : 'rejected-too-short'),
-      warnings: asArray(sample.warnings)
+      warnings: asArray(sample.warnings),
+      surfaceCadence: sample.surfaceCadence,
+      layoutCadence: sample.layoutCadence || sample.surfaceCadence
     }))
   };
   next.corpusWarnings = corpusWarningsFor(next);
@@ -334,6 +510,8 @@ export function summarizeCustomMask(mask = {}) {
     corpusReadiness: rebuilt.corpusReadiness,
     profileSummary: rebuilt.profileSummary,
     distribution: rebuilt.distribution,
+    surfaceCadence: rebuilt.surfaceCadence,
+    layoutCadence: rebuilt.layoutCadence,
     warnings: rebuilt.warnings
   };
 }
@@ -358,12 +536,20 @@ export function exportCustomMaskJson(mask = {}, options = {}) {
       contextLabel: sample.contextLabel || sample.promptCategory || 'uncategorized',
       eligibility: sample.eligibility || 'accepted',
       warnings: asArray(sample.warnings),
-      profile: sample.profile
+      profile: sample.profile,
+      surfaceCadence: sample.surfaceCadence,
+      layoutCadence: sample.layoutCadence || sample.surfaceCadence
     })),
     compositeProfile: rebuilt.compositeProfile,
-    profile: rebuilt.profile,
-    distribution: rebuilt.distribution,
-    profileTargets: rebuilt.profileTargets,
+    rebuilt: {
+      surfaceCadence: rebuilt.surfaceCadence,
+      layoutCadence: rebuilt.layoutCadence
+    },
+    profile: { ...rebuilt.profile, surfaceCadence: rebuilt.surfaceCadence, layoutCadence: rebuilt.layoutCadence },
+    surfaceCadence: rebuilt.surfaceCadence,
+    layoutCadence: rebuilt.layoutCadence,
+    distribution: { ...rebuilt.distribution, surfaceCadence: rebuilt.surfaceCadence, layoutCadence: rebuilt.layoutCadence },
+    profileTargets: { ...rebuilt.profileTargets, surfaceCadence: rebuilt.surfaceCadence, layoutCadence: rebuilt.layoutCadence },
     profileSummary: rebuilt.profileSummary,
     sampleCount: rebuilt.sampleCount,
     acceptedSampleCount: rebuilt.acceptedSampleCount,
