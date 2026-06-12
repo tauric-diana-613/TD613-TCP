@@ -1,6 +1,6 @@
 const TD613_HUSH_PHASE39_VERSION = '202605301720';
 const TD613_HUSH_OUTBOUND_PACKET_EXPORT_VERSION = '202606121823';
-const TD613_HUSH_HOUSEKEEPING_RELAYOUT_VERSION = '202606121823';
+const TD613_HUSH_HOUSEKEEPING_RELAYOUT_VERSION = '202606121846';
 
 const ensureHushPhase39Assets = () => {
   if (!document.querySelector('link[data-td613-hush-phase39="css"]')) {
@@ -31,6 +31,30 @@ const outputCardAnchor = () =>
   document.getElementById('protectedOutputHeading')?.closest('.hush-output-card') ||
   document.querySelector('.hush-output-card');
 
+const ensureProviderLogButton = (row) => {
+  if (!row) return null;
+  let button = document.getElementById('hushExportProviderLogBtn');
+  if (!button) {
+    button = document.createElement('button');
+    button.id = 'hushExportProviderLogBtn';
+    button.type = 'button';
+    button.className = 'hush-export-provider-log-btn';
+    button.disabled = true;
+    button.setAttribute('aria-disabled', 'true');
+    button.textContent = 'Export provider log';
+  }
+  return button;
+};
+
+const orderCustodySecondaryActions = (panel) => {
+  const row = panel?.querySelector('.hush-housekeeping-secondary-actions');
+  if (!row) return;
+  const packet = document.getElementById('hushExportPacketBtn');
+  const provider = ensureProviderLogButton(row);
+  const anatomy = panel.querySelector('.hush-housekeeping-details');
+  for (const node of [packet, provider, anatomy].filter(Boolean)) row.appendChild(node);
+};
+
 const relocateHushCustodyPanel = () => {
   const panel = document.getElementById('hushHousekeepingPanel');
   const outputCard = outputCardAnchor();
@@ -54,12 +78,15 @@ const relocateHushCustodyPanel = () => {
     hushClearCustomMaskBtn: 'Clear mask',
     hushExportCleanReceiptBtn: 'Export receipt',
     hushCopyCleanReceiptBtn: 'Copy receipt',
-    hushExportPacketBtn: 'Export packet'
+    hushExportPacketBtn: 'Export packet',
+    hushExportProviderLogBtn: 'Export provider log'
   };
   for (const [id, label] of Object.entries(labels)) {
     const button = document.getElementById(id);
     if (button) button.textContent = label;
   }
+
+  orderCustodySecondaryActions(panel);
 
   if (panel.parentNode !== outputCard.parentNode || panel.previousElementSibling !== outputCard) {
     outputCard.insertAdjacentElement('afterend', panel);
@@ -83,4 +110,4 @@ function bindRelayout() {
 
 if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', bindRelayout, { once: true });
 else bindRelayout();
-window.__TD613_HUSH_HOUSEKEEPING_RELAYOUT__ = { version: TD613_HUSH_HOUSEKEEPING_RELAYOUT_VERSION, relocateHushCustodyPanel, ensureHushPhase39Assets };
+window.__TD613_HUSH_HOUSEKEEPING_RELAYOUT__ = { version: TD613_HUSH_HOUSEKEEPING_RELAYOUT_VERSION, relocateHushCustodyPanel, ensureHushPhase39Assets, orderCustodySecondaryActions };
