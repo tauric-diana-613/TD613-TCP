@@ -1,7 +1,15 @@
-const HUSH_SCREEN_LOCK_VERSION = 'screen-lock/v1';
+const HUSH_SCREEN_LOCK_VERSION = 'screen-lock/v2-inline-css';
 const $ = (id) => document.getElementById(id);
 const START = Date.now();
 let done = false;
+
+function installStyle() {
+  if ($('td613HushScreenLockStyle')) return;
+  const style = document.createElement('style');
+  style.id = 'td613HushScreenLockStyle';
+  style.textContent = '#td613HushLoading[hidden]:not([data-final-hide="true"]){display:flex!important;visibility:visible!important;opacity:1!important;pointer-events:auto!important}#td613HushLoading[data-final-hide="true"]{display:none!important;visibility:hidden!important;opacity:0!important;pointer-events:none!important}';
+  document.head.appendChild(style);
+}
 
 function box(id) {
   const node = $(id);
@@ -62,10 +70,12 @@ function tick() {
 }
 
 function boot() {
+  installStyle();
   keep('boot');
   tick();
 }
 
+installStyle();
 if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', boot, { once: true });
 else boot();
 window.addEventListener('load', () => setTimeout(tick, 160), { once: true });
