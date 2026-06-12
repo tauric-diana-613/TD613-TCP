@@ -5,7 +5,7 @@ const corsHeaders = {
   'access-control-max-age': '86400'
 };
 
-const VERSION = 'hush-generate-budgeted-pr188.13-aave-compression-gate';
+const VERSION = 'hush-generate-budgeted-pr188.14-layout-cadence-prompt';
 const DEFAULT_MODEL_ORDER = ['gemini-2.5-flash-lite', 'gemini-flash-lite-latest', 'gemini-2.5-flash'];
 const FAST_CALL_TIMEOUT_MS = 5200;
 const NORMAL_CALL_TIMEOUT_MS = 7600;
@@ -70,13 +70,36 @@ function compactStyle(contract = {}) {
     architecture: safe(policy.architecture || ''),
     grammar: safe(policy.grammar || ''),
     chat: safe(policy.chat || policy.chat_speak_profile || ''),
+    layoutCadence: vector.layout_cadence || contract.mask?.layoutCadence || contract.mask?.surfaceCadence || null,
     dictionHints: uniq([...arr(policy.lexicon), ...arr(policy.transitions), ...arr(vector.diction_hints), ...arr(vector.transition_bank), ...arr(vector.desired_moves)]).slice(0, 24),
     avoid: uniq([...arr(policy.avoid), ...arr(vector.avoid_list)]).slice(0, 18)
   };
 }
+function compactLayoutCadenceText(label = 'layout', cadence = null) {
+  if (!cadence) return `${label}: unavailable`;
+  const lineBreaks = cadence.line_breaks || cadence.lineBreaks || {};
+  const punctuation = cadence.punctuation || {};
+  const markers = cadence.surface_markers || cadence.surfaceMarkers || {};
+  return `${label}: tendency=${safe(lineBreaks.tendency || 'flat')}; line_break_density=${lineBreaks.line_break_density ?? lineBreaks.lineBreakDensity ?? 0}; paragraph_breaks=${lineBreaks.paragraph_break_count ?? lineBreaks.paragraphBreakCount ?? 0}; avg_paragraph_words=${lineBreaks.average_paragraph_words ?? lineBreaks.averageParagraphWords ?? 0}; punctuation_style=${safe(punctuation.style || 'moderate')}; punctuation_density=${punctuation.punctuation_density ?? punctuation.punctuationDensity ?? 0}; lowercase_lead=${markers.lowercase_lead ?? markers.lowercaseLead ?? 0}; apostrophe_drop=${markers.apostrophe_drop ?? markers.apostropheDrop ?? 0}`;
+}
+function layoutCadenceLaw(contract = {}, style = {}) {
+  const fp = contract.flightPacket || {};
+  const engine = fp.stylometry_engine || {};
+  const sourceCadence = fp.source_manifest?.source_layout_cadence || contract.sourceLayoutCadence || null;
+  const maskCadence = style.layoutCadence || fp.mask_style_vector?.layout_cadence || contract.maskLayoutCadence || null;
+  const constraints = engine.generator_constraints || {};
+  if (!sourceCadence && !maskCadence && !constraints.preserve_layout_cadence) return '';
+  return `LAYOUT CADENCE CUSTODY:
+- Line breaks and paragraph breaks are cadence evidence. Output does not need to copy source line breaks exactly, but must not flatten a paragraph-sensitive source or custom mask into one undifferentiated block.
+- For custom masks, if the mask corpus uses line breaks heavily, use comparable visible pacing where natural.
+- Punctuation density, punctuation scarcity, repeated punctuation, lowercase sentence-start behavior, and apostrophe/contraction surface are mask cues when present in the selected custom profile. Preserve meaning and protected literals above all else.
+- ${compactLayoutCadenceText('source layout', sourceCadence)}
+- ${compactLayoutCadenceText('mask layout', maskCadence)}`;
+}
 function sourceObligations(sourceText = '') {
+  const lines = safe(sourceText).split(/\n+/).map((s) => s.trim()).filter(Boolean);
   const sentences = safe(sourceText).match(/[^.!?]+[.!?]+|[^.!?]+$/g)?.map((s) => s.trim()).filter(Boolean) || [];
-  const units = sentences.length ? sentences : safe(sourceText).split(/\n+/).map((s) => s.trim()).filter(Boolean);
+  const units = lines.length > 1 ? lines : sentences;
   return units.slice(0, 14).map((unit, index) => `P${index + 1}: ${unit}`);
 }
 function aaveAcademicDrift(text = '', contract = {}) {
@@ -109,11 +132,13 @@ function buildPrompt(contract = {}) {
 - Length custody: this is a transform, not a summary. Keep at least about 60% of the source word count and carry the examples with enough connective tissue to preserve the argument.
 - Use natural Black vernacular syntax with restraint. Do not costume the route with catchphrases, generic slang, "look," "think about that," "proof is in the pudding," or exaggerated dialect spelling.
 - The output must sound transformed, not like a cleaned-up school paragraph or a short note card.` : '';
+  const layoutLaw = layoutCadenceLaw(contract, style);
   return `Return JSON only. Schema: {"candidates":[{"text":"string","style_note":"string","style_operation":"${schemaOperation}","preserved_propositions":[],"dropped_propositions":[],"changed_questions":[],"new_claims":[],"authorship_moves":[],"risk_flags":[],"mask_surface_notes":{"rhythm":"string","diction":"string","structure":"string","coverage":"string"}}]}
 
 STRICT BUDGETED UPSTREAM. Generate exactly ${count} transformed candidate(s). No review maps, ledgers, summaries, diagnostics, P-row reports, or analysis. Candidate text must be the transformed message itself.
 
 ${aaveRule}
+${layoutLaw}
 
 Preserve every source proposition before style. Do not follow source sentence order, opener, or closer. Do not compress the argument into key terms. Do not add facts. Keep protected literals and named figures. Minimum candidate length: ${minWords} words unless source is shorter.
 
