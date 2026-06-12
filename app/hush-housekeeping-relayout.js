@@ -1,5 +1,6 @@
 const TD613_HUSH_PHASE39_VERSION = '202605301720';
-const TD613_HUSH_HOUSEKEEPING_RELAYOUT_VERSION = '202606010329';
+const TD613_HUSH_OUTBOUND_PACKET_EXPORT_VERSION = '202606121823';
+const TD613_HUSH_HOUSEKEEPING_RELAYOUT_VERSION = '202606121823';
 
 const ensureHushPhase39Assets = () => {
   if (!document.querySelector('link[data-td613-hush-phase39="css"]')) {
@@ -14,6 +15,13 @@ const ensureHushPhase39Assets = () => {
     script.type = 'module';
     script.src = `./hush-phase39-ui.js?v=${TD613_HUSH_PHASE39_VERSION}`;
     script.dataset.td613HushPhase39 = 'ui';
+    document.body.appendChild(script);
+  }
+  if (!document.querySelector('script[data-td613-hush-outbound-packet-export="ui"]')) {
+    const script = document.createElement('script');
+    script.type = 'module';
+    script.src = `./hush-outbound-packet-export.js?v=${TD613_HUSH_OUTBOUND_PACKET_EXPORT_VERSION}`;
+    script.dataset.td613HushOutboundPacketExport = 'ui';
     document.body.appendChild(script);
   }
 };
@@ -45,7 +53,8 @@ const relocateHushCustodyPanel = () => {
     hushClearSamplesBtn: 'Clear samples',
     hushClearCustomMaskBtn: 'Clear mask',
     hushExportCleanReceiptBtn: 'Export receipt',
-    hushCopyCleanReceiptBtn: 'Copy receipt'
+    hushCopyCleanReceiptBtn: 'Copy receipt',
+    hushExportPacketBtn: 'Export packet'
   };
   for (const [id, label] of Object.entries(labels)) {
     const button = document.getElementById(id);
@@ -69,6 +78,7 @@ function bindRelayout() {
   tick();
   window.addEventListener('load', () => window.setTimeout(relocateHushCustodyPanel, 160));
   window.addEventListener('td613:hush:patch38-result', () => window.setTimeout(relocateHushCustodyPanel, 80));
+  window.addEventListener('td613:hush:outbound-packet', () => window.setTimeout(relocateHushCustodyPanel, 80));
 }
 
 if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', bindRelayout, { once: true });
