@@ -71,6 +71,17 @@ assert(contract.rules.some((rule) => /Do not answer questions/i.test(rule)));
 assert(contract.mask.maskId === mask.id);
 assert(!Object.prototype.hasOwnProperty.call(contract, 'apiKey'));
 
+const lineBreakContract = buildHushLlmPromptContract({
+  sourceText: 'First paragraph.\n\nSecond paragraph.',
+  mask: { ...mask, sampleSeed: 'line one\nline two\nline three' },
+  candidateCount: 4
+});
+assert(lineBreakContract.sourceText.includes('\n\n'), 'provider contract should preserve paragraph breaks in sourceText');
+assert(lineBreakContract.maskReferenceExcerpt.includes('\n'), 'provider contract should preserve line breaks in mask reference excerpt');
+assert(lineBreakContract.rules.some((rule) => /paragraph breaks and line breaks/i.test(rule)), 'provider contract should carry the layout-cadence rule');
+assert.equal(typeof lineBreakContract.mask.lineBreakDensity, 'number');
+assert.equal(typeof lineBreakContract.mask.punctuationDensity, 'number');
+
 const propMap = buildPropositionMap(TECH_JOB_SIGNAL_SAMPLE);
 assert.equal(propMap.questionCount, 2);
 assert.equal(propMap.routeHint, 'question-preservation');
@@ -95,10 +106,22 @@ assert(!Object.prototype.hasOwnProperty.call(contractV2, 'apiKey'));
 assert(!Object.prototype.hasOwnProperty.call(contractV2, 'ledger'));
 
 const telemetry = buildPhase37ProviderTelemetry({ sourceText: TECH_JOB_SIGNAL_SAMPLE, mask });
-assert.equal(telemetry.version, "phase-37-ontology-carrying-generator-flight-pr151-sample-residue");
-assert(!Object.prototype.hasOwnProperty.call(telemetry.flightPacket, "ledger"));
+assert.equal(telemetry.version, 'phase-37-ontology-carrying-generator-flight-pr151-sample-residue');
+assert(!Object.prototype.hasOwnProperty.call(telemetry.flightPacket, 'ledger'));
 assert.equal(telemetry.flightPacket.custody_boundaries.no_mask_memory_payload, true);
-assert(!Object.prototype.hasOwnProperty.call(telemetry.flightPacket, "fullOntology"));
+assert(!Object.prototype.hasOwnProperty.call(telemetry.flightPacket, 'fullOntology'));
+
+const layoutTelemetry = buildPhase37ProviderTelemetry({
+  sourceText: 'First paragraph.\n\nSecond paragraph.',
+  mask: { ...mask, sampleSeed: 'line one\nline two\nline three' }
+});
+assert(layoutTelemetry.flightPacket.source_manifest.source_layout_cadence, 'flight packet should include source layout cadence');
+assert(layoutTelemetry.flightPacket.mask_style_vector.layout_cadence, 'flight packet should include mask layout cadence');
+assert(layoutTelemetry.flightPacket.stylometry_engine.source_surface_markers, 'flight packet should expose source surface markers');
+assert(layoutTelemetry.flightPacket.stylometry_engine.mask_surface_markers, 'flight packet should expose mask surface markers');
+assert.equal(layoutTelemetry.flightPacket.stylometry_engine.generator_constraints.preserve_layout_cadence, true);
+assert.equal(layoutTelemetry.flightPacket.stylometry_engine.generator_constraints.do_not_flatten_paragraph_sensitive_source, true);
+assert(Array.isArray(layoutTelemetry.flightPacket.stylometry_engine.audit.warnings));
 
 const integrity = auditPropositionIntegrity(TECH_JOB_SIGNAL_SAMPLE, patch38.selectedOutput);
 assert(integrity.questionFormScore >= 0.5);
