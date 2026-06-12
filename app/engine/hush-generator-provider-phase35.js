@@ -140,6 +140,139 @@ function compactDeepMetrics(metrics = {}) {
   };
 }
 
+function lineBreakTendency(lineBreaks = {}) {
+  if ((lineBreaks.paragraph_break_count || 0) > 0 && (lineBreaks.average_paragraph_words || 0) >= 90) return 'long-paragraph-sensitive';
+  if ((lineBreaks.paragraph_break_count || 0) > 0) return 'paragraph-sensitive';
+  if ((lineBreaks.line_break_density || 0) >= 0.08 || (lineBreaks.non_empty_line_count || 0) >= 4) return 'line-broken';
+  if ((lineBreaks.line_break_count || 0) > 0) return 'light-breaks';
+  return 'flat';
+}
+
+function punctuationStyle(punctuation = {}) {
+  const density = punctuation.punctuation_density || 0;
+  if (density <= 0.025) return 'sparse';
+  if ((punctuation.semicolon_density || 0) + (punctuation.colon_density || 0) + (punctuation.dash_density || 0) >= 0.035) return 'jointed';
+  if ((punctuation.question_density || 0) + (punctuation.exclamation_density || 0) + (punctuation.ellipsis_density || 0) >= 0.035 || (punctuation.repeated_punctuation_count || 0) > 0) return 'expressive';
+  return 'moderate';
+}
+
+function buildLayoutCadenceFromProfile(profile = {}, text = '') {
+  const value = String(text ?? '').replace(/\r\n?/g, '\n').replace(/^\n+|\n+$/g, '').trim();
+  const chars = Math.max(1, value.length);
+  const words = Math.max(1, wordList(value).length);
+  const lineBreakCount = (value.match(/\n/g) || []).length;
+  const paragraphBreakCount = (value.match(/\n{2,}/g) || []).length;
+  const lines = value.split('\n').map((line) => line.trim()).filter(Boolean);
+  const paragraphs = value.split(/\n{2,}/).map((paragraph) => paragraph.trim()).filter(Boolean);
+  const paragraphWordCounts = paragraphs.map((paragraph) => wordList(paragraph).length);
+  const sentenceChunks = value.match(/[^.!?]+[.!?]+|[^.!?]+$/g)?.map((item) => item.trim()).filter(Boolean) || [];
+  const lineBreaks = {
+    line_break_count: lineBreakCount,
+    paragraph_break_count: paragraphBreakCount,
+    non_empty_line_count: lines.length,
+    paragraph_count: paragraphs.length,
+    average_paragraph_words: compactNumber(paragraphWordCounts.reduce((sum, count) => sum + count, 0) / Math.max(1, paragraphWordCounts.length)),
+    average_line_words: compactNumber(words / Math.max(1, lines.length)),
+    max_paragraph_words: paragraphWordCounts.length ? Math.max(...paragraphWordCounts) : 0,
+    min_paragraph_words: paragraphWordCounts.length ? Math.min(...paragraphWordCounts) : 0,
+    line_break_density: compactNumber(profile.lineBreakDensity ?? (lineBreakCount / words)),
+    paragraph_break_density: compactNumber(paragraphBreakCount / words),
+    tendency: ''
+  };
+  lineBreaks.tendency = lineBreakTendency(lineBreaks);
+  const repeated = (value.match(/[!?.,;:]{2,}|…{2,}/g) || []).length;
+  const lowercaseStarts = (value.match(/(^|[.!?]\s+|\n+)[a-z]/g) || []).length;
+  const punctuation = {
+    punctuation_density: compactNumber(profile.punctuationDensity ?? ((value.match(/[.,;:!?—–-]|\.\.\.|…/g) || []).length / chars)),
+    comma_density: compactNumber((value.match(/,/g) || []).length / chars),
+    period_density: compactNumber((value.match(/\./g) || []).length / chars),
+    semicolon_density: compactNumber((value.match(/;/g) || []).length / chars),
+    colon_density: compactNumber((value.match(/:/g) || []).length / chars),
+    dash_density: compactNumber((value.match(/[—–-]/g) || []).length / chars),
+    question_density: compactNumber((value.match(/\?/g) || []).length / chars),
+    exclamation_density: compactNumber((value.match(/!/g) || []).length / chars),
+    ellipsis_density: compactNumber((value.match(/\.\.\.|…/g) || []).length / chars),
+    apostrophe_density: compactNumber((value.match(/[’']/g) || []).length / chars),
+    repeated_punctuation_count: repeated,
+    missing_terminal_punctuation_ratio: compactNumber(sentenceChunks.filter((chunk) => chunk && !/[.!?…]$/.test(chunk)).length / Math.max(1, sentenceChunks.length)),
+    lowercase_sentence_start_ratio: compactNumber(profile.surfaceMarkerProfile?.lowercaseLead ?? profile.lowercaseLead ?? (lowercaseStarts / Math.max(1, sentenceChunks.length)))
+  };
+  punctuation.style = punctuationStyle(punctuation);
+  return {
+    version: 'layout-cadence/v1',
+    line_breaks: lineBreaks,
+    punctuation,
+    surface_markers: {
+      lowercase_lead: compactNumber(profile.surfaceMarkerProfile?.lowercaseLead ?? profile.lowercaseLead ?? punctuation.lowercase_sentence_start_ratio),
+      apostrophe_drop: compactNumber(profile.surfaceMarkerProfile?.apostropheDrop ?? profile.apostropheDrop ?? 0),
+      abbreviation_density: compactNumber(profile.abbreviationDensity ?? profile.abbreviationPressure ?? 0),
+      conversational_posture: compactNumber(profile.conversationalPosture ?? profile.conversationalPressure ?? 0)
+    },
+    instruction: 'Line breaks and paragraph breaks are cadence evidence. Punctuation density, punctuation scarcity, repeated punctuation, lowercase sentence-start behavior, and apostrophe/contraction surface are mask cues when present.'
+  };
+}
+
+function compactLayoutCadence(cadence = null, fallbackProfile = {}, fallbackText = '') {
+  const source = cadence || fallbackProfile.surfaceCadence || fallbackProfile.layoutCadence || null;
+  if (!source) return buildLayoutCadenceFromProfile(fallbackProfile, fallbackText);
+  const lineBreaks = source.line_breaks || source.lineBreaks || {};
+  const punctuation = source.punctuation || {};
+  const markers = source.surface_markers || source.surfaceMarkers || {};
+  return {
+    version: source.version || 'layout-cadence/v1',
+    line_breaks: {
+      line_break_count: compactNumber(lineBreaks.line_break_count ?? lineBreaks.lineBreakCount),
+      paragraph_break_count: compactNumber(lineBreaks.paragraph_break_count ?? lineBreaks.paragraphBreakCount),
+      non_empty_line_count: compactNumber(lineBreaks.non_empty_line_count ?? lineBreaks.nonEmptyLineCount),
+      paragraph_count: compactNumber(lineBreaks.paragraph_count ?? lineBreaks.paragraphCount),
+      average_paragraph_words: compactNumber(lineBreaks.average_paragraph_words ?? lineBreaks.averageParagraphWords),
+      average_line_words: compactNumber(lineBreaks.average_line_words ?? lineBreaks.averageLineWords),
+      max_paragraph_words: compactNumber(lineBreaks.max_paragraph_words ?? lineBreaks.maxParagraphWords),
+      min_paragraph_words: compactNumber(lineBreaks.min_paragraph_words ?? lineBreaks.minParagraphWords),
+      line_break_density: compactNumber(lineBreaks.line_break_density ?? lineBreaks.lineBreakDensity),
+      paragraph_break_density: compactNumber(lineBreaks.paragraph_break_density ?? lineBreaks.paragraphBreakDensity),
+      tendency: lineBreaks.tendency || 'flat'
+    },
+    punctuation: {
+      punctuation_density: compactNumber(punctuation.punctuation_density ?? punctuation.punctuationDensity),
+      comma_density: compactNumber(punctuation.comma_density ?? punctuation.commaDensity),
+      period_density: compactNumber(punctuation.period_density ?? punctuation.periodDensity),
+      semicolon_density: compactNumber(punctuation.semicolon_density ?? punctuation.semicolonDensity),
+      colon_density: compactNumber(punctuation.colon_density ?? punctuation.colonDensity),
+      dash_density: compactNumber(punctuation.dash_density ?? punctuation.dashDensity),
+      question_density: compactNumber(punctuation.question_density ?? punctuation.questionDensity),
+      exclamation_density: compactNumber(punctuation.exclamation_density ?? punctuation.exclamationDensity),
+      ellipsis_density: compactNumber(punctuation.ellipsis_density ?? punctuation.ellipsisDensity),
+      apostrophe_density: compactNumber(punctuation.apostrophe_density ?? punctuation.apostropheDensity),
+      repeated_punctuation_count: compactNumber(punctuation.repeated_punctuation_count ?? punctuation.repeatedPunctuationCount),
+      missing_terminal_punctuation_ratio: compactNumber(punctuation.missing_terminal_punctuation_ratio ?? punctuation.missingTerminalPunctuationRatio),
+      lowercase_sentence_start_ratio: compactNumber(punctuation.lowercase_sentence_start_ratio ?? punctuation.lowercaseSentenceStartRatio),
+      style: punctuation.style || 'moderate'
+    },
+    surface_markers: {
+      lowercase_lead: compactNumber(markers.lowercase_lead ?? markers.lowercaseLead),
+      apostrophe_drop: compactNumber(markers.apostrophe_drop ?? markers.apostropheDrop),
+      abbreviation_density: compactNumber(markers.abbreviation_density ?? markers.abbreviationDensity),
+      conversational_posture: compactNumber(markers.conversational_posture ?? markers.conversationalPosture)
+    },
+    instruction: source.instruction || buildLayoutCadenceFromProfile(fallbackProfile, fallbackText).instruction
+  };
+}
+
+function surfaceMarkerWarnings(layout = {}) {
+  const markers = layout.surface_markers || {};
+  return (markers.lowercase_lead || 0) > 0.08 || (markers.apostrophe_drop || 0) > 0.01 || (markers.abbreviation_density || 0) > 0.08 || (markers.conversational_posture || 0) > 0.12;
+}
+
+function layoutWarnings(sourceLayout = {}, maskLayout = {}) {
+  const warnings = [];
+  if (['line-broken', 'paragraph-sensitive', 'long-paragraph-sensitive'].includes(sourceLayout.line_breaks?.tendency)) warnings.push('source-layout-sensitive');
+  if (['line-broken', 'paragraph-sensitive', 'long-paragraph-sensitive'].includes(maskLayout.line_breaks?.tendency)) warnings.push('mask-layout-sensitive');
+  if (['sparse', 'jointed', 'expressive'].includes(sourceLayout.punctuation?.style) || ['sparse', 'jointed', 'expressive'].includes(maskLayout.punctuation?.style)) warnings.push('punctuation-style-sensitive');
+  if (surfaceMarkerWarnings(sourceLayout) || surfaceMarkerWarnings(maskLayout)) warnings.push('surface-marker-sensitive');
+  return warnings;
+}
+
 export function enrichMaskForStylometry(mask = {}, referenceText = '') {
   const style = compactStyleProfile(styleProfile(mask));
   const seedText = buildCanonicalMaskSeed(mask, referenceText);
@@ -148,10 +281,13 @@ export function enrichMaskForStylometry(mask = {}, referenceText = '') {
   const generatedProfile = sparse ? extractCadenceProfile(seedText) : existingProfile;
   const generatedDeep = StylometricDeepMetrics.analyze(seedText);
   const targetShell = generatedProfile && !generatedProfile.empty ? cadenceModFromProfile(generatedProfile) : null;
+  const layoutCadence = compactLayoutCadence(mask.layoutCadence || mask.surfaceCadence || generatedProfile.layoutCadence || generatedProfile.surfaceCadence, generatedProfile, seedText);
   return {
     ...mask,
     label: style?.label || mask.label,
-    profile: generatedProfile,
+    profile: { ...generatedProfile, layoutCadence, surfaceCadence: layoutCadence },
+    surfaceCadence: layoutCadence,
+    layoutCadence,
     sampleSeed: safe(referenceText || style?.sample || mask.sampleSeed) || seedText,
     canonicalMaskSeed: seedText,
     styleDiversity: style,
@@ -164,6 +300,7 @@ export function enrichMaskForStylometry(mask = {}, referenceText = '') {
       profileWordCount: Number(generatedProfile.wordCount || 0),
       targetShell,
       deepMetrics: compactDeepMetrics(generatedDeep),
+      layoutCadence,
       styleDiversityVersion: style?.version || '',
       humanSampleResidueVersion: style?.human_sample_residue_version || '',
       source: sparse ? 'generated-from-canonical-mask-fields-via-stylometry-engine' : 'existing-mask-profile'
@@ -202,6 +339,7 @@ function maskStyleVector(mask = {}) {
   const writingTraits = mask.writingTraits || {};
   const enrichment = mask.__td613MaskEnrichment || {};
   const style = compactStyleProfile(mask.styleDiversity || styleProfile(mask));
+  const layoutCadence = compactLayoutCadence(mask.layoutCadence || mask.surfaceCadence || profile.layoutCadence || profile.surfaceCadence, profile, mask.canonicalMaskSeed || mask.sampleSeed || style?.sample || '');
   return {
     mask_id: mask.id || '',
     display_name: style?.label || mask.label || mask.name || '',
@@ -219,6 +357,8 @@ function maskStyleVector(mask = {}) {
     typo_policy: writingTraits.typoPolicy || style?.typo_policy || '',
     chat_speak_profile: writingTraits.chatSpeakProfile || style?.chat_speak_profile || '',
     human_sample_residue_version: style?.human_sample_residue_version || enrichment.humanSampleResidueVersion || '',
+    layout_cadence: layoutCadence,
+    surface_markers: layoutCadence.surface_markers,
     style_diversity: style,
     diction_hints: uniq([...(mask.dictionHints || []), ...(writingTraits.dictionHints || []), ...(style?.lexicon || [])]).slice(0, 20),
     transition_bank: uniq([...(mask.transitionBank || []), ...(style?.transitions || [])]).slice(0, 20),
@@ -235,6 +375,10 @@ function buildFlightPacket({ sourceText = '', mask = {}, candidateCount = 8, pro
   const propositionMap = buildPropositionMap(sourceText);
   const route = buildOntologyRoute({ sourceText, mask, propositionMap, operatorMode });
   const enrichedMask = enrichMaskForStylometry(mask);
+  const sourceProfile = extractCadenceProfile(sourceText);
+  const sourceLayoutCadence = compactLayoutCadence(sourceProfile.layoutCadence || sourceProfile.surfaceCadence, sourceProfile, sourceText);
+  const maskLayoutCadence = compactLayoutCadence(enrichedMask.layoutCadence || enrichedMask.surfaceCadence || enrichedMask.profile?.layoutCadence || enrichedMask.profile?.surfaceCadence, enrichedMask.profile || {}, enrichedMask.canonicalMaskSeed || enrichedMask.sampleSeed || '');
+  const auditWarnings = layoutWarnings(sourceLayoutCadence, maskLayoutCadence);
   return {
     packet_version: HUSH_FLIGHT_PACKET_VERSION,
     provider_version: HUSH_GENERATOR_PROVIDER_VERSION,
@@ -244,6 +388,7 @@ function buildFlightPacket({ sourceText = '', mask = {}, candidateCount = 8, pro
     source_manifest: {
       source_hash: hashSeed(sourceText),
       source_word_count: wordList(sourceText).length,
+      source_layout_cadence: sourceLayoutCadence,
       proposition_summary: propositionMap.summary,
       proposition_units: sourceUnitText(propositionMap, sourceText),
       term_bank: termBank(propositionMap, sourceText),
@@ -256,10 +401,13 @@ function buildFlightPacket({ sourceText = '', mask = {}, candidateCount = 8, pro
     remote_route_payload: compileRemoteRoutePayload(route),
     mask_style_vector: maskStyleVector(enrichedMask),
     stylometry_engine: {
-      source_profile: extractCadenceProfile(sourceText),
+      source_profile: sourceProfile,
       source_deep_metrics: compactDeepMetrics(StylometricDeepMetrics.analyze(sourceText)),
+      source_surface_markers: sourceLayoutCadence.surface_markers,
       mask_reference_profile: enrichedMask.profile || {},
       mask_reference_deep_metrics: compactDeepMetrics(StylometricDeepMetrics.analyze(enrichedMask.canonicalMaskSeed || enrichedMask.sampleSeed || '')),
+      mask_surface_markers: maskLayoutCadence.surface_markers,
+      layout_cadence_instruction: sourceLayoutCadence.instruction || maskLayoutCadence.instruction,
       target_shell: enrichedMask.__td613MaskEnrichment?.targetShell || null,
       cadence_shell: cadenceModFromProfile(enrichedMask.profile || {}),
       generator_constraints: {
@@ -272,9 +420,12 @@ function buildFlightPacket({ sourceText = '', mask = {}, candidateCount = 8, pro
         no_mask_memory_exfiltration: true,
         avoid_source_sentence_order: true,
         avoid_verbatim_tail: true,
+        preserve_layout_cadence: true,
+        do_not_flatten_paragraph_sensitive_source: true,
+        custom_mask_line_break_behavior_active: ['line-broken', 'paragraph-sensitive', 'long-paragraph-sensitive'].includes(maskLayoutCadence.line_breaks?.tendency),
         apply_human_sample_residue: Boolean(enrichedMask.__td613MaskEnrichment?.humanSampleResidueVersion)
       },
-      audit: { warnings: [], enrichment: enrichedMask.__td613MaskEnrichment || null }
+      audit: { warnings: auditWarnings, enrichment: enrichedMask.__td613MaskEnrichment || null }
     },
     flight_controls: {
       candidate_count: candidateCount,
