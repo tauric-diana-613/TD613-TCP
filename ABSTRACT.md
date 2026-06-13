@@ -2,17 +2,17 @@
 
 ## Concept
 
-The Cadence Playground (TCP) is an R&D instrument inside the TD613 field lab. Its job is straightforward to describe, even if the underlying problem is not. It studies how patterned language becomes socially legible before it becomes safely routable.
+TD613 is a custody-aware authorship routing stack for language under pressure. Its maintained gateway opens five current instruments: Hush, Aperture, Safe Harbor, Flight, and Trainer. Together they transform surfaces, audit route narrowing, preserve provenance, generate credentialed packets, and validate shells without collapsing those acts into an identity verdict.
 
-That distinction matters because the system problem here is not expression in the abstract. It is passage. Environments routinely produce recognition, recurrence, afterimage, adjacency, and near-contact without producing a route by which any of that becomes repair. TCP stages that threshold in public, but it does not confuse detection with care.
+The system problem here is not expression in the abstract. It is passage. Environments routinely produce recognition, recurrence, afterimage, adjacency, and near-contact without producing a route by which any of that becomes repair. TD613 stages that threshold in public, but it does not confuse detection with care.
 
-Accordingly, the project treats stylometry as a bounded signal model rather than a verdict engine. A participant encounters persona attractors, comparison tools, and controlled shell drift that make cadence pressure perceptible through interaction. The aim is not to prove authorship. The aim is to show how sentence rhythm, contraction habits, punctuation density, lexical dispersion, and repeated return-patterns can gather enough density to require routing.
+Accordingly, the project treats stylometry as a bounded signal model rather than a verdict engine. The maintained tools keep message surface, authorship pressure, semantic accountability, admissibility pressure, route state, packet custody, and credential footers separate. The aim is not to prove authorship. The aim is to show when sentence rhythm, contraction habits, punctuation density, lexical dispersion, route pressure, and repeated return-patterns gather enough density to require review, custody, or guarded passage.
 
-This repository should therefore be read as an experimental research prototype: a conceptual pilot that demonstrates the current interaction and model architecture while thresholds, policies, and interface language remain under active revision.
+This repository should therefore be read as an experimental research prototype with a current five-tool TD613 Gateway and older TCP lab chambers retained for experimental continuity. Thresholds, policies, and interface language remain under active revision.
 
 ## Formal stance
 
-TCP rests on three linked structural analogies.
+TD613 still uses three linked structural analogies inherited from the TCP lab layer.
 
 1. Branch: an unwanted solution may be a discovery branch, not an error to discard.
 2. Wave: recurrence can become dense and legible without yet becoming passage.
@@ -38,7 +38,7 @@ Let:
 - `C(t)` = custodial integrity
 - `D(t)` = custodial drift
 
-Then TCP uses:
+Then the TD613/TCP math layer uses:
 
 ```math
 C_{\mathrm{style}} =
@@ -105,4 +105,4 @@ That is more than presentation polish. It gives the public membrane a discipline
 
 ## Practical contribution
 
-TCP exists so that uncanny residue does not have to be flattened into reassurance copy or inflated into false certainty. It turns stylometric recognition into a public instrument for routing, provenance, and witness-safe continuity. In practical terms, that means recognition is allowed to arrive first, but it is not allowed to impersonate route.
+TD613 exists so that uncanny residue does not have to be flattened into reassurance copy or inflated into false certainty. It turns stylometric recognition into a public instrument for routing, provenance, and witness-safe continuity. In practical terms, that means recognition is allowed to arrive first, but it is not allowed to impersonate route.

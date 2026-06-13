@@ -4,18 +4,18 @@
 
 TD613 Safe Harbor is the canonical intake membrane that sits between provenance ritual context and cryptographic signature lanes.
 
-The goal is not to make TCP into a signer.
+The goal is not to make TD613 into a signer.
 
-The goal is to let TCP and EO-RFD shape a stable packet body first so the signature layer has a clean object to seal.
+The goal is to let the TD613 custody stack shape a stable packet body first so the signature layer has a clean object to seal.
 
 ## Role split
 
-### TCP
+### TD613 custody stack
 
-TCP is the eventual intake and canonicalization engine.
+Safe Harbor is the current intake and canonicalization chamber for packet custody. It coordinates upstream route evidence from Hush, Aperture, Flight, and Trainer when those tools are involved.
 
-- ingest text and badge context
-- compute cadence signature
+- ingest text, badge context, and triad context
+- compute cadence / route witness fields
 - shape canonical packet fields
 - expose packet hash and packet lifecycle
 
