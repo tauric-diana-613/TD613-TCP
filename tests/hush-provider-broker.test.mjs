@@ -17,12 +17,14 @@ const state = writeProviderCooldown(meta, { reason: 'provider_quota_exhausted', 
 assert.equal(state.version, HUSH_PROVIDER_BROKER_VERSION);
 assert.equal(state.mayCall, false);
 assert.equal(state.state, 'cooling_down');
-assert.equal(state.retryAfterSeconds, 56);
+assert.equal(state.retryAfterSeconds, 185);
+assert.equal(state.providerRetryAfterSeconds, 56);
 const held = buildProviderHeldReceipt(state, { packetTier: 'plain_record_packet', maskEvidenceState: 'seed_derived' });
 assert.equal(held.status, 'held');
 assert.equal(held.fallbackReleased, false);
 assert.equal(held.reason, 'provider_cooling_down');
 assert.equal(held.packetTier, 'plain_record_packet');
-assert.equal(providerMayCall(meta, 58000).mayCall, true);
+assert.equal(providerMayCall(meta, 58000).mayCall, false);
+assert.equal(providerMayCall(meta, 186000).mayCall, true);
 clearProviderBrokerState();
 console.log('hush-provider-broker.test.mjs passed');

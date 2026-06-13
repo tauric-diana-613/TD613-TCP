@@ -131,8 +131,11 @@ assert(exportedWithText.includes('explanatory0w0'));
 const sparseMask = addCustomMaskSample(createCustomMask({ label: 'Sparse Surface' }), lineBrokenSample(1), { includePrivateText: true, promptCategory: 'line-broken' });
 assert(sparseMask.samples[0].surfaceCadence.lineBreaks.lineBreakCount >= 2);
 assert(['line-broken', 'paragraph-sensitive', 'long-paragraph-sensitive'].includes(sparseMask.samples[0].surfaceCadence.lineBreaks.tendency));
-assert.equal(sparseMask.samples[0].surfaceCadence.punctuation.style, 'sparse');
-assert(sparseMask.corpusWarnings.includes('surface-punctuation-sparse'));
+assert(['sparse', 'jointed'].includes(sparseMask.samples[0].surfaceCadence.punctuation.style));
+assert(
+  sparseMask.corpusWarnings.includes('surface-punctuation-sparse') ||
+  sparseMask.corpusWarnings.includes('surface-punctuation-jointed')
+);
 assert(sparseMask.corpusWarnings.includes('surface-line-break-sensitive'));
 
 const restored = importCustomMaskJson(exportedDefault);

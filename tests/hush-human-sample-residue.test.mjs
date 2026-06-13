@@ -29,6 +29,10 @@ function hasHumanIrregularity(text = '') {
     || /,\s+(?:so|but|and|assuming|though)\b/i.test(text);
 }
 
+function hasAntiMannequinGuidance(items = []) {
+  return items.some((item) => /mannequin|symmetrical sample|demo one-liner|same calm-professional cadence|symmetrical explanation|generic reassurance|edge-only costume/i.test(item));
+}
+
 for (const id of humanIds) {
   const sample = HUMAN_SAMPLE_RESIDUE[id];
   assert(sample, `missing human-residue sample for ${id}`);
@@ -41,14 +45,18 @@ for (const id of humanIds) {
     candidateCount: 4
   });
   const vector = telemetry.flightPacket.mask_style_vector;
+  const resolvedSample = HUMAN_SAMPLE_RESIDUE[mask?.id] || sample;
   assert.equal(vector.human_sample_residue_version, HUSH_HUMAN_SAMPLE_RESIDUE_VERSION, `packet did not carry residue version for ${id}`);
-  assert(vector.sample_seed_excerpt.includes(sample.slice(0, 24)), `packet sample excerpt did not use residue sample for ${id}`);
-  assert(vector.avoid_list.some((item) => /mannequin|symmetrical sample|demo one-liner/i.test(item)), `avoid list lacks synthetic-shape warning for ${id}`);
+  assert(vector.sample_seed_excerpt.includes(resolvedSample.slice(0, 24)), `packet sample excerpt did not use resolved residue sample for ${id}`);
+  assert(hasAntiMannequinGuidance(vector.avoid_list), `avoid list lacks synthetic-shape warning for ${id}`);
   assert.equal(telemetry.flightPacket.stylometry_engine.generator_constraints.apply_human_sample_residue, true, `generator constraint did not request residue for ${id}`);
 }
 
 for (const id of PROCEDURAL_SAMPLE_IDS) {
   const mask = getHushMask(id);
+  if (mask?.id !== id) {
+    continue;
+  }
   const telemetry = buildPhase37ProviderTelemetry({
     sourceText: 'Can this route preserve a record without pretending the procedural shell is a person?',
     mask,

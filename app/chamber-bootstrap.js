@@ -122,6 +122,7 @@
     './browser-data.js?v='        + (V.data        || ''),
     './browser-diagnostics.js?v=' + (V.diagnostics || ''),
     './browser-engine.js?v='      + (V.engine      || ''),
+    './operator-receipt.js?v='    + (V.operatorReceipt || V.main || ''),
     './browser-main.js?v='        + (V.main        || ''),
     './tcp-gateway-rescue.js?v='  + (V.gatewayRescue || V.main || '202606110235'),
     './chamber-chrome.js?v='      + (V.chrome      || V.main || '')

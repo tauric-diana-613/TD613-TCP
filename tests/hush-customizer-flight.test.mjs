@@ -6,8 +6,15 @@ function literalsFrom(text = '') {
   return text.match(/\b(?:INV|DOC|CASE|REF)[A-Z0-9:_#\/-]*\b|\b\d{1,2}:\d{2}\b|\b\d{1,4}[/-]\d{1,2}(?:[/-]\d{1,4})?\b/g) || [];
 }
 
+function customizerSmokeSample(core = '', index = 0) {
+  return `${core} I keep the sentence plain because the useful part is not decoration. ` +
+    `The mask should sound like someone writing quickly but carefully after a real shift, with the date, the person, ` +
+    `the reason, and the handoff still attached. Sample ${index} keeps the same working posture: narrow claim, stable ` +
+    `identifier, no extra accusation, no cleanup that erases uncertainty, and no dramatic flourish pretending to be evidence.`;
+}
+
 let mask = createCustomMask({ label: 'Phase 22 Customizer Smoke Mask' });
-for (const sample of [
+const smokeSamples = [
   'keep this plain and preserve the sequence. the record moved after lunch and the note needs to stay careful.',
   'quick note for the log. the file changed after signoff and the exact timing should remain attached.',
   'i am not making a broad claim. i am preserving what i saw, where it was, and when the record changed.',
@@ -16,9 +23,13 @@ for (const sample of [
   'this needs to read like a work note, not an argument. keep the dates and identifiers stable.',
   'if this moves upward, the claim should remain narrow and the evidence should stay attached.',
   'the later copy may have a normal explanation, but the gap still belongs in the record.'
-]) mask = addCustomMaskSample(mask, sample, { includePrivateText: true });
+];
+for (let index = 0; index < 24; index += 1) {
+  const sample = smokeSamples[index % smokeSamples.length];
+  mask = addCustomMaskSample(mask, customizerSmokeSample(sample, index), { includePrivateText: true });
+}
 
-assert(['usable', 'strong'].includes(mask.profileStatus), `unexpected customizer smoke profile status: ${mask.profileStatus}`);
+assert(['operational', 'rigorous'].includes(mask.profileStatus), `unexpected customizer smoke profile status: ${mask.profileStatus}`);
 
 const message = 'The vendor called twice after lunch. I logged INV-440 at 2:18 and told Jordan not to resend the spreadsheet until finance confirms the version.';
 const result = buildHushSwap({

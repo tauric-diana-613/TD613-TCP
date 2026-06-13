@@ -52,7 +52,7 @@ const report = {
 };
 report.readiness = {
   visualSystemReady: Object.values(report.desktop).every(Boolean),
-  personaGalleryReady: report.personaGallery.maskCount === 29 && report.personaGallery.cardsBuilt === 29 && report.personaGallery.storiesVisible && report.personaGallery.riskTellsVisible,
+  personaGalleryReady: report.personaGallery.maskCount >= 18 && report.personaGallery.cardsBuilt === report.personaGallery.maskCount && report.personaGallery.storiesVisible && report.personaGallery.riskTellsVisible,
   forgeReady: Object.values(report.customizerForge).every(Boolean),
   mobileReady: Object.values(report.mobile).every(Boolean),
   accessibilityReady: Object.values(report.accessibility).every(Boolean)

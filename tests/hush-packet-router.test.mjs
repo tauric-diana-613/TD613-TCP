@@ -1,5 +1,5 @@
 import assert from 'assert';
-import { buildHushFlightPacketV3, buildPhase37ProviderTelemetry } from '../app/engine/hush-generator-provider-phase35.js';
+import { buildPhase37ProviderTelemetry } from '../app/engine/hush-generator-provider-phase35.js';
 import {
   buildPacketPreflight,
   buildRoutedProviderPacket,
@@ -20,7 +20,7 @@ assert.equal(routedPlain.packet_tier, 'plain_record_packet');
 assert(!('surface_marker_profile' in routedPlain.stylometry_engine.source_profile));
 assert(routedPlain.source_manifest.semantic_anchors.includes('LLM'));
 assert(routedPlain.source_manifest.semantic_anchors.some((x) => /sigil/i.test(x)));
-const chatPacket = buildHushFlightPacketV3({ sourceText: 'hey yall rn pls keep the file in the thread', mask: chat, candidateCount: 4 });
+const chatPacket = buildPhase37ProviderTelemetry({ sourceText: 'hey yall rn pls keep the file in the thread', mask: chat, candidateCount: 4 }).flightPacket;
 const chatTier = classifyMaskPacketTier({ mask: chat, ontologyRoute: { routeType: 'casual-register' }, propositionMap: {} });
 assert.equal(chatTier.tier, 'chat_cadence_packet');
 const routedChat = buildRoutedProviderPacket({ flightPacket: chatPacket, tier: chatTier.tier, sourceText: 'hey yall rn pls keep the file in the thread', preflight: buildPacketPreflight({ mask: chat, sourceText: 'hey yall rn pls keep the file in the thread' }) });

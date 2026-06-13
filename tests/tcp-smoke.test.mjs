@@ -17,9 +17,7 @@ const requiredFiles = [
   'tests/hush-phase39-ui.test.mjs',
   'app/safe-harbor/index.html',
   'app/safe-harbor/td613-flight.html',
-  'scripts/patch-td613-flight-seal-side-by-side.mjs',
-  'scripts/patch-td613-flight-mobile-tiles.mjs',
-  'scripts/patch-td613-flight-dashboard-polish.mjs'
+  'scripts/legacy/flight-patches/README.md'
 ];
 
 for (const filePath of requiredFiles) {

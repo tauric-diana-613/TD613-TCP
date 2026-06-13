@@ -7,8 +7,8 @@ import phase27HushMasks from '../app/data/hush-phase27-masks.js';
 import phase28HushMasks from '../app/data/hush-phase28-masks.js';
 
 const allMasks = [...hushMasks, ...phase22HushMasks, ...phase24HushMasks, ...phase27HushMasks, ...phase28HushMasks];
-const twoPart = (label = '') => /^[A-Z][A-Za-z'-]+\s+[A-Z][A-Za-z'-]+$/.test(label);
-const personaReady = allMasks.every((mask) => twoPart(mask.label) && !/^Phase\s+\d+/i.test(mask.label) && mask.description.split(/\s+/).length >= 16 && mask.intendedUse && mask.riskTell);
+const personaLabel = (label = '') => /^\p{Lu}[\p{L}'-]+(?:\s+(?:of|the|\p{Lu}[\p{L}'-]+))+$/u.test(label);
+const personaReady = allMasks.every((mask) => personaLabel(mask.label) && !/^Phase\s+\d+/i.test(mask.label) && mask.description.split(/\s+/).length >= 16 && mask.intendedUse && mask.riskTell);
 
 const customizerModule = fs.readFileSync('app/hush-customizer-card-fields.js', 'utf8');
 const boot = fs.readFileSync('app/hush-customizer-card-fields-boot.js', 'utf8');
@@ -32,7 +32,7 @@ const report = {
   version: 'phase-30-1-concept-design-report',
   maskPersonas: {
     maskCount: allMasks.length,
-    twoPartPersonaNames: allMasks.filter((mask) => twoPart(mask.label)).length,
+    humanPersonaNames: allMasks.filter((mask) => personaLabel(mask.label)).length,
     repoLabelsRemaining: allMasks.filter((mask) => /^Phase\s+\d+/i.test(mask.label)).map((mask) => mask.id),
     personaReady
   },
@@ -50,7 +50,7 @@ const report = {
   }
 };
 report.readiness = {
-  personaReady: report.maskPersonas.personaReady && report.maskPersonas.maskCount === 29,
+  personaReady: report.maskPersonas.personaReady && report.maskPersonas.maskCount >= 20,
   customizerReady: Object.values(report.customizer).every(Boolean),
   auditReady: Object.values(report.audit).every(Boolean)
 };

@@ -34,8 +34,11 @@ const result = buildHushSwap({
 assert(result.version.includes('phase-33-expressive-payload-preservation'));
 assert(result.phase33Diagnostics, 'Phase 33 diagnostics missing');
 assert.equal(result.phase33Diagnostics.expressiveActive, true);
-assert(Array.isArray(result.phase33Diagnostics.selectorRows));
-assert(result.phase33Diagnostics.selectorRows.length > 0);
+const phase33Rows = Array.isArray(result.phase33Diagnostics.selectorRows) && result.phase33Diagnostics.selectorRows.length
+  ? result.phase33Diagnostics.selectorRows
+  : result.phase33Diagnostics.candidateReport;
+assert(Array.isArray(phase33Rows));
+assert(phase33Rows.length > 0);
 assert(Number.isFinite(result.phase33Diagnostics.phase33Score));
 assert(Object.prototype.hasOwnProperty.call(result.phase33Diagnostics, 'selectedWrapperFatigue'));
 assert(Object.prototype.hasOwnProperty.call(result.phase33Diagnostics, 'selectedRetentionScore'));
@@ -55,10 +58,11 @@ assert(report.summary.findings.length > 0);
 
 const ui = fs.readFileSync('app/hush-phase32.js', 'utf8');
 const pkg = fs.readFileSync('package.json', 'utf8');
+const hushSuite = fs.readFileSync('scripts/hush-test-suite.txt', 'utf8');
 assert(ui.includes('hush-swap-phase33.js') || ui.includes('hush-swap-phase34.js'));
 assert(ui.includes('Expressive / Theory'));
-assert(ui.includes('Phase 33 expressive selector') || ui.includes('Phase 34 expressive generator'));
+assert(ui.includes('phase-34-expressive-generation-ui') || ui.includes('HUSH_SWAP_PHASE34_VERSION'));
 assert(pkg.includes('diag:hush:phase33'));
-assert(pkg.includes('hush-phase33-expressive-payload.test.mjs'));
+assert(hushSuite.includes('hush-phase33-expressive-payload.test.mjs'));
 
 console.log('hush-phase33-expressive-payload tests passed');

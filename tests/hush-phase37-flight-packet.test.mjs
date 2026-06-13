@@ -1,6 +1,5 @@
 import assert from 'assert';
 import {
-  buildHushFlightPacketV3,
   buildHushLlmPromptContractV3,
   buildPhase37ProviderTelemetry,
   HUSH_FLIGHT_PACKET_VERSION,
@@ -33,30 +32,29 @@ const mask = {
   sampleSeed: 'Still, the message should bend without losing its bones.'
 };
 
-const packet = buildHushFlightPacketV3({ sourceText, mask, candidateCount: 8 });
+const packet = buildPhase37ProviderTelemetry({ sourceText, mask, candidateCount: 8 }).flightPacket;
 assert.equal(packet.packet_version, HUSH_FLIGHT_PACKET_VERSION);
-assert.equal(packet.privacy_boundary.sends_private_ledger, false);
-assert.equal(packet.privacy_boundary.sends_mask_memory, false);
-assert(packet.source_manifest.source_units.length >= 1);
-assert(packet.source_manifest.required_terms.includes('uncertainty'));
-assert(packet.ontology_route.route_type);
-assert(packet.ontology_route.semantic_risk);
+assert.equal(packet.custody_boundaries.no_private_text_fields, true);
+assert.equal(packet.custody_boundaries.no_mask_memory_payload, true);
+assert(packet.source_manifest.proposition_units.length >= 1);
+assert(packet.source_manifest.term_bank.includes('uncertainty'));
+assert(packet.ontology_route.routeType);
+assert(packet.ontology_route.ontologyHints.semanticRisk);
 assert(packet.mask_style_vector.display_name === 'Test Lyric Mask');
-assert(packet.flight_controls.required_operation_diversity);
 assert(packet.flight_controls.required_operations.includes('cadence_alias'));
 
 const contract = buildHushLlmPromptContractV3({ sourceText, mask, candidateCount: 8 });
 assert.equal(contract.promptVersion, HUSH_LLM_CANDIDATE_V3);
-assert.equal(contract.phase37Version, HUSH_PROVIDER_PHASE37_VERSION);
+assert.equal(contract.flightPacket.phase37_version, HUSH_PROVIDER_PHASE37_VERSION);
 assert.equal(contract.flightPacket.packet_version, HUSH_FLIGHT_PACKET_VERSION);
-assert(contract.rules.some((rule) => rule.includes('Hush Flight Packet as active control')));
-assert(contract.outputSchema.candidates[0].style_operation);
+assert(contract.rules.some((rule) => rule.includes('selected mask profile and reference excerpt')));
+assert(contract.outputSchema.candidates[0].authorship_moves);
 
 const telemetry = buildPhase37ProviderTelemetry({ sourceText, mask, candidateCount: 8 });
 assert.equal(telemetry.version, HUSH_PROVIDER_PHASE37_VERSION);
-assert.equal(telemetry.sendsFlightPacket, true);
-assert.equal(telemetry.sendsMaskMemory, false);
-assert.equal(telemetry.remotePayloadIsPrivacyBounded, true);
+assert.equal(Boolean(telemetry.flightPacket), true);
+assert.equal(telemetry.flightPacket.custody_boundaries.no_mask_memory_payload, true);
+assert.equal(telemetry.flightPacket.custody_boundaries.no_private_text_fields, true);
 
 const providerReport = normalizeRemoteProviderResponse({
   provider: 'test-provider',
