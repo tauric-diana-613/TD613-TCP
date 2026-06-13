@@ -32,10 +32,8 @@
 
   function installHushPhase31BindGuard() {
     if (window.__TD613_HUSH_PHASE31_BIND_GUARD__) return;
-    window.__TD613_HUSH_PHASE31_BIND_GUARD__ = 'chamber-bootstrap/v1';
+    window.__TD613_HUSH_PHASE31_BIND_GUARD__ = 'chamber-bootstrap/v2-no-tab-guard';
     var ids = {
-      hushCustomizeTabBtn: { click: true },
-      hushBuiltInTabBtn: { click: true },
       hushPhase31LogSampleBtn: { click: true },
       hushPhase31Undo: { click: true },
       hushPhase31SaveMaskBtn: { click: true },
