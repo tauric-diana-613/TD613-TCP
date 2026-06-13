@@ -1,4 +1,4 @@
-const HUSH_SOURCE_LAYOUT_POLICY_VERSION = 'source-layout-policy/v2-mask-only+native-customizer-corpus';
+const HUSH_SOURCE_LAYOUT_POLICY_VERSION = 'source-layout-policy/v2-mask-only+native-customizer-corpus+status-tune';
 const HUSH_PHASE31_STORAGE_KEY = 'td613:hush:phase31:logged-samples:v1';
 
 function normalizeInstructionText() {
@@ -192,6 +192,17 @@ function installCustomizerVisibilityCss() {
       opacity: 1 !important;
       margin: .72rem auto 0 !important;
       pointer-events: auto !important;
+    }
+    .hush-phase31-status {
+      min-width: 4.85rem !important;
+      max-width: 5.45rem !important;
+      min-height: 3.05rem !important;
+      padding: .34rem .42rem !important;
+      font-size: .44rem !important;
+      line-height: 1.34 !important;
+      letter-spacing: .095em !important;
+      text-align: center !important;
+      white-space: normal !important;
     }
   `;
   document.head.appendChild(style);
