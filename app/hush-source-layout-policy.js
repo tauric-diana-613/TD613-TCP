@@ -1,4 +1,4 @@
-const HUSH_SOURCE_LAYOUT_POLICY_VERSION = 'source-layout-policy/v1-mask-only+customizer-clear-geometry-hide-masks';
+const HUSH_SOURCE_LAYOUT_POLICY_VERSION = 'source-layout-policy/v1-mask-only+customizer-clear-counter-align';
 
 function normalizeInstructionText() {
   return 'Source/input line breaks are reading context only, not output constraints. Do not copy or preserve source line breaks for their own sake. Visible line/paragraph pacing should come from the selected mask/custom-mask corpus when mask layout cadence is active; otherwise choose natural pacing for the transformed message.';
@@ -117,16 +117,31 @@ function installCustomizerVisibilityCss() {
       pointer-events: auto !important;
     }
     #hushPhase31CustomizerPanel:not([hidden]) .hush-phase31-corpus-meter,
-    #hushPhase31CustomizerPanel:not([hidden]) .hush-phase31-ledger-head {
-      display: grid !important;
-    }
     #hushPhase31CustomizerPanel:not([hidden]) .hush-phase31-sample-tools {
       display: grid !important;
     }
     #hushPhase31CustomizerPanel:not([hidden]) .hush-phase31-ledger-head {
-      grid-template-columns: minmax(0, 1fr) auto auto !important;
-      align-items: end !important;
-      column-gap: .48rem !important;
+      display: block !important;
+      position: relative !important;
+      padding-right: 6.4rem !important;
+      margin: .26rem 0 .56rem !important;
+      min-height: 3.45rem !important;
+    }
+    #hushPhase31CustomizerPanel:not([hidden]) .hush-phase31-ledger-head .hush-phase31-label {
+      display: grid !important;
+      gap: .26rem !important;
+      min-width: 0 !important;
+    }
+    #hushPhase31LedgerUtility {
+      position: absolute !important;
+      right: 0 !important;
+      bottom: .03rem !important;
+      display: inline-flex !important;
+      align-items: baseline !important;
+      justify-content: flex-end !important;
+      gap: .55rem !important;
+      white-space: nowrap !important;
+      z-index: 6 !important;
     }
     #hushPhase31CustomizerPanel:not([hidden]) #hushPhase31ClearDraft {
       appearance: none !important;
@@ -134,7 +149,7 @@ function installCustomizerVisibilityCss() {
       border: 0 !important;
       background: transparent !important;
       box-shadow: none !important;
-      padding: 0 0 .08rem !important;
+      padding: 0 !important;
       margin: 0 !important;
       color: rgba(255, 118, 104, .92) !important;
       font-family: var(--font-mono, ui-monospace, monospace) !important;
@@ -145,8 +160,19 @@ function installCustomizerVisibilityCss() {
       text-decoration: underline !important;
       text-underline-offset: 2px !important;
       cursor: pointer !important;
-      justify-self: end !important;
-      align-self: end !important;
+      white-space: nowrap !important;
+      vertical-align: baseline !important;
+    }
+    #hushPhase31CustomizerPanel:not([hidden]) #hushPhase31WordFloorCounter {
+      display: inline-block !important;
+      min-width: auto !important;
+      padding: 0 !important;
+      margin: 0 !important;
+      font-size: .48rem !important;
+      line-height: 1 !important;
+      letter-spacing: .12em !important;
+      vertical-align: baseline !important;
+      text-align: right !important;
       white-space: nowrap !important;
     }
     #hushPhase31CustomizerPanel:not([hidden]) #hushPhase31ClearDraft:hover,
@@ -198,6 +224,7 @@ function installCustomizerVisibilityCss() {
       max-height: 14rem !important;
       pointer-events: auto !important;
       resize: vertical !important;
+      margin-top: .18rem !important;
       margin-bottom: .18rem !important;
     }
     #hushPhase31CustomizerPanel:not([hidden]) #hushPhase31SampleStatus {
@@ -237,7 +264,14 @@ function hideCustomizerCockpit() {
 function ensureClearDraftControl() {
   const counter = document.getElementById('hushPhase31WordFloorCounter');
   const area = document.getElementById('hushVoiceReferenceSamplesSaved');
-  if (!counter || !area) return false;
+  const header = document.querySelector('#hushPhase31CustomizerPanel .hush-phase31-ledger-head');
+  if (!counter || !area || !header) return false;
+  let utility = document.getElementById('hushPhase31LedgerUtility');
+  if (!utility) {
+    utility = document.createElement('span');
+    utility.id = 'hushPhase31LedgerUtility';
+    header.appendChild(utility);
+  }
   let clear = document.getElementById('hushPhase31ClearDraft');
   if (!clear) {
     clear = document.createElement('button');
@@ -245,8 +279,9 @@ function ensureClearDraftControl() {
     clear.type = 'button';
     clear.textContent = 'clear';
     clear.setAttribute('aria-label', 'Clear sample draft text');
-    counter.parentElement?.insertBefore(clear, counter);
   }
+  if (clear.parentElement !== utility) utility.appendChild(clear);
+  if (counter.parentElement !== utility) utility.appendChild(counter);
   if (clear.dataset.bound !== 'true') {
     clear.dataset.bound = 'true';
     clear.addEventListener('click', () => {
@@ -272,7 +307,7 @@ function restoreCustomizerCockpit() {
   panel.style.removeProperty('max-height');
   panel.style.removeProperty('margin');
   panel.style.removeProperty('padding');
-  ['hushPhase31CorpusFill', 'hushPhase31SampleCategory', 'hushPhase31ContextLabel', 'hushVoiceReferenceSamplesSaved', 'hushPhase31LogSampleBtn', 'hushPhase31SaveMaskBtn', 'hushPhase31Undo', 'hushPhase31ResetCustomizer', 'hushPhase31SampleStatus', 'hushPhase31ClearDraft'].forEach((id) => {
+  ['hushPhase31CorpusFill', 'hushPhase31SampleCategory', 'hushPhase31ContextLabel', 'hushVoiceReferenceSamplesSaved', 'hushPhase31LogSampleBtn', 'hushPhase31SaveMaskBtn', 'hushPhase31Undo', 'hushPhase31ResetCustomizer', 'hushPhase31SampleStatus', 'hushPhase31ClearDraft', 'hushPhase31LedgerUtility'].forEach((id) => {
     const node = document.getElementById(id);
     if (!node) return;
     node.hidden = false;
