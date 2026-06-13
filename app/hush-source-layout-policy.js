@@ -161,6 +161,9 @@ function scheduleCustomizerRestore() {
 
 if (typeof window !== 'undefined') {
   window.addEventListener('td613:hush:outbound-packet', handleOutboundPacket);
+  window.addEventListener('click', (event) => {
+    if (event.target?.id === 'hushCustomizeTabBtn' || event.target?.closest?.('#hushCustomizeTabBtn')) scheduleCustomizerRestore();
+  }, true);
   window.__TD613_HUSH_SOURCE_LAYOUT_POLICY__ = { version: HUSH_SOURCE_LAYOUT_POLICY_VERSION, normalizeContract, normalizePacket, normalizeOutboundPacket, restoreCustomizerCockpit };
   if (window.__TD613_HUSH_PATCH38_LAST_OUTBOUND_PACKET) normalizeOutboundPacket(window.__TD613_HUSH_PATCH38_LAST_OUTBOUND_PACKET);
   if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', scheduleCustomizerRestore, { once: true });
