@@ -1,4 +1,4 @@
-const HUSH_CUSTOMIZER_CAPSULE_SCOPE_VERSION = 'customizer-capsule-scope/v1';
+const HUSH_CUSTOMIZER_CAPSULE_SCOPE_VERSION = 'customizer-capsule-scope/v2-bounded';
 const $ = (id) => document.getElementById(id);
 
 function customizerActive() {
@@ -56,8 +56,5 @@ else boot();
 
 window.addEventListener('td613:hush:patch38-result', () => window.setTimeout(syncCustomMaskCapsuleScope, 80));
 window.addEventListener('td613:hush:outbound-packet', () => window.setTimeout(syncCustomMaskCapsuleScope, 80));
-
-const observer = new MutationObserver(() => syncCustomMaskCapsuleScope());
-observer.observe(document.documentElement, { childList: true, subtree: true, attributes: true, attributeFilter: ['aria-pressed', 'hidden', 'class', 'data-capsule'] });
 
 window.__TD613_HUSH_CUSTOMIZER_CAPSULE_SCOPE__ = { version: HUSH_CUSTOMIZER_CAPSULE_SCOPE_VERSION, syncCustomMaskCapsuleScope, customizerActive };
