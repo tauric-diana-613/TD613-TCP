@@ -1,4 +1,4 @@
-const HUSH_SOURCE_LAYOUT_POLICY_VERSION = 'source-layout-policy/v1-mask-only+customizer-clear-geometry';
+const HUSH_SOURCE_LAYOUT_POLICY_VERSION = 'source-layout-policy/v1-mask-only+customizer-clear-geometry-hide-masks';
 
 function normalizeInstructionText() {
   return 'Source/input line breaks are reading context only, not output constraints. Do not copy or preserve source line breaks for their own sake. Visible line/paragraph pacing should come from the selected mask/custom-mask corpus when mask layout cadence is active; otherwise choose natural pacing for the transformed message.';
@@ -86,6 +86,20 @@ function installCustomizerVisibilityCss() {
   const style = document.createElement('style');
   style.id = 'hushPhase31VisibilityGuardStyle';
   style.textContent = `
+    #hushPhase31CustomizerPanel[hidden],
+    #hushPhase31CustomizerPanel[data-td613-mode="masks"] {
+      display: none !important;
+      visibility: hidden !important;
+      min-height: 0 !important;
+      height: 0 !important;
+      max-height: 0 !important;
+      margin: 0 !important;
+      padding: 0 !important;
+      border: 0 !important;
+      overflow: hidden !important;
+      opacity: 0 !important;
+      pointer-events: none !important;
+    }
     #hushPhase31CustomizerPanel:not([hidden]) {
       overflow: visible !important;
       min-height: 28rem !important;
@@ -206,6 +220,20 @@ function installCustomizerVisibilityCss() {
   document.head.appendChild(style);
 }
 
+function isCustomizeActive() {
+  return document.getElementById('hushCustomizeTabBtn')?.getAttribute('aria-pressed') === 'true';
+}
+
+function hideCustomizerCockpit() {
+  const panel = document.getElementById('hushPhase31CustomizerPanel');
+  if (!panel) return false;
+  panel.hidden = true;
+  panel.dataset.td613Mode = 'masks';
+  panel.setAttribute('aria-hidden', 'true');
+  panel.style.setProperty('display', 'none', 'important');
+  return true;
+}
+
 function ensureClearDraftControl() {
   const counter = document.getElementById('hushPhase31WordFloorCounter');
   const area = document.getElementById('hushVoiceReferenceSamplesSaved');
@@ -234,11 +262,16 @@ function restoreCustomizerCockpit() {
   installCustomizerVisibilityCss();
   ensureClearDraftControl();
   const panel = document.getElementById('hushPhase31CustomizerPanel');
-  const customizeTab = document.getElementById('hushCustomizeTabBtn');
-  const customizerActive = customizeTab?.getAttribute('aria-pressed') === 'true';
-  if (!panel || !customizerActive) return false;
+  if (!panel) return false;
+  if (!isCustomizeActive()) return hideCustomizerCockpit();
   panel.hidden = false;
+  panel.dataset.td613Mode = 'customize';
+  panel.removeAttribute('aria-hidden');
   panel.style.removeProperty('display');
+  panel.style.removeProperty('height');
+  panel.style.removeProperty('max-height');
+  panel.style.removeProperty('margin');
+  panel.style.removeProperty('padding');
   ['hushPhase31CorpusFill', 'hushPhase31SampleCategory', 'hushPhase31ContextLabel', 'hushVoiceReferenceSamplesSaved', 'hushPhase31LogSampleBtn', 'hushPhase31SaveMaskBtn', 'hushPhase31Undo', 'hushPhase31ResetCustomizer', 'hushPhase31SampleStatus', 'hushPhase31ClearDraft'].forEach((id) => {
     const node = document.getElementById(id);
     if (!node) return;
@@ -258,9 +291,9 @@ function scheduleCustomizerRestore() {
 if (typeof window !== 'undefined') {
   window.addEventListener('td613:hush:outbound-packet', handleOutboundPacket);
   window.addEventListener('click', (event) => {
-    if (event.target?.id === 'hushCustomizeTabBtn' || event.target?.closest?.('#hushCustomizeTabBtn')) scheduleCustomizerRestore();
+    if (event.target?.id === 'hushCustomizeTabBtn' || event.target?.closest?.('#hushCustomizeTabBtn') || event.target?.id === 'hushBuiltInTabBtn' || event.target?.closest?.('#hushBuiltInTabBtn')) scheduleCustomizerRestore();
   }, true);
-  window.__TD613_HUSH_SOURCE_LAYOUT_POLICY__ = { version: HUSH_SOURCE_LAYOUT_POLICY_VERSION, normalizeContract, normalizePacket, normalizeOutboundPacket, restoreCustomizerCockpit, ensureClearDraftControl };
+  window.__TD613_HUSH_SOURCE_LAYOUT_POLICY__ = { version: HUSH_SOURCE_LAYOUT_POLICY_VERSION, normalizeContract, normalizePacket, normalizeOutboundPacket, restoreCustomizerCockpit, hideCustomizerCockpit, ensureClearDraftControl };
   if (window.__TD613_HUSH_PATCH38_LAST_OUTBOUND_PACKET) normalizeOutboundPacket(window.__TD613_HUSH_PATCH38_LAST_OUTBOUND_PACKET);
   if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', scheduleCustomizerRestore, { once: true });
   else scheduleCustomizerRestore();
