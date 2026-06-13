@@ -57,7 +57,7 @@ for (const path of requiredDocs) {
 
 const readme = read('README.md');
 includesAll(readme, 'README.md', [
-  '# TCP — The Cadence Playground',
+  '# TD613 Gateway',
   '## What this is',
   '## Mission thesis',
   '## What this is not',
@@ -74,13 +74,17 @@ includesAll(readme, 'README.md', [
   '## Documentation index',
   'TD613 Hush',
   'TD613 is a custodial AI-access protocol',
-  'Hush is not TD613 Flight',
-  'Hush is not Safe Harbor',
-  'app/hush.html',
+  'TD613 Hush',
+  'TD613 Aperture',
+  'TD613 Safe Harbor',
+  'TD613 Flight',
+  'TD613 Trainer',
+  'Hush is not Safe Harbor or Flight',
+  'app/index.html',
   'Phase 29.1 repairs the public documentation surface'
 ]);
-assert(readme.includes('TD613 Hush — or Hush — is the product surface for the Toy-to-Tool authorship-pressure arc inside The Cadence Playground'));
-assert(readme.includes('Phase 29 gives Hush its own product route at `/hush.html`'));
+assert(readme.includes('TD613 is a custody-aware authorship routing stack'));
+assert(readme.includes('Older TCP chambers such as Homebase / Personas, Readout, and Deck remain in the repository as legacy/lab surfaces'));
 
 const index = read('docs/INDEX.md');
 for (const name of docsIndexMustLink) assert(index.includes(name), `docs index missing ${name}`);

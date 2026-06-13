@@ -3,7 +3,7 @@
   "version": "1.0.0",
   "private": true,
   "type": "module",
-  "description": "The Cadence Playground — custody-aware cadence routing demo",
+  "description": "TD613 custody-aware authorship routing instruments",
   "scripts": {
     "prepare": "git config core.hooksPath .githooks",
     "serve": "node scripts/serve-td613-localhost.mjs 6130",

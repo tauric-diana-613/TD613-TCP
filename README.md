@@ -1,14 +1,18 @@
-# TCP — The Cadence Playground
+# TD613 Gateway
 
 ## What this is
 
-The Cadence Playground is the larger browser workspace for TD613 cadence, route, Safe Harbor adjacency, Persona play, stylometric math, Hush, and local browser experiments.
+TD613 is a custody-aware authorship routing stack for vulnerable speech, authored surfaces, and route-sensitive packets entering machine-readable, model-mediated, and AI-indexed environments.
 
-TD613 Hush — or Hush — is the product surface for the Toy-to-Tool authorship-pressure arc inside The Cadence Playground. Phase 29 gives Hush its own product route at `/hush.html`. The older `/adversarial-bench.html` route remains available as the legacy chamber for continuity.
+The current gateway should be read through five maintained instruments:
 
-Hush is playful on the surface because it belongs in The Cadence Playground. Underneath, it is disciplined: Hush-native masks, custom mask samples, stylometric profile refinement, Escape Vector, Ingestion Friction, Controller state, Mask Memory, Iteration Ledger, Claim Ladder, Report Export, Fixtures, Calibration, Recognition Field, residual steering, protected literal lockbox, mask lifecycle, release policy, export policy, register custody, target-register audit, product state, readiness dashboard, report ingest, and readiness ledger.
+- `TD613 Hush` — local syntax transposition and review for message, mask, transform, residual source heat, and claim integrity.
+- `TD613 Aperture` — counter-tool audit for narrowing, filtering, selective admissibility pressure, and route distortion.
+- `TD613 Safe Harbor` — provenance intake, packet shaping, SHI minting, hashes, route recommendation, and seal-ready custody.
+- `TD613 Flight` — SHI-gated credential flightdeck for LLM-ready Flight Packets, authorship / rupture footers, Safe Harbor metadata, route-readiness diagnostics, and manifest-style handoff.
+- `TD613 Trainer` — extract / forge / validate / inject lane for controlled voice-shell candidates.
 
-Homebase, Deck, and Trainer remain legacy/lab chambers while Hush becomes the primary whistleblower-facing mask workflow. Hush is not the whole repository, and the repository should not collapse every TD613 surface into Hush.
+Older TCP chambers such as Homebase / Personas, Readout, and Deck remain in the repository as legacy/lab surfaces for experiments, regression pressure, and runtime continuity. They are not the current public onboarding route.
 
 ## Mission thesis
 
@@ -22,35 +26,29 @@ Read the full crown in [docs/TD613_MISSION_THESIS.md](docs/TD613_MISSION_THESIS.
 
 ## What this is not
 
-TD613 Hush does not prove identity, anonymity, untraceability, platform outcome, or publication safety.
+TD613 does not prove identity, anonymity, untraceability, platform outcome, publication safety, or legal sufficiency. Its instruments expose pressure, custody, and route state; they do not replace human judgment.
 
-Hush is not TD613 Flight. Flight is the SHI-gated credential flightdeck launched from Safe Harbor. Hush is the local authorship-pressure and custody review instrument inside TCP.
+Hush is not Safe Harbor or Flight. Hush transforms and reviews a message surface; Safe Harbor stages and seals packet custody; Flight prepares SHI-bound prompt packets and authorship / rupture footers.
 
-Hush is not Safe Harbor. Safe Harbor remains the adjacent intake and credential architecture.
+Aperture is not an enforcement classifier. It is a counter-tool for making narrowing and selective admissibility visible.
 
-Hush is not a platform classifier, external detector, legal strategy substitute, publication decision-maker, truth machine for whistleblowing claims, production safety platform, covert classifier, or provenance laundering tool.
+Trainer is not a license to impersonate. It extracts, forges, validates, and gates shell candidates under retrieval law.
+
+TD613 is not a platform classifier, external detector, legal strategy substitute, publication decision-maker, truth machine for whistleblowing claims, production safety platform, covert classifier, or provenance laundering tool.
 
 ## Core workflow
 
-1. Open Hush at `app/hush.html` for the product spine or `app/adversarial-bench.html` for the legacy chamber.
-2. Select a built-in Hush mask or create a custom mask from writing samples.
-3. Review the mask's stylometric profile.
-4. Stage protected baseline when needed.
-5. Stage message draft.
-6. Swap the surface toward the selected mask.
-7. Review protected output.
-8. Analyze Escape Vector.
-9. Review Ingestion Friction.
-10. Review Controller state.
-11. Review Mask Memory.
-12. Review Claim Ladder.
-13. Review Recognition Field.
-14. Review residual steering, literal lockbox, mask lifecycle, release policy, export policy, register custody, target-register audit, and readiness dashboard.
-15. Export only after reviewing warnings and claim ceiling.
+1. Open the gateway at `app/index.html`.
+2. Use `TD613 Hush` for local message transformation and review.
+3. Use `TD613 Aperture` when an output needs narrowing, filtering, admissibility, or route-pressure audit.
+4. Use `TD613 Safe Harbor` when a route needs provenance intake, SHI minting, packet hashes, route recommendation, or seal-ready custody.
+5. Use `TD613 Flight` only after Safe Harbor mints an SHI; Flight prepares credentialed, LLM-ready packets and authorship / rupture footers.
+6. Use `TD613 Trainer` when the task is shell extraction, candidate forging, validation, and gated injection/export.
+7. Treat older TCP chambers as lab/legacy surfaces unless a current tool explicitly depends on them.
 
 ## Phase map
 
-The Hush Toy-to-Tool build now runs Phase 0 through Phase 29. Phase 29.1 repairs the public documentation surface so Hush's public memory catches up with its engine. See [docs/PHASE_MAP.md](docs/PHASE_MAP.md), [docs/HUSH_PHASE_21_28_STATUS.md](docs/HUSH_PHASE_21_28_STATUS.md), [docs/HUSH_PRODUCT_SPINE_STATUS.md](docs/HUSH_PRODUCT_SPINE_STATUS.md), and [docs/HUSH_EPISTEMICIDE_AUDIT.md](docs/HUSH_EPISTEMICIDE_AUDIT.md).
+The phase documents remain useful for implementation history, but the current public orientation is the five-tool TD613 Gateway. Phase 29.1 repairs the public documentation surface so Hush's public memory catches up with its engine; newer gateway language keeps Hush beside Aperture, Safe Harbor, Flight, and Trainer instead of treating old TCP chambers as the starting path. See [docs/PHASE_MAP.md](docs/PHASE_MAP.md), [docs/HUSH_PHASE_21_28_STATUS.md](docs/HUSH_PHASE_21_28_STATUS.md), [docs/HUSH_PRODUCT_SPINE_STATUS.md](docs/HUSH_PRODUCT_SPINE_STATUS.md), and [docs/HUSH_EPISTEMICIDE_AUDIT.md](docs/HUSH_EPISTEMICIDE_AUDIT.md).
 
 ## Local-only posture
 
@@ -97,20 +95,17 @@ Start with [docs/INDEX.md](docs/INDEX.md), then read [docs/TD613_MISSION_THESIS.
 
 ## Registered field language
 
-TCP's glyph system is operational, not decorative. The browser uses a registered field language to keep surface role, state transition, and retrieval truth aligned.
+TD613's glyph and route language is operational, not decorative. The browser uses registered field language to keep surface role, state transition, and retrieval truth aligned.
 
-The current public membrane is organized as six roles:
+The current public gateway is organized around five maintained instruments:
 
-- `Ingress` = threshold
-- `Hush` = product spine for local authorship-pressure and custody review
-- `Homebase / Personas` = legacy/lab chamber for anchor, mask shelf, contact, residue
-- `Readout` = witness and law
-- `Deck` = legacy/lab chamber for encounter and duel
-- `Trainer` = legacy/lab chamber for corpus extraction and validation
+- `Hush` = local authorship-pressure, syntax transposition, custody review, and residual steering.
+- `Aperture` = counter-tool audit for narrowing, filtering, selective admissibility pressure, and route distortion.
+- `Safe Harbor` = provenance intake, SHI minting, packet state, hashes, route recommendation, and seal-ready custody.
+- `Flight` = SHI-gated credential flightdeck for routed prompts, authorship / rupture footers, glyph integrity, route-readiness diagnostics, and manifest export.
+- `Trainer` = extraction, forge validation, correction hints, release gate, and injection/export control.
 
-That role split matters because TCP does not present every state in the same voice. Phase 29 makes Hush a product route while keeping older chambers available for lab work.
-
-Adjacent to the TCP shell, `TD613 Flight` is the SHI-gated credential flightdeck launched from Safe Harbor. It prepares LLM-ready Flight Packets and authorship / rupture footers, but it does not mint SHI on its own; entrants must complete Safe Harbor's triad first.
+Older TCP roles such as Homebase / Personas, Readout, and Deck remain available as legacy/lab surfaces. They should not be treated as the current gateway contract.
 
 ## Problem statement
 
@@ -120,7 +115,7 @@ Most language systems flatten three different acts into one gesture:
 - transforming text into donor-shaped outputs
 - inferring what those patterns should mean socially or operationally
 
-TCP is built to keep those acts separate. The research question is not whether cadence can be made legible. It can. The harder question is how to expose stylometric contact, shell borrowing, route pressure, and provenance-sensitive passage without allowing resemblance to impersonate authorship, route, or repair.
+TD613 is built to keep those acts separate. The research question is not whether cadence can be made legible. It can. The harder question is how to expose stylometric contact, shell borrowing, route pressure, packet custody, and provenance-sensitive passage without allowing resemblance to impersonate authorship, route, or repair.
 
 The current system is organized around three layers:
 
@@ -144,7 +139,7 @@ This is the mechanism that keeps `Swap Cadences` from pretending that a surface-
 
 ## Safety constraints and decision grammar
 
-TCP is governed by four explicit constraints:
+TD613 is governed by four explicit constraints:
 
 ```math
 \text{Recognition} \neq \text{Repair}
@@ -166,7 +161,7 @@ These are operational constraints, not slogans.
 
 ## Evaluation and maintained proof surfaces
 
-TCP ships maintained proof surfaces in both Node and the browser. The maintained Node suite is:
+TD613 ships maintained proof surfaces in both Node and the browser. The maintained Node suite is:
 
 ```bash
 npm test
@@ -176,9 +171,9 @@ That path covers stylometry, fixtures, recognition, Hush, release hardening, ben
 
 ## Non-goals
 
-TCP and Hush are not authorship verdict engines, truth machines for whistleblowing claims, production safety platforms, covert classifiers, or provenance laundering tools.
+TD613 and Hush are not authorship verdict engines, truth machines for whistleblowing claims, production safety platforms, covert classifiers, or provenance laundering tools.
 
-The system is most coherent when read as a bounded retrieval-first cadence lab with explicit safety policy.
+The system is most coherent when read as a custody-aware authorship routing stack with explicit safety policy and legacy lab surfaces kept separate from the current gateway contract.
 
 ## Operational entry points
 
