@@ -2,7 +2,7 @@
 (function () {
   'use strict';
 
-  var VERSION = 'pr168-strict-transform-run-lock/v1';
+  var VERSION = 'pr168-strict-transform-run-lock/v2-held-receipt-release';
 
   function byId(id) {
     return document.getElementById(id);
@@ -26,8 +26,53 @@
     }
   }
 
+  function heldReceiptExists() {
+    var receipt = window.__TD613_HUSH_NO_FALLBACK_RECEIPT || window.__TD613_HUSH_PR123_LAST || null;
+    return Boolean(receipt && (receipt.status === 'held' || receipt.fallbackReleased === false || receipt.reason));
+  }
+
+  function releaseRunLock(reason) {
+    window.__TD613_HUSH_STRICT_TRANSFORM_RUNNING = false;
+    setBusy(false);
+    if (document.body) document.body.dataset.strictTransformLockRelease = reason || 'manual';
+    return true;
+  }
+
+  function recoverHeldReceiptLock(reason) {
+    var button = byId('generateMaskedOutputBtn');
+    var bodyRunning = document.body && document.body.dataset.strictTransformRunning === 'true';
+    var buttonRunning = button && button.dataset.strictTransformRunning === 'true';
+    if (!heldReceiptExists()) return false;
+    if (window.__TD613_HUSH_STRICT_TRANSFORM_RUNNING || bodyRunning || buttonRunning || (button && button.disabled)) {
+      return releaseRunLock(reason || 'held-receipt-recovery');
+    }
+    return false;
+  }
+
+  function installRecoveryListeners() {
+    if (!document.body || document.body.dataset.pr168RecoveryListeners === VERSION) return;
+    document.body.dataset.pr168RecoveryListeners = VERSION;
+    ['messageDraftInput', 'maskFieldSelect', 'maskReferenceInput', 'protectedBaselineInput', 'hushBuiltInTabBtn', 'hushCustomizeTabBtn'].forEach(function (id) {
+      var node = byId(id);
+      if (!node) return;
+      var type = node.tagName === 'SELECT' ? 'change' : 'input';
+      if (/Btn$/.test(id)) type = 'click';
+      node.addEventListener(type, function () {
+        window.setTimeout(function () { recoverHeldReceiptLock('input-or-mask-change'); }, 0);
+      }, true);
+    });
+  }
+
+  function installIdleRecovery() {
+    window.setTimeout(function () { recoverHeldReceiptLock('post-boot-idle'); }, 1200);
+    window.setTimeout(function () { recoverHeldReceiptLock('post-boot-idle-late'); }, 3200);
+  }
+
   function install() {
     if (!document.body || document.body.dataset.pageKind !== 'adversarial-bench') return;
+
+    installRecoveryListeners();
+    installIdleRecovery();
 
     var api = window.TD613_HUSH_PR123;
     if (!api || typeof api.run !== 'function') return;
@@ -42,6 +87,9 @@
       var runArgs = arguments;
 
       if (window.__TD613_HUSH_STRICT_TRANSFORM_RUNNING) {
+        if (recoverHeldReceiptLock('pre-run-held-receipt')) {
+          return api.__td613Pr168BaseRun.apply(runThis, runArgs);
+        }
         var maybeEvent = runArgs[0];
         if (maybeEvent && typeof maybeEvent.preventDefault === 'function') maybeEvent.preventDefault();
         if (maybeEvent && typeof maybeEvent.stopPropagation === 'function') maybeEvent.stopPropagation();
@@ -58,16 +106,19 @@
           return baseRun.apply(runThis, runArgs);
         })
         .finally(function () {
-          window.__TD613_HUSH_STRICT_TRANSFORM_RUNNING = false;
-          setBusy(false);
+          releaseRunLock('run-finally');
+          window.setTimeout(function () { recoverHeldReceiptLock('post-finally-held-receipt'); }, 80);
         });
     };
 
     api.__td613Pr168Version = VERSION;
     window.TD613_HUSH_PR168_RUN_LOCK = {
       version: VERSION,
-      installedAt: new Date().toISOString()
+      installedAt: new Date().toISOString(),
+      release: releaseRunLock,
+      recoverHeldReceiptLock: recoverHeldReceiptLock
     };
+    window.__TD613_HUSH_PR168_RELEASE_RUN_LOCK = releaseRunLock;
   }
 
   if (document.readyState === 'loading') {
