@@ -12,6 +12,7 @@ TD613 Hush is the local authorship-pressure and custody review instrument inside
 - [Hush Known Failure Modes](HUSH_KNOWN_FAILURE_MODES.md) — Failure symptoms, likely causes, and operator actions.
 - [Hush Product Spine Status](HUSH_PRODUCT_SPINE_STATUS.md) — Phase 29 `/hush` product route and dashboard status.
 - [Hush Epistemicide Audit](HUSH_EPISTEMICIDE_AUDIT.md) — Public-memory, report/UI, export, registry, and corpus drift audit.
+- [Amari Patch Lane](AMARI_PATCH_LANE.md) — Small packet handoff for mergeable AI-assisted micro-edits.
 - [Known Limitations](KNOWN_LIMITATIONS.md) — Boundaries, uncertainty zones, and local-only limits.
 
 ## Mission and doctrine
@@ -52,6 +53,7 @@ TD613 Hush is the local authorship-pressure and custody review instrument inside
 ## Governance and release
 
 - [Calibration Review Checklist](CALIBRATION_REVIEW_CHECKLIST.md) — Maintainer checklist before and after scoring changes.
+- [Amari Patch Lane](AMARI_PATCH_LANE.md) — Validator-backed handoff rules for external AI patch suggestions.
 - [Release Notes Phase 0–10](RELEASE_NOTES_PHASE_0_10.md) — Toy-to-Tool closeout notes.
 
 Hush is a local review workbench. It stays inside bounded local assumptions and avoids platform guarantees.

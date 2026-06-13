@@ -1,0 +1,30 @@
+{
+  "schemaVersion": "td613-amari-patch/v1",
+  "patchId": "short-product-area-change-id",
+  "intent": "One or two sentences describing the operator-facing change.",
+  "scope": "smallest affected surface, for example safe-harbor-ingress or flight-seal-controls",
+  "risk": "low",
+  "files": [
+    "app/example.html"
+  ],
+  "operations": [
+    {
+      "type": "replace-exact",
+      "path": "app/example.html",
+      "find": "Old exact text copied from the current repo.",
+      "replace": "New exact text."
+    },
+    {
+      "type": "insert-after",
+      "path": "app/example.html",
+      "anchor": "Exact anchor copied from the current repo.",
+      "insert": "New text inserted after the anchor."
+    }
+  ],
+  "tests": [
+    "node tests/station-pages.test.mjs"
+  ],
+  "notes": [
+    "Keep this packet small. If it needs a refactor, describe the refactor instead of pasting a giant file."
+  ]
+}
