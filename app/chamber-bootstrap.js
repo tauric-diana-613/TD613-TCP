@@ -141,7 +141,7 @@
     appendScript('./hush-pr123-stable-transform.js?v=' + (V.hushPr123 || V.hushPr122 || V.hushPatch38 || V.main || ''));
     appendScript('./hush-pr141-receipt-truth-normalizer.js?v=' + (V.hushPr141 || V.hushPr123 || V.hushPatch38 || V.main || ''));
     appendScript('./hush-pr131-suppress-pr130-rescue-release.js?v=' + (V.hushPr131 || V.hushPr141 || V.hushPr123 || V.hushPatch38 || V.main || ''));
-    appendScript('./hush-pr168-strict-transform-run-lock.js?v=' + (V.hushPr168 || V.hushPr131 || V.hushPr141 || V.hushPr123 || V.hushPatch38 || V.main || ''));
+    appendScript('./hush-pr168-strict-transform-run-lock.js?v=202606122415');
   }
 
   appendScript('./tcp-copy-hygiene.js?v=' + (V.copyHygiene || V.chrome || V.main || '202606010455'));
