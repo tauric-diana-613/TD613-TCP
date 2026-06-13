@@ -5,7 +5,7 @@ const corsHeaders = {
   'access-control-max-age': '86400'
 };
 
-const VERSION = 'hush-generate-budgeted-pr188.14-layout-cadence-prompt';
+const VERSION = 'hush-generate-budgeted-pr188.15-mask-only-layout-cadence';
 const DEFAULT_MODEL_ORDER = ['gemini-2.5-flash-lite', 'gemini-flash-lite-latest', 'gemini-2.5-flash'];
 const FAST_CALL_TIMEOUT_MS = 5200;
 const NORMAL_CALL_TIMEOUT_MS = 7600;
@@ -88,12 +88,13 @@ function layoutCadenceLaw(contract = {}, style = {}) {
   const sourceCadence = fp.source_manifest?.source_layout_cadence || contract.sourceLayoutCadence || null;
   const maskCadence = style.layoutCadence || fp.mask_style_vector?.layout_cadence || contract.maskLayoutCadence || null;
   const constraints = engine.generator_constraints || {};
-  if (!sourceCadence && !maskCadence && !constraints.preserve_layout_cadence) return '';
+  const maskLayoutActive = Boolean(maskCadence || constraints.preserve_mask_layout_cadence || constraints.custom_mask_line_break_behavior_active || constraints.preserve_layout_cadence);
+  if (!sourceCadence && !maskLayoutActive) return '';
   return `LAYOUT CADENCE CUSTODY:
-- Line breaks and paragraph breaks are cadence evidence. Output does not need to copy source line breaks exactly, but must not flatten a paragraph-sensitive source or custom mask into one undifferentiated block.
-- For custom masks, if the mask corpus uses line breaks heavily, use comparable visible pacing where natural.
+- Source/input line breaks are reading context only, not output constraints. Do not copy, preserve, or force source line breaks.
+- Use visible line/paragraph pacing only when the selected mask/custom-mask corpus indicates line-break behavior; otherwise choose natural pacing for the transformed message.
 - Punctuation density, punctuation scarcity, repeated punctuation, lowercase sentence-start behavior, and apostrophe/contraction surface are mask cues when present in the selected custom profile. Preserve meaning and protected literals above all else.
-- ${compactLayoutCadenceText('source layout', sourceCadence)}
+- ${compactLayoutCadenceText('source layout diagnostic only', sourceCadence)}
 - ${compactLayoutCadenceText('mask layout', maskCadence)}`;
 }
 function sourceObligations(sourceText = '') {
