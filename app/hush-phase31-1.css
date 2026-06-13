@@ -236,24 +236,54 @@
 .hush-phase31-ledger-head {
   display: grid;
   grid-template-columns: minmax(0, 1fr) auto;
-  align-items: start;
-  column-gap: .75rem;
-  margin: .26rem 0 .56rem;
+  align-items: end;
+  gap: .5rem;
+  margin: .26rem 0 .35rem;
   position: relative;
   z-index: 2;
 }
-.hush-phase31-word-floor {
+.hush-phase31-ledger-head .hush-phase31-label { min-width: 0; }
+.hush-phase31-draft-utility {
+  display: inline-flex;
+  align-items: baseline;
+  justify-content: flex-end;
+  gap: .5rem;
+  white-space: nowrap;
+  align-self: end;
   justify-self: end;
-  align-self: start;
-  min-width: 2.9rem;
-  padding-top: .08rem;
+  padding-bottom: .05rem;
+}
+.hush-phase31-clear-draft,
+.hush-phase31-word-floor {
+  font-family: var(--font-mono, ui-monospace, monospace);
   font-size: .48rem;
   line-height: 1;
   letter-spacing: .12em;
+  text-transform: uppercase;
+}
+.hush-phase31-clear-draft {
+  appearance: none;
+  -webkit-appearance: none;
+  border: 0;
+  background: transparent;
+  box-shadow: none;
+  padding: 0;
+  margin: 0;
+  color: rgba(255, 118, 104, .92);
+  text-decoration: underline;
+  text-underline-offset: 2px;
+  cursor: pointer;
+}
+.hush-phase31-clear-draft:hover,
+.hush-phase31-clear-draft:focus-visible {
+  color: rgba(255, 135, 113, 1);
+  text-shadow: 0 0 10px rgba(255, 118, 104, .28);
+  outline: none;
+}
+.hush-phase31-word-floor {
+  min-width: 2.9rem;
   text-align: right;
   color: rgba(202,255,223,.62);
-  text-transform: uppercase;
-  font-family: var(--font-mono, ui-monospace, monospace);
 }
 .hush-phase31-word-floor[data-state="ready"] { color: #31ff8a; }
 #hushPhase31SampleCategory,
@@ -422,5 +452,5 @@ textarea, input, select { font-size: .72rem !important; line-height: 1.24 !impor
   .hush-phase31-stat-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
   .hush-phase31-meter-top,.hush-phase31-tier-row { align-items: stretch; flex-direction: column; }
   .hush-phase31-ledger-head { grid-template-columns: 1fr; row-gap: .34rem; }
-  .hush-phase31-word-floor { justify-self: end; }
+  .hush-phase31-draft-utility { justify-self: end; }
 }

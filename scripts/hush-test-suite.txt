@@ -89,6 +89,7 @@ hush-mask-stylometry-enrichment.test.mjs
 hush-packet-router.test.mjs
 hush-phase22-jagged-mask-flight.test.mjs
 hush-phase31-1-customizer-forge.test.mjs
+hush-phase31-draft-ledger.test.mjs
 hush-phase37-flight-packet.test.mjs
 hush-phase39-engine.test.mjs
 hush-phase39-ui.test.mjs
