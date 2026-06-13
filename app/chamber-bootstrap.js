@@ -30,6 +30,34 @@
     document.head.appendChild(script);
   }
 
+  function installHushPhase31BindGuard() {
+    if (window.__TD613_HUSH_PHASE31_BIND_GUARD__) return;
+    window.__TD613_HUSH_PHASE31_BIND_GUARD__ = 'chamber-bootstrap/v1';
+    var ids = {
+      hushCustomizeTabBtn: { click: true },
+      hushBuiltInTabBtn: { click: true },
+      hushPhase31LogSampleBtn: { click: true },
+      hushPhase31Undo: { click: true },
+      hushPhase31SaveMaskBtn: { click: true },
+      hushPhase31CancelSave: { click: true },
+      hushPhase31AddToStudio: { click: true },
+      hushPhase31ResetCustomizer: { click: true },
+      hushVoiceReferenceSamplesSaved: { input: true }
+    };
+    var originalAdd = EventTarget.prototype.addEventListener;
+    EventTarget.prototype.addEventListener = function (type, listener, options) {
+      try {
+        var id = this && this.id;
+        if (id && ids[id] && ids[id][type] && this.dataset) {
+          var key = 'td613Phase31' + type.charAt(0).toUpperCase() + type.slice(1) + 'Bound';
+          if (this.dataset[key] === 'true') return;
+          this.dataset[key] = 'true';
+        }
+      } catch (error) {}
+      return originalAdd.call(this, type, listener, options);
+    };
+  }
+
   if (pageKind === 'gateway') {
     appendStylesheet('./gateway-housekeeping.css', './gateway-housekeeping.css?v=' + (V.gatewayHousekeeping || V.chrome || V.main || ''));
     var gatewayHousekeepingStyle = document.createElement('style');
@@ -69,6 +97,7 @@
   }
 
   if (pageKind === 'adversarial-bench') {
+    installHushPhase31BindGuard();
     appendStylesheet('./hush-visual-system.css', './hush-visual-system.css?v=' + (V.hushVisualSystem || V.main || ''));
     appendStylesheet('./hush-compact.css', './hush-compact.css?v=' + (V.hushCompact || V.main || ''));
     appendStylesheet('./hush-invisible.css', './hush-invisible.css?v=' + (V.hushInvisible || V.main || ''));
@@ -119,18 +148,15 @@
 
   var srcs = [
     './td613-constants.js',
-    './browser-data.js?v='        + (V.data        || ''),
-    './browser-diagnostics.js?v=' + (V.diagnostics || ''),
-    './browser-engine.js?v='      + (V.engine      || ''),
-    './operator-receipt.js?v='    + (V.operatorReceipt || V.main || ''),
-    './browser-main.js?v='        + (V.main        || ''),
-    './tcp-gateway-rescue.js?v='  + (V.gatewayRescue || V.main || '202606110235'),
-    './chamber-chrome.js?v='      + (V.chrome      || V.main || '')
+    './browser-data.js?v=' + (V.data || V.main || ''),
+    './browser-diagnostics.js?v=' + (V.diagnostics || V.main || ''),
+    './browser-engine.js?v=' + (V.engine || V.main || ''),
+    './browser-main.js?v=' + (V.main || ''),
+    './tcp-gateway-rescue.js?v=' + (V.gatewayRescue || V.main || '202606110235'),
+    './chamber-chrome.js?v=' + (V.chrome || V.main || '')
   ];
-
   if (needsRetrievalFixtures) {
-    srcs.splice(1, 0, './browser-retrieval-fixtures.js?v=' + (V.retrievalFixtures || V.diagnostics || ''));
+    srcs.splice(2, 0, './retrieval-fixtures.js?v=' + (V.fixtures || V.main || ''));
   }
-
   srcs.forEach(appendScript);
 }());
