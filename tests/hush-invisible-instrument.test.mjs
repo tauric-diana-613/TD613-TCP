@@ -4,7 +4,7 @@ import { JSDOM } from 'jsdom';
 import { initHushInvisibleShell, updateHushPressureRibbon } from '../app/hush-invisible-shell.js';
 
 const html = fs.readFileSync('app/adversarial-bench.html', 'utf8');
-const bridge = fs.readFileSync('app/adversarial-bench.js', 'utf8');
+const bridge = fs.readFileSync('app/adversarial-bench-light.js', 'utf8');
 const bootstrap = fs.readFileSync('app/chamber-bootstrap.js', 'utf8');
 const dom = new JSDOM(html);
 const { document } = dom.window;
@@ -72,8 +72,8 @@ assert(lab.contains(document.getElementById('recognitionFieldPanel')), 'recognit
 assert(lab.contains(document.getElementById('ledgerExportOutput')), 'ledger export lives inside Lab');
 assert(lab.contains(document.getElementById('reportExportOutput')), 'report export lives inside Lab');
 
-assert(bootstrap.includes('./hush-invisible.css'), 'bootstrap loads hush-invisible.css');
-assert(bridge.includes('./hush-invisible-shell.js'), 'browser bridge imports hush-invisible-shell.js');
+assert(html.includes('./hush-invisible.css'), 'Hush page loads hush-invisible.css directly');
+assert(bridge.includes('./hush-invisible-shell.js'), 'light browser bridge imports hush-invisible-shell.js');
 assert(bridge.includes('__TD613_HUSH_BENCH__'), 'browser bridge exposes the Hush bench for the invisible shell');
 
 for (const oldLabel of ['Protected Baseline / Reference Voice', 'Message Draft / Source Text', 'Protected Output']) {

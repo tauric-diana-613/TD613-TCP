@@ -1,22 +1,7 @@
-const TD613_HUSH_PHASE39_VERSION = '202605301720';
 const TD613_HUSH_OUTBOUND_PACKET_EXPORT_VERSION = '202606121823';
-const TD613_HUSH_HOUSEKEEPING_RELAYOUT_VERSION = '202606121846';
+const TD613_HUSH_HOUSEKEEPING_RELAYOUT_VERSION = '202606131610';
 
-const ensureHushPhase39Assets = () => {
-  if (!document.querySelector('link[data-td613-hush-phase39="css"]')) {
-    const link = document.createElement('link');
-    link.rel = 'stylesheet';
-    link.href = `./hush-phase39.css?v=${TD613_HUSH_PHASE39_VERSION}`;
-    link.dataset.td613HushPhase39 = 'css';
-    document.head.appendChild(link);
-  }
-  if (!document.querySelector('script[data-td613-hush-phase39="ui"]')) {
-    const script = document.createElement('script');
-    script.type = 'module';
-    script.src = `./hush-phase39-ui.js?v=${TD613_HUSH_PHASE39_VERSION}`;
-    script.dataset.td613HushPhase39 = 'ui';
-    document.body.appendChild(script);
-  }
+const ensureHousekeepingExportAssets = () => {
   if (!document.querySelector('script[data-td613-hush-outbound-packet-export="ui"]')) {
     const script = document.createElement('script');
     script.type = 'module';
@@ -95,7 +80,7 @@ const relocateHushCustodyPanel = () => {
 };
 
 function bindRelayout() {
-  ensureHushPhase39Assets();
+  ensureHousekeepingExportAssets();
   let tries = 0;
   const tick = () => {
     tries += 1;
@@ -110,4 +95,4 @@ function bindRelayout() {
 
 if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', bindRelayout, { once: true });
 else bindRelayout();
-window.__TD613_HUSH_HOUSEKEEPING_RELAYOUT__ = { version: TD613_HUSH_HOUSEKEEPING_RELAYOUT_VERSION, relocateHushCustodyPanel, ensureHushPhase39Assets, orderCustodySecondaryActions };
+window.__TD613_HUSH_HOUSEKEEPING_RELAYOUT__ = { version: TD613_HUSH_HOUSEKEEPING_RELAYOUT_VERSION, relocateHushCustodyPanel, ensureHousekeepingExportAssets, orderCustodySecondaryActions };

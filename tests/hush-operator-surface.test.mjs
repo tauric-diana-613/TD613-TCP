@@ -6,7 +6,7 @@ import { HUSH_ALIEN_CONSOLE_VERSION, initHushAlienConsole, renderHushMaskRouteCa
 assert.equal(HUSH_ALIEN_CONSOLE_VERSION, 'phase-20');
 
 const html = fs.readFileSync('app/adversarial-bench.html', 'utf8');
-const bridge = fs.readFileSync('app/adversarial-bench.js', 'utf8');
+const bridge = fs.readFileSync('app/adversarial-bench-light.js', 'utf8');
 const dom = new JSDOM(html, { url: 'http://localhost/adversarial-bench.html', pretendToBeVisual: true });
 const { document } = dom.window;
 

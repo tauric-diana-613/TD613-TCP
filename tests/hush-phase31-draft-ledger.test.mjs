@@ -54,8 +54,8 @@ const policy = fs.readFileSync('app/hush-source-layout-policy.js', 'utf8');
 const stableTransform = fs.readFileSync('app/hush-pr123-stable-transform.js', 'utf8');
 
 assert(html.includes('hush-phase31-1.css?v=202606131510'));
-assert(html.includes('hush-phase31-1.js?v=202606131420'));
-assert(html.includes('hush-source-layout-policy.js?v=202606131420'));
+assert(html.includes('hush-phase31-1.js?v=202606131610'));
+assert(html.includes('hush-source-layout-policy.js?v=202606131610'));
 assert(js.includes('hushPhase31DraftUtility'));
 assert(js.includes('hushPhase31ClearDraft'));
 assert(!js.includes('if (area && samples.length) area.value = samples.map'));

@@ -9,7 +9,7 @@ import {
 } from '../app/hush-simple-path.js';
 
 const html = fs.readFileSync('app/adversarial-bench.html', 'utf8');
-const bridge = fs.readFileSync('app/adversarial-bench.js', 'utf8');
+const bridge = fs.readFileSync('app/adversarial-bench-light.js', 'utf8');
 
 assert.equal(HUSH_SIMPLE_PATH_VERSION, 'phase-14');
 assert(html.includes('Message to Transform'), 'Hush page exposes Message to Transform as primary input');
@@ -19,7 +19,7 @@ assert(html.includes('Transformed Message'), 'Hush page exposes Transformed Mess
 assert(html.includes('id="hushVaultDrawer"'), 'Hush keeps reference voice in the Vault drawer');
 assert(html.includes('Advanced Reference Voice'), 'advanced reference voice remains available');
 assert(html.includes('id="maskReferenceDetails"'), 'mask reference details are moved behind the Vault drawer');
-assert(bridge.includes("import './hush-simple-path.js'"), 'browser bridge imports the simple path helper');
+assert(bridge.includes("import './hush-simple-path.js'"), 'light browser bridge imports the simple path helper');
 
 const dom = new JSDOM(`<!doctype html><body data-page-kind="adversarial-bench">
   <textarea id="protectedBaselineInput"></textarea>

@@ -2,7 +2,7 @@ import assert from 'assert';
 import fs from 'fs';
 
 const css = fs.readFileSync('app/hush-alien-console.css', 'utf8');
-const bootstrap = fs.readFileSync('app/chamber-bootstrap.js', 'utf8');
+const html = fs.readFileSync('app/adversarial-bench.html', 'utf8');
 const versions = fs.readFileSync('app/asset-versions.js', 'utf8');
 
 for (const selector of [
@@ -30,7 +30,7 @@ assert(css.includes('prefers-reduced-motion'), 'alien console css must respect r
 assert(css.includes('@media(max-width:720px)'), 'alien console css must include mobile media query');
 assert(css.includes(':focus-visible'), 'alien console css must preserve visible focus states');
 assert(!/@import\s+url|https?:\/\//i.test(css), 'alien console css must not import remote assets');
-assert(bootstrap.indexOf('hush-invisible.css') < bootstrap.indexOf('hush-alien-console.css'), 'alien console css should load after invisible css');
+assert(html.indexOf('hush-invisible.css') < html.indexOf('hush-alien-console.css'), 'alien console css should load after invisible css');
 assert(versions.includes('hushAlienConsole'), 'asset versions should include hushAlienConsole cache key');
 
 console.log('hush-alien-console-css tests passed');

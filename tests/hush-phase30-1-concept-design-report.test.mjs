@@ -12,7 +12,8 @@ const personaReady = allMasks.every((mask) => personaLabel(mask.label) && !/^Pha
 
 const customizerModule = fs.readFileSync('app/hush-customizer-card-fields.js', 'utf8');
 const boot = fs.readFileSync('app/hush-customizer-card-fields-boot.js', 'utf8');
-const bootstrap = fs.readFileSync('app/chamber-bootstrap.js', 'utf8');
+const hushHtml = fs.readFileSync('app/adversarial-bench.html', 'utf8');
+const phase31Ui = fs.readFileSync('app/hush-phase31-1.js', 'utf8');
 const auditDoc = fs.readFileSync('docs/HUSH_PHASE_30_1_CONCEPT_DESIGN_AUDIT.md', 'utf8');
 
 const requiredCustomizerFields = [
@@ -39,7 +40,7 @@ const report = {
   customizer: {
     modulePresent: customizerModule.includes('ensureCustomizerCardFields'),
     bootPresent: boot.includes('initHushCustomizerCardFields'),
-    bootstrapLoadsBoot: bootstrap.includes('hush-customizer-card-fields-boot.js'),
+    nativePhase31LoadsCustomizer: hushHtml.includes('hush-phase31-1.js') && phase31Ui.includes('hushPhase31CustomizerPanel'),
     fieldsPresent: requiredCustomizerFields.every((field) => customizerModule.includes(field))
   },
   audit: {

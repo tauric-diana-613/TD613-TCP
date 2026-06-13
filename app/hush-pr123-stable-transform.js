@@ -48,6 +48,8 @@ function install(){
   c.addEventListener('click',run,true);
   return true
 }
-function boot(){if(!document.body||document.body.dataset.pageKind!=='adversarial-bench')return;document.body.dataset.pr123StableTransform=V;window.TD613_HUSH_PR123={version:V,run:run,install:install,receipt:function(){return window.__TD613_HUSH_NO_FALLBACK_RECEIPT||window.__TD613_HUSH_PR123_LAST||null},debug:function(){return window.__TD613_HUSH_FULL_DEBUG_PACKET||null}};var n=0,t=setInterval(function(){install();if(++n>16)clearInterval(t)},250)}
+function boot(){if(!document.body||document.body.dataset.pageKind!=='adversarial-bench')return;document.body.dataset.pr123StableTransform=V;window.TD613_HUSH_PR123={version:V,run:run,install:install,receipt:function(){return window.__TD613_HUSH_NO_FALLBACK_RECEIPT||window.__TD613_HUSH_PR123_LAST||null},debug:function(){return window.__TD613_HUSH_FULL_DEBUG_PACKET||null}};install()}
 if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',boot,{once:true});else boot();
+window.addEventListener('td613:hush:core-ready',boot,{once:true});
+setTimeout(boot,350);
 }());

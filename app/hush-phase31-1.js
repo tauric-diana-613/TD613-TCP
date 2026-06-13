@@ -1,7 +1,16 @@
-import { createCustomMask, addCustomMaskSample, rebuildCustomMaskProfile, exportCustomMaskJson, importCustomMaskJson, HUSH_CUSTOM_MASK_CORPUS_POLICY } from './engine/hush-custom-mask.js';
-
 const VERSION = 'phase-31.1-corpus-import-export-reset-customizer';
 const LOGGED_SAMPLES_STORAGE_KEY = 'td613:hush:phase31:logged-samples:v1';
+const HUSH_CUSTOM_MASK_CORPUS_POLICY = Object.freeze({
+  minWordsPerSample: 75,
+  provisionalSamples: 12,
+  operationalSamples: 24,
+  rigorousSamples: 40,
+  provisionalWords: 900,
+  operationalWords: 1800,
+  rigorousWords: 3000,
+  holdoutRatio: 0.2,
+  rigorousPromptCategories: 5
+});
 const MIN_SAMPLE_WORDS = HUSH_CUSTOM_MASK_CORPUS_POLICY.minWordsPerSample;
 const text = (value) => String(value ?? '').trim();
 const byId = (id, doc = document) => doc.getElementById(id);
@@ -13,6 +22,12 @@ let dotTimer = null;
 let loaderArmed = false;
 let samples = [];
 let activeMask = null;
+let customMaskToolsPromise = null;
+
+function customMaskTools() {
+  if (!customMaskToolsPromise) customMaskToolsPromise = import('./engine/hush-custom-mask.js');
+  return customMaskToolsPromise;
+}
 
 function installLoading(doc = document) {
   if (!doc.body || loaderArmed) return;
@@ -57,6 +72,51 @@ function sampleTexts() {
   return samples.map(sampleText).filter(Boolean);
 }
 
+function localCorpusReadiness(nextSamples = samples) {
+  const clean = asArray(nextSamples).map(normalizeSampleEntry).filter(Boolean);
+  const acceptedWords = clean.reduce((sum, entry) => sum + words(entry.text), 0);
+  const acceptedSampleCount = clean.filter((entry) => words(entry.text) >= MIN_SAMPLE_WORDS).length;
+  const promptCategoryCount = new Set(clean.map((entry) => sampleCategory(entry))).size;
+  const generationAllowed = acceptedSampleCount >= HUSH_CUSTOM_MASK_CORPUS_POLICY.operationalSamples && acceptedWords >= HUSH_CUSTOM_MASK_CORPUS_POLICY.operationalWords;
+  const status = acceptedSampleCount >= HUSH_CUSTOM_MASK_CORPUS_POLICY.rigorousSamples && acceptedWords >= HUSH_CUSTOM_MASK_CORPUS_POLICY.rigorousWords && promptCategoryCount >= HUSH_CUSTOM_MASK_CORPUS_POLICY.rigorousPromptCategories
+    ? 'rigorous'
+    : generationAllowed
+      ? 'operational'
+      : acceptedSampleCount >= HUSH_CUSTOM_MASK_CORPUS_POLICY.provisionalSamples && acceptedWords >= HUSH_CUSTOM_MASK_CORPUS_POLICY.provisionalWords
+        ? 'provisional'
+        : clean.length
+          ? 'corpus-building'
+          : 'empty';
+  return {
+    status,
+    acceptedSampleCount,
+    acceptedWords,
+    promptCategoryCount,
+    readinessScore: Math.min(1, Math.max(acceptedSampleCount / HUSH_CUSTOM_MASK_CORPUS_POLICY.rigorousSamples, acceptedWords / HUSH_CUSTOM_MASK_CORPUS_POLICY.rigorousWords)),
+    generationAllowed
+  };
+}
+
+function createLocalCustomMask(input = {}, nextSamples = samples) {
+  const clean = asArray(nextSamples).map(normalizeSampleEntry).filter(Boolean);
+  const readiness = localCorpusReadiness(clean);
+  return {
+    ...input,
+    version: 'phase31-light-custom-mask/v1',
+    id: input.id || 'custom-unsaved-phase31-1',
+    label: input.label || 'Unsaved Custom Mask',
+    name: input.name || input.label || 'Unsaved Custom Mask',
+    source: input.source || 'custom-unsaved-phase31-light',
+    samples: clean,
+    sampleCount: clean.length,
+    acceptedSampleCount: readiness.acceptedSampleCount,
+    acceptedWords: readiness.acceptedWords,
+    profileStatus: readiness.status,
+    corpusReadiness: readiness,
+    sampleSeed: clean.map((entry) => entry.text).join('\n\n')
+  };
+}
+
 function readStoredSamples() {
   try {
     const parsed = JSON.parse(localStorage.getItem(LOGGED_SAMPLES_STORAGE_KEY) || '{}');
@@ -82,11 +142,7 @@ function writeStoredSamples(nextSamples = samples) {
 function rebuildActiveMaskFromSamples(nextSamples = samples) {
   const clean = asArray(nextSamples).map(normalizeSampleEntry).filter(Boolean);
   if (!clean.length) return null;
-  let next = createCustomMask({ label: 'Unsaved Custom Mask', id: 'custom-unsaved-phase31-1' });
-  for (const entry of clean) {
-    next = addCustomMaskSample(next, entry.text, { includePrivateText: true, promptCategory: entry.promptCategory, contextLabel: entry.contextLabel });
-  }
-  return next;
+  return createLocalCustomMask({ label: 'Unsaved Custom Mask', id: 'custom-unsaved-phase31-1' }, clean);
 }
 
 function persistSamples() {
@@ -260,8 +316,7 @@ function logSample(doc = document) {
   const contextLabel = text(byId('hushPhase31ContextLabel', doc)?.value) || promptCategory;
   const entry = { text: raw, promptCategory, contextLabel };
   samples.push(entry);
-  activeMask = activeMask || createCustomMask({ label: 'Unsaved Custom Mask', id: 'custom-unsaved-phase31-1' });
-  activeMask = addCustomMaskSample(activeMask, raw, { includePrivateText: true, promptCategory, contextLabel });
+  activeMask = createLocalCustomMask(activeMask || { label: 'Unsaved Custom Mask', id: 'custom-unsaved-phase31-1' }, samples);
   persistSamples();
   syncBench(activeMask, doc);
   if (area) {
@@ -275,9 +330,7 @@ function logSample(doc = document) {
 function undoSample(doc = document) {
   if (!samples.length) return;
   samples.pop();
-  activeMask = createCustomMask({ label: 'Unsaved Custom Mask', id: 'custom-unsaved-phase31-1' });
-  for (const entry of samples) activeMask = addCustomMaskSample(activeMask, sampleText(entry), { includePrivateText: true, promptCategory: sampleCategory(entry), contextLabel: entry.contextLabel || sampleCategory(entry) });
-  if (!samples.length) activeMask = null;
+  activeMask = samples.length ? createLocalCustomMask({ label: 'Unsaved Custom Mask', id: 'custom-unsaved-phase31-1' }, samples) : null;
   persistSamples();
   syncBench(activeMask, doc);
   renderLedger(doc);
@@ -360,18 +413,20 @@ function openSaveModal(doc = document) {
   if (modal) modal.hidden = false;
 }
 
-function prepareMaskForExchange(doc = document) {
+async function prepareMaskForExchange(doc = document) {
+  const { rebuildCustomMaskProfile } = await customMaskTools();
   const fields = readModal(doc);
   const label = fields.label || displayMaskName(activeMask);
-  const base = activeMask || createCustomMask({ label, id: `custom-${slug(label)}` });
+  const base = activeMask || createLocalCustomMask({ label, id: `custom-${slug(label)}` }, samples);
   const rebuilt = rebuildCustomMaskProfile({ ...base, label, ...fields, source: 'custom', sampleSeed: sampleTexts().join('\n\n') || base.sampleSeed || '' }, { includePrivateText: true });
   return Object.assign(rebuilt, fields, { label, source: 'custom', sampleSeed: sampleTexts().join('\n\n') || rebuilt.sampleSeed || '', profile: rebuilt.compositeProfile });
 }
 
-function exportMask(doc = document) {
+async function exportMask(doc = document) {
+  const { exportCustomMaskJson } = await customMaskTools();
   const status = byId('hushPhase31SampleStatus', doc);
   if (!activeMask && !samples.length) { if (status) status.textContent = 'Nothing to export yet. Log or import a custom mask first.'; return; }
-  const prepared = prepareMaskForExchange(doc);
+  const prepared = await prepareMaskForExchange(doc);
   const payload = JSON.parse(exportCustomMaskJson(prepared, { includePrivateText: true }));
   Object.assign(payload, readModal(doc), {
     family: prepared.family || 'custom field mask',
@@ -418,6 +473,7 @@ async function importMaskFromFile(file, doc = document) {
   const status = byId('hushPhase31SampleStatus', doc);
   if (!file) return;
   try {
+    const { createCustomMask, addCustomMaskSample, importCustomMaskJson } = await customMaskTools();
     const raw = await file.text();
     const parsed = JSON.parse(raw);
     const importedBase = importCustomMaskJson(parsed);
@@ -480,7 +536,8 @@ function wireCapsuleIO(doc = document) {
   }
 }
 
-function addToStudio(doc = document) {
+async function addToStudio(doc = document) {
+  const { rebuildCustomMaskProfile } = await customMaskTools();
   const bench = window.__TD613_HUSH_BENCH__ || {};
   const state = bench.benchState || {};
   const modalStatus = byId('hushPhase31ModalStatus', doc);
@@ -576,6 +633,6 @@ if (typeof window !== 'undefined' && typeof document !== 'undefined') {
   const boot = () => initHushPhase311(document);
   if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', boot, { once: true });
   else boot();
-  window.setTimeout(boot, 80);
-  window.setTimeout(boot, 360);
+  window.addEventListener('td613:hush:core-ready', boot, { once: true });
+  window.setTimeout(boot, 240);
 }

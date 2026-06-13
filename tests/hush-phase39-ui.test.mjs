@@ -10,7 +10,9 @@ const engine = fs.readFileSync('app/hush-phase39-engine.js', 'utf8');
 assert.ok(manifest.includes('hushPhase39'), 'asset manifest should include Phase 39 version');
 assert.ok(manifest.includes('hush-phase39.css'), 'asset manifest should load Phase 39 CSS');
 assert.ok(manifest.includes('hush-phase39-ui.js'), 'asset manifest should load Phase 39 UI module on Hush page');
-assert.ok(html.includes('asset-versions.js'), 'Hush page should load asset manifest');
+assert.ok(!html.includes('asset-versions.js'), 'Hush page should not use synchronous asset manifest boot');
+assert.ok(html.includes('hush-phase39.css'), 'Hush page should load Phase 39 CSS directly');
+assert.ok(html.includes('adversarial-bench-light.js'), 'Hush page should lazy-load Phase 39 UI from the light controller');
 
 for (const selector of ['.hush-phase39-panel', '.hush-phase39-grid', '.hush-phase39-chip', '.hush-phase39-meter']) {
   assert.ok(css.includes(selector), `Phase 39 CSS should include ${selector}`);

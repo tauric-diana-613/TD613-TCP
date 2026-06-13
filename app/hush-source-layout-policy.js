@@ -343,7 +343,8 @@ function restoreCustomizerCockpit() {
 }
 
 function scheduleCustomizerRestore() {
-  [0, 80, 180, 360, 720, 1200, 2200].forEach((delay) => window.setTimeout(restoreCustomizerCockpit, delay));
+  restoreCustomizerCockpit();
+  window.setTimeout(restoreCustomizerCockpit, 180);
 }
 
 if (typeof window !== 'undefined') {
@@ -355,5 +356,5 @@ if (typeof window !== 'undefined') {
   if (window.__TD613_HUSH_PATCH38_LAST_OUTBOUND_PACKET) normalizeOutboundPacket(window.__TD613_HUSH_PATCH38_LAST_OUTBOUND_PACKET);
   if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', scheduleCustomizerRestore, { once: true });
   else scheduleCustomizerRestore();
-  window.addEventListener('load', scheduleCustomizerRestore, { once: true });
+  window.addEventListener('td613:hush:core-ready', scheduleCustomizerRestore, { once: true });
 }

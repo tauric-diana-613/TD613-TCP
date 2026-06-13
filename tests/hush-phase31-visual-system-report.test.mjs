@@ -8,7 +8,7 @@ const html = fs.readFileSync('app/hush.html', 'utf8');
 const js = fs.readFileSync('app/hush.js', 'utf8');
 const visualCss = fs.readFileSync('app/hush-visual-system.css', 'utf8');
 const mobileCss = fs.readFileSync('app/hush-mobile-field-deck.css', 'utf8');
-const bootstrap = fs.readFileSync('app/chamber-bootstrap.js', 'utf8');
+const hushHtml = fs.readFileSync('app/adversarial-bench.html', 'utf8');
 const customizerBoot = fs.readFileSync('app/hush-customizer-card-fields-boot.js', 'utf8');
 const gallery = buildHushPersonaGallery(listHushMasks({ includeRetiredMasks: true }));
 const gallerySummary = summarizeHushPersonaGallery(gallery);
@@ -40,7 +40,7 @@ const report = {
     fieldsVisible: fs.readFileSync('app/hush-customizer-card-fields.js', 'utf8').includes('hushCustomMaskDescription'),
     previewVisible: fs.readFileSync('app/hush-customizer-forge.js', 'utf8').includes('hushCustomizerForgePreview'),
     warningsVisible: fs.readFileSync('app/hush-customizer-forge.js', 'utf8').includes('customizer-forge-incomplete'),
-    legacyChamberLoadsVisualSystem: bootstrap.includes('hush-visual-system.css')
+    hushPageLoadsVisualSystem: hushHtml.includes('hush-visual-system.css')
   },
   accessibility: {
     contrastReady: visualCss.includes('--hush-bg-deep') && visualCss.includes('--hush-route-ready'),

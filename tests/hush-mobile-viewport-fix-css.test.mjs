@@ -2,7 +2,7 @@ import assert from 'assert';
 import fs from 'fs';
 
 const css = fs.readFileSync('app/hush-mobile-viewport-fix.css', 'utf8');
-const bootstrap = fs.readFileSync('app/chamber-bootstrap.js', 'utf8');
+const html = fs.readFileSync('app/adversarial-bench.html', 'utf8');
 const versions = fs.readFileSync('app/asset-versions.js', 'utf8');
 
 for (const required of [
@@ -27,8 +27,8 @@ for (const required of [
 assert(css.includes('min-width:0!important'), 'viewport fix should neutralize min-width overflow');
 assert(css.includes('max-width:100%!important'), 'viewport fix should cap wide descendants');
 assert(!/@import\s+url|https?:\/\//i.test(css), 'viewport fix css must not import remote assets');
-assert(bootstrap.includes('hush-mobile-viewport-fix.css'), 'bootstrap should load viewport fix css');
-assert(bootstrap.indexOf('hush-field-instrument.css') < bootstrap.indexOf('hush-mobile-viewport-fix.css'), 'viewport fix css should load after field instrument css');
+assert(html.includes('hush-mobile-viewport-fix.css'), 'Hush page should load viewport fix css directly');
+assert(html.indexOf('hush-field-instrument.css') < html.indexOf('hush-mobile-viewport-fix.css'), 'viewport fix css should load after field instrument css');
 assert(versions.includes('hushMobileViewportFix'), 'asset versions should include hushMobileViewportFix cache key');
 
 console.log('hush-mobile-viewport-fix-css tests passed');
