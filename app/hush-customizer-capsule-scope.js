@@ -1,11 +1,15 @@
-const HUSH_CUSTOMIZER_CAPSULE_SCOPE_VERSION = 'customizer-capsule-scope/v2-bounded';
+const HUSH_CUSTOMIZER_CAPSULE_SCOPE_VERSION = 'customizer-capsule-scope/v3-customizer-only';
 const $ = (id) => document.getElementById(id);
 
 function customizerActive() {
-  const tab = $('hushCustomizeTabBtn');
-  const panel = $('hushPhase31CustomizerPanel');
-  if (tab?.getAttribute('aria-pressed') === 'true') return true;
-  if (panel && panel.hidden === false) return true;
+  const customizeTab = $('hushCustomizeTabBtn');
+  const builtInTab = $('hushBuiltInTabBtn');
+  const phase31Panel = $('hushPhase31CustomizerPanel');
+  const legacyPanel = $('hushCustomizePanel');
+  if (builtInTab?.getAttribute('aria-pressed') === 'true') return false;
+  if (customizeTab?.getAttribute('aria-pressed') === 'true') return true;
+  if (phase31Panel && phase31Panel.hidden === false) return true;
+  if (legacyPanel && legacyPanel.hidden === false && builtInTab?.getAttribute('aria-pressed') !== 'true') return true;
   return false;
 }
 
@@ -26,8 +30,17 @@ function syncCustomMaskCapsuleScope() {
   const capsule = customMaskCapsule();
   if (!capsule) return false;
   capsule.hidden = !active;
+  capsule.style.setProperty('display', active ? '' : 'none', 'important');
+  capsule.setAttribute('aria-hidden', active ? 'false' : 'true');
   capsule.dataset.customizerScoped = 'true';
+  capsule.dataset.scopeState = active ? 'customizer' : 'hidden-outside-customizer';
   return active;
+}
+
+function scheduleScopeSweep() {
+  [0, 80, 240, 620, 1200, 2400, 4200].forEach((delay) => {
+    window.setTimeout(syncCustomMaskCapsuleScope, delay);
+  });
 }
 
 function bindCapsuleScope() {
@@ -35,13 +48,9 @@ function bindCapsuleScope() {
     const node = $(id);
     if (!node || node.dataset.customizerCapsuleScope === 'true') return;
     node.dataset.customizerCapsuleScope = 'true';
-    node.addEventListener('click', () => {
-      window.setTimeout(syncCustomMaskCapsuleScope, 0);
-      window.setTimeout(syncCustomMaskCapsuleScope, 80);
-      window.setTimeout(syncCustomMaskCapsuleScope, 240);
-    });
+    node.addEventListener('click', scheduleScopeSweep);
   });
-  syncCustomMaskCapsuleScope();
+  scheduleScopeSweep();
 }
 
 function boot() {
@@ -49,11 +58,13 @@ function boot() {
   window.setTimeout(bindCapsuleScope, 120);
   window.setTimeout(bindCapsuleScope, 520);
   window.setTimeout(bindCapsuleScope, 1100);
+  window.setTimeout(bindCapsuleScope, 2600);
 }
 
 if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', boot, { once: true });
 else boot();
 
+window.addEventListener('load', scheduleScopeSweep, { once: true });
 window.addEventListener('td613:hush:patch38-result', () => window.setTimeout(syncCustomMaskCapsuleScope, 80));
 window.addEventListener('td613:hush:outbound-packet', () => window.setTimeout(syncCustomMaskCapsuleScope, 80));
 
