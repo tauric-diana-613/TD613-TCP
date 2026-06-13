@@ -53,7 +53,7 @@ const js = fs.readFileSync('app/hush-phase31-1.js', 'utf8');
 const policy = fs.readFileSync('app/hush-source-layout-policy.js', 'utf8');
 const stableTransform = fs.readFileSync('app/hush-pr123-stable-transform.js', 'utf8');
 
-assert(html.includes('hush-phase31-1.css?v=202606131445'));
+assert(html.includes('hush-phase31-1.css?v=202606131510'));
 assert(html.includes('hush-phase31-1.js?v=202606131420'));
 assert(html.includes('hush-source-layout-policy.js?v=202606131420'));
 assert(js.includes('hushPhase31DraftUtility'));
@@ -63,6 +63,9 @@ assert(css.includes('.hush-phase31-draft-utility'));
 assert(css.includes('align-items: baseline'));
 assert(css.includes('#hushPhase31ClearDraft.hush-phase31-clear-draft'));
 assert(css.includes('text-transform: none !important'));
+assert(css.includes('letter-spacing: .04em !important'));
+assert(css.includes('text-decoration: none !important'));
+assert(css.includes('min-width: 2.15rem'));
 assert(css.includes('border-radius: 0 !important'));
 assert(css.includes('background: transparent !important'));
 assert(css.includes('color: rgba(255, 118, 104, .92) !important'));

@@ -238,7 +238,7 @@
   grid-template-columns: minmax(0, 1fr) auto;
   align-items: end;
   gap: .5rem;
-  margin: .26rem 0 .35rem;
+  margin: .26rem 0 .48rem;
   position: relative;
   z-index: 2;
 }
@@ -251,7 +251,7 @@
   white-space: nowrap;
   align-self: end;
   justify-self: end;
-  padding-bottom: .05rem;
+  padding-bottom: .14rem;
 }
 .hush-phase31-clear-draft,
 .hush-phase31-word-floor {
@@ -279,9 +279,9 @@
   font-size: .48rem !important;
   font-weight: 500 !important;
   line-height: 1 !important;
-  letter-spacing: .08em !important;
+  letter-spacing: .04em !important;
   text-transform: none !important;
-  text-decoration: underline !important;
+  text-decoration: none !important;
   text-underline-offset: 2px !important;
   cursor: pointer !important;
   transition: color 120ms ease, text-shadow 120ms ease !important;
@@ -289,12 +289,13 @@
 #hushPhase31ClearDraft.hush-phase31-clear-draft:hover,
 #hushPhase31ClearDraft.hush-phase31-clear-draft:focus-visible {
   color: rgba(255, 135, 113, 1) !important;
+  text-decoration: underline !important;
   text-shadow: 0 0 10px rgba(255, 118, 104, .28) !important;
   outline: none !important;
   transform: none !important;
 }
 .hush-phase31-word-floor {
-  min-width: 2.9rem;
+  min-width: 2.15rem;
   text-align: right;
   color: rgba(202,255,223,.62);
   text-transform: uppercase;
