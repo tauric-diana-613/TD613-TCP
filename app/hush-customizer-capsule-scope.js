@@ -1,4 +1,4 @@
-const HUSH_CUSTOMIZER_CAPSULE_SCOPE_VERSION = 'customizer-capsule-scope/v3-customizer-only';
+const HUSH_CUSTOMIZER_CAPSULE_SCOPE_VERSION = 'customizer-capsule-scope/v4-mask-select-bound';
 const $ = (id) => document.getElementById(id);
 
 function customizerActive() {
@@ -30,7 +30,8 @@ function syncCustomMaskCapsuleScope() {
   const capsule = customMaskCapsule();
   if (!capsule) return false;
   capsule.hidden = !active;
-  capsule.style.setProperty('display', active ? '' : 'none', 'important');
+  if (active) capsule.style.removeProperty('display');
+  else capsule.style.setProperty('display', 'none', 'important');
   capsule.setAttribute('aria-hidden', active ? 'false' : 'true');
   capsule.dataset.customizerScoped = 'true';
   capsule.dataset.scopeState = active ? 'customizer' : 'hidden-outside-customizer';
@@ -44,11 +45,11 @@ function scheduleScopeSweep() {
 }
 
 function bindCapsuleScope() {
-  ['hushCustomizeTabBtn', 'hushBuiltInTabBtn'].forEach((id) => {
+  ['hushCustomizeTabBtn', 'hushBuiltInTabBtn', 'maskFieldSelect'].forEach((id) => {
     const node = $(id);
     if (!node || node.dataset.customizerCapsuleScope === 'true') return;
     node.dataset.customizerCapsuleScope = 'true';
-    node.addEventListener('click', scheduleScopeSweep);
+    node.addEventListener(id === 'maskFieldSelect' ? 'change' : 'click', scheduleScopeSweep);
   });
   scheduleScopeSweep();
 }
