@@ -38,7 +38,8 @@
     linear-gradient(145deg, rgba(3,21,18,.92), rgba(9,4,16,.80));
   box-shadow: inset 0 1px 0 rgba(255,255,255,.09), 0 18px 38px rgba(0,0,0,.26);
   position: relative;
-  overflow: hidden;
+  overflow: visible;
+  min-height: 28rem;
 }
 .hush-phase31-customizer::before {
   content: "";
@@ -50,6 +51,41 @@
   transform: translateX(-42%);
 }
 .hush-phase31-customizer[hidden], .hush-phase31-modal[hidden] { display: none !important; }
+.hush-phase31-customizer:not([hidden]) .hush-phase31-corpus-meter,
+.hush-phase31-customizer:not([hidden]) .hush-phase31-sample-tools,
+.hush-phase31-customizer:not([hidden]) .hush-phase31-ledger-head,
+.hush-phase31-customizer:not([hidden]) .hush-phase31-actions,
+.hush-phase31-customizer:not([hidden]) #hushPhase31SampleStatus,
+.hush-phase31-customizer:not([hidden]) #hushPhase31ResetCustomizer {
+  visibility: visible !important;
+  opacity: 1 !important;
+  transform: none !important;
+  max-height: none !important;
+  pointer-events: auto !important;
+}
+.hush-phase31-customizer:not([hidden]) .hush-phase31-corpus-meter,
+.hush-phase31-customizer:not([hidden]) .hush-phase31-ledger-head { display: grid !important; }
+.hush-phase31-customizer:not([hidden]) .hush-phase31-sample-tools { display: grid !important; }
+.hush-phase31-customizer:not([hidden]) .hush-phase31-actions { display: flex !important; }
+.hush-phase31-customizer:not([hidden]) #hushVoiceReferenceSamplesSaved {
+  display: block !important;
+  visibility: visible !important;
+  opacity: 1 !important;
+  width: 100% !important;
+  min-height: 7.2rem !important;
+  max-height: 14rem !important;
+  pointer-events: auto !important;
+  resize: vertical !important;
+}
+.hush-phase31-customizer:not([hidden]) #hushPhase31LogSampleBtn,
+.hush-phase31-customizer:not([hidden]) #hushPhase31SaveMaskBtn,
+.hush-phase31-customizer:not([hidden]) #hushPhase31Undo,
+.hush-phase31-customizer:not([hidden]) #hushPhase31ResetCustomizer {
+  display: inline-flex !important;
+  visibility: visible !important;
+  opacity: 1 !important;
+  pointer-events: auto !important;
+}
 .hush-phase31-head {
   display: flex;
   justify-content: space-between;
