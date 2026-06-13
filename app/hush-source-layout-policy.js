@@ -1,4 +1,4 @@
-const HUSH_SOURCE_LAYOUT_POLICY_VERSION = 'source-layout-policy/v1-mask-only';
+const HUSH_SOURCE_LAYOUT_POLICY_VERSION = 'source-layout-policy/v1-mask-only+customizer-visibility-guard';
 
 function normalizeInstructionText() {
   return 'Source/input line breaks are reading context only, not output constraints. Do not copy or preserve source line breaks for their own sake. Visible line/paragraph pacing should come from the selected mask/custom-mask corpus when mask layout cadence is active; otherwise choose natural pacing for the transformed message.';
@@ -81,8 +81,89 @@ function handleOutboundPacket(event = {}) {
   normalizeOutboundPacket(event.detail?.outboundPacket || window.__TD613_HUSH_PATCH38_LAST_OUTBOUND_PACKET || null);
 }
 
+function installCustomizerVisibilityCss() {
+  if (document.getElementById('hushPhase31VisibilityGuardStyle')) return;
+  const style = document.createElement('style');
+  style.id = 'hushPhase31VisibilityGuardStyle';
+  style.textContent = `
+    #hushPhase31CustomizerPanel:not([hidden]) {
+      overflow: visible !important;
+      min-height: 28rem !important;
+    }
+    #hushPhase31CustomizerPanel:not([hidden]) .hush-phase31-corpus-meter,
+    #hushPhase31CustomizerPanel:not([hidden]) .hush-phase31-sample-tools,
+    #hushPhase31CustomizerPanel:not([hidden]) .hush-phase31-ledger-head,
+    #hushPhase31CustomizerPanel:not([hidden]) .hush-phase31-actions,
+    #hushPhase31CustomizerPanel:not([hidden]) #hushPhase31SampleStatus,
+    #hushPhase31CustomizerPanel:not([hidden]) #hushPhase31ResetCustomizer {
+      visibility: visible !important;
+      opacity: 1 !important;
+      transform: none !important;
+      max-height: none !important;
+      pointer-events: auto !important;
+    }
+    #hushPhase31CustomizerPanel:not([hidden]) .hush-phase31-corpus-meter,
+    #hushPhase31CustomizerPanel:not([hidden]) .hush-phase31-ledger-head {
+      display: grid !important;
+    }
+    #hushPhase31CustomizerPanel:not([hidden]) .hush-phase31-sample-tools {
+      display: grid !important;
+    }
+    #hushPhase31CustomizerPanel:not([hidden]) .hush-phase31-actions {
+      display: flex !important;
+    }
+    #hushPhase31CustomizerPanel:not([hidden]) #hushVoiceReferenceSamplesSaved {
+      display: block !important;
+      visibility: visible !important;
+      opacity: 1 !important;
+      width: 100% !important;
+      min-height: 7.2rem !important;
+      max-height: 14rem !important;
+      pointer-events: auto !important;
+      resize: vertical !important;
+    }
+    #hushPhase31CustomizerPanel:not([hidden]) #hushPhase31LogSampleBtn,
+    #hushPhase31CustomizerPanel:not([hidden]) #hushPhase31SaveMaskBtn,
+    #hushPhase31CustomizerPanel:not([hidden]) #hushPhase31Undo,
+    #hushPhase31CustomizerPanel:not([hidden]) #hushPhase31ResetCustomizer {
+      display: inline-flex !important;
+      visibility: visible !important;
+      opacity: 1 !important;
+      pointer-events: auto !important;
+    }
+  `;
+  document.head.appendChild(style);
+}
+
+function restoreCustomizerCockpit() {
+  installCustomizerVisibilityCss();
+  const panel = document.getElementById('hushPhase31CustomizerPanel');
+  const customizeTab = document.getElementById('hushCustomizeTabBtn');
+  const customizerActive = customizeTab?.getAttribute('aria-pressed') === 'true';
+  if (!panel || !customizerActive) return false;
+  panel.hidden = false;
+  panel.style.removeProperty('display');
+  ['hushPhase31CorpusFill', 'hushPhase31SampleCategory', 'hushPhase31ContextLabel', 'hushVoiceReferenceSamplesSaved', 'hushPhase31LogSampleBtn', 'hushPhase31SaveMaskBtn', 'hushPhase31Undo', 'hushPhase31ResetCustomizer', 'hushPhase31SampleStatus'].forEach((id) => {
+    const node = document.getElementById(id);
+    if (!node) return;
+    node.hidden = false;
+    node.removeAttribute('aria-hidden');
+    node.style.removeProperty('display');
+    node.style.removeProperty('visibility');
+    node.style.removeProperty('opacity');
+  });
+  return true;
+}
+
+function scheduleCustomizerRestore() {
+  [0, 80, 180, 360, 720, 1200, 2200].forEach((delay) => window.setTimeout(restoreCustomizerCockpit, delay));
+}
+
 if (typeof window !== 'undefined') {
   window.addEventListener('td613:hush:outbound-packet', handleOutboundPacket);
-  window.__TD613_HUSH_SOURCE_LAYOUT_POLICY__ = { version: HUSH_SOURCE_LAYOUT_POLICY_VERSION, normalizeContract, normalizePacket, normalizeOutboundPacket };
+  window.__TD613_HUSH_SOURCE_LAYOUT_POLICY__ = { version: HUSH_SOURCE_LAYOUT_POLICY_VERSION, normalizeContract, normalizePacket, normalizeOutboundPacket, restoreCustomizerCockpit };
   if (window.__TD613_HUSH_PATCH38_LAST_OUTBOUND_PACKET) normalizeOutboundPacket(window.__TD613_HUSH_PATCH38_LAST_OUTBOUND_PACKET);
+  if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', scheduleCustomizerRestore, { once: true });
+  else scheduleCustomizerRestore();
+  window.addEventListener('load', scheduleCustomizerRestore, { once: true });
 }
