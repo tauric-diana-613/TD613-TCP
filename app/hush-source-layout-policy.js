@@ -1,4 +1,4 @@
-const HUSH_SOURCE_LAYOUT_POLICY_VERSION = 'source-layout-policy/v1-mask-only+customizer-clear-counter-align';
+const HUSH_SOURCE_LAYOUT_POLICY_VERSION = 'source-layout-policy/v1-mask-only+customizer-clear-counter-topline';
 
 function normalizeInstructionText() {
   return 'Source/input line breaks are reading context only, not output constraints. Do not copy or preserve source line breaks for their own sake. Visible line/paragraph pacing should come from the selected mask/custom-mask corpus when mask layout cadence is active; otherwise choose natural pacing for the transformed message.';
@@ -123,7 +123,7 @@ function installCustomizerVisibilityCss() {
     #hushPhase31CustomizerPanel:not([hidden]) .hush-phase31-ledger-head {
       display: block !important;
       position: relative !important;
-      padding-right: 6.4rem !important;
+      padding-right: 6.6rem !important;
       margin: .26rem 0 .56rem !important;
       min-height: 3.45rem !important;
     }
@@ -135,7 +135,8 @@ function installCustomizerVisibilityCss() {
     #hushPhase31LedgerUtility {
       position: absolute !important;
       right: 0 !important;
-      bottom: .03rem !important;
+      top: .2rem !important;
+      bottom: auto !important;
       display: inline-flex !important;
       align-items: baseline !important;
       justify-content: flex-end !important;
