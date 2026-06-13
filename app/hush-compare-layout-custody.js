@@ -1,4 +1,4 @@
-const HUSH_COMPARE_LAYOUT_CUSTODY_VERSION = 'compare-layout-custody/v1';
+const HUSH_COMPARE_LAYOUT_CUSTODY_VERSION = 'compare-layout-custody/v2-bounded';
 const $ = (id) => document.getElementById(id);
 
 function rawValue(id) {
@@ -70,8 +70,5 @@ else boot();
 
 window.addEventListener('td613:hush:patch38-result', () => window.setTimeout(syncTransformationCheckLayout, 80));
 window.addEventListener('td613:hush:outbound-packet', () => window.setTimeout(syncTransformationCheckLayout, 80));
-
-const observer = new MutationObserver(() => syncTransformationCheckLayout());
-observer.observe(document.documentElement, { childList: true, subtree: true });
 
 window.__TD613_HUSH_COMPARE_LAYOUT_CUSTODY__ = { version: HUSH_COMPARE_LAYOUT_CUSTODY_VERSION, syncTransformationCheckLayout };
