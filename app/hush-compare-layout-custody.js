@@ -1,17 +1,26 @@
-const HUSH_COMPARE_LAYOUT_CUSTODY_VERSION = 'compare-layout-custody/v2-bounded';
+const HUSH_COMPARE_LAYOUT_CUSTODY_VERSION = 'compare-layout-custody/v3-explicit-breaks';
 const $ = (id) => document.getElementById(id);
 
 function rawValue(id) {
   return $(id)?.value ?? '';
 }
 
+function escapeHtml(value = '') {
+  return String(value ?? '')
+    .replaceAll('&', '&amp;')
+    .replaceAll('<', '&lt;')
+    .replaceAll('>', '&gt;')
+    .replaceAll('"', '&quot;')
+    .replaceAll("'", '&#39;');
+}
+
 function applyLayoutSurface(node) {
   if (!node) return;
-  node.style.setProperty('white-space', 'pre-wrap', 'important');
+  node.style.setProperty('white-space', 'normal', 'important');
   node.style.setProperty('overflow-wrap', 'anywhere', 'important');
   node.style.setProperty('word-break', 'normal', 'important');
   node.style.setProperty('tab-size', '2', 'important');
-  node.dataset.layoutCustody = 'pre-wrap';
+  node.dataset.layoutCustody = 'explicit-breaks';
 }
 
 function countLineBreaks(value = '') {
@@ -22,7 +31,8 @@ function renderLayoutPreserved(node, value = '', fallback = '') {
   if (!node) return;
   applyLayoutSurface(node);
   const raw = String(value ?? '');
-  node.textContent = raw.length ? raw : fallback;
+  const display = raw.length ? raw : fallback;
+  node.innerHTML = escapeHtml(display).replace(/\n/g, '<br>');
   node.dataset.lineBreakCount = String(countLineBreaks(raw));
   node.dataset.paragraphBreakCount = String((raw.match(/\n\s*\n/g) || []).length);
 }
