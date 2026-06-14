@@ -1,4 +1,4 @@
-const HUSH_SOURCE_LAYOUT_POLICY_VERSION = 'source-layout-policy/v2-mask-only+native-customizer-corpus+status-tune';
+const HUSH_SOURCE_LAYOUT_POLICY_VERSION = 'source-layout-policy/v2-mask-only+native-customizer-corpus+status-tune+log-metal';
 const HUSH_PHASE31_STORAGE_KEY = 'td613:hush:phase31:logged-samples:v1';
 
 function normalizeInstructionText() {
@@ -153,6 +153,18 @@ function installCustomizerVisibilityCss() {
       letter-spacing: .13em !important;
       line-height: 1 !important;
       white-space: nowrap !important;
+    }
+    #hushPhase31CustomizerPanel:not([hidden]) #hushPhase31LogSampleBtn {
+      border: 1px solid rgba(202,255,223,.72) !important;
+      background: linear-gradient(135deg, rgba(202,255,223,.96) 0%, rgba(137,255,240,.76) 35%, rgba(49,255,138,.78) 66%, rgba(189,147,249,.32) 100%) !important;
+      color: #04120a !important;
+      box-shadow: inset 0 1px 0 rgba(255,255,255,.72), inset 0 -10px 18px rgba(4,24,14,.18), 0 0 22px rgba(49,255,138,.28), 0 14px 30px rgba(49,255,138,.14) !important;
+      text-shadow: 0 1px 0 rgba(255,255,255,.45) !important;
+    }
+    #hushPhase31CustomizerPanel:not([hidden]) #hushPhase31LogSampleBtn:hover,
+    #hushPhase31CustomizerPanel:not([hidden]) #hushPhase31LogSampleBtn:focus-visible {
+      background: linear-gradient(135deg, rgba(236,255,244,.98) 0%, rgba(137,255,240,.82) 34%, rgba(49,255,138,.86) 68%, rgba(189,147,249,.38) 100%) !important;
+      box-shadow: inset 0 1px 0 rgba(255,255,255,.78), inset 0 -10px 18px rgba(4,24,14,.16), 0 0 28px rgba(49,255,138,.34), 0 16px 34px rgba(49,255,138,.16) !important;
     }
     #hushPhase31CustomizerPanel:not([hidden]) #hushPhase31Undo {
       grid-column: 1 / -1 !important;
