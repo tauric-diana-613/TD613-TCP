@@ -136,6 +136,52 @@ body[data-page-kind="adversarial-bench"] button{
     overflow-wrap:anywhere;
     word-break:normal;
   }
+
+  .hush-transform-gate{
+    padding:.46rem!important;
+    margin:.04rem 0!important;
+    border-radius:22px!important;
+  }
+
+  .hush-transform-gate::before{
+    inset:5px!important;
+    border-radius:17px!important;
+  }
+
+  .hush-action-row{
+    gap:.32rem!important;
+  }
+
+  #generateMaskedOutputBtn{
+    min-height:2.85rem!important;
+    font-size:.82rem!important;
+  }
+
+  #copyHushOutputBtn{
+    min-height:2.18rem!important;
+    font-size:.72rem!important;
+  }
+
+  #analyzeOutputBtn,
+  #acceptOutputBtn,
+  #openHushReviewBtn,
+  #resetBenchBtn{
+    min-height:2.08rem!important;
+    font-size:.72rem!important;
+  }
+
+  .hush-gate-strip{
+    gap:.22rem!important;
+    margin-top:.3rem!important;
+  }
+
+  .hush-gate-strip span{
+    min-height:.88rem!important;
+    padding:.1rem .16rem!important;
+    font-size:.5rem!important;
+    line-height:1!important;
+    letter-spacing:.025em!important;
+  }
 }
 
 @media(max-width:430px){
@@ -151,5 +197,43 @@ body[data-page-kind="adversarial-bench"] button{
     inline-size:66%!important;
     min-inline-size:66%!important;
     max-inline-size:66%!important;
+  }
+
+  .hush-transform-gate{
+    padding:.42rem!important;
+    border-radius:20px!important;
+  }
+
+  .hush-action-row{
+    gap:.28rem!important;
+  }
+
+  #generateMaskedOutputBtn{
+    min-height:2.72rem!important;
+    font-size:.78rem!important;
+  }
+
+  #copyHushOutputBtn{
+    min-height:2.05rem!important;
+    font-size:.68rem!important;
+  }
+
+  #analyzeOutputBtn,
+  #acceptOutputBtn,
+  #openHushReviewBtn,
+  #resetBenchBtn{
+    min-height:1.95rem!important;
+    font-size:.68rem!important;
+  }
+
+  .hush-gate-strip{
+    gap:.18rem!important;
+    margin-top:.24rem!important;
+  }
+
+  .hush-gate-strip span{
+    min-height:.78rem!important;
+    padding:.08rem .12rem!important;
+    font-size:.46rem!important;
   }
 }
