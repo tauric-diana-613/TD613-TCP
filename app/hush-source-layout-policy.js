@@ -1,5 +1,35 @@
-const HUSH_SOURCE_LAYOUT_POLICY_VERSION = 'source-layout-policy/v2-mask-only+native-customizer-corpus+status-tune+log-metal+corpus-export-edit';
+const HUSH_SOURCE_LAYOUT_POLICY_VERSION = 'source-layout-policy/v2-mask-only+native-customizer-corpus+status-tune+log-metal+corpus-export-edit+ontology-fields';
 const HUSH_PHASE31_STORAGE_KEY = 'td613:hush:phase31:logged-samples:v1';
+const HUSH_DISCOURSE_MODES = Object.freeze([
+  ['explanatory', 'explanatory'],
+  ['argumentative', 'argumentative'],
+  ['narrative', 'narrative'],
+  ['procedural', 'procedural'],
+  ['reflective-affective', 'reflective-affective'],
+  ['legal-forensic', 'legal-forensic'],
+  ['casual-conversational', 'casual-conversational'],
+  ['technical-operational', 'technical-operational'],
+  ['poetic-symbolic', 'poetic-symbolic'],
+  ['corrective-repair', 'corrective-repair'],
+  ['compressed-summary', 'compressed-summary']
+]);
+const HUSH_RETRIEVAL_TRIGGERS = Object.freeze([
+  ['baseline-voice', 'baseline-voice'],
+  ['high-pressure', 'high-pressure'],
+  ['failure-recovery', 'failure-recovery'],
+  ['correction-request', 'correction-request'],
+  ['disagreement-pushback', 'disagreement-pushback'],
+  ['implementation-handoff', 'implementation-handoff'],
+  ['evidence-framing', 'evidence-framing'],
+  ['boundary-refusal', 'boundary-refusal'],
+  ['uncertainty-caveat', 'uncertainty-caveat'],
+  ['deep-explanation', 'deep-explanation'],
+  ['compression-summary', 'compression-summary'],
+  ['affective-repair', 'affective-repair'],
+  ['ritual-symbolic', 'ritual-symbolic'],
+  ['public-facing', 'public-facing'],
+  ['private-diagnostic', 'private-diagnostic']
+]);
 
 function normalizeInstructionText() {
   return 'Source/input line breaks are reading context only, not output constraints. Do not copy or preserve source line breaks for their own sake. Visible line/paragraph pacing should come from the selected mask/custom-mask corpus when mask layout cadence is active; otherwise choose natural pacing for the transformed message.';
@@ -80,6 +110,144 @@ function normalizeOutboundPacket(outboundPacket = {}) {
 
 function handleOutboundPacket(event = {}) {
   normalizeOutboundPacket(event.detail?.outboundPacket || window.__TD613_HUSH_PATCH38_LAST_OUTBOUND_PACKET || null);
+}
+
+function optionMarkup(options = [], selected = '') {
+  const values = options.map(([value]) => value);
+  const current = values.includes(String(selected || '').trim()) ? String(selected || '').trim() : values[0];
+  return options.map(([value, label]) => `<option value="${value}"${value === current ? ' selected' : ''}>${label}</option>`).join('');
+}
+
+function valueOrFirst(value = '', options = []) {
+  const values = options.map(([entry]) => entry);
+  return values.includes(String(value || '').trim()) ? String(value || '').trim() : values[0];
+}
+
+function setLabelName(control, name) {
+  const label = control?.closest?.('label') || (control?.id ? document.querySelector(`label[for="${control.id}"]`) : null);
+  if (!label) return;
+  const span = label.querySelector('span:first-child');
+  if (span) span.textContent = name;
+  else if (label.firstChild?.nodeType === Node.TEXT_NODE) label.firstChild.textContent = name;
+}
+
+function replaceWithSelect(control, options, className, id = '') {
+  if (!control) return null;
+  const selected = valueOrFirst(control.value, options);
+  if (control.tagName === 'SELECT') {
+    control.innerHTML = optionMarkup(options, selected);
+    control.value = selected;
+    if (className) control.className = className;
+    return control;
+  }
+  const select = document.createElement('select');
+  if (id || control.id) select.id = id || control.id;
+  if (className || control.className) select.className = className || control.className;
+  select.autocomplete = 'off';
+  select.innerHTML = optionMarkup(options, selected);
+  select.value = selected;
+  control.replaceWith(select);
+  return select;
+}
+
+function installOntologyFieldCss() {
+  if (document.getElementById('hushPhase31OntologyFieldsStyle')) return;
+  const style = document.createElement('style');
+  style.id = 'hushPhase31OntologyFieldsStyle';
+  style.textContent = `
+    #hushPhase31SaveCorpusEdits[data-save-state="saved"] {
+      border-color: rgba(49,255,138,.72) !important;
+      background: linear-gradient(135deg, rgba(202,255,223,.96), rgba(49,255,138,.82)) !important;
+      color: #031009 !important;
+      box-shadow: inset 0 1px 0 rgba(255,255,255,.62), 0 0 22px rgba(49,255,138,.28) !important;
+    }
+    #hushPhase31SaveCorpusEdits[data-save-state="saving"] {
+      opacity: .72 !important;
+    }
+    #hushPhase31EditCorpusList select.hush-phase31-edit-context,
+    #hushPhase31EditCorpusList select.hush-phase31-edit-category,
+    #hushPhase31ContextLabel,
+    #hushPhase31SampleCategory {
+      width: 100% !important;
+    }
+  `;
+  document.head.appendChild(style);
+}
+
+function ensureOntologyFields() {
+  const discourse = document.getElementById('hushPhase31SampleCategory');
+  if (discourse) {
+    setLabelName(discourse, 'Discourse Mode');
+    discourse.innerHTML = optionMarkup(HUSH_DISCOURSE_MODES, discourse.value);
+    discourse.value = valueOrFirst(discourse.value, HUSH_DISCOURSE_MODES);
+  }
+  const trigger = replaceWithSelect(document.getElementById('hushPhase31ContextLabel'), HUSH_RETRIEVAL_TRIGGERS, '', 'hushPhase31ContextLabel');
+  if (trigger) setLabelName(trigger, 'Retrieval Trigger');
+  const contextsLabel = document.querySelector('#hushPhase31CategoryCount')?.nextElementSibling;
+  if (contextsLabel) contextsLabel.textContent = 'routes';
+}
+
+function ensureEditRows() {
+  const list = document.getElementById('hushPhase31EditCorpusList');
+  if (!list) return false;
+  list.querySelectorAll('.hush-phase31-edit-sample').forEach((row) => {
+    const category = row.querySelector('.hush-phase31-edit-category');
+    if (category) {
+      setLabelName(category, 'Discourse Mode');
+      category.innerHTML = optionMarkup(HUSH_DISCOURSE_MODES, category.value);
+      category.value = valueOrFirst(category.value, HUSH_DISCOURSE_MODES);
+    }
+    const trigger = replaceWithSelect(row.querySelector('.hush-phase31-edit-context'), HUSH_RETRIEVAL_TRIGGERS, 'hush-phase31-edit-context');
+    if (trigger) setLabelName(trigger, 'Retrieval Trigger');
+  });
+  if (list.dataset.td613OntologyObserved !== 'true') {
+    list.dataset.td613OntologyObserved = 'true';
+    new MutationObserver(() => ensureEditRows()).observe(list, { childList: true, subtree: true });
+  }
+  return true;
+}
+
+function samplesFromEditRows() {
+  return Array.from(document.querySelectorAll('#hushPhase31EditCorpusList .hush-phase31-edit-sample')).map((row) => ({
+    text: String(row.querySelector('.hush-phase31-edit-text')?.value || '').trim(),
+    promptCategory: valueOrFirst(row.querySelector('.hush-phase31-edit-category')?.value, HUSH_DISCOURSE_MODES),
+    discourseMode: valueOrFirst(row.querySelector('.hush-phase31-edit-category')?.value, HUSH_DISCOURSE_MODES),
+    contextLabel: valueOrFirst(row.querySelector('.hush-phase31-edit-context')?.value, HUSH_RETRIEVAL_TRIGGERS),
+    retrievalTrigger: valueOrFirst(row.querySelector('.hush-phase31-edit-context')?.value, HUSH_RETRIEVAL_TRIGGERS)
+  })).filter((sample) => sample.text);
+}
+
+function bindOntologySaveState() {
+  const button = document.getElementById('hushPhase31SaveCorpusEdits');
+  if (!button || button.dataset.td613OntologySaveBound === 'true') return;
+  button.dataset.td613OntologySaveBound = 'true';
+  button.addEventListener('click', () => {
+    button.dataset.saveState = 'saving';
+    const expected = samplesFromEditRows();
+    window.setTimeout(() => {
+      const stored = readStoredSamples();
+      const saved = stored.length === expected.length && expected.every((sample, index) => {
+        const savedSample = stored[index] || {};
+        return savedSample.text === sample.text
+          && (savedSample.promptCategory || savedSample.discourseMode) === sample.promptCategory
+          && (savedSample.contextLabel || savedSample.retrievalTrigger) === sample.contextLabel;
+      });
+      if (!saved) {
+        button.dataset.saveState = 'error';
+        return;
+      }
+      const modal = document.getElementById('hushPhase31EditCorpusModal');
+      const wasHidden = modal?.hidden;
+      if (modal && wasHidden) modal.hidden = false;
+      button.dataset.saveState = 'saved';
+      button.textContent = 'Saved';
+      window.setTimeout(() => {
+        if (modal) modal.hidden = true;
+        button.dataset.saveState = '';
+        button.textContent = 'Save';
+      }, 520);
+    }, 0);
+  });
 }
 
 function installCustomizerVisibilityCss() {
@@ -294,15 +462,21 @@ function readStoredSamples() {
 
 function writeStoredSamples(nextSamples = []) {
   const clean = nextSamples
-    .map((sample) => ({
-      text: String(sample?.text || '').trim(),
-      promptCategory: String(sample?.promptCategory || sample?.contextLabel || 'uncategorized').trim() || 'uncategorized',
-      contextLabel: String(sample?.contextLabel || sample?.promptCategory || 'uncategorized').trim() || 'uncategorized'
-    }))
+    .map((sample) => {
+      const promptCategory = valueOrFirst(sample?.discourseMode || sample?.promptCategory || sample?.contextLabel, HUSH_DISCOURSE_MODES);
+      const contextLabel = valueOrFirst(sample?.retrievalTrigger || sample?.contextLabel, HUSH_RETRIEVAL_TRIGGERS);
+      return {
+        text: String(sample?.text || '').trim(),
+        promptCategory,
+        discourseMode: promptCategory,
+        contextLabel,
+        retrievalTrigger: contextLabel
+      };
+    })
     .filter((sample) => sample.text);
   try {
     if (!clean.length) localStorage.removeItem(HUSH_PHASE31_STORAGE_KEY);
-    else localStorage.setItem(HUSH_PHASE31_STORAGE_KEY, JSON.stringify({ version: 'phase31-logged-samples/v1', updatedAt: new Date().toISOString(), samples: clean }));
+    else localStorage.setItem(HUSH_PHASE31_STORAGE_KEY, JSON.stringify({ version: 'phase31-logged-samples/v2-ontology-fields', updatedAt: new Date().toISOString(), samples: clean }));
   } catch (error) {}
   return clean;
 }
@@ -310,15 +484,18 @@ function writeStoredSamples(nextSamples = []) {
 function appendStoredSample(sample) {
   if (!sample?.text || sampleWordCount(sample.text) < 75) return;
   const current = readStoredSamples();
-  const duplicate = current.some((entry) => entry.text === sample.text && entry.promptCategory === sample.promptCategory && entry.contextLabel === sample.contextLabel);
-  if (!duplicate) writeStoredSamples(current.concat(sample));
+  const promptCategory = valueOrFirst(sample?.promptCategory || sample?.discourseMode, HUSH_DISCOURSE_MODES);
+  const contextLabel = valueOrFirst(sample?.contextLabel || sample?.retrievalTrigger, HUSH_RETRIEVAL_TRIGGERS);
+  const nextSample = { ...sample, promptCategory, discourseMode: promptCategory, contextLabel, retrievalTrigger: contextLabel };
+  const duplicate = current.some((entry) => entry.text === nextSample.text && entry.promptCategory === nextSample.promptCategory && entry.contextLabel === nextSample.contextLabel);
+  if (!duplicate) writeStoredSamples(current.concat(nextSample));
 }
 
 function corpusExportDocument() {
   const clean = readStoredSamples().map((sample) => ({
     text: String(sample?.text || '').trim(),
-    promptCategory: String(sample?.promptCategory || sample?.contextLabel || 'uncategorized').trim() || 'uncategorized',
-    contextLabel: String(sample?.contextLabel || sample?.promptCategory || 'uncategorized').trim() || 'uncategorized'
+    promptCategory: valueOrFirst(sample?.discourseMode || sample?.promptCategory, HUSH_DISCOURSE_MODES),
+    contextLabel: valueOrFirst(sample?.retrievalTrigger || sample?.contextLabel, HUSH_RETRIEVAL_TRIGGERS)
   })).filter((sample) => sample.text);
   const totalWords = clean.reduce((sum, sample) => sum + sampleWordCount(sample.text), 0);
   const contexts = new Set(clean.map((sample) => sample.contextLabel || sample.promptCategory)).size;
@@ -327,14 +504,14 @@ function corpusExportDocument() {
     `Exported: ${new Date().toISOString()}`,
     `Samples: ${clean.length}`,
     `Words: ${totalWords}`,
-    `Contexts: ${contexts}`,
+    `Routes: ${contexts}`,
     ''
   ].join('\n');
   const body = clean.length
     ? clean.map((sample, index) => [
         `--- sample ${index + 1} ---`,
-        `category: ${sample.promptCategory}`,
-        `context: ${sample.contextLabel}`,
+        `discourse_mode: ${sample.promptCategory}`,
+        `retrieval_trigger: ${sample.contextLabel}`,
         `words: ${sampleWordCount(sample.text)}`,
         '',
         sample.text
@@ -390,9 +567,9 @@ function bindSamplePersistence() {
     logButton.addEventListener('click', () => {
       if (window.__TD613_HUSH_PHASE31_REHYDRATING__) return;
       const text = readDraftSample();
-      const promptCategory = String(document.getElementById('hushPhase31SampleCategory')?.value || 'uncategorized').trim() || 'uncategorized';
-      const contextLabel = String(document.getElementById('hushPhase31ContextLabel')?.value || promptCategory).trim() || promptCategory;
-      window.setTimeout(() => appendStoredSample({ text, promptCategory, contextLabel }), 0);
+      const promptCategory = valueOrFirst(document.getElementById('hushPhase31SampleCategory')?.value, HUSH_DISCOURSE_MODES);
+      const contextLabel = valueOrFirst(document.getElementById('hushPhase31ContextLabel')?.value, HUSH_RETRIEVAL_TRIGGERS);
+      window.setTimeout(() => appendStoredSample({ text, promptCategory, discourseMode: promptCategory, contextLabel, retrievalTrigger: contextLabel }), 0);
     }, true);
   }
   if (undoButton && undoButton.dataset.td613PersistBound !== 'true') {
@@ -435,8 +612,12 @@ function ensureClearDraftControl() {
 
 function restoreCustomizerCockpit() {
   installCustomizerVisibilityCss();
+  installOntologyFieldCss();
   ensureClearDraftControl();
   ensureCorpusExportControl();
+  ensureOntologyFields();
+  ensureEditRows();
+  bindOntologySaveState();
   const panel = document.getElementById('hushPhase31CustomizerPanel');
   if (!panel) return false;
   if (!isCustomizeActive()) return hideCustomizerCockpit();
@@ -469,9 +650,9 @@ function scheduleCustomizerRestore() {
 if (typeof window !== 'undefined') {
   window.addEventListener('td613:hush:outbound-packet', handleOutboundPacket);
   window.addEventListener('click', (event) => {
-    if (event.target?.id === 'hushCustomizeTabBtn' || event.target?.closest?.('#hushCustomizeTabBtn') || event.target?.id === 'hushBuiltInTabBtn' || event.target?.closest?.('#hushBuiltInTabBtn')) scheduleCustomizerRestore();
+    if (event.target?.id === 'hushCustomizeTabBtn' || event.target?.closest?.('#hushCustomizeTabBtn') || event.target?.id === 'hushBuiltInTabBtn' || event.target?.closest?.('#hushBuiltInTabBtn') || event.target?.id === 'hushPhase31EditCorpus' || event.target?.closest?.('#hushPhase31EditCorpus')) scheduleCustomizerRestore();
   }, true);
-  window.__TD613_HUSH_SOURCE_LAYOUT_POLICY__ = { version: HUSH_SOURCE_LAYOUT_POLICY_VERSION, normalizeContract, normalizePacket, normalizeOutboundPacket, restoreCustomizerCockpit, hideCustomizerCockpit, ensureClearDraftControl, ensureCorpusExportControl, corpusExportDocument, exportCorpusDocument, readStoredSamples, writeStoredSamples, rehydrateStoredSamples };
+  window.__TD613_HUSH_SOURCE_LAYOUT_POLICY__ = { version: HUSH_SOURCE_LAYOUT_POLICY_VERSION, normalizeContract, normalizePacket, normalizeOutboundPacket, restoreCustomizerCockpit, hideCustomizerCockpit, ensureClearDraftControl, ensureCorpusExportControl, ensureOntologyFields, ensureEditRows, corpusExportDocument, exportCorpusDocument, readStoredSamples, writeStoredSamples, rehydrateStoredSamples };
   if (window.__TD613_HUSH_PATCH38_LAST_OUTBOUND_PACKET) normalizeOutboundPacket(window.__TD613_HUSH_PATCH38_LAST_OUTBOUND_PACKET);
   if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', scheduleCustomizerRestore, { once: true });
   else scheduleCustomizerRestore();
