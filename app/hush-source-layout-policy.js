@@ -1,4 +1,4 @@
-const HUSH_SOURCE_LAYOUT_POLICY_VERSION = 'source-layout-policy/v2-mask-only+native-customizer-corpus+status-tune+log-metal';
+const HUSH_SOURCE_LAYOUT_POLICY_VERSION = 'source-layout-policy/v2-mask-only+native-customizer-corpus+status-tune+log-metal+corpus-export';
 const HUSH_PHASE31_STORAGE_KEY = 'td613:hush:phase31:logged-samples:v1';
 
 function normalizeInstructionText() {
@@ -166,6 +166,43 @@ function installCustomizerVisibilityCss() {
       background: linear-gradient(135deg, rgba(236,255,244,.98) 0%, rgba(137,255,240,.82) 34%, rgba(49,255,138,.86) 68%, rgba(189,147,249,.38) 100%) !important;
       box-shadow: inset 0 1px 0 rgba(255,255,255,.78), inset 0 -10px 18px rgba(4,24,14,.16), 0 0 28px rgba(49,255,138,.34), 0 16px 34px rgba(49,255,138,.16) !important;
     }
+    #hushPhase31CorpusExportLink {
+      appearance: none !important;
+      -webkit-appearance: none !important;
+      position: absolute !important;
+      top: 5.38rem !important;
+      right: 1.52rem !important;
+      z-index: 6 !important;
+      display: inline !important;
+      min-width: 0 !important;
+      min-height: 0 !important;
+      width: auto !important;
+      height: auto !important;
+      border: 0 !important;
+      border-radius: 0 !important;
+      background: transparent !important;
+      box-shadow: none !important;
+      padding: 0 !important;
+      margin: 0 !important;
+      color: rgba(236,255,244,.96) !important;
+      font-family: var(--font-mono, ui-monospace, monospace) !important;
+      font-size: .48rem !important;
+      font-weight: 500 !important;
+      line-height: 1 !important;
+      letter-spacing: .04em !important;
+      text-transform: lowercase !important;
+      text-decoration: none !important;
+      cursor: pointer !important;
+      text-shadow: 0 0 9px rgba(49,255,138,.42) !important;
+    }
+    #hushPhase31CorpusExportLink:hover,
+    #hushPhase31CorpusExportLink:focus-visible {
+      color: rgba(202,255,223,1) !important;
+      text-decoration: underline !important;
+      text-underline-offset: 2px !important;
+      outline: none !important;
+      text-shadow: 0 0 12px rgba(49,255,138,.48) !important;
+    }
     #hushPhase31CustomizerPanel:not([hidden]) #hushPhase31Undo {
       grid-column: 1 / -1 !important;
       display: flex !important;
@@ -276,6 +313,73 @@ function appendStoredSample(sample) {
   if (!duplicate) writeStoredSamples(current.concat(sample));
 }
 
+function corpusExportDocument() {
+  const clean = readStoredSamples().map((sample) => ({
+    text: String(sample?.text || '').trim(),
+    promptCategory: String(sample?.promptCategory || sample?.contextLabel || 'uncategorized').trim() || 'uncategorized',
+    contextLabel: String(sample?.contextLabel || sample?.promptCategory || 'uncategorized').trim() || 'uncategorized'
+  })).filter((sample) => sample.text);
+  const totalWords = clean.reduce((sum, sample) => sum + sampleWordCount(sample.text), 0);
+  const contexts = new Set(clean.map((sample) => sample.contextLabel || sample.promptCategory)).size;
+  const header = [
+    'TD613 Hush Customizer Mask Corpus',
+    `Exported: ${new Date().toISOString()}`,
+    `Samples: ${clean.length}`,
+    `Words: ${totalWords}`,
+    `Contexts: ${contexts}`,
+    ''
+  ].join('\n');
+  const body = clean.length
+    ? clean.map((sample, index) => [
+        `--- sample ${index + 1} ---`,
+        `category: ${sample.promptCategory}`,
+        `context: ${sample.contextLabel}`,
+        `words: ${sampleWordCount(sample.text)}`,
+        '',
+        sample.text
+      ].join('\n')).join('\n\n')
+    : 'No logged customizer samples were found in this browser.';
+  return `${header}\n${body}\n`;
+}
+
+function exportCorpusDocument() {
+  const status = document.getElementById('hushPhase31SampleStatus');
+  const stamp = new Date().toISOString().replace(/[:.]/g, '-').slice(0, 19);
+  const blob = new Blob([corpusExportDocument()], { type: 'text/plain;charset=utf-8' });
+  const url = URL.createObjectURL(blob);
+  const link = document.createElement('a');
+  link.href = url;
+  link.download = `td613-hush-customizer-corpus-${stamp}.txt`;
+  document.body.appendChild(link);
+  link.click();
+  link.remove();
+  window.setTimeout(() => URL.revokeObjectURL(url), 1200);
+  if (status) {
+    const clean = readStoredSamples();
+    const wordTotal = clean.reduce((sum, sample) => sum + sampleWordCount(sample?.text || ''), 0);
+    status.textContent = `Exported customizer corpus: ${clean.length} samples · ${wordTotal} words.`;
+  }
+}
+
+function ensureCorpusExportControl() {
+  const panel = document.getElementById('hushPhase31CustomizerPanel');
+  if (!panel) return false;
+  let link = document.getElementById('hushPhase31CorpusExportLink');
+  if (!link) {
+    link = document.createElement('button');
+    link.id = 'hushPhase31CorpusExportLink';
+    link.type = 'button';
+    link.textContent = 'export';
+    link.setAttribute('aria-label', 'Export the full customizer mask corpus in logged order');
+    panel.appendChild(link);
+  }
+  if (link.dataset.td613CorpusExportBound !== 'true') {
+    link.dataset.td613CorpusExportBound = 'true';
+    link.addEventListener('click', exportCorpusDocument);
+  }
+  return true;
+}
+
 function bindSamplePersistence() {
   const logButton = document.getElementById('hushPhase31LogSampleBtn');
   const undoButton = document.getElementById('hushPhase31Undo');
@@ -331,6 +435,7 @@ function ensureClearDraftControl() {
 function restoreCustomizerCockpit() {
   installCustomizerVisibilityCss();
   ensureClearDraftControl();
+  ensureCorpusExportControl();
   const panel = document.getElementById('hushPhase31CustomizerPanel');
   if (!panel) return false;
   if (!isCustomizeActive()) return hideCustomizerCockpit();
@@ -342,7 +447,7 @@ function restoreCustomizerCockpit() {
   panel.style.removeProperty('max-height');
   panel.style.removeProperty('margin');
   panel.style.removeProperty('padding');
-  ['hushPhase31CorpusFill', 'hushPhase31SampleCategory', 'hushPhase31ContextLabel', 'hushVoiceReferenceSamplesSaved', 'hushPhase31LogSampleBtn', 'hushPhase31SaveMaskBtn', 'hushPhase31Undo', 'hushPhase31ResetCustomizer', 'hushPhase31SampleStatus', 'hushPhase31DraftUtility', 'hushPhase31ClearDraft'].forEach((id) => {
+  ['hushPhase31CorpusFill', 'hushPhase31SampleCategory', 'hushPhase31ContextLabel', 'hushVoiceReferenceSamplesSaved', 'hushPhase31LogSampleBtn', 'hushPhase31SaveMaskBtn', 'hushPhase31Undo', 'hushPhase31ResetCustomizer', 'hushPhase31SampleStatus', 'hushPhase31DraftUtility', 'hushPhase31ClearDraft', 'hushPhase31CorpusExportLink'].forEach((id) => {
     const node = document.getElementById(id);
     if (!node) return;
     node.hidden = false;
@@ -357,6 +462,7 @@ function restoreCustomizerCockpit() {
 function scheduleCustomizerRestore() {
   restoreCustomizerCockpit();
   window.setTimeout(restoreCustomizerCockpit, 180);
+  window.setTimeout(restoreCustomizerCockpit, 520);
 }
 
 if (typeof window !== 'undefined') {
@@ -364,7 +470,7 @@ if (typeof window !== 'undefined') {
   window.addEventListener('click', (event) => {
     if (event.target?.id === 'hushCustomizeTabBtn' || event.target?.closest?.('#hushCustomizeTabBtn') || event.target?.id === 'hushBuiltInTabBtn' || event.target?.closest?.('#hushBuiltInTabBtn')) scheduleCustomizerRestore();
   }, true);
-  window.__TD613_HUSH_SOURCE_LAYOUT_POLICY__ = { version: HUSH_SOURCE_LAYOUT_POLICY_VERSION, normalizeContract, normalizePacket, normalizeOutboundPacket, restoreCustomizerCockpit, hideCustomizerCockpit, ensureClearDraftControl, readStoredSamples, writeStoredSamples, rehydrateStoredSamples };
+  window.__TD613_HUSH_SOURCE_LAYOUT_POLICY__ = { version: HUSH_SOURCE_LAYOUT_POLICY_VERSION, normalizeContract, normalizePacket, normalizeOutboundPacket, restoreCustomizerCockpit, hideCustomizerCockpit, ensureClearDraftControl, ensureCorpusExportControl, corpusExportDocument, exportCorpusDocument, readStoredSamples, writeStoredSamples, rehydrateStoredSamples };
   if (window.__TD613_HUSH_PATCH38_LAST_OUTBOUND_PACKET) normalizeOutboundPacket(window.__TD613_HUSH_PATCH38_LAST_OUTBOUND_PACKET);
   if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', scheduleCustomizerRestore, { once: true });
   else scheduleCustomizerRestore();
