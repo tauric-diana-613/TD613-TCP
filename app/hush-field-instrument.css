@@ -292,18 +292,29 @@ body[data-page-kind="adversarial-bench"]::before{
     bottom:.62rem;
     z-index:24;
     margin:.15rem 0!important;
-    padding:.7rem!important;
+    padding:.56rem!important;
     -webkit-backdrop-filter:blur(18px);
     backdrop-filter:blur(18px);
   }
-  .hush-action-row{display:grid!important;grid-template-columns:1fr 1fr!important;gap:.44rem!important}
-  #generateMaskedOutputBtn{grid-column:1/-1;min-height:3.55rem!important;font-size:.92rem!important}
-  #copyHushOutputBtn{grid-column:1/-1;min-height:2.75rem!important}
+  .hush-action-row{display:grid!important;grid-template-columns:1fr 1fr!important;gap:.36rem!important}
+  #generateMaskedOutputBtn{grid-column:1/-1;min-height:3.28rem!important;font-size:.92rem!important}
+  #copyHushOutputBtn{
+    grid-column:1/-1;
+    min-height:2.34rem!important;
+    opacity:.94!important;
+    filter:saturate(.92) brightness(.94)!important;
+    box-shadow:0 0 18px rgba(139,233,253,.12),inset 0 1px 0 rgba(255,255,255,.20)!important;
+  }
   #analyzeOutputBtn,
   #acceptOutputBtn,
   #openHushReviewBtn,
-  #resetBenchBtn{grid-column:auto!important;min-height:2.55rem!important}
-  .hush-gate-strip{grid-template-columns:repeat(2,1fr)!important;gap:.34rem!important}
+  #resetBenchBtn{
+    grid-column:auto!important;
+    min-height:2.28rem!important;
+    font-size:.78rem!important;
+    letter-spacing:.13em!important;
+  }
+  .hush-gate-strip{grid-template-columns:repeat(2,1fr)!important;gap:.34rem!important;margin-top:.36rem!important}
   .hush-gate-strip span{font-size:.68rem!important;text-align:center!important}
 
   .hush-output-status-band{
@@ -346,9 +357,11 @@ body[data-page-kind="adversarial-bench"]::before{
   .hush-route-card{min-width:88%!important;max-width:88%!important}
   .hush-route-card strong{margin-top:.5rem!important;padding-right:6.85rem!important}
   .hush-heat-tile{min-width:68%!important}
-  .hush-action-row{grid-template-columns:repeat(2,minmax(0,1fr))!important}
-  #generateMaskedOutputBtn,#copyHushOutputBtn{grid-column:1/-1!important}
-  #analyzeOutputBtn,#acceptOutputBtn,#openHushReviewBtn,#resetBenchBtn{grid-column:auto!important}
+  .hush-transform-gate{padding:.52rem!important}
+  .hush-action-row{grid-template-columns:repeat(2,minmax(0,1fr))!important;gap:.34rem!important}
+  #generateMaskedOutputBtn{grid-column:1/-1!important;min-height:3.2rem!important}
+  #copyHushOutputBtn{grid-column:1/-1!important;min-height:2.22rem!important}
+  #analyzeOutputBtn,#acceptOutputBtn,#openHushReviewBtn,#resetBenchBtn{grid-column:auto!important;min-height:2.18rem!important}
   textarea#messageDraftInput,textarea#protectedOutputInput{min-height:10rem!important}
 }
 
