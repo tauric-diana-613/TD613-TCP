@@ -544,3 +544,104 @@ textarea, input, select { font-size: .72rem !important; line-height: 1.24 !impor
 }
 .hush-phase31-edit-modal textarea { min-height: 5.8rem; }
 .hush-phase31-edit-context { min-height: 3.1rem !important; }
+
+/* Late control hygiene: protect tiny edit/remove controls from global pill styles. */
+#hushPhase31EditCorpus.hush-phase31-edit-corpus {
+  appearance: none !important;
+  -webkit-appearance: none !important;
+  display: block !important;
+  min-width: 0 !important;
+  min-height: 0 !important;
+  width: max-content !important;
+  height: auto !important;
+  border: 0 !important;
+  border-radius: 0 !important;
+  background: transparent !important;
+  box-shadow: none !important;
+  padding: .12rem 0 0 !important;
+  margin: .16rem auto 0 !important;
+  color: rgba(255, 118, 104, .92) !important;
+  font-family: var(--font-mono, ui-monospace, monospace) !important;
+  font-size: .48rem !important;
+  font-weight: 500 !important;
+  line-height: 1 !important;
+  letter-spacing: .04em !important;
+  text-transform: none !important;
+  text-decoration: none !important;
+  text-underline-offset: 2px !important;
+  cursor: pointer !important;
+  transition: color 120ms ease, text-shadow 120ms ease !important;
+}
+#hushPhase31EditCorpus.hush-phase31-edit-corpus:hover,
+#hushPhase31EditCorpus.hush-phase31-edit-corpus:focus-visible {
+  color: rgba(255, 135, 113, 1) !important;
+  text-decoration: underline !important;
+  text-shadow: 0 0 10px rgba(255, 118, 104, .28) !important;
+  outline: none !important;
+  transform: none !important;
+}
+.hush-phase31-edit-card {
+  display: grid !important;
+  grid-template-rows: auto auto minmax(0, 1fr) auto auto !important;
+  overflow: hidden !important;
+}
+.hush-phase31-edit-list {
+  min-height: 0 !important;
+  max-height: min(28rem, calc(100dvh - 14rem)) !important;
+  overflow: auto !important;
+  padding-right: .12rem !important;
+  overscroll-behavior: contain !important;
+}
+.hush-phase31-edit-card .hush-phase31-modal-actions {
+  position: sticky !important;
+  bottom: 0 !important;
+  z-index: 4 !important;
+  padding-top: .72rem !important;
+  padding-bottom: .08rem !important;
+  background: linear-gradient(180deg, rgba(3,18,16,0), rgba(3,18,16,.96) 28%, rgba(12,5,20,.98)) !important;
+}
+.hush-phase31-edit-remove.hush-phase31-edit-remove {
+  appearance: none !important;
+  -webkit-appearance: none !important;
+  position: absolute !important;
+  display: inline-grid !important;
+  place-items: center !important;
+  min-width: 0 !important;
+  min-height: 0 !important;
+  width: 1rem !important;
+  height: 1rem !important;
+  max-width: 1rem !important;
+  max-height: 1rem !important;
+  padding: 0 !important;
+  margin: 0 !important;
+  border: 0 !important;
+  border-radius: 999px !important;
+  background: transparent !important;
+  box-shadow: none !important;
+  top: .42rem !important;
+  right: .48rem !important;
+  left: auto !important;
+  bottom: auto !important;
+  transform: none !important;
+  color: rgba(255, 118, 104, .94) !important;
+  font-family: var(--font-mono, ui-monospace, monospace) !important;
+  font-size: .62rem !important;
+  font-weight: 700 !important;
+  line-height: 1 !important;
+  letter-spacing: 0 !important;
+  text-align: center !important;
+  text-transform: none !important;
+  text-decoration: none !important;
+  cursor: pointer !important;
+}
+.hush-phase31-edit-remove.hush-phase31-edit-remove:hover,
+.hush-phase31-edit-remove.hush-phase31-edit-remove:focus-visible {
+  color: rgba(255, 135, 113, 1) !important;
+  text-shadow: 0 0 10px rgba(255, 118, 104, .28) !important;
+  outline: none !important;
+  transform: none !important;
+}
+@media (max-width: 820px) {
+  .hush-phase31-edit-card { max-height: min(38rem, calc(100dvh - 2rem)) !important; }
+  .hush-phase31-edit-list { max-height: calc(100dvh - 12.5rem) !important; }
+}
