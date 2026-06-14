@@ -2842,6 +2842,21 @@ select {
 
   .grid > .flight-lane-prompt { transform: translate3d(0, 0, 0) !important; }
   .grid > .flight-lane-output { transform: translate3d(100%, 0, 0) !important; }
+
+  .grid > .flight-lane-output {
+    touch-action: pan-y pinch-zoom !important;
+  }
+
+  .mobile-lane-tab,
+  [data-flight-lane-target],
+  button,
+  input,
+  select,
+  textarea,
+  .payload-stepper,
+  .output-auth-toggle {
+    touch-action: manipulation !important;
+  }
   html[data-flight-mobile-lane="output"] .grid > .flight-lane-prompt,
   body.flight-output-active .grid > .flight-lane-prompt { transform: translate3d(-100%, 0, 0) !important; }
   html[data-flight-mobile-lane="output"] .grid > .flight-lane-output,
@@ -9709,13 +9724,25 @@ version: TD613_V5.version
     });
   }
 
+  function viewportHeight() {
+    return window.visualViewport && window.visualViewport.height ? window.visualViewport.height : window.innerHeight;
+  }
+
   function syncGridHeight() {
     if (!mobile()) return;
     var grid = q('.grid');
     var lane = activeLane();
     if (!grid || !lane) return;
-    var height = Math.max(lane.scrollHeight, lane.offsetHeight, window.innerHeight * 0.55);
+    var rect = lane.getBoundingClientRect();
+    var height = Math.max(lane.scrollHeight, lane.offsetHeight, rect.height, viewportHeight() * 0.55);
     grid.style.setProperty('height', Math.ceil(height) + 'px', 'important');
+  }
+
+  function settleGridHeight() {
+    syncGridHeight();
+    requestAnimationFrame(syncGridHeight);
+    window.setTimeout(syncGridHeight, 120);
+    window.setTimeout(syncGridHeight, 360);
   }
 
   function clearTransforms() {
@@ -9743,12 +9770,12 @@ version: TD613_V5.version
       requestAnimationFrame(function () {
         syncTabs(target);
         clearTransforms();
-        syncGridHeight();
+        settleGridHeight();
       });
     } else {
       syncTabs(target);
       clearTransforms();
-      syncGridHeight();
+      settleGridHeight();
     }
   }
 
@@ -9788,14 +9815,18 @@ version: TD613_V5.version
   function init() {
     syncTabs(laneName());
     clearTransforms();
-    syncGridHeight();
+    settleGridHeight();
     showIntro();
     var observer = new MutationObserver(syncGridHeight);
     var grid = q('.grid');
     if (grid) observer.observe(grid, { childList: true, subtree: true, attributes: true, characterData: true });
     document.addEventListener('input', syncGridHeight, true);
     window.addEventListener('resize', syncGridHeight, { passive: true });
-    window.addEventListener('orientationchange', syncGridHeight, { passive: true });
+    window.addEventListener('orientationchange', settleGridHeight, { passive: true });
+    window.addEventListener('pageshow', settleGridHeight, { passive: true });
+    if (window.visualViewport) {
+      window.visualViewport.addEventListener('resize', settleGridHeight, { passive: true });
+    }
   }
 
   if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', init, { once: true });
@@ -9890,7 +9921,9 @@ version: TD613_V5.version
 
 
 <script id="td613-flight-pr78-absolute-mobile-lane-script">
+window.TD613FlightPR78Disabled = true;
 (function () {
+  if (window.TD613FlightPR78Disabled) return;
   function mobile() { return window.matchMedia && window.matchMedia('(max-width: 820px)').matches; }
   function q(s) { return document.querySelector(s); }
   function lane() { return document.documentElement.dataset.flightMobileLane === 'output' ? 'output' : 'prompt'; }
