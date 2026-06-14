@@ -1,4 +1,4 @@
-const HUSH_SOURCE_LAYOUT_POLICY_VERSION = 'source-layout-policy/v2-mask-only+native-customizer-corpus+status-tune+log-metal+corpus-export-position';
+const HUSH_SOURCE_LAYOUT_POLICY_VERSION = 'source-layout-policy/v2-mask-only+native-customizer-corpus+status-tune+log-metal+corpus-export-northeast';
 const HUSH_PHASE31_STORAGE_KEY = 'td613:hush:phase31:logged-samples:v1';
 
 function normalizeInstructionText() {
@@ -170,8 +170,8 @@ function installCustomizerVisibilityCss() {
       appearance: none !important;
       -webkit-appearance: none !important;
       position: absolute !important;
-      top: 4.92rem !important;
-      right: 2.72rem !important;
+      top: 4.46rem !important;
+      right: 2.04rem !important;
       z-index: 6 !important;
       display: inline !important;
       min-width: 0 !important;
@@ -186,7 +186,7 @@ function installCustomizerVisibilityCss() {
       margin: 0 !important;
       color: rgba(236,255,244,.96) !important;
       font-family: var(--font-mono, ui-monospace, monospace) !important;
-      font-size: .43rem !important;
+      font-size: .42rem !important;
       font-weight: 500 !important;
       line-height: 1 !important;
       letter-spacing: .055em !important;
