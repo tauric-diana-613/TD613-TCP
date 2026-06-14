@@ -1,4 +1,4 @@
-const HUSH_SOURCE_LAYOUT_POLICY_VERSION = 'source-layout-policy/v2-mask-only+native-customizer-corpus+status-tune+log-metal+corpus-export-northeast';
+const HUSH_SOURCE_LAYOUT_POLICY_VERSION = 'source-layout-policy/v2-mask-only+native-customizer-corpus+status-tune+log-metal+corpus-export-edit';
 const HUSH_PHASE31_STORAGE_KEY = 'td613:hush:phase31:logged-samples:v1';
 
 function normalizeInstructionText() {
@@ -110,7 +110,8 @@ function installCustomizerVisibilityCss() {
     #hushPhase31CustomizerPanel:not([hidden]) .hush-phase31-ledger-head,
     #hushPhase31CustomizerPanel:not([hidden]) .hush-phase31-actions,
     #hushPhase31CustomizerPanel:not([hidden]) #hushPhase31SampleStatus,
-    #hushPhase31CustomizerPanel:not([hidden]) #hushPhase31ResetCustomizer {
+    #hushPhase31CustomizerPanel:not([hidden]) #hushPhase31ResetCustomizer,
+    #hushPhase31CustomizerPanel:not([hidden]) #hushPhase31EditCorpus {
       visibility: visible !important;
       opacity: 1 !important;
       transform: none !important;
@@ -447,7 +448,7 @@ function restoreCustomizerCockpit() {
   panel.style.removeProperty('max-height');
   panel.style.removeProperty('margin');
   panel.style.removeProperty('padding');
-  ['hushPhase31CorpusFill', 'hushPhase31SampleCategory', 'hushPhase31ContextLabel', 'hushVoiceReferenceSamplesSaved', 'hushPhase31LogSampleBtn', 'hushPhase31SaveMaskBtn', 'hushPhase31Undo', 'hushPhase31ResetCustomizer', 'hushPhase31SampleStatus', 'hushPhase31DraftUtility', 'hushPhase31ClearDraft', 'hushPhase31CorpusExportLink'].forEach((id) => {
+  ['hushPhase31CorpusFill', 'hushPhase31SampleCategory', 'hushPhase31ContextLabel', 'hushVoiceReferenceSamplesSaved', 'hushPhase31LogSampleBtn', 'hushPhase31SaveMaskBtn', 'hushPhase31Undo', 'hushPhase31ResetCustomizer', 'hushPhase31SampleStatus', 'hushPhase31DraftUtility', 'hushPhase31ClearDraft', 'hushPhase31CorpusExportLink', 'hushPhase31EditCorpus'].forEach((id) => {
     const node = document.getElementById(id);
     if (!node) return;
     node.hidden = false;
