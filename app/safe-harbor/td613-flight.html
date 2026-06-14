@@ -7635,6 +7635,37 @@ select {
   }
 }
 
+
+/* PR167_SENTINEL restore Seal spacing panels to side-by-side desktop layout */
+.seal-card .seal-spacing-grid {
+  grid-template-columns: minmax(15.4rem, .92fr) minmax(18rem, 1.08fr);
+  align-items: stretch;
+  margin-top: .08rem;
+}
+
+.seal-card .seal-spacing-grid > div {
+  min-width: 0;
+}
+
+.seal-card .seal-target-panel input#sealTargetWord {
+  width: 100%;
+  max-width: 100%;
+}
+
+@media (min-width: 821px) {
+  .flight-lane-output .seal-card .seal-spacing-grid {
+    display: grid !important;
+    grid-template-columns: minmax(15.4rem, .92fr) minmax(18rem, 1.08fr) !important;
+    gap: .46rem !important;
+  }
+}
+
+@media (max-width: 820px) {
+  .flight-lane-output .seal-card .seal-spacing-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
 </style>
 <script type="module" src="../analytics.js"></script>
 <script type="module" src="../speed-insights.js"></script>
@@ -8027,8 +8058,17 @@ This block controls the closing phrase and how the lozenge behaves. Use variety 
 <label><input checked="" id="sealUseDiamond" type="checkbox"/>Append lozenge (⟐)</label>
 <label><input id="sealUseSacDiamond" type="checkbox"/>Append lozenge + SAC (⟐)</label>
 </div>
-<div class="section-split-row">
-<div>
+<div class="section-split-row seal-spacing-grid">
+<div class="seal-target-panel">
+<label class="small-label" for="sealTargetWord">Target word (for ZWNJ insertion)</label>
+<input id="sealTargetWord" type="text" value="with"/>
+<div class="small-label" style="margin-top:.4rem;">Hair-space halo</div>
+<div class="radio-row">
+<label><input checked="" name="sealHair" type="radio" value="none"/>none</label>
+<label><input name="sealHair" type="radio" value="halo"/>1 hair before + 2 after</label>
+</div>
+</div>
+<div class="seal-zwnj-panel">
 <div class="small-label">ZWNJ behavior around the seal</div>
 <div class="radio-row">
 <label><input checked="" name="sealZwnjMode" type="radio" value="none"/>none</label>
@@ -8038,15 +8078,6 @@ This block controls the closing phrase and how the lozenge behaves. Use variety 
 <label><input name="sealZwnjMode" type="radio" value="insideVerb"/>inside verb</label>
 <label><input name="sealZwnjMode" type="radio" value="double"/>word + glyph</label>
 <label><input name="sealZwnjMode" type="radio" value="random"/>random</label>
-</div>
-</div>
-<div>
-<label class="small-label" for="sealTargetWord">Target word (for ZWNJ insertion)</label>
-<input id="sealTargetWord" type="text" value="with"/>
-<div class="small-label" style="margin-top:.4rem;">Hair-space halo</div>
-<div class="radio-row">
-<label><input checked="" name="sealHair" type="radio" value="none"/>none</label>
-<label><input name="sealHair" type="radio" value="halo"/>1 hair before + 2 after</label>
 </div>
 </div>
 </div>
