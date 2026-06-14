@@ -1,4 +1,4 @@
-const VERSION = 'phase-31.1-corpus-import-export-reset-customizer';
+const VERSION = 'phase-31.1-corpus-import-export-reset-customizer-edit-corpus';
 const LOGGED_SAMPLES_STORAGE_KEY = 'td613:hush:phase31:logged-samples:v1';
 const HUSH_CUSTOM_MASK_CORPUS_POLICY = Object.freeze({
   minWordsPerSample: 75,
@@ -13,6 +13,7 @@ const HUSH_CUSTOM_MASK_CORPUS_POLICY = Object.freeze({
 });
 const MIN_SAMPLE_WORDS = HUSH_CUSTOM_MASK_CORPUS_POLICY.minWordsPerSample;
 const text = (value) => String(value ?? '').trim();
+const escapeHtml = (value = '') => String(value ?? '').replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
 const byId = (id, doc = document) => doc.getElementById(id);
 const words = (value = '') => (String(value).match(/[A-Za-z0-9][A-Za-z0-9'-]*/g) || []).length;
 const slug = (value = 'custom-mask') => text(value).toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, '') || 'custom-mask';
@@ -190,6 +191,7 @@ function shellHtml() {
         <span><strong id="hushPhase31WordCount">0</strong><em>words</em></span>
         <span><strong id="hushPhase31CategoryCount">0</strong><em>contexts</em></span>
       </div>
+      <button id="hushPhase31EditCorpus" type="button" class="hush-phase31-edit-corpus">edit</button>
     </div>
     <div class="hush-phase31-sample-tools">
       <label class="hush-phase31-label" for="hushPhase31SampleCategory"><span>Sample category</span><select id="hushPhase31SampleCategory"><option value="explanatory">explanatory</option><option value="argumentative">argumentative</option><option value="narrative">narrative</option><option value="procedural">procedural</option><option value="reflective">reflective / affective</option><option value="legal-forensic">legal / forensic</option><option value="casual">casual / conversational</option><option value="technical">technical / operational</option><option value="poetic-symbolic">poetic / symbolic</option><option value="repair">repair / correction</option></select></label>
@@ -207,6 +209,19 @@ function shellHtml() {
     <div id="hushPhase31SampleStatus" class="persona-memory-summary">Corpus empty. Add 75+ word samples to begin.</div>
     <button id="hushPhase31ResetCustomizer" type="button" class="hush-phase31-reset-customizer">reset customizer</button>
   </section>`;
+}
+
+function editCorpusModalHtml() {
+  const options = ['explanatory','argumentative','narrative','procedural','reflective','legal-forensic','casual','technical','poetic-symbolic','repair','uncategorized']
+    .map((value) => `<option value="${value}">${value}</option>`).join('');
+  return `<div id="hushPhase31EditCorpusModal" class="hush-phase31-modal hush-phase31-edit-modal" hidden role="dialog" aria-modal="true" aria-labelledby="hushPhase31EditCorpusTitle">
+    <div class="hush-phase31-modal-card hush-phase31-edit-card"><h3 id="hushPhase31EditCorpusTitle">Edit Customizer Corpus</h3>
+      <p class="hush-phase31-edit-note">Newest samples appear first. Remove entries with the coral x, then Save to rebuild the custom corpus.</p>
+      <div id="hushPhase31EditCorpusList" class="hush-phase31-edit-list" data-options='${options.replace(/'/g, '&apos;')}'></div>
+      <div class="hush-phase31-modal-actions"><button id="hushPhase31SaveCorpusEdits" type="button" class="primary-cta">Save</button><button id="hushPhase31CloseCorpusEdit" type="button" class="ghost">Close</button></div>
+      <div id="hushPhase31EditCorpusStatus" class="hush-phase31-modal-status"></div>
+    </div>
+  </div>`;
 }
 
 function modalHtml() {
@@ -565,6 +580,67 @@ async function addToStudio(doc = document) {
   return saved;
 }
 
+function renderEditCorpusRows(doc = document) {
+  const list = byId('hushPhase31EditCorpusList', doc);
+  if (!list) return;
+  const opts = list.dataset.options || '';
+  const clean = samples.map(normalizeSampleEntry).filter(Boolean);
+  const newestFirst = clean.map((sample, index) => ({ sample, index })).reverse();
+  list.innerHTML = newestFirst.length ? newestFirst.map(({ sample, index }, displayIndex) => `
+    <section class="hush-phase31-edit-sample" data-index="${index}">
+      <button type="button" class="hush-phase31-edit-remove" aria-label="Remove sample ${index + 1}">×</button>
+      <label>Writing sample<textarea class="hush-phase31-edit-text">${escapeHtml(sample.text)}</textarea></label>
+      <label>Sample category<select class="hush-phase31-edit-category">${opts}</select></label>
+      <label>Context<textarea class="hush-phase31-edit-context">${escapeHtml(sample.contextLabel)}</textarea></label>
+    </section>`).join('') : '<p class="hush-phase31-edit-empty">No logged customizer samples yet.</p>';
+  newestFirst.forEach(({ sample, index }) => {
+    const row = list.querySelector(`[data-index="${index}"]`);
+    const select = row?.querySelector('.hush-phase31-edit-category');
+    if (select) select.value = sample.promptCategory;
+  });
+}
+
+function openEditCorpusModal(doc = document) {
+  renderEditCorpusRows(doc);
+  const modal = byId('hushPhase31EditCorpusModal', doc);
+  if (modal) modal.hidden = false;
+}
+
+function closeEditCorpusModal(doc = document) {
+  const modal = byId('hushPhase31EditCorpusModal', doc);
+  if (modal) modal.hidden = true;
+}
+
+function removeEditCorpusRow(event, doc = document) {
+  const button = event.target?.closest?.('.hush-phase31-edit-remove');
+  if (!button) return;
+  button.closest('.hush-phase31-edit-sample')?.remove();
+}
+
+function saveEditCorpusModal(doc = document) {
+  const rows = Array.from(doc.querySelectorAll('#hushPhase31EditCorpusList .hush-phase31-edit-sample'));
+  samples = rows.map((row) => ({
+    originalIndex: Number(row.dataset.index || 0),
+    sample: normalizeSampleEntry({
+      text: row.querySelector('.hush-phase31-edit-text')?.value || '',
+      promptCategory: row.querySelector('.hush-phase31-edit-category')?.value || 'uncategorized',
+      contextLabel: row.querySelector('.hush-phase31-edit-context')?.value || ''
+    })
+  })).filter((entry) => entry.sample).sort((a, b) => a.originalIndex - b.originalIndex).map((entry) => entry.sample);
+  activeMask = samples.length ? rebuildActiveMaskFromSamples(samples) : null;
+  persistSamples();
+  if (activeMask) syncBench(activeMask, doc);
+  else {
+    const bench = window.__TD613_HUSH_BENCH__ || {};
+    const state = bench.benchState || {};
+    state.activeCustomMask = null;
+    const ref = byId('maskReferenceInput', doc);
+    if (ref) ref.value = '';
+  }
+  renderLedger(doc);
+  closeEditCorpusModal(doc);
+}
+
 function orderCustomizer(doc = document) {
   const warnings = byId('hushSwapWarningsPanel', doc);
   const match = byId('hushProfileMatchPanel', doc);
@@ -579,6 +655,7 @@ function orderCustomizer(doc = document) {
   }
   parent.insertBefore(panel, match);
   if (!byId('hushPhase31SaveModal', doc)) doc.body.insertAdjacentHTML('beforeend', modalHtml());
+  if (!byId('hushPhase31EditCorpusModal', doc)) doc.body.insertAdjacentHTML('beforeend', editCorpusModalHtml());
   return panel;
 }
 
@@ -613,6 +690,10 @@ export function initHushPhase311(doc = document) {
   bindOnce(byId('hushPhase31LogSampleBtn', doc), 'click', 'td613Phase31NativeLogBound', () => logSample(doc));
   bindOnce(byId('hushPhase31Undo', doc), 'click', 'td613Phase31NativeUndoBound', () => undoSample(doc));
   bindOnce(byId('hushPhase31SaveMaskBtn', doc), 'click', 'td613Phase31NativeSaveBound', () => openSaveModal(doc));
+  bindOnce(byId('hushPhase31EditCorpus', doc), 'click', 'td613Phase31NativeEditCorpusBound', () => openEditCorpusModal(doc));
+  bindOnce(byId('hushPhase31CloseCorpusEdit', doc), 'click', 'td613Phase31NativeCloseCorpusEditBound', () => closeEditCorpusModal(doc));
+  bindOnce(byId('hushPhase31SaveCorpusEdits', doc), 'click', 'td613Phase31NativeSaveCorpusEditBound', () => saveEditCorpusModal(doc));
+  bindOnce(byId('hushPhase31EditCorpusList', doc), 'click', 'td613Phase31NativeRemoveCorpusEditBound', (event) => removeEditCorpusRow(event, doc));
   bindOnce(byId('hushPhase31CancelSave', doc), 'click', 'td613Phase31NativeCancelBound', () => { const modal = byId('hushPhase31SaveModal', doc); if (modal) modal.hidden = true; });
   bindOnce(byId('hushPhase31AddToStudio', doc), 'click', 'td613Phase31NativeAddBound', () => addToStudio(doc));
   bindOnce(byId('hushPhase31ResetCustomizer', doc), 'click', 'td613Phase31NativeResetBound', () => resetCustomizer(doc));
