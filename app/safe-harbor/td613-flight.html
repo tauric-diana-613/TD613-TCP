@@ -9756,8 +9756,20 @@ version: TD613_V5.version
     return target && target.closest && target.closest('textarea, .output, #taskText, .code-output, .json-output');
   }
 
+  var VERTICAL_RELEASE_RATIO = 1.25;
+  var HORIZONTAL_CAPTURE_RATIO = 1.75;
+  var HORIZONTAL_CAPTURE_PX = 24;
+
+  function isVerticalGesture(dx, dy) {
+    return Math.abs(dy) >= 8 && Math.abs(dy) > Math.abs(dx) * VERTICAL_RELEASE_RATIO;
+  }
+
+  function isHorizontalGesture(dx, dy) {
+    return Math.abs(dx) >= HORIZONTAL_CAPTURE_PX && Math.abs(dx) > Math.abs(dy) * HORIZONTAL_CAPTURE_RATIO;
+  }
+
   function blocksSwipe(target) {
-    return Boolean(target && target.closest && target.closest('textarea, input[type="text"], input[type="number"], input[type="date"], select, [contenteditable="true"]'));
+    return Boolean(target && target.closest && target.closest('textarea, input, select, button, label, [contenteditable="true"], .copy-grid, .payload-stepper, .output-auth-toggle, .mobile-lane-tab, [data-flight-lane-target]'));
   }
 
 
@@ -9806,11 +9818,9 @@ version: TD613_V5.version
     var t = event.touches[0];
     var scrollEl = textScrollTarget(event.target);
     if (scrollEl) {
-      text.el = scrollEl;
-      text.sx = t.clientX;
-      text.sy = t.clientY;
-      text.top = scrollEl.scrollTop || 0;
+      text.el = null;
       swipe.tracking = false;
+      swipe.active = false;
       return;
     }
     if (blocksSwipe(event.target)) return;
@@ -9825,21 +9835,17 @@ version: TD613_V5.version
     var touch = event.touches && event.touches[0];
     if (!touch) return;
 
-    if (text.el) {
-      var tx = touch.clientX - text.sx;
-      var ty = touch.clientY - text.sy;
-      if (Math.abs(ty) > 4 && Math.abs(ty) >= Math.abs(tx)) {
-        text.el.scrollTop = text.top - ty;
-        if (event.cancelable) event.preventDefault();
-        event.stopImmediatePropagation();
-      }
-      return;
-    }
-
     if (!swipe.tracking) return;
     var dx = touch.clientX - swipe.sx;
     var dy = touch.clientY - swipe.sy;
-    if (Math.abs(dx) < 12 || Math.abs(dx) < Math.abs(dy) * 1.08) return;
+    if (isVerticalGesture(dx, dy)) {
+      swipe.tracking = false;
+      swipe.active = false;
+      document.body.classList.remove('flight-dragging');
+      clearTransforms();
+      return;
+    }
+    if (!isHorizontalGesture(dx, dy)) return;
     swipe.active = true;
     if (event.cancelable) event.preventDefault();
     event.stopImmediatePropagation();
@@ -9864,7 +9870,7 @@ version: TD613_V5.version
     if (!touch) return;
     var dx = touch.clientX - swipe.sx;
     var dy = touch.clientY - swipe.sy;
-    if (!swipe.active || Math.abs(dx) < 44 || Math.abs(dx) < Math.abs(dy) * 1.15) {
+    if (!swipe.active || Math.abs(dx) < 44 || Math.abs(dx) < Math.abs(dy) * HORIZONTAL_CAPTURE_RATIO) {
       swipe.active = false;
       setLane(laneName(), dx);
       return;
@@ -9927,7 +9933,12 @@ version: TD613_V5.version
   function interactive(target) {
     return Boolean(target && target.closest && target.closest('textarea, input, select, button, label, [contenteditable="true"], .copy-grid, .payload-stepper'));
   }
-  var sx = 0, sy = 0, active = false, ignored = false;
+  var VERTICAL_RELEASE_RATIO = 1.25;
+  var HORIZONTAL_CAPTURE_RATIO = 1.75;
+  var HORIZONTAL_CAPTURE_PX = 24;
+  function verticalGesture(dx, dy) { return Math.abs(dy) >= 8 && Math.abs(dy) > Math.abs(dx) * VERTICAL_RELEASE_RATIO; }
+  function horizontalGesture(dx, dy) { return Math.abs(dx) >= HORIZONTAL_CAPTURE_PX && Math.abs(dx) > Math.abs(dy) * HORIZONTAL_CAPTURE_RATIO; }
+  var sx = 0, sy = 0, tracking = false, active = false, ignored = false;
   document.addEventListener('DOMContentLoaded', function () { syncTabs(lane()); clearTransforms(); });
   window.addEventListener('resize', function () { if (mobile()) setLane(lane()); }, { passive: true });
   document.addEventListener('click', function (event) {
@@ -9945,15 +9956,23 @@ version: TD613_V5.version
     if (ignored) return;
     sx = event.touches[0].clientX;
     sy = event.touches[0].clientY;
+    tracking = true;
     active = false;
   }, { capture: true, passive: true });
   document.addEventListener('touchmove', function (event) {
-    if (!mobile() || ignored) return;
+    if (!mobile() || ignored || !tracking) return;
     var touch = event.touches && event.touches[0];
     if (!touch) return;
     var dx = touch.clientX - sx;
     var dy = touch.clientY - sy;
-    if (Math.abs(dx) < 10 || Math.abs(dx) < Math.abs(dy) * 1.08) return;
+    if (verticalGesture(dx, dy)) {
+      tracking = false;
+      active = false;
+      document.body.classList.remove('flight-dragging');
+      clearTransforms();
+      return;
+    }
+    if (!horizontalGesture(dx, dy)) return;
     active = true;
     if (event.cancelable) event.preventDefault();
     event.stopImmediatePropagation();
@@ -9966,13 +9985,15 @@ version: TD613_V5.version
   }, { capture: true, passive: false });
   document.addEventListener('touchend', function (event) {
     if (!mobile()) return;
-    if (ignored) { ignored = false; return; }
+    if (ignored) { ignored = false; tracking = false; return; }
+    if (!tracking) { active = false; return; }
     var touch = event.changedTouches && event.changedTouches[0];
     document.body.classList.remove('flight-dragging');
     if (!touch) return;
     var dx = touch.clientX - sx;
     var dy = touch.clientY - sy;
-    if (!active || Math.abs(dx) < 42 || Math.abs(dx) < Math.abs(dy) * 1.2) { setLane(lane(), dx); return; }
+    tracking = false;
+    if (!active || Math.abs(dx) < 42 || Math.abs(dx) < Math.abs(dy) * HORIZONTAL_CAPTURE_RATIO) { active = false; setLane(lane(), dx); return; }
     event.stopImmediatePropagation();
     setLane(dx < 0 ? 'output' : 'prompt', dx);
   }, { capture: true, passive: true });
