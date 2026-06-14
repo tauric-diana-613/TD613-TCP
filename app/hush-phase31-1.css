@@ -469,3 +469,78 @@ textarea, input, select { font-size: .72rem !important; line-height: 1.24 !impor
   .hush-phase31-ledger-head { grid-template-columns: 1fr; row-gap: .34rem; }
   .hush-phase31-draft-utility { justify-self: end; }
 }
+
+.hush-phase31-edit-corpus {
+  appearance: none;
+  -webkit-appearance: none;
+  justify-self: center;
+  width: max-content;
+  border: 0;
+  background: transparent;
+  box-shadow: none;
+  padding: .12rem 0 0;
+  margin: .1rem auto 0;
+  color: rgba(255, 118, 104, .92);
+  font-family: var(--font-mono, ui-monospace, monospace);
+  font-size: .48rem;
+  font-weight: 500;
+  line-height: 1;
+  letter-spacing: .04em;
+  text-transform: none;
+  cursor: pointer;
+  transition: color 120ms ease, text-shadow 120ms ease;
+}
+.hush-phase31-edit-corpus:hover,
+.hush-phase31-edit-corpus:focus-visible {
+  color: rgba(255, 135, 113, 1);
+  text-decoration: underline;
+  text-shadow: 0 0 10px rgba(255, 118, 104, .28);
+  outline: none;
+}
+.hush-phase31-edit-card { width: min(38rem, calc(100vw - 2rem)); }
+.hush-phase31-edit-note {
+  margin: -.2rem 0 .7rem;
+  color: rgba(226,255,236,.68);
+  font-size: .6rem;
+  line-height: 1.35;
+}
+.hush-phase31-edit-list {
+  display: grid;
+  gap: .72rem;
+}
+.hush-phase31-edit-sample {
+  position: relative;
+  display: grid;
+  gap: .5rem;
+  padding: .72rem;
+  border: 1px solid rgba(137,255,240,.22);
+  border-radius: 18px;
+  background: rgba(0,0,0,.22);
+}
+.hush-phase31-edit-sample label { padding-right: 1.15rem; }
+.hush-phase31-edit-remove {
+  appearance: none;
+  -webkit-appearance: none;
+  position: absolute;
+  top: .38rem;
+  right: .5rem;
+  border: 0;
+  background: transparent;
+  color: rgba(255, 118, 104, .94);
+  font-size: .78rem;
+  line-height: 1;
+  cursor: pointer;
+}
+.hush-phase31-edit-remove:hover,
+.hush-phase31-edit-remove:focus-visible {
+  color: rgba(255, 135, 113, 1);
+  text-shadow: 0 0 10px rgba(255, 118, 104, .28);
+  outline: none;
+}
+.hush-phase31-edit-empty {
+  margin: 0;
+  color: rgba(226,255,236,.7);
+  font-size: .66rem;
+}
+.hush-phase31-edit-modal textarea { min-height: 5.8rem; }
+.hush-phase31-edit-context { min-height: 3.1rem !important; }
