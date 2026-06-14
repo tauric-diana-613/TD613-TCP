@@ -311,6 +311,16 @@ If no candidate clears the class-specific rewrite bar honestly, TCP now publishe
 
 It is not supposed to ghostwrite the passage or quietly flatten a stronger candidate back toward source just because a safer shallow surface exists.
 
+The current Aperture protocol identity is `v2.7.0` /
+`td613-aperture/v2.7.0`. The engine exports that identity through
+`TD613_APERTURE_VERSION`, `TD613_APERTURE_SCHEMA`, and
+`TD613_APERTURE_PROTOCOL.id`; handoff summaries carry the same
+version/schema so Gateway, Hush, Safe Harbor, and diagnostics do not
+float on older Aperture labels. The browser instrument adds ZFP
+certification and Moire Stratigraphy as UI/certification layers; the
+engine protocol remains the post-generation audit and registration
+surface.
+
 ## Semantic Lock
 
 `Generator V2` now exposes a semantic lock path for landed candidates whose proposition, actor, action, and object coverage all clear the class floor while the semantic audit remains bounded. When that lock holds:

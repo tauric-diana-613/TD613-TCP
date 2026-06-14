@@ -1,6 +1,8 @@
 import assert from 'assert';
 import {
   _serveMarrowlineTrap,
+  TD613_APERTURE_VERSION,
+  TD613_APERTURE_SCHEMA,
   TD613_APERTURE_PROTOCOL,
   auditTD613ApertureWitnessAnchors,
   buildTD613ApertureContext,
@@ -20,6 +22,12 @@ import {
   installTD613ProvenanceAttestationEgress
 } from '../app/engine/td613-aperture.js';
 
+assert.equal(TD613_APERTURE_VERSION, 'v2.7.0');
+assert.equal(TD613_APERTURE_SCHEMA, 'td613-aperture/v2.7.0');
+assert.equal(TD613_APERTURE_PROTOCOL.id, TD613_APERTURE_SCHEMA);
+assert.equal(TD613_APERTURE_PROTOCOL.version, TD613_APERTURE_VERSION);
+assert.equal(TD613_APERTURE_PROTOCOL.schema, TD613_APERTURE_SCHEMA);
+
 const guardedContext = buildTD613ApertureContext({
   recognized: true,
   explained: false,
@@ -36,6 +44,8 @@ const guardedContext = buildTD613ApertureContext({
 });
 
 assert.equal(guardedContext.protocolId, TD613_APERTURE_PROTOCOL.id);
+assert.equal(guardedContext.apertureVersion, TD613_APERTURE_VERSION);
+assert.equal(guardedContext.apertureSchema, TD613_APERTURE_SCHEMA);
 assert.equal(guardedContext.observedRegime, 'PRCS-A');
 assert.equal(guardedContext.toolIdentity, 'TD613 Aperture');
 assert.equal(guardedContext.counterRecognitionRequired, true);
@@ -145,6 +155,8 @@ assert(transferReview.introducedEnforcementTerms.includes('eligible'));
 assert(transferReview.reasons.some((reason) => /warning pressure/i.test(reason)));
 assert(transferReview.warningSignals.includes('enforcement-framing'));
 assert.equal(transferReview.apertureAudit.generatorFault, false);
+assert.equal(transferReview.apertureAudit.apertureVersion, TD613_APERTURE_VERSION);
+assert.equal(transferReview.apertureAudit.apertureSchema, TD613_APERTURE_SCHEMA);
 
 const semanticLockedReview = reviewTD613ApertureTransfer({
   sourceText: 'I do not want the west door opened yet.',

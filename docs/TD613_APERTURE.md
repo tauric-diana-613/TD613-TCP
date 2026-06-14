@@ -10,6 +10,7 @@ The live repo stance is:
 
 - `PRCS-A` is the observed regime
 - `TD613 Aperture` is the counter-tool
+- `v2.7.0` / `td613-aperture/v2.7.0` is the current canonical instrument identity
 - the instrument is anti-enforcement and warning-first
 
 So Aperture should:
@@ -37,6 +38,8 @@ That means the sequence is:
 4. the registered surface is exposed to TCP / downstream tools
 
 If the write lane misses, the correct answer is a visible hold docket. Aperture is not supposed to conceal that miss.
+
+The v2.7.0 browser instrument adds the current ZFP certification and Moire Stratigraphy layer without changing that doctrine. Rupture is gated by action plus incomplete closure (`acted && closureScore < 1`); route posture, beacon, zone, and visualization remain visible state, but `Pi` is not a rupture gate.
 
 ## What Aperture currently tracks
 
@@ -78,10 +81,13 @@ That split matters because a tool can be honest and still unusable if the doctri
 The main maintained Aperture surfaces are:
 
 - [app/engine/td613-aperture.js](/C:/Users/timst/OneDrive/Desktop/tcp-repository/app/engine/td613-aperture.js)
+- [app/aperture/tool.html](/C:/Users/timst/OneDrive/Desktop/tcp-repository/app/aperture/tool.html)
 - [app/aperture/index.html](/C:/Users/timst/OneDrive/Desktop/tcp-repository/app/aperture/index.html)
 - [tests/td613-aperture.test.mjs](/C:/Users/timst/OneDrive/Desktop/tcp-repository/tests/td613-aperture.test.mjs)
 - [reports/diagnostics/aperture.latest.json](/C:/Users/timst/OneDrive/Desktop/tcp-repository/reports/diagnostics/aperture.latest.json)
 - [reports/diagnostics/aperture.latest.md](/C:/Users/timst/OneDrive/Desktop/tcp-repository/reports/diagnostics/aperture.latest.md)
+
+`app/aperture/tool.html` is the canonical instrument body. `app/aperture/index.html` remains the stable public iframe shim and points at the current body with a cache token.
 
 ## What to verify
 
@@ -89,9 +95,11 @@ If you are checking Aperture in the current repo, verify these:
 
 - it preserves the `PRCS-A` regime callout
 - it preserves the `counter-tool` role
+- it reports `v2.7.0` and `td613-aperture/v2.7.0` on live, packet, engine, bridge, and diagnostics surfaces
 - it does not enforce selective admissibility over normal landed TCP outputs
 - it exposes warning signals without silently rerouting to source
-- annex diagnostics still report the expected metadata and content hash
+- ZFP certification, corrected rupture logic, Moire Stratigraphy, and Gateway embed handoff remain present in the canonical body
+- annex diagnostics inspect `app/aperture/tool.html`, not the iframe shim
 
 ## Design law
 

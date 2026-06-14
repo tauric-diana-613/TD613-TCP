@@ -51,6 +51,8 @@ function expectedBrowserEngine() {
     'window.TCP_ENGINE = Object.assign(window.TCP_ENGINE || {}, {',
     '  deepFreeze,',
     '  hydrateCorpus,',
+    '  TD613_APERTURE_VERSION,',
+    '  TD613_APERTURE_SCHEMA,',
     '  TD613_APERTURE_PROTOCOL,',
     '  TD613_APERTURE_ENFORCEMENT_TERMS,',
     '  buildTD613GovernedExposureSchema,',

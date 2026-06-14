@@ -59,6 +59,7 @@ const RUN_FINGERPRINT_INPUTS = Object.freeze([
   path.join(repoRoot, 'app', 'engine', 'hush-source-residue.js'),
   path.join(repoRoot, 'app', 'engine', 'hush-release-policy.js'),
   path.join(repoRoot, 'scripts', 'lib', 'annex-diagnostics.mjs'),
+  path.join(repoRoot, 'app', 'aperture', 'tool.html'),
   path.join(repoRoot, 'app', 'aperture', 'index.html')
 ]);
 

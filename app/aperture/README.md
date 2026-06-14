@@ -85,19 +85,24 @@ useful; together they make the exposure surface complete.
 
 ## What's missing right now
 
-[ROADMAP.md](../../ROADMAP.md) at the repo root names the pending
-Aperture refactor (Phase D — splitting the 8200-line monolith and
-collapsing the five-layer wrapper chain into an explicit composition
-registry). [KNOWN_FAILURES.md](../../KNOWN_FAILURES.md) tracks
-pre-existing engine-regression tests; none of the currently red ones
-are Aperture-specific.
+The canonical browser body is now [`tool.html`](tool.html) at
+`v2.7.0` / `td613-aperture/v2.7.0`; [`index.html`](index.html) is the
+stable public iframe shim. v2.7.0 carries the ZFP certification layer,
+the corrected rupture predicate, Moire Stratigraphy diagnostics, and
+the Gateway embed compatibility bridge.
+
+[ROADMAP.md](../../ROADMAP.md) at the repo root still names the pending
+Aperture refactor: splitting the monolithic standalone body and
+collapsing wrapper-era compatibility into explicit composition. That is
+a maintainability cleanup, not a separate live Aperture version.
 
 ## For the formal model
 
 [`docs/TD613_APERTURE.md`](../../docs/TD613_APERTURE.md) is the
 authoritative reference: the role-in-suite framing (PRCS-A as observed
 regime, Aperture as counter-tool), the post-generation audit doctrine,
-the maintained source surfaces (`app/engine/td613-aperture.js`), and
-the relationship to the broader TCP measurement stack.
+the maintained source surfaces (`app/aperture/tool.html` and
+`app/engine/td613-aperture.js`), and the relationship to the broader
+TCP measurement stack.
 
 This README is the onramp; the formal model is the substance.

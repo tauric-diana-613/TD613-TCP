@@ -263,6 +263,8 @@
       source: 'td613-aperture',
       mode: 'gateway-embed',
       type: 'status',
+      apertureVersion: String(payload.apertureVersion || payload.version || latestPacket?.apertureVersion || latestPacket?.version || 'v2.7.0'),
+      apertureSchema: String(payload.apertureSchema || payload.schemaVersion || latestPacket?.apertureSchema || latestPacket?.schemaVersion || 'td613-aperture/v2.7.0'),
       routeState: String(payload.routeState || 'membrane-only'),
       handoffStatus: String(payload.handoffStatus || 'awaiting packet'),
       packetReady: Boolean(payload.packetReady),

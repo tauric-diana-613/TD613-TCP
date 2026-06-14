@@ -849,8 +849,13 @@ function assessCompressionState(sourceText = '', outputText = '', witnessAudit =
   });
 }
 
+export const TD613_APERTURE_VERSION = 'v2.7.0';
+export const TD613_APERTURE_SCHEMA = 'td613-aperture/v2.7.0';
+
 export const TD613_APERTURE_PROTOCOL = Object.freeze({
-  id: 'td613-aperture/v1',
+  id: TD613_APERTURE_SCHEMA,
+  version: TD613_APERTURE_VERSION,
+  schema: TD613_APERTURE_SCHEMA,
   toolIdentity: 'TD613 Aperture',
   shortIdentity: 'Aperture',
   observedRegime: 'PRCS-A',
@@ -916,6 +921,8 @@ export function buildTD613ApertureAudit({
   const fault = Boolean(generatorFault);
   const withheld = Boolean(withheldMaterial || fault);
   return Object.freeze({
+    apertureVersion: TD613_APERTURE_VERSION,
+    apertureSchema: TD613_APERTURE_SCHEMA,
     observedRegime: TD613_APERTURE_PROTOCOL.observedRegime,
     instrumentRole: 'counter-tool',
     generatorFault: fault,
@@ -2457,6 +2464,8 @@ export function buildTD613ApertureContext({
 
   return Object.freeze({
     protocolId: TD613_APERTURE_PROTOCOL.id,
+    apertureVersion: TD613_APERTURE_VERSION,
+    apertureSchema: TD613_APERTURE_SCHEMA,
     toolIdentity: TD613_APERTURE_PROTOCOL.toolIdentity,
     observedRegime: TD613_APERTURE_PROTOCOL.observedRegime,
     stance: TD613_APERTURE_PROTOCOL.stance,
@@ -2652,6 +2661,8 @@ export function reviewTD613ApertureTransfer({
 
   return Object.freeze({
     protocolId: TD613_APERTURE_PROTOCOL.id,
+    apertureVersion: TD613_APERTURE_VERSION,
+    apertureSchema: TD613_APERTURE_SCHEMA,
     toolIdentity: TD613_APERTURE_PROTOCOL.toolIdentity,
     observedRegime: TD613_APERTURE_PROTOCOL.observedRegime,
     exportDiscipline: TD613_APERTURE_PROTOCOL.exportDiscipline,

@@ -222,10 +222,10 @@ const ANNEX_SPECS = Object.freeze([
   Object.freeze({
     id: 'aperture',
     label: 'TD613 Aperture',
-    relativePath: 'app/aperture/index.html',
-    expectedVersion: '2.2.1',
+    relativePath: 'app/aperture/tool.html',
+    expectedVersion: '2.7.0',
     versionPattern: /TD613 APERTURE v([0-9.]+) SOURCE DECLARATION/i,
-    titleIncludes: ['TD613 Aperture', 'v2.2.1'],
+    titleIncludes: ['TD613 Aperture', 'v2.7.0'],
     minimumInlineScripts: 1,
     meta: Object.freeze({
       'tool-name': 'TD613 Aperture',
@@ -263,7 +263,7 @@ const ANNEX_SPECS = Object.freeze([
       {
         id: 'source-declaration',
         label: 'source declaration',
-        pattern: /TD613 APERTURE v2\.2\.1 SOURCE DECLARATION/i
+        pattern: /TD613 APERTURE v2\.7\.0 SOURCE DECLARATION/i
       },
       {
         id: 'counter-tool-stance',
@@ -329,6 +329,31 @@ const ANNEX_SPECS = Object.freeze([
         id: 'packet-forensic-schema',
         label: 'packet forensic schema export',
         pattern: /packet\.forensicSchema\s*=/i
+      },
+      {
+        id: 'zfp-certification',
+        label: 'ZFP certification global',
+        pattern: /window\.APERTURE_ZFP_CERTIFICATION\s*=/i
+      },
+      {
+        id: 'corrected-rupture-predicate',
+        label: 'corrected rupture predicate',
+        pattern: /const\s+rupture\s*=\s*acted\s*&&\s*closureScore\s*<\s*1/i
+      },
+      {
+        id: 'moire-stratigraphy-kernel',
+        label: 'Moiré stratigraphy kernel',
+        pattern: /function\s+computeMoireStratigraphy\s*\(/i
+      },
+      {
+        id: 'gateway-embed-bridge',
+        label: 'Gateway embed bridge',
+        pattern: /APERTURE_GATEWAY_EMBED[\s\S]*window\.parent\.postMessage/i
+      },
+      {
+        id: 'v27-schema',
+        label: 'Aperture v2.7 schema marker',
+        pattern: /td613-aperture\/v2\.7\.0/i
       }
     ])
   })

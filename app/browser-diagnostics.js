@@ -5731,55 +5731,66 @@
     "aperture": {
       "id": "aperture",
       "label": "TD613 Aperture",
-      "file": "app/aperture/index.html",
-      "passed": false,
-      "title": "TD613 Aperture",
-      "version": null,
+      "file": "app/aperture/tool.html",
+      "passed": true,
+      "title": "TD613 Aperture - v2.7.0",
+      "version": "2.7.0",
       "meta": {
         "viewport": "width=device-width, initial-scale=1.0",
         "tool-name": "TD613 Aperture",
         "application-name": "TD613 Aperture",
         "apple-mobile-web-app-title": "TD613 Aperture",
-        "mobile-web-app-capable": "yes",
-        "apple-mobile-web-app-capable": "yes",
+        "tool-role": "counter-tool",
+        "aperture-version": "v2.7.0-zfp-certification",
+        "calibration-mode": "zero-parameter-invariant-ledger",
+        "compression-invariant-map": "true",
+        "zfp-certification": "true",
+        "relational-survival-test": "true",
+        "claim-origin-required": "true",
+        "observed-regime": "PRCS-A",
+        "observed-regime-full": "Eclipse-Omega PRCS-A",
+        "anti-enforcement": "true",
+        "source-note": "Legacy compatibility ids may use inherited human-route naming; these are not normative tool semantics."
+      },
+      "bodyDataset": {
+        "tool-name": "TD613 Aperture",
         "tool-role": "counter-tool",
         "observed-regime": "PRCS-A",
-        "anti-enforcement": "true",
-        "source-note": "TD613 Aperture is the counter-tool; version details remain inside the tool body, not the browser tab title."
+        "observed-regime-full": "Eclipse-Omega PRCS-A",
+        "anti-enforcement": "true"
       },
-      "bodyDataset": {},
       "fingerprint": {
-        "bytes": 1450,
-        "lineCount": 46,
-        "inlineScriptCount": 1,
-        "panelCount": 0,
-        "buttonCount": 0,
-        "contentHashSha256": "bedc60ce540a0a8c967828745fd11955d51677d4b052c275397a523196732b18"
+        "bytes": 571622,
+        "lineCount": 11693,
+        "inlineScriptCount": 13,
+        "panelCount": 3,
+        "buttonCount": 34,
+        "contentHashSha256": "1d7e54d37bc2789fdc5114064f277dd9eeb162c131df90afb5064e35cd371d1c"
       },
       "checks": [
         {
           "id": "title",
           "label": "title marker",
-          "ok": false,
-          "detail": "TD613 Aperture observed",
-          "expected": "TD613 Aperture + v2.2.1",
-          "actual": "TD613 Aperture"
+          "ok": true,
+          "detail": "TD613 Aperture - v2.7.0 observed",
+          "expected": "TD613 Aperture + v2.7.0",
+          "actual": "TD613 Aperture - v2.7.0"
         },
         {
           "id": "version",
           "label": "version marker",
-          "ok": false,
-          "detail": "version missing observed",
-          "expected": "2.2.1",
-          "actual": null
+          "ok": true,
+          "detail": "version 2.7.0 observed",
+          "expected": "2.7.0",
+          "actual": "2.7.0"
         },
         {
           "id": "inline-script",
           "label": "inline runtime present",
           "ok": true,
-          "detail": "1 inline script block(s)",
+          "detail": "13 inline script block(s)",
           "expected": ">= 1",
-          "actual": 1
+          "actual": 13
         },
         {
           "id": "meta:tool-name",
@@ -5816,168 +5827,168 @@
         {
           "id": "body:tool-name",
           "label": "body dataset tool-name",
-          "ok": false,
-          "detail": "tool-name => missing",
+          "ok": true,
+          "detail": "tool-name => TD613 Aperture",
           "expected": "TD613 Aperture",
-          "actual": null
+          "actual": "TD613 Aperture"
         },
         {
           "id": "body:tool-role",
           "label": "body dataset tool-role",
-          "ok": false,
-          "detail": "tool-role => missing",
+          "ok": true,
+          "detail": "tool-role => counter-tool",
           "expected": "counter-tool",
-          "actual": null
+          "actual": "counter-tool"
         },
         {
           "id": "body:observed-regime",
           "label": "body dataset observed-regime",
-          "ok": false,
-          "detail": "observed-regime => missing",
+          "ok": true,
+          "detail": "observed-regime => PRCS-A",
           "expected": "PRCS-A",
-          "actual": null
+          "actual": "PRCS-A"
         },
         {
           "id": "body:anti-enforcement",
           "label": "body dataset anti-enforcement",
-          "ok": false,
-          "detail": "anti-enforcement => missing",
+          "ok": true,
+          "detail": "anti-enforcement => true",
           "expected": "true",
-          "actual": null
+          "actual": "true"
         },
         {
           "id": "id:leftPanel",
           "label": "id leftPanel",
-          "ok": false,
-          "detail": "leftPanel missing",
+          "ok": true,
+          "detail": "leftPanel present",
           "expected": null,
           "actual": null
         },
         {
           "id": "id:centerArea",
           "label": "id centerArea",
-          "ok": false,
-          "detail": "centerArea missing",
+          "ok": true,
+          "detail": "centerArea present",
           "expected": null,
           "actual": null
         },
         {
           "id": "id:rightPanel",
           "label": "id rightPanel",
-          "ok": false,
-          "detail": "rightPanel missing",
+          "ok": true,
+          "detail": "rightPanel present",
           "expected": null,
           "actual": null
         },
         {
           "id": "id:humanRoutePanel",
           "label": "id humanRoutePanel",
-          "ok": false,
-          "detail": "humanRoutePanel missing",
+          "ok": true,
+          "detail": "humanRoutePanel present",
           "expected": null,
           "actual": null
         },
         {
           "id": "id:tcpBridgePanel",
           "label": "id tcpBridgePanel",
-          "ok": false,
-          "detail": "tcpBridgePanel missing",
+          "ok": true,
+          "detail": "tcpBridgePanel present",
           "expected": null,
           "actual": null
         },
         {
           "id": "id:btnTCPExport",
           "label": "id btnTCPExport",
-          "ok": false,
-          "detail": "btnTCPExport missing",
+          "ok": true,
+          "detail": "btnTCPExport present",
           "expected": null,
           "actual": null
         },
         {
           "id": "id:td613SchemaPanel",
           "label": "id td613SchemaPanel",
-          "ok": false,
-          "detail": "td613SchemaPanel missing",
+          "ok": true,
+          "detail": "td613SchemaPanel present",
           "expected": null,
           "actual": null
         },
         {
           "id": "id:diffAuditPanel",
           "label": "id diffAuditPanel",
-          "ok": false,
-          "detail": "diffAuditPanel missing",
+          "ok": true,
+          "detail": "diffAuditPanel present",
           "expected": null,
           "actual": null
         },
         {
           "id": "id:ethicsAuditPanel",
           "label": "id ethicsAuditPanel",
-          "ok": false,
-          "detail": "ethicsAuditPanel missing",
+          "ok": true,
+          "detail": "ethicsAuditPanel present",
           "expected": null,
           "actual": null
         },
         {
           "id": "id:schemaVersionReadout",
           "label": "id schemaVersionReadout",
-          "ok": false,
-          "detail": "schemaVersionReadout missing",
+          "ok": true,
+          "detail": "schemaVersionReadout present",
           "expected": null,
           "actual": null
         },
         {
           "id": "id:diffAuditMatrix",
           "label": "id diffAuditMatrix",
-          "ok": false,
-          "detail": "diffAuditMatrix missing",
+          "ok": true,
+          "detail": "diffAuditMatrix present",
           "expected": null,
           "actual": null
         },
         {
           "id": "id:ethicsAuditTable",
           "label": "id ethicsAuditTable",
-          "ok": false,
-          "detail": "ethicsAuditTable missing",
+          "ok": true,
+          "detail": "ethicsAuditTable present",
           "expected": null,
           "actual": null
         },
         {
           "id": "fn:resetSystem",
           "label": "function resetSystem",
-          "ok": false,
-          "detail": "resetSystem missing",
+          "ok": true,
+          "detail": "resetSystem present",
           "expected": null,
           "actual": null
         },
         {
           "id": "fn:createTCPHandoffPacket",
           "label": "function createTCPHandoffPacket",
-          "ok": false,
-          "detail": "createTCPHandoffPacket missing",
+          "ok": true,
+          "detail": "createTCPHandoffPacket present",
           "expected": null,
           "actual": null
         },
         {
           "id": "fn:scrubPacketEnvelope",
           "label": "function scrubPacketEnvelope",
-          "ok": false,
-          "detail": "scrubPacketEnvelope missing",
+          "ok": true,
+          "detail": "scrubPacketEnvelope present",
           "expected": null,
           "actual": null
         },
         {
           "id": "fn:triggerPreparedTCPHandoff",
           "label": "function triggerPreparedTCPHandoff",
-          "ok": false,
-          "detail": "triggerPreparedTCPHandoff missing",
+          "ok": true,
+          "detail": "triggerPreparedTCPHandoff present",
           "expected": null,
           "actual": null
         },
         {
           "id": "pattern:source-declaration",
           "label": "source declaration",
-          "ok": false,
-          "detail": "source declaration missing",
+          "ok": true,
+          "detail": "source declaration present",
           "expected": null,
           "actual": null
         },
@@ -6016,338 +6027,121 @@
         {
           "id": "pattern:source-global",
           "label": "source declaration global",
-          "ok": false,
-          "detail": "source declaration global missing",
+          "ok": true,
+          "detail": "source declaration global present",
           "expected": null,
           "actual": null
         },
         {
           "id": "pattern:aperture-global",
           "label": "Aperture runtime definition",
-          "ok": false,
-          "detail": "Aperture runtime definition missing",
+          "ok": true,
+          "detail": "Aperture runtime definition present",
           "expected": null,
           "actual": null
         },
         {
           "id": "pattern:packet-export-gate",
           "label": "packet export gate",
-          "ok": false,
-          "detail": "packet export gate missing",
+          "ok": true,
+          "detail": "packet export gate present",
           "expected": null,
           "actual": null
         },
         {
           "id": "pattern:route-classes",
           "label": "route class sync",
-          "ok": false,
-          "detail": "route class sync missing",
+          "ok": true,
+          "detail": "route class sync present",
           "expected": null,
           "actual": null
         },
         {
           "id": "pattern:residue-packet",
           "label": "non-identifying packet copy",
-          "ok": false,
-          "detail": "non-identifying packet copy missing",
+          "ok": true,
+          "detail": "non-identifying packet copy present",
           "expected": null,
           "actual": null
         },
         {
           "id": "pattern:governed-exposure-schema",
           "label": "governed exposure schema marker",
-          "ok": false,
-          "detail": "governed exposure schema marker missing",
+          "ok": true,
+          "detail": "governed exposure schema marker present",
           "expected": null,
           "actual": null
         },
         {
           "id": "pattern:differential-admissibility",
           "label": "differential admissibility panel",
-          "ok": false,
-          "detail": "differential admissibility panel missing",
+          "ok": true,
+          "detail": "differential admissibility panel present",
           "expected": null,
           "actual": null
         },
         {
           "id": "pattern:ethics-audit",
           "label": "protective vocabulary reassignment panel",
-          "ok": false,
-          "detail": "protective vocabulary reassignment panel missing",
+          "ok": true,
+          "detail": "protective vocabulary reassignment panel present",
           "expected": null,
           "actual": null
         },
         {
           "id": "pattern:packet-forensic-schema",
           "label": "packet forensic schema export",
-          "ok": false,
-          "detail": "packet forensic schema export missing",
+          "ok": true,
+          "detail": "packet forensic schema export present",
+          "expected": null,
+          "actual": null
+        },
+        {
+          "id": "pattern:zfp-certification",
+          "label": "ZFP certification global",
+          "ok": true,
+          "detail": "ZFP certification global present",
+          "expected": null,
+          "actual": null
+        },
+        {
+          "id": "pattern:corrected-rupture-predicate",
+          "label": "corrected rupture predicate",
+          "ok": true,
+          "detail": "corrected rupture predicate present",
+          "expected": null,
+          "actual": null
+        },
+        {
+          "id": "pattern:moire-stratigraphy-kernel",
+          "label": "Moiré stratigraphy kernel",
+          "ok": true,
+          "detail": "Moiré stratigraphy kernel present",
+          "expected": null,
+          "actual": null
+        },
+        {
+          "id": "pattern:gateway-embed-bridge",
+          "label": "Gateway embed bridge",
+          "ok": true,
+          "detail": "Gateway embed bridge present",
+          "expected": null,
+          "actual": null
+        },
+        {
+          "id": "pattern:v27-schema",
+          "label": "Aperture v2.7 schema marker",
+          "ok": true,
+          "detail": "Aperture v2.7 schema marker present",
           "expected": null,
           "actual": null
         }
       ],
-      "failedChecks": [
-        {
-          "id": "title",
-          "label": "title marker",
-          "ok": false,
-          "detail": "TD613 Aperture observed",
-          "expected": "TD613 Aperture + v2.2.1",
-          "actual": "TD613 Aperture"
-        },
-        {
-          "id": "version",
-          "label": "version marker",
-          "ok": false,
-          "detail": "version missing observed",
-          "expected": "2.2.1",
-          "actual": null
-        },
-        {
-          "id": "body:tool-name",
-          "label": "body dataset tool-name",
-          "ok": false,
-          "detail": "tool-name => missing",
-          "expected": "TD613 Aperture",
-          "actual": null
-        },
-        {
-          "id": "body:tool-role",
-          "label": "body dataset tool-role",
-          "ok": false,
-          "detail": "tool-role => missing",
-          "expected": "counter-tool",
-          "actual": null
-        },
-        {
-          "id": "body:observed-regime",
-          "label": "body dataset observed-regime",
-          "ok": false,
-          "detail": "observed-regime => missing",
-          "expected": "PRCS-A",
-          "actual": null
-        },
-        {
-          "id": "body:anti-enforcement",
-          "label": "body dataset anti-enforcement",
-          "ok": false,
-          "detail": "anti-enforcement => missing",
-          "expected": "true",
-          "actual": null
-        },
-        {
-          "id": "id:leftPanel",
-          "label": "id leftPanel",
-          "ok": false,
-          "detail": "leftPanel missing",
-          "expected": null,
-          "actual": null
-        },
-        {
-          "id": "id:centerArea",
-          "label": "id centerArea",
-          "ok": false,
-          "detail": "centerArea missing",
-          "expected": null,
-          "actual": null
-        },
-        {
-          "id": "id:rightPanel",
-          "label": "id rightPanel",
-          "ok": false,
-          "detail": "rightPanel missing",
-          "expected": null,
-          "actual": null
-        },
-        {
-          "id": "id:humanRoutePanel",
-          "label": "id humanRoutePanel",
-          "ok": false,
-          "detail": "humanRoutePanel missing",
-          "expected": null,
-          "actual": null
-        },
-        {
-          "id": "id:tcpBridgePanel",
-          "label": "id tcpBridgePanel",
-          "ok": false,
-          "detail": "tcpBridgePanel missing",
-          "expected": null,
-          "actual": null
-        },
-        {
-          "id": "id:btnTCPExport",
-          "label": "id btnTCPExport",
-          "ok": false,
-          "detail": "btnTCPExport missing",
-          "expected": null,
-          "actual": null
-        },
-        {
-          "id": "id:td613SchemaPanel",
-          "label": "id td613SchemaPanel",
-          "ok": false,
-          "detail": "td613SchemaPanel missing",
-          "expected": null,
-          "actual": null
-        },
-        {
-          "id": "id:diffAuditPanel",
-          "label": "id diffAuditPanel",
-          "ok": false,
-          "detail": "diffAuditPanel missing",
-          "expected": null,
-          "actual": null
-        },
-        {
-          "id": "id:ethicsAuditPanel",
-          "label": "id ethicsAuditPanel",
-          "ok": false,
-          "detail": "ethicsAuditPanel missing",
-          "expected": null,
-          "actual": null
-        },
-        {
-          "id": "id:schemaVersionReadout",
-          "label": "id schemaVersionReadout",
-          "ok": false,
-          "detail": "schemaVersionReadout missing",
-          "expected": null,
-          "actual": null
-        },
-        {
-          "id": "id:diffAuditMatrix",
-          "label": "id diffAuditMatrix",
-          "ok": false,
-          "detail": "diffAuditMatrix missing",
-          "expected": null,
-          "actual": null
-        },
-        {
-          "id": "id:ethicsAuditTable",
-          "label": "id ethicsAuditTable",
-          "ok": false,
-          "detail": "ethicsAuditTable missing",
-          "expected": null,
-          "actual": null
-        },
-        {
-          "id": "fn:resetSystem",
-          "label": "function resetSystem",
-          "ok": false,
-          "detail": "resetSystem missing",
-          "expected": null,
-          "actual": null
-        },
-        {
-          "id": "fn:createTCPHandoffPacket",
-          "label": "function createTCPHandoffPacket",
-          "ok": false,
-          "detail": "createTCPHandoffPacket missing",
-          "expected": null,
-          "actual": null
-        },
-        {
-          "id": "fn:scrubPacketEnvelope",
-          "label": "function scrubPacketEnvelope",
-          "ok": false,
-          "detail": "scrubPacketEnvelope missing",
-          "expected": null,
-          "actual": null
-        },
-        {
-          "id": "fn:triggerPreparedTCPHandoff",
-          "label": "function triggerPreparedTCPHandoff",
-          "ok": false,
-          "detail": "triggerPreparedTCPHandoff missing",
-          "expected": null,
-          "actual": null
-        },
-        {
-          "id": "pattern:source-declaration",
-          "label": "source declaration",
-          "ok": false,
-          "detail": "source declaration missing",
-          "expected": null,
-          "actual": null
-        },
-        {
-          "id": "pattern:source-global",
-          "label": "source declaration global",
-          "ok": false,
-          "detail": "source declaration global missing",
-          "expected": null,
-          "actual": null
-        },
-        {
-          "id": "pattern:aperture-global",
-          "label": "Aperture runtime definition",
-          "ok": false,
-          "detail": "Aperture runtime definition missing",
-          "expected": null,
-          "actual": null
-        },
-        {
-          "id": "pattern:packet-export-gate",
-          "label": "packet export gate",
-          "ok": false,
-          "detail": "packet export gate missing",
-          "expected": null,
-          "actual": null
-        },
-        {
-          "id": "pattern:route-classes",
-          "label": "route class sync",
-          "ok": false,
-          "detail": "route class sync missing",
-          "expected": null,
-          "actual": null
-        },
-        {
-          "id": "pattern:residue-packet",
-          "label": "non-identifying packet copy",
-          "ok": false,
-          "detail": "non-identifying packet copy missing",
-          "expected": null,
-          "actual": null
-        },
-        {
-          "id": "pattern:governed-exposure-schema",
-          "label": "governed exposure schema marker",
-          "ok": false,
-          "detail": "governed exposure schema marker missing",
-          "expected": null,
-          "actual": null
-        },
-        {
-          "id": "pattern:differential-admissibility",
-          "label": "differential admissibility panel",
-          "ok": false,
-          "detail": "differential admissibility panel missing",
-          "expected": null,
-          "actual": null
-        },
-        {
-          "id": "pattern:ethics-audit",
-          "label": "protective vocabulary reassignment panel",
-          "ok": false,
-          "detail": "protective vocabulary reassignment panel missing",
-          "expected": null,
-          "actual": null
-        },
-        {
-          "id": "pattern:packet-forensic-schema",
-          "label": "packet forensic schema export",
-          "ok": false,
-          "detail": "packet forensic schema export missing",
-          "expected": null,
-          "actual": null
-        }
-      ],
+      "failedChecks": [],
       "checkSummary": {
-        "total": 41,
-        "passed": 9,
-        "failed": 32
+        "total": 46,
+        "passed": 46,
+        "failed": 0
       }
     }
   }

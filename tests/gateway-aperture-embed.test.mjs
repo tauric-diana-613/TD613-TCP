@@ -8,7 +8,7 @@ const repoRoot = path.resolve(path.dirname(__filename), '..');
 
 const gatewayHtml = fs.readFileSync(path.join(repoRoot, 'app', 'index.html'), 'utf8');
 const browserMainSource = fs.readFileSync(path.join(repoRoot, 'app', 'browser-main.js'), 'utf8');
-const apertureHtml = fs.readFileSync(path.join(repoRoot, 'app', 'aperture', 'index.html'), 'utf8');
+const apertureHtml = fs.readFileSync(path.join(repoRoot, 'app', 'aperture', 'tool.html'), 'utf8');
 const harborMainSource = fs.readFileSync(path.join(repoRoot, 'app', 'safe-harbor', 'app', 'main.js'), 'utf8');
 
 assert.ok(gatewayHtml.includes('id="gatewayPreviewCanvas"'), 'gateway HTML includes the centered Aperture field preview');
@@ -30,6 +30,8 @@ assert.ok(browserMainSource.includes('gatewayApertureStorageEntries'), 'gateway 
 assert.ok(browserMainSource.includes('drawGatewayPreviewLineField'), 'gateway runtime uses layered line-field rendering for the gateway moire preview');
 assert.ok(apertureHtml.includes('APERTURE_GATEWAY_EMBED'), 'Aperture runtime still exposes an embed-mode branch');
 assert.ok(apertureHtml.includes('window.parent.postMessage'), 'Aperture embed can still bridge status to the gateway');
+assert.ok(apertureHtml.includes('apertureVersion: APERTURE_VERSION'), 'Aperture bridge summaries carry the canonical Aperture version');
+assert.ok(apertureHtml.includes('apertureSchema: APERTURE_SCHEMA'), 'Aperture bridge summaries carry the canonical Aperture schema');
 assert.ok(apertureHtml.includes('window.localStorage.setItem(GATEWAY_APERTURE_HANDOFF_KEY'), 'Aperture persists its latest handoff summary to local storage for separate-window gateway use');
 assert.ok(apertureHtml.includes('window.sessionStorage.setItem(GATEWAY_APERTURE_HANDOFF_KEY'), 'Aperture still mirrors its latest handoff summary to session storage');
 assert.ok(apertureHtml.includes('if (typeof drawMain === "function") drawMain();'), 'Aperture redraws the main field after resize so the center geometry stays visible');
