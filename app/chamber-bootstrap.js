@@ -3,6 +3,7 @@
   var query = window.location.search || '';
   var hash = window.location.hash || '';
   var pageKind = document.body && document.body.getAttribute('data-page-kind');
+  var isFlightPage = /\/td613-flight\.html(?:$|[?#])/i.test(window.location.href) || /TD613 Flight/i.test(document.title || '');
   var needsRetrievalFixtures =
     /(?:[?&](?:test-flight|fixtures|retrieval-fixtures)=)/i.test(query) ||
     /(?:test-flight|retrieval-fixtures)/i.test(hash);
@@ -28,6 +29,27 @@
     script.async = false;
     script.src = src;
     document.head.appendChild(script);
+  }
+
+  function installFlightOutputMicroControls() {
+    if (!isFlightPage || document.getElementById('td613-flight-output-micro-controls')) return;
+    var style = document.createElement('style');
+    style.id = 'td613-flight-output-micro-controls';
+    style.textContent = [
+      '/* TD613 Flight: protect output authorship/payload micro-controls from page button normalization. */',
+      '.output-card .status-bar{align-items:center!important;}',
+      '.output-card .output-auth-toggle{display:inline-flex!important;align-items:center!important;justify-content:flex-end!important;gap:.28rem!important;width:auto!important;min-width:0!important;min-height:0!important;margin-left:auto!important;padding:.18rem .28rem .18rem .42rem!important;border:1px solid rgba(36,240,109,.22)!important;border-radius:14px!important;background:linear-gradient(90deg,rgba(36,240,109,.075),rgba(0,7,7,.58))!important;box-shadow:inset 0 0 0 1px rgba(120,247,255,.045)!important;clip-path:polygon(0 0,calc(100% - 7px) 0,100% 7px,100% 100%,7px 100%,0 calc(100% - 7px))!important;color:rgba(190,255,223,.78)!important;font-family:var(--font-mono)!important;font-size:.48rem!important;line-height:1!important;letter-spacing:.08em!important;text-transform:uppercase!important;white-space:nowrap!important;}',
+      '.output-card .output-auth-toggle input[type="checkbox"]{appearance:none!important;-webkit-appearance:none!important;display:inline-grid!important;place-content:center!important;width:.78rem!important;height:.78rem!important;min-width:.78rem!important;min-height:.78rem!important;margin:0!important;border:1px solid rgba(36,240,109,.58)!important;border-radius:0!important;background:rgba(0,7,7,.72)!important;box-shadow:inset 0 0 0 1px rgba(120,247,255,.08),0 0 14px rgba(36,240,109,.08)!important;clip-path:polygon(0 0,calc(100% - 5px) 0,100% 5px,100% 100%,5px 100%,0 calc(100% - 5px))!important;}',
+      '.output-card .output-auth-toggle input[type="checkbox"]::before{content:""!important;width:.44rem!important;height:.44rem!important;transform:scale(0)!important;transition:transform .12s ease!important;background:var(--moss)!important;box-shadow:0 0 12px rgba(36,240,109,.45)!important;clip-path:polygon(14% 48%,35% 70%,84% 15%,96% 28%,36% 91%,2% 58%)!important;}',
+      '.output-card .output-auth-toggle input[type="checkbox"]:checked::before{transform:scale(1)!important;}',
+      '.output-card .status-bar .payload-stepper{display:inline-flex!important;align-items:center!important;justify-content:center!important;width:auto!important;min-width:76px!important;max-width:104px!important;min-height:18px!important;height:18px!important;margin-left:auto!important;padding:1px 4px!important;gap:3px!important;border:1px solid rgba(120,247,255,.16)!important;border-radius:0!important;background:rgba(0,7,7,.48)!important;box-shadow:inset 0 0 0 1px rgba(36,240,109,.035)!important;clip-path:polygon(0 0,calc(100% - 7px) 0,100% 7px,100% 100%,7px 100%,0 calc(100% - 7px))!important;transform:none!important;-webkit-transform:none!important;}',
+      '.output-card .status-bar .payload-stepper-label,.output-card .status-bar .payload-stepper-value{font-family:var(--font-mono)!important;line-height:1!important;text-transform:uppercase!important;}',
+      '.output-card .status-bar .payload-stepper-label{max-width:34px!important;color:var(--bone-dim)!important;font-size:5px!important;letter-spacing:.08em!important;}',
+      '.output-card .status-bar .payload-stepper-value{min-width:1.05rem!important;text-align:center!important;color:var(--bone-bright)!important;font-size:7px!important;letter-spacing:.04em!important;}',
+      '.output-card .status-bar .payload-stepper .payload-stepper-btn,.output-card .status-bar .payload-stepper .icon-btn{appearance:none!important;-webkit-appearance:none!important;display:inline-grid!important;place-items:center!important;width:14px!important;min-width:14px!important;max-width:14px!important;height:14px!important;min-height:14px!important;max-height:14px!important;padding:0!important;margin:0!important;border:1px solid rgba(36,240,109,.24)!important;border-radius:50%!important;background:rgba(0,3,3,.68)!important;box-shadow:inset 0 0 0 1px rgba(120,247,255,.05)!important;clip-path:none!important;color:var(--moss)!important;font-family:var(--font-mono)!important;font-size:8px!important;font-weight:700!important;line-height:1!important;letter-spacing:0!important;text-align:center!important;text-transform:none!important;}',
+      '@media (max-width:820px){.output-card .status-bar{display:grid!important;grid-template-columns:minmax(0,1fr) auto!important;grid-template-areas:"counts auth" ". payload"!important;gap:4px 8px!important;align-items:center!important;}.output-card #statusCounts{grid-area:counts!important;}.output-card .output-auth-toggle{grid-area:auth!important;justify-self:end!important;margin-left:0!important;font-size:.48rem!important;padding:.2rem .26rem .2rem .42rem!important;}.output-card .status-bar .payload-stepper{grid-area:payload!important;justify-self:end!important;align-self:start!important;margin:-1px 0 0!important;}}'
+    ].join('\n');
+    document.head.appendChild(style);
   }
 
   function installHushPhase31BindGuard() {
@@ -60,6 +82,8 @@
       return originalAdd.call(this, type, listener, options);
     };
   }
+
+  installFlightOutputMicroControls();
 
   if (pageKind === 'gateway') {
     appendStylesheet('./gateway-housekeeping.css', './gateway-housekeeping.css?v=' + (V.gatewayHousekeeping || V.chrome || V.main || ''));
