@@ -9014,9 +9014,102 @@ function clearFlightDraft() {
 try { localStorage.removeItem(FLIGHT_DRAFT_KEY); } catch (e) {}
 }
 
+function currentFlightDateValue() {
+return getBrowserDateValue();
+}
+
+function rewriteBindingDateOnly(value, nextDate = currentFlightDateValue()) {
+if (!value || typeof value !== "string" || !value.includes("TD613-Binding:")) return value;
+return value.replace(
+/(TD613-Binding:[^\n]*?\bpayload\s+\d+\s+[^\d\n]*?)\d{4}-\d{2}-\d{2}/g,
+"$1" + nextDate
+);
+}
+
+function refreshCachedFlightDates() {
+const nextDate = currentFlightDateValue();
+let parsed = null;
+
+try {
+parsed = JSON.parse(localStorage.getItem(FLIGHT_DRAFT_KEY) || "null");
+} catch (e) {
+parsed = null;
+}
+
+if (!parsed || !parsed.controls || typeof parsed.controls !== "object") return false;
+
+let changed = false;
+
+Object.entries(parsed.controls).forEach(([key, entry]) => {
+if (!entry || typeof entry !== "object") return;
+
+if (key === "id:authDate" && entry.value !== nextDate) {
+entry.value = nextDate;
+changed = true;
+}
+
+if (typeof entry.value === "string" && entry.value.includes("TD613-Binding:")) {
+const updated = rewriteBindingDateOnly(entry.value, nextDate);
+if (updated !== entry.value) {
+entry.value = updated;
+changed = true;
+}
+}
+});
+
+if (!parsed.controls["id:authDate"]) {
+parsed.controls["id:authDate"] = { value: nextDate };
+changed = true;
+}
+
+if (changed) {
+parsed.flightDateRefreshedAt = new Date().toISOString();
+parsed.flightDate = nextDate;
+try {
+localStorage.setItem(FLIGHT_DRAFT_KEY, JSON.stringify(parsed));
+} catch (e) {}
+}
+
+return changed;
+}
+
+function refreshVisibleAuthDateAndFooter() {
+const nextDate = currentFlightDateValue();
+const dateInput = document.getElementById("authDate");
+const output = document.getElementById("outputText");
+let changed = false;
+
+if (dateInput && dateInput.value !== nextDate) {
+dateInput.value = nextDate;
+changed = true;
+}
+
+if (output && output.value && output.value.includes("TD613-Binding:")) {
+const updated = rewriteBindingDateOnly(output.value, nextDate);
+if (updated !== output.value) {
+output.value = updated;
+changed = true;
+}
+}
+
+if (changed) {
+updateOutputStatus();
+updateVisualState();
+if (flightDraftHydrated && !flightRestoringDraft) persistFlightDraft();
+}
+
+return changed;
+}
+
 function persistFlightDraft() {
 if (!flightDraftHydrated || flightRestoringDraft) return;
 try {
+let previousDraft = null;
+try {
+previousDraft = JSON.parse(localStorage.getItem(FLIGHT_DRAFT_KEY) || "null");
+} catch (e) {
+previousDraft = null;
+}
 const controls = {};
 document.querySelectorAll("input, textarea, select").forEach(el => {
 const key = flightDraftControlKey(el);
@@ -9027,15 +9120,22 @@ controls[key] = { checked: !!el.checked };
 controls[key] = { value: el.value };
 }
 });
-localStorage.setItem(FLIGHT_DRAFT_KEY, JSON.stringify({
+const snapshot = {
 version: 1,
 savedAt: new Date().toISOString(),
+flightDate: currentFlightDateValue(),
 controls
-}));
+};
+if (previousDraft && previousDraft.flightDateRefreshedAt) {
+snapshot.flightDateRefreshedAt = previousDraft.flightDateRefreshedAt;
+}
+localStorage.setItem(FLIGHT_DRAFT_KEY, JSON.stringify(snapshot));
 } catch (e) {}
 }
 
 function restoreFlightDraft() {
+refreshCachedFlightDates();
+
 let parsed = null;
 try {
 parsed = JSON.parse(localStorage.getItem(FLIGHT_DRAFT_KEY) || "null");
@@ -9061,11 +9161,32 @@ flightRestoringDraft = false;
 return true;
 }
 
+window.addEventListener("pageshow", () => {
+refreshCachedFlightDates();
+refreshVisibleAuthDateAndFooter();
+}, { passive: true });
+
+window.addEventListener("focus", () => {
+refreshCachedFlightDates();
+refreshVisibleAuthDateAndFooter();
+}, { passive: true });
+
+document.addEventListener("visibilitychange", () => {
+if (document.visibilityState === "visible") {
+refreshCachedFlightDates();
+refreshVisibleAuthDateAndFooter();
+}
+});
+
+window.TD613FlightRefreshCachedDates = refreshCachedFlightDates;
+window.TD613FlightRefreshVisibleFooterDate = refreshVisibleAuthDateAndFooter;
+window.TD613FlightRewriteBindingDateOnly = rewriteBindingDateOnly;
+
 function normalizeFlightShi(value) {
 return (value || "").trim().replace(/\s+/g, "").toUpperCase();
 }
 
-function setFlightShi(value) {
+function setFlightShi(value, options = {}) {
 const shi = normalizeFlightShi(value);
 if (!FLIGHT_SHI_PATTERN.test(shi)) return false;
 window.TD613_FLIGHT_SHI = shi;
@@ -9075,11 +9196,13 @@ localStorage.setItem("TD613_FLIGHT_SHI", shi);
 document.documentElement.dataset.flightShiCached = "true";
 document.getElementById("authShi").value = shi;
 document.getElementById("authIncludeBinding").checked = true;
+if (options.rebuild !== false) {
 buildOutput();
+}
 return true;
 }
 
-function initFlightShiGate() {
+function initFlightShiGate(options = {}) {
 const gate = document.getElementById("flightShiGate");
 const form = document.getElementById("flightShiForm");
 const input = document.getElementById("flightShiInput");
@@ -9091,7 +9214,7 @@ try {
   cachedShi = localStorage.getItem("TD613_FLIGHT_SHI");
 } catch(e) {}
 
-if (cachedShi && setFlightShi(cachedShi)) {
+if (cachedShi && setFlightShi(cachedShi, { rebuild: !options.preserveOutput })) {
   gate.hidden = true;
   document.body.classList.remove("flight-locked");
   return;
@@ -9115,9 +9238,12 @@ window.setTimeout(() => input.focus(), 40);
 }
 
 document.addEventListener("DOMContentLoaded", () => {
+refreshCachedFlightDates();
 const restoredDraft = restoreFlightDraft();
+window.TD613FlightRestoredDraft = restoredDraft;
 if (!restoredDraft) clearAll();
-initFlightShiGate();
+initFlightShiGate({ preserveOutput: restoredDraft });
+refreshVisibleAuthDateAndFooter();
 // v5 performance patch: pointermove-driven background repaint was causing mobile lag.
 // Keep the calibration field static unless a future explicit "live calibration" control is added.
 document.getElementById("taskText").addEventListener("input", buildOutput);
@@ -9215,7 +9341,14 @@ copyText(val, label);
 });
 
 flightDraftHydrated = true;
+refreshVisibleAuthDateAndFooter();
+if (!restoredDraft) {
 buildOutput();
+} else {
+updateOutputStatus();
+updateVisualState();
+persistFlightDraft();
+}
 updateVisualState();
 syncMobileFlightLane();
 });
@@ -9721,7 +9854,13 @@ document.querySelectorAll("#routeMetrics")
 document.addEventListener("DOMContentLoaded", () => {
 bindV5();
 window.setTimeout(() => {
+if (window.TD613FlightRestoredDraft) {
+window.TD613FlightRefreshCachedDates?.();
+window.TD613FlightRefreshVisibleFooterDate?.();
+updateV5Panels();
+} else {
 window.buildOutput();
+}
 runSelfTest();
 }, 0);
 });
