@@ -20,6 +20,12 @@
     var heading = document.querySelector('.gateway-head h1');
     if (heading) heading.textContent = 'The Cadence Playground';
 
+    var gatewaySummary = document.querySelector('.gateway-summary');
+    if (gatewaySummary) {
+      gatewaySummary.textContent = 'TD613 is a custody-aware authorship routing stack for patterned voice under pressure. Move through Hush, Flight, Safe Harbor, and Forge Lane to inspect how voice becomes mask, packet, route, witness, and claim without pretending resemblance alone can certify authorship.';
+      gatewaySummary.setAttribute('data-copy-pass', 'gateway-routing-stack');
+    }
+
     var subtitle = document.querySelector('.gateway-preview-subtitle');
     if (subtitle) {
       subtitle.textContent = 'Aperture keeps the witness field from flattening into a single answer-surface. It tracks what enters as latent state, what survives projection, what gets registered, and which narrowing operator authored the loss before any route is allowed to call itself clean.';
