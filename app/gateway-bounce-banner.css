@@ -10,7 +10,7 @@ body[data-page-kind="gateway"] .gateway-preview-bottom-panel.gateway-preview-moi
     display: grid !important;
     grid-template-columns: minmax(0, 1fr) minmax(31rem, 42rem) !important;
     gap: clamp(1.5rem, 3vw, 3.5rem) !important;
-    align-items: start !important;
+    align-items: stretch !important;
   }
 
   body[data-page-kind="gateway"] .gateway-head .gateway-lockup > div:first-child,
@@ -23,13 +23,14 @@ body[data-page-kind="gateway"] .gateway-preview-bottom-panel.gateway-preview-moi
   }
 
   body[data-page-kind="gateway"] .gateway-head .gateway-lockup .gateway-banner-bounce-trace {
-    display: block !important;
+    display: flex !important;
+    flex-direction: column !important;
     grid-column: 2 !important;
     grid-row: 1 / span 2 !important;
-    align-self: start !important;
+    align-self: stretch !important;
     justify-self: end !important;
     width: min(100%, 40rem) !important;
-    height: clamp(9.6rem, 11vw, 11.4rem) !important;
+    height: 100% !important;
     min-height: 0 !important;
     margin: 0 !important;
     padding: .82rem .95rem .86rem !important;
@@ -41,6 +42,7 @@ body[data-page-kind="gateway"] .gateway-preview-bottom-panel.gateway-preview-moi
   }
 
   body[data-page-kind="gateway"] .gateway-head .gateway-lockup .gateway-banner-bounce-trace .section-kicker {
+    flex: 0 0 auto !important;
     margin: 0 0 .48rem !important;
     font-size: clamp(0.68rem, 0.78vw, 0.84rem) !important;
     letter-spacing: 0.24em !important;
@@ -49,9 +51,10 @@ body[data-page-kind="gateway"] .gateway-preview-bottom-panel.gateway-preview-moi
 
   body[data-page-kind="gateway"] .gateway-head .gateway-lockup .gateway-banner-bounce-trace canvas {
     display: block !important;
+    flex: 1 1 auto !important;
     width: 100% !important;
-    height: calc(100% - 2rem) !important;
-    min-height: 7.2rem !important;
+    height: auto !important;
+    min-height: 0 !important;
   }
 
   body[data-page-kind="gateway"] .gateway-preview-shell .gateway-preview-bottom {
