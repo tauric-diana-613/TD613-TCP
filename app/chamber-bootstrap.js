@@ -87,6 +87,7 @@
 
   if (pageKind === 'gateway') {
     appendStylesheet('./gateway-housekeeping.css', './gateway-housekeeping.css?v=' + (V.gatewayHousekeeping || V.chrome || V.main || ''));
+    appendStylesheet('./gateway-aperture-desktop-align.css', './gateway-aperture-desktop-align.css?v=' + (V.gatewayApertureDesktopAlign || V.gatewayHousekeeping || V.main || ''));
     var gatewayHousekeepingStyle = document.createElement('style');
     gatewayHousekeepingStyle.id = 'td613-gateway-housekeeping-prune';
     gatewayHousekeepingStyle.textContent = '#gatewayDoorDeck,#gatewayDoorHomebase,#gatewayDoorReadout,#gatewayPreviewPhaseStatus{display:none!important}';
