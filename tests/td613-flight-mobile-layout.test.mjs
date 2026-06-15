@@ -55,5 +55,9 @@ assert(html.includes('width: fit-content !important'));
 assert(html.includes('max-width: min(100%, 42rem) !important'));
 assert(html.includes('.seal-card .radio-row,'));
 assert(html.includes('max-width: min(100%, 18rem) !important'));
+assert(html.includes('PR171_SENTINEL TD613 Flight natural chip flow terminal override'));
+assert(html.includes('width: max-content !important'));
+assert(html.includes('justify-content: flex-start !important'));
+assert(html.includes('.flight-lane-prompt > .card:nth-of-type(4) .checkbox-row > label'));
 
 console.log('td613-flight-mobile-layout tests passed');
