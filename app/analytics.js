@@ -185,30 +185,47 @@ window.va = window.va || function(...params) {
   document.head.appendChild(style);
 })();
 
-(function restoreCompactSealSpacing() {
+(function restoreSealPanelOrderAndProportions() {
   const isFlight = /\/safe-harbor\/td613-flight\.html(?:$|[?#])/i.test(window.location.pathname + window.location.search + window.location.hash) || /TD613 Flight/i.test(document.title || '');
-  if (!isFlight || document.getElementById('td613CompactSealSpacing')) return;
+  if (!isFlight || document.getElementById('td613SealPanelOrderAndProportions')) return;
   const style = document.createElement('style');
-  style.id = 'td613CompactSealSpacing';
+  style.id = 'td613SealPanelOrderAndProportions';
   style.textContent = `
-    html body .flight-lane-output .seal-card .section-split-row.seal-spacing-grid,
     html body .seal-card .section-split-row.seal-spacing-grid {
-      display: grid !important;
-      grid-template-columns: minmax(0, .86fr) minmax(0, 1.14fr) !important;
+      display: flex !important;
+      flex-direction: row !important;
+      flex-wrap: nowrap !important;
       gap: .46rem !important;
       align-items: stretch !important;
-      width: auto !important;
+      justify-content: flex-start !important;
+      width: 100% !important;
       max-width: 100% !important;
+      grid-template-columns: none !important;
+      grid-template-areas: none !important;
     }
-    html body .seal-card .section-split-row.seal-spacing-grid > .seal-target-panel,
-    html body .seal-card .section-split-row.seal-spacing-grid > .seal-zwnj-panel {
-      min-width: 0 !important;
+
+    html body .seal-card .section-split-row.seal-spacing-grid > .seal-target-panel {
+      order: 1 !important;
+      flex: 0 1 calc(43% - .23rem) !important;
       width: auto !important;
+      min-width: 0 !important;
+      max-width: calc(43% - .23rem) !important;
+      margin-top: 0 !important;
+      transform: none !important;
+      -webkit-transform: none !important;
+    }
+
+    html body .seal-card .section-split-row.seal-spacing-grid > .seal-zwnj-panel {
+      order: 2 !important;
+      flex: 1 1 calc(57% - .23rem) !important;
+      width: auto !important;
+      min-width: 0 !important;
       max-width: none !important;
       margin-top: 0 !important;
       transform: none !important;
       -webkit-transform: none !important;
     }
+
     html body .seal-card .section-split-row.seal-spacing-grid > .seal-target-panel input#sealTargetWord {
       width: 100% !important;
       max-width: 100% !important;
@@ -219,8 +236,7 @@ window.va = window.va || function(...params) {
 })();
 
 // Load the Vercel Analytics script
-// When deployed to Vercel, analytics will be automatically tracked
-// The script is loaded from Vercel's CDN at /_vercel/insights/script.js
+// When deployed to Vercel, analytics will automatically track performance
 (function() {
   const script = document.createElement('script');
   script.defer = true;
