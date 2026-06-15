@@ -13,7 +13,7 @@ import {
 } from './hush-phase31-native-edit-carousel-v4.js';
 import * as nativePhase311 from './hush-phase31-1-original.js';
 
-const VERSION = 'phase-31.1-simple-edit-context-field';
+const VERSION = 'phase-31.1-dropdown-edit-list';
 
 export function initHushPhase311(doc = document) {
   upgradeCustomizerFields(doc);
@@ -26,7 +26,7 @@ export function initHushPhase311(doc = document) {
   window.setTimeout(() => installNativeCorpusCarousel(doc), 0);
   window.setTimeout(() => installNativeCorpusCarousel(doc), 260);
   window.setTimeout(() => installNativeCorpusCarousel(doc), 900);
-  return { ...result, version: VERSION, simpleEditPath: true };
+  return { ...result, version: VERSION, dropdownEditList: true };
 }
 
 if (typeof window !== 'undefined' && typeof document !== 'undefined') {
