@@ -7719,11 +7719,11 @@ select {
 
   .pill-row {
     grid-area: tags !important;
-    justify-self: start !important;
+    justify-self: end !important;
     align-self: center !important;
     display: flex !important;
     flex-wrap: wrap !important;
-    justify-content: flex-start !important;
+    justify-content: flex-end !important;
     max-width: 100% !important;
     gap: .16rem .22rem !important;
     padding: .02rem 0 0 !important;
@@ -7769,13 +7769,13 @@ select {
     letter-spacing: .16em !important;
   }
 
-  details.howto {
+  header details.howto {
     grid-area: howto !important;
     position: relative !important;
     justify-self: start !important;
     align-self: center !important;
     width: auto !important;
-    max-width: 27rem !important;
+    max-width: 31rem !important;
     min-height: 1rem !important;
     padding: .14rem .5rem !important;
     border-radius: 4px !important;
@@ -7783,37 +7783,103 @@ select {
     z-index: 20 !important;
   }
 
-  details.howto[open] {
+  header details.howto[open] {
     border-radius: 4px !important;
     clip-path: polygon(0 5px, 5px 0, calc(100% - 5px) 0, 100% 5px, 100% 100%, 5px 100%, 0 calc(100% - 5px)) !important;
   }
 
-  details.howto > summary {
-    font-size: .48rem !important;
+  header details.howto > summary {
+    font-size: .56rem !important;
     line-height: 1.08 !important;
     letter-spacing: .14em !important;
     white-space: nowrap !important;
   }
 
-  details.howto .howto-hint {
-    position: absolute !important;
-    top: calc(100% + .5rem) !important;
-    left: 0 !important;
-    width: min(58rem, calc(100vw - 4rem)) !important;
-    max-height: min(62vh, 34rem) !important;
-    overflow: auto !important;
-    padding: .78rem 1rem .9rem !important;
-    border: 1px solid rgba(255,193,90,0.26) !important;
-    border-radius: 10px !important;
-    background:
-      linear-gradient(135deg, rgba(4,16,17,0.98), rgba(0,5,6,0.98) 62%, rgba(24,14,5,0.96)),
-      radial-gradient(circle at 12% 0%, rgba(137,255,240,0.10), transparent 18rem) !important;
-    box-shadow: 0 26px 80px rgba(0,0,0,0.62), 0 0 32px rgba(255,193,90,0.08) !important;
+  header details.howto .howto-hint {
+    display: none !important;
   }
 
-  details.howto .howto-hint ol {
+  .flight-howto-modal[hidden] {
+    display: none !important;
+  }
+
+  .flight-howto-modal {
+    position: fixed !important;
+    inset: 0 !important;
+    z-index: 90 !important;
+    pointer-events: none !important;
+  }
+
+  .flight-howto-dialog {
+    position: fixed !important;
+    left: clamp(1rem, 2.6vw, 3rem) !important;
+    top: clamp(5.4rem, 11vh, 7rem) !important;
+    width: min(62rem, calc(100vw - 6rem)) !important;
+    max-height: min(68vh, 38rem) !important;
+    pointer-events: auto !important;
+    overflow: hidden !important;
+    border: 1px solid rgba(255,193,90,0.30) !important;
+    border-radius: 12px !important;
+    background:
+      linear-gradient(135deg, rgba(4,16,17,0.99), rgba(0,5,6,0.99) 62%, rgba(24,14,5,0.97)),
+      radial-gradient(circle at 14% 0%, rgba(137,255,240,0.12), transparent 18rem) !important;
+    box-shadow: 0 30px 90px rgba(0,0,0,0.68), 0 0 34px rgba(255,193,90,0.10) !important;
+  }
+
+  .flight-howto-dialog-head {
+    position: relative !important;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: space-between !important;
+    gap: 1rem !important;
+    padding: .72rem 3.1rem .42rem .95rem !important;
+    border-bottom: 1px solid rgba(255,193,90,0.18) !important;
+    background: linear-gradient(90deg, rgba(255,193,90,0.08), transparent 72%) !important;
+  }
+
+  .flight-howto-dialog-title {
     margin: 0 !important;
-    padding-left: 1.15rem !important;
+    color: rgba(245,255,246,0.93) !important;
+    font-family: var(--font-mono) !important;
+    font-size: .72rem !important;
+    line-height: 1 !important;
+    letter-spacing: .14em !important;
+    text-transform: uppercase !important;
+  }
+
+  .flight-howto-close {
+    position: absolute !important;
+    top: .48rem !important;
+    right: .55rem !important;
+    width: 1.35rem !important;
+    height: 1.35rem !important;
+    min-width: 1.35rem !important;
+    min-height: 1.35rem !important;
+    padding: 0 !important;
+    border: 1px solid rgba(255,118,104,0.72) !important;
+    border-radius: 4px !important;
+    background: rgba(40,8,8,0.72) !important;
+    color: rgba(255,118,104,0.96) !important;
+    font-family: var(--font-mono) !important;
+    font-size: .92rem !important;
+    line-height: 1 !important;
+    cursor: pointer !important;
+    box-shadow: 0 0 18px rgba(255,91,79,0.16) !important;
+  }
+
+  .flight-howto-modal-body {
+    max-height: calc(min(68vh, 38rem) - 3.05rem) !important;
+    overflow: auto !important;
+    padding: .78rem 1.08rem 1rem !important;
+    color: rgba(214,235,229,0.82) !important;
+    font-size: .62rem !important;
+    line-height: 1.45 !important;
+  }
+
+  .flight-howto-modal-body ol,
+  .flight-howto-modal-body ul {
+    margin: 0 !important;
+    padding-left: 1.18rem !important;
   }
 
   .grid {
@@ -8102,6 +8168,15 @@ Seal Generator &amp; Credential Flightdeck for TD613 routed prompts, authorship 
 </div>
 </details>
 </header>
+<div class="flight-howto-modal" id="flightHowtoModal" role="dialog" aria-modal="false" aria-hidden="true" aria-labelledby="flightHowtoModalTitle" hidden>
+<section class="flight-howto-dialog" role="document">
+<div class="flight-howto-dialog-head">
+<h2 class="flight-howto-dialog-title" id="flightHowtoModalTitle">How to fly this instrument</h2>
+<button class="flight-howto-close" id="flightHowtoClose" type="button" aria-label="Close Flight instructions">×</button>
+</div>
+<div class="flight-howto-modal-body" id="flightHowtoModalBody"></div>
+</section>
+</div>
 <nav class="mobile-flight-switcher" aria-label="TD613 Flight mobile lanes">
 <button class="mobile-lane-tab is-active" data-flight-lane-target="prompt" type="button" aria-selected="true">
 <span>Your Prompt</span>
@@ -10702,6 +10777,62 @@ window.TD613FlightPR78Disabled = true;
   window.snapFlightLane = setLane;
   window.syncMobileFlightLane = function () { setLane(laneName()); };
   window.TD613FlightIOSOutputScrollStabilizer = { measure: measure, settle: settle, setLane: setLane };
+})();
+</script>
+<script id="td613-flight-pr170-desktop-howto-modal">
+(function () {
+  function desktop() { return window.matchMedia && window.matchMedia('(min-width: 821px)').matches; }
+  function $(id) { return document.getElementById(id); }
+  function init() {
+    var details = document.querySelector('header details.howto');
+    var summary = details && details.querySelector('summary');
+    var hint = details && details.querySelector('.howto-hint');
+    var modal = $('flightHowtoModal');
+    var body = $('flightHowtoModalBody');
+    var close = $('flightHowtoClose');
+    if (!details || !summary || !hint || !modal || !body || !close) return;
+    body.innerHTML = hint.innerHTML;
+
+    function openModal(event) {
+      if (!desktop()) return;
+      if (event) {
+        event.preventDefault();
+        event.stopPropagation();
+      }
+      details.open = false;
+      modal.hidden = false;
+      modal.setAttribute('aria-hidden', 'false');
+      document.body.classList.add('flight-howto-modal-open');
+      try { close.focus({ preventScroll: true }); } catch (e) {}
+    }
+
+    function closeModal(event) {
+      if (event) {
+        event.preventDefault();
+        event.stopPropagation();
+      }
+      modal.hidden = true;
+      modal.setAttribute('aria-hidden', 'true');
+      document.body.classList.remove('flight-howto-modal-open');
+      try { summary.focus({ preventScroll: true }); } catch (e) {}
+    }
+
+    summary.addEventListener('click', openModal, true);
+    close.addEventListener('click', closeModal);
+    modal.addEventListener('click', function (event) {
+      if (event.target === modal) closeModal(event);
+    });
+    document.addEventListener('keydown', function (event) {
+      if (event.key === 'Escape' && !modal.hidden) closeModal(event);
+    });
+    window.addEventListener('resize', function () {
+      if (!desktop() && !modal.hidden) closeModal();
+    }, { passive: true });
+
+    window.TD613FlightHowtoModal = { open: openModal, close: closeModal };
+  }
+  if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', init, { once: true });
+  else init();
 })();
 </script>
 <script id="td613-pr95-route-path-default">

@@ -45,7 +45,10 @@ assert(html.includes('html body .page-wrap header .flight-quick-nav > a') || htm
 assert(html.includes('width: min(168ch, calc(100vw - 25rem))'));
 assert(html.includes('grid-template-areas:'));
 assert(html.includes('"howto tags" !important'));
-assert(html.includes('details.howto .howto-hint'));
-assert(html.includes('position: absolute !important'));
+assert(html.includes('justify-self: end !important'));
+assert(html.includes('header details.howto .howto-hint'));
+assert(html.includes('flightHowtoModal'));
+assert(html.includes('flightHowtoClose'));
+assert(html.includes('window.TD613FlightHowtoModal'));
 
 console.log('td613-flight-mobile-layout tests passed');
