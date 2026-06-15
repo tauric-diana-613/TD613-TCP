@@ -15,6 +15,7 @@ assert(html.includes('Your Prompt'));
 assert(html.includes('Sealed Output'));
 assert(html.includes('Prompt Output'));
 assert(html.includes('Copy Seal'));
+assert(html.includes('href="https://td613.com/adversarial-bench.html">Hush</a>'));
 assert(html.includes('Append lozenge'));
 assert(html.includes('Append lozenge + SAC'));
 assert(/authorship wrap/i.test(html));
@@ -37,5 +38,7 @@ assert(html.includes('data-flight-pr168-lane-stack="stable"'));
 assert(html.includes('window.TD613FlightIOSOutputScrollStabilizer'));
 assert(html.includes('--td613-flight-grid-height'));
 assert(html.includes('laneHeight(prompt), laneHeight(output), viewportHeight() * 0.62'));
+assert(html.includes('PR169_SENTINEL TD613 Flight desktop cockpit density restore'));
+assert(html.includes('html body .page-wrap header .flight-quick-nav > a') || html.includes('.flight-quick-nav a,'));
 
 console.log('td613-flight-mobile-layout tests passed');
