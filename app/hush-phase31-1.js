@@ -1,4 +1,3 @@
-import * as nativePhase311 from './hush-phase31-1-original.js';
 import {
   closeEditCorpusModal,
   exposeNativeCorpusCarousel,
@@ -9,21 +8,25 @@ import {
   readStoredSamples,
   renderActiveEditCorpusSample,
   saveEditCorpusModal,
+  upgradeCustomizerFields,
   writeStoredSamples
-} from './hush-phase31-native-edit-carousel.js';
+} from './hush-phase31-native-edit-carousel-v3.js';
+import * as nativePhase311 from './hush-phase31-1-original.js';
 
-const VERSION = 'phase-31.1-native-edit-corpus-carousel';
+const VERSION = 'phase-31.1-native-edit-corpus-carousel-schema-safe';
 
 export function initHushPhase311(doc = document) {
+  upgradeCustomizerFields(doc);
   const result = typeof nativePhase311.initHushPhase311 === 'function'
     ? nativePhase311.initHushPhase311(doc)
     : { installed: false };
   exposeNativeCorpusCarousel(doc);
   installNativeCorpusCarousel(doc);
+  upgradeCustomizerFields(doc);
   window.setTimeout(() => installNativeCorpusCarousel(doc), 0);
   window.setTimeout(() => installNativeCorpusCarousel(doc), 260);
   window.setTimeout(() => installNativeCorpusCarousel(doc), 900);
-  return { ...result, version: VERSION, nativeCarousel: true };
+  return { ...result, version: VERSION, nativeCarousel: true, schemaSafe: true };
 }
 
 if (typeof window !== 'undefined' && typeof document !== 'undefined') {
@@ -42,6 +45,7 @@ if (typeof window !== 'undefined' && typeof document !== 'undefined') {
     saveEditCorpusModal,
     readStoredSamples,
     writeStoredSamples,
-    installNativeCorpusCarousel
+    installNativeCorpusCarousel,
+    upgradeCustomizerFields
   };
 }
