@@ -243,11 +243,7 @@
   }
 
   function routeGatewayApertureStandalone() {
-    const url = new URL('./aperture/index.html', window.location.href);
-    if (ASSET_VERSION) {
-      url.searchParams.set('v', ASSET_VERSION);
-    }
-    return url.toString();
+    return new URL('./aperture/index.html', window.location.href).toString();
   }
 
   function gatewayApertureOriginAllowed(origin) {

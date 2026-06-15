@@ -27,6 +27,8 @@ assert.ok(files.gateway.includes('data-station-target="play"'), 'gateway page li
 assert.ok(files.gateway.includes('id="gatewayDoorDeck"'), 'gateway page exposes the Deck room door');
 assert.ok(files.gateway.includes('id="gatewayDoorHarbor"'), 'gateway page keeps Safe Harbor visible as a room door');
 assert.ok(files.gateway.includes('Open full Aperture'), 'gateway page exposes a standalone Aperture action');
+assert.ok(files.gateway.includes('id="gatewayApertureOpenFull" class="gateway-preview-link" href="./aperture/index.html"'), 'gateway opens the canonical Aperture route without a public cache token');
+assert.ok(!files.gateway.includes('href="./aperture/index.html?v='), 'gateway should not expose a cache-busted Aperture shim URL');
 assert.ok(files.homebase.includes('id="viewPaneHomebase"'), 'homebase page mounts the Homebase pane');
 assert.ok(files.homebase.includes('Mask gallery'), 'homebase page owns the merged Personas mask gallery');
 assert.ok(!fs.existsSync(path.join(repoRoot, 'app', 'personas.html')), 'standalone personas page should not exist after the merge');
@@ -46,5 +48,6 @@ const browserMainSource = fs.readFileSync(path.join(repoRoot, 'app', 'browser-ma
 assert.ok(browserMainSource.includes('redirectLegacyGatewayHashIfNeeded'), 'browser-main redirects legacy gateway hash routes');
 assert.ok(browserMainSource.includes('navigateToStation'), 'browser-main uses explicit station navigation');
 assert.ok(browserMainSource.includes('ensureSharedRuntimeDock'), 'browser-main injects shared runtime dock markup');
+assert.ok(browserMainSource.includes("return new URL('./aperture/index.html', window.location.href).toString();"), 'browser-main keeps Gateway Aperture standalone route canonical');
 
 console.log('station-pages.test.mjs passed');
