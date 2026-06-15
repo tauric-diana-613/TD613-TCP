@@ -10,6 +10,7 @@
     main:        '202606151705',
     aperture:    '202606151705',
     chrome:      '202606151735',
+    gatewayHousekeeping: '202606151825',
     copyHygiene: '202606011235',
     gatewayRescue: '202606110305',
     hushAlienConsole: '202605250326',
