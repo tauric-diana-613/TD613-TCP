@@ -1,0 +1,93 @@
+/* Desktop-only Aperture header control alignment.
+   Scope: TCP Gateway desktop. Mobile layout remains owned by gateway-housekeeping.css. */
+
+@media (min-width: 1024px) {
+  body[data-page-kind="gateway"] .gateway-preview-shell .gateway-preview-head {
+    position: relative !important;
+  }
+
+  body[data-page-kind="gateway"] .gateway-preview-shell .gateway-preview-title-group {
+    position: relative;
+    z-index: 2;
+  }
+
+  body[data-page-kind="gateway"] .gateway-preview-shell .gateway-preview-head .gateway-preview-controls {
+    --aperture-control-right: clamp(10.5rem, 14vw, 17rem);
+    --aperture-control-bottom: clamp(1.35rem, 1.8vw, 2rem);
+    --aperture-control-gap: clamp(0.78rem, 0.9vw, 1rem);
+    --aperture-bounce-width: clamp(13.25rem, 13vw, 15.25rem);
+    --aperture-cell-width: clamp(14.6rem, 15vw, 16.7rem);
+    --aperture-row-height: clamp(3.35rem, 4vw, 4.2rem);
+    position: absolute !important;
+    inset: 0 !important;
+    display: block !important;
+    width: auto !important;
+    height: auto !important;
+    min-height: 0 !important;
+    margin: 0 !important;
+    padding: 0 !important;
+    pointer-events: none !important;
+    z-index: 4;
+  }
+
+  body[data-page-kind="gateway"] .gateway-preview-shell .gateway-preview-head .gateway-preview-controls #gatewayApertureOpenFull.gateway-aperture-open-top {
+    position: absolute !important;
+    top: 1rem !important;
+    right: clamp(2.25rem, 3.4vw, 3.8rem) !important;
+    left: auto !important;
+    bottom: auto !important;
+    width: clamp(18rem, 21vw, 22rem) !important;
+    min-height: 3rem !important;
+    transform: none !important;
+    pointer-events: auto !important;
+    z-index: 7;
+  }
+
+  body[data-page-kind="gateway"] .gateway-preview-shell .gateway-preview-head .gateway-preview-controls #gatewayPreviewBounceStatus,
+  body[data-page-kind="gateway"] .gateway-preview-shell .gateway-preview-head .gateway-preview-controls #gatewayPreviewRun,
+  body[data-page-kind="gateway"] .gateway-preview-shell .gateway-preview-head .gateway-preview-controls #gatewayPreviewPropagate,
+  body[data-page-kind="gateway"] .gateway-preview-shell .gateway-preview-head .gateway-preview-controls #gatewayPreviewMoire,
+  body[data-page-kind="gateway"] .gateway-preview-shell .gateway-preview-head .gateway-preview-controls #gatewayPreviewReset {
+    position: absolute !important;
+    min-width: 0 !important;
+    min-height: 0 !important;
+    margin: 0 !important;
+    transform: none !important;
+    pointer-events: auto !important;
+    z-index: 5;
+  }
+
+  body[data-page-kind="gateway"] .gateway-preview-shell .gateway-preview-head .gateway-preview-controls #gatewayPreviewBounceStatus {
+    right: calc(var(--aperture-control-right) + (var(--aperture-cell-width) * 2) + (var(--aperture-control-gap) * 2)) !important;
+    bottom: var(--aperture-control-bottom) !important;
+    width: var(--aperture-bounce-width) !important;
+    height: calc((var(--aperture-row-height) * 2) + var(--aperture-control-gap)) !important;
+    display: inline-flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    text-align: center !important;
+    white-space: normal !important;
+  }
+
+  body[data-page-kind="gateway"] .gateway-preview-shell .gateway-preview-head .gateway-preview-controls #gatewayPreviewReset {
+    right: calc(var(--aperture-control-right) + var(--aperture-cell-width) + var(--aperture-control-gap)) !important;
+    bottom: calc(var(--aperture-control-bottom) + var(--aperture-row-height) + var(--aperture-control-gap)) !important;
+    width: var(--aperture-cell-width) !important;
+    height: var(--aperture-row-height) !important;
+  }
+
+  body[data-page-kind="gateway"] .gateway-preview-shell .gateway-preview-head .gateway-preview-controls #gatewayPreviewMoire {
+    right: var(--aperture-control-right) !important;
+    bottom: calc(var(--aperture-control-bottom) + var(--aperture-row-height) + var(--aperture-control-gap)) !important;
+    width: var(--aperture-cell-width) !important;
+    height: var(--aperture-row-height) !important;
+  }
+
+  body[data-page-kind="gateway"] .gateway-preview-shell .gateway-preview-head .gateway-preview-controls #gatewayPreviewRun,
+  body[data-page-kind="gateway"] .gateway-preview-shell .gateway-preview-head .gateway-preview-controls #gatewayPreviewPropagate {
+    right: var(--aperture-control-right) !important;
+    bottom: var(--aperture-control-bottom) !important;
+    width: calc((var(--aperture-cell-width) * 2) + var(--aperture-control-gap)) !important;
+    height: var(--aperture-row-height) !important;
+  }
+}
