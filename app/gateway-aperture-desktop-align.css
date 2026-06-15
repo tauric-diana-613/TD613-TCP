@@ -1,46 +1,56 @@
 /* Desktop-only Aperture header control alignment.
-   Scope: TCP Gateway desktop. Mobile layout remains owned by gateway-housekeeping.css. */
+   Normalizer pass: no full-header overlay, no inherited transform nudges. */
 
 @media (min-width: 1024px) {
   body[data-page-kind="gateway"] .gateway-preview-shell .gateway-preview-head {
-    position: relative !important;
+    display: grid !important;
+    grid-template-columns: minmax(18rem, 28rem) minmax(0, 1fr) !important;
+    align-items: stretch !important;
+    min-height: clamp(12rem, 13vw, 15rem) !important;
+    padding: 12px 18px 18px !important;
   }
 
   body[data-page-kind="gateway"] .gateway-preview-shell .gateway-preview-title-group {
-    position: relative;
-    z-index: 2;
+    grid-column: 1 !important;
+    position: relative !important;
+    z-index: 3 !important;
+    align-self: start !important;
+    max-width: 28rem !important;
   }
 
   body[data-page-kind="gateway"] .gateway-preview-shell .gateway-preview-head .gateway-preview-controls {
-    --aperture-control-right: clamp(10.5rem, 14vw, 17rem);
-    --aperture-control-bottom: clamp(1.35rem, 1.8vw, 2rem);
-    --aperture-control-gap: clamp(0.78rem, 0.9vw, 1rem);
-    --aperture-bounce-width: clamp(13.25rem, 13vw, 15.25rem);
-    --aperture-cell-width: clamp(14.6rem, 15vw, 16.7rem);
-    --aperture-row-height: clamp(3.35rem, 4vw, 4.2rem);
-    position: absolute !important;
-    inset: 0 !important;
+    --aperture-control-right: clamp(2rem, 4vw, 4.6rem);
+    --aperture-control-bottom: clamp(1.1rem, 1.45vw, 1.65rem);
+    --aperture-control-gap: clamp(0.62rem, 0.75vw, 0.82rem);
+    --aperture-bounce-width: clamp(12rem, 12.2vw, 14rem);
+    --aperture-cell-width: clamp(12.8rem, 13.8vw, 15.2rem);
+    --aperture-row-height: clamp(3rem, 3.4vw, 3.7rem);
+    grid-column: 2 !important;
+    position: relative !important;
     display: block !important;
+    align-self: stretch !important;
+    justify-self: stretch !important;
     width: auto !important;
     height: auto !important;
     min-height: 0 !important;
     margin: 0 !important;
     padding: 0 !important;
     pointer-events: none !important;
-    z-index: 4;
+    z-index: 4 !important;
+    transform: none !important;
   }
 
   body[data-page-kind="gateway"] .gateway-preview-shell .gateway-preview-head .gateway-preview-controls #gatewayApertureOpenFull.gateway-aperture-open-top {
     position: absolute !important;
-    top: 1rem !important;
-    right: clamp(2.25rem, 3.4vw, 3.8rem) !important;
+    top: 0.45rem !important;
+    right: var(--aperture-control-right) !important;
     left: auto !important;
     bottom: auto !important;
-    width: clamp(18rem, 21vw, 22rem) !important;
-    min-height: 3rem !important;
+    width: clamp(18rem, 22vw, 22.5rem) !important;
+    min-height: 2.9rem !important;
     transform: none !important;
     pointer-events: auto !important;
-    z-index: 7;
+    z-index: 6 !important;
   }
 
   body[data-page-kind="gateway"] .gateway-preview-shell .gateway-preview-head .gateway-preview-controls #gatewayPreviewBounceStatus,
@@ -54,7 +64,7 @@
     margin: 0 !important;
     transform: none !important;
     pointer-events: auto !important;
-    z-index: 5;
+    z-index: 5 !important;
   }
 
   body[data-page-kind="gateway"] .gateway-preview-shell .gateway-preview-head .gateway-preview-controls #gatewayPreviewBounceStatus {
@@ -65,6 +75,7 @@
     display: inline-flex !important;
     align-items: center !important;
     justify-content: center !important;
+    padding: 0 .7rem !important;
     text-align: center !important;
     white-space: normal !important;
   }
