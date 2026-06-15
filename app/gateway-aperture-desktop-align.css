@@ -15,8 +15,19 @@
     grid-column: 1 !important;
     position: relative !important;
     z-index: 3 !important;
-    align-self: start !important;
+    align-self: stretch !important;
+    display: flex !important;
+    flex-direction: column !important;
     max-width: 34rem !important;
+  }
+
+  body[data-page-kind="gateway"] .gateway-preview-shell .gateway-preview-title-group .gateway-preview-subtitle {
+    max-width: 34rem !important;
+    margin-top: clamp(0.72rem, 0.9vw, 1rem) !important;
+    color: rgba(220, 230, 244, 0.76) !important;
+    font-size: clamp(0.78rem, 0.86vw, 0.94rem) !important;
+    line-height: 1.56 !important;
+    letter-spacing: 0.085em !important;
   }
 
   body[data-page-kind="gateway"] .gateway-preview-shell .gateway-preview-head .gateway-preview-controls {
