@@ -11,7 +11,7 @@
     aperture:    '202606151705',
     chrome:      '202606151735',
     gatewayHousekeeping: '202606151825',
-    gatewayApertureDesktopAlign: '202606151850',
+    gatewayApertureDesktopAlign: '202606151905',
     copyHygiene: '202606011235',
     gatewayRescue: '202606110305',
     hushAlienConsole: '202605250326',
@@ -60,7 +60,6 @@
   var V = window.TD613_ASSET_VERSIONS;
   document.write('<link rel="stylesheet" href="./styles.css?v=' + V.styles + '" />');
   document.write('<link rel="stylesheet" href="./hush-phase39.css?v=' + V.hushPhase39 + '" />');
-  document.write('<link rel="stylesheet" href="./gateway-aperture-desktop-align.css?v=' + (V.gatewayApertureDesktopAlign || V.gatewayHousekeeping || V.main || '') + '" />');
   if (document.body && document.body.dataset && document.body.dataset.pageKind === 'adversarial-bench') {
     document.write('<script type="module" src="./hush-phase39-ui.js?v=' + V.hushPhase39 + '"><\/script>');
   } else {
