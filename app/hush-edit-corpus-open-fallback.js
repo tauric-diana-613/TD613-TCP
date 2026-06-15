@@ -1,21 +1,30 @@
-import './hush-edit-corpus-carousel.js?v=202606141720';
+const VERSION = 'hush-edit-corpus-helper/native-owned';
 
-const VERSION = 'hush-edit-corpus-open-fallback/v6-retired-to-carousel';
+function nativeApi() {
+  return window.__TD613_HUSH_PHASE31_NATIVE_EDIT_CAROUSEL__ || null;
+}
 
 function openModalFallback() {
-  return window.__TD613_HUSH_EDIT_CORPUS_CAROUSEL__?.open?.();
+  return nativeApi()?.openEditCorpusModal?.(document);
 }
 
 function readSamples() {
-  return window.__TD613_HUSH_EDIT_CORPUS_CAROUSEL__?.read?.() || [];
+  return nativeApi()?.readStoredSamples?.() || [];
 }
 
 function writeSamples(samples = []) {
-  return window.__TD613_HUSH_EDIT_CORPUS_CAROUSEL__?.write?.(samples) || [];
+  return nativeApi()?.writeStoredSamples?.(samples) || [];
 }
 
 function saveModal() {
-  return window.__TD613_HUSH_EDIT_CORPUS_CAROUSEL__?.save?.();
+  return nativeApi()?.saveEditCorpusModal?.(document);
 }
 
-window.__TD613_HUSH_EDIT_CORPUS_OPEN_FALLBACK__ = { version: VERSION, openModalFallback, readSamples, writeSamples, saveModal };
+window.__TD613_HUSH_EDIT_CORPUS_OPEN_FALLBACK__ = {
+  version: VERSION,
+  nativeOwned: true,
+  openModalFallback,
+  readSamples,
+  writeSamples,
+  saveModal
+};
