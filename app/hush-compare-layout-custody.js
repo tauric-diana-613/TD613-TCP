@@ -1,4 +1,6 @@
-const HUSH_COMPARE_LAYOUT_CUSTODY_VERSION = 'compare-layout-custody/v3-explicit-breaks';
+import './hush-edit-corpus-open-fallback.js?v=202606141555';
+
+const HUSH_COMPARE_LAYOUT_CUSTODY_VERSION = 'compare-layout-custody/v3-explicit-breaks+edit-fallback-preload';
 const $ = (id) => document.getElementById(id);
 
 function rawValue(id) {
