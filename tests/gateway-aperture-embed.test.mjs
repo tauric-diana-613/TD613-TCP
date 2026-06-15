@@ -8,6 +8,7 @@ const repoRoot = path.resolve(path.dirname(__filename), '..');
 
 const gatewayHtml = fs.readFileSync(path.join(repoRoot, 'app', 'index.html'), 'utf8');
 const browserMainSource = fs.readFileSync(path.join(repoRoot, 'app', 'browser-main.js'), 'utf8');
+const apertureShimHtml = fs.readFileSync(path.join(repoRoot, 'app', 'aperture', 'index.html'), 'utf8');
 const apertureHtml = fs.readFileSync(path.join(repoRoot, 'app', 'aperture', 'tool.html'), 'utf8');
 const harborMainSource = fs.readFileSync(path.join(repoRoot, 'app', 'safe-harbor', 'app', 'main.js'), 'utf8');
 
@@ -28,6 +29,7 @@ assert.ok(browserMainSource.includes('initGatewayPreview'), 'gateway runtime ini
 assert.ok(browserMainSource.includes('toggleGatewayPreviewMoire'), 'gateway runtime exposes a dedicated Moire preview control');
 assert.ok(browserMainSource.includes('gatewayApertureStorageEntries'), 'gateway runtime reads Aperture lane summaries from durable browser storage');
 assert.ok(browserMainSource.includes('drawGatewayPreviewLineField'), 'gateway runtime uses layered line-field rendering for the gateway moire preview');
+assert.ok(apertureShimHtml.includes('src="./tool.html?v=202606151705"'), 'Aperture shim cache token points at the mobile fast-tap build');
 assert.ok(apertureHtml.includes('APERTURE_GATEWAY_EMBED'), 'Aperture runtime still exposes an embed-mode branch');
 assert.ok(apertureHtml.includes('window.parent.postMessage'), 'Aperture embed can still bridge status to the gateway');
 assert.ok(apertureHtml.includes('apertureVersion: APERTURE_VERSION'), 'Aperture bridge summaries carry the canonical Aperture version');
@@ -35,6 +37,9 @@ assert.ok(apertureHtml.includes('apertureSchema: APERTURE_SCHEMA'), 'Aperture br
 assert.ok(apertureHtml.includes('window.localStorage.setItem(GATEWAY_APERTURE_HANDOFF_KEY'), 'Aperture persists its latest handoff summary to local storage for separate-window gateway use');
 assert.ok(apertureHtml.includes('window.sessionStorage.setItem(GATEWAY_APERTURE_HANDOFF_KEY'), 'Aperture still mirrors its latest handoff summary to session storage');
 assert.ok(apertureHtml.includes('if (typeof drawMain === "function") drawMain();'), 'Aperture redraws the main field after resize so the center geometry stays visible');
+assert.ok(apertureHtml.includes('td613-aperture-mobile-fasttap'), 'Aperture installs the mobile fast-tap bridge for iOS/coarse pointer controls');
+assert.ok(apertureHtml.includes('window.__TD613_APERTURE_MOBILE_FASTTAP__'), 'Aperture fast-tap bridge is guarded against duplicate installs');
+assert.ok(apertureHtml.includes('touchend'), 'Aperture fast-tap bridge converts clean mobile touchend gestures into immediate button clicks');
 assert.ok(harborMainSource.includes('parseGatewayApertureContext'), 'Safe Harbor exposes an Aperture fallback intake path');
 assert.ok(harborMainSource.includes("source: 'aperture-gateway'"), 'Safe Harbor tags Aperture fallback input distinctly from TCP query handoff');
 assert.ok(harborMainSource.includes('window.localStorage'), 'Safe Harbor can read separate-window Aperture context through local storage');

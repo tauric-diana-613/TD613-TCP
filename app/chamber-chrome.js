@@ -1,9 +1,7 @@
 (function () {
-  var V = window.TD613_ASSET_VERSIONS || {};
-  var apertureV = V.aperture ? '?v=' + V.aperture : '';
   var CHAMBER_NAV = [
     { label: 'Gateway', href: './index.html?ingress=off' },
-    { label: 'Aperture', href: './aperture/index.html' + apertureV }
+    { label: 'Aperture', href: './aperture/index.html' }
   ];
 
   function paintNav() {
@@ -22,7 +20,7 @@
     }
     var apertureLinks = document.querySelectorAll('a[href^="./aperture/index.html"]');
     for (var k = 0; k < apertureLinks.length; k++) {
-      apertureLinks[k].href = './aperture/index.html' + apertureV;
+      apertureLinks[k].href = './aperture/index.html';
     }
   }
 

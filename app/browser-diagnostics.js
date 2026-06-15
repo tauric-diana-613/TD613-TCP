@@ -5760,12 +5760,12 @@
         "anti-enforcement": "true"
       },
       "fingerprint": {
-        "bytes": 571622,
-        "lineCount": 11693,
-        "inlineScriptCount": 13,
+        "bytes": 574261,
+        "lineCount": 11777,
+        "inlineScriptCount": 14,
         "panelCount": 3,
         "buttonCount": 34,
-        "contentHashSha256": "1d7e54d37bc2789fdc5114064f277dd9eeb162c131df90afb5064e35cd371d1c"
+        "contentHashSha256": "b0be3fe67c7c7b41f63e5a2011767d9c9c8c3a78ef812eceda4816355c3be080"
       },
       "checks": [
         {
@@ -5788,9 +5788,9 @@
           "id": "inline-script",
           "label": "inline runtime present",
           "ok": true,
-          "detail": "13 inline script block(s)",
+          "detail": "14 inline script block(s)",
           "expected": ">= 1",
-          "actual": 13
+          "actual": 14
         },
         {
           "id": "meta:tool-name",

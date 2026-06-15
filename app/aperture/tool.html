@@ -11508,6 +11508,90 @@ APERTURE legacy compatibility layer, superseded by v2.7.0 (rupture-assist declar
 })();
 </script>
 
+<style id="td613-aperture-mobile-fasttap-style">
+@media (hover: none), (pointer: coarse), (max-width: 820px) {
+  button,
+  [role="button"],
+  .bridge-action,
+  .ra-button,
+  .qs-button,
+  .il-button,
+  .cim-button {
+    -webkit-tap-highlight-color: rgba(189,147,249,0.18);
+    -webkit-touch-callout: none;
+    user-select: none;
+    touch-action: manipulation;
+  }
+}
+</style>
+<script id="td613-aperture-mobile-fasttap">
+(() => {
+  if (window.__TD613_APERTURE_MOBILE_FASTTAP__) return;
+  window.__TD613_APERTURE_MOBILE_FASTTAP__ = true;
+
+  const coarse = () => {
+    try {
+      return window.matchMedia("(hover: none), (pointer: coarse), (max-width: 820px)").matches;
+    } catch (_) {
+      return /iPhone|iPad|iPod|Android/i.test(navigator.userAgent || "");
+    }
+  };
+
+  let start = null;
+  let syntheticUntil = 0;
+
+  function eligible(node) {
+    const target = node && node.closest ? node.closest("button,[role='button']") : null;
+    if (!target || target.disabled || target.getAttribute("aria-disabled") === "true") return null;
+    if (target.closest("input,textarea,select")) return null;
+    return target;
+  }
+
+  document.addEventListener("touchstart", (event) => {
+    if (!coarse() || event.touches.length !== 1) return;
+    const target = eligible(event.target);
+    if (!target) return;
+    const touch = event.touches[0];
+    start = {
+      target,
+      x: touch.clientX,
+      y: touch.clientY,
+      at: Date.now()
+    };
+  }, { passive: true, capture: true });
+
+  document.addEventListener("touchend", (event) => {
+    if (!coarse() || !start || event.changedTouches.length !== 1) return;
+    const target = eligible(event.target);
+    const touch = event.changedTouches[0];
+    const dx = Math.abs(touch.clientX - start.x);
+    const dy = Math.abs(touch.clientY - start.y);
+    const elapsed = Date.now() - start.at;
+    const sameTarget = target && (target === start.target || start.target.contains(target) || target.contains(start.target));
+    const cleanTap = sameTarget && elapsed < 650 && dx < 14 && dy < 14;
+    const tapTarget = start.target;
+    start = null;
+    if (!cleanTap) return;
+    syntheticUntil = Date.now() + 520;
+    event.preventDefault();
+    event.stopPropagation();
+    tapTarget.click();
+  }, { passive: false, capture: true });
+
+  document.addEventListener("touchcancel", () => {
+    start = null;
+  }, { passive: true, capture: true });
+
+  document.addEventListener("click", (event) => {
+    if (!syntheticUntil || Date.now() > syntheticUntil) return;
+    if (event.isTrusted) {
+      event.preventDefault();
+      event.stopPropagation();
+    }
+  }, { capture: true });
+})();
+</script>
+
 <script id="td613-aperture-gateway-embed-script">
 (() => {
   if (window.__TD613_APERTURE_GATEWAY_EMBED__) return;

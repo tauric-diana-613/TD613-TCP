@@ -45,9 +45,16 @@ assert.ok(files.deck.includes('id="harborBox"'), 'deck page exposes harbor outpu
 assert.ok(files.deck.includes('id="heroSignalValue"'), 'deck page exposes hero telemetry for the shared runtime');
 
 const browserMainSource = fs.readFileSync(path.join(repoRoot, 'app', 'browser-main.js'), 'utf8');
+const chamberChromeSource = fs.readFileSync(path.join(repoRoot, 'app', 'chamber-chrome.js'), 'utf8');
+const assetVersionsSource = fs.readFileSync(path.join(repoRoot, 'app', 'asset-versions.js'), 'utf8');
 assert.ok(browserMainSource.includes('redirectLegacyGatewayHashIfNeeded'), 'browser-main redirects legacy gateway hash routes');
 assert.ok(browserMainSource.includes('navigateToStation'), 'browser-main uses explicit station navigation');
 assert.ok(browserMainSource.includes('ensureSharedRuntimeDock'), 'browser-main injects shared runtime dock markup');
 assert.ok(browserMainSource.includes("return new URL('./aperture/index.html', window.location.href).toString();"), 'browser-main keeps Gateway Aperture standalone route canonical');
+assert.ok(chamberChromeSource.includes("{ label: 'Aperture', href: './aperture/index.html' }"), 'shared chamber chrome opens canonical Aperture route');
+assert.ok(!chamberChromeSource.includes("?v=' + V.aperture"), 'shared chamber chrome must not append public Aperture cache tokens');
+assert.ok(assetVersionsSource.includes("main:        '202606151705'"), 'asset versions bump browser-main after Gateway route canonicalization');
+assert.ok(assetVersionsSource.includes("aperture:    '202606151705'"), 'asset versions bump Aperture after mobile fast-tap patch');
+assert.ok(assetVersionsSource.includes("chrome:      '202606151705'"), 'asset versions bump chamber chrome after Aperture route canonicalization');
 
 console.log('station-pages.test.mjs passed');
