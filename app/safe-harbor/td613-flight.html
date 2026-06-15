@@ -7727,6 +7727,7 @@ select {
     max-width: 100% !important;
     gap: .16rem .22rem !important;
     padding: .02rem 0 0 !important;
+    transform: translateX(calc(clamp(12rem, 21vw, 16.75rem) - .86rem)) !important;
   }
 
   .pill {
@@ -7980,30 +7981,58 @@ select {
   }
 
   .flight-lane-prompt .checkbox-row > label {
-    max-width: min(100%, 28rem) !important;
+    flex: 0 1 calc(50% - .3rem) !important;
+    min-width: min(12rem, 100%) !important;
+    max-width: min(23rem, 100%) !important;
+    justify-content: flex-start !important;
+    text-align: left !important;
   }
 
   .flight-lane-prompt .radio-row > label {
     max-width: 9.5rem !important;
   }
 
+  .flight-lane-prompt .checkbox-row > label:has(input[type="text"]) {
+    flex-basis: min(23rem, 100%) !important;
+    max-width: min(23rem, 100%) !important;
+  }
+
+  .flight-lane-prompt .checkbox-row > label:has(input:only-child) {
+    flex: 0 0 auto !important;
+    min-width: 0 !important;
+    width: auto !important;
+  }
+
+  .seal-card .radio-row,
+  .seal-card .checkbox-row {
+    justify-content: flex-start !important;
+    align-items: flex-start !important;
+  }
+
   .seal-card .radio-row > label {
-    min-width: 5.1rem !important;
-    max-width: 9.8rem !important;
+    flex: 0 1 auto !important;
+    min-width: 0 !important;
+    max-width: min(13.5rem, 100%) !important;
+    justify-content: flex-start !important;
+    text-align: left !important;
   }
 
   .seal-card .checkbox-row > label {
     min-width: 0 !important;
     max-width: 18rem !important;
+    justify-content: flex-start !important;
+    text-align: left !important;
   }
 
   .seal-card .radio-row > .seal-custom-label {
-    min-width: 10rem !important;
-    max-width: 12.5rem !important;
+    min-width: 12rem !important;
+    max-width: 18rem !important;
+    white-space: nowrap !important;
   }
 
   .seal-card .radio-row > .seal-custom-label input[type="text"] {
-    width: min(7rem, 100%) !important;
+    flex: 1 1 7rem !important;
+    width: min(9rem, 100%) !important;
     min-width: 0 !important;
   }
 
@@ -8012,8 +8041,10 @@ select {
   }
 
   .seal-card .section-split-row .radio-row > label {
-    min-width: 5.8rem !important;
-    max-width: 9.4rem !important;
+    min-width: 0 !important;
+    max-width: 13rem !important;
+    justify-content: flex-start !important;
+    text-align: left !important;
   }
 
   .dev-drawer .card:has(#rotationSeed) .radio-row > label {
@@ -8172,7 +8203,7 @@ Seal Generator &amp; Credential Flightdeck for TD613 routed prompts, authorship 
 <section class="flight-howto-dialog" role="document">
 <div class="flight-howto-dialog-head">
 <h2 class="flight-howto-dialog-title" id="flightHowtoModalTitle">How to fly this instrument</h2>
-<button class="flight-howto-close" id="flightHowtoClose" type="button" aria-label="Close Flight instructions">×</button>
+<button class="flight-howto-close" id="flightHowtoClose" type="button" aria-label="Close Flight instructions">X</button>
 </div>
 <div class="flight-howto-modal-body" id="flightHowtoModalBody"></div>
 </section>

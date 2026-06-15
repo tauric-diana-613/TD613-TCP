@@ -46,9 +46,13 @@ assert(html.includes('width: min(168ch, calc(100vw - 25rem))'));
 assert(html.includes('grid-template-areas:'));
 assert(html.includes('"howto tags" !important'));
 assert(html.includes('justify-self: end !important'));
+assert(html.includes('transform: translateX(calc(clamp(12rem, 21vw, 16.75rem) - .86rem)) !important'));
 assert(html.includes('header details.howto .howto-hint'));
 assert(html.includes('flightHowtoModal'));
 assert(html.includes('flightHowtoClose'));
 assert(html.includes('window.TD613FlightHowtoModal'));
+assert(html.includes('flex: 0 1 calc(50% - .3rem) !important'));
+assert(html.includes('.seal-card .radio-row,'));
+assert(html.includes('max-width: min(13.5rem, 100%) !important'));
 
 console.log('td613-flight-mobile-layout tests passed');
