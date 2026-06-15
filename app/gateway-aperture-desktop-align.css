@@ -1,13 +1,14 @@
 /* Desktop-only Aperture header control alignment.
-   Normalizer pass: no full-header overlay, no inherited transform nudges. */
+   Compact grid pass: no absolute overlay, no transform nudges, no title collision. */
 
 @media (min-width: 1024px) {
   body[data-page-kind="gateway"] .gateway-preview-shell .gateway-preview-head {
     display: grid !important;
-    grid-template-columns: minmax(18rem, 28rem) minmax(0, 1fr) !important;
+    grid-template-columns: minmax(24rem, 34rem) minmax(28rem, 1fr) !important;
+    gap: clamp(1.15rem, 2vw, 2.25rem) !important;
     align-items: stretch !important;
-    min-height: clamp(12rem, 13vw, 15rem) !important;
-    padding: 12px 18px 18px !important;
+    min-height: clamp(10.2rem, 10.8vw, 12.4rem) !important;
+    padding: 12px 18px 16px !important;
   }
 
   body[data-page-kind="gateway"] .gateway-preview-shell .gateway-preview-title-group {
@@ -15,39 +16,42 @@
     position: relative !important;
     z-index: 3 !important;
     align-self: start !important;
-    max-width: 28rem !important;
+    max-width: 34rem !important;
   }
 
   body[data-page-kind="gateway"] .gateway-preview-shell .gateway-preview-head .gateway-preview-controls {
-    --aperture-control-right: clamp(2rem, 4vw, 4.6rem);
-    --aperture-control-bottom: clamp(1.1rem, 1.45vw, 1.65rem);
-    --aperture-control-gap: clamp(0.62rem, 0.75vw, 0.82rem);
-    --aperture-bounce-width: clamp(12rem, 12.2vw, 14rem);
-    --aperture-cell-width: clamp(12.8rem, 13.8vw, 15.2rem);
-    --aperture-row-height: clamp(3rem, 3.4vw, 3.7rem);
     grid-column: 2 !important;
     position: relative !important;
-    display: block !important;
+    display: grid !important;
+    grid-template-columns: 7.35rem 8.7rem 8.7rem !important;
+    grid-template-rows: 2.65rem minmax(0.6rem, 1fr) 2.35rem 2.35rem !important;
+    grid-template-areas:
+      "open open open"
+      ". . ."
+      "bounces reset moire"
+      "bounces run run" !important;
+    justify-self: end !important;
     align-self: stretch !important;
-    justify-self: stretch !important;
-    width: auto !important;
-    height: auto !important;
+    align-content: stretch !important;
+    justify-content: end !important;
+    gap: .48rem .55rem !important;
+    width: min(100%, 25.95rem) !important;
+    min-width: 0 !important;
     min-height: 0 !important;
     margin: 0 !important;
     padding: 0 !important;
-    pointer-events: none !important;
+    pointer-events: auto !important;
     z-index: 4 !important;
     transform: none !important;
   }
 
   body[data-page-kind="gateway"] .gateway-preview-shell .gateway-preview-head .gateway-preview-controls #gatewayApertureOpenFull.gateway-aperture-open-top {
-    position: absolute !important;
-    top: 0.45rem !important;
-    right: var(--aperture-control-right) !important;
-    left: auto !important;
-    bottom: auto !important;
-    width: clamp(18rem, 22vw, 22.5rem) !important;
-    min-height: 2.9rem !important;
+    grid-area: open !important;
+    position: static !important;
+    width: 18rem !important;
+    min-height: 2.65rem !important;
+    justify-self: end !important;
+    align-self: start !important;
     transform: none !important;
     pointer-events: auto !important;
     z-index: 6 !important;
@@ -58,47 +62,39 @@
   body[data-page-kind="gateway"] .gateway-preview-shell .gateway-preview-head .gateway-preview-controls #gatewayPreviewPropagate,
   body[data-page-kind="gateway"] .gateway-preview-shell .gateway-preview-head .gateway-preview-controls #gatewayPreviewMoire,
   body[data-page-kind="gateway"] .gateway-preview-shell .gateway-preview-head .gateway-preview-controls #gatewayPreviewReset {
-    position: absolute !important;
+    position: static !important;
+    width: auto !important;
+    height: auto !important;
     min-width: 0 !important;
-    min-height: 0 !important;
+    min-height: 2.35rem !important;
     margin: 0 !important;
+    padding: 0 .58rem !important;
     transform: none !important;
     pointer-events: auto !important;
     z-index: 5 !important;
   }
 
   body[data-page-kind="gateway"] .gateway-preview-shell .gateway-preview-head .gateway-preview-controls #gatewayPreviewBounceStatus {
-    right: calc(var(--aperture-control-right) + (var(--aperture-cell-width) * 2) + (var(--aperture-control-gap) * 2)) !important;
-    bottom: var(--aperture-control-bottom) !important;
-    width: var(--aperture-bounce-width) !important;
-    height: calc((var(--aperture-row-height) * 2) + var(--aperture-control-gap)) !important;
+    grid-area: bounces !important;
     display: inline-flex !important;
     align-items: center !important;
     justify-content: center !important;
-    padding: 0 .7rem !important;
+    min-height: 5.18rem !important;
+    padding: 0 .55rem !important;
     text-align: center !important;
     white-space: normal !important;
   }
 
   body[data-page-kind="gateway"] .gateway-preview-shell .gateway-preview-head .gateway-preview-controls #gatewayPreviewReset {
-    right: calc(var(--aperture-control-right) + var(--aperture-cell-width) + var(--aperture-control-gap)) !important;
-    bottom: calc(var(--aperture-control-bottom) + var(--aperture-row-height) + var(--aperture-control-gap)) !important;
-    width: var(--aperture-cell-width) !important;
-    height: var(--aperture-row-height) !important;
+    grid-area: reset !important;
   }
 
   body[data-page-kind="gateway"] .gateway-preview-shell .gateway-preview-head .gateway-preview-controls #gatewayPreviewMoire {
-    right: var(--aperture-control-right) !important;
-    bottom: calc(var(--aperture-control-bottom) + var(--aperture-row-height) + var(--aperture-control-gap)) !important;
-    width: var(--aperture-cell-width) !important;
-    height: var(--aperture-row-height) !important;
+    grid-area: moire !important;
   }
 
   body[data-page-kind="gateway"] .gateway-preview-shell .gateway-preview-head .gateway-preview-controls #gatewayPreviewRun,
   body[data-page-kind="gateway"] .gateway-preview-shell .gateway-preview-head .gateway-preview-controls #gatewayPreviewPropagate {
-    right: var(--aperture-control-right) !important;
-    bottom: var(--aperture-control-bottom) !important;
-    width: calc((var(--aperture-cell-width) * 2) + var(--aperture-control-gap)) !important;
-    height: var(--aperture-row-height) !important;
+    grid-area: run !important;
   }
 }
