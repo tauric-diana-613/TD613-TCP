@@ -7956,10 +7956,10 @@ select {
   }
 
   .radio-row label {
-    min-width: 4.8rem !important;
-    max-width: 10rem !important;
-    justify-content: center !important;
-    text-align: center !important;
+    min-width: 0 !important;
+    max-width: min(100%, 24rem) !important;
+    justify-content: flex-start !important;
+    text-align: left !important;
   }
 
   .checkbox-row label:has(input[type="text"]),
@@ -7981,9 +7981,10 @@ select {
   }
 
   .flight-lane-prompt .checkbox-row > label {
-    flex: 0 1 calc(50% - .3rem) !important;
-    min-width: min(12rem, 100%) !important;
-    max-width: min(23rem, 100%) !important;
+    flex: 0 0 auto !important;
+    width: fit-content !important;
+    min-width: 0 !important;
+    max-width: min(100%, 42rem) !important;
     justify-content: flex-start !important;
     text-align: left !important;
   }
@@ -7993,8 +7994,8 @@ select {
   }
 
   .flight-lane-prompt .checkbox-row > label:has(input[type="text"]) {
-    flex-basis: min(23rem, 100%) !important;
-    max-width: min(23rem, 100%) !important;
+    flex-basis: auto !important;
+    max-width: min(100%, 28rem) !important;
   }
 
   .flight-lane-prompt .checkbox-row > label:has(input:only-child) {
@@ -8010,29 +8011,32 @@ select {
   }
 
   .seal-card .radio-row > label {
-    flex: 0 1 auto !important;
+    flex: 0 0 auto !important;
+    width: fit-content !important;
     min-width: 0 !important;
-    max-width: min(13.5rem, 100%) !important;
+    max-width: min(100%, 18rem) !important;
     justify-content: flex-start !important;
     text-align: left !important;
   }
 
   .seal-card .checkbox-row > label {
+    flex: 0 0 auto !important;
+    width: fit-content !important;
     min-width: 0 !important;
-    max-width: 18rem !important;
+    max-width: min(100%, 22rem) !important;
     justify-content: flex-start !important;
     text-align: left !important;
   }
 
   .seal-card .radio-row > .seal-custom-label {
-    min-width: 12rem !important;
-    max-width: 18rem !important;
+    min-width: 8.8rem !important;
+    max-width: 13rem !important;
     white-space: nowrap !important;
   }
 
   .seal-card .radio-row > .seal-custom-label input[type="text"] {
-    flex: 1 1 7rem !important;
-    width: min(9rem, 100%) !important;
+    flex: 0 1 6.4rem !important;
+    width: min(6.4rem, 100%) !important;
     min-width: 0 !important;
   }
 
@@ -8042,7 +8046,7 @@ select {
 
   .seal-card .section-split-row .radio-row > label {
     min-width: 0 !important;
-    max-width: 13rem !important;
+    max-width: min(100%, 16rem) !important;
     justify-content: flex-start !important;
     text-align: left !important;
   }

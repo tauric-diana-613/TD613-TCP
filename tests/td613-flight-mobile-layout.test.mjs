@@ -51,8 +51,9 @@ assert(html.includes('header details.howto .howto-hint'));
 assert(html.includes('flightHowtoModal'));
 assert(html.includes('flightHowtoClose'));
 assert(html.includes('window.TD613FlightHowtoModal'));
-assert(html.includes('flex: 0 1 calc(50% - .3rem) !important'));
+assert(html.includes('width: fit-content !important'));
+assert(html.includes('max-width: min(100%, 42rem) !important'));
 assert(html.includes('.seal-card .radio-row,'));
-assert(html.includes('max-width: min(13.5rem, 100%) !important'));
+assert(html.includes('max-width: min(100%, 18rem) !important'));
 
 console.log('td613-flight-mobile-layout tests passed');
