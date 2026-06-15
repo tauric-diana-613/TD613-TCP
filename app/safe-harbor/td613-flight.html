@@ -7635,6 +7635,47 @@ select {
   }
 }
 
+
+/* PR168_SENTINEL definitive Seal spacing panel repair.
+   This must come after the older PR90/PR91 mobile/coarse-pointer patches because those
+   patches assign section-split children by nth-child and grid-template-areas. */
+.flight-lane-output .seal-card .seal-spacing-grid {
+  display: grid !important;
+  grid-template-columns: minmax(0, .86fr) minmax(0, 1.14fr) !important;
+  grid-template-areas: "target zwnj" !important;
+  align-items: stretch !important;
+  gap: .46rem !important;
+  margin-top: .08rem;
+}
+
+.flight-lane-output .seal-card .seal-spacing-grid > div {
+  min-width: 0 !important;
+  align-self: stretch !important;
+  margin-top: 0 !important;
+  transform: none !important;
+  -webkit-transform: none !important;
+}
+
+.flight-lane-output .seal-card .seal-target-panel {
+  grid-area: target !important;
+}
+
+.flight-lane-output .seal-card .seal-zwnj-panel {
+  grid-area: zwnj !important;
+}
+
+.flight-lane-output .seal-card .seal-target-panel input#sealTargetWord {
+  width: 100% !important;
+  max-width: 100% !important;
+}
+
+@media (max-width: 520px) {
+  .flight-lane-output .seal-card .seal-spacing-grid {
+    grid-template-columns: 1fr !important;
+    grid-template-areas: "target" "zwnj" !important;
+  }
+}
+
 </style>
 <script type="module" src="../analytics.js"></script>
 <script type="module" src="../speed-insights.js"></script>
@@ -8027,8 +8068,17 @@ This block controls the closing phrase and how the lozenge behaves. Use variety 
 <label><input checked="" id="sealUseDiamond" type="checkbox"/>Append lozenge (⟐)</label>
 <label><input id="sealUseSacDiamond" type="checkbox"/>Append lozenge + SAC (⟐)</label>
 </div>
-<div class="section-split-row">
-<div>
+<div class="section-split-row seal-spacing-grid">
+<div class="seal-target-panel">
+<label class="small-label" for="sealTargetWord">Target word (for ZWNJ insertion)</label>
+<input id="sealTargetWord" type="text" value="with"/>
+<div class="small-label" style="margin-top:.4rem;">Hair-space halo</div>
+<div class="radio-row">
+<label><input checked="" name="sealHair" type="radio" value="none"/>none</label>
+<label><input name="sealHair" type="radio" value="halo"/>1 hair before + 2 after</label>
+</div>
+</div>
+<div class="seal-zwnj-panel">
 <div class="small-label">ZWNJ behavior around the seal</div>
 <div class="radio-row">
 <label><input checked="" name="sealZwnjMode" type="radio" value="none"/>none</label>
@@ -8038,15 +8088,6 @@ This block controls the closing phrase and how the lozenge behaves. Use variety 
 <label><input name="sealZwnjMode" type="radio" value="insideVerb"/>inside verb</label>
 <label><input name="sealZwnjMode" type="radio" value="double"/>word + glyph</label>
 <label><input name="sealZwnjMode" type="radio" value="random"/>random</label>
-</div>
-</div>
-<div>
-<label class="small-label" for="sealTargetWord">Target word (for ZWNJ insertion)</label>
-<input id="sealTargetWord" type="text" value="with"/>
-<div class="small-label" style="margin-top:.4rem;">Hair-space halo</div>
-<div class="radio-row">
-<label><input checked="" name="sealHair" type="radio" value="none"/>none</label>
-<label><input name="sealHair" type="radio" value="halo"/>1 hair before + 2 after</label>
 </div>
 </div>
 </div>
