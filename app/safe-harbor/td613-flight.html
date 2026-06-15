@@ -7674,10 +7674,18 @@ select {
   }
 
   header {
+    grid-template-areas:
+      "title title"
+      "text text"
+      "howto tags" !important;
+    grid-template-columns: auto minmax(0, 1fr) !important;
+    column-gap: .48rem !important;
     min-height: 5rem !important;
     padding: .58rem clamp(12rem, 21vw, 16.75rem) .42rem .96rem !important;
     gap: .2rem !important;
     border-radius: 16px !important;
+    overflow: visible !important;
+    z-index: 12 !important;
   }
 
   header::after {
@@ -7687,6 +7695,7 @@ select {
   }
 
   h1 {
+    grid-area: title !important;
     font-size: clamp(1.25rem, 1.9vw, 2.05rem) !important;
     line-height: .95 !important;
     letter-spacing: .12em !important;
@@ -7700,6 +7709,7 @@ select {
   }
 
   .subtitle {
+    grid-area: text !important;
     width: min(168ch, calc(100vw - 25rem)) !important;
     max-width: min(168ch, calc(100vw - 25rem)) !important;
     padding-left: .68rem !important;
@@ -7708,8 +7718,15 @@ select {
   }
 
   .pill-row {
+    grid-area: tags !important;
+    justify-self: start !important;
+    align-self: center !important;
+    display: flex !important;
+    flex-wrap: wrap !important;
+    justify-content: flex-start !important;
+    max-width: 100% !important;
     gap: .16rem .22rem !important;
-    padding-top: .02rem !important;
+    padding: .02rem 0 0 !important;
   }
 
   .pill {
@@ -7753,22 +7770,50 @@ select {
   }
 
   details.howto {
-    width: min(86rem, 100%) !important;
+    grid-area: howto !important;
+    position: relative !important;
+    justify-self: start !important;
+    align-self: center !important;
+    width: auto !important;
+    max-width: 27rem !important;
     min-height: 1rem !important;
     padding: .14rem .5rem !important;
     border-radius: 4px !important;
     clip-path: polygon(0 5px, 5px 0, calc(100% - 5px) 0, 100% 5px, 100% 100%, 5px 100%, 0 calc(100% - 5px)) !important;
+    z-index: 20 !important;
   }
 
   details.howto[open] {
-    border-radius: 8px !important;
-    clip-path: none !important;
+    border-radius: 4px !important;
+    clip-path: polygon(0 5px, 5px 0, calc(100% - 5px) 0, 100% 5px, 100% 100%, 5px 100%, 0 calc(100% - 5px)) !important;
   }
 
   details.howto > summary {
     font-size: .48rem !important;
     line-height: 1.08 !important;
     letter-spacing: .14em !important;
+    white-space: nowrap !important;
+  }
+
+  details.howto .howto-hint {
+    position: absolute !important;
+    top: calc(100% + .5rem) !important;
+    left: 0 !important;
+    width: min(58rem, calc(100vw - 4rem)) !important;
+    max-height: min(62vh, 34rem) !important;
+    overflow: auto !important;
+    padding: .78rem 1rem .9rem !important;
+    border: 1px solid rgba(255,193,90,0.26) !important;
+    border-radius: 10px !important;
+    background:
+      linear-gradient(135deg, rgba(4,16,17,0.98), rgba(0,5,6,0.98) 62%, rgba(24,14,5,0.96)),
+      radial-gradient(circle at 12% 0%, rgba(137,255,240,0.10), transparent 18rem) !important;
+    box-shadow: 0 26px 80px rgba(0,0,0,0.62), 0 0 32px rgba(255,193,90,0.08) !important;
+  }
+
+  details.howto .howto-hint ol {
+    margin: 0 !important;
+    padding-left: 1.15rem !important;
   }
 
   .grid {

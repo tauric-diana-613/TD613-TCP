@@ -43,5 +43,9 @@ assert(html.includes('laneHeight(prompt), laneHeight(output), viewportHeight() *
 assert(html.includes('PR169_SENTINEL TD613 Flight desktop cockpit density restore'));
 assert(html.includes('html body .page-wrap header .flight-quick-nav > a') || html.includes('.flight-quick-nav a,'));
 assert(html.includes('width: min(168ch, calc(100vw - 25rem))'));
+assert(html.includes('grid-template-areas:'));
+assert(html.includes('"howto tags" !important'));
+assert(html.includes('details.howto .howto-hint'));
+assert(html.includes('position: absolute !important'));
 
 console.log('td613-flight-mobile-layout tests passed');
