@@ -263,7 +263,7 @@ window.va = window.va || function(...params) {
       html body .grid > .flight-lane-prompt,
       html body .grid > .flight-lane-output {
         touch-action: pan-y pinch-zoom !important;
-        overscroll-behavior-y: contain !important;
+        overscroll-behavior-y: auto !important;
       }
 
       html body .flight-lane textarea,
@@ -290,8 +290,6 @@ window.va = window.va || function(...params) {
 
   const mobile = () => window.matchMedia && window.matchMedia('(max-width: 820px)').matches;
   const q = (selector) => document.querySelector(selector);
-  const laneName = () => document.documentElement.dataset.flightMobileLane === 'output' ? 'output' : 'prompt';
-  const activeLane = () => q(laneName() === 'output' ? '.flight-lane-output' : '.flight-lane-prompt');
   const viewportHeight = () => window.visualViewport && window.visualViewport.height ? window.visualViewport.height : window.innerHeight;
 
   function preloadFlightPage() {
@@ -311,11 +309,18 @@ window.va = window.va || function(...params) {
     if (!mobile()) return;
     preloadFlightPage();
     const grid = q('.grid');
-    const lane = activeLane();
-    if (!grid || !lane) return;
-    const rect = lane.getBoundingClientRect();
-    const height = Math.max(lane.scrollHeight, lane.offsetHeight, rect.height, viewportHeight() * 0.55);
+    const prompt = q('.flight-lane-prompt');
+    const output = q('.flight-lane-output');
+    if (!grid || (!prompt && !output)) return;
+    const laneHeight = (lane) => {
+      if (!lane) return 0;
+      const rect = lane.getBoundingClientRect();
+      return Math.max(lane.scrollHeight || 0, lane.offsetHeight || 0, rect.height || 0);
+    };
+    const height = Math.max(laneHeight(prompt), laneHeight(output), viewportHeight() * 0.62);
+    document.documentElement.style.setProperty('--td613-flight-grid-height', `${Math.ceil(height)}px`);
     grid.style.setProperty('height', `${Math.ceil(height)}px`, 'important');
+    grid.style.setProperty('min-height', `${Math.ceil(height)}px`, 'important');
   }
 
   function settleGridHeight() {

@@ -7666,6 +7666,85 @@ select {
   }
 }
 
+/* PR168_SENTINEL TD613 Flight iOS output lane scroll stabilizer */
+@media (max-width: 820px) {
+  html[data-flight-pr168-lane-stack="stable"] body,
+  html[data-flight-pr168-lane-stack="stable"] body.flight-locked {
+    height: auto !important;
+    min-height: 100dvh !important;
+    max-height: none !important;
+    overflow-x: hidden !important;
+    overflow-y: auto !important;
+    overscroll-behavior-y: auto !important;
+    touch-action: pan-y pinch-zoom !important;
+  }
+
+  html[data-flight-pr168-lane-stack="stable"] .page-wrap {
+    height: auto !important;
+    min-height: 100dvh !important;
+    max-height: none !important;
+    overflow: visible !important;
+  }
+
+  html[data-flight-pr168-lane-stack="stable"] .grid {
+    display: block !important;
+    position: relative !important;
+    width: 100% !important;
+    min-width: 0 !important;
+    height: var(--td613-flight-grid-height, auto) !important;
+    min-height: var(--td613-flight-grid-height, 70dvh) !important;
+    max-height: none !important;
+    overflow-x: hidden !important;
+    overflow-y: visible !important;
+    scroll-snap-type: none !important;
+    contain: none !important;
+    -webkit-overflow-scrolling: auto !important;
+    touch-action: pan-y pinch-zoom !important;
+  }
+
+  html[data-flight-pr168-lane-stack="stable"] .grid > .flight-lane {
+    position: absolute !important;
+    top: 0 !important;
+    left: 0 !important;
+    right: auto !important;
+    width: 100% !important;
+    min-width: 0 !important;
+    max-width: 100% !important;
+    height: auto !important;
+    min-height: 0 !important;
+    max-height: none !important;
+    overflow: visible !important;
+    scroll-snap-align: none !important;
+    transition: transform .24s ease !important;
+    will-change: transform !important;
+    contain: none !important;
+    content-visibility: visible !important;
+    overscroll-behavior-y: auto !important;
+    -webkit-overflow-scrolling: auto !important;
+    touch-action: pan-y pinch-zoom !important;
+  }
+
+  html[data-flight-pr168-lane-stack="stable"] .grid > .flight-lane-prompt {
+    transform: translate3d(0, 0, 0) !important;
+  }
+
+  html[data-flight-pr168-lane-stack="stable"] .grid > .flight-lane-output {
+    transform: translate3d(100%, 0, 0) !important;
+  }
+
+  html[data-flight-pr168-lane-stack="stable"][data-flight-mobile-lane="output"] .grid > .flight-lane-prompt {
+    transform: translate3d(-100%, 0, 0) !important;
+  }
+
+  html[data-flight-pr168-lane-stack="stable"][data-flight-mobile-lane="output"] .grid > .flight-lane-output {
+    transform: translate3d(0, 0, 0) !important;
+  }
+
+  html[data-flight-pr168-lane-stack="stable"] body.flight-dragging .grid > .flight-lane {
+    transition: none !important;
+  }
+}
+
 </style>
 <script type="module" src="../analytics.js"></script>
 <script type="module" src="../speed-insights.js"></script>
@@ -9880,7 +9959,6 @@ version: TD613_V5.version
   function mobile() { return window.matchMedia && window.matchMedia('(max-width: 820px)').matches; }
   function q(sel) { return document.querySelector(sel); }
   function laneName() { return document.documentElement.dataset.flightMobileLane === 'output' ? 'output' : 'prompt'; }
-  function activeLane() { return q(laneName() === 'output' ? '.flight-lane-output' : '.flight-lane-prompt'); }
   function gridWidth() { var grid = q('.grid'); return grid ? grid.clientWidth : window.innerWidth; }
 
   function syncTabs(target) {
@@ -9898,14 +9976,22 @@ version: TD613_V5.version
     return window.visualViewport && window.visualViewport.height ? window.visualViewport.height : window.innerHeight;
   }
 
+  function laneHeight(lane) {
+    if (!lane) return 0;
+    var rect = lane.getBoundingClientRect();
+    return Math.max(lane.scrollHeight || 0, lane.offsetHeight || 0, rect.height || 0);
+  }
+
   function syncGridHeight() {
     if (!mobile()) return;
     var grid = q('.grid');
-    var lane = activeLane();
-    if (!grid || !lane) return;
-    var rect = lane.getBoundingClientRect();
-    var height = Math.max(lane.scrollHeight, lane.offsetHeight, rect.height, viewportHeight() * 0.55);
+    var prompt = q('.flight-lane-prompt');
+    var output = q('.flight-lane-output');
+    if (!grid || (!prompt && !output)) return;
+    var height = Math.max(laneHeight(prompt), laneHeight(output), viewportHeight() * 0.62);
+    document.documentElement.style.setProperty('--td613-flight-grid-height', Math.ceil(height) + 'px');
     grid.style.setProperty('height', Math.ceil(height) + 'px', 'important');
+    grid.style.setProperty('min-height', Math.ceil(height) + 'px', 'important');
   }
 
   function settleGridHeight() {
@@ -10219,6 +10305,108 @@ window.TD613FlightPR78Disabled = true;
   }
   if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', showCue, { once: true });
   else showCue();
+})();
+</script>
+<script id="td613-flight-pr168-ios-output-scroll-stabilizer">
+(function () {
+  if (window.__TD613FlightPR168IOSOutputScrollStabilizer) return;
+  window.__TD613FlightPR168IOSOutputScrollStabilizer = true;
+
+  function mobile() { return window.matchMedia && window.matchMedia('(max-width: 820px)').matches; }
+  function q(selector) { return document.querySelector(selector); }
+  function laneName() { return document.documentElement.dataset.flightMobileLane === 'output' ? 'output' : 'prompt'; }
+  function viewportHeight() {
+    return window.visualViewport && window.visualViewport.height ? window.visualViewport.height : window.innerHeight;
+  }
+  function laneHeight(lane) {
+    if (!lane) return 0;
+    var rect = lane.getBoundingClientRect();
+    return Math.max(lane.scrollHeight || 0, lane.offsetHeight || 0, rect.height || 0);
+  }
+  function forceVisible() {
+    document.documentElement.dataset.flightPr168LaneStack = 'stable';
+    document.querySelectorAll('.grid, .grid > .flight-lane, .flight-lane .card, .flight-lane textarea, .flight-lane input, .flight-lane button, .flight-lane select').forEach(function (node) {
+      if (!node || !node.style) return;
+      node.style.setProperty('content-visibility', 'visible', 'important');
+      node.style.setProperty('contain', 'none', 'important');
+    });
+  }
+  function measure() {
+    if (!mobile()) return 0;
+    forceVisible();
+    var grid = q('.grid');
+    var prompt = q('.flight-lane-prompt');
+    var output = q('.flight-lane-output');
+    if (!grid || (!prompt && !output)) return 0;
+    if (prompt) void prompt.offsetHeight;
+    if (output) void output.offsetHeight;
+    var height = Math.ceil(Math.max(laneHeight(prompt), laneHeight(output), viewportHeight() * 0.62));
+    if (height > 0) {
+      document.documentElement.style.setProperty('--td613-flight-grid-height', height + 'px');
+      grid.style.setProperty('height', height + 'px', 'important');
+      grid.style.setProperty('min-height', height + 'px', 'important');
+    }
+    return height;
+  }
+  function syncTabs(target) {
+    target = target === 'output' ? 'output' : 'prompt';
+    document.documentElement.dataset.flightMobileLane = target;
+    document.body.classList.toggle('flight-output-active', target === 'output');
+    document.querySelectorAll('[data-flight-lane-target]').forEach(function (el) {
+      var on = el.getAttribute('data-flight-lane-target') === target;
+      el.classList.toggle('is-active', on);
+      if (el.classList.contains('mobile-lane-tab')) el.setAttribute('aria-selected', on ? 'true' : 'false');
+    });
+  }
+  function settle() {
+    measure();
+    requestAnimationFrame(measure);
+    [30, 120, 260, 520, 960].forEach(function (delay) {
+      window.setTimeout(measure, delay);
+    });
+  }
+
+  var priorSetLane = window.TD613FlightSetLane || window.snapFlightLane;
+  function setLane(target, dx) {
+    target = target === 'output' ? 'output' : 'prompt';
+    if (typeof priorSetLane === 'function' && priorSetLane !== setLane) {
+      priorSetLane(target, dx);
+    } else {
+      syncTabs(target);
+    }
+    settle();
+  }
+
+  function init() {
+    if (!mobile()) return;
+    syncTabs(laneName());
+    settle();
+    var grid = q('.grid');
+    if (grid && window.MutationObserver && !grid.__td613FlightPR168Observer) {
+      grid.__td613FlightPR168Observer = new MutationObserver(function () { window.setTimeout(measure, 0); });
+      grid.__td613FlightPR168Observer.observe(grid, { childList: true, subtree: true, characterData: true });
+    }
+  }
+
+  if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', init, { once: true });
+  else init();
+  window.addEventListener('load', settle, { passive: true });
+  window.addEventListener('pageshow', settle, { passive: true });
+  window.addEventListener('resize', settle, { passive: true });
+  window.addEventListener('orientationchange', settle, { passive: true });
+  document.addEventListener('visibilitychange', function () { if (document.visibilityState === 'visible') settle(); });
+  document.addEventListener('input', settle, true);
+  document.addEventListener('change', settle, true);
+  document.addEventListener('click', function (event) {
+    var trigger = event.target && event.target.closest && event.target.closest('[data-flight-lane-target]');
+    if (trigger) window.setTimeout(settle, 40);
+  }, true);
+  if (window.visualViewport) window.visualViewport.addEventListener('resize', settle, { passive: true });
+
+  window.TD613FlightSetLane = setLane;
+  window.snapFlightLane = setLane;
+  window.syncMobileFlightLane = function () { setLane(laneName()); };
+  window.TD613FlightIOSOutputScrollStabilizer = { measure: measure, settle: settle, setLane: setLane };
 })();
 </script>
 <script id="td613-pr95-route-path-default">

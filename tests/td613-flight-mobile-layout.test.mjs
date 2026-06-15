@@ -31,5 +31,11 @@ assert(!html.includes('td613-flight-legacy.html'));
 assert(!html.includes('<iframe'));
 
 assert(!html.includes('grid.scrollIntoView'));
+assert(html.includes('PR168_SENTINEL TD613 Flight iOS output lane scroll stabilizer'));
+assert(html.includes('td613-flight-pr168-ios-output-scroll-stabilizer'));
+assert(html.includes('data-flight-pr168-lane-stack="stable"'));
+assert(html.includes('window.TD613FlightIOSOutputScrollStabilizer'));
+assert(html.includes('--td613-flight-grid-height'));
+assert(html.includes('laneHeight(prompt), laneHeight(output), viewportHeight() * 0.62'));
 
 console.log('td613-flight-mobile-layout tests passed');
