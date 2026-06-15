@@ -7,9 +7,12 @@ window.va = window.va || function(...params) {
   (window.vaq = window.vaq || []).push(params);
 };
 
+function isTD613FlightPage() {
+  return /\/safe-harbor\/td613-flight\.html(?:$|[?#])/i.test(window.location.pathname + window.location.search + window.location.hash) || /TD613 Flight/i.test(document.title || '');
+}
+
 (function installFlightMicroControlRescue() {
-  const isFlight = /\/safe-harbor\/td613-flight\.html(?:$|[?#])/i.test(window.location.pathname + window.location.search + window.location.hash) || /TD613 Flight/i.test(document.title || '');
-  if (!isFlight || document.getElementById('td613FlightMicroControlRescue')) return;
+  if (!isTD613FlightPage() || document.getElementById('td613FlightMicroControlRescue')) return;
   const style = document.createElement('style');
   style.id = 'td613FlightMicroControlRescue';
   style.textContent = `
@@ -186,8 +189,7 @@ window.va = window.va || function(...params) {
 })();
 
 (function installFlightSealSpacingRescue() {
-  const isFlight = /\/safe-harbor\/td613-flight\.html(?:$|[?#])/i.test(window.location.pathname + window.location.search + window.location.hash) || /TD613 Flight/i.test(document.title || '');
-  if (!isFlight || document.getElementById('td613FlightSealSpacingRescue')) return;
+  if (!isTD613FlightPage() || document.getElementById('td613FlightSealSpacingRescue')) return;
   const style = document.createElement('style');
   style.id = 'td613FlightSealSpacingRescue';
   style.textContent = `
@@ -225,6 +227,79 @@ window.va = window.va || function(...params) {
     }
   `;
   document.head.appendChild(style);
+})();
+
+(function installFlightMobileLanePreloadRescue() {
+  if (!isTD613FlightPage() || document.getElementById('td613FlightMobileLanePreloadRescue')) return;
+  const style = document.createElement('style');
+  style.id = 'td613FlightMobileLanePreloadRescue';
+  style.textContent = `
+    /* PR124 resolved: mobile lane sizing, touch, and preload rescue. */
+    html body .card {
+      content-visibility: visible !important;
+      contain-intrinsic-size: unset !important;
+    }
+
+    html body .grid > .flight-lane-output {
+      touch-action: pan-y pinch-zoom !important;
+    }
+
+    html body .mobile-lane-tab,
+    html body [data-flight-lane-target],
+    html body button,
+    html body input,
+    html body select,
+    html body textarea,
+    html body .payload-stepper,
+    html body .output-auth-toggle {
+      touch-action: manipulation !important;
+    }
+  `;
+  document.head.appendChild(style);
+
+  const mobile = () => window.matchMedia && window.matchMedia('(max-width: 820px)').matches;
+  const q = (selector) => document.querySelector(selector);
+  const laneName = () => document.documentElement.dataset.flightMobileLane === 'output' ? 'output' : 'prompt';
+  const activeLane = () => q(laneName() === 'output' ? '.flight-lane-output' : '.flight-lane-prompt');
+  const viewportHeight = () => window.visualViewport && window.visualViewport.height ? window.visualViewport.height : window.innerHeight;
+
+  function preloadFlightPage() {
+    if (!mobile()) return;
+    document.querySelectorAll('.flight-lane .card, .flight-lane .output-card, .flight-lane .seal-card, .flight-lane .copy-bin-card, .flight-lane textarea, .flight-lane input, .flight-lane button').forEach((el) => {
+      if (el && el.style) el.style.setProperty('content-visibility', 'visible', 'important');
+    });
+    const prompt = q('.flight-lane-prompt');
+    const output = q('.flight-lane-output');
+    if (prompt) void prompt.offsetHeight;
+    if (output) void output.offsetHeight;
+    document.querySelectorAll('.copy-chip').forEach((chip) => { void chip.offsetHeight; });
+  }
+
+  function syncGridHeight() {
+    if (!mobile()) return;
+    const grid = q('.grid');
+    const lane = activeLane();
+    if (!grid || !lane) return;
+    const rect = lane.getBoundingClientRect();
+    const height = Math.max(lane.scrollHeight, lane.offsetHeight, rect.height, viewportHeight() * 0.55);
+    grid.style.setProperty('height', `${Math.ceil(height)}px`, 'important');
+  }
+
+  function settleGridHeight() {
+    preloadFlightPage();
+    syncGridHeight();
+    window.requestAnimationFrame(syncGridHeight);
+    window.setTimeout(syncGridHeight, 120);
+    window.setTimeout(syncGridHeight, 360);
+  }
+
+  if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', settleGridHeight, { once: true });
+  else settleGridHeight();
+  window.addEventListener('load', settleGridHeight, { passive: true });
+  window.addEventListener('pageshow', settleGridHeight, { passive: true });
+  window.addEventListener('resize', settleGridHeight, { passive: true });
+  window.addEventListener('orientationchange', settleGridHeight, { passive: true });
+  if (window.visualViewport) window.visualViewport.addEventListener('resize', settleGridHeight, { passive: true });
 })();
 
 // Load the Vercel Analytics script
