@@ -185,6 +185,39 @@ window.va = window.va || function(...params) {
   document.head.appendChild(style);
 })();
 
+(function restoreCompactSealSpacing() {
+  const isFlight = /\/safe-harbor\/td613-flight\.html(?:$|[?#])/i.test(window.location.pathname + window.location.search + window.location.hash) || /TD613 Flight/i.test(document.title || '');
+  if (!isFlight || document.getElementById('td613CompactSealSpacing')) return;
+  const style = document.createElement('style');
+  style.id = 'td613CompactSealSpacing';
+  style.textContent = `
+    html body .flight-lane-output .seal-card .section-split-row.seal-spacing-grid,
+    html body .seal-card .section-split-row.seal-spacing-grid {
+      display: grid !important;
+      grid-template-columns: minmax(0, .86fr) minmax(0, 1.14fr) !important;
+      gap: .46rem !important;
+      align-items: stretch !important;
+      width: auto !important;
+      max-width: 100% !important;
+    }
+    html body .seal-card .section-split-row.seal-spacing-grid > .seal-target-panel,
+    html body .seal-card .section-split-row.seal-spacing-grid > .seal-zwnj-panel {
+      min-width: 0 !important;
+      width: auto !important;
+      max-width: none !important;
+      margin-top: 0 !important;
+      transform: none !important;
+      -webkit-transform: none !important;
+    }
+    html body .seal-card .section-split-row.seal-spacing-grid > .seal-target-panel input#sealTargetWord {
+      width: 100% !important;
+      max-width: 100% !important;
+      min-width: 0 !important;
+    }
+  `;
+  document.head.appendChild(style);
+})();
+
 // Load the Vercel Analytics script
 // When deployed to Vercel, analytics will be automatically tracked
 // The script is loaded from Vercel's CDN at /_vercel/insights/script.js
