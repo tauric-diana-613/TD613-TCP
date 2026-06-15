@@ -5,9 +5,9 @@ import {
   saveEditCorpusModal,
   upgradeCustomizerFields,
   writeStoredSamples
-} from './hush-phase31-native-edit-carousel-v3.js';
+} from './hush-phase31-native-edit-carousel-v4.js';
 
-const VERSION = 'hush-edit-corpus-helper/schema-safe-native-owned';
+const VERSION = 'hush-edit-corpus-helper/simple-edit-path';
 
 function nativeApi() {
   return window.__TD613_HUSH_PHASE31_NATIVE_EDIT_CAROUSEL__ || null;
@@ -39,7 +39,7 @@ if (typeof document !== 'undefined') {
 window.__TD613_HUSH_EDIT_CORPUS_OPEN_FALLBACK__ = {
   version: VERSION,
   nativeOwned: true,
-  schemaSafe: true,
+  simpleEditPath: true,
   openModalFallback,
   readSamples,
   writeSamples,
