@@ -1,25 +1,30 @@
-const VERSION = 'hush-edit-corpus-open-fallback/v2-assertive';
+const VERSION = 'hush-edit-corpus-open-fallback/v3-nonblocking-modal';
 const STORAGE_KEY = 'td613:hush:phase31:logged-samples:v1';
 const DISCOURSE_MODES = ['explanatory','argumentative','narrative','procedural','reflective-affective','legal-forensic','casual-conversational','technical-operational','poetic-symbolic','corrective-repair','compressed-summary'];
 const RETRIEVAL_TRIGGERS = ['baseline-voice','high-pressure','failure-recovery','correction-request','disagreement-pushback','implementation-handoff','evidence-framing','boundary-refusal','uncertainty-caveat','deep-explanation','compression-summary','affective-repair','ritual-symbolic','public-facing','private-diagnostic'];
 
-const escapeHtml = (value = '') => String(value ?? '').replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
 const valueOrFirst = (value = '', options = []) => options.includes(String(value || '').trim()) ? String(value || '').trim() : options[0];
-const wordCount = (value = '') => (String(value).match(/[A-Za-z0-9][A-Za-z0-9'-]*/g) || []).length;
+let renderToken = 0;
 
 function installStyle() {
   if (document.getElementById('hushEditCorpusOpenFallbackStyle')) return;
   const style = document.createElement('style');
   style.id = 'hushEditCorpusOpenFallbackStyle';
   style.textContent = `
-    #hushPhase31SaveCorpusEdits[data-save-state="saved"] {
-      border-color: rgba(49,255,138,.72) !important;
-      background: linear-gradient(135deg, rgba(202,255,223,.96), rgba(49,255,138,.82)) !important;
-      color: #031009 !important;
-      box-shadow: inset 0 1px 0 rgba(255,255,255,.62), 0 0 22px rgba(49,255,138,.28) !important;
+    #hushPhase31EditCorpusModal[hidden] { display: none !important; }
+    #hushPhase31EditCorpusModal .hush-phase31-edit-card {
+      display: grid !important;
+      grid-template-rows: auto auto minmax(0,1fr) auto auto !important;
+      overflow: hidden !important;
+      max-height: min(42rem, calc(100dvh - 2.4rem)) !important;
     }
-    #hushPhase31SaveCorpusEdits[data-save-state="saving"] { opacity: .72 !important; }
-    #hushPhase31SaveCorpusEdits[data-save-state="error"] { color: rgba(255,118,104,.98) !important; }
+    #hushPhase31EditCorpusModal .hush-phase31-edit-list {
+      min-height: 0 !important;
+      max-height: min(28rem, calc(100dvh - 14rem)) !important;
+      overflow: auto !important;
+      overscroll-behavior: contain !important;
+      -webkit-overflow-scrolling: touch !important;
+    }
     #hushPhase31EditCorpusModal .hush-phase31-edit-remove.hush-phase31-edit-remove {
       appearance: none !important;
       -webkit-appearance: none !important;
@@ -45,17 +50,22 @@ function installStyle() {
       transform: none !important;
       cursor: pointer !important;
     }
-    #hushPhase31EditCorpusModal .hush-phase31-edit-card {
-      display: grid !important;
-      grid-template-rows: auto auto minmax(0,1fr) auto auto !important;
-      overflow: hidden !important;
+    #hushPhase31EditCorpusModal .hush-phase31-edit-loading,
+    #hushPhase31EditCorpusModal .hush-phase31-edit-empty {
+      margin: .4rem 0;
+      color: rgba(202,255,223,.78);
+      font-family: var(--font-mono, ui-monospace, monospace);
+      font-size: .62rem;
+      letter-spacing: .03em;
     }
-    #hushPhase31EditCorpusModal .hush-phase31-edit-list {
-      min-height: 0 !important;
-      max-height: min(28rem, calc(100dvh - 14rem)) !important;
-      overflow: auto !important;
-      overscroll-behavior: contain !important;
+    #hushPhase31SaveCorpusEdits[data-save-state="saved"] {
+      border-color: rgba(49,255,138,.72) !important;
+      background: linear-gradient(135deg, rgba(202,255,223,.96), rgba(49,255,138,.82)) !important;
+      color: #031009 !important;
+      box-shadow: inset 0 1px 0 rgba(255,255,255,.62), 0 0 22px rgba(49,255,138,.28) !important;
     }
+    #hushPhase31SaveCorpusEdits[data-save-state="saving"] { opacity: .72 !important; }
+    #hushPhase31SaveCorpusEdits[data-save-state="error"] { color: rgba(255,118,104,.98) !important; }
   `;
   document.head.appendChild(style);
 }
@@ -63,13 +73,14 @@ function installStyle() {
 function readSamples() {
   try {
     const parsed = JSON.parse(localStorage.getItem(STORAGE_KEY) || '{}');
-    return Array.isArray(parsed.samples) ? parsed.samples.map((sample) => {
+    const raw = Array.isArray(parsed.samples) ? parsed.samples : [];
+    return raw.map((sample) => {
       const text = String(typeof sample === 'string' ? sample : sample?.text || '').trim();
       if (!text) return null;
       const discourseMode = valueOrFirst(sample?.discourseMode || sample?.promptCategory, DISCOURSE_MODES);
       const retrievalTrigger = valueOrFirst(sample?.retrievalTrigger || sample?.contextLabel, RETRIEVAL_TRIGGERS);
       return { text, promptCategory: discourseMode, discourseMode, contextLabel: retrievalTrigger, retrievalTrigger };
-    }).filter(Boolean) : [];
+    }).filter(Boolean);
   } catch (error) {
     return [];
   }
@@ -92,9 +103,49 @@ function writeSamples(samples = []) {
   return clean;
 }
 
-function optionsHtml(values, selected = '') {
+function optionNode(value, selected) {
+  const option = document.createElement('option');
+  option.value = value;
+  option.textContent = value;
+  option.selected = value === selected;
+  return option;
+}
+
+function selectNode(className, values, selected) {
+  const select = document.createElement('select');
+  select.className = className;
   const current = valueOrFirst(selected, values);
-  return values.map((value) => `<option value="${value}"${value === current ? ' selected' : ''}>${value}</option>`).join('');
+  values.forEach((value) => select.appendChild(optionNode(value, current)));
+  return select;
+}
+
+function labelWithText(labelText, control) {
+  const label = document.createElement('label');
+  label.append(document.createTextNode(labelText));
+  label.appendChild(control);
+  return label;
+}
+
+function sampleRow(sample, index) {
+  const row = document.createElement('section');
+  row.className = 'hush-phase31-edit-sample';
+  row.dataset.index = String(index);
+
+  const remove = document.createElement('button');
+  remove.type = 'button';
+  remove.className = 'hush-phase31-edit-remove';
+  remove.setAttribute('aria-label', `Remove sample ${index + 1}`);
+  remove.textContent = '×';
+
+  const textArea = document.createElement('textarea');
+  textArea.className = 'hush-phase31-edit-text';
+  textArea.value = sample.text || '';
+
+  row.appendChild(remove);
+  row.appendChild(labelWithText('Writing sample', textArea));
+  row.appendChild(labelWithText('Discourse Mode', selectNode('hush-phase31-edit-category', DISCOURSE_MODES, sample.discourseMode || sample.promptCategory)));
+  row.appendChild(labelWithText('Retrieval Trigger', selectNode('hush-phase31-edit-context', RETRIEVAL_TRIGGERS, sample.retrievalTrigger || sample.contextLabel)));
+  return row;
 }
 
 function ensureModal() {
@@ -107,31 +158,68 @@ function ensureModal() {
   modal.setAttribute('role', 'dialog');
   modal.setAttribute('aria-modal', 'true');
   modal.setAttribute('aria-labelledby', 'hushPhase31EditCorpusTitle');
-  modal.innerHTML = `<div class="hush-phase31-modal-card hush-phase31-edit-card"><h3 id="hushPhase31EditCorpusTitle">Edit Customizer Corpus</h3><p class="hush-phase31-edit-note">Samples appear in logged order. Remove entries with the coral x, then Save to rebuild the custom corpus.</p><div id="hushPhase31EditCorpusList" class="hush-phase31-edit-list"></div><div class="hush-phase31-modal-actions"><button id="hushPhase31SaveCorpusEdits" type="button" class="primary-cta">Save</button><button id="hushPhase31CloseCorpusEdit" type="button" class="ghost">Close</button></div><div id="hushPhase31EditCorpusStatus" class="hush-phase31-modal-status"></div></div>`;
+  modal.innerHTML = '<div class="hush-phase31-modal-card hush-phase31-edit-card"><h3 id="hushPhase31EditCorpusTitle">Edit Customizer Corpus</h3><p class="hush-phase31-edit-note">Samples appear in logged order. Remove entries with the coral x, then Save to rebuild the custom corpus.</p><div id="hushPhase31EditCorpusList" class="hush-phase31-edit-list"></div><div class="hush-phase31-modal-actions"><button id="hushPhase31SaveCorpusEdits" type="button" class="primary-cta">Save</button><button id="hushPhase31CloseCorpusEdit" type="button" class="ghost">Close</button></div><div id="hushPhase31EditCorpusStatus" class="hush-phase31-modal-status"></div></div>';
   document.body.appendChild(modal);
   return modal;
 }
 
-function renderRows() {
+function renderRowsNonblocking() {
+  const token = ++renderToken;
   const modal = ensureModal();
   const list = modal.querySelector('#hushPhase31EditCorpusList');
+  const status = modal.querySelector('#hushPhase31EditCorpusStatus');
+  const save = modal.querySelector('#hushPhase31SaveCorpusEdits');
   const samples = readSamples();
-  list.innerHTML = samples.length ? samples.map((sample, index) => {
-    const discourseMode = valueOrFirst(sample.discourseMode || sample.promptCategory, DISCOURSE_MODES);
-    const retrievalTrigger = valueOrFirst(sample.retrievalTrigger || sample.contextLabel, RETRIEVAL_TRIGGERS);
-    return `<section class="hush-phase31-edit-sample" data-index="${index}"><button type="button" class="hush-phase31-edit-remove" aria-label="Remove sample ${index + 1}">×</button><label>Writing sample<textarea class="hush-phase31-edit-text">${escapeHtml(sample.text || '')}</textarea></label><label>Discourse Mode<select class="hush-phase31-edit-category">${optionsHtml(DISCOURSE_MODES, discourseMode)}</select></label><label>Retrieval Trigger<select class="hush-phase31-edit-context">${optionsHtml(RETRIEVAL_TRIGGERS, retrievalTrigger)}</select></label></section>`;
-  }).join('') : '<p class="hush-phase31-edit-empty">No logged customizer samples yet.</p>';
+  if (!list) return;
+
+  list.textContent = '';
+  if (save) save.disabled = true;
+  if (status) status.textContent = samples.length ? `Loading ${samples.length} corpus samples…` : '';
+
+  if (!samples.length) {
+    const empty = document.createElement('p');
+    empty.className = 'hush-phase31-edit-empty';
+    empty.textContent = 'No logged customizer samples yet.';
+    list.appendChild(empty);
+    if (save) save.disabled = false;
+    return;
+  }
+
+  const loading = document.createElement('p');
+  loading.className = 'hush-phase31-edit-loading';
+  loading.textContent = 'Opening corpus editor…';
+  list.appendChild(loading);
+
+  let index = 0;
+  const batchSize = 2;
+  const step = () => {
+    if (token !== renderToken) return;
+    const fragment = document.createDocumentFragment();
+    let added = 0;
+    while (index < samples.length && added < batchSize) {
+      fragment.appendChild(sampleRow(samples[index], index));
+      index += 1;
+      added += 1;
+    }
+    if (loading.isConnected) loading.remove();
+    list.appendChild(fragment);
+    if (status) status.textContent = index < samples.length ? `Loaded ${index}/${samples.length} corpus samples…` : `Loaded ${samples.length} corpus samples.`;
+    if (index < samples.length) window.setTimeout(step, 0);
+    else if (save) save.disabled = false;
+  };
+  window.requestAnimationFrame(step);
 }
 
 function openModalFallback() {
   installStyle();
   const modal = ensureModal();
-  renderRows();
   modal.hidden = false;
+  window.requestAnimationFrame(renderRowsNonblocking);
 }
 
 function closeModal() {
   const modal = document.getElementById('hushPhase31EditCorpusModal');
+  renderToken += 1;
   if (modal) modal.hidden = true;
 }
 
@@ -163,6 +251,7 @@ function saveModal() {
   const save = document.getElementById('hushPhase31SaveCorpusEdits');
   const status = document.getElementById('hushPhase31EditCorpusStatus');
   const expected = rowsToSamples();
+  if (save?.disabled) return;
   if (save) save.dataset.saveState = 'saving';
   writeSamples(expected);
   if (!verifySaved(expected)) {
@@ -180,6 +269,7 @@ function saveModal() {
     if (save) {
       save.dataset.saveState = '';
       save.textContent = 'Save';
+      save.disabled = false;
     }
     location.reload();
   }, 520);
@@ -218,4 +308,4 @@ function boot() {
 
 if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', boot, { once: true });
 else boot();
-window.__TD613_HUSH_EDIT_CORPUS_OPEN_FALLBACK__ = { version: VERSION, openModalFallback, readSamples, writeSamples, saveModal };
+window.__TD613_HUSH_EDIT_CORPUS_OPEN_FALLBACK__ = { version: VERSION, openModalFallback, readSamples, writeSamples, saveModal, renderRowsNonblocking };
