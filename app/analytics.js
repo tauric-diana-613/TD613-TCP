@@ -185,6 +185,48 @@ window.va = window.va || function(...params) {
   document.head.appendChild(style);
 })();
 
+(function installFlightSealSpacingRescue() {
+  const isFlight = /\/safe-harbor\/td613-flight\.html(?:$|[?#])/i.test(window.location.pathname + window.location.search + window.location.hash) || /TD613 Flight/i.test(document.title || '');
+  if (!isFlight || document.getElementById('td613FlightSealSpacingRescue')) return;
+  const style = document.createElement('style');
+  style.id = 'td613FlightSealSpacingRescue';
+  style.textContent = `
+    /* PR123 resolved: definitive Seal spacing panel repair. */
+    html body .flight-lane-output .seal-card .seal-spacing-grid {
+      display: grid !important;
+      grid-template-columns: minmax(0, .86fr) minmax(0, 1.14fr) !important;
+      grid-template-areas: "target zwnj" !important;
+      align-items: stretch !important;
+      gap: .46rem !important;
+      margin-top: .08rem !important;
+    }
+
+    html body .flight-lane-output .seal-card .seal-spacing-grid > div {
+      min-width: 0 !important;
+      align-self: stretch !important;
+      margin-top: 0 !important;
+      transform: none !important;
+      -webkit-transform: none !important;
+    }
+
+    html body .flight-lane-output .seal-card .seal-target-panel { grid-area: target !important; }
+    html body .flight-lane-output .seal-card .seal-zwnj-panel { grid-area: zwnj !important; }
+
+    html body .flight-lane-output .seal-card .seal-target-panel input#sealTargetWord {
+      width: 100% !important;
+      max-width: 100% !important;
+    }
+
+    @media (max-width: 520px) {
+      html body .flight-lane-output .seal-card .seal-spacing-grid {
+        grid-template-columns: 1fr !important;
+        grid-template-areas: "target" "zwnj" !important;
+      }
+    }
+  `;
+  document.head.appendChild(style);
+})();
+
 // Load the Vercel Analytics script
 // When deployed to Vercel, analytics will be automatically tracked
 // The script is loaded from Vercel's CDN at /_vercel/insights/script.js
