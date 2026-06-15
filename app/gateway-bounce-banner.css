@@ -1,0 +1,63 @@
+/* TCP Gateway: move Bounce Trace into the top banner and let Moire span the freed width. */
+
+body[data-page-kind="gateway"] .gateway-preview-bottom-panel.gateway-preview-moire-wide {
+  grid-column: 1 / -1 !important;
+}
+
+@media (min-width: 1024px) {
+  body[data-page-kind="gateway"] .gateway-head .gateway-lockup {
+    position: relative !important;
+    display: grid !important;
+    grid-template-columns: minmax(0, 1fr) minmax(18rem, 28rem) !important;
+    gap: clamp(1.5rem, 3vw, 3.5rem) !important;
+    align-items: start !important;
+  }
+
+  body[data-page-kind="gateway"] .gateway-head .gateway-lockup > div:first-child,
+  body[data-page-kind="gateway"] .gateway-head .gateway-lockup > .gateway-summary {
+    grid-column: 1 !important;
+  }
+
+  body[data-page-kind="gateway"] .gateway-head .gateway-lockup > .gateway-summary {
+    grid-row: 2 !important;
+  }
+
+  body[data-page-kind="gateway"] .gateway-head .gateway-lockup .gateway-banner-bounce-trace {
+    display: block !important;
+    grid-column: 2 !important;
+    grid-row: 1 / span 2 !important;
+    align-self: start !important;
+    justify-self: end !important;
+    width: min(100%, 26rem) !important;
+    min-height: 0 !important;
+    margin: 0 !important;
+    padding: 1rem 1rem .9rem !important;
+    border-color: rgba(160, 200, 255, 0.16) !important;
+    background:
+      radial-gradient(circle at 16% 12%, rgba(189, 147, 249, 0.08), transparent 34%),
+      linear-gradient(180deg, rgba(7, 13, 22, 0.72), rgba(3, 7, 13, 0.9)) !important;
+  }
+
+  body[data-page-kind="gateway"] .gateway-head .gateway-lockup .gateway-banner-bounce-trace .section-kicker {
+    margin: 0 0 .6rem !important;
+    font-size: clamp(0.58rem, 0.68vw, 0.7rem) !important;
+    letter-spacing: 0.22em !important;
+    white-space: nowrap !important;
+  }
+
+  body[data-page-kind="gateway"] .gateway-head .gateway-lockup .gateway-banner-bounce-trace canvas {
+    display: block !important;
+    width: 100% !important;
+    height: clamp(4.2rem, 5.5vw, 5.6rem) !important;
+  }
+
+  body[data-page-kind="gateway"] .gateway-preview-shell .gateway-preview-bottom {
+    grid-template-columns: 1fr !important;
+  }
+}
+
+@media (max-width: 1023px) {
+  body[data-page-kind="gateway"] .gateway-head .gateway-lockup .gateway-banner-bounce-trace {
+    display: none !important;
+  }
+}
