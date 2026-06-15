@@ -55,6 +55,6 @@ assert.ok(chamberChromeSource.includes("{ label: 'Aperture', href: './aperture/i
 assert.ok(!chamberChromeSource.includes("?v=' + V.aperture"), 'shared chamber chrome must not append public Aperture cache tokens');
 assert.ok(assetVersionsSource.includes("main:        '202606151705'"), 'asset versions bump browser-main after Gateway route canonicalization');
 assert.ok(assetVersionsSource.includes("aperture:    '202606151705'"), 'asset versions bump Aperture after mobile fast-tap patch');
-assert.ok(assetVersionsSource.includes("chrome:      '202606151705'"), 'asset versions bump chamber chrome after Aperture route canonicalization');
+assert.ok(assetVersionsSource.includes("chrome:      '202606151735'"), 'asset versions bump chamber chrome after Gateway desktop housekeeping patch');
 
 console.log('station-pages.test.mjs passed');

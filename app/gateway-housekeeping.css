@@ -78,6 +78,82 @@ body[data-page-kind="gateway"] #gatewayPreviewReset {
   flex: 1 1 8.2rem;
 }
 
+/* PR177: desktop Gateway ingress and Aperture preview control geometry. */
+@media (min-width: 1024px) {
+  body[data-page-kind="gateway"] #ingressMembrane,
+  body[data-page-kind="gateway"] .ingress-layer {
+    scrollbar-width: none;
+    scrollbar-color: transparent transparent;
+  }
+
+  body[data-page-kind="gateway"] #ingressMembrane::-webkit-scrollbar,
+  body[data-page-kind="gateway"] .ingress-layer::-webkit-scrollbar {
+    width: 0;
+    height: 0;
+  }
+
+  body[data-page-kind="gateway"] .ingress-layer {
+    overflow-y: auto;
+    -webkit-overflow-scrolling: touch;
+  }
+
+  body[data-page-kind="gateway"] .ingress-core-stage {
+    transform: translateY(14px);
+  }
+
+  body[data-page-kind="gateway"] .gateway-preview-controls {
+    display: grid !important;
+    grid-template-columns: 9.1rem 10.4rem 10.4rem 12.8rem;
+    grid-template-rows: minmax(3rem, auto) minmax(3rem, auto);
+    grid-template-areas:
+      "bounces reset moire open"
+      "bounces run run .";
+    justify-content: end !important;
+    align-items: stretch;
+    gap: .55rem .65rem;
+    width: 100%;
+  }
+
+  body[data-page-kind="gateway"] #gatewayPreviewBounceStatus {
+    grid-area: bounces;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    min-height: 100%;
+    padding: 0 .7rem;
+    text-align: center;
+    white-space: normal;
+  }
+
+  body[data-page-kind="gateway"] #gatewayPreviewReset {
+    grid-area: reset;
+  }
+
+  body[data-page-kind="gateway"] #gatewayPreviewMoire {
+    grid-area: moire;
+  }
+
+  body[data-page-kind="gateway"] #gatewayPreviewRun,
+  body[data-page-kind="gateway"] #gatewayPreviewPropagate {
+    grid-area: run;
+  }
+
+  body[data-page-kind="gateway"] #gatewayApertureOpenFull.gateway-aperture-open-top {
+    grid-area: open;
+    align-self: start;
+    justify-self: stretch;
+    position: static !important;
+    width: 100%;
+  }
+
+  body[data-page-kind="gateway"] .gateway-preview-pill,
+  body[data-page-kind="gateway"] .gateway-preview-button,
+  body[data-page-kind="gateway"] .gateway-preview-link {
+    min-height: 3rem;
+  }
+}
+
 /* Chamber cards: sleek cards, Trainer hierarchy, muted detail copy. */
 body[data-page-kind="gateway"] .gateway-grid-six {
   grid-template-columns: repeat(2, minmax(0, 1fr));
