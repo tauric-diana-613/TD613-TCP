@@ -351,3 +351,18 @@ body[data-page-kind="gateway"] .gateway-grid-six .gateway-card:active {
     font-size: 0.68rem;
   }
 }
+
+/* Desktop-only Aperture control alignment: preserve the new button styling and keep Open Full Aperture pinned. */
+@media (min-width: 1024px) {
+  body[data-page-kind="gateway"] .gateway-preview-head {
+    min-height: clamp(8.6rem, 9.4vw, 10.25rem) !important;
+  }
+
+  body[data-page-kind="gateway"] #gatewayPreviewBounceStatus,
+  body[data-page-kind="gateway"] #gatewayPreviewRun,
+  body[data-page-kind="gateway"] #gatewayPreviewPropagate,
+  body[data-page-kind="gateway"] #gatewayPreviewMoire,
+  body[data-page-kind="gateway"] #gatewayPreviewReset {
+    transform: translate(1.35rem, clamp(3.2rem, 4vw, 4.25rem)) !important;
+  }
+}
