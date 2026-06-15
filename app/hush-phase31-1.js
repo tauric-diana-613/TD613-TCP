@@ -10,10 +10,10 @@ import {
   saveEditCorpusModal,
   upgradeCustomizerFields,
   writeStoredSamples
-} from './hush-phase31-native-edit-carousel-v3.js';
+} from './hush-phase31-native-edit-carousel-v4.js';
 import * as nativePhase311 from './hush-phase31-1-original.js';
 
-const VERSION = 'phase-31.1-native-edit-corpus-carousel-schema-safe';
+const VERSION = 'phase-31.1-simple-edit-context-field';
 
 export function initHushPhase311(doc = document) {
   upgradeCustomizerFields(doc);
@@ -26,7 +26,7 @@ export function initHushPhase311(doc = document) {
   window.setTimeout(() => installNativeCorpusCarousel(doc), 0);
   window.setTimeout(() => installNativeCorpusCarousel(doc), 260);
   window.setTimeout(() => installNativeCorpusCarousel(doc), 900);
-  return { ...result, version: VERSION, nativeCarousel: true, schemaSafe: true };
+  return { ...result, version: VERSION, simpleEditPath: true };
 }
 
 if (typeof window !== 'undefined' && typeof document !== 'undefined') {
