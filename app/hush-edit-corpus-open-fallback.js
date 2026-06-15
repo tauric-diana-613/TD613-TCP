@@ -1,4 +1,4 @@
-const VERSION = 'hush-edit-corpus-open-fallback/v3-nonblocking-modal';
+const VERSION = 'hush-edit-corpus-open-fallback/v4-sync-render';
 const STORAGE_KEY = 'td613:hush:phase31:logged-samples:v1';
 const DISCOURSE_MODES = ['explanatory','argumentative','narrative','procedural','reflective-affective','legal-forensic','casual-conversational','technical-operational','poetic-symbolic','corrective-repair','compressed-summary'];
 const RETRIEVAL_TRIGGERS = ['baseline-voice','high-pressure','failure-recovery','correction-request','disagreement-pushback','implementation-handoff','evidence-framing','boundary-refusal','uncertainty-caveat','deep-explanation','compression-summary','affective-repair','ritual-symbolic','public-facing','private-diagnostic'];
@@ -50,7 +50,6 @@ function installStyle() {
       transform: none !important;
       cursor: pointer !important;
     }
-    #hushPhase31EditCorpusModal .hush-phase31-edit-loading,
     #hushPhase31EditCorpusModal .hush-phase31-edit-empty {
       margin: .4rem 0;
       color: rgba(202,255,223,.78);
@@ -163,58 +162,38 @@ function ensureModal() {
   return modal;
 }
 
-function renderRowsNonblocking() {
+function renderRowsSync() {
   const token = ++renderToken;
   const modal = ensureModal();
   const list = modal.querySelector('#hushPhase31EditCorpusList');
   const status = modal.querySelector('#hushPhase31EditCorpusStatus');
   const save = modal.querySelector('#hushPhase31SaveCorpusEdits');
   const samples = readSamples();
-  if (!list) return;
+  if (!list || token !== renderToken) return;
 
   list.textContent = '';
-  if (save) save.disabled = true;
-  if (status) status.textContent = samples.length ? `Loading ${samples.length} corpus samples…` : '';
-
   if (!samples.length) {
     const empty = document.createElement('p');
     empty.className = 'hush-phase31-edit-empty';
     empty.textContent = 'No logged customizer samples yet.';
     list.appendChild(empty);
+    if (status) status.textContent = '';
     if (save) save.disabled = false;
     return;
   }
 
-  const loading = document.createElement('p');
-  loading.className = 'hush-phase31-edit-loading';
-  loading.textContent = 'Opening corpus editor…';
-  list.appendChild(loading);
-
-  let index = 0;
-  const batchSize = 2;
-  const step = () => {
-    if (token !== renderToken) return;
-    const fragment = document.createDocumentFragment();
-    let added = 0;
-    while (index < samples.length && added < batchSize) {
-      fragment.appendChild(sampleRow(samples[index], index));
-      index += 1;
-      added += 1;
-    }
-    if (loading.isConnected) loading.remove();
-    list.appendChild(fragment);
-    if (status) status.textContent = index < samples.length ? `Loaded ${index}/${samples.length} corpus samples…` : `Loaded ${samples.length} corpus samples.`;
-    if (index < samples.length) window.setTimeout(step, 0);
-    else if (save) save.disabled = false;
-  };
-  window.requestAnimationFrame(step);
+  const fragment = document.createDocumentFragment();
+  samples.forEach((sample, index) => fragment.appendChild(sampleRow(sample, index)));
+  list.appendChild(fragment);
+  if (status) status.textContent = `Loaded ${samples.length} corpus samples.`;
+  if (save) save.disabled = false;
 }
 
 function openModalFallback() {
   installStyle();
   const modal = ensureModal();
   modal.hidden = false;
-  window.requestAnimationFrame(renderRowsNonblocking);
+  renderRowsSync();
 }
 
 function closeModal() {
@@ -308,4 +287,4 @@ function boot() {
 
 if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', boot, { once: true });
 else boot();
-window.__TD613_HUSH_EDIT_CORPUS_OPEN_FALLBACK__ = { version: VERSION, openModalFallback, readSamples, writeSamples, saveModal, renderRowsNonblocking };
+window.__TD613_HUSH_EDIT_CORPUS_OPEN_FALLBACK__ = { version: VERSION, openModalFallback, readSamples, writeSamples, saveModal };
