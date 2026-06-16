@@ -1,9 +1,13 @@
-const VERSION = 'hush-output-active-mask-route/v4-receipts-jump-button';
+const VERSION = 'hush-output-active-mask-route/v5-title-bump-selected-box-hide';
 const $ = (id, doc = document) => doc.getElementById(id);
 let hideObserver = null;
 
 function text(value) {
   return String(value == null ? '' : value).replace(/\s+/g, ' ').trim();
+}
+
+function normalizeLabel(value) {
+  return text(value).replace(/\s+[—-]\s+/g, ' ').toLowerCase();
 }
 
 function displayMaskLabel(doc = document) {
@@ -22,6 +26,11 @@ function installStyle(doc = document) {
       display: block !important;
       transform: translateX(.64rem) !important;
       max-width: calc(100% - 1.28rem) !important;
+    }
+    body[data-page-kind="adversarial-bench"] [data-output-chamber-heading-bumped="true"] {
+      display: block !important;
+      transform: translateX(.46rem) !important;
+      max-width: calc(100% - .92rem) !important;
     }
     body[data-page-kind="adversarial-bench"] .hush-output-chamber .hush-output-status-band {
       width: 90%;
@@ -98,6 +107,10 @@ function installStyle(doc = document) {
       body[data-page-kind="adversarial-bench"] [data-output-chamber-kicker-bumped="true"] {
         transform: translateX(.86rem) !important;
         max-width: calc(100% - 1.72rem) !important;
+      }
+      body[data-page-kind="adversarial-bench"] [data-output-chamber-heading-bumped="true"] {
+        transform: translateX(.62rem) !important;
+        max-width: calc(100% - 1.24rem) !important;
       }
       body[data-page-kind="adversarial-bench"] .hush-output-chamber .hush-output-status-band {
         width: 90% !important;
@@ -210,20 +223,29 @@ function ensureReceiptsButton(doc = document) {
   return button;
 }
 
-function bumpOutputChamberKicker(doc = document) {
+function outputCard(doc = document) {
   const output = $('protectedOutputInput', doc);
-  const outputCard = output?.closest?.('.hush-output-card') || output?.closest?.('section') || output?.closest?.('article') || null;
-  if (!outputCard) return;
-  const nodes = Array.from(outputCard.querySelectorAll('span,div,p,strong,small')).filter((el) => {
-    if (!el || el.children.length) return false;
-    return text(el.textContent || '').toUpperCase() === 'OUTPUT CHAMBER';
-  });
-  const kicker = nodes[0];
-  if (!kicker) return;
-  kicker.dataset.outputChamberKickerBumped = 'true';
-  kicker.style.setProperty('display', 'block', 'important');
-  kicker.style.setProperty('transform', 'translateX(.86rem)', 'important');
-  kicker.style.setProperty('max-width', 'calc(100% - 1.72rem)', 'important');
+  return output?.closest?.('.hush-output-card') || output?.closest?.('section') || output?.closest?.('article') || null;
+}
+
+function bumpOutputChamberTitles(doc = document) {
+  const card = outputCard(doc);
+  if (!card) return;
+  const textNodes = Array.from(card.querySelectorAll('span,div,p,strong,small,h1,h2,h3')).filter((el) => el && !el.children.length);
+  const kicker = textNodes.find((el) => text(el.textContent || '').toUpperCase() === 'OUTPUT CHAMBER');
+  if (kicker) {
+    kicker.dataset.outputChamberKickerBumped = 'true';
+    kicker.style.setProperty('display', 'block', 'important');
+    kicker.style.setProperty('transform', 'translateX(.86rem)', 'important');
+    kicker.style.setProperty('max-width', 'calc(100% - 1.72rem)', 'important');
+  }
+  const heading = textNodes.find((el) => text(el.textContent || '').toUpperCase() === 'TRANSFORMED MESSAGE');
+  if (heading) {
+    heading.dataset.outputChamberHeadingBumped = 'true';
+    heading.style.setProperty('display', 'block', 'important');
+    heading.style.setProperty('transform', 'translateX(.62rem)', 'important');
+    heading.style.setProperty('max-width', 'calc(100% - 1.24rem)', 'important');
+  }
 }
 
 function hideOriginalActiveMaskReadout(doc = document) {
@@ -231,19 +253,21 @@ function hideOriginalActiveMaskReadout(doc = document) {
   const panel = $('hushBuiltInMaskPanel', doc) || doc.querySelector('.hush-mask-panel');
   const root = panel || chamber;
   if (!root) return;
-  const selected = displayMaskLabel(doc).replace(/\s+—\s+/g, ' ').toLowerCase();
+  const selected = normalizeLabel(displayMaskLabel(doc));
   const candidates = Array.from(root.querySelectorAll('*')).filter((el) => {
     if (!el || el.id === 'hushOutputActiveMaskRoute' || el.closest('#hushOutputActiveMaskRoute')) return false;
     if (['SELECT', 'OPTION', 'BUTTON', 'TEXTAREA', 'INPUT', 'LABEL'].includes(el.tagName)) return false;
+    if (el.querySelector('select,option,button,textarea,input,label')) return false;
     const copy = text(el.textContent || '');
-    if (!/^Active mask\b/i.test(copy)) return false;
-    if (copy.length > 260) return false;
-    const normalized = copy.replace(/\s+—\s+/g, ' ').toLowerCase();
-    return normalized.includes('active mask') && (!selected || normalized.includes(selected.split(' ')[0] || '') || copy.length < 120);
+    if (!copy || copy.length > 260) return false;
+    const normalized = normalizeLabel(copy);
+    const activeMaskBox = /^active mask\b/i.test(copy) && normalized.includes('active mask');
+    const selectedOnlyBox = selected && (normalized === selected || (copy.length < 120 && normalized.includes(selected)));
+    return activeMaskBox || selectedOnlyBox;
   });
   candidates
     .sort((a, b) => text(a.textContent || '').length - text(b.textContent || '').length)
-    .slice(0, 3)
+    .slice(0, 4)
     .forEach((el) => {
       el.dataset.outputRouteReceiptHidden = 'true';
       el.hidden = true;
@@ -265,7 +289,7 @@ function bind(doc = document) {
   doc.body.dataset.hushOutputActiveMaskRoute = VERSION;
   updateRouteReceipt(doc);
   hideOriginalActiveMaskReadout(doc);
-  bumpOutputChamberKicker(doc);
+  bumpOutputChamberTitles(doc);
   ensureReceiptsButton(doc);
   watchMaskPanel(doc);
   const select = $('maskFieldSelect', doc);
@@ -283,7 +307,7 @@ function bind(doc = document) {
   [180, 760, 1600, 2600].forEach((delay) => window.setTimeout(() => {
     updateRouteReceipt(doc);
     hideOriginalActiveMaskReadout(doc);
-    bumpOutputChamberKicker(doc);
+    bumpOutputChamberTitles(doc);
     ensureReceiptsButton(doc);
     updateReceiptsButton(doc);
   }, delay));
@@ -296,4 +320,4 @@ if (typeof document !== 'undefined') {
   [320, 900, 1800, 3200].forEach((delay) => window.setTimeout(run, delay));
 }
 
-window.__TD613_HUSH_OUTPUT_ACTIVE_MASK_ROUTE__ = { version: VERSION, updateRouteReceipt, hideOriginalActiveMaskReadout, updateReceiptsButton, jumpToReceipts };
+window.__TD613_HUSH_OUTPUT_ACTIVE_MASK_ROUTE__ = { version: VERSION, updateRouteReceipt, hideOriginalActiveMaskReadout, updateReceiptsButton, jumpToReceipts, bumpOutputChamberTitles };
