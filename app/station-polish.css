@@ -1,0 +1,4 @@
+/* station polish */
+.station-chamber-trainer { display: flex; flex-wrap: wrap; column-gap: 20px; row-gap: 16px; }
+.trainer-panel { flex: 1 1 620px; min-width: 0; }
+.evidence-spine-trainer { flex: 1 1 320px; min-width: 280px; }
