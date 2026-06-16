@@ -17,3 +17,14 @@ window.si = window.si || function () {
   rescue.href = 'app/desktop-rescue.css';
   document.head.appendChild(rescue);
 })();
+
+(function removeTrainerStationChips() {
+  function run() {
+    if (!document.body || document.body.getAttribute('data-page-kind') !== 'trainer') return;
+    const nav = document.querySelector('.station-nav');
+    if (nav) nav.remove();
+    try { document.title = 'TCP / Trainer'; } catch (error) {}
+  }
+  if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', run, { once: true });
+  else run();
+})();
