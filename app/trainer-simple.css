@@ -1,2 +1,4 @@
 /* trainer polish */
-.station-chamber-trainer { display: flex; }
+.station-chamber-trainer { display: flex; column-gap: 20px; }
+.trainer-panel { flex: 1 1 auto; }
+.evidence-spine-trainer { flex: 0 0 380px; }
