@@ -26,7 +26,7 @@ assert(css.includes('hush-phase31-modal'));
 assert(css.includes('#hushVoiceReferenceSamplesSaved'));
 assert(css.includes('#hushPhase31SampleCategory'));
 
-assert(js.includes('dropdownPagedEditor: true'));
+assert(js.includes('dropdownSnapCarousel: true'));
 assert(js.includes('externalEditOwner: true'));
 assert(originalJs.includes('MIN_SAMPLE_WORDS'));
 assert(originalJs.includes('HUSH_CUSTOM_MASK_CORPUS_POLICY'));

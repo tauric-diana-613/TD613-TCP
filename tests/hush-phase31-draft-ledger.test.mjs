@@ -61,6 +61,38 @@ async function loadPhase31(label) {
   return mod;
 }
 
+async function verifySnapCarouselForCount(sampleCount) {
+  const dom = installDom(storedSamples(sampleCount));
+  await loadPhase31(`snap-carousel-edit-${sampleCount}`);
+
+  const editButton = document.getElementById('hushPhase31EditCorpus');
+  assert.notEqual(editButton.dataset.td613Phase31NativeEditCorpusBound, 'true', 'legacy bulk edit handler is not bound to edit button');
+  editButton.click();
+  await new Promise((resolve) => setTimeout(resolve, 80));
+
+  assert.equal(document.querySelectorAll('.hush-phase31-edit-sample').length, sampleCount, 'snap carousel renders one slide per stored sample');
+  assert.equal(document.querySelectorAll('.hush-phase31-edit-category').length, sampleCount, 'snap carousel renders discourse dropdowns for every slide');
+  assert.equal(document.querySelectorAll('.hush-phase31-edit-context').length, sampleCount, 'snap carousel renders retrieval dropdowns for every slide');
+  assert.equal(document.getElementById('hushPhase31EditCorpusList').dataset.td613CarouselOwned, 'true', 'carousel marks the edit list as native-owned');
+  assert.equal(document.getElementById('hushPhase31PrevSample'), null, 'snap carousel does not render previous navigation');
+  assert.equal(document.getElementById('hushPhase31NextSample'), null, 'snap carousel does not render next navigation');
+  assert(document.getElementById('hushPhase31CarouselPrev'), 'desktop carousel has a tiny previous affordance');
+  assert(document.getElementById('hushPhase31CarouselNext'), 'desktop carousel has a tiny next affordance');
+  assert.equal(document.getElementById('hushPhase31CarouselCount').textContent, `Sample 1 / ${sampleCount} - swipe samples`);
+
+  document.querySelector('.hush-phase31-edit-text').value = 'edited ' + sampleText();
+  document.getElementById('hushPhase31SaveCorpusEdits').click();
+  await new Promise((resolve) => setTimeout(resolve, 80));
+
+  const editedStored = JSON.parse(localStorage.getItem(STORAGE_KEY));
+  assert.equal(editedStored.samples.length, sampleCount, 'carousel save preserves full working corpus');
+  assert(editedStored.samples[0].text.startsWith('edited '), 'carousel save stores edited slide text');
+  assert.equal(editedStored.samples[0].promptCategory, editedStored.samples[0].discourseMode);
+  assert.equal(editedStored.samples[0].contextLabel, editedStored.samples[0].retrievalTrigger);
+
+  dom.window.close();
+}
+
 const html = fs.readFileSync('app/adversarial-bench.html', 'utf8');
 const css = fs.readFileSync('app/hush-phase31-1.css', 'utf8');
 const js = fs.readFileSync('app/hush-phase31-1.js', 'utf8');
@@ -69,11 +101,11 @@ const policy = fs.readFileSync('app/hush-source-layout-policy.js', 'utf8');
 const stableTransform = fs.readFileSync('app/hush-pr123-stable-transform.js', 'utf8');
 
 assert(html.includes('hush-phase31-1.css?v=202606131510'));
-assert(html.includes('hush-phase31-1.js?v=202606151900'));
+assert(html.includes('hush-phase31-1.js?v=202606160010'));
 assert(!html.includes('hush-edit-corpus-open-fallback.js'), 'edit fallback script should not load on Hush');
 assert(html.includes('hush-source-layout-policy.js?v=202606131610'));
 assert(js.includes('externalEditOwner: true'), 'Phase31 wrapper should disable legacy bulk edit bindings');
-assert(js.includes('dropdownPagedEditor: true'), 'Phase31 wrapper should expose paged editor ownership');
+assert(js.includes('dropdownSnapCarousel: true'), 'Phase31 wrapper should expose snap carousel editor ownership');
 assert(originalJs.includes('hushPhase31DraftUtility'));
 assert(originalJs.includes('hushPhase31ClearDraft'));
 assert(!originalJs.includes('if (area && samples.length) area.value = samples.map'));
@@ -89,6 +121,7 @@ assert(css.includes('background: transparent !important'));
 assert(css.includes('color: rgba(255, 118, 104, .92) !important'));
 assert(!policy.includes('hushPhase31LedgerUtility'));
 assert(!policy.includes('logButton.click()'));
+assert(policy.includes('td613CarouselOwned'), 'late layout policy should not rewrite carousel-owned edit rows');
 assert(stableTransform.includes('finally{if(btn)btn.disabled=false}'));
 
 let dom = installDom();
@@ -140,34 +173,10 @@ assert.equal(document.getElementById('hushPhase31WordFloorCounter').textContent,
 document.getElementById('hushPhase31Undo').click();
 assert.equal(document.getElementById('hushPhase31SampleCount').textContent, '0');
 assert.equal(localStorage.getItem(STORAGE_KEY), null, 'undo clears persisted last sample');
-
 dom.window.close();
 
-dom = installDom(storedSamples(29));
-await loadPhase31('paged-edit');
+for (const sampleCount of [8, 29, 40, 100]) {
+  await verifySnapCarouselForCount(sampleCount);
+}
 
-const editButton = document.getElementById('hushPhase31EditCorpus');
-assert.notEqual(editButton.dataset.td613Phase31NativeEditCorpusBound, 'true', 'legacy bulk edit handler is not bound to edit button');
-editButton.click();
-await new Promise((resolve) => setTimeout(resolve, 80));
-assert.equal(document.querySelectorAll('.hush-phase31-edit-sample').length, 1, 'paged editor renders exactly one sample row');
-assert.equal(document.querySelectorAll('.hush-phase31-edit-category').length, 1, 'paged editor renders one discourse dropdown');
-assert.equal(document.querySelectorAll('.hush-phase31-edit-context').length, 1, 'paged editor renders one retrieval dropdown');
-assert.equal(document.getElementById('hushPhase31PagedCount').textContent, 'Sample 1 of 29');
-document.getElementById('hushPhase31NextSample').click();
-await new Promise((resolve) => setTimeout(resolve, 40));
-assert.equal(document.getElementById('hushPhase31PagedCount').textContent, 'Sample 2 of 29', 'next button advances paged editor');
-document.getElementById('hushPhase31PrevSample').click();
-await new Promise((resolve) => setTimeout(resolve, 40));
-assert.equal(document.getElementById('hushPhase31PagedCount').textContent, 'Sample 1 of 29', 'previous button rewinds paged editor');
-document.querySelector('.hush-phase31-edit-text').value = 'edited ' + sampleText();
-document.getElementById('hushPhase31SaveCorpusEdits').click();
-await new Promise((resolve) => setTimeout(resolve, 80));
-const editedStored = JSON.parse(localStorage.getItem(STORAGE_KEY));
-assert.equal(editedStored.samples.length, 29, 'paged save preserves full working corpus');
-assert(editedStored.samples[0].text.startsWith('edited '), 'paged save stores edited active sample');
-assert.equal(editedStored.samples[0].promptCategory, editedStored.samples[0].discourseMode);
-assert.equal(editedStored.samples[0].contextLabel, editedStored.samples[0].retrievalTrigger);
-
-dom.window.close();
 console.log('hush-phase31-draft-ledger tests passed');

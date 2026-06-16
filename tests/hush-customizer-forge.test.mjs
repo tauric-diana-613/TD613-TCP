@@ -51,7 +51,7 @@ assert(css.includes('#hushPhase31SampleCategory'));
 assert(css.includes('#messageDraftInput,#protectedOutputInput'));
 assert(!css.includes('#hushVoiceReferenceSamplesSaved{font-size:16px!important'));
 
-assert(js.includes('dropdownPagedEditor: true'));
+assert(js.includes('dropdownSnapCarousel: true'));
 assert(js.includes('externalEditOwner: true'));
 assert(originalJs.includes('MIN_SAMPLE_WORDS'));
 assert(originalJs.includes('phase-31.1-corpus'));

@@ -1,4 +1,4 @@
-const VERSION = 'phase-31.1-edit-modal/dropdown-paged-v6-swipe-owner';
+const VERSION = 'phase-31.1-edit-modal/dropdown-snap-carousel-v7-owner';
 const STORAGE_KEY = 'td613:hush:phase31:logged-samples:v1';
 const DISCOURSE_MODES = ['explanatory','argumentative','narrative','procedural','reflective-affective','legal-forensic','casual-conversational','technical-operational','poetic-symbolic','corrective-repair','compressed-summary'];
 const RETRIEVAL_TRIGGERS = ['baseline-voice','high-pressure','failure-recovery','correction-request','disagreement-pushback','implementation-handoff','evidence-framing','boundary-refusal','uncertainty-caveat','deep-explanation','compression-summary','affective-repair','ritual-symbolic','public-facing','private-diagnostic'];
@@ -122,17 +122,21 @@ export function upgradeCustomizerFields(doc = document) {
 }
 
 function ensureStyle(doc = document) {
-  if (byId('hushPhase31DropdownPagedStyle', doc)) return;
+  if (byId('hushPhase31DropdownCarouselStyle', doc)) return;
+  byId('hushPhase31DropdownPagedStyle', doc)?.remove();
   const style = doc.createElement('style');
-  style.id = 'hushPhase31DropdownPagedStyle';
+  style.id = 'hushPhase31DropdownCarouselStyle';
   style.textContent = `
     #hushPhase31EditCorpusModal[hidden]{display:none!important}
-    .hush-phase31-paged-nav{display:flex;align-items:center;justify-content:space-between;gap:.55rem;margin:.48rem 0 .64rem}
-    .hush-phase31-paged-count{flex:1;text-align:center;color:rgba(202,255,223,.78);font-family:var(--font-mono,ui-monospace,monospace);font-size:.58rem;letter-spacing:.11em;text-transform:uppercase}
-    .hush-phase31-paged-nav button{min-width:4.75rem!important;touch-action:manipulation!important}
-    .hush-phase31-paged-nav button[disabled]{opacity:.38!important;cursor:not-allowed!important;transform:none!important}
-    #hushPhase31EditCorpusList{min-height:0!important;max-height:min(28rem,calc(100dvh - 15rem))!important;overflow:auto!important;overscroll-behavior:contain!important;-webkit-overflow-scrolling:touch!important;touch-action:pan-y!important}
-    .hush-phase31-edit-sample{position:relative;padding:.74rem .62rem;margin:.62rem 0;border:1px solid rgba(202,255,223,.18);border-radius:1rem;background:rgba(4,18,12,.38)}
+    .hush-phase31-edit-card{grid-template-rows:auto auto auto minmax(0,1fr) auto auto!important}
+    .hush-phase31-carousel-meta{display:flex;align-items:center;justify-content:flex-end;gap:.34rem;margin:.12rem 0 .56rem}
+    .hush-phase31-carousel-count{margin:0;color:rgba(202,255,223,.72);font-family:var(--font-mono,ui-monospace,monospace);font-size:.58rem;letter-spacing:.11em;text-align:right;text-transform:uppercase}
+    .hush-phase31-carousel-arrow{display:none!important;appearance:none!important;-webkit-appearance:none!important;align-items:center!important;justify-content:center!important;width:1.34rem!important;height:1.12rem!important;min-width:0!important;min-height:0!important;padding:0!important;border:1px solid rgba(137,255,240,.22)!important;border-radius:8px!important;background:rgba(0,0,0,.18)!important;color:rgba(202,255,223,.82)!important;font:700 .62rem/1 var(--font-mono,ui-monospace,monospace)!important;letter-spacing:0!important;text-transform:none!important;box-shadow:none!important;cursor:pointer!important}
+    .hush-phase31-carousel-arrow:hover,.hush-phase31-carousel-arrow:focus-visible{color:#31ff8a!important;border-color:rgba(49,255,138,.48)!important;outline:none!important}
+    .hush-phase31-carousel-arrow[disabled]{opacity:.28!important;cursor:not-allowed!important}
+    @media (min-width:821px){.hush-phase31-carousel-arrow{display:inline-flex!important}}
+    #hushPhase31EditCorpusList{display:flex!important;gap:.68rem!important;min-height:0!important;max-height:min(29rem,calc(100dvh - 14rem))!important;overflow-x:auto!important;overflow-y:hidden!important;overscroll-behavior-x:contain!important;-webkit-overflow-scrolling:touch!important;scroll-snap-type:x mandatory!important;touch-action:pan-x pan-y!important;padding:.06rem .08rem .74rem!important;scrollbar-width:thin!important}
+    .hush-phase31-edit-sample{position:relative;flex:0 0 min(100%,32rem)!important;scroll-snap-align:start!important;scroll-snap-stop:always!important;contain:layout paint!important;padding:.74rem .62rem;margin:0;border:1px solid rgba(202,255,223,.18);border-radius:1rem;background:rgba(4,18,12,.38)}
     .hush-phase31-edit-sample label{display:grid;gap:.35rem;margin:.58rem 0;color:rgba(202,255,223,.86);font-family:var(--font-mono,ui-monospace,monospace);font-size:.62rem;letter-spacing:.08em;text-transform:uppercase}
     .hush-phase31-edit-sample textarea{min-height:10rem!important;resize:vertical!important}
     .hush-phase31-edit-remove{appearance:none!important;-webkit-appearance:none!important;position:absolute!important;display:inline-grid!important;place-items:center!important;width:1rem!important;height:1rem!important;top:.42rem!important;right:.48rem!important;border:0!important;border-radius:999px!important;background:transparent!important;color:rgba(255,118,104,.94)!important;font:700 .62rem/1 var(--font-mono,ui-monospace,monospace)!important;box-shadow:none!important;padding:0!important}
@@ -152,14 +156,16 @@ function ensureModal(doc = document) {
     modal.hidden = true;
     modal.setAttribute('role', 'dialog');
     modal.setAttribute('aria-modal', 'true');
-    modal.innerHTML = '<div class="hush-phase31-modal-card hush-phase31-edit-card"><h3 id="hushPhase31EditCorpusTitle">Edit Customizer Corpus</h3><p class="hush-phase31-edit-note">Paged editor: one sample is rendered at a time so mobile Safari does not build every dropdown at once.</p><div id="hushPhase31EditCorpusList" class="hush-phase31-edit-list"></div><div class="hush-phase31-modal-actions"><button id="hushPhase31SaveCorpusEdits" type="button" class="primary-cta">Save</button><button id="hushPhase31CloseCorpusEdit" type="button" class="ghost">Close</button></div><div id="hushPhase31EditCorpusStatus" class="hush-phase31-modal-status"></div></div>';
+    modal.innerHTML = '<div class="hush-phase31-modal-card hush-phase31-edit-card"><h3 id="hushPhase31EditCorpusTitle">Edit Customizer Corpus</h3><p class="hush-phase31-edit-note">Swipe through logged samples. Save writes the full edited corpus back after verification.</p><div class="hush-phase31-carousel-meta"><button id="hushPhase31CarouselPrev" type="button" class="hush-phase31-carousel-arrow" aria-label="Previous sample">&lt;</button><div id="hushPhase31CarouselCount" class="hush-phase31-carousel-count">Sample 0 / 0</div><button id="hushPhase31CarouselNext" type="button" class="hush-phase31-carousel-arrow" aria-label="Next sample">&gt;</button></div><div id="hushPhase31EditCorpusList" class="hush-phase31-edit-list" aria-label="Swipeable corpus sample editor"></div><div class="hush-phase31-modal-actions"><button id="hushPhase31SaveCorpusEdits" type="button" class="primary-cta">Save</button><button id="hushPhase31CloseCorpusEdit" type="button" class="ghost">Close</button></div><div id="hushPhase31EditCorpusStatus" class="hush-phase31-modal-status"></div></div>';
     doc.body.appendChild(modal);
   }
   const list = byId('hushPhase31EditCorpusList', doc);
   if (list) {
+    list.dataset.td613CarouselOwned = 'true';
     doc.querySelector('.hush-phase31-carousel-bar')?.remove();
-    if (!byId('hushPhase31PagedCount', doc)) {
-      list.insertAdjacentHTML('beforebegin', '<div class="hush-phase31-paged-nav"><button id="hushPhase31PrevSample" type="button" class="ghost" aria-label="Previous sample">Prev</button><span id="hushPhase31PagedCount" class="hush-phase31-paged-count">Sample 0 of 0</span><button id="hushPhase31NextSample" type="button" class="ghost" aria-label="Next sample">Next</button></div>');
+    doc.querySelector('.hush-phase31-paged-nav')?.remove();
+    if (!byId('hushPhase31CarouselCount', doc)) {
+      list.insertAdjacentHTML('beforebegin', '<div class="hush-phase31-carousel-meta"><button id="hushPhase31CarouselPrev" type="button" class="hush-phase31-carousel-arrow" aria-label="Previous sample">&lt;</button><div id="hushPhase31CarouselCount" class="hush-phase31-carousel-count">Sample 0 / 0</div><button id="hushPhase31CarouselNext" type="button" class="hush-phase31-carousel-arrow" aria-label="Next sample">&gt;</button></div>');
     }
     bindEditModalControls(doc);
   }
@@ -189,10 +195,6 @@ function setSaveState(doc = document, state = '') {
   button.disabled = state === 'saving';
 }
 
-function activeRow(doc = document) {
-  return doc.querySelector('#hushPhase31EditCorpusList .hush-phase31-edit-sample');
-}
-
 function rowToSample(row) {
   if (!row) return null;
   return normalizeSampleEntry({
@@ -204,49 +206,81 @@ function rowToSample(row) {
   });
 }
 
+function slideRows(doc = document) {
+  return Array.from(doc.querySelectorAll('#hushPhase31EditCorpusList .hush-phase31-edit-sample'));
+}
+
+function activeRow(doc = document) {
+  const rows = slideRows(doc);
+  return rows[Math.max(0, Math.min(activeIndex, rows.length - 1))] || rows[0] || null;
+}
+
+function pullRowIntoWorkingSamples(row) {
+  const index = Number(row?.dataset?.index);
+  if (!Number.isFinite(index) || index < 0) return null;
+  const updated = rowToSample(row);
+  workingSamples[index] = updated;
+  return updated;
+}
+
+function pullAllEditCorpusSamples(doc = document) {
+  slideRows(doc).forEach(pullRowIntoWorkingSamples);
+  return workingSamples.map(normalizeSampleEntry).filter(Boolean);
+}
+
 export function pullActiveEditCorpusSample(doc = document) {
   if (!workingSamples.length) return null;
-  const updated = rowToSample(activeRow(doc));
-  if (updated) workingSamples[activeIndex] = updated;
-  else workingSamples.splice(activeIndex, 1);
+  const updated = pullRowIntoWorkingSamples(activeRow(doc));
   activeIndex = Math.max(0, Math.min(activeIndex, Math.max(0, workingSamples.length - 1)));
   return updated;
 }
 
-export function renderActiveEditCorpusSample(doc = document) {
-  const list = byId('hushPhase31EditCorpusList', doc);
-  const count = byId('hushPhase31PagedCount', doc);
-  const prev = byId('hushPhase31PrevSample', doc);
-  const next = byId('hushPhase31NextSample', doc);
-  const status = byId('hushPhase31EditCorpusStatus', doc);
-  if (!list) return;
-  list.textContent = '';
-  setSaveState(doc, '');
+function setCarouselCount(doc = document) {
+  const count = byId('hushPhase31CarouselCount', doc);
   const total = workingSamples.length;
   activeIndex = Math.max(0, Math.min(activeIndex, Math.max(0, total - 1)));
-  if (count) count.textContent = total ? `Sample ${activeIndex + 1} of ${total}` : 'Sample 0 of 0';
+  if (count) count.textContent = total ? `Sample ${activeIndex + 1} / ${total} - swipe samples` : 'Sample 0 / 0';
+  const prev = byId('hushPhase31CarouselPrev', doc);
+  const next = byId('hushPhase31CarouselNext', doc);
   if (prev) prev.disabled = activeIndex <= 0;
   if (next) next.disabled = !total || activeIndex >= total - 1;
-  if (status) status.textContent = total ? 'One sample rendered. Edits stay in working memory until Save.' : 'No logged customizer samples yet.';
+}
 
-  if (!total) {
-    const empty = doc.createElement('p');
-    empty.className = 'hush-phase31-edit-empty';
-    empty.textContent = 'No logged customizer samples yet.';
-    list.appendChild(empty);
+function syncCarouselPosition(doc = document) {
+  const list = byId('hushPhase31EditCorpusList', doc);
+  const rows = slideRows(doc);
+  if (!list || !rows.length) {
+    activeIndex = 0;
+    setCarouselCount(doc);
     return;
   }
+  const listRect = list.getBoundingClientRect();
+  const targetX = listRect.left + listRect.width / 2;
+  let nextIndex = 0;
+  let bestDistance = Infinity;
+  rows.forEach((row, index) => {
+    const rect = row.getBoundingClientRect();
+    const distance = Math.abs((rect.left + rect.width / 2) - targetX);
+    if (distance < bestDistance) {
+      bestDistance = distance;
+      nextIndex = index;
+    }
+  });
+  activeIndex = nextIndex;
+  setCarouselCount(doc);
+}
 
-  const sample = workingSamples[activeIndex];
+function buildSampleSlide(doc, sample, index) {
   const row = doc.createElement('section');
   row.className = 'hush-phase31-edit-sample';
-  row.dataset.index = String(activeIndex);
+  row.dataset.index = String(index);
+  row.setAttribute('aria-label', `Corpus sample ${index + 1} of ${workingSamples.length}`);
 
   const remove = doc.createElement('button');
   remove.type = 'button';
   remove.className = 'hush-phase31-edit-remove';
-  remove.setAttribute('aria-label', `Remove sample ${activeIndex + 1}`);
-  remove.textContent = '×';
+  remove.setAttribute('aria-label', `Remove sample ${index + 1}`);
+  remove.textContent = 'x';
 
   const area = doc.createElement('textarea');
   area.className = 'hush-phase31-edit-text';
@@ -266,7 +300,36 @@ export function renderActiveEditCorpusSample(doc = document) {
   row.appendChild(label(doc, 'Writing sample', area));
   row.appendChild(label(doc, 'Discourse Mode', mode));
   row.appendChild(label(doc, 'Retrieval Trigger', retrieval));
-  list.appendChild(row);
+  return row;
+}
+
+export function renderActiveEditCorpusSample(doc = document) {
+  const list = byId('hushPhase31EditCorpusList', doc);
+  const status = byId('hushPhase31EditCorpusStatus', doc);
+  if (!list) return;
+  list.dataset.td613CarouselOwned = 'true';
+  list.textContent = '';
+  setSaveState(doc, '');
+  activeIndex = Math.max(0, Math.min(activeIndex, Math.max(0, workingSamples.length - 1)));
+  setCarouselCount(doc);
+  if (status) status.textContent = workingSamples.length ? 'Swipe the carousel. Edits stay in the corpus draft until Save.' : 'No logged customizer samples yet.';
+
+  if (!workingSamples.length) {
+    const empty = doc.createElement('p');
+    empty.className = 'hush-phase31-edit-empty';
+    empty.textContent = 'No logged customizer samples yet.';
+    list.appendChild(empty);
+    return;
+  }
+
+  workingSamples.forEach((sample, index) => {
+    list.appendChild(buildSampleSlide(doc, sample, index));
+  });
+
+  list.scrollLeft = 0;
+  bindEditModalControls(doc);
+  const raf = doc.defaultView?.requestAnimationFrame || ((fn) => doc.defaultView?.setTimeout ? doc.defaultView.setTimeout(fn, 0) : setTimeout(fn, 0));
+  raf(() => syncCarouselPosition(doc));
 }
 
 export function openEditCorpusModal(doc = document) {
@@ -288,11 +351,14 @@ export function closeEditCorpusModal(doc = document) {
 export function moveEditCorpus(delta, doc = document) {
   pullActiveEditCorpusSample(doc);
   activeIndex = Math.max(0, Math.min(activeIndex + delta, Math.max(0, workingSamples.length - 1)));
-  renderActiveEditCorpusSample(doc);
+  const row = slideRows(doc)[activeIndex];
+  if (row) row.scrollIntoView({ behavior: 'smooth', block: 'nearest', inline: 'start' });
+  setCarouselCount(doc);
 }
 
-function removeActive(doc = document) {
-  workingSamples.splice(activeIndex, 1);
+function removeSampleAt(index, doc = document) {
+  pullAllEditCorpusSamples(doc);
+  workingSamples.splice(Math.max(0, Math.min(index, Math.max(0, workingSamples.length - 1))), 1);
   activeIndex = Math.max(0, Math.min(activeIndex, Math.max(0, workingSamples.length - 1)));
   renderActiveEditCorpusSample(doc);
 }
@@ -300,8 +366,7 @@ function removeActive(doc = document) {
 export function saveEditCorpusModal(doc = document) {
   const before = localStorage.getItem(STORAGE_KEY);
   const status = byId('hushPhase31EditCorpusStatus', doc);
-  pullActiveEditCorpusSample(doc);
-  const expected = workingSamples.map(normalizeSampleEntry).filter(Boolean);
+  const expected = pullAllEditCorpusSamples(doc);
   setSaveState(doc, 'saving');
   writeStoredSamples(expected);
   if (!signaturesMatch(expected)) {
@@ -332,44 +397,45 @@ function bindControl(node, key, listener) {
   node.addEventListener('click', listener);
 }
 
-function bindSwipeNavigation(list, doc = document) {
-  if (!list || list.dataset.td613PagedSwipeBound === 'true') return;
-  list.dataset.td613PagedSwipeBound = 'true';
-  let startX = 0;
-  let startY = 0;
-  let tracking = false;
-  list.addEventListener('touchstart', (event) => {
-    const touch = event.touches?.[0];
-    if (!touch) return;
-    startX = touch.clientX;
-    startY = touch.clientY;
-    tracking = true;
-  }, { passive: true });
-  list.addEventListener('touchend', (event) => {
-    if (!tracking) return;
-    tracking = false;
-    const touch = event.changedTouches?.[0];
-    if (!touch) return;
-    const dx = touch.clientX - startX;
-    const dy = touch.clientY - startY;
-    if (Math.abs(dx) < 42 || Math.abs(dx) < Math.abs(dy) * 1.25) return;
-    moveEditCorpus(dx < 0 ? 1 : -1, doc);
-  }, { passive: true });
-}
-
 function bindEditModalControls(doc = document) {
-  bindControl(byId('hushPhase31PrevSample', doc), 'td613PagedPrevBound', (event) => intercept(event, () => moveEditCorpus(-1, doc)));
-  bindControl(byId('hushPhase31NextSample', doc), 'td613PagedNextBound', (event) => intercept(event, () => moveEditCorpus(1, doc)));
-  bindControl(byId('hushPhase31SaveCorpusEdits', doc), 'td613PagedSaveBound', (event) => intercept(event, () => saveEditCorpusModal(doc)));
-  bindControl(byId('hushPhase31CloseCorpusEdit', doc), 'td613PagedCloseBound', (event) => intercept(event, () => closeEditCorpusModal(doc)));
-  bindControl(byId('hushPhase31EditCorpus', doc), 'td613PagedOpenBound', (event) => intercept(event, () => openEditCorpusModal(doc)));
+  bindControl(byId('hushPhase31CarouselPrev', doc), 'td613CarouselPrevBound', (event) => intercept(event, () => moveEditCorpus(-1, doc)));
+  bindControl(byId('hushPhase31CarouselNext', doc), 'td613CarouselNextBound', (event) => intercept(event, () => moveEditCorpus(1, doc)));
+  bindControl(byId('hushPhase31SaveCorpusEdits', doc), 'td613CarouselSaveBound', (event) => intercept(event, () => saveEditCorpusModal(doc)));
+  bindControl(byId('hushPhase31CloseCorpusEdit', doc), 'td613CarouselCloseBound', (event) => intercept(event, () => closeEditCorpusModal(doc)));
+  bindControl(byId('hushPhase31EditCorpus', doc), 'td613CarouselOpenBound', (event) => intercept(event, () => openEditCorpusModal(doc)));
   const list = byId('hushPhase31EditCorpusList', doc);
-  if (list) {
-    bindSwipeNavigation(list, doc);
-    bindControl(list, 'td613PagedRemoveBound', (event) => {
-      if (!event.target?.closest?.('.hush-phase31-edit-remove')) return;
-      intercept(event, () => removeActive(doc));
-    });
+  if (!list) return;
+
+  bindControl(list, 'td613CarouselRemoveBound', (event) => {
+    const remove = event.target?.closest?.('.hush-phase31-edit-remove');
+    if (!remove) return;
+    const row = remove.closest('.hush-phase31-edit-sample');
+    const index = Number(row?.dataset?.index || activeIndex);
+    intercept(event, () => removeSampleAt(index, doc));
+  });
+
+  if (list.dataset.td613CarouselInputBound !== 'true') {
+    list.dataset.td613CarouselInputBound = 'true';
+    const syncRow = (event) => {
+      const row = event.target?.closest?.('.hush-phase31-edit-sample');
+      if (row) pullRowIntoWorkingSamples(row);
+    };
+    list.addEventListener('input', syncRow, { passive: true });
+    list.addEventListener('change', syncRow);
+  }
+
+  if (list.dataset.td613CarouselScrollBound !== 'true') {
+    list.dataset.td613CarouselScrollBound = 'true';
+    let scheduled = false;
+    list.addEventListener('scroll', () => {
+      if (scheduled) return;
+      scheduled = true;
+      const raf = doc.defaultView?.requestAnimationFrame || ((fn) => doc.defaultView?.setTimeout ? doc.defaultView.setTimeout(fn, 0) : setTimeout(fn, 0));
+      raf(() => {
+        scheduled = false;
+        syncCarouselPosition(doc);
+      });
+    }, { passive: true });
   }
 }
 

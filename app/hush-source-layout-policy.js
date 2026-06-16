@@ -190,6 +190,9 @@ function ensureOntologyFields() {
 function ensureEditRows() {
   const list = document.getElementById('hushPhase31EditCorpusList');
   if (!list) return false;
+  if (list.dataset.td613CarouselOwned === 'true' || window.__TD613_HUSH_PHASE31_NATIVE_EDIT_CAROUSEL__?.version?.includes('snap-carousel')) {
+    return true;
+  }
   list.querySelectorAll('.hush-phase31-edit-sample').forEach((row) => {
     const category = row.querySelector('.hush-phase31-edit-category');
     if (category) {

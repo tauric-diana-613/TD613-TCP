@@ -13,7 +13,7 @@ import {
 } from './hush-phase31-native-edit-carousel-v4.js';
 import * as nativePhase311 from './hush-phase31-1-original.js';
 
-const VERSION = 'phase-31.1-dropdown-paged-editor/v5-single-owner';
+const VERSION = 'phase-31.1-dropdown-snap-carousel/v6-single-owner';
 
 export function initHushPhase311(doc = document) {
   upgradeCustomizerFields(doc);
@@ -22,7 +22,7 @@ export function initHushPhase311(doc = document) {
     : { installed: false };
   exposeNativeCorpusCarousel(doc);
   upgradeCustomizerFields(doc);
-  return { ...result, version: VERSION, dropdownPagedEditor: true, singleEditOwner: true };
+  return { ...result, version: VERSION, dropdownSnapCarousel: true, singleEditOwner: true };
 }
 
 if (typeof window !== 'undefined' && typeof document !== 'undefined') {
@@ -30,17 +30,19 @@ if (typeof window !== 'undefined' && typeof document !== 'undefined') {
   if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', boot, { once: true });
   else boot();
   window.addEventListener('td613:hush:core-ready', boot, { once: true });
-  window.__TD613_HUSH_PHASE31_NATIVE_EDIT_CAROUSEL__ = {
-    version: VERSION,
-    openEditCorpusModal,
-    closeEditCorpusModal,
-    renderActiveEditCorpusSample,
-    moveEditCorpus,
-    pullActiveEditCorpusSample,
-    saveEditCorpusModal,
-    readStoredSamples,
-    writeStoredSamples,
-    installNativeCorpusCarousel,
-    upgradeCustomizerFields
-  };
+  if (!window.__TD613_HUSH_PHASE31_NATIVE_EDIT_CAROUSEL__) {
+    window.__TD613_HUSH_PHASE31_NATIVE_EDIT_CAROUSEL__ = {
+      version: VERSION,
+      openEditCorpusModal,
+      closeEditCorpusModal,
+      renderActiveEditCorpusSample,
+      moveEditCorpus,
+      pullActiveEditCorpusSample,
+      saveEditCorpusModal,
+      readStoredSamples,
+      writeStoredSamples,
+      installNativeCorpusCarousel,
+      upgradeCustomizerFields
+    };
+  }
 }
