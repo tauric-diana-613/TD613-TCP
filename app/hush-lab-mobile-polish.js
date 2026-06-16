@@ -1,4 +1,4 @@
-const VERSION = 'hush-lab-mobile-polish/v2-panel-aware-copy';
+const VERSION = 'hush-lab-mobile-polish/v3-no-normalization-loop';
 const $ = (id, doc = document) => doc.getElementById(id);
 let observer = null;
 let normalizing = false;
@@ -192,6 +192,10 @@ function copyForNode(node) {
   }
 }
 
+function staleUnavailable(value = '') {
+  return /\bunavailable\b/i.test(value) && !/\bunavailable until\b/i.test(value);
+}
+
 function normalizeUnavailableText(root) {
   if (!root || normalizing) return;
   normalizing = true;
@@ -200,15 +204,14 @@ function normalizeUnavailableText(root) {
       acceptNode(node) {
         const parent = node.parentElement;
         if (!parent || ['SCRIPT', 'STYLE', 'TEXTAREA', 'INPUT', 'SELECT', 'OPTION'].includes(parent.tagName)) return NodeFilter.FILTER_REJECT;
-        const value = node.nodeValue || '';
-        if (!/\bunavailable\b/i.test(value)) return NodeFilter.FILTER_REJECT;
-        return NodeFilter.FILTER_ACCEPT;
+        return staleUnavailable(node.nodeValue || '') ? NodeFilter.FILTER_ACCEPT : NodeFilter.FILTER_REJECT;
       }
     });
     const nodes = [];
     while (walker.nextNode()) nodes.push(walker.currentNode);
     nodes.forEach((node) => {
-      node.nodeValue = node.nodeValue.replace(/\bunavailable(?: until [^.,;\n]*)?\b/gi, copyForNode(node));
+      const next = (node.nodeValue || '').replace(/\bunavailable\b/gi, copyForNode(node));
+      if (next !== node.nodeValue) node.nodeValue = next;
     });
   } finally {
     normalizing = false;
@@ -223,7 +226,7 @@ function bind(doc = document) {
   if (!lab) return;
   normalizeUnavailableText(lab);
   observer = new MutationObserver(() => normalizeUnavailableText(lab));
-  observer.observe(lab, { childList: true, subtree: true, characterData: true });
+  observer.observe(lab, { childList: true, subtree: true });
 }
 
 if (typeof document !== 'undefined') {
