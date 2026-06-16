@@ -2,7 +2,7 @@
 (function () {
   'use strict';
 
-  var VERSION = 'pr123-strict-provider-bridge/v3-visible-status-endpoint-fallback';
+  var VERSION = 'pr123-strict-provider-bridge/v4-transmission-plate';
   var ENDPOINTS = ['/api/hush-generate-strict', 'https://td613.vercel.app/api/hush-generate-strict'];
   var running = false;
 
@@ -16,9 +16,9 @@
     var host = $('hushGeneratorModeWrap') || $('hushGateStrip') || ($('generateMaskedOutputBtn') && $('generateMaskedOutputBtn').closest('.hush-transform-gate')) || ($('generateMaskedOutputBtn') && $('generateMaskedOutputBtn').parentElement);
     var status = document.createElement('div');
     status.id = 'hushStrictProviderStatus';
-    status.className = 'hush-warning-panel hush-generator-status';
+    status.className = 'hush-warning-panel hush-generator-status hush-transmission-plate';
     status.setAttribute('aria-live', 'polite');
-    status.style.cssText = 'display:block;margin:.65rem 0 0;padding:.7rem .85rem;border:1px solid rgba(137,255,240,.28);border-radius:18px;background:rgba(3,9,20,.82);color:rgba(226,255,236,.92);font-size:.72rem;line-height:1.35;letter-spacing:.02em;white-space:normal;overflow-wrap:anywhere;';
+    status.style.cssText = 'display:block;position:relative;margin:.56rem 0 .18rem;padding:.62rem .82rem .62rem 1.05rem;border:1px solid rgba(137,255,240,.24);border-left:3px solid rgba(137,255,240,.78);border-radius:12px;background:linear-gradient(135deg,rgba(3,9,20,.88),rgba(10,7,22,.78));color:rgba(226,255,236,.92);font-size:.68rem;line-height:1.35;letter-spacing:.025em;white-space:normal;overflow-wrap:anywhere;box-shadow:inset 0 1px 0 rgba(255,255,255,.06),0 0 18px rgba(137,255,240,.08);';
     status.textContent = 'Strict provider bridge ready.';
     if (host && host.parentElement && host.id === 'hushGateStrip') host.insertAdjacentElement('beforebegin', status);
     else if (host && host.appendChild) host.appendChild(status);
@@ -43,6 +43,19 @@
     if (!status) return;
     status.dataset.tone = tone || 'info';
     status.textContent = message;
+    if (tone === 'error') {
+      status.style.borderColor = 'rgba(255,118,104,.34)';
+      status.style.borderLeftColor = 'rgba(255,118,104,.82)';
+      status.style.boxShadow = 'inset 0 1px 0 rgba(255,255,255,.06),0 0 18px rgba(255,118,104,.10)';
+    } else if (tone === 'ok') {
+      status.style.borderColor = 'rgba(137,255,240,.24)';
+      status.style.borderLeftColor = 'rgba(49,255,138,.82)';
+      status.style.boxShadow = 'inset 0 1px 0 rgba(255,255,255,.06),0 0 18px rgba(49,255,138,.10)';
+    } else {
+      status.style.borderColor = 'rgba(137,255,240,.24)';
+      status.style.borderLeftColor = 'rgba(137,255,240,.78)';
+      status.style.boxShadow = 'inset 0 1px 0 rgba(255,255,255,.06),0 0 18px rgba(137,255,240,.08)';
+    }
     var outputStatus = $('hushOutputStatusText');
     if (outputStatus) outputStatus.textContent = tone === 'ok' ? 'Provider' : tone === 'error' ? 'Held' : 'Running';
   }
@@ -65,7 +78,7 @@
   }
   function sourceLayoutPolicy() {
     return {
-      version: 'pr123-strict-provider-bridge/v3-current-hush',
+      version: 'pr123-strict-provider-bridge/v4-transmission-plate',
       source_line_breaks_are_constraints: false,
       source_line_breaks_are_reading_context: true,
       mask_line_breaks_may_guide_output_pacing: true,
@@ -77,7 +90,7 @@
     var mask = selectedMaskPayload();
     var candidateCount = 2;
     var contract = {
-      promptVersion: 'hush-strict-provider-bridge-current/v3',
+      promptVersion: 'hush-strict-provider-bridge-current/v4',
       sourceText: source,
       messageDraftText: source,
       protectedBaselineText: $('protectedBaselineInput') ? $('protectedBaselineInput').value : '',
@@ -105,7 +118,7 @@
         sourceLayoutPolicy().instruction
       ],
       flightPacket: {
-        packet_version: 'hush-strict-provider-bridge-flight/v3',
+        packet_version: 'hush-strict-provider-bridge-flight/v4',
         packet_tier: words(mask.sampleSeed || '') >= 180 ? 'strict_remote_mask_evidence_packet' : 'strict_remote_mask_label_packet',
         mask_id: mask.id,
         mask_label: mask.label,
