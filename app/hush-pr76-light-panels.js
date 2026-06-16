@@ -1,4 +1,4 @@
-const VERSION = 'hush-pr76-light-panels/v3-dom-only-readonly';
+const VERSION = 'hush-pr76-light-panels/v4-stable-profile-host-no-observer';
 const $ = (id, doc = document) => doc.getElementById(id);
 const text = (value) => String(value ?? '').trim();
 const esc = (value = '') => String(value ?? '').replaceAll('&', '&amp;').replaceAll('<', '&lt;').replaceAll('>', '&gt;').replaceAll('"', '&quot;').replaceAll("'", '&#39;');
@@ -22,7 +22,22 @@ function installStyle(doc = document) {
       display: block !important;
       margin: .4rem 0 .54rem !important;
     }
+    body[data-page-kind="adversarial-bench"][data-hush-pr76-active="true"] #messageDraftProfile {
+      display: none !important;
+      height: 0 !important;
+      min-height: 0 !important;
+      margin: 0 !important;
+      padding: 0 !important;
+      overflow: hidden !important;
+      opacity: 0 !important;
+      pointer-events: none !important;
+    }
+    body[data-page-kind="adversarial-bench"] #hushPr76AuthorshipProfileHost[hidden],
     body[data-page-kind="adversarial-bench"] #hushSuggestedMasksPanel[hidden] { display: none !important; }
+    body[data-page-kind="adversarial-bench"] #hushPr76AuthorshipProfileHost {
+      display: block !important;
+      margin: .4rem 0 .54rem !important;
+    }
     .hush-pr76-profile-panel {
       position: relative;
       margin: .28rem 0 .58rem;
@@ -246,11 +261,30 @@ function profileFor(source = '') {
   return { wordCount: tokens.length, charCount: source.replace(/\s/g, '').length, sentenceCount: sentences.length, avgSentence, maxSentence: Math.max(0, ...sentenceLengths), lexicalVariety, punctuationDensity, caveatHits, literalHits, firstPerson, secondPerson, repeats, heat, route };
 }
 
+function ensureProfileHost(doc = document) {
+  let host = $('hushPr76AuthorshipProfileHost', doc);
+  if (host) return host;
+  host = doc.createElement('section');
+  host.id = 'hushPr76AuthorshipProfileHost';
+  host.setAttribute('aria-label', 'Authorship profile');
+  host.hidden = true;
+  const profile = $('messageDraftProfile', doc);
+  const rail = $('hushInputControlRail', doc);
+  const input = $('messageDraftInput', doc);
+  if (profile) profile.insertAdjacentElement('afterend', host);
+  else if (rail) rail.insertAdjacentElement('afterend', host);
+  else if (input) input.insertAdjacentElement('afterend', host);
+  else doc.body.appendChild(host);
+  return host;
+}
+
 function renderProfile(doc = document) {
   const source = $('messageDraftInput', doc)?.value || '';
-  const host = $('messageDraftProfile', doc);
-  if (!host || !text(source)) return;
+  const host = ensureProfileHost(doc);
+  if (!host || !text(source)) return false;
   const p = profileFor(source);
+  host.hidden = false;
+  if (doc.body) doc.body.dataset.hushPr76Active = 'true';
   host.innerHTML = `<section class="hush-pr76-profile-panel" aria-label="Authorship profile"><div class="hush-pr76-profile-head"><span>Authorship Profile</span><strong>Scroll Stylometrics</strong><p>${esc(p.route)}</p></div><div class="hush-pr76-metric-grid">${[
     metric('Words', p.wordCount),
     metric('Characters', p.charCount),
@@ -265,12 +299,13 @@ function renderProfile(doc = document) {
     metric('Second person', p.secondPerson),
     metric('Recurrence', p.repeats)
   ].join('')}</div><div class="hush-pr76-scroll-hint">↕ scroll stylometrics</div></section>`;
+  return true;
 }
 
 function ensureSuggestedPanel(doc = document) {
   let panel = $('hushSuggestedMasksPanel', doc);
   if (panel) return panel;
-  const anchor = $('messageDraftProfile', doc) || $('hushInputControlRail', doc) || $('messageDraftInput', doc);
+  const anchor = ensureProfileHost(doc) || $('messageDraftProfile', doc) || $('hushInputControlRail', doc) || $('messageDraftInput', doc);
   if (!anchor) return null;
   panel = doc.createElement('section');
   panel.id = 'hushSuggestedMasksPanel';
@@ -318,10 +353,13 @@ function renderSuggestions(doc = document) {
 }
 
 function hidePanels(doc = document) {
+  const profileHost = $('hushPr76AuthorshipProfileHost', doc);
+  if (profileHost) { profileHost.hidden = true; profileHost.innerHTML = ''; }
   const profile = $('messageDraftProfile', doc);
   if (profile) profile.innerHTML = '';
   const panel = $('hushSuggestedMasksPanel', doc);
   if (panel) { panel.hidden = true; panel.innerHTML = ''; }
+  if (doc.body) doc.body.dataset.hushPr76Active = 'false';
 }
 
 function render(doc = document) {
@@ -336,9 +374,10 @@ function render(doc = document) {
 }
 
 function bind(doc = document) {
-  if (!doc?.body || doc.body.dataset.pageKind !== 'adversarial-bench' || doc.body.dataset.hushPr76DomOnly === 'true') return;
-  doc.body.dataset.hushPr76DomOnly = 'true';
+  if (!doc?.body || doc.body.dataset.pageKind !== 'adversarial-bench' || doc.body.dataset.hushPr76DomOnly === VERSION) return;
+  doc.body.dataset.hushPr76DomOnly = VERSION;
   installStyle(doc);
+  ensureProfileHost(doc);
   ensureSuggestedPanel(doc);
   const analyze = $('analyzeOutputBtn', doc);
   if (analyze) analyze.addEventListener('click', () => {
