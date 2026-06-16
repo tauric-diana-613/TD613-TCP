@@ -1,6 +1,7 @@
 import './hush-edit-corpus-carousel.js?v=202606141720';
+import './hush-input-control-rail.js?v=202606142010';
 
-const HUSH_COMPARE_LAYOUT_CUSTODY_VERSION = 'compare-layout-custody/v3-explicit-breaks+edit-carousel-preload';
+const HUSH_COMPARE_LAYOUT_CUSTODY_VERSION = 'compare-layout-custody/v3-explicit-breaks+edit-carousel-preload+input-rail';
 const $ = (id) => document.getElementById(id);
 
 function rawValue(id) {
