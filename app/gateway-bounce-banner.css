@@ -94,9 +94,12 @@ body[data-page-kind="gateway"] .gateway-preview-bottom-panel.gateway-preview-moi
     box-sizing: border-box !important;
     margin-top: clamp(1rem, 5vw, 1.45rem) !important;
     padding-right: clamp(0.45rem, 3vw, 1rem) !important;
-    color: rgba(204, 216, 236, 0.76) !important;
-    font-size: clamp(0.82rem, 3.8vw, 0.98rem) !important;
-    line-height: 1.46 !important;
-    letter-spacing: 0.012em !important;
+    color: rgba(208, 217, 235, 0.64) !important;
+    font-family: var(--sans, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif) !important;
+    font-size: clamp(0.78rem, 3.45vw, 0.92rem) !important;
+    font-weight: 400 !important;
+    line-height: 1.42 !important;
+    letter-spacing: 0.015em !important;
+    text-transform: none !important;
   }
 }
