@@ -1,7 +1,7 @@
 import { extractCadenceProfile } from './stylometry.js';
 import { rebuildPayloadSentence } from './hush-payload-repair.js';
 
-export const HUSH_SYNTAX_RECOMPOSER_VERSION = 'phase-21';
+export const HUSH_SYNTAX_RECOMPOSER_VERSION = 'phase-21.1-no-warm-logistics';
 
 const safeText = (value) => String(value ?? '');
 const asArray = (value) => Array.isArray(value) ? value.filter(Boolean) : [];
@@ -34,7 +34,7 @@ function timestampLiteral(literals = []) {
 
 function stripLiteralTail(text = '', literals = []) {
   let value = safeText(text);
-  for (const literal of literals) value = value.replace(new RegExp(`\\s*${literal.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')}\\s*$`, 'g'), '');
+  for (const literal of literals) value = value.replace(new RegExp(`\s*${literal.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')}\s*$`, 'g'), '');
   return value.trim();
 }
 
@@ -134,8 +134,6 @@ function familyPayloadParts(family = '', input = {}) {
       return [`Intake record: ${payload}`, versionTail, reasonTail, ...integrity];
     case 'procedural-neutral':
       return [`Procedural note: ${payload}`, holdTail, ...integrity];
-    case 'warm-logistics':
-      return [`Keeping this organized: ${payload}`, versionTail, reasonTail, ...integrity];
     case 'group-chat-soft':
       return [`Just flagging this plainly: ${payload}`, holdTail, ...integrity];
     case 'formal-record':
@@ -189,8 +187,6 @@ function composeByFamily(family = '', input = {}) {
       return sentenceJoin([`Intake note: ${main} ${datePart}`.trim(), ...parts('Review the later file label')]);
     case 'procedural-neutral':
       return sentenceJoin([`Record note: ${main} ${datePart}`.trim(), ...parts('Keep the attachment with the record')]);
-    case 'warm-logistics':
-      return sentenceJoin([`Just keeping this organized: ${main} should stay with the note ${datePart}`.trim(), ...parts('That keeps the context together')]);
     case 'group-chat-soft':
       return sentenceJoin([`Just flagging this plainly: ${main} should stay attached ${datePart}`.trim(), ...parts()]);
     case 'formal-record':
@@ -209,7 +205,7 @@ export function applySyntaxOperation(input = {}) {
 }
 
 export function diversifySyntaxPlans(input = {}) {
-  const families = ['record-first', 'evidence-first', 'date-first', 'caveat-first', 'request-softened', 'two-sentence-brief', 'short-note', 'intake-style', 'procedural-neutral', 'warm-logistics', 'group-chat-soft', 'formal-record', 'compressed-record', 'expanded-context'];
+  const families = ['record-first', 'evidence-first', 'date-first', 'caveat-first', 'request-softened', 'two-sentence-brief', 'short-note', 'intake-style', 'procedural-neutral', 'group-chat-soft', 'formal-record', 'compressed-record', 'expanded-context'];
   const count = Math.max(1, Math.min(36, Number(input.candidateCount || 18)));
   const out = [];
   while (out.length < count) out.push(families[out.length % families.length]);
