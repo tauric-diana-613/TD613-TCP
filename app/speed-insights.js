@@ -1,5 +1,5 @@
-// TD613 Safe Harbor desktop rescue loader
-// Mobile Safe Harbor remains governed by the primary app stylesheet.
+// TD613 rescue stylesheet/module loader.
+// Safe Harbor desktop rescue remains scoped; Hush PR76 restores Analyze surfaces.
 
 window.si = window.si || function () {
   (window.siq = window.siq || []).push(arguments);
@@ -16,4 +16,15 @@ window.si = window.si || function () {
   rescue.rel = 'stylesheet';
   rescue.href = 'app/desktop-rescue.css';
   document.head.appendChild(rescue);
+})();
+
+(function loadHushPr76AnalysisSurfaces() {
+  const route = window.location.pathname + window.location.search + window.location.hash;
+  const hush = /\/adversarial-bench\.html(?:$|[?#])/i.test(route) || /TD613 Hush/i.test(document.title || '');
+  if (!hush || document.querySelector('script[src^="./hush-pr76-mask-recommender.js"]')) return;
+
+  const script = document.createElement('script');
+  script.type = 'module';
+  script.src = './hush-pr76-mask-recommender.js?v=202606160045';
+  document.head.appendChild(script);
 })();
