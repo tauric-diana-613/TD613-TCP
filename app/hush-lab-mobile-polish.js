@@ -1,5 +1,4 @@
-const VERSION = 'hush-lab-mobile-polish/v1-amari-patch-lane';
-const LAB_UNAVAILABLE_COPY = 'unavailable until analysis runs';
+const VERSION = 'hush-lab-mobile-polish/v2-panel-aware-copy';
 const $ = (id, doc = document) => doc.getElementById(id);
 let observer = null;
 let normalizing = false;
@@ -172,6 +171,27 @@ function installStyle(doc = document) {
   doc.head.appendChild(style);
 }
 
+function copyForNode(node) {
+  const panel = node.parentElement?.closest?.('.hush-lab-panel');
+  if (!panel) return 'unavailable until required data exists';
+  switch (panel.id) {
+    case 'escapeVectorPanel':
+      return 'unavailable until transformed output exists';
+    case 'recognitionFieldPanel':
+      return 'unavailable until output analysis completes';
+    case 'personaMemoryPanel':
+      return 'unavailable until output is accepted';
+    case 'iterationPreviewPanel':
+      return 'unavailable until a session row is written';
+    case 'reportExportPanel':
+      return 'unavailable until report data exists';
+    case 'controllerPanel':
+      return 'unavailable until controller review runs';
+    default:
+      return 'unavailable until required data exists';
+  }
+}
+
 function normalizeUnavailableText(root) {
   if (!root || normalizing) return;
   normalizing = true;
@@ -181,14 +201,14 @@ function normalizeUnavailableText(root) {
         const parent = node.parentElement;
         if (!parent || ['SCRIPT', 'STYLE', 'TEXTAREA', 'INPUT', 'SELECT', 'OPTION'].includes(parent.tagName)) return NodeFilter.FILTER_REJECT;
         const value = node.nodeValue || '';
-        if (!/\bunavailable\b/i.test(value) || /unavailable until/i.test(value)) return NodeFilter.FILTER_REJECT;
+        if (!/\bunavailable\b/i.test(value)) return NodeFilter.FILTER_REJECT;
         return NodeFilter.FILTER_ACCEPT;
       }
     });
     const nodes = [];
     while (walker.nextNode()) nodes.push(walker.currentNode);
     nodes.forEach((node) => {
-      node.nodeValue = node.nodeValue.replace(/\bunavailable\b/gi, LAB_UNAVAILABLE_COPY);
+      node.nodeValue = node.nodeValue.replace(/\bunavailable(?: until [^.,;\n]*)?\b/gi, copyForNode(node));
     });
   } finally {
     normalizing = false;
