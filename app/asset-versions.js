@@ -10,6 +10,7 @@
     main:        '202606151705',
     aperture:    '202606151705',
     chrome:      '202606151735',
+    stationPolish: '202606160001',
     gatewayHousekeeping: '202606151825',
     gatewayApertureDesktopAlign: '202606151940',
     gatewayApertureSubtitle: '202606152145',
@@ -63,6 +64,9 @@
   var V = window.TD613_ASSET_VERSIONS;
   document.write('<link rel="stylesheet" href="./styles.css?v=' + V.styles + '" />');
   document.write('<link rel="stylesheet" href="./hush-phase39.css?v=' + V.hushPhase39 + '" />');
+  if (/\/trainer\.html(?:$|[?#])/i.test(window.location.pathname + window.location.search + window.location.hash)) {
+    document.write('<link rel="stylesheet" href="./station-polish.css?v=' + V.stationPolish + '" />');
+  }
   document.write('<link rel="stylesheet" href="./gateway-bounce-banner.css?v=' + (V.gatewayBounceBanner || V.main || '') + '" />');
   document.write('<script src="./gateway-aperture-subtitle.js?v=' + (V.gatewayApertureSubtitle || V.main || '') + '"><\/script>');
   document.write('<script src="./gateway-aperture-moire-panel.js?v=' + (V.gatewayMoirePanel || V.main || '') + '"><\/script>');
