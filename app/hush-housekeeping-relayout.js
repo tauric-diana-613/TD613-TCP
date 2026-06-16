@@ -1,14 +1,21 @@
-const TD613_HUSH_CUSTODY_EXPORT_WAKE_VERSION = '202606171506';
-const TD613_HUSH_HOUSEKEEPING_RELAYOUT_VERSION = '202606171506';
+const TD613_HUSH_CUSTODY_EXPORT_WAKE_VERSION = '202606171650';
+const TD613_HUSH_PR123_EXACT_VERSION = '202606171650';
+const TD613_HUSH_HOUSEKEEPING_RELAYOUT_VERSION = '202606171650';
+
+const appendScriptOnce = (selector, src, type = '') => {
+  if (document.querySelector(selector)) return;
+  const script = document.createElement('script');
+  if (type) script.type = type;
+  script.src = src;
+  const attr = selector.match(/\[([^=]+)=/)?.[1];
+  if (attr) script.setAttribute(attr, 'ui');
+  document.body.appendChild(script);
+};
 
 const ensureHousekeepingExportAssets = () => {
-  if (!document.querySelector('script[data-td613-hush-custody-export-wake="ui"]')) {
-    const script = document.createElement('script');
-    script.type = 'module';
-    script.src = `./hush-custody-export-wake.js?v=${TD613_HUSH_CUSTODY_EXPORT_WAKE_VERSION}`;
-    script.dataset.td613HushCustodyExportWake = 'ui';
-    document.body.appendChild(script);
-  }
+  appendScriptOnce('script[data-td613-hush-pr123-exact="ui"]', `./hush-pr123-strict-undefined-fallback.js?v=${TD613_HUSH_PR123_EXACT_VERSION}`);
+  appendScriptOnce('script[data-td613-hush-pr123-exact-capture="ui"]', `./hush-pr123-exact-capture.js?v=${TD613_HUSH_PR123_EXACT_VERSION}`, 'module');
+  appendScriptOnce('script[data-td613-hush-custody-export-wake="ui"]', `./hush-custody-export-wake.js?v=${TD613_HUSH_CUSTODY_EXPORT_WAKE_VERSION}`, 'module');
 };
 
 const outputCardAnchor = () =>
@@ -92,6 +99,7 @@ function bindRelayout() {
   window.addEventListener('load', () => window.setTimeout(relocateHushCustodyPanel, 160));
   window.addEventListener('td613:hush:patch38-result', () => window.setTimeout(relocateHushCustodyPanel, 80));
   window.addEventListener('td613:hush:outbound-packet', () => window.setTimeout(relocateHushCustodyPanel, 80));
+  window.addEventListener('td613:hush:provider-log', () => window.setTimeout(relocateHushCustodyPanel, 80));
 }
 
 if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', bindRelayout, { once: true });
