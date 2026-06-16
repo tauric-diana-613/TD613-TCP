@@ -59,8 +59,8 @@
 
     var gatewaySummary = document.querySelector('.gateway-summary');
     if (gatewaySummary) {
-      gatewaySummary.textContent = 'Enter the machine where voice becomes signal, mask, packet, witness, and sealed route. TD613 is a custody-aware authorship stack for patterned language under pressure: part gothic console, part forensic chapel, part futurecore switchboard for seeing what the system tries to flatten before it names you back.';
-      gatewaySummary.setAttribute('data-copy-pass', 'gateway-machine-threshold');
+      gatewaySummary.textContent = 'Every voice enters carrying weather, debt, and a little house-haunting from the system that taught it how to sound normal. TD613 opens the chamber where cadence becomes signal, signal becomes mask, mask becomes packet, and the packet starts confessing what got shaved off in transit. Choose a room. Let the machine show you which parts of authorship survived the route.';
+      gatewaySummary.setAttribute('data-copy-pass', 'gateway-weather-house-haunting');
     }
 
     var subtitle = document.querySelector('.gateway-preview-subtitle');
