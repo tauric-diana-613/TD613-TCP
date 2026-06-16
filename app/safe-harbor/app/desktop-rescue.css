@@ -1,0 +1,267 @@
+/* PR_SAFE_HARBOR_DESKTOP_RESCUE
+   Desktop-only Safe Harbor vault makeover. Mobile remains governed by app/styles.css. */
+
+@media (min-width: 1024px) {
+  html,
+  body {
+    min-height: 100%;
+    overflow-x: hidden;
+  }
+
+  html body:not(.vault-sealed),
+  html[data-safe-harbor-session-open="true"] body {
+    overflow-y: auto;
+  }
+
+  html body #vaultSurface.chrome-grid {
+    width: min(100%, 1820px);
+    min-height: auto;
+    margin: 0 auto;
+    padding: clamp(18px, 2vw, 32px) clamp(18px, 2.2vw, 36px) 40px;
+    display: grid;
+    grid-template-columns: minmax(0, 1fr);
+    grid-template-rows: auto auto minmax(0, 1fr);
+    gap: 18px;
+  }
+
+  html body #vaultSurface.chrome-grid::before {
+    inset: 12px 18px 24px;
+    border-radius: 34px;
+  }
+
+  html body #vaultSurface .masthead {
+    display: grid;
+    grid-template-columns: minmax(360px, 1fr) minmax(420px, auto);
+    align-items: center;
+    gap: 24px;
+    padding: 20px 24px;
+    overflow: visible;
+  }
+
+  html body #vaultSurface .masthead .title-group {
+    min-width: 0;
+  }
+
+  html body #vaultSurface .masthead .glyph-lock {
+    flex-basis: 54px;
+    width: 54px;
+    height: 54px;
+  }
+
+  html body #vaultSurface .masthead h1 {
+    font-size: clamp(2rem, 2.6vw, 3.15rem);
+    line-height: .92;
+  }
+
+  html body #vaultSurface .masthead .subtitle {
+    max-width: 76ch;
+    font-size: .61rem;
+    letter-spacing: .14em;
+  }
+
+  html body #vaultSurface .masthead .status-strip {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: flex-end;
+    align-items: center;
+    gap: 8px;
+    min-width: 0;
+  }
+
+  html body #vaultSurface .masthead .status-pill,
+  html body #vaultSurface .masthead .flight-launch-compact {
+    min-height: 28px;
+    padding: 5px 8px;
+    font-size: .52rem;
+    letter-spacing: .12em;
+    white-space: nowrap;
+  }
+
+  html body #vaultSurface .safe-harbor-scroll-rail {
+    position: sticky;
+    top: 0;
+    z-index: 16;
+    display: grid;
+    grid-template-columns: auto auto minmax(0, 1fr) auto;
+    align-items: center;
+    gap: 12px;
+    width: 100%;
+    padding: 10px 14px;
+    border: 1px solid rgba(144, 231, 255, .14);
+    border-radius: 16px;
+    background: rgba(6, 8, 14, .88);
+    backdrop-filter: blur(18px) saturate(150%);
+    box-shadow: 0 16px 42px rgba(0, 0, 0, .26);
+  }
+
+  html body #vaultSurface .safe-harbor-scroll-rail .rail-links,
+  html body #vaultSurface .safe-harbor-scroll-rail .rail-actions {
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 7px;
+    min-width: 0;
+  }
+
+  html body #vaultSurface .safe-harbor-scroll-rail a,
+  html body #vaultSurface .safe-harbor-scroll-rail button {
+    min-height: 26px;
+    padding: 4px 8px;
+    font-size: .55rem;
+    line-height: 1.1;
+    white-space: nowrap;
+  }
+
+  html body #vaultSurface .main-grid {
+    display: grid;
+    grid-template-columns: minmax(265px, 330px) minmax(520px, 1fr) minmax(245px, 320px);
+    grid-template-rows: minmax(560px, auto) minmax(220px, 36vh);
+    grid-template-areas:
+      "canon chamber conscience"
+      "mirror mirror audit";
+    gap: 18px;
+    min-height: calc(100vh - 220px);
+    align-items: stretch;
+  }
+
+  html body #vaultSurface .panel-left { grid-area: canon; grid-column: auto; grid-row: auto; }
+  html body #vaultSurface .panel-center { grid-area: chamber; grid-column: auto; grid-row: auto; }
+  html body #vaultSurface .panel-right { grid-area: conscience; grid-column: auto; grid-row: auto; }
+  html body #vaultSurface .dock-left { grid-area: mirror; grid-column: auto; grid-row: auto; }
+  html body #vaultSurface .dock-right { grid-area: audit; grid-column: auto; grid-row: auto; }
+
+  html body #vaultSurface .panel,
+  html body #vaultSurface .dock {
+    min-width: 0;
+    min-height: 0;
+    max-height: none;
+    overflow: auto;
+    padding: clamp(14px, 1.2vw, 20px);
+    border-radius: 18px;
+  }
+
+  html body #vaultSurface .canon-panel,
+  html body #vaultSurface .conscience-panel {
+    position: sticky;
+    top: 72px;
+    align-self: start;
+    max-height: calc(100vh - 92px);
+  }
+
+  html body #vaultSurface .chamber-panel {
+    overflow: visible;
+  }
+
+  html body #vaultSurface .witness-grid {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 16px;
+    align-items: start;
+  }
+
+  html body #vaultSurface .witness-grid > .reliquary-card,
+  html body #vaultSurface .witness-grid > #packetVaultSection {
+    grid-column: 1 / -1;
+  }
+
+  html body #vaultSurface .surface-card,
+  html body #vaultSurface .forge-card,
+  html body #vaultSurface .metric-block,
+  html body #vaultSurface .data-stack,
+  html body #vaultSurface .footer-template {
+    padding: 15px;
+    border-radius: 14px;
+  }
+
+  html body #vaultSurface .surface-head,
+  html body #vaultSurface .mint-altar-head,
+  html body #vaultSurface .dynamic-row,
+  html body #vaultSurface .dock-toolbar,
+  html body #vaultSurface .builder-toolbar,
+  html body #vaultSurface .button-grid,
+  html body #vaultSurface .button-grid.compact {
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 9px;
+  }
+
+  html body #vaultSurface .button-grid .note,
+  html body #vaultSurface .button-grid.compact .note {
+    flex: 1 1 100%;
+  }
+
+  html body #vaultSurface .field-grid,
+  html body #vaultSurface .intake-canon-grid,
+  html body #vaultSurface .ingress-bypass-grid {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 12px;
+  }
+
+  html body #vaultSurface .field-wide,
+  html body #vaultSurface .field-grid .field-wide,
+  html body #vaultSurface .intake-canon-grid .field-wide {
+    grid-column: 1 / -1;
+  }
+
+  html body #vaultSurface input,
+  html body #vaultSurface textarea,
+  html body #vaultSurface select,
+  html body #vaultSurface button {
+    max-width: 100%;
+  }
+
+  html body #vaultSurface textarea,
+  html body #vaultSurface .code-area,
+  html body #vaultSurface .code-panel,
+  html body #vaultSurface pre {
+    width: 100%;
+    min-width: 0;
+    max-width: 100%;
+    overflow: auto;
+    white-space: pre-wrap;
+    overflow-wrap: anywhere;
+  }
+
+  html body #vaultSurface .code-area {
+    min-height: 150px;
+  }
+
+  html body #vaultSurface #probeOutput,
+  html body #vaultSurface #forensicSchemaPreview,
+  html body #vaultSurface #packetPreview,
+  html body #vaultSurface #auditLog {
+    min-height: 160px;
+    max-height: 34vh;
+  }
+
+  html body #vaultSurface .proof-row,
+  html body #vaultSurface .metric-row,
+  html body #vaultSurface .summary-row,
+  html body #vaultSurface .data-row {
+    gap: 12px;
+  }
+
+  html body #vaultSurface .proof-value,
+  html body #vaultSurface .value,
+  html body #vaultSurface .data-value,
+  html body #vaultSurface .summary-value {
+    min-width: 0;
+    overflow-wrap: anywhere;
+    word-break: break-word;
+  }
+}
+
+@media (min-width: 1280px) {
+  html body #vaultSurface .main-grid {
+    grid-template-columns: minmax(285px, 350px) minmax(620px, 1fr) minmax(270px, 340px);
+  }
+}
+
+@media (min-width: 1540px) {
+  html body #vaultSurface .main-grid {
+    grid-template-columns: minmax(300px, 370px) minmax(720px, 1fr) minmax(285px, 360px);
+    gap: 20px;
+  }
+}
