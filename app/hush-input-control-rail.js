@@ -1,4 +1,4 @@
-const HUSH_INPUT_CONTROL_RAIL_VERSION = 'hush-input-control-rail/v1';
+const HUSH_INPUT_CONTROL_RAIL_VERSION = 'hush-input-control-rail/v2-hug-textarea';
 const $ = (id, doc = document) => doc.getElementById(id);
 
 function installStyle(doc = document) {
@@ -11,8 +11,12 @@ function installStyle(doc = document) {
       grid-template-columns: minmax(0, 1fr) minmax(0, 1fr) !important;
       gap: .52rem !important;
       width: 100% !important;
-      margin: .62rem 0 .72rem !important;
+      margin: .34rem 0 .44rem !important;
       align-items: stretch !important;
+    }
+    body[data-page-kind="adversarial-bench"] .hush-input-control-rail + #messageDraftProfile,
+    body[data-page-kind="adversarial-bench"] .hush-input-control-rail + .bay-profile {
+      margin-top: .12rem !important;
     }
     body[data-page-kind="adversarial-bench"] .hush-input-control-rail #analyzeOutputBtn,
     body[data-page-kind="adversarial-bench"] .hush-input-control-rail #hushPhase32ClearInput {
@@ -51,7 +55,7 @@ function installStyle(doc = document) {
     @media (max-width: 760px) {
       body[data-page-kind="adversarial-bench"] .hush-input-control-rail {
         gap: .44rem !important;
-        margin: .58rem 0 .68rem !important;
+        margin: .28rem 0 .38rem !important;
       }
       body[data-page-kind="adversarial-bench"] .hush-input-control-rail #analyzeOutputBtn,
       body[data-page-kind="adversarial-bench"] .hush-input-control-rail #hushPhase32ClearInput {
@@ -88,10 +92,8 @@ function ensureRail(doc = document) {
     rail.className = 'hush-input-control-rail';
   }
 
-  const profile = $('messageDraftProfile', doc);
-  const anchor = profile || input;
-  if (rail.parentElement !== anchor.parentElement || rail.previousElementSibling !== anchor) {
-    anchor.insertAdjacentElement('afterend', rail);
+  if (rail.parentElement !== input.parentElement || rail.previousElementSibling !== input) {
+    input.insertAdjacentElement('afterend', rail);
   }
 
   const analyze = $('analyzeOutputBtn', doc);
