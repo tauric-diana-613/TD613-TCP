@@ -129,6 +129,17 @@
     return;
   }
 
+  if (pageKind === 'trainer') {
+    [
+      './td613-constants.js',
+      './browser-data.js?v=' + (V.data || V.main || ''),
+      './browser-diagnostics.js?v=' + (V.diagnostics || V.main || ''),
+      './browser-engine.js?v=' + (V.engine || V.main || ''),
+      './trainer-standalone.js?v=' + (V.trainerStandalone || V.main || '202606162245')
+    ].forEach(appendScript);
+    return;
+  }
+
   appendScript('./tcp-copy-hygiene.js?v=' + (V.copyHygiene || V.chrome || V.main || '202606010455'));
 
   var srcs = [
