@@ -3,6 +3,29 @@
     return typeof window.matchMedia === 'function' && window.matchMedia('(min-width: 1024px)').matches;
   }
 
+  function installSubtitleCascadeGuard() {
+    if (!document.body || document.body.getAttribute('data-page-kind') !== 'gateway') return;
+    var existing = document.getElementById('td613GatewaySubtitleCascadeGuard');
+    if (existing) existing.remove();
+    var style = document.createElement('style');
+    style.id = 'td613GatewaySubtitleCascadeGuard';
+    style.textContent = [
+      'body[data-page-kind="gateway"] .gateway-head .gateway-summary,',
+      'body[data-page-kind="gateway"] .gateway-preview-shell .gateway-preview-title-group .gateway-preview-subtitle{',
+      'color:rgba(220,230,244,.64)!important;',
+      'font-family:var(--mono,ui-monospace,SFMono-Regular,Menlo,Monaco,Consolas,"Liberation Mono",monospace)!important;',
+      'font-weight:400!important;',
+      'line-height:1.5!important;',
+      'letter-spacing:.1em!important;',
+      'text-transform:uppercase!important;',
+      '}',
+      'body[data-page-kind="gateway"] .gateway-head .gateway-summary{font-size:.6rem!important;}',
+      'body[data-page-kind="gateway"] .gateway-preview-shell .gateway-preview-title-group .gateway-preview-subtitle{font-size:.6rem!important;}',
+      '@media (min-width:1024px){body[data-page-kind="gateway"] .gateway-head .gateway-summary[data-gateway-title-grouped="true"]{font-size:.66rem!important;}}'
+    ].join('');
+    document.head.appendChild(style);
+  }
+
   function setChamberGlyph(id, glyph, className) {
     var card = document.getElementById(id);
     var span = card && card.querySelector('.gateway-card-kicker .glyph');
@@ -87,15 +110,19 @@
     placeGatewaySummary();
     placeBounceTrace();
     installChamberGlyphs();
+    installSubtitleCascadeGuard();
   }
 
   if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', installGatewayCopy, { once: true });
   else installGatewayCopy();
   window.setTimeout(installGatewayCopy, 400);
-  window.setTimeout(installChamberGlyphs, 900);
+  window.setTimeout(installGatewayCopy, 900);
+  window.setTimeout(installGatewayCopy, 1600);
+  window.setTimeout(installSubtitleCascadeGuard, 2400);
   window.addEventListener('resize', function () {
     placeGatewaySummary();
     placeBounceTrace();
     installChamberGlyphs();
+    installSubtitleCascadeGuard();
   }, { passive: true });
 }());
