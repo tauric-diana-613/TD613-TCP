@@ -4,9 +4,9 @@ import './hush-pr76-light-panels.js?v=202606162225';
 import './hush-lab-mobile-polish.js?v=202606162345';
 import './hush-lab-provider-sync.js?v=202606170020';
 import './hush-output-active-mask-route.js?v=202606170220';
-import './hush-custody-export-wake.js?v=202606171506';
+import './hush-custody-export-wake.js?v=202606171635';
 
-const HUSH_COMPARE_LAYOUT_CUSTODY_VERSION = 'compare-layout-custody/v4-explicit-breaks+edit-carousel-preload+input-rail+pr76-dom-only+lab-mobile-polish+provider-sync+output-active-mask-route+custody-export-wake';
+const HUSH_COMPARE_LAYOUT_CUSTODY_VERSION = 'compare-layout-custody/v5-exact-custody-export-wake';
 const $ = (id) => document.getElementById(id);
 
 function rawValue(id) {
@@ -97,5 +97,6 @@ else boot();
 
 window.addEventListener('td613:hush:patch38-result', () => { window.setTimeout(syncTransformationCheckLayout, 80); window.setTimeout(syncCustodyExports, 90); });
 window.addEventListener('td613:hush:outbound-packet', () => { window.setTimeout(syncTransformationCheckLayout, 80); window.setTimeout(syncCustodyExports, 90); });
+window.addEventListener('td613:hush:provider-log', () => window.setTimeout(syncCustodyExports, 90));
 
 window.__TD613_HUSH_COMPARE_LAYOUT_CUSTODY__ = { version: HUSH_COMPARE_LAYOUT_CUSTODY_VERSION, syncTransformationCheckLayout, syncCustodyExports };
