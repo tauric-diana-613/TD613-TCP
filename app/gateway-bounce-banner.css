@@ -11,7 +11,7 @@ body[data-page-kind="gateway"] .gateway-card-kicker .glyph[data-gateway-glyph-ov
 body[data-page-kind="gateway"] .gateway-head .gateway-summary {
   color: rgba(220, 230, 244, 0.64) !important;
   font-family: var(--mono) !important;
-  font-size: 0.66rem !important;
+  font-size: 0.6rem !important;
   font-weight: 400 !important;
   line-height: 1.5 !important;
   letter-spacing: 0.1em !important;
