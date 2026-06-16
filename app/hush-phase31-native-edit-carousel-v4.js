@@ -1,4 +1,4 @@
-const VERSION = 'phase-31.1-edit-modal/dropdown-paged-v4';
+const VERSION = 'phase-31.1-edit-modal/dropdown-paged-v5-single-owner';
 const STORAGE_KEY = 'td613:hush:phase31:logged-samples:v1';
 const DISCOURSE_MODES = ['explanatory','argumentative','narrative','procedural','reflective-affective','legal-forensic','casual-conversational','technical-operational','poetic-symbolic','corrective-repair','compressed-summary'];
 const RETRIEVAL_TRIGGERS = ['baseline-voice','high-pressure','failure-recovery','correction-request','disagreement-pushback','implementation-handoff','evidence-framing','boundary-refusal','uncertainty-caveat','deep-explanation','compression-summary','affective-repair','ritual-symbolic','public-facing','private-diagnostic'];
@@ -265,15 +265,18 @@ export function renderActiveEditCorpusSample(doc = document) {
   row.appendChild(label(doc, 'Discourse Mode', mode));
   row.appendChild(label(doc, 'Retrieval Trigger', retrieval));
   list.appendChild(row);
+  console.info('rendered edit rows', doc.querySelectorAll('.hush-phase31-edit-sample').length);
 }
 
 export function openEditCorpusModal(doc = document) {
+  console.info('[Hush edit owner] opening virtualized dropdown editor');
   upgradeCustomizerFields(doc);
   const modal = ensureModal(doc);
   workingSamples = readStoredSamples();
   activeIndex = 0;
   modal.hidden = false;
-  requestAnimationFrame(() => renderActiveEditCorpusSample(doc));
+  const raf = doc.defaultView?.requestAnimationFrame || ((fn) => doc.defaultView?.setTimeout ? doc.defaultView.setTimeout(fn, 0) : setTimeout(fn, 0));
+  raf(() => renderActiveEditCorpusSample(doc));
 }
 
 export function closeEditCorpusModal(doc = document) {
@@ -311,6 +314,7 @@ export function saveEditCorpusModal(doc = document) {
   }
   setSaveState(doc, 'saved');
   if (status) status.textContent = `Saved ${expected.length} corpus sample${expected.length === 1 ? '' : 's'}.`;
+  window.__TD613_HUSH_PHASE31_CUSTOMIZER__?.refreshFromStoredSamples?.(doc);
   window.setTimeout(() => closeEditCorpusModal(doc), 520);
 }
 
@@ -352,10 +356,4 @@ export function exposeNativeCorpusCarousel(doc = document) {
     upgradeCustomizerFields
   };
   installNativeCorpusCarousel(doc);
-}
-
-if (typeof document !== 'undefined') {
-  installNativeCorpusCarousel(document);
-  if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', () => installNativeCorpusCarousel(document), { once: true });
-  else window.setTimeout(() => installNativeCorpusCarousel(document), 0);
 }

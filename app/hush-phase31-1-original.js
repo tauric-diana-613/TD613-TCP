@@ -18,6 +18,27 @@ const byId = (id, doc = document) => doc.getElementById(id);
 const words = (value = '') => (String(value).match(/[A-Za-z0-9][A-Za-z0-9'-]*/g) || []).length;
 const slug = (value = 'custom-mask') => text(value).toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, '') || 'custom-mask';
 const asArray = (value) => Array.isArray(value) ? value : [];
+const DISCOURSE_ALIASES = Object.freeze({
+  reflective: 'reflective-affective',
+  casual: 'casual-conversational',
+  technical: 'technical-operational',
+  repair: 'corrective-repair',
+  uncategorized: 'explanatory'
+});
+const RETRIEVAL_ALIASES = Object.freeze({
+  uncategorized: 'baseline-voice',
+  '': 'baseline-voice'
+});
+
+function discourseModeValue(value = '') {
+  const raw = text(value);
+  return DISCOURSE_ALIASES[raw] || raw || 'explanatory';
+}
+
+function retrievalTriggerValue(value = '') {
+  const raw = text(value);
+  return RETRIEVAL_ALIASES[raw] || raw || 'baseline-voice';
+}
 
 let dotTimer = null;
 let loaderArmed = false;
@@ -61,11 +82,14 @@ function sampleCategory(entry) {
 function normalizeSampleEntry(entry) {
   const body = sampleText(entry);
   if (!body) return null;
-  const promptCategory = typeof entry === 'string' ? 'uncategorized' : text(entry?.promptCategory || entry?.contextLabel || 'uncategorized') || 'uncategorized';
+  const promptCategory = typeof entry === 'string' ? 'explanatory' : discourseModeValue(entry?.discourseMode || entry?.promptCategory || 'explanatory');
+  const contextLabel = typeof entry === 'string' ? 'baseline-voice' : retrievalTriggerValue(entry?.retrievalTrigger || entry?.contextLabel || '');
   return {
     text: body,
     promptCategory,
-    contextLabel: typeof entry === 'string' ? promptCategory : text(entry?.contextLabel || entry?.promptCategory || promptCategory) || promptCategory
+    contextLabel,
+    discourseMode: promptCategory,
+    retrievalTrigger: contextLabel
   };
 }
 
@@ -327,9 +351,9 @@ function logSample(doc = document) {
     updateWordCounter(doc);
     return null;
   }
-  const promptCategory = text(byId('hushPhase31SampleCategory', doc)?.value) || 'uncategorized';
-  const contextLabel = text(byId('hushPhase31ContextLabel', doc)?.value) || promptCategory;
-  const entry = { text: raw, promptCategory, contextLabel };
+  const promptCategory = discourseModeValue(byId('hushPhase31SampleCategory', doc)?.value);
+  const contextLabel = retrievalTriggerValue(byId('hushPhase31ContextLabel', doc)?.value);
+  const entry = { text: raw, promptCategory, contextLabel, discourseMode: promptCategory, retrievalTrigger: contextLabel };
   samples.push(entry);
   activeMask = createLocalCustomMask(activeMask || { label: 'Unsaved Custom Mask', id: 'custom-unsaved-phase31-1' }, samples);
   persistSamples();
@@ -476,12 +500,12 @@ function normalizeImportedSamples(parsed = {}, imported = {}) {
   const sourceSamples = asArray(parsed.samples).length ? parsed.samples : asArray(imported.samples);
   const fromSamples = sourceSamples.map((sample) => ({
     text: text(sample?.text || ''),
-    promptCategory: text(sample?.promptCategory || sample?.contextLabel || 'imported'),
-    contextLabel: text(sample?.contextLabel || sample?.promptCategory || 'imported')
+    promptCategory: discourseModeValue(sample?.discourseMode || sample?.promptCategory || 'explanatory'),
+    contextLabel: retrievalTriggerValue(sample?.retrievalTrigger || sample?.contextLabel || '')
   })).filter((sample) => sample.text);
   if (fromSamples.length) return fromSamples;
   const seed = text(parsed.sampleSeed || imported.sampleSeed || '');
-  return seed ? [{ text: seed, promptCategory: 'imported', contextLabel: 'imported' }] : [];
+  return seed ? [{ text: seed, promptCategory: 'explanatory', contextLabel: 'baseline-voice', discourseMode: 'explanatory', retrievalTrigger: 'baseline-voice' }] : [];
 }
 
 async function importMaskFromFile(file, doc = document) {
@@ -637,7 +661,7 @@ function saveEditCorpusModal(doc = document) {
   closeEditCorpusModal(doc);
 }
 
-function orderCustomizer(doc = document) {
+function orderCustomizer(doc = document, options = {}) {
   const warnings = byId('hushSwapWarningsPanel', doc);
   const match = byId('hushProfileMatchPanel', doc);
   if (!warnings || !match || !warnings.parentElement) return null;
@@ -651,7 +675,7 @@ function orderCustomizer(doc = document) {
   }
   parent.insertBefore(panel, match);
   if (!byId('hushPhase31SaveModal', doc)) doc.body.insertAdjacentHTML('beforeend', modalHtml());
-  if (!byId('hushPhase31EditCorpusModal', doc)) doc.body.insertAdjacentHTML('beforeend', editCorpusModalHtml());
+  if (!options.externalEditOwner && !byId('hushPhase31EditCorpusModal', doc)) doc.body.insertAdjacentHTML('beforeend', editCorpusModalHtml());
   return panel;
 }
 
@@ -675,10 +699,26 @@ function clearDraft(doc = document) {
   area.focus({ preventScroll: true });
 }
 
-export function initHushPhase311(doc = document) {
+function refreshFromStoredSamples(doc = document) {
+  samples = readStoredSamples();
+  activeMask = samples.length ? rebuildActiveMaskFromSamples(samples) : null;
+  if (activeMask) syncBench(activeMask, doc);
+  else {
+    const bench = window.__TD613_HUSH_BENCH__ || {};
+    const state = bench.benchState || {};
+    state.activeCustomMask = null;
+    const ref = byId('maskReferenceInput', doc);
+    if (ref) ref.value = '';
+  }
+  renderLedger(doc);
+  return samples;
+}
+
+export function initHushPhase311(doc = document, options = {}) {
   document.title = 'TD613 Hush';
   installLoading(doc);
-  const panel = orderCustomizer(doc);
+  const externalEditOwner = Boolean(options.externalEditOwner);
+  const panel = orderCustomizer(doc, { externalEditOwner });
   if (!panel) return { version: VERSION, installed: false };
   setCustomizerVisible(doc);
   bindOnce(byId('hushCustomizeTabBtn', doc), 'click', 'td613Phase31NativeCustomizeBound', () => setTimeout(() => setCustomizerVisible(doc), 0));
@@ -686,10 +726,12 @@ export function initHushPhase311(doc = document) {
   bindOnce(byId('hushPhase31LogSampleBtn', doc), 'click', 'td613Phase31NativeLogBound', () => logSample(doc));
   bindOnce(byId('hushPhase31Undo', doc), 'click', 'td613Phase31NativeUndoBound', () => undoSample(doc));
   bindOnce(byId('hushPhase31SaveMaskBtn', doc), 'click', 'td613Phase31NativeSaveBound', () => openSaveModal(doc));
-  bindOnce(byId('hushPhase31EditCorpus', doc), 'click', 'td613Phase31NativeEditCorpusBound', () => openEditCorpusModal(doc));
-  bindOnce(byId('hushPhase31CloseCorpusEdit', doc), 'click', 'td613Phase31NativeCloseCorpusEditBound', () => closeEditCorpusModal(doc));
-  bindOnce(byId('hushPhase31SaveCorpusEdits', doc), 'click', 'td613Phase31NativeSaveCorpusEditBound', () => saveEditCorpusModal(doc));
-  bindOnce(byId('hushPhase31EditCorpusList', doc), 'click', 'td613Phase31NativeRemoveCorpusEditBound', (event) => removeEditCorpusRow(event, doc));
+  if (!externalEditOwner) {
+    bindOnce(byId('hushPhase31EditCorpus', doc), 'click', 'td613Phase31NativeEditCorpusBound', () => openEditCorpusModal(doc));
+    bindOnce(byId('hushPhase31CloseCorpusEdit', doc), 'click', 'td613Phase31NativeCloseCorpusEditBound', () => closeEditCorpusModal(doc));
+    bindOnce(byId('hushPhase31SaveCorpusEdits', doc), 'click', 'td613Phase31NativeSaveCorpusEditBound', () => saveEditCorpusModal(doc));
+    bindOnce(byId('hushPhase31EditCorpusList', doc), 'click', 'td613Phase31NativeRemoveCorpusEditBound', (event) => removeEditCorpusRow(event, doc));
+  }
   bindOnce(byId('hushPhase31CancelSave', doc), 'click', 'td613Phase31NativeCancelBound', () => { const modal = byId('hushPhase31SaveModal', doc); if (modal) modal.hidden = true; });
   bindOnce(byId('hushPhase31AddToStudio', doc), 'click', 'td613Phase31NativeAddBound', () => addToStudio(doc));
   bindOnce(byId('hushPhase31ResetCustomizer', doc), 'click', 'td613Phase31NativeResetBound', () => resetCustomizer(doc));
@@ -701,15 +743,10 @@ export function initHushPhase311(doc = document) {
   renderLedger(doc);
   window.setTimeout(() => wireCapsuleIO(doc), 140);
   window.setTimeout(() => wireCapsuleIO(doc), 520);
-  if (typeof window !== 'undefined') window.__TD613_HUSH_PHASE31_CUSTOMIZER__ = { version: VERSION, resetCustomizer, readStoredSamples, writeStoredSamples, rehydrateStoredSamples };
+  if (typeof window !== 'undefined') window.__TD613_HUSH_PHASE31_CUSTOMIZER__ = { version: VERSION, resetCustomizer, readStoredSamples, writeStoredSamples, rehydrateStoredSamples, refreshFromStoredSamples };
   return { version: VERSION, installed: true, corpusPolicy: HUSH_CUSTOM_MASK_CORPUS_POLICY };
 }
 
 if (typeof window !== 'undefined' && typeof document !== 'undefined') {
-  installLoading(document);
-  const boot = () => initHushPhase311(document);
-  if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', boot, { once: true });
-  else boot();
-  window.addEventListener('td613:hush:core-ready', boot, { once: true });
-  window.setTimeout(boot, 240);
+  window.__TD613_HUSH_PHASE31_ORIGINAL_MODULE__ = { version: VERSION, sideEffects: false };
 }

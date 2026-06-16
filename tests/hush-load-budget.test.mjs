@@ -5,6 +5,7 @@ const html = fs.readFileSync('app/adversarial-bench.html', 'utf8');
 const bootstrap = fs.readFileSync('app/chamber-bootstrap.js', 'utf8');
 const light = fs.readFileSync('app/adversarial-bench-light.js', 'utf8');
 const phase31 = fs.readFileSync('app/hush-phase31-1.js', 'utf8');
+const phase31Original = fs.readFileSync('app/hush-phase31-1-original.js', 'utf8');
 const housekeepingRelayout = fs.readFileSync('app/hush-housekeeping-relayout.js', 'utf8');
 const vercel = fs.readFileSync('vercel.json', 'utf8');
 
@@ -24,7 +25,8 @@ for (const heavy of ['browser-engine.js', 'browser-main.js', 'browser-diagnostic
 assert(!/^import .*adversarial-bench\.mjs/m.test(light), 'light controller should not statically import heavy bench');
 assert(light.includes("import('./adversarial-bench.mjs')"), 'light controller should dynamically import heavy bench on demand');
 assert(!/^import .*hush-custom-mask\.js/m.test(phase31), 'Phase31 should not statically import custom-mask/stylometry engine');
-assert(phase31.includes("import('./engine/hush-custom-mask.js')"), 'Phase31 should lazy-load custom-mask engine');
+assert(phase31Original.includes("import('./engine/hush-custom-mask.js')"), 'Phase31 implementation should lazy-load custom-mask engine');
+assert(!html.includes('hush-edit-corpus-open-fallback.js'), 'Hush page should not load fallback edit owner scripts');
 assert(!housekeepingRelayout.includes('hush-phase39-ui.js'), 'housekeeping relayout should not eagerly append Phase 39 UI');
 assert(!/"source": "\/hush-\(\.\*\)".*"no-store/s.test(vercel), 'Hush static assets should not force no-store');
 assert(!/"source": "\/engine\/\(\.\*\)".*"no-store/s.test(vercel), 'engine static assets should not force no-store');

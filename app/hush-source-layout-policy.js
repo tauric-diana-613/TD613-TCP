@@ -218,36 +218,7 @@ function samplesFromEditRows() {
 }
 
 function bindOntologySaveState() {
-  const button = document.getElementById('hushPhase31SaveCorpusEdits');
-  if (!button || button.dataset.td613OntologySaveBound === 'true') return;
-  button.dataset.td613OntologySaveBound = 'true';
-  button.addEventListener('click', () => {
-    button.dataset.saveState = 'saving';
-    const expected = samplesFromEditRows();
-    window.setTimeout(() => {
-      const stored = readStoredSamples();
-      const saved = stored.length === expected.length && expected.every((sample, index) => {
-        const savedSample = stored[index] || {};
-        return savedSample.text === sample.text
-          && (savedSample.promptCategory || savedSample.discourseMode) === sample.promptCategory
-          && (savedSample.contextLabel || savedSample.retrievalTrigger) === sample.contextLabel;
-      });
-      if (!saved) {
-        button.dataset.saveState = 'error';
-        return;
-      }
-      const modal = document.getElementById('hushPhase31EditCorpusModal');
-      const wasHidden = modal?.hidden;
-      if (modal && wasHidden) modal.hidden = false;
-      button.dataset.saveState = 'saved';
-      button.textContent = 'Saved';
-      window.setTimeout(() => {
-        if (modal) modal.hidden = true;
-        button.dataset.saveState = '';
-        button.textContent = 'Save';
-      }, 520);
-    }, 0);
-  });
+  return false;
 }
 
 function installCustomizerVisibilityCss() {

@@ -8,6 +8,20 @@ function sampleText() {
   return Array.from({ length: 82 }, (_, index) => `sampleword${index + 1}`).join(' ') + '.';
 }
 
+function storedSamples(count) {
+  return JSON.stringify({
+    version: 'phase31-logged-samples/v1',
+    updatedAt: '2026-06-15T19:00:00.000Z',
+    samples: Array.from({ length: count }, (_, index) => ({
+      text: `${sampleText()} sample-${index + 1}`,
+      promptCategory: index % 2 ? 'argumentative' : 'explanatory',
+      contextLabel: index % 2 ? 'implementation-handoff' : 'baseline-voice',
+      discourseMode: index % 2 ? 'argumentative' : 'explanatory',
+      retrievalTrigger: index % 2 ? 'implementation-handoff' : 'baseline-voice'
+    }))
+  });
+}
+
 function installDom(storedPayload = '') {
   const dom = new JSDOM(`<!doctype html><body data-page-kind="adversarial-bench">
     <button id="hushBuiltInTabBtn" type="button" aria-pressed="false">Masks</button>
@@ -50,15 +64,19 @@ async function loadPhase31(label) {
 const html = fs.readFileSync('app/adversarial-bench.html', 'utf8');
 const css = fs.readFileSync('app/hush-phase31-1.css', 'utf8');
 const js = fs.readFileSync('app/hush-phase31-1.js', 'utf8');
+const originalJs = fs.readFileSync('app/hush-phase31-1-original.js', 'utf8');
 const policy = fs.readFileSync('app/hush-source-layout-policy.js', 'utf8');
 const stableTransform = fs.readFileSync('app/hush-pr123-stable-transform.js', 'utf8');
 
 assert(html.includes('hush-phase31-1.css?v=202606131510'));
-assert(html.includes('hush-phase31-1.js?v=202606131610'));
+assert(html.includes('hush-phase31-1.js?v=202606151900'));
+assert(!html.includes('hush-edit-corpus-open-fallback.js'), 'edit fallback script should not load on Hush');
 assert(html.includes('hush-source-layout-policy.js?v=202606131610'));
-assert(js.includes('hushPhase31DraftUtility'));
-assert(js.includes('hushPhase31ClearDraft'));
-assert(!js.includes('if (area && samples.length) area.value = samples.map'));
+assert(js.includes('externalEditOwner: true'), 'Phase31 wrapper should disable legacy bulk edit bindings');
+assert(js.includes('dropdownPagedEditor: true'), 'Phase31 wrapper should expose paged editor ownership');
+assert(originalJs.includes('hushPhase31DraftUtility'));
+assert(originalJs.includes('hushPhase31ClearDraft'));
+assert(!originalJs.includes('if (area && samples.length) area.value = samples.map'));
 assert(css.includes('.hush-phase31-draft-utility'));
 assert(css.includes('align-items: baseline'));
 assert(css.includes('#hushPhase31ClearDraft.hush-phase31-clear-draft'));
@@ -107,6 +125,8 @@ const storedPayload = localStorage.getItem(STORAGE_KEY);
 const stored = JSON.parse(storedPayload);
 assert.equal(stored.samples.length, 1, 'one click stores exactly one sample');
 assert.equal(stored.samples[0].text, validSample);
+assert.equal(stored.samples[0].promptCategory, stored.samples[0].discourseMode, 'stored sample preserves discourse alias');
+assert.equal(stored.samples[0].contextLabel, stored.samples[0].retrievalTrigger, 'stored sample preserves retrieval alias');
 dom.window.close();
 
 dom = installDom(storedPayload);
@@ -120,6 +140,28 @@ assert.equal(document.getElementById('hushPhase31WordFloorCounter').textContent,
 document.getElementById('hushPhase31Undo').click();
 assert.equal(document.getElementById('hushPhase31SampleCount').textContent, '0');
 assert.equal(localStorage.getItem(STORAGE_KEY), null, 'undo clears persisted last sample');
+
+dom.window.close();
+
+dom = installDom(storedSamples(29));
+await loadPhase31('paged-edit');
+
+const editButton = document.getElementById('hushPhase31EditCorpus');
+assert.notEqual(editButton.dataset.td613Phase31NativeEditCorpusBound, 'true', 'legacy bulk edit handler is not bound to edit button');
+editButton.click();
+await new Promise((resolve) => setTimeout(resolve, 80));
+assert.equal(document.querySelectorAll('.hush-phase31-edit-sample').length, 1, 'paged editor renders exactly one sample row');
+assert.equal(document.querySelectorAll('.hush-phase31-edit-category').length, 1, 'paged editor renders one discourse dropdown');
+assert.equal(document.querySelectorAll('.hush-phase31-edit-context').length, 1, 'paged editor renders one retrieval dropdown');
+assert.equal(document.getElementById('hushPhase31PagedCount').textContent, 'Sample 1 of 29');
+document.querySelector('.hush-phase31-edit-text').value = 'edited ' + sampleText();
+document.getElementById('hushPhase31SaveCorpusEdits').click();
+await new Promise((resolve) => setTimeout(resolve, 80));
+const editedStored = JSON.parse(localStorage.getItem(STORAGE_KEY));
+assert.equal(editedStored.samples.length, 29, 'paged save preserves full working corpus');
+assert(editedStored.samples[0].text.startsWith('edited '), 'paged save stores edited active sample');
+assert.equal(editedStored.samples[0].promptCategory, editedStored.samples[0].discourseMode);
+assert.equal(editedStored.samples[0].contextLabel, editedStored.samples[0].retrievalTrigger);
 
 dom.window.close();
 console.log('hush-phase31-draft-ledger tests passed');
