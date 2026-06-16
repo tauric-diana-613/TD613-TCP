@@ -2,8 +2,9 @@
 (function () {
   'use strict';
 
-  var VERSION = 'pr168-strict-transform-run-lock/v3-exact-artifact-loader';
+  var VERSION = 'pr168-strict-transform-run-lock/v4-status-plate-loader';
   var EXACT_ASSET_VERSION = '202606171650';
+  var STATUS_PLATE_VERSION = '202606171720';
 
   function byId(id) {
     return document.getElementById(id);
@@ -20,14 +21,36 @@
 
   function ensureExactArtifactScripts() {
     if (!document.body && !document.head) return false;
+    appendScriptOnce('hushGeneratorStatusPlateLoader', './hush-generator-status-plate.js?v=' + STATUS_PLATE_VERSION, 'module');
     appendScriptOnce('hushPr123ExactArtifactLoader', './hush-pr123-strict-undefined-fallback.js?v=' + EXACT_ASSET_VERSION, '');
     appendScriptOnce('hushPr123ExactCaptureLoader', './hush-pr123-exact-capture.js?v=' + EXACT_ASSET_VERSION, 'module');
     appendScriptOnce('hushCustodyExportWakeExactLoader', './hush-custody-export-wake.js?v=' + EXACT_ASSET_VERSION, 'module');
     return true;
   }
 
+  function ensureStatusPlate(message, tone) {
+    if (window.__TD613_HUSH_GENERATOR_STATUS_PLATE__ && typeof window.__TD613_HUSH_GENERATOR_STATUS_PLATE__.set === 'function') {
+      return window.__TD613_HUSH_GENERATOR_STATUS_PLATE__.set(message || 'Strict provider bridge ready.', tone || 'info');
+    }
+    var plate = byId('hushGeneratorStatus') || byId('hushStrictProviderStatus');
+    var gate = byId('hushGateStrip');
+    if (!plate) {
+      plate = document.createElement('div');
+      plate.id = 'hushGeneratorStatus';
+      plate.className = 'hush-warning-panel hush-generator-status hush-transmission-plate';
+      plate.setAttribute('aria-live', 'polite');
+      if (gate && gate.insertAdjacentElement) gate.insertAdjacentElement('beforebegin', plate);
+    }
+    if (plate) {
+      plate.style.display = 'block';
+      plate.textContent = message || plate.textContent || 'Strict provider bridge ready.';
+      plate.dataset.tone = tone || 'info';
+    }
+    return plate;
+  }
+
   function setStatus(message, tone) {
-    var status = byId('hushGeneratorStatus') || byId('hushOutputStatusText');
+    var status = ensureStatusPlate(message, tone);
     if (!status) return;
     status.dataset.tone = tone || 'info';
     status.textContent = message;
@@ -78,19 +101,21 @@
       node.addEventListener(type, function () {
         window.setTimeout(function () { recoverHeldReceiptLock('input-or-mask-change'); }, 0);
         window.setTimeout(function () { window.__TD613_HUSH_CUSTODY_EXPORT_WAKE__?.updateButtons?.(); }, 80);
+        window.setTimeout(function () { ensureStatusPlate(); }, 120);
       }, true);
     });
   }
 
   function installIdleRecovery() {
-    window.setTimeout(function () { recoverHeldReceiptLock('post-boot-idle'); }, 1200);
-    window.setTimeout(function () { recoverHeldReceiptLock('post-boot-idle-late'); }, 3200);
+    window.setTimeout(function () { recoverHeldReceiptLock('post-boot-idle'); ensureStatusPlate(); }, 1200);
+    window.setTimeout(function () { recoverHeldReceiptLock('post-boot-idle-late'); ensureStatusPlate(); }, 3200);
   }
 
   function install() {
     if (!document.body || document.body.dataset.pageKind !== 'adversarial-bench') return;
 
     ensureExactArtifactScripts();
+    ensureStatusPlate();
     installRecoveryListeners();
     installIdleRecovery();
 
@@ -120,6 +145,7 @@
 
       window.__TD613_HUSH_STRICT_TRANSFORM_RUNNING = true;
       setBusy(true);
+      setStatus('Remote provider request preparing… strict packet route is active.', 'info');
 
       return Promise.resolve()
         .then(function () {
@@ -129,6 +155,7 @@
           releaseRunLock('run-finally');
           window.setTimeout(function () { recoverHeldReceiptLock('post-finally-held-receipt'); }, 80);
           window.setTimeout(function () { window.__TD613_HUSH_CUSTODY_EXPORT_WAKE__?.updateButtons?.(); }, 140);
+          window.setTimeout(function () { ensureStatusPlate(); }, 160);
         });
     };
 
@@ -137,15 +164,18 @@
       version: VERSION,
       installedAt: new Date().toISOString(),
       exactAssetVersion: EXACT_ASSET_VERSION,
+      statusPlateVersion: STATUS_PLATE_VERSION,
       release: releaseRunLock,
       recoverHeldReceiptLock: recoverHeldReceiptLock,
-      ensureExactArtifactScripts: ensureExactArtifactScripts
+      ensureExactArtifactScripts: ensureExactArtifactScripts,
+      ensureStatusPlate: ensureStatusPlate
     };
     window.__TD613_HUSH_PR168_RELEASE_RUN_LOCK = releaseRunLock;
   }
 
   function boot() {
     ensureExactArtifactScripts();
+    ensureStatusPlate();
     install();
   }
 
