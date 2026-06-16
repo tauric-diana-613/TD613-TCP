@@ -12,7 +12,7 @@
     chrome:      '202606151735',
     gatewayHousekeeping: '202606151825',
     gatewayApertureDesktopAlign: '202606151940',
-    gatewayApertureSubtitle: '202606151940',
+    gatewayApertureSubtitle: '202606152040',
     gatewayBounceBanner: '202606152030',
     copyHygiene: '202606011235',
     gatewayRescue: '202606110305',
