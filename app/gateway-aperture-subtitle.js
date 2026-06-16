@@ -39,9 +39,11 @@
     if (heading) heading.textContent = 'The Cadence Playground';
 
     var gatewaySummary = document.querySelector('.gateway-summary');
+    var titleBlock = document.querySelector('.gateway-head .gateway-lockup > div:first-child');
     if (gatewaySummary) {
-      gatewaySummary.textContent = 'TD613 is a custody-aware authorship routing stack for patterned voice under pressure. Move through Hush, Flight, Safe Harbor, and Forge Lane to inspect how voice becomes mask, packet, route, witness, and claim without pretending resemblance alone can certify authorship.';
-      gatewaySummary.setAttribute('data-copy-pass', 'gateway-routing-stack');
+      gatewaySummary.textContent = 'Enter the machine where voice becomes signal, mask, packet, witness, and sealed route. TD613 is a custody-aware authorship stack for patterned language under pressure: part gothic console, part forensic chapel, part futurecore switchboard for seeing what the system tries to flatten before it names you back.';
+      gatewaySummary.setAttribute('data-copy-pass', 'gateway-machine-threshold');
+      if (titleBlock && gatewaySummary.parentElement !== titleBlock) titleBlock.appendChild(gatewaySummary);
     }
 
     var subtitle = document.querySelector('.gateway-preview-subtitle');
