@@ -3,6 +3,21 @@
     return typeof window.matchMedia === 'function' && window.matchMedia('(min-width: 1024px)').matches;
   }
 
+  function setChamberGlyph(id, glyph, className) {
+    var card = document.getElementById(id);
+    var span = card && card.querySelector('.gateway-card-kicker .glyph');
+    if (!span) return;
+    span.textContent = glyph;
+    if (className) span.className = className;
+    span.setAttribute('aria-hidden', 'true');
+    span.dataset.gatewayGlyphOverride = 'true';
+  }
+
+  function installChamberGlyphs() {
+    setChamberGlyph('gatewayDoorFlight', 'à', 'glyph glyph-cyan');
+    setChamberGlyph('gatewayDoorHarbor', '𝄐', 'glyph glyph-cyan');
+  }
+
   function placeGatewaySummary() {
     var lockup = document.querySelector('.gateway-head .gateway-lockup');
     var titleBlock = document.querySelector('.gateway-head .gateway-lockup > div:first-child');
@@ -71,13 +86,16 @@
 
     placeGatewaySummary();
     placeBounceTrace();
+    installChamberGlyphs();
   }
 
   if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', installGatewayCopy, { once: true });
   else installGatewayCopy();
   window.setTimeout(installGatewayCopy, 400);
+  window.setTimeout(installChamberGlyphs, 900);
   window.addEventListener('resize', function () {
     placeGatewaySummary();
     placeBounceTrace();
+    installChamberGlyphs();
   }, { passive: true });
 }());
