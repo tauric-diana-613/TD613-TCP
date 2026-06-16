@@ -9,19 +9,18 @@ body[data-page-kind="gateway"] .gateway-preview-bottom-panel.gateway-preview-moi
     position: relative !important;
     display: grid !important;
     grid-template-columns: minmax(42rem, 1fr) minmax(27rem, 34rem) !important;
-    grid-template-rows: auto auto !important;
+    grid-template-rows: auto !important;
     gap: clamp(1rem, 1.7vw, 2rem) clamp(1.25rem, 2vw, 2.25rem) !important;
     align-items: start !important;
   }
 
-  body[data-page-kind="gateway"] .gateway-head .gateway-lockup > div:first-child,
-  body[data-page-kind="gateway"] .gateway-head .gateway-lockup > .gateway-summary {
-    grid-column: 1 !important;
-  }
-
   body[data-page-kind="gateway"] .gateway-head .gateway-lockup > div:first-child {
+    grid-column: 1 !important;
     min-width: 0 !important;
     max-width: none !important;
+    display: flex !important;
+    flex-direction: column !important;
+    align-items: flex-start !important;
   }
 
   body[data-page-kind="gateway"] .gateway-head .gateway-lockup h1 {
@@ -29,14 +28,12 @@ body[data-page-kind="gateway"] .gateway-preview-bottom-panel.gateway-preview-moi
     white-space: nowrap !important;
   }
 
-  body[data-page-kind="gateway"] .gateway-head .gateway-lockup > .gateway-summary {
-    grid-row: 2 !important;
-    align-self: start !important;
-    max-width: clamp(40rem, 52vw, 58rem) !important;
-    margin-top: clamp(0.85rem, 1.4vw, 1.55rem) !important;
-    color: rgba(204, 216, 236, 0.72) !important;
-    font-size: clamp(0.86rem, 0.9vw, 1rem) !important;
-    line-height: 1.48 !important;
+  body[data-page-kind="gateway"] .gateway-head .gateway-lockup .gateway-summary[data-gateway-title-grouped="true"] {
+    max-width: clamp(43rem, 56vw, 63rem) !important;
+    margin-top: clamp(0.9rem, 1.15vw, 1.45rem) !important;
+    color: rgba(204, 216, 236, 0.76) !important;
+    font-size: clamp(0.92rem, 0.98vw, 1.08rem) !important;
+    line-height: 1.5 !important;
     letter-spacing: 0.018em !important;
   }
 
@@ -44,7 +41,7 @@ body[data-page-kind="gateway"] .gateway-preview-bottom-panel.gateway-preview-moi
     display: flex !important;
     flex-direction: column !important;
     grid-column: 2 !important;
-    grid-row: 1 / span 2 !important;
+    grid-row: 1 !important;
     align-self: start !important;
     justify-self: end !important;
     width: min(100%, 33rem) !important;
