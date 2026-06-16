@@ -1,0 +1,2 @@
+redeploy trigger: 2026-06-16T20:50Z
+reason: retry Vercel rate-limit check after PR128
