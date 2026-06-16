@@ -2,10 +2,28 @@
 (function () {
   'use strict';
 
-  var VERSION = 'pr168-strict-transform-run-lock/v2-held-receipt-release';
+  var VERSION = 'pr168-strict-transform-run-lock/v3-exact-artifact-loader';
+  var EXACT_ASSET_VERSION = '202606171650';
 
   function byId(id) {
     return document.getElementById(id);
+  }
+
+  function appendScriptOnce(id, src, type) {
+    if (document.getElementById(id)) return;
+    var script = document.createElement('script');
+    script.id = id;
+    if (type) script.type = type;
+    script.src = src;
+    (document.body || document.head || document.documentElement).appendChild(script);
+  }
+
+  function ensureExactArtifactScripts() {
+    if (!document.body && !document.head) return false;
+    appendScriptOnce('hushPr123ExactArtifactLoader', './hush-pr123-strict-undefined-fallback.js?v=' + EXACT_ASSET_VERSION, '');
+    appendScriptOnce('hushPr123ExactCaptureLoader', './hush-pr123-exact-capture.js?v=' + EXACT_ASSET_VERSION, 'module');
+    appendScriptOnce('hushCustodyExportWakeExactLoader', './hush-custody-export-wake.js?v=' + EXACT_ASSET_VERSION, 'module');
+    return true;
   }
 
   function setStatus(message, tone) {
@@ -59,6 +77,7 @@
       if (/Btn$/.test(id)) type = 'click';
       node.addEventListener(type, function () {
         window.setTimeout(function () { recoverHeldReceiptLock('input-or-mask-change'); }, 0);
+        window.setTimeout(function () { window.__TD613_HUSH_CUSTODY_EXPORT_WAKE__?.updateButtons?.(); }, 80);
       }, true);
     });
   }
@@ -71,13 +90,14 @@
   function install() {
     if (!document.body || document.body.dataset.pageKind !== 'adversarial-bench') return;
 
+    ensureExactArtifactScripts();
     installRecoveryListeners();
     installIdleRecovery();
 
     var api = window.TD613_HUSH_PR123;
     if (!api || typeof api.run !== 'function') return;
 
-    if (!api.__td613Pr168BaseRun) api.__td613Pr168BaseRun = api.run;
+    if (!api.__td613Pr168BaseRun || !/exact-artifacts/.test(String(api.version || ''))) api.__td613Pr168BaseRun = api.run;
     if (api.__td613Pr168Version === VERSION) return;
 
     var baseRun = api.__td613Pr168BaseRun;
@@ -94,7 +114,7 @@
         if (maybeEvent && typeof maybeEvent.preventDefault === 'function') maybeEvent.preventDefault();
         if (maybeEvent && typeof maybeEvent.stopPropagation === 'function') maybeEvent.stopPropagation();
         if (maybeEvent && typeof maybeEvent.stopImmediatePropagation === 'function') maybeEvent.stopImmediatePropagation();
-        setStatus('Strict provider transform already running… waiting for the active 29s watchdog.', 'info');
+        setStatus('Strict provider transform already running… waiting for the active watchdog.', 'info');
         return Promise.resolve(null);
       }
 
@@ -108,6 +128,7 @@
         .finally(function () {
           releaseRunLock('run-finally');
           window.setTimeout(function () { recoverHeldReceiptLock('post-finally-held-receipt'); }, 80);
+          window.setTimeout(function () { window.__TD613_HUSH_CUSTODY_EXPORT_WAKE__?.updateButtons?.(); }, 140);
         });
     };
 
@@ -115,19 +136,26 @@
     window.TD613_HUSH_PR168_RUN_LOCK = {
       version: VERSION,
       installedAt: new Date().toISOString(),
+      exactAssetVersion: EXACT_ASSET_VERSION,
       release: releaseRunLock,
-      recoverHeldReceiptLock: recoverHeldReceiptLock
+      recoverHeldReceiptLock: recoverHeldReceiptLock,
+      ensureExactArtifactScripts: ensureExactArtifactScripts
     };
     window.__TD613_HUSH_PR168_RELEASE_RUN_LOCK = releaseRunLock;
   }
 
-  if (document.readyState === 'loading') {
-    document.addEventListener('DOMContentLoaded', install, { once: true });
-  } else {
+  function boot() {
+    ensureExactArtifactScripts();
     install();
   }
 
-  window.setTimeout(install, 250);
-  window.setTimeout(install, 1000);
-  window.setTimeout(install, 2500);
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', boot, { once: true });
+  } else {
+    boot();
+  }
+
+  window.setTimeout(boot, 250);
+  window.setTimeout(boot, 1000);
+  window.setTimeout(boot, 2500);
 }());
