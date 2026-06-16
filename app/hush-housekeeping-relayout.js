@@ -1,12 +1,12 @@
-const TD613_HUSH_OUTBOUND_PACKET_EXPORT_VERSION = '202606121823';
-const TD613_HUSH_HOUSEKEEPING_RELAYOUT_VERSION = '202606131610';
+const TD613_HUSH_CUSTODY_EXPORT_WAKE_VERSION = '202606171506';
+const TD613_HUSH_HOUSEKEEPING_RELAYOUT_VERSION = '202606171506';
 
 const ensureHousekeepingExportAssets = () => {
-  if (!document.querySelector('script[data-td613-hush-outbound-packet-export="ui"]')) {
+  if (!document.querySelector('script[data-td613-hush-custody-export-wake="ui"]')) {
     const script = document.createElement('script');
     script.type = 'module';
-    script.src = `./hush-outbound-packet-export.js?v=${TD613_HUSH_OUTBOUND_PACKET_EXPORT_VERSION}`;
-    script.dataset.td613HushOutboundPacketExport = 'ui';
+    script.src = `./hush-custody-export-wake.js?v=${TD613_HUSH_CUSTODY_EXPORT_WAKE_VERSION}`;
+    script.dataset.td613HushCustodyExportWake = 'ui';
     document.body.appendChild(script);
   }
 };
@@ -47,15 +47,15 @@ const relocateHushCustodyPanel = () => {
 
   panel.classList.add('hush-housekeeping-compact');
   panel.dataset.hushCustodyLocation = 'below-output-chamber';
-  panel.setAttribute('aria-label', 'Private text custody controls');
+  panel.setAttribute('aria-label', 'Custody controls');
 
   const kicker = panel.querySelector('.hush-housekeeping-kicker');
   const title = panel.querySelector('.hush-housekeeping-title');
   const copy = panel.querySelector('.hush-housekeeping-copy');
   const details = panel.querySelector('.hush-housekeeping-details summary');
-  if (kicker) kicker.textContent = 'Private text';
+  if (kicker) kicker.textContent = 'Custody';
   if (title) title.textContent = 'Custody';
-  if (copy) copy.textContent = 'Receipts only; private passages stay out.';
+  if (copy) copy.textContent = 'Receipts stay clean; packets and logs are diagnostic.';
   if (details) details.textContent = 'Mask anatomy';
 
   const labels = {
@@ -72,6 +72,7 @@ const relocateHushCustodyPanel = () => {
   }
 
   orderCustodySecondaryActions(panel);
+  window.__TD613_HUSH_CUSTODY_EXPORT_WAKE__?.updateButtons?.();
 
   if (panel.parentNode !== outputCard.parentNode || panel.previousElementSibling !== outputCard) {
     outputCard.insertAdjacentElement('afterend', panel);
