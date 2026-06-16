@@ -8,6 +8,16 @@ body[data-page-kind="gateway"] .gateway-card-kicker .glyph[data-gateway-glyph-ov
   text-transform: none !important;
 }
 
+body[data-page-kind="gateway"] .gateway-head .gateway-summary {
+  color: rgba(220, 230, 244, 0.64) !important;
+  font-family: var(--mono) !important;
+  font-size: 0.66rem !important;
+  font-weight: 400 !important;
+  line-height: 1.5 !important;
+  letter-spacing: 0.1em !important;
+  text-transform: uppercase !important;
+}
+
 @media (min-width: 1024px) {
   body[data-page-kind="gateway"] .gateway-head .gateway-lockup {
     position: relative !important;
@@ -35,10 +45,6 @@ body[data-page-kind="gateway"] .gateway-card-kicker .glyph[data-gateway-glyph-ov
   body[data-page-kind="gateway"] .gateway-head .gateway-lockup .gateway-summary[data-gateway-title-grouped="true"] {
     max-width: clamp(43rem, 56vw, 63rem) !important;
     margin-top: clamp(0.9rem, 1.15vw, 1.45rem) !important;
-    color: rgba(204, 216, 236, 0.76) !important;
-    font-size: clamp(0.92rem, 0.98vw, 1.08rem) !important;
-    line-height: 1.5 !important;
-    letter-spacing: 0.018em !important;
   }
 
   body[data-page-kind="gateway"] .gateway-head .gateway-lockup .gateway-banner-bounce-trace {
@@ -98,12 +104,5 @@ body[data-page-kind="gateway"] .gateway-card-kicker .glyph[data-gateway-glyph-ov
     box-sizing: border-box !important;
     margin-top: clamp(1rem, 5vw, 1.45rem) !important;
     padding-right: clamp(0.45rem, 3vw, 1rem) !important;
-    color: rgba(208, 217, 235, 0.64) !important;
-    font-family: var(--sans, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif) !important;
-    font-size: clamp(0.78rem, 3.45vw, 0.92rem) !important;
-    font-weight: 400 !important;
-    line-height: 1.42 !important;
-    letter-spacing: 0.015em !important;
-    text-transform: none !important;
   }
 }
