@@ -1,4 +1,4 @@
-const VERSION = 'hush-output-active-mask-route/v2-slim-output-only';
+const VERSION = 'hush-output-active-mask-route/v3-output-chamber-spacing';
 const $ = (id, doc = document) => doc.getElementById(id);
 let hideObserver = null;
 
@@ -18,6 +18,19 @@ function installStyle(doc = document) {
   const style = doc.createElement('style');
   style.id = 'hushOutputActiveMaskRouteStyle';
   style.textContent = `
+    body[data-page-kind="adversarial-bench"] .hush-output-chamber > .hush-kicker,
+    body[data-page-kind="adversarial-bench"] .hush-output-chamber > .section-kicker,
+    body[data-page-kind="adversarial-bench"] .hush-output-chamber > .eyebrow {
+      display: block;
+      transform: translateX(.38rem);
+      max-width: calc(100% - .76rem);
+    }
+    body[data-page-kind="adversarial-bench"] .hush-output-chamber .hush-output-status-band {
+      width: 90%;
+      max-width: 90%;
+      margin-left: auto;
+      margin-right: auto;
+    }
     body[data-page-kind="adversarial-bench"] #hushOutputActiveMaskRoute {
       display: grid;
       grid-template-columns: minmax(0, auto) minmax(0, 1fr);
@@ -58,6 +71,18 @@ function installStyle(doc = document) {
       display: none !important;
     }
     @media (max-width: 760px) {
+      body[data-page-kind="adversarial-bench"] .hush-output-chamber > .hush-kicker,
+      body[data-page-kind="adversarial-bench"] .hush-output-chamber > .section-kicker,
+      body[data-page-kind="adversarial-bench"] .hush-output-chamber > .eyebrow {
+        transform: translateX(.56rem);
+        max-width: calc(100% - 1.12rem);
+      }
+      body[data-page-kind="adversarial-bench"] .hush-output-chamber .hush-output-status-band {
+        width: 90% !important;
+        max-width: 90% !important;
+        margin-left: auto !important;
+        margin-right: auto !important;
+      }
       body[data-page-kind="adversarial-bench"] #hushOutputActiveMaskRoute {
         grid-template-columns: minmax(0, 1fr);
         gap: .24rem;
