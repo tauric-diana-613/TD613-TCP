@@ -10,7 +10,7 @@ body[data-page-kind="gateway"] .gateway-card-kicker .glyph[data-gateway-glyph-ov
 
 body[data-page-kind="gateway"] .gateway-head .gateway-summary {
   color: rgba(220, 230, 244, 0.64) !important;
-  font-family: var(--mono) !important;
+  font-family: var(--mono, ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", monospace) !important;
   font-size: 0.6rem !important;
   font-weight: 400 !important;
   line-height: 1.5 !important;
@@ -45,6 +45,7 @@ body[data-page-kind="gateway"] .gateway-head .gateway-summary {
   body[data-page-kind="gateway"] .gateway-head .gateway-lockup .gateway-summary[data-gateway-title-grouped="true"] {
     max-width: clamp(43rem, 56vw, 63rem) !important;
     margin-top: clamp(0.9rem, 1.15vw, 1.45rem) !important;
+    font-size: 0.66rem !important;
   }
 
   body[data-page-kind="gateway"] .gateway-head .gateway-lockup .gateway-banner-bounce-trace {
