@@ -154,6 +154,12 @@ assert.equal(document.querySelectorAll('.hush-phase31-edit-sample').length, 1, '
 assert.equal(document.querySelectorAll('.hush-phase31-edit-category').length, 1, 'paged editor renders one discourse dropdown');
 assert.equal(document.querySelectorAll('.hush-phase31-edit-context').length, 1, 'paged editor renders one retrieval dropdown');
 assert.equal(document.getElementById('hushPhase31PagedCount').textContent, 'Sample 1 of 29');
+document.getElementById('hushPhase31NextSample').click();
+await new Promise((resolve) => setTimeout(resolve, 40));
+assert.equal(document.getElementById('hushPhase31PagedCount').textContent, 'Sample 2 of 29', 'next button advances paged editor');
+document.getElementById('hushPhase31PrevSample').click();
+await new Promise((resolve) => setTimeout(resolve, 40));
+assert.equal(document.getElementById('hushPhase31PagedCount').textContent, 'Sample 1 of 29', 'previous button rewinds paged editor');
 document.querySelector('.hush-phase31-edit-text').value = 'edited ' + sampleText();
 document.getElementById('hushPhase31SaveCorpusEdits').click();
 await new Promise((resolve) => setTimeout(resolve, 80));

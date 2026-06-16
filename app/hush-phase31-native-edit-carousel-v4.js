@@ -1,4 +1,4 @@
-const VERSION = 'phase-31.1-edit-modal/dropdown-paged-v5-single-owner';
+const VERSION = 'phase-31.1-edit-modal/dropdown-paged-v6-swipe-owner';
 const STORAGE_KEY = 'td613:hush:phase31:logged-samples:v1';
 const DISCOURSE_MODES = ['explanatory','argumentative','narrative','procedural','reflective-affective','legal-forensic','casual-conversational','technical-operational','poetic-symbolic','corrective-repair','compressed-summary'];
 const RETRIEVAL_TRIGGERS = ['baseline-voice','high-pressure','failure-recovery','correction-request','disagreement-pushback','implementation-handoff','evidence-framing','boundary-refusal','uncertainty-caveat','deep-explanation','compression-summary','affective-repair','ritual-symbolic','public-facing','private-diagnostic'];
@@ -129,8 +129,9 @@ function ensureStyle(doc = document) {
     #hushPhase31EditCorpusModal[hidden]{display:none!important}
     .hush-phase31-paged-nav{display:flex;align-items:center;justify-content:space-between;gap:.55rem;margin:.48rem 0 .64rem}
     .hush-phase31-paged-count{flex:1;text-align:center;color:rgba(202,255,223,.78);font-family:var(--font-mono,ui-monospace,monospace);font-size:.58rem;letter-spacing:.11em;text-transform:uppercase}
+    .hush-phase31-paged-nav button{min-width:4.75rem!important;touch-action:manipulation!important}
     .hush-phase31-paged-nav button[disabled]{opacity:.38!important;cursor:not-allowed!important;transform:none!important}
-    #hushPhase31EditCorpusList{min-height:0!important;max-height:min(28rem,calc(100dvh - 15rem))!important;overflow:auto!important;overscroll-behavior:contain!important;-webkit-overflow-scrolling:touch!important}
+    #hushPhase31EditCorpusList{min-height:0!important;max-height:min(28rem,calc(100dvh - 15rem))!important;overflow:auto!important;overscroll-behavior:contain!important;-webkit-overflow-scrolling:touch!important;touch-action:pan-y!important}
     .hush-phase31-edit-sample{position:relative;padding:.74rem .62rem;margin:.62rem 0;border:1px solid rgba(202,255,223,.18);border-radius:1rem;background:rgba(4,18,12,.38)}
     .hush-phase31-edit-sample label{display:grid;gap:.35rem;margin:.58rem 0;color:rgba(202,255,223,.86);font-family:var(--font-mono,ui-monospace,monospace);font-size:.62rem;letter-spacing:.08em;text-transform:uppercase}
     .hush-phase31-edit-sample textarea{min-height:10rem!important;resize:vertical!important}
@@ -158,8 +159,9 @@ function ensureModal(doc = document) {
   if (list) {
     doc.querySelector('.hush-phase31-carousel-bar')?.remove();
     if (!byId('hushPhase31PagedCount', doc)) {
-      list.insertAdjacentHTML('beforebegin', '<div class="hush-phase31-paged-nav"><button id="hushPhase31PrevSample" type="button" class="ghost">Previous</button><span id="hushPhase31PagedCount" class="hush-phase31-paged-count">Sample 0 of 0</span><button id="hushPhase31NextSample" type="button" class="ghost">Next</button></div>');
+      list.insertAdjacentHTML('beforebegin', '<div class="hush-phase31-paged-nav"><button id="hushPhase31PrevSample" type="button" class="ghost" aria-label="Previous sample">Prev</button><span id="hushPhase31PagedCount" class="hush-phase31-paged-count">Sample 0 of 0</span><button id="hushPhase31NextSample" type="button" class="ghost" aria-label="Next sample">Next</button></div>');
     }
+    bindEditModalControls(doc);
   }
   return modal;
 }
@@ -265,13 +267,12 @@ export function renderActiveEditCorpusSample(doc = document) {
   row.appendChild(label(doc, 'Discourse Mode', mode));
   row.appendChild(label(doc, 'Retrieval Trigger', retrieval));
   list.appendChild(row);
-  console.info('rendered edit rows', doc.querySelectorAll('.hush-phase31-edit-sample').length);
 }
 
 export function openEditCorpusModal(doc = document) {
-  console.info('[Hush edit owner] opening virtualized dropdown editor');
   upgradeCustomizerFields(doc);
   const modal = ensureModal(doc);
+  bindEditModalControls(doc);
   workingSamples = readStoredSamples();
   activeIndex = 0;
   modal.hidden = false;
@@ -325,20 +326,57 @@ function intercept(event, fn) {
   fn();
 }
 
+function bindControl(node, key, listener) {
+  if (!node || node.dataset?.[key] === 'true') return;
+  if (node.dataset) node.dataset[key] = 'true';
+  node.addEventListener('click', listener);
+}
+
+function bindSwipeNavigation(list, doc = document) {
+  if (!list || list.dataset.td613PagedSwipeBound === 'true') return;
+  list.dataset.td613PagedSwipeBound = 'true';
+  let startX = 0;
+  let startY = 0;
+  let tracking = false;
+  list.addEventListener('touchstart', (event) => {
+    const touch = event.touches?.[0];
+    if (!touch) return;
+    startX = touch.clientX;
+    startY = touch.clientY;
+    tracking = true;
+  }, { passive: true });
+  list.addEventListener('touchend', (event) => {
+    if (!tracking) return;
+    tracking = false;
+    const touch = event.changedTouches?.[0];
+    if (!touch) return;
+    const dx = touch.clientX - startX;
+    const dy = touch.clientY - startY;
+    if (Math.abs(dx) < 42 || Math.abs(dx) < Math.abs(dy) * 1.25) return;
+    moveEditCorpus(dx < 0 ? 1 : -1, doc);
+  }, { passive: true });
+}
+
+function bindEditModalControls(doc = document) {
+  bindControl(byId('hushPhase31PrevSample', doc), 'td613PagedPrevBound', (event) => intercept(event, () => moveEditCorpus(-1, doc)));
+  bindControl(byId('hushPhase31NextSample', doc), 'td613PagedNextBound', (event) => intercept(event, () => moveEditCorpus(1, doc)));
+  bindControl(byId('hushPhase31SaveCorpusEdits', doc), 'td613PagedSaveBound', (event) => intercept(event, () => saveEditCorpusModal(doc)));
+  bindControl(byId('hushPhase31CloseCorpusEdit', doc), 'td613PagedCloseBound', (event) => intercept(event, () => closeEditCorpusModal(doc)));
+  bindControl(byId('hushPhase31EditCorpus', doc), 'td613PagedOpenBound', (event) => intercept(event, () => openEditCorpusModal(doc)));
+  const list = byId('hushPhase31EditCorpusList', doc);
+  if (list) {
+    bindSwipeNavigation(list, doc);
+    bindControl(list, 'td613PagedRemoveBound', (event) => {
+      if (!event.target?.closest?.('.hush-phase31-edit-remove')) return;
+      intercept(event, () => removeActive(doc));
+    });
+  }
+}
+
 export function installNativeCorpusCarousel(doc = document) {
   upgradeCustomizerFields(doc);
   ensureStyle(doc);
-  if (doc.documentElement?.dataset.td613DropdownPagedCaptureV4 === 'true') return;
-  if (doc.documentElement) doc.documentElement.dataset.td613DropdownPagedCaptureV4 = 'true';
-  doc.addEventListener('click', (event) => {
-    const target = event.target;
-    if (target?.closest?.('#hushPhase31EditCorpus')) return intercept(event, () => openEditCorpusModal(doc));
-    if (target?.closest?.('#hushPhase31PrevSample')) return intercept(event, () => moveEditCorpus(-1, doc));
-    if (target?.closest?.('#hushPhase31NextSample')) return intercept(event, () => moveEditCorpus(1, doc));
-    if (target?.closest?.('.hush-phase31-edit-remove')) return intercept(event, () => removeActive(doc));
-    if (target?.closest?.('#hushPhase31SaveCorpusEdits')) return intercept(event, () => saveEditCorpusModal(doc));
-    if (target?.closest?.('#hushPhase31CloseCorpusEdit')) return intercept(event, () => closeEditCorpusModal(doc));
-  }, true);
+  bindEditModalControls(doc);
 }
 
 export function exposeNativeCorpusCarousel(doc = document) {
