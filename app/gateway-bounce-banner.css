@@ -82,4 +82,21 @@ body[data-page-kind="gateway"] .gateway-preview-bottom-panel.gateway-preview-moi
   body[data-page-kind="gateway"] .gateway-head .gateway-lockup .gateway-banner-bounce-trace {
     display: none !important;
   }
+
+  body[data-page-kind="gateway"] .gateway-head .gateway-lockup,
+  body[data-page-kind="gateway"] .gateway-head .gateway-lockup > div:first-child,
+  body[data-page-kind="gateway"] .gateway-head .gateway-summary {
+    max-width: none !important;
+    width: 100% !important;
+  }
+
+  body[data-page-kind="gateway"] .gateway-head .gateway-summary {
+    box-sizing: border-box !important;
+    margin-top: clamp(1rem, 5vw, 1.45rem) !important;
+    padding-right: clamp(0.45rem, 3vw, 1rem) !important;
+    color: rgba(204, 216, 236, 0.76) !important;
+    font-size: clamp(0.82rem, 3.8vw, 0.98rem) !important;
+    line-height: 1.46 !important;
+    letter-spacing: 0.012em !important;
+  }
 }
