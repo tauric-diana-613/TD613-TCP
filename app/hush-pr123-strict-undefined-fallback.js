@@ -2,7 +2,7 @@
 (function () {
   'use strict';
 
-  var VERSION = 'pr123-strict-provider-bridge/v4-transmission-plate';
+  var VERSION = 'pr123-strict-provider-bridge/v5-receipt-popup-event';
   var ENDPOINTS = ['/api/hush-generate-strict', 'https://td613.vercel.app/api/hush-generate-strict'];
   var running = false;
 
@@ -78,7 +78,7 @@
   }
   function sourceLayoutPolicy() {
     return {
-      version: 'pr123-strict-provider-bridge/v4-transmission-plate',
+      version: 'pr123-strict-provider-bridge/v5-receipt-popup-event',
       source_line_breaks_are_constraints: false,
       source_line_breaks_are_reading_context: true,
       mask_line_breaks_may_guide_output_pacing: true,
@@ -90,7 +90,7 @@
     var mask = selectedMaskPayload();
     var candidateCount = 2;
     var contract = {
-      promptVersion: 'hush-strict-provider-bridge-current/v4',
+      promptVersion: 'hush-strict-provider-bridge-current/v5',
       sourceText: source,
       messageDraftText: source,
       protectedBaselineText: $('protectedBaselineInput') ? $('protectedBaselineInput').value : '',
@@ -118,7 +118,7 @@
         sourceLayoutPolicy().instruction
       ],
       flightPacket: {
-        packet_version: 'hush-strict-provider-bridge-flight/v4',
+        packet_version: 'hush-strict-provider-bridge-flight/v5',
         packet_tier: words(mask.sampleSeed || '') >= 180 ? 'strict_remote_mask_evidence_packet' : 'strict_remote_mask_label_packet',
         mask_id: mask.id,
         mask_label: mask.label,
@@ -173,6 +173,11 @@
       window.dispatchEvent(new CustomEvent('td613:hush:outbound-packet', { detail: { outboundPacket: { schema: 'td613-hush-outbound-packet/v1', createdAt: new Date().toISOString(), direction: 'outbound', mode: 'remote-llm-proxy', endpoint: endpoint, contract: contract, flightPacket: contract.flightPacket } } }));
     } catch (_) {}
   }
+  function dispatchHeldReceipt(receipt) {
+    window.__TD613_HUSH_NO_FALLBACK_RECEIPT = receipt;
+    try { window.dispatchEvent(new CustomEvent('td613:hush:no-fallback-receipt', { detail: { receipt: receipt } })); } catch (_) {}
+    try { window.dispatchEvent(new CustomEvent('td613:hush:provider-held', { detail: { receipt: receipt } })); } catch (_) {}
+  }
   async function callEndpoint(endpoint, contract) {
     var response = await fetch(endpoint, {
       method: 'POST',
@@ -220,7 +225,8 @@
       }
       var payload = last && last.payload ? last.payload : {};
       var reason = text(payload.reason || payload.error || payload.message || (last && last.error) || 'strict provider returned no releasable remote candidate');
-      window.__TD613_HUSH_NO_FALLBACK_RECEIPT = { status: 'held', reason: reason, fallbackReleased: false, payload: payload, endpoint: last && last.endpoint };
+      var receipt = { status: 'held', reason: reason, fallbackReleased: false, payload: payload, endpoint: last && last.endpoint, httpStatus: last && last.response && last.response.status, bridgeVersion: VERSION, contract: contract };
+      dispatchHeldReceipt(receipt);
       setStatus('Strict provider held: ' + reason + '. No local fallback released. Inspect window.__TD613_HUSH_PR123_LAST.', 'error');
       return null;
     } finally {
