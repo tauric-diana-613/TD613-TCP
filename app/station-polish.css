@@ -2,3 +2,13 @@
 .station-chamber-trainer { display: flex; flex-wrap: wrap; column-gap: 20px; row-gap: 16px; }
 .trainer-panel { flex: 1 1 620px; min-width: 0; }
 .evidence-spine-trainer { flex: 1 1 320px; min-width: 280px; }
+
+@media (max-width: 820px) {
+  body[data-page-kind="trainer"] textarea {
+    font-size: 16px !important;
+    line-height: 1.32 !important;
+    padding: 0.72rem 0.78rem !important;
+    -webkit-text-size-adjust: 100% !important;
+    text-size-adjust: 100% !important;
+  }
+}
