@@ -3,8 +3,9 @@ import './hush-input-control-rail.js?v=202606142010';
 import './hush-pr76-light-panels.js?v=202606162225';
 import './hush-lab-mobile-polish.js?v=202606162345';
 import './hush-lab-provider-sync.js?v=202606170020';
+import './hush-output-active-mask-route.js?v=202606170220';
 
-const HUSH_COMPARE_LAYOUT_CUSTODY_VERSION = 'compare-layout-custody/v3-explicit-breaks+edit-carousel-preload+input-rail+pr76-dom-only+lab-mobile-polish+provider-sync';
+const HUSH_COMPARE_LAYOUT_CUSTODY_VERSION = 'compare-layout-custody/v3-explicit-breaks+edit-carousel-preload+input-rail+pr76-dom-only+lab-mobile-polish+provider-sync+output-active-mask-route';
 const $ = (id) => document.getElementById(id);
 
 function rawValue(id) {
