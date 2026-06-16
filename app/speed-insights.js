@@ -7,6 +7,16 @@ window.si = window.si || function () {
   (window.siq = window.siq || []).push(arguments);
 };
 
+(function loadTrainerPolishStylesheet() {
+  const trainerPage = document.body && document.body.getAttribute('data-page-kind') === 'trainer';
+  if (!trainerPage || document.getElementById('td613TrainerPolishCss')) return;
+  const link = document.createElement('link');
+  link.id = 'td613TrainerPolishCss';
+  link.rel = 'stylesheet';
+  link.href = './trainer-simple.css';
+  document.head.appendChild(link);
+})();
+
 // Load the Vercel Speed Insights script
 // When deployed to Vercel, Speed Insights will automatically track performance metrics
 // The script is loaded from Vercel's CDN at /_vercel/speed-insights/script.js
