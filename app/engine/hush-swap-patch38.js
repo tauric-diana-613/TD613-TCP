@@ -5,7 +5,7 @@ import { attachPropositionIntegrity } from './hush-proposition-integrity.js';
 
 export * from './hush-swap-phase34.js';
 export const HUSH_SWAP_PATCH38_VERSION = 'patch-38-hybrid-candidate-generator';
-export const HUSH_SWAP_PATCH38_INTERNAL_VERSION = 'phase-37.10-register-boundary-review-gate';
+export const HUSH_SWAP_PATCH38_INTERNAL_VERSION = 'phase-37.11-no-local-collapse-release';
 
 const asArray = (value) => Array.isArray(value) ? value.filter(Boolean) : [];
 const safe = (value) => String(value ?? '');
@@ -286,19 +286,22 @@ function reviewReleaseEligible(candidate = {}, sourceText = '') {
   const questionOk = Number(audit.questionFormScore ?? 1) >= 0.5;
   const claimOk = !audit.answeredQuestion && !audit.inventedAdvice && !audit.strengthenedClaim && newClaimRisk < 0.48;
   const meaningOk = averageCoverage >= 0.36 || sourceTermCoverage >= 0.32 || candidate.operations?.includes?.(HUSH_MASK_SURFACE_FLIGHT_VERSION);
-  const shapeOk = lengthRatio >= 0.24 && lengthRatio <= 2.8 && collapseSurfaceScore(candidate.text || '') < 0.72;
+  const shapeOk = lengthRatio >= 0.24 && lengthRatio <= 2.8 && collapseSurfaceScore(candidate.text || '') < 0.48;
   const completenessFloor = registerTransformCandidate(candidate) ? 0.36 : 0.42;
   return questionOk && claimOk && meaningOk && shapeOk && operationCompleteness(candidate) >= completenessFloor;
 }
 
 function release(candidate = {}, sourceText = '') {
   if (!candidate?.text?.trim()) return false;
+  if (collapseSurfaceScore(candidate.text || '') >= 0.48) return false;
+  if (!providerSource(candidate)) return false;
   if (isSourceCopy(candidate, sourceText)) return false;
   if (questionFallbackEligible(candidate, sourceText)) return true;
   if (reviewReleaseEligible(candidate, sourceText)) return true;
   if (candidate.payloadIntegrity?.passed === false) return false;
   if (candidate.claimIntegrity?.passed === false) return false;
   if (candidate.releasePolicy?.hardBlocked === true) return false;
+  if (candidate.releasePolicy?.mayPopulateOutput === false) return false;
   if (candidate.propositionIntegrity?.passed === false) return false;
   return true;
 }
@@ -357,6 +360,10 @@ function normalize(candidate = {}, sourceText = '') {
     const audited = attachPropositionIntegrity(prepared, sourceText);
     const copy = sourceCopyRisk(audited.text || '', sourceText, audited);
     const registerBoundaryOk = registerBoundaryReviewEligible(audited, sourceText, copy);
+    if (collapseSurfaceScore(audited.text || '') >= 0.48) {
+      const warnings = [...new Set([...(audited.warnings || []), 'collapse-surface-output-blocked'])];
+      return { ...audited, sourceCopyRisk: copy, payloadIntegrity: { passed: false, warnings }, releasePolicy: { mayPopulateOutput: false, hardBlocked: true, state: 'hold' }, warnings };
+    }
     if (copy.exactCopy || copy.wrapperCopy || (copy.boundaryCopy && !registerBoundaryOk) || ((copy.nearCopy || copy.longVerbatimRun) && !providerSource(audited))) {
       const boundaryWarnings = [copy.openingRetained ? 'source-opening-retained' : '', copy.closingRetained ? 'source-closing-retained' : ''].filter(Boolean);
       const warnings = [...new Set([...(audited.warnings || []), ...boundaryWarnings, copy.wrapperCopy ? 'source-wrapper-copy-output' : copy.boundaryCopy ? 'source-boundary-copy-output' : copy.longVerbatimRun ? 'source-verbatim-run-output' : 'source-copy-output'])];
@@ -460,7 +467,7 @@ export function buildHushSwap(input = {}) {
   let selected = mode === GENERATOR_MODES.REMOTE_LLM_PROXY && strictRemoteOnly
     ? (ranked.find((row) => row.remote && row.authorshipScore >= 0.22 && row.maskFidelity >= 0.16)?.candidate || ranked.find((row) => row.remote && row.maskFidelity >= 0.18)?.candidate || ranked.find((row) => row.remote)?.candidate || null)
     : mode === GENERATOR_MODES.REMOTE_LLM_PROXY
-      ? (ranked.find((row) => row.remote && row.authorshipScore >= 0.24 && row.maskFidelity >= 0.24)?.candidate || ranked.find((row) => row.remote && row.maskFidelity >= 0.28)?.candidate || ranked.find((row) => row.candidate.operations?.includes?.(HUSH_MASK_SURFACE_FLIGHT_VERSION) && row.maskFidelity >= 0.34)?.candidate || ranked.find((row) => row.remote)?.candidate || null)
+      ? (ranked.find((row) => row.remote && row.authorshipScore >= 0.24 && row.maskFidelity >= 0.24)?.candidate || ranked.find((row) => row.remote && row.maskFidelity >= 0.28)?.candidate || ranked.find((row) => row.remote)?.candidate || null)
       : mode === GENERATOR_MODES.HYBRID
         ? (ranked.find((row) => row.remote && row.authorshipScore >= 0.22 && row.maskFidelity >= 0.2)?.candidate || ranked.find((row) => row.remote && row.maskFidelity >= 0.24)?.candidate || ranked.find((row) => row.candidate.operations?.includes?.(HUSH_MASK_SURFACE_FLIGHT_VERSION))?.candidate || ranked.find((row) => row.provider)?.candidate || ranked[0]?.candidate || null)
         : (ranked.find((row) => row.candidate.operations?.includes?.(HUSH_MASK_SURFACE_FLIGHT_VERSION) && row.maskFidelity >= 0.28)?.candidate || ranked.find((row) => row.offline && row.collapse < 0.42)?.candidate || ranked[0]?.candidate || null);
