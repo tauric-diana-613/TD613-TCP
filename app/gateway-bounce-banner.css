@@ -8,9 +8,10 @@ body[data-page-kind="gateway"] .gateway-preview-bottom-panel.gateway-preview-moi
   body[data-page-kind="gateway"] .gateway-head .gateway-lockup {
     position: relative !important;
     display: grid !important;
-    grid-template-columns: minmax(44rem, 1fr) minmax(25rem, 34rem) !important;
-    gap: clamp(1.25rem, 2.2vw, 2.5rem) !important;
-    align-items: stretch !important;
+    grid-template-columns: minmax(42rem, 1fr) minmax(27rem, 34rem) !important;
+    grid-template-rows: auto auto !important;
+    gap: clamp(1rem, 1.7vw, 2rem) clamp(1.25rem, 2vw, 2.25rem) !important;
+    align-items: start !important;
   }
 
   body[data-page-kind="gateway"] .gateway-head .gateway-lockup > div:first-child,
@@ -30,7 +31,13 @@ body[data-page-kind="gateway"] .gateway-preview-bottom-panel.gateway-preview-moi
 
   body[data-page-kind="gateway"] .gateway-head .gateway-lockup > .gateway-summary {
     grid-row: 2 !important;
-    max-width: clamp(31rem, 40vw, 42rem) !important;
+    align-self: start !important;
+    max-width: clamp(40rem, 52vw, 58rem) !important;
+    margin-top: clamp(0.85rem, 1.4vw, 1.55rem) !important;
+    color: rgba(204, 216, 236, 0.72) !important;
+    font-size: clamp(0.86rem, 0.9vw, 1rem) !important;
+    line-height: 1.48 !important;
+    letter-spacing: 0.018em !important;
   }
 
   body[data-page-kind="gateway"] .gateway-head .gateway-lockup .gateway-banner-bounce-trace {
@@ -38,11 +45,12 @@ body[data-page-kind="gateway"] .gateway-preview-bottom-panel.gateway-preview-moi
     flex-direction: column !important;
     grid-column: 2 !important;
     grid-row: 1 / span 2 !important;
-    align-self: stretch !important;
+    align-self: start !important;
     justify-self: end !important;
     width: min(100%, 33rem) !important;
-    height: 100% !important;
-    min-height: 0 !important;
+    height: clamp(13rem, 15.5vw, 16rem) !important;
+    max-height: 16rem !important;
+    min-height: 12rem !important;
     margin: 0 !important;
     padding: .72rem .82rem .76rem !important;
     overflow: hidden !important;
