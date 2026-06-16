@@ -13,7 +13,7 @@
     stationPolish: '202606160001',
     gatewayHousekeeping: '202606151825',
     gatewayApertureDesktopAlign: '202606162210',
-    gatewayApertureSubtitle: '202606152145',
+    gatewayApertureSubtitle: '202606162225',
     gatewayBounceBanner: '202606162210',
     gatewayMoirePanel: '202606152055',
     copyHygiene: '202606011235',
