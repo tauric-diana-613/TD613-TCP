@@ -24,13 +24,13 @@
   body[data-page-kind="gateway"] .gateway-preview-shell .gateway-preview-title-group .gateway-preview-subtitle {
     max-width: 32.5rem !important;
     margin-top: clamp(0.72rem, 0.9vw, 1rem) !important;
-    color: rgba(218, 226, 241, 0.78) !important;
-    font-family: var(--sans, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif) !important;
-    font-size: clamp(0.9rem, 0.92vw, 1.02rem) !important;
+    color: rgba(220, 230, 244, 0.64) !important;
+    font-family: var(--mono) !important;
+    font-size: 0.6rem !important;
     font-weight: 400 !important;
-    line-height: 1.48 !important;
-    letter-spacing: 0.024em !important;
-    text-transform: none !important;
+    line-height: 1.5 !important;
+    letter-spacing: 0.1em !important;
+    text-transform: uppercase !important;
   }
 
   body[data-page-kind="gateway"] .gateway-preview-shell .gateway-preview-head .gateway-preview-controls {
