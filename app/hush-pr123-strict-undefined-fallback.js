@@ -2,8 +2,9 @@
 (function () {
   'use strict';
 
-  var VERSION = 'pr123-strict-provider-bridge/v5-receipt-popup-event';
+  var VERSION = 'pr123-strict-provider-bridge/v6-receipt-popup-loader';
   var ENDPOINTS = ['/api/hush-generate-strict', 'https://td613.vercel.app/api/hush-generate-strict'];
+  var RECEIPT_POPUP_SRC = './hush-pr117-generating-watchdog-receipt.js?v=202606162255';
   var running = false;
 
   function $(id) { return document.getElementById(id); }
@@ -78,7 +79,7 @@
   }
   function sourceLayoutPolicy() {
     return {
-      version: 'pr123-strict-provider-bridge/v5-receipt-popup-event',
+      version: 'pr123-strict-provider-bridge/v6-receipt-popup-loader',
       source_line_breaks_are_constraints: false,
       source_line_breaks_are_reading_context: true,
       mask_line_breaks_may_guide_output_pacing: true,
@@ -90,7 +91,7 @@
     var mask = selectedMaskPayload();
     var candidateCount = 2;
     var contract = {
-      promptVersion: 'hush-strict-provider-bridge-current/v5',
+      promptVersion: 'hush-strict-provider-bridge-current/v6',
       sourceText: source,
       messageDraftText: source,
       protectedBaselineText: $('protectedBaselineInput') ? $('protectedBaselineInput').value : '',
@@ -118,7 +119,7 @@
         sourceLayoutPolicy().instruction
       ],
       flightPacket: {
-        packet_version: 'hush-strict-provider-bridge-flight/v5',
+        packet_version: 'hush-strict-provider-bridge-flight/v6',
         packet_tier: words(mask.sampleSeed || '') >= 180 ? 'strict_remote_mask_evidence_packet' : 'strict_remote_mask_label_packet',
         mask_id: mask.id,
         mask_label: mask.label,
@@ -173,10 +174,25 @@
       window.dispatchEvent(new CustomEvent('td613:hush:outbound-packet', { detail: { outboundPacket: { schema: 'td613-hush-outbound-packet/v1', createdAt: new Date().toISOString(), direction: 'outbound', mode: 'remote-llm-proxy', endpoint: endpoint, contract: contract, flightPacket: contract.flightPacket } } }));
     } catch (_) {}
   }
+  function ensureReceiptPopupLoaded() {
+    return new Promise(function (resolve) {
+      if (window.TD613_HUSH_PR117 && window.TD613_HUSH_PR117.disabled === false) return resolve(true);
+      if ($('hushPr117ReceiptPopupLoader')) return window.setTimeout(function () { resolve(Boolean(window.TD613_HUSH_PR117)); }, 140);
+      var script = document.createElement('script');
+      script.id = 'hushPr117ReceiptPopupLoader';
+      script.src = RECEIPT_POPUP_SRC;
+      script.onload = function () { resolve(true); };
+      script.onerror = function () { resolve(false); };
+      document.head.appendChild(script);
+    });
+  }
   function dispatchHeldReceipt(receipt) {
     window.__TD613_HUSH_NO_FALLBACK_RECEIPT = receipt;
-    try { window.dispatchEvent(new CustomEvent('td613:hush:no-fallback-receipt', { detail: { receipt: receipt } })); } catch (_) {}
-    try { window.dispatchEvent(new CustomEvent('td613:hush:provider-held', { detail: { receipt: receipt } })); } catch (_) {}
+    ensureReceiptPopupLoaded().then(function () {
+      try { window.dispatchEvent(new CustomEvent('td613:hush:no-fallback-receipt', { detail: { receipt: receipt } })); } catch (_) {}
+      try { window.dispatchEvent(new CustomEvent('td613:hush:provider-held', { detail: { receipt: receipt } })); } catch (_) {}
+      if (window.TD613_HUSH_PR117 && typeof window.TD613_HUSH_PR117.force === 'function') window.TD613_HUSH_PR117.force(receipt);
+    });
   }
   async function callEndpoint(endpoint, contract) {
     var response = await fetch(endpoint, {
@@ -237,6 +253,7 @@
   function bind() {
     if (!document.body || document.body.dataset.pageKind !== 'adversarial-bench') return;
     ensureVisibleStatus();
+    ensureReceiptPopupLoaded();
     var button = $('generateMaskedOutputBtn');
     if (!button || button.dataset.pr123StrictProviderBridge === VERSION) return;
     button.dataset.pr123StrictProviderBridge = VERSION;
