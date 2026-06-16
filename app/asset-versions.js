@@ -11,6 +11,7 @@
     aperture:    '202606151705',
     chrome:      '202606151735',
     stationPolish: '202606162255',
+    trainerStandalone: '202606162305',
     gatewayHousekeeping: '202606151825',
     gatewayApertureDesktopAlign: '202606162210',
     gatewayApertureSubtitle: '202606162225',
