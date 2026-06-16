@@ -1,13 +1,31 @@
 (function () {
-  function moveBounceTraceToBanner() {
+  function isDesktopGateway() {
+    return typeof window.matchMedia === 'function' && window.matchMedia('(min-width: 1024px)').matches;
+  }
+
+  function placeBounceTrace() {
     var banner = document.querySelector('.gateway-head .gateway-lockup');
+    var bottom = document.querySelector('.gateway-preview-shell .gateway-preview-bottom');
     var tracePanel = document.getElementById('gatewayPreviewTraceCanvas')?.closest?.('.gateway-preview-bottom-panel');
-    if (!banner || !tracePanel || tracePanel.dataset.gatewayBannerTrace === 'true') return;
+    var moirePanel = document.getElementById('gatewayPreviewMoireCanvas')?.closest?.('.gateway-preview-bottom-panel');
+    if (!tracePanel) return;
+
+    if (!isDesktopGateway()) {
+      tracePanel.classList.remove('gateway-banner-bounce-trace');
+      delete tracePanel.dataset.gatewayBannerTrace;
+      if (bottom && tracePanel.parentElement !== bottom) bottom.appendChild(tracePanel);
+      if (moirePanel) moirePanel.classList.remove('gateway-preview-moire-wide');
+      return;
+    }
+
+    if (!banner || tracePanel.parentElement === banner) {
+      if (moirePanel) moirePanel.classList.add('gateway-preview-moire-wide');
+      return;
+    }
+
     tracePanel.dataset.gatewayBannerTrace = 'true';
     tracePanel.classList.add('gateway-banner-bounce-trace');
     banner.appendChild(tracePanel);
-
-    var moirePanel = document.getElementById('gatewayPreviewMoireCanvas')?.closest?.('.gateway-preview-bottom-panel');
     if (moirePanel) moirePanel.classList.add('gateway-preview-moire-wide');
   }
 
@@ -32,10 +50,11 @@
       subtitle.setAttribute('data-copy-pass', 'repo-governed-exposure');
     }
 
-    moveBounceTraceToBanner();
+    placeBounceTrace();
   }
 
   if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', installGatewayCopy, { once: true });
   else installGatewayCopy();
   window.setTimeout(installGatewayCopy, 400);
+  window.addEventListener('resize', placeBounceTrace, { passive: true });
 }());
