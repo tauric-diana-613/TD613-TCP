@@ -1,4 +1,4 @@
-const VERSION = 'hush-pr76-profile-hold/v1-dom-only';
+const VERSION = 'hush-pr76-profile-hold/v2-stable-host-aware';
 const $ = (id, doc = document) => doc.getElementById(id);
 let observer = null;
 let holding = false;
@@ -9,10 +9,12 @@ function sourceText(doc = document) {
 }
 
 function hasPr76Profile(doc = document) {
-  return Boolean(doc.querySelector('#messageDraftProfile .hush-pr76-profile-panel'));
+  return Boolean(doc.querySelector('#hushPr76AuthorshipProfileHost .hush-pr76-profile-panel') || doc.querySelector('#messageDraftProfile .hush-pr76-profile-panel'));
 }
 
 function restoreProfile(doc = document) {
+  const stable = window.__TD613_HUSH_PR76_STABLE_PROFILE_HOST__;
+  if (stable && typeof stable.renderIntoStableHost === 'function') return stable.renderIntoStableHost(doc);
   const api = window.__TD613_HUSH_PR76_LIGHT_PANELS__;
   if (!api || typeof api.render !== 'function') return false;
   if (!sourceText(doc)) return false;
@@ -22,6 +24,8 @@ function restoreProfile(doc = document) {
 function scheduleHold(doc = document) {
   lastAnalyzeAt = Date.now();
   holding = true;
+  const stable = window.__TD613_HUSH_PR76_STABLE_PROFILE_HOST__;
+  if (stable && typeof stable.scheduleStableRender === 'function') stable.scheduleStableRender(doc);
   [0, 80, 180, 360, 720, 1200, 1900].forEach((delay) => {
     window.setTimeout(() => restoreProfile(doc), delay);
   });
