@@ -14,7 +14,7 @@
     gatewayHousekeeping: '202606151825',
     gatewayApertureDesktopAlign: '202606151940',
     gatewayApertureSubtitle: '202606152145',
-    gatewayBounceBanner: '202606152150',
+    gatewayBounceBanner: '202606162145',
     gatewayMoirePanel: '202606152055',
     copyHygiene: '202606011235',
     gatewayRescue: '202606110305',
