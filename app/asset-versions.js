@@ -13,7 +13,7 @@
     gatewayHousekeeping: '202606151825',
     gatewayApertureDesktopAlign: '202606151940',
     gatewayApertureSubtitle: '202606152105',
-    gatewayBounceBanner: '202606152125',
+    gatewayBounceBanner: '202606152135',
     gatewayMoirePanel: '202606152055',
     copyHygiene: '202606011235',
     gatewayRescue: '202606110305',
