@@ -34,6 +34,69 @@
     });
   }
 
+  function installStandaloneButtonSync(controller) {
+    var nodes = {
+      corpus: $('trainerCorpusInput'),
+      candidate: $('trainerGeneratedOutput'),
+      extract: $('trainerExtractBtn'),
+      forge: $('trainerForgeDraftBtn'),
+      validate: $('trainerValidateBtn'),
+      release: $('trainerReleaseGateBtn'),
+      exportButton: $('trainerExportBtn'),
+      inject: $('trainerInjectBtn')
+    };
+
+    function snapshot() {
+      if (controller && typeof controller.snapshot === 'function') {
+        try { return controller.snapshot() || {}; } catch (error) { return {}; }
+      }
+      return {};
+    }
+
+    function sync() {
+      var status = snapshot();
+      var hasCorpus = Boolean(String(nodes.corpus && nodes.corpus.value || '').trim());
+      var hasCandidate = Boolean(String(nodes.candidate && nodes.candidate.value || '').trim());
+      var corpusReady = Boolean(status.corpusReady || status.sampleCount);
+      var validationPass = Boolean(status.validationPass);
+      var releaseGateArmed = Boolean(status.releaseGateArmed);
+      var canInject = Boolean(status.canInject || validationPass);
+
+      if (nodes.extract) nodes.extract.disabled = !hasCorpus;
+      if (nodes.forge) nodes.forge.disabled = !hasCorpus && !corpusReady;
+      if (nodes.validate) nodes.validate.disabled = !(hasCandidate && (hasCorpus || corpusReady));
+      if (nodes.release) nodes.release.disabled = !validationPass;
+      if (nodes.exportButton) nodes.exportButton.disabled = !(validationPass && releaseGateArmed);
+      if (nodes.inject) nodes.inject.disabled = !canInject;
+
+      document.body.dataset.trainerActionSync = 'ready';
+      document.body.dataset.trainerCanExtract = String(Boolean(hasCorpus));
+      document.body.dataset.trainerCanValidate = String(Boolean(hasCandidate && (hasCorpus || corpusReady)));
+    }
+
+    function deferSync() {
+      window.requestAnimationFrame ? window.requestAnimationFrame(sync) : window.setTimeout(sync, 0);
+      window.setTimeout(sync, 80);
+    }
+
+    [nodes.corpus, nodes.candidate].forEach(function (node) {
+      if (!node) return;
+      node.addEventListener('input', deferSync);
+      node.addEventListener('change', deferSync);
+      node.addEventListener('keyup', deferSync);
+    });
+
+    [nodes.extract, nodes.forge, nodes.validate, nodes.release, nodes.exportButton, nodes.inject].forEach(function (node) {
+      if (!node) return;
+      node.addEventListener('click', deferSync);
+      node.addEventListener('pointerup', deferSync);
+    });
+
+    sync();
+    window.setTimeout(sync, 250);
+    window.setTimeout(sync, 900);
+  }
+
   async function bootTrainerStandalone() {
     if (!document.body || document.body.getAttribute('data-page-kind') !== 'trainer') return;
     document.title = 'TCP / Trainer';
@@ -76,6 +139,7 @@
       });
 
       window.TCP_TRAINER_LAB = controller;
+      installStandaloneButtonSync(controller);
       document.body.dataset.trainerBoot = 'standalone-ready';
       document.body.dataset.bootStage = 'trainer-standalone-ready';
       setTrainerStatus('Paste a corpus, extract the field, forge a draft, then validate the passage.');
