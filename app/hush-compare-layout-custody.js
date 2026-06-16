@@ -1,9 +1,10 @@
 import './hush-edit-corpus-carousel.js?v=202606141720';
 import './hush-input-control-rail.js?v=202606142010';
 import './hush-pr76-light-panels.js?v=202606162225';
-import './hush-pr76-profile-hold.js?v=202606162315';
+import './hush-pr76-stable-profile-host.js?v=202606162330';
+import './hush-pr76-profile-hold.js?v=202606162331';
 
-const HUSH_COMPARE_LAYOUT_CUSTODY_VERSION = 'compare-layout-custody/v3-explicit-breaks+edit-carousel-preload+input-rail+pr76-dom-only+profile-hold';
+const HUSH_COMPARE_LAYOUT_CUSTODY_VERSION = 'compare-layout-custody/v3-explicit-breaks+edit-carousel-preload+input-rail+pr76-dom-only+stable-profile-host';
 const $ = (id) => document.getElementById(id);
 
 function rawValue(id) {
