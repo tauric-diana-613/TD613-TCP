@@ -1,5 +1,6 @@
-const VERSION = 'hush-output-active-mask-route/v1-output-chamber-receipt';
+const VERSION = 'hush-output-active-mask-route/v2-slim-output-only';
 const $ = (id, doc = document) => doc.getElementById(id);
+let hideObserver = null;
 
 function text(value) {
   return String(value == null ? '' : value).replace(/\s+/g, ' ').trim();
@@ -22,7 +23,9 @@ function installStyle(doc = document) {
       grid-template-columns: minmax(0, auto) minmax(0, 1fr);
       align-items: center;
       gap: .7rem;
-      margin: -.08rem 0 .74rem;
+      width: 90%;
+      max-width: 90%;
+      margin: -.08rem auto .74rem;
       padding: .58rem .72rem;
       border: 1px solid rgba(139,233,253,.24);
       border-left: 3px solid rgba(115,255,186,.76);
@@ -51,11 +54,16 @@ function installStyle(doc = document) {
       text-align: right;
       overflow-wrap: anywhere;
     }
+    body[data-page-kind="adversarial-bench"] [data-output-route-receipt-hidden="true"] {
+      display: none !important;
+    }
     @media (max-width: 760px) {
       body[data-page-kind="adversarial-bench"] #hushOutputActiveMaskRoute {
         grid-template-columns: minmax(0, 1fr);
         gap: .24rem;
-        margin: -.02rem 0 .62rem;
+        width: 90%;
+        max-width: 90%;
+        margin: -.02rem auto .62rem;
         padding: .62rem .66rem;
         border-radius: 15px;
       }
@@ -95,34 +103,55 @@ function updateRouteReceipt(doc = document) {
   if (value) value.textContent = label || 'Selected mask';
 }
 
-function hideStandaloneMaskSideReadout(doc = document) {
+function hideOriginalActiveMaskReadout(doc = document) {
+  const chamber = doc.querySelector('.hush-mask-chamber');
   const panel = $('hushBuiltInMaskPanel', doc) || doc.querySelector('.hush-mask-panel');
-  if (!panel) return;
-  Array.from(panel.children || []).forEach((child) => {
-    if (child.id === 'hushOutputActiveMaskRoute') return;
-    if (child.dataset.outputRouteReceiptHidden === 'true') return;
-    const copy = text(child.textContent || '');
-    if (/^Active mask\b/i.test(copy) && copy.length < 180) {
-      child.dataset.outputRouteReceiptHidden = 'true';
-      child.hidden = true;
-      child.style.display = 'none';
-    }
+  const root = panel || chamber;
+  if (!root) return;
+  const selected = displayMaskLabel(doc).replace(/\s+—\s+/g, ' ').toLowerCase();
+  const candidates = Array.from(root.querySelectorAll('*')).filter((el) => {
+    if (!el || el.id === 'hushOutputActiveMaskRoute' || el.closest('#hushOutputActiveMaskRoute')) return false;
+    if (['SELECT', 'OPTION', 'BUTTON', 'TEXTAREA', 'INPUT', 'LABEL'].includes(el.tagName)) return false;
+    const copy = text(el.textContent || '');
+    if (!/^Active mask\b/i.test(copy)) return false;
+    if (copy.length > 260) return false;
+    const normalized = copy.replace(/\s+—\s+/g, ' ').toLowerCase();
+    return normalized.includes('active mask') && (!selected || normalized.includes(selected.split(' ')[0] || '') || copy.length < 120);
   });
+  candidates
+    .sort((a, b) => text(a.textContent || '').length - text(b.textContent || '').length)
+    .slice(0, 3)
+    .forEach((el) => {
+      el.dataset.outputRouteReceiptHidden = 'true';
+      el.hidden = true;
+      el.style.setProperty('display', 'none', 'important');
+    });
+}
+
+function watchMaskPanel(doc = document) {
+  const root = $('hushBuiltInMaskPanel', doc) || doc.querySelector('.hush-mask-chamber');
+  if (!root || hideObserver) return;
+  hideObserver = new MutationObserver(() => {
+    window.setTimeout(() => hideOriginalActiveMaskReadout(doc), 0);
+  });
+  hideObserver.observe(root, { childList: true, subtree: true });
 }
 
 function bind(doc = document) {
   if (!doc?.body || doc.body.dataset.pageKind !== 'adversarial-bench' || doc.body.dataset.hushOutputActiveMaskRoute === VERSION) return;
   doc.body.dataset.hushOutputActiveMaskRoute = VERSION;
   updateRouteReceipt(doc);
-  hideStandaloneMaskSideReadout(doc);
+  hideOriginalActiveMaskReadout(doc);
+  watchMaskPanel(doc);
   const select = $('maskFieldSelect', doc);
   if (select) select.addEventListener('change', () => {
     window.setTimeout(() => updateRouteReceipt(doc), 0);
-    window.setTimeout(() => hideStandaloneMaskSideReadout(doc), 80);
+    window.setTimeout(() => hideOriginalActiveMaskReadout(doc), 80);
+    window.setTimeout(() => hideOriginalActiveMaskReadout(doc), 260);
   });
   window.addEventListener('td613:hush:provider-output', () => updateRouteReceipt(doc));
   window.addEventListener('td613:hush:lab-synced', () => updateRouteReceipt(doc));
-  [180, 760, 1600].forEach((delay) => window.setTimeout(() => { updateRouteReceipt(doc); hideStandaloneMaskSideReadout(doc); }, delay));
+  [180, 760, 1600, 2600].forEach((delay) => window.setTimeout(() => { updateRouteReceipt(doc); hideOriginalActiveMaskReadout(doc); }, delay));
 }
 
 if (typeof document !== 'undefined') {
@@ -132,4 +161,4 @@ if (typeof document !== 'undefined') {
   [320, 900, 1800, 3200].forEach((delay) => window.setTimeout(run, delay));
 }
 
-window.__TD613_HUSH_OUTPUT_ACTIVE_MASK_ROUTE__ = { version: VERSION, updateRouteReceipt };
+window.__TD613_HUSH_OUTPUT_ACTIVE_MASK_ROUTE__ = { version: VERSION, updateRouteReceipt, hideOriginalActiveMaskReadout };
