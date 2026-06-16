@@ -1,18 +1,19 @@
-// Vercel Speed Insights initialization
-// This script initializes Vercel Speed Insights for the TD613-TCP project
-// Documentation: https://vercel.com/docs/speed-insights/quickstart
+// TD613 Safe Harbor desktop rescue loader
+// Mobile Safe Harbor remains governed by the primary app stylesheet.
 
-// Initialize the Speed Insights queue
 window.si = window.si || function () {
   (window.siq = window.siq || []).push(arguments);
 };
 
-// Load the Vercel Speed Insights script
-// When deployed to Vercel, Speed Insights will automatically track performance metrics
-// The script is loaded from Vercel's CDN at /_vercel/speed-insights/script.js
-(function() {
-  const script = document.createElement('script');
-  script.defer = true;
-  script.src = '/_vercel/speed-insights/script.js';
-  document.head.appendChild(script);
+(function loadSafeHarborDesktopRescueStylesheet() {
+  const route = window.location.pathname + window.location.search + window.location.hash;
+  const safeHarbor = /\/safe-harbor\/(?:index\.html)?(?:$|[?#])/i.test(route) || /TD613 Safe Harbor/i.test(document.title || '');
+  const flight = /\/safe-harbor\/td613-flight\.html(?:$|[?#])/i.test(route) || /TD613 Flight/i.test(document.title || '');
+  if (!safeHarbor || flight || document.getElementById('td613SafeHarborDesktopRescueCss')) return;
+
+  const rescue = document.createElement('link');
+  rescue.id = 'td613SafeHarborDesktopRescueCss';
+  rescue.rel = 'stylesheet';
+  rescue.href = 'app/desktop-rescue.css';
+  document.head.appendChild(rescue);
 })();
