@@ -1,4 +1,4 @@
-const TD613_HUSH_CUSTODY_EXPORT_WAKE_VERSION = 'custody-export-wake/v1';
+const TD613_HUSH_CUSTODY_EXPORT_WAKE_VERSION = 'custody-export-wake/v2-exact-strict-artifacts';
 const $ = (id) => document.getElementById(id);
 const trim = (value) => String(value ?? '').trim();
 
@@ -15,7 +15,7 @@ function outputText() {
 }
 
 function transformComplete() {
-  return Boolean(outputText() || resultState());
+  return Boolean(outputText() || resultState() || window.__TD613_HUSH_EXACT_OUTBOUND_PACKET || window.__TD613_HUSH_EXACT_PROVIDER_LOG);
 }
 
 function hashText(value = '') {
@@ -35,7 +35,9 @@ function selectedMask() {
 function exactOutboundPacket() {
   const s = benchState();
   const result = resultState() || {};
-  return window.__TD613_HUSH_PATCH38_LAST_OUTBOUND_PACKET
+  return window.__TD613_HUSH_EXACT_OUTBOUND_PACKET
+    || window.TD613_HUSH_PR123?.lastOutboundPacket?.()
+    || window.__TD613_HUSH_PATCH38_LAST_OUTBOUND_PACKET
     || window.__TD613_HUSH_PATCH38__?.lastOutboundPacket?.()
     || s.hushOutboundPacket
     || result.outboundPacket
@@ -56,7 +58,7 @@ function fallbackOutboundPacket() {
     direction: 'outbound',
     diagnosticFallback: true,
     createdAt: new Date().toISOString(),
-    note: 'Rebuilt from the latest completed local Hush transform because no stored Patch38 outbound contract was available. This is not provider output.',
+    note: 'Rebuilt from the latest completed local Hush transform because no stored outbound contract was available. This is not provider output.',
     snapshot: {
       identity,
       maskId: mask.id || s.selectedHushMaskId || null,
@@ -82,8 +84,14 @@ function outboundPacket() {
   return exactOutboundPacket() || fallbackOutboundPacket();
 }
 
+function exactProviderLog() {
+  return window.__TD613_HUSH_EXACT_PROVIDER_LOG || window.TD613_HUSH_PR123?.lastProviderLog?.() || benchState().hushProviderLog || null;
+}
+
 function providerReports() {
   const result = resultState() || {};
+  const exact = exactProviderLog();
+  if (exact) return [exact];
   return result.patch38Diagnostics?.providerReports
     || result.providerReports
     || window.__TD613_HUSH_PATCH38_LAST_PROVIDER_REPORTS
@@ -91,6 +99,8 @@ function providerReports() {
 }
 
 function providerLog() {
+  const exact = exactProviderLog();
+  if (exact) return { ...exact, exportedAt: new Date().toISOString() };
   if (!transformComplete()) return null;
   const result = resultState() || {};
   const reports = providerReports();
@@ -152,7 +162,7 @@ function exportPacket(event) {
   if (!payload) { setStatus('Transform first; no packet is ready yet.'); updateButtons(); return null; }
   const suffix = payload.snapshot?.identity || Date.now().toString(36);
   const json = writeJson({ ...payload, exportedAt: new Date().toISOString() }, `hush-outbound-packet-${suffix}.json`);
-  setStatus(payload.diagnosticFallback ? 'Fallback outbound packet exported from the completed local Transform.' : 'Outbound packet exported. This is not provider output.');
+  setStatus(payload.diagnosticFallback ? 'Fallback outbound packet exported from the completed local Transform.' : 'Exact outbound packet exported. This is not provider output.');
   updateButtons();
   return json;
 }
@@ -163,9 +173,9 @@ function exportProviderLog(event) {
   event?.stopImmediatePropagation?.();
   const payload = providerLog();
   if (!payload) { setStatus('Transform first; no provider diagnostics are ready yet.'); updateButtons(); return null; }
-  const suffix = payload.snapshot?.identity || Date.now().toString(36);
+  const suffix = payload.snapshot?.identity || payload.endpoint ? hashText(`${payload.endpoint || ''}\n${payload.httpStatus || ''}\n${payload.createdAt || ''}`) : Date.now().toString(36);
   const json = writeJson(payload, `hush-provider-log-${suffix}.json`);
-  setStatus(payload.reports?.length ? 'Provider log exported.' : 'Local transform provider-note exported; no remote provider return was recorded.');
+  setStatus(payload.exportKind === 'local-transform-provider-note' ? 'Local transform provider-note exported; no remote provider return was recorded.' : 'Exact provider log exported.');
   updateButtons();
   return json;
 }
@@ -193,7 +203,7 @@ function boot() {
   window.setInterval(updateButtons, 1500);
 }
 
-for (const name of ['td613:hush:patch38-result', 'td613:hush:outbound-packet', 'td613:hush:patch38-approval']) {
+for (const name of ['td613:hush:patch38-result', 'td613:hush:outbound-packet', 'td613:hush:patch38-approval', 'td613:hush:provider-log']) {
   window.addEventListener(name, wakeSoon);
 }
 for (const id of ['generateMaskedOutputBtn', 'analyzeOutputBtn', 'protectedOutputInput']) {
