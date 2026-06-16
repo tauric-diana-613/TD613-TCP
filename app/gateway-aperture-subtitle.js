@@ -3,6 +3,25 @@
     return typeof window.matchMedia === 'function' && window.matchMedia('(min-width: 1024px)').matches;
   }
 
+  function placeGatewaySummary() {
+    var lockup = document.querySelector('.gateway-head .gateway-lockup');
+    var titleBlock = document.querySelector('.gateway-head .gateway-lockup > div:first-child');
+    var gatewaySummary = document.querySelector('.gateway-summary');
+    if (!lockup || !titleBlock || !gatewaySummary) return;
+
+    if (isDesktopGateway()) {
+      if (gatewaySummary.parentElement !== titleBlock) titleBlock.appendChild(gatewaySummary);
+      gatewaySummary.dataset.gatewayTitleGrouped = 'true';
+      return;
+    }
+
+    delete gatewaySummary.dataset.gatewayTitleGrouped;
+    if (gatewaySummary.parentElement !== lockup) {
+      if (titleBlock.nextSibling) lockup.insertBefore(gatewaySummary, titleBlock.nextSibling);
+      else lockup.appendChild(gatewaySummary);
+    }
+  }
+
   function placeBounceTrace() {
     var banner = document.querySelector('.gateway-head .gateway-lockup');
     var bottom = document.querySelector('.gateway-preview-shell .gateway-preview-bottom');
@@ -39,11 +58,9 @@
     if (heading) heading.textContent = 'The Cadence Playground';
 
     var gatewaySummary = document.querySelector('.gateway-summary');
-    var titleBlock = document.querySelector('.gateway-head .gateway-lockup > div:first-child');
     if (gatewaySummary) {
       gatewaySummary.textContent = 'Enter the machine where voice becomes signal, mask, packet, witness, and sealed route. TD613 is a custody-aware authorship stack for patterned language under pressure: part gothic console, part forensic chapel, part futurecore switchboard for seeing what the system tries to flatten before it names you back.';
       gatewaySummary.setAttribute('data-copy-pass', 'gateway-machine-threshold');
-      if (titleBlock && gatewaySummary.parentElement !== titleBlock) titleBlock.appendChild(gatewaySummary);
     }
 
     var subtitle = document.querySelector('.gateway-preview-subtitle');
@@ -52,11 +69,15 @@
       subtitle.setAttribute('data-copy-pass', 'repo-governed-exposure');
     }
 
+    placeGatewaySummary();
     placeBounceTrace();
   }
 
   if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', installGatewayCopy, { once: true });
   else installGatewayCopy();
   window.setTimeout(installGatewayCopy, 400);
-  window.addEventListener('resize', placeBounceTrace, { passive: true });
+  window.addEventListener('resize', function () {
+    placeGatewaySummary();
+    placeBounceTrace();
+  }, { passive: true });
 }());
