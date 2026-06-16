@@ -2,72 +2,35 @@
 (function () {
   'use strict';
 
-  var VERSION = 'pr123-strict-provider-bridge/v6-receipt-popup-loader';
+  var VERSION = 'pr123-strict-provider-bridge/v8-exact-artifacts';
   var ENDPOINTS = ['/api/hush-generate-strict', 'https://td613.vercel.app/api/hush-generate-strict'];
-  var RECEIPT_POPUP_SRC = './hush-pr117-generating-watchdog-receipt.js?v=202606162255';
   var running = false;
 
   function $(id) { return document.getElementById(id); }
-  function text(value) { return String(value == null ? '' : value).trim(); }
-  function words(value) { return (String(value || '').match(/[A-Za-z0-9][A-Za-z0-9'-]*/g) || []).length; }
-  function safeJson(value) { try { return JSON.parse(JSON.stringify(value || {})); } catch (_) { return {}; } }
-  function ensureVisibleStatus() {
-    var existing = $('hushGeneratorStatus') || $('hushStrictProviderStatus');
-    if (existing) return existing;
-    var host = $('hushGeneratorModeWrap') || $('hushGateStrip') || ($('generateMaskedOutputBtn') && $('generateMaskedOutputBtn').closest('.hush-transform-gate')) || ($('generateMaskedOutputBtn') && $('generateMaskedOutputBtn').parentElement);
-    var status = document.createElement('div');
-    status.id = 'hushStrictProviderStatus';
-    status.className = 'hush-warning-panel hush-generator-status hush-transmission-plate';
-    status.setAttribute('aria-live', 'polite');
-    status.style.cssText = 'display:block;position:relative;margin:.56rem 0 .18rem;padding:.62rem .82rem .62rem 1.05rem;border:1px solid rgba(137,255,240,.24);border-left:3px solid rgba(137,255,240,.78);border-radius:12px;background:linear-gradient(135deg,rgba(3,9,20,.88),rgba(10,7,22,.78));color:rgba(226,255,236,.92);font-size:.68rem;line-height:1.35;letter-spacing:.025em;white-space:normal;overflow-wrap:anywhere;box-shadow:inset 0 1px 0 rgba(255,255,255,.06),0 0 18px rgba(137,255,240,.08);';
-    status.textContent = 'Strict provider bridge ready.';
-    if (host && host.parentElement && host.id === 'hushGateStrip') host.insertAdjacentElement('beforebegin', status);
-    else if (host && host.appendChild) host.appendChild(status);
-    else document.body.appendChild(status);
-    return status;
+  function T(value) { return String(value == null ? '' : value).trim(); }
+  function A(value) { return Array.isArray(value) ? value.filter(Boolean) : []; }
+  function copy(value) { try { return JSON.parse(JSON.stringify(value || {})); } catch (_) { return {}; } }
+  function hash(value) { var h = 2166136261; String(value || '').split('').forEach(function (ch) { h ^= ch.codePointAt(0); h = Math.imul(h, 16777619); }); return (h >>> 0).toString(16).padStart(8, '0'); }
+  function state() { return window.__TD613_HUSH_BENCH__ && window.__TD613_HUSH_BENCH__.benchState || {}; }
+  function mask() {
+    var s = state();
+    var id = $('maskFieldSelect') && $('maskFieldSelect').value || s.selectedHushMaskId || '';
+    var masks = [].concat(A(s.hushMasks), A(s.customMasks));
+    return masks.find(function (item) { return item && item.id === id; }) || s.selectedHushMask || { id: id || 'selected-mask', label: 'Selected mask' };
   }
-  function selectedMaskPayload() {
-    var select = $('maskFieldSelect');
-    var option = select && select.selectedOptions && select.selectedOptions[0];
-    var reference = $('maskReferenceInput');
-    return {
-      id: select ? select.value : 'selected-mask',
-      label: option ? option.textContent.replace(/\s+[-—].*$/, '').trim() : 'Selected mask',
-      name: option ? option.textContent.replace(/\s+[-—].*$/, '').trim() : 'Selected mask',
-      description: option ? option.textContent : '',
-      sampleSeed: reference ? reference.value : '',
-      profileStatus: 'remote-strict'
-    };
-  }
-  function setStatus(message, tone) {
-    var status = ensureVisibleStatus();
-    if (!status) return;
-    status.dataset.tone = tone || 'info';
-    status.textContent = message;
-    if (tone === 'error') {
-      status.style.borderColor = 'rgba(255,118,104,.34)';
-      status.style.borderLeftColor = 'rgba(255,118,104,.82)';
-      status.style.boxShadow = 'inset 0 1px 0 rgba(255,255,255,.06),0 0 18px rgba(255,118,104,.10)';
-    } else if (tone === 'ok') {
-      status.style.borderColor = 'rgba(137,255,240,.24)';
-      status.style.borderLeftColor = 'rgba(49,255,138,.82)';
-      status.style.boxShadow = 'inset 0 1px 0 rgba(255,255,255,.06),0 0 18px rgba(49,255,138,.10)';
-    } else {
-      status.style.borderColor = 'rgba(137,255,240,.24)';
-      status.style.borderLeftColor = 'rgba(137,255,240,.78)';
-      status.style.boxShadow = 'inset 0 1px 0 rgba(255,255,255,.06),0 0 18px rgba(137,255,240,.08)';
+  function status(message, tone) {
+    var node = $('hushGeneratorStatus') || $('hushStrictProviderStatus') || $('hushOutputStatusText');
+    if (!node) {
+      node = document.createElement('div');
+      node.id = 'hushStrictProviderStatus';
+      node.className = 'hush-warning-panel hush-generator-status';
+      var host = $('hushGateStrip') || $('generateMaskedOutputBtn') && $('generateMaskedOutputBtn').parentElement || document.body;
+      host.insertAdjacentElement ? host.insertAdjacentElement('beforebegin', node) : document.body.appendChild(node);
     }
-    var outputStatus = $('hushOutputStatusText');
-    if (outputStatus) outputStatus.textContent = tone === 'ok' ? 'Provider' : tone === 'error' ? 'Held' : 'Running';
-  }
-  function setOutput(value) {
-    var output = $('protectedOutputInput');
-    if (!output) return;
-    output.value = value || '';
-    output.dispatchEvent(new Event('input', { bubbles: true }));
-    if (window.__TD613_HUSH_BENCH__ && window.__TD613_HUSH_BENCH__.benchState) {
-      window.__TD613_HUSH_BENCH__.benchState.protectedOutputText = value || '';
-    }
+    node.dataset.tone = tone || 'info';
+    node.textContent = message;
+    var out = $('hushOutputStatusText');
+    if (out) out.textContent = tone === 'ok' ? 'Provider' : tone === 'error' ? 'Held' : 'Running';
   }
   function setBusy(value) {
     var button = $('generateMaskedOutputBtn');
@@ -77,173 +40,164 @@
     }
     if (document.body) document.body.dataset.strictTransformRunning = value ? 'true' : 'false';
   }
+  function setOutput(value) {
+    var output = $('protectedOutputInput');
+    if (output) {
+      output.value = value || '';
+      output.dispatchEvent(new Event('input', { bubbles: true }));
+    }
+    state().protectedOutputText = value || '';
+  }
+  function wordCount(value) { return (String(value || '').match(/[A-Za-z0-9][A-Za-z0-9'-]*/g) || []).length; }
   function sourceLayoutPolicy() {
     return {
-      version: 'pr123-strict-provider-bridge/v6-receipt-popup-loader',
+      version: VERSION,
       source_line_breaks_are_constraints: false,
       source_line_breaks_are_reading_context: true,
       mask_line_breaks_may_guide_output_pacing: true,
-      instruction: 'Source/input line breaks are reading context only, not output constraints. Do not copy or preserve source line breaks for their own sake. Visible pacing should come from the selected mask/custom-mask corpus or natural target-register pacing.'
+      instruction: 'Source/input line breaks are reading context only. Use the selected mask or natural target-register pacing for visible layout.'
     };
   }
   function buildContract() {
-    var source = $('messageDraftInput') ? $('messageDraftInput').value : '';
-    var mask = selectedMaskPayload();
-    var candidateCount = 2;
-    var contract = {
-      promptVersion: 'hush-strict-provider-bridge-current/v6',
-      sourceText: source,
-      messageDraftText: source,
-      protectedBaselineText: $('protectedBaselineInput') ? $('protectedBaselineInput').value : '',
-      maskReferenceText: $('maskReferenceInput') ? $('maskReferenceInput').value : mask.sampleSeed || '',
-      mask: mask,
-      selectedMask: mask,
-      maskId: mask.id,
-      selectedMaskId: mask.id,
-      candidateCount: candidateCount,
-      operatorMode: 'neutralize',
-      contextType: $('recognitionContextType') ? $('recognitionContextType').value : 'group-chat',
-      exposureDuration: $('recognitionExposureDuration') ? $('recognitionExposureDuration').value : 'single-use',
+    var s = state();
+    var m = mask();
+    var src = $('messageDraftInput') ? $('messageDraftInput').value : s.messageDraftText || '';
+    var ref = $('maskReferenceInput') ? $('maskReferenceInput').value : s.maskReferenceText || m.sampleSeed || m.description || '';
+    var tier = wordCount(ref) >= 180 ? 'strict_remote_mask_evidence_packet' : 'strict_remote_mask_label_packet';
+    return {
+      promptVersion: 'hush-strict-provider-bridge-current/v8',
+      sourceText: src,
+      messageDraftText: src,
+      protectedBaselineText: $('protectedBaselineInput') ? $('protectedBaselineInput').value : s.protectedBaselineText || '',
+      maskReferenceText: ref,
+      mask: m,
+      selectedMask: m,
+      maskId: m.id || s.selectedHushMaskId || '',
+      selectedMaskId: m.id || s.selectedHushMaskId || '',
+      candidateCount: 2,
+      operatorMode: s.recognitionIntentMode || 'neutralize',
+      contextType: $('recognitionContextType') ? $('recognitionContextType').value : s.recognitionContextType || 'group-chat',
+      exposureDuration: $('recognitionExposureDuration') ? $('recognitionExposureDuration').value : s.recognitionExposureDuration || 'single-use',
       strictDirect: true,
       strictNoFallback: true,
       strictBudgetedUpstream: true,
       noFallback: true,
-      packetTier: words(mask.sampleSeed || '') >= 180 ? 'strict_remote_mask_evidence_packet' : 'strict_remote_mask_label_packet',
-      maskEvidenceState: words(mask.sampleSeed || '') >= 180 ? 'rich' : 'label-only',
+      packetTier: tier,
+      maskEvidenceState: tier.indexOf('evidence') >= 0 ? 'rich' : 'label-only',
       operationTaxonomy: ['register_transform', 'syntax_inversion', 'cadence_alias', 'sentence_boundary_shift', 'term_preserving_reframe', 'heat_calibration'],
       sourceLayoutPolicy: sourceLayoutPolicy(),
       rules: [
         'Use remote provider generation only. Do not release local deterministic fallback text.',
-        'Do not prepend organizer phrases such as “Just keeping this organized.”',
         'Preserve core propositions and protected literals while changing register, syntax, cadence, and sentence architecture.',
         sourceLayoutPolicy().instruction
       ],
       flightPacket: {
-        packet_version: 'hush-strict-provider-bridge-flight/v6',
-        packet_tier: words(mask.sampleSeed || '') >= 180 ? 'strict_remote_mask_evidence_packet' : 'strict_remote_mask_label_packet',
-        mask_id: mask.id,
-        mask_label: mask.label,
-        mask_evidence: { maskEvidenceState: words(mask.sampleSeed || '') >= 180 ? 'rich' : 'label-only', wordCount: words(mask.sampleSeed || '') },
+        packet_version: 'hush-strict-provider-bridge-flight/v8',
+        packet_tier: tier,
+        mask_id: m.id || '',
+        mask_label: m.label || m.name || '',
+        mask_evidence: { maskEvidenceState: tier.indexOf('evidence') >= 0 ? 'rich' : 'label-only', wordCount: wordCount(ref) },
         source_layout_policy: sourceLayoutPolicy(),
-        flight_controls: {
-          candidate_count: candidateCount,
-          strict_budgeted_upstream: true,
-          no_local_fallback: true,
-          required_operations: ['register_transform', 'syntax_inversion', 'cadence_alias', 'sentence_boundary_shift', 'term_preserving_reframe', 'heat_calibration']
-        },
-        mask_style_vector: {
-          mask_id: mask.id,
-          display_name: mask.label,
-          sample_seed: mask.sampleSeed || '',
-          desired_moves: ['change opening word', 'change sentence order', 'preserve propositions', 'avoid source wrapper copy', 'avoid organizer prefaces'],
-          source_layout_policy: sourceLayoutPolicy()
-        }
+        flight_controls: { candidate_count: 2, strict_budgeted_upstream: true, no_local_fallback: true },
+        mask_style_vector: { mask_id: m.id || '', display_name: m.label || m.name || '', sample_seed: ref, source_layout_policy: sourceLayoutPolicy() }
       }
     };
-    return contract;
   }
-  function candidateText(candidate) {
-    return text(candidate && (candidate.text || candidate.output || candidate.candidate || candidate.rewrite || candidate.message || candidate.selectedOutput || candidate.protectedOutputText));
+  function packetFor(contract, endpoint) {
+    return {
+      schema: 'td613-hush-outbound-packet/v1',
+      exportKind: 'outbound-generator-contract',
+      direction: 'outbound',
+      diagnosticFallback: false,
+      createdAt: new Date().toISOString(),
+      mode: 'remote-llm-proxy',
+      endpoint: endpoint || null,
+      promptVersion: contract.promptVersion,
+      flightPacketVersion: contract.flightPacket && contract.flightPacket.packet_version || null,
+      snapshot: { identity: 'strict-' + hash([contract.sourceText, contract.maskId, contract.maskReferenceText, endpoint || ''].join('\n')), maskId: contract.maskId || null, sourceHash: hash(contract.sourceText || ''), referenceHash: hash(contract.maskReferenceText || '') },
+      note: 'Exact outbound strict provider contract captured before the provider request. This is not provider output.',
+      contract: contract,
+      flightPacket: contract.flightPacket || null
+    };
   }
-  function poisoned(value) {
-    return /Just keeping this organized|Keeping this organized|should stay with the note|That keeps the context together/i.test(value || '');
+  function publishPacket(contract, endpoint) {
+    var packet = packetFor(contract, endpoint);
+    window.__TD613_HUSH_EXACT_OUTBOUND_PACKET = copy(packet);
+    window.__TD613_HUSH_PATCH38_LAST_OUTBOUND_PACKET = copy(packet);
+    state().hushOutboundPacket = copy(packet);
+    try { window.dispatchEvent(new CustomEvent('td613:hush:outbound-packet', { detail: { outboundPacket: packet } })); } catch (_) {}
+    return packet;
   }
-  function allCandidateLike(payload) {
+  function publishProvider(payload, contract, endpoint, httpStatus) {
+    var log = { schema: 'td613-hush-provider-log/v1', exportKind: 'inbound-provider-log', direction: 'inbound', createdAt: new Date().toISOString(), bridgeVersion: VERSION, endpoint: endpoint, httpStatus: httpStatus, promptVersion: contract.promptVersion, flightPacketVersion: contract.flightPacket && contract.flightPacket.packet_version || null, note: 'Exact provider return captured after the provider response. This is not the outbound packet.', payload: copy(payload) };
+    window.__TD613_HUSH_PR123_LAST = copy({ endpoint: endpoint, httpStatus: httpStatus, payload: payload });
+    window.__TD613_HUSH_EXACT_PROVIDER_LOG = copy(log);
+    window.__TD613_HUSH_PATCH38_LAST_PROVIDER_REPORTS = [copy(log)];
+    state().hushProviderLog = copy(log);
+    try { window.dispatchEvent(new CustomEvent('td613:hush:provider-log', { detail: { providerLog: log } })); } catch (_) {}
+    return log;
+  }
+  function candidateText(candidate) { return T(candidate && (candidate.text || candidate.output || candidate.candidate || candidate.rewrite || candidate.message || candidate.selectedOutput || candidate.protectedOutputText)); }
+  function collectCandidates(payload) {
     var out = [];
     if (!payload || typeof payload !== 'object') return out;
-    if (Array.isArray(payload.candidates)) out = out.concat(payload.candidates);
-    if (Array.isArray(payload.outputs)) out = out.concat(payload.outputs);
-    if (Array.isArray(payload.results)) out = out.concat(payload.results);
+    ['candidates', 'outputs', 'results'].forEach(function (key) { if (Array.isArray(payload[key])) out = out.concat(payload[key]); });
     if (payload.selectedOutput || payload.output || payload.text || payload.rewrite || payload.message) out.push(payload);
-    if (payload.payload && typeof payload.payload === 'object') out = out.concat(allCandidateLike(payload.payload));
-    if (Array.isArray(payload.providerReports)) payload.providerReports.forEach(function (report) { out = out.concat(allCandidateLike(report)); });
+    if (payload.payload && typeof payload.payload === 'object') out = out.concat(collectCandidates(payload.payload));
+    if (Array.isArray(payload.providerReports)) payload.providerReports.forEach(function (report) { out = out.concat(collectCandidates(report)); });
     return out;
   }
-  function usableCandidate(payload) {
-    var candidates = allCandidateLike(payload);
+  function selectedCandidate(payload) {
+    var candidates = collectCandidates(payload);
     for (var i = 0; i < candidates.length; i += 1) {
       var value = candidateText(candidates[i]);
-      if (value && !poisoned(value)) return { text: value, candidate: candidates[i] };
+      if (value && !/Just keeping this organized|Keeping this organized|should stay with the note|That keeps the context together/i.test(value)) return { text: value, candidate: candidates[i] };
     }
     return null;
   }
-  function publishReceipt(payload, contract, endpoint, status) {
-    window.__TD613_HUSH_PR123_LAST = safeJson({ endpoint: endpoint, httpStatus: status, payload: payload });
-    window.__TD613_HUSH_STRICT_PROVIDER_LAST_CONTRACT = safeJson(contract);
-    try {
-      window.dispatchEvent(new CustomEvent('td613:hush:outbound-packet', { detail: { outboundPacket: { schema: 'td613-hush-outbound-packet/v1', createdAt: new Date().toISOString(), direction: 'outbound', mode: 'remote-llm-proxy', endpoint: endpoint, contract: contract, flightPacket: contract.flightPacket } } }));
-    } catch (_) {}
-  }
-  function ensureReceiptPopupLoaded() {
-    return new Promise(function (resolve) {
-      if (window.TD613_HUSH_PR117 && window.TD613_HUSH_PR117.disabled === false) return resolve(true);
-      if ($('hushPr117ReceiptPopupLoader')) return window.setTimeout(function () { resolve(Boolean(window.TD613_HUSH_PR117)); }, 140);
-      var script = document.createElement('script');
-      script.id = 'hushPr117ReceiptPopupLoader';
-      script.src = RECEIPT_POPUP_SRC;
-      script.onload = function () { resolve(true); };
-      script.onerror = function () { resolve(false); };
-      document.head.appendChild(script);
-    });
-  }
-  function dispatchHeldReceipt(receipt) {
-    window.__TD613_HUSH_NO_FALLBACK_RECEIPT = receipt;
-    ensureReceiptPopupLoaded().then(function () {
-      try { window.dispatchEvent(new CustomEvent('td613:hush:no-fallback-receipt', { detail: { receipt: receipt } })); } catch (_) {}
-      try { window.dispatchEvent(new CustomEvent('td613:hush:provider-held', { detail: { receipt: receipt } })); } catch (_) {}
-      if (window.TD613_HUSH_PR117 && typeof window.TD613_HUSH_PR117.force === 'function') window.TD613_HUSH_PR117.force(receipt);
-    });
-  }
   async function callEndpoint(endpoint, contract) {
-    var response = await fetch(endpoint, {
-      method: 'POST',
-      headers: { 'content-type': 'application/json' },
-      body: JSON.stringify({ contract: contract })
-    });
+    publishPacket(contract, endpoint);
+    var response = await fetch(endpoint, { method: 'POST', headers: { 'content-type': 'application/json' }, body: JSON.stringify({ contract: contract }) });
     var payload = await response.json().catch(function () { return { ok: false, error: 'non_json_response' }; });
-    return { response: response, payload: payload, endpoint: endpoint };
+    publishProvider(payload, contract, endpoint, response.status);
+    return { endpoint: endpoint, response: response, payload: payload };
   }
   async function run(event) {
     if (event && event.preventDefault) event.preventDefault();
     if (event && event.stopPropagation) event.stopPropagation();
     if (event && event.stopImmediatePropagation) event.stopImmediatePropagation();
-    if (running) {
-      setStatus('Strict provider transform already running…', 'info');
-      return null;
-    }
+    if (running) { status('Strict provider transform already running…', 'info'); return null; }
     var contract = buildContract();
-    if (!text(contract.sourceText)) {
-      setStatus('Message required before Transform.', 'error');
-      return null;
-    }
+    if (!T(contract.sourceText)) { status('Message required before Transform.', 'error'); return null; }
     running = true;
     setBusy(true);
     setOutput('');
-    setStatus('Remote provider request in flight… strict packet sent. No local fallback will be released.', 'info');
     var last = null;
     try {
       for (var i = 0; i < ENDPOINTS.length; i += 1) {
         var endpoint = ENDPOINTS[i];
-        setStatus('Remote provider request in flight via ' + endpoint + '…', 'info');
+        status('Remote provider request in flight via ' + endpoint + '…', 'info');
         try {
           last = await callEndpoint(endpoint, contract);
-          publishReceipt(last.payload, contract, endpoint, last.response.status);
-          var selected = usableCandidate(last.payload);
+          var selected = selectedCandidate(last.payload);
           if (last.response.ok && selected) {
             setOutput(selected.text);
-            setStatus('Remote provider output received from ' + endpoint + '. Review/edit before Accept.', 'ok');
+            var result = { selectedOutput: selected.text, patch38Diagnostics: { providerMode: 'remote-llm-proxy', providerReports: [window.__TD613_HUSH_EXACT_PROVIDER_LOG], selectedCandidateId: selected.candidate && (selected.candidate.id || selected.candidate.source) || 'provider-candidate' }, phase37Telemetry: { promptVersion: contract.promptVersion, flightPacketVersion: contract.flightPacket.packet_version, flightPacket: contract.flightPacket }, patch38Snapshot: window.__TD613_HUSH_EXACT_OUTBOUND_PACKET && window.__TD613_HUSH_EXACT_OUTBOUND_PACKET.snapshot || null, outboundPacket: window.__TD613_HUSH_EXACT_OUTBOUND_PACKET };
+            state().hushSwapResult = result;
+            window.__TD613_HUSH_PATCH38_LAST_RESULT = result;
+            status('Remote provider output received from ' + endpoint + '. Review/edit before Accept.', 'ok');
+            try { window.dispatchEvent(new CustomEvent('td613:hush:patch38-result', { detail: { result: result, outboundPacket: window.__TD613_HUSH_EXACT_OUTBOUND_PACKET } })); } catch (_) {}
             return selected.text;
           }
         } catch (error) {
-          last = { endpoint: endpoint, error: String(error && error.message || error), payload: { error: 'request_failed' }, response: { status: 0, ok: false } };
-          window.__TD613_HUSH_PR123_LAST = safeJson(last);
+          publishProvider({ error: 'request_failed', message: String(error && error.message || error) }, contract, endpoint, 0);
+          last = { endpoint: endpoint, response: { status: 0, ok: false }, payload: { error: 'request_failed' } };
         }
       }
-      var payload = last && last.payload ? last.payload : {};
-      var reason = text(payload.reason || payload.error || payload.message || (last && last.error) || 'strict provider returned no releasable remote candidate');
-      var receipt = { status: 'held', reason: reason, fallbackReleased: false, payload: payload, endpoint: last && last.endpoint, httpStatus: last && last.response && last.response.status, bridgeVersion: VERSION, contract: contract };
-      dispatchHeldReceipt(receipt);
-      setStatus('Strict provider held: ' + reason + '. No local fallback released. Inspect window.__TD613_HUSH_PR123_LAST.', 'error');
+      var payload = last && last.payload || {};
+      var reason = T(payload.reason || payload.error || payload.message || 'strict provider returned no releasable remote candidate');
+      window.__TD613_HUSH_NO_FALLBACK_RECEIPT = { status: 'held', reason: reason, fallbackReleased: false, endpoint: last && last.endpoint, httpStatus: last && last.response && last.response.status, bridgeVersion: VERSION, contract: contract };
+      status('Strict provider held: ' + reason + '. No local fallback released.', 'error');
       return null;
     } finally {
       running = false;
@@ -252,17 +206,18 @@
   }
   function bind() {
     if (!document.body || document.body.dataset.pageKind !== 'adversarial-bench') return;
-    ensureVisibleStatus();
-    ensureReceiptPopupLoaded();
     var button = $('generateMaskedOutputBtn');
     if (!button || button.dataset.pr123StrictProviderBridge === VERSION) return;
     button.dataset.pr123StrictProviderBridge = VERSION;
     button.addEventListener('click', run, true);
+    status('Strict provider bridge ready.', 'info');
   }
   window.TD613_HUSH_PR123 = window.TD613_HUSH_PR123 || {};
   window.TD613_HUSH_PR123.version = VERSION;
   window.TD613_HUSH_PR123.run = run;
   window.TD613_HUSH_PR123.buildContract = buildContract;
+  window.TD613_HUSH_PR123.lastOutboundPacket = function () { return window.__TD613_HUSH_EXACT_OUTBOUND_PACKET || null; };
+  window.TD613_HUSH_PR123.lastProviderLog = function () { return window.__TD613_HUSH_EXACT_PROVIDER_LOG || null; };
   if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', bind, { once: true });
   else bind();
   window.setTimeout(bind, 240);
