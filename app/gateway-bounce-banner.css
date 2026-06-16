@@ -4,6 +4,10 @@ body[data-page-kind="gateway"] .gateway-preview-bottom-panel.gateway-preview-moi
   grid-column: 1 / -1 !important;
 }
 
+body[data-page-kind="gateway"] .gateway-card-kicker .glyph[data-gateway-glyph-override="true"] {
+  text-transform: none !important;
+}
+
 @media (min-width: 1024px) {
   body[data-page-kind="gateway"] .gateway-head .gateway-lockup {
     position: relative !important;
