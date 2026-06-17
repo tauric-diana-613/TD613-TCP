@@ -8,9 +8,9 @@
 
   html.safe-harbor-pr147 #covenantCanonSection > .panel-section:has(.reference-link-grid) {
     display: block !important;
-    order: -10 !important;
-    margin-top: 0 !important;
-    margin-bottom: 14px !important;
+    order: 90 !important;
+    margin-top: 14px !important;
+    margin-bottom: 0 !important;
     visibility: visible !important;
     opacity: 1 !important;
     transform: none !important;
