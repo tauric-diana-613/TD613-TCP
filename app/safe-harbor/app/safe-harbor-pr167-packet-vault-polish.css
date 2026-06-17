@@ -1,4 +1,4 @@
-/* Packet Vault polish: compact PR150 drawer with PR167 centered Unicode chevron. */
+/* Packet Vault polish: compact PR150 drawer with centered ⮛/⮙ direction glyphs. */
 #packetVaultFold.reliquary-forensic-fold {
   margin-top: 18px !important;
   padding: 0 !important;
@@ -76,7 +76,7 @@
 }
 
 #packetVaultFold.reliquary-forensic-fold > summary::before {
-  content: '∨' !important;
+  content: '⮛' !important;
   grid-area: chevron !important;
   justify-self: start !important;
   align-self: center !important;
@@ -92,7 +92,7 @@
   border-radius: 999px !important;
   background: rgba(80, 250, 123, 0.055) !important;
   color: rgba(80, 250, 123, 0.94) !important;
-  font-size: 1.02rem !important;
+  font-size: 0.95rem !important;
   font-weight: 900 !important;
   line-height: 1 !important;
   text-align: center !important;
@@ -104,7 +104,7 @@
 }
 
 #packetVaultFold.reliquary-forensic-fold[open] > summary::before {
-  content: '∧' !important;
+  content: '⮙' !important;
   border-color: rgba(189, 147, 249, 0.34) !important;
   color: rgba(231, 219, 255, 0.92) !important;
   background: rgba(189, 147, 249, 0.06) !important;
@@ -166,7 +166,7 @@
     width: 28px !important;
     height: 28px !important;
     min-width: 28px !important;
-    font-size: 1.02rem !important;
+    font-size: 0.95rem !important;
   }
 
   #packetVaultFold.reliquary-forensic-fold > summary ~ * {
