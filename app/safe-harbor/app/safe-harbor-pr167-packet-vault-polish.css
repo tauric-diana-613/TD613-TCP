@@ -1,4 +1,4 @@
-/* Packet Vault polish: restore the original PR150 compact drawer, with centered Unicode ∨/∧ icon button. */
+/* Packet Vault polish: restore the original compact PR150 drawer and PR167 centered Unicode chevron. */
 #packetVaultFold.reliquary-forensic-fold {
   margin-top: 18px !important;
   padding: 0 !important;
@@ -23,9 +23,9 @@
     "title action"
     "chevron ." !important;
   align-items: center !important;
-  gap: 8px 14px !important;
-  min-height: 92px !important;
-  padding: 16px 18px 14px !important;
+  gap: 5px 12px !important;
+  min-height: 66px !important;
+  padding: 11px 14px 10px !important;
   border: 0 !important;
   border-radius: 17px !important;
   background:
@@ -49,7 +49,7 @@
   min-width: 0 !important;
   color: var(--text-soft) !important;
   font-family: var(--font-mono) !important;
-  font-size: 0.78rem !important;
+  font-size: 0.76rem !important;
   font-weight: 600 !important;
   line-height: 1.1 !important;
   letter-spacing: 0.22em !important;
@@ -62,14 +62,14 @@
   align-self: center !important;
   display: inline-grid !important;
   place-items: center !important;
-  min-height: 36px !important;
-  padding: 0 15px !important;
+  min-height: 34px !important;
+  padding: 0 14px !important;
   border: 1px solid rgba(80, 250, 123, 0.24) !important;
   border-radius: 999px !important;
   background: rgba(80, 250, 123, 0.05) !important;
   color: rgba(217, 255, 231, 0.88) !important;
   font-family: var(--font-mono) !important;
-  font-size: 0.58rem !important;
+  font-size: 0.56rem !important;
   font-weight: 800 !important;
   letter-spacing: 0.16em !important;
   text-transform: uppercase !important;
@@ -82,16 +82,18 @@
   align-self: center !important;
   display: inline-grid !important;
   place-items: center !important;
-  width: 34px !important;
-  height: 34px !important;
-  min-width: 34px !important;
+  justify-content: center !important;
+  align-content: center !important;
+  width: 30px !important;
+  height: 30px !important;
+  min-width: 30px !important;
   padding: 0 !important;
   border: 1px solid rgba(80, 250, 123, 0.32) !important;
   border-radius: 999px !important;
   background: rgba(80, 250, 123, 0.055) !important;
   color: rgba(80, 250, 123, 0.94) !important;
   font-family: var(--font-mono) !important;
-  font-size: 0.86rem !important;
+  font-size: 1.05rem !important;
   font-weight: 900 !important;
   line-height: 1 !important;
   text-align: center !important;
@@ -140,9 +142,9 @@
   }
 
   #packetVaultFold.reliquary-forensic-fold > summary {
-    min-height: 92px !important;
-    padding: 16px 18px 14px !important;
-    gap: 8px 14px !important;
+    min-height: 66px !important;
+    padding: 11px 14px 10px !important;
+    gap: 5px 12px !important;
     border-radius: 16px !important;
   }
 
@@ -156,17 +158,16 @@
   }
 
   #packetVaultFold.reliquary-forensic-fold > summary .fold-toggle-word {
-    min-height: 36px !important;
-    padding-inline: 15px !important;
+    min-height: 34px !important;
+    padding-inline: 14px !important;
     font-size: 0.56rem !important;
   }
 
   #packetVaultFold.reliquary-forensic-fold > summary::before {
-    width: 34px !important;
-    height: 34px !important;
-    min-width: 34px !important;
-    font-size: 0.86rem !important;
-    line-height: 1 !important;
+    width: 30px !important;
+    height: 30px !important;
+    min-width: 30px !important;
+    font-size: 1.05rem !important;
   }
 
   #packetVaultFold.reliquary-forensic-fold > summary ~ * {
