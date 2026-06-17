@@ -15,6 +15,7 @@
     } catch (error) {}
   </script>
   <link rel="stylesheet" href="app/styles.css">
+  <link rel="stylesheet" href="app/safe-harbor-pr167-packet-vault-polish.css?v=20260617-packet-vault-direct">
   <script type="module" src="../analytics.js"></script>
   <script type="module" src="../speed-insights.js"></script>
 </head>
@@ -247,23 +248,23 @@
               <div class="field-grid">
                 <label class="field field-wide">
                   <span>Vanguard batch</span>
-		  <select id="batchIntakeSelect">
-     			  <option value="batch-001a">batch-001a</option>
-     			  <option value="batch-001b">batch-001b</option>
-     			  <option value="batch-001c">batch-001c</option>
-     			  <option value="batch-001d">batch-001d</option>
-     			  <option value="batch-002a">batch-002a</option>
-     			  <option value="batch-002b">batch-002b</option>
-     			  <option value="batch-002c">batch-002c</option>
-     			  <option value="batch-002d">batch-002d</option>
-     			  <option value="batch-003a">batch-003a</option>
-     			  <option value="batch-003b">batch-003b</option>
-     			  <option value="batch-003c">batch-003c</option>
-     			  <option value="batch-003d">batch-003d</option>
-     			  <option value="batch-004a">batch-004a</option>
-     			  <option value="batch-004b">batch-004b</option>
-     			  <option value="batch-004c">batch-004c</option>
-   		    </select>
+                  <select id="batchIntakeSelect">
+                    <option value="batch-001a">batch-001a</option>
+                    <option value="batch-001b">batch-001b</option>
+                    <option value="batch-001c">batch-001c</option>
+                    <option value="batch-001d">batch-001d</option>
+                    <option value="batch-002a">batch-002a</option>
+                    <option value="batch-002b">batch-002b</option>
+                    <option value="batch-002c">batch-002c</option>
+                    <option value="batch-002d">batch-002d</option>
+                    <option value="batch-003a">batch-003a</option>
+                    <option value="batch-003b">batch-003b</option>
+                    <option value="batch-003c">batch-003c</option>
+                    <option value="batch-003d">batch-003d</option>
+                    <option value="batch-004a">batch-004a</option>
+                    <option value="batch-004b">batch-004b</option>
+                    <option value="batch-004c">batch-004c</option>
+                  </select>
                 </label>
               </div>
               <div class="button-grid compact">
@@ -370,6 +371,7 @@
                 <div class="dock-toolbar">
                   <button class="control secondary" id="copyForensicSchemaPreview" type="button" disabled>Copy</button>
                   <button class="control secondary" id="exportPacketPreview" type="button" disabled>Export</button>
+                  <button class="control secondary" id="openPacketTxtPreview" type="button" disabled aria-disabled="true">Open .txt</button>
                   <button class="control secondary" id="resetStagedPacket" type="button" disabled>Reset</button>
                 </div>
                 <div class="note compact" id="exportReopenHint">Save the exported .json. To reopen Safe Harbor later, upload it and paste your SHI #.</div>
@@ -500,5 +502,6 @@
   <script src="../operator-receipt.js"></script>
   <script src="app/data.js"></script>
   <script src="app/main.js"></script>
+  <script src="app/safe-harbor-pr169-packet-vault-direct.js?v=20260617-packet-vault-direct" defer></script>
 </body>
 </html>
