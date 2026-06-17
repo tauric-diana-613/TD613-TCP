@@ -1,6 +1,5 @@
 /* PR167 Packet Vault polish: restore reliquary drawer gown + centered chevron + Android-friendly txt opener. */
-html.safe-harbor-pr147 #packetVaultFold.reliquary-forensic-fold,
-body #packetVaultFold.reliquary-forensic-fold {
+#packetVaultFold.reliquary-forensic-fold {
   margin-top: 18px !important;
   border: 1px solid rgba(255, 143, 181, 0.24) !important;
   border-radius: 24px !important;
@@ -16,8 +15,7 @@ body #packetVaultFold.reliquary-forensic-fold {
   overflow: hidden !important;
 }
 
-html.safe-harbor-pr147 #packetVaultFold.reliquary-forensic-fold > summary,
-body #packetVaultFold.reliquary-forensic-fold > summary {
+#packetVaultFold.reliquary-forensic-fold > summary {
   list-style: none !important;
   display: grid !important;
   grid-template-columns: 30px minmax(0, 1fr) auto !important;
@@ -34,20 +32,17 @@ body #packetVaultFold.reliquary-forensic-fold > summary {
   cursor: pointer !important;
 }
 
-html.safe-harbor-pr147 #packetVaultFold.reliquary-forensic-fold > summary::-webkit-details-marker,
-body #packetVaultFold.reliquary-forensic-fold > summary::-webkit-details-marker {
+#packetVaultFold.reliquary-forensic-fold > summary::-webkit-details-marker {
   display: none !important;
 }
 
-html.safe-harbor-pr147 #packetVaultFold.reliquary-forensic-fold[open] > summary,
-body #packetVaultFold.reliquary-forensic-fold[open] > summary {
+#packetVaultFold.reliquary-forensic-fold[open] > summary {
   border-bottom: 1px solid rgba(255, 255, 255, 0.075) !important;
   border-radius: 23px 23px 0 0 !important;
   box-shadow: 0 16px 36px rgba(0, 0, 0, 0.18) !important;
 }
 
-html.safe-harbor-pr147 #packetVaultFold.reliquary-forensic-fold > summary::before,
-body #packetVaultFold.reliquary-forensic-fold > summary::before {
+#packetVaultFold.reliquary-forensic-fold > summary::before {
   content: '∨' !important;
   display: inline-grid !important;
   place-items: center !important;
@@ -73,8 +68,7 @@ body #packetVaultFold.reliquary-forensic-fold > summary::before {
     0 0 16px rgba(255, 203, 136, 0.08) !important;
 }
 
-html.safe-harbor-pr147 #packetVaultFold.reliquary-forensic-fold[open] > summary::before,
-body #packetVaultFold.reliquary-forensic-fold[open] > summary::before {
+#packetVaultFold.reliquary-forensic-fold[open] > summary::before {
   content: '∧' !important;
   transform: translateY(0.5px) !important;
   border-color: rgba(189, 147, 249, 0.38) !important;
@@ -84,8 +78,7 @@ body #packetVaultFold.reliquary-forensic-fold[open] > summary::before {
     0 0 18px rgba(189, 147, 249, 0.12) !important;
 }
 
-html.safe-harbor-pr147 #packetVaultFold.reliquary-forensic-fold > summary > span:first-child,
-body #packetVaultFold.reliquary-forensic-fold > summary > span:first-child {
+#packetVaultFold.reliquary-forensic-fold > summary > span:first-child {
   min-width: 0 !important;
   color: var(--text-bright) !important;
   font-family: var(--font-display) !important;
@@ -95,8 +88,7 @@ body #packetVaultFold.reliquary-forensic-fold > summary > span:first-child {
   text-transform: none !important;
 }
 
-html.safe-harbor-pr147 #packetVaultFold.reliquary-forensic-fold > summary .fold-toggle-word,
-body #packetVaultFold.reliquary-forensic-fold > summary .fold-toggle-word {
+#packetVaultFold.reliquary-forensic-fold > summary .fold-toggle-word {
   justify-self: end !important;
   display: inline-grid !important;
   place-items: center !important;
@@ -112,49 +104,40 @@ body #packetVaultFold.reliquary-forensic-fold > summary .fold-toggle-word {
   text-transform: uppercase !important;
 }
 
-html.safe-harbor-pr147 #packetVaultFold.reliquary-forensic-fold[open] > summary .fold-toggle-word,
-body #packetVaultFold.reliquary-forensic-fold[open] > summary .fold-toggle-word {
+#packetVaultFold.reliquary-forensic-fold[open] > summary .fold-toggle-word {
   border-color: rgba(189, 147, 249, 0.26) !important;
   color: rgba(231, 219, 255, 0.88) !important;
 }
 
-html.safe-harbor-pr147 #packetVaultFold.reliquary-forensic-fold > summary ~ *,
-body #packetVaultFold.reliquary-forensic-fold > summary ~ * {
+#packetVaultFold.reliquary-forensic-fold > summary ~ * {
   margin-left: 16px !important;
   margin-right: 16px !important;
 }
 
-html.safe-harbor-pr147 #packetVaultFold.reliquary-forensic-fold > summary + .metric-block,
-body #packetVaultFold.reliquary-forensic-fold > summary + .metric-block {
+#packetVaultFold.reliquary-forensic-fold > summary + .metric-block {
   margin-top: 16px !important;
 }
 
-html.safe-harbor-pr147 #packetVaultFold.reliquary-forensic-fold > .button-grid:last-child,
-html.safe-harbor-pr147 #packetVaultFold.reliquary-forensic-fold > .note:last-child,
-body #packetVaultFold.reliquary-forensic-fold > .button-grid:last-child,
-body #packetVaultFold.reliquary-forensic-fold > .note:last-child {
+#packetVaultFold.reliquary-forensic-fold > .button-grid:last-child,
+#packetVaultFold.reliquary-forensic-fold > .note:last-child {
   margin-bottom: 16px !important;
 }
 
-html.safe-harbor-pr147 #openPacketTxtPreview,
-body #openPacketTxtPreview {
+#openPacketTxtPreview {
   white-space: nowrap;
 }
 
-html.safe-harbor-pr147 #openPacketTxtPreview:not(:disabled),
-body #openPacketTxtPreview:not(:disabled) {
+#openPacketTxtPreview:not(:disabled) {
   border-color: rgba(139, 233, 253, 0.28);
   color: rgba(221, 248, 255, 0.94);
 }
 
 @media (max-width: 720px) {
-  html.safe-harbor-pr147 #packetVaultFold.reliquary-forensic-fold,
-  body #packetVaultFold.reliquary-forensic-fold {
+  #packetVaultFold.reliquary-forensic-fold {
     border-radius: 22px !important;
   }
 
-  html.safe-harbor-pr147 #packetVaultFold.reliquary-forensic-fold > summary,
-  body #packetVaultFold.reliquary-forensic-fold > summary {
+  #packetVaultFold.reliquary-forensic-fold > summary {
     grid-template-columns: 32px minmax(0, 1fr) auto !important;
     gap: 10px !important;
     min-height: 60px !important;
@@ -162,35 +145,30 @@ body #openPacketTxtPreview:not(:disabled) {
     border-radius: 21px !important;
   }
 
-  html.safe-harbor-pr147 #packetVaultFold.reliquary-forensic-fold[open] > summary,
-  body #packetVaultFold.reliquary-forensic-fold[open] > summary {
+  #packetVaultFold.reliquary-forensic-fold[open] > summary {
     border-radius: 21px 21px 0 0 !important;
   }
 
-  html.safe-harbor-pr147 #packetVaultFold.reliquary-forensic-fold > summary::before,
-  body #packetVaultFold.reliquary-forensic-fold > summary::before {
+  #packetVaultFold.reliquary-forensic-fold > summary::before {
     width: 30px !important;
     height: 30px !important;
     min-width: 30px !important;
     font-size: 1.05rem !important;
   }
 
-  html.safe-harbor-pr147 #packetVaultFold.reliquary-forensic-fold > summary .fold-toggle-word,
-  body #packetVaultFold.reliquary-forensic-fold > summary .fold-toggle-word {
+  #packetVaultFold.reliquary-forensic-fold > summary .fold-toggle-word {
     min-height: 28px !important;
     padding-inline: 10px !important;
     font-size: 0.54rem !important;
     letter-spacing: 0.13em !important;
   }
 
-  html.safe-harbor-pr147 #packetVaultFold.reliquary-forensic-fold > summary ~ *,
-  body #packetVaultFold.reliquary-forensic-fold > summary ~ * {
+  #packetVaultFold.reliquary-forensic-fold > summary ~ * {
     margin-left: 12px !important;
     margin-right: 12px !important;
   }
 
-  html.safe-harbor-pr147 #openPacketTxtPreview,
-  body #openPacketTxtPreview {
+  #openPacketTxtPreview {
     width: 100%;
   }
 }

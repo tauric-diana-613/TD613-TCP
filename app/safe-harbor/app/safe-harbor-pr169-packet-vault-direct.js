@@ -1,7 +1,7 @@
 (function () {
   'use strict';
 
-  var VERSION = 'safe-harbor-pr169-packet-vault-direct/v1';
+  var VERSION = 'safe-harbor-pr169-packet-vault-direct/v2';
   var STORAGE_KEY = 'td613.safe-harbor.session.v1';
   var MIRROR_KEY = 'td613.safe-harbor.session.mirror.v1';
 
@@ -10,17 +10,22 @@
   function parse(raw) { try { return raw ? JSON.parse(raw) : null; } catch (error) { return null; } }
   function read(storage, key) { try { return storage && storage.getItem(key); } catch (error) { return null; } }
 
-  function addStylesheet() {
-    if (document.querySelector('link[href*="safe-harbor-pr167-packet-vault-polish.css"]')) return;
-    var link = document.createElement('link');
-    link.rel = 'stylesheet';
-    link.href = 'app/safe-harbor-pr167-packet-vault-polish.css?v=20260617-pr169-direct';
-    (document.head || document.documentElement).appendChild(link);
+  function savedSession() {
+    return parse(read(window.sessionStorage, STORAGE_KEY)) || parse(read(window.localStorage, MIRROR_KEY)) || null;
   }
 
   function activePacket() {
-    var saved = parse(read(window.sessionStorage, STORAGE_KEY)) || parse(read(window.localStorage, MIRROR_KEY));
+    var saved = savedSession();
     return saved && saved.packet ? saved.packet : null;
+  }
+
+  function packetExportReady(packet) {
+    return Boolean(
+      packet &&
+      packet.bridge &&
+      packet.bridge.export_gate &&
+      packet.bridge.export_gate.ready
+    );
   }
 
   function packetText() {
@@ -31,8 +36,9 @@
   }
 
   function canOpenTxt() {
+    var packet = activePacket();
     var exportButton = $('exportPacketPreview');
-    return Boolean(activePacket() || (exportButton && exportButton.disabled === false));
+    return Boolean(packetExportReady(packet) || (exportButton && exportButton.disabled === false));
   }
 
   function openTxt() {
@@ -62,55 +68,49 @@
     return true;
   }
 
-  function ensureButton() {
-    var exportButton = $('exportPacketPreview');
-    var resetButton = $('resetStagedPacket');
-    if (!exportButton || !resetButton) return null;
-    var button = $('openPacketTxtPreview');
-    if (!button) {
-      button = document.createElement('button');
-      button.className = 'control secondary';
-      button.id = 'openPacketTxtPreview';
-      button.type = 'button';
-      button.textContent = 'Open .txt';
-      button.disabled = true;
-      button.setAttribute('aria-disabled', 'true');
-      resetButton.insertAdjacentElement('beforebegin', button);
-    }
-    if (button.dataset.pr169Bound !== VERSION) {
-      button.dataset.pr169Bound = VERSION;
-      button.addEventListener('click', function (event) {
+  function button() {
+    return $('openPacketTxtPreview');
+  }
+
+  function bindButton() {
+    var node = button();
+    if (!node) return null;
+    if (node.dataset.pr169Bound !== VERSION) {
+      node.dataset.pr169Bound = VERSION;
+      node.addEventListener('click', function (event) {
         event.preventDefault();
         openTxt();
       });
     }
-    return button;
+    return node;
   }
 
   function syncButton() {
-    var button = ensureButton();
-    if (!button) return;
+    var node = bindButton();
+    if (!node) return;
     var ready = canOpenTxt();
-    button.disabled = !ready;
-    button.setAttribute('aria-disabled', ready ? 'false' : 'true');
-    button.title = ready ? 'Open the sealed packet as plain text in a new tab' : 'Open .txt unlocks after the packet is sealed/export-ready';
+    node.disabled = !ready;
+    node.setAttribute('aria-disabled', ready ? 'false' : 'true');
+    node.title = ready ? 'Open the sealed packet as plain text in a new tab' : 'Open .txt unlocks after the packet is sealed/export-ready';
   }
 
   function boot() {
-    document.documentElement.classList.add('safe-harbor-pr147');
     document.documentElement.classList.add('safe-harbor-pr169');
-    addStylesheet();
-    ensureButton();
+    bindButton();
     syncButton();
-    window.__TD613_SAFE_HARBOR_PR169__ = { version: VERSION, button: Boolean($('openPacketTxtPreview')), at: new Date().toISOString() };
+    window.__TD613_SAFE_HARBOR_PR169__ = { version: VERSION, button: Boolean(button()), at: new Date().toISOString() };
   }
 
   if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', boot, { once: true });
   else boot();
   window.addEventListener('load', boot);
   window.addEventListener('pageshow', boot);
-  document.addEventListener('td613:safe-harbor-packet', boot);
-  [100, 360, 900, 1800, 3200].forEach(function (delay) { window.setTimeout(boot, delay); });
+  window.addEventListener('storage', syncButton);
+  document.addEventListener('td613:safe-harbor-packet', syncButton);
+  ['click', 'input', 'change'].forEach(function (type) {
+    document.addEventListener(type, function () { window.setTimeout(syncButton, 0); }, true);
+  });
+  [100, 360, 900, 1800].forEach(function (delay) { window.setTimeout(syncButton, delay); });
   window.setInterval(syncButton, 900);
 
   window.TD613_SAFE_HARBOR_PR169 = Object.freeze({ version: VERSION, boot: boot, openTxt: openTxt, syncButton: syncButton });
