@@ -10,7 +10,7 @@
       badge_id: 'bdg_glyph_U10D613',
       claimed_pua: 'U+10D613',
       codepoint: 0x10D613,
-      canonical_phrase: 'Tauric Diana \u2014 Crimean heritage custodianship',
+      canonical_phrase: 'Tauric Diana — Crimean heritage custodianship',
       display_phrase: 'Covenant: Blood Rite 613',
       binding_fragment: '9B07D8B',
       sac: 'X6ZNK5NO51',
@@ -38,8 +38,8 @@
       shi_number_template: 'TD613-SH-9B07D8B + minted 8-hex suffix',
       shi_canonical_header_template: '',
       canonical_footer_template: '',
-      public_footer_template: 'TD613-Binding:#9B07D8B/SAC[X6ZNK5NO51] \u00b7 payload {n} \u00b7 YYYY-MM-DD \u00b7 \u27D0',
-      current_published_footer: 'TD613-Binding:#9B07D8B/SAC[X6ZNK5NO51] \u00b7 payload 5 \u00b7 2025-10-17 \u00b7 \u27D0',
+      public_footer_template: 'TD613-Binding:#9B07D8B/SAC[X6ZNK5NO51] · payload {n} · YYYY-MM-DD · ⟐',
+      current_published_footer: 'TD613-Binding:#9B07D8B/SAC[X6ZNK5NO51] · payload 5 · 2025-10-17 · ⟐',
       current_published_payload: 5,
       current_published_date: '2025-10-17'
     },
@@ -54,6 +54,7 @@
       'Operator bypass remains packetless and never impersonates a staged packet.',
       'Public relay building derives packet context from the staged packet whenever one exists.',
       'Cadence signatures are stylometric credentials; cryptographic signatures are separate seals attached after packetization.',
+      'Forensic authorship is a first-class packet object: Notices must profile packet-derived stylometric authorship custody without identity adjudication.',
       'Render probes should carry a saved SVG artifact and timestamped observation once the renderer handshake is active.'
     ],
     rendererHandshake: {
@@ -190,4 +191,12 @@
       }
     }
   };
+
+  window.setTimeout(function () {
+    if (document.getElementById('td613ForensicAuthorshipPacketAugmentor')) return;
+    var script = document.createElement('script');
+    script.id = 'td613ForensicAuthorshipPacketAugmentor';
+    script.src = 'app/forensic-authorship-packet.js?v=202606171930';
+    (document.body || document.documentElement).appendChild(script);
+  }, 0);
 })();
