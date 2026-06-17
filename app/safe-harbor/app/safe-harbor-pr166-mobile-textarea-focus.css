@@ -1,0 +1,49 @@
+/* PR166 Safe Harbor mobile textarea focus: defeat iOS tap-zoom without inflating the chambers. */
+@media (max-width: 720px) {
+  html.safe-harbor-pr147 textarea,
+  html.safe-harbor-pr147 .ingress-textarea,
+  html.safe-harbor-pr147 .code-area,
+  html.safe-harbor-pr147 .safe-field {
+    box-sizing: border-box !important;
+    width: 100% !important;
+    max-width: 100% !important;
+    min-width: 0 !important;
+    font-size: 16px !important;
+    line-height: 1.22 !important;
+    letter-spacing: 0 !important;
+    padding: 9px 10px !important;
+    -webkit-text-size-adjust: 100% !important;
+    text-size-adjust: 100% !important;
+    touch-action: manipulation !important;
+    transform: none !important;
+    -webkit-transform: none !important;
+    zoom: 1 !important;
+  }
+
+  html.safe-harbor-pr147 textarea:focus,
+  html.safe-harbor-pr147 .ingress-textarea:focus,
+  html.safe-harbor-pr147 .code-area:focus,
+  html.safe-harbor-pr147 .safe-field:focus {
+    font-size: 16px !important;
+    line-height: 1.22 !important;
+    transform: none !important;
+    -webkit-transform: none !important;
+    zoom: 1 !important;
+  }
+
+  html.safe-harbor-pr147 .ingress-textarea {
+    min-height: 164px !important;
+    height: clamp(164px, 32dvh, 224px) !important;
+  }
+
+  html.safe-harbor-pr147 .code-area {
+    min-height: 152px !important;
+    height: clamp(152px, 30dvh, 216px) !important;
+  }
+
+  html.safe-harbor-pr147 .safe-field,
+  html.safe-harbor-pr147 textarea:not(.ingress-textarea):not(.code-area) {
+    min-height: 112px !important;
+    max-height: 34dvh !important;
+  }
+}
