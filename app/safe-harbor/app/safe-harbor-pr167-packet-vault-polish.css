@@ -1,0 +1,44 @@
+/* PR167 Packet Vault polish: centered drawer chevron + Android-friendly txt opener button. */
+html.safe-harbor-pr167 #packetVaultFold > summary::before {
+  content: '∨' !important;
+  display: inline-grid !important;
+  place-items: center !important;
+  justify-content: center !important;
+  align-content: center !important;
+  width: 28px !important;
+  height: 28px !important;
+  padding: 0 !important;
+  line-height: 1 !important;
+  font-size: 1.02rem !important;
+  font-weight: 900 !important;
+  text-align: center !important;
+  transform: translateY(-0.5px) !important;
+}
+
+html.safe-harbor-pr167 #packetVaultFold[open] > summary::before {
+  content: '∧' !important;
+  transform: translateY(0.5px) !important;
+  border-color: rgba(189, 147, 249, 0.34) !important;
+  color: rgba(231, 219, 255, 0.92) !important;
+}
+
+html.safe-harbor-pr167 #openPacketTxtPreview {
+  white-space: nowrap;
+}
+
+html.safe-harbor-pr167 #openPacketTxtPreview:not(:disabled) {
+  border-color: rgba(139, 233, 253, 0.28);
+  color: rgba(221, 248, 255, 0.94);
+}
+
+@media (max-width: 720px) {
+  html.safe-harbor-pr167 #packetVaultFold > summary::before {
+    width: 30px !important;
+    height: 30px !important;
+    font-size: 1.05rem !important;
+  }
+
+  html.safe-harbor-pr167 #openPacketTxtPreview {
+    width: 100%;
+  }
+}
