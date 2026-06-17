@@ -1,22 +1,118 @@
 (function () {
   'use strict';
 
-  var VERSION = 'safe-harbor-pr169-packet-vault-direct/v2';
+  var VERSION = 'safe-harbor-pr169-packet-vault-direct/v3-footer-history';
   var STORAGE_KEY = 'td613.safe-harbor.session.v1';
   var MIRROR_KEY = 'td613.safe-harbor.session.mirror.v1';
+  var HISTORICAL_EXAMPLE = 'TD613-Binding:#9B07D8B/SAC[X6ZNK5NO51] · payload 5 · 2025-10-17 · ⟐';
 
   function $(id) { return document.getElementById(id); }
   function text(value) { return String(value == null ? '' : value).trim(); }
   function parse(raw) { try { return raw ? JSON.parse(raw) : null; } catch (error) { return null; } }
   function read(storage, key) { try { return storage && storage.getItem(key); } catch (error) { return null; } }
+  function write(storage, key, value) { try { if (storage) storage.setItem(key, JSON.stringify(value)); } catch (error) {} }
+  function clone(value) { return value == null ? value : JSON.parse(JSON.stringify(value)); }
+
+  function stable(value) {
+    if (value === null || typeof value !== 'object') return JSON.stringify(value);
+    if (Array.isArray(value)) return '[' + value.map(stable).join(',') + ']';
+    return '{' + Object.keys(value).sort().map(function (key) {
+      return JSON.stringify(key) + ':' + stable(value[key]);
+    }).join(',') + '}';
+  }
+
+  function hex(buffer) {
+    return Array.from(new Uint8Array(buffer)).map(function (b) {
+      return b.toString(16).padStart(2, '0');
+    }).join('');
+  }
+
+  async function sha256(textValue) {
+    var enc = new TextEncoder();
+    var digest = await crypto.subtle.digest('SHA-256', enc.encode(String(textValue || '')));
+    return 'sha256:' + hex(digest);
+  }
+
+  function isFooterKey(key) {
+    return String(key || '').toLowerCase().indexOf('footer') !== -1;
+  }
+
+  function isActualFooterKey(key) {
+    var k = String(key || '').toLowerCase();
+    return k.indexOf('footer') !== -1 && k !== 'footer_mode';
+  }
+
+  function addHistory(value) {
+    if (value === null || typeof value !== 'object') return value;
+    if (Array.isArray(value)) return value.map(addHistory);
+    var keys = Object.keys(value);
+    var hasHistory = Object.prototype.hasOwnProperty.call(value, 'historical_example');
+    var actualFooterKeys = keys.filter(isActualFooterKey);
+    var anyFooterKeys = keys.filter(isFooterKey);
+    var target = actualFooterKeys.length
+      ? actualFooterKeys[actualFooterKeys.length - 1]
+      : (anyFooterKeys.length ? anyFooterKeys[anyFooterKeys.length - 1] : null);
+    var out = {};
+    keys.forEach(function (key) {
+      out[key] = addHistory(value[key]);
+      if (!hasHistory && target && key === target) out.historical_example = HISTORICAL_EXAMPLE;
+    });
+    return out;
+  }
+
+  function needsHistory(value) {
+    if (value === null || typeof value !== 'object') return false;
+    if (Array.isArray(value)) return value.some(needsHistory);
+    var keys = Object.keys(value);
+    if (keys.some(isFooterKey) && !Object.prototype.hasOwnProperty.call(value, 'historical_example')) return true;
+    return keys.some(function (key) { return needsHistory(value[key]); });
+  }
+
+  function packetHashMaterial(packet) {
+    var material = clone(packet);
+    if (material && material.signature) {
+      material.signature.sig = null;
+      material.signature.attached_at = null;
+      if (material.signature.status === 'sealed') material.signature.status = 'declared';
+    }
+    if (material) material.packet_hash_sha256 = null;
+    return material;
+  }
+
+  async function normalizePacket(packet) {
+    if (!packet || typeof packet !== 'object') return packet;
+    var patched = needsHistory(packet) ? addHistory(clone(packet)) : clone(packet);
+    if (patched && patched.schema_version === 'td613.safe-harbor.packet/v1') {
+      patched.packet_hash_sha256 = await sha256(stable(packetHashMaterial(patched)));
+    }
+    return patched;
+  }
 
   function savedSession() {
     return parse(read(window.sessionStorage, STORAGE_KEY)) || parse(read(window.localStorage, MIRROR_KEY)) || null;
   }
 
-  function activePacket() {
+  function storeSession(saved) {
+    if (!saved || !saved.packet) return;
+    write(window.sessionStorage, STORAGE_KEY, saved);
+    write(window.localStorage, MIRROR_KEY, saved);
+  }
+
+  async function activePacket() {
     var saved = savedSession();
-    return saved && saved.packet ? saved.packet : null;
+    var packet = saved && saved.packet ? saved.packet : null;
+    if (!packet) return null;
+    var patched = await normalizePacket(packet);
+    if (saved && JSON.stringify(patched) !== JSON.stringify(packet)) {
+      saved.packet = patched;
+      storeSession(saved);
+    }
+    return patched;
+  }
+
+  function activePacketSync() {
+    var saved = savedSession();
+    return saved && saved.packet ? addHistory(clone(saved.packet)) : null;
   }
 
   function packetExportReady(packet) {
@@ -28,25 +124,83 @@
     );
   }
 
-  function packetText() {
-    var packet = activePacket();
-    if (packet) return JSON.stringify(packet, null, 2);
+  async function packetText() {
+    var packet = await activePacket();
+    if (packet) return JSON.stringify(packet, null, 2) + '\n';
     var preview = $('forensicSchemaPreview');
     return preview ? text(preview.textContent || preview.value || '') : '';
   }
 
   function canOpenTxt() {
-    var packet = activePacket();
+    var packet = activePacketSync();
     var exportButton = $('exportPacketPreview');
     return Boolean(packetExportReady(packet) || (exportButton && exportButton.disabled === false));
   }
 
-  function openTxt() {
+  function packetFilename(packet) {
+    var helperTs = packet && packet.intake && packet.intake.helper_filename_safe;
+    var created = packet && (packet.created_at || (packet.receipt && packet.receipt.minted_at));
+    var ts = helperTs || String(created || new Date().toISOString()).replace(/[:.]/g, '-');
+    var stage = packet && packet.seal_handshake
+      ? 'sealed'
+      : (packet && packet.issuance && packet.issuance.badge_number ? 'minted' : 'staged');
+    var shi = packet && packet.issuance && packet.issuance.badge_number ? '-' + packet.issuance.badge_number : '';
+    var batch = packet && packet.intake && packet.intake.selected_batch_id ? '-' + packet.intake.selected_batch_id : '';
+    return 'td613-packet' + batch + '-' + stage + shi + '-' + ts + '.json';
+  }
+
+  function downloadJson(filename, value) {
+    var blob = new Blob([JSON.stringify(value, null, 2) + '\n'], { type: 'application/json;charset=utf-8' });
+    var url = URL.createObjectURL(blob);
+    var a = document.createElement('a');
+    a.href = url;
+    a.download = filename || 'td613-safe-harbor-packet.json';
+    document.body.appendChild(a);
+    a.click();
+    a.remove();
+    window.setTimeout(function () { URL.revokeObjectURL(url); }, 0);
+  }
+
+  function copyText(value) {
+    var body = String(value || '');
+    if (navigator.clipboard && navigator.clipboard.writeText) {
+      return navigator.clipboard.writeText(body).catch(function () { fallbackCopy(body); });
+    }
+    fallbackCopy(body);
+    return Promise.resolve();
+  }
+
+  function fallbackCopy(value) {
+    var textarea = document.createElement('textarea');
+    textarea.value = String(value || '');
+    textarea.setAttribute('readonly', 'readonly');
+    textarea.style.position = 'fixed';
+    textarea.style.left = '-9999px';
+    document.body.appendChild(textarea);
+    textarea.select();
+    try { document.execCommand('copy'); } catch (error) {}
+    textarea.remove();
+  }
+
+  function syncPreview(packet) {
+    var preview = $('packetPreview');
+    if (preview && packet) preview.textContent = JSON.stringify(packet, null, 2);
+    var hash = $('packetHashReadout');
+    if (hash && packet && packet.packet_hash_sha256) hash.textContent = packet.packet_hash_sha256;
+  }
+
+  async function normalizeVisiblePacket() {
+    var packet = await activePacket();
+    if (packet) syncPreview(packet);
+    return packet;
+  }
+
+  async function openTxt() {
     if (!canOpenTxt()) {
       syncButton();
       return false;
     }
-    var body = packetText();
+    var body = await packetText();
     if (!body) {
       syncButton();
       return false;
@@ -79,14 +233,73 @@
       node.dataset.pr169Bound = VERSION;
       node.addEventListener('click', function (event) {
         event.preventDefault();
-        openTxt();
+        void openTxt();
       });
     }
     return node;
   }
 
+  function bindPacketExports() {
+    var exportButton = $('exportPacketPreview');
+    if (exportButton && exportButton.dataset.footerHistoryExport !== VERSION) {
+      exportButton.dataset.footerHistoryExport = VERSION;
+      exportButton.addEventListener('click', function (event) {
+        var raw = activePacketSync();
+        if (!packetExportReady(raw)) return;
+        event.preventDefault();
+        event.stopImmediatePropagation();
+        void normalizeVisiblePacket().then(function (packet) {
+          if (!packet) return;
+          downloadJson(packetFilename(packet), packet);
+        });
+      }, true);
+    }
+
+    var packetCopyButton = $('copyPacketPreview');
+    if (packetCopyButton && packetCopyButton.dataset.footerHistoryCopy !== VERSION) {
+      packetCopyButton.dataset.footerHistoryCopy = VERSION;
+      packetCopyButton.addEventListener('click', function (event) {
+        var raw = activePacketSync();
+        if (!raw) return;
+        event.preventDefault();
+        event.stopImmediatePropagation();
+        void normalizeVisiblePacket().then(function (packet) {
+          if (packet) void copyText(JSON.stringify(packet, null, 2) + '\n');
+        });
+      }, true);
+    }
+
+    var exportCopyButton = $('copyForensicSchemaPreview');
+    if (exportCopyButton && exportCopyButton.dataset.footerHistoryCopy !== VERSION) {
+      exportCopyButton.dataset.footerHistoryCopy = VERSION;
+      exportCopyButton.addEventListener('click', function (event) {
+        var raw = activePacketSync();
+        if (!packetExportReady(raw)) return;
+        event.preventDefault();
+        event.stopImmediatePropagation();
+        void normalizeVisiblePacket().then(function (packet) {
+          if (packet) void copyText(JSON.stringify(packet, null, 2) + '\n');
+        });
+      }, true);
+    }
+  }
+
+  function patchApi() {
+    var api = window.TD613SafeHarbor;
+    if (!api || api.__footerHistoryPatch === VERSION || typeof api.buildPacket !== 'function') return;
+    var originalBuildPacket = api.buildPacket.bind(api);
+    api.buildPacket = async function () {
+      var packet = await originalBuildPacket();
+      return normalizePacket(packet);
+    };
+    api.__footerHistoryPatch = VERSION;
+  }
+
   function syncButton() {
     var node = bindButton();
+    bindPacketExports();
+    patchApi();
+    void normalizeVisiblePacket();
     if (!node) return;
     var ready = canOpenTxt();
     node.disabled = !ready;
@@ -97,8 +310,10 @@
   function boot() {
     document.documentElement.classList.add('safe-harbor-pr169');
     bindButton();
+    bindPacketExports();
+    patchApi();
     syncButton();
-    window.__TD613_SAFE_HARBOR_PR169__ = { version: VERSION, button: Boolean(button()), at: new Date().toISOString() };
+    window.__TD613_SAFE_HARBOR_PR169__ = { version: VERSION, button: Boolean(button()), at: new Date().toISOString(), footer_history: HISTORICAL_EXAMPLE };
   }
 
   if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', boot, { once: true });
@@ -113,5 +328,11 @@
   [100, 360, 900, 1800].forEach(function (delay) { window.setTimeout(syncButton, delay); });
   window.setInterval(syncButton, 900);
 
-  window.TD613_SAFE_HARBOR_PR169 = Object.freeze({ version: VERSION, boot: boot, openTxt: openTxt, syncButton: syncButton });
+  window.TD613_SAFE_HARBOR_PR169 = Object.freeze({
+    version: VERSION,
+    boot: boot,
+    openTxt: openTxt,
+    syncButton: syncButton,
+    historicalExample: HISTORICAL_EXAMPLE
+  });
 }());
