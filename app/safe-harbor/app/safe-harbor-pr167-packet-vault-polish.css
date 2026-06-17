@@ -135,6 +135,66 @@
   white-space: nowrap;
 }
 
+@media (min-width: 1024px) {
+  .ingress-head {
+    display: grid !important;
+    grid-template-columns: minmax(0, 1fr) auto auto !important;
+    align-items: start !important;
+    column-gap: 24px !important;
+  }
+
+  .ingress-head > .title-group {
+    grid-column: 1 !important;
+    min-width: 0 !important;
+  }
+
+  .ingress-head-actions {
+    grid-column: 2 !important;
+    display: inline-flex !important;
+    flex-wrap: nowrap !important;
+    align-items: center !important;
+    justify-content: flex-end !important;
+    gap: 10px !important;
+    margin-left: 0 !important;
+    min-width: max-content !important;
+  }
+
+  .ingress-head-actions .signout-launch {
+    align-self: center !important;
+    margin-left: 2px !important;
+    white-space: nowrap !important;
+  }
+
+  .ingress-status {
+    grid-column: 3 !important;
+    display: flex !important;
+    flex-direction: column !important;
+    flex-wrap: nowrap !important;
+    align-items: stretch !important;
+    justify-content: flex-start !important;
+    gap: 8px !important;
+    min-width: max-content !important;
+  }
+
+  #coherenceSigilIngress {
+    order: 0 !important;
+    align-self: center !important;
+    margin-bottom: 2px !important;
+  }
+
+  #ingressProgressPill {
+    order: 1 !important;
+  }
+
+  #ingressVaultPill {
+    order: 2 !important;
+  }
+
+  #ingressRoutePill {
+    order: 3 !important;
+  }
+}
+
 @media (max-width: 720px) {
   #packetVaultFold.reliquary-forensic-fold {
     border-radius: 17px !important;
