@@ -13,7 +13,7 @@
   }
 
   function escapeHtml(value) {
-    return String(value == null ? '' : value)
+    return String(value == null ? '')
       .replace(/&/g, '&amp;')
       .replace(/</g, '&lt;')
       .replace(/>/g, '&gt;')
@@ -215,7 +215,7 @@
   (function bootstrapSafeHarborHousekeeping() {
     const path = String((window.location && window.location.pathname) || '');
     if (!/safe-harbor/i.test(path)) return;
-    const version = '20260617-pr166-mobile-textarea-focus';
+    const version = '20260617-pr167-packet-vault-txt';
     const sessionKey = 'td613.safe-harbor.session.v1';
     const mirrorKey = 'td613.safe-harbor.session.mirror.v1';
     const shiPattern = /^TD613-SH-9B07D8B-[A-F0-9]{8}$/i;
@@ -340,6 +340,7 @@
     document.documentElement.classList.add('safe-harbor-pr163');
     document.documentElement.classList.add('safe-harbor-pr165');
     document.documentElement.classList.add('safe-harbor-pr166');
+    document.documentElement.classList.add('safe-harbor-pr167');
     polishSafeHarborIngressMembrane();
     window.setTimeout(polishSafeHarborIngressMembrane, 80);
     window.setTimeout(polishSafeHarborIngressMembrane, 600);
@@ -384,6 +385,20 @@
       pr166Link.rel = 'stylesheet';
       pr166Link.href = pr166CssHref;
       document.head.appendChild(pr166Link);
+    }
+    const pr167CssHref = 'app/safe-harbor-pr167-packet-vault-polish.css?v=' + version;
+    if (!document.querySelector('link[href*="safe-harbor-pr167-packet-vault-polish.css"]')) {
+      const pr167Link = document.createElement('link');
+      pr167Link.rel = 'stylesheet';
+      pr167Link.href = pr167CssHref;
+      document.head.appendChild(pr167Link);
+    }
+    const pr167JsSrc = 'app/safe-harbor-pr167-packet-vault-txt.js?v=' + version;
+    if (!document.querySelector('script[src*="safe-harbor-pr167-packet-vault-txt.js"]')) {
+      const pr167Script = document.createElement('script');
+      pr167Script.src = pr167JsSrc;
+      pr167Script.defer = true;
+      document.head.appendChild(pr167Script);
     }
     const jsSrc = 'app/safe-harbor-housekeeping.js?v=' + version;
     if (!document.querySelector('script[src*="safe-harbor-housekeeping.js"]')) {
