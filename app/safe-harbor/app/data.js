@@ -192,11 +192,16 @@
     }
   };
 
-  window.setTimeout(function () {
-    if (document.getElementById('td613ForensicAuthorshipPacketAugmentor')) return;
-    var script = document.createElement('script');
-    script.id = 'td613ForensicAuthorshipPacketAugmentor';
-    script.src = 'app/forensic-authorship-packet.js?v=202606171930';
-    (document.body || document.documentElement).appendChild(script);
-  }, 0);
+  function loadScriptOnce(id, src) {
+    window.setTimeout(function () {
+      if (document.getElementById(id)) return;
+      var script = document.createElement('script');
+      script.id = id;
+      script.src = src;
+      (document.body || document.documentElement).appendChild(script);
+    }, 0);
+  }
+
+  loadScriptOnce('td613ForensicAuthorshipPacketAugmentor', 'app/forensic-authorship-packet.js?v=202606171930');
+  loadScriptOnce('td613FooterHistoryPacketAugmentor', 'app/footer-history-packet.js?v=202606171945');
 })();
