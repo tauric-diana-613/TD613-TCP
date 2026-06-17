@@ -1,0 +1,62 @@
+/* PR165 mobile public reference rescue: keep Verify + Offline Capsule visible in Safe Harbor mobile flow. */
+@media (max-width: 720px) {
+  html.safe-harbor-pr147 #covenantCanonSection {
+    display: flex !important;
+    flex-direction: column !important;
+    overflow: visible !important;
+  }
+
+  html.safe-harbor-pr147 #covenantCanonSection > .panel-section:has(.reference-link-grid) {
+    display: block !important;
+    order: -10 !important;
+    margin-top: 0 !important;
+    margin-bottom: 14px !important;
+    visibility: visible !important;
+    opacity: 1 !important;
+    transform: none !important;
+    overflow: visible !important;
+  }
+
+  html.safe-harbor-pr147 #covenantCanonSection .reference-link-grid {
+    display: grid !important;
+    grid-template-columns: minmax(0, 1fr) !important;
+    gap: 10px !important;
+    width: 100% !important;
+    max-width: 100% !important;
+    min-width: 0 !important;
+    overflow: visible !important;
+  }
+
+  html.safe-harbor-pr147 #covenantCanonSection .reference-link-card {
+    display: grid !important;
+    grid-template-columns: minmax(0, 1fr) !important;
+    gap: 7px !important;
+    width: 100% !important;
+    max-width: 100% !important;
+    min-width: 0 !important;
+    min-height: 62px !important;
+    padding: 14px 15px 14px 18px !important;
+    visibility: visible !important;
+    opacity: 1 !important;
+    transform: none !important;
+    border-left: 3px solid rgba(139, 233, 253, 0.42) !important;
+    background:
+      linear-gradient(180deg, rgba(10, 12, 18, 0.92), rgba(7, 9, 14, 0.985)) padding-box,
+      linear-gradient(135deg, rgba(139, 233, 253, 0.20), rgba(189, 147, 249, 0.14)) border-box !important;
+  }
+
+  html.safe-harbor-pr147 #covenantCanonSection .reference-link-card .surface-kicker {
+    display: block !important;
+    color: var(--cyan) !important;
+    font-size: 0.62rem !important;
+    letter-spacing: 0.18em !important;
+  }
+
+  html.safe-harbor-pr147 #covenantCanonSection .reference-link-card strong {
+    display: block !important;
+    color: var(--text-bright) !important;
+    font-size: 0.86rem !important;
+    line-height: 1.28 !important;
+    overflow-wrap: anywhere !important;
+  }
+}
