@@ -1,7 +1,7 @@
 (function () {
   'use strict';
 
-  var VERSION = 'safe-harbor-pr169-packet-vault-direct/v3-footer-history';
+  var VERSION = 'safe-harbor-pr169-packet-vault-direct/v4-probe-footer-history';
   var STORAGE_KEY = 'td613.safe-harbor.session.v1';
   var MIRROR_KEY = 'td613.safe-harbor.session.mirror.v1';
   var HISTORICAL_EXAMPLE = 'TD613-Binding:#9B07D8B/SAC[X6ZNK5NO51] · payload 5 · 2025-10-17 · ⟐';
@@ -56,6 +56,22 @@
     keys.forEach(function (key) {
       out[key] = addHistory(value[key]);
       if (!hasHistory && target && key === target) out.historical_example = HISTORICAL_EXAMPLE;
+    });
+    return out;
+  }
+
+  function addHistoryAfterPublicFooter(value) {
+    if (value === null || typeof value !== 'object') return value;
+    if (Array.isArray(value)) return value.map(addHistoryAfterPublicFooter);
+    var keys = Object.keys(value);
+    var hasPublicFooter = Object.prototype.hasOwnProperty.call(value, 'public_footer');
+    var hasHistory = Object.prototype.hasOwnProperty.call(value, 'historical_example');
+    var out = {};
+    keys.forEach(function (key) {
+      out[key] = addHistoryAfterPublicFooter(value[key]);
+      if (hasPublicFooter && !hasHistory && key === 'public_footer') {
+        out.historical_example = HISTORICAL_EXAMPLE;
+      }
     });
     return out;
   }
@@ -195,6 +211,29 @@
     return packet;
   }
 
+  function patchProbeText(raw) {
+    var body = String(raw || '');
+    if (!body) return body;
+    var parsed = parse(body);
+    if (parsed && typeof parsed === 'object') {
+      return JSON.stringify(addHistoryAfterPublicFooter(parsed), null, 2);
+    }
+    if (body.indexOf('- canonical_footer:') === -1 || body.indexOf('- historical_example:') !== -1) return body;
+    return body.replace(/(^- canonical_footer:.*$)/m, '$1\n- historical_example: ' + HISTORICAL_EXAMPLE);
+  }
+
+  function patchProbeOutput() {
+    var node = $('probeOutput');
+    if (!node) return null;
+    var current = 'value' in node ? node.value : node.textContent;
+    var patched = patchProbeText(current);
+    if (patched !== current) {
+      if ('value' in node) node.value = patched;
+      else node.textContent = patched;
+    }
+    return patched;
+  }
+
   async function openTxt() {
     if (!canOpenTxt()) {
       syncButton();
@@ -284,22 +323,58 @@
     }
   }
 
+  function bindProbeOutputs() {
+    var probeButtons = Array.from(document.querySelectorAll('[data-probe-variant]'));
+    probeButtons.forEach(function (buttonNode) {
+      if (buttonNode.dataset.footerHistoryProbe === VERSION) return;
+      buttonNode.dataset.footerHistoryProbe = VERSION;
+      buttonNode.addEventListener('click', function () {
+        window.setTimeout(patchProbeOutput, 0);
+      }, false);
+    });
+
+    var copyProbe = $('copyProbeOutput');
+    if (copyProbe && copyProbe.dataset.footerHistoryProbeCopy !== VERSION) {
+      copyProbe.dataset.footerHistoryProbeCopy = VERSION;
+      copyProbe.addEventListener('click', function () {
+        patchProbeOutput();
+      }, true);
+    }
+  }
+
   function patchApi() {
     var api = window.TD613SafeHarbor;
-    if (!api || api.__footerHistoryPatch === VERSION || typeof api.buildPacket !== 'function') return;
-    var originalBuildPacket = api.buildPacket.bind(api);
-    api.buildPacket = async function () {
-      var packet = await originalBuildPacket();
-      return normalizePacket(packet);
-    };
+    if (!api || api.__footerHistoryPatch === VERSION) return;
+    if (typeof api.buildPacket === 'function') {
+      var originalBuildPacket = api.buildPacket.bind(api);
+      api.buildPacket = async function () {
+        var packet = await originalBuildPacket();
+        return normalizePacket(packet);
+      };
+    }
+    if (typeof api.buildProbe === 'function') {
+      var originalBuildProbe = api.buildProbe.bind(api);
+      api.buildProbe = function (variant) {
+        var result = originalBuildProbe(variant);
+        var patched = patchProbeText(result);
+        var node = $('probeOutput');
+        if (node) {
+          if ('value' in node) node.value = patched;
+          else node.textContent = patched;
+        }
+        return patched;
+      };
+    }
     api.__footerHistoryPatch = VERSION;
   }
 
   function syncButton() {
     var node = bindButton();
     bindPacketExports();
+    bindProbeOutputs();
     patchApi();
     void normalizeVisiblePacket();
+    patchProbeOutput();
     if (!node) return;
     var ready = canOpenTxt();
     node.disabled = !ready;
@@ -311,6 +386,7 @@
     document.documentElement.classList.add('safe-harbor-pr169');
     bindButton();
     bindPacketExports();
+    bindProbeOutputs();
     patchApi();
     syncButton();
     window.__TD613_SAFE_HARBOR_PR169__ = { version: VERSION, button: Boolean(button()), at: new Date().toISOString(), footer_history: HISTORICAL_EXAMPLE };
@@ -333,6 +409,7 @@
     boot: boot,
     openTxt: openTxt,
     syncButton: syncButton,
-    historicalExample: HISTORICAL_EXAMPLE
+    historicalExample: HISTORICAL_EXAMPLE,
+    patchProbeText: patchProbeText
   });
 }());
