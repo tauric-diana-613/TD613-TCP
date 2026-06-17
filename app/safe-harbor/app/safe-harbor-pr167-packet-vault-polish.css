@@ -1,5 +1,48 @@
-/* PR167 Packet Vault polish: centered drawer chevron + Android-friendly txt opener button. */
-html.safe-harbor-pr167 #packetVaultFold > summary::before {
+/* PR167 Packet Vault polish: restore reliquary drawer gown + centered chevron + Android-friendly txt opener. */
+html.safe-harbor-pr167 #packetVaultFold.reliquary-forensic-fold {
+  margin-top: 18px !important;
+  border: 1px solid rgba(255, 143, 181, 0.24) !important;
+  border-radius: 24px !important;
+  background:
+    radial-gradient(circle at 12% 0%, rgba(255, 143, 181, 0.13), transparent 34%),
+    radial-gradient(circle at 92% 8%, rgba(139, 233, 253, 0.10), transparent 30%),
+    linear-gradient(180deg, rgba(38, 18, 33, 0.94), rgba(12, 9, 18, 0.985)) padding-box,
+    linear-gradient(135deg, rgba(255, 143, 181, 0.32), rgba(215, 255, 131, 0.10), rgba(189, 147, 249, 0.26)) border-box !important;
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.055),
+    0 0 30px rgba(255, 143, 181, 0.12),
+    0 0 54px rgba(189, 147, 249, 0.08) !important;
+  overflow: hidden !important;
+}
+
+html.safe-harbor-pr167 #packetVaultFold.reliquary-forensic-fold > summary {
+  list-style: none !important;
+  display: grid !important;
+  grid-template-columns: 30px minmax(0, 1fr) auto !important;
+  align-items: center !important;
+  gap: 12px !important;
+  min-height: 62px !important;
+  padding: 15px 17px !important;
+  border: 0 !important;
+  border-radius: 23px !important;
+  background:
+    linear-gradient(135deg, rgba(255, 143, 181, 0.13), rgba(189, 147, 249, 0.10), rgba(139, 233, 253, 0.05)),
+    linear-gradient(180deg, rgba(29, 17, 32, 0.94), rgba(10, 8, 15, 0.96)) !important;
+  color: var(--text-bright) !important;
+  cursor: pointer !important;
+}
+
+html.safe-harbor-pr167 #packetVaultFold.reliquary-forensic-fold > summary::-webkit-details-marker {
+  display: none !important;
+}
+
+html.safe-harbor-pr167 #packetVaultFold.reliquary-forensic-fold[open] > summary {
+  border-bottom: 1px solid rgba(255, 255, 255, 0.075) !important;
+  border-radius: 23px 23px 0 0 !important;
+  box-shadow: 0 16px 36px rgba(0, 0, 0, 0.18) !important;
+}
+
+html.safe-harbor-pr167 #packetVaultFold.reliquary-forensic-fold > summary::before {
   content: '∨' !important;
   display: inline-grid !important;
   place-items: center !important;
@@ -7,19 +50,77 @@ html.safe-harbor-pr167 #packetVaultFold > summary::before {
   align-content: center !important;
   width: 28px !important;
   height: 28px !important;
+  min-width: 28px !important;
   padding: 0 !important;
+  border: 1px solid rgba(255, 203, 136, 0.30) !important;
+  border-radius: 999px !important;
+  background:
+    radial-gradient(circle, rgba(255, 203, 136, 0.15), transparent 58%),
+    rgba(7, 6, 11, 0.74) !important;
+  color: rgba(255, 225, 179, 0.94) !important;
   line-height: 1 !important;
   font-size: 1.02rem !important;
   font-weight: 900 !important;
   text-align: center !important;
   transform: translateY(-0.5px) !important;
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.06),
+    0 0 16px rgba(255, 203, 136, 0.08) !important;
 }
 
-html.safe-harbor-pr167 #packetVaultFold[open] > summary::before {
+html.safe-harbor-pr167 #packetVaultFold.reliquary-forensic-fold[open] > summary::before {
   content: '∧' !important;
   transform: translateY(0.5px) !important;
-  border-color: rgba(189, 147, 249, 0.34) !important;
-  color: rgba(231, 219, 255, 0.92) !important;
+  border-color: rgba(189, 147, 249, 0.38) !important;
+  color: rgba(231, 219, 255, 0.95) !important;
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.06),
+    0 0 18px rgba(189, 147, 249, 0.12) !important;
+}
+
+html.safe-harbor-pr167 #packetVaultFold.reliquary-forensic-fold > summary > span:first-child {
+  min-width: 0 !important;
+  color: var(--text-bright) !important;
+  font-family: var(--font-display) !important;
+  font-size: clamp(1rem, 2vw, 1.28rem) !important;
+  line-height: 1.04 !important;
+  letter-spacing: 0.04em !important;
+  text-transform: none !important;
+}
+
+html.safe-harbor-pr167 #packetVaultFold.reliquary-forensic-fold > summary .fold-toggle-word {
+  justify-self: end !important;
+  display: inline-grid !important;
+  place-items: center !important;
+  min-height: 30px !important;
+  padding: 0 12px !important;
+  border: 1px solid rgba(216, 225, 255, 0.14) !important;
+  border-radius: 999px !important;
+  background: rgba(6, 6, 10, 0.42) !important;
+  color: var(--text-soft) !important;
+  font-family: var(--font-mono) !important;
+  font-size: 0.58rem !important;
+  letter-spacing: 0.16em !important;
+  text-transform: uppercase !important;
+}
+
+html.safe-harbor-pr167 #packetVaultFold.reliquary-forensic-fold[open] > summary .fold-toggle-word {
+  border-color: rgba(189, 147, 249, 0.26) !important;
+  color: rgba(231, 219, 255, 0.88) !important;
+}
+
+html.safe-harbor-pr167 #packetVaultFold.reliquary-forensic-fold > summary ~ * {
+  margin-left: 16px !important;
+  margin-right: 16px !important;
+}
+
+html.safe-harbor-pr167 #packetVaultFold.reliquary-forensic-fold > summary + .metric-block {
+  margin-top: 16px !important;
+}
+
+html.safe-harbor-pr167 #packetVaultFold.reliquary-forensic-fold > .button-grid:last-child,
+html.safe-harbor-pr167 #packetVaultFold.reliquary-forensic-fold > .note:last-child {
+  margin-bottom: 16px !important;
 }
 
 html.safe-harbor-pr167 #openPacketTxtPreview {
@@ -32,10 +133,39 @@ html.safe-harbor-pr167 #openPacketTxtPreview:not(:disabled) {
 }
 
 @media (max-width: 720px) {
-  html.safe-harbor-pr167 #packetVaultFold > summary::before {
+  html.safe-harbor-pr167 #packetVaultFold.reliquary-forensic-fold {
+    border-radius: 22px !important;
+  }
+
+  html.safe-harbor-pr167 #packetVaultFold.reliquary-forensic-fold > summary {
+    grid-template-columns: 32px minmax(0, 1fr) auto !important;
+    gap: 10px !important;
+    min-height: 60px !important;
+    padding: 14px 14px !important;
+    border-radius: 21px !important;
+  }
+
+  html.safe-harbor-pr167 #packetVaultFold.reliquary-forensic-fold[open] > summary {
+    border-radius: 21px 21px 0 0 !important;
+  }
+
+  html.safe-harbor-pr167 #packetVaultFold.reliquary-forensic-fold > summary::before {
     width: 30px !important;
     height: 30px !important;
+    min-width: 30px !important;
     font-size: 1.05rem !important;
+  }
+
+  html.safe-harbor-pr167 #packetVaultFold.reliquary-forensic-fold > summary .fold-toggle-word {
+    min-height: 28px !important;
+    padding-inline: 10px !important;
+    font-size: 0.54rem !important;
+    letter-spacing: 0.13em !important;
+  }
+
+  html.safe-harbor-pr167 #packetVaultFold.reliquary-forensic-fold > summary ~ * {
+    margin-left: 12px !important;
+    margin-right: 12px !important;
   }
 
   html.safe-harbor-pr167 #openPacketTxtPreview {
