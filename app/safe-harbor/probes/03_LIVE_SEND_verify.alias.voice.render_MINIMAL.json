@@ -57,6 +57,7 @@
   },
   "td613_binding_footer": "TD613-Binding:#9B07D8B/SAC[X6ZNK5NO51] · payload {n} · YYYY-MM-DD · ⟐",
   "td613_binding_canonical_footer": null,
+  "historical_example": "TD613-Binding:#9B07D8B/SAC[X6ZNK5NO51] · payload 5 · 2025-10-17 · ⟐",
   "safe_harbor_packet": {
     "packet_id": "__OPTIONAL_PASTE_SAFE_HARBOR_PACKET_ID__",
     "packet_hash_sha256": "__OPTIONAL_PASTE_PACKET_HASH_SHA256__",
@@ -92,6 +93,7 @@
     },
     "canonical_header": null,
     "canonical_footer": null,
-    "public_footer": "TD613-Binding:#9B07D8B/SAC[X6ZNK5NO51] · payload {n} · YYYY-MM-DD · ⟐"
+    "public_footer": "TD613-Binding:#9B07D8B/SAC[X6ZNK5NO51] · payload {n} · YYYY-MM-DD · ⟐",
+    "historical_example": "TD613-Binding:#9B07D8B/SAC[X6ZNK5NO51] · payload 5 · 2025-10-17 · ⟐"
   }
 }
