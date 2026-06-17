@@ -1,4 +1,4 @@
-/* PR165 mobile public reference rescue: keep Verify + Offline Capsule visible in Safe Harbor mobile flow. */
+/* PR165 mobile public reference rescue: keep Verify + Offline Capsule visible in the Public Doctrine drawer flow. */
 @media (max-width: 720px) {
   html.safe-harbor-pr147 #covenantCanonSection {
     display: flex !important;
@@ -8,13 +8,22 @@
 
   html.safe-harbor-pr147 #covenantCanonSection > .panel-section:has(.reference-link-grid) {
     display: block !important;
-    order: 90 !important;
-    margin-top: 14px !important;
-    margin-bottom: 0 !important;
+    order: 0 !important;
+    margin-top: -10px !important;
+    margin-bottom: 14px !important;
+    padding: 0 12px 14px !important;
     visibility: visible !important;
     opacity: 1 !important;
     transform: none !important;
     overflow: visible !important;
+  }
+
+  html.safe-harbor-pr147 #covenantCanonSection > .panel-section:has(.fold-panel:not([open])) + .panel-section:has(.reference-link-grid) {
+    display: none !important;
+  }
+
+  html.safe-harbor-pr147 #covenantCanonSection > .panel-section:has(.reference-link-grid) > .section-label {
+    display: none !important;
   }
 
   html.safe-harbor-pr147 #covenantCanonSection .reference-link-grid {
@@ -24,6 +33,7 @@
     width: 100% !important;
     max-width: 100% !important;
     min-width: 0 !important;
+    margin-top: 0 !important;
     overflow: visible !important;
   }
 
@@ -58,5 +68,17 @@
     font-size: 0.86rem !important;
     line-height: 1.28 !important;
     overflow-wrap: anywhere !important;
+  }
+
+  html.safe-harbor-pr147 #operatorMirrorSection details.dock-fold:not([open]) > :not(summary),
+  html.safe-harbor-pr147 .audit-dock details.dock-fold:not([open]) > :not(summary) {
+    display: none !important;
+  }
+}
+
+@media (min-width: 721px) {
+  html.safe-harbor-pr147 #operatorMirrorSection details.dock-fold > :not(summary),
+  html.safe-harbor-pr147 .audit-dock details.dock-fold > :not(summary) {
+    display: block !important;
   }
 }
