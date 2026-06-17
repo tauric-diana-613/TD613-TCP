@@ -1,9 +1,10 @@
 (function () {
   'use strict';
 
-  var VERSION = 'safe-harbor-pr167-packet-vault-txt/v1';
+  var VERSION = 'safe-harbor-pr167-packet-vault-txt/v2-desktop-drawer-preset';
   var STORAGE_KEY = 'td613.safe-harbor.session.v1';
   var MIRROR_KEY = 'td613.safe-harbor.session.mirror.v1';
+  var DESKTOP_QUERY = '(min-width: 721px)';
 
   function $(id) { return document.getElementById(id); }
   function text(value) { return String(value == null ? '' : value).trim(); }
@@ -94,20 +95,63 @@
     return button;
   }
 
+  function drawerTargets() {
+    return Array.from(document.querySelectorAll([
+      '#operatorMirrorSection details',
+      '#operatorMirrorSection .dock-fold',
+      '#operatorMirrorSection .fold-panel',
+      '.operator-dock details',
+      '.operator-dock .dock-fold',
+      '.operator-dock .fold-panel',
+      '.audit-dock details',
+      '.audit-dock .dock-fold',
+      '.audit-dock .fold-panel'
+    ].join(','))).filter(function (node, index, list) {
+      return node && node.tagName === 'DETAILS' && list.indexOf(node) === index;
+    });
+  }
+
+  function desktopDrawerPreset() {
+    var isDesktop = window.matchMedia ? window.matchMedia(DESKTOP_QUERY).matches : window.innerWidth >= 721;
+    drawerTargets().forEach(function (drawer) {
+      drawer.dataset.safeHarborDesktopPreset = isDesktop ? 'open' : 'closed';
+      if (isDesktop) drawer.open = true;
+      else drawer.open = false;
+    });
+    window.__TD613_SAFE_HARBOR_PR167_DRAWERS__ = {
+      version: VERSION,
+      desktop: isDesktop,
+      drawers: drawerTargets().length,
+      at: new Date().toISOString()
+    };
+  }
+
+  function bindBreakpoint() {
+    if (!window.matchMedia || document.documentElement.dataset.pr167DrawerBreakpoint === 'true') return;
+    document.documentElement.dataset.pr167DrawerBreakpoint = 'true';
+    var media = window.matchMedia(DESKTOP_QUERY);
+    var handler = function () { window.setTimeout(desktopDrawerPreset, 0); };
+    if (media.addEventListener) media.addEventListener('change', handler);
+    else if (media.addListener) media.addListener(handler);
+  }
+
   function boot() {
     document.documentElement.classList.add('safe-harbor-pr167');
     ensureButton();
     syncButton();
+    desktopDrawerPreset();
+    bindBreakpoint();
   }
 
   if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', boot, { once: true });
   else boot();
   window.addEventListener('load', boot);
   window.addEventListener('storage', boot);
+  [120, 520, 1200, 2400].forEach(function (delay) { window.setTimeout(boot, delay); });
   setInterval(function () {
     ensureButton();
     syncButton();
   }, 900);
 
-  window.TD613_SAFE_HARBOR_PR167 = Object.freeze({ version: VERSION, boot: boot, openTxt: openTxt, syncButton: syncButton });
+  window.TD613_SAFE_HARBOR_PR167 = Object.freeze({ version: VERSION, boot: boot, openTxt: openTxt, syncButton: syncButton, desktopDrawerPreset: desktopDrawerPreset });
 }());
