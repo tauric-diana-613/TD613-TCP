@@ -1,4 +1,114 @@
 (function () {
+  'use strict';
+
+  var STORAGE_KEY = 'td613.safe-harbor.session.v1';
+  var MIRROR_KEY = 'td613.safe-harbor.session.mirror.v1';
+  var SHI_PATTERN = /^TD613-SH-9B07D8B-[A-F0-9]{8}$/i;
+
+  function text(value) { return String(value == null ? '' : value).trim(); }
+  function parse(raw) { try { return raw ? JSON.parse(raw) : null; } catch (error) { return null; } }
+  function read(storage, key) { try { return storage && storage.getItem(key); } catch (error) { return null; } }
+  function write(storage, key, value) { try { if (storage && value) storage.setItem(key, value); } catch (error) {} }
+  function remove(storage, key) { try { if (storage) storage.removeItem(key); } catch (error) {} }
+
+  function hasIssuedShi(saved) {
+    var issuance = saved && saved.packet && saved.packet.issuance ? saved.packet.issuance : null;
+    var covenant = saved && saved.covenant ? saved.covenant : null;
+    return Boolean(
+      (issuance && SHI_PATTERN.test(text(issuance.badge_number))) ||
+      (covenant && SHI_PATTERN.test(text(covenant.badgeNumber)))
+    );
+  }
+
+  function looksOpen(saved) {
+    var ingress = saved && saved.ingress ? saved.ingress : null;
+    return Boolean(saved && ingress && (
+      ingress.vaultOpen ||
+      ingress.operatorShellOpen ||
+      ingress.packetId ||
+      ingress.receiptId ||
+      saved.packet ||
+      saved.sealed ||
+      hasIssuedShi(saved)
+    ));
+  }
+
+  function normalize(saved) {
+    if (!looksOpen(saved)) return saved;
+    if (!saved.ingress || typeof saved.ingress !== 'object') saved.ingress = {};
+    if (!saved.ingress.vaultOpen && !saved.ingress.operatorShellOpen) saved.ingress.vaultOpen = true;
+    if ((saved.packet || saved.sealed || hasIssuedShi(saved)) && saved.ingress.recovered !== true) saved.ingress.recovered = true;
+    return saved;
+  }
+
+  function applyOpenState(open) {
+    if (open) document.documentElement.dataset.safeHarborSessionOpen = 'true';
+    else delete document.documentElement.dataset.safeHarborSessionOpen;
+    if (document.body) {
+      document.body.classList.toggle('vault-open', Boolean(open));
+      document.body.classList.toggle('vault-sealed', !open);
+    }
+    var membrane = document.getElementById('ingressMembrane');
+    if (membrane && open) {
+      membrane.hidden = true;
+      membrane.classList.add('is-hidden');
+    }
+  }
+
+  function restoreSessionBeforeMain() {
+    var sessionRaw = read(window.sessionStorage, STORAGE_KEY);
+    var mirrorRaw = read(window.localStorage, MIRROR_KEY);
+    var saved = normalize(parse(sessionRaw) || parse(mirrorRaw));
+    if (!saved) {
+      applyOpenState(false);
+      return;
+    }
+    var raw = JSON.stringify(saved);
+    write(window.sessionStorage, STORAGE_KEY, raw);
+    write(window.localStorage, MIRROR_KEY, raw);
+    applyOpenState(looksOpen(saved));
+    window.__TD613_SAFE_HARBOR_PREBOOT_SESSION__ = {
+      open: looksOpen(saved),
+      packet: Boolean(saved.packet),
+      at: new Date().toISOString()
+    };
+  }
+
+  function mirrorSafeHarborStorageWrites() {
+    if (!window.Storage || Storage.prototype.__td613SafeHarborMirrorV1) return;
+    Storage.prototype.__td613SafeHarborMirrorV1 = true;
+    var nativeSet = Storage.prototype.setItem;
+    var nativeRemove = Storage.prototype.removeItem;
+    Storage.prototype.setItem = function (key, value) {
+      var result = nativeSet.apply(this, arguments);
+      try {
+        if (this === window.sessionStorage && key === STORAGE_KEY) nativeSet.call(window.localStorage, MIRROR_KEY, String(value));
+      } catch (error) {}
+      return result;
+    };
+    Storage.prototype.removeItem = function (key) {
+      var result = nativeRemove.apply(this, arguments);
+      try {
+        if (this === window.sessionStorage && key === STORAGE_KEY) nativeRemove.call(window.localStorage, MIRROR_KEY);
+      } catch (error) {}
+      return result;
+    };
+  }
+
+  function installMobileNoZoomGuard() {
+    var meta = document.querySelector('meta[name="viewport"]');
+    if (meta) meta.setAttribute('content', 'width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no, viewport-fit=cover');
+    if (document.getElementById('safeHarborPrebootNoZoom')) return;
+    var style = document.createElement('style');
+    style.id = 'safeHarborPrebootNoZoom';
+    style.textContent = '@media (max-width:720px){html,body{-webkit-text-size-adjust:100%!important;text-size-adjust:100%!important;}input,textarea,select,.ingress-textarea,.code-area,.safe-field{font-size:16px!important;line-height:1.22!important;letter-spacing:0!important;zoom:1!important;-webkit-transform:none!important;transform:none!important;touch-action:manipulation!important;-webkit-text-size-adjust:100%!important;text-size-adjust:100%!important;}textarea,.ingress-textarea,.code-area,.safe-field{padding:9px 10px!important;box-sizing:border-box!important;max-width:100%!important;min-width:0!important;}.ingress-textarea{min-height:164px!important;height:clamp(164px,32dvh,224px)!important;}.code-area{min-height:152px!important;height:clamp(152px,30dvh,216px)!important;}textarea:not(.ingress-textarea):not(.code-area),.safe-field{min-height:112px!important;max-height:34dvh!important;}}';
+    document.head.appendChild(style);
+  }
+
+  mirrorSafeHarborStorageWrites();
+  installMobileNoZoomGuard();
+  restoreSessionBeforeMain();
+
   window.TD613_SAFE_HARBOR_DATA = {
     meta: {
       repoName: 'TD613 Safe Harbor',
