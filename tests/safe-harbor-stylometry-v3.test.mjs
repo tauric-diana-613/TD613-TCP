@@ -72,12 +72,12 @@ function packet(options = {}) {
         higher_self: lane('higher_self', options.higher || {})
       },
       rich_stylometry: options.bridgeRich === false ? undefined : {
-        traceability_surface: { score: 0.81, band: 'high' },
+        traceability_surface: { score: options.bridgeScore ?? 0.81, band: options.bridgeBand || 'high' },
         cross_lane_divergence: {
-          cross_lane_stability: 0.7022,
-          cross_lane_spread: 0.1999,
-          strongest_pair: { pair: 'F-H', distance: 0.1222 },
-          widest_pair: { pair: 'P-H', distance: 0.3222 }
+          cross_lane_stability: options.bridgeStability ?? 0.7022,
+          cross_lane_spread: options.bridgeSpread ?? 0.1999,
+          strongest_pair: { pair: 'F-H', distance: options.bridgeStrongestDistance ?? 0.1222 },
+          widest_pair: { pair: 'P-H', distance: options.bridgeWidestDistance ?? 0.3222 }
         }
       },
       triad_resonance: 0.8222,
@@ -98,7 +98,7 @@ function packet(options = {}) {
       bridge_rich_stylometry_hash_covered: false
     } : {
       native_lane_rich_profile_hash_covered: true,
-      bridge_rich_stylometry_hash_covered: false,
+      bridge_rich_stylometry_hash_covered: Boolean(options.bridgeHashCovered),
       notes: 'Phase 3 derivation uses native lane rich_profile, not bridge-only export enrichment.'
     }
   };
@@ -114,6 +114,12 @@ assert.equal(blocked.badge_number_v3, null);
 assert.equal(blocked.stylometric_fingerprint_v3, null);
 assert.equal(blocked.migration_attestation.mode, 'blocked');
 
+const incompletePacket = packet();
+incompletePacket.analysis.segment_cadence_signatures.future_self.rich_profile = {};
+const incompleteGate = canIssueV3(incompletePacket);
+assert.equal(incompleteGate.ready, false);
+assert.ok(incompleteGate.blocking_reasons.some((reason) => reason.includes('rich_profile incomplete')));
+
 const issuedPacket = packet();
 const issued = await buildV3Issuance(issuedPacket);
 assert.equal(issued.status, 'issued');
@@ -123,6 +129,27 @@ assert.equal(issued.v2_v3_verification.v2.status, 'unchanged');
 assert.equal(issued.v2_v3_verification.v3.role, 'forensic_secondary_credential');
 assert.equal(issued.v2_v3_verification.promotion_status, 'v3-not-yet-recall-authoritative');
 assert.equal(issued.migration_attestation.raw_text_included, false);
+
+const bridgeMutated = await buildV3Issuance(packet({
+  bridgeScore: 0.12,
+  bridgeBand: 'low',
+  bridgeStability: 0.1,
+  bridgeSpread: 0.9,
+  bridgeStrongestDistance: 0.9,
+  bridgeWidestDistance: 0.95
+}));
+assert.equal(bridgeMutated.stylometric_fingerprint_v3, issued.stylometric_fingerprint_v3);
+
+const bridgeCovered = await buildV3Issuance(packet({
+  bridgeHashCovered: true,
+  bridgeScore: 0.12,
+  bridgeBand: 'low',
+  bridgeStability: 0.1,
+  bridgeSpread: 0.9,
+  bridgeStrongestDistance: 0.9,
+  bridgeWidestDistance: 0.95
+}));
+assert.notEqual(bridgeCovered.stylometric_fingerprint_v3, issued.stylometric_fingerprint_v3);
 
 const reordered = {
   b: 2,
