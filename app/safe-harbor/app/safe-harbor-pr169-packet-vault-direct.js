@@ -1,11 +1,14 @@
 (function () {
   'use strict';
 
-  var VERSION = 'safe-harbor-pr169-packet-vault-direct/v5-rich-stylometry-export';
+  var VERSION = 'safe-harbor-pr169-packet-vault-direct/v6-rich-lane-profiles';
   var STORAGE_KEY = 'td613.safe-harbor.session.v1';
   var MIRROR_KEY = 'td613.safe-harbor.session.mirror.v1';
   var HISTORICAL_EXAMPLE = 'TD613-Binding:#9B07D8B/SAC[X6ZNK5NO51] · payload 5 · 2025-10-17 · ⟐';
   var SCRIPT_URL = document.currentScript && document.currentScript.src ? document.currentScript.src : '';
+  var KEYS = ['future_self', 'past_self', 'higher_self'];
+  var RICH_PROFILE_SCHEMA = 'td613.safe-harbor.lane-rich-profile/v1';
+  var RICH_PROFILE_SOURCE = 'app/engine/stylometry.extractCadenceProfile + StylometricDeepMetrics.analyze';
   var richModulePromise = null;
 
   function $(id) { return document.getElementById(id); }
@@ -51,9 +54,7 @@
     var out = {};
     keys.forEach(function (key) {
       out[key] = addHistoryAfterPublicFooter(value[key]);
-      if (hasPublicFooter && !hasHistory && key === 'public_footer') {
-        out.historical_example = HISTORICAL_EXAMPLE;
-      }
+      if (hasPublicFooter && !hasHistory && key === 'public_footer') out.historical_example = HISTORICAL_EXAMPLE;
     });
     return out;
   }
@@ -94,6 +95,49 @@
     return api && typeof api.buildSafeHarborRichStylometry === 'function' ? api.buildSafeHarborRichStylometry : null;
   }
 
+  function hasUsableSegments(segments) {
+    return Boolean(
+      segments &&
+      typeof segments === 'object' &&
+      KEYS.every(function (key) { return typeof segments[key] === 'string' && segments[key].trim().length > 0; })
+    );
+  }
+
+  function topWeighted(profile, max) {
+    return Object.fromEntries(Object.entries(profile || {})
+      .filter(function (entry) { return Number(entry[1] || 0) > 0; })
+      .sort(function (left, right) { return Number(right[1] || 0) - Number(left[1] || 0); })
+      .slice(0, max || 80));
+  }
+
+  function compactLaneRichProfile(profile) {
+    if (!profile || typeof profile !== 'object') return null;
+    return {
+      contentWordComplexity: Number(profile.contentWordComplexity || 0),
+      modifierDensity: Number(profile.modifierDensity || 0),
+      hedgeDensity: Number(profile.hedgeDensity || 0),
+      abstractionPosture: Number(profile.abstractionPosture || 0),
+      directness: Number(profile.directness || 0),
+      latinatePreference: Number(profile.latinatePreference || 0),
+      abbreviationDensity: Number(profile.abbreviationDensity || 0),
+      orthographicLooseness: Number(profile.orthographicLooseness || 0),
+      fragmentPressure: Number(profile.fragmentPressure || 0),
+      conversationalPosture: Number(profile.conversationalPosture || 0),
+      syntacticBranchingDepth: Number(profile.syntacticBranchingDepth || 0),
+      structuralFriction: Number(profile.structuralFriction || 0),
+      lexicalEntropyScore: Number(profile.lexicalEntropyScore || 0),
+      characterEntropyBits: Number(profile.characterEntropyBits || 0),
+      tokenEntropyBits: Number(profile.tokenEntropyBits || 0),
+      transitionVariance: Number(profile.transitionVariance || 0),
+      acousticWeight: Number(profile.acousticWeight || 0),
+      registerMode: String(profile.registerMode || ''),
+      surfaceMarkerProfile: clone(profile.surfaceMarkerProfile || {}),
+      functionWordProfile: clone(profile.functionWordProfile || {}),
+      wordLengthProfile: clone(profile.wordLengthProfile || {}),
+      charTrigramProfile: topWeighted(profile.charTrigramProfile || {}, 80)
+    };
+  }
+
   function compactRichProvenance(rich) {
     if (!rich || typeof rich !== 'object') return null;
     return {
@@ -107,9 +151,34 @@
     };
   }
 
+  function promoteRichLaneProfiles(packet, rich) {
+    var signatures = packet && packet.analysis && packet.analysis.segment_cadence_signatures;
+    var profiles = rich && rich.per_lane_profiles;
+    if (!signatures || !profiles || typeof signatures !== 'object' || typeof profiles !== 'object') return;
+    KEYS.forEach(function (key) {
+      if (!signatures[key] || typeof signatures[key] !== 'object') return;
+      var compact = compactLaneRichProfile(profiles[key]);
+      signatures[key].rich_profile_schema = compact ? RICH_PROFILE_SCHEMA : null;
+      signatures[key].rich_profile_source = compact ? RICH_PROFILE_SOURCE : 'not available';
+      signatures[key].rich_profile = compact;
+    });
+  }
+
+  function attachRichLaneSemantics(packet) {
+    if (!packet || !packet.issuance || typeof packet.issuance !== 'object') return;
+    packet.issuance.stylometric_provenance = packet.issuance.stylometric_provenance && typeof packet.issuance.stylometric_provenance === 'object'
+      ? packet.issuance.stylometric_provenance
+      : {};
+    packet.issuance.stylometric_provenance.rich_lane_profile_semantics = {
+      status: 'present when Phase 2 lane signatures include rich_profile',
+      claim_supported: 'native per-lane authorship-signal enrichment',
+      claim_limit: 'not v3 SHI derivation unless explicit v3 seed is invoked'
+    };
+  }
+
   async function attachRichStylometry(packet, saved) {
     var segments = saved && saved.ingress && saved.ingress.segments ? saved.ingress.segments : null;
-    if (!packet || !segments || typeof segments !== 'object') return packet;
+    if (!packet || !hasUsableSegments(segments)) return packet;
     var builder = await richBuilder();
     if (typeof builder !== 'function') return packet;
     var rich = builder(segments);
@@ -121,6 +190,8 @@
       ? packet.issuance.stylometric_provenance
       : {};
     packet.issuance.stylometric_provenance.rich_stylometry = compactRichProvenance(rich);
+    promoteRichLaneProfiles(packet, rich);
+    attachRichLaneSemantics(packet);
     return packet;
   }
 
@@ -385,7 +456,8 @@
       button: Boolean(button()),
       at: new Date().toISOString(),
       footer_history: HISTORICAL_EXAMPLE,
-      rich_stylometry_export: true
+      rich_stylometry_export: true,
+      rich_lane_profiles: true
     };
   }
 
@@ -408,6 +480,7 @@
     syncButton: syncButton,
     historicalExample: HISTORICAL_EXAMPLE,
     patchProbeText: patchProbeText,
-    normalizePacket: normalizePacket
+    normalizePacket: normalizePacket,
+    compactLaneRichProfile: compactLaneRichProfile
   });
 }());
