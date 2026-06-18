@@ -66,6 +66,15 @@ function principal(packet) {
   return packet && packet.canon && packet.canon.principal ? String(packet.canon.principal) : 'tauric.diana.613';
 }
 
+function stableIssuedAt(packet) {
+  const value = packet && packet.intake && packet.intake.ts_utc
+    ? packet.intake.ts_utc
+    : packet && packet.created_at
+      ? packet.created_at
+      : new Date().toISOString();
+  return String(value).replace(/\.\d{3}Z$/, 'Z');
+}
+
 function q(value, step = 0.001) {
   const num = Number(value);
   if (!Number.isFinite(num)) return 0;
@@ -150,9 +159,7 @@ function missingRichProfileFields(profile) {
   for (const key of NUMERIC_SCALAR_FIELDS) {
     if (!Object.prototype.hasOwnProperty.call(profile, key) || !Number.isFinite(Number(profile[key]))) missing.push(key);
   }
-  if (!Object.prototype.hasOwnProperty.call(profile, 'registerMode') || typeof profile.registerMode !== 'string' || profile.registerMode.trim() === '') {
-    missing.push('registerMode');
-  }
+  if (!Object.prototype.hasOwnProperty.call(profile, 'registerMode') || typeof profile.registerMode !== 'string' || profile.registerMode.trim() === '') missing.push('registerMode');
   for (const key of DISTRIBUTION_FIELDS) {
     if (!isPlainObject(profile[key]) || Object.keys(profile[key]).length === 0) missing.push(key);
   }
@@ -221,9 +228,8 @@ export function canIssueV3(packet) {
       reasons.push('native ' + key + ' signature missing');
       continue;
     }
-    if (!lane.rich_profile || typeof lane.rich_profile !== 'object') {
-      reasons.push('native ' + key + ' rich_profile missing');
-    } else {
+    if (!lane.rich_profile || typeof lane.rich_profile !== 'object') reasons.push('native ' + key + ' rich_profile missing');
+    else {
       const missing = missingRichProfileFields(lane.rich_profile);
       if (missing.length) reasons.push('native ' + key + ' rich_profile incomplete: ' + missing.join(', '));
     }
@@ -235,9 +241,7 @@ export function canIssueV3(packet) {
   const semantics = packet && packet.rich_stylometry_hash_semantics;
   if (!semantics || semantics.native_lane_rich_profile_hash_covered !== true) {
     const bridgeOnly = Boolean(packet && packet.analysis && packet.analysis.rich_stylometry);
-    reasons.push(bridgeOnly
-      ? 'bridge-only rich stylometry present; native lane rich_profile absent or not hash-covered'
-      : 'native lane rich_profile hash coverage not attested');
+    reasons.push(bridgeOnly ? 'bridge-only rich stylometry present; native lane rich_profile absent or not hash-covered' : 'native lane rich_profile hash coverage not attested');
   }
   return Object.freeze({ ready: reasons.length === 0, blocking_reasons: reasons });
 }
@@ -329,7 +333,7 @@ export function buildMigrationAttestation(packet, mode = 'blocked', blockingReas
     raw_text_included: false,
     backfilled: false,
     packet_rewrite: false,
-    issued_at: new Date().toISOString().replace(/\.\d{3}Z$/, 'Z'),
+    issued_at: stableIssuedAt(packet),
     claim_supported: 'v3 forensic credential derived from native rich stylometric features',
     claim_limit: 'does not replace v2 recall credential or perform real-world identity adjudication'
   } : {
