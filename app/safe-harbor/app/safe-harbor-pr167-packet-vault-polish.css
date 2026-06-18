@@ -1,4 +1,4 @@
-/* Packet Vault polish: compact PR150 drawer with centered ▿/▵ direction glyphs. */
+/* Packet Vault polish: compact PR150 drawer with centered ˅/˄ direction glyphs. */
 #packetVaultFold.reliquary-forensic-fold {
   margin-top: 18px !important;
   padding: 0 !important;
@@ -76,7 +76,7 @@
 }
 
 #packetVaultFold.reliquary-forensic-fold > summary::before {
-  content: '▿' !important;
+  content: '˅' !important;
   grid-area: chevron !important;
   justify-self: start !important;
   align-self: center !important;
@@ -93,23 +93,23 @@
   background: rgba(80, 250, 123, 0.055) !important;
   color: rgba(80, 250, 123, 0.94) !important;
   font-family: -apple-system, BlinkMacSystemFont, "Segoe UI Symbol", "Apple Symbols", "Noto Sans Symbols", sans-serif !important;
-  font-size: 1.04rem !important;
+  font-size: 1.02rem !important;
   font-weight: 700 !important;
   line-height: 1 !important;
   text-align: center !important;
   text-indent: 0 !important;
-  transform: translateY(-0.75px) !important;
+  transform: translate(0.5px, -0.75px) !important;
   box-shadow:
     inset 0 1px 0 rgba(255, 255, 255, 0.04),
     0 0 14px rgba(80, 250, 123, 0.09) !important;
 }
 
 #packetVaultFold.reliquary-forensic-fold[open] > summary::before {
-  content: '▵' !important;
+  content: '˄' !important;
   border-color: rgba(189, 147, 249, 0.34) !important;
   color: rgba(231, 219, 255, 0.92) !important;
   background: rgba(189, 147, 249, 0.06) !important;
-  transform: translateY(0.25px) !important;
+  transform: translate(0.5px, 0.15px) !important;
 }
 
 #packetVaultFold.reliquary-forensic-fold[open] > summary .fold-toggle-word {
@@ -227,7 +227,7 @@
     width: 28px !important;
     height: 28px !important;
     min-width: 28px !important;
-    font-size: 1.04rem !important;
+    font-size: 1.02rem !important;
   }
 
   #packetVaultFold.reliquary-forensic-fold > summary ~ * {
