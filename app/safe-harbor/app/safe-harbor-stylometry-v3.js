@@ -25,6 +25,9 @@ const SCALAR_FIELDS = [
   'registerMode'
 ];
 
+const NUMERIC_SCALAR_FIELDS = SCALAR_FIELDS.filter((key) => key !== 'registerMode');
+const DISTRIBUTION_FIELDS = ['functionWordProfile', 'wordLengthProfile', 'charTrigramProfile', 'surfaceMarkerProfile'];
+
 const DISTRIBUTION_POLICY = Object.freeze({
   functionWordProfile: { key: 'functionWordProfileDigest', topK: 32, step: 0.0001 },
   wordLengthProfile: { key: 'wordLengthProfileDigest', topK: null, step: 0.0001 },
@@ -95,11 +98,17 @@ export function stableCanonicalJson(value) {
 }
 
 async function sha256Hex(text) {
-  if (!globalThis.crypto || !globalThis.crypto.subtle || !globalThis.TextEncoder) {
-    throw new Error('SHA-256 unavailable: crypto.subtle and TextEncoder are required for v3 derivation');
+  const value = String(text || '');
+  if (globalThis.crypto && globalThis.crypto.subtle && globalThis.TextEncoder) {
+    const digest = await globalThis.crypto.subtle.digest('SHA-256', new TextEncoder().encode(value));
+    return Array.from(new Uint8Array(digest)).map((byte) => byte.toString(16).padStart(2, '0')).join('');
   }
-  const digest = await globalThis.crypto.subtle.digest('SHA-256', new TextEncoder().encode(String(text || '')));
-  return Array.from(new Uint8Array(digest)).map((byte) => byte.toString(16).padStart(2, '0')).join('');
+  try {
+    const nodeCrypto = await import('node:crypto');
+    return nodeCrypto.createHash('sha256').update(value).digest('hex');
+  } catch (error) {
+    throw new Error('SHA-256 unavailable: crypto.subtle or node:crypto is required for v3 derivation');
+  }
 }
 
 async function sha256Tagged(value) {
@@ -135,6 +144,21 @@ function fingerprintSchemaV3() {
   });
 }
 
+function missingRichProfileFields(profile) {
+  const missing = [];
+  if (!isPlainObject(profile)) return SCALAR_FIELDS.concat(DISTRIBUTION_FIELDS);
+  for (const key of NUMERIC_SCALAR_FIELDS) {
+    if (!Object.prototype.hasOwnProperty.call(profile, key) || !Number.isFinite(Number(profile[key]))) missing.push(key);
+  }
+  if (!Object.prototype.hasOwnProperty.call(profile, 'registerMode') || typeof profile.registerMode !== 'string' || profile.registerMode.trim() === '') {
+    missing.push('registerMode');
+  }
+  for (const key of DISTRIBUTION_FIELDS) {
+    if (!isPlainObject(profile[key]) || Object.keys(profile[key]).length === 0) missing.push(key);
+  }
+  return missing;
+}
+
 async function lanePreimage(signature) {
   const profile = signature && signature.rich_profile ? signature.rich_profile : {};
   const lane = {};
@@ -145,26 +169,33 @@ async function lanePreimage(signature) {
   return lane;
 }
 
+function bridgeRichHashCovered(packet) {
+  const semantics = packet && packet.rich_stylometry_hash_semantics;
+  return Boolean(semantics && semantics.bridge_rich_stylometry_hash_covered === true);
+}
+
 function traceability(packet) {
-  const rich = packet && packet.analysis && packet.analysis.rich_stylometry;
+  const richAllowed = bridgeRichHashCovered(packet);
+  const rich = richAllowed && packet && packet.analysis && packet.analysis.rich_stylometry ? packet.analysis.rich_stylometry : null;
   const surface = rich && rich.traceability_surface ? rich.traceability_surface : null;
   return {
-    score: q(surface && surface.score, QUANTIZATION.traceability),
-    band: surface && surface.band ? String(surface.band) : null,
+    score: richAllowed ? q(surface && surface.score, QUANTIZATION.traceability) : null,
+    band: richAllowed && surface && surface.band ? String(surface.band) : null,
     packet_hash_sha256: packet && packet.packet_hash_sha256 ? String(packet.packet_hash_sha256) : null,
     hash_semantics: clone(packet && packet.rich_stylometry_hash_semantics ? packet.rich_stylometry_hash_semantics : null)
   };
 }
 
 function divergence(packet) {
-  const rich = packet && packet.analysis && packet.analysis.rich_stylometry;
+  const richAllowed = bridgeRichHashCovered(packet);
+  const rich = richAllowed && packet && packet.analysis && packet.analysis.rich_stylometry ? packet.analysis.rich_stylometry : null;
   const richDivergence = rich && rich.cross_lane_divergence ? rich.cross_lane_divergence : null;
   return {
     legacy_divergence_signature: clone(packet && packet.issuance && packet.issuance.stylometric_provenance ? packet.issuance.stylometric_provenance.divergence_signature : null),
-    rich_cross_lane_stability: q(richDivergence && richDivergence.cross_lane_stability, QUANTIZATION.divergence),
-    rich_cross_lane_spread: q(richDivergence && richDivergence.cross_lane_spread, QUANTIZATION.divergence),
-    strongest_pair: clone(richDivergence && richDivergence.strongest_pair ? richDivergence.strongest_pair : null),
-    widest_pair: clone(richDivergence && richDivergence.widest_pair ? richDivergence.widest_pair : null)
+    rich_cross_lane_stability: richAllowed ? q(richDivergence && richDivergence.cross_lane_stability, QUANTIZATION.divergence) : null,
+    rich_cross_lane_spread: richAllowed ? q(richDivergence && richDivergence.cross_lane_spread, QUANTIZATION.divergence) : null,
+    strongest_pair: richAllowed ? clone(richDivergence && richDivergence.strongest_pair ? richDivergence.strongest_pair : null) : null,
+    widest_pair: richAllowed ? clone(richDivergence && richDivergence.widest_pair ? richDivergence.widest_pair : null) : null
   };
 }
 
@@ -190,7 +221,12 @@ export function canIssueV3(packet) {
       reasons.push('native ' + key + ' signature missing');
       continue;
     }
-    if (!lane.rich_profile || typeof lane.rich_profile !== 'object') reasons.push('native ' + key + ' rich_profile missing');
+    if (!lane.rich_profile || typeof lane.rich_profile !== 'object') {
+      reasons.push('native ' + key + ' rich_profile missing');
+    } else {
+      const missing = missingRichProfileFields(lane.rich_profile);
+      if (missing.length) reasons.push('native ' + key + ' rich_profile incomplete: ' + missing.join(', '));
+    }
     if (lane.rich_profile_schema !== LANE_RICH_PROFILE_SCHEMA) reasons.push('native ' + key + ' rich_profile_schema mismatch');
   }
   const issuance = packet && packet.issuance ? packet.issuance : {};
