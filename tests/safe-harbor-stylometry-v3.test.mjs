@@ -28,7 +28,7 @@ const laneRichProfile = (overrides = {}) => ({
   surfaceMarkerProfile: { dash: 0.12, colon: 0.06, glyph: 0.02 },
   functionWordProfile: { the: 0.04214, and: 0.03121, of: 0.02222 },
   wordLengthProfile: { '1': 0.04, '2': 0.11, '3': 0.17, '4': 0.22, '5': 0.18, '6+': 0.28 },
-  charTrigramProfile: { 'the': 0.0062, 'ing': 0.0051, 'ion': 0.0044 },
+  charTrigramProfile: { the: 0.0062, ing: 0.0051, ion: 0.0044 },
   ...overrides
 });
 
@@ -60,6 +60,8 @@ function packet(options = {}) {
   return {
     schema_version: 'td613.safe-harbor.packet/v1',
     packet_hash_sha256: 'sha256:packet-hash-placeholder',
+    created_at: '2026-06-18T12:34:56Z',
+    intake: { ts_utc: '2026-06-18T12:34:56Z' },
     canon: {
       principal: 'tauric.diana.613',
       binding_fragment: '#9B07D8B',
@@ -89,9 +91,7 @@ function packet(options = {}) {
       stylometric_fingerprint: 'future_self=legacy|past_self=legacy|higher_self=legacy',
       triad_word_counts: { future_self: 72, past_self: 72, higher_self: 72 },
       triad_shortfalls: { future_self: 0, past_self: 0, higher_self: 0 },
-      stylometric_provenance: {
-        divergence_signature: { compact: 'legacy divergence' }
-      }
+      stylometric_provenance: { divergence_signature: { compact: 'legacy divergence' } }
     },
     rich_stylometry_hash_semantics: options.hashCovered === false ? {
       native_lane_rich_profile_hash_covered: false,
@@ -129,6 +129,7 @@ assert.equal(issued.v2_v3_verification.v2.status, 'unchanged');
 assert.equal(issued.v2_v3_verification.v3.role, 'forensic_secondary_credential');
 assert.equal(issued.v2_v3_verification.promotion_status, 'v3-not-yet-recall-authoritative');
 assert.equal(issued.migration_attestation.raw_text_included, false);
+assert.equal(issued.migration_attestation.issued_at, issuedPacket.intake.ts_utc);
 
 const bridgeMutated = await buildV3Issuance(packet({
   bridgeScore: 0.12,
@@ -160,10 +161,7 @@ const reordered = {
     future_self: { a: 1 }
   }
 };
-assert.equal(
-  stableCanonicalJson(reordered),
-  '{"a":{"a":2,"z":1},"b":2,"lanes":{"future_self":{"a":1},"past_self":{"b":2},"higher_self":{"c":3}}}'
-);
+assert.equal(stableCanonicalJson(reordered), '{"a":{"a":2,"z":1},"b":2,"lanes":{"future_self":{"a":1},"past_self":{"b":2},"higher_self":{"c":3}}}');
 
 const changed = await buildV3Issuance(packet({ future: { lexicalEntropyScore: 0.8129 } }));
 assert.notEqual(changed.stylometric_fingerprint_v3, issued.stylometric_fingerprint_v3);
