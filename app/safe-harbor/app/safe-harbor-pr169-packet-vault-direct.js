@@ -1,10 +1,12 @@
 (function () {
   'use strict';
 
-  var VERSION = 'safe-harbor-pr169-packet-vault-direct/v4-probe-footer-history';
+  var VERSION = 'safe-harbor-pr169-packet-vault-direct/v5-rich-stylometry-export';
   var STORAGE_KEY = 'td613.safe-harbor.session.v1';
   var MIRROR_KEY = 'td613.safe-harbor.session.mirror.v1';
   var HISTORICAL_EXAMPLE = 'TD613-Binding:#9B07D8B/SAC[X6ZNK5NO51] · payload 5 · 2025-10-17 · ⟐';
+  var SCRIPT_URL = document.currentScript && document.currentScript.src ? document.currentScript.src : '';
+  var richModulePromise = null;
 
   function $(id) { return document.getElementById(id); }
   function text(value) { return String(value == null ? '' : value).trim(); }
@@ -12,26 +14,6 @@
   function read(storage, key) { try { return storage && storage.getItem(key); } catch (error) { return null; } }
   function write(storage, key, value) { try { if (storage) storage.setItem(key, JSON.stringify(value)); } catch (error) {} }
   function clone(value) { return value == null ? value : JSON.parse(JSON.stringify(value)); }
-
-  function stable(value) {
-    if (value === null || typeof value !== 'object') return JSON.stringify(value);
-    if (Array.isArray(value)) return '[' + value.map(stable).join(',') + ']';
-    return '{' + Object.keys(value).sort().map(function (key) {
-      return JSON.stringify(key) + ':' + stable(value[key]);
-    }).join(',') + '}';
-  }
-
-  function hex(buffer) {
-    return Array.from(new Uint8Array(buffer)).map(function (b) {
-      return b.toString(16).padStart(2, '0');
-    }).join('');
-  }
-
-  async function sha256(textValue) {
-    var enc = new TextEncoder();
-    var digest = await crypto.subtle.digest('SHA-256', enc.encode(String(textValue || '')));
-    return 'sha256:' + hex(digest);
-  }
 
   function isFooterKey(key) {
     return String(key || '').toLowerCase().indexOf('footer') !== -1;
@@ -84,26 +66,6 @@
     return keys.some(function (key) { return needsHistory(value[key]); });
   }
 
-  function packetHashMaterial(packet) {
-    var material = clone(packet);
-    if (material && material.signature) {
-      material.signature.sig = null;
-      material.signature.attached_at = null;
-      if (material.signature.status === 'sealed') material.signature.status = 'declared';
-    }
-    if (material) material.packet_hash_sha256 = null;
-    return material;
-  }
-
-  async function normalizePacket(packet) {
-    if (!packet || typeof packet !== 'object') return packet;
-    var patched = needsHistory(packet) ? addHistory(clone(packet)) : clone(packet);
-    if (patched && patched.schema_version === 'td613.safe-harbor.packet/v1') {
-      patched.packet_hash_sha256 = await sha256(stable(packetHashMaterial(patched)));
-    }
-    return patched;
-  }
-
   function savedSession() {
     return parse(read(window.sessionStorage, STORAGE_KEY)) || parse(read(window.localStorage, MIRROR_KEY)) || null;
   }
@@ -114,12 +76,67 @@
     write(window.localStorage, MIRROR_KEY, saved);
   }
 
+  function richAdapterUrl() {
+    try {
+      return new URL('safe-harbor-rich-stylometry-adapter.js', SCRIPT_URL || window.location.href).href;
+    } catch (error) {
+      return 'app/safe-harbor-rich-stylometry-adapter.js';
+    }
+  }
+
+  async function richBuilder() {
+    var api = window.TD613_SAFE_HARBOR_STYLOMETRY;
+    if (api && typeof api.buildSafeHarborRichStylometry === 'function') return api.buildSafeHarborRichStylometry;
+    if (!richModulePromise) richModulePromise = import(richAdapterUrl()).catch(function () { return null; });
+    var mod = await richModulePromise;
+    if (mod && typeof mod.buildSafeHarborRichStylometry === 'function') return mod.buildSafeHarborRichStylometry;
+    api = window.TD613_SAFE_HARBOR_STYLOMETRY;
+    return api && typeof api.buildSafeHarborRichStylometry === 'function' ? api.buildSafeHarborRichStylometry : null;
+  }
+
+  function compactRichProvenance(rich) {
+    if (!rich || typeof rich !== 'object') return null;
+    return {
+      schema_version: rich.schema_version,
+      rich_fingerprint: rich.rich_fingerprint,
+      engine: clone(rich.engine),
+      triad_profile: clone(rich.triad_profile),
+      cross_lane_divergence: clone(rich.cross_lane_divergence),
+      traceability_surface: clone(rich.traceability_surface),
+      compatibility_note: rich.compatibility_note
+    };
+  }
+
+  async function attachRichStylometry(packet, saved) {
+    var segments = saved && saved.ingress && saved.ingress.segments ? saved.ingress.segments : null;
+    if (!packet || !segments || typeof segments !== 'object') return packet;
+    var builder = await richBuilder();
+    if (typeof builder !== 'function') return packet;
+    var rich = builder(segments);
+    if (!rich || typeof rich !== 'object') return packet;
+    packet.analysis = packet.analysis && typeof packet.analysis === 'object' ? packet.analysis : {};
+    packet.analysis.rich_stylometry = clone(rich);
+    packet.issuance = packet.issuance && typeof packet.issuance === 'object' ? packet.issuance : {};
+    packet.issuance.stylometric_provenance = packet.issuance.stylometric_provenance && typeof packet.issuance.stylometric_provenance === 'object'
+      ? packet.issuance.stylometric_provenance
+      : {};
+    packet.issuance.stylometric_provenance.rich_stylometry = compactRichProvenance(rich);
+    return packet;
+  }
+
+  async function normalizePacket(packet, saved) {
+    if (!packet || typeof packet !== 'object') return packet;
+    var patched = needsHistory(packet) ? addHistory(clone(packet)) : clone(packet);
+    patched = await attachRichStylometry(patched, saved);
+    return patched;
+  }
+
   async function activePacket() {
     var saved = savedSession();
     var packet = saved && saved.packet ? saved.packet : null;
     if (!packet) return null;
-    var patched = await normalizePacket(packet);
-    if (saved && JSON.stringify(patched) !== JSON.stringify(packet)) {
+    var patched = await normalizePacket(packet, saved);
+    if (JSON.stringify(patched) !== JSON.stringify(packet)) {
       saved.packet = patched;
       storeSession(saved);
     }
@@ -132,34 +149,14 @@
   }
 
   function packetExportReady(packet) {
-    return Boolean(
-      packet &&
-      packet.bridge &&
-      packet.bridge.export_gate &&
-      packet.bridge.export_gate.ready
-    );
-  }
-
-  async function packetText() {
-    var packet = await activePacket();
-    if (packet) return JSON.stringify(packet, null, 2) + '\n';
-    var preview = $('forensicSchemaPreview');
-    return preview ? text(preview.textContent || preview.value || '') : '';
-  }
-
-  function canOpenTxt() {
-    var packet = activePacketSync();
-    var exportButton = $('exportPacketPreview');
-    return Boolean(packetExportReady(packet) || (exportButton && exportButton.disabled === false));
+    return Boolean(packet && packet.bridge && packet.bridge.export_gate && packet.bridge.export_gate.ready);
   }
 
   function packetFilename(packet) {
     var helperTs = packet && packet.intake && packet.intake.helper_filename_safe;
     var created = packet && (packet.created_at || (packet.receipt && packet.receipt.minted_at));
     var ts = helperTs || String(created || new Date().toISOString()).replace(/[:.]/g, '-');
-    var stage = packet && packet.seal_handshake
-      ? 'sealed'
-      : (packet && packet.issuance && packet.issuance.badge_number ? 'minted' : 'staged');
+    var stage = packet && packet.seal_handshake ? 'sealed' : (packet && packet.issuance && packet.issuance.badge_number ? 'minted' : 'staged');
     var shi = packet && packet.issuance && packet.issuance.badge_number ? '-' + packet.issuance.badge_number : '';
     var batch = packet && packet.intake && packet.intake.selected_batch_id ? '-' + packet.intake.selected_batch_id : '';
     return 'td613-packet' + batch + '-' + stage + shi + '-' + ts + '.json';
@@ -179,9 +176,7 @@
 
   function copyText(value) {
     var body = String(value || '');
-    if (navigator.clipboard && navigator.clipboard.writeText) {
-      return navigator.clipboard.writeText(body).catch(function () { fallbackCopy(body); });
-    }
+    if (navigator.clipboard && navigator.clipboard.writeText) return navigator.clipboard.writeText(body).catch(function () { fallbackCopy(body); });
     fallbackCopy(body);
     return Promise.resolve();
   }
@@ -211,13 +206,18 @@
     return packet;
   }
 
+  async function packetText() {
+    var packet = await activePacket();
+    if (packet) return JSON.stringify(packet, null, 2) + '\n';
+    var preview = $('forensicSchemaPreview');
+    return preview ? text(preview.textContent || preview.value || '') : '';
+  }
+
   function patchProbeText(raw) {
     var body = String(raw || '');
     if (!body) return body;
     var parsed = parse(body);
-    if (parsed && typeof parsed === 'object') {
-      return JSON.stringify(addHistoryAfterPublicFooter(parsed), null, 2);
-    }
+    if (parsed && typeof parsed === 'object') return JSON.stringify(addHistoryAfterPublicFooter(parsed), null, 2);
     if (body.indexOf('- canonical_footer:') === -1 || body.indexOf('- historical_example:') !== -1) return body;
     return body.replace(/(^- canonical_footer:.*$)/m, '$1\n- historical_example: ' + HISTORICAL_EXAMPLE);
   }
@@ -235,7 +235,7 @@
   }
 
   async function openTxt() {
-    if (!canOpenTxt()) {
+    if (!packetExportReady(activePacketSync())) {
       syncButton();
       return false;
     }
@@ -261,9 +261,7 @@
     return true;
   }
 
-  function button() {
-    return $('openPacketTxtPreview');
-  }
+  function button() { return $('openPacketTxtPreview'); }
 
   function bindButton() {
     var node = button();
@@ -280,23 +278,22 @@
 
   function bindPacketExports() {
     var exportButton = $('exportPacketPreview');
-    if (exportButton && exportButton.dataset.footerHistoryExport !== VERSION) {
-      exportButton.dataset.footerHistoryExport = VERSION;
+    if (exportButton && exportButton.dataset.richStylometryExport !== VERSION) {
+      exportButton.dataset.richStylometryExport = VERSION;
       exportButton.addEventListener('click', function (event) {
         var raw = activePacketSync();
         if (!packetExportReady(raw)) return;
         event.preventDefault();
         event.stopImmediatePropagation();
         void normalizeVisiblePacket().then(function (packet) {
-          if (!packet) return;
-          downloadJson(packetFilename(packet), packet);
+          if (packet) downloadJson(packetFilename(packet), packet);
         });
       }, true);
     }
 
     var packetCopyButton = $('copyPacketPreview');
-    if (packetCopyButton && packetCopyButton.dataset.footerHistoryCopy !== VERSION) {
-      packetCopyButton.dataset.footerHistoryCopy = VERSION;
+    if (packetCopyButton && packetCopyButton.dataset.richStylometryCopy !== VERSION) {
+      packetCopyButton.dataset.richStylometryCopy = VERSION;
       packetCopyButton.addEventListener('click', function (event) {
         var raw = activePacketSync();
         if (!raw) return;
@@ -309,8 +306,8 @@
     }
 
     var exportCopyButton = $('copyForensicSchemaPreview');
-    if (exportCopyButton && exportCopyButton.dataset.footerHistoryCopy !== VERSION) {
-      exportCopyButton.dataset.footerHistoryCopy = VERSION;
+    if (exportCopyButton && exportCopyButton.dataset.richStylometryCopy !== VERSION) {
+      exportCopyButton.dataset.richStylometryCopy = VERSION;
       exportCopyButton.addEventListener('click', function (event) {
         var raw = activePacketSync();
         if (!packetExportReady(raw)) return;
@@ -324,32 +321,26 @@
   }
 
   function bindProbeOutputs() {
-    var probeButtons = Array.from(document.querySelectorAll('[data-probe-variant]'));
-    probeButtons.forEach(function (buttonNode) {
+    Array.from(document.querySelectorAll('[data-probe-variant]')).forEach(function (buttonNode) {
       if (buttonNode.dataset.footerHistoryProbe === VERSION) return;
       buttonNode.dataset.footerHistoryProbe = VERSION;
-      buttonNode.addEventListener('click', function () {
-        window.setTimeout(patchProbeOutput, 0);
-      }, false);
+      buttonNode.addEventListener('click', function () { window.setTimeout(patchProbeOutput, 0); }, false);
     });
-
     var copyProbe = $('copyProbeOutput');
     if (copyProbe && copyProbe.dataset.footerHistoryProbeCopy !== VERSION) {
       copyProbe.dataset.footerHistoryProbeCopy = VERSION;
-      copyProbe.addEventListener('click', function () {
-        patchProbeOutput();
-      }, true);
+      copyProbe.addEventListener('click', function () { patchProbeOutput(); }, true);
     }
   }
 
   function patchApi() {
     var api = window.TD613SafeHarbor;
-    if (!api || api.__footerHistoryPatch === VERSION) return;
+    if (!api || api.__richStylometryExportPatch === VERSION) return;
     if (typeof api.buildPacket === 'function') {
       var originalBuildPacket = api.buildPacket.bind(api);
       api.buildPacket = async function () {
         var packet = await originalBuildPacket();
-        return normalizePacket(packet);
+        return normalizePacket(packet, savedSession());
       };
     }
     if (typeof api.buildProbe === 'function') {
@@ -365,7 +356,7 @@
         return patched;
       };
     }
-    api.__footerHistoryPatch = VERSION;
+    api.__richStylometryExportPatch = VERSION;
   }
 
   function syncButton() {
@@ -376,7 +367,7 @@
     void normalizeVisiblePacket();
     patchProbeOutput();
     if (!node) return;
-    var ready = canOpenTxt();
+    var ready = packetExportReady(activePacketSync());
     node.disabled = !ready;
     node.setAttribute('aria-disabled', ready ? 'false' : 'true');
     node.title = ready ? 'Open the sealed packet as plain text in a new tab' : 'Open .txt unlocks after the packet is sealed/export-ready';
@@ -389,7 +380,13 @@
     bindProbeOutputs();
     patchApi();
     syncButton();
-    window.__TD613_SAFE_HARBOR_PR169__ = { version: VERSION, button: Boolean(button()), at: new Date().toISOString(), footer_history: HISTORICAL_EXAMPLE };
+    window.__TD613_SAFE_HARBOR_PR169__ = {
+      version: VERSION,
+      button: Boolean(button()),
+      at: new Date().toISOString(),
+      footer_history: HISTORICAL_EXAMPLE,
+      rich_stylometry_export: true
+    };
   }
 
   if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', boot, { once: true });
@@ -410,6 +407,7 @@
     openTxt: openTxt,
     syncButton: syncButton,
     historicalExample: HISTORICAL_EXAMPLE,
-    patchProbeText: patchProbeText
+    patchProbeText: patchProbeText,
+    normalizePacket: normalizePacket
   });
 }());
