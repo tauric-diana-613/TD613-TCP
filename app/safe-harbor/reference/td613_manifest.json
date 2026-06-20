@@ -3,52 +3,42 @@
   "binding_fragment": "9B07D8B",
   "short_code": "X6ZNK5NO51",
   "current_public_mode": "legacy-compat",
-  "internal_validation_accepts": [
-    "legacy",
-    "legacy-compat",
-    "sac-only"
-  ],
+  "internal_validation_accepts": ["legacy", "legacy-compat", "sac-only"],
   "future_public_mode": "sac-only",
   "current_published_payload": 5,
   "current_published_date": "2025-10-17",
-  "public_footer_template": "TD613-Binding:#9B07D8B/SAC[X6ZNK5NO51] \u00b7 payload {n} \u00b7 YYYY-MM-DD \u00b7 \u27d0",
-  "current_published_footer": "TD613-Binding:#9B07D8B/SAC[X6ZNK5NO51] \u00b7 payload 5 \u00b7 2025-10-17 \u00b7 \u27d0",
-  "updated_at": "2026-04-02T00:00:00Z",
-  "opener_hint": "\ud834\udf0b\u200c",
-  "closer_hint": "\u27d0",
+  "public_footer_template": "TD613-Binding:#9B07D8B/SAC[X6ZNK5NO51] · payload {n} · YYYY-MM-DD · ⟐",
+  "current_published_footer": "TD613-Binding:#9B07D8B/SAC[X6ZNK5NO51] · payload 5 · 2025-10-17 · ⟐",
+  "updated_at": "2026-06-20T00:00:00Z",
+  "opener_hint": "𝌋‌",
+  "closer_hint": "⟐",
   "signature_lanes": {
-    "historical_signed_zone": {
-      "status": "reference-only",
-      "algorithm": "Ed25519 / EdDSA detached .sig over canonical zone JSON",
-      "purpose": "signed badge/zone registry continuity and public verification",
-      "operator_only": true
-    },
-    "runtime_request_signing": {
-      "status": "advanced / operator-only",
-      "algorithm": "detached JWS request-signing lane",
-      "purpose": "middleware/runtime authorization flows such as request signing",
-      "operator_only": true
-    }
+    "historical_signed_zone": { "status": "reference-only", "algorithm": "Ed25519 / EdDSA detached .sig over canonical zone JSON", "purpose": "signed badge/zone registry continuity and public verification", "operator_only": true },
+    "runtime_request_signing": { "status": "advanced / operator-only", "algorithm": "detached JWS request-signing lane", "purpose": "middleware/runtime authorization flows such as request signing", "operator_only": true }
   },
   "safe_harbor": {
-    "version": "0.4.1",
+    "version": "0.4.1-phase9.1b",
     "packet_schema_version": "td613.safe-harbor.packet/v1",
     "packet_hash_field": "packet_hash_sha256",
-    "lifecycle_states": [
-      "staged",
-      "sealed",
-      "harbor-eligible",
-      "exported",
-      "verified"
-    ],
+    "lifecycle_states": ["staged", "sealed", "harbor-eligible", "exported", "verified"],
     "public_mode": "public",
     "operator_mode": "advanced / local-only",
     "dev_mode": "disabled by default in public ship",
-    "advanced_signature_lane": {
-      "public_default": "unsigned",
-      "operator_overlay": true,
-      "packet_context_required": true
-    }
+    "advanced_signature_lane": { "public_default": "unsigned", "operator_overlay": true, "packet_context_required": true }
+  },
+  "safe_harbor_surface_policy": {
+    "public_root": "v2",
+    "v3_visibility": "phase8-gated",
+    "release_discipline": "phase9",
+    "ui_export_policy": "phase9.1",
+    "ui_wiring": "phase9.1B",
+    "clipboard_policy": "phase9.1",
+    "offline_capsule_claim_limits": true,
+    "verify_room_claim_limits": true,
+    "eo_shorthand": "EO-RFD route firmware / hook lane",
+    "raw_text_public_export": false,
+    "khona_lit_po_zwnj_sensitive": true,
+    "claim_limit": "custody and replay posture only; not civil identity, legal identity, public law approval, state recognition, or authorship ownership"
   },
   "historical_example_note": "The published payload-5 footer is historical only. New attestations must use the live template with payload {n}."
 }
