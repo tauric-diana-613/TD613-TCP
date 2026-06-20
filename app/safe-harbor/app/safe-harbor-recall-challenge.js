@@ -7,7 +7,12 @@ const SCALAR_FIELDS = ['contentWordComplexity', 'modifierDensity', 'hedgeDensity
 
 function clone(value) { return value == null ? value : JSON.parse(JSON.stringify(value)); }
 function compactProfile(profile = {}) {
-  const out = { registerMode: String(profile.registerMode || '') };
+  const out = {
+    wordCount: Number(profile.wordCount || 0),
+    sentenceCount: Number(profile.sentenceCount || 0),
+    avgSentenceLength: Number(Number(profile.avgSentenceLength || 0).toFixed(4)),
+    registerMode: String(profile.registerMode || '')
+  };
   for (const key of SCALAR_FIELDS) out[key] = Number(Number(profile[key] || 0).toFixed(4));
   out.surfaceMarkerProfile = clone(profile.surfaceMarkerProfile || {});
   out.functionWordProfile = clone(profile.functionWordProfile || {});
