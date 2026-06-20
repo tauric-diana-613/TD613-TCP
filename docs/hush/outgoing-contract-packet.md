@@ -42,7 +42,9 @@ Provider target records provider class, provider name, model name, endpoint clas
 
 ## Private text policy
 
-Provider-ready contracts must not carry raw Customizer sample text, raw mask material, or unlabeled private text. Raw prompt export or private payload conditions move the contract to operator review or blocked status.
+Provider-ready contracts must not carry raw Customizer sample text, raw mask material, raw prompt aliases, or unlabeled private text. Raw prompt export or private payload conditions move the contract to operator review or blocked status.
+
+Raw prompt aliases include `system_instruction`, `developer_instruction`, `user_instruction`, `assembled_prompt`, raw prompt fields, and camelCase equivalents. A provider-ready imported contract cannot rely on `raw_prompt_exported: false` while carrying those raw prompt fields.
 
 ## Stylometry constraints
 
@@ -77,13 +79,16 @@ The validator recomputes:
 - `mask_context_hash_sha256`
 - `instruction_contract_hash_sha256`
 - `policy_hash_sha256`
-- `packet_hash_sha256`
+- top-level `packet_hash_sha256`
+- `hash_topology.packet_hash_sha256`
 
 Hash format is never enough. Declared hashes must replay against packet contents.
 
+Both packet hash locations must replay to the same expected packet hash. If the top-level packet hash and topology packet hash disagree, or if either location is stale after packet-body mutation, validation blocks.
+
 ## Restore/replay validation
 
-Validation blocks malformed hashes, hash-only contracts, SHI-style contract ids, SHI-style mask ids, missing provider-ready surfaces, missing refusal policy, missing private text policy, raw Customizer samples in provider-ready contracts, authority overclaims, EO-RFD firmware claims without adapter proof, and tampered packet bodies.
+Validation blocks malformed hashes, hash-only contracts, SHI-style contract ids, SHI-style mask ids, missing provider-ready surfaces, missing refusal policy, missing private text policy, raw Customizer samples in provider-ready contracts, raw prompt aliases in provider-ready contracts, authority overclaims, EO-RFD firmware claims without adapter proof, and tampered packet bodies.
 
 ## Dispatch envelope
 
