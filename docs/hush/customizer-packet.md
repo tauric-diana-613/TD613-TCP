@@ -10,6 +10,12 @@ It is not identity proof.
 
 It is a local stylometric transformation profile with corpus provenance, sample hashes, readiness, routing, private-text policy, and release discipline.
 
+## Landing trail
+
+PR #150 / commit `a7d2b4ba7d30f1c4f16ce9464ac7734bb38a231d` is the canonical Hush Customizer Packet v1 spine landing on `main`.
+
+PR #149 was opened as an equivalent first-pass implementation and should be treated as duplicate/fallback trail, not the source of truth.
+
 ## Schema
 
 ```text
