@@ -1,7 +1,7 @@
 import { PUBLIC_DEFAULT_ROOT, RELEASE_CLASSES, buildClaimLimits } from './safe-harbor-policy-constants.js';
 import { inspectRawTextExposure, releaseFacingArtifactsFromPacket } from './safe-harbor-raw-text-policy.js';
 
-export const REOPEN_VALIDATOR_VERSION = 'safe-harbor-reopen-validator/v1-phase9-1c';
+export const REOPEN_VALIDATOR_VERSION = 'safe-harbor-reopen-validator/v1-phase9-1c-hash-guard';
 export const LEGACY_HANDSHAKE_PREFIX = 'TD613-SH-SEAL-HANDSHAKE/v1:';
 
 function clone(value) { return value == null ? value : JSON.parse(JSON.stringify(value)); }
@@ -9,6 +9,10 @@ function normalizeShiNumber(value) { return String(value || '').trim().toUpperCa
 function nowIso() { return new Date().toISOString(); }
 function getPath(value, path) { return String(path || '').split('.').reduce((node, key) => (node && Object.prototype.hasOwnProperty.call(node, key) ? node[key] : undefined), value); }
 function isObject(value) { return Boolean(value && typeof value === 'object' && !Array.isArray(value)); }
+
+export function isSha256(value) {
+  return /^sha256:[a-f0-9]{64}$/iu.test(String(value || '').trim());
+}
 
 export function isShiNumber(value, bindingFragment = '9B07D8B') {
   const normalized = normalizeShiNumber(value);
@@ -35,13 +39,23 @@ export function unwrapSafeHarborPacket(parsed) {
 }
 
 function legacyHandshakeFrom(parsed, packet) { return String((parsed && parsed.seal_handshake) || (packet && packet.seal_handshake) || ''); }
+function packetHashes(packet) {
+  return {
+    packetHash: getPath(packet, 'packet_hash_sha256'),
+    finalHash: getPath(packet, 'hash_topology.final_packet_hash_sha256')
+  };
+}
+function hasValidHash(packet) {
+  const hashes = packetHashes(packet);
+  return isSha256(hashes.packetHash) || isSha256(hashes.finalHash);
+}
 
 export function classifyReopenPacket(parsed, packet) {
   const families = [];
   const handshake = legacyHandshakeFrom(parsed, packet);
   if (handshake.indexOf(LEGACY_HANDSHAKE_PREFIX) === 0) families.push('legacy-v1-sealed');
   if (getPath(packet, 'native_spine_purification.status')) families.push('phase6-native-spine');
-  if (getPath(packet, 'hash_topology.final_packet_hash_sha256') || getPath(packet, 'packet_hash_sha256')) families.push('hash-bearing-packet');
+  if (hasValidHash(packet)) families.push('hash-bearing-packet');
   if (getPath(packet, 'phase8_public_default_gate.status')) families.push('phase8-public-gate');
   if (getPath(packet, 'phase9_release_discipline.release_class')) families.push('phase9-release-discipline');
   if (getPath(packet, 'pipeline_state.pipeline_version')) families.push('phase9-1-pipeline-state');
@@ -77,8 +91,16 @@ export function validateReopenPacket(input, options = {}) {
   if (!packetShi) refusal_reasons.push('packet is missing issuance.badge_number');
   else if (token && packetShi !== token) refusal_reasons.push('SHI # does not match packet issuance.badge_number');
 
+  const hashes = packetHashes(packet || {});
+  if (hashes.packetHash && !isSha256(hashes.packetHash)) refusal_reasons.push('packet_hash_sha256 is not sha256:<64_hex>');
+  if (hashes.finalHash && !isSha256(hashes.finalHash)) refusal_reasons.push('hash_topology.final_packet_hash_sha256 is not sha256:<64_hex>');
+
   const families = packet ? classifyReopenPacket(parsed, packet) : [];
+  const strongFamilies = families.filter((family) => family !== 'hash-bearing-packet');
   if (!families.length) refusal_reasons.push('packet lacks legacy seal marker or current Safe Harbor authority surfaces');
+  if (families.includes('hash-bearing-packet') && !strongFamilies.length) refusal_reasons.push('hash-bearing packet alone is not enough to restore Safe Harbor');
+  if (!families.includes('legacy-v1-sealed') && strongFamilies.length && !families.includes('hash-bearing-packet')) refusal_reasons.push('current packet restore requires a valid sha256 packet hash');
+
   const phase5 = getPath(packet, 'phase5_replay_hardening.status');
   if (phase5 === 'fail' || phase5 === 'quarantine') refusal_reasons.push('Phase 5 blocks reopen: ' + phase5);
   const phase8 = getPath(packet, 'phase8_public_default_gate.status');
@@ -153,6 +175,6 @@ export function buildReopenSession(validation, existing = {}) {
 }
 
 if (typeof window !== 'undefined') {
-  window.TD613_SAFE_HARBOR_REOPEN_VALIDATOR = Object.freeze({ REOPEN_VALIDATOR_VERSION, LEGACY_HANDSHAKE_PREFIX, normalizeShiNumber, isShiNumber, parseReopenJson, unwrapSafeHarborPacket, classifyReopenPacket, validateReopenPacket, buildReopenSession });
+  window.TD613_SAFE_HARBOR_REOPEN_VALIDATOR = Object.freeze({ REOPEN_VALIDATOR_VERSION, LEGACY_HANDSHAKE_PREFIX, normalizeShiNumber, isSha256, isShiNumber, parseReopenJson, unwrapSafeHarborPacket, classifyReopenPacket, validateReopenPacket, buildReopenSession });
   window.dispatchEvent(new CustomEvent('td613:safe-harbor:reopen-validator-ready', { detail: { version: REOPEN_VALIDATOR_VERSION } }));
 }
