@@ -60,6 +60,7 @@ function hashMaterial(packet) {
   delete material.packet_hash_sha256;
   delete material.phase5_replay_hardening;
   delete material.export_quarantine;
+  delete material.phase5_hash_semantics;
   if (material.renderer_authority_metadata) material.renderer_authority_metadata.packet_hash_sha256 = null;
   return material;
 }
@@ -72,15 +73,16 @@ async function normalizeFixture(value) {
   let normalized = JSON.parse(JSON.stringify(value));
   delete normalized.phase5_replay_hardening;
   delete normalized.export_quarantine;
+  delete normalized.phase5_hash_semantics;
+  normalized.packet_hash_sha256 = hashPacket(normalized);
+  normalized = await attachPhase4Authority(normalized, { mode: 'export-normalized', packetHashRecomputed: true });
+  normalized.packet_hash_sha256 = hashPacket(normalized);
+  normalized = await attachPhase4Authority(normalized, { mode: 'export-normalized', packetHashRecomputed: true });
   normalized.phase5_hash_semantics = {
     phase5_replay_hardening_hash_covered: false,
     phase5_replay_hardening_hash_excluded: true,
     reason: 'Phase 5 replay hardening audits packet hash and authority surfaces; it is explicitly hash-excluded to avoid self-referential replay material.'
   };
-  normalized.packet_hash_sha256 = hashPacket(normalized);
-  normalized = await attachPhase4Authority(normalized, { mode: 'export-normalized', packetHashRecomputed: true });
-  normalized.packet_hash_sha256 = hashPacket(normalized);
-  normalized = await attachPhase4Authority(normalized, { mode: 'export-normalized', packetHashRecomputed: true });
   normalized.phase5_replay_hardening = await buildPhase5ReplayHardening(normalized, { includeTamperFixtures: false });
   return normalized;
 }
@@ -97,7 +99,7 @@ async function packetFixture() {
       },
       rich_stylometry: {
         traceability_surface: { score: 0.82, band: 'high' },
-        cross_lane_divergence: { cross_lane_stability: 0.79, cross_lane_spread: 0.21 }
+        cross_lane_divergence: { cross_lane_stability: 0.79, cross_lane_spread: 0.21, strongest_pair: { pair: 'F-H', distance: 0.12 }, widest_pair: { pair: 'P-H', distance: 0.24 } }
       },
       triad_resonance: 0.81,
       cross_lane_stability: 0.79,
@@ -114,10 +116,6 @@ async function packetFixture() {
       native_lane_rich_profile_hash_covered: true,
       bridge_rich_stylometry_hash_covered: true,
       v3_preimage_packet_hash_sha256: 'sha256:phase5-v3-preimage-hash'
-    },
-    phase5_hash_semantics: {
-      phase5_replay_hardening_hash_covered: false,
-      phase5_replay_hardening_hash_excluded: true
     }
   };
   packet.issuance.badge_number = expectedV2BadgeNumber(packet);
@@ -127,6 +125,10 @@ async function packetFixture() {
   let governed = await attachPhase4Authority(packet, { mode: 'export-normalized', packetHashRecomputed: true });
   governed.packet_hash_sha256 = hashPacket(governed);
   governed = await attachPhase4Authority(governed, { mode: 'export-normalized', packetHashRecomputed: true });
+  governed.phase5_hash_semantics = {
+    phase5_replay_hardening_hash_covered: false,
+    phase5_replay_hardening_hash_excluded: true
+  };
   return governed;
 }
 
@@ -136,6 +138,18 @@ assert.equal(replay.v2_replay.status, 'pass');
 assert.equal(replay.v3_replay.status, 'pass');
 assert.equal(replay.hash_replay.status, 'pass');
 assert.equal(replay.public_default_policy.default_public_credential, 'v2');
+assert.equal(replay.triad_divergence_evidence.status, 'present');
+assert.equal(replay.triad_divergence_evidence.primary_surface, 'analysis.rich_stylometry.cross_lane_divergence');
+assert.deepEqual(replay.countersignature_evidence_review.evidence_order.map((item) => item.surface), [
+  'issuance.v3',
+  'analysis.segment_cadence_signatures.*.rich_profile',
+  'analysis.rich_stylometry.cross_lane_divergence',
+  'phase5_replay_hardening',
+  'issuance.badge_number',
+  'thin_fallback'
+]);
+assert.ok(replay.phase4_recall_intake.recognized_surfaces.includes('analysis.rich_stylometry.cross_lane_divergence'));
+assert.equal(replay.phase4_recall_intake.triad_divergence_evidence.status, 'present');
 
 const convergence = await buildConvergenceReport(normalizeFixture, packet);
 assert.equal(convergence.status, 'pass');
