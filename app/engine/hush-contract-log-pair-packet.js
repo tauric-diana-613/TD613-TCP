@@ -39,6 +39,7 @@ function asArray(value) { return Array.isArray(value) ? value : []; }
 function getPath(value, path) { return String(path || '').split('.').reduce((node, key) => (node && Object.prototype.hasOwnProperty.call(node, key) ? node[key] : undefined), value); }
 async function hashObject(value) { return sha256Text(stableStringify(value == null ? null : value)); }
 function datePart(value) { return String(value || new Date().toISOString()).slice(0, 10).replace(/-/g, ''); }
+function unique(values) { return [...new Set(values.filter(Boolean))]; }
 
 export function containsShi(value) { return /TD613-SH-|SHI#:/iu.test(String(value || '')); }
 export function isContractLogPairPacketId(value) { return /^TD613-HUSH-PAIR-\d{8}-[A-F0-9]{8}$/u.test(String(value || '').trim().toUpperCase()); }
@@ -68,8 +69,18 @@ function linkedProviderLog(providerLog = {}, validation = {}) {
     provider_log_packet_hash_sha256: providerLog.packet_hash_sha256 || null,
     provider_log_schema_version: providerLog.schema_version || null,
     provider_log_release_class: getPath(providerLog, 'provider_log_release_discipline.release_class') || null,
-    provider_log_validation_status: validation.status || 'unavailable'
+    provider_log_validation_status: validation.status || 'unavailable',
+    provider_log_linked_contract_packet_id: getPath(providerLog, 'linked_contract.contract_packet_id') || null,
+    provider_log_linked_contract_hash_sha256: getPath(providerLog, 'linked_contract.contract_packet_hash_sha256') || null
   });
+}
+
+function providerLogMatchesContract(contract = {}, providerLog = {}) {
+  const contractId = contract.contract_packet_id || null;
+  const contractHash = contract.packet_hash_sha256 || null;
+  const providerLogContractId = getPath(providerLog, 'linked_contract.contract_packet_id') || null;
+  const providerLogContractHash = getPath(providerLog, 'linked_contract.contract_packet_hash_sha256') || null;
+  return Boolean(contractId && contractHash && providerLogContractId && providerLogContractHash && contractId === providerLogContractId && contractHash === providerLogContractHash);
 }
 
 function contractSnapshot(contract = {}) {
@@ -170,9 +181,19 @@ export async function buildContractLogPairPacket(input = {}, options = {}) {
   const created = options.createdAt || input.created_at || input.createdAt || new Date().toISOString();
   const updated = options.updatedAt || input.updated_at || input.updatedAt || created;
   const comparisons = buildComparisons(contract, providerLog);
-  const sourceValidationFailed = contractValidation.status !== 'pass' || providerLogValidation.status !== 'pass';
-  const release = pairReleaseDiscipline(comparisons.comparison_result, comparisons, { ...options, blocked: Boolean(options.blocked || sourceValidationFailed) });
-  const idSeed = stableStringify({ created: options.stableId ? 'stable' : created, contract: contract.contract_packet_id, providerLog: providerLog.provider_log_packet_id, result: comparisons.comparison_result.status });
+  const contractLogLinkMismatch = !providerLogMatchesContract(contract, providerLog);
+  const sourceValidationFailed = contractValidation.status !== 'pass' || providerLogValidation.status !== 'pass' || contractLogLinkMismatch;
+  const comparisonResult = contractLogLinkMismatch ? Object.freeze({
+    ...comparisons.comparison_result,
+    status: 'blocked',
+    severity: 'breach',
+    summary: 'Provider log linked contract does not match supplied outgoing contract.',
+    blocking_reasons: unique([...(asArray(comparisons.comparison_result.blocking_reasons)), 'provider log linked contract does not match supplied outgoing contract']),
+    review_reasons: asArray(comparisons.comparison_result.review_reasons),
+    audit_routes: asArray(comparisons.comparison_result.audit_routes)
+  }) : comparisons.comparison_result;
+  const release = pairReleaseDiscipline(comparisonResult, comparisons, { ...options, blocked: Boolean(options.blocked || sourceValidationFailed) });
+  const idSeed = stableStringify({ created: options.stableId ? 'stable' : created, contract: contract.contract_packet_id, providerLog: providerLog.provider_log_packet_id, result: comparisonResult.status });
   const idHash = await sha256Text(idSeed);
   const pairId = input.pair_packet_id || input.pairPacketId || `TD613-HUSH-PAIR-${datePart(created)}-${idHash.slice(7, 15).toUpperCase()}`;
   const packetBase = {
@@ -196,7 +217,7 @@ export async function buildContractLogPairPacket(input = {}, options = {}) {
     stylometry_audit_routing: comparisons.stylometry_audit_routing,
     adversarial_audit_routing: comparisons.adversarial_audit_routing,
     eo_rfd_route_comparison: comparisons.eo_rfd_route_comparison,
-    comparison_result: comparisons.comparison_result,
+    comparison_result: comparisonResult,
     claim_limits: HUSH_CONTRACT_LOG_PAIR_CLAIM_LIMITS,
     pair_release_discipline: release
   };
