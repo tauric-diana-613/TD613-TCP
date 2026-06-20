@@ -1,7 +1,7 @@
 (function () {
   'use strict';
 
-  var VERSION = 'safe-harbor-pr169-packet-vault-direct/v8-phase4-hash-replay';
+  var VERSION = 'safe-harbor-pr169-packet-vault-direct/v9-phase5-replay-hardening';
   var STORAGE_KEY = 'td613.safe-harbor.session.v1';
   var MIRROR_KEY = 'td613.safe-harbor.session.mirror.v1';
   var HISTORICAL_EXAMPLE = 'TD613-Binding:#9B07D8B/SAC[X6ZNK5NO51] · payload 5 · 2025-10-17 · ⟐';
@@ -12,6 +12,7 @@
   var richModulePromise = null;
   var v3ModulePromise = null;
   var authorityModulePromise = null;
+  var phase5ModulePromise = null;
 
   function $(id) { return document.getElementById(id); }
   function text(value) { return String(value == null ? '' : value).trim(); }
@@ -21,11 +22,8 @@
   function clone(value) { return value == null ? value : JSON.parse(JSON.stringify(value)); }
 
   function localModuleUrl(filename) {
-    try {
-      return new URL(filename, SCRIPT_URL || window.location.href).href;
-    } catch (error) {
-      return 'app/' + filename;
-    }
+    try { return new URL(filename, SCRIPT_URL || window.location.href).href; }
+    catch (error) { return 'app/' + filename; }
   }
 
   async function richBuilder() {
@@ -58,10 +56,17 @@
     return api && typeof api.attachPhase4Authority === 'function' ? api : null;
   }
 
-  function isFooterKey(key) {
-    return String(key || '').toLowerCase().indexOf('footer') !== -1;
+  async function phase5Api() {
+    var api = window.TD613_SAFE_HARBOR_PHASE5;
+    if (api && typeof api.buildPhase5ReplayHardening === 'function') return api;
+    if (!phase5ModulePromise) phase5ModulePromise = import(localModuleUrl('safe-harbor-phase5-replay-hardening.js')).catch(function () { return null; });
+    var mod = await phase5ModulePromise;
+    if (mod && typeof mod.buildPhase5ReplayHardening === 'function') return mod;
+    api = window.TD613_SAFE_HARBOR_PHASE5;
+    return api && typeof api.buildPhase5ReplayHardening === 'function' ? api : null;
   }
 
+  function isFooterKey(key) { return String(key || '').toLowerCase().indexOf('footer') !== -1; }
   function isActualFooterKey(key) {
     var k = String(key || '').toLowerCase();
     return k.indexOf('footer') !== -1 && k !== 'footer_mode';
@@ -74,9 +79,7 @@
     var hasHistory = Object.prototype.hasOwnProperty.call(value, 'historical_example');
     var actualFooterKeys = keys.filter(isActualFooterKey);
     var anyFooterKeys = keys.filter(isFooterKey);
-    var target = actualFooterKeys.length
-      ? actualFooterKeys[actualFooterKeys.length - 1]
-      : (anyFooterKeys.length ? anyFooterKeys[anyFooterKeys.length - 1] : null);
+    var target = actualFooterKeys.length ? actualFooterKeys[actualFooterKeys.length - 1] : (anyFooterKeys.length ? anyFooterKeys[anyFooterKeys.length - 1] : null);
     var out = {};
     keys.forEach(function (key) {
       out[key] = addHistory(value[key]);
@@ -107,10 +110,7 @@
     return keys.some(function (key) { return needsHistory(value[key]); });
   }
 
-  function savedSession() {
-    return parse(read(window.sessionStorage, STORAGE_KEY)) || parse(read(window.localStorage, MIRROR_KEY)) || null;
-  }
-
+  function savedSession() { return parse(read(window.sessionStorage, STORAGE_KEY)) || parse(read(window.localStorage, MIRROR_KEY)) || null; }
   function storeSession(saved) {
     if (!saved || !saved.packet) return;
     write(window.sessionStorage, STORAGE_KEY, saved);
@@ -118,11 +118,7 @@
   }
 
   function hasUsableSegments(segments) {
-    return Boolean(
-      segments &&
-      typeof segments === 'object' &&
-      KEYS.every(function (key) { return typeof segments[key] === 'string' && segments[key].trim().length > 0; })
-    );
+    return Boolean(segments && typeof segments === 'object' && KEYS.every(function (key) { return typeof segments[key] === 'string' && segments[key].trim().length > 0; }));
   }
 
   function topWeighted(profile, max) {
@@ -188,9 +184,7 @@
 
   function attachRichLaneSemantics(packet) {
     if (!packet || !packet.issuance || typeof packet.issuance !== 'object') return;
-    packet.issuance.stylometric_provenance = packet.issuance.stylometric_provenance && typeof packet.issuance.stylometric_provenance === 'object'
-      ? packet.issuance.stylometric_provenance
-      : {};
+    packet.issuance.stylometric_provenance = packet.issuance.stylometric_provenance && typeof packet.issuance.stylometric_provenance === 'object' ? packet.issuance.stylometric_provenance : {};
     packet.issuance.stylometric_provenance.rich_lane_profile_semantics = {
       status: 'present when export hardening includes segment_cadence_signatures.*.rich_profile',
       claim_supported: 'export-hardened per-lane authorship-signal enrichment',
@@ -208,9 +202,7 @@
     packet.analysis = packet.analysis && typeof packet.analysis === 'object' ? packet.analysis : {};
     packet.analysis.rich_stylometry = clone(rich);
     packet.issuance = packet.issuance && typeof packet.issuance === 'object' ? packet.issuance : {};
-    packet.issuance.stylometric_provenance = packet.issuance.stylometric_provenance && typeof packet.issuance.stylometric_provenance === 'object'
-      ? packet.issuance.stylometric_provenance
-      : {};
+    packet.issuance.stylometric_provenance = packet.issuance.stylometric_provenance && typeof packet.issuance.stylometric_provenance === 'object' ? packet.issuance.stylometric_provenance : {};
     packet.issuance.stylometric_provenance.rich_stylometry = compactRichProvenance(rich);
     promoteRichLaneProfiles(packet, rich);
     attachRichLaneSemantics(packet);
@@ -219,17 +211,13 @@
 
   function allRichProfilesPresent(packet) {
     var signatures = packet && packet.analysis && packet.analysis.segment_cadence_signatures;
-    return Boolean(signatures && KEYS.every(function (key) {
-      return signatures[key] && signatures[key].rich_profile_schema === RICH_PROFILE_SCHEMA && signatures[key].rich_profile;
-    }));
+    return Boolean(signatures && KEYS.every(function (key) { return signatures[key] && signatures[key].rich_profile_schema === RICH_PROFILE_SCHEMA && signatures[key].rich_profile; }));
   }
 
   function stable(value) {
     if (value === null || typeof value !== 'object') return JSON.stringify(value);
     if (Array.isArray(value)) return '[' + value.map(function (item) { return stable(item); }).join(',') + ']';
-    return '{' + Object.keys(value).filter(function (key) { return value[key] !== undefined; }).sort().map(function (key) {
-      return JSON.stringify(key) + ':' + stable(value[key]);
-    }).join(',') + '}';
+    return '{' + Object.keys(value).filter(function (key) { return value[key] !== undefined; }).sort().map(function (key) { return JSON.stringify(key) + ':' + stable(value[key]); }).join(',') + '}';
   }
 
   async function checksum(value) {
@@ -246,6 +234,8 @@
   function packetHashMaterial(packet) {
     var material = clone(packet);
     delete material.packet_hash_sha256;
+    delete material.phase5_replay_hardening;
+    delete material.export_quarantine;
     if (material.renderer_authority_metadata) material.renderer_authority_metadata.packet_hash_sha256 = null;
     if (material.signature) {
       material.signature.sig = null;
@@ -272,6 +262,15 @@
     return packet;
   }
 
+  function markPhase5HashSemantics(packet) {
+    packet.phase5_hash_semantics = {
+      phase5_replay_hardening_hash_covered: false,
+      phase5_replay_hardening_hash_excluded: true,
+      reason: 'Phase 5 replay hardening audits packet hash and authority surfaces; it is explicitly hash-excluded to avoid self-referential replay material.'
+    };
+    return packet;
+  }
+
   async function attachV3Issuance(packet) {
     if (!packet || !allRichProfilesPresent(packet)) return packet;
     var api = await v3Api();
@@ -291,9 +290,21 @@
     return api.attachPhase4Authority(packet, { mode: 'export-normalized', packetHashRecomputed: packetHashRecomputed });
   }
 
+  async function attachPhase5Hardening(packet) {
+    var api = await phase5Api();
+    if (!api || typeof api.buildPhase5ReplayHardening !== 'function') return packet;
+    markPhase5HashSemantics(packet);
+    var hardening = await api.buildPhase5ReplayHardening(packet, { includeTamperFixtures: false });
+    if (typeof api.applyPhase5Quarantine === 'function') return api.applyPhase5Quarantine(packet, hardening);
+    packet.phase5_replay_hardening = hardening;
+    return packet;
+  }
+
   async function normalizePacket(packet, saved) {
     if (!packet || typeof packet !== 'object') return packet;
     var patched = needsHistory(packet) ? addHistory(clone(packet)) : clone(packet);
+    delete patched.phase5_replay_hardening;
+    delete patched.export_quarantine;
     patched = await attachRichStylometry(patched, saved);
     markHashSemantics(patched, patched.packet_hash_sha256 || null);
     await recomputePacketHash(patched);
@@ -302,6 +313,7 @@
     patched = await attachPhase4Authority(patched, true);
     await recomputePacketHash(patched);
     patched = await attachPhase4Authority(patched, true);
+    patched = await attachPhase5Hardening(patched);
     return patched;
   }
 
@@ -323,7 +335,8 @@
   }
 
   function packetExportReady(packet) {
-    return Boolean(packet && packet.bridge && packet.bridge.export_gate && packet.bridge.export_gate.ready);
+    if (!packet || !packet.bridge || !packet.bridge.export_gate || !packet.bridge.export_gate.ready) return false;
+    return !(packet.phase5_replay_hardening && (packet.phase5_replay_hardening.status === 'quarantine' || packet.phase5_replay_hardening.status === 'fail'));
   }
 
   function packetFilename(packet) {
@@ -374,9 +387,7 @@
     var hash = $('packetHashReadout');
     if (hash && packet && packet.packet_hash_sha256) hash.textContent = packet.packet_hash_sha256;
     var badge = $('badgeStatusReadout');
-    if (badge && packet && packet.issuance && packet.issuance.badge_number_v3) {
-      badge.textContent = packet.issuance.badge_number + ' / ' + packet.issuance.badge_number_v3;
-    }
+    if (badge && packet && packet.issuance && packet.issuance.badge_number_v3) badge.textContent = packet.issuance.badge_number + ' / ' + packet.issuance.badge_number_v3;
   }
 
   async function normalizeVisiblePacket() {
@@ -414,15 +425,9 @@
   }
 
   async function openTxt() {
-    if (!packetExportReady(activePacketSync())) {
-      syncButton();
-      return false;
-    }
+    if (!packetExportReady(activePacketSync())) { syncButton(); return false; }
     var body = await packetText();
-    if (!body) {
-      syncButton();
-      return false;
-    }
+    if (!body) { syncButton(); return false; }
     var blob = new Blob([body], { type: 'text/plain;charset=utf-8' });
     var url = URL.createObjectURL(blob);
     var opened = window.open(url, '_blank', 'noopener,noreferrer');
@@ -447,10 +452,7 @@
     if (!node) return null;
     if (node.dataset.pr169Bound !== VERSION) {
       node.dataset.pr169Bound = VERSION;
-      node.addEventListener('click', function (event) {
-        event.preventDefault();
-        void openTxt();
-      });
+      node.addEventListener('click', function (event) { event.preventDefault(); void openTxt(); });
     }
     return node;
   }
@@ -464,9 +466,7 @@
         if (!packetExportReady(raw)) return;
         event.preventDefault();
         event.stopImmediatePropagation();
-        void normalizeVisiblePacket().then(function (packet) {
-          if (packet) downloadJson(packetFilename(packet), packet);
-        });
+        void normalizeVisiblePacket().then(function (packet) { if (packet) downloadJson(packetFilename(packet), packet); });
       }, true);
     }
 
@@ -478,9 +478,7 @@
         if (!raw) return;
         event.preventDefault();
         event.stopImmediatePropagation();
-        void normalizeVisiblePacket().then(function (packet) {
-          if (packet) void copyText(JSON.stringify(packet, null, 2) + '\n');
-        });
+        void normalizeVisiblePacket().then(function (packet) { if (packet) void copyText(JSON.stringify(packet, null, 2) + '\n'); });
       }, true);
     }
 
@@ -492,9 +490,7 @@
         if (!packetExportReady(raw)) return;
         event.preventDefault();
         event.stopImmediatePropagation();
-        void normalizeVisiblePacket().then(function (packet) {
-          if (packet) void copyText(JSON.stringify(packet, null, 2) + '\n');
-        });
+        void normalizeVisiblePacket().then(function (packet) { if (packet) void copyText(JSON.stringify(packet, null, 2) + '\n'); });
       }, true);
     }
   }
@@ -517,10 +513,7 @@
     if (!api || api.__richStylometryExportPatch === VERSION) return;
     if (typeof api.buildPacket === 'function') {
       var originalBuildPacket = api.buildPacket.bind(api);
-      api.buildPacket = async function () {
-        var packet = await originalBuildPacket();
-        return normalizePacket(packet, savedSession());
-      };
+      api.buildPacket = async function () { var packet = await originalBuildPacket(); return normalizePacket(packet, savedSession()); };
     }
     if (typeof api.buildProbe === 'function') {
       var originalBuildProbe = api.buildProbe.bind(api);
@@ -528,10 +521,7 @@
         var result = originalBuildProbe(variant);
         var patched = patchProbeText(result);
         var node = $('probeOutput');
-        if (node) {
-          if ('value' in node) node.value = patched;
-          else node.textContent = patched;
-        }
+        if (node) { if ('value' in node) node.value = patched; else node.textContent = patched; }
         return patched;
       };
     }
@@ -549,7 +539,7 @@
     var ready = packetExportReady(activePacketSync());
     node.disabled = !ready;
     node.setAttribute('aria-disabled', ready ? 'false' : 'true');
-    node.title = ready ? 'Open the sealed packet as plain text in a new tab' : 'Open .txt unlocks after the packet is sealed/export-ready';
+    node.title = ready ? 'Open the sealed packet as plain text in a new tab' : 'Open .txt unlocks after the packet is sealed/export-ready and Phase 5 is not quarantined';
   }
 
   function boot() {
@@ -566,7 +556,8 @@
       footer_history: HISTORICAL_EXAMPLE,
       rich_stylometry_export: true,
       rich_lane_profiles: true,
-      phase4_authority_governance: true
+      phase4_authority_governance: true,
+      phase5_replay_hardening: true
     };
   }
 
@@ -576,9 +567,7 @@
   window.addEventListener('pageshow', boot);
   window.addEventListener('storage', syncButton);
   document.addEventListener('td613:safe-harbor-packet', syncButton);
-  ['click', 'input', 'change'].forEach(function (type) {
-    document.addEventListener(type, function () { window.setTimeout(syncButton, 0); }, true);
-  });
+  ['click', 'input', 'change'].forEach(function (type) { document.addEventListener(type, function () { window.setTimeout(syncButton, 0); }, true); });
   [100, 360, 900, 1800].forEach(function (delay) { window.setTimeout(syncButton, delay); });
   window.setInterval(syncButton, 900);
 
