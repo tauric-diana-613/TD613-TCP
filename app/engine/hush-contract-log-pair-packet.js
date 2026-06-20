@@ -170,7 +170,8 @@ export async function buildContractLogPairPacket(input = {}, options = {}) {
   const created = options.createdAt || input.created_at || input.createdAt || new Date().toISOString();
   const updated = options.updatedAt || input.updated_at || input.updatedAt || created;
   const comparisons = buildComparisons(contract, providerLog);
-  const release = pairReleaseDiscipline(comparisons.comparison_result, comparisons, options);
+  const sourceValidationFailed = contractValidation.status !== 'pass' || providerLogValidation.status !== 'pass';
+  const release = pairReleaseDiscipline(comparisons.comparison_result, comparisons, { ...options, blocked: Boolean(options.blocked || sourceValidationFailed) });
   const idSeed = stableStringify({ created: options.stableId ? 'stable' : created, contract: contract.contract_packet_id, providerLog: providerLog.provider_log_packet_id, result: comparisons.comparison_result.status });
   const idHash = await sha256Text(idSeed);
   const pairId = input.pair_packet_id || input.pairPacketId || `TD613-HUSH-PAIR-${datePart(created)}-${idHash.slice(7, 15).toUpperCase()}`;
