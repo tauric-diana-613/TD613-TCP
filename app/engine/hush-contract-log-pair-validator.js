@@ -13,13 +13,31 @@ import { stableStringify, sha256Text, isSha256 } from './hush-customizer-packet.
 const CONTRACT_ID = /^TD613-HUSH-CONTRACT-\d{8}-[A-F0-9]{8}$/u;
 const PROVIDER_ID = /^TD613-HUSH-PROVIDER-\d{8}-[A-F0-9]{8}$/u;
 const RELEASE_CLASSES = Object.freeze(['pair-local', 'pair-review', 'audit-route-ready', 'breach-review', 'blocked']);
-const FORBIDDEN_PROOF = /voice\s+authentic|stylometric\s+authenticity|mask\s+alive|output\s+quality\s+proof|provider\s+intent\s+proof|authorship\s+ownership\s+proof|identity\s+proof|adversarial\s+counterfeit\s+proof|firmware\s+proof/iu;
+const FORBIDDEN_PROOF = /voice\s+authentic|stylometric\s+authenticity\s+(?:confirmed|proven|proof)|mask\s+alive|output\s+quality\s+(?:confirmed|proven|proof)|provider\s+intent\s+(?:confirmed|proven|proof)|authorship\s+ownership\s+(?:confirmed|proven|proof)|identity\s+(?:confirmed|proven|proof)|adversarial\s+counterfeit\s+(?:confirmed|proven|proof)|firmware\s+(?:confirmed|proven|proof)/iu;
 
 function isObject(value) { return Boolean(value && typeof value === 'object' && !Array.isArray(value)); }
 function getPath(value, path) { return String(path || '').split('.').reduce((node, key) => (node && Object.prototype.hasOwnProperty.call(node, key) ? node[key] : undefined), value); }
 function unique(values) { return [...new Set(values.filter(Boolean))]; }
 function body(value) { return JSON.stringify(value || {}); }
 function hasRawValue(value) { return value === true || (typeof value === 'string' && value.trim().length > 0) || (Array.isArray(value) && value.length > 0) || (isObject(value) && Object.keys(value).length > 0); }
+function overclaimSurface(packet = {}) {
+  return {
+    comparison_result: packet.comparison_result,
+    comparison_notes: [
+      packet.provider_target_comparison?.notes,
+      packet.dispatch_comparison?.notes,
+      packet.payload_comparison?.notes,
+      packet.privacy_comparison?.notes,
+      packet.refusal_comparison?.notes,
+      packet.safety_comparison?.notes,
+      packet.release_comparison?.notes,
+      packet.eo_rfd_route_comparison?.claim_limit,
+      packet.stylometry_audit_routing?.claim_limit,
+      packet.adversarial_audit_routing?.claim_limit,
+      packet.pair_release_discipline?.warnings
+    ]
+  };
+}
 
 export function isContractLogPairPacket(value) {
   return Boolean(value && value.schema_version === HUSH_CONTRACT_LOG_PAIR_SCHEMA && value.packet_class === HUSH_CONTRACT_LOG_PAIR_CLASS);
@@ -95,8 +113,7 @@ function inspectRequiredSurfaces(packet = {}, options = {}) {
 
   reasons.push(...inspectRawSnapshot(packet.contract_snapshot || {}, 'contract_snapshot'));
   reasons.push(...inspectRawSnapshot(packet.provider_log_snapshot || {}, 'provider_log_snapshot'));
-  const packetText = body(packet);
-  if (FORBIDDEN_PROOF.test(packetText)) reasons.push('pair packet cannot claim final proof of identity, output quality, stylometric authenticity, provider intent, counterfeit status, or EO-RFD firmware');
+  if (FORBIDDEN_PROOF.test(body(overclaimSurface(packet)))) reasons.push('pair packet cannot claim final proof of identity, output quality, stylometric authenticity, provider intent, counterfeit status, or EO-RFD firmware');
   if (getPath(packet, 'eo_rfd_route_comparison.status') === 'firmware-claim-blocked') warnings.push('EO-RFD route comparison blocked firmware claim');
   if (getPath(packet, 'provider_target_comparison.status') && getPath(packet, 'provider_target_comparison.status') !== 'aligned') warnings.push('provider target comparison requires review');
   if (getPath(packet, 'comparison_result.status') === 'not-comparable') warnings.push('comparison has not-comparable surfaces');
