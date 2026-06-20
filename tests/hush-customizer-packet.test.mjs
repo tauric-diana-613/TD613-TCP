@@ -6,7 +6,7 @@ import {
 } from '../app/engine/hush-customizer-packet.js';
 
 function sampleText(index) {
-  return `Sample ${index} carries a clear writing cadence with enough structure to measure. It explains one topic through steady clauses, varied sentence length, a few commas, and a clean record of how the sample moves from setup to point. This sentence keeps the sample over the word floor while preserving a distinct discourse trace for the Customizer packet builder.`;
+  return `Sample ${index} carries a clear writing cadence with enough structure to measure. It explains one topic through steady clauses, varied sentence length, a few commas, and a clean record of how the sample moves from setup to point. The sample adds another paragraph of ordinary material so the word floor is safely crossed without borrowing any special protected phrase. It keeps the language calm, concrete, and useful for packet tests. This final sentence preserves a distinct discourse trace for the Customizer packet builder while staying redacted after the ledger is built.`;
 }
 
 const samples = Array.from({ length: 24 }, (_, index) => ({
