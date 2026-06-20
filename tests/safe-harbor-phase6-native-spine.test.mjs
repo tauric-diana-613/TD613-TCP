@@ -1,4 +1,5 @@
 import assert from 'node:assert/strict';
+import { readFileSync } from 'node:fs';
 
 import {
   finalizeSafeHarborPacket,
@@ -9,6 +10,10 @@ import {
   expectedV2BadgeNumber,
   verifySafeHarborPacketAuthority
 } from '../app/safe-harbor/app/safe-harbor-authority-verifier.js';
+import {
+  buildAuthorityConflictReport,
+  buildHashReplayBattery
+} from '../app/safe-harbor/app/safe-harbor-phase5-replay-hardening.js';
 
 const laneText = (label) => [
   `${label} begins with a deliberate covenant sentence that carries enough language for the stylometric engine to read signal rather than noise.`,
@@ -25,11 +30,10 @@ const segments = {
 
 function thinLane(key, text) {
   const words = text.trim().split(/\s+/u).filter(Boolean);
-  const chars = text.length;
   return {
     source: 'safe-harbor.local',
     lane: key,
-    char_count: chars,
+    char_count: text.length,
     word_count: words.length,
     sentence_count: text.split(/[.!?]+/u).filter(Boolean).length,
     avg_word_length: 5.5,
@@ -63,10 +67,7 @@ function basePacket() {
       binding_fragment: '#9B07D8B',
       sac: 'SAC[X6ZNK5NO51]'
     },
-    intake: {
-      ts_utc: '2026-06-20T00:00:00Z',
-      status: 'issued'
-    },
+    intake: { ts_utc: '2026-06-20T00:00:00Z', status: 'issued' },
     analysis: {
       segment_cadence_signatures: signatures,
       triad_resonance: 0.81,
@@ -78,19 +79,10 @@ function basePacket() {
       stylometric_fingerprint: stableFingerprint(signatures),
       triad_word_counts: Object.fromEntries(Object.entries(signatures).map(([key, lane]) => [key, lane.word_count])),
       triad_shortfalls: { future_self: 0, past_self: 0, higher_self: 0 },
-      stylometric_provenance: {
-        divergence_signature: { compact: 'legacy divergence' }
-      }
+      stylometric_provenance: { divergence_signature: { compact: 'legacy divergence' } }
     },
-    signature: {
-      status: 'declared',
-      sig: null,
-      attached_at: null
-    },
-    bridge: {
-      covenant_gate: { confirmed: true },
-      export_gate: { ready: true, state: 'harbor-eligible', blockers: [] }
-    }
+    signature: { status: 'declared', sig: null, attached_at: null },
+    bridge: { covenant_gate: { confirmed: true }, export_gate: { ready: true, state: 'harbor-eligible', blockers: [] } }
   };
   packet.issuance.badge_number = expectedV2BadgeNumber(packet);
   return packet;
@@ -106,6 +98,7 @@ const nativePacket = await finalizeSafeHarborPacket(basePacket(), {
 assert.equal(nativePacket.native_spine_purification.status, 'native');
 assert.equal(nativePacket.native_spine_purification.rich_profile_birthplace, 'native');
 assert.equal(nativePacket.native_spine_purification.v3_issuance_birthplace, 'native');
+assert.equal(nativePacket.native_spine_purification.normalizer_role, 'verification-only');
 assert.equal(nativePacket.packet_authority_surface.rich_profile_promotion, 'native');
 assert.equal(nativePacket.packet_authority_surface.v3_issuance, 'native');
 assert.equal(nativePacket.packet_authority_surface.packet_hash_recomputed_after_native_finalization, true);
@@ -127,6 +120,11 @@ assert.equal(JSON.stringify(nativePacket).includes(segments.future_self), false)
 assert.equal(JSON.stringify(nativePacket).includes(segments.past_self), false);
 assert.equal(JSON.stringify(nativePacket).includes(segments.higher_self), false);
 
+const battery = await buildHashReplayBattery(nativePacket);
+assert.equal(battery.native_spine, 'pass');
+assert.equal(battery.hash_topology, 'pass');
+assert.equal(battery.finalizer_lineage, 'native');
+
 const recomputed = await computePacketHash(nativePacket);
 assert.equal(recomputed, nativePacket.packet_hash_sha256);
 
@@ -139,5 +137,32 @@ const exportPacket = await finalizeSafeHarborPacket(basePacket(), {
 assert.equal(exportPacket.native_spine_purification.status, 'export-hardened');
 assert.equal(exportPacket.packet_authority_surface.rich_profile_promotion, 'export-normalized');
 assert.equal(exportPacket.packet_authority_surface.v3_issuance, 'export-normalized');
+const exportBattery = await buildHashReplayBattery(exportPacket);
+assert.equal(exportBattery.finalizer_lineage, 'export-normalized');
+assert.equal(exportBattery.native_spine, 'pass');
+
+const legacyPacket = basePacket();
+const legacyReplay = await verifySafeHarborPacketAuthority(legacyPacket);
+assert.equal(legacyReplay.v2_replay.status, 'pass');
+assert.notEqual(classifyNativeFinalizationMode(legacyPacket), 'native');
+assert.equal(legacyPacket.native_spine_purification, undefined);
+
+const fakeNative = JSON.parse(JSON.stringify(exportPacket));
+fakeNative.native_spine_purification.status = 'native';
+fakeNative.native_spine_purification.normalizer_role = 'export-hardening-fallback';
+const fakeConflict = await buildAuthorityConflictReport(fakeNative);
+assert.equal(fakeConflict.status, 'conflict');
+assert.ok(fakeConflict.conflicts.some((item) => String(item.recommended_action || '').includes('fake-native-lineage')));
+
+const mislabeledLegacy = basePacket();
+mislabeledLegacy.packet_authority_surface = { rich_profile_promotion: 'native', v3_issuance: 'native' };
+const legacyConflict = await buildAuthorityConflictReport(mislabeledLegacy);
+assert.equal(legacyConflict.status, 'conflict');
+
+const pr169 = readFileSync(new URL('../app/safe-harbor/app/safe-harbor-pr169-packet-vault-direct.js', import.meta.url), 'utf8');
+assert.ok(pr169.includes('phase6_native_callsite'));
+assert.ok(pr169.includes("mode: 'native'"));
+assert.ok(pr169.includes('nativeBorn(packet)'));
+assert.ok(pr169.includes('export-normalized'));
 
 console.log('safe-harbor-phase6-native-spine: ok');
