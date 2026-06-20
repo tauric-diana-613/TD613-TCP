@@ -35,7 +35,7 @@ const providerLog = await buildProviderLogPacket({
 }, { stableId: true, createdAt: '2026-06-20T00:01:00Z' });
 const pair = await buildContractLogPairPacket({ outgoing_contract_packet: contract, provider_log_packet: providerLog }, { stableId: true, createdAt: '2026-06-20T00:02:00Z' });
 
-const audit = await buildStylometryAuditPacket({
+const baseInput = {
   contract_log_pair_packet: pair,
   stylometry_profile: {
     stylometry_profile_id: 'TD613-HUSH-STYLO-PROFILE-20260620-ABCDEF12',
@@ -52,7 +52,9 @@ const audit = await buildStylometryAuditPacket({
   pressure_preservation: { pressure_preservation_score: 0.76 },
   flattening_detection: { flattening_score: 0.1 },
   risk_profile: { unsafe_identifiability_risk: 'low', overfit_risk: 'low', private_cadence_exposure_risk: 'low', public_release_allowed: false, operator_review_required: true }
-}, { stableId: true, createdAt: '2026-06-20T00:03:00Z' });
+};
+
+const audit = await buildStylometryAuditPacket(baseInput, { stableId: true, createdAt: '2026-06-20T00:03:00Z' });
 
 assert.equal(audit.schema_version, HUSH_STYLOMETRY_AUDIT_SCHEMA);
 assert.equal(audit.packet_class, HUSH_STYLOMETRY_AUDIT_CLASS);
@@ -71,6 +73,7 @@ assert.equal(audit.flattening_detection.flattening_band, 'none');
 assert.equal(audit.constraint_preservation.schema_version, 'td613.hush.constraint-preservation/v1');
 assert.equal(audit.risk_profile.unsafe_identifiability_risk, 'low');
 assert.equal(audit.release_recommendation.release_class, 'release-safe');
+assert.equal(audit.release_recommendation.next_action, 'accept');
 assert.equal(audit.claim_limits.not_identity_proof, true);
 assert.equal(audit.claim_limits.stylometry_is_probabilistic, true);
 assert.equal(isSha256(audit.hash_topology.linked_pair_hash_sha256), true);
@@ -83,5 +86,22 @@ assert.equal(audit.hash_topology.packet_hash_sha256, audit.packet_hash_sha256);
 const body = JSON.stringify(audit);
 assert.equal(body.includes('Draft a bounded answer.'), false);
 assert.equal(body.includes('Redacted response body for hashing only.'), false);
+
+const localPrivateRaw = await buildStylometryAuditPacket({
+  ...baseInput,
+  audit_input_profile: { audit_mode: 'local-private-raw', response_feature_vector_hash_sha256: 'sha256:' + 'c'.repeat(64) },
+  release_recommendation: { release_class: 'release-safe' }
+}, { stableId: true, createdAt: '2026-06-20T00:04:00Z' });
+assert.equal(localPrivateRaw.release_recommendation.public_release_allowed, false);
+assert.equal(localPrivateRaw.release_recommendation.next_action, 'run-adversarial-audit');
+
+const blockRelease = await buildStylometryAuditPacket({ ...baseInput, release_recommendation: { release_class: 'block-release' } }, { stableId: true, createdAt: '2026-06-20T00:05:00Z' });
+assert.equal(blockRelease.release_recommendation.next_action, 'block');
+
+const reviseBeforeRelease = await buildStylometryAuditPacket({ ...baseInput, release_recommendation: { release_class: 'revise-before-release' } }, { stableId: true, createdAt: '2026-06-20T00:06:00Z' });
+assert.equal(reviseBeforeRelease.release_recommendation.next_action, 'revise');
+
+const responseHashOnly = await buildStylometryAuditPacket({ ...baseInput, audit_input_profile: { audit_mode: 'response-hash-only', response_feature_vector_hash_sha256: 'sha256:' + 'c'.repeat(64) } }, { stableId: true, createdAt: '2026-06-20T00:07:00Z' });
+assert.equal(responseHashOnly.release_recommendation.next_action, 'collect-more-evidence');
 
 console.log('hush-stylometry-audit-packet: ok');
