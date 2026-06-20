@@ -26,7 +26,10 @@ Validator replay recomputes:
 - `sample_hash_topology.profile_hash_sha256`
 - `sample_hash_topology.routing_hash_sha256`
 - `sample_hash_topology.policy_hash_sha256`
-- `packet_hash_sha256`
+- top-level `packet_hash_sha256`
+- `sample_hash_topology.packet_hash_sha256`
+
+Both packet hash locations must replay to the same expected packet hash. If the top-level packet hash and topology packet hash disagree, or if either location is stale after packet-body mutation, restore/import blocks.
 
 A packet whose body changes while its declared hashes remain stale must block restore/import.
 
