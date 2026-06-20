@@ -42,11 +42,11 @@ const contract = await buildOutgoingContractPacket({
 }, { stableId: true, createdAt: '2026-06-20T00:00:00Z' });
 
 const dispatchEnvelope = await buildProviderDispatchEnvelope(contract);
-dispatchEnvelope.dispatch_envelope_hash_sha256 = await sha256Text(stableStringify(dispatchEnvelope));
+const dispatchEnvelopeWithHash = { ...dispatchEnvelope, dispatch_envelope_hash_sha256: await sha256Text(stableStringify(dispatchEnvelope)) };
 
 const packet = await buildProviderLogPacket({
   outgoing_contract_packet: contract,
-  dispatch_envelope: dispatchEnvelope,
+  dispatch_envelope: dispatchEnvelopeWithHash,
   provider_target_observed: {
     provider_class: 'gemini',
     provider_name: 'Google Gemini',
