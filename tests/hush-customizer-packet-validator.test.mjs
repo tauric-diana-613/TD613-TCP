@@ -3,7 +3,7 @@ import { buildCustomizerPacket } from '../app/engine/hush-customizer-packet.js';
 import { isSha256, validateCustomizerPacket, buildCustomizerSession } from '../app/engine/hush-customizer-packet-validator.js';
 
 function sampleText(index) {
-  return `Reference ${index} gives the packet builder enough language to measure. It uses clear transitions, stable rhythm, useful punctuation, and enough words to qualify for the local Customizer corpus. The point of this paragraph is ordinary: create a safe sample that can become hash metadata without exporting the original text.`;
+  return `Reference ${index} gives the packet builder enough language to measure. It uses clear transitions, stable rhythm, useful punctuation, and enough words to qualify for the local Customizer corpus. The sample adds another ordinary paragraph so the word floor is safely crossed without relying on a special phrase. It keeps the wording calm, concrete, and useful for validator tests. The final sentence confirms that the packet may keep metadata while the original text stays out of redacted exports.`;
 }
 
 const samples = Array.from({ length: 12 }, (_, index) => ({ text: sampleText(index + 1), discourseMode: 'explanatory', retrievalTrigger: index % 2 ? 'edit-note' : 'baseline-voice' }));
