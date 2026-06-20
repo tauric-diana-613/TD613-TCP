@@ -1,7 +1,7 @@
 (function () {
   'use strict';
 
-  var VERSION = 'safe-harbor-pr169-packet-vault-direct/v10-phase6-native-aware';
+  var VERSION = 'safe-harbor-pr169-packet-vault-direct/v11-phase6-compose-purity';
   var STORAGE_KEY = 'td613.safe-harbor.session.v1';
   var MIRROR_KEY = 'td613.safe-harbor.session.mirror.v1';
   var HISTORICAL_EXAMPLE = 'TD613-Binding:#9B07D8B/SAC[X6ZNK5NO51] · payload 5 · 2025-10-17 · ⟐';
@@ -34,6 +34,7 @@
     });
     return out.future_self && out.past_self && out.higher_self ? out : null;
   }
+  function hasRawSegments(saved) { return Boolean(rawSegmentsFromSaved(saved)); }
 
   async function finalizerApi() {
     var api = window.TD613_SAFE_HARBOR_NATIVE_FINALIZER;
@@ -74,7 +75,7 @@
     var api = await finalizerApi();
     if (!api || typeof api.finalizeSafeHarborPacket !== 'function') return packet;
     var segments = rawSegmentsFromSaved(saved);
-    var chosenMode = mode || (segments ? 'export-normalized' : 'legacy-repair');
+    var chosenMode = mode || (segments ? 'native' : 'legacy-repair');
     if (!segments && chosenMode !== 'native') return refreshPhase5Only(packet);
     return api.finalizeSafeHarborPacket(packet, {
       mode: chosenMode,
@@ -90,7 +91,7 @@
     if (!packet || typeof packet !== 'object') return packet;
     if (nativeBorn(packet)) return refreshPhase5Only(packet);
     if (exportHardened(packet)) return refreshPhase5Only(packet);
-    return finalizePacket(packet, saved, 'export-normalized');
+    return finalizePacket(packet, saved, hasRawSegments(saved) ? 'native' : 'export-normalized');
   }
 
   async function nativeFinalizeSavedPacket() {
@@ -304,7 +305,7 @@
     bindProbeOutputs();
     patchApi();
     syncButton();
-    window.__TD613_SAFE_HARBOR_PR169__ = { version: VERSION, button: Boolean(button()), at: new Date().toISOString(), footer_history: HISTORICAL_EXAMPLE, phase6_native_callsite: true, normalizer_role: 'verification-or-export-hardening-fallback' };
+    window.__TD613_SAFE_HARBOR_PR169__ = { version: VERSION, button: Boolean(button()), at: new Date().toISOString(), footer_history: HISTORICAL_EXAMPLE, phase6_native_callsite: true, phase6_compose_purity: true, normalizer_role: 'verification-or-export-hardening-fallback' };
   }
   if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', boot, { once: true }); else boot();
   window.addEventListener('load', boot);
