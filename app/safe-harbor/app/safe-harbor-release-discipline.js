@@ -38,10 +38,8 @@ const ALLOWED_UI_STRINGS = [
 
 function clone(value) { return value == null ? value : JSON.parse(JSON.stringify(value)); }
 function getPath(value, path) { return String(path || '').split('.').reduce((node, key) => (node && Object.prototype.hasOwnProperty.call(node, key) ? node[key] : undefined), value); }
-function has(value) { return value !== undefined && value !== null; }
 function phase5Status(packet) { return getPath(packet, 'phase5_replay_hardening.status') || 'unavailable'; }
 function phase8Status(packet) { return getPath(packet, 'phase8_public_default_gate.status') || 'unavailable'; }
-function phase8Decision(packet) { return getPath(packet, 'phase8_public_default_gate.gate_decision') || 'keep-v2-only'; }
 function publicDisplayMode(packet) { return getPath(packet, 'phase8_public_default_gate.public_default_after') || getPath(packet, 'public_default_policy.public_default_mode') || 'v2-only'; }
 function outsideStatus(packet) { return getPath(packet, 'outside_witness_alignment.status') || 'unavailable'; }
 function nativeSpine(packet) {
@@ -56,12 +54,39 @@ function step1CanCountersign(packet) {
 function rawTextExported(value) {
   return /"raw_text"\s*:|Future self will carry|Past self remembers|Higher self names|future self will carry route|past self remembers residue|higher self names pattern/u.test(JSON.stringify(value || {}));
 }
-function covenantKeyPreserved(text) { return String(text || '').includes('Khona‌lit-po'); }
 function forbiddenHits(text) {
   const body = String(text || '');
   return FORBIDDEN_UI_STRINGS.filter((item) => body.toLowerCase().includes(item.toLowerCase()));
 }
 function publicDefaultIsV2(packet) { return (getPath(packet, 'public_default_policy.default_public_credential') || 'v2') === 'v2'; }
+function releaseFacingArtifacts(packet) {
+  return {
+    phase9_release_discipline: getPath(packet, 'phase9_release_discipline'),
+    outside_witness_receipt: getPath(packet, 'outside_witness_receipt'),
+    phase9_release_receipt: getPath(packet, 'phase9_release_receipt'),
+    renderer_authority_metadata: getPath(packet, 'renderer_authority_metadata'),
+    svg_authority_metadata: getPath(packet, 'svg_authority_metadata'),
+    signature_overlay_authority: getPath(packet, 'signature_overlay_authority'),
+    tcp_hook_authority: getPath(packet, 'tcp_hook_authority'),
+    eo_hook_authority: getPath(packet, 'eo_hook_authority')
+  };
+}
+function rendererOverclaim(packet) {
+  const item = getPath(packet, 'renderer_authority_metadata');
+  if (!item) return false;
+  if (item.public_default_credential && item.public_default_credential !== 'v2') return true;
+  if (item.v3_role === 'public-default') return true;
+  if (/Blood Rite 613 public credential/u.test(JSON.stringify(item))) return true;
+  return false;
+}
+function svgOverclaim(packet) {
+  const item = getPath(packet, 'svg_authority_metadata');
+  if (!item) return false;
+  if (item['data-td613-public-default'] && item['data-td613-public-default'] !== 'v2') return true;
+  if (item['data-td613-v3-role'] === 'public-default') return true;
+  if (/Blood Rite 613 public credential/u.test(JSON.stringify(item))) return true;
+  return false;
+}
 
 export function buildClaimLimits() {
   return Object.freeze({
@@ -88,24 +113,6 @@ export async function buildVerifiedClaims(packet) {
   });
 }
 
-function blockingReasons(packet, claims) {
-  const reasons = [];
-  if (claims.v2_replay === 'fail' || claims.v2_replay === 'unavailable') reasons.push('v2 replay is not pass');
-  if (claims.packet_hash_replay === 'fail') reasons.push('hash replay failed');
-  if (claims.phase5_hardening === 'fail' || claims.phase5_hardening === 'quarantine') reasons.push(`Phase 5 status is ${claims.phase5_hardening}`);
-  if (claims.v3_replay === 'fail' && claims.public_display_mode !== 'v2-only') reasons.push('v3 replay failed while public display requested v3');
-  if (claims.outside_witness_alignment === 'blocked') reasons.push('outside witnesses blocked');
-  if (!step1CanCountersign(packet)) reasons.push('Step 1 cannot countersign');
-  if (claims.phase8_public_default_gate === 'blocked' || claims.public_display_mode === 'blocked') reasons.push('Phase 8 public-default gate blocked');
-  if (!publicDefaultIsV2(packet)) reasons.push('public_default_credential is not v2');
-  if (rawTextExported({ phase9_release_discipline: packet && packet.phase9_release_discipline, outside_witness_receipt: getPath(packet, 'outside_witness_receipt'), renderer_authority_metadata: getPath(packet, 'renderer_authority_metadata'), svg_authority_metadata: getPath(packet, 'svg_authority_metadata'), signature_overlay_authority: getPath(packet, 'signature_overlay_authority'), tcp_hook_authority: getPath(packet, 'tcp_hook_authority'), eo_hook_authority: getPath(packet, 'eo_hook_authority') })) reasons.push('raw text appeared in release-facing artifact');
-  const rendererDefault = getPath(packet, 'renderer_authority_metadata.public_default_credential');
-  const svgDefault = getPath(packet, 'svg_authority_metadata.data-td613-public-default');
-  if (rendererDefault && rendererDefault !== 'v2') reasons.push('renderer public default overclaim');
-  if (svgDefault && svgDefault !== 'v2') reasons.push('SVG public default overclaim');
-  return [...new Set(reasons)];
-}
-
 export async function buildReleaseChecklist(packet) {
   const claims = await buildVerifiedClaims(packet);
   const checklist = {
@@ -115,13 +122,13 @@ export async function buildReleaseChecklist(packet) {
     v3_replay_checked_when_present: getPath(packet, 'issuance.v3.badge_number_v3') ? claims.v3_replay !== 'unavailable' : true,
     hash_replay_checked: claims.packet_hash_replay !== 'unavailable',
     phase5_checked: claims.phase5_hardening !== 'unavailable',
-    native_spine_checked: Boolean(getPath(packet, 'native_spine_purification.status')),
+    native_spine_checked: ['native', 'export-hardened', 'legacy', 'blocked', 'quarantined'].includes(claims.native_spine),
     outside_witnesses_checked: claims.outside_witness_alignment !== 'unavailable',
     step1_checked: Boolean(getPath(packet, 'step1_countersignature')),
     phase8_gate_checked: claims.phase8_public_default_gate !== 'unavailable',
     claim_limits_attached: true,
     ui_copy_policy_attached: true,
-    raw_text_absent: !rawTextExported(packet && packet.phase9_release_discipline ? packet.phase9_release_discipline : {}),
+    raw_text_absent: !rawTextExported(releaseFacingArtifacts(packet)),
     legacy_reopen_checked: claims.v2_replay === 'pass',
     release_class_assigned: true,
     operator_next_action_assigned: true
@@ -134,14 +141,17 @@ export async function buildFailureModeAtlas(packet) {
   const claims = await buildVerifiedClaims(packet);
   const failure = [];
   const push = (failure_class, definition, field, release_action, forbidden_remediation) => failure.push({ failure_class, definition, detected_in: field, operator_meaning: release_action === 'block' ? 'Stop release and preserve the packet for review.' : 'Hold for operator review.', public_meaning: 'Do not treat the visible packet as public-ready until the failure is resolved.', release_action, recommended_remediation: 'Regenerate or re-verify through the packet-controlled workflow; do not hand-edit authority fields.', forbidden_remediation });
-  if (claims.v2_replay === 'fail') push('replay failure', 'v2 public credential replay failed.', 'issuance.badge_number', 'block', 'Do not manually edit the v2 badge.');
+  if (claims.v2_replay === 'fail' || claims.v2_replay === 'unavailable') push('replay failure', 'v2 public credential replay failed or was unavailable.', 'issuance.badge_number', 'block', 'Do not manually edit the v2 badge.');
   if (claims.v3_replay === 'fail') push('stale v3', 'v3 forensic credential replay failed.', 'issuance.v3', publicDisplayMode(packet) === 'v2-only' ? 'review' : 'block', 'Do not display SH3 as public companion when replay fails.');
   if (claims.packet_hash_replay === 'fail') push('hash failure', 'packet hash replay failed.', 'packet_hash_sha256', 'block', 'Do not recalculate and overwrite the packet hash by hand.');
-  if (claims.phase5_hardening === 'quarantine') push('Phase 5 quarantine', 'Phase 5 replay hardening quarantined the packet.', 'phase5_replay_hardening.status', 'block', 'Do not downgrade quarantine into a friendly caveat.');
+  if (claims.phase5_hardening === 'quarantine' || claims.phase5_hardening === 'fail') push('Phase 5 quarantine', 'Phase 5 replay hardening blocked the packet.', 'phase5_replay_hardening.status', 'block', 'Do not downgrade quarantine into a friendly caveat.');
   if (claims.outside_witness_alignment === 'blocked') push('outside witness mismatch', 'Outside witness artifacts disagree with packet authority.', 'outside_witness_alignment.status', 'block', 'Do not rely on renderer beauty over packet authority.');
   if (!step1CanCountersign(packet)) push('Step 1 refusal', 'Step 1 countersignature cannot bind cleanly.', 'step1_countersignature.can_countersign', 'block', 'Do not treat Step 1 as ceremonial.');
-  if (claims.phase8_public_default_gate === 'blocked') push('public-default gate block', 'Phase 8 public display gate blocked release.', 'phase8_public_default_gate.status', 'block', 'Do not display v3 beside v2 without the gate.');
+  if (claims.phase8_public_default_gate === 'blocked' || claims.public_display_mode === 'blocked') push('public-default gate block', 'Phase 8 public display gate blocked release.', 'phase8_public_default_gate.status', 'block', 'Do not display v3 beside v2 without the gate.');
   if (!publicDefaultIsV2(packet)) push('claim overreach', 'public_default_credential moved away from v2.', 'public_default_policy.default_public_credential', 'block', 'Do not manually change public_default_credential away from v2.');
+  if (rendererOverclaim(packet)) push('renderer overclaim', 'Renderer metadata claims public authority not supported by packet policy.', 'renderer_authority_metadata', 'block', 'Do not let renderer metadata create authority.');
+  if (svgOverclaim(packet)) push('SVG overclaim', 'SVG metadata claims public authority not supported by packet policy.', 'svg_authority_metadata', 'block', 'Do not let SVG metadata create authority.');
+  if (rawTextExported(releaseFacingArtifacts(packet))) push('raw text leakage', 'Release-facing artifacts contain raw triad text or raw_text fields.', 'release-facing artifacts', 'block', 'Do not copy raw triad text into release docs or public artifacts.');
   return Object.freeze({ schema_version: 'td613.safe-harbor.failure-mode-atlas/v1', failure_modes: failure });
 }
 
@@ -173,7 +183,7 @@ export async function buildOperatorNextAction(packet) {
   return buildOperatorNextActionFromRelease(release_class, claims);
 }
 
-export function buildPublicSummaryFromClaims(release_class, claims, reasons = []) {
+export function buildPublicSummaryFromClaims(release_class, claims) {
   const limit = 'This does not prove civil identity, legal identity, public law approval, or authorship ownership.';
   if (release_class === 'blocked') return `This TD613 Safe Harbor packet is blocked from public-ready release. Review the refusal reasons in Phase 5, outside witness alignment, Phase 8 public-default gate, and Phase 9 release discipline. Do not present this packet as public-readable. ${limit}`;
   if (claims.public_display_mode === 'dual-v2-v3') return `This TD613 Safe Harbor packet is public-readable under dual v2/v3 verification display. v2 remains the public root; v3 functions as a replay-verified companion credential. ${limit}`;
@@ -186,7 +196,7 @@ export async function buildPublicSummary(packet) {
   const checklist = await buildReleaseChecklist(packet);
   const failures = await buildFailureModeAtlas(packet);
   const release_class = releaseClassFrom(packet, claims, checklist, failures);
-  return buildPublicSummaryFromClaims(release_class, claims, failures.failure_modes.map((item) => item.failure_class));
+  return buildPublicSummaryFromClaims(release_class, claims);
 }
 
 export function buildUiCopyPolicy() {
@@ -215,7 +225,7 @@ export async function buildReleaseDiscipline(packet, context = {}) {
   const failureAtlas = await buildFailureModeAtlas(packet);
   const release_class = releaseClassFrom(packet, verified_claims, checklist, failureAtlas);
   const operator_next_action = buildOperatorNextActionFromRelease(release_class, verified_claims);
-  const public_summary = buildPublicSummaryFromClaims(release_class, verified_claims, failureAtlas.failure_modes.map((item) => item.failure_class));
+  const public_summary = buildPublicSummaryFromClaims(release_class, verified_claims);
   const release_notes = [];
   if (verified_claims.public_display_mode === 'v2-only') release_notes.push('v2 remains the public root.');
   if (['v2-primary-v3-visible', 'dual-v2-v3'].includes(verified_claims.public_display_mode)) release_notes.push('v3 visibility is Phase 8 gate-controlled and remains subordinate to v2 public root.');
@@ -240,15 +250,16 @@ export async function verifyReleaseDiscipline(packet, context = {}) {
   const reasons = [];
   if (release.raw_text_exported !== false) reasons.push('release discipline claims raw text exported');
   if (summaryHits.length) reasons.push(...summaryHits.map((hit) => `forbidden public summary string: ${hit}`));
-  for (const [key, value] of Object.entries(buildClaimLimits())) if (release.claim_limits && release.claim_limits[key] !== value) reasons.push(`claim limit missing or false: ${key}`);
+  if (!release.claim_limits) reasons.push('claim limits missing');
+  for (const [key, value] of Object.entries(buildClaimLimits())) if (!release.claim_limits || release.claim_limits[key] !== value) reasons.push(`claim limit missing or false: ${key}`);
   return Object.freeze({ status: reasons.length ? 'blocked' : release.status, release_class: release.release_class, operator_next_action: release.operator_next_action, refusal_reasons: [...new Set(reasons)] });
 }
 
 export async function applyReleaseDiscipline(packet, context = {}) {
   const out = clone(packet || {});
   const release = await buildReleaseDiscipline(out, context);
-  const checklist = await buildReleaseChecklist(out);
   out.phase9_release_discipline = release;
+  const checklist = await buildReleaseChecklist(out);
   out.release_checklist = checklist;
   out.phase9_release_receipt = { schema_version: RECEIPT_SCHEMA, release_class: release.release_class, operator_next_action: release.operator_next_action, public_display_mode: release.verified_claims.public_display_mode, claim_limits_attached: true, known_limits_attached: true, ui_copy_policy_attached: true, raw_text_exported: false, summary: release.public_summary };
   if (out.outside_witness_receipt) out.outside_witness_receipt.phase9_release_receipt = clone(out.phase9_release_receipt);
