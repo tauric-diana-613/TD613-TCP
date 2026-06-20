@@ -10,6 +10,8 @@ This folder tracks the current Safe Harbor release doctrine.
 4. Phase 8 public-default gate
 5. Phase 9 release discipline
 6. Phase 9.1 maintenance seal and UI/export discipline
+7. Phase 9.1B UI surface wiring
+8. Phase 9.1C SHI + packet restore gate and hash guard
 
 ## Core docs
 
@@ -27,10 +29,22 @@ This folder tracks the current Safe Harbor release doctrine.
 - [EO-RFD glossary note](./eo-rfd-glossary-note.md)
 - [Maintenance map](./maintenance-map.md)
 
+## Landing note
+
+Phase 9.1C hash-guard landed through PR #147 / commit `d82808ba424944a881314db024bb0fdef85f2040` after PR #146 was closed as a duplicate because the normal merge endpoint was blocked by the platform/tool safety layer.
+
+Future agents should treat PR #147 as the canonical sealed hash-guard landing.
+
 ## Run before editing Safe Harbor authority surfaces
 
 ```bash
 npm run test:safe-harbor:current
+```
+
+For restore-gate work, also run:
+
+```bash
+npm run test:safe-harbor:phase9.1c
 ```
 
 ## Claim ceiling
