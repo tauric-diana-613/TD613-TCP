@@ -1,7 +1,7 @@
 (function () {
   'use strict';
 
-  var VERSION = 'safe-harbor-pr169-packet-vault-direct/v7-v3-issuance-normalizer';
+  var VERSION = 'safe-harbor-pr169-packet-vault-direct/v8-phase4-hash-replay';
   var STORAGE_KEY = 'td613.safe-harbor.session.v1';
   var MIRROR_KEY = 'td613.safe-harbor.session.mirror.v1';
   var HISTORICAL_EXAMPLE = 'TD613-Binding:#9B07D8B/SAC[X6ZNK5NO51] · payload 5 · 2025-10-17 · ⟐';
@@ -11,6 +11,7 @@
   var RICH_PROFILE_SOURCE = 'app/engine/stylometry.extractCadenceProfile + StylometricDeepMetrics.analyze';
   var richModulePromise = null;
   var v3ModulePromise = null;
+  var authorityModulePromise = null;
 
   function $(id) { return document.getElementById(id); }
   function text(value) { return String(value == null ? '' : value).trim(); }
@@ -19,26 +20,48 @@
   function write(storage, key, value) { try { if (storage) storage.setItem(key, JSON.stringify(value)); } catch (error) {} }
   function clone(value) { return value == null ? value : JSON.parse(JSON.stringify(value)); }
 
-  function stable(value) {
-    if (value === null || typeof value !== 'object') return JSON.stringify(value);
-    if (Array.isArray(value)) return '[' + value.map(stable).join(',') + ']';
-    return '{' + Object.keys(value).sort().map(function (key) {
-      return JSON.stringify(key) + ':' + stable(value[key]);
-    }).join(',') + '}';
+  function localModuleUrl(filename) {
+    try {
+      return new URL(filename, SCRIPT_URL || window.location.href).href;
+    } catch (error) {
+      return 'app/' + filename;
+    }
   }
 
-  function hex(buffer) {
-    return Array.from(new Uint8Array(buffer)).map(function (byte) {
-      return byte.toString(16).padStart(2, '0');
-    }).join('');
+  async function richBuilder() {
+    var api = window.TD613_SAFE_HARBOR_STYLOMETRY;
+    if (api && typeof api.buildSafeHarborRichStylometry === 'function') return api.buildSafeHarborRichStylometry;
+    if (!richModulePromise) richModulePromise = import(localModuleUrl('safe-harbor-rich-stylometry-adapter.js')).catch(function () { return null; });
+    var mod = await richModulePromise;
+    if (mod && typeof mod.buildSafeHarborRichStylometry === 'function') return mod.buildSafeHarborRichStylometry;
+    api = window.TD613_SAFE_HARBOR_STYLOMETRY;
+    return api && typeof api.buildSafeHarborRichStylometry === 'function' ? api.buildSafeHarborRichStylometry : null;
   }
 
-  async function sha256(textValue) {
-    var digest = await crypto.subtle.digest('SHA-256', new TextEncoder().encode(String(textValue || '')));
-    return 'sha256:' + hex(digest);
+  async function v3Api() {
+    var api = window.TD613_SAFE_HARBOR_STYLOMETRY_V3;
+    if (api && typeof api.buildV3Issuance === 'function') return api;
+    if (!v3ModulePromise) v3ModulePromise = import(localModuleUrl('safe-harbor-stylometry-v3.js')).catch(function () { return null; });
+    var mod = await v3ModulePromise;
+    if (mod && typeof mod.buildV3Issuance === 'function') return mod;
+    api = window.TD613_SAFE_HARBOR_STYLOMETRY_V3;
+    return api && typeof api.buildV3Issuance === 'function' ? api : null;
   }
 
-  function isFooterKey(key) { return String(key || '').toLowerCase().indexOf('footer') !== -1; }
+  async function authorityApi() {
+    var api = window.TD613_SAFE_HARBOR_AUTHORITY;
+    if (api && typeof api.attachPhase4Authority === 'function') return api;
+    if (!authorityModulePromise) authorityModulePromise = import(localModuleUrl('safe-harbor-authority-verifier.js')).catch(function () { return null; });
+    var mod = await authorityModulePromise;
+    if (mod && typeof mod.attachPhase4Authority === 'function') return mod;
+    api = window.TD613_SAFE_HARBOR_AUTHORITY;
+    return api && typeof api.attachPhase4Authority === 'function' ? api : null;
+  }
+
+  function isFooterKey(key) {
+    return String(key || '').toLowerCase().indexOf('footer') !== -1;
+  }
+
   function isActualFooterKey(key) {
     var k = String(key || '').toLowerCase();
     return k.indexOf('footer') !== -1 && k !== 'footer_mode';
@@ -51,7 +74,9 @@
     var hasHistory = Object.prototype.hasOwnProperty.call(value, 'historical_example');
     var actualFooterKeys = keys.filter(isActualFooterKey);
     var anyFooterKeys = keys.filter(isFooterKey);
-    var target = actualFooterKeys.length ? actualFooterKeys[actualFooterKeys.length - 1] : (anyFooterKeys.length ? anyFooterKeys[anyFooterKeys.length - 1] : null);
+    var target = actualFooterKeys.length
+      ? actualFooterKeys[actualFooterKeys.length - 1]
+      : (anyFooterKeys.length ? anyFooterKeys[anyFooterKeys.length - 1] : null);
     var out = {};
     keys.forEach(function (key) {
       out[key] = addHistory(value[key]);
@@ -92,35 +117,12 @@
     write(window.localStorage, MIRROR_KEY, saved);
   }
 
-  function moduleUrl(filename) {
-    try { return new URL(filename, SCRIPT_URL || window.location.href).href; }
-    catch (error) { return 'app/' + filename; }
-  }
-
-  async function richBuilder() {
-    var api = window.TD613_SAFE_HARBOR_STYLOMETRY;
-    if (api && typeof api.buildSafeHarborRichStylometry === 'function') return api.buildSafeHarborRichStylometry;
-    if (!richModulePromise) richModulePromise = import(moduleUrl('safe-harbor-rich-stylometry-adapter.js')).catch(function () { return null; });
-    var mod = await richModulePromise;
-    if (mod && typeof mod.buildSafeHarborRichStylometry === 'function') return mod.buildSafeHarborRichStylometry;
-    api = window.TD613_SAFE_HARBOR_STYLOMETRY;
-    return api && typeof api.buildSafeHarborRichStylometry === 'function' ? api.buildSafeHarborRichStylometry : null;
-  }
-
-  async function v3Builder() {
-    var api = window.TD613_SAFE_HARBOR_STYLOMETRY_V3;
-    if (api && typeof api.buildV3Issuance === 'function') return api.buildV3Issuance;
-    if (!v3ModulePromise) v3ModulePromise = import(moduleUrl('safe-harbor-stylometry-v3.js')).catch(function () { return null; });
-    var mod = await v3ModulePromise;
-    if (mod && typeof mod.buildV3Issuance === 'function') return mod.buildV3Issuance;
-    api = window.TD613_SAFE_HARBOR_STYLOMETRY_V3;
-    return api && typeof api.buildV3Issuance === 'function' ? api.buildV3Issuance : null;
-  }
-
   function hasUsableSegments(segments) {
-    return Boolean(segments && typeof segments === 'object' && KEYS.every(function (key) {
-      return typeof segments[key] === 'string' && segments[key].trim().length > 0;
-    }));
+    return Boolean(
+      segments &&
+      typeof segments === 'object' &&
+      KEYS.every(function (key) { return typeof segments[key] === 'string' && segments[key].trim().length > 0; })
+    );
   }
 
   function topWeighted(profile, max) {
@@ -174,99 +176,133 @@
   function promoteRichLaneProfiles(packet, rich) {
     var signatures = packet && packet.analysis && packet.analysis.segment_cadence_signatures;
     var profiles = rich && rich.per_lane_profiles;
-    if (!signatures || !profiles || typeof signatures !== 'object' || typeof profiles !== 'object') return false;
-    var promoted = false;
+    if (!signatures || !profiles || typeof signatures !== 'object' || typeof profiles !== 'object') return;
     KEYS.forEach(function (key) {
       if (!signatures[key] || typeof signatures[key] !== 'object') return;
       var compact = compactLaneRichProfile(profiles[key]);
       signatures[key].rich_profile_schema = compact ? RICH_PROFILE_SCHEMA : null;
       signatures[key].rich_profile_source = compact ? RICH_PROFILE_SOURCE : 'not available';
       signatures[key].rich_profile = compact;
-      promoted = promoted || Boolean(compact);
     });
-    return promoted;
   }
 
   function attachRichLaneSemantics(packet) {
     if (!packet || !packet.issuance || typeof packet.issuance !== 'object') return;
-    packet.issuance.stylometric_provenance = packet.issuance.stylometric_provenance && typeof packet.issuance.stylometric_provenance === 'object' ? packet.issuance.stylometric_provenance : {};
+    packet.issuance.stylometric_provenance = packet.issuance.stylometric_provenance && typeof packet.issuance.stylometric_provenance === 'object'
+      ? packet.issuance.stylometric_provenance
+      : {};
     packet.issuance.stylometric_provenance.rich_lane_profile_semantics = {
-      status: 'present when Phase 2 lane signatures include rich_profile',
-      claim_supported: 'native per-lane authorship-signal enrichment',
-      claim_limit: 'not v3 SHI derivation unless explicit v3 seed is invoked'
-    };
-  }
-
-  function attachHashSemantics(packet, promoted) {
-    if (!packet || typeof packet !== 'object') return;
-    packet.rich_stylometry_hash_semantics = {
-      native_lane_rich_profile_hash_covered: Boolean(promoted),
-      bridge_rich_stylometry_hash_covered: false,
-      notes: 'Phase 3 derivation uses lane-level rich_profile promoted into the packet before export hash recomputation; bridge packet-level rich_stylometry remains secondary evidence.'
+      status: 'present when export hardening includes segment_cadence_signatures.*.rich_profile',
+      claim_supported: 'export-hardened per-lane authorship-signal enrichment',
+      claim_limit: 'not native Safe Harbor birthplace authority unless packet_authority_surface says native'
     };
   }
 
   async function attachRichStylometry(packet, saved) {
     var segments = saved && saved.ingress && saved.ingress.segments ? saved.ingress.segments : null;
-    if (!packet || !hasUsableSegments(segments)) {
-      attachHashSemantics(packet, false);
-      return packet;
-    }
+    if (!packet || !hasUsableSegments(segments)) return packet;
     var builder = await richBuilder();
-    if (typeof builder !== 'function') {
-      attachHashSemantics(packet, false);
-      return packet;
-    }
+    if (typeof builder !== 'function') return packet;
     var rich = builder(segments);
-    if (!rich || typeof rich !== 'object') {
-      attachHashSemantics(packet, false);
-      return packet;
-    }
+    if (!rich || typeof rich !== 'object') return packet;
     packet.analysis = packet.analysis && typeof packet.analysis === 'object' ? packet.analysis : {};
     packet.analysis.rich_stylometry = clone(rich);
     packet.issuance = packet.issuance && typeof packet.issuance === 'object' ? packet.issuance : {};
-    packet.issuance.stylometric_provenance = packet.issuance.stylometric_provenance && typeof packet.issuance.stylometric_provenance === 'object' ? packet.issuance.stylometric_provenance : {};
+    packet.issuance.stylometric_provenance = packet.issuance.stylometric_provenance && typeof packet.issuance.stylometric_provenance === 'object'
+      ? packet.issuance.stylometric_provenance
+      : {};
     packet.issuance.stylometric_provenance.rich_stylometry = compactRichProvenance(rich);
-    var promoted = promoteRichLaneProfiles(packet, rich);
+    promoteRichLaneProfiles(packet, rich);
     attachRichLaneSemantics(packet);
-    attachHashSemantics(packet, promoted);
     return packet;
+  }
+
+  function allRichProfilesPresent(packet) {
+    var signatures = packet && packet.analysis && packet.analysis.segment_cadence_signatures;
+    return Boolean(signatures && KEYS.every(function (key) {
+      return signatures[key] && signatures[key].rich_profile_schema === RICH_PROFILE_SCHEMA && signatures[key].rich_profile;
+    }));
+  }
+
+  function stable(value) {
+    if (value === null || typeof value !== 'object') return JSON.stringify(value);
+    if (Array.isArray(value)) return '[' + value.map(function (item) { return stable(item); }).join(',') + ']';
+    return '{' + Object.keys(value).filter(function (key) { return value[key] !== undefined; }).sort().map(function (key) {
+      return JSON.stringify(key) + ':' + stable(value[key]);
+    }).join(',') + '}';
+  }
+
+  async function checksum(value) {
+    var body = typeof value === 'string' ? value : JSON.stringify(value);
+    if (window.crypto && window.crypto.subtle && window.TextEncoder) {
+      try {
+        var digest = await window.crypto.subtle.digest('SHA-256', new TextEncoder().encode(body));
+        return 'sha256:' + Array.from(new Uint8Array(digest)).map(function (b) { return b.toString(16).padStart(2, '0'); }).join('');
+      } catch (error) {}
+    }
+    return null;
   }
 
   function packetHashMaterial(packet) {
     var material = clone(packet);
-    if (material && material.signature) {
+    delete material.packet_hash_sha256;
+    if (material.renderer_authority_metadata) material.renderer_authority_metadata.packet_hash_sha256 = null;
+    if (material.signature) {
       material.signature.sig = null;
       material.signature.attached_at = null;
       if (material.signature.status === 'sealed') material.signature.status = 'declared';
     }
-    if (material) material.packet_hash_sha256 = null;
     return material;
   }
 
-  async function attachV3Issuance(packet) {
-    if (!packet || !packet.issuance || typeof packet.issuance !== 'object') return packet;
-    var builder = await v3Builder();
-    if (typeof builder !== 'function') return packet;
-    var v3 = await builder(packet);
-    packet.issuance.v3 = v3;
-    packet.issuance.badge_number_v3 = v3 && v3.badge_number_v3 ? v3.badge_number_v3 : null;
-    packet.issuance.stylometric_fingerprint_v3 = v3 && v3.stylometric_fingerprint_v3 ? v3.stylometric_fingerprint_v3 : null;
+  async function recomputePacketHash(packet) {
+    var digest = await checksum(stable(packetHashMaterial(packet)));
+    if (digest) packet.packet_hash_sha256 = digest;
     return packet;
+  }
+
+  function markHashSemantics(packet, v3PreimageHash) {
+    if (!packet || !allRichProfilesPresent(packet)) return packet;
+    packet.rich_stylometry_hash_semantics = {
+      native_lane_rich_profile_hash_covered: true,
+      bridge_rich_stylometry_hash_covered: true,
+      v3_preimage_packet_hash_sha256: v3PreimageHash || packet.packet_hash_sha256 || null,
+      notes: 'Phase 4 export hardening promotes lane rich_profile, issues v3 when eligible, and recomputes packet_hash_sha256 before public export. composePacket remains the packet birthplace.'
+    };
+    return packet;
+  }
+
+  async function attachV3Issuance(packet) {
+    if (!packet || !allRichProfilesPresent(packet)) return packet;
+    var api = await v3Api();
+    if (!api || typeof api.buildV3Issuance !== 'function') return packet;
+    packet.issuance = packet.issuance && typeof packet.issuance === 'object' ? packet.issuance : {};
+    if (!packet.issuance.v3 || packet.issuance.v3.status !== 'issued') {
+      packet.issuance.v3 = await api.buildV3Issuance(packet);
+      packet.issuance.badge_number_v3 = packet.issuance.v3.badge_number_v3 || null;
+      packet.issuance.stylometric_fingerprint_v3 = packet.issuance.v3.stylometric_fingerprint_v3 || null;
+    }
+    return packet;
+  }
+
+  async function attachPhase4Authority(packet, packetHashRecomputed) {
+    var api = await authorityApi();
+    if (!api || typeof api.attachPhase4Authority !== 'function') return packet;
+    return api.attachPhase4Authority(packet, { mode: 'export-normalized', packetHashRecomputed: packetHashRecomputed });
   }
 
   async function normalizePacket(packet, saved) {
     if (!packet || typeof packet !== 'object') return packet;
     var patched = needsHistory(packet) ? addHistory(clone(packet)) : clone(packet);
     patched = await attachRichStylometry(patched, saved);
+    markHashSemantics(patched, patched.packet_hash_sha256 || null);
+    await recomputePacketHash(patched);
+    markHashSemantics(patched, patched.packet_hash_sha256 || null);
     patched = await attachV3Issuance(patched);
-    if (patched && patched.schema_version === 'td613.safe-harbor.packet/v1') patched.packet_hash_sha256 = await sha256(stable(packetHashMaterial(patched)));
+    patched = await attachPhase4Authority(patched, true);
+    await recomputePacketHash(patched);
+    patched = await attachPhase4Authority(patched, true);
     return patched;
-  }
-
-  function activePacketSync() {
-    var saved = savedSession();
-    return saved && saved.packet ? addHistory(clone(saved.packet)) : null;
   }
 
   async function activePacket() {
@@ -281,7 +317,14 @@
     return patched;
   }
 
-  function packetExportReady(packet) { return Boolean(packet && packet.bridge && packet.bridge.export_gate && packet.bridge.export_gate.ready); }
+  function activePacketSync() {
+    var saved = savedSession();
+    return saved && saved.packet ? addHistory(clone(saved.packet)) : null;
+  }
+
+  function packetExportReady(packet) {
+    return Boolean(packet && packet.bridge && packet.bridge.export_gate && packet.bridge.export_gate.ready);
+  }
 
   function packetFilename(packet) {
     var helperTs = packet && packet.intake && packet.intake.helper_filename_safe;
@@ -289,8 +332,9 @@
     var ts = helperTs || String(created || new Date().toISOString()).replace(/[:.]/g, '-');
     var stage = packet && packet.seal_handshake ? 'sealed' : (packet && packet.issuance && packet.issuance.badge_number ? 'minted' : 'staged');
     var shi = packet && packet.issuance && packet.issuance.badge_number ? '-' + packet.issuance.badge_number : '';
+    var v3 = packet && packet.issuance && packet.issuance.badge_number_v3 ? '-' + packet.issuance.badge_number_v3 : '';
     var batch = packet && packet.intake && packet.intake.selected_batch_id ? '-' + packet.intake.selected_batch_id : '';
-    return 'td613-packet' + batch + '-' + stage + shi + '-' + ts + '.json';
+    return 'td613-packet' + batch + '-' + stage + shi + v3 + '-' + ts + '.json';
   }
 
   function downloadJson(filename, value) {
@@ -329,6 +373,10 @@
     if (preview && packet) preview.textContent = JSON.stringify(packet, null, 2);
     var hash = $('packetHashReadout');
     if (hash && packet && packet.packet_hash_sha256) hash.textContent = packet.packet_hash_sha256;
+    var badge = $('badgeStatusReadout');
+    if (badge && packet && packet.issuance && packet.issuance.badge_number_v3) {
+      badge.textContent = packet.issuance.badge_number + ' / ' + packet.issuance.badge_number_v3;
+    }
   }
 
   async function normalizeVisiblePacket() {
@@ -518,7 +566,7 @@
       footer_history: HISTORICAL_EXAMPLE,
       rich_stylometry_export: true,
       rich_lane_profiles: true,
-      v3_issuance_normalizer: true
+      phase4_authority_governance: true
     };
   }
 
