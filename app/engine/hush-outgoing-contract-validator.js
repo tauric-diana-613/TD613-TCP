@@ -23,6 +23,20 @@ const PUBLIC_BLOCKED_PATTERNS = Object.freeze([
   /legal\s*identity/iu,
   /civil\s*identity/iu
 ]);
+const RAW_PROMPT_ALIAS_KEYS = Object.freeze([
+  'system_instruction',
+  'systemInstruction',
+  'developer_instruction',
+  'developerInstruction',
+  'user_instruction',
+  'userInstruction',
+  'assembled_prompt',
+  'assembledPrompt',
+  'raw_prompt',
+  'rawPrompt',
+  'prompt_text',
+  'promptText'
+]);
 
 function isObject(value) { return Boolean(value && typeof value === 'object' && !Array.isArray(value)); }
 function asArray(value) { return Array.isArray(value) ? value : []; }
@@ -31,6 +45,11 @@ function body(value) { return JSON.stringify(value || {}); }
 function unique(values) { return [...new Set(values.filter(Boolean))]; }
 
 export { isSha256, buildOutgoingContractPacket };
+
+export function hasRawPromptAlias(instructionContract = {}) {
+  if (!isObject(instructionContract)) return false;
+  return RAW_PROMPT_ALIAS_KEYS.some((key) => typeof instructionContract[key] === 'string' && instructionContract[key].trim().length > 0);
+}
 
 export function classifyOutgoingContractPacket(packet = {}) {
   const families = [];
@@ -95,6 +114,7 @@ function inspectRequiredSurfaces(packet = {}, options = {}) {
   if (!packet.instruction_contract) reasons.push('instruction_contract is required');
   if (!getPath(packet, 'instruction_contract.expected_output_class')) reasons.push('instruction_contract.expected_output_class is required');
   if (getPath(packet, 'instruction_contract.raw_prompt_exported') && providerReady) reasons.push('raw prompt cannot be exported in provider-ready contract');
+  if (providerReady && hasRawPromptAlias(packet.instruction_contract) && options.allowRawPromptText !== true) reasons.push('raw prompt aliases cannot be present in provider-ready contract');
 
   if (!packet.private_text_policy) reasons.push('private_text_policy is required');
   if (providerReady && getPath(packet, 'private_text_policy.raw_customizer_samples_exported')) reasons.push('raw Customizer samples cannot be provider-ready');
@@ -160,14 +180,29 @@ export async function recomputeOutgoingContractHashes(packet = {}) {
     mask_context_hash_sha256: getPath(packet, 'hash_topology.mask_context_hash_sha256'),
     instruction_contract_hash_sha256: getPath(packet, 'hash_topology.instruction_contract_hash_sha256'),
     policy_hash_sha256: getPath(packet, 'hash_topology.policy_hash_sha256'),
-    packet_hash_sha256: packet.packet_hash_sha256 || getPath(packet, 'hash_topology.packet_hash_sha256')
+    top_level_packet_hash_sha256: packet.packet_hash_sha256,
+    topology_packet_hash_sha256: getPath(packet, 'hash_topology.packet_hash_sha256')
   };
   const refusal_reasons = [];
-  for (const key of Object.keys(declared)) {
-    const expected = key === 'packet_hash_sha256' ? expectedPacketHash : expectedTopology[key];
-    if (declared[key] !== expected) refusal_reasons.push(key === 'packet_hash_sha256' ? 'packet hash replay mismatch' : `${key.replace(/_sha256$/, '').replace(/_/g, ' ')} mismatch`);
-  }
-  return Object.freeze({ schema_version: 'td613.hush.outgoing-contract-hash-replay/v1', status: refusal_reasons.length ? 'blocked' : 'pass', matches: refusal_reasons.length === 0, declared, expected: { ...expectedTopology, packet_hash_sha256: expectedPacketHash }, refusal_reasons });
+  const hashPairs = [
+    ['request_context_hash_sha256', expectedTopology.request_context_hash_sha256, 'request context hash mismatch'],
+    ['provider_target_hash_sha256', expectedTopology.provider_target_hash_sha256, 'provider target hash mismatch'],
+    ['mask_context_hash_sha256', expectedTopology.mask_context_hash_sha256, 'mask context hash mismatch'],
+    ['instruction_contract_hash_sha256', expectedTopology.instruction_contract_hash_sha256, 'instruction contract hash mismatch'],
+    ['policy_hash_sha256', expectedTopology.policy_hash_sha256, 'policy hash mismatch']
+  ];
+  for (const [key, expected, message] of hashPairs) if (declared[key] !== expected) refusal_reasons.push(message);
+  if (declared.top_level_packet_hash_sha256 !== expectedPacketHash) refusal_reasons.push('packet hash replay mismatch');
+  if (declared.topology_packet_hash_sha256 !== expectedPacketHash) refusal_reasons.push('topology packet hash replay mismatch');
+  if (declared.top_level_packet_hash_sha256 && declared.topology_packet_hash_sha256 && declared.top_level_packet_hash_sha256 !== declared.topology_packet_hash_sha256) refusal_reasons.push('packet hash locations disagree');
+  return Object.freeze({
+    schema_version: 'td613.hush.outgoing-contract-hash-replay/v1',
+    status: refusal_reasons.length ? 'blocked' : 'pass',
+    matches: refusal_reasons.length === 0,
+    declared,
+    expected: { ...expectedTopology, packet_hash_sha256: expectedPacketHash },
+    refusal_reasons
+  });
 }
 
 export async function validateOutgoingContract(packet = {}, options = {}) {
@@ -209,5 +244,5 @@ export async function buildProviderDispatchEnvelope(contractPacket = {}, options
 }
 
 if (typeof window !== 'undefined') {
-  window.TD613_HUSH_OUTGOING_CONTRACT_VALIDATOR = Object.freeze({ isSha256, buildOutgoingContractPacket, classifyOutgoingContractPacket, validateOutgoingContractShape, recomputeOutgoingContractHashes, validateOutgoingContract, buildProviderDispatchEnvelope });
+  window.TD613_HUSH_OUTGOING_CONTRACT_VALIDATOR = Object.freeze({ isSha256, buildOutgoingContractPacket, classifyOutgoingContractPacket, hasRawPromptAlias, validateOutgoingContractShape, recomputeOutgoingContractHashes, validateOutgoingContract, buildProviderDispatchEnvelope });
 }
