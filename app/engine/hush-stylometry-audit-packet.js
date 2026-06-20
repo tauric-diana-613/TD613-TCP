@@ -221,7 +221,7 @@ function releaseRecommendation(input = {}, risk = {}, cadence = {}, flattening =
     public_release_allowed: bool(source.public_release_allowed ?? source.publicReleaseAllowed, releaseClass === 'release-safe' && !highRisk && !localPrivateRaw),
     provider_rewrite_allowed: bool(source.provider_rewrite_allowed ?? source.providerRewriteAllowed, releaseClass === 'revise-before-release'),
     mask_tuning_allowed: bool(source.mask_tuning_allowed ?? source.maskTuningAllowed, false),
-    next_action: source.next_action || source.nextAction || (releaseClass === 'block-release' ? 'block' : releaseClass === 'revise-before-release' ? 'revise' : insufficient ? 'collect-more-evidence' : releaseClass === 'release-safe' ? 'accept' : localPrivateRaw ? 'run-adversarial-audit' : 'run-adversarial-audit'),
+    next_action: source.next_action || source.nextAction || (releaseClass === 'block-release' ? 'block' : releaseClass === 'revise-before-release' ? 'revise' : insufficient ? 'collect-more-evidence' : localPrivateRaw ? 'run-adversarial-audit' : releaseClass === 'release-safe' ? 'accept' : 'run-adversarial-audit'),
     reasons: asArray(source.reasons)
   });
 }
