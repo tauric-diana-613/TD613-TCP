@@ -13,7 +13,7 @@ import { stableStringify, sha256Text, isSha256 } from './hush-customizer-packet.
 const CONTRACT_ID = /^TD613-HUSH-CONTRACT-\d{8}-[A-F0-9]{8}$/u;
 const PROVIDER_ID = /^TD613-HUSH-PROVIDER-\d{8}-[A-F0-9]{8}$/u;
 const RELEASE_CLASSES = Object.freeze(['pair-local', 'pair-review', 'audit-route-ready', 'breach-review', 'blocked']);
-const FORBIDDEN_PROOF = /voice\s+authentic|stylometric\s+authenticity\s+(?:confirmed|proven|proof)|mask\s+alive|output\s+quality\s+(?:confirmed|proven|proof)|provider\s+intent\s+(?:confirmed|proven|proof)|authorship\s+ownership\s+(?:confirmed|proven|proof)|identity\s+(?:confirmed|proven|proof)|adversarial\s+counterfeit\s+(?:confirmed|proven|proof)|firmware\s+(?:confirmed|proven|proof)/iu;
+const FORBIDDEN_PROOF = /voice\s+authentic|stylometric\s+authenticity\s+(?:confirmed|proven|proof)|mask\s+alive|output\s+quality\s+(?:confirmed|proven|proof)|provider\s+intent\s+(?:confirmed|proven|proof)|authorship\s+ownership\s+(?:confirmed|proven|proof)|identity\s+(?:confirmed|proven|proof)|adversarial\s+counterfeit\s+(?:confirmed|proven|proof)|(?:EO-RFD\s+)?firmware\s+(?:confirmed|proven|proof)/iu;
 
 function isObject(value) { return Boolean(value && typeof value === 'object' && !Array.isArray(value)); }
 function getPath(value, path) { return String(path || '').split('.').reduce((node, key) => (node && Object.prototype.hasOwnProperty.call(node, key) ? node[key] : undefined), value); }
@@ -31,9 +31,6 @@ function overclaimSurface(packet = {}) {
       packet.refusal_comparison?.notes,
       packet.safety_comparison?.notes,
       packet.release_comparison?.notes,
-      packet.eo_rfd_route_comparison?.claim_limit,
-      packet.stylometry_audit_routing?.claim_limit,
-      packet.adversarial_audit_routing?.claim_limit,
       packet.pair_release_discipline?.warnings
     ]
   };
@@ -87,18 +84,23 @@ function inspectRequiredSurfaces(packet = {}, options = {}) {
 
   if (!packet.linked_contract) reasons.push('linked_contract is required');
   const contractId = getPath(packet, 'linked_contract.contract_packet_id');
+  const contractHash = getPath(packet, 'linked_contract.contract_packet_hash_sha256');
   if (!contractId) reasons.push('linked_contract.contract_packet_id is required');
   if (containsShi(contractId)) reasons.push('linked_contract.contract_packet_id must not use SHI');
   if (contractId && !CONTRACT_ID.test(String(contractId).toUpperCase())) reasons.push('linked_contract.contract_packet_id is malformed');
-  if (!isSha256(getPath(packet, 'linked_contract.contract_packet_hash_sha256'))) reasons.push('linked_contract.contract_packet_hash_sha256 is not sha256:<64_hex>');
+  if (!isSha256(contractHash)) reasons.push('linked_contract.contract_packet_hash_sha256 is not sha256:<64_hex>');
   if (getPath(packet, 'linked_contract.contract_validation_status') !== 'pass' && getPath(packet, 'pair_release_discipline.release_class') !== 'blocked') warnings.push('linked contract validation did not pass');
 
   if (!packet.linked_provider_log) reasons.push('linked_provider_log is required');
   const providerId = getPath(packet, 'linked_provider_log.provider_log_packet_id');
+  const providerLogLinkedContractId = getPath(packet, 'linked_provider_log.provider_log_linked_contract_packet_id');
+  const providerLogLinkedContractHash = getPath(packet, 'linked_provider_log.provider_log_linked_contract_hash_sha256');
   if (!providerId) reasons.push('linked_provider_log.provider_log_packet_id is required');
   if (containsShi(providerId)) reasons.push('linked_provider_log.provider_log_packet_id must not use SHI');
   if (providerId && !PROVIDER_ID.test(String(providerId).toUpperCase())) reasons.push('linked_provider_log.provider_log_packet_id is malformed');
   if (!isSha256(getPath(packet, 'linked_provider_log.provider_log_packet_hash_sha256'))) reasons.push('linked_provider_log.provider_log_packet_hash_sha256 is not sha256:<64_hex>');
+  if (providerLogLinkedContractId && contractId && providerLogLinkedContractId !== contractId) reasons.push('linked provider log contract id does not match linked contract');
+  if (providerLogLinkedContractHash && contractHash && providerLogLinkedContractHash !== contractHash) reasons.push('linked provider log contract hash does not match linked contract');
   if (getPath(packet, 'linked_provider_log.provider_log_validation_status') !== 'pass' && getPath(packet, 'pair_release_discipline.release_class') !== 'blocked') warnings.push('linked provider log validation did not pass');
 
   if (!packet.contract_snapshot) reasons.push('contract_snapshot is required');

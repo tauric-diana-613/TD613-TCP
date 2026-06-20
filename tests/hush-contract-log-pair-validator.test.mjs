@@ -16,32 +16,40 @@ async function expectBlocked(basePacket, mutator, reasonFragment = null, options
   return result;
 }
 
-const contract = await buildOutgoingContractPacket({
-  requestKind: 'generation',
-  surface: 'provider-bridge',
-  sourceEvent: 'manual',
-  providerClass: 'local',
-  providerName: 'Local Test',
-  modelName: 'local-test',
-  endpointClass: 'local-runtime',
-  mask_context: { mask_source: 'customizer', mask_id: 'pair-validator-mask', mask_release_class: 'operational-local', discourse_mode: 'legal-forensic', retrieval_trigger: 'baseline-voice' },
-  customizer_packet_ref: { customizer_packet_id: 'TD613-HUSH-CUSTOMIZER-20260620-ABCDEF12', customizer_packet_hash_sha256: 'sha256:' + 'a'.repeat(64), customizer_release_class: 'operational-local', sample_text_exported: false, sample_count: 24, accepted_words: 2400 },
-  systemInstruction: 'Preserve claim limits.',
-  developerInstruction: 'Use the requested mode and trigger.',
-  userInstruction: 'Draft a bounded answer.',
-  redactedPromptSummary: 'Bounded pair validator request.',
-  expectedOutputClass: 'draft'
-}, { stableId: true, createdAt: '2026-06-20T00:00:00Z' });
-const dispatchEnvelope = await buildProviderDispatchEnvelope(contract);
-const dispatchEnvelopeWithHash = { ...dispatchEnvelope, dispatch_envelope_hash_sha256: await sha256Text(stableStringify(dispatchEnvelope)) };
-const providerLog = await buildProviderLogPacket({
-  outgoing_contract_packet: contract,
-  dispatch_envelope: dispatchEnvelopeWithHash,
-  provider_target_observed: { provider_class: 'local', provider_name: 'Local Test', model_name: 'local-test', endpoint_class: 'local-runtime', api_surface: 'local', network_dispatch_observed: true, provider_request_id: 'req-pair-v', provider_response_id: 'res-pair-v' },
-  rawResponseText: 'Redacted response body for hashing only.',
-  redactedResponseSummary: 'Provider returned a bounded redacted draft.',
-  response_observation: { finish_reason: 'stop', provider_reported_status: 'success' }
-}, { stableId: true, createdAt: '2026-06-20T00:01:00Z' });
+async function makeContract({ createdAt = '2026-06-20T00:00:00Z', maskId = 'pair-validator-mask', summary = 'Bounded pair validator request.' } = {}) {
+  return buildOutgoingContractPacket({
+    requestKind: 'generation',
+    surface: 'provider-bridge',
+    sourceEvent: 'manual',
+    providerClass: 'local',
+    providerName: 'Local Test',
+    modelName: 'local-test',
+    endpointClass: 'local-runtime',
+    mask_context: { mask_source: 'customizer', mask_id: maskId, mask_release_class: 'operational-local', discourse_mode: 'legal-forensic', retrieval_trigger: 'baseline-voice' },
+    customizer_packet_ref: { customizer_packet_id: 'TD613-HUSH-CUSTOMIZER-20260620-ABCDEF12', customizer_packet_hash_sha256: 'sha256:' + 'a'.repeat(64), customizer_release_class: 'operational-local', sample_text_exported: false, sample_count: 24, accepted_words: 2400 },
+    systemInstruction: 'Preserve claim limits.',
+    developerInstruction: 'Use the requested mode and trigger.',
+    userInstruction: 'Draft a bounded answer.',
+    redactedPromptSummary: summary,
+    expectedOutputClass: 'draft'
+  }, { stableId: true, createdAt });
+}
+
+async function makeProviderLog(contract, { createdAt = '2026-06-20T00:01:00Z' } = {}) {
+  const dispatchEnvelope = await buildProviderDispatchEnvelope(contract);
+  const dispatchEnvelopeWithHash = { ...dispatchEnvelope, dispatch_envelope_hash_sha256: await sha256Text(stableStringify(dispatchEnvelope)) };
+  return buildProviderLogPacket({
+    outgoing_contract_packet: contract,
+    dispatch_envelope: dispatchEnvelopeWithHash,
+    provider_target_observed: { provider_class: 'local', provider_name: 'Local Test', model_name: 'local-test', endpoint_class: 'local-runtime', api_surface: 'local', network_dispatch_observed: true, provider_request_id: 'req-pair-v', provider_response_id: 'res-pair-v' },
+    rawResponseText: 'Redacted response body for hashing only.',
+    redactedResponseSummary: 'Provider returned a bounded redacted draft.',
+    response_observation: { finish_reason: 'stop', provider_reported_status: 'success' }
+  }, { stableId: true, createdAt });
+}
+
+const contract = await makeContract();
+const providerLog = await makeProviderLog(contract);
 const pair = await buildContractLogPairPacket({ outgoing_contract_packet: contract, provider_log_packet: providerLog }, { stableId: true, createdAt: '2026-06-20T00:02:00Z' });
 
 const validation = await validateContractLogPair(pair);
@@ -51,6 +59,17 @@ assert.equal(validation.hash_replay.status, 'pass');
 assert.ok(validation.authority_families.includes('contract-log-pair-v1'));
 assert.ok(validation.authority_families.includes('linked-contract-bearing'));
 assert.ok(validation.authority_families.includes('linked-provider-log-bearing'));
+assert.equal(pair.eo_rfd_route_comparison.claim_limit, 'EO-RFD route comparison only; not firmware proof');
+assert.equal(validation.refusal_reasons.length, 0);
+
+const otherContract = await makeContract({ createdAt: '2026-06-20T00:03:00Z', maskId: 'pair-validator-other-mask', summary: 'Different bounded pair validator request.' });
+const mismatchedPair = await buildContractLogPairPacket({ outgoing_contract_packet: otherContract, provider_log_packet: providerLog }, { stableId: true, createdAt: '2026-06-20T00:04:00Z' });
+assert.equal(mismatchedPair.pair_release_discipline.release_class, 'blocked');
+assert.equal(mismatchedPair.comparison_result.status, 'blocked');
+const mismatchedValidation = await validateContractLogPair(mismatchedPair, { allowBlocked: true });
+assert.equal(mismatchedValidation.status, 'blocked');
+assert.ok(mismatchedValidation.refusal_reasons.some((reason) => reason.includes('linked provider log contract id does not match linked contract')));
+assert.ok(mismatchedValidation.refusal_reasons.some((reason) => reason.includes('linked provider log contract hash does not match linked contract')));
 
 await expectBlocked(pair, (p) => { p.pair_packet_id = 'BAD-PAIR-ID'; }, 'pair_packet_id must match');
 await expectBlocked(pair, (p) => { p.pair_packet_id = 'TD613-SH-9B07D8B-ABCDEF12'; }, 'pair_packet_id must not use SHI');
@@ -58,6 +77,8 @@ await expectBlocked(pair, (p) => { delete p.linked_contract; }, 'linked_contract
 await expectBlocked(pair, (p) => { delete p.linked_provider_log; }, 'linked_provider_log is required');
 await expectBlocked(pair, (p) => { p.linked_contract.contract_packet_id = 'BAD-CONTRACT-ID'; }, 'linked_contract.contract_packet_id is malformed');
 await expectBlocked(pair, (p) => { p.linked_provider_log.provider_log_packet_id = 'BAD-PROVIDER-ID'; }, 'linked_provider_log.provider_log_packet_id is malformed');
+await expectBlocked(pair, (p) => { p.linked_provider_log.provider_log_linked_contract_packet_id = 'TD613-HUSH-CONTRACT-20260620-FFFFFFFF'; }, 'linked provider log contract id does not match linked contract');
+await expectBlocked(pair, (p) => { p.linked_provider_log.provider_log_linked_contract_hash_sha256 = 'sha256:' + 'f'.repeat(64); }, 'linked provider log contract hash does not match linked contract');
 
 const hashOnly = { schema_version: 'td613.hush.contract-log-pair/v1', packet_class: 'contract-provider-event-comparison', pair_packet_id: 'TD613-HUSH-PAIR-20260620-ABCDEF12', packet_hash_sha256: 'sha256:' + 'b'.repeat(64) };
 assert.equal((await validateContractLogPair(hashOnly)).status, 'blocked');
