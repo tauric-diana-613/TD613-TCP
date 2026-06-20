@@ -157,7 +157,8 @@ assert.ok(convergence.stable_after_iteration >= 2);
 
 const fixtures = await buildTamperReport(packet);
 assert.equal(fixtures.status, 'pass');
-assert.equal(fixtures.fixtures.length, 12);
+assert.equal(fixtures.fixtures.length, 13);
+assert.ok(fixtures.fixtures.some((item) => item.fixture === 'fake_native_lineage' && item.actual_status === 'fail'));
 
 const hardening = await buildPhase5ReplayHardening(packet, { includeTamperFixtures: false });
 assert.equal(hardening.status, 'pass');
