@@ -16,6 +16,28 @@ PR #150 / commit `a7d2b4ba7d30f1c4f16ce9464ac7734bb38a231d` is the canonical Hus
 
 PR #149 was opened as an equivalent first-pass implementation and should be treated as duplicate/fallback trail, not the source of truth.
 
+## Phase 9.1 validator replay hotfix
+
+The restore/import validator must not treat declared hash strings as proof of packet integrity.
+
+Validator replay recomputes:
+
+- `sample_hash_topology.sample_ledger_hash_sha256`
+- `sample_hash_topology.profile_hash_sha256`
+- `sample_hash_topology.routing_hash_sha256`
+- `sample_hash_topology.policy_hash_sha256`
+- `packet_hash_sha256`
+
+A packet whose body changes while its declared hashes remain stale must block restore/import.
+
+Hash-only Customizer packets are blocked.
+
+Missing `routing_profile` blocks normal restore/import.
+
+SHI-style values are refused in both `customizer_packet_id` and `mask_id`.
+
+Raw sample fields or aliases require explicit private-text confirmation, and restored redacted sessions strip raw-text aliases before assigning active mask samples.
+
 ## Schema
 
 ```text
@@ -32,7 +54,7 @@ Customizer packets use:
 TD613-HUSH-CUSTOMIZER-YYYYMMDD-XXXXXXXX
 ```
 
-They must not use SHI as the mask identifier.
+They must not use SHI as the packet identifier or mask identifier.
 
 ## Core rule
 
@@ -46,11 +68,13 @@ A Hush Customizer packet is a stylometric transformation profile. It does not pr
 
 ## Restore rule
 
-Normal restore requires more than a hash. A packet must provide schema, packet id, valid `sha256:<64_hex>` hashes, sample ledger, corpus readiness, private-text policy, release discipline, and mode/trigger routing structure.
+Normal restore requires more than a hash. A packet must provide schema, packet id, valid replayed `sha256:<64_hex>` hashes, sample ledger, corpus readiness, private-text policy, release discipline, and mode/trigger routing structure.
 
 Hash-only packets are blocked.
 
 Malformed hashes are blocked.
+
+Tampered packet bodies are blocked when replayed hashes no longer match.
 
 Raw samples in a redacted import are blocked.
 
