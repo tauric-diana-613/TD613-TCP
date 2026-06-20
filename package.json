@@ -17,6 +17,7 @@
     "test:hush:outgoing-contract": "node tests/hush-outgoing-contract-packet.test.mjs && node tests/hush-outgoing-contract-validator.test.mjs",
     "test:hush:provider-log": "node tests/hush-provider-log-packet.test.mjs && node tests/hush-provider-log-validator.test.mjs",
     "test:hush:contract-log-pair": "node tests/hush-contract-log-pair-packet.test.mjs && node tests/hush-contract-log-comparator.test.mjs && node tests/hush-contract-log-pair-validator.test.mjs",
+    "test:hush:stylometry-audit": "node tests/hush-stylometry-audit-packet.test.mjs && node tests/hush-stylometry-audit-validator.test.mjs",
     "test:release": "node tests/release-manifest.test.mjs && node tests/docs-surface.test.mjs && node tests/release-hardening.test.mjs && node tests/release-plumbing.test.mjs && node tests/vercel-deploy-hygiene.test.mjs && node tests/amari-patch-lane.test.mjs",
     "test:safe-harbor": "node tests/td613-flight-mobile-layout.test.mjs && node tests/safe-harbor-shi.test.mjs && node tests/safe-harbor-stylometry-v3.test.mjs && node tests/safe-harbor-phase4-authority.test.mjs && node tests/safe-harbor-phase5-replay-hardening.test.mjs && node tests/safe-harbor-phase6-native-spine.test.mjs && node tests/safe-harbor-batch-seal.test.mjs && node tests/station-pages.test.mjs && node tests/operator-receipt.test.mjs",
     "test:safe-harbor:phase7": "node tests/safe-harbor-phase7-outside-witness-alignment.test.mjs",
