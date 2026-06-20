@@ -1,114 +1,21 @@
 (function () {
   'use strict';
 
-  var VERSION = 'safe-harbor-pr169-packet-vault-direct/v9-phase5-replay-hardening';
+  var VERSION = 'safe-harbor-pr169-packet-vault-direct/v10-phase6-native-aware';
   var STORAGE_KEY = 'td613.safe-harbor.session.v1';
   var MIRROR_KEY = 'td613.safe-harbor.session.mirror.v1';
   var HISTORICAL_EXAMPLE = 'TD613-Binding:#9B07D8B/SAC[X6ZNK5NO51] · payload 5 · 2025-10-17 · ⟐';
   var SCRIPT_URL = document.currentScript && document.currentScript.src ? document.currentScript.src : '';
-  var KEYS = ['future_self', 'past_self', 'higher_self'];
-  var RICH_PROFILE_SCHEMA = 'td613.safe-harbor.lane-rich-profile/v1';
-  var RICH_PROFILE_SOURCE = 'app/engine/stylometry.extractCadenceProfile + StylometricDeepMetrics.analyze';
-  var richModulePromise = null;
-  var v3ModulePromise = null;
-  var authorityModulePromise = null;
-  var phase5ModulePromise = null;
+  var finalizerPromise = null;
+  var phase5Promise = null;
 
   function $(id) { return document.getElementById(id); }
   function text(value) { return String(value == null ? '' : value).trim(); }
   function parse(raw) { try { return raw ? JSON.parse(raw) : null; } catch (error) { return null; } }
+  function clone(value) { return value == null ? value : JSON.parse(JSON.stringify(value)); }
   function read(storage, key) { try { return storage && storage.getItem(key); } catch (error) { return null; } }
   function write(storage, key, value) { try { if (storage) storage.setItem(key, JSON.stringify(value)); } catch (error) {} }
-  function clone(value) { return value == null ? value : JSON.parse(JSON.stringify(value)); }
-
-  function localModuleUrl(filename) {
-    try { return new URL(filename, SCRIPT_URL || window.location.href).href; }
-    catch (error) { return 'app/' + filename; }
-  }
-
-  async function richBuilder() {
-    var api = window.TD613_SAFE_HARBOR_STYLOMETRY;
-    if (api && typeof api.buildSafeHarborRichStylometry === 'function') return api.buildSafeHarborRichStylometry;
-    if (!richModulePromise) richModulePromise = import(localModuleUrl('safe-harbor-rich-stylometry-adapter.js')).catch(function () { return null; });
-    var mod = await richModulePromise;
-    if (mod && typeof mod.buildSafeHarborRichStylometry === 'function') return mod.buildSafeHarborRichStylometry;
-    api = window.TD613_SAFE_HARBOR_STYLOMETRY;
-    return api && typeof api.buildSafeHarborRichStylometry === 'function' ? api.buildSafeHarborRichStylometry : null;
-  }
-
-  async function v3Api() {
-    var api = window.TD613_SAFE_HARBOR_STYLOMETRY_V3;
-    if (api && typeof api.buildV3Issuance === 'function') return api;
-    if (!v3ModulePromise) v3ModulePromise = import(localModuleUrl('safe-harbor-stylometry-v3.js')).catch(function () { return null; });
-    var mod = await v3ModulePromise;
-    if (mod && typeof mod.buildV3Issuance === 'function') return mod;
-    api = window.TD613_SAFE_HARBOR_STYLOMETRY_V3;
-    return api && typeof api.buildV3Issuance === 'function' ? api : null;
-  }
-
-  async function authorityApi() {
-    var api = window.TD613_SAFE_HARBOR_AUTHORITY;
-    if (api && typeof api.attachPhase4Authority === 'function') return api;
-    if (!authorityModulePromise) authorityModulePromise = import(localModuleUrl('safe-harbor-authority-verifier.js')).catch(function () { return null; });
-    var mod = await authorityModulePromise;
-    if (mod && typeof mod.attachPhase4Authority === 'function') return mod;
-    api = window.TD613_SAFE_HARBOR_AUTHORITY;
-    return api && typeof api.attachPhase4Authority === 'function' ? api : null;
-  }
-
-  async function phase5Api() {
-    var api = window.TD613_SAFE_HARBOR_PHASE5;
-    if (api && typeof api.buildPhase5ReplayHardening === 'function') return api;
-    if (!phase5ModulePromise) phase5ModulePromise = import(localModuleUrl('safe-harbor-phase5-replay-hardening.js')).catch(function () { return null; });
-    var mod = await phase5ModulePromise;
-    if (mod && typeof mod.buildPhase5ReplayHardening === 'function') return mod;
-    api = window.TD613_SAFE_HARBOR_PHASE5;
-    return api && typeof api.buildPhase5ReplayHardening === 'function' ? api : null;
-  }
-
-  function isFooterKey(key) { return String(key || '').toLowerCase().indexOf('footer') !== -1; }
-  function isActualFooterKey(key) {
-    var k = String(key || '').toLowerCase();
-    return k.indexOf('footer') !== -1 && k !== 'footer_mode';
-  }
-
-  function addHistory(value) {
-    if (value === null || typeof value !== 'object') return value;
-    if (Array.isArray(value)) return value.map(addHistory);
-    var keys = Object.keys(value);
-    var hasHistory = Object.prototype.hasOwnProperty.call(value, 'historical_example');
-    var actualFooterKeys = keys.filter(isActualFooterKey);
-    var anyFooterKeys = keys.filter(isFooterKey);
-    var target = actualFooterKeys.length ? actualFooterKeys[actualFooterKeys.length - 1] : (anyFooterKeys.length ? anyFooterKeys[anyFooterKeys.length - 1] : null);
-    var out = {};
-    keys.forEach(function (key) {
-      out[key] = addHistory(value[key]);
-      if (!hasHistory && target && key === target) out.historical_example = HISTORICAL_EXAMPLE;
-    });
-    return out;
-  }
-
-  function addHistoryAfterPublicFooter(value) {
-    if (value === null || typeof value !== 'object') return value;
-    if (Array.isArray(value)) return value.map(addHistoryAfterPublicFooter);
-    var keys = Object.keys(value);
-    var hasPublicFooter = Object.prototype.hasOwnProperty.call(value, 'public_footer');
-    var hasHistory = Object.prototype.hasOwnProperty.call(value, 'historical_example');
-    var out = {};
-    keys.forEach(function (key) {
-      out[key] = addHistoryAfterPublicFooter(value[key]);
-      if (hasPublicFooter && !hasHistory && key === 'public_footer') out.historical_example = HISTORICAL_EXAMPLE;
-    });
-    return out;
-  }
-
-  function needsHistory(value) {
-    if (value === null || typeof value !== 'object') return false;
-    if (Array.isArray(value)) return value.some(needsHistory);
-    var keys = Object.keys(value);
-    if (keys.some(isFooterKey) && !Object.prototype.hasOwnProperty.call(value, 'historical_example')) return true;
-    return keys.some(function (key) { return needsHistory(value[key]); });
-  }
+  function localModuleUrl(filename) { try { return new URL(filename, SCRIPT_URL || window.location.href).href; } catch (error) { return 'app/' + filename; } }
 
   function savedSession() { return parse(read(window.sessionStorage, STORAGE_KEY)) || parse(read(window.localStorage, MIRROR_KEY)) || null; }
   function storeSession(saved) {
@@ -116,229 +23,90 @@
     write(window.sessionStorage, STORAGE_KEY, saved);
     write(window.localStorage, MIRROR_KEY, saved);
   }
-
-  function hasUsableSegments(segments) {
-    return Boolean(segments && typeof segments === 'object' && KEYS.every(function (key) { return typeof segments[key] === 'string' && segments[key].trim().length > 0; }));
-  }
-
-  function topWeighted(profile, max) {
-    return Object.fromEntries(Object.entries(profile || {})
-      .filter(function (entry) { return Number(entry[1] || 0) > 0; })
-      .sort(function (left, right) { return Number(right[1] || 0) - Number(left[1] || 0); })
-      .slice(0, max || 80));
-  }
-
-  function compactLaneRichProfile(profile) {
-    if (!profile || typeof profile !== 'object') return null;
-    return {
-      contentWordComplexity: Number(profile.contentWordComplexity || 0),
-      modifierDensity: Number(profile.modifierDensity || 0),
-      hedgeDensity: Number(profile.hedgeDensity || 0),
-      abstractionPosture: Number(profile.abstractionPosture || 0),
-      directness: Number(profile.directness || 0),
-      latinatePreference: Number(profile.latinatePreference || 0),
-      abbreviationDensity: Number(profile.abbreviationDensity || 0),
-      orthographicLooseness: Number(profile.orthographicLooseness || 0),
-      fragmentPressure: Number(profile.fragmentPressure || 0),
-      conversationalPosture: Number(profile.conversationalPosture || 0),
-      syntacticBranchingDepth: Number(profile.syntacticBranchingDepth || 0),
-      structuralFriction: Number(profile.structuralFriction || 0),
-      lexicalEntropyScore: Number(profile.lexicalEntropyScore || 0),
-      characterEntropyBits: Number(profile.characterEntropyBits || 0),
-      tokenEntropyBits: Number(profile.tokenEntropyBits || 0),
-      transitionVariance: Number(profile.transitionVariance || 0),
-      acousticWeight: Number(profile.acousticWeight || 0),
-      registerMode: String(profile.registerMode || ''),
-      surfaceMarkerProfile: clone(profile.surfaceMarkerProfile || {}),
-      functionWordProfile: clone(profile.functionWordProfile || {}),
-      wordLengthProfile: clone(profile.wordLengthProfile || {}),
-      charTrigramProfile: topWeighted(profile.charTrigramProfile || {}, 80)
-    };
-  }
-
-  function compactRichProvenance(rich) {
-    if (!rich || typeof rich !== 'object') return null;
-    return {
-      schema_version: rich.schema_version,
-      rich_fingerprint: rich.rich_fingerprint,
-      engine: clone(rich.engine),
-      triad_profile: clone(rich.triad_profile),
-      cross_lane_divergence: clone(rich.cross_lane_divergence),
-      traceability_surface: clone(rich.traceability_surface),
-      compatibility_note: rich.compatibility_note
-    };
-  }
-
-  function promoteRichLaneProfiles(packet, rich) {
-    var signatures = packet && packet.analysis && packet.analysis.segment_cadence_signatures;
-    var profiles = rich && rich.per_lane_profiles;
-    if (!signatures || !profiles || typeof signatures !== 'object' || typeof profiles !== 'object') return;
-    KEYS.forEach(function (key) {
-      if (!signatures[key] || typeof signatures[key] !== 'object') return;
-      var compact = compactLaneRichProfile(profiles[key]);
-      signatures[key].rich_profile_schema = compact ? RICH_PROFILE_SCHEMA : null;
-      signatures[key].rich_profile_source = compact ? RICH_PROFILE_SOURCE : 'not available';
-      signatures[key].rich_profile = compact;
+  function rawSegmentsFromSaved(saved) {
+    var source = saved && saved.ingress && saved.ingress.segments ? saved.ingress.segments : null;
+    if (!source && saved && saved.sealed && saved.sealed.segments) source = saved.sealed.segments;
+    if (!source || typeof source !== 'object') return null;
+    var out = {};
+    ['future_self', 'past_self', 'higher_self'].forEach(function (key) {
+      var value = source[key];
+      out[key] = typeof value === 'string' ? value : (value && typeof value.raw_text === 'string' ? value.raw_text : '');
     });
+    return out.future_self && out.past_self && out.higher_self ? out : null;
   }
 
-  function attachRichLaneSemantics(packet) {
-    if (!packet || !packet.issuance || typeof packet.issuance !== 'object') return;
-    packet.issuance.stylometric_provenance = packet.issuance.stylometric_provenance && typeof packet.issuance.stylometric_provenance === 'object' ? packet.issuance.stylometric_provenance : {};
-    packet.issuance.stylometric_provenance.rich_lane_profile_semantics = {
-      status: 'present when export hardening includes segment_cadence_signatures.*.rich_profile',
-      claim_supported: 'export-hardened per-lane authorship-signal enrichment',
-      claim_limit: 'not native Safe Harbor birthplace authority unless packet_authority_surface says native'
-    };
+  async function finalizerApi() {
+    var api = window.TD613_SAFE_HARBOR_NATIVE_FINALIZER;
+    if (api && typeof api.finalizeSafeHarborPacket === 'function') return api;
+    if (!finalizerPromise) finalizerPromise = import(localModuleUrl('safe-harbor-native-finalizer.js')).catch(function () { return null; });
+    var mod = await finalizerPromise;
+    if (mod && typeof mod.finalizeSafeHarborPacket === 'function') return mod;
+    api = window.TD613_SAFE_HARBOR_NATIVE_FINALIZER;
+    return api && typeof api.finalizeSafeHarborPacket === 'function' ? api : null;
   }
 
-  async function attachRichStylometry(packet, saved) {
-    var segments = saved && saved.ingress && saved.ingress.segments ? saved.ingress.segments : null;
-    if (!packet || !hasUsableSegments(segments)) return packet;
-    var builder = await richBuilder();
-    if (typeof builder !== 'function') return packet;
-    var rich = builder(segments);
-    if (!rich || typeof rich !== 'object') return packet;
-    packet.analysis = packet.analysis && typeof packet.analysis === 'object' ? packet.analysis : {};
-    packet.analysis.rich_stylometry = clone(rich);
-    packet.issuance = packet.issuance && typeof packet.issuance === 'object' ? packet.issuance : {};
-    packet.issuance.stylometric_provenance = packet.issuance.stylometric_provenance && typeof packet.issuance.stylometric_provenance === 'object' ? packet.issuance.stylometric_provenance : {};
-    packet.issuance.stylometric_provenance.rich_stylometry = compactRichProvenance(rich);
-    promoteRichLaneProfiles(packet, rich);
-    attachRichLaneSemantics(packet);
-    return packet;
+  async function phase5Api() {
+    var api = window.TD613_SAFE_HARBOR_PHASE5;
+    if (api && typeof api.buildPhase5ReplayHardening === 'function') return api;
+    if (!phase5Promise) phase5Promise = import(localModuleUrl('safe-harbor-phase5-replay-hardening.js')).catch(function () { return null; });
+    var mod = await phase5Promise;
+    if (mod && typeof mod.buildPhase5ReplayHardening === 'function') return mod;
+    api = window.TD613_SAFE_HARBOR_PHASE5;
+    return api && typeof api.buildPhase5ReplayHardening === 'function' ? api : null;
   }
 
-  function allRichProfilesPresent(packet) {
-    var signatures = packet && packet.analysis && packet.analysis.segment_cadence_signatures;
-    return Boolean(signatures && KEYS.every(function (key) { return signatures[key] && signatures[key].rich_profile_schema === RICH_PROFILE_SCHEMA && signatures[key].rich_profile; }));
-  }
+  function nativeBorn(packet) { return Boolean(packet && packet.native_spine_purification && packet.native_spine_purification.status === 'native'); }
+  function exportHardened(packet) { return Boolean(packet && packet.native_spine_purification && packet.native_spine_purification.status === 'export-hardened'); }
 
-  function stable(value) {
-    if (value === null || typeof value !== 'object') return JSON.stringify(value);
-    if (Array.isArray(value)) return '[' + value.map(function (item) { return stable(item); }).join(',') + ']';
-    return '{' + Object.keys(value).filter(function (key) { return value[key] !== undefined; }).sort().map(function (key) { return JSON.stringify(key) + ':' + stable(value[key]); }).join(',') + '}';
-  }
-
-  async function checksum(value) {
-    var body = typeof value === 'string' ? value : JSON.stringify(value);
-    if (window.crypto && window.crypto.subtle && window.TextEncoder) {
-      try {
-        var digest = await window.crypto.subtle.digest('SHA-256', new TextEncoder().encode(body));
-        return 'sha256:' + Array.from(new Uint8Array(digest)).map(function (b) { return b.toString(16).padStart(2, '0'); }).join('');
-      } catch (error) {}
-    }
-    return null;
-  }
-
-  function packetHashMaterial(packet) {
-    var material = clone(packet);
-    delete material.packet_hash_sha256;
-    delete material.phase5_replay_hardening;
-    delete material.export_quarantine;
-    if (material.renderer_authority_metadata) material.renderer_authority_metadata.packet_hash_sha256 = null;
-    if (material.signature) {
-      material.signature.sig = null;
-      material.signature.attached_at = null;
-      if (material.signature.status === 'sealed') material.signature.status = 'declared';
-    }
-    return material;
-  }
-
-  async function recomputePacketHash(packet) {
-    var digest = await checksum(stable(packetHashMaterial(packet)));
-    if (digest) packet.packet_hash_sha256 = digest;
-    return packet;
-  }
-
-  function markHashSemantics(packet, v3PreimageHash) {
-    if (!packet || !allRichProfilesPresent(packet)) return packet;
-    packet.rich_stylometry_hash_semantics = {
-      native_lane_rich_profile_hash_covered: true,
-      bridge_rich_stylometry_hash_covered: true,
-      v3_preimage_packet_hash_sha256: v3PreimageHash || packet.packet_hash_sha256 || null,
-      notes: 'Phase 4 export hardening promotes lane rich_profile, issues v3 when eligible, and recomputes packet_hash_sha256 before public export. composePacket remains the packet birthplace.'
-    };
-    return packet;
-  }
-
-  function markPhase5HashSemantics(packet) {
-    packet.phase5_hash_semantics = {
-      phase5_replay_hardening_hash_covered: false,
-      phase5_replay_hardening_hash_excluded: true,
-      reason: 'Phase 5 replay hardening audits packet hash and authority surfaces; it is explicitly hash-excluded to avoid self-referential replay material.'
-    };
-    return packet;
-  }
-
-  async function attachV3Issuance(packet) {
-    if (!packet || !allRichProfilesPresent(packet)) return packet;
-    var api = await v3Api();
-    if (!api || typeof api.buildV3Issuance !== 'function') return packet;
-    packet.issuance = packet.issuance && typeof packet.issuance === 'object' ? packet.issuance : {};
-    if (!packet.issuance.v3 || packet.issuance.v3.status !== 'issued') {
-      packet.issuance.v3 = await api.buildV3Issuance(packet);
-      packet.issuance.badge_number_v3 = packet.issuance.v3.badge_number_v3 || null;
-      packet.issuance.stylometric_fingerprint_v3 = packet.issuance.v3.stylometric_fingerprint_v3 || null;
-    }
-    return packet;
-  }
-
-  async function attachPhase4Authority(packet, packetHashRecomputed) {
-    var api = await authorityApi();
-    if (!api || typeof api.attachPhase4Authority !== 'function') return packet;
-    return api.attachPhase4Authority(packet, { mode: 'export-normalized', packetHashRecomputed: packetHashRecomputed });
-  }
-
-  async function attachPhase5Hardening(packet) {
+  async function refreshPhase5Only(packet) {
     var api = await phase5Api();
     if (!api || typeof api.buildPhase5ReplayHardening !== 'function') return packet;
-    markPhase5HashSemantics(packet);
-    var hardening = await api.buildPhase5ReplayHardening(packet, { includeTamperFixtures: false });
-    if (typeof api.applyPhase5Quarantine === 'function') return api.applyPhase5Quarantine(packet, hardening);
-    packet.phase5_replay_hardening = hardening;
-    return packet;
+    var out = clone(packet);
+    var hardening = await api.buildPhase5ReplayHardening(out, { includeTamperFixtures: false });
+    out.phase5_replay_hardening = hardening;
+    if (typeof api.applyPhase5Quarantine === 'function') out = api.applyPhase5Quarantine(out, hardening);
+    return out;
+  }
+
+  async function finalizePacket(packet, saved, mode) {
+    if (!packet || typeof packet !== 'object') return packet;
+    if (nativeBorn(packet)) return refreshPhase5Only(packet);
+    var api = await finalizerApi();
+    if (!api || typeof api.finalizeSafeHarborPacket !== 'function') return packet;
+    var segments = rawSegmentsFromSaved(saved);
+    var chosenMode = mode || (segments ? 'export-normalized' : 'legacy-repair');
+    if (!segments && chosenMode !== 'native') return refreshPhase5Only(packet);
+    return api.finalizeSafeHarborPacket(packet, {
+      mode: chosenMode,
+      segments: segments,
+      includePhase5: true,
+      includeTamperFixtures: false,
+      allowV3Rebuild: false,
+      rawTextExportAllowed: false
+    });
   }
 
   async function normalizePacket(packet, saved) {
     if (!packet || typeof packet !== 'object') return packet;
-    var patched = needsHistory(packet) ? addHistory(clone(packet)) : clone(packet);
-    delete patched.phase5_replay_hardening;
-    delete patched.export_quarantine;
-    patched = await attachRichStylometry(patched, saved);
-    markHashSemantics(patched, patched.packet_hash_sha256 || null);
-    await recomputePacketHash(patched);
-    markHashSemantics(patched, patched.packet_hash_sha256 || null);
-    patched = await attachV3Issuance(patched);
-    patched = await attachPhase4Authority(patched, true);
-    await recomputePacketHash(patched);
-    patched = await attachPhase4Authority(patched, true);
-    patched = await attachPhase5Hardening(patched);
-    return patched;
+    if (nativeBorn(packet)) return refreshPhase5Only(packet);
+    if (exportHardened(packet)) return refreshPhase5Only(packet);
+    return finalizePacket(packet, saved, 'export-normalized');
   }
 
-  async function activePacket() {
+  async function nativeFinalizeSavedPacket() {
     var saved = savedSession();
-    var packet = saved && saved.packet ? saved.packet : null;
-    if (!packet) return null;
-    var patched = await normalizePacket(packet, saved);
-    if (JSON.stringify(patched) !== JSON.stringify(packet)) {
-      saved.packet = patched;
-      storeSession(saved);
-    }
-    return patched;
-  }
-
-  function activePacketSync() {
-    var saved = savedSession();
-    return saved && saved.packet ? addHistory(clone(saved.packet)) : null;
+    if (!saved || !saved.packet) return null;
+    var finalized = await finalizePacket(saved.packet, saved, 'native');
+    saved.packet = finalized;
+    storeSession(saved);
+    syncPreview(finalized);
+    return finalized;
   }
 
   function packetExportReady(packet) {
     if (!packet || !packet.bridge || !packet.bridge.export_gate || !packet.bridge.export_gate.ready) return false;
     return !(packet.phase5_replay_hardening && (packet.phase5_replay_hardening.status === 'quarantine' || packet.phase5_replay_hardening.status === 'fail'));
   }
-
   function packetFilename(packet) {
     var helperTs = packet && packet.intake && packet.intake.helper_filename_safe;
     var created = packet && (packet.created_at || (packet.receipt && packet.receipt.minted_at));
@@ -349,7 +117,6 @@
     var batch = packet && packet.intake && packet.intake.selected_batch_id ? '-' + packet.intake.selected_batch_id : '';
     return 'td613-packet' + batch + '-' + stage + shi + v3 + '-' + ts + '.json';
   }
-
   function downloadJson(filename, value) {
     var blob = new Blob([JSON.stringify(value, null, 2) + '\n'], { type: 'application/json;charset=utf-8' });
     var url = URL.createObjectURL(blob);
@@ -361,14 +128,12 @@
     a.remove();
     window.setTimeout(function () { URL.revokeObjectURL(url); }, 0);
   }
-
   function copyText(value) {
     var body = String(value || '');
     if (navigator.clipboard && navigator.clipboard.writeText) return navigator.clipboard.writeText(body).catch(function () { fallbackCopy(body); });
     fallbackCopy(body);
     return Promise.resolve();
   }
-
   function fallbackCopy(value) {
     var textarea = document.createElement('textarea');
     textarea.value = String(value || '');
@@ -380,55 +145,57 @@
     try { document.execCommand('copy'); } catch (error) {}
     textarea.remove();
   }
-
   function syncPreview(packet) {
     var preview = $('packetPreview');
     if (preview && packet) preview.textContent = JSON.stringify(packet, null, 2);
+    var schema = $('forensicSchemaPreview');
+    if (schema && packet) schema.textContent = JSON.stringify(packet, null, 2);
     var hash = $('packetHashReadout');
     if (hash && packet && packet.packet_hash_sha256) hash.textContent = packet.packet_hash_sha256;
     var badge = $('badgeStatusReadout');
-    if (badge && packet && packet.issuance && packet.issuance.badge_number_v3) badge.textContent = packet.issuance.badge_number + ' / ' + packet.issuance.badge_number_v3;
+    if (badge && packet && packet.issuance) badge.textContent = packet.issuance.badge_number_v3 ? packet.issuance.badge_number + ' / ' + packet.issuance.badge_number_v3 : (packet.issuance.badge_number || 'not issued');
+    var phase = $('packetPhase');
+    if (phase && packet) {
+      var spine = packet.native_spine_purification && packet.native_spine_purification.status;
+      var hardening = packet.phase5_replay_hardening && packet.phase5_replay_hardening.status;
+      phase.textContent = hardening === 'quarantine' ? 'Native Spine: quarantined' : spine === 'native' ? 'Native Spine: native-born' : spine === 'export-hardened' ? 'Native Spine: export-hardened' : 'Native Spine: legacy v2';
+    }
   }
-
-  async function normalizeVisiblePacket() {
-    var packet = await activePacket();
-    if (packet) syncPreview(packet);
-    return packet;
+  async function activePacket() {
+    var saved = savedSession();
+    var packet = saved && saved.packet ? saved.packet : null;
+    if (!packet) return null;
+    var patched = await normalizePacket(packet, saved);
+    if (JSON.stringify(patched) !== JSON.stringify(packet)) {
+      saved.packet = patched;
+      storeSession(saved);
+    }
+    return patched;
   }
-
-  async function packetText() {
-    var packet = await activePacket();
-    if (packet) return JSON.stringify(packet, null, 2) + '\n';
-    var preview = $('forensicSchemaPreview');
-    return preview ? text(preview.textContent || preview.value || '') : '';
-  }
+  function activePacketSync() { var saved = savedSession(); return saved && saved.packet ? clone(saved.packet) : null; }
+  async function normalizeVisiblePacket() { var packet = await activePacket(); if (packet) syncPreview(packet); return packet; }
+  async function packetText() { var packet = await activePacket(); return packet ? JSON.stringify(packet, null, 2) + '\n' : ''; }
 
   function patchProbeText(raw) {
     var body = String(raw || '');
     if (!body) return body;
     var parsed = parse(body);
-    if (parsed && typeof parsed === 'object') return JSON.stringify(addHistoryAfterPublicFooter(parsed), null, 2);
+    if (parsed && typeof parsed === 'object') return JSON.stringify(parsed, null, 2);
     if (body.indexOf('- canonical_footer:') === -1 || body.indexOf('- historical_example:') !== -1) return body;
     return body.replace(/(^- canonical_footer:.*$)/m, '$1\n- historical_example: ' + HISTORICAL_EXAMPLE);
   }
-
   function patchProbeOutput() {
     var node = $('probeOutput');
     if (!node) return null;
     var current = 'value' in node ? node.value : node.textContent;
     var patched = patchProbeText(current);
-    if (patched !== current) {
-      if ('value' in node) node.value = patched;
-      else node.textContent = patched;
-    }
+    if (patched !== current) { if ('value' in node) node.value = patched; else node.textContent = patched; }
     return patched;
   }
-
   async function openTxt() {
-    if (!packetExportReady(activePacketSync())) { syncButton(); return false; }
-    var body = await packetText();
-    if (!body) { syncButton(); return false; }
-    var blob = new Blob([body], { type: 'text/plain;charset=utf-8' });
+    var packet = await normalizeVisiblePacket();
+    if (!packet || !packetExportReady(packet)) { syncButton(); return false; }
+    var blob = new Blob([JSON.stringify(packet, null, 2) + '\n'], { type: 'text/plain;charset=utf-8' });
     var url = URL.createObjectURL(blob);
     var opened = window.open(url, '_blank', 'noopener,noreferrer');
     if (!opened) {
@@ -444,9 +211,7 @@
     window.setTimeout(function () { URL.revokeObjectURL(url); }, 120000);
     return true;
   }
-
   function button() { return $('openPacketTxtPreview'); }
-
   function bindButton() {
     var node = button();
     if (!node) return null;
@@ -456,45 +221,35 @@
     }
     return node;
   }
-
   function bindPacketExports() {
     var exportButton = $('exportPacketPreview');
     if (exportButton && exportButton.dataset.richStylometryExport !== VERSION) {
       exportButton.dataset.richStylometryExport = VERSION;
       exportButton.addEventListener('click', function (event) {
-        var raw = activePacketSync();
-        if (!packetExportReady(raw)) return;
         event.preventDefault();
         event.stopImmediatePropagation();
-        void normalizeVisiblePacket().then(function (packet) { if (packet) downloadJson(packetFilename(packet), packet); });
+        void normalizeVisiblePacket().then(function (packet) { if (packet && packetExportReady(packet)) downloadJson(packetFilename(packet), packet); });
       }, true);
     }
-
     var packetCopyButton = $('copyPacketPreview');
     if (packetCopyButton && packetCopyButton.dataset.richStylometryCopy !== VERSION) {
       packetCopyButton.dataset.richStylometryCopy = VERSION;
       packetCopyButton.addEventListener('click', function (event) {
-        var raw = activePacketSync();
-        if (!raw) return;
         event.preventDefault();
         event.stopImmediatePropagation();
         void normalizeVisiblePacket().then(function (packet) { if (packet) void copyText(JSON.stringify(packet, null, 2) + '\n'); });
       }, true);
     }
-
     var exportCopyButton = $('copyForensicSchemaPreview');
     if (exportCopyButton && exportCopyButton.dataset.richStylometryCopy !== VERSION) {
       exportCopyButton.dataset.richStylometryCopy = VERSION;
       exportCopyButton.addEventListener('click', function (event) {
-        var raw = activePacketSync();
-        if (!packetExportReady(raw)) return;
         event.preventDefault();
         event.stopImmediatePropagation();
         void normalizeVisiblePacket().then(function (packet) { if (packet) void copyText(JSON.stringify(packet, null, 2) + '\n'); });
       }, true);
     }
   }
-
   function bindProbeOutputs() {
     Array.from(document.querySelectorAll('[data-probe-variant]')).forEach(function (buttonNode) {
       if (buttonNode.dataset.footerHistoryProbe === VERSION) return;
@@ -507,27 +262,28 @@
       copyProbe.addEventListener('click', function () { patchProbeOutput(); }, true);
     }
   }
-
   function patchApi() {
     var api = window.TD613SafeHarbor;
-    if (!api || api.__richStylometryExportPatch === VERSION) return;
+    if (!api || api.__phase6NativeCallsitePatch === VERSION) return;
+    if (typeof api.mintStagedPacket === 'function') {
+      var originalMint = api.mintStagedPacket.bind(api);
+      api.mintStagedPacket = async function () { var result = await originalMint(); await nativeFinalizeSavedPacket(); return result; };
+    }
     if (typeof api.buildPacket === 'function') {
       var originalBuildPacket = api.buildPacket.bind(api);
-      api.buildPacket = async function () { var packet = await originalBuildPacket(); return normalizePacket(packet, savedSession()); };
+      api.buildPacket = async function () {
+        var packet = await originalBuildPacket();
+        var saved = savedSession();
+        if (packet && saved) return finalizePacket(packet, saved, nativeBorn(packet) ? null : 'native');
+        return packet;
+      };
     }
     if (typeof api.buildProbe === 'function') {
       var originalBuildProbe = api.buildProbe.bind(api);
-      api.buildProbe = function (variant) {
-        var result = originalBuildProbe(variant);
-        var patched = patchProbeText(result);
-        var node = $('probeOutput');
-        if (node) { if ('value' in node) node.value = patched; else node.textContent = patched; }
-        return patched;
-      };
+      api.buildProbe = function (variant) { var result = originalBuildProbe(variant); var patched = patchProbeText(result); var node = $('probeOutput'); if (node) { if ('value' in node) node.value = patched; else node.textContent = patched; } return patched; };
     }
-    api.__richStylometryExportPatch = VERSION;
+    api.__phase6NativeCallsitePatch = VERSION;
   }
-
   function syncButton() {
     var node = bindButton();
     bindPacketExports();
@@ -539,9 +295,8 @@
     var ready = packetExportReady(activePacketSync());
     node.disabled = !ready;
     node.setAttribute('aria-disabled', ready ? 'false' : 'true');
-    node.title = ready ? 'Open the sealed packet as plain text in a new tab' : 'Open .txt unlocks after the packet is sealed/export-ready and Phase 5 is not quarantined';
+    node.title = ready ? 'Open the sealed packet as plain text in a new tab' : 'Open .txt unlocks after the packet is export-ready and Phase 5 is not quarantined';
   }
-
   function boot() {
     document.documentElement.classList.add('safe-harbor-pr169');
     bindButton();
@@ -549,36 +304,17 @@
     bindProbeOutputs();
     patchApi();
     syncButton();
-    window.__TD613_SAFE_HARBOR_PR169__ = {
-      version: VERSION,
-      button: Boolean(button()),
-      at: new Date().toISOString(),
-      footer_history: HISTORICAL_EXAMPLE,
-      rich_stylometry_export: true,
-      rich_lane_profiles: true,
-      phase4_authority_governance: true,
-      phase5_replay_hardening: true
-    };
+    window.__TD613_SAFE_HARBOR_PR169__ = { version: VERSION, button: Boolean(button()), at: new Date().toISOString(), footer_history: HISTORICAL_EXAMPLE, phase6_native_callsite: true, normalizer_role: 'verification-or-export-hardening-fallback' };
   }
-
-  if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', boot, { once: true });
-  else boot();
+  if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', boot, { once: true }); else boot();
   window.addEventListener('load', boot);
   window.addEventListener('pageshow', boot);
   window.addEventListener('storage', syncButton);
+  window.addEventListener('td613:safe-harbor:native-finalizer-ready', syncButton);
   document.addEventListener('td613:safe-harbor-packet', syncButton);
   ['click', 'input', 'change'].forEach(function (type) { document.addEventListener(type, function () { window.setTimeout(syncButton, 0); }, true); });
   [100, 360, 900, 1800].forEach(function (delay) { window.setTimeout(syncButton, delay); });
   window.setInterval(syncButton, 900);
 
-  window.TD613_SAFE_HARBOR_PR169 = Object.freeze({
-    version: VERSION,
-    boot: boot,
-    openTxt: openTxt,
-    syncButton: syncButton,
-    historicalExample: HISTORICAL_EXAMPLE,
-    patchProbeText: patchProbeText,
-    normalizePacket: normalizePacket,
-    compactLaneRichProfile: compactLaneRichProfile
-  });
+  window.TD613_SAFE_HARBOR_PR169 = Object.freeze({ version: VERSION, boot: boot, openTxt: openTxt, syncButton: syncButton, historicalExample: HISTORICAL_EXAMPLE, patchProbeText: patchProbeText, normalizePacket: normalizePacket });
 }());
