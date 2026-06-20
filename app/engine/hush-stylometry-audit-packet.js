@@ -142,7 +142,7 @@ function cadenceAlignment(input = {}, auditInput = {}) {
       register_stability: Number(source.metric_scores?.register_stability ?? source.metricScores?.registerStability ?? score),
       cadence_variance: Number(source.metric_scores?.cadence_variance ?? source.metricScores?.cadenceVariance ?? score)
     }),
-    interpretation: source.interpretation || 'bounded empirical interpretation; not identity proof'
+    interpretation: source.interpretation || 'bounded empirical interpretation; identity not proven'
   });
 }
 
@@ -211,16 +211,17 @@ function riskProfile(input = {}) {
 function releaseRecommendation(input = {}, risk = {}, cadence = {}, flattening = {}, auditInput = {}) {
   const source = input.release_recommendation || input.releaseRecommendation || {};
   const highRisk = ['high', 'severe'].includes(risk.unsafe_identifiability_risk) || ['high', 'severe'].includes(risk.overfit_risk) || ['high', 'severe'].includes(risk.private_cadence_exposure_risk);
+  const localPrivateRaw = auditInput.audit_mode === 'local-private-raw';
   const insufficient = cadence.confidence === 'insufficient' || auditInput.audit_mode === 'response-hash-only';
   let releaseClass = source.release_class || source.releaseClass;
-  if (!releaseClass) releaseClass = insufficient ? 'insufficient-evidence' : highRisk ? 'operator-review' : ['high', 'severe'].includes(flattening.flattening_band) ? 'revise-before-release' : cadence.alignment_band === 'aligned' && risk.unsafe_identifiability_risk === 'low' ? 'release-safe' : 'operator-review';
+  if (!releaseClass) releaseClass = insufficient ? 'insufficient-evidence' : highRisk ? 'operator-review' : localPrivateRaw ? 'operator-review' : ['high', 'severe'].includes(flattening.flattening_band) ? 'revise-before-release' : cadence.alignment_band === 'aligned' && risk.unsafe_identifiability_risk === 'low' ? 'release-safe' : 'operator-review';
   return Object.freeze({
     schema_version: 'td613.hush.stylometry-release-recommendation/v1',
     release_class: releaseClass,
-    public_release_allowed: bool(source.public_release_allowed ?? source.publicReleaseAllowed, releaseClass === 'release-safe' && !highRisk),
+    public_release_allowed: bool(source.public_release_allowed ?? source.publicReleaseAllowed, releaseClass === 'release-safe' && !highRisk && !localPrivateRaw),
     provider_rewrite_allowed: bool(source.provider_rewrite_allowed ?? source.providerRewriteAllowed, releaseClass === 'revise-before-release'),
     mask_tuning_allowed: bool(source.mask_tuning_allowed ?? source.maskTuningAllowed, false),
-    next_action: source.next_action || source.nextAction || (releaseClass === 'release-safe' ? 'accept' : releaseClass === 'revise-before-release' ? 'revise' : releaseClass === 'block-release' ? 'block' : insufficient ? 'collect-more-evidence' : 'run-adversarial-audit'),
+    next_action: source.next_action || source.nextAction || (localPrivateRaw ? 'run-adversarial-audit' : releaseClass === 'release-safe' ? 'accept' : releaseClass === 'revise-before-release' ? 'revise' : releaseClass === 'block-release' ? 'block' : insufficient ? 'collect-more-evidence' : 'run-adversarial-audit'),
     reasons: asArray(source.reasons)
   });
 }
