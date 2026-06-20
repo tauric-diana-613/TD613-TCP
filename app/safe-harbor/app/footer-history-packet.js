@@ -1,6 +1,6 @@
 (function () {
   'use strict';
-  const VERSION = 'safe-harbor-footer-history/v1';
+  const VERSION = 'safe-harbor-footer-history/v2-session-gate';
   const HISTORICAL_EXAMPLE = 'TD613-Binding:#9B07D8B/SAC[X6ZNK5NO51] · payload 5 · 2025-10-17 · ⟐';
   const enc = new TextEncoder();
   let busy = false;
@@ -88,12 +88,23 @@
     }
   }
 
+  function loadScriptOnce(id, src) {
+    window.setTimeout(function () {
+      if (document.getElementById(id)) return;
+      const script = document.createElement('script');
+      script.id = id;
+      script.src = src;
+      (document.body || document.documentElement).appendChild(script);
+    }, 0);
+  }
+
   function boot() {
     const node = $('packetPreview');
     if (node && node.dataset.footerHistoryPacket !== VERSION) {
       node.dataset.footerHistoryPacket = VERSION;
       new MutationObserver(() => window.setTimeout(refresh, 0)).observe(node, { childList: true, characterData: true, subtree: true });
     }
+    loadScriptOnce('td613SafeHarborSessionGate', 'app/safe-harbor-session-gate.js?v=20260620-phase9-1c');
     window.setTimeout(refresh, 0);
     window.setTimeout(refresh, 300);
     window.setTimeout(refresh, 900);
