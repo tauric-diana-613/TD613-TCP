@@ -48,6 +48,9 @@ function packetHashReplayMaterial(packet) {
   delete material.phase5_replay_hardening;
   delete material.export_quarantine;
   delete material.phase5_hash_semantics;
+  delete material.hash_topology;
+  delete material.native_spine_purification;
+  delete material.phase6_migration_policy;
   if (material.renderer_authority_metadata) material.renderer_authority_metadata.packet_hash_sha256 = null;
   if (material.signature) {
     material.signature.sig = null;
@@ -108,7 +111,10 @@ export async function verifyHashReplay(packet) {
   const declared = packet && packet.packet_hash_sha256 ? String(packet.packet_hash_sha256) : null;
   if (!declared) return Object.freeze({ status: 'unavailable', packet_hash_sha256: null, expected_packet_hash_sha256: null });
   const surface = packet && packet.packet_authority_surface ? packet.packet_authority_surface : null;
-  if (!surface || surface.packet_hash_recomputed_after_export_hardening !== true) return Object.freeze({ status: 'not-recomputed', packet_hash_sha256: declared, expected_packet_hash_sha256: null });
+  const recomputed = Boolean(surface && (surface.packet_hash_recomputed_after_export_hardening === true || surface.packet_hash_recomputed_after_native_finalization === true));
+  if (!recomputed) return Object.freeze({ status: 'not-recomputed', packet_hash_sha256: declared, expected_packet_hash_sha256: null });
+  const topologyFinal = packet && packet.hash_topology && packet.hash_topology.final_packet_hash_sha256 ? String(packet.hash_topology.final_packet_hash_sha256) : null;
+  if (topologyFinal && topologyFinal !== declared) return Object.freeze({ status: 'fail', packet_hash_sha256: declared, expected_packet_hash_sha256: topologyFinal, reason: 'hash_topology final hash mismatch' });
   const digest = await sha256Hex(stableForPacketHash(packetHashReplayMaterial(packet)));
   if (!digest) return Object.freeze({ status: 'not-recomputed', packet_hash_sha256: declared, expected_packet_hash_sha256: null });
   const expected = 'sha256:' + digest;
@@ -116,7 +122,9 @@ export async function verifyHashReplay(packet) {
 }
 export function classifyAuthoritySurface(packet) {
   const surface = packet && packet.packet_authority_surface ? packet.packet_authority_surface : null;
-  if (surface && surface.rich_profile_promotion === 'native' && surface.v3_issuance === 'native') return Object.freeze({ status: 'native', packet_authority_surface: clone(surface) });
+  const spine = packet && packet.native_spine_purification ? packet.native_spine_purification : null;
+  if (spine && spine.status === 'native' && surface && surface.rich_profile_promotion === 'native' && surface.v3_issuance === 'native') return Object.freeze({ status: 'native', packet_authority_surface: clone(surface) });
+  if (surface && surface.rich_profile_promotion === 'native' && surface.v3_issuance === 'native') return Object.freeze({ status: 'native-rich-unattested', packet_authority_surface: clone(surface) });
   if (surface && surface.packet_hash_recomputed_after_export_hardening === true) return Object.freeze({ status: 'export-hardened', packet_authority_surface: clone(surface) });
   if (hasAllNativeRichProfiles(packet)) return Object.freeze({ status: 'native-rich-unattested', packet_authority_surface: clone(surface) });
   if (packet && packet.analysis && packet.analysis.rich_stylometry) return Object.freeze({ status: 'bridge-only', packet_authority_surface: clone(surface) });
@@ -125,7 +133,18 @@ export function classifyAuthoritySurface(packet) {
 export function buildPacketAuthoritySurface(packet, options = {}) {
   const mode = options.mode || (hasAllNativeRichProfiles(packet) ? 'export-normalized' : 'legacy');
   const native = mode === 'native';
-  return Object.freeze({ schema_version: AUTHORITY_SURFACE_SCHEMA, native_constructor: 'app/safe-harbor/app/main.js::composePacket', export_hardening_layer: native ? 'verification-only' : 'app/safe-harbor/app/safe-harbor-pr169-packet-vault-direct.js', rich_profile_promotion: native ? 'native' : (hasAllNativeRichProfiles(packet) ? 'export-normalized' : 'legacy'), v3_issuance: native ? 'native' : (options.v3Issued ? 'export-normalized' : 'blocked-or-unavailable'), packet_hash_recomputed_after_export_hardening: !native && Boolean(options.packetHashRecomputed), authority_note: native ? 'Native constructor finalized this packet.' : 'Export hardening finalized this packet for public export.' });
+  const richPresent = hasAllNativeRichProfiles(packet);
+  const v3Issued = Boolean(options.v3Issued);
+  return Object.freeze({
+    schema_version: AUTHORITY_SURFACE_SCHEMA,
+    native_constructor: 'app/safe-harbor/app/main.js::composePacket',
+    export_hardening_layer: native ? 'verification-only' : 'app/safe-harbor/app/safe-harbor-pr169-packet-vault-direct.js',
+    rich_profile_promotion: native ? 'native' : (richPresent ? 'export-normalized' : 'legacy'),
+    v3_issuance: native ? 'native' : (v3Issued ? 'export-normalized' : 'blocked-or-unavailable'),
+    packet_hash_recomputed_after_export_hardening: !native && Boolean(options.packetHashRecomputed),
+    packet_hash_recomputed_after_native_finalization: native && Boolean(options.packetHashRecomputed),
+    authority_note: native ? 'Native constructor finalized this packet through the shared Safe Harbor native finalizer.' : 'Export hardening finalized this packet for public export.'
+  });
 }
 export function buildRecallGovernance(packet) {
   const issuance = packet && packet.issuance ? packet.issuance : {};
