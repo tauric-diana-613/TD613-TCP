@@ -13,7 +13,8 @@ function isObject(value) { return Boolean(value && typeof value === 'object' && 
 export function isShiNumber(value, bindingFragment = '9B07D8B') {
   const normalized = normalizeShiNumber(value);
   const fragment = String(bindingFragment || '9B07D8B').replace(/^#/, '').toUpperCase();
-  return new RegExp('^TD613-SH-' + fragment.replace(/[.*+?^${}()|[\]\\]/g, '\\$&') + '-[A-F0-9]{8}$', 'u').test(normalized);
+  const escaped = fragment.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+  return new RegExp('^TD613-SH-' + escaped + '-[A-F0-9]{8}$', 'u').test(normalized);
 }
 
 export function parseReopenJson(input) {
@@ -28,18 +29,12 @@ export function unwrapSafeHarborPacket(parsed) {
   if (!root) return { packet: null, wrapper: null, source: 'invalid' };
   if (root.issuance && root.issuance.badge_number) return { packet: root, wrapper: null, source: 'root-packet' };
   if (root.packet && root.packet.issuance && root.packet.issuance.badge_number) return { packet: root.packet, wrapper: root, source: 'packet-wrapper' };
-  if (root.safe_harbor && root.safe_harbor.staged_snapshot && root.safe_harbor.staged_snapshot.issuance && root.safe_harbor.staged_snapshot.issuance.badge_number) {
-    return { packet: root.safe_harbor.staged_snapshot, wrapper: root, source: 'safe-harbor-staged-snapshot' };
-  }
-  if (root.safe_harbor && root.safe_harbor.issuance && root.safe_harbor.issuance.badge_number) {
-    return { packet: Object.assign({}, root, root.safe_harbor), wrapper: root, source: 'safe-harbor-merged-wrapper' };
-  }
+  if (root.safe_harbor && root.safe_harbor.staged_snapshot && root.safe_harbor.staged_snapshot.issuance && root.safe_harbor.staged_snapshot.issuance.badge_number) return { packet: root.safe_harbor.staged_snapshot, wrapper: root, source: 'safe-harbor-staged-snapshot' };
+  if (root.safe_harbor && root.safe_harbor.issuance && root.safe_harbor.issuance.badge_number) return { packet: Object.assign({}, root, root.safe_harbor), wrapper: root, source: 'safe-harbor-merged-wrapper' };
   return { packet: root, wrapper: null, source: 'unwrapped-fallback' };
 }
 
-function legacyHandshakeFrom(parsed, packet) {
-  return String((parsed && parsed.seal_handshake) || (packet && packet.seal_handshake) || '');
-}
+function legacyHandshakeFrom(parsed, packet) { return String((parsed && parsed.seal_handshake) || (packet && packet.seal_handshake) || ''); }
 
 export function classifyReopenPacket(parsed, packet) {
   const families = [];
@@ -69,11 +64,8 @@ export function validateReopenPacket(input, options = {}) {
   const refusal_reasons = [];
   const warnings = [];
   let parsed = null;
-  try {
-    parsed = parseReopenJson(input && Object.prototype.hasOwnProperty.call(input, 'text') ? input.text : input);
-  } catch (error) {
-    return Object.freeze({ schema_version: 'td613.safe-harbor.reopen-validation/v1', status: 'blocked', validator_version: REOPEN_VALIDATOR_VERSION, refusal_reasons: ['uploaded packet JSON is malformed'], error: String(error && error.message ? error.message : error) });
-  }
+  try { parsed = parseReopenJson(input && Object.prototype.hasOwnProperty.call(input, 'text') ? input.text : input); }
+  catch (error) { return Object.freeze({ schema_version: 'td613.safe-harbor.reopen-validation/v1', status: 'blocked', validator_version: REOPEN_VALIDATOR_VERSION, refusal_reasons: ['uploaded packet JSON is malformed'], error: String(error && error.message ? error.message : error) }); }
   const token = normalizeShiNumber(input && input.shi ? input.shi : options.shi);
   if (!token) refusal_reasons.push('SHI # is required');
   else if (!isShiNumber(token, bindingFragment)) refusal_reasons.push('SHI # format does not match TD613-SH-<binding>-<8_hex>');
@@ -87,7 +79,6 @@ export function validateReopenPacket(input, options = {}) {
 
   const families = packet ? classifyReopenPacket(parsed, packet) : [];
   if (!families.length) refusal_reasons.push('packet lacks legacy seal marker or current Safe Harbor authority surfaces');
-
   const phase5 = getPath(packet, 'phase5_replay_hardening.status');
   if (phase5 === 'fail' || phase5 === 'quarantine') refusal_reasons.push('Phase 5 blocks reopen: ' + phase5);
   const phase8 = getPath(packet, 'phase8_public_default_gate.status');
@@ -101,11 +92,10 @@ export function validateReopenPacket(input, options = {}) {
   if (!getPath(packet, 'phase8_public_default_gate.status')) warnings.push('Phase 8 gate missing; current pipeline should refresh after reopen');
   if (!getPath(packet, 'phase9_release_discipline.release_class')) warnings.push('Phase 9 release discipline missing; current pipeline should refresh after reopen');
 
-  const status = refusal_reasons.length ? 'blocked' : 'pass';
   return Object.freeze({
     schema_version: 'td613.safe-harbor.reopen-validation/v1',
     validator_version: REOPEN_VALIDATOR_VERSION,
-    status,
+    status: refusal_reasons.length ? 'blocked' : 'pass',
     typed_shi: token,
     packet_shi: packetShi || null,
     packet,
@@ -126,6 +116,7 @@ export function buildReopenSession(validation, existing = {}) {
   const receiptId = getPath(packet, 'receipt.receipt_id') || null;
   const packetId = getPath(packet, 'packet_id') || null;
   const badgeNumber = getPath(packet, 'issuance.badge_number') || validation.typed_shi;
+  const priorAudit = Array.isArray(existing.audit) ? existing.audit.slice(0, 23) : [];
   return Object.freeze({
     helper: existing.helper || null,
     hooks: existing.hooks || { tcp: null, eo: null, signature: null },
@@ -134,7 +125,7 @@ export function buildReopenSession(validation, existing = {}) {
     lastProbe: existing.lastProbe || '',
     audit: [
       { ts_utc: nowIso(), type: 'shi-recall-reopened-current-validator', detail: { shi_number: validation.typed_shi, packet_id: packetId, authority_families: validation.authority_families, validator_version: REOPEN_VALIDATOR_VERSION } },
-      ...Array.isArray(existing.audit) ? existing.audit.slice(0, 23) : []
+      ...priorAudit
     ],
     renderer: existing.renderer || { detected: false, meta: null },
     ingress: {
@@ -162,16 +153,6 @@ export function buildReopenSession(validation, existing = {}) {
 }
 
 if (typeof window !== 'undefined') {
-  window.TD613_SAFE_HARBOR_REOPEN_VALIDATOR = Object.freeze({
-    REOPEN_VALIDATOR_VERSION,
-    LEGACY_HANDSHAKE_PREFIX,
-    normalizeShiNumber,
-    isShiNumber,
-    parseReopenJson,
-    unwrapSafeHarborPacket,
-    classifyReopenPacket,
-    validateReopenPacket,
-    buildReopenSession
-  });
+  window.TD613_SAFE_HARBOR_REOPEN_VALIDATOR = Object.freeze({ REOPEN_VALIDATOR_VERSION, LEGACY_HANDSHAKE_PREFIX, normalizeShiNumber, isShiNumber, parseReopenJson, unwrapSafeHarborPacket, classifyReopenPacket, validateReopenPacket, buildReopenSession });
   window.dispatchEvent(new CustomEvent('td613:safe-harbor:reopen-validator-ready', { detail: { version: REOPEN_VALIDATOR_VERSION } }));
 }
