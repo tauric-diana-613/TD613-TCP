@@ -1,6 +1,6 @@
 import assert from 'node:assert/strict';
 import { buildOutgoingContractPacket } from '../app/engine/hush-outgoing-contract-packet.js';
-import { validateOutgoingContract, buildProviderDispatchEnvelope } from '../app/engine/hush-outgoing-contract-validator.js';
+import { validateOutgoingContract, buildProviderDispatchEnvelope, recomputeOutgoingContractHashes } from '../app/engine/hush-outgoing-contract-validator.js';
 
 async function validPacket(overrides = {}) {
   return buildOutgoingContractPacket({
@@ -33,6 +33,21 @@ async function validPacket(overrides = {}) {
     expectedOutputClass: 'draft',
     ...overrides
   }, { stableId: true, createdAt: '2026-06-20T00:00:00Z' });
+}
+
+async function replayHashes(packet) {
+  const replay = await recomputeOutgoingContractHashes(packet);
+  packet.hash_topology = {
+    ...packet.hash_topology,
+    request_context_hash_sha256: replay.expected.request_context_hash_sha256,
+    provider_target_hash_sha256: replay.expected.provider_target_hash_sha256,
+    mask_context_hash_sha256: replay.expected.mask_context_hash_sha256,
+    instruction_contract_hash_sha256: replay.expected.instruction_contract_hash_sha256,
+    policy_hash_sha256: replay.expected.policy_hash_sha256,
+    packet_hash_sha256: replay.expected.packet_hash_sha256
+  };
+  packet.packet_hash_sha256 = replay.expected.packet_hash_sha256;
+  return packet;
 }
 
 const packet = await validPacket();
@@ -116,19 +131,27 @@ const tamperedInstruction = JSON.parse(JSON.stringify(packet));
 tamperedInstruction.instruction_contract.expected_output_class = 'packet';
 const tamperedInstructionValidation = await validateOutgoingContract(tamperedInstruction);
 assert.equal(tamperedInstructionValidation.status, 'blocked');
-assert.ok(tamperedInstructionValidation.refusal_reasons.some((reason) => reason.includes('instruction contract mismatch')));
+assert.ok(tamperedInstructionValidation.refusal_reasons.some((reason) => reason.includes('instruction contract hash mismatch')));
 
 const tamperedMask = JSON.parse(JSON.stringify(packet));
 tamperedMask.mask_context.retrieval_trigger = 'stealth-trigger';
 const tamperedMaskValidation = await validateOutgoingContract(tamperedMask);
 assert.equal(tamperedMaskValidation.status, 'blocked');
-assert.ok(tamperedMaskValidation.refusal_reasons.some((reason) => reason.includes('mask context mismatch')));
+assert.ok(tamperedMaskValidation.refusal_reasons.some((reason) => reason.includes('mask context hash mismatch')));
 
 const staleTop = JSON.parse(JSON.stringify(packet));
 staleTop.hash_topology.packet_hash_sha256 = 'sha256:' + 'c'.repeat(64);
 const staleTopValidation = await validateOutgoingContract(staleTop);
 assert.equal(staleTopValidation.status, 'blocked');
-assert.ok(staleTopValidation.refusal_reasons.some((reason) => reason.includes('packet hash replay mismatch')));
+assert.ok(staleTopValidation.refusal_reasons.some((reason) => reason.includes('topology packet hash replay mismatch')));
+assert.ok(staleTopValidation.refusal_reasons.some((reason) => reason.includes('packet hash locations disagree')));
+
+const rawPromptAlias = JSON.parse(JSON.stringify(packet));
+rawPromptAlias.instruction_contract.user_instruction = 'Raw provider-facing user instruction should not be present in a provider-ready contract.';
+await replayHashes(rawPromptAlias);
+const rawPromptAliasValidation = await validateOutgoingContract(rawPromptAlias);
+assert.equal(rawPromptAliasValidation.status, 'blocked');
+assert.ok(rawPromptAliasValidation.refusal_reasons.some((reason) => reason.includes('raw prompt aliases cannot be present')));
 
 const localPacket = await validPacket({ providerClass: 'unknown', endpointClass: 'unknown' });
 const localEnvelope = await buildProviderDispatchEnvelope(localPacket);
