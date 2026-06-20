@@ -1,16 +1,16 @@
 (function () {
   'use strict';
 
-  var VERSION = 'safe-harbor-pr169-packet-vault-direct/v11-phase6-compose-purity';
+  var VERSION = 'safe-harbor-pr169-packet-vault-direct/v12-phase7-witness-compose-purity';
   var STORAGE_KEY = 'td613.safe-harbor.session.v1';
   var MIRROR_KEY = 'td613.safe-harbor.session.mirror.v1';
   var HISTORICAL_EXAMPLE = 'TD613-Binding:#9B07D8B/SAC[X6ZNK5NO51] · payload 5 · 2025-10-17 · ⟐';
   var SCRIPT_URL = document.currentScript && document.currentScript.src ? document.currentScript.src : '';
   var finalizerPromise = null;
   var phase5Promise = null;
+  var outsideWitnessPromise = null;
 
   function $(id) { return document.getElementById(id); }
-  function text(value) { return String(value == null ? '' : value).trim(); }
   function parse(raw) { try { return raw ? JSON.parse(raw) : null; } catch (error) { return null; } }
   function clone(value) { return value == null ? value : JSON.parse(JSON.stringify(value)); }
   function read(storage, key) { try { return storage && storage.getItem(key); } catch (error) { return null; } }
@@ -45,7 +45,6 @@
     api = window.TD613_SAFE_HARBOR_NATIVE_FINALIZER;
     return api && typeof api.finalizeSafeHarborPacket === 'function' ? api : null;
   }
-
   async function phase5Api() {
     var api = window.TD613_SAFE_HARBOR_PHASE5;
     if (api && typeof api.buildPhase5ReplayHardening === 'function') return api;
@@ -55,29 +54,66 @@
     api = window.TD613_SAFE_HARBOR_PHASE5;
     return api && typeof api.buildPhase5ReplayHardening === 'function' ? api : null;
   }
+  async function outsideWitnessApi() {
+    var api = window.TD613_SAFE_HARBOR_OUTSIDE_WITNESS;
+    if (api && typeof api.buildOutsideWitnessAlignment === 'function') return api;
+    if (!outsideWitnessPromise) outsideWitnessPromise = import(localModuleUrl('safe-harbor-outside-witness-alignment.js')).catch(function () { return null; });
+    var mod = await outsideWitnessPromise;
+    if (mod && typeof mod.buildOutsideWitnessAlignment === 'function') return mod;
+    api = window.TD613_SAFE_HARBOR_OUTSIDE_WITNESS;
+    return api && typeof api.buildOutsideWitnessAlignment === 'function' ? api : null;
+  }
 
   function nativeBorn(packet) { return Boolean(packet && packet.native_spine_purification && packet.native_spine_purification.status === 'native'); }
   function exportHardened(packet) { return Boolean(packet && packet.native_spine_purification && packet.native_spine_purification.status === 'export-hardened'); }
 
+  async function attachOutsideWitness(packet) {
+    var api = await outsideWitnessApi();
+    if (!api || typeof api.buildOutsideWitnessAlignment !== 'function') return packet;
+    var out = clone(packet);
+    var alignment = await api.buildOutsideWitnessAlignment(out);
+    out.outside_witness_alignment = alignment;
+    out.step1_countersignature = alignment.step1_countersignature;
+    out.countersignatory_intake = alignment.countersignatory_intake;
+    out.renderer_authority_metadata = alignment.renderer_authority_metadata;
+    out.svg_authority_metadata = alignment.svg_authority_metadata;
+    out.signature_overlay_authority = alignment.signature_overlay_authority;
+    out.tcp_hook_authority = alignment.tcp_hook_authority;
+    out.eo_hook_authority = alignment.eo_hook_authority;
+    out.outside_witness_receipt = alignment.outside_witness_receipt;
+    if (out.phase4_recall_intake && alignment.step1_countersignature) {
+      out.phase4_recall_intake.countersignature_evidence_review = {
+        schema_version: 'td613.safe-harbor.countersignature-evidence-review/v1',
+        step1_can_countersign: Boolean(alignment.step1_countersignature.can_countersign),
+        step1_recommended_action: alignment.step1_countersignature.recommended_action,
+        refusal_reasons: alignment.step1_countersignature.refusal_reasons || [],
+        public_default: 'v2',
+        raw_text_exported: false
+      };
+    }
+    return out;
+  }
+
   async function refreshPhase5Only(packet) {
     var api = await phase5Api();
-    if (!api || typeof api.buildPhase5ReplayHardening !== 'function') return packet;
     var out = clone(packet);
-    var hardening = await api.buildPhase5ReplayHardening(out, { includeTamperFixtures: false });
-    out.phase5_replay_hardening = hardening;
-    if (typeof api.applyPhase5Quarantine === 'function') out = api.applyPhase5Quarantine(out, hardening);
-    return out;
+    if (api && typeof api.buildPhase5ReplayHardening === 'function') {
+      var hardening = await api.buildPhase5ReplayHardening(out, { includeTamperFixtures: false });
+      out.phase5_replay_hardening = hardening;
+      if (typeof api.applyPhase5Quarantine === 'function') out = api.applyPhase5Quarantine(out, hardening);
+    }
+    return attachOutsideWitness(out);
   }
 
   async function finalizePacket(packet, saved, mode) {
     if (!packet || typeof packet !== 'object') return packet;
     if (nativeBorn(packet)) return refreshPhase5Only(packet);
     var api = await finalizerApi();
-    if (!api || typeof api.finalizeSafeHarborPacket !== 'function') return packet;
+    if (!api || typeof api.finalizeSafeHarborPacket !== 'function') return attachOutsideWitness(packet);
     var segments = rawSegmentsFromSaved(saved);
     var chosenMode = mode || (segments ? 'native' : 'legacy-repair');
     if (!segments && chosenMode !== 'native') return refreshPhase5Only(packet);
-    return api.finalizeSafeHarborPacket(packet, {
+    var finalized = await api.finalizeSafeHarborPacket(packet, {
       mode: chosenMode,
       segments: segments,
       includePhase5: true,
@@ -85,6 +121,7 @@
       allowV3Rebuild: false,
       rawTextExportAllowed: false
     });
+    return attachOutsideWitness(finalized);
   }
 
   async function normalizePacket(packet, saved) {
@@ -93,7 +130,6 @@
     if (exportHardened(packet)) return refreshPhase5Only(packet);
     return finalizePacket(packet, saved, hasRawSegments(saved) ? 'native' : 'export-normalized');
   }
-
   async function nativeFinalizeSavedPacket() {
     var saved = savedSession();
     if (!saved || !saved.packet) return null;
@@ -159,7 +195,8 @@
     if (phase && packet) {
       var spine = packet.native_spine_purification && packet.native_spine_purification.status;
       var hardening = packet.phase5_replay_hardening && packet.phase5_replay_hardening.status;
-      phase.textContent = hardening === 'quarantine' ? 'Native Spine: quarantined' : spine === 'native' ? 'Native Spine: native-born' : spine === 'export-hardened' ? 'Native Spine: export-hardened' : 'Native Spine: legacy v2';
+      var witness = packet.outside_witness_alignment && packet.outside_witness_alignment.status;
+      phase.textContent = hardening === 'quarantine' ? 'Native Spine: quarantined' : spine === 'native' ? 'Native Spine: native-born / witnesses ' + (witness || 'pending') : spine === 'export-hardened' ? 'Native Spine: export-hardened / witnesses ' + (witness || 'pending') : 'Native Spine: legacy v2 / witnesses ' + (witness || 'pending');
     }
   }
   async function activePacket() {
@@ -175,7 +212,6 @@
   }
   function activePacketSync() { var saved = savedSession(); return saved && saved.packet ? clone(saved.packet) : null; }
   async function normalizeVisiblePacket() { var packet = await activePacket(); if (packet) syncPreview(packet); return packet; }
-  async function packetText() { var packet = await activePacket(); return packet ? JSON.stringify(packet, null, 2) + '\n' : ''; }
 
   function patchProbeText(raw) {
     var body = String(raw || '');
@@ -265,25 +301,20 @@
   }
   function patchApi() {
     var api = window.TD613SafeHarbor;
-    if (!api || api.__phase6NativeCallsitePatch === VERSION) return;
+    if (!api || api.__phase7OutsideWitnessPatch === VERSION) return;
     if (typeof api.mintStagedPacket === 'function') {
       var originalMint = api.mintStagedPacket.bind(api);
       api.mintStagedPacket = async function () { var result = await originalMint(); await nativeFinalizeSavedPacket(); return result; };
     }
     if (typeof api.buildPacket === 'function') {
       var originalBuildPacket = api.buildPacket.bind(api);
-      api.buildPacket = async function () {
-        var packet = await originalBuildPacket();
-        var saved = savedSession();
-        if (packet && saved) return finalizePacket(packet, saved, nativeBorn(packet) ? null : 'native');
-        return packet;
-      };
+      api.buildPacket = async function () { var packet = await originalBuildPacket(); var saved = savedSession(); return packet && saved ? finalizePacket(packet, saved, nativeBorn(packet) ? null : 'native') : packet; };
     }
     if (typeof api.buildProbe === 'function') {
       var originalBuildProbe = api.buildProbe.bind(api);
       api.buildProbe = function (variant) { var result = originalBuildProbe(variant); var patched = patchProbeText(result); var node = $('probeOutput'); if (node) { if ('value' in node) node.value = patched; else node.textContent = patched; } return patched; };
     }
-    api.__phase6NativeCallsitePatch = VERSION;
+    api.__phase7OutsideWitnessPatch = VERSION;
   }
   function syncButton() {
     var node = bindButton();
@@ -296,7 +327,7 @@
     var ready = packetExportReady(activePacketSync());
     node.disabled = !ready;
     node.setAttribute('aria-disabled', ready ? 'false' : 'true');
-    node.title = ready ? 'Open the sealed packet as plain text in a new tab' : 'Open .txt unlocks after the packet is export-ready and Phase 5 is not quarantined';
+    node.title = ready ? 'Open the sealed packet as plain text in a new tab' : 'Open .txt unlocks after the packet is export-ready, Phase 5 is not quarantined, and witnesses are readable';
   }
   function boot() {
     document.documentElement.classList.add('safe-harbor-pr169');
@@ -305,13 +336,14 @@
     bindProbeOutputs();
     patchApi();
     syncButton();
-    window.__TD613_SAFE_HARBOR_PR169__ = { version: VERSION, button: Boolean(button()), at: new Date().toISOString(), footer_history: HISTORICAL_EXAMPLE, phase6_native_callsite: true, phase6_compose_purity: true, normalizer_role: 'verification-or-export-hardening-fallback' };
+    window.__TD613_SAFE_HARBOR_PR169__ = { version: VERSION, button: Boolean(button()), at: new Date().toISOString(), footer_history: HISTORICAL_EXAMPLE, phase6_native_callsite: true, phase6_compose_purity: true, phase7_outside_witness_alignment: true, normalizer_role: 'verification-or-export-hardening-fallback' };
   }
   if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', boot, { once: true }); else boot();
   window.addEventListener('load', boot);
   window.addEventListener('pageshow', boot);
   window.addEventListener('storage', syncButton);
   window.addEventListener('td613:safe-harbor:native-finalizer-ready', syncButton);
+  window.addEventListener('td613:safe-harbor:outside-witness-ready', syncButton);
   document.addEventListener('td613:safe-harbor-packet', syncButton);
   ['click', 'input', 'change'].forEach(function (type) { document.addEventListener(type, function () { window.setTimeout(syncButton, 0); }, true); });
   [100, 360, 900, 1800].forEach(function (delay) { window.setTimeout(syncButton, delay); });
