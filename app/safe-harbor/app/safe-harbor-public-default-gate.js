@@ -4,15 +4,7 @@ import {
   verifyV3Replay,
   verifyHashReplay
 } from './safe-harbor-authority-verifier.js';
-import {
-  buildOutsideWitnessAlignment,
-  buildRendererAuthorityV2,
-  buildSvgAuthorityMetadata,
-  buildSignatureOverlayAuthority,
-  buildTcpHookAuthority,
-  buildEoHookAuthority,
-  buildOperatorReceipt
-} from './safe-harbor-outside-witness-alignment.js';
+import { buildOutsideWitnessAlignment } from './safe-harbor-outside-witness-alignment.js';
 
 const GATE_SCHEMA = 'td613.safe-harbor.public-default-gate/v1';
 const POLICY_SCHEMA = 'td613.safe-harbor.public-default-policy/v2';
@@ -37,15 +29,8 @@ function outsideStatus(packet) { return getPath(packet, 'outside_witness_alignme
 function packetHash(packet) { return packet && packet.packet_hash_sha256 ? packet.packet_hash_sha256 : null; }
 function hashTopologyFinal(packet) { return getPath(packet, 'hash_topology.final_packet_hash_sha256') || null; }
 function publicPolicy(packet) { return packet && packet.public_default_policy ? packet.public_default_policy : {}; }
-function step1(packet) { return packet && packet.step1_countersignature ? packet.step1_countersignature : null; }
-function signature(packet) { return packet && packet.signature_overlay_authority ? packet.signature_overlay_authority : null; }
-function renderer(packet) { return packet && packet.renderer_authority_metadata ? packet.renderer_authority_metadata : null; }
-function svg(packet) { return packet && packet.svg_authority_metadata ? packet.svg_authority_metadata : null; }
-function tcp(packet) { return packet && packet.tcp_hook_authority ? packet.tcp_hook_authority : null; }
-function eo(packet) { return packet && packet.eo_hook_authority ? packet.eo_hook_authority : null; }
 function rawTextExported(value) {
-  const body = JSON.stringify(value || {});
-  return /"raw_text"\s*:|Future self will carry|Past self remembers|Higher self names|Blood Rite 613 public credential/u.test(body);
+  return /"raw_text"\s*:|Future self will carry|Past self remembers|Higher self names|Blood Rite 613 public credential/u.test(JSON.stringify(value || {}));
 }
 function explicitPolicy(context = {}, packet = {}) {
   const policy = context.phase8Policy || context.publicDefaultPolicy || publicPolicy(packet).phase8_policy || {};
@@ -56,15 +41,8 @@ function explicitPolicy(context = {}, packet = {}) {
     raw: clone(policy)
   };
 }
-function witnessStatus(value, alignedValue = 'aligned') {
-  if (!value) return 'unavailable';
-  if (value.status) return value.status;
-  if (value.signature_can_bind === false) return 'refused';
-  if (value.can_countersign === false) return 'refused';
-  return alignedValue;
-}
 function rendererStatus(packet) {
-  const item = renderer(packet);
+  const item = getPath(packet, 'renderer_authority_metadata');
   if (!item) return 'unavailable';
   if (item.public_default_credential && item.public_default_credential !== 'v2') return 'mismatch';
   if (item.packet_hash_sha256 && item.packet_hash_sha256 !== packetHash(packet)) return 'mismatch';
@@ -73,7 +51,7 @@ function rendererStatus(packet) {
   return 'aligned';
 }
 function svgStatus(packet) {
-  const item = svg(packet);
+  const item = getPath(packet, 'svg_authority_metadata');
   if (!item) return 'unavailable';
   if (item['data-td613-public-default'] && item['data-td613-public-default'] !== 'v2') return 'mismatch';
   if (item['data-td613-packet-hash'] && item['data-td613-packet-hash'] !== packetHash(packet)) return 'mismatch';
@@ -82,7 +60,7 @@ function svgStatus(packet) {
   return 'aligned';
 }
 function signatureStatus(packet) {
-  const item = signature(packet);
+  const item = getPath(packet, 'signature_overlay_authority');
   if (!item) return 'unavailable';
   if (item.signature_can_bind === false) return 'refused';
   if (item.packet_hash_at_signature && item.packet_hash_at_signature !== packetHash(packet)) return 'refused';
@@ -90,7 +68,7 @@ function signatureStatus(packet) {
   return 'aligned';
 }
 function tcpStatus(packet) {
-  const item = tcp(packet);
+  const item = getPath(packet, 'tcp_hook_authority');
   if (!item) return 'unavailable';
   if (item.status === 'pending') return 'pending';
   if (item.status === 'blocked') return 'blocked';
@@ -99,7 +77,7 @@ function tcpStatus(packet) {
   return item.status || 'aligned';
 }
 function eoStatus(packet) {
-  const item = eo(packet);
+  const item = getPath(packet, 'eo_hook_authority');
   if (!item) return 'unavailable';
   if (item.status === 'pending') return 'pending';
   if (item.status === 'blocked') return 'blocked';
@@ -107,8 +85,8 @@ function eoStatus(packet) {
   if (item.observed_packet_hash && item.observed_packet_hash !== packetHash(packet)) return 'mismatch';
   return item.status || 'aligned';
 }
-function legacyV2Reopen(packet, v2Replay) { return v2Replay && v2Replay.status === 'pass' ? 'pass' : v2Replay && v2Replay.status === 'fail' ? 'fail' : 'unavailable'; }
-function canStep1Countersign(packet) { const item = step1(packet); return item ? item.can_countersign === true : false; }
+function legacyV2Reopen(v2Replay) { return v2Replay && v2Replay.status === 'pass' ? 'pass' : v2Replay && v2Replay.status === 'fail' ? 'fail' : 'unavailable'; }
+function canStep1Countersign(packet) { const item = getPath(packet, 'step1_countersignature'); return item ? item.can_countersign === true : false; }
 function noAuthorityClaimPending(status) { return status === 'aligned' || status === 'pending' || status === 'unavailable'; }
 
 export function buildPublicDisplayRoles(packet, gate) {
@@ -134,16 +112,8 @@ export async function buildPublicDefaultGate(packet, context = {}) {
   const tStatus = tcpStatus(packet);
   const eStatus = eoStatus(packet);
   const stepCan = canStep1Countersign(packet);
-  const legacy = legacyV2Reopen(packet, v2);
-  const rawText = rawTextExported({
-    step1_countersignature: step1(packet),
-    renderer_authority_metadata: renderer(packet),
-    svg_authority_metadata: svg(packet),
-    signature_overlay_authority: signature(packet),
-    tcp_hook_authority: tcp(packet),
-    eo_hook_authority: eo(packet),
-    outside_witness_receipt: packet && packet.outside_witness_receipt
-  });
+  const legacy = legacyV2Reopen(v2);
+  const rawText = rawTextExported({ step1_countersignature: getPath(packet, 'step1_countersignature'), renderer_authority_metadata: getPath(packet, 'renderer_authority_metadata'), svg_authority_metadata: getPath(packet, 'svg_authority_metadata'), signature_overlay_authority: getPath(packet, 'signature_overlay_authority'), tcp_hook_authority: getPath(packet, 'tcp_hook_authority'), eo_hook_authority: getPath(packet, 'eo_hook_authority'), outside_witness_receipt: getPath(packet, 'outside_witness_receipt') });
   const refusal = [];
   if (v2.status === 'fail') refusal.push('v2 replay failed');
   if (v2.status === 'unavailable') refusal.push('v2 replay unavailable');
@@ -159,7 +129,7 @@ export async function buildPublicDefaultGate(packet, context = {}) {
   if (eStatus === 'mismatch' || eStatus === 'blocked') refusal.push('EO hook mismatch or block');
   if (legacy === 'fail') refusal.push('legacy v2 reopen failed');
   if (rawText) refusal.push('raw text appeared in public display artifact');
-  const majorBlock = refusal.length > 0;
+  if (getPath(packet, 'public_default_policy.default_public_credential') && getPath(packet, 'public_default_policy.default_public_credential') !== 'v2') refusal.push('public_default_credential changed from v2 without Phase 8 permission');
   const inputs = Object.freeze({
     v2_replay: v2.status,
     v3_replay: v3.status,
@@ -180,7 +150,7 @@ export async function buildPublicDefaultGate(packet, context = {}) {
   let public_default_after = 'v2-only';
   let status = 'review';
   const allCore = v2.status === 'pass' && v3.status === 'pass' && hash.status === 'pass' && (p5 === 'pass' || p5 === 'review') && native === 'native' && outside === 'aligned' && stepCan && rStatus === 'aligned' && sStatus === 'aligned' && sigStatus === 'aligned' && noAuthorityClaimPending(tStatus) && noAuthorityClaimPending(eStatus) && legacy === 'pass' && rawText === false;
-  if (majorBlock) {
+  if (refusal.length) {
     gate_decision = 'block';
     public_default_after = 'blocked';
     status = 'blocked';
@@ -189,7 +159,7 @@ export async function buildPublicDefaultGate(packet, context = {}) {
     public_default_after = 'v2-only';
     status = native === 'legacy' ? 'unavailable' : 'review';
   } else if (!allCore) {
-    gate_decision = outside === 'partial' || tStatus === 'pending' || eStatus === 'pending' ? 'keep-v2-only' : 'keep-v2-only';
+    gate_decision = 'keep-v2-only';
     public_default_after = 'v2-only';
     status = 'review';
   } else if (policy.allowDualDisplay && getPath(packet, 'recall_governance.v3.promotion_status') === 'v3-dual-verification-ready' && getPath(packet, 'public_default_policy.v3_public_ready') === true && getPath(packet, 'step1_countersignature.recommended_action') === 'dual-verify') {
@@ -200,23 +170,8 @@ export async function buildPublicDefaultGate(packet, context = {}) {
     gate_decision = 'allow-v3-visible';
     public_default_after = 'v2-primary-v3-visible';
     status = 'pass';
-  } else {
-    gate_decision = 'keep-v2-only';
-    public_default_after = 'v2-only';
-    status = 'review';
   }
-  const gate = {
-    schema_version: GATE_SCHEMA,
-    status,
-    public_default_before: 'v2',
-    public_default_after,
-    gate_decision,
-    gate_inputs: inputs,
-    public_display_roles: null,
-    refusal_reasons: [...new Set(refusal)],
-    claim_supported: 'The public-default gate determines whether v3 may be displayed beside v2 under packet replay, native lineage, witness alignment, and public-default policy.',
-    claim_limit: 'This gate does not prove civil identity, legal identity, public law approval, authorship ownership, or v3 supremacy.'
-  };
+  const gate = { schema_version: GATE_SCHEMA, status, public_default_before: 'v2', public_default_after, gate_decision, gate_inputs: inputs, public_display_roles: null, refusal_reasons: [...new Set(refusal)], claim_supported: 'The public-default gate determines whether v3 may be displayed beside v2 under packet replay, native lineage, witness alignment, and public-default policy.', claim_limit: 'This gate does not prove civil identity, legal identity, public law approval, authorship ownership, or v3 supremacy.' };
   gate.public_display_roles = buildPublicDisplayRoles(packet, gate);
   return Object.freeze(gate);
 }
@@ -225,103 +180,30 @@ export async function verifyPublicDefaultGate(packet, context = {}) {
   const gate = await buildPublicDefaultGate(packet, context);
   return Object.freeze({ status: gate.status, gate_decision: gate.gate_decision, public_default_after: gate.public_default_after, refusal_reasons: gate.refusal_reasons });
 }
-
 export function refusePublicDefaultPromotion(packet, reasons = []) {
-  return Object.freeze({
-    schema_version: GATE_SCHEMA,
-    status: 'blocked',
-    public_default_before: 'v2',
-    public_default_after: 'blocked',
-    gate_decision: 'block',
-    gate_inputs: {},
-    public_display_roles: { v2: 'public-default', v3: 'blocked' },
-    refusal_reasons: reasons.length ? reasons.slice() : ['public-default promotion refused'],
-    claim_supported: 'The public-default gate refused v3 visibility or dual display.',
-    claim_limit: 'Refusal preserves v2 public default and does not adjudicate identity.'
-  });
+  return Object.freeze({ schema_version: GATE_SCHEMA, status: 'blocked', public_default_before: 'v2', public_default_after: 'blocked', gate_decision: 'block', gate_inputs: {}, public_display_roles: { v2: 'public-default', v3: 'blocked' }, refusal_reasons: reasons.length ? reasons.slice() : ['public-default promotion refused'], claim_supported: 'The public-default gate refused v3 visibility or dual display.', claim_limit: 'Refusal preserves v2 public default and does not adjudicate identity.' });
 }
-
 export function buildPhase8PublicDefaultPolicy(packet, gate) {
   const mode = gate && gate.public_default_after ? gate.public_default_after : 'v2-only';
   const decision = gate && gate.gate_decision ? gate.gate_decision : 'keep-v2-only';
   const displayMode = mode === 'dual-v2-v3' ? 'dual-display' : mode === 'v2-primary-v3-visible' ? 'v3-visible' : mode === 'blocked' ? 'blocked' : 'legacy-compatible';
-  return Object.freeze({
-    schema_version: POLICY_SCHEMA,
-    display_mode: displayMode,
-    public_shi: mode === 'v2-only' ? 'v2' : mode === 'blocked' ? 'blocked' : 'v2+v3',
-    default_public_credential: 'v2',
-    public_default_mode: mode,
-    v3_public_visible: mode === 'v2-primary-v3-visible' || mode === 'dual-v2-v3',
-    v3_public_ready: mode === 'dual-v2-v3',
-    phase8_gate_status: gate ? gate.status : 'unavailable',
-    phase8_gate_decision: decision,
-    reason: 'v2 remains public default unless Phase 8 gate permits v3 companion display.'
-  });
+  return Object.freeze({ schema_version: POLICY_SCHEMA, display_mode: displayMode, public_shi: mode === 'v2-only' ? 'v2' : mode === 'blocked' ? 'blocked' : 'v2+v3', default_public_credential: 'v2', public_default_mode: mode, v3_public_visible: mode === 'v2-primary-v3-visible' || mode === 'dual-v2-v3', v3_public_ready: mode === 'dual-v2-v3', phase8_gate_status: gate ? gate.status : 'unavailable', phase8_gate_decision: decision, reason: 'v2 remains public default unless Phase 8 gate permits v3 companion display.' });
 }
-
 export function buildPhase8RendererPolicy(packet, gate) {
   const roles = buildPublicDisplayRoles(packet, gate);
-  return Object.freeze({
-    schema_version: RENDERER_SCHEMA,
-    badge_number: getPath(packet, 'issuance.badge_number') || null,
-    badge_number_v3: getPath(packet, 'issuance.v3.badge_number_v3') || null,
-    v2_role: roles.v2,
-    v3_role: roles.v3,
-    public_default_credential: 'v2',
-    public_display_mode: gate ? gate.public_default_after : 'v2-only',
-    phase8_gate_status: gate ? gate.status : 'unavailable',
-    phase8_gate_decision: gate ? gate.gate_decision : 'keep-v2-only',
-    native_spine_status: nativeSpineStatus(packet),
-    phase5_status: phase5Status(packet),
-    outside_witness_alignment: outsideStatus(packet),
-    packet_hash_sha256: packetHash(packet),
-    hash_topology_final: hashTopologyFinal(packet),
-    raw_text_included: false,
-    renderer_claim_limit: 'Renderer metadata displays Phase 8 policy; it does not create public authority.'
-  });
+  return Object.freeze({ schema_version: RENDERER_SCHEMA, badge_number: getPath(packet, 'issuance.badge_number') || null, badge_number_v3: getPath(packet, 'issuance.v3.badge_number_v3') || null, v2_role: roles.v2, v3_role: roles.v3, public_default_credential: 'v2', public_display_mode: gate ? gate.public_default_after : 'v2-only', phase8_gate_status: gate ? gate.status : 'unavailable', phase8_gate_decision: gate ? gate.gate_decision : 'keep-v2-only', native_spine_status: nativeSpineStatus(packet), phase5_status: phase5Status(packet), outside_witness_alignment: outsideStatus(packet), packet_hash_sha256: packetHash(packet), hash_topology_final: hashTopologyFinal(packet), raw_text_included: false, renderer_claim_limit: 'Renderer metadata displays Phase 8 policy; it does not create public authority.' });
 }
-
 export function buildPhase8SvgPolicy(packet, gate) {
   const roles = buildPublicDisplayRoles(packet, gate);
-  return Object.freeze({
-    schema_version: SVG_SCHEMA,
-    'data-td613-public-default': 'v2',
-    'data-td613-public-display-mode': gate ? gate.public_default_after : 'v2-only',
-    'data-td613-v2-role': roles.v2,
-    'data-td613-v3-role': roles.v3,
-    'data-td613-phase8-gate': gate ? gate.status : 'unavailable',
-    'data-td613-phase8-decision': gate ? gate.gate_decision : 'keep-v2-only',
-    'data-td613-native-spine': nativeSpineStatus(packet),
-    'data-td613-phase5-status': phase5Status(packet),
-    'data-td613-outside-witnesses': outsideStatus(packet),
-    'data-td613-packet-hash': packetHash(packet),
-    'data-td613-hash-topology-final': hashTopologyFinal(packet),
-    'data-td613-raw-text-included': 'false'
-  });
+  return Object.freeze({ schema_version: SVG_SCHEMA, 'data-td613-public-default': 'v2', 'data-td613-public-display-mode': gate ? gate.public_default_after : 'v2-only', 'data-td613-v2-role': roles.v2, 'data-td613-v3-role': roles.v3, 'data-td613-phase8-gate': gate ? gate.status : 'unavailable', 'data-td613-phase8-decision': gate ? gate.gate_decision : 'keep-v2-only', 'data-td613-native-spine': nativeSpineStatus(packet), 'data-td613-phase5-status': phase5Status(packet), 'data-td613-outside-witnesses': outsideStatus(packet), 'data-td613-packet-hash': packetHash(packet), 'data-td613-hash-topology-final': hashTopologyFinal(packet), 'data-td613-raw-text-included': 'false' });
 }
-
 export function buildPhase8ReceiptPolicy(packet, gate) {
-  return Object.freeze({
-    schema_version: RECEIPT_SCHEMA,
-    public_default: 'v2',
-    public_display_mode: gate ? gate.public_default_after : 'v2-only',
-    gate_status: gate ? gate.status : 'unavailable',
-    gate_decision: gate ? gate.gate_decision : 'keep-v2-only',
-    v2_role: gate && gate.public_display_roles ? gate.public_display_roles.v2 : 'public-default',
-    v3_role: gate && gate.public_display_roles ? gate.public_display_roles.v3 : 'hidden',
-    phase5_status: phase5Status(packet),
-    outside_witness_alignment: outsideStatus(packet),
-    raw_text_exported: false,
-    claim_limit: 'Receipt reports Phase 8 public-display policy; it does not create public authority.'
-  });
+  return Object.freeze({ schema_version: RECEIPT_SCHEMA, public_default: 'v2', public_display_mode: gate ? gate.public_default_after : 'v2-only', gate_status: gate ? gate.status : 'unavailable', gate_decision: gate ? gate.gate_decision : 'keep-v2-only', v2_role: gate && gate.public_display_roles ? gate.public_display_roles.v2 : 'public-default', v3_role: gate && gate.public_display_roles ? gate.public_display_roles.v3 : 'hidden', phase5_status: phase5Status(packet), outside_witness_alignment: outsideStatus(packet), raw_text_exported: false, claim_limit: 'Receipt reports Phase 8 public-display policy; it does not create public authority.' });
 }
-
 export async function applyPublicDefaultGate(packet, context = {}) {
-  let out = clone(packet || {});
-  if (!out.outside_witness_alignment) {
-    out.outside_witness_alignment = await buildOutsideWitnessAlignment(out);
-  }
-  let gate = await buildPublicDefaultGate(out, context);
+  const out = clone(packet || {});
+  if (!out.outside_witness_alignment) out.outside_witness_alignment = await buildOutsideWitnessAlignment(out);
+  const gate = await buildPublicDefaultGate(out, context);
   out.phase8_public_default_gate = gate;
   out.public_default_policy = buildPhase8PublicDefaultPolicy(out, gate);
   out.renderer_authority_metadata = buildPhase8RendererPolicy(out, gate);
@@ -329,40 +211,17 @@ export async function applyPublicDefaultGate(packet, context = {}) {
   out.phase8_receipt_policy = buildPhase8ReceiptPolicy(out, gate);
   if (out.outside_witness_receipt) out.outside_witness_receipt.phase8_public_default_gate = clone(out.phase8_receipt_policy);
   if (out.step1_countersignature) {
-    out.step1_countersignature.phase8_public_default_gate = {
-      status: gate.status,
-      gate_decision: gate.gate_decision,
-      public_display_mode: gate.public_default_after
-    };
+    out.step1_countersignature.phase8_public_default_gate = { status: gate.status, gate_decision: gate.gate_decision, public_display_mode: gate.public_default_after };
     if (gate.status === 'blocked' && !out.step1_countersignature.refusal_reasons.includes('Phase 8 gate blocked public display')) {
       out.step1_countersignature.refusal_reasons.push('Phase 8 gate blocked public display');
       out.step1_countersignature.can_countersign = false;
       out.step1_countersignature.recommended_action = 'block';
     }
   }
-  out.outside_witness_alignment = await buildOutsideWitnessAlignment(out, {
-    renderer_authority_metadata: out.renderer_authority_metadata,
-    svg_metadata: out.svg_authority_metadata,
-    step1_envelope: out.step1_countersignature,
-    signature_overlay_authority: out.signature_overlay_authority,
-    tcp_hook_authority: out.tcp_hook_authority,
-    eo_hook_authority: out.eo_hook_authority,
-    operator_receipt: out.outside_witness_receipt
-  });
   return out;
 }
 
 if (typeof window !== 'undefined') {
-  window.TD613_SAFE_HARBOR_PUBLIC_DEFAULT_GATE = Object.freeze({
-    buildPublicDefaultGate,
-    verifyPublicDefaultGate,
-    applyPublicDefaultGate,
-    buildPublicDisplayRoles,
-    buildPhase8RendererPolicy,
-    buildPhase8SvgPolicy,
-    buildPhase8ReceiptPolicy,
-    buildPhase8PublicDefaultPolicy,
-    refusePublicDefaultPromotion
-  });
+  window.TD613_SAFE_HARBOR_PUBLIC_DEFAULT_GATE = Object.freeze({ buildPublicDefaultGate, verifyPublicDefaultGate, applyPublicDefaultGate, buildPublicDisplayRoles, buildPhase8RendererPolicy, buildPhase8SvgPolicy, buildPhase8ReceiptPolicy, buildPhase8PublicDefaultPolicy, refusePublicDefaultPromotion });
   window.dispatchEvent(new CustomEvent('td613:safe-harbor:public-default-gate-ready', { detail: { version: GATE_SCHEMA } }));
 }
