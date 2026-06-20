@@ -138,6 +138,12 @@ Both packet hash locations must replay to the same expected packet hash. If the 
 
 Validation blocks malformed hashes, hash-only provider logs, SHI-style provider log IDs, missing linked contract, malformed linked contract IDs, missing provider target observed, missing dispatch/request/response/redaction surfaces, raw/private export in audit-ready logs, private-text echo in audit-ready logs, provider compliance claims, stylometry authenticity claims, EO-RFD fake firmware claims, EO-RFD legal/executive authority claims, and tampered packet bodies.
 
+## Validator regression coverage
+
+The provider log validator regression suite must cover raw request surfaces, raw response surfaces, private echo, linked-contract integrity, compliance overclaims, stylometric authenticity overclaims, EO-RFD boundary violations, refusal-alignment pre-adjudication, missing required evidentiary surfaces, and dual packet-hash replay.
+
+This coverage keeps Phase 2 as the receipt chamber. It observes provider-boundary events; it does not become the Phase 3 comparator, Phase 4 stylometry audit, or EO-RFD firmware proof.
+
 ## Attachment rule
 
 A provider log may be attached to an outgoing contract with:
