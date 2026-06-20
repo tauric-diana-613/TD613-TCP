@@ -87,4 +87,11 @@ const missingRoutingValidation = await validateCustomizerPacket(missingRouting);
 assert.equal(missingRoutingValidation.status, 'blocked');
 assert.ok(missingRoutingValidation.refusal_reasons.some((reason) => reason.includes('routing_profile is required')));
 
+const tamperedTopologyPacketHash = JSON.parse(JSON.stringify(packet));
+tamperedTopologyPacketHash.sample_hash_topology.packet_hash_sha256 = 'sha256:' + 'f'.repeat(64);
+const tamperedTopologyPacketHashValidation = await validateCustomizerPacket(tamperedTopologyPacketHash);
+assert.equal(tamperedTopologyPacketHashValidation.status, 'blocked');
+assert.ok(tamperedTopologyPacketHashValidation.refusal_reasons.some((reason) => reason.includes('topology packet hash replay mismatch')));
+assert.ok(tamperedTopologyPacketHashValidation.refusal_reasons.some((reason) => reason.includes('packet hash locations disagree')));
+
 console.log('hush-customizer-packet-validator: ok');
