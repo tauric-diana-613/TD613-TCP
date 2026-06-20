@@ -1,7 +1,7 @@
 (function () {
   'use strict';
 
-  var VERSION = 'safe-harbor-pr169-packet-vault-direct/v12-phase7-witness-compose-purity';
+  var VERSION = 'safe-harbor-pr169-packet-vault-direct/v14-phase8-gate-compose-purity';
   var STORAGE_KEY = 'td613.safe-harbor.session.v1';
   var MIRROR_KEY = 'td613.safe-harbor.session.mirror.v1';
   var HISTORICAL_EXAMPLE = 'TD613-Binding:#9B07D8B/SAC[X6ZNK5NO51] · payload 5 · 2025-10-17 · ⟐';
@@ -9,6 +9,7 @@
   var finalizerPromise = null;
   var phase5Promise = null;
   var outsideWitnessPromise = null;
+  var publicGatePromise = null;
 
   function $(id) { return document.getElementById(id); }
   function parse(raw) { try { return raw ? JSON.parse(raw) : null; } catch (error) { return null; } }
@@ -63,6 +64,15 @@
     api = window.TD613_SAFE_HARBOR_OUTSIDE_WITNESS;
     return api && typeof api.buildOutsideWitnessAlignment === 'function' ? api : null;
   }
+  async function publicGateApi() {
+    var api = window.TD613_SAFE_HARBOR_PUBLIC_DEFAULT_GATE;
+    if (api && typeof api.applyPublicDefaultGate === 'function') return api;
+    if (!publicGatePromise) publicGatePromise = import(localModuleUrl('safe-harbor-public-default-gate.js')).catch(function () { return null; });
+    var mod = await publicGatePromise;
+    if (mod && typeof mod.applyPublicDefaultGate === 'function') return mod;
+    api = window.TD613_SAFE_HARBOR_PUBLIC_DEFAULT_GATE;
+    return api && typeof api.applyPublicDefaultGate === 'function' ? api : null;
+  }
 
   function nativeBorn(packet) { return Boolean(packet && packet.native_spine_purification && packet.native_spine_purification.status === 'native'); }
   function exportHardened(packet) { return Boolean(packet && packet.native_spine_purification && packet.native_spine_purification.status === 'export-hardened'); }
@@ -93,6 +103,15 @@
     }
     return out;
   }
+  async function attachPublicDefaultGate(packet) {
+    var api = await publicGateApi();
+    if (!api || typeof api.applyPublicDefaultGate !== 'function') return packet;
+    return api.applyPublicDefaultGate(packet, { phase8Policy: { public_display_mode: 'v2-only' } });
+  }
+  async function attachWitnessAndGate(packet) {
+    var withWitness = await attachOutsideWitness(packet);
+    return attachPublicDefaultGate(withWitness);
+  }
 
   async function refreshPhase5Only(packet) {
     var api = await phase5Api();
@@ -102,14 +121,14 @@
       out.phase5_replay_hardening = hardening;
       if (typeof api.applyPhase5Quarantine === 'function') out = api.applyPhase5Quarantine(out, hardening);
     }
-    return attachOutsideWitness(out);
+    return attachWitnessAndGate(out);
   }
 
   async function finalizePacket(packet, saved, mode) {
     if (!packet || typeof packet !== 'object') return packet;
     if (nativeBorn(packet)) return refreshPhase5Only(packet);
     var api = await finalizerApi();
-    if (!api || typeof api.finalizeSafeHarborPacket !== 'function') return attachOutsideWitness(packet);
+    if (!api || typeof api.finalizeSafeHarborPacket !== 'function') return attachWitnessAndGate(packet);
     var segments = rawSegmentsFromSaved(saved);
     var chosenMode = mode || (segments ? 'native' : 'legacy-repair');
     if (!segments && chosenMode !== 'native') return refreshPhase5Only(packet);
@@ -121,7 +140,7 @@
       allowV3Rebuild: false,
       rawTextExportAllowed: false
     });
-    return attachOutsideWitness(finalized);
+    return attachWitnessAndGate(finalized);
   }
 
   async function normalizePacket(packet, saved) {
@@ -142,6 +161,7 @@
 
   function packetExportReady(packet) {
     if (!packet || !packet.bridge || !packet.bridge.export_gate || !packet.bridge.export_gate.ready) return false;
+    if (packet.phase8_public_default_gate && packet.phase8_public_default_gate.status === 'blocked') return false;
     return !(packet.phase5_replay_hardening && (packet.phase5_replay_hardening.status === 'quarantine' || packet.phase5_replay_hardening.status === 'fail'));
   }
   function packetFilename(packet) {
@@ -182,6 +202,14 @@
     try { document.execCommand('copy'); } catch (error) {}
     textarea.remove();
   }
+  function publicLabel(packet) {
+    var gate = packet && packet.phase8_public_default_gate;
+    var mode = gate && gate.public_default_after ? gate.public_default_after : 'v2-only';
+    if (mode === 'v2-primary-v3-visible') return 'public v2+v3 visible';
+    if (mode === 'dual-v2-v3') return 'public dual-gated';
+    if (mode === 'blocked') return 'public blocked';
+    return 'public v2-only';
+  }
   function syncPreview(packet) {
     var preview = $('packetPreview');
     if (preview && packet) preview.textContent = JSON.stringify(packet, null, 2);
@@ -196,7 +224,7 @@
       var spine = packet.native_spine_purification && packet.native_spine_purification.status;
       var hardening = packet.phase5_replay_hardening && packet.phase5_replay_hardening.status;
       var witness = packet.outside_witness_alignment && packet.outside_witness_alignment.status;
-      phase.textContent = hardening === 'quarantine' ? 'Native Spine: quarantined' : spine === 'native' ? 'Native Spine: native-born / witnesses ' + (witness || 'pending') : spine === 'export-hardened' ? 'Native Spine: export-hardened / witnesses ' + (witness || 'pending') : 'Native Spine: legacy v2 / witnesses ' + (witness || 'pending');
+      phase.textContent = hardening === 'quarantine' ? 'Native Spine: quarantined / ' + publicLabel(packet) : spine === 'native' ? 'Native Spine: native-born / witnesses ' + (witness || 'pending') + ' / ' + publicLabel(packet) : spine === 'export-hardened' ? 'Native Spine: export-hardened / witnesses ' + (witness || 'pending') + ' / ' + publicLabel(packet) : 'Native Spine: legacy v2 / witnesses ' + (witness || 'pending') + ' / ' + publicLabel(packet);
     }
   }
   async function activePacket() {
@@ -301,7 +329,7 @@
   }
   function patchApi() {
     var api = window.TD613SafeHarbor;
-    if (!api || api.__phase7OutsideWitnessPatch === VERSION) return;
+    if (!api || api.__phase8PublicDefaultGatePatch === VERSION) return;
     if (typeof api.mintStagedPacket === 'function') {
       var originalMint = api.mintStagedPacket.bind(api);
       api.mintStagedPacket = async function () { var result = await originalMint(); await nativeFinalizeSavedPacket(); return result; };
@@ -314,7 +342,7 @@
       var originalBuildProbe = api.buildProbe.bind(api);
       api.buildProbe = function (variant) { var result = originalBuildProbe(variant); var patched = patchProbeText(result); var node = $('probeOutput'); if (node) { if ('value' in node) node.value = patched; else node.textContent = patched; } return patched; };
     }
-    api.__phase7OutsideWitnessPatch = VERSION;
+    api.__phase8PublicDefaultGatePatch = VERSION;
   }
   function syncButton() {
     var node = bindButton();
@@ -327,7 +355,7 @@
     var ready = packetExportReady(activePacketSync());
     node.disabled = !ready;
     node.setAttribute('aria-disabled', ready ? 'false' : 'true');
-    node.title = ready ? 'Open the sealed packet as plain text in a new tab' : 'Open .txt unlocks after the packet is export-ready, Phase 5 is not quarantined, and witnesses are readable';
+    node.title = ready ? 'Open the sealed packet as plain text in a new tab' : 'Open .txt unlocks after the packet is export-ready, Phase 5 is not quarantined, witnesses are readable, and Phase 8 gate is not blocked';
   }
   function boot() {
     document.documentElement.classList.add('safe-harbor-pr169');
@@ -336,7 +364,7 @@
     bindProbeOutputs();
     patchApi();
     syncButton();
-    window.__TD613_SAFE_HARBOR_PR169__ = { version: VERSION, button: Boolean(button()), at: new Date().toISOString(), footer_history: HISTORICAL_EXAMPLE, phase6_native_callsite: true, phase6_compose_purity: true, phase7_outside_witness_alignment: true, normalizer_role: 'verification-or-export-hardening-fallback' };
+    window.__TD613_SAFE_HARBOR_PR169__ = { version: VERSION, button: Boolean(button()), at: new Date().toISOString(), footer_history: HISTORICAL_EXAMPLE, phase6_native_callsite: true, phase6_compose_purity: true, phase7_outside_witness_alignment: true, phase8_public_default_gate: true, normalizer_role: 'verification-or-export-hardening-fallback' };
   }
   if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', boot, { once: true }); else boot();
   window.addEventListener('load', boot);
@@ -344,10 +372,10 @@
   window.addEventListener('storage', syncButton);
   window.addEventListener('td613:safe-harbor:native-finalizer-ready', syncButton);
   window.addEventListener('td613:safe-harbor:outside-witness-ready', syncButton);
+  window.addEventListener('td613:safe-harbor:public-default-gate-ready', syncButton);
   document.addEventListener('td613:safe-harbor-packet', syncButton);
   ['click', 'input', 'change'].forEach(function (type) { document.addEventListener(type, function () { window.setTimeout(syncButton, 0); }, true); });
   [100, 360, 900, 1800].forEach(function (delay) { window.setTimeout(syncButton, delay); });
   window.setInterval(syncButton, 900);
-
   window.TD613_SAFE_HARBOR_PR169 = Object.freeze({ version: VERSION, boot: boot, openTxt: openTxt, syncButton: syncButton, historicalExample: HISTORICAL_EXAMPLE, patchProbeText: patchProbeText, normalizePacket: normalizePacket });
 }());
