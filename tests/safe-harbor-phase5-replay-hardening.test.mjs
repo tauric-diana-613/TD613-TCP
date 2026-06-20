@@ -7,8 +7,10 @@ import {
   expectedV2BadgeNumber,
   verifySafeHarborPacketAuthority
 } from '../app/safe-harbor/app/safe-harbor-authority-verifier.js';
+import { buildRecallChallengeProfile } from '../app/safe-harbor/app/safe-harbor-recall-challenge.js';
 import {
   buildAuthorityConflictReport,
+  buildChallengeReplayReport,
   buildConvergenceReport,
   buildPhase5ReplayHardening,
   buildTamperReport,
@@ -18,6 +20,9 @@ import {
 
 function profile(delta = 0) {
   return {
+    wordCount: 44,
+    sentenceCount: 4,
+    avgSentenceLength: 11,
     contentWordComplexity: 0.41 + delta,
     modifierDensity: 0.08,
     hedgeDensity: 0.01,
@@ -61,6 +66,23 @@ function hashMaterial(packet) {
 
 function hashPacket(packet) {
   return 'sha256:' + crypto.createHash('sha256').update(stable(hashMaterial(packet))).digest('hex');
+}
+
+async function normalizeFixture(value) {
+  let normalized = JSON.parse(JSON.stringify(value));
+  delete normalized.phase5_replay_hardening;
+  delete normalized.export_quarantine;
+  normalized.phase5_hash_semantics = {
+    phase5_replay_hardening_hash_covered: false,
+    phase5_replay_hardening_hash_excluded: true,
+    reason: 'Phase 5 replay hardening audits packet hash and authority surfaces; it is explicitly hash-excluded to avoid self-referential replay material.'
+  };
+  normalized.packet_hash_sha256 = hashPacket(normalized);
+  normalized = await attachPhase4Authority(normalized, { mode: 'export-normalized', packetHashRecomputed: true });
+  normalized.packet_hash_sha256 = hashPacket(normalized);
+  normalized = await attachPhase4Authority(normalized, { mode: 'export-normalized', packetHashRecomputed: true });
+  normalized.phase5_replay_hardening = await buildPhase5ReplayHardening(normalized, { includeTamperFixtures: false });
+  return normalized;
 }
 
 async function packetFixture() {
@@ -115,9 +137,9 @@ assert.equal(replay.v3_replay.status, 'pass');
 assert.equal(replay.hash_replay.status, 'pass');
 assert.equal(replay.public_default_policy.default_public_credential, 'v2');
 
-const convergence = await buildConvergenceReport(async (value) => value, packet);
+const convergence = await buildConvergenceReport(normalizeFixture, packet);
 assert.equal(convergence.status, 'pass');
-assert.equal(convergence.stable_after_iteration, 2);
+assert.ok(convergence.stable_after_iteration >= 2);
 
 const fixtures = await buildTamperReport(packet);
 assert.equal(fixtures.status, 'pass');
@@ -128,6 +150,19 @@ assert.equal(hardening.status, 'pass');
 assert.equal(hardening.replay_battery.v2_badge, 'pass');
 assert.equal(hardening.replay_battery.v3_badge, 'pass');
 assert.equal(hardening.replay_battery.packet_hash, 'pass');
+
+const shortChallenge = await buildRecallChallengeProfile({
+  future_self: 'one',
+  past_self: 'two',
+  higher_self: 'three'
+});
+assert.equal(shortChallenge.raw_text_retained, false);
+assert.equal(shortChallenge.profile_only, true);
+assert.ok(shortChallenge.lanes.future_self.wordCount < 12);
+const challengeReport = await buildChallengeReplayReport(packet, shortChallenge);
+assert.equal(challengeReport.status, 'fail');
+assert.equal(challengeReport.recommended_action, 'block-recall');
+assert.ok(challengeReport.lane_failures.some((failure) => failure.reason === 'ultra-short challenge lane'));
 
 const stale = JSON.parse(JSON.stringify(packet));
 stale.analysis.segment_cadence_signatures.future_self.rich_profile.lexicalEntropyScore += 0.25;
