@@ -143,14 +143,17 @@ export async function recomputeCustomizerPacketHashes(packet = {}) {
     profile_hash_sha256: getPath(packet, 'sample_hash_topology.profile_hash_sha256'),
     routing_hash_sha256: getPath(packet, 'sample_hash_topology.routing_hash_sha256'),
     policy_hash_sha256: getPath(packet, 'sample_hash_topology.policy_hash_sha256'),
-    packet_hash_sha256: packet.packet_hash_sha256 || getPath(packet, 'sample_hash_topology.packet_hash_sha256')
+    top_level_packet_hash_sha256: packet.packet_hash_sha256,
+    topology_packet_hash_sha256: getPath(packet, 'sample_hash_topology.packet_hash_sha256')
   };
   const refusal_reasons = [];
   if (declared.sample_ledger_hash_sha256 !== expected.sample_ledger_hash_sha256) refusal_reasons.push('sample ledger hash mismatch');
   if (declared.profile_hash_sha256 !== expected.profile_hash_sha256) refusal_reasons.push('profile hash mismatch');
   if (declared.routing_hash_sha256 !== expected.routing_hash_sha256) refusal_reasons.push('routing hash mismatch');
   if (declared.policy_hash_sha256 !== expected.policy_hash_sha256) refusal_reasons.push('policy hash mismatch');
-  if (declared.packet_hash_sha256 !== expected.packet_hash_sha256) refusal_reasons.push('packet hash replay mismatch');
+  if (declared.top_level_packet_hash_sha256 !== expected.packet_hash_sha256) refusal_reasons.push('packet hash replay mismatch');
+  if (declared.topology_packet_hash_sha256 !== expected.packet_hash_sha256) refusal_reasons.push('topology packet hash replay mismatch');
+  if (declared.top_level_packet_hash_sha256 && declared.topology_packet_hash_sha256 && declared.top_level_packet_hash_sha256 !== declared.topology_packet_hash_sha256) refusal_reasons.push('packet hash locations disagree');
   return Object.freeze({ schema_version: 'td613.hush.customizer-hash-replay/v1', status: refusal_reasons.length ? 'blocked' : 'pass', matches: refusal_reasons.length === 0, declared, expected, refusal_reasons });
 }
 
