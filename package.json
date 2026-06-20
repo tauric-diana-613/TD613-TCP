@@ -13,6 +13,7 @@
     "test:fixtures": "node tests/fixtures-calibration.test.mjs && node tests/fixture-runner.test.mjs && node tests/stylometry-regression.test.mjs",
     "test:recognition": "node tests/context-profile.test.mjs && node tests/recognition-field.test.mjs && node tests/recognition-field-regression.test.mjs",
     "test:hush": "node scripts/run-hush-tests.mjs",
+    "test:hush:customizer-packet": "node tests/hush-customizer-packet.test.mjs && node tests/hush-customizer-packet-validator.test.mjs",
     "test:release": "node tests/release-manifest.test.mjs && node tests/docs-surface.test.mjs && node tests/release-hardening.test.mjs && node tests/release-plumbing.test.mjs && node tests/vercel-deploy-hygiene.test.mjs && node tests/amari-patch-lane.test.mjs",
     "test:safe-harbor": "node tests/td613-flight-mobile-layout.test.mjs && node tests/safe-harbor-shi.test.mjs && node tests/safe-harbor-stylometry-v3.test.mjs && node tests/safe-harbor-phase4-authority.test.mjs && node tests/safe-harbor-phase5-replay-hardening.test.mjs && node tests/safe-harbor-phase6-native-spine.test.mjs && node tests/safe-harbor-batch-seal.test.mjs && node tests/station-pages.test.mjs && node tests/operator-receipt.test.mjs",
     "test:safe-harbor:phase7": "node tests/safe-harbor-phase7-outside-witness-alignment.test.mjs",
