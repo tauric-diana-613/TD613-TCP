@@ -28,8 +28,10 @@ jobs:
       - run: npm ci
       - name: Run lightweight TCP smoke gate
         run: node tests/tcp-smoke.test.mjs
-      - name: Run Safe Harbor regression gate
-        run: npm run test:safe-harbor
+      - name: Run Safe Harbor Phase 5/6 regression gate
+        run: |
+          node tests/safe-harbor-phase5-replay-hardening.test.mjs
+          node tests/safe-harbor-phase6-native-spine.test.mjs
 
   deploy:
     needs: test
