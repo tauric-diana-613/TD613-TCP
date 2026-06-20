@@ -266,12 +266,14 @@ export function buildSafeHarborRichStylometry(triadSegments = {}, options = {}) 
   });
 }
 
-window.TD613_SAFE_HARBOR_STYLOMETRY = Object.freeze({
-  version: SCHEMA_VERSION,
-  buildSafeHarborLaneProfile,
-  buildSafeHarborRichDivergence,
-  buildSafeHarborRichStylometry
-});
-window.dispatchEvent(new CustomEvent('td613:safe-harbor:rich-stylometry-ready', {
-  detail: { version: SCHEMA_VERSION }
-}));
+if (typeof window !== 'undefined') {
+  window.TD613_SAFE_HARBOR_STYLOMETRY = Object.freeze({
+    version: SCHEMA_VERSION,
+    buildSafeHarborLaneProfile,
+    buildSafeHarborRichDivergence,
+    buildSafeHarborRichStylometry
+  });
+  window.dispatchEvent(new CustomEvent('td613:safe-harbor:rich-stylometry-ready', {
+    detail: { version: SCHEMA_VERSION }
+  }));
+}
