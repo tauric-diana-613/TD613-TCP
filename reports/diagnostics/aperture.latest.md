@@ -1,24 +1,24 @@
 # TD613 Aperture Annex Diagnostics
 
-Source: app/aperture/index.html
+Source: app/aperture/tool.html
 Status: passed
-Version: 2.2.1
-Title: TD613 Aperture - v2.2.1
+Version: 2.7.0
+Title: TD613 Aperture - v2.7.0
 
 ## Fingerprint
 
-- bytes: 399523
-- line_count: 8212
-- inline_script_count: 8
+- bytes: 574261
+- line_count: 11777
+- inline_script_count: 14
 - panel_count: 3
-- button_count: 20
-- content_hash_sha256: 21a1498753d2dfd31821f81f92ec451b89816c68079ffc4f5f8ad7ae964ab99c
+- button_count: 34
+- content_hash_sha256: b0be3fe67c7c7b41f63e5a2011767d9c9c8c3a78ef812eceda4816355c3be080
 
 ## Checks
 
-- [pass] title marker: TD613 Aperture - v2.2.1 observed
-- [pass] version marker: version 2.2.1 observed
-- [pass] inline runtime present: 8 inline script block(s)
+- [pass] title marker: TD613 Aperture - v2.7.0 observed
+- [pass] version marker: version 2.7.0 observed
+- [pass] inline runtime present: 14 inline script block(s)
 - [pass] meta tool-name: tool-name => TD613 Aperture
 - [pass] meta tool-role: tool-role => counter-tool
 - [pass] meta observed-regime: observed-regime => PRCS-A
@@ -57,3 +57,8 @@ Title: TD613 Aperture - v2.2.1
 - [pass] differential admissibility panel: differential admissibility panel present
 - [pass] protective vocabulary reassignment panel: protective vocabulary reassignment panel present
 - [pass] packet forensic schema export: packet forensic schema export present
+- [pass] ZFP certification global: ZFP certification global present
+- [pass] corrected rupture predicate: corrected rupture predicate present
+- [pass] Moiré stratigraphy kernel: Moiré stratigraphy kernel present
+- [pass] Gateway embed bridge: Gateway embed bridge present
+- [pass] Aperture v2.7 schema marker: Aperture v2.7 schema marker present

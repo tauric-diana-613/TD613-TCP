@@ -223,7 +223,8 @@ assert.equal(typeof latestReport.workingDoctrine.representativePairs.bilateralVi
 assert.equal(typeof latestReport.workingDoctrine.representativePairs.bilateralNonTrivialRate, 'number', 'private TD613 Aperture representative non-trivial rate is numeric');
 assert.ok(latestReport.annexes?.aperture, 'diagnostics JSON report includes Aperture annex diagnostics');
 assert.ok(latestReport.annexes.aperture.passed, 'Aperture annex diagnostics pass');
-assert.equal(latestReport.annexes.aperture.version, '2.2.1', 'Aperture annex diagnostics report the expected version');
+assert.equal(latestReport.annexes.aperture.file, 'app/aperture/tool.html', 'Aperture annex diagnostics inspect the canonical tool body');
+assert.equal(latestReport.annexes.aperture.version, '2.7.0', 'Aperture annex diagnostics report the expected version');
 assert.equal(latestReport.annexes.aperture.label, 'TD613 Aperture', 'Aperture annex diagnostics use the TD613 Aperture label');
 assert.equal(latestReport.annexes.aperture.meta['tool-name'], 'TD613 Aperture', 'Aperture annex diagnostics preserve the TD613 Aperture tool name');
 assert.equal(latestReport.annexes.aperture.meta['tool-role'], 'counter-tool', 'Aperture annex diagnostics preserve tool role');
@@ -269,7 +270,7 @@ assert.ok(latestMarkdown.includes('### TD613 Aperture'), 'diagnostics Markdown r
 
 const apertureReport = JSON.parse(fs.readFileSync(apertureJsonPath, 'utf8'));
 assert.ok(apertureReport.passed, 'standalone Aperture annex report passes');
-assert.equal(apertureReport.file, 'app/aperture/index.html', 'standalone Aperture annex report points to the repo surface');
+assert.equal(apertureReport.file, 'app/aperture/tool.html', 'standalone Aperture annex report points to the canonical tool body');
 assert.equal(apertureReport.meta['tool-name'], 'TD613 Aperture', 'standalone Aperture annex report preserves the TD613 Aperture tool name');
 assert.equal(apertureReport.meta['observed-regime'], 'PRCS-A', 'standalone Aperture annex report preserves the PRCS-A regime callout');
 

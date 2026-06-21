@@ -210,9 +210,5 @@ Total diagnostics cases: 270
 ### TD613 Aperture
 
 - status: passed
-- version: 2.2.1
-- source: app/aperture/index.html
-- content_hash_sha256: 21a1498753d2dfd31821f81f92ec451b89816c68079ffc4f5f8ad7ae964ab99c
-- inline_script_count: 8
-- failed_checks: none
-
+- source: app/aperture/tool.html
+- version: 2.7.0
