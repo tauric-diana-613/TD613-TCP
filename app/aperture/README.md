@@ -1,5 +1,26 @@
 # TD613 Aperture
 
+## Promotion Lane
+
+Use the Aperture sync lane when moving standalone HTML candidates between
+Downloads and the repo. Staging is deliberately non-destructive; promotion is
+the only step that updates the public repo body.
+
+```powershell
+npm run aperture:compare -- "C:\Users\timst\Downloads\Aperture_v2_9_3.html"
+npm run aperture:stage -- "C:\Users\timst\Downloads\Aperture_v2_9_3.html"
+npm run aperture:promote-staged
+npm run aperture:check-sync
+npm run aperture:export-downloads
+```
+
+`aperture:stage` writes only to `.aperture-staging/`, which is gitignored.
+`aperture:promote-staged` updates `app/aperture/tool.html`, the iframe cache
+token in `app/aperture/index.html`, `app/asset-versions.js`, and Aperture
+engine version constants. `aperture:export-downloads` writes the repo-approved
+tool body back to `Aperture.html` and a versioned `Aperture_vX_Y_Z.html` copy
+in Downloads.
+
 ## What this is
 
 Aperture shows you when a system is filtering, narrowing, or

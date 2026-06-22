@@ -5,6 +5,7 @@ coverage/
 *.log
 .env
 reports/diagnostics/.staging/
+.aperture-staging/
 
 # Crash dumps and edge profiles
 .codex-http-*.pid
