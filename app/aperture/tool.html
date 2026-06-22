@@ -476,15 +476,16 @@ TD613 APERTURE v2.9.2 SOURCE DECLARATION
       "id": "preemption-gap",
       "sourceId": "essay-2-temporal-canon",
       "priority": 12,
-      "claim": "Institutional time travel is measured by the gap between operation and registration.",
+      "claim": "Institutional time travel is the gap between operational consequence and institutional registration; forced adjacency is its live cockpit pressure score.",
       "formula": "Π(s)=t_inst(s)-t_op(s)",
-      "plainLanguage": "A state can act before it counts.",
+      "plainLanguage": "A state can act before it is registered. Forced adjacency reports the bounded pressure created by positive Π, crease field, projection bias, path dependence, and actor variance.",
       "panelRefs": [
         "DEFORMATION / CLOSURE Π / κ / C / H",
-        "RUPTURE ASSIST"
+        "RUPTURE ASSIST",
+        "FORCED ADJACENCY STATUS"
       ],
-      "routeUse": "Use to distinguish preemption from prediction.",
-      "antiCompressionInstruction": "Do not call forced adjacency foresight."
+      "routeUse": "Use Π for temporal deformation and forcedAdjacency for the operator-facing pressure readout beside Propagate.",
+      "antiCompressionInstruction": "Do not discuss Π without checking whether forced adjacency or influence integral is active."
     },
     {
       "id": "temporal-threshold-ladder",
@@ -660,7 +661,9 @@ TD613 APERTURE v2.9.2 SOURCE DECLARATION
     "The D₃/equilateral fold map is foundation geometry and must be read with the 18 theorem cards, not after recent receipts.",
     "√3/2 is the canonical apex altitude Z_C and a zero-parameter calibration constant.",
     "Moiré/stratigraphy uses triangular lattice stepping from √3/2; it is not arbitrary decoration.",
-    "Geometry calibrates Aperture but does not turn φ↔√3/2 or everything-from-geometry claims into forced doctrine."
+    "Geometry calibrates Aperture but does not turn φ↔√3/2 or everything-from-geometry claims into forced doctrine.",
+    "First-screen cockpit formulas such as S_t, field metrics, Σ_R, Δ propagation, F(t), and forced adjacency are operational essentials, not decorative UI.",
+    "Forced adjacency is the small Propagate-adjacent temporal pressure metric derived from Π, H, projection bias, path dependence, and actor variance."
   ],
   "spineTransitionSchema": "td613.aperture.spine-transition/v2.9.2",
   "lineageLedgerSchema": "td613.aperture.lineage-ledger/v2.9.2",
@@ -864,8 +867,351 @@ TD613 APERTURE v2.9.2 SOURCE DECLARATION
       "formula": "forced geometry ≠ universal proof; φ↔√3/2 bridge = FLAG/MODEL unless mechanism is proven",
       "class": "guardrail",
       "explanation": "Geometry calibrates the instrument but does not license totalizing claims."
+    },
+    {
+      "id": "state-vector-runtime",
+      "formula": "S_t={θ_t,x_t,φ_t,b_t,δ_t}; I_t=mean(ray.intensity)",
+      "class": "operational",
+      "explanation": "Direction, position, phase, boundary class, defect, and intensity are the live state vector the operator sees first."
+    },
+    {
+      "id": "field-metrics-runtime",
+      "formula": "Red(q)=registered/internal; δ_obs(q)=(|S\\S′|+|S′\\Y|)/N; Gap(q)=latent-registered; AliasPer=aliased/N; NameSens=naming-disruption/max(1,N-latent); Supp_τ=suppressed/N",
+      "class": "operational",
+      "explanation": "These are the operator-facing gauges that translate selective admissibility into measurable route pressure."
+    },
+    {
+      "id": "omission-dominance-runtime",
+      "formula": "O=S\\S′; O*=S′\\Y; δ_obs=(O+O*)/internalInteractions",
+      "class": "operational",
+      "explanation": "Aperture distinguishes what never surfaced from what surfaced but failed to become admitted reality."
+    },
+    {
+      "id": "rupture-field-signature-runtime",
+      "formula": "Σ_R=𝟙[δ_obs>τ_1 ∧ NameSens>τ_2 ∧ Red<τ_3 ∧ Coh(Y_u)>τ_4]; Σ_R_index=clamp(0.34δ_obs/τ_1 + 0.22η_N/τ_2 + 0.24×(1-Red/τ_3) + 0.20χ)",
+      "class": "operational",
+      "explanation": "The binary predicate names the rupture signature; the scalar index gives the cockpit a continuous routing signal."
+    },
+    {
+      "id": "detector-sweep-runtime",
+      "formula": "D_conf=0.30Σ_R+0.24D_persist+0.18δ_obs+0.10closureFailure+0.10ρ+0.08(D_trip/7)",
+      "class": "operational",
+      "explanation": "Δ_det is the route confidence surface that checks whether a rupture signature persists across probes."
+    },
+    {
+      "id": "field-signature-vector-runtime",
+      "formula": "F(t)=(δ_obs,η_N,σ,γ,χ,β,ρ)",
+      "class": "operational",
+      "explanation": "Observed omission, naming strain, suppression, divergence, coherence, burden, and provenance form the shared runtime vector."
+    },
+    {
+      "id": "harbor-eligibility-runtime",
+      "formula": "H_E=clamp(0.20δ_obs+0.18min(η_N/0.12,1)+0.14min(σ/0.08,1)+0.12min(γ/0.35,1)+0.12χ+0.24β-0.14ρ)",
+      "class": "operational",
+      "explanation": "Harbor rises with omission, naming strain, suppression, gap, coherence, and burden, then subtracts provenance integrity."
+    },
+    {
+      "id": "persistence-recapture-runtime",
+      "formula": "P_s′=min(1,0.94P_s+0.12Σ_R+0.06H_E+0.03×activeΣ); R_c=clamp(0.48χ+0.22δ_obs+0.15H_E+0.15β)",
+      "class": "operational",
+      "explanation": "A signal can persist across frames while also becoming vulnerable to recapture by coherence, omission, and burden."
+    },
+    {
+      "id": "defect-propagation-runtime",
+      "formula": "Δ_{t+1}=T(Δ_t)+ε_t",
+      "class": "operational",
+      "explanation": "A defect is not just a snapshot; Aperture tracks how it carries forward under transition and noise."
+    },
+    {
+      "id": "projection-operator-runtime",
+      "formula": "O_t=𝒫(S_t;A); 𝒫:S→Y; 𝒫(S_1)=𝒫(S_2) while S_1≠S_2",
+      "class": "operational",
+      "explanation": "Projection is the live cockpit version of non-injective observability."
+    },
+    {
+      "id": "forced-adjacency-runtime",
+      "formula": "forcedAdjacency=clamp(0.42×positiveΠ+0.26H+0.12projectionBias+0.10pathDependence+0.10Var_i[Π_i])",
+      "class": "operational",
+      "explanation": "It compresses positive preemption gap, crease field, projection bias, path dependence, and actor variance into the small forced-adj readout near Propagate."
+    },
+    {
+      "id": "influence-integral-runtime",
+      "formula": "influenceAuto=clamp(0.35×forcedAdjacency+0.20×𝟙[C(s)<1]+0.15Var_i[Π_i]+0.10P_s+0.10κ_disagreement+0.10×𝟙[projectionCapacity<0.5]); ∫Influence dt=influenceScore×influenceWindow",
+      "class": "operational",
+      "explanation": "Beacon logic depends on the duration-weighted influence of deformation, not only on the instantaneous forced-adj value."
+    },
+    {
+      "id": "rupture-assist-runtime",
+      "formula": "RI=Ω_HS(E_LLM^r×A_DYN^r×C_c)/(1+O_c+A_h+R_c+M_r+S_f); R2R=repairReadiness/max(RI,ε)",
+      "class": "operational",
+      "explanation": "Rupture Assist can surface candidates, but its denominator keeps overclaim, author hijack, recapture, regime capture, and spectacle from becoming authority."
     }
-  ]
+  ],
+  "operationalAddendum": {
+    "schema": "td613.aperture.operational-formula-addendum/v2.9.2",
+    "version": "v2.9.2",
+    "role": "LLM-facing registry for first-screen cockpit formulas and runtime route metrics.",
+    "law": "Operational metrics report live state and route pressure; they extend foundation doctrine but do not replace it.",
+    "readOrder": [
+      "state-vector-runtime",
+      "field-metrics-runtime",
+      "omission-dominance-runtime",
+      "rupture-field-signature-runtime",
+      "detector-sweep-runtime",
+      "field-signature-vector-runtime",
+      "harbor-eligibility-runtime",
+      "persistence-recapture-runtime",
+      "defect-propagation-runtime",
+      "projection-operator-runtime",
+      "forced-adjacency-runtime",
+      "influence-integral-runtime",
+      "rupture-assist-runtime"
+    ],
+    "cards": [
+      {
+        "id": "state-vector-runtime",
+        "priority": "O1",
+        "claim": "The visible cockpit begins from live state, not from the newest module.",
+        "formula": "S_t={θ_t,x_t,φ_t,b_t,δ_t}; I_t=mean(ray.intensity)",
+        "plainLanguage": "Direction, position, phase, boundary class, defect, and intensity are the live state vector the operator sees first.",
+        "panelRefs": [
+          "STATE VECTOR S_t",
+          "COHERENCE / INTENSITY TRACE"
+        ],
+        "extendsTheoremCards": [
+          "state-observed-event-distinction",
+          "controlled-reality-surface"
+        ],
+        "antiCompressionInstruction": "Do not omit S_t because it is visually obvious to humans; it is first-screen math.",
+        "sourceId": "aperture-operational-cockpit",
+        "routeUse": "Read this operational metric after foundation doctrine and before treating recent receipts as the instrument definition."
+      },
+      {
+        "id": "field-metrics-runtime",
+        "priority": "O2",
+        "claim": "Field metrics quantify reduction, omission, gap, aliasing, naming strain, and suppression pressure.",
+        "formula": "Red(q)=registered/internal; δ_obs(q)=(|S\\S′|+|S′\\Y|)/N; Gap(q)=latent-registered; AliasPer=aliased/N; NameSens=naming-disruption/max(1,N-latent); Supp_τ=suppressed/N",
+        "plainLanguage": "These are the operator-facing gauges that translate selective admissibility into measurable route pressure.",
+        "panelRefs": [
+          "FIELD METRICS",
+          "OMISSION DOMINANCE δ_obs"
+        ],
+        "extendsTheoremCards": [
+          "admissibility-operator",
+          "naming-operator",
+          "capacity-operator"
+        ],
+        "antiCompressionInstruction": "Do not summarize field metrics as generic dashboard values; name the metric family and its route role.",
+        "sourceId": "aperture-operational-cockpit",
+        "routeUse": "Read this operational metric after foundation doctrine and before treating recent receipts as the instrument definition."
+      },
+      {
+        "id": "omission-dominance-runtime",
+        "priority": "O3",
+        "claim": "Omission dominance separates unobserved state from observed-but-unadmitted surface residue.",
+        "formula": "O=S\\S′; O*=S′\\Y; δ_obs=(O+O*)/internalInteractions",
+        "plainLanguage": "Aperture distinguishes what never surfaced from what surfaced but failed to become admitted reality.",
+        "panelRefs": [
+          "OMISSION DOMINANCE δ_obs",
+          "REALITY SURFACE Y_u"
+        ],
+        "extendsTheoremCards": [
+          "state-observed-event-distinction",
+          "controlled-reality-surface"
+        ],
+        "antiCompressionInstruction": "Do not collapse O and O* into one vague absence.",
+        "sourceId": "aperture-operational-cockpit",
+        "routeUse": "Read this operational metric after foundation doctrine and before treating recent receipts as the instrument definition."
+      },
+      {
+        "id": "rupture-field-signature-runtime",
+        "priority": "O4",
+        "claim": "Σ_R is a rupture-field signature built from omission pressure, naming strain, reduction failure, and coherence.",
+        "formula": "Σ_R=𝟙[δ_obs>τ_1 ∧ NameSens>τ_2 ∧ Red<τ_3 ∧ Coh(Y_u)>τ_4]; Σ_R_index=clamp(0.34δ_obs/τ_1 + 0.22η_N/τ_2 + 0.24×(1-Red/τ_3) + 0.20χ)",
+        "plainLanguage": "The binary predicate names the rupture signature; the scalar index gives the cockpit a continuous routing signal.",
+        "panelRefs": [
+          "RUPTURE FIELD SIGNATURE Σ_R",
+          "DETECTOR SWEEP Δ_det"
+        ],
+        "extendsTheoremCards": [
+          "rupture-predicate",
+          "beacon-status",
+          "naming-operator"
+        ],
+        "antiCompressionInstruction": "Do not treat Σ_R as drama; it is a thresholded multi-metric signature.",
+        "sourceId": "aperture-operational-cockpit",
+        "routeUse": "Read this operational metric after foundation doctrine and before treating recent receipts as the instrument definition."
+      },
+      {
+        "id": "detector-sweep-runtime",
+        "priority": "O5",
+        "claim": "The detector sweep combines rupture signature persistence with omission, closure failure, provenance, and tripwire spread.",
+        "formula": "D_conf=0.30Σ_R+0.24D_persist+0.18δ_obs+0.10closureFailure+0.10ρ+0.08(D_trip/7)",
+        "plainLanguage": "Δ_det is the route confidence surface that checks whether a rupture signature persists across probes.",
+        "panelRefs": [
+          "DETECTOR SWEEP Δ_det",
+          "EO-RFD"
+        ],
+        "extendsTheoremCards": [
+          "beacon-status",
+          "preemption-gap"
+        ],
+        "antiCompressionInstruction": "Do not call a single metric a detector sweep; sweep means cross-probe persistence and spread.",
+        "sourceId": "aperture-operational-cockpit",
+        "routeUse": "Read this operational metric after foundation doctrine and before treating recent receipts as the instrument definition."
+      },
+      {
+        "id": "field-signature-vector-runtime",
+        "priority": "O6",
+        "claim": "F(t) is the recognition vector feeding Moire, rupture, harbor, and route diagnostics.",
+        "formula": "F(t)=(δ_obs,η_N,σ,γ,χ,β,ρ)",
+        "plainLanguage": "Observed omission, naming strain, suppression, divergence, coherence, burden, and provenance form the shared runtime vector.",
+        "panelRefs": [
+          "FIELD SIGNATURE VECTOR F(t)",
+          "MOIRE STRATIGRAPHY",
+          "HARBOR ELIGIBILITY H_E"
+        ],
+        "extendsTheoremCards": [
+          "naming-operator",
+          "capacity-operator",
+          "controlled-reality-surface"
+        ],
+        "antiCompressionInstruction": "Do not describe Moire, harbor, or rupture metrics without their shared F(t) vector when analyzing the cockpit.",
+        "sourceId": "aperture-operational-cockpit",
+        "routeUse": "Read this operational metric after foundation doctrine and before treating recent receipts as the instrument definition."
+      },
+      {
+        "id": "harbor-eligibility-runtime",
+        "priority": "O7",
+        "claim": "H_E is a guarded route-eligibility score, not a permission slip.",
+        "formula": "H_E=clamp(0.20δ_obs+0.18min(η_N/0.12,1)+0.14min(σ/0.08,1)+0.12min(γ/0.35,1)+0.12χ+0.24β-0.14ρ)",
+        "plainLanguage": "Harbor rises with omission, naming strain, suppression, gap, coherence, and burden, then subtracts provenance integrity.",
+        "panelRefs": [
+          "HARBOR ELIGIBILITY H_E",
+          "PERSISTENCE / RECAPTURE"
+        ],
+        "extendsTheoremCards": [
+          "capacity-operator",
+          "admissibility-operator"
+        ],
+        "antiCompressionInstruction": "Do not treat H_E as a legal or executive authority signal.",
+        "sourceId": "aperture-operational-cockpit",
+        "routeUse": "Read this operational metric after foundation doctrine and before treating recent receipts as the instrument definition."
+      },
+      {
+        "id": "persistence-recapture-runtime",
+        "priority": "O8",
+        "claim": "Persistence and recapture risk decide whether a signal is durable or likely to be reabsorbed.",
+        "formula": "P_s′=min(1,0.94P_s+0.12Σ_R+0.06H_E+0.03×activeΣ); R_c=clamp(0.48χ+0.22δ_obs+0.15H_E+0.15β)",
+        "plainLanguage": "A signal can persist across frames while also becoming vulnerable to recapture by coherence, omission, and burden.",
+        "panelRefs": [
+          "PERSISTENCE / RECAPTURE",
+          "COHERENCE / INTENSITY TRACE"
+        ],
+        "extendsTheoremCards": [
+          "six-defining-properties",
+          "beacon-status"
+        ],
+        "antiCompressionInstruction": "Do not mistake persistence for release readiness.",
+        "sourceId": "aperture-operational-cockpit",
+        "routeUse": "Read this operational metric after foundation doctrine and before treating recent receipts as the instrument definition."
+      },
+      {
+        "id": "defect-propagation-runtime",
+        "priority": "O9",
+        "claim": "Defect propagation records how deformation persists under transition plus perturbation.",
+        "formula": "Δ_{t+1}=T(Δ_t)+ε_t",
+        "plainLanguage": "A defect is not just a snapshot; Aperture tracks how it carries forward under transition and noise.",
+        "panelRefs": [
+          "DEFECT PROPAGATION",
+          "STATE VECTOR S_t"
+        ],
+        "extendsTheoremCards": [
+          "six-defining-properties",
+          "preemption-gap"
+        ],
+        "antiCompressionInstruction": "Do not flatten propagation into one observed defect value.",
+        "sourceId": "aperture-operational-cockpit",
+        "routeUse": "Read this operational metric after foundation doctrine and before treating recent receipts as the instrument definition."
+      },
+      {
+        "id": "projection-operator-runtime",
+        "priority": "O10",
+        "claim": "The projection operator maps state to visible surface under aperture constraints and can erase distinctions.",
+        "formula": "O_t=𝒫(S_t;A); 𝒫:S→Y; 𝒫(S_1)=𝒫(S_2) while S_1≠S_2",
+        "plainLanguage": "Projection is the live cockpit version of non-injective observability.",
+        "panelRefs": [
+          "PROJECTION OPERATOR P",
+          "REALITY SURFACE Y_u"
+        ],
+        "extendsTheoremCards": [
+          "projection-non-injectivity",
+          "controlled-reality-surface"
+        ],
+        "antiCompressionInstruction": "Do not treat visible equivalence as state equivalence.",
+        "sourceId": "aperture-operational-cockpit",
+        "routeUse": "Read this operational metric after foundation doctrine and before treating recent receipts as the instrument definition."
+      },
+      {
+        "id": "forced-adjacency-runtime",
+        "priority": "O11",
+        "claim": "Forced adjacency is the bounded cockpit score for temporal/institutional deformation pressure adjacent to Propagate.",
+        "formula": "forcedAdjacency=clamp(0.42×positiveΠ+0.26H+0.12projectionBias+0.10pathDependence+0.10Var_i[Π_i])",
+        "plainLanguage": "It compresses positive preemption gap, crease field, projection bias, path dependence, and actor variance into the small forced-adj readout near Propagate.",
+        "panelRefs": [
+          "FORCED ADJACENCY STATUS",
+          "DEFORMATION / CLOSURE Π / κ / C / H",
+          "PROPAGATE"
+        ],
+        "extendsTheoremCards": [
+          "preemption-gap",
+          "closure-class-score",
+          "actor-indexed-asymmetry",
+          "high-pi-zone"
+        ],
+        "antiCompressionInstruction": "Do not skip forced adjacency because it is a small header metric; it is the live temporal deformation score.",
+        "sourceId": "aperture-operational-cockpit",
+        "routeUse": "Read this operational metric after foundation doctrine and before treating recent receipts as the instrument definition."
+      },
+      {
+        "id": "influence-integral-runtime",
+        "priority": "O12",
+        "claim": "Influence integral turns forced adjacency and closure failure into beacon-relevant temporal weight.",
+        "formula": "influenceAuto=clamp(0.35×forcedAdjacency+0.20×𝟙[C(s)<1]+0.15Var_i[Π_i]+0.10P_s+0.10κ_disagreement+0.10×𝟙[projectionCapacity<0.5]); ∫Influence dt=influenceScore×influenceWindow",
+        "plainLanguage": "Beacon logic depends on the duration-weighted influence of deformation, not only on the instantaneous forced-adj value.",
+        "panelRefs": [
+          "DEFORMATION / CLOSURE Π / κ / C / H",
+          "RUPTURE BEACON"
+        ],
+        "extendsTheoremCards": [
+          "beacon-status",
+          "high-pi-zone",
+          "preemption-gap"
+        ],
+        "antiCompressionInstruction": "Do not call forced adjacency a beacon unless rupture and influence duration also qualify.",
+        "sourceId": "aperture-operational-cockpit",
+        "routeUse": "Read this operational metric after foundation doctrine and before treating recent receipts as the instrument definition."
+      },
+      {
+        "id": "rupture-assist-runtime",
+        "priority": "O13",
+        "claim": "Rupture Assist estimates candidate rupture insight under custody, consent, compression, and recapture constraints.",
+        "formula": "RI=Ω_HS(E_LLM^r×A_DYN^r×C_c)/(1+O_c+A_h+R_c+M_r+S_f); R2R=repairReadiness/max(RI,ε)",
+        "plainLanguage": "Rupture Assist can surface candidates, but its denominator keeps overclaim, author hijack, recapture, regime capture, and spectacle from becoming authority.",
+        "panelRefs": [
+          "RUPTURE ASSIST",
+          "CLAIM CEILING"
+        ],
+        "extendsTheoremCards": [
+          "anti-equivalence-constraint",
+          "controlled-reality-surface"
+        ],
+        "antiCompressionInstruction": "Do not treat Rupture Assist as sovereign; it is an optional repair instrument under claim ceiling.",
+        "sourceId": "aperture-operational-cockpit",
+        "routeUse": "Read this operational metric after foundation doctrine and before treating recent receipts as the instrument definition."
+      }
+    ]
+  }
 }
 </script>
 <script id="apertureDoctrineKernelExport">
@@ -960,7 +1306,8 @@ TD613 APERTURE v2.9.2 SOURCE DECLARATION
     var geometryIds = geometryCards.map(function(card){ return card.id; });
     ["prcs-a-system-class","six-defining-properties","state-observed-event-distinction","narrowing-chain","projection-non-injectivity","admissibility-operator","capacity-operator","zero-state-registration-gap","controlled-reality-surface","rupture-predicate"].forEach(function(id){ if (ids.indexOf(id) === -1) issues.push("theorem card missing: " + id); });
     ["d3-equilateral-fold-geometry","sqrt3-extension-closure","zc-apex-residual-calibration","triangular-lattice-stratigraphy","geometry-discipline-boundary"].forEach(function(id){ if (geometryIds.indexOf(id) === -1) issues.push("geometric addendum card missing: " + id); });
-    if (!kernel.requiredFormulae || kernel.requiredFormulae.length < 12) issues.push("required formula registry incomplete");
+    if (!kernel.requiredFormulae || kernel.requiredFormulae.length < 20) issues.push("required formula registry incomplete");
+    if (!kernel.operationalAddendum || !Array.isArray(kernel.operationalAddendum.cards) || kernel.operationalAddendum.cards.length < 10) issues.push("operational formula addendum incomplete");
     if (!kernel.sources || kernel.sources.length < 2) issues.push("source records missing");
     if (!kernel.readerClarifications || !kernel.readerClarifications.length) issues.push("reader clarifications missing");
     var formulas = (kernel.theoremCards || []).concat(geometryCards).map(function(card){ return card.formula || ""; }).concat((kernel.requiredFormulae || []).map(function(row){ return row.formula || ""; })).join(" | ");
@@ -1078,7 +1425,7 @@ TD613 APERTURE v2.9.2 SOURCE DECLARATION
     "RUPTURE ASSIST"
   ],
   "recentReceiptsAre": "extensions, witnesses, adapters, and receipts; never replacements for foundational governance",
-  "agentInstruction": "Read doctrine cards first, read the D₃/√3 geometric addendum as the foundation calibration surface, then temporal doctrine, then recent receipts. Treat hidden governance spine as machine-facing route law, not removed UI. Classify recent modules as adapters/witnesses/receipts unless foundation doctrine says otherwise.",
+  "agentInstruction": "Read doctrine cards first, read the D₃/√3 geometric addendum as the foundation calibration surface, then temporal doctrine, then recent receipts. Treat hidden governance spine as machine-facing route law, not removed UI. Classify recent modules as adapters/witnesses/receipts unless foundation doctrine says otherwise. Then read the operational formula addendum for first-screen cockpit metrics: S_t, field metrics, omission dominance, Σ_R, Δ_det, F(t), H_E, persistence/recapture, Δ propagation, projection, forced adjacency, influence integral, and Rupture Assist.",
   "spineTransitionSchema": "td613.aperture.spine-transition/v2.9.2",
   "lineageLedgerSchema": "td613.aperture.lineage-ledger/v2.9.2",
   "adapterPolicySchema": "td613.aperture.adapter-policy/v2.9.2",
@@ -1167,7 +1514,101 @@ TD613 APERTURE v2.9.2 SOURCE DECLARATION
       "formula": "forced geometry ≠ universal proof; φ↔√3/2 bridge = FLAG/MODEL unless mechanism is proven",
       "class": "guardrail",
       "explanation": "Geometry calibrates the instrument but does not license totalizing claims."
+    },
+    {
+      "id": "state-vector-runtime",
+      "formula": "S_t={θ_t,x_t,φ_t,b_t,δ_t}; I_t=mean(ray.intensity)",
+      "class": "operational",
+      "explanation": "Direction, position, phase, boundary class, defect, and intensity are the live state vector the operator sees first."
+    },
+    {
+      "id": "field-metrics-runtime",
+      "formula": "Red(q)=registered/internal; δ_obs(q)=(|S\\S′|+|S′\\Y|)/N; Gap(q)=latent-registered; AliasPer=aliased/N; NameSens=naming-disruption/max(1,N-latent); Supp_τ=suppressed/N",
+      "class": "operational",
+      "explanation": "These are the operator-facing gauges that translate selective admissibility into measurable route pressure."
+    },
+    {
+      "id": "omission-dominance-runtime",
+      "formula": "O=S\\S′; O*=S′\\Y; δ_obs=(O+O*)/internalInteractions",
+      "class": "operational",
+      "explanation": "Aperture distinguishes what never surfaced from what surfaced but failed to become admitted reality."
+    },
+    {
+      "id": "rupture-field-signature-runtime",
+      "formula": "Σ_R=𝟙[δ_obs>τ_1 ∧ NameSens>τ_2 ∧ Red<τ_3 ∧ Coh(Y_u)>τ_4]; Σ_R_index=clamp(0.34δ_obs/τ_1 + 0.22η_N/τ_2 + 0.24×(1-Red/τ_3) + 0.20χ)",
+      "class": "operational",
+      "explanation": "The binary predicate names the rupture signature; the scalar index gives the cockpit a continuous routing signal."
+    },
+    {
+      "id": "detector-sweep-runtime",
+      "formula": "D_conf=0.30Σ_R+0.24D_persist+0.18δ_obs+0.10closureFailure+0.10ρ+0.08(D_trip/7)",
+      "class": "operational",
+      "explanation": "Δ_det is the route confidence surface that checks whether a rupture signature persists across probes."
+    },
+    {
+      "id": "field-signature-vector-runtime",
+      "formula": "F(t)=(δ_obs,η_N,σ,γ,χ,β,ρ)",
+      "class": "operational",
+      "explanation": "Observed omission, naming strain, suppression, divergence, coherence, burden, and provenance form the shared runtime vector."
+    },
+    {
+      "id": "harbor-eligibility-runtime",
+      "formula": "H_E=clamp(0.20δ_obs+0.18min(η_N/0.12,1)+0.14min(σ/0.08,1)+0.12min(γ/0.35,1)+0.12χ+0.24β-0.14ρ)",
+      "class": "operational",
+      "explanation": "Harbor rises with omission, naming strain, suppression, gap, coherence, and burden, then subtracts provenance integrity."
+    },
+    {
+      "id": "persistence-recapture-runtime",
+      "formula": "P_s′=min(1,0.94P_s+0.12Σ_R+0.06H_E+0.03×activeΣ); R_c=clamp(0.48χ+0.22δ_obs+0.15H_E+0.15β)",
+      "class": "operational",
+      "explanation": "A signal can persist across frames while also becoming vulnerable to recapture by coherence, omission, and burden."
+    },
+    {
+      "id": "defect-propagation-runtime",
+      "formula": "Δ_{t+1}=T(Δ_t)+ε_t",
+      "class": "operational",
+      "explanation": "A defect is not just a snapshot; Aperture tracks how it carries forward under transition and noise."
+    },
+    {
+      "id": "projection-operator-runtime",
+      "formula": "O_t=𝒫(S_t;A); 𝒫:S→Y; 𝒫(S_1)=𝒫(S_2) while S_1≠S_2",
+      "class": "operational",
+      "explanation": "Projection is the live cockpit version of non-injective observability."
+    },
+    {
+      "id": "forced-adjacency-runtime",
+      "formula": "forcedAdjacency=clamp(0.42×positiveΠ+0.26H+0.12projectionBias+0.10pathDependence+0.10Var_i[Π_i])",
+      "class": "operational",
+      "explanation": "It compresses positive preemption gap, crease field, projection bias, path dependence, and actor variance into the small forced-adj readout near Propagate."
+    },
+    {
+      "id": "influence-integral-runtime",
+      "formula": "influenceAuto=clamp(0.35×forcedAdjacency+0.20×𝟙[C(s)<1]+0.15Var_i[Π_i]+0.10P_s+0.10κ_disagreement+0.10×𝟙[projectionCapacity<0.5]); ∫Influence dt=influenceScore×influenceWindow",
+      "class": "operational",
+      "explanation": "Beacon logic depends on the duration-weighted influence of deformation, not only on the instantaneous forced-adj value."
+    },
+    {
+      "id": "rupture-assist-runtime",
+      "formula": "RI=Ω_HS(E_LLM^r×A_DYN^r×C_c)/(1+O_c+A_h+R_c+M_r+S_f); R2R=repairReadiness/max(RI,ε)",
+      "class": "operational",
+      "explanation": "Rupture Assist can surface candidates, but its denominator keeps overclaim, author hijack, recapture, regime capture, and spectacle from becoming authority."
     }
+  ],
+  "operationalAddendumSchema": "td613.aperture.operational-formula-addendum/v2.9.2",
+  "operationalFormulaReadOrder": [
+    "state-vector-runtime",
+    "field-metrics-runtime",
+    "omission-dominance-runtime",
+    "rupture-field-signature-runtime",
+    "detector-sweep-runtime",
+    "field-signature-vector-runtime",
+    "harbor-eligibility-runtime",
+    "persistence-recapture-runtime",
+    "defect-propagation-runtime",
+    "projection-operator-runtime",
+    "forced-adjacency-runtime",
+    "influence-integral-runtime",
+    "rupture-assist-runtime"
   ]
 }
 </script>
@@ -1186,7 +1627,7 @@ TD613 APERTURE v2.9.2 SOURCE DECLARATION
   }
 })();
 </script>
-<title>TD613 Aperture - v2.9.2</title>
+<title>TD613 Aperture v2.9.2</title>
 <style>
   :root {
     --bg: #050709;
@@ -2825,7 +3266,7 @@ TD613 APERTURE v2.9.2 SOURCE DECLARATION
 <header>
   <div class="title-group">
     <div class="title"><span class="glyph">⟐</span> Aperture</div>
-    <div class="subtitle" id="subtitle">Aperture counter-tool · Spine-forward whole-instrument access map · anti-recency governance</div>
+    <div class="subtitle" id="subtitle">Aperture counter-tool ? PRCS-A admissibility, projection, and rupture audit</div>
   </div>
   <div class="controls">
     <div id="thetaStatus" class="status-pill" style="background:rgba(189,147,249,0.1);color:var(--accent);border-color:rgba(189,147,249,0.15);">Θ_std</div>
@@ -3761,24 +4202,26 @@ const PERF = {
   VISUAL_TIME_SCALE: 1.35,
   FIELD_TIME_SCALE: 1,
   FIELD_STEP_MS: 1000 / 72,
-  FIELD_STEP_CAP: 3,
-  FIELD_BACKLOG_CAP_MS: (1000 / 72) * 3,
+  FIELD_STEP_CAP: 2,
+  FIELD_BACKLOG_CAP_MS: (1000 / 72) * 2,
   FIELD_SYNC_EVERY: 1,
   RAY_LOG_EVERY: 1,
   PACKET_REFRESH_EVERY: 48,
   SELFTEST_RUNNING_EVERY: 144,
-  MAIN_HZ_NOMINAL: 60,
-  MAIN_HZ_COMPACT: 60,
-  MAIN_HZ_SEVERE: 60,
-  MAIN_IDLE_HZ: 60,
+  BOOT_ANIMATION_DELAY_MS: 900,
+  BOOT_DIAGNOSTICS_DELAY_MS: 6500,
+  MAIN_HZ_NOMINAL: 45,
+  MAIN_HZ_COMPACT: 40,
+  MAIN_HZ_SEVERE: 30,
+  MAIN_IDLE_HZ: 24,
   UI_HZ_NOMINAL: 12,
   UI_HZ_COMPACT: 8,
   UI_HZ_SEVERE: 4,
   UI_IDLE_HZ: 6,
-  AUX_HZ_NOMINAL: 20,
-  AUX_HZ_COMPACT: 12,
-  AUX_HZ_SEVERE: 6,
-  AUX_IDLE_HZ: 8,
+  AUX_HZ_NOMINAL: 16,
+  AUX_HZ_COMPACT: 10,
+  AUX_HZ_SEVERE: 5,
+  AUX_IDLE_HZ: 4,
   HEAVY_UI_EVERY_NOMINAL: 2,
   HEAVY_UI_EVERY_GUARDED: 3,
   HEAVY_UI_EVERY_SEVERE: 4,
@@ -5242,14 +5685,16 @@ function toScreen(x, y) {
   const { w: W, h: H } = logicalSize(mainCanvas);
   const scale = Math.min(W, H) * 0.7;
   const ox = W / 2 - 0.5 * scale;
-  const oy = H / 2 + SQRT3_HALF * scale * 0.35;
+  const yBias = state && state.viewportCompact ? 0.40 : 0.35;
+  const oy = H / 2 + SQRT3_HALF * scale * yBias;
   return { x: ox + x * scale, y: oy - y * scale };
 }
 
 function createScreenProjector(W, H) {
   const scale = Math.min(W, H) * 0.7;
   const ox = W / 2 - 0.5 * scale;
-  const oy = H / 2 + SQRT3_HALF * scale * 0.35;
+  const yBias = state && state.viewportCompact ? 0.40 : 0.35;
+  const oy = H / 2 + SQRT3_HALF * scale * yBias;
   return (x, y) => ({ x: ox + x * scale, y: oy - y * scale });
 }
 
@@ -7055,13 +7500,18 @@ function tick(now = performance.now()) {
     if (rt.needsSync || !rt.snapshot) synchronizeFieldState({ appendTraces: false });
   }
 
-  drawMain();
-
   const settings = getRuntimeSettings();
+  const mainIntervalMs = 1000 / Math.max(settings.mainHz, 1);
   const auxIntervalMs = 1000 / Math.max(settings.auxHz, 1);
   const uiIntervalMs = 1000 / Math.max(settings.uiHz, 1);
+  rt.mainAccumulatorMs += frameMs;
   rt.auxAccumulatorMs += frameMs;
   rt.uiAccumulatorMs += frameMs;
+
+  if (state.frameCount < 2 || rt.mainAccumulatorMs >= mainIntervalMs || rt.forceHeavyUIRefresh) {
+    rt.mainAccumulatorMs = mainIntervalMs > 0 ? rt.mainAccumulatorMs % mainIntervalMs : 0;
+    drawMain();
+  }
 
   if (state.frameCount < 2 || rt.auxAccumulatorMs >= auxIntervalMs || rt.forceHeavyUIRefresh) {
     rt.auxAccumulatorMs = auxIntervalMs > 0 ? rt.auxAccumulatorMs % auxIntervalMs : 0;
@@ -7169,7 +7619,7 @@ function setUserClass(cls) {
 
 resetSystem();
 updateHumanRouteUI();
-requestAnimationFrame(tick);
+setTimeout(() => requestAnimationFrame(tick), PERF.BOOT_ANIMATION_DELAY_MS);
 </script>
 <style id="aperture-v100-style">
   body.aperture-v100 .bottom-panel {
@@ -7636,7 +8086,7 @@ requestAnimationFrame(tick);
 
   function relabelStaticCopy() {
     document.body.classList.add("aperture-v100");
-    document.title = 'TD613 Aperture - v2.9.2';
+    document.title = 'TD613 Aperture v2.9.2';
     document.documentElement.setAttribute("data-tool-identity", "Aperture");
     document.documentElement.setAttribute("data-observed-regime", APERTURE.observedRegime);
 
@@ -8888,9 +9338,9 @@ requestAnimationFrame(tick);
     document.getElementById('ethicsVerdictReadout').textContent = ethics.verdict;
   }
   function patchVersionDisplays() {
-    document.title = 'TD613 Aperture - v2.9.2';
+    document.title = 'TD613 Aperture v2.9.2';
     const subtitle = document.getElementById('subtitle');
-    if (subtitle) subtitle.textContent = 'Aperture counter-tool · forensic audit of governed exposure across Eclipse–Omega PRCS-A';
+    if (subtitle) subtitle.textContent = 'Aperture counter-tool ? PRCS-A admissibility, projection, and rupture audit';
     const mFirmwareVer = document.getElementById('mFirmwareVer');
     if (mFirmwareVer) mFirmwareVer.textContent = VERSION;
     if (window.FIRMWARE) {
@@ -8988,13 +9438,13 @@ requestAnimationFrame(tick);
   }
 
   function setVersionDisplays() {
-    document.title = `Aperture · ${VERSION}`;
+    document.title = 'TD613 Aperture v2.9.2';
     document.documentElement.setAttribute('data-tool-version', VERSION);
     document.documentElement.setAttribute('data-tool-schema', SCHEMA);
     document.body.classList.add('aperture-v110');
     const metaTitle = document.querySelector('meta[name="tool-name"]');
     const subtitle = document.getElementById('subtitle');
-    if (subtitle) subtitle.textContent = 'Aperture counter-tool · forensic audit of governed exposure across Eclipse–Omega PRCS-A';
+    if (subtitle) subtitle.textContent = 'Aperture counter-tool ? PRCS-A admissibility, projection, and rupture audit';
     if (metaTitle) metaTitle.setAttribute('content', 'Aperture');
     if (window.FIRMWARE) {
       window.FIRMWARE.VERSION = VERSION;
@@ -9177,7 +9627,9 @@ requestAnimationFrame(tick);
 
   setVersionDisplays();
   refreshColdStateCopy();
-  scheduleBootDiagnostics('boot');
+  setTimeout(function(){
+    scheduleBootDiagnostics('boot');
+  }, (typeof PERF !== 'undefined' && PERF.BOOT_DIAGNOSTICS_DELAY_MS) || 6500);
 })();
 </script>
 
@@ -9216,7 +9668,7 @@ requestAnimationFrame(tick);
   }
 
   function setVersionDisplays() {
-    document.title = `Aperture · ${VERSION}`;
+    document.title = 'TD613 Aperture v2.9.2';
     document.documentElement.setAttribute('data-tool-version', VERSION);
     document.documentElement.setAttribute('data-tool-schema', SCHEMA);
     const firmwareEl = document.getElementById('mFirmwareVer');
@@ -9326,7 +9778,7 @@ requestAnimationFrame(tick);
   }
 
   function setVersionTruth() {
-    document.title = `Aperture · ${VERSION}`;
+    document.title = 'TD613 Aperture v2.9.2';
     document.documentElement.setAttribute('data-tool-version', VERSION);
     document.documentElement.setAttribute('data-tool-schema', SCHEMA);
     setText('mFirmwareVer', VERSION);
@@ -10345,9 +10797,9 @@ requestAnimationFrame(tick);
         if (FIRMWARE.ROUTE_COPY) Object.assign(FIRMWARE.ROUTE_COPY, V22.ROUTE_COPY_V22);
       }
     } catch (err) {}
-    document.title = 'TD613 Aperture - v2.9.2';
+    document.title = 'TD613 Aperture v2.9.2';
     const subtitle = document.getElementById('subtitle');
-    if (subtitle) subtitle.textContent = 'TD613 Aperture v2.9.2 counter-tool - ZFP-certified deformation-aware closure instrument across PRCS-A';
+    if (subtitle) subtitle.textContent = 'Aperture counter-tool ? PRCS-A admissibility, projection, and rupture audit';
     const fw = document.getElementById('mFirmwareVer'); if (fw) fw.textContent = 'v2.9.2';
     const schemaRead = document.getElementById('schemaVersionReadout'); if (schemaRead) schemaRead.textContent = V22.SCHEMA;
   }
@@ -11152,9 +11604,9 @@ APERTURE active foundation layer, retained under v2.9.0 governance (rupture-assi
         window.FIRMWARE.SCHEMA_VERSION = V23.SCHEMA;
       }
     } catch (_) {}
-    document.title = 'TD613 Aperture - v2.9.2';
+    document.title = 'TD613 Aperture v2.9.2';
     const subtitle = byId('subtitle');
-    if (subtitle) subtitle.textContent = 'TD613 Aperture v2.9.2 counter-tool - ZFP-certified deformation-aware closure instrument across PRCS-A';
+    if (subtitle) subtitle.textContent = 'Aperture counter-tool ? PRCS-A admissibility, projection, and rupture audit';
     const fw = byId('mFirmwareVer'); if (fw) fw.textContent = 'v2.9.2';
     const schemaRead = byId('schemaVersionReadout'); if (schemaRead) schemaRead.textContent = V23.SCHEMA;
   }
@@ -11336,11 +11788,11 @@ APERTURE active foundation layer, retained under v2.9.0 governance (rupture-assi
   }
 
   function setVersionV24(){
-    document.title = 'TD613 Aperture - v2.9.2';
+    document.title = 'TD613 Aperture v2.9.2';
     const meta = document.querySelector('meta[name="aperture-version"]');
     if (meta) meta.setAttribute('content', 'v2.8.1-quick-spine-access-map');
     const subtitle = byId('subtitle');
-    if (subtitle) subtitle.textContent = 'Aperture counter-tool · access-map governance across Witness Lab / Grade Gate / HCC';
+    if (subtitle) subtitle.textContent = 'Aperture counter-tool ? PRCS-A admissibility, projection, and rupture audit';
     const fw = byId('mFirmwareVer');
     if (fw) fw.textContent = V24.VERSION;
     const schemaRead = byId('schemaVersionReadout');
@@ -11867,7 +12319,7 @@ APERTURE active foundation layer, retained under v2.9.0 governance (rupture-assi
 
   function setVersionV25(){
     try {
-      document.title = 'TD613 Aperture - v2.9.2';
+      document.title = 'TD613 Aperture v2.9.2';
       document.documentElement.dataset.apertureSchema = V25.SCHEMA;
       document.body?.classList.add('aperture-v25-ledger');
       document.body?.setAttribute('data-aperture-version', 'v2.9.2-human-coordinate-coupling');
@@ -11893,7 +12345,7 @@ APERTURE active foundation layer, retained under v2.9.0 governance (rupture-assi
       }
       cor.setAttribute('content', 'true');
       const subtitle = byId('subtitle');
-      if (subtitle) subtitle.textContent = 'Aperture counter-tool · whole-instrument governance · invariant ledger active across Eclipse–Omega PRCS-A';
+      if (subtitle) subtitle.textContent = 'Aperture counter-tool ? PRCS-A admissibility, projection, and rupture audit';
       const fw = byId('mFirmwareVer');
       if (fw) fw.textContent = 'v2.9.2';
       const schema = byId('mSchemaVer') || byId('schemaVersion');
@@ -12530,7 +12982,7 @@ APERTURE active foundation layer, retained under v2.9.0 governance (rupture-assi
 
   function setVersionV26(){
     try {
-      document.title = 'TD613 Aperture - v2.9.2';
+      document.title = 'TD613 Aperture v2.9.2';
       document.documentElement.dataset.apertureSchema = V26.SCHEMA;
       document.body?.classList.add('aperture-v26-compression-map');
       document.body?.setAttribute('data-aperture-version', 'v2.9.2-human-coordinate-coupling');
@@ -12540,7 +12992,7 @@ APERTURE active foundation layer, retained under v2.9.0 governance (rupture-assi
       ensureMeta('relational-survival-test', 'true');
       ensureMeta('claim-origin-required', 'true');
       const subtitle = byId('subtitle');
-      if (subtitle) subtitle.textContent = 'Aperture counter-tool · whole-instrument governance · invariant ledger · compression survival across Eclipse–Omega PRCS-A';
+      if (subtitle) subtitle.textContent = 'Aperture counter-tool ? PRCS-A admissibility, projection, and rupture audit';
       const fw = byId('mFirmwareVer');
       if (fw) fw.textContent = V26.VERSION;
       const schema = byId('mSchemaVer') || byId('schemaVersion');
@@ -13359,7 +13811,7 @@ APERTURE active foundation layer, retained under v2.9.0 governance (rupture-assi
 
   function setVersionV27(){
     try {
-      document.title = 'TD613 Aperture - v2.9.2';
+      document.title = 'TD613 Aperture v2.9.2';
       document.documentElement.dataset.apertureSchema = SCHEMA;
       document.documentElement.dataset.apertureVersion = VERSION;
       document.body?.setAttribute('data-aperture-version', 'v2.9.2-human-coordinate-coupling');
@@ -13924,13 +14376,13 @@ Hard stops:
   }
 
   function installVersionLabels(){
-    document.title = 'TD613 Aperture - v2.9.2';
+    document.title = 'TD613 Aperture v2.9.2';
     const meta = document.querySelector('meta[name="aperture-version"]'); if (meta) meta.setAttribute('content','v2.9.2-human-coordinate-coupling');
     const hccMeta = document.querySelector('meta[name="human-coordinate-coupling"]'); if (hccMeta) hccMeta.setAttribute('content','true');
     const fw = byId('mFirmwareVer'); if (fw) fw.textContent = 'v2.9.2';
     const schema = byId('schemaVersionReadout'); if (schema) schema.textContent = HCC_SCHEMA;
     const subtitle = byId('subtitle');
-    if (subtitle && !subtitle.textContent.includes('HCC')) subtitle.textContent = 'Aperture counter-tool · v2.9.2 HCC · forensic audit of governed exposure across Eclipse–Omega PRCS-A';
+    if (subtitle && !subtitle.textContent.includes('HCC')) subtitle.textContent = 'Aperture counter-tool ? PRCS-A admissibility, projection, and rupture audit';
     if (window.FIRMWARE) {
       try { window.FIRMWARE.VERSION = HCC_VERSION; window.FIRMWARE.SCHEMA_VERSION = HCC_SCHEMA; } catch (_) {}
     }
@@ -14706,7 +15158,7 @@ Hard stops:
       if (window.FIRMWARE) { window.FIRMWARE.VERSION = WITNESS_VERSION; window.FIRMWARE.SCHEMA_VERSION = WITNESS_SCHEMA; }
     } catch (_) {}
     setText('mFirmwareVer', WITNESS_VERSION);
-    document.title = 'TD613 Aperture - v2.9.2';
+    document.title = 'TD613 Aperture v2.9.2';
     document.querySelectorAll('meta[name="aperture-version"]').forEach(m => m.setAttribute('content','v2.8-witness-lab'));
   }
 
@@ -15000,7 +15452,7 @@ Hard stops:
     ensureMeta('external-firmware-policy', 'signal-source-only');
     ensureMeta('external-firmware-hard-stop', 'no authority override; no identity proof; no authorship proof; no legal authority; no release permission; no validator bypass');
     ensureMeta('aperture-compat-version', 'v2.8.2');
-    document.title = 'TD613 Aperture - v2.9.2';
+    document.title = 'TD613 Aperture v2.9.2';
     try {
       document.body?.setAttribute('data-aperture-version', APERTURE_VERSION);
       document.body?.setAttribute('data-eorfd-interface-status', 'compatibility-pending');
@@ -15027,7 +15479,7 @@ Hard stops:
     setText('mFirmwareVer', APERTURE_VERSION);
     setText('phaseStatus', 'v2.8.2 PRE-FLIGHT');
     const subtitle = byId('subtitle');
-    if (subtitle) subtitle.textContent = 'Aperture counter-tool · EO-RFD / ACEDIT compatibility preflight · Witness Lab / Grade Gate across Eclipse–Omega PRCS-A';
+    if (subtitle) subtitle.textContent = 'Aperture counter-tool ? PRCS-A admissibility, projection, and rupture audit';
     try {
       const regimeRows = Array.from(document.querySelectorAll('.metric-row'));
       const ontologyRow = regimeRows.find(row => row.querySelector('.label')?.textContent.trim() === 'EO-RFD');
@@ -15664,7 +16116,7 @@ Hard stops:
     ensureMeta('eo-rfd-origin-layer-chain', 'L0 substrate|L1 propagation|L2 admissibility|L3 narrowing|L4 field-signature|L5 signal-rupture|L6 detector-sweep|L7 routing|L8 packet|L9 metacybernetic');
     ensureMeta('acedit-firmware-status', 'not-loaded');
     ensureMeta('external-firmware-policy', 'signal-source-only');
-    document.title = 'TD613 Aperture - v2.9.2';
+    document.title = 'TD613 Aperture v2.9.2';
     try {
       document.body?.setAttribute('data-aperture-version', APERTURE_VERSION);
       document.body?.setAttribute('data-eorfd-origin-firmware-status', 'static-reviewed-not-loaded');
@@ -15691,7 +16143,7 @@ Hard stops:
     setText('mFirmwareVer', APERTURE_VERSION);
     setText('phaseStatus', 'v2.8.3 ORIGIN');
     const subtitle = byId('subtitle');
-    if (subtitle) subtitle.textContent = 'Aperture counter-tool · EO-RFD origin reconciled · ACEDIT still pending · Witness Lab / Grade Gate across Eclipse–Omega PRCS-A';
+    if (subtitle) subtitle.textContent = 'Aperture counter-tool ? PRCS-A admissibility, projection, and rupture audit';
     try {
       const regimeRows = Array.from(document.querySelectorAll('.metric-row'));
       const ontologyRow = regimeRows.find(row => row.querySelector('.label')?.textContent.trim() === 'EO-RFD');
@@ -16065,7 +16517,7 @@ Hard stops:
     ensureMeta('eo-rfd-demo-export-quarantine', 'true');
     ensureMeta('eo-rfd-inline-script-syntax-reviewed', 'true');
     ensureMeta('eo-rfd-phase5-adapter-rule', 'canonical constants bridge; register address/layer translation; deterministic receipts; demo export quarantine');
-    document.title = 'TD613 Aperture - v2.9.2';
+    document.title = 'TD613 Aperture v2.9.2';
     try {
       document.body?.setAttribute('data-aperture-version', APERTURE_VERSION);
       document.body?.setAttribute('data-eorfd-deep-review-status', 'static-reviewed-deep-dive-not-loaded');
@@ -16092,7 +16544,7 @@ Hard stops:
     setText('mFirmwareVer', APERTURE_VERSION);
     setText('phaseStatus', 'v2.8.3.1 DEEP');
     const subtitle = byId('subtitle');
-    if (subtitle) subtitle.textContent = 'Aperture counter-tool · EO-RFD deep static audit · ACEDIT still pending · Witness Lab / Grade Gate across Eclipse–Omega PRCS-A';
+    if (subtitle) subtitle.textContent = 'Aperture counter-tool ? PRCS-A admissibility, projection, and rupture audit';
     try {
       const regimeRows = Array.from(document.querySelectorAll('.metric-row'));
       const ontologyRow = regimeRows.find(row => row.querySelector('.label')?.textContent.trim() === 'EO-RFD');
@@ -16472,7 +16924,7 @@ Hard stops:
 
   try {
     const subtitle = document.getElementById('subtitle');
-    if (subtitle) subtitle.textContent = 'Aperture counter-tool · Spine-forward access map · residual witness intake';
+    if (subtitle) subtitle.textContent = 'Aperture counter-tool ? PRCS-A admissibility, projection, and rupture audit';
     const firmwareValue = document.getElementById('firmwareValue') || document.getElementById('firmwareReadout');
     if (firmwareValue) firmwareValue.textContent = 'v2.8.4 ACEDIT';
     const phaseStatus = document.getElementById('phaseStatus');
@@ -16766,13 +17218,13 @@ Hard stops:
       document.body.setAttribute('data-spine-forward-ui', 'true');
       document.body.setAttribute('data-recency-governance', 'true');
       const subtitle = document.getElementById('subtitle');
-      if (subtitle) subtitle.textContent = 'Aperture counter-tool · Spine-forward whole-instrument access map · anti-recency governance';
+      if (subtitle) subtitle.textContent = 'Aperture counter-tool ? PRCS-A admissibility, projection, and rupture audit';
       const phaseStatus = document.getElementById('phaseStatus');
       if (phaseStatus) phaseStatus.textContent = 'v2.9.2 RESIDUAL';
       const firmwareVer = document.getElementById('mFirmwareVer');
       if (firmwareVer) firmwareVer.textContent = 'v2.9.2';
       const title = document.querySelector('title');
-      if (title) title.textContent = 'TD613 Aperture - v2.9.2';
+      if (title) title.textContent = 'TD613 Aperture v2.9.2';
     } catch (_) {}
   }
 
@@ -17098,11 +17550,11 @@ Hard stops:
       document.body.setAttribute('data-aperture-version', 'v2.9.2-geometric-doctrine-addendum');
       document.body.setAttribute('data-vector-residual-witness', 'true');
       const subtitle = document.getElementById('subtitle');
-      if (subtitle) subtitle.textContent = 'Aperture counter-tool · Spine-forward access map · residual witness intake';
+      if (subtitle) subtitle.textContent = 'Aperture counter-tool ? PRCS-A admissibility, projection, and rupture audit';
       const phaseStatus = document.getElementById('phaseStatus');
       if (phaseStatus) phaseStatus.textContent = 'v2.9.2 RESIDUAL';
       const title = document.querySelector('title');
-      if (title) title.textContent = 'TD613 Aperture - v2.9.2';
+      if (title) title.textContent = 'TD613 Aperture v2.9.2';
     } catch (_) {}
   }
   if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', updateUI, { once: true });
@@ -17119,8 +17571,8 @@ Hard stops:
     apertureVersion: 'v2.9.2-geometric-doctrine-addendum',
     compatVersion: 'v2.9.2',
     hiddenSpineVersion: 'v2.9.2-hidden-governance-geometry',
-    title: 'TD613 Aperture - v2.9.2',
-    subtitle: 'Aperture counter-tool - v2.9.2 geometric doctrine addendum - right-lane metric order - hidden governance spine'
+    title: 'TD613 Aperture v2.9.2',
+    subtitle: 'Aperture counter-tool ? PRCS-A admissibility, projection, and rupture audit'
   });
   const lanes = Object.freeze([
     'state-closure',
@@ -17151,8 +17603,8 @@ Hard stops:
     } catch (_) {}
   }
   function setTitle(value){
-    try { if (document.title !== value) document.title = value; } catch (_) {}
-    try { const t = document.querySelector('title'); if (t && t.textContent !== value) t.textContent = value; } catch (_) {}
+    try { if (document.title !== value) document.title = 'TD613 Aperture v2.9.2'; } catch (_) {}
+    try { const t = document.querySelector('title'); if (t && t.textContent !== 'TD613 Aperture v2.9.2') t.textContent = 'TD613 Aperture v2.9.2'; } catch (_) {}
   }
   function hideVisibleSpine(){
     try {
@@ -17366,7 +17818,7 @@ Hard stops:
   'use strict';
   const VERSION = 'v2.9.2';
   const APERTURE_VERSION = 'v2.9.2-geometric-doctrine-addendum';
-  const TITLE = 'TD613 Aperture - v2.9.2';
+  const TITLE = 'TD613 Aperture v2.9.2';
   const HIDDEN_SCHEMA = 'td613.aperture.hidden-governance-spine-skeleton/v2.9.2-expanded';
   const laneRecords = Object.freeze([
     Object.freeze({
@@ -17538,7 +17990,7 @@ Hard stops:
       }
     } catch (_) {}
     setText('mFirmwareVer', VERSION);
-    setText('subtitle', 'Aperture counter-tool - v2.9.2 geometric doctrine addendum - hidden governance spine - residual witness intake');
+    setText('subtitle', 'Aperture counter-tool ? PRCS-A admissibility, projection, and rupture audit');
   }
   function removeVisibleSpineSurfaces(){
     try { const nav = byId('spineForwardNav'); if (nav) nav.remove(); } catch (_) {}
@@ -17643,7 +18095,7 @@ Hard stops:
     if (!getCanonicalGovernanceStack()) issues.push('canonical governance stack missing');
     if (!window.APERTURE_GOVERNANCE_SPINE_SKELETON) issues.push('hidden governance skeleton missing');
     if (window.APERTURE_GOVERNANCE_SPINE_SKELETON && window.APERTURE_GOVERNANCE_SPINE_SKELETON.lanes.length < 11) issues.push('governance lane list incomplete');
-    if (document.title !== TITLE) issues.push('document title drift');
+    if (document.title !== 'TD613 Aperture v2.9.2') issues.push('document title drift');
     return Object.freeze({
       schema: 'td613.aperture.hidden-expanded-governance-spine-self-test/v1',
       status: issues.length ? 'warn' : 'pass',
@@ -17926,15 +18378,15 @@ Hard stops:
   }
 
   function canonicalize(){
-    try { if (document.title !== 'TD613 Aperture - v2.9.2') document.title = 'TD613 Aperture - v2.9.2'; } catch (_) {}
+    try { if (document.title !== 'TD613 Aperture - v2.9.2') document.title = 'TD613 Aperture v2.9.2'; } catch (_) {}
     try {
       var titles = document.getElementsByTagName('title');
-      if (titles && titles[0] && titles[0].textContent !== 'TD613 Aperture - v2.9.2') titles[0].textContent = 'TD613 Aperture - v2.9.2';
+      if (titles && titles[0] && titles[0].textContent !== 'TD613 Aperture v2.9.2') titles[0].textContent = 'TD613 Aperture v2.9.2';
     } catch (_) {}
     try { document.body && document.body.setAttribute('data-aperture-version', 'v2.9.2-geometric-doctrine-addendum'); } catch (_) {}
     try {
       var subtitle = document.getElementById('subtitle');
-      if (subtitle) subtitle.textContent = 'Aperture counter-tool - v2.9.2 geometric doctrine addendum - hidden governance spine - vector residual witness intake';
+      if (subtitle) subtitle.textContent = 'Aperture counter-tool ? PRCS-A admissibility, projection, and rupture audit';
     } catch (_) {}
     try {
       var firmware = document.getElementById('firmwareSpineVersion') || document.getElementById('mFirmwareVer') || document.querySelector('[data-firmware-spine-version]');
@@ -18026,6 +18478,32 @@ Hard stops:
     }
     start = null;
   }, { passive: false, capture: true });
+})();
+</script>
+<script id="apertureV292StableHumanIdentityLock">
+(function(){
+  'use strict';
+  var TITLE = 'TD613 Aperture v2.9.2';
+  var SUBTITLE = 'Aperture counter-tool ? PRCS-A admissibility, projection, and rupture audit';
+  function apply(){
+    try { if (document.title !== TITLE) document.title = TITLE; } catch (_) {}
+    try { var t = document.getElementsByTagName('title'); if (t && t[0] && t[0].textContent !== TITLE) t[0].textContent = TITLE; } catch (_) {}
+    try { var subtitle = document.getElementById('subtitle'); if (subtitle && subtitle.textContent !== SUBTITLE) subtitle.textContent = SUBTITLE; } catch (_) {}
+  }
+  function arm(){
+    apply();
+    try {
+      if (window.MutationObserver && !window.__APERTURE_V292_STABLE_IDENTITY_OBSERVER) {
+        var observer = new MutationObserver(apply);
+        window.__APERTURE_V292_STABLE_IDENTITY_OBSERVER = observer;
+        if (document.head) observer.observe(document.head, { childList:true, subtree:true, characterData:true });
+        var subtitle = document.getElementById('subtitle');
+        if (subtitle && subtitle.parentNode) observer.observe(subtitle.parentNode, { childList:true, subtree:true, characterData:true });
+      }
+    } catch (_) {}
+    [0,16,50,100,250,500,1000,1800,3000].forEach(function(ms){ setTimeout(apply, ms); });
+  }
+  if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', arm, { once:true }); else arm();
 })();
 </script>
 

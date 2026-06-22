@@ -224,7 +224,7 @@ assert.equal(typeof latestReport.workingDoctrine.representativePairs.bilateralNo
 assert.ok(latestReport.annexes?.aperture, 'diagnostics JSON report includes Aperture annex diagnostics');
 assert.ok(latestReport.annexes.aperture.passed, 'Aperture annex diagnostics pass');
 assert.equal(latestReport.annexes.aperture.file, 'app/aperture/tool.html', 'Aperture annex diagnostics inspect the canonical tool body');
-assert.equal(latestReport.annexes.aperture.version, '2.7.0', 'Aperture annex diagnostics report the expected version');
+assert.equal(latestReport.annexes.aperture.version, '2.9.2', 'Aperture annex diagnostics report the expected version');
 assert.equal(latestReport.annexes.aperture.label, 'TD613 Aperture', 'Aperture annex diagnostics use the TD613 Aperture label');
 assert.equal(latestReport.annexes.aperture.meta['tool-name'], 'TD613 Aperture', 'Aperture annex diagnostics preserve the TD613 Aperture tool name');
 assert.equal(latestReport.annexes.aperture.meta['tool-role'], 'counter-tool', 'Aperture annex diagnostics preserve tool role');
