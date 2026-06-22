@@ -96,7 +96,7 @@ Adversarial seed means later counterfeit, overfit, style-laundering, third-party
 
 ## EO-RFD route observation
 
-EO-RFD route observation is interface-only unless a verified firmware adapter is attached. Provider logs must not claim live EO-RFD firmware execution, legal authority, executive-order authority, or public-law authority without verified adapter proof.
+EO-RFD route observation is interface-only unless a verified firmware adapter is attached. Provider logs must not claim live EO-RFD firmware execution, government authority or public authority without verified adapter proof.
 
 ## Release classes
 
@@ -136,7 +136,7 @@ Both packet hash locations must replay to the same expected packet hash. If the 
 
 ## Validation rules
 
-Validation blocks malformed hashes, hash-only provider logs, SHI-style provider log IDs, missing linked contract, malformed linked contract IDs, missing provider target observed, missing dispatch/request/response/redaction surfaces, raw/private export in audit-ready logs, private-text echo in audit-ready logs, provider compliance claims, stylometry authenticity claims, EO-RFD fake firmware claims, EO-RFD legal/executive authority claims, and tampered packet bodies.
+Validation blocks malformed hashes, hash-only provider logs, SHI-style provider log IDs, missing linked contract, malformed linked contract IDs, missing provider target observed, missing dispatch/request/response/redaction surfaces, raw/private export in audit-ready logs, private-text echo in audit-ready logs, provider compliance claims, stylometry authenticity claims, EO-RFD fake firmware claims, EO-RFD government authority claims, and tampered packet bodies.
 
 ## Validator regression coverage
 

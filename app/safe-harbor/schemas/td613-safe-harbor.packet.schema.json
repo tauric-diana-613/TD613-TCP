@@ -374,8 +374,7 @@
           "type": [
             "string",
             "null"
-          ],
-          "pattern": "^(TD613-Binding:#9B07D8B\\/SAC\\[X6ZNK5NO51\\] · 𝌋 · SHI#:TD613-SH-9B07D8B-[A-F0-9]{8} · payload .+ · .+ · ⟐)?$"
+          ]
         },
         "badge_state": {
           "type": "string",

@@ -154,9 +154,19 @@ function adversarialConstraints(input = {}) {
 
 function eoRfdRouteState(input = {}) {
   const eo = input.eo_rfd_route_state || input.eoRfdRouteState || {};
+  const aperture = eo.aperture_context || eo.apertureContext || input.aperture_context || input.apertureContext || {};
   return Object.freeze({
     schema_version: 'td613.hush.eo-rfd-route-state/v1',
     firmware_status: eo.firmware_status || eo.firmwareStatus || 'interface-only',
+    aperture_context: Object.freeze({
+      aperture_version: aperture.aperture_version || aperture.apertureVersion || 'v2.9.2',
+      aperture_schema: aperture.aperture_schema || aperture.apertureSchema || 'td613-aperture/v2.9.2',
+      aperture_feature_version: aperture.aperture_feature_version || aperture.apertureFeatureVersion || 'v2.9.2-geometric-doctrine-addendum',
+      doctrine_kernel: aperture.doctrine_kernel || aperture.doctrineKernel || 'present',
+      geometric_addendum: aperture.geometric_addendum || aperture.geometricAddendum || 'present',
+      authority: aperture.authority || 'context-only',
+      claim_limit: aperture.claim_limit || aperture.claimLimit || 'Aperture context informs EO-RFD route review; it does not create firmware proof.'
+    }),
     route_conscience_hook: eo.route_conscience_hook || eo.routeConscienceHook || 'required',
     provider_contract_hook: bool(eo.provider_contract_hook ?? eo.providerContractHook, true),
     stylometry_drift_hook: bool(eo.stylometry_drift_hook ?? eo.stylometryDriftHook, true),

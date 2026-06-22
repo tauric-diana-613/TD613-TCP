@@ -112,7 +112,7 @@ Boundary:
 
 - Hush Phase 5 may create `hush-eo-rfd-interface.js` as a socket/interface.
 - Do not claim EO-RFD firmware execution inside Hush until an actual adapter is attached and verified.
-- EO means EO-RFD route firmware / route-conscience hook lane in this context, not executive-order authority.
+- EO means EO-RFD route conscience / context lane in this context, not government authority.
 
 ## Safe Harbor non-edit zone for Hush work
 

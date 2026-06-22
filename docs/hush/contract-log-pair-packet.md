@@ -112,7 +112,7 @@ Phase 3 may route to adversarial audit. It does not decide counterfeit, overfit,
 
 ## EO-RFD route comparison
 
-EO-RFD route comparison remains route-conscience comparison only. It is not firmware proof, legal authority, executive-order authority, or public-law authority.
+EO-RFD route comparison remains route-conscience comparison only. It is not firmware proof, government authority or public authority.
 
 ## Comparison result
 

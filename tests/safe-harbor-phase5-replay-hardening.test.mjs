@@ -9,6 +9,11 @@ import {
 } from '../app/safe-harbor/app/safe-harbor-authority-verifier.js';
 import { buildRecallChallengeProfile } from '../app/safe-harbor/app/safe-harbor-recall-challenge.js';
 import {
+  buildNativeHashTopology,
+  buildNativeSpinePurification,
+  buildPhase6MigrationPolicy
+} from '../app/safe-harbor/app/safe-harbor-native-finalizer.js';
+import {
   buildAuthorityConflictReport,
   buildChallengeReplayReport,
   buildConvergenceReport,
@@ -17,6 +22,8 @@ import {
   detectStaleV3,
   shouldAllowPublicExport
 } from '../app/safe-harbor/app/safe-harbor-phase5-replay-hardening.js';
+
+const LANES = ['future_self', 'past_self', 'higher_self'];
 
 function profile(delta = 0) {
   return {
@@ -52,7 +59,10 @@ function stable(value) {
   if (value === undefined) return undefined;
   if (value === null || typeof value !== 'object') return JSON.stringify(value);
   if (Array.isArray(value)) return '[' + value.map((item) => stable(item)).join(',') + ']';
-  return '{' + Object.keys(value).filter((key) => value[key] !== undefined).sort().map((key) => JSON.stringify(key) + ':' + stable(value[key])).join(',') + '}';
+  const keys = LANES.every((key) => Object.prototype.hasOwnProperty.call(value, key)) && Object.keys(value).length === LANES.length
+    ? LANES.slice()
+    : Object.keys(value).filter((key) => value[key] !== undefined).sort();
+  return '{' + keys.map((key) => JSON.stringify(key) + ':' + stable(value[key])).join(',') + '}';
 }
 
 function hashMaterial(packet) {
@@ -61,7 +71,31 @@ function hashMaterial(packet) {
   delete material.phase5_replay_hardening;
   delete material.export_quarantine;
   delete material.phase5_hash_semantics;
-  if (material.renderer_authority_metadata) material.renderer_authority_metadata.packet_hash_sha256 = null;
+  delete material.hash_topology;
+  delete material.native_spine_purification;
+  delete material.phase6_migration_policy;
+  delete material.packet_authority_surface;
+  delete material.recall_governance;
+  delete material.public_default_policy;
+  delete material.phase4_recall_intake;
+  delete material.renderer_authority_metadata;
+  delete material.step1_countersignature;
+  delete material.countersignatory_intake;
+  delete material.svg_authority_metadata;
+  delete material.signature_overlay_authority;
+  delete material.tcp_hook_authority;
+  delete material.eo_hook_authority;
+  delete material.outside_witness_receipt;
+  delete material.outside_witness_alignment;
+  delete material.phase8_public_default_gate;
+  delete material.phase8_receipt_policy;
+  delete material.phase9_release_discipline;
+  delete material.phase9_release_receipt;
+  if (material.signature) {
+    delete material.signature.sig;
+    delete material.signature.attached_at;
+    if (material.signature.status === 'sealed') material.signature.status = 'declared';
+  }
   return material;
 }
 
@@ -78,6 +112,13 @@ async function normalizeFixture(value) {
   normalized = await attachPhase4Authority(normalized, { mode: 'export-normalized', packetHashRecomputed: true });
   normalized.packet_hash_sha256 = hashPacket(normalized);
   normalized = await attachPhase4Authority(normalized, { mode: 'export-normalized', packetHashRecomputed: true });
+  normalized.native_spine_purification = buildNativeSpinePurification(normalized, { mode: 'export-normalized' });
+  normalized.phase6_migration_policy = buildPhase6MigrationPolicy();
+  normalized.hash_topology = buildNativeHashTopology(normalized, {
+    mode: 'export-normalized',
+    v3PreimageHash: normalized.rich_stylometry_hash_semantics?.v3_preimage_packet_hash_sha256 || null,
+    finalPacketHash: normalized.packet_hash_sha256
+  });
   normalized.phase5_hash_semantics = {
     phase5_replay_hardening_hash_covered: false,
     phase5_replay_hardening_hash_excluded: true,
@@ -125,6 +166,13 @@ async function packetFixture() {
   let governed = await attachPhase4Authority(packet, { mode: 'export-normalized', packetHashRecomputed: true });
   governed.packet_hash_sha256 = hashPacket(governed);
   governed = await attachPhase4Authority(governed, { mode: 'export-normalized', packetHashRecomputed: true });
+  governed.native_spine_purification = buildNativeSpinePurification(governed, { mode: 'export-normalized' });
+  governed.phase6_migration_policy = buildPhase6MigrationPolicy();
+  governed.hash_topology = buildNativeHashTopology(governed, {
+    mode: 'export-normalized',
+    v3PreimageHash: governed.rich_stylometry_hash_semantics?.v3_preimage_packet_hash_sha256 || null,
+    finalPacketHash: governed.packet_hash_sha256
+  });
   governed.phase5_hash_semantics = {
     phase5_replay_hardening_hash_covered: false,
     phase5_replay_hardening_hash_excluded: true

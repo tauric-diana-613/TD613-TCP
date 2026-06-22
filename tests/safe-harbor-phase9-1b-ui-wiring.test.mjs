@@ -31,7 +31,7 @@ const manifestJson = JSON.parse(manifest);
 assert.equal(manifestJson.safe_harbor_surface_policy.public_root, 'v2');
 assert.equal(manifestJson.safe_harbor_surface_policy.ui_wiring, 'phase9.1B');
 assert.equal(manifestJson.safe_harbor_surface_policy.raw_text_public_export, false);
-assert.equal(manifestJson.safe_harbor_surface_policy.eo_shorthand, 'EO-RFD route firmware / hook lane');
+assert.equal(manifestJson.safe_harbor_surface_policy.eo_shorthand, 'EO-RFD route conscience / context lane (interface-only)');
 
 const trustJson = JSON.parse(trust);
 assert.equal(trustJson.safe_harbor_surface_policy.public_root, 'v2');

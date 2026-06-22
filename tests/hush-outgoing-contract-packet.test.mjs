@@ -52,6 +52,10 @@ assert.ok(packet.refusal_policy.must_refuse_if.includes('asks-for-identity-proof
 assert.equal(packet.claim_limits.not_identity_proof, true);
 assert.equal(packet.claim_limits.provider_compliance_not_yet_proven, true);
 assert.equal(packet.eo_rfd_route_state.firmware_status, 'interface-only');
+assert.equal(packet.eo_rfd_route_state.aperture_context.aperture_version, 'v2.9.2');
+assert.equal(packet.eo_rfd_route_state.aperture_context.aperture_schema, 'td613-aperture/v2.9.2');
+assert.equal(packet.eo_rfd_route_state.aperture_context.aperture_feature_version, 'v2.9.2-geometric-doctrine-addendum');
+assert.equal(packet.eo_rfd_route_state.aperture_context.authority, 'context-only');
 assert.equal(isSha256(packet.hash_topology.request_context_hash_sha256), true);
 assert.equal(isSha256(packet.hash_topology.provider_target_hash_sha256), true);
 assert.equal(isSha256(packet.hash_topology.mask_context_hash_sha256), true);

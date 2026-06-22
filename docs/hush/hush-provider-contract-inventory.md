@@ -170,7 +170,7 @@ refusal_reason_hook
 
 Do not claim firmware-attached unless a verified adapter exists.
 
-Do not treat EO-RFD as executive-order authority.
+Do not treat EO-RFD as government authority.
 
 ## Provider log phase boundary
 

@@ -86,8 +86,8 @@ useful; together they make the exposure surface complete.
 ## What's missing right now
 
 The canonical browser body is now [`tool.html`](tool.html) at
-`v2.7.0` / `td613-aperture/v2.7.0`; [`index.html`](index.html) is the
-stable public iframe shim. v2.7.0 carries the ZFP certification layer,
+`v2.9.2` / `td613-aperture/v2.9.2`; [`index.html`](index.html) is the
+stable public iframe shim. v2.9.2 carries the doctrine kernel, geometric addendum, ZFP certification layer,
 the corrected rupture predicate, Moire Stratigraphy diagnostics, and
 the Gateway embed compatibility bridge.
 

@@ -160,7 +160,7 @@ const legacyConflict = await buildAuthorityConflictReport(mislabeledLegacy);
 assert.equal(legacyConflict.status, 'conflict');
 
 const pr169 = readFileSync(new URL('../app/safe-harbor/app/safe-harbor-pr169-packet-vault-direct.js', import.meta.url), 'utf8');
-assert.ok(pr169.includes('v11-phase6-compose-purity'));
+assert.ok(pr169.includes('v16-phase9-1b-wire-ui-surfaces'));
 assert.ok(pr169.includes('phase6_native_callsite'));
 assert.ok(pr169.includes('phase6_compose_purity'));
 assert.ok(pr169.includes("mode: 'native'"));

@@ -277,7 +277,17 @@
         },
         eo: {
           status: 'attached',
-          source: 'demo-eo',
+          source: 'eo-rfd',
+          aperture_context: {
+            apertureVersion: 'v2.9.2',
+            apertureSchema: 'td613-aperture/v2.9.2',
+            apertureFeatureVersion: 'v2.9.2-geometric-doctrine-addendum',
+            observedRegime: 'PRCS-A',
+            doctrineKernel: 'present',
+            geometricAddendum: 'present',
+            eorfdAuthority: 'interface-only',
+            claimLimit: 'Aperture/EO-RFD context observes route posture; it does not create packet authority.'
+          },
           route_state: 'harbor-eligible',
           recommended_harbor: 'provenance.seal',
           export_ready: true,

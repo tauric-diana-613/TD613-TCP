@@ -40,7 +40,10 @@ function stableForPacketHash(value) {
   if (value === undefined) return undefined;
   if (value === null || typeof value !== 'object') return JSON.stringify(value);
   if (Array.isArray(value)) return '[' + value.map((item) => stableForPacketHash(item)).join(',') + ']';
-  return '{' + Object.keys(value).filter((key) => value[key] !== undefined).sort().map((key) => JSON.stringify(key) + ':' + stableForPacketHash(value[key])).join(',') + '}';
+  const keys = LANES.every((key) => Object.prototype.hasOwnProperty.call(value, key)) && Object.keys(value).length === LANES.length
+    ? LANES.slice()
+    : Object.keys(value).filter((key) => value[key] !== undefined).sort();
+  return '{' + keys.map((key) => JSON.stringify(key) + ':' + stableForPacketHash(value[key])).join(',') + '}';
 }
 function packetHashReplayMaterial(packet) {
   const material = clone(packet || {});
@@ -51,10 +54,27 @@ function packetHashReplayMaterial(packet) {
   delete material.hash_topology;
   delete material.native_spine_purification;
   delete material.phase6_migration_policy;
+  delete material.packet_authority_surface;
+  delete material.recall_governance;
+  delete material.public_default_policy;
+  delete material.phase4_recall_intake;
+  delete material.renderer_authority_metadata;
+  delete material.step1_countersignature;
+  delete material.countersignatory_intake;
+  delete material.svg_authority_metadata;
+  delete material.signature_overlay_authority;
+  delete material.tcp_hook_authority;
+  delete material.eo_hook_authority;
+  delete material.outside_witness_receipt;
+  delete material.outside_witness_alignment;
+  delete material.phase8_public_default_gate;
+  delete material.phase8_receipt_policy;
+  delete material.phase9_release_discipline;
+  delete material.phase9_release_receipt;
   if (material.renderer_authority_metadata) material.renderer_authority_metadata.packet_hash_sha256 = null;
   if (material.signature) {
-    material.signature.sig = null;
-    material.signature.attached_at = null;
+    delete material.signature.sig;
+    delete material.signature.attached_at;
     if (material.signature.status === 'sealed') material.signature.status = 'declared';
   }
   return material;

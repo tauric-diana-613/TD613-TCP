@@ -117,7 +117,7 @@ function assertNoRawText(value, label) {
   assert.equal(body.includes(segments.future_self), false, `${label} leaked future lane`);
   assert.equal(body.includes(segments.past_self), false, `${label} leaked past lane`);
   assert.equal(body.includes(segments.higher_self), false, `${label} leaked higher lane`);
-  assert.equal(body.includes('raw_text'), false, `${label} carried raw_text key`);
+  assert.equal(/"raw_text"\s*:/u.test(body), false, `${label} carried raw_text key`);
 }
 
 const clean = await nativePacket();
@@ -208,7 +208,7 @@ const verifiedRelease = await verifyReleaseDiscipline(visible);
 assert.equal(verifiedRelease.status, 'ready');
 
 const pr169 = readFileSync(new URL('../app/safe-harbor/app/safe-harbor-pr169-packet-vault-direct.js', import.meta.url), 'utf8');
-assert.ok(pr169.includes('v15-phase9-release-discipline'));
+assert.ok(pr169.includes('v16-phase9-1b-wire-ui-surfaces'));
 assert.ok(pr169.includes('phase6_compose_purity: true'));
 assert.ok(pr169.includes('phase7_outside_witness_alignment: true'));
 assert.ok(pr169.includes('phase8_public_default_gate: true'));

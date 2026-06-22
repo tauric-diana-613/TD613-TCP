@@ -2,23 +2,23 @@
 
 Source: app/aperture/tool.html
 Status: passed
-Version: 2.7.0
-Title: TD613 Aperture - v2.7.0
+Version: 2.9.2
+Title: TD613 Aperture - v2.9.2
 
 ## Fingerprint
 
-- bytes: 574261
-- line_count: 11777
-- inline_script_count: 14
-- panel_count: 3
-- button_count: 34
-- content_hash_sha256: b0be3fe67c7c7b41f63e5a2011767d9c9c8c3a78ef812eceda4816355c3be080
+- bytes: 886993
+- line_count: 18034
+- inline_script_count: 36
+- panel_count: 6
+- button_count: 43
+- content_hash_sha256: 5a8c8c8400069242109c2e1ea74488b669fe24a6c4aaa597898622d70a0296f6
 
 ## Checks
 
-- [pass] title marker: TD613 Aperture - v2.7.0 observed
-- [pass] version marker: version 2.7.0 observed
-- [pass] inline runtime present: 14 inline script block(s)
+- [pass] title marker: TD613 Aperture - v2.9.2 observed
+- [pass] version marker: version 2.9.2 observed
+- [pass] inline runtime present: 36 inline script block(s)
 - [pass] meta tool-name: tool-name => TD613 Aperture
 - [pass] meta tool-role: tool-role => counter-tool
 - [pass] meta observed-regime: observed-regime => PRCS-A
@@ -59,6 +59,11 @@ Title: TD613 Aperture - v2.7.0
 - [pass] packet forensic schema export: packet forensic schema export present
 - [pass] ZFP certification global: ZFP certification global present
 - [pass] corrected rupture predicate: corrected rupture predicate present
-- [pass] Moiré stratigraphy kernel: Moiré stratigraphy kernel present
+- [pass] Moire stratigraphy kernel: Moire stratigraphy kernel present
+- [pass] Doctrine kernel global: Doctrine kernel global present
+- [pass] 18 theorem cards: 18 theorem cards present
+- [pass] geometric doctrine addendum: geometric doctrine addendum present
+- [pass] required formulae list: required formulae list present
+- [pass] EO-RFD receipt globals: EO-RFD receipt globals present
 - [pass] Gateway embed bridge: Gateway embed bridge present
-- [pass] Aperture v2.7 schema marker: Aperture v2.7 schema marker present
+- [pass] Aperture v2.9.2 schema marker: Aperture v2.9.2 schema marker present

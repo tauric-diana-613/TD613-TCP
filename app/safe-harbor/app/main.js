@@ -9,6 +9,16 @@
   const GATEWAY_APERTURE_HANDOFF_KEY = (window.TD613_CONSTANTS && window.TD613_CONSTANTS.GATEWAY_APERTURE_HANDOFF_KEY) || 'td613.gateway.aperture-handoff';
   const MAX_AUDIT = 24;
   const MIN_LANE_WORDS = 40;
+  const APERTURE_CONTEXT_BASE = Object.freeze({
+    apertureVersion: 'v2.9.2',
+    apertureSchema: 'td613-aperture/v2.9.2',
+    apertureFeatureVersion: 'v2.9.2-geometric-doctrine-addendum',
+    observedRegime: 'PRCS-A',
+    doctrineKernel: 'present',
+    geometricAddendum: 'present',
+    eorfdAuthority: 'interface-only',
+    claimLimit: 'Aperture/EO-RFD context observes route posture; it does not create packet authority.'
+  });
   const INGRESS_STEP_COPY = {
     future_self: {
       support: 'Speak forward first. Let the chamber hear direction, residue, or warning before it hears revision.',
@@ -281,6 +291,11 @@
       .filter(Boolean);
     return {
       source: source,
+      apertureContext: compactApertureContext({
+        source: 'url-parameter-handoff',
+        route: trim(params.get('route')),
+        handoffMode: 'safe-harbor-ingress'
+      }),
       decision: trim(params.get('decision')),
       harbor: trim(params.get('harbor')),
       route: trim(params.get('route')),
@@ -346,6 +361,14 @@
     };
     return {
       source: 'aperture-gateway',
+      apertureContext: compactApertureContext({
+        apertureVersion: String(summary.apertureVersion || packet?.apertureVersion || APERTURE_CONTEXT_BASE.apertureVersion),
+        apertureSchema: String(summary.apertureSchema || packet?.apertureSchema || APERTURE_CONTEXT_BASE.apertureSchema),
+        apertureFeatureVersion: String(summary.apertureFeatureVersion || packet?.apertureFeatureVersion || APERTURE_CONTEXT_BASE.apertureFeatureVersion),
+        source: 'gateway-embed-handoff',
+        handoffStatus: summary.handoffStatus ? String(summary.handoffStatus) : null,
+        packetKey: summary.packetKey ? String(summary.packetKey) : null
+      }),
       decision: trim(summary.handoffStatus),
       harbor: summary.packetReady || summary.packetExported ? 'aperture-lane' : null,
       route: trim(summary.routeState),
@@ -1840,10 +1863,16 @@
   }
 
   async function attachHook(kind, detail) {
-    state.hooks[kind] = detail;
+    const normalized = Object.assign({}, detail || {});
+    if (kind === 'eo') {
+      normalized.aperture_context = compactApertureContext(normalized.aperture_context || {});
+      normalized.eorfd_authority = APERTURE_CONTEXT_BASE.eorfdAuthority;
+      normalized.claim_limit = APERTURE_CONTEXT_BASE.claimLimit;
+    }
+    state.hooks[kind] = normalized;
     if (state.ingress.packetId) await rebuild(kind + '-hook');
     else { render(); persist(); }
-    logEvent(kind + '-hook-attached', { source: detail.source || kind, status: detail.status || 'attached' });
+    logEvent(kind + '-hook-attached', { source: normalized.source || kind, status: normalized.status || 'attached' });
   }
 
   async function rebuild(reason) {
@@ -2104,7 +2133,7 @@
   function extendedFooterString(shiNumber) {
     const compact = footerString();
     const value = shiNumber || shiFormatTemplate();
-    return compact.replace(/\s(?:Â·|·)\spayload/u, ' \u00b7 \u{1D30B} \u00b7 SHI#:' + value + ' \u00b7 payload');
+    return compact.replace(/\s(?:\u00b7|\u00c2\u00b7|\u00c3\u0082\u00c2\u00b7)\spayload/u, ' \u00b7 \u{1D30B} \u00b7 SHI#:' + value + ' \u00b7 payload');
   }
 
   function updateFormValues() {
@@ -2582,12 +2611,45 @@
   function clamp01(value) { return Math.max(0, Math.min(1, Number(value) || 0)); }
   function round4(value) { return Number((Number(value) || 0).toFixed(4)); }
   function uniqueList(values) { return [...new Set((values || []).filter(Boolean).map((value) => String(value)))]; }
+  function compactApertureContext(extra) {
+    return Object.assign({}, APERTURE_CONTEXT_BASE, extra || {});
+  }
+  function tauricIntakeContext(extra) {
+    const selectedBatchId = state.selectedBatchId || (dom.batchIntakeSelect && dom.batchIntakeSelect.value) || null;
+    return Object.assign({
+      selectedBatchId,
+      family: 'Tauric Diana intake',
+      source: 'corpus/tauric-diana-intake',
+      manifest: 'TD613_corpus_manifest.json',
+      eorfdRouteRole: 'protected batch route context',
+      apertureSchema: APERTURE_CONTEXT_BASE.apertureSchema,
+      rawNodeTextExported: false
+    }, extra || {});
+  }
+  function entrantIntakeContext() {
+    return {
+      family: 'entrant triad intake',
+      lanes: KEYS.slice(),
+      shiDerivation: 'principal + binding fragment + entrant-owned stylometric fingerprint',
+      stylometricWitness: 'Future/Past/Higher triad',
+      framePosture: 'route conscience before packet authority',
+      apertureSchema: APERTURE_CONTEXT_BASE.apertureSchema,
+      rawTextExported: false
+    };
+  }
   function buildApertureAuditRecord(detail) {
     const record = detail || {};
     const fault = Boolean(record.generatorFault);
     const withheld = Boolean(record.withheldMaterial);
     return {
+      apertureVersion: APERTURE_CONTEXT_BASE.apertureVersion,
+      apertureSchema: APERTURE_CONTEXT_BASE.apertureSchema,
+      apertureFeatureVersion: APERTURE_CONTEXT_BASE.apertureFeatureVersion,
       observedRegime: 'PRCS-A',
+      doctrineKernel: APERTURE_CONTEXT_BASE.doctrineKernel,
+      geometricAddendum: APERTURE_CONTEXT_BASE.geometricAddendum,
+      eorfdAuthority: APERTURE_CONTEXT_BASE.eorfdAuthority,
+      claimLimit: APERTURE_CONTEXT_BASE.claimLimit,
       instrumentRole: 'counter-tool',
       generatorFault: fault,
       warningSignals: uniqueList(record.warningSignals || []),
@@ -2643,6 +2705,7 @@
     const dominant = dominantOperatorRecord((state.handoff && state.handoff.dominantOperator) || (audit.policyPressure >= Math.max(audit.capacityPressure, audit.observabilityDeficit, audit.namingSensitivity) ? 'A' : audit.capacityPressure >= Math.max(audit.observabilityDeficit, audit.namingSensitivity) ? 'K' : audit.observabilityDeficit >= Math.max(audit.namingSensitivity, audit.aliasPersistence) ? 'P' : audit.namingSensitivity >= audit.aliasPersistence ? 'F' : 'P'));
     return {
       schemaVersion: 'td613-governed-exposure/v1',
+      apertureContext: compactApertureContext(state.handoff && state.handoff.apertureContext ? state.handoff.apertureContext : null),
       observedRegime: 'PRCS-A',
       instrumentRole: 'counter-tool',
       narrowingChain: 'R∘K∘C∘P∘F∘A',
@@ -2861,6 +2924,9 @@
           sealedAt: state.helper.sealed_at
         })
       : null;
+    const apertureContext = compactApertureContext(state.handoff && state.handoff.apertureContext ? state.handoff.apertureContext : null);
+    const entrantContext = entrantIntakeContext();
+    const tauricContext = state.selectedBatchId ? tauricIntakeContext() : null;
     const packet = {
       schema_version: 'td613.safe-harbor.packet/v1',
       seal_handshake: sealHandshakeValue,
@@ -2895,6 +2961,8 @@
       intake: {
         status: signatureObject.status === 'sealed' ? 'sealed' : (badgeAssignment ? 'issued' : 'staged'),
         selected_batch_id: state.selectedBatchId || null,
+        entrant_intake_context: entrantContext,
+        tauric_intake_context: tauricContext,
         request_id: state.helper.request_id,
         ts_utc: state.helper.ts_utc,
         sealed_at: state.helper.sealed_at,
@@ -2919,6 +2987,9 @@
         route: {
           state: routeState(),
           source: state.hooks.eo ? ('local ingress + ' + (state.hooks.eo.source || 'eo-hook')) : 'local ingress',
+          aperture_context: apertureContext,
+          entrant_intake_context: entrantContext,
+          tauric_intake_context: tauricContext,
           recommended_harbor: state.hooks.eo ? (state.hooks.eo.recommended_harbor || 'provenance.seal') : (state.covenant.confirmed ? 'provenance.seal' : 'packet.stage'),
           export_ready: false,
           membrane_note: D.routeCopy[routeState()] || '',
@@ -2926,6 +2997,9 @@
         },
         eo_alignment: {
           route_source: state.hooks.eo ? (state.hooks.eo.source || 'eo-hook') : 'local ingress',
+          aperture_context: apertureContext,
+          entrant_intake_context: entrantContext,
+          tauric_intake_context: tauricContext,
           membrane_note: state.hooks.eo && state.hooks.eo.membrane_note ? state.hooks.eo.membrane_note : (D.routeCopy[routeState()] || '')
         }
       },
@@ -2961,9 +3035,27 @@
         })
       },
       signature: signatureObject,
+      aperture_context: apertureContext,
+      entrant_intake_context: entrantContext,
+      tauric_intake_context: tauricContext,
+      eorfd_route_context: {
+        authority: APERTURE_CONTEXT_BASE.eorfdAuthority,
+        routeRole: 'route conscience / context',
+        claimLimit: APERTURE_CONTEXT_BASE.claimLimit,
+        rawTextExported: false
+      },
       aperture_audit: null,
       forensic_schema: null,
       bridge: {
+        aperture_context: apertureContext,
+        entrant_intake_context: entrantContext,
+        tauric_intake_context: tauricContext,
+        eorfd_route_context: {
+          authority: APERTURE_CONTEXT_BASE.eorfdAuthority,
+          routeRole: 'route conscience / context',
+          claimLimit: APERTURE_CONTEXT_BASE.claimLimit,
+          rawTextExported: false
+        },
         public_probe_defaults: {
           start_with: '01_LIVE_SEND_verify.alias.voice_MINIMAL.txt',
           render_followup: '03_LIVE_SEND_verify.alias.voice.render_MINIMAL.json'
@@ -3276,6 +3368,10 @@
       '- packet_hash_sha256: ' + state.packet.packet_hash_sha256,
       '- receipt_state: ' + state.packet.receipt.state,
       '- signature_lane: ' + line,
+      '- aperture_context: ' + (state.packet.aperture_context ? state.packet.aperture_context.apertureSchema : APERTURE_CONTEXT_BASE.apertureSchema),
+      '- eorfd_authority: ' + (state.packet.eorfd_route_context ? state.packet.eorfd_route_context.authority : APERTURE_CONTEXT_BASE.eorfdAuthority),
+      '- entrant_intake_context: ' + (state.packet.entrant_intake_context ? state.packet.entrant_intake_context.family : 'absent'),
+      '- tauric_intake_context: ' + (state.packet.tauric_intake_context ? state.packet.tauric_intake_context.selectedBatchId : 'absent'),
       '- aperture_audit: ' + (state.packet.aperture_audit ? 'present' : 'absent'),
       '- forensic_schema: ' + (state.packet.forensic_schema ? 'present' : 'absent')
     ];
@@ -3313,6 +3409,10 @@
       receipt_state: state.packet.receipt.state,
       signature_lane: state.packet.bridge && state.packet.bridge.signature_lane ? (state.packet.bridge.signature_lane.lane || 'none') : (state.packet.signature.sig_type || 'none'),
       packet_schema_version: state.packet.schema_version,
+      aperture_context: state.packet.aperture_context || compactApertureContext(),
+      eorfd_route_context: state.packet.eorfd_route_context || null,
+      entrant_intake_context: state.packet.entrant_intake_context || null,
+      tauric_intake_context: state.packet.tauric_intake_context || null,
       aperture_audit: state.packet.aperture_audit || null,
       forensic_schema: state.packet.forensic_schema || null,
       aperture_warning_signals: state.packet.aperture_audit ? state.packet.aperture_audit.warningSignals || [] : [],

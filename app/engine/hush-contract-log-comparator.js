@@ -143,6 +143,8 @@ export function compareEoRfdRoute(contractPacket = {}, providerLogPacket = {}) {
   const logFirmware = getPath(providerLogPacket, 'eo_rfd_route_observation.firmware_status');
   const contractHook = getPath(contractPacket, 'eo_rfd_route_state.route_conscience_hook');
   const logHook = getPath(providerLogPacket, 'eo_rfd_route_observation.route_conscience_hook_observed');
+  const contractApertureSchema = getPath(contractPacket, 'eo_rfd_route_state.aperture_context.aperture_schema');
+  const logApertureSchema = getPath(providerLogPacket, 'eo_rfd_route_observation.aperture_context.aperture_schema');
   const verified = getPath(providerLogPacket, 'eo_rfd_route_observation.firmware_adapter_verified') === true;
   const noteBody = JSON.stringify(providerLogPacket.eo_rfd_route_observation || {});
   let status = 'aligned-interface';
@@ -150,7 +152,8 @@ export function compareEoRfdRoute(contractPacket = {}, providerLogPacket = {}) {
   else if ((contractFirmware === 'firmware-attached' || logFirmware === 'firmware-attached') && !verified) status = 'firmware-claim-blocked';
   else if (/executive[-\s]*order|legal authority|public law/iu.test(noteBody)) status = 'firmware-claim-blocked';
   else if (contractHook !== logHook) status = 'route-review';
-  return Object.freeze({ schema_version: 'td613.hush.eo-rfd-route-comparison/v1', contract_firmware_status: contractFirmware || null, log_firmware_status: logFirmware || null, contract_route_conscience_hook: contractHook || null, log_route_conscience_hook_observed: logHook || null, firmware_adapter_verified: verified, status, severity: severityFor(status), claim_limit: 'EO-RFD route comparison only; not firmware proof' });
+  else if (contractApertureSchema && logApertureSchema && contractApertureSchema !== logApertureSchema) status = 'route-review';
+  return Object.freeze({ schema_version: 'td613.hush.eo-rfd-route-comparison/v1', contract_firmware_status: contractFirmware || null, log_firmware_status: logFirmware || null, contract_route_conscience_hook: contractHook || null, log_route_conscience_hook_observed: logHook || null, contract_aperture_schema: contractApertureSchema || null, log_aperture_schema: logApertureSchema || null, firmware_adapter_verified: verified, status, severity: severityFor(status), claim_limit: 'EO-RFD route comparison only; not firmware proof' });
 }
 
 export function aggregateContractLogComparison(comparisons = {}) {

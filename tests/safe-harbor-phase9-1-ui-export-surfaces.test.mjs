@@ -28,6 +28,8 @@ assert.equal(verifyExportPayload(EXPORT_SURFACES.PUBLIC_SUMMARY_COPY, summaryPay
 
 const receipt = buildExportReceipt(EXPORT_SURFACES.PACKET_JSON, packet, packet);
 assert.equal(receipt.public_default, 'v2');
+assert.equal(receipt.aperture_context.apertureVersion, 'v2.9.2');
+assert.equal(receipt.aperture_context.apertureSchema, 'td613-aperture/v2.9.2');
 assert.equal(receipt.raw_text_exported, false);
 assert.equal(receipt.claim_limits_attached, true);
 
@@ -54,6 +56,6 @@ const capsulePolicy = readFileSync(new URL('../docs/safe-harbor/offline-capsule-
 const eoNote = readFileSync(new URL('../docs/safe-harbor/eo-rfd-glossary-note.md', import.meta.url), 'utf8');
 assert.ok(verifyPolicy.includes('Phase 9 release class'));
 assert.ok(capsulePolicy.includes('release class'));
-assert.ok(eoNote.includes('EO-RFD route firmware'));
+assert.ok(eoNote.includes('EO-RFD route conscience / context lane'));
 
 console.log('safe-harbor-phase9-1-ui-export-surfaces: ok');

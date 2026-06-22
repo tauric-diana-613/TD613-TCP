@@ -259,8 +259,9 @@
       source: 'td613-aperture',
       mode: 'gateway-embed',
       type: 'status',
-      apertureVersion: String(payload.apertureVersion || payload.version || latestPacket?.apertureVersion || latestPacket?.version || 'v2.7.0'),
-      apertureSchema: String(payload.apertureSchema || payload.schemaVersion || latestPacket?.apertureSchema || latestPacket?.schemaVersion || 'td613-aperture/v2.7.0'),
+      apertureVersion: String(payload.apertureVersion || payload.version || latestPacket?.apertureVersion || latestPacket?.version || 'v2.9.2'),
+      apertureSchema: String(payload.apertureSchema || payload.schemaVersion || latestPacket?.apertureSchema || latestPacket?.schemaVersion || 'td613-aperture/v2.9.2'),
+      apertureFeatureVersion: String(payload.apertureFeatureVersion || latestPacket?.apertureFeatureVersion || 'v2.9.2-geometric-doctrine-addendum'),
       routeState: String(payload.routeState || 'membrane-only'),
       handoffStatus: String(payload.handoffStatus || 'awaiting packet'),
       packetReady: Boolean(payload.packetReady),
@@ -2741,7 +2742,7 @@
     setStatusMessage(baseMessage);
     const cue = $('analysisStatusCue');
     if (cue) {
-      cue.textContent = 'â†“ Shell Duel updated below';
+      cue.textContent = '↓ Shell Duel updated below';
       cue.hidden = false;
     }
     pulseShellDuel();

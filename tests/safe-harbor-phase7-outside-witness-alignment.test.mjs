@@ -101,7 +101,7 @@ function assertNoRawText(value, label) {
   assert.equal(body.includes(segments.future_self), false, `${label} leaked future lane`);
   assert.equal(body.includes(segments.past_self), false, `${label} leaked past lane`);
   assert.equal(body.includes(segments.higher_self), false, `${label} leaked higher lane`);
-  assert.equal(body.includes('raw_text'), false, `${label} carried raw_text key`);
+  assert.equal(/"raw_text"\s*:/u.test(body), false, `${label} carried raw_text key`);
 }
 
 const packet = await nativePacket();

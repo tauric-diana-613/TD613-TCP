@@ -6,7 +6,7 @@ Phase 30.1 audits Hush after the Evidence Cockpit merge and prepares the next de
 
 ## Aperture frame
 
-The audit uses the Aperture counter-tool frame, now canonically v2.7.0: route state, layer visibility, self-test visibility, anti-enforcement posture, and export-gate legibility. Hush should preserve play while making custody, limits, and state visible.
+The audit uses the Aperture counter-tool frame, now canonically v2.9.2 with doctrine-kernel and geometric-addendum posture: route state, layer visibility, self-test visibility, anti-enforcement posture, and export-gate legibility. Hush should preserve play while making custody, limits, and state visible.
 
 ## Desktop UI / UX audit
 

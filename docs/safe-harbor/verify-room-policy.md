@@ -33,4 +33,4 @@ Do not use bare identity, legal-status, authorship-proof, v3-default, SH3-replac
 
 ## EO-RFD note
 
-EO means EO-RFD route firmware / hook lane when displayed in Safe Harbor verification contexts.
+EO means EO-RFD route conscience / context lane (interface-only) when displayed in Safe Harbor verification contexts.

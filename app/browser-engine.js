@@ -901,13 +901,15 @@ function assessCompressionState(sourceText = '', outputText = '', witnessAudit =
   });
 }
 
-const TD613_APERTURE_VERSION = 'v2.7.0';
-const TD613_APERTURE_SCHEMA = 'td613-aperture/v2.7.0';
+const TD613_APERTURE_VERSION = 'v2.9.2';
+const TD613_APERTURE_SCHEMA = 'td613-aperture/v2.9.2';
+const TD613_APERTURE_FEATURE_VERSION = 'v2.9.2-geometric-doctrine-addendum';
 
 const TD613_APERTURE_PROTOCOL = Object.freeze({
   id: TD613_APERTURE_SCHEMA,
   version: TD613_APERTURE_VERSION,
   schema: TD613_APERTURE_SCHEMA,
+  featureVersion: TD613_APERTURE_FEATURE_VERSION,
   toolIdentity: 'TD613 Aperture',
   shortIdentity: 'Aperture',
   observedRegime: 'PRCS-A',
@@ -975,7 +977,10 @@ function buildTD613ApertureAudit({
   return Object.freeze({
     apertureVersion: TD613_APERTURE_VERSION,
     apertureSchema: TD613_APERTURE_SCHEMA,
+    apertureFeatureVersion: TD613_APERTURE_FEATURE_VERSION,
     observedRegime: TD613_APERTURE_PROTOCOL.observedRegime,
+    doctrineKernel: 'present',
+    geometricAddendum: 'present',
     instrumentRole: 'counter-tool',
     generatorFault: fault,
     warningSignals: Object.freeze(uniqueStrings(warningSignals)),
@@ -2518,6 +2523,7 @@ function buildTD613ApertureContext({
     protocolId: TD613_APERTURE_PROTOCOL.id,
     apertureVersion: TD613_APERTURE_VERSION,
     apertureSchema: TD613_APERTURE_SCHEMA,
+    apertureFeatureVersion: TD613_APERTURE_FEATURE_VERSION,
     toolIdentity: TD613_APERTURE_PROTOCOL.toolIdentity,
     observedRegime: TD613_APERTURE_PROTOCOL.observedRegime,
     stance: TD613_APERTURE_PROTOCOL.stance,
@@ -2715,6 +2721,7 @@ function reviewTD613ApertureTransfer({
     protocolId: TD613_APERTURE_PROTOCOL.id,
     apertureVersion: TD613_APERTURE_VERSION,
     apertureSchema: TD613_APERTURE_SCHEMA,
+    apertureFeatureVersion: TD613_APERTURE_FEATURE_VERSION,
     toolIdentity: TD613_APERTURE_PROTOCOL.toolIdentity,
     observedRegime: TD613_APERTURE_PROTOCOL.observedRegime,
     exportDiscipline: TD613_APERTURE_PROTOCOL.exportDiscipline,
@@ -38403,6 +38410,7 @@ window.TCP_ENGINE = Object.assign(window.TCP_ENGINE || {}, {
   hydrateCorpus,
   TD613_APERTURE_VERSION,
   TD613_APERTURE_SCHEMA,
+  TD613_APERTURE_FEATURE_VERSION,
   TD613_APERTURE_PROTOCOL,
   TD613_APERTURE_ENFORCEMENT_TERMS,
   buildTD613GovernedExposureSchema,

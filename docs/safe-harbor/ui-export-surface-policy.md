@@ -36,4 +36,4 @@ Blood Rite 613 may appear as covenant display. Khona‌lit-po is ZWNJ-sensitive 
 
 ## EO-RFD note
 
-EO means EO-RFD route firmware / hook lane in this project, not executive-order authority.
+EO means EO-RFD route conscience / context lane (interface-only) in this project, not government authority.

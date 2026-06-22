@@ -80,4 +80,4 @@ npm run test:safe-harbor:phase9.1c
 
 ## EO-RFD
 
-`EO` means EO-RFD route firmware / route-conscience hook lane. It is not executive-order authority.
+`EO` means EO-RFD route conscience / context lane (interface-only). It is not government authority.

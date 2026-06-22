@@ -34,6 +34,21 @@
     "provenance": {
       "type": "object"
     },
+    "aperture_context": {
+      "type": "object"
+    },
+    "tauric_intake_context": {
+      "type": "object"
+    },
+    "doctrine_trace": {
+      "type": "object"
+    },
+    "geometry_trace": {
+      "type": "object"
+    },
+    "claim_limit": {
+      "type": "string"
+    },
     "lane": {
       "type": "string"
     },

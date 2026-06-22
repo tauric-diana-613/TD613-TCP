@@ -6,6 +6,7 @@ import {
   verifyV2Replay,
   verifyV3Replay
 } from './safe-harbor-authority-verifier.js';
+import { compactSafeHarborApertureContext, safeHarborTauricIntakeContext } from './safe-harbor-aperture-context.js';
 
 const STEP1_SCHEMA = 'td613.safe-harbor.step1-countersignature/v2';
 const INTAKE_SCHEMA = 'td613.safe-harbor.countersignatory-intake/v1';
@@ -97,8 +98,20 @@ function lineageConflicts(packet) {
   return conflicts;
 }
 function rawTextFound(value) {
-  const body = JSON.stringify(value || {});
-  return /raw_text|future self will carry route|past self remembers residue|higher self names pattern/u.test(body);
+  const seen = new Set();
+  const scan = (node, key = '') => {
+    if (node == null) return false;
+    if (typeof node === 'string') {
+      if (key === 'raw_text' && node.trim()) return true;
+      return /future self will carry route|past self remembers residue|higher self names pattern/u.test(node);
+    }
+    if (typeof node !== 'object') return false;
+    if (seen.has(node)) return false;
+    seen.add(node);
+    if (Array.isArray(node)) return node.some((item) => scan(item, key));
+    return Object.entries(node).some(([childKey, child]) => childKey === 'raw_text' || scan(child, childKey));
+  };
+  return scan(value);
 }
 
 export async function buildStep1Countersignature(packet, context = {}) {
@@ -119,6 +132,8 @@ export async function buildStep1Countersignature(packet, context = {}) {
   refusal.push(...hookAuthorityMismatches(packet, context));
   const envelope = {
     schema_version: STEP1_SCHEMA,
+    aperture_context: compactSafeHarborApertureContext(packet?.aperture_context || packet?.bridge?.aperture_context || {}),
+    tauric_intake_context: packet?.tauric_intake_context || packet?.intake?.tauric_intake_context || safeHarborTauricIntakeContext(packet),
     source_status: sourceStatus(packet),
     packet_lineage: lineage,
     hash_replay: hash.status,
@@ -156,6 +171,9 @@ export async function buildCountersignatoryIntake(packet, context = {}) {
   const missing = [];
   const surfaces = ['native_spine_purification', 'hash_topology', 'packet_authority_surface', 'recall_governance', 'public_default_policy', 'phase5_replay_hardening', 'phase4_recall_intake', 'renderer_authority_metadata'];
   for (const surface of surfaces) (getPath(packet, surface) ? recognized : missing).push(surface);
+  if (getPath(packet, 'aperture_audit')) recognized.push('aperture_audit');
+  if (getPath(packet, 'forensic_schema')) recognized.push('forensic_schema');
+  if (getPath(packet, 'tauric_intake_context') || getPath(packet, 'intake.tauric_intake_context')) recognized.push('tauric_intake_context');
   if (context.signature_overlay_authority) recognized.push('signature_overlay_authority');
   else missing.push('signature_overlay_authority');
   if (context.tcp_hook_authority || context.tcpHookAuthority) recognized.push('tcp_hook_authority');
@@ -169,6 +187,8 @@ export async function buildCountersignatoryIntake(packet, context = {}) {
   if (conflicting.length) required.push('Resolve countersignature refusal reasons before signing');
   return Object.freeze({
     schema_version: INTAKE_SCHEMA,
+    aperture_context: compactSafeHarborApertureContext(packet?.aperture_context || packet?.bridge?.aperture_context || {}),
+    tauric_intake_context: packet?.tauric_intake_context || packet?.intake?.tauric_intake_context || safeHarborTauricIntakeContext(packet),
     intake_status: conflicting.length ? 'refused' : missing.length ? 'review' : 'ready',
     packet_lineage: step1.packet_lineage,
     recognized_surfaces: recognized,

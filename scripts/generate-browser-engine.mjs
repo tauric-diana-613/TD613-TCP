@@ -40,6 +40,7 @@ const generated = [
   '  hydrateCorpus,',
   '  TD613_APERTURE_VERSION,',
   '  TD613_APERTURE_SCHEMA,',
+  '  TD613_APERTURE_FEATURE_VERSION,',
   '  TD613_APERTURE_PROTOCOL,',
   '  TD613_APERTURE_ENFORCEMENT_TERMS,',
   '  buildTD613GovernedExposureSchema,',

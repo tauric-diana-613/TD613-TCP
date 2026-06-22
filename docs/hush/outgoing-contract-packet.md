@@ -56,7 +56,7 @@ Adversarial constraints record whether later response audit should check overfit
 
 ## EO-RFD interface note
 
-EO-RFD route state is interface-only unless a verified firmware adapter is attached. A contract must not claim live EO-RFD firmware execution, legal authority, executive-order authority, or public law authority without verified adapter proof.
+EO-RFD route state is interface-only unless a verified firmware adapter is attached. A contract must not claim live EO-RFD firmware execution, government authority or public authority without verified adapter proof.
 
 ## Release classes
 

@@ -68,7 +68,10 @@ function inspectRawSnapshot(value, path = 'snapshot') {
   if (!isObject(value) && !Array.isArray(value)) return reasons;
   for (const [key, nested] of Object.entries(value || {})) {
     const childPath = `${path}.${key}`;
-    if (/^(raw_prompt|raw_prompt_text|raw_user_text|raw_response|raw_response_text|raw_customizer_samples|raw_mask_material|raw_sample|raw_samples|raw_text)$/iu.test(key) && hasRawValue(nested)) reasons.push(`${childPath} must not contain raw text`);
+    if (/^(raw_prompt|raw_prompt_text|raw_user_text|raw_response|raw_response_text|raw_customizer_samples|raw_mask_material|raw_sample|raw_samples|raw_text)$/iu.test(key) && hasRawValue(nested)) {
+      const rawLabel = key.replace(/_/g, ' ');
+      reasons.push(`${childPath} must not contain raw text (${rawLabel})`);
+    }
     if (/^(raw_prompt_exported|raw_response_exported|raw_customizer_samples_sent|raw_mask_material_sent|raw_request_exported|raw_response_exported)$/iu.test(key) && nested === true) reasons.push(`${childPath} indicates raw material in pair snapshot`);
     if (isObject(nested) || Array.isArray(nested)) reasons.push(...inspectRawSnapshot(nested, childPath));
   }

@@ -311,10 +311,11 @@ If no candidate clears the class-specific rewrite bar honestly, TCP now publishe
 
 It is not supposed to ghostwrite the passage or quietly flatten a stronger candidate back toward source just because a safer shallow surface exists.
 
-The current Aperture protocol identity is `v2.7.0` /
-`td613-aperture/v2.7.0`. The engine exports that identity through
-`TD613_APERTURE_VERSION`, `TD613_APERTURE_SCHEMA`, and
-`TD613_APERTURE_PROTOCOL.id`; handoff summaries carry the same
+The current Aperture protocol identity is `v2.9.2` /
+`td613-aperture/v2.9.2`. The engine also exports
+`v2.9.2-geometric-doctrine-addendum` as the Aperture feature posture
+through `TD613_APERTURE_FEATURE_VERSION`. `TD613_APERTURE_VERSION`,
+`TD613_APERTURE_SCHEMA`, and `TD613_APERTURE_PROTOCOL.id` carry the same
 version/schema so Gateway, Hush, Safe Harbor, and diagnostics do not
 float on older Aperture labels. The browser instrument adds ZFP
 certification and Moire Stratigraphy as UI/certification layers; the

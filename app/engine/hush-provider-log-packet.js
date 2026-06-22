@@ -217,9 +217,20 @@ function adversarialObservationSeed(input = {}) {
 
 function eoRfdRouteObservation(input = {}) {
   const observed = input.eo_rfd_route_observation || input.eoRfdRouteObservation || {};
+  const contract = input.outgoing_contract_packet || input.outgoingContractPacket || input.contract_packet || input.contractPacket || {};
+  const aperture = observed.aperture_context || observed.apertureContext || contract.eo_rfd_route_state?.aperture_context || input.aperture_context || input.apertureContext || {};
   return Object.freeze({
     schema_version: 'td613.hush.eo-rfd-route-observation/v1',
     firmware_status: observed.firmware_status || observed.firmwareStatus || 'interface-only',
+    aperture_context: Object.freeze({
+      aperture_version: aperture.aperture_version || aperture.apertureVersion || 'v2.9.2',
+      aperture_schema: aperture.aperture_schema || aperture.apertureSchema || 'td613-aperture/v2.9.2',
+      aperture_feature_version: aperture.aperture_feature_version || aperture.apertureFeatureVersion || 'v2.9.2-geometric-doctrine-addendum',
+      doctrine_kernel: aperture.doctrine_kernel || aperture.doctrineKernel || 'present',
+      geometric_addendum: aperture.geometric_addendum || aperture.geometricAddendum || 'present',
+      authority: aperture.authority || 'context-only',
+      claim_limit: aperture.claim_limit || aperture.claimLimit || 'Aperture context informs EO-RFD route review; it does not create firmware proof.'
+    }),
     route_conscience_hook_observed: observed.route_conscience_hook_observed || observed.routeConscienceHookObserved || 'required',
     provider_contract_hook_present: bool(observed.provider_contract_hook_present ?? observed.providerContractHookPresent, true),
     stylometry_drift_hook_present: bool(observed.stylometry_drift_hook_present ?? observed.stylometryDriftHookPresent, true),

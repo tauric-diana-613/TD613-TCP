@@ -4,6 +4,13 @@ import {
   buildPhase4CountersignatureEvidenceReview
 } from './safe-harbor-step1-countersignature.js';
 import { verifyHashReplay, verifyV2Replay, verifyV3Replay } from './safe-harbor-authority-verifier.js';
+import { compactSafeHarborApertureContext, safeHarborTauricIntakeContext } from './safe-harbor-aperture-context.js';
+
+export {
+  buildCountersignatoryIntake,
+  buildStep1Countersignature,
+  buildPhase4CountersignatureEvidenceReview
+};
 
 const OUTSIDE_WITNESS_SCHEMA = 'td613.safe-harbor.outside-witness-alignment/v1';
 const RENDERER_SCHEMA = 'td613.safe-harbor.renderer-authority/v2';
@@ -39,7 +46,22 @@ function v3Role(packet) {
 }
 function packetHash(packet) { return packet && packet.packet_hash_sha256 ? packet.packet_hash_sha256 : null; }
 function hashTopologyFinal(packet) { return getPath(packet, 'hash_topology.final_packet_hash_sha256') || null; }
-function rawTextFound(value) { return /raw_text|Future self|Past self|Higher self|future self will carry|past self remembers|higher self names/u.test(JSON.stringify(value || {})); }
+function rawTextFound(value) {
+  const seen = new Set();
+  const scan = (node, key = '') => {
+    if (node == null) return false;
+    if (typeof node === 'string') {
+      if (key === 'raw_text' && node.trim()) return true;
+      return /Future self|Past self|Higher self|future self will carry|past self remembers|higher self names/u.test(node);
+    }
+    if (typeof node !== 'object') return false;
+    if (seen.has(node)) return false;
+    seen.add(node);
+    if (Array.isArray(node)) return node.some((item) => scan(item, key));
+    return Object.entries(node).some(([childKey, child]) => childKey === 'raw_text' || scan(child, childKey));
+  };
+  return scan(value);
+}
 function grammar(packet, step1Action = 'legacy-recall', hashReplay = 'unavailable') {
   return Object.freeze({
     public_default: 'v2',
@@ -128,6 +150,8 @@ export function buildEoHookAuthority(packet, context = {}) {
   return Object.freeze({
     schema_version: EO_SCHEMA,
     status: context.status || (blocked ? 'blocked' : 'aligned'),
+    aperture_context: compactSafeHarborApertureContext(packet?.aperture_context || packet?.bridge?.aperture_context || {}),
+    tauric_intake_context: packet?.tauric_intake_context || packet?.intake?.tauric_intake_context || safeHarborTauricIntakeContext(packet),
     observed_packet_hash: packetHash(packet),
     observed_lineage: lineage(packet),
     observed_phase5_status: p5,
@@ -141,6 +165,8 @@ export function buildEoHookAuthority(packet, context = {}) {
 export function buildOperatorReceipt(packet, witnesses = {}) {
   return Object.freeze({
     schema_version: RECEIPT_SCHEMA,
+    aperture_context: compactSafeHarborApertureContext(packet?.aperture_context || packet?.bridge?.aperture_context || {}),
+    tauric_intake_context: packet?.tauric_intake_context || packet?.intake?.tauric_intake_context || safeHarborTauricIntakeContext(packet),
     packet_lineage: lineage(packet),
     public_default: 'v2',
     v3_role: v3Role(packet),
@@ -275,6 +301,8 @@ export async function buildOutsideWitnessAlignment(packet, witnesses = {}) {
   return Object.freeze({
     schema_version: OUTSIDE_WITNESS_SCHEMA,
     status,
+    aperture_context: compactSafeHarborApertureContext(packet?.aperture_context || packet?.bridge?.aperture_context || {}),
+    tauric_intake_context: packet?.tauric_intake_context || packet?.intake?.tauric_intake_context || safeHarborTauricIntakeContext(packet),
     witnesses: {
       step1_envelope: verification.blocked_witnesses.includes('step1_envelope') ? 'refused' : verification.pending_witnesses.includes('step1_envelope') ? 'pending' : 'aligned',
       countersignatory_intake: intake.intake_status === 'refused' ? 'refused' : intake.intake_status === 'review' ? 'pending' : 'aligned',

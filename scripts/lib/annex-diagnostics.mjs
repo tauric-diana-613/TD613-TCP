@@ -223,9 +223,9 @@ const ANNEX_SPECS = Object.freeze([
     id: 'aperture',
     label: 'TD613 Aperture',
     relativePath: 'app/aperture/tool.html',
-    expectedVersion: '2.7.0',
+    expectedVersion: '2.9.2',
     versionPattern: /TD613 APERTURE v([0-9.]+) SOURCE DECLARATION/i,
-    titleIncludes: ['TD613 Aperture', 'v2.7.0'],
+    titleIncludes: ['TD613 Aperture', 'v2.9.2'],
     minimumInlineScripts: 1,
     meta: Object.freeze({
       'tool-name': 'TD613 Aperture',
@@ -263,7 +263,7 @@ const ANNEX_SPECS = Object.freeze([
       {
         id: 'source-declaration',
         label: 'source declaration',
-        pattern: /TD613 APERTURE v2\.7\.0 SOURCE DECLARATION/i
+        pattern: /TD613 APERTURE v2\.9\.2 SOURCE DECLARATION/i
       },
       {
         id: 'counter-tool-stance',
@@ -342,8 +342,33 @@ const ANNEX_SPECS = Object.freeze([
       },
       {
         id: 'moire-stratigraphy-kernel',
-        label: 'Moiré stratigraphy kernel',
+        label: 'Moire stratigraphy kernel',
         pattern: /function\s+computeMoireStratigraphy\s*\(/i
+      },
+      {
+        id: 'doctrine-kernel',
+        label: 'Doctrine kernel global',
+        pattern: /window\.APERTURE_DOCTRINE_KERNEL\s*=/i
+      },
+      {
+        id: 'theorem-cards',
+        label: '18 theorem cards',
+        pattern: /theoremCards[\s\S]*six-defining-properties[\s\S]*controlled-reality-surface/i
+      },
+      {
+        id: 'geometric-addendum',
+        label: 'geometric doctrine addendum',
+        pattern: /geometricAddendum[\s\S]*(?:SQRT3_HALF|sqrt3Half|sqrt3\/2)/i
+      },
+      {
+        id: 'required-formulae',
+        label: 'required formulae list',
+        pattern: /requiredFormulae[\s\S]*R\(s\)\s*=\s*1/i
+      },
+      {
+        id: 'eorfd-receipt',
+        label: 'EO-RFD receipt globals',
+        pattern: /APERTURE_EORFD_(?:COMPAT|ORIGIN_RECONCILIATION|DEEP_STATIC_AUDIT)/i
       },
       {
         id: 'gateway-embed-bridge',
@@ -351,9 +376,9 @@ const ANNEX_SPECS = Object.freeze([
         pattern: /APERTURE_GATEWAY_EMBED[\s\S]*window\.parent\.postMessage/i
       },
       {
-        id: 'v27-schema',
-        label: 'Aperture v2.7 schema marker',
-        pattern: /td613-aperture\/v2\.7\.0/i
+        id: 'v292-schema',
+        label: 'Aperture v2.9.2 schema marker',
+        pattern: /td613-aperture\/v2\.9\.2/i
       }
     ])
   })

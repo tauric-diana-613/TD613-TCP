@@ -18,6 +18,23 @@ const HASH_EXCLUDES = Object.freeze([
   'hash_topology',
   'native_spine_purification',
   'phase6_migration_policy',
+  'packet_authority_surface',
+  'recall_governance',
+  'public_default_policy',
+  'phase4_recall_intake',
+  'renderer_authority_metadata',
+  'step1_countersignature',
+  'countersignatory_intake',
+  'svg_authority_metadata',
+  'signature_overlay_authority',
+  'tcp_hook_authority',
+  'eo_hook_authority',
+  'outside_witness_receipt',
+  'outside_witness_alignment',
+  'phase8_public_default_gate',
+  'phase8_receipt_policy',
+  'phase9_release_discipline',
+  'phase9_release_receipt',
   'signature.sig',
   'signature.attached_at',
   'renderer_authority_metadata.packet_hash_sha256'
@@ -220,6 +237,31 @@ function markPhase5HashSemantics(packet) {
   return packet;
 }
 
+async function settleNativePacketHash(packet, mode, preimageHash) {
+  let governed = packet;
+  let settledHash = governed && governed.packet_hash_sha256 ? governed.packet_hash_sha256 : null;
+  for (let i = 0; i < 4; i += 1) {
+    const nextHash = await computePacketHash(governed);
+    governed.packet_hash_sha256 = nextHash;
+    governed.hash_topology = buildNativeHashTopology(governed, { mode, v3PreimageHash: preimageHash, finalPacketHash: nextHash });
+    governed = await attachPhase4Authority(governed, { mode, packetHashRecomputed: true });
+    governed.native_spine_purification = buildNativeSpinePurification(governed, { mode });
+    governed.phase6_migration_policy = buildPhase6MigrationPolicy();
+    governed.hash_topology = buildNativeHashTopology(governed, { mode, v3PreimageHash: preimageHash, finalPacketHash: nextHash });
+    const checkHash = await computePacketHash(governed);
+    if (checkHash === nextHash || checkHash === settledHash) {
+      governed.packet_hash_sha256 = checkHash;
+      governed.hash_topology = buildNativeHashTopology(governed, { mode, v3PreimageHash: preimageHash, finalPacketHash: checkHash });
+      return governed;
+    }
+    settledHash = nextHash;
+  }
+  const finalHash = await computePacketHash(governed);
+  governed.packet_hash_sha256 = finalHash;
+  governed.hash_topology = buildNativeHashTopology(governed, { mode, v3PreimageHash: preimageHash, finalPacketHash: finalHash });
+  return governed;
+}
+
 export async function attachNativeV3Issuance(packet, options = {}) {
   if (!packet || !allRichProfilesPresent(packet)) return packet;
   packet.issuance = isObject(packet.issuance) ? packet.issuance : {};
@@ -259,6 +301,7 @@ export async function finalizeSafeHarborPacket(packet, context = {}) {
   governed.native_spine_purification = buildNativeSpinePurification(governed, { mode });
   governed.phase6_migration_policy = buildPhase6MigrationPolicy();
   governed.hash_topology = buildNativeHashTopology(governed, { mode, v3PreimageHash: preimageHash, finalPacketHash: finalHash });
+  governed = await settleNativePacketHash(governed, mode, preimageHash);
   if (context.includePhase5 !== false) {
     markPhase5HashSemantics(governed);
     const hardening = await buildPhase5ReplayHardening(governed, { includeTamperFixtures: Boolean(context.includeTamperFixtures) });
