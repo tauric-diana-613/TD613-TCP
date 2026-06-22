@@ -3178,6 +3178,17 @@ TD613 APERTURE v2.9.2 SOURCE DECLARATION
     scroll-behavior: auto !important;
   }
 
+  html.aperture-booting body {
+    opacity: 0 !important;
+    pointer-events: none !important;
+  }
+
+  html.aperture-ready body {
+    opacity: 1 !important;
+    pointer-events: auto !important;
+    transition: opacity 120ms ease-out;
+  }
+
   body {
     grid-template-rows: 42px 1fr !important;
   }
@@ -3241,22 +3252,31 @@ TD613 APERTURE v2.9.2 SOURCE DECLARATION
 <script id="apertureV286NoShutterBootGuard">
 (function(){
   try { document.documentElement.classList.add('aperture-booting'); } catch (_) {}
+  var bootFinished = false;
+  function revealBoot(){
+    if (bootFinished) return;
+    bootFinished = true;
+    try {
+      document.documentElement.classList.remove('aperture-booting');
+      document.documentElement.classList.add('aperture-ready');
+    } catch (_) {}
+  }
   function finishBoot(){
     try {
       setTimeout(function(){
         requestAnimationFrame(function(){
           requestAnimationFrame(function(){
-            document.documentElement.classList.remove('aperture-booting');
-            document.documentElement.classList.add('aperture-ready');
+            revealBoot();
           });
         });
-      }, 850);
+      }, 450);
     } catch (_) {
-      try { document.documentElement.classList.remove('aperture-booting'); } catch (__) {}
+      revealBoot();
     }
   }
   if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', finishBoot, { once:true });
   else finishBoot();
+  setTimeout(revealBoot, 1800);
 })();
 </script>
 
@@ -3266,7 +3286,7 @@ TD613 APERTURE v2.9.2 SOURCE DECLARATION
 <header>
   <div class="title-group">
     <div class="title"><span class="glyph">⟐</span> Aperture</div>
-    <div class="subtitle" id="subtitle">Aperture counter-tool ? PRCS-A admissibility, projection, and rupture audit</div>
+    <div class="subtitle" id="subtitle">Aperture counter-tool - PRCS-A admissibility, projection, and rupture audit</div>
   </div>
   <div class="controls">
     <div id="thetaStatus" class="status-pill" style="background:rgba(189,147,249,0.1);color:var(--accent);border-color:rgba(189,147,249,0.15);">Θ_std</div>
@@ -4202,44 +4222,44 @@ const PERF = {
   VISUAL_TIME_SCALE: 1.35,
   FIELD_TIME_SCALE: 1,
   FIELD_STEP_MS: 1000 / 72,
-  FIELD_STEP_CAP: 2,
-  FIELD_BACKLOG_CAP_MS: (1000 / 72) * 2,
-  FIELD_SYNC_EVERY: 1,
-  RAY_LOG_EVERY: 1,
+  FIELD_STEP_CAP: 4,
+  FIELD_BACKLOG_CAP_MS: (1000 / 72) * 4,
+  FIELD_SYNC_EVERY: 4,
+  RAY_LOG_EVERY: 4,
   PACKET_REFRESH_EVERY: 48,
   SELFTEST_RUNNING_EVERY: 144,
   BOOT_ANIMATION_DELAY_MS: 900,
   BOOT_DIAGNOSTICS_DELAY_MS: 6500,
-  MAIN_HZ_NOMINAL: 45,
-  MAIN_HZ_COMPACT: 40,
+  MAIN_HZ_NOMINAL: 60,
+  MAIN_HZ_COMPACT: 45,
   MAIN_HZ_SEVERE: 30,
   MAIN_IDLE_HZ: 24,
-  UI_HZ_NOMINAL: 12,
-  UI_HZ_COMPACT: 8,
+  UI_HZ_NOMINAL: 6,
+  UI_HZ_COMPACT: 4,
   UI_HZ_SEVERE: 4,
   UI_IDLE_HZ: 6,
-  AUX_HZ_NOMINAL: 16,
-  AUX_HZ_COMPACT: 10,
-  AUX_HZ_SEVERE: 5,
-  AUX_IDLE_HZ: 4,
+  AUX_HZ_NOMINAL: 8,
+  AUX_HZ_COMPACT: 6,
+  AUX_HZ_SEVERE: 3,
+  AUX_IDLE_HZ: 2,
   HEAVY_UI_EVERY_NOMINAL: 2,
   HEAVY_UI_EVERY_GUARDED: 3,
   HEAVY_UI_EVERY_SEVERE: 4,
   TRACE_LIMIT_NOMINAL: 180,
   TRACE_LIMIT_GUARDED: 140,
   TRACE_LIMIT_SEVERE: 96,
-  RAY_CAP_DESKTOP_NOMINAL: 144,
-  RAY_CAP_DESKTOP_GUARDED: 120,
-  RAY_CAP_DESKTOP_SEVERE: 96,
-  RAY_CAP_COMPACT_NOMINAL: 96,
-  RAY_CAP_COMPACT_GUARDED: 72,
-  RAY_CAP_COMPACT_SEVERE: 56,
-  PATH_POINTS_DESKTOP_NOMINAL: 18,
-  PATH_POINTS_DESKTOP_GUARDED: 14,
-  PATH_POINTS_DESKTOP_SEVERE: 10,
-  PATH_POINTS_COMPACT_NOMINAL: 12,
-  PATH_POINTS_COMPACT_GUARDED: 10,
-  PATH_POINTS_COMPACT_SEVERE: 8,
+  RAY_CAP_DESKTOP_NOMINAL: 64,
+  RAY_CAP_DESKTOP_GUARDED: 48,
+  RAY_CAP_DESKTOP_SEVERE: 36,
+  RAY_CAP_COMPACT_NOMINAL: 64,
+  RAY_CAP_COMPACT_GUARDED: 48,
+  RAY_CAP_COMPACT_SEVERE: 36,
+  PATH_POINTS_DESKTOP_NOMINAL: 7,
+  PATH_POINTS_DESKTOP_GUARDED: 6,
+  PATH_POINTS_DESKTOP_SEVERE: 5,
+  PATH_POINTS_COMPACT_NOMINAL: 7,
+  PATH_POINTS_COMPACT_GUARDED: 6,
+  PATH_POINTS_COMPACT_SEVERE: 5,
   GRID_STEP_DESKTOP: 36,
   GRID_STEP_COMPACT: 46,
   MOIRE_FIELD_STEP_DESKTOP: 14,
@@ -4415,6 +4435,7 @@ function buildHandoffPacketKey(metrics) {
 
 function ensureSelfTest(force = false) {
   if (!state.selfTest) state.selfTest = createInitialState().selfTest;
+  if (!force && state.selfTest.status === "pending") return state.selfTest;
   const lastTick = Number.isFinite(state.selfTest.lastTick) ? state.selfTest.lastTick : -999;
   const duePending = state.selfTest.status === "pending";
   const dueDirty = state.selfTest.dirty && (force || state.tick === 0 || (state.tick - lastTick) >= 15);
@@ -5681,11 +5702,19 @@ function logicalSize(c) {
   return { w: c.width / dpr, h: c.height / dpr };
 }
 
+function isElementVisibleInViewport(el) {
+  if (!el || typeof el.getBoundingClientRect !== "function") return false;
+  const rect = el.getBoundingClientRect();
+  const vw = window.visualViewport ? window.visualViewport.width : window.innerWidth;
+  const vh = window.visualViewport ? window.visualViewport.height : window.innerHeight;
+  return rect.width > 0 && rect.height > 0 && rect.bottom > 0 && rect.right > 0 && rect.top < vh && rect.left < vw;
+}
+
 function toScreen(x, y) {
   const { w: W, h: H } = logicalSize(mainCanvas);
   const scale = Math.min(W, H) * 0.7;
   const ox = W / 2 - 0.5 * scale;
-  const yBias = state && state.viewportCompact ? 0.40 : 0.35;
+  const yBias = state && state.viewportCompact ? 0.46 : 0.35;
   const oy = H / 2 + SQRT3_HALF * scale * yBias;
   return { x: ox + x * scale, y: oy - y * scale };
 }
@@ -5693,7 +5722,7 @@ function toScreen(x, y) {
 function createScreenProjector(W, H) {
   const scale = Math.min(W, H) * 0.7;
   const ox = W / 2 - 0.5 * scale;
-  const yBias = state && state.viewportCompact ? 0.40 : 0.35;
+  const yBias = state && state.viewportCompact ? 0.46 : 0.35;
   const oy = H / 2 + SQRT3_HALF * scale * yBias;
   return (x, y) => ({ x: ox + x * scale, y: oy - y * scale });
 }
@@ -5910,6 +5939,9 @@ function drawMain() {
   ctx.lineWidth = quietMode ? 1.1 : 1.5;
   ctx.stroke();
 
+  const drawRayGradientGlow = !quietMode && state.showMoire;
+  const drawRayFastGlow = !quietMode && !state.showMoire;
+  const drawSegmentStride = 1;
   const admC = { registered: [80, 250, 123], latent: [139, 233, 253], suppressed: [241, 250, 140], aliased: [255, 85, 85] };
   const admA = { registered: 1, latent: 0.5, suppressed: 0.4, aliased: 0.6 };
 
@@ -5918,9 +5950,9 @@ function drawMain() {
     const rgb = admC[ray.admissibility] || [200, 200, 200];
     const aB = admA[ray.admissibility] || 0.5;
 
-    for (let i = 0; i < ray.path.length - 1; i++) {
+    for (let i = 0; i < ray.path.length - 1; i += drawSegmentStride) {
       const p1 = project(ray.path[i].x, ray.path[i].y);
-      const p2 = project(ray.path[i + 1].x, ray.path[i + 1].y);
+      const p2 = project(ray.path[Math.min(i + drawSegmentStride, ray.path.length - 1)].x, ray.path[Math.min(i + drawSegmentStride, ray.path.length - 1)].y);
       const fade = ray.intensity * (1 - i / ray.path.length) * 0.7 * Math.max(0.48, calmFactor);
       ctx.beginPath();
       ctx.moveTo(p1.x, p1.y);
@@ -5933,7 +5965,7 @@ function drawMain() {
     if (ray.alive) {
       const sp = project(ray.x, ray.y);
       const r = 2 + ray.intensity * 3;
-      if (!quietMode) {
+      if (drawRayGradientGlow) {
         const bl = ctx.createRadialGradient(sp.x, sp.y, 0, sp.x, sp.y, r * 3.5);
         bl.addColorStop(0, `rgba(${rgb[0]},${rgb[1]},${rgb[2]},${0.25 * ray.intensity})`);
         bl.addColorStop(0.5, `rgba(${rgb[0]},${rgb[1]},${rgb[2]},${0.08 * ray.intensity})`);
@@ -5941,6 +5973,11 @@ function drawMain() {
         ctx.beginPath();
         ctx.arc(sp.x, sp.y, r * 3.5, 0, Math.PI * 2);
         ctx.fillStyle = bl;
+        ctx.fill();
+      } else if (drawRayFastGlow) {
+        ctx.beginPath();
+        ctx.arc(sp.x, sp.y, r * 2.35, 0, Math.PI * 2);
+        ctx.fillStyle = `rgba(${rgb[0]},${rgb[1]},${rgb[2]},${0.055 + 0.055 * ray.intensity})`;
         ctx.fill();
       }
       ctx.beginPath();
@@ -7515,8 +7552,10 @@ function tick(now = performance.now()) {
 
   if (state.frameCount < 2 || rt.auxAccumulatorMs >= auxIntervalMs || rt.forceHeavyUIRefresh) {
     rt.auxAccumulatorMs = auxIntervalMs > 0 ? rt.auxAccumulatorMs % auxIntervalMs : 0;
-    drawMoirePanel();
-    drawTrace();
+    const moireCanvas = document.getElementById("moireCanvas");
+    const traceCanvas = document.getElementById("traceCanvas");
+    if (isElementVisibleInViewport(moireCanvas)) drawMoirePanel();
+    if (isElementVisibleInViewport(traceCanvas)) drawTrace();
   }
 
   if (state.frameCount < 2 || rt.uiAccumulatorMs >= uiIntervalMs || rt.forceUIRefresh) {
@@ -7585,7 +7624,12 @@ function resetSystem() {
   updateFieldModeButtons();
   syncBodyClasses();
   invalidateStaticCaches();
-  ensureSelfTest(true);
+  state.selfTest = Object.assign({}, state.selfTest, {
+    status: "pending",
+    issues: ["self-test ready; run manually after first paint"],
+    dirty: true,
+    pendingReason: "manual"
+  });
   synchronizeFieldState({ appendTraces: false });
   drawMain();
   drawMoirePanel();
@@ -9133,7 +9177,7 @@ setTimeout(() => requestAnimationFrame(tick), PERF.BOOT_ANIMATION_DELAY_MS);
 
   window.drawMain = function apertureDrawMain() {
     originalDrawMain.call(this);
-    drawApertureMainOverlay();
+    if (state.showMoire) drawApertureMainOverlay();
   };
 
   window.drawMoireField = function apertureDrawMoireField(ctx, W, H) {
@@ -9340,7 +9384,7 @@ setTimeout(() => requestAnimationFrame(tick), PERF.BOOT_ANIMATION_DELAY_MS);
   function patchVersionDisplays() {
     document.title = 'TD613 Aperture v2.9.2';
     const subtitle = document.getElementById('subtitle');
-    if (subtitle) subtitle.textContent = 'Aperture counter-tool ? PRCS-A admissibility, projection, and rupture audit';
+    if (subtitle) subtitle.textContent = 'Aperture counter-tool - PRCS-A admissibility, projection, and rupture audit';
     const mFirmwareVer = document.getElementById('mFirmwareVer');
     if (mFirmwareVer) mFirmwareVer.textContent = VERSION;
     if (window.FIRMWARE) {
@@ -9444,7 +9488,7 @@ setTimeout(() => requestAnimationFrame(tick), PERF.BOOT_ANIMATION_DELAY_MS);
     document.body.classList.add('aperture-v110');
     const metaTitle = document.querySelector('meta[name="tool-name"]');
     const subtitle = document.getElementById('subtitle');
-    if (subtitle) subtitle.textContent = 'Aperture counter-tool ? PRCS-A admissibility, projection, and rupture audit';
+    if (subtitle) subtitle.textContent = 'Aperture counter-tool - PRCS-A admissibility, projection, and rupture audit';
     if (metaTitle) metaTitle.setAttribute('content', 'Aperture');
     if (window.FIRMWARE) {
       window.FIRMWARE.VERSION = VERSION;
@@ -9620,16 +9664,13 @@ setTimeout(() => requestAnimationFrame(tick), PERF.BOOT_ANIMATION_DELAY_MS);
       state.bootDiagnostics.phase = 'queued';
       state.bootDiagnostics.reason = 'reset';
       state.bootDiagnostics.notes = ['reset diagnostics queued'];
-      scheduleBootDiagnostics('reset');
       return out;
     };
   }
 
   setVersionDisplays();
   refreshColdStateCopy();
-  setTimeout(function(){
-    scheduleBootDiagnostics('boot');
-  }, (typeof PERF !== 'undefined' && PERF.BOOT_DIAGNOSTICS_DELAY_MS) || 6500);
+  window.runApertureBootDiagnostics = runBootDiagnostics;
 })();
 </script>
 
@@ -9719,13 +9760,7 @@ setTimeout(() => requestAnimationFrame(tick), PERF.BOOT_ANIMATION_DELAY_MS);
   bindGlobals();
   ensureBootState();
   setVersionDisplays();
-  requestAnimationFrame(() => {
-    bindGlobals();
-    runBootPass('boot-fix');
-    if (typeof updateUI === 'function') {
-      try { updateUI({ force: true, slow: true }); } catch (err) {}
-    }
-  });
+  window.runApertureBootPassV111 = runBootPass;
 })();
 </script>
 
@@ -9915,7 +9950,6 @@ setTimeout(() => requestAnimationFrame(tick), PERF.BOOT_ANIMATION_DELAY_MS);
         stateRef.bootDiagnostics.notes = ['reset diagnostics queued'];
       }
       BOOT.completed = false;
-      queueBootPass('reset-v112');
       return out;
     };
   }
@@ -9937,11 +9971,10 @@ setTimeout(() => requestAnimationFrame(tick), PERF.BOOT_ANIMATION_DELAY_MS);
       bindGlobals();
       setVersionTruth();
       wrapReset();
-      queueBootPass('dom-ready-v112');
     }, { once: true });
   }
 
-  queueBootPass('boot-v112');
+  window.runApertureBootPassV112 = runBootPass;
 })();
 </script>
 
@@ -10799,7 +10832,7 @@ setTimeout(() => requestAnimationFrame(tick), PERF.BOOT_ANIMATION_DELAY_MS);
     } catch (err) {}
     document.title = 'TD613 Aperture v2.9.2';
     const subtitle = document.getElementById('subtitle');
-    if (subtitle) subtitle.textContent = 'Aperture counter-tool ? PRCS-A admissibility, projection, and rupture audit';
+    if (subtitle) subtitle.textContent = 'Aperture counter-tool - PRCS-A admissibility, projection, and rupture audit';
     const fw = document.getElementById('mFirmwareVer'); if (fw) fw.textContent = 'v2.9.2';
     const schemaRead = document.getElementById('schemaVersionReadout'); if (schemaRead) schemaRead.textContent = V22.SCHEMA;
   }
@@ -11606,7 +11639,7 @@ APERTURE active foundation layer, retained under v2.9.0 governance (rupture-assi
     } catch (_) {}
     document.title = 'TD613 Aperture v2.9.2';
     const subtitle = byId('subtitle');
-    if (subtitle) subtitle.textContent = 'Aperture counter-tool ? PRCS-A admissibility, projection, and rupture audit';
+    if (subtitle) subtitle.textContent = 'Aperture counter-tool - PRCS-A admissibility, projection, and rupture audit';
     const fw = byId('mFirmwareVer'); if (fw) fw.textContent = 'v2.9.2';
     const schemaRead = byId('schemaVersionReadout'); if (schemaRead) schemaRead.textContent = V23.SCHEMA;
   }
@@ -11792,7 +11825,7 @@ APERTURE active foundation layer, retained under v2.9.0 governance (rupture-assi
     const meta = document.querySelector('meta[name="aperture-version"]');
     if (meta) meta.setAttribute('content', 'v2.8.1-quick-spine-access-map');
     const subtitle = byId('subtitle');
-    if (subtitle) subtitle.textContent = 'Aperture counter-tool ? PRCS-A admissibility, projection, and rupture audit';
+    if (subtitle) subtitle.textContent = 'Aperture counter-tool - PRCS-A admissibility, projection, and rupture audit';
     const fw = byId('mFirmwareVer');
     if (fw) fw.textContent = V24.VERSION;
     const schemaRead = byId('schemaVersionReadout');
@@ -12345,7 +12378,7 @@ APERTURE active foundation layer, retained under v2.9.0 governance (rupture-assi
       }
       cor.setAttribute('content', 'true');
       const subtitle = byId('subtitle');
-      if (subtitle) subtitle.textContent = 'Aperture counter-tool ? PRCS-A admissibility, projection, and rupture audit';
+      if (subtitle) subtitle.textContent = 'Aperture counter-tool - PRCS-A admissibility, projection, and rupture audit';
       const fw = byId('mFirmwareVer');
       if (fw) fw.textContent = 'v2.9.2';
       const schema = byId('mSchemaVer') || byId('schemaVersion');
@@ -12992,7 +13025,7 @@ APERTURE active foundation layer, retained under v2.9.0 governance (rupture-assi
       ensureMeta('relational-survival-test', 'true');
       ensureMeta('claim-origin-required', 'true');
       const subtitle = byId('subtitle');
-      if (subtitle) subtitle.textContent = 'Aperture counter-tool ? PRCS-A admissibility, projection, and rupture audit';
+      if (subtitle) subtitle.textContent = 'Aperture counter-tool - PRCS-A admissibility, projection, and rupture audit';
       const fw = byId('mFirmwareVer');
       if (fw) fw.textContent = V26.VERSION;
       const schema = byId('mSchemaVer') || byId('schemaVersion');
@@ -14382,7 +14415,7 @@ Hard stops:
     const fw = byId('mFirmwareVer'); if (fw) fw.textContent = 'v2.9.2';
     const schema = byId('schemaVersionReadout'); if (schema) schema.textContent = HCC_SCHEMA;
     const subtitle = byId('subtitle');
-    if (subtitle && !subtitle.textContent.includes('HCC')) subtitle.textContent = 'Aperture counter-tool ? PRCS-A admissibility, projection, and rupture audit';
+    if (subtitle && !subtitle.textContent.includes('HCC')) subtitle.textContent = 'Aperture counter-tool - PRCS-A admissibility, projection, and rupture audit';
     if (window.FIRMWARE) {
       try { window.FIRMWARE.VERSION = HCC_VERSION; window.FIRMWARE.SCHEMA_VERSION = HCC_SCHEMA; } catch (_) {}
     }
@@ -15479,7 +15512,7 @@ Hard stops:
     setText('mFirmwareVer', APERTURE_VERSION);
     setText('phaseStatus', 'v2.8.2 PRE-FLIGHT');
     const subtitle = byId('subtitle');
-    if (subtitle) subtitle.textContent = 'Aperture counter-tool ? PRCS-A admissibility, projection, and rupture audit';
+    if (subtitle) subtitle.textContent = 'Aperture counter-tool - PRCS-A admissibility, projection, and rupture audit';
     try {
       const regimeRows = Array.from(document.querySelectorAll('.metric-row'));
       const ontologyRow = regimeRows.find(row => row.querySelector('.label')?.textContent.trim() === 'EO-RFD');
@@ -16143,7 +16176,7 @@ Hard stops:
     setText('mFirmwareVer', APERTURE_VERSION);
     setText('phaseStatus', 'v2.8.3 ORIGIN');
     const subtitle = byId('subtitle');
-    if (subtitle) subtitle.textContent = 'Aperture counter-tool ? PRCS-A admissibility, projection, and rupture audit';
+    if (subtitle) subtitle.textContent = 'Aperture counter-tool - PRCS-A admissibility, projection, and rupture audit';
     try {
       const regimeRows = Array.from(document.querySelectorAll('.metric-row'));
       const ontologyRow = regimeRows.find(row => row.querySelector('.label')?.textContent.trim() === 'EO-RFD');
@@ -16544,7 +16577,7 @@ Hard stops:
     setText('mFirmwareVer', APERTURE_VERSION);
     setText('phaseStatus', 'v2.8.3.1 DEEP');
     const subtitle = byId('subtitle');
-    if (subtitle) subtitle.textContent = 'Aperture counter-tool ? PRCS-A admissibility, projection, and rupture audit';
+    if (subtitle) subtitle.textContent = 'Aperture counter-tool - PRCS-A admissibility, projection, and rupture audit';
     try {
       const regimeRows = Array.from(document.querySelectorAll('.metric-row'));
       const ontologyRow = regimeRows.find(row => row.querySelector('.label')?.textContent.trim() === 'EO-RFD');
@@ -16924,7 +16957,7 @@ Hard stops:
 
   try {
     const subtitle = document.getElementById('subtitle');
-    if (subtitle) subtitle.textContent = 'Aperture counter-tool ? PRCS-A admissibility, projection, and rupture audit';
+    if (subtitle) subtitle.textContent = 'Aperture counter-tool - PRCS-A admissibility, projection, and rupture audit';
     const firmwareValue = document.getElementById('firmwareValue') || document.getElementById('firmwareReadout');
     if (firmwareValue) firmwareValue.textContent = 'v2.8.4 ACEDIT';
     const phaseStatus = document.getElementById('phaseStatus');
@@ -17218,7 +17251,7 @@ Hard stops:
       document.body.setAttribute('data-spine-forward-ui', 'true');
       document.body.setAttribute('data-recency-governance', 'true');
       const subtitle = document.getElementById('subtitle');
-      if (subtitle) subtitle.textContent = 'Aperture counter-tool ? PRCS-A admissibility, projection, and rupture audit';
+      if (subtitle) subtitle.textContent = 'Aperture counter-tool - PRCS-A admissibility, projection, and rupture audit';
       const phaseStatus = document.getElementById('phaseStatus');
       if (phaseStatus) phaseStatus.textContent = 'v2.9.2 RESIDUAL';
       const firmwareVer = document.getElementById('mFirmwareVer');
@@ -17550,7 +17583,7 @@ Hard stops:
       document.body.setAttribute('data-aperture-version', 'v2.9.2-geometric-doctrine-addendum');
       document.body.setAttribute('data-vector-residual-witness', 'true');
       const subtitle = document.getElementById('subtitle');
-      if (subtitle) subtitle.textContent = 'Aperture counter-tool ? PRCS-A admissibility, projection, and rupture audit';
+      if (subtitle) subtitle.textContent = 'Aperture counter-tool - PRCS-A admissibility, projection, and rupture audit';
       const phaseStatus = document.getElementById('phaseStatus');
       if (phaseStatus) phaseStatus.textContent = 'v2.9.2 RESIDUAL';
       const title = document.querySelector('title');
@@ -17572,7 +17605,7 @@ Hard stops:
     compatVersion: 'v2.9.2',
     hiddenSpineVersion: 'v2.9.2-hidden-governance-geometry',
     title: 'TD613 Aperture v2.9.2',
-    subtitle: 'Aperture counter-tool ? PRCS-A admissibility, projection, and rupture audit'
+    subtitle: 'Aperture counter-tool - PRCS-A admissibility, projection, and rupture audit'
   });
   const lanes = Object.freeze([
     'state-closure',
@@ -17799,7 +17832,7 @@ Hard stops:
     ['createTCPHandoffPacket','buildHandoffPacket','buildHumanRouteEnvelope'].forEach(wrapBuilder);
     wrapSelfTest();
     installButtonRepair();
-    [100, 500, 1200].forEach(delay => setTimeout(function(){ applyHygiene(); installButtonRepair(); }, delay));
+    installButtonRepair();
   }
   window.runHiddenGovernanceSpineSelfTest = runHiddenGovernanceSpineSelfTest;
   window.attachHiddenGovernanceSpine = attachHiddenGovernanceSpine;
@@ -17990,7 +18023,7 @@ Hard stops:
       }
     } catch (_) {}
     setText('mFirmwareVer', VERSION);
-    setText('subtitle', 'Aperture counter-tool ? PRCS-A admissibility, projection, and rupture audit');
+    setText('subtitle', 'Aperture counter-tool - PRCS-A admissibility, projection, and rupture audit');
   }
   function removeVisibleSpineSurfaces(){
     try { const nav = byId('spineForwardNav'); if (nav) nav.remove(); } catch (_) {}
@@ -18243,7 +18276,7 @@ Hard stops:
     window.attachHiddenGovernanceSpine = attachSkeleton;
     wrapSelfTest();
     installButtonRepair();
-    [50, 250, 800, 1600].forEach(function(delay){ setTimeout(function(){ installExpandedSpine(); canonicalizeVersion(); removeVisibleSpineSurfaces(); installButtonRepair(); }, delay); });
+    installButtonRepair();
   }
   if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', install, { once: true });
   else install();
@@ -18378,7 +18411,7 @@ Hard stops:
   }
 
   function canonicalize(){
-    try { if (document.title !== 'TD613 Aperture - v2.9.2') document.title = 'TD613 Aperture v2.9.2'; } catch (_) {}
+    try { if (document.title !== 'TD613 Aperture v2.9.2') document.title = 'TD613 Aperture v2.9.2'; } catch (_) {}
     try {
       var titles = document.getElementsByTagName('title');
       if (titles && titles[0] && titles[0].textContent !== 'TD613 Aperture v2.9.2') titles[0].textContent = 'TD613 Aperture v2.9.2';
@@ -18386,7 +18419,7 @@ Hard stops:
     try { document.body && document.body.setAttribute('data-aperture-version', 'v2.9.2-geometric-doctrine-addendum'); } catch (_) {}
     try {
       var subtitle = document.getElementById('subtitle');
-      if (subtitle) subtitle.textContent = 'Aperture counter-tool ? PRCS-A admissibility, projection, and rupture audit';
+      if (subtitle && subtitle.textContent !== 'Aperture counter-tool - PRCS-A admissibility, projection, and rupture audit') subtitle.textContent = 'Aperture counter-tool - PRCS-A admissibility, projection, and rupture audit';
     } catch (_) {}
     try {
       var firmware = document.getElementById('firmwareSpineVersion') || document.getElementById('mFirmwareVer') || document.querySelector('[data-firmware-spine-version]');
@@ -18394,20 +18427,7 @@ Hard stops:
     } catch (_) {}
   }
 
-  function armVersionLock(){
-    try {
-      var head = document.head || document.documentElement;
-      if (head && window.MutationObserver && !window.__APERTURE_V286_TITLE_LOCK) {
-        window.__APERTURE_V286_TITLE_LOCK = new MutationObserver(function(){ canonicalize(); });
-        window.__APERTURE_V286_TITLE_LOCK.observe(head, { childList:true, subtree:true, characterData:true });
-      }
-    } catch (_) {}
-    try {
-      if (!window.__APERTURE_V286_TITLE_INTERVAL) {
-        window.__APERTURE_V286_TITLE_INTERVAL = setInterval(canonicalize, 2500);
-      }
-    } catch (_) {}
-  }
+  function armVersionLock(){ canonicalize(); }
 
   function safeCall(name, fallback){
     try {
@@ -18443,8 +18463,6 @@ Hard stops:
 
   if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', bindAll, { once:true });
   else bindAll();
-  setTimeout(bindAll, 0);
-  setTimeout(bindAll, 250);
 })();
 </script>
 
@@ -18484,7 +18502,7 @@ Hard stops:
 (function(){
   'use strict';
   var TITLE = 'TD613 Aperture v2.9.2';
-  var SUBTITLE = 'Aperture counter-tool ? PRCS-A admissibility, projection, and rupture audit';
+  var SUBTITLE = 'Aperture counter-tool - PRCS-A admissibility, projection, and rupture audit';
   function apply(){
     try { if (document.title !== TITLE) document.title = TITLE; } catch (_) {}
     try { var t = document.getElementsByTagName('title'); if (t && t[0] && t[0].textContent !== TITLE) t[0].textContent = TITLE; } catch (_) {}
@@ -18492,16 +18510,6 @@ Hard stops:
   }
   function arm(){
     apply();
-    try {
-      if (window.MutationObserver && !window.__APERTURE_V292_STABLE_IDENTITY_OBSERVER) {
-        var observer = new MutationObserver(apply);
-        window.__APERTURE_V292_STABLE_IDENTITY_OBSERVER = observer;
-        if (document.head) observer.observe(document.head, { childList:true, subtree:true, characterData:true });
-        var subtitle = document.getElementById('subtitle');
-        if (subtitle && subtitle.parentNode) observer.observe(subtitle.parentNode, { childList:true, subtree:true, characterData:true });
-      }
-    } catch (_) {}
-    [0,16,50,100,250,500,1000,1800,3000].forEach(function(ms){ setTimeout(apply, ms); });
   }
   if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', arm, { once:true }); else arm();
 })();

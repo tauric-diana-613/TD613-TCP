@@ -5835,12 +5835,12 @@
         "external-firmware-policy": "signal-source-only"
       },
       "fingerprint": {
-        "bytes": 913051,
-        "lineCount": 18512,
+        "bytes": 912983,
+        "lineCount": 18520,
         "inlineScriptCount": 37,
         "panelCount": 6,
         "buttonCount": 43,
-        "contentHashSha256": "44a233f79b92cd2a13105cfb18d24eda991096ce881e048f75750c70f080a09a"
+        "contentHashSha256": "c7b748e5d132327e4728d3c3f80c0ba6bb6c75049004e6b4d3710782301f7659"
       },
       "checks": [
         {
