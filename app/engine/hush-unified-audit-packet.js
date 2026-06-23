@@ -53,6 +53,7 @@ function inspectClaimSurface(value) {
 export function unifiedAuditPacketHashPreimage(packet = {}) {
   const material = clone(packet || {});
   delete material.packet_hash_sha256;
+  delete material.safe_harbor_handoff;
   if (material.hash_replay) {
     material.hash_replay.packet_hash_sha256 = null;
     material.hash_replay.hash_topology_packet_hash_sha256 = null;
