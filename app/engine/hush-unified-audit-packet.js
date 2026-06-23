@@ -19,6 +19,8 @@ export const HUSH_UNIFIED_AUDIT_CLAIM_LIMITS = Object.freeze({
 
 const STATUSES = Object.freeze(['clean', 'warned', 'blocked', 'repair_required', 'unresolved_witness', 'quarantine']);
 const PROOFISH = /\b(identity|authorship|legal|semantic truth|consciousness|release|validator|safe harbor|hush|aperture|eo-rfd|residual|topology|acedit)\b[^.\n]{0,90}\b(proof|prove|proves|authority|override|permission|authorized|verified truth|verdict)\b|\b(proves?|authorizes?|overrides?|publishes?)\b[^.\n]{0,90}\b(identity|authorship|legal|truth|release|safe harbor|hush|aperture)\b/iu;
+const CLAIM_BOUNDARY_KEYS = /^(forbidden_claims|forbiddenClaims|required_claim_ceiling|requiredClaimCeiling|claim_ceiling|claimCeiling|claim_limits|claimLimits|required_limits|requiredLimits|prohibited_claims|prohibitedClaims|blocked_effects|blockedEffects|disallowed_transformations|disallowedTransformations|allowed_effects|allowedEffects|non_goals|nonGoals|guardrails|authority_ceiling|authorityCeiling)$/u;
+const NEGATED_PROOFISH = /\b(no|not|never|cannot|can't|must not|may not|does not|is not|without|forbidden|blocked|excluded|not_[a-z_]*proof|not-[a-z-]*proof)\b[^.\n]{0,90}\b(identity|authorship|legal|truth|proof|authority|override|permission|release|verdict)\b|\b(identity|authorship|legal|truth|proof|authority|override|permission|release|verdict)\b[^.\n]{0,90}\b(not|false|forbidden|blocked|excluded)\b/iu;
 const RAW_KEYS = /^(raw_text|rawText|raw_private_text|rawPrivateText|raw_response|rawResponse|raw_response_text|rawResponseText|raw_training_text|rawTrainingText|raw_sample|raw_samples|rawSamples|sample_text|sampleText|private_codename|privateCodename)$/u;
 
 function isObject(value) { return Boolean(value && typeof value === 'object' && !Array.isArray(value)); }
@@ -29,7 +31,6 @@ function nowIso(context = {}) { return context.created_at || context.createdAt |
 function datePart(value) { return String(value || new Date().toISOString()).slice(0, 10).replace(/-/g, ''); }
 function getPath(value, path) { return String(path || '').split('.').reduce((node, key) => (node && Object.prototype.hasOwnProperty.call(node, key) ? node[key] : undefined), value); }
 function maybeHash(value) { return isSha256(value) ? value : null; }
-function textOf(value) { return JSON.stringify(value || {}); }
 async function hashObject(value) { return sha256Text(stableStringify(value == null ? null : value)); }
 
 function hasRawLeak(value, path = 'packet') {
@@ -44,9 +45,19 @@ function hasRawLeak(value, path = 'packet') {
   return leaks;
 }
 
-function inspectClaimSurface(value) {
+function inspectClaimSurface(value, path = 'packet') {
   const violations = [];
-  if (PROOFISH.test(textOf(value))) violations.push('forbidden proof or authority language detected');
+  if (typeof value === 'string') {
+    const body = value.trim();
+    if (body && PROOFISH.test(body) && !NEGATED_PROOFISH.test(body)) violations.push(`${path}: forbidden proof or authority language detected`);
+    return violations;
+  }
+  if (!isObject(value) && !Array.isArray(value)) return violations;
+  for (const [key, child] of Object.entries(value || {})) {
+    if (CLAIM_BOUNDARY_KEYS.test(key)) continue;
+    if (key === 'safe_harbor_handoff' || key === 'decision') continue;
+    violations.push(...inspectClaimSurface(child, `${path}.${key}`));
+  }
   return violations;
 }
 
@@ -245,11 +256,13 @@ export function decideUnifiedAuditPacketStatus(packet = {}) {
   if (packetStatus === 'clean' && ['high', 'severe'].includes(stylo.overfit_risk)) { packetStatus = 'repair_required'; reasons.push('stylometry high-risk route'); }
   if (packetStatus === 'clean' && getPath(packet, 'phase5_interface.phase5_validation_status') === 'warn') { packetStatus = 'unresolved_witness'; reasons.push('Phase 5 witness unresolved'); }
   if (packetStatus === 'clean' && (getPath(packet, 'relational_comparison.contract_log_match_status') === 'partial' || stylo.status === 'warn')) { packetStatus = 'warned'; reasons.push('bounded warning present'); }
+  const custodyHandoffAllowed = ['clean', 'warned', 'repair_required', 'unresolved_witness', 'blocked', 'quarantine'].includes(packetStatus);
   return Object.freeze({
     schema: 'td613.hush.phase6.decision/v1',
     packet_status: STATUSES.includes(packetStatus) ? packetStatus : 'blocked',
     release_allowed: false,
-    safe_harbor_handoff_allowed: ['clean', 'warned', 'repair_required', 'unresolved_witness', 'blocked', 'quarantine'].includes(packetStatus),
+    safe_harbor_custody_handoff_allowed: custodyHandoffAllowed,
+    safe_harbor_handoff_allowed: custodyHandoffAllowed,
     mask_gallery_update_allowed: packetStatus === 'clean' || packetStatus === 'warned',
     repair_required: packetStatus === 'repair_required',
     quarantine_required: packetStatus === 'quarantine',
