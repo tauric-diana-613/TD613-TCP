@@ -62,6 +62,9 @@ export function buildPhase8NumericDecisionSurface(scores = {}, thresholds = PHAS
   if (context.claim_ceiling_held === false) lists.failed.push('claim_ceiling'); else lists.passed.push('claim_ceiling');
   if (context.raw_sample_text_included === true) lists.failed.push('raw_sample_text'); else lists.passed.push('raw_sample_text');
   if (context.public_default_allowed === true) lists.failed.push('public_default'); else lists.passed.push('public_default');
+  if (context.candidate_required === true && context.candidate_present !== true) lists.failed.push('candidate_present'); else if (context.candidate_required === true) lists.passed.push('candidate_present');
+  if (context.source_text_used_as_candidate === true) lists.failed.push('source_candidate_separation'); else if (context.candidate_required === true) lists.passed.push('source_candidate_separation');
+  if (context.candidate_required === true && !context.candidate_hash_sha256) lists.failed.push('candidate_hash_sha256'); else if (context.candidate_required === true) lists.passed.push('candidate_hash_sha256');
   minRule('mandatory_anchor_retention', s.mandatory_anchor_retention ?? 0, thresholds.mandatory_anchor_retention, lists, true);
   maxRule('factual_damage_risk', s.factual_damage_risk ?? 0, thresholds.factual_damage_risk_max, lists, true);
   maxRule('sample_seed_phrase_overlap', f.sample_seed_phrase_overlap ?? 0, thresholds.sample_seed_phrase_overlap_max, lists, true);
