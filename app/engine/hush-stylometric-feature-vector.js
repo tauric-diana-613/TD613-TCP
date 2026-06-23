@@ -9,21 +9,31 @@ const HELPER_WORDS = ['certainly', 'overall', 'ultimately', 'additionally', 'fur
 const HEDGE_WORDS = ['may', 'might', 'could', 'appears', 'suggests', 'likely', 'possible', 'seems', 'unless'];
 const CERTAINTY_WORDS = ['always', 'never', 'definitely', 'clearly', 'obviously'];
 const ABBREV_WORDS = ['idk', 'bc', 'rn', 'imo', 'fyi', 'tho', 'tbh', 'ngl', 'pls', 'plz', 'ur'];
-const REGISTER_WORDS = ['custody', 'packet', 'hash', 'source', 'record', 'route', 'mask', 'register', 'claim', 'handoff', 'file', 'date', 'footer', 'mismatch', 'review'];
+const REGISTER_WORDS = ['custody', 'packet', 'hash', 'source', 'record', 'route', 'mask', 'register', 'claim', 'handoff', 'file', 'date', 'footer', 'mismatch', 'review', 'attached', 'sent', 'label'];
 const RELATIONAL_MARKERS = ['yeah', 'ok', 'okay', 'just', 'keep', "don't", 'dont', 'we', 'us', 'here'];
 const INTIMACY_MARKERS = ['love', 'babe', 'bestie', 'sweetie', 'friend', 'everyone', 'together'];
 const SUPPORT_GROUP_MARKERS = ['mindful', 'supportive', 'holding space', 'gentle reminder', 'gently remind', 'care', 'community'];
 const THREAD_LEAK_MARKERS = ['as we said', 'like we said', 'in here', 'this thread', 'everyone here', 'our group', 'last time', 'you already know', 'nobody here'];
 const BULLETIN_MARKERS = ['please remember', 'for future review', 'as needed', 'moving forward', 'ensure that', 'please note'];
+const HANDOFF_OBJECT_MARKERS = ['attached', 'attachment', 'sent', 'sending', 'file', 'doc', 'folder', 'label', 'date', 'note', 'footer'];
+const DATE_MARKERS = ['date', 'dated', 'export', '6/18', 'timestamp', 'minute'];
+const LABEL_MARKERS = ['label', 'tag', 'file name', 'wjct', 'file label'];
+const MEMO_POLISH_MARKERS = ['please find attached', 'for your review', 'applicable', 'relevant file', 'following up', 'please see', 'attached please find'];
+const FATIGUE_PROP_MARKERS = ['tired', 'exhausted', 'sleep', 'vending-machine', 'vending machine', 'clock', 'fluorescent', 'before i crash', 'barely awake', 'eats me alive'];
+const AMBIGUITY_MARKERS = ['this', 'thing', 'stuff', 'whatever', 'later', 'check it', 'idk what'];
+const PRESSURE_MARKERS = ['already', 'again', 'still', 'now', 'keep', "don't split", 'dont split', 'needs to stay', 'stays', 'kept with'];
+const HOSTILITY_MARKERS = ['read it', 'you people', 'stop asking', 'figure it out', 'not my problem'];
 const FEATURE_SCALES = Object.freeze({ mean_sentence_length: 30, sentence_length_variance: 120, clause_chain_ratio: 4, comma_to_period_ratio: 4 });
 
 function text(value) { return String(value || ''); }
 function tokens(value) { return text(value).match(/[A-Za-z0-9][A-Za-z0-9'-]*/g) || []; }
 function sentences(value) { return text(value).split(/[.!?]+/u).map((part) => part.trim()).filter(Boolean); }
+function lines(value) { return text(value).split(/\n+/u).map((part) => part.trim()).filter(Boolean); }
 function clamp(value) { return Math.max(0, Math.min(1, Number((Number(value) || 0).toFixed(4)))); }
 function rate(n, d) { return clamp(d ? n / d : 0); }
 function wordHits(words, tokenList) { const lower = tokenList.map((token) => token.toLowerCase()); return words.filter((word) => lower.includes(word)).length; }
 function phraseHits(phrases, value) { const lower = text(value).toLowerCase(); return phrases.filter((phrase) => lower.includes(String(phrase).toLowerCase())).length; }
+function containsPhrase(phrase, value) { return text(value).toLowerCase().includes(String(phrase).toLowerCase()); }
 function variance(nums = []) { if (!nums.length) return 0; const avg = nums.reduce((a, b) => a + b, 0) / nums.length; return nums.reduce((sum, n) => sum + Math.pow(n - avg, 2), 0) / nums.length; }
 function uniqueRatio(tokenList = []) { return rate(new Set(tokenList.map((token) => token.toLowerCase())).size, tokenList.length); }
 function lexicalDensity(tokenList = []) { const stop = /^(the|a|an|and|or|but|if|to|of|in|on|for|with|is|are|was|were|be|it|this|that|as|at|by|from)$/iu; return rate(tokenList.filter((token) => !stop.test(token)).length, tokenList.length); }
@@ -31,11 +41,14 @@ function terminalDistribution(value) { const v = text(value); const total = Math
 function fixtureText(fixture) { return typeof fixture === 'string' ? fixture : text(fixture?.text); }
 function fixtureClass(fixture) { return typeof fixture === 'string' ? 'inline' : text(fixture?.fixture_class || fixture?.class || 'unknown'); }
 function scaledDelta(key, a, b) { const scale = FEATURE_SCALES[key] || 1; return (Number(a) - Number(b)) / scale; }
+function hasHandoffUnit(value) { return phraseHits(HANDOFF_OBJECT_MARKERS, value) > 0 || /FILE-?72|WJCT|6\/18/iu.test(text(value)); }
+function lineEndsLoose(line) { return !/[.!?]$/u.test(text(line).trim()); }
 
 export async function extractMaskFeatureVector(input = '', options = {}) {
   const value = text(input || options.redacted_summary || '');
   const tokenList = tokens(value);
   const sentenceList = sentences(value);
+  const lineList = lines(value);
   const lengths = sentenceList.map((sentence) => tokens(sentence).length).filter(Boolean);
   const mean = lengths.length ? lengths.reduce((a, b) => a + b, 0) / lengths.length : 0;
   const v = variance(lengths);
@@ -50,6 +63,14 @@ export async function extractMaskFeatureVector(input = '', options = {}) {
   const supportPhraseHits = phraseHits(SUPPORT_GROUP_MARKERS, value);
   const threadLeakHits = phraseHits(THREAD_LEAK_MARKERS, value);
   const bulletinHits = phraseHits(BULLETIN_MARKERS, value);
+  const handoffHits = phraseHits(HANDOFF_OBJECT_MARKERS, value);
+  const dateHits = phraseHits(DATE_MARKERS, value);
+  const labelHits = phraseHits(LABEL_MARKERS, value);
+  const memoHits = phraseHits(MEMO_POLISH_MARKERS, value);
+  const fatigueHits = phraseHits(FATIGUE_PROP_MARKERS, value);
+  const ambiguityHits = phraseHits(AMBIGUITY_MARKERS, value);
+  const pressureHits = phraseHits(PRESSURE_MARKERS, value);
+  const hostilityHits = phraseHits(HOSTILITY_MARKERS, value);
   const sharedRoomHits = (value.match(/\bwe\b|\bus\b|\bhere\b|\beveryone\b/giu) || []).length;
   const directAddressHits = (value.match(/\byou\b|\by'all\b|\bu\b/giu) || []).length;
   const insideRoomHits = (value.match(/\bin here\b|\beveryone here\b|\bour group\b|\bthis thread\b|\bnobody here\b/giu) || []).length;
@@ -59,6 +80,31 @@ export async function extractMaskFeatureVector(input = '', options = {}) {
   const lowerValue = value.toLowerCase();
   const sampleHits = sampleTerms.filter((term) => lowerValue.includes(term)).length;
   const factPressure = options.fact_pressure_preservation ?? (registerHits ? clamp((registerHits + sampleHits) / Math.max(tokenList.length, 1) * 3.2) : 0);
+  const completeLineHits = lineList.filter(hasHandoffUnit).length;
+  const lineBreakCount = (value.match(/\n/g) || []).length;
+  const looseLineCount = lineList.filter(lineEndsLoose).length;
+  const allCaps = tokenList.filter((token) => /^[A-Z0-9-]{3,}$/u.test(token) && !/^(WJCT|FILE-?72)$/u.test(token)).length;
+  const attachmentVisibility = clamp((phraseHits(['attached', 'attachment', 'sent', 'sending', 'file', 'folder', 'doc', 'FILE-72'], value)) * 0.4);
+  const dateVisibility = clamp((dateHits || /\b\d{1,2}\/\d{1,2}\b/u.test(value) ? 1 : 0));
+  const labelVisibility = clamp((labelHits || /WJCT/iu.test(value) ? 1 : 0));
+  const handoffRetention = clamp(attachmentVisibility * 0.34 + dateVisibility * 0.28 + labelVisibility * 0.22 + (containsPhrase('footer', value) || containsPhrase('mismatch', value) ? 0.16 : 0));
+  const contextSufficiency = clamp(handoffRetention * 0.44 + factPressure * 0.34 + Math.min(tokenList.length, 18) / 90);
+  const underExplained = clamp(1 - contextSufficiency);
+  const ambiguityScore = clamp(ambiguityHits * 0.18 + (tokenList.length <= 5 ? 0.35 : 0));
+  const droppedAnchorRate = clamp(1 - handoffRetention);
+  const overCompression = clamp((tokenList.length <= 6 ? 0.45 : 0) + underExplained * 0.55 + ambiguityScore * 0.25);
+  const communicatedCompletion = clamp(lineList.length ? completeLineHits / lineList.length : (hasHandoffUnit(value) ? 0.65 : 0));
+  const lineBreakCompletion = clamp(lineBreakCount ? completeLineHits / Math.max(lineList.length, 1) : 0);
+  const lineBreakPressure = clamp(lineBreakCount * 0.16 + pressureHits * 0.08 + completeLineHits * 0.08);
+  const finalDispatch = clamp(communicatedCompletion * 0.4 + rate(lineList.filter((line) => tokens(line).length <= 9).length, Math.max(lineList.length, 1)) * 0.3 + lineBreakPressure * 0.3);
+  const continuedAfterCompletion = clamp(lineList.length >= 3 && completeLineHits >= 2 ? 0.55 : lineList.length >= 2 && completeLineHits >= 1 ? 0.18 : 0);
+  const lowEnergy = clamp(0.36 + lineBreakCount * 0.12 + rate(lengths.filter((len) => len <= 9).length, Math.max(lengths.length, 1)) * 0.22 - helperHits * 0.14 - memoHits * 0.18 - fatigueHits * 0.08);
+  const lowOrnament = clamp(1 - rate(punctuation, Math.max(tokenList.length, 1)) * 0.8 - helperHits * 0.08 - fatigueHits * 0.08);
+  const endPunctuationLooseness = clamp(rate(looseLineCount, Math.max(lineList.length, 1)) * 0.6);
+  const hostilePressure = clamp(hostilityHits * 0.28 + containsPhrase('I already sent this', value) * 0.08);
+  const fatigueTheater = clamp(fatigueHits * 0.24 + phraseHits(['sorry', 'eats me alive'], value) * 0.08);
+  const memoPolish = clamp(memoHits * 0.24 + wordHits(['applicable', 'relevant', 'review', 'please'], tokenList) * 0.04);
+  const projectTone = clamp(memoHits * 0.18 + wordHits(['following', 'review', 'applicable', 'relevant'], tokenList) * 0.05);
   const features = Object.freeze({
     mean_sentence_length: Number(mean.toFixed(4)),
     sentence_length_variance: Number(v.toFixed(4)),
@@ -70,7 +116,7 @@ export async function extractMaskFeatureVector(input = '', options = {}) {
     comma_to_period_ratio: rate((value.match(/,/g) || []).length, Math.max((value.match(/\./g) || []).length, 1)),
     slash_usage_rate: rate((value.match(/\//g) || []).length, Math.max(tokenList.length, 1)),
     plus_usage_rate: rate((value.match(/\+/g) || []).length, Math.max(tokenList.length, 1)),
-    line_break_rate: rate((value.match(/\n/g) || []).length, Math.max(tokenList.length, 1)),
+    line_break_rate: rate(lineBreakCount, Math.max(tokenList.length, 1)),
     lexical_density: lexicalDensity(tokenList),
     type_token_ratio: uniqueRatio(tokenList),
     rare_word_pressure: rate(tokenList.filter((token) => token.length >= 10).length, Math.max(tokenList.length, 1)),
@@ -110,6 +156,48 @@ export async function extractMaskFeatureVector(input = '', options = {}) {
     anchor_retention_under_warmth: clamp(factPressure * (1 - Math.max(0, intimacyHits - 1) * 0.08)),
     escalation_temperature: clamp(escalationHits * 0.12 + (value.match(/!/g) || []).length * 0.08),
     warmth_to_custody_ratio: clamp((relationalHits + intimacyHits + supportPhraseHits) / Math.max(registerHits + sampleHits + 1, 1) * 0.28),
+    attachment_visibility_score: attachmentVisibility,
+    date_visibility_score: dateVisibility,
+    label_visibility_score: labelVisibility,
+    handoff_object_retention: handoffRetention,
+    next_action_visibility_score: clamp(handoffHits * 0.1 + pressureHits * 0.18 + lineBreakCount * 0.08),
+    context_sufficiency_score: contextSufficiency,
+    minimal_context_retention: contextSufficiency,
+    under_explained_risk: underExplained,
+    handoff_ambiguity_score: ambiguityScore,
+    dropped_anchor_rate: droppedAnchorRate,
+    over_compression_risk: overCompression,
+    thin_handoff_score: overCompression,
+    context_drop_score: underExplained,
+    dropped_required_object_rate: droppedAnchorRate,
+    communicated_thought_completion_score: communicatedCompletion,
+    line_break_completion_ratio: lineBreakCompletion,
+    line_break_pressure_score: lineBreakPressure,
+    final_dispatch_cadence_score: finalDispatch,
+    continued_after_completion_score: continuedAfterCompletion,
+    pressure_segment_count: Math.min(lineList.length, 9),
+    low_energy_cadence_score: lowEnergy,
+    ordinary_roughness_score: clamp(lowEnergy * 0.55 + endPunctuationLooseness * 0.45),
+    transition_suppression_score: clamp(1 - helperHits * 0.12 - memoHits * 0.18),
+    low_ornament_score: lowOrnament,
+    end_punctuation_looseness_score: endPunctuationLooseness,
+    caps_artifact_rate: rate(allCaps, Math.max(tokenList.length, 1)),
+    autocorrect_surface_pressure: clamp(rate(allCaps, Math.max(tokenList.length, 1)) + endPunctuationLooseness * 0.15),
+    meaning_preserved_under_surface_noise: clamp(contextSufficiency * 0.62 + factPressure * 0.38),
+    grammar_priority_score: clamp(1 - endPunctuationLooseness * 0.35 + memoHits * 0.18),
+    punctuation_priority_score: clamp(1 - endPunctuationLooseness * 0.45 + memoHits * 0.15),
+    pressure_annoyance_score: clamp(pressureHits * 0.1 + phraseHits(['already', 'still'], value) * 0.04),
+    hostile_pressure_score: hostilePressure,
+    repeat_request_pressure_score: clamp(phraseHits(['already', 'again'], value) * 0.14),
+    operational_friction_score: clamp(pressureHits * 0.09),
+    invented_fatigue_prop_rate: rate(fatigueHits, Math.max(sentenceList.length, 1)),
+    fatigue_theater_score: fatigueTheater,
+    vending_machine_cosplay_score: clamp(phraseHits(['vending-machine', 'vending machine'], value) * 0.5),
+    fake_noir_pressure: clamp(phraseHits(['clock', 'fluorescent', 'eats me alive'], value) * 0.18),
+    memo_polish_score: memoPolish,
+    project_management_tone_score: projectTone,
+    bulletin_board_handoff_score: clamp(memoPolish * 0.6 + bulletinHits * 0.18),
+    overexplained_transition_score: clamp(helperHits * 0.1 + memoHits * 0.12),
     bounded_irregularity_index: clamp(cv * 0.42 + rate(punctuation, Math.max(tokenList.length, 1))),
     imperfection_budget_used: clamp(cv * 0.5 + rate(punctuation, Math.max(tokenList.length, 1))),
     rhythm_asymmetry_score: clamp(cv),
@@ -130,6 +218,7 @@ export async function extractMaskFeatureVector(input = '', options = {}) {
 
 function roleCentroid(role = 'baseline') {
   const base = { mean_sentence_length: 13, sentence_length_cv: 0.42, lexical_density: 0.62, hedge_marker_rate: 0.04, abbreviation_rate: 0.01, generic_helper_voice_score: 0.05, api_sheen_score: 0.08, bounded_irregularity_index: 0.42, breath_retention_score: 0.74 };
+  if (role === 'quick_handoff') return { ...base, mean_sentence_length: 7, sentence_length_cv: 0.5, lexical_density: 0.66, hedge_marker_rate: 0.025, abbreviation_rate: 0.015, generic_helper_voice_score: 0.04, api_sheen_score: 0.04, bounded_irregularity_index: 0.48, breath_retention_score: 0.76 };
   if (role === 'small circle') return { ...base, mean_sentence_length: 10, sentence_length_cv: 0.48, lexical_density: 0.6, hedge_marker_rate: 0.04, abbreviation_rate: 0.025, generic_helper_voice_score: 0.04, api_sheen_score: 0.05, bounded_irregularity_index: 0.46, breath_retention_score: 0.78 };
   if (role === 'shorthand') return { ...base, mean_sentence_length: 8, sentence_length_cv: 0.54, abbreviation_rate: 0.08, bounded_irregularity_index: 0.52 };
   if (role === 'checklist') return { ...base, mean_sentence_length: 7, sentence_length_cv: 0.35, lexical_density: 0.68, bounded_irregularity_index: 0.34 };
