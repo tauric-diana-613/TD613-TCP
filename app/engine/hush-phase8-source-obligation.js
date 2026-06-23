@@ -18,12 +18,17 @@ async function hashObject(value) { return sha256Text(stableStringify(value == nu
 
 export async function extractSourceObligationSet(sourceTextOrSummary = '', options = {}) {
   const value = text(sourceTextOrSummary || options.summary || '');
+  const anchorLimit = options.anchorLimit ?? options.anchor_limit ?? 10;
+  const derived = options.derive_source_anchors === false ? [] : anchorTerms(value);
+  const mandatoryDerived = derived.slice(0, anchorLimit);
+  const optionalStart = anchorLimit;
+  const optionalEnd = optionalStart + (options.optionalAnchorLimit ?? options.optional_anchor_limit ?? 8);
   const obligations = {
     schema: HUSH_SOURCE_OBLIGATION_SCHEMA,
     source_hash_sha256: value ? await sha256Text(value) : null,
     raw_source_included: false,
-    mandatory_anchors: Object.freeze(unique([...(options.mandatory_anchors || options.mandatoryAnchors || []), ...anchorTerms(value).slice(0, options.anchorLimit || 10)])),
-    optional_anchors: Object.freeze(unique([...(options.optional_anchors || options.optionalAnchors || []), ...anchorTerms(value).slice(options.anchorLimit || 10, (options.anchorLimit || 10) + 8)])),
+    mandatory_anchors: Object.freeze(unique([...(options.mandatory_anchors || options.mandatoryAnchors || []), ...mandatoryDerived])),
+    optional_anchors: Object.freeze(unique([...(options.optional_anchors || options.optionalAnchors || []), ...derived.slice(optionalStart, optionalEnd)])),
     hedges: Object.freeze(unique(hits(HEDGE, value).map((item) => item.toLowerCase()))),
     sequence_relations: Object.freeze(unique(hits(SEQUENCE, value).map((item) => item.toLowerCase()))),
     contrast_relations: Object.freeze(unique(hits(CONTRAST, value).map((item) => item.toLowerCase()))),
@@ -46,7 +51,7 @@ export function scoreSourceObligationRetention(sourceObligations = {}, candidate
   const contrast = sourceObligations.contrast_relations || [];
   const causal = sourceObligations.causal_relations || [];
   const mandatoryScore = rate(retained(mandatory, candidateText), mandatory.length || 1);
-  const optionalScore = rate(retained(optional, candidateText), optional.length || 1);
+  const optionalScore = optional.length ? rate(retained(optional, candidateText), optional.length) : 1;
   const hedgeScore = hedge.length ? rate(retained(hedge, candidateText), hedge.length) : 1;
   const sequenceScore = sequence.length ? rate(retained(sequence, candidateText), sequence.length) : 1;
   const contrastScore = contrast.length ? rate(retained(contrast, candidateText), contrast.length) : 1;
