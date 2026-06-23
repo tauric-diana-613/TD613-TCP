@@ -8,7 +8,6 @@ const handoff = summarizePhase7RegistryForPhase8(registry);
 const keisha = handoff.masks.find((mask) => mask.mask_id === 'group-chat-soft');
 assert.ok(keisha, 'group-chat-soft should be present in Phase 7 handoff');
 assert.equal(keisha.label, 'Keisha Soft Circle');
-assert.equal(keisha.family, 'small circle');
 assert.equal(keishaSoftCircleFixtures.length, 7);
 
 function statusFor(packet) {
@@ -43,8 +42,10 @@ for (const fixture of keishaSoftCircleFixtures) {
   assert.equal(packet.source_obligation_set.explicit_source_obligation_required, true);
   assert.equal(packet.source_obligation_set.derive_source_anchors, false);
   assert.equal(packet.stylometric_passport.mask_id, 'group-chat-soft');
+  assert.equal(packet.stylometric_passport.role, 'small circle');
   assert.equal(packet.stylometric_passport.mask_centroid.role, 'small circle');
   assert.equal(packet.stylometric_passport.tolerance_bands.relational_proximity_score_min, 0.18);
+  assert.equal(packet.stylometric_passport.tolerance_bands.generic_ai_baseline_distance_min, 0.22);
 
   const replay = await replayHushPerMaskMetricPassportHashes(packet);
   assert.equal(replay.status, 'passed', `${fixture.fixture_id} metric replay should pass`);
