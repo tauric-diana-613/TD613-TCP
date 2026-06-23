@@ -15,9 +15,9 @@ function thresholdFor(maskRecord = {}) {
 export function buildPhase8OntologyBindings(extra = {}) {
   return Object.freeze({
     schema: HUSH_ONTOLOGY_BINDINGS_SCHEMA,
-    classes: Object.freeze(['MaskRegistryRecord', 'PerMaskPacket', 'StylometricPassport', 'MaskCentroid', 'GenericAIBaseline', 'CandidateRealization', 'SourceObligationSet', 'HumanImperfectionEnvelope', 'AntiSlopVector', 'SampleReuseVector', 'CollisionPosture', 'ClaimCeiling', 'PacketDecisionSurface', ...asArray(extra.classes)]),
-    relations: Object.freeze(['PerMaskPacket derivesFrom MaskRegistryRecord', 'PerMaskPacket contains StylometricPassport', 'StylometricPassport hasCentroid MaskCentroid', 'StylometricPassport comparesAgainst GenericAIBaseline', 'CandidateRealization mustSatisfy SourceObligationSet', 'CandidateRealization measuredAgainst MaskCentroid', 'CandidateRealization constrainedBy ClaimCeiling', 'PacketDecisionSurface acceptsIf NumericThresholdsPass', ...asArray(extra.relations)]),
-    forbidden_equivalences: Object.freeze(['stylometric_fit != identity_proof', 'mask_breath != authorship_proof', 'human_irregularity != consent', 'candidate_pass != public_release_permission'])
+    classes: Object.freeze(['MaskRegistryRecord', 'PerMaskPacket', 'StylometricPassport', 'MaskCentroid', 'GenericAIBaseline', 'CandidateRealization', 'SourceObligationSet', 'HumanImperfectionEnvelope', 'AntiSlopVector', 'SampleReuseVector', 'CollisionPosture', 'ClaimCeiling', 'PacketDecisionSurface', 'CandidatePresenceGate', 'EntrypointAssertion', ...asArray(extra.classes)]),
+    relations: Object.freeze(['PerMaskPacket derivesFrom MaskRegistryRecord', 'PerMaskPacket contains StylometricPassport', 'StylometricPassport hasCentroid MaskCentroid', 'StylometricPassport comparesAgainst GenericAIBaseline', 'CandidateRealization mustSatisfy SourceObligationSet', 'CandidateRealization measuredAgainst MaskCentroid', 'CandidateRealization constrainedBy ClaimCeiling', 'PacketDecisionSurface acceptsIf NumericThresholdsPass', 'CandidatePresenceGate separates SourceText from CandidateText', ...asArray(extra.relations)]),
+    forbidden_equivalences: Object.freeze(['stylometric_fit != identity_proof', 'mask_breath != authorship_proof', 'human_irregularity != consent', 'candidate_pass != public_release_permission', 'source_text != candidate_text', 'source_obligation_set != candidate_realization', 'candidate_hash != source_hash', 'candidate_presence != source_presence', ...asArray(extra.forbidden_equivalences)])
   });
 }
 
@@ -25,22 +25,8 @@ export async function buildStylometricPassport(maskRecord = {}, options = {}) {
   const thresholds = Object.freeze({ ...thresholdFor(maskRecord), ...(options.thresholds || {}) });
   const maskCentroid = await buildMaskCentroid(maskRecord, options.calibrationSamples || []);
   const genericBaseline = await buildGenericAIBaseline(options.genericFixtures || []);
-  const featureWeights = Object.freeze({
-    source_custody: 0.24,
-    mask_fit: 0.2,
-    generic_distance: 0.16,
-    anti_slop: 0.16,
-    human_irregularity: 0.14,
-    sample_reuse: 0.1
-  });
-  const minimumEvidence = Object.freeze({
-    registry_record_hash_required: true,
-    source_file_required: true,
-    source_index_required: true,
-    raw_sample_text_allowed: false,
-    candidate_text_stored: false,
-    numeric_decision_required: true
-  });
+  const featureWeights = Object.freeze({ source_custody: 0.24, mask_fit: 0.2, generic_distance: 0.16, anti_slop: 0.16, human_irregularity: 0.14, sample_reuse: 0.1 });
+  const minimumEvidence = Object.freeze({ registry_record_hash_required: true, source_file_required: true, source_index_required: true, raw_sample_text_allowed: false, candidate_text_stored: false, candidate_presence_gate_required: true, numeric_decision_required: true });
   const passport = {
     schema: HUSH_STYLOMETRIC_PASSPORT_SCHEMA,
     metric_set_version: 'hush-authorship-sciences-core/v1',
