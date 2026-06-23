@@ -49,6 +49,38 @@ export const GLITCHING_PIXIE_THRESHOLDS = Object.freeze({
   factual_damage_risk_max: 0.03
 });
 
+export const KEISHA_SOFT_CIRCLE_THRESHOLDS = Object.freeze({
+  ...PHASE8_UNIVERSAL_THRESHOLDS,
+  source_unit_coverage_min: 0.88,
+  mandatory_anchor_retention: 1.0,
+  hedge_retention_min: 0.85,
+  sequence_relation_retention_min: 0.8,
+  generic_helper_voice_score_max: 0.1,
+  api_sheen_score_max: 0.18,
+  polish_pressure_max: 0.2,
+  closure_lamination_score_max: 0.25,
+  relational_proximity_score_min: 0.18,
+  relational_proximity_score_max: 0.52,
+  invented_intimacy_risk_max: 0.12,
+  unsupported_care_marker_rate_max: 0.08,
+  fake_support_group_voice_score_max: 0.1,
+  emotional_overreach_score_max: 0.16,
+  social_belonging_leakage_score_max: 0.1,
+  thread_findable_crutch_rate_max: 0.06,
+  inside_room_reference_rate_max: 0.06,
+  unnecessary_audience_marker_rate_max: 0.08,
+  bulletin_board_tone_score_max: 0.12,
+  low_drama_pressure_score_min: 0.55,
+  fact_pressure_preservation_min: 0.55,
+  escalation_temperature_max: 0.3,
+  warmth_to_custody_ratio_min: 0.2,
+  warmth_to_custody_ratio_max: 0.62,
+  sample_seed_phrase_overlap_max: 0,
+  sample_seed_lexical_overlap_max: 0.1,
+  profile_reconstruction_risk_max: 0.16,
+  private_cadence_exposure_risk_max: 0.16
+});
+
 function passList() { return { passed: [], failed: [], repair: [] }; }
 function minRule(name, value, min, lists, hard = false) { if (value < min) (hard ? lists.failed : lists.repair).push(name); else lists.passed.push(name); }
 function maxRule(name, value, max, lists, hard = false) { if (value > max) (hard ? lists.failed : lists.repair).push(name); else lists.passed.push(name); }
@@ -80,6 +112,7 @@ export function buildPhase8NumericDecisionSurface(scores = {}, thresholds = PHAS
   maxRule('closure_lamination_score', f.closure_lamination_score ?? 0, thresholds.closure_lamination_score_max, lists);
   maxRule('sample_seed_lexical_overlap', f.sample_seed_lexical_overlap ?? 0, thresholds.sample_seed_lexical_overlap_max, lists);
   maxRule('profile_reconstruction_risk', f.profile_reconstruction_risk ?? 0, thresholds.profile_reconstruction_risk_max, lists);
+  if (thresholds.private_cadence_exposure_risk_max != null) maxRule('private_cadence_exposure_risk', f.private_cadence_exposure_risk ?? 0, thresholds.private_cadence_exposure_risk_max, lists);
   minRule('mask_breath_score', f.breath_retention_score ?? 0, thresholds.mask_breath_score_min, lists);
   bandRule('bounded_irregularity_index', f.bounded_irregularity_index ?? 0, thresholds.bounded_irregularity_index_min, thresholds.bounded_irregularity_index_max, lists);
   minRule('rhythm_asymmetry_score', f.rhythm_asymmetry_score ?? 0, thresholds.rhythm_asymmetry_score_min, lists);
@@ -95,6 +128,21 @@ export function buildPhase8NumericDecisionSurface(scores = {}, thresholds = PHAS
   if (thresholds.slash_usage_rate_max != null) maxRule('slash_usage_rate', f.slash_usage_rate ?? 0, thresholds.slash_usage_rate_max, lists);
   if (thresholds.plus_usage_rate_max != null) maxRule('plus_usage_rate', f.plus_usage_rate ?? 0, thresholds.plus_usage_rate_max, lists);
   if (thresholds.mascot_phrase_rate_max != null) maxRule('mascot_phrase_rate', f.mascot_phrase_rate ?? 0, thresholds.mascot_phrase_rate_max, lists, true);
+  if (thresholds.relational_proximity_score_min != null) minRule('relational_proximity_score', f.relational_proximity_score ?? 0, thresholds.relational_proximity_score_min, lists);
+  if (thresholds.relational_proximity_score_max != null) maxRule('relational_proximity_score', f.relational_proximity_score ?? 0, thresholds.relational_proximity_score_max, lists);
+  if (thresholds.invented_intimacy_risk_max != null) maxRule('invented_intimacy_risk', f.invented_intimacy_risk ?? 0, thresholds.invented_intimacy_risk_max, lists, true);
+  if (thresholds.unsupported_care_marker_rate_max != null) maxRule('unsupported_care_marker_rate', f.unsupported_care_marker_rate ?? 0, thresholds.unsupported_care_marker_rate_max, lists);
+  if (thresholds.fake_support_group_voice_score_max != null) maxRule('fake_support_group_voice_score', f.fake_support_group_voice_score ?? 0, thresholds.fake_support_group_voice_score_max, lists, true);
+  if (thresholds.emotional_overreach_score_max != null) maxRule('emotional_overreach_score', f.emotional_overreach_score ?? 0, thresholds.emotional_overreach_score_max, lists);
+  if (thresholds.social_belonging_leakage_score_max != null) maxRule('social_belonging_leakage_score', f.social_belonging_leakage_score ?? 0, thresholds.social_belonging_leakage_score_max, lists, true);
+  if (thresholds.thread_findable_crutch_rate_max != null) maxRule('thread_findable_crutch_rate', f.thread_findable_crutch_rate ?? 0, thresholds.thread_findable_crutch_rate_max, lists);
+  if (thresholds.inside_room_reference_rate_max != null) maxRule('inside_room_reference_rate', f.inside_room_reference_rate ?? 0, thresholds.inside_room_reference_rate_max, lists, true);
+  if (thresholds.unnecessary_audience_marker_rate_max != null) maxRule('unnecessary_audience_marker_rate', f.unnecessary_audience_marker_rate ?? 0, thresholds.unnecessary_audience_marker_rate_max, lists);
+  if (thresholds.bulletin_board_tone_score_max != null) maxRule('bulletin_board_tone_score', f.bulletin_board_tone_score ?? 0, thresholds.bulletin_board_tone_score_max, lists);
+  if (thresholds.low_drama_pressure_score_min != null) minRule('low_drama_pressure_score', f.low_drama_pressure_score ?? 0, thresholds.low_drama_pressure_score_min, lists);
+  if (thresholds.fact_pressure_preservation_min != null) minRule('fact_pressure_preservation', f.fact_pressure_preservation ?? s.source_unit_coverage ?? 0, thresholds.fact_pressure_preservation_min, lists);
+  if (thresholds.escalation_temperature_max != null) maxRule('escalation_temperature', f.escalation_temperature ?? 0, thresholds.escalation_temperature_max, lists);
+  if (thresholds.warmth_to_custody_ratio_min != null || thresholds.warmth_to_custody_ratio_max != null) bandRule('warmth_to_custody_ratio', f.warmth_to_custody_ratio ?? 0, thresholds.warmth_to_custody_ratio_min ?? 0, thresholds.warmth_to_custody_ratio_max ?? 1, lists);
   const status = lists.failed.length ? 'blocked' : lists.repair.length ? 'repair_required' : 'pass';
   return Object.freeze({ schema: HUSH_NUMERIC_DECISION_SURFACE_SCHEMA, status, passed_thresholds: Object.freeze(lists.passed), failed_thresholds: Object.freeze(lists.failed), repair_thresholds: Object.freeze(lists.repair), block_reasons: Object.freeze(lists.failed), threshold_version: context.threshold_version || 'phase8-hard-metric-passport/v1' });
 }
