@@ -23,7 +23,6 @@ export const HUSH_MASK_REGISTRY_CLAIM_CEILING = Object.freeze({
 });
 
 const CLAIM_PATTERN = /\b(identity|authorship|legal|release|consent|impersonation|safe harbor|public default|voice ownership|cultural membership)\b[^.\n]{0,80}\b(proof|prove|proves|authority|permission|authorization|approved|verified|confirmed)\b/iu;
-const SHA = /^sha256:[a-f0-9]{64}$/iu;
 const DEFAULT_SOURCES = Object.freeze([
   Object.freeze({ source_file: 'app/data/hush-masks.js', source_export: 'default', source_name: 'canonical', masks: canonicalMasks, canonical: true }),
   Object.freeze({ source_file: 'app/data/hush-phase22-masks.js', source_export: 'default', source_name: 'phase22', masks: phase22Masks }),
@@ -170,6 +169,7 @@ export async function buildHushMaskRegistryRecord(mask = {}, context = {}) {
   const seedHash = seed.sample_seed_present ? await sha256Text(String(mask.sampleSeed || mask.sample_seed || '')) : null;
   const phase6 = normalizePhase6Summary(context.phase6_summary || context.phase6Summary || null, Boolean(context.phase6_required || context.phase6Required));
   const duplicatePosture = context.duplicate_posture || context.duplicatePosture || 'none';
+  const collisionRefs = Object.freeze(asArray(context.collision_refs || context.collisionRefs));
   const recordIdSeed = stableStringify({ mask_id: mask.id, source_file: source.source_file, source_index: sourceIndex, cohort });
   const recordIdHash = await sha256Text(recordIdSeed);
   const baseRecord = {
@@ -189,6 +189,7 @@ export async function buildHushMaskRegistryRecord(mask = {}, context = {}) {
     active: mask.active !== false,
     retired_reason: mask.active === false ? (mask.retiredReason || mask.retired_reason || 'inactive source mask') : null,
     duplicate_posture: duplicatePosture,
+    collision_refs: collisionRefs,
     authorship_protection: authorshipProtection(mask),
     sample_seed_policy: Object.freeze({ ...seed, sample_seed_hash_sha256: seedHash }),
     profile_evidence: profileEvidence(mask),
@@ -245,6 +246,31 @@ export async function detectHushMaskGalleryCollisions(records = []) {
   return Object.freeze(collisions);
 }
 
+async function rehashRecord(record = {}) {
+  const material = { ...record, record_hash_sha256: null };
+  const decision = decideHushMaskRegistryStatus(material);
+  const withDecision = { ...material, registry_status: decision.status, registry_notes: decision.notes };
+  return Object.freeze({ ...withDecision, record_hash_sha256: await hashObject(recordHashPreimage(withDecision)) });
+}
+
+export async function applyHushMaskCollisionPosture(records = [], collisions = []) {
+  const byKey = new Map(records.map((record) => [`${record.mask_id}@${record.source_file}`, record]));
+  for (const collision of collisions) {
+    if (collision.collision_type !== 'duplicate_id') continue;
+    for (const record of records.filter((candidate) => collision.mask_ids.includes(candidate.mask_id) && collision.source_files.includes(candidate.source_file))) {
+      const posture = record.cohort === 'canonical_thirteen' && collision.resolution === 'canonical_wins'
+        ? 'canonical_wins'
+        : collision.resolution === 'canonical_wins'
+          ? 'extension_shadowed'
+          : 'needs_collision_review';
+      const key = `${record.mask_id}@${record.source_file}`;
+      const existing = byKey.get(key);
+      byKey.set(key, await rehashRecord({ ...existing, duplicate_posture: posture, collision_refs: unique([...(existing.collision_refs || []), collision.collision_id]) }));
+    }
+  }
+  return Object.freeze(records.map((record) => byKey.get(`${record.mask_id}@${record.source_file}`) || record));
+}
+
 function sourceEntries(input = {}) {
   if (input.sources) return input.sources;
   return DEFAULT_SOURCES;
@@ -297,7 +323,7 @@ function rootStatus(records = [], collisions = []) {
 
 export async function buildHushMaskGalleryRegistry(input = {}) {
   const created = nowIso(input.context || input);
-  const records = [];
+  let records = [];
   for (const source of sourceEntries(input)) {
     for (const [index, mask] of asArray(source.masks).entries()) {
       records.push(await buildHushMaskRegistryRecord(mask, {
@@ -310,6 +336,7 @@ export async function buildHushMaskGalleryRegistry(input = {}) {
     }
   }
   const collisionLedger = await detectHushMaskGalleryCollisions(records);
+  records = await applyHushMaskCollisionPosture(records, collisionLedger);
   const canonicalRecords = records.filter((record) => record.cohort === 'canonical_thirteen');
   const packetLedger = packetizationLedger(records);
   const idHash = await sha256Text(stableStringify({ created: input.stableId ? 'stable' : created, records: records.map((record) => record.record_hash_sha256) }));
@@ -372,11 +399,13 @@ export function summarizePhase7RegistryForPhase8(registry = {}) {
       source_index: record.source_index,
       registry_record_hash_sha256: record.record_hash_sha256,
       intended_role: record.gallery_role,
+      cohort: record.cohort,
       claim_ceiling: record.claim_ceiling,
       sample_seed_policy: record.sample_seed_policy,
       authorship_protection: record.authorship_protection,
       phase6_audit_summary: record.phase6_audit_summary,
       collision_status: record.duplicate_posture,
+      collision_refs: Object.freeze(record.collision_refs || []),
       packetization_status: record.packetization.packetization_status,
       phase8_requirement: 'packetize-one-mask-per-pr'
     })))
@@ -428,5 +457,5 @@ export async function replayHushMaskGalleryRegistryHashes(registry = {}) {
 }
 
 if (typeof window !== 'undefined') {
-  window.TD613_HUSH_MASK_GALLERY_REGISTRY = Object.freeze({ HUSH_MASK_GALLERY_REGISTRY_SCHEMA, HUSH_MASK_REGISTRY_RECORD_SCHEMA, HUSH_MASK_GALLERY_COLLISION_SCHEMA, HUSH_MASK_GALLERY_PHASE, HUSH_MASK_GALLERY_REGISTRY_VERSION, CANONICAL_THIRTEEN_COUNT, HUSH_MASK_REGISTRY_CLAIM_CEILING, buildHushMaskGalleryRegistry, buildHushMaskRegistryRecord, classifyHushMaskCohort, detectHushMaskGalleryCollisions, decideHushMaskRegistryStatus, summarizePhase7RegistryForPhase8, buildPhase7SafeHarborCustodyHandoff, replayHushMaskGalleryRegistryHashes });
+  window.TD613_HUSH_MASK_GALLERY_REGISTRY = Object.freeze({ HUSH_MASK_GALLERY_REGISTRY_SCHEMA, HUSH_MASK_REGISTRY_RECORD_SCHEMA, HUSH_MASK_GALLERY_COLLISION_SCHEMA, HUSH_MASK_GALLERY_PHASE, HUSH_MASK_GALLERY_REGISTRY_VERSION, CANONICAL_THIRTEEN_COUNT, HUSH_MASK_REGISTRY_CLAIM_CEILING, buildHushMaskGalleryRegistry, buildHushMaskRegistryRecord, classifyHushMaskCohort, detectHushMaskGalleryCollisions, applyHushMaskCollisionPosture, decideHushMaskRegistryStatus, summarizePhase7RegistryForPhase8, buildPhase7SafeHarborCustodyHandoff, replayHushMaskGalleryRegistryHashes });
 }
