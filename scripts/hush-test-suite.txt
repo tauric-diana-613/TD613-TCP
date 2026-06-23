@@ -98,3 +98,5 @@ hush-provider-broker.test.mjs
 hush-strict-remote-only.test.mjs
 hush-phase6-unified-audit-packet.test.mjs
 hush-phase7-mask-gallery-registry.test.mjs
+hush-phase8-step0-human-stylometric-bench.test.mjs
+hush-phase8-per-mask-packet.test.mjs
