@@ -108,3 +108,4 @@ hush-phase8-candidate-presence-gate.test.mjs
 hush-phase8-wrapper-only-entrypoint.test.mjs
 hush-phase8-generic-ai-baseline-fixture-bank.test.mjs
 hush-phase8-glitching-pixie-gold-fixtures.test.mjs
+hush_phase8_source_obligation_check.mjs

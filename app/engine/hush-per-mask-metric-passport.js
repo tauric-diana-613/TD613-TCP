@@ -38,7 +38,8 @@ async function metricSectionHashes(packet = {}) {
 
 async function buildCandidateRealization(maskRef = {}, candidate = '', passport = {}, candidateGate = {}, options = {}) {
   const sourceText = options.sourceText || options.source_summary || maskRef.label || '';
-  const sourceObligations = await extractSourceObligationSet(sourceText, options.sourceObligation || options.source_obligation || {});
+  const sourceObligationOptions = options.sourceObligation || options.source_obligation || {};
+  const sourceObligations = await extractSourceObligationSet(sourceText, sourceObligationOptions);
   const featureOptions = { ...(options.featureVector || options.feature_vector || {}), ...(options.feature_options || {}) };
   const candidateValue = candidateGate.candidate_present ? candidate : '';
   const featureVector = await extractMaskFeatureVector(candidateValue, featureOptions);
@@ -103,6 +104,9 @@ export async function buildHushPerMaskPacketWithMetricPassport(maskRef = {}, opt
     candidate_present: candidateGate.candidate_present,
     candidate_hash_sha256: candidateGate.candidate_hash_sha256,
     source_text_used_as_candidate: candidateGate.source_text_used_as_candidate,
+    explicit_source_obligation_required: candidateParts.sourceObligations.explicit_source_obligation_required === true,
+    explicit_source_obligation_present: candidateParts.sourceObligations.explicit_source_obligation_present === true,
+    source_obligation_gate_status: candidateParts.sourceObligations.source_obligation_status || candidateParts.realization.source_retention.source_obligation_gate_status,
     threshold_version: passport.passport_tag
   });
   const ontology = buildPhase8OntologyBindings();

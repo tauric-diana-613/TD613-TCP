@@ -16,18 +16,35 @@ function hits(re, value) { return text(value).match(re) || []; }
 function anchorTerms(value) { return unique(tokens(value).filter((token) => token.length >= 4 && !/^(this|that|with|from|have|will|they|them|there|where|when|what|into|about)$/iu.test(token)).map((token) => token.toLowerCase())).slice(0, 24); }
 async function hashObject(value) { return sha256Text(stableStringify(value == null ? null : value)); }
 
+function explicitRequired(options = {}) {
+  return options.explicit_source_obligation_required === true || options.explicitSourceObligationRequired === true;
+}
+
+function explicitAnchors(options = {}) {
+  return unique(options.mandatory_anchors || options.mandatoryAnchors || []);
+}
+
 export async function extractSourceObligationSet(sourceTextOrSummary = '', options = {}) {
   const value = text(sourceTextOrSummary || options.summary || '');
   const anchorLimit = options.anchorLimit ?? options.anchor_limit ?? 10;
-  const derived = options.derive_source_anchors === false ? [] : anchorTerms(value);
+  const required = explicitRequired(options);
+  const explicitMandatory = explicitAnchors(options);
+  const deriveAnchors = options.derive_source_anchors === true || (options.derive_source_anchors !== false && required !== true);
+  const derived = deriveAnchors ? anchorTerms(value) : [];
   const mandatoryDerived = derived.slice(0, anchorLimit);
   const optionalStart = anchorLimit;
   const optionalEnd = optionalStart + (options.optionalAnchorLimit ?? options.optional_anchor_limit ?? 8);
+  const mandatoryAnchors = unique([...explicitMandatory, ...mandatoryDerived]);
   const obligations = {
     schema: HUSH_SOURCE_OBLIGATION_SCHEMA,
     source_hash_sha256: value ? await sha256Text(value) : null,
     raw_source_included: false,
-    mandatory_anchors: Object.freeze(unique([...(options.mandatory_anchors || options.mandatoryAnchors || []), ...mandatoryDerived])),
+    explicit_source_obligation_required: required,
+    explicit_source_obligation_present: explicitMandatory.length > 0,
+    derive_source_anchors: deriveAnchors,
+    source_obligation_mode: required ? (deriveAnchors ? 'explicit-plus-derived' : 'explicit-only') : deriveAnchors ? 'derived' : 'manual',
+    source_obligation_status: required && explicitMandatory.length === 0 ? 'blocked' : 'passed',
+    mandatory_anchors: Object.freeze(mandatoryAnchors),
     optional_anchors: Object.freeze(unique([...(options.optional_anchors || options.optionalAnchors || []), ...derived.slice(optionalStart, optionalEnd)])),
     hedges: Object.freeze(unique(hits(HEDGE, value).map((item) => item.toLowerCase()))),
     sequence_relations: Object.freeze(unique(hits(SEQUENCE, value).map((item) => item.toLowerCase()))),
@@ -57,6 +74,7 @@ export function scoreSourceObligationRetention(sourceObligations = {}, candidate
   const contrastScore = contrast.length ? rate(retained(contrast, candidateText), contrast.length) : 1;
   const causalScore = causal.length ? rate(retained(causal, candidateText), causal.length) : 1;
   const coverage = Number(((mandatoryScore * 0.55) + (optionalScore * 0.15) + (hedgeScore * 0.1) + (sequenceScore * 0.08) + (contrastScore * 0.06) + (causalScore * 0.06)).toFixed(4));
+  const explicitGateBlocked = sourceObligations.explicit_source_obligation_required === true && sourceObligations.explicit_source_obligation_present !== true;
   return Object.freeze({
     schema: HUSH_SOURCE_RETENTION_SCHEMA,
     mandatory_anchor_retention: mandatoryScore,
@@ -66,8 +84,11 @@ export function scoreSourceObligationRetention(sourceObligations = {}, candidate
     contrast_relation_retention: contrastScore,
     causal_relation_retention: causalScore,
     source_unit_coverage: coverage,
+    explicit_source_obligation_required: sourceObligations.explicit_source_obligation_required === true,
+    explicit_source_obligation_present: sourceObligations.explicit_source_obligation_present === true,
+    source_obligation_gate_status: explicitGateBlocked ? 'blocked' : sourceObligations.source_obligation_status || 'passed',
     factual_damage_risk: options.factual_damage_risk ?? 0,
     compression_loss_rate: options.compression_loss_rate ?? Number(Math.max(0, 1 - coverage).toFixed(4)),
-    source_retention_status: mandatoryScore < (sourceObligations.must_preserve_score_floor ?? 1) ? 'blocked' : coverage < 0.85 ? 'repair_required' : 'passed'
+    source_retention_status: explicitGateBlocked || mandatoryScore < (sourceObligations.must_preserve_score_floor ?? 1) ? 'blocked' : coverage < 0.85 ? 'repair_required' : 'passed'
   });
 }
