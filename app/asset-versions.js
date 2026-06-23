@@ -8,7 +8,7 @@
     fixtures:    '202604230045',
     receipt:     '202605010945',
     main:        '202606211930',
-    aperture:    '202606221735',
+    aperture:    '202606222030',
     chrome:      '202606151735',
     stationPolish: '202606162255',
     trainerStandalone: '202606162305',

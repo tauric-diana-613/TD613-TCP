@@ -4220,12 +4220,14 @@ const HUMAN_ROUTE_QUALIFIERS = FIRMWARE.HUMAN_ROUTE_QUALIFIERS;
 const LOSS_LABELS = FIRMWARE.LOSS_LABELS;
 const PERF = {
   VISUAL_TIME_SCALE: 1.35,
+  VISUAL_STEP_MS: 1000 / 72,
   FIELD_TIME_SCALE: 1,
-  FIELD_STEP_MS: 1000 / 72,
-  FIELD_STEP_CAP: 4,
-  FIELD_BACKLOG_CAP_MS: (1000 / 72) * 4,
-  FIELD_SYNC_EVERY: 4,
-  RAY_LOG_EVERY: 4,
+  FIELD_STEP_MS: 1000 / 54,
+  FIELD_STEP_CAP: 2,
+  FIELD_BACKLOG_CAP_MS: (1000 / 54) * 2,
+  FIELD_SYNC_EVERY: 5,
+  RAY_LOG_EVERY: 8,
+  RAY_SPAWN_COUNT: 4,
   PACKET_REFRESH_EVERY: 48,
   SELFTEST_RUNNING_EVERY: 144,
   BOOT_ANIMATION_DELAY_MS: 900,
@@ -4234,12 +4236,12 @@ const PERF = {
   MAIN_HZ_COMPACT: 60,
   MAIN_HZ_SEVERE: 30,
   MAIN_IDLE_HZ: 24,
-  UI_HZ_NOMINAL: 6,
-  UI_HZ_COMPACT: 6,
+  UI_HZ_NOMINAL: 4,
+  UI_HZ_COMPACT: 4,
   UI_HZ_SEVERE: 4,
-  UI_IDLE_HZ: 6,
-  AUX_HZ_NOMINAL: 8,
-  AUX_HZ_COMPACT: 8,
+  UI_IDLE_HZ: 3,
+  AUX_HZ_NOMINAL: 4,
+  AUX_HZ_COMPACT: 4,
   AUX_HZ_SEVERE: 3,
   AUX_IDLE_HZ: 2,
   HEAVY_UI_EVERY_NOMINAL: 2,
@@ -4248,18 +4250,18 @@ const PERF = {
   TRACE_LIMIT_NOMINAL: 180,
   TRACE_LIMIT_GUARDED: 140,
   TRACE_LIMIT_SEVERE: 96,
-  RAY_CAP_DESKTOP_NOMINAL: 64,
-  RAY_CAP_DESKTOP_GUARDED: 48,
-  RAY_CAP_DESKTOP_SEVERE: 36,
-  RAY_CAP_COMPACT_NOMINAL: 64,
-  RAY_CAP_COMPACT_GUARDED: 48,
-  RAY_CAP_COMPACT_SEVERE: 36,
-  PATH_POINTS_DESKTOP_NOMINAL: 7,
-  PATH_POINTS_DESKTOP_GUARDED: 6,
-  PATH_POINTS_DESKTOP_SEVERE: 5,
-  PATH_POINTS_COMPACT_NOMINAL: 7,
-  PATH_POINTS_COMPACT_GUARDED: 6,
-  PATH_POINTS_COMPACT_SEVERE: 5,
+  RAY_CAP_DESKTOP_NOMINAL: 48,
+  RAY_CAP_DESKTOP_GUARDED: 36,
+  RAY_CAP_DESKTOP_SEVERE: 28,
+  RAY_CAP_COMPACT_NOMINAL: 48,
+  RAY_CAP_COMPACT_GUARDED: 36,
+  RAY_CAP_COMPACT_SEVERE: 28,
+  PATH_POINTS_DESKTOP_NOMINAL: 6,
+  PATH_POINTS_DESKTOP_GUARDED: 5,
+  PATH_POINTS_DESKTOP_SEVERE: 4,
+  PATH_POINTS_COMPACT_NOMINAL: 6,
+  PATH_POINTS_COMPACT_GUARDED: 5,
+  PATH_POINTS_COMPACT_SEVERE: 4,
   GRID_STEP_DESKTOP: 36,
   GRID_STEP_COMPACT: 46,
   MOIRE_FIELD_STEP_DESKTOP: 14,
@@ -5627,8 +5629,9 @@ function logEvent(type, msg) {
 function spawnRays() {
   const cx = (TRI.A.x + TRI.B.x + TRI.C.x) / 3;
   const cy = (TRI.A.y + TRI.B.y + TRI.C.y) / 3;
-  for (let i = 0; i < 6; i++) {
-    const angle = (i / 6) * Math.PI * 2 + Math.random() * 0.2;
+  const count = Math.max(3, PERF.RAY_SPAWN_COUNT || 4);
+  for (let i = 0; i < count; i++) {
+    const angle = (i / count) * Math.PI * 2 + Math.random() * 0.2;
     const px = cx + (Math.random() - 0.5) * 0.05;
     const py = cy + (Math.random() - 0.5) * 0.05;
     if (isInsideTriangle(px, py)) state.rays.push(createRay(px, py, angle, 0.8 + Math.random() * 0.2));
@@ -5695,10 +5698,18 @@ function resizeAll() {
   if (changed || priorCompact !== compact) invalidateStaticCaches();
   return changed;
 }
-window.addEventListener("resize", resizeAll);
-window.addEventListener("orientationchange", resizeAll);
+let resizeAllFrame = 0;
+function requestResizeAll() {
+  if (resizeAllFrame) return;
+  resizeAllFrame = requestAnimationFrame(() => {
+    resizeAllFrame = 0;
+    resizeAll();
+  });
+}
+window.addEventListener("resize", requestResizeAll);
+window.addEventListener("orientationchange", requestResizeAll);
 if (window.visualViewport && typeof window.visualViewport.addEventListener === "function") {
-  window.visualViewport.addEventListener("resize", resizeAll);
+  window.visualViewport.addEventListener("resize", requestResizeAll);
 }
 // Defer initial sizing until grid layout is resolved
 requestAnimationFrame(() => { resizeAll(); requestAnimationFrame(resizeAll); });
@@ -7512,7 +7523,7 @@ function advanceFieldStep() {
   const rt = ensureRuntime();
   if (state.tick % PERF.FIELD_SYNC_EVERY === 0) {
     synchronizeFieldState({ appendTraces: true });
-  } else {
+  } else if (!rt.snapshot) {
     rt.needsSync = true;
   }
 }
@@ -7525,7 +7536,7 @@ function tick(now = performance.now()) {
   state.frameCount++;
   state.viewportCompact = compactViewport();
   applyRuntimeGovernor(frameMs);
-  rt.visualTick += (frameMs / PERF.FIELD_STEP_MS) * PERF.VISUAL_TIME_SCALE;
+  rt.visualTick += (frameMs / (PERF.VISUAL_STEP_MS || PERF.FIELD_STEP_MS)) * PERF.VISUAL_TIME_SCALE;
 
   if (state.running) {
     rt.fieldBacklogMs = Math.min(PERF.FIELD_BACKLOG_CAP_MS, rt.fieldBacklogMs + frameMs);
@@ -7636,8 +7647,6 @@ function resetSystem() {
   });
   synchronizeFieldState({ appendTraces: false });
   drawMain();
-  drawMoirePanel();
-  drawTrace();
   updateUI({ force: true, slow: true });
 }
 
@@ -8432,7 +8441,7 @@ setTimeout(() => requestAnimationFrame(tick), PERF.BOOT_ANIMATION_DELAY_MS);
   }
 
   function moireVisualTicksPerSecond() {
-    const step = typeof PERF !== "undefined" && PERF.FIELD_STEP_MS ? PERF.FIELD_STEP_MS : 1000 / 72;
+    const step = typeof PERF !== "undefined" && (PERF.VISUAL_STEP_MS || PERF.FIELD_STEP_MS) ? (PERF.VISUAL_STEP_MS || PERF.FIELD_STEP_MS) : 1000 / 72;
     const scale = typeof PERF !== "undefined" && PERF.VISUAL_TIME_SCALE ? PERF.VISUAL_TIME_SCALE : 1.35;
     return (scale / step) * 1000;
   }
@@ -8981,6 +8990,14 @@ setTimeout(() => requestAnimationFrame(tick), PERF.BOOT_ANIMATION_DELAY_MS);
   const originalSetFieldMode = window.setFieldMode;
   const originalSyncBodyClasses = window.syncBodyClasses;
 
+  function drawVisibleApertureAuxiliaryPanels() {
+    const moireCanvas = document.getElementById("moireCanvas");
+    const traceCanvas = document.getElementById("traceCanvas");
+    if (typeof isElementVisibleInViewport !== "function") return;
+    if (isElementVisibleInViewport(moireCanvas)) drawMoirePanel();
+    if (isElementVisibleInViewport(traceCanvas)) drawTrace();
+  }
+
   function syncApertureBodyClasses() {
     const eoHardening = !!(state.eoDiagnostics && state.eoDiagnostics.hardening);
     document.body.classList.toggle("route-warning", state.routeState === "warning");
@@ -9148,7 +9165,7 @@ setTimeout(() => requestAnimationFrame(tick), PERF.BOOT_ANIMATION_DELAY_MS);
     }
     invalidateStaticCaches();
     drawMain();
-    drawMoirePanel();
+    drawVisibleApertureAuxiliaryPanels();
     markRuntimeDirty(true);
   };
 
@@ -9165,7 +9182,7 @@ setTimeout(() => requestAnimationFrame(tick), PERF.BOOT_ANIMATION_DELAY_MS);
     syncApertureBodyClasses();
     invalidateStaticCaches();
     drawMain();
-    drawMoirePanel();
+    drawVisibleApertureAuxiliaryPanels();
     updateUI({ force: true, slow: true });
     return result;
   };
@@ -9180,8 +9197,13 @@ setTimeout(() => requestAnimationFrame(tick), PERF.BOOT_ANIMATION_DELAY_MS);
   };
 
   window.drawMain = function apertureDrawMain() {
+    const renderMoire = !!state.showMoire;
+    if (renderMoire) state.showMoire = false;
     originalDrawMain.call(this);
-    if (state.showMoire) drawApertureMainOverlay();
+    if (renderMoire) {
+      state.showMoire = true;
+      drawApertureMainOverlay();
+    }
   };
 
   window.drawMoireField = function apertureDrawMoireField(ctx, W, H) {
@@ -9204,8 +9226,7 @@ setTimeout(() => requestAnimationFrame(tick), PERF.BOOT_ANIMATION_DELAY_MS);
     syncApertureBodyClasses();
     synchronizeFieldState({ appendTraces: false });
     drawMain();
-    drawMoirePanel();
-    drawTrace();
+    drawVisibleApertureAuxiliaryPanels();
     updateUI({ force: true, slow: true });
     return result;
   };
@@ -9216,8 +9237,6 @@ setTimeout(() => requestAnimationFrame(tick), PERF.BOOT_ANIMATION_DELAY_MS);
   synchronizeFieldState({ appendTraces: false });
   renderApertureUI();
   drawMain();
-  drawMoirePanel();
-  drawTrace();
   updateUI({ force: true, slow: true });
 })();
 </script>
@@ -14269,10 +14288,19 @@ APERTURE active foundation layer, retained under v2.9.0 governance (rupture-assi
     window.resetSystem.__td613GatewayEmbedWrapped = true;
   }
 
+  let gatewayEmbedResizeFrame = 0;
   window.addEventListener("resize", () => {
-    if (typeof drawMain === "function") drawMain();
-    if (typeof drawMoirePanel === "function") drawMoirePanel();
-    if (typeof drawTrace === "function") drawTrace();
+    if (gatewayEmbedResizeFrame) return;
+    gatewayEmbedResizeFrame = requestAnimationFrame(() => {
+      gatewayEmbedResizeFrame = 0;
+      if (typeof drawMain === "function") drawMain();
+      if (typeof isElementVisibleInViewport === "function") {
+        const moireCanvas = document.getElementById("moireCanvas");
+        const traceCanvas = document.getElementById("traceCanvas");
+        if (typeof drawMoirePanel === "function" && isElementVisibleInViewport(moireCanvas)) drawMoirePanel();
+        if (typeof drawTrace === "function" && isElementVisibleInViewport(traceCanvas)) drawTrace();
+      }
+    });
   }, { passive: true });
 
   if (document.readyState === "loading") {
