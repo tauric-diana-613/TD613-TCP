@@ -55,6 +55,7 @@ export const KEISHA_SOFT_CIRCLE_THRESHOLDS = Object.freeze({
   mandatory_anchor_retention: 1.0,
   hedge_retention_min: 0.85,
   sequence_relation_retention_min: 0.8,
+  generic_ai_baseline_distance_min: 0.22,
   generic_helper_voice_score_max: 0.1,
   api_sheen_score_max: 0.18,
   polish_pressure_max: 0.2,
