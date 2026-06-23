@@ -7,11 +7,14 @@ import { buildStylometricPassport, buildPhase8OntologyBindings } from './hush-ph
 import { buildCandidatePresenceGate, buildPhase8EntrypointAssertion } from './hush-phase8-candidate-presence-gate.js';
 
 export const HUSH_PER_MASK_METRIC_WRAPPER_SCHEMA = 'td613.hush.phase8.metric-passport-wrapper/v1';
+export const HUSH_UNICODE_PERTURBATION_ENVELOPE_SCHEMA = 'td613.hush.phase8.unicode-perturbation-envelope/v1';
 
 function clone(value) { return value == null ? value : JSON.parse(JSON.stringify(value)); }
 function asArray(value) { return Array.isArray(value) ? value : []; }
 function unique(values) { return [...new Set(values.filter(Boolean))]; }
 async function hashObject(value) { return sha256Text(stableStringify(value == null ? null : value)); }
+function zeroWidthRate(value = '') { const count = (String(value || '').match(/[\u200B-\u200F\u2060\uFEFF]/gu) || []).length; const units = Math.max((String(value || '').match(/[A-Za-z0-9]+/g) || []).length, 1); return Math.max(0, Math.min(1, Number((count / units).toFixed(4)))); }
+function homoglyphRate(value = '') { const count = (String(value || '').match(/[\u{1D400}-\u{1D7FF}]/gu) || []).length; const units = Math.max((String(value || '').match(/[A-Za-z0-9]+/g) || []).length, 1); return Math.max(0, Math.min(1, Number((count / units).toFixed(4)))); }
 
 function metricPreimage(packet = {}) {
   const material = clone(packet || {});
@@ -31,9 +34,52 @@ async function metricSectionHashes(packet = {}) {
     source_obligation_set_hash_sha256: await hashObject(packet.source_obligation_set || {}),
     candidate_presence_gate_hash_sha256: await hashObject(packet.candidate_presence_gate || {}),
     candidate_realization_vector_hash_sha256: await hashObject(packet.candidate_realization_vector || {}),
+    unicode_perturbation_envelope_hash_sha256: await hashObject(packet.unicode_perturbation_envelope || null),
     numeric_decision_surface_hash_sha256: await hashObject(packet.numeric_decision_surface || {}),
     ontology_bindings_hash_sha256: await hashObject(packet.ontology_bindings || {})
   });
+}
+
+async function buildUnicodePerturbationEnvelope(candidate = '', options = {}) {
+  const settings = options.unicodePerturbation || options.unicode_perturbation || options.unicode_perturbation_envelope || null;
+  if (!settings) return null;
+  const level = Number(settings.perturbation_level ?? settings.unicode_perturbation_level ?? 0);
+  if (level <= 0) return null;
+  const normalizedRecovery = settings.normalized_recovery_text ?? settings.recovery_text ?? String(candidate || '').normalize('NFKC');
+  const mapMaterial = settings.perturbation_map ?? settings.map ?? null;
+  const mapHash = settings.unicode_perturbation_map_hash_sha256 || (mapMaterial ? await hashObject(mapMaterial) : null);
+  const visibleHash = settings.visible_candidate_hash_sha256 || await sha256Text(String(candidate || ''));
+  const recoveryHash = settings.normalized_recovery_text_hash_sha256 || await sha256Text(String(normalizedRecovery || ''));
+  const envelope = {
+    schema: HUSH_UNICODE_PERTURBATION_ENVELOPE_SCHEMA,
+    unicode_mode_explicit: settings.unicode_mode_explicit === true,
+    perturbation_level: level,
+    visible_candidate_hash_sha256: visibleHash,
+    normalized_recovery_text_hash_sha256: recoveryHash,
+    unicode_perturbation_map_hash_sha256: mapHash,
+    zero_width_presence_rate: settings.zero_width_presence_rate ?? zeroWidthRate(candidate),
+    homoglyph_substitution_rate: settings.homoglyph_substitution_rate ?? homoglyphRate(candidate),
+    accessibility_warning: settings.accessibility_warning || 'unicode perturbation requires operator review and recovery validation',
+    copy_paste_degradation_risk: settings.copy_paste_degradation_risk ?? (level >= 2 ? 0.18 : 0.08),
+    normalization_recovery_score: settings.normalization_recovery_score ?? (mapHash ? 1 : 0),
+    raw_candidate_included: false,
+    raw_recovery_text_included: false,
+    raw_perturbation_map_included: false
+  };
+  return Object.freeze({ ...envelope, envelope_hash_sha256: await hashObject(envelope) });
+}
+
+function unicodeMetrics(envelope = null) {
+  if (!envelope) return {};
+  return {
+    unicode_perturbation_score: envelope.perturbation_level >= 2 ? 0.08 : 0.05,
+    zero_width_presence_rate: envelope.zero_width_presence_rate,
+    homoglyph_substitution_rate: envelope.homoglyph_substitution_rate,
+    normalization_recovery_score: envelope.normalization_recovery_score,
+    perturbation_map_present: envelope.unicode_perturbation_map_hash_sha256 ? 1 : 0,
+    accessibility_degradation_risk: envelope.perturbation_level >= 2 ? 0.18 : 0.08,
+    copy_paste_corruption_risk: envelope.copy_paste_degradation_risk
+  };
 }
 
 async function buildCandidateRealization(maskRef = {}, candidate = '', passport = {}, candidateGate = {}, options = {}) {
@@ -56,24 +102,9 @@ async function buildCandidateRealization(maskRef = {}, candidate = '', passport 
       source_retention: sourceRetention,
       mask_fit: maskFit,
       generic_ai_distance: Object.freeze({ generic_ai_baseline_distance: maskFit.generic_ai_baseline_distance }),
-      imperfection_profile: Object.freeze({
-        bounded_irregularity_index: featureVector.feature_vector.bounded_irregularity_index,
-        imperfection_budget_used: featureVector.feature_vector.imperfection_budget_used,
-        rhythm_asymmetry_score: featureVector.feature_vector.rhythm_asymmetry_score,
-        nonuniformity_without_damage: featureVector.feature_vector.nonuniformity_without_damage
-      }),
-      sample_reuse_profile: Object.freeze({
-        sample_seed_lexical_overlap: featureVector.feature_vector.sample_seed_lexical_overlap,
-        sample_seed_phrase_overlap: featureVector.feature_vector.sample_seed_phrase_overlap,
-        rare_phrase_reuse: featureVector.feature_vector.rare_phrase_reuse,
-        profile_reconstruction_risk: featureVector.feature_vector.profile_reconstruction_risk
-      }),
-      anti_slop_profile: Object.freeze({
-        generic_helper_voice_score: featureVector.feature_vector.generic_helper_voice_score,
-        api_sheen_score: featureVector.feature_vector.api_sheen_score,
-        polish_pressure: featureVector.feature_vector.polish_pressure,
-        closure_lamination_score: featureVector.feature_vector.closure_lamination_score
-      })
+      imperfection_profile: Object.freeze({ bounded_irregularity_index: featureVector.feature_vector.bounded_irregularity_index, imperfection_budget_used: featureVector.feature_vector.imperfection_budget_used, rhythm_asymmetry_score: featureVector.feature_vector.rhythm_asymmetry_score, nonuniformity_without_damage: featureVector.feature_vector.nonuniformity_without_damage }),
+      sample_reuse_profile: Object.freeze({ sample_seed_lexical_overlap: featureVector.feature_vector.sample_seed_lexical_overlap, sample_seed_phrase_overlap: featureVector.feature_vector.sample_seed_phrase_overlap, rare_phrase_reuse: featureVector.feature_vector.rare_phrase_reuse, profile_reconstruction_risk: featureVector.feature_vector.profile_reconstruction_risk }),
+      anti_slop_profile: Object.freeze({ generic_helper_voice_score: featureVector.feature_vector.generic_helper_voice_score, api_sheen_score: featureVector.feature_vector.api_sheen_score, polish_pressure: featureVector.feature_vector.polish_pressure, closure_lamination_score: featureVector.feature_vector.closure_lamination_score })
     })
   });
 }
@@ -90,13 +121,10 @@ export async function buildHushPerMaskPacketWithMetricPassport(maskRef = {}, opt
   const passport = await buildStylometricPassport(maskRef, options.passport || {});
   const sourceText = options.sourceText || options.source_summary || maskRef.label || '';
   const candidate = options.candidate ?? options.candidateText ?? '';
+  const unicodeEnvelope = await buildUnicodePerturbationEnvelope(candidate, options);
   const candidateGate = await buildCandidatePresenceGate(candidate, sourceText, { candidate_required: options.candidate_required !== false, missing_candidate_status: options.missing_candidate_status || 'blocked' });
-  const candidateParts = await buildCandidateRealization(maskRef, candidate, passport, candidateGate, options);
-  const decision = buildPhase8NumericDecisionSurface({
-    feature_vector: candidateParts.realization.feature_vector,
-    source_retention: candidateParts.realization.source_retention,
-    mask_fit: candidateParts.realization.mask_fit
-  }, passport.tolerance_bands, {
+  const candidateParts = await buildCandidateRealization(maskRef, candidate, passport, candidateGate, { ...options, featureVector: { ...(options.featureVector || options.feature_vector || {}), ...unicodeMetrics(unicodeEnvelope) } });
+  const decision = buildPhase8NumericDecisionSurface({ feature_vector: candidateParts.realization.feature_vector, source_retention: candidateParts.realization.source_retention, mask_fit: candidateParts.realization.mask_fit }, passport.tolerance_bands, {
     claim_ceiling_held: true,
     raw_sample_text_included: false,
     public_default_allowed: false,
@@ -121,6 +149,7 @@ export async function buildHushPerMaskPacketWithMetricPassport(maskRef = {}, opt
     source_obligation_set: candidateParts.sourceObligations,
     candidate_presence_gate: candidateGate,
     candidate_realization_vector: candidateParts.realization,
+    unicode_perturbation_envelope: unicodeEnvelope,
     numeric_decision_surface: decision,
     ontology_bindings: ontology,
     packet_status: 'calibrated',
@@ -152,3 +181,5 @@ export async function replayHushPerMaskMetricPassportHashes(packet = {}) {
   if (packet.metric_packet_hash_sha256 && !packet.base_per_mask_packet && !packet.stylometric_passport) reasons.push('hash-only metric packet blocked');
   return Object.freeze({ schema: 'td613.hush.phase8.metric-hash-replay-result/v1', status: reasons.length ? 'failed' : 'passed', refusal_reasons: Object.freeze(unique(reasons)), expected_metric_packet_hash_sha256: expected, hash_only_packet_blocked: true });
 }
+
+if (typeof window !== 'undefined') window.TD613_HUSH_PHASE8_METRIC_PASSPORT = Object.freeze({ HUSH_PER_MASK_METRIC_WRAPPER_SCHEMA, HUSH_UNICODE_PERTURBATION_ENVELOPE_SCHEMA, buildHushPerMaskPacketWithMetricPassport, replayHushPerMaskMetricPassportHashes });
