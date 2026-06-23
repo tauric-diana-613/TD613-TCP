@@ -43,6 +43,7 @@ function claimText(value) { return JSON.stringify(value || {}); }
 function hasBlockedClaim(value) { return CLAIM_PATTERN.test(claimText(value)); }
 function samplePolicyOf(mask = {}) { return mask.samplePolicy || mask.sample_policy || {}; }
 function pressureWarnings(mask = {}) { return asArray(mask.pressureWarnings || mask.pressure_warnings); }
+function recordRef(record = {}) { return `${record.registry_record_id || 'unregistered'}@${record.source_file || 'unknown'}#${record.source_index ?? 'x'}`; }
 function isTargetRegister(mask = {}) {
   const family = String(mask.family || '').toLowerCase();
   return family.includes('target register') || Boolean(mask.internalRegister || mask.packetHints?.internalRegister || mask.profileTargets?.internalRegister || mask.transformHints?.internalRegister || mask.transformHints?.operation === 'register_transform');
@@ -189,6 +190,8 @@ export async function buildHushMaskRegistryRecord(mask = {}, context = {}) {
     active: mask.active !== false,
     retired_reason: mask.active === false ? (mask.retiredReason || mask.retired_reason || 'inactive source mask') : null,
     duplicate_posture: duplicatePosture,
+    collision_status: duplicatePosture === 'none' ? 'none' : 'collision-recorded',
+    collision_refs: [],
     authorship_protection: authorshipProtection(mask),
     sample_seed_policy: Object.freeze({ ...seed, sample_seed_hash_sha256: seedHash }),
     profile_evidence: profileEvidence(mask),
@@ -228,13 +231,16 @@ export async function detectHushMaskGalleryCollisions(records = []) {
   }
   let index = 0;
   async function pushCollision(type, group, severity = 'medium', resolution = 'needs_review') {
-    const collisionSeed = await sha256Text(stableStringify({ type, mask_ids: group.map((record) => record.mask_id), source_files: group.map((record) => record.source_file) }));
+    const refs = unique(group.map(recordRef));
+    const collisionSeed = await sha256Text(stableStringify({ type, refs }));
     collisions.push(Object.freeze({
       schema: HUSH_MASK_GALLERY_COLLISION_SCHEMA,
       collision_id: `phase7-collision-${String(index += 1).padStart(3, '0')}-${collisionSeed.slice(7, 15)}`,
       collision_type: type,
       mask_ids: unique(group.map((record) => record.mask_id)),
+      labels: unique(group.map((record) => record.label)),
       source_files: unique(group.map((record) => record.source_file)),
+      record_refs: refs,
       severity,
       resolution,
       notes: ['collision recorded; no silent overwrite']
@@ -243,6 +249,30 @@ export async function detectHushMaskGalleryCollisions(records = []) {
   for (const group of byId.values()) if (group.length > 1) await pushCollision('duplicate_id', group, group.some((record) => record.cohort === 'canonical_thirteen') ? 'medium' : 'low', group.some((record) => record.cohort === 'canonical_thirteen') ? 'canonical_wins' : 'needs_review');
   for (const group of byLabel.values()) if (group.length > 1) await pushCollision('duplicate_label', group, 'low', 'needs_review');
   return Object.freeze(collisions);
+}
+
+function collisionPostureFor(record = {}, collisions = []) {
+  const hits = asArray(collisions).filter((collision) => asArray(collision.record_refs).includes(recordRef(record)));
+  if (!hits.length) return Object.freeze({ duplicate_posture: record.duplicate_posture || 'none', collision_status: 'none', collision_refs: [] });
+  if (hits.some((collision) => collision.severity === 'blocking')) return Object.freeze({ duplicate_posture: 'needs_collision_review', collision_status: 'blocking', collision_refs: hits.map((collision) => collision.collision_id) });
+  if (hits.some((collision) => collision.resolution === 'canonical_wins')) {
+    const duplicatePosture = record.cohort === 'canonical_thirteen' ? 'canonical_wins' : 'extension_shadowed';
+    return Object.freeze({ duplicate_posture: duplicatePosture, collision_status: 'collision-recorded', collision_refs: hits.map((collision) => collision.collision_id) });
+  }
+  return Object.freeze({ duplicate_posture: 'needs_collision_review', collision_status: 'needs_review', collision_refs: hits.map((collision) => collision.collision_id) });
+}
+
+async function applyCollisionPosture(records = [], collisions = []) {
+  const updated = [];
+  for (const record of records) {
+    const posture = collisionPostureFor(record, collisions);
+    const base = { ...record, ...posture, record_hash_sha256: null };
+    const decision = decideHushMaskRegistryStatus(base);
+    const withDecision = { ...base, registry_status: decision.status, registry_notes: decision.notes };
+    const recordHash = await hashObject(recordHashPreimage(withDecision));
+    updated.push(Object.freeze({ ...withDecision, record_hash_sha256: recordHash }));
+  }
+  return Object.freeze(updated);
 }
 
 function sourceEntries(input = {}) {
@@ -297,10 +327,10 @@ function rootStatus(records = [], collisions = []) {
 
 export async function buildHushMaskGalleryRegistry(input = {}) {
   const created = nowIso(input.context || input);
-  const records = [];
+  const initialRecords = [];
   for (const source of sourceEntries(input)) {
     for (const [index, mask] of asArray(source.masks).entries()) {
-      records.push(await buildHushMaskRegistryRecord(mask, {
+      initialRecords.push(await buildHushMaskRegistryRecord(mask, {
         source,
         source_index: index,
         createdAt: created,
@@ -309,7 +339,8 @@ export async function buildHushMaskGalleryRegistry(input = {}) {
       }));
     }
   }
-  const collisionLedger = await detectHushMaskGalleryCollisions(records);
+  const collisionLedger = await detectHushMaskGalleryCollisions(initialRecords);
+  const records = await applyCollisionPosture(initialRecords, collisionLedger);
   const canonicalRecords = records.filter((record) => record.cohort === 'canonical_thirteen');
   const packetLedger = packetizationLedger(records);
   const idHash = await sha256Text(stableStringify({ created: input.stableId ? 'stable' : created, records: records.map((record) => record.record_hash_sha256) }));
@@ -325,7 +356,7 @@ export async function buildHushMaskGalleryRegistry(input = {}) {
       actual_count: canonicalRecords.length,
       source_file: 'app/data/hush-masks.js'
     }),
-    records: Object.freeze(records),
+    records,
     collision_ledger: collisionLedger,
     packetization_ledger: packetLedger,
     phase6_summary_policy: Object.freeze({ consume_phase6_summary_only: true, raw_phase5_signal_authority_allowed: false, raw_private_text_allowed: false }),
@@ -377,6 +408,7 @@ export function summarizePhase7RegistryForPhase8(registry = {}) {
       authorship_protection: record.authorship_protection,
       phase6_audit_summary: record.phase6_audit_summary,
       collision_status: record.duplicate_posture,
+      collision_refs: asArray(record.collision_refs),
       packetization_status: record.packetization.packetization_status,
       phase8_requirement: 'packetize-one-mask-per-pr'
     })))
