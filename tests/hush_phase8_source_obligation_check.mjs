@@ -1,6 +1,7 @@
 import assert from 'node:assert/strict';
 import { buildHushMaskGalleryRegistry, summarizePhase7RegistryForPhase8 } from '../app/engine/hush-mask-gallery-registry.js';
 import { buildHushPerMaskPacketWithMetricPassport, replayHushPerMaskMetricPassportHashes } from '../app/engine/hush-per-mask-metric-passport.js';
+import { extractSourceObligationSet } from '../app/engine/hush-phase8-source-obligation.js';
 
 const registry = await buildHushMaskGalleryRegistry({ stableId: true, createdAt: '2026-06-20T00:00:00Z' });
 const handoff = summarizePhase7RegistryForPhase8(registry);
@@ -62,5 +63,18 @@ assert.ok(missingExplicit.numeric_decision_surface.failed_thresholds.includes('e
 assert.ok(missingExplicit.numeric_decision_surface.failed_thresholds.includes('source_obligation_gate'));
 const replay2 = await replayHushPerMaskMetricPassportHashes(missingExplicit);
 assert.equal(replay2.status, 'passed');
+
+const camelCaseDerived = await extractSourceObligationSet(sourceText, {
+  explicitSourceObligationRequired: true,
+  deriveSourceAnchors: true,
+  mandatoryAnchors: ['FILE-72'],
+  anchorLimit: 4
+});
+assert.equal(camelCaseDerived.explicit_source_obligation_required, true);
+assert.equal(camelCaseDerived.explicit_source_obligation_present, true);
+assert.equal(camelCaseDerived.derive_source_anchors, true);
+assert.equal(camelCaseDerived.source_obligation_mode, 'explicit-plus-derived');
+assert.ok(camelCaseDerived.mandatory_anchors.includes('FILE-72'));
+assert.ok(camelCaseDerived.mandatory_anchors.some((anchor) => anchor !== 'FILE-72'));
 
 console.log('hush-phase8-explicit-source-obligation-gate: ok');
