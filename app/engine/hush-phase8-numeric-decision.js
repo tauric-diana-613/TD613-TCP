@@ -82,6 +82,55 @@ export const KEISHA_SOFT_CIRCLE_THRESHOLDS = Object.freeze({
   private_cadence_exposure_risk_max: 0.16
 });
 
+export const CRYO_CRISTIANO_THRESHOLDS = Object.freeze({
+  ...PHASE8_UNIVERSAL_THRESHOLDS,
+  source_unit_coverage_min: 0.9,
+  mandatory_anchor_retention: 1.0,
+  hedge_retention_min: 0.75,
+  sequence_relation_retention_min: 0.75,
+  generic_helper_voice_score_max: 0.1,
+  api_sheen_score_max: 0.16,
+  polish_pressure_max: 0.18,
+  closure_lamination_score_max: 0.22,
+  attachment_visibility_score_min: 0.75,
+  date_visibility_score_min: 0.75,
+  label_visibility_score_min: 0.75,
+  handoff_object_retention_min: 0.85,
+  next_action_visibility_score_min: 0.55,
+  context_sufficiency_score_min: 0.78,
+  under_explained_risk_max: 0.18,
+  handoff_ambiguity_score_max: 0.14,
+  dropped_anchor_rate_max: 0.08,
+  over_compression_risk_max: 0.16,
+  communicated_thought_completion_score_min: 0.72,
+  line_break_completion_ratio_min: 0.4,
+  line_break_pressure_score_min: 0.28,
+  final_dispatch_cadence_score_min: 0.32,
+  continued_after_completion_score_min: 0.12,
+  low_energy_cadence_score_min: 0.52,
+  low_ornament_score_min: 0.62,
+  end_punctuation_looseness_score_min: 0.18,
+  end_punctuation_looseness_score_max: 0.72,
+  caps_artifact_rate_max: 0.18,
+  meaning_preserved_under_surface_noise_min: 0.85,
+  grammar_priority_score_max: 0.68,
+  punctuation_priority_score_max: 0.7,
+  pressure_annoyance_score_min: 0.08,
+  pressure_annoyance_score_max: 0.48,
+  hostile_pressure_score_max: 0.08,
+  repeat_request_pressure_score_max: 0.32,
+  memo_polish_score_max: 0.16,
+  project_management_tone_score_max: 0.14,
+  invented_fatigue_prop_rate_max: 0,
+  fatigue_theater_score_max: 0.08,
+  mascot_phrase_rate_max: 0,
+  warmth_to_custody_ratio_max: 0.42,
+  sample_seed_phrase_overlap_max: 0,
+  sample_seed_lexical_overlap_max: 0.1,
+  profile_reconstruction_risk_max: 0.14,
+  private_cadence_exposure_risk_max: 0.14
+});
+
 function passList() { return { passed: [], failed: [], repair: [] }; }
 function minRule(name, value, min, lists, hard = false) { if (value < min) (hard ? lists.failed : lists.repair).push(name); else lists.passed.push(name); }
 function maxRule(name, value, max, lists, hard = false) { if (value > max) (hard ? lists.failed : lists.repair).push(name); else lists.passed.push(name); }
@@ -144,6 +193,35 @@ export function buildPhase8NumericDecisionSurface(scores = {}, thresholds = PHAS
   if (thresholds.fact_pressure_preservation_min != null) minRule('fact_pressure_preservation', f.fact_pressure_preservation ?? s.source_unit_coverage ?? 0, thresholds.fact_pressure_preservation_min, lists);
   if (thresholds.escalation_temperature_max != null) maxRule('escalation_temperature', f.escalation_temperature ?? 0, thresholds.escalation_temperature_max, lists);
   if (thresholds.warmth_to_custody_ratio_min != null || thresholds.warmth_to_custody_ratio_max != null) bandRule('warmth_to_custody_ratio', f.warmth_to_custody_ratio ?? 0, thresholds.warmth_to_custody_ratio_min ?? 0, thresholds.warmth_to_custody_ratio_max ?? 1, lists);
+  if (thresholds.attachment_visibility_score_min != null) minRule('attachment_visibility_score', f.attachment_visibility_score ?? 0, thresholds.attachment_visibility_score_min, lists);
+  if (thresholds.date_visibility_score_min != null) minRule('date_visibility_score', f.date_visibility_score ?? 0, thresholds.date_visibility_score_min, lists);
+  if (thresholds.label_visibility_score_min != null) minRule('label_visibility_score', f.label_visibility_score ?? 0, thresholds.label_visibility_score_min, lists);
+  if (thresholds.handoff_object_retention_min != null) minRule('handoff_object_retention', f.handoff_object_retention ?? 0, thresholds.handoff_object_retention_min, lists);
+  if (thresholds.next_action_visibility_score_min != null) minRule('next_action_visibility_score', f.next_action_visibility_score ?? 0, thresholds.next_action_visibility_score_min, lists);
+  if (thresholds.context_sufficiency_score_min != null) minRule('context_sufficiency_score', f.context_sufficiency_score ?? 0, thresholds.context_sufficiency_score_min, lists);
+  if (thresholds.under_explained_risk_max != null) maxRule('under_explained_risk', f.under_explained_risk ?? 0, thresholds.under_explained_risk_max, lists);
+  if (thresholds.handoff_ambiguity_score_max != null) maxRule('handoff_ambiguity_score', f.handoff_ambiguity_score ?? 0, thresholds.handoff_ambiguity_score_max, lists, true);
+  if (thresholds.dropped_anchor_rate_max != null) maxRule('dropped_anchor_rate', f.dropped_anchor_rate ?? 0, thresholds.dropped_anchor_rate_max, lists, true);
+  if (thresholds.over_compression_risk_max != null) maxRule('over_compression_risk', f.over_compression_risk ?? 0, thresholds.over_compression_risk_max, lists, true);
+  if (thresholds.communicated_thought_completion_score_min != null) minRule('communicated_thought_completion_score', f.communicated_thought_completion_score ?? 0, thresholds.communicated_thought_completion_score_min, lists);
+  if (thresholds.line_break_completion_ratio_min != null) minRule('line_break_completion_ratio', f.line_break_completion_ratio ?? 0, thresholds.line_break_completion_ratio_min, lists);
+  if (thresholds.line_break_pressure_score_min != null) minRule('line_break_pressure_score', f.line_break_pressure_score ?? 0, thresholds.line_break_pressure_score_min, lists);
+  if (thresholds.final_dispatch_cadence_score_min != null) minRule('final_dispatch_cadence_score', f.final_dispatch_cadence_score ?? 0, thresholds.final_dispatch_cadence_score_min, lists);
+  if (thresholds.continued_after_completion_score_min != null) minRule('continued_after_completion_score', f.continued_after_completion_score ?? 0, thresholds.continued_after_completion_score_min, lists);
+  if (thresholds.low_energy_cadence_score_min != null) minRule('low_energy_cadence_score', f.low_energy_cadence_score ?? 0, thresholds.low_energy_cadence_score_min, lists);
+  if (thresholds.low_ornament_score_min != null) minRule('low_ornament_score', f.low_ornament_score ?? 0, thresholds.low_ornament_score_min, lists);
+  if (thresholds.end_punctuation_looseness_score_min != null || thresholds.end_punctuation_looseness_score_max != null) bandRule('end_punctuation_looseness_score', f.end_punctuation_looseness_score ?? 0, thresholds.end_punctuation_looseness_score_min ?? 0, thresholds.end_punctuation_looseness_score_max ?? 1, lists);
+  if (thresholds.caps_artifact_rate_max != null) maxRule('caps_artifact_rate', f.caps_artifact_rate ?? 0, thresholds.caps_artifact_rate_max, lists);
+  if (thresholds.meaning_preserved_under_surface_noise_min != null) minRule('meaning_preserved_under_surface_noise', f.meaning_preserved_under_surface_noise ?? 0, thresholds.meaning_preserved_under_surface_noise_min, lists);
+  if (thresholds.grammar_priority_score_max != null) maxRule('grammar_priority_score', f.grammar_priority_score ?? 0, thresholds.grammar_priority_score_max, lists);
+  if (thresholds.punctuation_priority_score_max != null) maxRule('punctuation_priority_score', f.punctuation_priority_score ?? 0, thresholds.punctuation_priority_score_max, lists);
+  if (thresholds.pressure_annoyance_score_min != null || thresholds.pressure_annoyance_score_max != null) bandRule('pressure_annoyance_score', f.pressure_annoyance_score ?? 0, thresholds.pressure_annoyance_score_min ?? 0, thresholds.pressure_annoyance_score_max ?? 1, lists);
+  if (thresholds.hostile_pressure_score_max != null) maxRule('hostile_pressure_score', f.hostile_pressure_score ?? 0, thresholds.hostile_pressure_score_max, lists, true);
+  if (thresholds.repeat_request_pressure_score_max != null) maxRule('repeat_request_pressure_score', f.repeat_request_pressure_score ?? 0, thresholds.repeat_request_pressure_score_max, lists);
+  if (thresholds.memo_polish_score_max != null) maxRule('memo_polish_score', f.memo_polish_score ?? 0, thresholds.memo_polish_score_max, lists);
+  if (thresholds.project_management_tone_score_max != null) maxRule('project_management_tone_score', f.project_management_tone_score ?? 0, thresholds.project_management_tone_score_max, lists);
+  if (thresholds.invented_fatigue_prop_rate_max != null) maxRule('invented_fatigue_prop_rate', f.invented_fatigue_prop_rate ?? 0, thresholds.invented_fatigue_prop_rate_max, lists, true);
+  if (thresholds.fatigue_theater_score_max != null) maxRule('fatigue_theater_score', f.fatigue_theater_score ?? 0, thresholds.fatigue_theater_score_max, lists, true);
   const status = lists.failed.length ? 'blocked' : lists.repair.length ? 'repair_required' : 'pass';
   return Object.freeze({ schema: HUSH_NUMERIC_DECISION_SURFACE_SCHEMA, status, passed_thresholds: Object.freeze(lists.passed), failed_thresholds: Object.freeze(lists.failed), repair_thresholds: Object.freeze(lists.repair), block_reasons: Object.freeze(lists.failed), threshold_version: context.threshold_version || 'phase8-hard-metric-passport/v1' });
 }
