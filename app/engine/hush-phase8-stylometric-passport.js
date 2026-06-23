@@ -7,6 +7,13 @@ export const HUSH_ONTOLOGY_BINDINGS_SCHEMA = 'td613.hush.phase8.ontology-binding
 
 function asArray(value) { return Array.isArray(value) ? value : []; }
 async function hashObject(value) { return sha256Text(stableStringify(value == null ? null : value)); }
+function roleForPassport(maskRecord = {}) {
+  const id = String(maskRecord.mask_id || '').toLowerCase();
+  const family = String(maskRecord.family || '').toLowerCase();
+  if (id === 'night-shift-note' || family.includes('quick handoff')) return 'quick_handoff';
+  if (id === 'group-chat-soft' || family.includes('small circle')) return 'small circle';
+  return maskRecord.intended_role || maskRecord.gallery_role || maskRecord.family || null;
+}
 function thresholdFor(maskRecord = {}) {
   if (maskRecord.mask_id === 'night-shift-note') return CRYO_CRISTIANO_THRESHOLDS;
   if (maskRecord.mask_id === 'group-chat-soft') return KEISHA_SOFT_CIRCLE_THRESHOLDS;
@@ -25,7 +32,9 @@ export function buildPhase8OntologyBindings(extra = {}) {
 
 export async function buildStylometricPassport(maskRecord = {}, options = {}) {
   const thresholds = Object.freeze({ ...thresholdFor(maskRecord), ...(options.thresholds || {}) });
-  const maskCentroid = await buildMaskCentroid(maskRecord, options.calibrationSamples || []);
+  const role = roleForPassport(maskRecord);
+  const routedMaskRecord = role ? { ...maskRecord, gallery_role: role } : maskRecord;
+  const maskCentroid = await buildMaskCentroid(routedMaskRecord, options.calibrationSamples || []);
   const genericBaseline = await buildGenericAIBaseline(options.genericFixtures || []);
   const featureWeights = Object.freeze({ source_custody: 0.24, mask_fit: 0.2, generic_distance: 0.16, anti_slop: 0.16, human_irregularity: 0.14, sample_reuse: 0.1 });
   const minimumEvidence = Object.freeze({ registry_record_hash_required: true, source_file_required: true, source_index_required: true, raw_sample_text_allowed: false, candidate_text_stored: false, candidate_presence_gate_required: true, numeric_decision_required: true });
@@ -34,7 +43,7 @@ export async function buildStylometricPassport(maskRecord = {}, options = {}) {
     metric_set_version: 'hush-authorship-sciences-core/v1',
     passport_tag: 'phase8-hard-metric-passport/v1',
     mask_id: maskRecord.mask_id || null,
-    role: maskRecord.intended_role || maskRecord.gallery_role || maskRecord.family || null,
+    role,
     mask_centroid: maskCentroid,
     generic_ai_baseline: genericBaseline,
     tolerance_bands: thresholds,
