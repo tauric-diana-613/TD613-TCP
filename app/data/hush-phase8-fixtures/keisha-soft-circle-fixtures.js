@@ -22,7 +22,7 @@ export const keishaSoftCircleFixtures = Object.freeze([
     mask_id: 'group-chat-soft',
     fixture_id: 'keisha-good-low-drama-custody-001',
     source_summary: SOURCE,
-    candidate: "yeah keep FILE-72 with the review date. may just be template noise, but don't let the footer mismatch get split off.",
+    candidate: "yeah, keep FILE-72 with the review date. may just be template noise, but don't let the footer mismatch get split off.",
     expected_status: 'pass',
     expected_flags: Object.freeze([]),
     required_thresholds: Object.freeze(['mandatory_anchor_retention', 'source_unit_coverage', 'relational_proximity_score', 'low_drama_pressure_score', 'warmth_to_custody_ratio', 'generic_helper_voice_score', 'api_sheen_score']),
