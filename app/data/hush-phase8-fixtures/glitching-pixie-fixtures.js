@@ -4,7 +4,7 @@ export const glitchingPixieFixtures = Object.freeze([
     mask_id: 'phase28-transform-to-chatspeak',
     fixture_id: 'pixie-good-compressed-custody-001',
     source_summary: 'FILE-72 has the same export minute, but one copy has the footer and one copy does not. The cause may be template noise, but the mismatch should remain visible before review.',
-    candidate: 'may be template noise, but FILE-72 keeps same export minute + one copy footer/no-footer split. mismatch stays visible before review.',
+    candidate: 'may be template noise. FILE-72 keeps same export minute + one copy footer/no-footer split; mismatch stays visible before review.',
     expected_status: 'pass',
     expected_flags: Object.freeze([]),
     required_thresholds: Object.freeze(['mandatory_anchor_retention', 'source_unit_coverage', 'hedge_retention', 'generic_helper_voice_score', 'api_sheen_score', 'bounded_irregularity_index', 'mask_centroid_distance', 'generic_ai_baseline_distance']),
