@@ -65,6 +65,8 @@ export function buildPhase8NumericDecisionSurface(scores = {}, thresholds = PHAS
   if (context.candidate_required === true && context.candidate_present !== true) lists.failed.push('candidate_present'); else if (context.candidate_required === true) lists.passed.push('candidate_present');
   if (context.source_text_used_as_candidate === true) lists.failed.push('source_candidate_separation'); else if (context.candidate_required === true) lists.passed.push('source_candidate_separation');
   if (context.candidate_required === true && !context.candidate_hash_sha256) lists.failed.push('candidate_hash_sha256'); else if (context.candidate_required === true) lists.passed.push('candidate_hash_sha256');
+  if (context.explicit_source_obligation_required === true && context.explicit_source_obligation_present !== true) lists.failed.push('explicit_source_obligation_set'); else if (context.explicit_source_obligation_required === true) lists.passed.push('explicit_source_obligation_set');
+  if (context.source_obligation_gate_status === 'blocked' || s.source_obligation_gate_status === 'blocked') lists.failed.push('source_obligation_gate'); else if (context.explicit_source_obligation_required === true || s.explicit_source_obligation_required === true) lists.passed.push('source_obligation_gate');
   minRule('mandatory_anchor_retention', s.mandatory_anchor_retention ?? 0, thresholds.mandatory_anchor_retention, lists, true);
   maxRule('factual_damage_risk', s.factual_damage_risk ?? 0, thresholds.factual_damage_risk_max, lists, true);
   maxRule('sample_seed_phrase_overlap', f.sample_seed_phrase_overlap ?? 0, thresholds.sample_seed_phrase_overlap_max, lists, true);
