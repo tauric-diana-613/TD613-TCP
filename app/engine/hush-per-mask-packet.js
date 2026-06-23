@@ -117,6 +117,7 @@ function authorshipProtection(maskRef = {}) {
 function perMaskPreimage(packet = {}) {
   const material = clone(packet || {});
   delete material.packet_hash_sha256;
+  delete material.phase9_handoff;
   if (material.hash_replay) {
     material.hash_replay.packet_hash_sha256 = null;
     material.hash_replay.hash_topology_packet_hash_sha256 = null;
