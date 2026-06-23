@@ -100,3 +100,7 @@ hush-phase6-unified-audit-packet.test.mjs
 hush-phase7-mask-gallery-registry.test.mjs
 hush-phase8-step0-human-stylometric-bench.test.mjs
 hush-phase8-per-mask-packet.test.mjs
+hush-phase8-hard-metric-gate.test.mjs
+hush-phase8-stylometric-passport.test.mjs
+hush-phase8-source-obligation-retention.test.mjs
+hush-phase8-glitching-pixie-metrics.test.mjs
