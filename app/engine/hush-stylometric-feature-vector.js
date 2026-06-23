@@ -1,4 +1,5 @@
 import { stableStringify, sha256Text } from './hush-customizer-packet.js';
+import genericAiBaselineFixtures from '../data/hush-phase8-fixtures/generic-ai-baseline-fixtures.js';
 
 export const HUSH_STYLOMETRIC_FEATURE_VECTOR_SCHEMA = 'td613.hush.phase8.stylometric-feature-vector/v1';
 export const HUSH_GENERIC_AI_BASELINE_SCHEMA = 'td613.hush.phase8.generic-ai-baseline/v1';
@@ -20,6 +21,8 @@ function variance(nums = []) { if (!nums.length) return 0; const avg = nums.redu
 function uniqueRatio(tokenList = []) { return rate(new Set(tokenList.map((token) => token.toLowerCase())).size, tokenList.length); }
 function lexicalDensity(tokenList = []) { const stop = /^(the|a|an|and|or|but|if|to|of|in|on|for|with|is|are|was|were|be|it|this|that|as|at|by|from)$/iu; return rate(tokenList.filter((token) => !stop.test(token)).length, tokenList.length); }
 function terminalDistribution(value) { const v = text(value); const total = Math.max((v.match(/[.!?]/g) || []).length, 1); return Object.freeze({ period: rate((v.match(/\./g) || []).length, total), question: rate((v.match(/\?/g) || []).length, total), bang: rate((v.match(/!/g) || []).length, total) }); }
+function fixtureText(fixture) { return typeof fixture === 'string' ? fixture : text(fixture?.text); }
+function fixtureClass(fixture) { return typeof fixture === 'string' ? 'inline' : text(fixture?.fixture_class || fixture?.class || 'unknown'); }
 
 export async function extractMaskFeatureVector(input = '', options = {}) {
   const value = text(input || options.redacted_summary || '');
@@ -104,14 +107,15 @@ export async function buildMaskCentroid(maskRecord = {}, calibrationSamples = []
 }
 
 export async function buildGenericAIBaseline(fixtures = []) {
-  const defaultFixtures = fixtures.length ? fixtures : ['Certainly here is a polished professional response.', 'Overall this is clear and streamlined.', 'Ultimately this provides a concise summary.'];
-  const vectors = await Promise.all(defaultFixtures.map((fixture) => extractMaskFeatureVector(fixture)));
+  const sourceFixtures = fixtures.length ? fixtures : genericAiBaselineFixtures;
+  const vectors = await Promise.all(sourceFixtures.map((fixture) => extractMaskFeatureVector(fixtureText(fixture))));
   const avg = {};
   for (const key of Object.keys(vectors[0].feature_vector)) {
     const values = vectors.map((vector) => vector.feature_vector[key]).filter((value) => typeof value === 'number');
     if (values.length) avg[key] = Number((values.reduce((a, b) => a + b, 0) / values.length).toFixed(4));
   }
-  return Object.freeze({ schema: HUSH_GENERIC_AI_BASELINE_SCHEMA, baseline_class: 'generic-helper-prose-baseline', fixture_count: defaultFixtures.length, baseline_features: Object.freeze(avg), baseline_hash_sha256: await sha256Text(stableStringify(avg)) });
+  const classes = [...new Set(sourceFixtures.map(fixtureClass))];
+  return Object.freeze({ schema: HUSH_GENERIC_AI_BASELINE_SCHEMA, baseline_class: 'generic-ai-baseline-fixture-bank', baseline_version: 'generic-ai-baseline-fixture-bank/v1', fixture_count: sourceFixtures.length, baseline_fixture_count: sourceFixtures.length, baseline_classes: Object.freeze(classes), baseline_features: Object.freeze(avg), baseline_hash_sha256: await sha256Text(stableStringify({ avg, classes })) });
 }
 
 function distance(a = {}, b = {}, keys = []) {
