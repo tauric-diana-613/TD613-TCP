@@ -24,12 +24,18 @@ function explicitAnchors(options = {}) {
   return unique(options.mandatory_anchors || options.mandatoryAnchors || []);
 }
 
+function deriveSourceAnchors(options = {}, required = false) {
+  if (options.derive_source_anchors === true || options.deriveSourceAnchors === true) return true;
+  if (options.derive_source_anchors === false || options.deriveSourceAnchors === false) return false;
+  return required !== true;
+}
+
 export async function extractSourceObligationSet(sourceTextOrSummary = '', options = {}) {
   const value = text(sourceTextOrSummary || options.summary || '');
   const anchorLimit = options.anchorLimit ?? options.anchor_limit ?? 10;
   const required = explicitRequired(options);
   const explicitMandatory = explicitAnchors(options);
-  const deriveAnchors = options.derive_source_anchors === true || (options.derive_source_anchors !== false && required !== true);
+  const deriveAnchors = deriveSourceAnchors(options, required);
   const derived = deriveAnchors ? anchorTerms(value) : [];
   const mandatoryDerived = derived.slice(0, anchorLimit);
   const optionalStart = anchorLimit;
