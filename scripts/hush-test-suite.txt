@@ -104,3 +104,7 @@ hush-phase8-hard-metric-gate.test.mjs
 hush-phase8-stylometric-passport.test.mjs
 hush-phase8-source-obligation-retention.test.mjs
 hush-phase8-glitching-pixie-metrics.test.mjs
+hush-phase8-candidate-presence-gate.test.mjs
+hush-phase8-wrapper-only-entrypoint.test.mjs
+hush-phase8-generic-ai-baseline-fixture-bank.test.mjs
+hush-phase8-glitching-pixie-gold-fixtures.test.mjs
