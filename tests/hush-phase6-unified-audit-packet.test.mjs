@@ -81,6 +81,8 @@ assert.ok(clean.packet_id.startsWith('hush-audit-20260620-'));
 assert.equal(clean.packet_status, 'clean');
 assert.equal(clean.phase5_interface.phase5_validation_status, 'not_present');
 assert.equal(clean.decision.release_allowed, false);
+assert.equal(clean.decision.safe_harbor_custody_handoff_allowed, true);
+assert.equal(clean.decision.safe_harbor_handoff_allowed, true);
 assert.equal(clean.safe_harbor_handoff.custody_facts_only, true);
 assert.equal(clean.safe_harbor_handoff.release_allowed, false);
 assert.equal(clean.hash_replay.status, 'passed');
@@ -137,6 +139,28 @@ const legacy = await buildHushUnifiedAuditPacket({
   context: { stableId: true, createdAt: '2026-06-20T00:05:00Z', legacy_reopen_mode: true }
 });
 assert.equal(legacy.hash_replay.legacy_reopen_mode, true);
+
+const boundaryLanguage = await buildHushUnifiedAuditPacket({
+  outboundContract: contract({
+    forbidden_claims: ['not identity proof', 'not authorship proof', 'do not claim legal authority', 'no release permission'],
+    required_claim_ceiling: ['not_identity_proof', 'not_authorship_proof']
+  }),
+  providerLog: providerLog(),
+  stylometryAudit: stylometry(),
+  context: { stableId: true, createdAt: '2026-06-20T00:06:00Z' }
+});
+assert.equal(boundaryLanguage.claim_ceiling.status, 'held');
+assert.equal(boundaryLanguage.packet_status, 'clean');
+
+const positiveProofClaim = await buildHushUnifiedAuditPacket({
+  outboundContract: contract(),
+  providerLog: providerLog({ response_summary: 'EO-RFD proves authorship and authorizes release.' }),
+  stylometryAudit: stylometry(),
+  context: { stableId: true, createdAt: '2026-06-20T00:07:00Z' }
+});
+assert.equal(positiveProofClaim.claim_ceiling.status, 'broken');
+assert.equal(positiveProofClaim.packet_status, 'blocked');
+assert.match(positiveProofClaim.decision.reasons.join('\n'), /claim ceiling broken/u);
 
 const handoff = buildPhase6SafeHarborHandoff(cleanWithPhase5);
 assert.equal(handoff.schema, 'td613.safeharbor.phase6-custody-handoff/v1');
