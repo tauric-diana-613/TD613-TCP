@@ -112,8 +112,8 @@ assert.equal(blockedPhase5AsAuthority.phase5_interface.refusal_receipt_ref, 'ref
 assert.equal(blockedPhase5AsAuthority.decision.release_allowed, false);
 
 const mismatch = await buildHushUnifiedAuditPacket({
-  outboundContract: contract({ expected_sections: ['summary', 'risk'] }),
-  providerLog: providerLog({ observed_sections: ['summary'] }),
+  outboundContract: contract(),
+  providerLog: providerLog({ privacy_risks: ['boundary-review'] }),
   stylometryAudit: stylometry(),
   context: { stableId: true, createdAt: '2026-06-20T00:03:00Z' }
 });
