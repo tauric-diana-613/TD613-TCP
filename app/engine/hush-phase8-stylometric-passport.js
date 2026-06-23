@@ -12,6 +12,10 @@ function thresholdFor(maskRecord = {}) {
   if (maskRecord.mask_id === 'phase28-transform-to-chatspeak') return GLITCHING_PIXIE_THRESHOLDS;
   return PHASE8_UNIVERSAL_THRESHOLDS;
 }
+function roleForPassport(maskRecord = {}) {
+  if (maskRecord.mask_id === 'group-chat-soft') return 'small circle';
+  return maskRecord.intended_role || maskRecord.gallery_role || maskRecord.family || null;
+}
 
 export function buildPhase8OntologyBindings(extra = {}) {
   return Object.freeze({
@@ -24,7 +28,8 @@ export function buildPhase8OntologyBindings(extra = {}) {
 
 export async function buildStylometricPassport(maskRecord = {}, options = {}) {
   const thresholds = Object.freeze({ ...thresholdFor(maskRecord), ...(options.thresholds || {}) });
-  const maskCentroid = await buildMaskCentroid(maskRecord, options.calibrationSamples || []);
+  const role = roleForPassport(maskRecord);
+  const maskCentroid = await buildMaskCentroid({ ...maskRecord, intended_role: role }, options.calibrationSamples || []);
   const genericBaseline = await buildGenericAIBaseline(options.genericFixtures || []);
   const featureWeights = Object.freeze({ source_custody: 0.24, mask_fit: 0.2, generic_distance: 0.16, anti_slop: 0.16, human_irregularity: 0.14, sample_reuse: 0.1 });
   const minimumEvidence = Object.freeze({ registry_record_hash_required: true, source_file_required: true, source_index_required: true, raw_sample_text_allowed: false, candidate_text_stored: false, candidate_presence_gate_required: true, numeric_decision_required: true });
@@ -33,7 +38,7 @@ export async function buildStylometricPassport(maskRecord = {}, options = {}) {
     metric_set_version: 'hush-authorship-sciences-core/v1',
     passport_tag: 'phase8-hard-metric-passport/v1',
     mask_id: maskRecord.mask_id || null,
-    role: maskRecord.intended_role || maskRecord.gallery_role || maskRecord.family || null,
+    role,
     mask_centroid: maskCentroid,
     generic_ai_baseline: genericBaseline,
     tolerance_bands: thresholds,
