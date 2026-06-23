@@ -1,0 +1,22 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "td613.hush.phase5.refusal-receipt/v1",
+  "title": "TD613 Hush Phase 5 Refusal Receipt",
+  "type": "object",
+  "required": ["schema", "created_at", "source_family", "signal_class", "foundation_lane", "refusal_reasons", "raw_private_text_included", "authority_ceiling_confirmed", "release_allowed", "runtime_loaded", "runtime_executed"],
+  "properties": {
+    "schema": { "const": "td613.hush.phase5.refusal-receipt/v1" },
+    "created_at": { "type": "string" },
+    "source_family": { "type": "string" },
+    "signal_class": { "type": "string" },
+    "foundation_lane": { "type": "string" },
+    "refusal_reasons": { "type": "array", "items": { "type": "string" } },
+    "payload_ref_hash_sha256": { "type": ["string", "null"], "pattern": "^sha256:[a-fA-F0-9]{64}$" },
+    "raw_private_text_included": { "const": false },
+    "authority_ceiling_confirmed": { "const": true },
+    "release_allowed": { "const": false },
+    "runtime_loaded": { "const": false },
+    "runtime_executed": { "const": false }
+  },
+  "additionalProperties": true
+}
