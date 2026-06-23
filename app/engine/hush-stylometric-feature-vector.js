@@ -109,7 +109,7 @@ export async function extractMaskFeatureVector(input = '', options = {}) {
     fact_pressure_preservation: factPressure,
     anchor_retention_under_warmth: clamp(factPressure * (1 - Math.max(0, intimacyHits - 1) * 0.08)),
     escalation_temperature: clamp(escalationHits * 0.12 + (value.match(/!/g) || []).length * 0.08),
-    warmth_to_custody_ratio: clamp((relationalHits + intimacyHits + supportPhraseHits) / Math.max(registerHits + sampleHits + 1, 1) * 0.18),
+    warmth_to_custody_ratio: clamp((relationalHits + intimacyHits + supportPhraseHits) / Math.max(registerHits + sampleHits + 1, 1) * 0.28),
     bounded_irregularity_index: clamp(cv * 0.42 + rate(punctuation, Math.max(tokenList.length, 1))),
     imperfection_budget_used: clamp(cv * 0.5 + rate(punctuation, Math.max(tokenList.length, 1))),
     rhythm_asymmetry_score: clamp(cv),
