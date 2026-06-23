@@ -111,3 +111,4 @@ hush-phase8-glitching-pixie-gold-fixtures.test.mjs
 hush_phase8_source_obligation_check.mjs
 hush-phase8-keisha-soft-circle-fixtures.test.mjs
 hush-phase8-handoff-fixtures.test.mjs
+hush-phase8-rex-fractura-fixtures.test.mjs
