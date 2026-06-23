@@ -4,6 +4,7 @@ import { extractMaskFeatureVector, scoreCandidateAgainstMask } from './hush-styl
 import { extractSourceObligationSet, scoreSourceObligationRetention } from './hush-phase8-source-obligation.js';
 import { buildPhase8NumericDecisionSurface } from './hush-phase8-numeric-decision.js';
 import { buildStylometricPassport, buildPhase8OntologyBindings } from './hush-phase8-stylometric-passport.js';
+import { buildCandidatePresenceGate, buildPhase8EntrypointAssertion } from './hush-phase8-candidate-presence-gate.js';
 
 export const HUSH_PER_MASK_METRIC_WRAPPER_SCHEMA = 'td613.hush.phase8.metric-passport-wrapper/v1';
 
@@ -24,26 +25,30 @@ function metricPreimage(packet = {}) {
 
 async function metricSectionHashes(packet = {}) {
   return Object.freeze({
+    entrypoint_assertion_hash_sha256: await hashObject(packet.entrypoint_assertion || {}),
     base_packet_hash_sha256: await hashObject(packet.base_per_mask_packet || {}),
     stylometric_passport_hash_sha256: await hashObject(packet.stylometric_passport || {}),
     source_obligation_set_hash_sha256: await hashObject(packet.source_obligation_set || {}),
+    candidate_presence_gate_hash_sha256: await hashObject(packet.candidate_presence_gate || {}),
     candidate_realization_vector_hash_sha256: await hashObject(packet.candidate_realization_vector || {}),
     numeric_decision_surface_hash_sha256: await hashObject(packet.numeric_decision_surface || {}),
     ontology_bindings_hash_sha256: await hashObject(packet.ontology_bindings || {})
   });
 }
 
-async function buildCandidateRealization(maskRef = {}, candidate = '', passport = {}, options = {}) {
+async function buildCandidateRealization(maskRef = {}, candidate = '', passport = {}, candidateGate = {}, options = {}) {
   const sourceText = options.sourceText || options.source_summary || maskRef.label || '';
   const sourceObligations = await extractSourceObligationSet(sourceText, options.sourceObligation || options.source_obligation || {});
-  const featureVector = await extractMaskFeatureVector(candidate || sourceText, options.featureVector || options.feature_vector || {});
-  const sourceRetention = scoreSourceObligationRetention(sourceObligations, candidate || sourceText, options.sourceRetention || options.source_retention || {});
+  const featureOptions = { ...(options.featureVector || options.feature_vector || {}), ...(options.feature_options || {}) };
+  const candidateValue = candidateGate.candidate_present ? candidate : '';
+  const featureVector = await extractMaskFeatureVector(candidateValue, featureOptions);
+  const sourceRetention = scoreSourceObligationRetention(sourceObligations, candidateValue, options.sourceRetention || options.source_retention || {});
   const maskFit = scoreCandidateAgainstMask(featureVector, passport.mask_centroid, passport.generic_ai_baseline, options.maskFit || options.mask_fit || {});
   return Object.freeze({
     sourceObligations,
     realization: Object.freeze({
       schema: 'td613.hush.phase8.candidate-realization-vector/v1',
-      candidate_hash_sha256: featureVector.text_hash_sha256,
+      candidate_hash_sha256: candidateGate.candidate_hash_sha256,
       raw_candidate_included: false,
       feature_vector: featureVector.feature_vector,
       feature_vector_hash_sha256: featureVector.feature_vector_hash_sha256,
@@ -72,7 +77,8 @@ async function buildCandidateRealization(maskRef = {}, candidate = '', passport 
   });
 }
 
-function finalStatus(basePacket = {}, decision = {}) {
+function finalStatus(basePacket = {}, decision = {}, gate = {}, entrypoint = {}) {
+  if (entrypoint.status === 'blocked' || gate.status === 'blocked') return 'blocked';
   if (basePacket.packet_status === 'blocked' || decision.status === 'blocked') return 'blocked';
   if (basePacket.packet_status === 'repair_required' || decision.status === 'repair_required') return 'repair_required';
   return basePacket.packet_status || 'calibrated';
@@ -81,7 +87,10 @@ function finalStatus(basePacket = {}, decision = {}) {
 export async function buildHushPerMaskPacketWithMetricPassport(maskRef = {}, options = {}) {
   const basePacket = await buildHushPerMaskPacket(maskRef, options);
   const passport = await buildStylometricPassport(maskRef, options.passport || {});
-  const candidateParts = await buildCandidateRealization(maskRef, options.candidate || options.candidateText || '', passport, options);
+  const sourceText = options.sourceText || options.source_summary || maskRef.label || '';
+  const candidate = options.candidate ?? options.candidateText ?? '';
+  const candidateGate = await buildCandidatePresenceGate(candidate, sourceText, { candidate_required: options.candidate_required !== false, missing_candidate_status: options.missing_candidate_status || 'blocked' });
+  const candidateParts = await buildCandidateRealization(maskRef, candidate, passport, candidateGate, options);
   const decision = buildPhase8NumericDecisionSurface({
     feature_vector: candidateParts.realization.feature_vector,
     source_retention: candidateParts.realization.source_retention,
@@ -90,32 +99,40 @@ export async function buildHushPerMaskPacketWithMetricPassport(maskRef = {}, opt
     claim_ceiling_held: true,
     raw_sample_text_included: false,
     public_default_allowed: false,
+    candidate_required: candidateGate.candidate_required,
+    candidate_present: candidateGate.candidate_present,
+    candidate_hash_sha256: candidateGate.candidate_hash_sha256,
+    source_text_used_as_candidate: candidateGate.source_text_used_as_candidate,
     threshold_version: passport.passport_tag
   });
   const ontology = buildPhase8OntologyBindings();
   const wrapper = {
     schema: HUSH_PER_MASK_METRIC_WRAPPER_SCHEMA,
-    phase: 'PHASE_8_0B_HARD_METRIC_PASSPORT',
+    phase: 'PHASE_8_0C_GATE_HARDENING',
     mask_packet_id: basePacket.mask_packet_id,
     mask_id: basePacket.mask_id,
+    entrypoint_assertion: null,
     base_per_mask_packet: basePacket,
     stylometric_passport: passport,
     source_obligation_set: candidateParts.sourceObligations,
+    candidate_presence_gate: candidateGate,
     candidate_realization_vector: candidateParts.realization,
     numeric_decision_surface: decision,
     ontology_bindings: ontology,
-    packet_status: finalStatus(basePacket, decision),
+    packet_status: 'calibrated',
     public_default_allowed: false,
     raw_candidate_included: false,
     raw_sample_text_included: false,
     metric_hash_replay: null,
     metric_packet_hash_sha256: null
   };
-  const replayShell = Object.freeze({ schema: 'td613.hush.phase8.metric-hash-replay/v1', metric_packet_hash_sha256: null, section_hashes: await metricSectionHashes(wrapper), hash_only_packet_blocked: true, status: 'not_run' });
-  const withReplay = { ...wrapper, metric_hash_replay: replayShell };
+  const entrypoint = buildPhase8EntrypointAssertion(wrapper);
+  const withEntry = { ...wrapper, entrypoint_assertion: entrypoint, packet_status: finalStatus(basePacket, decision, candidateGate, entrypoint) };
+  const replayShell = Object.freeze({ schema: 'td613.hush.phase8.metric-hash-replay/v1', metric_packet_hash_sha256: null, section_hashes: await metricSectionHashes(withEntry), hash_only_packet_blocked: true, status: 'not_run' });
+  const withReplay = { ...withEntry, metric_hash_replay: replayShell };
   const hash = await hashObject(metricPreimage(withReplay));
   const replay = Object.freeze({ ...replayShell, metric_packet_hash_sha256: hash, status: 'passed' });
-  return Object.freeze({ ...wrapper, metric_hash_replay: replay, metric_packet_hash_sha256: hash });
+  return Object.freeze({ ...withEntry, metric_hash_replay: replay, metric_packet_hash_sha256: hash });
 }
 
 export async function replayHushPerMaskMetricPassportHashes(packet = {}) {
