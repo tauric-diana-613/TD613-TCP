@@ -29,7 +29,7 @@ assert.ok(browserMainSource.includes('initGatewayPreview'), 'gateway runtime ini
 assert.ok(browserMainSource.includes('toggleGatewayPreviewMoire'), 'gateway runtime exposes a dedicated Moire preview control');
 assert.ok(browserMainSource.includes('gatewayApertureStorageEntries'), 'gateway runtime reads Aperture lane summaries from durable browser storage');
 assert.ok(browserMainSource.includes('drawGatewayPreviewLineField'), 'gateway runtime uses layered line-field rendering for the gateway moire preview');
-assert.ok(apertureShimHtml.includes('src="./tool.html?v=202606211930"'), 'Aperture shim cache token points at the v2.9.2 canonical build');
+assert.ok(apertureShimHtml.includes('src="./tool.html?v=202606221735"'), 'Aperture shim cache token points at the v2.9.2 canonical build');
 assert.ok(apertureHtml.includes('APERTURE_GATEWAY_EMBED'), 'Aperture runtime still exposes an embed-mode branch');
 assert.ok(apertureHtml.includes('window.parent.postMessage'), 'Aperture embed can still bridge status to the gateway');
 assert.ok(apertureHtml.includes('apertureVersion: APERTURE_VERSION'), 'Aperture bridge summaries carry the canonical Aperture version');

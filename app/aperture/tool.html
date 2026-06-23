@@ -4231,15 +4231,15 @@ const PERF = {
   BOOT_ANIMATION_DELAY_MS: 900,
   BOOT_DIAGNOSTICS_DELAY_MS: 6500,
   MAIN_HZ_NOMINAL: 60,
-  MAIN_HZ_COMPACT: 45,
+  MAIN_HZ_COMPACT: 60,
   MAIN_HZ_SEVERE: 30,
   MAIN_IDLE_HZ: 24,
   UI_HZ_NOMINAL: 6,
-  UI_HZ_COMPACT: 4,
+  UI_HZ_COMPACT: 6,
   UI_HZ_SEVERE: 4,
   UI_IDLE_HZ: 6,
   AUX_HZ_NOMINAL: 8,
-  AUX_HZ_COMPACT: 6,
+  AUX_HZ_COMPACT: 8,
   AUX_HZ_SEVERE: 3,
   AUX_IDLE_HZ: 2,
   HEAVY_UI_EVERY_NOMINAL: 2,
@@ -5650,13 +5650,19 @@ function getCanvasDpr(kind) {
 
 function setupHiDPI(canvas, w, h, kind = "aux") {
   const dpr = getCanvasDpr(kind);
-  canvas.width = Math.max(1, Math.round(w * dpr));
-  canvas.height = Math.max(1, Math.round(h * dpr));
-  canvas.style.width = w + "px"; canvas.style.height = h + "px";
+  const targetW = Math.max(1, Math.round(w * dpr));
+  const targetH = Math.max(1, Math.round(h * dpr));
+  const cssW = w + "px";
+  const cssH = h + "px";
+  const changed = canvas.width !== targetW || canvas.height !== targetH || canvas._eoDpr !== dpr || canvas.style.width !== cssW || canvas.style.height !== cssH;
+  if (canvas.width !== targetW) canvas.width = targetW;
+  if (canvas.height !== targetH) canvas.height = targetH;
+  if (canvas.style.width !== cssW) canvas.style.width = cssW;
+  if (canvas.style.height !== cssH) canvas.style.height = cssH;
   const ctx = canvas.getContext("2d");
   canvas._eoDpr = dpr;
   ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
-  return ctx;
+  return changed;
 }
 
 function compactViewport() {
@@ -5677,17 +5683,17 @@ function resizeAll() {
   state.viewportCompact = compact;
   const area = document.getElementById("centerArea");
   const areaBox = elementBox(area, compact ? 320 : 480, compact ? 260 : 360);
-  setupHiDPI(mainCanvas, areaBox.w, areaBox.h, "main");
+  let changed = setupHiDPI(mainCanvas, areaBox.w, areaBox.h, "main");
   ["moireCanvas", "traceCanvas"].forEach(id => {
     const c = document.getElementById(id);
     const p = c.parentElement;
     const panelBox = elementBox(p, areaBox.w, compact ? 180 : 220);
     const pw = Math.max(panelBox.w - 20, 180);
     const ph = Math.max(panelBox.h - 34, compact ? 160 : 180);
-    setupHiDPI(c, pw, ph, "aux");
+    changed = setupHiDPI(c, pw, ph, "aux") || changed;
   });
-  if (priorCompact !== compact) invalidateStaticCaches();
-  else invalidateStaticCaches();
+  if (changed || priorCompact !== compact) invalidateStaticCaches();
+  return changed;
 }
 window.addEventListener("resize", resizeAll);
 window.addEventListener("orientationchange", resizeAll);
@@ -7484,7 +7490,6 @@ function updateUI(opts = {}) {
   runtime.forceHeavyUIRefresh = false;
 }
 
-let _resizeFrames = 0;
 function advanceFieldStep() {
   state.tick++;
   const settings = getRuntimeSettings();
@@ -7513,7 +7518,6 @@ function advanceFieldStep() {
 }
 
 function tick(now = performance.now()) {
-  if (_resizeFrames < 5) { resizeAll(); _resizeFrames++; }
   const rt = ensureRuntime();
   if (!rt.lastFrameTs) rt.lastFrameTs = now;
   const frameMs = Math.max(0, Math.min(250, now - rt.lastFrameTs));
@@ -7615,7 +7619,7 @@ function resetSystem() {
   state.eoDiagnostics = { metaState: "pending", hardening: false, sweepStatus: "pending", summary: "awaiting EO sweep", counterfactual: "awaiting EO sweep", packetScrub: { ok: true, status: "pending", score: 0, issues: ["awaiting packet"] }, lastRun: 0 };
   state.runtime = createRuntimeState();
   state.viewportCompact = compactViewport();
-  _resizeFrames = 0;
+  resizeAll();
   document.getElementById("btnRun").textContent = "▶ PROPAGATE";
   document.getElementById("btnRun").classList.remove("active");
   document.getElementById("btnMoire").classList.remove("active");
