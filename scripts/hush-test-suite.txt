@@ -96,3 +96,4 @@ hush-phase39-ui.test.mjs
 hush-load-budget.test.mjs
 hush-provider-broker.test.mjs
 hush-strict-remote-only.test.mjs
+hush-phase6-unified-audit-packet.test.mjs
