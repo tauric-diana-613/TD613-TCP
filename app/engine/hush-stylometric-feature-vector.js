@@ -10,6 +10,7 @@ const HEDGE_WORDS = ['may', 'might', 'could', 'appears', 'suggests', 'likely', '
 const CERTAINTY_WORDS = ['always', 'never', 'definitely', 'clearly', 'obviously'];
 const ABBREV_WORDS = ['idk', 'bc', 'rn', 'imo', 'fyi', 'tho', 'tbh', 'ngl', 'pls', 'plz', 'ur'];
 const REGISTER_WORDS = ['custody', 'packet', 'hash', 'source', 'record', 'route', 'mask', 'register', 'claim', 'handoff'];
+const FEATURE_SCALES = Object.freeze({ mean_sentence_length: 30, sentence_length_variance: 120, clause_chain_ratio: 4, comma_to_period_ratio: 4 });
 
 function text(value) { return String(value || ''); }
 function tokens(value) { return text(value).match(/[A-Za-z0-9][A-Za-z0-9'-]*/g) || []; }
@@ -23,6 +24,7 @@ function lexicalDensity(tokenList = []) { const stop = /^(the|a|an|and|or|but|if
 function terminalDistribution(value) { const v = text(value); const total = Math.max((v.match(/[.!?]/g) || []).length, 1); return Object.freeze({ period: rate((v.match(/\./g) || []).length, total), question: rate((v.match(/\?/g) || []).length, total), bang: rate((v.match(/!/g) || []).length, total) }); }
 function fixtureText(fixture) { return typeof fixture === 'string' ? fixture : text(fixture?.text); }
 function fixtureClass(fixture) { return typeof fixture === 'string' ? 'inline' : text(fixture?.fixture_class || fixture?.class || 'unknown'); }
+function scaledDelta(key, a, b) { const scale = FEATURE_SCALES[key] || 1; return (Number(a) - Number(b)) / scale; }
 
 export async function extractMaskFeatureVector(input = '', options = {}) {
   const value = text(input || options.redacted_summary || '');
@@ -121,7 +123,7 @@ export async function buildGenericAIBaseline(fixtures = []) {
 function distance(a = {}, b = {}, keys = []) {
   const used = keys.filter((key) => typeof a[key] === 'number' && typeof b[key] === 'number');
   if (!used.length) return 1;
-  const sum = used.reduce((total, key) => total + Math.pow(a[key] - b[key], 2), 0);
+  const sum = used.reduce((total, key) => total + Math.pow(scaledDelta(key, a[key], b[key]), 2), 0);
   return clamp(Math.sqrt(sum / used.length));
 }
 
