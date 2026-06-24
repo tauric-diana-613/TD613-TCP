@@ -4,6 +4,7 @@ import { PHASE8_UNIVERSAL_THRESHOLDS, GLITCHING_PIXIE_THRESHOLDS, KEISHA_SOFT_CI
 import { RECEIPTS_QUEENIE_THRESHOLDS, RECEIPTS_QUEENIE_CADENCE_HEATMAP, buildReceiptsQueenieCentroid, isReceiptsQueenieRecord } from './hush-phase8-receipts-queenie.js';
 import { SOL_STRATIGRAPHIX_THRESHOLDS, SOL_STRATIGRAPHIX_CADENCE_HEATMAP, buildSolStratigraphixCentroid, isSolStratigraphixRecord } from './hush-phase8-sol-stratigraphix.js';
 import { HARBOR_ZORA_THRESHOLDS, HARBOR_ZORA_CADENCE_HEATMAP, buildHarborZoraCentroid, isHarborZoraRecord } from './hush-phase8-harbor-zora.js';
+import { NOLAN_NEEDLER_THRESHOLDS, NOLAN_NEEDLER_CADENCE_HEATMAP, buildNolanNeedlerCentroid, isNolanNeedlerRecord } from './hush-phase8-nolan-needler.js';
 import { calibrateQueenieThresholds } from './hush-phase8-qs-calibration-hotfix.js';
 
 export const HUSH_STYLOMETRIC_PASSPORT_SCHEMA = 'td613.hush.phase8.stylometric-passport/v1';
@@ -12,6 +13,7 @@ export const HUSH_ONTOLOGY_BINDINGS_SCHEMA = 'td613.hush.phase8.ontology-binding
 function asArray(value) { return Array.isArray(value) ? value : []; }
 async function hashObject(value) { return sha256Text(stableStringify(value == null ? null : value)); }
 function thresholdFor(maskRecord = {}) {
+  if (isNolanNeedlerRecord(maskRecord)) return NOLAN_NEEDLER_THRESHOLDS;
   if (isHarborZoraRecord(maskRecord)) return HARBOR_ZORA_THRESHOLDS;
   if (isSolStratigraphixRecord(maskRecord)) return SOL_STRATIGRAPHIX_THRESHOLDS;
   if (isReceiptsQueenieRecord(maskRecord)) return calibrateQueenieThresholds(RECEIPTS_QUEENIE_THRESHOLDS);
@@ -22,6 +24,7 @@ function thresholdFor(maskRecord = {}) {
   return PHASE8_UNIVERSAL_THRESHOLDS;
 }
 function roleForPassport(maskRecord = {}) {
+  if (isNolanNeedlerRecord(maskRecord)) return 'low_heat_edge';
   if (isHarborZoraRecord(maskRecord)) return 'source_register';
   if (isSolStratigraphixRecord(maskRecord)) return 'document_distance';
   if (isReceiptsQueenieRecord(maskRecord)) return 'warm_receipts';
@@ -31,6 +34,7 @@ function roleForPassport(maskRecord = {}) {
   return maskRecord.intended_role || maskRecord.gallery_role || maskRecord.family || null;
 }
 function heatmapFor(maskRecord = {}, role = null) {
+  if (role === 'low_heat_edge' && isNolanNeedlerRecord(maskRecord)) return NOLAN_NEEDLER_CADENCE_HEATMAP;
   if (role === 'source_register' && isHarborZoraRecord(maskRecord)) return HARBOR_ZORA_CADENCE_HEATMAP;
   if (role === 'document_distance' && isSolStratigraphixRecord(maskRecord)) return SOL_STRATIGRAPHIX_CADENCE_HEATMAP;
   if (role === 'warm_receipts') return RECEIPTS_QUEENIE_CADENCE_HEATMAP;
@@ -50,13 +54,15 @@ export async function buildStylometricPassport(maskRecord = {}, options = {}) {
   const thresholds = Object.freeze({ ...thresholdFor(maskRecord), ...(options.thresholds || {}) });
   const role = roleForPassport(maskRecord);
   const centroidRecord = { ...maskRecord, gallery_role: role, intended_role: role };
-  const maskCentroid = role === 'source_register' && isHarborZoraRecord(maskRecord)
-    ? await buildHarborZoraCentroid(centroidRecord, options.calibrationSamples || [])
-    : role === 'document_distance' && isSolStratigraphixRecord(maskRecord)
-      ? await buildSolStratigraphixCentroid(centroidRecord, options.calibrationSamples || [])
-      : role === 'warm_receipts'
-        ? await buildReceiptsQueenieCentroid(centroidRecord, options.calibrationSamples || [])
-        : await buildMaskCentroid(centroidRecord, options.calibrationSamples || []);
+  const maskCentroid = role === 'low_heat_edge' && isNolanNeedlerRecord(maskRecord)
+    ? await buildNolanNeedlerCentroid(centroidRecord, options.calibrationSamples || [])
+    : role === 'source_register' && isHarborZoraRecord(maskRecord)
+      ? await buildHarborZoraCentroid(centroidRecord, options.calibrationSamples || [])
+      : role === 'document_distance' && isSolStratigraphixRecord(maskRecord)
+        ? await buildSolStratigraphixCentroid(centroidRecord, options.calibrationSamples || [])
+        : role === 'warm_receipts'
+          ? await buildReceiptsQueenieCentroid(centroidRecord, options.calibrationSamples || [])
+          : await buildMaskCentroid(centroidRecord, options.calibrationSamples || []);
   const genericBaseline = await buildGenericAIBaseline(options.genericFixtures || []);
   const featureWeights = Object.freeze({ source_custody: 0.24, mask_fit: 0.2, generic_distance: 0.16, anti_slop: 0.16, human_irregularity: 0.14, sample_reuse: 0.1 });
   const minimumEvidence = Object.freeze({ registry_record_hash_required: true, source_file_required: true, source_index_required: true, raw_sample_text_allowed: false, candidate_text_stored: false, candidate_presence_gate_required: true, numeric_decision_required: true });
