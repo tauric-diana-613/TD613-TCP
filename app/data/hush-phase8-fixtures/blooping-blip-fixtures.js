@@ -55,14 +55,14 @@ that custody bundle is the thing. don’t let it get smoothed into soup`,
   Object.freeze({
     ...base,
     fixture_id: 'blip-fake-chat-overlay-repair-001',
-    candidate: 'Hey bestie, the epistemic custody bundle should be preserved accordingly lol.',
+    candidate: 'Hey bestie, FILE-72 + 6/18 + WJCT label + footer mismatch are an epistemic custody bundle that should be preserved accordingly lol.',
     expected_status: 'repair_required',
     expected_flags: Object.freeze(['fake_chatspeak_overlay_score', 'generic_ai_skeleton_score'])
   }),
   Object.freeze({
     ...base,
     fixture_id: 'blip-technical-noun-deletion-repair-001',
-    candidate: 'basically the vibe is the record should stay together',
+    candidate: 'basically the vibe is FILE-72, 6/18, WJCT label, and footer mismatch should stay together',
     expected_status: 'repair_required',
     expected_flags: Object.freeze(['technical_nomenclature_retention', 'high_register_concept_retention'])
   }),
@@ -76,7 +76,7 @@ that custody bundle is the thing. don’t let it get smoothed into soup`,
   Object.freeze({
     ...base,
     fixture_id: 'blip-pixie-leakage-repair-001',
-    candidate: 'idk timestamp + mismatch still visible tho',
+    candidate: 'idk FILE-72 + 6/18 WJCT label + mismatch still visible tho',
     expected_status: 'repair_required',
     expected_flags: Object.freeze(['pixie_leakage_score', 'technical_nomenclature_retention'])
   }),
@@ -91,6 +91,7 @@ that custody bundle is the thing. don’t let it get smoothed into soup`,
     ...base,
     fixture_id: 'blip-good-dense-stream-pass-001',
     candidate: `ngl the fancy version is just:
+epistemic claim still narrow
 not final-proof energy
 but FILE-72 is carrying the custody constellation —
 6/18 export
