@@ -114,3 +114,4 @@ hush-phase8-handoff-fixtures.test.mjs
 hush-phase8-rex-fractura-fixtures.test.mjs
 hush-phase8-receipts-queenie-fixtures.test.mjs
 hush-phase8-sol-stratigraphix-fixtures.test.mjs
+hush-phase8-harbor-zora-fixtures.test.mjs
