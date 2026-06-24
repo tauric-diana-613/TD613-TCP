@@ -7,6 +7,7 @@ import { buildStylometricPassport, buildPhase8OntologyBindings } from './hush-ph
 import { buildCandidatePresenceGate, buildPhase8EntrypointAssertion } from './hush-phase8-candidate-presence-gate.js';
 import { computeReceiptsQueenieFeatureMetrics, applyReceiptsQueenieDecisionRules } from './hush-phase8-receipts-queenie.js';
 import { computeSolStratigraphixFeatureMetrics, applySolStratigraphixDecisionRules } from './hush-phase8-sol-stratigraphix.js';
+import { computeHarborZoraFeatureMetrics, applyHarborZoraDecisionRules } from './hush-phase8-harbor-zora.js';
 import { calibrateSolMetrics } from './hush-phase8-qs-calibration-hotfix.js';
 
 export const HUSH_PER_MASK_METRIC_WRAPPER_SCHEMA = 'td613.hush.phase8.metric-passport-wrapper/v1';
@@ -86,6 +87,7 @@ function unicodeMetrics(envelope = null) {
 }
 
 function isSolPassport(passport = {}) { return passport.mask_id === 'library-ghost' && passport.role === 'document_distance'; }
+function isHarborZoraPassport(passport = {}) { return passport.mask_id === 'phase27-register-preserve' && passport.role === 'source_register'; }
 
 async function buildCandidateRealization(maskRef = {}, candidate = '', passport = {}, candidateGate = {}, options = {}) {
   const sourceText = options.sourceText || options.source_summary || maskRef.label || '';
@@ -94,7 +96,8 @@ async function buildCandidateRealization(maskRef = {}, candidate = '', passport 
   const extracted = await extractMaskFeatureVector(candidateValue, { ...(options.featureVector || options.feature_vector || {}), ...(options.feature_options || {}) });
   const queenieMetrics = passport.role === 'warm_receipts' ? computeReceiptsQueenieFeatureMetrics(candidateValue, { ...options, sourceText, sourceObligations }) : {};
   const solMetrics = isSolPassport(passport) ? calibrateSolMetrics(computeSolStratigraphixFeatureMetrics(candidateValue, { ...options, sourceText, sourceObligations }), candidateValue) : {};
-  const mergedFeatures = Object.freeze({ ...extracted.feature_vector, ...queenieMetrics, ...solMetrics });
+  const zoraMetrics = isHarborZoraPassport(passport) ? computeHarborZoraFeatureMetrics(candidateValue, { ...options, sourceText, sourceObligations }) : {};
+  const mergedFeatures = Object.freeze({ ...extracted.feature_vector, ...queenieMetrics, ...solMetrics, ...zoraMetrics });
   const featureVector = Object.freeze({ ...extracted, feature_vector: mergedFeatures, feature_vector_hash_sha256: await sha256Text(stableStringify(mergedFeatures)) });
   const sourceRetention = scoreSourceObligationRetention(sourceObligations, candidateValue, options.sourceRetention || options.source_retention || {});
   const maskFit = scoreCandidateAgainstMask(featureVector, passport.mask_centroid, passport.generic_ai_baseline, options.maskFit || options.mask_fit || {});
@@ -146,6 +149,7 @@ export async function buildHushPerMaskPacketWithMetricPassport(maskRef = {}, opt
   });
   if (passport.role === 'warm_receipts') decision = applyReceiptsQueenieDecisionRules(decision, candidateParts.realization.feature_vector, passport.tolerance_bands);
   if (isSolPassport(passport)) decision = applySolStratigraphixDecisionRules(decision, candidateParts.realization.feature_vector, passport.tolerance_bands);
+  if (isHarborZoraPassport(passport)) decision = applyHarborZoraDecisionRules(decision, candidateParts.realization.feature_vector, passport.tolerance_bands);
   const ontology = buildPhase8OntologyBindings();
   const wrapper = {
     schema: HUSH_PER_MASK_METRIC_WRAPPER_SCHEMA,
