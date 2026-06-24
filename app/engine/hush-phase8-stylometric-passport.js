@@ -3,6 +3,7 @@ import { buildMaskCentroid, buildGenericAIBaseline } from './hush-stylometric-fe
 import { PHASE8_UNIVERSAL_THRESHOLDS, GLITCHING_PIXIE_THRESHOLDS, KEISHA_SOFT_CIRCLE_THRESHOLDS, CRYO_CRISTIANO_THRESHOLDS, REX_FRACTURA_THRESHOLDS } from './hush-phase8-numeric-decision.js';
 import { RECEIPTS_QUEENIE_THRESHOLDS, RECEIPTS_QUEENIE_CADENCE_HEATMAP, buildReceiptsQueenieCentroid, isReceiptsQueenieRecord } from './hush-phase8-receipts-queenie.js';
 import { SOL_STRATIGRAPHIX_THRESHOLDS, SOL_STRATIGRAPHIX_CADENCE_HEATMAP, buildSolStratigraphixCentroid, isSolStratigraphixRecord } from './hush-phase8-sol-stratigraphix.js';
+import { calibrateQueenieThresholds } from './hush-phase8-qs-calibration-hotfix.js';
 
 export const HUSH_STYLOMETRIC_PASSPORT_SCHEMA = 'td613.hush.phase8.stylometric-passport/v1';
 export const HUSH_ONTOLOGY_BINDINGS_SCHEMA = 'td613.hush.phase8.ontology-bindings/v1';
@@ -11,7 +12,7 @@ function asArray(value) { return Array.isArray(value) ? value : []; }
 async function hashObject(value) { return sha256Text(stableStringify(value == null ? null : value)); }
 function thresholdFor(maskRecord = {}) {
   if (isSolStratigraphixRecord(maskRecord)) return SOL_STRATIGRAPHIX_THRESHOLDS;
-  if (isReceiptsQueenieRecord(maskRecord)) return RECEIPTS_QUEENIE_THRESHOLDS;
+  if (isReceiptsQueenieRecord(maskRecord)) return calibrateQueenieThresholds(RECEIPTS_QUEENIE_THRESHOLDS);
   if (maskRecord.mask_id === 'phase22-jagged-record') return REX_FRACTURA_THRESHOLDS;
   if (maskRecord.mask_id === 'night-shift-note') return CRYO_CRISTIANO_THRESHOLDS;
   if (maskRecord.mask_id === 'group-chat-soft') return KEISHA_SOFT_CIRCLE_THRESHOLDS;
