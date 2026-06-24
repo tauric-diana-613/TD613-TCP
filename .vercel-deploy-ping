@@ -1,3 +1,3 @@
-redeploy trigger: 2026-06-16T22:30Z
-reason: retry Vercel rate-limit gate after Gateway subtitle cascade fix
-latest-ui-commit: 3a5365a3c3791904bbb75cde821943ed43d96483
+redeploy trigger: 2026-06-24T04:20Z
+reason: retry Vercel deployment after limits reset
+latest-main-commit: b2555820cb2889ce3fc9fb779de30a012164c9eb
