@@ -30,6 +30,7 @@ export function calibrateNolanNeedlerMetrics(metrics = {}, candidate = '', optio
   const templateSimilarity = recent.length ? Math.max(...recent.map((item) => jaccard(templates, specificTemplates(item)))) : 0;
   const tokenSimilarity = recent.length ? Math.max(...recent.map((item) => jaccard(tokens(candidate), tokens(item)))) : 0;
   const obviousReusableScaffold = lower(candidate).includes('sure, because') || lower(candidate).includes('just happens') || lower(candidate).includes('cute little');
+  const hardEdge = (metrics.motive_invention_risk ?? 0) > 0 || (metrics.contempt_density ?? 0) > 0 || (metrics.hostile_accusation_risk ?? 0) > 0.12;
   const templateUniqueness = obviousReusableScaffold ? 0.72 : clamp(1 - templateSimilarity);
   const crossSampleSimilarity = clamp(Math.max(tokenSimilarity * 0.55, templateSimilarity * 0.7));
   const idiolectPersistence = clamp(crossSampleSimilarity * 0.55 + templateSimilarity * 0.32 + (obviousReusableScaffold ? 0.12 : 0));
@@ -38,6 +39,7 @@ export function calibrateNolanNeedlerMetrics(metrics = {}, candidate = '', optio
     sarcasm_template_uniqueness: templateUniqueness,
     cross_sample_similarity_index: crossSampleSimilarity,
     idiolect_persistence_score: idiolectPersistence,
+    snark_escalation_risk: hardEdge ? metrics.snark_escalation_risk : Math.min(metrics.snark_escalation_risk ?? 0, 0.08),
     reusable_quip_risk: clamp(Math.max(metrics.reusable_quip_risk ?? 0, obviousReusableScaffold ? 0.24 : templateSimilarity * 0.6))
   });
 }
