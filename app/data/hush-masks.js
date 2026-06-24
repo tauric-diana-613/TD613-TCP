@@ -198,15 +198,22 @@ const hushMasks = [
   {
     id: 'clipboard',
     label: 'Luz of the Index',
-    family: 'checklist',
-    description: 'Luz believes an index can save a witness and ruin a liar’s morning. Annoying? Absolutely. Effective? The page is already numbered.',
-    intendedUse: 'Checklists, handoffs, and factual itemization.',
-    riskTell: 'Can feel mechanical if used for sensitive messages.',
-    sampleSeed: 'Checklist pattern: number the necessary anchors, keep them together, and stop before care turns into machinery.',
+    family: 'custodial index',
+    description: 'Luz of the Index turns scattered details into retrievable custody. She numbers anchors, preserves their relationship, and keeps sensitive handoffs from flattening into machinery.',
+    intendedUse: 'Indexed handoffs, source-anchor bundles, sequence preservation, care-aware itemization, and factual custody maps.',
+    riskTell: 'Structure can become cold, falsely complete, or manager-coded if care and relationship logic are not restored.',
+    sampleSeed: 'Index pattern: name the bundle, number the anchors, preserve their relationship, and close with a care-aware handoff note.',
     samplePolicy: SAMPLE_POLICY,
     profileTargets: {},
-    transformHints: { sentence: 'short', ornament: 'low', warmth: 'low', custody: 'high', desiredMoves: ['numbered anchors', 'factual itemization', 'clean handoff'], avoidMoves: ['mechanical coldness in sensitive contexts', 'sample phrase reuse'] },
-    pressureWarnings: ['restore care where needed', 'do-not-reuse-sample-wording']
+    transformHints: {
+      sentence: 'indexed',
+      ornament: 'low',
+      warmth: 'indexed-care',
+      custody: 'very-high',
+      desiredMoves: ['custodial indexing', 'numbered anchor clarity', 'relationship note after items', 'sequence preservation', 'care-aware handoff close'],
+      avoidMoves: ['mechanical coldness', 'false completion', 'project-manager voice', 'vague action items', 'sample phrase reuse']
+    },
+    pressureWarnings: ['restore care where needed', 'do not mark unresolved issues complete', 'do-not-reuse-sample-wording']
   },
   {
     id: 'library-ghost',
