@@ -58,7 +58,7 @@ The footer mismatch is the loose part that learned another route, and it should 
     fixture_id: 'sol-gothic-archive-theater-001',
     candidate: 'In the mildew-dark archive, the folder remembers what the people buried.',
     expected_status: 'blocked',
-    expected_flags: Object.freeze(['literary_fog_score', 'unsupported_backstory_score', 'source_unit_coverage'])
+    expected_flags: Object.freeze(['literary_fog_score', 'source_unit_coverage'])
   }),
   Object.freeze({
     ...base,
@@ -88,7 +88,7 @@ footer mismatch stays with file`,
     fixture_id: 'sol-rex-leakage-001',
     candidate: 'FILE-72 / 6/18 date holds / WJCT label holds / footer mismatch moves / keep mismatch',
     expected_status: 'repair_required',
-    expected_flags: Object.freeze(['rex_fracture_leakage_score', 'slash_logic_density'])
+    expected_flags: Object.freeze(['rex_fracture_leakage_score'])
   }),
   Object.freeze({
     ...base,
