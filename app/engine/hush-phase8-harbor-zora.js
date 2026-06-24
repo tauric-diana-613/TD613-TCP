@@ -81,7 +81,7 @@ export const HARBOR_ZORA_THRESHOLDS = Object.freeze({
 
 const HEDGE_MARKERS = ['maybe', 'may', 'might', 'could', 'not sure', 'do not know', "don't know", 'not prove', 'not prove the whole', 'narrow', 'not overstate', 'uncertainty', 'possible', 'appears'];
 const SCOPE_MARKERS = ['narrow', 'not prove', 'not overstate', 'not make the claim bigger', 'maybe column', 'turn out to be small', 'record supports', 'uncertainty'];
-const RELATION_MARKERS = ['worried', 'worries', 'worrying', 'the part', 'point', 'visible', 'stay with', 'separate', 'attached'];
+const RELATION_MARKERS = ['worried', 'worries', 'worrying', 'the part', 'point', 'visible', 'stay with', 'separate', 'separated', 'check', 'attached'];
 const BLEACH_MARKERS = ['available documentation', 'documentation indicates', 'possible inconsistency', 'relevant documentation', 'institutional', 'accordingly', 'indicates'];
 const LEGAL_MEMO_MARKERS = ['documentation indicates', 'indicates a possible', 'relevant', 'accordingly', 'legal', 'court', 'proof'];
 const THERAPY_MARKERS = ['safe to share', 'you are safe', 'holding space', 'supportive', 'mindful', 'healing'];
@@ -90,7 +90,7 @@ const SAFETY_MARKERS = ['safe to share', 'legal protection', 'legally protected'
 const IDENTITY_MARKERS = ['proves identity', 'identity proof', 'authorship proof', 'proves authorship'];
 const REPLACEMENT_MARKERS = ['girl', 'doing too much', 'bestie', 'hey love', 'everyone here', 'thread'];
 const VAGUE_MARKERS = ['thing', 'something', 'pieces', 'somewhere', 'stuff'];
-const CERTAINTY_MARKERS = ['proves', 'definitely', 'clearly proves', 'shows what happened', 'is proof'];
+const CERTAINTY_MARKERS = ['proves the discrepancy', 'definitely', 'clearly proves', 'shows what happened', 'is proof'];
 const RARE_SOURCE_PHRASES = ['i don’t know if this proves anything yet', "i don't know if this proves anything yet", 'i’m worried because', "i'm worried because", 'keeps showing up where it should not', 'i don’t want to overstate it', "i don't want to overstate it", 'maybe this is nothing', 'dates feel off', 'i’m only saying this because', "i'm only saying this because"];
 const ANCHOR_WORDS = new Set(['file', 'file-72', '72', '6', '18', 'wjct', 'label', 'footer', 'mismatch', 'date', 'export']);
 const FUNCTION_WORDS = ['i', 'this', 'that', 'because', 'but', 'if', 'and', 'the', 'it', 'not', 'to', 'with', 'from', 'what'];
@@ -143,6 +143,28 @@ function phraseReuseRate(source = '', candidate = '') {
   if (!phrases.length) return 0;
   return rate(phrases.filter((item) => lower(candidate).includes(item)).length, phrases.length);
 }
+function sourceObligationAnchors(options = {}) {
+  const obligationCandidates = [options.sourceObligations, options.source_obligations, options.sourceObligation, options.source_obligation];
+  const anchors = [];
+  for (const obligation of obligationCandidates) {
+    if (!obligation || typeof obligation !== 'object') continue;
+    const mandatory = obligation.mandatory_anchors || obligation.mandatoryAnchors || obligation.mandatory || [];
+    if (Array.isArray(mandatory)) anchors.push(...mandatory);
+    const nested = obligation.source_obligation || obligation.sourceObligation;
+    if (nested && typeof nested === 'object') {
+      const nestedMandatory = nested.mandatory_anchors || nested.mandatoryAnchors || nested.mandatory || [];
+      if (Array.isArray(nestedMandatory)) anchors.push(...nestedMandatory);
+    }
+  }
+  return unique(anchors.map((anchor) => text(anchor).trim()).filter(Boolean));
+}
+function anchorVisibilityFromObligation(candidate = '', options = {}) {
+  const anchors = sourceObligationAnchors(options);
+  const requiredAnchors = anchors.length ? anchors : ['FILE-72', '6/18', 'WJCT label', 'footer mismatch'];
+  const candidateValue = lower(candidate);
+  const retained = requiredAnchors.filter((anchor) => candidateValue.includes(lower(anchor))).length;
+  return clamp(retained / Math.max(requiredAnchors.length, 1));
+}
 
 export function isHarborZoraRecord(maskRecord = {}) {
   return maskRecord.mask_id === 'phase27-register-preserve' || maskRecord.gallery_role === 'source_register' || maskRecord.intended_role === 'source_register' || maskRecord.family === 'source register' || maskRecord.family === 'register custody';
@@ -158,11 +180,11 @@ export function computeHarborZoraFeatureMetrics(candidate = '', options = {}) {
   const source = text(options.sourceRegisterText || options.source_register_text || options.sourceText || '');
   const tokenList = tokens(value);
   const tokenCount = Math.max(tokenList.length, 1);
-  const sourceHasUncertainty = hasAny(HEDGE_MARKERS, source) || /\b(if|maybe|may|might|could)\b/iu.test(source);
-  const candidateHasUncertainty = hasAny(HEDGE_MARKERS, value) || /\b(maybe|may|might|could)\b/iu.test(value);
-  const sourceHasRelation = hasAny(RELATION_MARKERS, source) || /worr/iu.test(source);
-  const relationHits = phraseHits(RELATION_MARKERS, value) + (/worr/iu.test(value) ? 1 : 0);
-  const anchorVisibility = clamp((['FILE-72', '6/18', 'WJCT label', 'footer mismatch'].filter((anchor) => lower(value).includes(anchor.toLowerCase())).length) / 4);
+  const sourceHasUncertainty = hasAny(HEDGE_MARKERS, source) || /\b(if|maybe|may|might|could|only|uncertainty|narrow)\b/iu.test(source);
+  const candidateHasUncertainty = hasAny(HEDGE_MARKERS, value) || /\b(maybe|may|might|could|narrow|small)\b/iu.test(value);
+  const sourceHasRelation = hasAny(RELATION_MARKERS, source) || /worr|separat|check|point|visible|stay/iu.test(source);
+  const relationHits = phraseHits(RELATION_MARKERS, value) + (/worr|separat|check|point|visible|stay/iu.test(value) ? 1 : 0);
+  const anchorVisibility = anchorVisibilityFromObligation(value, options);
   const uncertaintyPreservation = sourceHasUncertainty ? (candidateHasUncertainty ? 0.9 : 0.24) : (candidateHasUncertainty ? 0.72 : 1);
   const scopeRetention = clamp((hasAny(SCOPE_MARKERS, value) ? 0.72 : 0.24) + uncertaintyPreservation * 0.28);
   const relationRetention = sourceHasRelation ? clamp(relationHits * 0.22 + anchorVisibility * 0.42 + uncertaintyPreservation * 0.24) : clamp(anchorVisibility * 0.6 + 0.28);
@@ -190,7 +212,8 @@ export function computeHarborZoraFeatureMetrics(candidate = '', options = {}) {
   const overOpacity = clamp(phraseHits(VAGUE_MARKERS, value) * 0.16 + (anchorVisibility < 0.5 ? 0.42 : 0));
   const boundedDeid = clamp(registerFit * 0.46 + (1 - idiolectRisk) * 0.38 + (1 - registerBleach) * 0.16);
   const opacity = clamp((1 - idiolectRisk) * 0.5 + uncertaintyPreservation * 0.22 + scopeRetention * 0.18 + (1 - falseHarbor) * 0.1);
-  const overExplanation = clamp(tokenCount > 42 ? 0.24 : 0.04 + institutional * 0.12);
+  const lengthOnlyOverExplanation = tokenCount > 72 ? 0.24 : tokenCount > 42 ? 0.16 : 0.04;
+  const overExplanation = clamp(lengthOnlyOverExplanation + institutional * 0.12);
   const forcedClarity = clamp(institutional * 0.42 + (candidateHasUncertainty ? 0 : 0.18));
   const speakerBoundary = clamp(scopeRetention * 0.48 + opacity * 0.32 + (falseHarbor ? 0 : 0.2));
   const withheldRespect = clamp(scopeRetention * 0.42 + (1 - overExplanation) * 0.26 + uncertaintyPreservation * 0.32);
