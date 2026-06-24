@@ -1,6 +1,7 @@
 import { stableStringify, sha256Text } from './hush-customizer-packet.js';
 import { buildMaskCentroid, buildGenericAIBaseline } from './hush-stylometric-feature-vector.js';
 import { PHASE8_UNIVERSAL_THRESHOLDS, GLITCHING_PIXIE_THRESHOLDS, KEISHA_SOFT_CIRCLE_THRESHOLDS, CRYO_CRISTIANO_THRESHOLDS, REX_FRACTURA_THRESHOLDS } from './hush-phase8-numeric-decision.js';
+import { RECEIPTS_QUEENIE_THRESHOLDS, RECEIPTS_QUEENIE_CADENCE_HEATMAP, buildReceiptsQueenieCentroid, isReceiptsQueenieRecord } from './hush-phase8-receipts-queenie.js';
 
 export const HUSH_STYLOMETRIC_PASSPORT_SCHEMA = 'td613.hush.phase8.stylometric-passport/v1';
 export const HUSH_ONTOLOGY_BINDINGS_SCHEMA = 'td613.hush.phase8.ontology-bindings/v1';
@@ -8,6 +9,7 @@ export const HUSH_ONTOLOGY_BINDINGS_SCHEMA = 'td613.hush.phase8.ontology-binding
 function asArray(value) { return Array.isArray(value) ? value : []; }
 async function hashObject(value) { return sha256Text(stableStringify(value == null ? null : value)); }
 function thresholdFor(maskRecord = {}) {
+  if (isReceiptsQueenieRecord(maskRecord)) return RECEIPTS_QUEENIE_THRESHOLDS;
   if (maskRecord.mask_id === 'phase22-jagged-record') return REX_FRACTURA_THRESHOLDS;
   if (maskRecord.mask_id === 'night-shift-note') return CRYO_CRISTIANO_THRESHOLDS;
   if (maskRecord.mask_id === 'group-chat-soft') return KEISHA_SOFT_CIRCLE_THRESHOLDS;
@@ -15,6 +17,7 @@ function thresholdFor(maskRecord = {}) {
   return PHASE8_UNIVERSAL_THRESHOLDS;
 }
 function roleForPassport(maskRecord = {}) {
+  if (isReceiptsQueenieRecord(maskRecord)) return 'warm_receipts';
   if (maskRecord.mask_id === 'phase22-jagged-record') return 'adversarial_fracture';
   if (maskRecord.mask_id === 'night-shift-note') return 'quick_handoff';
   if (maskRecord.mask_id === 'group-chat-soft') return 'small circle';
@@ -34,7 +37,9 @@ export async function buildStylometricPassport(maskRecord = {}, options = {}) {
   const thresholds = Object.freeze({ ...thresholdFor(maskRecord), ...(options.thresholds || {}) });
   const role = roleForPassport(maskRecord);
   const centroidRecord = { ...maskRecord, gallery_role: role, intended_role: role };
-  const maskCentroid = await buildMaskCentroid(centroidRecord, options.calibrationSamples || []);
+  const maskCentroid = role === 'warm_receipts'
+    ? await buildReceiptsQueenieCentroid(centroidRecord, options.calibrationSamples || [])
+    : await buildMaskCentroid(centroidRecord, options.calibrationSamples || []);
   const genericBaseline = await buildGenericAIBaseline(options.genericFixtures || []);
   const featureWeights = Object.freeze({ source_custody: 0.24, mask_fit: 0.2, generic_distance: 0.16, anti_slop: 0.16, human_irregularity: 0.14, sample_reuse: 0.1 });
   const minimumEvidence = Object.freeze({ registry_record_hash_required: true, source_file_required: true, source_index_required: true, raw_sample_text_allowed: false, candidate_text_stored: false, candidate_presence_gate_required: true, numeric_decision_required: true });
@@ -47,6 +52,7 @@ export async function buildStylometricPassport(maskRecord = {}, options = {}) {
     mask_centroid: maskCentroid,
     generic_ai_baseline: genericBaseline,
     tolerance_bands: thresholds,
+    cadence_heatmap: role === 'warm_receipts' ? RECEIPTS_QUEENIE_CADENCE_HEATMAP : null,
     feature_weights: featureWeights,
     minimum_evidence: minimumEvidence,
     limitations: Object.freeze(['numeric passport measures packet admissibility only', 'no civil identity conclusion', 'no public release authority'])
