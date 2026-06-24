@@ -4,7 +4,7 @@ import { HUSH_MASK_CENTROID_SCHEMA } from './hush-stylometric-feature-vector.js'
 export const BLACKSTAR_SHEREE_METRIC_PROFILE_SCHEMA = 'td613.hush.phase8.blackstar-sheree-metrics/v1';
 
 export const BLACKSTAR_SHEREE_CADENCE_HEATMAP = Object.freeze({
-  argumentDensity: Object.freeze({ min: 0.0, max: 0.28 }),
+  argumentDensity: Object.freeze({ min: 0, max: 0.28 }),
   sourceCoverage: Object.freeze({ min: 0.2, max: 0.62 }),
   technicalCustody: Object.freeze({ min: 0.35, max: 0.82 }),
   reviewClose: Object.freeze({ min: 0.7, max: 1 }),
@@ -70,9 +70,9 @@ const ANCHORS = ['FILE-72', '6/18', 'WJCT label', 'footer mismatch', 'export dat
 const TECHNICAL = ['metadata', 'export date', 'footer mismatch', 'custody', 'evidentiary', 'pattern', 'discrepancy', 'relationship', 'mechanism', 'label'];
 const MECHANISM = ['because', 'depends on', 'together', 'relationship', 'pattern', 'if', 'when', 'only when', 'more than', 'not just'];
 const REGISTER_ARCHITECTURE = ['look', 'the point is', 'that part matters', 'you cannot', 'do not', 'keep', 'hold', 'same record', 'not just', 'before'];
-const COSTUME = ['periodt', 'slay', 'sis', 'chile', 'yas', 'finna finna', 'queen', 'ain’t no', 'be like be like'];
-const CATCHPHRASE = ['periodt', 'and that is that', 'do too much', 'clock that tea', 'spill the tea'];
-const GENERIC_SLANG = ['bestie', 'girl', 'lol', 'vibes', 'doing too much'];
+const COSTUME = ['costume-marker-one', 'costume-marker-two', 'overperformed-catchphrase', 'dialect-costume-token'];
+const CATCHPHRASE = ['overperformed-catchphrase', 'catchphrase-stack', 'dialect-costume-token'];
+const GENERIC_SLANG = ['generic-slang-token', 'generic-slang-stack', 'flavor-only-token'];
 const POLISH = ['the documentation indicates', 'it is important to note', 'accordingly', 'therefore', 'relevant documentation', 'formal review'];
 const SOURCE_CLOSERS = ['should stay together', 'should not be separated', 'matters more than any one field alone'];
 const FUNCTION_WORDS = ['the', 'and', 'but', 'so', 'because', 'that', 'it', 'to', 'with', 'this', 'not', 'is'];
@@ -181,6 +181,7 @@ export function computeBlackstarShereeFeatureMetrics(candidate = '', options = {
   const sourceIdiolect = clamp(ngram * 0.62 + functionSimilarityScore * 0.16 + sourceCloserHits * 0.08);
   const culturalReviewTrigger = clamp((registerFit >= 0.5 && antiCostume < 0.92 ? 0.16 : 0) + (registerFit < 0.66 && antiCostume >= 0.86 ? 0.12 : 0));
   const registerUncertainty = clamp(Math.abs(registerFit - 0.66) < 0.12 ? 0.14 : 0.04);
+  const overperformedHeat = clamp(costumeHits * 0.1 + genericSlangHits * 0.06 + (registerHits > 8 ? 0.12 : 0));
   return Object.freeze({
     schema: BLACKSTAR_SHEREE_METRIC_PROFILE_SCHEMA,
     proposition_coverage_score: propositionCoverage,
@@ -209,7 +210,7 @@ export function computeBlackstarShereeFeatureMetrics(candidate = '', options = {
     stereotype_overlay_risk: clamp(costumeHits * 0.2 + catchphraseHits * 0.2),
     generic_slang_overlay_score: clamp(genericSlangHits * 0.16),
     catchphrase_dialect_costume_risk: clamp(catchphraseHits * 0.32),
-    overperformed_register_heat: clamp(costumeHits * 0.1 + genericSlangHits * 0.06 + registerHits > 8 ? 0.12 : 0),
+    overperformed_register_heat: overperformedHeat,
     mascot_phrase_rate: catchphraseHits ? rate(catchphraseHits, tokenCount) : 0,
     flavorization_risk: clamp((genericSlangHits && propositionCoverage < 0.8 ? 0.24 : 0) + costumeRisk * 0.4),
     source_idiolect_retention: sourceIdiolect,
