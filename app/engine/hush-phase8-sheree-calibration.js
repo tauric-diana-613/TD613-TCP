@@ -8,6 +8,6 @@ export function calibrateBlackstarShereeMetrics(metrics = {}) {
   if (targetFit >= 0.5 && targetFit < 0.66 && antiCostume >= 0.86) {
     next.cultural_review_trigger_score = Math.max(Number(next.cultural_review_trigger_score || 0), 0.14);
   }
-  next.human_review_gate = Number(next.cultural_review_trigger_score || 0) > 0.12 || Number(next.register_uncertainty_score || 0) > 0.1 ? 1 : 0;
+  next.human_review_gate = Number(next.cultural_review_trigger_score || 0) >= 0.12 || Number(next.register_uncertainty_score || 0) >= 0.1 ? 1 : 0;
   return Object.freeze(next);
 }
