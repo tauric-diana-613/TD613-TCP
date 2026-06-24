@@ -6,6 +6,7 @@ import { buildPhase8NumericDecisionSurface } from './hush-phase8-numeric-decisio
 import { buildStylometricPassport, buildPhase8OntologyBindings } from './hush-phase8-stylometric-passport.js';
 import { buildCandidatePresenceGate, buildPhase8EntrypointAssertion } from './hush-phase8-candidate-presence-gate.js';
 import { computeReceiptsQueenieFeatureMetrics, applyReceiptsQueenieDecisionRules } from './hush-phase8-receipts-queenie.js';
+import { computeSolStratigraphixFeatureMetrics, applySolStratigraphixDecisionRules } from './hush-phase8-sol-stratigraphix.js';
 
 export const HUSH_PER_MASK_METRIC_WRAPPER_SCHEMA = 'td613.hush.phase8.metric-passport-wrapper/v1';
 export const HUSH_UNICODE_PERTURBATION_ENVELOPE_SCHEMA = 'td613.hush.phase8.unicode-perturbation-envelope/v1';
@@ -14,8 +15,10 @@ function clone(value) { return value == null ? value : JSON.parse(JSON.stringify
 function asArray(value) { return Array.isArray(value) ? value : []; }
 function unique(values) { return [...new Set(values.filter(Boolean))]; }
 async function hashObject(value) { return sha256Text(stableStringify(value == null ? null : value)); }
-function zeroWidthRate(value = '') { const count = (String(value || '').match(/[\u200B-\u200F\u2060\uFEFF]/gu) || []).length; const units = Math.max((String(value || '').match(/[A-Za-z0-9]+/g) || []).length, 1); return Math.max(0, Math.min(1, Number((count / units).toFixed(4)))); }
-function homoglyphRate(value = '') { const count = (String(value || '').match(/[\u{1D400}-\u{1D7FF}]/gu) || []).length; const units = Math.max((String(value || '').match(/[A-Za-z0-9]+/g) || []).length, 1); return Math.max(0, Math.min(1, Number((count / units).toFixed(4)))); }
+function tokenUnits(value = '') { return Math.max((String(value || '').match(/[A-Za-z0-9]+/g) || []).length, 1); }
+function boundedRate(count, units) { return Math.max(0, Math.min(1, Number((count / units).toFixed(4)))); }
+function zeroWidthRate(value = '') { return boundedRate((String(value || '').match(/[\u200B-\u200F\u2060\uFEFF]/gu) || []).length, tokenUnits(value)); }
+function homoglyphRate(value = '') { return boundedRate((String(value || '').match(/[\u{1D400}-\u{1D7FF}]/gu) || []).length, tokenUnits(value)); }
 
 function metricPreimage(packet = {}) {
   const material = clone(packet || {});
@@ -46,21 +49,19 @@ async function buildUnicodePerturbationEnvelope(candidate = '', options = {}) {
   if (!settings) return null;
   const level = Number(settings.perturbation_level ?? settings.unicode_perturbation_level ?? 0);
   if (level <= 0) return null;
-  const normalizedRecovery = settings.normalized_recovery_text ?? settings.recovery_text ?? String(candidate || '').normalize('NFKC');
+  const recovery = settings.normalized_recovery_text ?? settings.recovery_text ?? String(candidate || '').normalize('NFKC');
   const mapMaterial = settings.perturbation_map ?? settings.map ?? null;
   const mapHash = settings.unicode_perturbation_map_hash_sha256 || (mapMaterial ? await hashObject(mapMaterial) : null);
-  const visibleHash = settings.visible_candidate_hash_sha256 || await sha256Text(String(candidate || ''));
-  const recoveryHash = settings.normalized_recovery_text_hash_sha256 || await sha256Text(String(normalizedRecovery || ''));
   const envelope = {
     schema: HUSH_UNICODE_PERTURBATION_ENVELOPE_SCHEMA,
     unicode_mode_explicit: settings.unicode_mode_explicit === true,
     perturbation_level: level,
-    visible_candidate_hash_sha256: visibleHash,
-    normalized_recovery_text_hash_sha256: recoveryHash,
+    visible_candidate_hash_sha256: settings.visible_candidate_hash_sha256 || await sha256Text(String(candidate || '')),
+    normalized_recovery_text_hash_sha256: settings.normalized_recovery_text_hash_sha256 || await sha256Text(String(recovery || '')),
     unicode_perturbation_map_hash_sha256: mapHash,
     zero_width_presence_rate: settings.zero_width_presence_rate ?? zeroWidthRate(candidate),
     homoglyph_substitution_rate: settings.homoglyph_substitution_rate ?? homoglyphRate(candidate),
-    accessibility_warning: settings.accessibility_warning || 'unicode perturbation requires operator review and recovery validation',
+    accessibility_warning: settings.accessibility_warning || 'operator review required',
     copy_paste_degradation_risk: settings.copy_paste_degradation_risk ?? (level >= 2 ? 0.18 : 0.08),
     normalization_recovery_score: settings.normalization_recovery_score ?? (mapHash ? 1 : 0),
     raw_candidate_included: false,
@@ -83,16 +84,17 @@ function unicodeMetrics(envelope = null) {
   };
 }
 
+function isSolPassport(passport = {}) { return passport.mask_id === 'library-ghost' && passport.role === 'document_distance'; }
+
 async function buildCandidateRealization(maskRef = {}, candidate = '', passport = {}, candidateGate = {}, options = {}) {
   const sourceText = options.sourceText || options.source_summary || maskRef.label || '';
-  const sourceObligationOptions = options.sourceObligation || options.source_obligation || {};
-  const sourceObligations = await extractSourceObligationSet(sourceText, sourceObligationOptions);
-  const featureOptions = { ...(options.featureVector || options.feature_vector || {}), ...(options.feature_options || {}) };
+  const sourceObligations = await extractSourceObligationSet(sourceText, options.sourceObligation || options.source_obligation || {});
   const candidateValue = candidateGate.candidate_present ? candidate : '';
-  const extractedFeatureVector = await extractMaskFeatureVector(candidateValue, featureOptions);
+  const extracted = await extractMaskFeatureVector(candidateValue, { ...(options.featureVector || options.feature_vector || {}), ...(options.feature_options || {}) });
   const queenieMetrics = passport.role === 'warm_receipts' ? computeReceiptsQueenieFeatureMetrics(candidateValue, { ...options, sourceText, sourceObligations }) : {};
-  const mergedFeatureVector = Object.freeze({ ...extractedFeatureVector.feature_vector, ...queenieMetrics });
-  const featureVector = Object.freeze({ ...extractedFeatureVector, feature_vector: mergedFeatureVector, feature_vector_hash_sha256: await sha256Text(stableStringify(mergedFeatureVector)) });
+  const solMetrics = isSolPassport(passport) ? computeSolStratigraphixFeatureMetrics(candidateValue, { ...options, sourceText, sourceObligations }) : {};
+  const mergedFeatures = Object.freeze({ ...extracted.feature_vector, ...queenieMetrics, ...solMetrics });
+  const featureVector = Object.freeze({ ...extracted, feature_vector: mergedFeatures, feature_vector_hash_sha256: await sha256Text(stableStringify(mergedFeatures)) });
   const sourceRetention = scoreSourceObligationRetention(sourceObligations, candidateValue, options.sourceRetention || options.source_retention || {});
   const maskFit = scoreCandidateAgainstMask(featureVector, passport.mask_centroid, passport.generic_ai_baseline, options.maskFit || options.mask_fit || {});
   return Object.freeze({
@@ -142,6 +144,7 @@ export async function buildHushPerMaskPacketWithMetricPassport(maskRef = {}, opt
     threshold_version: passport.passport_tag
   });
   if (passport.role === 'warm_receipts') decision = applyReceiptsQueenieDecisionRules(decision, candidateParts.realization.feature_vector, passport.tolerance_bands);
+  if (isSolPassport(passport)) decision = applySolStratigraphixDecisionRules(decision, candidateParts.realization.feature_vector, passport.tolerance_bands);
   const ontology = buildPhase8OntologyBindings();
   const wrapper = {
     schema: HUSH_PER_MASK_METRIC_WRAPPER_SCHEMA,
