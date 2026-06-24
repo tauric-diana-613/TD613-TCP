@@ -22,22 +22,41 @@ const LULU_QUASAR_CALIBRATION_OVERRIDES = Object.freeze({
   punctuation_fingerprint_retention_max: 0.48
 });
 
+const PHASE8_CENTROID_BASE_FEATURES = Object.freeze({
+  mean_sentence_length: 12,
+  sentence_length_cv: 0.5,
+  lexical_density: 0.62,
+  generic_helper_voice_score: 0.04,
+  api_sheen_score: 0.04,
+  bounded_irregularity_index: 0.42,
+  source_adaptive: true,
+  public_default_allowed: false
+});
+
 function asArray(value) { return Array.isArray(value) ? value : []; }
 async function hashObject(value) { return sha256Text(stableStringify(value == null ? null : value)); }
+function composePhase8Thresholds(maskThresholds = {}, overrides = {}) { return Object.freeze({ ...PHASE8_UNIVERSAL_THRESHOLDS, ...(maskThresholds || {}), ...(overrides || {}) }); }
+async function normalizePhase8CentroidBaseKeys(centroid = {}, role = null) {
+  if (!centroid || typeof centroid !== 'object') return centroid;
+  const current = centroid.centroid_features && typeof centroid.centroid_features === 'object' ? centroid.centroid_features : {};
+  const features = Object.freeze({ ...PHASE8_CENTROID_BASE_FEATURES, ...current, source_adaptive: current.source_adaptive ?? centroid.source_adaptive ?? PHASE8_CENTROID_BASE_FEATURES.source_adaptive, public_default_allowed: current.public_default_allowed ?? false });
+  const normalized = { ...centroid, role: centroid.role || role, source_adaptive: centroid.source_adaptive ?? features.source_adaptive, centroid_features: features };
+  return Object.freeze({ ...normalized, centroid_hash_sha256: await hashObject(features) });
+}
 function thresholdFor(maskRecord = {}) {
-  if (isLuzIndexRecord(maskRecord)) return Object.freeze({ ...PHASE8_UNIVERSAL_THRESHOLDS, ...LUZ_INDEX_THRESHOLDS });
-  if (isDromologicalPaulRecord(maskRecord)) return Object.freeze({ ...PHASE8_UNIVERSAL_THRESHOLDS, ...DROMOLOGICAL_PAUL_THRESHOLDS });
-  if (isLuluQuasarRecord(maskRecord)) return Object.freeze({ ...PHASE8_UNIVERSAL_THRESHOLDS, ...LULU_QUASAR_THRESHOLDS, ...LULU_QUASAR_CALIBRATION_OVERRIDES });
-  if (isBlackstarShereeRecord(maskRecord)) return BLACKSTAR_SHEREE_THRESHOLDS;
-  if (isBloopingBlipRecord(maskRecord)) return BLOOPING_BLIP_THRESHOLDS;
-  if (isNolanNeedlerRecord(maskRecord)) return NOLAN_NEEDLER_THRESHOLDS;
-  if (isHarborZoraRecord(maskRecord)) return HARBOR_ZORA_THRESHOLDS;
-  if (isSolStratigraphixRecord(maskRecord)) return SOL_STRATIGRAPHIX_THRESHOLDS;
-  if (isReceiptsQueenieRecord(maskRecord)) return calibrateQueenieThresholds(RECEIPTS_QUEENIE_THRESHOLDS);
-  if (maskRecord.mask_id === 'phase22-jagged-record') return REX_FRACTURA_THRESHOLDS;
-  if (maskRecord.mask_id === 'night-shift-note') return CRYO_CRISTIANO_THRESHOLDS;
-  if (maskRecord.mask_id === 'group-chat-soft') return KEISHA_SOFT_CIRCLE_THRESHOLDS;
-  if (maskRecord.mask_id === 'phase28-transform-to-chatspeak') return GLITCHING_PIXIE_THRESHOLDS;
+  if (isLuzIndexRecord(maskRecord)) return composePhase8Thresholds(LUZ_INDEX_THRESHOLDS);
+  if (isDromologicalPaulRecord(maskRecord)) return composePhase8Thresholds(DROMOLOGICAL_PAUL_THRESHOLDS);
+  if (isLuluQuasarRecord(maskRecord)) return composePhase8Thresholds(LULU_QUASAR_THRESHOLDS, LULU_QUASAR_CALIBRATION_OVERRIDES);
+  if (isBlackstarShereeRecord(maskRecord)) return composePhase8Thresholds(BLACKSTAR_SHEREE_THRESHOLDS);
+  if (isBloopingBlipRecord(maskRecord)) return composePhase8Thresholds(BLOOPING_BLIP_THRESHOLDS);
+  if (isNolanNeedlerRecord(maskRecord)) return composePhase8Thresholds(NOLAN_NEEDLER_THRESHOLDS);
+  if (isHarborZoraRecord(maskRecord)) return composePhase8Thresholds(HARBOR_ZORA_THRESHOLDS);
+  if (isSolStratigraphixRecord(maskRecord)) return composePhase8Thresholds(SOL_STRATIGRAPHIX_THRESHOLDS);
+  if (isReceiptsQueenieRecord(maskRecord)) return composePhase8Thresholds(calibrateQueenieThresholds(RECEIPTS_QUEENIE_THRESHOLDS));
+  if (maskRecord.mask_id === 'phase22-jagged-record') return composePhase8Thresholds(REX_FRACTURA_THRESHOLDS);
+  if (maskRecord.mask_id === 'night-shift-note') return composePhase8Thresholds(CRYO_CRISTIANO_THRESHOLDS);
+  if (maskRecord.mask_id === 'group-chat-soft') return composePhase8Thresholds(KEISHA_SOFT_CIRCLE_THRESHOLDS);
+  if (maskRecord.mask_id === 'phase28-transform-to-chatspeak') return composePhase8Thresholds(GLITCHING_PIXIE_THRESHOLDS);
   return PHASE8_UNIVERSAL_THRESHOLDS;
 }
 function roleForPassport(maskRecord = {}) {
@@ -81,7 +100,7 @@ export async function buildStylometricPassport(maskRecord = {}, options = {}) {
   const thresholds = Object.freeze({ ...thresholdFor(maskRecord), ...(options.thresholds || {}) });
   const role = roleForPassport(maskRecord);
   const centroidRecord = { ...maskRecord, gallery_role: role, intended_role: role };
-  const maskCentroid = role === 'custodial_index' && isLuzIndexRecord(maskRecord)
+  const rawMaskCentroid = role === 'custodial_index' && isLuzIndexRecord(maskRecord)
     ? await buildLuzIndexCentroid(centroidRecord, options.calibrationSamples || [])
     : role === 'public_forum_dromology' && isDromologicalPaulRecord(maskRecord)
       ? await buildDromologicalPaulCentroid(centroidRecord, options.calibrationSamples || [])
@@ -100,6 +119,7 @@ export async function buildStylometricPassport(maskRecord = {}, options = {}) {
                   : role === 'warm_receipts'
                     ? await buildReceiptsQueenieCentroid(centroidRecord, options.calibrationSamples || [])
                     : await buildMaskCentroid(centroidRecord, options.calibrationSamples || []);
+  const maskCentroid = await normalizePhase8CentroidBaseKeys(rawMaskCentroid, role);
   const genericBaseline = await buildGenericAIBaseline(options.genericFixtures || []);
   const featureWeights = Object.freeze({ source_custody: 0.24, mask_fit: 0.2, generic_distance: 0.16, anti_slop: 0.16, human_irregularity: 0.14, sample_reuse: 0.1 });
   const minimumEvidence = Object.freeze({ registry_record_hash_required: true, source_file_required: true, source_index_required: true, raw_sample_text_allowed: false, candidate_text_stored: false, candidate_presence_gate_required: true, numeric_decision_required: true });
