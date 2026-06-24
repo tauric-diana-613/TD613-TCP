@@ -118,3 +118,7 @@ hush-phase8-harbor-zora-fixtures.test.mjs
 hush-phase8-nolan-needler-fixtures.test.mjs
 hush-phase8-blooping-blip-fixtures.test.mjs
 hush-phase8-blackstar-sheree-fixtures.test.mjs
+hush-phase8-lulu-quasar-fixtures.test.mjs
+hush-phase8-forum-pseudonym-fixtures.test.mjs
+hush-phase8-luz-index-fixtures.test.mjs
+hush-phase8-seal-governance.test.mjs
