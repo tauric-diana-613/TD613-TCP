@@ -33,7 +33,8 @@ export function buildPhase8OntologyBindings(extra = {}) {
 export async function buildStylometricPassport(maskRecord = {}, options = {}) {
   const thresholds = Object.freeze({ ...thresholdFor(maskRecord), ...(options.thresholds || {}) });
   const role = roleForPassport(maskRecord);
-  const maskCentroid = await buildMaskCentroid({ ...maskRecord, intended_role: role }, options.calibrationSamples || []);
+  const centroidRecord = { ...maskRecord, gallery_role: role, intended_role: role };
+  const maskCentroid = await buildMaskCentroid(centroidRecord, options.calibrationSamples || []);
   const genericBaseline = await buildGenericAIBaseline(options.genericFixtures || []);
   const featureWeights = Object.freeze({ source_custody: 0.24, mask_fit: 0.2, generic_distance: 0.16, anti_slop: 0.16, human_irregularity: 0.14, sample_reuse: 0.1 });
   const minimumEvidence = Object.freeze({ registry_record_hash_required: true, source_file_required: true, source_index_required: true, raw_sample_text_allowed: false, candidate_text_stored: false, candidate_presence_gate_required: true, numeric_decision_required: true });
