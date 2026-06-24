@@ -11,6 +11,7 @@ import { computeHarborZoraFeatureMetrics, applyHarborZoraDecisionRules } from '.
 import { computeNolanNeedlerFeatureMetrics, applyNolanNeedlerDecisionRules } from './hush-phase8-nolan-needler.js';
 import { computeBloopingBlipFeatureMetrics, applyBloopingBlipDecisionRules } from './hush-phase8-blooping-blip.js';
 import { computeBlackstarShereeFeatureMetrics, applyBlackstarShereeDecisionRules } from './hush-phase8-blackstar-sheree.js';
+import { calibrateBlackstarShereeMetrics } from './hush-phase8-sheree-calibration.js';
 import { calibrateNolanNeedlerMetrics } from './hush-phase8-nolan-calibration.js';
 import { calibrateSolMetrics } from './hush-phase8-qs-calibration-hotfix.js';
 
@@ -106,7 +107,7 @@ async function buildCandidateRealization(maskRef = {}, candidate = '', passport 
   const zoraMetrics = isHarborZoraPassport(passport) ? computeHarborZoraFeatureMetrics(candidateValue, { ...options, sourceText, sourceObligations }) : {};
   const nolanMetrics = isNolanNeedlerPassport(passport) ? calibrateNolanNeedlerMetrics(computeNolanNeedlerFeatureMetrics(candidateValue, { ...options, sourceText, sourceObligations }), candidateValue, options) : {};
   const blipMetrics = isBloopingBlipPassport(passport) ? computeBloopingBlipFeatureMetrics(candidateValue, { ...options, sourceText, sourceObligations }) : {};
-  const shereeMetrics = isBlackstarShereePassport(passport) ? computeBlackstarShereeFeatureMetrics(candidateValue, { ...options, sourceText, sourceObligations }) : {};
+  const shereeMetrics = isBlackstarShereePassport(passport) ? calibrateBlackstarShereeMetrics(computeBlackstarShereeFeatureMetrics(candidateValue, { ...options, sourceText, sourceObligations })) : {};
   const mergedFeatures = Object.freeze({ ...extracted.feature_vector, ...queenieMetrics, ...solMetrics, ...zoraMetrics, ...nolanMetrics, ...blipMetrics, ...shereeMetrics });
   const featureVector = Object.freeze({ ...extracted, feature_vector: mergedFeatures, feature_vector_hash_sha256: await sha256Text(stableStringify(mergedFeatures)) });
   const sourceRetention = scoreSourceObligationRetention(sourceObligations, candidateValue, options.sourceRetention || options.source_retention || {});
