@@ -5,6 +5,7 @@ import { extractSourceObligationSet, scoreSourceObligationRetention } from './hu
 import { buildPhase8NumericDecisionSurface } from './hush-phase8-numeric-decision.js';
 import { buildStylometricPassport, buildPhase8OntologyBindings } from './hush-phase8-stylometric-passport.js';
 import { buildCandidatePresenceGate, buildPhase8EntrypointAssertion } from './hush-phase8-candidate-presence-gate.js';
+import { computeReceiptsQueenieFeatureMetrics, applyReceiptsQueenieDecisionRules } from './hush-phase8-receipts-queenie.js';
 
 export const HUSH_PER_MASK_METRIC_WRAPPER_SCHEMA = 'td613.hush.phase8.metric-passport-wrapper/v1';
 export const HUSH_UNICODE_PERTURBATION_ENVELOPE_SCHEMA = 'td613.hush.phase8.unicode-perturbation-envelope/v1';
@@ -88,7 +89,10 @@ async function buildCandidateRealization(maskRef = {}, candidate = '', passport 
   const sourceObligations = await extractSourceObligationSet(sourceText, sourceObligationOptions);
   const featureOptions = { ...(options.featureVector || options.feature_vector || {}), ...(options.feature_options || {}) };
   const candidateValue = candidateGate.candidate_present ? candidate : '';
-  const featureVector = await extractMaskFeatureVector(candidateValue, featureOptions);
+  const extractedFeatureVector = await extractMaskFeatureVector(candidateValue, featureOptions);
+  const queenieMetrics = passport.role === 'warm_receipts' ? computeReceiptsQueenieFeatureMetrics(candidateValue, { ...options, sourceText, sourceObligations }) : {};
+  const mergedFeatureVector = Object.freeze({ ...extractedFeatureVector.feature_vector, ...queenieMetrics });
+  const featureVector = Object.freeze({ ...extractedFeatureVector, feature_vector: mergedFeatureVector, feature_vector_hash_sha256: await sha256Text(stableStringify(mergedFeatureVector)) });
   const sourceRetention = scoreSourceObligationRetention(sourceObligations, candidateValue, options.sourceRetention || options.source_retention || {});
   const maskFit = scoreCandidateAgainstMask(featureVector, passport.mask_centroid, passport.generic_ai_baseline, options.maskFit || options.mask_fit || {});
   return Object.freeze({
@@ -124,7 +128,7 @@ export async function buildHushPerMaskPacketWithMetricPassport(maskRef = {}, opt
   const unicodeEnvelope = await buildUnicodePerturbationEnvelope(candidate, options);
   const candidateGate = await buildCandidatePresenceGate(candidate, sourceText, { candidate_required: options.candidate_required !== false, missing_candidate_status: options.missing_candidate_status || 'blocked' });
   const candidateParts = await buildCandidateRealization(maskRef, candidate, passport, candidateGate, { ...options, featureVector: { ...(options.featureVector || options.feature_vector || {}), ...unicodeMetrics(unicodeEnvelope) } });
-  const decision = buildPhase8NumericDecisionSurface({ feature_vector: candidateParts.realization.feature_vector, source_retention: candidateParts.realization.source_retention, mask_fit: candidateParts.realization.mask_fit }, passport.tolerance_bands, {
+  let decision = buildPhase8NumericDecisionSurface({ feature_vector: candidateParts.realization.feature_vector, source_retention: candidateParts.realization.source_retention, mask_fit: candidateParts.realization.mask_fit }, passport.tolerance_bands, {
     claim_ceiling_held: true,
     raw_sample_text_included: false,
     public_default_allowed: false,
@@ -137,6 +141,7 @@ export async function buildHushPerMaskPacketWithMetricPassport(maskRef = {}, opt
     source_obligation_gate_status: candidateParts.sourceObligations.source_obligation_status || candidateParts.realization.source_retention.source_obligation_gate_status,
     threshold_version: passport.passport_tag
   });
+  if (passport.role === 'warm_receipts') decision = applyReceiptsQueenieDecisionRules(decision, candidateParts.realization.feature_vector, passport.tolerance_bands);
   const ontology = buildPhase8OntologyBindings();
   const wrapper = {
     schema: HUSH_PER_MASK_METRIC_WRAPPER_SCHEMA,
