@@ -13,10 +13,17 @@ import { calibrateQueenieThresholds } from './hush-phase8-qs-calibration-hotfix.
 export const HUSH_STYLOMETRIC_PASSPORT_SCHEMA = 'td613.hush.phase8.stylometric-passport/v1';
 export const HUSH_ONTOLOGY_BINDINGS_SCHEMA = 'td613.hush.phase8.ontology-bindings/v1';
 
+const LULU_QUASAR_CALIBRATION_OVERRIDES = Object.freeze({
+  blue_orange_syntax_score_min: 0.28,
+  bizarre_relief_score_min: 0.2,
+  function_word_signature_similarity_max: 0.62,
+  punctuation_fingerprint_retention_max: 0.48
+});
+
 function asArray(value) { return Array.isArray(value) ? value : []; }
 async function hashObject(value) { return sha256Text(stableStringify(value == null ? null : value)); }
 function thresholdFor(maskRecord = {}) {
-  if (isLuluQuasarRecord(maskRecord)) return LULU_QUASAR_THRESHOLDS;
+  if (isLuluQuasarRecord(maskRecord)) return Object.freeze({ ...PHASE8_UNIVERSAL_THRESHOLDS, ...LULU_QUASAR_THRESHOLDS, ...LULU_QUASAR_CALIBRATION_OVERRIDES });
   if (isBlackstarShereeRecord(maskRecord)) return BLACKSTAR_SHEREE_THRESHOLDS;
   if (isBloopingBlipRecord(maskRecord)) return BLOOPING_BLIP_THRESHOLDS;
   if (isNolanNeedlerRecord(maskRecord)) return NOLAN_NEEDLER_THRESHOLDS;
