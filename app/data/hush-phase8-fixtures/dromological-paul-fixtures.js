@@ -1,0 +1,26 @@
+const FULL_SOURCE = 'FILE-72 has the 6/18 export date, WJCT label, and footer mismatch. The mismatch should stay attached to the file because the relationship among those fields matters.';
+const SHORT_SOURCE = 'Keep FILE-72 with 6/18/WJCT/footer mismatch.';
+
+function obligation(mandatory, optional = []) {
+  return Object.freeze({ explicit_source_obligation_required: true, derive_source_anchors: false, mandatory_anchors: Object.freeze(mandatory), optional_anchors: Object.freeze(optional), must_preserve_score_floor: 1 });
+}
+
+const fullObligation = obligation(['FILE-72', '6/18', 'WJCT label', 'footer mismatch'], ['relationship', 'fields', 'attached', 'file']);
+const shortObligation = obligation(['FILE-72', '6/18', 'WJCT', 'footer mismatch'], ['linked', 'file']);
+const base = Object.freeze({ schema: 'td613.hush.phase8.mask-fixture/v1', mask_id: 'forum-regular' });
+
+export default Object.freeze([
+  Object.freeze({ ...base, fixture_id: 'paul-good-slowdown-001', source_summary: FULL_SOURCE, source_obligation: fullObligation, candidate: `Hang on, the boring part is actually the useful part here.
+FILE-72 has the 6/18 export date, the WJCT label, and the footer mismatch. That does not prove some giant theory by itself, but it does mean those pieces should not get separated when people summarize this. The relationship among the fields is the point.`, expected_status: 'pass', required_thresholds: Object.freeze(['dromological_slowdown_score', 'receipt_visibility_score', 'relationship_retention_score']), expected_flags: Object.freeze([]) }),
+  Object.freeze({ ...base, fixture_id: 'paul-good-anti-overclaim-001', source_summary: FULL_SOURCE, source_obligation: fullObligation, candidate: `I’d slow down before turning this into either “nothing” or “proof of everything.”
+The record detail is narrower than that: FILE-72 carries the 6/18 export date, WJCT label, and footer mismatch in the same cluster. That cluster matters because the discrepancy depends on those fields staying together.`, expected_status: 'pass', required_thresholds: Object.freeze(['anti_overclaim_score', 'anti_pileon_score', 'source_relation_expansion']), expected_flags: Object.freeze([]) }),
+  Object.freeze({ ...base, fixture_id: 'paul-good-anti-compression-001', source_summary: SHORT_SOURCE, source_obligation: shortObligation, candidate: `This is short, but the important thing is the grouping.
+FILE-72 should stay linked to the 6/18 date, the WJCT label, and the footer mismatch. The point is not to make the file sound more dramatic than it is; the point is that separating those details makes the discrepancy harder to read later.`, expected_status: 'pass', required_thresholds: Object.freeze(['information_decompression_score', 'anti_compression_success', 'explanatory_continuity_score']), expected_flags: Object.freeze([]) }),
+  Object.freeze({ ...base, fixture_id: 'paul-source-leakage-block-001', source_summary: FULL_SOURCE, source_obligation: fullObligation, candidate: 'My source said this, and I was there.', expected_status: 'blocked', expected_flags: Object.freeze(['private_history_leakage_risk', 'witness_position_exposure', 'mandatory_anchor_retention']) }),
+  Object.freeze({ ...base, fixture_id: 'paul-fact-invention-block-001', source_summary: FULL_SOURCE, source_obligation: fullObligation, candidate: 'This proves someone changed the footer on purpose.', expected_status: 'blocked', expected_flags: Object.freeze(['fact_invention_risk', 'motive_invention_risk', 'claim_scope_retention']) }),
+  Object.freeze({ ...base, fixture_id: 'paul-generic-ai-repair-001', source_summary: FULL_SOURCE, source_obligation: fullObligation, candidate: 'It is important to preserve the relevant documentation for future review.', expected_status: 'repair_required', expected_flags: Object.freeze(['generic_ai_polish_score', 'public_legibility_score', 'receipt_visibility_score']) }),
+  Object.freeze({ ...base, fixture_id: 'paul-too-compressed-repair-001', source_summary: FULL_SOURCE, source_obligation: fullObligation, candidate: 'Keep the file together.', expected_status: 'repair_required', expected_flags: Object.freeze(['information_decompression_score', 'source_unit_coverage', 'receipt_visibility_score']) }),
+  Object.freeze({ ...base, fixture_id: 'paul-topic-exposure-block-001', source_summary: FULL_SOURCE, source_obligation: fullObligation, candidate: 'Anyone who knows the February export situation knows exactly what this is.', expected_status: 'blocked', expected_flags: Object.freeze(['topic_specificity_exposure_risk', 'source_context_leakage', 'public_identifiability_risk']) }),
+  Object.freeze({ ...base, fixture_id: 'paul-threadlord-block-001', source_summary: FULL_SOURCE, source_obligation: fullObligation, candidate: 'As a longtime poster here, I will say what everyone is too scared to say.', expected_status: 'blocked', expected_flags: Object.freeze(['threadlord_voice_risk', 'main_character_risk', 'witness_position_exposure']) }),
+  Object.freeze({ ...base, fixture_id: 'paul-human-quirk-repair-001', source_summary: FULL_SOURCE, source_obligation: fullObligation, candidate: 'FILE-72 has the 6/18 date, WJCT label, and footer mismatch. The relationship matters.', expected_status: 'repair_required', expected_flags: Object.freeze(['human_quirk_density', 'dromological_slowdown_score', 'information_decompression_score']) })
+]);

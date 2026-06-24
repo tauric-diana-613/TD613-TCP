@@ -177,16 +177,23 @@ const hushMasks = [
   },
   {
     id: 'forum-regular',
-    label: 'Paul Publica',
+    label: 'Dromological Paul',
     family: 'forum pseudonym',
-    description: 'Paul has seen page three eat the evidence before breakfast. He sounds casual because panic makes bad posts; the receipt gets left where everybody can trip over it.',
-    intendedUse: 'Pseudonymous public notes that need ordinary legibility.',
-    riskTell: 'Topic specificity can become more identifying than style.',
-    sampleSeed: 'Forum-regular pattern: sound casual, name the boring detail, and keep the linked pieces together for later readers.',
+    description: 'Dromological Paul speaks from behind an avatar like the future historian in the comment thread who slows the room down. Candid, intelligent, slightly imperfect, and human enough to make people stop scrolling; the receipt stays in public view without dragging the witness into the post.',
+    intendedUse: 'Pseudonymous public explanations that need ordinary legibility, information decompression, and thread-level slowdown without adding facts.',
+    riskTell: 'Repeatable quirks can become a pseudonym fingerprint; topic specificity can identify more than style.',
+    sampleSeed: 'Dromological forum pattern: slow the thread, explain the boring hinge, keep the linked pieces together, and do not add facts.',
     samplePolicy: SAMPLE_POLICY,
     profileTargets: {},
-    transformHints: { sentence: 'mid', ornament: 'medium', warmth: 'medium', custody: 'medium', desiredMoves: ['casual public legibility', 'boring detail made visible', 'receipt left in plain view'], avoidMoves: ['topic leakage', 'page-three repetition', 'sample phrase reuse'] },
-    pressureWarnings: ['watch topic leakage', 'do-not-reuse-sample-wording']
+    transformHints: {
+      sentence: 'mid-long',
+      ornament: 'low-medium',
+      warmth: 'medium',
+      custody: 'high',
+      desiredMoves: ['public forum legibility', 'dromological slowdown', 'information decompression without fact expansion', 'repeatable mask-level quirks', 'receipt left in plain view'],
+      avoidMoves: ['topic leakage', 'private history leakage', 'threadlord voice', 'generic assistant polish', 'sample phrase reuse']
+    },
+    pressureWarnings: ['watch topic leakage', 'watch pseudonym fingerprint becoming source leakage', 'do-not-reuse-sample-wording']
   },
   {
     id: 'clipboard',
