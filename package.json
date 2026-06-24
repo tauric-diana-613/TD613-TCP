@@ -43,7 +43,25 @@
     "test:trainer": "node tests/trainer-lab.test.mjs",
     "test:legacy:formulas": "node tests/formulas.test.mjs",
     "model:au:create": "ollama create AU -f infra/ollama/AU.Modelfile",
-    "model:au:probe": "ollama run AU"
+    "audit:au": "node scripts/run-au-signal-audit.mjs",
+    "amari:check": "node scripts/validate-amari-packet.mjs",
+    "forge:ontology": "node scripts/forge-ontology.mjs && npm run sync:browser-engine",
+    "check:generated-sync": "node scripts/check-generated-sync.mjs",
+    "sync:browser-engine": "node scripts/generate-browser-engine.mjs",
+    "sync:browser-diagnostics": "node scripts/generate-browser-diagnostics.mjs",
+    "sync:defaults-json": "node scripts/generate-defaults-json.mjs",
+    "sync:personas-json": "node scripts/generate-personas-json.mjs",
+    "sync:retrieval-fixtures": "node scripts/generate-retrieval-fixtures.mjs",
+    "sync:generated": "npm run sync:browser-engine && npm run sync:browser-diagnostics && npm run sync:defaults-json && npm run sync:personas-json && npm run sync:retrieval-fixtures",
+    "aperture:compare": "node scripts/aperture-compare.mjs",
+    "aperture:stage": "node scripts/aperture-stage.mjs",
+    "aperture:promote-staged": "node scripts/aperture-promote-staged.mjs",
+    "aperture:export-downloads": "node scripts/aperture-export-downloads.mjs",
+    "aperture:check-sync": "node scripts/aperture-check-sync.mjs",
+    "test:aperture-sync-lane": "node tests/aperture-sync-lane.test.mjs",
+    "diag:battery": "node scripts/run-diagnostics-battery.mjs",
+    "validate": "node scripts/validate-samples.mjs"
   },
-  "dependencies": {}
+  "devDependencies": { "jsdom": "^29.1.0" },
+  "dependencies": { "@vercel/analytics": "^2.0.1", "@vercel/speed-insights": "^2.0.0" }
 }
