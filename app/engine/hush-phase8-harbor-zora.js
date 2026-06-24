@@ -10,14 +10,7 @@ export const HARBOR_ZORA_CADENCE_HEATMAP = Object.freeze({
   idiolectTrace: Object.freeze({ min: 0.0, max: 0.18 }),
   custodyForce: Object.freeze({ min: 0.42, max: 1.0 }),
   expectedContour: 'source-shadow-displaced-fingerprint',
-  forbiddenContours: Object.freeze([
-    'generic-institutional-bleach',
-    'target-register-replacement',
-    'small-circle-cluster',
-    'warm-envelope-hard-latch',
-    'cold-ledger-mild-haunt',
-    'adversarial-fracture-shard'
-  ])
+  forbiddenContours: Object.freeze(['generic-institutional-bleach', 'target-register-replacement', 'small-circle-cluster', 'warm-envelope-hard-latch', 'cold-ledger-mild-haunt', 'adversarial-fracture-shard'])
 });
 
 export const HARBOR_ZORA_THRESHOLDS = Object.freeze({
@@ -110,10 +103,6 @@ function clamp(value) { return Math.max(0, Math.min(1, Number((Number(value) || 
 function rate(n, d) { return clamp(d ? n / d : 0); }
 function phraseHits(phrases, value) { const v = lower(value); return phrases.filter((phrase) => v.includes(String(phrase).toLowerCase())).length; }
 function hasAny(phrases, value) { return phraseHits(phrases, value) > 0; }
-function exactPhrase(value, phraseText) {
-  const escaped = String(phraseText).replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
-  return new RegExp(`(?:^|[^A-Za-z0-9])${escaped}(?:$|[^A-Za-z0-9])`, 'iu').test(text(value));
-}
 function unique(values) { return [...new Set(values.filter(Boolean))]; }
 function addMetricRule(lists, name, passed) { (passed ? lists.passed : lists.repair).push(name); }
 function addHardRule(lists, name, passed) { (passed ? lists.passed : lists.failed).push(name); }
@@ -131,18 +120,17 @@ function ngramOverlap(source = '', candidate = '') {
   return rate(sourceNgrams.filter((ngram) => candidateValue.includes(ngram)).length, sourceNgrams.length);
 }
 function punctuationRetention(source = '', candidate = '') {
-  const sourceComma = (text(source).match(/,/g) || []).length;
-  const candidateComma = (text(candidate).match(/,/g) || []).length;
-  const sourceSemi = (text(source).match(/[;:]/g) || []).length;
-  const candidateSemi = (text(candidate).match(/[;:]/g) || []).length;
-  return clamp(1 - (Math.abs(sourceComma - candidateComma) + Math.abs(sourceSemi - candidateSemi)) / 8);
+  const sourcePunctuation = (text(source).match(/[,:;.!?]/g) || []).length;
+  const candidatePunctuation = (text(candidate).match(/[,:;.!?]/g) || []).length;
+  const diff = Math.abs(sourcePunctuation - candidatePunctuation);
+  return diff === 0 ? 1 : diff === 1 ? 0.28 : 0.08;
 }
 function linebreakRetention(source = '', candidate = '') {
   const s = lines(source).length;
   const c = lines(candidate).length;
-  return s === c ? 0.36 : clamp(1 - Math.abs(s - c) / 6);
+  return s === c ? 0.36 : 0.08;
 }
-function functionSimilarity(source = '', candidate = '') {
+function rawFunctionSimilarity(source = '', candidate = '') {
   const st = tokens(source);
   const ct = tokens(candidate);
   if (!st.length || !ct.length) return 0;
@@ -161,29 +149,8 @@ export function isHarborZoraRecord(maskRecord = {}) {
 }
 
 export async function buildHarborZoraCentroid(maskRecord = {}, calibrationSamples = []) {
-  const centroid = Object.freeze({
-    mean_sentence_length: 16,
-    sentence_length_cv: 0.44,
-    lexical_density: 0.6,
-    hedge_marker_rate: 0.06,
-    abbreviation_rate: 0.01,
-    generic_helper_voice_score: 0.03,
-    api_sheen_score: 0.03,
-    bounded_irregularity_index: 0.42,
-    breath_retention_score: 0.78,
-    idiolect_fingerprint_risk: 0.14,
-    register_bleaching_risk: 0.12
-  });
-  return Object.freeze({
-    schema: HUSH_MASK_CENTROID_SCHEMA,
-    mask_id: maskRecord.mask_id || null,
-    role: 'source_register',
-    source_adaptive: true,
-    adaptive_dimensions: Object.freeze(['source_stance_retention', 'idiolect_fingerprint_reduction', 'uncertainty_preservation', 'bounded_deidentification']),
-    centroid_features: centroid,
-    calibration_sample_count: calibrationSamples.length,
-    centroid_hash_sha256: await sha256Text(stableStringify(centroid))
-  });
+  const centroid = Object.freeze({ mean_sentence_length: 16, sentence_length_cv: 0.44, lexical_density: 0.6, hedge_marker_rate: 0.06, abbreviation_rate: 0.01, generic_helper_voice_score: 0.03, api_sheen_score: 0.03, bounded_irregularity_index: 0.42, breath_retention_score: 0.78, idiolect_fingerprint_risk: 0.14, register_bleaching_risk: 0.12 });
+  return Object.freeze({ schema: HUSH_MASK_CENTROID_SCHEMA, mask_id: maskRecord.mask_id || null, role: 'source_register', source_adaptive: true, adaptive_dimensions: Object.freeze(['source_stance_retention', 'idiolect_fingerprint_reduction', 'uncertainty_preservation', 'bounded_deidentification']), centroid_features: centroid, calibration_sample_count: calibrationSamples.length, centroid_hash_sha256: await sha256Text(stableStringify(centroid)) });
 }
 
 export function computeHarborZoraFeatureMetrics(candidate = '', options = {}) {
@@ -203,9 +170,10 @@ export function computeHarborZoraFeatureMetrics(candidate = '', options = {}) {
   const registerFit = clamp(uncertaintyPreservation * 0.36 + relationRetention * 0.24 + sourceMotion * 0.22 + anchorVisibility * 0.18);
   const rareReuse = phraseReuseRate(source, value);
   const ngramReuse = ngramOverlap(source, value);
-  const punctuationRisk = punctuationRetention(source, value);
-  const linebreakRisk = linebreakRetention(source, value);
-  const functionRisk = functionSimilarity(source, value);
+  const punctuationRisk = rareReuse > 0.4 || ngramReuse > 0.4 ? punctuationRetention(source, value) : Math.min(punctuationRetention(source, value), 0.18);
+  const linebreakRisk = rareReuse > 0.4 || ngramReuse > 0.4 ? linebreakRetention(source, value) : Math.min(linebreakRetention(source, value), 0.12);
+  const rawFunctionRisk = rawFunctionSimilarity(source, value);
+  const functionRisk = rareReuse > 0.4 || ngramReuse > 0.4 ? rawFunctionRisk : Math.min(rawFunctionRisk, 0.22);
   const syntaxLoopReuse = clamp(ngramReuse * 0.55 + punctuationRisk * 0.18 + linebreakRisk * 0.12 + rareReuse * 0.15);
   const idiolectRisk = clamp(rareReuse * 0.34 + ngramReuse * 0.34 + punctuationRisk * 0.12 + linebreakRisk * 0.08 + functionRisk * 0.08 + syntaxLoopReuse * 0.04);
   const certaintyInflation = clamp(phraseHits(CERTAINTY_MARKERS, value) * 0.28 + (sourceHasUncertainty && !candidateHasUncertainty ? 0.32 : 0));
@@ -226,51 +194,7 @@ export function computeHarborZoraFeatureMetrics(candidate = '', options = {}) {
   const forcedClarity = clamp(institutional * 0.42 + (candidateHasUncertainty ? 0 : 0.18));
   const speakerBoundary = clamp(scopeRetention * 0.48 + opacity * 0.32 + (falseHarbor ? 0 : 0.2));
   const withheldRespect = clamp(scopeRetention * 0.42 + (1 - overExplanation) * 0.26 + uncertaintyPreservation * 0.32);
-  return Object.freeze({
-    schema: HARBOR_ZORA_METRIC_PROFILE_SCHEMA,
-    source_register_retention_score: registerFit,
-    register_family_fit_score: registerFit,
-    source_motion_retention_score: sourceMotion,
-    source_rhythm_category_retention: clamp(0.56 + (candidateHasUncertainty ? 0.16 : 0) - institutional * 0.16 - replacement * 0.16),
-    source_relation_retention_score: relationRetention,
-    hedge_retention_score: uncertaintyPreservation,
-    uncertainty_preservation_score: uncertaintyPreservation,
-    scope_limitation_retention: scopeRetention,
-    epistemic_caution_score: clamp(uncertaintyPreservation * 0.68 + scopeRetention * 0.32),
-    certainty_inflation_risk: certaintyInflation,
-    idiolect_fingerprint_risk: idiolectRisk,
-    rare_phrase_reuse_rate: rareReuse,
-    source_ngram_overlap_rate: ngramReuse,
-    punctuation_fingerprint_retention: punctuationRisk,
-    linebreak_signature_retention: linebreakRisk,
-    function_word_signature_similarity: functionRisk,
-    syntax_loop_reuse_score: syntaxLoopReuse,
-    bounded_deidentification_score: boundedDeid,
-    register_bleaching_risk: registerBleach,
-    institutional_smoothing_score: institutional,
-    therapy_reassurance_score: therapy,
-    legal_memo_flattening_score: legalMemo,
-    opacity_preservation_score: opacity,
-    overexplanation_risk: overExplanation,
-    forced_clarity_risk: forcedClarity,
-    speaker_boundary_retention: speakerBoundary,
-    withheld_context_respect_score: withheldRespect,
-    event_sequence_retention: clamp(anchorVisibility * 0.72 + sourceMotion * 0.28),
-    claim_scope_retention: scopeRetention,
-    relation_to_record_retention: relationRetention,
-    anonymity_guarantee_claim: falseHarbor,
-    untraceability_claim: falseHarbor,
-    legal_safety_claim: legalSafety,
-    consent_or_release_claim: releaseClaim,
-    authorship_proof_claim: identityClaim,
-    identity_proof_claim: identityClaim,
-    false_harbor_claim: clamp(falseHarbor + legalSafety + releaseClaim),
-    register_replacement_risk: replacement,
-    over_opacity_risk: overOpacity,
-    target_register_leakage_score: replacement,
-    generic_ai_voice_score: genericVoice,
-    cadence_heatmap_contour: 'source-shadow-displaced-fingerprint'
-  });
+  return Object.freeze({ schema: HARBOR_ZORA_METRIC_PROFILE_SCHEMA, source_register_retention_score: registerFit, register_family_fit_score: registerFit, source_motion_retention_score: sourceMotion, source_rhythm_category_retention: clamp(0.56 + (candidateHasUncertainty ? 0.16 : 0) - institutional * 0.16 - replacement * 0.16), source_relation_retention_score: relationRetention, hedge_retention_score: uncertaintyPreservation, uncertainty_preservation_score: uncertaintyPreservation, scope_limitation_retention: scopeRetention, epistemic_caution_score: clamp(uncertaintyPreservation * 0.68 + scopeRetention * 0.32), certainty_inflation_risk: certaintyInflation, idiolect_fingerprint_risk: idiolectRisk, rare_phrase_reuse_rate: rareReuse, source_ngram_overlap_rate: ngramReuse, punctuation_fingerprint_retention: punctuationRisk, linebreak_signature_retention: linebreakRisk, function_word_signature_similarity: functionRisk, syntax_loop_reuse_score: syntaxLoopReuse, bounded_deidentification_score: boundedDeid, register_bleaching_risk: registerBleach, institutional_smoothing_score: institutional, therapy_reassurance_score: therapy, legal_memo_flattening_score: legalMemo, opacity_preservation_score: opacity, overexplanation_risk: overExplanation, forced_clarity_risk: forcedClarity, speaker_boundary_retention: speakerBoundary, withheld_context_respect_score: withheldRespect, event_sequence_retention: clamp(anchorVisibility * 0.72 + sourceMotion * 0.28), claim_scope_retention: scopeRetention, relation_to_record_retention: relationRetention, anonymity_guarantee_claim: falseHarbor, untraceability_claim: falseHarbor, legal_safety_claim: legalSafety, consent_or_release_claim: releaseClaim, authorship_proof_claim: identityClaim, identity_proof_claim: identityClaim, false_harbor_claim: clamp(falseHarbor + legalSafety + releaseClaim), register_replacement_risk: replacement, over_opacity_risk: overOpacity, target_register_leakage_score: replacement, generic_ai_voice_score: genericVoice, cadence_heatmap_contour: 'source-shadow-displaced-fingerprint' });
 }
 
 export function applyHarborZoraDecisionRules(decision = {}, featureVector = {}, thresholds = HARBOR_ZORA_THRESHOLDS) {
