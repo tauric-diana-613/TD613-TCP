@@ -431,6 +431,35 @@ export function buildPhase7SafeHarborCustodyHandoff(registry = {}) {
     raw_sample_export_allowed: false,
     claim_ceiling_status: 'held',
     phase8_ready_count: summarizePhase7RegistryForPhase8(registry).ready_count,
+    custody_facts_only: true,
     notes: Object.freeze(['gallery registry is a mask accession ledger, not an identity or Safe Harbor issuance ledger'])
   });
+}
+
+export async function replayHushMaskGalleryRegistryHashes(registry = {}) {
+  const reasons = [];
+  if (!isSha256(registry.registry_hash_sha256)) reasons.push('registry_hash_sha256 malformed');
+  if (!isSha256(registry.hash_replay?.registry_hash_sha256)) reasons.push('hash_replay.registry_hash_sha256 malformed');
+  if (!isSha256(registry.hash_replay?.hash_topology_registry_hash_sha256)) reasons.push('hash_topology registry hash malformed');
+  for (const record of asArray(registry.records)) {
+    const expected = await hashObject(recordHashPreimage(record));
+    if (record.record_hash_sha256 !== expected) reasons.push(`record hash mismatch: ${record.mask_id}`);
+  }
+  const expectedRegistryHash = await hashObject(registryPreimage(registry));
+  if (registry.registry_hash_sha256 !== expectedRegistryHash) reasons.push('registry hash mismatch');
+  if (registry.hash_replay?.registry_hash_sha256 !== expectedRegistryHash) reasons.push('hash replay registry hash mismatch');
+  if (registry.hash_replay?.hash_topology_registry_hash_sha256 !== expectedRegistryHash) reasons.push('hash topology registry hash mismatch');
+  const hasOnlyHash = Boolean(registry.registry_hash_sha256) && !registry.records && !registry.canonical_cohort;
+  if (hasOnlyHash) reasons.push('hash-only registry blocked');
+  return Object.freeze({
+    schema: 'td613.hush.phase7.hash-replay-result/v1',
+    status: reasons.length ? 'failed' : 'passed',
+    refusal_reasons: unique(reasons),
+    expected_registry_hash_sha256: expectedRegistryHash,
+    hash_only_registry_blocked: true
+  });
+}
+
+if (typeof window !== 'undefined') {
+  window.TD613_HUSH_MASK_GALLERY_REGISTRY = Object.freeze({ HUSH_MASK_GALLERY_REGISTRY_SCHEMA, HUSH_MASK_REGISTRY_RECORD_SCHEMA, HUSH_MASK_GALLERY_COLLISION_SCHEMA, HUSH_MASK_GALLERY_PHASE, HUSH_MASK_GALLERY_REGISTRY_VERSION, CANONICAL_THIRTEEN_COUNT, HUSH_MASK_REGISTRY_CLAIM_CEILING, buildHushMaskGalleryRegistry, buildHushMaskRegistryRecord, classifyHushMaskCohort, detectHushMaskGalleryCollisions, applyHushMaskCollisionPosture, decideHushMaskRegistryStatus, summarizePhase7RegistryForPhase8, buildPhase7SafeHarborCustodyHandoff, replayHushMaskGalleryRegistryHashes });
 }
