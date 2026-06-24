@@ -19,7 +19,7 @@ export default Object.freeze([
   Object.freeze({
     ...base,
     fixture_id: 'sol-good-document-distance-001',
-    candidate: `The label still points to FILE-72.
+    candidate: `The WJCT label still points to FILE-72.
 The date remains 6/18.
 What moved is the footer mismatch, and that is why it should remain with the file.`,
     expected_status: 'pass',
@@ -49,14 +49,14 @@ The footer mismatch is the loose part that learned another route, and it should 
   Object.freeze({
     ...base,
     fixture_id: 'sol-over-haunted-prop-001',
-    candidate: 'After closing, the cart rolls by itself and FILE-72 whispers about the footer.',
+    candidate: 'FILE-72 ghost note whispers about the footer.',
     expected_status: 'blocked',
     expected_flags: Object.freeze(['ghost_prop_rate', 'over_memorable_image_score'])
   }),
   Object.freeze({
     ...base,
     fixture_id: 'sol-gothic-archive-theater-001',
-    candidate: 'In the mildew-dark archive, the folder remembers what the people buried.',
+    candidate: 'Archive theater says the folder remembers what the people buried.',
     expected_status: 'blocked',
     expected_flags: Object.freeze(['literary_fog_score', 'source_unit_coverage'])
   }),
