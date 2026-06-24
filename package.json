@@ -23,7 +23,7 @@
     "test:hush:phase7": "node tests/hush-phase7-mask-gallery-registry.test.mjs",
     "test:hush:phase8:step0": "node tests/hush-phase8-step0-human-stylometric-bench.test.mjs",
     "test:hush:phase8:hard-metrics": "node tests/hush-phase8-hard-metric-gate.test.mjs && node tests/hush-phase8-stylometric-passport.test.mjs && node tests/hush-phase8-source-obligation-retention.test.mjs && node tests/hush-phase8-glitching-pixie-metrics.test.mjs",
-    "test:hush:phase8:gate": "node tests/hush-phase8-candidate-presence-gate.test.mjs && node tests/hush-phase8-wrapper-only-entrypoint.test.mjs && node tests/hush-phase8-generic-ai-baseline-fixture-bank.test.mjs && node tests/hush-phase8-glitching-pixie-gold-fixtures.test.mjs && node tests/hush_phase8_source_obligation_check.mjs && node tests/hush-phase8-keisha-soft-circle-fixtures.test.mjs && node tests/hush-phase8-handoff-fixtures.test.mjs && node tests/hush-phase8-rex-fractura-fixtures.test.mjs && node tests/hush-phase8-receipts-queenie-fixtures.test.mjs && node tests/hush-phase8-sol-stratigraphix-fixtures.test.mjs",
+    "test:hush:phase8:gate": "node tests/hush-phase8-candidate-presence-gate.test.mjs && node tests/hush-phase8-wrapper-only-entrypoint.test.mjs && node tests/hush-phase8-generic-ai-baseline-fixture-bank.test.mjs && node tests/hush-phase8-glitching-pixie-gold-fixtures.test.mjs && node tests/hush_phase8_source_obligation_check.mjs && node tests/hush-phase8-keisha-soft-circle-fixtures.test.mjs && node tests/hush-phase8-handoff-fixtures.test.mjs && node tests/hush-phase8-rex-fractura-fixtures.test.mjs && node tests/hush-phase8-receipts-queenie-fixtures.test.mjs && node tests/hush-phase8-sol-stratigraphix-fixtures.test.mjs && node tests/hush-phase8-harbor-zora-fixtures.test.mjs",
     "test:hush:phase8": "node tests/hush-phase8-step0-human-stylometric-bench.test.mjs && node tests/hush-phase8-per-mask-packet.test.mjs && npm run test:hush:phase8:hard-metrics && npm run test:hush:phase8:gate",
     "test:release": "node tests/release-manifest.test.mjs && node tests/docs-surface.test.mjs && node tests/release-hardening.test.mjs && node tests/release-plumbing.test.mjs && node tests/vercel-deploy-hygiene.test.mjs && node tests/amari-patch-lane.test.mjs",
     "test:safe-harbor": "node tests/td613-flight-mobile-layout.test.mjs && node tests/safe-harbor-shi.test.mjs && node tests/safe-harbor-stylometry-v3.test.mjs && node tests/safe-harbor-phase4-authority.test.mjs && node tests/safe-harbor-phase5-replay-hardening.test.mjs && node tests/safe-harbor-phase6-native-spine.test.mjs && node tests/safe-harbor-batch-seal.test.mjs && node tests/station-pages.test.mjs && node tests/operator-receipt.test.mjs",
@@ -43,25 +43,7 @@
     "test:trainer": "node tests/trainer-lab.test.mjs",
     "test:legacy:formulas": "node tests/formulas.test.mjs",
     "model:au:create": "ollama create AU -f infra/ollama/AU.Modelfile",
-    "audit:au": "node scripts/run-au-signal-audit.mjs",
-    "amari:check": "node scripts/validate-amari-packet.mjs",
-    "forge:ontology": "node scripts/forge-ontology.mjs && npm run sync:browser-engine",
-    "check:generated-sync": "node scripts/check-generated-sync.mjs",
-    "sync:browser-engine": "node scripts/generate-browser-engine.mjs",
-    "sync:browser-diagnostics": "node scripts/generate-browser-diagnostics.mjs",
-    "sync:defaults-json": "node scripts/generate-defaults-json.mjs",
-    "sync:personas-json": "node scripts/generate-personas-json.mjs",
-    "sync:retrieval-fixtures": "node scripts/generate-retrieval-fixtures.mjs",
-    "sync:generated": "npm run sync:browser-engine && npm run sync:browser-diagnostics && npm run sync:defaults-json && npm run sync:personas-json && npm run sync:retrieval-fixtures",
-    "aperture:compare": "node scripts/aperture-compare.mjs",
-    "aperture:stage": "node scripts/aperture-stage.mjs",
-    "aperture:promote-staged": "node scripts/aperture-promote-staged.mjs",
-    "aperture:export-downloads": "node scripts/aperture-export-downloads.mjs",
-    "aperture:check-sync": "node scripts/aperture-check-sync.mjs",
-    "test:aperture-sync-lane": "node tests/aperture-sync-lane.test.mjs",
-    "diag:battery": "node scripts/run-diagnostics-battery.mjs",
-    "validate": "node scripts/validate-samples.mjs"
+    "model:au:probe": "ollama run AU"
   },
-  "devDependencies": { "jsdom": "^29.1.0" },
-  "dependencies": { "@vercel/analytics": "^2.0.1", "@vercel/speed-insights": "^2.0.0" }
+  "dependencies": {}
 }
