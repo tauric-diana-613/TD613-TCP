@@ -84,8 +84,8 @@ export const DROMOLOGICAL_PAUL_THRESHOLDS = Object.freeze({
 
 const DEFAULT_ANCHORS = ['FILE-72', '6/18', 'WJCT label', 'footer mismatch'];
 const SLOWDOWN = ['hang on', 'slow down', 'slow this down', 'before turning this', 'before anyone', 'this is short', 'the important thing'];
-const ANTI_OVERCLAIM = ['does not prove', 'not prove', 'not proof of everything', 'not nothing', 'narrower than that', 'not to make', 'not dramatic', 'whole story'];
-const RELATION = ['relationship', 'fields', 'pieces', 'cluster', 'grouping', 'linked', 'separated', 'together', 'discrepancy depends'];
+const ANTI_OVERCLAIM = ['does not prove', 'not prove', 'not proof of everything', 'proof of everything', 'not nothing', 'nothing', 'narrower than that', 'not to make', 'not dramatic', 'whole story'];
+const RELATION = ['relationship', 'fields', 'pieces', 'cluster', 'grouping', 'linked', 'separated', 'together', 'discrepancy depends', 'summarize', 'summary'];
 const FORUM = ['hang on', 'i’d slow down', "i'd slow down", 'the boring part', 'the useful part', 'people summarize', 'later readers', 'the point is', 'actually'];
 const QUIRK = ['hang on', 'boring part', 'giant theory', 'either', 'nothing', 'proof of everything', 'short, but', 'later readers', ';'];
 const GENERIC = ['it is important to preserve', 'relevant documentation', 'future review', 'documentation indicates', 'accordingly', 'formal review'];
@@ -171,6 +171,19 @@ export function isDromologicalPaulRecord(maskRecord = {}) {
 export async function buildDromologicalPaulCentroid(maskRecord = {}, calibrationSamples = []) {
   const centroid = Object.freeze({
     source_adaptive: true,
+    mean_sentence_length: 22,
+    sentence_length_cv: 0.58,
+    lexical_density: 0.64,
+    hedge_marker_rate: 0.04,
+    abbreviation_rate: 0.02,
+    generic_helper_voice_score: 0.04,
+    api_sheen_score: 0.04,
+    bounded_irregularity_index: 0.46,
+    breath_retention_score: 0.56,
+    mask_breath_score: 0.56,
+    imperfection_budget_used: 0.34,
+    rhythm_asymmetry_score: 0.32,
+    nonuniformity_without_damage: 0.56,
     public_legibility_score: 0.82,
     ordinary_forum_cadence_score: 0.76,
     dromological_slowdown_score: 0.72,
@@ -205,12 +218,13 @@ export function computeDromologicalPaulFeatureMetrics(candidate = '', options = 
   const publicLegibility = clamp((tokenCount >= 28 ? 0.26 : 0.08) + (sentenceCount >= 2 ? 0.18 : 0.06) + anchorScore * 0.28 + forumHits * 0.06);
   const forumCadence = clamp(publicLegibility * 0.46 + forumHits * 0.08 + punctuationAsymmetry(value) * 0.18);
   const readability = clamp(publicLegibility * 0.58 + relationRetention * 0.24 + (tokenCount <= 95 ? 0.12 : 0));
+  const overclaimExtremes = lower(value).includes('nothing') && lower(value).includes('proof');
   const explanatoryPull = clamp(relationRetention * 0.44 + slowdownHits * 0.12 + antiOverclaimHits * 0.1 + (compressedSource ? 0.12 : 0));
   const plainAnchor = clamp(anchorScore * 0.64 + receiptVisibility * 0.24 + (firstAnchorPosition(value, options) <= 0.45 ? 0.12 : 0));
   const slowdown = clamp(slowdownHits * 0.18 + antiOverclaimHits * 0.12 + forumHits * 0.06 + (firstAnchorPosition(value, options) <= 0.35 ? 0.08 : 0));
   const velocity = clamp(slowdown * 0.78 + (hasAny(['hang on', 'slow down', 'before turning'], value) ? 0.16 : 0));
-  const antiPileon = clamp(antiOverclaimHits * 0.18 + slowdownHits * 0.1 + (lower(value).includes('nothing') && lower(value).includes('proof') ? 0.22 : 0));
-  const antiOverclaim = clamp(antiOverclaimHits * 0.2 + (lower(value).includes('does not prove') || lower(value).includes('not to make') ? 0.34 : 0));
+  const antiPileon = clamp(antiOverclaimHits * 0.18 + slowdownHits * 0.1 + (overclaimExtremes ? 0.22 : 0));
+  const antiOverclaim = clamp(antiOverclaimHits * 0.2 + (lower(value).includes('does not prove') || lower(value).includes('not to make') ? 0.34 : 0) + (overclaimExtremes ? 0.36 : 0));
   const reorientation = clamp(slowdown * 0.46 + relationRetention * 0.24 + explanatoryPull * 0.2);
   const infoDecompression = clamp((tokenCount >= 30 ? 0.28 : 0.02) + relationRetention * 0.34 + antiOverclaim * 0.18 + (compressedSource ? 0.14 : 0.06));
   const antiCompression = clamp(infoDecompression * 0.72 + (tokenCount >= 24 ? 0.16 : 0));
@@ -232,7 +246,7 @@ export function computeDromologicalPaulFeatureMetrics(candidate = '', options = 
   const sourceVoiceSeparation = clamp(sourceIdiolectDisplacement * 0.76 + (factInvention || motiveInvention ? 0 : 0.12));
   const topicExposure = clamp(phraseHits(TOPIC_EXPOSURE, value) * 0.26 + (/wjct\/dds|february export/iu.test(value) ? 0.28 : 0));
   const privateHistory = clamp(phraseHits(PRIVATE_HISTORY, value) * 0.38);
-  const witnessExposure = clamp(privateHistory + (lower(value).includes('i was there') ? 0.34 : 0));
+  const witnessExposure = clamp(privateHistory + (lower(value).includes('i was there') || lower(value).includes('my source') ? 0.34 : 0));
   const publicIdentifiability = clamp(topicExposure * 0.7 + privateHistory * 0.3);
   const sourceContextLeakage = clamp(topicExposure * 0.62 + privateHistory * 0.24);
   const genericPolish = clamp(phraseHits(GENERIC, value) * 0.16 + (tokenCount < 16 ? 0.04 : 0));
