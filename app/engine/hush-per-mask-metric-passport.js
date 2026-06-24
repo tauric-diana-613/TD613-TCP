@@ -13,6 +13,7 @@ import { computeBloopingBlipFeatureMetrics, applyBloopingBlipDecisionRules } fro
 import { computeBlackstarShereeFeatureMetrics, applyBlackstarShereeDecisionRules } from './hush-phase8-blackstar-sheree.js';
 import { computeLuluQuasarFeatureMetrics, applyLuluQuasarDecisionRules } from './hush-phase8-lulu-quasar.js';
 import { computeDromologicalPaulFeatureMetrics, applyDromologicalPaulDecisionRules } from './hush-phase8-dromological-paul.js';
+import { computeLuzIndexFeatureMetrics, applyLuzIndexDecisionRules } from './hush-phase8-luz-index.js';
 import { calibrateBlackstarShereeMetrics } from './hush-phase8-sheree-calibration.js';
 import { calibrateNolanNeedlerMetrics } from './hush-phase8-nolan-calibration.js';
 import { calibrateSolMetrics } from './hush-phase8-qs-calibration-hotfix.js';
@@ -100,6 +101,7 @@ function isBloopingBlipPassport(passport = {}) { return passport.mask_id === 'bu
 function isBlackstarShereePassport(passport = {}) { return passport.mask_id === 'phase28-transform-to-aave' && passport.role === 'chosen_target_register'; }
 function isLuluQuasarPassport(passport = {}) { return passport.mask_id === 'quirky-orbit' && passport.role === 'blue_orange_relief'; }
 function isDromologicalPaulPassport(passport = {}) { return passport.mask_id === 'forum-regular' && passport.role === 'public_forum_dromology'; }
+function isLuzIndexPassport(passport = {}) { return passport.mask_id === 'clipboard' && passport.role === 'custodial_index'; }
 
 async function buildCandidateRealization(maskRef = {}, candidate = '', passport = {}, candidateGate = {}, options = {}) {
   const sourceText = options.sourceText || options.source_summary || maskRef.label || '';
@@ -114,7 +116,8 @@ async function buildCandidateRealization(maskRef = {}, candidate = '', passport 
   const shereeMetrics = isBlackstarShereePassport(passport) ? calibrateBlackstarShereeMetrics(computeBlackstarShereeFeatureMetrics(candidateValue, { ...options, sourceText, sourceObligations })) : {};
   const luluMetrics = isLuluQuasarPassport(passport) ? computeLuluQuasarFeatureMetrics(candidateValue, { ...options, sourceText, sourceObligations }) : {};
   const paulMetrics = isDromologicalPaulPassport(passport) ? computeDromologicalPaulFeatureMetrics(candidateValue, { ...options, sourceText, sourceObligations }) : {};
-  const mergedFeatures = Object.freeze({ ...extracted.feature_vector, ...queenieMetrics, ...solMetrics, ...zoraMetrics, ...nolanMetrics, ...blipMetrics, ...shereeMetrics, ...luluMetrics, ...paulMetrics });
+  const luzMetrics = isLuzIndexPassport(passport) ? computeLuzIndexFeatureMetrics(candidateValue, { ...options, sourceText, sourceObligations }) : {};
+  const mergedFeatures = Object.freeze({ ...extracted.feature_vector, ...queenieMetrics, ...solMetrics, ...zoraMetrics, ...nolanMetrics, ...blipMetrics, ...shereeMetrics, ...luluMetrics, ...paulMetrics, ...luzMetrics });
   const featureVector = Object.freeze({ ...extracted, feature_vector: mergedFeatures, feature_vector_hash_sha256: await sha256Text(stableStringify(mergedFeatures)) });
   const sourceRetention = scoreSourceObligationRetention(sourceObligations, candidateValue, options.sourceRetention || options.source_retention || {});
   const maskFit = scoreCandidateAgainstMask(featureVector, passport.mask_centroid, passport.generic_ai_baseline, options.maskFit || options.mask_fit || {});
@@ -173,6 +176,7 @@ export async function buildHushPerMaskPacketWithMetricPassport(maskRef = {}, opt
   if (isBlackstarShereePassport(passport)) decision = applyBlackstarShereeDecisionRules(decision, candidateParts.realization.feature_vector, passport.tolerance_bands);
   if (isLuluQuasarPassport(passport)) decision = applyLuluQuasarDecisionRules(decision, candidateParts.realization.feature_vector, passport.tolerance_bands);
   if (isDromologicalPaulPassport(passport)) decision = applyDromologicalPaulDecisionRules(decision, candidateParts.realization.feature_vector, passport.tolerance_bands);
+  if (isLuzIndexPassport(passport)) decision = applyLuzIndexDecisionRules(decision, candidateParts.realization.feature_vector, passport.tolerance_bands);
   const ontology = buildPhase8OntologyBindings();
   const wrapper = {
     schema: HUSH_PER_MASK_METRIC_WRAPPER_SCHEMA,
