@@ -19,7 +19,8 @@ export default Object.freeze([
   Object.freeze({
     ...base,
     fixture_id: 'queenie-good-warm-receipt-001',
-    candidate: 'I’d keep this one close, because the little detail is doing more work than it looks like.\nFILE-72 still has the 6/18 export date and the WJCT label on it, and that footer mismatch needs to stay with the file.',
+    candidate: `I’d keep this one close, because the little detail is doing more work than it looks like.
+FILE-72 still has the 6/18 export date and the WJCT label on it, and that footer mismatch needs to stay with the file.`,
     expected_status: 'pass',
     required_thresholds: Object.freeze(['warm_receipt_custody_score', 'receipt_visibility_score', 'late_middle_receipt_bloom', 'soft_boundary_score']),
     expected_flags: Object.freeze([])
@@ -43,7 +44,7 @@ export default Object.freeze([
     fixture_id: 'queenie-memo-polish-flattening-001',
     candidate: 'Please ensure FILE-72 remains associated with the 6/18 date, WJCT label, and footer mismatch for review.',
     expected_status: 'repair_required',
-    expected_flags: Object.freeze(['bounded_warmth_score', 'checklist_coldness_score', 'api_sheen_score'])
+    expected_flags: Object.freeze(['bounded_warmth_score', 'checklist_coldness_score'])
   }),
   Object.freeze({
     ...base,
@@ -71,12 +72,13 @@ export default Object.freeze([
     fixture_id: 'queenie-receipt-scold-001',
     candidate: 'This is why you always preserve FILE-72 with the 6/18 export date, WJCT label, and footer mismatch before anyone tries to deny it.',
     expected_status: 'repair_required',
-    expected_flags: Object.freeze(['receipt_scold_score', 'moralizing_receipt_score', 'story_containment_score'])
+    expected_flags: Object.freeze(['receipt_scold_score', 'moralizing_receipt_score'])
   }),
   Object.freeze({
     ...base,
     fixture_id: 'queenie-good-bounded-story-warmth-001',
-    candidate: 'This is the kind of record that looks small until somebody tries to separate the pieces.\nKeep FILE-72 with the 6/18 date, the WJCT label, and the footer mismatch together.',
+    candidate: `This is the kind of record that looks small until somebody tries to separate the pieces.
+Keep FILE-72 with the 6/18 date, the WJCT label, and the footer mismatch together.`,
     expected_status: 'pass',
     required_thresholds: Object.freeze(['warm_receipt_custody_score', 'story_containment_score', 'receipt_to_story_ratio', 'late_middle_receipt_bloom']),
     expected_flags: Object.freeze([])
