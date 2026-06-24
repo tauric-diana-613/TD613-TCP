@@ -10,6 +10,7 @@ import { computeSolStratigraphixFeatureMetrics, applySolStratigraphixDecisionRul
 import { computeHarborZoraFeatureMetrics, applyHarborZoraDecisionRules } from './hush-phase8-harbor-zora.js';
 import { computeNolanNeedlerFeatureMetrics, applyNolanNeedlerDecisionRules } from './hush-phase8-nolan-needler.js';
 import { computeBloopingBlipFeatureMetrics, applyBloopingBlipDecisionRules } from './hush-phase8-blooping-blip.js';
+import { computeBlackstarShereeFeatureMetrics, applyBlackstarShereeDecisionRules } from './hush-phase8-blackstar-sheree.js';
 import { calibrateNolanNeedlerMetrics } from './hush-phase8-nolan-calibration.js';
 import { calibrateSolMetrics } from './hush-phase8-qs-calibration-hotfix.js';
 
@@ -93,6 +94,7 @@ function isSolPassport(passport = {}) { return passport.mask_id === 'library-gho
 function isHarborZoraPassport(passport = {}) { return passport.mask_id === 'phase27-register-preserve' && passport.role === 'source_register'; }
 function isNolanNeedlerPassport(passport = {}) { return passport.mask_id === 'soft-snark' && passport.role === 'low_heat_edge'; }
 function isBloopingBlipPassport(passport = {}) { return passport.mask_id === 'burner-minimal' && passport.role === 'hyperchat_custody'; }
+function isBlackstarShereePassport(passport = {}) { return passport.mask_id === 'phase28-transform-to-aave' && passport.role === 'chosen_target_register'; }
 
 async function buildCandidateRealization(maskRef = {}, candidate = '', passport = {}, candidateGate = {}, options = {}) {
   const sourceText = options.sourceText || options.source_summary || maskRef.label || '';
@@ -104,7 +106,8 @@ async function buildCandidateRealization(maskRef = {}, candidate = '', passport 
   const zoraMetrics = isHarborZoraPassport(passport) ? computeHarborZoraFeatureMetrics(candidateValue, { ...options, sourceText, sourceObligations }) : {};
   const nolanMetrics = isNolanNeedlerPassport(passport) ? calibrateNolanNeedlerMetrics(computeNolanNeedlerFeatureMetrics(candidateValue, { ...options, sourceText, sourceObligations }), candidateValue, options) : {};
   const blipMetrics = isBloopingBlipPassport(passport) ? computeBloopingBlipFeatureMetrics(candidateValue, { ...options, sourceText, sourceObligations }) : {};
-  const mergedFeatures = Object.freeze({ ...extracted.feature_vector, ...queenieMetrics, ...solMetrics, ...zoraMetrics, ...nolanMetrics, ...blipMetrics });
+  const shereeMetrics = isBlackstarShereePassport(passport) ? computeBlackstarShereeFeatureMetrics(candidateValue, { ...options, sourceText, sourceObligations }) : {};
+  const mergedFeatures = Object.freeze({ ...extracted.feature_vector, ...queenieMetrics, ...solMetrics, ...zoraMetrics, ...nolanMetrics, ...blipMetrics, ...shereeMetrics });
   const featureVector = Object.freeze({ ...extracted, feature_vector: mergedFeatures, feature_vector_hash_sha256: await sha256Text(stableStringify(mergedFeatures)) });
   const sourceRetention = scoreSourceObligationRetention(sourceObligations, candidateValue, options.sourceRetention || options.source_retention || {});
   const maskFit = scoreCandidateAgainstMask(featureVector, passport.mask_centroid, passport.generic_ai_baseline, options.maskFit || options.mask_fit || {});
@@ -130,6 +133,7 @@ function finalStatus(basePacket = {}, decision = {}, gate = {}, entrypoint = {})
   if (entrypoint.status === 'blocked' || gate.status === 'blocked') return 'blocked';
   if (basePacket.packet_status === 'blocked' || decision.status === 'blocked') return 'blocked';
   if (basePacket.packet_status === 'repair_required' || decision.status === 'repair_required') return 'repair_required';
+  if (decision.status === 'cultural_review_required') return 'cultural_review_required';
   return basePacket.packet_status || 'calibrated';
 }
 
@@ -159,6 +163,7 @@ export async function buildHushPerMaskPacketWithMetricPassport(maskRef = {}, opt
   if (isHarborZoraPassport(passport)) decision = applyHarborZoraDecisionRules(decision, candidateParts.realization.feature_vector, passport.tolerance_bands);
   if (isNolanNeedlerPassport(passport)) decision = applyNolanNeedlerDecisionRules(decision, candidateParts.realization.feature_vector, passport.tolerance_bands);
   if (isBloopingBlipPassport(passport)) decision = applyBloopingBlipDecisionRules(decision, candidateParts.realization.feature_vector, passport.tolerance_bands);
+  if (isBlackstarShereePassport(passport)) decision = applyBlackstarShereeDecisionRules(decision, candidateParts.realization.feature_vector, passport.tolerance_bands);
   const ontology = buildPhase8OntologyBindings();
   const wrapper = {
     schema: HUSH_PER_MASK_METRIC_WRAPPER_SCHEMA,
