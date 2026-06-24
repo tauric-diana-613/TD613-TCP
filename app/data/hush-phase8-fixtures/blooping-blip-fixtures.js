@@ -76,7 +76,7 @@ that custody bundle is the thing. don’t let it get smoothed into soup`,
   Object.freeze({
     ...base,
     fixture_id: 'blip-pixie-leakage-repair-001',
-    candidate: 'idk FILE-72 + 6/18 WJCT label + mismatch still visible tho',
+    candidate: 'idk FILE-72 + 6/18 WJCT label + footer mismatch still visible tho',
     expected_status: 'repair_required',
     expected_flags: Object.freeze(['pixie_leakage_score', 'technical_nomenclature_retention'])
   }),
