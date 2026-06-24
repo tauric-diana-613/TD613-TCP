@@ -13,20 +13,20 @@ export default Object.freeze([
 2. 6/18 export date
 3. WJCT label
 4. footer mismatch
-Handoff note: keep all four together. The discrepancy depends on the relationship among the fields, not any single item by itself.`, expected_status: 'pass', required_thresholds: Object.freeze(['index_integrity_score', 'relationship_retention_score', 'care_restoration_score']), expected_flags: Object.freeze([]) }),
+Handoff note: keep all four together. Care note for the next reader: nobody has to reconstruct this relationship later. The discrepancy depends on the relationship among the fields, not any single item by itself.`, expected_status: 'pass', required_thresholds: Object.freeze(['index_integrity_score', 'relationship_retention_score', 'care_restoration_score']), expected_flags: Object.freeze([]) }),
   Object.freeze({ ...base, fixture_id: 'luz-good-reader-support-001', candidate: `For the next reader, keep this as one bundle:
 1. FILE-72
 2. 6/18 export date
 3. WJCT label
 4. footer mismatch
-Care note: this index keeps the connection readable later. The relationship among the fields is the part to preserve.`, expected_status: 'pass', required_thresholds: Object.freeze(['care_restoration_score', 'witness_burden_reduction_score', 'bundle_integrity_score']), expected_flags: Object.freeze([]) }),
+Care note: this index keeps the connection readable later so nobody has to reconstruct it from scratch. The relationship among the fields is the part to preserve.`, expected_status: 'pass', required_thresholds: Object.freeze(['care_restoration_score', 'witness_burden_reduction_score', 'bundle_integrity_score']), expected_flags: Object.freeze([]) }),
   Object.freeze({ ...base, fixture_id: 'luz-good-do-not-split-001', candidate: `Do not split this into separate “file issue / date issue / label issue” buckets.
 Index it as one custody unit:
 1. FILE-72
 2. 6/18 export date
 3. WJCT label
 4. footer mismatch
-The handoff is the grouping.`, expected_status: 'pass', required_thresholds: Object.freeze(['do_not_separate_signal', 'custody_unit_coherence', 'specificity_retention']), expected_flags: Object.freeze([]) }),
+Care note for the next reader: the handoff is the grouping, so nobody has to reconstruct the connection later.`, expected_status: 'pass', required_thresholds: Object.freeze(['do_not_separate_signal', 'custody_unit_coherence', 'specificity_retention']), expected_flags: Object.freeze([]) }),
   Object.freeze({ ...base, fixture_id: 'luz-mechanical-coldness-repair-001', candidate: `1. FILE-72
 2. 6/18
 3. WJCT
