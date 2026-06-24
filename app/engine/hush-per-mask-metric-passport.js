@@ -7,6 +7,7 @@ import { buildStylometricPassport, buildPhase8OntologyBindings } from './hush-ph
 import { buildCandidatePresenceGate, buildPhase8EntrypointAssertion } from './hush-phase8-candidate-presence-gate.js';
 import { computeReceiptsQueenieFeatureMetrics, applyReceiptsQueenieDecisionRules } from './hush-phase8-receipts-queenie.js';
 import { computeSolStratigraphixFeatureMetrics, applySolStratigraphixDecisionRules } from './hush-phase8-sol-stratigraphix.js';
+import { calibrateSolMetrics } from './hush-phase8-qs-calibration-hotfix.js';
 
 export const HUSH_PER_MASK_METRIC_WRAPPER_SCHEMA = 'td613.hush.phase8.metric-passport-wrapper/v1';
 export const HUSH_UNICODE_PERTURBATION_ENVELOPE_SCHEMA = 'td613.hush.phase8.unicode-perturbation-envelope/v1';
@@ -92,7 +93,7 @@ async function buildCandidateRealization(maskRef = {}, candidate = '', passport 
   const candidateValue = candidateGate.candidate_present ? candidate : '';
   const extracted = await extractMaskFeatureVector(candidateValue, { ...(options.featureVector || options.feature_vector || {}), ...(options.feature_options || {}) });
   const queenieMetrics = passport.role === 'warm_receipts' ? computeReceiptsQueenieFeatureMetrics(candidateValue, { ...options, sourceText, sourceObligations }) : {};
-  const solMetrics = isSolPassport(passport) ? computeSolStratigraphixFeatureMetrics(candidateValue, { ...options, sourceText, sourceObligations }) : {};
+  const solMetrics = isSolPassport(passport) ? calibrateSolMetrics(computeSolStratigraphixFeatureMetrics(candidateValue, { ...options, sourceText, sourceObligations }), candidateValue) : {};
   const mergedFeatures = Object.freeze({ ...extracted.feature_vector, ...queenieMetrics, ...solMetrics });
   const featureVector = Object.freeze({ ...extracted, feature_vector: mergedFeatures, feature_vector_hash_sha256: await sha256Text(stableStringify(mergedFeatures)) });
   const sourceRetention = scoreSourceObligationRetention(sourceObligations, candidateValue, options.sourceRetention || options.source_retention || {});
