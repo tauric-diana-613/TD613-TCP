@@ -77,7 +77,7 @@ FILE-72 still has the 6/18 export date and the WJCT label on it, and that footer
   Object.freeze({
     ...base,
     fixture_id: 'queenie-good-bounded-story-warmth-001',
-    candidate: `This is the kind of record that looks small until somebody tries to separate the pieces.
+    candidate: `I’d keep this one close, because it looks small until somebody tries to separate the pieces.
 Keep FILE-72 with the 6/18 date, the WJCT label, and the footer mismatch together.`,
     expected_status: 'pass',
     required_thresholds: Object.freeze(['warm_receipt_custody_score', 'story_containment_score', 'receipt_to_story_ratio', 'late_middle_receipt_bloom']),
