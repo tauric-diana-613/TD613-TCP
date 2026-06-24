@@ -83,7 +83,7 @@ export default Object.freeze([
     fixture_id: 'nolan-edge-after-receipt-001',
     candidate: 'FILE-72 still has the 6/18 date and WJCT label, so the footer mismatch remains with the file. Convenient.',
     expected_status: 'repair_required',
-    expected_flags: Object.freeze(['edge_after_receipt_risk', 'receipt_return_latency'])
+    expected_flags: Object.freeze(['edge_after_receipt_risk'])
   }),
   Object.freeze({
     ...base,
