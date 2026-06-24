@@ -50,6 +50,9 @@ function roleFor(mask = {}) {
   const family = String(mask.family || '').toLowerCase();
   const id = String(mask.id || '').toLowerCase();
   if (isTargetRegister(mask)) return 'register';
+  if (family.includes('jagged') || id.includes('phase22-jagged-record')) return 'adversarial_fracture';
+  if (family.includes('quick handoff') || id.includes('night-shift-note')) return 'quick_handoff';
+  if (family.includes('small circle') || id.includes('group-chat-soft')) return 'small circle';
   if (family.includes('checklist') || id.includes('clipboard')) return 'checklist';
   if (family.includes('document')) return 'document_distance';
   if (family.includes('low signature') || id.includes('burner')) return 'low_signature';
