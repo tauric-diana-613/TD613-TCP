@@ -9,6 +9,7 @@ import { computeReceiptsQueenieFeatureMetrics, applyReceiptsQueenieDecisionRules
 import { computeSolStratigraphixFeatureMetrics, applySolStratigraphixDecisionRules } from './hush-phase8-sol-stratigraphix.js';
 import { computeHarborZoraFeatureMetrics, applyHarborZoraDecisionRules } from './hush-phase8-harbor-zora.js';
 import { computeNolanNeedlerFeatureMetrics, applyNolanNeedlerDecisionRules } from './hush-phase8-nolan-needler.js';
+import { calibrateNolanNeedlerMetrics } from './hush-phase8-nolan-calibration.js';
 import { calibrateSolMetrics } from './hush-phase8-qs-calibration-hotfix.js';
 
 export const HUSH_PER_MASK_METRIC_WRAPPER_SCHEMA = 'td613.hush.phase8.metric-passport-wrapper/v1';
@@ -99,7 +100,7 @@ async function buildCandidateRealization(maskRef = {}, candidate = '', passport 
   const queenieMetrics = passport.role === 'warm_receipts' ? computeReceiptsQueenieFeatureMetrics(candidateValue, { ...options, sourceText, sourceObligations }) : {};
   const solMetrics = isSolPassport(passport) ? calibrateSolMetrics(computeSolStratigraphixFeatureMetrics(candidateValue, { ...options, sourceText, sourceObligations }), candidateValue) : {};
   const zoraMetrics = isHarborZoraPassport(passport) ? computeHarborZoraFeatureMetrics(candidateValue, { ...options, sourceText, sourceObligations }) : {};
-  const nolanMetrics = isNolanNeedlerPassport(passport) ? computeNolanNeedlerFeatureMetrics(candidateValue, { ...options, sourceText, sourceObligations }) : {};
+  const nolanMetrics = isNolanNeedlerPassport(passport) ? calibrateNolanNeedlerMetrics(computeNolanNeedlerFeatureMetrics(candidateValue, { ...options, sourceText, sourceObligations }), candidateValue, options) : {};
   const mergedFeatures = Object.freeze({ ...extracted.feature_vector, ...queenieMetrics, ...solMetrics, ...zoraMetrics, ...nolanMetrics });
   const featureVector = Object.freeze({ ...extracted, feature_vector: mergedFeatures, feature_vector_hash_sha256: await sha256Text(stableStringify(mergedFeatures)) });
   const sourceRetention = scoreSourceObligationRetention(sourceObligations, candidateValue, options.sourceRetention || options.source_retention || {});
