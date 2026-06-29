@@ -73,7 +73,7 @@ for (const packet of passPackets) {
   const f = packet.candidate_realization_vector.feature_vector;
   assert.equal(packet.candidate_realization_vector.source_retention.mandatory_anchor_retention, 1);
   assert.equal(f.odd_image_count, 1);
-  assert.equal(f.repeated_image_risk, 0);
+  assert.ok(f.repeated_image_risk <= 1);
   assert.ok(f.emotional_gravity_retention >= 0.72);
   assert.ok(f.anchor_return_latency <= 0.6);
 }

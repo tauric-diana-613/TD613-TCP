@@ -42,6 +42,8 @@ Repo-side tests can validate engines, fixture behavior, docs, suite registration
 
 Deployed Hush/Vercel/API behavior requires deployed packet review and runtime logs. That belongs to Phase 9.
 
+Current deployment status: not validated because the Vercel free-tier deployment quota was exhausted. This is an environment/quota limitation, not evidence of runtime failure or runtime success.
+
 ## Phase 9 prerequisites
 
 Phase 9 should begin with:
@@ -54,6 +56,7 @@ Phase 9 should begin with:
 - fixture replay logs
 - Codex CI / deployed API confirmation
 - manual TD613.com packet review where needed
+- cleared Vercel quota or another deployed test environment
 
 ## Zora caveat
 
@@ -61,6 +64,6 @@ PR #188 has merged and covered Zora package registration plus narrow Zora calibr
 
 ## Readiness statement
 
-Phase 8 may close after repo-side checks pass. Phase 9 should treat deployed runtime testing and cross-mask collision ecology as new work, not as completed Phase 8 evidence.
+Phase 8 may close after repo-side checks pass. Phase 9 remains not started. It should treat deployed runtime testing and cross-mask collision ecology as new work, not as completed Phase 8 evidence.
 
 Sealed.

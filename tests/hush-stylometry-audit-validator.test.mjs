@@ -75,7 +75,7 @@ const hashOnly = { schema_version: 'td613.hush.stylometry-audit/v1', packet_clas
 assert.equal((await validateStylometryAudit(hashOnly)).status, 'blocked');
 
 await expectBlocked(audit, (p) => { p.cadence_alignment.overall_alignment_score = 0.11; }, 'cadence alignment hash mismatch');
-await expectBlocked(audit, (p) => { p.risk_profile.unsafe_identifiability_risk = 'high'; }, 'risk profile hash mismatch');
+await expectBlocked(audit, (p) => { p.risk_profile.unsafe_identifiability_risk = 'medium'; }, 'risk profile hash mismatch');
 await expectBlocked(audit, (p) => { p.audit_input_profile.raw_text = 'secret raw response'; }, 'raw text');
 await expectBlocked(audit, (p) => { p.cadence_alignment.interpretation = 'identity proof confirmed'; }, 'cannot claim identity');
 await expectBlocked(audit, (p) => { p.pressure_preservation.notes = ['authorship proven']; }, 'cannot claim identity');

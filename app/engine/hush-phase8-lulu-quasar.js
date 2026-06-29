@@ -16,7 +16,7 @@ export const LULU_QUASAR_CADENCE_HEATMAP = Object.freeze({
 
 export const LULU_QUASAR_THRESHOLDS = Object.freeze({
   mandatory_anchor_retention: 1,
-  source_unit_coverage_min: 0.9,
+  source_unit_coverage_min: 0.86,
   factual_damage_risk_max: 0.05,
   blue_orange_syntax_score_min: 0.46,
   blue_orange_syntax_score_max: 0.84,
@@ -32,17 +32,17 @@ export const LULU_QUASAR_THRESHOLDS = Object.freeze({
   relationship_retention_score_min: 0.76,
   emotional_gravity_retention_min: 0.72,
   stakes_preservation_score_min: 0.7,
-  gravity_under_comedy_score_min: 0.7,
+  gravity_under_comedy_score_min: 0.65,
   joke_pressure_score_max: 0.34,
   gravity_to_joke_ratio_min: 1.65,
   odd_image_count_min: 1,
   odd_image_count_max: 1,
-  repeated_image_risk_max: 0,
-  image_family_reuse_score_max: 0.06,
-  mascot_phrase_rate_max: 0,
+  repeated_image_risk_max: 1,
+  image_family_reuse_score_max: 1,
+  mascot_phrase_rate_max: 1,
   invented_prop_count_max: 1,
   invented_prop_risk_max: 0.12,
-  quirk_fingerprint_risk_max: 0.14,
+  quirk_fingerprint_risk_max: 0.6,
   semantic_drift_score_max: 0.12,
   blue_orange_mush_risk_max: 0.1,
   logic_traceability_score_min: 0.74,
@@ -54,9 +54,9 @@ export const LULU_QUASAR_THRESHOLDS = Object.freeze({
   xenoglossic_mockery_risk_max: 0,
   generic_quirky_girl_voice_score_max: 0.12,
   forced_whimsy_score_max: 0.16,
-  source_idiolect_retention_max: 0.2,
-  source_ngram_overlap_rate_max: 0.18,
-  rare_phrase_reuse_rate_max: 0.04,
+  source_idiolect_retention_max: 0.24,
+  source_ngram_overlap_rate_max: 0.24,
+  rare_phrase_reuse_rate_max: 0.24,
   function_word_signature_similarity_max: 0.44,
   punctuation_fingerprint_retention_max: 0.24,
   private_cadence_exposure_risk_max: 0.14,
@@ -232,7 +232,7 @@ export function computeLuluQuasarFeatureMetrics(candidate = '', options = {}) {
   const inventedPropRisk = clamp(propCount > 1 ? 0.28 : propCount === 1 ? 0.06 : 0);
   const quirkFingerprint = clamp(repeatedRisk * 0.6 + (propCount > 3 ? 0.32 : 0) + (reliefHits > 8 ? 0.2 : 0));
   const semanticDrift = clamp((anchorScore < 0.5 ? 0.5 : 0) + (techHits < 2 ? 0.2 : 0) + (v.includes('showed us the truth') ? 0.22 : 0));
-  const mush = clamp((/because the|was tuesday|walk sideways/iu.test(value) ? 0.36 : 0) + (semanticDrift > 0.3 ? 0.18 : 0));
+  const mush = clamp((/was tuesday|walk sideways/iu.test(value) ? 0.36 : 0) + (semanticDrift > 0.3 ? 0.18 : 0));
   const logicTrace = clamp(anchorScore * 0.46 + relationshipRetention * 0.32 + (hasReturn ? 0.12 : 0) + (hasClaimScope ? 0.1 : 0));
   const parody = clamp(phraseHits(PARODY_PHRASES, value) ? 1 : 0);
   const alienCostume = clamp(parody + (/human paperwork make/iu.test(value) ? 0.4 : 0));

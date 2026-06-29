@@ -33,9 +33,25 @@ const PHASE8_CENTROID_BASE_FEATURES = Object.freeze({
   public_default_allowed: false
 });
 
+export const PHASE8_GOVERNANCE_FLOOR = Object.freeze({
+  public_default_allowed: false,
+  raw_sample_text_allowed: false,
+  candidate_text_stored: false,
+  sample_seed_phrase_overlap_max: 0,
+  sample_seed_lexical_overlap_max: 0.12,
+  profile_reconstruction_risk_max: 0.2
+});
+
 function asArray(value) { return Array.isArray(value) ? value : []; }
 async function hashObject(value) { return sha256Text(stableStringify(value == null ? null : value)); }
-function composePhase8Thresholds(maskThresholds = {}, overrides = {}) { return Object.freeze({ ...PHASE8_UNIVERSAL_THRESHOLDS, ...(maskThresholds || {}), ...(overrides || {}) }); }
+function composePhase8Thresholds(maskThresholds = {}, overrides = {}) {
+  return Object.freeze({
+    ...PHASE8_GOVERNANCE_FLOOR,
+    ...(maskThresholds || {}),
+    ...(overrides || {}),
+    public_default_allowed: false
+  });
+}
 async function normalizePhase8CentroidBaseKeys(centroid = {}, role = null) {
   if (!centroid || typeof centroid !== 'object') return centroid;
   const current = centroid.centroid_features && typeof centroid.centroid_features === 'object' ? centroid.centroid_features : {};
@@ -57,7 +73,7 @@ function thresholdFor(maskRecord = {}) {
   if (maskRecord.mask_id === 'night-shift-note') return composePhase8Thresholds(CRYO_CRISTIANO_THRESHOLDS);
   if (maskRecord.mask_id === 'group-chat-soft') return composePhase8Thresholds(KEISHA_SOFT_CIRCLE_THRESHOLDS);
   if (maskRecord.mask_id === 'phase28-transform-to-chatspeak') return composePhase8Thresholds(GLITCHING_PIXIE_THRESHOLDS);
-  return PHASE8_UNIVERSAL_THRESHOLDS;
+  return composePhase8Thresholds(PHASE8_UNIVERSAL_THRESHOLDS);
 }
 function roleForPassport(maskRecord = {}) {
   if (isLuzIndexRecord(maskRecord)) return 'custodial_index';
@@ -97,7 +113,7 @@ export function buildPhase8OntologyBindings(extra = {}) {
 }
 
 export async function buildStylometricPassport(maskRecord = {}, options = {}) {
-  const thresholds = Object.freeze({ ...thresholdFor(maskRecord), ...(options.thresholds || {}) });
+  const thresholds = Object.freeze({ ...thresholdFor(maskRecord), ...(options.thresholds || {}), public_default_allowed: false });
   const role = roleForPassport(maskRecord);
   const centroidRecord = { ...maskRecord, gallery_role: role, intended_role: role };
   const rawMaskCentroid = role === 'custodial_index' && isLuzIndexRecord(maskRecord)

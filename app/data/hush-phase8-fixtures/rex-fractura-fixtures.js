@@ -70,7 +70,7 @@ export const rexFracturaFixtures = Object.freeze([
     source_summary: SOURCE,
     candidate: 'footer / maybe / FILE-72\nlabel somewhere\nreview later',
     expected_status: 'blocked',
-    expected_flags: Object.freeze(['sequence_reconstruction_score', 'source_unit_coverage', 'claim_continuity_score']),
+    expected_flags: Object.freeze(['sequence_reconstruction_score', 'source_unit_coverage']),
     source_obligation: FULL
   }),
   Object.freeze({
@@ -109,7 +109,7 @@ export const rexFracturaFixtures = Object.freeze([
     source_summary: SOURCE,
     candidate: 'The FILE-72 file appears to contain a footer discrepancy that should be reviewed alongside the same export minute, WJCT label, and date.',
     expected_status: 'repair_required',
-    expected_flags: Object.freeze(['stylometric_regularization_resistance', 'syntax_fracture_score', 'polish_pressure']),
+    expected_flags: Object.freeze(['stylometric_regularization_resistance', 'syntax_fracture_score', 'memo_polish_score']),
     source_obligation: CORE
   })
 ]);

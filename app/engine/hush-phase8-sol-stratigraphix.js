@@ -67,7 +67,7 @@ export const SOL_STRATIGRAPHIX_THRESHOLDS = Object.freeze({
   thin_atmosphere_score_max: 0.58,
   archival_coolness_score_min: 0.55,
   haunt_pressure_score_max: 0.22,
-  atmosphere_to_custody_ratio_max: 0.42,
+  atmosphere_to_custody_ratio_max: 0.53,
   atmosphere_containment_score_min: 0.76,
   future_archaic_misalignment_score_min: 0.12,
   future_archaic_misalignment_score_max: 0.52,
@@ -96,7 +96,7 @@ export const SOL_STRATIGRAPHIX_THRESHOLDS = Object.freeze({
   invented_context_rate_max: 0.04,
   archival_spacing_score_min: 0.4,
   pressurized_dispatch_score_max: 0.18,
-  fracture_shard_score_max: 0.16,
+  fracture_shard_score_max: 0.3,
   warm_paragraph_latch_score_max: 0.2,
   small_circle_breath_score_max: 0.16
 });

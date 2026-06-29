@@ -15,7 +15,7 @@ assert(!html.includes('hush-phase39-ui.js'), 'Phase 39 UI should lazy-load after
 assert(!html.includes('browser-engine.js'), 'Hush page should not directly load the generic browser engine');
 assert(!html.includes('browser-main.js'), 'Hush page should not directly load generic browser main');
 
-const hushBranch = bootstrap.slice(bootstrap.indexOf("if (pageKind === 'adversarial-bench')"), bootstrap.indexOf('appendScript(\'./tcp-copy-hygiene.js'));
+const hushBranch = bootstrap.slice(bootstrap.indexOf("if (pageKind === 'adversarial-bench')"), bootstrap.indexOf("if (pageKind === 'trainer')"));
 assert(hushBranch.includes('installHushPhase31BindGuard();'), 'Hush bootstrap should preserve Phase31 bind guard');
 assert(hushBranch.includes('return;'), 'Hush bootstrap should exit before generic chamber payload');
 for (const heavy of ['browser-engine.js', 'browser-main.js', 'browser-diagnostics.js', 'hush-patch38.js', 'hush-pr75-rescue.js']) {

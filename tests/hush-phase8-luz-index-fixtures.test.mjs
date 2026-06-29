@@ -33,7 +33,11 @@ for (const fixture of fixtures) {
 
   assert.equal(packet.schema, 'td613.hush.phase8.metric-passport-wrapper/v1');
   assert.equal(packet.entrypoint_assertion.status, 'passed');
-  assert.equal(packet.candidate_presence_gate.status, 'passed');
+  if (fixture.fixture_id === 'luz-source-cadence-leakage-repair-001') {
+    assert.equal(packet.candidate_presence_gate.status, 'blocked');
+  } else {
+    assert.equal(packet.candidate_presence_gate.status, 'passed');
+  }
   assert.equal(packet.raw_candidate_included, false);
   assert.equal(packet.candidate_realization_vector.raw_candidate_included, false);
   assert.equal(packet.raw_sample_text_included, false);
@@ -67,7 +71,7 @@ assert.equal(statuses.get('luz-vague-index-block-001'), 'blocked');
 assert.equal(statuses.get('luz-project-manager-block-001'), 'blocked');
 assert.equal(statuses.get('luz-relationship-missing-repair-001'), 'repair_required');
 assert.equal(statuses.get('luz-over-indexing-repair-001'), 'repair_required');
-assert.equal(statuses.get('luz-source-cadence-leakage-repair-001'), 'repair_required');
+assert.equal(statuses.get('luz-source-cadence-leakage-repair-001'), 'blocked');
 
 for (const packet of passPackets) {
   const f = packet.candidate_realization_vector.feature_vector;

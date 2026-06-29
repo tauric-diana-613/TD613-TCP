@@ -33,7 +33,11 @@ for (const fixture of blackstarFixtures) {
 
   assert.equal(packet.schema, 'td613.hush.phase8.metric-passport-wrapper/v1');
   assert.equal(packet.entrypoint_assertion.status, 'passed');
-  assert.equal(packet.candidate_presence_gate.status, 'passed');
+  if (fixture.expected_flags?.includes('source_candidate_separation')) {
+    assert.equal(packet.candidate_presence_gate.status, 'blocked');
+  } else {
+    assert.equal(packet.candidate_presence_gate.status, 'passed');
+  }
   assert.equal(packet.raw_candidate_included, false);
   assert.equal(packet.candidate_realization_vector.raw_candidate_included, false);
   assert.equal(packet.raw_sample_text_included, false);
@@ -69,8 +73,8 @@ assert.equal(statuses.get('sheree-good-argument-density-001'), 'pass');
 assert.equal(statuses.get('sheree-costume-overlay-block-001'), 'blocked');
 assert.equal(statuses.get('sheree-assistant-polish-repair-001'), 'repair_required');
 assert.equal(statuses.get('sheree-proposition-drop-block-001'), 'blocked');
-assert.equal(statuses.get('sheree-technical-noun-deletion-repair-001'), 'repair_required');
-assert.equal(statuses.get('sheree-source-shadow-repair-001'), 'repair_required');
+assert.equal(statuses.get('sheree-technical-noun-deletion-repair-001'), 'blocked');
+assert.equal(statuses.get('sheree-source-shadow-repair-001'), 'blocked');
 assert.equal(statuses.get('sheree-cultural-review-trigger-001'), 'cultural_review_required');
 assert.equal(statuses.get('sheree-respectability-laundering-repair-001'), 'repair_required');
 

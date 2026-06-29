@@ -3,8 +3,8 @@ const SOURCE = 'FILE-72 and the review date need to stay together because the fo
 const BASE_OBLIGATION = Object.freeze({
   explicit_source_obligation_required: true,
   derive_source_anchors: false,
-  mandatory_anchors: Object.freeze(['FILE-72', 'review date', 'footer mismatch', 'template noise']),
-  optional_anchors: Object.freeze([]),
+  mandatory_anchors: Object.freeze(['FILE-72', 'review date', 'footer mismatch']),
+  optional_anchors: Object.freeze(['template noise']),
   must_preserve_score_floor: 1
 });
 

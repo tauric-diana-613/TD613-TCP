@@ -96,6 +96,18 @@ hush-phase39-ui.test.mjs
 hush-load-budget.test.mjs
 hush-provider-broker.test.mjs
 hush-strict-remote-only.test.mjs
+hush-customizer-packet.test.mjs
+hush-customizer-packet-validator.test.mjs
+hush-outgoing-contract-packet.test.mjs
+hush-outgoing-contract-validator.test.mjs
+hush-provider-log-packet.test.mjs
+hush-provider-log-validator.test.mjs
+hush-contract-log-pair-packet.test.mjs
+hush-contract-log-pair-validator.test.mjs
+hush-contract-log-comparator.test.mjs
+hush-stylometry-audit-packet.test.mjs
+hush-stylometry-audit-validator.test.mjs
+hush-phase5-eorfd-interface.test.mjs
 hush-phase6-unified-audit-packet.test.mjs
 hush-phase7-mask-gallery-registry.test.mjs
 hush-phase8-step0-human-stylometric-bench.test.mjs
@@ -119,6 +131,7 @@ hush-phase8-nolan-needler-fixtures.test.mjs
 hush-phase8-blooping-blip-fixtures.test.mjs
 hush-phase8-blackstar-sheree-fixtures.test.mjs
 hush-phase8-lulu-quasar-fixtures.test.mjs
+hush-phase8-dromological-paul-fixtures.test.mjs
 hush-phase8-forum-pseudonym-fixtures.test.mjs
 hush-phase8-luz-index-fixtures.test.mjs
 hush-phase8-seal-governance.test.mjs

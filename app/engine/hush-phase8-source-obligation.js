@@ -61,9 +61,24 @@ export async function extractSourceObligationSet(sourceTextOrSummary = '', optio
   return Object.freeze({ ...obligations, obligation_hash_sha256: await hashObject(obligations) });
 }
 
+function normalizedAnchorText(value = '') {
+  return text(value).toLowerCase().replace(/[^a-z0-9]+/g, '');
+}
+
+function normalizedAnchorTokens(value = '') {
+  return text(value).toLowerCase().match(/[a-z0-9]+/g) || [];
+}
+
 function retained(items = [], candidate = '') {
   const lower = text(candidate).toLowerCase();
-  return items.filter((item) => lower.includes(String(item).toLowerCase())).length;
+  const normalized = normalizedAnchorText(candidate);
+  const candidateTokens = new Set(normalizedAnchorTokens(candidate));
+  return items.filter((item) => {
+    const needle = String(item).toLowerCase();
+    const needleTokens = normalizedAnchorTokens(needle);
+    const tokenMatch = needleTokens.length > 1 && needleTokens.every((token) => candidateTokens.has(token));
+    return lower.includes(needle) || normalized.includes(normalizedAnchorText(needle)) || tokenMatch;
+  }).length;
 }
 
 export function scoreSourceObligationRetention(sourceObligations = {}, candidateText = '', options = {}) {

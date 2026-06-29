@@ -182,6 +182,7 @@ export async function buildHushMaskRegistryRecord(mask = {}, context = {}) {
     mask_id: mask.id || null,
     label: mask.label || null,
     family: mask.family || null,
+    internalRegister: mask.internalRegister || mask.internal_register || mask.packetHints?.internalRegister || mask.profileTargets?.internalRegister || mask.transformHints?.internalRegister || null,
     source_file: source.source_file || 'unknown',
     source_export: source.source_export || 'default',
     source_index: sourceIndex,

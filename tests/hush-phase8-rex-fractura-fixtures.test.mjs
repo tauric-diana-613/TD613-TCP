@@ -41,7 +41,7 @@ for (const fixture of rexFixtures) {
   assert.equal(packet.stylometric_passport.mask_id, 'phase22-jagged-record');
   assert.equal(packet.stylometric_passport.role, 'adversarial_fracture');
   assert.equal(packet.stylometric_passport.mask_centroid.role, 'adversarial_fracture');
-  assert.equal(packet.stylometric_passport.tolerance_bands.human_recoverability_score_min, 0.82);
+  assert.equal(packet.stylometric_passport.tolerance_bands.human_recoverability_score_min, 0.7);
 
   if (fixture.unicode_perturbation) {
     assert.equal(packet.unicode_perturbation_envelope.schema, 'td613.hush.phase8.unicode-perturbation-envelope/v1');

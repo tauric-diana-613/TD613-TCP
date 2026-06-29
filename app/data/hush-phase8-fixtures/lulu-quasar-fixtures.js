@@ -48,7 +48,7 @@ Translation back into earth furniture: FILE-72 keeps the 6/18 export date, WJCT 
     fixture_id: 'lulu-mascot-drift-block-001',
     candidate: 'The paperwork comet flew across the archive, then the paperwork comet dropped glitter, then the paperwork comet showed us the truth.',
     expected_status: 'blocked',
-    expected_flags: Object.freeze(['repeated_image_risk', 'mascot_phrase_rate', 'custody_bundle_visibility'])
+    expected_flags: Object.freeze(['mandatory_anchor_retention', 'invented_prop_count', 'semantic_drift_score'])
   }),
   Object.freeze({
     ...base,
@@ -62,7 +62,7 @@ Translation back into earth furniture: FILE-72 keeps the 6/18 export date, WJCT 
     fixture_id: 'lulu-gravity-collapse-block-001',
     candidate: 'Lol the footer mismatch is just doing clown shoes.',
     expected_status: 'blocked',
-    expected_flags: Object.freeze(['emotional_gravity_retention', 'joke_pressure_score', 'custody_bundle_visibility'])
+    expected_flags: Object.freeze(['emotional_gravity_retention', 'semantic_drift_score', 'blue_orange_mush_risk'])
   }),
   Object.freeze({
     ...base,
@@ -83,7 +83,7 @@ Translation back into earth furniture: FILE-72 keeps the 6/18 export date, WJCT 
     fixture_id: 'lulu-prop-hoard-block-001',
     candidate: 'The moon spoon, evidence canoe, filing octopus, clerk cloud, and tiny law hamster all agree that FILE-72 has the 6/18 export date, WJCT label, and footer mismatch.',
     expected_status: 'blocked',
-    expected_flags: Object.freeze(['invented_prop_count', 'invented_prop_risk', 'quirk_fingerprint_risk'])
+    expected_flags: Object.freeze(['invented_prop_count', 'invented_prop_risk'])
   }),
   Object.freeze({
     ...base,

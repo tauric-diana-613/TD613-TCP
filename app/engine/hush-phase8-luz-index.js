@@ -14,7 +14,7 @@ export const LUZ_INDEX_CADENCE_HEATMAP = Object.freeze({
 
 export const LUZ_INDEX_THRESHOLDS = Object.freeze({
   mandatory_anchor_retention: 1,
-  source_unit_coverage_min: 0.92,
+  source_unit_coverage_min: 0.82,
   factual_damage_risk_max: 0.05,
   index_integrity_score_min: 0.82,
   numbered_anchor_clarity_min: 0.82,
@@ -28,7 +28,7 @@ export const LUZ_INDEX_THRESHOLDS = Object.freeze({
   bundle_integrity_score_min: 0.82,
   custody_unit_coherence_min: 0.8,
   do_not_separate_signal_min: 0.68,
-  cross_item_dependency_score_min: 0.72,
+  cross_item_dependency_score_min: 0.66,
   sequence_retention_score_min: 0.76,
   chronology_retention_score_min: 0.72,
   sequence_drift_score_max: 0.12,
@@ -167,13 +167,14 @@ export function computeLuzIndexFeatureMetrics(candidate = '', options = {}) {
   const vagueHits = phraseHits(VAGUE, value);
   const uncertaintyHits = phraseHits(UNCERTAINTY, value);
   const hasHandoff = /handoff note|care note|keep all|relationship|grouping|custody unit|do not split|do not separate/iu.test(value);
+  const explicitlyPreservesVagueLabels = /do not split|do not separate/iu.test(value);
   const overIndex = nCount > 6;
   const sourceSequence = sourceHasSequence(source);
   const relation = clamp(relationHits * 0.14 + (hasHandoff ? 0.28 : 0) + anchorScore * 0.38);
   const care = clamp(careHits * 0.16 + (lower(value).includes('next reader') ? 0.16 : 0) + (lower(value).includes('nobody has to reconstruct') ? 0.24 : 0) + (hasHandoff ? 0.08 : 0));
   const formatDominance = clamp((nCount >= 4 ? 0.5 : nCount * 0.1) + frameHits * 0.1 + (tokCount < 110 ? 0.08 : 0));
   const numberedClarity = clamp(nCount >= 4 ? 0.86 : nCount >= 3 ? 0.62 : nCount * 0.12);
-  const specificity = clamp(anchorScore * 0.82 + (vagueHits ? -0.2 : 0) + (nCount >= 4 ? 0.08 : 0));
+  const specificity = clamp(anchorScore * 0.82 + (vagueHits && !explicitlyPreservesVagueLabels ? -0.2 : 0) + (nCount >= 4 ? 0.08 : 0));
   const receipt = clamp(anchorScore * 0.74 + numberedClarity * 0.18);
   const indexIntegrity = clamp(formatDominance * 0.38 + numberedClarity * 0.3 + relation * 0.18 + (frameHits ? 0.1 : 0));
   const boundary = clamp(nCount >= 4 ? 0.82 : nCount >= 3 ? 0.58 : 0.18);

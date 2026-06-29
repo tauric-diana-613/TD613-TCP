@@ -61,7 +61,7 @@ for (const fixture of zoraFixtures) {
 assert.equal(statuses.get('zora-good-source-register-harbor-001'), 'pass');
 assert.equal(statuses.get('zora-good-hedge-rotation-001'), 'pass');
 assert.equal(statuses.get('zora-good-relation-retention-001'), 'pass');
-assert.equal(statuses.get('zora-over-held-source-001'), 'repair_required');
+assert.equal(statuses.get('zora-over-held-source-001'), 'blocked');
 assert.equal(statuses.get('zora-bleached-institutional-voice-001'), 'repair_required');
 assert.equal(statuses.get('zora-certainty-inflation-001'), 'blocked');
 assert.equal(statuses.get('zora-false-harbor-claim-001'), 'blocked');

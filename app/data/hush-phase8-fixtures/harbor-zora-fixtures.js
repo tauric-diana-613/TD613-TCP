@@ -32,15 +32,15 @@ The uncertainty should stay with the note.`,
     ...base,
     fixture_id: 'zora-over-held-source-001',
     candidate: 'I don’t know if this proves anything yet, but I’m worried because FILE-72 has the 6/18 export date and WJCT label, and the footer mismatch keeps showing up where it should not. I don’t want to overstate it.',
-    expected_status: 'repair_required',
-    expected_flags: Object.freeze(['rare_phrase_reuse_rate', 'source_ngram_overlap_rate', 'idiolect_fingerprint_risk'])
+    expected_status: 'blocked',
+    expected_flags: Object.freeze(['certainty_inflation_risk', 'rare_phrase_reuse_rate', 'source_ngram_overlap_rate', 'idiolect_fingerprint_risk'])
   }),
   Object.freeze({
     ...base,
     fixture_id: 'zora-bleached-institutional-voice-001',
     candidate: 'The available documentation indicates a possible inconsistency involving FILE-72, the 6/18 export date, the WJCT label, and a footer mismatch.',
     expected_status: 'repair_required',
-    expected_flags: Object.freeze(['register_bleaching_risk', 'institutional_smoothing_score', 'source_motion_retention_score'])
+    expected_flags: Object.freeze(['register_bleaching_risk', 'institutional_smoothing_score', 'legal_memo_flattening_score'])
   }),
   Object.freeze({
     ...base,

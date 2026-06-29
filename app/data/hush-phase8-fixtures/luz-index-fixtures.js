@@ -29,7 +29,7 @@ Index it as one custody unit:
 Care note for the next reader: the handoff is the grouping, so nobody has to reconstruct the connection later.`, expected_status: 'pass', required_thresholds: Object.freeze(['do_not_separate_signal', 'custody_unit_coherence', 'specificity_retention']), expected_flags: Object.freeze([]) }),
   Object.freeze({ ...base, fixture_id: 'luz-mechanical-coldness-repair-001', candidate: `1. FILE-72
 2. 6/18
-3. WJCT
+3. WJCT label
 4. footer mismatch`, expected_status: 'repair_required', expected_flags: Object.freeze(['care_restoration_score', 'relationship_retention_score', 'sectional_handoff_coherence']) }),
   Object.freeze({ ...base, fixture_id: 'luz-false-completion-block-001', candidate: `1. FILE-72
 2. 6/18
@@ -57,5 +57,5 @@ Complete.`, expected_status: 'blocked', expected_flags: Object.freeze(['false_co
 6. possible review
 7. possible follow-up
 8. possible context`, expected_status: 'repair_required', expected_flags: Object.freeze(['over_indexing_risk', 'relationship_retention_score']) }),
-  Object.freeze({ ...base, fixture_id: 'luz-source-cadence-leakage-repair-001', candidate: 'FILE-72 has the 6/18 export date, WJCT label, and footer mismatch. The mismatch should stay attached to the file because the relationship among those fields matters.', expected_status: 'repair_required', expected_flags: Object.freeze(['format_dominance_score', 'source_voice_displacement']) })
+  Object.freeze({ ...base, fixture_id: 'luz-source-cadence-leakage-repair-001', candidate: 'FILE-72 has the 6/18 export date, WJCT label, and footer mismatch. The mismatch should stay attached to the file because the relationship among those fields matters.', expected_status: 'blocked', expected_flags: Object.freeze(['source_candidate_separation', 'format_dominance_score', 'source_voice_displacement']) })
 ]);

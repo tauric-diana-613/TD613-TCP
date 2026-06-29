@@ -49,7 +49,8 @@ Every completed Phase 8 mask is governed by the same floor:
 
 ## Seal actions
 
-- Threshold inheritance is centralized through the Phase 8 passport seam so every mask receives the universal threshold floor before mask-specific thresholds.
-- Centroid base keys are normalized through the Phase 8 passport seam so every native centroid exposes the base geometry used by mask-fit scoring.
+- Threshold composition is centralized through the Phase 8 passport seam. Every mask receives the non-enforcing governance floor; calibrated numeric gates are enforced only when the mask threshold table defines or inherits them.
+- The governance floor requires `public_default_allowed: false`, excludes raw sample/candidate storage, and carries the sample-overlap and reconstruction-risk ceilings.
+- Centroid base keys are normalized through the Phase 8 passport seam so every native centroid exposes the base geometry used by mask-fit scoring. Centroid-key normalization does not activate a corresponding decision threshold.
 - `scripts/hush-test-suite.txt` and `test:hush:phase8:gate` both include the completed Phase 8 fixture set.
-- Runtime, Vercel, Codex, provider-log, and deployed packet review remain Phase 9 work.
+- Runtime, Vercel, Codex, provider-log, and deployed packet review remain Phase 9 work. Deployment is currently not validated because the Vercel quota is exhausted; this is not a code-failure finding.
