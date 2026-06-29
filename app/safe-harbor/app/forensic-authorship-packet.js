@@ -3,21 +3,10 @@
   const VERSION = 'safe-harbor-forensic-authorship/v1';
   const SCHEMA = 'td613.safe-harbor.forensic-authorship/v1';
   const $ = (id) => document.getElementById(id);
-  const enc = new TextEncoder();
   let busy = false;
 
   function clone(v) { return v == null ? v : JSON.parse(JSON.stringify(v)); }
   function round(v, d = 4) { const n = Number(v); if (!Number.isFinite(n)) return null; const s = Math.pow(10, d); return Math.round(n * s) / s; }
-  function stable(v) {
-    if (v === null || typeof v !== 'object') return JSON.stringify(v);
-    if (Array.isArray(v)) return '[' + v.map(stable).join(',') + ']';
-    return '{' + Object.keys(v).sort().map((k) => JSON.stringify(k) + ':' + stable(v[k])).join(',') + '}';
-  }
-  async function sha256(text) {
-    const d = await crypto.subtle.digest('SHA-256', enc.encode(String(text || '')));
-    return 'sha256:' + Array.from(new Uint8Array(d)).map((b) => b.toString(16).padStart(2, '0')).join('');
-  }
-
   function pairBounds(items) {
     const arr = Array.isArray(items) ? items.map((x) => ({ pair: x.pair || null, similarity: Number(x.similarity) })).filter((x) => Number.isFinite(x.similarity)) : [];
     if (!arr.length) return { strongest: null, widest: null };
@@ -96,33 +85,11 @@
     if (!packet || packet.schema_version !== 'td613.safe-harbor.packet/v1') return packet;
     const next = clone(packet);
     next.forensic_authorship = build(next);
-    const material = clone(next);
-    if (material.signature) { material.signature.sig = null; material.signature.attached_at = null; if (material.signature.status === 'sealed') material.signature.status = 'declared'; }
-    material.packet_hash_sha256 = null;
-    next.packet_hash_sha256 = await sha256(stable(material));
+    next.forensic_authorship.hash_posture = 'supplemental receipt; excluded from the native packet hash';
     return next;
   }
 
-  function readPreview() {
-    const node = $('packetPreview');
-    if (!node) return null;
-    const raw = String(node.textContent || '').trim();
-    if (!raw || raw === 'packet pending') return null;
-    try { return JSON.parse(raw); } catch (_) { return null; }
-  }
-  async function refresh() {
-    if (busy) return;
-    const node = $('packetPreview');
-    const packet = readPreview();
-    if (!node || !packet || packet.forensic_authorship?.schema_version === SCHEMA) return;
-    busy = true;
-    try {
-      const next = await augment(packet);
-      node.textContent = JSON.stringify(next, null, 2);
-      const hash = $('packetHashReadout');
-      if (hash) hash.textContent = next.packet_hash_sha256;
-    } finally { busy = false; }
-  }
+  async function refresh() { return false; }
   function filename(packet) {
     const shi = packet?.issuance?.badge_number ? '-' + packet.issuance.badge_number : '';
     const stage = packet?.bridge?.export_gate?.ready ? 'sealed' : (packet?.issuance?.badge_number ? 'minted' : 'staged');
@@ -136,25 +103,7 @@
     a.href = href; a.download = name; document.body.appendChild(a); a.click(); document.body.removeChild(a);
     setTimeout(() => URL.revokeObjectURL(href), 0);
   }
-  function boot() {
-    const node = $('packetPreview');
-    if (node && !node.dataset.forensicAuthorship) {
-      node.dataset.forensicAuthorship = VERSION;
-      new MutationObserver(() => setTimeout(refresh, 0)).observe(node, { childList: true, characterData: true, subtree: true });
-    }
-    document.addEventListener('click', async (event) => {
-      const button = event.target?.closest?.('#copyPacketPreview,#exportPacketPreview,#covenantExport');
-      if (!button) return;
-      const packet = readPreview();
-      if (!packet) return;
-      const next = await augment(packet);
-      const text = JSON.stringify(next, null, 2) + '\n';
-      if (node) node.textContent = text;
-      if (button.id === 'copyPacketPreview' && navigator.clipboard?.writeText) { event.preventDefault(); event.stopPropagation(); await navigator.clipboard.writeText(text); }
-      if (button.id === 'exportPacketPreview' || button.id === 'covenantExport') { event.preventDefault(); event.stopPropagation(); download(filename(next), text); }
-    }, true);
-    setTimeout(refresh, 0); setTimeout(refresh, 600); setTimeout(refresh, 1600);
-  }
+  function boot() {}
   if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', boot, { once: true }); else boot();
   window.TD613_SAFE_HARBOR_FORENSIC_AUTHORSHIP = { version: VERSION, schema: SCHEMA, augmentPacket: augment, buildForensicAuthorship: build, refreshPreview: refresh };
 }());

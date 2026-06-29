@@ -13,7 +13,7 @@
   }
 
   function escapeHtml(value) {
-    return String(value == null ? '')
+    return String(value == null ? '' : value)
       .replace(/&/g, '&amp;')
       .replace(/</g, '&lt;')
       .replace(/>/g, '&gt;')
@@ -213,6 +213,8 @@
   });
 
   (function bootstrapSafeHarborHousekeeping() {
+    // Safe Harbor now owns its compatibility assets explicitly in its page shell.
+    return;
     const path = String((window.location && window.location.pathname) || '');
     if (!/safe-harbor/i.test(path)) return;
     const version = '20260617-pr167-packet-vault-txt';

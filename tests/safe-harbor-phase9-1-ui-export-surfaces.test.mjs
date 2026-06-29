@@ -4,6 +4,7 @@ import { readFileSync } from 'node:fs';
 import { buildClaimLimits } from '../app/safe-harbor/app/safe-harbor-policy-constants.js';
 import { EXPORT_SURFACES, classifyExportSurface, buildExportPayload, verifyExportPayload, buildExportReceipt } from '../app/safe-harbor/app/safe-harbor-export-policy.js';
 import { buildClipboardPayload, verifyClipboardPayload } from '../app/safe-harbor/app/safe-harbor-clipboard-policy.js';
+import { packetExportReadyAfterPipeline } from '../app/safe-harbor/app/safe-harbor-packet-pipeline.js';
 import { SAFE_HARBOR_SURFACES, COPY_EXPORT_CONTROL_MAP, getSurfaceByControl } from '../app/safe-harbor/app/safe-harbor-surface-registry.js';
 
 const packet = {
@@ -20,6 +21,13 @@ const packet = {
 
 assert.equal(classifyExportSurface(EXPORT_SURFACES.PACKET_JSON, packet), 'verification-ready');
 assert.equal(classifyExportSurface(EXPORT_SURFACES.PUBLIC_SUMMARY_COPY, packet), 'verification-ready');
+assert.equal(packetExportReadyAfterPipeline(packet), true);
+
+for (const missingStage of ['phase5_replay_hardening', 'phase8_public_default_gate', 'phase9_release_discipline']) {
+  const incomplete = JSON.parse(JSON.stringify(packet));
+  delete incomplete[missingStage];
+  assert.equal(packetExportReadyAfterPipeline(incomplete), false, `${missingStage} must fail closed`);
+}
 
 const summaryPayload = buildExportPayload(EXPORT_SURFACES.PUBLIC_SUMMARY_COPY, packet);
 assert.equal(summaryPayload.public_root, 'v2');

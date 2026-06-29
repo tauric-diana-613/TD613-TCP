@@ -6,9 +6,28 @@
 
   const KEYS = ['future_self', 'past_self', 'higher_self'];
   const STORAGE_KEY = 'td613.safe-harbor.session.v1';
+  const MIRROR_KEY = 'td613.safe-harbor.session.mirror.v1';
   const GATEWAY_APERTURE_HANDOFF_KEY = (window.TD613_CONSTANTS && window.TD613_CONSTANTS.GATEWAY_APERTURE_HANDOFF_KEY) || 'td613.gateway.aperture-handoff';
   const MAX_AUDIT = 24;
   const MIN_LANE_WORDS = 40;
+  const BATCH_FILE_MANIFEST = Object.freeze({
+    'batch-001a': 'corpus/tauric-diana-intake/batch-001a_migration_console.json',
+    'batch-001b': 'corpus/tauric-diana-intake/batch-001b_historical_console_lineage.json',
+    'batch-001c': 'corpus/tauric-diana-intake/batch-001c_constitutional_spine.json',
+    'batch-001d': 'corpus/tauric-diana-intake/batch-001d_protected_core_set_a.json',
+    'batch-002a': 'corpus/tauric-diana-intake/batch-002a_thinkers_spine.json',
+    'batch-002b': 'corpus/tauric-diana-intake/batch-002b_continuity_citation.json',
+    'batch-002c': 'corpus/tauric-diana-intake/batch-002c_policy_provenance.json',
+    'batch-002d': 'corpus/tauric-diana-intake/batch-002d_route_support.json',
+    'batch-003a': 'corpus/tauric-diana-intake/batch-003a_svenbots_core.json',
+    'batch-003b': 'corpus/tauric-diana-intake/batch-003b_implementation_layer.json',
+    'batch-003c': 'corpus/tauric-diana-intake/batch-003c_schema_source_bridge.json',
+    'batch-003d': 'corpus/tauric-diana-intake/batch-003d_risk_recovery_ops.json',
+    'batch-004a': 'corpus/tauric-diana-intake/batch-004a_bulk_raw_intake.json',
+    'batch-004b': 'corpus/tauric-diana-intake/batch-004b_high_value_archives.json',
+    'batch-004c': 'corpus/tauric-diana-intake/batch-004c_coined_frameworks.json'
+  });
+  const batchNodesCache = new Map();
   const APERTURE_CONTEXT_BASE = Object.freeze({
     apertureVersion: 'v2.9.2',
     apertureSchema: 'td613-aperture/v2.9.2',
@@ -191,6 +210,7 @@
     auditLog: $('auditLog'),
     safeHarborReceiptMount: $('safeHarborReceiptMount'),
     safeHarborVaultReceiptMount: $('safeHarborVaultReceiptMount'),
+    operatorPacketMirrorFold: $('operatorPacketMirrorFold'),
     coherenceSigilIngress: $('coherenceSigilIngress'),
     coherenceSigilVault: $('coherenceSigilVault'),
     railShiState: $('railShiState'),
@@ -202,7 +222,7 @@
     copyButtons: Array.from(document.querySelectorAll('[data-copy-target]'))
   };
 
-  const optionalDomKeys = new Set(['resealVault', 'railShiState', 'railDynamicLaneState', 'railRefreshHelpers', 'railSignOut']);
+  const optionalDomKeys = new Set(['footerModePreview', 'resealVault', 'railShiState', 'railDynamicLaneState', 'railRefreshHelpers', 'railSignOut']);
   const missingDomKeys = Object.entries(dom)
     .filter(([key, node]) => key !== 'body' && !optionalDomKeys.has(key) && !Array.isArray(node) && !node)
     .map(([key]) => key);
@@ -257,7 +277,7 @@
     render();
     dom.body.classList.remove('boot-pending');
     dom.body.classList.add('boot-ready');
-    void rebuild('init');
+    if (!state.packet && state.ingress.packetId && state.ingress.receiptId) void rebuild('init');
     if (dom.batchIntakeSelect) {
       void loadBatchNodes(dom.batchIntakeSelect.value || 'batch-001a');
     }
@@ -472,13 +492,11 @@
       el.addEventListener('input', () => void handleFormChange());
       el.addEventListener('change', () => void handleFormChange());
     });
-    dom.clearIngress.addEventListener('click', resetAll);
-    [dom.signOutIngress, dom.signOutVault].filter(Boolean).forEach((button) => button.addEventListener('click', signOutSession));
+    document.addEventListener('click', handleSessionControlClick, true);
     if (dom.resealVault) dom.resealVault.addEventListener('click', returnToIngress);
     dom.refreshHelpers.addEventListener('click', () => refreshHelpers());
     if (dom.refreshProbeHelpers) dom.refreshProbeHelpers.addEventListener('click', () => refreshHelpers());
     if (dom.railRefreshHelpers) dom.railRefreshHelpers.addEventListener('click', () => refreshHelpers());
-    if (dom.railSignOut) dom.railSignOut.addEventListener('click', signOutSession);
     dom.covenantExport.addEventListener('click', () => void covenantExport());
     dom.mintStagedPacket.addEventListener('click', () => void mintStagedPacket());
     if (dom.forgeBatch) dom.forgeBatch.addEventListener('click', () => void forgeBatch());
@@ -513,7 +531,8 @@
     dom.copyCanonicalHeader.addEventListener('click', () => void copyText(dom.canonicalHeaderPreview.textContent || ''));
     dom.copyExtendedFooter.addEventListener('click', () => void copyText(dom.extendedFooterPreview.textContent || ''));
     dom.copyProbeOutput.addEventListener('click', () => void copyText(dom.probeOutput.value || ''));
-    dom.copyPacketPreview.addEventListener('click', () => void copyText(dom.packetPreview.textContent || ''));
+    dom.copyPacketPreview.addEventListener('click', () => void copyText(state.packet ? JSON.stringify(state.packet, null, 2) : ''));
+    if (dom.operatorPacketMirrorFold) dom.operatorPacketMirrorFold.addEventListener('toggle', renderPacket);
     dom.copyForensicSchemaPreview.addEventListener('click', () => {
       if (!packetIsSealed()) return;
       void copyText(packetExportJsonString());
@@ -627,9 +646,19 @@
   }
 
   function signOutSession() {
+    window.dispatchEvent(new CustomEvent('td613:safe-harbor-session-reset'));
+    try { localStorage.removeItem(MIRROR_KEY); } catch (error) {}
     resetAll();
     dom.ingressNote.textContent = 'Session cleared. The sealed packet, SHI binding, and recall state were purged and the membrane is active again.';
-    render();
+  }
+
+  function handleSessionControlClick(event) {
+    const button = event.target && event.target.closest
+      ? event.target.closest('#signOutIngress,#signOutVault,#railSignOut,#clearIngress')
+      : null;
+    if (!button) return;
+    if (button.id === 'clearIngress') resetAll();
+    else signOutSession();
   }
 
   function hydrate() {
@@ -641,7 +670,6 @@
       dom.bypassSealedPacketName.hidden = true;
     }
     updateHelpers();
-    render();
   }
 
   function isLocalhostOperator() {
@@ -959,26 +987,6 @@
       if (!operatorReady) dom.batchNodesFold.open = false;
     }
   }
-
-  const BATCH_FILE_MANIFEST = {
-    'batch-001a': 'corpus/tauric-diana-intake/batch-001a_migration_console.json',
-    'batch-001b': 'corpus/tauric-diana-intake/batch-001b_historical_console_lineage.json',
-    'batch-001c': 'corpus/tauric-diana-intake/batch-001c_constitutional_spine.json',
-    'batch-001d': 'corpus/tauric-diana-intake/batch-001d_protected_core_set_a.json',
-    'batch-002a': 'corpus/tauric-diana-intake/batch-002a_thinkers_spine.json',
-    'batch-002b': 'corpus/tauric-diana-intake/batch-002b_continuity_citation.json',
-    'batch-002c': 'corpus/tauric-diana-intake/batch-002c_policy_provenance.json',
-    'batch-002d': 'corpus/tauric-diana-intake/batch-002d_route_support.json',
-    'batch-003a': 'corpus/tauric-diana-intake/batch-003a_svenbots_core.json',
-    'batch-003b': 'corpus/tauric-diana-intake/batch-003b_implementation_layer.json',
-    'batch-003c': 'corpus/tauric-diana-intake/batch-003c_schema_source_bridge.json',
-    'batch-003d': 'corpus/tauric-diana-intake/batch-003d_risk_recovery_ops.json',
-    'batch-004a': 'corpus/tauric-diana-intake/batch-004a_bulk_raw_intake.json',
-    'batch-004b': 'corpus/tauric-diana-intake/batch-004b_high_value_archives.json',
-    'batch-004c': 'corpus/tauric-diana-intake/batch-004c_coined_frameworks.json'
-  };
-
-  const batchNodesCache = new Map();
 
   async function loadBatchNodes(batchId) {
     if (!dom.batchNodesList) return;
@@ -1421,7 +1429,17 @@
     if (dom.forensicSchemaPreview) dom.forensicSchemaPreview.textContent = JSON.stringify(state.packet.forensic_schema, null, 2);
     dom.packetStateReadout.textContent = state.packet.receipt.state;
     dom.provenanceRetentionReadout.textContent = state.packet.analysis.route.provenance ? metric(state.packet.analysis.route.provenance.retention_target) : 'pending';
-    dom.packetPreview.textContent = JSON.stringify(state.packet, null, 2);
+    dom.packetPreview.textContent = dom.operatorPacketMirrorFold && dom.operatorPacketMirrorFold.open
+      ? JSON.stringify(state.packet, null, 2)
+      : JSON.stringify({
+        schema_version: state.packet.schema_version,
+        packet_id: state.packet.packet_id,
+        packet_hash_sha256: state.packet.packet_hash_sha256,
+        phase5_status: state.packet.phase5_replay_hardening && state.packet.phase5_replay_hardening.status,
+        phase8_status: state.packet.phase8_public_default_gate && state.packet.phase8_public_default_gate.status,
+        phase9_release_class: state.packet.phase9_release_discipline && state.packet.phase9_release_discipline.release_class,
+        full_packet: 'Expand Operator packet mirror to render the complete packet.'
+      }, null, 2);
     stampBadgeMetaOnPrincipal(state.packet);
     renderMintSurface(state.packet.issuance.badge_number || null, issuance);
     dom.covenantNote.textContent = state.packet.bridge.covenant_gate.confirmed
@@ -1922,7 +1940,7 @@
     dom.probeOutput.value = '';
     writeStorage(null);
     hydrate();
-    logEvent('session-reset', { state: 'sealed' });
+    render();
   }
 
 
@@ -3672,6 +3690,17 @@
       mintStagedPacket: async function () { return mintStagedPacket(); },
       buildProbe: function (variant) { return buildProbeOutput(variant); },
       buildPacket: async function () { return state.packet ? clone(state.packet) : null; },
+      resetSession: function () {
+        signOutSession();
+        return true;
+      },
+      adoptGovernedPacket: function (packet) {
+        if (!packet || packet.schema_version !== 'td613.safe-harbor.packet/v1') return false;
+        state.packet = clone(packet);
+        persist();
+        render();
+        return true;
+      },
       getSealedPayload: function () { return state.sealed ? clone(state.sealed) : null; },
       attachSignatureOverlay: async function (detail) {
         if (dom.kleopatraVoid && detail && detail.sig !== undefined) dom.kleopatraVoid.value = detail.sig || '';

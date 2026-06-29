@@ -16,6 +16,12 @@
   </script>
   <link rel="stylesheet" href="app/styles.css">
   <link rel="stylesheet" href="app/safe-harbor-pr167-packet-vault-polish.css?v=20260617-packet-vault-tight-v5">
+  <link rel="stylesheet" href="app/safe-harbor-housekeeping.css?v=202606282300">
+  <link rel="stylesheet" href="app/safe-harbor-pr149-recall-hotfix.css?v=202606282300">
+  <link rel="stylesheet" href="app/safe-harbor-pr153-mobile-field-scale.css?v=202606282300">
+  <link rel="stylesheet" href="app/safe-harbor-pr154-mobile-focus-stable.css?v=202606282300">
+  <link rel="stylesheet" href="app/safe-harbor-pr165-mobile-public-references.css?v=202606282300">
+  <link rel="stylesheet" href="app/safe-harbor-pr166-mobile-textarea-focus.css?v=202606282300">
   <script type="module" src="../analytics.js"></script>
   <script type="module" src="../speed-insights.js"></script>
 </head>
@@ -483,7 +489,7 @@
       </aside>
 
       <section class="dock dock-left operator-dock" id="operatorMirrorSection" data-td613-skip="true">
-        <details class="dock-fold">
+        <details class="dock-fold" id="operatorPacketMirrorFold">
           <summary>Operator packet mirror</summary>
           <div class="dock-toolbar"><button class="control secondary" id="copyPacketPreview" type="button">Copy Packet</button></div>
           <pre id="packetPreview" class="code-panel">packet pending</pre>
@@ -499,9 +505,10 @@
     </main>
   </div>
 
-  <script src="../operator-receipt.js"></script>
-  <script src="app/data.js"></script>
-  <script src="app/main.js"></script>
-  <script src="app/safe-harbor-pr169-packet-vault-direct.js?v=20260617-packet-vault-direct" defer></script>
+  <script src="../operator-receipt.js?v=202606282250"></script>
+  <script src="app/data.js?v=202606290520"></script>
+  <script src="app/main.js?v=202606290730"></script>
+  <script src="app/safe-harbor-housekeeping.js?v=202606290035"></script>
+  <script src="app/safe-harbor-pr169-packet-vault-direct.js?v=202606290700" defer></script>
 </body>
 </html>

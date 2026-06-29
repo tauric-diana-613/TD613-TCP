@@ -2,6 +2,7 @@
   'use strict';
 
   var VERSION = 'safe-harbor-pr169-packet-vault-direct/v16-phase9-1b-wire-ui-surfaces';
+  var ASSET_VERSION = '202606290700';
   var STORAGE_KEY = 'td613.safe-harbor.session.v1';
   var MIRROR_KEY = 'td613.safe-harbor.session.mirror.v1';
   var HISTORICAL_EXAMPLE = 'TD613-Binding:#9B07D8B/SAC[X6ZNK5NO51] · payload 5 · 2025-10-17 · ⟐';
@@ -9,13 +10,26 @@
   var pipelinePromise = null;
   var exportPolicyPromise = null;
   var clipboardPolicyPromise = null;
+  var normalizationPromise = null;
+  var normalizationScheduled = false;
+  var lastNormalizedSnapshot = null;
+  var booted = false;
+  var sessionEpoch = 0;
 
   function $(id) { return document.getElementById(id); }
   function parse(raw) { try { return raw ? JSON.parse(raw) : null; } catch (error) { return null; } }
   function clone(value) { return value == null ? value : JSON.parse(JSON.stringify(value)); }
   function read(storage, key) { try { return storage && storage.getItem(key); } catch (error) { return null; } }
   function write(storage, key, value) { try { if (storage) storage.setItem(key, JSON.stringify(value)); } catch (error) {} }
-  function localModuleUrl(filename) { try { return new URL(filename, SCRIPT_URL || window.location.href).href; } catch (error) { return 'app/' + filename; } }
+  function localModuleUrl(filename) {
+    try {
+      var url = new URL(filename, SCRIPT_URL || window.location.href);
+      url.searchParams.set('v', ASSET_VERSION);
+      return url.href;
+    } catch (error) {
+      return 'app/' + filename + '?v=' + ASSET_VERSION;
+    }
+  }
 
   function savedSession() { return parse(read(window.sessionStorage, STORAGE_KEY)) || parse(read(window.localStorage, MIRROR_KEY)) || null; }
   function storeSession(saved) { if (!saved || !saved.packet) return; write(window.sessionStorage, STORAGE_KEY, saved); write(window.localStorage, MIRROR_KEY, saved); }
@@ -29,6 +43,22 @@
   }
   function hasRawSegments(saved) { return Boolean(rawSegmentsFromSaved(saved)); }
   function nativeBorn(packet) { return Boolean(packet && packet.native_spine_purification && packet.native_spine_purification.status === 'native'); }
+  function stripSupplementalReceipts(value) {
+    if (Array.isArray(value)) return value.map(stripSupplementalReceipts);
+    if (!value || typeof value !== 'object') return value;
+    var out = {};
+    Object.keys(value).forEach(function (key) {
+      if (key === 'forensic_authorship' || key === 'historical_example') return;
+      out[key] = stripSupplementalReceipts(value[key]);
+    });
+    return out;
+  }
+  function corePacketForPipeline(packet) {
+    var core = stripSupplementalReceipts(clone(packet));
+    var nativeHash = core && core.hash_topology && core.hash_topology.final_packet_hash_sha256;
+    if (nativeHash) core.packet_hash_sha256 = nativeHash;
+    return core;
+  }
 
   async function pipelineApi() {
     var api = window.TD613_SAFE_HARBOR_PACKET_PIPELINE;
@@ -60,8 +90,33 @@
 
   async function normalizePacket(packet, saved) {
     var api = await pipelineApi();
-    if (!api || typeof api.normalizePacketThroughPipeline !== 'function') return packet;
-    return api.normalizePacketThroughPipeline(packet, saved, { mode: hasRawSegments(saved) ? 'native' : 'export-normalized' });
+    var pipelineState = packet && packet.pipeline_state;
+    var pipelineCurrent = Boolean(
+      api &&
+      pipelineState &&
+      pipelineState.pipeline_version === api.PIPELINE_VERSION &&
+      packet.packet_hash_sha256 &&
+      packet.hash_topology &&
+      packet.hash_topology.final_packet_hash_sha256 === packet.packet_hash_sha256 &&
+      packet.phase5_replay_hardening && packet.phase5_replay_hardening.status === 'pass' &&
+      packet.outside_witness_alignment && (packet.outside_witness_alignment.status === 'aligned' || packet.outside_witness_alignment.status === 'partial') &&
+      packet.phase8_public_default_gate && (packet.phase8_public_default_gate.status === 'pass' || packet.phase8_public_default_gate.status === 'review') &&
+      packet.phase9_release_discipline && (packet.phase9_release_discipline.release_class === 'verification-ready' || packet.phase9_release_discipline.release_class === 'public-readable')
+    );
+    if (pipelineCurrent) return packet;
+    var corePacket = corePacketForPipeline(packet);
+    var normalized = api && typeof api.normalizePacketThroughPipeline === 'function'
+      ? await api.normalizePacketThroughPipeline(corePacket, saved, { mode: hasRawSegments(saved) ? 'native' : 'export-normalized' })
+      : corePacket;
+    var forensic = window.TD613_SAFE_HARBOR_FORENSIC_AUTHORSHIP;
+    if (normalized && !normalized.forensic_authorship && forensic && typeof forensic.augmentPacket === 'function') {
+      normalized = await forensic.augmentPacket(normalized);
+    }
+    var footerHistory = window.TD613_SAFE_HARBOR_FOOTER_HISTORY;
+    if (normalized && footerHistory && typeof footerHistory.augmentPacket === 'function') {
+      normalized = await footerHistory.augmentPacket(normalized);
+    }
+    return normalized;
   }
   async function nativeFinalizeSavedPacket() {
     var saved = savedSession();
@@ -77,10 +132,12 @@
   }
   function packetExportReady(packet) {
     if (!packet || !packet.bridge || !packet.bridge.export_gate || !packet.bridge.export_gate.ready) return false;
-    if (packet.phase5_replay_hardening && (packet.phase5_replay_hardening.status === 'quarantine' || packet.phase5_replay_hardening.status === 'fail')) return false;
-    if (packet.phase8_public_default_gate && packet.phase8_public_default_gate.status === 'blocked') return false;
-    if (packet.phase9_release_discipline && packet.phase9_release_discipline.release_class === 'blocked') return false;
-    return true;
+    var phase5 = packet.phase5_replay_hardening && packet.phase5_replay_hardening.status;
+    var phase8 = packet.phase8_public_default_gate && packet.phase8_public_default_gate.status;
+    var phase9 = packet.phase9_release_discipline && packet.phase9_release_discipline.release_class;
+    if (phase5 !== 'pass') return false;
+    if (phase8 !== 'pass' && phase8 !== 'review') return false;
+    return phase9 === 'verification-ready' || phase9 === 'public-readable';
   }
 
   function packetFilename(packet) {
@@ -145,11 +202,24 @@
     return 'public v2-only';
   }
   function releaseLabel(packet) { var release = packet && packet.phase9_release_discipline; return 'release ' + (release && release.release_class ? release.release_class : 'operator-only'); }
+  function packetPreviewText(packet) {
+    var fold = $('operatorPacketMirrorFold');
+    if (fold && fold.open) return JSON.stringify(packet, null, 2);
+    return JSON.stringify({
+      schema_version: packet.schema_version,
+      packet_id: packet.packet_id,
+      packet_hash_sha256: packet.packet_hash_sha256,
+      phase5_status: packet.phase5_replay_hardening && packet.phase5_replay_hardening.status,
+      phase8_status: packet.phase8_public_default_gate && packet.phase8_public_default_gate.status,
+      phase9_release_class: packet.phase9_release_discipline && packet.phase9_release_discipline.release_class,
+      full_packet: 'Expand Operator packet mirror to render the complete packet.'
+    }, null, 2);
+  }
   function syncPreview(packet) {
     var preview = $('packetPreview');
-    if (preview && packet) preview.textContent = JSON.stringify(packet, null, 2);
+    if (preview && packet) preview.textContent = packetPreviewText(packet);
     var schema = $('forensicSchemaPreview');
-    if (schema && packet) schema.textContent = JSON.stringify(packet, null, 2);
+    if (schema && packet) schema.textContent = JSON.stringify(packet.forensic_schema || {}, null, 2);
     var hash = $('packetHashReadout');
     if (hash && packet && packet.packet_hash_sha256) hash.textContent = packet.packet_hash_sha256;
     var badge = $('badgeStatusReadout');
@@ -172,12 +242,47 @@
     var saved = savedSession();
     var packet = saved && saved.packet ? saved.packet : null;
     if (!packet) return null;
+    var epoch = sessionEpoch;
+    var sourceSnapshot = JSON.stringify(packet);
+    if (sourceSnapshot === lastNormalizedSnapshot) return clone(packet);
     var patched = await normalizePacket(packet, saved);
-    if (JSON.stringify(patched) !== JSON.stringify(packet)) { saved.packet = patched; storeSession(saved); }
+    var current = savedSession();
+    if (epoch !== sessionEpoch || !current || !current.packet || JSON.stringify(current.packet) !== sourceSnapshot) return null;
+    if (JSON.stringify(patched) !== JSON.stringify(packet)) {
+      saved.packet = patched;
+      storeSession(saved);
+      var nativeApi = window.TD613SafeHarbor;
+      if (nativeApi && typeof nativeApi.adoptGovernedPacket === 'function') nativeApi.adoptGovernedPacket(patched);
+    }
+    lastNormalizedSnapshot = JSON.stringify(patched);
     return patched;
   }
   function activePacketSync() { var saved = savedSession(); return saved && saved.packet ? clone(saved.packet) : null; }
-  async function normalizeVisiblePacket() { var packet = await activePacket(); if (packet) syncPreview(packet); return packet; }
+  function normalizeVisiblePacket() {
+    if (!normalizationPromise) {
+      normalizationPromise = activePacket()
+        .then(function (packet) { if (packet) syncPreview(packet); return packet; })
+        .finally(function () { normalizationPromise = null; });
+    }
+    return normalizationPromise;
+  }
+  function scheduleNormalization() {
+    if (normalizationScheduled || normalizationPromise) return;
+    normalizationScheduled = true;
+    var run = function () {
+      normalizationScheduled = false;
+      void normalizeVisiblePacket().then(syncReadyState);
+    };
+    var queue = function () {
+      if (typeof window.requestIdleCallback === 'function') {
+        window.requestIdleCallback(run, { timeout: 4000 });
+      } else {
+        window.setTimeout(run, 400);
+      }
+    };
+    if (document.readyState === 'complete') queue();
+    else window.addEventListener('load', queue, { once: true });
+  }
 
   function patchProbeText(raw) {
     var body = String(raw || '');
@@ -246,20 +351,46 @@
     if (typeof api.buildProbe === 'function') { var originalBuildProbe = api.buildProbe.bind(api); api.buildProbe = function (variant) { var result = originalBuildProbe(variant); var patched = patchProbeText(result); var node = $('probeOutput'); if (node) { if ('value' in node) node.value = patched; else node.textContent = patched; } return patched; }; }
     api.__phase9_1bWirePatch = VERSION;
   }
+  function syncReadyState(packet) {
+    var node = button();
+    var ready = packetExportReady(packet);
+    var exportButton = $('exportPacketPreview');
+    if (exportButton) {
+      exportButton.disabled = !ready;
+      exportButton.setAttribute('aria-disabled', ready ? 'false' : 'true');
+      exportButton.title = ready ? 'Export a policy-gated packet' : 'Export unlocks after Phase 5, Phase 8, and Phase 9 release discipline pass';
+    }
+    if (node) {
+      node.disabled = !ready;
+      node.setAttribute('aria-disabled', ready ? 'false' : 'true');
+      node.title = ready ? 'Open a policy-gated sealed packet text preview' : 'Open .txt unlocks after export readiness, Phase 5, Phase 8, and Phase 9 release discipline pass';
+    }
+  }
+  function bindPacketMirror() {
+    var fold = $('operatorPacketMirrorFold');
+    if (!fold || fold.dataset.safeHarborPacketMirror === VERSION) return;
+    fold.dataset.safeHarborPacketMirror = VERSION;
+    fold.addEventListener('toggle', function () {
+      var packet = activePacketSync();
+      if (packet) syncPreview(packet);
+    });
+  }
   function syncButton() {
-    var node = bindButton();
+    bindButton();
     bindPacketExports();
     bindProbeOutputs();
+    bindPacketMirror();
     patchApi();
-    void normalizeVisiblePacket();
     patchProbeOutput();
-    if (!node) return;
-    var ready = packetExportReady(activePacketSync());
-    node.disabled = !ready;
-    node.setAttribute('aria-disabled', ready ? 'false' : 'true');
-    node.title = ready ? 'Open a policy-gated sealed packet text preview' : 'Open .txt unlocks after export readiness, Phase 5, Phase 8, and Phase 9 release discipline pass';
+    syncReadyState(activePacketSync());
+    scheduleNormalization();
   }
   function boot() {
+    if (booted) {
+      syncReadyState(activePacketSync());
+      return;
+    }
+    booted = true;
     document.documentElement.classList.add('safe-harbor-pr169');
     bindButton();
     bindPacketExports();
@@ -269,14 +400,12 @@
     window.__TD613_SAFE_HARBOR_PR169__ = { version: VERSION, button: Boolean(button()), at: new Date().toISOString(), footer_history: HISTORICAL_EXAMPLE, phase6_native_callsite: true, phase6_compose_purity: true, phase7_outside_witness_alignment: true, phase8_public_default_gate: true, phase9_release_discipline: true, phase9_1_maintenance_seal: true, phase9_1b_ui_surface_wiring: true, normalizer_role: 'pipeline-ui-bridge' };
   }
   if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', boot, { once: true }); else boot();
-  window.addEventListener('load', boot);
-  window.addEventListener('pageshow', boot);
-  window.addEventListener('storage', syncButton);
+  window.addEventListener('pageshow', function () { lastNormalizedSnapshot = null; syncButton(); });
+  window.addEventListener('storage', function () { lastNormalizedSnapshot = null; syncButton(); });
   window.addEventListener('td613:safe-harbor:maintenance-seal-ready', syncButton);
   window.addEventListener('td613:safe-harbor:release-discipline-ready', syncButton);
-  document.addEventListener('td613:safe-harbor-packet', syncButton);
-  ['click', 'input', 'change'].forEach(function (type) { document.addEventListener(type, function () { window.setTimeout(syncButton, 0); }, true); });
-  [100, 360, 900, 1800].forEach(function (delay) { window.setTimeout(syncButton, delay); });
-  window.setInterval(syncButton, 900);
+  window.addEventListener('td613:safe-harbor-session-reset', function () { sessionEpoch += 1; lastNormalizedSnapshot = null; });
+  window.addEventListener('td613:safe-harbor-packet', function () { lastNormalizedSnapshot = null; window.setTimeout(syncButton, 0); });
+  window.setTimeout(syncButton, 600);
   window.TD613_SAFE_HARBOR_PR169 = Object.freeze({ version: VERSION, boot: boot, openTxt: openTxt, syncButton: syncButton, historicalExample: HISTORICAL_EXAMPLE, patchProbeText: patchProbeText, normalizePacket: normalizePacket });
 }());

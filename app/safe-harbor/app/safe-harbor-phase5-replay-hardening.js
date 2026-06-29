@@ -5,7 +5,7 @@ import {
   verifyHashReplay,
   verifySafeHarborPacketAuthority,
   verifyV3Replay
-} from './safe-harbor-authority-verifier.js';
+} from './safe-harbor-authority-verifier.js?v=202606290125';
 import {
   buildRecallChallengeReceipt,
   compareRecallChallengeToPacket

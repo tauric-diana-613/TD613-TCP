@@ -1,11 +1,12 @@
-import { finalizeSafeHarborPacket } from './safe-harbor-native-finalizer.js';
-import { buildPhase5ReplayHardening, applyPhase5Quarantine } from './safe-harbor-phase5-replay-hardening.js';
+import { finalizeSafeHarborPacket } from './safe-harbor-native-finalizer.js?v=202606290125';
+import { buildPhase5ReplayHardening, applyPhase5Quarantine } from './safe-harbor-phase5-replay-hardening.js?v=202606290125';
 import { buildOutsideWitnessAlignment } from './safe-harbor-outside-witness-alignment.js';
-import { applyPublicDefaultGate } from './safe-harbor-public-default-gate.js';
+import { applyPublicDefaultGate } from './safe-harbor-public-default-gate.js?v=202606290205';
 import { applyReleaseDiscipline } from './safe-harbor-release-discipline.js';
 import { SAFE_HARBOR_RUNTIME_MARKERS } from './safe-harbor-policy-constants.js';
+import { verifyHashReplay } from './safe-harbor-authority-verifier.js?v=202606290125';
 
-export const PIPELINE_VERSION = 'safe-harbor-packet-pipeline/v1-phase9-1-maintenance-seal';
+export const PIPELINE_VERSION = 'safe-harbor-packet-pipeline/v2-phase9-1-maintenance-seal-stabilized-runtime';
 
 function clone(value) { return value == null ? value : JSON.parse(JSON.stringify(value)); }
 function getPath(value, path) { return String(path || '').split('.').reduce((node, key) => (node && Object.prototype.hasOwnProperty.call(node, key) ? node[key] : undefined), value); }
@@ -40,14 +41,20 @@ export async function refreshPhase5ThroughPipeline(packet, options = {}) {
   return out;
 }
 
+async function canReusePhase5(packet) {
+  if (getPath(packet, 'phase5_replay_hardening.status') !== 'pass') return false;
+  const replay = await verifyHashReplay(packet);
+  return replay.status === 'pass';
+}
+
 export async function attachOutsideWitnessesThroughPipeline(packet) {
   const out = clone(packet || {});
   const alignment = await buildOutsideWitnessAlignment(out);
   out.outside_witness_alignment = alignment;
   out.step1_countersignature = alignment.step1_countersignature;
   out.countersignatory_intake = alignment.countersignatory_intake;
-  out.renderer_authority_metadata = alignment.renderer_authority_metadata;
-  out.svg_authority_metadata = alignment.svg_authority_metadata;
+  out.renderer_authority_metadata = { ...(alignment.renderer_authority_metadata || {}), ...(out.renderer_authority_metadata || {}) };
+  out.svg_authority_metadata = { ...(alignment.svg_authority_metadata || {}), ...(out.svg_authority_metadata || {}) };
   out.signature_overlay_authority = alignment.signature_overlay_authority;
   out.tcp_hook_authority = alignment.tcp_hook_authority;
   out.eo_hook_authority = alignment.eo_hook_authority;
@@ -100,7 +107,7 @@ export async function normalizePacketThroughPipeline(packet, saved, options = {}
   if (!options.skipFinalize && !nativeBorn(out) && !exportHardened(out)) {
     return finalizePacketThroughPipeline(out, saved, { ...options, mode: hasRawSegments(saved) ? 'native' : 'export-normalized' });
   }
-  out = await refreshPhase5ThroughPipeline(out, options);
+  if (!(await canReusePhase5(out))) out = await refreshPhase5ThroughPipeline(out, options);
   out = await attachOutsideWitnessesThroughPipeline(out, options);
   out = await applyPublicGateThroughPipeline(out, options);
   out = await applyReleaseDisciplineThroughPipeline(out, options);
@@ -109,10 +116,12 @@ export async function normalizePacketThroughPipeline(packet, saved, options = {}
 
 export function packetExportReadyAfterPipeline(packet) {
   if (!packet || !packet.bridge || !packet.bridge.export_gate || !packet.bridge.export_gate.ready) return false;
-  if (getPath(packet, 'phase5_replay_hardening.status') === 'quarantine' || getPath(packet, 'phase5_replay_hardening.status') === 'fail') return false;
-  if (getPath(packet, 'phase8_public_default_gate.status') === 'blocked') return false;
-  if (getPath(packet, 'phase9_release_discipline.release_class') === 'blocked') return false;
-  return true;
+  const phase5 = getPath(packet, 'phase5_replay_hardening.status');
+  const phase8 = getPath(packet, 'phase8_public_default_gate.status');
+  const phase9 = getPath(packet, 'phase9_release_discipline.release_class');
+  if (phase5 !== 'pass') return false;
+  if (!['pass', 'review'].includes(phase8)) return false;
+  return ['verification-ready', 'public-readable'].includes(phase9);
 }
 
 if (typeof window !== 'undefined') {

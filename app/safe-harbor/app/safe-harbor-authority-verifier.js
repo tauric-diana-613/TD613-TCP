@@ -71,6 +71,9 @@ function packetHashReplayMaterial(packet) {
   delete material.phase8_receipt_policy;
   delete material.phase9_release_discipline;
   delete material.phase9_release_receipt;
+  delete material.release_checklist;
+  delete material.pipeline_state;
+  delete material.forensic_authorship;
   if (material.renderer_authority_metadata) material.renderer_authority_metadata.packet_hash_sha256 = null;
   if (material.signature) {
     delete material.signature.sig;

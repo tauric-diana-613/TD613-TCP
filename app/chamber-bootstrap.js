@@ -135,6 +135,7 @@
       './browser-data.js?v=' + (V.data || V.main || ''),
       './browser-diagnostics.js?v=' + (V.diagnostics || V.main || ''),
       './browser-engine.js?v=' + (V.engine || V.main || ''),
+      './operator-receipt.js?v=' + (V.receipt || V.main || ''),
       './trainer-standalone.js?v=' + (V.trainerStandalone || V.main || '202606162245')
     ].forEach(appendScript);
     return;
@@ -147,6 +148,7 @@
     './browser-data.js?v=' + (V.data || V.main || ''),
     './browser-diagnostics.js?v=' + (V.diagnostics || V.main || ''),
     './browser-engine.js?v=' + (V.engine || V.main || ''),
+    './operator-receipt.js?v=' + (V.receipt || V.main || ''),
     './browser-main.js?v=' + (V.main || ''),
     './tcp-gateway-rescue.js?v=' + (V.gatewayRescue || V.main || '202606110235'),
     './chamber-chrome.js?v=' + (V.chrome || V.main || '')

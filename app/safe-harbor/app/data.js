@@ -322,6 +322,6 @@
     }, 0);
   }
 
-  loadScriptOnce('td613ForensicAuthorshipPacketAugmentor', 'app/forensic-authorship-packet.js?v=202606171930');
-  loadScriptOnce('td613FooterHistoryPacketAugmentor', 'app/footer-history-packet.js?v=202606171945');
+  loadScriptOnce('td613ForensicAuthorshipPacketAugmentor', 'app/forensic-authorship-packet.js?v=202606290520');
+  loadScriptOnce('td613FooterHistoryPacketAugmentor', 'app/footer-history-packet.js?v=202606290520');
 })();

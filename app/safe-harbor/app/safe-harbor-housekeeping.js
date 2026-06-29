@@ -245,7 +245,6 @@
       input.addEventListener(type, saveOnInput, true);
     });
     input.addEventListener('blur', function () { emitInput(input); saveOnInput(); }, true);
-    setInterval(watchIngressTextarea, 350);
   }
 
   function savedTriadReady() {
@@ -318,6 +317,11 @@
       if (!button || button.dataset.pr147Signout) return;
       button.dataset.pr147Signout = VERSION;
       button.addEventListener('click', function () {
+        var nativeApi = window.TD613SafeHarbor;
+        if (nativeApi && typeof nativeApi.resetSession === 'function') {
+          nativeApi.resetSession();
+          return;
+        }
         remove(window.localStorage, MIRROR_KEY);
         applyOpenDataset(false);
       }, true);
@@ -338,6 +342,7 @@
   if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', boot, { once: true });
   else boot();
   window.addEventListener('load', boot);
+  window.addEventListener('pageshow', boot);
   window.addEventListener('focusin', function (event) {
     if (event.target && event.target.matches && event.target.matches('input, textarea, select, .code-area, .ingress-textarea')) forceNoZoomControls();
   }, true);
@@ -347,15 +352,11 @@
   window.addEventListener('storage', function (event) {
     if (!event.key || event.key === STORAGE_KEY || event.key === MIRROR_KEY) boot();
   });
-  setInterval(function () {
-    fixFlightLinks();
-    hookProgrammaticInput();
-    installViewportGuard();
-    forceNoZoomControls();
-    enforceOpenMembrane();
-    updateRecallGate();
-    mirrorSession();
-  }, 700);
+  document.addEventListener('visibilitychange', function () {
+    if (document.visibilityState === 'visible') boot();
+    else mirrorSession();
+  });
+  [120, 600, 1800].forEach(function (delay) { window.setTimeout(boot, delay); });
 
   window.TD613_SAFE_HARBOR_PR147 = Object.freeze({
     version: VERSION,

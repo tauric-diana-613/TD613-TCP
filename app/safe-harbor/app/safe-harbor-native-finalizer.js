@@ -1,6 +1,6 @@
 import { buildSafeHarborRichStylometry } from './safe-harbor-rich-stylometry-adapter.js';
 import { buildV3Issuance, canIssueV3, stableCanonicalJson } from './safe-harbor-stylometry-v3.js';
-import { attachPhase4Authority, verifyV3Replay } from './safe-harbor-authority-verifier.js';
+import { attachPhase4Authority, verifyV3Replay } from './safe-harbor-authority-verifier.js?v=202606290125';
 import { buildPhase5ReplayHardening, applyPhase5Quarantine, detectStaleV3 } from './safe-harbor-phase5-replay-hardening.js';
 
 const LANES = ['future_self', 'past_self', 'higher_self'];
@@ -35,6 +35,9 @@ const HASH_EXCLUDES = Object.freeze([
   'phase8_receipt_policy',
   'phase9_release_discipline',
   'phase9_release_receipt',
+  'release_checklist',
+  'pipeline_state',
+  'forensic_authorship',
   'signature.sig',
   'signature.attached_at',
   'renderer_authority_metadata.packet_hash_sha256'

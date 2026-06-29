@@ -20,6 +20,7 @@ import {
   buildTcpHookAuthority,
   verifyOutsideWitnessAlignment
 } from '../app/safe-harbor/app/safe-harbor-outside-witness-alignment.js';
+import { attachOutsideWitnessesThroughPipeline } from '../app/safe-harbor/app/safe-harbor-packet-pipeline.js';
 
 const laneText = (label) => [
   `${label} begins with a deliberate covenant sentence that carries enough language for the stylometric engine to read signal rather than noise.`,
@@ -118,6 +119,19 @@ assert.equal(alignment.witnesses.svg_metadata, 'aligned');
 assert.equal(alignment.witnesses.signature_overlay, 'aligned');
 assert.equal(alignment.witnesses.tcp_hook, 'aligned');
 assert.equal(alignment.witnesses.eo_hook, 'aligned');
+
+const staleWitnessPacket = JSON.parse(JSON.stringify(packet));
+staleWitnessPacket.signature_overlay_authority = {
+  ...witnesses.signature_overlay_authority,
+  signature_can_bind: false,
+  binding_refusal_reasons: ['stale prior-cycle refusal']
+};
+staleWitnessPacket.tcp_hook_authority = { ...witnesses.tcp_hook_authority, status: 'blocked' };
+staleWitnessPacket.eo_hook_authority = { ...witnesses.eo_hook_authority, status: 'blocked' };
+const refreshedWitnessPacket = await attachOutsideWitnessesThroughPipeline(staleWitnessPacket);
+assert.equal(refreshedWitnessPacket.signature_overlay_authority.signature_can_bind, true);
+assert.equal(refreshedWitnessPacket.tcp_hook_authority.status, 'aligned');
+assert.equal(refreshedWitnessPacket.eo_hook_authority.status, 'aligned');
 
 assert.equal(witnesses.step1_envelope.source_status, 'packet-observed rich stylometry present');
 assert.equal(witnesses.step1_envelope.can_countersign, true);
