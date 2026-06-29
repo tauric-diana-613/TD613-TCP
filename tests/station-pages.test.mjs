@@ -54,7 +54,8 @@ assert.ok(browserMainSource.includes("return new URL('./aperture/index.html', wi
 assert.ok(chamberChromeSource.includes("{ label: 'Aperture', href: './aperture/index.html' }"), 'shared chamber chrome opens canonical Aperture route');
 assert.ok(!chamberChromeSource.includes("?v=' + V.aperture"), 'shared chamber chrome must not append public Aperture cache tokens');
 assert.ok(assetVersionsSource.includes("main:        '202606211930'"), 'asset versions bump browser-main after Gateway route canonicalization');
-assert.ok(assetVersionsSource.includes("aperture:    '202606211930'"), 'asset versions bump Aperture after v2.9.2 canonicalization');
+const apertureAssetVersion = assetVersionsSource.match(/aperture:\s+'(\d+)'/)?.[1];
+assert.ok(Number(apertureAssetVersion) >= 202606211930, 'asset versions retain the v2.9.2 canonicalization bump or newer');
 assert.ok(assetVersionsSource.includes("chrome:      '202606151735'"), 'asset versions bump chamber chrome after Gateway desktop housekeeping patch');
 
 console.log('station-pages.test.mjs passed');
