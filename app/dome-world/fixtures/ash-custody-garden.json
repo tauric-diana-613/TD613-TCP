@@ -1,0 +1,132 @@
+{
+  "schema": "td613.ash.synthetic-garden/v0.5",
+  "claimCeiling": "synthetic-fixtures-teach-custody-without-sensitive-intake",
+  "fixtures": [
+    {
+      "id": "local_file_private_hold",
+      "teaches": "local browser hashing and private Ash custody",
+      "doesNotProve": ["identity", "permission", "truth", "document authenticity"],
+      "payload": {
+        "sourceEnvironment": "local_file",
+        "sourceLocator": {
+          "label": "Synthetic local custody memo",
+          "path_or_ref": "local path withheld"
+        },
+        "artifactMetadata": {
+          "mediaType": "text/plain",
+          "byteLength": 613,
+          "contentHash": "sha256:synthetic-local-613",
+          "hashScope": "local-browser"
+        },
+        "credentialReference": {
+          "credentialType": "local-possession"
+        },
+        "ashPosture": {
+          "roomRoute": "private-sense-only",
+          "recommendedTending": ["private-hold", "ash-receipt"]
+        }
+      }
+    },
+    {
+      "id": "repo_artifact_public_weather",
+      "teaches": "repo artifact references can emit public weather without moving raw content into Ash server custody",
+      "doesNotProve": ["identity", "permission", "truth", "repository authorship", "document authenticity"],
+      "payload": {
+        "sourceEnvironment": "repo",
+        "sourceLocator": {
+          "label": "Synthetic repository custody reference",
+          "path_or_ref": "app/dome-world/README.md",
+          "revision": "synthetic-main"
+        },
+        "artifactMetadata": {
+          "mediaType": "text/markdown",
+          "byteLength": 2048,
+          "contentHash": "sha256:synthetic-repo-weather-2048",
+          "hashScope": "repo-blob-reference"
+        },
+        "credentialReference": {
+          "credentialType": "repo-read-public"
+        },
+        "ashPosture": {
+          "roomRoute": "atrium-public-weather",
+          "recommendedTending": ["public-weather", "ash-receipt"]
+        }
+      }
+    },
+    {
+      "id": "llm_session_private_reference",
+      "teaches": "LLM session references can be named as private custody posture without exporting session text",
+      "doesNotProve": ["identity", "permission", "truth", "model output authenticity", "content custody"],
+      "payload": {
+        "sourceEnvironment": "llm_chat",
+        "sourceLocator": {
+          "label": "Synthetic LLM session reference",
+          "path_or_ref": "session reference withheld"
+        },
+        "artifactMetadata": {
+          "mediaType": "application/json",
+          "byteLength": 1440,
+          "contentHash": "sha256:synthetic-llm-session-1440",
+          "hashScope": "session-metadata-reference"
+        },
+        "credentialReference": {
+          "credentialType": "session-possession"
+        },
+        "ashPosture": {
+          "roomRoute": "private-sense-only",
+          "recommendedTending": ["private-reference", "custody-replay", "ash-receipt"]
+        }
+      }
+    },
+    {
+      "id": "spreadsheet_safe_harbor_buffer",
+      "teaches": "spreadsheet metadata can route into Safe Harbor buffer posture without summarizing cells before custody",
+      "doesNotProve": ["identity", "permission", "truth", "cell accuracy", "document authenticity"],
+      "payload": {
+        "sourceEnvironment": "spreadsheet",
+        "sourceLocator": {
+          "label": "Synthetic spreadsheet safe harbor buffer",
+          "path_or_ref": "sheet locator withheld"
+        },
+        "artifactMetadata": {
+          "mediaType": "text/csv",
+          "byteLength": 987,
+          "contentHash": "sha256:synthetic-spreadsheet-987",
+          "hashScope": "local-browser-metadata"
+        },
+        "credentialReference": {
+          "credentialType": "operator-declared-access"
+        },
+        "ashPosture": {
+          "roomRoute": "safe-harbor-buffer",
+          "recommendedTending": ["safe-harbor-buffer", "ash-receipt"]
+        }
+      }
+    },
+    {
+      "id": "cloud_drive_metadata_only",
+      "teaches": "cloud drive artifacts can be registered through metadata-only custody while cloud credentials and raw content stay outside Ash",
+      "doesNotProve": ["identity", "permission", "truth", "cloud account ownership", "document authenticity"],
+      "payload": {
+        "sourceEnvironment": "cloud_drive",
+        "sourceLocator": {
+          "label": "Synthetic cloud drive metadata object",
+          "path_or_ref": "cloud object id withheld"
+        },
+        "artifactMetadata": {
+          "mediaType": "application/pdf",
+          "byteLength": 4096,
+          "contentHash": "sha256:synthetic-cloud-drive-4096",
+          "hashScope": "drive-metadata-only"
+        },
+        "credentialReference": {
+          "credentialType": "metadata-reference"
+        },
+        "ashPosture": {
+          "roomRoute": "private-sense-only",
+          "recommendedTending": ["metadata-only", "custody-replay", "ash-receipt"]
+        }
+      }
+    }
+  ]
+}
