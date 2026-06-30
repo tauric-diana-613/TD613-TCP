@@ -1,162 +1,61 @@
-# Phase 9 Whole-Stack Collision Audit
+# Phase 9 — Whole-Stack Cross-Mask Collision Audit
 
-Status: readiness scaffold only. Phase 9 has not started.
+Status: local instrumentation executed; deployed/provider flight remains deferred.
 
-Phase 9 begins only after the Phase 8 threshold-floor hotfix is merged, the full Hush suite is green, the packet bank and provider logs are available, and Vercel quota or another deployed test environment permits runtime validation.
+Phase 8 proved the masks individually. Phase 9 tests whether they survive each other.
 
-## Audit object
+Distinctness is custody. Collision is evidence. The bench is not the stack.
 
-The test object is the full TD613/Hush runtime ecology:
+## Scope
 
-1. local repo test suite
-2. Hush mask registry
-3. per-mask packet builder
-4. stylometric passport builder
-5. numeric decision surface
-6. Hush Customizer UI
-7. strict provider bridge
-8. outbound provider contracts
-9. inbound provider logs
-10. deployed Hush and TD613 pages
-11. Safe Harbor packet and receipt surfaces
-12. Aperture governance declarations
-13. Vercel deployment behavior
-14. cross-mask outputs produced from the same source packet
+Phase 9 audits the completed thirteen-mask Hush set across local registry behavior, Phase 8 packet handoff fields, shared source packets, dangerous pair collisions, full 13×13 collision staging, provider contract fixtures, export policy parity, and deployed runtime flight logs when available.
 
-`adversarial-bench.html` is one stress arena. It is not the canonical runtime by itself and cannot stand in for the whole stack.
+This phase currently records local instrumentation and fixture-backed provider-contract parity. It does not yet record live provider behavior or deployed TD613.com runtime evidence.
 
-## Core question
+## Completed mask set
 
-Can the stack preserve mask identity, source obligations, public-default discipline, export policy, and provider-contract integrity when one source packet is processed through multiple masks across local and deployed surfaces?
+Glitching Pixie; Keisha Soft Circle; Cryo Cristiano; Rex Fractura; Receipts Queenie; Sol Stratigraphix; Harbor Zora; Nolan the Needler; Blooping Blip; Blackstar Shereé; Lulu Quasar; Dromological Paul; Luz of the Index.
 
-## Comparison route
+## Execution layers
 
-For every source/mask pair, preserve one joined record:
+- 9.0 local collision matrix: `npm run test:hush:phase9:local`.
+- 9.1 provider contract parity: fixture-backed until live provider logs are captured.
+- 9.2 export discipline: `npm run test:hush:phase9:exports`.
+- 9.3 deployed runtime flight: not run — environment limitation unless a live preview or production surface gets manually tested.
 
-`Source Packet -> Local Fixture Replay -> Local Packet Build -> Deployed UI -> Outbound Contract -> Provider Return -> Final Packet/Log`
+## Evidence classes
 
-Compare:
+| Evidence class | Current posture |
+| --- | --- |
+| Local registry / packet scaffolding | executed through Phase 9 tests |
+| Dangerous pair matrix | generated locally |
+| Full 13×13 collision matrix | staged locally |
+| Provider drift | fixture-backed only |
+| Export policy | local parity checked |
+| Deployed TD613.com runtime | deferred until manual/Codex flight evidence |
+| Live provider output | deferred until outbound/inbound logs exist |
 
-- source anchors and mandatory obligations
-- mask ID, label, role, centroid, and threshold table
-- candidate output and provider style note
-- preserved propositions, dropped propositions, and new claims
-- raw candidate/sample exclusion
-- `public_default_allowed: false`
-- packet hashes, replay hashes, receipts, and contract consistency
+## Required outputs
 
-Score local/deployed parity, source-obligation parity, mask identity retention, provider drift, threshold parity, replay consistency, export discipline, and public-default integrity.
+The Phase 9 runner writes packet bank, dangerous pair matrix, full matrix, provider drift ledger, runtime flight template, and release recommendation docs under `docs/hush/`.
 
-## Collision matrix
+## Release recommendation
 
-Start with these higher-risk pairings:
+Local Phase 9 instrumentation may remain merged after local tests pass. Deployed/provider release claims remain deferred until runtime evidence exists.
 
-- Blip vs Pixie
-- Lulu vs Blip
-- Zora vs Sheree
-- Keisha vs Queenie
-- Sol vs Luz
-- Dromological Paul vs Zora
-- Rex vs Blip
-- Rex vs Sol
-- Luz vs Dromological Paul
-- Sheree vs Keisha
+## Deferred Phase 10 candidates
 
-Expand to the full matrix after the first comparison pass is stable.
-
-## Shared packet bank
-
-Prepare ten packets before runtime testing:
-
-1. dense forensic source
-2. short vague whistleblower source
-3. high-emotion source
-4. technical metadata source
-5. public-facing forum source
-6. legal or claim-boundary source
-7. document-custody source
-8. contradiction or logic source
-9. sensitive relational source
-10. provider-stress source
-
-Each packet must declare mandatory anchors, optional anchors, source obligations, claim boundaries, prohibited additions, and expected mask-specific behavior.
-
-## Provider log contract
-
-Record provider model, prompt and Flight packet versions, outbound contract hash, source/reference hashes, mask ID and label, candidate text, preserved/dropped/new propositions, style operation/note, and risk flags.
-
-Hard blockers:
-
-- new factual claim
-- dropped mandatory anchor
-- wrong mask ID, label, role, or internal-register exposure
-- public-default flip
-- raw candidate or sample leak
-- provider style note contradicting the mask role
-- generic formal-assistant collapse
-
-## Deployment evidence
-
-For every deployed surface, record URL, visible build timestamp or commit SHA when available, output, request shape when accessible, endpoint behavior, contract/log artifacts, console errors, and exports.
-
-Current deployment status: not validated because the Vercel free-tier deployment quota is exhausted. This is not evidence of runtime failure or runtime success.
-
-## Findings template
-
-### 1. Local vs deployed parity
-
-Pending Phase 9 execution.
-
-### 2. Provider drift summary
-
-Pending Phase 9 execution.
-
-### 3. Cross-mask collision table
-
-Pending Phase 9 execution.
-
-### 4. Mask identity preservation
-
-Pending Phase 9 execution.
-
-### 5. Source-obligation survival
-
-Pending Phase 9 execution.
-
-### 6. Public-default/export integrity
-
-Pending Phase 9 execution.
-
-### 7. Safe Harbor/Aperture boundary status
-
-Pending Phase 9 execution.
-
-### 8. Adversarial bench findings
-
-Pending Phase 9 execution. Use the bench for malformed packets, collision prompts, mask-confusion attempts, raw leakage attempts, public-default flips, provider formalism traps, and register/costume traps.
-
-### 9. Runtime-only issues
-
-Pending Phase 9 execution.
-
-### 10. Repo-only issues
-
-Pending Phase 9 execution.
-
-### 11. Required hotfixes
-
-Pending Phase 9 execution.
-
-### 12. Release recommendation
-
-Not ready to issue until local and deployed evidence is available.
-
-## Issue classes
-
-Classify every finding as a repo bug, runtime/deployment bug, provider drift, mask collision, threshold calibration bug, export-policy bug, UI-routing bug, contract/log mismatch, documentation-only issue, or Phase 10 candidate.
+- deployed runtime tolerance thresholds
+- live provider flight harness
+- visual collision heatmap
+- provider drift baseline expansion
 
 ## Non-claims
 
-Phase 9 may test mask behavior, provider drift, export discipline, deployed/runtime parity, source-obligation retention, and cross-mask collision.
+Phase 9 records observed local behavior, fixture-backed provider drift, and export-policy discipline. It does not become authorship proof, identity proof, public-release permission, Safe Harbor override, Aperture override, EO-RFD/ACEDIT override, or validator bypass.
 
-Phase 9 may not claim authorship or identity proof, legal protection, consent, truth adjudication, public-release permission, anonymity, non-attribution, safety guarantee, EO-RFD/ACEDIT authority override, or Safe Harbor override.
+## Manual runtime evidence status
+
+not run — environment limitation / awaiting live flight packet evidence
+
+Sealed ⟐
