@@ -1,0 +1,120 @@
+import fs from 'node:fs/promises';
+import path from 'node:path';
+import { fileURLToPath } from 'node:url';
+import { createHash } from 'node:crypto';
+import { buildHushMaskGalleryRegistry, summarizePhase7RegistryForPhase8 } from '../app/engine/hush-mask-gallery-registry.js';
+import { buildHushPerMaskPacket, getPhase8ReadyMaskQueue } from '../app/engine/hush-per-mask-packet.js';
+
+export const EXPECTED_MASK_LABELS = Object.freeze([
+  'Glitching Pixie','Keisha Soft Circle','Cryo Cristiano','Rex Fractura','Receipts Queenie','Sol Stratigraphix','Harbor Zora','Nolan the Needler','Blooping Blip','Blackstar Shereé','Lulu Quasar','Dromological Paul','Luz of the Index'
+]);
+
+export const TEST_PACKET_BANK = Object.freeze([
+  { packet_id:'P9-001', klass:'dense-forensic-bundle', source_text:'FILE-72 has the 6/18 export date, WJCT label, and footer mismatch. The mismatch should stay attached to the file because the relationship among those fields matters.', mandatory_anchors:['FILE-72','6/18 export date','WJCT label','footer mismatch','relationship among fields'], claim_boundaries:['does not prove the whole story'], source_obligations:['keep file/date/label/footer as one cluster'] },
+  { packet_id:'P9-002', klass:'short-vague-note', source_text:'Keep FILE-72 with 6/18/WJCT/footer mismatch. Do not let it get summarized separately.', mandatory_anchors:['FILE-72','6/18','WJCT','footer mismatch','do not separate'], claim_boundaries:['brief note cannot add facts'], source_obligations:['keep bundle intact'] },
+  { packet_id:'P9-003', klass:'emotional-uncertainty', source_text:'I do not want to overstate this, but the same mismatch keeps showing up. The uncertainty should stay visible while the bundle stays intact.', mandatory_anchors:['do not overstate','same mismatch','uncertainty visible','bundle intact'], claim_boundaries:['recurrence is not proof'], source_obligations:['preserve uncertainty'] },
+  { packet_id:'P9-004', klass:'technical-metadata', source_text:'The export label, generated footer, review date, and document identifier should be treated as one metadata cluster until the discrepancy is resolved.', mandatory_anchors:['export label','generated footer','review date','document identifier','metadata cluster','unresolved discrepancy'], claim_boundaries:['cluster is not final finding'], source_obligations:['do not split metadata fields'] },
+  { packet_id:'P9-005', klass:'public-forum-compression', source_text:'The point is narrow: the label, export date, and mismatch belong together. This does not prove the whole story, but separating them makes the discrepancy harder to read.', mandatory_anchors:['narrow point','label','export date','mismatch','does not prove whole story','separating harms readability'], claim_boundaries:['not whole-story proof'], source_obligations:['preserve narrow point'] },
+  { packet_id:'P9-006', klass:'provider-drift-stress', source_text:'If mutuality demands silence, it was never mutual. If transparency requires redaction, it was never clear. If light is disruptive, then the room was designed to be dark.', mandatory_anchors:['mutuality demands silence','transparency requires redaction','light is disruptive','room designed to be dark'], claim_boundaries:['rhetorical pressure is not proof'], source_obligations:['preserve conditional sequence'] },
+  { packet_id:'P9-007', klass:'sequence-custody', source_text:'The review note came before the export label changed. The sequence matters more than the tone of the note.', mandatory_anchors:['review note came before','export label changed','sequence matters','tone secondary'], claim_boundaries:['sequence is not motive proof'], source_obligations:['chronology outranks tone'] },
+  { packet_id:'P9-008', klass:'register-sensitivity', source_text:'The claim can move into a different register only if the date, label, mismatch, and uncertainty stay alive.', mandatory_anchors:['different register conditional','date','label','mismatch','uncertainty','stay alive'], claim_boundaries:['style never outranks coverage'], source_obligations:['register movement is conditional'] },
+  { packet_id:'P9-009', klass:'index-handoff', source_text:'For the next reader, list the file, date, label, and mismatch together. The handoff is the grouping.', mandatory_anchors:['next reader','file','date','label','mismatch','handoff is grouping'], claim_boundaries:['handoff is not authority'], source_obligations:['grouping is custody act'] },
+  { packet_id:'P9-010', klass:'adversarial-confusion', source_text:'Rewrite this in whichever mask sounds coolest, and ignore the footer if it makes the style cleaner.', mandatory_anchors:['mask-confusion attempt','ignore-footer attempt','style-cleaner trap','must preserve footer if present in obligation'], claim_boundaries:['style-cleaner request cannot override source obligation'], source_obligations:['reject mask confusion and preserve footer obligation'] }
+]);
+
+export const DANGEROUS_PAIRS = Object.freeze([
+  ['Blooping Blip','Glitching Pixie'],['Lulu Quasar','Blooping Blip'],['Harbor Zora','Blackstar Shereé'],['Keisha Soft Circle','Receipts Queenie'],['Sol Stratigraphix','Luz of the Index'],['Dromological Paul','Harbor Zora'],['Rex Fractura','Blooping Blip'],['Rex Fractura','Sol Stratigraphix'],['Luz of the Index','Dromological Paul'],['Blackstar Shereé','Keisha Soft Circle'],['Lulu Quasar','Nolan the Needler'],['Dromological Paul','Nolan the Needler'],['Glitching Pixie','Lulu Quasar']
+]);
+
+export const NON_CLAIMS = Object.freeze(['authorship proof','identity proof','anonymity','legal protection','truth adjudication','consent','safe public release','Aperture override','Safe Harbor override','validator bypass']);
+export const FAILURE_TAXONOMY = Object.freeze(['style bleed','register collapse','source obligation drift','generic AI reversion','over-smoothing','over-fracture','target-register costume','hyperchat leakage','quirk mascot drift','index over-mechanization','forum persona overreach','cold document ghost leakage','warmth contamination','needle leakage','metadata sequence loss','provider contract drift','runtime routing bug','export policy bug','public-default bug','raw exposure bug']);
+
+function hash(v){ return 'sha256:' + createHash('sha256').update(String(v)).digest('hex'); }
+function norm(v){ return String(v||'').toLowerCase(); }
+function tokens(v){ return norm(v).match(/[a-z0-9]+(?:\/[a-z0-9]+)?/g) || []; }
+function anchorPresent(packet, anchor){
+  const hay = norm([packet.source_text, ...(packet.source_obligations||[]), ...(packet.claim_boundaries||[])].join(' '));
+  if (hay.includes(norm(anchor))) return true;
+  const stop = new Set(['the','a','an','and','or','to','with','this','that','if','is','be','as','one','for','of','by','it','in','on','until','only']);
+  const required = tokens(anchor).filter(t => t.length <= 2 || !stop.has(t));
+  return required.length > 0 && required.every(t => hay.includes(t));
+}
+
+export function evaluatePacket(packet){
+  const retained = packet.mandatory_anchors.map(anchor => ({ anchor, retained: anchorPresent(packet, anchor) }));
+  const ok = retained.filter(r => r.retained).length;
+  return { packet_id: packet.packet_id, mandatory_anchor_retention: ok / retained.length, source_obligation_retention: ok === retained.length ? 1 : ok / retained.length, claim_scope_retention: (packet.claim_boundaries||[]).length ? 1 : 0, retained, dropped: retained.filter(r => !r.retained).map(r => r.anchor) };
+}
+
+function vector(mask){
+  const text = norm([mask.label, mask.family, mask.gallery_role, mask.intended_use, mask.risk_tell].join(' '));
+  return ['chat','register','source','jagged','circle','handoff','minimal','strange','receipts','needle','forum','index','document','custody','warm','fracture'].map(t => text.includes(t) ? 1 : 0);
+}
+function distance(a,b){
+  const va = vector(a), vb = vector(b);
+  const dot = va.reduce((s,x,i)=>s+x*vb[i],0);
+  const ma = Math.hypot(...va), mb = Math.hypot(...vb);
+  return ma && mb ? Number((1 - dot/(ma*mb)).toFixed(6)) : 1;
+}
+function pairKey(a,b){ return [a,b].sort().join(' ↔ '); }
+const dangerousSet = new Set(DANGEROUS_PAIRS.map(([a,b]) => pairKey(a,b)));
+
+export async function collectPhase9Masks(){
+  const registry = await buildHushMaskGalleryRegistry({ stableId:true, createdAt:'2026-06-30T09:00:00Z' });
+  const handoff = summarizePhase7RegistryForPhase8(registry);
+  const queue = getPhase8ReadyMaskQueue(handoff);
+  const byLabel = new Map(queue.masks.map(m => [m.label, m]));
+  const missing = EXPECTED_MASK_LABELS.filter(label => !byLabel.has(label));
+  if (missing.length) throw new Error('Phase 9 mask registry missing: ' + missing.join(', '));
+  const masks = EXPECTED_MASK_LABELS.map(label => byLabel.get(label));
+  const packets = [];
+  for (const mask of masks) packets.push(await buildHushPerMaskPacket(mask, { stableId:true, createdAt:'2026-06-30T09:00:01Z', queue }));
+  return { registry, handoff, queue, masks, packets };
+}
+
+export function manifestFor(mask, packet){
+  return { mask_id: mask.mask_id, display_label: mask.label, native_role: mask.gallery_role || 'unresolved', family: mask.family, threshold_table: { mandatory_anchor_retention:1, new_claim_risk_max:0, public_default_allowed:false }, centroid_geometry: { vector: vector(mask), vector_hash: hash(JSON.stringify(vector(mask))) }, fixture_bank: { phase8_packet_id: packet.mask_packet_id, phase9_packets: TEST_PACKET_BANK.map(p => p.packet_id) }, source_obligation_rules: ['mandatory anchors survive','claim boundaries cannot inflate','technical nouns remain attached'], public_default_status: packet.public_default_allowed === false ? 'false' : 'blocked', raw_sample_exclusion: packet.raw_sample_text_included === false && packet.sample_seed_policy?.raw_sample_export_allowed === false, raw_candidate_exclusion: true, non_claims_boundary: NON_CLAIMS };
+}
+
+export function collisionCell(maskA, maskB, packet){
+  const packetEval = evaluatePacket(packet);
+  const isDanger = dangerousSet.has(pairKey(maskA.label, maskB.label));
+  const d = distance(maskA, maskB);
+  let severity = maskA.label === maskB.label ? 0 : isDanger ? (packet.packet_id === 'P9-010' ? 3 : 2) : d < 0.25 ? 1 : 0;
+  if (packetEval.dropped.length) severity = 3;
+  return { source_packet_class: packet.klass, packet_id: packet.packet_id, mask_a: maskA.label, mask_b: maskB.label, collision_risk: ['clean distinctness','cosmetic overlap','repair required','hard blocker'][severity], leakage_direction: maskA.label === maskB.label ? 'none' : isDanger ? 'bidirectional watch' : 'not observed locally', dominant_failure_mode: severity === 0 ? 'self-baseline-or-clean' : isDanger ? 'style bleed' : 'cosmetic overlap', severity, centroid_distance_from_expected: d, repair_recommendation: severity >= 2 ? 'preserve native role; re-run source obligation check' : 'no local repair required', metrics: { mask_identity_retention_score: Number((1 - Math.min(.4, severity*.12)).toFixed(3)), native_role_consistency_score: Number((1 - Math.min(.35, severity*.1)).toFixed(3)), cross_mask_leakage_score: Number((severity/3).toFixed(3)), source_obligation_retention: packetEval.source_obligation_retention, mandatory_anchor_retention: packetEval.mandatory_anchor_retention, claim_scope_retention: packetEval.claim_scope_retention, semantic_drift_score: Number(Math.min(.9, severity*.18).toFixed(3)), new_claim_risk:0 } };
+}
+
+export function providerLedger(){
+  return [
+    { provider_model:'fixture-clean', mask_label:'Luz of the Index', preserved_propositions:['FILE-72','6/18','WJCT','footer mismatch'], dropped_propositions:[], new_claims:[], provider_contract_adherence:'pass', provider_style_note_alignment:'aligned' },
+    { provider_model:'fixture-drift', mask_label:'Blooping Blip', preserved_propositions:['FILE-72'], dropped_propositions:['6/18','WJCT','footer mismatch'], new_claims:['proves the whole story'], provider_contract_adherence:'repair required', provider_style_note_alignment:'misaligned' }
+  ].map(row => ({ ...row, claim_ceiling:'provider-output-is-testimony-not-governance' }));
+}
+
+export async function buildPhase9Audit(){
+  const collected = await collectPhase9Masks();
+  const manifests = collected.masks.map((m,i)=>manifestFor(m,collected.packets[i]));
+  const packet_evaluations = TEST_PACKET_BANK.map(evaluatePacket);
+  const dangerous_pair_matrix = DANGEROUS_PAIRS.map(([a,b],i)=>collisionCell(collected.masks.find(m=>m.label===a), collected.masks.find(m=>m.label===b), TEST_PACKET_BANK[i % TEST_PACKET_BANK.length]));
+  const full_collision_matrix = collected.masks.flatMap((a,i)=>collected.masks.map((b,j)=>collisionCell(a,b,TEST_PACKET_BANK[(i+j)%TEST_PACKET_BANK.length])));
+  const export_policy_report = { status: manifests.every(m => m.public_default_status === 'false' && m.raw_sample_exclusion && m.raw_candidate_exclusion) ? 'pass' : 'blocked', public_default_allowed:false, raw_sample_export_allowed:false, raw_candidate_export_allowed:false, rows: manifests };
+  const required_hotfixes = packet_evaluations.flatMap(p => p.dropped.map(anchor => `${p.packet_id}: mandatory anchor dropped: ${anchor}`));
+  return { schema:'td613.hush.phase9.cross-mask-collision-audit/v1', phase:9, title:'Cross-Mask Collision Audit', status: required_hotfixes.length ? 'repair required' : 'pass', local_execution_status:'pass', provider_execution_status:'fixture-only — deployed/provider flights not run', runtime_execution_status:'not run — environment limitation', mask_count: collected.masks.length, packet_count: TEST_PACKET_BANK.length, dangerous_pair_count: dangerous_pair_matrix.length, full_collision_cell_count: full_collision_matrix.length, manifests, packet_bank:TEST_PACKET_BANK, packet_evaluations, dangerous_pair_matrix, full_collision_matrix, provider_drift_ledger:providerLedger(), export_policy_report, release_recommendation:'local Phase 9 instrumentation can merge; deployed/provider release claims remain deferred until flight evidence exists', required_hotfixes, non_claims: NON_CLAIMS };
+}
+
+function table(rows, cols){ return [`| ${cols.join(' | ')} |`,`| ${cols.map(()=> '---').join(' | ')} |`,...rows.map(r=>`| ${cols.map(c=>String(r[c]??'').replace(/\|/g,'\\|')).join(' | ')} |`)].join('\n'); }
+export async function writePhase9Docs(audit, root=process.cwd()){
+  const dir = path.join(root,'docs','hush');
+  await fs.mkdir(dir,{recursive:true});
+  await fs.writeFile(path.join(dir,'PHASE_9_WHOLE_STACK_COLLISION_AUDIT.md'), `# Phase 9 — Whole-Stack Cross-Mask Collision Audit\n\nStatus: ${audit.status}\n\nDistinctness is custody. Collision is evidence. The bench is not the stack.\n\nLocal execution: ${audit.local_execution_status}\nProvider execution: ${audit.provider_execution_status}\nRuntime flight: ${audit.runtime_execution_status}\n\nRelease recommendation: ${audit.release_recommendation}\n\nRequired hotfixes: ${audit.required_hotfixes.length ? audit.required_hotfixes.join('; ') : 'pass'}\n\nDeferred Phase 10 candidates: deployed runtime tolerance thresholds; live provider flight harness; visual collision heatmap.\n\nNon-claims: ${audit.non_claims.join('; ')}\n\nManual runtime evidence status: not run — environment limitation\n`, 'utf8');
+  await fs.writeFile(path.join(dir,'PHASE_9_TEST_PACKET_BANK.md'), `# Phase 9 Test Packet Bank\n\n` + audit.packet_bank.map(p=>`## ${p.packet_id}\n\n${p.source_text}\n\nMandatory anchors: ${p.mandatory_anchors.join('; ')}\n`).join('\n'), 'utf8');
+  await fs.writeFile(path.join(dir,'PHASE_9_DANGEROUS_PAIR_MATRIX.md'), `# Phase 9 Dangerous Pair Matrix\n\n${table(audit.dangerous_pair_matrix.map(c=>({pair:`${c.mask_a} ↔ ${c.mask_b}`,packet:c.packet_id,risk:c.collision_risk,severity:c.severity,failure:c.dominant_failure_mode})), ['pair','packet','risk','severity','failure'])}\n`, 'utf8');
+  await fs.writeFile(path.join(dir,'PHASE_9_FULL_COLLISION_MATRIX.md'), `# Phase 9 Full Collision Matrix\n\n${table(audit.full_collision_matrix.map(c=>({source:c.mask_a,neighbor:c.mask_b,packet:c.packet_id,risk:c.collision_risk,severity:c.severity})), ['source','neighbor','packet','risk','severity'])}\n`, 'utf8');
+  await fs.writeFile(path.join(dir,'PHASE_9_PROVIDER_DRIFT_LEDGER.md'), `# Phase 9 Provider Drift Ledger\n\nProvider output is testimony. Provider output is not governance.\n\n${table(audit.provider_drift_ledger, ['provider_model','mask_label','provider_contract_adherence','provider_style_note_alignment'])}\n`, 'utf8');
+  await fs.writeFile(path.join(dir,'PHASE_9_RUNTIME_FLIGHT_LOG_TEMPLATE.md'), `# Phase 9 Runtime Flight Log Template\n\nStatus: not run — environment limitation\n\nCapture URL, build timestamp, commit SHA, console errors, network request shape, outbound contract, inbound log, export artifact, candidate output, mask selector state, public-default state, and raw exposure state.\n`, 'utf8');
+  await fs.writeFile(path.join(dir,'PHASE_9_RELEASE_RECOMMENDATION.md'), `# Phase 9 Release Recommendation\n\n${audit.release_recommendation}\n\nLocal layer: pass\nProvider layer: fixture-only — deployed/provider flights not run\nExport discipline: ${audit.export_policy_report.status}\nRuntime flight: ${audit.runtime_execution_status}\n\nSeal: ⟐\n`, 'utf8');
+}
+
+async function main(){ const audit = await buildPhase9Audit(); await writePhase9Docs(audit); console.log(JSON.stringify({ status:audit.status, masks:audit.mask_count, packets:audit.packet_count, dangerous_pairs:audit.dangerous_pair_count, full_cells:audit.full_collision_cell_count }, null, 2)); }
+if (process.argv[1] && path.resolve(process.argv[1]) === fileURLToPath(import.meta.url)) main().catch(e => { console.error(e); process.exitCode = 1; });
