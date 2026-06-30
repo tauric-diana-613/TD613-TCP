@@ -29,8 +29,12 @@ jobs:
       - run: npm ci
       - name: Phase 8 baseline
         run: npm run test:hush:phase8
-      - name: Phase 9 local matrix
-        run: npm run test:hush:phase9:local
+      - name: Phase 9 cross-mask collision
+        run: node tests/hush-phase9-cross-mask-collision.test.mjs
+      - name: Phase 9 mask distinctness
+        run: node tests/hush-phase9-mask-distinctness.test.mjs
+      - name: Phase 9 source obligations
+        run: node tests/hush-phase9-source-obligation-matrix.test.mjs
       - name: Phase 9 provider contracts
         run: npm run test:hush:phase9:contracts
       - name: Phase 9 exports
