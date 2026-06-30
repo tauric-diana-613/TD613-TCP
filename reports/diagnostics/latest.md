@@ -211,4 +211,4 @@ Total diagnostics cases: 270
 
 - status: passed
 - source: app/aperture/tool.html
-- version: 2.7.0
+- version: 2.9.4

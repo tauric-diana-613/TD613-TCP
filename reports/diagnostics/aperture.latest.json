@@ -3,16 +3,17 @@
   "label": "TD613 Aperture",
   "file": "app/aperture/tool.html",
   "passed": true,
-  "title": "TD613 Aperture - v2.9.2",
-  "version": "2.9.2",
+  "title": "TD613 Aperture v2.9.4",
+  "version": "2.9.4",
   "meta": {
     "viewport": "width=device-width, initial-scale=1.0",
     "tool-name": "TD613 Aperture",
     "application-name": "TD613 Aperture",
     "apple-mobile-web-app-title": "TD613 Aperture",
     "tool-role": "counter-tool",
-    "aperture-version": "v2.9.2-geometric-doctrine-addendum",
-    "aperture-roots-version": "v2.9.2",
+    "aperture-version": "v2.9.4",
+    "aperture-feature-version": "v2.9.4-sigma-dynamical-instrument",
+    "aperture-roots-version": "v2.9.4",
     "canonical-governance-stack": "selective-admissibility-event-rationality|field-metrics|anti-epistemicide|narrowing-regime|narrowing-chain|rupture-beacon|losslessness-zero-loss|regime-law|six-defining-properties|reality-surface|temporal-closure|rupture-assist",
     "calibration-mode": "zero-parameter-invariant-ledger",
     "compression-invariant-map": "true",
@@ -23,29 +24,29 @@
     "observed-regime-full": "Eclipse–Omega PRCS-A",
     "anti-enforcement": "true",
     "human-coordinate-coupling": "true",
-    "hcc-version": "v2.9.2",
+    "hcc-version": "v2.9.4",
     "hcc-couplings": "WHAT-WHO|WHERE-HOW|WHEN-WHY",
     "hcc-placement": "counter-recognition-human-input-collapsed",
     "hcc-hard-stop": "WHO self-provided or withheld; HOW not diagnosis; WHY not destiny",
     "grade-gate": "true",
-    "grade-gate-version": "v2.7.3",
+    "grade-gate-version": "v2.9.4",
     "grade-categories": "FORCED|FORCED_IN_CONTEXT|FORCED_UNDER_CONSTRAINT|CONSTRUCTION|SELECTED|OPEN",
     "grade-hard-stop": "SELECTED not FORCED; CONSTRUCTION not FORCED; OPEN not closed; context and constraint gates must remain visible",
     "witness-lab": "true",
-    "witness-lab-version": "v2.8",
+    "witness-lab-version": "v2.9.4",
     "witness-route-type": "witness_artifact",
     "witness-hard-stop": "Witness support is not canonization",
     "anti-equivalence-gate": "true",
     "exactness-boundary-ledger": "true",
     "absence-preservation-check": "true",
     "reproducibility-receipt": "true",
-    "quick-spine-version": "v2.8.5",
+    "quick-spine-version": "v2.9.4",
     "eo-rfd-lineage": "detector-ontology-and-rupture-field-lineage",
     "eo-rfd-interface-status": "compatibility-pending",
     "acedit-firmware-status": "not-loaded",
     "external-firmware-policy": "signal-source-only",
     "external-firmware-hard-stop": "no authority override; no identity proof; no authorship proof; no legal authority; no release permission; no validator bypass",
-    "aperture-compat-version": "v2.9.2",
+    "aperture-compat-version": "v2.9.4",
     "eo-rfd-origin-firmware-status": "static-reviewed-not-loaded",
     "eo-rfd-origin-artifact-sha256": "2ded6b25075cdee057355708d4f5db2a703baf88c3b3687f6d4625908af6aa99",
     "eo-rfd-origin-layer-chain": "L0 substrate|L1 propagation|L2 admissibility|L3 narrowing|L4 field-signature|L5 signal-rupture|L6 detector-sweep|L7 routing|L8 packet|L9 metacybernetic",
@@ -73,10 +74,10 @@
     "quick-spine-hard-stop": "route function over patch chronology; governance spine is machine-facing not absent; human panel access preserved; no visible spine crown; no module may become the audit crown",
     "source-note": "Legacy compatibility ids may use inherited human-route naming; these are not normative tool semantics.",
     "spine-forward-ui": "hidden-governance-skeleton",
-    "spine-forward-version": "v2.9.2-hidden-governance-skeleton",
-    "ai-reader-contract": "hidden-governance-spine means machine-facing not absent; consult whole-instrument lanes before recent modules; no newest-feature-capture; no single-panel-capture",
+    "spine-forward-version": "v2.9.4-hidden-governance-skeleton",
+    "ai-reader-contract": "hidden-governance-spine means machine-facing not absent; select lanes by task; avoid version-first or single-panel capture",
     "vector-substrate-intake": "true",
-    "vector-substrate-intake-version": "v2.9.2",
+    "vector-substrate-intake-version": "v2.9.4",
     "vector-substrate-review-status": "static-reviewed-not-loaded",
     "vector-substrate-math-sha256": "348353d19fe48625d2fa72cc6935a3308138baaae051ac1b6249efec203ade90",
     "residual-dynamics-sha256": "3a326137c51bb0f13ebc677f5870ba8553e5c250b6cd803a36653195592cf054",
@@ -86,56 +87,65 @@
     "kira-vector-adapter-status": "preflight-only-not-runtime",
     "matrix-operator-witness-status": "witness-artifact-not-public-default-authority",
     "residual-hard-stop": "no truth proof; no understanding proof; no authorship proof; no identity proof; no release permission; no runtime import",
-    "llm-route-guidance": "begin with canonical governance stack before hidden lane contract; preserve foundational panels; recent receipts may testify but may not define Aperture",
+    "llm-route-guidance": "begin with canonical governance stack; preserve foundational panels; selected receipts may testify but may not define Aperture",
     "recency-governance": "true",
-    "aperture-doctrine-kernel": "td613.aperture.doctrine-kernel/v2.9.2",
-    "aperture-model-reader-contract": "foundation doctrine before recent receipts; hidden spine means machine-facing not absent; no newest-feature-capture",
+    "aperture-doctrine-kernel": "td613.aperture.doctrine-kernel/v2.9.4",
+    "aperture-model-reader-contract": "foundation doctrine before feature lanes; hidden spine means machine-facing not absent; avoid version-first capture",
     "mobile-parity-contract": "all human panels reachable on mobile; hidden governance spine is machine-facing only",
     "panel-inventory-contract": "left|center|right|bottom required",
-    "aperture-spine-transition": "visible-spine-reclassified-hidden-machine-governance-human-panels-preserved"
+    "aperture-spine-transition": "visible-spine-reclassified-hidden-machine-governance-human-panels-preserved",
+    "aperture-v294-purpose": "v2.9.4 bridge capabilities: triple overlay, Phason Seam, heterostratigraphic lattice, and Dome-World / Flow-Core bridge",
+    "llm-recitation-policy": "only identity line required: TD613 Aperture is the counter-tool for the observed Eclipse-Omega PRCS-A regime; after that, use or simulate relevant instrument features",
+    "llm-browserless-use": "browser access is not required; LLMs may run a textual/simulated Aperture pass from supplied inputs, declared assumptions, and requested panel scope",
+    "dome-flowcore-compat": "v2.9.4 exposes one-way Aperture-to-Flow-Core route-weather translation plus Sigma runtime field operators and Phason Seam diagnostics",
+    "phason-seam-status": "v2.9.4-phason-seam-projection-custody-instrument",
+    "operator-tool-map": "hidden-machine-readable; full panel/function/scan-family index available in apertureToolUseIndex, apertureScanGrammarIndex, and apertureV294DynamicalOperatorIndex",
+    "triple-overlay-status": "D3-sqrt3-periodic|phi-quasiperiodic|heterostratigraphic-incommensurability",
+    "dome-flowcore-bridge": "one-way-aperture-to-flowcore-weather-translation",
+    "ash-readiness-status": "modeled-not-executed"
   },
   "bodyDataset": {
-    "tool-name": "TD613 Aperture",
-    "tool-role": "counter-tool",
+    "anti-enforcement": "true",
+    "aperture-version": "v2.9.4",
+    "eorfd-interface-status": "compatibility-pending",
+    "external-firmware-policy": "signal-source-only",
     "observed-regime": "PRCS-A",
     "observed-regime-full": "Eclipse–Omega PRCS-A",
-    "anti-enforcement": "true",
-    "aperture-version": "v2.9.2-geometric-doctrine-addendum",
-    "eorfd-interface-status": "compatibility-pending",
-    "external-firmware-policy": "signal-source-only"
+    "tool-name": "TD613 Aperture",
+    "tool-role": "counter-tool"
   },
   "fingerprint": {
-    "bytes": 886993,
-    "lineCount": 18034,
-    "inlineScriptCount": 36,
+    "bytes": 1029468,
+    "lineCount": 22014,
+    "inlineScriptCount": 57,
     "panelCount": 6,
-    "buttonCount": 43,
-    "contentHashSha256": "5a8c8c8400069242109c2e1ea74488b669fe24a6c4aaa597898622d70a0296f6"
+    "buttonCount": 46,
+    "contentHashSha256": "35442480b8728e2fc5417026320743e633979811a8d3ab9eb6527edc385d593e"
   },
   "checks": [
     {
       "id": "title",
       "label": "title marker",
       "ok": true,
-      "detail": "TD613 Aperture - v2.9.2 observed",
-      "expected": "TD613 Aperture + v2.9.2",
-      "actual": "TD613 Aperture - v2.9.2"
+      "detail": "TD613 Aperture v2.9.4 observed",
+      "expected": "TD613 Aperture + v2.9.4",
+      "actual": "TD613 Aperture v2.9.4"
     },
     {
       "id": "version",
       "label": "version marker",
       "ok": true,
-      "detail": "version 2.9.2 observed",
-      "expected": "2.9.2",
-      "actual": "2.9.2"
+      "detail": "version 2.9.4 observed",
+      "expected": "2.9.4",
+      "actual": "2.9.4"
     },
     {
       "id": "inline-script",
       "label": "inline runtime present",
       "ok": true,
-      "detail": "36 inline script block(s)",
+      "detail": "57 inline script block(s)",
       "expected": ">= 1",
-      "actual": 36
+      "actual": 57
     },
     {
       "id": "meta:tool-name",
@@ -330,6 +340,14 @@
       "actual": null
     },
     {
+      "id": "fn:compileDomeWorldBridge",
+      "label": "function compileDomeWorldBridge",
+      "ok": true,
+      "detail": "compileDomeWorldBridge present",
+      "expected": null,
+      "actual": null
+    },
+    {
       "id": "pattern:source-declaration",
       "label": "source declaration",
       "ok": true,
@@ -514,18 +532,42 @@
       "actual": null
     },
     {
-      "id": "pattern:v292-schema",
-      "label": "Aperture v2.9.2 schema marker",
+      "id": "pattern:v294-schema",
+      "label": "Aperture v2.9.4 schema marker",
       "ok": true,
-      "detail": "Aperture v2.9.2 schema marker present",
+      "detail": "Aperture v2.9.4 schema marker present",
+      "expected": null,
+      "actual": null
+    },
+    {
+      "id": "pattern:sigma-dynamical-instrument",
+      "label": "Sigma dynamical instrument",
+      "ok": true,
+      "detail": "Sigma dynamical instrument present",
+      "expected": null,
+      "actual": null
+    },
+    {
+      "id": "pattern:phason-seam",
+      "label": "Phason seam detector",
+      "ok": true,
+      "detail": "Phason seam detector present",
+      "expected": null,
+      "actual": null
+    },
+    {
+      "id": "pattern:dome-bridge-compiler",
+      "label": "pure Dome-World bridge compiler",
+      "ok": true,
+      "detail": "pure Dome-World bridge compiler present",
       "expected": null,
       "actual": null
     }
   ],
   "failedChecks": [],
   "checkSummary": {
-    "total": 51,
-    "passed": 51,
+    "total": 55,
+    "passed": 55,
     "failed": 0
   }
 }

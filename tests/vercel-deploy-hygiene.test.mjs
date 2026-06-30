@@ -39,7 +39,15 @@ function assertRevalidatingStatic(source) {
 assert.equal(vercel.version, 2, 'Vercel config should use version 2');
 assert.equal(vercel.functions?.['api/hush-generate-strict.js']?.maxDuration, 60, 'strict Hush route should keep 60s function budget');
 assert.equal(vercel.functions?.['api/hush-generate.js']?.maxDuration, 60, 'Hush route should keep 60s function budget');
+assert.equal(vercel.functions?.['api/dome-world-engine.py']?.maxDuration, 60, 'Dome exact route should keep 60s function budget');
 
+assertRewrite('/api/dome-world/ping', '/api/dome-world-engine?operation=ping');
+assertRewrite('/api/dome-world/readiness', '/api/dome-world-engine?operation=readiness');
+assertRewrite('/api/dome-world/step2-readiness', '/api/dome-world-engine?operation=step2-readiness');
+assertRewrite('/api/dome-world/(.*)', '/api/dome-world-engine?operation=$1');
+assertRewrite('/dome-world', '/app/dome-world/index.html');
+assertRewrite('/dome-world/', '/app/dome-world/index.html');
+assertRewrite('/dome-world/(.*)', '/app/dome-world/$1');
 assertRewrite('/api/(.*)', '/api/$1');
 assertRewrite('/safe-harbor/td613-flight.html', '/api/flight-html');
 assertRewrite('/app/safe-harbor/td613-flight.html', '/api/flight-html');
@@ -51,6 +59,9 @@ assertRewrite('/(.*)', '/app/$1');
   '/app/adversarial-bench.html',
   '/safe-harbor/td613-flight.html',
   '/app/safe-harbor/td613-flight.html'
+  ,'/dome-world'
+  ,'/dome-world/'
+  ,'/app/dome-world/index.html'
 ].forEach(assertNoStore);
 
 [
@@ -76,6 +87,7 @@ assertRewrite('/(.*)', '/app/$1');
   '/app/engine/(.*)',
   '/asset-versions.js',
   '/app/asset-versions.js'
+  ,'/dome-world/(.*)'
 ].forEach(assertRevalidatingStatic);
 
 assert.match(gitignore, /(^|\r?\n)\.env(\r?\n|$)/, '.env must remain ignored for Vercel/local secret hygiene');

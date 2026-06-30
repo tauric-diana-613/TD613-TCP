@@ -80,4 +80,6 @@ npm run test:safe-harbor:phase9.1c
 
 ## EO-RFD
 
-`EO` means EO-RFD route conscience / context lane (interface-only). It is not government authority.
+`EO` means the EO-RFD route conscience / context lane. Current state is
+`interface_context`; current claim authority is `design_signal`. It is not
+government authority.

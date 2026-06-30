@@ -13,6 +13,7 @@ console.log(JSON.stringify({
   changed: [
     'app/aperture/tool.html',
     'app/aperture/index.html',
+    'app/aperture/release.json',
     'app/asset-versions.js',
     'app/engine/td613-aperture.js'
   ]

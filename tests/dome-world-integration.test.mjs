@@ -1,0 +1,48 @@
+import assert from 'node:assert/strict';
+import fs from 'node:fs';
+
+const html = fs.readFileSync('app/dome-world/index.html', 'utf8');
+const api = fs.readFileSync('api/dome-world-engine.py', 'utf8');
+const vercel = JSON.parse(fs.readFileSync('vercel.json', 'utf8'));
+const vercelIgnore = fs.readFileSync('.vercelignore', 'utf8');
+const gateway = fs.readFileSync('app/index.html', 'utf8');
+const title = html.match(/<title>([^<]+)<\/title>/i)?.[1];
+const nav = html.match(/<nav class="nav"[\s\S]*?<\/nav>/i)?.[0] || '';
+const tabLabels = [...nav.matchAll(/<button class="tab(?: active)?" data-view="[^"]+"[^>]*>[\s\S]*?<span>([^<]+)<\/span><\/button>/g)].map((match) => match[1]);
+const ids = [...html.matchAll(/\sid="([^"]+)"/g)].map((match) => match[1]);
+
+assert.equal(title, 'Dome-World / Flow-Core v0.4.3');
+assert.equal(tabLabels.length, 8);
+assert.deepEqual(
+  tabLabels,
+  ['Weather', 'Rooms', 'Lab', 'Ash', 'Substrate', 'Phason', 'Aperture', 'Receipts']
+);
+assert.equal((html.match(/class="view(?: active)? primary-view"/g) || []).length, 7);
+assert.equal((html.match(/class="view-intro"/g) || []).length, 7);
+assert.match(html, /data-sigil="米"/);
+assert.match(html, /data-glyph="hõt"/);
+assert.equal(new Set(ids).size, ids.length);
+assert.ok(ids.includes('liveCanvas'));
+assert.ok(ids.includes('tomoCanvas'));
+assert.ok(ids.includes('exactCoords'));
+assert.ok(!ids.includes('ashText'), 'public Ash route must not expose raw sensitive-text intake');
+assert.match(html, /function renderActiveView\(/);
+assert.doesNotMatch(html, /function renderAll\(/);
+assert.ok(
+  html.includes('generateWitnessReceipt,computeGradientMisfit,computeHeterostratigraphicPotential,computeRepoWeather,generateLiveLatticeSeed'),
+  'DomeCore exports every active heterostratigraphic and repository-weather function'
+);
+assert.match(html, /canvas\.width!==width\|\|canvas\.height!==height/);
+assert.match(html, /if\(!liveState\.running \|\| activeView!=='live' \|\| document\.hidden\) return/);
+assert.match(html, /rawExactCoordinatesExported:false|raw_exact_coordinates_allowed:\s*false/);
+assert.match(api, /MAX_BODY_BYTES = 131_072/);
+assert.match(api, /DOME_WORLD_TRAINER_ENABLED/);
+assert.match(api, /DOME_WORLD_CHECKPOINT_SECRET/);
+assert.match(api, /Ash readiness accepts metadata only/);
+assert.ok(vercel.rewrites.some((entry) => entry.source === '/dome-world' && entry.destination === '/app/dome-world/index.html'));
+assert.ok(vercel.rewrites.some((entry) => entry.source === '/api/dome-world/(.*)' && entry.destination.includes('/api/dome-world-engine')));
+assert.match(vercelIgnore, /packages\/dome_world_exact\/verification\//);
+assert.match(vercelIgnore, /packages\/dome_world_exact\/tests\//);
+assert.ok(!gateway.includes('href="./dome-world'), 'Dome-World remains outside public navigation');
+
+console.log('dome-world-integration.test.mjs passed');

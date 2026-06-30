@@ -223,9 +223,9 @@ const ANNEX_SPECS = Object.freeze([
     id: 'aperture',
     label: 'TD613 Aperture',
     relativePath: 'app/aperture/tool.html',
-    expectedVersion: '2.9.2',
+    expectedVersion: '2.9.4',
     versionPattern: /TD613 APERTURE v([0-9.]+) SOURCE DECLARATION/i,
-    titleIncludes: ['TD613 Aperture', 'v2.9.2'],
+    titleIncludes: ['TD613 Aperture', 'v2.9.4'],
     minimumInlineScripts: 1,
     meta: Object.freeze({
       'tool-name': 'TD613 Aperture',
@@ -257,13 +257,14 @@ const ANNEX_SPECS = Object.freeze([
       'resetSystem',
       'createTCPHandoffPacket',
       'scrubPacketEnvelope',
-      'triggerPreparedTCPHandoff'
+      'triggerPreparedTCPHandoff',
+      'compileDomeWorldBridge'
     ]),
     requiredPatterns: Object.freeze([
       {
         id: 'source-declaration',
         label: 'source declaration',
-        pattern: /TD613 APERTURE v2\.9\.2 SOURCE DECLARATION/i
+        pattern: /TD613 APERTURE v2\.9\.4 SOURCE DECLARATION/i
       },
       {
         id: 'counter-tool-stance',
@@ -376,9 +377,24 @@ const ANNEX_SPECS = Object.freeze([
         pattern: /APERTURE_GATEWAY_EMBED[\s\S]*window\.parent\.postMessage/i
       },
       {
-        id: 'v292-schema',
-        label: 'Aperture v2.9.2 schema marker',
-        pattern: /td613-aperture\/v2\.9\.2/i
+        id: 'v294-schema',
+        label: 'Aperture v2.9.4 schema marker',
+        pattern: /td613-aperture\/v2\.9\.4/i
+      },
+      {
+        id: 'sigma-dynamical-instrument',
+        label: 'Sigma dynamical instrument',
+        pattern: /v2\.9\.4-sigma-dynamical-instrument/i
+      },
+      {
+        id: 'phason-seam',
+        label: 'Phason seam detector',
+        pattern: /APERTURE_V294_PHASON_SEAM|phasonSeamPanel/i
+      },
+      {
+        id: 'dome-bridge-compiler',
+        label: 'pure Dome-World bridge compiler',
+        pattern: /function\s+compileDomeWorldBridge\s*\(/i
       }
     ])
   })

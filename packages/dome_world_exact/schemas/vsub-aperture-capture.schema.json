@@ -1,0 +1,23 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Vector-Substrate Aperture Capture Receipt",
+  "description": "Exact capture/grow decision emitted by the residual-learner bridge when an Aperture scan packet is admitted into the forced basis of the ambient number field. Replaces the v0.4.2b bridge's float gluing_obstruction with a measured residual norm and an asserted grade with a computed grade.",
+  "type": "object",
+  "required": ["schema", "captured", "field_grew", "grade", "decision_basis", "claim_ceiling"],
+  "properties": {
+    "schema": { "const": "td613.vsub-aperture.capture/v1" },
+    "engine": { "type": "string", "description": "real engine identifier, or 'sympy-reference' for the dependency-free variant" },
+    "active_lane": { "type": "string", "description": "Aperture scan family / lane that produced the observation" },
+    "artifact_id": { "type": "string" },
+    "projection_residual_before": { "type": "string", "description": "exact ||r||^2_G before any growth; '0' IFF already captured" },
+    "projection_residual_after": { "type": "string", "description": "exact ||r||^2_G after growth; '0' IFF now captured" },
+    "captured": { "type": "boolean", "description": "true IFF the observation lies in the current forced basis (exact membership)" },
+    "field_grew": { "type": "boolean" },
+    "forced_basis_dim": { "type": "array", "items": { "type": "integer" }, "minItems": 2, "maxItems": 2, "description": "[before, after]" },
+    "adjoined_seed_minpoly": { "type": ["array", "null"], "items": { "type": "integer" }, "description": "monic-integer minimal polynomial (high->low) of the adjoined algebraic-integer seed" },
+    "grade": { "enum": ["FORCED", "FORCED_IN_CONTEXT", "FORCED_UNDER_CONSTRAINT", "CONSTRUCTION", "SELECTED", "OPEN"], "description": "computed grade on Aperture's grade-gate lattice" },
+    "witness_intact": { "type": "boolean", "description": "tamper-evident witness chain verification" },
+    "decision_basis": { "type": "string" },
+    "claim_ceiling": { "type": "string" }
+  }
+}

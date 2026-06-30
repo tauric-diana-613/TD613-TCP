@@ -2,6 +2,7 @@
 import assert from 'node:assert/strict';
 import {
   APERTURE_INDEX_PATH,
+  APERTURE_RELEASE_PATH,
   APERTURE_TOOL_PATH,
   ASSET_VERSIONS_PATH,
   readHtmlArtifact,
@@ -11,6 +12,7 @@ import {
 const tool = await readHtmlArtifact(APERTURE_TOOL_PATH);
 const index = await readHtmlArtifact(APERTURE_INDEX_PATH);
 const assetVersions = await readText(ASSET_VERSIONS_PATH);
+const release = JSON.parse(await readText(APERTURE_RELEASE_PATH));
 
 const indexVersion = index.metadata.version;
 const iframeToken = index.metadata.cacheToken;
@@ -20,6 +22,9 @@ assert.ok(tool.metadata.version, 'app/aperture/tool.html has no detected Apertur
 assert.equal(indexVersion, tool.metadata.version, 'app/aperture/index.html aperture-version does not match tool.html');
 assert.ok(iframeToken, 'app/aperture/index.html iframe cache token missing');
 assert.equal(assetToken, iframeToken, 'app/asset-versions.js aperture token does not match index iframe token');
+assert.equal(release.version, tool.metadata.version, 'app/aperture/release.json version does not match tool.html');
+assert.equal(release.apertureSchema, tool.metadata.schema, 'app/aperture/release.json schema does not match tool.html');
+assert.equal(release.featureVersion, tool.metadata.featureVersion, 'app/aperture/release.json feature version does not match tool.html');
 assert.ok(tool.metadata.blocks.doctrineKernel, 'Doctrine kernel block missing from tool.html');
 assert.ok(tool.metadata.globals.gatewayEmbed, 'Gateway embed global missing from tool.html');
 

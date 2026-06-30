@@ -46,7 +46,11 @@
     "raw_text_public_export": false,
     "khona_lit_po": "Khona‌lit-po",
     "khona_lit_po_zwnj_sensitive": true,
-    "eo_shorthand": "EO-RFD route conscience / context lane (interface-only)",
+    "eo_shorthand": "EO-RFD route conscience / context lane (interface_context; design_signal)",
+    "eorfd_operational_state": "interface_context",
+    "eorfd_claim_authority": "design_signal",
+    "eorfd_target_state": "verified-runtime-installation",
+    "dome_world_receipt_policy": "reference-only; no exact coordinates, trainer history, or sensitive text",
     "claim_limit": "custody and replay posture only; not civil identity, legal identity, public law approval, state recognition, or authorship ownership"
   }
 }

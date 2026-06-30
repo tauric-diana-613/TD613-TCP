@@ -23,9 +23,9 @@ import {
   installTD613ProvenanceAttestationEgress
 } from '../app/engine/td613-aperture.js';
 
-assert.equal(TD613_APERTURE_VERSION, 'v2.9.2');
-assert.equal(TD613_APERTURE_SCHEMA, 'td613-aperture/v2.9.2');
-assert.equal(TD613_APERTURE_FEATURE_VERSION, 'v2.9.2-geometric-doctrine-addendum');
+assert.equal(TD613_APERTURE_VERSION, 'v2.9.4');
+assert.equal(TD613_APERTURE_SCHEMA, 'td613-aperture/v2.9.4');
+assert.equal(TD613_APERTURE_FEATURE_VERSION, 'v2.9.4-sigma-dynamical-instrument');
 assert.equal(TD613_APERTURE_PROTOCOL.id, TD613_APERTURE_SCHEMA);
 assert.equal(TD613_APERTURE_PROTOCOL.version, TD613_APERTURE_VERSION);
 assert.equal(TD613_APERTURE_PROTOCOL.schema, TD613_APERTURE_SCHEMA);

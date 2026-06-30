@@ -1,0 +1,31 @@
+{
+  "schema": "td613.aperture-to-dome.route-weather/v1",
+  "source": {
+    "tool": "TD613 Aperture",
+    "version": "v2.9.3",
+    "role": "counter-tool"
+  },
+  "bridge_direction": "Aperture→Flow-Core only",
+  "active_lane": "phason_gate_scan",
+  "metrics": {
+    "fold_pressure": 0.42,
+    "projection_shift": 0.78,
+    "gluing_obstruction": 0.48,
+    "route_pressure": 0.67,
+    "coherence": 0.58
+  },
+  "flowcore_weather": {
+    "temperature": "moderate",
+    "pressure": "storming",
+    "humidity": "moist",
+    "visibility": "partial",
+    "rest_debt": 0.63
+  },
+  "recommended_tending": [
+    "cōl",
+    "𝄐"
+  ],
+  "room_candidate": "Phason Gate",
+  "hard_stop": "Dome-World may teach/simulate; it may not override Aperture doctrine.",
+  "claim_ceiling": "aperture-to-flowcore-translation-not-aperture-execution"
+}

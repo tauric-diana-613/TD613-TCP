@@ -96,7 +96,11 @@ Adversarial seed means later counterfeit, overfit, style-laundering, third-party
 
 ## EO-RFD route observation
 
-EO-RFD route observation is interface-only unless a verified firmware adapter is attached. Provider logs must not claim live EO-RFD firmware execution, government authority or public authority without verified adapter proof.
+EO-RFD route observation currently records `interface_context` operational
+state and `design_signal` claim authority. Provider logs must not promote that
+state to verified runtime execution, government authority, or public authority
+without the declared adapter/runtime receipts. This phase ceiling does not
+deny later verified promotion.
 
 ## Release classes
 

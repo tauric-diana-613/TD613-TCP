@@ -123,6 +123,9 @@ function inspectRequiredSurfaces(packet = {}, options = {}) {
   if (!packet.eo_rfd_route_observation) warnings.push('EO-RFD route observation absent');
   if (getPath(packet, 'eo_rfd_route_observation.firmware_status') === 'firmware-attached' && getPath(packet, 'eo_rfd_route_observation.firmware_adapter_verified') !== true) reasons.push('EO-RFD firmware-attached claim requires verified adapter proof');
   if (LEGAL_AUTHORITY_PATTERN.test(body(packet.eo_rfd_route_observation))) reasons.push('EO-RFD route observation must not claim legal or executive-order authority');
+  if (getPath(packet, 'eo_rfd_route_observation.dome_world_context.raw_exact_coordinates_allowed') !== false) reasons.push('provider logs may carry Dome receipt references, never raw exact coordinates');
+  if (getPath(packet, 'eo_rfd_route_observation.dome_world_context.training_history_allowed') !== false) reasons.push('provider logs may not carry Dome trainer history');
+  if (getPath(packet, 'eo_rfd_route_observation.dome_world_context.sensitive_text_allowed') !== false) reasons.push('provider logs may not carry Dome sensitive text');
 
   return { reasons, warnings };
 }

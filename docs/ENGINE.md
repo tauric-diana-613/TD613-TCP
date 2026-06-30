@@ -311,16 +311,18 @@ If no candidate clears the class-specific rewrite bar honestly, TCP now publishe
 
 It is not supposed to ghostwrite the passage or quietly flatten a stronger candidate back toward source just because a safer shallow surface exists.
 
-The current Aperture protocol identity is `v2.9.2` /
-`td613-aperture/v2.9.2`. The engine also exports
-`v2.9.2-geometric-doctrine-addendum` as the Aperture feature posture
+The current Aperture protocol identity is `v2.9.4` /
+`td613-aperture/v2.9.4`. The engine also exports
+`v2.9.4-sigma-dynamical-instrument` as the Aperture feature posture
 through `TD613_APERTURE_FEATURE_VERSION`. `TD613_APERTURE_VERSION`,
 `TD613_APERTURE_SCHEMA`, and `TD613_APERTURE_PROTOCOL.id` carry the same
 version/schema so Gateway, Hush, Safe Harbor, and diagnostics do not
 float on older Aperture labels. The browser instrument adds ZFP
-certification and Moire Stratigraphy as UI/certification layers; the
-engine protocol remains the post-generation audit and registration
-surface.
+certification, Moire Stratigraphy, Phason seam detection, Sigma dynamics, and
+the one-way Dome-World compiler as UI/certification/translation layers; the
+engine protocol remains the post-generation audit and registration surface.
+The canonical cross-language values live in `app/aperture/release.json` and
+are propagated with `npm run sync:aperture-release`.
 
 ## Semantic Lock
 

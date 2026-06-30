@@ -107,10 +107,12 @@ useful; together they make the exposure surface complete.
 ## What's missing right now
 
 The canonical browser body is now [`tool.html`](tool.html) at
-`v2.9.2` / `td613-aperture/v2.9.2`; [`index.html`](index.html) is the
-stable public iframe shim. v2.9.2 carries the doctrine kernel, geometric addendum, ZFP certification layer,
-the corrected rupture predicate, Moire Stratigraphy diagnostics, and
-the Gateway embed compatibility bridge.
+`v2.9.4` / `td613-aperture/v2.9.4`; [`index.html`](index.html) is the
+stable public iframe shim. v2.9.4 carries the doctrine kernel, geometric addendum, ZFP certification layer,
+the corrected rupture predicate, Moire Stratigraphy diagnostics, Phason and
+Sigma dynamical surfaces, and the Gateway/Dome-World one-way bridge compiler.
+The bridge exports modeled route weather only when explicitly invoked; it
+does not execute Aperture or transmit automatically.
 
 [ROADMAP.md](../../ROADMAP.md) at the repo root still names the pending
 Aperture refactor: splitting the monolithic standalone body and

@@ -46,7 +46,7 @@ export function buildSurfacePolicySummary() {
     aperture_context: compactSafeHarborApertureContext(),
     claim_limits_required: true,
     raw_text_public_export: false,
-    eo_shorthand: 'EO-RFD route conscience / context lane (interface-only)'
+    eo_shorthand: 'EO-RFD route conscience / context lane (interface_context; design_signal)'
   });
 }
 

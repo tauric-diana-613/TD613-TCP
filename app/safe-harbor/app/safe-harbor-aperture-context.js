@@ -1,12 +1,22 @@
 export const SAFE_HARBOR_APERTURE_CONTEXT = Object.freeze({
-  apertureVersion: 'v2.9.2',
-  apertureSchema: 'td613-aperture/v2.9.2',
-  apertureFeatureVersion: 'v2.9.2-geometric-doctrine-addendum',
+  apertureVersion: 'v2.9.4',
+  apertureSchema: 'td613-aperture/v2.9.4',
+  apertureFeatureVersion: 'v2.9.4-sigma-dynamical-instrument',
   observedRegime: 'PRCS-A',
   doctrineKernel: 'present',
   geometricAddendum: 'present',
-  eorfdAuthority: 'interface-only',
-  claimLimit: 'Aperture/EO-RFD context observes route posture; it does not create packet authority.'
+  eorfdOperationalState: 'interface_context',
+  eorfdClaimAuthority: 'design_signal',
+  eorfdTargetState: 'verified-runtime-installation',
+  eorfdAuthority: 'design-signal',
+  domeWorld: Object.freeze({
+    version: 'v0.4.3',
+    receiptReferenceOnly: true,
+    rawExactCoordinatesExported: false,
+    trainingHistoryExported: false,
+    sensitiveTextExported: false
+  }),
+  claimLimit: 'Aperture/EO-RFD context observes route posture; runtime promotion requires explicit verification and never creates packet authority.'
 });
 
 export function compactSafeHarborApertureContext(extra = {}) {

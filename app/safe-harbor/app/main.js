@@ -29,14 +29,18 @@
   });
   const batchNodesCache = new Map();
   const APERTURE_CONTEXT_BASE = Object.freeze({
-    apertureVersion: 'v2.9.2',
-    apertureSchema: 'td613-aperture/v2.9.2',
-    apertureFeatureVersion: 'v2.9.2-geometric-doctrine-addendum',
+    apertureVersion: 'v2.9.4',
+    apertureSchema: 'td613-aperture/v2.9.4',
+    apertureFeatureVersion: 'v2.9.4-sigma-dynamical-instrument',
     observedRegime: 'PRCS-A',
     doctrineKernel: 'present',
     geometricAddendum: 'present',
-    eorfdAuthority: 'interface-only',
-    claimLimit: 'Aperture/EO-RFD context observes route posture; it does not create packet authority.'
+    eorfdOperationalState: 'interface_context',
+    eorfdClaimAuthority: 'design_signal',
+    eorfdTargetState: 'verified-runtime-installation',
+    eorfdAuthority: 'design-signal',
+    domeWorld: Object.freeze({ version:'v0.4.3', receiptReferenceOnly:true, rawExactCoordinatesExported:false, trainingHistoryExported:false, sensitiveTextExported:false }),
+    claimLimit: 'Aperture/EO-RFD context observes route posture; runtime promotion requires explicit verification and never creates packet authority.'
   });
   const INGRESS_STEP_COPY = {
     future_self: {
@@ -2666,7 +2670,11 @@
       observedRegime: 'PRCS-A',
       doctrineKernel: APERTURE_CONTEXT_BASE.doctrineKernel,
       geometricAddendum: APERTURE_CONTEXT_BASE.geometricAddendum,
+      eorfdOperationalState: APERTURE_CONTEXT_BASE.eorfdOperationalState,
+      eorfdClaimAuthority: APERTURE_CONTEXT_BASE.eorfdClaimAuthority,
+      eorfdTargetState: APERTURE_CONTEXT_BASE.eorfdTargetState,
       eorfdAuthority: APERTURE_CONTEXT_BASE.eorfdAuthority,
+      domeWorld: clone(APERTURE_CONTEXT_BASE.domeWorld),
       claimLimit: APERTURE_CONTEXT_BASE.claimLimit,
       instrumentRole: 'counter-tool',
       generatorFault: fault,
@@ -3058,9 +3066,13 @@
       tauric_intake_context: tauricContext,
       eorfd_route_context: {
         authority: APERTURE_CONTEXT_BASE.eorfdAuthority,
+        operationalState: APERTURE_CONTEXT_BASE.eorfdOperationalState,
+        claimAuthority: APERTURE_CONTEXT_BASE.eorfdClaimAuthority,
+        targetState: APERTURE_CONTEXT_BASE.eorfdTargetState,
         routeRole: 'route conscience / context',
         claimLimit: APERTURE_CONTEXT_BASE.claimLimit,
-        rawTextExported: false
+        rawTextExported: false,
+        domeWorld: clone(APERTURE_CONTEXT_BASE.domeWorld)
       },
       aperture_audit: null,
       forensic_schema: null,
@@ -3070,9 +3082,13 @@
         tauric_intake_context: tauricContext,
         eorfd_route_context: {
           authority: APERTURE_CONTEXT_BASE.eorfdAuthority,
+          operationalState: APERTURE_CONTEXT_BASE.eorfdOperationalState,
+          claimAuthority: APERTURE_CONTEXT_BASE.eorfdClaimAuthority,
+          targetState: APERTURE_CONTEXT_BASE.eorfdTargetState,
           routeRole: 'route conscience / context',
           claimLimit: APERTURE_CONTEXT_BASE.claimLimit,
-          rawTextExported: false
+          rawTextExported: false,
+          domeWorld: clone(APERTURE_CONTEXT_BASE.domeWorld)
         },
         public_probe_defaults: {
           start_with: '01_LIVE_SEND_verify.alias.voice_MINIMAL.txt',
