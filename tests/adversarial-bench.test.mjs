@@ -26,9 +26,12 @@ bench.initAdversarialBench(document);
 assert(bench.benchState.iterationLedger);
 assert.equal(bench.benchState.iterationLedger.rows.length, 0);
 assert(document.getElementById('recognitionContextType').options.length >= 4);
-assert(document.getElementById('maskFieldSelect').options.length >= 20);
+assert(bench.benchState.hushMasks.length >= 13);
+assert.equal(
+  document.getElementById('maskFieldSelect').options.length,
+  bench.benchState.hushMasks.length + bench.benchState.customMasks.length
+);
 assert.equal(bench.benchState.recognitionContextType, 'group-chat');
-assert(bench.benchState.hushMasks.length >= 20);
 assert(bench.benchState.selectedHushMask);
 assert(document.getElementById('hushMaskProfilePanel').textContent.includes('Profile status'));
 
@@ -85,10 +88,12 @@ else assert(swapResult.failureReason.includes('failed candidate'));
 assert(document.getElementById('hushProfileMatchPanel').textContent.includes('Match score') || swapResult.allCandidatesFailed);
 
 const hushMaskExport = bench.exportCurrentHushMaskProfile();
-assert(hushMaskExport.includes('phase-12'));
+const hushMaskPayload = JSON.parse(hushMaskExport);
+assert.equal(hushMaskPayload.maskId || hushMaskPayload.id, bench.benchState.selectedHushMask.id);
+assert.equal(typeof hushMaskPayload.version, 'string');
 assert(!hushMaskExport.includes('This is a custom sample with a practical rhythm'));
 const hushSwapExport = bench.exportCurrentHushSwapJson();
-assert(hushSwapExport.includes('phase-12'));
+assert.equal(JSON.parse(hushSwapExport).version, 'phase-22');
 const currentOutput = document.getElementById('protectedOutputInput').value;
 if (currentOutput) assert(!hushSwapExport.includes(currentOutput));
 

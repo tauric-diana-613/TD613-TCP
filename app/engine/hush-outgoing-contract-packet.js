@@ -158,21 +158,33 @@ function eoRfdRouteState(input = {}) {
   return Object.freeze({
     schema_version: 'td613.hush.eo-rfd-route-state/v1',
     firmware_status: eo.firmware_status || eo.firmwareStatus || 'interface-only',
+    operational_state: eo.operational_state || eo.operationalState || 'interface_context',
+    claim_authority: eo.claim_authority || eo.claimAuthority || 'design_signal',
+    target_operational_state: eo.target_operational_state || eo.targetOperationalState || 'verified-runtime-installation',
     aperture_context: Object.freeze({
-      aperture_version: aperture.aperture_version || aperture.apertureVersion || 'v2.9.2',
-      aperture_schema: aperture.aperture_schema || aperture.apertureSchema || 'td613-aperture/v2.9.2',
-      aperture_feature_version: aperture.aperture_feature_version || aperture.apertureFeatureVersion || 'v2.9.2-geometric-doctrine-addendum',
+      aperture_version: aperture.aperture_version || aperture.apertureVersion || 'v2.9.4',
+      aperture_schema: aperture.aperture_schema || aperture.apertureSchema || 'td613-aperture/v2.9.4',
+      aperture_feature_version: aperture.aperture_feature_version || aperture.apertureFeatureVersion || 'v2.9.4-sigma-dynamical-instrument',
       doctrine_kernel: aperture.doctrine_kernel || aperture.doctrineKernel || 'present',
       geometric_addendum: aperture.geometric_addendum || aperture.geometricAddendum || 'present',
-      authority: aperture.authority || 'context-only',
-      claim_limit: aperture.claim_limit || aperture.claimLimit || 'Aperture context informs EO-RFD route review; it does not create firmware proof.'
+      authority: aperture.authority || 'design-signal',
+      dome_world_receipt: aperture.dome_world_receipt || aperture.domeWorldReceipt || null,
+      claim_limit: aperture.claim_limit || aperture.claimLimit || 'Current EO-RFD state is interface context with design-signal authority; later runtime promotion requires explicit verification.'
+    }),
+    dome_world_context: Object.freeze({
+      version: 'v0.4.3',
+      schema: 'td613.dome-world.receipt-ref/v0.4.3',
+      receipt_reference_only: true,
+      raw_exact_coordinates_allowed: false,
+      training_history_allowed: false,
+      sensitive_text_allowed: false
     }),
     route_conscience_hook: eo.route_conscience_hook || eo.routeConscienceHook || 'required',
     provider_contract_hook: bool(eo.provider_contract_hook ?? eo.providerContractHook, true),
     stylometry_drift_hook: bool(eo.stylometry_drift_hook ?? eo.stylometryDriftHook, true),
     refusal_reason_hook: bool(eo.refusal_reason_hook ?? eo.refusalReasonHook, true),
     route_state_label: eo.route_state_label || eo.routeStateLabel || 'provider-ready',
-    operator_note: eo.operator_note || eo.operatorNote || 'EO-RFD firmware not attached; interface state only'
+    operator_note: eo.operator_note || eo.operatorNote || 'EO-RFD is at interface_context/design_signal; this phase does not activate runtime firmware.'
   });
 }
 

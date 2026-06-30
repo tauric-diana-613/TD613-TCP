@@ -1,0 +1,1186 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover" />
+<meta name="apple-mobile-web-app-capable" content="yes" />
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+<meta name="mobile-web-app-capable" content="yes" />
+<meta name="format-detection" content="telephone=no" />
+<meta name="theme-color" content="#03100d" />
+<meta name="application-name" content="Dome-World / Flow-Core" />
+<meta name="td613-route" content="𝌋‌ U+10D613" />
+<meta name="observed-regime" content="PRCS-A" />
+<meta name="claim-ceiling" content="ambiance-reading-not-total-field" />
+<meta name="aperture-membrane" content="v2.9.4-compatible; foundation-before-receipts; exact substrate optional; no geometry crown" />
+<meta name="td613-dome-world-version" content="v0.4.3" />
+<title>Dome-World / Flow-Core v0.4.3</title>
+<style>
+:root{
+  --bg0:#03100d;--bg1:#071712;--bg2:#0e251d;--bg3:#18372b;
+  --panel:rgba(9,24,20,.80);--panel2:rgba(14,36,30,.84);--glass:rgba(255,255,255,.055);
+  --line:rgba(203,235,213,.16);--line2:rgba(240,213,142,.30);--line3:rgba(127,215,255,.20);
+  --text:#e7f0e3;--muted:#b4c4b6;--dim:#7a9080;--bright:#fff8da;
+  --water:#7fd7ff;--cyan:#76ead4;--gold:#e4c66c;--rose:#d98594;--violet:#b39bec;--leaf:#8ee386;--soil:#c48b55;--hot:#f0a35e;
+  --shadow:0 18px 60px rgba(0,0,0,.34),0 2px 0 rgba(255,255,255,.03) inset;
+  --r:24px;--r2:18px;--r3:14px;
+  --mono:ui-monospace,SFMono-Regular,Menlo,Monaco,Consolas,monospace;
+  --serif:Iowan Old Style,Palatino Linotype,Book Antiqua,Georgia,serif;
+  --sans:Inter,ui-sans-serif,system-ui,-apple-system,BlinkMacSystemFont,Segoe UI,Roboto,Helvetica,Arial,sans-serif;
+  --touch:44px;
+}
+*{box-sizing:border-box}
+html{background:var(--bg0);color:var(--text);font-family:var(--mono);-webkit-text-size-adjust:100%;text-size-adjust:100%;scroll-padding-top:88px;scroll-behavior:smooth}
+body{margin:0;min-height:100vh;overflow-x:hidden;position:relative;background:radial-gradient(circle at 14% 12%,rgba(127,215,255,.18),transparent 24%),radial-gradient(circle at 86% 8%,rgba(228,198,108,.14),transparent 28%),radial-gradient(circle at 50% 100%,rgba(142,227,134,.10),transparent 28%),linear-gradient(155deg,var(--bg0),var(--bg1) 42%,#060b08 100%)}
+body::before,body::after{content:"";position:fixed;inset:0;pointer-events:none;z-index:0}
+body::before{opacity:.28;background:repeating-linear-gradient(60deg,rgba(255,255,255,.022) 0 1px,transparent 1px 28px),repeating-linear-gradient(-60deg,rgba(255,255,255,.018) 0 1px,transparent 1px 28px),repeating-linear-gradient(0deg,rgba(255,255,255,.016) 0 1px,transparent 1px 28px);mask-image:radial-gradient(circle at 50% 30%,#000 0 55%,transparent 90%)}
+body::after{opacity:.24;background:radial-gradient(circle at 50% 52%,rgba(127,215,255,.16),transparent 18%),radial-gradient(circle at 50% 52%,transparent 0 17%,rgba(118,234,212,.08) 17.2% 17.6%,transparent 18%),radial-gradient(circle at 50% 52%,transparent 0 27%,rgba(228,198,108,.06) 27.2% 27.5%,transparent 28%),radial-gradient(circle at 50% 52%,transparent 0 40%,rgba(179,155,236,.05) 40.2% 40.45%,transparent 41%);filter:blur(2px)}
+button,input,textarea,select{font:inherit}button{color:inherit;touch-action:manipulation;-webkit-tap-highlight-color:transparent}input,select,textarea{min-height:var(--touch)}
+.wrap{position:relative;z-index:1;width:min(1500px,calc(100% - 20px));margin:0 auto;padding:max(16px,env(safe-area-inset-top)) 0 max(26px,env(safe-area-inset-bottom))}
+header{position:relative;display:grid;grid-template-columns:minmax(0,1fr) auto;gap:18px;align-items:start;border:1px solid var(--line);border-radius:calc(var(--r) + 8px);padding:18px 18px 20px;margin-bottom:14px;background:linear-gradient(180deg,rgba(255,255,255,.05),rgba(255,255,255,.01) 38%,rgba(0,0,0,.05)),linear-gradient(135deg,rgba(127,215,255,.05),rgba(228,198,108,.03) 48%,rgba(179,155,236,.05)),var(--panel);box-shadow:var(--shadow);backdrop-filter:blur(14px);overflow:hidden}
+header::before{content:"";position:absolute;inset:-10% -6% auto auto;width:320px;height:320px;background:radial-gradient(circle,rgba(228,198,108,.18),transparent 42%),repeating-conic-gradient(from 0deg,rgba(255,255,255,.05) 0 6deg,transparent 6deg 12deg);border-radius:50%;filter:blur(1px);opacity:.7;transform:translate(18%,-18%)}
+.flow-glyph-field{position:absolute;z-index:0;right:4%;bottom:-12px;display:grid;grid-template-columns:repeat(6,auto);align-items:center;gap:2px 18px;color:var(--cyan);font:400 clamp(1.35rem,2.8vw,3rem)/1 var(--serif);opacity:.07;transform:skewX(-9deg);pointer-events:none}.flow-glyph-field span:nth-child(3n+2){color:var(--gold);transform:translateY(-12px)}.flow-glyph-field span:nth-child(3n){color:var(--violet);transform:translateY(8px)}header>div:not(.flow-glyph-field),header>.seal{position:relative;z-index:1}
+.eyebrow{font-family:var(--sans);font-size:.72rem;letter-spacing:.24em;text-transform:uppercase;color:var(--gold)}
+h1{font-family:var(--serif);font-weight:400;font-size:clamp(2.4rem,8vw,6.4rem);line-height:.88;letter-spacing:-.06em;margin:.12em 0;color:var(--bright);text-wrap:balance}h1 em{font-style:italic;color:var(--cyan)}
+.lede{max-width:92ch;color:#d3ddd2;line-height:1.65;margin:.7rem 0 0;font-family:var(--sans);font-size:clamp(.95rem,1.3vw,1.02rem)}
+.seal{position:relative;z-index:1;align-self:start;border:1px solid var(--line2);border-radius:999px;padding:12px 14px;color:var(--bright);background:linear-gradient(180deg,rgba(7,22,17,.86),rgba(7,22,17,.62));box-shadow:var(--shadow);white-space:nowrap;font-size:.78rem;text-align:right}
+.nav-frame{position:sticky;top:8px;z-index:30;margin:0 0 14px;padding:7px 4px 11px;background:linear-gradient(180deg,rgba(3,16,13,.94),rgba(3,16,13,.68) 78%,transparent);backdrop-filter:blur(15px);overflow:hidden}
+.nav-frame::before{content:"";position:absolute;left:4px;right:4px;top:23px;height:1px;pointer-events:none;background:linear-gradient(90deg,transparent,var(--cyan) 12%,rgba(228,198,108,.55) 52%,var(--violet) 88%,transparent);opacity:.24}
+.nav-kicker{position:relative;display:flex;justify-content:space-between;gap:16px;padding:0 7px 8px;color:var(--dim);font:600 .56rem/1.2 var(--mono);letter-spacing:.18em;text-transform:uppercase}.nav-kicker span{padding-inline:5px;background:rgba(3,16,13,.82)}.nav-kicker span:last-child{color:rgba(228,198,108,.82);text-align:right}
+.nav{position:relative;display:grid;grid-template-columns:repeat(8,minmax(0,1fr));gap:7px;overflow:auto;padding:4px 2px 7px;scrollbar-width:none;cursor:grab;user-select:none;touch-action:pan-x;perspective:900px}.nav::-webkit-scrollbar{display:none}.nav.dragging{cursor:grabbing}.nav.dragging .tab{pointer-events:none}
+.exact-grid{display:grid;grid-template-columns:minmax(0,1fr) minmax(280px,.72fr);gap:14px}.exact-grid textarea{min-height:126px}
+.status-chip{display:inline-flex;padding:6px 9px;border:1px solid var(--line);border-radius:6px;font:700 .72rem/1 var(--mono);letter-spacing:.08em;text-transform:uppercase;color:var(--cyan)}
+.tab{--tab-accent:var(--cyan);position:relative;display:grid;grid-template-columns:auto minmax(0,1fr);align-items:end;gap:9px;min-width:0;min-height:64px;border:1px solid color-mix(in srgb,var(--tab-accent) 28%,transparent);border-radius:0;padding:11px 13px;color:#c8d8cc;background:linear-gradient(155deg,color-mix(in srgb,var(--tab-accent) 18%,rgba(10,34,27,.96)),rgba(5,21,17,.96) 50%,rgba(2,12,10,.99));clip-path:polygon(11px 0,calc(100% - 15px) 0,100% 15px,100% calc(100% - 8px),calc(100% - 8px) 100%,0 100%,0 11px);cursor:pointer;transition:.2s transform,.2s color,.2s border-color,.2s filter,.2s box-shadow;white-space:nowrap;text-align:left;overflow:hidden;box-shadow:inset 3px 0 color-mix(in srgb,var(--tab-accent) 32%,transparent),inset 0 1px rgba(255,255,255,.07),0 7px 16px rgba(0,0,0,.26);transform:rotateX(1deg)}
+.tab::before{content:attr(data-sigil);position:absolute;right:9px;top:2px;color:var(--tab-accent);font:400 2.25rem/1 var(--serif);opacity:.13;transform:rotate(-8deg);text-shadow:0 0 16px color-mix(in srgb,var(--tab-accent) 45%,transparent);transition:.2s opacity,.2s transform}
+.tab::after{content:"";position:absolute;left:12px;right:12px;bottom:5px;height:2px;background:linear-gradient(90deg,var(--tab-accent),transparent 78%);transform:scaleX(.35);transform-origin:left;opacity:.42;transition:.2s transform,.2s opacity}
+.tab small{align-self:center;color:color-mix(in srgb,var(--tab-accent) 68%,white);font:700 .54rem/1 var(--mono);letter-spacing:.1em}.tab span{position:relative;overflow:hidden;text-overflow:ellipsis;font:700 .7rem/1 var(--mono);letter-spacing:.075em;text-transform:uppercase;text-shadow:0 1px 8px rgba(0,0,0,.65)}
+.tab:nth-child(2){--tab-accent:var(--leaf)}.tab:nth-child(3){--tab-accent:var(--violet)}.tab:nth-child(4){--tab-accent:var(--rose)}.tab:nth-child(5){--tab-accent:var(--water)}.tab:nth-child(6){--tab-accent:var(--gold)}.tab:nth-child(7){--tab-accent:#d0a7ff}.tab:nth-child(8){--tab-accent:#f2d98c}
+.tab:hover{z-index:2;transform:translateY(-3px) rotateX(0);color:var(--bright);border-color:color-mix(in srgb,var(--tab-accent) 76%,white 8%);filter:brightness(1.16);box-shadow:inset 4px 0 var(--tab-accent),inset 0 1px rgba(255,255,255,.15),0 12px 24px rgba(0,0,0,.34),0 0 18px color-mix(in srgb,var(--tab-accent) 13%,transparent)}.tab:hover::before{opacity:.32;transform:rotate(0) scale(1.06)}.tab:hover::after{transform:scaleX(.85);opacity:.9}
+.tab.active{z-index:3;transform:translateY(-3px);color:var(--bright);border-color:color-mix(in srgb,var(--tab-accent) 82%,white 10%);background:linear-gradient(135deg,color-mix(in srgb,var(--tab-accent) 30%,rgba(36,39,23,.97)),rgba(8,34,27,.98) 54%,rgba(24,15,42,.96));box-shadow:inset 5px 0 var(--tab-accent),inset 0 1px rgba(255,255,255,.17),0 11px 24px rgba(0,0,0,.36),0 0 20px color-mix(in srgb,var(--tab-accent) 17%,transparent)}.tab.active small{color:var(--bright)}.tab.active::before{opacity:.42;transform:rotate(0) scale(1.1)}.tab.active::after{transform:scaleX(1);opacity:1;background:linear-gradient(90deg,var(--tab-accent),var(--bright),transparent)}
+.btn,.room-btn{border:1px solid rgba(118,234,212,.20);background:linear-gradient(180deg,rgba(16,43,34,.88),rgba(6,23,18,.92));border-radius:2px;padding:10px 15px;cursor:pointer;transition:.16s transform,.16s border-color,.16s background,.16s color,.16s box-shadow;box-shadow:inset 0 1px rgba(255,255,255,.04);clip-path:polygon(7px 0,calc(100% - 7px) 0,100% 7px,100% 100%,7px 100%,0 calc(100% - 7px),0 7px);white-space:nowrap}
+.btn:hover,.room-btn:hover{transform:translateY(-1px);border-color:rgba(228,198,108,.72);background:linear-gradient(135deg,rgba(61,50,24,.92),rgba(10,39,31,.94));color:var(--bright);box-shadow:0 8px 18px rgba(0,0,0,.22),inset 2px 0 var(--gold)}
+.btn:focus-visible,.tab:focus-visible,.room-btn:focus-visible,.lab-node:focus-visible{outline:2px solid var(--cyan);outline-offset:3px}
+.view{display:none}.view.active{display:block;animation:fadeUp .2s ease}@keyframes fadeUp{from{opacity:.55;transform:translateY(4px)}to{opacity:1;transform:translateY(0)}}
+.grid{display:grid;grid-template-columns:minmax(360px,1.2fr) minmax(320px,.8fr);gap:14px;align-items:start}.tri{display:grid;grid-template-columns:1fr 1fr 1fr;gap:14px}.api-grid{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+.panel{position:relative;border:1px solid var(--line);border-radius:var(--r);background:linear-gradient(180deg,rgba(255,255,255,.04),transparent 42%),linear-gradient(145deg,rgba(127,215,255,.03),rgba(228,198,108,.025) 52%,rgba(179,155,236,.03)),var(--panel);box-shadow:var(--shadow);padding:16px;backdrop-filter:blur(12px);overflow:hidden}
+.panel::before{content:"";position:absolute;inset:0;pointer-events:none;opacity:.12;background:linear-gradient(60deg,transparent 0 48%,rgba(255,255,255,.05) 48.4% 48.8%,transparent 49.2%),linear-gradient(-60deg,transparent 0 48%,rgba(255,255,255,.04) 48.4% 48.8%,transparent 49.2%);background-size:44px 44px}.panel>*{position:relative;z-index:1}
+.panel h2,.panel h3{font-family:var(--serif);font-weight:400;color:var(--bright);letter-spacing:-.03em;margin:0 0 12px}.panel h2{font-size:clamp(1.7rem,4vw,3.3rem);line-height:1}.panel h3{font-size:clamp(1.3rem,2.5vw,1.75rem)}
+.sub{color:var(--muted);font-size:.84rem;line-height:1.58;font-family:var(--sans)}.claim{font-size:.72rem;color:var(--dim);line-height:1.5;border-top:1px solid rgba(255,255,255,.08);margin-top:12px;padding-top:10px}
+.weather-card{min-height:470px;position:relative;display:grid;place-items:stretch;padding:0;border-radius:calc(var(--r) + 4px)}canvas{display:block;width:100%;height:100%}#weatherCanvas{min-height:470px}
+.weather-copy{position:absolute;inset:auto 16px 16px;max-width:680px;background:rgba(4,16,12,.68);border:1px solid var(--line);border-radius:18px;padding:16px;backdrop-filter:blur(12px);box-shadow:0 14px 34px rgba(0,0,0,.24)}.weather-copy b{color:var(--gold)}
+.kpis{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}.kpi{border:1px solid rgba(255,255,255,.08);border-radius:18px;background:linear-gradient(180deg,rgba(255,255,255,.03),rgba(0,0,0,.20));padding:13px}.kpi small{display:block;color:var(--dim);font-size:.66rem;text-transform:uppercase;letter-spacing:.12em;font-family:var(--sans)}.kpi strong{display:block;color:var(--bright);font-size:clamp(1.25rem,4vw,2.15rem);font-weight:500;margin-top:4px}
+.status-line{display:flex;justify-content:space-between;gap:10px;border-bottom:1px dotted rgba(255,255,255,.08);padding:8px 0;color:var(--muted);font-size:.78rem;font-family:var(--sans)}.status-line span:last-child{color:var(--bright);text-align:right}
+.rooms{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:10px}.room-btn{white-space:normal;text-align:left;min-height:100px;padding:12px;background:linear-gradient(180deg,rgba(14,37,29,.82),rgba(10,25,21,.80))}.room-btn.active{border-color:var(--gold);background:linear-gradient(135deg,rgba(73,58,25,.88),rgba(16,47,37,.88));color:var(--bright);box-shadow:inset 3px 0 var(--gold)}.room-btn small{display:block;color:var(--muted);margin-top:6px;line-height:1.35;font-family:var(--sans)}
+.actions{display:flex;flex-wrap:wrap;gap:6px;margin-top:10px}.btn{min-height:var(--touch);font:650 .75rem/1 var(--mono);letter-spacing:.035em}.btn.primary{border-color:rgba(102,218,198,.58);background:linear-gradient(135deg,rgba(35,101,88,.58),rgba(13,43,35,.94));color:#a9fff0;box-shadow:inset 3px 0 var(--cyan)}
+.lab-shell{position:relative;isolation:isolate;min-height:640px;padding:clamp(20px,3vw,42px);border-block:1px solid rgba(179,155,236,.26);background:linear-gradient(135deg,rgba(4,17,14,.98),rgba(7,25,20,.94) 52%,rgba(13,9,24,.96));overflow:hidden}
+.lab-shell::before{content:"";position:absolute;z-index:-2;inset:0;background:repeating-linear-gradient(60deg,transparent 0 56px,rgba(118,234,212,.035) 56px 57px),repeating-linear-gradient(-60deg,transparent 0 56px,rgba(179,155,236,.03) 56px 57px),linear-gradient(90deg,transparent 0 72%,rgba(228,198,108,.045) 72% 72.2%,transparent 72.2%)}
+.lab-shell::after{content:"";position:absolute;z-index:-1;width:min(58vw,780px);height:min(58vw,780px);right:-18%;top:-48%;border:1px solid rgba(228,198,108,.12);transform:rotate(18deg);box-shadow:0 0 0 44px rgba(118,234,212,.018),0 0 0 96px rgba(179,155,236,.016)}
+.lab-mast{display:grid;grid-template-columns:minmax(0,1fr) auto;align-items:end;gap:22px;margin-bottom:26px;padding-bottom:18px;border-bottom:1px solid rgba(118,234,212,.16)}
+.lab-overline{color:var(--violet);font:700 .63rem/1.2 var(--mono);letter-spacing:.22em;text-transform:uppercase}.lab-mast h2{margin:7px 0 4px;color:var(--bright);font:400 clamp(2.2rem,5.5vw,5rem)/.92 var(--serif);letter-spacing:-.045em}.lab-mast p{max-width:74ch;margin:0;color:var(--muted);font:.86rem/1.6 var(--sans)}
+.lab-telemetry{display:grid;grid-template-columns:repeat(3,auto);gap:1px;align-self:stretch}.lab-telemetry span{display:grid;place-items:center;min-width:88px;padding:9px 12px;border:1px solid rgba(118,234,212,.12);color:var(--dim);font:600 .57rem/1.35 var(--mono);letter-spacing:.1em;text-transform:uppercase;background:rgba(2,13,10,.55)}.lab-telemetry b{display:block;color:var(--cyan);font-size:.75rem}
+.lab-constellation{display:grid;grid-template-columns:repeat(12,minmax(0,1fr));grid-auto-flow:dense;gap:8px}
+.lab-node{position:relative;display:grid;grid-template-columns:auto minmax(0,1fr);grid-template-rows:auto 1fr;column-gap:13px;min-height:122px;padding:16px 17px;border:1px solid rgba(118,234,212,.16);color:var(--text);background:linear-gradient(145deg,rgba(15,48,38,.82),rgba(4,20,16,.94) 64%,rgba(21,13,35,.76));clip-path:polygon(12px 0,100% 0,100% calc(100% - 12px),calc(100% - 12px) 100%,0 100%,0 12px);cursor:pointer;text-align:left;overflow:hidden;transition:.18s transform,.18s border-color,.18s filter,.18s background}
+.lab-node::before{content:attr(data-glyph);position:absolute;right:18px;top:11px;color:var(--node-accent,var(--cyan));font:400 clamp(2rem,4vw,4.4rem)/1 var(--serif);opacity:.09;transform:rotate(-7deg);text-shadow:0 0 20px color-mix(in srgb,var(--node-accent,var(--cyan)) 32%,transparent);transition:.2s opacity,.2s transform}
+.lab-node::after{content:"";position:absolute;right:-24px;bottom:-30px;width:88px;height:88px;border:1px solid color-mix(in srgb,var(--node-accent,var(--cyan)) 35%,transparent);transform:rotate(45deg);transition:.25s transform,.25s border-color}
+.lab-node:hover{transform:translateY(-2px);border-color:color-mix(in srgb,var(--node-accent,var(--cyan)) 70%,transparent);filter:brightness(1.12);background:linear-gradient(145deg,rgba(22,68,54,.90),rgba(5,24,19,.96) 58%,rgba(31,18,49,.84))}.lab-node:hover::before{opacity:.24;transform:rotate(0) scale(1.06)}.lab-node:hover::after{transform:rotate(58deg) scale(1.12)}
+.lab-node:nth-child(1),.lab-node:nth-child(4),.lab-node:nth-child(8){grid-column:span 3}.lab-node:nth-child(2),.lab-node:nth-child(5),.lab-node:nth-child(9){grid-column:span 5}.lab-node:nth-child(3),.lab-node:nth-child(6),.lab-node:nth-child(7),.lab-node:nth-child(10){grid-column:span 4}
+.lab-index{grid-row:1 / 3;color:var(--node-accent,var(--cyan));font:700 .62rem/1 var(--mono);letter-spacing:.08em}.lab-node strong{align-self:start;color:var(--bright);font:500 clamp(.95rem,1.6vw,1.2rem)/1.05 var(--serif)}.lab-node small{align-self:end;margin-top:20px;color:var(--dim);font:600 .58rem/1.35 var(--mono);letter-spacing:.08em;text-transform:uppercase}
+.lab-node[data-tone="gold"]{--node-accent:var(--gold)}.lab-node[data-tone="violet"]{--node-accent:var(--violet)}.lab-node[data-tone="rose"]{--node-accent:var(--rose)}.lab-node[data-tone="leaf"]{--node-accent:var(--leaf)}
+.lab-ceiling{display:flex;justify-content:space-between;gap:18px;margin:22px 0 0;padding-top:14px;border-top:1px solid rgba(228,198,108,.14);color:var(--dim);font:.65rem/1.55 var(--mono)}.lab-ceiling b{color:var(--gold);font-weight:500}
+.primary-view{--view-accent:var(--cyan);position:relative;isolation:isolate;padding:clamp(18px,2.6vw,34px);border-block:1px solid color-mix(in srgb,var(--view-accent) 24%,transparent);background:linear-gradient(145deg,rgba(3,18,14,.97),rgba(8,28,22,.92) 58%,rgba(13,9,24,.92));overflow:hidden}
+.primary-view::before{content:"";position:absolute;z-index:-2;inset:0;background:repeating-linear-gradient(60deg,transparent 0 64px,color-mix(in srgb,var(--view-accent) 5%,transparent) 64px 65px),repeating-linear-gradient(-60deg,transparent 0 64px,rgba(179,155,236,.025) 64px 65px)}
+.primary-view::after{content:attr(data-glyph);position:absolute;z-index:-1;right:3%;top:-3%;color:var(--view-accent);font:400 clamp(8rem,20vw,20rem)/1 var(--serif);opacity:.035;transform:rotate(-9deg);pointer-events:none}
+#weather{--view-accent:var(--cyan)}#rooms{--view-accent:var(--leaf)}#ash{--view-accent:var(--rose)}#substrate{--view-accent:var(--water)}#phason{--view-accent:var(--gold)}#aperture{--view-accent:var(--violet)}#receipts{--view-accent:#f2d98c}
+.view-intro{display:grid;grid-template-columns:minmax(0,1fr) auto;align-items:end;gap:22px;margin-bottom:22px;padding:0 2px 16px;border-bottom:1px solid color-mix(in srgb,var(--view-accent) 20%,transparent)}
+.view-overline{color:var(--view-accent);font:700 .61rem/1.2 var(--mono);letter-spacing:.2em;text-transform:uppercase}.view-intro h2{margin:7px 0 4px;color:var(--bright);font:400 clamp(2.15rem,4.8vw,4.4rem)/.94 var(--serif);letter-spacing:-.04em}.view-intro p{max-width:76ch;margin:0;color:var(--muted);font:.84rem/1.58 var(--sans)}
+.view-telemetry{display:grid;grid-template-columns:repeat(3,minmax(72px,auto));gap:1px}.view-telemetry span{display:grid;place-items:center;min-height:62px;padding:8px 11px;border:1px solid color-mix(in srgb,var(--view-accent) 15%,transparent);color:var(--dim);font:600 .54rem/1.35 var(--mono);letter-spacing:.09em;text-transform:uppercase;background:rgba(2,13,10,.58)}.view-telemetry b{display:block;color:var(--view-accent);font-size:.7rem}
+.primary-view .panel{border-color:color-mix(in srgb,var(--view-accent) 22%,transparent);border-radius:0;background:linear-gradient(145deg,color-mix(in srgb,var(--view-accent) 6%,rgba(11,32,26,.94)),rgba(4,19,15,.96) 62%,rgba(19,12,31,.84));clip-path:polygon(12px 0,100% 0,100% calc(100% - 12px),calc(100% - 12px) 100%,0 100%,0 12px);box-shadow:inset 3px 0 color-mix(in srgb,var(--view-accent) 28%,transparent),0 16px 40px rgba(0,0,0,.28)}
+.primary-view .panel::after{content:"";position:absolute;top:0;right:0;width:46%;height:1px;background:linear-gradient(90deg,transparent,var(--view-accent));opacity:.4}
+.primary-view .kpi,.primary-view .weather-copy,.primary-view pre,.primary-view .console,.primary-view input,.primary-view select,.primary-view textarea{border-radius:2px}.primary-view .kpi{clip-path:polygon(7px 0,100% 0,100% calc(100% - 7px),calc(100% - 7px) 100%,0 100%,0 7px);border-color:color-mix(in srgb,var(--view-accent) 16%,transparent)}.primary-view .weather-copy{border-color:color-mix(in srgb,var(--view-accent) 28%,transparent);clip-path:polygon(12px 0,100% 0,100% calc(100% - 12px),calc(100% - 12px) 100%,0 100%,0 12px)}
+.console,pre{background:linear-gradient(180deg,rgba(0,0,0,.34),rgba(0,0,0,.24));border:1px solid rgba(255,255,255,.08);border-radius:18px;padding:13px;overflow:auto;font-size:.76rem;line-height:1.54;color:#cde2d4;white-space:pre-wrap;word-break:break-word}.console{height:280px}.log{padding:6px 0;border-bottom:1px dotted rgba(255,255,255,.08)}.log time{color:var(--gold)}
+.formline{display:flex;gap:8px;margin-top:10px;flex-wrap:wrap}.formline input,.formline select{flex:1 1 180px;min-width:0;border:1px solid var(--line);background:#06100d;color:var(--text);border-radius:14px;padding:12px 14px}textarea{width:100%;border:1px solid var(--line);background:#06100d;color:var(--text);border-radius:14px;padding:12px 14px;margin-top:10px;min-height:88px}
+.meter{display:grid;grid-template-columns:150px 1fr 44px;align-items:center;gap:10px;margin:10px 0;color:var(--muted);font-size:.73rem;font-family:var(--sans)}.meter input{width:100%;accent-color:var(--gold)}
+.pill{display:inline-block;border:1px solid var(--line);border-radius:999px;padding:4px 8px;margin:3px;color:var(--muted);font-size:.67rem}.pill.hot{border-color:rgba(217,133,148,.5);color:var(--rose)}.pill.gold{border-color:rgba(228,198,108,.5);color:var(--gold)}.pill.cyan{border-color:rgba(102,218,198,.5);color:var(--cyan)}.pill.violet{border-color:rgba(179,155,236,.5);color:var(--violet)}
+#tomoCanvas,#ashCanvas,#patternCanvas,#repoCanvas{height:560px;background:#040c09;border-radius:20px;border:1px solid rgba(255,255,255,.06)}.legend{position:absolute;left:14px;bottom:14px;background:rgba(4,16,12,.84);border:1px solid var(--line);border-radius:13px;padding:10px;font-size:.72rem;line-height:1.7;max-width:min(80%,360px)}.rel{position:relative}
+.mathline{font-family:var(--serif);font-size:clamp(1.1rem,2.2vw,1.7rem);color:var(--bright);border:1px solid rgba(255,255,255,.08);border-radius:16px;padding:12px;margin:8px 0;background:rgba(0,0,0,.18)}
+.footer{display:flex;justify-content:space-between;gap:14px;color:var(--dim);font-size:.74rem;margin-top:20px;padding:20px 2px 0;border-top:1px solid var(--line);font-family:var(--sans)}
+@media(max-width:1180px){.rooms{grid-template-columns:repeat(3,minmax(0,1fr))}}
+@media(max-width:980px){.grid,.tri,.api-grid{grid-template-columns:1fr}.rooms{grid-template-columns:repeat(2,minmax(0,1fr))}header{grid-template-columns:1fr}.seal{justify-self:start;text-align:left;white-space:normal}.weather-copy{position:relative;inset:auto;margin:14px}.weather-card{display:block;min-height:unset}#weatherCanvas{min-height:420px}#tomoCanvas,#ashCanvas,#patternCanvas,#repoCanvas{height:460px}.nav{grid-template-columns:repeat(8,minmax(112px,1fr))}.lab-mast{grid-template-columns:1fr}.lab-telemetry{justify-self:start}.lab-node{grid-column:span 6!important}}
+@media(max-width:760px){html{scroll-padding-top:12px}.wrap{width:min(100%,calc(100% - 14px));padding:12px 0 calc(98px + env(safe-area-inset-bottom))}header{padding:16px 14px 18px;border-radius:22px}h1{font-size:clamp(2.15rem,12vw,3.6rem)}.lede{font-size:.93rem}.nav-frame{position:fixed;left:8px;right:8px;bottom:max(8px,env(safe-area-inset-bottom));top:auto;z-index:40;margin:0;padding:7px;border:1px solid rgba(118,234,212,.24);background:rgba(3,16,13,.94);box-shadow:0 18px 44px rgba(0,0,0,.44);overscroll-behavior-x:contain}.nav-frame::before,.nav-kicker{display:none}.nav{display:flex;gap:6px;padding:2px}.tab{flex:0 0 118px;min-height:58px;padding:9px 11px}.tab::before{font-size:1.9rem}.panel{padding:14px;border-radius:22px}.kpis{grid-template-columns:1fr 1fr}.kpi strong{font-size:1.35rem}.rooms{grid-template-columns:1fr 1fr;gap:8px}.room-btn{min-height:92px;padding:12px}.console{height:220px}.formline{flex-direction:column}.formline input,.formline select,.formline button{width:100%}.meter{grid-template-columns:92px 1fr 40px;gap:8px}#weatherCanvas{min-height:340px}#tomoCanvas,#ashCanvas,#patternCanvas,#repoCanvas{height:360px}.legend{left:10px;right:10px;bottom:10px;max-width:none;font-size:.67rem}.footer{flex-direction:column;padding-bottom:8px}.lab-shell{min-height:0;padding:22px 14px}.lab-mast{margin-bottom:18px}.lab-telemetry{grid-template-columns:repeat(3,minmax(0,1fr));width:100%}.lab-telemetry span{min-width:0;padding:8px 5px}.lab-constellation{grid-template-columns:1fr 1fr}.lab-node{grid-column:span 1!important;min-height:116px;padding:13px}.lab-ceiling{display:block}.lab-ceiling span{display:block;margin-top:5px}}
+@media(max-width:760px){.exact-grid{grid-template-columns:1fr}}
+@media(max-width:480px){.wrap{width:min(100%,calc(100% - 10px))}header{padding:14px 12px 16px}.eyebrow{font-size:.62rem;letter-spacing:.18em}h1{font-size:clamp(2rem,13vw,3rem)}.lede{font-size:.9rem;line-height:1.55}.seal{font-size:.72rem;padding:10px 12px}.panel h2{font-size:1.6rem}.panel h3{font-size:1.2rem}.weather-copy{padding:12px;margin:10px}.kpis{grid-template-columns:1fr}.rooms{grid-template-columns:1fr}.btn,.tab,.room-btn{font-size:.92rem}#weatherCanvas{min-height:300px}#tomoCanvas,#ashCanvas,#patternCanvas,#repoCanvas{height:310px}}
+@media(max-width:980px){.view-intro{grid-template-columns:1fr}.view-telemetry{justify-self:start}}
+@media(max-width:760px){.primary-view{padding:22px 14px}.view-intro{margin-bottom:18px}.view-telemetry{grid-template-columns:repeat(3,minmax(0,1fr));width:100%}.view-telemetry span{min-width:0;padding:8px 5px}}
+@media(prefers-reduced-motion:reduce){*{scroll-behavior:auto!important;animation:none!important;transition:none!important}}
+</style>
+</head>
+<body>
+<main class="wrap">
+<header><div><div class="eyebrow">𝌋‌ TD613-routed · Dome-World / Flow-Core v0.4.3 · Aperture v2.9.4 bridge</div><h1>Dome-World <em>// Flow-Core</em></h1><p class="lede">An ambiance-mediated cognitive weather runtime. Local sections, exact residuals, and gluing obstructions remain distinct: modeled weather routes attention; exact gates preserve observation; neither impersonates authority.</p></div><div class="seal">𝌋‌ U+10D613 · ⟐<br><span class="sub">PRCS-A · Stewardship · Exact custody</span></div><div class="flow-glyph-field" aria-hidden="true"><span>米</span><span>上</span><span>下</span><span>hõt</span><span>cōl</span><span>à</span><span>出</span><span>≈</span><span>𝄐</span><span>☆</span><span>⟐</span><span>𝌋‌</span></div></header>
+<div class="nav-frame"><div class="nav-kicker"><span>米 Flow-Core routing meridian 上 / 下</span><span id="routeState">Weather / local section ≈</span></div><nav class="nav" aria-label="Dome primary navigation"><button class="tab active" data-view="weather" data-sigil="≈" aria-current="page"><small>01</small><span>Weather</span></button><button class="tab" data-view="rooms" data-sigil="米"><small>02</small><span>Rooms</span></button><button class="tab" data-view="lab" data-sigil="上"><small>03</small><span>Lab</span></button><button class="tab" data-view="ash" data-sigil="下"><small>04</small><span>Ash</span></button><button class="tab" data-view="substrate" data-sigil="à"><small>05</small><span>Substrate</span></button><button class="tab" data-view="phason" data-sigil="出"><small>06</small><span>Phason</span></button><button class="tab" data-view="aperture" data-sigil="𝌋‌"><small>07</small><span>Aperture</span></button><button class="tab" data-view="receipts" data-sigil="⟐"><small>08</small><span>Receipts</span></button></nav></div>
+
+<section id="weather" class="view active primary-view" data-glyph="≈"><div class="view-intro"><div><div class="view-overline">≈ / Flow-Core ambiance field</div><h2>Dome Weather</h2><p>Read local pressure, fold density, and tending posture without mistaking modeled climate for prediction or proof.</p></div><div class="view-telemetry"><span><b>LOCAL</b>field</span><span><b>MODELED</b>weather</span><span><b>OPEN</b>route</span></div></div><div class="grid"><div class="panel weather-card"><canvas id="weatherCanvas"></canvas><div class="weather-copy"><h2>Current Dome Weather</h2><p id="weatherNarrative"></p><div id="weatherPills"></div></div></div><aside class="panel"><h3>Ambiance readout</h3><div class="kpis"><div class="kpi"><small>fold density</small><strong id="kFold">—</strong></div><div class="kpi"><small>storm risk</small><strong id="kStorm">—</strong></div><div class="kpi"><small>humidity</small><strong id="kHumidity">—</strong></div><div class="kpi"><small>visibility</small><strong id="kVisibility">—</strong></div></div><div id="ambianceLines" style="margin-top:12px"></div><div class="actions"><button class="btn primary" data-event="rest">𝄐 Rest</button><button class="btn" data-event="hydrate">Hydrate</button><button class="btn" data-event="vent">Vent</button><button class="btn" data-event="compost">Compost</button></div><p class="claim">Claim ceiling: <span id="claimA">weather-reading-not-prediction</span>. A weather reading diagnoses ambiance; it does not certify truth, identity, authorship, or cultural authority.</p></aside></div><div class="panel" style="margin-top:14px"><h3>World console</h3><div class="console" id="log"></div></div></section>
+
+<section id="aperture" class="view primary-view" data-glyph="𝌋‌"><div class="view-intro"><div><div class="view-overline">𝌋‌ / one-way governance membrane</div><h2>Aperture Bridge</h2><p>Translate declared Aperture diagnostics into route weather while keeping doctrine, execution, and authority on their proper sides of the membrane.</p></div><div class="view-telemetry"><span><b>v2.9.4</b>source</span><span><b>ONE-WAY</b>bridge</span><span><b>OPEN</b>receipt</span></div></div><div class="grid"><div class="panel"><h3>Aperture Bridge · one-way route weather</h3><p class="sub">Aperture v2.9.4 may describe route posture to Dome-World. Dome-World does not execute Aperture and never writes back into Aperture doctrine.</p><div class="formline"><input id="bridgeOmission" inputmode="decimal" value="0.18" aria-label="omission pressure"/><input id="bridgeCoherence" inputmode="decimal" value="0.72" aria-label="coherence"/><input id="bridgeDivergence" inputmode="decimal" value="0.31" aria-label="divergence"/></div><div class="actions"><button class="btn primary" id="compileBridge">Compile route weather</button><button class="btn" id="readApertureHandoff">Read local handoff</button></div><p class="claim">Claim ceiling: aperture-to-flowcore-translation-not-aperture-execution.</p></div><aside class="panel"><h3>Bridge receipt</h3><pre id="bridgePre"></pre></aside></div></section>
+
+<section id="phason" class="view primary-view" data-glyph="出"><div class="view-intro"><div><div class="view-overline">出 / projection without content mutation</div><h2>Phason Gate</h2><p>Hold content identity fixed while testing a declared change in projection. Movement through the gate remains simulation, never external enforcement.</p></div><div class="view-telemetry"><span><b>FIXED</b>content</span><span><b>SHIFTED</b>projection</span><span><b>SIM</b>authority</span></div></div><div class="grid"><div class="panel"><h3>Phason Gate simulator</h3><p class="sub">Hold content identity fixed while changing the declared projection. This is a route experiment, not an external enforcement channel.</p><div class="formline"><input id="phasonHash" value="sha256:unassigned" aria-label="content hash"/><select id="phasonProjection"><option value="local-section">local-section</option><option value="quasiperiodic">quasiperiodic</option><option value="stewardship-hold">stewardship-hold</option></select></div><div class="actions"><button class="btn primary" id="runPhason">Run simulation</button></div><p class="claim">Claim ceiling: phason-gate-simulation-not-external-enforcement.</p></div><aside class="panel"><h3>Projection receipt</h3><pre id="phasonPre"></pre></aside></div></section>
+
+<section id="substrate" class="view primary-view" data-glyph="à"><div class="view-intro"><div><div class="view-overline">à / exact arithmetic substrate</div><h2>Residual Substrate</h2><p>Observe exact coordinates, preserve every unresolved event, and separate construction proposals from authenticated confirmation.</p></div><div class="view-telemetry"><span><b>Q / Z</b>arithmetic</span><span><b>0</b>float gates</span><span><b>OPEN</b>first</span></div></div><div class="exact-grid"><div class="panel"><h3>Exact residual substrate</h3><p class="sub">Coordinates must be integers or rational strings. Capture observes; proposal does not mutate; confirmation requires an enabled operator route.</p><textarea id="exactCoords" aria-label="exact coordinate observations">[[1,0,1,0],[1,0,1,0],[1,0,1,0]]</textarea><div class="actions"><button class="btn" id="runExactCapture">Observe first</button><button class="btn primary" id="proposeExact">Propose</button><button class="btn" id="confirmExact" disabled>Confirm</button><button class="btn" id="exportCheckpoint" disabled>Export checkpoint</button><label class="btn" for="importCheckpoint">Import checkpoint</label><input id="importCheckpoint" type="file" accept="application/json" hidden/></div><p class="claim">OPEN, rejected, uncaptured, and encoder-missing observations remain visible. Exact execution does not imply EO-RFD firmware activation.</p></div><aside class="panel"><span class="status-chip" id="exactStatus">OPEN</span><h3>Substrate receipt</h3><pre id="exactPre"></pre></aside></div></section>
+
+<section id="rooms" class="view primary-view" data-glyph="米"><div class="view-intro"><div><div class="view-overline">米 / situated local climates</div><h2>Dome Rooms</h2><p>Move through local sections without pretending they glue into one total field. Each room keeps its own ambiance, operators, and fold pressure.</p></div><div class="view-telemetry"><span><b>9</b>climates</span><span><b>LOCAL</b>sections</span><span><b>LIVE</b>folds</span></div></div><div class="grid"><div class="panel"><h3>Rooms as local climates</h3><div class="rooms" id="roomButtons"></div><div class="actions"><button class="btn primary" id="senseBtn">Sense fold</button><button class="btn" data-event="rest">𝄐 Rest here</button><button class="btn" data-event="hydrate">Hydrate</button><button class="btn" data-event="vent">Vent</button><button class="btn" data-event="compost">Compost</button></div><p class="claim">Rooms are not containers. They are local ambiance sections. Folds mark where rooms resist safe gluing.</p></div><aside class="panel"><h3 id="roomTitle">Atrium / Weather Room</h3><div id="roomSense"></div><pre id="roomPre"></pre></aside></div></section>
+
+<section id="math" class="view"><div class="grid"><div class="panel"><h3>Ambiance math</h3><p class="sub">The public ontology speaks ambiance. The compute layer uses local sections and restriction maps so the system can preserve situated experience without faking global closure.</p><div class="mathline">X<sub>t</sub> = ⋃ U<sub>r</sub></div><div class="mathline">a<sub>r</sub> ∈ 𝒜(U<sub>r</sub>)</div><div class="mathline">ρ<sub>r→s</sub>: 𝒜(U<sub>r</sub>) → 𝒜(U<sub>r</sub> ∩ U<sub>s</sub>)</div><div class="mathline">δ<sub>rs</sub> = ||ρ<sub>r→s</sub>(a<sub>r</sub>) − ρ<sub>s→r</sub>(a<sub>s</sub>)||</div><div class="mathline">W<sub>t</sub> = aggregate({a<sub>r</sub>},{δ<sub>rs</sub>},𝄐)</div><p class="claim">The field is the model. Ambiance is the situated local section. A fold marks where sections cannot safely glue. Weather renders those relations without pretending to contain them.</p></div><aside class="panel"><h3>Top gluing obstructions</h3><div id="foldList"></div><pre id="mathPre"></pre></aside></div></section>
+
+<section id="tomography" class="view"><div class="grid"><div class="panel rel"><canvas id="tomoCanvas"></canvas><div class="legend"><span style="color:var(--cyan)">△ √3 / D₃ triangular calibration</span><br><span style="color:var(--gold)">◇ φ / quasiperiodic projection</span><br><span style="color:var(--rose)">● folds as gluing obstructions</span><br><span style="color:var(--violet)">∙ holonomy memory</span></div></div><aside class="panel"><h3>Tomographic décor</h3><p class="sub">The decorative lattice is not just pretty wallpaper. It renders periodic √3 discipline, quasiperiodic φ pressure, and rose fold lines where local ambiance sections resist clean gluing.</p><div class="actions"><button class="btn" id="redrawTomo">Redraw lattice</button><button class="btn" data-event="rest">𝄐 Integrate</button><button class="btn" data-event="vent">Vent torsion</button></div><pre id="foldPre"></pre></aside></div></section>
+
+
+<section id="live" class="view"><div class="grid"><div class="panel rel"><canvas id="liveCanvas"></canvas><div class="legend"><span style="color:var(--cyan)">△ √3/D₃ Moiré force</span><br><span style="color:var(--gold)">◇ φ/quasiperiodic counterlayer</span><br><span style="color:var(--rose)">● gradient-misfit folds</span><br><span style="color:var(--violet)">∙ tactile particles = tendency probes</span></div></div><aside class="panel"><h3>Live Heterostratigraphic Lattice</h3><p class="sub">Erin's particle-tether gesture is preserved as tactile play, but the motion now samples the actual heterostratigraphic potential: a rotated √3/D₃ triangular Moiré layer coupled to a φ/quasiperiodic counterlayer. Drag/touch to attract; hover/move to stir. The nodes are probes, not proof.</p><div class="actions"><button class="btn primary" id="resetLive">Reset live lattice</button><button class="btn" id="coolLive">𝄐 Cool motion</button><button class="btn" id="sparkLive">Introduce torsion</button></div><pre id="livePre"></pre><p class="claim">Math: T(x)=Σcos(kd·x)+Σcos(kRθd·x); Q(x)=Σcos(kφe·x); F(x)=||∇T-∇Q||. Tactile dynamics sample F under user input. Claim ceiling: interactive-lattice-not-substrate-proof.</p></aside></div></section>
+<section id="loom" class="view"><div class="api-grid"><div class="panel"><h3>米 Loom · holonomy memory</h3><p class="sub">The Loom stores how a route bent future possibility. It holds path deformation, not raw public cadence.</p><form class="formline" id="transmitForm"><input id="transmitInput" placeholder="Offer a texture to the fold"/><button class="btn primary">hold</button></form><div class="actions"><button class="btn" id="weaveBtn">Weave weather</button><button class="btn" data-event="rest">𝄐 Rest cloth</button></div><div id="loomStats" style="margin-top:12px"></div></div><div class="panel"><h3>Cloth map</h3><div class="console" id="cloth"></div></div></div><div class="panel" style="margin-top:14px"><h3>Holonomy ledger</h3><pre id="holonomyPre"></pre></div></section>
+
+<section id="stewardship" class="view"><div class="grid"><div class="panel"><h3>Stewardship Gate</h3><p class="sub">Unverified Indigenous-language or cultural-framework material is quarantined by default when the source is AI-generated, unknown, or unsupported. This is a custody membrane, not a vibe check.</p><div class="formline"><input id="sgLang" value="Ojibwe / Anishinaabemowin" aria-label="language or framework"/><select id="sgSource"><option>ai-generated gloss</option><option>unknown</option><option>published-dictionary</option><option>fluent-speaker</option><option>elder</option><option>community-organization</option><option>community-guided</option></select></div><textarea id="sgText">unverified poetic gloss involving local Indigenous language</textarea><div class="actions"><button class="btn primary" id="runGate">Run gate</button><button class="btn" id="gateEvent">Route as event</button></div><p class="claim">Anti-equivalence law: Indigenous-inspired ≠ Indigenous-authorized; proximity ≠ permission; beauty ≠ verification; oral tradition ≠ training data.</p></div><aside class="panel"><h3>Gate result</h3><pre id="gatePre"></pre></aside></div></section>
+
+
+<section id="ash" class="view primary-view" data-glyph="下"><div class="view-intro"><div><div class="view-overline">下 / readiness below the custody threshold</div><h2>Ash Readiness</h2><p>Assess metadata and local posture before sensitive intake exists. Readiness can prepare custody; it cannot impersonate custody.</p></div><div class="view-telemetry"><span><b>0</b>raw text</span><span><b>LOCAL</b>posture</span><span><b>PREVIEW</b>only</span></div></div><div class="grid"><div class="panel"><h3>TD613 Ash · readiness preview</h3><p class="sub">This public route accepts metadata and local posture only. It does not accept, upload, hash, summarize, or retain raw sensitive text.</p><div class="formline"><input id="ashArtifactId" placeholder="artifact id"/><select id="ashClass"><option>sensitive-document</option><option>whistleblower-packet</option><option>cultural-language-item</option><option>legal-intake</option><option>archive-fragment</option><option>private-note</option></select><input id="ashMediaType" value="text/plain" aria-label="media type"/><input id="ashByteLength" inputmode="numeric" placeholder="byte length"/></div><div class="actions"><button class="btn primary" id="runAsh">Assess readiness</button><button class="btn" id="copyAsh">Copy readiness receipt</button><button class="btn" id="downloadAsh">Download receipt</button></div><p class="claim">Claim ceiling: ash-readiness-preview-not-sensitive-intake. Arrival ≠ consent; metadata ≠ content; readiness ≠ custody.</p></div><aside class="panel rel"><canvas id="ashCanvas"></canvas><div class="legend"><span style="color:var(--cyan)">△ structure / √3 discipline</span><br><span style="color:var(--gold)">◇ metadata recurrence</span><br><span style="color:var(--rose)">● privacy/stewardship folds</span><br><span style="color:var(--violet)">∙ readiness only</span></div></aside></div><div class="panel" style="margin-top:14px"><h3>Ash readiness receipt</h3><pre id="ashPre"></pre></div></section>
+<section id="patterns" class="view"><div class="grid"><div class="panel rel"><canvas id="patternCanvas"></canvas><div class="legend"><span style="color:var(--gold)">decor mode</span><br><span style="color:var(--cyan)">Dome room headers</span><br><span style="color:var(--rose)">Ash veils / receipt seals</span></div></div><aside class="panel"><h3>Pattern Library</h3><p class="sub">Exportable lattice décor for the Atrium, Hush Loom, Aperture Tomography, Safe Harbor Cistern, Flight Chimney, Trainer Forge, and Ash veils.</p><div class="actions"><button class="btn primary" id="redrawPattern">Redraw pattern</button><button class="btn" id="downloadPattern">Download PNG</button></div><pre id="patternPre"></pre></aside></div></section>
+<section id="repo" class="view"><div class="grid"><div class="panel rel"><canvas id="repoCanvas"></canvas></div><aside class="panel"><h3>Repository Weather</h3><p class="sub">Prepared for CI/CD: not just “tests pass,” but whether meaning has permission to move through TD613 custody.</p><div class="actions"><button class="btn primary" id="refreshRepoWeather">Read repo weather</button><button class="btn" id="copyRepoWeather">Copy repo weather</button></div><pre id="repoPre"></pre></aside></div></section>
+<section id="lore" class="view"><div class="grid"><div class="panel"><h3>TCP Lore Bridge</h3><p class="sub">The Cadence Playground was the vestibule. Dome-World is the Atrium. TD613 remains the custody law. Flow-Core is the weather moving through the rooms.</p><div id="loreMap"></div><p class="claim">This bridge preserves TCP sediment rather than bulldozing it. Dome-World should house the existing Hush / Aperture / Safe Harbor / Flight / Trainer suite, not impersonate the whole repo.</p></div><aside class="panel"><h3>Five-instrument room map</h3><pre id="lorePre"></pre></aside></div></section>
+<section id="accident" class="view"><div class="grid"><div class="panel"><h3>Accident Assay Lab</h3><p class="sub">Begin with the improbable as an instrumented perturbation. The assay reveals route sensitivity; surprise never upgrades itself into proof.</p><div class="formline"><select id="assayType"><option value="glyph-route">glyph-route</option><option value="zwnj-presence">zwnj-presence</option><option value="anti-equivalence">anti-equivalence</option><option value="rest-state">rest-state</option><option value="claim-ceiling">claim-ceiling</option></select><input id="assayBefore" value="TD613"/><input id="assayAfter" value="𝌋‌ TD613 ⟐"/></div><div class="actions"><button class="btn primary" id="runAssay">Run assay</button><button class="btn" id="antiAssay">Test anti-equivalence</button></div></div><aside class="panel"><h3>Assay result</h3><pre id="assayPre"></pre></aside></div></section>
+
+<section id="api" class="view"><div class="api-grid"><div class="panel"><h3>API Surface</h3><p class="sub">The bundle includes a DOM-independent ES module and dependency-free Node API stub. The public language says ambiance; the API keeps enough machinery to make receipts reproducible.</p><pre id="endpointPre"></pre><div class="actions"><button class="btn" id="copyCurl">Copy curl</button><button class="btn" id="downloadWorld">Download world packet</button></div></div><div class="panel"><h3>Live API-shaped response</h3><pre id="apiPre"></pre></div></div></section>
+
+<section id="receipts" class="view primary-view" data-glyph="⟐"><div class="view-intro"><div><div class="view-overline">⟐ / declared witness surface</div><h2>Route Receipts</h2><p>Collect what the world observed, routed, deferred, or refused without allowing a receipt to crown itself as universal proof.</p></div><div class="view-telemetry"><span><b>HASHED</b>world</span><span><b>SCOPED</b>witness</span><span><b>NO</b>crown</span></div></div><div class="api-grid"><div class="panel"><h3>Witness receipt</h3><p class="sub">Surface, route, weather, fold, stewardship, privacy ceiling. Receipt, not proof.</p><div class="actions"><button class="btn" id="copyReceipt">Copy receipt</button><button class="btn" id="downloadReceipt">Download receipt</button><button class="btn" id="resetWorld">Reset world</button></div></div><pre id="receiptPre"></pre></div></section>
+<section id="lab" class="view"><div class="lab-shell"><div class="lab-mast"><div><div class="lab-overline">米 / 上 / 下 · Dome-World field laboratory · hõt ↔ cōl</div><h2>Flow-Core Lab</h2><p>Enter a bounded instrument without flattening the world around it. Each station reads one layer of the field; no single assay inherits the authority of the whole.</p></div><div class="lab-telemetry" aria-label="Lab route status"><span><b>10</b>stations</span><span><b>local</b>scope</span><span><b>OPEN</b>route</span></div></div><div class="lab-constellation"><button class="lab-node" data-open-view="math" data-tone="gold" data-glyph="米"><span class="lab-index">01</span><strong>Invariant Math</strong><small>sections / restrictions / folds</small></button><button class="lab-node" data-open-view="tomography" data-tone="violet" data-glyph="上"><span class="lab-index">02</span><strong>Heterostratigraphic Tomography</strong><small>√3 lattice / φ counterlayer</small></button><button class="lab-node" data-open-view="live" data-glyph="下"><span class="lab-index">03</span><strong>Live Lattice</strong><small>tactile tendency probes</small></button><button class="lab-node" data-open-view="loom" data-tone="leaf" data-glyph="hõt"><span class="lab-index">04</span><strong>Holonomy Loom</strong><small>route memory / cloth map</small></button><button class="lab-node" data-open-view="stewardship" data-tone="rose" data-glyph="cōl"><span class="lab-index">05</span><strong>Stewardship Gate</strong><small>custody / cultural boundary</small></button><button class="lab-node" data-open-view="patterns" data-tone="gold" data-glyph="à"><span class="lab-index">06</span><strong>Pattern Library</strong><small>field grammar / export décor</small></button><button class="lab-node" data-open-view="repo" data-glyph="出"><span class="lab-index">07</span><strong>Repository Weather</strong><small>CI climate / route pressure</small></button><button class="lab-node" data-open-view="lore" data-tone="violet" data-glyph="≈"><span class="lab-index">08</span><strong>Topology & Lore</strong><small>sediment / five-room map</small></button><button class="lab-node" data-open-view="accident" data-tone="rose" data-glyph="𝄐"><span class="lab-index">09</span><strong>Accident Assay</strong><small>instrumented perturbation</small></button><button class="lab-node" data-open-view="api" data-tone="leaf" data-glyph="☆"><span class="lab-index">10</span><strong>Interface Bus</strong><small>schemas / receipts / API</small></button></div><p class="lab-ceiling"><b>Claim ceiling: dev-hidden-compatibility-workflow-not-production-custody.</b><span>Lab instruments expose bounded witnesses; they do not become a governance crown. ⟐</span></p></div></section>
+<footer class="footer"><span>🌾 Dome-World / Flow-Core is the brand; TD613 is the witness membrane.</span><span>The more beautiful the ambiance, the stricter the provenance. ⟐</span></footer>
+</main>
+<script>
+const DomeCore = (() => {
+// dome_ambiance_core.js — Dome-World / Flow-Core Substrate v0.4.3
+// Ambiance-mediated runtime: local sections, restriction maps, gluing obstructions, stewardship gates.
+// 𝌋‌ U+10D613 · TD613 witness membrane · claim ceilings by default.
+
+const ENGINE_VERSION = '0.4.3-aperture-v2.9.4-exact-bridge';
+
+const CLAIM_CEILINGS = Object.freeze({
+  ambiance: 'ambiance-reading-not-total-field',
+  weather: 'weather-reading-not-prediction',
+  fold: 'gluing-obstruction-signal-not-proof',
+  route: 'route-pressure-signal-not-proof',
+  effect: 'ambiance-effect-record-not-authorship-proof',
+  holonomy: 'route-deformation-record-not-truth-proof',
+  pattern: 'pattern-signal-not-identity-proof',
+  assay: 'accident-assay-not-causal-proof',
+  stewardship: 'custodial-reference-not-cultural-authority',
+  ash: 'ash-signature-not-content-proof',
+  repo: 'repository-weather-not-truth-proof',
+  public: 'aggregate-ambiance-not-personal-state'
+});
+
+const AMBIANCE_MATH = Object.freeze({
+  cover: 'X_t = ⋃ U_r',
+  localSection: 'a_r ∈ 𝒜(U_r)',
+  restrictionMap: 'ρ_{r→s}: 𝒜(U_r) → 𝒜(U_r ∩ U_s)',
+  foldObstruction: 'δ_{rs} = ||ρ_{r→s}(a_r) - ρ_{s→r}(a_s)||',
+  weather: 'W_t = aggregate({a_r},{δ_{rs}},𝄐)',
+  holonomy: 'H_γ = transported_exit(γ) - entry(γ)'
+});
+
+const ANTI_EQUIVALENCES = Object.freeze([
+  ['containment','healing'],
+  ['cadence','code'],
+  ['inheritance','consent'],
+  ['fracture','format'],
+  ['memory','storage'],
+  ['rest','idleness'],
+  ['weather','prediction'],
+  ['fold','wound'],
+  ['receipt','proof'],
+  ['ambiance','surveillance'],
+  ['indigenous-inspired','indigenous-authorized'],
+  ['proximity','permission'],
+  ['ancestry','standing'],
+  ['translation','transfer'],
+  ['oral tradition','training data'],
+  ['beauty','verification'],
+  ['community benefit','cultural consent'],
+  ['arrival','consent'],
+  ['summary','safety'],
+  ['signature','content'],
+  ['ash','evidence']
+]);
+
+const ROOM_AMBIANCES = Object.freeze({
+  atrium: {
+    display: 'Atrium / Weather Room',
+    operators: ['下//上','à//出','weather'],
+    receives: ['cross-room-summary','tending','weather-query'],
+    preserves: ['world-coherence','fronts','visibility'],
+    emits: ['weather','navigation','receipt'],
+    blocks: ['single-room-capture'],
+    privacy_class: 'world-scoped',
+    decay_rate: 0.018,
+    restriction_weights: { pressure:.18, humidity:.18, torsion:.12, rest:.14, pattern_flow:.18, visibility:.20 }
+  },
+  loom: {
+    display: 'Loom Room',
+    operators: ['米','𝄐','cadence/provenance'],
+    receives: ['transmission','cadence-sample','motif-return'],
+    preserves: ['holonomy','pattern-flow','anti-equivalence-edge'],
+    emits: ['motif','cloth-map','route-deformation'],
+    blocks: ['authorship-proof-claim','identity-proof-claim'],
+    privacy_class: 'room-scoped',
+    decay_rate: 0.012,
+    restriction_weights: { pressure:.10, humidity:.12, torsion:.20, rest:.12, pattern_flow:.34, visibility:.12 }
+  },
+  cistern: {
+    display: 'Cistern',
+    operators: ['下//上','à//出','buffer'],
+    receives: ['latent-trace','unresolved-material','hydration-request'],
+    preserves: ['potential-energy','latency','readiness'],
+    emits: ['hydration','readiness-signal'],
+    blocks: ['premature-public-export'],
+    privacy_class: 'private-local',
+    decay_rate: 0.008,
+    restriction_weights: { pressure:.12, humidity:.36, torsion:.08, rest:.16, pattern_flow:.10, visibility:.18 }
+  },
+  solar: {
+    display: 'Solar Chimney',
+    operators: ['cōl//hõt','expansion','divergence'],
+    receives: ['high-energy-proposal','prototype-draft'],
+    preserves: ['speculative-lift','divergence'],
+    emits: ['branch','experiment','prototype'],
+    blocks: ['finality-claim'],
+    privacy_class: 'room-scoped',
+    decay_rate: 0.02,
+    restriction_weights: { pressure:.24, humidity:.08, torsion:.26, rest:.06, pattern_flow:.16, visibility:.20 }
+  },
+  bedroom: {
+    display: 'Bed-room',
+    operators: ['𝄐','integration','low-energy-continuity'],
+    receives: ['overload','grief-heavy-material','high-pressure-route'],
+    preserves: ['continuity','recovery','quiet'],
+    emits: ['rest-recommendation','slowed-route'],
+    blocks: ['forced-adjacency'],
+    privacy_class: 'private-local',
+    decay_rate: 0.005,
+    restriction_weights: { pressure:.10, humidity:.16, torsion:.06, rest:.42, pattern_flow:.08, visibility:.18 }
+  },
+  compost: {
+    display: 'Compost Room',
+    operators: ['à//出','soil','transformation'],
+    receives: ['failure','stale-artifact','abandoned-branch'],
+    preserves: ['lessons','fertility','reusable-fragment'],
+    emits: ['soil','lesson','renewal'],
+    blocks: ['shame-error-collapse'],
+    privacy_class: 'room-scoped',
+    decay_rate: 0.03,
+    restriction_weights: { pressure:.16, humidity:.18, torsion:.18, rest:.18, pattern_flow:.18, visibility:.12 }
+  },
+  accident: {
+    display: 'Accident Lab',
+    operators: ['assay','perturbation','forensic-variance'],
+    receives: ['variant','improbable-output','route-test'],
+    preserves: ['delta','route-sensitivity','closure-shift'],
+    emits: ['assay-receipt','variance-map'],
+    blocks: ['causal-overclaim'],
+    privacy_class: 'room-scoped',
+    decay_rate: 0.015,
+    restriction_weights: { pressure:.22, humidity:.08, torsion:.30, rest:.06, pattern_flow:.14, visibility:.20 }
+  },
+  stewardship: {
+    display: 'Stewardship Gate',
+    operators: ['provenance','permission','refusal'],
+    receives: ['language-item','cultural-reference','custodial-claim'],
+    preserves: ['source-chain','permission-status','revocation-path'],
+    emits: ['quarantine','review-request','permission-record'],
+    blocks: ['unverified-indigenous-language-public-export','cultural-authority-overclaim'],
+    privacy_class: 'never-export-sensitive',
+    decay_rate: 0.0,
+    restriction_weights: { pressure:.18, humidity:.10, torsion:.28, rest:.10, pattern_flow:.10, visibility:.24 }
+  },
+  ash: {
+    display: 'TD613 Ash / Intake Threshold',
+    operators: ['ash','salt','custody-weather'],
+    receives: ['sensitive-document','private-text','intake-packet'],
+    preserves: ['salted-signature','privacy-boundary','route-weather'],
+    emits: ['ash-receipt','public-weather','visual-mask'],
+    blocks: ['raw-content-public-export','summary-before-custody','arrival-as-consent'],
+    privacy_class: 'private-local',
+    decay_rate: 0.002,
+    restriction_weights: { pressure:.24, humidity:.10, torsion:.26, rest:.08, pattern_flow:.12, visibility:.20 }
+  },
+  api: {
+    display: 'API Surface / Machine Room',
+    operators: ['schema','endpoint','receipt'],
+    receives: ['developer-input','event-contract','fixture'],
+    preserves: ['schema','test','portable-core'],
+    emits: ['json','curl','download'],
+    blocks: ['decorative-only-interpretation'],
+    privacy_class: 'aggregate-public',
+    decay_rate: 0.0,
+    restriction_weights: { pressure:.14, humidity:.10, torsion:.12, rest:.10, pattern_flow:.18, visibility:.36 }
+  }
+});
+
+function clamp(n, lo=0, hi=1){ return Math.max(lo, Math.min(hi, Number.isFinite(+n) ? +n : 0)); }
+function round(n, places=4){ const p = 10 ** places; return Math.round((Number(n) + Number.EPSILON) * p) / p; }
+function stableStringify(value){
+  if(value === null || typeof value !== 'object') return JSON.stringify(value);
+  if(Array.isArray(value)) return '[' + value.map(stableStringify).join(',') + ']';
+  return '{' + Object.keys(value).sort().map(k => JSON.stringify(k)+':'+stableStringify(value[k])).join(',') + '}';
+}
+function hash(value){
+  const s = typeof value === 'string' ? value : stableStringify(value);
+  let h = 2166136261 >>> 0;
+  for(let i=0;i<s.length;i++){ h ^= s.charCodeAt(i); h = Math.imul(h, 16777619) >>> 0; }
+  return h.toString(16).padStart(8,'0');
+}
+function clone(x){ return JSON.parse(JSON.stringify(x)); }
+
+function createLocalSection(room, seed=0.42){
+  const roomDef = ROOM_AMBIANCES[room] || ROOM_AMBIANCES.atrium;
+  const wiggle = (n) => clamp(seed + (parseInt(hash(room + ':' + n).slice(0,2),16) % 29 - 14) / 100);
+  const section = {
+    schema: 'flowcore.ambiance.local-section/v0.3',
+    section_id: 'as_' + hash(room + ':' + seed),
+    coordinates: { room, local_cover: 'U_' + room, layer: roomDef.operators[0] || 'ambiance', time_index: 0 },
+    ambiance: {
+      pressure: wiggle('pressure'),
+      humidity: wiggle('humidity'),
+      torsion: wiggle('torsion'),
+      rest: room === 'bedroom' ? 0.78 : wiggle('rest'),
+      pattern_flow: room === 'loom' ? 0.74 : wiggle('pattern'),
+      visibility: room === 'stewardship' ? 0.42 : wiggle('visibility'),
+      fold_density: 0.18,
+      fold_index: 0.22
+    },
+    boundaries: {
+      anti_equivalence: [],
+      privacy_class: roomDef.privacy_class,
+      claim_ceiling: 'ambiance-section-not-total-field'
+    },
+    memory: { holonomy: 0, decay_rate: roomDef.decay_rate, last_tended: null }
+  };
+  return section;
+}
+
+// Backward-compatible alias: the model can compute local state, but the public ontology senses ambiance.
+const computeLocalState = createLocalSection;
+const computeFieldCell = createLocalSection;
+
+function createWorld(opts={}){
+  const world_id = opts.world_id || ('dw_' + hash(Date.now() + ':' + (opts.seed || 'seed')));
+  const sections = {};
+  Object.keys(ROOM_AMBIANCES).forEach((room, i) => sections[room] = createLocalSection(room, 0.30 + i * 0.043));
+  return {
+    schema: 'domeworld.flowcore.ambiance-world/v0.3',
+    engine_version: ENGINE_VERSION,
+    world_id,
+    day: 1,
+    active_room: 'atrium',
+    grammar: ['下//上','cōl//hõt','à//出','米','𝄐'],
+    td613: { glyph: '𝌋‌', seal: '⟐', observed_regime: 'PRCS-A', route: 'U+10D613' },
+    math: AMBIANCE_MATH,
+    global: {
+      down_up: 0.68,
+      cool_hot: 0.54,
+      gather_release: 0.46,
+      pattern_flow: 0.52,
+      rest: 0.62,
+      stewardship_caution: 0.44
+    },
+    local_sections: sections,
+    folds: [],
+    event_log: [],
+    loom: { seeds: [], motifs: [], traces: [], holonomies: [] },
+    stewardship: { gates: [], quarantined_count: 0, verified_count: 0 },
+    ash: { items: [], latest: null, local_salt: 'salt_' + hash(world_id + ':ash') },
+    repo_weather: null,
+    privacy: { public_export: 'quantized', raw_cadence_export: false, default_class: 'room-scoped' }
+  };
+}
+
+function vectorOf(section){
+  const a = section.ambiance || {};
+  return ['pressure','humidity','torsion','rest','pattern_flow','visibility'].map(k => clamp(a[k]));
+}
+
+function restrictSection(section, targetRoom){
+  const target = ROOM_AMBIANCES[targetRoom] || ROOM_AMBIANCES.atrium;
+  const weights = target.restriction_weights;
+  const a = section.ambiance || {};
+  return {
+    pressure: round(clamp(a.pressure) * weights.pressure),
+    humidity: round(clamp(a.humidity) * weights.humidity),
+    torsion: round(clamp(a.torsion) * weights.torsion),
+    rest: round(clamp(a.rest) * weights.rest),
+    pattern_flow: round(clamp(a.pattern_flow) * weights.pattern_flow),
+    visibility: round(clamp(a.visibility) * weights.visibility)
+  };
+}
+
+function computeGluingObstruction(sectionA, sectionB){
+  const roomA = sectionA.coordinates.room;
+  const roomB = sectionB.coordinates.room;
+  const ra = restrictSection(sectionA, roomB);
+  const rb = restrictSection(sectionB, roomA);
+  const dims = Object.keys(ra);
+  const sq = dims.reduce((acc,k) => acc + (ra[k]-rb[k])*(ra[k]-rb[k]), 0);
+  const baseDelta = Math.sqrt(sq / dims.length) * 2.4;
+  const aePenalty = ((sectionA.boundaries?.anti_equivalence?.length || 0) + (sectionB.boundaries?.anti_equivalence?.length || 0)) * 0.035;
+  const delta = clamp(baseDelta + aePenalty);
+  const closure_class = delta > .72 ? 'suppressed' : delta > .54 ? 'aliased' : delta > .34 ? 'drift' : delta > .18 ? 'soft-fold' : 'settled';
+  return {
+    schema: 'flowcore.ambiance.gluing-obstruction/v0.3',
+    fold_id: 'fold_' + hash(roomA + ':' + roomB + ':' + round(delta,3)),
+    rooms: [roomA, roomB],
+    formula: AMBIANCE_MATH.foldObstruction,
+    obstruction_delta: round(delta),
+    fold_density: round(clamp(delta * .82 + aePenalty)),
+    dominant_fold: inferDominantFold(sectionA, sectionB),
+    closure_class,
+    claim_ceiling: CLAIM_CEILINGS.fold
+  };
+}
+
+function inferDominantFold(a,b){
+  const av = a.ambiance, bv = b.ambiance;
+  const diffs = Object.keys(av).filter(k => typeof av[k] === 'number').map(k => [k, Math.abs(av[k]-bv[k])]);
+  diffs.sort((x,y)=>y[1]-x[1]);
+  const k = diffs[0]?.[0] || 'settled';
+  if(k === 'pattern_flow') return 'memory/pattern-flow';
+  if(k === 'rest') return 'rest/integration';
+  if(k === 'torsion') return 'admissibility/torsion';
+  if(k === 'humidity') return 'latent-memory/humidity';
+  if(k === 'visibility') return 'visibility/claim-ceiling';
+  return 'pressure/tendency';
+}
+
+function recomputeFolds(world){
+  const rooms = Object.keys(world.local_sections);
+  const pairs = [];
+  for(let i=0;i<rooms.length;i++){
+    for(let j=i+1;j<rooms.length;j++){
+      const r1=rooms[i], r2=rooms[j];
+      // keep adjacency lightweight; atrium bridges all, stewardship and accident compare to all, otherwise selected pairs
+      if(r1==='atrium' || r2==='atrium' || r1==='stewardship' || r2==='stewardship' || (r1==='loom' && ['cistern','bedroom','accident'].includes(r2)) || (r1==='cistern' && r2==='compost') || (r1==='solar' && r2==='api')){
+        pairs.push(computeGluingObstruction(world.local_sections[r1], world.local_sections[r2]));
+      }
+    }
+  }
+  world.folds = pairs.sort((a,b)=>b.obstruction_delta-a.obstruction_delta).slice(0,18);
+  rooms.forEach(room => {
+    const related = pairs.filter(f => f.rooms.includes(room));
+    const avg = related.length ? related.reduce((s,f)=>s+f.fold_density,0)/related.length : 0;
+    const sec = world.local_sections[room];
+    sec.ambiance.fold_density = round(clamp(avg));
+    sec.ambiance.fold_index = round(clamp(avg*.65 + sec.ambiance.pressure*.20 + sec.ambiance.torsion*.15));
+  });
+  return world.folds;
+}
+
+function senseFold(world, room='atrium'){
+  recomputeFolds(world);
+  const section = world.local_sections[room] || world.local_sections.atrium;
+  const folds = world.folds.filter(f => f.rooms.includes(room));
+  const weather = readRoomWeather(section, folds);
+  return {
+    schema: 'flowcore.ambiance.sensed-fold/v0.3',
+    room,
+    local_section: section,
+    folds,
+    weather,
+    math: {
+      localSection: AMBIANCE_MATH.localSection,
+      restrictionMap: AMBIANCE_MATH.restrictionMap,
+      foldObstruction: AMBIANCE_MATH.foldObstruction
+    },
+    claim_ceiling: CLAIM_CEILINGS.ambiance
+  };
+}
+
+function readTendency(section){
+  const a = section.ambiance || section;
+  const tendency = {
+    pressure: a.pressure > .68 ? 'rising' : a.pressure > .40 ? 'held' : 'settling',
+    humidity: a.humidity > .66 ? 'memory-heavy' : a.humidity > .38 ? 'moist' : 'drying',
+    torsion: a.torsion > .66 ? 'twisting' : a.torsion > .35 ? 'pleating' : 'smooth',
+    rest: a.rest > .66 ? 'integrating' : a.rest > .38 ? 'available' : 'depleted',
+    pattern_flow: a.pattern_flow > .66 ? 'germinating' : a.pattern_flow > .38 ? 'threading' : 'quiet',
+    visibility: a.visibility > .66 ? 'clear' : a.visibility > .38 ? 'partial' : 'fogged'
+  };
+  return { schema:'flowcore.ambiance.tendency/v0.3', tendency, claim_ceiling: CLAIM_CEILINGS.weather };
+}
+
+const computeFlowVector = (section) => {
+  const a = section.ambiance || section;
+  return {
+    down_up: round(a.humidity * .35 + a.visibility * .20 - a.pressure * .10),
+    cool_hot: round(a.pressure * .25 + a.torsion * .22 - a.rest * .20),
+    gather_release: round(a.pattern_flow * .25 + a.humidity * .18 - a.torsion * .08),
+    pattern_flow: round(a.pattern_flow * .4 + a.rest * .16),
+    rest: round(a.rest * .5 - a.pressure * .12),
+    claim_ceiling: 'computed-dynamics-not-inhabited-totality'
+  };
+};
+
+const readRoomWeather = (section, folds=[]) => {
+  const a = section.ambiance;
+  const topFold = folds[0];
+  const tendency = readTendency(section).tendency;
+  const storm_risk = clamp(a.pressure*.30 + a.torsion*.26 + a.fold_density*.32 + a.humidity*.12 - a.rest*.22);
+  const visibility = clamp(a.visibility*.72 + a.rest*.18 - a.torsion*.12);
+  const recommended_tending = [];
+  if(a.rest < .45 || storm_risk > .55) recommended_tending.push('𝄐 rest');
+  if(a.humidity > .66) recommended_tending.push('米 loom');
+  if(a.visibility < .45) recommended_tending.push('stewardship gate');
+  if(a.pressure > .62) recommended_tending.push('cistern buffer');
+  if(!recommended_tending.length) recommended_tending.push('sense', 'tend lightly');
+  return {
+    schema: 'domeworld.ambiance.room-weather/v0.3',
+    room: section.coordinates.room,
+    pressure: tendency.pressure,
+    humidity: tendency.humidity,
+    torsion: tendency.torsion,
+    rest: tendency.rest,
+    visibility: tendency.visibility,
+    fold_density: round(a.fold_density),
+    storm_risk: round(storm_risk),
+    front: topFold ? topFold.dominant_fold : 'none',
+    recommended_tending,
+    claim_ceiling: CLAIM_CEILINGS.weather
+  };
+};
+
+function computeAmbianceWeather(world){
+  recomputeFolds(world);
+  const sections = Object.values(world.local_sections);
+  const avg = key => sections.reduce((s,x)=>s+(x.ambiance[key]||0),0)/sections.length;
+  const foldAvg = world.folds.length ? world.folds.reduce((s,f)=>s+f.fold_density,0)/world.folds.length : 0;
+  const top = world.folds[0];
+  const pressure = avg('pressure'), humidity=avg('humidity'), torsion=avg('torsion'), rest=avg('rest'), visibility=avg('visibility');
+  const storm_risk = clamp(pressure*.26 + torsion*.22 + foldAvg*.34 + humidity*.14 - rest*.24);
+  const drought_zones = sections.filter(s => s.ambiance.humidity < .36).map(s => s.coordinates.room);
+  const recommended_tending = [];
+  if(rest < .50 || storm_risk > .52) recommended_tending.push('𝄐 Rest');
+  if(humidity > .60) recommended_tending.push('米 Loom');
+  if(world.stewardship.quarantined_count > 0) recommended_tending.push('Stewardship Gate');
+  if(drought_zones.length) recommended_tending.push('Cistern');
+  if(!recommended_tending.length) recommended_tending.push('Sense', 'Tend lightly');
+  return {
+    schema: 'domeworld.ambiance.weather/v0.3',
+    world_id: world.world_id,
+    math: AMBIANCE_MATH.weather,
+    weather: {
+      pressure: pressure > .62 ? 'rising' : pressure > .42 ? 'held' : 'settling',
+      humidity: humidity > .62 ? 'high latent memory' : humidity > .42 ? 'moderate' : 'drying',
+      torsion: torsion > .62 ? 'strong pleating' : torsion > .40 ? 'soft pleating' : 'smooth',
+      visibility: visibility > .62 ? 'clear' : visibility > .42 ? 'partial' : 'fogged',
+      dominant_front: top ? top.dominant_fold : 'none',
+      fold_density: round(foldAvg),
+      storm_risk: round(storm_risk),
+      drought_zones,
+      recommended_tending
+    },
+    claim_ceiling: CLAIM_CEILINGS.weather
+  };
+}
+const computeWeather = computeAmbianceWeather;
+
+function detectAntiEquivalence(payload){
+  const text = typeof payload === 'string' ? payload.toLowerCase() : stableStringify(payload).toLowerCase();
+  const triggered = [];
+  for(const [a,b] of ANTI_EQUIVALENCES){
+    const aa = a.toLowerCase(), bb = b.toLowerCase();
+    if(text.includes(aa) && text.includes(bb)) triggered.push(`${a}≠${b}`);
+  }
+  return {
+    schema: 'td613.anti-embedding-detection/v0.3',
+    triggered,
+    fold_density_delta: round(clamp(triggered.length * .11)),
+    recommended_route: triggered.length ? 'manual-review|stewardship-gate|safe-harbor-buffer' : 'continue',
+    claim_ceiling: 'anti-embedding-boundary-not-final-ontology'
+  };
+}
+
+function stewardshipGate(item={}){
+  const language = String(item.language_or_framework || item.language || '').toLowerCase();
+  const sourceType = String(item.source_type || '').toLowerCase();
+  const text = stableStringify(item).toLowerCase();
+  const indigenousHint = /(ojibwe|anishinaabe|anishinaabemowin|cree|n[eê]hiyaw|first nation|indigenous|oral tradition|elder|ceremon)/i.test(language + ' ' + text);
+  const aiGenerated = /(ai-generated|llm|model-generated|unverified|unknown)/i.test(sourceType + ' ' + text);
+  let status = item.stewardship_status || 'pending-review';
+  if(indigenousHint && aiGenerated) status = 'quarantined';
+  else if(indigenousHint && /(fluent-speaker|elder|community-organization|published-dictionary|community-guided|verified)/i.test(sourceType + ' ' + status)) status = status === 'pending-review' ? 'community-guided' : status;
+  const allowed = status === 'verified' || status === 'community-guided';
+  return {
+    schema: 'td613.stewardship-gate/v0.3',
+    knowledge_item_id: item.knowledge_item_id || ('ki_' + hash(item)),
+    language_or_framework: item.language_or_framework || item.language || 'unspecified',
+    source_type: item.source_type || 'unspecified',
+    stewardship_status: status,
+    permissions: {
+      display: allowed && !!item.allow_display,
+      translate: allowed && !!item.allow_translate,
+      train_on: false,
+      export: allowed && !!item.allow_export,
+      public_use: allowed && !!item.allow_public_use
+    },
+    revocation_supported: true,
+    notes: status === 'quarantined' ? 'Unverified Indigenous-language/cultural item. Human steward review required before public use.' : 'Permission remains contextual and revocable.',
+    claim_ceiling: CLAIM_CEILINGS.stewardship
+  };
+}
+
+function computeHolonomy(entryVector, exitVector, path=[]){
+  const ev = Array.isArray(entryVector) ? entryVector : vectorOf(entryVector);
+  const xv = Array.isArray(exitVector) ? exitVector : vectorOf(exitVector);
+  const diffs = ev.map((v,i)=> (xv[i]||0)-v);
+  const curvature_delta = Math.sqrt(diffs.reduce((s,d)=>s+d*d,0)/Math.max(1,diffs.length));
+  return {
+    schema: 'domeworld.loom.holonomy/v0.3',
+    path_signature: path.join('→') || 'local',
+    entry_vector: ev.map(n=>round(n)),
+    exit_vector: xv.map(n=>round(n)),
+    curvature_delta: round(curvature_delta),
+    fold_axis: curvature_delta > .28 ? 'strong route deformation' : curvature_delta > .12 ? 'soft route deformation' : 'settled transport',
+    claim_ceiling: CLAIM_CEILINGS.holonomy
+  };
+}
+
+
+function bucketLabel(n){ return n > .66 ? 'high' : n > .33 ? 'medium' : 'low'; }
+function countMatches(text, pattern){ const m = String(text || '').match(pattern); return m ? m.length : 0; }
+function computeAshSignature(input={}){
+  const text = String(input.text || input.content || '');
+  const artifact_class = input.artifact_class || 'sensitive-document';
+  const salt_scope = input.salt_scope || 'local-world';
+  const salt = input.salt || 'local-salt';
+  const mode = input.mode || 'private-sense';
+  const source_type = input.source_type || 'unknown';
+  const language_or_framework = input.language_or_framework || '';
+  const sensitive = /indigenous|ojibwe|anishinaabe|cree|language|whistle|legal|medical|minority|cultural|custod|evidence|sealed|private/i.test([artifact_class, language_or_framework, text.slice(0,300)].join(' '));
+  const length = text.length;
+  const words = text.trim() ? text.trim().split(/\s+/).length : 0;
+  const paragraphs = text.split(/\n\s*\n/).filter(Boolean).length || (text ? 1 : 0);
+  const numbers = countMatches(text, /\b\d+(?:\.\d+)?\b/g);
+  const glyphs = countMatches(text, /[𝌋⟐米𝄐下上出]/gu);
+  const emails = countMatches(text, /[\w.+-]+@[\w.-]+\.[a-z]{2,}/gi);
+  const phones = countMatches(text, /(?:\+?\d[\d\s().-]{7,}\d)/g);
+  const properish = countMatches(text, /\b[A-Z][a-z]{2,}\b/g);
+  const cultural_terms = countMatches(text, /\b(?:Ojibwe|Anishinaabemowin|Anishinaabe|Cree|nêhiyawêwin|Indigenous|First Nation|Elder|ceremony|oral tradition|language steward)\b/gi);
+  const structure_score = clamp((paragraphs/8)*.35 + (numbers/16)*.22 + (glyphs/8)*.18 + (words/1200)*.25);
+  const privacy_pressure = clamp((emails+phones)/3*.32 + properish/40*.26 + (sensitive?.25:0) + Math.min(1,length/12000)*.17);
+  const stewardship_pressure = clamp(cultural_terms/5*.46 + (/ai-generated|unknown/i.test(source_type)?.22:0) + (/indigenous|ojibwe|anishinaabe|cree|nêhiyawêwin|first nation/i.test(language_or_framework)?.28:0));
+  const claim_pressure = clamp((/proof|prove|certify|authorship|identity|guarantee|safe|true|verified/i.test(text)?.22:0) + structure_score*.18 + stewardship_pressure*.24);
+  const fold_density = clamp(.18 + privacy_pressure*.28 + stewardship_pressure*.30 + claim_pressure*.22 + structure_score*.12);
+  const route = fold_density > .72 || stewardship_pressure > .55 ? 'safe-harbor-buffer' : privacy_pressure > .48 ? 'private-sense-only' : 'atrium-public-weather';
+  const public_export = route === 'atrium-public-weather' && mode === 'public-weather';
+  const seed = hash({salt_scope,salt,text_hash:hash(text),artifact_class,mode});
+  return {
+    schema: 'td613.ash.signature/v0.4',
+    ash_id: 'ash_' + hash({seed, length, words, artifact_class}),
+    salt_scope,
+    content_exported: false,
+    raw_content_retained: false,
+    content_hash: 'salted:' + hash(salt + '|' + text),
+    visual_seed: seed,
+    artifact_class,
+    mode,
+    public_export,
+    room_route: route,
+    ambiance_signature: {
+      structure: bucketLabel(structure_score),
+      privacy_pressure: bucketLabel(privacy_pressure),
+      stewardship_pressure: bucketLabel(stewardship_pressure),
+      claim_pressure: bucketLabel(claim_pressure),
+      fold_density: round(fold_density),
+      numbers: numbers ? 'present' : 'not-detected',
+      'named-contact-risk': (emails+phones+properish) > 8 ? 'elevated' : (emails+phones+properish) ? 'present' : 'low'
+    },
+    anti_equivalence: detectAntiEquivalence(text).triggered,
+    recommended_tending: [
+      ...(stewardship_pressure > .42 ? ['stewardship-gate'] : []),
+      ...(privacy_pressure > .42 ? ['redact'] : []),
+      ...(fold_density > .62 ? ['safe-harbor-buffer','rest'] : ['private-hold']),
+      'ash-receipt'
+    ],
+    claim_ceiling: CLAIM_CEILINGS.ash
+  };
+}
+function generateAshReceipt(world, input={}){
+  const signature = computeAshSignature({ ...input, salt: input.salt || world.ash?.local_salt || world.world_id });
+  return {
+    schema: 'td613.ash.receipt/v0.4',
+    receipt_id: 'ashr_' + hash({signature, world_id:world.world_id, day:world.day}),
+    td613: world.td613,
+    ash: signature,
+    private_mode: input.mode !== 'public-weather',
+    public_surface: {
+      content_exported: false,
+      text_preview: null,
+      quantized_weather_only: true,
+      visual_signature: 'salted-heterostratigraphic-overlay'
+    },
+    anti_extraction_defaults: {
+      local_hold: true,
+      no_content_export: true,
+      public_weather_only: true,
+      receipt_not_proof: true,
+      beauty_not_verification: true
+    },
+    seal: '⟐',
+    claim_ceiling: CLAIM_CEILINGS.ash
+  };
+}
+function computeRepoWeather(world, opts={}){
+  recomputeFolds(world);
+  const weather = computeAmbianceWeather(world).weather;
+  const ashCount = world.ash?.items?.length || 0;
+  const q = world.stewardship?.quarantined_count || 0;
+  const antiEvents = (world.event_log || []).reduce((n,e)=> n + ((e.anti_equivalence||[]).length ? 1 : 0),0);
+  const pressure = clamp((weather.fold_density === 'high' ? .72 : weather.fold_density === 'moderate' ? .46 : .22) + q*.08 + antiEvents*.03 + ashCount*.025);
+  return {
+    schema: 'td613.repo-weather/v0.4',
+    repo_weather: pressure > .72 ? 'pressure rising' : pressure > .42 ? 'partial clearing' : 'settled with watchfulness',
+    dominant_fold: q ? 'stewardship/provenance' : ashCount ? 'privacy/provenance' : (world.folds[0]?.dominant_fold || 'settled'),
+    ash_items: ashCount,
+    quarantined_items: q,
+    anti_equivalence: antiEvents ? 'triggered' : 'intact',
+    recommended_tending: q ? ['stewardship-review','safe-harbor-buffer','rest'] : ashCount ? ['review-ash-receipts','rest'] : ['loom','rest'],
+    claim_ceiling: CLAIM_CEILINGS.repo
+  };
+}
+
+function applyFlowEvent(world, event={}){
+  const w = clone(world);
+  const room = event.room || w.active_room || 'atrium';
+  const section = w.local_sections[room] || w.local_sections.atrium;
+  const before = clone(section);
+  const type = event.operator || event.type || 'sense';
+  const payload = event.payload || {};
+  const a = section.ambiance;
+  if(type === 'rest') { a.rest = clamp(a.rest + .16); a.pressure = clamp(a.pressure - .08); a.torsion = clamp(a.torsion - .07); }
+  else if(type === 'hydrate') { a.humidity = clamp(a.humidity + .14); a.visibility = clamp(a.visibility + .05); }
+  else if(type === 'vent') { a.pressure = clamp(a.pressure - .06); a.torsion = clamp(a.torsion - .03); a.visibility = clamp(a.visibility + .06); }
+  else if(type === 'compost') { a.pattern_flow = clamp(a.pattern_flow + .10); a.humidity = clamp(a.humidity + .04); }
+  else if(type === 'transmission') { a.pattern_flow = clamp(a.pattern_flow + .12); a.humidity = clamp(a.humidity + .06); a.torsion = clamp(a.torsion + .04); w.loom.seeds.push({ raw_hash:'sha256:'+hash(payload.text || payload), room, age:0, resonance:.22, privacy_class:'room-scoped' }); }
+  else if(type === 'stewardship-check') { const gate = stewardshipGate(payload); w.stewardship.gates.push(gate); if(gate.stewardship_status === 'quarantined'){ w.stewardship.quarantined_count += 1; a.torsion = clamp(a.torsion + .16); a.visibility = clamp(a.visibility - .12); a.pressure = clamp(a.pressure + .07); } else if(gate.stewardship_status === 'verified' || gate.stewardship_status === 'community-guided'){ w.stewardship.verified_count += 1; a.visibility = clamp(a.visibility + .10); a.torsion = clamp(a.torsion - .05); } event.gate = gate; }
+  else if(type === 'ash-document') { const receipt = generateAshReceipt(w, payload); w.ash = w.ash || {items:[], latest:null, local_salt:'salt_'+hash(w.world_id+':ash')}; w.ash.items.push(receipt); w.ash.latest = receipt; a.torsion = clamp(a.torsion + receipt.ash.ambiance_signature.fold_density*.18); a.pressure = clamp(a.pressure + receipt.ash.ambiance_signature.fold_density*.12); a.visibility = clamp(a.visibility - (receipt.ash.public_export ? .01 : .06)); event.ash = receipt; }
+  else { a.pressure = clamp(a.pressure + .01); }
+  const anti = detectAntiEquivalence(payload.text || payload);
+  if(anti.triggered.length){
+    section.boundaries.anti_equivalence = [...new Set([...(section.boundaries.anti_equivalence||[]), ...anti.triggered])];
+    a.torsion = clamp(a.torsion + anti.fold_density_delta);
+    a.pressure = clamp(a.pressure + anti.fold_density_delta*.6);
+  }
+  section.coordinates.time_index += 1;
+  section.memory.last_tended = event.event_id || ('evt_' + hash(event));
+  const holonomy = computeHolonomy(before, section, [room,type]);
+  w.loom.holonomies.push(holonomy);
+  w.day += 1;
+  w.event_log.push({
+    schema: 'flowcore.ambiance.event/v0.3',
+    event_id: event.event_id || ('evt_' + hash({event, day:w.day, n:w.event_log.length})),
+    day: w.day,
+    room,
+    operator: type,
+    payload_hash: 'sha256:' + hash(payload),
+    anti_equivalence: anti.triggered,
+    holonomy_delta: holonomy.curvature_delta,
+    gate: event.gate || null,
+    ash: event.ash ? { receipt_id:event.ash.receipt_id, ash_id:event.ash.ash.ash_id, room_route:event.ash.ash.room_route } : null,
+    claim_ceiling: CLAIM_CEILINGS.effect
+  });
+  recomputeFolds(w);
+  return w;
+}
+
+const tend = applyFlowEvent;
+
+function runAccidentAssay(world, opts={}){
+  const before = String(opts.before ?? 'TD613');
+  const after = String(opts.after ?? '𝌋‌ TD613 ⟐');
+  const type = opts.type || 'glyph-route';
+  const base = (parseInt(hash(before).slice(0,4),16) % 1000) / 1000;
+  const variant = (parseInt(hash(after).slice(0,4),16) % 1000) / 1000;
+  const lexicalDelta = clamp(Math.abs(variant-base));
+  const antiBefore = detectAntiEquivalence(before);
+  const antiAfter = detectAntiEquivalence(after);
+  const glyphDelta = /[𝌋⟐‌]/u.test(after) ? .18 : 0;
+  const zwnjDelta = after.includes('\u200c') || after.includes('‌') ? .12 : 0;
+  const fold_index_delta = clamp(lexicalDelta*.36 + glyphDelta + zwnjDelta + antiAfter.fold_density_delta);
+  const closure_class = fold_index_delta > .62 ? 'suppressed' : fold_index_delta > .42 ? 'aliased' : fold_index_delta > .22 ? 'drift' : 'settled';
+  return {
+    schema: 'domeworld.accident-assay/v0.3',
+    assay_id: 'aa_' + hash({type,before,after}),
+    type,
+    perturbation: { before, after },
+    observations: {
+      base_signature: round(base),
+      variant_signature: round(variant),
+      lexical_delta: round(lexicalDelta),
+      glyph_delta: round(glyphDelta + zwnjDelta),
+      anti_equivalence_delta: round(Math.max(0, antiAfter.fold_density_delta - antiBefore.fold_density_delta))
+    },
+    delta: { fold_index_delta: round(fold_index_delta), closure_class, dominant_axis: glyphDelta || zwnjDelta ? 'naming/admissibility' : antiAfter.triggered.length ? 'anti-equivalence' : 'route-sensitivity' },
+    interpretation_ceiling: CLAIM_CEILINGS.assay
+  };
+}
+
+
+const HETEROSTRATIGRAPHIC_MATH = Object.freeze({
+  triangularMoire: 'T(x)=Σ_i cos(k d_i·x)+Σ_i cos(k R_θ d_i·x), d_i∈{0,π/3,2π/3}',
+  quasiperiodicPhi: 'Q(x)=Σ_{m=0}^{9} cos(k_φ e_m·x + φ_m), e_m=(cos(mπ/5),sin(mπ/5))',
+  gradientMisfit: 'F(x)=||∇T(x)-∇Q(x)||',
+  tactileDynamics: 'v_{t+1}=ζv_t-α∇F(x_t)+β·input(x_t); x_{t+1}=x_t+v_{t+1}',
+  claim: '2D projected quasiperiodic surrogate; visual diagnostic, not physical-material proof'
+});
+
+function computeTriangularMoireSample(x=0, y=0, opts={}){
+  const k = opts.k || 0.036;
+  const theta = opts.theta ?? 0.055;
+  const dirs = [0, Math.PI/3, 2*Math.PI/3];
+  const sample = (ang) => Math.cos(k * (Math.cos(ang)*x + Math.sin(ang)*y));
+  const a = dirs.reduce((s,d)=>s+sample(d),0) / dirs.length;
+  const b = dirs.reduce((s,d)=>s+sample(d+theta),0) / dirs.length;
+  return round((a + b) / 2, 6);
+}
+
+function computeQuasiperiodicPhiSample(x=0, y=0, opts={}){
+  const phi = (1 + Math.sqrt(5)) / 2;
+  const k = opts.kPhi || 0.026;
+  const phase = opts.phase || 0;
+  let acc = 0;
+  for(let m=0;m<10;m++){
+    const ang = m * Math.PI / 5;
+    const pm = Math.sin((m+1)*phi + phase) * Math.PI;
+    acc += Math.cos(k * (Math.cos(ang)*x + Math.sin(ang)*y) * (m%2 ? 1 : phi/2) + pm);
+  }
+  return round(acc / 10, 6);
+}
+
+function computeHeterostratigraphicPotential(x=0, y=0, opts={}){
+  const T = computeTriangularMoireSample(x, y, opts);
+  const Q = computeQuasiperiodicPhiSample(x, y, opts);
+  const fold = Math.abs(T - Q);
+  return { schema:'td613.heterostratigraphic.sample/v0.4.3', x:round(x,3), y:round(y,3), triangular:T, quasiperiodic:Q, fold_density:round(clamp(fold),6), claim_ceiling:CLAIM_CEILINGS.pattern };
+}
+
+function computeGradientMisfit(x=0, y=0, opts={}){
+  const eps = opts.eps || 2.5;
+  const Tx1 = computeTriangularMoireSample(x+eps,y,opts), Tx0 = computeTriangularMoireSample(x-eps,y,opts);
+  const Ty1 = computeTriangularMoireSample(x,y+eps,opts), Ty0 = computeTriangularMoireSample(x,y-eps,opts);
+  const Qx1 = computeQuasiperiodicPhiSample(x+eps,y,opts), Qx0 = computeQuasiperiodicPhiSample(x-eps,y,opts);
+  const Qy1 = computeQuasiperiodicPhiSample(x,y+eps,opts), Qy0 = computeQuasiperiodicPhiSample(x,y-eps,opts);
+  const gT = [(Tx1-Tx0)/(2*eps), (Ty1-Ty0)/(2*eps)];
+  const gQ = [(Qx1-Qx0)/(2*eps), (Qy1-Qy0)/(2*eps)];
+  const misfit = Math.hypot(gT[0]-gQ[0], gT[1]-gQ[1]);
+  return { schema:'td613.heterostratigraphic.gradient-misfit/v0.4.3', x:round(x,3), y:round(y,3), g_triangular:gT.map(v=>round(v,6)), g_quasiperiodic:gQ.map(v=>round(v,6)), gradient_misfit:round(clamp(misfit*16),6), claim_ceiling:'heterostratigraphic-visual-diagnostic-not-material-proof' };
+}
+
+function generateLiveLatticeSeed(world, opts={}){
+  const weather = computeAmbianceWeather(world);
+  const seed = hash({ world_id: world.world_id, day: world.day, weather: weather.weather, ash: world.ash?.latest?.ash?.ash_id || null, opts });
+  return { schema:'td613.live-lattice-seed/v0.4.3', seed, node_count: opts.node_count || 84, dynamics: HETEROSTRATIGRAPHIC_MATH.tactileDynamics, math: HETEROSTRATIGRAPHIC_MATH, weather: quantizeWeather(weather), claim_ceiling:'interactive-lattice-not-substrate-proof' };
+}
+
+function quantizeWeather(weather){
+  const w = weather.weather || weather;
+  return {
+    schema: 'domeworld.public-ambiance-weather/v0.3',
+    pressure: w.pressure,
+    humidity: w.humidity,
+    visibility: w.visibility,
+    dominant_front: w.dominant_front,
+    fold_density: w.fold_density > .66 ? 'high' : w.fold_density > .33 ? 'moderate' : 'low',
+    storm_risk: w.storm_risk > .66 ? 'high' : w.storm_risk > .33 ? 'moderate' : 'low',
+    recommended_tending: w.recommended_tending,
+    claim_ceiling: CLAIM_CEILINGS.public
+  };
+}
+
+function generateWitnessReceipt(world){
+  const weather = computeAmbianceWeather(world);
+  return {
+    schema: 'td613.domeworld.ambiance-witness-receipt/v0.3',
+    receipt_id: 'r_' + hash({world_id:world.world_id, day:world.day, events:world.event_log.length, folds:world.folds}),
+    engine_version: ENGINE_VERSION,
+    td613: world.td613,
+    world_id: world.world_id,
+    day: world.day,
+    math: AMBIANCE_MATH,
+    top_folds: world.folds.slice(0,5),
+    weather: quantizeWeather(weather),
+    stewardship: {
+      quarantined_count: world.stewardship.quarantined_count,
+      verified_count: world.stewardship.verified_count,
+      latest_gate: world.stewardship.gates.at(-1) || null
+    },
+    ash: {
+      count: world.ash?.items?.length || 0,
+      latest: world.ash?.latest ? { receipt_id: world.ash.latest.receipt_id, ash_id: world.ash.latest.ash.ash_id, room_route: world.ash.latest.ash.room_route, claim_ceiling: world.ash.latest.claim_ceiling } : null
+    },
+    repo_weather: computeRepoWeather(world),
+    event_count: world.event_log.length,
+    privacy: world.privacy,
+    claim_ceiling: CLAIM_CEILINGS.route,
+    seal: '⟐'
+  };
+}
+
+
+return {ENGINE_VERSION,CLAIM_CEILINGS,AMBIANCE_MATH,ANTI_EQUIVALENCES,ROOM_AMBIANCES,clamp,round,stableStringify,hash,clone,createLocalSection,computeLocalState,computeFieldCell,createWorld,restrictSection,computeGluingObstruction,recomputeFolds,senseFold,readTendency,computeFlowVector,readRoomWeather,computeAmbianceWeather,computeWeather,detectAntiEquivalence,stewardshipGate,computeHolonomy,applyFlowEvent,tend,runAccidentAssay,quantizeWeather,generateWitnessReceipt,computeGradientMisfit,computeHeterostratigraphicPotential,computeRepoWeather,generateLiveLatticeSeed};
+})();
+
+const C = DomeCore;
+const DOME_EXPORT_POLICY = Object.freeze({
+  receiptReferenceOnly:true,
+  rawExactCoordinatesExported:false,
+  trainingHistoryExported:false,
+  sensitiveTextExported:false
+});
+let world;
+try { world = JSON.parse(localStorage.getItem('domeworld.v04.ash.world') || 'null') || C.createWorld({seed:'ambiance'}); } catch(e) { world = C.createWorld({seed:'ambiance'}); }
+let activeRoom = world.active_room || 'atrium';
+let lastGate = null;
+let lastAssay = null;
+let lastAsh = world.ash?.latest || null;
+let lastRepoWeather = null;
+let lastBridge = null;
+let lastPhason = null;
+let lastExact = null;
+let pendingProposalToken = null;
+let activeView = 'weather';
+const $ = (id) => document.getElementById(id);
+const fmt = (obj) => JSON.stringify(obj, null, 2);
+function save(){ try{ localStorage.setItem('domeworld.v04.ash.world', JSON.stringify(world)); }catch(e){} }
+function log(msg){ const el=$('log'); const div=document.createElement('div'); div.className='log'; div.innerHTML='<time>Day '+world.day+'</time> '+msg; el.prepend(div); while(el.children.length>40) el.lastChild.remove(); }
+function pct(n){ return Math.round((Number(n)||0)*100)+'%'; }
+function download(name, data, type='application/json'){ const blob=new Blob([typeof data==='string'?data:fmt(data)],{type}); const a=document.createElement('a'); a.href=URL.createObjectURL(blob); a.download=name; a.click(); URL.revokeObjectURL(a.href); }
+async function copy(text){ try{ await navigator.clipboard.writeText(text); log('Copied to clipboard.'); }catch(e){ log('Copy unavailable here; use the visible text.'); } }
+function routeEvent(type, room=activeRoom, payload={}){ world = C.applyFlowEvent(world, { room, operator:type, payload }); save(); log('<b>'+type+'</b> tended in '+C.ROOM_AMBIANCES[room].display+'.'); renderActiveView(); }
+async function domeRequest(operation,payload={}){
+  const envelope={operation,traceId:'dw_'+Date.now().toString(36),apertureContext:{version:'v2.9.4',schema:'td613-aperture/v2.9.4',observedRegime:'PRCS-A'},payload};
+  const response=await fetch('/api/dome-world/'+operation,{method:'POST',headers:{'content-type':'application/json'},body:JSON.stringify(envelope)});
+  const body=await response.json().catch(()=>({ok:false,error:'non-json-response'}));
+  if(!response.ok || body.ok===false) throw new Error(body.error||('HTTP '+response.status));
+  return body;
+}
+function localBridgeFallback(metrics){
+  const omission=Math.max(0,Math.min(1,Number(metrics.omissionPressure)||0));
+  const coherence=Math.max(0,Math.min(1,Number(metrics.coherence)||0));
+  const divergence=Math.max(0,Math.min(1,Number(metrics.divergence)||0));
+  return {ok:true,offlineFallback:true,result:{status:'OPEN',schema:'td613.aperture.dome-flowcore-route-weather/v2.9.4',weather:{occlusion:omission,coherence,routePressure:Number(((omission+divergence+(1-coherence))/3).toFixed(6)),modeled:true},decision:'route-weather-modeled-without-exact-gate-entry',claimCeiling:'aperture-to-flowcore-translation-not-aperture-execution'}};
+}
+
+function renderWeather(){
+  const weather = C.computeAmbianceWeather(world);
+  $('kFold').textContent = pct(weather.weather.fold_density);
+  $('kStorm').textContent = pct(weather.weather.storm_risk);
+  $('kHumidity').textContent = weather.weather.humidity;
+  $('kVisibility').textContent = weather.weather.visibility;
+  $('claimA').textContent = weather.claim_ceiling;
+  $('weatherNarrative').innerHTML = `Pressure is <b>${weather.weather.pressure}</b>. Humidity reads <b>${weather.weather.humidity}</b>. Visibility is <b>${weather.weather.visibility}</b>. A front forms around <b>${weather.weather.dominant_front}</b>. Recommended tending: <b>${weather.weather.recommended_tending.join(' → ')}</b>.`;
+  $('weatherPills').innerHTML = ['ambiance-mediated','fold≠wound','weather≠prediction','receipt≠proof'].map((x,i)=>`<span class="pill ${i%2?'gold':'cyan'}">${x}</span>`).join('');
+  $('ambianceLines').innerHTML = [
+    ['day', world.day], ['world', world.world_id], ['events', world.event_log.length], ['quarantined', world.stewardship.quarantined_count], ['top fold', weather.weather.dominant_front]
+  ].map(([a,b])=>`<div class="status-line"><span>${a}</span><span>${b}</span></div>`).join('');
+  drawWeatherCanvas();
+}
+function renderRooms(){
+  $('roomButtons').innerHTML = Object.entries(C.ROOM_AMBIANCES).map(([id,r])=>`<button class="room-btn ${id===activeRoom?'active':''}" data-room="${id}"><b>${r.display}</b><small>${r.operators.join(' · ')}</small></button>`).join('');
+  document.querySelectorAll('[data-room]').forEach(b => b.onclick = () => { activeRoom = b.dataset.room; world.active_room=activeRoom; save(); renderRooms(); });
+  const sensed = C.senseFold(world, activeRoom);
+  $('roomTitle').textContent = C.ROOM_AMBIANCES[activeRoom].display;
+  $('roomSense').innerHTML = Object.entries(sensed.weather).filter(([k,v]) => typeof v !== 'object').map(([a,b])=>`<div class="status-line"><span>${a}</span><span>${b}</span></div>`).join('');
+  $('roomPre').textContent = fmt(sensed);
+}
+function renderMath(){
+  C.recomputeFolds(world);
+  $('foldList').innerHTML = world.folds.slice(0,8).map(f => `<div class="status-line"><span>${f.rooms.join(' ↔ ')}</span><span>${pct(f.fold_density)} · ${f.dominant_fold}</span></div>`).join('');
+  $('mathPre').textContent = fmt({ math:C.AMBIANCE_MATH, top_folds:world.folds.slice(0,5), claim_ceiling:'gluing-obstruction-signal-not-proof' });
+}
+function renderLoom(){
+  $('loomStats').innerHTML = [
+    ['seeds', world.loom.seeds.length], ['holonomies', world.loom.holonomies.length], ['latest curvature', world.loom.holonomies.at(-1)?.curvature_delta ?? '—'], ['privacy', world.privacy.default_class]
+  ].map(([a,b])=>`<div class="status-line"><span>${a}</span><span>${b}</span></div>`).join('');
+  const rows = [...world.loom.seeds.slice(-10).map(s=>'seed '+s.raw_hash.slice(-8)+' ▒▒▒'), ...world.loom.holonomies.slice(-10).map(h=>'holonomy '+h.curvature_delta+' '+h.fold_axis)].reverse();
+  $('cloth').textContent = rows.join('\\n') || 'The cloth is quiet. Nothing is held.';
+  $('holonomyPre').textContent = fmt(world.loom.holonomies.slice(-12));
+}
+function renderStewardship(){ $('gatePre').textContent = lastGate ? fmt(lastGate) : fmt({instruction:'Run the gate before using living Indigenous-language or cultural-framework material publicly.', claim_ceiling:C.CLAIM_CEILINGS.stewardship}); }
+
+function ashPayload(){ return {metadata:{artifactId:$('ashArtifactId').value||null,artifactClass:$('ashClass').value,mediaType:$('ashMediaType').value||null,byteLength:Number($('ashByteLength').value)||null}}; }
+function localAshReadiness(payload){ return {ok:true,offlineFallback:true,result:{status:'OPEN',schema:'td613.dome-world.ash-readiness/v0.4.3',observation:{...payload.metadata,rawSensitiveTextAccepted:false},decision:'readiness-posture-only',reasons:['production sensitive intake and server custody are not enabled'],claimCeiling:'ash-readiness-preview-not-sensitive-intake'}}; }
+function renderAsh(){ if(!lastAsh) lastAsh=localAshReadiness(ashPayload()); $('ashPre').textContent=fmt(lastAsh); drawAshCanvas(); }
+function renderPatterns(){ const sample = { schema:'domeworld.pattern-library/v0.4', patterns:['Atrium lattice','Cistern mask','Loom cloth','Stewardship quarantine veil','Aperture tomography','Ash signature','Rest weather'], claim_ceiling:'pattern-signal-not-identity-proof' }; $('patternPre').textContent = fmt(sample); drawPatternCanvas(); }
+function renderRepo(){ lastRepoWeather = C.computeRepoWeather(world); $('repoPre').textContent = fmt(lastRepoWeather); drawRepoCanvas(); }
+function renderLore(){ const rows=[['Hush','Loom Room','cadence texture, masking, residual heat'],['Aperture','Tomography Room','narrowing, admissibility, route distortion'],['Safe Harbor','Cistern','packet custody, SHI, hold/recall'],['Flight','Solar Chimney','credential lift, LLM-ready handoff'],['Trainer','Forge / Compost','extract, forge, validate, inject/export'],['TD613 Ash','Intake Threshold','salted ambiance signatures for sensitive docs']]; $('loreMap').innerHTML = rows.map(r=>`<div class="status-line"><span>${r[0]} → ${r[1]}</span><span>${r[2]}</span></div>`).join(''); $('lorePre').textContent = fmt({legacy:'The Cadence Playground', future:'Dome-World / Flow-Core Atrium', preservation:'TCP lore becomes sediment, not clutter.', rows}); }
+
+function renderAccident(){ $('assayPre').textContent = lastAssay ? fmt(lastAssay) : fmt({instruction:'Run a perturbation assay. Surprise becomes measured route sensitivity, not proof.', claim_ceiling:C.CLAIM_CEILINGS.assay}); }
+function renderAPI(){
+  const receipt = C.generateWitnessReceipt(world);
+  $('endpointPre').textContent = `GET  /api/dome-world/ping
+GET  /api/dome-world/readiness
+POST /api/dome-world/aperture-bridge
+POST /api/dome-world/phason-gate
+POST /api/dome-world/ash-readiness
+POST /api/dome-world/exact-capture
+POST /api/dome-world/exact-closure
+POST /api/dome-world/trainer-step
+
+curl -X POST /api/dome-world/aperture-bridge \
+  -H 'content-type: application/json' \
+  -d '{"operation":"aperture-bridge","traceId":"example","apertureContext":{"version":"v2.9.4"},"payload":{"metrics":{"omissionPressure":0.2,"coherence":0.7,"divergence":0.3}}}'`;
+  $('apiPre').textContent = fmt({ event_example: {room:'loom', operator:'transmission', payload:{text:'a texture offered to the fold'}}, weather:C.computeAmbianceWeather(world), receipt_preview:receipt, ash_preview:world.ash?.latest || null, repo_weather:C.computeRepoWeather(world) });
+}
+function renderReceipts(){ $('receiptPre').textContent = fmt({world:C.generateWitnessReceipt(world),apertureBridge:lastBridge,phason:lastPhason,exact:lastExact,claim_ceiling:'receipts-witness-declared-routes-not-universal-authority'}); }
+function renderAperture(){ $('bridgePre').textContent=fmt(lastBridge||{schema:'td613.aperture.dome-flowcore-bridge/v2.9.4',status:'OPEN',instruction:'Compile modeled route weather or read the local Aperture handoff.',claimCeiling:'aperture-to-flowcore-translation-not-aperture-execution'}); }
+function renderPhason(){ $('phasonPre').textContent=fmt(lastPhason||{schema:'td613.dome-world.phason-gate/v0.4.3',status:'OPEN',instruction:'Run a content-stable projection simulation.',claimCeiling:'phason-gate-simulation-not-external-enforcement'}); }
+function renderSubstrate(){ $('exactPre').textContent=fmt(lastExact||{schema:'td613.dome-world.exact-receipt/v0.4.3',status:'OPEN',instruction:'Supply exact coordinates. Float coordinates are rejected.',claimCeiling:'exact-residual-receipt-not-proof-or-authority'}); $('exactStatus').textContent=lastExact?.result?.status||lastExact?.status||'OPEN'; }
+function stopLiveLattice(){ liveState.running=false; if(liveState.raf){cancelAnimationFrame(liveState.raf);liveState.raf=0;} }
+function renderActiveView(){
+  if(activeView!=='live') stopLiveLattice();
+  const renderers={weather:renderWeather,aperture:renderAperture,phason:renderPhason,substrate:renderSubstrate,ash:renderAsh,rooms:renderRooms,receipts:renderReceipts,lab:()=>{},math:renderMath,tomography:drawTomography,live:()=>{renderLiveReadout();setupLiveInput();startLiveLattice();},loom:renderLoom,stewardship:renderStewardship,patterns:renderPatterns,repo:renderRepo,lore:renderLore,accident:renderAccident,api:renderAPI};
+  (renderers[activeView]||(()=>{}))();
+}
+function openView(view){
+  if(!$(view)) return;
+  activeView=view;
+  const labViews=new Set(['lab','math','tomography','live','loom','stewardship','patterns','repo','lore','accident','api']);
+  const primaryView=labViews.has(view)?'lab':view;
+  document.querySelectorAll('.tab').forEach(b=>{const selected=b.dataset.view===primaryView;b.classList.toggle('active',selected);if(selected)b.setAttribute('aria-current','page');else b.removeAttribute('aria-current');});
+  document.querySelectorAll('.view').forEach(v=>v.classList.toggle('active',v.id===view));
+  const routeLabels={weather:'Weather / local section',rooms:'Rooms / local climates',lab:'Lab / field instruments',ash:'Ash / readiness membrane',substrate:'Substrate / exact residual',phason:'Phason / projection gate',aperture:'Aperture / one-way bridge',receipts:'Receipts / witness surface'};
+  if($('routeState')) $('routeState').textContent=routeLabels[primaryView]||'Flow-Core / local route';
+  requestAnimationFrame(()=>requestAnimationFrame(renderActiveView));
+}
+document.querySelectorAll('.tab').forEach(btn => btn.onclick = () => { if(!document.querySelector('.nav')?.dataset.dragged) openView(btn.dataset.view); });
+document.querySelectorAll('[data-open-view]').forEach(btn=>btn.onclick=()=>openView(btn.dataset.openView));
+const primaryNav=document.querySelector('.nav');
+let navDrag=null;
+primaryNav.addEventListener('pointerdown',e=>{navDrag={id:e.pointerId,x:e.clientX,left:primaryNav.scrollLeft,moved:false,captured:false};});
+primaryNav.addEventListener('pointermove',e=>{if(!navDrag||navDrag.id!==e.pointerId)return;const dx=e.clientX-navDrag.x;if(Math.abs(dx)>5&&!navDrag.captured){navDrag.moved=true;navDrag.captured=true;primaryNav.setPointerCapture?.(e.pointerId);primaryNav.classList.add('dragging');}if(navDrag.moved)primaryNav.scrollLeft=navDrag.left-dx;});
+function endNavDrag(){if(!navDrag)return;primaryNav.dataset.dragged=navDrag.moved?'1':'';navDrag=null;primaryNav.classList.remove('dragging');setTimeout(()=>delete primaryNav.dataset.dragged,0);}
+primaryNav.addEventListener('pointerup',endNavDrag);primaryNav.addEventListener('pointercancel',endNavDrag);
+document.querySelectorAll('[data-event]').forEach(b => b.onclick = () => routeEvent(b.dataset.event));
+$('senseBtn').onclick = () => { renderRooms(); log('Sensed '+C.ROOM_AMBIANCES[activeRoom].display+'.'); };
+$('transmitForm').onsubmit = (e) => { e.preventDefault(); const text=$('transmitInput').value.trim(); if(text){ routeEvent('transmission','loom',{text}); $('transmitInput').value=''; } };
+$('weaveBtn').onclick = () => routeEvent('transmission','loom',{text:'weather woven into cloth '+Date.now()});
+$('runGate').onclick = () => { lastGate = C.stewardshipGate({ language_or_framework:$('sgLang').value, source_type:$('sgSource').value, text:$('sgText').value }); renderStewardship(); log('Stewardship gate read: '+lastGate.stewardship_status+'.'); };
+$('gateEvent').onclick = () => routeEvent('stewardship-check','stewardship',{ language_or_framework:$('sgLang').value, source_type:$('sgSource').value, text:$('sgText').value });
+
+$('compileBridge').onclick=async()=>{const metrics={omissionPressure:$('bridgeOmission').value,coherence:$('bridgeCoherence').value,divergence:$('bridgeDivergence').value};try{lastBridge=await domeRequest('aperture-bridge',{metrics});}catch(error){lastBridge=localBridgeFallback(metrics);lastBridge.networkError=error.message;}renderAperture();};
+$('readApertureHandoff').onclick=()=>{try{lastBridge=JSON.parse(localStorage.getItem('td613.gateway.aperture-handoff')||'null')||{status:'OPEN',reason:'no-local-handoff'};}catch(error){lastBridge={status:'OPEN',reason:'handoff-unreadable'};}renderAperture();};
+$('runPhason').onclick=async()=>{const payload={contentHash:$('phasonHash').value,projection:{mode:$('phasonProjection').value}};try{lastPhason=await domeRequest('phason-gate',payload);}catch(error){lastPhason={ok:true,offlineFallback:true,result:{status:'OPEN',observation:{contentHash:payload.contentHash,contentChanged:false,projection:payload.projection},decision:'projection-simulation-only',claimCeiling:'phason-gate-simulation-not-external-enforcement'},networkError:error.message};}renderPhason();};
+function exactObservations(){const parsed=JSON.parse($('exactCoords').value);if(!Array.isArray(parsed)||!parsed.length)throw new Error('Enter a non-empty JSON array of coordinate arrays.');return parsed;}
+$('runExactCapture').onclick=async()=>{try{const observations=exactObservations();lastExact=await domeRequest('exact-capture',{observation_coords:observations[0]});}catch(error){lastExact={status:'OPEN',error:error.message,claimCeiling:'offline-or-invalid-exact-input-preserved-not-invented'};}renderSubstrate();};
+$('proposeExact').onclick=async()=>{try{lastExact=await domeRequest('trainer-step',{action:'propose',observations:exactObservations()});pendingProposalToken=lastExact.result?.proposalToken||null;$('confirmExact').disabled=!pendingProposalToken;}catch(error){lastExact={status:'OPEN',error:error.message,note:'Trainer may be disabled on public deployments.'};pendingProposalToken=null;$('confirmExact').disabled=true;}renderSubstrate();};
+$('confirmExact').onclick=async()=>{if(!pendingProposalToken)return;try{lastExact=await domeRequest('trainer-step',{action:'confirm',proposalToken:pendingProposalToken});$('exportCheckpoint').disabled=!lastExact.result?.checkpoint;pendingProposalToken=null;$('confirmExact').disabled=true;}catch(error){lastExact={status:'OPEN',error:error.message};}renderSubstrate();};
+$('exportCheckpoint').onclick=()=>{const checkpoint=lastExact?.result?.checkpoint;if(checkpoint)download('dome_world_exact_checkpoint_v0_4_3.json',checkpoint);};
+$('importCheckpoint').onchange=async event=>{const file=event.target.files?.[0];if(!file)return;try{const checkpoint=JSON.parse(await file.text());lastExact={status:'OPEN',decision:'client-checkpoint-imported-for-inspection',checkpoint,claimCeiling:'import-does-not-resume-or-mutate-without-server-authentication'};}catch(error){lastExact={status:'OPEN',error:'Checkpoint JSON could not be parsed.'};}renderSubstrate();};
+$('runAsh').onclick = async () => { const payload=ashPayload(); try{lastAsh=await domeRequest('ash-readiness',payload);}catch(error){lastAsh=localAshReadiness(payload);lastAsh.networkError=error.message;} renderAsh(); log('Ash readiness assessed without raw content intake.'); };
+$('copyAsh').onclick = () => copy($('ashPre').textContent);
+$('downloadAsh').onclick = () => download('td613_ash_readiness_v0_4_3.json', lastAsh || localAshReadiness(ashPayload()));
+$('redrawPattern').onclick = () => drawPatternCanvas(true);
+$('downloadPattern').onclick = () => { const a=document.createElement('a'); a.download='td613_ash_dome_pattern.png'; a.href=$('patternCanvas').toDataURL('image/png'); a.click(); };
+$('refreshRepoWeather').onclick = () => { renderRepo(); log('Repository weather refreshed.'); };
+$('copyRepoWeather').onclick = () => copy($('repoPre').textContent);
+
+$('runAssay').onclick = () => { lastAssay = C.runAccidentAssay(world, { type:$('assayType').value, before:$('assayBefore').value, after:$('assayAfter').value }); renderAccident(); log('Accident assay ran: '+lastAssay.delta.closure_class+'.'); };
+$('antiAssay').onclick = () => { $('assayBefore').value='oral tradition'; $('assayAfter').value='oral tradition as training data'; $('assayType').value='anti-equivalence'; $('runAssay').click(); };
+$('redrawTomo').onclick = () => drawTomography(true);
+
+$('resetLive').onclick = () => { resetLiveLattice(); drawLiveLattice(); log('Live heterostratigraphic lattice reset.'); };
+$('coolLive').onclick = () => { liveState.cool = Math.max(.90, liveState.cool-.015); renderLiveReadout(); log('Live lattice cooled; motion damped.'); };
+$('sparkLive').onclick = () => { liveState.impulse = Math.min(2.4, liveState.impulse+.25); liveState.nodes.forEach(n=>{n.vx+=(Math.random()-.5)*1.4;n.vy+=(Math.random()-.5)*1.4;n.pulse=1;}); renderLiveReadout(); log('φ/√3 torsion introduced.'); };
+
+$('copyCurl').onclick = () => copy($('endpointPre').textContent);
+$('downloadWorld').onclick = () => download('dome_world_ash_ambiance_world_v0_4_1.json', world);
+$('copyReceipt').onclick = () => copy($('receiptPre').textContent);
+$('downloadReceipt').onclick = () => download('dome_world_ash_ambiance_receipt_v0_4_1.json', C.generateWitnessReceipt(world));
+$('resetWorld').onclick = () => { world=C.createWorld({seed:'reset'+Date.now()}); activeRoom='atrium'; save(); log('World reset.'); renderActiveView(); };
+
+function setupCanvas(canvas){ const dpr=Math.min(window.devicePixelRatio||1,2); const rect=canvas.getBoundingClientRect(); const width=Math.max(1,Math.floor(rect.width*dpr)); const height=Math.max(1,Math.floor(rect.height*dpr)); if(canvas.width!==width||canvas.height!==height){canvas.width=width;canvas.height=height;} const ctx=canvas.getContext('2d'); ctx.setTransform(dpr,0,0,dpr,0,0); return [ctx,rect.width,rect.height]; }
+function drawLine(ctx,x1,y1,x2,y2,color,w=1,alpha=1){ ctx.save(); ctx.globalAlpha=alpha; ctx.strokeStyle=color; ctx.lineWidth=w; ctx.beginPath(); ctx.moveTo(x1,y1); ctx.lineTo(x2,y2); ctx.stroke(); ctx.restore(); }
+function drawTriGrid(ctx,w,h,spacing,angle,color,alpha){ const diag=Math.hypot(w,h); ctx.save(); ctx.translate(w/2,h/2); ctx.rotate(angle); ctx.globalAlpha=alpha; ctx.strokeStyle=color; ctx.lineWidth=.8; for(let x=-diag;x<=diag;x+=spacing){ ctx.beginPath(); ctx.moveTo(x,-diag); ctx.lineTo(x,diag); ctx.stroke(); } ctx.restore(); }
+function drawPhiRosette(ctx,w,h,phase=0){ const cx=w*.52, cy=h*.47; const phi=(1+Math.sqrt(5))/2; ctx.save(); ctx.globalAlpha=.48; for(let i=0;i<10;i++){ const a=i*Math.PI/5+phase; ctx.strokeStyle=i%2?'rgba(228,198,108,.32)':'rgba(179,155,236,.22)'; ctx.lineWidth=1; ctx.beginPath(); for(let t=-260;t<260;t+=6){ const r=t/260; const wob=Math.sin(t*.035*phi+i)*18; const x=cx+Math.cos(a)*t+Math.cos(a+Math.PI/2)*wob; const y=cy+Math.sin(a)*t+Math.sin(a+Math.PI/2)*wob; if(t===-260)ctx.moveTo(x,y); else ctx.lineTo(x,y); } ctx.stroke(); } ctx.restore(); }
+function drawFolds(ctx,w,h){ C.recomputeFolds(world); const folds=world.folds.slice(0,7); folds.forEach((f,i)=>{ const y=h*(.18+i*.105); const amp=18+f.fold_density*42; ctx.save(); ctx.globalAlpha=.30+f.fold_density*.45; ctx.strokeStyle='rgba(217,133,148,.85)'; ctx.lineWidth=1+f.fold_density*3; ctx.beginPath(); for(let x=0;x<=w;x+=8){ const yy=y+Math.sin(x*.015+i)*amp*Math.sin((x/w)*Math.PI); if(x===0)ctx.moveTo(x,yy); else ctx.lineTo(x,yy); } ctx.stroke(); ctx.restore(); }); }
+function drawWeatherCanvas(){ const canvas=$('weatherCanvas'); if(!canvas) return; const [ctx,w,h]=setupCanvas(canvas); ctx.clearRect(0,0,w,h); const g=ctx.createRadialGradient(w*.5,h*.46,10,w*.5,h*.5,Math.max(w,h)*.7); g.addColorStop(0,'rgba(127,215,255,.12)'); g.addColorStop(.45,'rgba(14,39,31,.35)'); g.addColorStop(1,'rgba(2,8,7,.94)'); ctx.fillStyle=g; ctx.fillRect(0,0,w,h); drawTriGrid(ctx,w,h,28,0,'rgba(118,234,212,.22)',.7); drawTriGrid(ctx,w,h,28,Math.PI/3,'rgba(118,234,212,.16)',.65); drawTriGrid(ctx,w,h,28,-Math.PI/3,'rgba(127,215,255,.14)',.65); drawPhiRosette(ctx,w,h,.08); drawFolds(ctx,w,h); ctx.save(); ctx.strokeStyle='rgba(255,248,218,.30)'; ctx.lineWidth=1.4; ctx.beginPath(); ctx.arc(w*.5,h*.62,Math.min(w,h)*.43,Math.PI,0); ctx.stroke(); ctx.restore(); const rooms=Object.keys(C.ROOM_AMBIANCES); rooms.forEach((r,i)=>{ const a=(i/rooms.length)*Math.PI*2-Math.PI/2; const rad=Math.min(w,h)*.32; const x=w*.5+Math.cos(a)*rad; const y=h*.58+Math.sin(a)*rad*.62; const sec=world.local_sections[r]; ctx.fillStyle=`rgba(228,198,108,${.18+sec.ambiance.fold_index*.45})`; ctx.beginPath(); ctx.arc(x,y,5+sec.ambiance.fold_density*10,0,Math.PI*2); ctx.fill(); }); }
+function drawTomography(){ const canvas=$('tomoCanvas'); if(!canvas) return; const [ctx,w,h]=setupCanvas(canvas); ctx.fillStyle='#040c09'; ctx.fillRect(0,0,w,h); const phase=(world.day%60)/60*Math.PI*2; drawTriGrid(ctx,w,h,24,0,'rgba(118,234,212,.20)',.9); drawTriGrid(ctx,w,h,24,Math.PI/3+0.045,'rgba(118,234,212,.16)',.9); drawTriGrid(ctx,w,h,24,-Math.PI/3-0.032,'rgba(127,215,255,.14)',.9); drawPhiRosette(ctx,w,h,phase*.06); drawFolds(ctx,w,h); ctx.save(); ctx.globalAlpha=.2; ctx.strokeStyle='rgba(228,198,108,.55)'; for(let r=36;r<Math.min(w,h)*.6;r*=1.618){ ctx.beginPath(); ctx.arc(w*.5,h*.5,r,0,Math.PI*2); ctx.stroke(); } ctx.restore(); $('foldPre').textContent = fmt({formula:C.AMBIANCE_MATH.foldObstruction, top_folds:world.folds.slice(0,4)}); }
+
+function seededRand(seed){ let x=parseInt(String(seed||'1').slice(0,8),16)||123456; return function(){ x ^= x << 13; x ^= x >>> 17; x ^= x << 5; return ((x>>>0)%10000)/10000; }; }
+function drawAshCanvas(){ const canvas=$('ashCanvas'); if(!canvas) return; const [ctx,w,h]=setupCanvas(canvas); const receipt=lastAsh||localAshReadiness(ashPayload()); const seed=JSON.stringify(receipt).split('').reduce((n,ch)=>((n*31)+ch.charCodeAt(0))>>>0,2166136261).toString(16); const rnd=seededRand(seed); const density=.38; ctx.fillStyle='#040c09'; ctx.fillRect(0,0,w,h); drawTriGrid(ctx,w,h,18+density*18,0,'rgba(118,234,212,.24)',.9); drawTriGrid(ctx,w,h,18+density*18,Math.PI/3+.03,'rgba(127,215,255,.16)',.85); drawPhiRosette(ctx,w,h,rnd()*Math.PI); for(let i=0;i<9;i++){ const y=h*(.13+i*.09); const amp=10+density*54*rnd(); ctx.save(); ctx.globalAlpha=.22+density*.55; ctx.strokeStyle=i%2?'rgba(217,133,148,.88)':'rgba(228,198,108,.66)'; ctx.lineWidth=1+density*3; ctx.beginPath(); for(let x=0;x<=w;x+=7){ const yy=y+Math.sin(x*(.012+rnd()*.006)+i)*amp*Math.sin((x/w)*Math.PI); if(x===0)ctx.moveTo(x,yy); else ctx.lineTo(x,yy); } ctx.stroke(); ctx.restore(); } ctx.save(); ctx.globalAlpha=.18; ctx.fillStyle='rgba(0,0,0,.72)'; ctx.fillRect(0,0,w,h); ctx.globalAlpha=.9; ctx.strokeStyle='rgba(255,248,218,.30)'; ctx.lineWidth=1.2; ctx.beginPath(); ctx.arc(w*.5,h*.56,Math.min(w,h)*.36,Math.PI,0); ctx.stroke(); ctx.fillStyle='rgba(255,248,218,.78)'; ctx.font='12px ui-monospace,monospace'; ctx.fillText('TD613 Ash · readiness only · no raw intake',18,26); ctx.fillStyle='rgba(228,198,108,.78)'; ctx.fillText(String(receipt.traceId||receipt.result?.observation?.artifactId||'metadata-only'),18,44); ctx.restore(); }
+function drawPatternCanvas(){ const canvas=$('patternCanvas'); if(!canvas) return; const [ctx,w,h]=setupCanvas(canvas); ctx.fillStyle='#040c09'; ctx.fillRect(0,0,w,h); drawTriGrid(ctx,w,h,22,0,'rgba(118,234,212,.24)',.95); drawTriGrid(ctx,w,h,22,Math.PI/3,'rgba(118,234,212,.18)',.85); drawTriGrid(ctx,w,h,22,-Math.PI/3,'rgba(127,215,255,.14)',.85); drawPhiRosette(ctx,w,h,(world.day%30)/30); drawFolds(ctx,w,h); ctx.save(); ctx.globalAlpha=.22; for(let r=22;r<Math.min(w,h)*.72;r*=1.618){ ctx.strokeStyle=r%2?'rgba(228,198,108,.52)':'rgba(179,155,236,.38)'; ctx.beginPath(); ctx.arc(w*.5,h*.53,r,0,Math.PI*2); ctx.stroke(); } ctx.restore(); }
+function drawRepoCanvas(){ const canvas=$('repoCanvas'); if(!canvas) return; const [ctx,w,h]=setupCanvas(canvas); const rw=lastRepoWeather || C.computeRepoWeather(world); ctx.fillStyle='#040c09'; ctx.fillRect(0,0,w,h); drawTriGrid(ctx,w,h,30,0,'rgba(118,234,212,.16)',.7); drawPhiRosette(ctx,w,h,.22); drawFolds(ctx,w,h); ctx.save(); ctx.fillStyle='rgba(4,16,12,.72)'; ctx.strokeStyle='rgba(240,213,142,.30)'; ctx.lineWidth=1; ctx.roundRect?.(20,20,Math.min(w-40,520),160,18); if(ctx.roundRect)ctx.fill(); else ctx.fillRect(20,20,Math.min(w-40,520),160); ctx.fillStyle='rgba(255,248,218,.86)'; ctx.font='18px Georgia,serif'; ctx.fillText('Repository Weather',42,58); ctx.font='12px ui-monospace,monospace'; ctx.fillStyle='rgba(228,198,108,.86)'; ctx.fillText(rw.repo_weather,42,84); ctx.fillStyle='rgba(205,226,212,.82)'; ctx.fillText('dominant fold: '+rw.dominant_fold,42,108); ctx.fillText('Ash items: '+rw.ash_items+' · quarantine: '+rw.quarantined_items,42,132); ctx.fillText('ceiling: '+rw.claim_ceiling,42,156); ctx.restore(); }
+
+
+// Live Lattice: tactile particles sampling the heterostratigraphic gradient-misfit potential.
+const liveState = { nodes: [], input: {x:0,y:0,active:false,inside:false}, running:false, raf:0, cool:.985, impulse:1 };
+function liveSeededRand(){ const seed = C.generateLiveLatticeSeed(world,{node_count:84}).seed; let x = parseInt(seed.slice(0,8),16) || 12345; return function(){ x ^= x << 13; x ^= x >>> 17; x ^= x << 5; return ((x>>>0)%10000)/10000; }; }
+function resetLiveLattice(){
+  const canvas=$('liveCanvas'); if(!canvas) return;
+  const rect=canvas.getBoundingClientRect(); const rnd=liveSeededRand(); liveState.nodes=[];
+  const n = Math.min(96, Math.max(54, Math.floor(rect.width*rect.height/7600)));
+  for(let i=0;i<n;i++){
+    const a = i * Math.PI * (3-Math.sqrt(5));
+    const rr = Math.sqrt((i+.5)/n) * Math.min(rect.width,rect.height)*.44;
+    liveState.nodes.push({x:Math.cos(a)*rr + (rnd()-.5)*22, y:Math.sin(a)*rr + (rnd()-.5)*22, vx:(rnd()-.5)*.7, vy:(rnd()-.5)*.7, pulse:rnd()*.6});
+  }
+  renderLiveReadout();
+}
+function setupLiveInput(){
+  const canvas=$('liveCanvas'); if(!canvas || canvas.dataset.liveBound) return; canvas.dataset.liveBound='true';
+  const pos=(e)=>{ const r=canvas.getBoundingClientRect(); const p=e.touches?e.touches[0]:e; liveState.input.x=p.clientX-r.left-r.width/2; liveState.input.y=p.clientY-r.top-r.height/2; liveState.input.inside=true; };
+  canvas.addEventListener('pointermove', e=>{pos(e); liveState.input.active=e.buttons>0;});
+  canvas.addEventListener('pointerdown', e=>{canvas.setPointerCapture?.(e.pointerId); pos(e); liveState.input.active=true;});
+  canvas.addEventListener('pointerup', ()=>{liveState.input.active=false;});
+  canvas.addEventListener('pointerleave', ()=>{liveState.input.inside=false; liveState.input.active=false;});
+  canvas.addEventListener('touchmove', e=>e.preventDefault(), {passive:false});
+}
+function updateLiveNode(node, w, h){
+  const gm = C.computeGradientMisfit(node.x, node.y, {phase: world.day*.07});
+  const gx = gm.g_triangular[0]-gm.g_quasiperiodic[0];
+  const gy = gm.g_triangular[1]-gm.g_quasiperiodic[1];
+  node.vx += -gx * 22 * liveState.impulse + Math.sin(node.y*.017+world.day*.03)*.006;
+  node.vy += -gy * 22 * liveState.impulse + Math.cos(node.x*.013-world.day*.02)*.006;
+  if(liveState.input.inside){
+    const dx=node.x-liveState.input.x, dy=node.y-liveState.input.y, d=Math.hypot(dx,dy)||1;
+    if(d<260){ const f=(260-d)/260; const s=liveState.input.active?-0.052:.026; node.vx += dx/d*f*s*28; node.vy += dy/d*f*s*28; node.pulse=Math.min(1,node.pulse+f*.06); }
+  }
+  node.vx*=liveState.cool; node.vy*=liveState.cool; node.x+=node.vx; node.y+=node.vy;
+  const bx=w/2-10, by=h/2-10; if(Math.abs(node.x)>bx){ node.x=Math.sign(node.x)*bx; node.vx*=-.62; } if(Math.abs(node.y)>by){ node.y=Math.sign(node.y)*by; node.vy*=-.62; }
+  node.pulse*=.965;
+}
+function drawLiveLattice(){
+  liveState.raf=0;
+  if(!liveState.running || activeView!=='live' || document.hidden) return;
+  const canvas=$('liveCanvas'); if(!canvas) return; const [ctx,w,h]=setupCanvas(canvas); if(!liveState.nodes.length) resetLiveLattice();
+  ctx.fillStyle='rgba(4,12,9,.28)'; ctx.fillRect(0,0,w,h); ctx.save(); ctx.translate(w/2,h/2);
+  liveState.nodes.forEach(n=>updateLiveNode(n,w,h));
+  // substrate: rigorous layers beneath the nodes
+  ctx.save(); ctx.translate(-w/2,-h/2); drawTriGrid(ctx,w,h,24,0,'rgba(118,234,212,.13)',.75); drawTriGrid(ctx,w,h,24,Math.PI/3+.055,'rgba(118,234,212,.11)',.75); drawPhiRosette(ctx,w,h,world.day*.006); ctx.restore();
+  for(let i=0;i<liveState.nodes.length;i++){
+    for(let j=i+1;j<liveState.nodes.length;j++){
+      const a=liveState.nodes[i], b=liveState.nodes[j]; const d=Math.hypot(a.x-b.x,a.y-b.y);
+      if(d<92){ const mid=C.computeHeterostratigraphicPotential((a.x+b.x)/2,(a.y+b.y)/2,{phase:world.day*.07}); const alpha=(1-d/92)*(.18+mid.fold_density*.62); ctx.strokeStyle=`rgba(${mid.fold_density>.55?'217,133,148':'138,43,226'},${alpha})`; ctx.lineWidth=.45+mid.fold_density*1.2; ctx.beginPath(); ctx.moveTo(a.x,a.y); ctx.lineTo(b.x,b.y); ctx.stroke(); }
+    }
+  }
+  liveState.nodes.forEach(n=>{ const p=C.computeHeterostratigraphicPotential(n.x,n.y,{phase:world.day*.07}); ctx.fillStyle=p.fold_density>.58?`rgba(228,198,108,${.62+n.pulse*.35})`:`rgba(179,155,236,${.48+n.pulse*.25})`; ctx.beginPath(); ctx.arc(n.x,n.y,2.1+n.pulse*5+p.fold_density*2,0,Math.PI*2); ctx.fill(); });
+  ctx.restore();
+  if(liveState.running && activeView==='live' && !document.hidden) liveState.raf=requestAnimationFrame(drawLiveLattice);
+}
+function startLiveLattice(){ if(activeView!=='live'||document.hidden)return;liveState.running=true;if(!liveState.raf)liveState.raf=requestAnimationFrame(drawLiveLattice); }
+function renderLiveReadout(){
+  const sample = C.computeGradientMisfit(0,0,{phase:world.day*.07});
+  const seed = C.generateLiveLatticeSeed(world,{node_count: liveState.nodes.length || 84});
+  if($('livePre')) $('livePre').textContent = fmt({ ...seed, center_gradient_misfit: sample, note:'Erin tactile particle sketch upgraded: nodes are probes moving over heterostratigraphic gradient misfit, not random tethers pretending to be the substrate.' });
+}
+
+window.addEventListener('resize', () => { clearTimeout(window.__dwResize); window.__dwResize=setTimeout(renderActiveView,140); });
+document.addEventListener('visibilitychange',()=>{if(document.hidden)stopLiveLattice();else if(activeView==='live')startLiveLattice();});
+log('Dome-World v0.4.3 initialized. Modeled weather, exact residuals, and custody ceilings remain distinct.');
+renderActiveView();
+</script>
+</body>
+</html>

@@ -136,6 +136,9 @@ function inspectRequiredSurfaces(packet = {}, options = {}) {
   if (getPath(packet, 'eo_rfd_route_state.firmware_status') === 'firmware-attached' && options.eoRfdAdapterVerified !== true) reasons.push('EO-RFD firmware-attached claim requires verified adapter proof');
   const eoText = body(packet.eo_rfd_route_state);
   if (/executive[-\s]*order|legal authority|public law/iu.test(eoText)) reasons.push('EO-RFD route state must not claim legal or executive-order authority');
+  if (getPath(packet, 'eo_rfd_route_state.dome_world_context.raw_exact_coordinates_allowed') !== false) reasons.push('Hush may carry Dome receipt references, never raw exact coordinates');
+  if (getPath(packet, 'eo_rfd_route_state.dome_world_context.training_history_allowed') !== false) reasons.push('Hush may not carry Dome trainer history');
+  if (getPath(packet, 'eo_rfd_route_state.dome_world_context.sensitive_text_allowed') !== false) reasons.push('Hush may not carry Dome sensitive text');
   for (const pattern of PUBLIC_BLOCKED_PATTERNS) if (pattern.test(body(packet.instruction_contract)) || pattern.test(body(packet.claim_limits)) || pattern.test(body(packet.release_discipline))) reasons.push('contract contains forbidden public authority overclaim');
   return { reasons, warnings };
 }

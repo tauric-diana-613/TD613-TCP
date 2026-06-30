@@ -158,10 +158,14 @@ Stylometry becomes empirical audit evidence after provider output exists.
 
 ## EO-RFD boundary
 
-The outgoing contract may carry EO-RFD route state as interface-only:
+The outgoing contract may carry EO-RFD route state using the compatibility
+`firmware_status: interface-only` label plus explicit phase-aware fields:
 
 ```text
 firmware_status: interface-only
+operational_state: interface_context
+claim_authority: design_signal
+target_operational_state: verified-runtime-installation
 route_conscience_hook
 provider_contract_hook
 stylometry_drift_hook

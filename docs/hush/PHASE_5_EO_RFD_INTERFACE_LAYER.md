@@ -34,7 +34,7 @@ KIRA remains adapter-preflight. KIRA cannot become runtime through Phase 5.
 
 ## Read order
 
-Phase 5 signals sit last in the v2.9.2 read order:
+Phase 5 signals sit last in the v2.9.4 read order:
 
 1. PRCS-A / observed regime
 2. Six defining properties

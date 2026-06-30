@@ -47,6 +47,7 @@ function makeCanvasStub() {
     measureText: () => ({ width: 0 }), transform: noop,
     getTransform: () => ({ a: 1, b: 0, c: 0, d: 1, e: 0, f: 0 }),
     isPointInPath: () => false, isPointInStroke: () => false,
+    addColorStop: noop,
     createLinearGradient: () => stub,
     createRadialGradient: () => stub,
     createPattern: () => stub,

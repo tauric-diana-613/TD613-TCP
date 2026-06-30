@@ -33,4 +33,6 @@ Do not use bare identity, legal-status, authorship-proof, v3-default, SH3-replac
 
 ## EO-RFD note
 
-EO means EO-RFD route conscience / context lane (interface-only) when displayed in Safe Harbor verification contexts.
+EO means the EO-RFD route conscience / context lane when displayed in Safe
+Harbor verification contexts. Current state is `interface_context`; current
+claim authority is `design_signal`.

@@ -7,7 +7,7 @@ const light = fs.readFileSync('app/adversarial-bench-light.js', 'utf8');
 const phase31 = fs.readFileSync('app/hush-phase31-1.js', 'utf8');
 const phase31Original = fs.readFileSync('app/hush-phase31-1-original.js', 'utf8');
 const housekeepingRelayout = fs.readFileSync('app/hush-housekeeping-relayout.js', 'utf8');
-const vercel = fs.readFileSync('vercel.json', 'utf8');
+const vercel = JSON.parse(fs.readFileSync('vercel.json', 'utf8'));
 
 assert(html.includes('adversarial-bench-light.js'), 'Hush page should boot through the light controller');
 assert(!html.includes('asset-versions.js'), 'Hush page should not use asset-versions document.write boot');
@@ -28,7 +28,15 @@ assert(!/^import .*hush-custom-mask\.js/m.test(phase31), 'Phase31 should not sta
 assert(phase31Original.includes("import('./engine/hush-custom-mask.js')"), 'Phase31 implementation should lazy-load custom-mask engine');
 assert(!html.includes('hush-edit-corpus-open-fallback.js'), 'Hush page should not load fallback edit owner scripts');
 assert(!housekeepingRelayout.includes('hush-phase39-ui.js'), 'housekeeping relayout should not eagerly append Phase 39 UI');
-assert(!/"source": "\/hush-\(\.\*\)".*"no-store/s.test(vercel), 'Hush static assets should not force no-store');
-assert(!/"source": "\/engine\/\(\.\*\)".*"no-store/s.test(vercel), 'engine static assets should not force no-store');
+const headerValue = (source) => vercel.headers
+  .find((entry) => entry.source === source)
+  ?.headers?.find((header) => header.key.toLowerCase() === 'cache-control')
+  ?.value || '';
+for (const source of ['/hush-(.*)', '/app/hush-(.*)']) {
+  assert(!headerValue(source).includes('no-store'), `${source} static assets should not force no-store`);
+}
+for (const source of ['/engine/(.*)', '/app/engine/(.*)']) {
+  assert(!headerValue(source).includes('no-store'), `${source} static assets should not force no-store`);
+}
 
 console.log('hush-load-budget tests passed');

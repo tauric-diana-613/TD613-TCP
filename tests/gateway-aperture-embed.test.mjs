@@ -9,6 +9,7 @@ const repoRoot = path.resolve(path.dirname(__filename), '..');
 const gatewayHtml = fs.readFileSync(path.join(repoRoot, 'app', 'index.html'), 'utf8');
 const browserMainSource = fs.readFileSync(path.join(repoRoot, 'app', 'browser-main.js'), 'utf8');
 const apertureShimHtml = fs.readFileSync(path.join(repoRoot, 'app', 'aperture', 'index.html'), 'utf8');
+const assetVersionsSource = fs.readFileSync(path.join(repoRoot, 'app', 'asset-versions.js'), 'utf8');
 const apertureHtml = fs.readFileSync(path.join(repoRoot, 'app', 'aperture', 'tool.html'), 'utf8');
 const harborMainSource = fs.readFileSync(path.join(repoRoot, 'app', 'safe-harbor', 'app', 'main.js'), 'utf8');
 
@@ -29,7 +30,9 @@ assert.ok(browserMainSource.includes('initGatewayPreview'), 'gateway runtime ini
 assert.ok(browserMainSource.includes('toggleGatewayPreviewMoire'), 'gateway runtime exposes a dedicated Moire preview control');
 assert.ok(browserMainSource.includes('gatewayApertureStorageEntries'), 'gateway runtime reads Aperture lane summaries from durable browser storage');
 assert.ok(browserMainSource.includes('drawGatewayPreviewLineField'), 'gateway runtime uses layered line-field rendering for the gateway moire preview');
-assert.ok(apertureShimHtml.includes('src="./tool.html?v=202606222030"'), 'Aperture shim cache token points at the v2.9.2 canonical build');
+const apertureAssetToken = assetVersionsSource.match(/aperture:\s*'([^']+)'/)?.[1];
+assert.ok(apertureAssetToken, 'asset version registry exposes an Aperture token');
+assert.ok(apertureShimHtml.includes(`src="./tool.html?v=${apertureAssetToken}"`), 'Aperture shim cache token matches the canonical asset registry');
 assert.ok(apertureHtml.includes('APERTURE_GATEWAY_EMBED'), 'Aperture runtime still exposes an embed-mode branch');
 assert.ok(apertureHtml.includes('window.parent.postMessage'), 'Aperture embed can still bridge status to the gateway');
 assert.ok(apertureHtml.includes('apertureVersion: APERTURE_VERSION'), 'Aperture bridge summaries carry the canonical Aperture version');

@@ -2,7 +2,7 @@
 
 ## Why Phase 12 exists
 
-Phase 12 answers the Aperture counter-tool audit finding, now canonically tracked under v2.9.2, that Hush was becoming reviewable before it became sufficiently steering-aware.
+Phase 12 answers the Aperture counter-tool audit finding, now canonically tracked under v2.9.4, that Hush was becoming reviewable before it became sufficiently steering-aware.
 
 The failure mode was not that Hush lacked metrics. The failure mode was that Hush could generate a set of candidates, score them, and select the best available candidate even when the entire candidate set remained weak.
 

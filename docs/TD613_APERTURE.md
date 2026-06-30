@@ -10,7 +10,7 @@ The live repo stance is:
 
 - `PRCS-A` is the observed regime
 - `TD613 Aperture` is the counter-tool
-- `v2.9.2` / `td613-aperture/v2.9.2` is the current canonical instrument identity
+- `v2.9.4` / `td613-aperture/v2.9.4` is the current canonical instrument identity
 - the instrument is anti-enforcement and warning-first
 
 So Aperture should:
@@ -39,7 +39,17 @@ That means the sequence is:
 
 If the write lane misses, the correct answer is a visible hold docket. Aperture is not supposed to conceal that miss.
 
-The v2.9.2 browser instrument carries the doctrine kernel, geometric addendum, ZFP certification, and Moire Stratigraphy layer without changing that foundation doctrine. Rupture is gated by action plus incomplete closure (`acted && closureScore < 1`); route posture, beacon, zone, and visualization remain visible state, but `Pi` is not a rupture gate.
+The v2.9.4 browser instrument carries the doctrine kernel, geometric addendum,
+ZFP certification, Moire Stratigraphy, Phason seam detection, and Sigma
+dynamical instrument without changing that foundation doctrine. Rupture is
+gated by action plus incomplete closure (`acted && closureScore < 1`); route
+posture, beacon, zone, and visualization remain visible state, but `Pi` is not
+a rupture gate.
+
+Its Dome-World bridge is pure and one-way. `compileDomeWorldBridge(snapshot)`
+returns modeled route weather without network activity;
+`emitDomeWorldBridgeReceipt(snapshot)` is the explicit storage/event action.
+Modeled weather cannot enter the exact residual gate.
 
 ## What Aperture currently tracks
 
@@ -95,10 +105,11 @@ If you are checking Aperture in the current repo, verify these:
 
 - it preserves the `PRCS-A` regime callout
 - it preserves the `counter-tool` role
-- it reports `v2.9.2` and `td613-aperture/v2.9.2` on live, packet, engine, bridge, and diagnostics surfaces
+- it reports `v2.9.4` and `td613-aperture/v2.9.4` on live, packet, engine, bridge, and diagnostics surfaces
 - it does not enforce selective admissibility over normal landed TCP outputs
 - it exposes warning signals without silently rerouting to source
 - ZFP certification, corrected rupture logic, Moire Stratigraphy, and Gateway embed handoff remain present in the canonical body
+- the Phason/Sigma surfaces and pure Dome-World bridge compiler remain present
 - annex diagnostics inspect `app/aperture/tool.html`, not the iframe shim
 
 ## Design law

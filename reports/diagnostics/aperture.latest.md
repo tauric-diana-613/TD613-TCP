@@ -2,23 +2,23 @@
 
 Source: app/aperture/tool.html
 Status: passed
-Version: 2.9.2
-Title: TD613 Aperture - v2.9.2
+Version: 2.9.4
+Title: TD613 Aperture v2.9.4
 
 ## Fingerprint
 
-- bytes: 886993
-- line_count: 18034
-- inline_script_count: 36
+- bytes: 1029468
+- line_count: 22014
+- inline_script_count: 57
 - panel_count: 6
-- button_count: 43
-- content_hash_sha256: 5a8c8c8400069242109c2e1ea74488b669fe24a6c4aaa597898622d70a0296f6
+- button_count: 46
+- content_hash_sha256: 35442480b8728e2fc5417026320743e633979811a8d3ab9eb6527edc385d593e
 
 ## Checks
 
-- [pass] title marker: TD613 Aperture - v2.9.2 observed
-- [pass] version marker: version 2.9.2 observed
-- [pass] inline runtime present: 36 inline script block(s)
+- [pass] title marker: TD613 Aperture v2.9.4 observed
+- [pass] version marker: version 2.9.4 observed
+- [pass] inline runtime present: 57 inline script block(s)
 - [pass] meta tool-name: tool-name => TD613 Aperture
 - [pass] meta tool-role: tool-role => counter-tool
 - [pass] meta observed-regime: observed-regime => PRCS-A
@@ -43,6 +43,7 @@ Title: TD613 Aperture - v2.9.2
 - [pass] function createTCPHandoffPacket: createTCPHandoffPacket present
 - [pass] function scrubPacketEnvelope: scrubPacketEnvelope present
 - [pass] function triggerPreparedTCPHandoff: triggerPreparedTCPHandoff present
+- [pass] function compileDomeWorldBridge: compileDomeWorldBridge present
 - [pass] source declaration: source declaration present
 - [pass] counter-tool stance: counter-tool stance present
 - [pass] anti-enforcement stance: anti-enforcement stance present
@@ -66,4 +67,7 @@ Title: TD613 Aperture - v2.9.2
 - [pass] required formulae list: required formulae list present
 - [pass] EO-RFD receipt globals: EO-RFD receipt globals present
 - [pass] Gateway embed bridge: Gateway embed bridge present
-- [pass] Aperture v2.9.2 schema marker: Aperture v2.9.2 schema marker present
+- [pass] Aperture v2.9.4 schema marker: Aperture v2.9.4 schema marker present
+- [pass] Sigma dynamical instrument: Sigma dynamical instrument present
+- [pass] Phason seam detector: Phason seam detector present
+- [pass] pure Dome-World bridge compiler: pure Dome-World bridge compiler present

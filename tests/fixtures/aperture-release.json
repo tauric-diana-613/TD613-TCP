@@ -1,0 +1,19 @@
+{
+  "schema": "td613.aperture.release/v1",
+  "version": "v2.9.4",
+  "apertureSchema": "td613-aperture/v2.9.4",
+  "featureVersion": "v2.9.4-sigma-dynamical-instrument",
+  "doctrineKernelSchema": "td613.aperture.doctrine-kernel/v2.9.4",
+  "domeBridgeSchema": "td613.aperture.dome-flowcore-bridge/v2.9.4",
+  "domeWorld": {
+    "version": "v0.4.3",
+    "schema": "td613.dome-world/v0.4.3",
+    "exactReceiptSchema": "td613.dome-world.exact-receipt/v0.4.3"
+  },
+  "observedRegime": "PRCS-A",
+  "eorfd": {
+    "operationalState": "interface_context",
+    "claimAuthority": "design_signal",
+    "targetOperationalState": "verified_runtime_installation"
+  }
+}

@@ -6,6 +6,7 @@ coverage/
 .env
 reports/diagnostics/.staging/
 .aperture-staging/
+.venv-dome/
 
 # Crash dumps and edge profiles
 .codex-http-*.pid
@@ -13,3 +14,5 @@ tmp-edge-profile-*/
 *.dmp
 *.dat
 Crashpad/
+.vercel
+.env*

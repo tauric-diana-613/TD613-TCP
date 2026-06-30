@@ -1,0 +1,9 @@
+{
+  "schema": "td613.aperture-to-dome.route-weather/v1",
+  "source": { "tool": "TD613 Aperture", "version": "v2.9.3", "role": "counter-tool" },
+  "active_lane": "admissibility_scan",
+  "artifact_id": "art_in_field",
+  "observation_coords": [3, 2, 0, 0],
+  "_note": "3 + 2*theta in K=Q(sqrt2+sqrt3); lies in span{1,theta} -> captured, residual 0, grade FORCED",
+  "claim_ceiling": "aperture-to-flowcore-translation-not-aperture-execution"
+}

@@ -20,6 +20,7 @@ TD613 Hush is the local authorship-pressure and custody review instrument inside
 - [TD613 Mission Thesis](TD613_MISSION_THESIS.md) — Custodial AI-access protocol for vulnerable speech and vulnerable corpora entering model-mediated environments.
 - [TD613 Aperture](TD613_APERTURE.md) — Counter-tool for governed exposure events and anti-selective-admissibility audit posture.
 - [TD613 Safe Harbor](TD613_SAFE_HARBOR.md) — Provenance-preserving passage layer.
+- [Dome-World / Flow-Core](DOME_WORLD_FLOW_CORE.md) — Non-public route-weather, exact residual, Phason, and readiness station.
 - [Responsible Use](RESPONSIBLE_USE.md) — Appropriate and unsupported uses.
 - [Whistleblower Policy Posture](WHISTLEBLOWER_POLICY_POSTURE.md) — Policy framing for vulnerable speakers and evidence-preserving review.
 - [Anti-Selective Admissibility](ANTI_SELECTIVE_ADMISSIBILITY.md) — How Hush resists cherry-picked coherence and event-rationality drift.

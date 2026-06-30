@@ -136,6 +136,7 @@
       './browser-diagnostics.js?v=' + (V.diagnostics || V.main || ''),
       './browser-engine.js?v=' + (V.engine || V.main || ''),
       './operator-receipt.js?v=' + (V.receipt || V.main || ''),
+      './chamber-chrome.js?v=' + (V.chrome || V.main || ''),
       './trainer-standalone.js?v=' + (V.trainerStandalone || V.main || '202606162245')
     ].forEach(appendScript);
     return;

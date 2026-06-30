@@ -6,6 +6,11 @@
     },
     "api/hush-generate.js": {
       "maxDuration": 60
+    },
+    "api/dome-world-engine.py": {
+      "maxDuration": 60,
+      "includeFiles": "packages/dome_world_exact/**/*.py",
+      "excludeFiles": "packages/dome_world_exact/{bridge,fixtures,schemas,tests,verification}/**"
     }
   },
   "headers": [
@@ -34,9 +39,20 @@
     { "source": "/app/engine/(.*)", "headers": [{ "key": "Cache-Control", "value": "public, max-age=0, must-revalidate" }] },
     { "source": "/engine/(.*)", "headers": [{ "key": "Cache-Control", "value": "public, max-age=0, must-revalidate" }] },
     { "source": "/asset-versions.js", "headers": [{ "key": "Cache-Control", "value": "public, max-age=0, must-revalidate" }] },
-    { "source": "/app/asset-versions.js", "headers": [{ "key": "Cache-Control", "value": "public, max-age=0, must-revalidate" }] }
+    { "source": "/app/asset-versions.js", "headers": [{ "key": "Cache-Control", "value": "public, max-age=0, must-revalidate" }] },
+    { "source": "/dome-world", "headers": [{ "key": "Cache-Control", "value": "no-store, max-age=0" }] },
+    { "source": "/dome-world/", "headers": [{ "key": "Cache-Control", "value": "no-store, max-age=0" }] },
+    { "source": "/app/dome-world/index.html", "headers": [{ "key": "Cache-Control", "value": "no-store, max-age=0" }] },
+    { "source": "/dome-world/(.*)", "headers": [{ "key": "Cache-Control", "value": "public, max-age=0, must-revalidate" }] }
   ],
   "rewrites": [
+    { "source": "/api/dome-world/ping", "destination": "/api/dome-world-engine?operation=ping" },
+    { "source": "/api/dome-world/readiness", "destination": "/api/dome-world-engine?operation=readiness" },
+    { "source": "/api/dome-world/step2-readiness", "destination": "/api/dome-world-engine?operation=step2-readiness" },
+    { "source": "/api/dome-world/(.*)", "destination": "/api/dome-world-engine?operation=$1" },
+    { "source": "/dome-world", "destination": "/app/dome-world/index.html" },
+    { "source": "/dome-world/", "destination": "/app/dome-world/index.html" },
+    { "source": "/dome-world/(.*)", "destination": "/app/dome-world/$1" },
     { "source": "/api/(.*)", "destination": "/api/$1" },
     { "source": "/safe-harbor/td613-flight.html", "destination": "/api/flight-html" },
     { "source": "/app/safe-harbor/td613-flight.html", "destination": "/api/flight-html" },

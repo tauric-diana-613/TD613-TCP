@@ -3,6 +3,7 @@ import fs from 'node:fs/promises';
 import os from 'node:os';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
+import { parse } from 'parse5';
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 
@@ -12,6 +13,7 @@ export const APERTURE_TOOL_PATH = path.join(APERTURE_DIR, 'tool.html');
 export const APERTURE_INDEX_PATH = path.join(APERTURE_DIR, 'index.html');
 export const ASSET_VERSIONS_PATH = path.join(REPO_ROOT, 'app', 'asset-versions.js');
 export const APERTURE_ENGINE_PATH = path.join(REPO_ROOT, 'app', 'engine', 'td613-aperture.js');
+export const APERTURE_RELEASE_PATH = path.join(APERTURE_DIR, 'release.json');
 export const STAGING_DIR = path.join(REPO_ROOT, '.aperture-staging');
 export const STAGED_HTML_PATH = path.join(STAGING_DIR, 'candidate.html');
 export const STAGED_MANIFEST_PATH = path.join(STAGING_DIR, 'manifest.json');
@@ -83,17 +85,14 @@ export function extractApertureMetadata(html, filePath = '') {
     firstMatch(html, /td613-aperture\/v\d+(?:\.\d+){2,3}(?![-\w])/);
 
   const apertureVersionMeta = firstMeta(html, 'aperture-version');
-  const featureVersion = apertureVersionMeta && apertureVersionMeta !== version
-    ? apertureVersionMeta
-    : firstMatch(html, /\bTD613_APERTURE_FEATURE_VERSION\s*=\s*["']([^"']+)["']/) ||
-      firstMatch(html, /\bAPERTURE_VERSION\s*=\s*["']([^"']+)["']/);
+  const featureVersion =
+    firstMeta(html, 'aperture-feature-version') ||
+    (apertureVersionMeta && apertureVersionMeta !== version ? apertureVersionMeta : null) ||
+    firstMatch(html, /\bTD613_APERTURE_FEATURE_VERSION\s*=\s*["']([^"']+)["']/) ||
+    firstMatch(html, /\bAPERTURE_VERSION\s*=\s*["']([^"']+)["']/);
 
   const token = firstMatch(html, /tool\.html\?v=([0-9A-Za-z._-]+)/);
-  const ids = [...html.matchAll(/\bid=["']([^"']+)["']/g)].map((match) => match[1]);
-  const idCounts = countBy(ids);
-  const duplicateIds = Object.entries(idCounts)
-    .filter(([, count]) => count > 1)
-    .map(([id, count]) => ({ id, count }));
+  const duplicateIds = findDuplicateDomIds(html);
   const versionCounts = countBy([...html.matchAll(/\bv\d+(?:\.\d+){2,3}(?:[-A-Za-z0-9_.]+)?/g)].map((match) => match[0]));
 
   return {
@@ -169,11 +168,12 @@ export function normalizeApertureForRepo(html, metadata) {
   next = setMetaContent(next, 'aperture-compat-version', version);
   next = setMetaContent(next, 'hcc-version', version);
   next = setMetaContent(next, 'vector-substrate-intake-version', version);
-  next = setMetaContent(next, 'aperture-version', featureVersion);
+  next = setMetaContent(next, 'aperture-version', version);
+  next = setMetaContent(next, 'aperture-feature-version', featureVersion);
   next = setMetaContent(next, 'spine-forward-version', `${version}-hidden-governance-skeleton`);
 
   next = next.replace(/\bdata-hcc-version=["'][^"']+["']/g, `data-hcc-version="${version}"`);
-  next = next.replace(/\bdata-aperture-version=["'][^"']+["']/g, `data-aperture-version="${featureVersion}"`);
+  next = next.replace(/\bdata-aperture-version=["'][^"']+["']/g, `data-aperture-version="${version}"`);
 
   // Known active patch layers used stale v2.7.2 constants in several historical donor files.
   next = next.replace(/td613-aperture\/v2\.7\.2/g, schema);
@@ -204,6 +204,30 @@ export function updateApertureEngineJs(js, metadata) {
     .replace(/(TD613_APERTURE_VERSION\s*=\s*['"])[^'"]+(['"])/, `$1${version}$2`)
     .replace(/(TD613_APERTURE_SCHEMA\s*=\s*['"])[^'"]+(['"])/, `$1${schema}$2`)
     .replace(/(TD613_APERTURE_FEATURE_VERSION\s*=\s*['"])[^'"]+(['"])/, `$1${featureVersion}$2`);
+}
+
+export function releaseManifestFromMetadata(metadata) {
+  const version = metadata.version;
+  const apertureSchema = metadata.schema || `td613-aperture/${version}`;
+  return {
+    schema: 'td613.aperture.release/v1',
+    version,
+    apertureSchema,
+    featureVersion: metadata.featureVersion || version,
+    doctrineKernelSchema: metadata.doctrineKernelSchema || `td613.aperture.doctrine-kernel/${version}`,
+    domeBridgeSchema: `td613.aperture.dome-flowcore-bridge/${version}`,
+    domeWorld: {
+      version: 'v0.4.3',
+      schema: 'td613.dome-world/v0.4.3',
+      exactReceiptSchema: 'td613.dome-world.exact-receipt/v0.4.3'
+    },
+    observedRegime: 'PRCS-A',
+    eorfd: {
+      operationalState: 'interface_context',
+      claimAuthority: 'design_signal',
+      targetOperationalState: 'verified_runtime_installation'
+    }
+  };
 }
 
 export async function writeStage(candidatePath) {
@@ -250,6 +274,7 @@ export async function promoteStagedCandidate() {
   await writeText(APERTURE_INDEX_PATH, updateApertureIndexHtml(await readText(APERTURE_INDEX_PATH), normalizedMetadata, token));
   await writeText(ASSET_VERSIONS_PATH, updateAssetVersionsJs(await readText(ASSET_VERSIONS_PATH), token));
   await writeText(APERTURE_ENGINE_PATH, updateApertureEngineJs(await readText(APERTURE_ENGINE_PATH), normalizedMetadata));
+  await writeJson(APERTURE_RELEASE_PATH, releaseManifestFromMetadata(normalizedMetadata));
 
   const promoted = await readHtmlArtifact(APERTURE_TOOL_PATH);
   const promotion = {
@@ -359,7 +384,13 @@ function firstVersion(html) {
 }
 
 function firstMeta(html, name) {
-  return firstMatch(html, new RegExp(`<meta\\s+name=["']${escapeRegex(name)}["']\\s+content=["']([^"']+)["']`, 'i'));
+  const tags = [...html.matchAll(/<meta\b[^>]*>/gi)].map((match) => match[0]);
+  for (const tag of tags) {
+    const metaName = firstMatch(tag, /\bname=["']([^"']+)["']/i);
+    if (metaName !== name) continue;
+    return firstMatch(tag, /\bcontent=["']([^"']*)["']/i);
+  }
+  return null;
 }
 
 function firstMatch(html, pattern) {
@@ -373,9 +404,15 @@ function hasId(html, id) {
 
 function setMetaContent(html, name, content) {
   if (!content) return html;
-  const pattern = new RegExp(`(<meta\\s+name=["']${escapeRegex(name)}["']\\s+content=["'])[^"']*(["'])`, 'i');
-  if (!pattern.test(html)) return html;
-  return html.replace(pattern, `$1${content}$2`);
+  const tagPattern = /<meta\b[^>]*>/gi;
+  return html.replace(tagPattern, (tag) => {
+    const metaName = firstMatch(tag, /\bname=["']([^"']+)["']/i);
+    if (metaName !== name) return tag;
+    if (/\bcontent=["'][^"']*["']/i.test(tag)) {
+      return tag.replace(/(\bcontent=["'])[^"']*(["'])/i, `$1${content}$2`);
+    }
+    return tag.replace(/\/?>$/, (ending) => ` content="${content}"${ending}`);
+  });
 }
 
 function countMatches(text, pattern) {
@@ -387,6 +424,21 @@ function countBy(values) {
     acc[value] = (acc[value] || 0) + 1;
     return acc;
   }, {});
+}
+
+function findDuplicateDomIds(html) {
+  const ids = [];
+  const stack = [parse(html)];
+  while (stack.length) {
+    const node = stack.pop();
+    const id = node?.attrs?.find((attribute) => attribute.name === 'id')?.value;
+    if (id) ids.push(id);
+    if (Array.isArray(node?.childNodes)) stack.push(...node.childNodes);
+    if (node?.content) stack.push(node.content);
+  }
+  return Object.entries(countBy(ids))
+    .filter(([, count]) => count > 1)
+    .map(([id, count]) => ({ id, count }));
 }
 
 function escapeRegex(value) {
