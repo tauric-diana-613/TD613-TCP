@@ -1,0 +1,45 @@
+name: Hush Phase 9
+
+on:
+  pull_request:
+    branches: [ main ]
+    paths:
+      - 'scripts/run-hush-phase9-audit.mjs'
+      - 'tests/hush-phase9-*.test.mjs'
+      - 'docs/hush/PHASE_9_*.md'
+      - 'package.json'
+      - 'app/engine/hush-*.js'
+      - 'app/data/hush-*.js'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  phase9:
+    name: Hush Phase 9 local audit
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+          cache: npm
+      - run: npm ci
+      - name: Phase 8 baseline
+        run: npm run test:hush:phase8
+      - name: Phase 9 cross-mask collision
+        run: node tests/hush-phase9-cross-mask-collision.test.mjs
+      - name: Phase 9 mask distinctness
+        run: node tests/hush-phase9-mask-distinctness.test.mjs
+      - name: Phase 9 source obligations
+        run: node tests/hush-phase9-source-obligation-matrix.test.mjs
+      - name: Phase 9 provider contracts
+        run: npm run test:hush:phase9:contracts
+      - name: Phase 9 exports
+        run: npm run test:hush:phase9:exports
+      - name: Phase 9 audit runner
+        run: npm run test:hush:phase9
+      - name: Phase 9 runtime log schema
+        run: npm run test:hush:phase9:runtime-log
