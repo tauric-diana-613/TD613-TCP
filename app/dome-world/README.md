@@ -29,6 +29,10 @@ One Python function serves `/api/dome-world/*`:
 
 Trainer proposal/confirmation requires `DOME_WORLD_TRAINER_ENABLED=1`,
 `DOME_WORLD_OPERATOR_TOKEN`, and `DOME_WORLD_CHECKPOINT_SECRET`.
+The cockpit accepts the operator token only in the Substrate station, keeps it
+in `sessionStorage` for the current browser tab, and sends it only as the
+`Authorization` header on `trainer-step` requests. It never enters packets,
+receipts, checkpoints, localStorage, or repository files.
 
 ## Provenance
 
