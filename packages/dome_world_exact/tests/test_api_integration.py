@@ -48,6 +48,27 @@ def test_trainer_is_dark_without_explicit_environment_gate(monkeypatch):
         )
 
 
+def test_trainer_requires_operator_token_and_signing_secret(monkeypatch):
+    monkeypatch.setenv("DOME_WORLD_TRAINER_ENABLED", "1")
+    monkeypatch.setenv("DOME_WORLD_OPERATOR_TOKEN", "operator-secret")
+    monkeypatch.setenv("DOME_WORLD_CHECKPOINT_SECRET", "checkpoint-secret")
+    payload = envelope(
+        "trainer-step",
+        {"action": "propose", "observations": [[1, 0, 1, 0]]},
+    )
+
+    with pytest.raises(PermissionError, match="operator token"):
+        API.dispatch_post(payload, {})
+
+    receipt = API.dispatch_post(
+        payload,
+        {"authorization": "Bearer operator-secret"},
+    )
+    assert receipt["result"]["status"] in {"CAPTURED", "CONSTRUCTION_PROPOSED", "OPEN"}
+    assert "operator-secret" not in str(receipt)
+    assert "checkpoint-secret" not in str(receipt)
+
+
 def test_readiness_reports_client_held_storage(monkeypatch):
     monkeypatch.setenv("DOME_WORLD_TRAINER_ENABLED", "0")
     receipt = API.readiness_receipt()
