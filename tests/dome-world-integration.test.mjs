@@ -49,7 +49,7 @@ assert.match(html, /fetch\('\/api\/dome-world\/readiness'/);
 assert.match(html, /body\.trainerEnabled\?'Trainer live':'Trainer dark'/);
 assert.doesNotMatch(html, /localStorage\.setItem\(TRAINER_TOKEN_SESSION_KEY/);
 assert.doesNotMatch(html, /payload\.operatorToken|operatorToken:trainerOperatorToken/);
-assert.match(api, /Ash readiness accepts metadata only/);
+assert.match(api, /Ash custody accepts metadata\/manifests only; raw content fields are prohibited/);
 assert.ok(vercel.rewrites.some((entry) => entry.source === '/dome-world' && entry.destination === '/app/dome-world/index.html'));
 assert.ok(vercel.rewrites.some((entry) => entry.source === '/api/dome-world/(.*)' && entry.destination.includes('/api/dome-world-engine')));
 assert.match(vercelIgnore, /packages\/dome_world_exact\/verification\//);

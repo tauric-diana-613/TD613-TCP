@@ -6,6 +6,7 @@ const root = process.cwd();
 const read = (path) => readFileSync(join(root, path), 'utf8');
 
 const html = read('app/dome-world/ash-custody.html');
+const cockpit = read('app/dome-world/index.html');
 const api = read('api/dome-world-engine.py');
 const manifestSchema = JSON.parse(read('app/dome-world/schemas/ash-custody-manifest.schema.json'));
 const receiptSchema = JSON.parse(read('app/dome-world/schemas/ash-custody-receipt.schema.json'));
@@ -14,6 +15,9 @@ const indexSchema = JSON.parse(read('app/dome-world/schemas/receipt-index.schema
 const syntheticGarden = JSON.parse(read('app/dome-world/fixtures/ash-custody-garden.json'));
 
 assert.match(html, /Register Artifact/);
+assert.match(cockpit, /href="\/dome-world\/ash-custody\.html">Register Artifact<\/a>/);
+assert.match(cockpit, /Ash registers metadata and custody posture; raw content stays outside server custody\./);
+assert.equal((cockpit.match(/class="tab(?: active)?" data-view=/g) || []).length, 8);
 assert.match(html, /Ash owns custody/);
 assert.match(html, /Receipts index only/);
 assert.match(html, /Phason diffs projection/);
