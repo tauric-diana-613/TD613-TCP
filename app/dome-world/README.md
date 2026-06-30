@@ -8,6 +8,19 @@
 - opt-in lambda=2c emission-gap closure;
 - readiness-only Ash metadata posture.
 
+## Ash custody v0.5
+
+`/dome-world/ash-custody.html` adds the Ash Custody Layer:
+
+- local-only **Register Artifact** flow for browser file metadata and SHA-256 hashing;
+- source-environment adapters for local files, repositories, cloud/local drives, spreadsheets/lists, LLM chat/session artifacts, and manual metadata;
+- `td613.ash.custody-manifest/v0.5` and `td613.ash.custody-receipt/v0.5` receipts;
+- Ash custody replay that re-renders custody state without rehydrating raw content;
+- Phason custody diff for content-invariant projection/custody changes;
+- receipt indexing that keeps Receipts as a witness index rather than the custody owner.
+
+The route is intentionally an Ash station, not a generic upload page. Receipts index it; Ash owns the artifact custody boundary.
+
 ## Boundaries
 
 Modeled weather never enters the exact gate. Exact execution does not activate
@@ -25,6 +38,7 @@ One Python function serves `/api/dome-world/*`:
 
 - `GET ping`, `GET readiness`, and compatibility `GET step2-readiness`
 - `POST aperture-bridge`, `phason-gate`, `ash-readiness`
+- `POST ash-custody-register`, `ash-custody-replay`, `phason-custody-diff`, `receipt-index`
 - `POST exact-capture`, `exact-closure`, `trainer-step`
 
 Trainer proposal/confirmation requires `DOME_WORLD_TRAINER_ENABLED=1`,
@@ -38,3 +52,6 @@ receipts, checkpoints, localStorage, or repository files.
 
 The exact package and verification artifacts are under
 `packages/dome_world_exact/`. See its `PROVENANCE.md` and original specifications.
+
+Ash custody design notes live in `app/dome-world/docs/ASH_CUSTODY_LAYER.md` and
+`app/dome-world/docs/RECEIPT_JURISDICTION.md`.
