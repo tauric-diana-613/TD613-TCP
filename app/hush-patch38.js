@@ -5,6 +5,7 @@ import { buildHushLlmPromptContractV2, buildHushLlmPromptContractV3, buildPhase3
 import { auditPropositionIntegrity } from './engine/hush-proposition-integrity.js';
 import { deriveApertureApprovalTransparency } from './engine/aperture-approval-transparency.js';
 import { extractCadenceProfile } from './engine/stylometry.js';
+import { sanitizeHushRemoteContract } from './engine/hush-contract-sanitizer.js';
 
 const $ = (id, doc = document) => doc.getElementById(id);
 const text = (value) => String(value ?? '').trim();
@@ -36,6 +37,7 @@ function hashString(value = '') {
   return (hash >>> 0).toString(16).padStart(8, '0');
 }
 function cloneReport(report = {}) { return JSON.parse(JSON.stringify(report || {})); }
+function providerBoundContractOf(contract = {}) { return sanitizeHushRemoteContract(contract); }
 function remoteReportCacheKey(contract = {}) { return hashString(stableStringify({ promptVersion: contract.promptVersion, sourceText: contract.sourceText, flightPacket: contract.flightPacket, candidateCount: contract.candidateCount, operatorMode: contract.operatorMode })); }
 function getCachedRemoteReport(cacheKey = '') {
   const entry = patch38RemoteReportCache.get(cacheKey);
@@ -174,6 +176,7 @@ function remoteEndpointCandidates() {
   return [...new Set(candidates.filter(Boolean))];
 }
 function buildOutboundPacketExport({ contract = {}, snapshot = {}, phase37Telemetry = {}, mode = '' } = {}) {
+  const providerBoundContract = providerBoundContractOf(contract);
   return {
     schema: 'td613-hush-outbound-packet/v1',
     createdAt: new Date().toISOString(),
@@ -181,13 +184,17 @@ function buildOutboundPacketExport({ contract = {}, snapshot = {}, phase37Teleme
     direction: 'outbound',
     includesPrivateText: true,
     privateTextIncluded: true,
-    note: 'This is the outbound Hush generator contract built at Transform time. It is not Gemini output and contains the source/mask payload that Hush sent or prepared to send for generation.',
+    note: 'Outbound packet built locally. Provider-bound payload sanitized before remote generation.',
     mode,
     promptVersion: contract.promptVersion || phase37Telemetry.promptVersion || null,
     flightPacketVersion: contract.flightPacketVersion || phase37Telemetry.flightPacketVersion || contract.flightPacket?.packet_version || null,
     snapshot: { runId: snapshot.runId || null, identity: snapshot.identity || null, maskId: snapshot.mask?.id || '', sourceHash: hashString(snapshot.sourceText || ''), referenceHash: hashString(snapshot.maskReferenceText || '') },
     endpointCandidates: mode === GENERATOR_MODES.REMOTE_LLM_PROXY || mode === GENERATOR_MODES.HYBRID ? remoteEndpointCandidates() : [],
-    contract
+    rawLocalContractHash: hashString(stableStringify(contract)),
+    providerBoundContractHash: hashString(stableStringify(providerBoundContract)),
+    promptDetox: { active: true, sampleSeedExported: false, maskLoreExported: false, providerBoundPacket: 'sanitized' },
+    contract,
+    providerBoundContract
   };
 }
 function publishOutboundPacket(outboundPacket = null, state = bench.benchState || {}) {
@@ -196,29 +203,31 @@ function publishOutboundPacket(outboundPacket = null, state = bench.benchState |
   emitHushEvent('td613:hush:outbound-packet', { outboundPacket });
 }
 async function fetchRemoteReportUncached(contract = {}, doc = document) {
+  const providerBoundContract = providerBoundContractOf(contract);
   const tried = [];
   for (const endpoint of remoteEndpointCandidates()) {
     try {
-      const response = await fetch(endpoint, { method: 'POST', mode: 'cors', headers: { 'content-type': 'application/json' }, body: JSON.stringify({ contract }) });
+      const response = await fetch(endpoint, { method: 'POST', mode: 'cors', headers: { 'content-type': 'application/json' }, body: JSON.stringify({ contract: providerBoundContract }) });
       tried.push(`${endpoint}:${response.status}`);
       if (response.status === 404) continue;
       if (!response.ok) {
         const warning = `remote-provider-http-${response.status}`;
         setGeneratorStatus(`Remote provider reached ${endpoint} but returned ${response.status}; switch to Hybrid if you need local fallback.`, 'warning', doc);
-        return { provider: 'remote-llm-proxy', model: 'remote-llm-proxy', candidates: [], warnings: [warning, `endpoint:${endpoint}`], requestReceipt: { endpoint, triedEndpoints: tried, sentPrivateLedger: false, sentMaskMemory: false, redactionApplied: true, promptVersion: contract.promptVersion, flightPacketVersion: contract.flightPacketVersion } };
+        return { provider: 'remote-llm-proxy', model: 'remote-llm-proxy', candidates: [], warnings: [warning, `endpoint:${endpoint}`], requestReceipt: { endpoint, triedEndpoints: tried, sentPrivateLedger: false, sentMaskMemory: false, redactionApplied: true, promptDetoxActive: true, sampleSeedExportedToProvider: false, maskLoreExportedToProvider: false, providerBoundPacket: 'sanitized', promptVersion: providerBoundContract.promptVersion, flightPacketVersion: providerBoundContract.flightPacketVersion } };
       }
-      const normalized = normalizeRemoteProviderResponse(await response.json(), contract);
-      normalized.requestReceipt = { ...(normalized.requestReceipt || {}), endpoint, triedEndpoints: tried, promptVersion: contract.promptVersion, flightPacketVersion: contract.flightPacketVersion };
+      const normalized = normalizeRemoteProviderResponse(await response.json(), providerBoundContract);
+      normalized.requestReceipt = { ...(normalized.requestReceipt || {}), endpoint, triedEndpoints: tried, promptDetoxActive: true, sampleSeedExportedToProvider: false, maskLoreExportedToProvider: false, providerBoundPacket: 'sanitized', promptVersion: providerBoundContract.promptVersion, flightPacketVersion: providerBoundContract.flightPacketVersion };
       if (!normalized.candidates?.length) { normalized.warnings = [...new Set([...(normalized.warnings || []), 'remote-provider-empty-candidates', `endpoint:${endpoint}`])]; setGeneratorStatus(`Remote provider reached ${endpoint} but returned zero usable candidates. Inspect Phase 37 diagnostics.`, 'warning', doc); }
       else setGeneratorStatus(`Remote provider reached ${endpoint} and returned ${normalized.candidates.length} Phase 37 candidate(s). Local audit still controls release.`, 'ok', doc);
       return normalized;
     } catch (error) { tried.push(`${endpoint}:exception`); }
   }
   setGeneratorStatus(`Remote provider route not found. Tried: ${tried.join(', ') || remoteEndpointCandidates().join(', ')}.`, 'error', doc);
-  return { provider: 'remote-llm-proxy', model: 'remote-llm-proxy', candidates: [], warnings: ['remote-provider-route-not-found', ...tried.map((item) => `tried:${item}`)], requestReceipt: { sentPrivateLedger: false, sentMaskMemory: false, redactionApplied: true, promptVersion: 'hush-llm-candidate-v3', triedEndpoints: tried } };
+  return { provider: 'remote-llm-proxy', model: 'remote-llm-proxy', candidates: [], warnings: ['remote-provider-route-not-found', ...tried.map((item) => `tried:${item}`)], requestReceipt: { sentPrivateLedger: false, sentMaskMemory: false, redactionApplied: true, promptDetoxActive: true, sampleSeedExportedToProvider: false, maskLoreExportedToProvider: false, providerBoundPacket: 'sanitized', promptVersion: 'hush-llm-candidate-v3', triedEndpoints: tried } };
 }
 async function fetchRemoteReport(input = {}, doc = document) {
-  const contract = input.contract || buildHushLlmPromptContractV3(input);
+  const rawContract = input.contract || buildHushLlmPromptContractV3(input);
+  const contract = providerBoundContractOf(rawContract);
   const cacheKey = remoteReportCacheKey(contract);
   const cached = getCachedRemoteReport(cacheKey);
   if (cached) { setGeneratorStatus('Remote provider cache hit: same source + same mask + same Phase37 packet. Reusing stable candidate report.', 'ok', doc); return cached; }
@@ -247,9 +256,10 @@ function renderDiagnostics(result = {}, doc = document) {
   const rows = Array.isArray(p.selectorRows) ? p.selectorRows.slice(0, 6) : [];
   const receipt = p.providerReports?.[0]?.requestReceipt || {};
   const endpointLine = receipt.endpoint ? `<span>Endpoint: <code>${esc(receipt.endpoint)}</code></span>` : receipt.triedEndpoints?.length ? `<span>Tried: <code>${esc(receipt.triedEndpoints.join(', '))}</code></span>` : receipt.cacheHit ? `<span>Endpoint: <code>session-cache</code></span>` : '';
+  const detoxLine = `<span>Prompt detox: <code>${esc(receipt.promptDetoxActive || result.outboundPacket?.promptDetox?.active ? 'active' : 'n/a')}</code></span><span>Sample seed exported: <code>${esc(receipt.sampleSeedExportedToProvider === false ? 'false' : 'n/a')}</code></span><span>Mask lore exported: <code>${esc(receipt.maskLoreExportedToProvider === false ? 'false' : 'n/a')}</code></span><span>Catchphrase rejected: <code>${esc(receipt.catchphraseRejected ?? 0)}</code></span><span>Provider-bound packet: <code>${esc(receipt.providerBoundPacket || result.outboundPacket?.promptDetox?.providerBoundPacket || 'sanitized')}</code></span>`;
   const operationSpread = Array.isArray(p.operationSpread) ? p.operationSpread.join(', ') : 'none';
   const apertureLine = packet.aperture_bridge ? `<span>Aperture: <code>${esc(packet.aperture_bridge.route_intent || 'bridge')}</code></span><span>Repair: <code>${esc((packet.repair_controls?.aperture_repair_operations || packet.aperture_bridge.repair_controls?.aperture_repair_operations || []).join(', ') || 'none')}</code></span>` : '';
-  target.innerHTML = `<strong>Phase 37 ontology-carrying generator flight</strong><span hidden>${PHASE35_COMPATIBILITY_LABEL}</span><div class="hush-phase32-diagnostic-grid"><span>Mode: <code>${esc(p.providerMode || 'offline-expressive')}</code></span><span>Packet: <code>${esc(phase37.flightPacketVersion || packet.packet_version || 'n/a')}</code></span><span>Prompt: <code>${esc(phase37.promptVersion || receipt.promptVersion || 'n/a')}</code></span>${apertureLine}<span>Route: <code>${esc(route.route_type || route.routeType || 'n/a')}</code></span><span>Source: <code>${esc(route.source_type || route.sourceType || 'n/a')}</code></span><span>Risk: <code>${esc(route.semantic_risk || 'n/a')}</code></span><span>Depth: <code>${esc(route.transformation_depth || 'n/a')}</code></span>${endpointLine}<span>Cache: <code>${esc(receipt.cacheHit ? 'hit' : receipt.cacheKey ? 'stored' : 'n/a')}</code></span><span>Snapshot: <code>${esc(result.patch38Snapshot?.identity || 'n/a')}</code></span><span>Operations: <code>${esc(operationSpread)}</code></span><span>Selected op: <code>${esc(p.selectedStyleOperation || 'n/a')}</code></span><span>Generated: <code>${esc(p.generatedCount ?? 0)}</code></span><span>Merged: <code>${esc(p.mergedCount ?? 0)}</code></span><span>Coverage: <code>${esc(p.selectedCoverage ?? 'n/a')}</code></span><span>Question score: <code>${esc(prop.questionFormScore ?? 'n/a')}</code></span><span>New claim risk: <code>${esc(prop.newClaimRisk?.score ?? 'n/a')}</code></span><span>Collapse: <code>${esc(p.selectedCollapseSurfaceScore ?? 0)}</code></span><span>Warning: <code>${esc(p.warning || prop.warnings?.join(', ') || 'none')}</code></span></div>${rows.length ? `<details><summary>Phase 37 candidates</summary>${rows.map((row) => `<div><code>${esc(row.id)}</code> ${esc(row.operation || row.strategy || '')} · score ${esc(row.score)} · mask ${esc(row.maskFidelity ?? 'n/a')} · syntax ${esc(row.syntaxDistance ?? 'n/a')} · collapse ${esc(row.collapse)}</div>`).join('')}</details>` : ''}`;
+  target.innerHTML = `<strong>Phase 37 ontology-carrying generator flight</strong><span hidden>${PHASE35_COMPATIBILITY_LABEL}</span><div class="hush-phase32-diagnostic-grid"><span>Mode: <code>${esc(p.providerMode || 'offline-expressive')}</code></span><span>Packet: <code>${esc(phase37.flightPacketVersion || packet.packet_version || 'n/a')}</code></span><span>Prompt: <code>${esc(phase37.promptVersion || receipt.promptVersion || 'n/a')}</code></span>${apertureLine}<span>Route: <code>${esc(route.route_type || route.routeType || 'n/a')}</code></span><span>Source: <code>${esc(route.source_type || route.sourceType || 'n/a')}</code></span><span>Risk: <code>${esc(route.semantic_risk || 'n/a')}</code></span><span>Depth: <code>${esc(route.transformation_depth || 'n/a')}</code></span>${endpointLine}${detoxLine}<span>Cache: <code>${esc(receipt.cacheHit ? 'hit' : receipt.cacheKey ? 'stored' : 'n/a')}</code></span><span>Snapshot: <code>${esc(result.patch38Snapshot?.identity || 'n/a')}</code></span><span>Operations: <code>${esc(operationSpread)}</code></span><span>Selected op: <code>${esc(p.selectedStyleOperation || 'n/a')}</code></span><span>Generated: <code>${esc(p.generatedCount ?? 0)}</code></span><span>Merged: <code>${esc(p.mergedCount ?? 0)}</code></span><span>Coverage: <code>${esc(p.selectedCoverage ?? 'n/a')}</code></span><span>Question score: <code>${esc(prop.questionFormScore ?? 'n/a')}</code></span><span>New claim risk: <code>${esc(prop.newClaimRisk?.score ?? 'n/a')}</code></span><span>Collapse: <code>${esc(p.selectedCollapseSurfaceScore ?? 0)}</code></span><span>Warning: <code>${esc(p.warning || prop.warnings?.join(', ') || 'none')}</code></span></div><p class="sub">Outbound packet built locally. Provider-bound payload sanitized before remote generation.</p>${rows.length ? `<details><summary>Phase 37 candidates</summary>${rows.map((row) => `<div><code>${esc(row.id)}</code> ${esc(row.operation || row.strategy || '')} · score ${esc(row.score)} · mask ${esc(row.maskFidelity ?? 'n/a')} · syntax ${esc(row.syntaxDistance ?? 'n/a')} · collapse ${esc(row.collapse)}</div>`).join('')}</details>` : ''}`;
 }
 function buildPatch38ApprovalPacket({ reason = '', result = {}, warnings = [] } = {}) {
   const diagnostics = result.patch38Diagnostics || {};
@@ -296,7 +306,7 @@ async function runPatch38Transform(doc = document) {
     const outboundPacket = buildOutboundPacketExport({ contract: outboundContract, snapshot, phase37Telemetry, mode: snapshot.mode });
     publishOutboundPacket(outboundPacket, snapshot.state);
     const providerReports = [];
-    if (snapshot.mode === GENERATOR_MODES.HYBRID || snapshot.mode === GENERATOR_MODES.REMOTE_LLM_PROXY) providerReports.push(await fetchRemoteReport({ contract: outboundContract }, doc));
+    if (snapshot.mode === GENERATOR_MODES.HYBRID || snapshot.mode === GENERATOR_MODES.REMOTE_LLM_PROXY) providerReports.push(await fetchRemoteReport({ contract: outboundPacket.providerBoundContract }, doc));
     if (!snapshotStillCurrent(snapshot, doc)) { renderStaleTransformDiscard(snapshot, doc); return null; }
     const result = buildHushSwap({ sourceText: snapshot.sourceText, protectedBaselineText: snapshot.protectedBaselineText, mask: snapshot.mask, maskProfile: snapshot.referenceProfile || activeField(snapshot.state, snapshot.mask) || snapshot.mask?.profile || {}, maskReferenceText: snapshot.maskReferenceText, generatorMode: snapshot.mode, providerReports, protectedLiterals: [], phase37Telemetry, operatorMode: snapshot.recognitionIntentMode, contextType: snapshot.recognitionContextType, exposureDuration: snapshot.recognitionExposureDuration, options: { candidateCount: 30, includePrivateText: false } });
     if (!snapshotStillCurrent(snapshot, doc)) { renderStaleTransformDiscard(snapshot, doc); return null; }
