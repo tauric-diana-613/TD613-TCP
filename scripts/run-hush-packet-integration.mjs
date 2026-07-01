@@ -5,6 +5,7 @@ import { fileURLToPath } from 'url';
 
 export const HUSH_PHASE12_RECEIPT_SCHEMA = 'td613.hush.phase12.integration-gate-receipt/v1';
 export const HUSH_PHASE12_MANIFEST_PATH = path.join('scripts', 'hush-packet-integration-suite.txt');
+export const HUSH_PHASE12_REQUIRED_PHASES = Object.freeze([1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12]);
 
 const REQUIRED_PACKAGE_SCRIPTS = Object.freeze([
   'test:hush:outgoing-contract',
@@ -61,6 +62,14 @@ export function validateHushPhase12Manifest(options = {}) {
 
   for (let index = 1; index < phase_comments.length; index += 1) {
     if (phase_comments[index] < phase_comments[index - 1]) errors.push('packet integration manifest phase order is not monotonic');
+  }
+
+  const phaseSet = new Set(phase_comments);
+  for (const requiredPhase of HUSH_PHASE12_REQUIRED_PHASES) {
+    if (!phaseSet.has(requiredPhase)) errors.push(`packet integration manifest missing Phase ${requiredPhase}`);
+  }
+  for (const phase of phaseSet) {
+    if (!HUSH_PHASE12_REQUIRED_PHASES.includes(phase)) errors.push(`packet integration manifest includes out-of-scope Phase ${phase}`);
   }
 
   const packageJson = readJson('package.json');
