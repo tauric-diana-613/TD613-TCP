@@ -2,8 +2,9 @@ import { extractCadenceProfile } from './stylometry.js';
 import { buildMeaningPlan } from './hush-meaning-plan.js';
 import { buildRealizationPlan } from './hush-realization-plan.js';
 import { scoreNaturalness } from './hush-naturalness.js';
+import { auditHushCatchphraseQuarantine } from './hush-catchphrase-quarantine.js';
 
-export const HUSH_MASK_WRITER_VERSION = 'phase-16.1-mask-distinctness';
+export const HUSH_MASK_WRITER_VERSION = 'phase-16.2-living-key-detox';
 
 const safeText = (value) => String(value ?? '');
 const asArray = (value) => Array.isArray(value) ? value.filter(Boolean) : [];
@@ -46,7 +47,7 @@ function adjustContractions(text = '', posture = 'mixed') {
 
 function applyDirectness(text = '', directness = 'balanced') {
   let value = safeText(text).replace(/\s+/g, ' ').trim();
-  if (directness === 'soft' && !/^It appears/i.test(value)) value = `It appears that ${value.charAt(0).toLowerCase()}${value.slice(1)}`;
+  if (directness === 'soft') value = value.replace(/^\s*(?:obviously|clearly)\s*,?\s*/i, '');
   if (directness === 'blunt') value = value.replace(/^I think\s+/i, '').replace(/^It appears that\s+/i, '');
   return ensureTerminal(value);
 }
@@ -56,18 +57,15 @@ function compressText(text = '') {
 }
 
 function expandText(text = '', plan = {}) {
-  const transition = asArray(plan.transitionBank)[0] || 'For reference';
   const value = safeText(text).trim();
-  if (!value || value.toLowerCase().startsWith(transition.toLowerCase())) return value;
-  return `${transition}, ${value.charAt(0).toLowerCase()}${value.slice(1)}`;
+  const parts = sentenceSplit(value);
+  if (parts.length > 1) return value;
+  const transition = asArray(plan.transitionBank).find((item) => !/for reference|for the record|leaving this|boring part|tiny|comet|flare/i.test(item));
+  return transition ? `${ensureTerminal(value)} ${ensureTerminal(transition)}` : value;
 }
 
 function fragments(text = '') {
   return sentenceSplit(text).flatMap((part) => safeText(part).split(/,\s+|;\s+|\s+and\s+/i)).map((part) => safeText(part).replace(/[.!?]$/g, '').trim()).filter(Boolean);
-}
-
-function firstFragment(text = '') {
-  return fragments(text)[0] || safeText(text).replace(/[.!?]$/g, '').trim();
 }
 
 function shapeSentences(text = '', traits = {}, strategy = '') {
@@ -109,48 +107,49 @@ function indexed(text = '') {
   return bits.map((bit, index) => `${index + 1}. ${ensureTerminal(bit)}`).join(' ');
 }
 
+function slashShape(text = '') {
+  return lowSignature(text).replace(/\.\s+/g, ' / ').replace(/[.]$/g, '');
+}
+
+function sourceDerivedIrregularity(text = '') {
+  const value = safeText(text).trim();
+  const parts = fragments(value);
+  if (parts.length < 2) return ensureTerminal(value);
+  return `${ensureTerminal(parts[0])} ${parts.slice(1, 3).map((part) => part.replace(/^\w/, (c) => c.toLowerCase())).map(ensureTerminal).join(' ')}`;
+}
+
 function strategyLayer(text = '', strategy = '', plan = {}, mask = {}) {
   const value = safeText(text).trim();
   if (!value) return '';
-  const lower = value.charAt(0).toLowerCase() + value.slice(1);
-  const transition = asArray(plan.transitionBank)[1] || 'Also';
   const id = safeText(mask.id);
-  const map = {
-    formal: `For reference, ${lower}`,
-    'soft-witness': `I am keeping this plain: ${lower}`,
-    'plain-witness': `What I can confirm is this: ${lower}`,
-    memo: `Note: ${lower}`,
-    'thread-note': `Leaving this here for the thread: ${lower}`,
-    'record-note': `For the record, ${lower}`,
-    balanced: `${transition}, ${lower}`
-  };
   if (strategy === 'chat-shorthand') return applyChatShorthand(value);
   if (strategy === 'low-signature') return lowSignature(value);
   if (strategy === 'indexed') return indexed(value);
-  if (strategy === 'jagged-note') return `not polished / ${lowSignature(value).replace(/\.\s+/g, ' / ').replace(/[.]$/g, '')}`;
-  if (strategy === 'small-circle') return `ok, small circle version: ${lower}`;
-  if (strategy === 'night-handoff') return `Leaving this before I log off. ${lowSignature(value)}`;
-  if (strategy === 'receipt-warm') return `I kept this plain because it may matter later. ${ensureTerminal(value)}`;
-  if (strategy === 'snark-pin') return `Interesting little detail. ${ensureTerminal(value)}`;
-  if (strategy === 'forum-slowdown') return `Boring part, but this probably matters: ${lower}`;
-  if (strategy === 'weird-orbit') return `Tiny signal flare. Anyway, ${lower}`;
-  if (strategy === 'archive-ghost') return `The record remains legible. ${ensureTerminal(value)}`;
+  if (strategy === 'jagged-note') return slashShape(value);
+  if (strategy === 'small-circle') return sourceDerivedIrregularity(adjustContractions(value, 'frequent')).replace(/^Please\s+/i, '');
+  if (strategy === 'night-handoff') return lowSignature(compressText(value));
+  if (strategy === 'receipt-warm') return sourceDerivedIrregularity(adjustContractions(value, 'frequent'));
+  if (strategy === 'snark-pin') return compressText(value);
+  if (strategy === 'forum-slowdown') return shapeSentences(expandText(value, plan), { sentenceLength: 'long', clauseShape: 'branching' }, 'long-sentence');
+  if (strategy === 'weird-orbit') return shapeSentences(value, { sentenceLength: 'short', clauseShape: 'clipped' }, 'short-sentence');
+  if (strategy === 'archive-ghost') return adjustContractions(value, 'avoid');
   if (strategy === 'source-preserve') return value;
-  if (strategy === 'register-turn') return `${lower}`.replace(/\bthe record\b/i, 'the record').replace(/\bshould\b/i, 'still needs to');
-  if (strategy === 'argument-cadence') return `the point is the record still has to hold: ${lower}`;
+  if (strategy === 'register-turn') return adjustContractions(value, 'frequent');
+  if (strategy === 'argument-cadence') return shapeSentences(value, { sentenceLength: 'long', clauseShape: 'branching' }, 'long-sentence');
   if (strategy === 'low-affect') return value.replace(/\b(?:please|thanks|thank you)\b/gi, '').replace(/\s+/g, ' ').trim();
+  if (strategy === 'formal') return adjustContractions(value, 'avoid');
+  if (strategy === 'soft-witness' || strategy === 'plain-witness') return applyDirectness(value, 'soft');
+  if (strategy === 'memo' || strategy === 'record-note' || strategy === 'thread-note' || strategy === 'balanced') return ensureTerminal(value);
   if (id === 'burner-minimal') return lowSignature(value);
-  return map[strategy] || value;
+  return value;
 }
 
 function warmText(text = '') {
-  const value = safeText(text).trim();
-  return /^(just to keep|i want to make sure|thanks|also)/i.test(value) ? value : `Just to keep this clear, ${value.charAt(0).toLowerCase()}${value.slice(1)}`;
+  return sourceDerivedIrregularity(adjustContractions(safeText(text), 'frequent'));
 }
 
 function legalMeasured(text = '') {
-  const value = safeText(text).trim().replace(/\bproof\b/gi, 'supporting material').replace(/\bobviously\b/gi, 'the record appears to show');
-  return /^(for clarity|based on the record)/i.test(value) ? value : `For clarity, ${value.charAt(0).toLowerCase()}${value.slice(1)}`;
+  return safeText(text).trim().replace(/\bproof\b/gi, 'supporting material').replace(/\bobviously\b/gi, 'the record appears to show');
 }
 
 function bureaucratic(text = '') {
@@ -158,8 +157,7 @@ function bureaucratic(text = '') {
 }
 
 function casual(text = '') {
-  const value = adjustContractions(safeText(text), 'frequent');
-  return /^(hey|quick note|just)/i.test(value) ? value : `Quick note: ${value.charAt(0).toLowerCase()}${value.slice(1)}`;
+  return adjustContractions(safeText(text), 'frequent');
 }
 
 function preserveProtectedLiterals(text = '', protectedLiterals = []) {
@@ -216,14 +214,15 @@ export function writeMaskCandidate(input = {}) {
   text = adjustContractions(text, traits.contractionPosture);
   text = applyAvoidList(text, realizationPlan.avoidList);
   text = preserveProtectedLiterals(text, input.protectedLiterals || input.meaningPlan?.protectedLiterals || []);
-  return { id: input.id || `writer-candidate-${strategy}`, text, strategy, operations: [`strategy:${strategy}`, `diction:${traits.diction || 'plain'}`, `verbosity:${traits.verbosity || 'balanced'}`, `sentence:${traits.sentenceLength || 'medium'}`], warnings: [] };
+  return { id: input.id || `writer-candidate-${strategy}`, text, strategy, operations: [`strategy:${strategy}`, `diction:${traits.diction || 'plain'}`, `verbosity:${traits.verbosity || 'balanced'}`, `sentence:${traits.sentenceLength || 'medium'}`, 'catchphrase-detox:structural-operator'], warnings: [] };
 }
 
 export function repairMaskCandidate(input = {}) {
   const candidate = input.candidate || {};
   const text = preserveProtectedLiterals(candidate.text, input.protectedLiterals || input.meaningPlan?.protectedLiterals || []);
   const naturalness = scoreNaturalness({ text, mask: input.mask, realizationPlan: input.realizationPlan });
-  return { ...candidate, text, profile: extractCadenceProfile(text), naturalness, warnings: [...new Set([...asArray(candidate.warnings), ...asArray(naturalness.fluencyWarnings)])] };
+  const catchphraseQuarantine = auditHushCatchphraseQuarantine({ text, sourceText: input.sourceText, mask: input.mask, sampleTexts: [input.mask?.sampleSeed, input.mask?.description] });
+  return { ...candidate, text, profile: extractCadenceProfile(text), naturalness, catchphraseQuarantine, warnings: [...new Set([...asArray(candidate.warnings), ...asArray(naturalness.fluencyWarnings), ...asArray(catchphraseQuarantine.warnings)])] };
 }
 
 export function diversifyMaskCandidates(input = {}) {
@@ -242,7 +241,7 @@ export function generateMaskWriterCandidates(input = {}) {
   const meaningPlan = input.meaningPlan || buildMeaningPlan({ sourceText, protectedLiterals });
   const realizationPlan = input.realizationPlan || buildRealizationPlan({ mask: input.mask || {}, maskProfile: input.maskProfile });
   const candidateCount = Math.max(1, Math.min(36, Number(input.candidateCount || 18)));
-  const candidates = diversifyMaskCandidates({ candidateCount, mask: input.mask || {} }).map((strategy, index) => repairMaskCandidate({ ...input, id: `writer-candidate-${index + 1}`, strategy, meaningPlan, realizationPlan, protectedLiterals, candidate: writeMaskCandidate({ ...input, id: `writer-candidate-${index + 1}`, strategy, meaningPlan, realizationPlan, protectedLiterals }) }));
+  const candidates = diversifyMaskCandidates({ candidateCount, mask: input.mask || {} }).map((strategy, index) => repairMaskCandidate({ ...input, id: `writer-candidate-${index + 1}`, strategy, sourceText, meaningPlan, realizationPlan, protectedLiterals, candidate: writeMaskCandidate({ ...input, id: `writer-candidate-${index + 1}`, strategy, meaningPlan, realizationPlan, protectedLiterals }) }));
   const uniqueCandidates = [];
   const seen = new Set();
   for (const candidate of candidates) {
@@ -251,5 +250,6 @@ export function generateMaskWriterCandidates(input = {}) {
     seen.add(key);
     uniqueCandidates.push(candidate);
   }
-  return { version: HUSH_MASK_WRITER_VERSION, meaningPlan, realizationPlan, candidates: uniqueCandidates, warnings: uniqueCandidates.length < candidateCount ? ['candidate-deduplication-reduced-pool'] : [], limitations: ['Mask Writer generates local rewrite candidates; existing Hush scoring still decides viability.'] };
+  const detoxedCandidates = uniqueCandidates.filter((candidate) => candidate.catchphraseQuarantine?.passed !== false);
+  return { version: HUSH_MASK_WRITER_VERSION, meaningPlan, realizationPlan, candidates: detoxedCandidates.length ? detoxedCandidates : uniqueCandidates, warnings: [...(uniqueCandidates.length < candidateCount ? ['candidate-deduplication-reduced-pool'] : []), ...(detoxedCandidates.length < uniqueCandidates.length ? ['catchphrase-quarantine-filtered-local-writer-candidates'] : [])], limitations: ['Mask Writer generates local rewrite candidates; existing Hush scoring still decides viability.', 'Mask Writer uses structural style operators only; fixed persona slogans are quarantined.'] };
 }

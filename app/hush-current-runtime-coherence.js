@@ -1,3 +1,4 @@
+import './hush-remote-contract-detox.js';
 import { benchState as lightBenchState } from './adversarial-bench-light.js';
 
 export const HUSH_CURRENT_LIGHT_BENCH_VERSION = 'current-hush-light/20260701';
