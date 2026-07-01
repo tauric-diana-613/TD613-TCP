@@ -1,4 +1,6 @@
 import { buildProtectedLiteralList, checkProtectedLiteralIntegrity } from '../app/engine/hush-protected-literals.js';
+import { auditHushCatchphraseQuarantine } from '../app/engine/hush-catchphrase-quarantine.js';
+import { hushSanitizerReceipt, sanitizeHushRemoteContract } from '../app/engine/hush-contract-sanitizer.js';
 
 const corsHeaders = {
   'access-control-allow-origin': '*',
@@ -7,7 +9,7 @@ const corsHeaders = {
   'access-control-max-age': '86400'
 };
 
-const VERSION = 'hush-generate-budgeted-pr188.16-mask-anatomy-literal-gate';
+const VERSION = 'hush-generate-budgeted-pr188.17-backend-prompt-detox';
 const DEFAULT_MODEL_ORDER = ['gemini-2.5-flash-lite', 'gemini-flash-lite-latest', 'gemini-2.5-flash'];
 const FAST_CALL_TIMEOUT_MS = 5200;
 const NORMAL_CALL_TIMEOUT_MS = 7600;
@@ -26,6 +28,7 @@ function uniq(values = []) { return [...new Set(values.map(safe).filter(Boolean)
 function words(value = '') { return safe(value).toLowerCase().match(/[a-z0-9][a-z0-9'-]*/g) || []; }
 function normModel(value = '') { return safe(value).replace(/^models\//, ''); }
 function uniqModels(values = []) { return [...new Set(values.map(normModel).filter(Boolean))]; }
+function providerBoundContract(contract = {}) { return sanitizeHushRemoteContract(contract); }
 function configuredModels() {
   const env = uniqModels([...safe(process.env.GEMINI_MODEL).split(','), ...safe(process.env.GEMINI_MODEL_FALLBACKS).split(',')]);
   return uniqModels([...DEFAULT_MODEL_ORDER, ...env]).sort((a, b) => {
@@ -60,30 +63,36 @@ function wallBudget(contract = {}) {
 }
 function callTimeout(contract = {}) { return isFast(contract) ? FAST_CALL_TIMEOUT_MS : NORMAL_CALL_TIMEOUT_MS; }
 function compactStyle(contract = {}) {
-  const fp = contract.flightPacket || {};
+  const cleanContract = providerBoundContract(contract);
+  const fp = cleanContract.flightPacket || {};
   const vector = fp.mask_style_vector || {};
   const policy = fp.style_diversity_policy || vector.style_diversity || {};
-  const mask = contract.mask || contract.selectedMask || {};
+  const mask = cleanContract.mask || cleanContract.selectedMask || {};
   const hints = vector.transform_hints || mask.transformHints || {};
   const diversity = vector.style_diversity || mask.diversity || {};
+  const layout = vector.layout_cadence || mask.layoutCadence || mask.surfaceCadence || null;
+  const punctuation = layout?.punctuation || {};
+  const lineBreaks = layout?.line_breaks || layout?.lineBreaks || {};
+  const markers = layout?.surface_markers || layout?.surfaceMarkers || {};
   return {
-    packetTier: safe(contract.packetTier || fp.packetTier || fp.packet_tier || ''),
-    maskId: safe(contract.maskId || contract.mask_id || vector.mask_id || vector.id || contract.selectedMaskId || ''),
-    displayName: safe(vector.display_name || contract.mask?.label || contract.selectedMask?.label || ''),
-    register: safe(vector.register || policy.internalRegister || mask.internalRegister || mask.family || contract.internalRegister || ''),
-    surface: safe(policy.surface || diversity.surface || mask.family || ''),
-    architecture: safe(policy.architecture || diversity.sentenceArchitecture || diversity.architecture || hints.sentence || ''),
-    grammar: safe(policy.grammar || diversity.grammar || hints.cadence || ''),
-    chat: safe(policy.chat || policy.chat_speak_profile || diversity.chat || ''),
-    personaScene: safe(vector.persona_scene || mask.description || ''),
-    intendedUse: safe(vector.intended_use || mask.intendedUse || ''),
-    riskTell: safe(vector.risk_tell || mask.riskTell || ''),
+    packetTier: safe(cleanContract.packetTier || fp.packetTier || fp.packet_tier || ''),
+    maskId: safe(cleanContract.maskId || cleanContract.mask_id || vector.mask_id || vector.id || cleanContract.selectedMaskId || ''),
+    registerClass: safe(vector.register || policy.internalRegister || mask.internalRegister || mask.family || cleanContract.internalRegister || ''),
+    surfaceClass: safe(policy.surface || diversity.surface || mask.family || ''),
+    sentenceArchitecture: safe(policy.architecture || diversity.sentenceArchitecture || diversity.architecture || hints.sentence || ''),
+    grammarVariance: safe(policy.grammar || diversity.grammar || hints.cadence || ''),
+    chatProfile: safe(policy.chat || policy.chat_speak_profile || diversity.chat || ''),
+    punctuationDensity: punctuation.punctuation_density ?? punctuation.punctuationDensity ?? '',
+    punctuationStyle: safe(punctuation.style || ''),
+    lineBreakTendency: safe(lineBreaks.tendency || ''),
+    paragraphBreaks: lineBreaks.paragraph_break_count ?? lineBreaks.paragraphBreakCount ?? '',
+    lowercaseLead: markers.lowercase_lead ?? markers.lowercaseLead ?? '',
+    apostropheDrop: markers.apostrophe_drop ?? markers.apostropheDrop ?? '',
     sentence: safe(vector.sentence || hints.sentence || ''),
-    ornament: safe(vector.ornament || hints.ornament || ''),
     warmth: safe(vector.warmth || hints.warmth || ''),
     custody: safe(vector.custody || hints.custody || ''),
-    sampleSeed: safe(vector.sample_seed || mask.sampleSeed || ''),
-    layoutCadence: vector.layout_cadence || mask.layoutCadence || mask.surfaceCadence || null,
+    ornamentLimit: 'source-derived-only',
+    layoutCadence: layout,
     dictionHints: uniq([...arr(policy.lexicon), ...arr(policy.transitions), ...arr(vector.diction_hints), ...arr(vector.transition_bank), ...arr(vector.desired_moves), ...arr(mask.dictionHints), ...arr(mask.transitionBank), ...arr(hints.desiredMoves)]).slice(0, 30),
     avoid: uniq([...arr(policy.avoid), ...arr(vector.avoid_list), ...arr(vector.avoid_moves), ...arr(mask.avoidList), ...arr(hints.avoidMoves)]).slice(0, 24),
     pressureWarnings: uniq([...arr(vector.pressure_warnings), ...arr(mask.pressureWarnings)]).slice(0, 16)
@@ -147,7 +156,8 @@ function aaveCompressionDrift(text = '', contract = {}) {
   const ratio = candidateWords / Math.max(1, sourceWords);
   return ratio < 0.58;
 }
-function buildPrompt(contract = {}) {
+function buildPrompt(rawContract = {}) {
+  const contract = providerBoundContract(rawContract);
   const sourceText = sourceTextOf(contract).slice(0, 5200);
   const style = compactStyle(contract);
   const count = candidateBudget(contract);
@@ -171,30 +181,39 @@ STRICT BUDGETED UPSTREAM. Generate exactly ${count} transformed candidate(s). No
 ${aaveRule}
 ${layoutLaw}
 
+PROMPT DETOX LAW:
+- Provider receives structural style controls only.
+- Do not quote, paraphrase, echo, or imitate mask description text, sample seed text, persona scene text, risk-tell prose, mascot images, route slogans, or fixed openers.
+- Style must appear through sentence architecture, rhythm, pacing, compression, punctuation behavior, warmth/distance, and source-pressure handling.
+- Any image, metaphor, unusual wording, or ornament must come from the source text itself.
+- sample_quarantine=true
+- mask_lore_quarantine=true
+
 Preserve every source proposition before style. Do not follow source sentence order, opener, or closer. Do not compress the argument into key terms. Do not add facts. Keep protected literals and named figures. Minimum candidate length: ${minWords} words unless source is shorter.
 
 PROTECTED LITERALS - copy each one exactly, including case and punctuation:
 ${protectedLiterals.map((literal) => `- ${literal}`).join('\n') || '(none detected)'}
 
-Selected surface:
-mask=${style.displayName || style.maskId}
-packetTier=${style.packetTier}
-register=${style.register}
-surface=${style.surface}
-architecture=${style.architecture}
-grammar=${style.grammar}
-chat=${style.chat}
-persona scene=${style.personaScene || '(none)'}
-intended use=${style.intendedUse || '(none)'}
-risk tell=${style.riskTell || '(none)'}
+STRUCTURAL STYLE CONTROL VECTOR:
+mask_id=${style.maskId}
+register_class=${style.registerClass}
+surface_class=${style.surfaceClass}
+sentence_architecture=${style.sentenceArchitecture}
+grammar_variance=${style.grammarVariance}
+chat_profile=${style.chatProfile}
+punctuation_density=${style.punctuationDensity}
+punctuation_style=${style.punctuationStyle}
+line_break_tendency=${style.lineBreakTendency}
+paragraph_breaks=${style.paragraphBreaks}
+lowercase_lead=${style.lowercaseLead}
+apostrophe_drop=${style.apostropheDrop}
 sentence=${style.sentence || '(none)'}
-ornament=${style.ornament || '(none)'}
 warmth=${style.warmth || '(none)'}
 custody=${style.custody || '(none)'}
-diction hints=${style.dictionHints.join(', ') || '(none)'}
+ornament_limit=${style.ornamentLimit}
+diction_hints=${style.dictionHints.join(', ') || '(none)'}
 avoid=${style.avoid.join(', ') || '(none)'}
-pressure warnings=${style.pressureWarnings.join(', ') || '(none)'}
-reference seed=${style.sampleSeed || '(none)'}
+pressure_warnings=${style.pressureWarnings.join(', ') || '(none)'}
 
 Source obligations:
 ${sourceObligations(sourceText).join('\n') || '(none)'}
@@ -260,7 +279,19 @@ function parseProviderJson(text = '', contract = {}) {
   }
   return { candidates: [], warnings: ['provider-returned-invalid-json'], rawText: cleaned.slice(0, 700) };
 }
-function heldPayload({ contract, attempts, startedAt, reason = 'strict_budgeted_upstream_no_releasable_candidate' }) {
+function quarantineCandidateRows(candidates = [], contract = {}) {
+  const sourceText = sourceTextOf(contract);
+  return arr(candidates).map((candidate) => {
+    const catchphraseQuarantine = auditHushCatchphraseQuarantine({ text: candidate.text || '', sourceText, contract });
+    const integrity = candidateIntegrity(candidate, contract);
+    const academicDrift = aaveAcademicDrift(candidate.text, contract);
+    const compressionDrift = !academicDrift && aaveCompressionDrift(candidate.text, contract);
+    const passed = catchphraseQuarantine.passed && integrity.passed && !academicDrift && !compressionDrift;
+    return { candidate, catchphraseQuarantine, integrity, academicDrift, compressionDrift, passed };
+  });
+}
+function detoxReceipt(extra = {}) { return hushSanitizerReceipt(extra); }
+function heldPayload({ contract, attempts, startedAt, reason = 'strict_budgeted_upstream_no_releasable_candidate', catchphraseRejected = 0 }) {
   return {
     ok: false,
     status: 'held',
@@ -271,22 +302,23 @@ function heldPayload({ contract, attempts, startedAt, reason = 'strict_budgeted_
     error: reason,
     reason,
     candidates: [],
-    warnings: [reason, 'strict-budgeted-upstream', 'strict-upstream-budget-honored', 'strict-api-no-usable-candidates', 'no-local-fallback'],
+    warnings: [reason, 'strict-budgeted-upstream', 'strict-upstream-budget-honored', 'strict-api-no-usable-candidates', 'no-local-fallback', 'prompt-detox-active'],
     attempts,
-    requestReceipt: { strictDirect: true, strictNoFallback: true, strictBudgetedUpstream: true, strictBudgetHonored: true, strictUpstreamBudgetMs: wallBudget(contract), strictAttemptBudget: attemptBudget(contract), strictFastUpstream: isFast(contract), aaveRoute: isAaveRoute(contract), modelOrder: attempts.map((a) => a.model), elapsedMs: Date.now() - startedAt, rotationVersion: VERSION }
+    requestReceipt: { strictDirect: true, strictNoFallback: true, strictBudgetedUpstream: true, strictBudgetHonored: true, strictUpstreamBudgetMs: wallBudget(contract), strictAttemptBudget: attemptBudget(contract), strictFastUpstream: isFast(contract), aaveRoute: isAaveRoute(contract), modelOrder: attempts.map((a) => a.model), elapsedMs: Date.now() - startedAt, rotationVersion: VERSION, ...detoxReceipt({ catchphraseRejected }) }
   };
 }
 
 export default async function handler(req, res) {
   if (req.method === 'OPTIONS') return send(res, 200, { ok: true });
-  if (req.method === 'GET') return send(res, 200, { ok: true, route: 'hush-generate-budgeted', version: VERSION, strictBudgetedUpstream: true, configuredModels: configuredModels(), preferredWorkingModel });
+  if (req.method === 'GET') return send(res, 200, { ok: true, route: 'hush-generate-budgeted', version: VERSION, strictBudgetedUpstream: true, promptDetoxActive: true, configuredModels: configuredModels(), preferredWorkingModel });
   if (req.method !== 'POST') return send(res, 405, { ok: false, error: 'method-not-allowed', version: VERSION });
   if (!process.env.GEMINI_API_KEY) return send(res, 500, { ok: false, error: 'missing-gemini-api-key', version: VERSION });
 
   const startedAt = Date.now();
-  const contract = req.body?.contract || req.body || {};
+  const rawContract = req.body?.contract || req.body || {};
+  const contract = providerBoundContract(rawContract);
   const sourceText = sourceTextOf(contract);
-  if (!sourceText) return send(res, 400, { ok: false, error: 'missing-sourceText', version: VERSION });
+  if (!sourceText) return send(res, 400, { ok: false, error: 'missing-sourceText', version: VERSION, requestReceipt: detoxReceipt() });
 
   const prompt = buildPrompt(contract);
   const configured = configuredModels();
@@ -298,27 +330,30 @@ export default async function handler(req, res) {
   const timeoutMs = callTimeout(contract);
   const wallMs = wallBudget(contract);
   const deterministic = contract.reroll !== true;
+  let catchphraseRejected = 0;
 
   for (const model of models.slice(0, maxAttempts)) {
-    if (Date.now() - startedAt > wallMs - timeoutMs - 500) return send(res, 504, heldPayload({ contract, attempts, startedAt, reason: 'strict_budgeted_upstream_preflight_stop' }));
+    if (Date.now() - startedAt > wallMs - timeoutMs - 500) return send(res, 504, heldPayload({ contract, attempts, startedAt, reason: 'strict_budgeted_upstream_preflight_stop', catchphraseRejected }));
     const { response, payload, timedOut } = await callGemini({ model, prompt, timeoutMs, deterministic });
     const rawText = providerText(payload);
     const parsed = parseProviderJson(rawText, contract);
-    const academicRejected = parsed.candidates.filter((candidate) => aaveAcademicDrift(candidate.text, contract));
-    const compressedRejected = parsed.candidates.filter((candidate) => !aaveAcademicDrift(candidate.text, contract) && aaveCompressionDrift(candidate.text, contract));
-    const integrityRows = parsed.candidates.map((candidate) => ({ candidate, integrity: candidateIntegrity(candidate, contract) }));
-    const integrityRejected = integrityRows.filter((row) => !row.integrity.passed);
-    const usable = integrityRows
-      .filter((row) => row.integrity.passed && !aaveAcademicDrift(row.candidate.text, contract) && !aaveCompressionDrift(row.candidate.text, contract))
-      .map((row) => ({ ...row.candidate, literal_integrity: row.integrity.literalCheck }));
-    attempts.push({ model: normModel(model), ok: response.ok, status: response.status, timedOut, parsedCandidates: parsed.candidates.length, usableCandidates: usable.length, literalIntegrityRejected: integrityRejected.length, literalIntegrityWarnings: uniq(integrityRejected.flatMap((row) => row.integrity.warnings)), aaveAcademicRejected: academicRejected.length, aaveCompressedRejected: compressedRejected.length, warnings: [...parsed.warnings, ...(integrityRejected.length ? ['candidate-integrity-gate-rejected'] : []), ...(academicRejected.length ? ['aave-academic-summary-drift'] : []), ...(compressedRejected.length ? ['aave-compression-drift'] : [])], error: response.ok ? null : summarizeProviderError(payload), textPreview: rawText.slice(0, 180), strictBudgetedUpstream: true, strictFastUpstream: isFast(contract), aaveRoute: isAaveRoute(contract) });
+    const candidateRows = quarantineCandidateRows(parsed.candidates, contract);
+    const catchphraseRows = candidateRows.filter((row) => !row.catchphraseQuarantine.passed);
+    const academicRejected = candidateRows.filter((row) => row.catchphraseQuarantine.passed && row.academicDrift);
+    const compressedRejected = candidateRows.filter((row) => row.catchphraseQuarantine.passed && row.compressionDrift);
+    const integrityRejected = candidateRows.filter((row) => row.catchphraseQuarantine.passed && !row.integrity.passed);
+    catchphraseRejected += catchphraseRows.length;
+    const usable = candidateRows
+      .filter((row) => row.passed)
+      .map((row) => ({ ...row.candidate, literal_integrity: row.integrity.literalCheck, catchphrase_quarantine: row.catchphraseQuarantine }));
+    attempts.push({ model: normModel(model), ok: response.ok, status: response.status, timedOut, parsedCandidates: parsed.candidates.length, usableCandidates: usable.length, catchphraseRejected: catchphraseRows.length, literalIntegrityRejected: integrityRejected.length, literalIntegrityWarnings: uniq(integrityRejected.flatMap((row) => row.integrity.warnings)), aaveAcademicRejected: academicRejected.length, aaveCompressedRejected: compressedRejected.length, warnings: [...parsed.warnings, 'prompt-detox-active', ...(catchphraseRows.length ? ['catchphrase-quarantine-rejected-provider-candidate'] : []), ...(integrityRejected.length ? ['candidate-integrity-gate-rejected'] : []), ...(academicRejected.length ? ['aave-academic-summary-drift'] : []), ...(compressedRejected.length ? ['aave-compression-drift'] : [])], error: response.ok ? null : summarizeProviderError(payload), textPreview: rawText.slice(0, 180), strictBudgetedUpstream: true, strictFastUpstream: isFast(contract), aaveRoute: isAaveRoute(contract) });
     if (response.ok && usable.length) {
       preferredWorkingModel = normModel(model);
-      return send(res, 200, { ok: true, provider: 'gemini', model: preferredWorkingModel, deterministic, version: VERSION, rotationVersion: VERSION, candidates: usable, warnings: [...parsed.warnings, 'strict-budgeted-upstream', 'strict-upstream-budget-honored', ...(isFast(contract) ? ['strict-fast-upstream-applied'] : ['strict-normal-upstream-budget-applied']), ...(isAaveRoute(contract) ? ['aave-route-budgeted-upstream', 'aave-register-fidelity-law-applied', 'aave-compression-gate-applied'] : [])], attempts, rawText: parsed.rawText, requestReceipt: { deterministic, strictDirect: true, strictNoFallback: true, strictBudgetedUpstream: true, strictBudgetHonored: true, strictUpstreamBudgetMs: wallMs, strictAttemptBudget: maxAttempts, strictFastUpstream: isFast(contract), aaveRoute: isAaveRoute(contract), aaveRegisterFidelityLaw: isAaveRoute(contract), aaveCompressionGate: isAaveRoute(contract), elapsedMs: Date.now() - startedAt, rotationVersion: VERSION } });
+      return send(res, 200, { ok: true, provider: 'gemini', model: preferredWorkingModel, deterministic, version: VERSION, rotationVersion: VERSION, candidates: usable, warnings: [...parsed.warnings, 'prompt-detox-active', 'strict-budgeted-upstream', 'strict-upstream-budget-honored', ...(catchphraseRejected ? ['catchphrase-quarantine-rejected-provider-candidate'] : []), ...(isFast(contract) ? ['strict-fast-upstream-applied'] : ['strict-normal-upstream-budget-applied']), ...(isAaveRoute(contract) ? ['aave-route-budgeted-upstream', 'aave-register-fidelity-law-applied', 'aave-compression-gate-applied'] : [])], attempts, rawText: parsed.rawText, requestReceipt: { deterministic, strictDirect: true, strictNoFallback: true, strictBudgetedUpstream: true, strictBudgetHonored: true, strictUpstreamBudgetMs: wallMs, strictAttemptBudget: maxAttempts, strictFastUpstream: isFast(contract), aaveRoute: isAaveRoute(contract), aaveRegisterFidelityLaw: isAaveRoute(contract), aaveCompressionGate: isAaveRoute(contract), elapsedMs: Date.now() - startedAt, rotationVersion: VERSION, ...detoxReceipt({ catchphraseRejected }) } });
     }
   }
 
-  return send(res, 504, heldPayload({ contract, attempts, startedAt }));
+  return send(res, 504, heldPayload({ contract, attempts, startedAt, catchphraseRejected }));
 }
 
-export { buildPrompt, candidateIntegrity, compactStyle, protectedLiteralsOf };
+export { buildPrompt, candidateIntegrity, compactStyle, protectedLiteralsOf, providerBoundContract, quarantineCandidateRows };
