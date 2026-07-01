@@ -13,7 +13,7 @@ import { buildMaskLifecycle, summarizeMaskLifecycle } from './hush-mask-lifecycl
 import { exportHushPolicyJson } from './hush-export-policy.js';
 import { buildMeaningPlan, extractPayloadProtectedLiterals } from './hush-meaning-plan.js';
 import { buildRealizationPlan } from './hush-realization-plan.js';
-import { generateMaskWriterCandidates } from './hush-mask-writer.js';
+import { generateMaskWriterCandidates, styleStrategiesForMask } from './hush-mask-writer.js';
 import { scoreNaturalness, summarizeNaturalness } from './hush-naturalness.js';
 import { cleanHushCandidates, summarizeCleanroom } from './hush-candidate-cleanroom.js';
 import { buildReleasePolicy, summarizeReleasePolicy } from './hush-release-policy.js';
@@ -29,13 +29,27 @@ import { buildPayloadBindingMap, summarizePayloadBindingMap } from './hush-paylo
 import { verifyPayloadIntegrity, summarizePayloadIntegrity } from './hush-payload-integrity.js';
 import { repairPayloadLoss, rebuildPayloadSentence, summarizePayloadRepair } from './hush-payload-repair.js';
 
-export const HUSH_SWAP_VERSION = 'phase-22';
+export const HUSH_SWAP_VERSION = 'phase-22.1-selection-pressure';
 
 const safeText = (value) => String(value ?? '');
 const asArray = (value) => Array.isArray(value) ? [...value] : [];
 const clamp = (value, min = 0, max = 1) => Number.isFinite(value) ? Math.max(min, Math.min(max, value)) : 0;
 const round = (value, digits = 4) => Number.isFinite(value) ? Number(value.toFixed(digits)) : 0;
 const unique = (values = []) => [...new Set(asArray(values).filter(Boolean))];
+const GENERIC_SAFE_STRATEGIES = new Set([
+  'record-first',
+  'evidence-first',
+  'date-first',
+  'caveat-first',
+  'request-softened',
+  'two-sentence-brief',
+  'intake-style',
+  'procedural-neutral',
+  'formal-record',
+  'compressed-record',
+  'expanded-context',
+  'literal-safe-fallback'
+]);
 
 function extractProtectedLiterals(text = '') {
   return extractPayloadProtectedLiterals(text).slice(0, 64);
@@ -46,6 +60,44 @@ function literalScore(outputText = '', protectedLiterals = []) {
   if (!required.length) return 1;
   const kept = required.filter((literal) => safeText(outputText).includes(literal)).length;
   return clamp(kept / required.length);
+}
+
+function buildMaskStyleSelectionSignal(candidate = {}, mask = {}) {
+  const strategy = safeText(candidate.strategy || candidate.family).trim();
+  const source = safeText(candidate.source || '').trim();
+  const operations = asArray(candidate.operations).map((item) => safeText(item)).join(' ');
+  const maskStrategies = styleStrategiesForMask(mask || {});
+  const maskSpecific = maskStrategies.includes(strategy) || maskStrategies.some((entry) => operations.includes(`strategy:${entry}`));
+  const writerSource = source === 'mask-writer';
+  const syntaxSource = source === 'syntax-recomposer';
+  const fallbackSource = source === 'literal-safe-fallback';
+  const genericSafe = fallbackSource || (syntaxSource && !maskSpecific && GENERIC_SAFE_STRATEGIES.has(strategy));
+  const humanSurface = writerSource && !genericSafe;
+  let maskStyleScore = writerSource ? 0.64 : syntaxSource ? 0.24 : 0.10;
+  if (maskSpecific) maskStyleScore += 0.34;
+  if (humanSurface && !maskSpecific) maskStyleScore += 0.08;
+  if (fallbackSource) maskStyleScore = 0.04;
+  if (genericSafe) maskStyleScore -= 0.10;
+  const genericSafetyPenalty = fallbackSource ? 0.18 : genericSafe ? 0.11 : syntaxSource && !maskSpecific ? 0.04 : 0;
+  return {
+    version: 'hush-selection-pressure/v1',
+    source,
+    strategy,
+    maskStrategies,
+    maskSpecific,
+    writerSource,
+    syntaxSource,
+    fallbackSource,
+    genericSafe,
+    humanSurface,
+    maskStyleScore: round(clamp(maskStyleScore)),
+    genericSafetyPenalty: round(clamp(genericSafetyPenalty)),
+    warnings: [
+      ...(genericSafe ? ['generic-safe-candidate-penalized'] : []),
+      ...(writerSource && maskSpecific ? ['mask-specific-writer-candidate'] : []),
+      ...(syntaxSource && !maskSpecific ? ['syntax-candidate-may-flatten-mask'] : [])
+    ]
+  };
 }
 
 function mutateCandidate(text = '', index = 0, mask = {}, steeringPlan = null) {
@@ -291,6 +343,7 @@ export function scoreHushSwapCandidate(input = {}) {
   const literalPlacementSummary = summarizeLiteralPlacement(candidate.literalPlacement || input.literalPlacementMap || {});
   const naturalness = candidate.writerNaturalness || scoreNaturalness({ text: outputText, mask: input.mask, realizationPlan: input.realizationPlan });
   const naturalnessSummary = summarizeNaturalness(naturalness);
+  const maskStyleSignal = buildMaskStyleSelectionSignal(candidate, input.mask || {});
   const scores = escapeVector.scores || {};
   const protectedLiteralScore = Math.min(literalScore(outputText, protectedLiterals), lockboxVerification.preservationScore ?? 1);
   const steeringScore = scoreCandidateWithSteering({
@@ -309,12 +362,14 @@ export function scoreHushSwapCandidate(input = {}) {
   const claimScore = claimIntegrity.score ?? (claimIntegrity.passed ? 1 : 0);
   const payloadScore = payloadIntegrity.score ?? (payloadIntegrity.passed ? 1 : 0);
   const naturalnessHardBlocks = naturalnessScore < 0.34 ? ['naturalness-catastrophic'] : [];
-  const finalScore = round((steeringScore.finalScore * 0.38) + (naturalnessScore * 0.12) + (sourceScore * 0.16) + (syntaxScore * 0.16) + (claimScore * 0.06) + (payloadScore * 0.12));
+  const finalScore = round(clamp((steeringScore.finalScore * 0.31) + (naturalnessScore * 0.09) + (sourceScore * 0.12) + (syntaxScore * 0.11) + (claimScore * 0.06) + (payloadScore * 0.12) + (maskStyleSignal.maskStyleScore * 0.19) - maskStyleSignal.genericSafetyPenalty));
+  const selectionScore = finalScore;
   const hardVetoes = [...asArray(steeringScore.vetoes), ...naturalnessHardBlocks, ...asArray(claimIntegrity.hardFailures).map(() => 'claim-integrity-failed'), ...asArray(payloadIntegrity.hardFailures).map(() => 'claim-payload-loss')];
   const reviewWarnings = unique([
     ...asArray(steeringScore.reviewWarnings),
     ...asArray(steeringPlan.warnings),
     ...asArray(candidate.writerWarnings),
+    ...asArray(maskStyleSignal.warnings),
     ...asArray(match.warnings),
     ...asArray(naturalness.fluencyWarnings),
     ...asArray(sourceResidue.warnings),
@@ -324,8 +379,10 @@ export function scoreHushSwapCandidate(input = {}) {
     ...asArray(payloadRepair?.warnings),
     ...asArray(candidate.literalPlacement?.warnings)
   ]);
+  const scoreBreakdown = { ...steeringScore.scoreBreakdown, naturalness: naturalnessScore, sourceResidueScore: sourceScore, sourceResidueRisk: sourceResidueScore.sourceResidueRisk, syntaxShiftScore: syntaxScore, claimIntegrity: claimScore, payloadIntegrity: payloadScore, maskStyleScore: maskStyleSignal.maskStyleScore, genericSafetyPenalty: maskStyleSignal.genericSafetyPenalty };
+  const weightProfile = { ...steeringScore.weightProfile, naturalness: 0.09, sourceResidueScore: 0.12, syntaxShiftScore: 0.11, claimIntegrity: 0.06, payloadIntegrity: 0.12, maskStyleScore: 0.19, genericSafetyPenalty: 'subtract' };
   const releasePolicy = buildReleasePolicy({
-    candidate: { ...candidate, text: outputText, vetoes: hardVetoes, warnings: reviewWarnings, scoreBreakdown: { ...steeringScore.scoreBreakdown, naturalness: naturalnessScore, sourceResidueScore: sourceScore, syntaxShiftScore: syntaxScore, claimIntegrity: claimScore, payloadIntegrity: payloadScore }, weightProfile: steeringScore.weightProfile, naturalness, escapeVector, lockboxVerification, sourceResidue, sourceResidueScore: sourceScore, syntaxShift, claimIntegrity, payloadIntegrity, payloadRepair, match },
+    candidate: { ...candidate, text: outputText, vetoes: hardVetoes, warnings: reviewWarnings, scoreBreakdown, weightProfile, naturalness, escapeVector, lockboxVerification, sourceResidue, sourceResidueScore: sourceScore, syntaxShift, claimIntegrity, payloadIntegrity, payloadRepair, match, maskStyleSignal },
     outputText,
     protectedLiterals,
     semanticFidelity: scores.semanticFidelity ?? 0,
@@ -343,8 +400,10 @@ export function scoreHushSwapCandidate(input = {}) {
   return {
     ...candidate,
     finalScore,
-    scoreBreakdown: { ...steeringScore.scoreBreakdown, naturalness: naturalnessScore, sourceResidueScore: sourceScore, sourceResidueRisk: sourceResidueScore.sourceResidueRisk, syntaxShiftScore: syntaxScore, claimIntegrity: claimScore, payloadIntegrity: payloadScore },
-    weightProfile: { ...steeringScore.weightProfile, naturalness: 0.12, sourceResidueScore: 0.16, syntaxShiftScore: 0.16, claimIntegrity: 0.06, payloadIntegrity: 0.12 },
+    selectionScore,
+    scoreBreakdown,
+    weightProfile,
+    maskStyleSignal,
     vetoes: unique(hardVetoes),
     reviewWarnings,
     releasePolicy,
@@ -394,6 +453,13 @@ export function chooseBestHushSwapCandidate(candidates = [], options = {}) {
     const leftWrapper = asArray(left.syntaxShift?.warnings).includes('wrapper-only-transform') ? 1 : 0;
     const rightWrapper = asArray(right.syntaxShift?.warnings).includes('wrapper-only-transform') ? 1 : 0;
     if (leftWrapper !== rightWrapper) return leftWrapper - rightWrapper;
+    const leftScore = left.selectionScore ?? left.finalScore ?? 0;
+    const rightScore = right.selectionScore ?? right.finalScore ?? 0;
+    const scoreDelta = rightScore - leftScore;
+    if (Math.abs(scoreDelta) > 0.015) return scoreDelta;
+    const leftStyle = left.maskStyleSignal?.maskStyleScore ?? 0;
+    const rightStyle = right.maskStyleSignal?.maskStyleScore ?? 0;
+    if (leftStyle !== rightStyle) return rightStyle - leftStyle;
     return (right.finalScore || 0) - (left.finalScore || 0);
   });
   const best = scored[0] || null;
@@ -477,6 +543,7 @@ export function buildHushSwap(input = {}) {
     controllerDecision: selected?.controllerDecision || null,
     claimCeiling,
     recognitionField: selected?.recognitionField || null,
+    maskStyleSignal: selected?.maskStyleSignal || null,
     warnings: unique([...asArray(phase21.writerBundle?.warnings), ...asArray(phase21.syntaxBundle?.warnings), ...asArray(phase21.cleanroom?.operations), ...candidates.flatMap((candidate) => asArray(candidate.warnings)), ...(allCandidatesFailed ? ['all-candidates-failed'] : [])]),
     limitations: ['Hush swap is a local candidate selection workflow, not an external recognition outcome.', 'Preserve the claim and payload before chasing the mask.']
   };
