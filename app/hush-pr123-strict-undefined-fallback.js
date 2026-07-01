@@ -258,12 +258,13 @@
             var result = { selectedOutput: selected.text, selectedCandidateId: candidateId, candidates: [selected.candidate], lockboxVerification: { passed: true, preservationScore: 1, missing: [], protectedLiterals: contract.protectedLiterals }, releasePolicy: { mayPopulateOutput: true, hardBlocked: false, releaseStatus: 'Review required', state: 'review' }, releaseSummary: { status: 'review', warnings: ['operator-review-required'] }, patch38Diagnostics: { providerMode: 'remote-llm-proxy', providerReports: [window.__TD613_HUSH_EXACT_PROVIDER_LOG], selectedCandidateId: candidateId }, phase37Telemetry: { promptVersion: contract.promptVersion, flightPacketVersion: contract.flightPacket.packet_version, flightPacket: contract.flightPacket }, patch38Snapshot: window.__TD613_HUSH_EXACT_OUTBOUND_PACKET && window.__TD613_HUSH_EXACT_OUTBOUND_PACKET.snapshot || null, outboundPacket: window.__TD613_HUSH_EXACT_OUTBOUND_PACKET };
             state().hushSwapResult = result;
             window.__TD613_HUSH_PATCH38_LAST_RESULT = result;
-            markReviewPending(contract.protectedLiterals.length);
             status('Remote provider output received from ' + endpoint + '. Review/edit before Accept.', 'ok');
+            markReviewPending(contract.protectedLiterals.length);
             try { window.dispatchEvent(new CustomEvent('td613:hush:patch38-result', { detail: { result: result, outboundPacket: window.__TD613_HUSH_EXACT_OUTBOUND_PACKET } })); } catch (_) {}
             window.setTimeout(runLocalReview, 0);
             return selected.text;
           }
+          if (last.payload && (last.payload.held === true || last.payload.status === 'held')) break;
         } catch (error) {
           publishProvider({ error: 'request_failed', message: String(error && error.message || error) }, contract, endpoint, 0);
           last = { endpoint: endpoint, response: { status: 0, ok: false }, payload: { error: 'request_failed' } };
