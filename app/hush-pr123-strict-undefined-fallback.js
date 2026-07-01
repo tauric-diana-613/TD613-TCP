@@ -252,8 +252,8 @@
             state().hushSwapResult = result;
             window.__TD613_HUSH_PATCH38_LAST_RESULT = result;
             status('Remote provider output received from ' + endpoint + '. Review/edit before Accept.', 'ok');
-            markReviewPending(contract.protectedLiterals.length);
             try { window.dispatchEvent(new CustomEvent('td613:hush:patch38-result', { detail: { result: result, outboundPacket: window.__TD613_HUSH_EXACT_OUTBOUND_PACKET } })); } catch (_) {}
+            markReviewPending(contract.protectedLiterals.length);
             return selected.text;
           }
           if (last.payload && (last.payload.held === true || last.payload.status === 'held')) break;

@@ -37,6 +37,10 @@ The immediate provider result displayed quiet claim/literal/source indicators. M
 
 Local boot inspection found five strict/capture script elements. The page declared the strict bridge directly while both the run-lock and housekeeping layers injected older cache-token copies. Because the bind guard included the bridge version, a stale version could attach after the current version.
 
+### Stale cross-mask reference
+
+The light bench populated the first selected mask's hidden reference seed but did not replace it on later mask changes. A later contract could therefore combine the current mask identity with another mask's reference evidence, increasing holds and flattening mask differentiation.
+
 ## Patch
 
 - Added shared exact protected-literal extraction and integrity checks.
@@ -46,6 +50,7 @@ Local boot inspection found five strict/capture script elements. The page declar
 - Added server and browser rejection gates for literal loss, reported dropped propositions, and reported new claims.
 - Marked accepted provider output as review-required while keeping full local analysis behind the operator's Review action.
 - Removed duplicate strict bridge injection from run-lock and housekeeping layers.
+- Synchronizes the hidden mask reference whenever the operator changes masks.
 - Added a cache token and a regression test for bridge ownership, mask anatomy, and literal integrity.
 
 ## Verified Behavior

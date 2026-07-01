@@ -87,17 +87,21 @@ assert.equal(candidateIntegrity(newClaimCandidate, contract).passed, false);
 
 const bridge = fs.readFileSync('app/hush-pr123-strict-undefined-fallback.js', 'utf8');
 const html = fs.readFileSync('app/adversarial-bench.html', 'utf8');
+const lightBench = fs.readFileSync('app/adversarial-bench-light.js', 'utf8');
 const runLock = fs.readFileSync('app/hush-pr168-strict-transform-run-lock.js', 'utf8');
 const housekeeping = fs.readFileSync('app/hush-housekeeping-relayout.js', 'utf8');
 for (const marker of ['function protectedLiterals', 'function styleVector', 'function candidateIntegrity', 'function markReviewPending', 'protected_literals: literals']) {
   assert.ok(bridge.includes(marker), `strict browser bridge missing ${marker}`);
 }
-assert.ok(html.includes('hush-pr123-strict-undefined-fallback.js?v=202607010705'));
+assert.ok(html.includes('hush-pr123-strict-undefined-fallback.js?v=202607010740'));
+assert.ok(html.includes('adversarial-bench-light.js?v=202607010740'));
 assert.equal((html.match(/hush-pr123-strict-undefined-fallback\.js/g) || []).length, 1, 'page must declare one strict bridge owner');
 assert.ok(!runLock.includes("appendScriptOnce('hushPr123ExactArtifactLoader'"), 'run-lock must not inject a competing strict bridge');
 assert.ok(!housekeeping.includes('data-td613-hush-pr123-exact='), 'housekeeping must not inject strict bridge assets');
-assert.ok(bridge.indexOf("status('Remote provider output received") < bridge.indexOf('markReviewPending(contract.protectedLiterals.length)'), 'review status must win after provider success');
+assert.ok(bridge.indexOf("dispatchEvent(new CustomEvent('td613:hush:patch38-result'") < bridge.indexOf('markReviewPending(contract.protectedLiterals.length)'), 'review status must win after synchronous result listeners');
 assert.ok(bridge.includes("last.payload.held === true || last.payload.status === 'held'"), 'structured holds must not fall through to a cross-domain retry');
 assert.ok(!bridge.includes('runLocalReview'), 'strict generation must not auto-load the heavy review bench');
+assert.ok(lightBench.includes('if (reference && mask) {'), 'mask selection must synchronize the active reference');
+assert.ok(!lightBench.includes('reference && mask && !text(reference.value)'), 'a previous mask reference must not survive mask switching');
 
 console.log('hush strict provider mask-anatomy and literal-integrity tests passed');
