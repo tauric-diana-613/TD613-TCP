@@ -70,6 +70,17 @@ The first message can become Hush's protected comparison baseline. The strict br
 - Export surfaces exclude private text by default and include it only after the explicit private-text toggle.
 - Mobile document width remains within the viewport.
 
-## Validation Boundary
+## Final Production Acceptance
 
-The full local Hush test suite passed after the patch. Local browser boot and failure recovery passed, but the local static server has no configured Gemini endpoint, so remote generation correctly held without releasing a fallback. Final mask-quality and exact-literal confirmation requires a production deployment of this patch.
+The full local Hush test suite passed after the patch. Vercel deployed the merged runtime, and the canonical TD613.com page then completed a fresh 26-run matrix:
+
+- all 13 active masks ran twice;
+- each mask received one native-use probe and one shared high-custody probe;
+- 26/26 transforms released provider output;
+- every required identifier, date, timestamp, and configuration key survived exactly;
+- every successful result entered `Review` with the exact gate visible;
+- no stale mask reference or historical baseline literal crossed into a later transform.
+
+The final outputs visibly separated the active surfaces, including Pixie shorthand, Sheree relational argument, Zora uncertainty, Rex fracture, Keisha group-chat warmth, Cryo handoff, six-word Blip compression, Lulu's bounded odd image, Queenie warmth, Nolan low heat, Paul forum pacing, Luz indexing, and Sol document distance.
+
+A final cross-message regression established a Pixie baseline, transformed an unrelated Sol message, and ran Review. The analyzer reported `Protected literals: preserved`, retained a `1.00 locked` literal score, and enabled Accept. No Pixie identifier appeared as a missing Sol obligation.
