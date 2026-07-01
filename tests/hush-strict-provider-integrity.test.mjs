@@ -92,9 +92,11 @@ const housekeeping = fs.readFileSync('app/hush-housekeeping-relayout.js', 'utf8'
 for (const marker of ['function protectedLiterals', 'function styleVector', 'function candidateIntegrity', 'function runLocalReview', 'protected_literals: literals']) {
   assert.ok(bridge.includes(marker), `strict browser bridge missing ${marker}`);
 }
-assert.ok(html.includes('hush-pr123-strict-undefined-fallback.js?v=202607010615'));
+assert.ok(html.includes('hush-pr123-strict-undefined-fallback.js?v=202607010650'));
 assert.equal((html.match(/hush-pr123-strict-undefined-fallback\.js/g) || []).length, 1, 'page must declare one strict bridge owner');
 assert.ok(!runLock.includes("appendScriptOnce('hushPr123ExactArtifactLoader'"), 'run-lock must not inject a competing strict bridge');
 assert.ok(!housekeeping.includes('data-td613-hush-pr123-exact='), 'housekeeping must not inject strict bridge assets');
+assert.ok(bridge.indexOf("status('Remote provider output received") < bridge.indexOf('markReviewPending(contract.protectedLiterals.length)'), 'review status must win after provider success');
+assert.ok(bridge.includes("last.payload.held === true || last.payload.status === 'held'"), 'structured holds must not fall through to a cross-domain retry');
 
 console.log('hush strict provider mask-anatomy and literal-integrity tests passed');
