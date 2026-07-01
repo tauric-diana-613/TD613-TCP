@@ -56,6 +56,7 @@ hush-phase11-surface-registry.test.mjs
 hush-phase11-export-console.test.mjs
 hush-phase11-release-tribunal.test.mjs
 hush-phase11-runtime-evidence-panel.test.mjs
+hush-phase11-drawer-dom-safety.test.mjs
 
 # Phase 12 — integration gate
 hush-phase12-packet-chain-integrity.test.mjs
