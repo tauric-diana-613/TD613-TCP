@@ -4,6 +4,8 @@ import { buildHushEvidenceCockpit, summarizeHushEvidenceCockpit } from './engine
 import { listHushMasks } from './engine/hush-mask-studio.js';
 import { renderHushPersonaGallery, summarizeHushPersonaGallery } from './hush-persona-gallery.js';
 
+const HUSH_SURFACE_MODE = 'current-hush-surface';
+
 function pill(label, status) {
   return `<article class="dashboard-pill ${status || 'gray'}"><strong>${label}</strong><span>${status || 'gray'}</span></article>`;
 }
@@ -25,7 +27,7 @@ function ensureCockpitShell() {
   cockpit.id = 'hushEvidenceCockpit';
   cockpit.className = 'hush-product-card cockpit-card';
   cockpit.innerHTML = `
-    <div class="card-heading-row"><div><p class="eyebrow">Phase 31</p><h2>Evidence Cockpit</h2></div><div id="hushRouteState" class="route-state">booting</div></div>
+    <div class="card-heading-row"><div><p class="eyebrow">Current Hush</p><h2>Evidence Cockpit</h2></div><div id="hushRouteState" class="route-state">booting</div></div>
     <div class="cockpit-grid">
       <article class="instrument-panel wide"><h3>Signal Bus</h3><div id="hushSignalBus" class="bus-grid"></div></article>
       <article class="instrument-panel"><h3>Narrowing Losses</h3><div id="hushNarrowingLosses" class="loss-stack"></div></article>
@@ -49,8 +51,8 @@ function bindPersonaSelection() {
 
 async function renderDashboard() {
   const dashboard = buildHushReadinessDashboard({ exportReady: true, operatorReady: true });
-  const state = buildHushProductState({ dashboard, currentMode: 'phase-31-visual-system' });
-  const cockpit = await buildHushEvidenceCockpit({ reports: { exportReady: true, operatorReady: true }, dashboard, mode: 'phase-31-visual-system', maskId: 'persona-gallery' });
+  const state = buildHushProductState({ dashboard, currentMode: HUSH_SURFACE_MODE });
+  const cockpit = await buildHushEvidenceCockpit({ reports: { exportReady: true, operatorReady: true }, dashboard, mode: HUSH_SURFACE_MODE, maskId: 'persona-gallery' });
   const gallery = renderHushPersonaGallery(document.getElementById('hushPersonaGallery'), listHushMasks());
   ensureCockpitShell();
   bindPersonaSelection();
@@ -89,4 +91,4 @@ if (typeof document !== 'undefined') {
   else renderDashboard();
 }
 
-export { renderDashboard, ensureCockpitShell, bindPersonaSelection };
+export { renderDashboard, ensureCockpitShell, bindPersonaSelection, HUSH_SURFACE_MODE };
