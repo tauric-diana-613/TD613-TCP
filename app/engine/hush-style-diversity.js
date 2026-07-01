@@ -1,4 +1,4 @@
-export const HUSH_STYLE_DIVERSITY_VERSION = 'pr188.1-mask-identity-refresh/v1';
+export const HUSH_STYLE_DIVERSITY_VERSION = '20260701-dromological-paul-deploy-fix/v1';
 
 export const ACTIVE_MASK_IDS = Object.freeze([
   'group-chat-soft',
@@ -89,18 +89,18 @@ const PROFILES = {
     sample: 'ok yall, small circle version: the date stays, the name stays, and i am not trying to make this louder than it needs to be.'
   }),
   'forum-regular': P({
-    label: 'Paul Publica',
-    surface: 'public-forum skepticism with civic static',
-    bio: 'Paul has seen page three eat the evidence before breakfast. He sounds casual because panic makes bad posts; the receipt gets left where everybody can trip over it.',
-    architecture: 'setup sentence, receipt sentence, sideways caveat; mild ramble allowed',
+    label: 'Dromological Paul',
+    surface: 'dromological public-forum slowdown with civic static',
+    bio: 'Dromological Paul has seen page three eat the evidence before breakfast. He sounds casual because speed makes bad posts; the receipt gets left where everybody can trip over it without turning the witness into the spectacle.',
+    architecture: 'setup sentence, receipt sentence, dromological slowdown caveat; mild ramble allowed',
     punctuation: 'parentheses allowed; comma-heavy; no corporate bullets',
     grammar: 'forum casual; “imo”/“kinda” allowed when source can carry it',
     typo: 'rare lowercase i or missing comma allowed away from evidence',
     chat: 'forum casual, not group-chat cute',
-    lexicon: ['boring detail', 'lines up', 'probably matters', 'imo', 'page three', 'weird part'],
-    transitions: ['not saying this proves everything', 'boring part', 'worth keeping', 'imo'],
+    lexicon: ['boring detail', 'lines up', 'probably matters', 'imo', 'page three', 'weird part', 'speed is the problem'],
+    transitions: ['not saying this proves everything', 'boring part', 'worth keeping', 'imo', 'slow the thread down'],
     axes: { formality: 0.28, warmth: 0.34, compression: 0.38, friction: 0.66, ornament: 0.35, chat: 0.34, typo: 0.08, gothic: 0.26 },
-    sample: 'This is the boring-detail thing that usually matters later, imo. The date lines up, so keep both pieces together.'
+    sample: 'This is the boring-detail thing that usually matters later, imo. The date lines up, so keep both pieces together and slow the thread down.'
   }),
   'quirky-orbit': P({
     label: 'Lulu Quasar',
