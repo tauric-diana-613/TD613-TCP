@@ -1,0 +1,31 @@
+name: Hush Dromological Paul
+
+on:
+  pull_request:
+    branches: [ main ]
+    paths:
+      - 'app/adversarial-bench.html'
+      - 'app/asset-versions.js'
+      - 'app/data/hush-masks.js'
+      - 'app/data/hush-mask-studio-audit-pr150.json'
+      - 'app/engine/hush-style-diversity.js'
+      - 'tests/hush-dromological-paul-deploy.test.mjs'
+      - '.github/workflows/hush-dromological-paul.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  dromological-paul:
+    name: Dromological Paul deploy regression
+    runs-on: ubuntu-latest
+    timeout-minutes: 8
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+          cache: npm
+      - run: npm ci
+      - run: node tests/hush-dromological-paul-deploy.test.mjs
