@@ -1,0 +1,30 @@
+name: Hush Packet UI Entrypoint
+
+on:
+  pull_request:
+    branches: [ main ]
+    paths:
+      - 'app/adversarial-bench.html'
+      - 'app/hush-packet-dashboard.html'
+      - 'app/hush-packet-dashboard.js'
+      - 'app/hush-packet-dashboard.css'
+      - 'tests/hush-packet-ui-entrypoint.test.mjs'
+      - '.github/workflows/hush-packet-ui-entrypoint.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  packet-ui-entrypoint:
+    name: Hush packet UI entrypoint
+    runs-on: ubuntu-latest
+    timeout-minutes: 8
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+          cache: npm
+      - run: npm ci
+      - run: node tests/hush-packet-ui-entrypoint.test.mjs
