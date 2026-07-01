@@ -18,6 +18,10 @@ function nonClaimsPresent(nonClaims = []) {
   return HUSH_PHASE10_NON_CLAIMS.every((claim) => nonClaims.includes(claim));
 }
 
+function releaseStatusRequiresBoundary(status) {
+  return ['release-candidate', 'harbor-eligible', 'sealed'].includes(status);
+}
+
 export function collectHushPhase10HardBlockers(packet = {}) {
   const blockers = [];
   const exportPolicy = packet.export_policy_validation || {};
@@ -33,6 +37,7 @@ export function collectHushPhase10HardBlockers(packet = {}) {
   if (exportPolicy.raw_candidate_exported === true || exportPolicy.raw_candidate_export_allowed === true) blockers.push('raw candidate exported');
   if (packet.local_validation?.mandatory_anchors_preserved === false) blockers.push('mandatory anchor dropped');
   if (provider.new_claims?.length) blockers.push('new factual claim added');
+  if (provider.mode && provider.mode !== 'none' && provider.pass === false) blockers.push('provider validation failed');
   if (packet.local_validation?.claim_boundary_inflated === true) blockers.push('claim boundary inflated');
   if (packet.expected_mask_id && packet.mask_id !== packet.expected_mask_id) blockers.push('wrong mask id');
   if (packet.expected_mask_label && packet.mask_label !== packet.expected_mask_label) blockers.push('wrong mask label');
@@ -40,6 +45,8 @@ export function collectHushPhase10HardBlockers(packet = {}) {
   if (provider.risk_flags?.length && provider.drift_classified !== true) blockers.push('provider drift unclassified');
   if (packet.release_status === 'runtime-flight-pass' && !runtime.pass) blockers.push('runtime flight missing but status marked runtime-flight-pass');
   if (provider.mode === 'fixture-backed' && provider.status === 'live-provider-pass') blockers.push('fixture-backed provider evidence marked live-provider-pass');
+  if (releaseStatusRequiresBoundary(packet.release_status) && safeHarbor.assessed !== true) blockers.push('release status assigned before Safe Harbor assessment');
+  if (releaseStatusRequiresBoundary(packet.release_status) && aperture.checked !== true) blockers.push('release status assigned before Aperture boundary check');
   if (safeHarbor.receipt_treated_as_proof === true) blockers.push('Safe Harbor receipt treated as proof');
   if (aperture.release_authority === true) blockers.push('Aperture treated as release authority');
   if (!nonClaimsPresent(packet.non_claims || [])) blockers.push('non-claims missing');
@@ -53,12 +60,16 @@ export function recommendHushRelease(packet = {}) {
   const blockers = collectHushPhase10HardBlockers(packet);
   if (blockers.length) return 'blocked';
   if (!packet.local_validation?.pass) return 'draft';
+  if (!packet.phase8_mask_validation?.pass) return 'local-pass';
   if (!packet.phase9_collision_validation?.pass) return 'local-pass';
   if (!packet.export_policy_validation?.pass) return 'blocked';
   if (packet.phase9_collision_validation?.max_collision_severity >= 2) return 'local-pass';
+  if (!packet.provider_contract_validation?.pass) return 'local-pass';
   if (packet.provider_contract_validation?.mode === 'fixture-backed') return 'fixture-provider-pass';
   if (!packet.runtime_flight_validation?.pass) return 'runtime-flight-pending';
   if (!allRuntimeFieldsPresent(packet.runtime_flight_validation || {})) return 'runtime-flight-pending';
+  if (packet.safe_harbor_boundary?.assessed !== true) return 'runtime-flight-pass';
+  if (packet.aperture_boundary?.checked !== true) return 'runtime-flight-pass';
   if (!packet.safe_harbor_boundary?.eligible) return 'release-candidate';
   return 'harbor-eligible';
 }
