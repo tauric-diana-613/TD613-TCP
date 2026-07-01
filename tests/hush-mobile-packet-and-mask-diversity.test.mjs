@@ -12,13 +12,17 @@ const css = fs.readFileSync('app/hush-packet-entrypoint.css', 'utf8');
 const runtime = fs.readFileSync('app/hush-current-runtime-coherence.js', 'utf8');
 
 assert.match(html, /id="packetDrawerLink"/);
-assert.match(html, /id="packetDrawerFloatingLink"/);
+assert.match(html, /id="packetDrawerDock"/);
+assert.match(html, /id="packetDrawerPanelLink"/);
 assert.match(html, /href="\.\/hush-packet-dashboard\.html"/);
-assert.match(html, /hush-packet-entrypoint\.css\?v=202607010930/);
+assert.match(html, /hush-packet-entrypoint\.css\?v=202607010945/);
 assert.match(html, /hush-current-runtime-coherence\.js\?v=202607010930/);
 assert.match(html, /adversarial-bench-light\.js\?v=202607010930/);
-assert.match(css, /position:\s*fixed/);
-assert.match(css, /env\(safe-area-inset-bottom\)/);
+assert.equal(/packetDrawerFloatingLink/.test(html), false);
+assert.match(css, /hush-packet-panel-dock/);
+assert.match(css, /justify-content:\s*flex-end/);
+assert.match(css, /radial-gradient/);
+assert.equal(/position:\s*fixed/.test(css), false);
 assert.match(runtime, /current-hush-light\/20260701/);
 assert.match(runtime, /current-hush-heavy\/20260701/);
 
