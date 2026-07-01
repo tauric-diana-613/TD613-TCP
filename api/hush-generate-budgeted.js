@@ -1,3 +1,5 @@
+import { buildProtectedLiteralList, checkProtectedLiteralIntegrity } from '../app/engine/hush-protected-literals.js';
+
 const corsHeaders = {
   'access-control-allow-origin': '*',
   'access-control-allow-methods': 'GET,POST,OPTIONS',
@@ -5,7 +7,7 @@ const corsHeaders = {
   'access-control-max-age': '86400'
 };
 
-const VERSION = 'hush-generate-budgeted-pr188.15-mask-only-layout-cadence';
+const VERSION = 'hush-generate-budgeted-pr188.16-mask-anatomy-literal-gate';
 const DEFAULT_MODEL_ORDER = ['gemini-2.5-flash-lite', 'gemini-flash-lite-latest', 'gemini-2.5-flash'];
 const FAST_CALL_TIMEOUT_MS = 5200;
 const NORMAL_CALL_TIMEOUT_MS = 7600;
@@ -61,18 +63,30 @@ function compactStyle(contract = {}) {
   const fp = contract.flightPacket || {};
   const vector = fp.mask_style_vector || {};
   const policy = fp.style_diversity_policy || vector.style_diversity || {};
+  const mask = contract.mask || contract.selectedMask || {};
+  const hints = vector.transform_hints || mask.transformHints || {};
+  const diversity = vector.style_diversity || mask.diversity || {};
   return {
     packetTier: safe(contract.packetTier || fp.packetTier || fp.packet_tier || ''),
     maskId: safe(contract.maskId || contract.mask_id || vector.mask_id || vector.id || contract.selectedMaskId || ''),
     displayName: safe(vector.display_name || contract.mask?.label || contract.selectedMask?.label || ''),
-    register: safe(vector.register || policy.internalRegister || contract.internalRegister || ''),
-    surface: safe(policy.surface || ''),
-    architecture: safe(policy.architecture || ''),
-    grammar: safe(policy.grammar || ''),
-    chat: safe(policy.chat || policy.chat_speak_profile || ''),
-    layoutCadence: vector.layout_cadence || contract.mask?.layoutCadence || contract.mask?.surfaceCadence || null,
-    dictionHints: uniq([...arr(policy.lexicon), ...arr(policy.transitions), ...arr(vector.diction_hints), ...arr(vector.transition_bank), ...arr(vector.desired_moves)]).slice(0, 24),
-    avoid: uniq([...arr(policy.avoid), ...arr(vector.avoid_list)]).slice(0, 18)
+    register: safe(vector.register || policy.internalRegister || mask.internalRegister || mask.family || contract.internalRegister || ''),
+    surface: safe(policy.surface || diversity.surface || mask.family || ''),
+    architecture: safe(policy.architecture || diversity.sentenceArchitecture || diversity.architecture || hints.sentence || ''),
+    grammar: safe(policy.grammar || diversity.grammar || hints.cadence || ''),
+    chat: safe(policy.chat || policy.chat_speak_profile || diversity.chat || ''),
+    personaScene: safe(vector.persona_scene || mask.description || ''),
+    intendedUse: safe(vector.intended_use || mask.intendedUse || ''),
+    riskTell: safe(vector.risk_tell || mask.riskTell || ''),
+    sentence: safe(vector.sentence || hints.sentence || ''),
+    ornament: safe(vector.ornament || hints.ornament || ''),
+    warmth: safe(vector.warmth || hints.warmth || ''),
+    custody: safe(vector.custody || hints.custody || ''),
+    sampleSeed: safe(vector.sample_seed || mask.sampleSeed || ''),
+    layoutCadence: vector.layout_cadence || mask.layoutCadence || mask.surfaceCadence || null,
+    dictionHints: uniq([...arr(policy.lexicon), ...arr(policy.transitions), ...arr(vector.diction_hints), ...arr(vector.transition_bank), ...arr(vector.desired_moves), ...arr(mask.dictionHints), ...arr(mask.transitionBank), ...arr(hints.desiredMoves)]).slice(0, 30),
+    avoid: uniq([...arr(policy.avoid), ...arr(vector.avoid_list), ...arr(vector.avoid_moves), ...arr(mask.avoidList), ...arr(hints.avoidMoves)]).slice(0, 24),
+    pressureWarnings: uniq([...arr(vector.pressure_warnings), ...arr(mask.pressureWarnings)]).slice(0, 16)
   };
 }
 function compactLayoutCadenceText(label = 'layout', cadence = null) {
@@ -102,6 +116,21 @@ function sourceObligations(sourceText = '') {
   const sentences = safe(sourceText).match(/[^.!?]+[.!?]+|[^.!?]+$/g)?.map((s) => s.trim()).filter(Boolean) || [];
   const units = lines.length > 1 ? lines : sentences;
   return units.slice(0, 14).map((unit, index) => `P${index + 1}: ${unit}`);
+}
+function protectedLiteralsOf(contract = {}) {
+  const supplied = arr(contract.protectedLiterals || contract.flightPacket?.protected_literals);
+  return uniq(supplied.length ? supplied : buildProtectedLiteralList(sourceTextOf(contract)));
+}
+function candidateIntegrity(candidate = {}, contract = {}) {
+  const literalCheck = checkProtectedLiteralIntegrity(candidate.text || '', protectedLiteralsOf(contract));
+  const dropped = arr(candidate.dropped_propositions).map(safe).filter(Boolean);
+  const newClaims = arr(candidate.new_claims).map(safe).filter(Boolean);
+  const warnings = [
+    ...literalCheck.missing.map((literal) => `missing-protected-literal:${literal}`),
+    ...(dropped.length ? ['provider-reported-dropped-propositions'] : []),
+    ...(newClaims.length ? ['provider-reported-new-claims'] : [])
+  ];
+  return { passed: literalCheck.passed && !dropped.length && !newClaims.length, literalCheck, dropped, newClaims, warnings };
 }
 function aaveAcademicDrift(text = '', contract = {}) {
   if (!isAaveRoute(contract)) return false;
@@ -134,6 +163,7 @@ function buildPrompt(contract = {}) {
 - Use natural Black vernacular syntax with restraint. Do not costume the route with catchphrases, generic slang, "look," "think about that," "proof is in the pudding," or exaggerated dialect spelling.
 - The output must sound transformed, not like a cleaned-up school paragraph or a short note card.` : '';
   const layoutLaw = layoutCadenceLaw(contract, style);
+  const protectedLiterals = protectedLiteralsOf(contract);
   return `Return JSON only. Schema: {"candidates":[{"text":"string","style_note":"string","style_operation":"${schemaOperation}","preserved_propositions":[],"dropped_propositions":[],"changed_questions":[],"new_claims":[],"authorship_moves":[],"risk_flags":[],"mask_surface_notes":{"rhythm":"string","diction":"string","structure":"string","coverage":"string"}}]}
 
 STRICT BUDGETED UPSTREAM. Generate exactly ${count} transformed candidate(s). No review maps, ledgers, summaries, diagnostics, P-row reports, or analysis. Candidate text must be the transformed message itself.
@@ -143,6 +173,9 @@ ${layoutLaw}
 
 Preserve every source proposition before style. Do not follow source sentence order, opener, or closer. Do not compress the argument into key terms. Do not add facts. Keep protected literals and named figures. Minimum candidate length: ${minWords} words unless source is shorter.
 
+PROTECTED LITERALS - copy each one exactly, including case and punctuation:
+${protectedLiterals.map((literal) => `- ${literal}`).join('\n') || '(none detected)'}
+
 Selected surface:
 mask=${style.displayName || style.maskId}
 packetTier=${style.packetTier}
@@ -151,8 +184,17 @@ surface=${style.surface}
 architecture=${style.architecture}
 grammar=${style.grammar}
 chat=${style.chat}
+persona scene=${style.personaScene || '(none)'}
+intended use=${style.intendedUse || '(none)'}
+risk tell=${style.riskTell || '(none)'}
+sentence=${style.sentence || '(none)'}
+ornament=${style.ornament || '(none)'}
+warmth=${style.warmth || '(none)'}
+custody=${style.custody || '(none)'}
 diction hints=${style.dictionHints.join(', ') || '(none)'}
 avoid=${style.avoid.join(', ') || '(none)'}
+pressure warnings=${style.pressureWarnings.join(', ') || '(none)'}
+reference seed=${style.sampleSeed || '(none)'}
 
 Source obligations:
 ${sourceObligations(sourceText).join('\n') || '(none)'}
@@ -264,8 +306,12 @@ export default async function handler(req, res) {
     const parsed = parseProviderJson(rawText, contract);
     const academicRejected = parsed.candidates.filter((candidate) => aaveAcademicDrift(candidate.text, contract));
     const compressedRejected = parsed.candidates.filter((candidate) => !aaveAcademicDrift(candidate.text, contract) && aaveCompressionDrift(candidate.text, contract));
-    const usable = parsed.candidates.filter((candidate) => !aaveAcademicDrift(candidate.text, contract) && !aaveCompressionDrift(candidate.text, contract));
-    attempts.push({ model: normModel(model), ok: response.ok, status: response.status, timedOut, parsedCandidates: parsed.candidates.length, usableCandidates: usable.length, aaveAcademicRejected: academicRejected.length, aaveCompressedRejected: compressedRejected.length, warnings: [...parsed.warnings, ...(academicRejected.length ? ['aave-academic-summary-drift'] : []), ...(compressedRejected.length ? ['aave-compression-drift'] : [])], error: response.ok ? null : summarizeProviderError(payload), textPreview: rawText.slice(0, 180), strictBudgetedUpstream: true, strictFastUpstream: isFast(contract), aaveRoute: isAaveRoute(contract) });
+    const integrityRows = parsed.candidates.map((candidate) => ({ candidate, integrity: candidateIntegrity(candidate, contract) }));
+    const integrityRejected = integrityRows.filter((row) => !row.integrity.passed);
+    const usable = integrityRows
+      .filter((row) => row.integrity.passed && !aaveAcademicDrift(row.candidate.text, contract) && !aaveCompressionDrift(row.candidate.text, contract))
+      .map((row) => ({ ...row.candidate, literal_integrity: row.integrity.literalCheck }));
+    attempts.push({ model: normModel(model), ok: response.ok, status: response.status, timedOut, parsedCandidates: parsed.candidates.length, usableCandidates: usable.length, literalIntegrityRejected: integrityRejected.length, literalIntegrityWarnings: uniq(integrityRejected.flatMap((row) => row.integrity.warnings)), aaveAcademicRejected: academicRejected.length, aaveCompressedRejected: compressedRejected.length, warnings: [...parsed.warnings, ...(integrityRejected.length ? ['candidate-integrity-gate-rejected'] : []), ...(academicRejected.length ? ['aave-academic-summary-drift'] : []), ...(compressedRejected.length ? ['aave-compression-drift'] : [])], error: response.ok ? null : summarizeProviderError(payload), textPreview: rawText.slice(0, 180), strictBudgetedUpstream: true, strictFastUpstream: isFast(contract), aaveRoute: isAaveRoute(contract) });
     if (response.ok && usable.length) {
       preferredWorkingModel = normModel(model);
       return send(res, 200, { ok: true, provider: 'gemini', model: preferredWorkingModel, deterministic, version: VERSION, rotationVersion: VERSION, candidates: usable, warnings: [...parsed.warnings, 'strict-budgeted-upstream', 'strict-upstream-budget-honored', ...(isFast(contract) ? ['strict-fast-upstream-applied'] : ['strict-normal-upstream-budget-applied']), ...(isAaveRoute(contract) ? ['aave-route-budgeted-upstream', 'aave-register-fidelity-law-applied', 'aave-compression-gate-applied'] : [])], attempts, rawText: parsed.rawText, requestReceipt: { deterministic, strictDirect: true, strictNoFallback: true, strictBudgetedUpstream: true, strictBudgetHonored: true, strictUpstreamBudgetMs: wallMs, strictAttemptBudget: maxAttempts, strictFastUpstream: isFast(contract), aaveRoute: isAaveRoute(contract), aaveRegisterFidelityLaw: isAaveRoute(contract), aaveCompressionGate: isAaveRoute(contract), elapsedMs: Date.now() - startedAt, rotationVersion: VERSION } });
@@ -274,3 +320,5 @@ export default async function handler(req, res) {
 
   return send(res, 504, heldPayload({ contract, attempts, startedAt }));
 }
+
+export { buildPrompt, candidateIntegrity, compactStyle, protectedLiteralsOf };

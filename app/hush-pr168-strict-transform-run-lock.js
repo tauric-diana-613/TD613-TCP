@@ -2,7 +2,7 @@
 (function () {
   'use strict';
 
-  var VERSION = 'pr168-strict-transform-run-lock/v4-status-plate-loader';
+  var VERSION = 'pr168-strict-transform-run-lock/v5-single-bridge-owner';
   var EXACT_ASSET_VERSION = '202606171650';
   var STATUS_PLATE_VERSION = '202606171720';
 
@@ -22,7 +22,6 @@
   function ensureExactArtifactScripts() {
     if (!document.body && !document.head) return false;
     appendScriptOnce('hushGeneratorStatusPlateLoader', './hush-generator-status-plate.js?v=' + STATUS_PLATE_VERSION, 'module');
-    appendScriptOnce('hushPr123ExactArtifactLoader', './hush-pr123-strict-undefined-fallback.js?v=' + EXACT_ASSET_VERSION, '');
     appendScriptOnce('hushPr123ExactCaptureLoader', './hush-pr123-exact-capture.js?v=' + EXACT_ASSET_VERSION, 'module');
     appendScriptOnce('hushCustodyExportWakeExactLoader', './hush-custody-export-wake.js?v=' + EXACT_ASSET_VERSION, 'module');
     return true;

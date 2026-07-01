@@ -2,7 +2,7 @@
 (function () {
   'use strict';
 
-  var VERSION = 'pr123-strict-provider-bridge/v8-exact-artifacts';
+  var VERSION = 'pr123-strict-provider-bridge/v9-mask-anatomy-literal-gate';
   var ENDPOINTS = ['/api/hush-generate-strict', 'https://td613.vercel.app/api/hush-generate-strict'];
   var running = false;
 
@@ -49,6 +49,48 @@
     state().protectedOutputText = value || '';
   }
   function wordCount(value) { return (String(value || '').match(/[A-Za-z0-9][A-Za-z0-9'-]*/g) || []).length; }
+  function protectedLiterals(value) {
+    var source = T(value);
+    var patterns = [
+      /\b(?:EXHIBIT|DOC|CASE|ID|REF|INV|PO|HR|PAY|FILE|TICKET|REQ|FORM|TD613|SHI|SAC|HUSH)(?:[-:#/._][A-Z0-9]+)+\b/gi,
+      /\b\d{4}-\d{2}-\d{2}\b/g,
+      /\b\d{1,2}\/\d{1,2}(?:\/\d{2,4})?\b/g,
+      /\b\d{1,2}:\d{2}(?::\d{2})?(?:Z|[+-]\d{2}:\d{2})?\b/g,
+      /\b[a-z][a-z0-9]*(?:_[a-z0-9]+)+\b/g,
+      /\b[A-Z][a-z]+(?:\s+[A-Z][a-z]+){1,2}\b/g
+    ];
+    var out = [];
+    patterns.forEach(function (pattern) { out = out.concat(source.match(pattern) || []); });
+    return Array.from(new Set(out)).slice(0, 48);
+  }
+  function styleVector(m, ref) {
+    var hints = m.transformHints || {};
+    return {
+      mask_id: m.id || '',
+      display_name: m.label || m.name || '',
+      family: m.family || '',
+      register: m.internalRegister || m.family || '',
+      persona_scene: m.description || '',
+      intended_use: m.intendedUse || '',
+      risk_tell: m.riskTell || '',
+      sentence: hints.sentence || '',
+      ornament: hints.ornament || '',
+      warmth: hints.warmth || '',
+      custody: hints.custody || '',
+      sample_seed: ref,
+      transform_hints: copy(hints),
+      desired_moves: A(hints.desiredMoves),
+      avoid_moves: A(hints.avoidMoves),
+      diction_hints: A(m.dictionHints),
+      transition_bank: A(m.transitionBank),
+      avoid_list: A(m.avoidList),
+      pressure_warnings: A(m.pressureWarnings),
+      style_diversity: copy(m.diversity),
+      writing_traits: copy(m.writingTraits),
+      profile_targets: copy(m.profileTargets),
+      source_layout_policy: sourceLayoutPolicy()
+    };
+  }
   function sourceLayoutPolicy() {
     return {
       version: VERSION,
@@ -64,8 +106,9 @@
     var src = $('messageDraftInput') ? $('messageDraftInput').value : s.messageDraftText || '';
     var ref = $('maskReferenceInput') ? $('maskReferenceInput').value : s.maskReferenceText || m.sampleSeed || m.description || '';
     var tier = wordCount(ref) >= 180 ? 'strict_remote_mask_evidence_packet' : 'strict_remote_mask_label_packet';
+    var literals = protectedLiterals([src, $('protectedBaselineInput') ? $('protectedBaselineInput').value : s.protectedBaselineText || ''].join('\n'));
     return {
-      promptVersion: 'hush-strict-provider-bridge-current/v8',
+      promptVersion: 'hush-strict-provider-bridge-current/v9',
       sourceText: src,
       messageDraftText: src,
       protectedBaselineText: $('protectedBaselineInput') ? $('protectedBaselineInput').value : s.protectedBaselineText || '',
@@ -84,6 +127,7 @@
       noFallback: true,
       packetTier: tier,
       maskEvidenceState: tier.indexOf('evidence') >= 0 ? 'rich' : 'label-only',
+      protectedLiterals: literals,
       operationTaxonomy: ['register_transform', 'syntax_inversion', 'cadence_alias', 'sentence_boundary_shift', 'term_preserving_reframe', 'heat_calibration'],
       sourceLayoutPolicy: sourceLayoutPolicy(),
       rules: [
@@ -92,14 +136,15 @@
         sourceLayoutPolicy().instruction
       ],
       flightPacket: {
-        packet_version: 'hush-strict-provider-bridge-flight/v8',
+        packet_version: 'hush-strict-provider-bridge-flight/v9',
         packet_tier: tier,
         mask_id: m.id || '',
         mask_label: m.label || m.name || '',
         mask_evidence: { maskEvidenceState: tier.indexOf('evidence') >= 0 ? 'rich' : 'label-only', wordCount: wordCount(ref) },
         source_layout_policy: sourceLayoutPolicy(),
+        protected_literals: literals,
         flight_controls: { candidate_count: 2, strict_budgeted_upstream: true, no_local_fallback: true },
-        mask_style_vector: { mask_id: m.id || '', display_name: m.label || m.name || '', sample_seed: ref, source_layout_policy: sourceLayoutPolicy() }
+        mask_style_vector: styleVector(m, ref)
       }
     };
   }
@@ -147,13 +192,40 @@
     if (Array.isArray(payload.providerReports)) payload.providerReports.forEach(function (report) { out = out.concat(collectCandidates(report)); });
     return out;
   }
-  function selectedCandidate(payload) {
+  function candidateIntegrity(candidate, contract) {
+    var value = candidateText(candidate);
+    var missing = A(contract.protectedLiterals).filter(function (literal) { return value.indexOf(literal) < 0; });
+    var dropped = A(candidate && (candidate.dropped_propositions || candidate.droppedPropositions));
+    var added = A(candidate && (candidate.new_claims || candidate.newClaims));
+    return { passed: Boolean(value) && !missing.length && !dropped.length && !added.length, missing: missing, dropped: dropped, newClaims: added };
+  }
+  function selectedCandidate(payload, contract) {
     var candidates = collectCandidates(payload);
+    var rejected = [];
     for (var i = 0; i < candidates.length; i += 1) {
       var value = candidateText(candidates[i]);
-      if (value && !/Just keeping this organized|Keeping this organized|should stay with the note|That keeps the context together/i.test(value)) return { text: value, candidate: candidates[i] };
+      var integrity = candidateIntegrity(candidates[i], contract);
+      if (value && integrity.passed && !/Just keeping this organized|Keeping this organized|should stay with the note|That keeps the context together/i.test(value)) return { text: value, candidate: candidates[i], integrity: integrity };
+      rejected.push(integrity);
     }
+    if (payload && typeof payload === 'object') payload.clientIntegrityRejections = rejected;
     return null;
+  }
+  function markReviewPending(literalCount) {
+    var values = {
+      hushOutputStatusText: 'Review',
+      hushOutputClaimText: 'Pending',
+      hushOutputLiteralText: literalCount ? 'Exact gate passed' : 'None required',
+      hushOutputSourceText: 'Pending'
+    };
+    Object.keys(values).forEach(function (id) { var node = $(id); if (node) node.textContent = values[id]; });
+  }
+  function runLocalReview() {
+    var api = window.__TD613_HUSH_BENCH__;
+    if (!api || typeof api.analyzeProtectedOutput !== 'function') return;
+    Promise.resolve(api.analyzeProtectedOutput()).catch(function () {
+      status('Remote output received. Local review could not complete automatically; tap Review.', 'error');
+    });
   }
   async function callEndpoint(endpoint, contract) {
     publishPacket(contract, endpoint);
@@ -166,7 +238,7 @@
     if (event && event.preventDefault) event.preventDefault();
     if (event && event.stopPropagation) event.stopPropagation();
     if (event && event.stopImmediatePropagation) event.stopImmediatePropagation();
-    if (running) { status('Strict provider transform already running…', 'info'); return null; }
+    if (running) { status('Strict provider transform already running...', 'info'); return null; }
     var contract = buildContract();
     if (!T(contract.sourceText)) { status('Message required before Transform.', 'error'); return null; }
     running = true;
@@ -176,17 +248,20 @@
     try {
       for (var i = 0; i < ENDPOINTS.length; i += 1) {
         var endpoint = ENDPOINTS[i];
-        status('Remote provider request in flight via ' + endpoint + '…', 'info');
+        status('Remote provider request in flight via ' + endpoint + '...', 'info');
         try {
           last = await callEndpoint(endpoint, contract);
-          var selected = selectedCandidate(last.payload);
+          var selected = selectedCandidate(last.payload, contract);
           if (last.response.ok && selected) {
             setOutput(selected.text);
-            var result = { selectedOutput: selected.text, patch38Diagnostics: { providerMode: 'remote-llm-proxy', providerReports: [window.__TD613_HUSH_EXACT_PROVIDER_LOG], selectedCandidateId: selected.candidate && (selected.candidate.id || selected.candidate.source) || 'provider-candidate' }, phase37Telemetry: { promptVersion: contract.promptVersion, flightPacketVersion: contract.flightPacket.packet_version, flightPacket: contract.flightPacket }, patch38Snapshot: window.__TD613_HUSH_EXACT_OUTBOUND_PACKET && window.__TD613_HUSH_EXACT_OUTBOUND_PACKET.snapshot || null, outboundPacket: window.__TD613_HUSH_EXACT_OUTBOUND_PACKET };
+            var candidateId = selected.candidate && (selected.candidate.id || selected.candidate.source) || 'provider-candidate';
+            var result = { selectedOutput: selected.text, selectedCandidateId: candidateId, candidates: [selected.candidate], lockboxVerification: { passed: true, preservationScore: 1, missing: [], protectedLiterals: contract.protectedLiterals }, releasePolicy: { mayPopulateOutput: true, hardBlocked: false, releaseStatus: 'Review required', state: 'review' }, releaseSummary: { status: 'review', warnings: ['operator-review-required'] }, patch38Diagnostics: { providerMode: 'remote-llm-proxy', providerReports: [window.__TD613_HUSH_EXACT_PROVIDER_LOG], selectedCandidateId: candidateId }, phase37Telemetry: { promptVersion: contract.promptVersion, flightPacketVersion: contract.flightPacket.packet_version, flightPacket: contract.flightPacket }, patch38Snapshot: window.__TD613_HUSH_EXACT_OUTBOUND_PACKET && window.__TD613_HUSH_EXACT_OUTBOUND_PACKET.snapshot || null, outboundPacket: window.__TD613_HUSH_EXACT_OUTBOUND_PACKET };
             state().hushSwapResult = result;
             window.__TD613_HUSH_PATCH38_LAST_RESULT = result;
+            markReviewPending(contract.protectedLiterals.length);
             status('Remote provider output received from ' + endpoint + '. Review/edit before Accept.', 'ok');
             try { window.dispatchEvent(new CustomEvent('td613:hush:patch38-result', { detail: { result: result, outboundPacket: window.__TD613_HUSH_EXACT_OUTBOUND_PACKET } })); } catch (_) {}
+            window.setTimeout(runLocalReview, 0);
             return selected.text;
           }
         } catch (error) {
@@ -216,6 +291,8 @@
   window.TD613_HUSH_PR123.version = VERSION;
   window.TD613_HUSH_PR123.run = run;
   window.TD613_HUSH_PR123.buildContract = buildContract;
+  window.TD613_HUSH_PR123.protectedLiterals = protectedLiterals;
+  window.TD613_HUSH_PR123.candidateIntegrity = candidateIntegrity;
   window.TD613_HUSH_PR123.lastOutboundPacket = function () { return window.__TD613_HUSH_EXACT_OUTBOUND_PACKET || null; };
   window.TD613_HUSH_PR123.lastProviderLog = function () { return window.__TD613_HUSH_EXACT_PROVIDER_LOG || null; };
   if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', bind, { once: true });
