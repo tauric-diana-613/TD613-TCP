@@ -1,6 +1,7 @@
 import { execFileSync } from 'child_process';
 import fs from 'fs';
 import path from 'path';
+import { fileURLToPath } from 'url';
 
 export const HUSH_PHASE12_RECEIPT_SCHEMA = 'td613.hush.phase12.integration-gate-receipt/v1';
 export const HUSH_PHASE12_MANIFEST_PATH = path.join('scripts', 'hush-packet-integration-suite.txt');
@@ -144,6 +145,7 @@ function main() {
   }), null, 2));
 }
 
-if (process.argv[1] && path.resolve(process.argv[1]) === path.resolve(import.meta.filename)) {
+const currentFile = fileURLToPath(import.meta.url);
+if (process.argv[1] && path.resolve(process.argv[1]) === path.resolve(currentFile)) {
   main();
 }
