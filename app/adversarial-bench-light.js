@@ -142,7 +142,11 @@ export function selectHushMask(maskId = '', doc = document) {
   const select = byId('maskFieldSelect', doc);
   if (select && mask) select.value = mask.id;
   const reference = byId('maskReferenceInput', doc);
-  if (reference && mask && !text(reference.value)) reference.value = mask.sampleSeed || mask.description || '';
+  if (reference && mask) {
+    reference.value = mask.sampleSeed || mask.description || '';
+    benchState.maskReferenceText = reference.value;
+    reference.dispatchEvent(new Event('input', { bubbles: true }));
+  }
   renderHushMaskProfile(doc);
   return mask;
 }
