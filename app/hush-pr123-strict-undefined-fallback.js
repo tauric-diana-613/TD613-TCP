@@ -106,7 +106,7 @@
     var src = $('messageDraftInput') ? $('messageDraftInput').value : s.messageDraftText || '';
     var ref = $('maskReferenceInput') ? $('maskReferenceInput').value : s.maskReferenceText || m.sampleSeed || m.description || '';
     var tier = wordCount(ref) >= 180 ? 'strict_remote_mask_evidence_packet' : 'strict_remote_mask_label_packet';
-    var literals = protectedLiterals([src, $('protectedBaselineInput') ? $('protectedBaselineInput').value : s.protectedBaselineText || ''].join('\n'));
+    var literals = protectedLiterals(src);
     return {
       promptVersion: 'hush-strict-provider-bridge-current/v9',
       sourceText: src,

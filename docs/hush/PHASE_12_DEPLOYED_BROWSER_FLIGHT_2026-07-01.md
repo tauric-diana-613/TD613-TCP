@@ -41,6 +41,10 @@ Local boot inspection found five strict/capture script elements. The page declar
 
 The light bench populated the first selected mask's hidden reference seed but did not replace it on later mask changes. A later contract could therefore combine the current mask identity with another mask's reference evidence, increasing holds and flattening mask differentiation.
 
+### Historical baseline contamination
+
+The first message can become Hush's protected comparison baseline. The strict bridge combined literals from that historical baseline with the current message, so later unrelated transforms inherited old identifiers and dates as invisible mandatory obligations.
+
 ## Patch
 
 - Added shared exact protected-literal extraction and integrity checks.
@@ -51,6 +55,7 @@ The light bench populated the first selected mask's hidden reference seed but di
 - Marked accepted provider output as review-required while keeping full local analysis behind the operator's Review action.
 - Removed duplicate strict bridge injection from run-lock and housekeeping layers.
 - Synchronizes the hidden mask reference whenever the operator changes masks.
+- Scopes strict protected literals to the current message while retaining the baseline for local comparison and review.
 - Added a cache token and a regression test for bridge ownership, mask anatomy, and literal integrity.
 
 ## Verified Behavior
