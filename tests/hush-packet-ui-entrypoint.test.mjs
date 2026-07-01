@@ -9,6 +9,9 @@ assert.match(appHtml, /href="\.\/hush-packet-dashboard\.html"/);
 assert.match(appHtml, />Packets \/\/ drawer<\/a>/);
 assert.match(appHtml, /aria-label="Open Hush packet drawer"/);
 assert.match(appHtml, /class="statepill active hush-packet-drawer-link"/);
+assert.match(appHtml, /id="packetDrawerDock"/);
+assert.match(appHtml, /id="packetDrawerPanelLink"/);
+assert.equal(/packetDrawerFloatingLink/.test(appHtml), false);
 
 assert.match(drawerHtml, /<h1 id="drawerTitle">Packet Drawer<\/h1>/);
 assert.match(drawerHtml, /Fixture preview loaded/);
