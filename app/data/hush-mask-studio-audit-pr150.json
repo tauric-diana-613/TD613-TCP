@@ -1,6 +1,6 @@
 {
-  "version": "pr188.1-mask-identity-refresh/v1",
-  "purpose": "Audit mirror for the active Hush mask gallery after PR188 cull and PR188.1 identity refresh.",
+  "version": "20260701-dromological-paul-deploy-fix/v1",
+  "purpose": "Audit mirror for the active Hush mask gallery after PR188 cull, PR188.1 identity refresh, and Dromological Paul deploy-name repair.",
   "doctrine": "Right-to-opacity protective style studio: masks are route pressure and safety surfaces, not authorship certification. Style texture may shape cadence, punctuation, diction, looseness, and social posture; it must never corrupt facts, dates, names, amounts, quoted material, IDs, SHI values, file labels, or claims.",
   "axis_order": ["formality", "warmth", "compression", "friction", "ornament", "chat", "typo", "gothic"],
   "active_masks_sorted_by_formality": [
@@ -14,7 +14,7 @@
     { "id": "quirky-orbit", "label": "Lulu Quasar", "formality": 0.22, "warmth": 0.48, "compression": 0.36, "friction": 0.72, "ornament": 0.84, "chat": 0.05, "typo": 0.00, "gothic": 0.76, "lane": "weird little quasar deflection" },
     { "id": "grandma-receipts", "label": "Receipts Queenie", "formality": 0.24, "warmth": 0.92, "compression": 0.34, "friction": 0.36, "ornament": 0.28, "chat": 0.06, "typo": 0.00, "gothic": 0.34, "lane": "cookie-tin receipt memory" },
     { "id": "soft-snark", "label": "Nolan the Needler", "formality": 0.26, "warmth": 0.24, "compression": 0.46, "friction": 0.88, "ornament": 0.45, "chat": 0.12, "typo": 0.00, "gothic": 0.44, "lane": "receipt-bearing side-eye with a pinprick grin" },
-    { "id": "forum-regular", "label": "Paul Publica", "formality": 0.28, "warmth": 0.34, "compression": 0.38, "friction": 0.66, "ornament": 0.35, "chat": 0.34, "typo": 0.08, "gothic": 0.26, "lane": "public-forum skepticism with civic static" },
+    { "id": "forum-regular", "label": "Dromological Paul", "formality": 0.28, "warmth": 0.34, "compression": 0.38, "friction": 0.66, "ornament": 0.35, "chat": 0.34, "typo": 0.08, "gothic": 0.26, "lane": "dromological public-forum slowdown with civic static" },
     { "id": "clipboard", "label": "Luz of the Index", "formality": 0.58, "warmth": 0.05, "compression": 0.86, "friction": 0.34, "ornament": 0.00, "chat": 0.00, "typo": 0.00, "gothic": 0.24, "lane": "indexed ritual checklist with a pen click" },
     { "id": "library-ghost", "label": "Sol Stratigraphix", "formality": 0.76, "warmth": 0.04, "compression": 0.40, "friction": 0.62, "ornament": 0.56, "chat": 0.00, "typo": 0.00, "gothic": 0.95, "lane": "stratigraphic archive distance" }
   ],
@@ -48,11 +48,11 @@
     "night-shift-note": "Cryo Cristiano",
     "burner-minimal": "Blooping Blip",
     "quirky-orbit": "Lulu Quasar",
-    "forum-regular": "Paul Publica",
+    "forum-regular": "Dromological Paul",
     "library-ghost": "Sol Stratigraphix",
     "phase27-register-preserve": "Harbor Zora",
     "grandma-receipts": "Receipts Queenie"
   },
   "removed_active_masks": ["plain-witness", "busy-admin", "formal-record", "mutual-aid-coordinator", "legal-intake", "hr-portal", "academic-caveat"],
-  "minimum_distance_note": "PR188 pruned synthetic and duplicative active masks. PR188.1 refreshed gallery identities and corrected active bios/pronoun references while keeping stable mask IDs."
+  "minimum_distance_note": "PR188 pruned synthetic and duplicative active masks. PR188.1 refreshed gallery identities and corrected active bios/pronoun references. The Dromological Paul repair aligns the audit mirror with the active deployed mask name."
 }
