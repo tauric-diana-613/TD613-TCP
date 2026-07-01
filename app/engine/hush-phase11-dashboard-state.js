@@ -140,7 +140,7 @@ function buildExportPosture(phase10Packet = {}) {
 
 export function buildHushPhase11DashboardState(input = {}) {
   const sourcePackets = input.source_packets || {};
-  const phase10Packet = input.phase10_packet || buildHushPhase10ReleasePacket(input.release_packet || {});
+  const phase10Packet = buildHushPhase10ReleasePacket(input.phase10_packet || input.release_packet || {});
   const hardBlockers = Object.freeze([...(phase10Packet.hard_blockers || []), ...(input.hard_blockers || [])]);
   const warnings = Object.freeze(input.warnings || []);
   const dashboard = {

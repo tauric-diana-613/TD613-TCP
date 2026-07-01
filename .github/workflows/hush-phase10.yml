@@ -35,4 +35,5 @@ jobs:
       - run: npm run test:hush:phase10:runtime
       - run: npm run test:hush:phase10:nonclaims
       - run: npm run test:hush:phase10:safe-harbor
+      - run: node tests/hush-phase10-audit-runner.test.mjs
       - run: npm run test:hush:phase10

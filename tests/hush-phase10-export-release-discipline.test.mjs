@@ -17,4 +17,28 @@ const publicUndefined = buildPhase10FixturePacket({
 assert.equal(publicUndefined.release_status, 'blocked');
 assert.ok(publicUndefined.hard_blockers.includes('public_default_allowed undefined'));
 
+const exposureUndefined = buildPhase10FixturePacket({
+  export_policy_validation: {
+    pass: true,
+    public_default_allowed: false,
+    raw_sample_export_allowed: false,
+    raw_candidate_export_allowed: false
+  }
+});
+assert.equal(exposureUndefined.release_status, 'blocked');
+assert.ok(exposureUndefined.hard_blockers.includes('raw sample exposure undefined'));
+assert.ok(exposureUndefined.hard_blockers.includes('raw candidate exposure undefined'));
+
+const allowanceUndefined = buildPhase10FixturePacket({
+  export_policy_validation: {
+    pass: true,
+    public_default_allowed: false,
+    raw_sample_exported: false,
+    raw_candidate_exported: false
+  }
+});
+assert.equal(allowanceUndefined.release_status, 'blocked');
+assert.ok(allowanceUndefined.hard_blockers.includes('raw sample export allowance undefined'));
+assert.ok(allowanceUndefined.hard_blockers.includes('raw candidate export allowance undefined'));
+
 console.log('hush-phase10-export-release-discipline: ok');
