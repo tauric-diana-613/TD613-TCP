@@ -220,7 +220,7 @@ function syncHeavySelection(heavy, doc = document) {
 
 export async function loadHeavyBench(doc = document) {
   if (!heavyBenchPromise) {
-    heavyBenchPromise = import('./adversarial-bench.mjs').then((heavy) => {
+    heavyBenchPromise = import('./adversarial-bench.mjs?v=202607010855').then((heavy) => {
       syncHeavySelection(heavy, doc);
       heavy.initAdversarialBench?.(doc);
       syncHeavySelection(heavy, doc);
