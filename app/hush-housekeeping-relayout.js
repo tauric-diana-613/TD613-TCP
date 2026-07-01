@@ -1,22 +1,7 @@
-const TD613_HUSH_CUSTODY_EXPORT_WAKE_VERSION = '202606171650';
-const TD613_HUSH_PR123_EXACT_VERSION = '202606171650';
-const TD613_HUSH_HOUSEKEEPING_RELAYOUT_VERSION = '202606171650';
+const TD613_HUSH_HOUSEKEEPING_RELAYOUT_VERSION = '202607010615';
 
-const appendScriptOnce = (selector, src, type = '') => {
-  if (document.querySelector(selector)) return;
-  const script = document.createElement('script');
-  if (type) script.type = type;
-  script.src = src;
-  const attr = selector.match(/\[([^=]+)=/)?.[1];
-  if (attr) script.setAttribute(attr, 'ui');
-  document.body.appendChild(script);
-};
-
-const ensureHousekeepingExportAssets = () => {
-  appendScriptOnce('script[data-td613-hush-pr123-exact="ui"]', `./hush-pr123-strict-undefined-fallback.js?v=${TD613_HUSH_PR123_EXACT_VERSION}`);
-  appendScriptOnce('script[data-td613-hush-pr123-exact-capture="ui"]', `./hush-pr123-exact-capture.js?v=${TD613_HUSH_PR123_EXACT_VERSION}`, 'module');
-  appendScriptOnce('script[data-td613-hush-custody-export-wake="ui"]', `./hush-custody-export-wake.js?v=${TD613_HUSH_CUSTODY_EXPORT_WAKE_VERSION}`, 'module');
-};
+// Asset ownership belongs to the page and the run-lock coordinator.
+const ensureHousekeepingExportAssets = () => true;
 
 const outputCardAnchor = () =>
   document.getElementById('protectedOutputInput')?.closest('.hush-output-card') ||

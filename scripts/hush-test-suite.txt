@@ -162,3 +162,4 @@ hush-phase12-export-surface-parity.test.mjs
 hush-phase12-boundary-nonclaims.test.mjs
 hush-phase12-release-packet-consistency.test.mjs
 hush-phase12-suite-manifest.test.mjs
+hush-strict-provider-integrity.test.mjs

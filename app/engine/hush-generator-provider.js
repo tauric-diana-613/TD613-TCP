@@ -1,5 +1,6 @@
 import { generateExpressiveCandidates } from './hush-expressive-generator.js';
 import { extractCadenceProfile } from './stylometry.js';
+import { buildProtectedLiteralList } from './hush-protected-literals.js';
 
 export const HUSH_GENERATOR_PROVIDER_VERSION = 'patch-38-generator-provider-phase37-telemetry+generic-transposition+session-cache+pr135-authorship-moves+line-break-custody';
 export const TECH_JOB_SIGNAL_SAMPLE = 'How do you find a tech job with no prior experience in the sector? Is signal reading fluency really that much of a skill asset?';
@@ -131,18 +132,7 @@ export function compactMaskForRemote(mask = {}) {
   };
 }
 
-export function buildProtectedLiteralList(sourceText = '') {
-  const source = safe(sourceText);
-  const literals = [];
-  const patterns = [
-    /\b(?:DOC|CASE|ID|REF|INV|PO|HR|PAY|FILE|TICKET|REQ|FORM|TD613|SHI|SAC)[-:#A-Z0-9]+\b/gi,
-    /\b\d{1,2}:\d{2}\b/g,
-    /\b\d{1,2}\/\d{1,2}(?:\/\d{2,4})?\b/g,
-    /\b[A-Z][a-z]+(?:\s+[A-Z][a-z]+){1,2}\b/g
-  ];
-  for (const pattern of patterns) for (const match of source.matchAll(pattern)) literals.push(match[0]);
-  return [...new Set(literals)].slice(0, 40);
-}
+export { buildProtectedLiteralList };
 
 export function buildHushLlmPromptContract(input = {}) {
   const mask = input.mask || {};
