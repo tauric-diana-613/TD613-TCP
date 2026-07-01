@@ -41,6 +41,16 @@ h1 { margin: 0; font-size: clamp(44px, 9vw, 92px); letter-spacing: -0.07em; line
 h2 { margin: 0 0 14px; letter-spacing: -0.03em; }
 h3 { margin: 0 0 6px; }
 .lede { max-width: 760px; font-size: clamp(18px, 2.4vw, 25px); color: #fff; }
+.drawer-mode-notice {
+  width: fit-content;
+  max-width: 780px;
+  margin: 18px 0 0;
+  padding: 10px 13px;
+  border: 1px solid rgba(255, 216, 155, 0.45);
+  border-radius: 999px;
+  background: rgba(255, 216, 155, 0.08);
+  color: var(--warning);
+}
 
 .status-grid {
   display: grid;
@@ -121,4 +131,5 @@ dd { margin: 0; }
   .rung { grid-template-columns: 44px 1fr; }
   .rung-status { grid-column: 2; }
   #nonClaims { columns: 1; }
+  .drawer-mode-notice { width: 100%; border-radius: 18px; }
 }

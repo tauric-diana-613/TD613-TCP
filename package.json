@@ -37,7 +37,7 @@
     "test:hush:phase10:runtime": "node tests/hush-phase10-runtime-evidence-gate.test.mjs",
     "test:hush:phase10:nonclaims": "node tests/hush-phase10-nonclaims-release-policy.test.mjs",
     "test:hush:phase10:safe-harbor": "node tests/hush-phase10-safe-harbor-boundary.test.mjs",
-    "test:hush:phase11": "node tests/hush-phase11-dashboard-state.test.mjs && node tests/hush-phase11-action-gates.test.mjs && node tests/hush-phase11-surface-registry.test.mjs && node tests/hush-phase11-export-console.test.mjs && node tests/hush-phase11-release-tribunal.test.mjs && node tests/hush-phase11-runtime-evidence-panel.test.mjs",
+    "test:hush:phase11": "node tests/hush-phase11-dashboard-state.test.mjs && node tests/hush-phase11-action-gates.test.mjs && node tests/hush-phase11-surface-registry.test.mjs && node tests/hush-phase11-export-console.test.mjs && node tests/hush-phase11-release-tribunal.test.mjs && node tests/hush-phase11-runtime-evidence-panel.test.mjs && node tests/hush-phase11-drawer-dom-safety.test.mjs",
     "test:hush:packets": "node scripts/run-hush-packet-integration.mjs",
     "test:hush:packets:check": "node scripts/run-hush-packet-integration.mjs --check",
     "test:release": "node tests/release-manifest.test.mjs && node tests/docs-surface.test.mjs && node tests/release-hardening.test.mjs && node tests/release-plumbing.test.mjs && node tests/vercel-deploy-hygiene.test.mjs && node tests/amari-patch-lane.test.mjs",
