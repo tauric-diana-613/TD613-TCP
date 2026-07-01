@@ -220,13 +220,6 @@
     };
     Object.keys(values).forEach(function (id) { var node = $(id); if (node) node.textContent = values[id]; });
   }
-  function runLocalReview() {
-    var api = window.__TD613_HUSH_BENCH__;
-    if (!api || typeof api.analyzeProtectedOutput !== 'function') return;
-    Promise.resolve(api.analyzeProtectedOutput()).catch(function () {
-      status('Remote output received. Local review could not complete automatically; tap Review.', 'error');
-    });
-  }
   async function callEndpoint(endpoint, contract) {
     publishPacket(contract, endpoint);
     var response = await fetch(endpoint, { method: 'POST', headers: { 'content-type': 'application/json' }, body: JSON.stringify({ contract: contract }) });
@@ -261,7 +254,6 @@
             status('Remote provider output received from ' + endpoint + '. Review/edit before Accept.', 'ok');
             markReviewPending(contract.protectedLiterals.length);
             try { window.dispatchEvent(new CustomEvent('td613:hush:patch38-result', { detail: { result: result, outboundPacket: window.__TD613_HUSH_EXACT_OUTBOUND_PACKET } })); } catch (_) {}
-            window.setTimeout(runLocalReview, 0);
             return selected.text;
           }
           if (last.payload && (last.payload.held === true || last.payload.status === 'held')) break;

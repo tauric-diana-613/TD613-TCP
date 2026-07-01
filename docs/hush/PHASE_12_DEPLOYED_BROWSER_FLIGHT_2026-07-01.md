@@ -44,7 +44,7 @@ Local boot inspection found five strict/capture script elements. The page declar
 - Added full mask anatomy to the strict flight vector and provider prompt.
 - Enumerated exact protected literals in the provider instruction.
 - Added server and browser rejection gates for literal loss, reported dropped propositions, and reported new claims.
-- Marked accepted provider output as review-required and initiated local analysis automatically.
+- Marked accepted provider output as review-required while keeping full local analysis behind the operator's Review action.
 - Removed duplicate strict bridge injection from run-lock and housekeeping layers.
 - Added a cache token and a regression test for bridge ownership, mask anatomy, and literal integrity.
 
