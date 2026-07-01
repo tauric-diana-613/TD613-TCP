@@ -17,8 +17,8 @@ const CHAIN_LANES = Object.freeze([
   ['unified_audit', 'Unified audit packet'],
   ['mask_gallery', 'Mask gallery registry'],
   ['mask_packet', 'Per-mask packet'],
-  ['phase9_collision', 'Phase 9 collision audit'],
-  ['phase10_release', 'Phase 10 release discipline']
+  ['phase9_collision', 'Cross-mask collision audit'],
+  ['phase10_release', 'Release discipline']
 ]);
 
 const RUNTIME_FIELDS = Object.freeze([
