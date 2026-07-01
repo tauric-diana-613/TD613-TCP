@@ -1,0 +1,36 @@
+name: Hush Phase 11
+
+on:
+  pull_request:
+    branches: [ main ]
+    paths:
+      - 'app/hush-packet-dashboard.*'
+      - 'app/engine/hush-phase11-*.js'
+      - 'tests/hush-phase11-*.test.mjs'
+      - 'docs/hush/PHASE_11_*.md'
+      - 'package.json'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  phase11:
+    name: Hush Phase 11 packet drawer
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+          cache: npm
+      - run: npm ci
+      - name: Phase 8 baseline
+        run: npm run test:hush:phase8
+      - name: Phase 9 collision baseline
+        run: npm run test:hush:phase9
+      - name: Phase 10 release discipline baseline
+        run: npm run test:hush:phase10
+      - name: Phase 11 drawer gate
+        run: npm run test:hush:phase11
