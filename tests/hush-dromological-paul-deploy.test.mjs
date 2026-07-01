@@ -40,7 +40,7 @@ const auditRow = studioStyleAudit().find((row) => row.id === 'forum-regular');
 assert.equal(auditRow?.label, NEW_LABEL);
 
 const html = fs.readFileSync('app/adversarial-bench.html', 'utf8');
-assert.match(html, /adversarial-bench-light\.js\?v=202607010240/);
+assert.match(html, /adversarial-bench-light\.js\?v=202607010930/);
 assert.match(html, /hush-phase31-1\.js\?v=202607010240/);
 
 console.log('hush-dromological-paul-deploy: ok');

@@ -1,0 +1,30 @@
+name: Hush Packet and Mask Diversity
+
+on:
+  pull_request:
+    branches: [ main ]
+    paths:
+      - 'app/adversarial-bench.html'
+      - 'app/hush-packet-entrypoint.css'
+      - 'app/hush-current-runtime-coherence.js'
+      - 'app/engine/hush-mask-writer.js'
+      - 'tests/hush-mobile-packet-and-mask-diversity.test.mjs'
+      - '.github/workflows/hush-mobile-packet-and-mask-diversity.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  packet-and-mask-diversity:
+    name: Hush packet entrypoint and mask diversity
+    runs-on: ubuntu-latest
+    timeout-minutes: 8
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+          cache: npm
+      - run: npm ci
+      - run: node tests/hush-mobile-packet-and-mask-diversity.test.mjs

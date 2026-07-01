@@ -1,0 +1,42 @@
+body[data-page-kind="adversarial-bench"] .hush-packet-floating-link {
+  position: fixed;
+  right: max(14px, env(safe-area-inset-right));
+  bottom: calc(18px + env(safe-area-inset-bottom));
+  z-index: 80;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.45rem;
+  min-height: 44px;
+  padding: 0.74rem 0.92rem;
+  border: 1px solid rgba(139, 233, 253, 0.46);
+  border-radius: 999px;
+  background: rgba(7, 10, 22, 0.86);
+  color: #f8f4ff;
+  text-decoration: none;
+  font: 800 0.72rem/1 ui-monospace, SFMono-Regular, Menlo, monospace;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  box-shadow: 0 12px 34px rgba(0, 0, 0, 0.42), 0 0 22px rgba(139, 233, 253, 0.18);
+  backdrop-filter: blur(12px);
+}
+
+body[data-page-kind="adversarial-bench"] .hush-packet-floating-link::before {
+  content: '⟐';
+  color: #8be9fd;
+}
+
+body[data-page-kind="adversarial-bench"] .hush-packet-floating-link:hover,
+body[data-page-kind="adversarial-bench"] .hush-packet-floating-link:focus-visible {
+  border-color: rgba(189, 147, 249, 0.7);
+  box-shadow: 0 16px 42px rgba(0, 0, 0, 0.48), 0 0 28px rgba(189, 147, 249, 0.24);
+  outline: none;
+}
+
+@media (max-width: 760px) {
+  body[data-page-kind="adversarial-bench"] .hush-packet-floating-link {
+    right: max(12px, env(safe-area-inset-right));
+    bottom: calc(72px + env(safe-area-inset-bottom));
+    padding: 0.68rem 0.82rem;
+    font-size: 0.66rem;
+  }
+}
