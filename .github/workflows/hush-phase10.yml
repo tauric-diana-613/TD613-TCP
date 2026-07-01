@@ -1,0 +1,38 @@
+name: Hush Phase 10
+
+on:
+  pull_request:
+    branches: [ main ]
+    paths:
+      - 'app/engine/hush-phase10-release-discipline.js'
+      - 'app/data/hush-phase10-release-statuses.js'
+      - 'scripts/run-hush-phase10-release-audit.mjs'
+      - 'tests/hush-phase10-*.test.mjs'
+      - 'docs/hush/PHASE_10_*.md'
+      - 'package.json'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  phase10:
+    name: Hush Phase 10 release discipline
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+          cache: npm
+      - run: npm ci
+      - run: npm run test:hush:phase8
+      - run: npm run test:hush:phase9
+      - run: npm run test:hush:phase10:status
+      - run: npm run test:hush:phase10:evidence
+      - run: npm run test:hush:phase10:exports
+      - run: npm run test:hush:phase10:runtime
+      - run: npm run test:hush:phase10:nonclaims
+      - run: npm run test:hush:phase10:safe-harbor
+      - run: npm run test:hush:phase10
