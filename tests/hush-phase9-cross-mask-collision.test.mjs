@@ -4,6 +4,7 @@ import { buildPhase9Audit, DANGEROUS_PAIRS, EXPECTED_MASK_LABELS, TEST_PACKET_BA
 const audit = await buildPhase9Audit();
 
 assert.equal(audit.schema, 'td613.hush.phase9.cross-mask-collision-audit/v1');
+assert.equal(audit.status, 'pass', audit.required_hotfixes.join('\n'));
 assert.equal(audit.mask_count, EXPECTED_MASK_LABELS.length);
 assert.equal(audit.packet_count, TEST_PACKET_BANK.length);
 assert.equal(audit.dangerous_pair_count, DANGEROUS_PAIRS.length);

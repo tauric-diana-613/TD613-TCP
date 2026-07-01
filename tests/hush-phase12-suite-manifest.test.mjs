@@ -25,6 +25,7 @@ for (const testFile of manifest.tests) assert.ok(fs.existsSync(path.join('tests'
 const packageJson = JSON.parse(fs.readFileSync('package.json', 'utf8'));
 assert.equal(packageJson.scripts['test:hush:packets'], 'node scripts/run-hush-packet-integration.mjs');
 assert.equal(packageJson.scripts['test:hush:packets:check'], 'node scripts/run-hush-packet-integration.mjs --check');
+assert.match(packageJson.scripts['test:hush:phase12'], /hush-phase12-release-packet-consistency\.test\.mjs/);
 
 const receipt = JSON.parse(execFileSync(process.execPath, ['scripts/run-hush-packet-integration.mjs', '--check'], { encoding: 'utf8' }));
 assert.equal(receipt.schema, HUSH_PHASE12_RECEIPT_SCHEMA);

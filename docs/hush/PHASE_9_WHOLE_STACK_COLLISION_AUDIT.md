@@ -37,7 +37,7 @@ Glitching Pixie; Keisha Soft Circle; Cryo Cristiano; Rex Fractura; Receipts Quee
 
 ## Required outputs
 
-The Phase 9 runner writes packet bank, dangerous pair matrix, full matrix, provider drift ledger, runtime flight template, and release recommendation docs under `docs/hush/`.
+The Phase 9 runner evaluates without mutating tracked doctrine by default. Run `npm run docs:hush:phase9` explicitly to regenerate the packet bank, dangerous pair matrix, full matrix, provider drift ledger, runtime flight template, and release recommendation docs under `docs/hush/`.
 
 ## Release recommendation
 

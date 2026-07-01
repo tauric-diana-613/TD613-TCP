@@ -22,6 +22,10 @@ function releaseStatusRequiresBoundary(status) {
   return ['release-candidate', 'harbor-eligible', 'sealed'].includes(status);
 }
 
+function providerEvidenceRequired(provider = {}) {
+  return provider.pass === true || (provider.mode && provider.mode !== 'none');
+}
+
 export function collectHushPhase10HardBlockers(packet = {}) {
   const blockers = [];
   const exportPolicy = packet.export_policy_validation || {};
@@ -35,14 +39,29 @@ export function collectHushPhase10HardBlockers(packet = {}) {
   if (exportPolicy.public_default_allowed === undefined) blockers.push('public_default_allowed undefined');
   if (exportPolicy.raw_sample_exported === true || exportPolicy.raw_sample_export_allowed === true) blockers.push('raw sample exported');
   if (exportPolicy.raw_candidate_exported === true || exportPolicy.raw_candidate_export_allowed === true) blockers.push('raw candidate exported');
+  if (exportPolicy.pass === true && exportPolicy.raw_sample_exported === undefined) blockers.push('raw sample exposure undefined');
+  if (exportPolicy.pass === true && exportPolicy.raw_candidate_exported === undefined) blockers.push('raw candidate exposure undefined');
+  if (exportPolicy.pass === true && exportPolicy.raw_sample_export_allowed === undefined) blockers.push('raw sample export allowance undefined');
+  if (exportPolicy.pass === true && exportPolicy.raw_candidate_export_allowed === undefined) blockers.push('raw candidate export allowance undefined');
   if (packet.local_validation?.mandatory_anchors_preserved === false) blockers.push('mandatory anchor dropped');
+  if (packet.local_validation?.pass === true && packet.local_validation?.mandatory_anchors_preserved !== true) blockers.push('mandatory anchor retention undefined');
+  if (packet.local_validation?.pass === true && packet.local_validation?.source_obligations_exist !== true) blockers.push('source obligations undefined');
   if (provider.new_claims?.length) blockers.push('new factual claim added');
+  if (providerEvidenceRequired(provider) && provider.dropped_propositions?.length) blockers.push('provider proposition dropped');
+  if (provider.pass === true && (!Array.isArray(provider.preserved_propositions) || provider.preserved_propositions.length === 0)) blockers.push('provider preservation evidence missing');
+  if (provider.pass === true && !Array.isArray(provider.dropped_propositions)) blockers.push('provider dropped-proposition check undefined');
+  if (provider.pass === true && !Array.isArray(provider.new_claims)) blockers.push('provider new-claim check undefined');
+  if (provider.pass === true && !Array.isArray(provider.risk_flags)) blockers.push('provider risk check undefined');
+  if (provider.pass === true && provider.drift_classified !== true) blockers.push('provider drift classification undefined');
+  if (provider.pass === true && !['fixture-backed', 'live'].includes(provider.mode)) blockers.push('provider mode invalid');
   if (provider.mode && provider.mode !== 'none' && provider.pass === false) blockers.push('provider validation failed');
   if (packet.local_validation?.claim_boundary_inflated === true) blockers.push('claim boundary inflated');
   if (packet.expected_mask_id && packet.mask_id !== packet.expected_mask_id) blockers.push('wrong mask id');
   if (packet.expected_mask_label && packet.mask_label !== packet.expected_mask_label) blockers.push('wrong mask label');
   if (packet.internal_register_public === true) blockers.push('internal register exposed publicly');
   if (provider.risk_flags?.length && provider.drift_classified !== true) blockers.push('provider drift unclassified');
+  if (runtime.pass === true && runtime.public_default_state === true) blockers.push('runtime public default allowed');
+  if (runtime.pass === true && hasValue(runtime.raw_exposure_state) && runtime.raw_exposure_state !== 'excluded') blockers.push('runtime raw exposure not excluded');
   if (packet.release_status === 'runtime-flight-pass' && !runtime.pass) blockers.push('runtime flight missing but status marked runtime-flight-pass');
   if (provider.mode === 'fixture-backed' && provider.status === 'live-provider-pass') blockers.push('fixture-backed provider evidence marked live-provider-pass');
   if (releaseStatusRequiresBoundary(packet.release_status) && safeHarbor.assessed !== true) blockers.push('release status assigned before Safe Harbor assessment');

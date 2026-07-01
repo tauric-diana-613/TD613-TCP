@@ -29,6 +29,14 @@ const fullRuntime = {
   raw_exposure_state: 'excluded'
 };
 
+const unsafeRuntimePosture = buildPhase10FixturePacket({
+  provider_contract_validation: { pass: true, mode: 'live', preserved_propositions: ['FILE-72'], dropped_propositions: [], new_claims: [], risk_flags: [], drift_classified: true },
+  runtime_flight_validation: { ...fullRuntime, public_default_state: true, raw_exposure_state: 'candidate-visible' }
+});
+assert.equal(unsafeRuntimePosture.release_status, 'blocked');
+assert.ok(unsafeRuntimePosture.hard_blockers.includes('runtime public default allowed'));
+assert.ok(unsafeRuntimePosture.hard_blockers.includes('runtime raw exposure not excluded'));
+
 const runtimeWithoutSafeHarborAssessment = buildPhase10FixturePacket({
   provider_contract_validation: { pass: true, mode: 'live', preserved_propositions: ['FILE-72'], dropped_propositions: [], new_claims: [], risk_flags: [], drift_classified: true },
   runtime_flight_validation: fullRuntime,

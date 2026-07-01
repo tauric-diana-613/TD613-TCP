@@ -19,6 +19,7 @@ const REQUIRED_PACKAGE_SCRIPTS = Object.freeze([
   'test:hush:phase9',
   'test:hush:phase10',
   'test:hush:phase11',
+  'test:hush:phase12',
   'test:hush:packets',
   'test:hush:packets:check'
 ]);

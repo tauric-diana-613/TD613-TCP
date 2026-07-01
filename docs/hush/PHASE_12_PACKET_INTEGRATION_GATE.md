@@ -30,6 +30,7 @@ Phase 12 adds:
 - `scripts/run-hush-packet-integration.mjs`
 - `npm run test:hush:packets`
 - `npm run test:hush:packets:check`
+- `npm run test:hush:phase12`
 - Phase 12 parity tests
 - Phase 12 workflow
 - Failure atlas

@@ -31,5 +31,7 @@ jobs:
       - run: npm ci
       - name: Packet integration check
         run: npm run test:hush:packets:check
+      - name: Phase 12 direct regression gate
+        run: npm run test:hush:phase12
       - name: Packet integration gate
         run: npm run test:hush:packets
