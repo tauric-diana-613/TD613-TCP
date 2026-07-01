@@ -88,13 +88,14 @@ assert.equal(candidateIntegrity(newClaimCandidate, contract).passed, false);
 const bridge = fs.readFileSync('app/hush-pr123-strict-undefined-fallback.js', 'utf8');
 const html = fs.readFileSync('app/adversarial-bench.html', 'utf8');
 const lightBench = fs.readFileSync('app/adversarial-bench-light.js', 'utf8');
+const heavyBench = fs.readFileSync('app/adversarial-bench.mjs', 'utf8');
 const runLock = fs.readFileSync('app/hush-pr168-strict-transform-run-lock.js', 'utf8');
 const housekeeping = fs.readFileSync('app/hush-housekeeping-relayout.js', 'utf8');
 for (const marker of ['function protectedLiterals', 'function styleVector', 'function candidateIntegrity', 'function markReviewPending', 'protected_literals: literals']) {
   assert.ok(bridge.includes(marker), `strict browser bridge missing ${marker}`);
 }
 assert.ok(html.includes('hush-pr123-strict-undefined-fallback.js?v=202607010815'));
-assert.ok(html.includes('adversarial-bench-light.js?v=202607010740'));
+assert.ok(html.includes('adversarial-bench-light.js?v=202607010855'));
 assert.equal((html.match(/hush-pr123-strict-undefined-fallback\.js/g) || []).length, 1, 'page must declare one strict bridge owner');
 assert.ok(!runLock.includes("appendScriptOnce('hushPr123ExactArtifactLoader'"), 'run-lock must not inject a competing strict bridge');
 assert.ok(!housekeeping.includes('data-td613-hush-pr123-exact='), 'housekeeping must not inject strict bridge assets');
@@ -105,5 +106,8 @@ assert.ok(bridge.includes('var literals = protectedLiterals(src);'), 'strict lit
 assert.ok(!bridge.includes("protectedLiterals([src, $('protectedBaselineInput')"), 'historical baseline literals must not contaminate the current transform');
 assert.ok(lightBench.includes('if (reference && mask) {'), 'mask selection must synchronize the active reference');
 assert.ok(!lightBench.includes('reference && mask && !text(reference.value)'), 'a previous mask reference must not survive mask switching');
+assert.ok(lightBench.includes("import('./adversarial-bench.mjs?v=202607010855')"), 'heavy review must use the current cache token');
+assert.ok(heavyBench.includes('buildProtectedLiteralList(benchState.messageDraftText)'), 'local review literals must come from the current source');
+assert.ok(!heavyBench.includes('benchState.messageDraftText}\\n${benchState.protectedBaselineText'), 'local review must not inherit historical baseline literals');
 
 console.log('hush strict provider mask-anatomy and literal-integrity tests passed');

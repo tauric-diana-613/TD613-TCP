@@ -55,7 +55,7 @@ The first message can become Hush's protected comparison baseline. The strict br
 - Marked accepted provider output as review-required while keeping full local analysis behind the operator's Review action.
 - Removed duplicate strict bridge injection from run-lock and housekeeping layers.
 - Synchronizes the hidden mask reference whenever the operator changes masks.
-- Scopes strict protected literals to the current message while retaining the baseline for local comparison and review.
+- Scopes strict-generation and local-review protected literals to the current message while retaining the baseline as separate comparison context.
 - Added a cache token and a regression test for bridge ownership, mask anatomy, and literal integrity.
 
 ## Verified Behavior
