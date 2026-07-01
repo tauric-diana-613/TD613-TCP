@@ -1,0 +1,29 @@
+name: Hush Current Surface Coherence
+
+on:
+  pull_request:
+    branches: [ main ]
+    paths:
+      - 'app/hush.html'
+      - 'app/hush.js'
+      - 'vercel.json'
+      - 'tests/hush-current-surface-coherence.test.mjs'
+      - '.github/workflows/hush-current-surface-coherence.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  current-surface-coherence:
+    name: Hush current surface coherence
+    runs-on: ubuntu-latest
+    timeout-minutes: 8
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+          cache: npm
+      - run: npm ci
+      - run: node tests/hush-current-surface-coherence.test.mjs
