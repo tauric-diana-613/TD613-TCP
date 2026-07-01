@@ -2,18 +2,28 @@
 <html lang="en">
 <head>
   <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Hush Packet Drawer — Phase 11</title>
-  <link rel="stylesheet" href="./hush-packet-dashboard.css" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+  <title>Hush Packet Drawer</title>
+  <link rel="stylesheet" href="./hush-visual-system.css?v=202606131610" />
+  <link rel="stylesheet" href="./hush-compact.css?v=202606131610" />
+  <link rel="stylesheet" href="./hush-field-instrument.css?v=202606131610" />
+  <link rel="stylesheet" href="./hush-packet-dashboard.css?v=202607011015" />
 </head>
-<body>
-  <main class="drawer-shell" aria-labelledby="drawerTitle" data-drawer-mode="fixture-preview">
-    <section class="hero" aria-label="Phase 11 drawer doctrine">
-      <p class="eyebrow">𝌋 Hush Phase 11</p>
-      <h1 id="drawerTitle">Packet Drawer</h1>
-      <p class="lede">A governed witness surface for packet custody. This drawer reads Hush law; it does not replace the current Hush room.</p>
-      <p class="seal">Containment on. Mirror logic off. Existing Hush design untouched.</p>
-      <p id="drawerModeNotice" class="drawer-mode-notice">Fixture preview loaded. No live packet, provider return, public export, or seal action is being claimed.</p>
+<body data-page-kind="hush-packet-drawer">
+  <main class="drawer-shell hush-instrument" aria-labelledby="drawerTitle" data-drawer-mode="fixture-preview">
+    <section class="hero hush-found-tech-border" aria-label="Packet drawer doctrine">
+      <div class="drawer-hero-copy">
+        <p class="eyebrow">𝌋 Hush Packet Cockpit</p>
+        <h1 id="drawerTitle">Packet Drawer</h1>
+        <p class="lede">A governed witness surface for packet custody. This cockpit reads Hush law; it does not publish, certify, or replace the current Hush room.</p>
+        <p class="seal">Containment on. Mirror logic off. Existing Hush design untouched.</p>
+        <p id="drawerModeNotice" class="drawer-mode-notice">Fixture preview loaded. No live packet, provider return, public release, or seal action is being claimed.</p>
+      </div>
+      <div class="drawer-action-bar" aria-label="Packet drawer actions">
+        <button id="copyPacketDrawerBtn" type="button" class="drawer-cta secondary">Copy</button>
+        <button id="exportPacketDrawerBtn" type="button" class="drawer-cta primary">Export</button>
+        <p id="drawerActionStatus" class="drawer-action-status" role="status" aria-live="polite">Copy/export carries a custody receipt only.</p>
+      </div>
     </section>
 
     <section class="status-grid" aria-label="Release and boundary posture">
@@ -43,7 +53,7 @@
 
     <section class="card action-card" aria-label="Action gates">
       <h2>Action Gates</h2>
-      <p class="microcopy">Buttons are petitions. Every action below is evaluated by Phase 11 gate law before it may travel.</p>
+      <p class="microcopy">Buttons are petitions. Every action below is evaluated by drawer gate law before it may travel.</p>
       <div id="actionGates" class="action-gates"></div>
     </section>
 
@@ -52,6 +62,6 @@
       <ul id="nonClaims"></ul>
     </section>
   </main>
-  <script type="module" src="./hush-packet-dashboard.js"></script>
+  <script type="module" src="./hush-packet-dashboard.js?v=202607011015"></script>
 </body>
 </html>

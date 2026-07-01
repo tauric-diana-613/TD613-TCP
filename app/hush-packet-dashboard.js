@@ -5,6 +5,27 @@ import { buildHushPhase11ActionGateReport } from './engine/hush-phase11-action-g
 const state = buildHushPhase11DashboardState({ phase10_packet: buildPhase10FixturePacket() });
 const gateReport = buildHushPhase11ActionGateReport(state);
 
+const ACTION_LABELS = Object.freeze({
+  'build-contract': 'Build Contract',
+  'attach-provider-log': 'Attach Provider Log',
+  'build-contract-log-pair': 'Build Contract-Log Pair',
+  'build-stylometry-audit': 'Build Stylometry Audit',
+  'attach-eorfd-signal': 'Attach EO-RFD Signal',
+  'build-unified-audit': 'Build Unified Audit',
+  'open-boundary-review': 'Open Boundary Review',
+  'open-mask-registry': 'Open Mask Registry',
+  'run-phase9-collision-audit': 'Run Collision Audit',
+  'run-phase10-release-audit': 'Run Release Audit',
+  'attach-runtime-flight-evidence': 'Attach Runtime Evidence',
+  'export-redacted': 'Export Redacted Receipt',
+  'export-private-backup': 'Export Private Backup',
+  'copy-dashboard-summary': 'Copy Drawer Summary',
+  'copy-non-claim-summary': 'Copy Non-Claim Summary',
+  'mark-release-candidate': 'Mark Release Candidate',
+  'mark-sealed': 'Mark Sealed',
+  'revoke-release': 'Revoke Release'
+});
+
 function text(value) {
   return String(value ?? 'not recorded');
 }
@@ -29,6 +50,110 @@ function renderDl(root, rows) {
   }
 }
 
+function gateLabel(action = '') {
+  return ACTION_LABELS[action] || text(action).replace(/-/g, ' ');
+}
+
+function buildDrawerReceipt() {
+  return {
+    schema: 'td613.hush.packet-drawer-custody-receipt/v1',
+    created_at: new Date().toISOString(),
+    drawer_mode: document.querySelector('[data-drawer-mode]')?.getAttribute('data-drawer-mode') || 'fixture-preview',
+    release: {
+      status: state.release_discipline.release_status,
+      recommendation: state.release_discipline.release_recommendation,
+      evidence_level: state.release_discipline.evidence_ladder_level,
+      hard_blockers: state.hard_blockers
+    },
+    runtime: {
+      status: state.runtime_flight_posture.status,
+      missing_fields: state.runtime_flight_posture.missing_fields
+    },
+    boundaries: {
+      safe_harbor: state.boundary_posture.safe_harbor.status,
+      aperture: state.boundary_posture.aperture.status,
+      eorfd: state.boundary_posture.eorfd.status
+    },
+    export_posture: {
+      redacted_export_possible: state.export_posture.redacted_export_possible,
+      public_default_allowed: state.export_posture.public_default_allowed,
+      raw_surfaces_private: state.export_posture.operator_private_required
+    },
+    chain_spine: state.chain_spine.map((lane) => ({
+      label: lane.label,
+      status: lane.status,
+      packet_id: lane.packet_id || null,
+      evidence_class: lane.evidence_class,
+      blocker: lane.blocker || null
+    })),
+    evidence_ladder: state.evidence_ladder.map((rung) => ({
+      id: rung.id,
+      label: rung.label,
+      status: rung.status,
+      blocking_reason: rung.blocking_reason || null
+    })),
+    action_gates: gateReport.gates.map((gate) => ({
+      action: gateLabel(gate.action),
+      status: gate.gate_status,
+      allowed: gate.allowed,
+      reason: gate.reason,
+      repair: gate.repair
+    })),
+    non_claims: state.non_claims,
+    receipt_limits: [
+      'This export is a custody receipt, not a publication action.',
+      'This export does not prove identity, legal authorship, provider compliance, release approval, or seal authority.',
+      'Fixture preview may omit live runtime evidence.'
+    ]
+  };
+}
+
+async function copyTextToClipboard(value) {
+  if (navigator.clipboard?.writeText) {
+    await navigator.clipboard.writeText(value);
+    return true;
+  }
+  const scratch = document.createElement('textarea');
+  scratch.value = value;
+  scratch.setAttribute('readonly', '');
+  scratch.style.position = 'fixed';
+  scratch.style.opacity = '0';
+  document.body.appendChild(scratch);
+  scratch.select();
+  const copied = document.execCommand('copy');
+  scratch.remove();
+  return copied;
+}
+
+function setActionStatus(message) {
+  const status = document.getElementById('drawerActionStatus');
+  if (status) status.textContent = message;
+}
+
+function exportReceipt() {
+  const receipt = buildDrawerReceipt();
+  const blob = new Blob([JSON.stringify(receipt, null, 2)], { type: 'application/json' });
+  const url = URL.createObjectURL(blob);
+  const link = document.createElement('a');
+  link.href = url;
+  link.download = `hush-packet-drawer-custody-${receipt.created_at.replace(/[:.]/g, '-')}.json`;
+  document.body.appendChild(link);
+  link.click();
+  link.remove();
+  URL.revokeObjectURL(url);
+  setActionStatus('Custody receipt exported. No release authority granted.');
+}
+
+async function copyReceipt() {
+  const receipt = buildDrawerReceipt();
+  try {
+    const copied = await copyTextToClipboard(JSON.stringify(receipt, null, 2));
+    setActionStatus(copied ? 'Custody receipt copied. No release authority granted.' : 'Copy unavailable in this browser.');
+  } catch {
+    setActionStatus('Copy unavailable in this browser.');
+  }
+}
+
 renderDl(document.getElementById('releaseTribunal'), [
   ['Source mode', 'fixture preview / no live packet loaded'],
   ['Release status', state.release_discipline.release_status],
@@ -50,7 +175,7 @@ for (const [label, value] of [
   ['Redacted export', state.export_posture.redacted_export_possible ? 'available in fixture preview' : 'blocked'],
   ['Public default', state.export_posture.public_default_allowed ? 'allowed' : 'blocked by default'],
   ['Raw surfaces', state.export_posture.operator_private_required ? 'private review required' : 'excluded'],
-  ['Export authority', 'fixture preview only; no clipboard or public export action is performed here']
+  ['Export authority', 'copy/export creates a local custody receipt only; no public release action is performed here']
 ]) {
   const paragraph = document.createElement('p');
   appendTextElement(paragraph, 'strong', `${label}: `);
@@ -84,11 +209,13 @@ const actionGates = document.getElementById('actionGates');
 clear(actionGates);
 for (const gate of gateReport.gates) {
   const button = document.createElement('button');
+  const label = gateLabel(gate.action);
   button.className = `gate ${gate.gate_status}`;
   button.type = 'button';
   button.dataset.allowed = String(gate.allowed);
-  button.setAttribute('aria-label', `${gate.action}: ${gate.gate_status}`);
-  appendTextElement(button, 'span', gate.action);
+  button.dataset.action = gate.action;
+  button.setAttribute('aria-label', `${label}: ${gate.gate_status}`);
+  appendTextElement(button, 'span', label);
   appendTextElement(button, 'small', gate.gate_status);
   actionGates.appendChild(button);
 }
@@ -98,3 +225,8 @@ clear(nonClaims);
 for (const claim of state.non_claims) {
   appendTextElement(nonClaims, 'li', claim);
 }
+
+document.getElementById('copyPacketDrawerBtn')?.addEventListener('click', copyReceipt);
+document.getElementById('exportPacketDrawerBtn')?.addEventListener('click', exportReceipt);
+
+export { buildDrawerReceipt, gateLabel };
