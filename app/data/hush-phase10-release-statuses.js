@@ -62,6 +62,7 @@ export const HUSH_PHASE10_HARD_BLOCKERS = Object.freeze([
   'raw candidate exported',
   'mandatory anchor dropped',
   'new factual claim added',
+  'provider validation failed',
   'claim boundary inflated',
   'wrong mask id',
   'wrong mask label',
@@ -69,10 +70,13 @@ export const HUSH_PHASE10_HARD_BLOCKERS = Object.freeze([
   'provider drift unclassified',
   'runtime flight missing but status marked runtime-flight-pass',
   'fixture-backed provider evidence marked live-provider-pass',
+  'release status assigned before Safe Harbor assessment',
+  'release status assigned before Aperture boundary check',
   'Safe Harbor receipt treated as proof',
   'Aperture treated as release authority',
   'non-claims missing',
-  'validator bypass implied'
+  'validator bypass implied',
+  'collision severity 3'
 ]);
 
 export const HUSH_PHASE10_RUNTIME_FIELDS = Object.freeze([
