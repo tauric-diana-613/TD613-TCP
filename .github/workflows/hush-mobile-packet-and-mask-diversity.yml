@@ -8,7 +8,9 @@ on:
       - 'app/hush-packet-entrypoint.css'
       - 'app/hush-current-runtime-coherence.js'
       - 'app/engine/hush-mask-writer.js'
+      - 'app/engine/hush-swap.js'
       - 'tests/hush-mobile-packet-and-mask-diversity.test.mjs'
+      - 'tests/hush-selection-pressure.test.mjs'
       - '.github/workflows/hush-mobile-packet-and-mask-diversity.yml'
   workflow_dispatch:
 
@@ -28,3 +30,4 @@ jobs:
           cache: npm
       - run: npm ci
       - run: node tests/hush-mobile-packet-and-mask-diversity.test.mjs
+      - run: node tests/hush-selection-pressure.test.mjs
