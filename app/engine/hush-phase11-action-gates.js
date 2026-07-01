@@ -13,6 +13,7 @@ export const HUSH_PHASE11_ACTIONS = Object.freeze([
   'build-stylometry-audit',
   'attach-eorfd-signal',
   'build-unified-audit',
+  'open-boundary-review',
   'open-mask-registry',
   'run-phase9-collision-audit',
   'run-phase10-release-audit',
@@ -73,7 +74,7 @@ export function evaluateHushPhase11Action(action, input = {}) {
     return makeGate(action, nonClaims.length > 0, nonClaims.length ? 'available' : 'blocked', 'phase10', nonClaims.length ? 'non-claims are present' : 'non-claims missing', 'restore non-claims before copying', { non_claims: nonClaims });
   }
 
-  if (['build-contract', 'attach-provider-log', 'build-contract-log-pair', 'build-stylometry-audit', 'build-unified-audit', 'open-mask-registry', 'run-phase9-collision-audit', 'run-phase10-release-audit', 'attach-runtime-flight-evidence', 'attach-eorfd-signal'].includes(action)) {
+  if (['build-contract', 'attach-provider-log', 'build-contract-log-pair', 'build-stylometry-audit', 'build-unified-audit', 'open-boundary-review', 'open-mask-registry', 'run-phase9-collision-audit', 'run-phase10-release-audit', 'attach-runtime-flight-evidence', 'attach-eorfd-signal'].includes(action)) {
     return makeGate(action, true, 'available', 'phase11', 'evidence or repair action is allowed', 'run validators before export or release', { blockers });
   }
 

@@ -10,6 +10,7 @@ import {
 const clean = buildHushPhase11DashboardState({ phase10_packet: buildPhase10FixturePacket() });
 assert.equal(evaluateHushPhase11Action('copy-dashboard-summary', clean).allowed, true);
 assert.equal(evaluateHushPhase11Action('copy-non-claim-summary', clean).allowed, true);
+assert.equal(evaluateHushPhase11Action('open-boundary-review', clean).allowed, true);
 assert.equal(evaluateHushPhase11Action('export-redacted', clean).allowed, true);
 assert.equal(evaluateHushPhase11Action('mark-release-candidate', clean).allowed, false);
 assert.match(explainBlockedHushPhase11Action('mark-release-candidate', clean), /below release-candidate/);
@@ -35,6 +36,7 @@ assert.equal(evaluateHushPhase11Action('export-redacted', providerFailed).allowe
 
 const report = buildHushPhase11ActionGateReport(clean);
 assert.equal(report.gates.length > 10, true);
+assert.ok(report.gates.some((gate) => gate.action === 'open-boundary-review' && gate.allowed === true));
 assert.ok(report.gates.some((gate) => gate.action === 'export-private-backup' && gate.gate_status === 'review-required'));
 
 console.log('hush-phase11-action-gates: ok');
