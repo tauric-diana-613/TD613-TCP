@@ -36,7 +36,7 @@ export function readHushPhase12Manifest(manifestPath = HUSH_PHASE12_MANIFEST_PAT
   for (const row of rows) {
     if (!row) continue;
     if (row.startsWith('#')) {
-      const match = row.match(/Phase\s+(\d+)/i);
+      const match = row.match(/^#\s*Phase\s+(\d+)/i);
       if (match) phaseComments.push(Number(match[1]));
       continue;
     }
