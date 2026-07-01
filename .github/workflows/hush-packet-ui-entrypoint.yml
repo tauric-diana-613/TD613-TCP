@@ -5,9 +5,11 @@ on:
     branches: [ main ]
     paths:
       - 'app/adversarial-bench.html'
+      - 'app/hush.html'
       - 'app/hush-packet-dashboard.html'
       - 'app/hush-packet-dashboard.js'
       - 'app/hush-packet-dashboard.css'
+      - 'app/engine/hush-phase11-dashboard-state.js'
       - 'tests/hush-packet-ui-entrypoint.test.mjs'
       - '.github/workflows/hush-packet-ui-entrypoint.yml'
   workflow_dispatch:
