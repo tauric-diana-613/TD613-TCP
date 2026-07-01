@@ -1,0 +1,65 @@
+# TD613 Hush Phase 12 Packet Integration Manifest
+# Purpose: deterministic packet-ecology gate, no live provider calls, no deployed runtime dependency.
+
+# Phase 1 — authored intent
+hush-outgoing-contract-packet.test.mjs
+hush-outgoing-contract-validator.test.mjs
+
+# Phase 2 — provider boundary
+hush-provider-log-packet.test.mjs
+hush-provider-log-validator.test.mjs
+
+# Phase 3 — comparison
+hush-contract-log-pair-packet.test.mjs
+hush-contract-log-comparator.test.mjs
+hush-contract-log-pair-validator.test.mjs
+
+# Phase 4 — stylometry foundation
+hush-stylometry-audit-packet.test.mjs
+hush-stylometry-audit-validator.test.mjs
+
+# Phase 5 — EO-RFD interface socket
+hush-phase5-eorfd-interface.test.mjs
+
+# Phase 6 — unified audit packet
+hush-phase6-unified-audit-packet.test.mjs
+
+# Phase 7 — mask gallery registry
+hush-phase7-mask-gallery-registry.test.mjs
+
+# Phase 8 — per-mask governance
+hush-phase8-per-mask-packet.test.mjs
+hush-phase8-stylometric-passport.test.mjs
+hush-phase8-source-obligation-retention.test.mjs
+hush-phase8-seal-governance.test.mjs
+
+# Phase 9 — collision / provider fixture / export parity
+hush-phase9-cross-mask-collision.test.mjs
+hush-phase9-mask-distinctness.test.mjs
+hush-phase9-source-obligation-matrix.test.mjs
+hush-phase9-provider-contract-parity.test.mjs
+hush-phase9-export-policy-parity.test.mjs
+hush-phase9-runtime-log-schema.test.mjs
+
+# Phase 10 — release discipline
+hush-phase10-release-status-model.test.mjs
+hush-phase10-release-evidence-ladder.test.mjs
+hush-phase10-export-release-discipline.test.mjs
+hush-phase10-runtime-evidence-gate.test.mjs
+hush-phase10-nonclaims-release-policy.test.mjs
+hush-phase10-safe-harbor-boundary.test.mjs
+
+# Phase 11 — drawer witness surface
+hush-phase11-dashboard-state.test.mjs
+hush-phase11-action-gates.test.mjs
+hush-phase11-surface-registry.test.mjs
+hush-phase11-export-console.test.mjs
+hush-phase11-release-tribunal.test.mjs
+hush-phase11-runtime-evidence-panel.test.mjs
+
+# Phase 12 — integration gate
+hush-phase12-packet-chain-integrity.test.mjs
+hush-phase12-release-to-drawer-parity.test.mjs
+hush-phase12-export-surface-parity.test.mjs
+hush-phase12-boundary-nonclaims.test.mjs
+hush-phase12-suite-manifest.test.mjs
