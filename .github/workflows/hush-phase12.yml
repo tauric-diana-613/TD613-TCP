@@ -1,0 +1,35 @@
+name: Hush Phase 12
+
+on:
+  pull_request:
+    branches: [ main ]
+    paths:
+      - 'app/engine/hush-*.js'
+      - 'app/data/hush-*.js'
+      - 'tests/hush-*.test.mjs'
+      - 'scripts/hush-packet-integration-suite.txt'
+      - 'scripts/run-hush-packet-integration.mjs'
+      - 'scripts/hush-test-suite.txt'
+      - 'docs/hush/PHASE_12_*.md'
+      - 'package.json'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  phase12:
+    name: Hush Phase 12 integration gate
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+          cache: npm
+      - run: npm ci
+      - name: Packet integration check
+        run: npm run test:hush:packets:check
+      - name: Packet integration gate
+        run: npm run test:hush:packets
