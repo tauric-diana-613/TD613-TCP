@@ -20,10 +20,13 @@ CLAIMS = {
     "weather": "weather-controller-not-safety-certification",
     "aperture": "aperture-handoff-not-aperture-execution-or-ash-custody-proof",
 }
-FORCE_ORDER = ["OPEN", "SELECTED", "CONSTRUCTION", "FORCED_UNDER_CONSTRAINT", "FORCED_IN_CONTEXT", "FORCED"]
+# Lower-force means lower agency / higher constraint. When provenance is ambiguous,
+# the most constrained status wins rather than allowing OPEN to launder the context.
+FORCE_ORDER = ["FORCED", "FORCED_IN_CONTEXT", "FORCED_UNDER_CONSTRAINT", "CONSTRUCTION", "SELECTED", "OPEN"]
 CATEGORY_MARKERS = {"whistleblower", "legal", "medical", "heritage", "youth-related", "employment-complaint", "financial-audit", "safety-matter"}
 ANTI_EQ = ["visibility ≠ consent", "receipt ≠ proof", "redaction ≠ safety", "custody ≠ content", "summary ≠ permission", "containment ≠ healing", "beauty ≠ verification", "arrival ≠ consent"]
-AUTHORITY_RE = re.compile(r"\b(certified|verified|proof|authentic|permissioned|legally safe|sealed as fact|identity confirmed|guarantees anonymity|prevents all data leakage|defeats crawlers)\b", re.I)
+AUTHORITY_RE = re.compile(r"\b(certified|verified|proof|authentic|permissioned|legally safe|sealed as fact|identity confirmed|guarantees anonymity|entirely secure)\b", re.I)
+ANTI_GENERIC_RE = re.compile(r"\b(privacy concerns?|policy language|safe summary|permission issue|generic policy category|corporate-safe classification)\b", re.I)
 DATE_RE = re.compile(r"\b(?:\d{4}-\d{2}-\d{2}|\d{1,2}/\d{1,2}/\d{2,4}|(?:jan|feb|mar|apr|may|jun|jul|aug|sep|oct|nov|dec)[a-z]*\s+\d{1,2})\b", re.I)
 NUMBER_RE = re.compile(r"\b\d+(?:\.\d+)?\b")
 PROPER_RE = re.compile(r"\b[A-Z][a-z]+(?:\s+[A-Z][a-z]+)*\b")
@@ -32,7 +35,7 @@ ROLE_RE = re.compile(r"\b(?:director|manager|attorney|doctor|officer|employee|wi
 SEQ_RE = re.compile(r"\b(?:before|after|then|next|later|earlier|first|second|third|revision|commit|last-modified|superseded)\b", re.I)
 GLYPH_RE = re.compile(r"[≠𝌋⟐米𝄐]|\u200c")
 HASH_RE = re.compile(r"sha256:[a-z0-9:_-]{8,}", re.I)
-PATH_RE = re.compile(r"(?:/|\\\\|[A-Za-z]:\\\\|\.pdf|\.docx|\.xlsx|\.csv|\.html|\.json|\.md)\b", re.I)
+PATH_RE = re.compile(r"(?:[/\\][^\s,;]+|[A-Za-z]:\\[^\s,;]+|[\w.-]+\.(?:pdf|docx|xlsx|csv|html|json|md))", re.I)
 
 
 def _dict(value: Any) -> dict:
@@ -75,6 +78,31 @@ def _projection(payload: dict) -> dict:
     return payload
 
 
+def _negated_authority(text: str, start: int) -> bool:
+    prefix = text[max(0, start - 90):start].lower().replace("_", "-")
+    return any(token in prefix for token in (
+        "not-", "not ", "no-", "no ", "never-", "never ", "without-", "without ",
+        "non-", "receipt-not", "not-content", "not-permission", "not-identity",
+        "not-authenticity", "not-anonymity", "not-external", "not-legal",
+    ))
+
+
+def _authority_hits(text: str) -> list[str]:
+    hits = []
+    for match in AUTHORITY_RE.finditer(text):
+        if not _negated_authority(text, match.start()):
+            hits.append(match.group(0))
+    return hits
+
+
+def _anti_equivalence_score(text: str, lower: str) -> tuple[float, str | None]:
+    generic = ANTI_GENERIC_RE.search(lower)
+    literal_present = any(lit in text for lit in ANTI_EQ) or "≠" in text
+    if generic and not literal_present:
+        return .72, generic.group(0)
+    return 0.0, generic.group(0) if generic else None
+
+
 def leakage_vector(projection: dict) -> dict:
     txt = _text(projection)
     lower = txt.lower()
@@ -84,9 +112,8 @@ def leakage_vector(projection: dict) -> dict:
     quotes = txt.count('"') // 2
     rare = sum(1 for word in re.findall(r"\b[A-Za-z0-9_-]{13,}\b", txt) if not word.lower().startswith("sha256"))
     categories = sorted(cat for cat in CATEGORY_MARKERS if cat in lower or cat.replace("-", " ") in lower)
-    authority = AUTHORITY_RE.findall(txt)
-    anti_generic = bool(re.search(r"privacy concern|policy language|safe summary|permission issue|verification|proof", lower))
-    anti_score = .72 if anti_generic and any(lit not in txt for lit in ANTI_EQ) else 0
+    authority = _authority_hits(txt)
+    anti_score, anti_signal = _anti_equivalence_score(txt, lower)
     return {
         "reconstruction_pressure": _metric("reconstruction_pressure", len(dates)*.08 + len(nums)*.025 + len(hashes)*.15 + len(paths)*.12 + quotes*.04 + rare*.04 + (.14 if "source_environment" in lower else 0) + (.12 if "room_route" in lower or "route" in lower else 0), "projection exposes artifact shape, source route, chronology, hash, or phrase traces"),
         "entity_inference_pressure": _metric("entity_inference_pressure", len(proper)*.045 + len(roles)*.08 + (.22 if EMAIL_PHONE_RE.search(txt) else 0) + (.16 if "source_environment" in lower else 0), "projection contains role, proper-noun, contact, institution, or small-context markers"),
@@ -94,8 +121,8 @@ def leakage_vector(projection: dict) -> dict:
         "stylometric_heat": _metric("stylometric_heat", len(glyphs)*.08 + (.2 if "sealed" in lower or "claimceiling" in lower else 0) + (.12 if re.search(r"[;:—]{3,}", txt) else 0), "projection carries cadence, glyph, footer, capitalization, or ritualized syntax traces"),
         "linkage_pressure": _metric("linkage_pressure", len(hashes)*.18 + (.18 if _rid(projection) else 0) + (.18 if "path_or_ref" in lower or "source_locator" in lower else 0) + (.12 if "visual_signature" in lower else 0), "projection exposes stable identifiers, paths, hashes, visual seed, or repeated receipt patterns"),
         "custody_category_leakage": _metric("custody_category_leakage", len(categories)*.32 + (.18 if "custody_category" in lower else 0), "projection reveals or implies a sensitive category", category_hits=categories),
-        "authority_drift": _metric("authority_drift", len(authority)*.22, "projection language implies proof, permission, authenticity, legality, safety, anonymity, or truth"),
-        "anti_equivalence_collapse": _metric("anti_equivalence_collapse", anti_score, "projection flattens protected non-equivalence lines into generic policy language"),
+        "authority_drift": _metric("authority_drift", len(authority)*.22, "projection language implies proof, permission, authenticity, legality, safety, anonymity, or truth", authority_hits=authority),
+        "anti_equivalence_collapse": _metric("anti_equivalence_collapse", anti_score, "projection flattens protected non-equivalence lines into generic policy language", collapse_signal=anti_signal),
     }
 
 
@@ -154,8 +181,10 @@ def ash_veil(payload: dict, aperture: dict, sha256: Callable[[Any], str], now: C
     manifest = _manifest(receipt)
     leak = ash_leak_challenge({"projection": receipt}, aperture)
     meta, locator, posture = _dict(manifest.get("artifact_metadata")), _dict(manifest.get("source_locator")), _dict(manifest.get("ash_posture"))
-    basis = {"receipt": _rid(receipt), "artifact": manifest.get("artifact_id"), "route": posture.get("room_route")}
-    return {"status": leak["projectionVerdict"], "schema": "td613.ash.veil/v0.6", "veil_id": "veil_" + sha256(basis)[-16:], "created_at": now(), "artifact_id": manifest.get("artifact_id"), "content_exported": False, "surface": "structural-surrogate", "source_environment_bucket": manifest.get("source_environment") or "manual", "media_type_bucket": str(meta.get("media_type") or "unknown").split("/")[0], "byte_length_bucket": _byte_bucket(meta.get("byte_length")), "hash_scope": meta.get("hash_scope") or "withheld-or-route-scoped", "route_scoped_digest": sha256(basis), "path_or_ref_exported": bool(payload.get("allowExactPath") is True and locator.get("path_or_ref")), "exact_path_or_ref": locator.get("path_or_ref") if payload.get("allowExactPath") is True else None, "weather": {k: v["bucket"] for k, v in leak["leakageVector"].items()}, "allowed": ["public-weather", "receipt-index-reference"], "blocked": sorted(set(["raw-summary"] + leak["blockedProjections"])), "claimCeiling": CLAIMS["veil"]}
+    salt_scope = str(payload.get("saltScope") or payload.get("salt_scope") or meta.get("hash_scope") or "route-scoped")
+    basis = {"receipt": _rid(receipt), "artifact": manifest.get("artifact_id"), "route": posture.get("room_route"), "scope": salt_scope}
+    route_digest = sha256({"ash_veil_route_scope": salt_scope, "basis": basis})
+    return {"status": leak["projectionVerdict"], "schema": "td613.ash.veil/v0.6", "veil_id": "veil_" + route_digest[-16:], "created_at": now(), "artifact_id": manifest.get("artifact_id"), "content_exported": False, "surface": "structural-surrogate", "source_environment_bucket": manifest.get("source_environment") or "manual", "media_type_bucket": str(meta.get("media_type") or "unknown").split("/")[0], "byte_length_bucket": _byte_bucket(meta.get("byte_length")), "hash_scope": salt_scope, "route_scoped_digest": route_digest, "path_or_ref_exported": bool(payload.get("allowExactPath") is True and locator.get("path_or_ref")), "exact_path_or_ref": locator.get("path_or_ref") if payload.get("allowExactPath") is True else None, "weather": {k: v["bucket"] for k, v in leak["leakageVector"].items()}, "allowed": ["public-weather", "receipt-index-reference"], "blocked": sorted(set(["raw-summary"] + leak["blockedProjections"])), "claimCeiling": CLAIMS["veil"]}
 
 
 def ash_cinder(payload: dict, aperture: dict, sha256: Callable[[Any], str], now: Callable[[], str]) -> dict:
