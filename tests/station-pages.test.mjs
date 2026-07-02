@@ -53,7 +53,8 @@ assert.ok(browserMainSource.includes('ensureSharedRuntimeDock'), 'browser-main i
 assert.ok(browserMainSource.includes("return new URL('./aperture/index.html', window.location.href).toString();"), 'browser-main keeps Gateway Aperture standalone route canonical');
 assert.ok(chamberChromeSource.includes("{ label: 'Aperture', href: './aperture/index.html' }"), 'shared chamber chrome opens canonical Aperture route');
 assert.ok(!chamberChromeSource.includes("?v=' + V.aperture"), 'shared chamber chrome must not append public Aperture cache tokens');
-assert.ok(assetVersionsSource.includes("main:        '202606211930'"), 'asset versions bump browser-main after Gateway route canonicalization');
+const browserMainAssetVersion = assetVersionsSource.match(/main:\s+'(\d+)'/)?.[1];
+assert.ok(Number(browserMainAssetVersion) >= 202606211930, 'asset versions retain the Gateway route canonicalization bump or newer');
 const apertureAssetVersion = assetVersionsSource.match(/aperture:\s+'(\d+)'/)?.[1];
 assert.ok(Number(apertureAssetVersion) >= 202606211930, 'asset versions retain the v2.9.4 canonicalization bump or newer');
 assert.ok(assetVersionsSource.includes("chrome:      '202606151735'"), 'asset versions bump chamber chrome after Gateway desktop housekeeping patch');
