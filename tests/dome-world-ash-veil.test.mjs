@@ -16,5 +16,7 @@ assert.match(runtime, /route_scoped_digest/);
 assert.match(runtime, /exact_path_or_ref.*allowExactPath/s);
 assert.match(html, /Build Ash Veil/);
 assert.match(html, /must not reveal raw text/);
+assert.match(html, /ash-veil/);
+assert.match(html, /saltScope:\$\('saltScope'\)\.value/);
 
 console.log('Ash Veil contract: PASS');
