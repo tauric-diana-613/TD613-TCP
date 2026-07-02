@@ -108,6 +108,18 @@ assert.equal(nativePacket.hash_topology.schema_version, 'td613.safe-harbor.hash-
 assert.equal(nativePacket.hash_topology.final_packet_hash_sha256, nativePacket.packet_hash_sha256);
 assert.equal(nativePacket.phase5_hash_semantics.phase5_replay_hardening_hash_excluded, true);
 assert.equal(classifyNativeFinalizationMode(nativePacket), 'native');
+assert.equal(nativePacket.packet_capabilities.rich_stylometry_profile, true);
+assert.equal(nativePacket.packet_capabilities.rich_stylometry_schema, 'td613.safe-harbor.rich-stylometry/v3');
+assert.equal(nativePacket.packet_capabilities.native_rich_profile_birthplace, true);
+assert.equal(nativePacket.packet_capabilities.preferred_authorship_surface, 'rich_stylometry');
+assert.equal(nativePacket.analysis.segment_cadence_signatures.future_self.legacy_profile_source, 'safe-harbor.local');
+assert.equal(nativePacket.analysis.segment_cadence_signatures.future_self.legacy_profile_schema, 'td613.safe-harbor.legacy-lane-profile/v1');
+assert.equal(nativePacket.analysis.segment_cadence_signatures.future_self.rich_profile_source, 'app/engine/stylometry.extractCadenceProfile + StylometricDeepMetrics.analyze');
+assert.equal(nativePacket.analysis.segment_cadence_signatures.future_self.rich_profile.surfaceMarkerSummary.zero_marker_count >= 0, true);
+assert.equal(nativePacket.forensic_authorship.authorship_metrics.preferred_authorship_surface, 'rich_stylometry');
+assert.ok(nativePacket.forensic_authorship.authorship_metrics.rich_lane_summary.future_self);
+assert.ok(nativePacket.forensic_authorship.authorship_metrics.rich_cross_lane_summary.primary_divergence_axes);
+assert.equal(nativePacket.forensic_authorship.authorship_metrics.authorship_traceability_summary.basis, 'packet-internal rich stylometry only');
 
 const replay = await verifySafeHarborPacketAuthority(nativePacket);
 assert.equal(replay.v2_replay.status, 'pass');
@@ -137,6 +149,8 @@ const exportPacket = await finalizeSafeHarborPacket(basePacket(), {
 assert.equal(exportPacket.native_spine_purification.status, 'export-hardened');
 assert.equal(exportPacket.packet_authority_surface.rich_profile_promotion, 'export-normalized');
 assert.equal(exportPacket.packet_authority_surface.v3_issuance, 'export-normalized');
+assert.equal(exportPacket.packet_capabilities.rich_stylometry_profile, true);
+assert.equal(exportPacket.packet_capabilities.native_rich_profile_birthplace, false);
 const exportBattery = await buildHashReplayBattery(exportPacket);
 assert.equal(exportBattery.finalizer_lineage, 'export-normalized');
 assert.equal(exportBattery.native_spine, 'pass');
