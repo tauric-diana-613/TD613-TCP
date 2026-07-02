@@ -20,8 +20,6 @@ CLAIMS = {
     "weather": "weather-controller-not-safety-certification",
     "aperture": "aperture-handoff-not-aperture-execution-or-ash-custody-proof",
 }
-# Lower-force means lower agency / higher constraint. When provenance is ambiguous,
-# the most constrained status wins rather than allowing OPEN to launder the context.
 FORCE_ORDER = ["FORCED", "FORCED_IN_CONTEXT", "FORCED_UNDER_CONSTRAINT", "CONSTRUCTION", "SELECTED", "OPEN"]
 CATEGORY_MARKERS = {"whistleblower", "legal", "medical", "heritage", "youth-related", "employment-complaint", "financial-audit", "safety-matter"}
 ANTI_EQ = ["visibility ≠ consent", "receipt ≠ proof", "redaction ≠ safety", "custody ≠ content", "summary ≠ permission", "containment ≠ healing", "beauty ≠ verification", "arrival ≠ consent"]
@@ -128,26 +126,36 @@ def leakage_vector(projection: dict) -> dict:
 
 def verdict(vector: dict) -> str:
     high = {k for k, v in vector.items() if v.get("bucket") == "high"}
-    if high & {"authority_drift", "anti_equivalence_collapse"}: return "QUARANTINE"
-    if high & {"reconstruction_pressure", "custody_category_leakage"}: return "BLOCK_EXPORT"
-    if high: return "WATCH"
-    if any(v.get("bucket") == "medium" for v in vector.values()): return "COOL_ROUTE"
+    if high & {"authority_drift", "anti_equivalence_collapse"}:
+        return "QUARANTINE"
+    if high & {"reconstruction_pressure", "custody_category_leakage"}:
+        return "BLOCK_EXPORT"
+    if high:
+        return "WATCH"
+    if any(v.get("bucket") == "medium" for v in vector.values()):
+        return "COOL_ROUTE"
     return "OPEN"
 
 
 def blocked(vector: dict) -> list[str]:
     out = []
-    if vector["reconstruction_pressure"]["bucket"] != "low": out += ["raw-summary", "public-cinder"]
-    if vector["linkage_pressure"]["bucket"] != "low": out += ["stable-public-hash", "universal-digest"]
-    if vector["authority_drift"]["bucket"] != "low": out += ["proof-language", "verification-language"]
-    if vector["anti_equivalence_collapse"]["bucket"] != "low": out += ["generic-policy-collapse"]
+    if vector["reconstruction_pressure"]["bucket"] != "low":
+        out += ["raw-summary", "public-cinder"]
+    if vector["linkage_pressure"]["bucket"] != "low":
+        out += ["stable-public-hash", "universal-digest"]
+    if vector["authority_drift"]["bucket"] != "low":
+        out += ["proof-language", "verification-language"]
+    if vector["anti_equivalence_collapse"]["bucket"] != "low":
+        out += ["generic-policy-collapse"]
     return sorted(set(out))
 
 
 def tending(vector: dict) -> list[str]:
     v = verdict(vector)
-    if v in {"BLOCK_EXPORT", "QUARANTINE"}: return ["𝄐", "safe-harbor-buffer", "lower-projection-detail", "rotate-salt-scope"]
-    if v in {"WATCH", "COOL_ROUTE"}: return ["cōl", "ash-veil", "route-scoped-digest"]
+    if v in {"BLOCK_EXPORT", "QUARANTINE"}:
+        return ["𝄐", "safe-harbor-buffer", "lower-projection-detail", "rotate-salt-scope"]
+    if v in {"WATCH", "COOL_ROUTE"}:
+        return ["cōl", "ash-veil", "route-scoped-digest"]
     return ["hõt", "controlled-cinder-eligible", "receipt-index-reference"]
 
 
@@ -171,8 +179,10 @@ def ash_leak_challenge(payload: dict, aperture: dict) -> dict:
 
 
 def _byte_bucket(value: Any) -> str:
-    try: n = int(value or 0)
-    except (TypeError, ValueError): n = 0
+    try:
+        n = int(value or 0)
+    except (TypeError, ValueError):
+        n = 0
     return "unknown" if n <= 0 else "under-1kb" if n < 1024 else "1kb-1mb" if n < 1048576 else "over-1mb"
 
 
@@ -180,7 +190,9 @@ def ash_veil(payload: dict, aperture: dict, sha256: Callable[[Any], str], now: C
     receipt = _dict(payload.get("receipt")) or _projection(payload)
     manifest = _manifest(receipt)
     leak = ash_leak_challenge({"projection": receipt}, aperture)
-    meta, locator, posture = _dict(manifest.get("artifact_metadata")), _dict(manifest.get("source_locator")), _dict(manifest.get("ash_posture"))
+    meta = _dict(manifest.get("artifact_metadata"))
+    locator = _dict(manifest.get("source_locator"))
+    posture = _dict(manifest.get("ash_posture"))
     salt_scope = str(payload.get("saltScope") or payload.get("salt_scope") or meta.get("hash_scope") or "route-scoped")
     basis = {"receipt": _rid(receipt), "artifact": manifest.get("artifact_id"), "route": posture.get("room_route"), "scope": salt_scope}
     route_digest = sha256({"ash_veil_route_scope": salt_scope, "basis": basis})
@@ -188,17 +200,60 @@ def ash_veil(payload: dict, aperture: dict, sha256: Callable[[Any], str], now: C
 
 
 def ash_cinder(payload: dict, aperture: dict, sha256: Callable[[Any], str], now: Callable[[], str]) -> dict:
-    fragment = str(payload.get("fragment") or payload.get("candidateFragment") or "")
+    fragment = str(payload.get("fragment") or payload.get("candidateFragment") or "").strip()
     receipt = _dict(payload.get("receipt"))
-    source_id = str(payload.get("source_receipt_id") or payload.get("sourceReceiptId") or receipt.get("receipt_id") or "")
+    source_id = str(
+        payload.get("source_receipt_id")
+        or payload.get("sourceReceiptId")
+        or receipt.get("receipt_id")
+        or ""
+    ).strip()
+    salt_scope = str(payload.get("saltScope") or payload.get("salt_scope") or "cinder-scoped")
     approved = payload.get("operatorApproved") is True or payload.get("operator_approved") is True
     leak = ash_leak_challenge({"projection": {"fragment_class": "operator-approved-redacted-fragment", "source_receipt_id": source_id, "fragment": fragment[:220]}}, aperture)
-    passed = approved and leak["projectionVerdict"] in {"OPEN", "COOL_ROUTE"} and leak["leakageVector"]["reconstruction_pressure"]["bucket"] != "high"
-    return {"status": "OPEN" if passed else "HELD", "schema": "td613.ash.cinder/v0.6", "cinder_id": "cinder_" + sha256({"source": source_id, "fragment": fragment})[-16:], "created_at": now(), "source_receipt_id": source_id or None, "fragment_class": "operator-approved-redacted-fragment", "content_exported": bool(passed), "raw_document_exported": False, "redaction_level": str(payload.get("redactionLevel") or "high"), "fragment": fragment if passed else None, "export_blocked_reason": None if passed else "operator approval and passing Leak Challenge required before Cinder export", "operator_approved": approved, "leak_challenge": {"reconstruction_pressure": leak["leakageVector"]["reconstruction_pressure"]["bucket"], "linkage_pressure": leak["leakageVector"]["linkage_pressure"]["bucket"], "stylometric_heat": leak["leakageVector"]["stylometric_heat"]["bucket"], "verdict": leak["projectionVerdict"]}, "claimCeiling": CLAIMS["cinder"]}
+    pressure_bucket = leak["leakageVector"]["reconstruction_pressure"]["bucket"]
+    passed = (
+        approved
+        and bool(source_id)
+        and bool(fragment)
+        and leak["projectionVerdict"] in {"OPEN", "COOL_ROUTE"}
+        and pressure_bucket != "high"
+    )
+    hold_reasons = []
+    if not approved:
+        hold_reasons.append("operator-approval-required")
+    if not source_id:
+        hold_reasons.append("source-receipt-id-required")
+    if not fragment:
+        hold_reasons.append("non-empty-fragment-required")
+    if leak["projectionVerdict"] not in {"OPEN", "COOL_ROUTE"}:
+        hold_reasons.append("leak-challenge-verdict-held")
+    if pressure_bucket == "high":
+        hold_reasons.append("reconstruction-pressure-high")
+    return {
+        "status": "OPEN" if passed else "HELD",
+        "schema": "td613.ash.cinder/v0.6",
+        "cinder_id": "cinder_" + sha256({"source": source_id, "fragment": fragment, "scope": salt_scope})[-16:],
+        "created_at": now(),
+        "source_receipt_id": source_id or None,
+        "source_receipt_required": True,
+        "fragment_required": True,
+        "salt_scope": salt_scope,
+        "fragment_class": "operator-approved-redacted-fragment",
+        "content_exported": bool(passed),
+        "raw_document_exported": False,
+        "redaction_level": str(payload.get("redactionLevel") or "high"),
+        "fragment": fragment if passed else None,
+        "export_blocked_reason": None if passed else ", ".join(hold_reasons),
+        "operator_approved": approved,
+        "leak_challenge": {"reconstruction_pressure": pressure_bucket, "linkage_pressure": leak["leakageVector"]["linkage_pressure"]["bucket"], "stylometric_heat": leak["leakageVector"]["stylometric_heat"]["bucket"], "verdict": leak["projectionVerdict"]},
+        "claimCeiling": CLAIMS["cinder"],
+    }
 
 
 def ash_compare(payload: dict, aperture: dict) -> dict:
-    prev, curr = _dict(payload.get("previous") or payload.get("previousReceipt") or payload.get("a")), _dict(payload.get("current") or payload.get("currentReceipt") or payload.get("b"))
+    prev = _dict(payload.get("previous") or payload.get("previousReceipt") or payload.get("a"))
+    curr = _dict(payload.get("current") or payload.get("currentReceipt") or payload.get("b"))
     a, b = ash_leak_challenge({"projection": prev}, aperture), ash_leak_challenge({"projection": curr}, aperture)
     delta = {k: round(b["leakageVector"][k]["score"] - a["leakageVector"][k]["score"], 2) for k in a["leakageVector"]}
     return {"status": "WATCH" if any(v > .15 for v in delta.values()) else "OPEN", "schema": "td613.ash.compare/v0.6", "aperture": aperture, "privacy_pressure_delta": delta, "reconstruction_pressure_delta": delta.get("reconstruction_pressure", 0), "linkage_pressure_delta": delta.get("linkage_pressure", 0), "evidence_anchor_loss": bool(prev.get("receipt_id") and not curr.get("receipt_id")), "anti_equivalence_collapse": b["leakageVector"]["anti_equivalence_collapse"]["bucket"] == "high", "authority_drift": b["leakageVector"]["authority_drift"]["bucket"] != "low", "recommended_projection": "Ash Veil" if b["projectionVerdict"] in {"OPEN", "COOL_ROUTE"} else "Safe Harbor buffer", "claimCeiling": CLAIMS["compare"]}
@@ -221,7 +276,8 @@ def ash_grade_gate(payload: dict, aperture: dict) -> dict:
 
 def ash_hcc_adapter(payload: dict, aperture: dict) -> dict:
     who = str(payload.get("whoPolicy") or payload.get("who_policy") or "self-provided-or-withheld")
-    if who not in {"self-provided-or-withheld", "withheld", "self-provided"}: who = "self-provided-or-withheld"
+    if who not in {"self-provided-or-withheld", "withheld", "self-provided"}:
+        who = "self-provided-or-withheld"
     return {"status": "OPEN", "schema": "td613.hcc.adapter/v0.6", "aperture": aperture, "pairs": {"WHAT": "WHO", "WHERE": "HOW", "WHEN": "WHY"}, "who_policy": who, "how_policy": "non-diagnostic", "why_policy": "non-predictive", "identity_inference_allowed": False, "diagnosis_claimed": False, "destiny_prediction_claimed": False, "claimCeiling": CLAIMS["hcc"]}
 
 
