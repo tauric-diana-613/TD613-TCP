@@ -1,0 +1,31 @@
+name: Hush Phase 13
+
+on:
+  pull_request:
+    branches: [ main ]
+    paths:
+      - 'app/data/hush-phase13-mask-fidelity-profiles.js'
+      - 'app/engine/hush-phase13-profile-fidelity-gate.js'
+      - 'scripts/run-hush-phase13-fidelity-audit.mjs'
+      - 'tests/hush-phase13-*.test.mjs'
+      - 'docs/hush/PHASE_13_*.md'
+      - 'package.json'
+      - '.github/workflows/hush-phase13.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  phase13:
+    name: Hush Phase 13 fidelity gate
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+          cache: npm
+      - run: npm ci
+      - run: npm run test:hush:phase13
