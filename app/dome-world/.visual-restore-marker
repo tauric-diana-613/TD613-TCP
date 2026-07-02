@@ -1,0 +1,6 @@
+Dome-World visual restoration marker.
+
+This file intentionally changes no UI code. It exists only to force a fresh deployment from the restored pre-overwrite Dome-World tree after the accidental flattening commit was removed from main.
+
+Restored visual source commit: 1c166a2b70704fe8b8b0a5a8678930e8f400bb97
+Sealed ⟐
