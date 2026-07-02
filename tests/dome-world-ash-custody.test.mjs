@@ -15,6 +15,10 @@ const indexSchema = JSON.parse(read('app/dome-world/schemas/receipt-index.schema
 const syntheticGarden = JSON.parse(read('app/dome-world/fixtures/ash-custody-garden.json'));
 
 assert.match(html, /Register Artifact/);
+assert.match(html, /Leak Challenge/);
+assert.match(html, /Veil/);
+assert.match(html, /Cinder/);
+assert.match(html, /Recall/);
 assert.match(cockpit, /href="\/dome-world\/ash-custody\.html">Register Artifact<\/a>/);
 assert.match(cockpit, /Ash registers metadata and custody posture; raw content stays outside server custody\./);
 assert.equal((cockpit.match(/class="tab(?: active)?" data-view=/g) || []).length, 8);
@@ -22,12 +26,12 @@ assert.match(html, /Ash owns custody/);
 assert.match(html, /Receipts index only/);
 assert.match(html, /Phason diffs projection/);
 assert.match(html, /Substrate waits for exact coordinates/);
-assert.match(html, /custody-replay-without-content/);
 
-for (const op of ['ash-custody-register', 'ash-custody-replay', 'phason-custody-diff', 'receipt-index']) {
+for (const op of ['ash-custody-register', 'ash-custody-replay', 'phason-custody-diff', 'receipt-index', 'ash-leak-challenge', 'ash-veil', 'ash-cinder', 'ash-compare', 'ash-recall', 'ash-grade-gate', 'ash-hcc-adapter', 'ash-projection-simulate']) {
   assert.match(api, new RegExp(`"${op}"`));
 }
 assert.match(api, /RAW_CONTENT_KEYS/);
+assert.match(api, /walk\(payload\)/);
 
 assert.equal(manifestSchema.$id, 'td613.ash.custody-manifest/v0.5');
 assert.equal(receiptSchema.$id, 'td613.ash.custody-receipt/v0.5');
@@ -53,8 +57,8 @@ for (const env of ['local_file', 'repo', 'cloud_drive', 'local_drive', 'spreadsh
   assert.ok(envs.includes(env));
 }
 
-assert.equal(syntheticGarden.schema, 'td613.ash.synthetic-garden/v0.5');
-assert.ok(syntheticGarden.fixtures.length >= 5);
+assert.equal(syntheticGarden.schema, 'td613.ash.synthetic-garden/v0.6');
+assert.ok(syntheticGarden.fixtures.length >= 10);
 for (const fixture of syntheticGarden.fixtures) {
   assert.ok(fixture.teaches);
   assert.ok(Array.isArray(fixture.doesNotProve));
@@ -63,6 +67,8 @@ for (const fixture of syntheticGarden.fixtures) {
   assert.ok(fixture.payload?.artifactMetadata?.contentHash);
   assert.ok(fixture.payload?.credentialReference);
   assert.ok(fixture.payload?.ashPosture);
+  assert.ok(fixture.expectedDecision);
+  assert.ok(fixture.claimCeiling);
 }
 
 console.log('Ash custody layer contract: PASS');
