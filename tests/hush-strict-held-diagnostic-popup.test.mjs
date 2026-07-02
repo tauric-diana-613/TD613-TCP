@@ -13,12 +13,11 @@ assert.match(moduleSource, /Strict held receipt/);
 assert.match(moduleSource, /window\.__TD613_HUSH_FULL_DEBUG_PACKET/);
 assert.match(moduleSource, /td613:hush:provider-log/);
 
-const dom = new JSDOM('<!doctype html><html><head></head><body data-page-kind="adversarial-bench"><div id="hushOutputStatusText"></div><div id="acceptWarning" hidden></div></body></html>', { url: 'https://td613.test/adversarial-bench.html', pretendToBeVisual: true });
+const dom = new JSDOM('<!doctype html><html><head></head><body><div id="hushOutputStatusText"></div><div id="acceptWarning" hidden></div></body></html>', { url: 'https://td613.test/adversarial-bench.html', pretendToBeVisual: true });
 globalThis.window = dom.window;
 globalThis.document = dom.window.document;
 globalThis.CustomEvent = dom.window.CustomEvent;
 globalThis.Event = dom.window.Event;
-globalThis.MutationObserver = dom.window.MutationObserver;
 Object.defineProperty(globalThis, 'navigator', { value: { clipboard: { writeText: async () => undefined } }, configurable: true });
 window.__TD613_HUSH_EXACT_OUTBOUND_PACKET = {
   contract: {
