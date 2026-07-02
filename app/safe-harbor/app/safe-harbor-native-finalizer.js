@@ -1,14 +1,17 @@
-import { buildSafeHarborRichStylometry } from './safe-harbor-rich-stylometry-adapter.js';
+import { buildSafeHarborRichStylometry, summarizeSurfaceMarkers } from './safe-harbor-rich-stylometry-adapter.js';
 import { buildV3Issuance, canIssueV3, stableCanonicalJson } from './safe-harbor-stylometry-v3.js';
 import { attachPhase4Authority, verifyV3Replay } from './safe-harbor-authority-verifier.js?v=202606290125';
 import { buildPhase5ReplayHardening, applyPhase5Quarantine, detectStaleV3 } from './safe-harbor-phase5-replay-hardening.js';
 
 const LANES = ['future_self', 'past_self', 'higher_self'];
+const LEGACY_PROFILE_SCHEMA = 'td613.safe-harbor.legacy-lane-profile/v1';
 const RICH_PROFILE_SCHEMA = 'td613.safe-harbor.lane-rich-profile/v1';
+const RICH_STYLOMETRY_FEATURE_SCHEMA = 'td613.safe-harbor.rich-stylometry/v3';
 const FINALIZER_SCHEMA = 'td613.safe-harbor.native-finalizer/v1';
 const NATIVE_SPINE_SCHEMA = 'td613.safe-harbor.native-spine-purification/v1';
 const HASH_TOPOLOGY_SCHEMA = 'td613.safe-harbor.hash-topology/v1';
 const PHASE6_MIGRATION_SCHEMA = 'td613.safe-harbor.phase6-migration-policy/v1';
+const PACKET_CAPABILITIES_SCHEMA = 'td613.safe-harbor.packet-capabilities/v1';
 
 const HASH_EXCLUDES = Object.freeze([
   'packet_hash_sha256',
@@ -62,15 +65,21 @@ function round(value, places = 4) {
   const num = Number(value || 0);
   return Number.isFinite(num) ? Number(num.toFixed(places)) : 0;
 }
+function spread(values = []) {
+  const nums = values.map(Number).filter(Number.isFinite);
+  if (!nums.length) return null;
+  return round(Math.max(...nums) - Math.min(...nums), 4);
+}
 function topWeighted(profile = {}, max = 80) {
   return Object.fromEntries(Object.entries(profile || {})
     .filter(([, value]) => Number(value || 0) > 0)
-    .sort((left, right) => Number(right[1] || 0) - Number(left[1] || 0) || String(left[0]).localeCompare(String(right[0])))
+    .sort((left, right) => Number(right[1] || 0) - Number(left[1] || 0) || String(left[0]).localeCompare(String(left[0])))
     .slice(0, max)
     .map(([key, value]) => [key, round(value, 5)]));
 }
 function compactLaneRichProfile(profile) {
   if (!isObject(profile)) return null;
+  const surfaceMarkerProfile = clone(profile.surfaceMarkerProfile || {});
   return {
     contentWordComplexity: round(profile.contentWordComplexity),
     modifierDensity: round(profile.modifierDensity),
@@ -90,7 +99,8 @@ function compactLaneRichProfile(profile) {
     transitionVariance: round(profile.transitionVariance),
     acousticWeight: round(profile.acousticWeight),
     registerMode: String(profile.registerMode || ''),
-    surfaceMarkerProfile: clone(profile.surfaceMarkerProfile || {}),
+    surfaceMarkerProfile,
+    surfaceMarkerSummary: profile.surfaceMarkerSummary ? clone(profile.surfaceMarkerSummary) : summarizeSurfaceMarkers(surfaceMarkerProfile),
     functionWordProfile: clone(profile.functionWordProfile || {}),
     wordLengthProfile: clone(profile.wordLengthProfile || {}),
     charTrigramProfile: topWeighted(profile.charTrigramProfile || {}, 80)
@@ -114,6 +124,127 @@ function hasSegments(segments = {}) {
 function allRichProfilesPresent(packet) {
   const signatures = packet && packet.analysis && packet.analysis.segment_cadence_signatures;
   return Boolean(signatures && LANES.every((key) => signatures[key] && signatures[key].rich_profile_schema === RICH_PROFILE_SCHEMA && signatures[key].rich_profile));
+}
+function buildPacketCapabilities(packet, mode = 'native') {
+  const signatures = packet && packet.analysis && packet.analysis.segment_cadence_signatures;
+  const richPresent = allRichProfilesPresent(packet);
+  const nativeBirth = richPresent && LANES.every((key) => getPath(signatures, key + '.rich_profile_birthplace') === 'native');
+  const v3Status = getPath(packet, 'issuance.v3.status') || null;
+  const v2Credential = getPath(packet, 'issuance.badge_number') || null;
+  const v3Credential = getPath(packet, 'issuance.badge_number_v3') || getPath(packet, 'issuance.v3.badge_number_v3') || null;
+  return Object.freeze({
+    schema_version: PACKET_CAPABILITIES_SCHEMA,
+    safe_harbor_packet_schema: packet && packet.schema_version ? String(packet.schema_version) : null,
+    legacy_cadence_profile: Boolean(signatures),
+    legacy_profile_schema: signatures ? LEGACY_PROFILE_SCHEMA : null,
+    rich_stylometry_profile: richPresent,
+    rich_stylometry_schema: richPresent ? RICH_STYLOMETRY_FEATURE_SCHEMA : null,
+    rich_lane_profile_schema: richPresent ? RICH_PROFILE_SCHEMA : null,
+    sh3_credential_present: Boolean(v3Status === 'issued' || v3Credential),
+    dual_recall_ready: Boolean(v2Credential && v3Credential),
+    native_rich_profile_birthplace: nativeBirth,
+    rich_profile_birthplace_mode: richPresent ? (nativeBirth ? 'native' : mode) : 'unavailable',
+    traceability_risk_surface_present: Boolean(getPath(packet, 'analysis.rich_stylometry.traceability_surface') || getPath(packet, 'issuance.stylometric_provenance.rich_stylometry.traceability_surface')),
+    forensic_authorship_receipt_ready: richPresent,
+    raw_text_exported: false,
+    preferred_authorship_surface: richPresent ? 'rich_stylometry' : 'legacy_cadence',
+    legacy_compatibility: 'top-level schema_version remains td613.safe-harbor.packet/v1; packet_capabilities advertises advanced feature surfaces without breaking legacy parsers'
+  });
+}
+function attachPacketCapabilities(packet, mode = 'native') {
+  if (!packet || !isObject(packet)) return packet;
+  packet.packet_capabilities = buildPacketCapabilities(packet, mode);
+  return packet;
+}
+function buildRichLaneSummary(packet) {
+  const signatures = packet && packet.analysis && packet.analysis.segment_cadence_signatures;
+  if (!isObject(signatures)) return {};
+  const out = {};
+  for (const key of LANES) {
+    const profile = getPath(signatures, key + '.rich_profile');
+    if (!isObject(profile)) continue;
+    out[key] = {
+      registerMode: profile.registerMode || null,
+      lexicalEntropyScore: round(profile.lexicalEntropyScore),
+      directness: round(profile.directness),
+      abstractionPosture: round(profile.abstractionPosture),
+      structuralFriction: round(profile.structuralFriction),
+      transitionVariance: round(profile.transitionVariance),
+      orthographicLooseness: round(profile.orthographicLooseness),
+      conversationalPosture: round(profile.conversationalPosture),
+      syntacticBranchingDepth: round(profile.syntacticBranchingDepth),
+      contentWordComplexity: round(profile.contentWordComplexity),
+      modifierDensity: round(profile.modifierDensity),
+      hedgeDensity: round(profile.hedgeDensity),
+      latinatePreference: round(profile.latinatePreference),
+      fragmentPressure: round(profile.fragmentPressure),
+      acousticWeight: round(profile.acousticWeight),
+      surfaceMarkerSummary: clone(profile.surfaceMarkerSummary || summarizeSurfaceMarkers(profile.surfaceMarkerProfile || {}))
+    };
+  }
+  return out;
+}
+function dominantRichAxesForPair(pair) {
+  const numeric = isObject(pair && pair.numeric) ? pair.numeric : {};
+  const distributions = isObject(pair && pair.distributions) ? pair.distributions : {};
+  const numericAxes = Object.entries(numeric)
+    .filter(([, value]) => Number(value || 0) > 0)
+    .sort((a, b) => Number(b[1] || 0) - Number(a[1] || 0))
+    .slice(0, 6)
+    .map(([key, value]) => ({ key, kind: 'numeric', distance: round(value, 4) }));
+  const distributionAxes = Object.entries(distributions)
+    .filter(([, value]) => Number(value || 0) > 0)
+    .sort((a, b) => Number(b[1] || 0) - Number(a[1] || 0))
+    .slice(0, 4)
+    .map(([key, value]) => ({ key, kind: 'distribution', distance: round(value, 4) }));
+  return numericAxes.concat(distributionAxes).slice(0, 8);
+}
+function buildRichCrossLaneSummary(packet) {
+  const divergence = getPath(packet, 'analysis.rich_stylometry.cross_lane_divergence') || getPath(packet, 'issuance.stylometric_provenance.rich_stylometry.cross_lane_divergence') || {};
+  const richLane = buildRichLaneSummary(packet);
+  const widest = divergence.widest_pair || null;
+  const strongest = divergence.strongest_pair || null;
+  const widestProfile = widest && widest.pair && isObject(divergence.pairwise) ? divergence.pairwise[widest.pair] : null;
+  const laneValues = Object.values(richLane);
+  return {
+    widest_rich_divergence_pair: widest ? clone(widest) : null,
+    strongest_rich_similarity_pair: strongest ? clone(strongest) : null,
+    primary_divergence_axes: dominantRichAxesForPair(widestProfile),
+    register_mode_spread: [...new Set(laneValues.map((lane) => lane.registerMode).filter(Boolean))],
+    entropy_spread: spread(laneValues.map((lane) => lane.lexicalEntropyScore)),
+    directness_spread: spread(laneValues.map((lane) => lane.directness)),
+    structural_friction_spread: spread(laneValues.map((lane) => lane.structuralFriction)),
+    compact: divergence.compact || null
+  };
+}
+function buildAuthorshipTraceabilitySummary(packet) {
+  const trace = getPath(packet, 'analysis.rich_stylometry.traceability_surface') || getPath(packet, 'issuance.stylometric_provenance.rich_stylometry.traceability_surface') || null;
+  if (!trace) {
+    return {
+      score: null,
+      band: null,
+      basis: allRichProfilesPresent(packet) ? 'rich stylometry present; traceability surface not present' : 'legacy cadence only',
+      claim_limit: 'not real-world identity determination'
+    };
+  }
+  return {
+    score: round(trace.score),
+    band: trace.band || null,
+    basis: 'packet-internal rich stylometry only',
+    note: trace.note || null,
+    claim_limit: 'not real-world identity determination'
+  };
+}
+function enrichForensicAuthorship(packet) {
+  if (!packet || !isObject(packet) || !allRichProfilesPresent(packet)) return packet;
+  packet.forensic_authorship = isObject(packet.forensic_authorship) ? packet.forensic_authorship : { schema_version: 'td613.safe-harbor.forensic-authorship/v1' };
+  packet.forensic_authorship.authorship_metrics = isObject(packet.forensic_authorship.authorship_metrics) ? packet.forensic_authorship.authorship_metrics : {};
+  packet.forensic_authorship.authorship_metrics.rich_lane_summary = buildRichLaneSummary(packet);
+  packet.forensic_authorship.authorship_metrics.rich_cross_lane_summary = buildRichCrossLaneSummary(packet);
+  packet.forensic_authorship.authorship_metrics.authorship_traceability_summary = buildAuthorshipTraceabilitySummary(packet);
+  packet.forensic_authorship.authorship_metrics.preferred_authorship_surface = 'rich_stylometry';
+  packet.forensic_authorship.authorship_metrics.legacy_lane_summary_role = 'compatibility context';
+  return packet;
 }
 async function sha256Hex(text) {
   const value = String(text || '');
@@ -159,11 +290,15 @@ export function promoteNativeRichLaneProfiles(packet, rich, options = {}) {
     const lane = packet.analysis.segment_cadence_signatures[key];
     if (!lane || !isObject(lane)) continue;
     const compact = compactLaneRichProfile(rich.per_lane_profiles && rich.per_lane_profiles[key]);
+    lane.legacy_profile_schema = LEGACY_PROFILE_SCHEMA;
+    lane.legacy_profile_source = lane.source || 'safe-harbor.local';
     lane.rich_profile_schema = compact ? RICH_PROFILE_SCHEMA : null;
     lane.rich_profile_source = compact ? 'app/engine/stylometry.extractCadenceProfile + StylometricDeepMetrics.analyze' : 'not available';
     lane.rich_profile_birthplace = compact ? mode : 'unavailable';
     lane.rich_profile = compact;
   }
+  attachPacketCapabilities(packet, mode);
+  enrichForensicAuthorship(packet);
   return packet;
 }
 
@@ -244,6 +379,8 @@ async function settleNativePacketHash(packet, mode, preimageHash) {
   let governed = packet;
   let settledHash = governed && governed.packet_hash_sha256 ? governed.packet_hash_sha256 : null;
   for (let i = 0; i < 4; i += 1) {
+    attachPacketCapabilities(governed, mode);
+    enrichForensicAuthorship(governed);
     const nextHash = await computePacketHash(governed);
     governed.packet_hash_sha256 = nextHash;
     governed.hash_topology = buildNativeHashTopology(governed, { mode, v3PreimageHash: preimageHash, finalPacketHash: nextHash });
@@ -251,14 +388,20 @@ async function settleNativePacketHash(packet, mode, preimageHash) {
     governed.native_spine_purification = buildNativeSpinePurification(governed, { mode });
     governed.phase6_migration_policy = buildPhase6MigrationPolicy();
     governed.hash_topology = buildNativeHashTopology(governed, { mode, v3PreimageHash: preimageHash, finalPacketHash: nextHash });
+    attachPacketCapabilities(governed, mode);
+    enrichForensicAuthorship(governed);
     const checkHash = await computePacketHash(governed);
     if (checkHash === nextHash || checkHash === settledHash) {
       governed.packet_hash_sha256 = checkHash;
       governed.hash_topology = buildNativeHashTopology(governed, { mode, v3PreimageHash: preimageHash, finalPacketHash: checkHash });
+      attachPacketCapabilities(governed, mode);
+      enrichForensicAuthorship(governed);
       return governed;
     }
     settledHash = nextHash;
   }
+  attachPacketCapabilities(governed, mode);
+  enrichForensicAuthorship(governed);
   const finalHash = await computePacketHash(governed);
   governed.packet_hash_sha256 = finalHash;
   governed.hash_topology = buildNativeHashTopology(governed, { mode, v3PreimageHash: preimageHash, finalPacketHash: finalHash });
@@ -288,15 +431,22 @@ export async function finalizeSafeHarborPacket(packet, context = {}) {
   if (hasSegments(context.segments)) {
     const rich = buildSafeHarborRichStylometry(context.segments, { compactCharTrigrams: true, maxCharTrigrams: 120 });
     promoteNativeRichLaneProfiles(out, rich, { mode });
+  } else {
+    attachPacketCapabilities(out, mode);
+    enrichForensicAuthorship(out);
   }
   const preimageHash = await computePacketHash(out);
   out.packet_hash_sha256 = preimageHash;
   markRichHashSemantics(out, preimageHash, mode);
   await attachNativeV3Issuance(out, { allowV3Rebuild: context.allowV3Rebuild === true });
+  attachPacketCapabilities(out, mode);
+  enrichForensicAuthorship(out);
   let governed = await attachPhase4Authority(out, { mode, packetHashRecomputed: true });
   governed.native_spine_purification = buildNativeSpinePurification(governed, { mode });
   governed.phase6_migration_policy = buildPhase6MigrationPolicy();
   governed.hash_topology = buildNativeHashTopology(governed, { mode, v3PreimageHash: preimageHash, finalPacketHash: null });
+  attachPacketCapabilities(governed, mode);
+  enrichForensicAuthorship(governed);
   const finalHash = await computePacketHash(governed);
   governed.packet_hash_sha256 = finalHash;
   governed.hash_topology = buildNativeHashTopology(governed, { mode, v3PreimageHash: preimageHash, finalPacketHash: finalHash });
@@ -304,6 +454,8 @@ export async function finalizeSafeHarborPacket(packet, context = {}) {
   governed.native_spine_purification = buildNativeSpinePurification(governed, { mode });
   governed.phase6_migration_policy = buildPhase6MigrationPolicy();
   governed.hash_topology = buildNativeHashTopology(governed, { mode, v3PreimageHash: preimageHash, finalPacketHash: finalHash });
+  attachPacketCapabilities(governed, mode);
+  enrichForensicAuthorship(governed);
   governed = await settleNativePacketHash(governed, mode, preimageHash);
   if (context.includePhase5 !== false) {
     markPhase5HashSemantics(governed);
@@ -311,6 +463,8 @@ export async function finalizeSafeHarborPacket(packet, context = {}) {
     governed.phase5_replay_hardening = hardening;
     if (hardening.status === 'quarantine' || hardening.status === 'fail') return applyPhase5Quarantine(governed, hardening);
     governed.native_spine_purification = buildNativeSpinePurification(governed, { mode });
+    attachPacketCapabilities(governed, mode);
+    enrichForensicAuthorship(governed);
   }
   return governed;
 }
@@ -334,6 +488,7 @@ if (typeof window !== 'undefined') {
     buildNativeSpinePurification,
     buildPhase6MigrationPolicy,
     attachNativeV3Issuance,
+    attachPacketCapabilities,
     classifyNativeFinalizationMode
   });
   window.dispatchEvent(new CustomEvent('td613:safe-harbor:native-finalizer-ready', { detail: { version: FINALIZER_SCHEMA } }));
