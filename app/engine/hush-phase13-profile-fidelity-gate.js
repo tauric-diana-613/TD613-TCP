@@ -14,7 +14,7 @@ const GENERIC_PHRASES = [
   'at the end of the day'
 ];
 const TRANSITIONS = ['however', 'therefore', 'moreover', 'furthermore', 'additionally', 'ultimately', 'in summary'];
-const NEGATIONS = ['not', 'never', 'no ', "n't", 'without'];
+const NEGATIONS = ['not', 'never', 'no ', "n't", 'without', 'unresolved'];
 const clamp = (value) => Math.max(0, Math.min(1, Number.isFinite(value) ? value : 0));
 const round = (value) => Number(clamp(value).toFixed(3));
 const text = (value = '') => String(value ?? '').replace(/\r\n?/g, '\n');
@@ -78,25 +78,34 @@ export function scoreMaskNativeVariance(candidate = '', profile = {}) {
   const body = text(candidate);
   const topo = layoutTopology(body);
   const lower = body.toLowerCase();
-  let score = ratioHits(lower, profile.positive_fidelity_markers || []) * 0.45;
-  if (profile.layout_mode === 'indexed-anchor-blocks') score += (topo.has_numbered_lines ? 0.28 : 0) + (topo.has_line_units ? 0.18 : 0);
+  let score = ratioHits(lower, profile.positive_fidelity_markers || []) * 0.38;
+  if (profile.layout_mode === 'indexed-anchor-blocks') score += (topo.has_numbered_lines ? 0.36 : 0) + (topo.has_line_units ? 0.22 : 0) + (topo.paragraph_break_count ? 0.16 : 0);
   if (profile.layout_mode === 'short-handoff-paragraphs') {
     const sentences = splitSentences(body);
     const avg = sentences.reduce((sum, sentence) => sum + sentence.split(/\s+/).length, 0) / Math.max(1, sentences.length);
-    score += avg <= 12 ? 0.35 : 0.05;
-    score += topo.paragraph_break_count >= 1 ? 0.18 : 0;
+    score += avg <= 12 ? 0.38 : 0.05;
+    score += topo.paragraph_break_count >= 1 ? 0.22 : 0;
   }
-  if (profile.layout_mode === 'bounded-fracture-lines') score += topo.has_line_units ? 0.3 : 0;
-  if (profile.layout_mode === 'evidence-first-bite') score += /receipt|evidence|file|record|anchor/i.test(body.split(/\n|\./)[0] || '') ? 0.28 : 0;
-  if (profile.layout_mode === 'warm-boundary-paragraphs') score += /boundary|hold|care|source/i.test(lower) ? 0.24 : 0;
+  if (profile.layout_mode === 'bounded-fracture-lines') score += topo.has_line_units ? 0.42 : 0;
+  if (profile.layout_mode === 'evidence-first-bite') score += /receipt|evidence|file|record|anchor/i.test(body.split(/\n|\./)[0] || '') ? 0.34 : 0;
+  if (profile.layout_mode === 'warm-boundary-paragraphs') score += /boundary|hold|care|source/i.test(lower) ? 0.3 : 0;
   return round(score);
+}
+function layoutNativeSignal(candidate = '', profile = {}) {
+  const topo = layoutTopology(candidate);
+  if (profile.layout_mode === 'indexed-anchor-blocks') return round((topo.has_numbered_lines ? 0.45 : 0) + (topo.has_line_units ? 0.35 : 0) + (topo.paragraph_break_count ? 0.2 : 0));
+  if (profile.layout_mode === 'short-handoff-paragraphs') return round((topo.paragraph_break_count ? 0.42 : 0) + (splitSentences(candidate).length <= 4 ? 0.28 : 0));
+  if (profile.layout_mode === 'bounded-fracture-lines') return topo.has_line_units ? 0.7 : 0.1;
+  if (profile.layout_mode === 'evidence-first-bite') return /receipt|evidence|file|record|anchor/i.test(text(candidate).split(/\n|\./)[0] || '') ? 0.68 : 0.1;
+  return 0.35;
 }
 export function scoreProfileFidelity(candidate = '', profile = {}) {
   const lower = text(candidate).toLowerCase();
   const positive = ratioHits(lower, profile.positive_fidelity_markers || []);
   const failures = ratioHits(lower, profile.synthetic_failure_markers || []);
   const varianceScore = scoreMaskNativeVariance(candidate, profile);
-  return round((positive * 0.52) + (varianceScore * 0.38) - (failures * 0.35) + 0.14);
+  const layoutScore = layoutNativeSignal(candidate, profile);
+  return round((positive * 0.28) + (varianceScore * 0.34) + (layoutScore * 0.34) - (failures * 0.35) + 0.12);
 }
 export function scoreSemanticIntegrity(source = '', candidate = '', protectedLiterals = []) {
   const src = text(source).toLowerCase();
@@ -139,7 +148,7 @@ export function evaluatePhase13Candidate(input = {}) {
   return Object.freeze({
     schema: HUSH_PHASE13_GATE_SCHEMA,
     phase: 13,
-    candidate_id: input.candidate_id || 'candidate',
+    candidate_id: input.candidate_id || input.case_id || 'candidate',
     source_packet_id: input.source_packet_id || null,
     mask_id: profile.mask_id,
     mask_label: profile.mask_label,
