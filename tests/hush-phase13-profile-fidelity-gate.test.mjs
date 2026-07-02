@@ -15,13 +15,13 @@ for (const profile of HUSH_PHASE13_MASK_FIDELITY_PROFILES) {
 
 const evaluated = evaluatePhase13Candidate({
   mask_id: 'luz-index',
-  source_text: 'Bundle:\n1. FILE-72 remains attached.\n\nCare note stays visible.',
-  candidate_text: '1. FILE-72 remains attached.\n\nCare note stays visible.'
+  source_text: 'Bundle:\n1. FILE-72 remains attached.\n2. Footer mismatch is not resolved.\n\nCare note stays visible.',
+  candidate_text: '1. FILE-72 remains attached.\n2. Footer mismatch is not resolved.\n\nCare note stays visible.'
 });
 assert.equal(evaluated.schema, HUSH_PHASE13_GATE_SCHEMA);
 assert.equal(evaluated.phase, 13);
 assert.equal(evaluated.mask_id, 'luz-index');
-assert.ok(evaluated.profile_fidelity_score > 0.48);
+assert.ok(evaluated.profile_fidelity_score > 0.62, JSON.stringify(evaluated));
 assert.ok(evaluated.non_claims.includes('authorship proof'));
 
 console.log('hush-phase13-profile-fidelity-gate: ok');
