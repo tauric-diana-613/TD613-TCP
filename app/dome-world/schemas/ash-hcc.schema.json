@@ -1,0 +1,15 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "td613.hcc.adapter/v0.6",
+  "title": "Human Coordinate Coupling Adapter",
+  "type": "object",
+  "required": ["schema", "who_policy", "how_policy", "why_policy", "identity_inference_allowed", "claimCeiling"],
+  "properties": {
+    "schema": { "const": "td613.hcc.adapter/v0.6" },
+    "who_policy": { "enum": ["self-provided-or-withheld", "self-provided", "withheld"] },
+    "how_policy": { "const": "non-diagnostic" },
+    "why_policy": { "const": "non-predictive" },
+    "identity_inference_allowed": { "const": false },
+    "claimCeiling": { "const": "hcc-context-routing-not-identity-proof" }
+  }
+}
