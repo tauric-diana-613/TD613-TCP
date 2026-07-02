@@ -1,0 +1,42 @@
+name: Ash v0.6 Cinder Source Guard
+
+on:
+  pull_request:
+    branches: [ main ]
+    paths:
+      - 'packages/dome_world_exact/ash_v06.py'
+      - 'app/dome-world/ash-custody.html'
+      - 'tests/dome-world-ash-cinder.test.mjs'
+      - 'tests/dome-world-ash-veil.test.mjs'
+      - '.github/workflows/ash-v06-cinder-source-guard.yml'
+      - 'package.json'
+      - 'api/dome-world-engine.py'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  ash-v06-cinder-source-guard:
+    name: Ash v0.6 Cinder guard
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+          cache: npm
+      - run: npm ci
+      - name: Python compile
+        run: python -m py_compile api/dome-world-engine.py packages/dome_world_exact/ash_v06.py
+      - name: Ash Cinder contract
+        run: node tests/dome-world-ash-cinder.test.mjs
+      - name: Ash Veil contract
+        run: node tests/dome-world-ash-veil.test.mjs
+      - name: Dome-World integration
+        run: node tests/dome-world-integration.test.mjs
+      - name: Aperture Dome bridge
+        run: node tests/aperture-dome-bridge.test.mjs
+      - name: Ash custody contract
+        run: node tests/dome-world-ash-custody.test.mjs
