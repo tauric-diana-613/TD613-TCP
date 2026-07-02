@@ -9,11 +9,13 @@ on:
       - 'app/adversarial-bench.html'
       - 'app/hush-compare-layout-custody.js'
       - 'app/hush-layout-topology-guard.js'
+      - 'app/hush-strict-held-diagnostic-popup.js'
       - 'app/hush-source-layout-policy.js'
       - 'scripts/hush-test-suite.txt'
       - 'vercel.json'
       - 'tests/hush-current-surface-coherence.test.mjs'
       - 'tests/hush-layout-topology-guard.test.mjs'
+      - 'tests/hush-strict-held-diagnostic-popup.test.mjs'
       - '.github/workflows/hush-current-surface-coherence.yml'
   workflow_dispatch:
 
@@ -34,3 +36,4 @@ jobs:
       - run: npm ci
       - run: node tests/hush-current-surface-coherence.test.mjs
       - run: node tests/hush-layout-topology-guard.test.mjs
+      - run: node tests/hush-strict-held-diagnostic-popup.test.mjs
