@@ -6,26 +6,29 @@
 - Aperture v2.9.4 one-way route-weather translation;
 - exact residual capture and proposal/confirmation training;
 - opt-in lambda=2c emission-gap closure;
-- readiness-only Ash metadata posture.
+- Ash metadata custody, replay, and v0.6 projection leakage testing.
 
-## Ash custody v0.5
+## Ash custody v0.6
 
 `/dome-world/ash-custody.html` adds the Ash Custody Layer:
 
 - local-only **Register Artifact** flow for browser file metadata and SHA-256 hashing;
 - source-environment adapters for local files, repositories, cloud/local drives, spreadsheets/lists, LLM chat/session artifacts, and manual metadata;
 - `td613.ash.custody-manifest/v0.5` and `td613.ash.custody-receipt/v0.5` receipts;
-- Ash custody replay that re-renders custody state without rehydrating raw content;
+- Ash custody replay that re-renders custody state without rehydrating artifact material;
 - Phason custody diff for content-invariant projection/custody changes;
-- receipt indexing that keeps Receipts as a witness index rather than the custody owner.
+- receipt indexing that keeps Receipts as a witness index rather than the custody owner;
+- Leak Challenge / Reconstruction Pressure Lab for metadata-only projection analysis;
+- Ash Veil, Cinder, Compare, Recall, Grade Gate, HCC adapter, and Flow-Core weather controller surfaces.
 
-The route is intentionally an Ash station, not a generic upload page. Receipts index it; Ash owns the artifact custody boundary.
+The route is intentionally an Ash station. Receipts index it; Ash owns the artifact custody boundary.
 
 ## Boundaries
 
 Modeled weather never enters the exact gate. Exact execution does not activate
-EO-RFD firmware. Ash accepts metadata only. Trainer checkpoints remain
-client-held and HMAC-signed; server persistence is intentionally absent.
+EO-RFD firmware. Ash server operations accept metadata/projection packets only.
+Optional local text analysis stays browser-local and clears after scoring. Trainer
+checkpoints remain client-held and HMAC-signed; server persistence is intentionally absent.
 
 The primary navigation contains Weather, Aperture, Phason, Substrate, Ash,
 Rooms, Receipts, and Dev. Legacy Math, Tomography, Live Lattice, Loom,
@@ -39,6 +42,8 @@ One Python function serves `/api/dome-world/*`:
 - `GET ping`, `GET readiness`, and compatibility `GET step2-readiness`
 - `POST aperture-bridge`, `phason-gate`, `ash-readiness`
 - `POST ash-custody-register`, `ash-custody-replay`, `phason-custody-diff`, `receipt-index`
+- `POST ash-leak-challenge`, `ash-veil`, `ash-cinder`, `ash-compare`, `ash-recall`
+- `POST ash-grade-gate`, `ash-hcc-adapter`, `ash-projection-simulate`
 - `POST exact-capture`, `exact-closure`, `trainer-step`
 
 Trainer proposal/confirmation requires `DOME_WORLD_TRAINER_ENABLED=1`,
