@@ -1,0 +1,15 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "td613.ash.leak-challenge/v0.6",
+  "title": "Ash Leak Challenge / Reconstruction Pressure Report",
+  "type": "object",
+  "required": ["schema", "mode", "raw_content_received", "leakageVector", "projectionVerdict", "claimCeiling"],
+  "properties": {
+    "schema": { "const": "td613.ash.leak-challenge/v0.6" },
+    "mode": { "const": "metadata-only-server-projection-analysis" },
+    "raw_content_received": { "const": false },
+    "leakageVector": { "type": "object" },
+    "projectionVerdict": { "enum": ["OPEN", "WATCH", "COOL_ROUTE", "BLOCK_EXPORT", "QUARANTINE", "RECALL_RECOMMENDED"] },
+    "claimCeiling": { "const": "ash-leak-challenge-risk-estimate-not-anonymity-certification" }
+  }
+}
