@@ -34,5 +34,9 @@ jobs:
         run: node tests/dome-world-ash-cinder.test.mjs
       - name: Ash Veil contract
         run: node tests/dome-world-ash-veil.test.mjs
-      - name: Dome-World test suite
-        run: npm run test:dome-world
+      - name: Dome-World integration
+        run: node tests/dome-world-integration.test.mjs
+      - name: Aperture Dome bridge
+        run: node tests/aperture-dome-bridge.test.mjs
+      - name: Ash custody contract
+        run: node tests/dome-world-ash-custody.test.mjs
