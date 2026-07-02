@@ -1,0 +1,68 @@
+/* Preservation-only mobile polish for Dome-World. */
+
+input,
+select,
+textarea {
+  font-size: 16px;
+}
+
+.dome-internal-stepper {
+  position: fixed;
+  right: 10px;
+  top: 50%;
+  z-index: 36;
+  display: grid;
+  gap: 6px;
+  transform: translateY(-50%);
+  pointer-events: none;
+}
+
+.dome-step {
+  pointer-events: auto;
+  width: 28px;
+  height: 38px;
+  border: 1px solid rgba(118, 234, 212, .22);
+  border-radius: 0;
+  background: rgba(3, 16, 13, .38);
+  color: rgba(255, 248, 218, .72);
+  font: 500 1.25rem/1 var(--serif);
+  backdrop-filter: blur(8px);
+  box-shadow: none;
+  opacity: .58;
+}
+
+@media (max-width: 760px) {
+  input,
+  select,
+  textarea {
+    font-size: 16px;
+  }
+
+  .primary-view .view-intro h2 {
+    font-size: clamp(1.65rem, 8vw, 2.7rem);
+  }
+
+  .primary-view .view-intro p,
+  .primary-view .sub,
+  .primary-view .status-line {
+    font-size: .82rem;
+  }
+
+  .wrap {
+    padding-bottom: calc(112px + env(safe-area-inset-bottom));
+  }
+
+  .dome-internal-stepper {
+    right: 4px;
+    top: auto;
+    bottom: calc(104px + env(safe-area-inset-bottom));
+    grid-template-columns: 1fr 1fr;
+    transform: none;
+  }
+
+  .dome-step {
+    width: 30px;
+    height: 34px;
+    font-size: 1.1rem;
+  }
+}
