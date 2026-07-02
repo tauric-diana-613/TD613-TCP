@@ -1,0 +1,13 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "td613.ash.recall/v0.6",
+  "title": "Ash Recall Notice",
+  "type": "object",
+  "required": ["schema", "recall_id", "target_id", "recall_status", "reason_class", "content_deleted_claimed", "public_export_allowed", "claimCeiling"],
+  "properties": {
+    "schema": { "const": "td613.ash.recall/v0.6" },
+    "content_deleted_claimed": { "const": false },
+    "public_export_allowed": { "const": false },
+    "claimCeiling": { "const": "ash-recall-not-erasure-proof" }
+  }
+}
