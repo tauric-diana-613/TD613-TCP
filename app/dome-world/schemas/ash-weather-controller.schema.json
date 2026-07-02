@@ -1,0 +1,16 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "flowcore.ash-weather-controller/v0.6",
+  "title": "Flow-Core Ash Weather Controller",
+  "type": "object",
+  "required": ["schema", "operator", "weather", "allowed", "blocked", "decision", "claimCeiling"],
+  "properties": {
+    "schema": { "const": "flowcore.ash-weather-controller/v0.6" },
+    "operator": { "enum": ["cōl", "hõt", "𝄐", "米"] },
+    "weather": { "type": "object" },
+    "allowed": { "type": "array" },
+    "blocked": { "type": "array" },
+    "decision": { "type": "string" },
+    "claimCeiling": { "const": "weather-controller-not-safety-certification" }
+  }
+}

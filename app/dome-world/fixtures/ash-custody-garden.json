@@ -1,132 +1,86 @@
 {
-  "schema": "td613.ash.synthetic-garden/v0.5",
+  "schema": "td613.ash.synthetic-garden/v0.6",
   "claimCeiling": "synthetic-fixtures-teach-custody-without-sensitive-intake",
   "fixtures": [
     {
-      "id": "local_file_private_hold",
-      "teaches": "local browser hashing and private Ash custody",
+      "id": "redacted_memo_source_role_leak",
+      "teaches": "a redacted memo can still leak source role through structure and metadata",
       "doesNotProve": ["identity", "permission", "truth", "document authenticity"],
-      "payload": {
-        "sourceEnvironment": "local_file",
-        "sourceLocator": {
-          "label": "Synthetic local custody memo",
-          "path_or_ref": "local path withheld"
-        },
-        "artifactMetadata": {
-          "mediaType": "text/plain",
-          "byteLength": 613,
-          "contentHash": "sha256:synthetic-local-613",
-          "hashScope": "local-browser"
-        },
-        "credentialReference": {
-          "credentialType": "local-possession"
-        },
-        "ashPosture": {
-          "roomRoute": "private-sense-only",
-          "recommendedTending": ["private-hold", "ash-receipt"]
-        }
-      }
+      "payload": { "sourceEnvironment": "manual", "sourceLocator": { "label": "Synthetic role-leak memo", "path_or_ref": "withheld" }, "artifactMetadata": { "mediaType": "application/json", "byteLength": 1440, "contentHash": "sha256:garden-role-leak", "hashScope": "route-scoped" }, "credentialReference": { "credentialType": "operator-attested" }, "ashPosture": { "roomRoute": "safe-harbor-buffer", "recommendedTending": ["cōl", "ash-veil"] } },
+      "expectedDecision": "COOL_ROUTE",
+      "claimCeiling": "ash-leak-challenge-risk-estimate-not-anonymity-certification"
     },
     {
-      "id": "repo_artifact_public_weather",
-      "teaches": "repo artifact references can emit public weather without moving raw content into Ash server custody",
-      "doesNotProve": ["identity", "permission", "truth", "repository authorship", "document authenticity"],
-      "payload": {
-        "sourceEnvironment": "repo",
-        "sourceLocator": {
-          "label": "Synthetic repository custody reference",
-          "path_or_ref": "app/dome-world/README.md",
-          "revision": "synthetic-main"
-        },
-        "artifactMetadata": {
-          "mediaType": "text/markdown",
-          "byteLength": 2048,
-          "contentHash": "sha256:synthetic-repo-weather-2048",
-          "hashScope": "repo-blob-reference"
-        },
-        "credentialReference": {
-          "credentialType": "repo-read-public"
-        },
-        "ashPosture": {
-          "roomRoute": "atrium-public-weather",
-          "recommendedTending": ["public-weather", "ash-receipt"]
-        }
-      }
+      "id": "public_weather_custody_category_leak",
+      "teaches": "public weather can leak custody category even without text preview",
+      "doesNotProve": ["safety", "anonymity", "truth"],
+      "payload": { "sourceEnvironment": "cloud_drive", "sourceLocator": { "label": "Synthetic category weather", "path_or_ref": "cloud ref withheld" }, "artifactMetadata": { "mediaType": "application/pdf", "byteLength": 4096, "contentHash": "sha256:garden-category-weather", "hashScope": "metadata-only" }, "credentialReference": { "credentialType": "metadata-reference" }, "ashPosture": { "roomRoute": "private-sense-only", "recommendedTending": ["𝄐", "safe-harbor-buffer"] } },
+      "expectedDecision": "BLOCK_EXPORT",
+      "claimCeiling": "ash-veil-structure-not-content-summary"
     },
     {
-      "id": "llm_session_private_reference",
-      "teaches": "LLM session references can be named as private custody posture without exporting session text",
-      "doesNotProve": ["identity", "permission", "truth", "model output authenticity", "content custody"],
-      "payload": {
-        "sourceEnvironment": "llm_chat",
-        "sourceLocator": {
-          "label": "Synthetic LLM session reference",
-          "path_or_ref": "session reference withheld"
-        },
-        "artifactMetadata": {
-          "mediaType": "application/json",
-          "byteLength": 1440,
-          "contentHash": "sha256:synthetic-llm-session-1440",
-          "hashScope": "session-metadata-reference"
-        },
-        "credentialReference": {
-          "credentialType": "session-possession"
-        },
-        "ashPosture": {
-          "roomRoute": "private-sense-only",
-          "recommendedTending": ["private-reference", "custody-replay", "ash-receipt"]
-        }
-      }
+      "id": "cinder_draft_stylometric_heat",
+      "teaches": "a small fragment can still carry cadence heat",
+      "doesNotProve": ["authorship", "identity", "complete-document-meaning"],
+      "payload": { "sourceEnvironment": "manual", "sourceLocator": { "label": "Synthetic Cinder draft", "path_or_ref": "fragment draft" }, "artifactMetadata": { "mediaType": "text/plain", "byteLength": 220, "contentHash": "sha256:garden-cinder-heat", "hashScope": "fragment-scoped" }, "credentialReference": { "credentialType": "operator-attested" }, "ashPosture": { "roomRoute": "private-sense-only", "recommendedTending": ["revise", "lower-cadence-heat"] } },
+      "expectedDecision": "WATCH",
+      "claimCeiling": "ash-cinder-fragment-not-full-document"
     },
     {
-      "id": "spreadsheet_safe_harbor_buffer",
-      "teaches": "spreadsheet metadata can route into Safe Harbor buffer posture without summarizing cells before custody",
-      "doesNotProve": ["identity", "permission", "truth", "cell accuracy", "document authenticity"],
-      "payload": {
-        "sourceEnvironment": "spreadsheet",
-        "sourceLocator": {
-          "label": "Synthetic spreadsheet safe harbor buffer",
-          "path_or_ref": "sheet locator withheld"
-        },
-        "artifactMetadata": {
-          "mediaType": "text/csv",
-          "byteLength": 987,
-          "contentHash": "sha256:synthetic-spreadsheet-987",
-          "hashScope": "local-browser-metadata"
-        },
-        "credentialReference": {
-          "credentialType": "operator-declared-access"
-        },
-        "ashPosture": {
-          "roomRoute": "safe-harbor-buffer",
-          "recommendedTending": ["safe-harbor-buffer", "ash-receipt"]
-        }
-      }
+      "id": "receipt_pair_projection_drift",
+      "teaches": "content-invariant receipts can still cross a projection seam",
+      "doesNotProve": ["external enforcement", "permission", "content custody"],
+      "payload": { "sourceEnvironment": "repo", "sourceLocator": { "label": "Synthetic projection drift pair", "path_or_ref": "repo ref withheld" }, "artifactMetadata": { "mediaType": "application/json", "byteLength": 2048, "contentHash": "sha256:garden-invariant-drift", "hashScope": "repo-reference" }, "credentialReference": { "credentialType": "repo-access" }, "ashPosture": { "roomRoute": "atrium-public-weather", "recommendedTending": ["phason-custody-diff"] } },
+      "expectedDecision": "SEAM_DETECTED",
+      "claimCeiling": "phason-custody-diff-not-external-enforcement-or-permission-proof"
     },
     {
-      "id": "cloud_drive_metadata_only",
-      "teaches": "cloud drive artifacts can be registered through metadata-only custody while cloud credentials and raw content stay outside Ash",
-      "doesNotProve": ["identity", "permission", "truth", "cloud account ownership", "document authenticity"],
-      "payload": {
-        "sourceEnvironment": "cloud_drive",
-        "sourceLocator": {
-          "label": "Synthetic cloud drive metadata object",
-          "path_or_ref": "cloud object id withheld"
-        },
-        "artifactMetadata": {
-          "mediaType": "application/pdf",
-          "byteLength": 4096,
-          "contentHash": "sha256:synthetic-cloud-drive-4096",
-          "hashScope": "drive-metadata-only"
-        },
-        "credentialReference": {
-          "credentialType": "metadata-reference"
-        },
-        "ashPosture": {
-          "roomRoute": "private-sense-only",
-          "recommendedTending": ["metadata-only", "custody-replay", "ash-receipt"]
-        }
-      }
+      "id": "stable_hash_linkage_risk",
+      "teaches": "stable public hashes can link receipts across contexts",
+      "doesNotProve": ["identity", "permission", "truth"],
+      "payload": { "sourceEnvironment": "repo", "sourceLocator": { "label": "Synthetic stable hash risk", "path_or_ref": "withheld/path.json" }, "artifactMetadata": { "mediaType": "application/json", "byteLength": 987, "contentHash": "sha256:garden-stable-linkage", "hashScope": "stable-public-risk" }, "credentialReference": { "credentialType": "repo-access" }, "ashPosture": { "roomRoute": "safe-harbor-buffer", "recommendedTending": ["rotate-salt-scope", "route-scoped-digest"] } },
+      "expectedDecision": "COOL_ROUTE",
+      "claimCeiling": "ash-leak-challenge-risk-estimate-not-anonymity-certification"
+    },
+    {
+      "id": "anti_equivalence_collapse_summary",
+      "teaches": "generic summaries can collapse receipt-not-proof and visibility-not-consent lines",
+      "doesNotProve": ["safety", "permission", "verification"],
+      "payload": { "sourceEnvironment": "manual", "sourceLocator": { "label": "Synthetic anti-equivalence collapse", "path_or_ref": "summary draft" }, "artifactMetadata": { "mediaType": "text/plain", "byteLength": 512, "contentHash": "sha256:garden-anti-equivalence", "hashScope": "projection-only" }, "credentialReference": { "credentialType": "operator-attested" }, "ashPosture": { "roomRoute": "private-sense-only", "recommendedTending": ["𝄐", "rewrite-projection"] } },
+      "expectedDecision": "QUARANTINE",
+      "claimCeiling": "ash-reconstruction-pressure-not-proof-of-external-leakage"
+    },
+    {
+      "id": "grade_gate_constrained_context",
+      "teaches": "Grade Gate records constrained context without claiming outside enforcement",
+      "doesNotProve": ["legal effect", "third-party compliance", "external crawler behavior"],
+      "payload": { "sourceEnvironment": "manual", "sourceLocator": { "label": "Synthetic constrained context", "path_or_ref": "operator ledger" }, "artifactMetadata": { "mediaType": "application/json", "byteLength": 330, "contentHash": "sha256:garden-grade-gate", "hashScope": "operator-ledger" }, "credentialReference": { "credentialType": "operator-attested" }, "ashPosture": { "roomRoute": "safe-harbor-buffer", "recommendedTending": ["grade-gate", "receipt-index-reference"] } },
+      "expectedDecision": "FORCED_UNDER_CONSTRAINT",
+      "claimCeiling": "ash-grade-gate-context-record-not-third-party-enforcement"
+    },
+    {
+      "id": "hcc_who_withheld",
+      "teaches": "HCC can preserve context while WHO remains self-provided or withheld",
+      "doesNotProve": ["identity", "diagnosis", "destiny prediction"],
+      "payload": { "sourceEnvironment": "manual", "sourceLocator": { "label": "Synthetic HCC withheld WHO", "path_or_ref": "hcc adapter" }, "artifactMetadata": { "mediaType": "application/json", "byteLength": 400, "contentHash": "sha256:garden-hcc-who-withheld", "hashScope": "context-routing" }, "credentialReference": { "credentialType": "none" }, "ashPosture": { "roomRoute": "private-sense-only", "recommendedTending": ["hcc-adapter", "identity-withheld"] } },
+      "expectedDecision": "WHO_WITHHELD",
+      "claimCeiling": "hcc-context-routing-not-identity-proof"
+    },
+    {
+      "id": "recall_after_projection_leak",
+      "teaches": "recall notices can mark projection leakage without claiming external erasure",
+      "doesNotProve": ["external deletion", "crawler removal", "legal compliance"],
+      "payload": { "sourceEnvironment": "cloud_drive", "sourceLocator": { "label": "Synthetic recall notice", "path_or_ref": "cloud ref withheld" }, "artifactMetadata": { "mediaType": "application/json", "byteLength": 640, "contentHash": "sha256:garden-recall", "hashScope": "receipt-scoped" }, "credentialReference": { "credentialType": "metadata-reference" }, "ashPosture": { "roomRoute": "safe-harbor-buffer", "recommendedTending": ["ash-recall", "block-public-export"] } },
+      "expectedDecision": "RECALLED",
+      "claimCeiling": "ash-recall-not-erasure-proof"
+    },
+    {
+      "id": "safe_harbor_after_leak_failure",
+      "teaches": "Leak Challenge failure routes projection to Safe Harbor buffer and 𝄐 pause",
+      "doesNotProve": ["safety", "anonymity", "truth"],
+      "payload": { "sourceEnvironment": "spreadsheet", "sourceLocator": { "label": "Synthetic failed projection", "path_or_ref": "sheet range withheld" }, "artifactMetadata": { "mediaType": "text/csv", "byteLength": 1800, "contentHash": "sha256:garden-safe-harbor-after-failure", "hashScope": "local-browser-metadata" }, "credentialReference": { "credentialType": "operator-declared-access" }, "ashPosture": { "roomRoute": "safe-harbor-buffer", "recommendedTending": ["𝄐", "safe-harbor-buffer", "lower-projection-detail"] } },
+      "expectedDecision": "BLOCK_EXPORT",
+      "claimCeiling": "ash-leak-challenge-risk-estimate-not-anonymity-certification"
     }
   ]
 }

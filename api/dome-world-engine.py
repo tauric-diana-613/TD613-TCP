@@ -25,6 +25,7 @@ from packages.dome_world_exact.runtime import (  # noqa: E402
     trainer_confirm,
     trainer_propose,
 )
+from packages.dome_world_exact.ash_v06 import ASH_V06_OPERATIONS, dispatch_ash_v06  # noqa: E402
 
 MAX_BODY_BYTES = 131_072
 RAW_CONTENT_KEYS = {"text", "rawText", "content", "document", "body", "sensitiveText", "rawBytes", "fileBytes", "fileContent"}
@@ -39,7 +40,7 @@ POST_OPERATIONS = {
     "exact-capture",
     "exact-closure",
     "trainer-step",
-}
+} | ASH_V06_OPERATIONS
 
 
 def _now():
@@ -56,9 +57,26 @@ def _sha256(value):
 
 
 def _reject_raw_content(payload):
-    present = sorted(key for key in RAW_CONTENT_KEYS if payload.get(key))
+    present = []
+
+    def active(value):
+        return value not in (None, "", False, [], {})
+
+    def walk(value, path="payload"):
+        if isinstance(value, dict):
+            for key, child in value.items():
+                child_path = f"{path}.{key}"
+                if key in RAW_CONTENT_KEYS and active(child):
+                    present.append(child_path)
+                else:
+                    walk(child, child_path)
+        elif isinstance(value, list):
+            for index, child in enumerate(value):
+                walk(child, f"{path}[{index}]")
+
+    walk(payload)
     if present:
-        raise ValueError("Ash custody accepts metadata/manifests only; raw content fields are prohibited: " + ", ".join(present))
+        raise ValueError("Ash custody accepts metadata/manifests only; raw content fields are prohibited: " + ", ".join(sorted(present)))
 
 
 def _copy_dict(value):
@@ -377,6 +395,8 @@ def dispatch_post(envelope, headers):
         result = _phason_custody_diff(payload, aperture)
     elif operation == "receipt-index":
         result = _receipt_index(payload, aperture)
+    elif operation in ASH_V06_OPERATIONS:
+        result = dispatch_ash_v06(operation, payload, aperture, _reject_raw_content, _sha256, _now)
     elif operation == "exact-capture":
         result = exact_capture(payload)
     elif operation == "exact-closure":
@@ -392,11 +412,7 @@ def dispatch_post(envelope, headers):
         if not signing_secret:
             raise RuntimeError("checkpoint signing secret is not configured")
         action = str(payload.get("action", "propose"))
-        result = (
-            trainer_confirm(payload, signing_secret)
-            if action == "confirm"
-            else trainer_propose(payload, signing_secret)
-        )
+        result = trainer_confirm(payload, signing_secret) if action == "confirm" else trainer_propose(payload, signing_secret)
 
     return {
         "ok": True,
