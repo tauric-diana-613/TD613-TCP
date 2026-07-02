@@ -8,6 +8,8 @@ const read = (path) => readFileSync(join(root, path), 'utf8');
 const html = read('app/dome-world/ash-custody.html');
 const cockpit = read('app/dome-world/index.html');
 const api = read('api/dome-world-engine.py');
+const ashRuntime = read('packages/dome_world_exact/ash_v06.py');
+const operationSurface = api + '\n' + ashRuntime;
 const manifestSchema = JSON.parse(read('app/dome-world/schemas/ash-custody-manifest.schema.json'));
 const receiptSchema = JSON.parse(read('app/dome-world/schemas/ash-custody-receipt.schema.json'));
 const phasonSchema = JSON.parse(read('app/dome-world/schemas/phason-custody-diff.schema.json'));
@@ -28,7 +30,7 @@ assert.match(html, /Phason diffs projection/);
 assert.match(html, /Substrate waits for exact coordinates/);
 
 for (const op of ['ash-custody-register', 'ash-custody-replay', 'phason-custody-diff', 'receipt-index', 'ash-leak-challenge', 'ash-veil', 'ash-cinder', 'ash-compare', 'ash-recall', 'ash-grade-gate', 'ash-hcc-adapter', 'ash-projection-simulate']) {
-  assert.match(api, new RegExp(`"${op}"`));
+  assert.match(operationSurface, new RegExp(`"${op}"`));
 }
 assert.match(api, /RAW_CONTENT_KEYS/);
 assert.match(api, /walk\(payload\)/);
