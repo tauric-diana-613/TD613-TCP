@@ -28,4 +28,19 @@ jobs:
           node-version: '22'
           cache: npm
       - run: npm ci
-      - run: npm run test:hush:phase13
+      - name: Phase 13 profile fidelity
+        run: node tests/hush-phase13-profile-fidelity-gate.test.mjs
+      - name: Phase 13 smoothness penalty
+        run: node tests/hush-phase13-synthetic-perfection-penalty.test.mjs
+      - name: Phase 13 native variance
+        run: node tests/hush-phase13-mask-native-variance.test.mjs
+      - name: Phase 13 selector rerank
+        run: node tests/hush-phase13-selector-rerank.test.mjs
+      - name: Phase 13 layout fidelity
+        run: node tests/hush-phase13-linebreak-profile-fidelity.test.mjs
+      - name: Phase 13 nonclaims
+        run: node tests/hush-phase13-nonclaims.test.mjs
+      - name: Phase 13 audit runner
+        run: node tests/hush-phase13-audit-runner.test.mjs
+      - name: Phase 13 audit command
+        run: node scripts/run-hush-phase13-fidelity-audit.mjs
