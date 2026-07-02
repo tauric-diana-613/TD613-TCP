@@ -1,4 +1,5 @@
-const VERSION = 'hush-strict-held-diagnostic-popup/v1';
+const VERSION = 'hush-strict-held-diagnostic-popup/v2-idempotent';
+let lastRenderedSignature = '';
 
 function $(id) { return document.getElementById(id); }
 function text(value = '') { return String(value ?? '').trim(); }
@@ -91,7 +92,7 @@ export function buildStrictHeldReceipt(providerLog = {}, outboundPacket = null) 
     warnings: unique(payload.warnings || []),
     requestReceipt: {
       strictDirect: request.strictDirect === true,
-      strictNoFallback: request.strictNoFallback === true || true,
+      strictNoFallback: true,
       strictBudgetedUpstream: request.strictBudgetedUpstream === true || /strict_budgeted/.test(reason),
       strictBudgetHonored: request.strictBudgetHonored === true,
       strictFastUpstream: request.strictFastUpstream === true,
@@ -115,6 +116,10 @@ export function buildStrictHeldReceipt(providerLog = {}, outboundPacket = null) 
   };
 }
 
+function receiptSignature(receipt = {}) {
+  return [receipt.schema, receipt.reason, receipt.endpoint, receipt.httpStatus, receipt.contractSummary?.maskId, arr(receipt.attemptSummary).map((attempt) => `${attempt.model}:${attempt.status}:${attempt.usableCandidates}:${attempt.literalIntegrityRejected}:${attempt.catchphraseRejected}`).join('|')].map(text).join('::');
+}
+
 function safePopupReceipt(receipt = {}) {
   const safe = copy(receipt);
   safe.attemptSummary = arr(safe.attemptSummary).slice(0, 4);
@@ -131,11 +136,14 @@ function ensureCss() {
 
 export function renderStrictHeldPopup(receipt = {}) {
   ensureCss();
+  const signature = receiptSignature(receipt);
   const old = $('hushReceiptPopup');
+  if (old && old.dataset.strictHeldSignature === signature) return true;
   if (old) old.remove();
   const box = document.createElement('section');
   box.id = 'hushReceiptPopup';
   box.className = 'hush-receipt-pop';
+  box.dataset.strictHeldSignature = signature;
   box.innerHTML = '<div class="hush-receipt-pop-head"><div class="hush-receipt-pop-title">Strict held receipt</div><div class="hush-receipt-pop-actions"><button id="hushStrictHeldCopy" class="hush-receipt-pop-btn" type="button">Copy</button><button id="hushStrictHeldFull" class="hush-receipt-pop-btn" type="button">Full</button><button id="hushStrictHeldClose" class="hush-receipt-pop-btn" type="button">Close</button></div></div><div class="hush-receipt-pop-body"><pre></pre></div><div class="hush-receipt-pop-note">Failure mode: strict provider held. No local fallback released. Full debug stays in window.__TD613_HUSH_FULL_DEBUG_PACKET.</div>';
   box.querySelector('pre').textContent = JSON.stringify(safePopupReceipt(receipt), null, 2);
   document.body.appendChild(box);
@@ -146,6 +154,7 @@ export function renderStrictHeldPopup(receipt = {}) {
 }
 
 function publishReceipt(receipt, providerLog = null) {
+  const signature = receiptSignature(receipt);
   window.__TD613_HUSH_NO_FALLBACK_RECEIPT = receipt;
   window.__TD613_HUSH_FULL_DEBUG_PACKET = {
     schema: 'td613-hush-strict-held-full-debug/v1',
@@ -165,7 +174,10 @@ function publishReceipt(receipt, providerLog = null) {
     status.textContent = `${receipt.message} Receipt ready.`;
   }
   renderStrictHeldPopup(receipt);
-  try { window.dispatchEvent(new CustomEvent('td613:hush:strict-held-receipt', { detail: { receipt } })); } catch {}
+  if (lastRenderedSignature !== signature) {
+    lastRenderedSignature = signature;
+    try { window.dispatchEvent(new CustomEvent('td613:hush:strict-held-receipt', { detail: { receipt } })); } catch {}
+  }
 }
 
 export function inspectStrictHeld(providerLog = null) {
@@ -180,7 +192,7 @@ export function inspectStrictHeld(providerLog = null) {
 }
 
 function schedule() {
-  [0, 80, 220, 520, 1100, 2000].forEach((delay) => window.setTimeout(() => inspectStrictHeld(), delay));
+  [0, 80, 220, 520, 1100].forEach((delay) => window.setTimeout(() => inspectStrictHeld(), delay));
 }
 
 function boot() {
