@@ -25,8 +25,12 @@ assert.match(html, /ash-cinder/);
 assert.match(html, /ash-veil/);
 
 const cinderGuard = spawnSync('python3', ['-c', `
-from packages.dome_world_exact.ash_v06 import ash_cinder
-import hashlib, json
+import hashlib, importlib.util, json, pathlib
+path = pathlib.Path("packages/dome_world_exact/ash_v06.py")
+spec = importlib.util.spec_from_file_location("ash_v06_direct", path)
+mod = importlib.util.module_from_spec(spec)
+spec.loader.exec_module(mod)
+ash_cinder = mod.ash_cinder
 
 def sha256(value):
     data = json.dumps(value, sort_keys=True, separators=(",", ":")).encode("utf-8")
