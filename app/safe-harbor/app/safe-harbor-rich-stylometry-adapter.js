@@ -80,6 +80,19 @@ function topWeighted(profile = {}, max = 80) {
   );
 }
 
+export function summarizeSurfaceMarkers(profile = {}, maxDominant = 5) {
+  const entries = Object.entries(profile || {});
+  const nonzero = entries
+    .filter(([, value]) => Number(value || 0) > 0)
+    .sort((left, right) => Number(right[1] || 0) - Number(left[1] || 0) || String(left[0]).localeCompare(String(right[0])));
+  return Object.freeze({
+    nonzero_markers: nonzero.map(([key]) => key),
+    zero_marker_count: entries.length - nonzero.length,
+    dominant_surface_markers: Object.fromEntries(nonzero.slice(0, maxDominant).map(([key, value]) => [key, round(value, 5)])),
+    marker_density: entries.length ? round(nonzero.length / entries.length, 4) : 0
+  });
+}
+
 function laneFingerprintSource(profile = {}) {
   return {
     registerMode: profile.registerMode || 'plain',
@@ -176,6 +189,7 @@ function classifyTraceability(perLane = {}, divergence = {}) {
 export function buildSafeHarborLaneProfile(laneKey = '', text = '', options = {}) {
   const profile = extractCadenceProfile(String(text || ''));
   const deep = StylometricDeepMetrics.analyze(String(text || ''));
+  const surfaceMarkerProfile = cleanObject(profile.surfaceMarkerProfile);
   return Object.freeze({
     lane_key: laneKey,
     source_status: text ? 'text-observed' : 'empty',
@@ -209,7 +223,8 @@ export function buildSafeHarborLaneProfile(laneKey = '', text = '', options = {}
     transitionVariance: profile.transitionVariance,
     acousticWeight: profile.acousticWeight,
     deepMetrics: cleanObject(deep),
-    surfaceMarkerProfile: cleanObject(profile.surfaceMarkerProfile),
+    surfaceMarkerProfile,
+    surfaceMarkerSummary: summarizeSurfaceMarkers(surfaceMarkerProfile),
     functionWordProfile: cleanObject(profile.functionWordProfile),
     wordLengthProfile: cleanObject(profile.wordLengthProfile),
     charTrigramProfile: options.compactCharTrigrams === false ? cleanObject(profile.charTrigramProfile) : topWeighted(profile.charTrigramProfile, Number(options.maxCharTrigrams || 120))
@@ -271,7 +286,8 @@ if (typeof window !== 'undefined') {
     version: SCHEMA_VERSION,
     buildSafeHarborLaneProfile,
     buildSafeHarborRichDivergence,
-    buildSafeHarborRichStylometry
+    buildSafeHarborRichStylometry,
+    summarizeSurfaceMarkers
   });
   window.dispatchEvent(new CustomEvent('td613:safe-harbor:rich-stylometry-ready', {
     detail: { version: SCHEMA_VERSION }
