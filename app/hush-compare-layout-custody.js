@@ -1,3 +1,4 @@
+import './hush-layout-topology-guard.js?v=202607020735';
 import './hush-edit-corpus-carousel.js?v=202606141720';
 import './hush-input-control-rail.js?v=202606142010';
 import './hush-pr76-light-panels.js?v=202606162225';
@@ -6,7 +7,7 @@ import './hush-lab-provider-sync.js?v=202606170020';
 import './hush-output-active-mask-route.js?v=202606170220';
 import './hush-custody-export-wake.js?v=202606171635';
 
-const HUSH_COMPARE_LAYOUT_CUSTODY_VERSION = 'compare-layout-custody/v5-exact-custody-export-wake';
+const HUSH_COMPARE_LAYOUT_CUSTODY_VERSION = 'compare-layout-custody/v6-topology-guard';
 const $ = (id) => document.getElementById(id);
 
 function rawValue(id) {
