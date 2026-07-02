@@ -19,7 +19,8 @@ const manifest = {
   manifest_generated_at: new Date().toISOString(),
   total_batches: files.length,
   total_nodes: 0,
-  batches: []
+  batches: [],
+  corpus_registry: []
 };
 
 let allNodes = [];
@@ -36,6 +37,13 @@ for (const file of files) {
     delete batchMeta.nodes;
 
     manifest.batches.push(batchMeta);
+    manifest.corpus_registry.push({
+      batch_id: parsed.batch_id,
+      path: path.posix.join('tauric-diana-intake', file),
+      primary_persona: Array.isArray(parsed.safe_harbor && parsed.safe_harbor.personas)
+        ? parsed.safe_harbor.personas.map((persona) => persona && persona.name).filter(Boolean).join(', ')
+        : ''
+    });
 
     if (Array.isArray(parsed.nodes)) {
       allNodes = allNodes.concat(parsed.nodes);

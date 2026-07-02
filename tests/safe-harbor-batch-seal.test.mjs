@@ -22,6 +22,10 @@ const artifact = buildSealedBatchArtifact({
     packet_id: 'SH-TEST',
     created_at: '2026-04-21T11:59:00.000Z',
     packet_hash_sha256: 'sha256:test',
+    binding_provenance: {
+      schema_version: 'td613.safe-harbor.binding-provenance/v1',
+      canonical_declaration: { sha256: '9b07d8bc' }
+    },
     receipt: { receipt_id: 'SHR-TEST' },
     analysis: {
       route: {
@@ -49,6 +53,8 @@ assert.equal(artifact.route_status, 'provenance.seal', 'sealed batch is force-ro
 assert.equal(artifact.verification_status, 'Provenance Seal', 'sealed batch advertises the new verification state');
 assert.equal(artifact.safe_harbor.route.status, 'provenance.seal', 'safe harbor route block preserves provenance.seal');
 assert.equal(artifact.safe_harbor.signature.sig, '-----BEGIN PGP SIGNATURE-----', 'detached signature text is carried unchanged');
+assert.equal(artifact.safe_harbor.signature.armor_type, 'SIGNATURE', 'detached signature armor is classified without verification');
+assert.equal(artifact.safe_harbor.signature.verified, false, 'carried signature text is not advertised as verified');
 assert.deepStrictEqual(
   artifact.safe_harbor.personas.map((persona) => persona.name),
   ['The Archivist', 'The Matron'],
@@ -58,6 +64,11 @@ assert.equal(
   artifact.safe_harbor.issuance.badge_number,
   'TD613-SH-9B07D8B-ABCD1234',
   'sealed batch keeps the minted SHI number in the issuance wrapper'
+);
+assert.equal(
+  artifact.safe_harbor.binding_provenance.canonical_declaration.sha256,
+  '9b07d8bc',
+  'sealed batch carries the packet binding provenance into the custody wrapper'
 );
 
 console.log('safe-harbor-batch-seal.test.mjs passed');

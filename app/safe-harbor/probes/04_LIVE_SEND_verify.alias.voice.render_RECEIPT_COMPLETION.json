@@ -53,6 +53,7 @@
     "schema_family": "cpfg://v2",
     "semver": "2.1.0",
     "reference_files": [
+      "binding_provenance_manifest.json",
       "binding_event_envelope.json",
       "binding_event_full_hex.txt",
       "binding_event_receipt.json",
@@ -61,7 +62,10 @@
       "td_signed_payloads_bundle.json"
     ],
     "binding_text_sha256": "9b07d8bcc73096c8c616ca6039057a46bb42d361edb9c10551c88f3756a1cb04",
-    "binding_text_md5": "b6ca85d00f211127729bdb73a19c691a"
+    "binding_text_md5": "b6ca85d00f211127729bdb73a19c691a",
+    "binding_text_md5_legacy": "b6ca85d00f211127729bdb73a19c691a",
+    "digest_scope": "NFC UTF-8 with LF newlines and terminal LF",
+    "binding_event_signature_status": "unsigned"
   },
   "retrieval_controls": {
     "canonical_reference_mode": "canonical_first_then_runtime",

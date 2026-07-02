@@ -16,6 +16,15 @@
   "trust_profile_file": "td613_trust_profile.json",
   "binding_fragment": "9B07D8B",
   "sac": "X6ZNK5NO51",
+  "binding_provenance": {
+    "schema_version": "td613.safe-harbor.binding-provenance/v1",
+    "manifest": "binding_provenance_manifest.json",
+    "binding_text_sha256": "9b07d8bcc73096c8c616ca6039057a46bb42d361edb9c10551c88f3756a1cb04",
+    "binding_text_md5_legacy": "b6ca85d00f211127729bdb73a19c691a",
+    "digest_scope": "NFC UTF-8 with LF newlines and terminal LF",
+    "binding_event_signature_status": "unsigned",
+    "claim_ceiling": "content-integrity and custody anchor; not independent identity, authorship, ownership, trusted-time, or signer-authentication proof"
+  },
   "current_public_mode": "legacy-compat",
   "internal_validation_accepts": [
     "legacy",

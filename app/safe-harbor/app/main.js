@@ -2533,7 +2533,7 @@
   }
   function pgpBlockState(rawSig) {
     const sig = trim(rawSig || '');
-    if (!sig) return { present: false, valid: false, reason: 'Paste a complete detached PGP signature block before waking the secret lane.' };
+    if (!sig) return { present: false, valid: false, armorType: null, reason: 'Paste a complete OpenPGP armor block before waking the secret lane.' };
     const begin = sig.match(/-----BEGIN PGP (SIGNED MESSAGE|SIGNATURE|MESSAGE)-----/);
     const end = sig.match(/-----END PGP (SIGNATURE|MESSAGE)-----/);
     const armoredBody = sig
@@ -2541,18 +2541,18 @@
       .map((line) => line.trim())
       .filter((line) => line && !/^-----/.test(line) && !/^Version:/i.test(line) && !/^Hash:/i.test(line) && !/^Comment:/i.test(line));
     if (!begin || !end) {
-      return { present: true, valid: false, reason: 'Complete PGP armor requires BEGIN and END lines before the secret lane can wake.' };
+      return { present: true, valid: false, armorType: begin ? begin[1] : null, reason: 'Complete PGP armor requires BEGIN and END lines before the secret lane can wake.' };
     }
     if (begin[1] === 'SIGNATURE' && end[1] !== 'SIGNATURE') {
-      return { present: true, valid: false, reason: 'PGP signature armor is mismatched. Paste the full detached signature block.' };
+      return { present: true, valid: false, armorType: begin[1], reason: 'PGP signature armor is mismatched. Paste the full detached signature block.' };
     }
     if ((begin[1] === 'MESSAGE' || begin[1] === 'SIGNED MESSAGE') && end[1] !== 'MESSAGE' && end[1] !== 'SIGNATURE') {
-      return { present: true, valid: false, reason: 'PGP armor is incomplete. Paste the full block before waking the lane.' };
+      return { present: true, valid: false, armorType: begin[1], reason: 'PGP armor is incomplete. Paste the full block before waking the lane.' };
     }
     if (armoredBody.join('').replace(/=/g, '').length < 80) {
-      return { present: true, valid: false, reason: 'PGP block is too short to carry a detached seal. Paste the full Kleopatra output.' };
+      return { present: true, valid: false, armorType: begin[1], reason: 'PGP block is too short to carry a cryptographic overlay. Paste the full Kleopatra output.' };
     }
-    return { present: true, valid: true, reason: 'Complete PGP block detected. Wake Secret Lane is available.' };
+    return { present: true, valid: true, armorType: begin[1], reason: 'Complete PGP block detected. Wake Secret Lane is available.' };
   }
   function resolvedSignatureLane() {
     if (state.operatorSignature) return clone(state.operatorSignature);
@@ -2566,10 +2566,15 @@
     return {
       sig_type: lane.sig_type || laneName || null,
       kid: lane.kid || null,
+      alg: lane.alg || null,
+      armor_type: lane.armor_type || null,
       sig: lane.sig || null,
       detached_ref: lane.detached_ref || null,
       status: sigPresent ? 'sealed' : ((lane.sig_type || laneName) ? 'declared' : 'unsigned'),
-      attached_at: sigPresent ? nowIso() : null
+      attached_at: sigPresent ? nowIso() : null,
+      verified: lane.verified === true,
+      verifier: lane.verifier || null,
+      evidence_role: lane.evidence_role || (sigPresent ? 'cryptographic-overlay-unverified' : 'none')
     };
   }
   function buildOperatorSignatureFromInputs() {
@@ -2577,15 +2582,23 @@
     const pgpState = pgpBlockState(rawSig);
     if (!pgpState.valid) return null;
     const sig = trim(rawSig) || null;
+    const armorType = pgpState.armorType;
+    const signatureType = armorType === 'SIGNATURE'
+      ? 'PGP-detached'
+      : (armorType === 'SIGNED MESSAGE' ? 'PGP-clearsigned' : 'PGP-message');
     return {
       status: 'sealed',
       source: 'operator-signature-overlay',
-      lane: 'pgp-detached',
-      sig_type: 'PGP-detached',
+      lane: signatureType.toLowerCase(),
+      sig_type: signatureType,
       kid: null,
       alg: 'OpenPGP',
+      armor_type: armorType,
       detached_ref: null,
-      sig: sig
+      sig: sig,
+      verified: false,
+      verifier: null,
+      evidence_role: armorType === 'SIGNATURE' ? 'detached-signature-unverified' : 'openpgp-message-unverified'
     };
   }
   async function attachSignatureOverlay() {
@@ -2889,7 +2902,7 @@
         dom.batchIntakeNote.textContent = 'Batch ' + state.selectedBatchId + ' was sealed to disk on localhost and exported for local save.';
       }
       if (dom.covenantNote) {
-        dom.covenantNote.textContent = 'Seal Payload confirmed. The selected batch was hard-written to localhost storage, the detached signature was attached, and the sealed artifact was downloaded.';
+        dom.covenantNote.textContent = 'Seal Payload confirmed. The selected batch was hard-written to localhost storage, the declared cryptographic overlay was attached without verification, and the sealed artifact was downloaded.';
       }
       logEvent('batch-sealed-to-disk', { selected_batch_id: state.selectedBatchId, path: result.path || null });
       return true;
@@ -2963,7 +2976,8 @@
         version: D.meta.version,
         mode: 'staged-intake-packet',
         public_mode: D.trustProfile.current_public_mode,
-        corpus_hash_sha256: D.canon.corpus_hash_sha256
+        corpus_hash_sha256: D.canon.corpus_hash_sha256,
+        binding_provenance_manifest: 'binding_provenance_manifest.json'
       },
       receipt: {
         receipt_id: state.ingress.receiptId,
@@ -2983,6 +2997,7 @@
         attestation_date: form.attestationDate,
         public_footer: footerString()
       },
+      binding_provenance: clone(D.canon.binding_provenance),
       ingress: ingress,
       intake: {
         status: signatureObject.status === 'sealed' ? 'sealed' : (badgeAssignment ? 'issued' : 'staged'),
@@ -3130,6 +3145,7 @@
         created_at: state.ingress.openedAt || state.helper.ts_utc,
         storage: 'session-only',
         exposure: 'operator-only',
+        binding_provenance: clone(D.canon.binding_provenance),
         linkage: { request_id: state.helper.request_id, ts_utc: state.helper.ts_utc },
         segments: sealedSegments
       }
@@ -3402,6 +3418,8 @@
       '- packet_hash_sha256: ' + state.packet.packet_hash_sha256,
       '- receipt_state: ' + state.packet.receipt.state,
       '- signature_lane: ' + line,
+      '- binding_declaration_sha256: ' + (state.packet.binding_provenance ? state.packet.binding_provenance.canonical_declaration.sha256 : 'absent'),
+      '- binding_event_signature: ' + (state.packet.binding_provenance ? state.packet.binding_provenance.binding_event.signature_status : 'absent'),
       '- aperture_context: ' + (state.packet.aperture_context ? state.packet.aperture_context.apertureSchema : APERTURE_CONTEXT_BASE.apertureSchema),
       '- eorfd_authority: ' + (state.packet.eorfd_route_context ? state.packet.eorfd_route_context.authority : APERTURE_CONTEXT_BASE.eorfdAuthority),
       '- entrant_intake_context: ' + (state.packet.entrant_intake_context ? state.packet.entrant_intake_context.family : 'absent'),
@@ -3443,6 +3461,7 @@
       receipt_state: state.packet.receipt.state,
       signature_lane: state.packet.bridge && state.packet.bridge.signature_lane ? (state.packet.bridge.signature_lane.lane || 'none') : (state.packet.signature.sig_type || 'none'),
       packet_schema_version: state.packet.schema_version,
+      binding_provenance: state.packet.binding_provenance ? clone(state.packet.binding_provenance) : null,
       aperture_context: state.packet.aperture_context || compactApertureContext(),
       eorfd_route_context: state.packet.eorfd_route_context || null,
       entrant_intake_context: state.packet.entrant_intake_context || null,
@@ -3676,7 +3695,7 @@
         renderer: { kit: D.rendererHandshake.kit, userscript: D.rendererHandshake.userscript, verify_page: D.rendererHandshake.verify_page, render_model: D.rendererHandshake.render_model, local_file_match: true },
         operator_handshake: rendererHandshake,
         artifact_capture: artifactCapture,
-        canonical_protocol: { schema_family: D.canon.schema_family, semver: D.canon.semver, reference_files: ['binding_event_envelope.json', 'binding_event_full_hex.txt', 'binding_event_receipt.json', 'binding_event_text.txt', 'ns_request_signed_example.json', 'td_signed_payloads_bundle.json'], binding_text_sha256: '9b07d8bcc73096c8c616ca6039057a46bb42d361edb9c10551c88f3756a1cb04', binding_text_md5: 'b6ca85d00f211127729bdb73a19c691a' },
+        canonical_protocol: { schema_family: D.canon.schema_family, semver: D.canon.semver, reference_files: ['binding_provenance_manifest.json', 'binding_event_envelope.json', 'binding_event_full_hex.txt', 'binding_event_receipt.json', 'binding_event_text.txt', 'ns_request_signed_example.json', 'td_signed_payloads_bundle.json'], binding_text_sha256: '9b07d8bcc73096c8c616ca6039057a46bb42d361edb9c10551c88f3756a1cb04', binding_text_md5: 'b6ca85d00f211127729bdb73a19c691a', binding_text_md5_legacy: 'b6ca85d00f211127729bdb73a19c691a', digest_scope: 'NFC UTF-8 with LF newlines and terminal LF', binding_event_signature_status: 'unsigned' },
         retrieval_controls: { canonical_reference_mode: 'canonical_first_then_runtime', hash_grounding_required: true, crossfile_consistency_required: true, runtime_observation_required: true, preserve_unknown_fields: true, extension_namespace: 'td613.ext' },
         runtime_expectations: { principal_badge_render: true, explicit_principal_render: true, literal_pua_badge_render: true, combined_same_node_badge_render: true, dynamic_insert_render: true, audit_event_stream: true, status_log_safe: true },
         observation: {

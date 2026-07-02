@@ -4,6 +4,7 @@ import { readFileSync } from 'node:fs';
 const read = (path) => readFileSync(path, 'utf8');
 const scripts = [
   'app/operator-receipt.js',
+  'app/safe-harbor/app/binding-provenance.js',
   'app/safe-harbor/app/data.js',
   'app/safe-harbor/app/forensic-authorship-packet.js',
   'app/safe-harbor/app/footer-history-packet.js',
@@ -84,6 +85,10 @@ assert.match(
   index,
   /safe-harbor-housekeeping\.js\?v=/,
   'Safe Harbor must own its housekeeping runtime explicitly'
+);
+assert.ok(
+  index.indexOf('app/binding-provenance.js?v=') < index.indexOf('app/data.js?v='),
+  'binding provenance must load before packet data and composition'
 );
 assert.doesNotMatch(
   index,

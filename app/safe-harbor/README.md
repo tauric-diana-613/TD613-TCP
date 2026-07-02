@@ -1,5 +1,33 @@
 # TD613 Safe Harbor
 
+## Binding provenance
+
+Every newly composed Safe Harbor packet carries `binding_provenance`, which
+anchors the packet to the canonical Tauric Diana declaration without copying
+the declaration text into routine exports. The authoritative descriptor is
+`corpus/binding_provenance_manifest.json`.
+
+- SHA-256 is the normative declaration-integrity digest.
+- MD5 is retained only as a legacy correlation fingerprint.
+- The digest scope is NFC-normalized UTF-8 with LF newlines and the terminal
+  LF included.
+- `𝌋` (U+1D30B) is the ingress sigil, `⟐` (U+27D0) is the seal, and U+10D613
+  is the claimed PUA scalar (`\uDBF5\uDE13` in UTF-16).
+- The historical binding event is unsigned. Its hashes establish byte
+  identity, not signer authentication, civil identity, authorship, exclusive
+  ownership, or a trusted timestamp.
+- The published HS256 request examples are test vectors because their
+  symmetric key is included with the example.
+- Historical intake batches preserve their original OpenPGP overlays, but
+  some `BEGIN PGP MESSAGE` blocks were labeled `PGP-detached` and several
+  archived packets omit the replayable staged snapshot. Treat those records
+  as unverified historical custody overlays, not verified signatures.
+
+The legacy corpus root remains
+`BFB2D575AE6605BF7DB3EECF8CF333E4EF78B2C673DC7647600A9D9CB20CCE88`.
+Its exact ordered-leaf serialization is recorded in the binding provenance
+manifest so an auditor can replay it.
+
 ## What this is
 
 If your writing has been picked up by AI training data — or might be —

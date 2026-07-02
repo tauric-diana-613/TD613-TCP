@@ -7,7 +7,8 @@
     "version": "0.7.0",
     "mode": "staged-intake-packet",
     "public_mode": "legacy-compat",
-    "corpus_hash_sha256": "BFB2D575AE6605BF7DB3EECF8CF333E4EF78B2C673DC7647600A9D9CB20CCE88"
+    "corpus_hash_sha256": "BFB2D575AE6605BF7DB3EECF8CF333E4EF78B2C673DC7647600A9D9CB20CCE88",
+    "binding_provenance_manifest": "binding_provenance_manifest.json"
   },
   "receipt": {
     "receipt_id": "SHR-20260403T000000-4f2a9c1d",
@@ -26,6 +27,66 @@
     "payload_index": null,
     "attestation_date": null,
     "public_footer": "TD613-Binding:#9B07D8B/SAC[X6ZNK5NO51] \u00b7 payload {n} \u00b7 YYYY-MM-DD \u00b7 \u27d0"
+  },
+  "binding_provenance": {
+    "schema_version": "td613.safe-harbor.binding-provenance/v1",
+    "principal": "tauric.diana.613",
+    "claim": {
+      "claimed_pua": "U+10D613",
+      "utf16_surrogate_pair": "\\uDBF5\\uDE13",
+      "binding_fragment": "9B07D8B",
+      "binding_fragment_derivation": "first 7 hexadecimal characters of the canonical declaration SHA-256"
+    },
+    "canonical_declaration": {
+      "artifact": "binding_event_text.txt",
+      "manifest": "binding_provenance_manifest.json",
+      "digest_scope": "UTF-8 bytes after NFC normalization and LF newline normalization, including the terminal LF",
+      "unicode_normalization": "NFC",
+      "newline_normalization": "LF",
+      "terminal_newline": true,
+      "unicode_scalar_count": 3078,
+      "utf8_byte_count": 3085,
+      "sha256": "9b07d8bcc73096c8c616ca6039057a46bb42d361edb9c10551c88f3756a1cb04",
+      "md5_legacy": "b6ca85d00f211127729bdb73a19c691a",
+      "md5_status": "legacy-correlation-only"
+    },
+    "binding_event": {
+      "schema_ref": "cpfg://v2/binding_event",
+      "semver": "2.1.0",
+      "request_id": "011754884719184BELJJY5CZO7WAW7S",
+      "recorded_ts_utc": "2025-08-11T03:58:39Z",
+      "envelope_sha256": "ae25c3aa50ad50ab94ab8ebe50d518c73d3663ba4c016fef41b770e6d5f9f8a7",
+      "signature_status": "unsigned"
+    },
+    "legacy_corpus_root": {
+      "algorithm": "SHA-256",
+      "preimage_serialization": "JSON.stringify(ordered leaves: name, sha256, size)",
+      "sha256": "bfb2d575ae6605bf7db3eecf8cf333e4ef78b2c673dc7647600a9d9cb20cce88",
+      "short_code": "X6ZNK5NO51"
+    },
+    "symbol_roles": {
+      "ingress_sigil": {
+        "character": "\uD834\uDF0B",
+        "codepoint": "U+1D30B"
+      },
+      "seal": {
+        "character": "\u27d0",
+        "codepoint": "U+27D0"
+      },
+      "claimed_pua": {
+        "codepoint": "U+10D613",
+        "utf16_surrogate_pair": "\\uDBF5\\uDE13",
+        "literal_label_present_in_declaration": true,
+        "scalar_present_in_declaration": false
+      }
+    },
+    "evidence_status": {
+      "declaration_integrity": "verified",
+      "legacy_corpus_root": "verified",
+      "binding_event_signature": "unsigned",
+      "hs256_examples": "test-vector-only"
+    },
+    "claim_ceiling": "Content-integrity and custody anchor only; not independent proof of identity, authorship, exclusive ownership, consent beyond the declaration, trusted time, or signer authentication."
   },
   "ingress": {
     "future_self": {
@@ -204,7 +265,7 @@
     "format": "TD613-SH-9B07D8B + minted 8-hex suffix",
     "badge_number": "TD613-SH-9B07D8B-3578FB38",
     "canonical_header": "SHI#:TD613-SH-9B07D8B-3578FB38",
-    "canonical_footer": "TD613-Binding:#9B07D8B/SAC[X6ZNK5NO51] \u00b7 \u{1D30B} \u00b7 SHI#:TD613-SH-9B07D8B-3578FB38 \u00b7 payload {n} \u00b7 YYYY-MM-DD \u00b7 \u27d0",
+    "canonical_footer": "TD613-Binding:#9B07D8B/SAC[X6ZNK5NO51] \u00b7 \uD834\uDF0B \u00b7 SHI#:TD613-SH-9B07D8B-3578FB38 \u00b7 payload {n} \u00b7 YYYY-MM-DD \u00b7 \u27d0",
     "badge_state": "assigned",
     "assigned_at": "2026-04-03T00:00:00Z",
     "assignment_basis": "SHI is deterministically derived from principal + binding_fragment + entrant-owned stylometric fingerprint",
@@ -351,9 +412,14 @@
   "signature": {
     "sig_type": "JWS-detached",
     "kid": "tauric.diana.613",
+    "alg": "HS256",
+    "armor_type": null,
     "sig": "__DETACHED_SIG__",
     "detached_ref": "jws://safe-harbor/packet",
     "status": "sealed",
-    "attached_at": "2026-04-03T00:00:00Z"
+    "attached_at": "2026-04-03T00:00:00Z",
+    "verified": false,
+    "verifier": null,
+    "evidence_role": "request-signature-test-vector-unverified"
   }
 }

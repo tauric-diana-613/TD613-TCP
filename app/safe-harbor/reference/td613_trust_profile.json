@@ -6,6 +6,13 @@
   "future_public_mode": "sac-only",
   "binding_fragment": "9B07D8B",
   "sac": "X6ZNK5NO51",
+  "binding_provenance": {
+    "schema_version": "td613.safe-harbor.binding-provenance/v1",
+    "manifest": "binding_provenance_manifest.json",
+    "binding_text_sha256": "9b07d8bcc73096c8c616ca6039057a46bb42d361edb9c10551c88f3756a1cb04",
+    "binding_text_md5_legacy": "b6ca85d00f211127729bdb73a19c691a",
+    "binding_event_signature_status": "unsigned"
+  },
   "payload_latest": 5,
   "canonical_public_footer": "TD613-Binding:#9B07D8B/SAC[X6ZNK5NO51] · payload {n} · YYYY-MM-DD · ⟐",
   "accepted_footer_examples": {

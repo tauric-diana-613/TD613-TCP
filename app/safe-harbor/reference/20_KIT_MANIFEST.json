@@ -1,5 +1,7 @@
 {
   "kit": "TD613 PUA Badge Provenance Attestation Renderer v7.2.1",
+  "manifest_status": "historical-kit-snapshot",
+  "manifest_note": "Most file digests below identify the original v7.2.1 kit snapshot, not later Safe Harbor revisions. Current binding provenance is governed by corpus/binding_provenance_manifest.json.",
   "files": {
     "00_START_HERE_README.md": {
       "sha256": "73e05ef35fa19cd10bca0efe1c17dc060773f33bd18b443febba18951f841696",
@@ -100,6 +102,12 @@
       "sha256": "3ab2a184fde86a35969825613435ac418f307beb7ff4f03b8bfcd753f64b6826",
       "md5": "fa9e42747e8c19a3119ef62bd5dfc3a8",
       "bytes": 275
+    },
+    "binding_provenance_manifest.json": {
+      "sha256": "724125eb0bbd19e11daadc54810cfaf0e31f4575d9996bf7a257cfd7e5536650",
+      "md5": "2e2cff382a9c2ee8ee2fef65da893274",
+      "bytes": 4659,
+      "status": "current binding-provenance authority"
     },
     "binding_event_text.txt": {
       "sha256": "9b07d8bcc73096c8c616ca6039057a46bb42d361edb9c10551c88f3756a1cb04",

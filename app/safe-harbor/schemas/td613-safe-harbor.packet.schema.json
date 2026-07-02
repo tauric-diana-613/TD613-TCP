@@ -9,6 +9,7 @@
     "canonicalization",
     "receipt",
     "canon",
+    "binding_provenance",
     "ingress",
     "intake",
     "analysis",
@@ -36,7 +37,8 @@
         "version",
         "mode",
         "public_mode",
-        "corpus_hash_sha256"
+        "corpus_hash_sha256",
+        "binding_provenance_manifest"
       ],
       "properties": {
         "engine": {
@@ -53,6 +55,9 @@
         },
         "corpus_hash_sha256": {
           "type": "string"
+        },
+        "binding_provenance_manifest": {
+          "const": "binding_provenance_manifest.json"
         }
       }
     },
@@ -137,6 +142,9 @@
           "type": "string"
         }
       }
+    },
+    "binding_provenance": {
+      "$ref": "#/$defs/bindingProvenance"
     },
     "ingress": {
       "type": "object",
@@ -543,10 +551,15 @@
       "required": [
         "sig_type",
         "kid",
+        "alg",
+        "armor_type",
         "sig",
         "detached_ref",
         "status",
-        "attached_at"
+        "attached_at",
+        "verified",
+        "verifier",
+        "evidence_role"
       ],
       "properties": {
         "sig_type": {
@@ -559,6 +572,24 @@
           "type": [
             "string",
             "null"
+          ]
+        },
+        "alg": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "armor_type": {
+          "type": [
+            "string",
+            "null"
+          ],
+          "enum": [
+            "SIGNATURE",
+            "SIGNED MESSAGE",
+            "MESSAGE",
+            null
           ]
         },
         "sig": {
@@ -587,6 +618,18 @@
             "string",
             "null"
           ]
+        },
+        "verified": {
+          "type": "boolean"
+        },
+        "verifier": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "evidence_role": {
+          "type": "string"
         }
       }
     },
@@ -598,6 +641,98 @@
     }
   },
   "$defs": {
+    "bindingProvenance": {
+      "type": "object",
+      "required": [
+        "schema_version",
+        "principal",
+        "claim",
+        "canonical_declaration",
+        "binding_event",
+        "legacy_corpus_root",
+        "symbol_roles",
+        "evidence_status",
+        "claim_ceiling"
+      ],
+      "properties": {
+        "schema_version": {
+          "const": "td613.safe-harbor.binding-provenance/v1"
+        },
+        "principal": {
+          "const": "tauric.diana.613"
+        },
+        "claim": {
+          "type": "object",
+          "required": [
+            "claimed_pua",
+            "utf16_surrogate_pair",
+            "binding_fragment",
+            "binding_fragment_derivation"
+          ]
+        },
+        "canonical_declaration": {
+          "type": "object",
+          "required": [
+            "artifact",
+            "manifest",
+            "digest_scope",
+            "unicode_normalization",
+            "newline_normalization",
+            "terminal_newline",
+            "unicode_scalar_count",
+            "utf8_byte_count",
+            "sha256",
+            "md5_legacy",
+            "md5_status"
+          ],
+          "properties": {
+            "sha256": {
+              "pattern": "^[a-f0-9]{64}$"
+            },
+            "md5_legacy": {
+              "pattern": "^[a-f0-9]{32}$"
+            },
+            "md5_status": {
+              "const": "legacy-correlation-only"
+            }
+          }
+        },
+        "binding_event": {
+          "type": "object",
+          "required": [
+            "schema_ref",
+            "semver",
+            "request_id",
+            "recorded_ts_utc",
+            "envelope_sha256",
+            "signature_status"
+          ],
+          "properties": {
+            "signature_status": {
+              "const": "unsigned"
+            }
+          }
+        },
+        "legacy_corpus_root": {
+          "type": "object",
+          "required": [
+            "algorithm",
+            "preimage_serialization",
+            "sha256",
+            "short_code"
+          ]
+        },
+        "symbol_roles": {
+          "type": "object"
+        },
+        "evidence_status": {
+          "type": "object"
+        },
+        "claim_ceiling": {
+          "type": "string"
+        }
+      }
+    },
     "apertureAudit": {
       "type": "object",
       "required": [

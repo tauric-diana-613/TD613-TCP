@@ -1,5 +1,5 @@
 {
-  "manifest_generated_at": "2026-05-14T22:59:41.798Z",
+  "manifest_generated_at": "2026-07-02T20:32:35.177Z",
   "total_batches": 15,
   "total_nodes": 62,
   "batches": [
@@ -1351,6 +1351,83 @@
           "created_at": "2026-04-25T01:17:13Z"
         }
       }
+    }
+  ],
+  "corpus_registry": [
+    {
+      "batch_id": "batch-001a",
+      "path": "tauric-diana-intake/batch-001a_migration_console.json",
+      "primary_persona": "The Operator"
+    },
+    {
+      "batch_id": "batch-001b",
+      "path": "tauric-diana-intake/batch-001b_historical_console_lineage.json",
+      "primary_persona": "The Operator"
+    },
+    {
+      "batch_id": "batch-001c",
+      "path": "tauric-diana-intake/batch-001c_constitutional_spine.json",
+      "primary_persona": "The Operator"
+    },
+    {
+      "batch_id": "batch-001d",
+      "path": "tauric-diana-intake/batch-001d_protected_core_set_a.json",
+      "primary_persona": "The Operator"
+    },
+    {
+      "batch_id": "batch-002a",
+      "path": "tauric-diana-intake/batch-002a_thinkers_spine.json",
+      "primary_persona": "The Archivist"
+    },
+    {
+      "batch_id": "batch-002b",
+      "path": "tauric-diana-intake/batch-002b_continuity_citation.json",
+      "primary_persona": "The Archivist"
+    },
+    {
+      "batch_id": "batch-002c",
+      "path": "tauric-diana-intake/batch-002c_policy_provenance.json",
+      "primary_persona": "The Archivist"
+    },
+    {
+      "batch_id": "batch-002d",
+      "path": "tauric-diana-intake/batch-002d_route_support.json",
+      "primary_persona": "The Archivist"
+    },
+    {
+      "batch_id": "batch-003a",
+      "path": "tauric-diana-intake/batch-003a_svenbots_core.json",
+      "primary_persona": "The Matron, The Undertow, The Spark"
+    },
+    {
+      "batch_id": "batch-003b",
+      "path": "tauric-diana-intake/batch-003b_implementation_layer.json",
+      "primary_persona": "The Matron, The Undertow, The Spark"
+    },
+    {
+      "batch_id": "batch-003c",
+      "path": "tauric-diana-intake/batch-003c_schema_source_bridge.json",
+      "primary_persona": "The Matron, The Undertow, The Spark"
+    },
+    {
+      "batch_id": "batch-003d",
+      "path": "tauric-diana-intake/batch-003d_risk_recovery_ops.json",
+      "primary_persona": "The Matron, The Undertow, The Spark"
+    },
+    {
+      "batch_id": "batch-004a",
+      "path": "tauric-diana-intake/batch-004a_bulk_raw_intake.json",
+      "primary_persona": "The Cross-Examiner, The Methods Editor"
+    },
+    {
+      "batch_id": "batch-004b",
+      "path": "tauric-diana-intake/batch-004b_high_value_archives.json",
+      "primary_persona": "The Cross-Examiner, The Methods Editor"
+    },
+    {
+      "batch_id": "batch-004c",
+      "path": "tauric-diana-intake/batch-004c_coined_frameworks.json",
+      "primary_persona": "The Cross-Examiner, The Methods Editor"
     }
   ],
   "nodes": [

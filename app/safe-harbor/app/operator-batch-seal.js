@@ -61,6 +61,11 @@ export function buildSealedBatchArtifact({
   const personas = splitPrimaryPersonas(registryEntry && registryEntry.primary_persona);
   const signatureValue = signature && typeof signature === 'object' ? signature : {};
   const detachedSignature = signatureValue.sig == null ? null : String(signatureValue.sig);
+  const armorMatch = detachedSignature && detachedSignature.match(/-----BEGIN PGP (SIGNED MESSAGE|SIGNATURE|MESSAGE)-----/);
+  const armorType = signatureValue.armor_type || (armorMatch ? armorMatch[1] : null);
+  const inferredType = armorType === 'SIGNATURE'
+    ? 'PGP-detached'
+    : (armorType === 'SIGNED MESSAGE' ? 'PGP-clearsigned' : (armorType === 'MESSAGE' ? 'PGP-message' : null));
   const witness = serverWitness && typeof serverWitness === 'object' ? serverWitness : {};
 
   return {
@@ -73,6 +78,7 @@ export function buildSealedBatchArtifact({
       selected_batch_id: batchId || null,
       sealed_at: sealedAt || null,
       staged_snapshot: packetValue,
+      binding_provenance: packetValue.binding_provenance || null,
       route: {
         status: 'provenance.seal',
         state: route.state || 'harbor-eligible',
@@ -101,14 +107,16 @@ export function buildSealedBatchArtifact({
           : buildStylometricProvenance(issuance)
       },
       signature: {
-        sig_type: signatureValue.sig_type || 'PGP-detached',
+        sig_type: signatureValue.sig_type || inferredType,
         alg: signatureValue.alg || 'OpenPGP',
+        armor_type: armorType,
         sig: detachedSignature,
         // Truth-in-advertising: this toolchain preserves the detached signature
         // text byte-for-byte but does not verify it. Downstream readers that
         // need cryptographic verification must run it themselves.
         verified: false,
-        verifier: null
+        verifier: null,
+        evidence_role: signatureValue.evidence_role || (armorType === 'SIGNATURE' ? 'detached-signature-unverified' : (detachedSignature ? 'openpgp-message-unverified' : 'none'))
       },
       packet: {
         packet_id: packetValue.packet_id || null,

@@ -126,9 +126,10 @@
       sac: 'X6ZNK5NO51',
       schema_family: 'cpfg://v2',
       semver: '2.1.0',
-    preview_svg_sha256: '2c20bb26f3dcc3fe41e8e3d71705942d220aed7e56391c274f8f5e5d01e4d1aa',
-    preview_svg_md5: 'd4522965d0660d1150a828e00e5dd6f9',
-      corpus_hash_sha256: 'BFB2D575AE6605BF7DB3EECF8CF333E4EF78B2C673DC7647600A9D9CB20CCE88'
+      preview_svg_sha256: '2c20bb26f3dcc3fe41e8e3d71705942d220aed7e56391c274f8f5e5d01e4d1aa',
+      preview_svg_md5: 'd4522965d0660d1150a828e00e5dd6f9',
+      corpus_hash_sha256: 'BFB2D575AE6605BF7DB3EECF8CF333E4EF78B2C673DC7647600A9D9CB20CCE88',
+      binding_provenance: window.TD613_SAFE_HARBOR_BINDING_PROVENANCE || null
     },
 
     operatorBypass: {
@@ -164,6 +165,7 @@
       'Operator bypass remains packetless and never impersonates a staged packet.',
       'Public relay building derives packet context from the staged packet whenever one exists.',
       'Cadence signatures are stylometric credentials; cryptographic signatures are separate seals attached after packetization.',
+      'Binding provenance names its digest scope and unsigned event status; content integrity must not impersonate signer authentication.',
       'Forensic authorship is a first-class packet object: Notices must profile packet-derived stylometric authorship custody without identity adjudication.',
       'Render probes should carry a saved SVG artifact and timestamped observation once the renderer handshake is active.'
     ],
