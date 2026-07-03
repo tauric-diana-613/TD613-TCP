@@ -114,12 +114,94 @@ h1{font-family:var(--serif);font-weight:400;font-size:clamp(2.4rem,8vw,6.4rem);l
 @media(max-width:980px){.view-intro{grid-template-columns:1fr}.view-telemetry{justify-self:start}}
 @media(max-width:760px){.primary-view{padding:22px 14px}.view-intro{margin-bottom:18px}.view-telemetry{grid-template-columns:repeat(3,minmax(0,1fr));width:100%}.view-telemetry span{min-width:0;padding:8px 5px}}
 @media(prefers-reduced-motion:reduce){*{scroll-behavior:auto!important;animation:none!important;transition:none!important}}
+
+/* Preservation-only handrail: no Weather, Lab, tab, runtime, or Ash restyling. */
+input,
+select,
+textarea {
+  font-size: 16px;
+}
+.dome-internal-stepper {
+  position: fixed;
+  z-index: 36;
+  top: 50%;
+  right: 10px;
+  display: grid;
+  gap: 6px;
+  transform: translateY(-50%);
+  pointer-events: none;
+}
+.dome-step {
+  width: 28px;
+  height: 38px;
+  margin: 0;
+  padding: 0;
+  border: 1px solid rgba(118,234,212,.22);
+  border-radius: 0;
+  background: rgba(3,16,13,.42);
+  color: rgba(255,248,218,.74);
+  font: 500 1.25rem/1 var(--serif);
+  -webkit-backdrop-filter: blur(8px);
+  backdrop-filter: blur(8px);
+  clip-path: polygon(6px 0,100% 0,100% calc(100% - 6px),calc(100% - 6px) 100%,0 100%,0 6px);
+  box-shadow: none;
+  opacity: .58;
+  cursor: pointer;
+  pointer-events: auto;
+  touch-action: manipulation;
+  transition: opacity .16s ease,color .16s ease,border-color .16s ease,background .16s ease;
+}
+.dome-step:hover,
+.dome-step:focus-visible {
+  opacity: 1;
+  color: var(--bright);
+  border-color: rgba(228,198,108,.55);
+  background: rgba(3,16,13,.72);
+  outline: 1px solid rgba(118,234,212,.38);
+  outline-offset: 2px;
+}
+@media(max-width:760px) {
+  .wrap {
+    padding-bottom: calc(112px + env(safe-area-inset-bottom));
+  }
+  .primary-view .view-intro h2 {
+    font-size: clamp(1.65rem,8vw,2.7rem);
+  }
+  .primary-view .view-intro p,
+  .primary-view .sub,
+  .primary-view .status-line {
+    font-size: .82rem;
+  }
+  .primary-view .panel h2 {
+    font-size: clamp(1.35rem,7vw,2.1rem);
+  }
+  .primary-view .panel h3 {
+    font-size: clamp(1.1rem,5.5vw,1.45rem);
+  }
+  .dome-internal-stepper {
+    top: auto;
+    right: 4px;
+    bottom: calc(104px + env(safe-area-inset-bottom));
+    grid-template-columns: 1fr 1fr;
+    transform: none;
+  }
+  .dome-step {
+    width: 30px;
+    height: 34px;
+    background: rgba(3,16,13,.36);
+    font-size: 1.1rem;
+  }
+}
 </style>
 </head>
 <body>
 <main class="wrap">
 <header><div><div class="eyebrow">𝌋‌ TD613-routed · Dome-World / Flow-Core v0.4.3 · Aperture v2.9.4 bridge</div><h1>Dome-World <em>// Flow-Core</em></h1><p class="lede">An ambiance-mediated cognitive weather runtime. Local sections, exact residuals, and gluing obstructions remain distinct: modeled weather routes attention; exact gates preserve observation; neither impersonates authority.</p></div><div class="seal">𝌋‌ U+10D613 · ⟐<br><span class="sub">PRCS-A · Stewardship · Exact custody</span></div><div class="flow-glyph-field" aria-hidden="true"><span>米</span><span>上</span><span>下</span><span>hõt</span><span>cōl</span><span>à</span><span>出</span><span>≈</span><span>𝄐</span><span>☆</span><span>⟐</span><span>𝌋‌</span></div></header>
 <div class="nav-frame"><div class="nav-kicker"><span>米 Flow-Core routing meridian 上 / 下</span><span id="routeState">Weather / local section ≈</span></div><nav class="nav" aria-label="Dome primary navigation"><button class="tab active" data-view="weather" data-sigil="≈" aria-current="page"><small>01</small><span>Weather</span></button><button class="tab" data-view="rooms" data-sigil="米"><small>02</small><span>Rooms</span></button><button class="tab" data-view="lab" data-sigil="上"><small>03</small><span>Lab</span></button><button class="tab" data-view="ash" data-sigil="下"><small>04</small><span>Ash</span></button><button class="tab" data-view="substrate" data-sigil="à"><small>05</small><span>Substrate</span></button><button class="tab" data-view="phason" data-sigil="出"><small>06</small><span>Phason</span></button><button class="tab" data-view="aperture" data-sigil="𝌋‌"><small>07</small><span>Aperture</span></button><button class="tab" data-view="receipts" data-sigil="⟐"><small>08</small><span>Receipts</span></button></nav></div>
+<div class="dome-internal-stepper" aria-label="Dome internal navigation">
+  <button class="dome-step dome-prev" type="button" aria-label="Previous Dome tab">‹</button>
+  <button class="dome-step dome-next" type="button" aria-label="Next Dome tab">›</button>
+</div>
 
 <section id="weather" class="view active primary-view" data-glyph="≈"><div class="view-intro"><div><div class="view-overline">≈ / Flow-Core ambiance</div><h2>Dome Weather</h2><p>Read local pressure, fold density, and tending posture without mistaking modeled climate for prediction or proof.</p></div><div class="view-telemetry"><span><b>LOCAL</b>field</span><span><b>MODELED</b>weather</span><span><b>OPEN</b>route</span></div></div><div class="grid"><div class="panel weather-card"><canvas id="weatherCanvas"></canvas><div class="weather-copy"><h2>Current Dome Weather</h2><p id="weatherNarrative"></p><div id="weatherPills"></div></div></div><aside class="panel"><h3>Ambiance readout</h3><div class="kpis"><div class="kpi"><small>fold density</small><strong id="kFold">—</strong></div><div class="kpi"><small>storm risk</small><strong id="kStorm">—</strong></div><div class="kpi"><small>humidity</small><strong id="kHumidity">—</strong></div><div class="kpi"><small>visibility</small><strong id="kVisibility">—</strong></div></div><div id="ambianceLines" style="margin-top:12px"></div><div class="actions"><button class="btn primary" data-event="rest">𝄐 Rest</button><button class="btn" data-event="hydrate">Hydrate</button><button class="btn" data-event="vent">Vent</button><button class="btn" data-event="compost">Compost</button></div><p class="claim">Claim ceiling: <span id="claimA">weather-reading-not-prediction</span>. A weather reading diagnoses ambiance; it does not certify truth, identity, authorship, or cultural authority.</p></aside></div><div class="panel" style="margin-top:14px"><h3>World console</h3><div class="console" id="log"></div></div></section>
 
@@ -1084,6 +1166,18 @@ function openView(view){
   requestAnimationFrame(()=>requestAnimationFrame(renderActiveView));
 }
 document.querySelectorAll('.tab').forEach(btn => btn.onclick = () => { if(!document.querySelector('.nav')?.dataset.dragged) openView(btn.dataset.view); });
+const domeTabs=[...document.querySelectorAll('.tab')];
+function activeDomeTabIndex(){
+  return Math.max(0,domeTabs.findIndex(tab=>tab.classList.contains('active')));
+}
+function stepDome(delta){
+  const next=domeTabs[(activeDomeTabIndex()+delta+domeTabs.length)%domeTabs.length];
+  if(!next)return;
+  openView(next.dataset.view);
+  next.scrollIntoView({behavior:'smooth',inline:'center',block:'nearest'});
+}
+document.querySelector('.dome-prev')?.addEventListener('click',()=>stepDome(-1));
+document.querySelector('.dome-next')?.addEventListener('click',()=>stepDome(1));
 document.querySelectorAll('[data-open-view]').forEach(btn=>btn.onclick=()=>openView(btn.dataset.openView));
 const primaryNav=document.querySelector('.nav');
 let navDrag=null;

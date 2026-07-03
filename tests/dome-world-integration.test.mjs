@@ -3,6 +3,23 @@ import fs from 'node:fs';
 
 const html = fs.readFileSync('app/dome-world/index.html', 'utf8');
 const api = fs.readFileSync('api/dome-world-engine.py', 'utf8');
+
+for (const preservedSurface of [
+  /\.weather-card/,
+  /id="weatherCanvas"/,
+  /\.weather-copy/,
+  /\.lab-shell/,
+  /\.lab-constellation/,
+  /\.lab-node::before/,
+  /\.lab-node::after/,
+  /\.tab::before/,
+  /\.tab::after/,
+]) {
+  assert.match(html, preservedSurface);
+}
+assert.match(html, /class="dome-internal-stepper"/);
+assert.match(html, /function stepDome\(delta\)/);
+assert.doesNotMatch(html, /sleepToggle|>Sleep</);
 const vercel = JSON.parse(fs.readFileSync('vercel.json', 'utf8'));
 const vercelIgnore = fs.readFileSync('.vercelignore', 'utf8');
 const gateway = fs.readFileSync('app/index.html', 'utf8');
