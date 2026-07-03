@@ -28,6 +28,11 @@ assert.match(html, /Ash owns custody/);
 assert.match(html, /Receipts index only/);
 assert.match(html, /Phason diffs projection/);
 assert.match(html, /Substrate waits for exact coordinates/);
+assert.match(html, /#intake > \.panel:first-child \{\s*display: grid;/);
+assert.match(html, /grid-template-columns: repeat\(2, minmax\(0, 1fr\)\)/);
+assert.match(html, /font-size: 16px;/);
+assert.match(html, /max-height: 52vh;/);
+assert.match(html, /scrollbar-width: none;/);
 
 for (const op of ['ash-custody-register', 'ash-custody-replay', 'phason-custody-diff', 'receipt-index', 'ash-leak-challenge', 'ash-veil', 'ash-cinder', 'ash-compare', 'ash-recall', 'ash-grade-gate', 'ash-hcc-adapter', 'ash-projection-simulate']) {
   assert.match(operationSurface, new RegExp(`"${op}"`));

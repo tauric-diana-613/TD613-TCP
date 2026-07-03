@@ -34,9 +34,16 @@ assert.match(html, /data-lab-step="1"/);
 assert.match(html, /touch-action:pan-y/);
 assert.match(html, /Math\.abs\(dy\)>Math\.abs\(dx\)\+6/);
 assert.doesNotMatch(html, /touchmove[^;\n]*preventDefault/);
+assert.match(html, /\.formline input,\s*\.formline select,\s*\.formline button \{\s*flex: none;/);
+assert.match(html, /\.kpis,\s*\.rooms \{\s*grid-template-columns: repeat\(2,minmax\(0,1fr\)\)/);
+assert.match(html, /padding-bottom: calc\(156px \+ env\(safe-area-inset-bottom\)\)/);
 
 assert.match(html, /const DomeArt=\(\(\)=>\{/);
-assert.match(html, /const frameInterval=1000\/30/);
+assert.match(html, /const frameInterval=1000\/\(renderer\.hz\|\|30\)/);
+assert.match(html, /live:\{id:'live-lattice-tendency-probes',canvas:'liveCanvas',draw:drawLiveLattice,hz:24/);
+assert.match(html, /Math\.min\(72, Math\.max\(32, Math\.floor\(rect\.width\*rect\.height\/9000\)\)\)/);
+assert.match(html, /const refreshField=liveState\.frame%2===1/);
+assert.doesNotMatch(html.slice(html.indexOf('function drawLiveLattice'), html.indexOf('function renderLiveReadout')), /computeHeterostratigraphicPotential/);
 assert.match(html, /DomeArt\?\.activate\(null\)/);
 assert.match(html, /window\.DOME_WORLD_ART=DomeArt/);
 assert.match(html, /td613\.dome-world\.art-receipt\/v0\.5\.0/);
