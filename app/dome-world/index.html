@@ -256,6 +256,16 @@ textarea {
   pre {
     max-width: 100%;
   }
+  .panel.rel > .legend {
+    position:relative;
+    left:auto;
+    right:auto;
+    bottom:auto;
+    max-width:none;
+    margin-top:8px;
+    padding:9px 10px;
+    background:rgba(4,16,12,.72);
+  }
   .nav-frame {
     left: 6px;
     right: 6px;
@@ -1384,18 +1394,19 @@ function drawRepoCanvas(time=0){ const canvas=$('repoCanvas'); if(!canvas) retur
 
 
 // Live Lattice: tactile particles sampling the heterostratigraphic gradient-misfit potential.
-const liveState = { nodes: [], input: {x:0,y:0,active:false,inside:false}, pointer:null, cool:.985, impulse:1, frame:0 };
+const liveState = { nodes: [], input: {x:0,y:0,active:false,inside:false}, pointer:null, cool:.985, impulse:1, frame:0, substrate:null, substrateKey:'' };
 function liveSeededRand(){ const seed = C.generateLiveLatticeSeed(world,{node_count:84}).seed; let x = parseInt(seed.slice(0,8),16) || 12345; return function(){ x ^= x << 13; x ^= x >>> 17; x ^= x << 5; return ((x>>>0)%10000)/10000; }; }
 function resetLiveLattice(){
   const canvas=$('liveCanvas'); if(!canvas) return;
   const rect=canvas.getBoundingClientRect(); const rnd=liveSeededRand(); liveState.nodes=[];
-  const n = Math.min(72, Math.max(32, Math.floor(rect.width*rect.height/9000)));
+  const n = Math.min(56, Math.max(28, Math.floor(rect.width*rect.height/11000)));
   for(let i=0;i<n;i++){
     const a = i * Math.PI * (3-Math.sqrt(5));
     const rr = Math.sqrt((i+.5)/n) * Math.min(rect.width,rect.height)*.44;
-    liveState.nodes.push({x:Math.cos(a)*rr + (rnd()-.5)*22, y:Math.sin(a)*rr + (rnd()-.5)*22, vx:(rnd()-.5)*.7, vy:(rnd()-.5)*.7, pulse:rnd()*.6, gx:0, gy:0, fold:0});
+    liveState.nodes.push({x:Math.cos(a)*rr + (rnd()-.5)*22, y:Math.sin(a)*rr + (rnd()-.5)*22, vx:(rnd()-.5)*.7, vy:(rnd()-.5)*.7, pulse:rnd()*.6, gx:0, gy:0, fold:0, fieldReady:false, sampleSlot:i%8});
   }
   liveState.frame=0;
+  liveState.substrateKey='';
   renderLiveReadout();
 }
 function setupLiveInput(){
@@ -1426,6 +1437,7 @@ function updateLiveNode(node, w, h, refreshField){
     node.gx = gm.g_triangular[0]-gm.g_quasiperiodic[0];
     node.gy = gm.g_triangular[1]-gm.g_quasiperiodic[1];
     node.fold = gm.gradient_misfit;
+    node.fieldReady = true;
   }
   node.vx += -node.gx * 22 * liveState.impulse + Math.sin(node.y*.017+world.day*.03)*.006;
   node.vy += -node.gy * 22 * liveState.impulse + Math.cos(node.x*.013-world.day*.02)*.006;
@@ -1437,15 +1449,30 @@ function updateLiveNode(node, w, h, refreshField){
   const bx=w/2-10, by=h/2-10; if(Math.abs(node.x)>bx){ node.x=Math.sign(node.x)*bx; node.vx*=-.62; } if(Math.abs(node.y)>by){ node.y=Math.sign(node.y)*by; node.vy*=-.62; }
   node.pulse*=.965;
 }
+function liveSubstrateLayer(w,h,dpr){
+  const width=Math.max(1,Math.floor(w*dpr)),height=Math.max(1,Math.floor(h*dpr));
+  const key=`${width}x${height}:${world.day}`;
+  if(liveState.substrate&&liveState.substrateKey===key)return liveState.substrate;
+  const layer=document.createElement('canvas');
+  layer.width=width;
+  layer.height=height;
+  const layerCtx=layer.getContext('2d');
+  layerCtx.setTransform(dpr,0,0,dpr,0,0);
+  drawTriGrid(layerCtx,w,h,24,0,'rgba(118,234,212,.13)',.75);
+  drawTriGrid(layerCtx,w,h,24,Math.PI/3+.055,'rgba(118,234,212,.11)',.75);
+  drawPhiRosette(layerCtx,w,h,world.day*.006);
+  liveState.substrate=layer;
+  liveState.substrateKey=key;
+  return layer;
+}
 function drawLiveLattice(){
   if(activeView!=='live' || document.hidden) return;
-  const canvas=$('liveCanvas'); if(!canvas) return; const [ctx,w,h]=setupCanvas(canvas); if(!liveState.nodes.length) resetLiveLattice();
+  const canvas=$('liveCanvas'); if(!canvas) return; const [ctx,w,h,dpr]=setupCanvas(canvas); if(!liveState.nodes.length) resetLiveLattice();
   ctx.fillStyle='rgba(4,12,9,.28)'; ctx.fillRect(0,0,w,h); ctx.save(); ctx.translate(w/2,h/2);
   liveState.frame++;
-  const refreshField=liveState.frame%2===1;
-  liveState.nodes.forEach(n=>updateLiveNode(n,w,h,refreshField));
+  liveState.nodes.forEach(n=>updateLiveNode(n,w,h,liveState.frame%8===n.sampleSlot));
   // substrate: rigorous layers beneath the nodes
-  ctx.save(); ctx.translate(-w/2,-h/2); drawTriGrid(ctx,w,h,24,0,'rgba(118,234,212,.13)',.75); drawTriGrid(ctx,w,h,24,Math.PI/3+.055,'rgba(118,234,212,.11)',.75); drawPhiRosette(ctx,w,h,world.day*.006); ctx.restore();
+  ctx.save(); ctx.translate(-w/2,-h/2); ctx.drawImage(liveSubstrateLayer(w,h,dpr),0,0,w,h); ctx.restore();
   for(let i=0;i<liveState.nodes.length;i++){
     for(let j=i+1;j<liveState.nodes.length;j++){
       const a=liveState.nodes[i], b=liveState.nodes[j], dx=a.x-b.x, dy=a.y-b.y, d2=dx*dx+dy*dy;
@@ -1472,7 +1499,7 @@ const DOME_ART_RENDERERS=Object.freeze({
   aperture:{id:'aperture-one-way-membrane',canvas:'apertureCanvas',draw:drawApertureCanvas,operators:['permeability=χ(1-δ_obs)','divergence refraction','omission bands'],claim:'translation-not-aperture-execution'},
   receipts:{id:'receipts-ledger-star-map',canvas:'receiptsCanvas',draw:drawReceiptsCanvas,operators:['declared lineage only','OPEN receipts remain visible'],claim:'witness-map-not-universal-authority'},
   tomography:{id:'heterostratigraphic-tomography',canvas:'tomoCanvas',draw:drawTomography,operators:['T(x)=Σcos(kd·x)+Σcos(kRθd·x)','Q(x)=Σcos(kφe·x)'],claim:'heterostratigraphic-visual-diagnostic-not-material-proof'},
-  live:{id:'live-lattice-tendency-probes',canvas:'liveCanvas',draw:drawLiveLattice,hz:24,operators:['F(x)=||∇T(x)-∇Q(x)||','v(t+1)=ζv(t)-α∇F(x(t))+β·input(x(t))'],claim:'interactive-lattice-not-substrate-proof'},
+  live:{id:'live-lattice-tendency-probes',canvas:'liveCanvas',draw:drawLiveLattice,hz:30,operators:['F(x)=||∇T(x)-∇Q(x)||','v(t+1)=ζv(t)-α∇F(x(t))+β·input(x(t))'],claim:'interactive-lattice-not-substrate-proof'},
   patterns:{id:'pattern-library-field',canvas:'patternCanvas',draw:drawPatternCanvas,operators:['√3 triangular calibration','φ counterlayer'],claim:'pattern-signal-not-identity-proof'},
   repo:{id:'repository-weather-field',canvas:'repoCanvas',draw:drawRepoCanvas,operators:['repository route weather','fold obstruction'],claim:'repository-weather-not-truth-proof'}
 });
