@@ -81,7 +81,8 @@
     "aperture:check-sync": "node scripts/aperture-check-sync.mjs",
     "sync:aperture-release": "node scripts/sync-aperture-release.mjs",
     "test:aperture-sync-lane": "node tests/aperture-sync-lane.test.mjs",
-    "test:dome-world": "node tests/dome-world-integration.test.mjs && node tests/aperture-dome-bridge.test.mjs && node tests/dome-world-ash-custody.test.mjs && node tests/dome-world-ash-leak-challenge.test.mjs && node tests/dome-world-ash-veil.test.mjs && node tests/dome-world-ash-cinder.test.mjs && node tests/dome-world-ash-compare.test.mjs && node tests/dome-world-ash-recall.test.mjs && node tests/dome-world-ash-hcc-grade-gate.test.mjs",
+    "test:dome-world:art": "node tests/dome-world-art.test.mjs && node tests/dome-world-integration.test.mjs && node tests/aperture-dome-bridge.test.mjs",
+    "test:dome-world": "npm run test:dome-world:art && node tests/dome-world-ash-custody.test.mjs && node tests/dome-world-ash-leak-challenge.test.mjs && node tests/dome-world-ash-veil.test.mjs && node tests/dome-world-ash-cinder.test.mjs && node tests/dome-world-ash-compare.test.mjs && node tests/dome-world-ash-recall.test.mjs && node tests/dome-world-ash-hcc-grade-gate.test.mjs",
     "test:dome-world:python": "python -m pytest packages/dome_world_exact/engine/test_capacity.py packages/dome_world_exact/engine/test_coords_to_minpoly.py packages/dome_world_exact/engine/test_residual_learner.py packages/dome_world_exact/tests/test_runtime_integration.py packages/dome_world_exact/tests/test_api_integration.py -q",
     "diag:battery": "node scripts/run-diagnostics-battery.mjs",
     "validate": "node scripts/validate-samples.mjs"

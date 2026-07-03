@@ -28,7 +28,7 @@ const nav = html.match(/<nav class="nav"[\s\S]*?<\/nav>/i)?.[0] || '';
 const tabLabels = [...nav.matchAll(/<button class="tab(?: active)?" data-view="[^"]+"[^>]*>[\s\S]*?<span>([^<]+)<\/span><\/button>/g)].map((match) => match[1]);
 const ids = [...html.matchAll(/\sid="([^"]+)"/g)].map((match) => match[1]);
 
-assert.equal(title, 'Dome-World / Flow-Core v0.4.3');
+assert.equal(title, 'Dome-World / Flow-Core v0.5.0');
 assert.equal(tabLabels.length, 8);
 assert.deepEqual(
   tabLabels,
@@ -55,7 +55,8 @@ assert.ok(
   'DomeCore exports every active heterostratigraphic and repository-weather function'
 );
 assert.match(html, /canvas\.width!==width\|\|canvas\.height!==height/);
-assert.match(html, /if\(!liveState\.running \|\| activeView!=='live' \|\| document\.hidden\) return/);
+assert.match(html, /if\(activeView!=='live' \|\| document\.hidden\) return/);
+assert.match(html, /if\(!renderer\|\|!canvas\|\|document\.hidden\|\|!viewportVisible\)return/);
 assert.match(html, /rawExactCoordinatesExported:false|raw_exact_coordinates_allowed:\s*false/);
 assert.match(api, /MAX_BODY_BYTES = 131_072/);
 assert.match(api, /DOME_WORLD_TRAINER_ENABLED/);

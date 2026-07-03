@@ -1,8 +1,9 @@
-# Dome-World / Flow-Core v0.4.3
+# Dome-World / Flow-Core v0.5.0
 
 `/dome-world` is a non-public TD613 station that combines:
 
 - the full browser cockpit and room system;
+- one active-view sovereign-perspective scheduler with machine-facing art receipts;
 - Aperture v2.9.4 one-way route-weather translation;
 - exact residual capture and proposal/confirmation training;
 - opt-in lambda=2c emission-gap closure;
@@ -30,10 +31,21 @@ EO-RFD firmware. Ash server operations accept metadata/projection packets only.
 Optional local text analysis stays browser-local and clears after scoring. Trainer
 checkpoints remain client-held and HMAC-signed; server persistence is intentionally absent.
 
-The primary navigation contains Weather, Aperture, Phason, Substrate, Ash,
-Rooms, Receipts, and Dev. Legacy Math, Tomography, Live Lattice, Loom,
+The primary navigation contains Weather, Rooms, Lab, Ash, Substrate, Phason,
+Aperture, and Receipts. Legacy Math, Tomography, Live Lattice, Loom,
 Stewardship, Patterns, Repo Weather, Lore, Accident, and API surfaces remain
-inside the Dev hierarchy.
+inside the Lab hierarchy.
+
+## Sovereign perspectives
+
+Weather, Rooms, Lab, Substrate, Phason, Aperture, and Receipts each render a
+mathematically constrained active perspective. One coordinator owns animation,
+pauses hidden views, preserves stable canvas dimensions, and exposes
+`window.DOME_WORLD_ART` for machine inspection. Live Lattice uses the same
+coordinator and provides a compact station rail, keyboard routing, ordinary
+vertical mobile scrolling, and horizontal field interaction.
+
+Ash is intentionally outside the v0.5.0 art scheduler.
 
 ## API
 

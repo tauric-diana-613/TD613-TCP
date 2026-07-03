@@ -1,6 +1,6 @@
 # Dome-World Phase 2 Dome-Art Program
 
-Status: design-prep only. No Phase 2 renderer is active in the cockpit.
+Status: implemented in Dome-World v0.5.0. Ash remains deferred.
 
 ## Preservation Contract
 
@@ -15,7 +15,7 @@ Phase 2 extends the existing Dome-World grammar; it does not replace it.
 
 ## Shared Rendering Architecture
 
-Future views should use one coordinator:
+The cockpit uses one coordinator:
 
 ```js
 renderDomeArt(viewId, worldSnapshot, viewport, time)
@@ -41,44 +41,42 @@ Required receipt fields:
 ### Weather: Exterior Atmospheric Dome
 
 Preserve the current triangular lattice, phi rosette, fold traces, room nodes, and Dome arc.
-Future work may bind pressure-line amplitude to fold density, curvature visibility to route
-visibility, and front velocity to declared world cadence. It may not turn weather into
-prediction or replace the current composition.
+Pressure-line amplitude is bound to fold density, curvature visibility to route visibility,
+and front velocity to declared world cadence. Weather remains modeled ambiance, not prediction.
 
 ### Rooms: Interior Chamber Lattice
 
-Render rooms as local sections rather than boxes in a universal floor plan. Chamber cells use
+Rooms render as local sections rather than boxes in a universal floor plan. Chamber cells use
 the existing room adjacency map; corridor brightness reflects restriction compatibility; fold
 arcs appear where local sections resist gluing. `cōl` and `hõt` remain a local gradient, never a
 global rank.
 
 ### Lab: Station Constellation
 
-Keep all ten `.lab-node` objects unchanged. A canvas or CSS layer may sit behind the cards to
-draw station edges, hover routing pulses, and glyph-specific interference traces. The graph
-must remain subordinate to the cards and stop when Lab is not active.
+All ten `.lab-node` objects remain unchanged. A canvas beneath the cards draws declared station
+edges and glyph-specific route pulses. The graph remains subordinate and stops outside Lab.
 
 ### Substrate: Exact Coordinate Mesh
 
-Render rational coordinates as exact markers on a deformation mesh. Residual wells show
+Rational coordinates render as exact markers on a deformation mesh. Residual wells show
 captured differences; unresolved observations remain visible as open markers. Float weather
 values never cross into exact-gate decisions.
 
 ### Phason: Content-Invariant Seam View
 
-Use paired layers with a fixed content anchor and a changing projection basis. Moire bands,
+Paired layers hold a fixed content anchor against a changing projection basis. Moire bands,
 phase seams, and trace displacement visualize projection drift. The content digest remains
 stationary and visible so motion cannot imply content mutation.
 
 ### Aperture: Boundary Membrane
 
-Render a semi-permeable route membrane whose refraction is driven only by declared Aperture
+The semi-permeable route membrane is driven only by declared Aperture
 handoff fields. The bridge remains one-way. Exposure gradients may visualize route posture;
 they may not claim Aperture execution or write back into doctrine.
 
 ### Receipts: Ledger Star Map
 
-Map receipts as scoped witness nodes. Edges represent declared lineage, replay, recall, or
+Receipts map as scoped witness nodes. Edges represent declared lineage, replay, recall, or
 revocation relationships. Node size may encode local route density, never truth or authority.
 Every visual witness retains its claim ceiling.
 
