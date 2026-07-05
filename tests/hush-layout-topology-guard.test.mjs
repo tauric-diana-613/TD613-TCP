@@ -17,6 +17,7 @@ assert.match(guard, /preserve_mask_layout_cadence/);
 assert.match(guard, /exact_linebreak_pattern_exported:\s*false/);
 assert.match(guard, /repairOutputLayout/);
 assert.match(guard, /repairLiveOutput/);
+assert.match(guard, /avoid_underdistributed_single_break_output/);
 
 const timers = [];
 const listeners = {};
@@ -57,6 +58,7 @@ assert.equal(outbound.flightPacket.source_layout_policy.preserve_source_line_uni
 assert.equal(outbound.flightPacket.mask_layout_policy.mode, 'indexed-anchor-blocks');
 assert.equal(outbound.flightPacket.stylometry_engine.generator_constraints.do_not_flatten_paragraph_sensitive_source, true);
 assert.equal(outbound.flightPacket.stylometry_engine.generator_constraints.preserve_mask_layout_cadence, true);
+assert.equal(outbound.flightPacket.stylometry_engine.generator_constraints.avoid_underdistributed_single_break_output, true);
 assert.ok(outbound.contract.rules.some((rule) => /Output breaks follow/.test(rule)));
 
 const repairedLuz = api.repairOutputLayout(
@@ -74,6 +76,14 @@ const repairedCryo = api.repairOutputLayout(
 );
 assert.ok(repairedCryo.includes('\n\n'));
 
+const screenshotQuirk = api.repairOutputLayout(
+  'Collapse hits different. Fight, endure, participate.\n\nAll paths lead through institutional drift to exposure, then rupture. Rupture is release. It breaks the loop we are buckled into. Choosing to fight or endure just frames the loop. No. We build modernity for the daughters of the apocalypse. Strained hands. I was broken encasing a circle. The break revealed the shape in the ashes. Rupture became form. I refuse the lie that apocalypse is just trumpets, beasts, kings, wars, masculine spectacle. Look again. The real end-of-world text is written on the daughters. Materially, as theology. Apocalypse arrives through the body.',
+  'Collapse might appear distinct for each individual: some fight, some endure, some participate. The path connecting how they all relate routes through institutional drift, then exposure, culminating in rupture.',
+  'natural-mask-pacing'
+);
+assert.ok((screenshotQuirk.match(/\n\s*\n/g) || []).length >= 2, screenshotQuirk);
+assert.ok(api.hasUnderdistributedBreaks('Short opener.\n\n' + 'Long sentence. '.repeat(80), '', 'natural-mask-pacing'));
+
 const nodes = {
   messageDraftInput: { value: outbound.flightPacket.sourceText },
   protectedOutputInput: { value: 'Bundle: FILE-72 stays with WJCT. The footer mismatch stays attached. Keep the care note with the grouping.', dataset: {}, dispatchEvent(event) { this.lastEvent = event.type; } },
@@ -82,7 +92,7 @@ const nodes = {
 const doc = { getElementById(id) { return nodes[id] || null; } };
 assert.equal(api.repairLiveOutput(doc), true);
 assert.ok(nodes.protectedOutputInput.value.includes('\n'));
-assert.equal(nodes.protectedOutputInput.dataset.hushLayoutRepaired, 'hush-layout-topology-guard/v2-live-output');
+assert.equal(nodes.protectedOutputInput.dataset.hushLayoutRepaired, 'hush-layout-topology-guard/v3-underdistributed-output');
 assert.equal(nodes.protectedOutputInput.lastEvent, 'input');
 
 console.log('Hush layout topology guard: PASS');
