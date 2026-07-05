@@ -1,5 +1,6 @@
 import './hush-layout-topology-guard.js?v=202607052150';
 import './hush-aperture-repair-runtime.js?v=202607052151';
+import './hush-mask-native-layout-runtime.js?v=202607052152';
 import './hush-strict-held-diagnostic-popup.js?v=202607021640';
 import './hush-edit-corpus-carousel.js?v=202606141720';
 import './hush-input-control-rail.js?v=202606142010';
@@ -9,7 +10,7 @@ import './hush-lab-provider-sync.js?v=202606170020';
 import './hush-output-active-mask-route.js?v=202606170220';
 import './hush-custody-export-wake.js?v=202606171635';
 
-const HUSH_COMPARE_LAYOUT_CUSTODY_VERSION = 'compare-layout-custody/v8-aperture-repair-runtime';
+const HUSH_COMPARE_LAYOUT_CUSTODY_VERSION = 'compare-layout-custody/v9-aperture-mask-native-repair';
 const $ = (id) => document.getElementById(id);
 
 function rawValue(id) {
