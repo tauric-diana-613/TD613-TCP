@@ -1,6 +1,7 @@
 import './hush-layout-topology-guard.js?v=202607052150';
 import './hush-aperture-repair-runtime.js?v=202607052151';
 import './hush-mask-native-layout-runtime.js?v=202607052152';
+import './hush-candidate-carryover-runtime.js?v=202607052325';
 import './hush-strict-held-diagnostic-popup.js?v=202607021640';
 import './hush-edit-corpus-carousel.js?v=202606141720';
 import './hush-input-control-rail.js?v=202606142010';
@@ -10,7 +11,7 @@ import './hush-lab-provider-sync.js?v=202606170020';
 import './hush-output-active-mask-route.js?v=202606170220';
 import './hush-custody-export-wake.js?v=202606171635';
 
-const HUSH_COMPARE_LAYOUT_CUSTODY_VERSION = 'compare-layout-custody/v9-aperture-mask-native-repair';
+const HUSH_COMPARE_LAYOUT_CUSTODY_VERSION = 'compare-layout-custody/v10-carryover-selection';
 const $ = (id) => document.getElementById(id);
 
 function rawValue(id) {
@@ -101,6 +102,7 @@ else boot();
 
 window.addEventListener('td613:hush:patch38-result', () => { window.setTimeout(syncTransformationCheckLayout, 80); window.setTimeout(syncCustodyExports, 90); });
 window.addEventListener('td613:hush:aperture-repair-pass', () => { window.setTimeout(syncTransformationCheckLayout, 40); window.setTimeout(syncCustodyExports, 90); });
+window.addEventListener('td613:hush:carryover-selection', () => { window.setTimeout(syncTransformationCheckLayout, 40); window.setTimeout(syncCustodyExports, 90); });
 window.addEventListener('td613:hush:outbound-packet', () => { window.setTimeout(syncTransformationCheckLayout, 80); window.setTimeout(syncCustodyExports, 90); });
 window.addEventListener('td613:hush:provider-log', () => window.setTimeout(syncCustodyExports, 90));
 
