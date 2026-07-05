@@ -1,7 +1,7 @@
 import { extractCadenceProfile } from './stylometry.js';
 import { rebuildPayloadSentence } from './hush-payload-repair.js';
 
-export const HUSH_SYNTAX_RECOMPOSER_VERSION = 'phase-21.1-no-warm-logistics';
+export const HUSH_SYNTAX_RECOMPOSER_VERSION = 'phase-21.2-source-detached-families';
 
 const safeText = (value) => String(value ?? '');
 const asArray = (value) => Array.isArray(value) ? value.filter(Boolean) : [];
@@ -99,6 +99,17 @@ function payloadSentence(input = {}) {
   return rebuildPayloadSentence({ sourceText: input.sourceText, payloadMap, payloadBindingMap: input.payloadBindingMap });
 }
 
+function anchorPhrase(input = {}, fallback = 'the record') {
+  const payloadMap = input.payloadMap || {};
+  const evidence = payloadText(payloadMap, 'evidence-id');
+  const timestamp = payloadText(payloadMap, 'timestamp');
+  const date = payloadText(payloadMap, 'date');
+  const actor = payloadText(payloadMap, 'actor');
+  const time = timestamp || date;
+  const anchor = [evidence, actor, time].filter(Boolean).join(' / ');
+  return anchor || fallback;
+}
+
 function familyPayloadParts(family = '', input = {}) {
   const sourceText = safeText(input.sourceText);
   const payload = payloadSentence(input);
@@ -114,6 +125,7 @@ function familyPayloadParts(family = '', input = {}) {
   const versionTail = hasVersion && !/version/i.test(payload) ? 'The version context should remain attached' : '';
   const reasonTail = reason && !payload.toLowerCase().includes(reason.toLowerCase()) ? reason.replace(/^bc\b/i, 'because') : '';
   const holdTail = actor && /not to resend|do not resend|not resend/i.test(sourceText) && !/not resend|hold/i.test(payload) ? `${actor} should hold before resending` : '';
+  const anchor = anchorPhrase(input, evidence || 'the record');
 
   switch (family) {
     case 'record-first':
@@ -142,6 +154,14 @@ function familyPayloadParts(family = '', input = {}) {
       return [evidence && time ? `${evidence}; ${time}; ${payload}` : `Record: ${payload}`, ...integrity];
     case 'expanded-context':
       return [payload, versionTail, reasonTail, 'The point is preservation, not expansion', ...integrity];
+    case 'source-detached-brief':
+      return [`Start with the anchor: ${anchor}`, 'Then keep the claim narrow', payload, ...integrity];
+    case 'residue-break-turn':
+      return ['The issue is the relationship between the anchor and the later handling', payload, 'Do not carry the source phrasing forward', ...integrity];
+    case 'archive-reframe':
+      return [`Archive frame: ${anchor}`, payload, versionTail || reasonTail || 'The record should be read through attachment and sequence', ...integrity];
+    case 'sequence-inversion':
+      return [versionTail || reasonTail || holdTail || 'The review point comes after the anchor', payload, `Anchor retained: ${anchor}`, ...integrity];
     default:
       return [payload, ...integrity];
   }
@@ -167,6 +187,7 @@ function composeByFamily(family = '', input = {}) {
   const changedLater = /changed later|label changed|later copy|later version/i.test(sourceText);
   const tail = (fallback = '') => integrityTail(sourceText, fallback);
   const parts = (fallback = '') => integrityParts(sourceText, fallback);
+  const anchor = [evidence, timestamp || date].filter(Boolean).join(' / ') || main || 'the record';
 
   switch (family) {
     case 'record-first':
@@ -195,6 +216,14 @@ function composeByFamily(family = '', input = {}) {
       return sentenceJoin([`${main}; ${timestamp || date || 'timing retained'}; ${tail('review later')}`]);
     case 'expanded-context':
       return sentenceJoin([`${main} should remain connected to the message ${datePart}`.trim(), ...parts('The point is preservation, not expansion'), changedLater ? 'The later label change is the review issue' : '']);
+    case 'source-detached-brief':
+      return sentenceJoin([`Anchor first: ${anchor}`, 'The claim stays narrow', ...parts('The source order should not decide the output order')]);
+    case 'residue-break-turn':
+      return sentenceJoin(['Begin with the review point, not the source sentence path', `${main} remains the anchor ${datePart}`.trim(), ...parts('Keep meaning; break the source body')]);
+    case 'archive-reframe':
+      return sentenceJoin([`Archive frame: ${anchor}`, `${nounForLiteral(evidence)} handling stays the issue`, ...parts('The output should carry custody, not source syntax')]);
+    case 'sequence-inversion':
+      return sentenceJoin([changedLater ? 'Later handling is the review point' : 'The review point comes after the anchor', `${main} ${datePart}`.trim(), ...parts('Anchor retained without copying the source route')]);
     default:
       return sentenceJoin([`${main} should remain with the note ${datePart}`.trim(), ...parts()]);
   }
@@ -205,7 +234,7 @@ export function applySyntaxOperation(input = {}) {
 }
 
 export function diversifySyntaxPlans(input = {}) {
-  const families = ['record-first', 'evidence-first', 'date-first', 'caveat-first', 'request-softened', 'two-sentence-brief', 'short-note', 'intake-style', 'procedural-neutral', 'group-chat-soft', 'formal-record', 'compressed-record', 'expanded-context'];
+  const families = ['source-detached-brief', 'residue-break-turn', 'archive-reframe', 'sequence-inversion', 'record-first', 'evidence-first', 'date-first', 'caveat-first', 'request-softened', 'two-sentence-brief', 'short-note', 'intake-style', 'procedural-neutral', 'group-chat-soft', 'formal-record', 'compressed-record', 'expanded-context'];
   const count = Math.max(1, Math.min(36, Number(input.candidateCount || 18)));
   const out = [];
   while (out.length < count) out.push(families[out.length % families.length]);
