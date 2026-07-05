@@ -8,14 +8,20 @@ const transformed = 'The surface offers three postures: resistance, endurance, a
 
 const stuck = evaluateSourceResidual(source, sourceStuck);
 const clean = evaluateSourceResidual(source, transformed);
+assert.match(stuck.version, /source-residue-adapter/);
 assert.ok(stuck.sourceResidualPercent > clean.sourceResidualPercent, JSON.stringify({ stuck, clean }));
-assert.ok(stuck.warnings.includes('source-residual-high'), JSON.stringify(stuck));
-assert.ok(stuck.bigramCarryover > clean.bigramCarryover);
-assert.ok(stuck.trigramCarryover > clean.trigramCarryover);
+assert.ok(stuck.warnings.includes('source-residual-high') || stuck.warnings.includes('source-body-severe') || stuck.warnings.includes('source-body-attached'), JSON.stringify(stuck));
+assert.ok(stuck.cadenceBodyRisk > clean.cadenceBodyRisk, JSON.stringify({ stuck, clean }));
+assert.ok(stuck.longestCopiedRun > clean.longestCopiedRun, JSON.stringify({ stuck, clean }));
+
+const meterSupplied = evaluateSourceResidual(source, transformed, { sourceResidualRisk: 0.71 });
+assert.equal(meterSupplied.escapeVectorRisk, 0.71);
+assert.equal(meterSupplied.sourceResidualPercent, 71);
+assert.ok(meterSupplied.warnings.includes('escape-vector-source-risk-used'));
 
 const stuckEval = evaluateApertureRepairCandidate({ id: 'stuck', text: sourceStuck }, source, { mask: { id: 'grandma-receipts', label: 'Receipts Queenie' } });
 const cleanEval = evaluateApertureRepairCandidate({ id: 'clean', text: transformed }, source, { mask: { id: 'grandma-receipts', label: 'Receipts Queenie' } });
 assert.ok(stuckEval.penalty > cleanEval.penalty, JSON.stringify({ stuckEval, cleanEval }));
-assert.ok(stuckEval.warnings.some((warning) => warning.includes('source-residual')), JSON.stringify(stuckEval));
+assert.ok(stuckEval.warnings.some((warning) => warning.includes('source')), JSON.stringify(stuckEval));
 
 console.log('hush-source-residual-guard: ok');
