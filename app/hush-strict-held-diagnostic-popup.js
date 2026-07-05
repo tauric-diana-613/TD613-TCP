@@ -1,4 +1,4 @@
-const VERSION = 'hush-strict-held-diagnostic-popup/v2-idempotent';
+const VERSION = 'hush-strict-held-diagnostic-popup/v3-crash-guard';
 let lastRenderedSignature = '';
 
 function $(id) { return document.getElementById(id); }
@@ -155,6 +155,10 @@ export function renderStrictHeldPopup(receipt = {}) {
 
 function publishReceipt(receipt, providerLog = null) {
   const signature = receiptSignature(receipt);
+  const old = $('hushReceiptPopup');
+  const alreadyRendered = lastRenderedSignature === signature && old?.dataset.strictHeldSignature === signature;
+  if (alreadyRendered) return;
+  lastRenderedSignature = signature;
   window.__TD613_HUSH_NO_FALLBACK_RECEIPT = receipt;
   window.__TD613_HUSH_FULL_DEBUG_PACKET = {
     schema: 'td613-hush-strict-held-full-debug/v1',
@@ -164,20 +168,18 @@ function publishReceipt(receipt, providerLog = null) {
     lastStrictBridge: window.__TD613_HUSH_PR123_LAST || null
   };
   const warning = $('acceptWarning');
-  if (warning) {
+  const message = `${receipt.message} Receipt ready.`;
+  if (warning && warning.textContent !== message) {
     warning.hidden = false;
-    warning.textContent = `${receipt.message} Receipt ready.`;
+    warning.textContent = message;
   }
   const status = $('hushGeneratorStatus') || $('hushStrictProviderStatus') || $('hushOutputStatusText');
-  if (status) {
+  if (status && status.textContent !== message) {
     status.dataset.tone = 'error';
-    status.textContent = `${receipt.message} Receipt ready.`;
+    status.textContent = message;
   }
   renderStrictHeldPopup(receipt);
-  if (lastRenderedSignature !== signature) {
-    lastRenderedSignature = signature;
-    try { window.dispatchEvent(new CustomEvent('td613:hush:strict-held-receipt', { detail: { receipt } })); } catch {}
-  }
+  try { window.dispatchEvent(new CustomEvent('td613:hush:strict-held-receipt', { detail: { receipt } })); } catch {}
 }
 
 export function inspectStrictHeld(providerLog = null) {
@@ -192,7 +194,7 @@ export function inspectStrictHeld(providerLog = null) {
 }
 
 function schedule() {
-  [0, 80, 220, 520, 1100].forEach((delay) => window.setTimeout(() => inspectStrictHeld(), delay));
+  [0, 180, 650].forEach((delay) => window.setTimeout(() => inspectStrictHeld(), delay));
 }
 
 function boot() {
@@ -206,7 +208,6 @@ function boot() {
   document.addEventListener('click', (event) => {
     if (event.target?.closest?.('#generateMaskedOutputBtn')) schedule();
   }, true);
-  if (window.MutationObserver) new MutationObserver(() => inspectStrictHeld()).observe(document.body, { childList: true, subtree: true, characterData: true });
   window.__TD613_HUSH_STRICT_HELD_DIAGNOSTIC_POPUP__ = { version: VERSION, inspectStrictHeld, buildStrictHeldReceipt, renderStrictHeldPopup };
   schedule();
 }
