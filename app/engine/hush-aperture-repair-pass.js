@@ -1,6 +1,6 @@
 import { evaluatePhase14Candidate } from './hush-phase14-cognitive-authorship-gate.js';
 
-export const HUSH_APERTURE_REPAIR_PASS_VERSION = 'aperture-hush-repair-pass/v2-luz-checklist-demotion';
+export const HUSH_APERTURE_REPAIR_PASS_VERSION = 'aperture-hush-repair-pass/v3-luz-checklist-shape';
 
 const safe = (value = '') => String(value ?? '');
 const lower = (value = '') => safe(value).toLowerCase();
@@ -72,21 +72,22 @@ export function evaluateApertureRepairCandidate(candidate = {}, sourceText = '',
   const maskCompletionSensitive = mask.isCryo || mask.isSheree;
   const overcompletion = maskCompletionSensitive && (phase14.completion_prior_score >= 0.68 || completionHits.length >= 1) && phase14.process_fidelity_score < 0.74;
   const weakQueenie = mask.isQueenie && !outputHasNativeReceiptTerms(candidateText);
-  const luzChecklist = mask.isLuz && checklistShape(candidateText) && !luzNativeSignal(candidateText);
-  const luzStaticIndex = mask.isLuz && /^(?:\s*(?:\d+[.)]|[-*•])\s+.+\n?){3,}$/m.test(candidateText.trim()) && !/reclassif|reframe|custody|provisional|anchor/i.test(candidateText);
+  const luzHasNativeSignal = luzNativeSignal(candidateText);
+  const luzChecklist = mask.isLuz && checklistShape(candidateText);
+  const luzStaticIndex = mask.isLuz && /^(?:\s*(?:\d+[.)]|[-*•])\s+.+\n?){3,}$/m.test(candidateText.trim()) && !/reclassif|reframe|provisional|anchor/i.test(candidateText);
   const hardBlockReasons = [];
   if (queenieMotifLeak) hardBlockReasons.push('aperture-queenie-domestic-motif-leak');
   if (maskCompletionSensitive && phase14.completion_prior_score > 0.86 && phase14.process_fidelity_score < 0.58) hardBlockReasons.push('aperture-mask-overcompletion-block');
-  const luzPenalty = luzChecklist ? 0.82 : luzStaticIndex ? 0.62 : 0;
+  const luzPenalty = luzChecklist ? (luzHasNativeSignal ? 0.48 : 0.86) : luzStaticIndex ? 0.62 : 0;
   const penalty = round4((queenieMotifLeak ? 3.5 : 0) + (weakQueenie ? 0.45 : 0) + luzPenalty + (overcompletion ? Math.min(0.95, 0.36 + phase14.completion_prior_score * 0.42 + completionHits.length * 0.08) : Math.min(0.32, phase14.completion_prior_score * 0.16)));
-  const bonus = round4(Math.min(0.42, phase14.process_fidelity_score * 0.22 + phase14.memory_return_score * 0.08 + phase14.closure_asymmetry_score * 0.07 + (mask.isLuz && luzNativeSignal(candidateText) ? 0.08 : 0)));
+  const bonus = round4(Math.min(0.42, phase14.process_fidelity_score * 0.22 + phase14.memory_return_score * 0.08 + phase14.closure_asymmetry_score * 0.07 + (mask.isLuz && luzHasNativeSignal && !luzChecklist ? 0.08 : 0)));
   return Object.freeze({
     schema: 'td613-hush-aperture-repair-pass/v1',
     version: HUSH_APERTURE_REPAIR_PASS_VERSION,
     route: ['runtime_spine', 'phason_seam', 'moire_scan', 'grade_gate', 'sigma_receipt_ledger'],
     mask,
     motif: { queenieMotifLeak, candidateMotifs, sourceMotifs, weakQueenie },
-    luz: { luzChecklist, luzStaticIndex, luzNativeSignal: luzNativeSignal(candidateText) },
+    luz: { luzChecklist, luzStaticIndex, luzNativeSignal: luzHasNativeSignal },
     completion: { maskCompletionSensitive, overcompletion, completionHits, completion_prior_score: phase14.completion_prior_score, process_fidelity_score: phase14.process_fidelity_score },
     phase14,
     hardBlocked: hardBlockReasons.length > 0,
