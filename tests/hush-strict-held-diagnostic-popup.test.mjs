@@ -12,6 +12,7 @@ assert.match(moduleSource, /td613-hush-strict-held-diagnostic-receipt\/v1/);
 assert.match(moduleSource, /Strict held receipt/);
 assert.match(moduleSource, /window\.__TD613_HUSH_FULL_DEBUG_PACKET/);
 assert.match(moduleSource, /td613:hush:provider-log/);
+assert.doesNotMatch(moduleSource, /new\s+MutationObserver/);
 
 const dom = new JSDOM('<!doctype html><html><head></head><body><div id="hushOutputStatusText"></div><div id="acceptWarning" hidden></div></body></html>', { url: 'https://td613.test/adversarial-bench.html', pretendToBeVisual: true });
 globalThis.window = dom.window;
@@ -72,5 +73,11 @@ assert.equal(window.__TD613_HUSH_NO_FALLBACK_RECEIPT.reason, 'strict_budgeted_up
 assert.equal(window.__TD613_HUSH_FULL_DEBUG_PACKET.receipt.reason, 'strict_budgeted_upstream_no_releasable_candidate');
 assert.equal(document.getElementById('acceptWarning').hidden, false);
 assert.match(document.getElementById('hushOutputStatusText').textContent, /Receipt ready/);
+
+const firstPopup = document.getElementById('hushReceiptPopup');
+const firstStatus = document.getElementById('hushOutputStatusText').textContent;
+assert.equal(popup.inspectStrictHeld(providerLog), true);
+assert.strictEqual(document.getElementById('hushReceiptPopup'), firstPopup);
+assert.equal(document.getElementById('hushOutputStatusText').textContent, firstStatus);
 
 console.log('hush-strict-held-diagnostic-popup: ok');
