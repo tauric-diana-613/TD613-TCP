@@ -26,8 +26,9 @@ const rexFixed = repairMaskNativeLayout(rexLong, 'source text', 'bounded-fractur
 assert.ok((rexFixed.match(/\n\s*\n/g) || []).length >= 2, rexFixed);
 
 const luzGeneric = evaluateApertureRepairCandidate({ id: 'luz-list', text: luzChecklist }, 'The file remains unresolved.', { mask: { id: 'luz-index', label: 'Luz of the Index' } });
-const luzNative = evaluateApertureRepairCandidate({ id: 'luz-archive', text: 'Provisional custody anchor: the file remains unresolved.\n\nReturn to item one: the later record reframes the index.' }, 'The file remains unresolved.', { mask: { id: 'luz-index', label: 'Luz of the Index' } });
+const luzNative = evaluateApertureRepairCandidate({ id: 'luz-archive', text: 'Provisional custody anchor: unresolved record remains in the stack.\n\nReturn to item one: the later record reframes the index.' }, 'The file remains unresolved.', { mask: { id: 'luz-index', label: 'Luz of the Index' } });
 assert.ok(luzGeneric.warnings.includes('aperture-luz-checklist-demotion'), JSON.stringify(luzGeneric));
-assert.ok(luzGeneric.penalty > luzNative.penalty, JSON.stringify({ luzGeneric, luzNative }));
+assert.equal(luzNative.warnings.includes('aperture-luz-checklist-demotion'), false, JSON.stringify(luzNative));
+assert.equal(luzNative.luz.luzNativeSignal, true, JSON.stringify(luzNative));
 
 console.log('hush-special-mask-layout-runtime: ok');
