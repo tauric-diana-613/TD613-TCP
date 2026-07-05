@@ -5,13 +5,14 @@ import vm from 'node:vm';
 import { evaluateApertureRepairCandidate } from '../app/engine/hush-aperture-repair-pass.js';
 
 const source = readFileSync(join(process.cwd(), 'app/hush-mask-native-layout-runtime.js'), 'utf8');
+const vmSource = source.replaceAll('export function ', 'function ');
 assert.match(source, /v2-special-mask-lanes/);
 assert.match(source, /repairLuz/);
 assert.match(source, /repairCryo/);
 assert.match(source, /repairRex/);
 
 const context = { window: {}, document: { body: { dataset: {} }, readyState: 'complete', addEventListener() {}, getElementById() { return null; } }, Event: class Event {} };
-vm.runInNewContext(`${source}\nwindow.__TEST_API__ = { repairMaskNativeLayout };`, context);
+vm.runInNewContext(`${vmSource}\nwindow.__TEST_API__ = { repairMaskNativeLayout };`, context);
 const api = context.window.__TEST_API__;
 
 const luzChecklist = '1. Identify the file.\n2. Explain the mismatch.\n3. Note the custody issue.\n4. Summarize the result.';
