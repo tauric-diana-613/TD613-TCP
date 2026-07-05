@@ -1,6 +1,7 @@
 import { evaluatePhase14Candidate } from './hush-phase14-cognitive-authorship-gate.js';
+import { evaluateSourceResidual } from './hush-source-residual-guard.js';
 
-export const HUSH_APERTURE_REPAIR_PASS_VERSION = 'aperture-hush-repair-pass/v3-luz-checklist-shape';
+export const HUSH_APERTURE_REPAIR_PASS_VERSION = 'aperture-hush-repair-pass/v4-source-residual-guard';
 
 const safe = (value = '') => String(value ?? '');
 const lower = (value = '') => safe(value).toLowerCase();
@@ -54,10 +55,18 @@ function checklistShape(value = '') {
   return listed >= 3 && listed / lines.length >= 0.5;
 }
 function luzNativeSignal(value = '') { const body = lower(value); return LUZ_PROCESS_TERMS.some((term) => body.includes(term)); }
+function residualPenalty(residual) {
+  if (!residual) return 0;
+  if (residual.hardHigh) return 1.15;
+  if (residual.sourceResidualScore >= 0.42) return 0.72;
+  if (residual.sourceResidualScore >= 0.34) return 0.36;
+  return Math.min(0.18, residual.sourceResidualScore * 0.35);
+}
 
 export function evaluateApertureRepairCandidate(candidate = {}, sourceText = '', input = {}) {
   const candidateText = safe(candidate.text || '');
   const mask = identifyApertureMask(input);
+  const sourceResidual = evaluateSourceResidual(sourceText, candidateText, { protectedLiterals: input.protectedLiterals || candidate.protectedLiterals || [], escapeVector: input.escapeVector || candidate.escapeVector || null, sourceResidualRisk: input.sourceResidualRisk ?? candidate.sourceResidualRisk });
   const candidateMotifs = motifHits(candidateText);
   const sourceMotifs = motifHits(sourceText);
   const queenieMotifLeak = mask.isQueenie && candidateMotifs.length > 0 && sourceMotifs.length === 0;
@@ -66,6 +75,7 @@ export function evaluateApertureRepairCandidate(candidate = {}, sourceText = '',
     mask_label: input.mask?.label || input.mask?.name || input.maskLabel || '',
     source_text: sourceText,
     candidate_text: candidateText,
+    protected_literals: input.protectedLiterals || candidate.protectedLiterals || [],
     phase13_profile_fidelity_score: 0.74
   });
   const completionHits = completionMarkerHits(candidateText);
@@ -78,14 +88,17 @@ export function evaluateApertureRepairCandidate(candidate = {}, sourceText = '',
   const hardBlockReasons = [];
   if (queenieMotifLeak) hardBlockReasons.push('aperture-queenie-domestic-motif-leak');
   if (maskCompletionSensitive && phase14.completion_prior_score > 0.86 && phase14.process_fidelity_score < 0.58) hardBlockReasons.push('aperture-mask-overcompletion-block');
+  if (sourceResidual.hardHigh && phase14.semantic_integrity_score >= 0.9) hardBlockReasons.push('aperture-source-residual-hard-high');
   const luzPenalty = luzChecklist ? (luzHasNativeSignal ? 0.48 : 0.86) : luzStaticIndex ? 0.62 : 0;
-  const penalty = round4((queenieMotifLeak ? 3.5 : 0) + (weakQueenie ? 0.45 : 0) + luzPenalty + (overcompletion ? Math.min(0.95, 0.36 + phase14.completion_prior_score * 0.42 + completionHits.length * 0.08) : Math.min(0.32, phase14.completion_prior_score * 0.16)));
+  const srcPenalty = residualPenalty(sourceResidual);
+  const penalty = round4((queenieMotifLeak ? 3.5 : 0) + (weakQueenie ? 0.45 : 0) + luzPenalty + srcPenalty + (overcompletion ? Math.min(0.95, 0.36 + phase14.completion_prior_score * 0.42 + completionHits.length * 0.08) : Math.min(0.32, phase14.completion_prior_score * 0.16)));
   const bonus = round4(Math.min(0.42, phase14.process_fidelity_score * 0.22 + phase14.memory_return_score * 0.08 + phase14.closure_asymmetry_score * 0.07 + (mask.isLuz && luzHasNativeSignal && !luzChecklist ? 0.08 : 0)));
   return Object.freeze({
     schema: 'td613-hush-aperture-repair-pass/v1',
     version: HUSH_APERTURE_REPAIR_PASS_VERSION,
-    route: ['runtime_spine', 'phason_seam', 'moire_scan', 'grade_gate', 'sigma_receipt_ledger'],
+    route: ['runtime_spine', 'phason_seam', 'source_residue_adapter', 'moire_scan', 'grade_gate', 'sigma_receipt_ledger'],
     mask,
+    sourceResidual,
     motif: { queenieMotifLeak, candidateMotifs, sourceMotifs, weakQueenie },
     luz: { luzChecklist, luzStaticIndex, luzNativeSignal: luzHasNativeSignal },
     completion: { maskCompletionSensitive, overcompletion, completionHits, completion_prior_score: phase14.completion_prior_score, process_fidelity_score: phase14.process_fidelity_score },
@@ -95,7 +108,7 @@ export function evaluateApertureRepairCandidate(candidate = {}, sourceText = '',
     penalty,
     bonus,
     selectorDelta: round4(bonus - penalty),
-    warnings: [...hardBlockReasons, ...(overcompletion ? ['aperture-mask-overcompletion-penalty'] : []), ...(weakQueenie ? ['aperture-queenie-receipt-native-terms-low'] : []), ...(luzChecklist ? ['aperture-luz-checklist-demotion'] : []), ...(luzStaticIndex ? ['aperture-luz-static-index-demotion'] : [])]
+    warnings: [...hardBlockReasons, ...sourceResidual.warnings.map((warning) => `aperture-${warning}`), ...(overcompletion ? ['aperture-mask-overcompletion-penalty'] : []), ...(weakQueenie ? ['aperture-queenie-receipt-native-terms-low'] : []), ...(luzChecklist ? ['aperture-luz-checklist-demotion'] : []), ...(luzStaticIndex ? ['aperture-luz-static-index-demotion'] : [])]
   });
 }
 
