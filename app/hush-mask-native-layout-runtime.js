@@ -10,12 +10,15 @@ function mode(doc = document) {
   if (/rex|fractura|jagged/.test(label)) return 'bounded-fracture-lines';
   return 'natural-mask-pacing';
 }
+function lineUnits(value = '') { return norm(value).split('\n').map((line) => line.trim()).filter(Boolean); }
 function units(value = '') {
+  const rawLines = lineUnits(value);
+  const listed = rawLines.filter((line) => /^\s*(?:\d+[.)]|[-*•])\s+/.test(line)).length;
+  if (rawLines.length >= 2 && listed >= 2) return rawLines;
   const body = norm(value).replace(/\s+/g, ' ');
   if (!body) return [];
   return body.match(/[^.!?]+[.!?]+(?:["'”’])?|[^.!?]+$/g)?.map((unit) => unit.trim()).filter(Boolean) || [body];
 }
-function lineUnits(value = '') { return norm(value).split('\n').map((line) => line.trim()).filter(Boolean); }
 function blocks(value = '') { return norm(value).split(/\n\s*\n/u).map((part) => part.trim()).filter(Boolean); }
 function topo(value = '') {
   const body = norm(value);
