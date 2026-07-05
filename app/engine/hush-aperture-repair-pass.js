@@ -66,7 +66,7 @@ function residualPenalty(residual) {
 export function evaluateApertureRepairCandidate(candidate = {}, sourceText = '', input = {}) {
   const candidateText = safe(candidate.text || '');
   const mask = identifyApertureMask(input);
-  const sourceResidual = evaluateSourceResidual(sourceText, candidateText);
+  const sourceResidual = evaluateSourceResidual(sourceText, candidateText, { protectedLiterals: input.protectedLiterals || candidate.protectedLiterals || [], escapeVector: input.escapeVector || candidate.escapeVector || null, sourceResidualRisk: input.sourceResidualRisk ?? candidate.sourceResidualRisk });
   const candidateMotifs = motifHits(candidateText);
   const sourceMotifs = motifHits(sourceText);
   const queenieMotifLeak = mask.isQueenie && candidateMotifs.length > 0 && sourceMotifs.length === 0;
@@ -75,6 +75,7 @@ export function evaluateApertureRepairCandidate(candidate = {}, sourceText = '',
     mask_label: input.mask?.label || input.mask?.name || input.maskLabel || '',
     source_text: sourceText,
     candidate_text: candidateText,
+    protected_literals: input.protectedLiterals || candidate.protectedLiterals || [],
     phase13_profile_fidelity_score: 0.74
   });
   const completionHits = completionMarkerHits(candidateText);
@@ -95,7 +96,7 @@ export function evaluateApertureRepairCandidate(candidate = {}, sourceText = '',
   return Object.freeze({
     schema: 'td613-hush-aperture-repair-pass/v1',
     version: HUSH_APERTURE_REPAIR_PASS_VERSION,
-    route: ['runtime_spine', 'phason_seam', 'source_residual_scan', 'moire_scan', 'grade_gate', 'sigma_receipt_ledger'],
+    route: ['runtime_spine', 'phason_seam', 'source_residue_adapter', 'moire_scan', 'grade_gate', 'sigma_receipt_ledger'],
     mask,
     sourceResidual,
     motif: { queenieMotifLeak, candidateMotifs, sourceMotifs, weakQueenie },
