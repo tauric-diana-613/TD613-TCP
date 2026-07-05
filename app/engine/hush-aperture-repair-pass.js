@@ -1,6 +1,6 @@
 import { evaluatePhase14Candidate } from './hush-phase14-cognitive-authorship-gate.js';
 
-export const HUSH_APERTURE_REPAIR_PASS_VERSION = 'aperture-hush-repair-pass/v1-runtime-interdiction';
+export const HUSH_APERTURE_REPAIR_PASS_VERSION = 'aperture-hush-repair-pass/v3-luz-checklist-shape';
 
 const safe = (value = '') => String(value ?? '');
 const lower = (value = '') => safe(value).toLowerCase();
@@ -20,6 +20,7 @@ const QUEENIE_DOMESTIC_MOTIF_PATTERNS = [
 ];
 const RECEIPT_NATIVE_TERMS = ['receipt', 'record', 'paper trail', 'file', 'evidence', 'who said what', 'what changed', 'what got left out', 'the part they thought nobody saved'];
 const OVERCOMPLETION_PATTERNS = [/\boverall\b/i, /\bin conclusion\b/i, /\bultimately\b/i, /\bmoving forward\b/i, /\bthis shows that\b/i, /\bclear and professional\b/i, /\bhandled carefully\b/i, /\bsupportive close\b/i, /\bempowerment\b/i];
+const LUZ_PROCESS_TERMS = ['custody', 'archive', 'archival', 'reclassify', 'classification', 'anchor', 'index', 'record', 'trace', 'provisional', 'return to item', 'item reframes'];
 
 function maskSurface(input = {}) {
   const mask = input.mask || {};
@@ -46,6 +47,13 @@ export function identifyApertureMask(input = {}) {
 function motifHits(value = '') { return QUEENIE_DOMESTIC_MOTIF_PATTERNS.filter((re) => re.test(value)).map((re) => String(re)); }
 function outputHasNativeReceiptTerms(value = '') { const body = lower(value); return RECEIPT_NATIVE_TERMS.some((term) => body.includes(term)); }
 function completionMarkerHits(value = '') { return OVERCOMPLETION_PATTERNS.filter((re) => re.test(value)).map((re) => String(re)); }
+function checklistShape(value = '') {
+  const lines = safe(value).split(/\r?\n/).map((line) => line.trim()).filter(Boolean);
+  if (lines.length < 3) return false;
+  const listed = lines.filter((line) => /^\s*(?:\d+[.)]|[-*•])\s+/.test(line)).length;
+  return listed >= 3 && listed / lines.length >= 0.5;
+}
+function luzNativeSignal(value = '') { const body = lower(value); return LUZ_PROCESS_TERMS.some((term) => body.includes(term)); }
 
 export function evaluateApertureRepairCandidate(candidate = {}, sourceText = '', input = {}) {
   const candidateText = safe(candidate.text || '');
@@ -54,7 +62,7 @@ export function evaluateApertureRepairCandidate(candidate = {}, sourceText = '',
   const sourceMotifs = motifHits(sourceText);
   const queenieMotifLeak = mask.isQueenie && candidateMotifs.length > 0 && sourceMotifs.length === 0;
   const phase14 = evaluatePhase14Candidate({
-    mask_id: mask.isQueenie ? 'grandma-receipts' : mask.isCryo ? 'cryo-cristiano' : mask.isSheree ? 'blackstar-sheree' : input.mask?.id || input.maskId || '',
+    mask_id: mask.isQueenie ? 'grandma-receipts' : mask.isCryo ? 'cryo-cristiano' : mask.isSheree ? 'blackstar-sheree' : mask.isLuz ? 'luz-index' : input.mask?.id || input.maskId || '',
     mask_label: input.mask?.label || input.mask?.name || input.maskLabel || '',
     source_text: sourceText,
     candidate_text: candidateText,
@@ -64,17 +72,22 @@ export function evaluateApertureRepairCandidate(candidate = {}, sourceText = '',
   const maskCompletionSensitive = mask.isCryo || mask.isSheree;
   const overcompletion = maskCompletionSensitive && (phase14.completion_prior_score >= 0.68 || completionHits.length >= 1) && phase14.process_fidelity_score < 0.74;
   const weakQueenie = mask.isQueenie && !outputHasNativeReceiptTerms(candidateText);
+  const luzHasNativeSignal = luzNativeSignal(candidateText);
+  const luzChecklist = mask.isLuz && checklistShape(candidateText);
+  const luzStaticIndex = mask.isLuz && /^(?:\s*(?:\d+[.)]|[-*•])\s+.+\n?){3,}$/m.test(candidateText.trim()) && !/reclassif|reframe|provisional|anchor/i.test(candidateText);
   const hardBlockReasons = [];
   if (queenieMotifLeak) hardBlockReasons.push('aperture-queenie-domestic-motif-leak');
   if (maskCompletionSensitive && phase14.completion_prior_score > 0.86 && phase14.process_fidelity_score < 0.58) hardBlockReasons.push('aperture-mask-overcompletion-block');
-  const penalty = round4((queenieMotifLeak ? 3.5 : 0) + (weakQueenie ? 0.45 : 0) + (overcompletion ? Math.min(0.95, 0.36 + phase14.completion_prior_score * 0.42 + completionHits.length * 0.08) : Math.min(0.32, phase14.completion_prior_score * 0.16)));
-  const bonus = round4(Math.min(0.42, phase14.process_fidelity_score * 0.22 + phase14.memory_return_score * 0.08 + phase14.closure_asymmetry_score * 0.07));
+  const luzPenalty = luzChecklist ? (luzHasNativeSignal ? 0.48 : 0.86) : luzStaticIndex ? 0.62 : 0;
+  const penalty = round4((queenieMotifLeak ? 3.5 : 0) + (weakQueenie ? 0.45 : 0) + luzPenalty + (overcompletion ? Math.min(0.95, 0.36 + phase14.completion_prior_score * 0.42 + completionHits.length * 0.08) : Math.min(0.32, phase14.completion_prior_score * 0.16)));
+  const bonus = round4(Math.min(0.42, phase14.process_fidelity_score * 0.22 + phase14.memory_return_score * 0.08 + phase14.closure_asymmetry_score * 0.07 + (mask.isLuz && luzHasNativeSignal && !luzChecklist ? 0.08 : 0)));
   return Object.freeze({
     schema: 'td613-hush-aperture-repair-pass/v1',
     version: HUSH_APERTURE_REPAIR_PASS_VERSION,
     route: ['runtime_spine', 'phason_seam', 'moire_scan', 'grade_gate', 'sigma_receipt_ledger'],
     mask,
     motif: { queenieMotifLeak, candidateMotifs, sourceMotifs, weakQueenie },
+    luz: { luzChecklist, luzStaticIndex, luzNativeSignal: luzHasNativeSignal },
     completion: { maskCompletionSensitive, overcompletion, completionHits, completion_prior_score: phase14.completion_prior_score, process_fidelity_score: phase14.process_fidelity_score },
     phase14,
     hardBlocked: hardBlockReasons.length > 0,
@@ -82,7 +95,7 @@ export function evaluateApertureRepairCandidate(candidate = {}, sourceText = '',
     penalty,
     bonus,
     selectorDelta: round4(bonus - penalty),
-    warnings: [...hardBlockReasons, ...(overcompletion ? ['aperture-mask-overcompletion-penalty'] : []), ...(weakQueenie ? ['aperture-queenie-receipt-native-terms-low'] : [])]
+    warnings: [...hardBlockReasons, ...(overcompletion ? ['aperture-mask-overcompletion-penalty'] : []), ...(weakQueenie ? ['aperture-queenie-receipt-native-terms-low'] : []), ...(luzChecklist ? ['aperture-luz-checklist-demotion'] : []), ...(luzStaticIndex ? ['aperture-luz-static-index-demotion'] : [])]
   });
 }
 
