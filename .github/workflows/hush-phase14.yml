@@ -1,0 +1,46 @@
+name: Hush Phase 14
+
+on:
+  pull_request:
+    branches: [ main ]
+    paths:
+      - 'app/data/hush-phase14-cognitive-process-profiles.js'
+      - 'app/engine/hush-phase14-cognitive-authorship-gate.js'
+      - 'scripts/run-hush-phase14-cognitive-audit.mjs'
+      - 'tests/hush-phase14-*.test.mjs'
+      - 'docs/hush/PHASE_14_*.md'
+      - 'package.json'
+      - '.github/workflows/hush-phase14.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  phase14:
+    name: Hush Phase 14 cognitive gate
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+          cache: npm
+      - run: npm ci
+      - name: Phase 14 process profiles
+        run: node tests/hush-phase14-cognitive-process-profile.test.mjs
+      - name: Phase 14 completion prior
+        run: node tests/hush-phase14-completion-prior-penalty.test.mjs
+      - name: Phase 14 temporal drafting
+        run: node tests/hush-phase14-temporal-drafting-signature.test.mjs
+      - name: Phase 14 memory return
+        run: node tests/hush-phase14-memory-return-behavior.test.mjs
+      - name: Phase 14 selector rerank
+        run: node tests/hush-phase14-selector-rerank.test.mjs
+      - name: Phase 14 detector nonclaims
+        run: node tests/hush-phase14-detector-nonclaims.test.mjs
+      - name: Phase 14 audit runner
+        run: node tests/hush-phase14-audit-runner.test.mjs
+      - name: Phase 14 audit command
+        run: node scripts/run-hush-phase14-cognitive-audit.mjs
