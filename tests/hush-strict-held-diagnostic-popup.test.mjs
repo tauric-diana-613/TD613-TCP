@@ -80,4 +80,33 @@ assert.equal(popup.inspectStrictHeld(providerLog), true);
 assert.strictEqual(document.getElementById('hushReceiptPopup'), firstPopup);
 assert.equal(document.getElementById('hushOutputStatusText').textContent, firstStatus);
 
+const successLog = {
+  schema: 'td613-hush-provider-log/v1',
+  endpoint: '/api/hush-generate-strict',
+  httpStatus: 200,
+  payload: {
+    ok: true,
+    provider: 'gemini',
+    model: 'gemini-flash-lite-latest',
+    warnings: ['prompt-detox-active', 'strict-budgeted-upstream', 'strict-upstream-budget-honored', 'strict-normal-upstream-budget-applied'],
+    candidates: [{ text: 'Remote candidate released for review.' }, { text: 'Second remote candidate.' }],
+    attempts: [
+      { model: 'gemini-2.5-flash-lite', ok: false, status: 503, parsedCandidates: 0, usableCandidates: 0, warnings: ['provider-returned-invalid-json'], error: { code: 503, status: 'UNAVAILABLE' } },
+      { model: 'gemini-flash-lite-latest', ok: true, status: 200, parsedCandidates: 2, usableCandidates: 2, warnings: ['prompt-detox-active'], error: null }
+    ],
+    requestReceipt: { strictNoFallback: true, strictBudgetedUpstream: true, strictBudgetHonored: true }
+  }
+};
+
+document.getElementById('hushReceiptPopup').remove();
+window.__TD613_HUSH_NO_FALLBACK_RECEIPT = null;
+window.__TD613_HUSH_FULL_DEBUG_PACKET = null;
+document.getElementById('acceptWarning').hidden = true;
+document.getElementById('hushOutputStatusText').textContent = '';
+assert.equal(popup.inspectStrictHeld(successLog), false);
+assert.equal(document.getElementById('hushReceiptPopup'), null);
+assert.equal(window.__TD613_HUSH_NO_FALLBACK_RECEIPT, null);
+assert.equal(window.__TD613_HUSH_FULL_DEBUG_PACKET, null);
+assert.equal(document.getElementById('acceptWarning').hidden, true);
+
 console.log('hush-strict-held-diagnostic-popup: ok');

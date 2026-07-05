@@ -1,4 +1,4 @@
-const VERSION = 'hush-strict-held-diagnostic-popup/v3-crash-guard';
+const VERSION = 'hush-strict-held-diagnostic-popup/v4-success-guard';
 let lastRenderedSignature = '';
 
 function $(id) { return document.getElementById(id); }
@@ -11,6 +11,8 @@ function hash(value = '') {
   return (h >>> 0).toString(16).padStart(8, '0');
 }
 function unique(values = []) { return [...new Set(arr(values).map(text).filter(Boolean))]; }
+function totalUsableCandidates(payload = {}) { return arr(payload.attempts).reduce((sum, attempt) => sum + Number(attempt?.usableCandidates || 0), 0) + arr(payload.candidates).length; }
+function hasSuccessCandidates(payload = {}) { return payload.ok === true && totalUsableCandidates(payload) > 0; }
 
 function copyText(value = '') {
   if (navigator.clipboard?.writeText) return navigator.clipboard.writeText(value);
@@ -24,15 +26,18 @@ function copyText(value = '') {
 }
 
 function heldReason(payload = {}) {
-  return text(payload.reason || payload.error || payload.message || payload.model || '');
+  return text(payload.reason || payload.error || payload.message || '');
 }
 
 function isStrictHeld(payload = {}) {
+  if (hasSuccessCandidates(payload)) return false;
   const reason = heldReason(payload);
   const warnings = unique(payload.warnings).join(' ');
+  const failureSurface = `${reason} ${warnings}`;
   return payload.held === true
     || payload.status === 'held'
-    || /strict[_-]budgeted[_-]upstream|strict[_-]api[_-]no[_-]usable[_-]candidates|no[_-]local[_-]fallback/i.test(`${reason} ${warnings}`);
+    || /strict[_-]api[_-]no[_-]usable[_-]candidates|no[_-]local[_-]fallback|strict[_-]budgeted[_-]upstream[_-](?:no[_-]releasable[_-]candidate|preflight[_-]stop)|provider[_-]returned[_-]invalid[_-]json|request_failed|non_json_response/i.test(failureSurface)
+    || (payload.ok === false && totalUsableCandidates(payload) === 0);
 }
 
 function summarizeAttempts(payload = {}) {
