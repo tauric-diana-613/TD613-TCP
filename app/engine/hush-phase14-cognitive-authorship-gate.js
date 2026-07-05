@@ -23,10 +23,14 @@ function variance(values = []) {
   const avg = values.reduce((sum, value) => sum + value, 0) / values.length;
   return values.reduce((sum, value) => sum + ((value - avg) ** 2), 0) / values.length;
 }
+function markerForms(needle = '') {
+  const raw = String(needle).toLowerCase();
+  return [raw, raw.replace(/[-_]+/g, ' '), raw.replace(/[-_]+/g, '')];
+}
 function ratioHits(haystack = '', needles = []) {
   const lower = text(haystack).toLowerCase();
   if (!needles.length) return 0;
-  return needles.filter((needle) => lower.includes(String(needle).toLowerCase())).length / needles.length;
+  return needles.filter((needle) => markerForms(needle).some((form) => form && lower.includes(form))).length / needles.length;
 }
 function lexicalAnchors(value = '') {
   const stop = new Set(['the', 'and', 'that', 'this', 'with', 'from', 'into', 'when', 'then', 'there', 'their', 'about', 'again', 'because', 'should', 'would', 'could', 'still']);
