@@ -1,4 +1,4 @@
-const VERSION = 'hush-layout-topology-guard/v2-live-output';
+const VERSION = 'hush-layout-topology-guard/v3-underdistributed-output';
 
 function norm(value = '') { return String(value ?? '').replace(/\r\n?/g, '\n'); }
 function topology(value = '') {
@@ -52,17 +52,17 @@ function patchPacket(packet = {}) {
   }
   const engine = packet.stylometry_engine || (packet.stylometry_engine = {});
   engine.layout_cadence_instruction = instruction;
-  engine.generator_constraints = { ...(engine.generator_constraints || {}), preserve_layout_topology: true, preserve_source_paragraph_units: true, do_not_flatten_paragraph_sensitive_source: true, preserve_source_layout_cadence: false, preserve_mask_layout_cadence: true, output_layout_mode: m };
-  packet.generator_constraints = { ...(packet.generator_constraints || {}), preserve_layout_topology: true, preserve_source_paragraph_units: true, do_not_flatten_paragraph_sensitive_source: true, preserve_source_layout_cadence: false, preserve_mask_layout_cadence: true, output_layout_mode: m };
+  engine.generator_constraints = { ...(engine.generator_constraints || {}), preserve_layout_topology: true, preserve_source_paragraph_units: true, do_not_flatten_paragraph_sensitive_source: true, preserve_source_layout_cadence: false, preserve_mask_layout_cadence: true, output_layout_mode: m, avoid_underdistributed_single_break_output: true };
+  packet.generator_constraints = { ...(packet.generator_constraints || {}), preserve_layout_topology: true, preserve_source_paragraph_units: true, do_not_flatten_paragraph_sensitive_source: true, preserve_source_layout_cadence: false, preserve_mask_layout_cadence: true, output_layout_mode: m, avoid_underdistributed_single_break_output: true };
   return packet;
 }
 function patchContract(contract = {}) {
   if (!contract || typeof contract !== 'object') return contract;
   const packet = contract.flightPacket || contract.flight_packet || null;
   const m = mode(packet || contract);
-  const instruction = law(m);
-  contract.sourceLayoutPolicy = { version: VERSION, source_layout_topology_required: true, preserve_source_paragraph_units: true, exact_source_linebreak_pattern_exported: false, mask_layout_rules_drive_output: true, instruction };
-  contract.rules = Array.isArray(contract.rules) ? contract.rules.filter((rule) => !/reading context only|do not copy or preserve source line breaks/i.test(String(rule || ''))).concat(instruction) : [instruction];
+  const instruction = `${law(m)} Avoid outputs with one short opening paragraph followed by one long slab; redistribute paragraph breaks across the full output when the candidate is multi-unit.`;
+  contract.sourceLayoutPolicy = { version: VERSION, source_layout_topology_required: true, preserve_source_paragraph_units: true, exact_source_linebreak_pattern_exported: false, mask_layout_rules_drive_output: true, avoid_underdistributed_single_break_output: true, instruction };
+  contract.rules = Array.isArray(contract.rules) ? contract.rules.filter((rule) => !/reading context only|do not copy or preserve source line breaks|Avoid outputs with one short opening paragraph/i.test(String(rule || ''))).concat(instruction) : [instruction];
   if (packet) patchPacket(packet);
   return contract;
 }
@@ -81,25 +81,58 @@ function splitUnits(value = '') {
   const semiUnits = body.split(/\s*;\s*/u).map((unit) => unit.trim()).filter(Boolean);
   return semiUnits.length > 1 ? semiUnits.map((unit, index) => index < semiUnits.length - 1 ? `${unit};` : unit) : [body];
 }
+function wordCount(value = '') { return (String(value || '').match(/[A-Za-z0-9][A-Za-z0-9'-]*/g) || []).length; }
+function paragraphBlocks(value = '') { return norm(value).split(/\n\s*\n/u).map((part) => part.trim()).filter(Boolean); }
+function targetGroupCount(units = [], sourceTopo = {}, outputMode = 'natural-mask-pacing') {
+  if (outputMode === 'indexed-anchor-blocks' || outputMode === 'bounded-fracture-lines') return units.length;
+  if (outputMode === 'short-handoff-paragraphs') return Math.min(2, Math.max(1, units.length));
+  if (sourceTopo.has_paragraph_breaks) return Math.min(sourceTopo.paragraph_break_count + 1, units.length);
+  if (units.length >= 9) return 4;
+  if (units.length >= 5) return 3;
+  if (units.length >= 3) return 2;
+  return 1;
+}
+function hasUnderdistributedBreaks(value = '', sourceText = '', outputMode = 'natural-mask-pacing') {
+  const clean = norm(value).trim();
+  if (!clean.includes('\n')) return true;
+  const units = splitUnits(clean);
+  if (units.length <= 2) return false;
+  const blocks = paragraphBlocks(clean);
+  const sourceTopo = topology(sourceText);
+  const target = targetGroupCount(units, sourceTopo, outputMode);
+  const maxWords = Math.max(...blocks.map(wordCount), 0);
+  const minWords = Math.min(...blocks.map(wordCount), Infinity);
+  if (outputMode === 'indexed-anchor-blocks' || outputMode === 'bounded-fracture-lines') return topology(clean).non_empty_line_count < Math.min(units.length, 3);
+  if (blocks.length < target) return true;
+  if (blocks.length <= 2 && units.length >= 5 && maxWords >= 85) return true;
+  if (blocks.length === 2 && minWords <= 18 && maxWords >= 60) return true;
+  return false;
+}
+function regroupUnits(units = [], sourceTopo = {}, outputMode = 'natural-mask-pacing') {
+  if (outputMode === 'indexed-anchor-blocks' || outputMode === 'bounded-fracture-lines') return units.join('\n');
+  if (outputMode === 'short-handoff-paragraphs') return units.length <= 2 ? units.join('\n\n') : `${units.slice(0, 2).join(' ')}\n\n${units.slice(2).join(' ')}`;
+  const target = targetGroupCount(units, sourceTopo, outputMode);
+  if (target <= 1) return units.join(' ');
+  const groups = [];
+  const base = Math.floor(units.length / target);
+  const rem = units.length % target;
+  let cursor = 0;
+  for (let i = 0; i < target; i += 1) {
+    const size = base + (i < rem ? 1 : 0);
+    groups.push(units.slice(cursor, cursor + size).join(' '));
+    cursor += size;
+  }
+  return groups.filter(Boolean).join('\n\n');
+}
 function repairOutputLayout(output = '', sourceText = '', outputMode = 'natural-mask-pacing') {
   const clean = norm(output).trim();
-  if (!clean || clean.includes('\n')) return clean;
+  if (!clean) return clean;
   const topo = topology(sourceText);
-  const needsLayout = topo.has_paragraph_breaks || topo.has_single_line_breaks || outputMode !== 'natural-mask-pacing';
-  if (!needsLayout) return clean;
   const units = splitUnits(clean);
-  if (units.length <= 1) return clean;
-  if (outputMode === 'indexed-anchor-blocks') return units.join('\n');
-  if (outputMode === 'bounded-fracture-lines') return units.join('\n');
-  if (outputMode === 'short-handoff-paragraphs') return units.length <= 2 ? units.join('\n\n') : `${units.slice(0, 2).join(' ')}\n\n${units.slice(2).join(' ')}`;
-  if (topo.has_paragraph_breaks) {
-    const target = Math.min(topo.paragraph_break_count + 1, units.length);
-    const groupSize = Math.ceil(units.length / target);
-    const groups = [];
-    for (let i = 0; i < units.length; i += groupSize) groups.push(units.slice(i, i + groupSize).join(' '));
-    return groups.join('\n\n');
-  }
-  return units.join('\n');
+  const needsLayout = topo.has_paragraph_breaks || topo.has_single_line_breaks || outputMode !== 'natural-mask-pacing' || hasUnderdistributedBreaks(clean, sourceText, outputMode);
+  if (!needsLayout || units.length <= 1) return clean;
+  if (!hasUnderdistributedBreaks(clean, sourceText, outputMode) && clean.includes('\n')) return clean;
+  return regroupUnits(units, topo, outputMode);
 }
 function repairLiveOutput(doc = document) {
   const input = doc?.getElementById?.('messageDraftInput');
@@ -128,7 +161,7 @@ function scheduleLiveRepair() {
 }
 if (typeof window !== 'undefined') {
   const prior = window.__TD613_HUSH_SOURCE_LAYOUT_POLICY__ || {};
-  window.__TD613_HUSH_LAYOUT_TOPOLOGY_GUARD__ = Object.freeze({ version: VERSION, topology, patchPacket, patchContract, normalizeOutboundPacket, mode, repairOutputLayout, repairLiveOutput });
+  window.__TD613_HUSH_LAYOUT_TOPOLOGY_GUARD__ = Object.freeze({ version: VERSION, topology, patchPacket, patchContract, normalizeOutboundPacket, mode, repairOutputLayout, repairLiveOutput, hasUnderdistributedBreaks });
   window.__TD613_HUSH_SOURCE_LAYOUT_POLICY__ = { ...prior, version: VERSION, captureLayoutTopology: topology, normalizePacket: patchPacket, normalizeContract: patchContract, normalizeOutboundPacket };
   window.addEventListener('td613:hush:outbound-packet', handle);
   window.addEventListener('td613:hush:patch38-result', scheduleLiveRepair);
