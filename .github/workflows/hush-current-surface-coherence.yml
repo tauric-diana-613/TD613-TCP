@@ -10,16 +10,19 @@ on:
       - 'app/hush-compare-layout-custody.js'
       - 'app/hush-layout-topology-guard.js'
       - 'app/hush-mask-native-layout-runtime.js'
+      - 'app/hush-candidate-carryover-runtime.js'
       - 'app/hush-strict-held-diagnostic-popup.js'
       - 'app/hush-source-layout-policy.js'
       - 'app/engine/hush-aperture-repair-pass.js'
       - 'app/engine/hush-source-residual-guard.js'
+      - 'app/engine/hush-syntax-recomposer.js'
       - 'scripts/hush-test-suite.txt'
       - 'vercel.json'
       - 'tests/hush-current-surface-coherence.test.mjs'
       - 'tests/hush-layout-topology-guard.test.mjs'
       - 'tests/hush-special-mask-layout-runtime.test.mjs'
       - 'tests/hush-source-residual-guard.test.mjs'
+      - 'tests/hush-carryover-selection-runtime.test.mjs'
       - 'tests/hush-strict-held-diagnostic-popup.test.mjs'
       - '.github/workflows/hush-current-surface-coherence.yml'
   workflow_dispatch:
@@ -43,4 +46,5 @@ jobs:
       - run: node tests/hush-layout-topology-guard.test.mjs
       - run: node tests/hush-special-mask-layout-runtime.test.mjs
       - run: node tests/hush-source-residual-guard.test.mjs
+      - run: node tests/hush-carryover-selection-runtime.test.mjs
       - run: node tests/hush-strict-held-diagnostic-popup.test.mjs
