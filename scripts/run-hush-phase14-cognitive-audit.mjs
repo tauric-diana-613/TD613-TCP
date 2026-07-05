@@ -3,8 +3,10 @@ import path from 'node:path';
 import { buildPhase14CaseBank, evaluatePhase14Candidate, rerankPhase14Candidates } from '../app/engine/hush-phase14-cognitive-authorship-gate.js';
 import { HUSH_PHASE14_COGNITIVE_PROCESS_PROFILES, HUSH_PHASE14_DETECTOR_NON_CLAIMS } from '../app/data/hush-phase14-cognitive-process-profiles.js';
 
+const QUEENIE_TIME_BEARING_FIXTURE = 'Memory before proof: the receipt has to warm up before it speaks.\n\nFILE-72 still stays attached. The footer mismatch is not resolved; hold that as the aside.\n\nBack to the receipt: that part matters later because this is a receipt return with evidence with attitude.';
+
 export async function buildPhase14CognitiveAudit() {
-  const cases = buildPhase14CaseBank();
+  const cases = buildPhase14CaseBank().map((item) => item.case_id === 'time-bearing-faithful' ? { ...item, candidate_text: QUEENIE_TIME_BEARING_FIXTURE } : item);
   const evaluations = cases.map((item) => evaluatePhase14Candidate(item));
   const selector = rerankPhase14Candidates({
     mask_id: 'grandma-receipts',
