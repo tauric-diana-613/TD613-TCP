@@ -1,7 +1,7 @@
 import { evaluatePhase14Candidate } from './hush-phase14-cognitive-authorship-gate.js';
 import { evaluateSourceResidual } from './hush-source-residual-guard.js';
 
-export const HUSH_APERTURE_REPAIR_PASS_VERSION = 'aperture-hush-repair-pass/v4-source-residual-guard';
+export const HUSH_APERTURE_REPAIR_PASS_VERSION = 'aperture-hush-repair-pass/v5-contained-residual-review';
 
 const safe = (value = '') => String(value ?? '');
 const lower = (value = '') => safe(value).toLowerCase();
@@ -88,7 +88,8 @@ export function evaluateApertureRepairCandidate(candidate = {}, sourceText = '',
   const hardBlockReasons = [];
   if (queenieMotifLeak) hardBlockReasons.push('aperture-queenie-domestic-motif-leak');
   if (maskCompletionSensitive && phase14.completion_prior_score > 0.86 && phase14.process_fidelity_score < 0.58) hardBlockReasons.push('aperture-mask-overcompletion-block');
-  if (sourceResidual.hardHigh && phase14.semantic_integrity_score >= 0.9) hardBlockReasons.push('aperture-source-residual-hard-high');
+  const reviewReasons = [];
+  if (sourceResidual.hardHigh && phase14.semantic_integrity_score >= 0.9) reviewReasons.push('source-residual-review-high');
   const luzPenalty = luzChecklist ? (luzHasNativeSignal ? 0.48 : 0.86) : luzStaticIndex ? 0.62 : 0;
   const srcPenalty = residualPenalty(sourceResidual);
   const penalty = round4((queenieMotifLeak ? 3.5 : 0) + (weakQueenie ? 0.45 : 0) + luzPenalty + srcPenalty + (overcompletion ? Math.min(0.95, 0.36 + phase14.completion_prior_score * 0.42 + completionHits.length * 0.08) : Math.min(0.32, phase14.completion_prior_score * 0.16)));
@@ -105,10 +106,11 @@ export function evaluateApertureRepairCandidate(candidate = {}, sourceText = '',
     phase14,
     hardBlocked: hardBlockReasons.length > 0,
     hardBlockReasons,
+    reviewReasons,
     penalty,
     bonus,
     selectorDelta: round4(bonus - penalty),
-    warnings: [...hardBlockReasons, ...sourceResidual.warnings.map((warning) => `aperture-${warning}`), ...(overcompletion ? ['aperture-mask-overcompletion-penalty'] : []), ...(weakQueenie ? ['aperture-queenie-receipt-native-terms-low'] : []), ...(luzChecklist ? ['aperture-luz-checklist-demotion'] : []), ...(luzStaticIndex ? ['aperture-luz-static-index-demotion'] : [])]
+    warnings: [...hardBlockReasons, ...reviewReasons, ...sourceResidual.warnings.map((warning) => `source-${warning}`), ...(overcompletion ? ['mask-overcompletion-penalty'] : []), ...(weakQueenie ? ['queenie-receipt-native-terms-low'] : []), ...(luzChecklist ? ['luz-checklist-demotion'] : []), ...(luzStaticIndex ? ['luz-static-index-demotion'] : [])]
   });
 }
 
