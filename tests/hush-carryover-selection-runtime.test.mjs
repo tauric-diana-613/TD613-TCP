@@ -8,6 +8,11 @@ import { applyCarryoverSelection } from '../app/hush-candidate-carryover-runtime
 const bridge = readFileSync(join(process.cwd(), 'app/hush-compare-layout-custody.js'), 'utf8');
 assert.match(bridge, /hush-candidate-carryover-runtime\.js\?v=202607052325/);
 
+const runtimeSource = readFileSync(join(process.cwd(), 'app/hush-candidate-carryover-runtime.js'), 'utf8');
+assert.match(runtimeSource, /v2-live-candidate-scoring/);
+assert.match(runtimeSource, /buildSourceResidue/);
+assert.match(runtimeSource, /scoreSourceResidue/);
+
 const syntaxSource = readFileSync(join(process.cwd(), 'app/engine/hush-syntax-recomposer.js'), 'utf8');
 assert.match(syntaxSource, /source-detached-brief/);
 assert.match(syntaxSource, /residue-break-turn/);
@@ -23,22 +28,25 @@ const detachedRisk = scoreSourceResidue(buildSourceResidue({ sourceText, outputT
 const copiedRisk = scoreSourceResidue(buildSourceResidue({ sourceText, outputText: sourceText, protectedLiterals: ['FILE-72'] })).sourceResidueRisk;
 assert.ok(detachedRisk < copiedRisk, JSON.stringify({ detached: detached.text, detachedRisk, copiedRisk }));
 
+const lowerText = 'Anchor first: FILE-72. Keep the claim narrow. The unresolved footer mismatch stays with the evidence record.';
 const result = {
   selectedCandidateId: 'too-close',
-  selectedOutput: 'too close',
+  selectedOutput: sourceText,
   candidates: [
-    { id: 'too-close', text: 'too close', finalScore: 0.91, releasePolicy: { mayPopulateOutput: true }, payloadIntegrity: { passed: true, score: 1 }, sourceResidueScore: { sourceResidueRisk: 0.76 }, escapeVector: { scores: { semanticFidelity: 0.94 } } },
-    { id: 'lower-carry', text: 'lower carry', finalScore: 0.74, releasePolicy: { mayPopulateOutput: true }, payloadIntegrity: { passed: true, score: 1 }, sourceResidueScore: { sourceResidueRisk: 0.39 }, escapeVector: { scores: { semanticFidelity: 0.89 } } }
+    { id: 'too-close', text: sourceText, finalScore: 0.91, releasePolicy: { mayPopulateOutput: true }, payloadIntegrity: { passed: true, score: 1 }, escapeVector: { scores: { semanticFidelity: 0.96 } } },
+    { id: 'lower-carry', text: lowerText, finalScore: 0.74, releasePolicy: { mayPopulateOutput: true }, payloadIntegrity: { passed: true, score: 1 }, escapeVector: { scores: { semanticFidelity: 0.88 } } }
   ],
-  patch38Diagnostics: { selectedCandidateId: 'too-close' }
+  patch38Diagnostics: { selectedCandidateId: 'too-close' },
+  outboundPacket: { contract: { sourceText, protectedLiterals: ['FILE-72'] } }
 };
 const outputNode = { value: '', dataset: {}, dispatchEvent(event) { this.lastEvent = event.type; } };
 const doc = { getElementById(id) { return id === 'protectedOutputInput' ? outputNode : { value: sourceText }; } };
 assert.equal(applyCarryoverSelection(result, doc), true);
 assert.equal(result.selectedCandidateId, 'lower-carry');
-assert.equal(result.selectedOutput, 'lower carry');
-assert.equal(outputNode.value, 'lower carry');
-assert.equal(outputNode.dataset.carryoverSelectionRuntime, 'hush-candidate-carryover-runtime/v1');
+assert.equal(result.selectedOutput, lowerText);
+assert.equal(outputNode.value, lowerText);
+assert.equal(outputNode.dataset.carryoverSelectionRuntime, 'hush-candidate-carryover-runtime/v2-live-candidate-scoring');
 assert.equal(result.carryoverSelectionReceipt.applied, true);
+assert.ok(result.carryoverSelectionReceipt.before.carry > result.carryoverSelectionReceipt.after.carry, JSON.stringify(result.carryoverSelectionReceipt));
 
 console.log('hush-carryover-selection-runtime: ok');
