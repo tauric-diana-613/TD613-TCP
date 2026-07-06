@@ -1,4 +1,4 @@
-export const HUSH_SOURCE_RESIDUE_VERSION = 'phase-18';
+export const HUSH_SOURCE_RESIDUE_VERSION = 'phase-18.1-calibrated-body-risk';
 
 const safeText = (value) => String(value ?? '');
 const asArray = (value) => Array.isArray(value) ? value.filter(Boolean) : [];
@@ -84,6 +84,10 @@ function phraseRetention(sourceTokens = [], outputTokens = [], side = 'opening',
   return outputTokens.join(' ').includes(sourcePhrase.join(' ')) ? 1 : 0;
 }
 
+function riskStatus(risk = 0) {
+  return risk > 0.82 ? 'severe' : risk > 0.62 ? 'attached' : risk > 0.42 ? 'review' : 'detached';
+}
+
 export function buildSourceResidue(input = {}) {
   const sourceText = safeText(input.sourceText);
   const outputText = safeText(input.outputText ?? input.text);
@@ -103,25 +107,27 @@ export function buildSourceResidue(input = {}) {
   const openingPhraseRetention = phraseRetention(sourceTokens, outputTokens, 'opening');
   const closingPhraseRetention = phraseRetention(sourceTokens, outputTokens, 'closing');
   const bigramOverlap = jaccard(ngrams(sourceTokens, 2), ngrams(outputTokens, 2));
-  const cadenceBodyRisk = clamp((nonLiteralTokenRetention * 0.30) + (Math.min(longestCopiedRun / 12, 1) * 0.22) + (sourceOrderRetention * 0.16) + (sentenceSkeletonSimilarity * 0.14) + (functionWordFrameOverlap * 0.08) + (bigramOverlap * 0.10));
+  const contiguousRisk = Math.min(longestCopiedRun / 10, 1);
+  const boundaryRisk = (openingPhraseRetention * 0.5) + (closingPhraseRetention * 0.5);
+  const cadenceBodyRisk = clamp((nonLiteralTokenRetention * 0.08) + (contiguousRisk * 0.27) + (sourceOrderRetention * 0.16) + (sentenceSkeletonSimilarity * 0.13) + (functionWordFrameOverlap * 0.07) + (bigramOverlap * 0.19) + (boundaryRisk * 0.10));
   const warnings = [];
-  if (nonLiteralTokenRetention > 0.85 || longestCopiedRun > 8 || sentenceSkeletonSimilarity > 0.88) warnings.push('source-body-attached');
-  if (nonLiteralTokenRetention > 0.95 || longestCopiedRun >= 12 || cadenceBodyRisk > 0.82) warnings.push('source-body-severe');
+  if (cadenceBodyRisk > 0.62 || longestCopiedRun > 8 || bigramOverlap > 0.52 || (sentenceSkeletonSimilarity > 0.9 && sourceOrderRetention > 0.7)) warnings.push('source-body-attached');
+  if (cadenceBodyRisk > 0.82 || longestCopiedRun >= 12 || (bigramOverlap > 0.68 && sourceOrderRetention > 0.82)) warnings.push('source-body-severe');
   if (openingPhraseRetention) warnings.push('source-opening-retained');
   if (closingPhraseRetention) warnings.push('source-closing-retained');
   return {
     version: HUSH_SOURCE_RESIDUE_VERSION,
-    metrics: { nonLiteralTokenRetention: round(nonLiteralTokenRetention), sourceCoverage: round(sourceCoverage), longestCopiedRun, sourceOrderRetention: round(sourceOrderRetention), sentenceSkeletonSimilarity: round(sentenceSkeletonSimilarity), functionWordFrameOverlap: round(functionWordFrameOverlap), openingPhraseRetention, closingPhraseRetention, bigramOverlap: round(bigramOverlap), cadenceBodyRisk: round(cadenceBodyRisk) },
-    status: cadenceBodyRisk > 0.82 ? 'severe' : cadenceBodyRisk > 0.62 ? 'attached' : cadenceBodyRisk > 0.42 ? 'review' : 'detached',
+    metrics: { nonLiteralTokenRetention: round(nonLiteralTokenRetention), sourceCoverage: round(sourceCoverage), longestCopiedRun, sourceOrderRetention: round(sourceOrderRetention), sentenceSkeletonSimilarity: round(sentenceSkeletonSimilarity), functionWordFrameOverlap: round(functionWordFrameOverlap), openingPhraseRetention, closingPhraseRetention, bigramOverlap: round(bigramOverlap), contiguousRisk: round(contiguousRisk), boundaryRisk: round(boundaryRisk), cadenceBodyRisk: round(cadenceBodyRisk) },
+    status: riskStatus(cadenceBodyRisk),
     warnings: [...new Set(warnings)],
-    limitations: ['Source residue measures non-literal source-body retention for local review; it is not an external recognition prediction.']
+    limitations: ['Source residue now separates allowed payload continuity from copied source-body structure; it is not an external recognition prediction.']
   };
 }
 
 export function scoreSourceResidue(input = {}) {
   const residue = input.metrics ? input : buildSourceResidue(input);
   const risk = Number(residue.metrics?.cadenceBodyRisk ?? 0);
-  return { version: HUSH_SOURCE_RESIDUE_VERSION, sourceResidueRisk: round(clamp(risk)), sourceResidueScore: round(clamp(1 - risk)), status: residue.status || 'review', warnings: asArray(residue.warnings) };
+  return { version: HUSH_SOURCE_RESIDUE_VERSION, sourceResidueRisk: round(clamp(risk)), sourceResidueScore: round(clamp(1 - risk)), status: residue.status || riskStatus(risk), warnings: asArray(residue.warnings) };
 }
 
 export function summarizeSourceResidue(input = {}) {
