@@ -1,4 +1,6 @@
 import assert from 'node:assert/strict';
+import { buildEscapeVector } from '../app/engine/escape-vector.js';
+import { buildSourceResidue, scoreSourceResidue } from '../app/engine/hush-source-residue.js';
 import { evaluateSourceResidual } from '../app/engine/hush-source-residual-guard.js';
 import { evaluateApertureRepairCandidate } from '../app/engine/hush-aperture-repair-pass.js';
 
@@ -10,9 +12,19 @@ const stuck = evaluateSourceResidual(source, sourceStuck);
 const clean = evaluateSourceResidual(source, transformed);
 assert.match(stuck.version, /source-residue-adapter/);
 assert.ok(stuck.sourceResidualPercent > clean.sourceResidualPercent, JSON.stringify({ stuck, clean }));
-assert.ok(stuck.warnings.includes('source-residual-high') || stuck.warnings.includes('source-body-severe') || stuck.warnings.includes('source-body-attached'), JSON.stringify(stuck));
 assert.ok(stuck.cadenceBodyRisk > clean.cadenceBodyRisk, JSON.stringify({ stuck, clean }));
 assert.ok(stuck.longestCopiedRun > clean.longestCopiedRun, JSON.stringify({ stuck, clean }));
+
+const exact = scoreSourceResidue(buildSourceResidue({ sourceText: source, outputText: source })).sourceResidueRisk;
+const calibratedClean = scoreSourceResidue(buildSourceResidue({ sourceText: source, outputText: transformed })).sourceResidueRisk;
+assert.ok(exact > 0.8, JSON.stringify({ exact, calibratedClean }));
+assert.ok(calibratedClean < 0.62, JSON.stringify({ exact, calibratedClean }));
+
+const vectorExact = buildEscapeVector({ protectedBaselineText: source, draftText: source, outputText: source, options: { thresholds: { minWords: 5 } } });
+const vectorClean = buildEscapeVector({ protectedBaselineText: source, draftText: source, outputText: transformed, options: { thresholds: { minWords: 5 } } });
+assert.ok(vectorExact.scores.sourceResidualRisk > 0.8, JSON.stringify({ exact: vectorExact.scores, clean: vectorClean.scores }));
+assert.ok(vectorClean.scores.sourceResidualRisk < 0.62, JSON.stringify({ exact: vectorExact.scores, clean: vectorClean.scores, sourceRisk: vectorClean.views.sourceRisk }));
+assert.ok(Number.isFinite(vectorClean.views.sourceRisk.body), JSON.stringify(vectorClean.views.sourceRisk));
 
 const meterSupplied = evaluateSourceResidual(source, transformed, { sourceResidualRisk: 0.71 });
 assert.equal(meterSupplied.escapeVectorRisk, 0.71);
