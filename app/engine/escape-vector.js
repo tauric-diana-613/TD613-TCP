@@ -1,4 +1,5 @@
 import { buildIngestionFrictionAudit } from './ingestion-friction.js';
+import { buildSourceResidue, scoreSourceResidue } from './hush-source-residue.js';
 import {
   buildSemanticAuditBundle,
   compareTexts,
@@ -190,11 +191,22 @@ export function normalizeEscapeVectorInput(input = {}) {
   };
 }
 
+function calibratedCloseness(rawScore = null, bodyScore = null) {
+  if (!Number.isFinite(rawScore)) return null;
+  if (!Number.isFinite(bodyScore)) return clip(rawScore);
+  return weightedMean([
+    { value: bodyScore, weight: 0.72 },
+    { value: rawScore, weight: 0.28 }
+  ]);
+}
+
 export function computeSourceRiskEnvelope(views = {}) {
-  const values = ['raw', 'normalized', 'visible', 'semantic', 'glyph']
+  const primary = ['body', 'raw', 'normalized', 'visible', 'glyph']
     .map((key) => views[key])
     .filter(Number.isFinite);
-  return values.length ? clip(Math.max(...values)) : null;
+  if (primary.length) return clip(Math.max(...primary));
+  const fallback = ['semantic'].map((key) => views[key]).filter(Number.isFinite);
+  return fallback.length ? clip(Math.max(...fallback)) : null;
 }
 
 export function computeMaskDelta(args = {}) {
@@ -213,22 +225,32 @@ export function computeMaskDelta(args = {}) {
 export function computeSourceResidualRisk(args = {}) {
   const input = normalizeEscapeVectorInput(args);
   const warnings = [];
-  const views = { raw: null, normalized: null, visible: null, semantic: null, glyph: null };
+  const views = { raw: null, normalized: null, visible: null, semantic: null, glyph: null, body: null };
+  let body = null;
   if (!input.protectedBaselineText) warnings.push('missing-protected-baseline');
   if (!input.outputText) warnings.push('missing-output');
   if (input.protectedBaselineText && input.outputText) {
-    views.raw = scorePair(input.outputText, input.protectedBaselineText, input.outputProfile, input.protectedBaselineProfile).score;
-    views.normalized = scorePair(normalizeText(input.outputText), normalizeText(input.protectedBaselineText)).score;
-    views.visible = scorePair(stripHiddenMarks(input.outputText), stripHiddenMarks(input.protectedBaselineText)).score;
+    body = buildSourceResidue({ sourceText: input.protectedBaselineText, outputText: input.outputText, protectedLiterals: input.protectedLiterals });
+    const bodyScore = scoreSourceResidue(body).sourceResidueRisk;
+    views.body = clip(bodyScore);
+    const raw = scorePair(input.outputText, input.protectedBaselineText, input.outputProfile, input.protectedBaselineProfile).score;
+    const normalized = scorePair(normalizeText(input.outputText), normalizeText(input.protectedBaselineText)).score;
+    const visible = scorePair(stripHiddenMarks(input.outputText), stripHiddenMarks(input.protectedBaselineText)).score;
+    views.raw = calibratedCloseness(raw, views.body);
+    views.normalized = calibratedCloseness(normalized, views.body);
+    views.visible = calibratedCloseness(visible, views.body);
   }
   const suppliedSemantic = input.semanticAudit?.sourceRiskSemantic ?? input.views?.sourceRisk?.semantic;
   const suppliedGlyph = input.ingestionAudit?.sourceRiskGlyph ?? input.views?.sourceRisk?.glyph;
-  if (Number.isFinite(suppliedSemantic)) views.semantic = clip(suppliedSemantic);
+  if (Number.isFinite(suppliedSemantic)) views.semantic = calibratedCloseness(clip(suppliedSemantic), views.body);
   if (Number.isFinite(suppliedGlyph)) views.glyph = clip(suppliedGlyph);
   if (input.views?.sourceRisk) {
-    for (const key of Object.keys(views)) if (Number.isFinite(input.views.sourceRisk[key])) views[key] = clip(input.views.sourceRisk[key]);
+    for (const key of Object.keys(views)) {
+      if (key === 'body') continue;
+      if (Number.isFinite(input.views.sourceRisk[key])) views[key] = key === 'glyph' ? clip(input.views.sourceRisk[key]) : calibratedCloseness(clip(input.views.sourceRisk[key]), views.body);
+    }
   }
-  return { views, envelope: computeSourceRiskEnvelope(views), warnings };
+  return { views, envelope: computeSourceRiskEnvelope(views), warnings, body };
 }
 
 export function computeMaskFit(args = {}) {
@@ -416,7 +438,7 @@ export function buildEscapeVector(input = {}) {
   if (ingestionFriction === null) warnings.push('ingestion-friction-unavailable');
   if (apertureRecaptureRisk === null) warnings.push('aperture-audit-unavailable');
   const vector = {
-    version: 'phase-2',
+    version: 'phase-2.1-calibrated-source-residual',
     mode: active.mode,
     thresholds: { ...active.thresholds },
     scores: {
@@ -436,15 +458,16 @@ export function buildEscapeVector(input = {}) {
       apertureRecaptureRisk: round(apertureRecaptureRisk)
     },
     views: {
-      sourceRisk: { raw: round(source.views.raw), normalized: round(source.views.normalized), visible: round(source.views.visible), semantic: round(source.views.semantic), glyph: round(source.views.glyph), envelope: round(source.envelope) },
+      sourceRisk: { raw: round(source.views.raw), normalized: round(source.views.normalized), visible: round(source.views.visible), semantic: round(source.views.semantic), glyph: round(source.views.glyph), body: round(source.views.body), envelope: round(source.envelope) },
       maskFit: { raw: round(mask.views.raw), normalized: round(mask.views.normalized), visible: round(mask.views.visible), semantic: round(mask.views.semantic) },
       maskDelta: { raw: round(delta.raw), normalized: round(delta.normalized), visible: round(delta.visible), semantic: round(delta.semantic), safe: round(delta.safe) },
-      viewsUsed: ['raw', 'normalized', 'visible'].filter((view) => Number.isFinite(source.views[view]) || Number.isFinite(mask.views[view]))
+      viewsUsed: ['body', 'raw', 'normalized', 'visible'].filter((view) => Number.isFinite(source.views[view]) || Number.isFinite(mask.views[view]))
     },
     ingestionAudit: active.ingestionAudit || null,
     diagnostics: {
       sampleSufficiency: sufficiency.status,
       wordCounts: sufficiency.counts,
+      sourceResidueBody: source.body || null,
       semanticStatus: semantic.status,
       historyStatus: link.status,
       ingestionStatus: ingestionResolution.status,
