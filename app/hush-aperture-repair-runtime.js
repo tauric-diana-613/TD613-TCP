@@ -1,6 +1,6 @@
 import { evaluateApertureRepairCandidate, HUSH_APERTURE_REPAIR_PASS_VERSION } from './engine/hush-aperture-repair-pass.js';
 
-const VERSION = 'hush-aperture-repair-runtime/v1';
+const VERSION = 'hush-aperture-repair-runtime/v2-contained-status';
 const $ = (id, doc = document) => doc.getElementById(id);
 const safe = (value = '') => String(value ?? '');
 const asArray = (value) => Array.isArray(value) ? value.filter(Boolean) : [];
@@ -40,6 +40,12 @@ function publishStatus(message = '', tone = 'warning', doc = document) {
   status.dataset.tone = tone;
   status.textContent = message;
 }
+function publicMessageForSwap() {
+  return 'Hush selected a lower-risk candidate and kept the diagnostic receipt internal.';
+}
+function publicMessageForHold() {
+  return 'Hush held the output for review. Open diagnostics for details.';
+}
 function setOutput(result = {}, candidate = null, row = null, doc = document) {
   const output = $('protectedOutputInput', doc);
   if (!candidate) {
@@ -63,6 +69,9 @@ function setOutput(result = {}, candidate = null, row = null, doc = document) {
     output.dispatchEvent(new Event('input', { bubbles: true }));
   }
 }
+function hasOnlyReviewReasons(receipt = {}) {
+  return Boolean(!receipt.hardBlocked && asArray(receipt.reviewReasons).length);
+}
 export function applyApertureHushRepair(result = {}, doc = document) {
   if (!result || result.apertureRepairRuntimeApplied === VERSION) return false;
   const selected = selectedCandidate(result);
@@ -85,13 +94,20 @@ export function applyApertureHushRepair(result = {}, doc = document) {
   if (typeof window !== 'undefined') window.__TD613_HUSH_APERTURE_REPAIR_PASS__ = result.apertureRepairRuntime;
   if (shouldSwap) {
     setOutput(result, best.candidate, best, doc);
-    publishStatus(`Aperture repair swapped candidate: ${selected.id || 'selected'} → ${best.candidate.id || 'candidate'} (${best.aperture.warnings.join(', ') || 'process/layout repair'}).`, 'warning', doc);
+    publishStatus(publicMessageForSwap(), 'warning', doc);
     try { window.dispatchEvent(new CustomEvent('td613:hush:aperture-repair-pass', { detail: { result, repair: result.apertureRepairRuntime } })); } catch {}
     return true;
   }
+  if (hasOnlyReviewReasons(selectedAperture)) {
+    if (result.patch38Diagnostics) {
+      result.patch38Diagnostics.selectedApertureRepair = selectedAperture;
+      result.patch38Diagnostics.apertureRepairRuntimeVersion = VERSION;
+    }
+    return false;
+  }
   if (selectedAperture.hardBlocked && !best) {
     setOutput(result, null, null, doc);
-    publishStatus(`Aperture repair held output: ${selectedAperture.hardBlockReasons.join(', ') || 'repair hard block'}.`, 'error', doc);
+    publishStatus(publicMessageForHold(), 'error', doc);
     try { window.dispatchEvent(new CustomEvent('td613:hush:aperture-repair-pass', { detail: { result, repair: result.apertureRepairRuntime } })); } catch {}
     return true;
   }
