@@ -816,7 +816,6 @@ function buildGeneratorAuditCase({
   const selectedCandidate = selectedCandidateFromLedger(candidateLedger);
   const docket = result.generationDocket || null;
   const semanticAudit = result.semanticAudit || {};
-  const bounded = semanticBounded(semanticAudit, ontologyAudit);
   const toolabilityAudit = result.toolabilityAudit || {};
   const personaSeparationAudit = result.personaSeparationAudit || {};
   const ontologyAudit =
@@ -825,6 +824,7 @@ function buildGeneratorAuditCase({
     docket?.ontologyRoutePressure ||
     result.retrievalTrace?.ontologyAudit ||
     null;
+  const bounded = semanticBounded(semanticAudit, ontologyAudit);
   const semanticCoverage = ontologyAudit?.semanticCoverage || {};
   const anchorIntegrity = ontologyAudit?.anchorIntegrity || {};
   const aperture = ontologyAudit?.aperture || {};

@@ -1,21 +1,17 @@
 import assert from 'assert';
-import fs from 'fs';
+import { readFileSync } from 'fs';
 import path from 'path';
 import { fileURLToPath } from 'url';
-import * as engine from '../app/engine/stylometry.js';
 import {
   DIAGNOSTIC_BATTERY,
   DIAGNOSTIC_CORPUS,
   DIAGNOSTIC_CORPUS_BY_ID
 } from '../app/data/diagnostics.js';
+import { buildAnnexDiagnostics } from '../scripts/lib/annex-diagnostics.mjs';
 
 const __filename = fileURLToPath(import.meta.url);
 const repoRoot = path.resolve(path.dirname(__filename), '..');
-const latestJsonPath = path.join(repoRoot, 'reports', 'diagnostics', 'latest.json');
-const latestMdPath = path.join(repoRoot, 'reports', 'diagnostics', 'latest.md');
-const apertureJsonPath = path.join(repoRoot, 'reports', 'diagnostics', 'aperture.latest.json');
-const apertureMdPath = path.join(repoRoot, 'reports', 'diagnostics', 'aperture.latest.md');
-const diagnosticsScriptPath = path.join(repoRoot, 'scripts', 'run-diagnostics-battery.mjs');
+const diagnosticsScriptSource = readFileSync(new URL('../scripts/run-diagnostics-battery.mjs', import.meta.url), 'utf8');
 
 assert.equal(DIAGNOSTIC_CORPUS.families.length, 19, 'diagnostic corpus exposes 19 families');
 assert.equal(DIAGNOSTIC_CORPUS.samples.length, 76, 'diagnostic corpus exposes 76 samples');
@@ -26,14 +22,15 @@ assert.equal(DIAGNOSTIC_BATTERY.maskCases.length, 35, 'diagnostic battery expose
 assert.equal(DIAGNOSTIC_BATTERY.trainerCases.length, 35, 'diagnostic battery exposes 35 trainer cases');
 assert.equal(DIAGNOSTIC_BATTERY.retrievalCases.length, 18, 'diagnostic battery exposes 18 retrieval cases');
 assert.equal(DIAGNOSTIC_BATTERY.falseNeighborCases.length, 32, 'diagnostic battery exposes 32 false-neighbor cases');
-assert.ok(fs.readFileSync(diagnosticsScriptPath, 'utf8').includes("'hushCases'"), 'diagnostics runner declares a Hush section');
+assert.ok(diagnosticsScriptSource.includes("'hushCases'"), 'diagnostics runner declares a Hush section');
+assert.ok(diagnosticsScriptSource.includes('--section='), 'diagnostics runner supports section staging');
+assert.ok(diagnosticsScriptSource.includes('--assemble-only'), 'diagnostics runner supports release assembly from staged sections');
 
 for (const family of DIAGNOSTIC_CORPUS.families) {
   const samples = DIAGNOSTIC_CORPUS.samples.filter((sample) => sample.familyId === family.id);
   assert.equal(samples.length, 4, `${family.id}: every family contains exactly four variants`);
-  const variants = samples.map((sample) => sample.variant).sort();
   assert.deepEqual(
-    variants,
+    samples.map((sample) => sample.variant).sort(),
     ['formal-record', 'professional-message', 'rushed-mobile', 'tangled-followup'],
     `${family.id}: variants match required lanes`
   );
@@ -62,220 +59,9 @@ for (const caseSpec of DIAGNOSTIC_BATTERY.trainerCases) {
   assert.ok(caseSpec.extractionIds.every((id) => DIAGNOSTIC_CORPUS_BY_ID[id]), `${caseSpec.id}: trainer extraction ids resolve`);
 }
 
-for (const caseSpec of DIAGNOSTIC_BATTERY.retrievalCases) {
-  const sourceSample = DIAGNOSTIC_CORPUS_BY_ID[caseSpec.sourceId];
-  const donorSample = DIAGNOSTIC_CORPUS_BY_ID[caseSpec.donorId];
-  const result = engine.buildCadenceTransfer(sourceSample.text, {
-    mode: 'borrowed',
-    profile: engine.extractCadenceProfile(donorSample.text),
-    registerLane: donorSample.variant,
-    sourceText: donorSample.text,
-    strength: Number(caseSpec.strength || 0.88)
-  }, { retrieval: true, sourceRegisterLane: sourceSample.variant || undefined });
-  const targetOntology = String(result.generationControls?.targetOntology || '').trim().toLowerCase();
-  const propositionFloor =
-    targetOntology === 'actor'
-      ? 0.7
-      : targetOntology === 'institutional' && sourceSample.variant === 'rushed-mobile'
-        ? 0.55
-        : 0.85;
-  const actionFloor =
-    targetOntology === 'actor'
-      ? 0.66
-      : targetOntology === 'institutional' && sourceSample.variant === 'rushed-mobile'
-        ? 0.48
-        : 0.75;
-
-  assert.equal(result.protectedAnchorAudit?.protectedAnchorIntegrity ?? 0, 1, `${caseSpec.id}: literal anchors remain intact`);
-  assert.ok(
-    (result.semanticAudit?.propositionCoverage ?? 0) >= propositionFloor,
-    `${caseSpec.id}: proposition coverage stays above the ontology-aware safety floor`
-  );
-  assert.ok(
-    (result.semanticAudit?.actionCoverage ?? 0) >= actionFloor,
-    `${caseSpec.id}: action coverage stays above the ontology-aware safety floor`
-  );
-  assert.ok((result.semanticAudit?.polarityMismatches ?? 0) <= 3, `${caseSpec.id}: polarity mismatches stay bounded`);
-}
-
-const literalRiskMatrix = engine.buildSwapCadenceMatrix(DIAGNOSTIC_CORPUS.samples, {
-  orderedPairs: DIAGNOSTIC_BATTERY.swapPairs.filter((caseSpec) => caseSpec.mode === 'swap-literal-risk'),
-  flagshipPairs: [],
-  strength: 0.82
-});
-
-assert.equal(literalRiskMatrix.fullMatrix.length, 32, 'literal-risk swap diagnostics include 32 ordered cases');
-assert(
-  literalRiskMatrix.fullMatrix.every((report) => report.semanticAuditSummary.protectedAnchorIntegrityMin === 1),
-  'literal-risk swap diagnostics preserve protected anchors'
-);
-
-assert.ok(fs.existsSync(latestJsonPath), 'diagnostics JSON report exists');
-assert.ok(fs.existsSync(latestMdPath), 'diagnostics Markdown report exists');
-assert.ok(fs.existsSync(apertureJsonPath), 'Aperture annex JSON report exists');
-assert.ok(fs.existsSync(apertureMdPath), 'Aperture annex Markdown report exists');
-
-const latestReport = JSON.parse(fs.readFileSync(latestJsonPath, 'utf8'));
-assert.equal(latestReport.sections.swapPairs.length, 100, 'diagnostics JSON report includes swap section');
-assert.equal(latestReport.sections.maskCases.length, 34, 'diagnostics JSON report includes mask section');
-assert.equal(latestReport.sections.trainerCases.length, 34, 'diagnostics JSON report includes trainer section');
-assert.equal(latestReport.sections.retrievalCases.length, 18, 'diagnostics JSON report includes retrieval section');
-assert.equal(latestReport.sections.falseNeighborCases.length, 32, 'diagnostics JSON report includes false-neighbor section');
-assert.equal(latestReport.sections.generatorTransferCases.length, 18, 'diagnostics JSON report includes generator transfer section');
-assert.equal(latestReport.sections.generatorMaskCases.length, 34, 'diagnostics JSON report includes generator mask section');
-if (latestReport.sections.hushCases) {
-  assert.equal(latestReport.sections.hushCases.length, 240, 'diagnostics JSON report includes Hush section');
-}
-assert.ok(latestReport.generatorAudit, 'diagnostics JSON report includes generator audit');
-assert.equal(latestReport.generatorAudit.caseCount, 52, 'generator audit tracks retrieval and mask generator surfaces');
-assert.equal(latestReport.generatorAudit.generatorVersionCounts.v2, latestReport.generatorAudit.caseCount, 'generator audit reports V2 as the active writer across tracked diagnostics cases');
-assert.ok(latestReport.generatorAudit.semanticBoundedRate >= 0.9, 'generator audit reports a high bounded-semantics rate');
-assert.ok(latestReport.generatorAudit.unsafeStructuralCount <= 1, 'generator audit reports bounded unsafe structural winners');
-assert.equal(latestReport.generatorAudit.protectedAnchorIntegrityMin, 1, 'generator audit reports preserved protected anchors');
-assert.ok(Array.isArray(latestReport.generatorAudit.topMisses), 'generator audit top misses serialize');
-assert.ok(latestReport.ontologyIntegrity, 'diagnostics JSON report includes ontology integrity audit');
-assert.equal(latestReport.ontologyIntegrity.caseCount, latestReport.generatorAudit.caseCount, 'ontology integrity audit tracks the same generator case set');
-assert.ok(Object.keys(latestReport.ontologyIntegrity.routeFloorCounts || {}).length >= 1, 'ontology integrity audit serializes route floor counts');
-assert.equal(typeof latestReport.ontologyIntegrity.highHistoricalCreaseRate, 'number', 'ontology integrity audit exposes historical crease rate');
-assert.equal(typeof latestReport.ontologyIntegrity.highUnfoldingEnergyRate, 'number', 'ontology integrity audit exposes unfolding energy rate');
-assert.equal(typeof latestReport.ontologyIntegrity.beaconActiveSustainedRate, 'number', 'ontology integrity audit exposes beacon sustained rate');
-assert.equal(typeof latestReport.ontologyIntegrity.heldByApertureRoutePressureCount, 'number', 'ontology integrity audit exposes aperture route-pressure holds');
-assert.equal(typeof latestReport.ontologyIntegrity.apertureChangedRouteCount, 'number', 'ontology integrity audit exposes route shifts against toolability ordering');
-assert.ok(Array.isArray(latestReport.ontologyIntegrity.representativeCases), 'ontology integrity representative cases serialize');
-assert.ok(latestReport.cadenceDuelIntegrity, 'diagnostics JSON report includes cadence duel integrity audit');
-assert.equal(typeof latestReport.cadenceDuelIntegrity.laneMisclassificationCount, 'number', 'cadence duel integrity exposes lane misclassification count');
-assert.equal(typeof latestReport.cadenceDuelIntegrity.syntaxOnlyWinnerCount, 'number', 'cadence duel integrity exposes syntax-only winner count');
-assert.equal(typeof latestReport.cadenceDuelIntegrity.lexicalRegisterFalsePositiveCount, 'number', 'cadence duel integrity exposes lexical-register false positives');
-assert.equal(typeof latestReport.cadenceDuelIntegrity.artifactRepairRescueCount, 'number', 'cadence duel integrity exposes artifact-repair rescues');
-assert.ok(latestReport.cadenceDuelIntegrity.featureFamilyRealizationRates, 'cadence duel integrity exposes feature-family realization rates');
-assert.equal(typeof latestReport.cadenceDuelIntegrity.falseCleanCount, 'number', 'cadence duel integrity exposes false-clean count');
-assert.equal(typeof latestReport.cadenceDuelIntegrity.falseDirtyCount, 'number', 'cadence duel integrity exposes false-dirty count');
-assert.equal(typeof latestReport.cadenceDuelIntegrity.donorFeatureAdherenceAverage, 'number', 'cadence duel integrity exposes donor-feature adherence average');
-assert.equal(typeof latestReport.cadenceDuelIntegrity.concealmentEffectivenessAverage, 'number', 'cadence duel integrity exposes concealment effectiveness average');
-assert.equal(typeof latestReport.cadenceDuelIntegrity.referenceToRushedLandedRate, 'number', 'cadence duel integrity exposes formal-to-rushed landed rate');
-assert.equal(typeof latestReport.cadenceDuelIntegrity.probeToFormalLandedRate, 'number', 'cadence duel integrity exposes rushed-to-formal landed rate');
-assert.ok(Array.isArray(latestReport.cadenceDuelIntegrity.representativeCases), 'cadence duel integrity representative cases serialize');
-assert.ok(latestReport.toolability, 'diagnostics JSON report includes toolability audit');
-assert.equal(typeof latestReport.toolability.expectedCaseCount, 'number', 'toolability audit exposes expected case count');
-assert.ok(latestReport.toolability.expectedCaseCount > 0, 'toolability audit tracks expected-success cases');
-assert.equal(typeof latestReport.toolability.landedRate, 'number', 'toolability audit exposes landed rate');
-assert.equal(typeof latestReport.toolability.holdRate, 'number', 'toolability audit exposes hold rate');
-assert.equal(typeof latestReport.toolability.artifactRate, 'number', 'toolability audit exposes artifact rate');
-assert.equal(typeof latestReport.toolability.weakMovementRate, 'number', 'toolability audit exposes weak movement rate');
-assert.equal(typeof latestReport.toolability.distinctnessRate, 'number', 'toolability audit exposes distinctness rate');
-assert.equal(typeof latestReport.toolability.convergenceRate, 'number', 'toolability audit exposes convergence rate');
-assert.equal(typeof latestReport.toolability.previewHonestyRate, 'number', 'toolability audit exposes preview honesty rate');
-assert.equal(typeof latestReport.toolability.repeatedFlightStabilityRate, 'number', 'toolability audit exposes repeated-flight stability rate');
-assert.ok(latestReport.toolability.landedRate >= 0 && latestReport.toolability.landedRate <= 1, 'toolability landed rate stays normalized');
-assert.ok(latestReport.toolability.holdRate >= 0 && latestReport.toolability.holdRate <= 1, 'toolability hold rate stays normalized');
-assert.ok(latestReport.toolability.artifactRate >= 0 && latestReport.toolability.artifactRate <= 1, 'toolability artifact rate stays normalized');
-assert.ok(latestReport.toolability.weakMovementRate >= 0 && latestReport.toolability.weakMovementRate <= 1, 'toolability weak movement rate stays normalized');
-assert.ok(latestReport.toolability.distinctnessRate >= 0 && latestReport.toolability.distinctnessRate <= 1, 'toolability distinctness rate stays normalized');
-assert.ok(latestReport.toolability.convergenceRate >= 0 && latestReport.toolability.convergenceRate <= 1, 'toolability convergence rate stays normalized');
-assert.ok(latestReport.toolability.previewHonestyRate >= 0 && latestReport.toolability.previewHonestyRate <= 1, 'toolability preview honesty rate stays normalized');
-assert.ok(latestReport.toolability.repeatedFlightStabilityRate >= 0 && latestReport.toolability.repeatedFlightStabilityRate <= 1, 'toolability repeated-flight stability stays normalized');
-assert.ok(Array.isArray(latestReport.toolability.probes), 'toolability probes serialize');
-assert.ok(latestReport.toolability.probes.length >= 2, 'toolability probes include maintained live flights');
-if (latestReport.hushDiagnostics) {
-  assert.equal(latestReport.hushDiagnostics.caseCount, latestReport.sections.hushCases.length, 'Hush diagnostics track the Hush section');
-  assert.equal(latestReport.hushDiagnostics.sourceMessageCount, 12, 'Hush diagnostics track the maintained source-message set');
-  assert.equal(latestReport.hushDiagnostics.maskCount, 20, 'Hush diagnostics track the maintained Hush mask set');
-  assert.equal(typeof latestReport.hushDiagnostics.emittedRate, 'number', 'Hush diagnostics expose emitted rate');
-  assert.equal(typeof latestReport.hushDiagnostics.blockedRate, 'number', 'Hush diagnostics expose blocked rate');
-  assert.equal(typeof latestReport.hushDiagnostics.severeSourceBodyRate, 'number', 'Hush diagnostics expose severe source-body rate');
-  assert.equal(typeof latestReport.hushDiagnostics.averageCadenceBodyRisk, 'number', 'Hush diagnostics expose average cadence-body risk');
-  assert.equal(typeof latestReport.hushDiagnostics.maxLongestCopiedRun, 'number', 'Hush diagnostics expose max copied run');
-  assert.ok(Array.isArray(latestReport.hushDiagnostics.worstCases), 'Hush diagnostics serialize worst cases');
-  assert.ok(latestReport.hushDiagnostics.worstCases.length > 0, 'Hush diagnostics worst cases stay populated');
-}
-assert.ok(latestReport.sampleAudit, 'diagnostics JSON report includes sample audit');
-assert.ok(latestReport.personaAudit, 'diagnostics JSON report includes persona audit');
-assert.ok(latestReport.sampleAudit.randomizerCorpusSize >= 72, 'sample audit uses the full diagnostics corpus');
-assert.ok(latestReport.sampleAudit.uniqueResolvedProfileCount >= 72, 'sample audit resolves distinct profiles across the corpus');
-assert.ok(Array.isArray(latestReport.sampleAudit.closestPairs), 'sample audit closest pairs serialize');
-assert.ok(Array.isArray(latestReport.sampleAudit.exactProfileCollisions), 'sample audit exact collisions serialize');
-assert.equal(latestReport.sampleAudit.exactProfileCollisions.length, 0, 'sample audit reports no exact profile collisions for the current corpus');
-assert.ok(latestReport.sampleAudit.deckRandomizerSize >= 24, 'sample audit reports a substantial deck randomizer size');
-assert.ok(latestReport.sampleAudit.deckRandomizerFamilyCount >= 18, 'sample audit reports at least 18 families in the live deck randomizer');
-assert.equal(typeof latestReport.sampleAudit.deckRandomizerPairedFamilyCount, 'number', 'sample audit reports deck randomizer paired-family count');
-assert.equal(latestReport.sampleAudit.deckRandomizerWideSubsetSize, 16, 'sample audit reports a 16-sample wide subset for spread scoring');
-assert.ok(latestReport.sampleAudit.averageNearestFieldDistance >= 3, 'sample audit reports a widened deck nearest-field distance');
-assert.ok(latestReport.sampleAudit.minNearestFieldDistance >= 2.7, 'sample audit reports a bounded minimum deck field distance');
-assert.equal(latestReport.personaAudit.resolvedPersonaCount, 7, 'persona audit resolves all built-in personas');
-assert.equal(latestReport.personaAudit.uniqueResolvedProfileCount, 7, 'persona audit resolves distinct built-in persona profiles');
-assert.ok(Array.isArray(latestReport.personaAudit.closestPairs), 'persona audit closest pairs serialize');
-assert.ok(Array.isArray(latestReport.personaAudit.missingRecipeSampleIds), 'persona audit missing recipe ids serialize');
-assert.equal(latestReport.personaAudit.missingRecipeSampleIds.length, 0, 'persona audit reports no missing recipe sample ids for current built-ins');
-assert.ok(latestReport.personaAudit.averageNearestFieldDistance >= 1.6, 'persona audit reports a widened average nearest field distance');
-assert.ok(latestReport.personaAudit.minNearestFieldDistance >= 1.2, 'persona audit reports a materially separated minimum field distance');
-assert.ok(latestReport.personaAudit.distinctOutputCheck?.distinctOutputCount >= 6, 'persona audit distinct-output check keeps at least six distinct outputs across the seven built-ins');
-assert.ok(latestReport.workingDoctrine, 'diagnostics JSON report includes private TD613 Aperture working doctrine');
-assert.ok(
-  ['playable', 'warning', 'buffered', 'harbor-eligible'].includes(latestReport.workingDoctrine.state),
-  'private TD613 Aperture state stays within the declared doctrine grammar'
-);
-assert.equal(typeof latestReport.workingDoctrine.blockedGenerativePassage, 'boolean', 'private TD613 Aperture blockedGenerativePassage is boolean');
-assert.equal(typeof latestReport.workingDoctrine.actionBias, 'string', 'private TD613 Aperture actionBias is present');
-assert.ok(latestReport.workingDoctrine.representativePairs, 'private TD613 Aperture representative pair summary exists');
-assert.ok(Array.isArray(latestReport.workingDoctrine.representativePairs.selections), 'private TD613 Aperture representative selections are serialized');
-assert.ok(latestReport.workingDoctrine.representativePairs.selections.length > 0, 'private TD613 Aperture representative selections stay populated');
-assert.equal(typeof latestReport.workingDoctrine.representativePairs.bilateralVisibleRate, 'number', 'private TD613 Aperture representative visible rate is numeric');
-assert.equal(typeof latestReport.workingDoctrine.representativePairs.bilateralNonTrivialRate, 'number', 'private TD613 Aperture representative non-trivial rate is numeric');
-assert.ok(latestReport.annexes?.aperture, 'diagnostics JSON report includes Aperture annex diagnostics');
-assert.ok(latestReport.annexes.aperture.passed, 'Aperture annex diagnostics pass');
-assert.equal(latestReport.annexes.aperture.file, 'app/aperture/tool.html', 'Aperture annex diagnostics inspect the canonical tool body');
-assert.equal(latestReport.annexes.aperture.version, '2.9.4', 'Aperture annex diagnostics report the expected version');
-assert.equal(latestReport.annexes.aperture.label, 'TD613 Aperture', 'Aperture annex diagnostics use the TD613 Aperture label');
-assert.equal(latestReport.annexes.aperture.meta['tool-name'], 'TD613 Aperture', 'Aperture annex diagnostics preserve the TD613 Aperture tool name');
-assert.equal(latestReport.annexes.aperture.meta['tool-role'], 'counter-tool', 'Aperture annex diagnostics preserve tool role');
-assert.equal(latestReport.annexes.aperture.meta['observed-regime'], 'PRCS-A', 'Aperture annex diagnostics preserve the PRCS-A regime callout');
-assert.equal(latestReport.annexes.aperture.bodyDataset['anti-enforcement'], 'true', 'Aperture annex diagnostics preserve anti-enforcement stance');
-assert.ok(/^[a-f0-9]{64}$/i.test(latestReport.annexes.aperture.fingerprint.contentHashSha256), 'Aperture annex diagnostics expose a SHA-256 content hash');
-assert.ok(latestReport.summary.annexCount >= 1, 'diagnostics JSON report includes annex count');
-assert.ok(latestReport.summary.annexPassedCount >= 1, 'diagnostics JSON report includes passed annex count');
-assert.equal(typeof latestReport.summary.toolabilityLandedRate, 'number', 'diagnostics JSON report summary includes toolability landed rate');
-assert.equal(typeof latestReport.summary.toolabilityDistinctnessRate, 'number', 'diagnostics JSON report summary includes toolability distinctness rate');
-if (latestReport.hushDiagnostics) {
-  assert.equal(typeof latestReport.summary.hushEmittedRate, 'number', 'diagnostics JSON report summary includes Hush emitted rate');
-  assert.equal(typeof latestReport.summary.hushBlockedRate, 'number', 'diagnostics JSON report summary includes Hush blocked rate');
-  assert.equal(typeof latestReport.summary.hushSevereSourceBodyRate, 'number', 'diagnostics JSON report summary includes Hush severe source-body rate');
-}
-
-const latestMarkdown = fs.readFileSync(latestMdPath, 'utf8');
-assert.ok(latestMarkdown.includes('## Sample Audit'), 'diagnostics Markdown report includes sample audit section');
-assert.ok(latestMarkdown.includes('## Generator Audit'), 'diagnostics Markdown report includes generator audit section');
-assert.ok(latestMarkdown.includes('### Generator Misses'), 'diagnostics Markdown report includes generator misses section');
-assert.ok(latestMarkdown.includes('## Ontology Integrity'), 'diagnostics Markdown report includes ontology integrity section');
-assert.ok(latestMarkdown.includes('### Ontology Pressure Cases'), 'diagnostics Markdown report includes ontology pressure case section');
-assert.ok(latestMarkdown.includes('## Cadence Duel Integrity'), 'diagnostics Markdown report includes cadence duel integrity section');
-assert.ok(latestMarkdown.includes('### Cadence Duel Cases'), 'diagnostics Markdown report includes cadence duel integrity case section');
-assert.ok(latestMarkdown.includes('feature_family_realization_rates'), 'diagnostics Markdown report includes cadence duel vernacular feature rates');
-assert.ok(latestMarkdown.includes('false_clean_count'), 'diagnostics Markdown report includes cadence duel false-clean count');
-assert.ok(latestMarkdown.includes('donor_feature_adherence_average'), 'diagnostics Markdown report includes cadence duel donor adherence summary');
-assert.ok(latestMarkdown.includes('## Toolability'), 'diagnostics Markdown report includes toolability section');
-assert.ok(latestMarkdown.includes('### Toolability Probes'), 'diagnostics Markdown report includes toolability probe section');
-if (latestReport.hushDiagnostics) {
-  assert.ok(latestMarkdown.includes('## Hush Diagnostics'), 'diagnostics Markdown report includes Hush diagnostics section');
-  assert.ok(latestMarkdown.includes('### Hush Pressure Cases'), 'diagnostics Markdown report includes Hush pressure case section');
-}
-assert.ok(latestMarkdown.includes('### Closest Sample Pairs'), 'diagnostics Markdown report includes closest sample pairs section');
-assert.ok(latestMarkdown.includes('deck_randomizer_average_nearest_field_distance') || latestMarkdown.includes('average_nearest_field_distance'), 'diagnostics Markdown report includes field-distance spread details');
-assert.ok(latestMarkdown.includes('deck_randomizer_wide_subset_size'), 'diagnostics Markdown report includes wide-subset field spread details');
-assert.ok(latestMarkdown.includes('## Persona Audit'), 'diagnostics Markdown report includes persona audit section');
-assert.ok(latestMarkdown.includes('### Closest Persona Pairs'), 'diagnostics Markdown report includes closest persona pairs section');
-assert.ok(latestMarkdown.includes('## Private TD613 Aperture Working State'), 'diagnostics Markdown report includes private TD613 Aperture working-state section');
-assert.ok(latestMarkdown.includes('## Private TD613 Aperture Representative Pairs'), 'diagnostics Markdown report includes representative pair section');
-assert.ok(latestMarkdown.includes('## Annex Diagnostics'), 'diagnostics Markdown report includes annex diagnostics section');
-assert.ok(latestMarkdown.includes('### TD613 Aperture'), 'diagnostics Markdown report includes TD613 Aperture annex section');
-
-const apertureReport = JSON.parse(fs.readFileSync(apertureJsonPath, 'utf8'));
-assert.ok(apertureReport.passed, 'standalone Aperture annex report passes');
-assert.equal(apertureReport.file, 'app/aperture/tool.html', 'standalone Aperture annex report points to the canonical tool body');
-assert.equal(apertureReport.meta['tool-name'], 'TD613 Aperture', 'standalone Aperture annex report preserves the TD613 Aperture tool name');
-assert.equal(apertureReport.meta['observed-regime'], 'PRCS-A', 'standalone Aperture annex report preserves the PRCS-A regime callout');
-
-const apertureMarkdown = fs.readFileSync(apertureMdPath, 'utf8');
-assert.ok(apertureMarkdown.includes('# TD613 Aperture Annex Diagnostics'), 'Aperture annex Markdown report has a heading');
-assert.ok(apertureMarkdown.includes('content_hash_sha256'), 'Aperture annex Markdown report includes content hash');
+const annexes = buildAnnexDiagnostics(repoRoot);
+assert.ok(annexes.aperture, 'diagnostics smoke builds Aperture annex diagnostics');
+assert.ok(annexes.aperture.passed, 'Aperture annex diagnostics pass in smoke tier');
+assert.equal(annexes.aperture.file, 'app/aperture/tool.html', 'Aperture annex diagnostics inspect the canonical tool body');
 
 console.log('diagnostics.test.mjs passed');

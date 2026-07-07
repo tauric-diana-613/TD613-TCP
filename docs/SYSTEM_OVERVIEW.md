@@ -93,7 +93,10 @@ That same discipline is also useful for post-training work. A long-range RLHF or
 If you want the strongest maintained proof surfaces, use these:
 
 - `npm test`
-- `node scripts/run-diagnostics-battery.mjs`
+- `npm run diag:smoke`
+- `npm run diag:focus -- --area=<area>`
+- `npm run diag:release` when refreshing maintained diagnostics reports
+- [DIAGNOSTICS.md](/C:/Users/timst/OneDrive/Desktop/tcp-repository/docs/DIAGNOSTICS.md)
 - `?test-flight=transfer`
 - `?test-flight=swap`
 - `?test-flight=2`

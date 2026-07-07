@@ -7,12 +7,12 @@ Title: TD613 Aperture v2.9.4
 
 ## Fingerprint
 
-- bytes: 1029468
+- bytes: 1051481
 - line_count: 22014
 - inline_script_count: 57
 - panel_count: 6
 - button_count: 46
-- content_hash_sha256: 35442480b8728e2fc5417026320743e633979811a8d3ab9eb6527edc385d593e
+- content_hash_sha256: de00b99dcb8a04400e0b20aa917feb94eb6b07e798e6f290c1cd4ecaea203678
 
 ## Checks
 

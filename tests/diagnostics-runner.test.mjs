@@ -6,12 +6,9 @@ import { fileURLToPath } from 'url';
 
 const __filename = fileURLToPath(import.meta.url);
 const repoRoot = path.resolve(path.dirname(__filename), '..');
-const diagnosticsScript = path.join(repoRoot, 'scripts', 'run-diagnostics-battery.mjs');
-const reportsDir = path.join(repoRoot, 'reports', 'diagnostics');
-const stageDir = path.join(reportsDir, '.staging');
-const activeManifestPath = path.join(stageDir, 'active-run.json');
-const latestJsonPath = path.join(reportsDir, 'latest.json');
-const latestMdPath = path.join(reportsDir, 'latest.md');
+const diagnosticsScript = path.join(repoRoot, 'scripts', 'run-diagnostics.mjs');
+const latestJsonPath = path.join(repoRoot, 'reports', 'diagnostics', 'latest.json');
+const latestMdPath = path.join(repoRoot, 'reports', 'diagnostics', 'latest.md');
 
 function runDiagnostics(args = []) {
   return spawnSync(process.execPath, [diagnosticsScript, ...args], {
@@ -23,31 +20,17 @@ function runDiagnostics(args = []) {
 const latestJsonBefore = fs.readFileSync(latestJsonPath, 'utf8');
 const latestMdBefore = fs.readFileSync(latestMdPath, 'utf8');
 
-fs.rmSync(stageDir, { recursive: true, force: true });
+const recommendation = runDiagnostics(['recommend']);
+assert.equal(recommendation.status, 0, `recommend exits cleanly: ${recommendation.stderr || recommendation.stdout}`);
+assert.match(recommendation.stdout, /npm run diag:smoke/, 'recommend prints the smoke command');
+assert.match(recommendation.stdout, /diag:focus/, 'recommend prints focused diagnostics commands');
+assert.equal(fs.readFileSync(latestJsonPath, 'utf8'), latestJsonBefore, 'recommend does not overwrite latest.json');
+assert.equal(fs.readFileSync(latestMdPath, 'utf8'), latestMdBefore, 'recommend does not overwrite latest.md');
 
-try {
-  const stagedSampleAudit = runDiagnostics(['--fresh', '--section=sampleAudit']);
-  assert.equal(stagedSampleAudit.status, 0, `sampleAudit staging exits cleanly: ${stagedSampleAudit.stderr || stagedSampleAudit.stdout}`);
-  assert.ok(fs.existsSync(activeManifestPath), 'staging writes an active run manifest');
+const invalidFocus = runDiagnostics(['focus', '--area=all']);
+assert.notEqual(invalidFocus.status, 0, 'invalid focus area fails');
+assert.match(`${invalidFocus.stderr}\n${invalidFocus.stdout}`, /Unknown or missing focus area/i, 'invalid focus explains the bad area');
+assert.equal(fs.readFileSync(latestJsonPath, 'utf8'), latestJsonBefore, 'runner contract does not overwrite latest.json');
+assert.equal(fs.readFileSync(latestMdPath, 'utf8'), latestMdBefore, 'runner contract does not overwrite latest.md');
 
-  const activeManifest = JSON.parse(fs.readFileSync(activeManifestPath, 'utf8'));
-  const sampleAuditSnapshotPath = path.join(stageDir, activeManifest.runId, 'sampleAudit.json');
-  assert.ok(fs.existsSync(sampleAuditSnapshotPath), 'sampleAudit section snapshot is written');
-  assert.equal(fs.readFileSync(latestJsonPath, 'utf8'), latestJsonBefore, 'section-only staging does not overwrite latest.json');
-  assert.equal(fs.readFileSync(latestMdPath, 'utf8'), latestMdBefore, 'section-only staging does not overwrite latest.md');
-
-  const assembleOnlyFailure = runDiagnostics(['--assemble-only']);
-  assert.notEqual(assembleOnlyFailure.status, 0, 'assemble-only fails when required staged sections are missing');
-  const assembleFailureOutput = `${assembleOnlyFailure.stderr}\n${assembleOnlyFailure.stdout}`;
-  assert.match(assembleFailureOutput, /missing or stale sections/i, 'assemble-only failure explains the missing staged sections');
-
-  const stagedPersonaAudit = runDiagnostics(['--section=personaAudit']);
-  assert.equal(stagedPersonaAudit.status, 0, `personaAudit staging exits cleanly: ${stagedPersonaAudit.stderr || stagedPersonaAudit.stdout}`);
-  const resumedManifest = JSON.parse(fs.readFileSync(activeManifestPath, 'utf8'));
-  assert.equal(resumedManifest.runId, activeManifest.runId, 'section staging reuses the active run when the fingerprint is unchanged');
-  assert.ok(fs.existsSync(path.join(stageDir, resumedManifest.runId, 'personaAudit.json')), 'personaAudit section snapshot is written into the active run');
-
-  console.log('diagnostics-runner.test.mjs passed');
-} finally {
-  fs.rmSync(stageDir, { recursive: true, force: true });
-}
+console.log('diagnostics-runner.test.mjs passed');

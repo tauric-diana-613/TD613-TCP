@@ -413,7 +413,9 @@ When both shells are native, the duel should collapse toward identity on the sam
 
 ## Diagnostics contract
 
-The maintained diagnostics battery now treats the writer as a first-class surface. `node scripts/run-diagnostics-battery.mjs` records:
+Read [DIAGNOSTICS.md](/C:/Users/timst/OneDrive/Desktop/tcp-repository/docs/DIAGNOSTICS.md) before running diagnostics. The default path is `npm run diag:smoke` plus a focused area check; `npm run diag:release` is the report-publishing path, and `npm run diag:full` is reserved for intentional deep audits.
+
+The maintained diagnostics battery still treats the writer as a first-class surface. In release/full mode it records:
 
 - swap, mask, trainer, retrieval, and false-neighbor cases
 - sample and persona field-separation audits
