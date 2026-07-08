@@ -14,7 +14,7 @@ Phase 11 renames and upgrades that page rather than creating a second competing 
 
 ## What Hush replaces conceptually
 
-Hush replaces the need to move through Homebase, Deck, or Trainer for the basic whistleblower-facing mask path.
+Hush replaces the need to move through Homebase, Deck, or Clone for the basic whistleblower-facing mask path.
 
 It gives one path:
 
@@ -28,9 +28,9 @@ It gives one path:
 
 ## What Hush does not delete yet
 
-Homebase, Deck, and Trainer remain available as legacy and lab chambers. They are not design parents for Hush.
+Homebase, Deck, and Clone remain available as legacy and lab chambers. They are not design parents for Hush.
 
-Phase 11 treats Homebase, Deck, and Trainer as salvage yards, not design parents.
+Phase 11 treats Homebase, Deck, and Clone as salvage yards, not design parents.
 
 ## New Hush mask library
 
@@ -52,9 +52,9 @@ Profile matching uses local tolerance-band convergence. A high mask match with l
 
 Phase 11 does not re-enable legacy ontology gating. Ontology may classify, annotate, warn, and route. Ontology may not rewrite, decide, override metrics, or claim meaning beyond measured evidence.
 
-## Trainer salvage
+## Clone salvage
 
-Trainer contributes the useful pattern: corpus input, profile extraction, validation, export. The Trainer chamber does not supply the Hush design.
+Clone contributes the useful pattern: corpus input, profile extraction, validation, export. The Clone chamber does not supply the Hush design.
 
 ## Whistleblower posture
 

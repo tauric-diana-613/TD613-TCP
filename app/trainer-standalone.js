@@ -98,15 +98,15 @@
   }
 
   async function bootTrainerStandalone() {
-    if (!document.body || document.body.getAttribute('data-page-kind') !== 'trainer') return;
-    document.title = 'TCP / Trainer';
+    if (!document.body || !/^(?:trainer|clone)$/.test(document.body.getAttribute('data-page-kind') || '')) return;
+    document.title = 'TCP / Clone';
     document.body.dataset.trainerBoot = 'standalone-start';
     removeExpiredStationNav();
 
     var engine = window.TCP_ENGINE || null;
     if (!engine || typeof engine.extractCadenceProfile !== 'function') {
       document.body.dataset.trainerBoot = 'engine-missing';
-      setTrainerStatus('Trainer startup fault // TCP engine did not load.');
+      setTrainerStatus('Clone startup fault // TCP engine did not load.');
       return;
     }
 
@@ -125,7 +125,7 @@
           return {};
         },
         onStatus: function (message) {
-          setTrainerStatus(message || 'Trainer ready.');
+          setTrainerStatus(message || 'Clone ready.');
         },
         onInjectPersona: function (persona) {
           var next = Object.assign({}, persona || {}, {
@@ -133,7 +133,7 @@
             injectedAt: new Date().toISOString()
           });
           window.TCP_TRAINER_SESSION_PERSONAS.push(next);
-          setTrainerStatus((next.name || 'Trainer Persona') + ' is live in this Trainer session.', 'injected');
+          setTrainerStatus((next.name || 'Clone Persona') + ' is live in this Clone session.', 'injected');
           return next;
         }
       });
@@ -146,7 +146,7 @@
     } catch (error) {
       document.body.dataset.trainerBoot = 'standalone-error';
       document.body.dataset.bootError = String(error && error.message ? error.message : error || 'unknown').replace(/[^a-z0-9.\-_/ ]/gi, '').slice(0, 120);
-      setTrainerStatus('Trainer startup fault // ' + (error && error.message ? error.message : error));
+      setTrainerStatus('Clone startup fault // ' + (error && error.message ? error.message : error));
     }
   }
 

@@ -10,7 +10,7 @@ const browserMainSource = fs.readFileSync(path.join(repoRoot, 'app', 'browser-ma
 const legacyMainSource = fs.readFileSync(path.join(repoRoot, 'app', 'main.js'), 'utf8');
 const trainerBrowserSource = fs.readFileSync(path.join(repoRoot, 'app', 'toys', 'persona-trainer', 'browser.js'), 'utf8');
 const indexHtml = fs.readFileSync(path.join(repoRoot, 'app', 'index.html'), 'utf8');
-const trainerHtml = fs.readFileSync(path.join(repoRoot, 'app', 'trainer.html'), 'utf8');
+const trainerHtml = fs.readFileSync(path.join(repoRoot, 'app', 'clone.html'), 'utf8');
 const homebaseHtml = fs.readFileSync(path.join(repoRoot, 'app', 'homebase.html'), 'utf8');
 
 const forbiddenStorageMutations = [

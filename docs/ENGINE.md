@@ -263,7 +263,7 @@ Public routes are:
 - `#homebase`
 - `#readout`
 - `#deck`
-- `#trainer`
+- `#clone` (`#trainer` remains a legacy alias)
 
 Those routes do not create per-page engines. They are aliases over the shared `browser-main.js` state. `#deck` resolves to the same internal encounter surface that older code paths still call `play`, so existing helpers and tests do not have to fork their truth model. `#console` remains only as a compatibility alias and resolves immediately to `#homebase`.
 
@@ -272,7 +272,7 @@ Ingress now hands off to `#homebase` by default. From there, each station expose
 - `Homebase / Personas` = lock, reveal, mask shelf, mask contact, dossier, archive
 - `Readout` = witness/law proof surface
 - `Deck` = encounter, cast, duel, aftermath
-- `Trainer` = extraction, live draft generation, validation, injection
+- `Clone` = extraction, live draft generation, validation, injection
 
 The important implementation rule is unchanged: routing changes the shell and pacing, not the measured quantities or their custody logic.
 
@@ -352,9 +352,9 @@ Current role mapping:
 - `Homebase / Personas` = anchor / shelf / contact / residue
 - `Readout` = witness / law
 - `Deck` = encounter / duel / aftermath
-- `Trainer` = forge
+- `Clone` = forge
 
-The practical reason for this layer is simple: TCP no longer presents every state with the same generic status grammar. A `Homebase` contact state, a `Readout` criticality state, and a `Trainer` forge-ready state are all distinct runtime phases even when they share the same engine underneath.
+The practical reason for this layer is simple: TCP no longer presents every state with the same generic status grammar. A `Homebase` contact state, a `Readout` criticality state, and a `Clone` forge-ready state are all distinct runtime phases even when they share the same engine underneath.
 
 ## Public surface split
 
@@ -363,14 +363,14 @@ The public browser surface is now split across distinct roles:
 - `Homebase / Personas` handles cadence lock staging, reveal, save, archive, dossier, mask gallery, quick-apply actions, and mask comparison
 - `Readout` stays the strict proof surface
 - `Deck` handles live solo and paired play, shell assignment, `Swap Cadences`, and `Shell Duel`
-- `Trainer` remains the manual persona lab, but public draft generation now happens there through the shared transfer engine instead of a UI-only generated state
+- `Clone` remains the manual persona forge, but public draft generation now happens there through the shared transfer engine instead of a UI-only generated state
 
 Inside that merged surface, the Homebase/Personas loop still has an explicit state distinction:
 
 - shelf choice is tracked as `gallerySelectedMaskId`
 - Homebase wear is tracked as `homebaseWornMaskId`
 
-That distinction matters because choosing a mask is no longer the same event as wearing it. `Homebase / Personas` now owns both the shelf and the contact chamber: the chosen mask stays visible while the source text is passed through it. Public UI no longer exposes a fake generation button on the shelf; the live draft path is `Open in Trainer` followed by `Forge Draft`.
+That distinction matters because choosing a mask is no longer the same event as wearing it. `Homebase / Personas` now owns both the shelf and the contact chamber: the chosen mask stays visible while the source text is passed through it. Public UI no longer exposes a fake generation button on the shelf; the live draft path is `Open in Clone` followed by `Forge Draft`.
 
 ## Deck-facing Shell Duel
 
@@ -409,7 +409,7 @@ When both shells are native, the duel should collapse toward identity on the sam
 - `generator-v2.js` - native-first writing lane, candidate families, rewrite bars, hold dockets, and V2 result assembly
 - `harbor.js` - harbor selection, witness load, reuse gain, and ledger rows
 - `badges.js` - compact custody mode cycling for the demo UI
-- `browser-main.js` - Homebase / Personas, Readout, Deck, Trainer, runtime field grammar, shared solo-readout behavior, and test-flight orchestration
+- `browser-main.js` - Homebase / Personas, Readout, Deck, Clone, runtime field grammar, shared solo-readout behavior, and test-flight orchestration
 
 ## Diagnostics contract
 

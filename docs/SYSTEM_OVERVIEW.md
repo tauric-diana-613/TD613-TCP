@@ -69,7 +69,7 @@ In practice, that means:
 
 - the `Deck` can feel playful
 - the `Readout` stays strict
-- the `Trainer` lets you iterate manually
+- the `Clone` forge lets you iterate manually
 - `TD613 Flight` can stay compact and procedural because it is a credentialed packet builder, not a cadence lab
 - the docs should explain the whole thing without pretending there are three unrelated audiences
 

@@ -10,7 +10,7 @@ The current gateway should be read through five maintained instruments:
 - `TD613 Aperture` — counter-tool audit for narrowing, filtering, selective admissibility pressure, and route distortion.
 - `TD613 Safe Harbor` — provenance intake, packet shaping, SHI minting, hashes, route recommendation, and seal-ready custody.
 - `TD613 Flight` — SHI-gated credential flightdeck for LLM-ready Flight Packets, authorship / rupture footers, Safe Harbor metadata, route-readiness diagnostics, and manifest-style handoff.
-- `TD613 Trainer` — extract / forge / validate / inject lane for controlled voice-shell candidates.
+- `TD613 Clone` — extract / forge / validate / inject lane for controlled voice-shell candidates.
 
 Older TCP chambers such as Homebase / Personas, Readout, and Deck remain in the repository as legacy/lab surfaces for experiments, regression pressure, and runtime continuity. They are not the current public onboarding route.
 
@@ -32,7 +32,7 @@ Hush is not Safe Harbor or Flight. Hush transforms and reviews a message surface
 
 Aperture is not an enforcement classifier. It is a counter-tool for making narrowing and selective admissibility visible.
 
-Trainer is not a license to impersonate. It extracts, forges, validates, and gates shell candidates under retrieval law.
+Clone is not a license to impersonate. It extracts, forges, validates, and gates shell candidates under retrieval law.
 
 TD613 is not a platform classifier, external detector, legal strategy substitute, publication decision-maker, truth machine for whistleblowing claims, production safety platform, covert classifier, or provenance laundering tool.
 
@@ -43,12 +43,12 @@ TD613 is not a platform classifier, external detector, legal strategy substitute
 3. Use `TD613 Aperture` when an output needs narrowing, filtering, admissibility, or route-pressure audit.
 4. Use `TD613 Safe Harbor` when a route needs provenance intake, SHI minting, packet hashes, route recommendation, or seal-ready custody.
 5. Use `TD613 Flight` only after Safe Harbor mints an SHI; Flight prepares credentialed, LLM-ready packets and authorship / rupture footers.
-6. Use `TD613 Trainer` when the task is shell extraction, candidate forging, validation, and gated injection/export.
+6. Use `TD613 Clone` when the task is shell extraction, candidate forging, validation, and gated injection/export.
 7. Treat older TCP chambers as lab/legacy surfaces unless a current tool explicitly depends on them.
 
 ## Phase map
 
-The phase documents remain useful for implementation history, but the current public orientation is the five-tool TD613 Gateway. Phase 29.1 repairs the public documentation surface so Hush's public memory catches up with its engine; newer gateway language keeps Hush beside Aperture, Safe Harbor, Flight, and Trainer instead of treating old TCP chambers as the starting path. See [docs/PHASE_MAP.md](docs/PHASE_MAP.md), [docs/HUSH_PHASE_21_28_STATUS.md](docs/HUSH_PHASE_21_28_STATUS.md), [docs/HUSH_PRODUCT_SPINE_STATUS.md](docs/HUSH_PRODUCT_SPINE_STATUS.md), and [docs/HUSH_EPISTEMICIDE_AUDIT.md](docs/HUSH_EPISTEMICIDE_AUDIT.md).
+The phase documents remain useful for implementation history, but the current public orientation is the five-tool TD613 Gateway. Phase 29.1 repairs the public documentation surface so Hush's public memory catches up with its engine; newer gateway language keeps Hush beside Aperture, Safe Harbor, Flight, and Clone instead of treating old TCP chambers as the starting path. See [docs/PHASE_MAP.md](docs/PHASE_MAP.md), [docs/HUSH_PHASE_21_28_STATUS.md](docs/HUSH_PHASE_21_28_STATUS.md), [docs/HUSH_PRODUCT_SPINE_STATUS.md](docs/HUSH_PRODUCT_SPINE_STATUS.md), and [docs/HUSH_EPISTEMICIDE_AUDIT.md](docs/HUSH_EPISTEMICIDE_AUDIT.md).
 
 ## Local-only posture
 
@@ -103,7 +103,7 @@ The current public gateway is organized around five maintained instruments:
 - `Aperture` = counter-tool audit for narrowing, filtering, selective admissibility pressure, and route distortion.
 - `Safe Harbor` = provenance intake, SHI minting, packet state, hashes, route recommendation, and seal-ready custody.
 - `Flight` = SHI-gated credential flightdeck for routed prompts, authorship / rupture footers, glyph integrity, route-readiness diagnostics, and manifest export.
-- `Trainer` = extraction, forge validation, correction hints, release gate, and injection/export control.
+- `Clone` = extraction, forge validation, correction hints, release gate, and injection/export control.
 
 Older TCP roles such as Homebase / Personas, Readout, and Deck remain available as legacy/lab surfaces. They should not be treated as the current gateway contract.
 
@@ -167,7 +167,7 @@ TD613 ships maintained proof surfaces in both Node and the browser. The maintain
 npm test
 ```
 
-That path covers stylometry, fixtures, recognition, Hush, release hardening, benchmark, browser parity, retrieval lane, swap-cadence matrix, trainer lab, harbor, diagnostics, Hush product spine, readiness dashboard, report ingest, and readiness ledger.
+That path covers stylometry, fixtures, recognition, Hush, release hardening, benchmark, browser parity, retrieval lane, swap-cadence matrix, clone forge, harbor, diagnostics, Hush product spine, readiness dashboard, report ingest, and readiness ledger.
 
 ## Non-goals
 

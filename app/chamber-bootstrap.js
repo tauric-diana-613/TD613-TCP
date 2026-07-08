@@ -97,7 +97,7 @@
       if (!rail) return;
       var hush = document.getElementById('gatewayDoorHush');
       var harbor = document.getElementById('gatewayDoorHarbor');
-      var trainer = document.getElementById('gatewayDoorTrainer');
+      var clone = document.getElementById('gatewayDoorTrainer');
       var readout = document.getElementById('gatewayDoorReadout');
       var openFull = document.getElementById('gatewayApertureOpenFull');
       var phaseStatus = document.getElementById('gatewayPreviewPhaseStatus');
@@ -114,10 +114,10 @@
       if (readout) readout.remove();
       if (phaseStatus) phaseStatus.remove();
       if (openFull) openFull.classList.add('gateway-aperture-open-top');
-      [hush, flight, harbor, trainer].forEach(function (node) {
+      [hush, flight, harbor, clone].forEach(function (node) {
         if (node) rail.appendChild(node);
       });
-      rail.setAttribute('data-phase32-visible-order', 'hush flight safe-harbor trainer');
+      rail.setAttribute('data-phase32-visible-order', 'hush flight safe-harbor clone');
       rail.setAttribute('data-gateway-housekeeping', 'pr125');
     };
     if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', installFlightDoor, { once: true });
@@ -129,7 +129,7 @@
     return;
   }
 
-  if (pageKind === 'trainer') {
+  if (pageKind === 'trainer' || pageKind === 'clone') {
     [
       './td613-constants.js',
       './browser-data.js?v=' + (V.data || V.main || ''),

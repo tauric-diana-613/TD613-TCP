@@ -1154,7 +1154,7 @@
     homebase: 'homebase',
     readout: 'readout',
     play: 'deck',
-    trainer: 'trainer'
+    trainer: 'clone'
   });
   const HASH_TO_ARTIFACT_TAB = Object.freeze({
     console: 'console',
@@ -1163,6 +1163,7 @@
     readout: 'readout',
     deck: 'play',
     play: 'play',
+    clone: 'trainer',
     trainer: 'trainer'
   });
   const ARTIFACT_TAB_PANE_IDS = Object.freeze({
@@ -1196,7 +1197,7 @@
         lead: 'Reference stays reference. Probe stays probe.'
       }),
       trainer: Object.freeze({
-        title: 'TCP / Trainer',
+        title: 'TCP / Clone',
         line: 'Extract / forge / validate',
         lead: 'Forge only when the field needs a real shell.'
       })
@@ -1209,13 +1210,14 @@
     personas: 'homebase',
     readout: 'readout',
     deck: 'play',
+    clone: 'trainer',
     trainer: 'trainer'
   });
   const ARTIFACT_TAB_TO_PAGE = Object.freeze({
     homebase: './homebase.html',
     readout: './readout.html',
     play: './deck.html',
-    trainer: './trainer.html'
+    trainer: './clone.html'
   });
   const PAGE_KIND = (() => {
     const raw = document.body?.dataset?.pageKind || '';
@@ -1705,7 +1707,7 @@
       homebase: 'Homebase / Personas',
       readout: 'Readout',
       play: 'Deck',
-      trainer: 'Trainer'
+      trainer: 'Clone'
     }[normalizeArtifactTab(tab)] || 'Homebase';
   }
 
@@ -2261,7 +2263,7 @@
 
     if (persona.source === 'trainer') {
       return [
-        'Samples // trainer-forged shell',
+        'Samples // clone-forged shell',
         `Resolved strength // ${Math.round((persona.strength || 0.82) * 100)}%`,
         `Overlay mod // ${overlayModLabel(persona.mod)}`
       ];
@@ -2593,7 +2595,7 @@
   }
 
   function installTrainerBridge(error = null) {
-    const detail = error ? bootWarningMessage('Trainer lab', error) : '';
+    const detail = error ? bootWarningMessage('Clone forge', error) : '';
     window.TCP_TRAINER_LAB = Object.freeze({
       available: Boolean(trainerController),
       error: detail,
@@ -3355,13 +3357,13 @@
     if (persona.source === 'trainer') {
       return {
         maskVisualClass: 'trained-mask',
-        maskArtLabel: 'trained shell',
+        maskArtLabel: 'cloned shell',
         maskSigil: '##',
         maskState: 'unforged',
         family: 'Forged shell',
         tagline: 'Derived under retrieval law.',
-        voicePromise: 'A trained shell carrying the pressure of a validated forge pass.',
-        fieldUse: 'Use when you want a trainer-forged shell available in Homebase or Deck.',
+        voicePromise: 'A cloned shell carrying the pressure of a validated forge pass.',
+        fieldUse: 'Use when you want a clone-forged shell available in Homebase or Deck.',
         riskTell: 'Forge residue can still cling where validation left the strongest lanes intact.',
         frameTone: 'bruise-violet',
         collectorClass: 'trained',
@@ -5483,7 +5485,7 @@
       return 'captured shell';
     }
     if (persona.source === 'trainer') {
-      return 'trained shell';
+      return 'cloned shell';
     }
     return 'built-in field mask';
   }
@@ -5689,7 +5691,7 @@
           </div>
           <div class="analysis-status homebase-worn-mask-line">${escapeHtml(stageLine)}</div>
           <div class="persona-actions">
-            <button type="button" class="secondary persona-inline-action" data-persona-action="open-trainer" data-persona-id="${state.wornMask.id}">Open in Trainer</button>
+            <button type="button" class="secondary persona-inline-action" data-persona-action="open-trainer" data-persona-id="${state.wornMask.id}">Open in Clone</button>
             <button type="button" class="ghost persona-inline-action" data-persona-action="clear-homebase">Clear worn mask</button>
           </div>
         </div>
@@ -6184,7 +6186,7 @@
             <button type="button" class="secondary persona-inline-action" data-persona-action="wear-homebase" data-persona-id="${persona.id}">Bring into Homebase</button>
             <button type="button" class="ghost persona-inline-action" data-persona-action="assign-reference" data-persona-id="${persona.id}">Try on Deck A</button>
             <button type="button" class="ghost persona-inline-action" data-persona-action="assign-probe" data-persona-id="${persona.id}">Try on Deck B</button>
-            <button type="button" class="ghost persona-inline-action" data-persona-action="open-trainer" data-persona-id="${persona.id}">Open in Trainer</button>
+            <button type="button" class="ghost persona-inline-action" data-persona-action="open-trainer" data-persona-id="${persona.id}">Open in Clone</button>
           </div>
         </div>
       </div>
@@ -6200,7 +6202,7 @@
     const sectionConfigs = [
       { key: 'builtIn', title: 'Built-in masks', kicker: 'field cast' },
       { key: 'captured', title: 'Captured shells', kicker: 'saved from live cadence' },
-      { key: 'trained', title: 'Trained shells', kicker: 'forged in trainer' }
+      { key: 'trained', title: 'Cloned shells', kicker: 'forged in Clone' }
     ];
 
     deck.innerHTML = sectionConfigs
@@ -6374,7 +6376,7 @@
         ? state.deckCastingSummary.line
         : 'No pair awake yet.';
     const trainerSummary = trainerLoadError
-      ? 'Trainer annex offline. TCP core and ingress remain live.'
+      ? 'Clone forge offline. TCP core and ingress remain live.'
       : trainerSnapshot.lastInjectedPersonaSummary
         ? `${trainerSnapshot.lastInjectedPersonaSummary.name} is live on the session shelf.`
         : trainerSnapshot.validationPass
@@ -6418,7 +6420,7 @@
         glyphKey: 'tabTrainer',
         glyphClass: 'glyph-cyan',
         kicker: 'Forge',
-        title: 'Trainer',
+        title: 'Clone',
         summary: trainerSummary,
         detail: trainerSnapshot.lastInjectedPersonaSummary
           ? 'Open the forge to route the injected persona into the session shelf, Homebase, or Deck.'
@@ -6468,7 +6470,7 @@
         <div class="trainer-bridge-card trainer-bridge-empty">
           <div>
             <div class="persona-kicker">Forge lane degraded</div>
-            <p class="persona-empty">Trainer Lab did not load, so TCP keeps the core deck, ingress membrane, and witness surfaces live without pretending the forge is available.</p>
+            <p class="persona-empty">Clone forge did not load, so TCP keeps the core deck, ingress membrane, and witness surfaces live without pretending the forge is available.</p>
           </div>
         </div>
       `;
@@ -7419,7 +7421,7 @@ DeltaE = ${ledger.reuse_gain}`;
       return;
     }
     if (trainerLoadError || !trainerController) {
-      setStatusMessage('Trainer Lab is offline in this runtime. TCP kept the core chamber alive, but the forge lane is unavailable.');
+      setStatusMessage('Clone forge is offline in this runtime. TCP kept the core chamber alive, but the forge lane is unavailable.');
       return;
     }
     const context = buildTrainerDraftContext(id);
@@ -7435,7 +7437,7 @@ DeltaE = ${ledger.reuse_gain}`;
     if (focusTarget && typeof focusTarget.focus === 'function') {
       focusTarget.focus({ preventScroll: true });
     }
-    setStatusMessage(`${persona.name} is staged in Trainer. Forge Draft can now seed a live candidate from current field context.`);
+    setStatusMessage(`${persona.name} is staged in Clone. Forge Draft can now seed a live candidate from current field context.`);
   }
 
   function selectMaskPersona(id) {
@@ -7661,7 +7663,7 @@ DeltaE = ${ledger.reuse_gain}`;
     if (focusTarget && typeof focusTarget.focus === 'function') {
       focusTarget.focus({ preventScroll: true });
     }
-    setStatusMessage(`${persona.name} is staged in Trainer. Forge Draft can now seed a live candidate from current field context.`);
+    setStatusMessage(`${persona.name} is staged in Clone. Forge Draft can now seed a live candidate from current field context.`);
   }
 
   function generateMaskForPersona(id) {
@@ -7783,7 +7785,7 @@ DeltaE = ${ledger.reuse_gain}`;
   function normalizeTrainerPersona(persona = {}) {
     return normalizeStoredPersona({
       id: persona.id || `trainer-${Date.now()}`,
-      name: persona.name || 'Trainer Persona',
+      name: persona.name || 'Clone Persona',
       blurb: persona.blurb || 'Derived retrieval shell.',
       chips: Array.isArray(persona.chips) ? [...persona.chips] : ['trainer'],
       mod: persona.mod ? { ...persona.mod } : null,
@@ -8124,7 +8126,7 @@ DeltaE = ${ledger.reuse_gain}`;
         }
       : {
           available: false,
-          error: trainerLoadError ? bootWarningMessage('Trainer lab', trainerLoadError) : '',
+          error: trainerLoadError ? bootWarningMessage('Clone forge', trainerLoadError) : '',
           personaName: '',
           corpusReady: false,
           sampleCount: 0,
@@ -8331,7 +8333,7 @@ DeltaE = ${ledger.reuse_gain}`;
     } catch (error) {
       trainerController = null;
       trainerLoadError = error;
-      recordBootWarning('Trainer lab', error);
+      recordBootWarning('Clone forge', error);
       installTrainerBridge(error);
       renderTrainerBridge();
       return null;
@@ -9493,7 +9495,7 @@ DeltaE = ${ledger.reuse_gain}`;
     document.body.dataset.bootStage = 'boot-rendered-gallery';
     renderPersonas();
     document.body.dataset.bootStage = 'boot-rendered-personas';
-    if (PAGE_KIND === 'trainer' || $('trainerPane')) {
+    if (PAGE_KIND === 'trainer' || PAGE_KIND === 'clone' || $('trainerPane')) {
       await initializeTrainerLab();
     }
     document.body.dataset.bootStage = 'boot-rendered-trainer';

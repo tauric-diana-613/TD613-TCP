@@ -74,7 +74,7 @@ TD613 Flight is the credential flightdeck adjacent to Safe Harbor. It shapes SHI
 
 ### TCP legacy and lab chambers
 
-Homebase, Deck, Trainer, and related chambers remain available as lab and legacy surfaces. They may support exploration, corpus work, and profile extraction, but Hush is the primary mask studio for the current protective workflow.
+Homebase, Deck, Clone, and related chambers remain available as lab and legacy surfaces. They may support exploration, corpus work, and profile extraction, but Hush is the primary mask studio for the current protective workflow.
 
 ## What the repository should make impossible to miss
 

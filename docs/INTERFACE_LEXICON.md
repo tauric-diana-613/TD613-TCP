@@ -25,8 +25,8 @@ The glyph/state language is part of that vocabulary. In TCP, surface roles such 
 | `Reveal` | Opens the deep dossier and wakes the global solo Telemetry/Harbor path for the active lock. | Runs the shared one-sample readout logic on the current Homebase lock. |
 | `Save` | Persists the staged lock into the local lock archive. | Commits the draft cadence lock to local storage without changing its measured profile. |
 | `Bring into Homebase` | Moves the chosen shelf mask into the Homebase worn-mask stage. | Sets the current Homebase mask without changing deck shell assignment. |
-| `Open in Trainer` | Sends the current mask context into the forge without claiming a generated result yet. | Carries persona and source context into the shared trainer runtime so a real draft can be forged there. |
-| `Forge Draft` | Builds a live candidate passage in `Trainer`. | Uses the default Generator V2 writer on current Homebase/Deck/extracted-corpus context. If V2 misses honestly, the trainer now shows a visible hold docket instead of fake output. |
+| `Open in Clone` | Sends the current mask context into the forge without claiming a generated result yet. | Carries persona and source context into the shared clone runtime so a real draft can be forged there. |
+| `Forge Draft` | Builds a live candidate passage in `Clone`. | Uses the default Generator V2 writer on current Homebase/Deck/extracted-corpus context. If V2 misses honestly, Clone shows a visible hold docket instead of fake output. |
 | `Try on Deck A` | Sends a persona shell to the reference bay in `Deck`. | Assigns the selected shell to slot `A` for live deck analysis. |
 | `Try on Deck B` | Sends a persona shell to the probe bay in `Deck`. | Assigns the selected shell to slot `B` for live deck analysis. |
 
@@ -98,7 +98,7 @@ The glyph/state language is part of that vocabulary. In TCP, surface roles such 
 | `Deck` | The encounter station with bays, controls, cast report, and `Shell Duel`. | The public membrane where cadence play and route-state education happen first. |
 | `Homebase / Personas` | The cadence home and mask shelf for lock, reveal, save, archive, dossier, mask selection, and mask work. | The private lock-and-compare surface that stages one voice and one worn mask before or alongside deck play. |
 | `Readout` | The witness/law station that exposes scores, formulas, and ledger preview. | The explicit metric layer where similarity, route, and archive state are made legible. |
-| `Station route` | The hash-routed room selector such as `#homebase`, `#readout`, `#deck`, or `#trainer`. | A public navigation alias over one browser runtime; the route changes shell identity, not engine truth. `#console` remains a compatibility alias that resolves to `#homebase`. |
+| `Station route` | The hash-routed room selector such as `#homebase`, `#readout`, `#deck`, or `#clone`. | A public navigation alias over one browser runtime; the route changes shell identity, not engine truth. `#console` remains a compatibility alias that resolves to `#homebase`, and `#trainer` remains a legacy alias for `#clone`. |
 | `Branch` | The branch formula shown in the readout/debug layer. | The rule that unwanted surplus is preserved until it can be interpreted or dismissed responsibly. |
 | `Field` | The whole comparison environment shown on the deck. | The bounded environment in which similarity, recurrence, and route pressure interact. |
 | `Harbor deck` | The panel that recommends structured passage. | The safe-harbor layer that lowers witness burden without destroying provenance. |

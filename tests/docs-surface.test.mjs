@@ -78,7 +78,7 @@ includesAll(readme, 'README.md', [
   'TD613 Aperture',
   'TD613 Safe Harbor',
   'TD613 Flight',
-  'TD613 Trainer',
+  'TD613 Clone',
   'Hush is not Safe Harbor or Flight',
   'app/index.html',
   'Phase 29.1 repairs the public documentation surface'

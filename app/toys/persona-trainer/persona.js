@@ -18,7 +18,7 @@ export function buildPersonaBlurb(name, promptBuild, validation) {
   const retrieval = validation?.retrievalContract;
   const agreement = retrieval ? Math.round((retrieval.meanAgreement || 0) * 100) : 0;
   const description = promptBuild?.description || 'Derived retrieval shell.';
-  return `${description} Retrieval agreement ${agreement}% across the trainer calibration lane.`;
+  return `${description} Retrieval agreement ${agreement}% across the clone calibration lane.`;
 }
 
 export function buildBrowserPersona({
@@ -28,7 +28,7 @@ export function buildBrowserPersona({
   validation,
   buildMod
 }) {
-  const safeName = String(name || 'Trainer Persona').trim() || 'Trainer Persona';
+  const safeName = String(name || 'Clone Persona').trim() || 'Clone Persona';
   const chips = [
     ...topConstraintLabels(promptBuild?.promptConstraints || []),
     `retrieval ${Math.round(((validation?.retrievalContract?.meanAgreement) || 0) * 100)}`

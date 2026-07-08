@@ -55,10 +55,10 @@ export async function createTrainerController(options = {}) {
   } = options;
 
   if (!root) {
-    throw new Error('Trainer root node is required.');
+    throw new Error('Clone root node is required.');
   }
   if (!engine || typeof engine.extractCadenceProfile !== 'function') {
-    throw new Error('Trainer requires the live TCP engine.');
+    throw new Error('Clone requires the live TCP engine.');
   }
 
   const modules = await loadTrainerModuleBundle();
@@ -125,7 +125,7 @@ export async function createTrainerController(options = {}) {
   }
 
   function personaName() {
-    return String(nodes.personaName?.value || '').trim() || 'Trainer Persona';
+    return String(nodes.personaName?.value || '').trim() || 'Clone Persona';
   }
 
   function cloneContext(value) {
@@ -665,7 +665,7 @@ export async function createTrainerController(options = {}) {
       return;
     }
     try { localStorage.removeItem('td613_hook_event'); } catch (cleanupError) {}
-    if (!hookEvent || hookEvent.action !== 'route_to_trainer') return;
+    if (!hookEvent || !['route_to_trainer', 'route_to_clone'].includes(hookEvent.action)) return;
     const text = String(hookEvent.payload && hookEvent.payload.text ? hookEvent.payload.text : '').trim();
     if (!text) return;
     openContext({ corpusText: text, forcePopulate: true });

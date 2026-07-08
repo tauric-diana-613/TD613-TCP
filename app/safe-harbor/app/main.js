@@ -1055,14 +1055,14 @@
     const text = String(cleanText || '').trim();
     if (!text) return;
     const hookEvent = {
-      action: 'route_to_trainer',
+      action: 'route_to_clone',
       payload: { text },
       timestamp: Date.now()
     };
     try {
       localStorage.setItem('td613_hook_event', JSON.stringify(hookEvent));
     } catch (error) {}
-    window.open('../trainer.html', '_blank');
+    window.open('../clone.html', '_blank');
   }
 
   function renderIngress() {

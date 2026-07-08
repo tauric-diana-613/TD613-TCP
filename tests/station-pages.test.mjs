@@ -11,7 +11,7 @@ const files = {
   homebase: fs.readFileSync(path.join(repoRoot, 'app', 'homebase.html'), 'utf8'),
   readout: fs.readFileSync(path.join(repoRoot, 'app', 'readout.html'), 'utf8'),
   deck: fs.readFileSync(path.join(repoRoot, 'app', 'deck.html'), 'utf8'),
-  trainer: fs.readFileSync(path.join(repoRoot, 'app', 'trainer.html'), 'utf8')
+  trainer: fs.readFileSync(path.join(repoRoot, 'app', 'clone.html'), 'utf8')
 };
 
 assert.ok(files.gateway.includes('data-page-kind="gateway"'), 'gateway page exposes gateway page-kind');
@@ -21,7 +21,7 @@ assert.ok(files.gateway.includes('id="gatewayApertureBridgeRail"'), 'gateway pag
 assert.ok(files.homebase.includes('data-page-kind="homebase"'), 'homebase page exposes homebase page-kind');
 assert.ok(files.readout.includes('data-page-kind="readout"'), 'readout page exposes readout page-kind');
 assert.ok(files.deck.includes('data-page-kind="deck"'), 'deck page exposes deck page-kind');
-assert.ok(files.trainer.includes('data-page-kind="trainer"'), 'trainer page exposes trainer page-kind');
+assert.ok(files.trainer.includes('data-page-kind="clone"'), 'clone page exposes clone page-kind');
 
 assert.ok(files.gateway.includes('data-station-target="play"'), 'gateway page links into Deck');
 assert.ok(files.gateway.includes('id="gatewayDoorDeck"'), 'gateway page exposes the Deck room door');
@@ -38,7 +38,7 @@ for (const station of ['homebase', 'readout', 'deck', 'trainer']) {
 }
 assert.ok(files.readout.includes('id="viewPaneReadout"'), 'readout page mounts the Readout pane');
 assert.ok(files.deck.includes('id="viewPanePlay"'), 'deck page mounts the Deck pane');
-assert.ok(files.trainer.includes('id="viewPaneTrainer"'), 'trainer page mounts the Trainer pane');
+assert.ok(files.trainer.includes('id="viewPaneTrainer"'), 'clone page mounts the Clone forge pane');
 assert.ok(files.deck.includes('id="governedExposurePreview"'), 'deck page exposes governed exposure readout for the shared runtime');
 assert.ok(files.deck.includes('id="similarity"'), 'deck page exposes witness metrics for the shared runtime');
 assert.ok(files.deck.includes('id="harborBox"'), 'deck page exposes harbor output for the shared runtime');

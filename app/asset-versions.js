@@ -1,18 +1,18 @@
 (function () {
   try { document.title = 'TD613 Hush'; } catch (error) {}
   window.TD613_ASSET_VERSIONS = {
-    styles:      '202604192040',
+    styles:      '202607081245',
     data:        '202607010240',
     diagnostics: '202604230045',
     engine:      '202607010240',
     fixtures:    '202604230045',
     receipt:     '202605010945',
-    main:        '202607010240',
+    main:        '202607081245',
     aperture:    '202606291834',
     chrome:      '202606151735',
     stationPolish: '202606162255',
-    trainerStandalone: '202606162305',
-    gatewayHousekeeping: '202606151825',
+    trainerStandalone: '202607081245',
+    gatewayHousekeeping: '202607081245',
     gatewayApertureDesktopAlign: '202606162210',
     gatewayApertureSubtitle: '202606162225',
     gatewayBounceBanner: '202606162210',
@@ -65,7 +65,7 @@
   var V = window.TD613_ASSET_VERSIONS;
   document.write('<link rel="stylesheet" href="./styles.css?v=' + V.styles + '" />');
   document.write('<link rel="stylesheet" href="./hush-phase39.css?v=' + V.hushPhase39 + '" />');
-  if (/\/trainer\.html(?:$|[?#])/i.test(window.location.pathname + window.location.search + window.location.hash)) {
+  if (/\/(?:trainer|clone)\.html(?:$|[?#])/i.test(window.location.pathname + window.location.search + window.location.hash)) {
     document.write('<link rel="stylesheet" href="./station-polish.css?v=' + V.stationPolish + '" />');
   }
   document.write('<link rel="stylesheet" href="./gateway-bounce-banner.css?v=' + (V.gatewayBounceBanner || V.main || '') + '" />');

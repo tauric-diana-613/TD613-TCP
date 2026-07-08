@@ -24,7 +24,8 @@
       readout: './readout.html',
       deck: './deck.html',
       play: './deck.html',
-      trainer: './trainer.html'
+      trainer: './clone.html',
+      clone: './clone.html'
     };
     document.querySelectorAll('button[data-station-target]').forEach(function (button) {
       if (button.dataset.gatewayRescueBound === 'true') return;

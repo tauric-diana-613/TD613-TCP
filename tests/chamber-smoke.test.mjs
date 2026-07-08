@@ -26,7 +26,7 @@ const APP_DIR = resolve(__dirname, '..', 'app');
 const CHAMBERS = [
   { name: 'Gateway',  file: 'index.html',    hasNav: false },
   { name: 'Deck',     file: 'deck.html',     hasNav: true  },
-  { name: 'Trainer',  file: 'trainer.html',  hasNav: true  },
+  { name: 'Clone',    file: 'clone.html',    hasNav: true  },
   { name: 'Readout',  file: 'readout.html',  hasNav: true  },
   { name: 'Homebase / Personas', file: 'homebase.html', hasNav: true  }
 ];

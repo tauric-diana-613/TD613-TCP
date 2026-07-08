@@ -18,12 +18,12 @@ window.si = window.si || function () {
   document.head.appendChild(rescue);
 })();
 
-(function removeTrainerStationChips() {
+(function removeCloneStationChips() {
   function run() {
-    if (!document.body || document.body.getAttribute('data-page-kind') !== 'trainer') return;
+    if (!document.body || !['trainer', 'clone'].includes(document.body.getAttribute('data-page-kind'))) return;
     const nav = document.querySelector('.station-nav');
     if (nav) nav.remove();
-    try { document.title = 'TCP / Trainer'; } catch (error) {}
+    try { document.title = 'TCP / Clone'; } catch (error) {}
   }
   if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', run, { once: true });
   else run();
