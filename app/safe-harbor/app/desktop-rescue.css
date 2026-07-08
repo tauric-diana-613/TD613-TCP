@@ -19,7 +19,7 @@
     margin: 0 auto;
     padding: clamp(18px, 2vw, 32px) clamp(18px, 2.2vw, 36px) 40px;
     display: grid;
-    grid-template-columns: minmax(0, 1fr) clamp(210px, 15vw, 300px);
+    grid-template-columns: minmax(0, 1fr);
     grid-template-rows: auto minmax(0, 1fr);
     gap: 18px;
   }
@@ -30,6 +30,8 @@
   }
 
   html body #vaultSurface .masthead {
+    grid-column: 1;
+    grid-row: 1;
     display: grid;
     grid-template-columns: minmax(360px, 1fr) minmax(420px, auto);
     align-items: center;
@@ -77,49 +79,64 @@
     white-space: nowrap;
   }
 
+  /* The Harbor Map is deliberately absent from the opening cockpit. It becomes
+     a compact horizontal floating map only after Route Conscience has fully
+     scrolled away. The class is controlled by app/speed-insights.js. */
   html body #vaultSurface .safe-harbor-scroll-rail {
-    position: sticky;
-    top: 18px;
-    z-index: 16;
-    display: flex;
-    flex-direction: column;
-    align-items: stretch;
+    position: fixed;
+    top: 16px;
+    left: 50%;
+    z-index: 80;
+    display: grid;
+    grid-template-columns: auto auto minmax(0, 1fr) auto;
+    align-items: center;
     gap: 12px;
-    grid-column: 2;
-    grid-row: 1 / span 2;
-    width: auto;
-    max-height: calc(100vh - 36px);
-    overflow-y: auto;
+    width: min(calc(100vw - 48px), 1780px);
+    max-height: none;
+    overflow: visible;
     padding: 10px 14px;
     border: 1px solid rgba(144, 231, 255, .14);
-    border-radius: 0;
-    background: rgba(6, 8, 14, .88);
+    border-radius: 16px;
+    background: rgba(6, 8, 14, .92);
     backdrop-filter: blur(18px) saturate(150%);
     box-shadow: 0 16px 42px rgba(0, 0, 0, .26);
     clip-path: polygon(0 18px, 18px 0, calc(100% - 10px) 0, 100% 10px, 100% calc(100% - 18px), calc(100% - 18px) 100%, 10px 100%, 0 calc(100% - 10px));
+    opacity: 0;
+    visibility: hidden;
+    pointer-events: none;
+    transform: translate(-50%, -14px);
+    transition: opacity 180ms ease, transform 220ms ease, visibility 0s linear 220ms;
+  }
+
+  html body #vaultSurface.harbor-map-floating .safe-harbor-scroll-rail {
+    opacity: 1;
+    visibility: visible;
+    pointer-events: auto;
+    transform: translate(-50%, 0);
+    transition: opacity 180ms ease, transform 220ms ease, visibility 0s;
   }
 
   html body #vaultSurface .safe-harbor-scroll-rail .rail-links,
   html body #vaultSurface .safe-harbor-scroll-rail .rail-actions {
-    display: grid;
-    align-items: stretch;
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
     gap: 7px;
     min-width: 0;
   }
 
   html body #vaultSurface .safe-harbor-scroll-rail a,
   html body #vaultSurface .safe-harbor-scroll-rail button {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
     min-height: 26px;
     padding: 4px 8px;
     font-size: .55rem;
     line-height: 1.1;
-    white-space: normal;
+    white-space: nowrap;
   }
 
   html body #vaultSurface .main-grid {
+    grid-column: 1;
+    grid-row: 2;
     display: grid;
     grid-template-columns: minmax(265px, 330px) minmax(520px, 1fr) minmax(245px, 320px);
     grid-template-rows: minmax(560px, auto) minmax(220px, 36vh);
@@ -218,57 +235,10 @@
   html body #vaultSurface button {
     max-width: 100%;
   }
-
-  html body #vaultSurface textarea,
-  html body #vaultSurface .code-area,
-  html body #vaultSurface .code-panel,
-  html body #vaultSurface pre {
-    width: 100%;
-    min-width: 0;
-    max-width: 100%;
-    overflow: auto;
-    white-space: pre-wrap;
-    overflow-wrap: anywhere;
-  }
-
-  html body #vaultSurface .code-area {
-    min-height: 150px;
-  }
-
-  html body #vaultSurface #probeOutput,
-  html body #vaultSurface #forensicSchemaPreview,
-  html body #vaultSurface #packetPreview,
-  html body #vaultSurface #auditLog {
-    min-height: 160px;
-    max-height: 34vh;
-  }
-
-  html body #vaultSurface .proof-row,
-  html body #vaultSurface .metric-row,
-  html body #vaultSurface .summary-row,
-  html body #vaultSurface .data-row {
-    gap: 12px;
-  }
-
-  html body #vaultSurface .proof-value,
-  html body #vaultSurface .value,
-  html body #vaultSurface .data-value,
-  html body #vaultSurface .summary-value {
-    min-width: 0;
-    overflow-wrap: anywhere;
-    word-break: break-word;
-  }
 }
 
-@media (min-width: 1280px) {
-  html body #vaultSurface .main-grid {
-    grid-template-columns: minmax(285px, 350px) minmax(620px, 1fr) minmax(270px, 340px);
-  }
-}
-
-@media (min-width: 1540px) {
-  html body #vaultSurface .main-grid {
-    grid-template-columns: minmax(300px, 370px) minmax(720px, 1fr) minmax(285px, 360px);
-    gap: 20px;
+@media (min-width: 1024px) and (prefers-reduced-motion: reduce) {
+  html body #vaultSurface .safe-harbor-scroll-rail {
+    transition: none;
   }
 }
