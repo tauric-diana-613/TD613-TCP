@@ -91,6 +91,7 @@
     ingressStepInput: $('ingressStepInput'),
     ingressStepMeta: $('ingressStepMeta'),
     ingressSealReview: $('ingressSealReview'),
+    exportIngressTriad: $('exportIngressTriad'),
     ingressSealNote: $('ingressSealNote'),
     ingressBack: $('ingressBack'),
     ingressContinue: $('ingressContinue'),
@@ -489,6 +490,7 @@
     });
     dom.ingressBack.addEventListener('click', retreatIngressStep);
     dom.ingressContinue.addEventListener('click', advanceIngressStep);
+    if (dom.exportIngressTriad) dom.exportIngressTriad.addEventListener('click', exportIngressTriad);
     [[dom.ingressStageFuture, 0], [dom.ingressStagePast, 1], [dom.ingressStageHigher, 2], [dom.ingressStageSeal, 3]].forEach(([button, index]) => {
       button.addEventListener('click', () => setIngressStep(index));
     });
@@ -1138,6 +1140,7 @@
       renderIngressSummaryRow(dom.ingressSummaryFutureSelf, 'future_self');
       renderIngressSummaryRow(dom.ingressSummaryPastSelf, 'past_self');
       renderIngressSummaryRow(dom.ingressSummaryHigherSelf, 'higher_self');
+      if (dom.exportIngressTriad) dom.exportIngressTriad.disabled = count === 0;
       dom.ingressSealNote.textContent = count === 3
         ? 'Safe Harbor can now mint the staged packet. TCP stylometry remains a cadence credential, while EO and the seal lane stay attachable after packetization.'
         : 'The seal step remains locked until all three pages are held.';
@@ -1307,12 +1310,25 @@
 
   function renderIngressSummaryRow(target, key) {
     const raw = state.ingress.segments[key] || '';
+    if (!target) return;
     if (!trim(raw)) {
       target.textContent = 'awaiting line';
       return;
     }
     const stats = basicStats(raw);
-    target.textContent = stats.word_count + 'w / ' + stats.char_count + 'c / ' + shortChecksum(null, raw);
+    const checksum = shortChecksum(null, raw);
+    const metrics = document.createElement('span');
+    metrics.className = 'ingress-summary-metrics';
+    [
+      stats.word_count + 'w',
+      stats.char_count + 'c',
+      checksum
+    ].forEach((part) => {
+      const token = document.createElement('span');
+      token.textContent = part;
+      metrics.appendChild(token);
+    });
+    target.replaceChildren(metrics);
   }
 
   function renderHooks() {
@@ -2864,6 +2880,88 @@
 
   function packetExportJsonString() {
     return state.packet ? JSON.stringify(state.packet, null, 2) + '\n' : '';
+  }
+
+  function ingressLaneDisplayLabel(key) {
+    if (key === 'future_self') return 'Future Self';
+    if (key === 'past_self') return 'Past Self';
+    if (key === 'higher_self') return 'Higher Self';
+    return key;
+  }
+
+  function buildIngressTriadExport() {
+    const bundle = state.helper || stampBundle();
+    const triadSet = buildTriadSignatureSet();
+    const signatures = triadSet.signatures;
+    const triad = triadMetrics(signatures);
+    const issuance = evaluateTriadIssuance(signatures);
+    return {
+      schema_version: 'td613.safe-harbor.ingress-triad-export/v1',
+      exported_at: nowIso(),
+      source: 'safe-harbor.ingress.seal-step',
+      digest_scope: 'browser-local export of raw triad response text plus derived stylometric review',
+      claim_limit: 'Operator-local triad export. It is not identity proof, authorship proof, legal authority, consent, or public-release permission.',
+      minimum_lane_words: MIN_LANE_WORDS,
+      helper: {
+        ts_utc: bundle.ts_utc,
+        filename_safe: bundle.filename_safe,
+        request_id: bundle.request_id,
+        nonce: bundle.nonce
+      },
+      lanes: KEYS.map((key, index) => {
+        const raw = state.ingress.segments[key] || '';
+        const stats = basicStats(raw);
+        const signature = signatures[key] || {};
+        return {
+          index: index + 1,
+          key,
+          label: ingressLaneDisplayLabel(key),
+          prompt_label: D.ingressPrompts[key] && D.ingressPrompts[key].promptLabel ? D.ingressPrompts[key].promptLabel : key,
+          response_text: raw,
+          basic_stylometrics: {
+            word_count: stats.word_count,
+            char_count: stats.char_count,
+            checksum8: shortChecksum(null, raw),
+            threshold_met: stats.word_count >= MIN_LANE_WORDS,
+            threshold_shortfall: Math.max(0, MIN_LANE_WORDS - stats.word_count),
+            sentence_count: signature.sentence_count,
+            avg_word_length: signature.avg_word_length,
+            avg_sentence_length: signature.avg_sentence_length,
+            punctuation_density: signature.punctuation_density,
+            line_break_density: signature.line_break_density,
+            unique_ratio: signature.unique_ratio,
+            dominant_axes: signature.dominant_axes || [],
+            temporal_posture: signature.temporal_posture,
+            dominant_operator: signature.dominant_operator,
+            governed_exposure_depth: signature.governed_exposure_depth,
+            closure_class: signature.closure_class,
+            frame_alignment: signature.frame_alignment,
+            frame_alignment_note: signature.frame_alignment_note
+          }
+        };
+      }),
+      triad_metrics: triad,
+      issuance_readiness: {
+        ready: issuance.ready,
+        threshold_satisfied: issuance.thresholdSatisfied,
+        stylometric_fingerprint: issuance.stylometricFingerprint,
+        badge_number: issuance.badgeNumber,
+        blocking_reason: issuance.blockingReason,
+        word_counts: issuance.wordCounts,
+        shortfalls: issuance.shortfalls,
+        frame_alignment_flags: issuance.frameAlignmentFlags || []
+      }
+    };
+  }
+
+  function exportIngressTriad() {
+    const payload = buildIngressTriadExport();
+    const bundle = state.helper || stampBundle();
+    downloadJsonArtifact('td613-safe-harbor-triad-' + bundle.filename_safe + '.json', payload);
+    logEvent('ingress-triad-exported', {
+      lanes: payload.lanes.map((lane) => ({ key: lane.key, word_count: lane.basic_stylometrics.word_count })),
+      threshold_satisfied: payload.issuance_readiness.threshold_satisfied
+    });
   }
 
   function downloadJsonArtifact(filename, value) {

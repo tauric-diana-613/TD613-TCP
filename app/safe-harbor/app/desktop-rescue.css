@@ -19,8 +19,8 @@
     margin: 0 auto;
     padding: clamp(18px, 2vw, 32px) clamp(18px, 2.2vw, 36px) 40px;
     display: grid;
-    grid-template-columns: minmax(0, 1fr);
-    grid-template-rows: auto auto minmax(0, 1fr);
+    grid-template-columns: minmax(0, 1fr) clamp(210px, 15vw, 300px);
+    grid-template-rows: auto minmax(0, 1fr);
     gap: 18px;
   }
 
@@ -79,37 +79,44 @@
 
   html body #vaultSurface .safe-harbor-scroll-rail {
     position: sticky;
-    top: 0;
+    top: 18px;
     z-index: 16;
-    display: grid;
-    grid-template-columns: auto auto minmax(0, 1fr) auto;
-    align-items: center;
+    display: flex;
+    flex-direction: column;
+    align-items: stretch;
     gap: 12px;
-    width: 100%;
+    grid-column: 2;
+    grid-row: 1 / span 2;
+    width: auto;
+    max-height: calc(100vh - 36px);
+    overflow-y: auto;
     padding: 10px 14px;
     border: 1px solid rgba(144, 231, 255, .14);
-    border-radius: 16px;
+    border-radius: 0;
     background: rgba(6, 8, 14, .88);
     backdrop-filter: blur(18px) saturate(150%);
     box-shadow: 0 16px 42px rgba(0, 0, 0, .26);
+    clip-path: polygon(0 18px, 18px 0, calc(100% - 10px) 0, 100% 10px, 100% calc(100% - 18px), calc(100% - 18px) 100%, 10px 100%, 0 calc(100% - 10px));
   }
 
   html body #vaultSurface .safe-harbor-scroll-rail .rail-links,
   html body #vaultSurface .safe-harbor-scroll-rail .rail-actions {
-    display: flex;
-    align-items: center;
-    flex-wrap: wrap;
+    display: grid;
+    align-items: stretch;
     gap: 7px;
     min-width: 0;
   }
 
   html body #vaultSurface .safe-harbor-scroll-rail a,
   html body #vaultSurface .safe-harbor-scroll-rail button {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
     min-height: 26px;
     padding: 4px 8px;
     font-size: .55rem;
     line-height: 1.1;
-    white-space: nowrap;
+    white-space: normal;
   }
 
   html body #vaultSurface .main-grid {

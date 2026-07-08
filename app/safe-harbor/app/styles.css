@@ -1426,6 +1426,36 @@ html[data-safe-harbor-session-open="true"] .ingress-membrane {
   gap: 10px;
 }
 
+.ingress-seal-review-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  margin-bottom: 10px;
+}
+
+.micro-control {
+  min-height: 20px;
+  padding: 2px 7px;
+  font-size: 0.46rem;
+  letter-spacing: 0.14em;
+  line-height: 1;
+  opacity: 0.74;
+  text-transform: none;
+}
+
+.ingress-summary-metrics {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: flex-end;
+  gap: 4px 10px;
+  min-width: 0;
+}
+
+.ingress-summary-metrics span {
+  white-space: nowrap;
+}
+
 .proof-row {
   display: grid;
   grid-template-columns: 132px 1fr;
@@ -3532,6 +3562,23 @@ body[data-thermal="fermata"] .reliquary-card .mint-value[data-state="minted"] {
     background: transparent;
     color: rgba(190, 255, 214, 0.9);
     box-shadow: none;
+  }
+}
+
+@media (max-width: 720px) {
+  .ingress-seal-review-head {
+    align-items: flex-start;
+  }
+
+  .ingress-seal-review .summary-row {
+    grid-template-columns: 1fr;
+    gap: 6px;
+  }
+
+  .ingress-summary-metrics {
+    justify-content: flex-start;
+    font-size: clamp(0.82rem, 4vw, 1rem);
+    line-height: 1.35;
   }
 }
 

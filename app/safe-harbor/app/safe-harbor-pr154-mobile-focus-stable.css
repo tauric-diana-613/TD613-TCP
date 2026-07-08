@@ -397,6 +397,24 @@
     min-width: 0 !important;
     overflow-x: hidden !important;
   }
+
+  html.safe-harbor-pr164 .ingress-seal-review .summary-row {
+    grid-template-columns: minmax(0, 1fr) !important;
+    gap: 6px !important;
+  }
+
+  html.safe-harbor-pr164 .ingress-seal-review .summary-value {
+    text-align: left !important;
+  }
+
+  html.safe-harbor-pr164 .ingress-summary-metrics {
+    justify-content: flex-start !important;
+    overflow: visible !important;
+  }
+
+  html.safe-harbor-pr164 .ingress-summary-metrics span {
+    white-space: nowrap !important;
+  }
 }
 
 @media (max-width: 430px) {
