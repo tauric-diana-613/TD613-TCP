@@ -4536,58 +4536,136 @@ body[data-ingress-phase="revealing"] .ingress-layer {
   transform-origin: center;
 }
 
-/* Desktop Gateway reveal was doing full-page blur + CRT step repaint + clip
-   peel together. Keep the cinematic opening, but keep Chrome on composited
-   transform/opacity work during the threshold handoff. */
+/* Desktop Gateway reveal: keep the cinematic CRT threshold opening, but keep
+   Chrome mostly on composited transform/opacity work during the handoff. */
 @media (min-width: 721px) {
   body[data-page-kind="gateway"][data-ingress-phase="revealing"] .shell {
-    animation: gateway-shell-recover-composited 820ms cubic-bezier(0.2, 0.88, 0.22, 1) forwards;
+    animation: gateway-shell-recover-composited 1180ms cubic-bezier(0.2, 0.88, 0.22, 1) forwards;
     filter: none;
     will-change: transform, opacity;
   }
 
   body[data-page-kind="gateway"][data-ingress-phase="revealing"] .ingress-membrane {
-    backdrop-filter: blur(6px);
+    backdrop-filter: blur(10px);
   }
 
   body[data-page-kind="gateway"][data-ingress-phase="revealing"] .ingress-membrane::after {
-    animation: gateway-ingress-scan-composited 760ms cubic-bezier(0.16, 0.84, 0.24, 1) forwards;
+    background:
+      linear-gradient(180deg,
+        transparent 0%,
+        rgba(168, 85, 247, 0.24) 38%,
+        rgba(116, 234, 255, 0.34) 46%,
+        rgba(236, 251, 255, 0.88) 50%,
+        rgba(116, 234, 255, 0.34) 54%,
+        rgba(168, 85, 247, 0.22) 62%,
+        transparent 100%);
+    animation: gateway-ingress-scan-composited 980ms cubic-bezier(0.16, 0.84, 0.24, 1) forwards;
     will-change: transform, opacity;
   }
 
   body[data-page-kind="gateway"][data-ingress-phase="revealing"] .ingress-layer {
-    animation: gateway-ingress-peel-composited 860ms cubic-bezier(0.16, 0.88, 0.24, 1) forwards;
+    animation:
+      gateway-ingress-threshold-snap 520ms steps(11, end) forwards,
+      gateway-ingress-peel-composited 1180ms cubic-bezier(0.16, 0.88, 0.24, 1) forwards;
     will-change: transform, opacity;
     contain: layout paint style;
+  }
+
+  body[data-page-kind="gateway"][data-ingress-phase="revealing"] .ingress-layer::before {
+    animation: gateway-ingress-frame-flare 920ms steps(8, end) forwards;
   }
 }
 
 @keyframes gateway-ingress-scan-composited {
   0% {
     opacity: 0;
-    transform: translate3d(0, -116%, 0);
+    transform: translate3d(0, -118%, 0) scaleY(0.72);
   }
-  24% {
-    opacity: 0.82;
+  12% {
+    opacity: 0.98;
+    transform: translate3d(0, -66%, 0) scaleY(1.08);
+  }
+  26% {
+    opacity: 0.38;
+    transform: translate3d(0, -24%, 0) scaleY(0.82);
+  }
+  36% {
+    opacity: 1;
+    transform: translate3d(0, 8%, 0) scaleY(1.18);
+  }
+  58% {
+    opacity: 0.74;
   }
   100% {
     opacity: 0;
-    transform: translate3d(0, 116%, 0);
+    transform: translate3d(0, 118%, 0) scaleY(0.8);
   }
 }
 
 @keyframes gateway-ingress-peel-composited {
   0% {
     opacity: 1;
-    transform: translate3d(0, 0, 0) scale(1);
+    transform: translate3d(0, 0, 0) scale(1) scaleY(1);
+  }
+  8% {
+    opacity: 0.18;
+    transform: translate3d(0, 0.8vh, 0) scale(1.003) scaleY(0.012);
+  }
+  14% {
+    opacity: 1;
+    transform: translate3d(0, -0.4vh, 0) scale(1.002) scaleY(0.34);
+  }
+  24% {
+    opacity: 0.54;
+    transform: translate3d(0, 0.2vh, 0) scale(1.006) scaleY(0.82);
+  }
+  38% {
+    opacity: 1;
+    transform: translate3d(0, -0.2vh, 0) scale(1.004) scaleY(1);
   }
   62% {
-    opacity: 0.82;
-    transform: translate3d(0, -1.5vh, 0) scale(1.006);
+    opacity: 0.86;
+    transform: translate3d(0, -1.4vh, 0) scale(1.008) scaleY(1);
   }
   100% {
     opacity: 0;
-    transform: translate3d(0, -9vh, 0) scale(1.024);
+    transform: translate3d(0, -9vh, 0) scale(1.026) scaleY(1);
+  }
+}
+
+@keyframes gateway-ingress-threshold-snap {
+  0%, 100% {
+    opacity: 1;
+  }
+  9% {
+    opacity: 0.22;
+  }
+  13% {
+    opacity: 1;
+  }
+  21% {
+    opacity: 0.46;
+  }
+  27% {
+    opacity: 1;
+  }
+}
+
+@keyframes gateway-ingress-frame-flare {
+  0% {
+    opacity: 0.18;
+  }
+  12% {
+    opacity: 0.92;
+  }
+  18% {
+    opacity: 0.26;
+  }
+  36% {
+    opacity: 0.78;
+  }
+  100% {
+    opacity: 0.42;
   }
 }
 
