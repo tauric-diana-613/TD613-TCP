@@ -92,4 +92,77 @@
     min-height: 112px !important;
     max-height: 34dvh !important;
   }
+
+  /* PR168 iOS Safari width lock.
+     Preserve the chamber art while preventing an old or partially cached
+     header/action layout from widening the visual viewport. */
+  html,
+  body {
+    width: 100% !important;
+    max-width: 100% !important;
+    min-width: 0 !important;
+    overflow-x: clip !important;
+  }
+
+  .ingress-membrane:not(.is-hidden),
+  .ingress-shell,
+  .ingress-head,
+  .ingress-head-actions,
+  .status-strip.ingress-status,
+  .ingress-stage-rail,
+  .ingress-handshake-grid,
+  .ingress-step-panel,
+  .ingress-console-panel,
+  .ingress-step-entry,
+  .ingress-step-nav {
+    box-sizing: border-box !important;
+    min-width: 0 !important;
+    max-width: 100% !important;
+  }
+
+  .ingress-membrane:not(.is-hidden) {
+    width: 100% !important;
+    padding-inline: max(8px, env(safe-area-inset-left, 0px)) max(8px, env(safe-area-inset-right, 0px)) !important;
+    overflow-x: clip !important;
+  }
+
+  .ingress-shell {
+    width: 100% !important;
+    margin-inline: 0 !important;
+    overflow-x: clip !important;
+  }
+
+  .ingress-head,
+  .ingress-handshake-grid {
+    display: grid !important;
+    grid-template-columns: minmax(0, 1fr) !important;
+  }
+
+  .ingress-head-actions {
+    width: 100% !important;
+    overflow-x: auto !important;
+    overflow-y: hidden !important;
+    overscroll-behavior-x: contain !important;
+    -webkit-overflow-scrolling: touch;
+  }
+
+  .ingress-stage-rail {
+    width: 100% !important;
+    overflow-x: auto !important;
+    overflow-y: hidden !important;
+    overscroll-behavior-x: contain !important;
+    -webkit-overflow-scrolling: touch;
+  }
+
+  .ingress-step-nav {
+    display: grid !important;
+    grid-template-columns: minmax(0, 1fr) minmax(0, 1fr) !important;
+    gap: 10px !important;
+  }
+
+  .ingress-step-nav > * {
+    width: 100% !important;
+    min-width: 0 !important;
+    max-width: 100% !important;
+  }
 }
