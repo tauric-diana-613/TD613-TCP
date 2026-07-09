@@ -2,6 +2,8 @@ import assert from 'assert';
 import fs from 'fs';
 
 const html = fs.readFileSync('app/safe-harbor/td613-flight.html', 'utf8');
+const analytics = fs.readFileSync('app/analytics.js', 'utf8');
+const chamberBootstrap = fs.readFileSync('app/chamber-bootstrap.js', 'utf8');
 
 assert(html.includes('TD613 Flight'));
 assert(html.includes('Seal payload to begin Flight'));
@@ -22,6 +24,19 @@ assert(html.includes('Append lozenge'));
 assert(html.includes('Append lozenge + SAC'));
 assert(/authorship wrap/i.test(html));
 assert(/payload #/i.test(html));
+assert(html.includes('<input checked="" id="authIncludeBinding" type="checkbox"/>Include binding line'));
+assert(html.includes('<input checked="" id="authIncludeTetragram" type="checkbox"/>Include 𝌋 marker'));
+assert(html.includes('<input checked="" id="authIncludeDiamond" type="checkbox"/>Include closing ⟐'));
+assert(html.includes('document.getElementById("authIncludeBinding").checked = true;'));
+assert(html.includes('document.getElementById("authIncludeTetragram").checked = true;'));
+assert(html.includes('document.getElementById("authIncludeDiamond").checked = true;'));
+assert(html.includes('document.getElementById("authOutputToggle").checked = true;'));
+assert(html.includes('grid-template-areas: "counts payload" ". auth" !important;'));
+assert(!html.includes('grid-template-areas: "counts auth" ". payload" !important;'));
+assert(analytics.includes('grid-template-areas: "counts payload" ". auth" !important;'));
+assert(!analytics.includes('grid-template-areas: "counts auth" ". payload" !important;'));
+assert(chamberBootstrap.includes('grid-template-areas:"counts payload" ". auth"!important'));
+assert(!chamberBootstrap.includes('grid-template-areas:"counts auth" ". payload"!important'));
 
 assert(html.indexOf('<div class="card output-card">') < html.indexOf('<div class="card seal-card">'));
 assert(html.indexOf('mobile-prompt-rail') < html.indexOf('devSettingsDrawer'));

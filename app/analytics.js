@@ -164,7 +164,7 @@ window.va = window.va || function(...params) {
       html body .output-card .status-bar {
         display: grid !important;
         grid-template-columns: minmax(0,1fr) auto !important;
-        grid-template-areas: "counts auth" ". payload" !important;
+        grid-template-areas: "counts payload" ". auth" !important;
         gap: 4px 8px !important;
         align-items: center !important;
       }
