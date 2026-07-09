@@ -223,9 +223,9 @@ const ANNEX_SPECS = Object.freeze([
     id: 'aperture',
     label: 'TD613 Aperture',
     relativePath: 'app/aperture/tool.html',
-    expectedVersion: '2.9.4',
-    versionPattern: /TD613 APERTURE v([0-9.]+) SOURCE DECLARATION/i,
-    titleIncludes: ['TD613 Aperture', 'v2.9.4'],
+    expectedVersion: 'v3.0-alpha',
+    versionPattern: /TD613 APERTURE\s+(v[0-9]+(?:\.[0-9]+){1,3}(?:-[A-Za-z0-9_.]+)?)\s+SOURCE DECLARATION/i,
+    titleIncludes: ['TD613 Aperture', 'v3.0-alpha'],
     minimumInlineScripts: 1,
     meta: Object.freeze({
       'tool-name': 'TD613 Aperture',
@@ -264,7 +264,7 @@ const ANNEX_SPECS = Object.freeze([
       {
         id: 'source-declaration',
         label: 'source declaration',
-        pattern: /TD613 APERTURE v2\.9\.4 SOURCE DECLARATION/i
+        pattern: /TD613 APERTURE v3\.0-alpha SOURCE DECLARATION/i
       },
       {
         id: 'counter-tool-stance',
@@ -377,14 +377,14 @@ const ANNEX_SPECS = Object.freeze([
         pattern: /APERTURE_GATEWAY_EMBED[\s\S]*window\.parent\.postMessage/i
       },
       {
-        id: 'v294-schema',
-        label: 'Aperture v2.9.4 schema marker',
-        pattern: /td613-aperture\/v2\.9\.4/i
+        id: 'v3-alpha-schema',
+        label: 'Aperture v3.0-alpha schema marker',
+        pattern: /td613-aperture\/v3\.0-alpha/i
       },
       {
-        id: 'sigma-dynamical-instrument',
-        label: 'Sigma dynamical instrument',
-        pattern: /v2\.9\.4-sigma-dynamical-instrument/i
+        id: 'anti-epistemicide-runtime',
+        label: 'Anti-Epistemicide Research Runtime',
+        pattern: /v3\.0-alpha-anti-epistemicide-research-runtime/i
       },
       {
         id: 'phason-seam',

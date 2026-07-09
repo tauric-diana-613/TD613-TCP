@@ -1,4 +1,4 @@
-"""Single bounded Vercel function for Dome-World v0.4.3 operations."""
+"""Single bounded Vercel function for Dome-World v0.5.0 cockpit operations."""
 
 from __future__ import annotations
 
@@ -29,6 +29,16 @@ from packages.dome_world_exact.ash_v06 import ASH_V06_OPERATIONS, dispatch_ash_v
 
 MAX_BODY_BYTES = 131_072
 RAW_CONTENT_KEYS = {"text", "rawText", "content", "document", "body", "sensitiveText", "rawBytes", "fileBytes", "fileContent"}
+ASH_V06_OPERATION_NAMES = {
+    "ash-leak-challenge",
+    "ash-veil",
+    "ash-cinder",
+    "ash-compare",
+    "ash-recall",
+    "ash-grade-gate",
+    "ash-hcc-adapter",
+    "ash-projection-simulate",
+}
 POST_OPERATIONS = {
     "aperture-bridge",
     "phason-gate",
@@ -40,7 +50,10 @@ POST_OPERATIONS = {
     "exact-capture",
     "exact-closure",
     "trainer-step",
-} | ASH_V06_OPERATIONS
+} | ASH_V06_OPERATION_NAMES
+
+if ASH_V06_OPERATION_NAMES != ASH_V06_OPERATIONS:
+    raise RuntimeError("Ash v0.6 operation registry drift")
 
 
 def _now():
@@ -88,9 +101,9 @@ def _aperture_context(value):
     return {
         "version": APERTURE_VERSION,
         "schema": APERTURE_SCHEMA,
-        "feature": "v2.9.4-sigma-dynamical-instrument",
+        "feature": "v3.0-alpha-anti-epistemicide-research-runtime",
         "doctrine": "td613.aperture.doctrine-kernel/v2.9.4",
-        "bridge": "td613.aperture.dome-flowcore-bridge/v2.9.4",
+        "bridge": "td613.aperture.dome-flowcore-bridge/v3.0-alpha",
         "observedRegime": source.get("observedRegime", "PRCS-A"),
         "operationalState": "interface_context",
         "claimAuthority": "design_signal",
@@ -124,7 +137,7 @@ def _bridge(payload, aperture):
     divergence = bounded("divergence")
     return {
         "status": "OPEN",
-        "schema": "td613.aperture.dome-flowcore-route-weather/v2.9.4",
+        "schema": "td613.aperture.dome-flowcore-route-weather/v3.0-alpha",
         "aperture": aperture,
         "weather": {
             "occlusion": omission,

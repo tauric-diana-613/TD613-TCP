@@ -23,7 +23,7 @@ As of `Patch 30.3.3`, the stack should be read this way:
 - the maintained diagnostics battery includes both generator audit and toolability audit
 - `TD613 Safe Harbor` and `TD613 Aperture` should be read as downstream custody / audit layers, not alternate hidden writers
 - `TD613 Flight` is the Safe Harbor-adjacent flightdeck for SHI-bound prompt packets and authorship / rupture footer generation
-- `Dome-World / Flow-Core v0.5.0` is a non-public route-weather, sovereign-perspective, and exact-residual station coupled one-way to Aperture v2.9.4
+- `Dome-World / Flow-Core v0.5.0` is a non-public route-weather, sovereign-perspective, and exact-residual station coupled one-way to Aperture v3.0-alpha
 
 ## What the system actually measures
 

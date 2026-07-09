@@ -10,7 +10,7 @@ The live repo stance is:
 
 - `PRCS-A` is the observed regime
 - `TD613 Aperture` is the counter-tool
-- `v2.9.4` / `td613-aperture/v2.9.4` is the current canonical instrument identity
+- `v3.0-alpha` / `td613-aperture/v3.0-alpha` is the current canonical instrument identity
 - the instrument is anti-enforcement and warning-first
 
 So Aperture should:
@@ -39,7 +39,7 @@ That means the sequence is:
 
 If the write lane misses, the correct answer is a visible hold docket. Aperture is not supposed to conceal that miss.
 
-The v2.9.4 browser instrument carries the doctrine kernel, geometric addendum,
+The v3.0-alpha browser instrument carries the doctrine kernel, geometric addendum,
 ZFP certification, Moire Stratigraphy, Phason seam detection, and Sigma
 dynamical instrument without changing that foundation doctrine. Rupture is
 gated by action plus incomplete closure (`acted && closureScore < 1`); route
@@ -105,7 +105,7 @@ If you are checking Aperture in the current repo, verify these:
 
 - it preserves the `PRCS-A` regime callout
 - it preserves the `counter-tool` role
-- it reports `v2.9.4` and `td613-aperture/v2.9.4` on live, packet, engine, bridge, and diagnostics surfaces
+- it reports `v3.0-alpha` and `td613-aperture/v3.0-alpha` on live, packet, engine, bridge, and diagnostics surfaces
 - it does not enforce selective admissibility over normal landed TCP outputs
 - it exposes warning signals without silently rerouting to source
 - ZFP certification, corrected rupture logic, Moire Stratigraphy, and Gateway embed handoff remain present in the canonical body

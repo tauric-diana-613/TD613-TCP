@@ -162,9 +162,9 @@ function eoRfdRouteState(input = {}) {
     claim_authority: eo.claim_authority || eo.claimAuthority || 'design_signal',
     target_operational_state: eo.target_operational_state || eo.targetOperationalState || 'verified-runtime-installation',
     aperture_context: Object.freeze({
-      aperture_version: aperture.aperture_version || aperture.apertureVersion || 'v2.9.4',
-      aperture_schema: aperture.aperture_schema || aperture.apertureSchema || 'td613-aperture/v2.9.4',
-      aperture_feature_version: aperture.aperture_feature_version || aperture.apertureFeatureVersion || 'v2.9.4-sigma-dynamical-instrument',
+      aperture_version: aperture.aperture_version || aperture.apertureVersion || 'v3.0-alpha',
+      aperture_schema: aperture.aperture_schema || aperture.apertureSchema || 'td613-aperture/v3.0-alpha',
+      aperture_feature_version: aperture.aperture_feature_version || aperture.apertureFeatureVersion || 'v3.0-alpha-anti-epistemicide-research-runtime',
       doctrine_kernel: aperture.doctrine_kernel || aperture.doctrineKernel || 'present',
       geometric_addendum: aperture.geometric_addendum || aperture.geometricAddendum || 'present',
       authority: aperture.authority || 'design-signal',

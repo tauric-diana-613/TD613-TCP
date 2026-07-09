@@ -1,6 +1,6 @@
 # Dome-World / Flow-Core
 
-Current release: `v0.5.0`, coupled one-way to TD613 Aperture `v2.9.4`.
+Current release: `v0.5.0`, coupled one-way to TD613 Aperture `v3.0-alpha`.
 
 The v0.5.0 cockpit adds one active-view animation scheduler, machine-facing art receipts,
 mathematically constrained perspectives, and accessible Lab station navigation. Exact-engine

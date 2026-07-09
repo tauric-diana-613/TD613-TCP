@@ -36,8 +36,8 @@ assert.equal(verifyExportPayload(EXPORT_SURFACES.PUBLIC_SUMMARY_COPY, summaryPay
 
 const receipt = buildExportReceipt(EXPORT_SURFACES.PACKET_JSON, packet, packet);
 assert.equal(receipt.public_default, 'v2');
-assert.equal(receipt.aperture_context.apertureVersion, 'v2.9.4');
-assert.equal(receipt.aperture_context.apertureSchema, 'td613-aperture/v2.9.4');
+assert.equal(receipt.aperture_context.apertureVersion, 'v3.0-alpha');
+assert.equal(receipt.aperture_context.apertureSchema, 'td613-aperture/v3.0-alpha');
 assert.equal(receipt.raw_text_exported, false);
 assert.equal(receipt.claim_limits_attached, true);
 

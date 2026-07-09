@@ -257,6 +257,7 @@
             <option value="repo-access">repo-access</option>
             <option value="provider-session">provider-session</option>
             <option value="operator-attested">operator-attested</option></select
+          ><label>Force Status</label
           ><select id="forceStatus">
             <option>OPEN</option>
             <option>SELECTED</option>
@@ -278,6 +279,7 @@
             <option value="route-scoped">route-scoped</option>
             <option value="receipt-scoped">receipt-scoped</option>
             <option value="session-scoped">session-scoped</option></select
+          ><label>HCC WHO Policy</label
           ><select id="hccWhoPolicy">
             <option value="self-provided-or-withheld">
               self-provided-or-withheld
@@ -310,6 +312,7 @@
           <p class="sub">
             Server mode analyzes metadata/projections only. Client-local mode
             can inspect local text without sending it to the server.
+            client-local-raw-text-never-sent.
           </p>
           <textarea id="projectionInput"></textarea
           ><select id="testMode">
@@ -335,8 +338,8 @@
           <h2>Veil Builder</h2>
           <p class="sub">
             Builds a public-safe structural surrogate. Veil may reveal buckets,
-            weather, route posture, and claim ceiling; it must not reveal raw
-            text, quotes, names, exact path, or stable universal hash by
+            weather, route posture, and claim ceiling; it must not reveal raw text,
+            quotes, names, exact path, or stable universal hash by
             default.
           </p>
           <textarea id="veilInput"></textarea>
@@ -364,8 +367,7 @@
           <textarea id="cinderReceipt"></textarea
           ><textarea id="cinderFragment"></textarea
           ><label
-            ><input id="operatorApproved" type="checkbox" /> Operator approval
-            recorded</label
+            ><input id="operatorApproved" type="checkbox" /> Operator approval recorded</label
           >
           <div class="actions">
             <button class="btn primary" id="buildCinder">
@@ -393,6 +395,7 @@
           <textarea id="compareA"></textarea><textarea id="compareB"></textarea
           ><button class="btn primary" id="runCompare">Run Ash Compare</button
           ><button class="btn" id="loadComparePair">Load last two</button>
+          <p class="claim">Compare reports projection delta without certifying legal redaction.</p>
         </div>
         <aside class="panel">
           <h3>Compare delta</h3>
@@ -429,6 +432,7 @@
           >
             Create recall notice
           </button>
+          <p class="claim">Recall does not claim deletion from external systems.</p>
         </div>
         <aside class="panel">
           <h3>Recall notice</h3>
@@ -496,8 +500,8 @@
           operation,
           traceId: "ash_" + Date.now().toString(36),
           apertureContext: {
-            version: "v2.9.4",
-            schema: "td613-aperture/v2.9.4",
+            version: "v3.0-alpha",
+            schema: "td613-aperture/v3.0-alpha",
             observedRegime: "PRCS-A",
           },
           payload,
@@ -566,10 +570,10 @@
         remember(out);
       }
       function runLocalLeak() {
-        $("localLeakText").value = "";
+        $('localLeakText').value='';
         $("leakPre").textContent = fmt({
-          raw_text_sent_to_server: false,
-          raw_text_discarded: true,
+          raw_text_sent_to_server:false,
+          raw_text_discarded:true,
         });
       }
       async function buildVeil() {
@@ -578,7 +582,7 @@
           : latestReceipt || {};
         const out = await domeRequest("ash-veil", {
           receipt,
-          saltScope: $("saltScope").value,
+          saltScope:$('saltScope').value,
         });
         $("veilPre").textContent = fmt(out);
         remember(out);
@@ -591,7 +595,7 @@
           receipt,
           fragment: $("cinderFragment").value,
           operatorApproved: $("operatorApproved").checked,
-          saltScope: $("saltScope").value,
+          saltScope:$('saltScope').value,
         });
         $("cinderPre").textContent = fmt(out);
         remember(out);

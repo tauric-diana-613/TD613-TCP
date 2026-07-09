@@ -1,7 +1,7 @@
 export const SAFE_HARBOR_APERTURE_CONTEXT = Object.freeze({
-  apertureVersion: 'v2.9.4',
-  apertureSchema: 'td613-aperture/v2.9.4',
-  apertureFeatureVersion: 'v2.9.4-sigma-dynamical-instrument',
+  apertureVersion: 'v3.0-alpha',
+  apertureSchema: 'td613-aperture/v3.0-alpha',
+  apertureFeatureVersion: 'v3.0-alpha-anti-epistemicide-research-runtime',
   observedRegime: 'PRCS-A',
   doctrineKernel: 'present',
   geometricAddendum: 'present',

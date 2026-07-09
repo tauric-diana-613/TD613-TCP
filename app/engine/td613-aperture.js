@@ -849,9 +849,9 @@ function assessCompressionState(sourceText = '', outputText = '', witnessAudit =
   });
 }
 
-export const TD613_APERTURE_VERSION = 'v2.9.4';
-export const TD613_APERTURE_SCHEMA = 'td613-aperture/v2.9.4';
-export const TD613_APERTURE_FEATURE_VERSION = 'v2.9.4-sigma-dynamical-instrument';
+export const TD613_APERTURE_VERSION = 'v3.0-alpha';
+export const TD613_APERTURE_SCHEMA = 'td613-aperture/v3.0-alpha';
+export const TD613_APERTURE_FEATURE_VERSION = 'v3.0-alpha-anti-epistemicide-research-runtime';
 
 export const TD613_APERTURE_PROTOCOL = Object.freeze({
   id: TD613_APERTURE_SCHEMA,

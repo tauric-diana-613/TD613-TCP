@@ -1,4 +1,5 @@
 import assert from 'assert';
+import fs from 'fs';
 import {
   _serveMarrowlineTrap,
   TD613_APERTURE_VERSION,
@@ -23,9 +24,11 @@ import {
   installTD613ProvenanceAttestationEgress
 } from '../app/engine/td613-aperture.js';
 
-assert.equal(TD613_APERTURE_VERSION, 'v2.9.4');
-assert.equal(TD613_APERTURE_SCHEMA, 'td613-aperture/v2.9.4');
-assert.equal(TD613_APERTURE_FEATURE_VERSION, 'v2.9.4-sigma-dynamical-instrument');
+const apertureRelease = JSON.parse(fs.readFileSync('app/aperture/release.json', 'utf8'));
+
+assert.equal(TD613_APERTURE_VERSION, apertureRelease.version);
+assert.equal(TD613_APERTURE_SCHEMA, apertureRelease.apertureSchema);
+assert.equal(TD613_APERTURE_FEATURE_VERSION, apertureRelease.featureVersion);
 assert.equal(TD613_APERTURE_PROTOCOL.id, TD613_APERTURE_SCHEMA);
 assert.equal(TD613_APERTURE_PROTOCOL.version, TD613_APERTURE_VERSION);
 assert.equal(TD613_APERTURE_PROTOCOL.schema, TD613_APERTURE_SCHEMA);

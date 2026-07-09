@@ -71,20 +71,27 @@ export function currentCacheToken(date = new Date()) {
 }
 
 export function extractApertureMetadata(html, filePath = '') {
+  const apertureVersionMeta = firstMeta(html, 'aperture-version');
   const version =
     firstMatch(html, /TD613 APERTURE\s+(v\d+(?:\.\d+){2,3})\s+SOURCE DECLARATION/i) ||
+    firstMatch(html, /TD613 APERTURE\s+(v\d+(?:\.\d+){1,3}(?:-[A-Za-z0-9_.]+)?)\s+SOURCE DECLARATION/i) ||
     firstMeta(html, 'aperture-roots-version') ||
+    apertureVersionMeta ||
     firstMatch(html, /SOURCE_DECLARATION\s*=\s*Object\.freeze\(\s*\{[\s\S]{0,240}?version:\s*["'](v\d+(?:\.\d+){2,3})["']/i) ||
+    firstMatch(html, /SOURCE_DECLARATION\s*=\s*Object\.freeze\(\s*\{[\s\S]{0,240}?version:\s*["'](v\d+(?:\.\d+){1,3}(?:-[A-Za-z0-9_.]+)?)["']/i) ||
     firstMatch(html, /\bVERSION:\s*["'](v\d+(?:\.\d+){2,3})["']/) ||
+    firstMatch(html, /\bVERSION:\s*["'](v\d+(?:\.\d+){1,3}(?:-[A-Za-z0-9_.]+)?)["']/) ||
     firstMatch(html, /\bconst\s+VERSION\s*=\s*["'](v\d+(?:\.\d+){2,3})["']/) ||
+    firstMatch(html, /\bconst\s+VERSION\s*=\s*["'](v\d+(?:\.\d+){1,3}(?:-[A-Za-z0-9_.]+)?)["']/) ||
     firstMatch(html, /<title>TD613 Aperture\s*-\s*(v\d+(?:\.\d+){2,3})<\/title>/i) ||
+    firstMatch(html, /<title>TD613 Aperture\s*-\s*(v\d+(?:\.\d+){1,3}(?:-[A-Za-z0-9_.]+)?)<\/title>/i) ||
     firstVersion(html);
 
   const schema =
     firstMatch(html, new RegExp(`td613-aperture\\/${escapeRegex(version || '')}(?![-\\w])`)) ||
-    firstMatch(html, /td613-aperture\/v\d+(?:\.\d+){2,3}(?![-\w])/);
+    (version ? `td613-aperture/${version}` : null) ||
+    firstMatch(html, /td613-aperture\/v\d+(?:\.\d+){1,3}(?:-[A-Za-z0-9_.]+)?(?![-\w])/);
 
-  const apertureVersionMeta = firstMeta(html, 'aperture-version');
   const featureVersion =
     firstMeta(html, 'aperture-feature-version') ||
     (apertureVersionMeta && apertureVersionMeta !== version ? apertureVersionMeta : null) ||
@@ -174,9 +181,16 @@ export function normalizeApertureForRepo(html, metadata) {
 
   next = next.replace(/\bdata-hcc-version=["'][^"']+["']/g, `data-hcc-version="${version}"`);
   next = next.replace(/\bdata-aperture-version=["'][^"']+["']/g, `data-aperture-version="${version}"`);
+  next = next.replace(/document\.body\.dataset\.apertureVersion\s*=\s*['"]v2\.9\.4['"]/g, `document.body.dataset.apertureVersion = '${version}'`);
+  next = next.replace(
+    /featureVersion:\s*['"]v2\.9\.4-sigma-dynamical-instrument['"]/g,
+    `featureVersion: '${featureVersion}',\n      sigmaLineage: 'v2.9.4-sigma-dynamical-instrument'`
+  );
 
-  // Known active patch layers used stale v2.7.2 constants in several historical donor files.
+  // Known active patch layers used stale constants in several historical donor files.
+  // Normalize schema roots while preserving any local suffixes, e.g. /witness-lab.
   next = next.replace(/td613-aperture\/v2\.7\.2/g, schema);
+  next = next.replace(/td613-aperture\/v2\.9\.4/g, schema);
   next = next.replace(/\bv2\.7\.2\b/g, version);
 
   return next;
@@ -217,8 +231,8 @@ export function releaseManifestFromMetadata(metadata) {
     doctrineKernelSchema: metadata.doctrineKernelSchema || `td613.aperture.doctrine-kernel/${version}`,
     domeBridgeSchema: `td613.aperture.dome-flowcore-bridge/${version}`,
     domeWorld: {
-      version: 'v0.4.3',
-      schema: 'td613.dome-world/v0.4.3',
+      version: 'v0.5.0',
+      schema: 'td613.dome-world/v0.5.0',
       exactReceiptSchema: 'td613.dome-world.exact-receipt/v0.4.3'
     },
     observedRegime: 'PRCS-A',

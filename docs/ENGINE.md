@@ -311,9 +311,9 @@ If no candidate clears the class-specific rewrite bar honestly, TCP now publishe
 
 It is not supposed to ghostwrite the passage or quietly flatten a stronger candidate back toward source just because a safer shallow surface exists.
 
-The current Aperture protocol identity is `v2.9.4` /
-`td613-aperture/v2.9.4`. The engine also exports
-`v2.9.4-sigma-dynamical-instrument` as the Aperture feature posture
+The current Aperture protocol identity is `v3.0-alpha` /
+`td613-aperture/v3.0-alpha`. The engine also exports
+`v3.0-alpha-anti-epistemicide-research-runtime` as the Aperture feature posture
 through `TD613_APERTURE_FEATURE_VERSION`. `TD613_APERTURE_VERSION`,
 `TD613_APERTURE_SCHEMA`, and `TD613_APERTURE_PROTOCOL.id` carry the same
 version/schema so Gateway, Hush, Safe Harbor, and diagnostics do not

@@ -4,7 +4,7 @@
 
 - the full browser cockpit and room system;
 - one active-view sovereign-perspective scheduler with machine-facing art receipts;
-- Aperture v2.9.4 one-way route-weather translation;
+- Aperture v3.0-alpha one-way route-weather translation;
 - exact residual capture and proposal/confirmation training;
 - opt-in lambda=2c emission-gap closure;
 - Ash metadata custody, replay, and v0.6 projection leakage testing.

@@ -56,7 +56,7 @@ assert.ok(!chamberChromeSource.includes("?v=' + V.aperture"), 'shared chamber ch
 const browserMainAssetVersion = assetVersionsSource.match(/main:\s+'(\d+)'/)?.[1];
 assert.ok(Number(browserMainAssetVersion) >= 202606211930, 'asset versions retain the Gateway route canonicalization bump or newer');
 const apertureAssetVersion = assetVersionsSource.match(/aperture:\s+'(\d+)'/)?.[1];
-assert.ok(Number(apertureAssetVersion) >= 202606211930, 'asset versions retain the v2.9.4 canonicalization bump or newer');
+assert.ok(Number(apertureAssetVersion) >= 202606211930, 'asset versions retain the Aperture canonicalization bump or newer');
 assert.ok(assetVersionsSource.includes("chrome:      '202606151735'"), 'asset versions bump chamber chrome after Gateway desktop housekeeping patch');
 
 console.log('station-pages.test.mjs passed');
