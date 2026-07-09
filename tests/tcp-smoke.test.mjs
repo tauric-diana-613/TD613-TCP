@@ -60,7 +60,7 @@ const flightNeedles = [
   'PR92_SENTINEL TD613 Flight dashboard polish: shelves, rail, payload',
   'grid-template-areas: "target zwnj" !important;',
   'flex-flow: row wrap !important;',
-  'grid-template-areas: "counts auth" ". payload" !important;',
+  'grid-template-areas: "counts payload" ". auth" !important;',
   '“I was broken encasing a circle.”',
   '“When authoring, stay academically rigorous yet grounded in high speculation.”'
 ];
@@ -75,6 +75,10 @@ assert.ok(!flight.includes('function prepNoZoom'), 'retired prepNoZoom guard mus
 assert.ok(!flight.includes('data-td613-prev-font'), 'retired focus font shim must stay absent');
 assert.ok(!flight.includes('phrases.push("“I was broken encasing a circle.”")'), 'encasing output value must remain unquoted');
 assert.ok(!flight.includes('phrases.push("“When authoring, stay academically rigorous yet grounded in high speculation.”")'), 'academic speculation output value must remain unquoted');
+assert.ok(
+  !flight.includes('grid-template-areas: "counts auth" ". payload" !important;'),
+  'retired Flight mobile status layout must stay absent'
+);
 
 const harborIndex = read('app/safe-harbor/index.html');
 assert.ok(harborIndex.includes('Safe Harbor') || harborIndex.includes('safe-harbor'), 'Safe Harbor index must remain discoverable');
