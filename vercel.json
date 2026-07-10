@@ -14,6 +14,9 @@
     }
   },
   "headers": [
+    { "source": "/", "headers": [{ "key": "Cache-Control", "value": "no-store, max-age=0" }] },
+    { "source": "/index.html", "headers": [{ "key": "Cache-Control", "value": "no-store, max-age=0" }] },
+    { "source": "/app/index.html", "headers": [{ "key": "Cache-Control", "value": "no-store, max-age=0" }] },
     { "source": "/hush.html", "headers": [{ "key": "Cache-Control", "value": "no-store, max-age=0" }] },
     { "source": "/app/hush.html", "headers": [{ "key": "Cache-Control", "value": "no-store, max-age=0" }] },
     { "source": "/hush.js", "headers": [{ "key": "Cache-Control", "value": "public, max-age=0, must-revalidate" }] },
@@ -48,8 +51,10 @@
     { "source": "/app/hush-(.*)", "headers": [{ "key": "Cache-Control", "value": "public, max-age=0, must-revalidate" }] },
     { "source": "/app/engine/(.*)", "headers": [{ "key": "Cache-Control", "value": "public, max-age=0, must-revalidate" }] },
     { "source": "/engine/(.*)", "headers": [{ "key": "Cache-Control", "value": "public, max-age=0, must-revalidate" }] },
-    { "source": "/asset-versions.js", "headers": [{ "key": "Cache-Control", "value": "public, max-age=0, must-revalidate" }] },
-    { "source": "/app/asset-versions.js", "headers": [{ "key": "Cache-Control", "value": "public, max-age=0, must-revalidate" }] },
+    { "source": "/asset-versions.js", "headers": [{ "key": "Cache-Control", "value": "no-store, max-age=0" }] },
+    { "source": "/app/asset-versions.js", "headers": [{ "key": "Cache-Control", "value": "no-store, max-age=0" }] },
+    { "source": "/desktop-visibility-parity.css", "headers": [{ "key": "Cache-Control", "value": "no-store, max-age=0" }] },
+    { "source": "/app/desktop-visibility-parity.css", "headers": [{ "key": "Cache-Control", "value": "no-store, max-age=0" }] },
     { "source": "/dome-world", "headers": [{ "key": "Cache-Control", "value": "no-store, max-age=0" }] },
     { "source": "/dome-world/", "headers": [{ "key": "Cache-Control", "value": "no-store, max-age=0" }] },
     { "source": "/app/dome-world/index.html", "headers": [{ "key": "Cache-Control", "value": "no-store, max-age=0" }] },
