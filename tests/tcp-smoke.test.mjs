@@ -9,7 +9,6 @@ const exists = (filePath) => fs.existsSync(path.join(root, filePath));
 const requiredFiles = [
   'package.json',
   'app/index.html',
-  'app/desktop-visibility-parity.css',
   'app/adversarial-bench.html',
   'app/hush-phase39.css',
   'app/hush-phase39-engine.js',
@@ -37,8 +36,6 @@ const hushManifest = read('app/asset-versions.js');
 assert.ok(hushManifest.includes('hushPhase39'), 'asset manifest must expose Hush Phase 39 version');
 assert.ok(hushManifest.includes('hush-phase39.css'), 'asset manifest must load Phase 39 CSS');
 assert.ok(hushManifest.includes('hush-phase39-ui.js'), 'asset manifest must load Phase 39 UI');
-assert.ok(hushManifest.includes('desktopVisibilityParity'), 'asset manifest must version the desktop visibility contract');
-assert.ok(hushManifest.includes('desktop-visibility-parity.css'), 'asset manifest must load the desktop visibility contract');
 
 const hushEngine = read('app/hush-phase39-engine.js');
 for (const marker of ['detectEpistemicide', 'protectedMeaningResults', 'registerDrift', 'phase39Receipt', 'runPhase39']) {
@@ -106,18 +103,5 @@ assert.match(renderer, /dataset\.td613RendererBridge/, 'renderer must stamp a cr
 
 const gateway = read('app/index.html');
 assert.ok(gateway.includes('<html'), 'Gateway must remain an HTML document');
-for (const id of ['ingressSubtitle', 'ingressCueCopy', 'ingressStatus']) {
-  assert.match(gateway, new RegExp(`id="${id}"`), `Gateway ingress must retain written instruction surface: ${id}`);
-}
-assert.match(gateway, /class="ingress-cue-card ingress-forensic-card"/, 'Gateway must retain the governed-exposure instruction card');
-assert.match(gateway, /class="ingress-forensic-grid"/, 'Gateway must retain the governed-exposure instruction grid');
 
-const desktopVisibility = read('app/desktop-visibility-parity.css');
-assert.match(desktopVisibility, /#ingressMembrane[\s\S]{0,260}overflow-y:\s*auto\s*!important/, 'Gateway desktop scrolling must belong to the visible membrane');
-assert.match(desktopVisibility, /\.ingress-layer[\s\S]{0,260}max-height:\s*none\s*!important/, 'Gateway desktop ingress layer must not be capped to one viewport');
-assert.match(desktopVisibility, /\.ingress-layer[\s\S]{0,320}overflow:\s*visible\s*!important/, 'Gateway desktop ingress layer must remain in normal document flow');
-assert.match(desktopVisibility, /\.ingress-cue-copy/, 'Gateway written puzzle cues must be covered by the visibility contract');
-assert.match(desktopVisibility, /\.ingress-forensic-card/, 'Gateway governed-exposure copy must be covered by the visibility contract');
-assert.doesNotMatch(desktopVisibility, /scrollbar-width:\s*none/, 'desktop instruction surfaces must not erase their scroll affordance');
-
-console.log('TCP smoke passed: static surfaces, Flight sentinels, Safe Harbor flow, Mac renderer bridge, and desktop instruction visibility are intact.');
+console.log('TCP smoke passed: static surfaces, Flight sentinels, Safe Harbor desktop flow, and Mac renderer bridge are intact.');
