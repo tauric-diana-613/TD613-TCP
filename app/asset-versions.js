@@ -1,7 +1,17 @@
 (function () {
+  function purgeRetiredDesktopVisibility() {
+    var stale = document.querySelectorAll('link[href*="desktop-visibility-parity.css"]');
+    for (var i = 0; i < stale.length; i++) {
+      if (stale[i] && stale[i].parentNode) stale[i].parentNode.removeChild(stale[i]);
+    }
+  }
+
+  purgeRetiredDesktopVisibility();
+  window.addEventListener('pageshow', purgeRetiredDesktopVisibility);
+
   try { document.title = 'TD613 Hush'; } catch (error) {}
   window.TD613_ASSET_VERSIONS = {
-    styles:      '202607081245',
+    styles:      '202607101945',
     data:        '202607010240',
     diagnostics: '202604230045',
     engine:      '202607010240',
@@ -76,6 +86,7 @@
   } else {
     window.addEventListener('DOMContentLoaded', function () {
       try { document.title = 'TD613 Hush'; } catch (error) {}
+      purgeRetiredDesktopVisibility();
       if (document.body && document.body.dataset && document.body.dataset.pageKind === 'adversarial-bench') {
         var script = document.createElement('script');
         script.type = 'module';
