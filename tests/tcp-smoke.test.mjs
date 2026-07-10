@@ -88,10 +88,10 @@ assert.match(harborIndex, /id="injectDynamicLane"/, 'Safe Harbor must retain the
 assert.match(harborIndex, /id="dynamicTarget"/, 'Safe Harbor must retain the Dynamic Lane target');
 
 const desktopRescue = read('app/safe-harbor/app/desktop-rescue.css');
-assert.match(desktopRescue, /grid-template-areas:\s*\n\s*"canon chamber"/, 'desktop Safe Harbor must retain the deterministic compact desktop grid');
-assert.match(desktopRescue, /@media \(min-width: 1360px\)/, 'wide desktop must restore the three-station cockpit');
-assert.match(desktopRescue, /max-height: none;\s*\n\s*overflow: visible;/, 'desktop panels must remain in normal document flow');
-assert.doesNotMatch(desktopRescue, /\.canon-panel,[\s\S]{0,180}position:\s*sticky/, 'desktop side panels must not hide sections behind nested sticky scroll containers');
+assert.match(desktopRescue, /"canon chamber conscience"/, 'desktop Safe Harbor must retain the stable three-column cockpit');
+assert.match(desktopRescue, /grid-template-columns:\s*minmax\(265px, 330px\) minmax\(520px, 1fr\) minmax\(245px, 320px\)/, 'desktop Safe Harbor must retain its stable column widths');
+assert.match(desktopRescue, /\.canon-panel,[\s\S]{0,180}position:\s*sticky/, 'desktop side panels must retain the pre-Mac sticky cockpit contract');
+assert.doesNotMatch(desktopRescue, /@media \(min-width: 1360px\)/, 'retired Mac desktop reflow breakpoint must stay absent');
 
 const renderer = read('app/safe-harbor/renderers/10_TD613_PUA_Badge_Provenance_Attestation_Renderer_v7_2_1.user.js');
 assert.doesNotThrow(() => new Function(renderer), 'PUA renderer userscript must parse');
@@ -104,4 +104,4 @@ assert.match(renderer, /dataset\.td613RendererBridge/, 'renderer must stamp a cr
 const gateway = read('app/index.html');
 assert.ok(gateway.includes('<html'), 'Gateway must remain an HTML document');
 
-console.log('TCP smoke passed: static surfaces, Flight sentinels, Safe Harbor desktop flow, and Mac renderer bridge are intact.');
+console.log('TCP smoke passed: static surfaces, Flight sentinels, stable Safe Harbor desktop cockpit, and Mac renderer bridge are intact.');
