@@ -2,7 +2,6 @@
   try { document.title = 'TD613 Hush'; } catch (error) {}
   window.TD613_ASSET_VERSIONS = {
     styles:      '202607081245',
-    desktopVisibilityParity: '202607101900',
     data:        '202607010240',
     diagnostics: '202604230045',
     engine:      '202607010240',
@@ -65,7 +64,6 @@
   };
   var V = window.TD613_ASSET_VERSIONS;
   document.write('<link rel="stylesheet" href="./styles.css?v=' + V.styles + '" />');
-  document.write('<link rel="stylesheet" href="./desktop-visibility-parity.css?v=' + V.desktopVisibilityParity + '" />');
   document.write('<link rel="stylesheet" href="./hush-phase39.css?v=' + V.hushPhase39 + '" />');
   if (/\/(?:trainer|clone)\.html(?:$|[?#])/i.test(window.location.pathname + window.location.search + window.location.hash)) {
     document.write('<link rel="stylesheet" href="./station-polish.css?v=' + V.stationPolish + '" />');
