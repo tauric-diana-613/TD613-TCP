@@ -1,0 +1,100 @@
+/* TD613 desktop visibility parity contract
+   Prevent viewport-locked desktop chambers from hiding authored instruction
+   surfaces behind nested, scrollbar-less overflow regions.
+
+   This file is intentionally narrow. It repairs the Gateway ingress membrane
+   without redesigning its visual grammar or changing puzzle behavior. */
+
+@media (min-width: 1024px) {
+  html body[data-page-kind="gateway"] #ingressMembrane {
+    align-items: start !important;
+    justify-items: center !important;
+    overflow-x: hidden !important;
+    overflow-y: auto !important;
+    overscroll-behavior: contain;
+    scrollbar-width: auto !important;
+    scrollbar-color: rgba(116, 234, 255, 0.28) rgba(3, 10, 16, 0.42) !important;
+  }
+
+  html body[data-page-kind="gateway"] #ingressMembrane::-webkit-scrollbar {
+    width: 10px !important;
+    height: 10px !important;
+  }
+
+  html body[data-page-kind="gateway"] #ingressMembrane::-webkit-scrollbar-track {
+    background: rgba(3, 10, 16, 0.42);
+  }
+
+  html body[data-page-kind="gateway"] #ingressMembrane::-webkit-scrollbar-thumb {
+    border: 2px solid rgba(3, 10, 16, 0.42);
+    border-radius: 999px;
+    background: rgba(116, 234, 255, 0.28);
+  }
+
+  html body[data-page-kind="gateway"] #ingressMembrane .ingress-layer {
+    width: min(1240px, 100%) !important;
+    height: auto !important;
+    min-height: calc(100dvh - 48px) !important;
+    max-height: none !important;
+    margin-inline: auto !important;
+    overflow: visible !important;
+    scrollbar-width: auto !important;
+  }
+
+  html body[data-page-kind="gateway"] #ingressMembrane .ingress-grid {
+    flex: 0 0 auto !important;
+    min-height: 0 !important;
+  }
+
+  html body[data-page-kind="gateway"] #ingressMembrane .ingress-heading-copy,
+  html body[data-page-kind="gateway"] #ingressMembrane .ingress-subtitle,
+  html body[data-page-kind="gateway"] #ingressMembrane .ingress-cue-copy,
+  html body[data-page-kind="gateway"] #ingressMembrane .ingress-status,
+  html body[data-page-kind="gateway"] #ingressMembrane .ingress-forensic-card,
+  html body[data-page-kind="gateway"] #ingressMembrane .ingress-forensic-grid,
+  html body[data-page-kind="gateway"] #ingressMembrane .ingress-forensic-row,
+  html body[data-page-kind="gateway"] #ingressMembrane .ingress-forensic-value {
+    visibility: visible !important;
+    opacity: 1 !important;
+    max-height: none !important;
+  }
+
+  html body[data-page-kind="gateway"] #ingressMembrane .ingress-subtitle,
+  html body[data-page-kind="gateway"] #ingressMembrane .ingress-cue-copy,
+  html body[data-page-kind="gateway"] #ingressMembrane .ingress-status,
+  html body[data-page-kind="gateway"] #ingressMembrane .ingress-forensic-card {
+    overflow: visible !important;
+  }
+}
+
+/* Short desktop viewports and browser zoom must compact, never amputate. */
+@media (min-width: 1024px) and (max-height: 820px) {
+  html body[data-page-kind="gateway"] #ingressMembrane {
+    padding-block: 16px !important;
+  }
+
+  html body[data-page-kind="gateway"] #ingressMembrane .ingress-layer {
+    min-height: calc(100dvh - 32px) !important;
+    padding: 20px !important;
+  }
+
+  html body[data-page-kind="gateway"] #ingressMembrane .ingress-heading,
+  html body[data-page-kind="gateway"] #ingressMembrane .ingress-stage-rail {
+    margin-top: 12px !important;
+  }
+
+  html body[data-page-kind="gateway"] #ingressMembrane .ingress-grid {
+    margin-top: 16px !important;
+  }
+
+  html body[data-page-kind="gateway"] #ingressMembrane .ingress-core-stage {
+    min-height: 260px !important;
+    transform: none !important;
+  }
+}
+
+@media (min-width: 1024px) and (prefers-reduced-motion: reduce) {
+  html body[data-page-kind="gateway"] #ingressMembrane {
+    scroll-behavior: auto;
+  }
+}
