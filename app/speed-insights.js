@@ -14,7 +14,7 @@ window.si = window.si || function () {
   const rescue = document.createElement('link');
   rescue.id = 'td613SafeHarborDesktopRescueCss';
   rescue.rel = 'stylesheet';
-  rescue.href = 'app/desktop-rescue.css?v=20260708-harbor-map-scroll-swap';
+  rescue.href = 'app/desktop-rescue.css?v=20260710-stable-cockpit';
   document.head.appendChild(rescue);
 })();
 
