@@ -17,6 +17,8 @@ const requiredFiles = [
   'tests/hush-phase39-ui.test.mjs',
   'app/safe-harbor/index.html',
   'app/safe-harbor/td613-flight.html',
+  'app/safe-harbor/app/desktop-rescue.css',
+  'app/safe-harbor/renderers/10_TD613_PUA_Badge_Provenance_Attestation_Renderer_v7_2_1.user.js',
   'scripts/legacy/flight-patches/README.md'
 ];
 
@@ -82,8 +84,24 @@ assert.ok(
 
 const harborIndex = read('app/safe-harbor/index.html');
 assert.ok(harborIndex.includes('Safe Harbor') || harborIndex.includes('safe-harbor'), 'Safe Harbor index must remain discoverable');
+assert.match(harborIndex, /id="injectDynamicLane"/, 'Safe Harbor must retain the Dynamic Lane control');
+assert.match(harborIndex, /id="dynamicTarget"/, 'Safe Harbor must retain the Dynamic Lane target');
+
+const desktopRescue = read('app/safe-harbor/app/desktop-rescue.css');
+assert.match(desktopRescue, /grid-template-areas:\s*\n\s*"canon chamber"/, 'desktop Safe Harbor must retain the deterministic compact desktop grid');
+assert.match(desktopRescue, /@media \(min-width: 1360px\)/, 'wide desktop must restore the three-station cockpit');
+assert.match(desktopRescue, /max-height: none;\s*\n\s*overflow: visible;/, 'desktop panels must remain in normal document flow');
+assert.doesNotMatch(desktopRescue, /\.canon-panel,[\s\S]{0,180}position:\s*sticky/, 'desktop side panels must not hide sections behind nested sticky scroll containers');
+
+const renderer = read('app/safe-harbor/renderers/10_TD613_PUA_Badge_Provenance_Attestation_Renderer_v7_2_1.user.js');
+assert.doesNotThrow(() => new Function(renderer), 'PUA renderer userscript must parse');
+assert.match(renderer, /@grant\s+none/, 'PUA renderer must execute without an unused privileged grant');
+assert.doesNotMatch(renderer, /@grant\s+GM_setClipboard/, 'unused clipboard privilege must stay absent');
+assert.match(renderer, /closest\('#injectDynamicLane'\)/, 'renderer must rescan after the Dynamic Lane control is pressed');
+assert.match(renderer, /dynamic-lane-rescan/, 'renderer must emit a post-injection rescan receipt');
+assert.match(renderer, /dataset\.td613RendererBridge/, 'renderer must stamp a cross-world readiness marker');
 
 const gateway = read('app/index.html');
 assert.ok(gateway.includes('<html'), 'Gateway must remain an HTML document');
 
-console.log('TCP smoke passed: static surfaces, Flight sentinels, and Hush Phase 39 assets are intact.');
+console.log('TCP smoke passed: static surfaces, Flight sentinels, Safe Harbor desktop flow, and Mac renderer bridge are intact.');
