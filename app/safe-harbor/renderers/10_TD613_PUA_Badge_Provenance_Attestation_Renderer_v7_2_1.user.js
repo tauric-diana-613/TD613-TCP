@@ -6,7 +6,7 @@
 // @match        *://*/*
 // @match        file:///*
 // @run-at       document-end
-// @grant        GM_setClipboard
+// @grant        none
 // ==/UserScript==
 
 (function () {
@@ -38,6 +38,7 @@
   const FALLBACK_REASON = 'U+10D613 unrenderable in default fonts';
   const SKIP_SELECTOR = '[data-td613-skip="true"]';
   const PRINCIPAL_ATTR_SELECTOR = '[data-td613-principal="true"]';
+  const WORLD_BRIDGE = 'page-world-dom-bridge-v1';
 
   // Asymmetric-compute defense: badges are tracked in a WeakSet, not via a
   // queryable HTML attribute. Removes the cheap regex sweep target
@@ -98,6 +99,7 @@
       display_phrase: DISPLAY_PHRASE,
       preview_svg_sha256: PREVIEW_SVG_SHA256,
       preview_svg_md5: PREVIEW_SVG_MD5,
+      world_bridge: WORLD_BRIDGE,
       reason: reason
     }, extra);
     window.dispatchEvent(new CustomEvent('td613:badge-render', { detail }));
@@ -355,6 +357,18 @@
     while ((current = walker.nextNode())) transformTextNode(current);
   }
 
+  function stampRendererBridge() {
+    document.documentElement.dataset.td613Renderer = '7.2.1';
+    document.documentElement.dataset.td613RendererBridge = WORLD_BRIDGE;
+    let marker = document.querySelector('meta[name="td613-provenance-renderer"]');
+    if (!marker) {
+      marker = document.createElement('meta');
+      marker.setAttribute('name', 'td613-provenance-renderer');
+      (document.head || document.documentElement).appendChild(marker);
+    }
+    marker.setAttribute('content', '7.2.1');
+  }
+
   window.TD613ProvenanceAttestationRenderer = {
     renderer: RENDERER,
     version: '7.2.1',
@@ -379,11 +393,33 @@
     historical_example: HISTORICAL_EXAMPLE,
     observed_regime: OBSERVED_REGIME,
     instrument_role: INSTRUMENT_ROLE,
-    aperture_audit_field: APERTURE_AUDIT_FIELD
+    aperture_audit_field: APERTURE_AUDIT_FIELD,
+    world_bridge: WORLD_BRIDGE
   };
 
+  stampRendererBridge();
   scan(document.body);
   emit('scan-complete', { initial: true, match_mode: 'n/a', principal_match: false, pua_match: false });
+
+  // Explicitly rescan after Safe Harbor inserts the dynamic lane. This works
+  // across Chrome, Edge, Firefox, and Safari-compatible userscript managers,
+  // including managers that isolate extension globals from the page window.
+  document.addEventListener('click', function (event) {
+    const trigger = event.target && event.target.closest
+      ? event.target.closest('#injectDynamicLane')
+      : null;
+    if (!trigger) return;
+    setTimeout(function () {
+      const target = document.getElementById('operatorHandshakeSection') || document.body;
+      scan(target);
+      emit('dynamic-lane-rescan', { requested: true, trigger: 'inject-dynamic-lane' });
+    }, 0);
+  }, true);
+
+  window.addEventListener('td613:renderer-scan-request', function () {
+    scan(document.getElementById('operatorHandshakeSection') || document.body);
+    emit('scan-request-complete', { requested: true });
+  });
 
   const observer = new MutationObserver((mutations) => {
     mutations.forEach((mutation) => {

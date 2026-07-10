@@ -1,5 +1,7 @@
 /* PR_SAFE_HARBOR_DESKTOP_RESCUE
-   Desktop-only Safe Harbor vault makeover. Mobile remains governed by app/styles.css. */
+   Cross-platform desktop Safe Harbor layout.
+   The desktop shell stays fixed and legible without nested panel scroll traps.
+   Mobile remains governed by app/styles.css and the mobile hotfix layers. */
 
 @media (min-width: 1024px) {
   html,
@@ -13,14 +15,34 @@
     overflow-y: auto;
   }
 
+  /* Ingress stays in normal document flow on desktop. macOS hides overlay
+     scrollbars by default, so nested overflow containers can make whole
+     sections appear absent even though they are merely trapped below a panel. */
+  html body .ingress-membrane:not(.is-hidden),
+  html body .ingress-shell,
+  html body .ingress-head,
+  html body .ingress-handshake-grid,
+  html body .ingress-step-panel,
+  html body .ingress-console-panel {
+    min-width: 0;
+    min-height: 0;
+    height: auto;
+    max-height: none;
+    overflow: visible;
+  }
+
+  html body .ingress-handshake-grid {
+    align-items: start;
+  }
+
   html body #vaultSurface.chrome-grid {
     width: min(100%, 1820px);
     min-height: auto;
     margin: 0 auto;
-    padding: clamp(18px, 2vw, 32px) clamp(18px, 2.2vw, 36px) 40px;
+    padding: clamp(18px, 2vw, 32px) clamp(18px, 2.2vw, 36px) 48px;
     display: grid;
     grid-template-columns: minmax(0, 1fr);
-    grid-template-rows: auto minmax(0, 1fr);
+    grid-template-rows: auto auto;
     gap: 18px;
   }
 
@@ -33,7 +55,7 @@
     grid-column: 1;
     grid-row: 1;
     display: grid;
-    grid-template-columns: minmax(360px, 1fr) minmax(420px, auto);
+    grid-template-columns: minmax(320px, 1fr) minmax(380px, auto);
     align-items: center;
     gap: 24px;
     padding: 20px 24px;
@@ -79,8 +101,8 @@
     white-space: nowrap;
   }
 
-  /* The Harbor Map is deliberately absent from the opening cockpit. It becomes
-     a compact horizontal floating map only after Route Conscience has fully
+  /* The Harbor Map remains absent from the opening cockpit. It becomes a
+     compact horizontal floating map only after Route Conscience has fully
      scrolled away. The class is controlled by app/speed-insights.js. */
   html body #vaultSurface .safe-harbor-scroll-rail {
     position: fixed;
@@ -134,18 +156,23 @@
     white-space: nowrap;
   }
 
+  /* The 1024–1359px desktop band gets a deterministic two-column shell.
+     This covers Windows display scaling and smaller laptop browser viewports
+     without forcing horizontal overflow or silently clipping a side panel. */
   html body #vaultSurface .main-grid {
     grid-column: 1;
     grid-row: 2;
     display: grid;
-    grid-template-columns: minmax(265px, 330px) minmax(520px, 1fr) minmax(245px, 320px);
-    grid-template-rows: minmax(560px, auto) minmax(220px, 36vh);
+    grid-template-columns: minmax(230px, .72fr) minmax(0, 1.55fr);
+    grid-template-rows: auto auto auto;
     grid-template-areas:
-      "canon chamber conscience"
-      "mirror mirror audit";
+      "canon chamber"
+      "conscience chamber"
+      "mirror mirror"
+      "audit audit";
     gap: 18px;
-    min-height: calc(100vh - 220px);
-    align-items: stretch;
+    min-height: 0;
+    align-items: start;
   }
 
   html body #vaultSurface .panel-left { grid-area: canon; grid-column: auto; grid-row: auto; }
@@ -154,38 +181,46 @@
   html body #vaultSurface .dock-left { grid-area: mirror; grid-column: auto; grid-row: auto; }
   html body #vaultSurface .dock-right { grid-area: audit; grid-column: auto; grid-row: auto; }
 
+  /* Keep every desktop section in the page's normal scroll flow. Hidden
+     overlay scrollbars on macOS no longer conceal lower panel sections, and
+     Windows no longer gets competing inner scroll regions. */
   html body #vaultSurface .panel,
-  html body #vaultSurface .dock {
+  html body #vaultSurface .dock,
+  html body #vaultSurface .canon-panel,
+  html body #vaultSurface .conscience-panel,
+  html body #vaultSurface .chamber-panel {
+    position: relative;
+    top: auto;
+    align-self: start;
     min-width: 0;
     min-height: 0;
+    width: 100%;
+    height: auto;
     max-height: none;
-    overflow: auto;
+    overflow: visible;
+  }
+
+  html body #vaultSurface .panel,
+  html body #vaultSurface .dock {
     padding: clamp(14px, 1.2vw, 20px);
     border-radius: 18px;
   }
 
-  html body #vaultSurface .canon-panel,
-  html body #vaultSurface .conscience-panel {
-    position: sticky;
-    top: 72px;
-    align-self: start;
-    max-height: calc(100vh - 92px);
-  }
-
-  html body #vaultSurface .chamber-panel {
-    overflow: visible;
-  }
-
   html body #vaultSurface .witness-grid {
     display: grid;
-    grid-template-columns: repeat(2, minmax(0, 1fr));
+    grid-template-columns: minmax(0, 1fr);
     gap: 16px;
     align-items: start;
   }
 
+  html body #vaultSurface .witness-grid > * {
+    min-width: 0;
+    width: 100%;
+  }
+
   html body #vaultSurface .witness-grid > .reliquary-card,
   html body #vaultSurface .witness-grid > #packetVaultSection {
-    grid-column: 1 / -1;
+    grid-column: 1;
   }
 
   html body #vaultSurface .surface-card,
@@ -234,6 +269,45 @@
   html body #vaultSurface select,
   html body #vaultSurface button {
     max-width: 100%;
+  }
+}
+
+/* Wide desktop restores the three-station cockpit without reintroducing
+   fixed-height rows or inner panel scrollbars. */
+@media (min-width: 1360px) {
+  html body #vaultSurface .main-grid {
+    grid-template-columns: minmax(230px, .72fr) minmax(430px, 1.72fr) minmax(230px, .72fr);
+    grid-template-rows: auto auto;
+    grid-template-areas:
+      "canon chamber conscience"
+      "mirror mirror audit";
+  }
+
+  html body #vaultSurface .witness-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  html body #vaultSurface .witness-grid > .reliquary-card,
+  html body #vaultSurface .witness-grid > #packetVaultSection {
+    grid-column: 1 / -1;
+  }
+}
+
+@media (min-width: 1024px) and (max-width: 1199px) {
+  html body #vaultSurface .masthead {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  html body #vaultSurface .masthead .status-strip {
+    justify-content: flex-start;
+  }
+
+  html body #vaultSurface .safe-harbor-scroll-rail {
+    grid-template-columns: auto minmax(0, 1fr) auto;
+  }
+
+  html body #vaultSurface .safe-harbor-scroll-rail .rail-status-grid {
+    display: none;
   }
 }
 
