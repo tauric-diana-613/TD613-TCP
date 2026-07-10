@@ -106,10 +106,11 @@ assert.match(renderer, /dataset\.td613RendererBridge/, 'renderer must stamp a cr
 
 const gateway = read('app/index.html');
 assert.ok(gateway.includes('<html'), 'Gateway must remain an HTML document');
-for (const id of ['ingressSubtitle', 'ingressCueCopy', 'ingressStatus', 'ingressForensicGrid']) {
+for (const id of ['ingressSubtitle', 'ingressCueCopy', 'ingressStatus']) {
   assert.match(gateway, new RegExp(`id="${id}"`), `Gateway ingress must retain written instruction surface: ${id}`);
 }
 assert.match(gateway, /class="ingress-cue-card ingress-forensic-card"/, 'Gateway must retain the governed-exposure instruction card');
+assert.match(gateway, /class="ingress-forensic-grid"/, 'Gateway must retain the governed-exposure instruction grid');
 
 const desktopVisibility = read('app/desktop-visibility-parity.css');
 assert.match(desktopVisibility, /#ingressMembrane[\s\S]{0,260}overflow-y:\s*auto\s*!important/, 'Gateway desktop scrolling must belong to the visible membrane');
