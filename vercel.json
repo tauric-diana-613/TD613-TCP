@@ -12,10 +12,8 @@
       "includeFiles": "packages/dome_world_exact/**/*.py",
       "excludeFiles": "packages/dome_world_exact/{bridge,fixtures,schemas,tests,verification}/**"
     },
-    "api/dome-world-engine-v07.py": {
-      "maxDuration": 60,
-      "includeFiles": "**/*.py",
-      "excludeFiles": "packages/dome_world_exact/{bridge,fixtures,schemas,tests,verification}/**"
+    "api/ash-local-commitment.py": {
+      "maxDuration": 60
     }
   },
   "headers": [
@@ -65,13 +63,16 @@
     { "source": "/app/dome-world/index.html", "headers": [{ "key": "Cache-Control", "value": "no-store, max-age=0" }] },
     { "source": "/dome-world/ash-custody.html", "headers": [{ "key": "Cache-Control", "value": "no-store, max-age=0" }] },
     { "source": "/app/dome-world/ash-custody-v07.html", "headers": [{ "key": "Cache-Control", "value": "no-store, max-age=0" }] },
+    { "source": "/api/ash-local-commitment", "headers": [{ "key": "Cache-Control", "value": "no-store, max-age=0" }] },
     { "source": "/dome-world/(.*)", "headers": [{ "key": "Cache-Control", "value": "public, max-age=0, must-revalidate" }] }
   ],
   "rewrites": [
-    { "source": "/api/dome-world/ping", "destination": "/api/dome-world-engine-v07?operation=ping" },
-    { "source": "/api/dome-world/readiness", "destination": "/api/dome-world-engine-v07?operation=readiness" },
-    { "source": "/api/dome-world/step2-readiness", "destination": "/api/dome-world-engine-v07?operation=step2-readiness" },
-    { "source": "/api/dome-world/(.*)", "destination": "/api/dome-world-engine-v07?operation=$1" },
+    { "source": "/api/dome-world/ash-custody-register", "destination": "/api/ash-local-commitment" },
+    { "source": "/api/dome-world/ash-custody-replay", "destination": "/api/ash-local-commitment" },
+    { "source": "/api/dome-world/ping", "destination": "/api/dome-world-engine?operation=ping" },
+    { "source": "/api/dome-world/readiness", "destination": "/api/dome-world-engine?operation=readiness" },
+    { "source": "/api/dome-world/step2-readiness", "destination": "/api/dome-world-engine?operation=step2-readiness" },
+    { "source": "/api/dome-world/(.*)", "destination": "/api/dome-world-engine?operation=$1" },
     { "source": "/dome-world", "destination": "/app/dome-world/index.html" },
     { "source": "/dome-world/", "destination": "/app/dome-world/index.html" },
     { "source": "/dome-world/ash-custody.html", "destination": "/app/dome-world/ash-custody-v07.html" },
