@@ -14,6 +14,8 @@
  * sent by this probe.
  */
 
+import { pathToFileURL } from 'node:url';
+
 const PROBE_SCHEMA = 'td613.dome-world.deployment-probe/v0.1';
 const L0_ASSURANCE = 'L0_METADATA_ONLY';
 const FORBIDDEN_CUSTODY_OPERATIONS = new Set([
@@ -294,7 +296,7 @@ async function main() {
   }
 }
 
-const invokedPath = process.argv[1] ? new URL(`file://${process.argv[1]}`).href : '';
-if (import.meta.url === invokedPath) {
+const invokedUrl = process.argv[1] ? pathToFileURL(process.argv[1]).href : '';
+if (import.meta.url === invokedUrl) {
   await main();
 }
