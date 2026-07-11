@@ -70,4 +70,19 @@ jobs:
           if-no-files-found: error
           retention-days: 3
       - name: Validate commitment-aware API
-        run: python -m pytest packages/dome_world_exact/tests/test_api_integration.py -q
+        id: commitment_api
+        shell: bash
+        run: |
+          set +e
+          python -m pytest packages/dome_world_exact/tests/test_api_integration.py -q > dome-world-commitment-api.log 2>&1
+          status=$?
+          cat dome-world-commitment-api.log
+          exit $status
+      - name: Preserve commitment-API failure receipt
+        if: failure() && steps.commitment_api.outcome == 'failure'
+        uses: actions/upload-artifact@v4
+        with:
+          name: dome-world-phase1-commitment-api-failure
+          path: dome-world-commitment-api.log
+          if-no-files-found: error
+          retention-days: 3
