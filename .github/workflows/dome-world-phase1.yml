@@ -36,7 +36,22 @@ jobs:
       - name: Validate Ash browser-local commitment
         run: node tests/dome-world-ash-custody.test.mjs
       - name: Validate Dome-World integration
-        run: node tests/dome-world-integration.test.mjs
+        id: dome_integration
+        shell: bash
+        run: |
+          set +e
+          node tests/dome-world-integration.test.mjs > dome-world-integration.log 2>&1
+          status=$?
+          cat dome-world-integration.log
+          exit $status
+      - name: Preserve integration failure receipt
+        if: failure() && steps.dome_integration.outcome == 'failure'
+        uses: actions/upload-artifact@v4
+        with:
+          name: dome-world-phase1-integration-failure
+          path: dome-world-integration.log
+          if-no-files-found: error
+          retention-days: 3
       - name: Validate Vercel deploy hygiene
         run: node tests/vercel-deploy-hygiene.test.mjs
       - name: Validate commitment-aware API
