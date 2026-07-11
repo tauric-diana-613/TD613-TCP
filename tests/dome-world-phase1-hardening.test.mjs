@@ -22,14 +22,30 @@ assert.equal(
   '/api/ash-local-commitment-guard',
 );
 assert.equal(
-  rewrites.get('/dome-world/ash/local-commitment.js'),
-  '/app/dome-world/ash/local-commitment-v071.js',
+  rewrites.has('/dome-world/ash/local-commitment.js'),
+  false,
+  'the stable Ash kernel route must resolve through the canonical static fallback',
+);
+assert.equal(
+  rewrites.has('/app/dome-world/ash/local-commitment.js'),
+  false,
+  'the canonical repository path must not be shadowed by a versioned rewrite',
+);
+
+const aliasSource = readFileSync(
+  'app/dome-world/ash/local-commitment-v071.js',
+  'utf8',
+);
+assert.match(
+  aliasSource,
+  /export \* from "\.\/local-commitment\.js";/,
+  'the retained v0.7.1 URL must re-export the canonical kernel rather than fork it',
 );
 
 const {
   generateLocalCommitment,
   invalidateLocalCommitmentSelection,
-} = await import('../app/dome-world/ash/local-commitment-v071.js');
+} = await import('../app/dome-world/ash/local-commitment.js');
 
 const fileLike = (bytes, options = {}) => ({
   size: bytes.byteLength,
