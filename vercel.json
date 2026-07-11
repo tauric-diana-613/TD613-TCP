@@ -14,10 +14,7 @@
     },
     "api/dome-world-engine-v07.py": {
       "maxDuration": 60,
-      "includeFiles": [
-        "api/dome-world-engine.py",
-        "packages/dome_world_exact/**/*.py"
-      ],
+      "includeFiles": "**/*.py",
       "excludeFiles": "packages/dome_world_exact/{bridge,fixtures,schemas,tests,verification}/**"
     }
   },
