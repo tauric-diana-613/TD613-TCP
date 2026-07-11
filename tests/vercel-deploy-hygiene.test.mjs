@@ -41,6 +41,7 @@ assert.equal(vercel.functions?.['api/hush-generate-strict.js']?.maxDuration, 60,
 assert.equal(vercel.functions?.['api/hush-generate.js']?.maxDuration, 60, 'Hush route should keep 60s function budget');
 assert.equal(vercel.functions?.['api/dome-world-engine.py']?.maxDuration, 60, 'Dome exact lineage route should keep 60s function budget');
 assert.equal(vercel.functions?.['api/dome-world-engine-v07.py']?.maxDuration, 60, 'Dome v0.7 adapter should keep 60s function budget');
+assert.equal(typeof vercel.functions?.['api/dome-world-engine-v07.py']?.includeFiles, 'string', 'Vercel includeFiles must remain a string glob');
 
 assertRewrite('/api/dome-world/ping', '/api/dome-world-engine-v07?operation=ping');
 assertRewrite('/api/dome-world/readiness', '/api/dome-world-engine-v07?operation=readiness');
@@ -62,6 +63,8 @@ assertRewrite('/(.*)', '/app/$1');
   '/app/adversarial-bench.html',
   '/safe-harbor/td613-flight.html',
   '/app/safe-harbor/td613-flight.html',
+  '/asset-versions.js',
+  '/app/asset-versions.js',
   '/dome-world',
   '/dome-world/',
   '/app/dome-world/index.html',
@@ -90,8 +93,6 @@ assertRewrite('/(.*)', '/app/$1');
   '/app/hush-(.*)',
   '/engine/(.*)',
   '/app/engine/(.*)',
-  '/asset-versions.js',
-  '/app/asset-versions.js',
   '/dome-world/(.*)'
 ].forEach(assertRevalidatingStatic);
 
