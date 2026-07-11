@@ -53,6 +53,21 @@ jobs:
           if-no-files-found: error
           retention-days: 3
       - name: Validate Vercel deploy hygiene
-        run: node tests/vercel-deploy-hygiene.test.mjs
+        id: deploy_hygiene
+        shell: bash
+        run: |
+          set +e
+          node tests/vercel-deploy-hygiene.test.mjs > dome-world-deploy-hygiene.log 2>&1
+          status=$?
+          cat dome-world-deploy-hygiene.log
+          exit $status
+      - name: Preserve deploy-hygiene failure receipt
+        if: failure() && steps.deploy_hygiene.outcome == 'failure'
+        uses: actions/upload-artifact@v4
+        with:
+          name: dome-world-phase1-deploy-hygiene-failure
+          path: dome-world-deploy-hygiene.log
+          if-no-files-found: error
+          retention-days: 3
       - name: Validate commitment-aware API
         run: python -m pytest packages/dome_world_exact/tests/test_api_integration.py -q
