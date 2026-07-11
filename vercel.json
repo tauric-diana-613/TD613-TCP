@@ -12,8 +12,16 @@
       "includeFiles": "packages/dome_world_exact/**/*.py",
       "excludeFiles": "packages/dome_world_exact/{bridge,fixtures,schemas,tests,verification}/**"
     },
+    "api/dome-world-engine-guard.py": {
+      "maxDuration": 60,
+      "includeFiles": "{api/dome-world-engine.py,packages/dome_world_exact/**/*.py}"
+    },
     "api/ash-local-commitment.py": {
       "maxDuration": 60
+    },
+    "api/ash-local-commitment-guard.py": {
+      "maxDuration": 60,
+      "includeFiles": "api/ash-local-commitment.py"
     }
   },
   "headers": [
@@ -63,20 +71,29 @@
     { "source": "/app/dome-world/index.html", "headers": [{ "key": "Cache-Control", "value": "no-store, max-age=0" }] },
     { "source": "/dome-world/ash-custody.html", "headers": [{ "key": "Cache-Control", "value": "no-store, max-age=0" }] },
     { "source": "/app/dome-world/ash-custody-v07.html", "headers": [{ "key": "Cache-Control", "value": "no-store, max-age=0" }] },
+    { "source": "/dome-world/ash/local-commitment.js", "headers": [{ "key": "Cache-Control", "value": "no-store, max-age=0" }] },
+    { "source": "/app/dome-world/ash/local-commitment.js", "headers": [{ "key": "Cache-Control", "value": "no-store, max-age=0" }] },
+    { "source": "/api/dome-world-engine", "headers": [{ "key": "Cache-Control", "value": "no-store, max-age=0" }] },
     { "source": "/api/ash-local-commitment", "headers": [{ "key": "Cache-Control", "value": "no-store, max-age=0" }] },
+    { "source": "/api/dome-world-engine-guard", "headers": [{ "key": "Cache-Control", "value": "no-store, max-age=0" }] },
+    { "source": "/api/ash-local-commitment-guard", "headers": [{ "key": "Cache-Control", "value": "no-store, max-age=0" }] },
     { "source": "/dome-world/(.*)", "headers": [{ "key": "Cache-Control", "value": "public, max-age=0, must-revalidate" }] }
   ],
   "rewrites": [
-    { "source": "/api/dome-world/ash-custody-register", "destination": "/api/ash-local-commitment" },
-    { "source": "/api/dome-world/ash-custody-replay", "destination": "/api/ash-local-commitment" },
-    { "source": "/api/dome-world/ping", "destination": "/api/dome-world-engine?operation=ping" },
-    { "source": "/api/dome-world/readiness", "destination": "/api/dome-world-engine?operation=readiness" },
-    { "source": "/api/dome-world/step2-readiness", "destination": "/api/dome-world-engine?operation=step2-readiness" },
-    { "source": "/api/dome-world/(.*)", "destination": "/api/dome-world-engine?operation=$1" },
+    { "source": "/api/dome-world/ash-custody-register", "destination": "/api/ash-local-commitment-guard" },
+    { "source": "/api/dome-world/ash-custody-replay", "destination": "/api/ash-local-commitment-guard" },
+    { "source": "/api/ash-local-commitment", "destination": "/api/ash-local-commitment-guard" },
+    { "source": "/api/dome-world-engine", "destination": "/api/dome-world-engine-guard" },
+    { "source": "/api/dome-world/ping", "destination": "/api/dome-world-engine-guard?operation=ping" },
+    { "source": "/api/dome-world/readiness", "destination": "/api/dome-world-engine-guard?operation=readiness" },
+    { "source": "/api/dome-world/step2-readiness", "destination": "/api/dome-world-engine-guard?operation=step2-readiness" },
+    { "source": "/api/dome-world/(.*)", "destination": "/api/dome-world-engine-guard?operation=$1" },
     { "source": "/dome-world", "destination": "/app/dome-world/index.html" },
     { "source": "/dome-world/", "destination": "/app/dome-world/index.html" },
     { "source": "/dome-world/ash-custody.html", "destination": "/app/dome-world/ash-custody-v07.html" },
     { "source": "/app/dome-world/ash-custody.html", "destination": "/app/dome-world/ash-custody-v07.html" },
+    { "source": "/dome-world/ash/local-commitment.js", "destination": "/app/dome-world/ash/local-commitment-v071.js" },
+    { "source": "/app/dome-world/ash/local-commitment.js", "destination": "/app/dome-world/ash/local-commitment-v071.js" },
     { "source": "/dome-world/(.*)", "destination": "/app/dome-world/$1" },
     { "source": "/api/(.*)", "destination": "/api/$1" },
     { "source": "/safe-harbor/td613-flight.html", "destination": "/api/flight-html" },
