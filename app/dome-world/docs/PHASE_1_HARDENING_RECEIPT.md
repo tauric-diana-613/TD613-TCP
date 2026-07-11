@@ -2,63 +2,70 @@
 
 𝌋‌
 
-## Status
+## Audit origin
 
-**Implemented on the guarded public routes, merged to `main`, and reconciled with the canonical repository source.**
+The first Phase 0–1 merge established the local SHA-256 kernel, but post-merge review found three unresolved implementation seams:
 
-## Purpose
+1. the legacy Dome-World engine could still accept custody register/replay operations directly;
+2. contradictory L1 network/persistence flags could be normalized into false rather than rejected;
+3. an older slow hash promise could overwrite a newer file selection.
 
-Close the post-merge seams identified during review of the browser-local commitment kernel without widening Phase 1 jurisdiction.
+A subsequent merge documented those repairs but did not change the code. This receipt records their actual implementation.
 
 ## Implemented repairs
 
-1. **Direct-engine custody bypass**
-   - Public `/api/dome-world-engine` traffic routes through `api/dome-world-engine-guard.py`.
-   - The guard rejects `ash-custody-register` and `ash-custody-replay` before the legacy engine can dispatch them.
-   - Friendly custody routes and the direct commitment path route exclusively through `api/ash-local-commitment-guard.py`.
-   - The legacy engine remains internal sediment for non-custody operations; it cannot issue a public metadata-derived custody receipt through the guarded route.
+### Legacy-engine bypass closed
 
-2. **Contradictory L1 boundary flags**
-   - The public commitment guard requires:
-     - `network_operation_performed_by_module === false`
-     - `raw_bytes_persisted_by_module === false`
-   - Missing or contradictory values fail closed before the internal receipt function can normalize them.
-   - The v0.7 manifest schema now carries those fields as required `false` invariants and binds L1 to an object-valued local commitment while binding L0 to `null`.
+- `api/dome-world-engine.py` excludes `ash-custody-register` and `ash-custody-replay` from its operation registry;
+- direct dispatch of either operation fails closed;
+- readiness lists them only as delegated operations owned by `api/ash-local-commitment.py`;
+- the public guard remains as defense in depth.
 
-3. **Stale file-hash race**
-   - `app/dome-world/ash/local-commitment.js` is the canonical v0.7.1-hardened implementation.
-   - Concurrent commitment jobs are generation-bound.
-   - An older job resolves to the newest active commitment rather than overwriting it.
-   - Clearing the file selection invalidates every in-flight commitment and returns the intake to L0 posture.
-   - `local-commitment-v071.js` remains only as a compatibility re-export, preventing a second live implementation from drifting.
+### Contradictory L1 assertions rejected
 
-4. **Vercel configuration seam**
-   - The abandoned coupled `api/dome-world-engine-v07.py` adapter remains absent.
-   - Every configured `includeFiles` and `excludeFiles` value is validated as a string.
-   - The canonical Ash kernel now resolves through the ordinary Dome-World static route rather than a versioned shadow rewrite.
+The v0.7 endpoint now rejects conflicting digest/assurance aliases and requires explicit false values for:
 
-5. **Phase 0 documentation seam**
-   - `PHASE_0_CONTRACT_LEDGER.md` now records compatibility versions, public route ownership, side-effect posture, frozen Phase 1 invariants, validation coverage, and deferred roadmap work.
-   - The Dome-World README now reflects the guarded multi-function architecture rather than the obsolete one-function / Ash v0.6 description.
+- `network_operation_performed_by_module`;
+- `raw_bytes_transmitted`;
+- `raw_bytes_returned`;
+- `raw_bytes_persisted_by_module`;
+- `memory_erasure_guaranteed`.
 
-## Regression coverage
+It also validates byte length, media type, digest algorithm, browser-local execution, and strict lowercase SHA-256.
 
-- direct legacy-engine custody operations fail closed;
-- contradictory or missing L1 network/persistence flags fail closed;
-- rapid file reselection retains only the newest file commitment;
-- clearing an in-flight commitment raises an `AbortError` rather than restoring stale bytes;
-- canonical and versioned module routes cannot fork into separate implementations;
-- v0.7 schema invariants require the local no-network / no-persistence declarations;
-- every Vercel file-inclusion field remains schema-valid;
-- existing L0/L1 fixture, API integration, browser-contract, and deployment-hygiene tests remain in the hardening gate.
+### Stale file-selection race closed
 
-## Preserved boundaries
+The canonical browser module now contains a latest-selection coordinator. A commitment result becomes `CURRENT` only while its generation token and File object remain active; earlier promises resolve as `STALE` and cannot update the UI or re-enable registration for the wrong file.
 
-- no new claim-ceiling mechanism;
-- no Cinder transport redesign in this patch;
-- no reciprocal Flow-Core expansion;
-- no Aperture source promotion or rewrite;
-- no authorship, possession, identity, authenticity, truth, or trusted-time claim;
-- Ash remains custody-only and the human remains the consequential decision point.
+## Additional seam repairs
+
+- Removed the duplicate v0.7.1 browser implementation and made `local-commitment.js` canonical.
+- Replaced the stale v0.6 `ash-custody.html` copy with a compatibility route to v0.7.
+- Removed new v0.7 claim-ceiling fields; legacy v0.5/v0.6 vocabulary remains frozen for separate review.
+- Replaced receipt-list `innerHTML` with DOM/text construction.
+- Held the Cinder transport surface and rejected `fragment` / `candidateFragment` at the engine boundary until Phase 6.
+- Hardened legacy replay so a v0.5 metadata hash cannot be promoted to v0.7 L1 assurance.
+- Instantiated the roadmap, contract ledger, and implementation-status receipts in the repository.
+
+## Verification gates
+
+- JavaScript syntax and exact-byte vectors;
+- empty file and one-byte mutation;
+- Unicode byte divergence;
+- file-size hold;
+- stale-selection ordering;
+- L0/L1 API validation;
+- direct-engine custody rejection;
+- contradictory-boundary rejection;
+- legacy replay non-promotion;
+- raw fragment rejection;
+- schema parsing;
+- Vercel route and cache hygiene.
+
+## Remaining roadmap boundary
+
+Phases 2–9 are not silently implemented by this repair. Reciprocal Flow-Core API receipts, Relation Envelope runtime, Cinder transport redesign, provenance adapters, and advanced privacy research remain governed future work.
+
+The stone is exact. The floor is now bolted down.
 
 ⟐

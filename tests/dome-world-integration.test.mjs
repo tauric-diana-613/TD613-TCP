@@ -3,12 +3,12 @@ import fs from 'node:fs';
 
 const html = fs.readFileSync('app/dome-world/index.html', 'utf8');
 const ashV07 = fs.readFileSync('app/dome-world/ash-custody-v07.html', 'utf8');
+const ashAlias = fs.readFileSync('app/dome-world/ash-custody.html', 'utf8');
 const api = fs.readFileSync('api/dome-world-engine.py', 'utf8');
 const apiGuard = fs.readFileSync('api/dome-world-engine-guard.py', 'utf8');
 const apiCommitment = fs.readFileSync('api/ash-local-commitment.py', 'utf8');
 const commitmentGuard = fs.readFileSync('api/ash-local-commitment-guard.py', 'utf8');
 const localCommitment = fs.readFileSync('app/dome-world/ash/local-commitment.js', 'utf8');
-const localCommitmentV071 = fs.readFileSync('app/dome-world/ash/local-commitment-v071.js', 'utf8');
 
 for (const preservedSurface of [
   /\.weather-card/,
@@ -67,6 +67,10 @@ assert.match(html, /rawExactCoordinatesExported:false|raw_exact_coordinates_allo
 assert.match(api, /MAX_BODY_BYTES = 131_072/);
 assert.match(api, /DOME_WORLD_TRAINER_ENABLED/);
 assert.match(api, /DOME_WORLD_CHECKPOINT_SECRET/);
+assert.match(api, /PHASE1_CUSTODY_OPERATIONS/);
+assert.match(api, /operation in PHASE1_CUSTODY_OPERATIONS/);
+assert.match(api, /"fragment"/);
+assert.match(api, /"candidateFragment"/);
 assert.match(apiGuard, /LEGACY_CUSTODY_OPERATIONS/);
 assert.match(apiGuard, /owned exclusively by/);
 assert.match(html, /trainerOperatorToken/);
@@ -80,22 +84,28 @@ assert.doesNotMatch(html, /payload\.operatorToken|operatorToken:trainerOperatorT
 assert.match(api, /Ash custody accepts metadata\/manifests only; raw content fields are prohibited/);
 assert.match(apiCommitment, /metadataDigestFallback": False/);
 assert.match(apiCommitment, /L1_BROWSER_LOCAL_ARTIFACT_DIGEST/);
+assert.match(apiCommitment, /network_operation_performed_by_module=false/);
+assert.match(apiCommitment, /raw_bytes_persisted_by_module=false/);
 assert.match(commitmentGuard, /network_operation_performed_by_module=false/);
 assert.match(commitmentGuard, /raw_bytes_persisted_by_module=false/);
 assert.doesNotMatch(ashV07, /sha256:manual-placeholder/);
-assert.match(ashV07, /generateLocalCommitment/);
-assert.match(localCommitment, /selectionEpoch/);
-assert.match(localCommitment, /invalidateLocalCommitmentSelection/);
-assert.match(localCommitmentV071, /export \* from "\.\/local-commitment\.js";/);
+assert.match(ashV07, /createLatestCommitmentCoordinator/);
+assert.match(ashV07, /Cinder transport held · Phase 6/);
+assert.doesNotMatch(ashV07, /domeRequest\("ash-cinder"/);
+assert.doesNotMatch(ashV07, /innerHTML\s*=/);
+assert.doesNotMatch(ashV07, /claimCeiling|claim_ceiling/);
+assert.match(ashAlias, /ash-custody-v07\.html/);
+assert.doesNotMatch(ashAlias, /sha256:manual-placeholder|claim-ceiling/);
+assert.match(localCommitment, /createLatestCommitmentCoordinator/);
+assert.doesNotMatch(localCommitment, /fetch\(|XMLHttpRequest|WebSocket/);
 assert.ok(vercel.rewrites.some((entry) => entry.source === '/dome-world' && entry.destination === '/app/dome-world/index.html'));
 assert.ok(vercel.rewrites.some((entry) => entry.source === '/dome-world/ash-custody.html' && entry.destination === '/app/dome-world/ash-custody-v07.html'));
 assert.ok(vercel.rewrites.some((entry) => entry.source === '/api/dome-world/ash-custody-register' && entry.destination === '/api/ash-local-commitment-guard'));
 assert.ok(vercel.rewrites.some((entry) => entry.source === '/api/dome-world/ash-custody-replay' && entry.destination === '/api/ash-local-commitment-guard'));
 assert.ok(vercel.rewrites.some((entry) => entry.source === '/api/dome-world-engine' && entry.destination === '/api/dome-world-engine-guard'));
 assert.ok(vercel.rewrites.some((entry) => entry.source === '/api/ash-local-commitment' && entry.destination === '/api/ash-local-commitment-guard'));
-assert.ok(vercel.rewrites.some((entry) => entry.source === '/api/dome-world/(.*)' && entry.destination.includes('/api/dome-world-engine-guard')));
-assert.ok(!vercel.rewrites.some((entry) => entry.source === '/dome-world/ash/local-commitment.js'));
-assert.ok(!vercel.rewrites.some((entry) => entry.source === '/app/dome-world/ash/local-commitment.js'));
+assert.ok(vercel.rewrites.some((entry) => entry.source === '/api/dome-world/(.*)' && entry.destination.includes('/api/dome-world-engine-guard'));
+assert.ok(!vercel.rewrites.some((entry) => String(entry.destination).includes('local-commitment-v071.js')));
 assert.match(vercelIgnore, /packages\/dome_world_exact\/verification\//);
 assert.match(vercelIgnore, /packages\/dome_world_exact\/tests\//);
 assert.ok(!gateway.includes('href="./dome-world'), 'Dome-World remains outside public navigation');

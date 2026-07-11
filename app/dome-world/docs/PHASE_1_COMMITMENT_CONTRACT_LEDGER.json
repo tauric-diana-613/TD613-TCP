@@ -1,0 +1,20 @@
+{
+  "schema": "td613.phase1.commitment-contract-ledger/v0.1",
+  "versions": {
+    "aperture": "v3.0-alpha",
+    "dome_world": "v0.5.0",
+    "ash_local_commitment": "v0.7",
+    "ash_derivative_lineage": "v0.6",
+    "exact_substrate": "v0.4.3"
+  },
+  "endpoint_ownership": {
+    "ash-custody-register": "api/ash-local-commitment.py",
+    "ash-custody-replay": "api/ash-local-commitment.py",
+    "legacy_engine_phase1_custody_allowed": false
+  },
+  "assurance_classes": ["L0_METADATA_ONLY", "L1_BROWSER_LOCAL_ARTIFACT_DIGEST"],
+  "raw_artifact_bytes_accepted_by_server": false,
+  "metadata_digest_fallback": false,
+  "no_new_claim_ceiling_mechanism": true,
+  "does_not_establish": ["possession", "authorship", "authenticity", "identity", "permission", "truth", "trusted-time"]
+}

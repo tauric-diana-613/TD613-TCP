@@ -20,7 +20,7 @@
       input,select,textarea { width:100%; min-width:0; max-width:100%; min-height:44px; margin:4px 0 8px; padding:9px; font-size:16px; background:#020806; color:#e8f0e4; border:1px solid #294239; }
       input[readonly] { color:#c9e8d2; background:#06130f; }
       button { min-height:44px; font:inherit; }
-      button:disabled { opacity:.55; cursor:wait; }
+      button:disabled { opacity:.55; cursor:not-allowed; }
       input[type="checkbox"] { width:auto; min-height:0; margin:0 .45rem 0 0; vertical-align:middle; }
       textarea { min-height:80px; }
       pre { max-width:100%; max-height:52vh; overflow:auto; white-space:pre-wrap; word-break:break-word; background:#020806; padding:12px; border:1px solid #294239; }
@@ -29,6 +29,8 @@
       .commitment-status { border:1px solid #365e52; background:#03100d; padding:10px; margin:4px 0 8px; line-height:1.45; }
       .commitment-status[data-state="L1"] { border-color:#e4c66c; box-shadow:0 0 14px rgba(228,198,108,.16); }
       .commitment-status[data-state="ERROR"] { border-color:#b55f5f; color:#ffd2d2; }
+      .held { border-color:#7c5f36; background:#160f05; }
+      .receipt-card { border-top:1px solid #294239; padding:8px 0; overflow-wrap:anywhere; }
       @media (max-width:820px) {
         .wrap { width:min(100%,calc(100% - 12px)); padding:max(10px,env(safe-area-inset-top)) 0 calc(28px + env(safe-area-inset-bottom)); }
         .panel,header { margin:8px 0; padding:13px; border-radius:12px; }
@@ -38,7 +40,7 @@
         .nav a { flex:0 0 auto; white-space:nowrap; }
         .actions { align-items:stretch; }
         .actions .btn { flex:1 1 140px; min-width:0; white-space:normal; line-height:1.25; }
-        #intake > .panel:first-child { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap:8px; }
+        #intake > .panel:first-child { display:grid; grid-template-columns:repeat(2,minmax(0,1fr)); gap:8px; }
         #intake > .panel:first-child > * { margin-block:0; }
         #intake > .panel:first-child > h2,
         #intake > .panel:first-child > p,
@@ -49,7 +51,6 @@
         #intake > .panel:first-child > #commitSha,
         #intake > .panel:first-child > #blobSha,
         #intake > .panel:first-child > #contentHash,
-        #intake > .panel:first-child > #claimCeiling,
         #intake > .panel:first-child > label,
         #intake > .panel:first-child > textarea,
         #intake > .panel:first-child > .actions,
@@ -62,7 +63,7 @@
       <header>
         <p>𝌋‌ TD613 Ash · Local Commitment Kernel · metadata-only custody firewall</p>
         <h1>Ash Custody // v0.7 Lab</h1>
-        <p class="sub">Register artifacts with a true browser-local SHA-256 commitment, replay custody, test projections, build Veils and Cinders, compare leakage deltas, and issue recall notices without turning arrival into consent, receipt into proof, or projection into safety.</p>
+        <p class="sub">Register artifacts with a true browser-local SHA-256 commitment, replay custody, test projections, build Veils, compare leakage deltas, and issue recall notices without turning arrival into consent, receipt into proof, or projection into safety.</p>
         <div class="chips"><span class="chip">Ash owns custody</span><span class="chip">Receipts index only</span><span class="chip">Phason diffs projection</span><span class="chip">Exact bytes stay local</span></div>
       </header>
       <nav class="nav"><a href="#intake">Intake</a><a href="#leak">Leak Challenge</a><a href="#veil">Veil</a><a href="#cinder">Cinder</a><a href="#compare">Compare</a><a href="#diff">Phason Diff</a><a href="#recall">Recall</a><a href="#index">Receipt Index</a><a href="#garden">Synthetic Garden</a><a href="/dome-world">Back to Dome-World</a></nav>
@@ -84,22 +85,16 @@
           <input id="contentHash" readonly aria-readonly="true" placeholder="Select a local file to compute SHA-256" />
           <select id="sourceEnvironment"><option value="local_file">local_file</option><option value="repo">repo</option><option value="cloud_drive">cloud_drive</option><option value="local_drive">local_drive</option><option value="spreadsheet">spreadsheet/list</option><option value="llm_chat">llm_chat/session</option><option value="manual">manual</option></select>
           <select id="credentialType"><option value="none">none</option><option value="local-possession">local-possession</option><option value="repo-access">repo-access</option><option value="provider-session">provider-session</option><option value="operator-attested">operator-attested</option></select>
-          <label>Force Status</label><select id="forceStatus"><option>OPEN</option><option>SELECTED</option><option>CONSTRUCTION</option><option>FORCED_UNDER_CONSTRAINT</option><option>FORCED_IN_CONTEXT</option><option>FORCED</option></select>
-          <input id="custodyCategory" placeholder="Custody category" />
-          <input id="claimCeiling" value="ash-custody-receipt-not-content-custody-or-permission-proof" />
-          <select id="publicHashPolicy"><option value="route-scoped-digest">route-scoped-digest</option><option value="hide-stable-hash">hide-stable-hash</option><option value="operator-permitted-public-hash">operator-permitted-public-hash</option></select>
           <label>Salt Scope</label><select id="saltScope"><option value="route-scoped">route-scoped</option><option value="receipt-scoped">receipt-scoped</option><option value="session-scoped">session-scoped</option></select>
-          <label>HCC WHO Policy</label><select id="hccWhoPolicy"><option value="self-provided-or-withheld">self-provided-or-withheld</option><option value="withheld">withheld</option><option value="self-provided">self-provided</option></select>
-          <textarea id="operatorNotes" placeholder="Do not paste document text here."></textarea>
           <div class="actions"><button class="btn primary" id="registerArtifact">Generate custody receipt</button><button class="btn" id="clearForm">Clear</button><button class="btn" id="copyLatest">Copy latest</button></div>
-          <p class="claim">The commitment proves digest equality for exact bytes when recomputed. It does not prove possession, authorship, authenticity, identity, or time.</p>
+          <p class="claim">The commitment supports digest comparison for exact bytes when recomputed. It does not establish possession, authorship, authenticity, identity, permission, truth, or trusted time.</p>
         </div>
         <aside class="panel"><h3>Latest Ash receipt</h3><pre id="latestPre">No custody receipt yet.</pre></aside>
       </section>
 
       <section id="leak" class="grid"><div class="panel"><h2>Leak Challenge</h2><p class="sub">Server mode analyzes metadata/projections only. Client-local mode clears the local text after scoring.</p><textarea id="projectionInput"></textarea><select id="testMode"><option>quick</option><option>strict</option><option>adversarial</option></select><textarea id="localLeakText"></textarea><div class="actions"><button class="btn primary" id="runLeak">Run server projection challenge</button><button class="btn" id="runLocalLeak">Run client-local text challenge</button><button class="btn" id="loadLatestLeak">Load latest</button></div></div><aside class="panel"><h3>Reconstruction pressure report</h3><pre id="leakPre">Leak Challenge output appears here.</pre></aside></section>
       <section id="veil" class="grid"><div class="panel"><h2>Veil Builder</h2><p class="sub">Builds a structural surrogate without raw text, quotes, names, exact paths, or a stable universal hash by default.</p><textarea id="veilInput"></textarea><div class="actions"><button class="btn primary" id="buildVeil">Build Ash Veil</button><button class="btn" id="loadLatestVeil">Load latest</button></div><p class="claim">Ash Veil is structural, not a content summary.</p></div><aside class="panel"><h3>Ash Veil</h3><pre id="veilPre">Veil output appears here.</pre></aside></section>
-      <section id="cinder" class="grid"><div class="panel"><h2>Cinder Builder</h2><p class="sub">Cinders are operator-approved fragments, not summaries. This v0.7 commitment phase does not yet redesign the Cinder transport boundary.</p><textarea id="cinderReceipt"></textarea><textarea id="cinderFragment"></textarea><label><input id="operatorApproved" type="checkbox" /> Operator approval recorded</label><div class="actions"><button class="btn primary" id="buildCinder">Run challenge + build Cinder</button><button class="btn" id="loadLatestCinder">Load latest receipt</button></div></div><aside class="panel"><h3>Ash Cinder</h3><pre id="cinderPre">Cinder output appears here.</pre></aside></section>
+      <section id="cinder" class="grid"><div class="panel held"><h2>Cinder Builder · Transport Held</h2><p class="sub">Phase 6 has not been implemented. Plaintext fragments must not cross the server boundary. The field remains visible for roadmap continuity, but this surface performs no network request.</p><textarea id="cinderReceipt" disabled placeholder="Receipt selection will return in Phase 6."></textarea><textarea id="cinderFragment" disabled placeholder="Cinder fragment transport is held."></textarea><label><input id="operatorApproved" type="checkbox" disabled /> Operator approval cannot activate an unimplemented transport</label><div class="actions"><button class="btn" id="buildCinder" disabled>Cinder transport held · Phase 6</button><button class="btn" id="loadLatestCinder" disabled>Load latest receipt</button></div></div><aside class="panel"><h3>Ash Cinder</h3><pre id="cinderPre">HELD · no plaintext fragment was sent to the server.</pre></aside></section>
       <section id="compare" class="grid"><div class="panel"><h2>Ash Compare</h2><textarea id="compareA"></textarea><textarea id="compareB"></textarea><button class="btn primary" id="runCompare">Run Ash Compare</button><button class="btn" id="loadComparePair">Load last two</button></div><aside class="panel"><h3>Compare delta</h3><pre id="comparePre">Compare output appears here.</pre></aside></section>
       <section id="diff" class="grid"><div class="panel"><h2>Phason Custody Diff</h2><textarea id="previousReceipt"></textarea><textarea id="currentReceipt"></textarea><button class="btn primary" id="runDiff">Run Phason custody diff</button><button class="btn" id="loadLastTwo">Load last two</button></div><aside class="panel"><h3>Phason custody diff</h3><pre id="diffPre">Diff output appears here.</pre></aside></section>
       <section id="recall" class="grid"><div class="panel"><h2>Recall / Burn Notice</h2><input id="recallTarget" /><select id="recallStatus"><option value="superseded">superseded</option><option value="recalled">recalled</option><option value="stale">stale</option><option value="no-longer-exportable">no-longer-exportable</option></select><input id="recallReason" value="projection-leakage" /><button class="btn primary" id="runRecall">Create recall notice</button><p class="claim">Recall does not claim deletion from external systems.</p></div><aside class="panel"><h3>Recall notice</h3><pre id="recallPre">Recall output appears here.</pre></aside></section>
@@ -108,11 +103,12 @@
     </main>
 
     <script type="module">
-      import { generateLocalCommitment, L0_ASSURANCE, L1_ASSURANCE } from "./ash/local-commitment.js";
+      import { createLatestCommitmentCoordinator, generateLocalCommitment, L0_ASSURANCE, L1_ASSURANCE } from "./ash/local-commitment.js";
 
       const STORAGE_KEY = "td613:ash-custody:receipts:v0.7";
       const $ = (id) => document.getElementById(id);
       const fmt = (value) => JSON.stringify(value, null, 2);
+      const commitmentCoordinator = createLatestCommitmentCoordinator(generateLocalCommitment);
       let latestReceipt = null;
       let latestIndex = null;
       let localCommitment = null;
@@ -126,7 +122,7 @@
       function remember(receipt) { const items=readStore(); items.push(receipt); writeStore(items); latestReceipt=receipt; $("latestPre").textContent=fmt(receipt); renderReceiptList(); }
       function parseJSON(id) { return JSON.parse($(id).value); }
       function setCommitmentStatus(state, message) { const node=$("commitmentStatus"); node.dataset.state=state; node.textContent=message; }
-      function resetCommitment() { localCommitment=null; commitmentPending=false; $("contentHash").value=""; setCommitmentStatus("L0", `${L0_ASSURANCE} · no artifact byte digest has been computed.`); $("registerArtifact").disabled=false; }
+      function resetCommitment({ invalidate=true }={}) { if(invalidate) commitmentCoordinator.invalidate(); localCommitment=null; commitmentPending=false; $("contentHash").value=""; setCommitmentStatus("L0", `${L0_ASSURANCE} · no artifact byte digest has been computed.`); $("registerArtifact").disabled=false; }
 
       async function handleFileSelection() {
         const file = $("fileInput").files?.[0];
@@ -135,8 +131,11 @@
         commitmentPending=true;
         $("registerArtifact").disabled=true;
         setCommitmentStatus("PENDING", "HASHING · exact bytes are being digested locally.");
+        let result = null;
         try {
-          localCommitment=await generateLocalCommitment(file);
+          result=await commitmentCoordinator.commit(file);
+          if(result.status!=="CURRENT" || $("fileInput").files?.[0]!==file) return;
+          localCommitment=result.commitment;
           $("contentHash").value=localCommitment.artifact_digest;
           $("mediaType").value=localCommitment.media_type;
           $("byteLength").value=String(localCommitment.byte_length);
@@ -144,12 +143,15 @@
           $("sourceEnvironment").value="local_file";
           setCommitmentStatus("L1", `${L1_ASSURANCE} · ${localCommitment.artifact_digest}`);
         } catch (error) {
+          if($("fileInput").files?.[0]!==file) return;
           localCommitment=null;
           $("contentHash").value="";
           setCommitmentStatus("ERROR", `LOCAL COMMITMENT HELD · ${error.message}`);
         } finally {
-          commitmentPending=false;
-          $("registerArtifact").disabled=false;
+          const current = result
+            ? commitmentCoordinator.isCurrent(file,result.token)
+            : $("fileInput").files?.[0]===file;
+          if(current && $("fileInput").files?.[0]===file){ commitmentPending=false; $("registerArtifact").disabled=false; }
         }
       }
 
@@ -173,8 +175,7 @@
           artifactMetadata:{mediaType:$("mediaType").value||null,byteLength:Number($("byteLength").value)||null,lastModified:$("lastModified").value||null,artifactDigest,contentHash:artifactDigest,hashScope:localCommitment?"local-browser":"unavailable",assuranceClass,localCommitment},
           credentialReference:{credentialType:$("credentialType").value},
           privacyBoundary:{public_weather_only:true},
-          ashPosture:{roomRoute:"private-sense-only",recommendedTending:["private-hold","ash-receipt"]},
-          operatorMetadata:{notes:$("operatorNotes").value||null,raw_content_supplied:false,forceStatus:$("forceStatus").value,custodyCategory:$("custodyCategory").value||null,claimCeiling:$("claimCeiling").value,publicHashPolicy:$("publicHashPolicy").value,saltScope:$("saltScope").value,hccWhoPolicy:$("hccWhoPolicy").value}
+          ashPosture:{roomRoute:"private-sense-only",recommendedTending:["private-hold","ash-receipt"]}
         };
       }
 
@@ -182,22 +183,20 @@
       async function runLeak(){ const projection=$("projectionInput").value.trim()?parseJSON("projectionInput"):latestReceipt||{}; const out=await domeRequest("ash-leak-challenge",{projection,testMode:$("testMode").value}); $("leakPre").textContent=fmt(out); remember(out); }
       function runLocalLeak(){ $("localLeakText").value=""; $("leakPre").textContent=fmt({raw_text_sent_to_server:false,raw_text_discarded:true}); }
       async function buildVeil(){ const receipt=$("veilInput").value.trim()?parseJSON("veilInput"):latestReceipt||{}; const out=await domeRequest("ash-veil",{receipt,saltScope:$("saltScope").value}); $("veilPre").textContent=fmt(out); remember(out); }
-      async function buildCinder(){ const receipt=$("cinderReceipt").value.trim()?parseJSON("cinderReceipt"):latestReceipt||{}; const out=await domeRequest("ash-cinder",{receipt,fragment:$("cinderFragment").value,operatorApproved:$("operatorApproved").checked,saltScope:$("saltScope").value}); $("cinderPre").textContent=fmt(out); remember(out); }
       async function runCompare(){ const out=await domeRequest("ash-compare",{previous:parseJSON("compareA"),current:parseJSON("compareB")}); $("comparePre").textContent=fmt(out); remember(out); }
       async function runDiff(){ const out=await domeRequest("phason-custody-diff",{previousReceipt:parseJSON("previousReceipt"),currentReceipt:parseJSON("currentReceipt")}); $("diffPre").textContent=fmt(out); remember(out); }
       async function runRecall(){ const out=await domeRequest("ash-recall",{targetId:$("recallTarget").value,recallStatus:$("recallStatus").value,reasonClass:$("recallReason").value}); $("recallPre").textContent=fmt(out); remember(out); }
       async function buildIndex(){ latestIndex=await domeRequest("receipt-index",{receipts:readStore()}); $("indexPre").textContent=fmt(latestIndex); renderReceiptList(); }
-      function renderReceiptList(){ const items=readStore().slice().reverse(); $("receiptList").innerHTML=items.map((receipt,index)=>`<div class="receipt-card" data-i="${items.length-1-index}"><b>${receipt.receipt_id||receipt.cinder_id||receipt.veil_id||receipt.recall_id||receipt.schema}</b></div>`).join("")||'<p class="mini">No local receipts yet.</p>'; }
+      function renderReceiptList(){ const items=readStore().slice().reverse(); const host=$("receiptList"); host.replaceChildren(); if(!items.length){ const p=document.createElement("p"); p.className="mini"; p.textContent="No local receipts yet."; host.append(p); return; } items.forEach((receipt,index)=>{ const card=document.createElement("div"); card.className="receipt-card"; card.dataset.i=String(items.length-1-index); const strong=document.createElement("b"); strong.textContent=String(receipt.receipt_id||receipt.cinder_id||receipt.veil_id||receipt.recall_id||receipt.schema||"unnamed receipt"); card.append(strong); host.append(card); }); }
       function loadLastTwo(targetA,targetB){ const items=readStore(); if(items.length>1){ $(targetA).value=fmt(items.at(-2)); $(targetB).value=fmt(items.at(-1)); } }
       function downloadJSON(filename,value){ const blob=new Blob([fmt(value)],{type:"application/json"}); const url=URL.createObjectURL(blob); const link=document.createElement("a"); link.href=url; link.download=filename; link.click(); setTimeout(()=>URL.revokeObjectURL(url),0); }
 
       $("fileInput").addEventListener("change",handleFileSelection);
       $("registerArtifact").onclick=runRegister;
-      $("clearForm").onclick=()=>{ document.querySelectorAll("input,textarea").forEach((node)=>{ if(node.type!=="checkbox") node.value=""; else node.checked=false; }); $("claimCeiling").value="ash-custody-receipt-not-content-custody-or-permission-proof"; $("fileInput").value=""; resetCommitment(); };
+      $("clearForm").onclick=()=>{ commitmentCoordinator.invalidate(); document.querySelectorAll("input,textarea").forEach((node)=>{ if(node.type!=="checkbox") node.value=""; else node.checked=false; }); $("fileInput").value=""; resetCommitment({invalidate:false}); };
       $("copyLatest").onclick=()=>navigator.clipboard.writeText($("latestPre").textContent);
       $("runLeak").onclick=runLeak; $("runLocalLeak").onclick=runLocalLeak; $("loadLatestLeak").onclick=()=>{ if(latestReceipt) $("projectionInput").value=fmt(latestReceipt); };
       $("buildVeil").onclick=buildVeil; $("loadLatestVeil").onclick=()=>{ if(latestReceipt) $("veilInput").value=fmt(latestReceipt); };
-      $("buildCinder").onclick=buildCinder; $("loadLatestCinder").onclick=()=>{ if(latestReceipt) $("cinderReceipt").value=fmt(latestReceipt); };
       $("runCompare").onclick=runCompare; $("loadComparePair").onclick=()=>loadLastTwo("compareA","compareB");
       $("runDiff").onclick=runDiff; $("loadLastTwo").onclick=()=>loadLastTwo("previousReceipt","currentReceipt");
       $("runRecall").onclick=runRecall; $("buildIndex").onclick=buildIndex;
