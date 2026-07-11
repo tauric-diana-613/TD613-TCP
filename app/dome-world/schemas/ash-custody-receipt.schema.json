@@ -2,13 +2,14 @@
   "$schema": "https://json-schema.org/draft/2020-12/schema",
   "$id": "td613.ash.custody-receipt/v0.5",
   "title": "TD613 Ash Custody Receipt",
-  "description": "Canonical metadata-only Ash custody receipt. A receipt records custody posture and public weather boundaries; it does not prove content custody, permission, identity, truth, document authenticity, or verification.",
+  "description": "Metadata-only Ash custody receipt with explicit L0/L1 assurance class. A receipt does not prove permission, identity, authorship, authenticity, truth, possession, or trusted time.",
   "type": "object",
   "additionalProperties": true,
   "required": [
     "schema",
     "receipt_id",
     "created_at",
+    "assurance_class",
     "manifest",
     "public_surface",
     "export_boundary",
@@ -31,13 +32,38 @@
     "domeWorldVersion": {
       "type": "string"
     },
+    "assurance_class": {
+      "type": "string",
+      "enum": [
+        "L0_METADATA_ONLY",
+        "L1_BROWSER_LOCAL_ARTIFACT_DIGEST"
+      ]
+    },
     "manifest": {
       "type": "object",
       "additionalProperties": true,
-      "required": ["schema"],
+      "required": [
+        "schema",
+        "artifact_metadata"
+      ],
       "properties": {
         "schema": {
           "const": "td613.ash.custody-manifest/v0.5"
+        },
+        "artifact_metadata": {
+          "type": "object",
+          "required": [
+            "commitment_assurance"
+          ],
+          "properties": {
+            "commitment_assurance": {
+              "type": "string",
+              "enum": [
+                "L0_METADATA_ONLY",
+                "L1_BROWSER_LOCAL_ARTIFACT_DIGEST"
+              ]
+            }
+          }
         }
       }
     },
@@ -80,16 +106,13 @@
           "type": "string"
         },
         "raw_content_allowed": {
-          "const": false,
-          "description": "Ash receipts never authorize raw content export."
+          "const": false
         },
         "summary_before_custody": {
-          "const": false,
-          "description": "Ash refuses summary-before-custody extraction."
+          "const": false
         },
         "arrival_as_consent": {
-          "const": false,
-          "description": "Artifact arrival never becomes consent."
+          "const": false
         }
       }
     },
