@@ -37,6 +37,18 @@ def test_non_custody_engine_operation_remains_available():
     assert engine_guard.validate_envelope(envelope) is envelope
 
 
+def test_guarded_readiness_does_not_advertise_legacy_custody_execution():
+    readiness = engine_guard.guarded_readiness_receipt()
+    assert "ash-custody-register" not in readiness["operations"]
+    assert "ash-custody-replay" not in readiness["operations"]
+    assert readiness["delegatedCustodyOperations"] == [
+        "ash-custody-register",
+        "ash-custody-replay",
+    ]
+    assert readiness["custodyRoute"] == "isolated-local-commitment-endpoint"
+    assert readiness["metadataDigestFallbackOnPublicCustodyRoute"] is False
+
+
 def l1_envelope(**local_overrides):
     digest = "sha256:" + "ab" * 32
     local = {
