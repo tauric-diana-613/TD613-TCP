@@ -20,7 +20,7 @@ assert.match(runtime, /source-receipt-id-required/);
 assert.match(runtime, /non-empty-fragment-required/);
 assert.match(html, /Cinder Builder/);
 assert.match(html, /Operator approval recorded/);
-assert.match(html, /saltScope:\$\('saltScope'\)\.value/);
+assert.match(html, /saltScope\s*:\s*\$\(["']saltScope["']\)\.value/);
 assert.match(html, /ash-cinder/);
 assert.match(html, /ash-veil/);
 
