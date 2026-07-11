@@ -15,8 +15,8 @@ assert.equal(schema.properties.claimCeiling.const, 'ash-veil-structure-not-conte
 assert.match(runtime, /route_scoped_digest/);
 assert.match(runtime, /exact_path_or_ref.*allowExactPath/s);
 assert.match(html, /Build Ash Veil/);
-assert.match(html, /must not reveal raw text/);
+assert.match(html, /must not reveal raw\s+text/);
 assert.match(html, /ash-veil/);
-assert.match(html, /saltScope:\$\('saltScope'\)\.value/);
+assert.match(html, /saltScope\s*:\s*\$\(["']saltScope["']\)\.value/);
 
 console.log('Ash Veil contract: PASS');
