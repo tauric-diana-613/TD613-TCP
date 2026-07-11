@@ -40,13 +40,15 @@ assert.equal(vercel.version, 2, 'Vercel config should use version 2');
 assert.equal(vercel.functions?.['api/hush-generate-strict.js']?.maxDuration, 60, 'strict Hush route should keep 60s function budget');
 assert.equal(vercel.functions?.['api/hush-generate.js']?.maxDuration, 60, 'Hush route should keep 60s function budget');
 assert.equal(vercel.functions?.['api/dome-world-engine.py']?.maxDuration, 60, 'Dome exact lineage route should keep 60s function budget');
-assert.equal(vercel.functions?.['api/dome-world-engine-v07.py']?.maxDuration, 60, 'Dome v0.7 adapter should keep 60s function budget');
-assert.equal(typeof vercel.functions?.['api/dome-world-engine-v07.py']?.includeFiles, 'string', 'Vercel includeFiles must remain a string glob');
+assert.equal(vercel.functions?.['api/ash-local-commitment.py']?.maxDuration, 60, 'Ash local commitment route should keep 60s function budget');
+assert.ok(!vercel.functions?.['api/dome-world-engine-v07.py'], 'removed coupled v0.7 adapter must not return');
 
-assertRewrite('/api/dome-world/ping', '/api/dome-world-engine-v07?operation=ping');
-assertRewrite('/api/dome-world/readiness', '/api/dome-world-engine-v07?operation=readiness');
-assertRewrite('/api/dome-world/step2-readiness', '/api/dome-world-engine-v07?operation=step2-readiness');
-assertRewrite('/api/dome-world/(.*)', '/api/dome-world-engine-v07?operation=$1');
+assertRewrite('/api/dome-world/ash-custody-register', '/api/ash-local-commitment');
+assertRewrite('/api/dome-world/ash-custody-replay', '/api/ash-local-commitment');
+assertRewrite('/api/dome-world/ping', '/api/dome-world-engine?operation=ping');
+assertRewrite('/api/dome-world/readiness', '/api/dome-world-engine?operation=readiness');
+assertRewrite('/api/dome-world/step2-readiness', '/api/dome-world-engine?operation=step2-readiness');
+assertRewrite('/api/dome-world/(.*)', '/api/dome-world-engine?operation=$1');
 assertRewrite('/dome-world', '/app/dome-world/index.html');
 assertRewrite('/dome-world/', '/app/dome-world/index.html');
 assertRewrite('/dome-world/ash-custody.html', '/app/dome-world/ash-custody-v07.html');
@@ -69,7 +71,8 @@ assertRewrite('/(.*)', '/app/$1');
   '/dome-world/',
   '/app/dome-world/index.html',
   '/dome-world/ash-custody.html',
-  '/app/dome-world/ash-custody-v07.html'
+  '/app/dome-world/ash-custody-v07.html',
+  '/api/ash-local-commitment'
 ].forEach(assertNoStore);
 
 [
