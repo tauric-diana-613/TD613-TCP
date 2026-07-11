@@ -92,8 +92,6 @@
     { "source": "/dome-world/", "destination": "/app/dome-world/index.html" },
     { "source": "/dome-world/ash-custody.html", "destination": "/app/dome-world/ash-custody-v07.html" },
     { "source": "/app/dome-world/ash-custody.html", "destination": "/app/dome-world/ash-custody-v07.html" },
-    { "source": "/dome-world/ash/local-commitment.js", "destination": "/app/dome-world/ash/local-commitment-v071.js" },
-    { "source": "/app/dome-world/ash/local-commitment.js", "destination": "/app/dome-world/ash/local-commitment-v071.js" },
     { "source": "/dome-world/(.*)", "destination": "/app/dome-world/$1" },
     { "source": "/api/(.*)", "destination": "/api/$1" },
     { "source": "/safe-harbor/td613-flight.html", "destination": "/api/flight-html" },
