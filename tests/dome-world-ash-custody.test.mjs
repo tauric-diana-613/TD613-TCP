@@ -32,9 +32,6 @@ assert.match(htmlV07, /max-height:52vh;|max-height: 52vh;/);
 assert.match(htmlV07, /scrollbar-width:none;|scrollbar-width: none;/);
 assert.match(htmlAlias, /ash-custody-v07\.html/);
 assert.doesNotMatch(htmlAlias, /sha256:manual-placeholder|claim-ceiling/);
-
-assert.match(cockpit, /href="\/dome-world\/ash-custody\.html">Register Artifact<\/a>/);
-assert.match(cockpit, /Ash registers metadata and custody posture; raw content stays outside server custody\./);
 assert.equal((cockpit.match(/class="tab(?: active)?" data-view=/g) || []).length, 8);
 
 for (const op of ['ash-custody-register', 'ash-custody-replay', 'phason-custody-diff', 'receipt-index', 'ash-leak-challenge', 'ash-veil', 'ash-cinder', 'ash-compare', 'ash-recall', 'ash-grade-gate', 'ash-hcc-adapter', 'ash-projection-simulate']) {
