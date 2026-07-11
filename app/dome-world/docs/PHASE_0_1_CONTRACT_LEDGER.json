@@ -1,0 +1,129 @@
+{
+  "schema": "td613.dome-world.phase-0-contract-ledger/v0.1",
+  "status": "baseline-frozen-for-phase-1",
+  "versions": {
+    "aperture": "v3.0-alpha",
+    "dome_world": "v0.5.0",
+    "ash": "v0.6",
+    "exact_substrate_receipts": "v0.4.3",
+    "local_commitment": "v0.7"
+  },
+  "identity_rule": "module lineage does not rewrite current instrument identity",
+  "claim_ceiling_policy": "no-new-claim-ceiling-mechanism; legacy Dome/Ash vocabulary remains frozen for separate review",
+  "stations": {
+    "Aperture": {
+      "owns": [
+        "audit",
+        "admissibility",
+        "provenance",
+        "temporal ordering"
+      ],
+      "may_not": [
+        "take artifact custody",
+        "execute Ash actions"
+      ]
+    },
+    "Flow-Core": {
+      "owns": [
+        "bounded context translation",
+        "modeled route weather"
+      ],
+      "may_not": [
+        "know stable artifact digest",
+        "close custody gate"
+      ]
+    },
+    "Dome-World": {
+      "owns": [
+        "room and station ecology"
+      ],
+      "may_not": [
+        "seize custody",
+        "rewrite Aperture doctrine"
+      ]
+    },
+    "Ash": {
+      "owns": [
+        "artifact custody boundary",
+        "derivative construction",
+        "human-approved actions"
+      ],
+      "may_not": [
+        "treat receipt arrival as consent",
+        "claim external erasure"
+      ]
+    },
+    "Phason": {
+      "owns": [
+        "content-invariant projection and custody diffs"
+      ],
+      "may_not": [
+        "create permission",
+        "prove causation"
+      ]
+    },
+    "Receipts": {
+      "owns": [
+        "event indexing",
+        "replay references"
+      ],
+      "may_not": [
+        "take custody",
+        "flatten station jurisdiction"
+      ]
+    }
+  },
+  "phase_1_contracts": {
+    "L0_METADATA_ONLY": {
+      "artifact_digest": null,
+      "hash_scope": "unavailable",
+      "server_metadata_digest_fallback": false
+    },
+    "L1_BROWSER_LOCAL_ARTIFACT_DIGEST": {
+      "schema": "td613.ash.local-commitment/v0.7",
+      "digest_algorithm": "SHA-256",
+      "digest_pattern": "^sha256:[0-9a-f]{64}$",
+      "raw_bytes_transmitted": false,
+      "memory_erasure_guaranteed": false
+    }
+  },
+  "api": {
+    "GET": [
+      "/api/dome-world/ping",
+      "/api/dome-world/readiness"
+    ],
+    "POST": [
+      "aperture-bridge",
+      "phason-gate",
+      "ash-readiness",
+      "ash-custody-register",
+      "ash-custody-replay",
+      "phason-custody-diff",
+      "receipt-index",
+      "ash-leak-challenge",
+      "ash-veil",
+      "ash-cinder",
+      "ash-compare",
+      "ash-recall",
+      "ash-grade-gate",
+      "ash-hcc-adapter",
+      "ash-projection-simulate",
+      "exact-capture",
+      "exact-closure",
+      "trainer-step"
+    ],
+    "max_body_bytes": 131072,
+    "storage": "stateless-server; client-held receipts/checkpoints",
+    "raw_artifact_bytes_accepted": false
+  },
+  "regression_gates": [
+    "Aperture loads without identity flicker or microtask starvation",
+    "one shared animation clock per instrument surface",
+    "Grade Gate and Witness Lab affordances remain visible",
+    "local commitment contains no network operation",
+    "no metadata-derived artifact digest",
+    "no sha256:manual-placeholder",
+    "L0 and L1 remain distinct",
+    "raw bytes never enter the request envelope"
+  ]
+}
