@@ -25,8 +25,8 @@ const syntheticGarden = JSON.parse(read('app/dome-world/fixtures/ash-custody-gar
 for (const marker of [/Register Artifact/, /Leak Challenge/, /Veil/, /Cinder/, /Recall/, /Ash owns custody/, /Receipts index only/, /Phason diffs projection/]) {
   assert.match(htmlV07, marker);
 }
-assert.match(htmlV07, /#intake > \.panel:first-child \{\s*display: grid;/);
-assert.match(htmlV07, /grid-template-columns: repeat\(2, minmax\(0, 1fr\)\)/);
+assert.match(htmlV07, /#intake > \.panel:first-child \{\s*display:\s*grid;/);
+assert.match(htmlV07, /grid-template-columns:\s*repeat\(2,\s*minmax\(0,\s*1fr\)\)/);
 assert.match(htmlV07, /font-size:16px;|font-size: 16px;/);
 assert.match(htmlV07, /max-height:52vh;|max-height: 52vh;/);
 assert.match(htmlV07, /scrollbar-width:none;|scrollbar-width: none;/);
