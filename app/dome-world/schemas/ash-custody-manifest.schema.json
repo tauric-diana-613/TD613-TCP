@@ -2,96 +2,418 @@
   "$schema": "https://json-schema.org/draft/2020-12/schema",
   "$id": "td613.ash.custody-manifest/v0.5",
   "title": "TD613 Ash Custody Manifest",
+  "description": "Metadata-only Ash custody manifest with explicit L0/L1 commitment posture. Artifact bytes never enter the manifest.",
   "type": "object",
   "additionalProperties": true,
-  "required": ["schema", "artifact_id", "source_environment", "source_locator", "artifact_metadata", "privacy_boundary", "credential_reference", "ash_posture", "replay"],
+  "required": [
+    "schema",
+    "artifact_id",
+    "source_environment",
+    "source_locator",
+    "artifact_metadata",
+    "privacy_boundary",
+    "credential_reference",
+    "ash_posture",
+    "replay"
+  ],
   "properties": {
-    "schema": { "const": "td613.ash.custody-manifest/v0.5" },
-    "artifact_id": { "type": "string", "minLength": 1 },
+    "schema": {
+      "const": "td613.ash.custody-manifest/v0.5"
+    },
+    "artifact_id": {
+      "type": "string",
+      "minLength": 1
+    },
     "source_environment": {
       "type": "string",
-      "enum": ["local_file", "repo", "cloud_drive", "local_drive", "spreadsheet", "llm_chat", "manual"]
+      "enum": [
+        "local_file",
+        "repo",
+        "cloud_drive",
+        "local_drive",
+        "spreadsheet",
+        "llm_chat",
+        "manual"
+      ]
     },
     "source_locator": {
       "type": "object",
       "additionalProperties": true,
       "properties": {
-        "label": { "type": ["string", "null"] },
-        "path_or_ref": { "type": ["string", "null"] },
-        "revision": { "type": ["string", "null"] },
-        "commit_sha": { "type": ["string", "null"] },
-        "blob_sha": { "type": ["string", "null"] }
+        "label": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "path_or_ref": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "revision": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "commit_sha": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "blob_sha": {
+          "type": [
+            "string",
+            "null"
+          ]
+        }
       }
     },
     "artifact_metadata": {
       "type": "object",
       "additionalProperties": true,
-      "required": ["content_hash", "hash_scope"],
+      "required": [
+        "artifact_digest",
+        "content_hash",
+        "commitment_assurance",
+        "hash_scope",
+        "local_commitment"
+      ],
       "properties": {
-        "media_type": { "type": ["string", "null"] },
-        "byte_length": { "type": ["number", "integer", "null"], "minimum": 0 },
-        "last_modified": { "type": ["string", "null"] },
-        "content_hash": { "type": "string", "minLength": 1 },
+        "media_type": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "byte_length": {
+          "type": [
+            "integer",
+            "null"
+          ],
+          "minimum": 0
+        },
+        "last_modified": {
+          "type": [
+            "string",
+            "number",
+            "integer",
+            "null"
+          ]
+        },
+        "artifact_digest": {
+          "type": [
+            "string",
+            "null"
+          ],
+          "pattern": "^sha256:[0-9a-f]{64}$"
+        },
+        "content_hash": {
+          "description": "Compatibility alias for artifact_digest. Null in L0 receipts.",
+          "type": [
+            "string",
+            "null"
+          ],
+          "pattern": "^sha256:[0-9a-f]{64}$"
+        },
+        "commitment_assurance": {
+          "type": "string",
+          "enum": [
+            "L0_METADATA_ONLY",
+            "L1_BROWSER_LOCAL_ARTIFACT_DIGEST"
+          ]
+        },
         "hash_scope": {
           "type": "string",
-          "enum": ["local-browser", "repo-blob", "provider-revision", "reference-or-provider", "metadata-or-local-browser", "unavailable"]
+          "enum": [
+            "local-browser",
+            "unavailable",
+            "repo-blob",
+            "provider-revision",
+            "reference-or-provider",
+            "metadata-or-local-browser"
+          ]
+        },
+        "local_commitment": {
+          "type": [
+            "object",
+            "null"
+          ],
+          "additionalProperties": true,
+          "required": [
+            "schema",
+            "assurance_class",
+            "digest_algorithm",
+            "artifact_digest",
+            "byte_length",
+            "hash_execution",
+            "raw_bytes_returned",
+            "raw_bytes_persisted_by_module",
+            "memory_erasure_guaranteed"
+          ],
+          "properties": {
+            "schema": {
+              "const": "td613.ash.local-commitment/v0.7"
+            },
+            "assurance_class": {
+              "const": "L1_BROWSER_LOCAL_ARTIFACT_DIGEST"
+            },
+            "digest_algorithm": {
+              "const": "SHA-256"
+            },
+            "artifact_digest": {
+              "type": "string",
+              "pattern": "^sha256:[0-9a-f]{64}$"
+            },
+            "byte_length": {
+              "type": "integer",
+              "minimum": 0
+            },
+            "media_type": {
+              "type": [
+                "string",
+                "null"
+              ]
+            },
+            "last_modified_claim": {
+              "type": [
+                "number",
+                "integer",
+                "null"
+              ]
+            },
+            "hash_execution": {
+              "const": "browser-local"
+            },
+            "network_operation_performed_by_module": {
+              "const": false
+            },
+            "raw_bytes_returned": {
+              "const": false
+            },
+            "raw_bytes_persisted_by_module": {
+              "const": false
+            },
+            "best_effort_buffer_overwrite": {
+              "type": "boolean"
+            },
+            "memory_erasure_guaranteed": {
+              "const": false
+            },
+            "does_not_establish": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              }
+            }
+          }
         }
-      }
+      },
+      "allOf": [
+        {
+          "if": {
+            "properties": {
+              "commitment_assurance": {
+                "const": "L0_METADATA_ONLY"
+              }
+            }
+          },
+          "then": {
+            "properties": {
+              "artifact_digest": {
+                "const": null
+              },
+              "content_hash": {
+                "const": null
+              },
+              "hash_scope": {
+                "const": "unavailable"
+              },
+              "local_commitment": {
+                "const": null
+              }
+            }
+          }
+        },
+        {
+          "if": {
+            "properties": {
+              "commitment_assurance": {
+                "const": "L1_BROWSER_LOCAL_ARTIFACT_DIGEST"
+              }
+            }
+          },
+          "then": {
+            "properties": {
+              "artifact_digest": {
+                "type": "string",
+                "pattern": "^sha256:[0-9a-f]{64}$"
+              },
+              "content_hash": {
+                "type": "string",
+                "pattern": "^sha256:[0-9a-f]{64}$"
+              },
+              "hash_scope": {
+                "const": "local-browser"
+              },
+              "local_commitment": {
+                "type": "object"
+              }
+            }
+          }
+        }
+      ]
     },
     "privacy_boundary": {
       "type": "object",
-      "required": ["raw_content_exported", "raw_content_retained", "server_custody", "public_weather_only"],
+      "required": [
+        "raw_content_exported",
+        "raw_content_retained",
+        "server_custody",
+        "public_weather_only"
+      ],
       "properties": {
-        "raw_content_exported": { "const": false },
-        "raw_content_retained": { "const": false },
-        "server_custody": { "const": false },
-        "public_weather_only": { "type": "boolean" }
+        "raw_content_exported": {
+          "const": false
+        },
+        "raw_content_retained": {
+          "const": false
+        },
+        "server_custody": {
+          "const": false
+        },
+        "public_weather_only": {
+          "type": "boolean"
+        }
       }
     },
     "credential_reference": {
       "type": "object",
-      "required": ["credential_type", "credential_secret_recorded", "identity_proof_claimed", "permission_proof_claimed"],
+      "required": [
+        "credential_type",
+        "credential_secret_recorded",
+        "identity_proof_claimed",
+        "permission_proof_claimed"
+      ],
       "properties": {
         "credential_type": {
           "type": "string",
-          "enum": ["none", "local-possession", "repo-access", "provider-session", "operator-attested"]
+          "enum": [
+            "none",
+            "local-possession",
+            "repo-access",
+            "provider-session",
+            "operator-attested"
+          ]
         },
-        "credential_secret_recorded": { "const": false },
-        "identity_proof_claimed": { "const": false },
-        "permission_proof_claimed": { "const": false }
+        "credential_secret_recorded": {
+          "const": false
+        },
+        "identity_proof_claimed": {
+          "const": false
+        },
+        "permission_proof_claimed": {
+          "const": false
+        }
       }
     },
     "ash_posture": {
       "type": "object",
-      "required": ["room_route", "claim_ceiling", "recommended_tending"],
+      "required": [
+        "room_route",
+        "claim_ceiling",
+        "recommended_tending"
+      ],
       "properties": {
         "room_route": {
           "type": "string",
-          "enum": ["private-sense-only", "safe-harbor-buffer", "atrium-public-weather"]
+          "enum": [
+            "private-sense-only",
+            "safe-harbor-buffer",
+            "atrium-public-weather"
+          ]
         },
-        "claim_ceiling": { "const": "ash-readiness-preview-not-sensitive-intake" },
-        "recommended_tending": { "type": "array", "items": { "type": "string" } }
+        "claim_ceiling": {
+          "const": "ash-readiness-preview-not-sensitive-intake"
+        },
+        "recommended_tending": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        }
       }
     },
     "replay": {
       "type": "object",
-      "required": ["eligible", "mode", "raw_replay_available"],
+      "required": [
+        "eligible",
+        "mode",
+        "raw_replay_available"
+      ],
       "properties": {
-        "eligible": { "type": "boolean" },
-        "mode": { "const": "custody-replay-without-content" },
-        "raw_replay_available": { "const": false }
+        "eligible": {
+          "type": "boolean"
+        },
+        "mode": {
+          "const": "custody-replay-without-content"
+        },
+        "raw_replay_available": {
+          "const": false
+        }
       }
     }
   },
   "not": {
     "anyOf": [
-      { "required": ["text"] },
-      { "required": ["rawText"] },
-      { "required": ["content"] },
-      { "required": ["document"] },
-      { "required": ["body"] },
-      { "required": ["sensitiveText"] },
-      { "required": ["rawBytes"] }
+      {
+        "required": [
+          "text"
+        ]
+      },
+      {
+        "required": [
+          "rawText"
+        ]
+      },
+      {
+        "required": [
+          "content"
+        ]
+      },
+      {
+        "required": [
+          "document"
+        ]
+      },
+      {
+        "required": [
+          "body"
+        ]
+      },
+      {
+        "required": [
+          "sensitiveText"
+        ]
+      },
+      {
+        "required": [
+          "rawBytes"
+        ]
+      },
+      {
+        "required": [
+          "fileBytes"
+        ]
+      },
+      {
+        "required": [
+          "fileContent"
+        ]
+      }
     ]
   }
 }
