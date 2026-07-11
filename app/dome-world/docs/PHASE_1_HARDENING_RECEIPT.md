@@ -2,34 +2,41 @@
 
 𝌋‌
 
+## Status
+
+**Implemented on the guarded public route; pending merge validation.**
+
 ## Purpose
 
 Close three post-merge seams identified during review of the browser-local commitment kernel without widening Phase 1 jurisdiction.
 
-## Required repairs
+## Implemented repairs
 
 1. **Direct-engine custody bypass**
-   - `api/dome-world-engine.py` must reject `ash-custody-register` and `ash-custody-replay`.
-   - Those operations remain owned exclusively by `api/ash-local-commitment.py` through the exact Vercel rewrites.
-   - A direct POST to `/api/dome-world-engine` using either custody operation must fail closed and must never issue a legacy metadata-derived receipt.
+   - Public `/api/dome-world-engine` traffic now routes through `api/dome-world-engine-guard.py`.
+   - The guard rejects `ash-custody-register` and `ash-custody-replay` before the legacy engine can dispatch them.
+   - Friendly custody routes and the direct commitment path route exclusively through `api/ash-local-commitment-guard.py`.
+   - The legacy engine remains internal sediment for non-custody operations; it cannot issue a public metadata-derived custody receipt through the guarded route.
 
 2. **Contradictory L1 boundary flags**
-   - L1 validation must require:
+   - The public commitment guard requires:
      - `network_operation_performed_by_module === false`
      - `raw_bytes_persisted_by_module === false`
-   - The server may not normalize contradictory client assertions into safer values.
+   - Missing or contradictory values fail closed before the internal receipt function can normalize them.
 
 3. **Stale file-hash race**
-   - The Ash UI must bind an in-flight commitment to the exact current file-selection generation.
-   - Selecting or clearing another file invalidates all earlier in-flight commitments.
-   - A stale promise may not overwrite commitment state or re-enable registration for the wrong file.
+   - The served local commitment module is now `local-commitment-v071.js` behind the stable `local-commitment.js` route.
+   - Concurrent commitment jobs are generation-bound.
+   - An older job resolves to the newest active commitment rather than overwriting it.
+   - Clearing the file selection invalidates every in-flight commitment and returns the intake to L0 posture.
 
-## Required regression coverage
+## Regression coverage
 
-- direct legacy-engine custody operations are rejected;
-- contradictory L1 network/persistence flags are rejected;
+- direct legacy-engine custody operations fail closed;
+- contradictory or missing L1 network/persistence flags fail closed;
 - rapid file reselection retains only the newest file commitment;
-- existing L0/L1 fixture, route, deployment-hygiene, and no-raw-byte tests continue to pass.
+- clearing an in-flight commitment raises an `AbortError` rather than restoring stale bytes;
+- existing L0/L1 fixture, API integration, browser-contract, and Vercel deployment-hygiene tests remain in the hardening gate.
 
 ## Preserved boundaries
 
