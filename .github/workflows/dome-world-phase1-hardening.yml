@@ -12,7 +12,9 @@ on:
       - "app/dome-world/docs/PHASE_1_HARDENING_RECEIPT.md"
       - "app/dome-world/docs/ROADMAP_V07_PHASE1.md"
       - "app/dome-world/schemas/ash-custody-manifest-v07.schema.json"
+      - "scripts/dome-world-deployment-probe.mjs"
       - "vercel.json"
+      - "tests/dome-world-deployment-probe.test.mjs"
       - "tests/dome-world-phase0-contract-ledger.test.mjs"
       - "tests/dome-world-phase1-hardening.test.mjs"
       - "tests/vercel-deploy-hygiene.test.mjs"
@@ -30,7 +32,9 @@ on:
       - "app/dome-world/docs/PHASE_1_HARDENING_RECEIPT.md"
       - "app/dome-world/docs/ROADMAP_V07_PHASE1.md"
       - "app/dome-world/schemas/ash-custody-manifest-v07.schema.json"
+      - "scripts/dome-world-deployment-probe.mjs"
       - "vercel.json"
+      - "tests/dome-world-deployment-probe.test.mjs"
       - "tests/dome-world-phase0-contract-ledger.test.mjs"
       - "tests/dome-world-phase1-hardening.test.mjs"
       - "tests/vercel-deploy-hygiene.test.mjs"
@@ -59,6 +63,8 @@ jobs:
         run: python -m py_compile api/dome-world-engine-guard.py api/ash-local-commitment-guard.py
       - name: Validate Phase 0 contract ledger
         run: node tests/dome-world-phase0-contract-ledger.test.mjs
+      - name: Validate Phase 0 deployment probe contract
+        run: node tests/dome-world-deployment-probe.test.mjs
       - name: Validate guarded route and generation contracts
         run: node tests/dome-world-phase1-hardening.test.mjs
       - name: Validate guarded endpoint behavior
