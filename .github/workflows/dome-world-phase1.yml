@@ -4,8 +4,12 @@ on:
   pull_request:
     paths:
       - "api/ash-local-commitment.py"
+      - "app/dome-world/README.md"
       - "app/dome-world/ash/**"
       - "app/dome-world/ash-custody-v07.html"
+      - "app/dome-world/docs/PHASE_0_CONTRACT_LEDGER.md"
+      - "app/dome-world/docs/PHASE_1_HARDENING_RECEIPT.md"
+      - "app/dome-world/docs/ROADMAP_V07_PHASE1.md"
       - "app/dome-world/schemas/ash-custody-*-v07.schema.json"
       - "packages/dome_world_exact/**"
       - "tests/dome-world-*.test.mjs"
@@ -33,6 +37,8 @@ jobs:
         run: npm ci
       - name: Install Python test dependencies
         run: python -m pip install --disable-pip-version-check pytest sympy
+      - name: Validate Phase 0 contract ledger
+        run: node tests/dome-world-phase0-contract-ledger.test.mjs
       - name: Validate Ash browser-local commitment
         run: node tests/dome-world-ash-custody.test.mjs
       - name: Validate Dome-World integration
