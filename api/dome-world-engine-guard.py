@@ -44,6 +44,20 @@ def validate_envelope(envelope):
     return envelope
 
 
+def guarded_readiness_receipt(operation="readiness"):
+    payload = dict(_engine().readiness_receipt())
+    payload["operations"] = [
+        item
+        for item in payload.get("operations", [])
+        if item not in LEGACY_CUSTODY_OPERATIONS
+    ]
+    payload["operation"] = operation
+    payload["custodyRoute"] = "isolated-local-commitment-endpoint"
+    payload["delegatedCustodyOperations"] = sorted(LEGACY_CUSTODY_OPERATIONS)
+    payload["metadataDigestFallbackOnPublicCustodyRoute"] = False
+    return payload
+
+
 class handler(BaseHTTPRequestHandler):
     def _headers(self, status=200):
         engine = _engine()
@@ -69,7 +83,6 @@ class handler(BaseHTTPRequestHandler):
         self._headers(204)
 
     def do_GET(self):
-        engine = _engine()
         query = parse_qs(urlparse(self.path).query)
         operation = query.get("operation", ["readiness"])[0]
         if operation == "step2-readiness":
@@ -77,10 +90,7 @@ class handler(BaseHTTPRequestHandler):
         if operation not in {"ping", "readiness"}:
             self._write(405, {"ok": False, "error": "GET supports ping/readiness only"})
             return
-        payload = engine.readiness_receipt()
-        payload["operation"] = operation
-        payload["custodyRoute"] = "isolated-local-commitment-endpoint"
-        self._write(200, payload)
+        self._write(200, guarded_readiness_receipt(operation))
 
     def do_POST(self):
         engine = _engine()
