@@ -35,9 +35,9 @@ jobs:
         run: python -m pip install --disable-pip-version-check pytest sympy
       - name: Validate Ash browser-local commitment
         run: node tests/dome-world-ash-custody.test.mjs
-      - name: Validate Dome-World integration and deploy hygiene
-        run: |
-          node tests/dome-world-integration.test.mjs
-          node tests/vercel-deploy-hygiene.test.mjs
+      - name: Validate Dome-World integration
+        run: node tests/dome-world-integration.test.mjs
+      - name: Validate Vercel deploy hygiene
+        run: node tests/vercel-deploy-hygiene.test.mjs
       - name: Validate commitment-aware API
         run: python -m pytest packages/dome_world_exact/tests/test_api_integration.py -q
