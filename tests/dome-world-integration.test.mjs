@@ -104,7 +104,7 @@ assert.ok(vercel.rewrites.some((entry) => entry.source === '/api/dome-world/ash-
 assert.ok(vercel.rewrites.some((entry) => entry.source === '/api/dome-world/ash-custody-replay' && entry.destination === '/api/ash-local-commitment-guard'));
 assert.ok(vercel.rewrites.some((entry) => entry.source === '/api/dome-world-engine' && entry.destination === '/api/dome-world-engine-guard'));
 assert.ok(vercel.rewrites.some((entry) => entry.source === '/api/ash-local-commitment' && entry.destination === '/api/ash-local-commitment-guard'));
-assert.ok(vercel.rewrites.some((entry) => entry.source === '/api/dome-world/(.*)' && entry.destination.includes('/api/dome-world-engine-guard'));
+assert.ok(vercel.rewrites.some((entry) => entry.source === '/api/dome-world/(.*)' && entry.destination.includes('/api/dome-world-engine-guard')));
 assert.ok(!vercel.rewrites.some((entry) => String(entry.destination).includes('local-commitment-v071.js')));
 assert.match(vercelIgnore, /packages\/dome_world_exact\/verification\//);
 assert.match(vercelIgnore, /packages\/dome_world_exact\/tests\//);
