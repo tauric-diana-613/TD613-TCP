@@ -52,9 +52,27 @@ assert.equal(vercel.functions?.['api/dome-world-engine.py']?.maxDuration, 60, 'D
 assert.equal(vercel.functions?.['api/dome-world-engine-guard.py']?.maxDuration, 60, 'guarded Dome route should keep 60s function budget');
 assert.equal(vercel.functions?.['api/ash-local-commitment.py']?.maxDuration, 60, 'Ash local commitment lineage route should keep 60s function budget');
 assert.equal(vercel.functions?.['api/ash-local-commitment-guard.py']?.maxDuration, 60, 'guarded Ash commitment route should keep 60s function budget');
-assert.equal(typeof vercel.functions?.['api/dome-world-engine-guard.py']?.includeFiles, 'string', 'guard includeFiles must remain a Vercel-valid string');
-assert.equal(typeof vercel.functions?.['api/ash-local-commitment-guard.py']?.includeFiles, 'string', 'Ash guard includeFiles must remain a Vercel-valid string');
+
+for (const [name, config] of Object.entries(vercel.functions || {})) {
+  if (Object.prototype.hasOwnProperty.call(config, 'includeFiles')) {
+    assert.equal(
+      typeof config.includeFiles,
+      'string',
+      `${name}.includeFiles must remain a Vercel-valid string`,
+    );
+  }
+  if (Object.prototype.hasOwnProperty.call(config, 'excludeFiles')) {
+    assert.equal(
+      typeof config.excludeFiles,
+      'string',
+      `${name}.excludeFiles must remain a Vercel-valid string`,
+    );
+  }
+}
+
 assert.ok(!vercel.functions?.['api/dome-world-engine-v07.py'], 'removed coupled v0.7 adapter must not return');
+assert.equal(findRewrite('/dome-world/ash/local-commitment.js'), undefined, 'canonical Ash kernel should use the generic Dome-World static rewrite');
+assert.equal(findRewrite('/app/dome-world/ash/local-commitment.js'), undefined, 'canonical repository path must not be shadowed by a versioned rewrite');
 
 assertRewrite('/api/dome-world/ash-custody-register', '/api/ash-local-commitment-guard');
 assertRewrite('/api/dome-world/ash-custody-replay', '/api/ash-local-commitment-guard');
@@ -68,8 +86,6 @@ assertRewrite('/dome-world', '/app/dome-world/index.html');
 assertRewrite('/dome-world/', '/app/dome-world/index.html');
 assertRewrite('/dome-world/ash-custody.html', '/app/dome-world/ash-custody-v07.html');
 assertRewrite('/app/dome-world/ash-custody.html', '/app/dome-world/ash-custody-v07.html');
-assertRewrite('/dome-world/ash/local-commitment.js', '/app/dome-world/ash/local-commitment-v071.js');
-assertRewrite('/app/dome-world/ash/local-commitment.js', '/app/dome-world/ash/local-commitment-v071.js');
 assertRewrite('/dome-world/(.*)', '/app/dome-world/$1');
 assertRewrite('/api/(.*)', '/api/$1');
 assertRewrite('/safe-harbor/td613-flight.html', '/api/flight-html');
@@ -81,7 +97,6 @@ assertRewriteBefore('/api/dome-world/ash-custody-register', '/api/dome-world/(.*
 assertRewriteBefore('/api/dome-world/ash-custody-replay', '/api/dome-world/(.*)');
 assertRewriteBefore('/api/ash-local-commitment', '/api/(.*)');
 assertRewriteBefore('/api/dome-world-engine', '/api/(.*)');
-assertRewriteBefore('/dome-world/ash/local-commitment.js', '/dome-world/(.*)');
 
 [
   '/adversarial-bench.html',

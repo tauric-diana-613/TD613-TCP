@@ -7,6 +7,7 @@ const api = fs.readFileSync('api/dome-world-engine.py', 'utf8');
 const apiGuard = fs.readFileSync('api/dome-world-engine-guard.py', 'utf8');
 const apiCommitment = fs.readFileSync('api/ash-local-commitment.py', 'utf8');
 const commitmentGuard = fs.readFileSync('api/ash-local-commitment-guard.py', 'utf8');
+const localCommitment = fs.readFileSync('app/dome-world/ash/local-commitment.js', 'utf8');
 const localCommitmentV071 = fs.readFileSync('app/dome-world/ash/local-commitment-v071.js', 'utf8');
 
 for (const preservedSurface of [
@@ -83,7 +84,9 @@ assert.match(commitmentGuard, /network_operation_performed_by_module=false/);
 assert.match(commitmentGuard, /raw_bytes_persisted_by_module=false/);
 assert.doesNotMatch(ashV07, /sha256:manual-placeholder/);
 assert.match(ashV07, /generateLocalCommitment/);
-assert.match(localCommitmentV071, /selectionEpoch/);
+assert.match(localCommitment, /selectionEpoch/);
+assert.match(localCommitment, /invalidateLocalCommitmentSelection/);
+assert.match(localCommitmentV071, /export \* from "\.\/local-commitment\.js";/);
 assert.ok(vercel.rewrites.some((entry) => entry.source === '/dome-world' && entry.destination === '/app/dome-world/index.html'));
 assert.ok(vercel.rewrites.some((entry) => entry.source === '/dome-world/ash-custody.html' && entry.destination === '/app/dome-world/ash-custody-v07.html'));
 assert.ok(vercel.rewrites.some((entry) => entry.source === '/api/dome-world/ash-custody-register' && entry.destination === '/api/ash-local-commitment-guard'));
@@ -91,7 +94,8 @@ assert.ok(vercel.rewrites.some((entry) => entry.source === '/api/dome-world/ash-
 assert.ok(vercel.rewrites.some((entry) => entry.source === '/api/dome-world-engine' && entry.destination === '/api/dome-world-engine-guard'));
 assert.ok(vercel.rewrites.some((entry) => entry.source === '/api/ash-local-commitment' && entry.destination === '/api/ash-local-commitment-guard'));
 assert.ok(vercel.rewrites.some((entry) => entry.source === '/api/dome-world/(.*)' && entry.destination.includes('/api/dome-world-engine-guard')));
-assert.ok(vercel.rewrites.some((entry) => entry.source === '/dome-world/ash/local-commitment.js' && entry.destination === '/app/dome-world/ash/local-commitment-v071.js'));
+assert.ok(!vercel.rewrites.some((entry) => entry.source === '/dome-world/ash/local-commitment.js'));
+assert.ok(!vercel.rewrites.some((entry) => entry.source === '/app/dome-world/ash/local-commitment.js'));
 assert.match(vercelIgnore, /packages\/dome_world_exact\/verification\//);
 assert.match(vercelIgnore, /packages\/dome_world_exact\/tests\//);
 assert.ok(!gateway.includes('href="./dome-world'), 'Dome-World remains outside public navigation');

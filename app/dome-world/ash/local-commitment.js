@@ -1,16 +1,20 @@
 /**
- * TD613 Ash Local Commitment Kernel v0.7
+ * TD613 Ash Local Commitment Kernel v0.7.1
  *
  * Computes an L1 browser-local SHA-256 commitment over exact selected bytes.
- * The module performs no network operation and returns no raw bytes.
- * JavaScript cannot guarantee immediate memory erasure; buffer cleanup is
- * best-effort only and the receipt says so.
+ * Concurrent file selections are generation-bound: an older hash resolves to
+ * the newest active selection rather than overwriting the current intake state.
+ * Clearing the intake invalidates every in-flight commitment.
  */
 
 export const LOCAL_COMMITMENT_SCHEMA = "td613.ash.local-commitment/v0.7";
 export const L0_ASSURANCE = "L0_METADATA_ONLY";
 export const L1_ASSURANCE = "L1_BROWSER_LOCAL_ARTIFACT_DIGEST";
 export const DEFAULT_MAX_BYTES = 256 * 1024 * 1024;
+
+let selectionEpoch = 0;
+let invocationSerial = 0;
+let latestInvocation = null;
 
 function assertFileLike(file) {
   const valid =
@@ -33,7 +37,53 @@ function bytesToHex(buffer) {
   ).join("");
 }
 
-export async function generateLocalCommitment(
+function staleCommitmentError() {
+  const error = new Error(
+    "Local commitment invalidated by a newer file selection.",
+  );
+  error.name = "AbortError";
+  return error;
+}
+
+function scheduleEmptySelectionReset() {
+  if (typeof document === "undefined") return;
+  setTimeout(() => {
+    const input = document.getElementById("fileInput");
+    if (input?.files?.[0]) return;
+    const contentHash = document.getElementById("contentHash");
+    const status = document.getElementById("commitmentStatus");
+    const register = document.getElementById("registerArtifact");
+    if (contentHash) contentHash.value = "";
+    if (status) {
+      status.dataset.state = "L0";
+      status.textContent = `${L0_ASSURANCE} · no artifact byte digest has been computed.`;
+    }
+    if (register) register.disabled = false;
+  }, 0);
+}
+
+export function invalidateLocalCommitmentSelection() {
+  selectionEpoch += 1;
+  latestInvocation = null;
+}
+
+function installSelectionInvalidation() {
+  if (typeof document === "undefined") return;
+  document.getElementById("fileInput")?.addEventListener(
+    "change",
+    invalidateLocalCommitmentSelection,
+    { capture: true },
+  );
+  document.getElementById("clearForm")?.addEventListener(
+    "click",
+    invalidateLocalCommitmentSelection,
+    { capture: true },
+  );
+}
+
+installSelectionInvalidation();
+
+async function computeLocalCommitment(
   file,
   {
     maxBytes = DEFAULT_MAX_BYTES,
@@ -108,4 +158,31 @@ export async function generateLocalCommitment(
     }
     artifactBuffer = null;
   }
+}
+
+export function generateLocalCommitment(file, options = {}) {
+  const epoch = selectionEpoch;
+  const id = ++invocationSerial;
+  let promise;
+
+  promise = computeLocalCommitment(file, options).then(async (result) => {
+    const stillCurrent =
+      latestInvocation?.id === id && selectionEpoch === epoch;
+    if (stillCurrent) return result;
+
+    const replacement = latestInvocation;
+    if (
+      replacement &&
+      replacement.id !== id &&
+      replacement.epoch === selectionEpoch
+    ) {
+      return replacement.promise;
+    }
+
+    scheduleEmptySelectionReset();
+    throw staleCommitmentError();
+  });
+
+  latestInvocation = { id, epoch, file, promise };
+  return promise;
 }
