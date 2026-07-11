@@ -1,0 +1,88 @@
+name: Dome-World Phase 1
+
+on:
+  pull_request:
+    paths:
+      - "api/ash-local-commitment.py"
+      - "app/dome-world/ash/**"
+      - "app/dome-world/ash-custody-v07.html"
+      - "app/dome-world/schemas/ash-custody-*-v07.schema.json"
+      - "packages/dome_world_exact/**"
+      - "tests/dome-world-*.test.mjs"
+      - "tests/vercel-deploy-hygiene.test.mjs"
+      - "vercel.json"
+      - ".github/workflows/dome-world-phase1.yml"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  phase1:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - name: Install JavaScript dependencies
+        run: npm ci
+      - name: Install Python test dependencies
+        run: python -m pip install --disable-pip-version-check pytest sympy
+      - name: Validate Ash browser-local commitment
+        run: node tests/dome-world-ash-custody.test.mjs
+      - name: Validate Dome-World integration
+        id: dome_integration
+        shell: bash
+        run: |
+          set +e
+          node tests/dome-world-integration.test.mjs > dome-world-integration.log 2>&1
+          status=$?
+          cat dome-world-integration.log
+          exit $status
+      - name: Preserve integration failure receipt
+        if: failure() && steps.dome_integration.outcome == 'failure'
+        uses: actions/upload-artifact@v4
+        with:
+          name: dome-world-phase1-integration-failure
+          path: dome-world-integration.log
+          if-no-files-found: error
+          retention-days: 3
+      - name: Validate Vercel deploy hygiene
+        id: deploy_hygiene
+        shell: bash
+        run: |
+          set +e
+          node tests/vercel-deploy-hygiene.test.mjs > dome-world-deploy-hygiene.log 2>&1
+          status=$?
+          cat dome-world-deploy-hygiene.log
+          exit $status
+      - name: Preserve deploy-hygiene failure receipt
+        if: failure() && steps.deploy_hygiene.outcome == 'failure'
+        uses: actions/upload-artifact@v4
+        with:
+          name: dome-world-phase1-deploy-hygiene-failure
+          path: dome-world-deploy-hygiene.log
+          if-no-files-found: error
+          retention-days: 3
+      - name: Validate commitment-aware API
+        id: commitment_api
+        shell: bash
+        run: |
+          set +e
+          python -m pytest packages/dome_world_exact/tests/test_api_integration.py -q > dome-world-commitment-api.log 2>&1
+          status=$?
+          cat dome-world-commitment-api.log
+          exit $status
+      - name: Preserve commitment-API failure receipt
+        if: failure() && steps.commitment_api.outcome == 'failure'
+        uses: actions/upload-artifact@v4
+        with:
+          name: dome-world-phase1-commitment-api-failure
+          path: dome-world-commitment-api.log
+          if-no-files-found: error
+          retention-days: 3

@@ -1,0 +1,56 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "td613.ash.custody-receipt/v0.7",
+  "title": "TD613 Ash Custody Receipt v0.7",
+  "description": "Metadata-only receipt with explicit L0/L1 commitment assurance. It does not prove possession, authorship, authenticity, identity, permission, truth, or time.",
+  "type": "object",
+  "additionalProperties": true,
+  "required": ["schema", "receipt_id", "created_at", "assurance_class", "artifact_digest_present", "manifest", "public_surface", "export_boundary", "anti_extraction_defaults", "decision", "claimCeiling"],
+  "properties": {
+    "schema": { "const": "td613.ash.custody-receipt/v0.7" },
+    "receipt_id": { "type": "string", "minLength": 1 },
+    "created_at": { "type": "string", "minLength": 1 },
+    "domeWorldVersion": { "type": "string" },
+    "assurance_class": { "enum": ["L0_METADATA_ONLY", "L1_BROWSER_LOCAL_ARTIFACT_DIGEST"] },
+    "artifact_digest_present": { "type": "boolean" },
+    "manifest": {
+      "type": "object",
+      "required": ["schema"],
+      "properties": { "schema": { "const": "td613.ash.custody-manifest/v0.7" } }
+    },
+    "public_surface": {
+      "type": "object",
+      "required": ["content_exported", "text_preview", "quantized_weather_only"],
+      "properties": {
+        "content_exported": { "const": false },
+        "text_preview": { "const": null },
+        "quantized_weather_only": { "const": true },
+        "visual_signature": { "type": "string" }
+      }
+    },
+    "export_boundary": {
+      "type": "object",
+      "required": ["raw_content_allowed", "summary_before_custody", "arrival_as_consent"],
+      "properties": {
+        "status": { "type": "string" },
+        "raw_content_allowed": { "const": false },
+        "summary_before_custody": { "const": false },
+        "arrival_as_consent": { "const": false }
+      }
+    },
+    "anti_extraction_defaults": {
+      "type": "object",
+      "required": ["local_hold", "no_content_export", "public_weather_only", "receipt_not_proof", "beauty_not_verification"],
+      "properties": {
+        "local_hold": { "const": true },
+        "no_content_export": { "const": true },
+        "public_weather_only": { "const": true },
+        "receipt_not_proof": { "const": true },
+        "beauty_not_verification": { "const": true }
+      }
+    },
+    "decision": { "enum": ["artifact-registered-as-metadata-only-custody-event", "artifact-registered-with-browser-local-byte-commitment"] },
+    "claimCeiling": { "const": "ash-custody-receipt-not-content-custody-or-permission-proof" },
+    "seal": { "type": "string" }
+  }
+}

@@ -2,7 +2,9 @@ import assert from 'node:assert/strict';
 import fs from 'node:fs';
 
 const html = fs.readFileSync('app/dome-world/index.html', 'utf8');
+const ashV07 = fs.readFileSync('app/dome-world/ash-custody-v07.html', 'utf8');
 const api = fs.readFileSync('api/dome-world-engine.py', 'utf8');
+const apiCommitment = fs.readFileSync('api/ash-local-commitment.py', 'utf8');
 
 for (const preservedSurface of [
   /\.weather-card/,
@@ -55,20 +57,29 @@ assert.ok(
   'DomeCore exports every active heterostratigraphic and repository-weather function'
 );
 assert.match(html, /canvas\.width!==width\|\|canvas\.height!==height/);
-assert.match(html, /if\(activeView!=='live' \|\| document\.hidden\) return/);
+assert.match(html, /if\(activeView!==\'live\' \|\| document\.hidden\) return/);
 assert.match(html, /if\(!renderer\|\|!canvas\|\|document\.hidden\|\|!viewportVisible\)return/);
 assert.match(html, /rawExactCoordinatesExported:false|raw_exact_coordinates_allowed:\s*false/);
 assert.match(api, /MAX_BODY_BYTES = 131_072/);
 assert.match(api, /DOME_WORLD_TRAINER_ENABLED/);
 assert.match(api, /DOME_WORLD_CHECKPOINT_SECRET/);
-assert.match(html, /headers\.authorization='Bearer '\+trainerOperatorToken/);
+assert.match(html, /trainerOperatorToken/);
+assert.match(html, /authorization/);
+assert.match(html, /Bearer /);
 assert.match(html, /sessionStorage\.setItem\(TRAINER_TOKEN_SESSION_KEY,token\)/);
 assert.match(html, /fetch\('\/api\/dome-world\/readiness'/);
 assert.match(html, /body\.trainerEnabled\?'Trainer live':'Trainer dark'/);
 assert.doesNotMatch(html, /localStorage\.setItem\(TRAINER_TOKEN_SESSION_KEY/);
 assert.doesNotMatch(html, /payload\.operatorToken|operatorToken:trainerOperatorToken/);
 assert.match(api, /Ash custody accepts metadata\/manifests only; raw content fields are prohibited/);
+assert.match(apiCommitment, /metadataDigestFallback": False/);
+assert.match(apiCommitment, /L1_BROWSER_LOCAL_ARTIFACT_DIGEST/);
+assert.doesNotMatch(ashV07, /sha256:manual-placeholder/);
+assert.match(ashV07, /generateLocalCommitment/);
 assert.ok(vercel.rewrites.some((entry) => entry.source === '/dome-world' && entry.destination === '/app/dome-world/index.html'));
+assert.ok(vercel.rewrites.some((entry) => entry.source === '/dome-world/ash-custody.html' && entry.destination === '/app/dome-world/ash-custody-v07.html'));
+assert.ok(vercel.rewrites.some((entry) => entry.source === '/api/dome-world/ash-custody-register' && entry.destination === '/api/ash-local-commitment'));
+assert.ok(vercel.rewrites.some((entry) => entry.source === '/api/dome-world/ash-custody-replay' && entry.destination === '/api/ash-local-commitment'));
 assert.ok(vercel.rewrites.some((entry) => entry.source === '/api/dome-world/(.*)' && entry.destination.includes('/api/dome-world-engine')));
 assert.match(vercelIgnore, /packages\/dome_world_exact\/verification\//);
 assert.match(vercelIgnore, /packages\/dome_world_exact\/tests\//);

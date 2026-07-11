@@ -1,0 +1,113 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "td613.ash.custody-manifest/v0.7",
+  "title": "TD613 Ash Custody Manifest v0.7",
+  "type": "object",
+  "additionalProperties": true,
+  "required": ["schema", "artifact_id", "artifact_id_basis", "source_environment", "source_locator", "artifact_metadata", "privacy_boundary", "credential_reference", "ash_posture", "replay"],
+  "properties": {
+    "schema": { "const": "td613.ash.custody-manifest/v0.7" },
+    "artifact_id": { "type": "string", "minLength": 1 },
+    "artifact_id_basis": { "enum": ["artifact-digest-derived", "metadata-route-derived"] },
+    "source_environment": { "type": "string", "enum": ["local_file", "repo", "cloud_drive", "local_drive", "spreadsheet", "llm_chat", "manual"] },
+    "source_locator": {
+      "type": "object",
+      "additionalProperties": true,
+      "properties": {
+        "label": { "type": ["string", "null"] },
+        "path_or_ref": { "type": ["string", "null"] },
+        "revision": { "type": ["string", "null"] },
+        "commit_sha": { "type": ["string", "null"] },
+        "blob_sha": { "type": ["string", "null"] }
+      }
+    },
+    "artifact_metadata": {
+      "type": "object",
+      "additionalProperties": true,
+      "required": ["artifact_digest", "content_hash", "hash_scope", "assurance_class", "execution_attestation"],
+      "properties": {
+        "media_type": { "type": ["string", "null"] },
+        "byte_length": { "type": ["number", "integer", "null"], "minimum": 0 },
+        "last_modified_claim": { "type": ["string", "number", "integer", "null"] },
+        "artifact_digest": { "type": ["string", "null"], "pattern": "^sha256:[0-9a-f]{64}$" },
+        "content_hash": { "type": ["string", "null"], "pattern": "^sha256:[0-9a-f]{64}$", "description": "Compatibility alias for artifact_digest; never synthesized from metadata." },
+        "digest_algorithm": { "type": ["string", "null"], "enum": ["SHA-256", null] },
+        "hash_scope": { "enum": ["local-browser", "unavailable"] },
+        "assurance_class": { "enum": ["L0_METADATA_ONLY", "L1_BROWSER_LOCAL_ARTIFACT_DIGEST"] },
+        "execution_attestation": { "enum": ["no-byte-commitment-supplied", "client-generated-not-independently-attested"] }
+      },
+      "allOf": [
+        {
+          "if": { "properties": { "assurance_class": { "const": "L1_BROWSER_LOCAL_ARTIFACT_DIGEST" } } },
+          "then": {
+            "properties": {
+              "artifact_digest": { "type": "string", "pattern": "^sha256:[0-9a-f]{64}$" },
+              "content_hash": { "type": "string", "pattern": "^sha256:[0-9a-f]{64}$" },
+              "hash_scope": { "const": "local-browser" }
+            }
+          }
+        },
+        {
+          "if": { "properties": { "assurance_class": { "const": "L0_METADATA_ONLY" } } },
+          "then": {
+            "properties": {
+              "artifact_digest": { "const": null },
+              "content_hash": { "const": null },
+              "digest_algorithm": { "const": null },
+              "hash_scope": { "const": "unavailable" }
+            }
+          }
+        }
+      ]
+    },
+    "local_commitment": {
+      "type": ["object", "null"],
+      "properties": {
+        "schema": { "const": "td613.ash.local-commitment/v0.7" },
+        "artifact_digest": { "type": "string", "pattern": "^sha256:[0-9a-f]{64}$" },
+        "hash_execution": { "const": "browser-local" },
+        "raw_bytes_transmitted": { "const": false },
+        "raw_bytes_returned": { "const": false },
+        "memory_erasure_guaranteed": { "const": false }
+      }
+    },
+    "privacy_boundary": {
+      "type": "object",
+      "required": ["raw_content_exported", "raw_content_retained", "raw_content_received_by_server", "server_custody", "public_weather_only"],
+      "properties": {
+        "raw_content_exported": { "const": false },
+        "raw_content_retained": { "const": false },
+        "raw_content_received_by_server": { "const": false },
+        "server_custody": { "const": false },
+        "public_weather_only": { "type": "boolean" }
+      }
+    },
+    "credential_reference": {
+      "type": "object",
+      "required": ["credential_type", "credential_secret_recorded", "identity_proof_claimed", "permission_proof_claimed"],
+      "properties": {
+        "credential_type": { "type": "string" },
+        "credential_secret_recorded": { "const": false },
+        "identity_proof_claimed": { "const": false },
+        "permission_proof_claimed": { "const": false }
+      }
+    },
+    "ash_posture": { "type": "object" },
+    "replay": {
+      "type": "object",
+      "required": ["eligible", "mode", "raw_replay_available"],
+      "properties": {
+        "eligible": { "type": "boolean" },
+        "mode": { "const": "custody-replay-without-content" },
+        "raw_replay_available": { "const": false }
+      }
+    }
+  },
+  "not": {
+    "anyOf": [
+      { "required": ["text"] }, { "required": ["rawText"] }, { "required": ["content"] },
+      { "required": ["document"] }, { "required": ["body"] }, { "required": ["sensitiveText"] },
+      { "required": ["rawBytes"] }, { "required": ["fileBytes"] }, { "required": ["fileContent"] }
+    ]
+  }
+}
