@@ -68,7 +68,7 @@ def test_modeled_weather_never_claims_exact_capture():
 
 
 def test_ash_rejects_raw_content_fields():
-    with pytest.raises(ValueError, match="metadata only"):
+    with pytest.raises(ValueError, match="metadata/manifests only"):
         API.dispatch_post(envelope("ash-readiness", {"rawText": "private"}), {})
 
 
