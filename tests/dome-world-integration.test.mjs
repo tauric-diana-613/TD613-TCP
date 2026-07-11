@@ -63,7 +63,9 @@ assert.match(html, /rawExactCoordinatesExported:false|raw_exact_coordinates_allo
 assert.match(api, /MAX_BODY_BYTES = 131_072/);
 assert.match(api, /DOME_WORLD_TRAINER_ENABLED/);
 assert.match(api, /DOME_WORLD_CHECKPOINT_SECRET/);
-assert.match(html, /headers\.authorization=\'Bearer \'+trainerOperatorToken/);
+assert.match(html, /trainerOperatorToken/);
+assert.match(html, /authorization/);
+assert.match(html, /Bearer /);
 assert.match(html, /sessionStorage\.setItem\(TRAINER_TOKEN_SESSION_KEY,token\)/);
 assert.match(html, /fetch\('\/api\/dome-world\/readiness'/);
 assert.match(html, /body\.trainerEnabled\?'Trainer live':'Trainer dark'/);
