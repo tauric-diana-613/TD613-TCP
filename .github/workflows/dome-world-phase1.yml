@@ -3,7 +3,7 @@ name: Dome-World Phase 1
 on:
   pull_request:
     paths:
-      - "api/dome-world-engine-v07.py"
+      - "api/ash-local-commitment.py"
       - "app/dome-world/ash/**"
       - "app/dome-world/ash-custody-v07.html"
       - "app/dome-world/schemas/ash-custody-*-v07.schema.json"
