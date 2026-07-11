@@ -75,7 +75,33 @@ The Phase 1 and hardening workflows cover:
 - contradictory L1 flag rejection;
 - file-selection generation binding;
 - Vercel rewrite order, cache posture, and `includeFiles` / `excludeFiles` string validation;
-- guarded readiness jurisdiction.
+- guarded readiness jurisdiction;
+- the operator-runnable live deployment probe contract.
+
+## Live deployment probe
+
+Run the bounded probe against a deployed base URL:
+
+```bash
+node scripts/dome-world-deployment-probe.mjs https://your-deployment.example
+```
+
+or:
+
+```bash
+DOME_WORLD_BASE_URL=https://your-deployment.example \
+  node scripts/dome-world-deployment-probe.mjs
+```
+
+The probe performs five checks:
+
+1. guarded Dome-World ping;
+2. guarded Dome-World readiness;
+3. guarded Ash readiness;
+4. one L0 metadata-only custody registration with `artifact_digest: null`;
+5. a negative bypass test proving the public legacy engine rejects custody registration.
+
+The probe sends no artifact bytes, raw document text, credential secret, or artifact digest. Its PASS receipt establishes route behavior observed during that run only; it does not establish possession, authorship, authenticity, identity, permission, external-world truth, or trusted time.
 
 ## Deferred by roadmap order
 
