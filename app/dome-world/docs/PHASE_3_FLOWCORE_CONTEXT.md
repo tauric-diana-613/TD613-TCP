@@ -2,11 +2,23 @@
 
 Phase III creates an artifact-blind, private-by-default context station at:
 
-- `GET /api/flowcore-context?operation=readiness`
+- `GET /api/flowcore-context`
 - `POST /api/flowcore-context`
 - `/dome-world/flow-core-context.html`
 
 The operational receipt is `td613.flowcore.context-receipt/v0.1`.
+
+## Deployment topology
+
+Flow-Core shares the already-guarded Dome-World serverless boundary. It does not allocate a separate Vercel function. The public route rewrites to `api/dome-world-engine-guard.py`, which dispatches `flowcore-context-instrument` directly to the Phase III module while preserving the existing Ash custody isolation and legacy Dome operation registry.
+
+This topology keeps the Hobby deployment within its twelve-function ceiling without merging station authority:
+
+```text
+shared function boundary
+≠
+shared jurisdiction
+```
 
 ## Receipt law
 
