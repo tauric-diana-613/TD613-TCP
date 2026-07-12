@@ -1,21 +1,25 @@
 {
-  "schema": "td613.dome-world.marrowline.release/v1",
-  "version": "v0.1.0",
-  "stationSchema": "td613.dome-world.marrowline/v0.1.0",
-  "receiptSchema": "td613.dome-world.marrowline-receipt/v0.1",
+  "schema": "td613.dome-world.marrowline.release/v2",
+  "version": "v0.2.0",
+  "stationSchema": "td613.dome-world.marrowline/v0.2.0",
+  "receiptSchema": "td613.dome-world.marrowline-receipt/v0.2",
+  "liveReceiptSchema": "td613.dome-world.marrowline-live-receipt/v1",
   "route": "/dome-world/marrowline.html",
+  "liveIngressRoute": "/api/dome-world/marrowline",
   "navigation": "direct-route-non-public",
   "jurisdiction": {
-    "mode": "operator-invoked-local-assay",
-    "networkInterception": false,
+    "mode": "live-dedicated-ingress-plus-local-fallback",
+    "globalNetworkInterception": false,
     "requestMutation": false,
-    "crawlerTargeting": false,
-    "authorizationAuthority": false,
-    "cryptographicClaim": false
+    "crawlerIdentityClaim": false,
+    "authorizationAuthority": "server-side-operator-token-match-only",
+    "cryptographicClaim": false,
+    "unauthenticatedResponse": "http-200-absorbing-marrowline"
   },
-  "claimCeiling": "literary-ingestion-assay-not-authentication-or-network-defense",
+  "claimCeiling": "live-ingress-route-not-identity-authorship-or-legal-authority-proof",
   "lineage": {
-    "source": "Kʰonapolit Marrowline design",
-    "restorationPosture": "preserve-concept-repair-jurisdiction"
+    "source": "Kʰonapolit Marrowline design in canonical Aperture",
+    "canonicalFunction": "app/engine/td613-aperture.js::_serveMarrowlineTrap",
+    "restorationPosture": "activate-original-response-with-dedicated-jurisdiction"
   }
 }
