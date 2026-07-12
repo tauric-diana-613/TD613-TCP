@@ -1398,17 +1398,18 @@ function drawRepoCanvas(time=0){ const canvas=$('repoCanvas'); if(!canvas) retur
 
 
 // Live Lattice: tactile particles sampling the heterostratigraphic gradient-misfit potential.
-const LIVE_FRAME_MS=1000/30;
+const LIVE_FRAME_MS=1000/60;
 const liveState = { nodes: [], input: {x:0,y:0,active:false,inside:false}, pointer:null, cool:.985, impulse:1, frame:0, substrate:null, substrateKey:'', width:0, height:0 };
 function liveSeededRand(){ const seed = C.generateLiveLatticeSeed(world,{node_count:84}).seed; let x = parseInt(seed.slice(0,8),16) || 12345; return function(){ x ^= x << 13; x ^= x >>> 17; x ^= x << 5; return ((x>>>0)%10000)/10000; }; }
 function resetLiveLattice(){
   const canvas=$('liveCanvas'); if(!canvas) return;
   const rect=canvas.getBoundingClientRect(); const rnd=liveSeededRand(); liveState.nodes=[];
-  const n = Math.min(56, Math.max(28, Math.floor(rect.width*rect.height/11000)));
+  const n = Math.min(96, Math.max(54, Math.floor(rect.width*rect.height/7600)));
   for(let i=0;i<n;i++){
     const a = i * Math.PI * (3-Math.sqrt(5));
-    const rr = Math.sqrt((i+.5)/n) * Math.min(rect.width,rect.height)*.44;
-    liveState.nodes.push({x:Math.cos(a)*rr + (rnd()-.5)*22, y:Math.sin(a)*rr + (rnd()-.5)*22, vx:(rnd()-.5)*.7, vy:(rnd()-.5)*.7, pulse:rnd()*.6, gx:0, gy:0, fold:0, fieldReady:false, sampleSlot:i%8});
+    const rr = Math.sqrt((i+.5)/n) * Math.min(rect.width,rect.height)*.38;
+    const x=Math.cos(a)*rr + (rnd()-.5)*22, y=Math.sin(a)*rr + (rnd()-.5)*22;
+    liveState.nodes.push({x,y,homeX:x,homeY:y,vx:(rnd()-.5)*.34,vy:(rnd()-.5)*.34,pulse:rnd()*.6,drift:rnd()*Math.PI*2,gx:0,gy:0,fold:0,fieldReady:false,sampleSlot:i%4});
   }
   liveState.frame=0;
   liveState.width=rect.width;
@@ -1420,19 +1421,15 @@ function setupLiveInput(){
   const canvas=$('liveCanvas'); if(!canvas || canvas.dataset.liveBound) return; canvas.dataset.liveBound='true';
   const pos=(e)=>{ const r=canvas.getBoundingClientRect(); liveState.input.x=e.clientX-r.left-r.width/2; liveState.input.y=e.clientY-r.top-r.height/2; liveState.input.inside=true; };
   canvas.addEventListener('pointermove', e=>{
-    if(e.pointerType==='touch'&&liveState.pointer){
+    if(e.pointerType==='touch'&&liveState.pointer?.id!==e.pointerId)return;
+    if(liveState.pointer){
       const dx=e.clientX-liveState.pointer.x,dy=e.clientY-liveState.pointer.y;
-      if(liveState.pointer.mode==='pending'){
-        if(Math.abs(dy)>Math.abs(dx)+6){liveState.pointer.mode='scroll';liveState.input.active=false;return;}
-        if(Math.abs(dx)>Math.abs(dy)+6){liveState.pointer.mode='field';canvas.setPointerCapture?.(e.pointerId);}
-      }
-      if(liveState.pointer.mode!=='field')return;
-      e.preventDefault();
+      liveState.pointer.moved=liveState.pointer.moved||Math.hypot(dx,dy)>3;
     }
     pos(e);liveState.input.active=e.pointerType==='mouse'?e.buttons>0:true;
   });
-  canvas.addEventListener('pointerdown', e=>{pos(e);liveState.pointer={id:e.pointerId,x:e.clientX,y:e.clientY,mode:e.pointerType==='touch'?'pending':'field'};if(e.pointerType!=='touch')canvas.setPointerCapture?.(e.pointerId);liveState.input.active=e.pointerType!=='touch';});
-  canvas.addEventListener('pointerup', e=>{if(liveState.pointer?.mode==='pending'){pos(e);liveState.nodes.forEach(n=>{const d=Math.hypot(n.x-liveState.input.x,n.y-liveState.input.y);if(d<120)n.pulse=Math.min(1,n.pulse+.55);});}resetLivePointer();});
+  canvas.addEventListener('pointerdown', e=>{pos(e);liveState.pointer={id:e.pointerId,x:e.clientX,y:e.clientY,moved:false};canvas.setPointerCapture?.(e.pointerId);liveState.input.active=true;});
+  canvas.addEventListener('pointerup', e=>{if(liveState.pointer&&!liveState.pointer.moved){pos(e);liveState.nodes.forEach(n=>{const d=Math.hypot(n.x-liveState.input.x,n.y-liveState.input.y);if(d<120)n.pulse=Math.min(1,n.pulse+.55);});}resetLivePointer();});
   canvas.addEventListener('pointercancel',resetLivePointer);
   canvas.addEventListener('pointerleave', e=>{if(e.pointerType==='mouse'){liveState.input.inside=false;liveState.input.active=false;}});
   canvas.addEventListener('keydown',e=>{const step=18;if(e.key==='Escape'){e.preventDefault();openView('lab');return;}if(e.key===' '){e.preventDefault();liveState.input.inside=true;liveState.nodes.forEach(n=>n.pulse=Math.min(1,n.pulse+.35));return;}if(!['ArrowLeft','ArrowRight','ArrowUp','ArrowDown'].includes(e.key))return;e.preventDefault();liveState.input.inside=true;liveState.input.active=true;if(e.key==='ArrowLeft')liveState.input.x-=step;if(e.key==='ArrowRight')liveState.input.x+=step;if(e.key==='ArrowUp')liveState.input.y-=step;if(e.key==='ArrowDown')liveState.input.y+=step;});
@@ -1446,22 +1443,33 @@ function updateLiveNode(node, w, h, refreshField, frameScale=1){
     node.fold = gm.gradient_misfit;
     node.fieldReady = true;
   }
-  node.vx += (-node.gx * 22 * liveState.impulse + Math.sin(node.y*.017+world.day*.03)*.006)*frameScale;
-  node.vy += (-node.gy * 22 * liveState.impulse + Math.cos(node.x*.013-world.day*.02)*.006)*frameScale;
+  const gradientMagnitude=Math.hypot(node.gx,node.gy);
+  const fieldForce=(.006+node.fold*.012)*liveState.impulse;
+  if(gradientMagnitude>.000001){
+    node.vx += (-node.gx/gradientMagnitude)*fieldForce*frameScale;
+    node.vy += (-node.gy/gradientMagnitude)*fieldForce*frameScale;
+  }
+  const orbit=liveState.frame*.004+node.drift;
+  const targetX=node.homeX+Math.cos(orbit)*12, targetY=node.homeY+Math.sin(orbit*.83)*10;
+  node.vx += ((targetX-node.x)*.0018+Math.sin(node.y*.017+world.day*.03)*.004)*frameScale;
+  node.vy += ((targetY-node.y)*.0018+Math.cos(node.x*.013-world.day*.02)*.004)*frameScale;
   if(liveState.input.inside){
     const dx=node.x-liveState.input.x, dy=node.y-liveState.input.y, d=Math.hypot(dx,dy)||1;
-    if(d<260){ const f=(260-d)/260; const s=liveState.input.active?-0.052:.026; node.vx += dx/d*f*s*28*frameScale; node.vy += dy/d*f*s*28*frameScale; node.pulse=Math.min(1,node.pulse+f*.06*frameScale); }
+    if(d<230){ const f=(230-d)/230; const s=liveState.input.active?-.012:.006; node.vx += dx/d*f*s*28*frameScale; node.vy += dy/d*f*s*28*frameScale; node.pulse=Math.min(1,node.pulse+f*.085*frameScale); }
   }
+  const bx=w/2-12,by=h/2-12,nx=Math.abs(node.x)/bx,ny=Math.abs(node.y)/by;
+  if(nx>.78)node.vx-=Math.sign(node.x)*Math.pow((nx-.78)/.22,2)*.16*frameScale;
+  if(ny>.78)node.vy-=Math.sign(node.y)*Math.pow((ny-.78)/.22,2)*.16*frameScale;
   const damping=Math.pow(liveState.cool,frameScale);
   node.vx*=damping; node.vy*=damping; node.x+=node.vx*frameScale; node.y+=node.vy*frameScale;
-  const bx=w/2-10, by=h/2-10; if(Math.abs(node.x)>bx){ node.x=Math.sign(node.x)*bx; node.vx*=-.62; } if(Math.abs(node.y)>by){ node.y=Math.sign(node.y)*by; node.vy*=-.62; }
-  node.pulse*=Math.pow(.965,frameScale);
+  if(Math.abs(node.x)>bx){ node.x=Math.sign(node.x)*bx; node.vx*=-.72; } if(Math.abs(node.y)>by){ node.y=Math.sign(node.y)*by; node.vy*=-.72; }
+  node.pulse*=Math.pow(.982,frameScale);
 }
 function fitLiveLatticeToCanvas(w,h){
   if(!liveState.nodes.length||!liveState.width||!liveState.height){liveState.width=w;liveState.height=h;return;}
   if(Math.abs(w-liveState.width)<.5&&Math.abs(h-liveState.height)<.5)return;
   const sx=w/liveState.width,sy=h/liveState.height;
-  liveState.nodes.forEach(node=>{node.x*=sx;node.y*=sy;node.vx*=sx;node.vy*=sy;});
+  liveState.nodes.forEach(node=>{node.x*=sx;node.y*=sy;node.homeX*=sx;node.homeY*=sy;node.vx*=sx;node.vy*=sy;});
   liveState.width=w;liveState.height=h;liveState.substrateKey='';
 }
 function liveSubstrateLayer(w,h,dpr){
@@ -1485,18 +1493,18 @@ function drawLiveLattice(time=0,deltaMs=LIVE_FRAME_MS){
   const canvas=$('liveCanvas'); if(!canvas) return; const [ctx,w,h,dpr]=setupCanvas(canvas); if(!liveState.nodes.length) resetLiveLattice();
   fitLiveLatticeToCanvas(w,h);
   const frameScale=Math.max(.5,Math.min(3,deltaMs/LIVE_FRAME_MS));
-  ctx.fillStyle='rgba(4,12,9,.28)'; ctx.fillRect(0,0,w,h); ctx.save(); ctx.translate(w/2,h/2);
+  ctx.fillStyle='rgba(4,12,9,.18)'; ctx.fillRect(0,0,w,h); ctx.save(); ctx.translate(w/2,h/2);
   liveState.frame++;
-  liveState.nodes.forEach(n=>updateLiveNode(n,w,h,liveState.frame%8===n.sampleSlot,frameScale));
+  liveState.nodes.forEach(n=>updateLiveNode(n,w,h,liveState.frame%4===n.sampleSlot,frameScale));
   // substrate: rigorous layers beneath the nodes
   ctx.save(); ctx.translate(-w/2,-h/2); ctx.drawImage(liveSubstrateLayer(w,h,dpr),0,0,w,h); ctx.restore();
   for(let i=0;i<liveState.nodes.length;i++){
     for(let j=i+1;j<liveState.nodes.length;j++){
       const a=liveState.nodes[i], b=liveState.nodes[j], dx=a.x-b.x, dy=a.y-b.y, d2=dx*dx+dy*dy;
-      if(d2<8464){ const d=Math.sqrt(d2),fold=(a.fold+b.fold)*.5,alpha=(1-d/92)*(.18+fold*.62); ctx.strokeStyle=`rgba(${fold>.55?'217,133,148':'138,43,226'},${alpha})`; ctx.lineWidth=.45+fold*1.2; ctx.beginPath(); ctx.moveTo(a.x,a.y); ctx.lineTo(b.x,b.y); ctx.stroke(); }
+      if(d2<12100){ const d=Math.sqrt(d2),fold=(a.fold+b.fold)*.5,alpha=(1-d/110)*(.14+fold*.48); ctx.strokeStyle=`rgba(${fold>.55?'217,133,148':'138,43,226'},${alpha})`; ctx.lineWidth=.45+fold; ctx.beginPath(); ctx.moveTo(a.x,a.y); ctx.lineTo(b.x,b.y); ctx.stroke(); }
     }
   }
-  liveState.nodes.forEach(n=>{ ctx.fillStyle=n.fold>.58?`rgba(228,198,108,${.62+n.pulse*.35})`:`rgba(179,155,236,${.48+n.pulse*.25})`; ctx.beginPath(); ctx.arc(n.x,n.y,2.1+n.pulse*5+n.fold*2,0,Math.PI*2); ctx.fill(); });
+  liveState.nodes.forEach(n=>{ const warm=n.fold>.58,halo=4.8+n.pulse*7+n.fold*2.6;ctx.fillStyle=warm?`rgba(228,198,108,${.10+n.pulse*.14})`:`rgba(179,155,236,${.10+n.pulse*.13})`;ctx.beginPath();ctx.arc(n.x,n.y,halo,0,Math.PI*2);ctx.fill();ctx.fillStyle=warm?`rgba(242,217,140,${.72+n.pulse*.25})`:`rgba(200,178,255,${.68+n.pulse*.28})`;ctx.beginPath();ctx.arc(n.x,n.y,2.35+n.pulse*2.4+n.fold*.8,0,Math.PI*2);ctx.fill(); });
   ctx.restore();
 }
 function renderLiveReadout(){
@@ -1516,7 +1524,7 @@ const DOME_ART_RENDERERS=Object.freeze({
   aperture:{id:'aperture-reciprocal-receipt-membrane',canvas:'apertureCanvas',draw:drawApertureCanvas,operators:['permeability=χ(1-δ_obs)','divergence refraction','receipt return boundary'],claim:'reciprocal-receipts-without-reciprocal-authority'},
   receipts:{id:'receipts-ledger-star-map',canvas:'receiptsCanvas',draw:drawReceiptsCanvas,operators:['declared lineage only','OPEN receipts remain visible'],claim:'witness-map-not-universal-authority'},
   tomography:{id:'heterostratigraphic-tomography',canvas:'tomoCanvas',draw:drawTomography,operators:['T(x)=Σcos(kd·x)+Σcos(kRθd·x)','Q(x)=Σcos(kφe·x)'],claim:'heterostratigraphic-visual-diagnostic-not-material-proof'},
-  live:{id:'live-lattice-tendency-probes',canvas:'liveCanvas',draw:drawLiveLattice,hz:30,operators:['F(x)=||∇T(x)-∇Q(x)||','v(t+1)=ζv(t)-α∇F(x(t))+β·input(x(t))'],claim:'interactive-lattice-not-substrate-proof'},
+  live:{id:'live-lattice-tendency-probes',canvas:'liveCanvas',draw:drawLiveLattice,hz:60,operators:['F(x)=||∇T(x)-∇Q(x)||','v(t+1)=ζv(t)-α∇F(x(t))+β·input(x(t))'],claim:'interactive-lattice-not-substrate-proof'},
   patterns:{id:'pattern-library-field',canvas:'patternCanvas',draw:drawPatternCanvas,operators:['√3 triangular calibration','φ counterlayer'],claim:'pattern-signal-not-identity-proof'},
   repo:{id:'repository-weather-field',canvas:'repoCanvas',draw:drawRepoCanvas,operators:['repository route weather','fold obstruction'],claim:'repository-weather-not-truth-proof'}
 });
