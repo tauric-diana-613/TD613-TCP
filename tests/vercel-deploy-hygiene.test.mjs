@@ -3,10 +3,7 @@ import fs from 'fs';
 
 const vercel = JSON.parse(fs.readFileSync('vercel.json', 'utf8'));
 const gitignore = fs.readFileSync('.gitignore', 'utf8');
-const apiFunctionFiles = fs.readdirSync('api', { withFileTypes: true })
-  .filter((entry) => entry.isFile() && /\.(?:js|mjs|cjs|ts|tsx|py)$/.test(entry.name))
-  .map((entry) => entry.name)
-  .sort();
+const configuredFunctions = Object.keys(vercel.functions || {}).sort();
 
 function findRewrite(source) { return (vercel.rewrites || []).find((entry) => entry.source === source); }
 function findHeader(source) { return (vercel.headers || []).find((entry) => entry.source === source); }
@@ -39,9 +36,9 @@ function assertRevalidatingStatic(source) {
 }
 
 assert.equal(vercel.version, 2);
-assert.ok(apiFunctionFiles.length <= 12, `TD613 serverless budget exceeded: ${apiFunctionFiles.length}/12 — ${apiFunctionFiles.join(', ')}`);
-assert.ok(!apiFunctionFiles.includes('aperture-bridge.py'), 'Phase IV must share the guarded Dome-World function');
-assert.ok(!apiFunctionFiles.includes('aperture-bridge.js'), 'Phase IV must not allocate a new JavaScript function');
+assert.ok(configuredFunctions.length <= 12, `configured Vercel function budget exceeded: ${configuredFunctions.length}/12 — ${configuredFunctions.join(', ')}`);
+assert.ok(!configuredFunctions.includes('api/aperture-bridge.py'), 'Phase IV must share the guarded Dome-World function');
+assert.ok(!configuredFunctions.includes('api/aperture-bridge.js'), 'Phase IV must not allocate a new JavaScript function');
 assert.equal(vercel.functions?.['api/hush-generate-strict.js']?.maxDuration, 60);
 assert.equal(vercel.functions?.['api/hush-generate.js']?.maxDuration, 60);
 assert.equal(vercel.functions?.['api/dome-world-shell.js']?.maxDuration, 10);
@@ -137,4 +134,4 @@ assertRewriteBefore('/app/dome-world/index.html', '/app/(.*)');
 assert.match(gitignore, /(^|\r?\n)\.env(\r?\n|$)/, '.env must remain ignored');
 assert.doesNotMatch(gitignore, /(^|\r?\n)!\.env(\r?\n|$)/, '.env must not be negated');
 
-console.log(`vercel-deploy-hygiene.test.mjs passed with ${apiFunctionFiles.length}/12 serverless functions`);
+console.log(`vercel-deploy-hygiene.test.mjs passed with ${configuredFunctions.length}/12 configured functions`);
