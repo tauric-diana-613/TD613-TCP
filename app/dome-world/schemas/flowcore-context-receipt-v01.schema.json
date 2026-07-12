@@ -1,0 +1,66 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "td613.flowcore.context-receipt/v0.1",
+  "title": "TD613 Flow-Core Context Receipt v0.1",
+  "type": "object",
+  "required": ["status","schema","receipt_id","context_posture","source_status","sensor_id","authority_class","artifact_blind","measurements","transformation_history","missingness","uncertainty","alternatives","privacy","decision","recommendation_not_command","automatic_ash_action","prediction_authorized","cannot_establish"],
+  "properties": {
+    "status": {"enum": ["OPEN", "ABSTAIN"]},
+    "schema": {"const": "td613.flowcore.context-receipt/v0.1"},
+    "receipt_id": {"type": "string", "pattern": "^flowctx_[0-9a-f]{20}$"},
+    "created_at": {"type": "string"},
+    "operation": {"const": "flowcore-context-instrument"},
+    "context_posture": {"enum": ["CONTEXT_READY", "ABSTAIN_INSUFFICIENT_CONTEXT"]},
+    "source_status": {"enum": ["DERIVED", "UNRESOLVED"]},
+    "input_source_statuses": {"type":"array","items":{"enum":["OBSERVED","SUPPLIED","DERIVED","SIMULATED","INFERRED","ATTESTED","UNRESOLVED"]},"uniqueItems":true},
+    "sensor_id": {"const": "flowcore-context-instrument"},
+    "authority_class": {"enum": ["A1_OBSERVATIONAL", "A2_DERIVATIONAL"]},
+    "diagnostic_receipt_reference": {"type": ["string", "null"]},
+    "artifact_reference": {"type": "null"},
+    "artifact_blind": {"const": true},
+    "measurements": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["name","value","source_status","sensor_id","authority_class","transformation_history","missingness","uncertainty","alternatives","calibration"],
+        "properties": {
+          "name": {"type":"string","minLength":1},
+          "value": {"type":["number","null"]},
+          "source_status": {"enum":["OBSERVED","SUPPLIED","DERIVED","SIMULATED","INFERRED","ATTESTED","UNRESOLVED"]},
+          "sensor_id": {"type":"string","minLength":1},
+          "declared_sensor_id": {"type":"string","minLength":1},
+          "authority_class": {"enum":["A1_OBSERVATIONAL","A2_DERIVATIONAL","A3_INFERENTIAL"]},
+          "transformation_history": {"type":"array","items":{"type":"string"}},
+          "missingness": {"type":"array","items":{"type":"string"}},
+          "uncertainty": {"type":"object"},
+          "alternatives": {"type":"array","items":{"type":"string"}},
+          "calibration": {"type":"object"}
+        },
+        "additionalProperties": true
+      }
+    },
+    "modeled_weather": {"type":["object","null"]},
+    "weather": {"type":["object","null"]},
+    "transformation_history": {"type":"array","items":{"type":"string"}},
+    "missingness": {"type":"array","items":{"type":"string"}},
+    "uncertainty": {"type":"object"},
+    "alternatives": {"type":"array","items":{"type":"string"}},
+    "benign_controls": {"type":"array","items":{"type":"object"}},
+    "privacy": {
+      "type":"object",
+      "required":["visibility","public_export","artifact_blind","persistent_server_storage"],
+      "properties": {
+        "visibility":{"const":"PRIVATE_LOCAL_DEFAULT"},
+        "public_export":{"const":false},
+        "artifact_blind":{"const":true},
+        "persistent_server_storage":{"const":false}
+      }
+    },
+    "recommendation_not_command":{"const":true},
+    "automatic_ash_action":{"const":false},
+    "prediction_authorized":{"const":false},
+    "bridge_integration_status":{"const":"PHASE_4_DEFERRED"},
+    "cannot_establish":{"type":"array","items":{"type":"string"}}
+  },
+  "additionalProperties": true
+}
