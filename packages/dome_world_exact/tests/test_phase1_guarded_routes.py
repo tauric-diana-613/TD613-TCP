@@ -41,7 +41,9 @@ def test_guarded_readiness_does_not_advertise_legacy_custody_execution():
     readiness = engine_guard.guarded_readiness_receipt()
     assert "ash-custody-register" not in readiness["operations"]
     assert "ash-custody-replay" not in readiness["operations"]
+    assert "ash-custody-migrate" not in readiness["operations"]
     assert readiness["delegatedCustodyOperations"] == [
+        "ash-custody-migrate",
         "ash-custody-register",
         "ash-custody-replay",
     ]

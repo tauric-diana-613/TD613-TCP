@@ -64,7 +64,8 @@ assert.match(html, /rawExactCoordinatesExported:false|raw_exact_coordinates_allo
 assert.match(api, /MAX_BODY_BYTES = 131_072/);
 assert.match(api, /DOME_WORLD_TRAINER_ENABLED/);
 assert.match(api, /DOME_WORLD_CHECKPOINT_SECRET/);
-assert.match(apiGuard, /LEGACY_CUSTODY_OPERATIONS/);
+assert.match(apiGuard, /DELEGATED_CUSTODY_OPERATIONS/);
+assert.match(apiGuard, /ash-custody-migrate/);
 assert.match(apiGuard, /owned exclusively by/);
 assert.match(html, /sessionStorage\.setItem\(TRAINER_TOKEN_SESSION_KEY,token\)/);
 assert.doesNotMatch(html, /localStorage\.setItem\(TRAINER_TOKEN_SESSION_KEY/);

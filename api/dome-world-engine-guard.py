@@ -1,7 +1,7 @@
 """Public guard for the legacy Dome-World engine.
 
 The legacy engine remains available as an internal implementation for non-custody
-operations. Public custody registration and replay are rejected here and owned
+operations. Public custody operations are rejected here and owned
 exclusively by the Ash Local Commitment endpoint.
 """
 
@@ -15,9 +15,10 @@ from http.server import BaseHTTPRequestHandler
 from urllib.parse import parse_qs, urlparse
 
 MAX_BODY_BYTES = 131_072
-LEGACY_CUSTODY_OPERATIONS = {
+DELEGATED_CUSTODY_OPERATIONS = {
     "ash-custody-register",
     "ash-custody-replay",
+    "ash-custody-migrate",
 }
 
 
@@ -36,9 +37,9 @@ def validate_envelope(envelope):
     if not isinstance(envelope, dict):
         raise ValueError("request body must be a JSON object")
     operation = str(envelope.get("operation", "")).strip()
-    if operation in LEGACY_CUSTODY_OPERATIONS:
+    if operation in DELEGATED_CUSTODY_OPERATIONS:
         raise ValueError(
-            "Ash custody registration/replay is owned exclusively by "
+            "Ash custody operations are owned exclusively by "
             "api/ash-local-commitment-guard.py"
         )
     return envelope
@@ -49,11 +50,11 @@ def guarded_readiness_receipt(operation="readiness"):
     payload["operations"] = [
         item
         for item in payload.get("operations", [])
-        if item not in LEGACY_CUSTODY_OPERATIONS
+        if item not in DELEGATED_CUSTODY_OPERATIONS
     ]
     payload["operation"] = operation
     payload["custodyRoute"] = "isolated-local-commitment-endpoint"
-    payload["delegatedCustodyOperations"] = sorted(LEGACY_CUSTODY_OPERATIONS)
+    payload["delegatedCustodyOperations"] = sorted(DELEGATED_CUSTODY_OPERATIONS)
     payload["metadataDigestFallbackOnPublicCustodyRoute"] = False
     return payload
 

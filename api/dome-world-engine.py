@@ -58,9 +58,10 @@ RAW_CONTENT_KEYS = {
     "fragment",
     "candidateFragment",
 }
-PHASE1_CUSTODY_OPERATIONS = {
+DELEGATED_CUSTODY_OPERATIONS = {
     "ash-custody-register",
     "ash-custody-replay",
+    "ash-custody-migrate",
 }
 ASH_V06_OPERATION_NAMES = {
     "ash-leak-challenge",
@@ -156,7 +157,7 @@ def readiness_receipt():
         "aperture": _aperture_context({}),
         "operations": sorted(POST_OPERATIONS),
         "delegatedOperations": {
-            "ash-local-commitment-v0.7": sorted(PHASE1_CUSTODY_OPERATIONS),
+            "ash-local-commitment-v0.8": sorted(DELEGATED_CUSTODY_OPERATIONS),
         },
         "trainerEnabled": os.getenv("DOME_WORLD_TRAINER_ENABLED") == "1",
         "storage": "client-held-signed-checkpoints",
@@ -389,9 +390,9 @@ def dispatch_post(envelope, headers):
     if not isinstance(envelope, dict):
         raise ValueError("request body must be a JSON object")
     operation = str(envelope.get("operation", "")).strip()
-    if operation in PHASE1_CUSTODY_OPERATIONS:
+    if operation in DELEGATED_CUSTODY_OPERATIONS:
         raise ValueError(
-            "Phase 1 custody registration/replay is owned exclusively by "
+            "Ash custody operations are owned exclusively by "
             "api/ash-local-commitment.py"
         )
     if operation not in POST_OPERATIONS:

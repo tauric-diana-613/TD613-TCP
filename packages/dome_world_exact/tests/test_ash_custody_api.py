@@ -74,38 +74,39 @@ def registered_receipt(payload=None):
     return response["result"]
 
 
-def test_legacy_engine_cannot_bypass_v07_registration_or_replay():
-    assert "ash-custody-register" not in ENGINE.POST_OPERATIONS
-    assert "ash-custody-replay" not in ENGINE.POST_OPERATIONS
-    for operation in ("ash-custody-register", "ash-custody-replay"):
+def test_legacy_engine_cannot_bypass_v08_custody_operations():
+    delegated = {
+        "ash-custody-register",
+        "ash-custody-replay",
+        "ash-custody-migrate",
+    }
+    assert delegated.isdisjoint(ENGINE.POST_OPERATIONS)
+    for operation in delegated:
         with pytest.raises(ValueError, match="owned exclusively"):
             ENGINE.dispatch_post(envelope(operation, {}), {})
 
     readiness = ENGINE.readiness_receipt()
-    assert operation not in readiness["operations"]
-    assert set(readiness["delegatedOperations"]["ash-local-commitment-v0.7"]) == {
-        "ash-custody-register",
-        "ash-custody-replay",
-    }
+    assert delegated.isdisjoint(readiness["operations"])
+    assert set(readiness["delegatedOperations"]["ash-local-commitment-v0.8"]) == delegated
 
 
-def test_v07_registration_and_replay_use_commitment_endpoint():
+def test_v08_registration_and_replay_use_commitment_endpoint():
     receipt = registered_receipt()
-    assert receipt["schema"] == "td613.ash.custody-receipt/v0.7"
-    assert receipt["manifest"]["schema"] == "td613.ash.custody-manifest/v0.7"
+    assert receipt["schema"] == "td613.ash.custody-receipt/v0.8"
+    assert receipt["manifest"]["schema"] == "td613.ash.custody-manifest/v0.8"
     assert receipt["public_surface"]["content_exported"] is False
     assert receipt["export_boundary"]["raw_content_allowed"] is False
     assert receipt["anti_extraction_defaults"]["receipt_not_proof"] is True
     assert "claimCeiling" not in receipt
 
     replay = COMMITMENT.dispatch_post(envelope("ash-custody-replay", {"receipt": receipt}), {})["result"]
-    assert replay["schema"] == "td613.ash.custody-replay/v0.7"
+    assert replay["schema"] == "td613.ash.custody-replay/v0.8"
     assert replay["raw_replay_available"] is False
     assert replay["artifact_digest"] == receipt["manifest"]["artifact_metadata"]["artifact_digest"]
 
 
 @pytest.mark.parametrize("raw_key", ["text", "rawText", "content", "document"])
-def test_v07_registration_rejects_raw_content_keys(raw_key):
+def test_v08_registration_rejects_raw_content_keys(raw_key):
     payload = l1_payload()
     payload[raw_key] = "private raw content must not cross Ash custody registration"
     with pytest.raises(ValueError, match="raw content fields are prohibited"):
@@ -128,7 +129,7 @@ def test_cinder_plaintext_aliases_are_rejected_by_legacy_engine_until_phase6():
             )
 
 
-def test_phason_diff_accepts_v07_digest_and_detects_projection_change():
+def test_phason_diff_accepts_v08_digest_and_detects_projection_change():
     previous = registered_receipt()
     changed = deepcopy(l1_payload())
     changed["sourceLocator"]["path_or_ref"] = "repo reference shifted"
