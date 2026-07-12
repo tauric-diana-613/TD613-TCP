@@ -10,6 +10,7 @@
     {"sensor_id":"external-environmental-sensor","default_source_status":"OBSERVED","allowed_source_statuses":["OBSERVED"],"authority_class":"A1_OBSERVATIONAL","description":"external observation with disclosed calibration posture"},
     {"sensor_id":"simulated-fixture","default_source_status":"SIMULATED","allowed_source_statuses":["SIMULATED"],"authority_class":"A2_DERIVATIONAL","description":"declared fixture or hypothetical process"},
     {"sensor_id":"derived-formula","default_source_status":"DERIVED","allowed_source_statuses":["DERIVED"],"authority_class":"A2_DERIVATIONAL","description":"value computed from declared inputs and transformation"},
+    {"sensor_id":"aperture-diagnostic-receipt","default_source_status":"DERIVED","allowed_source_statuses":["DERIVED"],"authority_class":"A2_DERIVATIONAL","description":"metric carried by a validated Aperture diagnostic receipt"},
     {"sensor_id":"signed-witness-attestation","default_source_status":"ATTESTED","allowed_source_statuses":["ATTESTED"],"authority_class":"A1_OBSERVATIONAL","description":"signed assertion; signature does not prove the asserted fact"},
     {"sensor_id":"flowcore-context-instrument","default_source_status":"DERIVED","allowed_source_statuses":["DERIVED"],"authority_class":"A2_DERIVATIONAL","description":"Phase III normalization and bounded context translation"},
     {"sensor_id":"unknown","default_source_status":"UNRESOLVED","allowed_source_statuses":["UNRESOLVED"],"authority_class":"A1_OBSERVATIONAL","description":"sensor identity or generating process remains unresolved"}
