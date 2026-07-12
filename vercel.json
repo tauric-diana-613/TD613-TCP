@@ -14,11 +14,11 @@
     },
     "api/ash-local-commitment.py": {
       "maxDuration": 60,
-      "includeFiles": "packages/dome_world_exact/{ash_canonical_json.py,ash_commitment_v08.py,ash_receipt_v08.py}"
+      "includeFiles": "packages/dome_world_exact/ash_*.py"
     },
     "api/ash-local-commitment-guard.py": {
       "maxDuration": 60,
-      "includeFiles": "{api/ash-local-commitment.py,packages/dome_world_exact/{ash_canonical_json.py,ash_commitment_v08.py,ash_receipt_v08.py}}"
+      "includeFiles": "{api/ash-local-commitment.py,packages/dome_world_exact/ash_*.py}"
     }
   },
   "headers": [
