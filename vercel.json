@@ -4,6 +4,7 @@
     "api/hush-generate-strict.js": { "maxDuration": 60 },
     "api/hush-generate.js": { "maxDuration": 60 },
     "api/marrowline.js": { "maxDuration": 10 },
+    "api/khonapolit.js": { "maxDuration": 60 },
     "api/dome-world-engine.py": {
       "maxDuration": 60,
       "includeFiles": "packages/dome_world_exact/**/*.py",
@@ -82,6 +83,8 @@
     { "source": "/api/ash-local-commitment-guard", "headers": [{ "key": "Cache-Control", "value": "no-store, max-age=0" }] },
     { "source": "/api/marrowline", "headers": [{ "key": "Cache-Control", "value": "no-store, max-age=0" }] },
     { "source": "/api/dome-world/marrowline", "headers": [{ "key": "Cache-Control", "value": "no-store, max-age=0" }] },
+    { "source": "/api/khonapolit", "headers": [{ "key": "Cache-Control", "value": "no-store, max-age=0" }] },
+    { "source": "/api/dome-world/khonapolit", "headers": [{ "key": "Cache-Control", "value": "no-store, max-age=0" }] },
     { "source": "/dome-world/(.*)", "headers": [{ "key": "Cache-Control", "value": "public, max-age=0, must-revalidate" }] }
   ],
   "rewrites": [
@@ -91,6 +94,7 @@
     { "source": "/api/ash-local-commitment", "destination": "/api/ash-local-commitment-guard" },
     { "source": "/api/dome-world-engine", "destination": "/api/dome-world-engine-guard" },
     { "source": "/api/dome-world/marrowline", "destination": "/api/marrowline" },
+    { "source": "/api/dome-world/khonapolit", "destination": "/api/khonapolit" },
     { "source": "/api/dome-world/ping", "destination": "/api/dome-world-engine-guard?operation=ping" },
     { "source": "/api/dome-world/readiness", "destination": "/api/dome-world-engine-guard?operation=readiness" },
     { "source": "/api/dome-world/step2-readiness", "destination": "/api/dome-world-engine-guard?operation=step2-readiness" },
