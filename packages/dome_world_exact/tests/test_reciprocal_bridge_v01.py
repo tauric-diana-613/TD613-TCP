@@ -134,4 +134,5 @@ def test_phase4_readiness_preserves_hard_boundaries():
     assert receipt["artifactRelation"] is False
     assert receipt["automaticAshAction"] is False
     assert receipt["predictionAuthorized"] is False
-    assert receipt["newServerlessFunction"] if "newServerlessFunction" in receipt else True
+    assert receipt["operatorClosureRequired"] is True
+    assert receipt["serverlessBoundary"] == "shared-guarded-dome-world-boundary"
