@@ -56,12 +56,17 @@ jobs:
         id: generated_sync
         continue-on-error: true
         run: npm run check:generated-sync > generated-sync.log 2>&1
+      - name: Materialize generated diagnostic repair
+        if: steps.generated_sync.outcome == 'failure'
+        run: npm run sync:browser-diagnostics
       - name: Upload generated-sync diagnostics
         if: steps.generated_sync.outcome == 'failure'
         uses: actions/upload-artifact@v4
         with:
           name: phase4-generated-sync-diagnostics
-          path: generated-sync.log
+          path: |
+            generated-sync.log
+            app/browser-diagnostics.js
           retention-days: 3
       - name: Enforce generated-surface validation
         if: steps.generated_sync.outcome == 'failure'
