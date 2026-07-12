@@ -1398,7 +1398,8 @@ function drawRepoCanvas(time=0){ const canvas=$('repoCanvas'); if(!canvas) retur
 
 
 // Live Lattice: tactile particles sampling the heterostratigraphic gradient-misfit potential.
-const liveState = { nodes: [], input: {x:0,y:0,active:false,inside:false}, pointer:null, cool:.985, impulse:1, frame:0, substrate:null, substrateKey:'' };
+const LIVE_FRAME_MS=1000/30;
+const liveState = { nodes: [], input: {x:0,y:0,active:false,inside:false}, pointer:null, cool:.985, impulse:1, frame:0, substrate:null, substrateKey:'', width:0, height:0 };
 function liveSeededRand(){ const seed = C.generateLiveLatticeSeed(world,{node_count:84}).seed; let x = parseInt(seed.slice(0,8),16) || 12345; return function(){ x ^= x << 13; x ^= x >>> 17; x ^= x << 5; return ((x>>>0)%10000)/10000; }; }
 function resetLiveLattice(){
   const canvas=$('liveCanvas'); if(!canvas) return;
@@ -1410,6 +1411,8 @@ function resetLiveLattice(){
     liveState.nodes.push({x:Math.cos(a)*rr + (rnd()-.5)*22, y:Math.sin(a)*rr + (rnd()-.5)*22, vx:(rnd()-.5)*.7, vy:(rnd()-.5)*.7, pulse:rnd()*.6, gx:0, gy:0, fold:0, fieldReady:false, sampleSlot:i%8});
   }
   liveState.frame=0;
+  liveState.width=rect.width;
+  liveState.height=rect.height;
   liveState.substrateKey='';
   renderLiveReadout();
 }
@@ -1435,7 +1438,7 @@ function setupLiveInput(){
   canvas.addEventListener('keydown',e=>{const step=18;if(e.key==='Escape'){e.preventDefault();openView('lab');return;}if(e.key===' '){e.preventDefault();liveState.input.inside=true;liveState.nodes.forEach(n=>n.pulse=Math.min(1,n.pulse+.35));return;}if(!['ArrowLeft','ArrowRight','ArrowUp','ArrowDown'].includes(e.key))return;e.preventDefault();liveState.input.inside=true;liveState.input.active=true;if(e.key==='ArrowLeft')liveState.input.x-=step;if(e.key==='ArrowRight')liveState.input.x+=step;if(e.key==='ArrowUp')liveState.input.y-=step;if(e.key==='ArrowDown')liveState.input.y+=step;});
 }
 function resetLivePointer(){liveState.pointer=null;liveState.input.active=false;}
-function updateLiveNode(node, w, h, refreshField){
+function updateLiveNode(node, w, h, refreshField, frameScale=1){
   if(refreshField){
     const gm = C.computeGradientMisfit(node.x, node.y, {phase: world.day*.07});
     node.gx = gm.g_triangular[0]-gm.g_quasiperiodic[0];
@@ -1443,15 +1446,23 @@ function updateLiveNode(node, w, h, refreshField){
     node.fold = gm.gradient_misfit;
     node.fieldReady = true;
   }
-  node.vx += -node.gx * 22 * liveState.impulse + Math.sin(node.y*.017+world.day*.03)*.006;
-  node.vy += -node.gy * 22 * liveState.impulse + Math.cos(node.x*.013-world.day*.02)*.006;
+  node.vx += (-node.gx * 22 * liveState.impulse + Math.sin(node.y*.017+world.day*.03)*.006)*frameScale;
+  node.vy += (-node.gy * 22 * liveState.impulse + Math.cos(node.x*.013-world.day*.02)*.006)*frameScale;
   if(liveState.input.inside){
     const dx=node.x-liveState.input.x, dy=node.y-liveState.input.y, d=Math.hypot(dx,dy)||1;
-    if(d<260){ const f=(260-d)/260; const s=liveState.input.active?-0.052:.026; node.vx += dx/d*f*s*28; node.vy += dy/d*f*s*28; node.pulse=Math.min(1,node.pulse+f*.06); }
+    if(d<260){ const f=(260-d)/260; const s=liveState.input.active?-0.052:.026; node.vx += dx/d*f*s*28*frameScale; node.vy += dy/d*f*s*28*frameScale; node.pulse=Math.min(1,node.pulse+f*.06*frameScale); }
   }
-  node.vx*=liveState.cool; node.vy*=liveState.cool; node.x+=node.vx; node.y+=node.vy;
+  const damping=Math.pow(liveState.cool,frameScale);
+  node.vx*=damping; node.vy*=damping; node.x+=node.vx*frameScale; node.y+=node.vy*frameScale;
   const bx=w/2-10, by=h/2-10; if(Math.abs(node.x)>bx){ node.x=Math.sign(node.x)*bx; node.vx*=-.62; } if(Math.abs(node.y)>by){ node.y=Math.sign(node.y)*by; node.vy*=-.62; }
-  node.pulse*=.965;
+  node.pulse*=Math.pow(.965,frameScale);
+}
+function fitLiveLatticeToCanvas(w,h){
+  if(!liveState.nodes.length||!liveState.width||!liveState.height){liveState.width=w;liveState.height=h;return;}
+  if(Math.abs(w-liveState.width)<.5&&Math.abs(h-liveState.height)<.5)return;
+  const sx=w/liveState.width,sy=h/liveState.height;
+  liveState.nodes.forEach(node=>{node.x*=sx;node.y*=sy;node.vx*=sx;node.vy*=sy;});
+  liveState.width=w;liveState.height=h;liveState.substrateKey='';
 }
 function liveSubstrateLayer(w,h,dpr){
   const width=Math.max(1,Math.floor(w*dpr)),height=Math.max(1,Math.floor(h*dpr));
@@ -1469,12 +1480,14 @@ function liveSubstrateLayer(w,h,dpr){
   liveState.substrateKey=key;
   return layer;
 }
-function drawLiveLattice(){
+function drawLiveLattice(time=0,deltaMs=LIVE_FRAME_MS){
   if(activeView!=='live' || document.hidden) return;
   const canvas=$('liveCanvas'); if(!canvas) return; const [ctx,w,h,dpr]=setupCanvas(canvas); if(!liveState.nodes.length) resetLiveLattice();
+  fitLiveLatticeToCanvas(w,h);
+  const frameScale=Math.max(.5,Math.min(3,deltaMs/LIVE_FRAME_MS));
   ctx.fillStyle='rgba(4,12,9,.28)'; ctx.fillRect(0,0,w,h); ctx.save(); ctx.translate(w/2,h/2);
   liveState.frame++;
-  liveState.nodes.forEach(n=>updateLiveNode(n,w,h,liveState.frame%8===n.sampleSlot));
+  liveState.nodes.forEach(n=>updateLiveNode(n,w,h,liveState.frame%8===n.sampleSlot,frameScale));
   // substrate: rigorous layers beneath the nodes
   ctx.save(); ctx.translate(-w/2,-h/2); ctx.drawImage(liveSubstrateLayer(w,h,dpr),0,0,w,h); ctx.restore();
   for(let i=0;i<liveState.nodes.length;i++){
@@ -1520,7 +1533,8 @@ const DomeArt=(()=>{
   const reducedMotion=window.matchMedia('(prefers-reduced-motion: reduce)');
   const receipts=new Map();
   const drawCounts={};
-  let raf=0,lastFrame=0,sequence=0,active=null,viewportVisible=true,dirty=true;
+  let raf=0,lastFrame=0,sequence=0,active=null,viewportVisible=true,dirty=true,activeCanvas=null;
+  const frameTolerance=1.5;
   function sourceReceipts(view){
     const refs=[];
     if(view==='aperture'&&lastBridge)refs.push('aperture-bridge');
@@ -1553,18 +1567,29 @@ const DomeArt=(()=>{
     const canvas=renderer&&$(renderer.canvas);
     if(!renderer||!canvas||document.hidden||!viewportVisible)return;
     const frameInterval=1000/(renderer.hz||30);
-    if(reducedMotion.matches||timestamp-lastFrame>=frameInterval){
-      lastFrame=timestamp;sequence++;renderer.draw(timestamp/1000);drawCounts[active]=(drawCounts[active]||0)+1;
+    const elapsed=lastFrame?timestamp-lastFrame:frameInterval;
+    if(reducedMotion.matches||elapsed>=frameInterval-frameTolerance){
+      const overshoot=Math.min(frameInterval,Math.max(0,elapsed-frameInterval));
+      lastFrame=timestamp-overshoot;sequence++;renderer.draw(timestamp/1000,elapsed);drawCounts[active]=(drawCounts[active]||0)+1;
       if(dirty||sequence%30===0){writeReceipt(active,renderer,canvas);dirty=false;}
     }
     if(!reducedMotion.matches)schedule();
   }
-  function activate(view){cancel();active=DOME_ART_RENDERERS[view]?view:null;lastFrame=0;dirty=true;if(active)schedule();}
+  const canvasObserver='IntersectionObserver'in window?new IntersectionObserver(entries=>{
+    viewportVisible=entries[0]?.isIntersecting!==false;
+    if(viewportVisible)schedule();else cancel();
+  },{threshold:.01}):null;
+  function activate(view){
+    cancel();
+    if(activeCanvas&&canvasObserver)canvasObserver.unobserve(activeCanvas);
+    active=DOME_ART_RENDERERS[view]?view:null;activeCanvas=active?$(DOME_ART_RENDERERS[active].canvas):null;
+    lastFrame=0;dirty=true;viewportVisible=true;
+    if(activeCanvas&&canvasObserver)canvasObserver.observe(activeCanvas);
+    if(active)schedule();
+  }
   function invalidate(){dirty=true;if(active)schedule();}
   function getReceipt(view=active){const receipt=receipts.get(view);return receipt?JSON.parse(JSON.stringify(receipt)):null;}
   function getStatus(){const renderer=active&&DOME_ART_RENDERERS[active];const canvas=renderer&&$(renderer.canvas);return{version:DOME_ART_VERSION,schema:DOME_ART_SCHEMA,activeView:active,running:Boolean(raf),hidden:document.hidden,viewportVisible,reducedMotion:reducedMotion.matches,drawCounts:{...drawCounts},resizeCount:Number(canvas?.dataset.resizeCount)||0};}
-  const main=document.querySelector('main.wrap');
-  if('IntersectionObserver'in window&&main)new IntersectionObserver(entries=>{viewportVisible=entries[0]?.isIntersecting!==false;if(viewportVisible)schedule();else cancel();},{threshold:.01}).observe(main);
   reducedMotion.addEventListener?.('change',()=>{cancel();dirty=true;schedule();});
   document.addEventListener('visibilitychange',()=>{if(document.hidden)cancel();else schedule();});
   return Object.freeze({version:DOME_ART_VERSION,schema:DOME_ART_SCHEMA,activate,invalidate,getReceipt,getStatus});
