@@ -45,6 +45,7 @@ def test_api_dispatch_returns_phase3_receipt():
     assert response["result"]["status"] == "OPEN"
     assert response["result"]["diagnostic_receipt_reference"] == "apdiag_api_fixture"
     assert response["result"]["artifact_reference"] is None
+    assert response["result"]["bridge_integration_status"] == "PHASE_4_DEFERRED"
 
 
 def test_api_rejects_unknown_operation():
@@ -74,7 +75,9 @@ def test_api_readiness_exposes_no_ash_or_prediction_authority():
     assert receipt["bridgeIntegrationStatus"] == "PHASE_4_DEFERRED"
 
 
-def test_shared_guard_keeps_existing_dome_operations_available():
-    response = API.dispatch_guarded_post(envelope({"metrics": {}}, operation="aperture-bridge"))
+def test_shared_guard_keeps_unrelated_dome_operations_available():
+    response = API.dispatch_guarded_post(
+        envelope({"contentHash": "", "projection": {}}, operation="phason-gate")
+    )
     assert response["ok"] is True
-    assert response["operation"] == "aperture-bridge"
+    assert response["operation"] == "phason-gate"
