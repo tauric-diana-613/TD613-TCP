@@ -20,10 +20,6 @@
     "api/ash-local-commitment-guard.py": {
       "maxDuration": 60,
       "includeFiles": "{api/ash-local-commitment.py,packages/dome_world_exact/ash_*.py}"
-    },
-    "api/flowcore-context.py": {
-      "maxDuration": 60,
-      "includeFiles": "packages/dome_world_exact/flowcore_context.py"
     }
   },
   "headers": [
