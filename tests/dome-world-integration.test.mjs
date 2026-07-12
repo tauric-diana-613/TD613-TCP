@@ -105,7 +105,7 @@ rewrite('/api/ash-local-commitment', '/api/ash-local-commitment-guard');
 assert.ok(vercel.rewrites.some((entry) => entry.source === '/api/dome-world/(.*)' && entry.destination.includes('/api/dome-world-engine-guard')));
 assert.ok(!vercel.rewrites.some((entry) => String(entry.destination).includes('local-commitment-v071.js')));
 assert.match(vercel.functions['api/dome-world-shell.js'].includeFiles, /app\/dome-world\/index\.html/);
-assert.match(domeShell, /data-glyph=\\"∴\\"/);
+assert.match(domeShell, /data-glyph="∴"/);
 assert.match(domeShell, /\/dome-world\/marrowline\.html/);
 assert.match(domeShell, /<span><b>11<\/b>stations<\/span>/);
 assert.match(vercel.functions['api/ash-local-commitment.py'].includeFiles, /ash_\*\.py/);
