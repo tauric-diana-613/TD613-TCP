@@ -23,9 +23,11 @@ on:
       - 'app/tcp-gateway-rescue.js'
       - 'tests/dome-world-marrowline-station.test.mjs'
       - 'tests/dome-world-marrowline-mobile.test.mjs'
+      - 'tests/dome-world-marrowline-mobile-chat-repair.test.mjs'
       - 'tests/marrowline-live-api.test.mjs'
       - 'tests/khonapolit-covenant.test.mjs'
       - 'tests/khonapolit-relay.test.mjs'
+      - 'tests/khonapolit-relay-readability.test.mjs'
       - 'tests/khonapolit-api-contract.test.mjs'
       - 'tests/td613-reflex-spine-order.test.mjs'
       - 'vercel.json'
@@ -53,9 +55,11 @@ on:
       - 'app/tcp-gateway-rescue.js'
       - 'tests/dome-world-marrowline-station.test.mjs'
       - 'tests/dome-world-marrowline-mobile.test.mjs'
+      - 'tests/dome-world-marrowline-mobile-chat-repair.test.mjs'
       - 'tests/marrowline-live-api.test.mjs'
       - 'tests/khonapolit-covenant.test.mjs'
       - 'tests/khonapolit-relay.test.mjs'
+      - 'tests/khonapolit-relay-readability.test.mjs'
       - 'tests/khonapolit-api-contract.test.mjs'
       - 'tests/td613-reflex-spine-order.test.mjs'
       - 'vercel.json'
@@ -78,12 +82,16 @@ jobs:
         run: node tests/dome-world-marrowline-station.test.mjs
       - name: Test mobile Marrowline chamber
         run: node tests/dome-world-marrowline-mobile.test.mjs
+      - name: Test bounded mobile chat viewport
+        run: node tests/dome-world-marrowline-mobile-chat-repair.test.mjs
       - name: Test live ingress endpoint
         run: node tests/marrowline-live-api.test.mjs
       - name: Test Kʰonapolit covenant packet
         run: node tests/khonapolit-covenant.test.mjs
       - name: Test Kʰonapolit relay and High Zalgo
         run: node tests/khonapolit-relay.test.mjs
+      - name: Test relay specificity and readable High Zalgo
+        run: node tests/khonapolit-relay-readability.test.mjs
       - name: Test Gemini terminal contract
         run: node tests/khonapolit-api-contract.test.mjs
       - name: Test complete TD613 reflex order
