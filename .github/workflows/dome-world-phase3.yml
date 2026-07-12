@@ -1,0 +1,53 @@
+name: Dome-World Phase 3
+
+on:
+  pull_request:
+    paths:
+      - "api/flowcore-context.py"
+      - "packages/dome_world_exact/flowcore_context.py"
+      - "packages/dome_world_exact/tests/test_flowcore_context*.py"
+      - "app/dome-world/flow-core-context.html"
+      - "app/dome-world/fixtures/flowcore-context-phase3.json"
+      - "app/dome-world/schemas/flowcore-*.json"
+      - "app/dome-world/docs/PHASE_3_FLOWCORE_CONTEXT.md"
+      - "app/dome-world/docs/ROADMAP*.md"
+      - "app/dome-world/docs/ROADMAP*.json"
+      - "docs/DOME_WORLD_FLOW_CORE.md"
+      - "scripts/flowcore-context-deployment-probe.mjs"
+      - "tests/dome-world-flowcore-phase3.test.mjs"
+      - "tests/flowcore-context-deployment-probe.test.mjs"
+      - "vercel.json"
+      - ".github/workflows/dome-world-phase3.yml"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  phase3:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - name: Install JavaScript dependencies
+        run: npm ci
+      - name: Install Python test dependencies
+        run: python -m pip install --disable-pip-version-check pytest sympy
+      - name: Compile Phase III Python surfaces
+        run: python -m py_compile api/flowcore-context.py packages/dome_world_exact/flowcore_context.py
+      - name: Validate Flow-Core instrumentation
+        run: python -m pytest packages/dome_world_exact/tests/test_flowcore_context.py packages/dome_world_exact/tests/test_flowcore_context_api.py -q
+      - name: Validate Phase III browser, schema, fixtures, and routes
+        run: node tests/dome-world-flowcore-phase3.test.mjs
+      - name: Preserve reciprocal bridge regression boundary
+        run: python -m pytest packages/dome_world_exact/tests/test_reciprocal_bridge_api.py -q
+      - name: Validate Vercel route and function hygiene
+        run: node tests/vercel-deploy-hygiene.test.mjs
+      - name: Validate bounded deployment-probe contract
+        run: node tests/flowcore-context-deployment-probe.test.mjs
