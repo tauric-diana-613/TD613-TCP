@@ -3,7 +3,7 @@ name: Dome-World Phase 3
 on:
   pull_request:
     paths:
-      - "api/flowcore-context.py"
+      - "api/dome-world-engine-guard.py"
       - "packages/dome_world_exact/flowcore_context.py"
       - "packages/dome_world_exact/tests/test_flowcore_context*.py"
       - "app/dome-world/flow-core-context.html"
@@ -40,7 +40,7 @@ jobs:
       - name: Install Python test dependencies
         run: python -m pip install --disable-pip-version-check pytest sympy
       - name: Compile Phase III Python surfaces
-        run: python -m py_compile api/flowcore-context.py packages/dome_world_exact/flowcore_context.py
+        run: python -m py_compile api/dome-world-engine-guard.py packages/dome_world_exact/flowcore_context.py
       - name: Validate Flow-Core instrumentation
         run: python -m pytest packages/dome_world_exact/tests/test_flowcore_context.py packages/dome_world_exact/tests/test_flowcore_context_api.py -q
       - name: Validate Phase III browser, schema, fixtures, and routes
