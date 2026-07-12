@@ -117,7 +117,9 @@ class handler(BaseHTTPRequestHandler):
             length = int(self.headers.get("Content-Length", "0"))
             if length <= 0 or length > MAX_BODY_BYTES:
                 raise ValueError("request body must be between 1 and 131072 bytes")
-            envelope = validate_l1_boundary_flags(json.loads(self.rfile.read(length)))
+            envelope = validate_l1_boundary_flags(
+                commitment.strict_json_loads(self.rfile.read(length))
+            )
             self._write(200, commitment.dispatch_post(envelope))
         except (ValueError, TypeError, json.JSONDecodeError) as exc:
             self._write(400, {"ok": False, "error": str(exc)})
