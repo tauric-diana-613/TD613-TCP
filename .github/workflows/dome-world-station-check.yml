@@ -3,20 +3,28 @@ name: Dome-World Station Check
 on:
   pull_request:
     paths:
+      - "api/dome-world-shell.js"
+      - "app/dome-world/index.html"
       - "app/dome-world/marrowline.html"
       - "app/dome-world/marrowline-station.js"
       - "app/dome-world/marrowline.release.json"
       - "app/dome-world/README.md"
+      - "tests/dome-world-lab-marrowline-link.test.mjs"
       - "tests/dome-world-marrowline-station.test.mjs"
+      - "vercel.json"
       - ".github/workflows/dome-world-station-check.yml"
   push:
     branches: [main]
     paths:
+      - "api/dome-world-shell.js"
+      - "app/dome-world/index.html"
       - "app/dome-world/marrowline.html"
       - "app/dome-world/marrowline-station.js"
       - "app/dome-world/marrowline.release.json"
       - "app/dome-world/README.md"
+      - "tests/dome-world-lab-marrowline-link.test.mjs"
       - "tests/dome-world-marrowline-station.test.mjs"
+      - "vercel.json"
       - ".github/workflows/dome-world-station-check.yml"
   workflow_dispatch:
 
@@ -34,4 +42,5 @@ jobs:
           node-version: 22
           cache: npm
       - run: npm ci
+      - run: node tests/dome-world-lab-marrowline-link.test.mjs
       - run: node tests/dome-world-marrowline-station.test.mjs
