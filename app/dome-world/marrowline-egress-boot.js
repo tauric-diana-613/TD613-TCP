@@ -95,12 +95,10 @@ function installCircuitObserver(doc = document, root = window) {
 }
 
 async function bootMarrowlineRoom(doc = document, root = window) {
-  const [stationModule, terminalModule] = await Promise.all([
+  await Promise.all([
     import('./marrowline-station.js'),
     import('./marrowline-terminal.js')
   ]);
-  stationModule.installMarrowlineStation?.(doc);
-  terminalModule.installKhonapolitTerminal?.(doc, root);
   installCircuitObserver(doc, root);
   const receipt = Object.freeze({
     schema: 'td613.dome-world.marrowline-room-boot/v1',
