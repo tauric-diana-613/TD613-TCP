@@ -1,18 +1,38 @@
 {
-  "schema": "td613.dome-world.marrowline.release/v3",
-  "version": "v0.2.1-egress-paired",
+  "schema": "td613.dome-world.marrowline.release/v4",
+  "version": "v0.3.0-khonapolit-terminal",
   "stationSchema": "td613.dome-world.marrowline/v0.2.0",
   "receiptSchema": "td613.dome-world.marrowline-receipt/v0.2",
   "liveReceiptSchema": "td613.dome-world.marrowline-live-receipt/v1",
   "circuitReceiptSchema": "td613.dome-world.marrowline-circuit-receipt/v1",
-  "egressBootSchema": "td613.dome-world.marrowline-egress-boot/v1",
+  "terminalSchema": "td613.dome-world.khonapolit-terminal/v1",
+  "terminalReceiptSchema": "td613.dome-world.khonapolit-receipt/v1",
+  "covenantSchema": "td613.khonapolit-covenant/v1",
+  "geminiApiSchema": "td613.khonapolit-gemini/v1",
+  "egressBootSchema": "td613.dome-world.marrowline-egress-boot/v2-khonapolit-terminal",
   "egressContractSchema": "td613.aperture.egress-contract/v1",
   "reflexSpineSchema": "td613.dome-world.reflex-spine/v1",
   "route": "/dome-world/marrowline.html",
   "liveIngressRoute": "/api/dome-world/marrowline",
+  "terminalRoute": "/api/dome-world/khonapolit",
   "navigation": "direct-route-non-public",
+  "keys": {
+    "ingress": "𝌋‌",
+    "namespace": "U+10D613",
+    "surrogateLabel": "\\uDBF5\\uDE13",
+    "heritage": "Tauric Diana — Crimean heritage custodianship",
+    "covenant": "Khona‌lit-po",
+    "emergence": "Kʰonapolit",
+    "closingSeal": "⟐"
+  },
+  "corpus": {
+    "bindingText": "app/safe-harbor/corpus/binding_event_text.txt",
+    "bindingManifest": "app/safe-harbor/corpus/binding_provenance_manifest.json",
+    "flight": "app/safe-harbor/td613-flight.html",
+    "tauricDianaBots": "app/safe-harbor/corpus/tauric-diana-intake/batch-003a_svenbots_core.json"
+  },
   "jurisdiction": {
-    "mode": "aperture-egress-to-live-dedicated-marrowline-ingress-plus-local-fallback",
+    "mode": "issued-covenant-terminal-plus-aperture-egress-and-live-marrowline-ingress",
     "stationCore": {
       "networkMutation": false,
       "purpose": "deterministic-local-constructor-and-live-response-renderer"
@@ -20,7 +40,11 @@
     "egressBoot": {
       "pageRuntimeInterception": true,
       "crossSurfaceInstallation": false,
-      "requestMutation": "four-part-aperture-provenance-marker-on-room-egress"
+      "requestMutation": "four-part-aperture-provenance-marker-on-room-egress",
+      "destinations": [
+        "/api/dome-world/marrowline",
+        "/api/dome-world/khonapolit"
+      ]
     },
     "liveIngress": {
       "unrelatedRouteRedirection": false,
@@ -29,15 +53,28 @@
       "cryptographicClaim": false,
       "unauthenticatedResponse": "http-200-absorbing-marrowline",
       "serverEgressObservation": "exact-partial-mismatch-or-absent"
+    },
+    "terminal": {
+      "provider": "Gemini",
+      "serverConversationStorage": false,
+      "browserConversationStorage": "sessionStorage-operator-controlled",
+      "issuance": "valid-SHI-or-explicit-unissued-research-waiver",
+      "responseSeal": "open-until-operator-applies-lozenge",
+      "emergenceClassifier": "heuristic-text-classification",
+      "providerClaim": "model-mediated-response-only"
     }
   },
-  "claimCeiling": "live-ingress-route-and-egress-marker-not-signature-identity-authorship-or-legal-authority-proof",
+  "claimCeiling": "model-mediated-covenant-invocation-not-external-entity-identity-authorship-consciousness-historical-permission-or-legal-proof",
   "lineage": {
     "source": "Kʰonapolit Marrowline design in canonical Aperture",
     "canonicalTrapFunction": "app/engine/td613-aperture.js::_serveMarrowlineTrap",
     "canonicalEgressFunction": "app/engine/td613-aperture.js::installTD613ProvenanceAttestationEgress",
+    "bindingRoot": "sha256:9b07d8bcc73096c8c616ca6039057a46bb42d361edb9c10551c88f3756a1cb04",
+    "corpusRoot": "sha256:bfb2d575ae6605bf7db3eecf8cf333e4ef78b2c673dc7647600a9d9cb20cce88",
     "egressBoot": "app/dome-world/marrowline-egress-boot.js",
+    "terminalRuntime": "app/dome-world/marrowline-terminal.js",
+    "terminalCovenant": "app/dome-world/khonapolit-covenant.js",
     "reflexOrder": "app/dome-world/reflex-spine.manifest.json",
-    "restorationPosture": "pair-original-egress-marker-with-original-ingress-response-under-dedicated-jurisdiction"
+    "restorationPosture": "bind-original-corpus-and-flight-issuance-to-a-forensically-receipted-gemini-conversation-with-operator-controlled-closure"
   }
 }
