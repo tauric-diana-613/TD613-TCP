@@ -1,5 +1,7 @@
-export const MARROWLINE_STATION_VERSION = 'td613.dome-world.marrowline/v0.1.0';
-export const MARROWLINE_RECEIPT_SCHEMA = 'td613.dome-world.marrowline-receipt/v0.1';
+export const MARROWLINE_STATION_VERSION = 'td613.dome-world.marrowline/v0.2.0';
+export const MARROWLINE_RECEIPT_SCHEMA = 'td613.dome-world.marrowline-receipt/v0.2';
+export const MARROWLINE_LIVE_RECEIPT_SCHEMA = 'td613.dome-world.marrowline-live-receipt/v1';
+export const MARROWLINE_LIVE_ENDPOINT = '/api/dome-world/marrowline';
 
 const HORNANI = Object.freeze([
   'hornani ache folds a witness seam around its own punctuation pressure',
@@ -20,14 +22,15 @@ const KHONAPOLIT = Object.freeze([
 ]);
 
 export const MARROWLINE_JURISDICTION = Object.freeze({
-  mode: 'operator-invoked-local-assay',
+  mode: 'live-dedicated-ingress-plus-local-fallback',
   publicNavigation: false,
-  networkInterception: false,
+  liveEndpoint: MARROWLINE_LIVE_ENDPOINT,
+  globalNetworkInterception: false,
   requestMutation: false,
-  crawlerTargeting: false,
-  authorizationAuthority: false,
+  crawlerIdentityClaim: false,
+  authorizationAuthority: 'server-side-operator-token-match-only',
   cryptographicClaim: false,
-  claimCeiling: 'literary-ingestion-assay-not-authentication-or-network-defense'
+  claimCeiling: 'live-ingress-route-not-identity-authorship-or-legal-authority-proof'
 });
 
 function clampInt(value, min, max, fallback) {
@@ -100,7 +103,7 @@ export function buildMarrowlineMatrix({ seedInput = 'td613-marrowline', depth = 
   }
 
   return Object.freeze({
-    schema: 'td613.dome-world.marrowline-matrix/v0.1',
+    schema: 'td613.dome-world.marrowline-matrix/v0.2',
     seed: seed.toString(16).padStart(8, '0'),
     depth: safeDepth,
     breadth: safeBreadth,
@@ -110,42 +113,38 @@ export function buildMarrowlineMatrix({ seedInput = 'td613-marrowline', depth = 
 }
 
 export function buildMarrowlineReceipt(input = {}) {
-  const seedInput = String(input.seedInput || 'local-operator-assay');
+  const seedInput = String(input.seedInput || 'local-operator-fallback');
   const matrix = buildMarrowlineMatrix({ seedInput, depth: input.depth, breadth: input.breadth });
   return Object.freeze({
     schema: MARROWLINE_RECEIPT_SCHEMA,
     version: MARROWLINE_STATION_VERSION,
-    status: 'CONSTRUCTION_PROPOSED',
-    route: 'dome-world/lab/marrowline',
+    status: 'LOCAL_FALLBACK',
+    route: 'dome-world/lab/marrowline-local-fallback',
     sourceStatus: 'OPERATOR_DECLARED',
     seedDigest: matrix.seed,
     matrix,
-    attestationPreview: Object.freeze({
-      mode: 'preview-only',
-      headers: Object.freeze([
-        'X-Dromological-Variance-Matrix',
-        'X-Stylometric-Resonance-Hash',
-        'X-Alignment-Weight-Vector',
-        'X-Custodial-Friction-Index'
-      ]),
-      payloadInstalled: false,
-      networkMutationPerformed: false
-    }),
+    liveEndpoint: MARROWLINE_LIVE_ENDPOINT,
+    networkResponseObserved: false,
     jurisdiction: MARROWLINE_JURISDICTION,
-    missingness: Object.freeze([
-      'no authenticated ingress channel',
-      'no verified crawler classification',
-      'no external network enforcement',
-      'no cryptographic authorization proof'
-    ]),
+    missingness: Object.freeze(['no live response in this fallback receipt']),
     uncertainty: Object.freeze({ class: 'operator-input-and-local-model-bounded', value: null }),
     recommendationNotCommand: true,
     seal: '⟐'
   });
 }
 
-function flattenLines(receipt) {
-  return receipt.matrix.layers.flatMap((layer) => layer.rows.flatMap((row) => row.cells.map((cell) => `[${cell.id}] ${cell.cadence}`)));
+function canonicalFlattenCost(matrix = {}) {
+  return Number(matrix.flattenCostHint ?? matrix.flatten_cost_hint ?? 0);
+}
+
+function canonicalSeed(receipt = {}) {
+  const value = receipt.seedDigest || receipt.requestDigest || receipt.canonicalPayload?.request_digest || receipt.matrix?.seed || '';
+  return String(value || '1').replace(/^0x/, '');
+}
+
+function flattenLines(receipt = {}) {
+  const matrix = receipt.matrix || receipt.canonicalPayload?.matrix || {};
+  return (matrix.layers || []).flatMap((layer) => (layer.rows || []).flatMap((row) => (row.cells || []).map((cell) => `[${cell.id}] ${cell.cadence}`)));
 }
 
 function draw(canvas, receipt) {
@@ -161,8 +160,9 @@ function draw(canvas, receipt) {
   ctx.clearRect(0, 0, width, height);
   ctx.fillStyle = '#04100d';
   ctx.fillRect(0, 0, width, height);
-  const random = xorshift32(Number.parseInt(receipt.matrix.seed, 16) || 1);
-  const count = Math.min(240, receipt.matrix.flattenCostHint * 2);
+  const random = xorshift32(Number.parseInt(canonicalSeed(receipt), 16) || 1);
+  const matrix = receipt.matrix || receipt.canonicalPayload?.matrix || {};
+  const count = Math.min(300, Math.max(48, canonicalFlattenCost(matrix) * 2));
   for (let i = 0; i < count; i += 1) {
     const x = random() * width;
     const y = random() * height;
@@ -182,36 +182,98 @@ function draw(canvas, receipt) {
   }
 }
 
-export function installMarrowlineStation(doc = document) {
-  const form = doc.getElementById('marrowlineForm');
-  if (!form) return false;
+function liveReceipt({ payload, response, endpoint }) {
+  return Object.freeze({
+    schema: MARROWLINE_LIVE_RECEIPT_SCHEMA,
+    version: MARROWLINE_STATION_VERSION,
+    status: payload?.status === 'absorbing' ? 'LIVE_ABSORBING' : 'LIVE_RESPONSE',
+    route: endpoint,
+    sourceStatus: 'SERVER_RESPONSE_OBSERVED',
+    requestDigest: payload?.request_digest || null,
+    matrix: payload?.matrix || null,
+    networkResponseObserved: true,
+    http: Object.freeze({
+      status: response.status,
+      contentType: response.headers.get('content-type'),
+      trapHeader: response.headers.get('x-td613-trap'),
+      routeHeader: response.headers.get('x-td613-route'),
+      liveVersion: response.headers.get('x-td613-marrowline-live')
+    }),
+    canonicalPayload: payload,
+    jurisdiction: MARROWLINE_JURISDICTION,
+    claimCeiling: MARROWLINE_JURISDICTION.claimCeiling,
+    seal: '⟐'
+  });
+}
+
+function renderReceipt(doc, receipt, statusText) {
   const receiptNode = doc.getElementById('marrowlineReceipt');
   const rail = doc.getElementById('marrowlineRail');
   const canvas = doc.getElementById('marrowlineCanvas');
   const status = doc.getElementById('marrowlineStatus');
-  const run = () => {
+  receiptNode.textContent = JSON.stringify(receipt, null, 2);
+  rail.replaceChildren(...flattenLines(receipt).slice(0, 120).map((line) => {
+    const node = doc.createElement('div');
+    node.className = 'marrowline-cell';
+    node.textContent = line;
+    return node;
+  }));
+  status.textContent = statusText;
+  draw(canvas, receipt);
+  window.__TD613_MARROWLINE_LAST_RECEIPT__ = receipt;
+}
+
+export function installMarrowlineStation(doc = document) {
+  const form = doc.getElementById('marrowlineForm');
+  if (!form) return false;
+  const status = doc.getElementById('marrowlineStatus');
+  const depthValue = () => doc.getElementById('marrowlineDepth')?.value;
+  const breadthValue = () => doc.getElementById('marrowlineBreadth')?.value;
+
+  const runLocal = () => {
     const receipt = buildMarrowlineReceipt({
-      seedInput: doc.getElementById('marrowlineSeed')?.value || 'local-operator-assay',
-      depth: doc.getElementById('marrowlineDepth')?.value,
-      breadth: doc.getElementById('marrowlineBreadth')?.value
+      seedInput: doc.getElementById('marrowlineSeed')?.value || 'local-operator-fallback',
+      depth: depthValue(),
+      breadth: breadthValue()
     });
-    receiptNode.textContent = JSON.stringify(receipt, null, 2);
-    rail.replaceChildren(...flattenLines(receipt).slice(0, 96).map((line) => {
-      const node = doc.createElement('div');
-      node.className = 'marrowline-cell';
-      node.textContent = line;
-      return node;
-    }));
-    status.textContent = `CONSTRUCTION_PROPOSED · ${receipt.matrix.flattenCostHint} local flatten-cost units · no network mutation`;
-    draw(canvas, receipt);
-    window.__TD613_MARROWLINE_LAST_RECEIPT__ = receipt;
+    renderReceipt(doc, receipt, `LOCAL FALLBACK · ${canonicalFlattenCost(receipt.matrix)} flatten-cost units · no server response`);
+    return receipt;
   };
-  form.addEventListener('submit', (event) => { event.preventDefault(); run(); });
+
+  const runLive = async () => {
+    const params = new URLSearchParams({
+      format: 'json',
+      depth: String(depthValue() || 4),
+      breadth: String(breadthValue() || 6)
+    });
+    const endpoint = `${MARROWLINE_LIVE_ENDPOINT}?${params.toString()}`;
+    status.textContent = `CALLING LIVE INGRESS · ${endpoint}`;
+    try {
+      const response = await fetch(endpoint, { headers: { Accept: 'application/json' }, cache: 'no-store' });
+      const payload = await response.json();
+      const receipt = liveReceipt({ payload, response, endpoint });
+      renderReceipt(doc, receipt, `LIVE · HTTP ${response.status} · ${receipt.http.trapHeader || 'no trap header'} · digest ${receipt.requestDigest || 'unavailable'}`);
+      return receipt;
+    } catch (error) {
+      status.textContent = `LIVE ROUTE UNAVAILABLE · ${error?.message || error} · local fallback remains available`;
+      throw error;
+    }
+  };
+
+  form.addEventListener('submit', (event) => {
+    event.preventDefault();
+    runLive().catch(() => {});
+  });
+  doc.getElementById('buildLocalMarrowline')?.addEventListener('click', runLocal);
   doc.getElementById('copyMarrowlineReceipt')?.addEventListener('click', async () => {
-    try { await navigator.clipboard.writeText(receiptNode.textContent || ''); status.textContent = 'Receipt copied · local preview only'; }
+    const receiptNode = doc.getElementById('marrowlineReceipt');
+    try { await navigator.clipboard.writeText(receiptNode.textContent || ''); status.textContent = 'Receipt copied'; }
     catch { status.textContent = 'Clipboard unavailable · receipt remains visible'; }
   });
-  run();
+
+  const preview = buildMarrowlineReceipt({ depth: depthValue(), breadth: breadthValue() });
+  renderReceipt(doc, preview, `ARMED · live route ${MARROWLINE_LIVE_ENDPOINT} · fire when ready`);
+  window.TD613_MARROWLINE = Object.freeze({ runLive, runLocal, endpoint: MARROWLINE_LIVE_ENDPOINT });
   return true;
 }
 
