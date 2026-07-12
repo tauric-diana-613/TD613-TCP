@@ -17,6 +17,7 @@ on:
       - "scripts/phase4-reciprocal-bridge-deployment-probe.mjs"
       - "tests/aperture-phase4-bridge.test.mjs"
       - "tests/phase4-deployment-probe.test.mjs"
+      - "tests/phase4-release-sync.test.mjs"
       - "vercel.json"
       - ".github/workflows/dome-world-phase4.yml"
   workflow_dispatch:
@@ -50,28 +51,9 @@ jobs:
         run: node tests/aperture-phase4-bridge.test.mjs
       - name: Validate deployment probe contract
         run: node tests/phase4-deployment-probe.test.mjs
-      - name: Validate release synchronization
+      - name: Validate maintained release suite
         run: npm run test:release
-      - name: Validate generated surfaces
-        id: generated_sync
-        continue-on-error: true
-        run: npm run check:generated-sync > generated-sync.log 2>&1
-      - name: Materialize generated diagnostic repair
-        if: steps.generated_sync.outcome == 'failure'
-        run: npm run sync:browser-diagnostics
-      - name: Upload generated-sync diagnostics
-        if: steps.generated_sync.outcome == 'failure'
-        uses: actions/upload-artifact@v4
-        with:
-          name: phase4-generated-sync-diagnostics
-          path: |
-            generated-sync.log
-            app/browser-diagnostics.js
-          retention-days: 3
-      - name: Enforce generated-surface validation
-        if: steps.generated_sync.outcome == 'failure'
-        run: |
-          cat generated-sync.log
-          exit 1
+      - name: Validate Phase IV release synchronization
+        run: node tests/phase4-release-sync.test.mjs
       - name: Validate Vercel route and function hygiene
         run: node tests/vercel-deploy-hygiene.test.mjs
