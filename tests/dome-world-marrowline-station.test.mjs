@@ -10,6 +10,10 @@ import {
   buildMarrowlineReceipt
 } from '../app/dome-world/marrowline-station.js';
 import {
+  MARROWLINE_CIRCUIT_RECEIPT_SCHEMA,
+  circuitObservation
+} from '../app/dome-world/marrowline-egress-boot.js';
+import {
   TD613_APERTURE_ATTESTATION_HEADER_KEYS,
   buildTD613ApertureAttestationHeaders,
   observeTD613ApertureEgress
@@ -26,6 +30,7 @@ const vercel = JSON.parse(fs.readFileSync('vercel.json', 'utf8'));
 assert.equal(MARROWLINE_STATION_VERSION, 'td613.dome-world.marrowline/v0.2.0');
 assert.equal(MARROWLINE_RECEIPT_SCHEMA, 'td613.dome-world.marrowline-receipt/v0.2');
 assert.equal(MARROWLINE_LIVE_RECEIPT_SCHEMA, 'td613.dome-world.marrowline-live-receipt/v1');
+assert.equal(MARROWLINE_CIRCUIT_RECEIPT_SCHEMA, 'td613.dome-world.marrowline-circuit-receipt/v1');
 assert.equal(MARROWLINE_LIVE_ENDPOINT, '/api/dome-world/marrowline');
 assert.equal(release.stationSchema, MARROWLINE_STATION_VERSION);
 assert.equal(release.receiptSchema, MARROWLINE_RECEIPT_SCHEMA);
@@ -66,10 +71,29 @@ const exactHeaders = buildTD613ApertureAttestationHeaders();
 assert.equal(Object.keys(exactHeaders).length, TD613_APERTURE_ATTESTATION_HEADER_KEYS.length);
 assert.equal(observeTD613ApertureEgress(exactHeaders).status, 'exact');
 
+const circuit = circuitObservation({
+  requestDigest: 'a613beef',
+  http: { status: 200, trapHeader: 'marrowline', routeHeader: 'live-marrowline-ingress' },
+  canonicalPayload: {
+    request_digest: 'a613beef',
+    aperture_egress: { status: 'exact', exact: true, marker: 'A+' },
+    reflex_spine: { active_steps: [1, 2] }
+  }
+});
+assert.equal(circuit.schema, MARROWLINE_CIRCUIT_RECEIPT_SCHEMA);
+assert.equal(circuit.status, 'CIRCUIT_EXACT');
+assert.equal(circuit.apertureEgress.marker, 'A+');
+assert.equal(circuit.marrowlineIngress.httpStatus, 200);
+assert.equal(circuit.marrowlineIngress.trapHeader, 'marrowline');
+assert.deepEqual(circuit.reflex.activeSteps, [1, 2]);
+assert.equal(circuitObservation({ canonicalPayload: {} }), null);
+
 assert.doesNotMatch(stationSource, /window\.fetch\s*=/, 'station itself must not monkey-patch fetch');
 assert.doesNotMatch(stationSource, /XMLHttpRequest\.prototype/, 'station itself must not monkey-patch XHR');
 assert.match(stationSource, /fetch\(endpoint/);
 assert.match(bootSource, /installTD613ProvenanceAttestationEgress/);
+assert.match(bootSource, /installCircuitObserver/);
+assert.match(bootSource, /APERTURE EGRESS/);
 assert.match(bootSource, /import\('\.\/marrowline-station\.js'\)/);
 assert.match(apiSource, /observeTD613ApertureEgress/);
 assert.match(apiSource, /_serveMarrowlineTrap/);
