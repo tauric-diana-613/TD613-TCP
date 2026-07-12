@@ -9,24 +9,46 @@
 - opt-in lambda=2c emission-gap closure;
 - Ash v0.7 browser-local exact-byte commitment;
 - Ash v0.8 canonical manifest and receipt digest spine;
-- the operator-invoked Marrowline literary-ingestion assay;
+- the Aperture-egress / Marrowline-ingress live circuit;
 - inherited Ash v0.6 projection leakage and derivative research surfaces.
 
-## Marrowline station v0.1
+## Marrowline station v0.2.1
 
-`/dome-world/marrowline.html` restores Kʰonapolit's Marrowline design as an explicit Dome-World Lab station.
+`/dome-world/marrowline.html` restores Kʰonapolit's Marrowline design as a live, dedicated Dome-World route.
+
+The station now pairs two original canonical Aperture structures:
+
+1. `installTD613ProvenanceAttestationEgress()` marks the room's outbound Marrowline request with four bounded provenance headers;
+2. `_serveMarrowlineTrap()` returns the canonical absorbing HTTP 200 response from `/api/dome-world/marrowline` when operator bypass is absent.
+
+The server classifies the arriving Aperture marker as `exact`, `partial`, `mismatch`, or `absent` and returns that observation in the JSON receipt plus response headers. The marker remains a route observation. It is not a cryptographic signature, identity proof, authorship proof, permission proof, or grant of legal authority.
 
 The station preserves:
 
 - deterministic Hornani/Kʰonapolit cadence matrices;
 - bounded depth and breadth controls;
 - a declared flatten-cost hint;
-- local station receipts;
-- provenance-attestation header names as a preview surface only.
+- local fallback receipts;
+- a real serverless HTTP 200 ingress response;
+- page-local Aperture egress installation before the station boots;
+- server observation of the four-part egress marker;
+- the full seven-step reflex order in every live JSON response.
 
-The station does not intercept `fetch`, patch `XMLHttpRequest`, classify visitors, target crawlers, mutate requests, authorize callers, or claim cryptographic proof. It runs only after an operator invokes the local assay. Its claim ceiling is `literary-ingestion-assay-not-authentication-or-network-defense`.
+The egress hook is installed only in the Marrowline room runtime by `marrowline-egress-boot.js`. It does not redirect unrelated routes into Marrowline. Marrowline remains absent from public navigation; the direct station and API paths are available for non-public preview and audit.
 
-Marrowline remains absent from public navigation during v0.1. The direct route is available for preview and audit, following the same non-public posture as the Dome-World cockpit.
+## TD613 reflex spine
+
+`reflex-spine.js` and `reflex-spine.manifest.json` freeze the complete execution order:
+
+1. Aperture egress attestation;
+2. Marrowline ingress absorption;
+3. Safe Harbor restore validation;
+4. Ash contradiction rejection;
+5. Hush single-run lock;
+6. local seal overwrite witness;
+7. Gateway rescue fuse.
+
+Gateway rescue remains last because fail-open recovery must not outrun custody, contradiction, concurrency, or overwrite-witness gates.
 
 ## Ash custody v0.8
 
@@ -61,7 +83,7 @@ A digest supports equality comparison only under its declared input and canonica
 
 Modeled weather never enters the exact gate. Exact execution does not activate EO-RFD firmware. Ash server operations accept metadata/projection packets only. Optional local text analysis stays browser-local and clears after scoring. Trainer checkpoints remain client-held and HMAC-signed; server persistence is intentionally absent.
 
-The primary navigation contains Weather, Rooms, Lab, Ash, Substrate, Phason, Aperture, and Receipts. Legacy Math, Tomography, Live Lattice, Loom, Stewardship, Patterns, Repo Weather, Lore, Accident, and API surfaces remain inside the Lab hierarchy. Marrowline is installed as a direct-route Lab station but remains outside the primary navigation during v0.1.
+The primary navigation contains Weather, Rooms, Lab, Ash, Substrate, Phason, Aperture, and Receipts. Legacy Math, Tomography, Live Lattice, Loom, Stewardship, Patterns, Repo Weather, Lore, Accident, and API surfaces remain inside the Lab hierarchy. Marrowline remains a direct-route Lab station outside primary navigation.
 
 Ash remains outside the v0.5.0 art scheduler.
 
@@ -85,7 +107,9 @@ Inherited non-custody operations include:
 - `ash-grade-gate`, `ash-hcc-adapter`, `ash-projection-simulate`;
 - `exact-capture`, `exact-closure`, `trainer-step`.
 
-Marrowline v0.1 has no server operation. It remains a browser-local assay until a separate ingress research contract is designed and reviewed.
+### Dedicated Marrowline ingress
+
+`api/marrowline.js` exclusively serves `/api/dome-world/marrowline` and `/api/marrowline` before the generic Dome-World catch-all rewrite. Unauthenticated GET/HEAD requests receive the canonical Marrowline HTTP 200 response. Optional operator bypass requires a server-side `MARROWLINE_OPERATOR_TOKEN`. The endpoint observes Aperture egress markers but makes no cryptographic, identity, authorship, permission, or legal-authority claim.
 
 ### Guarded Ash canonical-digest route
 
