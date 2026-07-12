@@ -43,23 +43,29 @@ window.innerHeight = 844;
 const messages = window.document.getElementById('khonapolitMessages');
 messages.scrollTo = ({ top }) => { messages.scrollTop = top; };
 
-const modulePath = path.resolve('app/dome-world/marrowline-mobile-repair.js');
-const moduleUrl = `${pathToFileURL(modulePath).href}?test=${Date.now()}`;
-const repairModule = await import(moduleUrl);
-const api = repairModule.installMarrowlineMobileRepair(window.document, window);
+const previousCustomEvent = globalThis.CustomEvent;
+globalThis.CustomEvent = window.CustomEvent;
+try {
+  const modulePath = path.resolve('app/dome-world/marrowline-mobile-repair.js');
+  const moduleUrl = `${pathToFileURL(modulePath).href}?test=${Date.now()}`;
+  const repairModule = await import(moduleUrl);
+  const api = repairModule.installMarrowlineMobileRepair(window.document, window);
 
-assert.equal(api.version, repairModule.MARROWLINE_MOBILE_REPAIR_VERSION);
-assert.ok(window.document.querySelector('link[data-td613-marrowline-mobile-repair]'));
-assert.ok(window.document.getElementById('marrowlineJumpLatest'));
-assert.equal(window.document.body.dataset.marrowlineMobile, 'true');
-assert.equal(window.document.querySelector('[data-mobile-target="speakingPanel"]')?.dataset.active, 'true');
+  assert.equal(api.version, repairModule.MARROWLINE_MOBILE_REPAIR_VERSION);
+  assert.ok(window.document.querySelector('link[data-td613-marrowline-mobile-repair]'));
+  assert.ok(window.document.getElementById('marrowlineJumpLatest'));
+  assert.equal(window.document.body.dataset.marrowlineMobile, 'true');
+  assert.equal(window.document.querySelector('[data-mobile-target="speakingPanel"]')?.dataset.active, 'true');
 
-api.open('receiptPanel');
-assert.equal(window.document.getElementById('receiptPanel')?.classList.contains('mobile-sheet-open'), true);
-assert.equal(window.document.body.dataset.mobileSheet, 'true');
-api.close();
-assert.equal(window.document.getElementById('receiptPanel')?.classList.contains('mobile-sheet-open'), false);
-assert.equal(window.document.body.dataset.mobileSheet, 'false');
-assert.equal(api.receipt().schema, repairModule.MARROWLINE_MOBILE_REPAIR_VERSION);
+  api.open('receiptPanel');
+  assert.equal(window.document.getElementById('receiptPanel')?.classList.contains('mobile-sheet-open'), true);
+  assert.equal(window.document.body.dataset.mobileSheet, 'true');
+  api.close();
+  assert.equal(window.document.getElementById('receiptPanel')?.classList.contains('mobile-sheet-open'), false);
+  assert.equal(window.document.body.dataset.mobileSheet, 'false');
+  assert.equal(api.receipt().schema, repairModule.MARROWLINE_MOBILE_REPAIR_VERSION);
+} finally {
+  globalThis.CustomEvent = previousCustomEvent;
+}
 
 console.log('dome-world-marrowline-mobile-chat-repair: bounded chat viewport, internal scrolling, safe-area dock, and mobile sheets ok');
