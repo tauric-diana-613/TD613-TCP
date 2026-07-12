@@ -56,6 +56,8 @@ assertRewrite('/api/dome-world/ash-custody-replay', '/api/ash-local-commitment-g
 assertRewrite('/api/dome-world/ash-custody-migrate', '/api/ash-local-commitment-guard');
 assertRewrite('/api/ash-local-commitment', '/api/ash-local-commitment-guard');
 assertRewrite('/api/dome-world-engine', '/api/dome-world-engine-guard');
+assertRewrite('/api/flowcore-context', '/api/dome-world-engine-guard?operation=flowcore-context');
+assertRewrite('/api/dome-world/flowcore-context', '/api/dome-world-engine-guard?operation=flowcore-context');
 assertRewrite('/api/dome-world/ping', '/api/dome-world-engine-guard?operation=ping');
 assertRewrite('/api/dome-world/readiness', '/api/dome-world-engine-guard?operation=readiness');
 assertRewrite('/api/dome-world/step2-readiness', '/api/dome-world-engine-guard?operation=step2-readiness');
@@ -66,6 +68,7 @@ assertRewrite('/dome-world/index.html', '/api/dome-world-shell');
 assertRewrite('/app/dome-world/index.html', '/api/dome-world-shell');
 assertRewrite('/dome-world/ash-custody.html', '/app/dome-world/ash-custody-v08.html');
 assertRewrite('/app/dome-world/ash-custody.html', '/app/dome-world/ash-custody-v08.html');
+assertRewrite('/dome-world/flow-core-context.html', '/app/dome-world/flow-core-context.html');
 assertRewrite('/dome-world/(.*)', '/app/dome-world/$1');
 assertRewrite('/api/(.*)', '/api/$1');
 assertRewrite('/safe-harbor/td613-flight.html', '/api/flight-html');
@@ -77,9 +80,11 @@ for (const exact of [
   '/api/dome-world/ash-custody-register',
   '/api/dome-world/ash-custody-replay',
   '/api/dome-world/ash-custody-migrate',
+  '/api/dome-world/flowcore-context',
 ]) assertRewriteBefore(exact, '/api/dome-world/(.*)');
 assertRewriteBefore('/api/ash-local-commitment', '/api/(.*)');
 assertRewriteBefore('/api/dome-world-engine', '/api/(.*)');
+assertRewriteBefore('/api/flowcore-context', '/api/(.*)');
 assertRewriteBefore('/dome-world', '/dome-world/(.*)');
 assertRewriteBefore('/dome-world/', '/dome-world/(.*)');
 assertRewriteBefore('/dome-world/index.html', '/dome-world/(.*)');
@@ -98,12 +103,16 @@ assertRewriteBefore('/app/dome-world/index.html', '/app/(.*)');
   '/dome-world/ash-custody.html',
   '/app/dome-world/ash-custody-v07.html',
   '/app/dome-world/ash-custody-v08.html',
+  '/dome-world/flow-core-context.html',
+  '/app/dome-world/flow-core-context.html',
   '/dome-world/ash/local-commitment.js',
   '/app/dome-world/ash/local-commitment.js',
   '/dome-world/ash/canonical-json.js',
   '/app/dome-world/ash/canonical-json.js',
   '/api/dome-world-engine',
   '/api/ash-local-commitment',
+  '/api/flowcore-context',
+  '/api/dome-world/flowcore-context',
   '/api/dome-world-engine-guard',
   '/api/ash-local-commitment-guard',
 ].forEach(assertNoStore);

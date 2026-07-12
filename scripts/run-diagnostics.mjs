@@ -15,6 +15,7 @@ const COMMANDS = Object.freeze({
   ],
   'dome-world': [
     [npm, ['run', 'test:dome-world:art']],
+    [npm, ['run', 'test:dome-world:phase3']],
     [node, ['tests/dome-world-ash-custody.test.mjs']]
   ],
   hush: [

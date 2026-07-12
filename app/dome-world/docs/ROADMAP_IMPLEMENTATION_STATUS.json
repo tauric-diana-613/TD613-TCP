@@ -1,14 +1,14 @@
 {
-  "schema": "td613.roadmap.implementation-status/v0.2",
+  "schema": "td613.roadmap.implementation-status/v0.3",
   "as_of": "2026-07-12",
   "no_silent_promotion": true,
   "no_new_claim_ceiling_mechanism": true,
   "phases": [
     {"phase": 0, "status": "IMPLEMENTED_HARDENED", "live_probe_policy": "rerun-after-custody-release"},
     {"phase": 1, "status": "IMPLEMENTED_HARDENED"},
-    {"phase": 2, "status": "IMPLEMENTED_VALIDATION_GATED", "promotion_requires": ["phase2-ci-green", "post-merge-live-probe"]},
-    {"phase": 3, "status": "PLANNED"},
-    {"phase": 4, "status": "APERTURE_DESIGN_INSTANTIATED_API_DEFERRED"},
+    {"phase": 2, "status": "IMPLEMENTED_PRODUCTION_DEMONSTRATED"},
+    {"phase": 3, "status": "IMPLEMENTED_VALIDATION_GATED", "promotion_requires": ["phase3-ci-green", "production-inspection", "post-merge-live-probe"]},
+    {"phase": 4, "status": "PROVISIONAL_RECEIPT_PATH_ACTIVE_V01_ADOPTION_DEFERRED"},
     {"phase": 5, "status": "APERTURE_LANDING_ZONE_INSTANTIATED_RUNTIME_DEFERRED"},
     {"phase": 6, "status": "HELD", "reason": "plaintext Cinder transport not redesigned"},
     {"phase": 7, "status": "PLANNED"},
@@ -24,6 +24,18 @@
     "migration_sources": ["td613.ash.custody-manifest/v0.5", "td613.ash.custody-manifest/v0.7"],
     "universal_stable_digest_published_by_default": false
   },
+  "phase_3": {
+    "context_receipt_schema": "td613.flowcore.context-receipt/v0.1",
+    "sensor_registry_schema": "td613.flowcore.sensor-registry/v0.1",
+    "operation": "flowcore-context-instrument",
+    "source_statuses": ["OBSERVED", "SUPPLIED", "DERIVED", "SIMULATED", "INFERRED", "ATTESTED", "UNRESOLVED"],
+    "postures": ["CONTEXT_READY", "ABSTAIN_INSUFFICIENT_CONTEXT"],
+    "artifact_blind": true,
+    "private_by_default": true,
+    "prediction_authorized": false,
+    "automatic_ash_action": false,
+    "bridge_integration_status": "PHASE_4_DEFERRED"
+  },
   "closed_post_merge_seams": [
     "legacy-engine-custody-bypass",
     "contradictory-l1-boundary-normalization",
@@ -31,6 +43,7 @@
     "duplicate-local-commitment-runtime",
     "stale-v06-alias-surface",
     "receipt-list-innerhtml-injection",
-    "plaintext-cinder-ui-transit"
+    "plaintext-cinder-ui-transit",
+    "aperture-v3-identity-contention"
   ]
 }

@@ -1,0 +1,61 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover" />
+<meta name="td613-route" content="𝌋‌ U+10D613" />
+<meta name="flowcore-context-schema" content="td613.flowcore.context-receipt/v0.1" />
+<title>Dome-World / Flow-Core Context Phase III</title>
+<style>
+*{box-sizing:border-box}html{background:#07100f;color-scheme:dark;-webkit-text-size-adjust:100%}body{margin:0;background:#07100f;color:#edf2e8;font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace}.wrap{width:min(1180px,calc(100% - 22px));margin:auto;padding:18px 0 44px}.panel,header{border:1px solid #37524a;border-radius:18px;background:#0b1a17;padding:16px;margin:12px 0}.grid{display:grid;grid-template-columns:minmax(0,1.05fr) minmax(320px,.95fr);gap:12px}.metrics{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}.field{display:block}.field span{display:block;color:#b9c9bd;font-size:.8rem;margin:4px 0}input,select,textarea,button{font:inherit;font-size:16px}input,select,textarea{width:100%;min-height:44px;padding:9px;background:#030908;color:#edf2e8;border:1px solid #37524a}textarea{min-height:96px}.actions,.chips,.nav{display:flex;gap:8px;flex-wrap:wrap}.btn,.chip,.nav a{border:1px solid #507b6e;background:#06100e;color:#edf2e8;padding:9px 11px;text-decoration:none}.primary{border-color:#d6c56f}.status{padding:10px;border:1px solid #507b6e;background:#06100e;margin:10px 0;overflow-wrap:anywhere}.status[data-state="ABSTAIN"],.held{border-color:#9e7349;background:#1b1208}.status[data-state="OPEN"]{border-color:#d6c56f}.sub{color:#b9c9bd;line-height:1.55}.claim{font-size:.76rem;text-transform:uppercase;color:#93a49a;line-height:1.5}pre{max-height:64vh;overflow:auto;white-space:pre-wrap;word-break:break-word;background:#030908;border:1px solid #37524a;padding:12px}.receipt-row{border-top:1px solid #37524a;padding:8px 0}@media(max-width:820px){.wrap{width:calc(100% - 12px);padding:max(10px,env(safe-area-inset-top)) 0 calc(28px + env(safe-area-inset-bottom))}.grid,.metrics{grid-template-columns:1fr}.panel,header{border-radius:12px;padding:13px}.actions .btn{flex:1 1 145px}.nav{overflow:auto;flex-wrap:nowrap}.nav a{white-space:nowrap;flex:0 0 auto}}
+</style>
+</head>
+<body>
+<main class="wrap">
+<header>
+<p>𝌋‌ TD613 Flow-Core · Phase III · Context Instrumentation</p>
+<h1>Named sensors. Honest weather. Earned abstention.</h1>
+<p class="sub">Flow-Core records where each value came from, how it changed, what remains missing, and when the responsible output is no modeled weather at all. Context stays artifact-blind and private by default.</p>
+<div class="chips"><span class="chip">source status travels</span><span class="chip">sensor provenance</span><span class="chip">benign controls</span><span class="chip">abstention is valid</span></div>
+<nav class="nav"><a href="/dome-world">Dome-World</a><a href="/dome-world/ash-custody.html">Ash Phase II</a><a href="#receipt">Receipt</a></nav>
+</header>
+<section class="grid">
+<div class="panel">
+<h2>Instrument context</h2>
+<label class="field"><span>Diagnostic receipt reference</span><input id="diagnosticRef" value="apdiag_phase3_demo" /></label>
+<div class="metrics">
+<label class="field"><span>Source status</span><select id="sourceStatus"><option>DERIVED</option><option>SIMULATED</option><option>SUPPLIED</option><option>OBSERVED</option><option>ATTESTED</option><option>INFERRED</option><option>UNRESOLVED</option></select></label>
+<label class="field"><span>Sensor</span><select id="sensorId"><option>derived-formula</option><option>simulated-fixture</option><option>operator-declaration</option><option>browser-performance-api</option><option>http-response-log</option><option>retrieval-comparison</option><option>repository-change-record</option><option>controlled-model-output-experiment</option><option>external-environmental-sensor</option><option>signed-witness-attestation</option><option>unknown</option></select></label>
+<label class="field"><span>Omission pressure [0–1]</span><input id="omissionPressure" value="0.2" inputmode="decimal" /></label>
+<label class="field"><span>Coherence [0–1]</span><input id="coherence" value="0.75" inputmode="decimal" /></label>
+<label class="field"><span>Divergence [0–1]</span><input id="divergence" value="0.3" inputmode="decimal" /></label>
+<label class="field"><span>Naming sensitivity [0–1]</span><input id="namingSensitivity" value="0.4" inputmode="decimal" /></label>
+<label class="field"><span>Rupture pressure [0–1]</span><input id="rupturePressure" value="0.1" inputmode="decimal" /></label>
+<label class="field"><span>Benign control</span><select id="condition"><option value="">none</option><option>LATENCY</option><option>OUTAGE</option><option>DRIFT</option><option>NOISE</option><option>RETRIEVAL_GAP</option></select></label>
+</div>
+<label class="field"><span>Transformation history</span><textarea id="transform">declared inputs -> bounded Phase III context metric</textarea></label>
+<div class="actions"><button id="instrument" class="btn primary">Generate context receipt</button><button id="loadSimulation" class="btn">Load simulation</button><button id="loadAbstention" class="btn">Load insufficient context</button><button id="clear" class="btn">Clear</button></div>
+<div id="status" class="status" data-state="READY" role="status" aria-live="polite">READY · no context receipt generated.</div>
+<p class="claim">No stable artifact identifier, raw bytes, prediction authority, or automatic Ash action crosses this station.</p>
+</div>
+<aside class="panel"><h2>Materiality readout</h2><div id="summary" class="sub">The receipt will name source posture, sensors, missingness, uncertainty, alternatives, and any abstention.</div><div id="localIndex"></div></aside>
+</section>
+<section id="receipt" class="panel"><h2>Latest receipt</h2><pre id="receiptPre">No receipt yet.</pre></section>
+<section class="panel held"><h2>Phase IV boundary</h2><p class="sub">This station produces the final Phase III context receipt. The existing reciprocal bridge remains a bounded preview until Phase IV explicitly adopts this v0.1 contract. Receipt arrival never creates artifact relation, doctrine writeback, or custody action.</p></section>
+</main>
+<script>
+const $=id=>document.getElementById(id),KEY='td613:flowcore:context:v0.1';
+const metricNames=['omissionPressure','coherence','divergence','namingSensitivity','rupturePressure'];
+function number(id){const value=$(id).value.trim();return value===''?null:Number(value)}
+function payload(){const sensor_id=$('sensorId').value,source_status=$('sourceStatus').value,history=$('transform').value.split('\n').map(v=>v.trim()).filter(Boolean);const measurements=metricNames.filter(id=>$(id).value.trim()!=='').map(name=>({name,value:number(name),sensor_id,source_status,transformation_history:history}));const condition=$('condition').value;return{diagnosticReceipt:{receipt_id:$('diagnosticRef').value.trim()||null},measurements,conditions:condition?[{kind:condition,detail:'operator-selected benign control'}]:[]}}
+function remember(receipt){const items=JSON.parse(localStorage.getItem(KEY)||'[]');items.push(receipt);localStorage.setItem(KEY,JSON.stringify(items.slice(-40)));renderIndex()}
+function renderIndex(){const host=$('localIndex');host.replaceChildren();const items=JSON.parse(localStorage.getItem(KEY)||'[]').slice().reverse();for(const receipt of items){const row=document.createElement('div');row.className='receipt-row';row.textContent=`${receipt.receipt_id} · ${receipt.context_posture}`;host.append(row)}if(!items.length)host.textContent='No local context receipts.'}
+async function instrument(){try{$('status').dataset.state='PENDING';$('status').textContent='INSTRUMENTING · validating source and sensor posture.';const response=await fetch('/api/flowcore-context',{method:'POST',headers:{'content-type':'application/json'},body:JSON.stringify({operation:'flowcore-context-instrument',traceId:'flowctx_'+Date.now().toString(36),apertureContext:{version:'v3.0-alpha',schema:'td613-aperture/v3.0-alpha',observedRegime:'PRCS-A'},payload:payload()})});const body=await response.json();if(!response.ok||body.ok===false)throw new Error(body.error||`HTTP ${response.status}`);const receipt=body.result;$('receiptPre').textContent=JSON.stringify(receipt,null,2);$('status').dataset.state=receipt.status;$('status').textContent=`${receipt.status} · ${receipt.context_posture}`;$('summary').textContent=`Source ${receipt.source_status}; sensors ${receipt.measurements.map(item=>item.sensor_id).join(', ')||'none'}; missing ${receipt.missingness.length}; alternatives ${receipt.alternatives.length}; weather ${receipt.modeled_weather?'returned':'withheld'}.`;remember(receipt)}catch(error){$('status').dataset.state='ABSTAIN';$('status').textContent=`HELD · ${error.message}`}}
+$('instrument').onclick=instrument;
+$('loadSimulation').onclick=()=>{$('sourceStatus').value='SIMULATED';$('sensorId').value='simulated-fixture';$('transform').value='declared simulation -> bounded context metric';$('condition').value='NOISE'};
+$('loadAbstention').onclick=()=>{$('coherence').value='';$('sourceStatus').value='DERIVED';$('sensorId').value='derived-formula';$('transform').value='declared inputs -> bounded context metric'};
+$('clear').onclick=()=>{for(const id of metricNames)$(id).value='';$('diagnosticRef').value='';$('receiptPre').textContent='No receipt yet.';$('summary').textContent='No context receipt generated.';$('status').dataset.state='READY';$('status').textContent='READY · cleared.'};
+renderIndex();
+</script>
+</body>
+</html>
