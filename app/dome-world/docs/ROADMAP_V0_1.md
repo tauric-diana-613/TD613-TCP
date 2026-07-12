@@ -2,7 +2,7 @@
 
 **Working title:** *The Crayon Map*  
 **Status:** governed implementation roadmap  
-**Baseline:** Aperture v3.0-alpha · Dome-World v0.5.0 · Ash v0.8 digest spine / v0.7 commitment / v0.6 derivative lineage · exact substrate v0.4.3
+**Baseline:** Aperture v3.0-alpha · Dome-World v0.5.0 · Flow-Core context v0.1 · Ash v0.8 digest spine / v0.7 commitment / v0.6 derivative lineage · exact substrate v0.4.3
 
 ## Governing laws
 
@@ -62,6 +62,8 @@ Phase 9  Validation, deployment, and release discipline
 
 **Purpose:** Add named sensors, source status, transformation history, missingness, uncertainty, alternatives, benign controls, and abstention. Context remains artifact-blind and private by default.
 
+**Exit gate:** each measurement names source and sensor; simulated inputs cannot claim observed status; unknown sensors remain unresolved; missing required context abstains; benign outage/latency/drift/noise/retrieval controls remain alternatives rather than suppression findings; no artifact identifier enters; prediction and Ash action remain unauthorized.
+
 ## Phase 4 — Reciprocal Receipt Bridge
 
 ```text
@@ -73,7 +75,7 @@ Aperture diagnostic receipt
 → optional Ash human gate
 ```
 
-**Purpose:** Implement two-way communication before two-way authority. Flow-Core cannot write Aperture doctrine; Aperture cannot execute Ash.
+**Purpose:** Implement two-way communication before two-way authority. Flow-Core cannot write Aperture doctrine; Aperture cannot execute Ash. Phase IV explicitly adopts the Phase III `v0.1` receipt and retires the provisional `vNext` bridge return.
 
 ## Phase 5 — Relation Envelope and Phason Continuity
 
@@ -111,6 +113,6 @@ The human decides.
 
 ## Current implementation state
 
-See `ROADMAP_IMPLEMENTATION_STATUS.md` and `.json`. Phases 0–1 are implemented and hardened. Phase 2 is implemented on its governed branch and remains validation-gated until Phase 2 CI and the post-merge live probe close. Later phases remain planned, designed, or explicitly held.
+See `ROADMAP_IMPLEMENTATION_STATUS.md` and `.json`. Phases 0–2 have passed their implementation and production gates. Phase 3 is implemented on its governed branch and remains validation-gated until Phase III CI, preview inspection, and the post-merge live probe close. Phase 4 retains a provisional receipt path but does not adopt the Phase III v0.1 contract until its own gate.
 
 ⟐
