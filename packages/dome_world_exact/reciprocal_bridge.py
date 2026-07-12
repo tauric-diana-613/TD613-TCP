@@ -14,6 +14,7 @@ from typing import Any
 
 from packages.dome_world_exact.flowcore_context import (
     CONTEXT_RECEIPT_SCHEMA,
+    SENSOR_REGISTRY,
     instrument_context,
     reject_artifact_material,
 )
@@ -40,23 +41,25 @@ METRIC_NAMES = (
     "namingSensitivity",
     "rupturePressure",
 )
-REQUIRED_METRICS = ("omissionPressure", "coherence", "divergence")
-
 FORBIDDEN_AUTHORITY_KEYS = {
-    "automatic_ash_action",
-    "automaticAshAction",
-    "prediction_authorized",
-    "predictionAuthorized",
-    "reciprocal_authority",
-    "reciprocalAuthority",
-    "artifact_relation",
-    "artifactRelation",
-    "doctrine_writeback",
-    "doctrineWriteback",
-    "execute",
-    "mandatory",
-    "binding",
+    "automatic_ash_action", "automaticAshAction",
+    "prediction_authorized", "predictionAuthorized",
+    "reciprocal_authority", "reciprocalAuthority",
+    "artifact_relation", "artifactRelation",
+    "doctrine_writeback", "doctrineWriteback",
+    "execute", "mandatory", "binding",
 }
+
+# Phase IV extends the Phase III registry without changing standalone receipts.
+SENSOR_REGISTRY.setdefault(
+    "aperture-diagnostic-receipt",
+    {
+        "default_source_status": "DERIVED",
+        "allowed_source_statuses": ["DERIVED"],
+        "authority_class": "A2_DERIVATIONAL",
+        "description": "metric carried by a validated Aperture diagnostic receipt",
+    },
+)
 
 
 def _dict(value: Any) -> dict[str, Any]:
@@ -87,8 +90,7 @@ def _finite_metric(value: Any, name: str) -> float | int | None:
         return None
     if isinstance(value, bool) or not isinstance(value, (int, float)):
         raise ValueError(f"diagnostic metric {name} must be a finite number")
-    number = float(value)
-    if not math.isfinite(number):
+    if not math.isfinite(float(value)):
         raise ValueError(f"diagnostic metric {name} must be finite")
     return value
 
@@ -98,7 +100,9 @@ def _task_intent(receipt: dict[str, Any]) -> dict[str, Any]:
     route = str(task.get("primary_route", task.get("primaryRoute", ""))).strip()
     if not route:
         raise ValueError("Aperture diagnostic receipt requires a task-intent route")
-    runtime = str(task.get("runtime_materiality", task.get("runtimeMateriality", "BACKGROUND"))).upper()
+    runtime = str(
+        task.get("runtime_materiality", task.get("runtimeMateriality", "BACKGROUND"))
+    ).upper()
     if runtime not in {"NONE", "BACKGROUND", "MATERIAL", "DISPOSITIVE"}:
         raise ValueError("Aperture diagnostic receipt has unsupported runtime materiality")
     if task.get("automatic_redirect") is True or task.get("automaticRedirect") is True:
@@ -108,7 +112,9 @@ def _task_intent(receipt: dict[str, Any]) -> dict[str, Any]:
 
 def _metric_source(receipt: dict[str, Any]) -> dict[str, Any]:
     produced = _dict(receipt.get("produced"))
-    request = _dict(produced.get("context_request")) or _dict(produced.get("contextRequest"))
+    request = _dict(produced.get("context_request")) or _dict(
+        produced.get("contextRequest")
+    )
     metrics = _dict(request.get("metrics")) or _dict(request.get("source_metrics"))
     if metrics:
         return metrics
@@ -120,7 +126,6 @@ def validate_diagnostic_receipt(receipt: Any) -> dict[str, Any]:
         raise ValueError("Phase IV requires an Aperture diagnostic receipt object")
     reject_artifact_material(receipt, "diagnostic")
     _reject_authority_material(receipt)
-
     if receipt.get("schema") != DIAGNOSTIC_RECEIPT_SCHEMA:
         raise ValueError("unsupported Aperture diagnostic receipt schema")
     receipt_id = str(receipt.get("receipt_id", receipt.get("receiptId", ""))).strip()
@@ -135,7 +140,6 @@ def validate_diagnostic_receipt(receipt: Any) -> dict[str, Any]:
         raise ValueError("diagnostic Aperture firmware schema mismatch")
     if receipt.get("posture") not in (None, "recommendation-not-command"):
         raise ValueError("diagnostic posture must remain recommendation-not-command")
-
     _task_intent(receipt)
     metrics = _metric_source(receipt)
     if not metrics:
@@ -152,11 +156,10 @@ def diagnostic_measurements(receipt: dict[str, Any]) -> list[dict[str, Any]]:
     for name in METRIC_NAMES:
         if name not in metrics:
             continue
-        value = _finite_metric(metrics[name], name)
         measurements.append(
             {
                 "name": name,
-                "value": value,
+                "value": _finite_metric(metrics[name], name),
                 "sensor_id": "aperture-diagnostic-receipt",
                 "source_status": "DERIVED",
                 "authority_class": "A2_DERIVATIONAL",
@@ -167,7 +170,10 @@ def diagnostic_measurements(receipt: dict[str, Any]) -> list[dict[str, Any]]:
                     "class": "diagnostic-and-transformation-bounded",
                     "value": None,
                 },
-                "calibration": {"status": "DECLARED_NOT_INDEPENDENT", "independent": False},
+                "calibration": {
+                    "status": "DECLARED_NOT_INDEPENDENT",
+                    "independent": False,
+                },
             }
         )
     return measurements
@@ -190,13 +196,10 @@ def contextualize_diagnostic(
         "conditions": conditions or [],
         "alternatives": alternatives or [],
     }
-    context = instrument_context(
-        payload,
-        aperture or {},
-        bridge_mode="PHASE_4_RECIPROCAL",
-    )
+    context = instrument_context(payload, aperture or {})
     context["task_intent"] = task
     context["bridge_contract"] = BRIDGE_CONTRACT_SCHEMA
+    context["bridge_integration_status"] = "PHASE_4_ACTIVE"
     context["reciprocal_receipts"] = True
     context["reciprocal_authority"] = False
     context["operator_closure_required"] = True
