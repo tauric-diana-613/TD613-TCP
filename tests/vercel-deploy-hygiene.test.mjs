@@ -7,6 +7,7 @@ const apiFunctionFiles = fs.readdirSync('api', { withFileTypes: true })
   .filter((entry) => entry.isFile() && /\.(?:js|mjs|cjs|ts|tsx|py)$/.test(entry.name))
   .map((entry) => entry.name)
   .sort();
+const SERVERLESS_BUDGET = 11;
 
 function findRewrite(source) { return (vercel.rewrites || []).find((entry) => entry.source === source); }
 function findHeader(source) { return (vercel.headers || []).find((entry) => entry.source === source); }
@@ -40,10 +41,11 @@ function assertRevalidatingStatic(source) {
 
 assert.equal(vercel.version, 2);
 assert.ok(
-  apiFunctionFiles.length <= 12,
-  `Vercel Hobby allows at most 12 serverless functions; found ${apiFunctionFiles.length}: ${apiFunctionFiles.join(', ')}`,
+  apiFunctionFiles.length <= SERVERLESS_BUDGET,
+  `TD613 reserves one serverless slot; budget ${SERVERLESS_BUDGET}, found ${apiFunctionFiles.length}: ${apiFunctionFiles.join(', ')}`,
 );
 assert.ok(!apiFunctionFiles.includes('flowcore-context.py'), 'Flow-Core must share the guarded Dome-World function');
+assert.ok(!apiFunctionFiles.includes('hush-generate-strict-pr124.js'), 'superseded PR124 endpoint must remain a compatibility rewrite, not a function');
 assert.equal(vercel.functions?.['api/hush-generate-strict.js']?.maxDuration, 60);
 assert.equal(vercel.functions?.['api/hush-generate.js']?.maxDuration, 60);
 assert.equal(vercel.functions?.['api/dome-world-engine.py']?.maxDuration, 60);
@@ -59,6 +61,7 @@ assert.match(vercel.functions['api/ash-local-commitment.py'].includeFiles, /ash_
 assert.match(vercel.functions['api/ash-local-commitment-guard.py'].includeFiles, /ash_\*\.py/);
 assert.ok(!vercel.functions?.['api/dome-world-engine-v07.py']);
 
+assertRewrite('/api/hush-generate-strict-pr124', '/api/hush-generate-strict');
 assertRewrite('/api/dome-world/ash-custody-register', '/api/ash-local-commitment-guard');
 assertRewrite('/api/dome-world/ash-custody-replay', '/api/ash-local-commitment-guard');
 assertRewrite('/api/dome-world/ash-custody-migrate', '/api/ash-local-commitment-guard');
@@ -88,6 +91,7 @@ for (const exact of [
   '/api/dome-world/ash-custody-migrate',
   '/api/dome-world/flowcore-context',
 ]) assertRewriteBefore(exact, '/api/dome-world/(.*)');
+assertRewriteBefore('/api/hush-generate-strict-pr124', '/api/(.*)');
 assertRewriteBefore('/api/ash-local-commitment', '/api/(.*)');
 assertRewriteBefore('/api/dome-world-engine', '/api/(.*)');
 assertRewriteBefore('/api/flowcore-context', '/api/(.*)');
@@ -111,6 +115,7 @@ assertRewriteBefore('/api/flowcore-context', '/api/(.*)');
   '/app/dome-world/ash/local-commitment.js',
   '/dome-world/ash/canonical-json.js',
   '/app/dome-world/ash/canonical-json.js',
+  '/api/hush-generate-strict-pr124',
   '/api/dome-world-engine',
   '/api/ash-local-commitment',
   '/api/flowcore-context',
@@ -146,4 +151,4 @@ assertRewriteBefore('/api/flowcore-context', '/api/(.*)');
 assert.match(gitignore, /(^|\r?\n)\.env(\r?\n|$)/, '.env must remain ignored');
 assert.doesNotMatch(gitignore, /(^|\r?\n)!\.env(\r?\n|$)/, '.env must not be negated');
 
-console.log(`vercel-deploy-hygiene.test.mjs passed with ${apiFunctionFiles.length}/12 serverless functions`);
+console.log(`vercel-deploy-hygiene.test.mjs passed with ${apiFunctionFiles.length}/${SERVERLESS_BUDGET} serverless budget used`);
