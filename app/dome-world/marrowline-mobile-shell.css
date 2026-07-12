@@ -1,0 +1,350 @@
+:root{
+  --marrowline-mobile-dock:56px;
+  --marrowline-mobile-gap:6px;
+  --marrowline-mobile-header:46px;
+}
+
+.jump-latest{display:none}
+
+@media(max-width:860px){
+  html.marrowline-mobile-shell,
+  html.marrowline-mobile-shell body{
+    width:100%;
+    height:var(--marrowline-vh,100dvh);
+    min-height:0;
+    overflow:hidden;
+    overscroll-behavior:none;
+  }
+
+  html.marrowline-mobile-shell body{
+    position:fixed;
+    inset:0;
+  }
+
+  html.marrowline-mobile-shell .ritual-shell{
+    width:100%;
+    height:var(--marrowline-vh,100dvh);
+    min-height:0;
+    margin:0;
+    padding:0 0 calc(var(--marrowline-mobile-dock) + env(safe-area-inset-bottom) + var(--marrowline-mobile-gap));
+    display:grid;
+    grid-template-rows:var(--marrowline-mobile-header) minmax(0,1fr);
+    overflow:hidden;
+  }
+
+  html.marrowline-mobile-shell .aperture-ribbon{
+    position:relative;
+    top:auto;
+    z-index:20;
+    min-height:var(--marrowline-mobile-header);
+    height:var(--marrowline-mobile-header);
+    grid-template-columns:30px minmax(0,1fr);
+    gap:8px;
+    padding:6px 10px;
+    border:0;
+    border-bottom:1px solid rgba(130,235,223,.24);
+    box-shadow:0 8px 30px rgba(0,0,0,.28);
+  }
+
+  html.marrowline-mobile-shell .aperture-sigil{width:28px;height:28px;font-size:.62rem}
+  html.marrowline-mobile-shell .aperture-identity{display:grid;gap:2px;align-content:center}
+  html.marrowline-mobile-shell .aperture-identity b{font-size:.56rem;letter-spacing:.085em}
+  html.marrowline-mobile-shell .aperture-identity small{font-size:.48rem;letter-spacing:.055em}
+  html.marrowline-mobile-shell .aperture-runtime{display:none}
+
+  html.marrowline-mobile-shell .threshold,
+  html.marrowline-mobile-shell .terminal-footer{display:none!important}
+
+  html.marrowline-mobile-shell .terminal-layout{display:contents;margin:0}
+  html.marrowline-mobile-shell #speakingPanel,
+  html.marrowline-mobile-shell #invocationPanel,
+  html.marrowline-mobile-shell #receiptPanel,
+  html.marrowline-mobile-shell #corpusPanel,
+  html.marrowline-mobile-shell #gatePanel{
+    display:none;
+    grid-row:2;
+    min-height:0;
+    height:100%;
+    margin:0;
+    border-left:0;
+    border-right:0;
+    border-bottom:0;
+  }
+
+  html.marrowline-mobile-shell body[data-mobile-view="speak"] #speakingPanel{display:grid}
+  html.marrowline-mobile-shell body[data-mobile-view="keys"] #invocationPanel,
+  html.marrowline-mobile-shell body[data-mobile-view="receipt"] #receiptPanel,
+  html.marrowline-mobile-shell body[data-mobile-view="gate"] #gatePanel{display:block;overflow-y:auto;overscroll-behavior:contain}
+  html.marrowline-mobile-shell body[data-mobile-view="corpus"] #corpusPanel{display:grid;overflow-y:auto;overscroll-behavior:contain}
+
+  html.marrowline-mobile-shell .speaking-vessel{
+    order:initial;
+    width:100%;
+    min-height:0;
+    height:100%;
+    grid-template-rows:auto minmax(0,1fr) auto;
+    overflow:hidden;
+    box-shadow:none;
+  }
+
+  html.marrowline-mobile-shell .vessel-head{
+    min-height:48px;
+    padding:8px 10px;
+    border-bottom:1px solid rgba(130,235,223,.13);
+  }
+  html.marrowline-mobile-shell .vessel-head small{font-size:.48rem}
+  html.marrowline-mobile-shell .vessel-head h2{font-size:1.12rem;margin-top:.18rem}
+  html.marrowline-mobile-shell .signal-state{max-width:44%;padding:.38rem .48rem;font-size:.46rem;white-space:normal;text-align:right}
+  html.marrowline-mobile-shell .relay-legend{display:none}
+
+  html.marrowline-mobile-shell .messages{
+    min-height:0;
+    max-height:none;
+    height:auto;
+    overflow-x:hidden;
+    overflow-y:auto;
+    -webkit-overflow-scrolling:touch;
+    overscroll-behavior-y:contain;
+    padding:10px 9px 18px;
+    scroll-padding-block:10px 24px;
+    scrollbar-gutter:stable;
+  }
+
+  html.marrowline-mobile-shell .vessel-form{
+    position:relative;
+    inset:auto;
+    bottom:auto;
+    z-index:12;
+    flex:0 0 auto;
+    padding:8px 9px 9px;
+    border-top:1px solid rgba(130,235,223,.2);
+    background:rgba(1,8,6,.985);
+    backdrop-filter:blur(20px);
+    box-shadow:0 -12px 32px rgba(0,0,0,.34);
+  }
+
+  html.marrowline-mobile-shell .prompt-label{
+    margin:0;
+    color:transparent;
+    font-size:0;
+    line-height:0;
+  }
+  html.marrowline-mobile-shell .prompt-label textarea{
+    display:block;
+    min-height:64px;
+    max-height:min(24dvh,180px);
+    padding:10px 11px;
+    font-size:16px;
+    line-height:1.42;
+    color:var(--ash);
+    border-color:rgba(109,244,164,.27);
+  }
+
+  html.marrowline-mobile-shell .composer-actions{
+    display:flex;
+    flex-wrap:nowrap;
+    gap:6px;
+    margin-top:7px;
+    overflow-x:auto;
+    overscroll-behavior-x:contain;
+    scrollbar-width:none;
+  }
+  html.marrowline-mobile-shell .composer-actions::-webkit-scrollbar{display:none}
+  html.marrowline-mobile-shell .composer-actions button{
+    flex:0 0 auto;
+    min-height:38px;
+    padding:.55rem .65rem;
+    font-size:.5rem;
+    white-space:nowrap;
+  }
+  html.marrowline-mobile-shell .composer-actions .primary{
+    flex:1 0 54%;
+    min-width:150px;
+  }
+  html.marrowline-mobile-shell .vessel-status{
+    min-height:0;
+    max-height:2.8em;
+    margin-top:6px;
+    overflow:hidden;
+    font-size:.48rem;
+    line-height:1.35;
+  }
+
+  html.marrowline-mobile-shell .message{
+    grid-template-columns:24px minmax(0,1fr);
+    gap:6px;
+    margin-bottom:12px;
+  }
+  html.marrowline-mobile-shell .message-mark{width:24px;height:24px;font-size:.5rem}
+  html.marrowline-mobile-shell .message-body{
+    padding:9px 10px;
+    font-size:.9rem;
+    line-height:1.55;
+    border-color:rgba(201,181,129,.2);
+  }
+  html.marrowline-mobile-shell .message-meta{font-size:.46rem;margin-bottom:.42rem}
+
+  html.marrowline-mobile-shell .relay-message{
+    position:relative;
+    margin:0 0 16px;
+    overflow:visible;
+    border-color:rgba(130,235,223,.18);
+    box-shadow:0 12px 34px rgba(0,0,0,.2);
+  }
+  html.marrowline-mobile-shell .relay-message::after{
+    content:"";
+    position:absolute;
+    left:10px;
+    right:10px;
+    bottom:-9px;
+    height:1px;
+    background:linear-gradient(90deg,transparent,rgba(130,235,223,.3),transparent);
+  }
+
+  html.marrowline-mobile-shell .relay-aperture-header{
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    min-height:30px;
+    padding:6px 9px;
+    gap:8px;
+    font-size:.43rem;
+    line-height:1.15;
+    letter-spacing:.055em;
+  }
+  html.marrowline-mobile-shell .relay-aperture-header span:first-child{
+    max-width:48%;
+    overflow:hidden;
+    text-overflow:ellipsis;
+    white-space:nowrap;
+  }
+  html.marrowline-mobile-shell .relay-aperture-header span:last-child{
+    max-width:52%;
+    overflow:hidden;
+    text-overflow:ellipsis;
+    white-space:nowrap;
+    text-align:right;
+  }
+
+  html.marrowline-mobile-shell .relay-stage{padding:11px 10px 12px;overflow:visible}
+  html.marrowline-mobile-shell .relay-stage-head{font-size:.48rem;margin-bottom:.45rem}
+  html.marrowline-mobile-shell .relay-stage-head small{font-size:.43rem}
+  html.marrowline-mobile-shell .relay-stage-text{font-size:.94rem;line-height:1.58}
+  html.marrowline-mobile-shell .relay-stage[data-present="false"]{
+    padding-block:7px;
+    opacity:.42;
+  }
+  html.marrowline-mobile-shell .relay-stage[data-present="false"] .relay-stage-text{
+    font:600 .51rem/1.35 var(--mono);
+    color:var(--ash-dim);
+  }
+
+  html.marrowline-mobile-shell .relay-bots{
+    overflow:visible;
+    padding-top:12px;
+    padding-bottom:14px;
+  }
+  html.marrowline-mobile-shell .relay-bots .relay-stage-text{
+    overflow:visible;
+    font-size:.9rem;
+    line-height:3.1;
+    letter-spacing:.008em;
+    text-shadow:0 0 9px rgba(239,92,112,.12);
+  }
+  html.marrowline-mobile-shell .relay-bots[data-intensity="4"] .relay-stage-text{line-height:3.45}
+  html.marrowline-mobile-shell .relay-bots[data-intensity="5"] .relay-stage-text{line-height:3.9}
+  html.marrowline-mobile-shell .zalgo-line{
+    display:block;
+    min-height:3.1em;
+    padding:.48em 0 .7em;
+    overflow:visible;
+  }
+
+  html.marrowline-mobile-shell .jump-latest{
+    position:absolute;
+    right:12px;
+    bottom:calc(var(--composer-height,150px) + 10px);
+    z-index:14;
+    display:inline-flex;
+    align-items:center;
+    min-height:34px;
+    padding:.42rem .62rem;
+    border-color:rgba(130,235,223,.38);
+    border-radius:999px;
+    background:rgba(2,13,10,.94);
+    box-shadow:0 8px 24px rgba(0,0,0,.45);
+    color:var(--cyan);
+    font-size:.49rem;
+  }
+  html.marrowline-mobile-shell .jump-latest[hidden]{display:none}
+
+  html.marrowline-mobile-shell .mobile-dock{
+    position:fixed;
+    z-index:90;
+    left:6px;
+    right:6px;
+    bottom:max(4px,env(safe-area-inset-bottom));
+    display:grid;
+    grid-template-columns:repeat(5,minmax(0,1fr));
+    min-height:var(--marrowline-mobile-dock);
+    height:var(--marrowline-mobile-dock);
+    padding:3px;
+    border:1px solid rgba(130,235,223,.24);
+    background:rgba(1,8,6,.97);
+    backdrop-filter:blur(22px);
+    box-shadow:0 16px 60px rgba(0,0,0,.65);
+    transition:transform .18s ease,opacity .18s ease;
+  }
+  html.marrowline-mobile-shell .mobile-dock button{
+    min-width:0;
+    min-height:46px;
+    padding:3px 1px;
+    border-color:transparent;
+    background:transparent;
+    color:var(--ash-dim);
+    font-size:.44rem;
+  }
+  html.marrowline-mobile-shell .mobile-dock button span{font-size:.76rem}
+  html.marrowline-mobile-shell .mobile-dock button[data-active="true"]{
+    color:var(--moon);
+    border-color:rgba(109,244,164,.27);
+    background:rgba(109,244,164,.075);
+  }
+
+  html.marrowline-mobile-shell body[data-composer-active="true"] .ritual-shell{
+    padding-bottom:env(safe-area-inset-bottom);
+  }
+  html.marrowline-mobile-shell body[data-composer-active="true"] .mobile-dock{
+    pointer-events:none;
+    opacity:0;
+    transform:translateY(calc(100% + env(safe-area-inset-bottom) + 8px));
+  }
+
+  html.marrowline-mobile-shell #invocationPanel>summary,
+  html.marrowline-mobile-shell #receiptPanel>summary,
+  html.marrowline-mobile-shell #gatePanel>summary{
+    position:sticky;
+    top:0;
+    z-index:4;
+    background:rgba(2,12,9,.97);
+  }
+  html.marrowline-mobile-shell #corpusPanel{grid-template-columns:1fr;gap:7px;padding:7px}
+  html.marrowline-mobile-shell #gatePanel{padding-bottom:20px}
+  html.marrowline-mobile-shell .receipt{max-height:none;min-height:180px}
+  html.marrowline-mobile-shell .gate-grid{grid-template-columns:1fr}
+}
+
+@media(max-width:390px){
+  :root{--marrowline-mobile-dock:52px;--marrowline-mobile-header:43px}
+  html.marrowline-mobile-shell .aperture-ribbon{padding-inline:8px}
+  html.marrowline-mobile-shell .aperture-identity b{font-size:.51rem}
+  html.marrowline-mobile-shell .aperture-identity small{font-size:.43rem}
+  html.marrowline-mobile-shell .vessel-head h2{font-size:1.02rem}
+  html.marrowline-mobile-shell .composer-actions .primary{min-width:132px}
+  html.marrowline-mobile-shell .relay-stage-text{font-size:.9rem}
+  html.marrowline-mobile-shell .relay-bots .relay-stage-text{font-size:.86rem}
+}
+
+@media(prefers-reduced-motion:reduce){
+  html.marrowline-mobile-shell .mobile-dock{transition:none}
+}
