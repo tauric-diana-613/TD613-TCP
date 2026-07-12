@@ -20,10 +20,6 @@
     "api/ash-local-commitment-guard.py": {
       "maxDuration": 60,
       "includeFiles": "{api/ash-local-commitment.py,packages/dome_world_exact/ash_*.py}"
-    },
-    "api/flowcore-context.py": {
-      "maxDuration": 60,
-      "includeFiles": "packages/dome_world_exact/flowcore_*.py"
     }
   },
   "headers": [
@@ -98,7 +94,8 @@
     { "source": "/api/dome-world/ash-custody-migrate", "destination": "/api/ash-local-commitment-guard" },
     { "source": "/api/ash-local-commitment", "destination": "/api/ash-local-commitment-guard" },
     { "source": "/api/dome-world-engine", "destination": "/api/dome-world-engine-guard" },
-    { "source": "/api/dome-world/flowcore-context", "destination": "/api/flowcore-context" },
+    { "source": "/api/flowcore-context", "destination": "/api/dome-world-engine-guard?operation=flowcore-context" },
+    { "source": "/api/dome-world/flowcore-context", "destination": "/api/dome-world-engine-guard?operation=flowcore-context" },
     { "source": "/api/dome-world/marrowline", "destination": "/api/marrowline" },
     { "source": "/api/dome-world/ping", "destination": "/api/dome-world-engine-guard?operation=ping" },
     { "source": "/api/dome-world/readiness", "destination": "/api/dome-world-engine-guard?operation=readiness" },
