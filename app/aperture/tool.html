@@ -7895,7 +7895,7 @@ const FIRMWARE = {
 
 const SOURCE_DECLARATION = Object.freeze({
   toolName: "TD613 Aperture",
-  version: "v2.9.4",
+  version: "v3.0-alpha",
   schema: "td613-aperture/v3.0-alpha",
   role: "counter-tool",
   observedRegime: "PRCS-A",
@@ -11522,7 +11522,7 @@ setTimeout(() => requestAnimationFrame(tick), PERF.BOOT_ANIMATION_DELAY_MS);
   window.__APERTURE_V100__ = true;
 
   const APERTURE = {
-    version: "v2.9.4",
+    version: "v3.0-alpha",
     schema: "td613-aperture/v3.0-alpha",
     title: "Aperture",
     counterToolClass: "counter-tool",
@@ -14543,8 +14543,8 @@ setTimeout(() => requestAnimationFrame(tick), PERF.BOOT_ANIMATION_DELAY_MS);
   function setVersionV22(){
     try {
       if (window.FIRMWARE) {
-        FIRMWARE.VERSION = V22.VERSION;
-        FIRMWARE.SCHEMA_VERSION = V22.SCHEMA;
+        FIRMWARE.TEMPORAL_VERSION = V22.VERSION;
+        FIRMWARE.TEMPORAL_SCHEMA_VERSION = V22.SCHEMA;
         if (FIRMWARE.ROUTE_COPY) Object.assign(FIRMWARE.ROUTE_COPY, V22.ROUTE_COPY_V22);
       }
     } catch (err) {}
@@ -15346,8 +15346,8 @@ APERTURE active foundation layer, retained under v2.9.4 governance (rupture-assi
   function setVersionV23(){
     try {
       if (window.FIRMWARE) {
-        window.FIRMWARE.VERSION = V23.VERSION;
-        window.FIRMWARE.SCHEMA_VERSION = V23.SCHEMA;
+        window.FIRMWARE.RUPTURE_ASSIST_VERSION = V23.VERSION;
+        window.FIRMWARE.RUPTURE_ASSIST_SCHEMA_VERSION = V23.SCHEMA;
       }
     } catch (_) {}
     document.title = 'TD613 Aperture v3.0-alpha';
@@ -19219,7 +19219,6 @@ Hard stops:
       window.APERTURE_SCHEMA_VERSION = 'td613-aperture/v3.0-alpha';
     } catch (_) {}
     setText('mFirmwareVer', 'v3.0-alpha');
-    setText('phaseStatus', 'v2.9.4 PRE-FLIGHT');
     const subtitle = byId('subtitle');
     if (subtitle) subtitle.textContent = 'Aperture counter-tool - PRCS-A admissibility, projection, and rupture audit';
     try {
@@ -19257,8 +19256,9 @@ Hard stops:
       window.APERTURE_SOURCE_DECLARATION = freeze({
         ...previous,
         toolName: 'TD613 Aperture',
-        version: APERTURE_VERSION,
-        schema: APERTURE_SCHEMA,
+        version: 'v3.0-alpha',
+        schema: 'td613-aperture/v3.0-alpha',
+        eorfdCompatibilityVersion: APERTURE_VERSION,
         role: 'counter-tool',
         observedRegime: 'PRCS-A',
         observedRegimeFull: 'Eclipse–Omega PRCS-A',
@@ -19880,7 +19880,6 @@ Hard stops:
       window.APERTURE_SCHEMA_VERSION = 'td613-aperture/v3.0-alpha';
     } catch (_) {}
     setText('mFirmwareVer', 'v3.0-alpha');
-    setText('phaseStatus', 'v2.9.4 ORIGIN');
     const subtitle = byId('subtitle');
     if (subtitle) subtitle.textContent = 'Aperture counter-tool - PRCS-A admissibility, projection, and rupture audit';
     try {
@@ -19905,8 +19904,9 @@ Hard stops:
       window.APERTURE_SOURCE_DECLARATION = freeze({
         ...previous,
         toolName: 'TD613 Aperture',
-        version: APERTURE_VERSION,
-        schema: APERTURE_SCHEMA,
+        version: 'v3.0-alpha',
+        schema: 'td613-aperture/v3.0-alpha',
+        eorfdOriginReconciliationVersion: APERTURE_VERSION,
         role: 'counter-tool',
         observedRegime: 'PRCS-A',
         observedRegimeFull: 'Eclipse–Omega PRCS-A',
@@ -20279,7 +20279,6 @@ Hard stops:
       window.APERTURE_SCHEMA_VERSION = 'td613-aperture/v3.0-alpha';
     } catch (_) {}
     setText('mFirmwareVer', 'v3.0-alpha');
-    setText('phaseStatus', 'v2.9.4 DEEP');
     const subtitle = byId('subtitle');
     if (subtitle) subtitle.textContent = 'Aperture counter-tool - PRCS-A admissibility, projection, and rupture audit';
     try {
@@ -20304,8 +20303,9 @@ Hard stops:
       window.APERTURE_SOURCE_DECLARATION = freeze({
         ...previous,
         toolName: 'TD613 Aperture',
-        version: APERTURE_VERSION,
-        schema: APERTURE_SCHEMA,
+        version: 'v3.0-alpha',
+        schema: 'td613-aperture/v3.0-alpha',
+        eorfdDeepStaticAuditVersion: APERTURE_VERSION,
         role: 'counter-tool',
         observedRegime: 'PRCS-A',
         observedRegimeFull: 'Eclipse–Omega PRCS-A',
@@ -20662,8 +20662,6 @@ Hard stops:
     if (subtitle) subtitle.textContent = 'Aperture counter-tool - PRCS-A admissibility, projection, and rupture audit';
     const firmwareValue = document.getElementById('firmwareValue') || document.getElementById('firmwareReadout');
     if (firmwareValue) firmwareValue.textContent = 'v3.0-alpha';
-    const phaseStatus = document.getElementById('phaseStatus');
-    if (phaseStatus) phaseStatus.textContent = 'v2.9.4 READY';
     document.body.setAttribute('data-aperture-version', 'v3.0-alpha');
     document.body.setAttribute('data-acedit-review-status', 'static-reviewed-not-loaded');
     document.body.setAttribute('data-acedit-authority-boundary', 'signal-source-only');
@@ -20952,8 +20950,6 @@ Hard stops:
       document.body.setAttribute('data-recency-governance', 'true');
       const subtitle = document.getElementById('subtitle');
       if (subtitle) subtitle.textContent = 'Aperture counter-tool - PRCS-A admissibility, projection, and rupture audit';
-      const phaseStatus = document.getElementById('phaseStatus');
-      if (phaseStatus) phaseStatus.textContent = 'v2.9.4 RESIDUAL';
       const firmwareVer = document.getElementById('mFirmwareVer');
       if (firmwareVer) firmwareVer.textContent = 'v3.0-alpha';
       const title = document.querySelector('title');
@@ -21282,8 +21278,6 @@ Hard stops:
       document.body.setAttribute('data-vector-residual-witness', 'true');
       const subtitle = document.getElementById('subtitle');
       if (subtitle) subtitle.textContent = 'Aperture counter-tool - PRCS-A admissibility, projection, and rupture audit';
-      const phaseStatus = document.getElementById('phaseStatus');
-      if (phaseStatus) phaseStatus.textContent = 'v2.9.4 RESIDUAL';
       const title = document.querySelector('title');
       if (title) title.textContent = 'TD613 Aperture v3.0-alpha';
     } catch (_) {}

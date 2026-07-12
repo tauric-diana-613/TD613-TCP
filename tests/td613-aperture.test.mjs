@@ -25,6 +25,19 @@ import {
 } from '../app/engine/td613-aperture.js';
 
 const apertureRelease = JSON.parse(fs.readFileSync('app/aperture/release.json', 'utf8'));
+const apertureToolHtml = fs.readFileSync('app/aperture/tool.html', 'utf8');
+
+assert.match(apertureToolHtml, /const SOURCE_DECLARATION = Object\.freeze\(\{[\s\S]*?version: "v3\.0-alpha"/);
+assert.match(apertureToolHtml, /const APERTURE = \{\s*version: "v3\.0-alpha"/);
+assert.doesNotMatch(apertureToolHtml, /phaseStatus[^\n]*v2\.9\.4/);
+assert.doesNotMatch(apertureToolHtml, /FIRMWARE\.VERSION = V22\.VERSION/);
+assert.doesNotMatch(apertureToolHtml, /FIRMWARE\.VERSION = V23\.VERSION/);
+assert.match(apertureToolHtml, /FIRMWARE\.TEMPORAL_VERSION = V22\.VERSION/);
+assert.match(apertureToolHtml, /FIRMWARE\.RUPTURE_ASSIST_VERSION = V23\.VERSION/);
+assert.doesNotMatch(apertureToolHtml, /APERTURE_SOURCE_DECLARATION = freeze\(\{[\s\S]{0,260}?version: APERTURE_VERSION/);
+assert.match(apertureToolHtml, /eorfdCompatibilityVersion: APERTURE_VERSION/);
+assert.match(apertureToolHtml, /eorfdOriginReconciliationVersion: APERTURE_VERSION/);
+assert.match(apertureToolHtml, /eorfdDeepStaticAuditVersion: APERTURE_VERSION/);
 
 assert.equal(TD613_APERTURE_VERSION, apertureRelease.version);
 assert.equal(TD613_APERTURE_SCHEMA, apertureRelease.apertureSchema);
