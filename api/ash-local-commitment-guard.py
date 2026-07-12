@@ -1,8 +1,8 @@
-"""Public validation guard for TD613 Ash Local Commitment v0.7.
+"""Public validation guard for TD613 Ash Canonical Digest Spine v0.8.
 
-The internal commitment function performs normalization and receipt production.
-This guard rejects contradictory L1 client boundary assertions before the
-internal function can normalize them into safer values.
+The internal Ash function owns canonicalization, registration, replay, and
+migration. This guard keeps the Phase 1 L1 client-boundary assertions strict
+before Phase 2 digest construction begins.
 """
 
 from __future__ import annotations
@@ -20,7 +20,7 @@ MAX_BODY_BYTES = 131_072
 @lru_cache(maxsize=1)
 def _commitment():
     path = os.path.join(os.path.dirname(__file__), "ash-local-commitment.py")
-    spec = importlib.util.spec_from_file_location("td613_ash_local_commitment_internal", path)
+    spec = importlib.util.spec_from_file_location("td613_ash_commitment_internal", path)
     if spec is None or spec.loader is None:
         raise RuntimeError("unable to load internal Ash commitment function")
     module = importlib.util.module_from_spec(spec)
@@ -83,7 +83,7 @@ class handler(BaseHTTPRequestHandler):
         self.send_response(status)
         self.send_header("Content-Type", "application/json; charset=utf-8")
         self.send_header("Cache-Control", "no-store, max-age=0")
-        self.send_header("X-TD613-Ash-Commitment", "v0.7-guarded")
+        self.send_header("X-TD613-Ash-Commitment", "v0.8-guarded")
         self.send_header("Vary", "Origin")
         origin = self.headers.get("Origin", "")
         host = self.headers.get("Host", "")
@@ -117,7 +117,9 @@ class handler(BaseHTTPRequestHandler):
             length = int(self.headers.get("Content-Length", "0"))
             if length <= 0 or length > MAX_BODY_BYTES:
                 raise ValueError("request body must be between 1 and 131072 bytes")
-            envelope = validate_l1_boundary_flags(json.loads(self.rfile.read(length)))
+            envelope = validate_l1_boundary_flags(
+                commitment.strict_json_loads(self.rfile.read(length))
+            )
             self._write(200, commitment.dispatch_post(envelope))
         except (ValueError, TypeError, json.JSONDecodeError) as exc:
             self._write(400, {"ok": False, "error": str(exc)})
@@ -126,7 +128,7 @@ class handler(BaseHTTPRequestHandler):
                 500,
                 {
                     "ok": False,
-                    "error": "Ash guarded commitment operation failed",
+                    "error": "Ash guarded canonical digest operation failed",
                     "detail": str(exc),
                 },
             )

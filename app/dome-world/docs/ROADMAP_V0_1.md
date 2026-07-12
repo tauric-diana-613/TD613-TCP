@@ -2,7 +2,7 @@
 
 **Working title:** *The Crayon Map*  
 **Status:** governed implementation roadmap  
-**Baseline:** Aperture v3.0-alpha · Dome-World v0.5.0 · Ash v0.7 commitment / v0.6 derivative lineage · exact substrate v0.4.3
+**Baseline:** Aperture v3.0-alpha · Dome-World v0.5.0 · Ash v0.8 digest spine / v0.7 commitment / v0.6 derivative lineage · exact substrate v0.4.3
 
 ## Governing laws
 
@@ -55,6 +55,8 @@ Phase 9  Validation, deployment, and release discipline
 ## Phase 2 — Canonical Digest and Receipt Spine
 
 **Purpose:** Separate `artifact_digest`, `manifest_digest`, and `receipt_digest`; define canonical JSON and migration rules without turning any digest into identity, authorship, possession, authenticity, or time proof.
+
+**Exit gate:** browser and Python canonicalization agree on frozen vectors; metadata changes preserve a valid artifact digest while changing the manifest digest; receipt-envelope changes alter the receipt digest; v0.5 migration never promotes a metadata hash to L1; v0.7 L1 migration validates the original local commitment; malformed or tampered v0.8 receipts fail closed; stable digests remain local by default.
 
 ## Phase 3 — Flow-Core Context Instrumentation
 
@@ -109,6 +111,6 @@ The human decides.
 
 ## Current implementation state
 
-See `ROADMAP_IMPLEMENTATION_STATUS.md` and `.json`. Only Phases 0–1 may be described as implemented. Later phases remain planned or explicitly held.
+See `ROADMAP_IMPLEMENTATION_STATUS.md` and `.json`. Phases 0–1 are implemented and hardened. Phase 2 is implemented on its governed branch and remains validation-gated until Phase 2 CI and the post-merge live probe close. Later phases remain planned, designed, or explicitly held.
 
 ⟐

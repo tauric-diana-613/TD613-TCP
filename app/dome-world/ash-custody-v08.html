@@ -1,0 +1,93 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover" />
+  <meta name="td613-route" content="𝌋‌ U+10D613" />
+  <meta name="ash-canonical-digest" content="td613.ash.canonical-json/v0.1" />
+  <title>Dome-World / Ash Custody v0.8</title>
+  <style>
+    *{box-sizing:border-box}html{background:#03100d;color-scheme:dark;-webkit-text-size-adjust:100%}body{margin:0;background:#03100d;color:#e8f0e4;font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace}.wrap{width:min(1120px,calc(100% - 22px));margin:auto;padding:18px 0 40px}.panel,header{border:1px solid #294239;border-radius:18px;background:#081914;padding:16px;margin:12px 0}.grid{display:grid;grid-template-columns:minmax(0,1fr) minmax(280px,.8fr);gap:12px}.nav,.actions,.chips{display:flex;gap:8px;flex-wrap:wrap}.nav{position:sticky;top:0;z-index:20;padding:8px 0;background:rgba(3,16,13,.95)}.nav a,.btn,.chip{border:1px solid #365e52;background:#04110e;color:#e8f0e4;padding:9px 11px;text-decoration:none}.primary{border-color:#e4c66c}input,select,textarea{width:100%;min-width:0;min-height:44px;margin:4px 0 8px;padding:9px;font-size:16px;background:#020806;color:#e8f0e4;border:1px solid #294239}textarea{min-height:130px}button{font:inherit;min-height:44px}button:disabled{opacity:.55}.sub{color:#b6c7b8;line-height:1.5}.claim{color:#8da092;font-size:.76rem;text-transform:uppercase;line-height:1.5}.status{border:1px solid #365e52;background:#03100d;padding:10px;margin:8px 0;overflow-wrap:anywhere}.status[data-state="VERIFIED"],.status[data-state="L1"]{border-color:#e4c66c}.status[data-state="ERROR"]{border-color:#b55f5f;color:#ffd2d2}.held{border-color:#7c5f36;background:#160f05}pre{max-height:54vh;overflow:auto;white-space:pre-wrap;word-break:break-word;background:#020806;padding:12px;border:1px solid #294239}.receipt{border-top:1px solid #294239;padding:8px 0;overflow-wrap:anywhere}.digest label{display:block;color:#b6c7b8;font-size:.78rem;margin-top:8px}@media(max-width:820px){.wrap{width:calc(100% - 12px);padding:max(10px,env(safe-area-inset-top)) 0 calc(28px + env(safe-area-inset-bottom))}.grid{grid-template-columns:1fr}.panel,header{border-radius:12px;padding:13px}.nav{overflow:auto;flex-wrap:nowrap;scrollbar-width:none}.nav::-webkit-scrollbar{display:none}.nav a{flex:0 0 auto;white-space:nowrap}.actions .btn{flex:1 1 140px}}
+  </style>
+</head>
+<body>
+<main class="wrap">
+  <header>
+    <p>𝌋‌ TD613 Ash · Phase II · Canonical Digest + Receipt Spine</p>
+    <h1>Ash Custody // v0.8</h1>
+    <p class="sub">Artifact, manifest, and receipt remain separate strata. The browser may create an exact-byte artifact commitment; the server canonicalizes the custody manifest and final receipt under TD613-CJ-1. Every digest stays local by default and supports equality checks only.</p>
+    <div class="chips"><span class="chip">artifact ≠ manifest ≠ receipt</span><span class="chip">TD613-CJ-1</span><span class="chip">L0/L1 preserved</span><span class="chip">no public stable handle</span></div>
+  </header>
+  <nav class="nav"><a href="#intake">Intake</a><a href="#replay">Replay / migrate</a><a href="#receipts">Local receipts</a><a href="#held">Held derivatives</a><a href="/dome-world">Dome-World</a></nav>
+
+  <section id="intake" class="grid">
+    <div class="panel">
+      <h2>Register artifact</h2>
+      <p class="sub">A selected file is read and hashed in the browser. Raw bytes never enter the request. Leaving the picker empty produces L0 metadata-only registration.</p>
+      <input id="fileInput" type="file" />
+      <div id="commitmentStatus" class="status" data-state="L0" role="status" aria-live="polite">L0_METADATA_ONLY · no artifact byte digest computed.</div>
+      <input id="sourceLabel" placeholder="Human label" />
+      <input id="pathRef" placeholder="Path / ref / range (optional)" />
+      <input id="revision" placeholder="Revision (optional)" />
+      <input id="commitSha" placeholder="Commit SHA (optional)" />
+      <input id="blobSha" placeholder="Blob SHA (optional)" />
+      <input id="mediaType" placeholder="Media type" />
+      <input id="byteLength" placeholder="Byte length" inputmode="numeric" />
+      <input id="lastModified" placeholder="Last modified claim" />
+      <select id="sourceEnvironment"><option>local_file</option><option>repo</option><option>cloud_drive</option><option>local_drive</option><option>spreadsheet</option><option>llm_chat</option><option>manual</option></select>
+      <select id="credentialType"><option>none</option><option>local-possession</option><option>repo-access</option><option>provider-session</option><option>operator-attested</option></select>
+      <div class="actions"><button class="btn primary" id="registerArtifact">Generate v0.8 receipt</button><button class="btn" id="clearForm">Clear</button></div>
+      <p class="claim">A digest establishes neither possession, authorship, authenticity, identity, permission, truth, nor trusted time.</p>
+    </div>
+    <aside class="panel digest">
+      <h3>Digest spine</h3>
+      <label>Artifact digest</label><input id="artifactDigest" readonly />
+      <label>Manifest digest</label><input id="manifestDigest" readonly />
+      <label>Receipt digest</label><input id="receiptDigest" readonly />
+      <pre id="latestPre">No receipt yet.</pre>
+    </aside>
+  </section>
+
+  <section id="replay" class="grid">
+    <div class="panel">
+      <h2>Replay or migrate</h2>
+      <p class="sub">Paste a receipt or manifest. Replay verifies v0.8 digests. Migration accepts v0.5 and v0.7; a v0.5 content hash stays quarantined and cannot become an artifact digest. A v0.7 L1 digest survives only after its local-commitment boundary validates.</p>
+      <textarea id="legacyInput" placeholder="Paste custody receipt or manifest JSON"></textarea>
+      <div class="actions"><button class="btn primary" id="replayReceipt">Replay</button><button class="btn" id="migrateReceipt">Migrate to v0.8</button><button class="btn" id="loadLatest">Load latest</button></div>
+    </div>
+    <aside class="panel"><h3>Replay / migration result</h3><pre id="migrationPre">Output appears here.</pre></aside>
+  </section>
+
+  <section id="receipts" class="grid"><div class="panel"><h2>Local receipt index</h2><div class="actions"><button class="btn" id="downloadLatest">Download latest</button><button class="btn" id="clearReceipts">Clear local receipts</button></div><div id="receiptList"></div></div><aside class="panel"><h3>Canonical profile</h3><p class="sub">UTF-8 · no Unicode normalization · printable ASCII object keys · safe integers only · deterministic key order · domain-separated SHA-256.</p><p class="claim">The server computes manifest and receipt digests. The browser recomputes both before accepting the receipt locally.</p></aside></section>
+
+  <section id="held" class="panel held"><h2>Derivative transport held</h2><p class="sub">Cinder plaintext transport remains disabled until Phase 6. Veil, Compare, Recall, Leak Challenge, and other inherited v0.6 research surfaces retain their prior jurisdiction; Phase II adds no execution authority and no new claim-ceiling mechanism.</p><a class="btn" href="./ash-custody-v07.html">Open inherited v0.7 research surface</a></section>
+</main>
+<script type="module">
+  import {createLatestCommitmentCoordinator,generateLocalCommitment,L0_ASSURANCE,L1_ASSURANCE} from "./ash/local-commitment.js";
+  import {verifyReceiptDigests} from "./ash/canonical-json.js";
+  const $=id=>document.getElementById(id),fmt=v=>JSON.stringify(v,null,2),KEY="td613:ash-custody:receipts:v0.8",OLD="td613:ash-custody:receipts:v0.7";
+  const coordinator=createLatestCommitmentCoordinator(generateLocalCommitment);let localCommitment=null,pending=false,latest=null;
+  function readStore(){try{const now=JSON.parse(localStorage.getItem(KEY)||"[]");if(Array.isArray(now)&&now.length)return now;const old=JSON.parse(localStorage.getItem(OLD)||"[]");return Array.isArray(old)?old:[]}catch{return[]}}
+  function writeStore(items){localStorage.setItem(KEY,JSON.stringify(items.slice(-120)))}
+  function status(state,text){const node=$("commitmentStatus");node.dataset.state=state;node.textContent=text}
+  function show(receipt){latest=receipt;$("latestPre").textContent=fmt(receipt);$("artifactDigest").value=receipt?.manifest?.artifact_metadata?.artifact_digest||"";$("manifestDigest").value=receipt?.manifest_digest||receipt?.manifest?.manifest_digest||"";$("receiptDigest").value=receipt?.receipt_digest||""}
+  function remember(receipt){const items=readStore();items.push(receipt);writeStore(items);show(receipt);render()}
+  function render(){const host=$("receiptList");host.replaceChildren();const items=readStore().slice().reverse();if(!items.length){const p=document.createElement("p");p.className="sub";p.textContent="No local receipts.";host.append(p);return}for(const receipt of items){const row=document.createElement("div");row.className="receipt";row.textContent=String(receipt.receipt_id||receipt.schema||"unnamed receipt");host.append(row)}}
+  function reset(invalidate=true){if(invalidate)coordinator.invalidate();localCommitment=null;pending=false;$("artifactDigest").value="";$("manifestDigest").value="";$("receiptDigest").value="";status("L0",`${L0_ASSURANCE} · no artifact byte digest computed.`);$("registerArtifact").disabled=false}
+  async function selectFile(){const file=$("fileInput").files?.[0];reset();if(!file)return;pending=true;$("registerArtifact").disabled=true;status("PENDING","HASHING · exact bytes are being digested locally.");let result;try{result=await coordinator.commit(file);if(result.status!=="CURRENT"||$("fileInput").files?.[0]!==file)return;localCommitment=result.commitment;$("artifactDigest").value=localCommitment.artifact_digest;$("mediaType").value=localCommitment.media_type;$("byteLength").value=String(localCommitment.byte_length);$("lastModified").value=localCommitment.last_modified_claim??"";$("sourceEnvironment").value="local_file";status("L1",`${L1_ASSURANCE} · ${localCommitment.artifact_digest}`)}catch(error){if($("fileInput").files?.[0]===file){localCommitment=null;status("ERROR",`LOCAL COMMITMENT HELD · ${error.message}`)}}finally{if(result&&coordinator.isCurrent(file,result.token)){pending=false;$("registerArtifact").disabled=false}}}
+  async function request(operation,payload){const envelope={operation,traceId:"ash_"+Date.now().toString(36),apertureContext:{version:"v3.0-alpha",schema:"td613-aperture/v3.0-alpha",observedRegime:"PRCS-A"},payload};const response=await fetch("/api/dome-world/"+operation,{method:"POST",headers:{"content-type":"application/json"},body:JSON.stringify(envelope)});const body=await response.json().catch(()=>({ok:false,error:"non-json"}));if(!response.ok||body.ok===false)throw new Error(body.error||`HTTP ${response.status}`);return body.result||body}
+  function payload(){const file=$("fileInput").files?.[0];if(pending)throw new Error("Local commitment still running.");if(file&&!localCommitment)throw new Error("Selected file lacks a valid local commitment.");const raw=$("byteLength").value.trim(),digest=localCommitment?.artifact_digest||null;return{sourceEnvironment:$("sourceEnvironment").value,sourceLocator:{label:$("sourceLabel").value||null,path_or_ref:$("pathRef").value||null,revision:$("revision").value||null,commit_sha:$("commitSha").value||null,blob_sha:$("blobSha").value||null},artifactMetadata:{mediaType:$("mediaType").value||null,byteLength:raw===""?null:Number(raw),lastModified:$("lastModified").value||null,artifactDigest:digest,contentHash:digest,hashScope:localCommitment?"local-browser":"unavailable",assuranceClass:localCommitment?.assurance_class||L0_ASSURANCE,localCommitment},credentialReference:{credentialType:$("credentialType").value},privacyBoundary:{public_weather_only:true},ashPosture:{roomRoute:"private-sense-only",recommendedTending:["private-hold","ash-receipt"]}}}
+  async function accept(receipt){const integrity=await verifyReceiptDigests(receipt);if(!integrity.valid)throw new Error("Browser canonical digest verification failed.");remember(receipt);status("VERIFIED",`DIGEST SPINE VERIFIED · manifest ${receipt.manifest_digest.slice(-12)} · receipt ${receipt.receipt_digest.slice(-12)}`)}
+  function sourcePayload(){const source=JSON.parse($("legacyInput").value);return source?.manifest?{receipt:source}:{manifest:source}}
+  $("fileInput").addEventListener("change",selectFile);
+  $("registerArtifact").onclick=async()=>{try{await accept(await request("ash-custody-register",payload()))}catch(error){status("ERROR",`RECEIPT HELD · ${error.message}`);$("latestPre").textContent=fmt({status:"HELD",error:error.message})}};
+  $("replayReceipt").onclick=async()=>{try{$("migrationPre").textContent=fmt(await request("ash-custody-replay",sourcePayload()))}catch(error){$("migrationPre").textContent=fmt({status:"HELD",error:error.message})}};
+  $("migrateReceipt").onclick=async()=>{try{const out=await request("ash-custody-migrate",sourcePayload());$("migrationPre").textContent=fmt(out);if(out.migrated_receipt)await accept(out.migrated_receipt)}catch(error){$("migrationPre").textContent=fmt({status:"HELD",error:error.message})}};
+  $("loadLatest").onclick=()=>{if(latest)$("legacyInput").value=fmt(latest)};
+  $("clearForm").onclick=()=>{coordinator.invalidate();document.querySelectorAll("input").forEach(node=>node.value="");reset(false)};
+  $("clearReceipts").onclick=()=>{writeStore([]);latest=null;render()};
+  $("downloadLatest").onclick=()=>{if(!latest)return;const blob=new Blob([fmt(latest)],{type:"application/json"}),url=URL.createObjectURL(blob),a=document.createElement("a");a.href=url;a.download="td613-ash-custody-receipt-v08.json";a.click();setTimeout(()=>URL.revokeObjectURL(url),0)};
+  const stored=readStore();if(stored.length)show(stored.at(-1));render();
+</script>
+</body>
+</html>

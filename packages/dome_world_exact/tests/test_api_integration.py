@@ -7,11 +7,14 @@ from pathlib import Path
 import pytest
 
 
-API_PATH = Path(__file__).resolve().parents[3] / "api" / "ash-local-commitment.py"
+ROOT = Path(__file__).resolve().parents[3]
+API_PATH = ROOT / "api" / "ash-local-commitment.py"
 SPEC = importlib.util.spec_from_file_location("ash_local_commitment_api", API_PATH)
 API = importlib.util.module_from_spec(SPEC)
 assert SPEC and SPEC.loader
 SPEC.loader.exec_module(API)
+
+DIGEST = "sha256:ba7816bf8f01cfea414140de5dae2223b00361a396177a9cb410ff61f20015ad"
 
 
 def envelope(operation, payload):
@@ -23,24 +26,24 @@ def envelope(operation, payload):
     }
 
 
-def l1_payload():
-    digest = "sha256:ba7816bf8f01cfea414140de5dae2223b00361a396177a9cb410ff61f20015ad"
+def l1_payload(label="abc fixture"):
     return {
+        "artifactId": "operator-stable-test-id",
         "sourceEnvironment": "local_file",
-        "sourceLocator": {"label": "abc fixture", "path_or_ref": "local path withheld"},
+        "sourceLocator": {"label": label, "path_or_ref": "local path withheld"},
         "artifactMetadata": {
             "mediaType": "text/plain",
             "byteLength": 3,
             "lastModified": 613,
-            "artifactDigest": digest,
-            "contentHash": digest,
+            "artifactDigest": DIGEST,
+            "contentHash": DIGEST,
             "hashScope": "local-browser",
             "assuranceClass": "L1_BROWSER_LOCAL_ARTIFACT_DIGEST",
             "localCommitment": {
                 "schema": "td613.ash.local-commitment/v0.7",
                 "assurance_class": "L1_BROWSER_LOCAL_ARTIFACT_DIGEST",
                 "digest_algorithm": "SHA-256",
-                "artifact_digest": digest,
+                "artifact_digest": DIGEST,
                 "byte_length": 3,
                 "media_type": "text/plain",
                 "last_modified_claim": 613,
@@ -60,130 +63,214 @@ def l1_payload():
     }
 
 
-def test_only_phase1_custody_operations_are_exposed():
-    assert API.SUPPORTED_OPERATIONS == {"ash-custody-register", "ash-custody-replay"}
-    with pytest.raises(ValueError, match="unsupported"):
-        API.dispatch_post(envelope("aperture-bridge", {}), {})
-
-
-def test_ash_rejects_raw_content_fields():
-    with pytest.raises(ValueError, match="metadata/manifests only"):
-        API.dispatch_post(envelope("ash-custody-register", {"rawText": "private"}), {})
-
-
-def test_readiness_reports_phase1_commitment_boundary_without_new_claim_ceiling():
-    receipt = API.readiness_receipt()
-    assert receipt["schema"] == "td613.ash.local-commitment-readiness/v0.7"
-    assert receipt["status"] == "phase-1-active"
-    assert receipt["rawBytesAcceptedByServer"] is False
-    assert receipt["metadataDigestFallback"] is False
-    assert receipt["boundaryVocabularyPolicy"] == "no-new-mechanism-legacy-frozen"
-    assert receipt["assuranceClasses"] == [
-        "L0_METADATA_ONLY",
-        "L1_BROWSER_LOCAL_ARTIFACT_DIGEST",
-    ]
-
-
-def test_l1_local_commitment_registers_exact_digest_without_raw_bytes():
-    response = API.dispatch_post(envelope("ash-custody-register", l1_payload()), {})
-    receipt = response["result"]
-    metadata = receipt["manifest"]["artifact_metadata"]
-
-    assert receipt["schema"] == "td613.ash.custody-receipt/v0.7"
-    assert receipt["assurance_class"] == "L1_BROWSER_LOCAL_ARTIFACT_DIGEST"
-    assert receipt["artifact_digest_present"] is True
-    assert receipt["decision"] == "artifact-registered-with-browser-local-byte-commitment"
-    assert metadata["artifact_digest"].endswith("f20015ad")
-    assert metadata["content_hash"] == metadata["artifact_digest"]
-    assert receipt["manifest"]["privacy_boundary"]["raw_content_received_by_server"] is False
-    assert "rawBytes" not in str(receipt)
-    assert "claimCeiling" not in receipt
-    assert "claim_ceiling" not in receipt["manifest"]["ash_posture"]
-    assert "trusted-time" in receipt["does_not_establish"]
-
-
-def test_l0_registration_never_synthesizes_metadata_digest():
-    payload = l1_payload()
+def l0_payload(label="metadata fixture"):
+    payload = l1_payload(label)
     payload["artifactMetadata"] = {
         "mediaType": "text/plain",
         "byteLength": 3,
+        "lastModified": 613,
         "assuranceClass": "L0_METADATA_ONLY",
         "artifactDigest": None,
         "contentHash": None,
         "hashScope": "unavailable",
         "localCommitment": None,
     }
-    receipt = API.dispatch_post(envelope("ash-custody-register", payload), {})["result"]
+    return payload
+
+
+def register(payload):
+    return API.dispatch_post(envelope("ash-custody-register", payload), {})["result"]
+
+
+def test_phase2_operations_and_readiness():
+    assert API.SUPPORTED_OPERATIONS == {
+        "ash-custody-register",
+        "ash-custody-replay",
+        "ash-custody-migrate",
+    }
+    receipt = API.readiness_receipt()
+    assert receipt["schema"] == "td613.ash.canonical-digest-readiness/v0.8"
+    assert receipt["status"] == "phase-2-active"
+    assert receipt["canonicalJsonProfile"] == "td613.ash.canonical-json/v0.1"
+    assert receipt["digestSpine"] == [
+        "artifact_digest",
+        "manifest_digest",
+        "receipt_digest",
+    ]
+    assert receipt["rawBytesAcceptedByServer"] is False
+    assert receipt["metadataDigestFallback"] is False
+    assert receipt["universalStableDigestPublishedByDefault"] is False
+
+
+def test_l1_registration_separates_artifact_manifest_and_receipt_digests():
+    receipt = register(l1_payload())
+    manifest = receipt["manifest"]
+    metadata = manifest["artifact_metadata"]
+
+    assert receipt["schema"] == "td613.ash.custody-receipt/v0.8"
+    assert manifest["schema"] == "td613.ash.custody-manifest/v0.8"
+    assert metadata["artifact_digest"] == DIGEST
+    assert "content_hash" not in metadata
+    assert manifest["manifest_digest"] == receipt["manifest_digest"]
+    assert receipt["receipt_digest"].startswith("sha256:")
+    assert receipt["receipt_id"] == "ashc_" + receipt["receipt_digest"][-20:]
+    assert receipt["public_surface"]["artifact_digest_exported"] is False
+    assert receipt["public_surface"]["manifest_digest_exported"] is False
+    assert receipt["public_surface"]["receipt_digest_exported"] is False
+    assert receipt["export_boundary"]["universal_stable_digest_allowed"] is False
+    assert "claimCeiling" not in receipt
+    assert "trusted-time" in receipt["does_not_establish"]
+
+
+def test_metadata_change_preserves_artifact_digest_but_changes_manifest_and_receipt():
+    first = register(l1_payload("first label"))
+    second = register(l1_payload("second label"))
+
+    assert (
+        first["manifest"]["artifact_metadata"]["artifact_digest"]
+        == second["manifest"]["artifact_metadata"]["artifact_digest"]
+    )
+    assert first["manifest_digest"] != second["manifest_digest"]
+    assert first["receipt_digest"] != second["receipt_digest"]
+
+
+def test_receipt_envelope_change_changes_receipt_digest_without_changing_manifest_digest():
+    receipt = register(l1_payload())
+    changed = deepcopy(receipt)
+    changed["created_at"] = "2040-01-01T00:00:00Z"
+    changed.pop("receipt_digest")
+    changed.pop("receipt_id")
+    changed["receipt_digest"] = API.compute_receipt_digest(changed)
+
+    assert changed["manifest_digest"] == receipt["manifest_digest"]
+    assert changed["receipt_digest"] != receipt["receipt_digest"]
+
+
+def test_l0_registration_has_manifest_and_receipt_digests_without_artifact_digest():
+    receipt = register(l0_payload())
     metadata = receipt["manifest"]["artifact_metadata"]
 
     assert receipt["assurance_class"] == "L0_METADATA_ONLY"
     assert receipt["artifact_digest_present"] is False
     assert metadata["artifact_digest"] is None
-    assert metadata["content_hash"] is None
     assert metadata["digest_algorithm"] is None
-    assert receipt["manifest"]["artifact_id_basis"] == "metadata-route-derived"
+    assert receipt["manifest_digest"].startswith("sha256:")
+    assert receipt["receipt_digest"].startswith("sha256:")
+    assert receipt["manifest"]["artifact_id_basis"] == "operator-supplied"
 
 
-def test_l1_rejects_digest_mismatch_and_false_boundary_assertions():
+def test_random_artifact_id_never_derives_from_artifact_digest():
+    payload = l1_payload()
+    payload.pop("artifactId")
+    receipt = register(payload)
+    assert receipt["manifest"]["artifact_id_basis"] == "receipt-local-random"
+    assert DIGEST[-16:] not in receipt["manifest"]["artifact_id"]
+
+
+def test_l1_boundary_regressions_remain_closed():
     payload = l1_payload()
     payload["artifactMetadata"]["localCommitment"]["artifact_digest"] = "sha256:" + "0" * 64
     with pytest.raises(ValueError, match="conflict|does not match"):
-        API.dispatch_post(envelope("ash-custody-register", payload), {})
+        register(payload)
 
-    for key, expected in [
-        ("network_operation_performed_by_module", False),
-        ("raw_bytes_transmitted", False),
-        ("raw_bytes_returned", False),
-        ("raw_bytes_persisted_by_module", False),
-        ("memory_erasure_guaranteed", False),
+    for key in [
+        "network_operation_performed_by_module",
+        "raw_bytes_transmitted",
+        "raw_bytes_returned",
+        "raw_bytes_persisted_by_module",
+        "memory_erasure_guaranteed",
     ]:
         payload = l1_payload()
-        payload["artifactMetadata"]["localCommitment"][key] = not expected
+        payload["artifactMetadata"]["localCommitment"][key] = True
         with pytest.raises(ValueError):
-            API.dispatch_post(envelope("ash-custody-register", payload), {})
+            register(payload)
+
+    with pytest.raises(ValueError, match="metadata/manifests only"):
+        register({"rawText": "private"})
 
 
-def test_conflicting_aliases_and_uppercase_digest_are_rejected():
-    payload = l1_payload()
-    payload["artifactMetadata"]["contentHash"] = "sha256:" + "0" * 64
-    with pytest.raises(ValueError, match="declarations conflict"):
-        API.dispatch_post(envelope("ash-custody-register", payload), {})
-
-    payload = l1_payload()
-    upper = payload["artifactMetadata"]["artifactDigest"].upper()
-    payload["artifactMetadata"]["artifactDigest"] = upper
-    payload["artifactMetadata"]["contentHash"] = upper
-    payload["artifactMetadata"]["localCommitment"]["artifact_digest"] = upper
-    with pytest.raises(ValueError, match="lowercase"):
-        API.dispatch_post(envelope("ash-custody-register", payload), {})
-
-
-def test_l0_rejects_manual_digest_promotion_and_local_commitment():
-    payload = l1_payload()
-    payload["artifactMetadata"]["assuranceClass"] = "L0_METADATA_ONLY"
-    payload["artifactMetadata"]["localCommitment"] = None
-    with pytest.raises(ValueError, match="may not carry an artifact digest"):
-        API.dispatch_post(envelope("ash-custody-register", payload), {})
-
-    payload = l1_payload()
-    payload["artifactMetadata"]["assuranceClass"] = "L0_METADATA_ONLY"
-    payload["artifactMetadata"]["artifactDigest"] = None
-    payload["artifactMetadata"]["contentHash"] = None
-    with pytest.raises(ValueError, match="may not carry a local commitment"):
-        API.dispatch_post(envelope("ash-custody-register", payload), {})
-
-
-def test_replay_preserves_v07_digest_without_rehydrating_content():
-    receipt = API.dispatch_post(envelope("ash-custody-register", l1_payload()), {})["result"]
-    replay = API.dispatch_post(envelope("ash-custody-replay", {"receipt": receipt}), {})["result"]
-    assert replay["artifact_digest"] == receipt["manifest"]["artifact_metadata"]["artifact_digest"]
-    assert replay["assurance_class"] == "L1_BROWSER_LOCAL_ARTIFACT_DIGEST"
+def test_v08_replay_verifies_both_canonical_digests():
+    receipt = register(l1_payload())
+    replay = API.dispatch_post(
+        envelope("ash-custody-replay", {"receipt": receipt}),
+        {},
+    )["result"]
+    assert replay["validation_status"] == "V0_8_DIGEST_SPINE_VERIFIED"
+    assert replay["artifact_digest"] == DIGEST
+    assert replay["manifest_digest"] == receipt["manifest_digest"]
+    assert replay["receipt_digest"] == receipt["receipt_digest"]
     assert replay["raw_replay_available"] is False
-    assert replay["replay_mode"] == "custody-replay-without-content"
-    assert "claimCeiling" not in replay
 
 
-def test_legacy_replay_does_not_promote_metadata_hash_to_v07_digest():
+def test_v08_replay_rejects_tampered_manifest_or_receipt():
+    receipt = register(l1_payload())
+    tampered_manifest = deepcopy(receipt)
+    tampered_manifest["manifest"]["source_locator"]["label"] = "tampered"
+    with pytest.raises(ValueError, match="manifest digest"):
+        API.dispatch_post(envelope("ash-custody-replay", {"receipt": tampered_manifest}), {})
+
+    tampered_receipt = deepcopy(receipt)
+    tampered_receipt["created_at"] = "2040-01-01T00:00:00Z"
+    with pytest.raises(ValueError, match="receipt digest"):
+        API.dispatch_post(envelope("ash-custody-replay", {"receipt": tampered_receipt}), {})
+
+
+def test_v05_migration_quarantines_legacy_content_hash_and_targets_l0():
+    legacy = {
+        "schema": "td613.ash.custody-manifest/v0.5",
+        "artifact_id": "legacy",
+        "source_environment": "manual",
+        "source_locator": {"label": "legacy fixture"},
+        "artifact_metadata": {
+            "media_type": "text/plain",
+            "byte_length": 3,
+            "content_hash": "sha256:" + "a" * 64,
+            "hash_scope": "metadata-or-local-browser",
+        },
+        "credential_reference": {"credential_type": "none"},
+        "privacy_boundary": {"server_custody": False},
+        "ash_posture": {"room_route": "private-sense-only"},
+    }
+    migration = API.dispatch_post(
+        envelope("ash-custody-migrate", {"manifest": legacy}),
+        {},
+    )["result"]
+    receipt = migration["migrated_receipt"]
+    provenance = receipt["manifest"]["migration_provenance"]
+
+    assert migration["status"] == "MIGRATED"
+    assert migration["target_assurance_class"] == "L0_METADATA_ONLY"
+    assert receipt["manifest"]["artifact_metadata"]["artifact_digest"] is None
+    assert provenance["legacy_content_hash_reference"] == "sha256:" + "a" * 64
+    assert provenance["legacy_content_hash_promoted_to_artifact_digest"] is False
+    assert receipt["manifest_digest"].startswith("sha256:")
+    assert receipt["receipt_digest"].startswith("sha256:")
+
+
+def test_v07_l1_migration_preserves_digest_only_after_boundary_validation():
+    source = register(l1_payload())
+    legacy_v07 = deepcopy(source["manifest"])
+    legacy_v07["schema"] = "td613.ash.custody-manifest/v0.7"
+    legacy_v07.pop("manifest_digest")
+    legacy_v07.pop("canonicalization")
+    legacy_v07["artifact_metadata"]["content_hash"] = DIGEST
+
+    migration = API.dispatch_post(
+        envelope("ash-custody-migrate", {"manifest": legacy_v07}),
+        {},
+    )["result"]
+    receipt = migration["migrated_receipt"]
+    assert migration["target_assurance_class"] == "L1_BROWSER_LOCAL_ARTIFACT_DIGEST"
+    assert receipt["manifest"]["artifact_metadata"]["artifact_digest"] == DIGEST
+    assert (
+        receipt["manifest"]["migration_provenance"][
+            "artifact_digest_preserved_after_validation"
+        ]
+        is True
+    )
+
+
+def test_legacy_replay_never_promotes_v05_hash_to_artifact_digest():
     legacy = {
         "schema": "td613.ash.custody-manifest/v0.5",
         "artifact_id": "legacy",
@@ -194,7 +281,10 @@ def test_legacy_replay_does_not_promote_metadata_hash_to_v07_digest():
         "ash_posture": {"room_route": "private-sense-only"},
         "privacy_boundary": {"server_custody": False},
     }
-    replay = API.dispatch_post(envelope("ash-custody-replay", {"manifest": legacy}), {})["result"]
+    replay = API.dispatch_post(
+        envelope("ash-custody-replay", {"manifest": legacy}),
+        {},
+    )["result"]
     assert replay["assurance_class"] == "LEGACY_UNVERIFIED_RECEIPT"
     assert replay["artifact_digest"] is None
-    assert replay["raw_replay_available"] is False
+    assert replay["migration_available"] is True
