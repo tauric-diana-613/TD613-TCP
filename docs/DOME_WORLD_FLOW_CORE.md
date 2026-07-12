@@ -16,6 +16,8 @@ Dome-World preserves three layers without collapsing them:
 
 The public route shares `api/dome-world-engine-guard.py` rather than allocating another Vercel serverless function. Flow-Core dispatch remains separate inside that bounded function: shared deployment capacity does not transfer custody, doctrine, artifact relation, prediction, or Ash authority.
 
+The superseded `hush-generate-strict-pr124` function has been removed; its public URL rewrites to the current strict endpoint. The repository now enforces an eleven-function operating budget, retaining at least one spare slot even though the project has moved to Vercel Pro.
+
 The station can return `CONTEXT_READY` or `ABSTAIN_INSUFFICIENT_CONTEXT`. Unknown sensors remain `UNRESOLVED`; simulated fixtures cannot present as observed; absent required metrics withhold modeled weather. Outage, latency, drift, noise, and retrieval gaps remain benign controls rather than automatic suppression or surveillance findings.
 
 The context station is artifact-blind and private by default. It rejects stable artifact identifiers, raw bytes, and non-null artifact references; cannot write Aperture doctrine; cannot activate Ash; and does not authorize prediction.
