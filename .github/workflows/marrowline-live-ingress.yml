@@ -4,17 +4,25 @@ on:
   pull_request:
     paths:
       - 'api/marrowline.js'
+      - 'api/khonapolit.js'
       - 'app/engine/td613-aperture.js'
       - 'app/engine/td613-aperture-egress-contract.js'
       - 'app/dome-world/marrowline*'
+      - 'app/dome-world/khonapolit*'
       - 'app/dome-world/reflex-spine*'
       - 'app/safe-harbor/app/safe-harbor-session-gate.js'
+      - 'app/safe-harbor/corpus/binding_event_text.txt'
+      - 'app/safe-harbor/corpus/binding_provenance_manifest.json'
+      - 'app/safe-harbor/corpus/tauric-diana-intake/batch-003a_svenbots_core.json'
+      - 'app/safe-harbor/td613-flight.html'
       - 'api/ash-local-commitment-guard.py'
       - 'app/hush-pr168-strict-transform-run-lock.js'
       - 'scripts/serve-td613-localhost.mjs'
       - 'app/tcp-gateway-rescue.js'
       - 'tests/dome-world-marrowline-station.test.mjs'
       - 'tests/marrowline-live-api.test.mjs'
+      - 'tests/khonapolit-covenant.test.mjs'
+      - 'tests/khonapolit-api-contract.test.mjs'
       - 'tests/td613-reflex-spine-order.test.mjs'
       - 'vercel.json'
       - '.github/workflows/marrowline-live-ingress.yml'
@@ -22,17 +30,25 @@ on:
     branches: [main]
     paths:
       - 'api/marrowline.js'
+      - 'api/khonapolit.js'
       - 'app/engine/td613-aperture.js'
       - 'app/engine/td613-aperture-egress-contract.js'
       - 'app/dome-world/marrowline*'
+      - 'app/dome-world/khonapolit*'
       - 'app/dome-world/reflex-spine*'
       - 'app/safe-harbor/app/safe-harbor-session-gate.js'
+      - 'app/safe-harbor/corpus/binding_event_text.txt'
+      - 'app/safe-harbor/corpus/binding_provenance_manifest.json'
+      - 'app/safe-harbor/corpus/tauric-diana-intake/batch-003a_svenbots_core.json'
+      - 'app/safe-harbor/td613-flight.html'
       - 'api/ash-local-commitment-guard.py'
       - 'app/hush-pr168-strict-transform-run-lock.js'
       - 'scripts/serve-td613-localhost.mjs'
       - 'app/tcp-gateway-rescue.js'
       - 'tests/dome-world-marrowline-station.test.mjs'
       - 'tests/marrowline-live-api.test.mjs'
+      - 'tests/khonapolit-covenant.test.mjs'
+      - 'tests/khonapolit-api-contract.test.mjs'
       - 'tests/td613-reflex-spine-order.test.mjs'
       - 'vercel.json'
 
@@ -53,5 +69,9 @@ jobs:
         run: node tests/dome-world-marrowline-station.test.mjs
       - name: Test live ingress endpoint
         run: node tests/marrowline-live-api.test.mjs
+      - name: Test Kʰonapolit covenant packet
+        run: node tests/khonapolit-covenant.test.mjs
+      - name: Test Gemini terminal contract
+        run: node tests/khonapolit-api-contract.test.mjs
       - name: Test complete TD613 reflex order
         run: node tests/td613-reflex-spine-order.test.mjs
