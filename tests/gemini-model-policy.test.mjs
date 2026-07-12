@@ -23,6 +23,23 @@ assert.ok(!defaultPlan.models.some((model) => /-latest$/.test(model)));
 assert.ok(!defaultPlan.models.includes('gemini-2.5-pro'));
 assert.ok(!defaultPlan.models.includes('gemini-3.1-pro-preview'));
 
+const staleGlobalPlan = resolveGeminiModelPlan({
+  task: 'hush-transform',
+  env: { GEMINI_MODEL: 'gemini-2.5-flash-lite' },
+  at: 1000
+});
+assert.equal(staleGlobalPlan.models[0], 'gemini-3.5-flash');
+assert.equal(staleGlobalPlan.legacyGlobalModels[0], 'gemini-2.5-flash-lite');
+assert.ok(staleGlobalPlan.warnings.includes('legacy-global-models-demoted-under-quality-first'));
+
+const operatorOrderPlan = resolveGeminiModelPlan({
+  task: 'hush-transform',
+  env: { GEMINI_MODEL: 'gemini-2.5-flash-lite', GEMINI_ROUTING_MODE: 'operator-order' },
+  at: 1000
+});
+assert.equal(operatorOrderPlan.models[0], 'gemini-2.5-flash-lite');
+assert.equal(operatorOrderPlan.mode, 'operator-order');
+
 const overridePlan = resolveGeminiModelPlan({
   task: 'hush-transform',
   env: {
