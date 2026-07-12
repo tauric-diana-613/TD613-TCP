@@ -37,21 +37,29 @@ const splitModels = (value = '') => safe(value).split(',').map(normModel).filter
 function routeEnvNames(task = 'general-text') {
   if (task === 'hush-transform') return { preferred: 'HUSH_GEMINI_MODEL', fallbacks: 'HUSH_GEMINI_FALLBACKS' };
   if (task === 'khonapolit-dialogue') return { preferred: 'KHONAPOLIT_GEMINI_MODEL', fallbacks: 'KHONAPOLIT_GEMINI_FALLBACKS' };
-  return { preferred: 'GEMINI_MODEL', fallbacks: 'GEMINI_MODEL_FALLBACKS' };
+  return { preferred: '', fallbacks: '' };
 }
 
 function disabledModels(env = process.env) {
   return new Set(splitModels(env.GEMINI_DISABLED_MODELS));
 }
 
-function explicitModels(task = 'general-text', env = process.env) {
+function routeSpecificModels(task = 'general-text', env = process.env) {
   const names = routeEnvNames(task);
   return uniq([
-    ...splitModels(env[names.preferred]),
-    ...splitModels(env[names.fallbacks]),
-    ...splitModels(env.GEMINI_MODEL),
-    ...splitModels(env.GEMINI_MODEL_FALLBACKS)
+    ...(names.preferred ? splitModels(env[names.preferred]) : []),
+    ...(names.fallbacks ? splitModels(env[names.fallbacks]) : [])
   ]);
+}
+
+function legacyGlobalModels(env = process.env) {
+  return uniq([...splitModels(env.GEMINI_MODEL), ...splitModels(env.GEMINI_MODEL_FALLBACKS)]);
+}
+
+function routingMode(env = process.env) {
+  if (/^(?:1|true|yes)$/i.test(safe(env.GEMINI_MODEL_OVERRIDE))) return 'operator-order';
+  const mode = safe(env.GEMINI_ROUTING_MODE || 'quality-first').toLowerCase();
+  return mode === 'operator-order' ? 'operator-order' : 'quality-first';
 }
 
 function cooldownFor(status = 0, timedOut = false, retryAfterSeconds = 0, strike = 1) {
@@ -108,12 +116,18 @@ export function readGeminiModelState(model, at = Date.now()) {
 export function resolveGeminiModelPlan({ task = 'general-text', env = process.env, at = Date.now(), maxModels = 8 } = {}) {
   const defaults = TASK_DEFAULTS[task] || TASK_DEFAULTS['general-text'];
   const disabled = disabledModels(env);
-  const explicit = explicitModels(task, env);
-  const requested = uniq([...explicit, ...defaults]).filter((model) => !disabled.has(model));
+  const routeSpecific = routeSpecificModels(task, env);
+  const legacyGlobal = legacyGlobalModels(env);
+  const explicit = uniq([...routeSpecific, ...legacyGlobal]);
+  const mode = routingMode(env);
+  const requested = uniq(mode === 'operator-order'
+    ? [...routeSpecific, ...legacyGlobal, ...defaults]
+    : [...routeSpecific, ...defaults, ...legacyGlobal]
+  ).filter((model) => !disabled.has(model));
   const rows = requested.map((model, index) => {
     const state = readGeminiModelState(model, at);
     const metadata = MODEL_CATALOG[model] || Object.freeze({ tier: 'operator-supplied', stability: 'unknown', quality: 0, role: 'operator-supplied' });
-    return Object.freeze({ model, index, explicit: explicit.includes(model), metadata, state });
+    return Object.freeze({ model, index, explicit: explicit.includes(model), routeSpecific: routeSpecific.includes(model), legacyGlobal: legacyGlobal.includes(model), metadata, state });
   });
   const available = rows.filter((row) => row.state.mayCall);
   const cooling = rows.filter((row) => !row.state.mayCall);
@@ -121,15 +135,18 @@ export function resolveGeminiModelPlan({ task = 'general-text', env = process.en
   const warnings = [];
   if (requested.some((model) => /-latest$/.test(model))) warnings.push('moving-latest-alias-explicitly-configured');
   if (explicit.some((model) => !MODEL_CATALOG[model])) warnings.push('operator-supplied-model-outside-pinned-catalog');
+  if (mode === 'quality-first' && legacyGlobal.length) warnings.push('legacy-global-models-demoted-under-quality-first');
   if (cooling.length) warnings.push('cooling-models-demoted');
   return Object.freeze({
     version: GEMINI_MODEL_POLICY_VERSION,
     task,
-    mode: safe(env.GEMINI_ROUTING_MODE || 'quality-first') || 'quality-first',
+    mode,
     models: Object.freeze(ordered.map((row) => row.model)),
     callableModels: Object.freeze(available.map((row) => row.model)),
     rows: Object.freeze(ordered),
     explicitModels: Object.freeze(explicit),
+    routeSpecificModels: Object.freeze(routeSpecific),
+    legacyGlobalModels: Object.freeze(legacyGlobal),
     disabledModels: Object.freeze([...disabled]),
     warnings: Object.freeze(warnings),
     stickySuccessPromotion: false,
