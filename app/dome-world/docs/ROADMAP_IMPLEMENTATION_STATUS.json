@@ -7,7 +7,7 @@
     {"phase": 0, "status": "IMPLEMENTED_HARDENED", "live_probe_policy": "rerun-after-custody-release"},
     {"phase": 1, "status": "IMPLEMENTED_HARDENED"},
     {"phase": 2, "status": "IMPLEMENTED_PRODUCTION_DEMONSTRATED"},
-    {"phase": 3, "status": "IMPLEMENTED_VALIDATION_GATED", "promotion_requires": ["phase3-ci-green", "production-inspection", "post-merge-live-probe"]},
+    {"phase": 3, "status": "IMPLEMENTED_PRODUCTION_DEMONSTRATED"},
     {"phase": 4, "status": "PROVISIONAL_RECEIPT_PATH_ACTIVE_V01_ADOPTION_DEFERRED"},
     {"phase": 5, "status": "APERTURE_LANDING_ZONE_INSTANTIATED_RUNTIME_DEFERRED"},
     {"phase": 6, "status": "HELD", "reason": "plaintext Cinder transport not redesigned"},

@@ -34,5 +34,6 @@ assert.ok(vercel.rewrites.some(route=>route.source==='/api/flowcore-context'&&ro
 assert.ok(vercel.rewrites.some(route=>route.source==='/api/dome-world/flowcore-context'&&route.destination==='/api/dome-world-engine-guard?operation=flowcore-context'));
 assert.ok(vercel.rewrites.some(route=>route.source==='/dome-world/flow-core-context.html'&&route.destination==='/app/dome-world/flow-core-context.html'));
 const phase3=status.phases.find(item=>item.phase===3);
-assert.equal(phase3.status,'IMPLEMENTED_VALIDATION_GATED');
+assert.equal(phase3.status,'IMPLEMENTED_PRODUCTION_DEMONSTRATED');
+assert.ok(fs.existsSync('app/dome-world/docs/PHASE_3_PRODUCTION_DEMO_RECEIPT.md'));
 console.log('Dome-World Flow-Core Phase III contract passes on the shared guarded boundary.');

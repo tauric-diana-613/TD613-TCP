@@ -7,7 +7,7 @@ This ledger separates **planned**, **designed**, **implemented**, **hardened**, 
 | 0 · Baseline / contracts | **Implemented + hardened** | contract ledger, split endpoint inventory, Vercel routes, regression tests, deployment probe | rerun live probe after each custody release |
 | 1 · Local Commitment | **Implemented + hardened** | browser SHA-256 kernel, L0/L1 endpoint, strict server validation, stale-selection guard | continuing regression coverage |
 | 2 · Digest / receipt spine | **Implemented + production-demonstrated** | TD613-CJ-1, v0.8 schemas, register/replay/migrate runtime, tamper and mobile production demo | continuing regression coverage |
-| 3 · Flow-Core instrumentation | **Implemented; validation gated** | dedicated context endpoint, v0.1 schema, sensor registry, benign fixtures, abstention, private artifact-blind lab | green Phase III CI, preview inspection, post-merge live probe |
+| 3 · Flow-Core instrumentation | **Implemented + production-demonstrated** | dedicated context endpoint, v0.1 schema, sensor registry, benign fixtures, abstention, private artifact-blind lab, production receipt | continuing regression and calibration coverage |
 | 4 · Reciprocal bridge | **Preview receipt path active; v0.1 adoption deferred** | Aperture v3 diagnostic receipt and provisional Flow-Core `vNext` return | adopt Phase III v0.1 receipt, round-trip replay, returned-receipt audit |
 | 5 · Relation Envelope | **Landing zone designed; runtime deferred** | Aperture relation contract / Phason jurisdiction | route-scoped HMAC, nonce lifecycle, local-only runtime |
 | 6 · Human-gated derivatives | **Held** | Cinder UI disabled; plaintext fragment aliases rejected | client-side/destination-bound Cinder transport and shared human gate |
@@ -17,7 +17,7 @@ This ledger separates **planned**, **designed**, **implemented**, **hardened**, 
 
 ## Phase III promotion boundary
 
-Phase III may be called operational only after its pull-request gates pass, the preview lab is inspected, and the post-merge live probe returns a v0.1 receipt from production. Until then, the implementation remains validation-gated.
+Phase III passed its contract, browser, mobile, artifact-rejection, abstention, and post-merge production probes on 2026-07-12. The exact evidence is recorded in `PHASE_3_PRODUCTION_DEMO_RECEIPT.md`. This promotion does not activate Phase IV bridge adoption, prediction authority, artifact relation, or Ash action.
 
 The station preserves:
 

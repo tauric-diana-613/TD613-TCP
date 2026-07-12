@@ -113,6 +113,6 @@ The human decides.
 
 ## Current implementation state
 
-See `ROADMAP_IMPLEMENTATION_STATUS.md` and `.json`. Phases 0–2 have passed their implementation and production gates. Phase 3 is implemented on its governed branch and remains validation-gated until Phase III CI, preview inspection, and the post-merge live probe close. Phase 4 retains a provisional receipt path but does not adopt the Phase III v0.1 contract until its own gate.
+See `ROADMAP_IMPLEMENTATION_STATUS.md` and `.json`. Phases 0–3 have passed their implementation and production gates. Phase 3's production evidence is recorded in `PHASE_3_PRODUCTION_DEMO_RECEIPT.md`. Phase 4 retains a provisional receipt path but does not adopt the Phase III v0.1 contract until its own gate.
 
 ⟐

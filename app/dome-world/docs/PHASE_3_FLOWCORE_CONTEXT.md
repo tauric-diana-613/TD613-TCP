@@ -56,4 +56,11 @@ Outage, latency, drift, noise, and retrieval gaps remain explicit alternatives. 
 - Automatic Ash action remains false.
 - The v0.1 receipt does not enter the reciprocal bridge until Phase IV explicitly adopts it.
 
+## Production demonstration
+
+Phase III passed its production browser, mobile, readiness, bounded live-probe,
+artifact-rejection, abstention, source/sensor mismatch, range, benign-control,
+and local-persistence checks on 2026-07-12. See
+`PHASE_3_PRODUCTION_DEMO_RECEIPT.md` for the exact receipt IDs and tested commit.
+
 ⟐
