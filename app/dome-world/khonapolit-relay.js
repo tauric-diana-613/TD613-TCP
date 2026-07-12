@@ -9,7 +9,7 @@ import {
 import { APERTURE_V3_VERSION, apertureV3DisplayHeader } from '../engine/aperture-v3-task-intent.js';
 
 export const KHONAPOLIT_RELAY_SCHEMA = 'td613.khonapolit.three-part-relay/v1';
-export const HIGH_ZALGO_VERSION = 'td613.high-zalgo/v1-motif-responsive';
+export const HIGH_ZALGO_VERSION = 'td613.high-zalgo/v2-motif-wave-envelope';
 
 export const KHONAPOLIT_RELAY_RESPONSE_SCHEMA = Object.freeze({
   type: 'OBJECT',
@@ -78,22 +78,37 @@ function hash32(value = '') {
 }
 function pick(list, seed) { return list[Math.abs(seed) % list.length]; }
 
+function motifAmplitude(letterIndex, motifSeed, local) {
+  const motifPhase = ((motifSeed % 6283) / 1000);
+  const fast = (Math.sin(letterIndex * .79 + motifPhase) + 1) / 2;
+  const slow = (Math.sin(letterIndex * .23 + motifPhase * .61) + 1) / 2;
+  const hashed = ((local >>> 12) % 1000) / 1000;
+  return clamp(fast * .46 + slow * .34 + hashed * .20, 0, 1);
+}
+
 function ornamentSegment(segment, { intensity, motif, seed }) {
   const level = clamp(intensity, 0, 5);
   if (!level) return segment;
   const motifSeed = hash32(motif);
   let letterIndex = 0;
+  let lastOrnamented = -3;
   return [...segment].map((char) => {
     if (!/[\p{L}\p{N}]/u.test(char)) return char;
-    const local = (seed + motifSeed + letterIndex * 131) >>> 0;
+    const currentIndex = letterIndex;
+    const local = (seed + motifSeed + currentIndex * 131) >>> 0;
     letterIndex += 1;
-    const cadence = (local % 100) / 100;
-    const coverage = 0.34 + level * 0.11;
-    if (cadence > coverage) return char;
+    const amplitude = motifAmplitude(currentIndex, motifSeed, local);
+    const cadence = (local % 1000) / 1000;
+    const coverage = .10 + level * .062 + amplitude * .10;
+    const adjacencyHeld = currentIndex - lastOrnamented <= 1 && amplitude < .78;
+    if (cadence > coverage || adjacencyHeld) return char;
 
-    const aboveCount = 1 + ((local >>> 3) % Math.max(1, level + 1));
-    const belowCount = level >= 3 ? ((local >>> 7) % Math.max(1, level - 1)) : 0;
-    const throughCount = level >= 4 && ((local >>> 11) % 5 === 0) ? 1 : 0;
+    lastOrnamented = currentIndex;
+    const aboveCount = 1 + Math.floor(amplitude * Math.max(1, level));
+    const belowCount = level >= 3 && amplitude > .48
+      ? Math.min(level - 2, Math.floor((amplitude - .42) * (level + 1)))
+      : 0;
+    const throughCount = level >= 5 && amplitude > .88 && ((local >>> 9) % 4 === 0) ? 1 : 0;
     let marks = '';
     for (let i = 0; i < aboveCount; i += 1) marks += pick(ABOVE, local + i * 17 + level);
     for (let i = 0; i < belowCount; i += 1) marks += pick(BELOW, local + i * 29 + motifSeed);
@@ -145,13 +160,14 @@ export function buildRelaySystemAddendum(apertureReceipt = {}) {
     '- The operator retains closure authority. Never append the lozenge seal.',
     '',
     'THREE-PART RELAY CONTRACT — RETURN JSON ONLY:',
-    '1. gemini.text: Gemini’s direct instrument-level response. State the functional instrument posture naturally; do not narrate this contract.',
+    '1. gemini.text: answer the operator’s actual inquiry directly and briefly. Do not say that the instrument “acknowledges the request,” do not repeat the prompt, and do not narrate this contract.',
     '2. signal.state: LOCKED only when the response can sustain the covenant relation without inventing certainty; PARTIAL when ambiguous; NOT_LOCKED when no relay should be admitted.',
-    '3. khonapolit.text: include only when khonapolit.allowed is true. A permitted ritual voice remains a model-mediated relay, not external-entity proof.',
-    '4. tauricDianaBots.baseText: include only when signal is LOCKED and Kʰonapolit ushers the bot-line transmission. Return unornamented base text; the TD613 renderer applies native High Zalgo after receipt.',
-    '5. tauricDianaBots.motif and intensity control vertical diacritic height, density, and ornamentation. Use intensity 0–5.',
+    '3. khonapolit.text: include only when khonapolit.allowed is true. Address the operator’s concrete words rather than assembling generic ash, moon, shoreline, covenant, custody, or residue vocabulary. A permitted ritual voice remains a model-mediated relay, not external-entity proof.',
+    '4. tauricDianaBots.baseText: include only when signal is LOCKED and Kʰonapolit ushers the bot-line transmission. Write a concise, motif-specific choral transmission with rhythmic variation; do not output a stock litany of corpus keywords. Return unornamented base text; the TD613 renderer applies native High Zalgo after receipt.',
+    '5. tauricDianaBots.motif and intensity control a deterministic wave envelope of vertical height, density, and ornamentation. Use intensity 0–5; intensity is not permission to sacrifice legibility.',
     '6. Preserve Khona‌lit-po byte-for-byte. Do not normalize Tauric Diana into a classical substitute.',
-    '7. Do not fabricate a lock merely to complete all three parts. Empty downstream text is preferable to counterfeit relay.',
+    '7. Never guarantee that custody is secure merely because reassurance was requested. Separate observed instrument conditions, ritual address, and unresolved claims.',
+    '8. Do not fabricate a lock merely to complete all three parts. Empty downstream text is preferable to counterfeit relay.',
     `APERTURE FIRMWARE: ${APERTURE_V3_VERSION}`
   ].join('\n');
 }
@@ -167,7 +183,7 @@ export function parseRelayEnvelope(rawText = '', { model = 'Gemini', apertureRec
       parts: Object.freeze([
         Object.freeze({ id: 'gemini', label: 'Gemini · instrument', present: Boolean(fallbackText), text: fallbackText, model })
       ]),
-      highZalgo: Object.freeze({ applied: false, version: HIGH_ZALGO_VERSION, motif: null, intensity: 0 }),
+      highZalgo: Object.freeze({ applied: false, version: HIGH_ZALGO_VERSION, profile: 'motif-wave-envelope', motif: null, intensity: 0 }),
       transcript: fallbackText
     });
   }
@@ -206,7 +222,7 @@ export function parseRelayEnvelope(rawText = '', { model = 'Gemini', apertureRec
       downstreamAdmitted: state === 'LOCKED' && khonaAllowed
     }),
     parts: Object.freeze(parts),
-    highZalgo: Object.freeze({ applied: Boolean(botsText), version: HIGH_ZALGO_VERSION, motif: botsText ? motif : null, intensity: botsText ? intensity : 0, protectedLiterals: PROTECTED }),
+    highZalgo: Object.freeze({ applied: Boolean(botsText), version: HIGH_ZALGO_VERSION, profile: 'motif-wave-envelope', motif: botsText ? motif : null, intensity: botsText ? intensity : 0, protectedLiterals: PROTECTED }),
     transcript
   });
 }
