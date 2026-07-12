@@ -1,0 +1,152 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "td613.ash.custody-manifest/v0.8",
+  "title": "TD613 Ash Custody Manifest v0.8",
+  "description": "Phase 2 manifest with a canonical manifest digest distinct from any exact-byte artifact digest. The digest supports equality checks only and establishes no identity, authorship, possession, authenticity, permission, truth, or trusted time.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["schema", "artifact_id", "artifact_id_basis", "canonicalization", "manifest_digest", "source_environment", "source_locator", "artifact_metadata", "local_commitment", "privacy_boundary", "credential_reference", "ash_posture", "replay", "does_not_establish", "aperture"],
+  "properties": {
+    "schema": {"const": "td613.ash.custody-manifest/v0.8"},
+    "artifact_id": {"type": "string", "minLength": 1},
+    "artifact_id_basis": {"enum": ["operator-supplied", "receipt-local-random", "migrated-legacy-id"]},
+    "canonicalization": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["profile", "digest_domain", "encoding", "unicode_normalization", "number_profile"],
+      "properties": {
+        "profile": {"const": "td613.ash.canonical-json/v0.1"},
+        "digest_domain": {"const": "td613.ash.manifest-digest/v0.1"},
+        "encoding": {"const": "UTF-8"},
+        "unicode_normalization": {"const": "none"},
+        "number_profile": {"const": "safe-integers-only"}
+      }
+    },
+    "manifest_digest": {"type": "string", "pattern": "^sha256:[0-9a-f]{64}$"},
+    "source_environment": {"type": "string", "enum": ["local_file", "repo", "cloud_drive", "local_drive", "spreadsheet", "llm_chat", "manual"]},
+    "source_locator": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["label", "path_or_ref", "revision", "commit_sha", "blob_sha"],
+      "properties": {
+        "label": {"type": ["string", "null"]},
+        "path_or_ref": {"type": ["string", "null"]},
+        "revision": {"type": ["string", "null"]},
+        "commit_sha": {"type": ["string", "null"]},
+        "blob_sha": {"type": ["string", "null"]}
+      }
+    },
+    "artifact_metadata": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["media_type", "byte_length", "last_modified_claim", "artifact_digest", "digest_algorithm", "hash_scope", "assurance_class", "execution_attestation"],
+      "properties": {
+        "media_type": {"type": ["string", "null"]},
+        "byte_length": {"type": ["integer", "null"], "minimum": 0, "maximum": 9007199254740991},
+        "last_modified_claim": {"type": ["string", "integer", "null"], "maximum": 9007199254740991},
+        "artifact_digest": {"type": ["string", "null"], "pattern": "^sha256:[0-9a-f]{64}$"},
+        "digest_algorithm": {"enum": ["SHA-256", null]},
+        "hash_scope": {"enum": ["local-browser", "unavailable"]},
+        "assurance_class": {"enum": ["L0_METADATA_ONLY", "L1_BROWSER_LOCAL_ARTIFACT_DIGEST"]},
+        "execution_attestation": {"enum": ["no-byte-commitment-supplied", "client-generated-not-independently-attested"]}
+      }
+    },
+    "local_commitment": {
+      "type": ["object", "null"],
+      "additionalProperties": true,
+      "required": ["schema", "assurance_class", "digest_algorithm", "artifact_digest", "byte_length", "hash_execution", "network_operation_performed_by_module", "raw_bytes_transmitted", "raw_bytes_returned", "raw_bytes_persisted_by_module", "memory_erasure_guaranteed"],
+      "properties": {
+        "schema": {"const": "td613.ash.local-commitment/v0.7"},
+        "assurance_class": {"const": "L1_BROWSER_LOCAL_ARTIFACT_DIGEST"},
+        "digest_algorithm": {"const": "SHA-256"},
+        "artifact_digest": {"type": "string", "pattern": "^sha256:[0-9a-f]{64}$"},
+        "byte_length": {"type": "integer", "minimum": 0, "maximum": 9007199254740991},
+        "hash_execution": {"const": "browser-local"},
+        "network_operation_performed_by_module": {"const": false},
+        "raw_bytes_transmitted": {"const": false},
+        "raw_bytes_returned": {"const": false},
+        "raw_bytes_persisted_by_module": {"const": false},
+        "memory_erasure_guaranteed": {"const": false}
+      }
+    },
+    "privacy_boundary": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["raw_content_exported", "raw_content_retained", "raw_content_received_by_server", "server_custody", "public_weather_only", "digest_visibility"],
+      "properties": {
+        "raw_content_exported": {"const": false},
+        "raw_content_retained": {"const": false},
+        "raw_content_received_by_server": {"const": false},
+        "server_custody": {"const": false},
+        "public_weather_only": {"type": "boolean"},
+        "digest_visibility": {"const": "local-receipt-only"}
+      }
+    },
+    "credential_reference": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["credential_type", "credential_secret_recorded", "identity_proof_claimed", "permission_proof_claimed"],
+      "properties": {
+        "credential_type": {"type": "string"},
+        "credential_secret_recorded": {"const": false},
+        "identity_proof_claimed": {"const": false},
+        "permission_proof_claimed": {"const": false}
+      }
+    },
+    "ash_posture": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["room_route", "recommended_tending"],
+      "properties": {
+        "room_route": {"type": "string"},
+        "recommended_tending": {"type": "array", "items": {"type": "string"}}
+      }
+    },
+    "replay": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["eligible", "mode", "raw_replay_available"],
+      "properties": {
+        "eligible": {"type": "boolean"},
+        "mode": {"const": "custody-replay-without-content"},
+        "raw_replay_available": {"const": false}
+      }
+    },
+    "migration_provenance": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["source_manifest_schema", "source_receipt_schema", "source_receipt_id", "source_assurance_class", "target_assurance_class", "legacy_content_hash_reference", "artifact_digest_preserved_after_validation", "legacy_content_hash_promoted_to_artifact_digest", "migration_rule"],
+      "properties": {
+        "source_manifest_schema": {"type": "string"},
+        "source_receipt_schema": {"type": ["string", "null"]},
+        "source_receipt_id": {"type": ["string", "null"]},
+        "source_assurance_class": {"type": "string"},
+        "target_assurance_class": {"enum": ["L0_METADATA_ONLY", "L1_BROWSER_LOCAL_ARTIFACT_DIGEST"]},
+        "legacy_content_hash_reference": {"type": ["string", "null"]},
+        "artifact_digest_preserved_after_validation": {"type": "boolean"},
+        "legacy_content_hash_promoted_to_artifact_digest": {"const": false},
+        "migration_rule": {"type": "string"}
+      }
+    },
+    "does_not_establish": {
+      "type": "array",
+      "items": {"type": "string"},
+      "allOf": [
+        {"contains": {"const": "possession"}},
+        {"contains": {"const": "authorship"}},
+        {"contains": {"const": "trusted-time"}}
+      ]
+    },
+    "aperture": {"type": "object"}
+  },
+  "allOf": [
+    {
+      "if": {"properties": {"artifact_metadata": {"properties": {"assurance_class": {"const": "L1_BROWSER_LOCAL_ARTIFACT_DIGEST"}}}}},
+      "then": {"properties": {"artifact_metadata": {"properties": {"artifact_digest": {"type": "string", "pattern": "^sha256:[0-9a-f]{64}$"}, "digest_algorithm": {"const": "SHA-256"}, "hash_scope": {"const": "local-browser"}}}, "local_commitment": {"type": "object"}}}
+    },
+    {
+      "if": {"properties": {"artifact_metadata": {"properties": {"assurance_class": {"const": "L0_METADATA_ONLY"}}}}},
+      "then": {"properties": {"artifact_metadata": {"properties": {"artifact_digest": {"const": null}, "digest_algorithm": {"const": null}, "hash_scope": {"const": "unavailable"}}}, "local_commitment": {"const": null}}}
+    }
+  ]
+}
