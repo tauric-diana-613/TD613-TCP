@@ -1,0 +1,58 @@
+name: Dome-World Phase 4
+
+on:
+  pull_request:
+    paths:
+      - "api/dome-world-engine-guard.py"
+      - "packages/dome_world_exact/reciprocal_bridge.py"
+      - "packages/dome_world_exact/flowcore_context.py"
+      - "packages/dome_world_exact/tests/test_reciprocal_bridge_v01.py"
+      - "app/engine/aperture-v3-reciprocal-bridge.js"
+      - "app/aperture/index.html"
+      - "app/aperture/release.*"
+      - "app/dome-world/reciprocal-bridge.html"
+      - "app/dome-world/schemas/aperture-*.json"
+      - "app/dome-world/schemas/flowcore-*.json"
+      - "app/dome-world/docs/PHASE_4_*.md"
+      - "scripts/phase4-reciprocal-bridge-deployment-probe.mjs"
+      - "tests/aperture-phase4-bridge.test.mjs"
+      - "tests/phase4-deployment-probe.test.mjs"
+      - "vercel.json"
+      - ".github/workflows/dome-world-phase4.yml"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  phase4:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - name: Install JavaScript dependencies
+        run: npm ci
+      - name: Install Python test dependencies
+        run: python -m pip install --disable-pip-version-check pytest sympy
+      - name: Compile Phase IV Python surfaces
+        run: python -m py_compile api/dome-world-engine-guard.py packages/dome_world_exact/reciprocal_bridge.py packages/dome_world_exact/flowcore_context.py
+      - name: Validate Phase IV server bridge
+        run: python -m pytest packages/dome_world_exact/tests/test_reciprocal_bridge_v01.py -q
+      - name: Preserve Phase III context instrumentation
+        run: python -m pytest packages/dome_world_exact/tests/test_flowcore_context.py packages/dome_world_exact/tests/test_flowcore_context_api.py -q
+      - name: Validate browser audit and replay
+        run: node tests/aperture-phase4-bridge.test.mjs
+      - name: Validate deployment probe contract
+        run: node tests/phase4-deployment-probe.test.mjs
+      - name: Validate release synchronization
+        run: npm run test:release
+      - name: Validate generated surfaces
+        run: npm run check:generated-sync
+      - name: Validate Vercel route and function hygiene
+        run: node tests/vercel-deploy-hygiene.test.mjs
