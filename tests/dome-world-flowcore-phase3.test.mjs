@@ -1,0 +1,34 @@
+import assert from 'node:assert/strict';
+import fs from 'node:fs';
+
+const moduleSource=fs.readFileSync('packages/dome_world_exact/flowcore_context.py','utf8');
+const api=fs.readFileSync('api/flowcore-context.py','utf8');
+const ui=fs.readFileSync('app/dome-world/flow-core-context.html','utf8');
+const schema=JSON.parse(fs.readFileSync('app/dome-world/schemas/flowcore-context-receipt-v01.schema.json','utf8'));
+const registry=JSON.parse(fs.readFileSync('app/dome-world/schemas/flowcore-sensor-registry-v01.json','utf8'));
+const fixtures=JSON.parse(fs.readFileSync('app/dome-world/fixtures/flowcore-context-phase3.json','utf8'));
+const vercel=JSON.parse(fs.readFileSync('vercel.json','utf8'));
+const status=JSON.parse(fs.readFileSync('app/dome-world/docs/ROADMAP_IMPLEMENTATION_STATUS.json','utf8'));
+
+assert.equal(schema.$id,'td613.flowcore.context-receipt/v0.1');
+assert.equal(registry.schema,'td613.flowcore.sensor-registry/v0.1');
+assert.ok(registry.sensors.some(sensor=>sensor.sensor_id==='simulated-fixture'&&sensor.allowed_source_statuses.join(',')==='SIMULATED'));
+assert.ok(registry.sensors.some(sensor=>sensor.sensor_id==='unknown'&&sensor.default_source_status==='UNRESOLVED'));
+assert.ok(fixtures.fixtures.length>=6);
+assert.match(moduleSource,/ABSTAIN_INSUFFICIENT_CONTEXT/);
+assert.match(moduleSource,/PRIVATE_LOCAL_DEFAULT/);
+assert.match(moduleSource,/PHASE_4_DEFERRED/);
+assert.match(moduleSource,/ordinary outage, latency, drift, noise, or retrieval gaps/);
+assert.match(moduleSource,/flowcore-context-instrument/);
+assert.match(api,/OPERATION/);
+assert.match(api,/MAX_BODY_BYTES = 131_072/);
+assert.match(ui,/Named sensors\. Honest weather\. Earned abstention\./);
+assert.match(ui,/\/api\/flowcore-context/);
+assert.doesNotMatch(ui,/artifactDigest|artifact_digest/);
+assert.doesNotMatch(ui,/innerHTML/);
+assert.ok(vercel.functions['api/flowcore-context.py']);
+assert.ok(vercel.rewrites.some(route=>route.source==='/api/dome-world/flowcore-context'&&route.destination==='/api/flowcore-context'));
+assert.ok(vercel.rewrites.some(route=>route.source==='/dome-world/flow-core-context.html'&&route.destination==='/app/dome-world/flow-core-context.html'));
+const phase3=status.phases.find(item=>item.phase===3);
+assert.equal(phase3.status,'IMPLEMENTED_VALIDATION_GATED');
+console.log('Dome-World Flow-Core Phase III contract passes.');
