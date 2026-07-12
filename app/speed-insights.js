@@ -5,6 +5,92 @@ window.si = window.si || function () {
   (window.siq = window.siq || []).push(arguments);
 };
 
+(function installSafeHarborHardSignOut() {
+  const route = window.location.pathname + window.location.search + window.location.hash;
+  const safeHarbor = /\/safe-harbor\/(?:index\.html)?(?:$|[?#])/i.test(route) || /TD613 Safe Harbor/i.test(document.title || '');
+  const flight = /\/safe-harbor\/td613-flight\.html(?:$|[?#])/i.test(route) || /TD613 Flight/i.test(document.title || '');
+  if (!safeHarbor || flight) return;
+
+  const SESSION_KEY = 'td613.safe-harbor.session.v1';
+  const MIRROR_KEY = 'td613.safe-harbor.session.mirror.v1';
+  const DEFAULT_BYPASS_KEY = 'td613.safe-harbor.operator-bypass.hash';
+  const DEFAULT_DEV_MODE_KEY = 'td613.safe-harbor.dev-mode.enabled';
+  let signingOut = false;
+
+  function storageKeys() {
+    const data = window.TD613_SAFE_HARBOR_DATA;
+    const operator = data && data.operatorBypass ? data.operatorBypass : {};
+    return Array.from(new Set([
+      SESSION_KEY,
+      MIRROR_KEY,
+      DEFAULT_BYPASS_KEY,
+      DEFAULT_DEV_MODE_KEY,
+      operator.storage_key,
+      operator.dev_mode_storage_key
+    ].filter(Boolean)));
+  }
+
+  function purgeStorage() {
+    const keys = storageKeys();
+    [window.sessionStorage, window.localStorage].forEach((storage) => {
+      keys.forEach((key) => {
+        try { storage.removeItem(key); } catch (error) {}
+      });
+    });
+    try { delete window.TD613_SAFE_HARBOR_OPERATOR; } catch (error) {
+      window.TD613_SAFE_HARBOR_OPERATOR = {};
+    }
+  }
+
+  function restoreSealedSurface() {
+    delete document.documentElement.dataset.safeHarborSessionOpen;
+    const body = document.body;
+    if (body) {
+      body.classList.add('vault-sealed');
+      body.classList.remove('vault-open');
+    }
+    const membrane = document.getElementById('ingressMembrane');
+    if (membrane) {
+      membrane.hidden = false;
+      membrane.classList.remove('is-hidden');
+      membrane.removeAttribute('aria-hidden');
+    }
+    const vault = document.getElementById('vaultSurface');
+    if (vault) vault.classList.remove('harbor-map-floating');
+  }
+
+  function hardSignOut(event) {
+    const trigger = event.target && event.target.closest
+      ? event.target.closest('#signOutIngress,#signOutVault,#railSignOut')
+      : null;
+    if (!trigger) return;
+
+    event.preventDefault();
+    event.stopImmediatePropagation();
+    if (signingOut) return;
+    signingOut = true;
+
+    window.__TD613_SAFE_HARBOR_SIGNING_OUT__ = true;
+    purgeStorage();
+    window.dispatchEvent(new CustomEvent('td613:safe-harbor-session-reset', {
+      detail: { source: 'always-loaded-bootstrap', hard_reset: true }
+    }));
+    purgeStorage();
+    restoreSealedSurface();
+
+    const target = new URL(window.location.href);
+    target.search = '';
+    target.hash = '';
+    target.searchParams.set('signed_out', String(Date.now()));
+    window.setTimeout(() => window.location.replace(target.href), 0);
+  }
+
+  // Window capture runs before the main runtime, housekeeping wrappers, and
+  // any target-level listener. Sign Out therefore remains available even when
+  // the chamber runtime has partially failed or an async packet task is alive.
+  window.addEventListener('click', hardSignOut, true);
+})();
+
 (function loadSafeHarborDesktopRescueStylesheet() {
   const route = window.location.pathname + window.location.search + window.location.hash;
   const safeHarbor = /\/safe-harbor\/(?:index\.html)?(?:$|[?#])/i.test(route) || /TD613 Safe Harbor/i.test(document.title || '');
