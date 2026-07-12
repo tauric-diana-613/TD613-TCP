@@ -104,7 +104,7 @@
     { "source": "/api/hush-generate", "destination": "/api/hush-generate-quality" },
     { "source": "/api/hush-generate-budgeted", "destination": "/api/hush-generate-quality" },
     { "source": "/api/khonapolit", "destination": "/api/khonapolit-quality" },
-    { "source": "/api/dome-world/khonapolit", "destination": "/api/khonapolit-quality" },
+    { "source": "/api/dome-world/khonapolit", "destination": "/api/khonapolit" },
     { "source": "/api/dome-world/marrowline", "destination": "/api/marrowline" },
     { "source": "/api/dome-world/ping", "destination": "/api/dome-world-engine-guard?operation=ping" },
     { "source": "/api/dome-world/readiness", "destination": "/api/dome-world-engine-guard?operation=readiness" },
