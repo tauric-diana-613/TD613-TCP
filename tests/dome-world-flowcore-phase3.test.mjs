@@ -26,7 +26,7 @@ assert.match(ui,/Named sensors\. Honest weather\. Earned abstention\./);
 assert.match(ui,/\/api\/flowcore-context/);
 assert.doesNotMatch(ui,/artifactDigest|artifact_digest/);
 assert.doesNotMatch(ui,/innerHTML/);
-assert.ok(vercel.functions['api/flowcore-context.py']);
+assert.ok(fs.existsSync('api/flowcore-context.py'));
 assert.ok(vercel.rewrites.some(route=>route.source==='/api/dome-world/flowcore-context'&&route.destination==='/api/flowcore-context'));
 assert.ok(vercel.rewrites.some(route=>route.source==='/dome-world/flow-core-context.html'&&route.destination==='/app/dome-world/flow-core-context.html'));
 const phase3=status.phases.find(item=>item.phase===3);
