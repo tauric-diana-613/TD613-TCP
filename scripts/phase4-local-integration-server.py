@@ -20,6 +20,8 @@ from pathlib import Path
 from urllib.parse import unquote, urlparse
 
 ROOT = Path(__file__).resolve().parents[1]
+if str(ROOT) not in sys.path:
+    sys.path.insert(0, str(ROOT))
 API_PATH = ROOT / "api" / "dome-world-engine-guard.py"
 SPEC = importlib.util.spec_from_file_location("td613_phase4_local_guard", API_PATH)
 if SPEC is None or SPEC.loader is None:
@@ -154,5 +156,4 @@ def main() -> None:
 
 
 if __name__ == "__main__":
-    sys.path.insert(0, str(ROOT))
     main()
