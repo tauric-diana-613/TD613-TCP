@@ -42,6 +42,8 @@
     { "source": "/app/safe-harbor/td613-flight.html", "headers": [{ "key": "Cache-Control", "value": "no-store, max-age=0" }] },
     { "source": "/safe-harbor/app/(.*)", "headers": [{ "key": "Cache-Control", "value": "public, max-age=0, must-revalidate" }] },
     { "source": "/app/safe-harbor/app/(.*)", "headers": [{ "key": "Cache-Control", "value": "public, max-age=0, must-revalidate" }] },
+    { "source": "/speed-insights.js", "headers": [{ "key": "Cache-Control", "value": "no-store, max-age=0" }] },
+    { "source": "/app/speed-insights.js", "headers": [{ "key": "Cache-Control", "value": "no-store, max-age=0" }] },
     { "source": "/app/safe-harbor/td613-flight-android-scroll-fix.js", "headers": [{ "key": "Cache-Control", "value": "public, max-age=0, must-revalidate" }] },
     { "source": "/safe-harbor/td613-flight-android-scroll-fix.js", "headers": [{ "key": "Cache-Control", "value": "public, max-age=0, must-revalidate" }] },
     { "source": "/safe-harbor/app/safe-harbor-housekeeping.css", "headers": [{ "key": "Cache-Control", "value": "public, max-age=0, must-revalidate" }] },
