@@ -37,6 +37,8 @@ function assertRevalidatingStatic(source) {
 assert.equal(vercel.version, 2);
 assert.equal(vercel.functions?.['api/hush-generate-strict.js']?.maxDuration, 60);
 assert.equal(vercel.functions?.['api/hush-generate.js']?.maxDuration, 60);
+assert.equal(vercel.functions?.['api/dome-world-shell.js']?.maxDuration, 10);
+assert.equal(vercel.functions?.['api/dome-world-shell.js']?.includeFiles, 'app/dome-world/index.html');
 assert.equal(vercel.functions?.['api/dome-world-engine.py']?.maxDuration, 60);
 assert.equal(vercel.functions?.['api/dome-world-engine-guard.py']?.maxDuration, 60);
 assert.equal(vercel.functions?.['api/ash-local-commitment.py']?.maxDuration, 60);
@@ -58,8 +60,10 @@ assertRewrite('/api/dome-world/ping', '/api/dome-world-engine-guard?operation=pi
 assertRewrite('/api/dome-world/readiness', '/api/dome-world-engine-guard?operation=readiness');
 assertRewrite('/api/dome-world/step2-readiness', '/api/dome-world-engine-guard?operation=step2-readiness');
 assertRewrite('/api/dome-world/(.*)', '/api/dome-world-engine-guard?operation=$1');
-assertRewrite('/dome-world', '/app/dome-world/index.html');
-assertRewrite('/dome-world/', '/app/dome-world/index.html');
+assertRewrite('/dome-world', '/api/dome-world-shell');
+assertRewrite('/dome-world/', '/api/dome-world-shell');
+assertRewrite('/dome-world/index.html', '/api/dome-world-shell');
+assertRewrite('/app/dome-world/index.html', '/api/dome-world-shell');
 assertRewrite('/dome-world/ash-custody.html', '/app/dome-world/ash-custody-v08.html');
 assertRewrite('/app/dome-world/ash-custody.html', '/app/dome-world/ash-custody-v08.html');
 assertRewrite('/dome-world/(.*)', '/app/dome-world/$1');
@@ -76,6 +80,10 @@ for (const exact of [
 ]) assertRewriteBefore(exact, '/api/dome-world/(.*)');
 assertRewriteBefore('/api/ash-local-commitment', '/api/(.*)');
 assertRewriteBefore('/api/dome-world-engine', '/api/(.*)');
+assertRewriteBefore('/dome-world', '/dome-world/(.*)');
+assertRewriteBefore('/dome-world/', '/dome-world/(.*)');
+assertRewriteBefore('/dome-world/index.html', '/dome-world/(.*)');
+assertRewriteBefore('/app/dome-world/index.html', '/app/(.*)');
 
 [
   '/adversarial-bench.html',
