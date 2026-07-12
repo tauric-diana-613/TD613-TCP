@@ -1,11 +1,16 @@
 # Phase III Production Demo Receipt
 
-**Tester:** Codex browser/API harness  
-**Date/time:** 2026-07-12T17:18:43-04:00  
-**Device:** Desktop 1280x720; mobile emulation 390x844 and 844x390  
-**Browser:** Codex in-app Chromium browser  
-**Production URL:** `https://td613.com/dome-world/flow-core-context.html`  
-**Commit/head:** `807b7b8b26047f0abcc854e28113dde084099eac`  
+**Tester:** Codex browser/API harness
+
+**Date/time:** 2026-07-12T17:18:43-04:00
+
+**Device:** Desktop 1280x720; mobile emulation 390x844 and 844x390
+
+**Browser:** Codex in-app Chromium browser
+
+**Production URL:** `https://td613.com/dome-world/flow-core-context.html`
+
+**Commit/head:** `807b7b8b26047f0abcc854e28113dde084099eac`
 **Deployment:** `https://td-613-qzy6pszwr-tauric-diana-s-projects.vercel.app`
 
 ## Checkpoint receipt
