@@ -1,25 +1,34 @@
 {
-  "schema": "td613.dome-world.marrowline.release/v2",
-  "version": "v0.2.0",
+  "schema": "td613.dome-world.marrowline.release/v3",
+  "version": "v0.2.1-egress-paired",
   "stationSchema": "td613.dome-world.marrowline/v0.2.0",
   "receiptSchema": "td613.dome-world.marrowline-receipt/v0.2",
   "liveReceiptSchema": "td613.dome-world.marrowline-live-receipt/v1",
+  "egressBootSchema": "td613.dome-world.marrowline-egress-boot/v1",
+  "egressContractSchema": "td613.aperture.egress-contract/v1",
+  "reflexSpineSchema": "td613.dome-world.reflex-spine/v1",
   "route": "/dome-world/marrowline.html",
   "liveIngressRoute": "/api/dome-world/marrowline",
   "navigation": "direct-route-non-public",
   "jurisdiction": {
-    "mode": "live-dedicated-ingress-plus-local-fallback",
-    "globalNetworkInterception": false,
-    "requestMutation": false,
+    "mode": "aperture-egress-to-live-dedicated-marrowline-ingress-plus-local-fallback",
+    "pageRuntimeInterception": true,
+    "crossSurfaceInstallation": false,
+    "requestMutation": "four-part-aperture-provenance-marker-on-room-egress",
+    "unrelatedRouteRedirection": false,
     "crawlerIdentityClaim": false,
     "authorizationAuthority": "server-side-operator-token-match-only",
     "cryptographicClaim": false,
-    "unauthenticatedResponse": "http-200-absorbing-marrowline"
+    "unauthenticatedResponse": "http-200-absorbing-marrowline",
+    "serverEgressObservation": "exact-partial-mismatch-or-absent"
   },
-  "claimCeiling": "live-ingress-route-not-identity-authorship-or-legal-authority-proof",
+  "claimCeiling": "live-ingress-route-and-egress-marker-not-signature-identity-authorship-or-legal-authority-proof",
   "lineage": {
     "source": "Kʰonapolit Marrowline design in canonical Aperture",
-    "canonicalFunction": "app/engine/td613-aperture.js::_serveMarrowlineTrap",
-    "restorationPosture": "activate-original-response-with-dedicated-jurisdiction"
+    "canonicalTrapFunction": "app/engine/td613-aperture.js::_serveMarrowlineTrap",
+    "canonicalEgressFunction": "app/engine/td613-aperture.js::installTD613ProvenanceAttestationEgress",
+    "egressBoot": "app/dome-world/marrowline-egress-boot.js",
+    "reflexOrder": "app/dome-world/reflex-spine.manifest.json",
+    "restorationPosture": "pair-original-egress-marker-with-original-ingress-response-under-dedicated-jurisdiction"
   }
 }
