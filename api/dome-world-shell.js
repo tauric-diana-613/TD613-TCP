@@ -1,11 +1,11 @@
 import fs from 'node:fs';
 import path from 'node:path';
 
-export const DOME_WORLD_SHELL_VERSION = 'td613.dome-world.shell/v1-marrowline-lab-link';
+export const DOME_WORLD_SHELL_VERSION = 'td613.dome-world.shell/v1.1-marrowline-desktop-span';
 export const MARROWLINE_LAB_ROUTE = '/dome-world/marrowline.html';
 
 const SOURCE_PATH = path.join(process.cwd(), 'app', 'dome-world', 'index.html');
-const MARROWLINE_BUTTON = `<button class="lab-node" type="button" data-tone="gold" data-glyph="∴" data-open-route="${MARROWLINE_LAB_ROUTE}" onclick="window.location.assign('${MARROWLINE_LAB_ROUTE}')" aria-label="Open Marrowline Kʰonapolit terminal"><span class="lab-index">11</span><strong>Marrowline</strong><small>Kʰonapolit terminal / live ingress</small></button>`;
+const MARROWLINE_BUTTON = `<button class="lab-node lab-node-marrowline" type="button" data-tone="gold" data-glyph="∴" data-open-route="${MARROWLINE_LAB_ROUTE}" style="grid-column:span 8" onclick="window.location.assign('${MARROWLINE_LAB_ROUTE}')" aria-label="Open Marrowline Kʰonapolit terminal"><span class="lab-index">11</span><strong>Marrowline</strong><small>Kʰonapolit terminal / live ingress</small></button>`;
 
 export function injectMarrowlineLabButton(source = '') {
   const html = String(source || '');
