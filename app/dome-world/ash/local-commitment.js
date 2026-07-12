@@ -1,20 +1,16 @@
 /**
- * TD613 Ash Local Commitment Kernel v0.7.1
+ * TD613 Ash Local Commitment Kernel v0.7
  *
  * Computes an L1 browser-local SHA-256 commitment over exact selected bytes.
- * Concurrent file selections are generation-bound: an older hash resolves to
- * the newest active selection rather than overwriting the current intake state.
- * Clearing the intake invalidates every in-flight commitment.
+ * The module performs no network operation and returns no raw bytes.
+ * JavaScript cannot guarantee immediate memory erasure; buffer cleanup is
+ * best-effort only and the receipt says so.
  */
 
 export const LOCAL_COMMITMENT_SCHEMA = "td613.ash.local-commitment/v0.7";
 export const L0_ASSURANCE = "L0_METADATA_ONLY";
 export const L1_ASSURANCE = "L1_BROWSER_LOCAL_ARTIFACT_DIGEST";
 export const DEFAULT_MAX_BYTES = 256 * 1024 * 1024;
-
-let selectionEpoch = 0;
-let invocationSerial = 0;
-let latestInvocation = null;
 
 function assertFileLike(file) {
   const valid =
@@ -37,53 +33,7 @@ function bytesToHex(buffer) {
   ).join("");
 }
 
-function staleCommitmentError() {
-  const error = new Error(
-    "Local commitment invalidated by a newer file selection.",
-  );
-  error.name = "AbortError";
-  return error;
-}
-
-function scheduleEmptySelectionReset() {
-  if (typeof document === "undefined") return;
-  setTimeout(() => {
-    const input = document.getElementById("fileInput");
-    if (input?.files?.[0]) return;
-    const contentHash = document.getElementById("contentHash");
-    const status = document.getElementById("commitmentStatus");
-    const register = document.getElementById("registerArtifact");
-    if (contentHash) contentHash.value = "";
-    if (status) {
-      status.dataset.state = "L0";
-      status.textContent = `${L0_ASSURANCE} · no artifact byte digest has been computed.`;
-    }
-    if (register) register.disabled = false;
-  }, 0);
-}
-
-export function invalidateLocalCommitmentSelection() {
-  selectionEpoch += 1;
-  latestInvocation = null;
-}
-
-function installSelectionInvalidation() {
-  if (typeof document === "undefined") return;
-  document.getElementById("fileInput")?.addEventListener(
-    "change",
-    invalidateLocalCommitmentSelection,
-    { capture: true },
-  );
-  document.getElementById("clearForm")?.addEventListener(
-    "click",
-    invalidateLocalCommitmentSelection,
-    { capture: true },
-  );
-}
-
-installSelectionInvalidation();
-
-async function computeLocalCommitment(
+export async function generateLocalCommitment(
   file,
   {
     maxBytes = DEFAULT_MAX_BYTES,
@@ -104,7 +54,7 @@ async function computeLocalCommitment(
 
   if (file.size > maxBytes) {
     throw new RangeError(
-      `File exceeds the Phase 1 local-hashing ceiling of ${maxBytes} bytes.`,
+      `File exceeds the Phase 1 local-hashing limit of ${maxBytes} bytes.`,
     );
   }
 
@@ -147,8 +97,15 @@ async function computeLocalCommitment(
       raw_bytes_persisted_by_module: false,
       best_effort_buffer_overwrite: true,
       memory_erasure_guaranteed: false,
-      claim_boundary:
-        "local-byte-commitment-not-possession-authorship-authenticity-identity-or-time-proof",
+      does_not_establish: Object.freeze([
+        "possession",
+        "authorship",
+        "authenticity",
+        "identity",
+        "permission",
+        "truth",
+        "trusted-time",
+      ]),
     });
   } finally {
     if (artifactBuffer instanceof ArrayBuffer) {
@@ -160,29 +117,65 @@ async function computeLocalCommitment(
   }
 }
 
-export function generateLocalCommitment(file, options = {}) {
-  const epoch = selectionEpoch;
-  const id = ++invocationSerial;
-  let promise;
+/**
+ * Latest-selection coordinator.
+ *
+ * A commitment result is CURRENT only when no later selection or clear action
+ * has invalidated it. This prevents a slow earlier file hash from overwriting
+ * the state for a newer file selection.
+ */
+export function createLatestCommitmentCoordinator(
+  generate = generateLocalCommitment,
+) {
+  if (typeof generate !== "function") {
+    throw new TypeError("generate must be a function.");
+  }
 
-  promise = computeLocalCommitment(file, options).then(async (result) => {
-    const stillCurrent =
-      latestInvocation?.id === id && selectionEpoch === epoch;
-    if (stillCurrent) return result;
+  let generation = 0;
+  let activeFile = null;
 
-    const replacement = latestInvocation;
-    if (
-      replacement &&
-      replacement.id !== id &&
-      replacement.epoch === selectionEpoch
-    ) {
-      return replacement.promise;
-    }
+  return Object.freeze({
+    invalidate() {
+      generation += 1;
+      activeFile = null;
+      return generation;
+    },
 
-    scheduleEmptySelectionReset();
-    throw staleCommitmentError();
+    async commit(file, options = {}) {
+      assertFileLike(file);
+      const token = ++generation;
+      activeFile = file;
+
+      try {
+        const commitment = await generate(file, options);
+        const current = token === generation && activeFile === file;
+        return Object.freeze({
+          status: current ? "CURRENT" : "STALE",
+          token,
+          file,
+          commitment: current ? commitment : null,
+        });
+      } catch (error) {
+        const current = token === generation && activeFile === file;
+        if (!current) {
+          return Object.freeze({
+            status: "STALE",
+            token,
+            file,
+            commitment: null,
+            error,
+          });
+        }
+        throw error;
+      }
+    },
+
+    isCurrent(file, token) {
+      return token === generation && activeFile === file;
+    },
+
+    get generation() {
+      return generation;
+    },
   });
-
-  latestInvocation = { id, epoch, file, promise };
-  return promise;
 }

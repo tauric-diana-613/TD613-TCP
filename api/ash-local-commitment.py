@@ -2,32 +2,50 @@
 
 This function owns only Phase 1 custody registration and replay. It accepts
 metadata plus an optional browser-generated SHA-256 commitment. Raw artifact
-bytes are prohibited, and L0 metadata-only registration never synthesizes an
-artifact digest.
+bytes are prohibited, L0 metadata-only registration never synthesizes an
+artifact digest, and v0.7 introduces no claim-ceiling mechanism.
 """
 
 from __future__ import annotations
 
 import hashlib
 import json
+import re
 import secrets
 from datetime import datetime, timezone
 from http.server import BaseHTTPRequestHandler
 from urllib.parse import parse_qs, urlparse
-import re
 
 MAX_BODY_BYTES = 131_072
 LOCAL_SCHEMA = "td613.ash.local-commitment/v0.7"
 MANIFEST_SCHEMA = "td613.ash.custody-manifest/v0.7"
 RECEIPT_SCHEMA = "td613.ash.custody-receipt/v0.7"
+REPLAY_SCHEMA = "td613.ash.custody-replay/v0.7"
 L0_ASSURANCE = "L0_METADATA_ONLY"
 L1_ASSURANCE = "L1_BROWSER_LOCAL_ARTIFACT_DIGEST"
+LEGACY_REPLAY_ASSURANCE = "LEGACY_UNVERIFIED_RECEIPT"
 SUPPORTED_OPERATIONS = {"ash-custody-register", "ash-custody-replay"}
 RAW_CONTENT_KEYS = {
-    "text", "rawText", "content", "document", "body", "sensitiveText",
-    "rawBytes", "fileBytes", "fileContent",
+    "text",
+    "rawText",
+    "content",
+    "document",
+    "body",
+    "sensitiveText",
+    "rawBytes",
+    "fileBytes",
+    "fileContent",
 }
 SHA256_RE = re.compile(r"^sha256:[0-9a-f]{64}$")
+DOES_NOT_ESTABLISH = [
+    "possession",
+    "authorship",
+    "authenticity",
+    "identity",
+    "permission",
+    "truth",
+    "trusted-time",
+]
 
 
 def _now():
@@ -45,6 +63,13 @@ def _sha256(value):
 
 def _copy_dict(value):
     return value if isinstance(value, dict) else {}
+
+
+def _first_present(mapping, *keys):
+    for key in keys:
+        if key in mapping and mapping[key] is not None:
+            return mapping[key]
+    return None
 
 
 def _reject_raw_content(payload):
@@ -88,12 +113,26 @@ def _aperture_context(value):
 def _normalized_digest(value):
     if value in (None, ""):
         return None
-    digest = str(value).strip().lower()
-    if not SHA256_RE.fullmatch(digest):
+    raw = str(value).strip()
+    if raw != raw.lower() or not SHA256_RE.fullmatch(raw):
         raise ValueError(
             "artifact digest must be sha256 followed by 64 lowercase hexadecimal characters"
         )
-    return digest
+    return raw
+
+
+def _nonnegative_int(value, label):
+    if value in (None, ""):
+        return None
+    if isinstance(value, bool):
+        raise TypeError(f"{label} must be a non-negative integer")
+    try:
+        normalized = int(value)
+    except (TypeError, ValueError) as exc:
+        raise TypeError(f"{label} must be a non-negative integer") from exc
+    if normalized < 0:
+        raise ValueError(f"{label} must be a non-negative integer")
+    return normalized
 
 
 def _normalize_local_commitment(artifact_metadata):
@@ -101,18 +140,46 @@ def _normalize_local_commitment(artifact_metadata):
         artifact_metadata.get("localCommitment")
         or artifact_metadata.get("local_commitment")
     )
-    requested_assurance = str(
-        artifact_metadata.get("assuranceClass")
-        or artifact_metadata.get("assurance_class")
-        or local.get("assurance_class")
-        or L0_ASSURANCE
-    ).strip()
-    digest = _normalized_digest(
-        artifact_metadata.get("artifactDigest")
-        or artifact_metadata.get("artifact_digest")
-        or artifact_metadata.get("contentHash")
-        or artifact_metadata.get("content_hash")
-        or local.get("artifact_digest")
+
+    explicit_assurance = _first_present(
+        artifact_metadata,
+        "assuranceClass",
+        "assurance_class",
+    )
+    if str(explicit_assurance or "").strip() == L0_ASSURANCE and local:
+        raise ValueError("L0 metadata-only registration may not carry a local commitment")
+
+    assurance_values = {
+        str(value).strip()
+        for value in (
+            explicit_assurance,
+            local.get("assurance_class"),
+        )
+        if value not in (None, "")
+    }
+    if len(assurance_values) > 1:
+        raise ValueError("commitment assurance declarations conflict")
+    requested_assurance = next(iter(assurance_values), L0_ASSURANCE)
+
+    digest_values = []
+    for value in (
+        artifact_metadata.get("artifactDigest"),
+        artifact_metadata.get("artifact_digest"),
+        artifact_metadata.get("contentHash"),
+        artifact_metadata.get("content_hash"),
+        local.get("artifact_digest"),
+    ):
+        normalized = _normalized_digest(value)
+        if normalized is not None:
+            digest_values.append(normalized)
+    distinct_digests = set(digest_values)
+    if len(distinct_digests) > 1:
+        raise ValueError("artifact digest declarations conflict")
+    digest = next(iter(distinct_digests), None)
+
+    metadata_size = _nonnegative_int(
+        _first_present(artifact_metadata, "byteLength", "byte_length"),
+        "artifact byte length",
     )
 
     if requested_assurance == L1_ASSURANCE:
@@ -120,22 +187,45 @@ def _normalize_local_commitment(artifact_metadata):
             raise ValueError(f"L1 browser-local assurance requires {LOCAL_SCHEMA}")
         if local.get("assurance_class") != L1_ASSURANCE:
             raise ValueError("local commitment assurance class does not match L1")
-        local_digest = _normalized_digest(local.get("artifact_digest"))
-        if not digest or local_digest != digest:
-            raise ValueError("local commitment digest does not match artifact metadata")
+        if not digest:
+            raise ValueError("L1 browser-local assurance requires an artifact digest")
+        if local.get("digest_algorithm") != "SHA-256":
+            raise ValueError("L1 local commitment must declare digest_algorithm=SHA-256")
         if local.get("hash_execution") != "browser-local":
             raise ValueError("L1 local commitment must declare browser-local hash execution")
+        if local.get("network_operation_performed_by_module") is not False:
+            raise ValueError(
+                "L1 local commitment must declare network_operation_performed_by_module=false"
+            )
         if local.get("raw_bytes_transmitted") is not False:
             raise ValueError("L1 local commitment must declare raw_bytes_transmitted=false")
         if local.get("raw_bytes_returned") is not False:
             raise ValueError("L1 local commitment must declare raw_bytes_returned=false")
+        if local.get("raw_bytes_persisted_by_module") is not False:
+            raise ValueError(
+                "L1 local commitment must declare raw_bytes_persisted_by_module=false"
+            )
         if local.get("memory_erasure_guaranteed") is not False:
             raise ValueError("L1 local commitment may not claim guaranteed memory erasure")
 
-        local_size = local.get("byte_length")
-        metadata_size = artifact_metadata.get("byteLength") or artifact_metadata.get("byte_length")
-        if local_size is not None and metadata_size is not None and int(local_size) != int(metadata_size):
+        local_size = _nonnegative_int(local.get("byte_length"), "local byte length")
+        if local_size is None:
+            raise ValueError("L1 local commitment requires byte_length")
+        if metadata_size is not None and local_size != metadata_size:
             raise ValueError("local commitment byte length does not match artifact metadata")
+
+        local_media_type = local.get("media_type")
+        metadata_media_type = _first_present(
+            artifact_metadata,
+            "mediaType",
+            "media_type",
+        )
+        if (
+            local_media_type not in (None, "")
+            and metadata_media_type not in (None, "")
+            and str(local_media_type) != str(metadata_media_type)
+        ):
+            raise ValueError("local commitment media type does not match artifact metadata")
 
         return {
             "assurance_class": L1_ASSURANCE,
@@ -143,17 +233,24 @@ def _normalize_local_commitment(artifact_metadata):
             "execution_attestation": "client-generated-not-independently-attested",
             "local_commitment": {
                 "schema": LOCAL_SCHEMA,
+                "assurance_class": L1_ASSURANCE,
                 "digest_algorithm": "SHA-256",
                 "artifact_digest": digest,
-                "byte_length": local.get("byte_length"),
-                "media_type": local.get("media_type"),
+                "byte_length": local_size,
+                "media_type": local_media_type,
                 "last_modified_claim": local.get("last_modified_claim"),
+                "hash_input": "exact-file-picker-bytes",
                 "hash_execution": "browser-local",
+                "execution_attestation": "client-generated-not-independently-attested",
                 "network_operation_performed_by_module": False,
                 "raw_bytes_transmitted": False,
                 "raw_bytes_returned": False,
                 "raw_bytes_persisted_by_module": False,
+                "best_effort_buffer_overwrite": bool(
+                    local.get("best_effort_buffer_overwrite", True)
+                ),
                 "memory_erasure_guaranteed": False,
+                "does_not_establish": list(DOES_NOT_ESTABLISH),
             },
         }
 
@@ -161,6 +258,8 @@ def _normalize_local_commitment(artifact_metadata):
         raise ValueError("unsupported Ash commitment assurance class")
     if digest is not None:
         raise ValueError("L0 metadata-only registration may not carry an artifact digest")
+    if local:
+        raise ValueError("L0 metadata-only registration may not carry a local commitment")
     return {
         "assurance_class": L0_ASSURANCE,
         "artifact_digest": None,
@@ -202,12 +301,21 @@ def _normalize_manifest(payload, aperture):
                 "source": source_environment,
                 "locator": source_locator,
                 "metadata": {
-                    "media_type": artifact_metadata.get("mediaType")
-                    or artifact_metadata.get("media_type"),
-                    "byte_length": artifact_metadata.get("byteLength")
-                    or artifact_metadata.get("byte_length"),
-                    "last_modified_claim": artifact_metadata.get("lastModified")
-                    or artifact_metadata.get("last_modified"),
+                    "media_type": _first_present(
+                        artifact_metadata,
+                        "mediaType",
+                        "media_type",
+                    ),
+                    "byte_length": _first_present(
+                        artifact_metadata,
+                        "byteLength",
+                        "byte_length",
+                    ),
+                    "last_modified_claim": _first_present(
+                        artifact_metadata,
+                        "lastModified",
+                        "last_modified",
+                    ),
                 },
             }
         )
@@ -233,12 +341,20 @@ def _normalize_manifest(payload, aperture):
             or source_locator.get("blobSha"),
         },
         "artifact_metadata": {
-            "media_type": artifact_metadata.get("mediaType")
-            or artifact_metadata.get("media_type"),
-            "byte_length": artifact_metadata.get("byteLength")
-            or artifact_metadata.get("byte_length"),
-            "last_modified_claim": artifact_metadata.get("lastModified")
-            or artifact_metadata.get("last_modified"),
+            "media_type": _first_present(
+                artifact_metadata,
+                "mediaType",
+                "media_type",
+            ),
+            "byte_length": _nonnegative_int(
+                _first_present(artifact_metadata, "byteLength", "byte_length"),
+                "artifact byte length",
+            ),
+            "last_modified_claim": _first_present(
+                artifact_metadata,
+                "lastModified",
+                "last_modified",
+            ),
             "artifact_digest": artifact_digest,
             "content_hash": artifact_digest,
             "digest_algorithm": "SHA-256" if artifact_digest else None,
@@ -268,7 +384,6 @@ def _normalize_manifest(payload, aperture):
             "room_route": ash_posture.get("roomRoute")
             or ash_posture.get("room_route")
             or "private-sense-only",
-            "claim_ceiling": "ash-readiness-preview-not-sensitive-intake",
             "recommended_tending": ash_posture.get("recommendedTending")
             or ash_posture.get("recommended_tending")
             or ["ash-receipt", "safe-harbor-buffer"],
@@ -319,7 +434,7 @@ def _register(payload, aperture):
             if assurance == L1_ASSURANCE
             else "artifact-registered-as-metadata-only-custody-event"
         ),
-        "claimCeiling": "ash-custody-receipt-not-content-custody-or-permission-proof",
+        "does_not_establish": list(DOES_NOT_ESTABLISH),
         "seal": "⟐",
     }
 
@@ -330,22 +445,41 @@ def _replay(payload, aperture):
     manifest = _copy_dict(payload.get("manifest")) or _copy_dict(receipt.get("manifest"))
     if not manifest:
         raise ValueError("ash-custody-replay requires a custody receipt or manifest")
+
+    manifest_schema = manifest.get("schema")
     metadata = _copy_dict(manifest.get("artifact_metadata"))
+    if manifest_schema == MANIFEST_SCHEMA:
+        replay_metadata = dict(metadata)
+        replay_metadata["local_commitment"] = manifest.get("local_commitment")
+        commitment = _normalize_local_commitment(replay_metadata)
+        artifact_digest = commitment["artifact_digest"]
+        assurance = commitment["assurance_class"]
+        validation_status = "V0_7_VALIDATED"
+        legacy_content_hash_reference = None
+    else:
+        artifact_digest = None
+        assurance = LEGACY_REPLAY_ASSURANCE
+        validation_status = "LEGACY_REPLAY_NOT_REVALIDATED_AS_L1"
+        legacy_content_hash_reference = metadata.get("content_hash")
+
     return {
         "status": "OPEN",
-        "schema": "td613.ash.custody-replay/v0.7",
+        "schema": REPLAY_SCHEMA,
         "aperture": aperture,
         "receipt_id": receipt.get("receipt_id"),
         "artifact_id": manifest.get("artifact_id"),
         "source_environment": manifest.get("source_environment"),
-        "artifact_digest": metadata.get("artifact_digest"),
-        "assurance_class": metadata.get("assurance_class", L0_ASSURANCE),
+        "source_manifest_schema": manifest_schema,
+        "artifact_digest": artifact_digest,
+        "legacy_content_hash_reference": legacy_content_hash_reference,
+        "assurance_class": assurance,
+        "validation_status": validation_status,
         "route": _copy_dict(manifest.get("ash_posture")).get("room_route"),
         "privacy_boundary": manifest.get("privacy_boundary"),
         "replay_mode": "custody-replay-without-content",
         "raw_replay_available": False,
         "decision": "replayed-custody-state-without-rehydrating-raw-content",
-        "claimCeiling": "ash-custody-replay-not-fresh-execution-or-content-access",
+        "does_not_establish": list(DOES_NOT_ESTABLISH),
     }
 
 
@@ -358,6 +492,7 @@ def readiness_receipt():
         "assuranceClasses": [L0_ASSURANCE, L1_ASSURANCE],
         "rawBytesAcceptedByServer": False,
         "metadataDigestFallback": False,
+        "boundaryVocabularyPolicy": "no-new-mechanism-legacy-frozen",
     }
 
 
@@ -369,14 +504,17 @@ def dispatch_post(envelope, headers=None):
         raise ValueError("unsupported or missing operation")
     payload = envelope.get("payload") if isinstance(envelope.get("payload"), dict) else {}
     aperture = _aperture_context(envelope.get("apertureContext"))
-    result = _register(payload, aperture) if operation == "ash-custody-register" else _replay(payload, aperture)
+    result = (
+        _register(payload, aperture)
+        if operation == "ash-custody-register"
+        else _replay(payload, aperture)
+    )
     return {
         "ok": True,
         "operation": operation,
         "traceId": str(envelope.get("traceId", "")).strip() or secrets.token_hex(8),
         "apertureContext": aperture,
         "result": result,
-        "claimCeiling": result.get("claimCeiling"),
     }
 
 

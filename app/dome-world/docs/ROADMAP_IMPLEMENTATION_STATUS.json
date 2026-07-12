@@ -1,0 +1,27 @@
+{
+  "schema": "td613.roadmap.implementation-status/v0.1",
+  "as_of": "2026-07-11",
+  "no_silent_promotion": true,
+  "no_new_claim_ceiling_mechanism": true,
+  "phases": [
+    {"phase": 0, "status": "IMPLEMENTED_HARDENED", "live_probe_pending": true},
+    {"phase": 1, "status": "IMPLEMENTED_HARDENED", "live_probe_pending": true},
+    {"phase": 2, "status": "PLANNED"},
+    {"phase": 3, "status": "PLANNED"},
+    {"phase": 4, "status": "APERTURE_DESIGN_INSTANTIATED_API_DEFERRED"},
+    {"phase": 5, "status": "APERTURE_LANDING_ZONE_INSTANTIATED_RUNTIME_DEFERRED"},
+    {"phase": 6, "status": "HELD", "reason": "plaintext Cinder transport not redesigned"},
+    {"phase": 7, "status": "PLANNED"},
+    {"phase": 8, "status": "OPEN_FIELD_RESEARCH_ONLY"},
+    {"phase": 9, "status": "PARTIAL_CONTINUOUS"}
+  ],
+  "closed_post_merge_seams": [
+    "legacy-engine-custody-bypass",
+    "contradictory-l1-boundary-normalization",
+    "stale-file-hash-race",
+    "duplicate-local-commitment-runtime",
+    "stale-v06-alias-surface",
+    "receipt-list-innerhtml-injection",
+    "plaintext-cinder-ui-transit"
+  ]
+}

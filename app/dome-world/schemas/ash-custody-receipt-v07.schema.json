@@ -2,10 +2,22 @@
   "$schema": "https://json-schema.org/draft/2020-12/schema",
   "$id": "td613.ash.custody-receipt/v0.7",
   "title": "TD613 Ash Custody Receipt v0.7",
-  "description": "Metadata-only receipt with explicit L0/L1 commitment assurance. It does not prove possession, authorship, authenticity, identity, permission, truth, or time.",
+  "description": "Metadata-only receipt with explicit L0/L1 commitment assurance. It does not establish possession, authorship, authenticity, identity, permission, truth, or trusted time. v0.7 introduces no claim-ceiling mechanism.",
   "type": "object",
   "additionalProperties": true,
-  "required": ["schema", "receipt_id", "created_at", "assurance_class", "artifact_digest_present", "manifest", "public_surface", "export_boundary", "anti_extraction_defaults", "decision", "claimCeiling"],
+  "required": [
+    "schema",
+    "receipt_id",
+    "created_at",
+    "assurance_class",
+    "artifact_digest_present",
+    "manifest",
+    "public_surface",
+    "export_boundary",
+    "anti_extraction_defaults",
+    "decision",
+    "does_not_establish"
+  ],
   "properties": {
     "schema": { "const": "td613.ash.custody-receipt/v0.7" },
     "receipt_id": { "type": "string", "minLength": 1 },
@@ -49,8 +61,23 @@
         "beauty_not_verification": { "const": true }
       }
     },
-    "decision": { "enum": ["artifact-registered-as-metadata-only-custody-event", "artifact-registered-with-browser-local-byte-commitment"] },
-    "claimCeiling": { "const": "ash-custody-receipt-not-content-custody-or-permission-proof" },
+    "decision": {
+      "enum": [
+        "artifact-registered-as-metadata-only-custody-event",
+        "artifact-registered-with-browser-local-byte-commitment"
+      ]
+    },
+    "does_not_establish": {
+      "type": "array",
+      "items": { "type": "string" },
+      "contains": { "const": "trusted-time" }
+    },
     "seal": { "type": "string" }
+  },
+  "not": {
+    "anyOf": [
+      { "required": ["claimCeiling"] },
+      { "required": ["claim_ceiling"] }
+    ]
   }
 }

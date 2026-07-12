@@ -40,7 +40,22 @@ jobs:
       - name: Validate Phase 0 contract ledger
         run: node tests/dome-world-phase0-contract-ledger.test.mjs
       - name: Validate Ash browser-local commitment
-        run: node tests/dome-world-ash-custody.test.mjs
+        id: ash_browser
+        shell: bash
+        run: |
+          set +e
+          node tests/dome-world-ash-custody.test.mjs > dome-world-ash-browser.log 2>&1
+          status=$?
+          cat dome-world-ash-browser.log
+          exit $status
+      - name: Preserve Ash browser failure receipt
+        if: failure() && steps.ash_browser.outcome == 'failure'
+        uses: actions/upload-artifact@v4
+        with:
+          name: dome-world-phase1-ash-browser-failure
+          path: dome-world-ash-browser.log
+          if-no-files-found: error
+          retention-days: 3
       - name: Validate Dome-World integration
         id: dome_integration
         shell: bash

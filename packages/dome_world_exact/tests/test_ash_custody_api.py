@@ -7,11 +7,21 @@ from pathlib import Path
 import pytest
 
 
-API_PATH = Path(__file__).resolve().parents[3] / "api" / "dome-world-engine.py"
-SPEC = importlib.util.spec_from_file_location("dome_world_engine_api_ash", API_PATH)
-API = importlib.util.module_from_spec(SPEC)
-assert SPEC and SPEC.loader
-SPEC.loader.exec_module(API)
+ROOT = Path(__file__).resolve().parents[3]
+ENGINE_PATH = ROOT / "api" / "dome-world-engine.py"
+COMMITMENT_PATH = ROOT / "api" / "ash-local-commitment.py"
+
+
+def load(path: Path, name: str):
+    spec = importlib.util.spec_from_file_location(name, path)
+    module = importlib.util.module_from_spec(spec)
+    assert spec and spec.loader
+    spec.loader.exec_module(module)
+    return module
+
+
+ENGINE = load(ENGINE_PATH, "dome_world_engine_api_ash")
+COMMITMENT = load(COMMITMENT_PATH, "ash_local_commitment_api_for_engine_tests")
 
 
 def envelope(operation, payload):
@@ -23,114 +33,127 @@ def envelope(operation, payload):
     }
 
 
-def dispatch(operation, payload):
-    return API.dispatch_post(envelope(operation, payload), {})
-
-
-def base_manifest_payload():
+def l1_payload():
+    digest = "sha256:ba7816bf8f01cfea414140de5dae2223b00361a396177a9cb410ff61f20015ad"
     return {
         "sourceEnvironment": "local_file",
-        "sourceLocator": {
-            "label": "Synthetic local custody memo",
-            "path_or_ref": "local path withheld",
-        },
+        "sourceLocator": {"label": "Synthetic local custody memo", "path_or_ref": "local path withheld"},
         "artifactMetadata": {
             "mediaType": "text/plain",
-            "byteLength": 613,
-            "contentHash": "sha256:synthetic-local-613",
-            "hashScope": "local-browser",
+            "byteLength": 3,
+            "artifactDigest": digest,
+            "contentHash": digest,
+            "assuranceClass": "L1_BROWSER_LOCAL_ARTIFACT_DIGEST",
+            "localCommitment": {
+                "schema": "td613.ash.local-commitment/v0.7",
+                "assurance_class": "L1_BROWSER_LOCAL_ARTIFACT_DIGEST",
+                "digest_algorithm": "SHA-256",
+                "artifact_digest": digest,
+                "byte_length": 3,
+                "media_type": "text/plain",
+                "last_modified_claim": 613,
+                "hash_input": "exact-file-picker-bytes",
+                "hash_execution": "browser-local",
+                "network_operation_performed_by_module": False,
+                "raw_bytes_transmitted": False,
+                "raw_bytes_returned": False,
+                "raw_bytes_persisted_by_module": False,
+                "best_effort_buffer_overwrite": True,
+                "memory_erasure_guaranteed": False,
+            },
         },
-        "credentialReference": {
-            "credentialType": "local-possession",
-        },
-        "privacyBoundary": {
-            "public_weather_only": True,
-        },
-        "ashPosture": {
-            "roomRoute": "private-sense-only",
-            "recommendedTending": ["private-hold", "ash-receipt"],
-        },
+        "credentialReference": {"credentialType": "local-possession"},
+        "privacyBoundary": {"public_weather_only": True},
+        "ashPosture": {"roomRoute": "private-sense-only", "recommendedTending": ["private-hold", "ash-receipt"]},
     }
 
 
 def registered_receipt(payload=None):
-    response = dispatch("ash-custody-register", payload or base_manifest_payload())
+    response = COMMITMENT.dispatch_post(envelope("ash-custody-register", payload or l1_payload()), {})
     assert response["ok"] is True
     return response["result"]
 
 
-def test_ash_custody_register_returns_metadata_only_receipt():
-    response = dispatch("ash-custody-register", base_manifest_payload())
+def test_legacy_engine_cannot_bypass_v07_registration_or_replay():
+    assert "ash-custody-register" not in ENGINE.POST_OPERATIONS
+    assert "ash-custody-replay" not in ENGINE.POST_OPERATIONS
+    for operation in ("ash-custody-register", "ash-custody-replay"):
+        with pytest.raises(ValueError, match="owned exclusively"):
+            ENGINE.dispatch_post(envelope(operation, {}), {})
 
-    assert response["ok"] is True
-    receipt = response["result"]
-    assert receipt["schema"] == "td613.ash.custody-receipt/v0.5"
-    assert receipt["manifest"]["schema"] == "td613.ash.custody-manifest/v0.5"
+    readiness = ENGINE.readiness_receipt()
+    assert operation not in readiness["operations"]
+    assert set(readiness["delegatedOperations"]["ash-local-commitment-v0.7"]) == {
+        "ash-custody-register",
+        "ash-custody-replay",
+    }
+
+
+def test_v07_registration_and_replay_use_commitment_endpoint():
+    receipt = registered_receipt()
+    assert receipt["schema"] == "td613.ash.custody-receipt/v0.7"
+    assert receipt["manifest"]["schema"] == "td613.ash.custody-manifest/v0.7"
     assert receipt["public_surface"]["content_exported"] is False
-    assert receipt["public_surface"]["text_preview"] is None
-    assert receipt["public_surface"]["quantized_weather_only"] is True
     assert receipt["export_boundary"]["raw_content_allowed"] is False
-    assert receipt["export_boundary"]["summary_before_custody"] is False
-    assert receipt["export_boundary"]["arrival_as_consent"] is False
-    assert receipt["anti_extraction_defaults"]["local_hold"] is True
-    assert receipt["anti_extraction_defaults"]["no_content_export"] is True
-    assert receipt["anti_extraction_defaults"]["public_weather_only"] is True
     assert receipt["anti_extraction_defaults"]["receipt_not_proof"] is True
-    assert receipt["anti_extraction_defaults"]["beauty_not_verification"] is True
-    assert receipt["claimCeiling"] == "ash-custody-receipt-not-content-custody-or-permission-proof"
+    assert "claimCeiling" not in receipt
+
+    replay = COMMITMENT.dispatch_post(envelope("ash-custody-replay", {"receipt": receipt}), {})["result"]
+    assert replay["schema"] == "td613.ash.custody-replay/v0.7"
+    assert replay["raw_replay_available"] is False
+    assert replay["artifact_digest"] == receipt["manifest"]["artifact_metadata"]["artifact_digest"]
 
 
 @pytest.mark.parametrize("raw_key", ["text", "rawText", "content", "document"])
-def test_ash_custody_register_rejects_raw_content_keys(raw_key):
-    payload = base_manifest_payload()
+def test_v07_registration_rejects_raw_content_keys(raw_key):
+    payload = l1_payload()
     payload[raw_key] = "private raw content must not cross Ash custody registration"
-
     with pytest.raises(ValueError, match="raw content fields are prohibited"):
-        dispatch("ash-custody-register", payload)
+        COMMITMENT.dispatch_post(envelope("ash-custody-register", payload), {})
 
 
-def test_ash_custody_replay_never_rehydrates_raw_content():
-    receipt = registered_receipt()
-    response = dispatch("ash-custody-replay", {"receipt": receipt})
+def test_cinder_plaintext_aliases_are_rejected_by_legacy_engine_until_phase6():
+    for key in ("fragment", "candidateFragment"):
+        with pytest.raises(ValueError, match="raw content fields are prohibited"):
+            ENGINE.dispatch_post(
+                envelope(
+                    "ash-cinder",
+                    {
+                        "receipt": {"receipt_id": "ashc_test"},
+                        key: "plaintext fragment",
+                        "operatorApproved": True,
+                    },
+                ),
+                {},
+            )
 
-    assert response["ok"] is True
-    replay = response["result"]
-    assert replay["schema"] == "td613.ash.custody-replay/v0.5"
-    assert replay["raw_replay_available"] is False
-    assert replay["decision"] == "replayed-custody-state-without-rehydrating-raw-content"
-    assert replay["claimCeiling"] == "ash-custody-replay-not-fresh-execution-or-content-access"
 
-
-def test_phason_custody_diff_detects_content_invariant_projection_change():
+def test_phason_diff_accepts_v07_digest_and_detects_projection_change():
     previous = registered_receipt()
-    changed_payload = deepcopy(base_manifest_payload())
-    changed_payload["sourceLocator"]["path_or_ref"] = "repo reference shifted"
-    changed_payload["credentialReference"]["credentialType"] = "repo-commit-reference"
-    changed_payload["privacyBoundary"]["public_weather_only"] = False
-    changed_payload["ashPosture"]["roomRoute"] = "safe-harbor-buffer"
-    changed_payload["artifactMetadata"]["contentHash"] = previous["manifest"]["artifact_metadata"]["content_hash"]
-    current = registered_receipt(changed_payload)
+    changed = deepcopy(l1_payload())
+    changed["sourceLocator"]["path_or_ref"] = "repo reference shifted"
+    changed["credentialReference"]["credentialType"] = "repo-commit-reference"
+    changed["privacyBoundary"]["public_weather_only"] = False
+    changed["ashPosture"]["roomRoute"] = "safe-harbor-buffer"
+    current = registered_receipt(changed)
 
-    response = dispatch("phason-custody-diff", {"previousReceipt": previous, "currentReceipt": current})
-
-    assert response["ok"] is True
+    response = ENGINE.dispatch_post(
+        envelope("phason-custody-diff", {"previousReceipt": previous, "currentReceipt": current}),
+        {},
+    )
     diff = response["result"]
     assert diff["schema"] == "td613.phason.custody-diff/v0.5"
     assert diff["content_invariant"] is True
     assert diff["projection_changed"] is True
     assert diff["status"] == "SEAM_DETECTED"
-    assert diff["claimCeiling"] == "phason-custody-diff-not-external-enforcement-or-permission-proof"
 
 
-def test_receipt_index_compacts_without_claiming_custody_ownership():
+def test_receipt_index_keeps_v07_receipt_as_reference_not_custody_owner():
     receipt = registered_receipt()
-    response = dispatch("receipt-index", {"receipts": [receipt]})
-
-    assert response["ok"] is True
+    response = ENGINE.dispatch_post(envelope("receipt-index", {"receipts": [receipt]}), {})
     index = response["result"]
     assert index["schema"] == "td613.dome.receipt-index/v0.5"
     assert index["decision"] == "indexed-cross-station-receipts-without-taking-custody"
-    assert index["claimCeiling"] == "receipt-index-not-custody-owner-or-universal-authority"
     assert index["receipts"][0]["export"] == "compact-reference-only"
     assert "custody_owner" not in index
     assert all("owner" not in row for row in index["receipts"])
