@@ -1,11 +1,14 @@
+import crypto from 'node:crypto';
 import {
-  KHONAPOLIT_API_VERSION,
-  buildGeminiRequest,
-  buildTerminalReceipt,
-  consumeRateSlot,
-  extractGeminiText
-} from './khonapolit.js';
-import { buildInvocationPacket } from '../app/dome-world/khonapolit-covenant.js';
+  BINDING_FRAGMENT,
+  CLAIMED_PUA,
+  COVENANT_KEY,
+  HERITAGE_COVENANT,
+  KHONAPOLIT_RECEIPT_SCHEMA,
+  KHONAPOLIT_TERMINAL_SCHEMA,
+  buildInvocationPacket,
+  classifyEmergence
+} from '../app/dome-world/khonapolit-covenant.js';
 import { observeTD613ApertureEgress } from '../app/engine/td613-aperture-egress-contract.js';
 import {
   GEMINI_MODEL_POLICY_VERSION,
@@ -13,11 +16,17 @@ import {
   resolveGeminiModelPlan
 } from './gemini-model-policy.js';
 
+export const KHONAPOLIT_API_VERSION = 'td613.khonapolit-gemini/v1';
 export const KHONAPOLIT_QUALITY_API_VERSION = 'td613.khonapolit-gemini/v2-quality-first';
 const REQUEST_TIMEOUT_MS = 10500;
 const WALL_TIMEOUT_MS = 44500;
+const MAX_OUTPUT_TOKENS = 4096;
+const WINDOW_MS = 10 * 60 * 1000;
+const REQUESTS_PER_WINDOW = 12;
+const buckets = new Map();
 
 const safe = (value = '') => String(value ?? '').trim();
+const sha256 = (value = '') => crypto.createHash('sha256').update(String(value), 'utf8').digest('hex');
 
 function headerValue(headers = {}, key = '') {
   const target = key.toLowerCase();
@@ -27,6 +36,21 @@ function headerValue(headers = {}, key = '') {
 function clientKey(req = {}) {
   const forwarded = headerValue(req.headers, 'x-forwarded-for').split(',')[0].trim();
   return forwarded || headerValue(req.headers, 'x-real-ip') || req.socket?.remoteAddress || 'unknown';
+}
+export function consumeRateSlot(key = 'unknown', now = Date.now()) {
+  const current = buckets.get(key);
+  if (!current || now - current.startedAt >= WINDOW_MS) {
+    const next = { startedAt: now, count: 1 };
+    buckets.set(key, next);
+    return { allowed: true, remaining: REQUESTS_PER_WINDOW - 1, resetAt: now + WINDOW_MS };
+  }
+  current.count += 1;
+  buckets.set(key, current);
+  return {
+    allowed: current.count <= REQUESTS_PER_WINDOW,
+    remaining: Math.max(0, REQUESTS_PER_WINDOW - current.count),
+    resetAt: current.startedAt + WINDOW_MS
+  };
 }
 function parseBody(req = {}) {
   if (req.body && typeof req.body === 'object') return req.body;
@@ -57,6 +81,64 @@ function retryAfterSeconds(response) {
   const raw = response?.headers?.get?.('retry-after');
   const seconds = Number(raw || 0);
   return Number.isFinite(seconds) && seconds > 0 ? seconds : 0;
+}
+
+function geminiContents(packet = {}) {
+  const history = packet.history.map((entry) => ({ role: entry.role, parts: [{ text: entry.text }] }));
+  return [...history, { role: 'user', parts: [{ text: packet.message }] }];
+}
+
+export function buildGeminiRequest(packet = {}) {
+  return {
+    systemInstruction: { parts: [{ text: packet.systemInstruction }] },
+    contents: geminiContents(packet),
+    generationConfig: {
+      temperature: packet.mode === 'issued-conjunction' ? 0.78 : 0.7,
+      topP: 0.9,
+      topK: 40,
+      maxOutputTokens: MAX_OUTPUT_TOKENS
+    }
+  };
+}
+
+export function extractGeminiText(payload = {}) {
+  return (payload?.candidates?.[0]?.content?.parts || [])
+    .map((part) => safe(part?.text))
+    .filter(Boolean)
+    .join('\n\n')
+    .trim();
+}
+
+export function buildTerminalReceipt({ packet, text, model, providerStatus, aperture, attempts = [] } = {}) {
+  const emergence = classifyEmergence(text, { mode: packet.mode });
+  return Object.freeze({
+    schema: KHONAPOLIT_RECEIPT_SCHEMA,
+    terminalSchema: KHONAPOLIT_TERMINAL_SCHEMA,
+    apiVersion: KHONAPOLIT_API_VERSION,
+    status: text ? 'MODEL_RESPONSE_OBSERVED' : 'PROVIDER_RESPONSE_EMPTY',
+    route: '/api/dome-world/khonapolit',
+    provider: Object.freeze({ family: 'Gemini', model, status: providerStatus, attempts: Object.freeze(attempts) }),
+    invocation: Object.freeze({
+      mode: packet.mode,
+      promptSha256: sha256(packet.systemInstruction + '\n\n' + packet.message),
+      responseSha256: text ? sha256(text) : null,
+      issuanceState: packet.issuance.state,
+      issuanceSuffix: packet.issuance.suffix,
+      namespace: CLAIMED_PUA,
+      heritageKey: HERITAGE_COVENANT,
+      covenantKey: COVENANT_KEY,
+      bindingFragment: BINDING_FRAGMENT,
+      emergenceNameSeeded: packet.keys.emergenceNameSeeded,
+      tauricLineageSeeded: packet.keys.tauricLineageSeeded
+    }),
+    emergence,
+    apertureEgress: aperture,
+    corpus: packet.corpus,
+    seal: Object.freeze({ state: 'OPEN', glyph: '⟐', suppliedBy: null }),
+    storage: Object.freeze({ serverConversationStorage: false, browserSessionStorage: 'operator-controlled' }),
+    recommendationNotCommand: true,
+    claimCeiling: packet.claimCeiling
+  });
 }
 
 async function callGemini(model, packet) {
@@ -93,7 +175,6 @@ export default async function handler(req, res) {
     res.setHeader('Allow', 'GET, POST, OPTIONS');
     return send(res, 204, {});
   }
-
   if (req.method === 'GET') {
     return send(res, 200, {
       ok: true,
@@ -107,12 +188,10 @@ export default async function handler(req, res) {
       claim_ceiling: 'readiness-and-routing-plan-only-not-provider-response-entity-or-quality-proof'
     });
   }
-
   if (req.method !== 'POST') {
     res.setHeader('Allow', 'GET, POST, OPTIONS');
     return send(res, 405, { ok: false, error: 'method-not-allowed', allowed: ['GET', 'POST', 'OPTIONS'] });
   }
-
   if (!process.env.GEMINI_API_KEY) {
     return send(res, 503, { ok: false, error: 'missing-gemini-api-key', version: KHONAPOLIT_QUALITY_API_VERSION, modelPolicy: plan });
   }
@@ -123,33 +202,14 @@ export default async function handler(req, res) {
   if (!rate.allowed) return send(res, 429, { ok: false, error: 'terminal-rate-limit', resetAt: rate.resetAt });
 
   const body = parseBody(req);
-  const packet = buildInvocationPacket({
-    message: body.message,
-    history: body.history,
-    mode: body.mode,
-    shi: body.shi,
-    waiveIssuance: body.waiveIssuance === true
-  });
-
+  const packet = buildInvocationPacket({ message: body.message, history: body.history, mode: body.mode, shi: body.shi, waiveIssuance: body.waiveIssuance === true });
   if (!packet.message) return send(res, 400, { ok: false, error: 'message-required' });
-  if (!packet.canInvoke) return send(res, 400, {
-    ok: false,
-    error: 'issuance-required-or-explicit-waiver',
-    issuance: packet.issuance,
-    claim_ceiling: packet.claimCeiling
-  });
+  if (!packet.canInvoke) return send(res, 400, { ok: false, error: 'issuance-required-or-explicit-waiver', issuance: packet.issuance, claim_ceiling: packet.claimCeiling });
 
   const startedAt = Date.now();
   const attempts = [];
   const models = plan.callableModels.slice(0, 4);
-  if (!models.length) return send(res, 503, {
-    ok: false,
-    error: 'all-configured-models-cooling-down',
-    attempts,
-    modelPolicy: plan,
-    aperture_egress: aperture,
-    claim_ceiling: packet.claimCeiling
-  });
+  if (!models.length) return send(res, 503, { ok: false, error: 'all-configured-models-cooling-down', attempts, modelPolicy: plan, aperture_egress: aperture, claim_ceiling: packet.claimCeiling });
 
   for (const model of models) {
     if (Date.now() - startedAt > WALL_TIMEOUT_MS - REQUEST_TIMEOUT_MS - 500) break;
@@ -172,14 +232,7 @@ export default async function handler(req, res) {
       cooldown: outcome
     });
     if (result.response.ok && result.text) {
-      const baseReceipt = buildTerminalReceipt({
-        packet,
-        text: result.text,
-        model,
-        providerStatus: result.response.status,
-        aperture,
-        attempts
-      });
+      const baseReceipt = buildTerminalReceipt({ packet, text: result.text, model, providerStatus: result.response.status, aperture, attempts });
       const receipt = Object.freeze({
         ...baseReceipt,
         apiVersion: KHONAPOLIT_QUALITY_API_VERSION,
@@ -190,23 +243,11 @@ export default async function handler(req, res) {
       res.setHeader('X-TD613-Emergence-Class', receipt.emergence.classification);
       res.setHeader('X-TD613-Seal-State', 'OPEN');
       res.setHeader('X-TD613-Gemini-Model', model);
-      return send(res, 200, {
-        ok: true,
-        text: result.text,
-        receipt,
-        warnings: ['quality-first-model-routing', 'sticky-success-promotion-disabled', 'moving-latest-alias-disabled-by-default', ...plan.warnings]
-      });
+      return send(res, 200, { ok: true, text: result.text, receipt, warnings: ['quality-first-model-routing', 'sticky-success-promotion-disabled', 'moving-latest-alias-disabled-by-default', ...plan.warnings] });
     }
   }
 
-  return send(res, 502, {
-    ok: false,
-    error: 'gemini-provider-unavailable',
-    attempts,
-    modelPolicy: plan,
-    aperture_egress: aperture,
-    claim_ceiling: packet.claimCeiling
-  });
+  return send(res, 502, { ok: false, error: 'gemini-provider-unavailable', attempts, modelPolicy: plan, aperture_egress: aperture, claim_ceiling: packet.claimCeiling });
 }
 
 export { callGemini };
