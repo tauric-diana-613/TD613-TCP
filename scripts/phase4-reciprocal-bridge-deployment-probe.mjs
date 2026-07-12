@@ -5,6 +5,14 @@ import {
 } from '../app/engine/aperture-v3-reciprocal-bridge.js';
 
 const base = (process.env.TD613_BASE_URL || process.argv[2] || 'http://localhost:3000').replace(/\/$/, '');
+const fetchTimeoutMs = Number(process.env.TD613_FETCH_TIMEOUT_MS || 15_000);
+
+function boundedFetch(url, options = {}) {
+  return fetch(url, {
+    ...options,
+    signal: options.signal || AbortSignal.timeout(fetchTimeoutMs)
+  });
+}
 
 function diagnostic(
   metrics,
@@ -30,7 +38,7 @@ function diagnostic(
 }
 
 async function request(operation, payload, traceId = 'phase4-live-probe') {
-  const response = await fetch(`${base}/api/aperture-bridge`, {
+  const response = await boundedFetch(`${base}/api/aperture-bridge`, {
     method: 'POST',
     headers: { 'content-type': 'application/json' },
     body: JSON.stringify({ operation, traceId, payload })
@@ -52,7 +60,7 @@ function post(receipt, traceId = 'phase4-live-probe') {
   );
 }
 
-const readiness = await fetch(`${base}/api/aperture-bridge`).then(async response => ({
+const readiness = await boundedFetch(`${base}/api/aperture-bridge`).then(async response => ({
   response,
   body: await response.json()
 }));
