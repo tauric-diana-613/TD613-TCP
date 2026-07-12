@@ -1,6 +1,6 @@
 const base=(process.env.TD613_BASE_URL||process.argv[2]||'http://localhost:3000').replace(/\/$/,'');
 const required=['omissionPressure','coherence','divergence'];
-const readiness=await fetch(`${base}/api/flowcore-context?operation=readiness`).then(async response=>({response,body:await response.json()}));
+const readiness=await fetch(`${base}/api/flowcore-context`).then(async response=>({response,body:await response.json()}));
 if(!readiness.response.ok||readiness.body.status!=='phase-3-active')throw new Error('Flow-Core Phase III readiness failed');
 if(readiness.body.artifactBlind!==true||readiness.body.privateByDefault!==true)throw new Error('Flow-Core privacy/artifact boundary failed');
 for(const metric of required){if(!readiness.body.requiredWeatherMetrics.includes(metric))throw new Error(`missing required metric ${metric}`)}
