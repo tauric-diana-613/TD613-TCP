@@ -12,12 +12,18 @@ The operational receipt is `td613.flowcore.context-receipt/v0.1`.
 
 Flow-Core shares the already-guarded Dome-World serverless boundary. It does not allocate a separate Vercel function. The public route rewrites to `api/dome-world-engine-guard.py`, which dispatches `flowcore-context-instrument` directly to the Phase III module while preserving the existing Ash custody isolation and legacy Dome operation registry.
 
-This topology keeps the Hobby deployment within its twelve-function ceiling without merging station authority:
+The superseded `api/hush-generate-strict-pr124.js` function has also been retired. Its old public path remains available through a compatibility rewrite to the current strict endpoint. CI now holds the top-level API directory to an eleven-function operating budget, reserving at least one slot below the historical Hobby ceiling.
+
+This topology preserves capacity without merging authority:
 
 ```text
 shared function boundary
 ≠
 shared jurisdiction
+
+legacy route compatibility
+≠
+legacy function residency
 ```
 
 ## Receipt law
