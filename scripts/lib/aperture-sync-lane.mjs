@@ -229,7 +229,11 @@ export function releaseManifestFromMetadata(metadata) {
     apertureSchema,
     featureVersion: metadata.featureVersion || version,
     doctrineKernelSchema: metadata.doctrineKernelSchema || `td613.aperture.doctrine-kernel/${version}`,
-    domeBridgeSchema: `td613.aperture.dome-flowcore-bridge/${version}`,
+    domeBridgeSchema: `td613.aperture.reciprocal-receipt-bridge/${version}`,
+    domeDiagnosticReceiptSchema: `td613.aperture.diagnostic-receipt/${version}`,
+    flowCoreContextReceiptSchema: 'td613.flowcore.context-receipt/vNext',
+    roundTripReceiptSchema: `td613.aperture.round-trip-receipt/${version}`,
+    bridgePosture: 'reciprocal_receipts_without_reciprocal_authority',
     domeWorld: {
       version: 'v0.5.0',
       schema: 'td613.dome-world/v0.5.0',

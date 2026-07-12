@@ -3,6 +3,7 @@ import {
   compareVersions,
   extractApertureMetadata,
   normalizeApertureForRepo,
+  releaseManifestFromMetadata,
   updateApertureIndexHtml
 } from '../scripts/lib/aperture-sync-lane.mjs';
 
@@ -48,5 +49,12 @@ const indexHtml = '<meta name="aperture-version" content="v2.9.2"><iframe id="td
 const nextIndex = updateApertureIndexHtml(indexHtml, metadata, '202606221111');
 assert.match(nextIndex, /content="v2\.9\.3"/);
 assert.match(nextIndex, /tool\.html\?v=202606221111/);
+
+const release = releaseManifestFromMetadata(metadata);
+assert.equal(release.domeBridgeSchema, 'td613.aperture.reciprocal-receipt-bridge/v2.9.3');
+assert.equal(release.domeDiagnosticReceiptSchema, 'td613.aperture.diagnostic-receipt/v2.9.3');
+assert.equal(release.flowCoreContextReceiptSchema, 'td613.flowcore.context-receipt/vNext');
+assert.equal(release.roundTripReceiptSchema, 'td613.aperture.round-trip-receipt/v2.9.3');
+assert.equal(release.bridgePosture, 'reciprocal_receipts_without_reciprocal_authority');
 
 console.log('aperture-sync-lane.test.mjs passed');

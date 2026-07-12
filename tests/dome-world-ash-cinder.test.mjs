@@ -7,7 +7,7 @@ const root = process.cwd();
 const read = (path) => readFileSync(join(root, path), 'utf8');
 const schema = JSON.parse(read('app/dome-world/schemas/ash-cinder.schema.json'));
 const runtime = read('packages/dome_world_exact/ash_v06.py');
-const html = read('app/dome-world/ash-custody.html');
+const html = read('app/dome-world/ash-custody-v07.html');
 
 assert.equal(schema.$id, 'td613.ash.cinder/v0.6');
 assert.equal(schema.properties.raw_document_exported.const, false);
@@ -18,10 +18,9 @@ assert.match(runtime, /fragment_required/);
 assert.match(runtime, /salt_scope/);
 assert.match(runtime, /source-receipt-id-required/);
 assert.match(runtime, /non-empty-fragment-required/);
-assert.match(html, /Cinder Builder/);
-assert.match(html, /Operator approval recorded/);
-assert.match(html, /saltScope:\$\('saltScope'\)\.value/);
-assert.match(html, /ash-cinder/);
+assert.match(html, /Cinder Builder · Transport Held/);
+assert.match(html, /Operator approval cannot activate an unimplemented transport/);
+assert.doesNotMatch(html, /domeRequest\("ash-cinder"/);
 assert.match(html, /ash-veil/);
 
 const cinderGuard = spawnSync('python3', ['-c', `

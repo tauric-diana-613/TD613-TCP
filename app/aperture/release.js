@@ -5,7 +5,11 @@ export const APERTURE_RELEASE = Object.freeze({
   "apertureSchema": "td613-aperture/v3.0-alpha",
   "featureVersion": "v3.0-alpha-anti-epistemicide-research-runtime",
   "doctrineKernelSchema": "td613.aperture.doctrine-kernel/v2.9.4",
-  "domeBridgeSchema": "td613.aperture.dome-flowcore-bridge/v3.0-alpha",
+  "domeBridgeSchema": "td613.aperture.reciprocal-receipt-bridge/v3.0-alpha",
+  "domeDiagnosticReceiptSchema": "td613.aperture.diagnostic-receipt/v3.0-alpha",
+  "flowCoreContextReceiptSchema": "td613.flowcore.context-receipt/vNext",
+  "roundTripReceiptSchema": "td613.aperture.round-trip-receipt/v3.0-alpha",
+  "bridgePosture": "reciprocal_receipts_without_reciprocal_authority",
   "domeWorld": {
     "version": "v0.5.0",
     "schema": "td613.dome-world/v0.5.0",

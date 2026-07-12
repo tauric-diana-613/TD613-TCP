@@ -25,8 +25,15 @@ assert.equal(assetToken, iframeToken, 'app/asset-versions.js aperture token does
 assert.equal(release.version, tool.metadata.version, 'app/aperture/release.json version does not match tool.html');
 assert.equal(release.apertureSchema, tool.metadata.schema, 'app/aperture/release.json schema does not match tool.html');
 assert.equal(release.featureVersion, tool.metadata.featureVersion, 'app/aperture/release.json feature version does not match tool.html');
+assert.equal(release.domeBridgeSchema, `td613.aperture.reciprocal-receipt-bridge/${tool.metadata.version}`, 'reciprocal receipt bridge schema drifted');
+assert.equal(release.domeDiagnosticReceiptSchema, `td613.aperture.diagnostic-receipt/${tool.metadata.version}`, 'diagnostic receipt schema drifted');
+assert.equal(release.flowCoreContextReceiptSchema, 'td613.flowcore.context-receipt/vNext', 'Flow-Core context receipt schema drifted');
+assert.equal(release.roundTripReceiptSchema, `td613.aperture.round-trip-receipt/${tool.metadata.version}`, 'round-trip receipt schema drifted');
+assert.equal(release.bridgePosture, 'reciprocal_receipts_without_reciprocal_authority', 'reciprocal bridge authority posture drifted');
 assert.ok(tool.metadata.blocks.doctrineKernel, 'Doctrine kernel block missing from tool.html');
 assert.ok(tool.metadata.globals.gatewayEmbed, 'Gateway embed global missing from tool.html');
+assert.match(tool.html, /function\s+auditFlowCoreContextReceipt\s*\(/, 'returned Flow-Core receipt audit missing from tool.html');
+assert.match(tool.html, /reciprocalReceipts:true[\s\S]*reciprocalAuthority:false/, 'reciprocal receipt authority boundary missing from tool.html');
 
 console.log(JSON.stringify({
   status: 'pass',

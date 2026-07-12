@@ -10,6 +10,8 @@ the only step that updates the public repo body.
 npm run aperture:compare -- "C:\Users\timst\Downloads\Aperture_v2_9_3.html"
 npm run aperture:stage -- "C:\Users\timst\Downloads\Aperture_v2_9_3.html"
 npm run aperture:promote-staged
+npm run sync:aperture-release
+npm run sync:browser-diagnostics
 npm run aperture:check-sync
 npm run aperture:export-downloads
 ```
@@ -107,12 +109,14 @@ useful; together they make the exposure surface complete.
 ## What's missing right now
 
 The canonical browser body is now [`tool.html`](tool.html) at
-`v2.9.4` / `td613-aperture/v2.9.4`; [`index.html`](index.html) is the
-stable public iframe shim. v2.9.4 carries the doctrine kernel, geometric addendum, ZFP certification layer,
-the corrected rupture predicate, Moire Stratigraphy diagnostics, Phason and
-Sigma dynamical surfaces, and the Gateway/Dome-World one-way bridge compiler.
-The bridge exports modeled route weather only when explicitly invoked; it
-does not execute Aperture or transmit automatically.
+`v3.0-alpha` / `td613-aperture/v3.0-alpha`; [`index.html`](index.html) is the
+stable public iframe shim. v3.0-alpha carries the doctrine kernel, geometric
+addendum, ZFP certification, corrected rupture predicate, Moire Stratigraphy,
+Phason and Sigma dynamics, the Anti-Epistemicide Research Runtime, task-intent
+precedence, and the Gateway/Dome-World reciprocal receipt bridge. The bridge
+compiles an outbound diagnostic receipt only when explicitly invoked and can
+audit a returned Flow-Core context receipt. It does not transmit automatically,
+execute Aperture, rewrite doctrine, or trigger Ash custody.
 
 [ROADMAP.md](../../ROADMAP.md) at the repo root still names the pending
 Aperture refactor: splitting the monolithic standalone body and

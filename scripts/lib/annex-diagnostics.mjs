@@ -393,8 +393,28 @@ const ANNEX_SPECS = Object.freeze([
       },
       {
         id: 'dome-bridge-compiler',
-        label: 'pure Dome-World bridge compiler',
+        label: 'pure Dome-World diagnostic receipt compiler',
         pattern: /function\s+compileDomeWorldBridge\s*\(/i
+      },
+      {
+        id: 'reciprocal-receipt-audit',
+        label: 'bounded Flow-Core returned-receipt audit',
+        pattern: /function\s+auditFlowCoreContextReceipt\s*\(/i
+      },
+      {
+        id: 'reciprocal-authority-boundary',
+        label: 'reciprocal receipts without reciprocal authority',
+        pattern: /reciprocalReceipts:true[\s\S]*reciprocalAuthority:false[\s\S]*automaticAshAction:false/i
+      },
+      {
+        id: 'task-intent-precedence',
+        label: 'task-intent precedence and quiet runtime materiality',
+        pattern: /apertureV3TaskIntentPrecedence[\s\S]*Quiet Runtime Materiality Gate/i
+      },
+      {
+        id: 'relation-human-gate',
+        label: 'local Relation Envelope and human confirmation gate',
+        pattern: /buildRelationEnvelopeCandidate[\s\S]*confirmHumanGate/i
       }
     ])
   })

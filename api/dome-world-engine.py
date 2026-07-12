@@ -31,6 +31,14 @@ from packages.dome_world_exact.runtime import (  # noqa: E402
     trainer_confirm,
     trainer_propose,
 )
+from packages.dome_world_exact.release import (  # noqa: E402
+    APERTURE_DOME_BRIDGE_POSTURE,
+    APERTURE_DOME_DIAGNOSTIC_RECEIPT_SCHEMA,
+    APERTURE_DOME_BRIDGE_SCHEMA,
+    APERTURE_FEATURE_VERSION,
+    APERTURE_ROUND_TRIP_RECEIPT_SCHEMA,
+    FLOWCORE_CONTEXT_RECEIPT_SCHEMA,
+)
 from packages.dome_world_exact.ash_v06 import (  # noqa: E402
     ASH_V06_OPERATIONS,
     dispatch_ash_v06,
@@ -127,9 +135,13 @@ def _aperture_context(value):
     return {
         "version": APERTURE_VERSION,
         "schema": APERTURE_SCHEMA,
-        "feature": "v3.0-alpha-anti-epistemicide-research-runtime",
+        "feature": APERTURE_FEATURE_VERSION,
         "doctrine": "td613.aperture.doctrine-kernel/v2.9.4",
-        "bridge": "td613.aperture.dome-flowcore-bridge/v3.0-alpha",
+        "bridge": APERTURE_DOME_BRIDGE_SCHEMA,
+        "diagnosticReceiptSchema": APERTURE_DOME_DIAGNOSTIC_RECEIPT_SCHEMA,
+        "contextReceiptSchema": FLOWCORE_CONTEXT_RECEIPT_SCHEMA,
+        "roundTripReceiptSchema": APERTURE_ROUND_TRIP_RECEIPT_SCHEMA,
+        "bridgePosture": APERTURE_DOME_BRIDGE_POSTURE,
         "observedRegime": source.get("observedRegime", "PRCS-A"),
         "operationalState": "interface_context",
         "claimAuthority": "design_signal",
@@ -164,19 +176,63 @@ def _bridge(payload, aperture):
     omission = bounded("omissionPressure")
     coherence = bounded("coherence", 0.5)
     divergence = bounded("divergence")
+    naming = bounded("namingSensitivity")
+    rupture = bounded("rupturePressure")
+    route_pressure = round(
+        (omission + divergence + (1 - coherence) + rupture) / 4, 6
+    )
+    diagnostic = _copy_dict(payload.get("diagnosticReceipt"))
+    source_metrics = {
+        "omission": omission,
+        "coherence": coherence,
+        "divergence": divergence,
+        "namingSensitivity": naming,
+        "rupturePressure": rupture,
+    }
+    modeled_weather = {
+        "humidity": omission,
+        "visibility": coherence,
+        "routeHeat": naming,
+        "torsion": rupture,
+        "routePressure": route_pressure,
+        "modeled": True,
+    }
     return {
         "status": "OPEN",
-        "schema": "td613.aperture.dome-flowcore-route-weather/v3.0-alpha",
+        "schema": FLOWCORE_CONTEXT_RECEIPT_SCHEMA,
         "aperture": aperture,
-        "weather": {
-            "occlusion": omission,
-            "coherence": coherence,
-            "routePressure": round((omission + divergence + (1 - coherence)) / 3, 6),
-            "modeled": True,
-        },
-        "decision": "route-weather-modeled-without-exact-gate-entry",
-        "reasons": ["float weather metrics remain outside the exact substrate"],
-        "claimCeiling": "aperture-to-flowcore-translation-not-aperture-execution",
+        "source_status": "DERIVED",
+        "sensor_id": "derived-formula",
+        "authority_class": "A2_DERIVATIONAL",
+        "artifact_reference": None,
+        "source_metrics": source_metrics,
+        "modeled_weather": modeled_weather,
+        "weather": modeled_weather,
+        "diagnostic_receipt_reference": diagnostic.get("receipt_id"),
+        "transformation_history": [
+            "Aperture diagnostic receipt -> bounded Flow-Core route-weather translation"
+        ],
+        "missingness": [
+            "external sensor validation",
+            "independently verified environment",
+            "artifact relation",
+        ],
+        "uncertainty": {"class": "model-and-input-bounded", "value": None},
+        "decision": "context-receipt-returned-for-aperture-audit",
+        "reasons": [
+            "float weather metrics remain outside the exact substrate",
+            "returned context is a recommendation, not a command",
+        ],
+        "cannot_establish": [
+            "external surveillance",
+            "exact location",
+            "artifact possession",
+            "identity",
+            "intent",
+            "causation",
+        ],
+        "recommendation_not_command": True,
+        "claimCeiling": "reciprocal-receipt-not-reciprocal-authority-or-aperture-execution",
     }
 
 

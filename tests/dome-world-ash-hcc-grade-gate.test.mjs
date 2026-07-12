@@ -8,7 +8,7 @@ const read = (path) => readFileSync(join(root, path), 'utf8');
 const hcc = JSON.parse(read('app/dome-world/schemas/ash-hcc.schema.json'));
 const grade = JSON.parse(read('app/dome-world/schemas/ash-grade-gate.schema.json'));
 const runtime = read('packages/dome_world_exact/ash_v06.py');
-const html = read('app/dome-world/ash-custody.html');
+const api = read('api/dome-world-engine.py');
 
 assert.equal(hcc.$id, 'td613.hcc.adapter/v0.6');
 assert.equal(hcc.properties.identity_inference_allowed.const, false);
@@ -19,8 +19,8 @@ assert.equal(grade.properties.claimCeiling.const, 'ash-grade-gate-context-record
 assert.match(runtime, /lower_force_wins/);
 assert.match(runtime, /FORCE_ORDER = \["FORCED", "FORCED_IN_CONTEXT", "FORCED_UNDER_CONSTRAINT", "CONSTRUCTION", "SELECTED", "OPEN"\]/);
 assert.match(runtime, /identity_inference_allowed.*False/s);
-assert.match(html, /HCC WHO Policy/);
-assert.match(html, /Force Status/);
+assert.match(api, /"ash-hcc-adapter"/);
+assert.match(api, /"ash-grade-gate"/);
 
 const precedence = spawnSync('python3', ['-c', `
 from packages.dome_world_exact.ash_v06 import ash_grade_gate

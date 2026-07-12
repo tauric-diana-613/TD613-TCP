@@ -4,7 +4,7 @@
 
 - the full browser cockpit and room system;
 - one active-view sovereign-perspective scheduler with machine-facing art receipts;
-- Aperture v3.0-alpha compatibility context for bounded route-weather translation;
+- Aperture v3.0-alpha reciprocal diagnostic/context receipts for bounded route-weather translation without reciprocal authority;
 - exact residual capture and proposal/confirmation training;
 - opt-in lambda=2c emission-gap closure;
 - Ash v0.7 browser-local exact-byte commitment;

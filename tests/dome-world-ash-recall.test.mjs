@@ -6,7 +6,7 @@ const root = process.cwd();
 const read = (path) => readFileSync(join(root, path), 'utf8');
 const schema = JSON.parse(read('app/dome-world/schemas/ash-recall.schema.json'));
 const runtime = read('packages/dome_world_exact/ash_v06.py');
-const html = read('app/dome-world/ash-custody.html');
+const html = read('app/dome-world/ash-custody-v07.html');
 
 assert.equal(schema.$id, 'td613.ash.recall/v0.6');
 assert.equal(schema.properties.content_deleted_claimed.const, false);

@@ -8,7 +8,7 @@ const read = (path) => readFileSync(join(root, path), 'utf8');
 const api = read('api/dome-world-engine.py');
 const runtime = read('packages/dome_world_exact/ash_v06.py');
 const schema = JSON.parse(read('app/dome-world/schemas/ash-leak-challenge.schema.json'));
-const html = read('app/dome-world/ash-custody.html');
+const html = read('app/dome-world/ash-custody-v07.html');
 
 assert.equal(schema.$id, 'td613.ash.leak-challenge/v0.6');
 assert.equal(schema.properties.raw_content_received.const, false);
@@ -21,9 +21,9 @@ for (const metric of ['reconstruction_pressure', 'entity_inference_pressure', 'c
 }
 assert.match(runtime, /ANTI_GENERIC_RE/);
 assert.match(runtime, /_authority_hits/);
-assert.match(html, /client-local-raw-text-never-sent/);
+assert.match(html, /Client-local mode clears the local text after scoring/);
 assert.match(html, /raw_text_sent_to_server:false/);
-assert.match(html, /localLeakText'\)\.value=''/);
+assert.match(html, /localLeakText["']\)\.value=["']{2}/);
 
 const regression = spawnSync('python3', ['-c', `
 from packages.dome_world_exact.ash_v06 import ash_leak_challenge

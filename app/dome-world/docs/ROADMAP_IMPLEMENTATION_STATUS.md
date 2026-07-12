@@ -7,8 +7,8 @@ This ledger separates **planned**, **designed**, **implemented**, **hardened**, 
 | 0 · Baseline / contracts | **Implemented + hardened** | contract ledger, split endpoint inventory, Vercel routes, regression tests, deployment probe | rerun live probe after each custody release |
 | 1 · Local Commitment | **Implemented + hardened** | browser SHA-256 kernel, L0/L1 endpoint, strict server validation, stale-selection guard | continuing regression coverage |
 | 2 · Digest / receipt spine | **Implemented; hardening gated by Phase 2 CI** | TD613-CJ-1 browser/Python modules, frozen vectors, v0.8 schemas, register/replay/migrate runtime, canonical UI | green Phase 2 CI and post-merge live probe |
-| 3 · Flow-Core instrumentation | **Planned** | current weather remains modeled one-way context | sensor/source registry, uncertainty, controls, abstention |
-| 4 · Reciprocal bridge | **Designed in Aperture; API deferred** | Aperture v3 reciprocal receipt contracts | server operations and replayable round-trip receipts |
+| 3 · Flow-Core instrumentation | **Bounded receipt active** | modeled weather now returns source status, sensor identity, missingness, and uncertainty | external sensor validation remains absent |
+| 4 · Reciprocal bridge | **Receipt path active; authority deferred** | Aperture v3 diagnostic receipt and Flow-Core context receipt contracts | replayable authority, doctrine writeback, and automated Ash action remain prohibited |
 | 5 · Relation Envelope | **Landing zone designed; runtime deferred** | Aperture relation contract / Phason jurisdiction | route-scoped HMAC, nonce lifecycle, local-only runtime |
 | 6 · Human-gated derivatives | **Held** | Cinder UI disabled; plaintext fragment aliases rejected | client-side/destination-bound Cinder transport and shared human gate |
 | 7 · Provenance adapters | **Planned** | none operational | independent signature/time/inclusion adapters |
@@ -31,6 +31,6 @@ The relation means non-equivalence, not hierarchy. None of the three establishes
 
 - Phases 0 and 1 remain completed and hardened.
 - Phase 2 adds only canonical digest and migration machinery.
-- Flow-Core instrumentation, reciprocal server receipts, and Relation Envelope runtime remain deferred.
+- External Flow-Core instrumentation and persistent Relation Envelope runtime remain deferred. The server now emits bounded context receipts; Aperture audits them locally, and any Relation Envelope remains operator-approved and local-only.
 - Cinder transport remains held.
 - No new claim-ceiling mechanism is introduced; legacy vocabulary remains frozen for separate review.

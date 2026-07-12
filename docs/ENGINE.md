@@ -318,8 +318,9 @@ through `TD613_APERTURE_FEATURE_VERSION`. `TD613_APERTURE_VERSION`,
 `TD613_APERTURE_SCHEMA`, and `TD613_APERTURE_PROTOCOL.id` carry the same
 version/schema so Gateway, Hush, Safe Harbor, and diagnostics do not
 float on older Aperture labels. The browser instrument adds ZFP
-certification, Moire Stratigraphy, Phason seam detection, Sigma dynamics, and
-the one-way Dome-World compiler as UI/certification/translation layers; the
+certification, Moire Stratigraphy, Phason seam detection, Sigma dynamics,
+task-intent precedence, and the reciprocal-receipt Dome-World compiler/auditor
+as UI/certification/translation layers; the
 engine protocol remains the post-generation audit and registration surface.
 The canonical cross-language values live in `app/aperture/release.json` and
 are propagated with `npm run sync:aperture-release`.

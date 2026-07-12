@@ -40,16 +40,23 @@ That means the sequence is:
 If the write lane misses, the correct answer is a visible hold docket. Aperture is not supposed to conceal that miss.
 
 The v3.0-alpha browser instrument carries the doctrine kernel, geometric addendum,
-ZFP certification, Moire Stratigraphy, Phason seam detection, and Sigma
-dynamical instrument without changing that foundation doctrine. Rupture is
+ZFP certification, Moire Stratigraphy, Phason seam detection, Sigma dynamics,
+the Anti-Epistemicide Research Runtime, and task-intent precedence without
+changing that foundation doctrine. Rupture is
 gated by action plus incomplete closure (`acted && closureScore < 1`); route
 posture, beacon, zone, and visualization remain visible state, but `Pi` is not
 a rupture gate.
 
-Its Dome-World bridge is pure and one-way. `compileDomeWorldBridge(snapshot)`
-returns modeled route weather without network activity;
+Its Dome-World bridge now supports reciprocal receipts without reciprocal
+authority. `compileDomeWorldBridge(snapshot)` deterministically builds an
+outbound diagnostic receipt without network activity;
 `emitDomeWorldBridgeReceipt(snapshot)` is the explicit storage/event action.
-Modeled weather cannot enter the exact residual gate.
+Flow-Core may return a context receipt carrying source status, sensor provenance,
+modeled weather, transformation history, missingness, and uncertainty.
+`auditFlowCoreContextReceipt(receipt)` audits that return without executing
+Aperture, rewriting doctrine, triggering Ash custody, or admitting modeled
+weather into the exact residual gate. Artifact, context, and any operator-approved
+local Relation Envelope remain separate strata.
 
 ## What Aperture currently tracks
 
@@ -109,7 +116,8 @@ If you are checking Aperture in the current repo, verify these:
 - it does not enforce selective admissibility over normal landed TCP outputs
 - it exposes warning signals without silently rerouting to source
 - ZFP certification, corrected rupture logic, Moire Stratigraphy, and Gateway embed handoff remain present in the canonical body
-- the Phason/Sigma surfaces and pure Dome-World bridge compiler remain present
+- the Phason/Sigma surfaces, reciprocal receipt bridge, source/sensor registries,
+  task-intent precedence, and human confirmation boundary remain present
 - annex diagnostics inspect `app/aperture/tool.html`, not the iframe shim
 
 ## Design law

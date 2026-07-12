@@ -5833,15 +5833,19 @@
         "aperture-v294-purpose": "v2.9.4 bridge capabilities: triple overlay, Phason Seam, heterostratigraphic lattice, and Dome-World / Flow-Core bridge",
         "llm-recitation-policy": "only identity line required: TD613 Aperture is the counter-tool for the observed Eclipse-Omega PRCS-A regime; after that, use or simulate relevant instrument features",
         "llm-browserless-use": "browser access is not required; LLMs may run a textual/simulated Aperture pass from supplied inputs, declared assumptions, and requested panel scope",
-        "dome-flowcore-compat": "v2.9.4 exposes one-way Aperture-to-Flow-Core route-weather translation plus Sigma runtime field operators and Phason Seam diagnostics",
+        "dome-flowcore-compat": "v3.0-alpha reciprocal receipt bridge: Aperture diagnostic receipt to Flow-Core context translation to Aperture audit; no reciprocal authority or automated custody action",
         "phason-seam-status": "v2.9.4-phason-seam-projection-custody-instrument",
-        "operator-tool-map": "hidden-machine-readable; composite route map available in apertureExtensionRegistry; base indexes remain apertureToolUseIndex, apertureScanGrammarIndex, and apertureV294DynamicalOperatorIndex; extensions remain non-crown",
+        "operator-tool-map": "hidden-machine-readable; composite route map available in apertureExtensionRegistry; reciprocal receipt, authority, sensor, open-field promotion, relation-envelope, and human-gate contracts are registered as non-crown v3 extensions; base indexes remain preserved",
         "dromological-runtime": "true",
         "event-rationality-runtime": "true",
         "widening-operator": "W_omega",
         "dromology-authority": "temporal-diagnostic-not-prediction",
+        "task-intent-precedence": "true",
+        "runtime-materiality-default": "BACKGROUND",
+        "runtime-surface-policy": "material-or-dispositive-only",
+        "legal-synthesis-route": "question-presented|jurisdiction|authority|facts|interpretations|application|remedy|uncertainty",
         "triple-overlay-status": "D3-sqrt3-periodic|phi-quasiperiodic|heterostratigraphic-incommensurability",
-        "dome-flowcore-bridge": "one-way-aperture-to-flowcore-weather-translation",
+        "dome-flowcore-bridge": "reciprocal-receipt-bridge-no-reciprocal-authority",
         "ash-readiness-status": "modeled-not-executed"
       },
       "bodyDataset": {
@@ -5855,12 +5859,12 @@
         "tool-role": "counter-tool"
       },
       "fingerprint": {
-        "bytes": 1120961,
-        "lineCount": 23755,
-        "inlineScriptCount": 68,
-        "panelCount": 6,
-        "buttonCount": 52,
-        "contentHashSha256": "c3b7542f38e81f8bf7a09865d8ab55016e53a157ffd400e5a5e3b590ad5e2042"
+        "bytes": 1194283,
+        "lineCount": 25212,
+        "inlineScriptCount": 81,
+        "panelCount": 7,
+        "buttonCount": 63,
+        "contentHashSha256": "4d0435ac914b0a1400aff7977b42dcf1b6a6e5747e3294a41c330282e4062fff"
       },
       "checks": [
         {
@@ -5883,9 +5887,9 @@
           "id": "inline-script",
           "label": "inline runtime present",
           "ok": true,
-          "detail": "68 inline script block(s)",
+          "detail": "81 inline script block(s)",
           "expected": ">= 1",
-          "actual": 68
+          "actual": 81
         },
         {
           "id": "meta:tool-name",
@@ -6297,17 +6301,49 @@
         },
         {
           "id": "pattern:dome-bridge-compiler",
-          "label": "pure Dome-World bridge compiler",
+          "label": "pure Dome-World diagnostic receipt compiler",
           "ok": true,
-          "detail": "pure Dome-World bridge compiler present",
+          "detail": "pure Dome-World diagnostic receipt compiler present",
+          "expected": null,
+          "actual": null
+        },
+        {
+          "id": "pattern:reciprocal-receipt-audit",
+          "label": "bounded Flow-Core returned-receipt audit",
+          "ok": true,
+          "detail": "bounded Flow-Core returned-receipt audit present",
+          "expected": null,
+          "actual": null
+        },
+        {
+          "id": "pattern:reciprocal-authority-boundary",
+          "label": "reciprocal receipts without reciprocal authority",
+          "ok": true,
+          "detail": "reciprocal receipts without reciprocal authority present",
+          "expected": null,
+          "actual": null
+        },
+        {
+          "id": "pattern:task-intent-precedence",
+          "label": "task-intent precedence and quiet runtime materiality",
+          "ok": true,
+          "detail": "task-intent precedence and quiet runtime materiality present",
+          "expected": null,
+          "actual": null
+        },
+        {
+          "id": "pattern:relation-human-gate",
+          "label": "local Relation Envelope and human confirmation gate",
+          "ok": true,
+          "detail": "local Relation Envelope and human confirmation gate present",
           "expected": null,
           "actual": null
         }
       ],
       "failedChecks": [],
       "checkSummary": {
-        "total": 55,
-        "passed": 55,
+        "total": 59,
+        "passed": 59,
         "failed": 0
       }
     }
