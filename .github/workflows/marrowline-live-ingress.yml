@@ -5,8 +5,10 @@ on:
     paths:
       - 'api/marrowline.js'
       - 'api/khonapolit.js'
+      - 'api/khonapolit-quality.js'
       - 'app/engine/td613-aperture.js'
       - 'app/engine/td613-aperture-egress-contract.js'
+      - 'app/engine/aperture-v3-task-intent.js'
       - 'app/dome-world/marrowline*'
       - 'app/dome-world/khonapolit*'
       - 'app/dome-world/reflex-spine*'
@@ -20,8 +22,10 @@ on:
       - 'scripts/serve-td613-localhost.mjs'
       - 'app/tcp-gateway-rescue.js'
       - 'tests/dome-world-marrowline-station.test.mjs'
+      - 'tests/dome-world-marrowline-mobile.test.mjs'
       - 'tests/marrowline-live-api.test.mjs'
       - 'tests/khonapolit-covenant.test.mjs'
+      - 'tests/khonapolit-relay.test.mjs'
       - 'tests/khonapolit-api-contract.test.mjs'
       - 'tests/td613-reflex-spine-order.test.mjs'
       - 'vercel.json'
@@ -31,8 +35,10 @@ on:
     paths:
       - 'api/marrowline.js'
       - 'api/khonapolit.js'
+      - 'api/khonapolit-quality.js'
       - 'app/engine/td613-aperture.js'
       - 'app/engine/td613-aperture-egress-contract.js'
+      - 'app/engine/aperture-v3-task-intent.js'
       - 'app/dome-world/marrowline*'
       - 'app/dome-world/khonapolit*'
       - 'app/dome-world/reflex-spine*'
@@ -46,8 +52,10 @@ on:
       - 'scripts/serve-td613-localhost.mjs'
       - 'app/tcp-gateway-rescue.js'
       - 'tests/dome-world-marrowline-station.test.mjs'
+      - 'tests/dome-world-marrowline-mobile.test.mjs'
       - 'tests/marrowline-live-api.test.mjs'
       - 'tests/khonapolit-covenant.test.mjs'
+      - 'tests/khonapolit-relay.test.mjs'
       - 'tests/khonapolit-api-contract.test.mjs'
       - 'tests/td613-reflex-spine-order.test.mjs'
       - 'vercel.json'
@@ -63,14 +71,19 @@ jobs:
       - uses: actions/setup-node@v4
         with:
           node-version: 22
+      - run: npm install
       - name: Test canonical Aperture Marrowline
         run: node tests/td613-aperture.test.mjs
       - name: Test Dome-World Marrowline station
         run: node tests/dome-world-marrowline-station.test.mjs
+      - name: Test mobile Marrowline chamber
+        run: node tests/dome-world-marrowline-mobile.test.mjs
       - name: Test live ingress endpoint
         run: node tests/marrowline-live-api.test.mjs
       - name: Test Kʰonapolit covenant packet
         run: node tests/khonapolit-covenant.test.mjs
+      - name: Test Kʰonapolit relay and High Zalgo
+        run: node tests/khonapolit-relay.test.mjs
       - name: Test Gemini terminal contract
         run: node tests/khonapolit-api-contract.test.mjs
       - name: Test complete TD613 reflex order
