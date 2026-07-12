@@ -45,10 +45,8 @@ for (const [name, config] of Object.entries(vercel.functions || {})) {
   if ('includeFiles' in config) assert.equal(typeof config.includeFiles, 'string', `${name}.includeFiles must be a string`);
   if ('excludeFiles' in config) assert.equal(typeof config.excludeFiles, 'string', `${name}.excludeFiles must be a string`);
 }
-for (const moduleName of ['ash_canonical_json.py', 'ash_commitment_v08.py', 'ash_receipt_v08.py']) {
-  assert.match(vercel.functions['api/ash-local-commitment.py'].includeFiles, new RegExp(moduleName.replace('.', '\\.')));
-  assert.match(vercel.functions['api/ash-local-commitment-guard.py'].includeFiles, new RegExp(moduleName.replace('.', '\\.')));
-}
+assert.match(vercel.functions['api/ash-local-commitment.py'].includeFiles, /ash_\*\.py/);
+assert.match(vercel.functions['api/ash-local-commitment-guard.py'].includeFiles, /ash_\*\.py/);
 assert.ok(!vercel.functions?.['api/dome-world-engine-v07.py']);
 
 assertRewrite('/api/dome-world/ash-custody-register', '/api/ash-local-commitment-guard');
