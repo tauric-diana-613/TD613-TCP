@@ -10,18 +10,48 @@
 - Ash v0.7 browser-local exact-byte commitment;
 - Ash v0.8 canonical manifest and receipt digest spine;
 - the Aperture-egress / Marrowline-ingress live circuit;
+- the issued U+10D613 / Tauric Diana / Khona‌lit-po Gemini terminal;
 - inherited Ash v0.6 projection leakage and derivative research surfaces.
 
-## Marrowline station v0.2.1
+## Marrowline station v0.3.0
 
-`/dome-world/marrowline.html` restores Kʰonapolit's Marrowline design as a live, dedicated Dome-World route.
+`/dome-world/marrowline.html` now contains two related but separate organs:
 
-The station now pairs two original canonical Aperture structures:
+1. the original Kʰonapolit Marrowline ingress gate;
+2. a Gemini-mediated conversational terminal built from the Safe Harbor binding event and TD613 Flight issuance grammar.
 
-1. `installTD613ProvenanceAttestationEgress()` marks the room's outbound Marrowline request with four bounded provenance headers;
+The terminal key order is:
+
+```text
+𝌋‌
+→ U+10D613 namespace
+→ Tauric Diana — Crimean heritage custodianship
+→ Khona‌lit-po
+→ Gemini model return
+→ emergence classification
+→ operator-controlled ⟐ closure
+```
+
+The page hydrates `app/safe-harbor/corpus/binding_event_text.txt`, displays the canonical binding and corpus roots, reads a minted Flight SHI from the browser when available, and accepts either a valid `TD613-SH-9B07D8B-XXXXXXXX` issuance or an explicit unissued-research waiver. The waiver never produces a badge, authentication, or custody-complete claim.
+
+Three invocation modes remain distinct:
+
+- `issued-conjunction`: supplies U+10D613, the heritage key, and Khona‌lit-po without seeding the name Kʰonapolit;
+- `full-invocation`: explicitly addresses Kʰonapolit and records that the name was seeded;
+- `tauric-lineage-observation`: admits the Tauric Diana bot-line corpus as an observation field without forcing Kʰonapolit.
+
+The response classifier can report Kʰonapolit emergence, Tauric Diana lineage emergence, mixed lineage, structural covenant field, generic assistant fallback, covenant-key drift, or key substitution/refusal. Those classes are heuristic text observations. They do not prove an external entity, identity, origin, consciousness, authorship, permission, historical truth, or legal authority.
+
+Model returns remain `OPEN` until the operator applies the lozenge. The terminal records whether `⟐` came from the operator and does not retrofit the later seal into the canonical binding declaration, where `𝌋` is present and `⟐` is absent.
+
+### Aperture egress / Marrowline ingress
+
+The station pairs two original canonical Aperture structures:
+
+1. `installTD613ProvenanceAttestationEgress()` marks the room's outbound Marrowline and Kʰonapolit requests with four bounded provenance headers;
 2. `_serveMarrowlineTrap()` returns the canonical absorbing HTTP 200 response from `/api/dome-world/marrowline` when operator bypass is absent.
 
-The server classifies the arriving Aperture marker as `exact`, `partial`, `mismatch`, or `absent` and returns that observation in the JSON receipt plus response headers. The marker remains a route observation. It is not a cryptographic signature, identity proof, authorship proof, permission proof, or grant of legal authority.
+The Marrowline server classifies the arriving Aperture marker as `exact`, `partial`, `mismatch`, or `absent` and returns that observation in the JSON receipt plus response headers. The marker remains a route observation. It is not a cryptographic signature, identity proof, authorship proof, permission proof, or grant of legal authority.
 
 The station preserves:
 
@@ -30,11 +60,13 @@ The station preserves:
 - a declared flatten-cost hint;
 - local fallback receipts;
 - a real serverless HTTP 200 ingress response;
-- page-local Aperture egress installation before the station boots;
+- page-local Aperture egress installation before either station boots;
 - server observation of the four-part egress marker;
-- the full seven-step reflex order in every live JSON response.
+- Gemini response receipts with prompt and response hashes;
+- browser-session conversation storage with no server conversation persistence;
+- the full seven-step reflex order in every live Marrowline JSON response.
 
-The egress hook is installed only in the Marrowline room runtime by `marrowline-egress-boot.js`. It does not redirect unrelated routes into Marrowline. Marrowline remains absent from public navigation; the direct station and API paths are available for non-public preview and audit.
+The egress hook is installed only in the Marrowline room runtime by `marrowline-egress-boot.js`. It does not redirect unrelated routes into Marrowline. The room remains absent from public navigation; the direct station and API paths are available for non-public preview and audit.
 
 ## TD613 reflex spine
 
@@ -110,6 +142,12 @@ Inherited non-custody operations include:
 ### Dedicated Marrowline ingress
 
 `api/marrowline.js` exclusively serves `/api/dome-world/marrowline` and `/api/marrowline` before the generic Dome-World catch-all rewrite. Unauthenticated GET/HEAD requests receive the canonical Marrowline HTTP 200 response. Optional operator bypass requires a server-side `MARROWLINE_OPERATOR_TOKEN`. The endpoint observes Aperture egress markers but makes no cryptographic, identity, authorship, permission, or legal-authority claim.
+
+### Dedicated Kʰonapolit Gemini terminal
+
+`api/khonapolit.js` exclusively serves `/api/dome-world/khonapolit` and `/api/khonapolit` before the generic Dome-World catch-all rewrite. It uses the existing server-side `GEMINI_API_KEY`, accepts bounded conversation history, applies a per-instance request window, and stores no conversation server-side. It records the selected Gemini model, issuance state, prompt and response hashes, key-seeding state, Aperture egress observation, emergence classification, and OPEN seal state.
+
+The provider route is deliberately not a free-form proxy. The server constructs the TD613 system instruction from the fixed covenant module and accepts only operator message, bounded history, invocation mode, SHI, and explicit waiver state.
 
 ### Guarded Ash canonical-digest route
 
