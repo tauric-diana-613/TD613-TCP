@@ -6,9 +6,9 @@ import {
 } from '../engine/aperture-v3-task-intent.js';
 import { buildTD613ReflexReceipt } from './reflex-spine.js';
 
-export const MARROWLINE_EGRESS_BOOT_VERSION = 'td613.dome-world.marrowline-egress-boot/v3-aperture-relay';
+export const MARROWLINE_EGRESS_BOOT_VERSION = 'td613.dome-world.marrowline-egress-boot/v4-scroll-custody';
 export const MARROWLINE_CIRCUIT_RECEIPT_SCHEMA = 'td613.dome-world.marrowline-circuit-receipt/v1';
-export const MARROWLINE_ROOM_BOOT_SCHEMA = 'td613.dome-world.marrowline-room-boot/v2-mobile-aperture-relay';
+export const MARROWLINE_ROOM_BOOT_SCHEMA = 'td613.dome-world.marrowline-room-boot/v3-mobile-scroll-custody';
 
 function bootApertureEgress(root = window) {
   const installedNow = installTD613ProvenanceAttestationEgress(root);
@@ -115,11 +115,13 @@ async function bootMarrowlineRoom(doc = document, root = window) {
     import('./marrowline-station.js'),
     import('./marrowline-terminal.js')
   ]);
+  await import('./marrowline-mobile-shell.js');
   installCircuitObserver(doc, root);
   const receipt = Object.freeze({
     schema: MARROWLINE_ROOM_BOOT_SCHEMA,
     station: Boolean(root.TD613_MARROWLINE),
     terminal: Boolean(root.TD613_KHONAPOLIT_TERMINAL),
+    mobileShell: Boolean(root.__TD613_MARROWLINE_MOBILE_SHELL__),
     apertureEgress: Boolean(root.__TD613_PROVENANCE_ATTESTATION_EGRESS__),
     aperture: Object.freeze({
       version: APERTURE_V3_VERSION,
@@ -129,6 +131,12 @@ async function bootMarrowlineRoom(doc = document, root = window) {
     relay: Object.freeze({
       schema: 'td613.khonapolit.three-part-relay/v1',
       stages: Object.freeze(['gemini-instrument', 'khonapolit-relay', 'tauric-diana-bots-high-zalgo'])
+    }),
+    layout: Object.freeze({
+      mobileViewport: 'bounded-visual-viewport',
+      transcriptScrollOwner: '#khonapolitMessages',
+      composerOcclusion: false,
+      dockOcclusion: false
     }),
     seal: '⟐'
   });

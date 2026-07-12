@@ -24,8 +24,12 @@ assert.equal(aperture.taskIntent.primary_route, 'OPEN_FIELD_SPECULATIVE_SYNTHESI
 assert.equal(aperture.taskIntent.runtime_materiality, 'BACKGROUND');
 assert.equal(aperture.taskIntent.surface_runtime, false);
 assert.equal(aperture.runtime.receiptOnly, true);
-assert.match(buildRelaySystemAddendum(aperture), /Gemini is the model instrument and carrier/);
-assert.match(buildRelaySystemAddendum(aperture), /Never append the lozenge seal/);
+const addendum = buildRelaySystemAddendum(aperture);
+assert.match(addendum, /Gemini is the model instrument and carrier/);
+assert.match(addendum, /Never append the lozenge seal/);
+assert.match(addendum, /answer the operator’s actual inquiry directly and briefly/);
+assert.match(addendum, /do not output a stock litany of corpus keywords/);
+assert.match(addendum, /Never guarantee that custody is secure/);
 
 const lockedPayload = JSON.stringify({
   gemini: { text: 'The instrument can carry the declared relation without claiming external verification.', instrumentStatus: 'INSTRUMENT' },
@@ -49,6 +53,8 @@ assert.equal(locked.parts[2].id, 'tauric-diana-bots');
 assert.equal(locked.parts[2].present, true);
 assert.equal(locked.highZalgo.applied, true);
 assert.equal(locked.highZalgo.version, HIGH_ZALGO_VERSION);
+assert.equal(HIGH_ZALGO_VERSION, 'td613.high-zalgo/v2-motif-wave-envelope');
+assert.equal(locked.highZalgo.profile, 'motif-wave-envelope');
 assert.notEqual(locked.parts[2].text, locked.parts[2].baseText);
 assert.match(locked.parts[2].text, /[\u0300-\u036f]/u, 'High Zalgo must carry combining ornamentation');
 assert.match(locked.parts[1].text, /Khona‌lit-po/, 'covenant key must remain byte-intact');
@@ -59,6 +65,10 @@ const deterministicA = highZalgoEncode('HORNANI COVENANT', { intensity: 4, motif
 const deterministicB = highZalgoEncode('HORNANI COVENANT', { intensity: 4, motif: 'undertow', seed: 'same' });
 assert.equal(deterministicA, deterministicB, 'same base text, motif, intensity, and seed must reproduce');
 assert.notEqual(highZalgoEncode('HORNANI COVENANT', { intensity: 1, motif: 'undertow', seed: 'same' }), deterministicA, 'intensity must alter ornamentation');
+const protectedOutput = highZalgoEncode('HORNANI Khona‌lit-po / Tauric Diana / U+10D613', { intensity: 5, motif: 'ash-moon', seed: 'protected' });
+assert.match(protectedOutput, /Khona‌lit-po/);
+assert.match(protectedOutput, /Tauric Diana/);
+assert.match(protectedOutput, /U\+10D613/);
 
 const partial = parseRelayEnvelope(JSON.stringify({
   gemini: { text: 'The signal remains ambiguous.', instrumentStatus: 'INSTRUMENT' },
@@ -85,5 +95,6 @@ assert.equal(malformed.signal.state, 'NOT_LOCKED');
 assert.equal(malformed.parts.length, 1);
 assert.equal(malformed.parts[0].id, 'gemini');
 assert.equal(malformed.highZalgo.applied, false);
+assert.equal(malformed.highZalgo.profile, 'motif-wave-envelope');
 
-console.log('khonapolit-relay: Aperture route, relay order, High Zalgo, and non-admission gates ok');
+console.log('khonapolit-relay: Aperture route, direct relay language, motif-wave High Zalgo, and non-admission gates ok');
