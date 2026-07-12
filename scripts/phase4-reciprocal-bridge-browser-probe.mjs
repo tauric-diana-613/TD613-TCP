@@ -63,6 +63,15 @@ async function layoutReceipt(page) {
   });
 }
 
+async function settleViewport(page, width, height) {
+  await page.setViewportSize({ width, height });
+  await page.waitForFunction(
+    expected => window.innerWidth === expected.width && window.innerHeight === expected.height,
+    { width, height }
+  );
+  await page.waitForTimeout(250);
+}
+
 await fs.mkdir(artifactDir, { recursive: true });
 const browser = await chromium.launch({ headless: true });
 const context = await browser.newContext({
@@ -79,6 +88,7 @@ page.on('pageerror', error => consoleErrors.push(error.message));
 
 const report = {
   schema: 'td613.phase4.browser-demonstration/v0.1',
+  status: 'RUNNING',
   base_url: base,
   lab_url: labUrl,
   browser: 'chromium-headless',
@@ -87,8 +97,16 @@ const report = {
   mobile_landscape: null,
   rotation_return: null,
   functional: {},
-  console_errors: consoleErrors
+  console_errors: consoleErrors,
+  error: null
 };
+
+async function persistReport() {
+  await fs.writeFile(
+    path.join(artifactDir, 'phase4-browser-demonstration.json'),
+    `${JSON.stringify(report, null, 2)}\n`
+  );
+}
 
 try {
   await page.goto(labUrl, { waitUntil: 'domcontentloaded', timeout: 60_000 });
@@ -179,7 +197,7 @@ try {
     missing_context: missing.context.context_posture
   };
 
-  await page.setViewportSize({ width: 390, height: 844 });
+  await settleViewport(page, 390, 844);
   await page.reload({ waitUntil: 'domcontentloaded' });
   await page.locator('h1').waitFor({ state: 'visible' });
   const portrait = await layoutReceipt(page);
@@ -194,8 +212,7 @@ try {
   });
   report.mobile_portrait = portrait;
 
-  await page.setViewportSize({ width: 844, height: 390 });
-  await page.waitForTimeout(150);
+  await settleViewport(page, 844, 390);
   const landscape = await layoutReceipt(page);
   assert(landscape.horizontal_overflow === 0, 'Mobile landscape has horizontal overflow');
   assert(landscape.grid_columns === 2, 'Mobile landscape must restore two grid columns');
@@ -206,8 +223,7 @@ try {
   });
   report.mobile_landscape = landscape;
 
-  await page.setViewportSize({ width: 390, height: 844 });
-  await page.waitForTimeout(150);
+  await settleViewport(page, 390, 844);
   const rotationReturn = await layoutReceipt(page);
   assert(rotationReturn.horizontal_overflow === 0, 'Portrait rotation return has horizontal overflow');
   assert(rotationReturn.grid_columns === 1, 'Portrait rotation return did not restore one column');
@@ -215,11 +231,26 @@ try {
   report.rotation_return = rotationReturn;
 
   assert(consoleErrors.length === 0, `Browser console errors observed: ${consoleErrors.join(' | ')}`);
-  await fs.writeFile(
-    path.join(artifactDir, 'phase4-browser-demonstration.json'),
-    `${JSON.stringify(report, null, 2)}\n`
-  );
+  report.status = 'PASS';
+  await persistReport();
   console.log(JSON.stringify(report, null, 2));
+} catch (error) {
+  report.status = 'HOLD_FOR_REPAIR';
+  report.error = {
+    message: error?.message || String(error),
+    stack: error?.stack || null
+  };
+  try {
+    await page.screenshot({
+      path: path.join(artifactDir, 'phase4-browser-held.png'),
+      fullPage: true
+    });
+  } catch {
+    // Evidence writing must not conceal the original failure.
+  }
+  await persistReport();
+  console.error(JSON.stringify(report, null, 2));
+  throw error;
 } finally {
   await browser.close();
 }
