@@ -53,6 +53,20 @@ jobs:
       - name: Validate release synchronization
         run: npm run test:release
       - name: Validate generated surfaces
-        run: npm run check:generated-sync
+        id: generated_sync
+        continue-on-error: true
+        run: npm run check:generated-sync > generated-sync.log 2>&1
+      - name: Upload generated-sync diagnostics
+        if: steps.generated_sync.outcome == 'failure'
+        uses: actions/upload-artifact@v4
+        with:
+          name: phase4-generated-sync-diagnostics
+          path: generated-sync.log
+          retention-days: 3
+      - name: Enforce generated-surface validation
+        if: steps.generated_sync.outcome == 'failure'
+        run: |
+          cat generated-sync.log
+          exit 1
       - name: Validate Vercel route and function hygiene
         run: node tests/vercel-deploy-hygiene.test.mjs
