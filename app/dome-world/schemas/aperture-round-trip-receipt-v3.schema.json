@@ -1,0 +1,53 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "td613.aperture.round-trip-receipt/v3.0-alpha",
+  "title": "TD613 Aperture Round-Trip Receipt v3.0-alpha",
+  "type": "object",
+  "required": ["schema", "bridge_contract", "receipt_id", "created_at", "diagnostic", "context", "audit", "route", "jurisdiction", "status", "round_trip_digest"],
+  "properties": {
+    "schema": {"const": "td613.aperture.round-trip-receipt/v3.0-alpha"},
+    "bridge_contract": {"const": "td613.phase4.reciprocal-bridge/v0.1"},
+    "receipt_id": {"type": "string", "pattern": "^aprt_[0-9a-f]{20}$"},
+    "created_at": {"type": "string"},
+    "diagnostic": {"$ref": "#/$defs/digestedReceipt"},
+    "context": {"$ref": "#/$defs/digestedReceipt"},
+    "audit": {"$ref": "#/$defs/digestedReceipt"},
+    "route": {
+      "type": "object",
+      "required": ["task_intent", "runtime_materiality", "open_field_promotion"],
+      "properties": {
+        "task_intent": {"type": "object"},
+        "runtime_materiality": {"enum": ["NONE", "BACKGROUND", "MATERIAL", "DISPOSITIVE"]},
+        "open_field_promotion": {"const": false}
+      },
+      "additionalProperties": false
+    },
+    "jurisdiction": {
+      "type": "object",
+      "required": ["reciprocal_receipts", "reciprocal_authority", "artifact_relation", "automatic_ash_action", "prediction_authorized", "operator_closure_required"],
+      "properties": {
+        "reciprocal_receipts": {"const": true},
+        "reciprocal_authority": {"const": false},
+        "artifact_relation": {"const": false},
+        "automatic_ash_action": {"const": false},
+        "prediction_authorized": {"const": false},
+        "operator_closure_required": {"const": true}
+      },
+      "additionalProperties": false
+    },
+    "status": {"enum": ["ROUND_TRIP_VERIFIED", "ROUND_TRIP_VERIFIED_WITH_WARNINGS", "ROUND_TRIP_HELD_TAMPER", "ROUND_TRIP_HELD_PROVENANCE", "ROUND_TRIP_HELD_AUTHORITY_BREACH", "ROUND_TRIP_LEGACY_MIGRATION_REQUIRED"]},
+    "round_trip_digest": {"type": "string", "pattern": "^sha256:[0-9a-f]{64}$"}
+  },
+  "$defs": {
+    "digestedReceipt": {
+      "type": "object",
+      "required": ["receipt", "digest"],
+      "properties": {
+        "receipt": {"type": "object"},
+        "digest": {"type": "string", "pattern": "^sha256:[0-9a-f]{64}$"}
+      },
+      "additionalProperties": false
+    }
+  },
+  "additionalProperties": false
+}
