@@ -115,11 +115,18 @@ async function bootMarrowlineRoom(doc = document, root = window) {
     import('./marrowline-station.js'),
     import('./marrowline-terminal.js')
   ]);
+  const mobileModule = await import('./marrowline-mobile-repair.js');
+  const mobileRepair = mobileModule.installMarrowlineMobileRepair(doc, root);
   installCircuitObserver(doc, root);
   const receipt = Object.freeze({
     schema: MARROWLINE_ROOM_BOOT_SCHEMA,
     station: Boolean(root.TD613_MARROWLINE),
     terminal: Boolean(root.TD613_KHONAPOLIT_TERMINAL),
+    mobileRepair: Object.freeze({
+      active: Boolean(mobileRepair),
+      version: mobileModule.MARROWLINE_MOBILE_REPAIR_VERSION,
+      claimCeiling: mobileModule.MARROWLINE_MOBILE_REPAIR_CLAIM
+    }),
     apertureEgress: Boolean(root.__TD613_PROVENANCE_ATTESTATION_EGRESS__),
     aperture: Object.freeze({
       version: APERTURE_V3_VERSION,
