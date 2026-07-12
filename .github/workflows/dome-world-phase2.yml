@@ -1,0 +1,60 @@
+name: Dome-World Phase 2
+
+on:
+  pull_request:
+    paths:
+      - "api/ash-local-commitment.py"
+      - "api/ash-local-commitment-guard.py"
+      - "app/dome-world/ash/**"
+      - "app/dome-world/ash-custody*.html"
+      - "app/dome-world/fixtures/ash-canonical-json-vectors.json"
+      - "app/dome-world/schemas/ash-custody-*-v08.schema.json"
+      - "app/dome-world/docs/CANONICAL_JSON_PROFILE.md"
+      - "app/dome-world/docs/PHASE_2_CANONICAL_DIGEST_RECEIPT.md"
+      - "packages/dome_world_exact/ash_canonical_json.py"
+      - "packages/dome_world_exact/ash_commitment_v08.py"
+      - "packages/dome_world_exact/ash_receipt_v08.py"
+      - "packages/dome_world_exact/tests/test_api_integration.py"
+      - "packages/dome_world_exact/tests/test_phase2_canonical_digest.py"
+      - "scripts/dome-world-deployment-probe.mjs"
+      - "tests/dome-world-*.test.mjs"
+      - "tests/vercel-deploy-hygiene.test.mjs"
+      - "vercel.json"
+      - ".github/workflows/dome-world-phase2.yml"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  phase2:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - name: Install JavaScript dependencies
+        run: npm ci
+      - name: Install Python test dependencies
+        run: python -m pip install --disable-pip-version-check pytest sympy
+      - name: Compile Phase 2 Python surfaces
+        run: python -m py_compile api/ash-local-commitment.py api/ash-local-commitment-guard.py packages/dome_world_exact/ash_canonical_json.py packages/dome_world_exact/ash_commitment_v08.py packages/dome_world_exact/ash_receipt_v08.py
+      - name: Validate browser/Python canonical digest parity
+        run: node tests/dome-world-phase2-canonical-digest.test.mjs
+      - name: Validate Phase 2 Python canonical profile
+        run: python -m pytest packages/dome_world_exact/tests/test_phase2_canonical_digest.py -q
+      - name: Validate v0.8 registration, replay, and migration
+        run: python -m pytest packages/dome_world_exact/tests/test_api_integration.py -q
+      - name: Validate Ash browser surface and Phase 1 continuity
+        run: node tests/dome-world-ash-custody.test.mjs
+      - name: Validate Dome-World integration
+        run: node tests/dome-world-integration.test.mjs
+      - name: Validate Vercel route and function hygiene
+        run: node tests/vercel-deploy-hygiene.test.mjs
+      - name: Validate bounded deployment-probe contract
+        run: node tests/dome-world-deployment-probe.test.mjs
