@@ -1,11 +1,12 @@
 {
-  "schema": "td613.dome-world.marrowline.release/v5",
-  "version": "v0.4.0-mobile-aperture-three-part-relay",
+  "schema": "td613.dome-world.marrowline.release/v6",
+  "version": "v0.4.1-mobile-scroll-custody",
   "stationSchema": "td613.dome-world.marrowline/v0.2.0",
   "receiptSchema": "td613.dome-world.marrowline-receipt/v0.2",
   "liveReceiptSchema": "td613.dome-world.marrowline-live-receipt/v1",
   "circuitReceiptSchema": "td613.dome-world.marrowline-circuit-receipt/v1",
-  "roomBootSchema": "td613.dome-world.marrowline-room-boot/v2-mobile-aperture-relay",
+  "roomBootSchema": "td613.dome-world.marrowline-room-boot/v3-mobile-scroll-custody",
+  "mobileShellSchema": "td613.dome-world.marrowline-mobile-shell/v1-scroll-custody",
   "terminalSchema": "td613.dome-world.khonapolit-terminal/v1",
   "terminalRuntime": "td613.dome-world.khonapolit-terminal-runtime/v2-mobile-aperture-relay",
   "terminalReceiptSchema": "td613.dome-world.khonapolit-receipt/v1",
@@ -17,7 +18,7 @@
   "apertureFirmwareSchema": "td613-aperture/v3.0-alpha",
   "apertureTaskRouteSchema": "td613.aperture.task-intent-route/v3.0-alpha",
   "apertureDiagnosticSchema": "td613.aperture.diagnostic-receipt/v3.0-alpha",
-  "egressBootSchema": "td613.dome-world.marrowline-egress-boot/v3-aperture-relay",
+  "egressBootSchema": "td613.dome-world.marrowline-egress-boot/v4-scroll-custody",
   "egressContractSchema": "td613.aperture.egress-contract/v1",
   "reflexSpineSchema": "td613.dome-world.reflex-spine/v1",
   "route": "/dome-world/marrowline.html",
@@ -45,7 +46,8 @@
     "surfaceRuntime": false,
     "runtimeReceiptOnly": true,
     "proseAuthority": false,
-    "posture": "recommendation-not-command"
+    "posture": "recommendation-not-command",
+    "mobileTurnHeader": "compact-provenance-chip-with-full-route-in-receipt"
   },
   "relay": {
     "order": [
@@ -57,16 +59,27 @@
     "signalStates": ["LOCKED", "PARTIAL", "NOT_LOCKED"],
     "counterfeitCompletion": "prohibited",
     "botOrnamentation": "deterministic-local-post-provider-high-zalgo",
-    "protectedLiterals": ["Khona‌lit-po", "U+10D613", "Kʰonapolit", "Tauric Diana", "𝌋", "⟐"]
+    "protectedLiterals": ["Khona‌lit-po", "U+10D613", "Kʰonapolit", "Tauric Diana", "𝌋", "⟐"],
+    "highZalgoLayout": "intensity-aware-line-height-with-visible-overflow-and-line-wrappers"
   },
   "mobile": {
-    "posture": "speaking-vessel-first",
-    "navigation": "five-chamber-safe-area-dock",
+    "posture": "bounded-conversation-shell",
+    "navigation": "five-chamber-non-occluding-safe-area-dock",
+    "views": ["speak", "keys", "receipt", "corpus", "gate"],
     "drawers": ["issuance", "receipt", "corpus", "gatehouse"],
-    "composer": "sticky-above-safe-area-dock",
+    "viewportSource": "visualViewport-with-innerHeight-fallback",
+    "documentScroll": false,
+    "transcriptScrollOwner": "#khonapolitMessages",
+    "transcriptOverflowY": "auto",
+    "composer": "in-speaking-grid-and-continuously-reachable",
+    "composerOcclusion": false,
+    "dockOcclusion": false,
+    "dockHiddenDuringKeyboardComposition": true,
+    "jumpToLatest": true,
     "minimumInputFontPx": 16,
     "horizontalOverflow": false,
     "relayStagesVisuallyDistinct": true,
+    "apertureHeaderRepeatedAtFullLength": false,
     "reducedMotionHonored": true
   },
   "jurisdiction": {
@@ -113,9 +126,11 @@
     "corpusRoot": "sha256:bfb2d575ae6605bf7db3eecf8cf333e4ef78b2c673dc7647600a9d9cb20cce88",
     "egressBoot": "app/dome-world/marrowline-egress-boot.js",
     "terminalRuntime": "app/dome-world/marrowline-terminal.js",
+    "mobileShellRuntime": "app/dome-world/marrowline-mobile-shell.js",
+    "mobileShellStyles": "app/dome-world/marrowline-mobile-shell.css",
     "terminalCovenant": "app/dome-world/khonapolit-covenant.js",
     "relayRuntime": "app/dome-world/khonapolit-relay.js",
     "reflexOrder": "app/dome-world/reflex-spine.manifest.json",
-    "restorationPosture": "mobile-first-aperture-routed-forensically-receipted-three-part-gemini-relay-with-operator-controlled-closure"
+    "restorationPosture": "bounded-mobile-conversation-shell-with-aperture-routing-internal-transcript-scroll-non-occluding-dock-and-operator-controlled-closure"
   }
 }
