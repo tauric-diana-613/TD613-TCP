@@ -6,6 +6,7 @@ on:
       - 'api/marrowline.js'
       - 'app/engine/td613-aperture.js'
       - 'app/dome-world/marrowline*'
+      - 'tests/dome-world-marrowline-station.test.mjs'
       - 'tests/marrowline-live-api.test.mjs'
       - 'vercel.json'
       - '.github/workflows/marrowline-live-ingress.yml'
@@ -15,6 +16,7 @@ on:
       - 'api/marrowline.js'
       - 'app/engine/td613-aperture.js'
       - 'app/dome-world/marrowline*'
+      - 'tests/dome-world-marrowline-station.test.mjs'
       - 'tests/marrowline-live-api.test.mjs'
       - 'vercel.json'
 
@@ -31,5 +33,7 @@ jobs:
           node-version: 22
       - name: Test canonical Aperture Marrowline
         run: node tests/td613-aperture.test.mjs
+      - name: Test Dome-World Marrowline station
+        run: node tests/dome-world-marrowline-station.test.mjs
       - name: Test live ingress endpoint
         run: node tests/marrowline-live-api.test.mjs
