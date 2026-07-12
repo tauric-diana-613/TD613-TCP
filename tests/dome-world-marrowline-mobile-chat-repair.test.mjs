@@ -1,5 +1,6 @@
 import assert from 'node:assert/strict';
 import fs from 'node:fs';
+import path from 'node:path';
 import { pathToFileURL } from 'node:url';
 import { JSDOM } from 'jsdom';
 
@@ -42,7 +43,8 @@ window.innerHeight = 844;
 const messages = window.document.getElementById('khonapolitMessages');
 messages.scrollTo = ({ top }) => { messages.scrollTop = top; };
 
-const moduleUrl = `${pathToFileURL('app/dome-world/marrowline-mobile-repair.js').href}?test=${Date.now()}`;
+const modulePath = path.resolve('app/dome-world/marrowline-mobile-repair.js');
+const moduleUrl = `${pathToFileURL(modulePath).href}?test=${Date.now()}`;
 const repairModule = await import(moduleUrl);
 const api = repairModule.installMarrowlineMobileRepair(window.document, window);
 
