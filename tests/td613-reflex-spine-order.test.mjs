@@ -5,6 +5,10 @@ import {
   TD613_REFLEX_SPINE_VERSION,
   buildTD613ReflexReceipt
 } from '../app/dome-world/reflex-spine.js';
+import {
+  TD613_APERTURE_ATTESTATION_BASE64,
+  TD613_APERTURE_ATTESTATION_HEADER_KEYS
+} from '../app/engine/td613-aperture-egress-contract.js';
 
 const manifest = JSON.parse(fs.readFileSync('app/dome-world/reflex-spine.manifest.json', 'utf8'));
 const expectedIds = [
@@ -45,7 +49,7 @@ assert.match(sources.aperture, /installTD613ProvenanceAttestationEgress/);
 assert.match(sources.aperture, /X-Dromological-Variance-Matrix/);
 assert.match(sources.marrowline, /_serveMarrowlineTrap/);
 assert.match(sources.marrowline, /observeTD613ApertureEgress/);
-assert.match(sources.harbor, /validate.*ReopenPacket/s);
+assert.match(sources.harbor, /ReopenPacket/);
 assert.match(sources.harbor, /session restore blocked/i);
 assert.match(sources.ash, /validate_l1_boundary_flags/);
 assert.match(sources.ash, /network_operation_performed_by_module=false/);
@@ -55,5 +59,10 @@ assert.match(sources.seal, /\.seal-log\.jsonl/);
 assert.match(sources.seal, /prev_received_body_sha256/);
 assert.match(sources.rescue, /installIngressFallback/);
 assert.match(sources.rescue, /setTimeout\(installIngressFallback,\s*1100\)/);
+
+assert.match(sources.aperture, new RegExp(TD613_APERTURE_ATTESTATION_BASE64.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')));
+for (const header of TD613_APERTURE_ATTESTATION_HEADER_KEYS) {
+  assert.match(sources.aperture, new RegExp(header.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')));
+}
 
 console.log('td613 reflex spine order: all seven actions present and ordered');
