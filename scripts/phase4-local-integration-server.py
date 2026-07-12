@@ -66,6 +66,9 @@ class Phase4Handler(BaseHTTPRequestHandler):
         self.send_header("X-TD613-Integration-Harness", "phase-4")
         self.end_headers()
 
+    def _empty(self, status: int = 204) -> None:
+        self._headers(status, "image/x-icon", 0)
+
     def _json(self, status: int, payload: object) -> None:
         data = json.dumps(payload, separators=(",", ":"), ensure_ascii=True).encode("utf-8")
         self._headers(status, "application/json; charset=utf-8", len(data))
@@ -93,7 +96,11 @@ class Phase4Handler(BaseHTTPRequestHandler):
         self.do_GET()
 
     def do_GET(self) -> None:  # noqa: N802
-        if urlparse(self.path).path == "/api/aperture-bridge":
+        path = urlparse(self.path).path
+        if path == "/favicon.ico":
+            self._empty()
+            return
+        if path == "/api/aperture-bridge":
             payload = GUARD.phase4_readiness_receipt()
             payload["operation"] = "readiness"
             payload["integration_harness"] = True
