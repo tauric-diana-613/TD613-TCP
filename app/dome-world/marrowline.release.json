@@ -13,7 +13,7 @@
   "covenantSchema": "td613.khonapolit-covenant/v1",
   "geminiApiSchema": "td613.khonapolit-gemini/v3-aperture-three-part-relay",
   "relaySchema": "td613.khonapolit.three-part-relay/v1",
-  "highZalgoSchema": "td613.high-zalgo/v1-motif-responsive",
+  "highZalgoSchema": "td613.high-zalgo/v2-motif-wave-envelope",
   "apertureVersion": "v3.0-alpha",
   "apertureFirmwareSchema": "td613-aperture/v3.0-alpha",
   "apertureTaskRouteSchema": "td613.aperture.task-intent-route/v3.0-alpha",
