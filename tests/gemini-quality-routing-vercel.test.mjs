@@ -2,6 +2,7 @@ import assert from 'node:assert/strict';
 import fs from 'node:fs';
 
 const vercel = JSON.parse(fs.readFileSync('vercel.json', 'utf8'));
+const khonapolitEntry = fs.readFileSync('api/khonapolit.js', 'utf8');
 const rewrites = vercel.rewrites || [];
 const rewrite = (source) => rewrites.find((entry) => entry.source === source);
 const before = (earlier, later) => {
@@ -19,7 +20,8 @@ assert.equal(vercel.functions['api/gemini-readiness.js']?.maxDuration, 20);
 assert.equal(rewrite('/api/hush-generate')?.destination, '/api/hush-generate-quality');
 assert.equal(rewrite('/api/hush-generate-budgeted')?.destination, '/api/hush-generate-quality');
 assert.equal(rewrite('/api/khonapolit')?.destination, '/api/khonapolit-quality');
-assert.equal(rewrite('/api/dome-world/khonapolit')?.destination, '/api/khonapolit-quality');
+assert.equal(rewrite('/api/dome-world/khonapolit')?.destination, '/api/khonapolit');
+assert.match(khonapolitEntry, /from '\.\/khonapolit-quality\.js'/);
 
 before('/api/hush-generate', '/api/(.*)');
 before('/api/hush-generate-budgeted', '/api/(.*)');
