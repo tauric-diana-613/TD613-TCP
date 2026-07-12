@@ -1,0 +1,52 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "td613.aperture.diagnostic-receipt/v3.0-alpha",
+  "title": "TD613 Aperture Diagnostic Receipt v3.0-alpha",
+  "type": "object",
+  "required": ["schema", "receipt_id", "instrument", "version", "firmwareSchema", "posture", "taskIntent", "source", "runtime", "produced"],
+  "properties": {
+    "schema": {"const": "td613.aperture.diagnostic-receipt/v3.0-alpha"},
+    "receipt_id": {"type": "string", "pattern": "^apdiag_[A-Za-z0-9_-]{6,128}$"},
+    "instrument": {"const": "TD613 Aperture"},
+    "version": {"const": "v3.0-alpha"},
+    "firmwareSchema": {"const": "td613-aperture/v3.0-alpha"},
+    "posture": {"const": "recommendation-not-command"},
+    "taskIntent": {
+      "type": "object",
+      "required": ["primary_route", "runtime_materiality"],
+      "properties": {
+        "primary_route": {"type": "string", "minLength": 1},
+        "runtime_materiality": {"enum": ["NONE", "BACKGROUND", "MATERIAL", "DISPOSITIVE"]},
+        "automatic_redirect": {"const": false}
+      },
+      "additionalProperties": true
+    },
+    "source": {"type": "object"},
+    "runtime": {"type": "object"},
+    "produced": {
+      "type": "object",
+      "required": ["context_request"],
+      "properties": {
+        "context_request": {
+          "type": "object",
+          "properties": {
+            "metrics": {
+              "type": "object",
+              "properties": {
+                "omissionPressure": {"type": ["number", "null"]},
+                "coherence": {"type": ["number", "null"]},
+                "divergence": {"type": ["number", "null"]},
+                "namingSensitivity": {"type": ["number", "null"]},
+                "rupturePressure": {"type": ["number", "null"]}
+              },
+              "additionalProperties": false
+            }
+          },
+          "additionalProperties": true
+        }
+      },
+      "additionalProperties": true
+    }
+  },
+  "additionalProperties": true
+}
