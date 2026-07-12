@@ -1,7 +1,12 @@
 import crypto from 'node:crypto';
 import { _serveMarrowlineTrap } from '../app/engine/td613-aperture.js';
+import {
+  TD613_APERTURE_ATTESTATION_HEADER_KEYS,
+  observeTD613ApertureEgress
+} from '../app/engine/td613-aperture-egress-contract.js';
+import { TD613_REFLEX_ORDER } from '../app/dome-world/reflex-spine.js';
 
-const VERSION = 'td613.marrowline.live-ingress/v1';
+const VERSION = 'td613.marrowline.live-ingress/v2-aperture-egress';
 const OPERATOR_HEADER = 'x-td613-marrowline-operator';
 
 function clampInt(value, min, max, fallback) {
@@ -56,18 +61,52 @@ function write(res, status, body, headers = {}) {
   res.end(body);
 }
 
+function apertureResponseHeaders(observation = {}) {
+  return {
+    'X-TD613-Aperture-Egress': observation.status || 'absent',
+    'X-TD613-Aperture-Egress-Parts': `${observation.presentCount || 0}/${observation.requiredCount || TD613_APERTURE_ATTESTATION_HEADER_KEYS.length}`,
+    'X-TD613-Reflex-Step': '2/7'
+  };
+}
+
+function addIngressReceiptToBody(result = {}, observation = {}) {
+  const contentType = String(result.headers?.['content-type'] || '').toLowerCase();
+  if (!contentType.includes('application/json')) return result.body;
+  try {
+    const payload = JSON.parse(result.body);
+    return JSON.stringify({
+      ...payload,
+      aperture_egress: observation,
+      reflex_spine: {
+        schema: 'td613.dome-world.reflex-spine/v1',
+        active_steps: [1, 2],
+        order: TD613_REFLEX_ORDER
+      }
+    });
+  } catch {
+    return result.body;
+  }
+}
+
 export default function handler(req, res) {
+  const apertureEgress = observeTD613ApertureEgress(req?.headers || {});
   setHeaders(res, {
     'Cache-Control': 'no-store, max-age=0',
     'X-Content-Type-Options': 'nosniff',
     'X-TD613-Marrowline-Live': VERSION,
-    'Vary': 'Accept, User-Agent'
+    'Vary': 'Accept, User-Agent',
+    ...apertureResponseHeaders(apertureEgress)
   });
 
   if (String(req.method || '').toUpperCase() === 'OPTIONS') {
     write(res, 204, '', {
       'Access-Control-Allow-Methods': 'GET,HEAD,OPTIONS',
-      'Access-Control-Allow-Headers': `Accept,Authorization,${OPERATOR_HEADER}`,
+      'Access-Control-Allow-Headers': [
+        'Accept',
+        'Authorization',
+        OPERATOR_HEADER,
+        ...TD613_APERTURE_ATTESTATION_HEADER_KEYS
+      ].join(','),
       'Access-Control-Max-Age': '600'
     });
     return;
@@ -78,7 +117,8 @@ export default function handler(req, res) {
       protocol: VERSION,
       ok: false,
       error: 'method-not-allowed',
-      allowed: ['GET', 'HEAD', 'OPTIONS']
+      allowed: ['GET', 'HEAD', 'OPTIONS'],
+      aperture_egress: apertureEgress
     }), {
       'Content-Type': 'application/json; charset=utf-8',
       'Allow': 'GET, HEAD, OPTIONS'
@@ -100,6 +140,12 @@ export default function handler(req, res) {
       authorized: true,
       authorization_basis: 'server-side-operator-token-match',
       route: 'operator-bypass',
+      aperture_egress: apertureEgress,
+      reflex_spine: {
+        schema: 'td613.dome-world.reflex-spine/v1',
+        active_steps: [1, 2],
+        order: TD613_REFLEX_ORDER
+      },
       claim_ceiling: 'operator-token-match-not-identity-authorship-or-legal-authority-proof'
     });
     write(res, 200, String(req.method).toUpperCase() === 'HEAD' ? '' : payload, {
@@ -116,11 +162,14 @@ export default function handler(req, res) {
     depth,
     breadth
   });
+  const body = String(req.method).toUpperCase() === 'HEAD'
+    ? ''
+    : addIngressReceiptToBody(result, apertureEgress);
 
   write(
     res,
     result.status,
-    String(req.method).toUpperCase() === 'HEAD' ? '' : result.body,
+    body,
     {
       ...result.headers,
       'X-TD613-Route': 'live-marrowline-ingress',
