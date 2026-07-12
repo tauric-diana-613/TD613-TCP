@@ -9,7 +9,24 @@
 - opt-in lambda=2c emission-gap closure;
 - Ash v0.7 browser-local exact-byte commitment;
 - Ash v0.8 canonical manifest and receipt digest spine;
+- the operator-invoked Marrowline literary-ingestion assay;
 - inherited Ash v0.6 projection leakage and derivative research surfaces.
+
+## Marrowline station v0.1
+
+`/dome-world/marrowline.html` restores Kʰonapolit's Marrowline design as an explicit Dome-World Lab station.
+
+The station preserves:
+
+- deterministic Hornani/Kʰonapolit cadence matrices;
+- bounded depth and breadth controls;
+- a declared flatten-cost hint;
+- local station receipts;
+- provenance-attestation header names as a preview surface only.
+
+The station does not intercept `fetch`, patch `XMLHttpRequest`, classify visitors, target crawlers, mutate requests, authorize callers, or claim cryptographic proof. It runs only after an operator invokes the local assay. Its claim ceiling is `literary-ingestion-assay-not-authentication-or-network-defense`.
+
+Marrowline remains absent from public navigation during v0.1. The direct route is available for preview and audit, following the same non-public posture as the Dome-World cockpit.
 
 ## Ash custody v0.8
 
@@ -44,7 +61,7 @@ A digest supports equality comparison only under its declared input and canonica
 
 Modeled weather never enters the exact gate. Exact execution does not activate EO-RFD firmware. Ash server operations accept metadata/projection packets only. Optional local text analysis stays browser-local and clears after scoring. Trainer checkpoints remain client-held and HMAC-signed; server persistence is intentionally absent.
 
-The primary navigation contains Weather, Rooms, Lab, Ash, Substrate, Phason, Aperture, and Receipts. Legacy Math, Tomography, Live Lattice, Loom, Stewardship, Patterns, Repo Weather, Lore, Accident, and API surfaces remain inside the Lab hierarchy.
+The primary navigation contains Weather, Rooms, Lab, Ash, Substrate, Phason, Aperture, and Receipts. Legacy Math, Tomography, Live Lattice, Loom, Stewardship, Patterns, Repo Weather, Lore, Accident, and API surfaces remain inside the Lab hierarchy. Marrowline is installed as a direct-route Lab station but remains outside the primary navigation during v0.1.
 
 Ash remains outside the v0.5.0 art scheduler.
 
@@ -67,6 +84,8 @@ Inherited non-custody operations include:
 - `ash-leak-challenge`, `ash-veil`, `ash-cinder`, `ash-compare`, `ash-recall`;
 - `ash-grade-gate`, `ash-hcc-adapter`, `ash-projection-simulate`;
 - `exact-capture`, `exact-closure`, `trainer-step`.
+
+Marrowline v0.1 has no server operation. It remains a browser-local assay until a separate ingress research contract is designed and reviewed.
 
 ### Guarded Ash canonical-digest route
 

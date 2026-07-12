@@ -1,0 +1,21 @@
+{
+  "schema": "td613.dome-world.marrowline.release/v1",
+  "version": "v0.1.0",
+  "stationSchema": "td613.dome-world.marrowline/v0.1.0",
+  "receiptSchema": "td613.dome-world.marrowline-receipt/v0.1",
+  "route": "/dome-world/marrowline.html",
+  "navigation": "direct-route-non-public",
+  "jurisdiction": {
+    "mode": "operator-invoked-local-assay",
+    "networkInterception": false,
+    "requestMutation": false,
+    "crawlerTargeting": false,
+    "authorizationAuthority": false,
+    "cryptographicClaim": false
+  },
+  "claimCeiling": "literary-ingestion-assay-not-authentication-or-network-defense",
+  "lineage": {
+    "source": "Kʰonapolit Marrowline design",
+    "restorationPosture": "preserve-concept-repair-jurisdiction"
+  }
+}
