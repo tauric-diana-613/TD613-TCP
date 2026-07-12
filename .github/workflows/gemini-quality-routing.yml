@@ -1,0 +1,62 @@
+name: Gemini Quality Routing
+
+on:
+  pull_request:
+    paths:
+      - "api/gemini-model-policy.js"
+      - "api/gemini-readiness.js"
+      - "api/hush-generate-quality.js"
+      - "api/khonapolit-quality.js"
+      - "api/hush-generate-budgeted.js"
+      - "api/khonapolit.js"
+      - "app/engine/hush-provider-broker.js"
+      - ".env.example"
+      - "docs/hush-remote-provider-setup.md"
+      - "tests/gemini-model-policy.test.mjs"
+      - "tests/hush-gemini-quality-router.test.mjs"
+      - "tests/khonapolit-gemini-quality-router.test.mjs"
+      - "tests/gemini-quality-routing-vercel.test.mjs"
+      - "vercel.json"
+      - ".github/workflows/gemini-quality-routing.yml"
+  push:
+    branches: [main]
+    paths:
+      - "api/gemini-model-policy.js"
+      - "api/gemini-readiness.js"
+      - "api/hush-generate-quality.js"
+      - "api/khonapolit-quality.js"
+      - "app/engine/hush-provider-broker.js"
+      - ".env.example"
+      - "docs/hush-remote-provider-setup.md"
+      - "vercel.json"
+      - ".github/workflows/gemini-quality-routing.yml"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  quality-routing:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+      - run: npm ci
+      - name: Validate model policy
+        run: node tests/gemini-model-policy.test.mjs
+      - name: Validate Hush quality failover
+        run: node tests/hush-gemini-quality-router.test.mjs
+      - name: Validate Kʰonapolit quality failover
+        run: node tests/khonapolit-gemini-quality-router.test.mjs
+      - name: Validate deployment routing
+        run: node tests/gemini-quality-routing-vercel.test.mjs
+      - name: Preserve Hush provider broker behavior
+        run: node tests/hush-provider-broker.test.mjs
+      - name: Preserve strict prompt and candidate quarantine
+        run: node tests/hush-backend-prompt-detox.test.mjs
+      - name: Preserve Kʰonapolit API contract
+        run: node tests/khonapolit-api-contract.test.mjs
