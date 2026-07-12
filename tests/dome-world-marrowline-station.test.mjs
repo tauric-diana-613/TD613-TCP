@@ -47,7 +47,7 @@ assert.doesNotMatch(stationSource, /window\.fetch\s*=/, 'station must not monkey
 assert.doesNotMatch(stationSource, /XMLHttpRequest\.prototype/, 'station must not monkey-patch XHR');
 assert.doesNotMatch(stationSource, /setRequestHeader\(/, 'station must not attach network headers');
 assert.match(pageSource, /Jurisdiction before spectacle/);
-assert.match(pageSource, /no network mutation/i);
+assert.match(pageSource, /does not .*mutate network requests/is);
 assert.match(pageSource, /Kʰonapolit dream preserved/);
 
 console.log('dome-world-marrowline-station: ok');
