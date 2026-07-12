@@ -85,29 +85,34 @@ jobs:
           echo "Resolved Phase IV preview: $preview_url"
       - name: Run bounded Phase IV live probe
         if: github.event_name == 'pull_request'
+        id: live_probe
+        continue-on-error: true
         env:
           TD613_BASE_URL: ${{ steps.preview.outputs.preview_url }}
+          TD613_FETCH_TIMEOUT_MS: 12000
         run: |
           set -euo pipefail
           mkdir -p artifacts
-          for attempt in $(seq 1 30); do
+          for attempt in $(seq 1 4); do
             if node scripts/phase4-reciprocal-bridge-deployment-probe.mjs > artifacts/phase4-live-probe.json 2> artifacts/phase4-live-probe.err; then
               cat artifacts/phase4-live-probe.json
               exit 0
             fi
             echo "Preview probe attempt ${attempt} held; waiting for the deployment alias to converge."
             cat artifacts/phase4-live-probe.err || true
-            sleep 10
+            sleep 8
           done
           echo "Phase IV preview did not converge within the bounded retry window." >&2
           exit 1
       - name: Install Chromium probe runtime
-        if: github.event_name == 'pull_request'
+        if: github.event_name == 'pull_request' && steps.live_probe.outcome == 'success'
         run: |
           npm install --no-save --package-lock=false playwright@1.53.2
           npx playwright install --with-deps chromium
       - name: Demonstrate Phase IV lab on desktop and mobile
-        if: github.event_name == 'pull_request'
+        if: github.event_name == 'pull_request' && steps.live_probe.outcome == 'success'
+        id: browser_probe
+        continue-on-error: true
         env:
           TD613_BASE_URL: ${{ steps.preview.outputs.preview_url }}
           TD613_ARTIFACT_DIR: artifacts/phase4-browser
@@ -123,3 +128,10 @@ jobs:
             artifacts/phase4-browser/
           if-no-files-found: warn
           retention-days: 7
+      - name: Enforce Phase IV preview demonstration
+        if: github.event_name == 'pull_request' && (steps.live_probe.outcome == 'failure' || steps.browser_probe.outcome == 'failure')
+        run: |
+          echo "Phase IV preview demonstration held."
+          cat artifacts/phase4-live-probe.err 2>/dev/null || true
+          cat artifacts/phase4-browser/phase4-browser-demonstration.json 2>/dev/null || true
+          exit 1
