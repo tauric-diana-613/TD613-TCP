@@ -1,0 +1,49 @@
+{
+  "schema": "td613.dome-world.reflex-spine/v1",
+  "order": [
+    {
+      "step": 1,
+      "id": "aperture-egress-attestation",
+      "implementation": "app/engine/td613-aperture.js::installTD613ProvenanceAttestationEgress",
+      "jurisdiction": "marrowline-room-browser-runtime"
+    },
+    {
+      "step": 2,
+      "id": "marrowline-ingress-absorption",
+      "implementation": "api/marrowline.js",
+      "jurisdiction": "dedicated-serverless-ingress-route"
+    },
+    {
+      "step": 3,
+      "id": "safe-harbor-restore-validation",
+      "implementation": "app/safe-harbor/app/safe-harbor-session-gate.js",
+      "jurisdiction": "safe-harbor-session-reopen"
+    },
+    {
+      "step": 4,
+      "id": "ash-contradiction-rejection",
+      "implementation": "api/ash-local-commitment-guard.py",
+      "jurisdiction": "ash-public-custody-api"
+    },
+    {
+      "step": 5,
+      "id": "hush-single-run-lock",
+      "implementation": "app/hush-pr168-strict-transform-run-lock.js",
+      "jurisdiction": "hush-strict-provider-runtime"
+    },
+    {
+      "step": 6,
+      "id": "seal-overwrite-witness",
+      "implementation": "scripts/serve-td613-localhost.mjs",
+      "jurisdiction": "localhost-operator-seal-server"
+    },
+    {
+      "step": 7,
+      "id": "gateway-rescue-fuse",
+      "implementation": "app/tcp-gateway-rescue.js",
+      "jurisdiction": "gateway-ui-fail-open-rescue",
+      "mustRunLast": true
+    }
+  ],
+  "claimCeiling": "runtime-order-receipt-not-universal-enforcement-identity-authorship-or-legal-authority-proof"
+}
