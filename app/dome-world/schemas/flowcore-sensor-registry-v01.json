@@ -1,0 +1,18 @@
+{
+  "schema": "td613.flowcore.sensor-registry/v0.1",
+  "sensors": [
+    {"sensor_id":"operator-declaration","default_source_status":"SUPPLIED","allowed_source_statuses":["SUPPLIED"],"authority_class":"A1_OBSERVATIONAL","description":"operator-provided value without direct instrument verification"},
+    {"sensor_id":"browser-performance-api","default_source_status":"OBSERVED","allowed_source_statuses":["OBSERVED"],"authority_class":"A1_OBSERVATIONAL","description":"browser timing or performance measurement"},
+    {"sensor_id":"http-response-log","default_source_status":"OBSERVED","allowed_source_statuses":["OBSERVED"],"authority_class":"A1_OBSERVATIONAL","description":"bounded HTTP response record"},
+    {"sensor_id":"retrieval-comparison","default_source_status":"OBSERVED","allowed_source_statuses":["OBSERVED"],"authority_class":"A1_OBSERVATIONAL","description":"reproducible comparison between retrieval surfaces"},
+    {"sensor_id":"repository-change-record","default_source_status":"OBSERVED","allowed_source_statuses":["OBSERVED"],"authority_class":"A1_OBSERVATIONAL","description":"repository commit, diff, or release record"},
+    {"sensor_id":"controlled-model-output-experiment","default_source_status":"OBSERVED","allowed_source_statuses":["OBSERVED"],"authority_class":"A1_OBSERVATIONAL","description":"output observed under a declared controlled protocol"},
+    {"sensor_id":"external-environmental-sensor","default_source_status":"OBSERVED","allowed_source_statuses":["OBSERVED"],"authority_class":"A1_OBSERVATIONAL","description":"external observation with disclosed calibration posture"},
+    {"sensor_id":"simulated-fixture","default_source_status":"SIMULATED","allowed_source_statuses":["SIMULATED"],"authority_class":"A2_DERIVATIONAL","description":"declared fixture or hypothetical process"},
+    {"sensor_id":"derived-formula","default_source_status":"DERIVED","allowed_source_statuses":["DERIVED"],"authority_class":"A2_DERIVATIONAL","description":"value computed from declared inputs and transformation"},
+    {"sensor_id":"signed-witness-attestation","default_source_status":"ATTESTED","allowed_source_statuses":["ATTESTED"],"authority_class":"A1_OBSERVATIONAL","description":"signed assertion; signature does not prove the asserted fact"},
+    {"sensor_id":"flowcore-context-instrument","default_source_status":"DERIVED","allowed_source_statuses":["DERIVED"],"authority_class":"A2_DERIVATIONAL","description":"Phase III normalization and bounded context translation"},
+    {"sensor_id":"unknown","default_source_status":"UNRESOLVED","allowed_source_statuses":["UNRESOLVED"],"authority_class":"A1_OBSERVATIONAL","description":"sensor identity or generating process remains unresolved"}
+  ],
+  "law": "Every value names its generating sensor; unknown sensors remain UNRESOLVED."
+}
