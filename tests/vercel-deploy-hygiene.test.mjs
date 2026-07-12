@@ -3,6 +3,10 @@ import fs from 'fs';
 
 const vercel = JSON.parse(fs.readFileSync('vercel.json', 'utf8'));
 const gitignore = fs.readFileSync('.gitignore', 'utf8');
+const apiFunctionFiles = fs.readdirSync('api', { withFileTypes: true })
+  .filter((entry) => entry.isFile() && /\.(?:js|mjs|cjs|ts|tsx|py)$/.test(entry.name))
+  .map((entry) => entry.name)
+  .sort();
 
 function findRewrite(source) { return (vercel.rewrites || []).find((entry) => entry.source === source); }
 function findHeader(source) { return (vercel.headers || []).find((entry) => entry.source === source); }
@@ -35,12 +39,18 @@ function assertRevalidatingStatic(source) {
 }
 
 assert.equal(vercel.version, 2);
+assert.ok(
+  apiFunctionFiles.length <= 12,
+  `Vercel Hobby allows at most 12 serverless functions; found ${apiFunctionFiles.length}: ${apiFunctionFiles.join(', ')}`,
+);
+assert.ok(!apiFunctionFiles.includes('flowcore-context.py'), 'Flow-Core must share the guarded Dome-World function');
 assert.equal(vercel.functions?.['api/hush-generate-strict.js']?.maxDuration, 60);
 assert.equal(vercel.functions?.['api/hush-generate.js']?.maxDuration, 60);
 assert.equal(vercel.functions?.['api/dome-world-engine.py']?.maxDuration, 60);
 assert.equal(vercel.functions?.['api/dome-world-engine-guard.py']?.maxDuration, 60);
 assert.equal(vercel.functions?.['api/ash-local-commitment.py']?.maxDuration, 60);
 assert.equal(vercel.functions?.['api/ash-local-commitment-guard.py']?.maxDuration, 60);
+assert.ok(!vercel.functions?.['api/flowcore-context.py']);
 for (const [name, config] of Object.entries(vercel.functions || {})) {
   if ('includeFiles' in config) assert.equal(typeof config.includeFiles, 'string', `${name}.includeFiles must be a string`);
   if ('excludeFiles' in config) assert.equal(typeof config.excludeFiles, 'string', `${name}.excludeFiles must be a string`);
@@ -54,6 +64,8 @@ assertRewrite('/api/dome-world/ash-custody-replay', '/api/ash-local-commitment-g
 assertRewrite('/api/dome-world/ash-custody-migrate', '/api/ash-local-commitment-guard');
 assertRewrite('/api/ash-local-commitment', '/api/ash-local-commitment-guard');
 assertRewrite('/api/dome-world-engine', '/api/dome-world-engine-guard');
+assertRewrite('/api/flowcore-context', '/api/dome-world-engine-guard?operation=flowcore-context');
+assertRewrite('/api/dome-world/flowcore-context', '/api/dome-world-engine-guard?operation=flowcore-context');
 assertRewrite('/api/dome-world/ping', '/api/dome-world-engine-guard?operation=ping');
 assertRewrite('/api/dome-world/readiness', '/api/dome-world-engine-guard?operation=readiness');
 assertRewrite('/api/dome-world/step2-readiness', '/api/dome-world-engine-guard?operation=step2-readiness');
@@ -62,6 +74,7 @@ assertRewrite('/dome-world', '/app/dome-world/index.html');
 assertRewrite('/dome-world/', '/app/dome-world/index.html');
 assertRewrite('/dome-world/ash-custody.html', '/app/dome-world/ash-custody-v08.html');
 assertRewrite('/app/dome-world/ash-custody.html', '/app/dome-world/ash-custody-v08.html');
+assertRewrite('/dome-world/flow-core-context.html', '/app/dome-world/flow-core-context.html');
 assertRewrite('/dome-world/(.*)', '/app/dome-world/$1');
 assertRewrite('/api/(.*)', '/api/$1');
 assertRewrite('/safe-harbor/td613-flight.html', '/api/flight-html');
@@ -73,9 +86,11 @@ for (const exact of [
   '/api/dome-world/ash-custody-register',
   '/api/dome-world/ash-custody-replay',
   '/api/dome-world/ash-custody-migrate',
+  '/api/dome-world/flowcore-context',
 ]) assertRewriteBefore(exact, '/api/dome-world/(.*)');
 assertRewriteBefore('/api/ash-local-commitment', '/api/(.*)');
 assertRewriteBefore('/api/dome-world-engine', '/api/(.*)');
+assertRewriteBefore('/api/flowcore-context', '/api/(.*)');
 
 [
   '/adversarial-bench.html',
@@ -90,12 +105,16 @@ assertRewriteBefore('/api/dome-world-engine', '/api/(.*)');
   '/dome-world/ash-custody.html',
   '/app/dome-world/ash-custody-v07.html',
   '/app/dome-world/ash-custody-v08.html',
+  '/dome-world/flow-core-context.html',
+  '/app/dome-world/flow-core-context.html',
   '/dome-world/ash/local-commitment.js',
   '/app/dome-world/ash/local-commitment.js',
   '/dome-world/ash/canonical-json.js',
   '/app/dome-world/ash/canonical-json.js',
   '/api/dome-world-engine',
   '/api/ash-local-commitment',
+  '/api/flowcore-context',
+  '/api/dome-world/flowcore-context',
   '/api/dome-world-engine-guard',
   '/api/ash-local-commitment-guard',
 ].forEach(assertNoStore);
@@ -127,4 +146,4 @@ assertRewriteBefore('/api/dome-world-engine', '/api/(.*)');
 assert.match(gitignore, /(^|\r?\n)\.env(\r?\n|$)/, '.env must remain ignored');
 assert.doesNotMatch(gitignore, /(^|\r?\n)!\.env(\r?\n|$)/, '.env must not be negated');
 
-console.log('vercel-deploy-hygiene.test.mjs passed');
+console.log(`vercel-deploy-hygiene.test.mjs passed with ${apiFunctionFiles.length}/12 serverless functions`);
