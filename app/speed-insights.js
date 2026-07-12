@@ -30,16 +30,22 @@ window.si = window.si || function () {
     ].filter(Boolean)));
   }
 
+  function availableStorages() {
+    const storages = [];
+    try { if (window.sessionStorage) storages.push(window.sessionStorage); } catch (error) {}
+    try { if (window.localStorage && !storages.includes(window.localStorage)) storages.push(window.localStorage); } catch (error) {}
+    return storages;
+  }
+
   function purgeStorage() {
     const keys = storageKeys();
-    [window.sessionStorage, window.localStorage].forEach((storage) => {
+    availableStorages().forEach((storage) => {
       keys.forEach((key) => {
         try { storage.removeItem(key); } catch (error) {}
       });
     });
-    try { delete window.TD613_SAFE_HARBOR_OPERATOR; } catch (error) {
-      window.TD613_SAFE_HARBOR_OPERATOR = {};
-    }
+    try { delete window.TD613_SAFE_HARBOR_OPERATOR; } catch (error) {}
+    try { window.TD613_SAFE_HARBOR_OPERATOR = {}; } catch (error) {}
   }
 
   function restoreSealedSurface() {
