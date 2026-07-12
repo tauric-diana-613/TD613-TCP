@@ -1,0 +1,37 @@
+name: Dome-World Station Check
+
+on:
+  pull_request:
+    paths:
+      - "app/dome-world/marrowline.html"
+      - "app/dome-world/marrowline-station.js"
+      - "app/dome-world/marrowline.release.json"
+      - "app/dome-world/README.md"
+      - "tests/dome-world-marrowline-station.test.mjs"
+      - ".github/workflows/dome-world-station-check.yml"
+  push:
+    branches: [main]
+    paths:
+      - "app/dome-world/marrowline.html"
+      - "app/dome-world/marrowline-station.js"
+      - "app/dome-world/marrowline.release.json"
+      - "app/dome-world/README.md"
+      - "tests/dome-world-marrowline-station.test.mjs"
+      - ".github/workflows/dome-world-station-check.yml"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  station-check:
+    runs-on: ubuntu-latest
+    timeout-minutes: 8
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+      - run: npm ci
+      - run: node tests/dome-world-marrowline-station.test.mjs
