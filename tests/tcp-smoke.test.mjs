@@ -19,6 +19,7 @@ const requiredFiles = [
   'app/safe-harbor/td613-flight.html',
   'app/safe-harbor/app/desktop-rescue.css',
   'app/safe-harbor/renderers/10_TD613_PUA_Badge_Provenance_Attestation_Renderer_v7_2_1.user.js',
+  'app/speed-insights.js',
   'scripts/legacy/flight-patches/README.md'
 ];
 
@@ -86,12 +87,25 @@ const harborIndex = read('app/safe-harbor/index.html');
 assert.ok(harborIndex.includes('Safe Harbor') || harborIndex.includes('safe-harbor'), 'Safe Harbor index must remain discoverable');
 assert.match(harborIndex, /id="injectDynamicLane"/, 'Safe Harbor must retain the Dynamic Lane control');
 assert.match(harborIndex, /id="dynamicTarget"/, 'Safe Harbor must retain the Dynamic Lane target');
+for (const id of ['signOutIngress', 'signOutVault', 'railSignOut']) {
+  assert.match(harborIndex, new RegExp(`id="${id}"`), `Safe Harbor must retain Sign Out control: ${id}`);
+}
 
 const desktopRescue = read('app/safe-harbor/app/desktop-rescue.css');
 assert.match(desktopRescue, /"canon chamber conscience"/, 'desktop Safe Harbor must retain the stable three-column cockpit');
 assert.match(desktopRescue, /grid-template-columns:\s*minmax\(265px, 330px\) minmax\(520px, 1fr\) minmax\(245px, 320px\)/, 'desktop Safe Harbor must retain its stable column widths');
 assert.match(desktopRescue, /\.canon-panel,[\s\S]{0,180}position:\s*sticky/, 'desktop side panels must retain the pre-Mac sticky cockpit contract');
 assert.doesNotMatch(desktopRescue, /@media \(min-width: 1360px\)/, 'retired Mac desktop reflow breakpoint must stay absent');
+
+const safeHarborBootstrap = read('app/speed-insights.js');
+assert.doesNotThrow(() => new Function(safeHarborBootstrap), 'always-loaded Safe Harbor bootstrap must parse');
+assert.match(safeHarborBootstrap, /#signOutIngress,#signOutVault,#railSignOut/, 'hard Sign Out must cover ingress, vault, and Harbor Map controls');
+assert.match(safeHarborBootstrap, /td613\.safe-harbor\.session\.v1/, 'hard Sign Out must purge the session key');
+assert.match(safeHarborBootstrap, /td613\.safe-harbor\.session\.mirror\.v1/, 'hard Sign Out must purge the mirrored session key');
+assert.match(safeHarborBootstrap, /window\.addEventListener\('click', hardSignOut, true\)/, 'hard Sign Out must run at window capture before fragile runtime handlers');
+assert.match(safeHarborBootstrap, /td613:safe-harbor-session-reset/, 'hard Sign Out must cancel packet normalization work');
+assert.match(safeHarborBootstrap, /window\.location\.replace/, 'hard Sign Out must reload a clean membrane document');
+assert.match(safeHarborBootstrap, /availableStorages\(\)/, 'hard Sign Out must tolerate privacy-mode storage restrictions');
 
 const renderer = read('app/safe-harbor/renderers/10_TD613_PUA_Badge_Provenance_Attestation_Renderer_v7_2_1.user.js');
 assert.doesNotThrow(() => new Function(renderer), 'PUA renderer userscript must parse');
@@ -104,4 +118,4 @@ assert.match(renderer, /dataset\.td613RendererBridge/, 'renderer must stamp a cr
 const gateway = read('app/index.html');
 assert.ok(gateway.includes('<html'), 'Gateway must remain an HTML document');
 
-console.log('TCP smoke passed: static surfaces, Flight sentinels, stable Safe Harbor desktop cockpit, and Mac renderer bridge are intact.');
+console.log('TCP smoke passed: static surfaces, Flight sentinels, stable Safe Harbor desktop cockpit, hard Sign Out, and Mac renderer bridge are intact.');
