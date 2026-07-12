@@ -1,0 +1,74 @@
+{
+  "schema": "td613.flowcore.phase3-fixture-bank/v0.1",
+  "fixtures": [
+    {
+      "id": "derived-complete",
+      "expected_status": "OPEN",
+      "payload": {
+        "diagnosticReceipt": {"receipt_id": "apdiag_derived_complete"},
+        "measurements": [
+          {"name":"omissionPressure","value":0.2,"sensor_id":"derived-formula","source_status":"DERIVED","transformation_history":["fixture -> omissionPressure"]},
+          {"name":"coherence","value":0.75,"sensor_id":"derived-formula","source_status":"DERIVED","transformation_history":["fixture -> coherence"]},
+          {"name":"divergence","value":0.3,"sensor_id":"derived-formula","source_status":"DERIVED","transformation_history":["fixture -> divergence"]},
+          {"name":"namingSensitivity","value":0.4,"sensor_id":"derived-formula","source_status":"DERIVED","transformation_history":["fixture -> namingSensitivity"]},
+          {"name":"rupturePressure","value":0.1,"sensor_id":"derived-formula","source_status":"DERIVED","transformation_history":["fixture -> rupturePressure"]}
+        ]
+      }
+    },
+    {
+      "id": "simulated-complete",
+      "expected_status": "OPEN",
+      "payload": {
+        "measurements": [
+          {"name":"omissionPressure","value":0.45,"sensor_id":"simulated-fixture","source_status":"SIMULATED","transformation_history":["declared simulation -> omissionPressure"]},
+          {"name":"coherence","value":0.5,"sensor_id":"simulated-fixture","source_status":"SIMULATED","transformation_history":["declared simulation -> coherence"]},
+          {"name":"divergence","value":0.4,"sensor_id":"simulated-fixture","source_status":"SIMULATED","transformation_history":["declared simulation -> divergence"]}
+        ]
+      }
+    },
+    {
+      "id": "simulated-claiming-observed",
+      "expected_status": "ABSTAIN",
+      "payload": {
+        "measurements": [
+          {"name":"omissionPressure","value":0.2,"sensor_id":"simulated-fixture","source_status":"OBSERVED","transformation_history":["fixture"]},
+          {"name":"coherence","value":0.75,"sensor_id":"simulated-fixture","source_status":"OBSERVED","transformation_history":["fixture"]},
+          {"name":"divergence","value":0.3,"sensor_id":"simulated-fixture","source_status":"OBSERVED","transformation_history":["fixture"]}
+        ]
+      }
+    },
+    {
+      "id": "unknown-sensor",
+      "expected_status": "ABSTAIN",
+      "payload": {
+        "measurements": [
+          {"name":"omissionPressure","value":0.2,"sensor_id":"mystery-sensor","source_status":"OBSERVED"},
+          {"name":"coherence","value":0.75,"sensor_id":"mystery-sensor","source_status":"OBSERVED"},
+          {"name":"divergence","value":0.3,"sensor_id":"mystery-sensor","source_status":"OBSERVED"}
+        ]
+      }
+    },
+    {
+      "id": "benign-latency",
+      "expected_status": "OPEN",
+      "payload": {
+        "conditions": [{"kind":"LATENCY","detail":"450 ms response"}],
+        "measurements": [
+          {"name":"omissionPressure","value":0.2,"sensor_id":"derived-formula","source_status":"DERIVED","transformation_history":["fixture -> omissionPressure"]},
+          {"name":"coherence","value":0.75,"sensor_id":"derived-formula","source_status":"DERIVED","transformation_history":["fixture -> coherence"]},
+          {"name":"divergence","value":0.3,"sensor_id":"derived-formula","source_status":"DERIVED","transformation_history":["fixture -> divergence"]}
+        ]
+      }
+    },
+    {
+      "id": "insufficient-context",
+      "expected_status": "ABSTAIN",
+      "payload": {
+        "measurements": [
+          {"name":"omissionPressure","value":0.2,"sensor_id":"derived-formula","source_status":"DERIVED","transformation_history":["fixture -> omissionPressure"]},
+          {"name":"divergence","value":0.3,"sensor_id":"derived-formula","source_status":"DERIVED","transformation_history":["fixture -> divergence"]}
+        ]
+      }
+    }
+  ]
+}
