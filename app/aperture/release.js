@@ -6,8 +6,11 @@ export const APERTURE_RELEASE = Object.freeze({
   "featureVersion": "v3.0-alpha-anti-epistemicide-research-runtime",
   "doctrineKernelSchema": "td613.aperture.doctrine-kernel/v2.9.4",
   "domeBridgeSchema": "td613.aperture.reciprocal-receipt-bridge/v3.0-alpha",
+  "phase4BridgeContract": "td613.phase4.reciprocal-bridge/v0.1",
   "domeDiagnosticReceiptSchema": "td613.aperture.diagnostic-receipt/v3.0-alpha",
-  "flowCoreContextReceiptSchema": "td613.flowcore.context-receipt/vNext",
+  "flowCoreContextReceiptSchema": "td613.flowcore.context-receipt/v0.1",
+  "legacyFlowCoreContextReceiptSchema": "td613.flowcore.context-receipt/vNext",
+  "returnedContextAuditSchema": "td613.aperture.returned-context-audit/v0.1",
   "roundTripReceiptSchema": "td613.aperture.round-trip-receipt/v3.0-alpha",
   "bridgePosture": "reciprocal_receipts_without_reciprocal_authority",
   "domeWorld": {
