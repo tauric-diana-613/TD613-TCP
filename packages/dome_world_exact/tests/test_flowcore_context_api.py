@@ -6,8 +6,8 @@ from pathlib import Path
 import pytest
 
 ROOT = Path(__file__).resolve().parents[3]
-API_PATH = ROOT / "api" / "flowcore-context.py"
-SPEC = importlib.util.spec_from_file_location("td613_flowcore_context_api", API_PATH)
+API_PATH = ROOT / "api" / "dome-world-engine-guard.py"
+SPEC = importlib.util.spec_from_file_location("td613_flowcore_shared_guard", API_PATH)
 API = importlib.util.module_from_spec(SPEC)
 assert SPEC and SPEC.loader
 SPEC.loader.exec_module(API)
@@ -38,7 +38,7 @@ def complete_payload():
 
 
 def test_api_dispatch_returns_phase3_receipt():
-    response = API.dispatch_post(envelope(complete_payload()))
+    response = API.dispatch_guarded_post(envelope(complete_payload()))
     assert response["ok"] is True
     assert response["traceId"] == "phase3-api-test"
     assert response["result"]["schema"] == "td613.flowcore.context-receipt/v0.1"
@@ -49,19 +49,25 @@ def test_api_dispatch_returns_phase3_receipt():
 
 def test_api_rejects_unknown_operation():
     with pytest.raises(ValueError, match="unsupported"):
-        API.dispatch_post(envelope({}, operation="aperture-bridge"))
+        API.dispatch_guarded_post(envelope({}, operation="not-a-real-operation"))
 
 
 def test_api_rejects_artifact_digest():
     payload = complete_payload()
     payload["artifact_digest"] = "sha256:not-allowed"
     with pytest.raises(ValueError, match="artifact-blind"):
-        API.dispatch_post(envelope(payload))
+        API.dispatch_guarded_post(envelope(payload))
 
 
 def test_api_readiness_exposes_no_ash_or_prediction_authority():
-    receipt = API.readiness_receipt()
+    receipt = API.flowcore_readiness_receipt()
     assert receipt["status"] == "phase-3-active"
     assert receipt["automaticAshAction"] is False
     assert receipt["predictionAuthorized"] is False
     assert receipt["bridgeIntegrationStatus"] == "PHASE_4_DEFERRED"
+
+
+def test_shared_guard_keeps_existing_dome_operations_available():
+    response = API.dispatch_guarded_post(envelope({"metrics": {}}, operation="aperture-bridge"))
+    assert response["ok"] is True
+    assert response["operation"] == "aperture-bridge"
