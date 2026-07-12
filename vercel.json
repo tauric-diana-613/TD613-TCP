@@ -1,12 +1,8 @@
 {
   "version": 2,
   "functions": {
-    "api/hush-generate-strict.js": {
-      "maxDuration": 60
-    },
-    "api/hush-generate.js": {
-      "maxDuration": 60
-    },
+    "api/hush-generate-strict.js": { "maxDuration": 60 },
+    "api/hush-generate.js": { "maxDuration": 60 },
     "api/dome-world-engine.py": {
       "maxDuration": 60,
       "includeFiles": "packages/dome_world_exact/**/*.py",
@@ -17,11 +13,12 @@
       "includeFiles": "{api/dome-world-engine.py,packages/dome_world_exact/**/*.py}"
     },
     "api/ash-local-commitment.py": {
-      "maxDuration": 60
+      "maxDuration": 60,
+      "includeFiles": "packages/dome_world_exact/{ash_canonical_json.py,ash_commitment_v08.py,ash_receipt_v08.py}"
     },
     "api/ash-local-commitment-guard.py": {
       "maxDuration": 60,
-      "includeFiles": "api/ash-local-commitment.py"
+      "includeFiles": "{api/ash-local-commitment.py,packages/dome_world_exact/{ash_canonical_json.py,ash_commitment_v08.py,ash_receipt_v08.py}}"
     }
   },
   "headers": [
@@ -73,8 +70,11 @@
     { "source": "/app/dome-world/index.html", "headers": [{ "key": "Cache-Control", "value": "no-store, max-age=0" }] },
     { "source": "/dome-world/ash-custody.html", "headers": [{ "key": "Cache-Control", "value": "no-store, max-age=0" }] },
     { "source": "/app/dome-world/ash-custody-v07.html", "headers": [{ "key": "Cache-Control", "value": "no-store, max-age=0" }] },
+    { "source": "/app/dome-world/ash-custody-v08.html", "headers": [{ "key": "Cache-Control", "value": "no-store, max-age=0" }] },
     { "source": "/dome-world/ash/local-commitment.js", "headers": [{ "key": "Cache-Control", "value": "no-store, max-age=0" }] },
     { "source": "/app/dome-world/ash/local-commitment.js", "headers": [{ "key": "Cache-Control", "value": "no-store, max-age=0" }] },
+    { "source": "/dome-world/ash/canonical-json.js", "headers": [{ "key": "Cache-Control", "value": "no-store, max-age=0" }] },
+    { "source": "/app/dome-world/ash/canonical-json.js", "headers": [{ "key": "Cache-Control", "value": "no-store, max-age=0" }] },
     { "source": "/api/dome-world-engine", "headers": [{ "key": "Cache-Control", "value": "no-store, max-age=0" }] },
     { "source": "/api/ash-local-commitment", "headers": [{ "key": "Cache-Control", "value": "no-store, max-age=0" }] },
     { "source": "/api/dome-world-engine-guard", "headers": [{ "key": "Cache-Control", "value": "no-store, max-age=0" }] },
@@ -84,6 +84,7 @@
   "rewrites": [
     { "source": "/api/dome-world/ash-custody-register", "destination": "/api/ash-local-commitment-guard" },
     { "source": "/api/dome-world/ash-custody-replay", "destination": "/api/ash-local-commitment-guard" },
+    { "source": "/api/dome-world/ash-custody-migrate", "destination": "/api/ash-local-commitment-guard" },
     { "source": "/api/ash-local-commitment", "destination": "/api/ash-local-commitment-guard" },
     { "source": "/api/dome-world-engine", "destination": "/api/dome-world-engine-guard" },
     { "source": "/api/dome-world/ping", "destination": "/api/dome-world-engine-guard?operation=ping" },
@@ -92,8 +93,8 @@
     { "source": "/api/dome-world/(.*)", "destination": "/api/dome-world-engine-guard?operation=$1" },
     { "source": "/dome-world", "destination": "/app/dome-world/index.html" },
     { "source": "/dome-world/", "destination": "/app/dome-world/index.html" },
-    { "source": "/dome-world/ash-custody.html", "destination": "/app/dome-world/ash-custody-v07.html" },
-    { "source": "/app/dome-world/ash-custody.html", "destination": "/app/dome-world/ash-custody-v07.html" },
+    { "source": "/dome-world/ash-custody.html", "destination": "/app/dome-world/ash-custody-v08.html" },
+    { "source": "/app/dome-world/ash-custody.html", "destination": "/app/dome-world/ash-custody-v08.html" },
     { "source": "/dome-world/(.*)", "destination": "/app/dome-world/$1" },
     { "source": "/api/(.*)", "destination": "/api/$1" },
     { "source": "/safe-harbor/td613-flight.html", "destination": "/api/flight-html" },
