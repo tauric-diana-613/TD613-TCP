@@ -78,6 +78,7 @@
     { "source": "/app/dome-world/ash/local-commitment.js", "headers": [{ "key": "Cache-Control", "value": "no-store, max-age=0" }] },
     { "source": "/dome-world/ash/canonical-json.js", "headers": [{ "key": "Cache-Control", "value": "no-store, max-age=0" }] },
     { "source": "/app/dome-world/ash/canonical-json.js", "headers": [{ "key": "Cache-Control", "value": "no-store, max-age=0" }] },
+    { "source": "/api/hush-generate-strict-pr124", "headers": [{ "key": "Cache-Control", "value": "no-store, max-age=0" }] },
     { "source": "/api/dome-world-engine", "headers": [{ "key": "Cache-Control", "value": "no-store, max-age=0" }] },
     { "source": "/api/ash-local-commitment", "headers": [{ "key": "Cache-Control", "value": "no-store, max-age=0" }] },
     { "source": "/api/flowcore-context", "headers": [{ "key": "Cache-Control", "value": "no-store, max-age=0" }] },
@@ -89,6 +90,7 @@
     { "source": "/dome-world/(.*)", "headers": [{ "key": "Cache-Control", "value": "public, max-age=0, must-revalidate" }] }
   ],
   "rewrites": [
+    { "source": "/api/hush-generate-strict-pr124", "destination": "/api/hush-generate-strict" },
     { "source": "/api/dome-world/ash-custody-register", "destination": "/api/ash-local-commitment-guard" },
     { "source": "/api/dome-world/ash-custody-replay", "destination": "/api/ash-local-commitment-guard" },
     { "source": "/api/dome-world/ash-custody-migrate", "destination": "/api/ash-local-commitment-guard" },
