@@ -1,17 +1,29 @@
 import { installTD613ProvenanceAttestationEgress } from '../engine/td613-aperture.js';
+import {
+  APERTURE_V3_SCHEMA,
+  APERTURE_V3_VERSION,
+  routeApertureTaskIntent
+} from '../engine/aperture-v3-task-intent.js';
 import { buildTD613ReflexReceipt } from './reflex-spine.js';
 
-export const MARROWLINE_EGRESS_BOOT_VERSION = 'td613.dome-world.marrowline-egress-boot/v2-khonapolit-terminal';
+export const MARROWLINE_EGRESS_BOOT_VERSION = 'td613.dome-world.marrowline-egress-boot/v3-aperture-relay';
 export const MARROWLINE_CIRCUIT_RECEIPT_SCHEMA = 'td613.dome-world.marrowline-circuit-receipt/v1';
+export const MARROWLINE_ROOM_BOOT_SCHEMA = 'td613.dome-world.marrowline-room-boot/v2-mobile-aperture-relay';
 
 function bootApertureEgress(root = window) {
   const installedNow = installTD613ProvenanceAttestationEgress(root);
   const active = Boolean(root.__TD613_PROVENANCE_ATTESTATION_EGRESS__);
+  const taskIntent = routeApertureTaskIntent({ discourseMode: 'SPECULATIVE', runtimeMateriality: 'BACKGROUND' });
   const receipt = Object.freeze({
     schema: MARROWLINE_EGRESS_BOOT_VERSION,
     active,
     installedNow,
     scope: 'marrowline-room-browser-runtime',
+    aperture: Object.freeze({
+      version: APERTURE_V3_VERSION,
+      firmwareSchema: APERTURE_V3_SCHEMA,
+      taskIntent
+    }),
     destinations: Object.freeze([
       '/api/dome-world/marrowline',
       '/api/dome-world/khonapolit'
@@ -23,7 +35,7 @@ function bootApertureEgress(root = window) {
       'X-Custodial-Friction-Index'
     ]),
     reflex: buildTD613ReflexReceipt({ status: active ? 'EGRESS_ARMED' : 'EGRESS_UNAVAILABLE', activeSteps: active ? [1] : [] }),
-    claimCeiling: 'provenance-marker-installation-not-signature-authorship-identity-or-legal-authority-proof',
+    claimCeiling: 'provenance-marker-plus-task-route-not-signature-authorship-identity-entity-or-legal-authority-proof',
     seal: '⟐'
   });
   root.__TD613_MARROWLINE_EGRESS_BOOT__ = receipt;
@@ -46,6 +58,10 @@ function circuitObservation(receipt = {}) {
   return Object.freeze({
     schema: MARROWLINE_CIRCUIT_RECEIPT_SCHEMA,
     status: egress.status === 'exact' ? 'CIRCUIT_EXACT' : 'CIRCUIT_REVIEW',
+    aperture: Object.freeze({
+      version: APERTURE_V3_VERSION,
+      taskIntent: routeApertureTaskIntent({ discourseMode: 'TECHNICAL_RUNTIME', runtimeMateriality: 'MATERIAL', runtimeRequested: true })
+    }),
     apertureEgress: egress,
     marrowlineIngress: Object.freeze({
       httpStatus: receipt?.http?.status ?? null,
@@ -54,7 +70,7 @@ function circuitObservation(receipt = {}) {
       requestDigest: receipt?.requestDigest || canonical?.request_digest || null
     }),
     reflex: buildTD613ReflexReceipt({ status: 'CIRCUIT_OBSERVED', activeSteps }),
-    claimCeiling: 'observed-egress-ingress-circuit-not-signature-identity-authorship-permission-or-legal-authority-proof',
+    claimCeiling: 'observed-egress-ingress-circuit-not-signature-identity-authorship-permission-entity-or-legal-authority-proof',
     seal: '⟐'
   });
 }
@@ -101,10 +117,19 @@ async function bootMarrowlineRoom(doc = document, root = window) {
   ]);
   installCircuitObserver(doc, root);
   const receipt = Object.freeze({
-    schema: 'td613.dome-world.marrowline-room-boot/v1',
+    schema: MARROWLINE_ROOM_BOOT_SCHEMA,
     station: Boolean(root.TD613_MARROWLINE),
     terminal: Boolean(root.TD613_KHONAPOLIT_TERMINAL),
     apertureEgress: Boolean(root.__TD613_PROVENANCE_ATTESTATION_EGRESS__),
+    aperture: Object.freeze({
+      version: APERTURE_V3_VERSION,
+      firmwareSchema: APERTURE_V3_SCHEMA,
+      taskIntent: routeApertureTaskIntent({ discourseMode: 'SPECULATIVE', runtimeMateriality: 'BACKGROUND' })
+    }),
+    relay: Object.freeze({
+      schema: 'td613.khonapolit.three-part-relay/v1',
+      stages: Object.freeze(['gemini-instrument', 'khonapolit-relay', 'tauric-diana-bots-high-zalgo'])
+    }),
     seal: '⟐'
   });
   root.__TD613_MARROWLINE_ROOM_BOOT__ = receipt;
