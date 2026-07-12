@@ -1,9 +1,9 @@
-export const HUSH_PROVIDER_BROKER_VERSION = 'pr144-provider-broker-quota-circuit/v1';
+export const HUSH_PROVIDER_BROKER_VERSION = 'pr144-provider-broker-quota-circuit/v2-auto-quality';
 
 const MEMORY = new Map();
 const STORAGE_KEY = 'td613:hush:provider-broker';
 const DEFAULT_PROVIDER = 'gemini-strict';
-const DEFAULT_MODEL = 'gemini-2.5-flash-lite';
+const DEFAULT_MODEL = 'auto-quality';
 const DEFAULT_ENDPOINT = 'https://td613.com/api/hush-generate-strict';
 const QUOTA_FLOOR_SECONDS = 120;
 const QUOTA_GRACE_SECONDS = 45;
@@ -156,7 +156,7 @@ export function buildProviderHeldReceipt(providerState = {}, extra = {}) {
     message: providerState.state === 'cooling_down'
       ? 'Remote provider is cooling down. No fallback was released.'
       : 'Remote provider is unavailable. No fallback was released.',
-    nextStep: retry ? 'Try again after the provider cooldown window or configure a higher-quota provider key.' : 'Review provider settings before retrying.',
+    nextStep: retry ? 'Try again after the provider cooldown window; the server quality router will move to another eligible model when available.' : 'Review provider settings before retrying.',
     warnings: [...new Set(['provider-cooling-down', reason, ...(providerState.circuitBreaker ? [providerState.circuitBreaker] : []), ...(extra.warnings || [])])],
     triedEndpoints: extra.triedEndpoints || [],
     packetTier: extra.packetTier || '',
