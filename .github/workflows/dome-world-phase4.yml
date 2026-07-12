@@ -16,6 +16,7 @@ on:
       - "app/dome-world/docs/PHASE_4_*.md"
       - "scripts/phase4-reciprocal-bridge-deployment-probe.mjs"
       - "scripts/phase4-reciprocal-bridge-browser-probe.mjs"
+      - "scripts/phase4-local-integration-server.py"
       - "tests/aperture-phase4-bridge.test.mjs"
       - "tests/phase4-deployment-probe.test.mjs"
       - "tests/phase4-release-sync.test.mjs"
@@ -45,7 +46,7 @@ jobs:
       - name: Install Python test dependencies
         run: python -m pip install --disable-pip-version-check pytest sympy
       - name: Compile Phase IV Python surfaces
-        run: python -m py_compile api/dome-world-engine-guard.py packages/dome_world_exact/reciprocal_bridge.py packages/dome_world_exact/flowcore_context.py
+        run: python -m py_compile api/dome-world-engine-guard.py packages/dome_world_exact/reciprocal_bridge.py packages/dome_world_exact/flowcore_context.py scripts/phase4-local-integration-server.py
       - name: Validate Phase IV server bridge
         run: python -m pytest packages/dome_world_exact/tests/test_reciprocal_bridge_v01.py -q
       - name: Preserve Phase III context instrumentation
@@ -60,6 +61,7 @@ jobs:
         run: node tests/phase4-release-sync.test.mjs
       - name: Validate Vercel route and function hygiene
         run: node tests/vercel-deploy-hygiene.test.mjs
+
       - name: Resolve Vercel preview alias
         if: github.event_name == 'pull_request'
         id: preview
@@ -83,55 +85,110 @@ jobs:
           fi
           echo "preview_url=$preview_url" >> "$GITHUB_OUTPUT"
           echo "Resolved Phase IV preview: $preview_url"
-      - name: Run bounded Phase IV live probe
+
+      - name: Classify preview access boundary
         if: github.event_name == 'pull_request'
-        id: live_probe
-        continue-on-error: true
+        id: preview_access
         env:
-          TD613_BASE_URL: ${{ steps.preview.outputs.preview_url }}
-          TD613_FETCH_TIMEOUT_MS: 12000
+          PREVIEW_URL: ${{ steps.preview.outputs.preview_url }}
+          VERCEL_AUTOMATION_BYPASS_SECRET: ${{ secrets.VERCEL_AUTOMATION_BYPASS_SECRET }}
         run: |
           set -euo pipefail
           mkdir -p artifacts
-          for attempt in $(seq 1 4); do
-            if node scripts/phase4-reciprocal-bridge-deployment-probe.mjs > artifacts/phase4-live-probe.json 2> artifacts/phase4-live-probe.err; then
-              cat artifacts/phase4-live-probe.json
+          header_args=()
+          if [ -n "${VERCEL_AUTOMATION_BYPASS_SECRET:-}" ]; then
+            header_args+=( -H "x-vercel-protection-bypass: ${VERCEL_AUTOMATION_BYPASS_SECRET}" )
+            header_args+=( -H "x-vercel-set-bypass-cookie: true" )
+          fi
+          status="$(curl -sS --max-time 20 -D artifacts/phase4-preview-headers.txt -o artifacts/phase4-preview-body.txt -w '%{http_code}' "${header_args[@]}" "${PREVIEW_URL}/api/aperture-bridge" || true)"
+          content_type="$(awk 'BEGIN{IGNORECASE=1} /^content-type:/{gsub("\r",""); value=$0} END{sub(/^[^:]+:[[:space:]]*/,"",value); print value}' artifacts/phase4-preview-headers.txt)"
+          if [ "$status" = "200" ] && printf '%s' "$content_type" | grep -qi 'application/json'; then
+            state="JSON_REACHABLE"
+          else
+            state="PROTECTED_OR_NON_JSON"
+          fi
+          jq -n \
+            --arg schema "td613.phase4.preview-access/v0.1" \
+            --arg url "$PREVIEW_URL" \
+            --arg state "$state" \
+            --arg status "$status" \
+            --arg content_type "$content_type" \
+            --argjson bypass_configured "$([ -n "${VERCEL_AUTOMATION_BYPASS_SECRET:-}" ] && echo true || echo false)" \
+            '{schema:$schema,url:$url,state:$state,http_status:$status,content_type:$content_type,bypass_configured:$bypass_configured,claim:"deployment-access-receipt-not-runtime-verdict"}' \
+            > artifacts/phase4-preview-access.json
+          cat artifacts/phase4-preview-access.json
+          echo "state=$state" >> "$GITHUB_OUTPUT"
+
+      - name: Start bounded Phase IV integration runtime
+        id: integration_runtime
+        run: |
+          set -euo pipefail
+          mkdir -p artifacts
+          python scripts/phase4-local-integration-server.py --port 6134 > artifacts/phase4-integration-server.log 2>&1 &
+          echo $! > artifacts/phase4-integration-server.pid
+          for attempt in $(seq 1 30); do
+            if curl -fsS --max-time 2 http://127.0.0.1:6134/api/aperture-bridge > artifacts/phase4-integration-readiness.json; then
+              cat artifacts/phase4-integration-readiness.json
+              echo "base_url=http://127.0.0.1:6134" >> "$GITHUB_OUTPUT"
               exit 0
             fi
-            echo "Preview probe attempt ${attempt} held; waiting for the deployment alias to converge."
-            cat artifacts/phase4-live-probe.err || true
-            sleep 8
+            sleep 1
           done
-          echo "Phase IV preview did not converge within the bounded retry window." >&2
+          cat artifacts/phase4-integration-server.log || true
           exit 1
+
+      - name: Run bounded Phase IV runtime probe
+        id: live_probe
+        continue-on-error: true
+        env:
+          TD613_BASE_URL: ${{ steps.integration_runtime.outputs.base_url }}
+          TD613_FETCH_TIMEOUT_MS: 12000
+        run: node scripts/phase4-reciprocal-bridge-deployment-probe.mjs > artifacts/phase4-live-probe.json 2> artifacts/phase4-live-probe.err
+
       - name: Install Chromium probe runtime
-        if: github.event_name == 'pull_request' && steps.live_probe.outcome == 'success'
+        if: steps.live_probe.outcome == 'success'
         run: |
           npm install --no-save --package-lock=false playwright@1.53.2
           npx playwright install --with-deps chromium
+
       - name: Demonstrate Phase IV lab on desktop and mobile
-        if: github.event_name == 'pull_request' && steps.live_probe.outcome == 'success'
+        if: steps.live_probe.outcome == 'success'
         id: browser_probe
         continue-on-error: true
         env:
-          TD613_BASE_URL: ${{ steps.preview.outputs.preview_url }}
+          TD613_BASE_URL: ${{ steps.integration_runtime.outputs.base_url }}
           TD613_ARTIFACT_DIR: artifacts/phase4-browser
         run: node scripts/phase4-reciprocal-bridge-browser-probe.mjs
+
       - name: Preserve Phase IV demonstration receipts
-        if: always() && github.event_name == 'pull_request'
+        if: always()
         uses: actions/upload-artifact@v4
         with:
           name: phase4-reciprocal-receipt-demonstration
           path: |
+            artifacts/phase4-preview-access.json
+            artifacts/phase4-preview-headers.txt
+            artifacts/phase4-preview-body.txt
+            artifacts/phase4-integration-server.log
+            artifacts/phase4-integration-readiness.json
             artifacts/phase4-live-probe.json
             artifacts/phase4-live-probe.err
             artifacts/phase4-browser/
           if-no-files-found: warn
           retention-days: 7
-      - name: Enforce Phase IV preview demonstration
-        if: github.event_name == 'pull_request' && (steps.live_probe.outcome == 'failure' || steps.browser_probe.outcome == 'failure')
+
+      - name: Enforce Phase IV runtime demonstration
+        if: steps.live_probe.outcome == 'failure' || steps.browser_probe.outcome == 'failure'
         run: |
-          echo "Phase IV preview demonstration held."
+          echo "Phase IV runtime demonstration held."
+          cat artifacts/phase4-integration-server.log 2>/dev/null || true
           cat artifacts/phase4-live-probe.err 2>/dev/null || true
           cat artifacts/phase4-browser/phase4-browser-demonstration.json 2>/dev/null || true
           exit 1
+
+      - name: Stop bounded integration runtime
+        if: always()
+        run: |
+          if [ -f artifacts/phase4-integration-server.pid ]; then
+            kill "$(cat artifacts/phase4-integration-server.pid)" 2>/dev/null || true
+          fi
