@@ -1,64 +1,71 @@
 # Phase IV Production Demo Receipt
 
-**Status:** RUNTIME DEMONSTRATION PASS · PRODUCTION/PREVIEW RUNTIME NOT OBSERVED
+**Status:** IMPLEMENTED + PRODUCTION-DEMONSTRATED
 
-**Tester:** GitHub Actions — `Dome-World Phase 4`, run `29214493924`
+**Tester:** GitHub Actions — `Phase IV Production Closure Probe`, run `29215880253`
 
-**Date/time:** 2026-07-13 00:03 UTC
+**Date/time:** 2026-07-13 00:43 UTC
 
-**Device:** GitHub-hosted Ubuntu 24.04 runner; responsive viewports `1440×1000`, `390×844`, `844×390`, then `390×844` rotation return
+**Device:** GitHub-hosted Ubuntu runner; responsive viewports `1440×1000`, `390×844`, `844×390`, then `390×844` rotation return
 
 **Browser:** Chromium headless via Playwright 1.53.2
 
-**Production/preview URL:** `https://td-613-tcp-git-amari-phase4-reci-056784-tauric-diana-s-projects.vercel.app`
+**Production URL:** `https://td613.com`
 
-**Runtime commit:** `12950a8f51e228679b986bdb90f266e4c0b63ec1`
+**Production lab:** `https://td613.com/dome-world/reciprocal-bridge.html`
 
-**Deployment:** Vercel preview reported Ready. Unauthenticated CI received HTTP `302` with `text/plain`; no automation-bypass secret was configured. This access receipt establishes deployment protection, not Phase IV runtime failure or production success.
+**Runtime commit:** `cd1b2f5389144f508e44de92d6fe3e4e2f9b6160`
 
-**Demonstration artifact:** `phase4-reciprocal-receipt-demonstration`, artifact `8266136863`, archive digest `sha256:ac455fcc92f6317fa76d7ec88967243c7ee939aacaf89875937731c104b18724`
+**Probe-only workflow commit:** `9e75c36230fbbadb0d565f982465357828babf75`
+
+**Demonstration artifact:** `phase4-production-closure-receipts`, artifact `8266542869`, archive digest `sha256:a5ac28cd6f7065a9825405b43168d1d0fa76b55f409815f67c85f138ff36f0c7`
+
+The probe-only branch and PR were closed without merge after the production receipts were collected. No temporary workflow entered `main`.
 
 ## Evidentiary layers
 
 1. **Contract and regression CI:** PASS.
-2. **Shared-guard runtime integration:** PASS against the committed `api/dome-world-engine-guard.py` through the bounded local integration harness.
-3. **Desktop/mobile browser demonstration:** PASS against that same shared-guard runtime and committed lab assets.
-4. **Vercel preview deployment access:** HELD by deployment protection (`302`); runtime response unavailable to unauthenticated CI.
-5. **Production runtime:** NOT OBSERVED. No promotion claim is made from the protected preview response.
+2. **Shared-guard runtime integration:** PASS.
+3. **Pre-merge desktop/mobile browser demonstration:** PASS.
+4. **Post-merge production JSON runtime:** PASS at `https://td613.com/api/aperture-bridge`.
+5. **Post-merge production desktop/mobile browser demonstration:** PASS at the public Phase IV lab.
+6. **Production promotion:** EARNED.
 
-The integration harness added no serverless function. It served the committed browser assets and imported the same shared guard used by the Vercel route.
+The production probe directly observed the deployed JSON runtime. This closes the access gap left by the protected preview and supersedes the earlier `PRODUCTION/PREVIEW RUNTIME NOT OBSERVED` posture.
 
 ## Checkpoint receipt
 
-- **A. Identity and first paint:** PASS — integration surface rendered the Phase IV title and four receipt stations.
-- **B. Bridge readiness:** PASS — `td613.flowcore.context-receipt/v0.1`; reciprocal receipts true; reciprocal authority false; artifact blindness true; artifact relation false; automatic Ash action false; prediction authority false; operator closure required; runtime default BACKGROUND; Open Field auto-promotion false.
-- **C. Valid derived round trip:** PASS — API context `flowctx_8fd1545a2e69217a3297`; API round trip `aprt_023908b3e65e564954dc`; browser context `flowctx_1da1f571036ff51c5ef5`; browser round trip `aprt_00626c36d6cf5846d864`.
-- **D. Missing coherence:** PASS — `ABSTAIN / ABSTAIN_INSUFFICIENT_CONTEXT`; weather null.
-- **E. Invalid divergence:** PASS — divergence outside `[0,1]` remained invalid; value withheld; abstention returned; no clamping.
-- **F. Returned-context audit:** PASS — `CONTEXT_RECEIPT_ADMISSIBLE_FOR_BOUNDED_REVIEW`.
-- **G. Diagnostic-reference mismatch:** PASS — `HOLD_FOR_REPAIR`.
-- **H. Artifact injection:** PASS — HTTP `400`; no context receipt.
+- **A. Production readiness:** PASS — reciprocal receipts true; reciprocal authority false; artifact blindness true; artifact relation false; automatic Ash action false; prediction authority false; operator closure required; runtime default BACKGROUND; Open Field auto-promotion false.
+- **B. Canonical v0.1 return:** PASS — `td613.flowcore.context-receipt/v0.1`; context receipt `flowctx_95afdf3492ce85459c8c`.
+- **C. Returned-context audit:** PASS — `CONTEXT_RECEIPT_ADMISSIBLE_FOR_BOUNDED_REVIEW`.
+- **D. Round-trip receipt:** PASS — `aprt_f672778bc7b58f37f7ac`.
+- **E. Pure replay:** PASS — `ROUND_TRIP_VERIFIED`; no network call, weather regeneration, storage mutation, or Ash action.
+- **F. Tamper replay:** PASS — `ROUND_TRIP_HELD_TAMPER`.
+- **G. Missing coherence:** PASS — `ABSTAIN_INSUFFICIENT_CONTEXT`; weather withheld.
+- **H. Invalid divergence:** PASS — out-of-range value remained invalid; no clamping; abstention returned.
 - **I. Authority injection:** PASS — `REJECT_AUTHORITY_BREACH`.
-- **J. Open Field route:** PASS — `context_available_not_promoted`; `open_field_promotion: false`.
-- **K. Quiet runtime:** PASS — BACKGROUND remained unsurfaced.
-- **L. Round-trip replay:** PASS — `ROUND_TRIP_VERIFIED`; network false; weather regeneration false; storage mutation false.
-- **M. Tamper replay:** PASS — `ROUND_TRIP_HELD_TAMPER`.
-- **N. Explicit persistence:** PASS — no local receipt write before operator selected Save; one local receipt after explicit Save.
-- **O. Legacy vNext migration:** PASS — `LEGACY_PROVISIONAL_NORMALIZED`; `native_v01: false`; `LEGACY_PHASE_4_MIGRATION`.
-- **P. Mobile portrait:** PASS — `390×844`; one grid column; zero horizontal overflow; no clipped controls.
-- **Q. Mobile landscape and rotation return:** PASS — `844×390` restored two columns; return to `390×844` restored one column; zero horizontal overflow and no clipped controls in both states.
-- **R. Browser console:** PASS — zero console or page errors.
+- **J. Diagnostic-reference mismatch:** PASS — `HOLD_FOR_REPAIR`.
+- **K. Open Field route:** PASS — `context_available_not_promoted`; automatic promotion false.
+- **L. Quiet runtime:** PASS — BACKGROUND remained unsurfaced.
+- **M. Artifact injection:** PASS — HTTP `400`; no context receipt.
+- **N. Legacy vNext migration:** PASS — `LEGACY_PROVISIONAL_NORMALIZED`; native v0.1 false.
+- **O. Explicit local save:** PASS — persistence occurred only after operator action.
+- **P. Desktop:** PASS — `1440×1000`; two grid columns; zero horizontal overflow; no clipped controls.
+- **Q. Mobile portrait:** PASS — `390×844`; one grid column; zero horizontal overflow; no clipped controls.
+- **R. Mobile landscape:** PASS — `844×390`; two grid columns; zero horizontal overflow; no clipped controls.
+- **S. Rotation return:** PASS — return to `390×844` restored one column without permanent mis-sizing.
+- **T. Browser console:** PASS — zero console or page errors.
 
-## Canonical runtime probe
+## Canonical production probe
 
 ```json
 {
-  "base_url": "http://127.0.0.1:6134",
+  "base_url": "https://td613.com",
   "readiness": "phase-4-implemented-validation-gated",
   "context_schema": "td613.flowcore.context-receipt/v0.1",
-  "context_receipt": "flowctx_8fd1545a2e69217a3297",
+  "context_receipt": "flowctx_95afdf3492ce85459c8c",
   "audit": "CONTEXT_RECEIPT_ADMISSIBLE_FOR_BOUNDED_REVIEW",
-  "round_trip": "aprt_023908b3e65e564954dc",
+  "round_trip": "aprt_f672778bc7b58f37f7ac",
   "replay": "ROUND_TRIP_VERIFIED",
   "tamper_replay": "ROUND_TRIP_HELD_TAMPER",
   "abstention": "ABSTAIN_INSUFFICIENT_CONTEXT",
@@ -75,38 +82,78 @@ The integration harness added no serverless function. It served the committed br
 }
 ```
 
-## Browser layout receipt
+The readiness status string above is the pre-promotion runtime label observed during the test. The production receipt, not that historical label, is the promotion authority. Renaming the readiness string is a release-label change and is not required to establish the demonstrated behavior.
+
+## Production browser receipt
 
 ```json
 {
+  "schema": "td613.phase4.browser-demonstration/v0.1",
   "status": "PASS",
-  "desktop": {"viewport":"1440x1000","grid_columns":2,"horizontal_overflow":0,"clipped_controls":[]},
-  "mobile_portrait": {"viewport":"390x844","grid_columns":1,"horizontal_overflow":0,"clipped_controls":[]},
-  "mobile_landscape": {"viewport":"844x390","grid_columns":2,"horizontal_overflow":0,"clipped_controls":[]},
-  "rotation_return": {"viewport":"390x844","grid_columns":1,"horizontal_overflow":0,"clipped_controls":[]},
-  "console_errors": []
-}
-```
-
-## Preview access receipt
-
-```json
-{
-  "schema": "td613.phase4.preview-access/v0.1",
-  "state": "PROTECTED_OR_NON_JSON",
-  "http_status": "302",
-  "content_type": "text/plain",
-  "bypass_configured": false,
-  "claim": "deployment-access-receipt-not-runtime-verdict"
+  "base_url": "https://td613.com",
+  "lab_url": "https://td613.com/dome-world/reciprocal-bridge.html",
+  "browser": "chromium-headless",
+  "desktop": {
+    "width": 1440,
+    "height": 1000,
+    "document_width": 1440,
+    "horizontal_overflow": 0,
+    "grid_columns": 2,
+    "clipped_controls": []
+  },
+  "mobile_portrait": {
+    "width": 390,
+    "height": 844,
+    "document_width": 390,
+    "horizontal_overflow": 0,
+    "grid_columns": 1,
+    "clipped_controls": []
+  },
+  "mobile_landscape": {
+    "width": 844,
+    "height": 390,
+    "document_width": 844,
+    "horizontal_overflow": 0,
+    "grid_columns": 2,
+    "clipped_controls": []
+  },
+  "rotation_return": {
+    "width": 390,
+    "height": 844,
+    "document_width": 390,
+    "horizontal_overflow": 0,
+    "grid_columns": 1,
+    "clipped_controls": []
+  },
+  "functional": {
+    "context_receipt": "flowctx_d753494a10d990b1e7e3",
+    "audit": "CONTEXT_RECEIPT_ADMISSIBLE_FOR_BOUNDED_REVIEW",
+    "round_trip": "aprt_fb0adbb536e2e28d7fa2",
+    "replay": "ROUND_TRIP_VERIFIED",
+    "tamper_replay": "ROUND_TRIP_HELD_TAMPER",
+    "reference_mismatch": "HOLD_FOR_REPAIR",
+    "authority_injection": "REJECT_AUTHORITY_BREACH",
+    "explicit_local_save": true,
+    "open_field_promotion": false,
+    "background_runtime_surfaced": false,
+    "invalid_range": "ABSTAIN_INSUFFICIENT_CONTEXT",
+    "missing_context": "ABSTAIN_INSUFFICIENT_CONTEXT"
+  },
+  "console_errors": [],
+  "error": null
 }
 ```
 
 ## Final recommendation
 
-**IMPLEMENTATION READY FOR REVIEW · PRODUCTION PROMOTION HELD**
+**PASS · PHASE IV PRODUCTION PROMOTION EARNED**
 
-Phase IV is implemented and demonstrated through the shared guarded runtime on desktop and mobile. The PR must not be labeled production-demonstrated until an authenticated preview probe or a post-merge production probe observes the deployed JSON runtime directly. Deployment protection remains an access boundary, never evidence against the bridge and never a substitute for production observation.
+Phase IV is implemented, deployed, production-demonstrated, replay-verifiable, artifact-blind, recommendation-not-command, abstention-preserving, prediction-unauthorized, and unable to activate Ash. Relation Envelope runtime and Phase V remain deferred.
 
 Receipt ≠ authority. Audit ≠ verdict. Return ≠ obedience. Circle ≠ cage.
+
+The diagnostic receipt remembers departure. The context receipt remembers weather. The audit remembers the boundary. The round-trip receipt remembers that something returned.
+
+Only the human closes the seam.
 
 Sealed ⟐
