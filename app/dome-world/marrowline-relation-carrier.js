@@ -10,7 +10,7 @@ export async function computeMarrowlineCarrierDigest(packet, options = {}) {
 }
 export function createMarrowlineRelationCarrier(envelope, { carrierId = null, createdAt = null } = {}) {
   if (!envelope || envelope.schema !== RELATION_ENVELOPE_SCHEMA) throw new TypeError('Marrowline carrier requires a Relation Envelope.');
-  const packet = {
+  return {
     schema: MARROWLINE_RELATION_CARRIER_SCHEMA,
     carrier_id: carrierId || `marrel_${envelope.relation_id.slice(4)}`,
     relation_id: envelope.relation_id,
@@ -28,7 +28,6 @@ export function createMarrowlineRelationCarrier(envelope, { carrierId = null, cr
     server_persistence: false,
     seal: '⟐'
   };
-  return packet;
 }
 export async function sealMarrowlineRelationCarrier(packet, options = {}) {
   const sealed = clone(packet);
@@ -50,7 +49,8 @@ export async function inspectMarrowlineRelationCarrier(packet, options = {}) {
     'marrowline_withdrawal_authority', 'marrowline_supersession_authority', 'closure_authority',
     'network_required', 'server_persistence'
   ]) if (packet?.[field] !== false) reasons.push(`${field}_must_remain_false`);
-  if (packet?.carrier_digest) {
+  if (!packet?.carrier_digest) reasons.push('carrier_digest_missing');
+  else {
     const expectedCarrier = await computeMarrowlineCarrierDigest(packet, options);
     if (expectedCarrier !== packet.carrier_digest) reasons.push('carrier_digest_mismatch');
   }
