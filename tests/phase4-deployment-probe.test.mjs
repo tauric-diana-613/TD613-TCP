@@ -8,6 +8,8 @@ const source = fs.readFileSync(
 
 for (const pattern of [
   /\/api\/aperture-bridge/,
+  /phase-4-active/,
+  /readiness label is stale/,
   /td613\.flowcore\.context-receipt\/v0\.1/,
   /PHASE_4_ACTIVE/,
   /ROUND_TRIP_VERIFIED/,
