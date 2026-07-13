@@ -1,0 +1,62 @@
+name: Dome-World Phase V Relation Runtime
+
+on:
+  pull_request:
+    paths:
+      - "app/engine/phase5-*.js"
+      - "app/engine/aperture-v3-relation-audit.js"
+      - "app/dome-world/relation-envelope.html"
+      - "app/dome-world/marrowline-relation-carrier.js"
+      - "app/dome-world/fixtures/phase5-*"
+      - "app/dome-world/schemas/*relation*"
+      - "app/dome-world/schemas/phase5-relation-runtime-v01.json"
+      - "app/aperture/release.json"
+      - "app/aperture/release.js"
+      - "packages/dome_world_exact/release.py"
+      - "scripts/sync-aperture-release.mjs"
+      - "scripts/phase5-relation-*.mjs"
+      - "tests/fixtures/aperture-release.json"
+      - "tests/phase5-*.test.mjs"
+      - "tests/helpers/phase5-fixtures.mjs"
+      - ".github/workflows/dome-world-phase5.yml"
+  push:
+    branches: [main]
+    paths:
+      - "app/engine/phase5-*.js"
+      - "app/engine/aperture-v3-relation-audit.js"
+      - "app/dome-world/relation-envelope.html"
+      - "app/dome-world/marrowline-relation-carrier.js"
+      - "app/dome-world/fixtures/phase5-*"
+      - "app/dome-world/schemas/*relation*"
+      - "app/dome-world/schemas/phase5-relation-runtime-v01.json"
+      - "app/aperture/release.json"
+      - "app/aperture/release.js"
+      - "packages/dome_world_exact/release.py"
+      - "scripts/sync-aperture-release.mjs"
+      - "scripts/phase5-relation-*.mjs"
+      - "tests/fixtures/aperture-release.json"
+      - "tests/phase5-*.test.mjs"
+      - "tests/helpers/phase5-fixtures.mjs"
+      - ".github/workflows/dome-world-phase5.yml"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  phase5-relation-runtime:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+      - run: npm ci
+      - run: node tests/phase5-schemas.test.mjs
+      - run: node tests/phase5-fixtures.test.mjs
+      - run: node tests/phase5-third-object.test.mjs
+      - run: node tests/phase5-mobile.test.mjs
+      - run: node tests/phase5-deployment-probe.test.mjs
+      - run: node tests/phase5-release-sync.test.mjs

@@ -1,0 +1,81 @@
+{
+  "schema": "td613.phase5.relation-runtime/v0.1",
+  "title": "TD613 Phase V — The Third Object",
+  "subtitle": "Relation Envelope + Phason Continuity",
+  "status": "IMPLEMENTED_VALIDATION_GATED",
+  "production_status": "PRODUCTION_GATED",
+  "baseline": {
+    "phase_0": "IMPLEMENTED_HARDENED",
+    "phase_1": "IMPLEMENTED_HARDENED",
+    "phase_2": "IMPLEMENTED_PRODUCTION_DEMONSTRATED",
+    "phase_3": "IMPLEMENTED_PRODUCTION_DEMONSTRATED",
+    "phase_4": "IMPLEMENTED_PRODUCTION_DEMONSTRATED",
+    "phase_4_1": "PHASE_4_ACTIVE",
+    "phase_5": "IMPLEMENTED_VALIDATION_GATED"
+  },
+  "contracts": {
+    "ash_custody_receipt": "td613.ash.custody-receipt/v0.8",
+    "flowcore_context_receipt": "td613.flowcore.context-receipt/v0.1",
+    "aperture_round_trip_receipt": "td613.aperture.round-trip-receipt/v3.0-alpha",
+    "relation_envelope": "td613.relation-envelope/v0.1",
+    "confirmation_receipt": "td613.relation-confirmation-receipt/v0.1",
+    "aperture_relation_audit": "td613.aperture.relation-audit/v0.1",
+    "phason_relation_event": "td613.phason.relation-event/v0.1",
+    "phason_relation_chain": "td613.phason.relation-chain/v0.1",
+    "relation_replay_receipt": "td613.relation-replay-receipt/v0.1"
+  },
+  "assurance_classes": [
+    "R0_RECEIPT_REFERENCES_ONLY",
+    "R1_ROUTE_SCOPED_ARTIFACT_REFERENCE"
+  ],
+  "lifecycle_states": [
+    "PROPOSED",
+    "CONFIRMED",
+    "REVISED",
+    "WITHDRAWN",
+    "SUPERSEDED"
+  ],
+  "invariants": {
+    "relation_is_third_object": true,
+    "relation_before_relata": false,
+    "operator_confirmation_required": true,
+    "automatic_relation_creation": false,
+    "automatic_confirmation": false,
+    "artifact_digest_in_envelope": false,
+    "universal_stable_artifact_reference": false,
+    "server_persistence": false,
+    "new_serverless_function": false,
+    "automatic_ash_action": false,
+    "prediction_authorized": false,
+    "open_field_auto_promotion": false,
+    "relation_is_identity": false,
+    "relation_is_causation": false,
+    "relation_is_permission": false,
+    "marrowline_confirmation_authority": false
+  },
+  "digest_domains": {
+    "relation_envelope": "TD613:PHASE5:RELATION-ENVELOPE:v1",
+    "confirmation": "TD613:PHASE5:RELATION-CONFIRMATION:v1",
+    "aperture_audit": "TD613:PHASE5:APERTURE-RELATION-AUDIT:v1",
+    "phason_event": "TD613:PHASE5:PHASON-RELATION-EVENT:v1",
+    "phason_chain": "TD613:PHASE5:PHASON-RELATION-CHAIN:v1",
+    "replay": "TD613:PHASE5:RELATION-REPLAY:v1",
+    "ash_reference": "TD613:PHASE5:ASH-REFERENCE:v1"
+  },
+  "deferred": [
+    "Phase VI human-gated derivatives",
+    "Cinder transport",
+    "Ash execution",
+    "prediction",
+    "identity proof",
+    "authorship proof",
+    "ownership proof",
+    "permission proof",
+    "location proof",
+    "co-occurrence proof",
+    "causation proof",
+    "trusted-time proof",
+    "public universal artifact handle"
+  ],
+  "seal": "⟐"
+}

@@ -48,6 +48,15 @@ await writeText(
   `APERTURE_RETURNED_CONTEXT_AUDIT_SCHEMA = ${JSON.stringify(release.returnedContextAuditSchema)}\n` +
   `APERTURE_ROUND_TRIP_RECEIPT_SCHEMA = ${JSON.stringify(release.roundTripReceiptSchema)}\n` +
   `APERTURE_DOME_BRIDGE_POSTURE = ${JSON.stringify(release.bridgePosture)}\n` +
+  `PHASE5_RELATION_RUNTIME_SCHEMA = ${JSON.stringify(release.phase5RelationRuntime)}\n` +
+  `PHASE5_RELATION_ENVELOPE_SCHEMA = ${JSON.stringify(release.phase5RelationEnvelopeSchema)}\n` +
+  `PHASE5_RELATION_CONFIRMATION_SCHEMA = ${JSON.stringify(release.phase5RelationConfirmationSchema)}\n` +
+  `PHASE5_RELATION_AUDIT_SCHEMA = ${JSON.stringify(release.phase5RelationAuditSchema)}\n` +
+  `PHASE5_PHASON_EVENT_SCHEMA = ${JSON.stringify(release.phase5PhasonEventSchema)}\n` +
+  `PHASE5_PHASON_CHAIN_SCHEMA = ${JSON.stringify(release.phase5PhasonChainSchema)}\n` +
+  `PHASE5_REPLAY_SCHEMA = ${JSON.stringify(release.phase5ReplaySchema)}\n` +
+  `PHASE5_STATUS = ${JSON.stringify(release.phase5Status)}\n` +
+  `PHASE5_PRODUCTION_STATUS = ${JSON.stringify(release.phase5ProductionStatus)}\n` +
   `DOME_WORLD_VERSION = ${JSON.stringify(release.domeWorld?.version || 'v0.4.3')}\n` +
   `DOME_WORLD_SCHEMA = ${JSON.stringify(release.domeWorld?.schema || 'td613.dome-world/v0.4.3')}\n` +
   `EORFD_OPERATIONAL_STATE = ${JSON.stringify(release.eorfd?.operationalState || 'interface_context')}\n` +
@@ -69,6 +78,8 @@ console.log(JSON.stringify({
   version: release.version,
   schema: release.apertureSchema,
   featureVersion: release.featureVersion,
+  phase5Status: release.phase5Status,
+  phase5ProductionStatus: release.phase5ProductionStatus,
   targets: [
     'app/engine/td613-aperture.js',
     'app/aperture/release.js',
