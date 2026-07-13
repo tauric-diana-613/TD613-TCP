@@ -59,8 +59,18 @@
     "recommendation_not_command":{"const":true},
     "automatic_ash_action":{"const":false},
     "prediction_authorized":{"const":false},
-    "bridge_integration_status":{"const":"PHASE_4_DEFERRED"},
+    "bridge_integration_status":{"enum":["PHASE_4_DEFERRED","PHASE_4_ACTIVE"]},
+    "bridge_contract":{"type":"string"},
+    "reciprocal_receipts":{"type":"boolean"},
+    "reciprocal_authority":{"const":false},
+    "operator_closure_required":{"const":true},
     "cannot_establish":{"type":"array","items":{"type":"string"}}
   },
+  "allOf": [
+    {
+      "if": {"properties": {"status": {"const": "ABSTAIN"}}},
+      "then": {"properties": {"modeled_weather": {"type": "null"}, "weather": {"type": "null"}}}
+    }
+  ],
   "additionalProperties": true
 }

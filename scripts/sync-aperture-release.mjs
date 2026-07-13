@@ -39,8 +39,11 @@ await writeText(
   `APERTURE_FEATURE_VERSION = ${JSON.stringify(release.featureVersion)}\n` +
   `APERTURE_DOCTRINE_SCHEMA = ${JSON.stringify(release.doctrineKernelSchema)}\n` +
   `APERTURE_DOME_BRIDGE_SCHEMA = ${JSON.stringify(release.domeBridgeSchema)}\n` +
+  `PHASE4_BRIDGE_CONTRACT_SCHEMA = ${JSON.stringify(release.phase4BridgeContract)}\n` +
   `APERTURE_DOME_DIAGNOSTIC_RECEIPT_SCHEMA = ${JSON.stringify(release.domeDiagnosticReceiptSchema)}\n` +
   `FLOWCORE_CONTEXT_RECEIPT_SCHEMA = ${JSON.stringify(release.flowCoreContextReceiptSchema)}\n` +
+  `LEGACY_FLOWCORE_CONTEXT_RECEIPT_SCHEMA = ${JSON.stringify(release.legacyFlowCoreContextReceiptSchema)}\n` +
+  `APERTURE_RETURNED_CONTEXT_AUDIT_SCHEMA = ${JSON.stringify(release.returnedContextAuditSchema)}\n` +
   `APERTURE_ROUND_TRIP_RECEIPT_SCHEMA = ${JSON.stringify(release.roundTripReceiptSchema)}\n` +
   `APERTURE_DOME_BRIDGE_POSTURE = ${JSON.stringify(release.bridgePosture)}\n` +
   `DOME_WORLD_VERSION = ${JSON.stringify(release.domeWorld?.version || 'v0.4.3')}\n` +

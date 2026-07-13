@@ -1,0 +1,28 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "td613.flowcore.context-receipt-migration/v0.1",
+  "title": "TD613 Flow-Core vNext Migration Receipt",
+  "type": "object",
+  "required": ["schema", "legacy_schema", "migration_status", "native_v01", "legacy_receipt", "calibration", "bridge_integration_status", "recommendation_not_command", "automatic_ash_action", "prediction_authorized", "artifact_reference"],
+  "properties": {
+    "schema": {"const": "td613.flowcore.context-receipt-migration/v0.1"},
+    "legacy_schema": {"const": "td613.flowcore.context-receipt/vNext"},
+    "migration_status": {"const": "LEGACY_PROVISIONAL_NORMALIZED"},
+    "native_v01": {"const": false},
+    "legacy_receipt": {"type": "object"},
+    "calibration": {
+      "type": "object",
+      "required": ["status", "independent"],
+      "properties": {
+        "status": {"const": "UNDECLARED"},
+        "independent": {"const": false}
+      }
+    },
+    "bridge_integration_status": {"const": "LEGACY_PHASE_4_MIGRATION"},
+    "recommendation_not_command": {"const": true},
+    "automatic_ash_action": {"const": false},
+    "prediction_authorized": {"const": false},
+    "artifact_reference": {"type": "null"}
+  },
+  "additionalProperties": true
+}

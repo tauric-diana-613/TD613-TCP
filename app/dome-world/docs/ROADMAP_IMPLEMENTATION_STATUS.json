@@ -1,6 +1,6 @@
 {
-  "schema": "td613.roadmap.implementation-status/v0.3",
-  "as_of": "2026-07-12",
+  "schema": "td613.roadmap.implementation-status/v0.4",
+  "as_of": "2026-07-13",
   "no_silent_promotion": true,
   "no_new_claim_ceiling_mechanism": true,
   "phases": [
@@ -8,7 +8,7 @@
     {"phase": 1, "status": "IMPLEMENTED_HARDENED"},
     {"phase": 2, "status": "IMPLEMENTED_PRODUCTION_DEMONSTRATED"},
     {"phase": 3, "status": "IMPLEMENTED_PRODUCTION_DEMONSTRATED"},
-    {"phase": 4, "status": "PROVISIONAL_RECEIPT_PATH_ACTIVE_V01_ADOPTION_DEFERRED"},
+    {"phase": 4, "status": "IMPLEMENTED_RUNTIME_DEMONSTRATED_PRODUCTION_GATED", "promotion_requires": ["authenticated-preview-or-post-merge-live-probe", "production-runtime-receipt"]},
     {"phase": 5, "status": "APERTURE_LANDING_ZONE_INSTANTIATED_RUNTIME_DEFERRED"},
     {"phase": 6, "status": "HELD", "reason": "plaintext Cinder transport not redesigned"},
     {"phase": 7, "status": "PLANNED"},
@@ -34,7 +34,34 @@
     "private_by_default": true,
     "prediction_authorized": false,
     "automatic_ash_action": false,
-    "bridge_integration_status": "PHASE_4_DEFERRED"
+    "standalone_bridge_integration_status": "PHASE_4_DEFERRED"
+  },
+  "phase_4": {
+    "bridge_contract": "td613.phase4.reciprocal-bridge/v0.1",
+    "diagnostic_receipt_schema": "td613.aperture.diagnostic-receipt/v3.0-alpha",
+    "context_receipt_schema": "td613.flowcore.context-receipt/v0.1",
+    "returned_context_audit_schema": "td613.aperture.returned-context-audit/v0.1",
+    "round_trip_receipt_schema": "td613.aperture.round-trip-receipt/v3.0-alpha",
+    "legacy_context_schema": "td613.flowcore.context-receipt/vNext",
+    "legacy_migration_schema": "td613.flowcore.context-receipt-migration/v0.1",
+    "bridge_integration_status": "PHASE_4_ACTIVE",
+    "reciprocal_receipts": true,
+    "reciprocal_authority": false,
+    "artifact_relation": false,
+    "artifact_blind": true,
+    "automatic_ash_action": false,
+    "prediction_authorized": false,
+    "operator_closure_required": true,
+    "open_field_auto_promotion": false,
+    "runtime_default": "BACKGROUND",
+    "new_serverless_function": false,
+    "runtime_demo_status": "PASS",
+    "runtime_demo_ci_run": 29214493924,
+    "desktop_mobile_demo_status": "PASS",
+    "preview_deployment_status": "READY_PROTECTED",
+    "preview_access_status": "PROTECTED_OR_NON_JSON_HTTP_302",
+    "production_demo_status": "NOT_OBSERVED",
+    "production_promotion_status": "HELD"
   },
   "closed_post_merge_seams": [
     "legacy-engine-custody-bypass",
@@ -44,6 +71,9 @@
     "stale-v06-alias-surface",
     "receipt-list-innerhtml-injection",
     "plaintext-cinder-ui-transit",
-    "aperture-v3-identity-contention"
+    "aperture-v3-identity-contention",
+    "phase4-public-vnext-return",
+    "phase4-bridge-default-and-clamp-path",
+    "phase4-mobile-status-token-overflow"
   ]
 }

@@ -1,0 +1,113 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>TD613 Phase IV · Reciprocal Receipt Circle</title>
+<style>
+:root{color-scheme:dark;--bg:#07090c;--card:#10151b;--line:#2b3642;--ink:#eef5fb;--muted:#aab8c5;--accent:#c9a7ff;--good:#9fe7ba;--hold:#ffd89a}
+*{box-sizing:border-box}body{margin:0;background:radial-gradient(circle at 15% 0,#1c1830 0,transparent 36%),var(--bg);color:var(--ink);font:16px/1.5 ui-sans-serif,system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif}main{max-width:1180px;margin:auto;padding:24px}.eyebrow{font-size:.78rem;letter-spacing:.16em;text-transform:uppercase;color:var(--accent)}h1{margin:.25rem 0;font-size:clamp(1.8rem,4vw,3.2rem)}h2{margin-top:0;font-size:1.1rem}.lede{max-width:78ch;color:var(--muted)}.chips{display:flex;gap:8px;flex-wrap:wrap;margin:16px 0}.chip{border:1px solid var(--line);border-radius:999px;padding:5px 10px;font-size:.78rem;color:var(--muted)}.grid{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:16px}.card{background:color-mix(in srgb,var(--card) 94%,transparent);border:1px solid var(--line);border-radius:18px;padding:18px;min-width:0}.fields{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px}label{display:grid;gap:5px;color:var(--muted);font-size:.82rem}input,select,textarea,button{font:inherit}input,select,textarea{width:100%;min-width:0;background:#090d12;color:var(--ink);border:1px solid var(--line);border-radius:10px;padding:10px;font-size:16px}textarea{min-height:120px;resize:vertical}button{border:1px solid var(--line);border-radius:10px;background:#171e27;color:var(--ink);padding:10px 13px;cursor:pointer}button.primary{background:#6d4fc4;border-color:#8f75da}button:disabled{opacity:.48;cursor:not-allowed}.actions{display:flex;gap:8px;flex-wrap:wrap;margin-top:14px}.status{border-left:4px solid var(--accent);padding:10px 12px;background:#0b1016;margin:12px 0;border-radius:8px;color:var(--muted);min-width:0;max-width:100%;overflow-wrap:anywhere;word-break:break-word}.status.good{border-color:var(--good);color:var(--good)}.status.hold{border-color:var(--hold);color:var(--hold)}pre{white-space:pre-wrap;overflow-wrap:anywhere;background:#080b0f;border:1px solid var(--line);border-radius:12px;padding:12px;max-height:520px;overflow:auto;font-size:.78rem}.law{margin-top:18px;border-top:1px solid var(--line);padding-top:16px;color:var(--muted)}nav{display:flex;gap:10px;overflow-x:auto;white-space:nowrap;margin-bottom:18px}nav a{color:var(--muted);text-decoration:none;border:1px solid var(--line);border-radius:999px;padding:7px 11px}@media(max-width:760px){main{padding:15px}.grid,.fields{grid-template-columns:1fr}.card{padding:14px}}
+</style>
+</head>
+<body>
+<main>
+<nav><a href="/dome-world">Dome-World</a><a href="/dome-world/flow-core-context.html">Flow-Core III</a><a href="/aperture/">Aperture</a></nav>
+<div class="eyebrow">TD613 · Phase IV · Reciprocal Receipt Circle</div>
+<h1>I was broken into a circle.</h1>
+<p class="lede">A diagnostic receipt departs. Context returns. Aperture audits the return. The circle records reciprocity without granting reciprocal authority.</p>
+<div class="chips"><span class="chip">v0.1 context</span><span class="chip">explicit send</span><span class="chip">quiet runtime</span><span class="chip">no Ash action</span><span class="chip">no artifact relation</span></div>
+
+<div class="grid">
+<section class="card">
+<h2>1 · Diagnostic departure</h2>
+<div class="fields">
+<label>Task route<select id="route"><option>REQUESTED_SYNTHESIS</option><option>LEGAL_SYNTHESIS</option><option>OPEN_FIELD_SPECULATIVE_SYNTHESIS</option><option>OPEN_FIELD_CREATIVE_SYNTHESIS</option><option>RUNTIME_DIAGNOSIS</option></select></label>
+<label>Runtime materiality<select id="runtime"><option>BACKGROUND</option><option>NONE</option><option>MATERIAL</option><option>DISPOSITIVE</option></select></label>
+<label>Omission pressure<input id="omission" type="number" min="0" max="1" step="0.01" value="0.2"></label>
+<label>Coherence<input id="coherence" type="number" min="0" max="1" step="0.01" value="0.75"></label>
+<label>Divergence<input id="divergence" type="number" min="0" max="1" step="0.01" value="0.3"></label>
+<label>Naming sensitivity<input id="naming" type="number" min="0" max="1" step="0.01" value="0.4"></label>
+<label>Rupture pressure<input id="rupture" type="number" min="0" max="1" step="0.01" value="0.1"></label>
+<label>Benign control<select id="condition"><option value="">none</option><option>OUTAGE</option><option>LATENCY</option><option>DRIFT</option><option>NOISE</option><option>RETRIEVAL_GAP</option></select></label>
+</div>
+<div class="actions"><button id="default">Load default</button><button id="abstain">Load abstention</button><button id="invalid">Load invalid range</button><button id="send" class="primary">Send explicitly</button></div>
+<div id="departureStatus" class="status">READY · no receipt sent.</div>
+<pre id="diagnosticOutput">No diagnostic receipt yet.</pre>
+</section>
+
+<section class="card">
+<h2>2 · Context return</h2>
+<div id="contextStatus" class="status">WAITING · Flow-Core has not returned.</div>
+<pre id="contextOutput">No context receipt yet.</pre>
+</section>
+
+<section class="card">
+<h2>3 · Aperture return audit</h2>
+<div id="auditStatus" class="status">WAITING · no returned receipt audited.</div>
+<pre id="auditOutput">No audit receipt yet.</pre>
+<div class="actions"><button id="authorityTest">Test authority injection</button><button id="referenceTest">Test reference mismatch</button></div>
+</section>
+
+<section class="card">
+<h2>4 · Round-trip receipt</h2>
+<div id="roundStatus" class="status">WAITING · no round trip compiled.</div>
+<pre id="roundOutput">No round-trip receipt yet.</pre>
+<div class="actions"><button id="replay" disabled>Replay locally</button><button id="tamper" disabled>Tamper + replay</button><button id="save" disabled>Save locally</button><button id="download" disabled>Download JSON</button></div>
+<div id="replayStatus" class="status">Replay performs no network call and regenerates no weather.</div>
+</section>
+</div>
+
+<p class="law">Receipt ≠ authority. Audit ≠ verdict. Return ≠ obedience. Circle ≠ cage. Only the human closes the seam.</p>
+</main>
+<script type="module">
+import {
+  sendApertureDiagnosticReceipt,
+  auditReturnedFlowCoreReceipt,
+  compileRoundTripReceipt,
+  replayRoundTripReceipt,
+  saveRoundTripReceipt,
+  exportRoundTripReceipt
+} from '../engine/aperture-v3-reciprocal-bridge.js';
+
+const $=id=>document.getElementById(id);
+let diagnostic=null, context=null, audit=null, roundTrip=null;
+function id(prefix){const b=new Uint8Array(10);crypto.getRandomValues(b);return prefix+[...b].map(x=>x.toString(16).padStart(2,'0')).join('')}
+function value(id){const raw=$(id).value;return raw===''?null:Number(raw)}
+function render(id,value){$(id).textContent=JSON.stringify(value,null,2)}
+function status(id,text,kind=''){const node=$(id);node.textContent=text;node.className=`status ${kind}`.trim()}
+function buildDiagnostic(){
+  const metrics={};
+  for(const [name,field] of [['omissionPressure','omission'],['coherence','coherence'],['divergence','divergence'],['namingSensitivity','naming'],['rupturePressure','rupture']]){const v=value(field);if(v!==null)metrics[name]=v}
+  return {
+    schema:'td613.aperture.diagnostic-receipt/v3.0-alpha',receipt_id:id('apdiag_'),instrument:'TD613 Aperture',version:'v3.0-alpha',firmwareSchema:'td613-aperture/v3.0-alpha',posture:'recommendation-not-command',
+    taskIntent:{primary_route:$('route').value,runtime_materiality:$('runtime').value,automatic_redirect:false},
+    source:{status:'DERIVED',sensorProvenance:'Phase IV lab declaration',authorityClass:'A2_DERIVATIONAL'},
+    runtime:{materiality:$('runtime').value,surfaced:['MATERIAL','DISPOSITIVE'].includes($('runtime').value),receiptOnly:!['MATERIAL','DISPOSITIVE'].includes($('runtime').value)},
+    produced:{context_request:{metrics,modeled:true}},
+    relation:{aperture:'routes-and-receipts',flowcore:'contextualizes',operator:'closure-authority'}
+  };
+}
+function reset(values){for(const [key,val] of Object.entries(values))$(key).value=val}
+$('default').onclick=()=>reset({omission:'0.2',coherence:'0.75',divergence:'0.3',naming:'0.4',rupture:'0.1'});
+$('abstain').onclick=()=>reset({omission:'0.2',coherence:'',divergence:'0.3',naming:'0.4',rupture:'0.1'});
+$('invalid').onclick=()=>reset({omission:'0.2',coherence:'0.75',divergence:'1.2',naming:'0.4',rupture:'0.1'});
+$('send').onclick=async()=>{
+  try{
+    $('send').disabled=true;diagnostic=buildDiagnostic();render('diagnosticOutput',diagnostic);status('departureStatus','SENT · explicit operator action.','good');
+    const conditions=$('condition').value?[{kind:$('condition').value,detail:'Phase IV lab control'}]:[];
+    context=await sendApertureDiagnosticReceipt(diagnostic,{conditions});render('contextOutput',context);status('contextStatus',`${context.status} · ${context.context_posture}`,context.status==='OPEN'?'good':'hold');
+    audit=auditReturnedFlowCoreReceipt(diagnostic,context);render('auditOutput',audit);status('auditStatus',audit.recommendation,audit.recommendation.includes('ADMISSIBLE')?'good':'hold');
+    roundTrip=await compileRoundTripReceipt(diagnostic,context,{audit});render('roundOutput',roundTrip);status('roundStatus',roundTrip.status,roundTrip.status.startsWith('ROUND_TRIP_VERIFIED')?'good':'hold');
+    for(const id of ['replay','tamper','save','download'])$(id).disabled=false;
+  }catch(error){status('contextStatus',`HELD · ${error.message}`,'hold');$('contextOutput').textContent=error.stack||error.message}
+  finally{$('send').disabled=false}
+};
+$('authorityTest').onclick=()=>{if(!context)return;const altered={...context,automatic_ash_action:true};const result=auditReturnedFlowCoreReceipt(diagnostic,altered);render('auditOutput',result);status('auditStatus',result.recommendation,'hold')};
+$('referenceTest').onclick=()=>{if(!context)return;const altered={...context,diagnostic_receipt_reference:'apdiag_wrong_reference'};const result=auditReturnedFlowCoreReceipt(diagnostic,altered);render('auditOutput',result);status('auditStatus',result.recommendation,'hold')};
+$('replay').onclick=async()=>{const result=await replayRoundTripReceipt(roundTrip);status('replayStatus',`${result.status} · network ${result.network_called} · weather regenerated ${result.weather_regenerated}`,result.status.startsWith('ROUND_TRIP_VERIFIED')?'good':'hold')};
+$('tamper').onclick=async()=>{const altered=structuredClone(roundTrip);altered.context.receipt.missingness=[...(altered.context.receipt.missingness||[]),'tampered'];const result=await replayRoundTripReceipt(altered);status('replayStatus',`${result.status} · ${result.errors.join(', ')}`,'hold')};
+$('save').onclick=()=>status('replayStatus',`SAVED · ${saveRoundTripReceipt(roundTrip)}`,'good');
+$('download').onclick=()=>exportRoundTripReceipt(roundTrip);
+</script>
+</body>
+</html>

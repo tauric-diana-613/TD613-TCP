@@ -1,9 +1,8 @@
-"""Public guard for the bounded Dome-World and Flow-Core API surface.
+"""Public guard for the bounded Dome-World, Flow-Core, and Phase IV bridge.
 
-The legacy engine remains available as an internal implementation for non-custody
-operations. Public custody operations are rejected here and owned exclusively by
-the Ash Local Commitment endpoint. Phase III context instrumentation shares this
-already-bounded function without entering the legacy engine operation registry.
+Public custody operations remain owned exclusively by the Ash Local Commitment
+endpoint. Phase III context instrumentation and Phase IV reciprocal receipts
+share this bounded serverless function without sharing station authority.
 """
 
 from __future__ import annotations
@@ -22,6 +21,15 @@ from packages.dome_world_exact.flowcore_context import (
     readiness_receipt as flowcore_readiness_receipt,
     reject_artifact_material,
 )
+from packages.dome_world_exact.reciprocal_bridge import (
+    CONTEXTUALIZE_OPERATION as PHASE4_CONTEXTUALIZE_OPERATION,
+    LEGACY_OPERATION_ALIAS as PHASE4_LEGACY_ALIAS,
+    MIGRATE_OPERATION as PHASE4_MIGRATE_OPERATION,
+    READINESS_OPERATION as PHASE4_READINESS_OPERATION,
+    contextualize_diagnostic,
+    migrate_vnext_receipt,
+    readiness_receipt as phase4_readiness_receipt,
+)
 
 MAX_BODY_BYTES = 131_072
 DELEGATED_CUSTODY_OPERATIONS = {
@@ -30,6 +38,16 @@ DELEGATED_CUSTODY_OPERATIONS = {
     "ash-custody-migrate",
 }
 FLOWCORE_READINESS_OPERATIONS = {"flowcore-context", "flowcore-readiness"}
+PHASE4_POST_OPERATIONS = {
+    PHASE4_CONTEXTUALIZE_OPERATION,
+    PHASE4_LEGACY_ALIAS,
+    PHASE4_MIGRATE_OPERATION,
+}
+PHASE4_READINESS_OPERATIONS = {
+    PHASE4_READINESS_OPERATION,
+    "aperture-bridge",
+    "aperture-bridge-readiness",
+}
 
 
 @lru_cache(maxsize=1)
@@ -68,10 +86,11 @@ def _flowcore_aperture_context(value):
 def dispatch_guarded_post(envelope, headers=None):
     envelope = validate_envelope(envelope)
     operation = str(envelope.get("operation", "")).strip()
+    payload = envelope.get("payload") if isinstance(envelope.get("payload"), dict) else {}
+    aperture = _flowcore_aperture_context(envelope.get("apertureContext"))
+
     if operation == FLOWCORE_CONTEXT_OPERATION:
         reject_artifact_material(envelope, "envelope")
-        payload = envelope.get("payload") if isinstance(envelope.get("payload"), dict) else {}
-        aperture = _flowcore_aperture_context(envelope.get("apertureContext"))
         return {
             "ok": True,
             "operation": operation,
@@ -79,15 +98,45 @@ def dispatch_guarded_post(envelope, headers=None):
             "apertureContext": aperture,
             "result": instrument_context(payload, aperture),
         }
+
+    if operation in {PHASE4_CONTEXTUALIZE_OPERATION, PHASE4_LEGACY_ALIAS}:
+        reject_artifact_material(envelope, "envelope")
+        diagnostic = payload.get("diagnosticReceipt", payload.get("diagnostic_receipt"))
+        result = contextualize_diagnostic(
+            diagnostic,
+            aperture,
+            conditions=payload.get("conditions") if isinstance(payload.get("conditions"), list) else [],
+            alternatives=payload.get("alternatives") if isinstance(payload.get("alternatives"), list) else [],
+        )
+        return {
+            "ok": True,
+            "operation": PHASE4_CONTEXTUALIZE_OPERATION,
+            "traceId": str(envelope.get("traceId", "")).strip() or secrets.token_hex(8),
+            "apertureContext": aperture,
+            "result": result,
+            "recommendation_not_command": True,
+            "automatic_ash_action": False,
+            "prediction_authorized": False,
+        }
+
+    if operation == PHASE4_MIGRATE_OPERATION:
+        legacy = payload.get("contextReceipt", payload.get("context_receipt"))
+        return {
+            "ok": True,
+            "operation": operation,
+            "traceId": str(envelope.get("traceId", "")).strip() or secrets.token_hex(8),
+            "apertureContext": aperture,
+            "result": migrate_vnext_receipt(legacy),
+        }
+
     return _engine().dispatch_post(envelope, headers or {})
 
 
 def guarded_readiness_receipt(operation="readiness"):
     payload = dict(_engine().readiness_receipt())
     payload["operations"] = [
-        item
-        for item in payload.get("operations", [])
-        if item not in DELEGATED_CUSTODY_OPERATIONS
+        item for item in payload.get("operations", [])
+        if item not in DELEGATED_CUSTODY_OPERATIONS and item != PHASE4_LEGACY_ALIAS
     ]
     payload["operation"] = operation
     payload["custodyRoute"] = "isolated-local-commitment-endpoint"
@@ -96,12 +145,18 @@ def guarded_readiness_receipt(operation="readiness"):
     payload.setdefault("delegatedOperations", {})["flowcore-context-v0.1"] = [
         FLOWCORE_CONTEXT_OPERATION
     ]
+    payload["delegatedOperations"]["phase4-reciprocal-bridge-v0.1"] = sorted(
+        PHASE4_POST_OPERATIONS
+    )
     payload["flowCoreContextRoute"] = "shared-bounded-dome-guard"
+    payload["apertureBridgeRoute"] = "shared-bounded-dome-guard"
+    payload["aperture"]["contextReceiptSchema"] = "td613.flowcore.context-receipt/v0.1"
+    payload["aperture"]["phase4BridgeContract"] = "td613.phase4.reciprocal-bridge/v0.1"
     return payload
 
 
 class handler(BaseHTTPRequestHandler):
-    def _headers(self, status=200, flowcore=False):
+    def _headers(self, status=200, flowcore=False, phase4=False):
         engine = _engine()
         self.send_response(status)
         self.send_header("Content-Type", "application/json; charset=utf-8")
@@ -110,6 +165,8 @@ class handler(BaseHTTPRequestHandler):
         self.send_header("X-TD613-Custody-Route", "isolated")
         if flowcore:
             self.send_header("X-TD613-Flow-Core", "phase-3")
+        if phase4:
+            self.send_header("X-TD613-Reciprocal-Bridge", "phase-4")
         self.send_header("Vary", "Origin")
         origin = self.headers.get("Origin", "")
         host = self.headers.get("Host", "")
@@ -117,8 +174,8 @@ class handler(BaseHTTPRequestHandler):
             self.send_header("Access-Control-Allow-Origin", origin)
         self.end_headers()
 
-    def _write(self, status, payload, flowcore=False):
-        self._headers(status, flowcore=flowcore)
+    def _write(self, status, payload, flowcore=False, phase4=False):
+        self._headers(status, flowcore=flowcore, phase4=phase4)
         self.wfile.write(
             json.dumps(payload, separators=(",", ":"), ensure_ascii=True).encode("utf-8")
         )
@@ -136,6 +193,11 @@ class handler(BaseHTTPRequestHandler):
             payload["operation"] = "readiness"
             self._write(200, payload, flowcore=True)
             return
+        if operation in PHASE4_READINESS_OPERATIONS:
+            payload = phase4_readiness_receipt()
+            payload["operation"] = "readiness"
+            self._write(200, payload, flowcore=True, phase4=True)
+            return
         if operation not in {"ping", "readiness"}:
             self._write(405, {"ok": False, "error": "GET supports ping/readiness only"})
             return
@@ -148,8 +210,13 @@ class handler(BaseHTTPRequestHandler):
                 raise ValueError("request body must be between 1 and 131072 bytes")
             envelope = json.loads(self.rfile.read(length))
             headers = {key.lower(): value for key, value in self.headers.items()}
-            flowcore = str(envelope.get("operation", "")).strip() == FLOWCORE_CONTEXT_OPERATION
-            self._write(200, dispatch_guarded_post(envelope, headers), flowcore=flowcore)
+            operation = str(envelope.get("operation", "")).strip()
+            self._write(
+                200,
+                dispatch_guarded_post(envelope, headers),
+                flowcore=operation in {FLOWCORE_CONTEXT_OPERATION, *PHASE4_POST_OPERATIONS},
+                phase4=operation in PHASE4_POST_OPERATIONS,
+            )
         except PermissionError as exc:
             self._write(403, {"ok": False, "error": str(exc)})
         except (ValueError, TypeError, json.JSONDecodeError) as exc:
