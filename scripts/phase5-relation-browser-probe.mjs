@@ -9,6 +9,7 @@ export function inspectPhase5RelationLab(html = '') {
     no_relation_on_load: /No relation exists\./.test(source),
     proposal_action_present: /id="propose"/.test(source),
     explicit_confirmation_present: /id="confirm"[^>]*disabled/.test(source),
+    intact_replay_present: /value="replay">Replay confirmed envelope/.test(source),
     explicit_local_save_present: /id="save"[^>]*disabled/.test(source),
     explicit_export_present: /id="export"[^>]*disabled/.test(source),
     lifecycle_visible: /id="state"/.test(source) && /id="phasonState"/.test(source),
