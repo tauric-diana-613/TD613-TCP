@@ -9,7 +9,7 @@
     {"phase": 2, "status": "IMPLEMENTED_PRODUCTION_DEMONSTRATED"},
     {"phase": 3, "status": "IMPLEMENTED_PRODUCTION_DEMONSTRATED"},
     {"phase": 4, "status": "IMPLEMENTED_PRODUCTION_DEMONSTRATED", "continuing_gate": "regression-coverage; phase-5-separately-gated"},
-    {"phase": 5, "status": "IMPLEMENTED_VALIDATION_GATED", "production_status": "PRODUCTION_GATED"},
+    {"phase": 5, "status": "IMPLEMENTED_PRODUCTION_DEMONSTRATED", "production_status": "PRODUCTION_DEMONSTRATED"},
     {"phase": 6, "status": "HELD", "reason": "plaintext Cinder transport not redesigned"},
     {"phase": 7, "status": "PLANNED"},
     {"phase": 8, "status": "OPEN_FIELD_RESEARCH_ONLY"},
@@ -93,8 +93,16 @@
     "open_field_auto_promotion": false,
     "marrowline_confirmation_authority": false,
     "runtime_ci_status": "PASS",
-    "production_demo_status": "NOT_YET_EARNED",
-    "production_promotion_status": "GATED"
+    "production_demo_status": "PASS",
+    "production_promotion_status": "EARNED",
+    "production_runtime_commit": "d221205667a444e4b79358ffa7b505d2147ab215",
+    "production_probe": "scripts/phase5-relation-production-probe.mjs",
+    "production_probe_artifact_digest": "sha256:e8fd01ec96afca53cac24a69101d3957af8d3e1c5ecb8f5dce430f5088b3a3c5",
+    "production_base_url": "https://td613.com",
+    "production_browser_status": "PASS",
+    "production_desktop_status": "PASS",
+    "production_mobile_status": "PASS",
+    "production_phason_fork_status": "RELATION_REPLAY_HELD_PHASON_FORK"
   },
   "closed_post_merge_seams": [
     "legacy-engine-custody-bypass",
@@ -108,6 +116,7 @@
     "phase4-public-vnext-return",
     "phase4-bridge-default-and-clamp-path",
     "phase4-mobile-status-token-overflow",
-    "phase4-production-runtime-observation-gap"
+    "phase4-production-runtime-observation-gap",
+    "phase5-production-runtime-observation-gap"
   ]
 }

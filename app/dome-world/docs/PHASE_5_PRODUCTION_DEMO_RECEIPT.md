@@ -3,32 +3,63 @@
 ## Status
 
 ```text
-NOT_YET_EARNED
+PASS
+IMPLEMENTED_PRODUCTION_DEMONSTRATED
+PRODUCTION_DEMONSTRATED
 ```
 
-Phase V currently holds:
+## Production observation
 
-```text
-IMPLEMENTED_VALIDATION_GATED
-PRODUCTION_GATED
-```
+- Observed at: `https://td613.com/dome-world/relation-envelope.html`
+- Observed on: `2026-07-13`
+- Runtime commit: `d221205667a444e4b79358ffa7b505d2147ab215`
+- Probe: `scripts/phase5-relation-production-probe.mjs`
+- Browser: installed Chrome, headless, reduced motion
+- Desktop viewport: `1440 × 1000`
+- Mobile viewport: `390 × 844`
+- Probe receipt SHA-256: `e8fd01ec96afca53cac24a69101d3957af8d3e1c5ecb8f5dce430f5088b3a3c5`
+- Desktop screenshot SHA-256: `efaab9fb7fbccafecdf61875d8aae8d145e229f72ec820694151b9abd1e20abe`
+- Mobile screenshot SHA-256: `a035f259b2e06ccdec2c7ad69ab096075ab8141f9ebaefd014f99912e2f15988`
 
-A production-demonstrated claim remains withheld until an explicit production probe observes, from the deployed artifact:
+The operator evidence bundle is stored at
+`C:\Users\timst\Downloads\TD613_Phase5_Production_Demo`.
 
-1. the Phase V Lab route loads;
-2. no relation exists on load;
-3. a valid R0 proposal audits as admissible;
-4. a valid R1 proposal derives a route-scoped HMAC reference without exporting the artifact digest or key;
-5. confirmation requires a separate human action;
-6. replay verifies an intact confirmed relation;
-7. replay distinguishes a missing key from tamper;
-8. artifact disclosure and authority claims reject;
-9. a Phason fork holds without branch erasure;
-10. Marrowline preserves carrier-only status;
-11. desktop and mobile interaction remain usable;
-12. no Phase V server endpoint, persistence route, Ash action, prediction authority, or Open Field promotion appears.
+## Observed results
 
-No workflow-run ID, deployment artifact, production receipt ID, or promotion commit may be recorded here before those observations exist.
+| Gate | Production result |
+| --- | --- |
+| Route and empty initial state | PASS · no relation existed on load |
+| R0 proposal | `RELATION_PROPOSAL_ADMISSIBLE` |
+| R0 confirmation | `CONFIRMED` after a separate action |
+| R0 replay | `RELATION_REPLAY_VERIFIED_R0` |
+| R1 proposal | `RELATION_PROPOSAL_ADMISSIBLE` |
+| R1 confirmation | `CONFIRMED` after a separate action |
+| R1 replay | `RELATION_REPLAY_VERIFIED` |
+| Missing local key | `RELATION_REPLAY_HELD_KEY_UNAVAILABLE` |
+| Envelope tamper | `RELATION_REPLAY_HELD_TAMPER` |
+| `artifact_digest` injection | `RELATION_REPLAY_REJECTED_AUTHORITY_BREACH` |
+| Identity claim injection | `RELATION_REPLAY_REJECTED_AUTHORITY_BREACH` |
+| Causation claim injection | `RELATION_REPLAY_REJECTED_AUTHORITY_BREACH` |
+| Phason fork | `RELATION_REPLAY_HELD_PHASON_FORK`; all three branch events preserved |
+| Marrowline mutation | `HOLD_CARRIER_MUTATION` |
+| Nonce reuse | `HOLD_NONCE_REUSE` |
+| Open Field promotion | `false` |
+| Explicit local save | PASS; persisted across refresh |
+| Explicit export | PASS; receipt bundle only |
+| Network behavior | zero non-GET interaction requests; no Phase V endpoint |
+| Desktop | two columns, no horizontal overflow, no clipped controls |
+| Mobile | one column, no horizontal overflow, no clipped controls |
+| Console | no Phase V runtime errors |
+
+## Ruling
+
+Phase V is implemented, deployed, production-demonstrated, replay-verifiable,
+tamper-holding, branch-preserving, local by default, and operator-confirmed.
+
+The demonstration does not establish identity, authorship, ownership,
+permission, location, co-occurrence, causation, trusted time, prediction
+authority, public release, or Ash execution. Relation remains a third object.
+Marrowline remains carrier-only. Open Field remains unpromoted.
 
 𝌋‌ U+10D613
 

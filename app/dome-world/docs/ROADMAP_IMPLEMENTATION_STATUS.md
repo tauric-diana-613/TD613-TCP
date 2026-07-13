@@ -8,8 +8,8 @@ This ledger separates **planned**, **designed**, **implemented**, **hardened**, 
 | 1 · Local Commitment | **Implemented + hardened** | browser SHA-256 kernel, L0/L1 endpoint, strict server validation, stale-selection guard | continuing regression coverage |
 | 2 · Digest / receipt spine | **Implemented + production-demonstrated** | TD613-CJ-1, v0.8 schemas, register/replay/migrate runtime, tamper and mobile production demo | continuing regression coverage |
 | 3 · Flow-Core instrumentation | **Implemented + production-demonstrated** | v0.1 context endpoint, sensor registry, benign controls, abstention, private artifact-blind lab, production receipt | continuing regression and calibration coverage |
-| 4 · Reciprocal bridge | **Implemented + production-demonstrated** | v0.1 bridge adoption, formal diagnostic validation, returned-context audit, round-trip digest/replay, explicit-send lab, vNext migration, shared guarded endpoint, green API/browser CI, post-merge production probe, desktop/mobile/rotation production receipts | continuing regression coverage; Phase V remains separately gated |
-| 5 · Relation Envelope | **Landing zone designed; runtime deferred** | Aperture relation contract / Phason jurisdiction | route-scoped HMAC, nonce lifecycle, local-only runtime |
+| 4 · Reciprocal bridge | **Implemented + production-demonstrated** | v0.1 bridge adoption, formal diagnostic validation, returned-context audit, round-trip digest/replay, explicit-send lab, vNext migration, shared guarded endpoint, green API/browser CI, post-merge production probe, desktop/mobile/rotation production receipts | continuing regression coverage |
+| 5 · Relation Envelope | **Implemented + production-demonstrated** | R0/R1 local relation runtime, explicit confirmation, route-scoped HMAC, nonce lifecycle, replay/tamper holds, Phason fork preservation, Marrowline carrier boundary, desktop/mobile production receipt | continuing regression coverage; no server persistence or Ash action |
 | 6 · Human-gated derivatives | **Held** | Cinder UI disabled; plaintext fragment aliases rejected | client-side/destination-bound Cinder transport and shared human gate |
 | 7 · Provenance adapters | **Planned** | none operational | independent signature/time/inclusion adapters |
 | 8 · Privacy research | **Open Field only** | no operational authority | narrow predicates and formal threat models |
@@ -92,7 +92,7 @@ Legacy provenance may be preserved. It may not impersonate a native v0.1 receipt
 - Phase IV is implemented and production-demonstrated through direct post-merge JSON and browser observation.
 - Phase IV does not create a Relation Envelope or artifact relation.
 - Phase IV does not activate prediction, Ash, Cinder, or Phason relation lifecycle.
-- Phase V remains separately deferred and requires its own specification, implementation, and production gates.
+- Phase V is implemented and production-demonstrated through a direct deployed interaction probe; its relation remains local, operator-confirmed, and non-authoritative.
 - Legal routing remains routing; substantive legal synthesis belongs to the host model.
 - Open Field context remains unpromoted unless the operator explicitly requests promotion.
 - Runtime remains quiet unless material or dispositive.

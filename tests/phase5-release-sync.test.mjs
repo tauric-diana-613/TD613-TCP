@@ -10,11 +10,11 @@ const runtime = JSON.parse(fs.readFileSync('app/dome-world/schemas/phase5-relati
 
 assert.deepEqual(fixture, release);
 assert.equal(release.phase5RelationRuntime, runtime.schema);
-assert.equal(release.phase5Status, 'IMPLEMENTED_VALIDATION_GATED');
-assert.equal(release.phase5ProductionStatus, 'PRODUCTION_GATED');
+assert.equal(release.phase5Status, 'IMPLEMENTED_PRODUCTION_DEMONSTRATED');
+assert.equal(release.phase5ProductionStatus, 'PRODUCTION_DEMONSTRATED');
 assert.match(releaseJs, /td613\.phase5\.relation-runtime\/v0\.1/);
 assert.match(releasePy, /PHASE5_RELATION_RUNTIME_SCHEMA = "td613\.phase5\.relation-runtime\/v0\.1"/);
-assert.match(releasePy, /PHASE5_STATUS = "IMPLEMENTED_VALIDATION_GATED"/);
+assert.match(releasePy, /PHASE5_STATUS = "IMPLEMENTED_PRODUCTION_DEMONSTRATED"/);
 assert.match(sync, /release\.phase5RelationRuntime/);
 assert.match(sync, /release\.phase5Status/);
 assert.match(sync, /release\.phase5ProductionStatus/);

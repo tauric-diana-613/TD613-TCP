@@ -2,8 +2,8 @@
 
 ## Relation Envelope + Phason Continuity
 
-Status: **IMPLEMENTED_VALIDATION_GATED**  
-Production status: **PRODUCTION_GATED**
+Status: **IMPLEMENTED_PRODUCTION_DEMONSTRATED**
+Production status: **PRODUCTION_DEMONSTRATED**
 
 Phase V introduces a local third object among three independently valid receipts:
 
@@ -127,7 +127,11 @@ The Phase V CI gate covers:
 - desktop/mobile Lab structure;
 - release synchronization.
 
-Passing repository validation does not, by itself, earn `IMPLEMENTED_PRODUCTION_DEMONSTRATED`.
+Repository validation is supplemented by the direct deployed probe sealed in
+`PHASE_5_PRODUCTION_DEMO_RECEIPT.md`. That probe exercises R0/R1 proposal,
+confirmation, replay, tamper holds, Phason fork preservation, Marrowline carrier
+integrity, local persistence/export, and desktop/mobile layout against
+`https://td613.com`.
 
 𝌋‌ U+10D613
 

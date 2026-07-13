@@ -83,6 +83,7 @@
     "aperture:check-sync": "node scripts/aperture-check-sync.mjs",
     "sync:aperture-release": "node scripts/sync-aperture-release.mjs",
     "test:aperture-sync-lane": "node tests/aperture-sync-lane.test.mjs",
+    "test:aperture:v31": "node tests/aperture-v31-compatibility.test.mjs && node tests/aperture-v31-observatory-contracts.test.mjs",
     "test:dome-world:art": "node tests/dome-world-art.test.mjs && node tests/dome-world-integration.test.mjs && node tests/aperture-dome-bridge.test.mjs",
     "test:dome-world": "npm run test:dome-world:art && npm run test:dome-world:phase3 && node tests/dome-world-ash-custody.test.mjs && node tests/dome-world-ash-leak-challenge.test.mjs && node tests/dome-world-ash-veil.test.mjs && node tests/dome-world-ash-cinder.test.mjs && node tests/dome-world-ash-compare.test.mjs && node tests/dome-world-ash-recall.test.mjs && node tests/dome-world-ash-hcc-grade-gate.test.mjs",
     "test:dome-world:phase3": "node tests/dome-world-flowcore-phase3.test.mjs && node tests/flowcore-context-deployment-probe.test.mjs",

@@ -2,8 +2,8 @@
   "schema": "td613.phase5.relation-runtime/v0.1",
   "title": "TD613 Phase V — The Third Object",
   "subtitle": "Relation Envelope + Phason Continuity",
-  "status": "IMPLEMENTED_VALIDATION_GATED",
-  "production_status": "PRODUCTION_GATED",
+  "status": "IMPLEMENTED_PRODUCTION_DEMONSTRATED",
+  "production_status": "PRODUCTION_DEMONSTRATED",
   "baseline": {
     "phase_0": "IMPLEMENTED_HARDENED",
     "phase_1": "IMPLEMENTED_HARDENED",
@@ -11,7 +11,7 @@
     "phase_3": "IMPLEMENTED_PRODUCTION_DEMONSTRATED",
     "phase_4": "IMPLEMENTED_PRODUCTION_DEMONSTRATED",
     "phase_4_1": "PHASE_4_ACTIVE",
-    "phase_5": "IMPLEMENTED_VALIDATION_GATED"
+    "phase_5": "IMPLEMENTED_PRODUCTION_DEMONSTRATED"
   },
   "contracts": {
     "ash_custody_receipt": "td613.ash.custody-receipt/v0.8",

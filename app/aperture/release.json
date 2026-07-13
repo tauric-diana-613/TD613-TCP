@@ -21,8 +21,8 @@
   "phase5PhasonEventSchema": "td613.phason.relation-event/v0.1",
   "phase5PhasonChainSchema": "td613.phason.relation-chain/v0.1",
   "phase5ReplaySchema": "td613.relation-replay-receipt/v0.1",
-  "phase5Status": "IMPLEMENTED_VALIDATION_GATED",
-  "phase5ProductionStatus": "PRODUCTION_GATED",
+  "phase5Status": "IMPLEMENTED_PRODUCTION_DEMONSTRATED",
+  "phase5ProductionStatus": "PRODUCTION_DEMONSTRATED",
   "phase5Boundaries": {
     "newServerlessFunction": false,
     "serverPersistence": false,

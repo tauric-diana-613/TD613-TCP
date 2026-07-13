@@ -27,7 +27,8 @@ assert.equal(release.apertureSchema, tool.metadata.schema, 'app/aperture/release
 assert.equal(release.featureVersion, tool.metadata.featureVersion, 'app/aperture/release.json feature version does not match tool.html');
 assert.equal(release.domeBridgeSchema, `td613.aperture.reciprocal-receipt-bridge/${tool.metadata.version}`, 'reciprocal receipt bridge schema drifted');
 assert.equal(release.domeDiagnosticReceiptSchema, `td613.aperture.diagnostic-receipt/${tool.metadata.version}`, 'diagnostic receipt schema drifted');
-assert.equal(release.flowCoreContextReceiptSchema, 'td613.flowcore.context-receipt/vNext', 'Flow-Core context receipt schema drifted');
+assert.equal(release.flowCoreContextReceiptSchema, 'td613.flowcore.context-receipt/v0.1', 'Flow-Core context receipt schema drifted');
+assert.equal(release.legacyFlowCoreContextReceiptSchema, 'td613.flowcore.context-receipt/vNext', 'legacy Flow-Core context receipt schema drifted');
 assert.equal(release.roundTripReceiptSchema, `td613.aperture.round-trip-receipt/${tool.metadata.version}`, 'round-trip receipt schema drifted');
 assert.equal(release.bridgePosture, 'reciprocal_receipts_without_reciprocal_authority', 'reciprocal bridge authority posture drifted');
 assert.ok(tool.metadata.blocks.doctrineKernel, 'Doctrine kernel block missing from tool.html');
