@@ -6,6 +6,8 @@
   "doctrineKernelSchema": "td613.aperture.doctrine-kernel/v2.9.4",
   "domeBridgeSchema": "td613.aperture.reciprocal-receipt-bridge/v3.0-alpha",
   "phase4BridgeContract": "td613.phase4.reciprocal-bridge/v0.1",
+  "phase4ReadinessStatus": "phase-4-active",
+  "phase4ProductionStatus": "IMPLEMENTED_PRODUCTION_DEMONSTRATED",
   "domeDiagnosticReceiptSchema": "td613.aperture.diagnostic-receipt/v3.0-alpha",
   "flowCoreContextReceiptSchema": "td613.flowcore.context-receipt/v0.1",
   "legacyFlowCoreContextReceiptSchema": "td613.flowcore.context-receipt/vNext",
