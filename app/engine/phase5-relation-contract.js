@@ -33,6 +33,7 @@ export const RELATION_NONCLAIMS = Object.freeze([
   'co-occurrence', 'causation', 'truth', 'trusted-time'
 ]);
 
+const HEX64 = /^sha256:[0-9a-f]{64}$/;
 const IDS = Object.freeze({
   ash: /^ashc_[0-9a-f]{20}$/,
   flow: /^flowctx_[A-Za-z0-9_-]{6,128}$/,
@@ -72,14 +73,32 @@ export function findForbiddenRelationFields(value) {
 function requireId(value, pattern, label) {
   if (!pattern.test(String(value || ''))) throw new Error(`${label} is missing or malformed.`);
 }
+export function ashCommittedArtifactDigest(receipt) {
+  return receipt?.manifest?.artifact_metadata?.artifact_digest
+    || receipt?.manifest?.local_commitment?.artifact_digest
+    || null;
+}
 
-export function validateAshCustodyReceipt(receipt, { requireArtifactDigest = false } = {}) {
+export function validateAshCustodyReceipt(receipt, {
+  requireArtifactDigest = false, artifactDigest = null
+} = {}) {
   if (!receipt || typeof receipt !== 'object' || Array.isArray(receipt)) throw new TypeError('Phase V requires an Ash custody receipt object.');
   if (receipt.schema !== ASH_CUSTODY_SCHEMA) throw new Error('Unsupported Ash custody receipt schema.');
   requireId(receipt.receipt_id, IDS.ash, 'Ash receipt ID');
   if (!['L0_METADATA_ONLY', 'L1_BROWSER_LOCAL_ARTIFACT_DIGEST'].includes(receipt.assurance_class)) throw new Error('Ash assurance class is unsupported.');
-  if (receipt.assurance_class === 'L1_BROWSER_LOCAL_ARTIFACT_DIGEST' && receipt.artifact_digest_present !== true) throw new Error('L1 Ash receipt must declare a browser-local artifact digest.');
+  const committed = ashCommittedArtifactDigest(receipt);
+  if (receipt.assurance_class === 'L1_BROWSER_LOCAL_ARTIFACT_DIGEST') {
+    if (receipt.artifact_digest_present !== true || !HEX64.test(String(committed || ''))) {
+      throw new Error('L1 Ash receipt must contain a browser-local artifact commitment.');
+    }
+    if (artifactDigest != null && artifactDigest !== committed) {
+      throw new Error('Local artifact digest does not match the Ash custody commitment.');
+    }
+  } else if (committed != null) {
+    throw new Error('L0 Ash receipt cannot carry an artifact commitment.');
+  }
   if (requireArtifactDigest && receipt.assurance_class !== 'L1_BROWSER_LOCAL_ARTIFACT_DIGEST') throw new Error('R1 requires an L1 Ash receipt.');
+  if (requireArtifactDigest && !HEX64.test(String(artifactDigest || ''))) throw new Error('R1 requires the local artifact digest committed by Ash.');
   return receipt;
 }
 export async function validateAshCustodyReceiptIntegrity(receipt, options = {}) {
@@ -133,7 +152,7 @@ export async function compileRelationProposal(input, options = {}) {
     replay = replayRoundTripReceipt, nonceRegistry = null } = options;
   await validateAshCustodyReceiptIntegrity(ashReceipt, {
     requireArtifactDigest: assuranceClass === R1_ROUTE_SCOPED_ARTIFACT_REFERENCE,
-    cryptoImpl, TextEncoderImpl
+    artifactDigest, cryptoImpl, TextEncoderImpl
   });
   validateFlowCoreContextReceipt(flowcoreReceipt);
   const roundTripValidation = await validateRoundTripReceipt(roundTripReceipt, flowcoreReceipt, { replay, cryptoImpl, TextEncoderImpl });
@@ -179,7 +198,11 @@ export async function compileRelationProposal(input, options = {}) {
   envelope.relation_digest = await computeRelationDigest(envelope, { cryptoImpl, TextEncoderImpl });
   return deepFreezeRelationValue({
     envelope, key: reference.key,
-    source_validation: { ash: 'DIGEST_VERIFIED', flowcore: 'VALIDATED_REFERENCE', round_trip: roundTripValidation.replay.status },
+    source_validation: {
+      ash: 'DIGEST_VERIFIED_AND_ARTIFACT_COMMITMENT_MATCHED',
+      flowcore: 'VALIDATED_REFERENCE',
+      round_trip: roundTripValidation.replay.status
+    },
     side_effects: { network_called: false, storage_mutated: false, phason_event_created: false, confirmed: false, ash_action_triggered: false }
   });
 }
