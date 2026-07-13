@@ -115,7 +115,7 @@ const consoleErrors = [];
 const interactionRequests = [];
 let interactionStarted = false;
 page.on('console', message => {
-  if (message.type() === 'error' && !message.text().includes('status of 404 (Not Found)')) {
+  if (message.type() === 'error' && !message.text().includes('status of 404')) {
     consoleErrors.push(message.text());
   }
 });
@@ -183,6 +183,11 @@ try {
   assert(identityInjection.outcome === 'RELATION_REPLAY_REJECTED_AUTHORITY_BREACH', 'Identity claim injection was not rejected');
   const causationInjection = await runAssay(page, 'causation');
   assert(causationInjection.outcome === 'RELATION_REPLAY_REJECTED_AUTHORITY_BREACH', 'Causation claim injection was not rejected');
+  const phasonFork = await runAssay(page, 'phason');
+  assert(phasonFork.outcome === 'RELATION_REPLAY_HELD_PHASON_FORK', 'Phason fork was not held');
+  assert(phasonFork.fork_detected === true, 'Phason fork was not identified');
+  assert(phasonFork.active_relation_unchanged === true, 'Phason fork assay mutated the active relation');
+  assert(phasonFork.branch_events?.length === 3, 'Phason fork assay erased a branch event');
   const carrier = await runAssay(page, 'carrier');
   assert(carrier.outcome !== 'MARROWLINE_RELATION_CARRIER_VERIFIED', 'Mutated Marrowline carrier was accepted');
   const nonce = await runAssay(page, 'nonce');
@@ -232,6 +237,8 @@ try {
     artifact_injection: artifactInjection.outcome,
     identity_injection: identityInjection.outcome,
     causation_injection: causationInjection.outcome,
+    phason_fork: phasonFork.outcome,
+    phason_branch_events_preserved: phasonFork.branch_events.length,
     carrier_mutation: carrier.outcome,
     nonce_reuse: nonce.outcome,
     open_field_promotion: openField.open_field_promotion,

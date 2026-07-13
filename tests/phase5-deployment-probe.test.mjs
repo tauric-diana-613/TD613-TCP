@@ -8,6 +8,7 @@ const browser = inspectPhase5RelationLab(html);
 assert.equal(browser.outcome, 'PHASE5_BROWSER_CONTRACT_VERIFIED');
 assert.equal(browser.production_demonstrated, false);
 assert.equal(browser.checks.intact_replay_present, true);
+assert.equal(browser.checks.phason_fork_assay_present, true);
 
 const fakeFetch = async () => ({
   ok: true,

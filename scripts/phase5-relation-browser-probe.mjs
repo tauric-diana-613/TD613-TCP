@@ -10,6 +10,7 @@ export function inspectPhase5RelationLab(html = '') {
     proposal_action_present: /id="propose"/.test(source),
     explicit_confirmation_present: /id="confirm"[^>]*disabled/.test(source),
     intact_replay_present: /value="replay">Replay confirmed envelope/.test(source),
+    phason_fork_assay_present: /value="phason">Fork the Phason relation chain/.test(source),
     explicit_local_save_present: /id="save"[^>]*disabled/.test(source),
     explicit_export_present: /id="export"[^>]*disabled/.test(source),
     lifecycle_visible: /id="state"/.test(source) && /id="phasonState"/.test(source),
