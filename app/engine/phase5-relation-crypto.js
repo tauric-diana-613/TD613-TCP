@@ -144,16 +144,18 @@ export async function createRouteScopedReference({
   assuranceClass, ashAssuranceClass, artifactDigest = null, contextNonce = null,
   routeScope, key = null, cryptoImpl = globalThis.crypto, TextEncoderImpl = globalThis.TextEncoder
 }) {
+  const nonce = contextNonce == null
+    ? generateContextNonce({ cryptoImpl })
+    : validateContextNonce(contextNonce);
   if (assuranceClass === R0_RECEIPT_REFERENCES_ONLY) {
     return Object.freeze({
       assurance_class: R0_RECEIPT_REFERENCES_ONLY,
-      context_nonce: contextNonce || generateContextNonce({ cryptoImpl }),
+      context_nonce: nonce,
       ash_reference: null, key: null, key_extractable: null
     });
   }
   if (assuranceClass !== R1_ROUTE_SCOPED_ARTIFACT_REFERENCE) throw new Error('Unsupported relation assurance class.');
   if (ashAssuranceClass !== 'L1_BROWSER_LOCAL_ARTIFACT_DIGEST') throw new Error('R1 requires an L1 Ash receipt.');
-  const nonce = contextNonce || generateContextNonce({ cryptoImpl });
   const relationKey = key || await generateRelationKey({ cryptoImpl });
   const ashReference = await deriveAshReference({ key: relationKey, artifactDigest, contextNonce: nonce, routeScope, cryptoImpl, TextEncoderImpl });
   return Object.freeze({
