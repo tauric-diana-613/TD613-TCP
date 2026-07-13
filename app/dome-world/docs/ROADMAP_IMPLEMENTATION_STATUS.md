@@ -1,6 +1,6 @@
 # Roadmap Implementation Status
 
-This ledger separates **planned**, **designed**, **implemented**, **hardened**, and **production-demonstrated** work so a pull request cannot silently promote an architectural aspiration into an operational claim.
+This ledger separates **planned**, **designed**, **implemented**, **hardened**, **runtime-demonstrated**, and **production-demonstrated** work so a pull request cannot silently promote an architectural aspiration—or a protected preview—into an operational claim.
 
 | Phase | Status | Repository evidence | Remaining gate |
 |---|---|---|---|
@@ -8,7 +8,7 @@ This ledger separates **planned**, **designed**, **implemented**, **hardened**, 
 | 1 · Local Commitment | **Implemented + hardened** | browser SHA-256 kernel, L0/L1 endpoint, strict server validation, stale-selection guard | continuing regression coverage |
 | 2 · Digest / receipt spine | **Implemented + production-demonstrated** | TD613-CJ-1, v0.8 schemas, register/replay/migrate runtime, tamper and mobile production demo | continuing regression coverage |
 | 3 · Flow-Core instrumentation | **Implemented + production-demonstrated** | v0.1 context endpoint, sensor registry, benign controls, abstention, private artifact-blind lab, production receipt | continuing regression and calibration coverage |
-| 4 · Reciprocal bridge | **Implemented; validation-gated** | v0.1 bridge adoption, formal diagnostic validation, returned-context audit, round-trip digest/replay, explicit-send lab, vNext migration, shared guarded endpoint | Phase IV CI, preview/mobile demonstration, post-merge live probe, durable production receipt |
+| 4 · Reciprocal bridge | **Implemented + runtime-demonstrated; production-gated** | v0.1 bridge adoption, formal diagnostic validation, returned-context audit, round-trip digest/replay, explicit-send lab, vNext migration, shared guarded endpoint, green API/browser CI, desktop/mobile/rotation receipts | authenticated preview or post-merge production probe; production-runtime receipt |
 | 5 · Relation Envelope | **Landing zone designed; runtime deferred** | Aperture relation contract / Phason jurisdiction | route-scoped HMAC, nonce lifecycle, local-only runtime |
 | 6 · Human-gated derivatives | **Held** | Cinder UI disabled; plaintext fragment aliases rejected | client-side/destination-bound Cinder transport and shared human gate |
 | 7 · Provenance adapters | **Planned** | none operational | independent signature/time/inclusion adapters |
@@ -29,7 +29,26 @@ Aperture diagnostic receipt
 → optional operator save/export
 ```
 
-Implementation does not equal production demonstration. The durable `PHASE_4_PRODUCTION_DEMO_RECEIPT.md` remains a PENDING template until the preview and production gates are completed.
+Implementation still does not equal production demonstration. Phase IV has earned a narrower intermediate claim: **runtime-demonstrated through the shared guard on desktop and mobile**. The durable `PHASE_4_PRODUCTION_DEMO_RECEIPT.md` records that pass and separately records the Vercel preview access boundary. The preview reported Ready, while unauthenticated CI received HTTP 302 from deployment protection. That establishes neither deployed-runtime failure nor deployed-runtime success.
+
+Production promotion therefore remains held until an authenticated preview probe or a post-merge production probe observes the JSON runtime directly.
+
+## Phase IV demonstrated checks
+
+The green demonstration covered:
+
+- canonical v0.1 context return;
+- valid audit and round-trip replay;
+- tamper detection;
+- missing-context and invalid-range abstention without clamping;
+- authority and artifact rejection;
+- diagnostic-reference mismatch hold;
+- Open Field non-promotion;
+- BACKGROUND runtime remaining unsurfaced;
+- explicit persistence only after Save;
+- legacy vNext migration remaining non-native;
+- desktop, mobile portrait, mobile landscape, and portrait rotation return;
+- zero horizontal overflow, zero clipped controls, and zero browser console errors.
 
 ## Phase IV hard boundaries
 
@@ -45,7 +64,7 @@ open_field_auto_promotion = false
 runtime_default = BACKGROUND
 ```
 
-The bridge shares the existing guarded Dome-World function. No Phase IV serverless function is added.
+The bridge shares the existing guarded Dome-World function. No Phase IV serverless function is added. The CI integration harness is a test surface that imports the same shared guard; it does not create a production endpoint or alter deployment jurisdiction.
 
 ## vNext compatibility
 
@@ -61,7 +80,8 @@ Legacy provenance may be preserved. It may not impersonate a native v0.1 receipt
 ## No silent promotion
 
 - Phases 0–3 retain their earned status.
-- Phase IV remains validation-gated until the production receipt passes.
+- Phase IV is implemented and runtime-demonstrated; production promotion remains held until deployed JSON behavior is observed.
+- A protected preview response remains an access receipt, never a runtime verdict.
 - Phase IV does not create a Relation Envelope or artifact relation.
 - Phase IV does not activate prediction, Ash, Cinder, or Phason relation lifecycle.
 - Legal routing remains routing; substantive legal synthesis belongs to the host model.
