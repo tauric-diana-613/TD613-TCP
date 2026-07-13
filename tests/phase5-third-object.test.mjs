@@ -105,6 +105,7 @@ const wrongFlow = structuredClone(source.flow); wrongFlow.receipt_id = 'flowctx_
 assert.equal((await auditRelationProposal(proposal, { ashReceipt: source.ash, flowcoreReceipt: wrongFlow, roundTripReceipt: source.roundTrip, artifactDigest: ARTIFACT_DIGEST })).outcome, 'HOLD_REFERENCE_MISMATCH');
 await assert.rejects(compileRelationProposal({ ashReceipt: l0.ash, flowcoreReceipt: l0.flow, roundTripReceipt: l0.roundTrip, assuranceClass: R1_ROUTE_SCOPED_ARTIFACT_REFERENCE, artifactDigest: ARTIFACT_DIGEST }), /R1 requires an L1 Ash receipt/);
 await assert.rejects(createRelationStateSnapshot(proposal.envelope, 'SUPERSEDED'), /HOLD_LIFECYCLE_CONTRADICTION/);
+await assert.rejects(createRelationStateSnapshot(proposal.envelope, 'CONFIRMED'), /Explicit operator confirmation/);
 
 let chain = await createPhasonRelationChain(proposal.envelope);
 chain = await appendPhasonRelationEvent(chain, confirmed.envelope, 'CONFIRMED');
