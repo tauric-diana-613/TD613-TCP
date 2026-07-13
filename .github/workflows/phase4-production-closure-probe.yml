@@ -1,0 +1,51 @@
+name: Phase IV Production Closure Probe
+
+on:
+  pull_request:
+    paths:
+      - ".github/workflows/phase4-production-closure-probe.yml"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  production-closure:
+    runs-on: ubuntu-latest
+    timeout-minutes: 25
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+      - name: Install repository dependencies
+        run: npm ci
+      - name: Run canonical Phase IV production probe
+        env:
+          TD613_BASE_URL: https://td613.com
+          TD613_FETCH_TIMEOUT_MS: 20000
+        run: |
+          mkdir -p artifacts
+          node scripts/phase4-reciprocal-bridge-deployment-probe.mjs \
+            > artifacts/phase4-production-live-probe.json
+          cat artifacts/phase4-production-live-probe.json
+      - name: Install Chromium runtime
+        run: |
+          npm install --no-save --package-lock=false playwright@1.53.2
+          npx playwright install --with-deps chromium
+      - name: Demonstrate production lab on desktop and mobile
+        env:
+          TD613_BASE_URL: https://td613.com
+          TD613_ARTIFACT_DIR: artifacts/phase4-production-browser
+        run: node scripts/phase4-reciprocal-bridge-browser-probe.mjs
+      - name: Preserve production closure receipts
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: phase4-production-closure-receipts
+          path: |
+            artifacts/phase4-production-live-probe.json
+            artifacts/phase4-production-browser/
+          if-no-files-found: warn
+          retention-days: 7
