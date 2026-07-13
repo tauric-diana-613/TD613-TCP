@@ -1,0 +1,62 @@
+{
+  "schema": "td613.relation-envelope/v0.1",
+  "relation_id": "rel_0123456789abcdef0123",
+  "created_at": "2026-07-13T00:00:00Z",
+  "time_posture": "local-clock-not-trusted-time",
+  "state": "PROPOSED",
+  "assurance_class": "R0_RECEIPT_REFERENCES_ONLY",
+  "references": {
+    "ash_custody_receipt_id": "ashc_0123456789abcdef0123",
+    "ash_custody_receipt_schema": "td613.ash.custody-receipt/v0.8",
+    "ash_assurance_class": "L0_METADATA_ONLY",
+    "flowcore_context_receipt_id": "flowctx_0123456789abcdef0123",
+    "flowcore_context_receipt_schema": "td613.flowcore.context-receipt/v0.1",
+    "aperture_round_trip_receipt_id": "aprt_0123456789abcdef0123",
+    "aperture_round_trip_receipt_schema": "td613.aperture.round-trip-receipt/v3.0-alpha"
+  },
+  "route": {
+    "route_scope": "local-research-review",
+    "task_intent_route": "REQUESTED_SYNTHESIS",
+    "binding_purpose": "operator-declared-contextual-review"
+  },
+  "context_nonce": "AAAAAAAAAAAAAAAAAAAAAA",
+  "ash_reference": null,
+  "hmac": null,
+  "operator_confirmation": {
+    "status": "UNCONFIRMED",
+    "confirmation_receipt_id": null
+  },
+  "visibility": {
+    "posture": "PRIVATE_LOCAL_DEFAULT",
+    "session_mode": "SESSION_MEMORY_ONLY",
+    "server_persistence": false,
+    "public_export": false
+  },
+  "lineage": {
+    "revision_of": null,
+    "supersedes_relation_id": null
+  },
+  "open_field_promotion": false,
+  "automatic_relation_creation": false,
+  "automatic_confirmation": false,
+  "automatic_ash_action": false,
+  "prediction_authorized": false,
+  "relation_is_identity": false,
+  "relation_is_causation": false,
+  "relation_is_permission": false,
+  "marrowline_confirmation_authority": false,
+  "does_not_establish": [
+    "identity",
+    "authorship",
+    "possession",
+    "ownership",
+    "permission",
+    "location",
+    "co-occurrence",
+    "causation",
+    "truth",
+    "trusted-time"
+  ],
+  "seal": "⟐",
+  "relation_digest": "sha256:40545f9b682f16ce3ce6a799d92b915e1503de3084f52019c3d5eaf88c0f01b8"
+}
