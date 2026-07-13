@@ -229,6 +229,7 @@ export async function confirmRelation(proposalBundle, audit, options = {}) {
 export async function createRelationStateSnapshot(envelope, newState, options = {}) {
   if (!envelope || envelope.schema !== RELATION_ENVELOPE_SCHEMA) throw new TypeError('Relation Envelope is required.');
   if (!RELATION_STATES.includes(newState)) throw new Error('Unsupported relation state.');
+  if (newState === 'CONFIRMED') throw new Error('Explicit operator confirmation is required.');
   if (!TRANSITIONS[envelope.state]?.includes(newState)) throw new Error('HOLD_LIFECYCLE_CONTRADICTION');
   if (await computeRelationDigest(envelope, options) !== envelope.relation_digest) throw new Error('Relation Envelope digest verification failed before lifecycle transition.');
   const snapshot = clone(envelope); snapshot.state = newState;
