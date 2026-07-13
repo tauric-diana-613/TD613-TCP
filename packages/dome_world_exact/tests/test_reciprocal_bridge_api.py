@@ -75,7 +75,7 @@ def test_bridge_returns_auditable_flowcore_v01_context_receipt():
 
 def test_bridge_readiness_declares_v01_reciprocal_receipt_posture():
     readiness = API.phase4_readiness_receipt()
-    assert readiness["status"] == "phase-4-implemented-validation-gated"
+    assert readiness["status"] == "phase-4-active"
     assert readiness["bridgeContract"] == "td613.phase4.reciprocal-bridge/v0.1"
     assert readiness["diagnosticReceiptSchema"] == (
         "td613.aperture.diagnostic-receipt/v3.0-alpha"
