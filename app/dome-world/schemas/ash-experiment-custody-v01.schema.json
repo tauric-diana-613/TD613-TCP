@@ -1,0 +1,44 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://td613.com/schemas/ash-experiment-custody-v01.schema.json",
+  "title": "TD613 Ash experiment custody manifest v0.1",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["schema", "manifest_id", "created_at", "time_posture", "experiment_id", "source_custody", "pre_registration_digest", "instrument_ensemble_digest", "snapshot_batch_reference", "tomography_result_reference", "raw_artifact_content_present", "raw_observation_content_present", "public_stable_artifact_handle", "server_persistence", "automatic_derivative_construction", "automatic_export", "automatic_cinder_action", "scope_statement", "cannot_establish", "promotion_conditions", "operator_closure", "manifest_digest"],
+  "properties": {
+    "schema": { "const": "td613.ash.experiment-custody-manifest/v0.1" },
+    "manifest_id": { "type": "string", "pattern": "^ashexp_[A-Za-z0-9_-]{6,128}$" },
+    "created_at": { "type": "string" },
+    "time_posture": { "const": "local-clock-not-trusted-time" },
+    "experiment_id": { "type": "string", "pattern": "^atx_[A-Za-z0-9_-]{6,128}$" },
+    "source_custody": {
+      "type": "object", "additionalProperties": false,
+      "required": ["receipt_reference", "receipt_digest", "independently_verified"],
+      "properties": {
+        "receipt_reference": { "type": "string", "pattern": "^ashc_[A-Za-z0-9_-]{6,128}$" },
+        "receipt_digest": { "$ref": "#/$defs/digest" },
+        "independently_verified": { "type": "boolean" }
+      }
+    },
+    "pre_registration_digest": { "$ref": "#/$defs/digest" },
+    "instrument_ensemble_digest": { "$ref": "#/$defs/digest" },
+    "snapshot_batch_reference": { "type": ["string", "null"] },
+    "tomography_result_reference": { "type": ["string", "null"] },
+    "raw_artifact_content_present": { "const": false },
+    "raw_observation_content_present": { "const": false },
+    "public_stable_artifact_handle": { "const": false },
+    "server_persistence": { "const": false },
+    "automatic_derivative_construction": { "const": false },
+    "automatic_export": { "const": false },
+    "automatic_cinder_action": { "const": false },
+    "scope_statement": { "type": "string" },
+    "cannot_establish": { "type": "array", "items": { "type": "string" } },
+    "promotion_conditions": { "type": "array", "items": { "type": "string" } },
+    "operator_closure": { "$ref": "#/$defs/closure" },
+    "manifest_digest": { "$ref": "#/$defs/digest" }
+  },
+  "$defs": {
+    "digest": { "type": "string", "pattern": "^sha256:[0-9a-f]{64}$" },
+    "closure": { "type": "object", "additionalProperties": false, "required": ["required", "status"], "properties": { "required": { "const": true }, "status": { "const": "OPEN" } } }
+  }
+}

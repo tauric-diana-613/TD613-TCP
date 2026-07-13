@@ -1,0 +1,17 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://td613.com/schemas/ash-derivative-eligibility-v01.schema.json",
+  "title": "TD613 Ash derivative eligibility receipt v0.1",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["schema", "eligibility_id", "created_at", "time_posture", "tomography_result_custody_reference", "operator_purpose", "inputs", "decision", "reasons", "recommendation_only", "derivative_constructed", "export_authorized", "cinder_constructed", "transport_authorized", "automatic_ash_action", "scope_statement", "cannot_establish", "promotion_conditions", "operator_closure", "eligibility_digest"],
+  "properties": {
+    "schema": { "const": "td613.ash.derivative-eligibility-receipt/v0.1" },
+    "eligibility_id": { "type": "string", "pattern": "^ashelig_[A-Za-z0-9_-]{6,128}$" }, "created_at": { "type": "string" }, "time_posture": { "const": "local-clock-not-trusted-time" }, "tomography_result_custody_reference": { "type": "string" }, "operator_purpose": { "type": "string", "minLength": 1 },
+    "inputs": { "type": "object", "additionalProperties": false, "required": ["source_custody_verified", "source_drift_status", "coverage_status", "tamper_status", "phason_sensitivity", "shared_layer_burden"], "properties": { "source_custody_verified": { "type": "boolean" }, "source_drift_status": { "type": "string" }, "coverage_status": { "type": "string" }, "tamper_status": { "type": "string" }, "phason_sensitivity": { "type": "string" }, "shared_layer_burden": { "type": "string" } } },
+    "decision": { "enum": ["INELIGIBLE_MISSING_SOURCE_CUSTODY", "INELIGIBLE_SOURCE_DRIFT", "INELIGIBLE_INSUFFICIENT_COVERAGE", "INELIGIBLE_UNRESOLVED_TAMPER", "REVIEW_REQUIRED_HIGH_PHASON_SENSITIVITY", "REVIEW_REQUIRED_HIGH_SHARED_LAYER_BURDEN", "ELIGIBLE_FOR_OPERATOR_DERIVATIVE_REVIEW"] },
+    "reasons": { "type": "array", "items": { "type": "string" } }, "recommendation_only": { "const": true }, "derivative_constructed": { "const": false }, "export_authorized": { "const": false }, "cinder_constructed": { "const": false }, "transport_authorized": { "const": false }, "automatic_ash_action": { "const": false },
+    "scope_statement": { "type": "string" }, "cannot_establish": { "type": "array", "items": { "type": "string" } }, "promotion_conditions": { "type": "array", "items": { "type": "string" } }, "operator_closure": { "$ref": "#/$defs/closure" }, "eligibility_digest": { "$ref": "#/$defs/digest" }
+  },
+  "$defs": { "digest": { "type": "string", "pattern": "^sha256:[0-9a-f]{64}$" }, "closure": { "type": "object", "additionalProperties": false, "required": ["required", "status"], "properties": { "required": { "const": true }, "status": { "const": "OPEN" } } } }
+}

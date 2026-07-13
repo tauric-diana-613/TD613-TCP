@@ -1,0 +1,19 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://td613.com/schemas/aperture-admissibility-tomography-receipt-v01.schema.json",
+  "title": "TD613 Aperture admissibility tomography receipt v0.1",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["schema", "receipt_id", "created_at", "time_posture", "aperture_version", "experiment_id", "assurance_class", "status", "source_commitment", "instrument_ensemble", "snapshot_lattice", "coverage", "reference_layers", "registry_model", "shared_layer_relaxation", "phason_susceptibility", "temporal_route_object", "signed_residual_ledger", "heldout_validation", "alternative_models", "benign_controls", "missingness", "holds", "abstention_reason", "automatic_ash_action", "prediction_authorized", "derivative_authorized", "scope_statement", "cannot_establish", "promotion_conditions", "operator_closure", "receipt_digest"],
+  "properties": {
+    "schema": { "const": "td613.aperture.admissibility-tomography-receipt/v0.1" },
+    "receipt_id": { "type": "string", "pattern": "^attomo_[A-Za-z0-9_-]{6,128}$" },
+    "created_at": { "type": "string" }, "time_posture": { "const": "local-clock-not-trusted-time" }, "aperture_version": { "const": "v3.1-alpha" }, "experiment_id": { "type": "string" },
+    "assurance_class": { "enum": ["AT0_DESCRIPTIVE_CONSTELLATION", "AT1_SINGLE_COORDINATE", "AT2_FACTORIAL_REGISTRY", "AT3_MULTI_TIME_TOMOGRAPHY", "AT4_CROSS_ENVIRONMENT"] },
+    "status": { "enum": ["TOMOGRAPHY_READY", "TOMOGRAPHY_READY_WITH_WARNINGS", "ABSTAIN"] },
+    "source_commitment": { "type": "object" }, "instrument_ensemble": { "type": "object" }, "snapshot_lattice": { "type": "object" }, "coverage": { "type": "object" }, "reference_layers": { "type": "object" }, "registry_model": { "type": "object" }, "shared_layer_relaxation": { "type": "object" }, "phason_susceptibility": { "type": "object" }, "temporal_route_object": { "type": "object" }, "signed_residual_ledger": { "type": "object" }, "heldout_validation": { "type": "object" },
+    "alternative_models": { "type": "array", "items": { "type": "string" } }, "benign_controls": { "type": "array", "items": { "type": "string" } }, "missingness": { "type": "array", "items": { "type": "object" } }, "holds": { "type": "array", "items": { "type": "string" } }, "abstention_reason": { "type": ["string", "null"] },
+    "automatic_ash_action": { "const": false }, "prediction_authorized": { "const": false }, "derivative_authorized": { "const": false }, "scope_statement": { "type": "string" }, "cannot_establish": { "type": "array", "items": { "type": "string" } }, "promotion_conditions": { "type": "array", "items": { "type": "string" } }, "operator_closure": { "$ref": "#/$defs/closure" }, "receipt_digest": { "$ref": "#/$defs/digest" }
+  },
+  "$defs": { "digest": { "type": "string", "pattern": "^sha256:[0-9a-f]{64}$" }, "closure": { "type": "object", "additionalProperties": false, "required": ["required", "status"], "properties": { "required": { "const": true }, "status": { "const": "OPEN" } } } }
+}

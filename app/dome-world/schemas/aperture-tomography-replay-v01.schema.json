@@ -1,0 +1,11 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://td613.com/schemas/aperture-tomography-replay-v01.schema.json",
+  "title": "TD613 Aperture tomography replay v0.1",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["schema", "replay_id", "created_at", "source_receipt_id", "source_receipt_digest", "status", "digest_verified", "forbidden_paths", "reconstruction_reexecuted", "raw_source_restored", "operator_closure", "replay_digest"],
+  "properties": {
+    "schema": { "const": "td613.aperture.tomography-replay/v0.1" }, "replay_id": { "type": "string", "pattern": "^atreplay_[A-Za-z0-9_-]{6,128}$" }, "created_at": { "type": "string" }, "source_receipt_id": { "type": ["string", "null"] }, "source_receipt_digest": { "type": ["string", "null"] }, "status": { "enum": ["REPLAY_VERIFIED", "REPLAY_HELD"] }, "digest_verified": { "type": "boolean" }, "forbidden_paths": { "type": "array", "items": { "type": "string" } }, "reconstruction_reexecuted": { "const": false }, "raw_source_restored": { "const": false }, "operator_closure": { "type": "object" }, "replay_digest": { "type": "string", "pattern": "^sha256:[0-9a-f]{64}$" }
+  }
+}
