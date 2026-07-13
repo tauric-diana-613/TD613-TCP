@@ -113,10 +113,9 @@ async function createStateSnapshot(envelope, newState, options = {}) {
   return deepFreezeRelationValue(snapshot);
 }
 
-export async function createRelationStateSnapshot() {
-  throw new Error(
-    'Direct lifecycle snapshots are not authorized; use confirmRelation, reviseRelation, withdrawRelation, or supersedeRelation.'
-  );
+export async function createRelationStateSnapshot(_envelope, newState) {
+  if (newState === 'CONFIRMED') throw new Error('Explicit operator confirmation is required.');
+  throw new Error('HOLD_LIFECYCLE_CONTRADICTION');
 }
 
 export async function reviseRelation(confirmedBundle, proposalInput, options = {}) {
