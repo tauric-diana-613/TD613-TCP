@@ -40,6 +40,8 @@ await writeText(
   `APERTURE_DOCTRINE_SCHEMA = ${JSON.stringify(release.doctrineKernelSchema)}\n` +
   `APERTURE_DOME_BRIDGE_SCHEMA = ${JSON.stringify(release.domeBridgeSchema)}\n` +
   `PHASE4_BRIDGE_CONTRACT_SCHEMA = ${JSON.stringify(release.phase4BridgeContract)}\n` +
+  `PHASE4_READINESS_STATUS = ${JSON.stringify(release.phase4ReadinessStatus)}\n` +
+  `PHASE4_PRODUCTION_STATUS = ${JSON.stringify(release.phase4ProductionStatus)}\n` +
   `APERTURE_DOME_DIAGNOSTIC_RECEIPT_SCHEMA = ${JSON.stringify(release.domeDiagnosticReceiptSchema)}\n` +
   `FLOWCORE_CONTEXT_RECEIPT_SCHEMA = ${JSON.stringify(release.flowCoreContextReceiptSchema)}\n` +
   `LEGACY_FLOWCORE_CONTEXT_RECEIPT_SCHEMA = ${JSON.stringify(release.legacyFlowCoreContextReceiptSchema)}\n` +
