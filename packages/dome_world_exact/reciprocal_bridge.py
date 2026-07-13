@@ -240,7 +240,7 @@ def readiness_receipt() -> dict[str, Any]:
     return {
         "ok": True,
         "schema": "td613.phase4.reciprocal-bridge-readiness/v0.1",
-        "status": "phase-4-implemented-validation-gated",
+        "status": "phase-4-active",
         "operations": [CONTEXTUALIZE_OPERATION, LEGACY_OPERATION_ALIAS, MIGRATE_OPERATION],
         "bridgeContract": BRIDGE_CONTRACT_SCHEMA,
         "diagnosticReceiptSchema": DIAGNOSTIC_RECEIPT_SCHEMA,
