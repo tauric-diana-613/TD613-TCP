@@ -199,7 +199,9 @@ export async function compileRelationProposal(input, options = {}) {
   return deepFreezeRelationValue({
     envelope, key: reference.key,
     source_validation: {
-      ash: 'DIGEST_VERIFIED_AND_ARTIFACT_COMMITMENT_MATCHED',
+      ash: assuranceClass === R1_ROUTE_SCOPED_ARTIFACT_REFERENCE
+        ? 'DIGEST_VERIFIED_AND_ARTIFACT_COMMITMENT_MATCHED'
+        : 'DIGEST_VERIFIED',
       flowcore: 'VALIDATED_REFERENCE',
       round_trip: roundTripValidation.replay.status
     },
