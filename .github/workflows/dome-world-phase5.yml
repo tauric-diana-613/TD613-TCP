@@ -9,6 +9,11 @@ on:
       - "app/dome-world/marrowline-relation-carrier.js"
       - "app/dome-world/schemas/*relation*"
       - "app/dome-world/schemas/phase5-relation-runtime-v01.json"
+      - "app/aperture/release.json"
+      - "app/aperture/release.js"
+      - "packages/dome_world_exact/release.py"
+      - "scripts/sync-aperture-release.mjs"
+      - "tests/fixtures/aperture-release.json"
       - "api/dome-world-shell.js"
       - "tests/phase5-*.test.mjs"
       - "tests/helpers/phase5-fixtures.mjs"
@@ -23,6 +28,11 @@ on:
       - "app/dome-world/marrowline-relation-carrier.js"
       - "app/dome-world/schemas/*relation*"
       - "app/dome-world/schemas/phase5-relation-runtime-v01.json"
+      - "app/aperture/release.json"
+      - "app/aperture/release.js"
+      - "packages/dome_world_exact/release.py"
+      - "scripts/sync-aperture-release.mjs"
+      - "tests/fixtures/aperture-release.json"
       - "api/dome-world-shell.js"
       - "tests/phase5-*.test.mjs"
       - "tests/helpers/phase5-fixtures.mjs"
@@ -47,4 +57,5 @@ jobs:
       - run: node tests/phase5-schemas.test.mjs
       - run: node tests/phase5-third-object.test.mjs
       - run: node tests/phase5-mobile.test.mjs
+      - run: node tests/phase5-release-sync.test.mjs
       - run: node tests/dome-world-lab-marrowline-link.test.mjs
