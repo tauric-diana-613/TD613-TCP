@@ -47,13 +47,19 @@ independent receipt validation
 
 `R1_ROUTE_SCOPED_ARTIFACT_REFERENCE` requires:
 
-- an L1 Ash receipt;
-- a browser-local artifact digest;
+- an L1 Ash receipt with a digest-valid browser-local artifact commitment;
+- the same browser-local artifact digest that the Ash receipt commits;
 - a fresh 128-bit-or-greater nonce;
 - a per-relation, non-extractable HMAC-SHA-256 key;
 - explicit operator selection.
 
-The artifact digest remains outside the Relation Envelope. The envelope receives only a context-bound HMAC reference under `TD613:PHASE5:ASH-REFERENCE:v1`.
+The compiler rejects a local digest that does not equal the commitment inside the validated Ash receipt. The artifact digest remains outside the Relation Envelope. The envelope receives only a context-bound HMAC reference under `TD613:PHASE5:ASH-REFERENCE:v1`.
+
+## Confirmation integrity
+
+Confirmation recomputes and verifies both the proposal digest and the Aperture audit digest. The audit must name the same relation and proposal digest. Every confirmation claims the relation nonce through a bounded local registry, including callers that do not provide their own registry. Reconfirming the same nonce returns `HOLD_NONCE_REUSE`.
+
+The generic lifecycle snapshot export cannot create a confirmed, revised, withdrawn, or superseded state. Those transitions remain reachable only through the dedicated operator-confirmation and lifecycle operations.
 
 ## Lifecycle
 
@@ -82,13 +88,16 @@ The runtime adds:
 - no identity, authorship, ownership, permission, location, co-occurrence, or causation proof;
 - no Marrowline confirmation or closure authority.
 
-Marrowline may carry and render an envelope. Carrier mutation produces `HOLD_CARRIER_MUTATION`.
+Marrowline may carry and render only a sealed envelope packet. Missing or mutated carrier digests produce `HOLD_CARRIER_MUTATION`.
 
 ## Implementation map
 
 - `app/engine/phase5-relation-crypto.js`
-- `app/engine/phase5-relation-envelope.js`
-- `app/engine/aperture-v3-relation-audit.js`
+- `app/engine/phase5-relation-contract.js`
+- `app/engine/phase5-relation-lifecycle.js`
+- `app/engine/phase5-relation-envelope.js` — stable public facade
+- `app/engine/phase5-relation-audit-core.js`
+- `app/engine/aperture-v3-relation-audit.js` — stable Aperture facade
 - `app/engine/phase5-phason-relation-ledger.js`
 - `app/engine/phase5-relation-replay.js`
 - `app/dome-world/marrowline-relation-carrier.js`
@@ -102,17 +111,19 @@ Marrowline may carry and render an envelope. Carrier mutation produces `HOLD_CAR
 The Phase V CI gate covers:
 
 - R0/R1 non-equivalence;
-- non-extractable HMAC keys;
-- nonce uniqueness and reuse holds;
-- independent Ash digest verification;
+- non-extractable, per-relation HMAC keys;
+- nonce validation, uniqueness, and reuse holds;
+- independent Ash receipt digest verification;
+- equality between the R1 local digest and the Ash-committed digest;
 - Phase IV round-trip replay;
+- proposal and audit digest binding before confirmation;
 - artifact-digest exclusion;
-- explicit confirmation;
-- lifecycle immutability;
+- explicit confirmation and blocked generic state-transition bypasses;
+- fresh relation ID, nonce, and key on revision;
 - Phason links and forks;
-- pure replay;
+- pure replay and cross-receipt reference binding;
 - missing-key distinction;
-- Marrowline carrier integrity;
+- sealed Marrowline carrier integrity;
 - desktop/mobile Lab structure;
 - release synchronization.
 
