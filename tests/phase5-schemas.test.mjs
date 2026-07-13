@@ -22,5 +22,7 @@ const release = JSON.parse(fs.readFileSync(paths.at(-1), 'utf8'));
 assert.equal(release.invariants.new_serverless_function, false);
 assert.equal(release.invariants.operator_confirmation_required, true);
 assert.equal(release.baseline.phase_4_1, 'PHASE_4_ACTIVE');
-assert.equal(release.status, 'IMPLEMENTATION_DRAFT_PRODUCTION_GATED');
+assert.equal(release.status, 'IMPLEMENTED_VALIDATION_GATED');
+assert.equal(release.production_status, 'PRODUCTION_GATED');
+assert.equal(release.baseline.phase_5, 'IMPLEMENTED_VALIDATION_GATED');
 console.log('phase5-schemas.test.mjs passed');
