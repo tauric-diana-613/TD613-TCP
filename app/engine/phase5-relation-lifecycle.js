@@ -23,6 +23,7 @@ const TRANSITIONS = Object.freeze({
   WITHDRAWN: Object.freeze([]),
   SUPERSEDED: Object.freeze([])
 });
+const DEFAULT_CONFIRMATION_NONCE_REGISTRY = new NonceRegistry();
 const computeAuditDigest = (audit, options = {}) => canonicalDigest(
   PHASE5_DIGEST_DOMAINS.apertureAudit,
   relationDigestSubject(audit, 'audit_digest'),
@@ -32,8 +33,8 @@ const computeAuditDigest = (audit, options = {}) => canonicalDigest(
 export async function confirmRelation(proposalBundle, audit, options = {}) {
   const {
     explicitOperatorAction = false, confirmationId = null, createdAt = null,
-    nonceRegistry = null, cryptoImpl = globalThis.crypto,
-    TextEncoderImpl = globalThis.TextEncoder
+    nonceRegistry = DEFAULT_CONFIRMATION_NONCE_REGISTRY,
+    cryptoImpl = globalThis.crypto, TextEncoderImpl = globalThis.TextEncoder
   } = options;
   const proposal = proposalBundle?.envelope || proposalBundle;
   if (!proposal || proposal.schema !== RELATION_ENVELOPE_SCHEMA || proposal.state !== 'PROPOSED') {
@@ -55,14 +56,14 @@ export async function confirmRelation(proposalBundle, audit, options = {}) {
   if (audit.relation_id !== proposal.relation_id || audit.relation_digest !== proposal.relation_digest) {
     throw new Error('Audit and proposal references do not match.');
   }
-  const confirmationTime = createdAt || new Date().toISOString();
-  if (nonceRegistry != null) {
-    if (!(nonceRegistry instanceof NonceRegistry)) throw new TypeError('nonceRegistry must be a Phase V NonceRegistry.');
-    const claimed = await nonceRegistry.claim(proposal.context_nonce, {
-      relationId: proposal.relation_id, state: 'CONFIRMED', createdAt: confirmationTime
-    });
-    if (!claimed) throw new Error('HOLD_NONCE_REUSE');
+  if (!(nonceRegistry instanceof NonceRegistry)) {
+    throw new TypeError('nonceRegistry must be a Phase V NonceRegistry.');
   }
+  const confirmationTime = createdAt || new Date().toISOString();
+  const claimed = await nonceRegistry.claim(proposal.context_nonce, {
+    relationId: proposal.relation_id, state: 'CONFIRMED', createdAt: confirmationTime
+  });
+  if (!claimed) throw new Error('HOLD_NONCE_REUSE');
   const confirmation = {
     schema: RELATION_CONFIRMATION_SCHEMA,
     confirmation_receipt_id: confirmationId || randomRelationId('relconf_', cryptoImpl),
