@@ -56,8 +56,17 @@ const proposal = await compileRelationProposal({
   ashReceipt: source.ash, flowcoreReceipt: source.flow, roundTripReceipt: source.roundTrip,
   assuranceClass: R1_ROUTE_SCOPED_ARTIFACT_REFERENCE, artifactDigest: ARTIFACT_DIGEST
 }, { nonceRegistry: proposalRegistry });
+assert.equal(proposal.source_validation.ash, 'DIGEST_VERIFIED_AND_ARTIFACT_COMMITMENT_MATCHED');
 assert.equal(JSON.stringify(proposal.envelope).includes(ARTIFACT_DIGEST), false);
 assert.equal(proposal.envelope.hmac.key_extractable, false);
+await assert.rejects(
+  compileRelationProposal({
+    ashReceipt: source.ash, flowcoreReceipt: source.flow, roundTripReceipt: source.roundTrip,
+    assuranceClass: R1_ROUTE_SCOPED_ARTIFACT_REFERENCE,
+    artifactDigest: `sha256:${'b'.repeat(64)}`
+  }),
+  /does not match the Ash custody commitment/
+);
 const audit = await auditRelationProposal(proposal, {
   ashReceipt: source.ash, flowcoreReceipt: source.flow,
   roundTripReceipt: source.roundTrip, artifactDigest: ARTIFACT_DIGEST,
@@ -115,6 +124,10 @@ assert.equal(validateRelationTransition('PROPOSED', 'SUPERSEDED').valid, false);
 
 const r0Audit = await auditRelationProposal(r0, { ashReceipt: l0.ash, flowcoreReceipt: l0.flow, roundTripReceipt: l0.roundTrip });
 const r0Confirmed = await confirmRelation(r0, r0Audit, { explicitOperatorAction: true });
+await assert.rejects(
+  confirmRelation(r0, r0Audit, { explicitOperatorAction: true }),
+  /HOLD_NONCE_REUSE/
+);
 const base = await createPhasonRelationChain(r0.envelope);
 const confirmedBranch = await appendPhasonRelationEvent(base, r0Confirmed.envelope, 'CONFIRMED');
 const withdrawnBranch = await appendPhasonRelationEvent(base, await withdrawRelation(r0.envelope), 'WITHDRAWN');
