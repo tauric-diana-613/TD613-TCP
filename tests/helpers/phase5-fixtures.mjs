@@ -8,6 +8,9 @@ export async function ashReceipt(assurance = 'L1_BROWSER_LOCAL_ARTIFACT_DIGEST')
     artifact_id: 'artifact_phase5_fixture',
     assurance_class: assurance,
     artifact_digest_present: assurance === 'L1_BROWSER_LOCAL_ARTIFACT_DIGEST',
+    artifact_metadata: {
+      artifact_digest: assurance === 'L1_BROWSER_LOCAL_ARTIFACT_DIGEST' ? ARTIFACT_DIGEST : null
+    },
     manifest_digest: null
   };
   manifest.manifest_digest = await computeManifestDigest(manifest);
