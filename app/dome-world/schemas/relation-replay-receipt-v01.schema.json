@@ -1,0 +1,17 @@
+{
+  "$schema":"https://json-schema.org/draft/2020-12/schema",
+  "$id":"td613.relation-replay-receipt/v0.1",
+  "title":"TD613 Relation Replay Receipt v0.1",
+  "type":"object","additionalProperties":false,
+  "required":["schema","replay_id","relation_id","relation_digest","created_at","time_posture","outcome","errors","warnings","checks","network_called","artifact_reloaded","weather_regenerated","storage_mutated","ash_action_triggered","open_field_promoted","recommendation_not_command","replay_digest","seal"],
+  "properties":{
+    "schema":{"const":"td613.relation-replay-receipt/v0.1"},
+    "replay_id":{"type":"string","pattern":"^relreplay_[0-9a-f]{20}$"},
+    "relation_id":{"type":["string","null"]},"relation_digest":{"type":["string","null"]},
+    "created_at":{"type":"string"},"time_posture":{"const":"local-clock-not-trusted-time"},
+    "outcome":{"enum":["RELATION_REPLAY_VERIFIED","RELATION_REPLAY_VERIFIED_R0","RELATION_REPLAY_VERIFIED_WITH_WARNINGS","RELATION_REPLAY_HELD_TAMPER","RELATION_REPLAY_HELD_KEY_UNAVAILABLE","RELATION_REPLAY_HELD_REFERENCE_MISMATCH","RELATION_REPLAY_HELD_LIFECYCLE_CONTRADICTION","RELATION_REPLAY_HELD_PHASON_FORK","RELATION_REPLAY_REJECTED_AUTHORITY_BREACH"]},
+    "errors":{"type":"array"},"warnings":{"type":"array"},"checks":{"type":"object"},
+    "network_called":{"const":false},"artifact_reloaded":{"const":false},"weather_regenerated":{"const":false},"storage_mutated":{"const":false},"ash_action_triggered":{"const":false},"open_field_promoted":{"const":false},"recommendation_not_command":{"const":true},
+    "replay_digest":{"type":"string","pattern":"^sha256:[0-9a-f]{64}$"},"seal":{"const":"⟐"}
+  }
+}

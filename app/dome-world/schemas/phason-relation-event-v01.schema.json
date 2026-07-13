@@ -1,0 +1,19 @@
+{
+  "$schema":"https://json-schema.org/draft/2020-12/schema",
+  "$id":"td613.phason.relation-event/v0.1",
+  "title":"TD613 Phason Relation Event v0.1",
+  "type":"object","additionalProperties":false,
+  "required":["schema","event_id","relation_id","event_type","prior_state","new_state","relation_digest","previous_event_digest","created_at","time_posture","artifact_content_changed","context_receipt_changed","round_trip_receipt_changed","relation_changed","operator_action_required","event_digest","does_not_establish"],
+  "properties":{
+    "schema":{"const":"td613.phason.relation-event/v0.1"},
+    "event_id":{"type":"string","pattern":"^phev_[0-9a-f]{20}$"},"relation_id":{"type":"string","pattern":"^rel_[0-9a-f]{20}$"},
+    "event_type":{"enum":["CREATED","CONFIRMED","REVISED","WITHDRAWN","SUPERSEDED"]},
+    "prior_state":{"type":["string","null"]},"new_state":{"enum":["PROPOSED","CONFIRMED","REVISED","WITHDRAWN","SUPERSEDED"]},
+    "relation_digest":{"type":"string","pattern":"^sha256:[0-9a-f]{64}$"},
+    "previous_event_digest":{"type":["string","null"],"pattern":"^sha256:[0-9a-f]{64}$"},
+    "created_at":{"type":"string"},"time_posture":{"const":"local-clock-not-trusted-time"},
+    "artifact_content_changed":{"const":false},"context_receipt_changed":{"const":false},"round_trip_receipt_changed":{"const":false},"relation_changed":{"const":true},
+    "operator_action_required":{"type":"boolean"},"event_digest":{"type":"string","pattern":"^sha256:[0-9a-f]{64}$"},
+    "does_not_establish":{"type":"array","items":{"type":"string"}}
+  }
+}
