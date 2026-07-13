@@ -1,0 +1,16 @@
+import assert from 'node:assert/strict';
+import fs from 'node:fs';
+const html = fs.readFileSync('app/dome-world/relation-envelope.html', 'utf8');
+assert.match(html, /name="viewport"/);
+assert.match(html, /@media\(max-width:880px\)/);
+assert.match(html, /@media\(max-width:560px\)/);
+assert.match(html, /\.grid\{display:grid;grid-template-columns:minmax\(0,1fr\) minmax\(320px,.82fr\)/);
+assert.match(html, /@media\(max-width:880px\)\{\.grid\{grid-template-columns:1fr\}/);
+assert.match(html, /overflow-wrap:anywhere/);
+assert.match(html, /max-width:100%/);
+assert.doesNotMatch(html, /fetch\(|XMLHttpRequest|WebSocket|\/api\/phase5/);
+assert.match(html, /Explicitly confirm/);
+assert.match(html, /Explicit local save/);
+assert.match(html, /Download receipt bundle/);
+assert.match(html, /Marrowline carrier ≠ creator/);
+console.log('phase5-mobile.test.mjs passed');
