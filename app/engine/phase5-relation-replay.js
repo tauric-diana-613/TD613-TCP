@@ -62,6 +62,7 @@ export async function replayRelationEnvelope(
       if (confirmationReceipt.relation_id !== envelope?.relation_id) errors.push('confirmation_relation_reference_mismatch');
       const createdDigest = phasonChain?.events?.[0]?.relation_digest || null;
       if (createdDigest && confirmationReceipt.proposal_digest !== createdDigest) errors.push('confirmation_proposal_digest_mismatch');
+      if (audit?.relation_digest !== confirmationReceipt.proposal_digest) errors.push('confirmation_audit_proposal_digest_mismatch');
       if (confirmationReceipt.aperture_audit_digest !== audit?.audit_digest) errors.push('confirmation_audit_reference_mismatch');
       if (confirmationReceipt.explicit_operator_action !== true) errors.push('confirmation_not_explicit');
     }
@@ -94,7 +95,7 @@ export async function replayRelationEnvelope(
   if (errors.includes('artifact_or_authority_forbidden_field') || errors.includes('authority_boundary_breach') || errors.includes('confirmation_not_explicit')) outcome = 'RELATION_REPLAY_REJECTED_AUTHORITY_BREACH';
   else if (errors.includes('phason_fork')) outcome = 'RELATION_REPLAY_HELD_PHASON_FORK';
   else if (errors.some(error => error.includes('lifecycle') || error.includes('phason'))) outcome = 'RELATION_REPLAY_HELD_LIFECYCLE_CONTRADICTION';
-  else if (errors.some(error => error.includes('reference'))) outcome = 'RELATION_REPLAY_HELD_REFERENCE_MISMATCH';
+  else if (errors.some(error => error.includes('reference') || error.includes('proposal_digest'))) outcome = 'RELATION_REPLAY_HELD_REFERENCE_MISMATCH';
   else if (errors.length) outcome = 'RELATION_REPLAY_HELD_TAMPER';
   else if (outcome === 'RELATION_REPLAY_VERIFIED' && warnings.length) outcome = 'RELATION_REPLAY_VERIFIED_WITH_WARNINGS';
 
@@ -111,7 +112,7 @@ export async function replayRelationEnvelope(
       confirmation_digest: !errors.includes('confirmation_digest_mismatch'),
       audit_digest: !errors.includes('audit_digest_mismatch'),
       phason_chain: phasonReplay.outcome === 'RELATION_REPLAY_VERIFIED',
-      source_references: !errors.some(error => error.includes('reference_mismatch')),
+      source_references: !errors.some(error => error.includes('reference_mismatch') || error.includes('proposal_digest')),
       authority_nontransfer: !errors.includes('authority_boundary_breach'),
       artifact_digest_absent: !errors.includes('artifact_or_authority_forbidden_field')
     },
