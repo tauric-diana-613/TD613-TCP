@@ -8,7 +8,7 @@
     {"phase": 1, "status": "IMPLEMENTED_HARDENED"},
     {"phase": 2, "status": "IMPLEMENTED_PRODUCTION_DEMONSTRATED"},
     {"phase": 3, "status": "IMPLEMENTED_PRODUCTION_DEMONSTRATED"},
-    {"phase": 4, "status": "IMPLEMENTED_RUNTIME_DEMONSTRATED_PRODUCTION_GATED", "promotion_requires": ["authenticated-preview-or-post-merge-live-probe", "production-runtime-receipt"]},
+    {"phase": 4, "status": "IMPLEMENTED_PRODUCTION_DEMONSTRATED", "continuing_gate": "regression-coverage; phase-5-separately-gated"},
     {"phase": 5, "status": "APERTURE_LANDING_ZONE_INSTANTIATED_RUNTIME_DEFERRED"},
     {"phase": 6, "status": "HELD", "reason": "plaintext Cinder transport not redesigned"},
     {"phase": 7, "status": "PLANNED"},
@@ -60,8 +60,18 @@
     "desktop_mobile_demo_status": "PASS",
     "preview_deployment_status": "READY_PROTECTED",
     "preview_access_status": "PROTECTED_OR_NON_JSON_HTTP_302",
-    "production_demo_status": "NOT_OBSERVED",
-    "production_promotion_status": "HELD"
+    "production_demo_status": "PASS",
+    "production_promotion_status": "EARNED",
+    "production_runtime_commit": "cd1b2f5389144f508e44de92d6fe3e4e2f9b6160",
+    "production_probe_workflow_run": 29215880253,
+    "production_probe_artifact": 8266542869,
+    "production_probe_artifact_digest": "sha256:a5ac28cd6f7065a9825405b43168d1d0fa76b55f409815f67c85f138ff36f0c7",
+    "production_base_url": "https://td613.com",
+    "production_context_receipt": "flowctx_95afdf3492ce85459c8c",
+    "production_round_trip_receipt": "aprt_f672778bc7b58f37f7ac",
+    "production_replay_status": "ROUND_TRIP_VERIFIED",
+    "production_tamper_status": "ROUND_TRIP_HELD_TAMPER",
+    "production_browser_status": "PASS"
   },
   "closed_post_merge_seams": [
     "legacy-engine-custody-bypass",
@@ -74,6 +84,7 @@
     "aperture-v3-identity-contention",
     "phase4-public-vnext-return",
     "phase4-bridge-default-and-clamp-path",
-    "phase4-mobile-status-token-overflow"
+    "phase4-mobile-status-token-overflow",
+    "phase4-production-runtime-observation-gap"
   ]
 }
