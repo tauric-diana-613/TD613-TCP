@@ -67,6 +67,9 @@ const readiness = await boundedFetch(`${base}/api/aperture-bridge`).then(async r
 if (!readiness.response.ok || !readiness.body.reciprocalReceipts) {
   throw new Error('Phase IV readiness failed');
 }
+if (readiness.body.status !== 'phase-4-active') {
+  throw new Error(`Phase IV readiness label is stale: ${readiness.body.status || '<missing>'}`);
+}
 if (readiness.body.contextReceiptSchema !== 'td613.flowcore.context-receipt/v0.1') {
   throw new Error('Phase IV did not adopt v0.1');
 }
