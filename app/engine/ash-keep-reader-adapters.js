@@ -65,6 +65,14 @@ function uniqueSorted(values = []) {
   return [...new Set(values.map(value => String(value).trim()).filter(Boolean))].sort();
 }
 
+function uniqueSortedLower(values = []) {
+  return uniqueSorted(values.map(value => String(value).trim().toLowerCase()));
+}
+
+function uniqueSortedUpper(values = []) {
+  return uniqueSorted(values.map(value => String(value).trim().toUpperCase()));
+}
+
 function requireOpaqueId(value, label) {
   const output = String(value || '').trim();
   if (!OPAQUE_ID.test(output)) throw new Error(`${label} must be an opaque identifier.`);
@@ -86,15 +94,15 @@ function requireEnum(value, allowed, label) {
 function normalizeAdapter(adapter, index) {
   const adapterId = requireOpaqueId(adapter?.adapter_id, `Adapter ${index} ID`);
   const adapterClass = requireEnum(adapter?.adapter_class, ADAPTER_CLASSES, `Adapter ${adapterId} class`);
-  const acceptedReaderClasses = uniqueSorted(adapter?.accepted_reader_classes || []);
+  const acceptedReaderClasses = uniqueSortedLower(adapter?.accepted_reader_classes || []);
   if (!acceptedReaderClasses.length) throw new Error(`Adapter ${adapterId} requires at least one Reader class.`);
   for (const readerClass of acceptedReaderClasses) {
     if (!READER_CLASSES.includes(readerClass)) throw new Error(`Adapter ${adapterId} references unsupported Reader class: ${readerClass}`);
   }
-  const acquisitionRoutes = uniqueSorted(adapter?.allowed_acquisition_routes || []);
+  const acquisitionRoutes = uniqueSortedUpper(adapter?.allowed_acquisition_routes || []);
   if (!acquisitionRoutes.length) throw new Error(`Adapter ${adapterId} requires at least one acquisition route.`);
   for (const route of acquisitionRoutes) requireEnum(route, ACQUISITION_ROUTES, `Adapter ${adapterId} acquisition route`);
-  const executionEnvironments = uniqueSorted(adapter?.allowed_execution_environments || []);
+  const executionEnvironments = uniqueSortedUpper(adapter?.allowed_execution_environments || []);
   if (!executionEnvironments.length) throw new Error(`Adapter ${adapterId} requires at least one execution environment.`);
   for (const environment of executionEnvironments) requireEnum(environment, EXECUTION_ENVIRONMENTS, `Adapter ${adapterId} execution environment`);
   return {
