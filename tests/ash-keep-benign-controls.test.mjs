@@ -208,7 +208,7 @@ async function buildFixture(fixtureId, summaries, overrides = {}) {
       acquisitionRoute: isAlpha ? 'LOCAL_GENERATED' : 'SYNTHETIC_FIXTURE',
       executionEnvironment: isAlpha ? 'NODE_LOCAL' : 'DECLARED_FIXTURE',
       declaredExecutorClass: isAlpha ? 'DETERMINISTIC_FIXTURE' : 'DECLARED_FIXTURE',
-      fixtureStatus: isAlpha ? 'REFERENCE' : 'SYNTHETIC'
+      fixtureStatus: isAlpha ? 'DECLARED_FIXTURE' : 'SYNTHETIC'
     }));
   }
 
