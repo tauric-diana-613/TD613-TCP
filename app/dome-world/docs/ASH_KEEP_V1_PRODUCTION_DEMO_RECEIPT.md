@@ -42,6 +42,8 @@ The observer must emit `td613.ash-keep.deployment-observer-context/v0.1` contain
 - observed runtime commit SHA;
 - upstream deployment workflow-run ID;
 - observer workflow-run ID and attempt;
+- observer workflow-run URL;
+- observer status context;
 - triggering event class;
 - source status `DEPLOYED_OBSERVATION`;
 - `promotion_authorized = false`;
@@ -50,6 +52,27 @@ The observer must emit `td613.ash-keep.deployment-observer-context/v0.1` contain
 A deployment workflow success is a trigger condition, not production evidence by itself. A deployed probe `PASS` is evidence eligible for later operator closure, not authority to alter the release manifest. The observer therefore reasserts `PREVIEW_PENDING` and `NOT_YET_EARNED` even after preserving a successful deployed evidence bundle.
 
 Manual dispatch remains available only when an operator supplies both a deployed base URL and the exact confirmation phrase `RUN_DEPLOYED_OBSERVATION`. Manual and automatic observer lanes share the same non-promotion boundary.
+
+## Discoverable observer status
+
+The observer publishes one fixed legacy commit status context on the exact observed commit:
+
+```text
+Ash Keep Deployed Observation
+```
+
+The status may be:
+
+- `pending` while the deployed assay is running;
+- `success` after the deployed assay, evidence upload, and non-promotion reassertion complete;
+- `failure` when any observer step holds for repair;
+- `error` only for an explicit status-publication error class.
+
+The status target URL points to the observer workflow run. This makes the deployed evidence route discoverable without guessing run identifiers or granting the observer write access to repository contents.
+
+The bounded publisher is `scripts/publish-ash-keep-observer-status.mjs`. It receives only the GitHub token, repository, observed commit SHA, observer workflow-run URL, bounded status state, and a description limited to GitHub’s 140-character field. It emits `td613.ash-keep.observer-status-publication/v0.1` with `promotion_authorized = false`.
+
+A commit status is a navigational receipt and outcome signal. It is not a production receipt, promotion act, trusted timestamp, identity proof, or substitute for the preserved evidence artifact. Status publication receives `statuses: write`; repository contents remain read-only.
 
 ## Required deployed observations
 
@@ -72,7 +95,7 @@ The production probe must observe all of the following against the deployed runt
 15. browser console and page errors remain empty;
 16. screenshots, JSON observation, fixture manifest, deployment observer context, capsule fixtures, and evidence manifest receive SHA-256 digests;
 17. the probe records whether it observed local validation, protected preview, or deployed production;
-18. the probe, fixture runner, and deployment observer keep `promotion_authorized = false`.
+18. the probe, fixture runner, deployment observer, and status publisher keep `promotion_authorized = false`.
 
 ## Required promotion record
 
@@ -82,6 +105,8 @@ A later promotion commit must record:
 - deployed runtime commit SHA;
 - upstream deployment workflow-run ID;
 - deployed observer workflow-run ID and attempt;
+- deployed observer workflow-run URL;
+- observer status context, terminal state, and status ID;
 - deployment observer-context SHA-256;
 - evidence artifact ID;
 - evidence artifact SHA-256;
@@ -96,7 +121,7 @@ A later promotion commit must record:
 - explicit operator closure;
 - release-manifest synchronization across generated copies.
 
-The promotion commit must be separate from the implementation, probe-harness, observer-routing, or deployed-observation commits. A preview deployment, deployment workflow success, local browser run, green unit test, or successful static build cannot satisfy the production stratum.
+The promotion commit must be separate from the implementation, probe-harness, observer-routing, status-publication, or deployed-observation commits. A preview deployment, deployment workflow success, commit status, local browser run, green unit test, or successful static build cannot satisfy the production stratum.
 
 ## Boundaries
 
@@ -130,7 +155,8 @@ node scripts/run-ash-keep-production-probe.mjs
 
 ```text
 CLOSURE_HARNESS_IMPLEMENTED_VALIDATION_GATED
-POST_DEPLOYMENT_OBSERVER_DESIGNED
+POST_DEPLOYMENT_OBSERVER_IMPLEMENTED_TRIGGER_GATED
+OBSERVER_STATUS_PUBLICATION_DESIGNED
 PRODUCTION_EVIDENCE_ABSENT
 PROMOTION_WITHHELD
 ```

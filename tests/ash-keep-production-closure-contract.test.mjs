@@ -4,6 +4,7 @@ import fs from 'node:fs';
 const read = file => fs.readFileSync(file, 'utf8');
 const probe = read('scripts/ash-keep-production-probe.mjs');
 const runner = read('scripts/run-ash-keep-production-probe.mjs');
+const publisher = read('scripts/publish-ash-keep-observer-status.mjs');
 const receipt = read('app/dome-world/docs/ASH_KEEP_V1_PRODUCTION_DEMO_RECEIPT.md');
 const workflow = read('.github/workflows/ash-keep-production-closure.yml');
 const release = JSON.parse(read('app/aperture/release.json'));
@@ -66,6 +67,24 @@ assert.match(runner, /scrollWidth > parent\.clientWidth/);
 assert.doesNotMatch(runner, /IMPLEMENTED_PRODUCTION_DEMONSTRATED/);
 
 for (const token of [
+  "new Set(['pending', 'success', 'failure', 'error'])",
+  "const CONTEXT = 'Ash Keep Deployed Observation'",
+  "required('GITHUB_TOKEN')",
+  "required('TD613_OBSERVED_COMMIT')",
+  "required('TD613_OBSERVER_RUN_URL')",
+  'statuses/${sha}',
+  "method: 'POST'",
+  'description.length > 140',
+  'td613.ash-keep.observer-status-publication/v0.1',
+  'promotion_authorized: false'
+]) {
+  assert.ok(publisher.includes(token), `Observer status publisher omitted required token: ${token}`);
+}
+assert.match(publisher, /\^\[0-9a-f\]\{40\}\$/i);
+assert.match(publisher, /https:\\\/\\\/github\\\.com/);
+assert.doesNotMatch(publisher, /release\.json|productionStatus|IMPLEMENTED_PRODUCTION_DEMONSTRATED/);
+
+for (const token of [
   'NOT_YET_EARNED',
   'PREVIEW_PENDING',
   'post-merge probe',
@@ -78,6 +97,8 @@ for (const token of [
   'desktop screenshot SHA-256',
   'mobile portrait screenshot SHA-256',
   'mobile landscape screenshot SHA-256',
+  'Ash Keep Deployed Observation',
+  'commit status',
   'promotion_authorized = false',
   'PROMOTION_WITHHELD'
 ]) {
@@ -99,14 +120,25 @@ for (const token of [
   "github.event.workflow_run.conclusion == 'success'",
   "github.event.workflow_run.head_branch == 'main'",
   "github.event_name != 'workflow_run'",
+  'statuses: write',
   'https://td613.com',
   'TD613_OBSERVED_COMMIT',
   'TD613_UPSTREAM_WORKFLOW_RUN_ID',
+  'TD613_OBSERVER_RUN_URL',
+  'TD613_OBSERVER_STATUS_CONTEXT',
   'td613.ash-keep.deployment-observer-context/v0.1',
   'observed_runtime_commit',
   'upstream_deployment_workflow_run_id',
   'observer_workflow_run_id',
+  'observer_run_url',
+  'observer_status_context',
   'source_status: \'DEPLOYED_OBSERVATION\'',
+  'Publish observer pending status',
+  'Publish observer success status',
+  'Publish observer failure status',
+  'TD613_OBSERVER_STATUS_STATE: pending',
+  'TD613_OBSERVER_STATUS_STATE: success',
+  'TD613_OBSERVER_STATUS_STATE: failure',
   'Wait for deployed Ash Keep route',
   'Validate deployed observation class',
   'report.source_status !== \'DEPLOYED_OBSERVATION\'',
@@ -116,6 +148,7 @@ for (const token of [
   'npx playwright install --with-deps chromium',
   'scripts/ash-keep-production-probe.mjs',
   'scripts/run-ash-keep-production-probe.mjs',
+  'scripts/publish-ash-keep-observer-status.mjs',
   'TD613_PROBE_RUNTIME_DIR',
   'upload-artifact@v4',
   'ash-keep-production-closure-evidence',
