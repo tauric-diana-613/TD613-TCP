@@ -30,6 +30,27 @@ The runner must emit `td613.ash-keep.production-probe-fixture-manifest/v0.1` con
 
 Instrument source, operator-selected test material, and resulting observation remain separate objects.
 
+## Post-deployment observer route
+
+The automatic deployed observation begins only after the repository workflow named `Test and deploy static app` completes successfully on `main`.
+
+The `workflow_run` event supplies the deployed commit SHA and upstream deployment workflow-run ID. The Ash Keep observer must check out that exact commit, wait until `https://td613.com/dome-world/ash-keep.html` exposes the Ash Keep runtime, and then run the canonical probe through the declared fixture runner.
+
+The observer must emit `td613.ash-keep.deployment-observer-context/v0.1` containing:
+
+- observed base URL;
+- observed runtime commit SHA;
+- upstream deployment workflow-run ID;
+- observer workflow-run ID and attempt;
+- triggering event class;
+- source status `DEPLOYED_OBSERVATION`;
+- `promotion_authorized = false`;
+- observer-context SHA-256.
+
+A deployment workflow success is a trigger condition, not production evidence by itself. A deployed probe `PASS` is evidence eligible for later operator closure, not authority to alter the release manifest. The observer therefore reasserts `PREVIEW_PENDING` and `NOT_YET_EARNED` even after preserving a successful deployed evidence bundle.
+
+Manual dispatch remains available only when an operator supplies both a deployed base URL and the exact confirmation phrase `RUN_DEPLOYED_OBSERVATION`. Manual and automatic observer lanes share the same non-promotion boundary.
+
 ## Required deployed observations
 
 The production probe must observe all of the following against the deployed runtime:
@@ -46,12 +67,12 @@ The production probe must observe all of the following against the deployed runt
 10. Save Point sealing succeeds;
 11. Ash Capsule export, authenticated import, wrong-passphrase hold, and ciphertext-tamper hold succeed;
 12. a declared 250-node / approximately 400-edge synthetic Case Map compiles and verifies within the recorded performance threshold;
-13. desktop, mobile portrait, mobile landscape, rotation return, and reduced-motion layouts show zero horizontal overflow and no clipped visible controls;
+13. desktop, mobile portrait, mobile landscape, rotation return, and reduced-motion layouts show zero horizontal overflow and no unreachable clipped visible controls; intentionally scrollable navigation lanes remain separately recorded;
 14. the exercised closure path emits no non-read request and no recipient-transport request;
 15. browser console and page errors remain empty;
-16. screenshots, JSON observation, fixture manifest, capsule fixtures, and evidence manifest receive SHA-256 digests;
+16. screenshots, JSON observation, fixture manifest, deployment observer context, capsule fixtures, and evidence manifest receive SHA-256 digests;
 17. the probe records whether it observed local validation, protected preview, or deployed production;
-18. the probe and fixture runner keep `promotion_authorized = false`.
+18. the probe, fixture runner, and deployment observer keep `promotion_authorized = false`.
 
 ## Required promotion record
 
@@ -59,7 +80,9 @@ A later promotion commit must record:
 
 - deployed base URL;
 - deployed runtime commit SHA;
-- GitHub Actions workflow run ID;
+- upstream deployment workflow-run ID;
+- deployed observer workflow-run ID and attempt;
+- deployment observer-context SHA-256;
 - evidence artifact ID;
 - evidence artifact SHA-256;
 - canonical probe SHA-256;
@@ -73,7 +96,7 @@ A later promotion commit must record:
 - explicit operator closure;
 - release-manifest synchronization across generated copies.
 
-The promotion commit must be separate from the implementation or probe-harness commit. A preview deployment, local browser run, green unit test, or successful static build cannot satisfy the production stratum.
+The promotion commit must be separate from the implementation, probe-harness, observer-routing, or deployed-observation commits. A preview deployment, deployment workflow success, local browser run, green unit test, or successful static build cannot satisfy the production stratum.
 
 ## Boundaries
 
@@ -106,7 +129,8 @@ node scripts/run-ash-keep-production-probe.mjs
 ## Current ruling
 
 ```text
-CLOSURE_HARNESS_DESIGNED
+CLOSURE_HARNESS_IMPLEMENTED_VALIDATION_GATED
+POST_DEPLOYMENT_OBSERVER_DESIGNED
 PRODUCTION_EVIDENCE_ABSENT
 PROMOTION_WITHHELD
 ```
