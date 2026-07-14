@@ -64,6 +64,8 @@ jobs:
         run: node tests/ash-keep-production-closure-contract.test.mjs
       - name: Enforce release promotion gate
         run: node tests/ash-keep-production-promotion-gate.test.mjs
+      - name: Rebuild maintained Aperture download artifact
+        run: npm run aperture:export-downloads
       - name: Preserve Ash Keep component regressions
         run: npm run test:ash-keep
       - name: Install Chromium probe runtime
