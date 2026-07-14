@@ -108,3 +108,5 @@ Aperture and diagnostics may continue to reference `ash-readiness` as a contract
 ## Claim ceiling
 
 This integration proves workflow wiring and state transitions under focused validation. It does not production-demonstrate the new threshold route, live custody registration, mobile behavior, or production release gates until a deployed browser probe and sealed receipt exist.
+
+Validation trigger: second branch event issued after workflow installation.
