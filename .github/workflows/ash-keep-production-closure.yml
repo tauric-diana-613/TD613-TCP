@@ -15,6 +15,7 @@ on:
       - "scripts/ash-keep-local-closure-server.mjs"
       - "scripts/ash-keep-production-probe.mjs"
       - "scripts/run-ash-keep-production-probe.mjs"
+      - "scripts/publish-ash-keep-observer-status.mjs"
       - "tests/ash-keep-*.test.mjs"
       - ".github/workflows/ash-keep-production-closure.yml"
   push:
@@ -32,6 +33,7 @@ on:
       - "scripts/ash-keep-local-closure-server.mjs"
       - "scripts/ash-keep-production-probe.mjs"
       - "scripts/run-ash-keep-production-probe.mjs"
+      - "scripts/publish-ash-keep-observer-status.mjs"
       - "tests/ash-keep-*.test.mjs"
       - ".github/workflows/ash-keep-production-closure.yml"
   workflow_run:
@@ -52,6 +54,7 @@ on:
 
 permissions:
   contents: read
+  statuses: write
 
 jobs:
   local-closure-validation:
@@ -66,10 +69,11 @@ jobs:
           cache: npm
       - name: Install repository dependencies
         run: npm ci
-      - name: Validate probe, fixture runner, and server syntax
+      - name: Validate probe, fixture runner, status publisher, and server syntax
         run: |
           node --check scripts/ash-keep-production-probe.mjs
           node --check scripts/run-ash-keep-production-probe.mjs
+          node --check scripts/publish-ash-keep-observer-status.mjs
           node --check scripts/ash-keep-local-closure-server.mjs
       - name: Validate production closure contract
         run: node tests/ash-keep-production-closure-contract.test.mjs
@@ -112,6 +116,7 @@ jobs:
           path: |
             scripts/ash-keep-production-probe.mjs
             scripts/run-ash-keep-production-probe.mjs
+            scripts/publish-ash-keep-observer-status.mjs
             artifacts/ash-keep-local-server.log
             artifacts/ash-keep-local-readiness.json
             artifacts/ash-keep-probe-runtime/
@@ -136,6 +141,8 @@ jobs:
       TD613_DEPLOYED_BASE_URL: ${{ github.event_name == 'workflow_run' && 'https://td613.com' || inputs.base_url }}
       TD613_OBSERVED_COMMIT: ${{ github.event_name == 'workflow_run' && github.event.workflow_run.head_sha || github.sha }}
       TD613_UPSTREAM_WORKFLOW_RUN_ID: ${{ github.event_name == 'workflow_run' && github.event.workflow_run.id || '' }}
+      TD613_OBSERVER_RUN_URL: ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}
+      TD613_OBSERVER_STATUS_CONTEXT: Ash Keep Deployed Observation
     steps:
       - uses: actions/checkout@v4
         with:
@@ -144,6 +151,12 @@ jobs:
         with:
           node-version: 22
           cache: npm
+      - name: Publish observer pending status
+        env:
+          GITHUB_TOKEN: ${{ github.token }}
+          TD613_OBSERVER_STATUS_STATE: pending
+          TD613_OBSERVER_STATUS_DESCRIPTION: Ash Keep deployed observation is running
+        run: node scripts/publish-ash-keep-observer-status.mjs
       - name: Install repository dependencies
         run: npm ci
       - name: Wait for deployed Ash Keep route
@@ -178,6 +191,8 @@ jobs:
             upstream_deployment_workflow_run_id: process.env.TD613_UPSTREAM_WORKFLOW_RUN_ID || null,
             observer_workflow_run_id: process.env.TD613_OBSERVER_RUN_ID,
             observer_workflow_run_attempt: process.env.TD613_OBSERVER_RUN_ATTEMPT,
+            observer_run_url: process.env.TD613_OBSERVER_RUN_URL,
+            observer_status_context: process.env.TD613_OBSERVER_STATUS_CONTEXT,
             trigger_event: process.env.TD613_TRIGGER_EVENT,
             source_status: 'DEPLOYED_OBSERVATION',
             promotion_authorized: false
@@ -218,6 +233,7 @@ jobs:
           path: |
             scripts/ash-keep-production-probe.mjs
             scripts/run-ash-keep-production-probe.mjs
+            scripts/publish-ash-keep-observer-status.mjs
             artifacts/ash-keep-probe-runtime/
             artifacts/ash-keep-deployed-observation/
           if-no-files-found: error
@@ -228,3 +244,17 @@ jobs:
           node -e "const r=require('./app/aperture/release.json'); if(r.ash.productionStatus!=='PREVIEW_PENDING') process.exit(1)"
           grep -q 'NOT_YET_EARNED' app/dome-world/docs/ASH_KEEP_V1_PRODUCTION_DEMO_RECEIPT.md
           echo 'Deployed observation preserved. Promotion remains a separate operator-closed commit.'
+      - name: Publish observer success status
+        if: success()
+        env:
+          GITHUB_TOKEN: ${{ github.token }}
+          TD613_OBSERVER_STATUS_STATE: success
+          TD613_OBSERVER_STATUS_DESCRIPTION: Ash Keep deployed observation passed; promotion remains withheld
+        run: node scripts/publish-ash-keep-observer-status.mjs
+      - name: Publish observer failure status
+        if: failure()
+        env:
+          GITHUB_TOKEN: ${{ github.token }}
+          TD613_OBSERVER_STATUS_STATE: failure
+          TD613_OBSERVER_STATUS_DESCRIPTION: Ash Keep deployed observation held for repair
+        run: node scripts/publish-ash-keep-observer-status.mjs
