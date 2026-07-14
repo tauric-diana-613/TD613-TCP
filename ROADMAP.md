@@ -1,100 +1,559 @@
-# Roadmap
+# TD613 Repository Roadmap
 
-What is in flight, what is pending, and what is currently red. Use this
-alongside [`KNOWN_FAILURES.md`](KNOWN_FAILURES.md) and individual
-chamber READMEs.
+Roadmap generation: `v0.7 · synchronized with the completion ledger`
 
-## Recently shipped
+Date: `2026-07-14`
 
-- **Phase A** (commits `d1ff8a4`, `f1ca344`, `a3ce6ed`)
-  - Dropped sessionStorage dual-write of the gateway/aperture handoff.
-  - Archived six PATCH_*_LEDGER files to `app/safe-harbor/_archive/ledgers/`.
-  - Added [`CONTRIBUTING.md`](CONTRIBUTING.md) plus a commit-msg hook
-    that rejects placeholder messages (`Patch X.Y.Z`, `WIP`, empty).
-- **Phase B** (commits `966f638` through `01bc323`)
-  - Re-synced `browser-engine.js` and the 18 retrieval-lane fixtures.
-  - Added a JSDOM-based smoke test for every chamber HTML (project's
-    first runtime test dependency, `jsdom`).
-  - Wired CI to run `npm test` before deploying to GitHub Pages.
+Use this roadmap alongside:
 
-## In flight
+- [`docs/ASH_KEEP_BUILDOUT_LEDGER.md`](docs/ASH_KEEP_BUILDOUT_LEDGER.md)
+- [`KNOWN_FAILURES.md`](KNOWN_FAILURES.md)
+- [`docs/ASH_KEEP.md`](docs/ASH_KEEP.md)
+- [`docs/ASH_KEEP_CHOIR_TEST.md`](docs/ASH_KEEP_CHOIR_TEST.md)
+- [`docs/ASH_KEEP_READER_ADAPTER_REGISTRY.md`](docs/ASH_KEEP_READER_ADAPTER_REGISTRY.md)
+- [`docs/ASH_KEEP_READER_DISAGREEMENT.md`](docs/ASH_KEEP_READER_DISAGREEMENT.md)
+- chamber-specific READMEs and release receipts.
 
-Nothing right now. Phase B closed; next phase needs to be picked up
-deliberately.
+This file records what shipped, what has been selected next, what remains structurally pending, and what is currently red. The completion ledger remains authoritative for maturity scoring.
 
-## Pending
+## Governing maturity law
 
-### Phase C — Engine vocabulary externalization
+| Score | Status |
+| ---: | --- |
+| 0 | `UNIMPLEMENTED` |
+| 1 | `DESIGNED_ONLY` |
+| 2 | `SCAFFOLDED` |
+| 3 | `PARTIAL_TESTED_COMPONENT` |
+| 4 | `IMPLEMENTED_VALIDATION_GATED` |
+| 5 | `IMPLEMENTED_PRODUCTION_DEMONSTRATED` |
 
-`inferDiscourseOntology` and three sibling functions in
-`app/engine/generator-v2.js` carry fixture-leaning vocabulary
-(`unit`, `onboarding`, `motel`, `plumber`, `cabinet`, etc.) inside
-their regex bodies. That couples the engine to a specific corpus and
-makes new fixtures an engine change rather than a data change.
+The roadmap inherits three anti-fraud rules from the ledger:
 
-The fix: extract the vocabulary into
-`app/engine/data/discourse-ontology.json` and have the four functions
-load from it. No behavioral change required — the existing
-`tests/generator-v2.test.mjs` assertions pin the expected outputs.
+- green unit tests do not impersonate production evidence;
+- adjacent primitives do not impersonate integrated workflows;
+- declared boundaries do not impersonate enforcement across every route.
 
-### Phase D — Aperture monolith refactor
+## Current scored posture
 
-`app/aperture/index.html` is one 8200-line file with nine inline
-`<script>` blocks. Five of them version-stamp themselves
-(`aperture-v100-script` through `td613-aperture-gateway-embed-script`)
-and each monkey-patches `window.createTCPHandoffPacket`,
-`window.updateUI`, and `window.resetSystem` from the previous block.
-The chain works empirically but is one missed `originalX` capture
-away from corruption.
+```text
+Ash Keep production closure = 54 / 55 · 98%
+Choir program = 34 / 70 · 49%
+full bounded program = 121 / 295 · ≈41%
+production-demonstrated workstreams = 1 / 7
+validation-gated Choir instruments = 3
+transport-capable workstreams = 0
+```
 
-- **D1** — split each inline script into its own file in
-  `app/aperture/scripts/`. No logic change.
-- **D2** — replace the five-deep wrapper chain on each global with an
-  explicit `composeChain(layers, base)` registry pattern. Layers
-  declare themselves; composition runs once at the end.
+Current release posture also preserves:
 
+```text
+Ash Keep = IMPLEMENTED_PRODUCTION_DEMONSTRATED
+Phase IV = IMPLEMENTED_PRODUCTION_DEMONSTRATED
+Phase V = IMPLEMENTED_PRODUCTION_DEMONSTRATED
+Observatory = IMPLEMENTED_PRODUCTION_DEMONSTRATED
+Ash automatic Cinder = false
+Ash transport = false
+```
 
-### Phase E — Safe Harbor Ledger Consolidation (Patch 36)
+Those production statuses do not transfer to Choir, Safe Harbor adapters, recipient transport, or any future instrument by proximity.
 
-**Epic: Membrane Boot-Safety & Ingress Sequence Hardening**
-- *Ticket E.1: Enforce strict raw HTML membrane defaults.* Prevent the membrane from appearing frozen/sealed when JS fails by ensuring lanes 2 and 3 are hidden by default, bypass/mint controls are disabled by default, and a noscript boot alert is present.
-- *Ticket E.2: Sequence and bypass fix.* Ensure ingress sequence rendering only shows the active unresolved question. Fix the hidden-card bug so cards unhide when unlocked. Ensure `body.vault-open` toggles correctly for reliable dissolve behavior.
-- *Ticket E.3: Error handling.* Add global error/unhandled rejection handlers that surface boot and mint errors in the ingress note.
+---
 
-**Epic: Operator Bypass & Config Security**
-- *Ticket E.4: Secure local bypass.* The public ship must contain no hardcoded password/token. Bypass must use a local operator token hash supplied by config or session storage, functioning without dev-console injection.
-- *Ticket E.5: Packetless operator shell.* Operator bypass must open a packetless operator shell only, and must not pretend a packet exists.
+# Recently shipped
 
-**Epic: Packet Lifecycle & Safe Harbor State Normalization**
-- *Ticket E.6: Explicit stage transition.* Auto-unvault behavior is strictly removed. Transition from triad-ready requires an explicit "Mint Staged Packet" action.
-- *Ticket E.7: Standardized lifecycle nomenclature.* Normalize states toward: `staged`, `sealed`, `harbor-eligible`, `exported`, `verified`.
-- *Ticket E.8: Cryptographic Naming & Hash Migration.* `packet_checksum` is deprecated and must be renamed to `packet_hash_sha256`. The packet hash must be computed over strictly pre-signature material (the `sig` object is cleared before hashing).
+## Legacy repository stabilization
 
-**Epic: Advanced Probes & Signature Lane Integration**
-- *Ticket E.9: Packet-aware probes.* Public probe builder must derive packet context from the staged packet. Text probes include a Safe Harbor packet context block and canonical footer. JSON probes include `safe_harbor_packet` metadata and `td613_binding_footer`.
-- *Ticket E.10: Deterministic Badge Issuance.* Replace placeholder badge numbers with a deterministic hash over canonical intake context (`packet_id|receipt_id|binding_fragment|payload|date|principal|request_id`). Output format must be `TD613-SH-<binding-fragment>-<hash8>`.
-- *Ticket E.11: Operator Signature Lane.* Implement operator-only Advanced Signature Lane UI that attaches cleanly to the staged packet. Packet model adds a top-level `signature` object.
+### Phase A
 
-**Epic: Reference Surface Alignment & Housekeeping**
-- *Ticket E.12: Synchronize Canon Drift.* Fix verifier/manifest/offline capsule drift. Public mode is `legacy-compat`. Packet schema is `td613.safe-harbor.packet/v1`. Ensure `.git` is removed from the shipped archive. Align internal Safe Harbor version labels consistently.
+Commits: `d1ff8a4`, `f1ca344`, `a3ce6ed`
 
-## Currently red (tracked, not gating)
+- Removed sessionStorage dual-write of the gateway/aperture handoff.
+- Archived six `PATCH_*_LEDGER` files to `app/safe-harbor/_archive/ledgers/`.
+- Added [`CONTRIBUTING.md`](CONTRIBUTING.md) and a commit-message hook rejecting placeholder messages.
 
-Three engine-regression tests in
-[`KNOWN_FAILURES.md`](KNOWN_FAILURES.md):
+### Phase B
 
-- `tests/trainer-lab.test.mjs` — semantic audit floor below 0.85
-- `tests/trainer-browser.test.mjs` — fingerprint snapshot drift
-- `tests/persona-gallery.test.mjs` — gallery fingerprint snapshot drift
+Commits: `966f638` through `01bc323`
 
-All three trace back to operator additions in Patch 33.7.1 shifting
-engine output past existing thresholds and snapshots. They are
-quarantined into `npm run test:known-failing` so `npm test` (and CI)
-stays honest about new regressions.
+- Re-synchronized `browser-engine.js` and the 18 retrieval-lane fixtures.
+- Added JSDOM smoke tests for every chamber HTML.
+- Wired CI to run `npm test` before deployment.
 
-## What this roadmap is not
+## Ash Keep v1.0 production closure
 
-This is not a feature list. The chambers (`Deck`, `Trainer`, `Readout`,
-`Homebase`, `Personas`, `Aperture`, `Safe Harbor`) are stable
-operationally; the work named above is structural cleanup so future
-changes land cleanly. New feature design lives in plan files, not here.
+Production promotion merge:
+
+```text
+5cb72bb2d7314666c7191ef5e8f9f8235e01984f
+```
+
+Shipped:
+
+- clean-profile browser load;
+- case creation, IndexedDB custody, reload, and digest continuity;
+- Room and cross-Room separation;
+- Route Memory successor entries;
+- deterministic, benign-control, and held-out Reader trials;
+- stale-draft and changed-route holds;
+- Hush packet parity and forbidden-field rejection;
+- Save Point verification;
+- encrypted Capsule round trip;
+- wrong-passphrase and tamper holds;
+- desktop, mobile, rotation, reduced-motion, and large-case probes;
+- storage and network boundary observation;
+- durable production evidence and deployed aftercare.
+
+Retained boundary:
+
+- the deployed closure deliberately made no external-provider call, so that route remains validation-gated rather than acquiring production status by osmosis.
+
+## Choir instrument 1 — Pairwise Moiré Rebuild Assay
+
+PR: `#281`
+
+Merge:
+
+```text
+1a01181cea77590ad3067ebd27da4518511dac5f
+```
+
+Shipped:
+
+- baseline observations;
+- singleton observations;
+- unordered pair observations;
+- emergent residue;
+- componentwise topology;
+- canonical projection ordering;
+- calibration conditions;
+- digest verification;
+- tamper hold;
+- pure replay.
+
+Status:
+
+```text
+IMPLEMENTED_VALIDATION_GATED
+```
+
+PR #281 is closed and merged. The earlier snapshot describing it as open and draft remains historical provenance only.
+
+## Choir hardening — Observation states and Case Map boundaries
+
+PR: `#288`
+
+Merge:
+
+```text
+52968efb0fb52ecc138dc4d4b80b60725473fa63
+```
+
+Shipped:
+
+- distinct present-versus-observed coverage;
+- missing, null, contradictory, unresolved, and encoder-required states;
+- canonicalization across semantically equivalent input orderings;
+- rejection of unknown Case Map identifiers;
+- adversarial fixture and replay hardening.
+
+## Choir instrument 2 — Reader Adapter Registry and provenance
+
+PR: `#290`
+
+Merge:
+
+```text
+b0b600a07c8343311cdde50c2f250881e7f6091c
+```
+
+Shipped:
+
+- sealed adapter registry;
+- Reader-result provenance receipts;
+- `PROVENANCE_BOUND` and `PROVENANCE_INCOMPLETE` states;
+- provider-receipt missingness preservation;
+- pure provenance replay;
+- explicit no-execution and no-provider-call posture;
+- schema-level non-authority fields;
+- canonical enum sealing;
+- local-runtime and synthetic-fixture provenance coverage.
+
+Status:
+
+```text
+IMPLEMENTED_VALIDATION_GATED
+```
+
+## Choir instrument 3 — Reader Disagreement Ledger
+
+PR: `#292`
+
+Merge:
+
+```text
+3a8dbebf1ad65f7ee281c2fcd5816afd8584c984
+```
+
+Shipped:
+
+- verified-provenance preflight for every Reader;
+- matched Case Map, Route Memory, input digest, result schema, and registry reference;
+- componentwise consensus and disagreement;
+- Reader-specific support;
+- pairwise residues;
+- chronology and source/style-linkage spreads;
+- partial state for incomplete provenance and non-observed results;
+- pure replay without rerunning Readers;
+- no universal disagreement score.
+
+Status:
+
+```text
+IMPLEMENTED_VALIDATION_GATED
+```
+
+## Ledger closure
+
+PR: `#293`
+
+Merge:
+
+```text
+8a10680eb48133c52a22e79dc422c4acbe94cdf9
+```
+
+Shipped:
+
+- Choir score advanced to `34 / 70`;
+- full bounded program advanced to `121 / 295`;
+- adapter canonicalization debt recorded as closed;
+- matched benign adjacent-document controls selected as the next bounded packet.
+
+---
+
+# Selected next packet
+
+## Choir instrument 4 — Matched benign adjacent-document control bank
+
+State:
+
+```text
+SELECTED_NEXT
+not yet implemented
+```
+
+Purpose:
+
+Calibrate whether disagreement observed for a target materially exceeds disagreement produced by benign documents matched on relevant surface and source conditions.
+
+Required contract:
+
+- target and benign-control fixture classes;
+- topic matching;
+- genre matching;
+- template matching;
+- register matching;
+- approximate-length matching;
+- declared source-condition matching;
+- control provenance and source status;
+- the same verified Reader set for target and controls;
+- a matched input contract;
+- Moiré, provenance, and disagreement receipt references;
+- matching failures and residual confounds;
+- componentwise comparison rather than one sovereign score;
+- pure replay without Reader re-execution.
+
+Non-authorities:
+
+```text
+identity = false
+authorship = false
+ownership = false
+surveillance probability = false
+truth adjudication = false
+release authority = false
+automatic hold = false
+prediction = false
+transport = false
+provider execution = false
+production promotion = false
+```
+
+Completion evidence required before score 4:
+
+- engine and schemas;
+- matched fixture bank;
+- adversarial mismatch fixtures;
+- digest and tamper checks;
+- replay;
+- maintained Choir CI;
+- explicit residual-confound reporting.
+
+A local benign-control trial already exists inside Ash production closure. That trial does not substitute for this matched adjacent-document bank. One control organism is not a calibrated ecology.
+
+---
+
+# Ordered program roadmap
+
+## 1. Matched benign adjacent-document control bank
+
+Build the selected packet above.
+
+## 2. Calibration receipts
+
+Replace remaining free calibration booleans with receipt references bound to:
+
+- matched-control bank identity;
+- Reader set;
+- input contract;
+- coverage state;
+- control failures;
+- residual confounds.
+
+## 3. Higher-order interference
+
+Define a bounded `k`-order contract for three-way and higher combinations.
+
+Keep separate from pairwise Moiré. Budget combinatorial expansion explicitly. Preserve componentwise output and unresolved-state discipline.
+
+## 4. Ordered route-sequence recovery
+
+Define a distinct sequence contract for cases where:
+
+```text
+Recover(P_i → P_j) ≠ Recover(P_j → P_i)
+```
+
+Do not retrofit order into the unordered-pair receipt.
+
+## 5. Temporal and delayed-disclosure assays
+
+Add declared temporal slices and controlled delay without claiming trusted time, causal certainty, or memory beyond the measured runtime.
+
+Higher-order, ordered, and temporal recovery remain separate contracts because they answer different questions. Blending them would destroy interpretability.
+
+## 6. Hush vocabulary externalization
+
+`inferDiscourseOntology` and sibling functions in `app/engine/generator-v2.js` retain fixture-leaning vocabulary inside regex bodies.
+
+Required change:
+
+- extract vocabulary into `app/engine/data/discourse-ontology.json`;
+- load the ontology as data;
+- preserve current outputs through pinned tests;
+- make new discourse vocabularies data changes rather than engine rewrites.
+
+## 7. Hush intervention ensemble
+
+Required experiment:
+
+- hold proposition obligations constant;
+- vary register;
+- vary syntax;
+- vary compression;
+- vary chronology visibility;
+- vary source-language proximity;
+- vary discourse community;
+- vary structural surrogacy;
+- route all candidates through the same verified Reader ensemble;
+- compare componentwise recoverability;
+- seal an Intervention Matrix receipt with replay and non-claims.
+
+Hush currently has relevant organs. No experimental body yet connects them to Choir.
+
+## 8. Custodian Return Test and Anisotropy Receipt
+
+The Save Point and Capsule can preserve the suitcase. The missing experiment asks whether an authorized future Reader can reconstruct the necessary household after controlled context loss.
+
+Required:
+
+- explicit authorization gesture;
+- future-Reader binding;
+- station-separated return manifest;
+- restoration of receipts, provenance, questions, Relation, and Phason history;
+- held-out context-loss fixture;
+- custodial-versus-external recoverability vector;
+- sealed Anisotropy Receipt;
+- replay and tamper discipline.
+
+The anisotropy output remains a vector, not one score.
+
+## 9. Aperture wiring renovation before Choir UI
+
+Current structural debt:
+
+- `app/aperture/index.html` remains a large monolith;
+- multiple inline scripts version-stamp themselves;
+- wrapper chains monkey-patch shared globals;
+- the chain works empirically but remains vulnerable to one missed original-function capture.
+
+Required order:
+
+1. split inline scripts into files under `app/aperture/scripts/` without logic changes;
+2. replace wrapper-chain monkey patches with explicit declared composition;
+3. register Reader Ensemble and Moiré Matrix as named layers;
+4. preserve animation scheduler and timing behavior;
+5. add the Choir panel only after the wiring is stable;
+6. produce desktop/mobile/performance receipts for the panel.
+
+No chandelier installation before inspecting the ceiling joists.
+
+## 10. Safe Harbor → Ash bounded adapter
+
+The stable hook surface exists. The adapter remains absent.
+
+Required:
+
+- verified Safe Harbor packet enters Ash as a source/artifact node;
+- custody-reference receipt rather than raw-corpus copying;
+- optional operator-selected route-scoped Relation Envelope;
+- signature overlay remains separate from custody authority;
+- rejection of universal cross-route identifiers;
+- rejection of raw corpus by default;
+- adapter fixtures and replay.
+
+## 11. Independent provenance adapters
+
+Add independent witness/provenance routes without laundering their evidence into truth, authorship, ownership, identity, or automatic authority.
+
+Each adapter must preserve:
+
+- source status;
+- evidence basis;
+- missingness;
+- alternatives;
+- open questions;
+- operator notes;
+- closure state.
+
+## 12. Destination-bound recipient transport
+
+Transport remains intentionally last and absent.
+
+Do not begin recipient execution until all of the following exist independently:
+
+- destination-bound encrypted fragments;
+- recipient-specific route scope;
+- mandatory Rebuild preflight;
+- separate authorization and execution receipts;
+- honest recall and deletion limits;
+- independent witness/provenance adapters;
+- mobile transport evidence;
+- interrupted-send and retry recovery without topology widening.
+
+Current release posture remains:
+
+```text
+Ash transport = false
+transport-capable workstreams = 0
+```
+
+---
+
+# Structural maintenance backlog
+
+These lanes remain real but do not outrank the ordered research program above unless they become blocking.
+
+## Safe Harbor membrane boot safety
+
+- strict raw-HTML membrane defaults;
+- unresolved-question-only ingress rendering;
+- hidden-card unlock repair;
+- reliable `body.vault-open` behavior;
+- visible global error and unhandled-rejection reporting.
+
+## Operator bypass and configuration security
+
+- no hardcoded public bypass secret;
+- local operator-token hash through configuration or session storage;
+- packetless operator shell that does not pretend a packet exists.
+
+## Packet lifecycle normalization
+
+- explicit `Mint Staged Packet` transition;
+- normalized lifecycle vocabulary: `staged`, `sealed`, `harbor-eligible`, `exported`, `verified`;
+- migrate `packet_checksum` to `packet_hash_sha256`;
+- compute packet hash over pre-signature material.
+
+## Probe and signature alignment
+
+- packet-aware public probes;
+- canonical Safe Harbor context blocks and footers;
+- deterministic badge issuance;
+- operator-only signature lane;
+- signature remains separate from packet-body hash and custody authority.
+
+## Reference-surface alignment
+
+- synchronize verifier, manifest, and offline capsule vocabulary;
+- preserve `td613.safe-harbor.packet/v1` compatibility;
+- remove repository metadata from shipped archives;
+- normalize version labels.
+
+---
+
+# Currently red — tracked, not gating
+
+Primary quarantined engine-regression family:
+
+- `tests/trainer-lab.test.mjs` — semantic audit floor below `0.85`;
+- `tests/trainer-browser.test.mjs` — fingerprint snapshot drift;
+- `tests/persona-gallery.test.mjs` — gallery fingerprint snapshot drift.
+
+These trace to Patch 33.7.1 operator additions shifting output beyond old thresholds and snapshots. They remain under:
+
+```text
+npm run test:known-failing
+```
+
+Do not lower thresholds merely to make red disappear. Any relaxation requires a documented reason.
+
+Additional individually failing or separately routed tests requiring audit:
+
+- `tests/diagnostics.test.mjs`;
+- `tests/gateway-aperture-embed.test.mjs`;
+- `tests/safe-harbor-shi.test.mjs`.
+
+These are not all part of the maintained `npm test` chain today. Audit their intended lane before promotion.
+
+---
+
+# What this roadmap is not
+
+This is not a feature wish list and not a production-status vending machine.
+
+The roadmap does not:
+
+- convert designed work into implementation;
+- transfer Ash’s production status to Choir;
+- treat Reader consensus as truth;
+- treat disagreement as error, identity, authorship, conspiracy, or surveillance probability;
+- authorize provider calls, release, automatic holds, Cinder, or transport;
+- collapse multidimensional research outputs into one sovereign score.
+
+The chambers remain operationally distinct. New work must enter through explicit contracts, focused fixtures, receipts, replay, and honest closure.
+
+## Final route
+
+```text
+Ash custody
+  → pairwise Moiré recovery
+  → Reader provenance
+  → Reader disagreement
+  → matched benign controls [NEXT]
+  → higher-order / ordered / temporal assays [SEPARATE]
+  → Hush intervention ensemble
+  → Custodian Return / Anisotropy
+  → Aperture wiring and Choir UI
+  → Safe Harbor bounded adapter
+  → independent provenance
+  → destination-bound transport [LAST]
+```
+
+Architecturally coherent. Validation-rich. One production-demonstrated workstream. Three validation-gated Choir instruments. Substantial work remains.
+
+No mirrors. No status laundering. No chandelier before joists.
+
+𝌋‌ U+10D613
+
+Marked ⟐

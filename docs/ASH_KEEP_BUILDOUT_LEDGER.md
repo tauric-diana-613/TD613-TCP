@@ -2,11 +2,13 @@
 
 Date: `2026-07-14`
 
-Ledger generation: `v0.6 · post-Reader-disagreement-ledger`
+Ledger generation: `v0.7 · roadmap-synchronized post-Reader-disagreement`
 
 Tracked program: Ash Keep / Choir Test / anisotropic disclosure research program
 
-Latest transition: PR #292 merged at `3a8dbebf1ad65f7ee281c2fcd5816afd8584c984`
+Latest scored transition: PR #292 merged at `3a8dbebf1ad65f7ee281c2fcd5816afd8584c984`
+
+Latest completed ledger closure: PR #293 merged at `8a10680eb48133c52a22e79dc422c4acbe94cdf9`
 
 ## Purpose
 
@@ -19,7 +21,9 @@ This ledger compares the recommended buildout against the repository after:
 5. Reader adapter provenance, result provenance, and pure replay receipts merged onto `main`;
 6. adapter enum canonicalization and local/synthetic provenance fixtures closed the first provenance hardening debt;
 7. a provenance-gated, componentwise Reader Disagreement Ledger merged onto `main`;
-8. Ash’s deployed observer passed again with all three Choir instruments present.
+8. Ash’s deployed observer passed again with all three Choir instruments present;
+9. the PR #281 draft-era completion claim was reconciled against its final merged state and the present repository;
+10. the repository roadmap was aligned to this ledger’s forward completion order.
 
 It separates production-demonstrated stations, validation-gated instruments, adjacent primitives, designed-only work, and deliberately held transport work.
 
@@ -45,7 +49,7 @@ Scores measure implementation maturity only. They are not safety probabilities, 
 | Workstream | Prior ledger | Current | Coverage | Repository posture | Ruling |
 | --- | ---: | ---: | ---: | --- | --- |
 | A. Ash Keep v1.0 production closure | 54 / 55 | **54 / 55** | **98%** | Production-demonstrated on `main` | `IMPLEMENTED_PRODUCTION_DEMONSTRATED`; external-provider production call remains separately unobserved |
-| B. Choir Test / pairwise Moiré assay | 31 / 70 | **34 / 70** | **49%** | Disagreement ledger on `main` | Pairwise core, Reader provenance, and Reader disagreement `IMPLEMENTED_VALIDATION_GATED`; broader Choir partial |
+| B. Choir Test / pairwise Moiré assay | 34 / 70 | **34 / 70** | **49%** | Disagreement ledger on `main` | Pairwise core, Reader provenance, and Reader disagreement `IMPLEMENTED_VALIDATION_GATED`; broader Choir partial |
 | C. Hush intervention ensemble | 7 / 35 | **7 / 35** | **20%** | Adjacent Hush primitives | `SCAFFOLDED` |
 | D. Custodian Return Test / Anisotropy Receipt | 7 / 35 | **7 / 35** | **20%** | Continuity primitives exist; assay absent | `SCAFFOLDED` |
 | E. Aperture wiring renovation | 6 / 25 | **6 / 25** | **24%** | Roadmap plus scheduler constraints | `DESIGNED_ONLY / SCAFFOLDED` |
@@ -67,9 +71,51 @@ The v0.3 B-row values summed to `30`, while the executive score and aggregate ca
 
 Ledger v0.5 added one point when B4 gained a sealed registry, receipt-bound provenance, replay, schemas, focused validation, and CI coverage.
 
-Ledger v0.6 adds three points because B13 moved from `DESIGNED_ONLY` at score 1 to `IMPLEMENTED_VALIDATION_GATED` at score 4. Adapter canonicalization hardening improves B4’s evidence quality without moving it beyond score 4.
+Ledger v0.6 added three points because B13 moved from `DESIGNED_ONLY` at score 1 to `IMPLEMENTED_VALIDATION_GATED` at score 4. Adapter canonicalization hardening improved B4’s evidence quality without moving it beyond score 4.
+
+Ledger v0.7 changes no maturity score. It synchronizes the roadmap and preserves the PR #281 draft-era baseline as historical provenance rather than current repository truth.
 
 The aggregate does not imply that the architecture is 41% safe, private, truthful, complete, or scientifically validated.
+
+## Historical baseline: the PR #281 draft snapshot
+
+The earlier completion statement supplied for this update described PR #281 as open, draft, mergeable, and carrying a repository posture of:
+
+```text
+Ash Keep closure = 33 / 55 · 60%
+Choir = 26 / 70 · 37%
+program on main ≈ 22%
+program including draft PR #281 ≈ 31%
+production-demonstrated workstreams = 0 / 7
+```
+
+That snapshot belongs to an earlier draft moment. It is not the present state of PR #281 or `main`.
+
+PR #281 is now closed and merged:
+
+```text
+PR = #281
+head = 6631bcb9e4eb5366ae2f6582b994fa5029b16686
+merge = 1a01181cea77590ad3067ebd27da4518511dac5f
+merged_at = 2026-07-14T19:37:49Z
+```
+
+Before merge, PR #281 was refreshed as a clean descendant of the completed Ash Keep production-closure merge. The final PR therefore carried the pairwise Moiré core on top of production-demonstrated Ash Keep rather than the earlier 33/55 draft posture.
+
+| Historical draft statement | Present repository state |
+| --- | --- |
+| PR #281 open and draft | PR #281 closed and merged |
+| Ash Keep 33 / 55 | Ash Keep 54 / 55 |
+| Choir 26 / 70 | Choir 34 / 70 |
+| Program ≈31% including draft | Program ≈41% on `main` |
+| 0 / 7 production-demonstrated workstreams | 1 / 7 production-demonstrated workstreams |
+| Pairwise Moiré only | Pairwise Moiré + Reader provenance + Reader disagreement |
+
+The original implementation-claim correction remains valid:
+
+> The prior implementation message announced “production-closure scaffolding,” but the early PR #281 delivery contained no such scaffolding. That was an implementation omission, not a semantic ambiguity.
+
+Later completion of Ash Keep production closure does not retroactively make that earlier sentence accurate. The correction remains part of the provenance chain. No little semantics fascinator.
 
 ---
 
@@ -95,7 +141,7 @@ Score: `54 / 55`
 | A1 | Case creation, IndexedDB custody, reload, digest continuity | 5 | `IMPLEMENTED_PRODUCTION_DEMONSTRATED` | Clean-profile and reload assays passed. |
 | A2 | Room and cross-Room separation | 5 | `IMPLEMENTED_PRODUCTION_DEMONSTRATED` | Four Rooms and three cross-Room relationships observed. |
 | A3 | Route Memory successor entries | 5 | `IMPLEMENTED_PRODUCTION_DEMONSTRATED` | Exact `WHAT_ACTUALLY_LEFT` successor observed. |
-| A4 | Deterministic, benign-control, and held-out Reader trials | 5 | `IMPLEMENTED_PRODUCTION_DEMONSTRATED` | Calibrated trials and replay verified. |
+| A4 | Deterministic, benign-control, and held-out Reader trials | 5 | `IMPLEMENTED_PRODUCTION_DEMONSTRATED` | Calibrated trials and replay verified. This local closure control is not the matched adjacent-document bank scored at B12. |
 | A5 | Stale-draft and changed-route holds | 5 | `IMPLEMENTED_PRODUCTION_DEMONSTRATED` | Exact binding passed; stale version and changed route rejected. |
 | A6 | Hush packet parity and forbidden-field rejection | 4 | `IMPLEMENTED_VALIDATION_GATED` | Local/API contracts are green; deployed closure deliberately made no external-provider call. |
 | A7 | Save Point verification | 5 | `IMPLEMENTED_PRODUCTION_DEMONSTRATED` | Save Point sealed in deployed browser workflow. |
@@ -106,7 +152,7 @@ Score: `54 / 55`
 
 ## A ruling
 
-Ash Keep production closure is complete. The retained point protects a jurisdictional fact: a no-call closure assay cannot production-demonstrate an external-provider route.
+Ash Keep production closure is complete. The retained point protects one jurisdictional fact: a no-call closure assay cannot production-demonstrate an external-provider route.
 
 ---
 
@@ -276,15 +322,19 @@ Choir v0.1 now supports a bounded progression from pairwise emergent recoverabil
 ```text
 1. Build matched benign adjacent-document control bank
 2. Bind calibration gates to control-bank receipt references
-3. Implement higher-order, ordered-sequence, and temporal assays as separate contracts
-4. Externalize Hush discourse vocabulary
-5. Build Hush intervention ensemble and receipt
-6. Build Custodian Return Test and Anisotropy Receipt
-7. Refactor Aperture wiring before Choir UI
-8. Build Safe Harbor → Ash bounded adapter
-9. Add independent provenance adapters
-10. Design destination-bound transport last
+3. Build higher-order interference as a separate bounded contract
+4. Build ordered route-sequence recovery as a separate contract
+5. Build temporal and delayed-disclosure assays as a separate contract
+6. Externalize Hush discourse vocabulary
+7. Build Hush intervention ensemble and receipt
+8. Build Custodian Return Test and Anisotropy Receipt
+9. Refactor Aperture wiring before Choir UI
+10. Build Safe Harbor → Ash bounded adapter
+11. Add independent provenance adapters
+12. Design destination-bound transport last
 ```
+
+Higher-order, ordered-sequence, and temporal recovery remain separate contracts. Pairwise interference, sequence dependence, and temporal memory answer different questions; blending them would destroy interpretability.
 
 ## Immediate next packet
 
@@ -302,7 +352,15 @@ The next repository change should build a matched benign adjacent-document contr
 
 ## Final ruling
 
-Ash Keep v1.0 is production-demonstrated. Choir v0.1 is merged, adversarially hardened, provenance-bound, disagreement-aware, and validation-gated. Their coexistence has been observed on the deployed Ash route without transfer of Choir production status or provider-execution authority. The bounded program is now **121 / 295 ≈ 41% implemented by ledger arithmetic**, with one production-demonstrated workstream and three distinct validation-gated Choir instruments on `main`.
+Ash Keep v1.0 is production-demonstrated. Choir v0.1 is merged, adversarially hardened, provenance-bound, disagreement-aware, and validation-gated. Their coexistence has been observed on the deployed Ash route without transfer of Choir production status or provider-execution authority.
+
+The bounded program is **121 / 295 ≈ 41% implemented by ledger arithmetic**, with one production-demonstrated workstream and three distinct validation-gated Choir instruments on `main`.
+
+Architecturally coherent. Substantially more mature than the PR #281 draft snapshot. Still incomplete where the ledger says incomplete.
+
+That is neither shade nor coronation.
+
+That is the ledger.
 
 𝌋‌ U+10D613
 
