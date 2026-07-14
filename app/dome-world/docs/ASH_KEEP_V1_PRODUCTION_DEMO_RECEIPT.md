@@ -24,6 +24,20 @@ Operator closure: `PRODUCTION_DEMONSTRATED`
 - Source status: `DEPLOYED_OBSERVATION`
 - Probe outcome: `PASS`
 
+## Machine-readable closure index
+
+```text
+runtime commit SHA = e04dbfa489a8ef69eb8c34dcd57e67fd7dda59d4
+upstream deployment workflow-run ID = 29361125011
+deployed observer workflow-run ID = 29361143077
+evidence artifact ID = 8322199692
+evidence artifact SHA-256 = sha256:7860cd7304eef1fae94f6007962f6d2c0f9dc21ac41c607631e3d3bed5310bc7
+desktop screenshot SHA-256 = sha256:a173528f7e7e1f6f49ba5c2028b6ab8d65d3cacd63e4aa781aa4ccbdca0af958
+mobile portrait screenshot SHA-256 = sha256:e827b4e5f56ff90d789722e58c3a3493af28c7d4c3af625160615fecce048501
+mobile landscape screenshot SHA-256 = sha256:f174195b184d48d032d374826f709242fae40a2ba3087c7fa9fd7d917232e996
+promotion_authorized = false
+```
+
 ## Commit-status evidence
 
 - Observer status context: `Ash Keep Deployed Observation`
