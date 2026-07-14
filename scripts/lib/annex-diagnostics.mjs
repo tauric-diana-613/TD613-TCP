@@ -223,9 +223,9 @@ const ANNEX_SPECS = Object.freeze([
     id: 'aperture',
     label: 'TD613 Aperture',
     relativePath: 'app/aperture/tool.html',
-    expectedVersion: 'v3.0-alpha',
+    expectedVersion: 'v3.1-alpha',
     versionPattern: /TD613 APERTURE\s+(v[0-9]+(?:\.[0-9]+){1,3}(?:-[A-Za-z0-9_.]+)?)\s+SOURCE DECLARATION/i,
-    titleIncludes: ['TD613 Aperture', 'v3.0-alpha'],
+    titleIncludes: ['TD613 Aperture', 'v3.1-alpha'],
     minimumInlineScripts: 1,
     meta: Object.freeze({
       'tool-name': 'TD613 Aperture',
@@ -251,7 +251,9 @@ const ANNEX_SPECS = Object.freeze([
       'ethicsAuditPanel',
       'schemaVersionReadout',
       'diffAuditMatrix',
-      'ethicsAuditTable'
+      'ethicsAuditTable',
+      'apertureV31TomographyDrawer',
+      'at31OpenLab'
     ]),
     requiredFunctions: Object.freeze([
       'resetSystem',
@@ -264,7 +266,7 @@ const ANNEX_SPECS = Object.freeze([
       {
         id: 'source-declaration',
         label: 'source declaration',
-        pattern: /TD613 APERTURE v3\.0-alpha SOURCE DECLARATION/i
+        pattern: /TD613 APERTURE v3\.1-alpha SOURCE DECLARATION/i
       },
       {
         id: 'counter-tool-stance',
@@ -378,13 +380,28 @@ const ANNEX_SPECS = Object.freeze([
       },
       {
         id: 'v3-alpha-schema',
-        label: 'Aperture v3.0-alpha schema marker',
-        pattern: /td613-aperture\/v3\.0-alpha/i
+        label: 'Aperture v3.1-alpha schema marker',
+        pattern: /td613-aperture\/v3\.1-alpha/i
       },
       {
         id: 'anti-epistemicide-runtime',
         label: 'Anti-Epistemicide Research Runtime',
-        pattern: /v3\.0-alpha-anti-epistemicide-research-runtime/i
+        pattern: /v3\.1-alpha-admissibility-tomography-registry-dynamics-runtime/i
+      },
+      {
+        id: 'admissibility-tomography-contract',
+        label: 'Admissibility Tomography contract',
+        pattern: /td613\.aperture\.v31-admissibility-tomography-contract\/v0\.1/i
+      },
+      {
+        id: 'tomography-scope-boundary',
+        label: 'receipt-local scope and promotion boundary',
+        pattern: /globalClaimCeilingGovernor["']?\s*:\s*false/i
+      },
+      {
+        id: 'tomography-compact-pointer',
+        label: 'compact pointer-only standalone integration',
+        pattern: /compact-pointer-only/i
       },
       {
         id: 'phason-seam',

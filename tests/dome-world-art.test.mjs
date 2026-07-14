@@ -7,10 +7,10 @@ const release = JSON.parse(fs.readFileSync('app/aperture/release.json', 'utf8'))
 const dom = new JSDOM(html);
 const { document } = dom.window;
 
-assert.equal(document.title, 'Dome-World / Flow-Core v0.5.0');
-assert.equal(document.querySelector('meta[name="td613-dome-world-version"]')?.content, 'v0.5.0');
-assert.equal(release.domeWorld.version, 'v0.5.0');
-assert.equal(release.domeWorld.schema, 'td613.dome-world/v0.5.0');
+assert.equal(document.title, 'Dome-World / Flow-Core v0.6.0-alpha');
+assert.equal(document.querySelector('meta[name="td613-dome-world-version"]')?.content, 'v0.6.0-alpha');
+assert.equal(release.domeWorld.version, 'v0.6.0-alpha');
+assert.equal(release.domeWorld.schema, 'td613.dome-world/v0.6.0-alpha');
 assert.equal(release.domeWorld.exactReceiptSchema, 'td613.dome-world.exact-receipt/v0.4.3');
 
 for (const id of [

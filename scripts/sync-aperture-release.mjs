@@ -48,6 +48,16 @@ await writeText(
   `APERTURE_RETURNED_CONTEXT_AUDIT_SCHEMA = ${JSON.stringify(release.returnedContextAuditSchema)}\n` +
   `APERTURE_ROUND_TRIP_RECEIPT_SCHEMA = ${JSON.stringify(release.roundTripReceiptSchema)}\n` +
   `APERTURE_DOME_BRIDGE_POSTURE = ${JSON.stringify(release.bridgePosture)}\n` +
+  `APERTURE_COMPATIBILITY_RECEIPT_VERSION = ${JSON.stringify(release.compatibility?.phase4ReceiptSchemaVersion || release.version)}\n` +
+  `APERTURE_OBSERVATORY_STATUS = ${JSON.stringify(release.observatory?.status || 'NOT_INSTALLED')}\n` +
+  `APERTURE_TOMOGRAPHY_RECEIPT_SCHEMA = ${JSON.stringify(release.observatory?.tomographyReceiptSchema || '')}\n` +
+  `APERTURE_TOMOGRAPHY_REPLAY_SCHEMA = ${JSON.stringify(release.observatory?.tomographyReplaySchema || '')}\n` +
+  `FLOWCORE_CONTEXT_SERIES_SCHEMA = ${JSON.stringify(release.observatory?.flowCoreContextSeriesSchema || '')}\n` +
+  `DOME_EXPERIMENT_SCHEMA = ${JSON.stringify(release.observatory?.domeExperimentSchema || '')}\n` +
+  `ASH_VERSION = ${JSON.stringify(release.ash?.version || '')}\n` +
+  `ASH_PHASE = ${JSON.stringify(release.ash?.phase || '')}\n` +
+  `ASH_EXPERIMENT_CUSTODY_SCHEMA = ${JSON.stringify(release.ash?.experimentCustodySchema || '')}\n` +
+  `ASH_DERIVATIVE_ELIGIBILITY_SCHEMA = ${JSON.stringify(release.ash?.derivativeEligibilitySchema || '')}\n` +
   `PHASE5_RELATION_RUNTIME_SCHEMA = ${JSON.stringify(release.phase5RelationRuntime)}\n` +
   `PHASE5_RELATION_ENVELOPE_SCHEMA = ${JSON.stringify(release.phase5RelationEnvelopeSchema)}\n` +
   `PHASE5_RELATION_CONFIRMATION_SCHEMA = ${JSON.stringify(release.phase5RelationConfirmationSchema)}\n` +

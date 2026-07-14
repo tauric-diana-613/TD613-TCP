@@ -12,7 +12,7 @@ const dom = new JSDOM(html);
 const { document } = dom.window;
 
 assert.match(html, /viewport-fit=cover/);
-assert.equal(document.querySelector('meta[name="aperture-version"]')?.content, 'v3.0-alpha');
+assert.equal(document.querySelector('meta[name="aperture-version"]')?.content, 'v3.1-alpha');
 assert.equal(document.querySelector('meta[name="aperture-route"]')?.content, 'OPEN_FIELD_SPECULATIVE_SYNTHESIS');
 assert.ok(document.getElementById('apertureHeader'));
 assert.ok(document.getElementById('speakingPanel'));
@@ -30,7 +30,7 @@ assert.deepEqual(
 assert.match(document.querySelector('.relay-legend')?.textContent || '', /Gemini instrument/);
 assert.match(document.querySelector('.relay-legend')?.textContent || '', /Kʰonapolit relay/);
 assert.match(document.querySelector('.relay-legend')?.textContent || '', /Tauric Diana bots/);
-assert.equal(document.getElementById('metricAperture')?.textContent, 'v3.0-alpha');
+assert.equal(document.getElementById('metricAperture')?.textContent, 'v3.1-alpha');
 assert.equal(document.querySelector('.prompt-label textarea')?.getAttribute('enterkeyhint'), 'send');
 
 assert.match(baseCss, /overflow-x:clip/);

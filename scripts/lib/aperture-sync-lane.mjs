@@ -100,7 +100,7 @@ export function extractApertureMetadata(html, filePath = '') {
 
   const token = firstMatch(html, /tool\.html\?v=([0-9A-Za-z._-]+)/);
   const duplicateIds = findDuplicateDomIds(html);
-  const versionCounts = countBy([...html.matchAll(/\bv\d+(?:\.\d+){2,3}(?:[-A-Za-z0-9_.]+)?/g)].map((match) => match[0]));
+  const versionCounts = countBy([...html.matchAll(/\bv\d+(?:\.\d+){1,3}(?:[-A-Za-z0-9_.]+)?/g)].map((match) => match[0]));
 
   return {
     filePath,
@@ -193,6 +193,46 @@ export function normalizeApertureForRepo(html, metadata) {
   next = next.replace(/td613-aperture\/v2\.9\.4/g, schema);
   next = next.replace(/\bv2\.7\.2\b/g, version);
 
+  // Normalize active identity writers without rewriting lineage or deployed
+  // receipt contracts that intentionally retain their original schema version.
+  next = next.replace(/TD613 Aperture v3\.0-alpha/g, `TD613 Aperture ${version}`);
+  next = next.replace(/<title>TD613 Aperture[^<]*<\/title>/i, `<title>TD613 Aperture ${version}</title>`);
+  next = next.replace(
+    /(const\s+FIRMWARE\s*=\s*\{[\s\S]{0,180}?\bVERSION:\s*)["'][^"']+["']([\s\S]{0,120}?\bSCHEMA_VERSION:\s*)["'][^"']+["']/,
+    `$1"${version}"$2"${schema}"`
+  );
+  next = next.replace(
+    /(const\s+SOURCE_DECLARATION\s*=\s*Object\.freeze\(\s*\{[\s\S]{0,180}?\bversion:\s*)["'][^"']+["']([\s\S]{0,120}?\bschema:\s*)["'][^"']+["']/,
+    `$1"${version}"$2"${schema}"`
+  );
+  next = next.split(/(\r?\n)/).map((line) => {
+    const activeIdentityWriter = /(document\.title|mFirmwareVer|firmwareSpineVersion|schemaVersionReadout|dataset\.aperture(?:Version|Schema)|data-aperture-version|APERTURE_VERSION|APERTURE_SCHEMA_VERSION|FIRMWARE\.VERSION|FIRMWARE\.SCHEMA_VERSION|const\s+TITLE\s*=|--aperture-current-(?:version|schema)|(?:setMeta|ensureMeta)\(['"]aperture-(?:version|roots-version|compat-version|feature-version))/.test(line);
+    if (!activeIdentityWriter) return line;
+    let normalizedLine = line
+      .replace(/v3\.0-alpha-anti-epistemicide-research-runtime/g, featureVersion)
+      .replace(/v3\.0-alpha/g, version)
+      .replace(/td613-aperture\/v3\.0-alpha/g, schema)
+      .replace(/dataset\.apertureVersion\s*=\s*(?:VERSION|V\d+\.VERSION|CANONICAL\.apertureVersion)/g, `dataset.apertureVersion='${version}'`)
+      .replace(/dataset\.apertureSchema\s*=\s*(?:SCHEMA|V\d+\.SCHEMA|CANONICAL\.apertureSchema)/g, `dataset.apertureSchema='${schema}'`);
+    normalizedLine = normalizedLine.replace(
+      /((?:setMeta|ensureMeta)\(['"]aperture-(version|roots-version|compat-version|feature-version)['"]\s*,\s*)[^)]+(\))/g,
+      (_match, prefix, name, suffix) => `${prefix}'${name === 'feature-version' ? featureVersion : version}'${suffix}`
+    );
+    return normalizedLine;
+  }).join('');
+
+  // The final stability guard owns current identity. Its constants are not
+  // receipt-contract versions, so update them without touching frozen Phase
+  // IV/V v3.0 receipt schemas elsewhere in the document.
+  next = next.replace(
+    /(<script id=["']apertureV3IdentityAndDrawerStabilityGuard["'][^>]*>[\s\S]*?\bconst VERSION\s*=\s*)["'][^"']+["']([\s\S]*?\bconst SCHEMA\s*=\s*)["'][^"']+["']/,
+    `$1'${version}'$2'${schema}'`
+  );
+  next = next.replace(
+    /\[0,\s*220,\s*900,\s*1800\]\.forEach\(delay\s*=>\s*setTimeout\(applyIdentity,\s*delay\)\);/,
+    `requestAnimationFrame(applyIdentity);`
+  );
+
   return next;
 }
 
@@ -220,24 +260,67 @@ export function updateApertureEngineJs(js, metadata) {
     .replace(/(TD613_APERTURE_FEATURE_VERSION\s*=\s*['"])[^'"]+(['"])/, `$1${featureVersion}$2`);
 }
 
-export function releaseManifestFromMetadata(metadata) {
+export function releaseManifestFromMetadata(metadata, currentRelease = {}) {
   const version = metadata.version;
   const apertureSchema = metadata.schema || `td613-aperture/${version}`;
+  const isV31 = /^v3\.1(?:-|$)/.test(version);
+  const compatibilityReceiptVersion = isV31 ? 'v3.0-alpha' : version;
   return {
+    ...currentRelease,
     schema: 'td613.aperture.release/v1',
     version,
     apertureSchema,
     featureVersion: metadata.featureVersion || version,
     doctrineKernelSchema: metadata.doctrineKernelSchema || `td613.aperture.doctrine-kernel/${version}`,
     domeBridgeSchema: `td613.aperture.reciprocal-receipt-bridge/${version}`,
-    domeDiagnosticReceiptSchema: `td613.aperture.diagnostic-receipt/${version}`,
-    flowCoreContextReceiptSchema: 'td613.flowcore.context-receipt/vNext',
-    roundTripReceiptSchema: `td613.aperture.round-trip-receipt/${version}`,
+    phase4BridgeContract: currentRelease.phase4BridgeContract || 'td613.phase4.reciprocal-bridge/v0.1',
+    phase4ReadinessStatus: currentRelease.phase4ReadinessStatus || 'phase-4-active',
+    phase4ProductionStatus: currentRelease.phase4ProductionStatus || 'IMPLEMENTED_PRODUCTION_DEMONSTRATED',
+    domeDiagnosticReceiptSchema: `td613.aperture.diagnostic-receipt/${compatibilityReceiptVersion}`,
+    flowCoreContextReceiptSchema: 'td613.flowcore.context-receipt/v0.1',
+    legacyFlowCoreContextReceiptSchema: 'td613.flowcore.context-receipt/vNext',
+    returnedContextAuditSchema: currentRelease.returnedContextAuditSchema || 'td613.aperture.returned-context-audit/v0.1',
+    roundTripReceiptSchema: `td613.aperture.round-trip-receipt/${compatibilityReceiptVersion}`,
     bridgePosture: 'reciprocal_receipts_without_reciprocal_authority',
+    compatibility: {
+      ...(currentRelease.compatibility || {}),
+      phase4ReceiptSchemaVersion: compatibilityReceiptVersion,
+      v3ProducerMayEmitV30BridgeReceipts: isV31,
+      phase5RelationEnvelopeUnchanged: true
+    },
+    observatory: isV31 ? {
+      status: 'IMPLEMENTED_VALIDATION_GATED',
+      productionStatus: 'PRODUCTION_GATED',
+      capabilityProfile: ['reciprocal-bridge', 'admissibility-tomography'],
+      domeExperimentSchema: 'td613.dome-world.experiment-run/v0.1',
+      flowCoreContextSeriesSchema: 'td613.flowcore.context-series/v0.1',
+      instrumentAdapterReceiptSchema: 'td613.aperture.instrument-adapter-receipt/v0.1',
+      tomographyReceiptSchema: 'td613.aperture.admissibility-tomography-receipt/v0.1',
+      tomographyReplaySchema: 'td613.aperture.tomography-replay/v0.1',
+      scopeBoundary: {
+        fields: ['scope_statement', 'cannot_establish', 'promotion_conditions', 'abstention_reason', 'source_status', 'authority_class', 'operator_closure'],
+        globalClaimCeilingGovernor: false,
+        legacyVocabularyPreserved: true,
+        interpretationSuppressionAuthorized: false
+      }
+    } : currentRelease.observatory,
+    ash: isV31 ? {
+      version: 'v0.9-alpha',
+      phase: 'VI-A_EXPERIMENTAL_RUN_CUSTODY_AND_ELIGIBILITY',
+      status: 'IMPLEMENTED_VALIDATION_GATED',
+      productionStatus: 'PRODUCTION_GATED',
+      experimentCustodySchema: 'td613.ash.experiment-custody-manifest/v0.1',
+      snapshotBatchSchema: 'td613.ash.snapshot-batch-receipt/v0.1',
+      tomographyResultCustodySchema: 'td613.ash.tomography-result-custody/v0.1',
+      derivativeEligibilitySchema: 'td613.ash.derivative-eligibility-receipt/v0.1',
+      automaticCinder: false,
+      transport: false
+    } : currentRelease.ash,
     domeWorld: {
-      version: 'v0.5.0',
-      schema: 'td613.dome-world/v0.5.0',
-      exactReceiptSchema: 'td613.dome-world.exact-receipt/v0.4.3'
+      ...(currentRelease.domeWorld || {}),
+      version: isV31 ? 'v0.6.0-alpha' : (currentRelease.domeWorld?.version || 'v0.5.0'),
+      schema: isV31 ? 'td613.dome-world/v0.6.0-alpha' : (currentRelease.domeWorld?.schema || 'td613.dome-world/v0.5.0'),
+      exactReceiptSchema: currentRelease.domeWorld?.exactReceiptSchema || 'td613.dome-world.exact-receipt/v0.4.3'
     },
     observedRegime: 'PRCS-A',
     eorfd: {
@@ -292,7 +375,10 @@ export async function promoteStagedCandidate() {
   await writeText(APERTURE_INDEX_PATH, updateApertureIndexHtml(await readText(APERTURE_INDEX_PATH), normalizedMetadata, token));
   await writeText(ASSET_VERSIONS_PATH, updateAssetVersionsJs(await readText(ASSET_VERSIONS_PATH), token));
   await writeText(APERTURE_ENGINE_PATH, updateApertureEngineJs(await readText(APERTURE_ENGINE_PATH), normalizedMetadata));
-  await writeJson(APERTURE_RELEASE_PATH, releaseManifestFromMetadata(normalizedMetadata));
+  const currentRelease = await fileExists(APERTURE_RELEASE_PATH)
+    ? JSON.parse(await readText(APERTURE_RELEASE_PATH))
+    : {};
+  await writeJson(APERTURE_RELEASE_PATH, releaseManifestFromMetadata(normalizedMetadata, currentRelease));
 
   const promoted = await readHtmlArtifact(APERTURE_TOOL_PATH);
   const promotion = {
@@ -393,12 +479,12 @@ function comparisonRecommendation(status) {
 }
 
 function parseVersion(version) {
-  const match = String(version || '').match(/^v(\d+(?:\.\d+){2,3})/);
+  const match = String(version || '').match(/^v(\d+(?:\.\d+){1,3})/);
   return match ? match[1].split('.').map((part) => Number(part)) : null;
 }
 
 function firstVersion(html) {
-  return firstMatch(html, /\bv\d+(?:\.\d+){2,3}\b/);
+  return firstMatch(html, /\bv\d+(?:\.\d+){1,3}(?:-[A-Za-z0-9_.]+)?\b/);
 }
 
 function firstMeta(html, name) {

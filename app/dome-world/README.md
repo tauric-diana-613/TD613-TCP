@@ -1,10 +1,11 @@
-# Dome-World / Flow-Core v0.5.0
+# Dome-World / Flow-Core v0.6.0-alpha
 
 `/dome-world` is a non-public TD613 station that combines:
 
 - the full browser cockpit and room system;
 - one active-view sovereign-perspective scheduler with machine-facing art receipts;
-- Aperture v3.0-alpha reciprocal diagnostic/context receipts for bounded route-weather translation without reciprocal authority;
+- Aperture v3.1-alpha reconstruction identity with frozen v3.0 reciprocal diagnostic/context receipt compatibility;
+- a full Admissibility Tomography lab with Ash VI-A experimental custody and Flow-Core context-series indexing;
 - exact residual capture and proposal/confirmation training;
 - opt-in lambda=2c emission-gap closure;
 - Ash v0.7 browser-local exact-byte commitment;
@@ -117,7 +118,7 @@ Modeled weather never enters the exact gate. Exact execution does not activate E
 
 The primary navigation contains Weather, Rooms, Lab, Ash, Substrate, Phason, Aperture, and Receipts. Legacy Math, Tomography, Live Lattice, Loom, Stewardship, Patterns, Repo Weather, Lore, Accident, and API surfaces remain inside the Lab hierarchy. Marrowline remains a direct-route Lab station outside primary navigation.
 
-Ash remains outside the v0.5.0 art scheduler.
+Ash and tomography remain outside the preserved v0.5.0 art scheduler unless their own visible station is active.
 
 ## Sovereign perspectives
 

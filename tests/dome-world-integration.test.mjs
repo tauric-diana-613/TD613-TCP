@@ -38,7 +38,7 @@ const nav = html.match(/<nav class="nav"[\s\S]*?<\/nav>/i)?.[0] || '';
 const tabLabels = [...nav.matchAll(/<button class="tab(?: active)?" data-view="[^"]+"[^>]*>[\s\S]*?<span>([^<]+)<\/span><\/button>/g)].map((match) => match[1]);
 const ids = [...html.matchAll(/\sid="([^"]+)"/g)].map((match) => match[1]);
 
-assert.equal(title, 'Dome-World / Flow-Core v0.5.0');
+assert.equal(title, 'Dome-World / Flow-Core v0.6.0-alpha');
 assert.deepEqual(tabLabels, ['Weather', 'Rooms', 'Lab', 'Ash', 'Substrate', 'Phason', 'Aperture', 'Receipts']);
 assert.equal((html.match(/class="view(?: active)? primary-view"/g) || []).length, 7);
 assert.equal((html.match(/class="view-intro"/g) || []).length, 7);

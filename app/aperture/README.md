@@ -7,8 +7,8 @@ Downloads and the repo. Staging is deliberately non-destructive; promotion is
 the only step that updates the public repo body.
 
 ```powershell
-npm run aperture:compare -- "C:\Users\timst\Downloads\Aperture_v2_9_3.html"
-npm run aperture:stage -- "C:\Users\timst\Downloads\Aperture_v2_9_3.html"
+npm run aperture:compare -- "C:\Users\timst\Downloads\Aperture_v3_1-alpha.html"
+npm run aperture:stage -- "C:\Users\timst\Downloads\Aperture_v3_1-alpha.html"
 npm run aperture:promote-staged
 npm run sync:aperture-release
 npm run sync:browser-diagnostics
@@ -109,11 +109,13 @@ useful; together they make the exposure surface complete.
 ## What's missing right now
 
 The canonical browser body is now [`tool.html`](tool.html) at
-`v3.0-alpha` / `td613-aperture/v3.0-alpha`; [`index.html`](index.html) is the
-stable public iframe shim. v3.0-alpha carries the doctrine kernel, geometric
+`v3.1-alpha` / `td613-aperture/v3.1-alpha`; [`index.html`](index.html) is the
+stable public iframe shim. v3.1-alpha carries the doctrine kernel, geometric
 addendum, ZFP certification, corrected rupture predicate, Moire Stratigraphy,
 Phason and Sigma dynamics, the Anti-Epistemicide Research Runtime, task-intent
-precedence, and the Gateway/Dome-World reciprocal receipt bridge. The bridge
+precedence, the Gateway/Dome-World reciprocal receipt bridge, and a compact
+Admissibility Tomography status/launch drawer. The complete tomography lab
+lives in Dome-World so the standalone does not load the snapshot lattice. The bridge
 compiles an outbound diagnostic receipt only when explicitly invoked and can
 audit a returned Flow-Core context receipt. It does not transmit automatically,
 execute Aperture, rewrite doctrine, or trigger Ash custody.

@@ -10,7 +10,7 @@ The live repo stance is:
 
 - `PRCS-A` is the observed regime;
 - `TD613 Aperture` is the counter-tool;
-- `v3.0-alpha` / `td613-aperture/v3.0-alpha` is the current canonical instrument identity;
+- `v3.1-alpha` / `td613-aperture/v3.1-alpha` is the current canonical instrument identity;
 - the instrument is anti-enforcement and warning-first.
 
 Aperture should audit, annotate, register, and expose warning pressure. It should not quietly sort admissibility like the regime it critiques, flatten a strong candidate toward source because a shallower one looks safer, or silently convert a generator miss into false success.
@@ -26,7 +26,11 @@ The repo treats Aperture as post-generation audit and registration:
 
 If the write lane misses, the correct answer is a visible hold docket. Aperture is not supposed to conceal the miss.
 
-The v3.0-alpha browser instrument carries the doctrine kernel, geometric addendum, ZFP certification, Moire Stratigraphy, Phason seam detection, Sigma dynamics, Anti-Epistemicide Research Runtime, and task-intent precedence without changing that foundation doctrine. Rupture remains gated by action plus incomplete closure (`acted && closureScore < 1`). Route posture, beacon, zone, and visualization remain visible state, but `Pi` is not a rupture gate.
+The v3.1-alpha browser instrument carries the doctrine kernel, geometric addendum, ZFP certification, Moire Stratigraphy, Phason seam detection, Sigma dynamics, the inherited Anti-Epistemicide Research Runtime, task-intent precedence, and a compact Admissibility Tomography drawer without changing that foundation doctrine. The full controlled-source, instrument-ensemble, snapshot-lattice, reconstruction, and Ash VI-A workflow lives in Dome-World. Rupture remains gated by action plus incomplete closure (`acted && closureScore < 1`). Route posture, beacon, zone, and visualization remain visible state, but `Pi` is not a rupture gate.
+
+## v3.1 observatory boundary
+
+Aperture v3.1 is the reconstruction plane of a distributed observatory. Ash owns controlled-source and run custody; Flow-Core owns artifact-blind per-snapshot context; Phason records declared registry transitions; Dome-World hosts the complete laboratory; the human operator owns promotion, derivative review, and closure. New tomography receipts use local `scope_statement`, `cannot_establish`, `promotion_conditions`, `abstention_reason`, `source_status`, `authority_class`, and `operator_closure` fields. No new global claim-ceiling governor is installed, and inherited claim-ceiling vocabulary remains historical or panel-local.
 
 ## Task-intent precedence and quiet runtime
 
@@ -168,7 +172,8 @@ The Phase IV research lab is available at `/dome-world/reciprocal-bridge.html`. 
 
 - `PRCS-A` remains the observed regime;
 - Aperture remains the counter-tool;
-- active identity stays `v3.0-alpha` / `td613-aperture/v3.0-alpha`;
+- active identity stays `v3.1-alpha` / `td613-aperture/v3.1-alpha`;
+- Phase IV diagnostic and round-trip receipt schemas remain frozen at `v3.0-alpha` through the explicit v3.1 compatibility projection;
 - warning signals do not silently reroute ordinary landed outputs;
 - task-intent precedence and quiet runtime remain active;
 - the bridge returns v0.1 rather than vNext;

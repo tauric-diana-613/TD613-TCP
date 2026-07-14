@@ -66,9 +66,9 @@ def reject_raw_content(payload):
 def aperture_context(value):
     source = as_dict(value)
     return {
-        "version": "v3.0-alpha",
-        "schema": "td613-aperture/v3.0-alpha",
-        "feature": "v3.0-alpha-anti-epistemicide-research-runtime",
+        "version": "v3.1-alpha",
+        "schema": "td613-aperture/v3.1-alpha",
+        "feature": "v3.1-alpha-admissibility-tomography-registry-dynamics-runtime",
         "observedRegime": source.get("observedRegime", "PRCS-A"),
         "operationalState": "interface_context",
         "claimAuthority": "design_signal",

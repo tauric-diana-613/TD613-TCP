@@ -1,10 +1,10 @@
 {
   "schema": "td613.aperture.release/v1",
-  "version": "v3.0-alpha",
-  "apertureSchema": "td613-aperture/v3.0-alpha",
-  "featureVersion": "v3.0-alpha-anti-epistemicide-research-runtime",
+  "version": "v3.1-alpha",
+  "apertureSchema": "td613-aperture/v3.1-alpha",
+  "featureVersion": "v3.1-alpha-admissibility-tomography-registry-dynamics-runtime",
   "doctrineKernelSchema": "td613.aperture.doctrine-kernel/v2.9.4",
-  "domeBridgeSchema": "td613.aperture.reciprocal-receipt-bridge/v3.0-alpha",
+  "domeBridgeSchema": "td613.aperture.reciprocal-receipt-bridge/v3.1-alpha",
   "phase4BridgeContract": "td613.phase4.reciprocal-bridge/v0.1",
   "phase4ReadinessStatus": "phase-4-active",
   "phase4ProductionStatus": "IMPLEMENTED_PRODUCTION_DEMONSTRATED",
@@ -33,8 +33,8 @@
     "marrowlineConfirmationAuthority": false
   },
   "domeWorld": {
-    "version": "v0.5.0",
-    "schema": "td613.dome-world/v0.5.0",
+    "version": "v0.6.0-alpha",
+    "schema": "td613.dome-world/v0.6.0-alpha",
     "exactReceiptSchema": "td613.dome-world.exact-receipt/v0.4.3"
   },
   "observedRegime": "PRCS-A",
@@ -42,5 +42,49 @@
     "operationalState": "interface_context",
     "claimAuthority": "design_signal",
     "targetOperationalState": "verified_runtime_installation"
+  },
+  "compatibility": {
+    "phase4ReceiptSchemaVersion": "v3.0-alpha",
+    "v3ProducerMayEmitV30BridgeReceipts": true,
+    "phase5RelationEnvelopeUnchanged": true
+  },
+  "observatory": {
+    "status": "IMPLEMENTED_VALIDATION_GATED",
+    "productionStatus": "PRODUCTION_GATED",
+    "capabilityProfile": [
+      "reciprocal-bridge",
+      "admissibility-tomography"
+    ],
+    "domeExperimentSchema": "td613.dome-world.experiment-run/v0.1",
+    "flowCoreContextSeriesSchema": "td613.flowcore.context-series/v0.1",
+    "instrumentAdapterReceiptSchema": "td613.aperture.instrument-adapter-receipt/v0.1",
+    "tomographyReceiptSchema": "td613.aperture.admissibility-tomography-receipt/v0.1",
+    "tomographyReplaySchema": "td613.aperture.tomography-replay/v0.1",
+    "scopeBoundary": {
+      "fields": [
+        "scope_statement",
+        "cannot_establish",
+        "promotion_conditions",
+        "abstention_reason",
+        "source_status",
+        "authority_class",
+        "operator_closure"
+      ],
+      "globalClaimCeilingGovernor": false,
+      "legacyVocabularyPreserved": true,
+      "interpretationSuppressionAuthorized": false
+    }
+  },
+  "ash": {
+    "version": "v0.9-alpha",
+    "phase": "VI-A_EXPERIMENTAL_RUN_CUSTODY_AND_ELIGIBILITY",
+    "status": "IMPLEMENTED_VALIDATION_GATED",
+    "productionStatus": "PRODUCTION_GATED",
+    "experimentCustodySchema": "td613.ash.experiment-custody-manifest/v0.1",
+    "snapshotBatchSchema": "td613.ash.snapshot-batch-receipt/v0.1",
+    "tomographyResultCustodySchema": "td613.ash.tomography-result-custody/v0.1",
+    "derivativeEligibilitySchema": "td613.ash.derivative-eligibility-receipt/v0.1",
+    "automaticCinder": false,
+    "transport": false
   }
 }

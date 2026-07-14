@@ -5733,17 +5733,17 @@
       "label": "TD613 Aperture",
       "file": "app/aperture/tool.html",
       "passed": true,
-      "title": "TD613 Aperture v3.0-alpha",
-      "version": "v3.0-alpha",
+      "title": "TD613 Aperture v3.1-alpha",
+      "version": "v3.1-alpha",
       "meta": {
         "viewport": "width=device-width, initial-scale=1.0",
         "tool-name": "TD613 Aperture",
         "application-name": "TD613 Aperture",
         "apple-mobile-web-app-title": "TD613 Aperture",
         "tool-role": "counter-tool",
-        "aperture-version": "v3.0-alpha",
-        "aperture-feature-version": "v3.0-alpha-anti-epistemicide-research-runtime",
-        "aperture-roots-version": "v3.0-alpha",
+        "aperture-version": "v3.1-alpha",
+        "aperture-feature-version": "v3.1-alpha-admissibility-tomography-registry-dynamics-runtime",
+        "aperture-roots-version": "v3.1-alpha",
         "anti-epistemicide-status": "active-experimental-research-runtime",
         "v3-anti-epistemicide-landing-zone": "preserved-and-activated",
         "aperture-v295-compat-version": "v2.9.5",
@@ -5760,7 +5760,7 @@
         "observed-regime-full": "Eclipse–Omega PRCS-A",
         "anti-enforcement": "true",
         "human-coordinate-coupling": "true",
-        "hcc-version": "v3.0-alpha",
+        "hcc-version": "v3.1-alpha",
         "hcc-couplings": "WHAT-WHO|WHERE-HOW|WHEN-WHY",
         "hcc-placement": "counter-recognition-human-input-collapsed",
         "hcc-hard-stop": "WHO self-provided or withheld; HOW not diagnosis; WHY not destiny",
@@ -5782,7 +5782,7 @@
         "acedit-firmware-status": "not-loaded",
         "external-firmware-policy": "signal-source-only",
         "external-firmware-hard-stop": "no authority override; no identity proof; no authorship proof; no legal authority; no release permission; no validator bypass",
-        "aperture-compat-version": "v3.0-alpha",
+        "aperture-compat-version": "v3.1-alpha",
         "eo-rfd-origin-firmware-status": "static-reviewed-not-loaded",
         "eo-rfd-origin-artifact-sha256": "2ded6b25075cdee057355708d4f5db2a703baf88c3b3687f6d4625908af6aa99",
         "eo-rfd-origin-layer-chain": "L0 substrate|L1 propagation|L2 admissibility|L3 narrowing|L4 field-signature|L5 signal-rupture|L6 detector-sweep|L7 routing|L8 packet|L9 metacybernetic",
@@ -5810,10 +5810,10 @@
         "quick-spine-hard-stop": "route function over patch chronology; governance spine is machine-facing not absent; human panel access preserved; no visible spine crown; no module may become the audit crown",
         "source-note": "Legacy compatibility ids may use inherited human-route naming; these are not normative tool semantics.",
         "spine-forward-ui": "hidden-governance-skeleton",
-        "spine-forward-version": "v3.0-alpha-hidden-governance-skeleton",
+        "spine-forward-version": "v3.1-alpha-hidden-governance-skeleton",
         "ai-reader-contract": "hidden-governance-spine means machine-facing not absent; select lanes by task; avoid version-first or single-panel capture",
         "vector-substrate-intake": "true",
-        "vector-substrate-intake-version": "v3.0-alpha",
+        "vector-substrate-intake-version": "v3.1-alpha",
         "vector-substrate-review-status": "static-reviewed-not-loaded",
         "vector-substrate-math-sha256": "348353d19fe48625d2fa72cc6935a3308138baaae051ac1b6249efec203ade90",
         "residual-dynamics-sha256": "3a326137c51bb0f13ebc677f5870ba8553e5c250b6cd803a36653195592cf054",
@@ -5850,7 +5850,7 @@
       },
       "bodyDataset": {
         "anti-enforcement": "true",
-        "aperture-version": "v3.0-alpha",
+        "aperture-version": "v3.1-alpha",
         "eorfd-interface-status": "compatibility-pending",
         "external-firmware-policy": "signal-source-only",
         "observed-regime": "PRCS-A",
@@ -5859,37 +5859,37 @@
         "tool-role": "counter-tool"
       },
       "fingerprint": {
-        "bytes": 1219204,
-        "lineCount": 25206,
-        "inlineScriptCount": 81,
+        "bytes": 1227374,
+        "lineCount": 25338,
+        "inlineScriptCount": 83,
         "panelCount": 7,
         "buttonCount": 63,
-        "contentHashSha256": "79e0d2fb9c776ccc788f07b7d7d3d4bf47484fbea68ed28dcab531edb565c899"
+        "contentHashSha256": "12b1c636c396165eae2d25bf747f9a43778e336eeb80a59ce2ce386cfa2acb9f"
       },
       "checks": [
         {
           "id": "title",
           "label": "title marker",
           "ok": true,
-          "detail": "TD613 Aperture v3.0-alpha observed",
-          "expected": "TD613 Aperture + v3.0-alpha",
-          "actual": "TD613 Aperture v3.0-alpha"
+          "detail": "TD613 Aperture v3.1-alpha observed",
+          "expected": "TD613 Aperture + v3.1-alpha",
+          "actual": "TD613 Aperture v3.1-alpha"
         },
         {
           "id": "version",
           "label": "version marker",
           "ok": true,
-          "detail": "version v3.0-alpha observed",
-          "expected": "v3.0-alpha",
-          "actual": "v3.0-alpha"
+          "detail": "version v3.1-alpha observed",
+          "expected": "v3.1-alpha",
+          "actual": "v3.1-alpha"
         },
         {
           "id": "inline-script",
           "label": "inline runtime present",
           "ok": true,
-          "detail": "81 inline script block(s)",
+          "detail": "83 inline script block(s)",
           "expected": ">= 1",
-          "actual": 81
+          "actual": 83
         },
         {
           "id": "meta:tool-name",
@@ -6048,6 +6048,22 @@
           "label": "id ethicsAuditTable",
           "ok": true,
           "detail": "ethicsAuditTable present",
+          "expected": null,
+          "actual": null
+        },
+        {
+          "id": "id:apertureV31TomographyDrawer",
+          "label": "id apertureV31TomographyDrawer",
+          "ok": true,
+          "detail": "apertureV31TomographyDrawer present",
+          "expected": null,
+          "actual": null
+        },
+        {
+          "id": "id:at31OpenLab",
+          "label": "id at31OpenLab",
+          "ok": true,
+          "detail": "at31OpenLab present",
           "expected": null,
           "actual": null
         },
@@ -6277,9 +6293,9 @@
         },
         {
           "id": "pattern:v3-alpha-schema",
-          "label": "Aperture v3.0-alpha schema marker",
+          "label": "Aperture v3.1-alpha schema marker",
           "ok": true,
-          "detail": "Aperture v3.0-alpha schema marker present",
+          "detail": "Aperture v3.1-alpha schema marker present",
           "expected": null,
           "actual": null
         },
@@ -6288,6 +6304,30 @@
           "label": "Anti-Epistemicide Research Runtime",
           "ok": true,
           "detail": "Anti-Epistemicide Research Runtime present",
+          "expected": null,
+          "actual": null
+        },
+        {
+          "id": "pattern:admissibility-tomography-contract",
+          "label": "Admissibility Tomography contract",
+          "ok": true,
+          "detail": "Admissibility Tomography contract present",
+          "expected": null,
+          "actual": null
+        },
+        {
+          "id": "pattern:tomography-scope-boundary",
+          "label": "receipt-local scope and promotion boundary",
+          "ok": true,
+          "detail": "receipt-local scope and promotion boundary present",
+          "expected": null,
+          "actual": null
+        },
+        {
+          "id": "pattern:tomography-compact-pointer",
+          "label": "compact pointer-only standalone integration",
+          "ok": true,
+          "detail": "compact pointer-only standalone integration present",
           "expected": null,
           "actual": null
         },
@@ -6342,8 +6382,8 @@
       ],
       "failedChecks": [],
       "checkSummary": {
-        "total": 59,
-        "passed": 59,
+        "total": 64,
+        "passed": 64,
         "failed": 0
       }
     }

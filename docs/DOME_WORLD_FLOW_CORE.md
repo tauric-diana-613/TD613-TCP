@@ -1,8 +1,8 @@
 # Dome-World / Flow-Core
 
-Current release: Dome-World `v0.5.0`, Flow-Core context instrumentation `v0.1`, coupled to TD613 Aperture `v3.0-alpha` through reciprocal receipts without reciprocal authority.
+Current release: Dome-World `v0.6.0-alpha`, Flow-Core context instrumentation `v0.1`, coupled to TD613 Aperture `v3.1-alpha` through reciprocal receipts without reciprocal authority.
 
-The v0.5.0 cockpit provides active-view scheduling, machine-facing art receipts, mathematically constrained perspectives, and accessible Lab station navigation. Exact-engine and API receipt contracts retain their compatible v0.4.3 schemas.
+The v0.6.0-alpha cockpit adds the Admissibility Tomography observatory while preserving the v0.5.0 active-view art scheduler, machine-facing art receipts, mathematically constrained perspectives, and accessible Lab station navigation. Exact-engine and API receipt contracts retain their compatible v0.4.3 schemas.
 
 ## Phase III context station
 
