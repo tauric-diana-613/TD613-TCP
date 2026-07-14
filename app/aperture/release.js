@@ -83,8 +83,8 @@ export const APERTURE_RELEASE = Object.freeze({
   "ash": {
     "version": "v1.0-alpha",
     "phase": "ASH_KEEP_CASE_MAP_RUNTIME",
-    "status": "IMPLEMENTATION_IN_PROGRESS",
-    "productionStatus": "PREVIEW_PENDING",
+    "status": "IMPLEMENTED_PRODUCTION_DEMONSTRATED",
+    "productionStatus": "PRODUCTION_DEMONSTRATED",
     "experimentCustodySchema": "td613.ash.experiment-custody-manifest/v0.2",
     "snapshotBatchSchema": "td613.ash.snapshot-batch-receipt/v0.2",
     "tomographyResultCustodySchema": "td613.ash.tomography-result-custody/v0.2",

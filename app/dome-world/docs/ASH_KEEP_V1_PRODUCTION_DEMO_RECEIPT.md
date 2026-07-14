@@ -3,176 +3,158 @@
 ## Status
 
 ```text
-NOT_YET_EARNED
-IMPLEMENTATION_IN_PROGRESS
-PREVIEW_PENDING
+IMPLEMENTED_PRODUCTION_DEMONSTRATED
+PRODUCTION_DEMONSTRATED
 ```
 
-This document is a promotion gate, not evidence that promotion has occurred.
+Ash Keep v1.0 has earned production-demonstrated status through a post-merge observation of the deployed public artifact, a separately preserved evidence bundle, a terminal commit-status receipt, and explicit operator closure.
 
-Ash Keep v1.0 may be recorded as `IMPLEMENTED_PRODUCTION_DEMONSTRATED` only after a post-merge probe observes the deployed public artifact and a separate promotion commit records immutable evidence identifiers.
+Operator closure: `PRODUCTION_DEMONSTRATED`
 
-## Instrument and fixture separation
+## Observed deployment
 
-The canonical probe remains `scripts/ash-keep-production-probe.mjs`.
+- Deployed base URL: `https://td613.com`
+- Deployed Ash Keep route: `https://td613.com/dome-world/ash-keep.html`
+- Runtime commit SHA: `e04dbfa489a8ef69eb8c34dcd57e67fd7dda59d4`
+- Upstream deployment workflow run ID: `29361125011`
+- Deployed observer workflow run ID: `29361143077`
+- Deployed observer workflow run attempt: `1`
+- Deployed observer workflow run URL: `https://github.com/tauric-diana-613/TD613-TCP/actions/runs/29361143077`
+- Browser: `chromium-headless`
+- Source status: `DEPLOYED_OBSERVATION`
+- Probe outcome: `PASS`
 
-The executable entrypoint is `scripts/run-ash-keep-production-probe.mjs`. The runner creates an ephemeral runtime copy and injects one declared synthetic operator-selected excerpt after reload. This is required because an unkept draft correctly does not survive as Ash custody merely because it once appeared in the demo interface.
-
-The runner must emit `td613.ash-keep.production-probe-fixture-manifest/v0.1` containing:
-
-- canonical probe SHA-256;
-- ephemeral runtime probe SHA-256;
-- selected-excerpt SHA-256 and character count;
-- fixture class `SYNTHETIC_OPERATOR_SELECTED_EXCERPT`;
-- `source_mutated = false`;
-- `runtime_copy_ephemeral = true`;
-- `promotion_authorized = false`.
-
-Instrument source, operator-selected test material, and resulting observation remain separate objects.
-
-## Post-deployment observer route
-
-The automatic deployed observation begins only after the repository workflow named `Test and deploy static app` completes successfully on `main`.
-
-The `workflow_run` event supplies the deployed commit SHA and upstream deployment workflow-run ID. The Ash Keep observer must check out that exact commit, wait until `https://td613.com/dome-world/ash-keep.html` exposes the Ash Keep runtime, and then run the canonical probe through the declared fixture runner.
-
-The observer must emit `td613.ash-keep.deployment-observer-context/v0.1` containing:
-
-- observed base URL;
-- observed runtime commit SHA;
-- upstream deployment workflow-run ID;
-- observer workflow-run ID and attempt;
-- observer workflow-run URL;
-- observer status context;
-- triggering event class;
-- source status `DEPLOYED_OBSERVATION`;
-- `promotion_authorized = false`;
-- observer-context SHA-256.
-
-A deployment workflow success is a trigger condition, not production evidence by itself. A deployed probe `PASS` is evidence eligible for later operator closure, not authority to alter the release manifest.
-
-The observer now preserves the release posture declared by the exact checked-out commit. It does not hardcode preview as the only lawful state. The release-posture verifier admits exactly two coherent states:
-
-1. `IMPLEMENTATION_IN_PROGRESS / PREVIEW_PENDING`, paired with `NOT_YET_EARNED` and `PROMOTION_WITHHELD`;
-2. `IMPLEMENTED_PRODUCTION_DEMONSTRATED / PRODUCTION_DEMONSTRATED`, paired with a durable production receipt and explicit operator closure.
-
-Every hybrid or unrecognized state holds for repair. Both coherent states require `transport = false` and `automaticCinder = false`.
-
-Manual dispatch remains available only when an operator supplies both a deployed base URL and the exact confirmation phrase `RUN_DEPLOYED_OBSERVATION`. Manual and automatic observer lanes share the same non-promotion boundary.
-
-## Discoverable observer status
-
-The observer publishes one fixed legacy commit status context on the exact observed commit:
+## Machine-readable closure index
 
 ```text
-Ash Keep Deployed Observation
+runtime commit SHA = e04dbfa489a8ef69eb8c34dcd57e67fd7dda59d4
+upstream deployment workflow-run ID = 29361125011
+deployed observer workflow-run ID = 29361143077
+evidence artifact ID = 8322199692
+evidence artifact SHA-256 = sha256:7860cd7304eef1fae94f6007962f6d2c0f9dc21ac41c607631e3d3bed5310bc7
+desktop screenshot SHA-256 = sha256:a173528f7e7e1f6f49ba5c2028b6ab8d65d3cacd63e4aa781aa4ccbdca0af958
+mobile portrait screenshot SHA-256 = sha256:e827b4e5f56ff90d789722e58c3a3493af28c7d4c3af625160615fecce048501
+mobile landscape screenshot SHA-256 = sha256:f174195b184d48d032d374826f709242fae40a2ba3087c7fa9fd7d917232e996
+promotion_authorized = false
 ```
 
-The status may be:
+## Commit-status evidence
 
-- `pending` while the deployed assay is running;
-- `success` after the deployed assay and posture verification complete;
-- `failure` when any observer or evidence-preservation step holds for repair;
-- `error` only for an explicit status-publication error class.
+- Observer status context: `Ash Keep Deployed Observation`
+- Terminal observer status: `success`
+- Terminal observer status ID: `50468299004`
+- Terminal status description: `Ash Keep deployed observation passed; posture preserved`
+- Terminal status created at: `2026-07-14T19:16:36Z`
+- Terminal status target URL: `https://github.com/tauric-diana-613/TD613-TCP/actions/runs/29361143077`
+- Terminal status-publication receipt SHA-256: `sha256:92eb304628d992d5c273d64f59484fadf7c2bdecf9288d4fccf24bc57392d8ed`
+- Terminal status-publication receipt file SHA-256: `sha256:60e5ab21d43137290206e6086d4405a1bb35408251516cbaca171585eafeaa99`
 
-The status target URL points to the observer workflow run. This makes the deployed evidence route discoverable without guessing run identifiers or granting the observer write access to repository contents.
+The commit status is a navigational and outcome receipt. It remains separate from the production receipt, the evidence artifact, and operator closure.
 
-The bounded publisher is `scripts/publish-ash-keep-observer-status.mjs`. It receives only the GitHub token, repository, observed commit SHA, observer workflow-run URL, bounded status state, optional receipt path, and a description limited to GitHub’s 140-character field.
+## Evidence artifact
 
-Each publication may emit a durable **status-publication receipt** under `td613.ash-keep.observer-status-publication/v0.2` containing:
+- Evidence artifact ID: `8322199692`
+- Evidence artifact name: `ash-keep-deployed-observation-evidence`
+- Evidence artifact SHA-256: `sha256:7860cd7304eef1fae94f6007962f6d2c0f9dc21ac41c607631e3d3bed5310bc7`
+- Artifact created at: `2026-07-14T19:16:38Z`
+- Artifact expiry recorded by GitHub: `2026-08-13T19:16:37Z`
+- Evidence manifest file SHA-256: `sha256:81cb9b81e4b184cf8a06955592ebe88e7140989180934e3b5a5952cd94929245`
 
-- fixed status context;
-- terminal or pending state;
-- bounded description;
-- observer workflow-run target URL;
-- exact observed commit SHA;
-- GitHub status ID;
-- GitHub-created and updated timestamps when returned;
-- source status `OBSERVED_GITHUB_COMMIT_STATUS`;
-- `promotion_authorized = false`;
-- receipt SHA-256.
+## Instrument and fixture evidence
 
-Receipt paths must remain inside `artifacts/`. The workflow preserves pending, success, or failure status-publication receipts inside the deployed evidence artifact, together with the observer context, probe output, screenshots, fixture manifest, and release-posture verification.
+- Canonical probe SHA-256: `sha256:f5ae02320c6982ab01b2ac8e87854f088100a5339e39fac7021a9f46dac48b02`
+- Ephemeral runtime probe SHA-256: `sha256:df4373d50a09f51b3f2ab67d174ad0e04d103019bc9d45106b7dc11ab515346d`
+- Selected excerpt SHA-256: `sha256:963843f1c90029a97db1b768fce1327b50fe0fb20c3927207279d81f26a3e223`
+- Fixture manifest file SHA-256: `sha256:c7235551f1a3bc520d372ccd34c210d8813e2b4495765d97d6ab5f02fdd6ad2c`
+- Fixture class: `SYNTHETIC_OPERATOR_SELECTED_EXCERPT`
+- Canonical source mutated: `false`
+- Runtime copy ephemeral: `true`
+- Promotion authorized by fixture runner: `false`
 
-A commit status is a navigational receipt and outcome signal. It is not a production receipt, promotion act, trusted timestamp, identity proof, or substitute for the preserved evidence artifact. Status publication receives `statuses: write`; repository contents remain read-only.
+Instrument source, operator-selected test material, and observation remained separate objects.
 
-## Release-posture verification
+## Observer and posture evidence
 
-The executable posture contract is `scripts/assert-ash-keep-release-posture.mjs`.
+- Deployment observer-context SHA-256: `sha256:5b8d7c6b7ed43160e857931eeda5f1a9dc35cc5d8ae72058d23252b9f42b1ead`
+- Deployment observer-context file SHA-256: `sha256:8bf8ae0cca448b439851f25b7894209bdc3da97f3b2509be1b830420036ab65f`
+- Release-posture verification SHA-256: `sha256:f3844db8606886c7c68ad814b7e17c649602191001eafbf366d83d415f7668ea`
+- Release-posture verification file SHA-256: `sha256:165fa024fc460a7de408db6427bccf822e7d10172ce50af3d100420f1f350737`
+- Observed predecessor posture: `IMPLEMENTATION_IN_PROGRESS / PREVIEW_PENDING`
+- Predecessor posture preserved: `true`
+- Transport observed: `false`
+- Automatic Cinder observed: `false`
+- Promotion authorized by observer: `false`
+- Promotion authorized by status publisher: `false`
+- Promotion authorized by posture verifier: `false`
 
-It emits `td613.ash-keep.release-posture-verification/v0.1` with:
+The observer did not promote Ash Keep. This separate evidence-only commit performs operator closure after reviewing the preserved evidence.
 
-- Ash version and phase;
-- release status and production status;
-- resolved posture;
-- transport and Cinder boundaries;
-- durable receipt SHA-256;
-- `posture_preserved = true`;
-- `promotion_authorized = false`;
-- verification SHA-256.
+## Production observation evidence
 
-The deployed observer preserves this receipt in its evidence artifact. This allows the same observer to audit both pre-promotion and post-promotion deployments without laundering one posture into the other.
+- Production observation JSON SHA-256: `sha256:7c0b5a26c2846710a6fe04927dd0246ff3d1c10b7090f7a13cbc9d6376078cea`
+- Desktop screenshot SHA-256: `sha256:a173528f7e7e1f6f49ba5c2028b6ab8d65d3cacd63e4aa781aa4ccbdca0af958`
+- Mobile portrait screenshot SHA-256: `sha256:e827b4e5f56ff90d789722e58c3a3493af28c7d4c3af625160615fecce048501`
+- Mobile landscape screenshot SHA-256: `sha256:f174195b184d48d032d374826f709242fae40a2ba3087c7fa9fd7d917232e996`
+- Capsule SHA-256: `sha256:27061cca1b905f81aff7f366078163e1c25ad63fe697f1ed45c640c39ca1bfc2`
+- Tampered capsule SHA-256: `sha256:b78852d814d6f5aea1b6be84f3fbce1c89a1199a74a1d058e070f81f32f758a5`
 
-## Required deployed observations
+## Observed results
 
-The production probe must observe all of the following against the deployed runtime:
+| Gate | Deployed result |
+| --- | --- |
+| Clean arrival | PASS · zero IndexedDB records, zero localStorage keys, zero non-read requests |
+| Case continuity | PASS · Case Map digest preserved across reload |
+| Rooms | PASS · four Rooms and three cross-Room relationships observed |
+| Route Memory | PASS · one `WHAT_ACTUALLY_LEFT` successor entry |
+| Rebuild Test | `CALIBRATED_FOR_NAMED_FIXTURE` · four trials · one benign control · one held-out observation |
+| Rebuild replay | `REPLAY_VERIFIED` |
+| Real surveillance probability | `null` |
+| Automatic hold | `false` |
+| Exact release binding | PASS |
+| Stale version | rejected |
+| Changed route | rejected |
+| Transmission performed | `false` |
+| Provider call | `false` |
+| Provider POST requests added | `0` |
+| Save Point | PASS |
+| Capsule authenticated import | PASS |
+| Wrong passphrase | held without import |
+| Tampered capsule | held before import |
+| Scale fixture | PASS · 250 nodes, 400 relationships, verified in 10.3 ms |
+| Desktop | zero horizontal overflow; zero unreachable clipped controls |
+| Mobile portrait | zero horizontal overflow; zero unreachable clipped controls; intentional swipe lanes recorded separately |
+| Mobile landscape | zero horizontal overflow; zero unreachable clipped controls |
+| Rotation return | zero horizontal overflow; zero unreachable clipped controls |
+| Reduced motion | honored |
+| Non-read network requests | `0` |
+| Recipient-transport requests | `0` |
+| Console errors | `0` |
 
-1. a clean browser profile creates no Case Map, local pointer, or recipient request before operator action;
-2. demo or operator-created Case Map data persists in IndexedDB and restores after reload with the same Case Map digest;
-3. localStorage contains only the current-case pointer and compact interface preferences, never Case Map content, Room keys, Route Memory, private chronology, aliases, or raw records;
-4. multiple Rooms and at least one cross-Room relationship remain locally inspectable;
-5. Route Memory appends an exact `WHAT_ACTUALLY_LEFT` successor entry;
-6. a browser-worker Rebuild Test preserves benign control, held-out observation, componentwise exposure, null real-surveillance probability, and `automatic_hold = false`;
-7. Rebuild Test replay verifies without making a network call or reconstructing graph content;
-8. exact release binding verifies while changed version and changed route remain ineligible;
-9. local provider screening receives the declared selected excerpt, performs no provider call, and creates no recipient transport;
-10. Save Point sealing succeeds;
-11. Ash Capsule export, authenticated import, wrong-passphrase hold, and ciphertext-tamper hold succeed;
-12. a declared 250-node / approximately 400-edge synthetic Case Map compiles and verifies within the recorded performance threshold;
-13. desktop, mobile portrait, mobile landscape, rotation return, and reduced-motion layouts show zero horizontal overflow and no unreachable clipped visible controls; intentionally scrollable navigation lanes remain separately recorded;
-14. the exercised closure path emits no non-read request and no recipient-transport request;
-15. browser console and page errors remain empty;
-16. screenshots, JSON observation, fixture manifest, deployment observer context, status-publication receipt, release-posture verification, capsule fixtures, and evidence manifest receive SHA-256 digests;
-17. the probe records whether it observed local validation, protected preview, or deployed production;
-18. the probe, fixture runner, deployment observer, status publisher, and posture verifier keep `promotion_authorized = false`.
+## Release synchronization
 
-## Required promotion record
+The promotion changes only the Ash release posture and this durable evidence receipt. The following generated and test surfaces must remain synchronized:
 
-A later promotion commit must record:
+- `app/aperture/release.json`
+- `app/aperture/release.js`
+- `tests/fixtures/aperture-release.json`
 
-- deployed base URL;
-- deployed runtime commit SHA;
-- upstream deployment workflow-run ID;
-- deployed observer workflow-run ID and attempt;
-- deployed observer workflow-run URL;
-- observer status context, terminal state, and status ID;
-- terminal status-publication receipt SHA-256;
-- deployment observer-context SHA-256;
-- release-posture verification SHA-256;
-- evidence artifact ID;
-- evidence artifact SHA-256;
-- canonical probe SHA-256;
-- runtime probe SHA-256;
-- selected-excerpt SHA-256;
-- production observation JSON SHA-256;
-- desktop screenshot SHA-256;
-- mobile portrait screenshot SHA-256;
-- mobile landscape screenshot SHA-256;
-- probe outcome `PASS`;
-- explicit operator closure;
-- release-manifest synchronization across generated copies.
+The promoted release posture is:
 
-The promotion commit must be separate from the implementation, probe-harness, observer-routing, status-publication, posture-verification, or deployed-observation commits. A preview deployment, deployment workflow success, commit status, local browser run, green unit test, or successful static build cannot satisfy the production stratum.
+```text
+status = IMPLEMENTED_PRODUCTION_DEMONSTRATED
+productionStatus = PRODUCTION_DEMONSTRATED
+transport = false
+automaticCinder = false
+```
 
 ## Boundaries
 
-Even after a successful production demonstration, the receipt cannot establish:
+This production demonstration establishes that the declared deployed workflow behaved as observed under the preserved browser, fixture, route, and evidence conditions. It does not establish:
 
 - identity;
 - authorship;
 - ownership;
 - permission;
-- possession beyond the declared local observation;
 - confidentiality at an external provider;
 - resistance to every possible Reader;
 - real surveillance probability;
@@ -181,26 +163,18 @@ Even after a successful production demonstration, the receipt cannot establish:
 - deletion from any external system;
 - universal privacy or anonymity.
 
-The probe grants no release, transport, prediction, automatic hold, automatic Ash action, or Open Field promotion authority.
+Production demonstration grants no recipient transport, prediction authority, automatic hold, automatic Ash action, automatic Cinder, or Open Field promotion authority.
 
-## Canonical invocation
-
-```bash
-TD613_BASE_URL=https://td613.com \
-TD613_ARTIFACT_DIR=artifacts/ash-keep-production-closure \
-TD613_PROBE_RUNTIME_DIR=artifacts/ash-keep-probe-runtime \
-node scripts/run-ash-keep-production-probe.mjs
-```
-
-## Current ruling
+## Final ruling
 
 ```text
-CLOSURE_HARNESS_IMPLEMENTED_VALIDATION_GATED
-POST_DEPLOYMENT_OBSERVER_IMPLEMENTED_TRIGGER_GATED
-OBSERVER_STATUS_RECEIPTS_IMPLEMENTED_VALIDATION_GATED
-RELEASE_POSTURE_VERIFIER_IMPLEMENTED_VALIDATION_GATED
-PRODUCTION_EVIDENCE_OBSERVED_PENDING_STATUS_RECEIPT_REPLAY
-PRODUCTION_PROMOTION_WITHHELD
+CLOSURE_HARNESS_IMPLEMENTED_PRODUCTION_DEMONSTRATED
+POST_DEPLOYMENT_OBSERVER_IMPLEMENTED_PRODUCTION_DEMONSTRATED
+OBSERVER_STATUS_RECEIPTS_IMPLEMENTED_PRODUCTION_DEMONSTRATED
+RELEASE_POSTURE_VERIFIER_IMPLEMENTED_PRODUCTION_DEMONSTRATED
+ASH_KEEP_V1_IMPLEMENTED_PRODUCTION_DEMONSTRATED
+TRANSPORT_DEFERRED
+AUTOMATIC_CINDER_FALSE
 ```
 
 𝌋‌ U+10D613
