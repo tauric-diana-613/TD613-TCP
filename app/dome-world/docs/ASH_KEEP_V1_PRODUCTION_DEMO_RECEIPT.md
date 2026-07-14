@@ -12,6 +12,24 @@ This document is a promotion gate, not evidence that promotion has occurred.
 
 Ash Keep v1.0 may be recorded as `IMPLEMENTED_PRODUCTION_DEMONSTRATED` only after a post-merge probe observes the deployed public artifact and a separate promotion commit records immutable evidence identifiers.
 
+## Instrument and fixture separation
+
+The canonical probe remains `scripts/ash-keep-production-probe.mjs`.
+
+The executable entrypoint is `scripts/run-ash-keep-production-probe.mjs`. The runner creates an ephemeral runtime copy and injects one declared synthetic operator-selected excerpt after reload. This is required because an unkept draft correctly does not survive as Ash custody merely because it once appeared in the demo interface.
+
+The runner must emit `td613.ash-keep.production-probe-fixture-manifest/v0.1` containing:
+
+- canonical probe SHA-256;
+- ephemeral runtime probe SHA-256;
+- selected-excerpt SHA-256 and character count;
+- fixture class `SYNTHETIC_OPERATOR_SELECTED_EXCERPT`;
+- `source_mutated = false`;
+- `runtime_copy_ephemeral = true`;
+- `promotion_authorized = false`.
+
+Instrument source, operator-selected test material, and resulting observation remain separate objects.
+
 ## Required deployed observations
 
 The production probe must observe all of the following against the deployed runtime:
@@ -24,16 +42,16 @@ The production probe must observe all of the following against the deployed runt
 6. a browser-worker Rebuild Test preserves benign control, held-out observation, componentwise exposure, null real-surveillance probability, and `automatic_hold = false`;
 7. Rebuild Test replay verifies without making a network call or reconstructing graph content;
 8. exact release binding verifies while changed version and changed route remain ineligible;
-9. local provider screening performs no provider call and creates no recipient transport;
+9. local provider screening receives the declared selected excerpt, performs no provider call, and creates no recipient transport;
 10. Save Point sealing succeeds;
 11. Ash Capsule export, authenticated import, wrong-passphrase hold, and ciphertext-tamper hold succeed;
 12. a declared 250-node / approximately 400-edge synthetic Case Map compiles and verifies within the recorded performance threshold;
 13. desktop, mobile portrait, mobile landscape, rotation return, and reduced-motion layouts show zero horizontal overflow and no clipped visible controls;
 14. the exercised closure path emits no non-read request and no recipient-transport request;
 15. browser console and page errors remain empty;
-16. screenshots, JSON observation, capsule fixtures, and evidence manifest receive SHA-256 digests;
+16. screenshots, JSON observation, fixture manifest, capsule fixtures, and evidence manifest receive SHA-256 digests;
 17. the probe records whether it observed local validation, protected preview, or deployed production;
-18. the probe itself keeps `promotion_authorized = false`.
+18. the probe and fixture runner keep `promotion_authorized = false`.
 
 ## Required promotion record
 
@@ -44,6 +62,9 @@ A later promotion commit must record:
 - GitHub Actions workflow run ID;
 - evidence artifact ID;
 - evidence artifact SHA-256;
+- canonical probe SHA-256;
+- runtime probe SHA-256;
+- selected-excerpt SHA-256;
 - production observation JSON SHA-256;
 - desktop screenshot SHA-256;
 - mobile portrait screenshot SHA-256;
@@ -78,7 +99,8 @@ The probe grants no release, transport, prediction, automatic hold, automatic As
 ```bash
 TD613_BASE_URL=https://td613.com \
 TD613_ARTIFACT_DIR=artifacts/ash-keep-production-closure \
-node scripts/ash-keep-production-probe.mjs
+TD613_PROBE_RUNTIME_DIR=artifacts/ash-keep-probe-runtime \
+node scripts/run-ash-keep-production-probe.mjs
 ```
 
 ## Current ruling
