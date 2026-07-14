@@ -49,7 +49,14 @@ The observer must emit `td613.ash-keep.deployment-observer-context/v0.1` contain
 - `promotion_authorized = false`;
 - observer-context SHA-256.
 
-A deployment workflow success is a trigger condition, not production evidence by itself. A deployed probe `PASS` is evidence eligible for later operator closure, not authority to alter the release manifest. The observer therefore reasserts `PREVIEW_PENDING` and `NOT_YET_EARNED` even after preserving a successful deployed evidence bundle.
+A deployment workflow success is a trigger condition, not production evidence by itself. A deployed probe `PASS` is evidence eligible for later operator closure, not authority to alter the release manifest.
+
+The observer now preserves the release posture declared by the exact checked-out commit. It does not hardcode preview as the only lawful state. The release-posture verifier admits exactly two coherent states:
+
+1. `IMPLEMENTATION_IN_PROGRESS / PREVIEW_PENDING`, paired with `NOT_YET_EARNED` and `PROMOTION_WITHHELD`;
+2. `IMPLEMENTED_PRODUCTION_DEMONSTRATED / PRODUCTION_DEMONSTRATED`, paired with a durable production receipt and explicit operator closure.
+
+Every hybrid or unrecognized state holds for repair. Both coherent states require `transport = false` and `automaticCinder = false`.
 
 Manual dispatch remains available only when an operator supplies both a deployed base URL and the exact confirmation phrase `RUN_DEPLOYED_OBSERVATION`. Manual and automatic observer lanes share the same non-promotion boundary.
 
@@ -64,15 +71,47 @@ Ash Keep Deployed Observation
 The status may be:
 
 - `pending` while the deployed assay is running;
-- `success` after the deployed assay, evidence upload, and non-promotion reassertion complete;
-- `failure` when any observer step holds for repair;
+- `success` after the deployed assay and posture verification complete;
+- `failure` when any observer or evidence-preservation step holds for repair;
 - `error` only for an explicit status-publication error class.
 
 The status target URL points to the observer workflow run. This makes the deployed evidence route discoverable without guessing run identifiers or granting the observer write access to repository contents.
 
-The bounded publisher is `scripts/publish-ash-keep-observer-status.mjs`. It receives only the GitHub token, repository, observed commit SHA, observer workflow-run URL, bounded status state, and a description limited to GitHub’s 140-character field. It emits `td613.ash-keep.observer-status-publication/v0.1` with `promotion_authorized = false`.
+The bounded publisher is `scripts/publish-ash-keep-observer-status.mjs`. It receives only the GitHub token, repository, observed commit SHA, observer workflow-run URL, bounded status state, optional receipt path, and a description limited to GitHub’s 140-character field.
+
+Each publication may emit a durable **status-publication receipt** under `td613.ash-keep.observer-status-publication/v0.2` containing:
+
+- fixed status context;
+- terminal or pending state;
+- bounded description;
+- observer workflow-run target URL;
+- exact observed commit SHA;
+- GitHub status ID;
+- GitHub-created and updated timestamps when returned;
+- source status `OBSERVED_GITHUB_COMMIT_STATUS`;
+- `promotion_authorized = false`;
+- receipt SHA-256.
+
+Receipt paths must remain inside `artifacts/`. The workflow preserves pending, success, or failure status-publication receipts inside the deployed evidence artifact, together with the observer context, probe output, screenshots, fixture manifest, and release-posture verification.
 
 A commit status is a navigational receipt and outcome signal. It is not a production receipt, promotion act, trusted timestamp, identity proof, or substitute for the preserved evidence artifact. Status publication receives `statuses: write`; repository contents remain read-only.
+
+## Release-posture verification
+
+The executable posture contract is `scripts/assert-ash-keep-release-posture.mjs`.
+
+It emits `td613.ash-keep.release-posture-verification/v0.1` with:
+
+- Ash version and phase;
+- release status and production status;
+- resolved posture;
+- transport and Cinder boundaries;
+- durable receipt SHA-256;
+- `posture_preserved = true`;
+- `promotion_authorized = false`;
+- verification SHA-256.
+
+The deployed observer preserves this receipt in its evidence artifact. This allows the same observer to audit both pre-promotion and post-promotion deployments without laundering one posture into the other.
 
 ## Required deployed observations
 
@@ -93,9 +132,9 @@ The production probe must observe all of the following against the deployed runt
 13. desktop, mobile portrait, mobile landscape, rotation return, and reduced-motion layouts show zero horizontal overflow and no unreachable clipped visible controls; intentionally scrollable navigation lanes remain separately recorded;
 14. the exercised closure path emits no non-read request and no recipient-transport request;
 15. browser console and page errors remain empty;
-16. screenshots, JSON observation, fixture manifest, deployment observer context, capsule fixtures, and evidence manifest receive SHA-256 digests;
+16. screenshots, JSON observation, fixture manifest, deployment observer context, status-publication receipt, release-posture verification, capsule fixtures, and evidence manifest receive SHA-256 digests;
 17. the probe records whether it observed local validation, protected preview, or deployed production;
-18. the probe, fixture runner, deployment observer, and status publisher keep `promotion_authorized = false`.
+18. the probe, fixture runner, deployment observer, status publisher, and posture verifier keep `promotion_authorized = false`.
 
 ## Required promotion record
 
@@ -107,7 +146,9 @@ A later promotion commit must record:
 - deployed observer workflow-run ID and attempt;
 - deployed observer workflow-run URL;
 - observer status context, terminal state, and status ID;
+- terminal status-publication receipt SHA-256;
 - deployment observer-context SHA-256;
+- release-posture verification SHA-256;
 - evidence artifact ID;
 - evidence artifact SHA-256;
 - canonical probe SHA-256;
@@ -121,7 +162,7 @@ A later promotion commit must record:
 - explicit operator closure;
 - release-manifest synchronization across generated copies.
 
-The promotion commit must be separate from the implementation, probe-harness, observer-routing, status-publication, or deployed-observation commits. A preview deployment, deployment workflow success, commit status, local browser run, green unit test, or successful static build cannot satisfy the production stratum.
+The promotion commit must be separate from the implementation, probe-harness, observer-routing, status-publication, posture-verification, or deployed-observation commits. A preview deployment, deployment workflow success, commit status, local browser run, green unit test, or successful static build cannot satisfy the production stratum.
 
 ## Boundaries
 
@@ -156,9 +197,10 @@ node scripts/run-ash-keep-production-probe.mjs
 ```text
 CLOSURE_HARNESS_IMPLEMENTED_VALIDATION_GATED
 POST_DEPLOYMENT_OBSERVER_IMPLEMENTED_TRIGGER_GATED
-OBSERVER_STATUS_PUBLICATION_DESIGNED
-PRODUCTION_EVIDENCE_ABSENT
-PROMOTION_WITHHELD
+OBSERVER_STATUS_RECEIPTS_IMPLEMENTED_VALIDATION_GATED
+RELEASE_POSTURE_VERIFIER_IMPLEMENTED_VALIDATION_GATED
+PRODUCTION_EVIDENCE_OBSERVED_PENDING_STATUS_RECEIPT_REPLAY
+PRODUCTION_PROMOTION_WITHHELD
 ```
 
 𝌋‌ U+10D613
