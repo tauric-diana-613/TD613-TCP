@@ -50,13 +50,19 @@ for (const token of [
   'runtime_probe_sha256',
   'source_mutated: false',
   'runtime_copy_ephemeral: true',
-  'promotion_authorized: false',
-  'targetCount !== 1'
+  'runtime_transformations',
+  'DECLARE_SELECTED_EXCERPT_AFTER_UNKEPT_DRAFT_RELOAD',
+  'CLASSIFY_INTENTIONAL_HORIZONTAL_SCROLL_LANES_SEPARATELY_FROM_CLIPPING',
+  'scroll_lane_controls',
+  'replaceExactlyOnce',
+  'promotion_authorized: false'
 ]) {
   assert.ok(runner.includes(token), `Fixture runner omitted required provenance token: ${token}`);
 }
 assert.match(runner, /TD613_SELECTED_EXCERPT/);
 assert.match(runner, /#draftBody/);
+assert.match(runner, /overflowX/);
+assert.match(runner, /scrollWidth > parent\.clientWidth/);
 assert.doesNotMatch(runner, /IMPLEMENTED_PRODUCTION_DEMONSTRATED/);
 
 for (const token of [
