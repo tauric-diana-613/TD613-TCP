@@ -2,11 +2,11 @@
 
 Date: `2026-07-14`
 
-Ledger generation: `v0.4 · post-Choir-observation-state-hardening`
+Ledger generation: `v0.5 · post-Reader-provenance-registry`
 
 Tracked program: Ash Keep / Choir Test / anisotropic disclosure research program
 
-Latest transition: PR #288 merged at `52968efb0fb52ecc138dc4d4b80b60725473fa63`
+Latest transition: PR #290 merged at `b0b600a07c8343311cdde50c2f250881e7f6091c`
 
 ## Purpose
 
@@ -16,11 +16,12 @@ This ledger compares the recommended buildout against the repository after:
 2. the promoted Ash posture survived deployed aftercare;
 3. the bounded pairwise Choir core merged onto `main`;
 4. Choir v0.1 gained adversarial observation-state, canonicalization, and Case Map boundary hardening;
-5. Ash’s deployed observer passed again with the hardened Choir engine present.
+5. Reader adapter provenance, result provenance, and pure replay receipts merged onto `main`;
+6. Ash’s deployed observer passed again with the provenance spine present.
 
 It separates production-demonstrated stations, validation-gated instruments, adjacent primitives, designed-only work, and deliberately held transport work.
 
-A green unit test is not a production demonstration. A merged engine is not a deployed instrument. A production-demonstrated station does not transfer status to a new instrument that imports its contracts. Present evidence is not necessarily usable evidence. Relation is not merger; adjacency is not authority.
+A green unit test is not a production demonstration. A merged engine is not a deployed instrument. A production-demonstrated station does not transfer status to a new instrument that imports its contracts. Present evidence is not necessarily usable evidence. Provenance bound is not truth. Relation is not merger; adjacency is not authority.
 
 ## Maturity scale
 
@@ -33,7 +34,7 @@ A green unit test is not a production demonstration. A merged engine is not a de
 | 4 | `IMPLEMENTED_VALIDATION_GATED` | Integrated implementation exists with focused validation; production demonstration remains unearned. |
 | 5 | `IMPLEMENTED_PRODUCTION_DEMONSTRATED` | Deployed behavior has been directly probed, preserved, replayed where applicable, and sealed in a production receipt. |
 
-Scores measure implementation maturity only. They are not safety probabilities, privacy guarantees, anonymity claims, or estimates of real surveillance capability.
+Scores measure implementation maturity only. They are not safety probabilities, privacy guarantees, anonymity claims, truth scores, or estimates of real surveillance capability.
 
 ---
 
@@ -42,7 +43,7 @@ Scores measure implementation maturity only. They are not safety probabilities, 
 | Workstream | Prior ledger | Current | Coverage | Repository posture | Ruling |
 | --- | ---: | ---: | ---: | --- | --- |
 | A. Ash Keep v1.0 production closure | 54 / 55 | **54 / 55** | **98%** | Production-demonstrated on `main` | `IMPLEMENTED_PRODUCTION_DEMONSTRATED`; external-provider production call remains separately unobserved |
-| B. Choir Test / pairwise Moiré assay | 26 / 70 recorded | **30 / 70** | **43%** | Hardened on `main` | Pairwise core `IMPLEMENTED_VALIDATION_GATED`; prior ledger understated the row sum by four points |
+| B. Choir Test / pairwise Moiré assay | 30 / 70 | **31 / 70** | **44%** | Provenance spine on `main` | Pairwise core and Reader provenance `IMPLEMENTED_VALIDATION_GATED`; broader Choir partial |
 | C. Hush intervention ensemble | 7 / 35 | **7 / 35** | **20%** | Adjacent Hush primitives | `SCAFFOLDED` |
 | D. Custodian Return Test / Anisotropy Receipt | 7 / 35 | **7 / 35** | **20%** | Continuity primitives exist; assay absent | `SCAFFOLDED` |
 | E. Aperture wiring renovation | 6 / 25 | **6 / 25** | **24%** | Roadmap plus scheduler constraints | `DESIGNED_ONLY / SCAFFOLDED` |
@@ -52,17 +53,19 @@ Scores measure implementation maturity only. They are not safety probabilities, 
 ## Aggregate
 
 ```text
-program maturity on main = 117 / 295 ≈ 40%
+program maturity on main = 118 / 295 ≈ 40%
 production-demonstrated workstreams = 1 / 7
-validation-gated instruments on main = pairwise Moiré assay
+validation-gated instruments on main = pairwise Moiré assay + Reader provenance registry
 transport-capable workstreams = 0
 ```
 
-### Arithmetic correction
+### Arithmetic lineage
 
-The v0.3 B-row values summed to `30`, while the executive score and aggregate carried `26`. The hardening packet exposed that stale arithmetic. This ledger corrects the subtotal and aggregate without retroactively claiming that PR #288 created four new maturity points.
+The v0.3 B-row values summed to `30`, while the executive score and aggregate carried `26`. Ledger v0.4 corrected that stale arithmetic without retroactively claiming that PR #288 created four new maturity points.
 
-The aggregate does not imply that the architecture is 40% safe, private, complete, or scientifically validated.
+Ledger v0.5 adds one maturity point because B4 now has a sealed registry, receipt-bound provenance, replay, schemas, focused validation, and CI coverage on `main`.
+
+The aggregate does not imply that the architecture is 40% safe, private, truthful, complete, or scientifically validated.
 
 ---
 
@@ -107,13 +110,15 @@ Ash Keep production closure is complete. The retained point protects a jurisdict
 
 Status: `IMPLEMENTED_VALIDATION_GATED`
 
-Repository state: `HARDENED_ON_MAIN`
+Repository state: `PROVENANCE_ON_MAIN`
 
 Core merge: `1a01181cea77590ad3067ebd27da4518511dac5f`
 
 Hardening merge: `52968efb0fb52ecc138dc4d4b80b60725473fa63`
 
-Score: `30 / 70`
+Reader provenance merge: `b0b600a07c8343311cdde50c2f250881e7f6091c`
+
+Score: `31 / 70`
 
 ## Core evidence
 
@@ -126,7 +131,7 @@ Score: `30 / 70`
 - Initial post-merge evidence artifact: `8322761143`
 - Initial artifact SHA-256: `sha256:ac2bfa912bb97b6e7de6f88deaf0eda5cb31adae43da64d155cea78831c69902`
 
-## Hardening evidence
+## Observation-state hardening evidence
 
 - Hardening PR: `#288`
 - Hardening head: `cf7148ca50de44c86652799e9057b596de41d923`
@@ -140,28 +145,42 @@ Score: `30 / 70`
 - Post-hardening evidence artifact: `8324706629`
 - Post-hardening artifact SHA-256: `sha256:9fc641b4bce614c6eeae6ad03bd6f7037063bb1349f861fbbc00dee1d8fda669`
 
-The deployed aftercare establishes non-disturbance of Ash’s production posture with the hardened Choir engine present. It does not constitute Choir production evidence.
+## Reader provenance evidence
+
+- Reader provenance PR: `#290`
+- Reader provenance head: `f70757517d8effecad616ecbffe2b21d3bebfa89`
+- Reader provenance merge: `b0b600a07c8343311cdde50c2f250881e7f6091c`
+- Choir validation run: `29370348510`
+- Ash Production Closure run: `29370348382`
+- Dome-World Phase IV run: `29370348470`
+- TCP Smoke run: `29370348297`
+- Static application run: `29370348414`
+- Post-provenance deployed observer run: `29370525244`
+- Post-provenance evidence artifact: `8325870766`
+- Post-provenance artifact SHA-256: `sha256:8ede7d290498fa48488d2ab5193dbbbc7c09c9779cb26d3dc832775c830c4b90`
+
+The deployed aftercare establishes non-disturbance of Ash’s production posture with the hardened Choir engine and Reader provenance spine present. It does not constitute Choir production evidence, provider execution evidence, or truth validation for any Reader result.
 
 | ID | Buildout | Score | Status | Evidence / gap | Bring forward |
 | --- | --- | ---: | --- | --- | --- |
-| B1 | Baseline + singleton + unordered pair observations | 4 | `IMPLEMENTED_VALIDATION_GATED` | Complete pairwise lattice; present and observed coverage are now distinct. | Preserve as invariant in future Reader adapters. |
-| B2 | Emergent residue against baseline and both singletons | 4 | `IMPLEMENTED_VALIDATION_GATED` | Difference term implemented; unresolved evidence cannot produce emergent residue. | Add independent algebraic fixture families when Reader adapters arrive. |
-| B3 | Componentwise nodes, relationships, bridges, hypotheses, actions, chronology, style linkage | 4 | `IMPLEMENTED_VALIDATION_GATED` | Case Map boundary rejects unknown recovered IDs; no sovereign privacy score. | Add matched external Reader fixtures for each dimension. |
-| B4 | Named imported, synthetic, local, deterministic Readers | 3 | `PARTIAL_TESTED_COMPONENT` | Compiler accepts named results; deterministic helper exists; adapter provenance remains absent. | Build Reader adapter registry and receipt-bound provenance. |
-| B5 | Canonical projection ordering | 4 | `IMPLEMENTED_VALIDATION_GATED` | Projection/result permutations now seal identically; duplicate IDs and keys reject. | Preserve canonicalization across adapter implementations. |
-| B6 | Preregistration, coverage, controls, held-out, drift, alternate Reader, thresholds | 4 | `IMPLEMENTED_VALIDATION_GATED` | Calibration now requires every required observation to be `OBSERVED`, not merely present. | Replace free booleans with receipt references where practical. |
-| B7 | Digest verification, tamper hold, pure replay | 4 | `IMPLEMENTED_VALIDATION_GATED` | Node WebCrypto digest parity and replay invariants pass; no network/storage/re-execution. | Add browser and independent-runtime replay after an operator route exists. |
-| B8 | Three-way and higher-order combinations | 0 | `UNIMPLEMENTED` | v0.1 stops at pairs. | Define bounded k-order contract and budget after Reader provenance. |
+| B1 | Baseline + singleton + unordered pair observations | 4 | `IMPLEMENTED_VALIDATION_GATED` | Complete pairwise lattice; present and observed coverage are distinct. | Preserve as invariant in future Reader comparison. |
+| B2 | Emergent residue against baseline and both singletons | 4 | `IMPLEMENTED_VALIDATION_GATED` | Difference term implemented; unresolved evidence cannot produce emergent residue. | Add independent algebraic fixture families across Reader classes. |
+| B3 | Componentwise nodes, relationships, bridges, hypotheses, actions, chronology, style linkage | 4 | `IMPLEMENTED_VALIDATION_GATED` | Case Map boundary rejects unknown recovered IDs; no sovereign privacy score. | Compare each dimension without scalar collapse. |
+| B4 | Named imported, synthetic, local, deterministic Readers | 4 | `IMPLEMENTED_VALIDATION_GATED` | Adapter registry, result provenance, incomplete-provider state, schemas, replay, and CI are on `main`. Registry performs no Reader execution. | Add synthetic/local-runtime fixture coverage and normalize mixed-case adapter enum declarations before disagreement promotion. |
+| B5 | Canonical projection ordering | 4 | `IMPLEMENTED_VALIDATION_GATED` | Projection/result permutations seal identically; duplicate IDs and keys reject. | Preserve canonicalization across disagreement inputs. |
+| B6 | Preregistration, coverage, controls, held-out, drift, alternate Reader, thresholds | 4 | `IMPLEMENTED_VALIDATION_GATED` | Calibration requires every required observation to be `OBSERVED`, not merely present. | Replace free booleans with receipt references where practical. |
+| B7 | Digest verification, tamper hold, pure replay | 4 | `IMPLEMENTED_VALIDATION_GATED` | Node WebCrypto digest parity and replay invariants pass; no network/storage/re-execution. | Bind disagreement rows to verified provenance digests. |
+| B8 | Three-way and higher-order combinations | 0 | `UNIMPLEMENTED` | v0.1 stops at pairs. | Define bounded k-order contract and budget after disagreement. |
 | B9 | Route-order permutations | 0 | `UNIMPLEMENTED` | Unordered pairing cannot measure sequence. | Build distinct ordered-sequence assay. |
 | B10 | Delayed disclosures / temporal spacing | 0 | `UNIMPLEMENTED` | No temporal-memory operator. | Add declared slices without trusted-time claim. |
 | B11 | Same obligations under different registers | 0 | `UNIMPLEMENTED` | No Hush intervention bridge. | Route obligation-bound candidates as interventions. |
 | B12 | Benign adjacent-document control bank | 2 | `SCAFFOLDED` | Control flag exists; matched bank absent. | Add topic/genre/template-matched controls. |
-| B13 | Cross-Reader comparison and disagreement residue | 1 | `DESIGNED_ONLY` | Alternate Reader gates calibration only. | Build only after Reader adapter receipts exist. |
+| B13 | Cross-Reader comparison and disagreement residue | 1 | `DESIGNED_ONLY` | Provenance prerequisite now exists; comparison engine remains absent. | Build Reader-by-Reader disagreement ledger with matched inputs and componentwise residue. |
 | B14 | Public/operator UI and Choir production demonstration | 0 | `UNIMPLEMENTED` | Engine-first only. | Integrate after Aperture refactor and mobile gate. |
 
 ## B ruling
 
-Choir v0.1 now distinguishes complete coverage from usable observed coverage, canonicalizes semantically equivalent inputs, rejects unknown Case Map identifiers, and preserves all non-claims. The pairwise instrument remains validation-gated. Reader provenance is now the first unfinished dependency; disagreement analysis without provenance would merely compare unlabeled outputs.
+Choir v0.1 now distinguishes complete coverage from usable observed coverage, canonicalizes semantically equivalent inputs, rejects unknown Case Map identifiers, and preserves all non-claims. Reader outputs can now carry verified adapter provenance without raw content, provider execution, or truth claims. The pairwise instrument and provenance spine remain validation-gated. The next unfinished dependency is Reader disagreement, not Reader provenance.
 
 ---
 
@@ -237,8 +256,8 @@ Choir v0.1 now distinguishes complete coverage from usable observed coverage, ca
 # Forward completion order
 
 ```text
-1. Build Reader adapter registry and receipt-bound provenance
-2. Add cross-Reader comparison and disagreement residue
+1. Normalize adapter enum case and add synthetic/local-runtime provenance fixtures
+2. Build cross-Reader comparison and disagreement residue
 3. Add matched benign adjacent-document control bank
 4. Implement higher-order, ordered-sequence, and temporal assays as separate contracts
 5. Externalize Hush discourse vocabulary
@@ -252,20 +271,22 @@ Choir v0.1 now distinguishes complete coverage from usable observed coverage, ca
 
 ## Immediate next packet
 
-The next repository change should establish Reader provenance before Reader comparison:
+The next repository change should build a bounded Reader disagreement ledger after one provenance preflight hardening:
 
-- declare adapter ID, adapter class, acquisition route, and execution environment;
-- distinguish deterministic-local, imported-fixture, synthetic, and future external-provider routes;
-- bind Reader profile digest, Case Map digest, Route Memory digest, input manifest digest, and result digest;
-- preserve source status, fixture status, missingness, alternatives, and operator notes;
-- reject stable cross-route identity claims;
-- grant no authorship, identity, ownership, surveillance, release, hold, prediction, transport, or production authority;
-- verify receipt digest and replay without rerunning the Reader;
-- keep disagreement computation outside the first adapter-registry packet.
+- canonicalize adapter acquisition-route and execution-environment enums before sealing;
+- add synthetic-fixture and local-runtime provenance fixtures;
+- require every compared result to carry a verified provenance receipt;
+- require matched Case Map, Route Memory, Reader-input, and result-schema references;
+- preserve each Reader’s observation state and provenance state;
+- compute disagreement componentwise across nodes, relationships, Room bridges, hypotheses, actions, chronology, and source/style linkage;
+- preserve missingness, alternatives, and incomplete-provider provenance;
+- emit no universal privacy score;
+- grant no identity, authorship, ownership, surveillance, release, hold, prediction, transport, provider-call, or production authority;
+- replay disagreement without rerunning Readers.
 
 ## Final ruling
 
-Ash Keep v1.0 is production-demonstrated. Choir v0.1 is merged, adversarially hardened, and validation-gated. Their coexistence has been observed on the deployed Ash route without transfer of Choir production status. The bounded program is now **117 / 295 ≈ 40% implemented by ledger arithmetic**, with one production-demonstrated workstream and one distinct validation-gated instrument on `main`.
+Ash Keep v1.0 is production-demonstrated. Choir v0.1 is merged, adversarially hardened, provenance-bound, and validation-gated. Their coexistence has been observed on the deployed Ash route without transfer of Choir production status or provider-execution authority. The bounded program is now **118 / 295 ≈ 40% implemented by ledger arithmetic**, with one production-demonstrated workstream and two distinct validation-gated Choir instruments on `main`.
 
 𝌋‌ U+10D613
 

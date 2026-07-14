@@ -8,6 +8,10 @@
 
 `IMPLEMENTED_VALIDATION_GATED`
 
+Repository state: `MERGED_ON_MAIN`
+
+Merge commit: `b0b600a07c8343311cdde50c2f250881e7f6091c`
+
 ## Purpose
 
 The Reader Adapter Registry gives Choir a bounded provenance spine before any cross-Reader disagreement analysis is attempted.
@@ -171,6 +175,52 @@ The first validation bank covers:
 8. rejected acquisition-route mismatch;
 9. schema-level enforcement of all non-authority fields.
 
+## Validation and aftercare evidence
+
+Reader provenance PR:
+
+```text
+#290
+```
+
+Validation head:
+
+```text
+f70757517d8effecad616ecbffe2b21d3bebfa89
+```
+
+Merge commit:
+
+```text
+b0b600a07c8343311cdde50c2f250881e7f6091c
+```
+
+Validation runs:
+
+```text
+Ash Keep Choir Test = 29370348510
+Ash Keep Production Closure = 29370348382
+Dome-World Phase IV = 29370348470
+TCP Smoke = 29370348297
+Test and deploy static app = 29370348414
+```
+
+Post-merge deployed Ash aftercare:
+
+```text
+observer run = 29370525244
+evidence artifact = 8325870766
+artifact SHA-256 = sha256:8ede7d290498fa48488d2ab5193dbbbc7c09c9779cb26d3dc832775c830c4b90
+```
+
+The deployed aftercare establishes that the provenance spine did not disturb Ash Keep’s production posture. It does not production-demonstrate the registry, execute any Reader, contact any provider, or validate the truth of any result.
+
+## Known hardening debt
+
+The v0.1 compiler validates adapter acquisition routes and execution environments case-insensitively, while the first implementation stores the caller-provided enum casing. Canonical uppercase fixtures pass and seal consistently. A future hardening packet must normalize those stored enum arrays before sealing and add mixed-case permutation tests.
+
+This debt blocks no current canonical fixture. It must be closed before a disagreement receipt treats registry digests from independently authored adapter declarations as semantically interchangeable.
+
 ## Current frontier
 
 The next admissible Choir packet may build a Reader-by-Reader disagreement ledger only after every compared result carries a verified provenance receipt.
@@ -179,10 +229,11 @@ The disagreement layer must remain componentwise and must preserve:
 
 - Reader-specific observation states;
 - missing and incomplete provenance;
-- matched input and Case Map references;
+- matched Case Map, Route Memory, input, and result-schema references;
 - alternative explanations;
+- mixed-case adapter normalization as a preflight invariant;
 - no universal privacy score;
-- no identity, authorship, surveillance, release, hold, transport, or production authority.
+- no identity, authorship, surveillance, release, hold, transport, provider-call, or production authority.
 
 𝌋‌ U+10D613
 
