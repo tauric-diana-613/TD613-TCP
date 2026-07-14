@@ -8,7 +8,25 @@
 
 `IMPLEMENTED_VALIDATION_GATED`
 
-Repository state: `IMPLEMENTATION_BRANCH / MERGE_PENDING`
+Repository state: `MERGED_ON_MAIN / POST_MERGE_AFTERCARE_PASSED`
+
+## Evidence spine
+
+- Implementation PR: `#295`
+- Validated head: `6dabad7f6164802ea544a49c3193f12a999b345e`
+- Merge commit: `378bf0f1a81b6aa7b9ebe8379ca207d6f1f36925`
+- Choir validation run: `29373864154`
+- Ash Production Closure run: `29373864175`
+- Dome-World Phase IV run: `29373864134`
+- TCP Smoke run: `29373864151`
+- Static application run: `29373864141`
+- Post-merge deployed observer run: `29373962583`
+- Post-merge evidence artifact: `8327164665`
+- Artifact SHA-256: `sha256:44ee07bfc33fbb6446c18bd893f4fa289919e438d6b4b641c9cfc33824d7a266`
+- Deployed observation SHA-256: `sha256:76d7e6802f5e699c9a8b4bb1d061f5a3a6fe3d25d47178fcfaef446235c28b38`
+- Release-posture verification SHA-256: `sha256:5ed6f6f590c2b97e1afac78770fcf2046b000bee5340d53008bf3ff9c92c9938`
+
+Post-merge aftercare verified Ash Keep as `IMPLEMENTED_PRODUCTION_DEMONSTRATED` with transport false, automatic Cinder false, provider calls false, and no promotion authority granted to this Choir instrument.
 
 ## Purpose
 
@@ -102,9 +120,19 @@ Numeric dimensions:
 - chronology spread;
 - source/style-linkage spread.
 
-Each dimension preserves target value, per-control values, eligible-control count, minimum, maximum, median, target position, controls below target, and controls at or above target.
+Each dimension preserves target value, per-control values, eligible-control count, minimum, maximum, lower median, target position, controls below target, and controls at or above target.
 
 The bank also compares the count of observed Reader pairs carrying disagreement.
+
+### Canonical lower median
+
+The canonical serializer admits integers only. An even-sized control set can produce a fractional arithmetic median, so the receipt uses the lower median order statistic while preserving the complete per-control vector.
+
+```text
+lower_median(values) = sorted(values)[floor((n - 1) / 2)]
+```
+
+This keeps the receipt integer-safe and lossless with respect to the observed control values. Lower median is a declared summary convention, not a hidden rounding operation.
 
 ## No universal score
 
@@ -137,7 +165,9 @@ The first fixture bank covers:
 10. digest tampering;
 11. replay without Reader reexecution;
 12. replay hold after receipt mutation;
-13. schema-level non-authority enforcement.
+13. schema-level non-authority enforcement;
+14. integer-safe lower-median sealing for even control sets;
+15. compact failure-log preservation for future fixture diagnostics.
 
 ## Non-equivalences
 
@@ -151,6 +181,7 @@ Reader disagreement ≠ error
 provenance bound ≠ result correct
 calibration eligible ≠ production demonstrated
 calibration eligible ≠ release authority
+lower median ≠ arithmetic mean
 receipt ≠ command
 ```
 
@@ -179,11 +210,11 @@ recommendation_not_command = true
 
 ## Current frontier
 
-After merge and post-merge Ash aftercare, the next bounded step is to replace free calibration booleans with explicit control-bank receipt references.
+The next bounded step is to replace free calibration booleans in the pairwise Moiré contract with explicit control-bank receipt references.
 
 Higher-order interference, ordered route sequences, and temporal disclosure remain separate later contracts.
 
-No public UI, provider execution, transport, Cinder, release mutation, or production promotion is added here.
+No public UI, provider execution, transport, Cinder, release mutation, or production promotion was added here.
 
 𝌋‌ U+10D613
 
