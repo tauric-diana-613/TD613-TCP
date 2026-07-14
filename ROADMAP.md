@@ -1,6 +1,6 @@
 # TD613 Repository Roadmap
 
-Roadmap generation: `v0.7 · synchronized with the completion ledger`
+Roadmap generation: `v0.8 · post-matched-benign-control-bank`
 
 Date: `2026-07-14`
 
@@ -12,6 +12,7 @@ Use this roadmap alongside:
 - [`docs/ASH_KEEP_CHOIR_TEST.md`](docs/ASH_KEEP_CHOIR_TEST.md)
 - [`docs/ASH_KEEP_READER_ADAPTER_REGISTRY.md`](docs/ASH_KEEP_READER_ADAPTER_REGISTRY.md)
 - [`docs/ASH_KEEP_READER_DISAGREEMENT.md`](docs/ASH_KEEP_READER_DISAGREEMENT.md)
+- [`docs/ASH_KEEP_MATCHED_BENIGN_CONTROLS.md`](docs/ASH_KEEP_MATCHED_BENIGN_CONTROLS.md)
 - chamber-specific READMEs and release receipts.
 
 This file records what shipped, what has been selected next, what remains structurally pending, and what is currently red. The completion ledger remains authoritative for maturity scoring.
@@ -37,10 +38,10 @@ The roadmap inherits three anti-fraud rules from the ledger:
 
 ```text
 Ash Keep production closure = 54 / 55 · 98%
-Choir program = 34 / 70 · 49%
-full bounded program = 121 / 295 · ≈41%
+Choir program = 36 / 70 · 51%
+full bounded program = 123 / 295 · ≈42%
 production-demonstrated workstreams = 1 / 7
-validation-gated Choir instruments = 3
+validation-gated Choir instruments = 4
 transport-capable workstreams = 0
 ```
 
@@ -212,28 +213,73 @@ Status:
 IMPLEMENTED_VALIDATION_GATED
 ```
 
-## Ledger closure
+## Choir instrument 4 — Matched benign adjacent-document control bank
 
-PR: `#293`
+PR: `#295`
 
 Merge:
 
 ```text
-8a10680eb48133c52a22e79dc422c4acbe94cdf9
+378bf0f1a81b6aa7b9ebe8379ca207d6f1f36925
+```
+
+Post-merge evidence:
+
+```text
+Choir validation run = 29373864154
+Ash closure run = 29373864175
+Phase IV run = 29373864134
+TCP Smoke run = 29373864151
+Static application run = 29373864141
+Deployed observer run = 29373962583
+Evidence artifact = 8327164665
+Artifact SHA-256 = sha256:44ee07bfc33fbb6446c18bd893f4fa289919e438d6b4b641c9cfc33824d7a266
 ```
 
 Shipped:
 
-- Choir score advanced to `34 / 70`;
-- full bounded program advanced to `121 / 295`;
-- adapter canonicalization debt recorded as closed;
-- matched benign adjacent-document controls selected as the next bounded packet.
+- target and benign-control fixture classes;
+- topic, genre, template, register, approximate-length, and declared-source-condition matching;
+- verified Moiré, provenance, and Reader-disagreement receipt binding;
+- exact Reader-set, registry, result-schema, and input-contract alignment;
+- calibrated, partial, and held bank states;
+- excluded-control preservation with exact matching failures;
+- residual-confound reporting;
+- componentwise target-versus-control distributions;
+- canonical control ordering;
+- integer-safe lower-median summary with full control vectors preserved;
+- raw-document, raw-input, and raw-result rejection;
+- digest verification, tamper hold, and pure replay;
+- no universal score and no operational authority.
+
+Status:
+
+```text
+IMPLEMENTED_VALIDATION_GATED
+```
+
+Aftercare established only that Ash’s deployed production posture remained coherent with instrument 4 present. It did not production-demonstrate Choir or authorize provider execution, release, hold, Cinder, or transport.
+
+## Ledger progression
+
+```text
+PR #293 = Reader-disagreement ledger closure
+PR #294 = ledger/roadmap synchronization
+PR #295 = matched benign control bank
+```
+
+Current scored result:
+
+```text
+Choir = 36 / 70
+full bounded program = 123 / 295
+```
 
 ---
 
 # Selected next packet
 
-## Choir instrument 4 — Matched benign adjacent-document control bank
+## Calibration receipt binding
 
 State:
 
@@ -244,24 +290,21 @@ not yet implemented
 
 Purpose:
 
-Calibrate whether disagreement observed for a target materially exceeds disagreement produced by benign documents matched on relevant surface and source conditions.
+Replace remaining free calibration booleans in the pairwise Moiré contract with explicit references to a verified matched-control bank.
 
 Required contract:
 
-- target and benign-control fixture classes;
-- topic matching;
-- genre matching;
-- template matching;
-- register matching;
-- approximate-length matching;
-- declared source-condition matching;
-- control provenance and source status;
-- the same verified Reader set for target and controls;
-- a matched input contract;
-- Moiré, provenance, and disagreement receipt references;
-- matching failures and residual confounds;
-- componentwise comparison rather than one sovereign score;
-- pure replay without Reader re-execution.
+- matched-control bank ID and digest;
+- exact Reader set;
+- exact input-contract digest;
+- bank-state preservation;
+- `calibration_eligible = true` prerequisite;
+- eligible and excluded control counts;
+- matching failures;
+- residual confounds;
+- coverage state;
+- explicit hold on missing, mismatched, tampered, partial, held, or ineligible references;
+- replay without recomputing control distributions or rerunning Readers.
 
 Non-authorities:
 
@@ -279,44 +322,34 @@ provider execution = false
 production promotion = false
 ```
 
-Completion evidence required before score 4:
+Completion evidence required before score movement:
 
-- engine and schemas;
-- matched fixture bank;
-- adversarial mismatch fixtures;
-- digest and tamper checks;
+- calibration-reference contract and schema;
+- exact control-bank digest verification;
+- Reader-set and input-contract mismatch fixtures;
+- held and partial bank rejection;
+- tamper fixtures;
 - replay;
 - maintained Choir CI;
-- explicit residual-confound reporting.
+- explicit preservation of exclusions and residual confounds.
 
-A local benign-control trial already exists inside Ash production closure. That trial does not substitute for this matched adjacent-document bank. One control organism is not a calibrated ecology.
+A control bank being validation-gated does not make a calibration reference valid by association. The reference must verify the exact sealed bank and its eligibility state.
 
 ---
 
 # Ordered program roadmap
 
-## 1. Matched benign adjacent-document control bank
+## 1. Calibration receipt binding
 
 Build the selected packet above.
 
-## 2. Calibration receipts
-
-Replace remaining free calibration booleans with receipt references bound to:
-
-- matched-control bank identity;
-- Reader set;
-- input contract;
-- coverage state;
-- control failures;
-- residual confounds.
-
-## 3. Higher-order interference
+## 2. Higher-order interference
 
 Define a bounded `k`-order contract for three-way and higher combinations.
 
 Keep separate from pairwise Moiré. Budget combinatorial expansion explicitly. Preserve componentwise output and unresolved-state discipline.
 
-## 4. Ordered route-sequence recovery
+## 3. Ordered route-sequence recovery
 
 Define a distinct sequence contract for cases where:
 
@@ -326,13 +359,13 @@ Recover(P_i → P_j) ≠ Recover(P_j → P_i)
 
 Do not retrofit order into the unordered-pair receipt.
 
-## 5. Temporal and delayed-disclosure assays
+## 4. Temporal and delayed-disclosure assays
 
 Add declared temporal slices and controlled delay without claiming trusted time, causal certainty, or memory beyond the measured runtime.
 
 Higher-order, ordered, and temporal recovery remain separate contracts because they answer different questions. Blending them would destroy interpretability.
 
-## 6. Hush vocabulary externalization
+## 5. Hush vocabulary externalization
 
 `inferDiscourseOntology` and sibling functions in `app/engine/generator-v2.js` retain fixture-leaning vocabulary inside regex bodies.
 
@@ -343,7 +376,7 @@ Required change:
 - preserve current outputs through pinned tests;
 - make new discourse vocabularies data changes rather than engine rewrites.
 
-## 7. Hush intervention ensemble
+## 6. Hush intervention ensemble
 
 Required experiment:
 
@@ -361,7 +394,7 @@ Required experiment:
 
 Hush currently has relevant organs. No experimental body yet connects them to Choir.
 
-## 8. Custodian Return Test and Anisotropy Receipt
+## 7. Custodian Return Test and Anisotropy Receipt
 
 The Save Point and Capsule can preserve the suitcase. The missing experiment asks whether an authorized future Reader can reconstruct the necessary household after controlled context loss.
 
@@ -378,7 +411,7 @@ Required:
 
 The anisotropy output remains a vector, not one score.
 
-## 9. Aperture wiring renovation before Choir UI
+## 8. Aperture wiring renovation before Choir UI
 
 Current structural debt:
 
@@ -398,7 +431,7 @@ Required order:
 
 No chandelier installation before inspecting the ceiling joists.
 
-## 10. Safe Harbor → Ash bounded adapter
+## 9. Safe Harbor → Ash bounded adapter
 
 The stable hook surface exists. The adapter remains absent.
 
@@ -412,7 +445,7 @@ Required:
 - rejection of raw corpus by default;
 - adapter fixtures and replay.
 
-## 11. Independent provenance adapters
+## 10. Independent provenance adapters
 
 Add independent witness/provenance routes without laundering their evidence into truth, authorship, ownership, identity, or automatic authority.
 
@@ -426,7 +459,7 @@ Each adapter must preserve:
 - operator notes;
 - closure state.
 
-## 12. Destination-bound recipient transport
+## 11. Destination-bound recipient transport
 
 Transport remains intentionally last and absent.
 
@@ -527,7 +560,7 @@ The roadmap does not:
 - convert designed work into implementation;
 - transfer Ash’s production status to Choir;
 - treat Reader consensus as truth;
-- treat disagreement as error, identity, authorship, conspiracy, or surveillance probability;
+- treat disagreement or control-range position as error, identity, authorship, conspiracy, or surveillance probability;
 - authorize provider calls, release, automatic holds, Cinder, or transport;
 - collapse multidimensional research outputs into one sovereign score.
 
@@ -540,7 +573,8 @@ Ash custody
   → pairwise Moiré recovery
   → Reader provenance
   → Reader disagreement
-  → matched benign controls [NEXT]
+  → matched benign controls
+  → calibration receipt binding [NEXT]
   → higher-order / ordered / temporal assays [SEPARATE]
   → Hush intervention ensemble
   → Custodian Return / Anisotropy
@@ -550,7 +584,7 @@ Ash custody
   → destination-bound transport [LAST]
 ```
 
-Architecturally coherent. Validation-rich. One production-demonstrated workstream. Three validation-gated Choir instruments. Substantial work remains.
+Architecturally coherent. Validation-rich. One production-demonstrated workstream. Four validation-gated Choir instruments. Substantial work remains.
 
 No mirrors. No status laundering. No chandelier before joists.
 
