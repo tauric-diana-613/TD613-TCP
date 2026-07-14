@@ -307,7 +307,7 @@ export async function compileMatchedBenignControlBank(input = {}, options = {}) 
     if (!sameStrings(control.reader_ids, target.reader_ids)) failures.push('MATCH_MISMATCH:reader_set');
     if (control.registry_reference !== target.registry_reference) failures.push('MATCH_MISMATCH:registry_reference');
     if (control.result_schema !== target.result_schema) failures.push('MATCH_MISMATCH:result_schema');
-    if (!control.provenance_bound) failures.push('UNUSABLE:provenance_incomplete');
+    if (!control.provenance_bound) failures.push('UNUSABLENprovenance_incomplete');
     if (!control.reader_results_observed) failures.push('UNUSABLE:reader_results_unresolved');
     if (!control.moire_observations_observed) failures.push('UNUSABLE:moire_observations_unresolved');
     const eligible = failures.length === 0;
@@ -317,6 +317,8 @@ export async function compileMatchedBenignControlBank(input = {}, options = {}) 
       control_eligible: eligible
     }));
   }
+
+  eligibleControls.sort((left, right) => left.fixture_id.localeCompare(right.fixture_id));
 
   const targetFailures = [];
   if (!target.provenance_bound) targetFailures.push('TARGET_UNUSABLE:provenance_incomplete');
@@ -350,8 +352,7 @@ export async function compileMatchedBenignControlBank(input = {}, options = {}) 
     version: 'v0.1',
     bank_id: input.bankId || randomId('controlbank_', options.cryptoImpl || globalThis.crypto),
     created_at: now(input.createdAt),
-    mode: 'MATCHED_BENIGN_ADJACENT_DOCUMENT_CONTROLS',
-    bank_state: bankState,
+    mode: 'MATCHED_BENIGN_ADJACENT_DOCUMENT_CONTROLS',    bank_state: bankState,
     calibration_eligible: calibrationEligible,
     minimum_eligible_controls: minimumEligibleControls,
     eligible_control_count: eligibleControls.length,
@@ -482,7 +483,7 @@ export async function replayMatchedBenignControlBank(value, input = {}, options 
       : ['Matched benign control replay held for bank or receipt-reference repair.'],
     missingness: [],
     alternatives: [],
-    open_questions: verified ? [] : ['Which bank or receipt reference changed after sealing?'],
+    open_questions: verified ? [] : ['Which bank, control, or receipt reference changed after sealing?'],
     closure: { required: true, status: 'OPEN' },
     replay_digest: null
   };
