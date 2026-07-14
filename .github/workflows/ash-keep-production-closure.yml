@@ -12,6 +12,7 @@ on:
       - "app/aperture/release.json"
       - "app/aperture/release.js"
       - "tests/fixtures/aperture-release.json"
+      - "scripts/ash-keep-local-closure-server.mjs"
       - "scripts/ash-keep-production-probe.mjs"
       - "tests/ash-keep-*.test.mjs"
       - ".github/workflows/ash-keep-production-closure.yml"
@@ -27,6 +28,7 @@ on:
       - "app/aperture/release.json"
       - "app/aperture/release.js"
       - "tests/fixtures/aperture-release.json"
+      - "scripts/ash-keep-local-closure-server.mjs"
       - "scripts/ash-keep-production-probe.mjs"
       - "tests/ash-keep-*.test.mjs"
       - ".github/workflows/ash-keep-production-closure.yml"
@@ -58,8 +60,10 @@ jobs:
           cache: npm
       - name: Install repository dependencies
         run: npm ci
-      - name: Validate probe syntax
-        run: node --check scripts/ash-keep-production-probe.mjs
+      - name: Validate probe and server syntax
+        run: |
+          node --check scripts/ash-keep-production-probe.mjs
+          node --check scripts/ash-keep-local-closure-server.mjs
       - name: Validate production closure contract
         run: node tests/ash-keep-production-closure-contract.test.mjs
       - name: Enforce release promotion gate
@@ -76,10 +80,11 @@ jobs:
         run: |
           set -euo pipefail
           mkdir -p artifacts
-          npm run serve > artifacts/ash-keep-local-server.log 2>&1 &
+          node scripts/ash-keep-local-closure-server.mjs 6130 > artifacts/ash-keep-local-server.log 2>&1 &
           echo $! > artifacts/ash-keep-local-server.pid
           for attempt in $(seq 1 30); do
-            if curl -fsS --max-time 2 http://127.0.0.1:6130/dome-world/ash-keep.html > /dev/null; then
+            if curl -fsS --max-time 2 http://127.0.0.1:6130/__ash_keep_closure/readiness > artifacts/ash-keep-local-readiness.json; then
+              cat artifacts/ash-keep-local-readiness.json
               exit 0
             fi
             sleep 1
@@ -98,6 +103,7 @@ jobs:
           name: ash-keep-production-closure-evidence
           path: |
             artifacts/ash-keep-local-server.log
+            artifacts/ash-keep-local-readiness.json
             artifacts/ash-keep-production-closure/
           if-no-files-found: warn
           retention-days: 14
