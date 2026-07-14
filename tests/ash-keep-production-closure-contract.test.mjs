@@ -71,7 +71,8 @@ for (const token of [
   'post-merge probe',
   'separate promotion commit',
   'runtime commit SHA',
-  'workflow run ID',
+  'upstream deployment workflow-run ID',
+  'deployed observer workflow-run ID',
   'evidence artifact ID',
   'evidence artifact SHA-256',
   'desktop screenshot SHA-256',
@@ -93,6 +94,23 @@ assert.equal(release.ash.automaticCinder, false);
 for (const token of [
   'Ash Keep Production Closure',
   'workflow_dispatch',
+  'workflow_run',
+  'workflows: ["Test and deploy static app"]',
+  "github.event.workflow_run.conclusion == 'success'",
+  "github.event.workflow_run.head_branch == 'main'",
+  "github.event_name != 'workflow_run'",
+  'https://td613.com',
+  'TD613_OBSERVED_COMMIT',
+  'TD613_UPSTREAM_WORKFLOW_RUN_ID',
+  'td613.ash-keep.deployment-observer-context/v0.1',
+  'observed_runtime_commit',
+  'upstream_deployment_workflow_run_id',
+  'observer_workflow_run_id',
+  'source_status: \'DEPLOYED_OBSERVATION\'',
+  'Wait for deployed Ash Keep route',
+  'Validate deployed observation class',
+  'report.source_status !== \'DEPLOYED_OBSERVATION\'',
+  'report.promotion_authorized !== false',
   'tests/ash-keep-production-closure-contract.test.mjs',
   'tests/ash-keep-production-promotion-gate.test.mjs',
   'npx playwright install --with-deps chromium',
@@ -100,9 +118,14 @@ for (const token of [
   'scripts/run-ash-keep-production-probe.mjs',
   'TD613_PROBE_RUNTIME_DIR',
   'upload-artifact@v4',
-  'ash-keep-production-closure-evidence'
+  'ash-keep-production-closure-evidence',
+  'ash-keep-deployed-observation-evidence'
 ]) {
   assert.ok(workflow.includes(token), `Closure workflow omitted required token: ${token}`);
 }
+
+assert.match(workflow, /if: always\(\)[\s\S]*PREVIEW_PENDING/);
+assert.match(workflow, /if: always\(\)[\s\S]*NOT_YET_EARNED/);
+assert.doesNotMatch(workflow, /IMPLEMENTED_PRODUCTION_DEMONSTRATED/);
 
 console.log('ash-keep-production-closure-contract.test.mjs passed');
