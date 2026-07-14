@@ -1,0 +1,142 @@
+name: Ash Keep Production Closure
+
+on:
+  pull_request:
+    paths:
+      - "app/dome-world/ash-keep.html"
+      - "app/dome-world/ash-keep.js"
+      - "app/dome-world/ash-keep-worker.js"
+      - "app/dome-world/fixtures/ash-keep-demo.json"
+      - "app/dome-world/docs/ASH_KEEP_V1_PRODUCTION_DEMO_RECEIPT.md"
+      - "app/engine/ash-keep-*.js"
+      - "app/aperture/release.json"
+      - "app/aperture/release.js"
+      - "tests/fixtures/aperture-release.json"
+      - "scripts/ash-keep-production-probe.mjs"
+      - "tests/ash-keep-*.test.mjs"
+      - ".github/workflows/ash-keep-production-closure.yml"
+  push:
+    branches: [main]
+    paths:
+      - "app/dome-world/ash-keep.html"
+      - "app/dome-world/ash-keep.js"
+      - "app/dome-world/ash-keep-worker.js"
+      - "app/dome-world/fixtures/ash-keep-demo.json"
+      - "app/dome-world/docs/ASH_KEEP_V1_PRODUCTION_DEMO_RECEIPT.md"
+      - "app/engine/ash-keep-*.js"
+      - "app/aperture/release.json"
+      - "app/aperture/release.js"
+      - "tests/fixtures/aperture-release.json"
+      - "scripts/ash-keep-production-probe.mjs"
+      - "tests/ash-keep-*.test.mjs"
+      - ".github/workflows/ash-keep-production-closure.yml"
+  workflow_dispatch:
+    inputs:
+      base_url:
+        description: "Optional deployed base URL for a non-promoting observation"
+        required: false
+        default: ""
+        type: string
+      confirm_deployed_probe:
+        description: "Type RUN_DEPLOYED_OBSERVATION to run against base_url"
+        required: false
+        default: "HOLD"
+        type: string
+
+permissions:
+  contents: read
+
+jobs:
+  local-closure-validation:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+      - name: Install repository dependencies
+        run: npm ci
+      - name: Validate probe syntax
+        run: node --check scripts/ash-keep-production-probe.mjs
+      - name: Validate production closure contract
+        run: node tests/ash-keep-production-closure-contract.test.mjs
+      - name: Enforce release promotion gate
+        run: node tests/ash-keep-production-promotion-gate.test.mjs
+      - name: Preserve Ash Keep component regressions
+        run: npm run test:ash-keep
+      - name: Install Chromium probe runtime
+        run: |
+          npm install --no-save --package-lock=false playwright@1.53.2
+          npx playwright install --with-deps chromium
+      - name: Start bounded local Ash Keep runtime
+        run: |
+          set -euo pipefail
+          mkdir -p artifacts
+          npm run serve > artifacts/ash-keep-local-server.log 2>&1 &
+          echo $! > artifacts/ash-keep-local-server.pid
+          for attempt in $(seq 1 30); do
+            if curl -fsS --max-time 2 http://127.0.0.1:6130/dome-world/ash-keep.html > /dev/null; then
+              exit 0
+            fi
+            sleep 1
+          done
+          cat artifacts/ash-keep-local-server.log || true
+          exit 1
+      - name: Run bounded local closure observation
+        env:
+          TD613_BASE_URL: http://127.0.0.1:6130
+          TD613_ARTIFACT_DIR: artifacts/ash-keep-production-closure
+        run: node scripts/ash-keep-production-probe.mjs
+      - name: Preserve closure evidence
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: ash-keep-production-closure-evidence
+          path: |
+            artifacts/ash-keep-local-server.log
+            artifacts/ash-keep-production-closure/
+          if-no-files-found: warn
+          retention-days: 14
+      - name: Stop bounded local runtime
+        if: always()
+        run: |
+          if [ -f artifacts/ash-keep-local-server.pid ]; then
+            kill "$(cat artifacts/ash-keep-local-server.pid)" 2>/dev/null || true
+          fi
+
+  deployed-observation:
+    if: github.event_name == 'workflow_dispatch' && inputs.confirm_deployed_probe == 'RUN_DEPLOYED_OBSERVATION' && inputs.base_url != ''
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+      - name: Install repository dependencies
+        run: npm ci
+      - name: Install Chromium probe runtime
+        run: |
+          npm install --no-save --package-lock=false playwright@1.53.2
+          npx playwright install --with-deps chromium
+      - name: Observe deployed Ash Keep without promotion
+        env:
+          TD613_BASE_URL: ${{ inputs.base_url }}
+          TD613_ARTIFACT_DIR: artifacts/ash-keep-deployed-observation
+        run: node scripts/ash-keep-production-probe.mjs
+      - name: Preserve deployed observation
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: ash-keep-deployed-observation-evidence
+          path: artifacts/ash-keep-deployed-observation/
+          if-no-files-found: error
+          retention-days: 30
+      - name: Reassert non-promotion
+        run: |
+          node -e "const r=require('./app/aperture/release.json'); if(r.ash.productionStatus!=='PREVIEW_PENDING') process.exit(1)"
+          grep -q 'NOT_YET_EARNED' app/dome-world/docs/ASH_KEEP_V1_PRODUCTION_DEMO_RECEIPT.md
+          echo 'Deployed observation preserved. Promotion remains a separate operator-closed commit.'
