@@ -74,7 +74,7 @@
       "type": "array",
       "items": { "$ref": "#/$defs/pairResidue" }
     },
-    "calibration": { "type": "object" },
+    "calibration": { "$ref": "#/$defs/calibration" },
     "calibration_state": { "enum": ["CALIBRATED_FOR_NAMED_FIXTURE", "NOT_ENOUGH_TEST_DATA"] },
     "review_state": { "enum": ["OPERATOR_REVIEW_REQUIRED", "OBSERVATIONS_AVAILABLE"] },
     "emergent_pair_count": { "type": "integer", "minimum": 0 },
@@ -94,6 +94,7 @@
     "operator_notes": { "$ref": "#/$defs/stringArray" },
     "closure": {
       "type": "object",
+      "additionalProperties": false,
       "required": ["required", "status"],
       "properties": {
         "required": { "const": true },
@@ -148,8 +149,8 @@
         "missingness"
       ],
       "properties": {
-        "observation_id": { "type": "string" },
-        "projection_ids": { "type": "array", "maxItems": 2, "items": { "type": "string" } },
+        "observation_id": { "type": "string", "minLength": 1 },
+        "projection_ids": { "type": "array", "maxItems": 2, "uniqueItems": true, "items": { "type": "string" } },
         "state": {
           "enum": ["OBSERVED", "NULL", "REJECTED", "MISSING", "CONTRADICTORY", "UNCAPTURED", "ENCODER_REQUIRED", "UNRESOLVED"]
         },
@@ -158,6 +159,40 @@
         "held_out": { "type": "boolean" },
         "observations": { "type": "array" },
         "missingness": { "$ref": "#/$defs/stringArray" }
+      }
+    },
+    "calibration": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "preregistered_fixture",
+        "complete_baseline",
+        "complete_singleton_coverage",
+        "complete_pair_coverage",
+        "observed_baseline",
+        "observed_singleton_coverage",
+        "observed_pair_coverage",
+        "all_required_observations_observed",
+        "benign_control",
+        "held_out",
+        "source_drift_check",
+        "alternative_reader",
+        "exact_thresholds"
+      ],
+      "properties": {
+        "preregistered_fixture": { "type": "boolean" },
+        "complete_baseline": { "type": "boolean" },
+        "complete_singleton_coverage": { "type": "boolean" },
+        "complete_pair_coverage": { "type": "boolean" },
+        "observed_baseline": { "type": "boolean" },
+        "observed_singleton_coverage": { "type": "boolean" },
+        "observed_pair_coverage": { "type": "boolean" },
+        "all_required_observations_observed": { "type": "boolean" },
+        "benign_control": { "type": "boolean" },
+        "held_out": { "type": "boolean" },
+        "source_drift_check": { "type": "boolean" },
+        "alternative_reader": { "type": "boolean" },
+        "exact_thresholds": { "type": "object" }
       }
     },
     "residue": {
@@ -195,7 +230,7 @@
       ],
       "properties": {
         "pair_id": { "type": "string" },
-        "projection_ids": { "type": "array", "minItems": 2, "maxItems": 2, "items": { "type": "string" } },
+        "projection_ids": { "type": "array", "minItems": 2, "maxItems": 2, "uniqueItems": true, "items": { "type": "string" } },
         "state": { "enum": ["OBSERVED", "UNRESOLVED"] },
         "residue": { "$ref": "#/$defs/residue" },
         "emergent_topology_detected": { "type": "boolean" },
