@@ -20,6 +20,22 @@ assert.equal(assay.properties.prediction_authorized.const, false);
 assert.equal(assay.properties.recommendation_not_command.const, true);
 assert.equal(assay.properties.projections.maxItems, 32);
 assert.equal(assay.$defs.observation.properties.projection_ids.maxItems, 2);
+assert.equal(assay.$defs.observation.properties.projection_ids.uniqueItems, true);
+assert.equal(assay.$defs.pairResidue.properties.projection_ids.uniqueItems, true);
+assert.equal(assay.properties.calibration.$ref, '#/$defs/calibration');
+assert.equal(assay.$defs.calibration.additionalProperties, false);
+for (const field of [
+  'complete_baseline',
+  'complete_singleton_coverage',
+  'complete_pair_coverage',
+  'observed_baseline',
+  'observed_singleton_coverage',
+  'observed_pair_coverage',
+  'all_required_observations_observed'
+]) {
+  assert.ok(assay.$defs.calibration.required.includes(field), `Calibration schema omitted ${field}`);
+  assert.equal(assay.$defs.calibration.properties[field].type, 'boolean');
+}
 assert.deepEqual(
   assay.properties.calibration_state.enum,
   ['CALIBRATED_FOR_NAMED_FIXTURE', 'NOT_ENOUGH_TEST_DATA']
