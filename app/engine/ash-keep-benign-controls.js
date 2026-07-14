@@ -88,11 +88,10 @@ function sameStrings(left = [], right = []) {
   return a.length === b.length && a.every((value, index) => value === b[index]);
 }
 
-function median(values = []) {
+function lowerMedian(values = []) {
   if (!values.length) return null;
   const sorted = [...values].sort((left, right) => left - right);
-  const middle = Math.floor(sorted.length / 2);
-  return sorted.length % 2 ? sorted[middle] : (sorted[middle - 1] + sorted[middle]) / 2;
+  return sorted[Math.floor((sorted.length - 1) / 2)];
 }
 
 function positionFor(target, values = []) {
@@ -271,7 +270,7 @@ function comparisonRow(target, controls, field, kind) {
     eligible_control_count: controls.length,
     minimum,
     maximum,
-    median: median(values),
+    median: lowerMedian(values),
     target_position: positionFor(targetValue, values),
     controls_below_target: values.filter(value => value < targetValue).length,
     controls_at_or_above_target: values.filter(value => value >= targetValue).length
@@ -307,9 +306,9 @@ export async function compileMatchedBenignControlBank(input = {}, options = {}) 
     if (!sameStrings(control.reader_ids, target.reader_ids)) failures.push('MATCH_MISMATCH:reader_set');
     if (control.registry_reference !== target.registry_reference) failures.push('MATCH_MISMATCH:registry_reference');
     if (control.result_schema !== target.result_schema) failures.push('MATCH_MISMATCH:result_schema');
-    if (!control.provenance_bound) failures.push('UNUSABLENprovenance_incomplete');
-    if (!control.reader_results_observed) failures.push('UNUSABLE:reader_results_unresolved');
-    if (!control.moire_observations_observed) failures.push('UNUSABLE:moire_observations_unresolved');
+    if (!control.provenance_bound) failures.push('UNUSPROVENANCE_INCOMPLETE');
+    if (!control.reader_results_observed) failures.push('UNRESOLVED_READER_RESULTS');
+    if (!control.moire_observations_observed) failures.push('UNRESOLVED_MOIRE_OBSERVATIONS');
     const eligible = failures.length === 0;
     if (eligible) eligibleControls.push(control);
     publicControls.push(publicFixture(control, {
@@ -481,7 +480,7 @@ export async function replayMatchedBenignControlBank(value, input = {}, options 
     observations: verified
       ? ['Matched benign control bank and all referenced receipts verified without Reader re-execution.']
       : ['Matched benign control replay held for bank or receipt-reference repair.'],
-    missingness: [],
+    missingness : [],
     alternatives: [],
     open_questions: verified ? [] : ['Which bank, control, or receipt reference changed after sealing?'],
     closure: { required: true, status: 'OPEN' },
