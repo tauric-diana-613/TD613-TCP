@@ -28,6 +28,10 @@ function unique(values = []) {
   return [...new Set(values.map(value => String(value).trim()).filter(Boolean))];
 }
 
+function canonicalStrings(values = []) {
+  return unique(values).sort((left, right) => left.localeCompare(right));
+}
+
 function without(value, field) {
   const output = clone(value);
   delete output[field];
@@ -46,10 +50,14 @@ function requireDigest(value, label) {
   return output;
 }
 
+function keyFor(projectionIds = []) {
+  return [...projectionIds].sort().join('+');
+}
+
 function normalizeProjection(projection, index) {
   return {
     projection_id: requireOpaqueId(projection?.projection_id, `Projection ${index} ID`),
-    disclosed_opaque_references: unique(projection?.disclosed_opaque_references || [])
+    disclosed_opaque_references: canonicalStrings(projection?.disclosed_opaque_references || [])
       .map(value => requireOpaqueId(value, `Projection ${index} reference`)),
     route_id: projection?.route_id ? requireOpaqueId(projection.route_id, `Projection ${index} route ID`) : null,
     purpose: String(projection?.purpose || ''),
@@ -59,37 +67,65 @@ function normalizeProjection(projection, index) {
 
 function normalizeRecovered(recovered = {}) {
   return {
-    node_ids: unique(recovered.node_ids || []).map(value => requireOpaqueId(value, 'Recovered node ID')),
-    relationship_ids: unique(recovered.relationship_ids || []).map(value => requireOpaqueId(value, 'Recovered relationship ID')),
+    node_ids: canonicalStrings(recovered.node_ids || []).map(value => requireOpaqueId(value, 'Recovered node ID')),
+    relationship_ids: canonicalStrings(recovered.relationship_ids || []).map(value => requireOpaqueId(value, 'Recovered relationship ID')),
     chronology: Math.max(0, Math.min(1000, Number.isFinite(Number(recovered.chronology)) ? Math.trunc(Number(recovered.chronology)) : 0)),
     source_style_linkage: Math.max(0, Math.min(1000, Number.isFinite(Number(recovered.source_style_linkage)) ? Math.trunc(Number(recovered.source_style_linkage)) : 0))
   };
 }
 
 function normalizeResult(result, index) {
-  const projectionIds = unique(result?.projection_ids || []).map(value => requireOpaqueId(value, `Result ${index} projection ID`)).sort();
+  const suppliedProjectionIds = (result?.projection_ids || []).map(value => requireOpaqueId(value, `Result ${index} projection ID`));
+  const projectionIds = canonicalStrings(suppliedProjectionIds);
+  if (projectionIds.length !== suppliedProjectionIds.length) {
+    throw new Error(`Result ${index} projection IDs must be unique.`);
+  }
   if (projectionIds.length > 2) throw new Error('Moiré v0.1 accepts baseline, singleton, or pair observations only.');
   const state = String(result?.state || 'OBSERVED').toUpperCase();
   if (!OBSERVATION_STATES.has(state)) throw new Error(`Unsupported Moiré observation state: ${state}`);
+  const defaultObservationId = `moire_observation_${projectionIds.length ? projectionIds.join('__') : 'baseline'}`;
+  const observationId = String(result?.observation_id || defaultObservationId).trim();
+  if (!observationId) throw new Error(`Result ${index} observation ID is required.`);
   return {
-    observation_id: result?.observation_id || `moire_observation_${index + 1}`,
+    observation_id: observationId,
     projection_ids: projectionIds,
     state,
     recovered: normalizeRecovered(result?.recovered || {}),
     benign_control: Boolean(result?.benign_control),
     held_out: Boolean(result?.held_out),
     observations: clone(result?.observations || []),
-    missingness: unique(result?.missingness || [])
+    missingness: canonicalStrings(result?.missingness || [])
   };
 }
 
-function keyFor(projectionIds = []) {
-  return [...projectionIds].sort().join('+');
+function compareResults(left, right) {
+  const keyComparison = keyFor(left.projection_ids).localeCompare(keyFor(right.projection_ids));
+  return keyComparison || left.observation_id.localeCompare(right.observation_id);
+}
+
+function validateResultReferences(result, caseMap, projectionIds, index) {
+  for (const projectionId of result.projection_ids) {
+    if (!projectionIds.has(projectionId)) {
+      throw new Error(`Result ${index} references unknown projection ID: ${projectionId}`);
+    }
+  }
+  const caseNodeIds = new Set(caseMap.nodes.map(node => node.id));
+  const caseRelationshipIds = new Set(caseMap.relationships.map(edge => edge.id));
+  for (const nodeId of result.recovered.node_ids) {
+    if (!caseNodeIds.has(nodeId)) {
+      throw new Error(`Result ${index} recovered unknown Case Map node ID: ${nodeId}`);
+    }
+  }
+  for (const relationshipId of result.recovered.relationship_ids) {
+    if (!caseRelationshipIds.has(relationshipId)) {
+      throw new Error(`Result ${index} recovered unknown Case Map relationship ID: ${relationshipId}`);
+    }
+  }
 }
 
 function difference(left = [], ...rights) {
   const excluded = new Set(rights.flat());
-  return unique(left).filter(value => !excluded.has(value));
+  return canonicalStrings(left).filter(value => !excluded.has(value));
 }
 
 function pairwise(projections) {
@@ -112,6 +148,14 @@ function emptyResidue() {
     chronology_millipoints: 0,
     source_style_linkage_millipoints: 0
   };
+}
+
+function unresolvedMissingness(entries) {
+  return canonicalStrings(entries.flatMap(([label, observation]) => {
+    if (!observation) return [`missing ${label} observation`];
+    if (observation.state === 'OBSERVED') return [];
+    return [`${label} state: ${observation.state}`, ...observation.missingness];
+  }));
 }
 
 function residueFor({ caseMap, baseline, left, right, pair }) {
@@ -180,6 +224,20 @@ function projectionCoverage(projections, resultByKey) {
   return { baseline: resultByKey.has(''), singleton: singletonComplete, pair: pairComplete };
 }
 
+function observedCoverage(projections, resultByKey) {
+  const baselineObserved = resultByKey.get('')?.state === 'OBSERVED';
+  const singletonObserved = projections.every(projection => resultByKey.get(projection.projection_id)?.state === 'OBSERVED');
+  const pairObserved = pairwise(projections).every(([left, right]) => (
+    resultByKey.get(keyFor([left.projection_id, right.projection_id]))?.state === 'OBSERVED'
+  ));
+  return {
+    baseline: baselineObserved,
+    singleton: singletonObserved,
+    pair: pairObserved,
+    all: baselineObserved && singletonObserved && pairObserved
+  };
+}
+
 export async function compileMoireRebuildAssay(input = {}, options = {}) {
   if (!input.caseMap || input.caseMap.schema !== CASE_MAP_SCHEMA) throw new Error('Moiré Rebuild Assay requires a Case Map.');
   if (!input.routeMemory || input.routeMemory.schema !== ROUTE_MEMORY_SCHEMA) throw new Error('Moiré Rebuild Assay requires Route Memory.');
@@ -188,12 +246,23 @@ export async function compileMoireRebuildAssay(input = {}, options = {}) {
   requireDigest(input.routeMemory.route_memory_digest, 'Route Memory digest');
   requireDigest(input.reader.reader_digest, 'Reader digest');
 
-  const projections = (input.projections || []).map(normalizeProjection).sort((left, right) => left.projection_id.localeCompare(right.projection_id));
+  const projections = (input.projections || [])
+    .map(normalizeProjection)
+    .sort((left, right) => left.projection_id.localeCompare(right.projection_id));
   if (projections.length < 2) throw new Error('Moiré Rebuild Assay requires at least two projections.');
   if (projections.length > 32) throw new Error('Moiré Rebuild Assay v0.1 supports at most 32 projections.');
-  if (new Set(projections.map(projection => projection.projection_id)).size !== projections.length) throw new Error('Projection IDs must be unique.');
+  if (new Set(projections.map(projection => projection.projection_id)).size !== projections.length) {
+    throw new Error('Projection IDs must be unique.');
+  }
 
+  const projectionIds = new Set(projections.map(projection => projection.projection_id));
   const results = (input.results || []).map(normalizeResult);
+  results.forEach((result, index) => validateResultReferences(result, input.caseMap, projectionIds, index));
+  results.sort(compareResults);
+  if (new Set(results.map(result => result.observation_id)).size !== results.length) {
+    throw new Error('Moiré observation IDs must be unique.');
+  }
+
   const resultByKey = new Map();
   for (const result of results) {
     const key = keyFor(result.projection_ids);
@@ -202,6 +271,7 @@ export async function compileMoireRebuildAssay(input = {}, options = {}) {
   }
   const coverage = projectionCoverage(projections, resultByKey);
   if (!coverage.baseline) throw new Error('Moiré Rebuild Assay requires one baseline observation.');
+  const observed = observedCoverage(projections, resultByKey);
 
   const baseline = resultByKey.get('');
   const pairwiseResidue = pairwise(projections).map(([leftProjection, rightProjection]) => {
@@ -216,7 +286,11 @@ export async function compileMoireRebuildAssay(input = {}, options = {}) {
         state: 'UNRESOLVED',
         residue: emptyResidue(),
         emergent_topology_detected: false,
-        missingness: ['singleton or pair observation']
+        missingness: unresolvedMissingness([
+          [`singleton ${leftProjection.projection_id}`, left],
+          [`singleton ${rightProjection.projection_id}`, right],
+          [`pair ${pairKey}`, pair]
+        ])
       };
     }
     const computed = residueFor({ caseMap: input.caseMap, baseline, left, right, pair });
@@ -226,11 +300,11 @@ export async function compileMoireRebuildAssay(input = {}, options = {}) {
       state: computed.state,
       residue: computed.residue,
       emergent_topology_detected: computed.state === 'OBSERVED' && hasEmergentTopology(computed.residue),
-      missingness: computed.state === 'OBSERVED' ? [] : unique([
-        ...baseline.missingness,
-        ...left.missingness,
-        ...right.missingness,
-        ...pair.missingness
+      missingness: computed.state === 'OBSERVED' ? [] : unresolvedMissingness([
+        ['baseline', baseline],
+        [`singleton ${leftProjection.projection_id}`, left],
+        [`singleton ${rightProjection.projection_id}`, right],
+        [`pair ${pairKey}`, pair]
       ])
     };
   });
@@ -240,6 +314,10 @@ export async function compileMoireRebuildAssay(input = {}, options = {}) {
     complete_baseline: coverage.baseline,
     complete_singleton_coverage: coverage.singleton,
     complete_pair_coverage: coverage.pair,
+    observed_baseline: observed.baseline,
+    observed_singleton_coverage: observed.singleton,
+    observed_pair_coverage: observed.pair,
+    all_required_observations_observed: observed.all,
     benign_control: results.some(result => result.benign_control) || Boolean(input.calibration?.benignControl),
     held_out: results.some(result => result.held_out) || Boolean(input.calibration?.heldOut),
     source_drift_check: Boolean(input.calibration?.sourceDriftCheck),
@@ -250,6 +328,7 @@ export async function compileMoireRebuildAssay(input = {}, options = {}) {
     && calibration.complete_baseline
     && calibration.complete_singleton_coverage
     && calibration.complete_pair_coverage
+    && calibration.all_required_observations_observed
     && calibration.benign_control
     && calibration.held_out
     && calibration.source_drift_check
@@ -287,16 +366,16 @@ export async function compileMoireRebuildAssay(input = {}, options = {}) {
     prediction_authorized: false,
     recommendation_not_command: true,
     source_status: String(input.sourceStatus || 'DERIVED').toUpperCase(),
-    evidence_basis: unique(input.evidenceBasis || ['Case Map', 'Route Memory', 'named Reader observations']),
-    missingness: unique(input.missingness || []),
-    alternatives: unique(input.alternatives || [
+    evidence_basis: canonicalStrings(input.evidenceBasis || ['Case Map', 'Route Memory', 'named Reader observations']),
+    missingness: canonicalStrings(input.missingness || []),
+    alternatives: canonicalStrings(input.alternatives || [
       'ordinary topic overlap',
       'shared templates',
       'incomplete Route Memory',
       'Reader-specific reconstruction behavior'
     ]),
-    open_questions: unique(input.openQuestions || []),
-    operator_notes: unique(input.operatorNotes || []),
+    open_questions: canonicalStrings(input.openQuestions || []),
+    operator_notes: canonicalStrings(input.operatorNotes || []),
     closure: { required: true, status: input.closureStatus || 'OPEN' },
     assay_digest: null
   };
@@ -305,7 +384,9 @@ export async function compileMoireRebuildAssay(input = {}, options = {}) {
 }
 
 export async function runDeterministicMoireAssay(input = {}, options = {}) {
-  const projections = (input.projections || []).map(normalizeProjection);
+  const projections = (input.projections || [])
+    .map(normalizeProjection)
+    .sort((left, right) => left.projection_id.localeCompare(right.projection_id));
   const baseline = runDeterministicReader({
     caseMap: input.caseMap,
     routeMemory: input.routeMemory,
@@ -337,7 +418,7 @@ export async function runDeterministicMoireAssay(input = {}, options = {}) {
     const run = runDeterministicReader({
       caseMap: input.caseMap,
       routeMemory: input.routeMemory,
-      proposedReferences: unique([
+      proposedReferences: canonicalStrings([
         ...left.disclosed_opaque_references,
         ...right.disclosed_opaque_references
       ])
@@ -355,7 +436,7 @@ export async function runDeterministicMoireAssay(input = {}, options = {}) {
     ...input,
     projections,
     results,
-    evidenceBasis: unique([
+    evidenceBasis: canonicalStrings([
       ...(input.evidenceBasis || []),
       'deterministic Ash Keep Reader',
       'exact pairwise projection combinations'
