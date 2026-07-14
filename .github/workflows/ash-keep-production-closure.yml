@@ -16,6 +16,7 @@ on:
       - "scripts/ash-keep-production-probe.mjs"
       - "scripts/run-ash-keep-production-probe.mjs"
       - "scripts/publish-ash-keep-observer-status.mjs"
+      - "scripts/assert-ash-keep-release-posture.mjs"
       - "tests/ash-keep-*.test.mjs"
       - ".github/workflows/ash-keep-production-closure.yml"
   push:
@@ -34,6 +35,7 @@ on:
       - "scripts/ash-keep-production-probe.mjs"
       - "scripts/run-ash-keep-production-probe.mjs"
       - "scripts/publish-ash-keep-observer-status.mjs"
+      - "scripts/assert-ash-keep-release-posture.mjs"
       - "tests/ash-keep-*.test.mjs"
       - ".github/workflows/ash-keep-production-closure.yml"
   workflow_run:
@@ -69,16 +71,19 @@ jobs:
           cache: npm
       - name: Install repository dependencies
         run: npm ci
-      - name: Validate probe, fixture runner, status publisher, and server syntax
+      - name: Validate probe, fixture runner, status publisher, posture verifier, and server syntax
         run: |
           node --check scripts/ash-keep-production-probe.mjs
           node --check scripts/run-ash-keep-production-probe.mjs
           node --check scripts/publish-ash-keep-observer-status.mjs
+          node --check scripts/assert-ash-keep-release-posture.mjs
           node --check scripts/ash-keep-local-closure-server.mjs
       - name: Validate production closure contract
         run: node tests/ash-keep-production-closure-contract.test.mjs
       - name: Enforce release promotion gate
         run: node tests/ash-keep-production-promotion-gate.test.mjs
+      - name: Verify current Ash Keep release posture
+        run: node scripts/assert-ash-keep-release-posture.mjs
       - name: Rebuild maintained Aperture download artifact
         run: npm run aperture:export-downloads
       - name: Preserve Ash Keep component regressions
@@ -117,6 +122,7 @@ jobs:
             scripts/ash-keep-production-probe.mjs
             scripts/run-ash-keep-production-probe.mjs
             scripts/publish-ash-keep-observer-status.mjs
+            scripts/assert-ash-keep-release-posture.mjs
             artifacts/ash-keep-local-server.log
             artifacts/ash-keep-local-readiness.json
             artifacts/ash-keep-probe-runtime/
@@ -156,6 +162,7 @@ jobs:
           GITHUB_TOKEN: ${{ github.token }}
           TD613_OBSERVER_STATUS_STATE: pending
           TD613_OBSERVER_STATUS_DESCRIPTION: Ash Keep deployed observation is running
+          TD613_OBSERVER_STATUS_RECEIPT_PATH: artifacts/ash-keep-deployed-observation/observer-status-pending.json
         run: node scripts/publish-ash-keep-observer-status.mjs
       - name: Install repository dependencies
         run: npm ci
@@ -225,7 +232,28 @@ jobs:
           if (report.network?.non_read_requests?.length) throw new Error('Deployed observation emitted non-read requests.');
           if (report.network?.recipient_transport_requests?.length) throw new Error('Deployed observation emitted recipient transport.');
           NODE
-      - name: Preserve deployed observation
+      - name: Verify checked-out release posture
+        if: always()
+        env:
+          TD613_RELEASE_POSTURE_RECEIPT_PATH: artifacts/ash-keep-deployed-observation/release-posture-verification.json
+        run: node scripts/assert-ash-keep-release-posture.mjs
+      - name: Publish observer success status
+        if: success()
+        env:
+          GITHUB_TOKEN: ${{ github.token }}
+          TD613_OBSERVER_STATUS_STATE: success
+          TD613_OBSERVER_STATUS_DESCRIPTION: Ash Keep deployed observation passed; posture preserved
+          TD613_OBSERVER_STATUS_RECEIPT_PATH: artifacts/ash-keep-deployed-observation/observer-status-success.json
+        run: node scripts/publish-ash-keep-observer-status.mjs
+      - name: Publish observer failure status
+        if: failure()
+        env:
+          GITHUB_TOKEN: ${{ github.token }}
+          TD613_OBSERVER_STATUS_STATE: failure
+          TD613_OBSERVER_STATUS_DESCRIPTION: Ash Keep deployed observation held for repair
+          TD613_OBSERVER_STATUS_RECEIPT_PATH: artifacts/ash-keep-deployed-observation/observer-status-failure.json
+        run: node scripts/publish-ash-keep-observer-status.mjs
+      - name: Preserve deployed observation and status receipts
         if: always()
         uses: actions/upload-artifact@v4
         with:
@@ -234,27 +262,16 @@ jobs:
             scripts/ash-keep-production-probe.mjs
             scripts/run-ash-keep-production-probe.mjs
             scripts/publish-ash-keep-observer-status.mjs
+            scripts/assert-ash-keep-release-posture.mjs
             artifacts/ash-keep-probe-runtime/
             artifacts/ash-keep-deployed-observation/
           if-no-files-found: error
           retention-days: 30
-      - name: Reassert non-promotion
-        if: always()
-        run: |
-          node -e "const r=require('./app/aperture/release.json'); if(r.ash.productionStatus!=='PREVIEW_PENDING') process.exit(1)"
-          grep -q 'NOT_YET_EARNED' app/dome-world/docs/ASH_KEEP_V1_PRODUCTION_DEMO_RECEIPT.md
-          echo 'Deployed observation preserved. Promotion remains a separate operator-closed commit.'
-      - name: Publish observer success status
-        if: success()
-        env:
-          GITHUB_TOKEN: ${{ github.token }}
-          TD613_OBSERVER_STATUS_STATE: success
-          TD613_OBSERVER_STATUS_DESCRIPTION: Ash Keep deployed observation passed; promotion remains withheld
-        run: node scripts/publish-ash-keep-observer-status.mjs
-      - name: Publish observer failure status
+      - name: Reconcile terminal failure status
         if: failure()
         env:
           GITHUB_TOKEN: ${{ github.token }}
           TD613_OBSERVER_STATUS_STATE: failure
-          TD613_OBSERVER_STATUS_DESCRIPTION: Ash Keep deployed observation held for repair
+          TD613_OBSERVER_STATUS_DESCRIPTION: Ash Keep deployed observation or evidence preservation failed
+          TD613_OBSERVER_STATUS_RECEIPT_PATH: artifacts/ash-keep-deployed-observation/observer-status-failure-reconciled.json
         run: node scripts/publish-ash-keep-observer-status.mjs
