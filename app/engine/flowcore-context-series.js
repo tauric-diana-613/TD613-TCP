@@ -1,8 +1,10 @@
 import { canonicalDigest } from '../dome-world/ash/canonical-json.js';
 
-export const FLOWCORE_CONTEXT_SERIES_SCHEMA = 'td613.flowcore.context-series/v0.1';
+export const FLOWCORE_CONTEXT_SERIES_SCHEMA = 'td613.flowcore.context-series/v0.2';
+export const FLOWCORE_CONTEXT_SERIES_LEGACY_SCHEMA = 'td613.flowcore.context-series/v0.1';
 export const FLOWCORE_CONTEXT_RECEIPT_SCHEMA = 'td613.flowcore.context-receipt/v0.1';
-export const FLOWCORE_CONTEXT_SERIES_DIGEST_DOMAIN = 'TD613:V31:FLOWCORE-CONTEXT-SERIES:v1';
+export const FLOWCORE_CONTEXT_SERIES_DIGEST_DOMAIN = 'TD613:V31:FLOWCORE-CONTEXT-SERIES:v2';
+export const FLOWCORE_CONTEXT_SERIES_LEGACY_DIGEST_DOMAIN = 'TD613:V31:FLOWCORE-CONTEXT-SERIES:v1';
 
 function clone(value) {
   return value == null ? value : JSON.parse(JSON.stringify(value));
@@ -83,9 +85,12 @@ export async function compileFlowcoreContextSeries(
     automatic_ash_action: false,
     prediction_authorized: false,
     server_persistence: false,
-    scope_statement: 'Index of artifact-blind Flow-Core context receipt references for declared snapshots.',
-    cannot_establish: ['artifact identity', 'authorship', 'intent', 'external truth', 'prediction'],
-    operator_closure: { required: true, status: 'OPEN' },
+    evidence_basis: ['artifact-blind per-snapshot Flow-Core context receipt references'],
+    observations: { snapshot_count: entries.length, abstention_count: abstentions },
+    alternatives: [],
+    open_questions: abstentions ? ['Which missing context observations produced each abstention?'] : [],
+    operator_notes: [],
+    closure: { required: true, status: 'OPEN' },
     series_digest: null,
     seal: '⟐'
   };
@@ -98,7 +103,8 @@ export async function compileFlowcoreContextSeries(
 }
 
 export async function verifyFlowcoreContextSeries(series, options = {}) {
-  if (!series || series.schema !== FLOWCORE_CONTEXT_SERIES_SCHEMA) return false;
-  const expected = await canonicalDigest(FLOWCORE_CONTEXT_SERIES_DIGEST_DOMAIN, digestSubject(series), options);
+  if (!series || ![FLOWCORE_CONTEXT_SERIES_SCHEMA, FLOWCORE_CONTEXT_SERIES_LEGACY_SCHEMA].includes(series.schema)) return false;
+  const domain = series.schema === FLOWCORE_CONTEXT_SERIES_SCHEMA ? FLOWCORE_CONTEXT_SERIES_DIGEST_DOMAIN : FLOWCORE_CONTEXT_SERIES_LEGACY_DIGEST_DOMAIN;
+  const expected = await canonicalDigest(domain, digestSubject(series), options);
   return expected === series.series_digest;
 }

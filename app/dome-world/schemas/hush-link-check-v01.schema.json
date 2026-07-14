@@ -1,0 +1,52 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "td613.hush.link-check/v0.1",
+  "type": "object",
+  "required": [
+    "schema",
+    "check_id",
+    "created_at",
+    "source_status",
+    "comparison_basis",
+    "shared_feature_count",
+    "union_feature_count",
+    "linkability_vector",
+    "result",
+    "observations",
+    "missingness",
+    "alternatives",
+    "open_questions",
+    "operator_notes",
+    "closure",
+    "check_digest"
+  ],
+  "properties": {
+    "schema": {
+      "const": "td613.hush.link-check/v0.1"
+    },
+    "result": {
+      "enum": [
+        "INSUFFICIENT_COMPARISON_TEXT",
+        "COMPARISON_AVAILABLE"
+      ]
+    },
+    "check_digest": {
+      "type": "string",
+      "pattern": "^sha256:[0-9a-f]{64}$"
+    },
+    "check_id": {},
+    "created_at": {},
+    "source_status": {},
+    "comparison_basis": {},
+    "shared_feature_count": {},
+    "union_feature_count": {},
+    "linkability_vector": {},
+    "observations": {},
+    "missingness": {},
+    "alternatives": {},
+    "open_questions": {},
+    "operator_notes": {},
+    "closure": {}
+  },
+  "additionalProperties": false
+}

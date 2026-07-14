@@ -32,7 +32,7 @@ export function estimateRegistryDynamics({ globalConfiguration, orientations, lo
     jump_count: jumps.filter(value => value.jump).length,
     commensuration_state: commensurationState,
     symmetry_registry_equated: false,
-    scope_statement: 'Estimated global-to-local registry response from declared sequence coordinates.',
-    cannot_establish: ['hidden architecture', 'intent', 'attack', 'physical twist mechanics']
+    evidence_basis: ['declared orientation sequence', 'declared local registry sequence'],
+    observations: jumps, missingness: commensurationMismatch == null ? ['commensuration mismatch'] : [], alternatives: [], open_questions: [], operator_notes: [], closure: { required: true, status: 'OPEN' }
   });
 }

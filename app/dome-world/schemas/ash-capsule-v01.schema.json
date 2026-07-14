@@ -1,0 +1,56 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "td613.ash.ash-capsule/v0.1",
+  "type": "object",
+  "required": [
+    "schema",
+    "version",
+    "case_id",
+    "created_at",
+    "cipher",
+    "kdf",
+    "iterations",
+    "salt_bytes",
+    "iv_bytes",
+    "recipient_transport",
+    "salt",
+    "iv",
+    "ciphertext",
+    "capsule_digest"
+  ],
+  "properties": {
+    "schema": {
+      "const": "td613.ash.ash-capsule/v0.1"
+    },
+    "cipher": {
+      "const": "AES-256-GCM"
+    },
+    "kdf": {
+      "const": "PBKDF2-HMAC-SHA-256"
+    },
+    "iterations": {
+      "type": "integer",
+      "minimum": 600000
+    },
+    "salt_bytes": {
+      "const": 16
+    },
+    "iv_bytes": {
+      "const": 12
+    },
+    "recipient_transport": {
+      "const": "DEFERRED"
+    },
+    "capsule_digest": {
+      "type": "string",
+      "pattern": "^sha256:[0-9a-f]{64}$"
+    },
+    "version": {},
+    "case_id": {},
+    "created_at": {},
+    "salt": {},
+    "iv": {},
+    "ciphertext": {}
+  },
+  "additionalProperties": false
+}

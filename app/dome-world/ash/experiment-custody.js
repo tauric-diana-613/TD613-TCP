@@ -1,7 +1,9 @@
 import { canonicalDigest } from './canonical-json.js';
 
-export const ASH_EXPERIMENT_CUSTODY_SCHEMA = 'td613.ash.experiment-custody-manifest/v0.1';
-export const ASH_EXPERIMENT_CUSTODY_DOMAIN = 'TD613:V31:ASH-EXPERIMENT-CUSTODY:v1';
+export const ASH_EXPERIMENT_CUSTODY_SCHEMA = 'td613.ash.experiment-custody-manifest/v0.2';
+export const ASH_EXPERIMENT_CUSTODY_LEGACY_SCHEMA = 'td613.ash.experiment-custody-manifest/v0.1';
+export const ASH_EXPERIMENT_CUSTODY_DOMAIN = 'TD613:V31:ASH-EXPERIMENT-CUSTODY:v2';
+export const ASH_EXPERIMENT_CUSTODY_LEGACY_DOMAIN = 'TD613:V31:ASH-EXPERIMENT-CUSTODY:v1';
 
 const DIGEST = /^sha256:[0-9a-f]{64}$/;
 const REF = /^[A-Za-z][A-Za-z0-9_-]{5,127}$/;
@@ -48,10 +50,8 @@ export async function compileAshExperimentCustodyManifest(input, options = {}) {
     automatic_derivative_construction: false,
     automatic_export: false,
     automatic_cinder_action: false,
-    scope_statement: 'Ash custody manifest for a declared experiment and its references; it is not the experiment or its interpretation.',
-    cannot_establish: ['identity', 'authorship', 'ownership', 'permission', 'external truth', 'total causation'],
-    promotion_conditions: ['verified source custody', 'complete run references', 'operator review'],
-    operator_closure: { required: true, status: 'OPEN' },
+    source_status: 'SUPPLIED', evidence_basis: ['source custody receipt', 'pre-registration digest', 'instrument ensemble digest'],
+    observations: [], missingness: [], alternatives: [], open_questions: [], operator_notes: [], closure: { required: true, status: 'OPEN' },
     manifest_digest: null
   };
   manifest.manifest_digest = await canonicalDigest(ASH_EXPERIMENT_CUSTODY_DOMAIN, digestSubject(manifest), options);
@@ -59,6 +59,7 @@ export async function compileAshExperimentCustodyManifest(input, options = {}) {
 }
 
 export async function verifyAshExperimentCustodyManifest(manifest, options = {}) {
-  if (!manifest || manifest.schema !== ASH_EXPERIMENT_CUSTODY_SCHEMA) return false;
-  return manifest.manifest_digest === await canonicalDigest(ASH_EXPERIMENT_CUSTODY_DOMAIN, digestSubject(manifest), options);
+  if (!manifest || ![ASH_EXPERIMENT_CUSTODY_SCHEMA, ASH_EXPERIMENT_CUSTODY_LEGACY_SCHEMA].includes(manifest.schema)) return false;
+  const domain = manifest.schema === ASH_EXPERIMENT_CUSTODY_SCHEMA ? ASH_EXPERIMENT_CUSTODY_DOMAIN : ASH_EXPERIMENT_CUSTODY_LEGACY_DOMAIN;
+  return manifest.manifest_digest === await canonicalDigest(domain, digestSubject(manifest), options);
 }

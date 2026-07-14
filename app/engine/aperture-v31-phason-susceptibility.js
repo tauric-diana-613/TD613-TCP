@@ -27,7 +27,7 @@ export function estimatePhasonSusceptibility({ trials, shamResponse = 0, reversa
     reversal_difference: reversalDifference,
     state,
     controls: { repeated: true, sham_present: true, reversal_checked: true, hysteresis_checked: true },
-    scope_statement: 'Sensitivity of observed output to a controlled registry displacement.',
-    cannot_establish: ['physical phonon', 'electrical charge', 'Chern invariant', 'surveillance', 'intent', 'causal monopoly']
+    evidence_basis: ['repeated controlled coordinate displacements', 'sham and reversal observations'],
+    observations: normalized, missingness: [], alternatives: [], open_questions: [], operator_notes: [], closure: { required: true, status: 'OPEN' }
   });
 }

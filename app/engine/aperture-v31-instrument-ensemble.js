@@ -35,8 +35,9 @@ export async function compileInstrumentEnsemble({ instruments, ensembleId = null
     all_operator_authorized: normalized.every(value => value.operator_authorized),
     fixed_for_run: true,
     automatic_model_selection: false,
-    scope_statement: 'Fixed declared observation ensemble; changing membership creates a new version.',
-    cannot_establish: ['instrument completeness', 'hidden implementation', 'intent', 'external truth'],
+    evidence_basis: ['fixed declared instrument membership', 'declared intervention dimensions'],
+    observations: ['Changing membership creates a new ensemble version.'],
+    missingness: uniqueStrings(normalized.flatMap(value => value.missingness)), alternatives: [], open_questions: [], operator_notes: [], closure: { required: true, status: 'OPEN' },
     ensemble_digest: null
   };
   ensemble.ensemble_digest = await recordDigest(INSTRUMENT_ENSEMBLE_DOMAIN, ensemble, 'ensemble_digest', options);

@@ -1,7 +1,9 @@
 import { canonicalDigest } from './canonical-json.js';
 
-export const ASH_SNAPSHOT_BATCH_SCHEMA = 'td613.ash.snapshot-batch-receipt/v0.1';
-export const ASH_SNAPSHOT_BATCH_DOMAIN = 'TD613:V31:ASH-SNAPSHOT-BATCH:v1';
+export const ASH_SNAPSHOT_BATCH_SCHEMA = 'td613.ash.snapshot-batch-receipt/v0.2';
+export const ASH_SNAPSHOT_BATCH_LEGACY_SCHEMA = 'td613.ash.snapshot-batch-receipt/v0.1';
+export const ASH_SNAPSHOT_BATCH_DOMAIN = 'TD613:V31:ASH-SNAPSHOT-BATCH:v2';
+export const ASH_SNAPSHOT_BATCH_LEGACY_DOMAIN = 'TD613:V31:ASH-SNAPSHOT-BATCH:v1';
 export const SNAPSHOT_INCLUSION_STATES = Object.freeze([
   'INCLUDED', 'NULL_RESULT', 'MISSING', 'REJECTED', 'UNCAPTURED', 'ENCODER_REQUIRED'
 ]);
@@ -72,10 +74,8 @@ export async function compileAshSnapshotBatch({ experimentId, sourceReceiptRefer
     server_persistence: false,
     automatic_exclusion: false,
     automatic_ash_action: false,
-    scope_statement: 'Run-scoped custody index preserving every declared snapshot posture without observation content.',
-    cannot_establish: ['identity', 'authorship', 'intent', 'external truth', 'complete coverage'],
-    promotion_conditions: ['source invariance', 'coverage review', 'operator inclusion review'],
-    operator_closure: { required: true, status: 'OPEN' },
+    source_status: 'SUPPLIED', evidence_basis: ['declared snapshot entries', 'operator inclusion states'],
+    observations: [], missingness: entries.filter(entry => entry.missingness.length).map(entry => ({ snapshot_id: entry.snapshot_id, values: entry.missingness })), alternatives: [], open_questions: [], operator_notes: [], closure: { required: true, status: 'OPEN' },
     batch_digest: null
   };
   receipt.batch_digest = await canonicalDigest(ASH_SNAPSHOT_BATCH_DOMAIN, digestSubject(receipt), options);
@@ -83,6 +83,7 @@ export async function compileAshSnapshotBatch({ experimentId, sourceReceiptRefer
 }
 
 export async function verifyAshSnapshotBatch(receipt, options = {}) {
-  if (!receipt || receipt.schema !== ASH_SNAPSHOT_BATCH_SCHEMA) return false;
-  return receipt.batch_digest === await canonicalDigest(ASH_SNAPSHOT_BATCH_DOMAIN, digestSubject(receipt), options);
+  if (!receipt || ![ASH_SNAPSHOT_BATCH_SCHEMA, ASH_SNAPSHOT_BATCH_LEGACY_SCHEMA].includes(receipt.schema)) return false;
+  const domain = receipt.schema === ASH_SNAPSHOT_BATCH_SCHEMA ? ASH_SNAPSHOT_BATCH_DOMAIN : ASH_SNAPSHOT_BATCH_LEGACY_DOMAIN;
+  return receipt.batch_digest === await canonicalDigest(domain, digestSubject(receipt), options);
 }

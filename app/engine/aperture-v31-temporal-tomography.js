@@ -26,7 +26,7 @@ export function estimateTemporalRoute(lattice) {
     declared_clock: 'time_index',
     quantum_temporal_state: false,
     backward_causation_claimed: false,
-    scope_statement: 'Classical bounded multi-time route estimate from the declared snapshot lattice.',
-    cannot_establish: ['quantum temporal state', 'backward causation', 'time travel', 'total causal order']
+    evidence_basis: ['declared snapshot lattice', 'classical time-indexed marginals'],
+    observations: { marginals, transitions }, missingness: state === 'TRANSITION_NONIDENTIFIABLE' ? ['second temporal slice'] : [], alternatives: [], open_questions: [], operator_notes: [], closure: { required: true, status: 'OPEN' }
   });
 }

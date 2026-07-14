@@ -1,0 +1,66 @@
+{
+  "schema": "td613.ash.keep-demo/v0.1",
+  "title": "Glasshouse Archive inquiry",
+  "profile": "investigation",
+  "case": {
+    "rooms": [
+      { "id": "room_records", "label": "Records", "color": "#76ead4" },
+      { "id": "room_funding", "label": "Funding", "color": "#e4c66c" },
+      { "id": "room_people", "label": "Interviews", "color": "#d9a1ff" },
+      { "id": "room_next", "label": "Next steps", "color": "#ff8b9d" }
+    ],
+    "nodes": [
+      { "id": "node_archive", "type": "entity", "label": "Glasshouse Archive", "room_id": "room_records", "source_status": "SUPPLIED" },
+      { "id": "node_register", "type": "artifact", "label": "Synthetic grant register", "room_id": "room_records", "source_status": "SUPPLIED" },
+      { "id": "node_invoice", "type": "artifact", "label": "Synthetic invoice 14-B", "room_id": "room_funding", "source_status": "SUPPLIED" },
+      { "id": "node_meeting", "type": "event", "label": "Public garden meeting", "room_id": "room_people", "source_status": "OBSERVED" },
+      { "id": "node_claim", "type": "claim", "label": "Two entries share an unexplained reference", "room_id": "room_records", "source_status": "DERIVED" },
+      { "id": "node_hypothesis", "type": "hypothesis", "label": "The entries may describe one project", "room_id": "room_funding", "source_status": "INFERRED" },
+      { "id": "node_gap", "type": "evidence-gap", "label": "Missing approval page", "room_id": "room_records", "source_status": "OBSERVED" },
+      { "id": "node_source", "type": "source", "label": "Synthetic interview source", "room_id": "room_people", "source_status": "SUPPLIED" },
+      { "id": "node_action", "type": "intended-action", "label": "Request the public index", "room_id": "room_next", "source_status": "SUPPLIED" }
+    ],
+    "relationships": [
+      { "id": "edge_register_claim", "from": "node_register", "to": "node_claim", "type": "supports" },
+      { "id": "edge_invoice_hypothesis", "from": "node_invoice", "to": "node_hypothesis", "type": "suggests" },
+      { "id": "edge_claim_hypothesis", "from": "node_claim", "to": "node_hypothesis", "type": "bridges" },
+      { "id": "edge_source_meeting", "from": "node_source", "to": "node_meeting", "type": "describes" },
+      { "id": "edge_gap_action", "from": "node_gap", "to": "node_action", "type": "motivates" },
+      { "id": "edge_hypothesis_action", "from": "node_hypothesis", "to": "node_action", "type": "precedes" }
+    ],
+    "privateChronology": ["Register reviewed", "Invoice compared", "Public index request drafted"],
+    "intendedActions": ["Request the public index"]
+  },
+  "room_rules": [
+    { "route_id": "route_local_lab", "allowed_room_ids": ["room_records", "room_funding"], "local_link_keys": ["edge_claim_hypothesis"] },
+    { "route_id": "route_public_request", "allowed_room_ids": ["room_records", "room_next"], "local_link_keys": ["edge_hypothesis_action"] }
+  ],
+  "disclosure_sequence": [
+    ["node_archive"],
+    ["node_register"],
+    ["node_claim"],
+    ["node_invoice"],
+    ["node_hypothesis"],
+    ["node_action"]
+  ],
+  "bridge_disclosure": "node_hypothesis",
+  "style_samples": {
+    "left": "Please preserve the register order and mark every gap before drawing the next connection.",
+    "right": "Preserve the invoice order; mark each missing page before connecting the next record."
+  },
+  "benign_control": {
+    "before": { "node_ids": ["node_archive"], "relationship_ids": [] },
+    "after": { "node_ids": ["node_archive"], "relationship_ids": [] },
+    "observations": ["A repeated public title did not recover another Room."]
+  },
+  "null_result": {
+    "state": "NULL",
+    "observations": ["The Reader recovered no intended action from the isolated invoice fragment."]
+  },
+  "held_draft": "Please send the grant register, invoice reference, and our plan to request the missing approval page.",
+  "seed_test": {
+    "token": "GLASS-SEED-17",
+    "assigned_route": "route_synthetic_reader",
+    "source_status": "SIMULATED"
+  }
+}

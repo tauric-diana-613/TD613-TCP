@@ -1,0 +1,34 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "td613.aperture.tomography-replay/v0.2",
+  "title": "TD613 Aperture tomography replay v0.2",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["schema", "replay_id", "created_at", "source_receipt_id", "source_receipt_digest", "status", "digest_verified", "forbidden_paths", "reconstruction_reexecuted", "raw_source_restored", "source_status", "evidence_basis", "observations", "missingness", "alternatives", "open_questions", "operator_notes", "closure", "replay_digest"],
+  "properties": {
+    "schema": { "const": "td613.aperture.tomography-replay/v0.2" },
+    "replay_id": { "type": "string" },
+    "created_at": { "type": "string" },
+    "source_receipt_id": { "type": ["string", "null"] },
+    "source_receipt_digest": { "type": ["string", "null"] },
+    "status": { "enum": ["REPLAY_VERIFIED", "REPLAY_HELD"] },
+    "digest_verified": { "type": "boolean" },
+    "forbidden_paths": { "type": "array", "items": { "type": "string" } },
+    "reconstruction_reexecuted": { "const": false },
+    "raw_source_restored": { "const": false },
+    "source_status": { "type": "string" },
+    "evidence_basis": { "$ref": "#/$defs/textList" },
+    "observations": { "type": "array" },
+    "missingness": { "type": "array" },
+    "alternatives": { "type": "array" },
+    "open_questions": { "$ref": "#/$defs/textList" },
+    "operator_notes": { "$ref": "#/$defs/textList" },
+    "closure": { "$ref": "#/$defs/closure" },
+    "replay_digest": { "$ref": "#/$defs/digest" }
+  },
+  "$defs": {
+    "digest": { "type": "string", "pattern": "^sha256:[0-9a-f]{64}$" },
+    "textList": { "type": "array", "items": { "type": "string" } },
+    "closure": { "type": "object", "required": ["required", "status"], "properties": { "required": { "const": true }, "status": { "enum": ["OPEN", "CLOSED"] } }, "additionalProperties": false }
+  }
+}

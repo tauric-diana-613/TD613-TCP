@@ -12,8 +12,9 @@ export async function compileControlledSource(input, options = {}) {
     source_status: input.sourceStatus || 'SUPPLIED',
     invariance_rule: 'exact-commitment-match',
     raw_source_present: false,
-    scope_statement: 'Controlled source commitment used to audit drift across declared observations.',
-    cannot_establish: ['identity', 'authorship', 'ownership', 'permission', 'external truth'],
+    evidence_basis: ['Ash source receipt reference', 'exact source commitment'],
+    observations: ['Source invariance is tested by exact commitment comparison.'],
+    missingness: [], alternatives: [], open_questions: [], operator_notes: [], closure: { required: true, status: 'OPEN' },
     source_digest: null
   };
   source.source_digest = await recordDigest(CONTROLLED_SOURCE_DOMAIN, source, 'source_digest', options);

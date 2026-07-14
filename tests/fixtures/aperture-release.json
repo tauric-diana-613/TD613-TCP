@@ -33,8 +33,8 @@
     "marrowlineConfirmationAuthority": false
   },
   "domeWorld": {
-    "version": "v0.6.0-alpha",
-    "schema": "td613.dome-world/v0.6.0-alpha",
+    "version": "v0.7.0-alpha",
+    "schema": "td613.dome-world/v0.7.0-alpha",
     "exactReceiptSchema": "td613.dome-world.exact-receipt/v0.4.3"
   },
   "observedRegime": "PRCS-A",
@@ -55,35 +55,39 @@
       "reciprocal-bridge",
       "admissibility-tomography"
     ],
-    "domeExperimentSchema": "td613.dome-world.experiment-run/v0.1",
-    "flowCoreContextSeriesSchema": "td613.flowcore.context-series/v0.1",
-    "instrumentAdapterReceiptSchema": "td613.aperture.instrument-adapter-receipt/v0.1",
-    "tomographyReceiptSchema": "td613.aperture.admissibility-tomography-receipt/v0.1",
-    "tomographyReplaySchema": "td613.aperture.tomography-replay/v0.1",
-    "scopeBoundary": {
+    "domeExperimentSchema": "td613.dome-world.experiment-run/v0.2",
+    "flowCoreContextSeriesSchema": "td613.flowcore.context-series/v0.2",
+    "instrumentAdapterReceiptSchema": "td613.aperture.instrument-adapter-receipt/v0.2",
+    "tomographyReceiptSchema": "td613.aperture.admissibility-tomography-receipt/v0.2",
+    "tomographyReplaySchema": "td613.aperture.tomography-replay/v0.2",
+    "evidenceRecord": {
       "fields": [
-        "scope_statement",
-        "cannot_establish",
-        "promotion_conditions",
-        "abstention_reason",
         "source_status",
-        "authority_class",
-        "operator_closure"
+        "evidence_basis",
+        "observations",
+        "missingness",
+        "alternatives",
+        "open_questions",
+        "operator_notes",
+        "closure"
       ],
-      "globalClaimCeilingGovernor": false,
-      "legacyVocabularyPreserved": true,
-      "interpretationSuppressionAuthorized": false
+      "researchNotes": {
+        "default": "OFF",
+        "humanOperated": true,
+        "modelContextInjection": false
+      },
+      "legacyLimitingVocabularyCurrent": false
     }
   },
   "ash": {
-    "version": "v0.9-alpha",
-    "phase": "VI-A_EXPERIMENTAL_RUN_CUSTODY_AND_ELIGIBILITY",
-    "status": "IMPLEMENTED_PRODUCTION_DEMONSTRATED",
-    "productionStatus": "PRODUCTION_DEMONSTRATED",
-    "experimentCustodySchema": "td613.ash.experiment-custody-manifest/v0.1",
-    "snapshotBatchSchema": "td613.ash.snapshot-batch-receipt/v0.1",
-    "tomographyResultCustodySchema": "td613.ash.tomography-result-custody/v0.1",
-    "derivativeEligibilitySchema": "td613.ash.derivative-eligibility-receipt/v0.1",
+    "version": "v1.0-alpha",
+    "phase": "ASH_KEEP_CASE_MAP_RUNTIME",
+    "status": "IMPLEMENTATION_IN_PROGRESS",
+    "productionStatus": "PREVIEW_PENDING",
+    "experimentCustodySchema": "td613.ash.experiment-custody-manifest/v0.2",
+    "snapshotBatchSchema": "td613.ash.snapshot-batch-receipt/v0.2",
+    "tomographyResultCustodySchema": "td613.ash.tomography-result-custody/v0.2",
+    "derivativeEligibilitySchema": "td613.ash.derivative-eligibility-receipt/v0.2",
     "automaticCinder": false,
     "transport": false
   }

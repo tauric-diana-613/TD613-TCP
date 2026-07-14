@@ -25,7 +25,7 @@ export function estimateReferenceLayers({ pairs, flatThresholdNumerator = 1, fla
     schema: REFERENCE_LAYER_SCHEMA,
     estimates,
     strata_merged: false,
-    scope_statement: 'Bounded cross-response estimate between separately identified strata.',
-    cannot_establish: ['hidden communication', 'collusion', 'causal transfer', 'total coupling']
+    evidence_basis: ['declared paired strata', 'exact input and output differences'],
+    observations: estimates, missingness: [], alternatives: [], open_questions: [], operator_notes: [], closure: { required: true, status: 'OPEN' }
   });
 }

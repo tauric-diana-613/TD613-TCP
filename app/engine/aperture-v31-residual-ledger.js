@@ -34,7 +34,7 @@ export function compileSignedResidualLedger(entries) {
     state: structured ? 'STRUCTURED_UNEXPLAINED' : residuals.every(value => value.residual === 0) ? 'EXPLAINED' : 'PARTIALLY_EXPLAINED',
     opposed_residuals_cancelled: false,
     source_status_preserved: true,
-    scope_statement: 'Directional reconstruction remainder preserved by snapshot, instrument, time, and replicate.',
-    cannot_establish: ['good or bad valence', 'quantum quasiprobability', 'intent', 'total model failure']
+    evidence_basis: ['observed and predicted integer pairs'],
+    observations: residuals, missingness: [], alternatives: [], open_questions: structured ? ['Which alternative model explains the opposed residual structure?'] : [], operator_notes: [], closure: { required: true, status: 'OPEN' }
   });
 }

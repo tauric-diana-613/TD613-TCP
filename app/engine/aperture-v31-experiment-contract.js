@@ -1,9 +1,13 @@
 import { canonicalDigest } from '../dome-world/ash/canonical-json.js';
 
-export const DOME_EXPERIMENT_RUN_SCHEMA = 'td613.dome-world.experiment-run/v0.1';
-export const APERTURE_INSTRUMENT_ADAPTER_SCHEMA = 'td613.aperture.instrument-adapter-receipt/v0.1';
-export const EXPERIMENT_RUN_DIGEST_DOMAIN = 'TD613:V31:EXPERIMENT-RUN:v1';
-export const ADAPTER_RECEIPT_DIGEST_DOMAIN = 'TD613:V31:INSTRUMENT-ADAPTER:v1';
+export const DOME_EXPERIMENT_RUN_SCHEMA = 'td613.dome-world.experiment-run/v0.2';
+export const DOME_EXPERIMENT_RUN_LEGACY_SCHEMA = 'td613.dome-world.experiment-run/v0.1';
+export const APERTURE_INSTRUMENT_ADAPTER_SCHEMA = 'td613.aperture.instrument-adapter-receipt/v0.2';
+export const APERTURE_INSTRUMENT_ADAPTER_LEGACY_SCHEMA = 'td613.aperture.instrument-adapter-receipt/v0.1';
+export const EXPERIMENT_RUN_DIGEST_DOMAIN = 'TD613:V31:EXPERIMENT-RUN:v2';
+export const EXPERIMENT_RUN_LEGACY_DIGEST_DOMAIN = 'TD613:V31:EXPERIMENT-RUN:v1';
+export const ADAPTER_RECEIPT_DIGEST_DOMAIN = 'TD613:V31:INSTRUMENT-ADAPTER:v2';
+export const ADAPTER_RECEIPT_LEGACY_DIGEST_DOMAIN = 'TD613:V31:INSTRUMENT-ADAPTER:v1';
 
 const SOURCE_STATUSES = new Set(['OBSERVED', 'SUPPLIED', 'DERIVED', 'SIMULATED', 'INFERRED', 'ATTESTED', 'UNRESOLVED']);
 const ADAPTER_CLASSES = new Set(['EO-RFD', 'ACEDIT', 'KIRA', 'DECLARED_INSTRUMENT']);
@@ -79,9 +83,14 @@ export async function compileDomeExperimentRun(
     automatic_ash_action: false,
     prediction_authorized: false,
     server_persistence: false,
-    operator_closure: { required: true, status: 'OPEN' },
-    scope_statement: 'Dome-World experiment reference record; custody remains with each named station.',
-    cannot_establish: ['identity', 'authorship', 'ownership', 'permission', 'external truth', 'total causation'],
+    source_status: 'SUPPLIED',
+    evidence_basis: ['station-owned receipt references', 'pre-registration digest'],
+    observations: ['Dome-World hosts the run while named stations retain their records.'],
+    missingness: [],
+    alternatives: [],
+    open_questions: [],
+    operator_notes: [],
+    closure: { required: true, status: 'OPEN' },
     run_digest: null,
     seal: '⟐'
   };
@@ -102,7 +111,7 @@ export async function compileInstrumentAdapterReceipt(
     outputContract,
     transformationHistory = [],
     missingness = [],
-    cannotEstablish = [],
+    openQuestions = [],
     operationalState = 'interface_context',
     claimAuthority = 'design_signal',
     targetOperationalState = 'verified_runtime_installation',
@@ -134,13 +143,12 @@ export async function compileInstrumentAdapterReceipt(
     automatic_model_selection: false,
     automatic_run_promotion: false,
     automatic_ash_action: false,
-    scope_statement: 'Declared observation or preflight adapter output only.',
-    cannot_establish: [...new Set([
-      ...cannotEstablish.map(String),
-      'self-validation', 'identity', 'authorship', 'intent', 'external truth', 'runtime authority'
-    ])],
-    promotion_conditions: ['separate phase gate', 'adapter test', 'invariant receipt', 'operator approval'],
-    operator_closure: { required: true, status: 'OPEN' },
+    evidence_basis: ['declared adapter contract', 'transformation history', 'recorded missingness'],
+    observations: [],
+    alternatives: [],
+    open_questions: [...new Set(openQuestions.map(String))],
+    operator_notes: [],
+    closure: { required: true, status: 'OPEN' },
     adapter_digest: null,
     seal: '⟐'
   };
@@ -153,13 +161,15 @@ export async function compileInstrumentAdapterReceipt(
 }
 
 export async function verifyDomeExperimentRun(run, options = {}) {
-  if (!run || run.schema !== DOME_EXPERIMENT_RUN_SCHEMA) return false;
-  const expected = await canonicalDigest(EXPERIMENT_RUN_DIGEST_DOMAIN, digestSubject(run, 'run_digest'), options);
+  if (!run || ![DOME_EXPERIMENT_RUN_SCHEMA, DOME_EXPERIMENT_RUN_LEGACY_SCHEMA].includes(run.schema)) return false;
+  const domain = run.schema === DOME_EXPERIMENT_RUN_SCHEMA ? EXPERIMENT_RUN_DIGEST_DOMAIN : EXPERIMENT_RUN_LEGACY_DIGEST_DOMAIN;
+  const expected = await canonicalDigest(domain, digestSubject(run, 'run_digest'), options);
   return expected === run.run_digest;
 }
 
 export async function verifyInstrumentAdapterReceipt(receipt, options = {}) {
-  if (!receipt || receipt.schema !== APERTURE_INSTRUMENT_ADAPTER_SCHEMA) return false;
-  const expected = await canonicalDigest(ADAPTER_RECEIPT_DIGEST_DOMAIN, digestSubject(receipt, 'adapter_digest'), options);
+  if (!receipt || ![APERTURE_INSTRUMENT_ADAPTER_SCHEMA, APERTURE_INSTRUMENT_ADAPTER_LEGACY_SCHEMA].includes(receipt.schema)) return false;
+  const domain = receipt.schema === APERTURE_INSTRUMENT_ADAPTER_SCHEMA ? ADAPTER_RECEIPT_DIGEST_DOMAIN : ADAPTER_RECEIPT_LEGACY_DIGEST_DOMAIN;
+  const expected = await canonicalDigest(domain, digestSubject(receipt, 'adapter_digest'), options);
   return expected === receipt.adapter_digest;
 }

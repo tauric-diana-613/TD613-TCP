@@ -1,0 +1,41 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "td613.dome-world.experiment-run/v0.2",
+  "title": "TD613 Dome-World experiment run v0.2",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["schema", "experiment_id", "created_at", "time_posture", "state", "source_receipt_reference", "pre_registration_digest", "instrument_ensemble_reference", "snapshot_batch_reference", "flowcore_context_series_reference", "tomography_receipt_reference", "station_ownership", "automatic_station_advance", "automatic_ash_action", "prediction_authorized", "server_persistence", "source_status", "evidence_basis", "observations", "missingness", "alternatives", "open_questions", "operator_notes", "closure", "run_digest", "seal"],
+  "properties": {
+    "schema": { "const": "td613.dome-world.experiment-run/v0.2" },
+    "experiment_id": { "type": "string", "pattern": "^atx_[A-Za-z0-9_-]{6,128}$" },
+    "created_at": { "type": "string" },
+    "time_posture": { "const": "local-clock-not-trusted-time" },
+    "state": { "enum": ["DECLARED", "COLLECTING", "RECONSTRUCTED", "CLOSED", "HELD"] },
+    "source_receipt_reference": { "type": "string" },
+    "pre_registration_digest": { "$ref": "#/$defs/digest" },
+    "instrument_ensemble_reference": { "type": "string" },
+    "snapshot_batch_reference": { "type": ["string", "null"] },
+    "flowcore_context_series_reference": { "type": ["string", "null"] },
+    "tomography_receipt_reference": { "type": ["string", "null"] },
+    "station_ownership": { "type": "object" },
+    "automatic_station_advance": { "const": false },
+    "automatic_ash_action": { "const": false },
+    "prediction_authorized": { "const": false },
+    "server_persistence": { "const": false },
+    "source_status": { "type": "string" },
+    "evidence_basis": { "$ref": "#/$defs/textList" },
+    "observations": { "type": "array" },
+    "missingness": { "type": "array" },
+    "alternatives": { "type": "array" },
+    "open_questions": { "$ref": "#/$defs/textList" },
+    "operator_notes": { "$ref": "#/$defs/textList" },
+    "closure": { "$ref": "#/$defs/closure" },
+    "run_digest": { "$ref": "#/$defs/digest" },
+    "seal": { "type": "string" }
+  },
+  "$defs": {
+    "digest": { "type": "string", "pattern": "^sha256:[0-9a-f]{64}$" },
+    "textList": { "type": "array", "items": { "type": "string" } },
+    "closure": { "type": "object", "required": ["required", "status"], "properties": { "required": { "const": true }, "status": { "enum": ["OPEN", "CLOSED"] } }, "additionalProperties": false }
+  }
+}

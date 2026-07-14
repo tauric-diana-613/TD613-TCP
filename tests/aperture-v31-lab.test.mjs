@@ -15,14 +15,13 @@ assert.match(lab, /compileFlowcoreContextSeries/);
 assert.match(lab, /new IntersectionObserver/);
 assert.equal((lab.match(/requestAnimationFrame\(/g) || []).length, 1, 'Lab must use one scheduler request site.');
 assert.match(lab, /prefers-reduced-motion/);
-assert.doesNotMatch(lab, /\bclaim_ceiling\b/);
-assert.match(lab, /Scope boundaries govern receipt promotion; they do not censor interpretation\./);
+assert.match(lab, /Evidence records preserve observations, missing data, alternatives, open questions, and operator closure\./);
 assert.match(lab, /automatic_ash_action:false/);
 assert.match(lab, /prediction_authorized:false/);
 
 for (const path of [
-  'app/dome-world/schemas/aperture-admissibility-tomography-receipt-v01.schema.json',
-  'app/dome-world/schemas/aperture-tomography-replay-v01.schema.json'
+  'app/dome-world/schemas/aperture-admissibility-tomography-receipt-v02.schema.json',
+  'app/dome-world/schemas/aperture-tomography-replay-v02.schema.json'
 ]) {
   const schema = JSON.parse(fs.readFileSync(path, 'utf8'));
   assert.equal(schema.additionalProperties, false);

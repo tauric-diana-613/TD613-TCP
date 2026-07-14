@@ -6,7 +6,8 @@ import { compileSnapshotLattice, verifySnapshotLattice } from '../app/engine/ape
 const SOURCE = `sha256:${'1'.repeat(64)}`;
 const source = await compileControlledSource({ sourceId: 'atsrc_0123456789abcdef0123', sourceReceiptReference: 'ashc_0123456789abcdef0123', sourceCommitment: SOURCE });
 assert.equal(source.raw_source_present, false);
-assert.equal(source.claim_ceiling, undefined);
+assert.ok(source.evidence_basis.includes('exact source commitment'));
+assert.equal(source.closure.status, 'OPEN');
 assert.equal(await verifyControlledSource(source), true);
 assert.equal(auditSourceInvariance(source, [SOURCE, SOURCE]).status, 'SOURCE_HELD');
 assert.equal(auditSourceInvariance(source, [SOURCE, null]).status, 'SOURCE_UNVERIFIABLE');

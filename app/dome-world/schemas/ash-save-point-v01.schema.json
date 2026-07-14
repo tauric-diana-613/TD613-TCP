@@ -1,0 +1,57 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "td613.ash.save-point/v0.1",
+  "type": "object",
+  "required": [
+    "schema",
+    "save_point_id",
+    "case_id",
+    "created_at",
+    "case_map_digest",
+    "route_memory_digest",
+    "evidence_inventory",
+    "unanswered_questions",
+    "corroboration_state",
+    "hypothesis_posture",
+    "next_step_posture",
+    "tamper_state",
+    "source_status",
+    "evidence_basis",
+    "observations",
+    "missingness",
+    "alternatives",
+    "open_questions",
+    "operator_notes",
+    "closure",
+    "save_point_digest"
+  ],
+  "properties": {
+    "schema": {
+      "const": "td613.ash.save-point/v0.1"
+    },
+    "save_point_digest": {
+      "type": "string",
+      "pattern": "^sha256:[0-9a-f]{64}$"
+    },
+    "save_point_id": {},
+    "case_id": {},
+    "created_at": {},
+    "case_map_digest": {},
+    "route_memory_digest": {},
+    "evidence_inventory": {},
+    "unanswered_questions": {},
+    "corroboration_state": {},
+    "hypothesis_posture": {},
+    "next_step_posture": {},
+    "tamper_state": {},
+    "source_status": {},
+    "evidence_basis": {},
+    "observations": {},
+    "missingness": {},
+    "alternatives": {},
+    "open_questions": {},
+    "operator_notes": {},
+    "closure": {}
+  },
+  "additionalProperties": false
+}

@@ -1,0 +1,40 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "td613.ash.snapshot-batch-receipt/v0.2",
+  "title": "TD613 Ash snapshot batch receipt v0.2",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["schema", "batch_id", "created_at", "time_posture", "experiment_id", "source_receipt_reference", "entries", "snapshot_count", "included_count", "unresolved_count", "null_result_count", "raw_observation_content_present", "artifact_digest_present", "server_persistence", "automatic_exclusion", "automatic_ash_action", "source_status", "evidence_basis", "observations", "missingness", "alternatives", "open_questions", "operator_notes", "closure", "batch_digest"],
+  "properties": {
+    "schema": { "const": "td613.ash.snapshot-batch-receipt/v0.2" },
+    "batch_id": { "type": "string" },
+    "created_at": { "type": "string" },
+    "time_posture": { "const": "local-clock-not-trusted-time" },
+    "experiment_id": { "type": "string" },
+    "source_receipt_reference": { "type": "string" },
+    "entries": { "type": "array", "minItems": 1, "items": { "type": "object" } },
+    "snapshot_count": { "type": "integer", "minimum": 1 },
+    "included_count": { "type": "integer", "minimum": 0 },
+    "unresolved_count": { "type": "integer", "minimum": 0 },
+    "null_result_count": { "type": "integer", "minimum": 0 },
+    "raw_observation_content_present": { "const": false },
+    "artifact_digest_present": { "const": false },
+    "server_persistence": { "const": false },
+    "automatic_exclusion": { "const": false },
+    "automatic_ash_action": { "const": false },
+    "source_status": { "type": "string" },
+    "evidence_basis": { "$ref": "#/$defs/textList" },
+    "observations": { "type": "array" },
+    "missingness": { "type": "array" },
+    "alternatives": { "type": "array" },
+    "open_questions": { "$ref": "#/$defs/textList" },
+    "operator_notes": { "$ref": "#/$defs/textList" },
+    "closure": { "$ref": "#/$defs/closure" },
+    "batch_digest": { "$ref": "#/$defs/digest" }
+  },
+  "$defs": {
+    "digest": { "type": "string", "pattern": "^sha256:[0-9a-f]{64}$" },
+    "textList": { "type": "array", "items": { "type": "string" } },
+    "closure": { "type": "object", "required": ["required", "status"], "properties": { "required": { "const": true }, "status": { "enum": ["OPEN", "CLOSED"] } }, "additionalProperties": false }
+  }
+}

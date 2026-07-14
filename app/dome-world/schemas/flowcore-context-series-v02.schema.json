@@ -1,0 +1,41 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "td613.flowcore.context-series/v0.2",
+  "title": "TD613 Flow-Core context series v0.2",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["schema", "series_id", "experiment_id", "created_at", "time_posture", "status", "entries", "snapshot_count", "abstention_count", "missing_snapshot_count", "artifact_reference", "artifact_digest_present", "observation_content_present", "artifact_blind", "recommendation_not_command", "automatic_ash_action", "prediction_authorized", "server_persistence", "evidence_basis", "observations", "alternatives", "open_questions", "operator_notes", "closure", "series_digest", "seal"],
+  "properties": {
+    "schema": { "const": "td613.flowcore.context-series/v0.2" },
+    "series_id": { "type": "string", "pattern": "^flowseries_[A-Za-z0-9_-]{6,128}$" },
+    "experiment_id": { "type": "string" },
+    "created_at": { "type": "string" },
+    "time_posture": { "const": "local-clock-not-trusted-time" },
+    "status": { "enum": ["OPEN", "PARTIAL", "ABSTAIN"] },
+    "entries": { "type": "array", "minItems": 1, "items": { "type": "object" } },
+    "snapshot_count": { "type": "integer", "minimum": 1 },
+    "abstention_count": { "type": "integer", "minimum": 0 },
+    "missing_snapshot_count": { "type": "integer", "minimum": 0 },
+    "artifact_reference": { "const": null },
+    "artifact_digest_present": { "const": false },
+    "observation_content_present": { "const": false },
+    "artifact_blind": { "const": true },
+    "recommendation_not_command": { "const": true },
+    "automatic_ash_action": { "const": false },
+    "prediction_authorized": { "const": false },
+    "server_persistence": { "const": false },
+    "evidence_basis": { "$ref": "#/$defs/textList" },
+    "observations": { "type": "object" },
+    "alternatives": { "type": "array" },
+    "open_questions": { "$ref": "#/$defs/textList" },
+    "operator_notes": { "$ref": "#/$defs/textList" },
+    "closure": { "$ref": "#/$defs/closure" },
+    "series_digest": { "$ref": "#/$defs/digest" },
+    "seal": { "type": "string" }
+  },
+  "$defs": {
+    "digest": { "type": "string", "pattern": "^sha256:[0-9a-f]{64}$" },
+    "textList": { "type": "array", "items": { "type": "string" } },
+    "closure": { "type": "object", "required": ["required", "status"], "properties": { "required": { "const": true }, "status": { "enum": ["OPEN", "CLOSED"] } }, "additionalProperties": false }
+  }
+}

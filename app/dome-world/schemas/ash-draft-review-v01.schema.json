@@ -1,0 +1,64 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "td613.ash.draft-review/v0.1",
+  "type": "object",
+  "required": [
+    "schema",
+    "review_id",
+    "draft_id",
+    "draft_digest",
+    "created_at",
+    "checks",
+    "status",
+    "protective_actions",
+    "affected_room_ids",
+    "route_recommendation",
+    "approval_scope",
+    "provider_generation_approved",
+    "local_export_approved",
+    "recipient_transmission_approved",
+    "observations",
+    "missingness",
+    "alternatives",
+    "open_questions",
+    "operator_notes",
+    "closure",
+    "review_digest"
+  ],
+  "properties": {
+    "schema": {
+      "const": "td613.ash.draft-review/v0.1"
+    },
+    "status": {
+      "enum": [
+        "READY_FOR_LOCAL_RELEASE_APPROVAL",
+        "REVIEW_HELD"
+      ]
+    },
+    "recipient_transmission_approved": {
+      "const": false
+    },
+    "review_digest": {
+      "type": "string",
+      "pattern": "^sha256:[0-9a-f]{64}$"
+    },
+    "review_id": {},
+    "draft_id": {},
+    "draft_digest": {},
+    "created_at": {},
+    "checks": {},
+    "protective_actions": {},
+    "affected_room_ids": {},
+    "route_recommendation": {},
+    "approval_scope": {},
+    "provider_generation_approved": {},
+    "local_export_approved": {},
+    "observations": {},
+    "missingness": {},
+    "alternatives": {},
+    "open_questions": {},
+    "operator_notes": {},
+    "closure": {}
+  },
+  "additionalProperties": false
+}

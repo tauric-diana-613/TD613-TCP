@@ -32,7 +32,7 @@ const manifest = await compileAshExperimentCustodyManifest({
 assert.equal(manifest.source_custody.independently_verified, true);
 assert.equal(manifest.raw_artifact_content_present, false);
 assert.equal(manifest.automatic_cinder_action, false);
-assert.equal(manifest.claim_ceiling, undefined);
+assert.equal(manifest.closure.status, 'OPEN');
 assert.equal(await verifyAshExperimentCustodyManifest(manifest), true);
 const tamperedManifest = structuredClone(manifest);
 tamperedManifest.instrument_ensemble_digest = DIGEST_B;
@@ -60,7 +60,7 @@ assert.deepEqual(batch.entries.map(entry => entry.inclusion_status), ['INCLUDED'
 assert.equal(batch.entries[2].observation_digest, null);
 assert.equal(batch.raw_observation_content_present, false);
 assert.equal(batch.automatic_exclusion, false);
-assert.equal(batch.claim_ceiling, undefined);
+assert.equal(batch.closure.status, 'OPEN');
 assert.equal(await verifyAshSnapshotBatch(batch), true);
 const tamperedBatch = structuredClone(batch);
 tamperedBatch.entries[2].missingness = [];
@@ -81,14 +81,14 @@ const result = await compileAshTomographyResultCustody({
 assert.equal(result.derivative_present, false);
 assert.equal(result.cinder_present, false);
 assert.equal(result.transport_authorized, false);
-assert.equal(result.claim_ceiling, undefined);
+assert.equal(result.closure.status, 'OPEN');
 assert.equal(await verifyAshTomographyResultCustody(result), true);
 
 assert.equal(new Set([ASH_EXPERIMENT_CUSTODY_DOMAIN, ASH_SNAPSHOT_BATCH_DOMAIN, ASH_TOMOGRAPHY_RESULT_CUSTODY_DOMAIN]).size, 3);
 for (const path of [
-  'app/dome-world/schemas/ash-experiment-custody-v01.schema.json',
-  'app/dome-world/schemas/ash-snapshot-batch-v01.schema.json',
-  'app/dome-world/schemas/ash-tomography-result-custody-v01.schema.json'
+  'app/dome-world/schemas/ash-experiment-custody-v02.schema.json',
+  'app/dome-world/schemas/ash-snapshot-batch-v02.schema.json',
+  'app/dome-world/schemas/ash-tomography-result-custody-v02.schema.json'
 ]) {
   const schema = JSON.parse(fs.readFileSync(path, 'utf8'));
   assert.ok(schema.$id);

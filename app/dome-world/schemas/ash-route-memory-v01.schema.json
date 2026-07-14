@@ -1,0 +1,60 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "td613.ash.route-memory/v0.1",
+  "type": "object",
+  "required": [
+    "schema",
+    "case_id",
+    "created_at",
+    "entries",
+    "controlled_test_recovery",
+    "operator_declared_assumptions",
+    "unknown",
+    "source_status",
+    "evidence_basis",
+    "observations",
+    "missingness",
+    "alternatives",
+    "open_questions",
+    "operator_notes",
+    "closure",
+    "route_memory_digest"
+  ],
+  "properties": {
+    "schema": {
+      "const": "td613.ash.route-memory/v0.1"
+    },
+    "entries": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": [
+          "draft_digest",
+          "route_id",
+          "purpose",
+          "recipient_class",
+          "disclosed_opaque_references",
+          "record_class"
+        ]
+      }
+    },
+    "route_memory_digest": {
+      "type": "string",
+      "pattern": "^sha256:[0-9a-f]{64}$"
+    },
+    "case_id": {},
+    "created_at": {},
+    "controlled_test_recovery": {},
+    "operator_declared_assumptions": {},
+    "unknown": {},
+    "source_status": {},
+    "evidence_basis": {},
+    "observations": {},
+    "missingness": {},
+    "alternatives": {},
+    "open_questions": {},
+    "operator_notes": {},
+    "closure": {}
+  },
+  "additionalProperties": false
+}

@@ -1,7 +1,9 @@
 import { digest, freeze, integer, randomId, ratio, recordDigest, text, uniqueStrings, verifyRecord } from './aperture-v31-core.js';
 
-export const SNAPSHOT_LATTICE_SCHEMA = 'td613.aperture.snapshot-lattice/v0.1';
-export const SNAPSHOT_LATTICE_DOMAIN = 'TD613:V31:SNAPSHOT-LATTICE:v1';
+export const SNAPSHOT_LATTICE_SCHEMA = 'td613.aperture.snapshot-lattice/v0.2';
+export const SNAPSHOT_LATTICE_LEGACY_SCHEMA = 'td613.aperture.snapshot-lattice/v0.1';
+export const SNAPSHOT_LATTICE_DOMAIN = 'TD613:V31:SNAPSHOT-LATTICE:v2';
+export const SNAPSHOT_LATTICE_LEGACY_DOMAIN = 'TD613:V31:SNAPSHOT-LATTICE:v1';
 const STATES = new Set(['OBSERVED', 'NULL_RESULT', 'NOT_RUN', 'FAILED_INSTRUMENT', 'MISSING_OUTPUT', 'WITHHELD', 'INVALIDATED', 'OUTSIDE_SCOPE', 'UNKNOWN']);
 
 function normalizeSnapshot(value, instrumentIds) {
@@ -63,11 +65,22 @@ export async function compileSnapshotLattice({ source, ensemble, snapshots, decl
     coverage: { declared_variable_count: p, design_rank: rank, gamma: ratio(rank, p), state: coverageState },
     interpolation_performed: false,
     missing_states_preserved: true,
-    operator_closure: { required: true, status: 'OPEN' },
+    source_status: 'SUPPLIED',
+    evidence_basis: ['declared snapshot entries', 'design rank', 'preserved observation states'],
+    observations: { snapshot_count: entries.length, usable_count: usable.length, coverage_state: coverageState },
+    missingness: entries.filter(value => value.missingness.length).map(value => ({ snapshot_id: value.snapshot_id, values: value.missingness })),
+    alternatives: [],
+    open_questions: [],
+    operator_notes: [],
+    closure: { required: true, status: 'OPEN' },
     lattice_digest: null
   };
   lattice.lattice_digest = await recordDigest(SNAPSHOT_LATTICE_DOMAIN, lattice, 'lattice_digest', options);
   return freeze(lattice);
 }
 
-export const verifySnapshotLattice = (value, options = {}) => verifyRecord(SNAPSHOT_LATTICE_DOMAIN, value, 'lattice_digest', SNAPSHOT_LATTICE_SCHEMA, options);
+export const verifySnapshotLattice = (value, options = {}) => {
+  if (value?.schema === SNAPSHOT_LATTICE_SCHEMA) return verifyRecord(SNAPSHOT_LATTICE_DOMAIN, value, 'lattice_digest', SNAPSHOT_LATTICE_SCHEMA, options);
+  if (value?.schema === SNAPSHOT_LATTICE_LEGACY_SCHEMA) return verifyRecord(SNAPSHOT_LATTICE_LEGACY_DOMAIN, value, 'lattice_digest', SNAPSHOT_LATTICE_LEGACY_SCHEMA, options);
+  return false;
+};

@@ -24,7 +24,7 @@ export function estimateSharedLayerBurden({ sharedLayer, adjustments, normalizer
     state,
     human_analogy_declared: humanAnalogyDeclared === true,
     analogy_limits: (analogyLimits || []).map(String),
-    scope_statement: 'Structural estimate of incompatible declared adjustment demands.',
-    cannot_establish: ['psychological diagnosis', 'harm', 'intent', 'human worth', 'resilience', 'guilt']
+    evidence_basis: ['declared stratum adjustments', 'exact pairwise differences'],
+    observations: pairwise, missingness: [], alternatives: [], open_questions: [], operator_notes: [], closure: { required: true, status: 'OPEN' }
   });
 }

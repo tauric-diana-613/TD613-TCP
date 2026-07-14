@@ -1,0 +1,85 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "td613.aperture.rebuild-test/v0.1",
+  "type": "object",
+  "required": [
+    "schema",
+    "test_id",
+    "case_id",
+    "case_map_digest",
+    "route_memory_reference",
+    "reader",
+    "created_at",
+    "mode",
+    "source_drift_state",
+    "trials",
+    "signed_residue",
+    "calibration",
+    "calibration_state",
+    "exposure_bands_active",
+    "review_state",
+    "automatic_hold",
+    "frequencies_are_named_reader_results",
+    "real_surveillance_probability",
+    "provider_acquisition_route",
+    "source_status",
+    "evidence_basis",
+    "observations",
+    "missingness",
+    "alternatives",
+    "open_questions",
+    "operator_notes",
+    "closure",
+    "test_digest"
+  ],
+  "properties": {
+    "schema": {
+      "const": "td613.aperture.rebuild-test/v0.1"
+    },
+    "mode": {
+      "enum": [
+        "QUICK_SCAN",
+        "REBUILD_TEST"
+      ]
+    },
+    "calibration_state": {
+      "enum": [
+        "CALIBRATED_FOR_NAMED_FIXTURE",
+        "NOT_ENOUGH_TEST_DATA"
+      ]
+    },
+    "automatic_hold": {
+      "const": false
+    },
+    "real_surveillance_probability": {
+      "type": "null"
+    },
+    "test_digest": {
+      "type": "string",
+      "pattern": "^sha256:[0-9a-f]{64}$"
+    },
+    "test_id": {},
+    "case_id": {},
+    "case_map_digest": {},
+    "route_memory_reference": {},
+    "reader": {},
+    "created_at": {},
+    "source_drift_state": {},
+    "trials": {},
+    "signed_residue": {},
+    "calibration": {},
+    "exposure_bands_active": {},
+    "review_state": {},
+    "frequencies_are_named_reader_results": {},
+    "provider_acquisition_route": {},
+    "source_status": {},
+    "evidence_basis": {},
+    "observations": {},
+    "missingness": {},
+    "alternatives": {},
+    "open_questions": {},
+    "operator_notes": {},
+    "closure": {}
+  },
+  "additionalProperties": false
+}

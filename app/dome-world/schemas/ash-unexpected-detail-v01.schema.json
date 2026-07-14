@@ -1,0 +1,59 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "td613.ash.unexpected-detail/v0.1",
+  "type": "object",
+  "required": [
+    "schema",
+    "event_id",
+    "case_id",
+    "created_at",
+    "provider_receipt_reference",
+    "detail",
+    "detail_digest",
+    "known_before_output",
+    "later_corroboration",
+    "acquisition_route",
+    "actor_attribution",
+    "source_status",
+    "evidence_basis",
+    "observations",
+    "missingness",
+    "alternatives",
+    "open_questions",
+    "operator_notes",
+    "closure",
+    "event_digest"
+  ],
+  "properties": {
+    "schema": {
+      "const": "td613.ash.unexpected-detail/v0.1"
+    },
+    "acquisition_route": {
+      "const": "UNKNOWN"
+    },
+    "actor_attribution": {
+      "type": "null"
+    },
+    "event_digest": {
+      "type": "string",
+      "pattern": "^sha256:[0-9a-f]{64}$"
+    },
+    "event_id": {},
+    "case_id": {},
+    "created_at": {},
+    "provider_receipt_reference": {},
+    "detail": {},
+    "detail_digest": {},
+    "known_before_output": {},
+    "later_corroboration": {},
+    "source_status": {},
+    "evidence_basis": {},
+    "observations": {},
+    "missingness": {},
+    "alternatives": {},
+    "open_questions": {},
+    "operator_notes": {},
+    "closure": {}
+  },
+  "additionalProperties": false
+}

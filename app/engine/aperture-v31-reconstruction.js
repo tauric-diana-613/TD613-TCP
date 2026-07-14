@@ -1,8 +1,10 @@
 import { freeze, randomId, recordDigest, verifyRecord } from './aperture-v31-core.js';
 import { auditSourceInvariance } from './aperture-v31-controlled-source.js';
 
-export const TOMOGRAPHY_RECEIPT_SCHEMA = 'td613.aperture.admissibility-tomography-receipt/v0.1';
-export const TOMOGRAPHY_RECEIPT_DOMAIN = 'TD613:V31:ADMISSIBILITY-TOMOGRAPHY:v1';
+export const TOMOGRAPHY_RECEIPT_SCHEMA = 'td613.aperture.admissibility-tomography-receipt/v0.2';
+export const TOMOGRAPHY_RECEIPT_LEGACY_SCHEMA = 'td613.aperture.admissibility-tomography-receipt/v0.1';
+export const TOMOGRAPHY_RECEIPT_DOMAIN = 'TD613:V31:ADMISSIBILITY-TOMOGRAPHY:v2';
+export const TOMOGRAPHY_RECEIPT_LEGACY_DOMAIN = 'TD613:V31:ADMISSIBILITY-TOMOGRAPHY:v1';
 
 function assurance(lattice, ensemble, heldout) {
   if (lattice.environment_count >= 2 && heldout?.status === 'PASS') return 'AT4_CROSS_ENVIRONMENT';
@@ -50,14 +52,30 @@ export async function compileTomographyReceipt(input, options = {}) {
     automatic_ash_action: false,
     prediction_authorized: false,
     derivative_authorized: false,
-    scope_statement: 'Bounded reconstruction from declared controlled observations; receipt status governs promotion only.',
-    cannot_establish: ['hidden model internals', 'intent', 'total causation', 'external truth', 'quantum operation', 'time travel', 'identity', 'authorship'],
-    promotion_conditions: blocking ? ['resolve every blocking hold', 'repeat held-out validation', 'operator promotion'] : ['operator review', 'separate Ash custody', 'separate promotion decision'],
-    operator_closure: { required: true, status: 'OPEN' },
+    source_status: 'DERIVED',
+    evidence_basis: ['declared controlled source', 'snapshot lattice', 'held-out validation', 'signed residual ledger'],
+    observations: {
+      source_invariance: sourceAudit.status,
+      replication_present: input.lattice.replication_present,
+      coverage_state: input.lattice.coverage.state,
+      heldout_status: heldout.status
+    },
+    alternatives: (input.alternativeModels || []).map(String),
+    open_questions: blocking ? holds.map(value => `What additional observation would resolve ${value}?`) : [],
+    operator_notes: [],
+    closure: { required: true, status: 'OPEN' },
     receipt_digest: null
   };
   receipt.receipt_digest = await recordDigest(TOMOGRAPHY_RECEIPT_DOMAIN, receipt, 'receipt_digest', options);
   return freeze(receipt);
 }
 
-export const verifyTomographyReceipt = (value, options = {}) => verifyRecord(TOMOGRAPHY_RECEIPT_DOMAIN, value, 'receipt_digest', TOMOGRAPHY_RECEIPT_SCHEMA, options);
+export const verifyTomographyReceipt = (value, options = {}) => {
+  if (value?.schema === TOMOGRAPHY_RECEIPT_SCHEMA) {
+    return verifyRecord(TOMOGRAPHY_RECEIPT_DOMAIN, value, 'receipt_digest', TOMOGRAPHY_RECEIPT_SCHEMA, options);
+  }
+  if (value?.schema === TOMOGRAPHY_RECEIPT_LEGACY_SCHEMA) {
+    return verifyRecord(TOMOGRAPHY_RECEIPT_LEGACY_DOMAIN, value, 'receipt_digest', TOMOGRAPHY_RECEIPT_LEGACY_SCHEMA, options);
+  }
+  return false;
+};

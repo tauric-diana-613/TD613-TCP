@@ -1,7 +1,9 @@
 import { canonicalDigest } from './canonical-json.js';
 
-export const ASH_TOMOGRAPHY_RESULT_CUSTODY_SCHEMA = 'td613.ash.tomography-result-custody/v0.1';
-export const ASH_TOMOGRAPHY_RESULT_CUSTODY_DOMAIN = 'TD613:V31:ASH-TOMOGRAPHY-RESULT-CUSTODY:v1';
+export const ASH_TOMOGRAPHY_RESULT_CUSTODY_SCHEMA = 'td613.ash.tomography-result-custody/v0.2';
+export const ASH_TOMOGRAPHY_RESULT_CUSTODY_LEGACY_SCHEMA = 'td613.ash.tomography-result-custody/v0.1';
+export const ASH_TOMOGRAPHY_RESULT_CUSTODY_DOMAIN = 'TD613:V31:ASH-TOMOGRAPHY-RESULT-CUSTODY:v2';
+export const ASH_TOMOGRAPHY_RESULT_CUSTODY_LEGACY_DOMAIN = 'TD613:V31:ASH-TOMOGRAPHY-RESULT-CUSTODY:v1';
 
 const DIGEST = /^sha256:[0-9a-f]{64}$/;
 const clone = value => JSON.parse(JSON.stringify(value));
@@ -31,10 +33,8 @@ export async function compileAshTomographyResultCustody(input, options = {}) {
     transport_authorized: false,
     automatic_export: false,
     automatic_ash_action: false,
-    scope_statement: 'Custody reference for a tomography result; it neither validates the reconstruction nor authorizes a derivative.',
-    cannot_establish: ['identity', 'authorship', 'ownership', 'permission', 'external truth', 'total causation'],
-    promotion_conditions: ['digest verification', 'source-drift review', 'coverage review', 'operator decision'],
-    operator_closure: { required: true, status: 'OPEN' },
+    source_status: 'SUPPLIED', evidence_basis: ['tomography receipt digest', 'source drift status', 'coverage status', 'tamper status'],
+    observations: [], missingness: [], alternatives: [], open_questions: [], operator_notes: [], closure: { required: true, status: 'OPEN' },
     custody_digest: null
   };
   receipt.custody_digest = await canonicalDigest(ASH_TOMOGRAPHY_RESULT_CUSTODY_DOMAIN, digestSubject(receipt), options);
@@ -42,6 +42,7 @@ export async function compileAshTomographyResultCustody(input, options = {}) {
 }
 
 export async function verifyAshTomographyResultCustody(receipt, options = {}) {
-  if (!receipt || receipt.schema !== ASH_TOMOGRAPHY_RESULT_CUSTODY_SCHEMA) return false;
-  return receipt.custody_digest === await canonicalDigest(ASH_TOMOGRAPHY_RESULT_CUSTODY_DOMAIN, digestSubject(receipt), options);
+  if (!receipt || ![ASH_TOMOGRAPHY_RESULT_CUSTODY_SCHEMA, ASH_TOMOGRAPHY_RESULT_CUSTODY_LEGACY_SCHEMA].includes(receipt.schema)) return false;
+  const domain = receipt.schema === ASH_TOMOGRAPHY_RESULT_CUSTODY_SCHEMA ? ASH_TOMOGRAPHY_RESULT_CUSTODY_DOMAIN : ASH_TOMOGRAPHY_RESULT_CUSTODY_LEGACY_DOMAIN;
+  return receipt.custody_digest === await canonicalDigest(domain, digestSubject(receipt), options);
 }

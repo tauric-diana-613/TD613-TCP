@@ -1,0 +1,57 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "td613.aperture.reader-profile/v0.1",
+  "type": "object",
+  "required": [
+    "schema",
+    "reader_id",
+    "label",
+    "reader_class",
+    "version",
+    "source_status",
+    "repeat_count",
+    "seeded",
+    "provider_receipt_reference",
+    "evidence_basis",
+    "observations",
+    "missingness",
+    "alternatives",
+    "open_questions",
+    "operator_notes",
+    "closure",
+    "reader_digest"
+  ],
+  "properties": {
+    "schema": {
+      "const": "td613.aperture.reader-profile/v0.1"
+    },
+    "reader_class": {
+      "enum": [
+        "deterministic-baseline",
+        "ash-v06-quick-scan",
+        "local-hush",
+        "imported-provider-output",
+        "synthetic-external-provider"
+      ]
+    },
+    "reader_digest": {
+      "type": "string",
+      "pattern": "^sha256:[0-9a-f]{64}$"
+    },
+    "reader_id": {},
+    "label": {},
+    "version": {},
+    "source_status": {},
+    "repeat_count": {},
+    "seeded": {},
+    "provider_receipt_reference": {},
+    "evidence_basis": {},
+    "observations": {},
+    "missingness": {},
+    "alternatives": {},
+    "open_questions": {},
+    "operator_notes": {},
+    "closure": {}
+  },
+  "additionalProperties": false
+}

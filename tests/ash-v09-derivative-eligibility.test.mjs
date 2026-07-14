@@ -34,10 +34,10 @@ for (let index = 0; index < cases.length; index += 1) {
   assert.equal(receipt.cinder_constructed, false);
   assert.equal(receipt.transport_authorized, false);
   assert.equal(receipt.automatic_ash_action, false);
-  assert.equal(receipt.claim_ceiling, undefined);
+  assert.equal(receipt.closure.status, 'OPEN');
   assert.equal(await verifyAshDerivativeEligibility(receipt), true);
 }
 await assert.rejects(compileAshDerivativeEligibility({ ...baseline, operatorPurpose: '' }), /Operator purpose/);
-const schema = JSON.parse(fs.readFileSync('app/dome-world/schemas/ash-derivative-eligibility-v01.schema.json', 'utf8'));
+const schema = JSON.parse(fs.readFileSync('app/dome-world/schemas/ash-derivative-eligibility-v02.schema.json', 'utf8'));
 assert.equal(schema.additionalProperties, false);
 console.log('ash-v09-derivative-eligibility.test.mjs passed');

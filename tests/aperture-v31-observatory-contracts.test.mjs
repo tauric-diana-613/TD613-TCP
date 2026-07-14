@@ -28,11 +28,11 @@ const experiment = await compileDomeExperimentRun({
 });
 assert.equal(experiment.schema, DOME_EXPERIMENT_RUN_SCHEMA);
 assert.equal(experiment.state, 'DECLARED');
-assert.equal(experiment.operator_closure.status, 'OPEN');
+assert.equal(experiment.closure.status, 'OPEN');
 assert.equal(experiment.automatic_station_advance, false);
 assert.equal(experiment.automatic_ash_action, false);
 assert.equal(experiment.server_persistence, false);
-assert.equal(experiment.claim_ceiling, undefined);
+assert.ok(experiment.evidence_basis.includes('pre-registration digest'));
 assert.match(experiment.run_digest, /^sha256:[0-9a-f]{64}$/);
 assert.equal(await verifyDomeExperimentRun(experiment), true);
 const tamperedExperiment = structuredClone(experiment);
@@ -56,7 +56,7 @@ assert.equal(adapter.claim_authority, 'design_signal');
 assert.equal(adapter.target_operational_state, 'verified_runtime_installation');
 assert.equal(adapter.no_authority_transfer, true);
 assert.equal(adapter.automatic_run_promotion, false);
-assert.equal(adapter.claim_ceiling, undefined);
+assert.equal(adapter.closure.status, 'OPEN');
 assert.equal(await verifyInstrumentAdapterReceipt(adapter), true);
 
 const open = {
@@ -92,7 +92,7 @@ assert.equal(series.artifact_digest_present, false);
 assert.equal(series.observation_content_present, false);
 assert.equal(series.automatic_ash_action, false);
 assert.equal(series.prediction_authorized, false);
-assert.equal(series.claim_ceiling, undefined);
+assert.equal(series.closure.status, 'OPEN');
 assert.equal(await verifyFlowcoreContextSeries(series), true);
 
 const tamperedSeries = structuredClone(series);
@@ -124,9 +124,9 @@ assert.notEqual(EXPERIMENT_RUN_DIGEST_DOMAIN, FLOWCORE_CONTEXT_SERIES_DIGEST_DOM
 assert.notEqual(ADAPTER_RECEIPT_DIGEST_DOMAIN, FLOWCORE_CONTEXT_SERIES_DIGEST_DOMAIN);
 
 for (const path of [
-  'app/dome-world/schemas/dome-experiment-run-v01.schema.json',
-  'app/dome-world/schemas/flowcore-context-series-v01.schema.json',
-  'app/dome-world/schemas/aperture-instrument-adapter-receipt-v01.schema.json'
+  'app/dome-world/schemas/dome-experiment-run-v02.schema.json',
+  'app/dome-world/schemas/flowcore-context-series-v02.schema.json',
+  'app/dome-world/schemas/aperture-instrument-adapter-receipt-v02.schema.json'
 ]) {
   const schema = JSON.parse(fs.readFileSync(path, 'utf8'));
   assert.ok(schema.$id, `${path} must declare $id`);

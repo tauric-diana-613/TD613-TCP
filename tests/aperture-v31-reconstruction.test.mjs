@@ -34,7 +34,8 @@ assert.equal(receipt.status, 'TOMOGRAPHY_READY');
 assert.equal(receipt.assurance_class, 'AT3_MULTI_TIME_TOMOGRAPHY');
 assert.equal(receipt.automatic_ash_action, false);
 assert.equal(receipt.derivative_authorized, false);
-assert.equal(receipt.claim_ceiling, undefined);
+assert.deepEqual(receipt.evidence_basis, ['declared controlled source', 'snapshot lattice', 'held-out validation', 'signed residual ledger']);
+assert.equal(receipt.closure.status, 'OPEN');
 assert.equal(await verifyTomographyReceipt(receipt), true);
 
 const replay = await replayTomographyReceipt(receipt, { replayId: 'atreplay_demo0123456789ab', createdAt: '2026-07-13T03:01:00.000Z' });

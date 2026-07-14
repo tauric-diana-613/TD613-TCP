@@ -1,7 +1,9 @@
 import { canonicalDigest } from './canonical-json.js';
 
-export const ASH_DERIVATIVE_ELIGIBILITY_SCHEMA = 'td613.ash.derivative-eligibility-receipt/v0.1';
-export const ASH_DERIVATIVE_ELIGIBILITY_DOMAIN = 'TD613:V31:ASH-DERIVATIVE-ELIGIBILITY:v1';
+export const ASH_DERIVATIVE_ELIGIBILITY_SCHEMA = 'td613.ash.derivative-eligibility-receipt/v0.2';
+export const ASH_DERIVATIVE_ELIGIBILITY_LEGACY_SCHEMA = 'td613.ash.derivative-eligibility-receipt/v0.1';
+export const ASH_DERIVATIVE_ELIGIBILITY_DOMAIN = 'TD613:V31:ASH-DERIVATIVE-ELIGIBILITY:v2';
+export const ASH_DERIVATIVE_ELIGIBILITY_LEGACY_DOMAIN = 'TD613:V31:ASH-DERIVATIVE-ELIGIBILITY:v1';
 
 const clone = value => JSON.parse(JSON.stringify(value));
 const freeze = value => { if (!value || typeof value !== 'object' || Object.isFrozen(value)) return value; Object.values(value).forEach(freeze); return Object.freeze(value); };
@@ -44,10 +46,8 @@ export async function compileAshDerivativeEligibility(input, options = {}) {
     cinder_constructed: false,
     transport_authorized: false,
     automatic_ash_action: false,
-    scope_statement: 'Eligibility recommends whether a human may begin derivative review; it is not construction, permission, or transport authority.',
-    cannot_establish: ['identity', 'authorship', 'ownership', 'permission', 'external truth', 'fitness for release'],
-    promotion_conditions: ['operator review of selected observations', 'operator review of residuals and uncertainty', 'separate Phase VI-B gate'],
-    operator_closure: { required: true, status: 'OPEN' },
+    source_status: 'DERIVED', evidence_basis: ['custody verification', 'source drift', 'coverage', 'tamper posture', 'declared operator purpose'],
+    observations: [{ source_drift_status: input.sourceDriftStatus, coverage_status: input.coverageStatus, tamper_status: input.tamperStatus }], missingness: [], alternatives: [], open_questions: [], operator_notes: [], closure: { required: true, status: 'OPEN' },
     eligibility_digest: null
   };
   receipt.eligibility_digest = await canonicalDigest(ASH_DERIVATIVE_ELIGIBILITY_DOMAIN, digestSubject(receipt), options);
@@ -55,6 +55,7 @@ export async function compileAshDerivativeEligibility(input, options = {}) {
 }
 
 export async function verifyAshDerivativeEligibility(receipt, options = {}) {
-  if (!receipt || receipt.schema !== ASH_DERIVATIVE_ELIGIBILITY_SCHEMA) return false;
-  return receipt.eligibility_digest === await canonicalDigest(ASH_DERIVATIVE_ELIGIBILITY_DOMAIN, digestSubject(receipt), options);
+  if (!receipt || ![ASH_DERIVATIVE_ELIGIBILITY_SCHEMA, ASH_DERIVATIVE_ELIGIBILITY_LEGACY_SCHEMA].includes(receipt.schema)) return false;
+  const domain = receipt.schema === ASH_DERIVATIVE_ELIGIBILITY_SCHEMA ? ASH_DERIVATIVE_ELIGIBILITY_DOMAIN : ASH_DERIVATIVE_ELIGIBILITY_LEGACY_DOMAIN;
+  return receipt.eligibility_digest === await canonicalDigest(domain, digestSubject(receipt), options);
 }

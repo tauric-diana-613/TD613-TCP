@@ -23,12 +23,14 @@ assert.equal(alternate.sequence_class, 'ALTERNATE');
 
 const burden = estimateSharedLayerBurden({ sharedLayer: 'declared adapter', adjustments: [{ stratumId: 'a', adjustment: -100 }, { stratumId: 'b', adjustment: 100 }], normalizer: 100 });
 assert.equal(burden.state, 'HIGH_COMPETING_DEMANDS');
-assert.equal(burden.cannot_establish.includes('psychological diagnosis'), true);
+assert.ok(burden.evidence_basis.includes('exact pairwise differences'));
+assert.equal(burden.closure.status, 'OPEN');
 assert.throws(() => estimateSharedLayerBurden({ sharedLayer: 'human', adjustments: [{ stratumId: 'a', adjustment: 0 }, { stratumId: 'b', adjustment: 1 }], normalizer: 1, humanAnalogyDeclared: true }), /explicit limits/);
 
 const phason = estimatePhasonSusceptibility({ trials: [{ deltaCoordinate: 10, deltaObservation: 30 }, { deltaCoordinate: 10, deltaObservation: 40 }], shamResponse: 2, reversalDifference: 0, hysteresisThreshold: 1 });
 assert.equal(phason.state, 'PHASON_DOMINANT_CANDIDATE');
-assert.equal(phason.cannot_establish.includes('physical phonon'), true);
+assert.ok(phason.evidence_basis.includes('sham and reversal observations'));
+assert.equal(phason.closure.status, 'OPEN');
 
 const residual = compileSignedResidualLedger([
   { snapshotId: 'a', instrumentId: 'i', timeIndex: 0, replicate: 1, observed: 12, predicted: 10 },
