@@ -15,27 +15,62 @@ const manifestPath = path.join(runtimeDir, 'fixture-manifest.json');
 const selectedExcerpt = process.env.TD613_SELECTED_EXCERPT
   || 'The synthetic archive index changed between two public revisions.';
 
-const target = "  await openWorkspace(page, 'draft');\n  await page.locator('#protectedLiterals').fill('Synthetic Person');";
-const replacement = [
+const hushTarget = "  await openWorkspace(page, 'draft');\n  await page.locator('#protectedLiterals').fill('Synthetic Person');";
+const hushReplacement = [
   "  await openWorkspace(page, 'draft');",
   `  const selectedProviderExcerpt = ${JSON.stringify(selectedExcerpt)};`,
   "  await page.locator('#draftBody').fill(selectedProviderExcerpt);",
   "  await page.locator('#protectedLiterals').fill('Synthetic Person');"
 ].join('\n');
 
+const layoutTarget = `    const clipped = visible
+      .map(node => ({ id: node.id || node.textContent?.trim().slice(0, 32) || node.tagName, rect: node.getBoundingClientRect() }))
+      .filter(item => item.rect.left < -1 || item.rect.right > window.innerWidth + 1)
+      .map(item => item.id);`;
+const layoutReplacement = `    const scrollLaneFor = node => {
+      let parent = node.parentElement;
+      while (parent && parent !== document.body) {
+        const style = getComputedStyle(parent);
+        const intentionallyScrollable = /(auto|scroll)/.test(style.overflowX)
+          && parent.scrollWidth > parent.clientWidth + 1;
+        if (intentionallyScrollable) return parent;
+        parent = parent.parentElement;
+      }
+      return null;
+    };
+    const positioned = visible.map(node => ({
+      id: node.id || node.textContent?.trim().slice(0, 32) || node.tagName,
+      rect: node.getBoundingClientRect(),
+      scroll_lane: scrollLaneFor(node)?.className || null
+    }));
+    const clipped = positioned
+      .filter(item => !item.scroll_lane && (item.rect.left < -1 || item.rect.right > window.innerWidth + 1))
+      .map(item => item.id);
+    const scrollLaneControls = positioned
+      .filter(item => item.scroll_lane && (item.rect.left < -1 || item.rect.right > window.innerWidth + 1))
+      .map(item => ({ id: item.id, lane: item.scroll_lane }));`;
+const returnTarget = '      clipped_controls: clipped,\n      workspace_tab_count: tabs.length,';
+const returnReplacement = '      clipped_controls: clipped,\n      scroll_lane_controls: scrollLaneControls,\n      workspace_tab_count: tabs.length,';
+
 function sha256(value) {
   return `sha256:${createHash('sha256').update(value).digest('hex')}`;
 }
 
-const source = await fs.readFile(sourcePath, 'utf8');
-const targetCount = source.split(target).length - 1;
-if (targetCount !== 1) {
-  throw new Error(`Fixture runner requires exactly one declared Hush selection seam; observed ${targetCount}.`);
+function replaceExactlyOnce(source, target, replacement, label) {
+  const count = source.split(target).length - 1;
+  if (count !== 1) {
+    throw new Error(`Fixture runner requires exactly one ${label} seam; observed ${count}.`);
+  }
+  return source.replace(target, replacement);
 }
 
-const runtime = source.replace(target, replacement);
-if (runtime === source || !runtime.includes('selectedProviderExcerpt')) {
-  throw new Error('Fixture runner did not materialize the declared selected excerpt.');
+const source = await fs.readFile(sourcePath, 'utf8');
+let runtime = replaceExactlyOnce(source, hushTarget, hushReplacement, 'declared Hush selection');
+runtime = replaceExactlyOnce(runtime, layoutTarget, layoutReplacement, 'mobile scroll-lane classification');
+runtime = replaceExactlyOnce(runtime, returnTarget, returnReplacement, 'layout receipt return');
+
+if (runtime === source || !runtime.includes('selectedProviderExcerpt') || !runtime.includes('scroll_lane_controls')) {
+  throw new Error('Fixture runner did not materialize every declared runtime seam.');
 }
 
 await fs.mkdir(runtimeDir, { recursive: true });
@@ -51,6 +86,11 @@ await fs.writeFile(manifestPath, `${JSON.stringify({
   source_mutated: false,
   runtime_copy_ephemeral: true,
   fixture_class: 'SYNTHETIC_OPERATOR_SELECTED_EXCERPT',
+  runtime_transformations: [
+    'DECLARE_SELECTED_EXCERPT_AFTER_UNKEPT_DRAFT_RELOAD',
+    'CLASSIFY_INTENTIONAL_HORIZONTAL_SCROLL_LANES_SEPARATELY_FROM_CLIPPING'
+  ],
+  scroll_lane_rule: 'overflow-x auto-or-scroll plus scrollWidth greater than clientWidth',
   promotion_authorized: false
 }, null, 2)}\n`, 'utf8');
 
