@@ -5,12 +5,15 @@ on:
     paths:
       - "app/engine/ash-keep-moire.js"
       - "app/engine/ash-keep-reader-adapters.js"
+      - "app/engine/ash-keep-reader-disagreement.js"
       - "app/dome-world/schemas/aperture-moire-rebuild-*.schema.json"
       - "app/dome-world/schemas/aperture-reader-*.schema.json"
       - "tests/ash-keep-moire*.test.mjs"
       - "tests/ash-keep-reader-adapter*.test.mjs"
+      - "tests/ash-keep-reader-disagreement*.test.mjs"
       - "docs/ASH_KEEP_CHOIR_TEST.md"
       - "docs/ASH_KEEP_READER_ADAPTER_REGISTRY.md"
+      - "docs/ASH_KEEP_READER_DISAGREEMENT.md"
       - "docs/ASH_KEEP_BUILDOUT_LEDGER.md"
       - ".github/workflows/ash-keep-choir-test.yml"
   push:
@@ -18,12 +21,15 @@ on:
     paths:
       - "app/engine/ash-keep-moire.js"
       - "app/engine/ash-keep-reader-adapters.js"
+      - "app/engine/ash-keep-reader-disagreement.js"
       - "app/dome-world/schemas/aperture-moire-rebuild-*.schema.json"
       - "app/dome-world/schemas/aperture-reader-*.schema.json"
       - "tests/ash-keep-moire*.test.mjs"
       - "tests/ash-keep-reader-adapter*.test.mjs"
+      - "tests/ash-keep-reader-disagreement*.test.mjs"
       - "docs/ASH_KEEP_CHOIR_TEST.md"
       - "docs/ASH_KEEP_READER_ADAPTER_REGISTRY.md"
+      - "docs/ASH_KEEP_READER_DISAGREEMENT.md"
       - "docs/ASH_KEEP_BUILDOUT_LEDGER.md"
       - ".github/workflows/ash-keep-choir-test.yml"
   workflow_dispatch:
@@ -52,3 +58,9 @@ jobs:
         run: node tests/ash-keep-reader-adapter-schemas.test.mjs
       - name: Validate Reader adapter provenance registry
         run: node tests/ash-keep-reader-adapters.test.mjs
+      - name: Harden Reader adapter canonicalization and fixture classes
+        run: node tests/ash-keep-reader-adapter-hardening.test.mjs
+      - name: Validate Reader disagreement schemas
+        run: node tests/ash-keep-reader-disagreement-schemas.test.mjs
+      - name: Validate provenance-gated Reader disagreement
+        run: node tests/ash-keep-reader-disagreement.test.mjs
