@@ -1,0 +1,36 @@
+name: Ash Keep Choir Test
+
+on:
+  pull_request:
+    paths:
+      - "app/engine/ash-keep-moire.js"
+      - "app/dome-world/schemas/aperture-moire-rebuild-*.schema.json"
+      - "tests/ash-keep-moire*.test.mjs"
+      - "docs/ASH_KEEP_CHOIR_TEST.md"
+      - ".github/workflows/ash-keep-choir-test.yml"
+  push:
+    branches: [main]
+    paths:
+      - "app/engine/ash-keep-moire.js"
+      - "app/dome-world/schemas/aperture-moire-rebuild-*.schema.json"
+      - "tests/ash-keep-moire*.test.mjs"
+      - "docs/ASH_KEEP_CHOIR_TEST.md"
+      - ".github/workflows/ash-keep-choir-test.yml"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  choir-test:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+      - run: npm ci
+      - run: node tests/ash-keep-moire-schemas.test.mjs
+      - run: node tests/ash-keep-moire.test.mjs
