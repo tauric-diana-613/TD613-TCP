@@ -3,6 +3,7 @@ import fs from 'node:fs';
 
 const read = file => fs.readFileSync(file, 'utf8');
 const probe = read('scripts/ash-keep-production-probe.mjs');
+const runner = read('scripts/run-ash-keep-production-probe.mjs');
 const receipt = read('app/dome-world/docs/ASH_KEEP_V1_PRODUCTION_DEMO_RECEIPT.md');
 const workflow = read('.github/workflows/ash-keep-production-closure.yml');
 const release = JSON.parse(read('app/aperture/release.json'));
@@ -42,6 +43,23 @@ assert.doesNotMatch(probe, /IMPLEMENTED_PRODUCTION_DEMONSTRATED/);
 assert.doesNotMatch(probe, /productionStatus\s*=/);
 
 for (const token of [
+  'td613.ash-keep.production-probe-fixture-manifest/v0.1',
+  'SYNTHETIC_OPERATOR_SELECTED_EXCERPT',
+  'selected_excerpt_sha256',
+  'source_probe_sha256',
+  'runtime_probe_sha256',
+  'source_mutated: false',
+  'runtime_copy_ephemeral: true',
+  'promotion_authorized: false',
+  'targetCount !== 1'
+]) {
+  assert.ok(runner.includes(token), `Fixture runner omitted required provenance token: ${token}`);
+}
+assert.match(runner, /TD613_SELECTED_EXCERPT/);
+assert.match(runner, /#draftBody/);
+assert.doesNotMatch(runner, /IMPLEMENTED_PRODUCTION_DEMONSTRATED/);
+
+for (const token of [
   'NOT_YET_EARNED',
   'PREVIEW_PENDING',
   'post-merge probe',
@@ -73,6 +91,8 @@ for (const token of [
   'tests/ash-keep-production-promotion-gate.test.mjs',
   'npx playwright install --with-deps chromium',
   'scripts/ash-keep-production-probe.mjs',
+  'scripts/run-ash-keep-production-probe.mjs',
+  'TD613_PROBE_RUNTIME_DIR',
   'upload-artifact@v4',
   'ash-keep-production-closure-evidence'
 ]) {
