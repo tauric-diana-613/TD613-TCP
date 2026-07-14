@@ -4,9 +4,13 @@
 
 Status: `IMPLEMENTED_VALIDATION_GATED`
 
+Repository state: `MERGED_ON_MAIN`
+
+Merge commit: `1a01181cea77590ad3067ebd27da4518511dac5f`
+
 This slice adds the first bounded computation for **emergent recoverability** across two purpose-shaped projections.
 
-It does not create a universal privacy score. It does not estimate real surveillance probability. It does not authorize release, transport, prediction, or automatic Ash action.
+It does not create a universal privacy score. It does not estimate real surveillance probability. It does not authorize release, transport, prediction, automatic hold, or automatic Ash action.
 
 Ash Keep v1.0 is independently `IMPLEMENTED_PRODUCTION_DEMONSTRATED`. That production status does not transfer to this Choir slice.
 
@@ -79,6 +83,7 @@ pairwise residue ≠ release prohibition
 calibration ≠ universal validity
 replay ≠ reconstruction rerun
 receipt ≠ command
+Ash production status ≠ Choir production status
 ```
 
 The assay carries:
@@ -96,9 +101,9 @@ recommendation_not_command = true
 - `td613.aperture.moire-rebuild-assay/v0.1`
 - `td613.aperture.moire-rebuild-replay/v0.1`
 
-## Validation gate
+## Validation evidence
 
-The first fixture demonstrates the minimal Moiré condition already latent in Ash Keep:
+The focused validation fixture demonstrates the minimal Moiré condition already latent in Ash Keep:
 
 - projection A reveals one endpoint;
 - projection B reveals the other endpoint;
@@ -107,7 +112,33 @@ The first fixture demonstrates the minimal Moiré condition already latent in As
 
 A second synthetic fixture demonstrates a Reader recovering a hidden hypothesis only from the pair.
 
-This slice remains engine-first. It adds no public UI, provider call, recipient transport, release mutation, or change to the production-demonstrated Ash Keep runtime. Choir v0.1 remains separately validation-gated until its own deployed route and production receipt exist.
+The refreshed merge passed:
+
+- Ash Keep Choir Test run `29362404203`;
+- Ash Keep Production Closure run `29362404482`;
+- static application run `29362404164`;
+- TCP Smoke run `29362404136`;
+- Dome-World Phase IV run `29362404428`.
+
+After merge, Ash Keep’s deployed observer passed on the exact merge commit:
+
+- observer run `29362563703`;
+- evidence artifact `8322761143`;
+- artifact SHA-256 `sha256:ac2bfa912bb97b6e7de6f88deaf0eda5cb31adae43da64d155cea78831c69902`.
+
+That deployed aftercare establishes non-disturbance of Ash’s production posture with Choir present. It does not establish a deployed Choir route, public interface, Choir production receipt, or universal validity for the assay.
+
+## Current frontier
+
+Choir v0.1 remains engine-first. The next packet must stress the pairwise contract before adding scope:
+
+1. `NULL`, `MISSING`, `CONTRADICTORY`, `REJECTED`, and `UNRESOLVED` observation fixtures;
+2. projection-permutation property tests;
+3. incomplete singleton and pair coverage;
+4. residue monotonicity and canonicalization invariants;
+5. cross-runtime replay and digest parity.
+
+Higher-order combinations, ordered sequence effects, temporal spacing, register interventions, Reader disagreement, public UI, and production demonstration remain separate future contracts.
 
 𝌋‌ U+10D613
 
