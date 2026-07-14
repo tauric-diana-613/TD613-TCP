@@ -22,7 +22,8 @@ function extractDates(text = '') {
 }
 
 function extractEvidence(text = '') {
-  return safeText(text).match(/\b(?:EXHIBIT|DOC|CASE|ID|REF|TD613|SHI|SAC)[A-Z0-9:_#\[\]\/-]*\b/g) || [];
+  const matches = safeText(text).match(/\b(?:EXHIBIT|DOC|CASE|ID|REF|TD613|SHI|SAC)[A-Z0-9:_#\[\]\/-]*\b/g) || [];
+  return matches.filter((marker) => !['EXHIBIT', 'DOC', 'CASE', 'ID', 'REF', 'SHI', 'SAC'].includes(marker.toUpperCase()));
 }
 
 function status(hasFailure, hasReview = false) {

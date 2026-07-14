@@ -52,7 +52,7 @@ for (const message of cases) {
     const result = bench.benchState.hushSwapResult;
     const output = getValue('protectedOutputInput');
     assert(result, `no result for ${maskId}`);
-    assert.equal(result.version, 'phase-22');
+    assert.equal(result.version, 'phase-22.1-selection-pressure');
     assert(result.releasePolicy, 'missing release policy');
     assert(result.writer?.payloadMap, 'missing payload map');
     assert(result.payloadIntegrity, 'missing payload integrity');

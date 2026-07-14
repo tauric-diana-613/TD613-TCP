@@ -30,6 +30,22 @@ assert(cleaned.text.includes('6/13'));
 assert(cleaned.text.toLowerCase().includes('not'));
 assert(!cleaned.text.includes('Item 1:'));
 
+const grammaticalNegation = cleanHushCandidate({
+  candidate: { id: 'c-negation', strategy: 'formal', text: 'The record describes a bounded discrepancy.' },
+  meaningPlan: {
+    protectedLiterals: [],
+    units: [
+      { text: 'This is not a broader accusation.', hasNegation: true },
+      { text: 'Preserve the limitation without losing the source boundary.', hasNegation: true }
+    ]
+  },
+  realizationPlan: { traits: { diction: 'plain', clauseShape: 'simple' } }
+});
+assert.match(grammaticalNegation.text, /No broader accusation is being made\./);
+assert.match(grammaticalNegation.text, /The stated constraint must not be lost\./);
+assert.doesNotMatch(grammaticalNegation.text, /\bnot without\b/i);
+assert.doesNotMatch(grammaticalNegation.text, /\b(?:not|without)\.?$/i);
+
 const clipped = cleanHushCandidate({
   candidate: { id: 'c-clip', strategy: 'formal', text: '440 record should stay with the record on. No extra claim is added on 18. not' },
   sourceText: 'I logged INV-440 at 2:18 and told Jordan not to resend the spreadsheet.',

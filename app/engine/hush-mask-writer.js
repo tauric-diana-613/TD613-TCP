@@ -56,12 +56,8 @@ function compressText(text = '') {
   return safeText(text).replace(/\b(?:actually|really|just|basically|honestly)\b/gi, '').replace(/\s+/g, ' ').trim();
 }
 
-function expandText(text = '', plan = {}) {
-  const value = safeText(text).trim();
-  const parts = sentenceSplit(value);
-  if (parts.length > 1) return value;
-  const transition = asArray(plan.transitionBank).find((item) => !/for reference|for the record|leaving this|boring part|tiny|comet|flare/i.test(item));
-  return transition ? `${ensureTerminal(value)} ${ensureTerminal(transition)}` : value;
+function expandText(text = '') {
+  return safeText(text).trim();
 }
 
 function fragments(text = '') {
@@ -118,6 +114,35 @@ function sourceDerivedIrregularity(text = '') {
   return `${ensureTerminal(parts[0])} ${parts.slice(1, 3).map((part) => part.replace(/^\w/, (c) => c.toLowerCase())).map(ensureTerminal).join(' ')}`;
 }
 
+function sentenceStems(text = '') {
+  return sentenceSplit(text).map((part) => part.replace(/[.!?]+$/g, '').trim()).filter(Boolean);
+}
+
+function sequenceShape(text = '', marker = 'numeric') {
+  const parts = sentenceStems(text);
+  if (parts.length < 2) return ensureTerminal(text);
+  const labels = {
+    alpha: (index) => `(${String.fromCharCode(97 + index)})`,
+    bracket: (index) => `[${index + 1}]`,
+    item: (index) => `Item ${index + 1}:`,
+    padded: (index) => `${String(index + 1).padStart(2, '0')} /`,
+    numeric: (index) => `${index + 1}.`
+  };
+  const label = labels[marker] || labels.numeric;
+  return parts.map((part, index) => `${label(index)} ${ensureTerminal(part)}`).join(' ');
+}
+
+function joinedShape(text = '', separator = '; ') {
+  const parts = sentenceStems(text);
+  if (parts.length < 2) return ensureTerminal(text);
+  const shaped = parts.map((part, index) => {
+    if (!index) return part;
+    const continuation = part.replace(/^(?:and|but|so)\s+/i, '');
+    return /^[A-Z][a-z]/.test(continuation) ? continuation.charAt(0).toLowerCase() + continuation.slice(1) : continuation;
+  });
+  return ensureTerminal(shaped.join(separator));
+}
+
 function strategyLayer(text = '', strategy = '', plan = {}, mask = {}) {
   const value = safeText(text).trim();
   if (!value) return '';
@@ -137,9 +162,19 @@ function strategyLayer(text = '', strategy = '', plan = {}, mask = {}) {
   if (strategy === 'register-turn') return adjustContractions(value, 'frequent');
   if (strategy === 'argument-cadence') return shapeSentences(value, { sentenceLength: 'long', clauseShape: 'branching' }, 'long-sentence');
   if (strategy === 'low-affect') return value.replace(/\b(?:please|thanks|thank you)\b/gi, '').replace(/\s+/g, ' ').trim();
-  if (strategy === 'formal') return adjustContractions(value, 'avoid');
-  if (strategy === 'soft-witness' || strategy === 'plain-witness') return applyDirectness(value, 'soft');
-  if (strategy === 'memo' || strategy === 'record-note' || strategy === 'thread-note' || strategy === 'balanced') return ensureTerminal(value);
+  if (strategy === 'compressed') return joinedShape(value, '; ');
+  if (strategy === 'expanded') return joinedShape(value, '. Also, ');
+  if (strategy === 'conversational') return joinedShape(value, ' — ');
+  if (strategy === 'formal') return sequenceShape(adjustContractions(value, 'avoid'), 'numeric');
+  if (strategy === 'soft-witness') return joinedShape(applyDirectness(value, 'soft'), '; meanwhile, ');
+  if (strategy === 'dry-bureaucratic') return sequenceShape(value, 'item');
+  if (strategy === 'warm-organizer') return joinedShape(value, '; and ');
+  if (strategy === 'legal-measured') return sequenceShape(value, 'alpha');
+  if (strategy === 'plain-witness') return joinedShape(applyDirectness(value, 'soft'), ' / ');
+  if (strategy === 'memo') return sequenceShape(value, 'padded');
+  if (strategy === 'thread-note') return sequenceShape(value, 'bracket');
+  if (strategy === 'record-note') return joinedShape(value, ' | ');
+  if (strategy === 'balanced') return joinedShape(value, ': ');
   if (id === 'burner-minimal') return lowSignature(value);
   return value;
 }

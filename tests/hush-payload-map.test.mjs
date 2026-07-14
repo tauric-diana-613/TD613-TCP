@@ -29,6 +29,12 @@ assert.equal(classifyPayloadToken({ text: '2:18' }), 'timestamp');
 assert.equal(classifyPayloadToken({ text: 'Maya' }), 'actor');
 assert.equal(classifyPayloadToken({ text: 'finance' }), 'department');
 
+const imperativeSource = 'Make the note less formal without losing the document ID, while DOC-17 remains the anchor.';
+const imperativePlan = buildMeaningPlan({ sourceText: imperativeSource });
+const imperativePayload = buildPayloadMap({ sourceText: imperativeSource, meaningPlan: imperativePlan, protectedLiterals: imperativePlan.protectedLiterals });
+assert(!imperativePlan.protectedLiterals.includes('ID'), 'a bare descriptive ID label is not an operational identifier');
+assert(!imperativePayload.payloadUnits.some((unit) => unit.text === 'Make' && unit.kind === 'actor'), 'an imperative sentence opener is not an actor');
+
 const summary = summarizePayloadMap(payloadMap);
 assert.equal(summary.version, 'phase-21');
 assert(summary.payloadUnitCount >= 8);

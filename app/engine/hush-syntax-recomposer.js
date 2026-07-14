@@ -49,6 +49,8 @@ function negationPhrase(sourceText = '') {
   if (/\bI cannot confirm\b/i.test(sourceText)) return 'cannot be confirmed from my side';
   if (/\bdo not separate\b/i.test(sourceText)) return 'should stay together';
   if (/\bnot naming\b/i.test(sourceText)) return 'the sender is not being named';
+  if (/\bnot (?:a )?broader accusation\b/i.test(sourceText)) return 'No broader accusation is being made';
+  if (/\bwithout losing\b/i.test(sourceText)) return 'The stated constraint must not be lost';
   return '';
 }
 

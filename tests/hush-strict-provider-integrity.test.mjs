@@ -64,16 +64,19 @@ const contract = {
 
 assert.deepEqual(protectedLiteralsOf(contract), literals);
 const style = compactStyle(contract);
-assert.equal(style.personaScene, mask.description);
-assert.equal(style.intendedUse, mask.intendedUse);
-assert.equal(style.sentence, 'very-short');
-assert.ok(style.dictionHints.includes('use chat shorthand without losing event shape'));
+assert.equal(style.personaScene, undefined);
+assert.equal(style.intendedUse, undefined);
+assert.equal(style.sentence, '');
+assert.deepEqual(style.dictionHints, []);
 assert.ok(style.avoid.includes('formal cadence'));
 
 const prompt = buildPrompt(contract);
 for (const literal of expected) assert.ok(prompt.includes(`- ${literal}`), `prompt must enumerate ${literal}`);
-for (const phrase of ['persona scene=', 'intended use=', 'risk tell=', 'sentence=very-short', 'reference seed=']) {
-  assert.ok(prompt.includes(phrase), `prompt missing mask anatomy field ${phrase}`);
+for (const phrase of ['sample_quarantine=true', 'mask_lore_quarantine=true', `mask_id=${mask.id}`]) {
+  assert.ok(prompt.includes(phrase), `prompt missing strict provider boundary ${phrase}`);
+}
+for (const phrase of [mask.description, mask.intendedUse, mask.riskTell, mask.sampleSeed, 'persona scene=', 'reference seed=']) {
+  assert.ok(!prompt.includes(phrase), `prompt leaked quarantined mask lore ${phrase}`);
 }
 
 const goodCandidate = { text: sourceText, dropped_propositions: [], new_claims: [] };
@@ -94,8 +97,8 @@ const housekeeping = fs.readFileSync('app/hush-housekeeping-relayout.js', 'utf8'
 for (const marker of ['function protectedLiterals', 'function styleVector', 'function candidateIntegrity', 'function markReviewPending', 'protected_literals: literals']) {
   assert.ok(bridge.includes(marker), `strict browser bridge missing ${marker}`);
 }
-assert.ok(html.includes('hush-pr123-strict-undefined-fallback.js?v=202607010815'));
-assert.ok(html.includes('adversarial-bench-light.js?v=202607010855'));
+assert.ok(html.includes('hush-pr123-strict-undefined-fallback.js?v=202606121719'));
+assert.ok(html.includes('adversarial-bench-light.js?v=202607010930'));
 assert.equal((html.match(/hush-pr123-strict-undefined-fallback\.js/g) || []).length, 1, 'page must declare one strict bridge owner');
 assert.ok(!runLock.includes("appendScriptOnce('hushPr123ExactArtifactLoader'"), 'run-lock must not inject a competing strict bridge');
 assert.ok(!housekeeping.includes('data-td613-hush-pr123-exact='), 'housekeeping must not inject strict bridge assets');

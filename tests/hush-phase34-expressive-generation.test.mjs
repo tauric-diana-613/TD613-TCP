@@ -172,5 +172,5 @@ assert(budgetedProxy.includes('punctuation scarcity'));
 assert(budgetedProxy.includes('source_layout_cadence'));
 assert(!patch38Ui.includes('GEMINI_API_KEY'));
 assert(envExample.includes('GEMINI_API_KEY='));
-assert(setupDoc.includes('Do not paste API keys into the browser'));
+assert(setupDoc.includes('Never put provider keys in browser fields'));
 console.log('hush-phase34, patch38, and phase35 ontology generation tests passed');

@@ -16,7 +16,7 @@ import { buildPayloadMap } from '../app/engine/hush-payload-map.js';
 import { buildPayloadBindingMap } from '../app/engine/hush-payload-binding.js';
 import { verifyPayloadIntegrity } from '../app/engine/hush-payload-integrity.js';
 
-assert.equal(HUSH_SYNTAX_RECOMPOSER_VERSION, 'phase-21.1-no-warm-logistics');
+assert.equal(HUSH_SYNTAX_RECOMPOSER_VERSION, 'phase-21.2-source-detached-families');
 
 const sourceText = 'Please keep DOC-613 with the note from 6/13. I did not change it.';
 const protectedLiterals = ['DOC-613', '6/13'];
@@ -43,7 +43,7 @@ assert(candidate.operations.includes('payload-aware-recompose'));
 assert(candidate.text.includes('DOC-613'));
 
 const bundle = generateSyntaxRecomposerCandidates({ sourceText, meaningPlan, payloadMap, payloadBindingMap, claimRoleMap, literalPlacementMap, syntaxPlan, protectedLiterals, candidateCount: 18 });
-assert.equal(bundle.version, 'phase-21.1-no-warm-logistics');
+assert.equal(bundle.version, 'phase-21.2-source-detached-families');
 assert(bundle.candidates.length >= 12);
 assert(bundle.candidates.every((item) => item.text.includes('DOC-613') && item.text.includes('6/13')));
 assert(new Set(bundle.candidates.map((item) => item.family)).size >= 4);

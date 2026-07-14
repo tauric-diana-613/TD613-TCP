@@ -93,7 +93,7 @@ assert.equal(hushMaskPayload.maskId || hushMaskPayload.id, bench.benchState.sele
 assert.equal(typeof hushMaskPayload.version, 'string');
 assert(!hushMaskExport.includes('This is a custom sample with a practical rhythm'));
 const hushSwapExport = bench.exportCurrentHushSwapJson();
-assert.equal(JSON.parse(hushSwapExport).version, 'phase-22');
+assert.equal(JSON.parse(hushSwapExport).version, 'phase-22.1-selection-pressure');
 const currentOutput = document.getElementById('protectedOutputInput').value;
 if (currentOutput) assert(!hushSwapExport.includes(currentOutput));
 

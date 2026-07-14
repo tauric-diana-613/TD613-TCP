@@ -175,6 +175,7 @@ export function evaluateClaimCeiling({
   const linkability = metric(vector, 'maskLinkability');
   const drift = metric(vector, 'maskDrift');
   const ingestion = metric(vector, 'ingestionFriction') ?? (Number.isFinite(ingestionAudit.ingestionFriction) ? ingestionAudit.ingestionFriction : null);
+  const sampleSufficiency = String(vector?.diagnostics?.sampleSufficiency || '').toLowerCase();
   const controllerState = stateOf(controllerDecision);
   const dimensionsMoved = changedDimensionCount({ escapeVector: vector, iterationLedger, changedDimensions });
   const intent = wordsInIntent(reportIntent);
@@ -229,6 +230,12 @@ export function evaluateClaimCeiling({
       level = 7;
       reasons.push('Persona history supports local stable pseudonymous continuity candidacy.');
     }
+  }
+
+  if (sampleSufficiency === 'weak' && level > 3) {
+    level = 3;
+    reasons.push('Sample sufficiency is weak; evidentiary claims are capped at measurable style contact.');
+    warnings.push('sample-sufficiency-weak');
   }
 
   if (level === 8) warnings.push('external-corroboration-required');

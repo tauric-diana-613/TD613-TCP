@@ -58,10 +58,31 @@ function restoreNegations(text = '', meaningPlan = {}) {
   let value = safeText(text);
   for (const unit of asArray(meaningPlan.units)) {
     if (!unit?.hasNegation) continue;
-    const negations = safeText(unit.text).match(/\b(no|not|never|none|without|cannot|can't|do not|don't|did not|didn't)\b/gi) || [];
-    for (const negation of negations) {
-      if (!new RegExp(`\\b${negation.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')}\\b`, 'i').test(value)) value += ` ${negation}`;
+    const clause = collapseWhitespace(unit.text);
+    if (!clause) continue;
+
+    let repair = '';
+    let equivalent = null;
+    if (/\bnot\s+(?:a\s+)?broader accusation\b/i.test(clause)) {
+      repair = 'No broader accusation is being made.';
+      equivalent = /\b(?:no|not\s+(?:a\s+)?)broader accusation\b/i;
+    } else if (/\bwithout losing\b/i.test(clause)) {
+      repair = 'The stated constraint must not be lost.';
+      equivalent = /\b(?:without losing|constraint must not be lost)\b/i;
+    } else if (/\bdo not separate\b/i.test(clause)) {
+      repair = 'The referenced items should not be separated.';
+      equivalent = /\b(?:do not separate|should not be separated)\b/i;
+    } else if (/\b(?:do not|not to) resend\b/i.test(clause)) {
+      repair = 'The material should not be resent yet.';
+      equivalent = /\b(?:do not resend|not to resend|should not be resent)\b/i;
+    } else if (/\bcannot confirm\b/i.test(clause)) {
+      repair = 'The unresolved point cannot be confirmed.';
+      equivalent = /\b(?:cannot confirm|cannot be confirmed)\b/i;
+    } else {
+      repair = `Constraint retained: ${clause.replace(/[.!?]+$/, '')}.`;
+      equivalent = new RegExp(clause.replace(/[.!?]+$/, '').replace(/[.*+?^${}()|[\]\\]/g, '\\$&'), 'i');
     }
+    if (!equivalent.test(value)) value = `${value} ${repair}`;
   }
   return collapseWhitespace(value);
 }

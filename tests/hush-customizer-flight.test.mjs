@@ -42,7 +42,7 @@ const result = buildHushSwap({
   options: { candidateCount: 24 }
 });
 
-assert.equal(result.version, 'phase-22');
+assert.equal(result.version, 'phase-22.1-selection-pressure');
 assert(result.writer?.payloadMap, 'missing payload map');
 assert(result.writer?.payloadBindingMap, 'missing payload binding map');
 assert(result.candidates.some((candidate) => candidate.source === 'literal-safe-fallback'), 'missing literal-safe fallback candidate');

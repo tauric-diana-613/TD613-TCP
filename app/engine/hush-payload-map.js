@@ -50,7 +50,11 @@ export function classifyPayloadToken(input = {}) {
 function extractActors(text = '') {
   const value = safeText(text);
   const candidates = value.match(/\b[A-Z][a-z]{2,}\b/g) || [];
-  const excluded = new Set(['The', 'Please', 'Keep', 'I', 'This', 'That', 'For', 'Record', 'Vendor', 'Finance']);
+  const excluded = new Set([
+    'The', 'Please', 'Keep', 'I', 'This', 'That', 'For', 'Record', 'Vendor', 'Finance',
+    'Make', 'Review', 'Preserve', 'Hold', 'Save', 'Attach', 'Confirm', 'Change', 'Use',
+    'Leave', 'Send', 'Resend', 'Do', 'Can', 'Could', 'Should', 'Need'
+  ]);
   return unique(candidates.filter((word) => !excluded.has(word)));
 }
 

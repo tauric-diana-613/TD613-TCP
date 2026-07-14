@@ -101,7 +101,7 @@ const policy = fs.readFileSync('app/hush-source-layout-policy.js', 'utf8');
 const stableTransform = fs.readFileSync('app/hush-pr123-stable-transform.js', 'utf8');
 
 assert(html.includes('hush-phase31-1.css?v=202606131510'));
-assert(html.includes('hush-phase31-1.js?v=202606160010'));
+assert(html.includes('hush-phase31-1.js?v=202607010240'));
 assert(!html.includes('hush-edit-corpus-open-fallback.js'), 'edit fallback script should not load on Hush');
 assert(html.includes('hush-source-layout-policy.js?v=202606131610'));
 assert(js.includes('externalEditOwner: true'), 'Phase31 wrapper should disable legacy bulk edit bindings');

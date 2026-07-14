@@ -24,7 +24,7 @@ function contract(overrides = {}) {
     instruction_contract: { raw_prompt_exported: false },
     stylometry_constraints: { stylometry_engine: 'tcp-stylometry' },
     adversarial_constraints: { enabled: true },
-    eo_rfd_route_state: { firmware_status: 'interface-only', route_conscience_hook: 'required', aperture_context: { aperture_schema: 'td613-aperture/v3.0-alpha' } },
+    eo_rfd_route_state: { firmware_status: 'interface-only', route_conscience_hook: 'required', aperture_context: { aperture_schema: 'td613-aperture/v3.1-alpha' } },
     ...overrides
   };
 }
@@ -40,7 +40,7 @@ function log(overrides = {}) {
     provider_log_release_discipline: { release_class: 'audit-ready' },
     stylometry_observation_seed: { candidate_drift_flags: [] },
     adversarial_observation_seed: { attack_surfaces: ['overfit'] },
-    eo_rfd_route_observation: { firmware_status: 'interface-only', route_conscience_hook_observed: 'required', firmware_adapter_verified: false, aperture_context: { aperture_schema: 'td613-aperture/v3.0-alpha' }, operator_note: 'interface only' },
+    eo_rfd_route_observation: { firmware_status: 'interface-only', route_conscience_hook_observed: 'required', firmware_adapter_verified: false, aperture_context: { aperture_schema: 'td613-aperture/v3.1-alpha' }, operator_note: 'interface only' },
     ...overrides
   };
 }
@@ -89,8 +89,8 @@ assert.equal(routeAdversarialAudit(contract(), log({ adversarial_observation_see
 assert.equal(compareEoRfdRoute(contract(), log()).status, 'aligned-interface');
 assert.equal(compareEoRfdRoute(contract(), log({ eo_rfd_route_observation: { firmware_status: 'firmware-attached', route_conscience_hook_observed: 'required', firmware_adapter_verified: false } })).status, 'firmware-claim-blocked');
 assert.equal(compareEoRfdRoute(contract(), log({ eo_rfd_route_observation: { firmware_status: 'interface-only', route_conscience_hook_observed: 'optional', firmware_adapter_verified: false } })).status, 'route-review');
-assert.equal(compareEoRfdRoute(contract(), log()).contract_aperture_schema, 'td613-aperture/v3.0-alpha');
-assert.equal(compareEoRfdRoute(contract(), log()).log_aperture_schema, 'td613-aperture/v3.0-alpha');
+assert.equal(compareEoRfdRoute(contract(), log()).contract_aperture_schema, 'td613-aperture/v3.1-alpha');
+assert.equal(compareEoRfdRoute(contract(), log()).log_aperture_schema, 'td613-aperture/v3.1-alpha');
 
 const aligned = aggregateContractLogComparison({ provider_target_comparison: compareProviderTarget(contract(), log()), dispatch_comparison: compareDispatch(contract(), log()), payload_comparison: comparePayload(contract(), log()), privacy_comparison: comparePrivacy(contract(), log()), refusal_comparison: compareRefusal(contract(), log()), safety_comparison: compareSafety(contract(), log()), eo_rfd_route_comparison: compareEoRfdRoute(contract(), log()), stylometry_audit_routing: routeStylometryAudit(contract(), log()), adversarial_audit_routing: routeAdversarialAudit(contract(), log()) });
 assert.equal(aligned.status, 'aligned');

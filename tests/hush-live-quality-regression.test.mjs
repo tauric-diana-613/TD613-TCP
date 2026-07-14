@@ -15,7 +15,7 @@ const result = buildHushSwap({
 });
 
 const output = result.selectedOutput || '';
-assert.equal(result.version, 'phase-22');
+assert.equal(result.version, 'phase-22.1-selection-pressure');
 assert(output.trim().length > 0, 'Phase 22 live quality smoke produced no output');
 assert.notEqual(output.trim(), message.trim(), 'output should not be unchanged');
 assert(result.payloadIntegrity, 'missing payload integrity');

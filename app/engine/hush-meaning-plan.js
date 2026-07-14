@@ -17,6 +17,12 @@ function collectMatches(value = '', patterns = []) {
   return patterns.flatMap((pattern) => value.match(pattern) || []);
 }
 
+const BARE_OPERATIONAL_LABELS = new Set([
+  'EXHIBIT', 'DOC', 'CASE', 'ID', 'REF', 'INV', 'PO', 'HR', 'PAY', 'FILE',
+  'TICKET', 'REQ', 'FORM', 'SSN', 'EIN', 'TIN', 'ACCT', 'ACCOUNT', 'VENDOR',
+  'INVOICE', 'PAYROLL', 'BENEFIT'
+]);
+
 export function extractOperationalIdentifiers(text = '') {
   const value = safeText(text);
   const patterns = [
@@ -27,7 +33,9 @@ export function extractOperationalIdentifiers(text = '') {
     /\bSHI#?:[A-Z0-9:_#\/-]+\b/g,
     /\bTD613(?:-[A-Z0-9:_#\/-]+)?\b/g
   ];
-  return unique(collectMatches(value, patterns)).slice(0, 96);
+  return unique(collectMatches(value, patterns))
+    .filter((match) => !BARE_OPERATIONAL_LABELS.has(match.toUpperCase()))
+    .slice(0, 96);
 }
 
 export function extractTimeAnchors(text = '') {

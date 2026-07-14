@@ -32,7 +32,7 @@ document.getElementById('generateMaskedOutputBtn').click();
 const result = bench.benchState.hushSwapResult;
 const output = value('protectedOutputInput');
 assert(result, 'no Hush swap result for app flight');
-assert.equal(result.version, 'phase-22');
+assert.equal(result.version, 'phase-22.1-selection-pressure');
 assert(result.releasePolicy, 'missing release policy');
 assert(result.writer?.payloadMap, 'missing payload map');
 assert(result.writer?.payloadBindingMap, 'missing payload binding map');

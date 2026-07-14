@@ -17,7 +17,7 @@ const accessibility = auditHushVisualAccessibility({ cssText: visualCss, mobileC
 const report = {
   version: 'phase-31-visual-system-report',
   desktop: {
-    phase31Signage: html.includes('TD613 Hush · Phase 31'),
+    currentSurfaceSignage: html.includes('TD613 Hush · Current Surface'),
     cockpitVisible: js.includes('hushEvidenceCockpit'),
     personaGalleryVisible: html.includes('hushPersonaGallery') && js.includes('renderHushPersonaGallery'),
     customizerForgeVisible: customizerBoot.includes('initCustomizerForge'),

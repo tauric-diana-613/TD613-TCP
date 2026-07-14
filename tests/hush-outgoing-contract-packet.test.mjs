@@ -52,9 +52,9 @@ assert.ok(packet.refusal_policy.must_refuse_if.includes('asks-for-identity-proof
 assert.equal(packet.claim_limits.not_identity_proof, true);
 assert.equal(packet.claim_limits.provider_compliance_not_yet_proven, true);
 assert.equal(packet.eo_rfd_route_state.firmware_status, 'interface-only');
-assert.equal(packet.eo_rfd_route_state.aperture_context.aperture_version, 'v3.0-alpha');
-assert.equal(packet.eo_rfd_route_state.aperture_context.aperture_schema, 'td613-aperture/v3.0-alpha');
-assert.equal(packet.eo_rfd_route_state.aperture_context.aperture_feature_version, 'v3.0-alpha-anti-epistemicide-research-runtime');
+assert.equal(packet.eo_rfd_route_state.aperture_context.aperture_version, 'v3.1-alpha');
+assert.equal(packet.eo_rfd_route_state.aperture_context.aperture_schema, 'td613-aperture/v3.1-alpha');
+assert.equal(packet.eo_rfd_route_state.aperture_context.aperture_feature_version, 'v3.1-alpha-admissibility-tomography-registry-dynamics-runtime');
 assert.equal(packet.eo_rfd_route_state.aperture_context.authority, 'design-signal');
 assert.equal(packet.eo_rfd_route_state.operational_state, 'interface_context');
 assert.equal(packet.eo_rfd_route_state.claim_authority, 'design_signal');
