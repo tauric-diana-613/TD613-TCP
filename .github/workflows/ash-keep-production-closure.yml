@@ -14,6 +14,7 @@ on:
       - "tests/fixtures/aperture-release.json"
       - "scripts/ash-keep-local-closure-server.mjs"
       - "scripts/ash-keep-production-probe.mjs"
+      - "scripts/run-ash-keep-production-probe.mjs"
       - "tests/ash-keep-*.test.mjs"
       - ".github/workflows/ash-keep-production-closure.yml"
   push:
@@ -30,6 +31,7 @@ on:
       - "tests/fixtures/aperture-release.json"
       - "scripts/ash-keep-local-closure-server.mjs"
       - "scripts/ash-keep-production-probe.mjs"
+      - "scripts/run-ash-keep-production-probe.mjs"
       - "tests/ash-keep-*.test.mjs"
       - ".github/workflows/ash-keep-production-closure.yml"
   workflow_dispatch:
@@ -60,9 +62,10 @@ jobs:
           cache: npm
       - name: Install repository dependencies
         run: npm ci
-      - name: Validate probe and server syntax
+      - name: Validate probe, fixture runner, and server syntax
         run: |
           node --check scripts/ash-keep-production-probe.mjs
+          node --check scripts/run-ash-keep-production-probe.mjs
           node --check scripts/ash-keep-local-closure-server.mjs
       - name: Validate production closure contract
         run: node tests/ash-keep-production-closure-contract.test.mjs
@@ -95,7 +98,8 @@ jobs:
         env:
           TD613_BASE_URL: http://127.0.0.1:6130
           TD613_ARTIFACT_DIR: artifacts/ash-keep-production-closure
-        run: node scripts/ash-keep-production-probe.mjs
+          TD613_PROBE_RUNTIME_DIR: artifacts/ash-keep-probe-runtime
+        run: node scripts/run-ash-keep-production-probe.mjs
       - name: Preserve closure evidence
         if: always()
         uses: actions/upload-artifact@v4
@@ -103,8 +107,10 @@ jobs:
           name: ash-keep-production-closure-evidence
           path: |
             scripts/ash-keep-production-probe.mjs
+            scripts/run-ash-keep-production-probe.mjs
             artifacts/ash-keep-local-server.log
             artifacts/ash-keep-local-readiness.json
+            artifacts/ash-keep-probe-runtime/
             artifacts/ash-keep-production-closure/
           if-no-files-found: warn
           retention-days: 14
@@ -135,7 +141,8 @@ jobs:
         env:
           TD613_BASE_URL: ${{ inputs.base_url }}
           TD613_ARTIFACT_DIR: artifacts/ash-keep-deployed-observation
-        run: node scripts/ash-keep-production-probe.mjs
+          TD613_PROBE_RUNTIME_DIR: artifacts/ash-keep-probe-runtime
+        run: node scripts/run-ash-keep-production-probe.mjs
       - name: Preserve deployed observation
         if: always()
         uses: actions/upload-artifact@v4
@@ -143,6 +150,8 @@ jobs:
           name: ash-keep-deployed-observation-evidence
           path: |
             scripts/ash-keep-production-probe.mjs
+            scripts/run-ash-keep-production-probe.mjs
+            artifacts/ash-keep-probe-runtime/
             artifacts/ash-keep-deployed-observation/
           if-no-files-found: error
           retention-days: 30
