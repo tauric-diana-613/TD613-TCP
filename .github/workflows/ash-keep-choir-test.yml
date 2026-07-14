@@ -4,18 +4,26 @@ on:
   pull_request:
     paths:
       - "app/engine/ash-keep-moire.js"
+      - "app/engine/ash-keep-reader-adapters.js"
       - "app/dome-world/schemas/aperture-moire-rebuild-*.schema.json"
+      - "app/dome-world/schemas/aperture-reader-*.schema.json"
       - "tests/ash-keep-moire*.test.mjs"
+      - "tests/ash-keep-reader-adapter*.test.mjs"
       - "docs/ASH_KEEP_CHOIR_TEST.md"
+      - "docs/ASH_KEEP_READER_ADAPTER_REGISTRY.md"
       - "docs/ASH_KEEP_BUILDOUT_LEDGER.md"
       - ".github/workflows/ash-keep-choir-test.yml"
   push:
     branches: [main]
     paths:
       - "app/engine/ash-keep-moire.js"
+      - "app/engine/ash-keep-reader-adapters.js"
       - "app/dome-world/schemas/aperture-moire-rebuild-*.schema.json"
+      - "app/dome-world/schemas/aperture-reader-*.schema.json"
       - "tests/ash-keep-moire*.test.mjs"
+      - "tests/ash-keep-reader-adapter*.test.mjs"
       - "docs/ASH_KEEP_CHOIR_TEST.md"
+      - "docs/ASH_KEEP_READER_ADAPTER_REGISTRY.md"
       - "docs/ASH_KEEP_BUILDOUT_LEDGER.md"
       - ".github/workflows/ash-keep-choir-test.yml"
   workflow_dispatch:
@@ -40,3 +48,7 @@ jobs:
         run: node tests/ash-keep-moire.test.mjs
       - name: Stress Choir observation states and canonical invariants
         run: node tests/ash-keep-moire-stress.test.mjs
+      - name: Validate Reader adapter provenance schemas
+        run: node tests/ash-keep-reader-adapter-schemas.test.mjs
+      - name: Validate Reader adapter provenance registry
+        run: node tests/ash-keep-reader-adapters.test.mjs
