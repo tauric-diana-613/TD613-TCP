@@ -1,0 +1,206 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "td613.aperture.moire-rebuild-assay/v0.1",
+  "title": "TD613 Aperture Moire Rebuild Assay v0.1",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema",
+    "version",
+    "assay_id",
+    "case_id",
+    "case_map_digest",
+    "route_memory_reference",
+    "reader",
+    "created_at",
+    "mode",
+    "source_drift_state",
+    "projections",
+    "observations",
+    "pairwise_residue",
+    "calibration",
+    "calibration_state",
+    "review_state",
+    "emergent_pair_count",
+    "unresolved_pair_count",
+    "frequencies_are_named_reader_results",
+    "real_surveillance_probability",
+    "provider_acquisition_route",
+    "automatic_hold",
+    "automatic_ash_action",
+    "prediction_authorized",
+    "recommendation_not_command",
+    "source_status",
+    "evidence_basis",
+    "missingness",
+    "alternatives",
+    "open_questions",
+    "operator_notes",
+    "closure",
+    "assay_digest"
+  ],
+  "properties": {
+    "schema": { "const": "td613.aperture.moire-rebuild-assay/v0.1" },
+    "version": { "const": "v0.1" },
+    "assay_id": { "type": "string", "pattern": "^moire_[A-Za-z0-9_-]{6,128}$" },
+    "case_id": { "type": "string" },
+    "case_map_digest": { "$ref": "#/$defs/sha256" },
+    "route_memory_reference": { "$ref": "#/$defs/sha256" },
+    "reader": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["reader_id", "reader_class", "reader_digest"],
+      "properties": {
+        "reader_id": { "type": "string" },
+        "reader_class": { "type": "string" },
+        "reader_digest": { "$ref": "#/$defs/sha256" }
+      }
+    },
+    "created_at": { "type": "string" },
+    "mode": { "const": "PAIRWISE_MOIRE_REBUILD" },
+    "source_drift_state": { "type": "string" },
+    "projections": {
+      "type": "array",
+      "minItems": 2,
+      "maxItems": 32,
+      "items": { "$ref": "#/$defs/projection" }
+    },
+    "observations": {
+      "type": "array",
+      "minItems": 1,
+      "items": { "$ref": "#/$defs/observation" }
+    },
+    "pairwise_residue": {
+      "type": "array",
+      "items": { "$ref": "#/$defs/pairResidue" }
+    },
+    "calibration": { "type": "object" },
+    "calibration_state": { "enum": ["CALIBRATED_FOR_NAMED_FIXTURE", "NOT_ENOUGH_TEST_DATA"] },
+    "review_state": { "enum": ["OPERATOR_REVIEW_REQUIRED", "OBSERVATIONS_AVAILABLE"] },
+    "emergent_pair_count": { "type": "integer", "minimum": 0 },
+    "unresolved_pair_count": { "type": "integer", "minimum": 0 },
+    "frequencies_are_named_reader_results": { "const": true },
+    "real_surveillance_probability": { "type": "null" },
+    "provider_acquisition_route": { "const": "UNKNOWN" },
+    "automatic_hold": { "const": false },
+    "automatic_ash_action": { "const": false },
+    "prediction_authorized": { "const": false },
+    "recommendation_not_command": { "const": true },
+    "source_status": { "type": "string" },
+    "evidence_basis": { "$ref": "#/$defs/stringArray" },
+    "missingness": { "$ref": "#/$defs/stringArray" },
+    "alternatives": { "$ref": "#/$defs/stringArray" },
+    "open_questions": { "$ref": "#/$defs/stringArray" },
+    "operator_notes": { "$ref": "#/$defs/stringArray" },
+    "closure": {
+      "type": "object",
+      "required": ["required", "status"],
+      "properties": {
+        "required": { "const": true },
+        "status": { "type": "string" }
+      }
+    },
+    "assay_digest": { "$ref": "#/$defs/sha256" }
+  },
+  "$defs": {
+    "sha256": { "type": "string", "pattern": "^sha256:[0-9a-f]{64}$" },
+    "stringArray": { "type": "array", "items": { "type": "string" } },
+    "projection": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "projection_id",
+        "disclosed_opaque_references",
+        "route_id",
+        "purpose",
+        "source_status"
+      ],
+      "properties": {
+        "projection_id": { "type": "string" },
+        "disclosed_opaque_references": { "$ref": "#/$defs/stringArray" },
+        "route_id": { "type": ["string", "null"] },
+        "purpose": { "type": "string" },
+        "source_status": { "type": "string" }
+      }
+    },
+    "recovered": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["node_ids", "relationship_ids", "chronology", "source_style_linkage"],
+      "properties": {
+        "node_ids": { "$ref": "#/$defs/stringArray" },
+        "relationship_ids": { "$ref": "#/$defs/stringArray" },
+        "chronology": { "type": "integer", "minimum": 0, "maximum": 1000 },
+        "source_style_linkage": { "type": "integer", "minimum": 0, "maximum": 1000 }
+      }
+    },
+    "observation": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "observation_id",
+        "projection_ids",
+        "state",
+        "recovered",
+        "benign_control",
+        "held_out",
+        "observations",
+        "missingness"
+      ],
+      "properties": {
+        "observation_id": { "type": "string" },
+        "projection_ids": { "type": "array", "maxItems": 2, "items": { "type": "string" } },
+        "state": {
+          "enum": ["OBSERVED", "NULL", "REJECTED", "MISSING", "CONTRADICTORY", "UNCAPTURED", "ENCODER_REQUIRED", "UNRESOLVED"]
+        },
+        "recovered": { "$ref": "#/$defs/recovered" },
+        "benign_control": { "type": "boolean" },
+        "held_out": { "type": "boolean" },
+        "observations": { "type": "array" },
+        "missingness": { "$ref": "#/$defs/stringArray" }
+      }
+    },
+    "residue": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "node_ids",
+        "relationship_ids",
+        "room_bridge_ids",
+        "hypothesis_ids",
+        "next_action_ids",
+        "chronology_millipoints",
+        "source_style_linkage_millipoints"
+      ],
+      "properties": {
+        "node_ids": { "$ref": "#/$defs/stringArray" },
+        "relationship_ids": { "$ref": "#/$defs/stringArray" },
+        "room_bridge_ids": { "$ref": "#/$defs/stringArray" },
+        "hypothesis_ids": { "$ref": "#/$defs/stringArray" },
+        "next_action_ids": { "$ref": "#/$defs/stringArray" },
+        "chronology_millipoints": { "type": "integer", "minimum": 0, "maximum": 1000 },
+        "source_style_linkage_millipoints": { "type": "integer", "minimum": 0, "maximum": 1000 }
+      }
+    },
+    "pairResidue": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "pair_id",
+        "projection_ids",
+        "state",
+        "residue",
+        "emergent_topology_detected",
+        "missingness"
+      ],
+      "properties": {
+        "pair_id": { "type": "string" },
+        "projection_ids": { "type": "array", "minItems": 2, "maxItems": 2, "items": { "type": "string" } },
+        "state": { "enum": ["OBSERVED", "UNRESOLVED"] },
+        "residue": { "$ref": "#/$defs/residue" },
+        "emergent_topology_detected": { "type": "boolean" },
+        "missingness": { "$ref": "#/$defs/stringArray" }
+      }
+    }
+  }
+}
