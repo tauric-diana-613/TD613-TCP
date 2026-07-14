@@ -1,0 +1,53 @@
+name: Ash lifecycle integration
+
+on:
+  push:
+    branches:
+      - agent/ash-threshold-custody-well
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+concurrency:
+  group: ash-lifecycle-integration-${{ github.ref }}
+  cancel-in-progress: false
+
+jobs:
+  integrate:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out candidate branch
+        uses: actions/checkout@v4
+        with:
+          ref: agent/ash-threshold-custody-well
+          fetch-depth: 0
+
+      - name: Set up Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+
+      - name: Apply deterministic integration
+        run: node scripts/apply-ash-lifecycle-integration.mjs
+
+      - name: Run lifecycle tests
+        run: node tests/ash-lifecycle.test.mjs
+
+      - name: Run product architecture tests
+        run: node tests/ash-product-architecture.test.mjs
+
+      - name: Run Ash Keep suite
+        run: npm run test:ash-keep
+
+      - name: Commit generated integration
+        run: |
+          if git diff --quiet; then
+            echo "Integration tree already current."
+            exit 0
+          fi
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add app/dome-world/index.html app/dome-world/ash-keep.html app/engine/ash-lifecycle.js package.json ROADMAP.md docs/ASH_KEEP_BUILDOUT_LEDGER.md
+          git commit -m "Integrate Ash threshold custody lifecycle"
+          git push origin HEAD:agent/ash-threshold-custody-well
