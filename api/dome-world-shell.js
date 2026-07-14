@@ -3,9 +3,13 @@ import path from 'node:path';
 
 export const DOME_WORLD_SHELL_VERSION = 'td613.dome-world.shell/v1.1-marrowline-desktop-span';
 export const MARROWLINE_LAB_ROUTE = '/dome-world/marrowline.html';
+export const ASH_THRESHOLD_ROUTE = '/dome-world/ash-threshold.html';
+export const ASH_LIFECYCLE_SHELL_CONTRACT = 'td613.ash.lifecycle-shell/v0.1';
 
 const SOURCE_PATH = path.join(process.cwd(), 'app', 'dome-world', 'index.html');
 const MARROWLINE_BUTTON = `<button class="lab-node lab-node-marrowline" type="button" data-tone="gold" data-glyph="∴" data-open-route="${MARROWLINE_LAB_ROUTE}" style="grid-column:span 8" onclick="window.location.assign('${MARROWLINE_LAB_ROUTE}')" aria-label="Open Marrowline Kʰonapolit terminal"><span class="lab-index">11</span><strong>Marrowline</strong><small>Kʰonapolit terminal / live ingress</small></button>`;
+const ASH_TAB = `<a class="tab" href="${ASH_THRESHOLD_ROUTE}" data-view="ash" data-sigil="下" style="text-decoration:none"><small>04</small><span>Ash</span></a>`;
+const ASH_COMPATIBILITY_SECTION = `<section id="ash" class="view primary-view" data-glyph="下"><div class="view-intro"><div><div class="view-overline">下 / custody begins after the threshold</div><h2>Ash Threshold</h2><p>Clear arrival, boundary, and custody as distinct laws, then enter Ash Keep. Quick Scan remains a readiness operation inside the Keep; custody becomes the case root.</p></div><div class="view-telemetry"><span><b>0</b>raw text</span><span><b>SESSION</b>readiness</span><span><b>KEEP</b>primary</span></div></div><div class="grid"><div class="panel"><h3>Enter the Ash lifecycle</h3><p class="sub">The threshold performs no custody registration. Ash Keep binds a verified root into the Case Map and carries it through Rebuild, Draft, Release, Save Point, and Capsule.</p><div class="actions"><a class="btn primary" href="${ASH_THRESHOLD_ROUTE}">Enter Ash</a><a class="btn" href="/dome-world/ash-keep.html">Open existing Keep</a></div><p class="claim">Arrival ≠ consent; readiness ≠ custody; custody ≠ authenticity; continuity ≠ transport.</p></div><aside class="panel rel"><canvas id="ashCanvas" aria-label="Ash custody threshold field"></canvas><div class="legend"><span style="color:var(--cyan)">△ arrival boundary</span><br><span style="color:var(--gold)">◇ custody root</span><br><span style="color:var(--rose)">● held transition</span><br><span style="color:var(--violet)">∙ Quick Scan compatibility</span></div></aside></div><div hidden aria-hidden="true"><input id="ashArtifactId"><select id="ashClass"><option>sensitive-document</option></select><input id="ashMediaType" value="application/octet-stream"><input id="ashByteLength"><button id="runAsh"></button><button id="copyAsh"></button><button id="downloadAsh"></button></div><pre id="ashPre" hidden></pre></section>`;
 
 export function injectMarrowlineLabButton(source = '') {
   const html = String(source || '');
@@ -22,12 +26,38 @@ export function injectMarrowlineLabButton(source = '') {
     .replace(interfaceBus, (button) => `${button}${MARROWLINE_BUTTON}`);
 }
 
+export function injectAshLifecycleEntry(source = '') {
+  let html = String(source || '');
+  if (!html) throw new Error('dome-world-source-empty');
+
+  const oldTab = '<button class="tab" data-view="ash" data-sigil="下"><small>04</small><span>Ash</span></button>';
+  if (html.includes(oldTab)) html = html.replace(oldTab, ASH_TAB);
+  if (!html.includes(`href="${ASH_THRESHOLD_ROUTE}" data-view="ash"`)) {
+    throw new Error('dome-world-ash-tab-marker-missing');
+  }
+
+  const ashSection = /<section id="ash" class="view primary-view" data-glyph="下">[\s\S]*?<\/section>/;
+  if (!html.includes('<h2>Ash Threshold</h2>')) {
+    if (!ashSection.test(html)) throw new Error('dome-world-ash-section-marker-missing');
+    html = html.replace(ashSection, ASH_COMPATIBILITY_SECTION);
+  }
+
+  html = html.replace("ash:'Ash / readiness membrane'", "ash:'Ash / custody threshold'");
+  if (html.includes('<h2>Ash Readiness</h2>')) throw new Error('dome-world-visible-readiness-title-survived');
+  return html;
+}
+
+export function renderDomeWorldShell(source = '') {
+  return injectAshLifecycleEntry(injectMarrowlineLabButton(source));
+}
+
 function send(res, status, body = '') {
   res.statusCode = status;
   res.setHeader('Content-Type', 'text/html; charset=utf-8');
   res.setHeader('Cache-Control', 'no-store, max-age=0');
   res.setHeader('X-Content-Type-Options', 'nosniff');
   res.setHeader('X-TD613-Dome-Shell', DOME_WORLD_SHELL_VERSION);
+  res.setHeader('X-TD613-Ash-Lifecycle', ASH_LIFECYCLE_SHELL_CONTRACT);
   res.end(body);
 }
 
@@ -41,7 +71,7 @@ export default function handler(req, res) {
 
   try {
     const source = fs.readFileSync(SOURCE_PATH, 'utf8');
-    const html = injectMarrowlineLabButton(source);
+    const html = renderDomeWorldShell(source);
     send(res, 200, method === 'HEAD' ? '' : html);
   } catch (error) {
     res.setHeader('Content-Type', 'application/json; charset=utf-8');
@@ -50,7 +80,8 @@ export default function handler(req, res) {
       ok: false,
       error: 'dome-world-shell-unavailable',
       detail: String(error?.message || error),
-      version: DOME_WORLD_SHELL_VERSION
+      version: DOME_WORLD_SHELL_VERSION,
+      ashLifecycle: ASH_LIFECYCLE_SHELL_CONTRACT
     }));
   }
 }
