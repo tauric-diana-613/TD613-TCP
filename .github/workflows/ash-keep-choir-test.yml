@@ -75,4 +75,14 @@ jobs:
       - name: Validate matched benign control schemas
         run: node tests/ash-keep-benign-controls-schemas.test.mjs
       - name: Validate matched benign adjacent-document controls
-        run: node tests/ash-keep-benign-controls.test.mjs
+        shell: bash
+        run: |
+          set -o pipefail
+          node tests/ash-keep-benign-controls.test.mjs 2>&1 | tee matched-control-validation.log
+      - name: Preserve matched control failure log
+        if: failure()
+        uses: actions/upload-artifact@v4
+        with:
+          name: matched-control-failure-log
+          path: matched-control-validation.log
+          if-no-files-found: error
