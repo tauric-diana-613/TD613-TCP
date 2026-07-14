@@ -1,0 +1,116 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "td613.aperture.reader-result-provenance/v0.1",
+  "title": "TD613 Reader Result Provenance v0.1",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema", "version", "provenance_id", "created_at", "registry_reference",
+    "adapter", "reader", "case_id", "case_map_digest", "route_memory_digest",
+    "reader_input_digest", "reader_result_digest", "result_schema",
+    "result_reference", "result_state", "acquisition_route",
+    "acquisition_receipt_reference", "execution_environment",
+    "declared_executor_class", "execution_receipt_reference",
+    "execution_observed_by_registry", "provider_receipt_required",
+    "provider_receipt_reference", "fixture_status", "source_status",
+    "provenance_state", "evidence_basis", "observations", "missingness",
+    "alternatives", "open_questions", "operator_notes", "closure",
+    "input_content_present", "result_content_present",
+    "reader_execution_performed_by_registry", "provider_call_performed_by_registry",
+    "network_called_by_registry", "storage_mutated_by_registry",
+    "transport_authorized", "release_authorized",
+    "identity_inference_authorized", "authorship_attribution_authorized",
+    "surveillance_probability_authorized", "prediction_authorized",
+    "automatic_hold", "recommendation_not_command", "provenance_digest"
+  ],
+  "properties": {
+    "schema": { "const": "td613.aperture.reader-result-provenance/v0.1" },
+    "version": { "const": "v0.1" },
+    "provenance_id": { "type": "string", "pattern": "^readerprov_[A-Za-z0-9_-]{6,128}$" },
+    "created_at": { "type": "string" },
+    "registry_reference": { "$ref": "#/$defs/sha256" },
+    "adapter": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["adapter_id", "adapter_class", "adapter_version"],
+      "properties": {
+        "adapter_id": { "type": "string" },
+        "adapter_class": { "type": "string" },
+        "adapter_version": { "type": "string" }
+      }
+    },
+    "reader": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["reader_id", "reader_class", "reader_version", "reader_digest"],
+      "properties": {
+        "reader_id": { "type": "string" },
+        "reader_class": { "type": "string" },
+        "reader_version": { "type": "string" },
+        "reader_digest": { "$ref": "#/$defs/sha256" }
+      }
+    },
+    "case_id": { "type": "string" },
+    "case_map_digest": { "$ref": "#/$defs/sha256" },
+    "route_memory_digest": { "$ref": "#/$defs/sha256" },
+    "reader_input_digest": { "$ref": "#/$defs/sha256" },
+    "reader_result_digest": { "$ref": "#/$defs/sha256" },
+    "result_schema": { "type": ["string", "null"] },
+    "result_reference": { "type": ["string", "null"] },
+    "result_state": {
+      "enum": ["OBSERVED", "NULL", "REJECTED", "MISSING", "CONTRADICTORY", "UNCAPTURED", "ENCODER_REQUIRED", "UNRESOLVED"]
+    },
+    "acquisition_route": {
+      "enum": ["LOCAL_GENERATED", "IMPORTED_FILE", "IMPORTED_TEXT", "PROVIDER_RECEIPT_REFERENCE", "SYNTHETIC_FIXTURE"]
+    },
+    "acquisition_receipt_reference": { "type": ["string", "null"] },
+    "execution_environment": {
+      "enum": ["BROWSER_LOCAL", "NODE_LOCAL", "EXTERNAL_PROVIDER", "DECLARED_FIXTURE"]
+    },
+    "declared_executor_class": { "type": "string" },
+    "execution_receipt_reference": { "type": ["string", "null"] },
+    "execution_observed_by_registry": { "const": false },
+    "provider_receipt_required": { "type": "boolean" },
+    "provider_receipt_reference": { "type": ["string", "null"] },
+    "fixture_status": {
+      "enum": ["NONE", "SYNTHETIC", "DECLARED_FIXTURE", "BENIGN_CONTROL", "HELD_OUT"]
+    },
+    "source_status": { "type": "string" },
+    "provenance_state": { "enum": ["PROVENANCE_BOUND", "PROVENANCE_INCOMPLETE"] },
+    "evidence_basis": { "$ref": "#/$defs/stringArray" },
+    "observations": { "type": "array" },
+    "missingness": { "$ref": "#/$defs/stringArray" },
+    "alternatives": { "$ref": "#/$defs/stringArray" },
+    "open_questions": { "$ref": "#/$defs/stringArray" },
+    "operator_notes": { "$ref": "#/$defs/stringArray" },
+    "closure": { "$ref": "#/$defs/closure" },
+    "input_content_present": { "const": false },
+    "result_content_present": { "const": false },
+    "reader_execution_performed_by_registry": { "const": false },
+    "provider_call_performed_by_registry": { "const": false },
+    "network_called_by_registry": { "const": false },
+    "storage_mutated_by_registry": { "const": false },
+    "transport_authorized": { "const": false },
+    "release_authorized": { "const": false },
+    "identity_inference_authorized": { "const": false },
+    "authorship_attribution_authorized": { "const": false },
+    "surveillance_probability_authorized": { "const": false },
+    "prediction_authorized": { "const": false },
+    "automatic_hold": { "const": false },
+    "recommendation_not_command": { "const": true },
+    "provenance_digest": { "$ref": "#/$defs/sha256" }
+  },
+  "$defs": {
+    "sha256": { "type": "string", "pattern": "^sha256:[0-9a-f]{64}$" },
+    "stringArray": { "type": "array", "items": { "type": "string" } },
+    "closure": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["required", "status"],
+      "properties": {
+        "required": { "const": true },
+        "status": { "type": "string" }
+      }
+    }
+  }
+}
