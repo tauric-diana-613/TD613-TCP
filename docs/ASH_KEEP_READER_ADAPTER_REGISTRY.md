@@ -8,13 +8,15 @@
 
 `IMPLEMENTED_VALIDATION_GATED`
 
-Repository state: `MERGED_ON_MAIN`
+Repository state: `MERGED_AND_CANONICALIZED_ON_MAIN`
 
-Merge commit: `b0b600a07c8343311cdde50c2f250881e7f6091c`
+Initial merge commit: `b0b600a07c8343311cdde50c2f250881e7f6091c`
+
+Canonicalization merge: `3a8dbebf1ad65f7ee281c2fcd5816afd8584c984`
 
 ## Purpose
 
-The Reader Adapter Registry gives Choir a bounded provenance spine before any cross-Reader disagreement analysis is attempted.
+The Reader Adapter Registry gives Choir a bounded provenance spine before cross-Reader disagreement analysis.
 
 It records which adapter contract was used to admit a Reader result into the local research workflow. It does not execute Readers, contact providers, transport case material, infer identity, attribute authorship, estimate real surveillance probability, prohibit release, or activate an automatic hold.
 
@@ -125,6 +127,16 @@ Replay verifies:
 
 Replay does not restore raw input, restore raw output, rerun the Reader, call a provider, mutate storage, or authorize transport or release.
 
+## Canonicalization law
+
+Reader Adapter Registry v0.1 canonicalizes before sealing:
+
+- accepted Reader classes to lowercase;
+- acquisition-route enums to uppercase;
+- execution-environment enums to uppercase.
+
+Semantically equivalent mixed-case and canonical adapter declarations therefore produce identical registry bodies and digests.
+
 ## Non-equivalences
 
 ```text
@@ -163,7 +175,7 @@ recommendation_not_command = true
 
 ## Validation fixtures
 
-The first validation bank covers:
+The validation bank covers:
 
 1. a verified local deterministic adapter and result;
 2. an imported external result with a required provider receipt;
@@ -173,9 +185,12 @@ The first validation bank covers:
 6. replay hold after registry mutation;
 7. rejected Reader-class mismatch;
 8. rejected acquisition-route mismatch;
-9. schema-level enforcement of all non-authority fields.
+9. schema-level enforcement of all non-authority fields;
+10. semantically equivalent mixed-case and canonical registries sealing identically;
+11. a `LOCAL_RUNTIME` provenance route;
+12. a `SYNTHETIC_FIXTURE` provenance route.
 
-## Validation and aftercare evidence
+## Initial validation and aftercare evidence
 
 Reader provenance PR:
 
@@ -189,7 +204,7 @@ Validation head:
 f70757517d8effecad616ecbffe2b21d3bebfa89
 ```
 
-Merge commit:
+Initial merge commit:
 
 ```text
 b0b600a07c8343311cdde50c2f250881e7f6091c
@@ -213,27 +228,53 @@ evidence artifact = 8325870766
 artifact SHA-256 = sha256:8ede7d290498fa48488d2ab5193dbbbc7c09c9779cb26d3dc832775c830c4b90
 ```
 
-The deployed aftercare establishes that the provenance spine did not disturb Ash Keep’s production posture. It does not production-demonstrate the registry, execute any Reader, contact any provider, or validate the truth of any result.
+## Canonicalization closure evidence
 
-## Known hardening debt
+The mixed-case normalization debt closed inside Reader disagreement PR:
 
-The v0.1 compiler validates adapter acquisition routes and execution environments case-insensitively, while the first implementation stores the caller-provided enum casing. Canonical uppercase fixtures pass and seal consistently. A future hardening packet must normalize those stored enum arrays before sealing and add mixed-case permutation tests.
+```text
+#292
+```
 
-This debt blocks no current canonical fixture. It must be closed before a disagreement receipt treats registry digests from independently authored adapter declarations as semantically interchangeable.
+Canonicalization and disagreement merge:
+
+```text
+3a8dbebf1ad65f7ee281c2fcd5816afd8584c984
+```
+
+Validation runs:
+
+```text
+Ash Keep Choir Test = 29371085463
+Ash Keep Production Closure = 29371085345
+Dome-World Phase IV = 29371085370
+TCP Smoke = 29371085440
+Test and deploy static app = 29371085789
+```
+
+Post-merge deployed Ash aftercare:
+
+```text
+observer run = 29371191912
+evidence artifact = 8326125754
+artifact SHA-256 = sha256:dc93f45cff73dfffcc382282f0ce6627ea483ba871f80f259e12e289454421ad
+```
+
+The aftercare establishes that the canonicalized provenance spine and disagreement ledger did not disturb Ash Keep’s production posture. It does not production-demonstrate the registry, execute any Reader, contact any provider, or validate the truth of any result.
 
 ## Current frontier
 
-The next admissible Choir packet may build a Reader-by-Reader disagreement ledger only after every compared result carries a verified provenance receipt.
+Reader provenance and provenance-gated disagreement now exist on `main`. The next admissible Choir packet should add matched benign adjacent-document controls.
 
-The disagreement layer must remain componentwise and must preserve:
+The control bank must preserve:
 
-- Reader-specific observation states;
-- missing and incomplete provenance;
+- verified provenance for every target and control result;
 - matched Case Map, Route Memory, input, and result-schema references;
-- alternative explanations;
-- mixed-case adapter normalization as a preflight invariant;
+- topic, genre, template, register, approximate-length, and declared-source matching metadata;
+- matching failures and residual confounds;
+- Reader-specific observation and provenance states;
 - no universal privacy score;
-- no identity, authorship, surveillance, release, hold, transport, provider-call, or production authority.
+- no identity, authorship, ownership, surveillance, truth, release, hold, transport, provider-call, or production authority.
 
 𝌋‌ U+10D613
 
