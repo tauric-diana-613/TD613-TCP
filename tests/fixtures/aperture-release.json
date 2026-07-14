@@ -49,8 +49,8 @@
     "phase5RelationEnvelopeUnchanged": true
   },
   "observatory": {
-    "status": "IMPLEMENTED_VALIDATION_GATED",
-    "productionStatus": "PRODUCTION_GATED",
+    "status": "IMPLEMENTED_PRODUCTION_DEMONSTRATED",
+    "productionStatus": "PRODUCTION_DEMONSTRATED",
     "capabilityProfile": [
       "reciprocal-bridge",
       "admissibility-tomography"
@@ -78,8 +78,8 @@
   "ash": {
     "version": "v0.9-alpha",
     "phase": "VI-A_EXPERIMENTAL_RUN_CUSTODY_AND_ELIGIBILITY",
-    "status": "IMPLEMENTED_VALIDATION_GATED",
-    "productionStatus": "PRODUCTION_GATED",
+    "status": "IMPLEMENTED_PRODUCTION_DEMONSTRATED",
+    "productionStatus": "PRODUCTION_DEMONSTRATED",
     "experimentCustodySchema": "td613.ash.experiment-custody-manifest/v0.1",
     "snapshotBatchSchema": "td613.ash.snapshot-batch-receipt/v0.1",
     "tomographyResultCustodySchema": "td613.ash.tomography-result-custody/v0.1",

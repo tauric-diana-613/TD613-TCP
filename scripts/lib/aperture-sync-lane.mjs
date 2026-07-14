@@ -289,8 +289,8 @@ export function releaseManifestFromMetadata(metadata, currentRelease = {}) {
       phase5RelationEnvelopeUnchanged: true
     },
     observatory: isV31 ? {
-      status: 'IMPLEMENTED_VALIDATION_GATED',
-      productionStatus: 'PRODUCTION_GATED',
+      status: currentRelease.observatory?.status || 'IMPLEMENTED_VALIDATION_GATED',
+      productionStatus: currentRelease.observatory?.productionStatus || 'PRODUCTION_GATED',
       capabilityProfile: ['reciprocal-bridge', 'admissibility-tomography'],
       domeExperimentSchema: 'td613.dome-world.experiment-run/v0.1',
       flowCoreContextSeriesSchema: 'td613.flowcore.context-series/v0.1',
@@ -307,8 +307,8 @@ export function releaseManifestFromMetadata(metadata, currentRelease = {}) {
     ash: isV31 ? {
       version: 'v0.9-alpha',
       phase: 'VI-A_EXPERIMENTAL_RUN_CUSTODY_AND_ELIGIBILITY',
-      status: 'IMPLEMENTED_VALIDATION_GATED',
-      productionStatus: 'PRODUCTION_GATED',
+      status: currentRelease.ash?.status || 'IMPLEMENTED_VALIDATION_GATED',
+      productionStatus: currentRelease.ash?.productionStatus || 'PRODUCTION_GATED',
       experimentCustodySchema: 'td613.ash.experiment-custody-manifest/v0.1',
       snapshotBatchSchema: 'td613.ash.snapshot-batch-receipt/v0.1',
       tomographyResultCustodySchema: 'td613.ash.tomography-result-custody/v0.1',
