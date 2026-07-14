@@ -4,15 +4,17 @@
 
 Status: `IMPLEMENTED_VALIDATION_GATED`
 
-Repository state: `MERGED_ON_MAIN`
+Repository state: `HARDENED_ON_MAIN`
 
-Merge commit: `1a01181cea77590ad3067ebd27da4518511dac5f`
+Core merge: `1a01181cea77590ad3067ebd27da4518511dac5f`
 
-This slice adds the first bounded computation for **emergent recoverability** across two purpose-shaped projections.
+Hardening merge: `52968efb0fb52ecc138dc4d4b80b60725473fa63`
+
+This instrument computes **emergent recoverability** across two purpose-shaped projections.
 
 It does not create a universal privacy score. It does not estimate real surveillance probability. It does not authorize release, transport, prediction, automatic hold, or automatic Ash action.
 
-Ash Keep v1.0 is independently `IMPLEMENTED_PRODUCTION_DEMONSTRATED`. That production status does not transfer to this Choir slice.
+Ash Keep v1.0 is independently `IMPLEMENTED_PRODUCTION_DEMONSTRATED`. That production status does not transfer to Choir.
 
 ## Question
 
@@ -55,23 +57,41 @@ The deterministic helper enumerates:
 3. every unordered pair of projections;
 4. pairwise residue against the baseline and both singleton results.
 
-Projection order is canonicalized before sealing.
+## Canonical and evidentiary hardening
+
+PR #288 hardened the existing v0.1 jurisdiction without adding higher-order, sequence, temporal, provider, UI, or transport behavior.
+
+The engine now:
+
+- canonicalizes projection references, result order, recovered IDs, evidence strings, and deterministic projection order;
+- generates stable default observation IDs from projection keys;
+- rejects duplicate projection IDs inside one observation;
+- rejects duplicate observation IDs and duplicate projection keys;
+- rejects result keys containing unknown projections;
+- rejects recovered node and relationship IDs absent from the held Case Map;
+- distinguishes observation presence from usable `OBSERVED` evidence;
+- records `observed_baseline`, `observed_singleton_coverage`, `observed_pair_coverage`, and `all_required_observations_observed`;
+- prevents unresolved lattices from earning `CALIBRATED_FOR_NAMED_FIXTURE`;
+- records specific unresolved missingness;
+- seals semantically equivalent projection/result permutations identically.
 
 ## Calibration posture
 
-A named fixture becomes `CALIBRATED_FOR_NAMED_FIXTURE` only when all of the following are present:
+A named fixture becomes `CALIBRATED_FOR_NAMED_FIXTURE` only when all of the following hold:
 
 - preregistration;
-- baseline observation;
-- complete singleton coverage;
-- complete pair coverage;
+- baseline observation present and `OBSERVED`;
+- complete singleton coverage and every singleton `OBSERVED`;
+- complete pair coverage and every pair `OBSERVED`;
 - benign control;
 - held-out observation;
 - source-drift check;
 - alternative Reader;
 - exact thresholds.
 
-Without those conditions, the assay remains `NOT_ENOUGH_TEST_DATA` and exposes observations for human review without activating exposure bands.
+Presence alone cannot satisfy observed coverage. `NULL`, `MISSING`, `REJECTED`, `CONTRADICTORY`, `UNCAPTURED`, `ENCODER_REQUIRED`, and `UNRESOLVED` remain evidentiary states rather than disguised zeroes.
+
+Without every calibration condition, the assay remains `NOT_ENOUGH_TEST_DATA` and exposes observations for human review without activating exposure bands.
 
 ## Boundaries
 
@@ -80,6 +100,7 @@ pairwise residue ≠ intent
 pairwise residue ≠ attribution
 pairwise residue ≠ surveillance probability
 pairwise residue ≠ release prohibition
+present evidence ≠ usable observed evidence
 calibration ≠ universal validity
 replay ≠ reconstruction rerun
 receipt ≠ command
@@ -103,16 +124,16 @@ recommendation_not_command = true
 
 ## Validation evidence
 
-The focused validation fixture demonstrates the minimal Moiré condition already latent in Ash Keep:
+### Core merge
 
-- projection A reveals one endpoint;
-- projection B reveals the other endpoint;
-- neither singleton reveals the relationship;
-- the pair makes the relationship and its cross-Room bridge recoverable.
+The original fixtures establish:
 
-A second synthetic fixture demonstrates a Reader recovering a hidden hypothesis only from the pair.
+- two singleton projections can expose no relationship independently while their pair exposes a cross-Room relationship;
+- a synthetic Reader can recover a hidden hypothesis only from the pair;
+- digest tampering fails verification;
+- replay verifies without network, storage mutation, or reconstruction re-execution.
 
-The refreshed merge passed:
+The core merge passed:
 
 - Ash Keep Choir Test run `29362404203`;
 - Ash Keep Production Closure run `29362404482`;
@@ -120,25 +141,63 @@ The refreshed merge passed:
 - TCP Smoke run `29362404136`;
 - Dome-World Phase IV run `29362404428`.
 
-After merge, Ash Keep’s deployed observer passed on the exact merge commit:
+After core merge, Ash’s deployed observer passed:
 
 - observer run `29362563703`;
 - evidence artifact `8322761143`;
 - artifact SHA-256 `sha256:ac2bfa912bb97b6e7de6f88deaf0eda5cb31adae43da64d155cea78831c69902`.
 
-That deployed aftercare establishes non-disturbance of Ash’s production posture with Choir present. It does not establish a deployed Choir route, public interface, Choir production receipt, or universal validity for the assay.
+### Observation-state hardening
+
+The adversarial bank covers:
+
+- every non-`OBSERVED` state;
+- contradictory baseline;
+- missing singleton and pair coverage;
+- projection/result permutation invariance;
+- deterministic union monotonicity;
+- Node WebCrypto digest parity;
+- unknown node, relationship, and projection IDs;
+- duplicate projection IDs;
+- duplicate observation IDs;
+- duplicate projection keys.
+
+The hardening head passed together in one run:
+
+- schema validation;
+- original bounded pairwise fixture;
+- adversarial observation-state and canonical-invariant bank.
+
+Evidence:
+
+- hardening PR `#288`;
+- hardening head `cf7148ca50de44c86652799e9057b596de41d923`;
+- Choir run `29363287364`;
+- Ash Production Closure run `29363287330`;
+- Dome-World Phase IV run `29363287427`;
+- TCP Smoke run `29363287352`;
+- static application run `29363287316`.
+
+After hardening merge, Ash’s deployed observer passed:
+
+- observer run `29367532789`;
+- evidence artifact `8324706629`;
+- artifact SHA-256 `sha256:9fc641b4bce614c6eeae6ad03bd6f7037063bb1349f861fbbc00dee1d8fda669`.
+
+That deployed aftercare establishes non-disturbance of Ash’s production posture with hardened Choir code present. It does not establish a deployed Choir route, public interface, Choir production receipt, or universal validity.
 
 ## Current frontier
 
-Choir v0.1 remains engine-first. The next packet must stress the pairwise contract before adding scope:
+The pairwise contract has now been stressed without widening. The next packet is **Reader provenance before Reader disagreement**:
 
-1. `NULL`, `MISSING`, `CONTRADICTORY`, `REJECTED`, and `UNRESOLVED` observation fixtures;
-2. projection-permutation property tests;
-3. incomplete singleton and pair coverage;
-4. residue monotonicity and canonicalization invariants;
-5. cross-runtime replay and digest parity.
+1. define a Reader adapter registry;
+2. bind adapter ID, adapter class, acquisition route, and execution environment;
+3. bind Reader profile, Case Map, Route Memory, input manifest, and result digests;
+4. preserve source status, fixture status, missingness, alternatives, and operator notes;
+5. verify and replay the adapter receipt without rerunning the Reader;
+6. keep cross-Reader disagreement outside the first provenance packet.
 
-Higher-order combinations, ordered sequence effects, temporal spacing, register interventions, Reader disagreement, public UI, and production demonstration remain separate future contracts.
+Higher-order combinations, ordered sequence effects, temporal spacing, Hush register interventions, disagreement matrices, public UI, provider execution, and production demonstration remain separate future contracts.
 
 𝌋‌ U+10D613
 
