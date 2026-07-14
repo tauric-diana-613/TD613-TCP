@@ -8,6 +8,10 @@
 
 `IMPLEMENTED_VALIDATION_GATED`
 
+Repository state: `MERGED_ON_MAIN`
+
+Merge commit: `3a8dbebf1ad65f7ee281c2fcd5816afd8584c984`
+
 ## Purpose
 
 The Reader Disagreement Ledger compares purpose-shaped recovery summaries from two or more named Readers only after every compared result carries verified Reader-result provenance.
@@ -126,7 +130,7 @@ A non-observed Reader result may carry no observed summary content.
 
 ## Canonical adapter preflight
 
-Reader Adapter Registry v0.1 now canonicalizes before sealing:
+Reader Adapter Registry v0.1 canonicalizes before sealing:
 
 - accepted Reader classes to lowercase;
 - acquisition-route enums to uppercase;
@@ -134,7 +138,7 @@ Reader Adapter Registry v0.1 now canonicalizes before sealing:
 
 Semantically equivalent mixed-case and canonical adapter declarations therefore produce identical registry bodies and digests.
 
-The validation bank now includes `LOCAL_RUNTIME` and `SYNTHETIC_FIXTURE` provenance routes in addition to deterministic and imported-provider routes.
+The validation bank includes `LOCAL_RUNTIME` and `SYNTHETIC_FIXTURE` provenance routes in addition to deterministic and imported-provider routes.
 
 ## Replay
 
@@ -209,11 +213,51 @@ The first fixture bank covers:
 16. local-runtime and synthetic-fixture provenance routes;
 17. schema-level enforcement of all non-authority fields.
 
+## Validation and aftercare evidence
+
+Reader disagreement PR:
+
+```text
+#292
+```
+
+Validation head:
+
+```text
+c2db9e1cf7ebecd1b7e0f39fa8cbb404720e1da6
+```
+
+Merge commit:
+
+```text
+3a8dbebf1ad65f7ee281c2fcd5816afd8584c984
+```
+
+Validation runs:
+
+```text
+Ash Keep Choir Test = 29371085463
+Ash Keep Production Closure = 29371085345
+Dome-World Phase IV = 29371085370
+TCP Smoke = 29371085440
+Test and deploy static app = 29371085789
+```
+
+Post-merge deployed Ash aftercare:
+
+```text
+observer run = 29371191912
+evidence artifact = 8326125754
+artifact SHA-256 = sha256:dc93f45cff73dfffcc382282f0ce6627ea483ba871f80f259e12e289454421ad
+```
+
+The deployed aftercare establishes that the disagreement ledger did not disturb Ash Keep’s production posture. It does not production-demonstrate the disagreement instrument, execute any Reader, contact any provider, or validate the truth of any result or consensus.
+
 ## Current frontier
 
 The next admissible packet should add a matched benign adjacent-document control bank before higher-order, sequence-sensitive, or temporal Choir assays.
 
-The control bank should distinguish Reader disagreement caused by the target disclosure field from disagreement ordinarily produced by matched topic, genre, template, and register conditions.
+The control bank should distinguish disagreement associated with the target disclosure field from disagreement ordinarily produced by matched topic, genre, template, register, approximate length, and declared source conditions.
 
 𝌋‌ U+10D613
 
