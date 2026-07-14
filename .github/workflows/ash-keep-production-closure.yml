@@ -34,6 +34,9 @@ on:
       - "scripts/run-ash-keep-production-probe.mjs"
       - "tests/ash-keep-*.test.mjs"
       - ".github/workflows/ash-keep-production-closure.yml"
+  workflow_run:
+    workflows: ["Test and deploy static app"]
+    types: [completed]
   workflow_dispatch:
     inputs:
       base_url:
@@ -52,6 +55,7 @@ permissions:
 
 jobs:
   local-closure-validation:
+    if: github.event_name != 'workflow_run'
     runs-on: ubuntu-latest
     timeout-minutes: 20
     steps:
@@ -122,27 +126,90 @@ jobs:
           fi
 
   deployed-observation:
-    if: github.event_name == 'workflow_dispatch' && inputs.confirm_deployed_probe == 'RUN_DEPLOYED_OBSERVATION' && inputs.base_url != ''
+    if: >-
+      (github.event_name == 'workflow_dispatch' && inputs.confirm_deployed_probe == 'RUN_DEPLOYED_OBSERVATION' && inputs.base_url != '')
+      ||
+      (github.event_name == 'workflow_run' && github.event.workflow_run.conclusion == 'success' && github.event.workflow_run.head_branch == 'main')
     runs-on: ubuntu-latest
-    timeout-minutes: 15
+    timeout-minutes: 20
+    env:
+      TD613_DEPLOYED_BASE_URL: ${{ github.event_name == 'workflow_run' && 'https://td613.com' || inputs.base_url }}
+      TD613_OBSERVED_COMMIT: ${{ github.event_name == 'workflow_run' && github.event.workflow_run.head_sha || github.sha }}
+      TD613_UPSTREAM_WORKFLOW_RUN_ID: ${{ github.event_name == 'workflow_run' && github.event.workflow_run.id || '' }}
     steps:
       - uses: actions/checkout@v4
+        with:
+          ref: ${{ env.TD613_OBSERVED_COMMIT }}
       - uses: actions/setup-node@v4
         with:
           node-version: 22
           cache: npm
       - name: Install repository dependencies
         run: npm ci
+      - name: Wait for deployed Ash Keep route
+        run: |
+          set -euo pipefail
+          mkdir -p artifacts/ash-keep-deployed-observation
+          route="${TD613_DEPLOYED_BASE_URL%/}/dome-world/ash-keep.html"
+          for attempt in $(seq 1 60); do
+            body="$(curl -fsSL --max-time 10 "$route" || true)"
+            if printf '%s' "$body" | grep -q 'TD613 Ash Keep'; then
+              printf '%s' "$body" > artifacts/ash-keep-deployed-observation/deployed-route.html
+              printf '{"route":"%s","attempt":%s,"status":"READY"}\n' "$route" "$attempt" > artifacts/ash-keep-deployed-observation/deployment-readiness.json
+              exit 0
+            fi
+            sleep 5
+          done
+          printf '{"route":"%s","status":"HOLD_DEPLOYED_ROUTE_UNAVAILABLE"}\n' "$route" > artifacts/ash-keep-deployed-observation/deployment-readiness.json
+          exit 1
+      - name: Record deployment observer context
+        env:
+          TD613_OBSERVER_RUN_ID: ${{ github.run_id }}
+          TD613_OBSERVER_RUN_ATTEMPT: ${{ github.run_attempt }}
+          TD613_TRIGGER_EVENT: ${{ github.event_name }}
+        run: |
+          node <<'NODE'
+          const fs = require('node:fs');
+          const crypto = require('node:crypto');
+          const context = {
+            schema: 'td613.ash-keep.deployment-observer-context/v0.1',
+            observed_base_url: process.env.TD613_DEPLOYED_BASE_URL,
+            observed_runtime_commit: process.env.TD613_OBSERVED_COMMIT,
+            upstream_deployment_workflow_run_id: process.env.TD613_UPSTREAM_WORKFLOW_RUN_ID || null,
+            observer_workflow_run_id: process.env.TD613_OBSERVER_RUN_ID,
+            observer_workflow_run_attempt: process.env.TD613_OBSERVER_RUN_ATTEMPT,
+            trigger_event: process.env.TD613_TRIGGER_EVENT,
+            source_status: 'DEPLOYED_OBSERVATION',
+            promotion_authorized: false
+          };
+          const body = `${JSON.stringify(context, null, 2)}\n`;
+          context.context_sha256 = `sha256:${crypto.createHash('sha256').update(body).digest('hex')}`;
+          fs.writeFileSync(
+            'artifacts/ash-keep-deployed-observation/deployment-observer-context.json',
+            `${JSON.stringify(context, null, 2)}\n`
+          );
+          NODE
       - name: Install Chromium probe runtime
         run: |
           npm install --no-save --package-lock=false playwright@1.53.2
           npx playwright install --with-deps chromium
       - name: Observe deployed Ash Keep without promotion
         env:
-          TD613_BASE_URL: ${{ inputs.base_url }}
+          TD613_BASE_URL: ${{ env.TD613_DEPLOYED_BASE_URL }}
           TD613_ARTIFACT_DIR: artifacts/ash-keep-deployed-observation
           TD613_PROBE_RUNTIME_DIR: artifacts/ash-keep-probe-runtime
         run: node scripts/run-ash-keep-production-probe.mjs
+      - name: Validate deployed observation class
+        run: |
+          node <<'NODE'
+          const fs = require('node:fs');
+          const report = JSON.parse(fs.readFileSync('artifacts/ash-keep-deployed-observation/ash-keep-production-closure.json', 'utf8'));
+          if (report.status !== 'PASS') throw new Error(`Deployed observation did not pass: ${report.status}`);
+          if (report.source_status !== 'DEPLOYED_OBSERVATION') throw new Error(`Unexpected source status: ${report.source_status}`);
+          if (report.promotion_authorized !== false) throw new Error('Deployed observation attempted to authorize promotion.');
+          if (report.network?.non_read_requests?.length) throw new Error('Deployed observation emitted non-read requests.');
+          if (report.network?.recipient_transport_requests?.length) throw new Error('Deployed observation emitted recipient transport.');
+          NODE
       - name: Preserve deployed observation
         if: always()
         uses: actions/upload-artifact@v4
@@ -156,6 +223,7 @@ jobs:
           if-no-files-found: error
           retention-days: 30
       - name: Reassert non-promotion
+        if: always()
         run: |
           node -e "const r=require('./app/aperture/release.json'); if(r.ash.productionStatus!=='PREVIEW_PENDING') process.exit(1)"
           grep -q 'NOT_YET_EARNED' app/dome-world/docs/ASH_KEEP_V1_PRODUCTION_DEMO_RECEIPT.md
