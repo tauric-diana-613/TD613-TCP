@@ -37,6 +37,51 @@ const baseCase = {
   }]
 };
 
+function boundFixture(digestCharacter = 'd') {
+  const binding = buildCustodyRoot({ caseMap: baseCase, custodyReceipt, readinessReceipt: readiness });
+  const caseMap = {
+    ...baseCase,
+    custody_reference: binding.custody_reference,
+    nodes: binding.nodes,
+    case_map_digest: `sha256:${digestCharacter.repeat(64)}`
+  };
+  const latestTest = {
+    case_id: caseMap.case_id,
+    case_map_digest: caseMap.case_map_digest,
+    test_id: 'test_current',
+    review_state: 'OPERATOR_REVIEW_REQUIRED'
+  };
+  const latestDraft = {
+    case_id: caseMap.case_id,
+    case_map_digest: caseMap.case_map_digest,
+    draft_id: 'draft_current',
+    draft_digest: `sha256:${'f'.repeat(64)}`
+  };
+  const latestReview = {
+    review_id: 'review_current',
+    draft_id: latestDraft.draft_id,
+    draft_digest: latestDraft.draft_digest,
+    case_map_digest: caseMap.case_map_digest,
+    status: 'READY_FOR_LOCAL_RELEASE_APPROVAL',
+    local_export_approved: true
+  };
+  const latestRelease = {
+    receipt_id: 'release_current',
+    case_id: caseMap.case_id,
+    case_map_digest: caseMap.case_map_digest,
+    draft_id: latestDraft.draft_id,
+    draft_digest: latestDraft.draft_digest,
+    review_reference: latestReview.review_id
+  };
+  const latestSavePoint = {
+    case_id: caseMap.case_id,
+    case_map_digest: caseMap.case_map_digest,
+    save_point_id: 'save_current',
+    tamper_state: 'CLEAR'
+  };
+  return { caseMap, latestTest, latestDraft, latestReview, latestRelease, latestSavePoint };
+}
+
 test('Quick Scan readiness rejects raw content and preserves the no-custody boundary', async () => {
   await assert.rejects(() => compileReadinessReceipt({ text: 'raw sensitive content' }), /rejects raw content/i);
   assert.equal(readiness.raw_content_accepted, false);
@@ -62,7 +107,7 @@ test('custody root binding is idempotent and moves the root into the Case Map to
   assert.equal(second.root_node.id, first.root_node.id);
 });
 
-test('lifecycle gates distinguish readiness, verified custody, case binding, rebuild, release, and continuity', () => {
+test('lifecycle advances only through a contiguous custody-bound chain', () => {
   const arrival = deriveAshLifecycle({});
   assert.equal(arrival.state, ASH_LIFECYCLE_STATES.ARRIVAL_UNPERSISTED);
   assert.equal(workspaceGate(arrival, 'test').allowed, false);
@@ -75,60 +120,73 @@ test('lifecycle gates distinguish readiness, verified custody, case binding, reb
   assert.equal(verified.state, ASH_LIFECYCLE_STATES.CUSTODY_ROOT_VERIFIED);
   assert.equal(verified.next_action, 'CREATE_CASE');
 
-  const binding = buildCustodyRoot({ caseMap: baseCase, custodyReceipt, readinessReceipt: readiness });
-  const boundCase = {
-    ...baseCase,
-    custody_reference: binding.custody_reference,
-    nodes: binding.nodes,
-    case_map_digest: `sha256:${'d'.repeat(64)}`
-  };
-  const bound = deriveAshLifecycle({ readinessReceipt: readiness, custodyReceipt, custodyVerified: true, caseMap: boundCase });
+  const fixture = boundFixture();
+  const bound = deriveAshLifecycle({ readinessReceipt: readiness, custodyReceipt, custodyVerified: true, caseMap: fixture.caseMap });
   assert.equal(bound.state, ASH_LIFECYCLE_STATES.CASE_BOUND);
   assert.equal(bound.gates.test, true);
-  assert.equal(bound.gates.local_release, false);
+  assert.equal(bound.gates.draft, false);
 
-  const latestTest = {
-    case_id: boundCase.case_id,
-    case_map_digest: boundCase.case_map_digest,
-    test_id: 'test_current',
-    review_state: 'REVIEW_REQUIRED'
-  };
-  const rebuild = deriveAshLifecycle({ readinessReceipt: readiness, custodyReceipt, custodyVerified: true, caseMap: boundCase, latestTest });
+  const rebuild = deriveAshLifecycle({ readinessReceipt: readiness, custodyReceipt, custodyVerified: true, caseMap: fixture.caseMap, latestTest: fixture.latestTest });
   assert.equal(rebuild.state, ASH_LIFECYCLE_STATES.REBUILD_ELIGIBLE);
+  assert.equal(rebuild.next_action, 'KEEP_CUSTODY_BOUND_DRAFT');
+  assert.equal(rebuild.gates.draft, true);
 
-  const latestReview = { status: 'READY_FOR_LOCAL_RELEASE_APPROVAL', local_export_approved: true };
-  const release = deriveAshLifecycle({ readinessReceipt: readiness, custodyReceipt, custodyVerified: true, caseMap: boundCase, latestTest, latestReview });
-  assert.equal(release.state, ASH_LIFECYCLE_STATES.RELEASE_ELIGIBLE);
-  assert.equal(release.gates.local_release, true);
+  const reviewed = deriveAshLifecycle({
+    readinessReceipt: readiness, custodyReceipt, custodyVerified: true,
+    caseMap: fixture.caseMap, latestTest: fixture.latestTest,
+    latestDraft: fixture.latestDraft, latestReview: fixture.latestReview
+  });
+  assert.equal(reviewed.state, ASH_LIFECYCLE_STATES.REBUILD_ELIGIBLE);
+  assert.equal(reviewed.gates.local_release, true);
+  assert.equal(reviewed.next_action, 'KEEP_RELEASE_RECEIPT');
 
-  const latestSavePoint = {
-    case_id: boundCase.case_id,
-    case_map_digest: boundCase.case_map_digest,
-    save_point_id: 'save_current',
-    tamper_state: 'CLEAR'
-  };
-  const sealed = deriveAshLifecycle({ readinessReceipt: readiness, custodyReceipt, custodyVerified: true, caseMap: boundCase, latestTest, latestReview, latestSavePoint });
+  const released = deriveAshLifecycle({
+    readinessReceipt: readiness, custodyReceipt, custodyVerified: true,
+    caseMap: fixture.caseMap, latestTest: fixture.latestTest,
+    latestDraft: fixture.latestDraft, latestReview: fixture.latestReview,
+    latestRelease: fixture.latestRelease
+  });
+  assert.equal(released.state, ASH_LIFECYCLE_STATES.RELEASE_ELIGIBLE);
+  assert.equal(released.gates.save, true);
+
+  const sealed = deriveAshLifecycle({
+    readinessReceipt: readiness, custodyReceipt, custodyVerified: true,
+    ...fixture
+  });
   assert.equal(sealed.state, ASH_LIFECYCLE_STATES.CONTINUITY_SEALED);
 });
 
 test('a pre-custody Rebuild Test becomes stale when custody changes the Case Map digest', () => {
-  const binding = buildCustodyRoot({ caseMap: baseCase, custodyReceipt, readinessReceipt: readiness });
-  const boundCase = {
-    ...baseCase,
-    custody_reference: binding.custody_reference,
-    nodes: binding.nodes,
-    case_map_digest: `sha256:${'e'.repeat(64)}`
-  };
-  const staleTest = {
-    case_id: boundCase.case_id,
-    case_map_digest: baseCase.case_map_digest,
-    test_id: 'test_before_custody',
-    review_state: 'REVIEW_REQUIRED'
-  };
-  const lifecycle = deriveAshLifecycle({ readinessReceipt: readiness, custodyReceipt, custodyVerified: true, caseMap: boundCase, latestTest: staleTest });
+  const fixture = boundFixture('e');
+  const staleTest = { ...fixture.latestTest, test_id: 'test_before_custody', case_map_digest: baseCase.case_map_digest };
+  const lifecycle = deriveAshLifecycle({ readinessReceipt: readiness, custodyReceipt, custodyVerified: true, caseMap: fixture.caseMap, latestTest: staleTest });
   assert.equal(lifecycle.state, ASH_LIFECYCLE_STATES.CASE_BOUND);
   assert.ok(lifecycle.holds.includes('CURRENT_REBUILD_TEST_ABSENT'));
   assert.equal(lifecycle.gates.local_release, false);
+});
+
+test('pre-custody draft, review, release, and save artifacts cannot jump the lifecycle', () => {
+  const fixture = boundFixture('9');
+  const staleDigest = baseCase.case_map_digest;
+  const staleDraft = { ...fixture.latestDraft, case_map_digest: staleDigest };
+  const staleReview = { ...fixture.latestReview, case_map_digest: staleDigest };
+  const staleRelease = { ...fixture.latestRelease, case_map_digest: staleDigest };
+  const staleSave = { ...fixture.latestSavePoint, case_map_digest: staleDigest };
+  const lifecycle = deriveAshLifecycle({
+    readinessReceipt: readiness,
+    custodyReceipt,
+    custodyVerified: true,
+    caseMap: fixture.caseMap,
+    latestTest: fixture.latestTest,
+    latestDraft: staleDraft,
+    latestReview: staleReview,
+    latestRelease: staleRelease,
+    latestSavePoint: staleSave
+  });
+  assert.equal(lifecycle.state, ASH_LIFECYCLE_STATES.REBUILD_ELIGIBLE);
+  assert.equal(lifecycle.next_action, 'KEEP_CUSTODY_BOUND_DRAFT');
+  assert.equal(lifecycle.references.release_receipt, null);
+  assert.equal(lifecycle.references.save_point, null);
 });
 
 test('lifecycle receipts are sealed without granting identity, truth, or transport authority', async () => {
