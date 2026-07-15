@@ -7,7 +7,7 @@ function installStyle(doc = document) {
   style.textContent = `
     body[data-page-kind="adversarial-bench"]{padding-bottom:max(3rem,env(safe-area-inset-bottom))!important;}
     body[data-page-kind="adversarial-bench"] .shell.hush-instrument{padding-bottom:calc(5rem + env(safe-area-inset-bottom))!important;}
-    .hush-input-control-rail{display:grid!important;grid-template-columns:minmax(0,1fr) minmax(0,1fr)!important;gap:.52rem!important;margin:.55rem 0 .7rem!important;width:100%!important;}
+    .hush-input-control-rail{display:grid!important;grid-template-columns:minmax(0,1fr)!important;gap:.52rem!important;margin:.55rem 0 .7rem!important;width:100%!important;}
     .hush-input-control-rail #analyzeOutputBtn,.hush-input-control-rail #hushPhase32ClearInput{min-height:2.35rem!important;border-radius:999px!important;padding:.5rem .8rem!important;text-align:center!important;text-decoration:none!important;text-transform:uppercase!important;letter-spacing:.18em!important;font-weight:800!important;font-size:.74rem!important;}
     .hush-input-control-rail #analyzeOutputBtn{border:0!important;color:#071013!important;background:linear-gradient(105deg,#c69cff 0%,#89e7ff 52%,#a9f5ff 100%)!important;box-shadow:0 0 26px rgba(137,231,255,.22)!important;}
     .hush-input-control-rail #hushPhase32ClearInput{border:1px solid rgba(137,255,240,.30)!important;background:rgba(5,9,20,.82)!important;color:#f1fff6!important;}
@@ -93,3 +93,4 @@ if (typeof document !== 'undefined') {
   if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', run, { once: true }); else run();
   [240, 720, 1400, 2600, 4200].forEach((delay) => window.setTimeout(run, delay));
 }
+
