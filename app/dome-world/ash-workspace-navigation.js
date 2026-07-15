@@ -94,7 +94,7 @@ export function installAshWorkspaceNavigation(doc = globalThis.document, host = 
   updateTabPostures(doc);
 
   if (doc.body && typeof host.MutationObserver === 'function') {
-    new host.MutationObserver(updateTabPostures).observe(doc.body, {
+    new host.MutationObserver(() => updateTabPostures(doc)).observe(doc.body, {
       attributes: true,
       attributeFilter: ['data-ash-lifecycle'],
       childList: true,
