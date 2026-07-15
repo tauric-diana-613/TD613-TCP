@@ -4,6 +4,7 @@ import fs from 'node:fs';
 const read = path => fs.readFileSync(path, 'utf8');
 const workflow = read('.github/workflows/ash-keep-production-closure.yml');
 const probe = read('scripts/ash-lifecycle-production-probe.mjs');
+const threshold = read('app/dome-world/ash-threshold.html');
 const shell = read('api/dome-world-shell.js');
 const receipt = read('docs/ASH_LIFECYCLE_PRODUCTION_DEMO_RECEIPT.md');
 const ledger = read('docs/ASH_KEEP_BUILDOUT_LEDGER.md');
@@ -35,8 +36,14 @@ for (const token of [
 assert.match(probe, /promotion_authorized: false/);
 assert.match(probe, /readiness is not custody/);
 assert.match(probe, /continuity is not transport/);
+assert.match(probe, /waitForURL\([^\n]+arrival=cleared/);
+
+assert.match(threshold, /sessionStorage\.setItem\('td613:ash-threshold:readiness:v0\.1'/);
+assert.match(threshold, /location\.replace\('\/dome-world\/ash-keep\.html\?arrival=cleared&surface=ash-keep-html'\)/);
+assert.match(threshold, /readiness observation into Ash Keep/);
 
 assert.match(shell, /ASH_KEEP_JS_SHELL_VERSION = 'td613\.ash-keep\.js-shell\/v0\.2-review-refresh'/);
+assert.match(shell, /surface === 'ash-keep-html'/);
 assert.match(shell, /td613 lifecycle review refresh/);
 assert.match(shell, /setTimeout\(\(\) => location\.reload\(\), 160\)/);
 
