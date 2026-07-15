@@ -1,6 +1,8 @@
 # TD613 Repository Roadmap
 
-Roadmap generation: `v1.1 · Ash lifecycle production-demonstrated / Choir calibration selected`
+𝌋‌ U+10D613
+
+Roadmap generation: `v1.2 · Ash operator surface landed / consolidation selected`
 
 Date: `2026-07-15`
 
@@ -24,7 +26,7 @@ The ledger is authoritative for maturity scoring. This roadmap records shipped a
 | 4 | `IMPLEMENTED_VALIDATION_GATED` |
 | 5 | `IMPLEMENTED_PRODUCTION_DEMONSTRATED` |
 
-Green tests do not impersonate production evidence. Shared chambers do not impersonate lifecycle integration. Production status never transfers by proximity.
+Green tests do not impersonate production evidence. Shared chambers do not impersonate lifecycle integration. Production status never transfers by proximity. Current-head deployed aftercare proves non-disturbance along the observed route; it does not silently promote every new feature present on that head.
 
 ## Current posture
 
@@ -32,12 +34,25 @@ Green tests do not impersonate production evidence. Shared chambers do not imper
 Ash Keep = 54 / 55 · production-demonstrated
 Choir = 36 / 70 · validation-gated
 Ash lifecycle = 35 / 35 · production-demonstrated
-full bounded program = 158 / 330 · ≈48%
-production-demonstrated workstreams = 2 / 8
+Ash operator surface = 35 / 45 · validation-gated
+full bounded program = 193 / 375 · ≈51%
+production-demonstrated workstreams = 2 / 9
 transport-capable workstreams = 0
 ```
 
 Ash transport and automatic Cinder remain false.
+
+## Governing route distinctions
+
+```text
+workspace visibility ≠ mutation eligibility
+case selection ≠ case opening
+case closure ≠ case deletion
+saved fingerprint ≠ custody proof
+local deletion ≠ external erasure
+current-head aftercare ≠ feature-specific production demonstration
+case restoration ≠ historical-record repair
+```
 
 # Shipped spine
 
@@ -61,7 +76,7 @@ All remain validation-gated.
 
 ## Ash product lifecycle orchestration
 
-Implementation merge: PR `#297`, `af733b26f835bc49b5d75a75e0`
+Implementation merge: PR `#297`, `af733b26f835bc5f110e251addbc49b5d75a75e0`
 
 Production-observed runtime: `e8cbd00673e86d9fa0969407c28ef3ed89af55f7`
 
@@ -102,93 +117,235 @@ observer_result: PASS
 promotion_scope: lifecycle maturity only
 ```
 
-Demonstrated boundaries:
+The evidence-only receipt closed the lifecycle maturity gate. It grants no transport or automatic Cinder authority.
 
-- threshold wrong-order reset and ordered clearance;
-- session-only readiness with no raw content;
-- pre-custody workspace hold;
-- browser-local L1 artifact commitment;
-- exactly one custody-registration POST without artifact bytes;
-- verified custody manifest and receipt digests;
-- custody-root Case Map mutation;
-- one common Case Map digest across Rebuild, Draft, Review, Release, and Save Point;
-- authenticated Capsule round trip;
-- wrong-passphrase and tamper holds;
-- desktop, mobile portrait, mobile landscape, and reduced-motion reachability;
-- no provider, recipient, Cinder, or transport route;
-- no automatic runtime promotion.
+## Ash operator surface and local case stewardship
 
-The later evidence-only receipt closes the maturity gate. It grants no transport or automatic Cinder authority.
+Landed sequence:
+
+```text
+PR #323  lifecycle integration hardening
+PR #326  case-entry and restoration membrane
+PR #327  dedicated mobile composition
+PR #328  canonical Keep popup restoration
+PR #329  Save Case / Close Case / Select Case / local fingerprints
+PR #330  explicit Open / Delete and density-aware map labels
+PR #331  navigable workspaces with action-level lifecycle holds
+PR #332  navigation observer and deployed-probe reconciliation
+```
+
+Current-head deployed aftercare:
+
+```yaml
+head_commit: 3b85b95d616579ddc3255e2716cabd4b178f74da
+observer_run: 29441389808
+observer_result: PASS
+evidence_artifact: 8353582293
+evidence_artifact_sha256: sha256:ebb97064fb3cee667b227a176f72fa1dce66e4087b5e0470f6f286748a1279a6
+promotion_authorized: false
+ruling: CURRENT_HEAD_NON_DISTURBANCE_ONLY
+```
+
+The landed surface now supports deliberate local case saving, closing, selection, explicit opening, confirmed local deletion, mobile-specific composition, density-aware map labels, and reviewable workspaces whose mutating actions remain lifecycle-held. These features form a new maturity jurisdiction. They do not reopen or inherit A or H.
 
 # Selected next packet
 
-## Choir calibration receipt binding
+## Ash operator-surface consolidation and closure
 
 ```text
 SELECTED_NEXT
-status: IMPLEMENTED_VALIDATION_GATED / NEXT_PACKET_UNBUILT
+status: IMPLEMENTED_VALIDATION_GATED / CLOSURE_PACKET_UNBUILT
 ```
 
 Purpose:
 
-Replace free calibration booleans and nearby maturity assumptions with verified matched-control receipt references.
+Stabilize the operator substrate before Choir calibration is allowed to depend on it.
 
 Required circuit:
 
 ```text
-verified Moiré assay receipt
+declared composition manifest
+→ explicit case-state machine
+→ deletion plan and recovery receipt
+→ browser-local contention protocol
+→ historical compatibility audit
+→ lifecycle event bus
+→ dedicated deployed operator-surface probe
+→ evidence-only promotion decision
+```
+
+## 1. Declared composition manifest
+
+Declare one canonical order for:
+
+```text
+canonical Keep document
+→ lifecycle composition
+→ custody bridge
+→ workspace bridge
+→ navigation semantics
+→ case controls
+→ mobile composition
+→ map labels
+→ production observer
+```
+
+Each layer must state:
+
+- prerequisite version;
+- provided capability;
+- mutation surface;
+- authority ceiling;
+- idempotence marker;
+- failure posture.
+
+## 2. Explicit case-state contract
+
+The product must distinguish at least:
+
+```text
+EPHEMERAL_CURRENT
+CURRENT_UNSAVED
+CURRENT_SAVED
+CLOSED_SAVED
+CLOSED_CURRENT_UNSAVED
+SELECTED_NOT_OPEN
+DELETION_PENDING
+DELETED_LOCAL
+DELETE_PARTIAL_HOLD
+```
+
+No interface label may collapse selection into opening, closure into deletion, or saved sameness into custody proof.
+
+## 3. Destructive-continuity closure
+
+Local Delete must gain:
+
+- a pre-deletion inventory;
+- a deletion-plan digest;
+- one transaction or explicitly staged transaction set;
+- a post-deletion orphan scan;
+- a partial-failure receipt;
+- interrupted-delete recovery;
+- a clear statement that local deletion does not prove remote erasure;
+- an optional Capsule/export reminder before irreversible deletion.
+
+## 4. Browser-local contention protocol
+
+Define browser-local coordination for:
+
+- first custody registration;
+- Save Case;
+- explicit Open;
+- Delete;
+- stale pointer cleanup.
+
+This protocol may use a lease, lock, or deterministic transaction rule. It must not claim repository-wide or distributed locking.
+
+## 5. Historical compatibility audit
+
+Run a dry, non-mutating audit for:
+
+- malformed historical Save Points;
+- duplicate custody nodes;
+- orphaned reviews or releases;
+- stale saved-case fingerprints;
+- missing lifecycle records;
+- pointers to deleted cases.
+
+Any migration requires a separate human-approved plan.
+
+## 6. Lifecycle event bus
+
+Replace the temporary post-review reload with a declared internal lifecycle event bus before additional behavior depends on reload timing.
+
+## 7. Dedicated deployed operator-surface probe
+
+The deployed probe must directly demonstrate:
+
+- first entry;
+- returning entry without launch flicker;
+- Save Case;
+- mutation changing saved posture to current unsaved;
+- Close Case without deletion;
+- selection without opening;
+- explicit Open;
+- multiple local cases;
+- Delete confirmation;
+- complete owned-record cleanup;
+- interrupted or partial deletion hold;
+- all seven workspaces navigable;
+- mutating actions held at the correct lifecycle ranks;
+- desktop, mobile portrait, mobile landscape, and reduced-motion behavior;
+- density-aware map labels and accessible node numbering;
+- zero provider, recipient, Cinder, or transport routes;
+- `promotion_authorized: false` during observation.
+
+# Packet after consolidation
+
+## Choir calibration receipt binding
+
+```text
+AFTER_CONSOLIDATION
+status: IMPLEMENTED_VALIDATION_GATED / NEXT_RESEARCH_PACKET_UNBUILT
+```
+
+Purpose:
+
+Replace free calibration booleans and nearby maturity assumptions with verified matched-control receipt references bound to the settled lifecycle substrate.
+
+Required circuit:
+
+```text
+current custody-bound case_id and case_map_digest
+→ verified Moiré assay receipt
 → verified Reader provenance receipts
 → verified Reader Disagreement Ledger
 → verified matched benign-control bank receipt
 → calibration eligibility derived from references
 → componentwise comparison retained
-→ tamper and replay holds retained
+→ tamper, replay, and stale-case holds retained
 ```
 
 Required boundaries:
 
-- calibration eligibility must derive from verified receipt references rather than free booleans;
-- Reader-set, registry, result-schema, and input-contract equality remain explicit;
+- calibration eligibility derives from verified receipt references rather than free booleans;
+- target and control Reader sets, registry, result schema, and input contract remain explicit;
 - only eligible matched controls enter the comparison distribution;
+- case mutation invalidates stale calibration references;
+- saved-case fingerprints never impersonate custody or Case Map authority;
 - residual confounds and excluded controls remain visible;
 - no universal score;
 - no automatic hold, release, provider execution, or transport;
-- Ash lifecycle production status does not transfer to Choir.
-
-Required evidence:
-
-- exact receipt schemas and canonical digests;
-- missing, mismatched, tampered, and replay-held cases;
-- matched-control minimum enforcement;
-- target/control Reader-set equality;
-- componentwise outputs for nodes, relationships, Room bridges, hypotheses, intended actions, chronology, source/style linkage, and Reader-pair disagreement;
-- explicit non-authority fields.
+- A, H, and I maturity never transfer to Choir.
 
 # Ordered program roadmap
 
-1. **Choir calibration receipt binding.** Replace free calibration booleans with verified matched-control receipt references.
-2. **Higher-order interference.** Keep k-order recovery separate from pairwise Moiré.
-3. **Ordered route-sequence recovery.** Measure order effects under a sequence-specific receipt.
-4. **Temporal and delayed-disclosure assays.** Use declared slices without claiming trusted time.
-5. **Hush vocabulary externalization.** Move fixture-heavy vocabulary into declared data.
-6. **Hush intervention ensemble.** Hold proposition obligations constant across surface changes.
-7. **Custodian Return and Anisotropy.** Restore the custody-bound lifecycle after controlled context loss.
-8. **Aperture wiring renovation before Choir UI.** Replace wrapper chains with declared composition.
-9. **Safe Harbor → Ash custody-root adapter.** Enter verified packets through bounded custody ingress.
-10. **Independent provenance adapters.** Preserve evidence status without truth or identity inflation.
-11. **Destination-bound transport last.** Require lifecycle and Rebuild preflight plus separate authorization and execution receipts.
+1. **Ash operator-surface consolidation and closure.** Stabilize composition, case states, destructive continuity, contention, compatibility, event routing, and deployed observation.
+2. **Choir calibration receipt binding.** Bind calibration eligibility to verified receipts and the current custody-bound Case Map.
+3. **Custodian Return and Anisotropy.** Test whether the rightful custodian can restore the lifecycle after controlled context loss without granting equivalent external recoverability.
+4. **Higher-order interference.** Keep k-order recovery separate from pairwise Moiré.
+5. **Ordered route-sequence recovery.** Measure order effects under a sequence-specific receipt.
+6. **Temporal and delayed-disclosure assays.** Use declared slices without claiming trusted time.
+7. **Hush vocabulary externalization.** Move fixture-heavy vocabulary into declared data.
+8. **Hush intervention ensemble.** Hold proposition obligations constant across surface changes.
+9. **Aperture composition renovation before Choir UI.** Replace wrapper chains with declared composition.
+10. **Safe Harbor → Ash custody-root adapter.** Enter verified packets through bounded custody ingress.
+11. **Independent provenance adapters.** Preserve evidence status without truth or identity inflation.
+12. **Destination-bound transport last.** Require lifecycle and Rebuild preflight plus separate authorization and execution receipts.
 
 # Structural maintenance
 
-- Replace the temporary post-review lifecycle reload with a declared internal event bus during wiring renovation.
 - Preserve the twelve-function Vercel ceiling and Marrowline shell contract.
 - Narrow lifecycle persistence only through new evidence, never convenience.
+- Preserve exact `keepDraft()`-scoped binding regressions so unrelated Case Map digest uses cannot suppress Draft authority.
 - Keep Safe Harbor membrane, packet lifecycle, signature alignment, and reference-surface work separately tracked.
-- Preserve the adapter's exact `keepDraft()`-scoped binding regression so unrelated Case Map digest uses cannot suppress Draft binding again.
+- Record every post-promotion Ash change in the ledger delta register rather than folding it invisibly into A or H.
+- Keep navigation authority, mutation authority, custody authority, release authority, and transport authority separately testable.
 
 # Current red — separate jurisdiction
 
-Two Marrowline workflows remain red in an unchanged station-test family. The Ash lifecycle closure preserves that separation. Do not alter unrelated Marrowline code merely to make the repository look uniformly green.
+Two Marrowline workflows remain red in an unchanged station-test family. The Ash lifecycle and operator-surface work preserve that separation. Do not alter unrelated Marrowline code merely to make the repository look uniformly green.
 
 # Final route
 
@@ -201,18 +358,19 @@ Ash threshold
 → Draft / Review / Release
 → continuity
 → lifecycle production closure [CLOSED]
-→ Choir calibration receipt binding [NEXT]
+→ operator-surface consolidation [NEXT]
+→ Choir calibration receipt binding [AFTER CONSOLIDATION]
+→ Custodian Return / Anisotropy
 → higher-order / ordered / temporal assays
 → Hush intervention
-→ Custodian Return
 → Aperture and Choir UI
 → Safe Harbor custody ingress
 → independent provenance
 → destination transport [LAST]
 ```
 
-Architecturally coherent. The product inversion and its production closure are complete. Choir calibration now advances without inheriting Ash's production status or authority.
+Architecturally coherent. The lifecycle remains closed and production-demonstrated. The operator surface is real, useful, and validation-gated. Consolidation now precedes Choir so future research binds to a stable custodial substrate rather than retroactively patching a moving one.
 
-𝌋‌ U+10D613
+Authored with 𝌋‌
 
-Marked ⟐
+Noted ⟐
