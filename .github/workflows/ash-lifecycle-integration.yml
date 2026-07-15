@@ -1,53 +1,53 @@
 name: Ash lifecycle integration
 
 on:
-  push:
-    branches:
-      - agent/ash-threshold-custody-well
+  pull_request:
+    paths:
+      - "api/dome-world-shell.js"
+      - "api/ash-keep-shell.js"
+      - "app/dome-world/ash-threshold.html"
+      - "app/dome-world/ash-lifecycle.js"
+      - "app/engine/ash-lifecycle.js"
+      - "docs/ASH_KEEP_BUILDOUT_LEDGER.md"
+      - "docs/ASH_LIFECYCLE_ORCHESTRATION.md"
+      - "ROADMAP.md"
+      - "tests/ash-lifecycle.test.mjs"
+      - "tests/ash-product-architecture.test.mjs"
+      - "vercel.json"
+      - ".github/workflows/ash-lifecycle-integration.yml"
   workflow_dispatch:
 
 permissions:
-  contents: write
+  contents: read
 
 concurrency:
-  group: ash-lifecycle-integration-${{ github.ref }}
-  cancel-in-progress: false
+  group: ash-lifecycle-${{ github.event.pull_request.number || github.ref }}
+  cancel-in-progress: true
 
 jobs:
-  integrate:
+  validate:
     runs-on: ubuntu-latest
     steps:
-      - name: Check out candidate branch
+      - name: Check out candidate
         uses: actions/checkout@v4
-        with:
-          ref: agent/ash-threshold-custody-well
-          fetch-depth: 0
 
       - name: Set up Node
         uses: actions/setup-node@v4
         with:
           node-version: 20
+          cache: npm
 
-      - name: Apply deterministic integration
-        run: node scripts/apply-ash-lifecycle-integration.mjs
+      - name: Install dependencies
+        run: npm ci
 
-      - name: Run lifecycle tests
+      - name: Run lifecycle state tests
         run: node tests/ash-lifecycle.test.mjs
 
-      - name: Run product architecture tests
+      - name: Run lifecycle product architecture tests
         run: node tests/ash-product-architecture.test.mjs
 
-      - name: Run Ash Keep suite
-        run: npm run test:ash-keep
+      - name: Preserve existing Dome shell contract
+        run: node tests/dome-world-lab-marrowline-link.test.mjs
 
-      - name: Commit generated integration
-        run: |
-          if git diff --quiet; then
-            echo "Integration tree already current."
-            exit 0
-          fi
-          git config user.name "github-actions[bot]"
-          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          git add app/dome-world/index.html app/dome-world/ash-keep.html app/engine/ash-lifecycle.js package.json ROADMAP.md docs/ASH_KEEP_BUILDOUT_LEDGER.md
-          git commit -m "Integrate Ash threshold custody lifecycle"
-          git push origin HEAD:agent/ash-threshold-custody-well
+      - name: Run existing Ash Keep suite
+        run: npm run test:ash-keep
