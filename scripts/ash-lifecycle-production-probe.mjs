@@ -38,9 +38,7 @@ const repairedDraftSeam = [
 await fs.mkdir(artifactDir, { recursive: true });
 const source = await fs.readFile(CORE_PROBE, 'utf8');
 for (const marker of PROBE_CONTRACT_MARKERS) {
-  if (!source.includes(marker) && !PROBE_CONTRACT_MARKERS.includes(marker)) {
-    throw new Error(`Lifecycle probe core omitted contract marker: ${marker}`);
-  }
+  if (!source.includes(marker)) throw new Error(`Lifecycle probe core omitted contract marker: ${marker}`);
 }
 const seamCount = source.split(draftSeam).length - 1;
 if (seamCount !== 1) {
