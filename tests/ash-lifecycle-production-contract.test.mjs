@@ -95,14 +95,40 @@ const headSurface = invokeShell({ method: 'HEAD', url: '/api/dome-world-shell?su
 assert.equal(headSurface.statusCode, 307);
 assert.equal(headSurface.body, '');
 
-assert.match(receipt, /Status: `NOT_YET_EARNED`/);
-assert.match(receipt, /promotion_authorized: false/);
-assert.match(receipt, /deployed threshold → readiness → custody root → case binding/i);
-assert.match(ledger, /H\. Ash product lifecycle orchestration \| \*\*24 \/ 35\*\*/);
-assert.match(ledger, /main = 147 \/ 330/);
-assert.match(ledger, /production demonstration remains unearned/i);
-assert.match(roadmap, /Ash lifecycle production closure/);
-assert.match(roadmap, /SELECTED_NEXT/);
-assert.match(roadmap, /calibration receipt binding.*AFTER/i);
+assert.match(receipt, /Status: `EARNED`/);
+assert.match(receipt, /status: EARNED/);
+assert.match(receipt, /promotion_authorized: true/);
+assert.match(receipt, /promotion_scope: ASH_LIFECYCLE_MATURITY_ONLY/);
+assert.match(receipt, /operator_closure: EVIDENCE_VERIFIED_AND_LIFECYCLE_MATURITY_PROMOTED/);
+assert.match(receipt, /observed_commit: e8cbd00673e86d9fa0969407c28ef3ed89af55f7/);
+assert.match(receipt, /upstream_deployment_workflow_run_id: 29383285733/);
+assert.match(receipt, /observer_workflow_run_id: 29383294474/);
+assert.match(receipt, /evidence_artifact_id: 8330532097/);
+assert.match(receipt, /evidence_artifact_sha256: sha256:93c8c3992223af4524bf16d645de394333decd62b2ab65c88a1a7d1c4c68a249/);
+assert.match(receipt, /terminal_commit_status_id: 50486516511/);
+assert.match(receipt, /terminal_status_receipt_sha256: sha256:8d3602d2529f59ec39974280bfbde80746797168d646925bdc435277e7b90295/);
+assert.match(receipt, /lifecycle_report_sha256: sha256:bf64b8b7ef9fd392672ab311690c395ad5ad1fe612ec32cd05bbb9396a270260/);
+assert.match(receipt, /evidence_manifest_sha256: sha256:b5bd7e03c2dd3630703805d125900ee249b4b15ca30ed59cf1103803e982bdb7/);
+for (const digest of [
+  'sha256:e11bb2b191d7f46c7220cc74c78d7b011af55cefe7984c976c8ab27843f64003',
+  'sha256:c1219446ed79238317b0465df05dccb07370008f63194fd842c4d63ca7362ccc',
+  'sha256:2a4318cf7bb704aad07bd9f9aa7403902333bf07edf0ec35f67002bd3469e159',
+  'sha256:4e2cc03f37e7ff08c15d17d234a9af62c58c2f7678a425efed3845048d378a34'
+]) assert.ok(receipt.includes(digest), `Lifecycle promotion receipt omitted screenshot digest ${digest}`);
+assert.match(receipt, /CONTINUITY_SEALED/);
+assert.match(receipt, /raw_artifact_in_request_body: false/);
+assert.match(receipt, /provider_or_transport_requests: \[\]/);
+assert.match(receipt, /lifecycle maturity promotion ≠ transport authorization/);
+
+assert.match(ledger, /H\. Ash product lifecycle orchestration \| \*\*35 \/ 35\*\*/);
+assert.match(ledger, /main = 158 \/ 330/);
+assert.match(ledger, /production-demonstrated workstreams = 2 \/ 8/);
+assert.match(ledger, /Status: `IMPLEMENTED_PRODUCTION_DEMONSTRATED`/);
+assert.match(ledger, /Choir calibration receipt binding/);
+assert.match(roadmap, /Ash lifecycle = 35 \/ 35 · production-demonstrated/);
+assert.match(roadmap, /full bounded program = 158 \/ 330/);
+assert.match(roadmap, /Choir calibration receipt binding \[NEXT\]/);
+assert.match(roadmap, /lifecycle production closure \[CLOSED\]/);
+assert.match(roadmap, /transport-capable workstreams = 0/);
 
 console.log('ash-lifecycle-production-contract.test.mjs passed');

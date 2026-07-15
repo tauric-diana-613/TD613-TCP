@@ -2,18 +2,24 @@
 
 Date: `2026-07-15`
 
-Ledger generation: `v1.0 · post-Ash-lifecycle-merge / production-closure pending`
+Ledger generation: `v1.1 · Ash lifecycle production-demonstrated`
 
 Tracked program: Ash product lifecycle / Ash Keep / Choir Test / anisotropic disclosure research program
 
-Latest merged scored transition:
+Latest scored evidence transition:
 
 ```text
-PR #297
-af733b26f835bc5f110e251addbc49b5d75a75e0
+observed runtime
+e8cbd00673e86d9fa0969407c28ef3ed89af55f7
+
+observer run
+29383294474
+
+evidence artifact
+8330532097
 ```
 
-Active closure packet: `agent/ash-lifecycle-production-closure`
+Active closure packet: `agent/ash-lifecycle-evidence-promotion`
 
 ## Governing maturity law
 
@@ -39,12 +45,12 @@ A green unit test is not production evidence. An adjacent primitive is not an in
 | E. Aperture wiring renovation | **6 / 25** | **24%** | `DESIGNED_ONLY / SCAFFOLDED` |
 | F. Safe Harbor → Ash adapter | **6 / 30** | **20%** | `SCAFFOLDED` |
 | G. Destination-bound transport | **7 / 45** | **16%** | `HELD / SCAFFOLDED` |
-| H. Ash product lifecycle orchestration | **24 / 35** | **69%** | `IMPLEMENTED_VALIDATION_GATED`; production demonstration remains unearned |
+| H. Ash product lifecycle orchestration | **35 / 35** | **100%** | `IMPLEMENTED_PRODUCTION_DEMONSTRATED`; transport remains false |
 
 ```text
-main = 147 / 330 ≈ 45%
-production-demonstrated workstreams = 1 / 8
-validation-gated lifecycle workstreams = 1
+main = 158 / 330 ≈ 48%
+production-demonstrated workstreams = 2 / 8
+validation-gated lifecycle workstreams = 0
 validation-gated Choir instruments = 4
 transport-capable workstreams = 0
 ```
@@ -53,9 +59,9 @@ transport-capable workstreams = 0
 
 - v0.8 closed the matched benign-control bank at `123 / 295`.
 - v0.9 introduced H as a candidate scope outside the main denominator.
-- v1.0 records PR `#297` on `main` and moves H1–H6 from 3 to 4.
-- H7 remains 0 until the deployed lifecycle circuit is directly observed and sealed.
-- The denominator is now `330` because Ash lifecycle orchestration is an independent 35-point workstream rather than an implied extension of A.
+- v1.0 recorded PR `#297` on `main`, moved H1–H6 from 3 to 4, and established `147 / 330`.
+- v1.1 verifies the deployed lifecycle artifact, moves H1–H6 from 4 to 5, moves H7 from 0 to 5, and adds `11` earned points.
+- The denominator remains `330` because lifecycle orchestration remains an independent 35-point workstream rather than an implied extension of A.
 
 ---
 
@@ -86,7 +92,7 @@ Evidence spine:
 | A10 | Arrival triggers neither persistence nor transport | 5 |
 | A11 | Durable receipt, synchronized release, aftercare | 5 |
 
-A does not demonstrate H. Ash Keep closed before arrival, Quick Scan readiness, custody-root binding, and lifecycle authority became one product sequence.
+A and H remain distinct evidence jurisdictions. A demonstrates the Keep workspace. H demonstrates the complete arrival → readiness → custody → case → rebuild → release → continuity circuit.
 
 ---
 
@@ -123,7 +129,7 @@ matched controls         378bf0f1a81b6aa7b9ebe8379ca207d6f1f36925
 | B13 | Cross-Reader disagreement | 4 | `IMPLEMENTED_VALIDATION_GATED` |
 | B14 | Operator UI and production demonstration | 0 | `UNIMPLEMENTED` |
 
-Choir remains downstream of lifecycle closure. Calibration receipt binding resumes after H receives an honest deployed ruling.
+Lifecycle closure has removed B's sequencing hold. Calibration receipt binding becomes the selected next packet; it receives no transferred maturity from H.
 
 ---
 
@@ -153,118 +159,110 @@ A verified Safe Harbor packet must enter through the custody-root ingress and be
 
 `7 / 45`: destination fragment 0; recipient scope 2; mandatory Rebuild preflight 0; authorization/execution separation 2; recall limits 2; provenance adapter 0; mobile evidence 0; leak-safe recovery 1; execution path 0.
 
-Future transport requires a custody-bound case in `RELEASE_ELIGIBLE` state. A release receipt by itself remains insufficient.
+Future transport requires a custody-bound case in `RELEASE_ELIGIBLE` state. A release receipt by itself remains insufficient. H's production demonstration grants no transport capability.
 
 ---
 
 # H. Ash product lifecycle orchestration
 
-Status: `IMPLEMENTED_VALIDATION_GATED`
+Status: `IMPLEMENTED_PRODUCTION_DEMONSTRATED`
 
-Score: `24 / 35`
+Score: `35 / 35`
 
-Implementation merge:
+Implementation and repair spine:
 
 ```text
-PR #297
-af733b26f835bc5f110e251addbc49b5d75a75e0
+lifecycle orchestration             af733b26f835bc5f110e251addbc49b5d75a75e0
+browser delivery witness            901fd491ef306ff2863ada9167819ebc774b8c4b
+static document delivery            1e2e6a90c47100ce0f96b47c1798811a3c3fe57d
+governed inline core                249c58b58a27112d4f0b9a120a2883f9e0a2bb55
+late Custody workspace delegation   7db687062db4e4d158ee2f5f0b973dc9a0c5ac16
+keepDraft-scoped digest binding      e8cbd00673e86d9fa0969407c28ef3ed89af55f7
 ```
 
-Validated route:
+Production evidence spine:
+
+```text
+observed commit: e8cbd00673e86d9fa0969407c28ef3ed89af55f7
+deployment run: 29383285733
+observer run: 29383294474
+artifact: 8330532097
+artifact digest: sha256:93c8c3992223af4524bf16d645de394333decd62b2ab65c88a1a7d1c4c68a249
+terminal status id: 50486516511
+terminal status receipt: sha256:8d3602d2529f59ec39974280bfbde80746797168d646925bdc435277e7b90295
+lifecycle report: sha256:bf64b8b7ef9fd392672ab311690c395ad5ad1fe612ec32cd05bbb9396a270260
+evidence manifest: sha256:b5bd7e03c2dd3630703805d125900ee249b4b15ca30ed59cf1103803e982bdb7
+```
+
+Demonstrated route:
 
 ```text
 ARRIVAL_UNPERSISTED
 → READINESS_OBSERVED
-→ CUSTODY_ROOT_PROVISIONAL / CUSTODY_ROOT_VERIFIED
+→ CUSTODY_ROOT_VERIFIED
 → CASE_BOUND
 → REBUILD_ELIGIBLE
 → RELEASE_ELIGIBLE
 → CONTINUITY_SEALED
 ```
 
-Validation evidence:
-
-- lifecycle integration workflow: `29379660104`
-- Ash Keep local closure: `29379660113`
-- Dome Phase 1: `29379660071`
-- Dome Phase 1 Hardening: `29379660102`
-- Dome Phase 2: `29379660059`
-- Dome Phase 3: `29379660085`
-- Dome Phase 4: `29379660089`
-- Choir: `29379660109`
-- static application: `29379660107`
-- TCP Smoke: `29379660087`
-
-| ID | Buildout | Score | Bring forward |
+| ID | Buildout | Score | Evidence ruling |
 | --- | --- | ---: | --- |
-| H1 | Dome Ash tab routes to art-forward threshold; arrival remains unpersisted | 4 | Deployed threshold, mobile, and reduced-motion evidence |
-| H2 | Quick Scan receipt rejects raw content and preserves readiness ≠ custody | 4 | Session-only deployed handoff evidence |
-| H3 | L0/L1 custody registration and digest verification integrated into Keep | 4 | Live L1 API and request-boundary evidence |
-| H4 | Verified custody becomes Case Map root and changes `case_map_digest` | 4 | Deployed reload and idempotent binding evidence |
-| H5 | Rooms, Routes, Test, Draft, Review, Release, and Save obey lifecycle gates | 4 | Complete deployed interaction evidence |
-| H6 | Save Point and Capsule inherit custody through the committed Case Map | 4 | Deployed encrypted round trip and failure holds |
-| H7 | Deployed lifecycle production demonstration and promotion gate | 0 | Required before production status |
+| H1 | Dome Ash tab routes to art-forward threshold; arrival remains unpersisted | 5 | Wrong-order reset, ordered clearance, desktop/mobile/reduced-motion evidence |
+| H2 | Quick Scan receipt rejects raw content and preserves readiness ≠ custody | 5 | Session-only deployed handoff; no raw content or transport |
+| H3 | L0/L1 custody registration and digest verification integrated into Keep | 5 | Live L1 browser-local digest; exactly one bounded custody POST; no artifact bytes sent |
+| H4 | Verified custody becomes Case Map root and changes `case_map_digest` | 5 | Before/after digests, local root node, verified custody spine |
+| H5 | Rooms, Routes, Test, Draft, Review, Release, and Save obey lifecycle gates | 5 | Pre-custody hold plus common Case Map digest across Rebuild, Draft, Review, and Release |
+| H6 | Save Point and Capsule inherit custody through the committed Case Map | 5 | `CONTINUITY_SEALED`, encrypted round trip, wrong-passphrase and tamper holds |
+| H7 | Deployed lifecycle production demonstration and promotion gate | 5 | Current-workflow PASS, preserved artifact, terminal status, later evidence-only operator closure |
 
-The first post-merge deployed observer failed because it remained a pre-lifecycle Ash Keep probe. A second attempt confirmed the lifecycle shell was live, but the old direct-to-Keep assay could not represent the new governed sequence. That failure is preserved as evidence of probe obsolescence, not converted into a product pass.
+Observed boundaries:
 
-Active closure contract:
-
-- wait for both threshold and lifecycle-composed Keep markers;
-- clear Arrival → Boundary → Custody in order;
-- prove session-only readiness;
-- prove pre-custody workspace holds;
-- compute an L1 artifact digest locally;
-- perform one custody-registration POST without artifact bytes;
-- verify the custody digest spine;
-- bind the root and observe a changed Case Map digest;
-- run a current Rebuild Test;
-- keep a Case Map-bound Draft, Review, and Release Receipt;
-- reach `CONTINUITY_SEALED` through a current Save Point and encrypted Capsule;
-- preserve desktop/mobile screenshots, storage/network observations, and evidence digests;
-- authorize no promotion automatically.
+- no persistence before threshold clearance;
+- no raw content in readiness;
+- artifact bytes remained browser-local;
+- exactly one custody-registration POST;
+- no artifact content entered the request body;
+- no provider, recipient, Cinder, or transport route;
+- declared storage keys only;
+- wrong-passphrase and tamper holds succeeded;
+- desktop, mobile portrait, and mobile landscape each had zero horizontal overflow and no unreachable controls;
+- transport and automatic Cinder remain false.
 
 ---
 
 # Forward completion order
 
 ```text
-1. Production-demonstrate and evidence-close Ash lifecycle orchestration
-2. Bind Choir calibration gates to matched-control receipt references
-3. Build higher-order interference separately
-4. Build ordered route-sequence recovery separately
-5. Build temporal and delayed-disclosure assays separately
-6. Externalize Hush discourse vocabulary
-7. Build Hush intervention ensemble
-8. Build Custodian Return around the custody-bound lifecycle root
-9. Refactor Aperture before Choir UI
-10. Build Safe Harbor → Ash custody-root adapter
-11. Add independent provenance adapters
-12. Design destination-bound transport last
+1. Bind Choir calibration gates to matched-control receipt references
+2. Build higher-order interference separately
+3. Build ordered route-sequence recovery separately
+4. Build temporal and delayed-disclosure assays separately
+5. Externalize Hush discourse vocabulary
+6. Build Hush intervention ensemble
+7. Build Custodian Return around the custody-bound lifecycle root
+8. Refactor Aperture before Choir UI
+9. Build Safe Harbor → Ash custody-root adapter
+10. Add independent provenance adapters
+11. Design destination-bound transport last
 ```
 
 ## Immediate next packet
 
-`Ash lifecycle production closure`
+`Choir calibration receipt binding`
 
 Required outcome:
 
 ```text
-H = 24 / 35 remains validation-gated until deployed evidence is sealed.
-H may move to 35 / 35 only through a later evidence-only promotion commit.
+Replace free calibration booleans with verified matched-control receipt references.
+Preserve componentwise comparison, reader provenance, disagreement evidence, and tamper holds.
+Do not inherit production status from Ash lifecycle proximity.
 ```
 
 ## Current red inventory
 
-Two Marrowline workflows remain red in a test family untouched by PR #297. Their four PR-sensitive Vercel invariants were preserved on the synthetic merge object. They remain separately tracked station debt and do not become Ash evidence in either direction.
+Two Marrowline workflows remain red in a test family untouched by the Ash lifecycle program. They remain separately tracked station debt and do not become Ash evidence in either direction.
 
 ## Final ruling
 
-Ash Keep remains production-demonstrated. The complete Ash lifecycle is now merged, integrated, and validation-gated. Ash Readiness has been demoted to Quick Scan machine posture; Ash Custody now roots the case and invalidates stale downstream authority; Ash Keep orchestrates the governed sequence.
-
-The bounded program is **147 / 330 ≈ 45% implemented by ledger arithmetic**.
-
-Architecturally coherent. Product inversion repaired. Production closure still unearned exactly where the ledger says unearned.
-
-𝌋‌ U+10D613
-
-Marked ⟐
+Ash product lifecycle orchestration has earned `IMPLEMENTED_PRODUCTION_DEMONSTRATED` at `35 / 35`. The bounded program advances to `158 / 330`. This closes the lifecycle sequencing hold on Choir calibration work while preserving every anti-equivalence boundary: readiness remains distinct from custody, custody from authenticity, case binding from truth, release from transport, and production maturity from automatic Cinder.

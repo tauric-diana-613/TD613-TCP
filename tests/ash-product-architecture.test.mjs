@@ -124,10 +124,12 @@ test('custody affects Reader, draft, release, Save Point, and Capsule eligibilit
   assert.match(lifecycleEngine, /latestSavePoint\.case_map_digest === caseMap\.case_map_digest/);
 });
 
-test('ledger and roadmap hold lifecycle at validation-gated while selecting deployed closure', () => {
-  assert.match(ledger, /H\. Ash product lifecycle orchestration \| \*\*24 \/ 35\*\*/);
-  assert.match(ledger, /production demonstration remains unearned/i);
-  assert.match(roadmap, /Ash lifecycle production closure/);
-  assert.match(roadmap, /SELECTED_NEXT/);
+test('ledger and roadmap record deployed lifecycle closure while selecting Choir calibration', () => {
+  assert.match(ledger, /H\. Ash product lifecycle orchestration \| \*\*35 \/ 35\*\*/);
+  assert.match(ledger, /production-demonstrated workstreams = 2 \/ 8/);
+  assert.match(ledger, /main = 158 \/ 330/);
+  assert.match(roadmap, /lifecycle production closure \[CLOSED\]/);
+  assert.match(roadmap, /Choir calibration receipt binding \[NEXT\]/);
   assert.match(roadmap, /Safe Harbor → Ash custody-root adapter/);
+  assert.match(roadmap, /transport-capable workstreams = 0/);
 });
