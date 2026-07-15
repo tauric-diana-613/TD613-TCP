@@ -72,9 +72,13 @@ function currentRelease(caseMap, latestDraft, latestReview, latestRelease) {
     latestRelease.review_reference === latestReview.review_id;
 }
 
-function currentSave(caseMap, latestSavePoint) {
-  if (!caseMap || !latestSavePoint) return false;
-  return latestSavePoint.case_id === caseMap.case_id && latestSavePoint.case_map_digest === caseMap.case_map_digest && latestSavePoint.tamper_state !== 'TAMPERED';
+function currentSave(caseMap, latestRelease, latestSavePoint) {
+  if (!caseMap || !latestRelease || !latestSavePoint) return false;
+  return latestSavePoint.case_id === caseMap.case_id &&
+    latestSavePoint.case_map_digest === caseMap.case_map_digest &&
+    latestSavePoint.release_receipt_reference === latestRelease.receipt_id &&
+    latestSavePoint.release_receipt_digest === latestRelease.receipt_digest &&
+    latestSavePoint.tamper_state !== 'TAMPERED';
 }
 
 export async function compileReadinessReceipt(input = {}, options = {}) {
@@ -142,6 +146,7 @@ export function buildCustodyRoot({ caseMap, custodyReceipt, readinessReceipt = n
   return Object.freeze({
     custody_reference: reference,
     custody_digest: digest,
+    already_bound: Boolean(alreadyBound),
     root_node: clone(rootNode),
     nodes,
     evidence_basis_additions: [
@@ -174,7 +179,7 @@ export function deriveAshLifecycle(input = {}) {
   const draftCurrent = rebuildCurrent && currentDraft(caseMap, latestDraft);
   const reviewReady = draftCurrent && currentReview(caseMap, latestDraft, latestReview);
   const releaseCurrent = reviewReady && currentRelease(caseMap, latestDraft, latestReview, latestRelease);
-  const continuityCurrent = releaseCurrent && currentSave(caseMap, latestSavePoint);
+  const continuityCurrent = releaseCurrent && currentSave(caseMap, latestRelease, latestSavePoint);
 
   const holds = [];
   if (!readinessReceipt) holds.push('READINESS_NOT_OBSERVED');
