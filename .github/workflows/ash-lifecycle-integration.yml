@@ -55,5 +55,14 @@ jobs:
       - name: Preserve existing Dome shell contract
         run: node tests/dome-world-lab-marrowline-link.test.mjs
 
-      - name: Run existing Ash Keep suite
-        run: npm run test:ash-keep
+      - name: Run Ash Keep core regression
+        run: node tests/ash-keep-core.test.mjs
+
+      - name: Run Ash Keep continuity regression
+        run: node tests/ash-keep-continuity.test.mjs
+
+      - name: Run Ash Keep Hush API regression
+        run: node tests/ash-keep-hush-api.test.mjs
+
+      - name: Run Ash Keep UI regression
+        run: node tests/ash-keep-ui.test.mjs
