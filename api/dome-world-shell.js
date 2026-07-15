@@ -4,6 +4,7 @@ import path from 'node:path';
 export const DOME_WORLD_SHELL_VERSION = 'td613.dome-world.shell/v1.1-marrowline-desktop-span';
 export const MARROWLINE_LAB_ROUTE = '/dome-world/marrowline.html';
 export const ASH_THRESHOLD_ROUTE = '/dome-world/ash-threshold.html';
+export const ASH_KEEP_ENTRY_ROUTE = '/dome-world/ash-keep-entry.html';
 export const ASH_LIFECYCLE_SHELL_CONTRACT = 'td613.ash.lifecycle-shell/v0.1';
 export const ASH_KEEP_SHELL_VERSION = 'td613.ash-keep.shell/v0.1';
 export const ASH_KEEP_JS_SHELL_VERSION = 'td613.ash-keep.js-shell/v0.2-review-refresh';
@@ -115,12 +116,28 @@ function send(res, status, body = '', definition = surfaceDefinition('dome-world
   res.end(body);
 }
 
+function redirectAshKeepDocument(res, method) {
+  res.statusCode = 307;
+  res.setHeader('Location', ASH_KEEP_ENTRY_ROUTE);
+  res.setHeader('Content-Type', 'text/plain; charset=utf-8');
+  res.setHeader('Cache-Control', 'no-store, max-age=0');
+  res.setHeader('X-Content-Type-Options', 'nosniff');
+  res.setHeader('X-TD613-Ash-Keep-Shell', ASH_KEEP_SHELL_VERSION);
+  res.setHeader('X-TD613-Ash-Lifecycle', ASH_LIFECYCLE_SHELL_CONTRACT);
+  res.end(method === 'HEAD' ? '' : 'Ash Keep document delivery continues through the static adapter.');
+}
+
 export default function handler(req, res) {
   const method = String(req.method || 'GET').toUpperCase();
-  const definition = surfaceDefinition(requestedSurface(req));
+  const surface = requestedSurface(req);
+  const definition = surfaceDefinition(surface);
   if (!['GET', 'HEAD'].includes(method)) {
     res.setHeader('Allow', 'GET, HEAD');
     send(res, 405, 'Method Not Allowed', definition);
+    return;
+  }
+  if (surface === 'ash-keep-html') {
+    redirectAshKeepDocument(res, method);
     return;
   }
   try {
@@ -130,6 +147,6 @@ export default function handler(req, res) {
   } catch (error) {
     res.setHeader('Content-Type', 'application/json; charset=utf-8');
     res.statusCode = 500;
-    res.end(JSON.stringify({ ok: false, error: 'dome-world-shell-surface-unavailable', surface: requestedSurface(req), detail: String(error?.message || error), version: DOME_WORLD_SHELL_VERSION, ashLifecycle: ASH_LIFECYCLE_SHELL_CONTRACT }));
+    res.end(JSON.stringify({ ok: false, error: 'dome-world-shell-surface-unavailable', surface, detail: String(error?.message || error), version: DOME_WORLD_SHELL_VERSION, ashLifecycle: ASH_LIFECYCLE_SHELL_CONTRACT }));
   }
 }
