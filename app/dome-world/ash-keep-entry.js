@@ -14,6 +14,10 @@ const REVIEW_MARKER = "  await put('reviews', state.latestReview, state.latestRe
 const REVIEW_BINDING = "  await put('reviews', state.latestReview, state.latestReview.review_id);\n  renderDraft();\n  setTimeout(() => location.reload(), 160); // td613 lifecycle review refresh";
 const WORKSPACE_MARKER = "function setWorkspace(name) {\n  state.workspace = name;\n  qsa('.work-tab').forEach(button => button.setAttribute('aria-selected', String(button.dataset.workspace === name)));\n  qsa('.workspace').forEach(panel => panel.classList.toggle('active', panel.id === `workspace-${name}`));\n  state.mapVisible = name === 'map' && !document.hidden;\n  const prefs = JSON.parse(localStorage.getItem(PREFS_KEY) || '{}');\n  localStorage.setItem(PREFS_KEY, JSON.stringify({ ...prefs, workspace: name, mapMode: state.mapMode }));\n  if (state.mapVisible) startScheduler(); else stopScheduler();\n}";
 const WORKSPACE_BINDING = `${WORKSPACE_MARKER}\n\nwindow.__td613OpenAshWorkspace = setWorkspace; // td613 late workspace bridge`;
+const SAVE_POINT_MARKER = "    routeMemoryDigest: state.routeMemory.route_memory_digest,\n    evidenceInventory:";
+const SAVE_POINT_BINDING = "    routeMemoryDigest: state.routeMemory.route_memory_digest,\n    releaseReceiptReference: state.latestRelease?.receipt_id || null,\n    releaseReceiptDigest: state.latestRelease?.receipt_digest || null,\n    evidenceInventory:";
+const CAPSULE_MARKER = "async function exportCapsule() {\n  if (!state.savePoints.length) await makeSavePoint();";
+const CAPSULE_BINDING = "async function exportCapsule() {\n  const latestSavePoint = state.savePoints.at(-1);\n  const currentRelease = state.latestRelease;\n  if (!latestSavePoint || !currentRelease || latestSavePoint.release_receipt_reference !== currentRelease.receipt_id || latestSavePoint.release_receipt_digest !== currentRelease.receipt_digest) await makeSavePoint();";
 
 function hold(error) {
   document.documentElement.dataset.ashDeliveryState = 'held';
@@ -42,9 +46,21 @@ function governCore(source) {
   if (!code.includes('td613 late workspace bridge')) {
     code = replaceExactly(code, WORKSPACE_MARKER, WORKSPACE_BINDING, 'Late workspace bridge');
   }
+  if (code.includes(SAVE_POINT_MARKER)) {
+    code = replaceExactly(code, SAVE_POINT_MARKER, SAVE_POINT_BINDING, 'Save Point release binding');
+  } else if (!code.includes(SAVE_POINT_BINDING)) {
+    throw new Error('Save Point release binding marker is unavailable');
+  }
+  if (code.includes(CAPSULE_MARKER)) {
+    code = replaceExactly(code, CAPSULE_MARKER, CAPSULE_BINDING, 'Capsule current Save Point binding');
+  } else if (!code.includes(CAPSULE_BINDING)) {
+    throw new Error('Capsule current Save Point binding marker is unavailable');
+  }
   if (!code.includes(DRAFT_BINDING)) throw new Error('Governed core omitted the Draft Case Map binding');
   if (!code.includes('td613 lifecycle review refresh')) throw new Error('Governed core omitted the lifecycle review refresh');
   if (!code.includes('td613 late workspace bridge')) throw new Error('Governed core omitted the late workspace capability');
+  if (!code.includes(SAVE_POINT_BINDING)) throw new Error('Governed core omitted the Save Point release binding');
+  if (!code.includes(CAPSULE_BINDING)) throw new Error('Governed core omitted the Capsule current Save Point binding');
   return code;
 }
 
