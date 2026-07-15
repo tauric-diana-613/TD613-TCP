@@ -10,14 +10,14 @@ const WORKSPACE_BRIDGE_SCRIPT = '<script type="module" src="/dome-world/ash-work
 const ARRIVAL_COMPATIBILITY_SCRIPT = `<script>/* td613 arrival-route compatibility: static document first, history annotation only */if(sessionStorage.getItem('${READINESS_KEY}')&&location.pathname==='${PUBLIC_ROUTE}'&&location.search!=='?arrival=cleared'){history.replaceState(null,'','${PUBLIC_ROUTE}?arrival=cleared')}</script>`;
 const DRAFT_MARKER = "    caseId: state.caseMap.case_id,\n    body: $('draftBody').value,";
 const DRAFT_BINDING = "    caseId: state.caseMap.case_id,\n    caseMapDigest: state.caseMap.case_map_digest,\n    body: $('draftBody').value,";
+const SAVE_MARKER = "    routeMemoryDigest: state.routeMemory.route_memory_digest,\n    evidenceInventory: state.caseMap.nodes.filter(node => ['artifact', 'source'].includes(node.type)).map(node => node.id),";
+const SAVE_BINDING = "    routeMemoryDigest: state.routeMemory.route_memory_digest,\n    releaseReceiptReference: state.latestRelease?.receipt_id || null,\n    releaseReceiptDigest: state.latestRelease?.receipt_digest || null,\n    releaseCreatedAt: state.latestRelease?.created_at || null,\n    evidenceInventory: state.caseMap.nodes.filter(node => ['artifact', 'source'].includes(node.type)).map(node => node.id),";
+const CAPSULE_MARKER = "async function exportCapsule() {\n  if (!state.savePoints.length) await makeSavePoint();";
+const CAPSULE_BINDING = "async function exportCapsule() {\n  const latestSavePoint = state.savePoints.at(-1);\n  const currentRelease = state.latestRelease;\n  if (!currentRelease) throw new Error('A current Release Receipt is required before Capsule export.');\n  if (!latestSavePoint || latestSavePoint.release_receipt_reference !== currentRelease.receipt_id || latestSavePoint.release_receipt_digest !== currentRelease.receipt_digest || latestSavePoint.release_created_at !== currentRelease.created_at) await makeSavePoint();";
 const REVIEW_MARKER = "  await put('reviews', state.latestReview, state.latestReview.review_id);\n  renderDraft();";
 const REVIEW_BINDING = "  await put('reviews', state.latestReview, state.latestReview.review_id);\n  renderDraft();\n  setTimeout(() => location.reload(), 160); // td613 lifecycle review refresh";
 const WORKSPACE_MARKER = "function setWorkspace(name) {\n  state.workspace = name;\n  qsa('.work-tab').forEach(button => button.setAttribute('aria-selected', String(button.dataset.workspace === name)));\n  qsa('.workspace').forEach(panel => panel.classList.toggle('active', panel.id === `workspace-${name}`));\n  state.mapVisible = name === 'map' && !document.hidden;\n  const prefs = JSON.parse(localStorage.getItem(PREFS_KEY) || '{}');\n  localStorage.setItem(PREFS_KEY, JSON.stringify({ ...prefs, workspace: name, mapMode: state.mapMode }));\n  if (state.mapVisible) startScheduler(); else stopScheduler();\n}";
 const WORKSPACE_BINDING = `${WORKSPACE_MARKER}\n\nwindow.__td613OpenAshWorkspace = setWorkspace; // td613 late workspace bridge`;
-const SAVE_POINT_MARKER = "    routeMemoryDigest: state.routeMemory.route_memory_digest,\n    evidenceInventory:";
-const SAVE_POINT_BINDING = "    routeMemoryDigest: state.routeMemory.route_memory_digest,\n    releaseReceiptReference: state.latestRelease?.receipt_id || null,\n    releaseReceiptDigest: state.latestRelease?.receipt_digest || null,\n    evidenceInventory:";
-const CAPSULE_MARKER = "async function exportCapsule() {\n  if (!state.savePoints.length) await makeSavePoint();";
-const CAPSULE_BINDING = "async function exportCapsule() {\n  const latestSavePoint = state.savePoints.at(-1);\n  const currentRelease = state.latestRelease;\n  if (!currentRelease) throw new Error('A current Release Receipt is required before Capsule export.');\n  if (!latestSavePoint || latestSavePoint.release_receipt_reference !== currentRelease.receipt_id || latestSavePoint.release_receipt_digest !== currentRelease.receipt_digest) await makeSavePoint();";
 
 function hold(error) {
   document.documentElement.dataset.ashDeliveryState = 'held';
@@ -40,15 +40,9 @@ function governCore(source) {
   } else if (!code.includes(DRAFT_BINDING)) {
     throw new Error('Draft Case Map binding marker is unavailable');
   }
-  if (!code.includes('td613 lifecycle review refresh')) {
-    code = replaceExactly(code, REVIEW_MARKER, REVIEW_BINDING, 'Draft review refresh');
-  }
-  if (!code.includes('td613 late workspace bridge')) {
-    code = replaceExactly(code, WORKSPACE_MARKER, WORKSPACE_BINDING, 'Late workspace bridge');
-  }
-  if (code.includes(SAVE_POINT_MARKER)) {
-    code = replaceExactly(code, SAVE_POINT_MARKER, SAVE_POINT_BINDING, 'Save Point release binding');
-  } else if (!code.includes(SAVE_POINT_BINDING)) {
+  if (code.includes(SAVE_MARKER)) {
+    code = replaceExactly(code, SAVE_MARKER, SAVE_BINDING, 'Save Point release binding');
+  } else if (!code.includes(SAVE_BINDING)) {
     throw new Error('Save Point release binding marker is unavailable');
   }
   if (code.includes(CAPSULE_MARKER)) {
@@ -56,11 +50,17 @@ function governCore(source) {
   } else if (!code.includes(CAPSULE_BINDING)) {
     throw new Error('Capsule current Save Point binding marker is unavailable');
   }
+  if (!code.includes('td613 lifecycle review refresh')) {
+    code = replaceExactly(code, REVIEW_MARKER, REVIEW_BINDING, 'Draft review refresh');
+  }
+  if (!code.includes('td613 late workspace bridge')) {
+    code = replaceExactly(code, WORKSPACE_MARKER, WORKSPACE_BINDING, 'Late workspace bridge');
+  }
   if (!code.includes(DRAFT_BINDING)) throw new Error('Governed core omitted the Draft Case Map binding');
+  if (!code.includes(SAVE_BINDING)) throw new Error('Governed core omitted the Save Point release binding');
+  if (!code.includes(CAPSULE_BINDING)) throw new Error('Governed core omitted the Capsule current Save Point binding');
   if (!code.includes('td613 lifecycle review refresh')) throw new Error('Governed core omitted the lifecycle review refresh');
   if (!code.includes('td613 late workspace bridge')) throw new Error('Governed core omitted the late workspace capability');
-  if (!code.includes(SAVE_POINT_BINDING)) throw new Error('Governed core omitted the Save Point release binding');
-  if (!code.includes(CAPSULE_BINDING)) throw new Error('Governed core omitted the Capsule current Save Point binding');
   return code;
 }
 
