@@ -64,39 +64,41 @@ test('the threshold route is now a direct Ash Keep delivery surface, not a secon
   assert.match(threshold, /src="\/dome-world\/ash-keep-entry\.js"/);
   assert.doesNotMatch(threshold, /data-ash-law-step|compileReadinessReceipt|location\.replace|http-equiv="refresh"/);
   assert.match(keepEntry, /dataset\?\.ashPublicRoute/);
-  assert.match(keepEntry, /history\.replaceState\(null, '', `\$\{PUBLIC_ROUTE\}\$\{arrival\}`\)/);
+  assert.match(keepEntry, /window\.location\.replace\(canonicalKeepRoute\(\)\)/);
 });
 
-test('the composed Keep annotates history only after the shell and transformed core load', () => {
-  assert.match(renderedKeep, /src="\/api\/dome-world-shell\?surface=ash-keep-js"/);
-  assert.match(renderedKeep, /td613 arrival-route compatibility/);
+test('the canonical Keep annotates history before loading its native ordered composition', () => {
+  assert.match(renderedKeep, /src="\/dome-world\/ash-keep\.js"/);
+  assert.match(renderedKeep, /src="\/dome-world\/ash-convergence\.js"/);
   assert.match(renderedKeep, /sessionStorage\.getItem\('td613:ash-threshold:readiness:v0\.1'\)/);
   assert.match(renderedKeep, /history\.replaceState\(null,'',location\.pathname\+'\?arrival=cleared'\)/);
-  const coreIndex = renderedKeep.indexOf('/api/dome-world-shell?surface=ash-keep-js');
-  const historyIndex = renderedKeep.indexOf('td613 arrival-route compatibility');
+  const historyIndex = renderedKeep.indexOf("sessionStorage.getItem('td613:ash-threshold:readiness:v0.1')");
+  const coreIndex = renderedKeep.indexOf('/dome-world/ash-keep.js');
+  const convergenceIndex = renderedKeep.indexOf('/dome-world/ash-convergence.js');
   const lifecycleIndex = renderedKeep.indexOf('/dome-world/ash-lifecycle.js');
-  assert.ok(coreIndex >= 0 && historyIndex > coreIndex && lifecycleIndex > historyIndex, 'Composed core, history annotation, and lifecycle must load in declared order');
+  assert.ok(historyIndex >= 0 && coreIndex > historyIndex && convergenceIndex > coreIndex && lifecycleIndex > convergenceIndex, 'History, core, convergence, and lifecycle must load in declared order');
 });
 
-test('one Dome shell function composes the Keep lifecycle after the proven Keep core', () => {
-  assert.equal(ASH_KEEP_SHELL_VERSION, 'td613.ash-keep.shell/v0.1');
-  const coreIndex = renderedKeep.indexOf('/api/dome-world-shell?surface=ash-keep-js');
+test('one Dome shell function validates the canonical Keep composition without rewriting it', () => {
+  assert.equal(ASH_KEEP_SHELL_VERSION, 'td613.ash-keep.shell/v0.2-canonical-composition');
+  const coreIndex = renderedKeep.indexOf('/dome-world/ash-keep.js');
   const lifecycleIndex = renderedKeep.indexOf('/dome-world/ash-lifecycle.js');
-  assert.ok(coreIndex >= 0, 'Composed Ash Keep core script missing');
+  assert.ok(coreIndex >= 0, 'Canonical Ash Keep core script missing');
   assert.ok(lifecycleIndex > coreIndex, 'Lifecycle integration must load after the Keep core');
   assert.match(renderedKeep, /name="ash-lifecycle" content="v0\.1"/);
-  assert.equal(injectAshKeepLifecycle(renderedKeep), renderedKeep, 'Keep shell injection must be idempotent');
+  assert.match(renderedKeep, /name="ash-constitutional-composition" content="v0\.1"/);
+  assert.equal(injectAshKeepLifecycle(renderedKeep), renderedKeep, 'Keep shell validation must be byte-identical');
 });
 
-test('the Dome shell binds Draft authority, release-bound continuity, and exact review refresh', () => {
-  assert.equal(ASH_KEEP_JS_SHELL_VERSION, 'td613.ash-keep.js-shell/v0.3-release-bound-continuity');
+test('the canonical core owns Draft authority and release-bound continuity without reload injection', () => {
+  assert.equal(ASH_KEEP_JS_SHELL_VERSION, 'td613.ash-keep.js-shell/v0.4-native-bindings');
   assert.match(renderedKeepJs, /caseMapDigest: state\.caseMap\.case_map_digest/);
   assert.match(renderedKeepJs, /releaseReceiptReference: state\.latestRelease\?\.receipt_id \|\| null/);
   assert.match(renderedKeepJs, /releaseReceiptDigest: state\.latestRelease\?\.receipt_digest \|\| null/);
   assert.match(renderedKeepJs, /latestSavePoint\.release_receipt_reference !== currentRelease\.receipt_id/);
-  assert.match(renderedKeepJs, /td613 lifecycle review refresh/);
-  assert.match(renderedKeepJs, /setTimeout\(\(\) => location\.reload\(\), 160\)/);
-  assert.equal(bindAshDraftsToCaseMap(renderedKeepJs), renderedKeepJs, 'Keep JS binding must be idempotent');
+  assert.match(renderedKeepJs, /announce\('review-kept'/);
+  assert.doesNotMatch(renderedKeepJs, /location\.reload\(\)/);
+  assert.equal(bindAshDraftsToCaseMap(renderedKeepJs), renderedKeepJs, 'Keep JS validation must be byte-identical');
   assert.match(draftEngine, /case_map_digest: optionalDigest\(input\.caseMapDigest/);
   assert.match(draftEngine, /Review is bound to a different Case Map/);
   assert.match(draftEngine, /case_map_digest: input\.draft\.case_map_digest/);
@@ -142,7 +144,7 @@ test('custody affects Reader, draft, release, Save Point, and Capsule eligibilit
   assert.match(lifecycleEngine, /latestSavePoint\.release_receipt_digest === latestRelease\.receipt_digest/);
 });
 
-test('ledger and roadmap preserve lifecycle closure while selecting constitutional convergence', () => {
+test('ledger and roadmap preserve lifecycle closure while convergence awaits deployed observation', () => {
   assert.match(ledger, /H\. Ash product lifecycle orchestration \| \*\*35 \/ 35\*\*/);
   assert.match(ledger, /I\. Ash operator surface and local case stewardship \| \*\*35 \/ 45\*\*/);
   assert.match(ledger, /production-demonstrated workstreams = 2 \/ 9/);
@@ -151,7 +153,7 @@ test('ledger and roadmap preserve lifecycle closure while selecting constitution
   assert.match(ledger, /# Constitutional Synthesis Matrix/);
   assert.match(ledger, /Score: `40 \/ 50`/);
   assert.match(roadmap, /lifecycle production closure \[CLOSED\]/);
-  assert.match(roadmap, /constitutional convergence closure \[NEXT\]/);
+  assert.match(roadmap, /constitutional convergence closure \[VALIDATION PASSED .* DEPLOYED OBSERVATION PENDING\]/);
   assert.match(roadmap, /Custodian Return \/ Lifecycle Reconstitution/);
   assert.match(roadmap, /Choir calibration receipt binding/);
   assert.ok(roadmap.indexOf('Custodian Return / Lifecycle Reconstitution') < roadmap.indexOf('Choir calibration receipt binding'), 'Custodian Return must precede Choir calibration after convergence.');

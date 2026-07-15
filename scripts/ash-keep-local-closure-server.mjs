@@ -45,6 +45,10 @@ function sendJson(res, status, payload) {
 
 const server = http.createServer(async (req, res) => {
   const url = new URL(req.url || '/', `http://${req.headers.host || '127.0.0.1'}`);
+  if (url.pathname === '/favicon.ico') {
+    res.writeHead(204, { 'cache-control': 'no-store' });
+    return res.end();
+  }
   if (url.pathname === '/__ash_keep_closure/readiness') {
     return sendJson(res, 200, {
       ok: true,

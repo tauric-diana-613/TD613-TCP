@@ -48,28 +48,90 @@ function readJson(storage, key, fallback) {
   catch { return fallback; }
 }
 
-function lifecycleRecords() {
-  const value = readJson(localStorage, LIFECYCLE_KEY, {});
-  return value && typeof value === 'object' && !Array.isArray(value) ? value : {};
-}
-
-function writeLifecycleRecord(caseId, patch) {
-  const records = lifecycleRecords();
+async function lifecycleRecord(caseId) {
   const key = caseId || 'unbound';
-  records[key] = { ...(records[key] || {}), ...patch, updated_at: new Date().toISOString() };
-  localStorage.setItem(LIFECYCLE_KEY, JSON.stringify(records));
-  return records[key];
+  const db = await openDb();
+  try {
+    const stored = await getRecord(db, 'lifecycle', key);
+    if (stored?.value) return stored.value;
+  } finally {
+    db.close();
+  }
+  const legacy = readJson(localStorage, LIFECYCLE_KEY, {});
+  return legacy && typeof legacy === 'object' && !Array.isArray(legacy) ? legacy[key] || {} : {};
 }
 
-function custodyReceipts() {
-  const value = readJson(localStorage, CUSTODY_KEY, []);
-  return Array.isArray(value) ? value : [];
+async function writeLifecycleRecord(caseId, patch) {
+  const key = caseId || 'unbound';
+  const current = await lifecycleRecord(caseId);
+  const next = { ...current, ...patch, updated_at: new Date().toISOString() };
+  const db = await openDb();
+  try {
+    if (!db.objectStoreNames.contains('lifecycle')) throw new Error('Ash lifecycle store is unavailable.');
+    await new Promise((resolve, reject) => {
+      const request = db.transaction('lifecycle', 'readwrite').objectStore('lifecycle').put({ id: key, value: next });
+      request.onsuccess = () => resolve();
+      request.onerror = () => reject(request.error);
+    });
+  } finally {
+    db.close();
+  }
+  localStorage.removeItem(LIFECYCLE_KEY);
+  return next;
 }
 
-function rememberCustodyReceipt(receipt) {
-  const items = custodyReceipts();
-  if (!items.some(item => item.receipt_digest === receipt.receipt_digest)) items.push(receipt);
-  localStorage.setItem(CUSTODY_KEY, JSON.stringify(items.slice(-120)));
+async function moveUnboundLifecycle(caseId) {
+  if (!caseId) return;
+  const unbound = await lifecycleRecord(null);
+  if (!Object.keys(unbound).length) return;
+  await writeLifecycleRecord(caseId, unbound);
+  const db = await openDb();
+  try {
+    if (db.objectStoreNames.contains('lifecycle')) db.transaction('lifecycle', 'readwrite').objectStore('lifecycle').delete('unbound');
+  } finally {
+    db.close();
+  }
+}
+
+async function custodyReceipts() {
+  const db = await openDb();
+  try {
+    const stored = await getAll(db, 'custodyReceipts');
+    const items = stored.map(item => item.value).filter(Boolean);
+    if (items.length) return items;
+    const legacy = readJson(localStorage, CUSTODY_KEY, []);
+    if (Array.isArray(legacy) && legacy.length) {
+      const transaction = db.transaction('custodyReceipts', 'readwrite');
+      const store = transaction.objectStore('custodyReceipts');
+      for (const receipt of legacy.slice(-120)) store.put({ id: receipt.receipt_id || receipt.receipt_digest, value: receipt });
+      await new Promise((resolve, reject) => {
+        transaction.oncomplete = resolve;
+        transaction.onerror = () => reject(transaction.error);
+        transaction.onabort = () => reject(transaction.error);
+      });
+      localStorage.removeItem(CUSTODY_KEY);
+      return legacy.slice(-120);
+    }
+    return [];
+  } finally {
+    db.close();
+  }
+}
+
+async function rememberCustodyReceipt(receipt) {
+  const db = await openDb();
+  try {
+    await new Promise((resolve, reject) => {
+      const transaction = db.transaction('custodyReceipts', 'readwrite');
+      transaction.objectStore('custodyReceipts').put({ id: receipt.receipt_id || receipt.receipt_digest, value: receipt });
+      transaction.oncomplete = resolve;
+      transaction.onerror = () => reject(transaction.error);
+      transaction.onabort = () => reject(transaction.error);
+    });
+  } finally {
+    db.close();
+  }
+  localStorage.removeItem(CUSTODY_KEY);
 }
 
 function currentCaseId() {
@@ -232,7 +294,7 @@ function renderLifecycle() {
     validCustody.parentElement.lastChild.textContent = lifecycle.gates.test ? ' Custody root verified and case-bound' : ' Custody root required';
   }
   enforceReleaseGate();
-  renderCustodyIndex();
+  renderCustodyIndex().catch(error => console.error('Ash custody index held:', error));
 }
 
 function enforceReleaseGate() {
@@ -244,17 +306,17 @@ function enforceReleaseGate() {
   if (nativeReady && !ui.lifecycle.gates.local_release) $('reviewStatus').textContent = `Lifecycle hold: ${ui.lifecycle.next_action}.`;
 }
 
-function renderCustodyIndex() {
+async function renderCustodyIndex() {
   const host = $('custodyIndex');
   if (!host) return;
-  const items = custodyReceipts().slice().reverse();
+  const items = (await custodyReceipts()).slice().reverse();
   host.innerHTML = items.length ? items.map((receipt, index) => `<button type="button" data-custody-index="${index}">${receipt.receipt_id || receipt.receipt_digest || receipt.schema}<br>${receipt.manifest?.source_locator?.label || receipt.manifest?.sourceLocator?.label || 'unlabeled root'}</button>`).join('') : '<p class="sub">No local custody receipts.</p>';
   host.querySelectorAll('[data-custody-index]').forEach((button, index) => button.addEventListener('click', async () => {
     ui.custodyReceipt = items[index];
     const integrity = await verifyReceiptDigests(ui.custodyReceipt);
     ui.custodyVerified = integrity.valid;
     const caseId = currentCaseId();
-    writeLifecycleRecord(caseId, { custody_receipt_reference: ui.custodyReceipt.receipt_id, custody_receipt_digest: ui.custodyReceipt.receipt_digest, custody_verified: ui.custodyVerified });
+    await writeLifecycleRecord(caseId, { custody_receipt_reference: ui.custodyReceipt.receipt_id, custody_receipt_digest: ui.custodyReceipt.receipt_digest, custody_verified: ui.custodyVerified });
     await refreshLifecycle();
   }));
 }
@@ -272,7 +334,7 @@ async function compileQuickScan() {
     missingness: ['custody digest spine not yet verified', 'case root not yet bound']
   });
   const caseId = currentCaseId();
-  writeLifecycleRecord(caseId, { readiness_receipt: ui.readiness });
+  await writeLifecycleRecord(caseId, { readiness_receipt: ui.readiness });
   sessionStorage.setItem(READINESS_SESSION_KEY, JSON.stringify(ui.readiness));
   await refreshLifecycle();
 }
@@ -359,9 +421,9 @@ async function registerCustodyRoot() {
   if (!integrity.valid) throw new Error('Browser canonical digest verification failed.');
   ui.custodyReceipt = receipt;
   ui.custodyVerified = true;
-  rememberCustodyReceipt(receipt);
+  await rememberCustodyReceipt(receipt);
   const caseId = currentCaseId();
-  writeLifecycleRecord(caseId, {
+  await writeLifecycleRecord(caseId, {
     readiness_receipt: ui.readiness,
     custody_receipt_reference: receipt.receipt_id,
     custody_receipt_digest: receipt.receipt_digest,
@@ -415,7 +477,8 @@ async function bindCustodyRoot() {
       missingness: caseMap.missingness.filter(item => !/custody|case root/i.test(item))
     }));
     await putCase(db, next);
-    writeLifecycleRecord(caseId, {
+    ui.caseMap = next;
+    await writeLifecycleRecord(caseId, {
       readiness_receipt: ui.readiness,
       custody_receipt_reference: ui.custodyReceipt.receipt_id,
       custody_receipt_digest: ui.custodyReceipt.receipt_digest,
@@ -427,7 +490,13 @@ async function bindCustodyRoot() {
   } finally {
     db.close();
   }
-  setTimeout(() => location.reload(), 420);
+  window.dispatchEvent(new CustomEvent('td613:ash:custody-bound', { detail: {
+    case_id: caseId,
+    case_map_digest: ui.caseMap?.case_map_digest || null,
+    custody_root_receipt_reference: ui.custodyReceipt.receipt_id
+  } }));
+  await window.__td613AshKeep?.refresh?.();
+  await refreshLifecycle();
 }
 
 async function collectCaseState() {
@@ -454,12 +523,13 @@ async function collectCaseState() {
   }
 }
 
-function resolveStoredReceipts(caseId) {
-  const records = lifecycleRecords();
-  const record = records[caseId] || records.unbound || {};
-  const readiness = record.readiness_receipt || readJson(sessionStorage, READINESS_SESSION_KEY, null);
-  const custody = custodyReceipts().find(item => item.receipt_id === record.custody_receipt_reference || item.receipt_digest === record.custody_receipt_digest) || null;
-  return { record, readiness, custody };
+async function resolveStoredReceipts(caseId) {
+  const record = await lifecycleRecord(caseId);
+  const fallback = caseId ? await lifecycleRecord(null) : {};
+  const resolved = Object.keys(record).length ? record : fallback;
+  const readiness = resolved.readiness_receipt || readJson(sessionStorage, READINESS_SESSION_KEY, null);
+  const custody = (await custodyReceipts()).find(item => item.receipt_id === resolved.custody_receipt_reference || item.receipt_digest === resolved.custody_receipt_digest) || null;
+  return { record: resolved, readiness, custody };
 }
 
 async function refreshLifecycle() {
@@ -468,7 +538,7 @@ async function refreshLifecycle() {
   const collected = await collectCaseState();
   if (token !== ui.refreshToken) return;
   Object.assign(ui, collected);
-  const stored = resolveStoredReceipts(caseId);
+  const stored = await resolveStoredReceipts(caseId);
   ui.readiness = stored.readiness || ui.readiness;
   ui.custodyReceipt = stored.custody || ui.custodyReceipt;
   ui.custodyVerified = stored.record.custody_verified === true || ui.custodyVerified;
@@ -484,8 +554,13 @@ async function refreshLifecycle() {
     latestSavePoint: ui.latestSavePoint
   });
   ui.lifecycleReceipt = await compileLifecycleReceipt(ui.lifecycle);
-  if (caseId) writeLifecycleRecord(caseId, { lifecycle_receipt: ui.lifecycleReceipt, lifecycle_state: ui.lifecycle.state });
+  if (caseId) await writeLifecycleRecord(caseId, { lifecycle_receipt: ui.lifecycleReceipt, lifecycle_state: ui.lifecycle.state });
   renderLifecycle();
+  window.dispatchEvent(new CustomEvent('td613:ash:lifecycle-updated', { detail: {
+    case_id: caseId,
+    case_map_digest: ui.caseMap?.case_map_digest || null,
+    state: ui.lifecycle.state
+  } }));
 }
 
 function openWorkspace(name) {
@@ -551,15 +626,14 @@ async function bootLifecycle() {
     const pointer = currentCaseId();
     if (pointer !== lastPointer) {
       lastPointer = pointer;
-      if (pointer && lifecycleRecords().unbound) {
-        const records = lifecycleRecords();
-        records[pointer] = { ...(records[pointer] || {}), ...records.unbound };
-        delete records.unbound;
-        localStorage.setItem(LIFECYCLE_KEY, JSON.stringify(records));
-      }
+      await moveUnboundLifecycle(pointer);
       await refreshLifecycle();
     }
   }, 650);
+  window.__td613AshLifecycleRefresh = refreshLifecycle;
+  for (const type of ['core-mutated', 'case-opened', 'case-created', 'rebuild-kept', 'draft-kept', 'review-kept', 'release-kept', 'continuity-kept']) {
+    window.addEventListener(`td613:ash:${type}`, () => refreshLifecycle().catch(console.error));
+  }
 }
 
 bootLifecycle().catch(error => {

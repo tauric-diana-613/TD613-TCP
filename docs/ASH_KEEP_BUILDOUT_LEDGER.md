@@ -4,13 +4,13 @@
 
 Date: `2026-07-15`
 
-Ledger generation: `v1.3 · constitutional convergence recognized`
+Ledger generation: `v1.4 · constitutional convergence validation gate`
 
 Tracked program: Ash unified custodial lifecycle / Ash Keep / operator stewardship / Dome-World threshold / Flow-Core context / Aperture audit / Hush derivatives / Choir Test / anisotropic disclosure
 
 Active closure packet: `Ash Constitutional Convergence Closure`
 
-Packet posture: `SELECTED_NEXT / NOT_YET_BUILT`
+Packet posture: `IMPLEMENTED_VALIDATION_GATED / DEPLOYED_OBSERVATION_PENDING`
 
 ## Authoritative evidence coordinates
 
@@ -35,6 +35,12 @@ current-head artifact
 
 current-head artifact digest
 sha256:ebb97064fb3cee667b227a176f72fa1dce66e4087b5e0470f6f286748a1279a6
+
+constitutional convergence local receipt
+docs/ASH_CONSTITUTIONAL_CONVERGENCE_RECEIPT.md
+
+constitutional convergence local observation
+PASS · promotion_authorized:false
 ```
 
 ## Governing maturity law
@@ -243,6 +249,12 @@ Transport remains last and requires destination scope, Rebuild preflight, separa
 
 # Immediate packet — Ash Constitutional Convergence Closure
 
+Implementation posture: `IMPLEMENTED_VALIDATION_GATED / DEPLOYED_OBSERVATION_PENDING`
+
+The canonical composition, rank-conditioned Authority Context, explicit case states, complete stale invalidation, deletion recovery, browser-local contention, dry compatibility audit, and reference-only event buses are implemented. The focused gate passed `33 / 33`, and the desktop/mobile local flight passed without horizontal overflow, clipped controls, reload synchronization, or unauthorized outbound action.
+
+No component or synthesis score changes at this gate. Direct deployed evidence remains mandatory.
+
 Required circuit:
 
 ```text
@@ -301,9 +313,9 @@ Before the integration, Return lacked a complete body to restore. The unified li
 
 Two Marrowline workflows remain red in a separate station-test jurisdiction. They do not become Ash evidence in either direction.
 
-# Final ruling
+# Current ruling
 
-Ash lifecycle remains production-demonstrated at `35 / 35`. The operator surface remains validation-gated at `35 / 45`. Component maturity remains `193 / 375`; no adjacent workstream receives free points. The Readiness + Custody integration is now recognized as a `40 / 50` provisional constitutional-synthesis overlay because it converted compatible organs into one shared authority spine. The roadmap therefore closes convergence first, tests Custodian Return second, and resumes Choir calibration third.
+Ash lifecycle remains production-demonstrated at `35 / 35`. The operator surface remains validation-gated at `35 / 45`. Component maturity remains `193 / 375`; no adjacent workstream receives free points. Constitutional synthesis remains `40 / 50` pending the dedicated deployed convergence observer. The convergence implementation and local evidence gate are complete; production closure remains the active packet. After that evidence is sealed, the roadmap advances to Custodian Return and then Choir calibration.
 
 Authored with 𝌋‌
 

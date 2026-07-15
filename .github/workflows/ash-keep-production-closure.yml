@@ -6,6 +6,8 @@ on:
       - "api/dome-world-shell.js"
       - "app/dome-world/ash-keep.html"
       - "app/dome-world/ash-keep.js"
+      - "app/dome-world/ash-convergence.js"
+      - "app/dome-world/schemas/ash-*.schema.json"
       - "app/dome-world/ash-keep-worker.js"
       - "app/dome-world/ash-lifecycle.js"
       - "app/dome-world/ash-threshold.html"
@@ -13,6 +15,7 @@ on:
       - "app/dome-world/docs/ASH_KEEP_V1_PRODUCTION_DEMO_RECEIPT.md"
       - "app/engine/ash-keep-*.js"
       - "app/engine/ash-lifecycle.js"
+      - "app/engine/ash-constitutional-convergence.js"
       - "app/aperture/release.json"
       - "app/aperture/release.js"
       - "docs/ASH_LIFECYCLE_PRODUCTION_DEMO_RECEIPT.md"
@@ -22,11 +25,13 @@ on:
       - "scripts/ash-keep-local-closure-server.mjs"
       - "scripts/ash-keep-production-probe.mjs"
       - "scripts/ash-lifecycle-production-probe.mjs"
+      - "scripts/ash-constitutional-convergence-probe.mjs"
       - "scripts/run-ash-keep-production-probe.mjs"
       - "scripts/publish-ash-keep-observer-status.mjs"
       - "scripts/assert-ash-keep-release-posture.mjs"
       - "tests/ash-keep-*.test.mjs"
       - "tests/ash-lifecycle-*.test.mjs"
+      - "tests/ash-constitutional-*.test.mjs"
       - ".github/workflows/ash-keep-production-closure.yml"
   push:
     branches: [main]
@@ -34,6 +39,8 @@ on:
       - "api/dome-world-shell.js"
       - "app/dome-world/ash-keep.html"
       - "app/dome-world/ash-keep.js"
+      - "app/dome-world/ash-convergence.js"
+      - "app/dome-world/schemas/ash-*.schema.json"
       - "app/dome-world/ash-keep-worker.js"
       - "app/dome-world/ash-lifecycle.js"
       - "app/dome-world/ash-threshold.html"
@@ -41,6 +48,7 @@ on:
       - "app/dome-world/docs/ASH_KEEP_V1_PRODUCTION_DEMO_RECEIPT.md"
       - "app/engine/ash-keep-*.js"
       - "app/engine/ash-lifecycle.js"
+      - "app/engine/ash-constitutional-convergence.js"
       - "app/aperture/release.json"
       - "app/aperture/release.js"
       - "docs/ASH_LIFECYCLE_PRODUCTION_DEMO_RECEIPT.md"
@@ -50,11 +58,13 @@ on:
       - "scripts/ash-keep-local-closure-server.mjs"
       - "scripts/ash-keep-production-probe.mjs"
       - "scripts/ash-lifecycle-production-probe.mjs"
+      - "scripts/ash-constitutional-convergence-probe.mjs"
       - "scripts/run-ash-keep-production-probe.mjs"
       - "scripts/publish-ash-keep-observer-status.mjs"
       - "scripts/assert-ash-keep-release-posture.mjs"
       - "tests/ash-keep-*.test.mjs"
       - "tests/ash-lifecycle-*.test.mjs"
+      - "tests/ash-constitutional-*.test.mjs"
       - ".github/workflows/ash-keep-production-closure.yml"
   workflow_run:
     workflows: ["Test and deploy static app"]
@@ -93,6 +103,7 @@ jobs:
         run: |
           node --check scripts/ash-keep-production-probe.mjs
           node --check scripts/ash-lifecycle-production-probe.mjs
+          node --check scripts/ash-constitutional-convergence-probe.mjs
           node --check scripts/run-ash-keep-production-probe.mjs
           node --check scripts/publish-ash-keep-observer-status.mjs
           node --check scripts/assert-ash-keep-release-posture.mjs
@@ -139,6 +150,11 @@ jobs:
           TD613_ARTIFACT_DIR: artifacts/ash-keep-production-closure
           TD613_PROBE_RUNTIME_DIR: artifacts/ash-keep-probe-runtime
         run: node scripts/run-ash-keep-production-probe.mjs
+      - name: Run constitutional convergence preview
+        env:
+          TD613_BASE_URL: http://127.0.0.1:6130
+          TD613_ARTIFACT_DIR: artifacts/ash-constitutional-convergence
+        run: node scripts/ash-constitutional-convergence-probe.mjs
       - name: Preserve local core-closure evidence
         if: always()
         uses: actions/upload-artifact@v4
@@ -154,6 +170,7 @@ jobs:
             artifacts/ash-keep-local-readiness.json
             artifacts/ash-keep-probe-runtime/
             artifacts/ash-keep-production-closure/
+            artifacts/ash-constitutional-convergence/
           if-no-files-found: warn
           retention-days: 14
       - name: Stop bounded local runtime
@@ -205,7 +222,9 @@ jobs:
             if printf '%s' "$threshold_body" | grep -q 'name="ash-lifecycle" content="v0.1"' \
               && printf '%s' "$threshold_body" | grep -q '/dome-world/ash-lifecycle.js' \
               && printf '%s' "$keep_body" | grep -q 'name="ash-lifecycle" content="v0.1"' \
-              && printf '%s' "$keep_body" | grep -q '/dome-world/ash-lifecycle.js'; then
+              && printf '%s' "$keep_body" | grep -q '/dome-world/ash-lifecycle.js' \
+              && printf '%s' "$keep_body" | grep -q 'name="ash-constitutional-composition" content="v0.1"' \
+              && printf '%s' "$keep_body" | grep -q '/dome-world/ash-convergence.js'; then
               printf '%s' "$threshold_body" > artifacts/ash-lifecycle-deployed-observation/deployed-threshold.html
               printf '%s' "$keep_body" > artifacts/ash-lifecycle-deployed-observation/deployed-keep.html
               printf '{"threshold":"%s","keep":"%s","attempt":%s,"status":"LIFECYCLE_READY"}\n' "$threshold" "$keep" "$attempt" > artifacts/ash-lifecycle-deployed-observation/deployment-readiness.json
@@ -250,6 +269,11 @@ jobs:
           TD613_BASE_URL: ${{ env.TD613_DEPLOYED_BASE_URL }}
           TD613_ARTIFACT_DIR: artifacts/ash-lifecycle-deployed-observation
         run: node scripts/ash-lifecycle-production-probe.mjs
+      - name: Observe deployed constitutional convergence without promotion
+        env:
+          TD613_BASE_URL: ${{ env.TD613_DEPLOYED_BASE_URL }}
+          TD613_ARTIFACT_DIR: artifacts/ash-constitutional-convergence-deployed
+        run: node scripts/ash-constitutional-convergence-probe.mjs
       - name: Validate deployed lifecycle observation class
         run: |
           node <<'NODE'
@@ -262,6 +286,18 @@ jobs:
           if (report.network?.provider_or_transport_requests?.length) throw new Error('Lifecycle observation reached provider or recipient transport.');
           if (report.network?.raw_artifact_in_request_body !== false) throw new Error('Lifecycle observation did not prove the raw-byte request boundary.');
           if (report.continuity?.lifecycle_state !== 'CONTINUITY_SEALED') throw new Error('Lifecycle did not reach continuity-sealed state.');
+          NODE
+      - name: Validate deployed convergence observation class
+        run: |
+          node <<'NODE'
+          const fs = require('node:fs');
+          const report = JSON.parse(fs.readFileSync('artifacts/ash-constitutional-convergence-deployed/ash-constitutional-convergence.json', 'utf8'));
+          if (report.status !== 'PASS') throw new Error(`Convergence observation did not pass: ${report.status}`);
+          if (report.source_status !== 'DEPLOYED_OBSERVATION') throw new Error(`Unexpected source status: ${report.source_status}`);
+          if (report.promotion_authorized !== false) throw new Error('Convergence observation attempted to authorize promotion.');
+          if (report.observations?.boundaries?.non_read_requests?.length) throw new Error('Convergence observation emitted a non-read request.');
+          if (report.observations?.boundaries?.provider_recipient_cinder_transport_requests?.length) throw new Error('Convergence observation reached a provider, recipient, Cinder, or transport route.');
+          if (report.observations?.multi_tab?.serialized !== true) throw new Error('Cross-tab operation serialization was not observed.');
           NODE
       - name: Verify checked-out Ash Keep release posture
         if: always()
@@ -291,10 +327,12 @@ jobs:
           name: ash-lifecycle-deployed-observation-evidence
           path: |
             scripts/ash-lifecycle-production-probe.mjs
+            scripts/ash-constitutional-convergence-probe.mjs
             scripts/publish-ash-keep-observer-status.mjs
             scripts/assert-ash-keep-release-posture.mjs
             docs/ASH_LIFECYCLE_PRODUCTION_DEMO_RECEIPT.md
             artifacts/ash-lifecycle-deployed-observation/
+            artifacts/ash-constitutional-convergence-deployed/
           if-no-files-found: error
           retention-days: 30
       - name: Reconcile terminal lifecycle failure status

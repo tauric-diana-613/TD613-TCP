@@ -114,7 +114,6 @@ export async function compileReadinessReceipt(input = {}, options = {}) {
     missingness: unique(input.missingness || ['custody receipt not yet verified', 'case root not yet bound']),
     alternatives: unique(input.alternatives || ['metadata-only custody root', 'browser-local exact-byte commitment', 'continue without artifact bytes']),
     open_questions: unique(input.openQuestions || ['Which artifact or metadata object should become the custody root?']),
-    claim_ceiling: 'quick-scan-readiness-not-custody-or-intake-authority',
     readiness_digest: null
   };
   const readinessSubject = { ...record };

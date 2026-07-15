@@ -1,0 +1,17 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "td613.ash.deletion-plan/v0.1",
+  "type": "object",
+  "required": ["schema", "receipt_id", "case_id", "inventory", "inventory_count", "capsule_reminder_presented", "local_scope_only", "external_erasure_performed", "plan_digest"],
+  "properties": {
+    "schema": { "const": "td613.ash.deletion-plan/v0.1" },
+    "receipt_id": { "type": "string" },
+    "case_id": { "type": "string" },
+    "inventory": { "type": "object", "additionalProperties": { "type": "array", "items": { "type": "string" } } },
+    "inventory_count": { "type": "integer", "minimum": 0 },
+    "capsule_reminder_presented": { "const": true },
+    "local_scope_only": { "const": true },
+    "external_erasure_performed": { "const": false },
+    "plan_digest": { "type": "string", "pattern": "^sha256:" }
+  }
+}

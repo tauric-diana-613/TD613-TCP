@@ -5,6 +5,8 @@
   <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
   <meta name="color-scheme" content="dark">
   <meta name="theme-color" content="#04130f">
+  <meta name="ash-lifecycle" content="v0.1">
+  <meta name="ash-constitutional-composition" content="v0.1">
   <title>TD613 Ash Keep · Case Map</title>
   <script>try{if(localStorage.getItem('td613.ash-keep.current-case'))document.documentElement.classList.add('ash-has-current-case')}catch{}</script>
   <style>
@@ -73,7 +75,11 @@
   </main>
 
   <div class="launch" id="launch" role="dialog" aria-modal="true" aria-labelledby="ashLaunchTitle"><section class="launch-panel"><div class="launch-glyphs">米 · 上 · 下 · hõt · cōl · 𝄐 · ⟐</div><h2 id="ashLaunchTitle">Ash Keep</h2><p>Keep the private shape of a case coherent while testing what a purpose-shaped fragment could make recoverable through a declared route.</p><div class="field-grid"><div class="field"><label for="newTitle">Title</label><input id="newTitle" value="Untitled case"></div><div class="field"><label for="newProfile">Workspace profile</label><select id="newProfile"><option value="investigation">Investigation</option><option value="research">Research project</option><option value="legal">Legal matter</option><option value="archive">Archive</option><option value="organizing">Organizing</option><option value="unpublished">Unpublished work</option></select></div><div class="field"><label for="selectCase">Select Case</label><select id="selectCase" disabled><option value="">No saved cases yet</option></select></div></div><div class="actions"><button class="btn primary" id="startDemo">Start a demo</button><button class="btn gold" id="newCase">New case</button></div></section></div>
+  <script>if(sessionStorage.getItem('td613:ash-threshold:readiness:v0.1')&&location.search!=='?arrival=cleared')history.replaceState(null,'',location.pathname+'?arrival=cleared')</script>
   <script type="module" src="/dome-world/ash-keep.js"></script>
+  <script type="module" src="/dome-world/ash-convergence.js"></script>
+  <script type="module" src="/dome-world/ash-lifecycle.js"></script>
+  <script type="module" src="/dome-world/ash-workspace-bridge.js"></script>
   <script type="module" src="/dome-world/ash-case-controls.js"></script>
 </body>
 </html>

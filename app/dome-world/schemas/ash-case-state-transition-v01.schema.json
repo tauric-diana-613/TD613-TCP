@@ -1,0 +1,16 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "td613.ash.case-state-transition/v0.1",
+  "type": "object",
+  "required": ["schema", "receipt_id", "next_state", "reason", "local_only", "transition_digest"],
+  "properties": {
+    "schema": { "const": "td613.ash.case-state-transition/v0.1" },
+    "receipt_id": { "type": "string" },
+    "case_id": { "type": ["string", "null"] },
+    "previous_state": { "type": ["string", "null"] },
+    "next_state": { "enum": ["EPHEMERAL_CURRENT", "CURRENT_UNSAVED", "CURRENT_SAVED", "CLOSED_SAVED", "CLOSED_CURRENT_UNSAVED", "SELECTED_NOT_OPEN", "DELETION_PENDING", "DELETED_LOCAL", "DELETE_PARTIAL_HOLD"] },
+    "reason": { "type": "string" },
+    "local_only": { "const": true },
+    "transition_digest": { "type": "string", "pattern": "^sha256:" }
+  }
+}

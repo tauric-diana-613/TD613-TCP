@@ -26,10 +26,14 @@ import {
 import { compileProviderPacket, screenProviderDraft } from '../engine/ash-keep-provider.js';
 
 const DB_NAME = 'td613-ash-keep';
-const DB_VERSION = 1;
+const DB_VERSION = 2;
 const POINTER_KEY = 'td613.ash-keep.current-case';
 const PREFS_KEY = 'td613.ash-keep.preferences';
-const STORES = ['cases', 'roomRules', 'routeMemory', 'tests', 'drafts', 'reviews', 'releases', 'savePoints', 'unexpectedDetails', 'notes'];
+const STORES = [
+  'cases', 'roomRules', 'routeMemory', 'tests', 'drafts', 'reviews', 'releases', 'savePoints', 'unexpectedDetails', 'notes',
+  'authorityContexts', 'authorityBindings', 'invalidations', 'caseStates', 'operations', 'deletionPlans', 'deletionReceipts',
+  'compatibilityAudits', 'lifecycle', 'savedCases', 'custodyReceipts', 'tombstones'
+];
 const $ = id => document.getElementById(id);
 const qsa = (selector, root = document) => [...root.querySelectorAll(selector)];
 const split = value => [...new Set(String(value || '').split(',').map(item => item.trim()).filter(Boolean))];
@@ -67,6 +71,15 @@ const state = {
   frame: 0,
   canvasSize: { width: 0, height: 0, dpr: 0 }
 };
+
+function announce(type, detail = {}) {
+  window.dispatchEvent(new CustomEvent(`td613:ash:${type}`, { detail: {
+    case_id: state.caseMap?.case_id || null,
+    case_map_digest: state.caseMap?.case_map_digest || null,
+    route_memory_digest: state.routeMemory?.route_memory_digest || null,
+    ...detail
+  } }));
+}
 
 function openDb() {
   return new Promise((resolve, reject) => {
@@ -161,6 +174,7 @@ async function persistCore() {
   await put('routeMemory', state.routeMemory, state.caseMap.case_id);
   localStorage.setItem(POINTER_KEY, state.caseMap.case_id);
   $('storageState').textContent = 'IndexedDB active';
+  announce('core-mutated');
 }
 
 async function loadCase(caseId) {
@@ -177,6 +191,7 @@ async function loadCase(caseId) {
   state.demo = record.title === 'Glasshouse Archive inquiry';
   $('launch').classList.add('hidden');
   renderAll();
+  announce('case-opened');
   return true;
 }
 
@@ -220,6 +235,7 @@ async function createCase({ demo = false } = {}) {
   await persistCore();
   $('launch').classList.add('hidden');
   renderAll();
+  announce('case-created');
 }
 
 function initWorker() {
@@ -253,6 +269,8 @@ function setWorkspace(name) {
   localStorage.setItem(PREFS_KEY, JSON.stringify({ ...prefs, workspace: name, mapMode: state.mapMode }));
   if (state.mapVisible) startScheduler(); else stopScheduler();
 }
+
+window.__td613OpenAshWorkspace = setWorkspace;
 
 function renderAll() {
   if (!state.caseMap) return;
@@ -530,6 +548,7 @@ function selectNode(id) {
 }
 
 async function runTest() {
+  await window.TD613AshConvergence.authorize('APERTURE_REBUILD');
   const proposed = split($('testRefs').value);
   $('testStatus').textContent = 'Reader sweep running…';
   state.reader = await compileReaderProfile({
@@ -567,6 +586,7 @@ async function runTest() {
   }));
   await persistCore();
   renderTest(); buildLayout(); drawMap(performance.now()); startScheduler();
+  announce('rebuild-kept', { rebuild_receipt_reference: state.latestTest.test_id });
   const first = state.latestTest.trials.find(trial => trial.state === 'OBSERVED' && !trial.benign_control);
   if (first) {
     const added = first.change.room_bridges.direction === 'INCREASE' ? 7 : first.change.relationships.direction === 'INCREASE' ? 4 : 0;
@@ -583,8 +603,10 @@ function buildReviewChecks() {
 }
 
 async function keepDraft() {
+  await window.TD613AshConvergence.authorize('KEEP_DRAFT');
   state.latestDraft = await compileAshDraft({
     caseId: state.caseMap.case_id,
+    caseMapDigest: state.caseMap.case_map_digest,
     body: $('draftBody').value,
     version: $('draftVersion').value,
     selectedRoute: $('draftRoute').value,
@@ -607,6 +629,7 @@ async function keepDraft() {
   state.latestReview = null; state.latestRelease = null;
   await put('drafts', state.latestDraft, state.latestDraft.draft_id);
   renderDraft();
+  announce('draft-kept', { draft_reference: state.latestDraft.draft_id });
 }
 
 function uniqueRoomIds(refs) {
@@ -614,6 +637,7 @@ function uniqueRoomIds(refs) {
 }
 
 async function reviewDraft() {
+  await window.TD613AshConvergence.authorize('REVIEW_DRAFT');
   if (!state.latestDraft || state.latestDraft.body !== $('draftBody').value || state.latestDraft.version !== $('draftVersion').value) await keepDraft();
   const values = Object.fromEntries(qsa('[data-review]').map(input => [input.dataset.review, input.checked]));
   state.latestReview = await compileDraftReview({
@@ -636,9 +660,11 @@ async function reviewDraft() {
   });
   await put('reviews', state.latestReview, state.latestReview.review_id);
   renderDraft();
+  announce('review-kept', { review_reference: state.latestReview.review_id });
 }
 
 async function approveRelease() {
+  await window.TD613AshConvergence.authorize('KEEP_RELEASE');
   const existing = (await all('releases')).map(item => item.value?.nonce).filter(Boolean);
   state.latestRelease = await compileReleaseReceipt({
     draft: state.latestDraft,
@@ -652,13 +678,18 @@ async function approveRelease() {
   });
   await put('releases', state.latestRelease, state.latestRelease.receipt_id);
   renderDraft();
+  announce('release-kept', { release_reference: state.latestRelease.receipt_id });
 }
 
 async function makeSavePoint() {
+  await window.TD613AshConvergence.authorize('SEAL_CONTINUITY');
   state.savePoints.push(await compileSavePoint({
     caseId: state.caseMap.case_id,
     caseMapDigest: state.caseMap.case_map_digest,
     routeMemoryDigest: state.routeMemory.route_memory_digest,
+    releaseReceiptReference: state.latestRelease?.receipt_id || null,
+    releaseReceiptDigest: state.latestRelease?.receipt_digest || null,
+    releaseCreatedAt: state.latestRelease?.created_at || null,
     evidenceInventory: state.caseMap.nodes.filter(node => ['artifact', 'source'].includes(node.type)).map(node => node.id),
     unansweredQuestions: String($('saveQuestions').value || '').split('\n').filter(Boolean),
     corroborationState: state.caseMap.nodes.filter(node => node.type === 'claim').map(node => ({ node_id: node.id, posture: node.confidence_posture })),
@@ -671,6 +702,7 @@ async function makeSavePoint() {
   await put('savePoints', point, point.save_point_id);
   $('saveStatus').textContent = `Save Point ${point.save_point_id} sealed locally.`;
   renderSaves();
+  announce('continuity-kept', { continuity_reference: point.save_point_id });
 }
 
 function downloadJson(filename, value) {
@@ -680,7 +712,11 @@ function downloadJson(filename, value) {
 }
 
 async function exportCapsule() {
-  if (!state.savePoints.length) await makeSavePoint();
+  await window.TD613AshConvergence.authorize('EXPORT_CAPSULE');
+  const latestSavePoint = state.savePoints.at(-1);
+  const currentRelease = state.latestRelease;
+  if (!currentRelease) throw new Error('A current Release Receipt is required before Capsule export.');
+  if (!latestSavePoint || latestSavePoint.release_receipt_reference !== currentRelease.receipt_id || latestSavePoint.release_receipt_digest !== currentRelease.receipt_digest || latestSavePoint.release_created_at !== currentRelease.created_at) await makeSavePoint();
   const passphrase = $('capsulePassphrase').value;
   $('capsuleStatus').textContent = 'Encrypting locally…';
   const capsule = await encryptAshCapsule({
@@ -708,9 +744,11 @@ async function importCapsule() {
   $('capsuleStatus').textContent = 'Authenticated capsule opened into local custody.';
   $('launch').classList.add('hidden');
   renderAll();
+  announce('capsule-opened', { continuity_reference: payload.save_point.save_point_id });
 }
 
 async function recordRoute() {
+  await window.TD613AshConvergence.authorize('ROUTE_MEMORY_WRITE');
   const draftDigest = $('routeDigest').value || state.latestDraft?.draft_digest;
   state.routeMemory = await compileRouteMemory(routeInput(state.routeMemory, { entries: [...state.routeMemory.entries, {
     draft_digest: draftDigest,
@@ -801,6 +839,7 @@ async function recordUnexpectedDetail() {
 }
 
 async function askHushProvider() {
+  await window.TD613AshConvergence.authorize('HUSH_CANDIDATE');
   if (!$('providerApproval').checked) throw new Error('Confirm the exact provider draft first.');
   if (!$('providerScreenReview').checked) throw new Error('Review the local provider screen first.');
   const body = $('draftBody').value.trim();
@@ -979,6 +1018,20 @@ async function boot() {
     $('launch').classList.remove('hidden');
   }
   startScheduler();
+  window.__td613AshKeep = Object.freeze({
+    version: 'td613.ash-keep.browser-core/v1.1-convergence-native',
+    current: () => ({
+      case_id: state.caseMap?.case_id || null,
+      case_map_digest: state.caseMap?.case_map_digest || null,
+      route_memory_digest: state.routeMemory?.route_memory_digest || null
+    }),
+    refresh: async () => {
+      const caseId = localStorage.getItem(POINTER_KEY);
+      if (caseId) await loadCase(caseId);
+    },
+    openWorkspace: setWorkspace
+  });
+  announce('core-ready');
 }
 
 boot().catch(error => { $('storageState').textContent = 'Local custody error'; console.error(error); });

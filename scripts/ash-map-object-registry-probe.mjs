@@ -1,4 +1,5 @@
 import fs from 'node:fs/promises';
+import fsSync from 'node:fs';
 import path from 'node:path';
 import { chromium } from 'playwright';
 
@@ -8,6 +9,19 @@ const keepUrl = `${base}/dome-world/ash-keep.html`;
 
 function assert(condition, message) {
   if (!condition) throw new Error(message);
+}
+
+function chromeExecutable() {
+  if (process.env.TD613_BROWSER_EXECUTABLE && fsSync.existsSync(process.env.TD613_BROWSER_EXECUTABLE)) return process.env.TD613_BROWSER_EXECUTABLE;
+  const candidates = process.platform === 'win32'
+    ? [
+        'C:\\Program Files\\Google\\Chrome\\Application\\chrome.exe',
+        'C:\\Program Files (x86)\\Google\\Chrome\\Application\\chrome.exe',
+        'C:\\Program Files (x86)\\Microsoft\\Edge\\Application\\msedge.exe',
+        'C:\\Program Files\\Microsoft\\Edge\\Application\\msedge.exe'
+      ]
+    : ['/usr/bin/google-chrome', '/usr/bin/chromium', '/usr/bin/chromium-browser'];
+  return candidates.find(candidate => fsSync.existsSync(candidate)) || null;
 }
 
 async function waitForRegistry(page) {
@@ -76,7 +90,8 @@ async function clickFocusedNode(page) {
 }
 
 await fs.mkdir(artifactDir, { recursive: true });
-const browser = await chromium.launch({ headless: true });
+const executablePath = chromeExecutable();
+const browser = await chromium.launch({ headless: true, ...(executablePath ? { executablePath } : {}) });
 const context = await browser.newContext({ viewport: { width: 1440, height: 1000 }, reducedMotion: 'reduce' });
 const page = await context.newPage();
 const consoleErrors = [];

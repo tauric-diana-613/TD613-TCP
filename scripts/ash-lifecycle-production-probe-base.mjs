@@ -22,9 +22,7 @@ const LIFECYCLE_ROUTE = Object.freeze([
 ]);
 const ALLOWED_LOCAL_KEYS = new Set([
   'td613.ash-keep.current-case',
-  'td613.ash-keep.preferences',
-  'td613:ash-keep:lifecycle:v0.1',
-  'td613:ash-custody:receipts:v0.8'
+  'td613.ash-keep.preferences'
 ]);
 
 function assert(condition, message) {
@@ -243,7 +241,7 @@ try {
   assert(caseMap.case_map_digest !== preCase.case_map_digest, 'Custody binding did not change the Case Map digest');
   const rootNode = caseMap.nodes.find(node => node.custody_reference === caseMap.custody_reference);
   assert(rootNode?.type === 'artifact', 'Custody root artifact node was not found');
-  const custodyReceipts = await page.evaluate(() => JSON.parse(localStorage.getItem('td613:ash-custody:receipts:v0.8') || '[]'));
+  const custodyReceipts = (afterBinding.custodyReceipts || []).map(item => item.value || item);
   const custodyReceipt = custodyReceipts.find(item => item.receipt_id === caseMap.custody_reference);
   assert(custodyReceipt?.receipt_digest && custodyReceipt?.manifest_digest, 'Custody digest spine was not preserved');
   report.custody = {
@@ -289,12 +287,7 @@ try {
   });
   const custodyCheck = page.locator('[data-review="validCustody"]');
   assert(await custodyCheck.isChecked(), 'Observed custody did not replace the free review checkbox');
-  await Promise.all([
-    page.waitForNavigation({ waitUntil: 'networkidle', timeout: 45_000 }),
-    page.locator('#reviewDraft').click()
-  ]);
-  await page.locator('meta[name="ash-lifecycle"][content="v0.1"]').waitFor({ state: 'attached' });
-  await openWorkspace(page, 'draft');
+  await page.locator('#reviewDraft').click();
   await waitForText(page, '#reviewStatus', /READY_FOR_LOCAL_RELEASE_APPROVAL/);
   await page.locator('#approveRelease').waitFor({ state: 'visible' });
   await page.waitForFunction(() => !document.querySelector('#approveRelease')?.disabled, null, { timeout: 45_000 });

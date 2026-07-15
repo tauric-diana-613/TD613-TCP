@@ -41,7 +41,7 @@ async function openWorkspace(page, name) {
 async function databaseSnapshot(page) {
   return page.evaluate(async ({ dbName }) => {
     const open = await new Promise((resolve, reject) => {
-      const request = indexedDB.open(dbName, 1);
+      const request = indexedDB.open(dbName);
       request.onsuccess = () => resolve(request.result);
       request.onerror = () => reject(request.error);
     });

@@ -57,26 +57,28 @@ const localWrites = [...runtime.matchAll(/localStorage\.setItem\(([^,\n]+),/g)].
 assert.deepEqual(localWrites.sort(), ['POINTER_KEY', 'PREFS_KEY'], 'Only the compact current-case pointer and UI preferences may enter localStorage from the core runtime.');
 
 assert.match(caseControls, /import '\.\/ash-map-labels\.js'/);
-assert.match(caseControls, /ASH_CASE_CONTROLS_VERSION = 'td613\.ash-keep\.case-controls\/v1\.1'/);
+assert.match(caseControls, /ASH_CASE_CONTROLS_VERSION = 'td613\.ash-keep\.case-controls\/v1\.2'/);
 assert.match(caseControls, /SAVED_CASES_KEY = 'td613\.ash-keep\.saved-cases:v1'/);
 assert.match(caseControls, /async function saveCurrentCase\(\)/);
 assert.match(caseControls, /async function closeCurrentCase\(\)/);
 assert.match(caseControls, /async function populateCaseSelect\(/);
 assert.match(caseControls, /current unsaved/);
-assert.match(caseControls, /fingerprint === savedRecord\.fingerprint/);
+assert.match(caseControls, /async function caseIsSaved/);
+assert.match(caseControls, /putWrapped\(db, 'savedCases'/);
 assert.match(caseControls, /crypto\.subtle\.digest\('SHA-256'/);
 assert.match(caseControls, /document\.documentElement\.classList\.remove\(PREPAINT_CLASS\)/);
-assert.match(caseControls, /location\.reload\(\)/);
+assert.doesNotMatch(caseControls, /location\.reload\(\)/);
 assert.match(caseControls, /select\.disabled = options\.length === 0/);
 assert.match(caseControls, /open\.textContent = 'Open'/);
 assert.match(caseControls, /remove\.textContent = 'Delete'/);
 assert.match(caseControls, /open\.disabled = true/);
 assert.match(caseControls, /remove\.disabled = true/);
-assert.match(caseControls, /setChoiceAvailability\(Boolean\(event\.target\.value\)\)/);
+assert.match(caseControls, /setChoiceAvailability\(Boolean\(caseId\)\)/);
 assert.doesNotMatch(caseControls, /selectCase'\)\?\.addEventListener\('change',[^\n]*openSelectedCase/, 'Choosing a case may arm controls but must not open it automatically.');
 assert.match(caseControls, /async function deleteSelectedCase\(\)/);
 assert.match(caseControls, /window\.confirm\(`Delete/);
-assert.match(caseControls, /async function deleteCaseRecords\(db, caseId\)/);
+assert.match(caseControls, /async function atomicDeleteCase\(db, caseId\)/);
+assert.match(caseControls, /planDeletion\(caseId, title, true\)/);
 assert.match(caseControls, /localStorage\.removeItem\(POINTER_KEY\)/);
 assert.doesNotMatch(caseControls, /innerHTML\s*=\s*.*title/, 'Saved case titles must not be interpolated through innerHTML.');
 

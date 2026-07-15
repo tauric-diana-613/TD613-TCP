@@ -1,0 +1,15 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "td613.ash.stale-invalidation/v0.1",
+  "type": "object",
+  "required": ["schema", "receipt_id", "case_id", "changed_dimensions", "invalidated_targets", "stale_records_preserved", "invalidation_digest"],
+  "properties": {
+    "schema": { "const": "td613.ash.stale-invalidation/v0.1" },
+    "receipt_id": { "type": "string" },
+    "case_id": { "type": "string" },
+    "changed_dimensions": { "type": "array", "minItems": 1, "items": { "enum": ["CASE_MAP", "ROUTE_MEMORY", "CUSTODY_ROOT"] } },
+    "invalidated_targets": { "type": "array", "minItems": 9, "items": { "type": "string" } },
+    "stale_records_preserved": { "const": true },
+    "invalidation_digest": { "type": "string", "pattern": "^sha256:" }
+  }
+}

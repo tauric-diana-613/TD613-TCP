@@ -5,8 +5,8 @@ export const DOME_WORLD_SHELL_VERSION = 'td613.dome-world.shell/v1.2-embedded-as
 export const MARROWLINE_LAB_ROUTE = '/dome-world/marrowline.html';
 export const ASH_THRESHOLD_ROUTE = '/dome-world/ash-threshold.html';
 export const ASH_LIFECYCLE_SHELL_CONTRACT = 'td613.ash.lifecycle-shell/v0.1';
-export const ASH_KEEP_SHELL_VERSION = 'td613.ash-keep.shell/v0.1';
-export const ASH_KEEP_JS_SHELL_VERSION = 'td613.ash-keep.js-shell/v0.3-release-bound-continuity';
+export const ASH_KEEP_SHELL_VERSION = 'td613.ash-keep.shell/v0.2-canonical-composition';
+export const ASH_KEEP_JS_SHELL_VERSION = 'td613.ash-keep.js-shell/v0.4-native-bindings';
 export const ASH_LIFECYCLE_MODULE = '/dome-world/ash-lifecycle.js';
 export const ASH_WORKSPACE_BRIDGE_MODULE = '/dome-world/ash-workspace-bridge.js';
 
@@ -15,21 +15,6 @@ const ASH_KEEP_SOURCE_PATH = path.join(process.cwd(), 'app', 'dome-world', 'ash-
 const ASH_KEEP_JS_SOURCE_PATH = path.join(process.cwd(), 'app', 'dome-world', 'ash-keep.js');
 const MARROWLINE_BUTTON = `<button class="lab-node lab-node-marrowline" type="button" data-tone="gold" data-glyph="∴" data-open-route="${MARROWLINE_LAB_ROUTE}" style="grid-column:span 8" onclick="window.location.assign('${MARROWLINE_LAB_ROUTE}')" aria-label="Open Marrowline Kʰonapolit terminal"><span class="lab-index">11</span><strong>Marrowline</strong><small>Kʰonapolit terminal / live ingress</small></button>`;
 const ASH_TAB = `<button class="tab" data-view="ash" data-sigil="下"><small>04</small><span>Ash</span></button>`;
-const CORE_SCRIPT = '<script type="module" src="/dome-world/ash-keep.js"></script>';
-const SERVED_CORE_SCRIPT = '<script type="module" src="/api/dome-world-shell?surface=ash-keep-js"></script>';
-const LIFECYCLE_SCRIPT = `<script type="module" src="${ASH_LIFECYCLE_MODULE}"></script>`;
-const WORKSPACE_BRIDGE_SCRIPT = `<script type="module" src="${ASH_WORKSPACE_BRIDGE_MODULE}"></script>`;
-const ARRIVAL_COMPATIBILITY_SCRIPT = `<script>/* td613 arrival-route compatibility: composed shell first, history annotation only */if(sessionStorage.getItem('td613:ash-threshold:readiness:v0.1')&&location.search!=='?arrival=cleared'){history.replaceState(null,'',location.pathname+'?arrival=cleared')}</script>`;
-const DRAFT_MARKER = '    caseId: state.caseMap.case_id,\n    body: $(\'draftBody\').value,';
-const DRAFT_BINDING = '    caseId: state.caseMap.case_id,\n    caseMapDigest: state.caseMap.case_map_digest,\n    body: $(\'draftBody\').value,';
-const SAVE_POINT_MARKER = '    routeMemoryDigest: state.routeMemory.route_memory_digest,\n    evidenceInventory: state.caseMap.nodes.filter(node => [\'artifact\', \'source\'].includes(node.type)).map(node => node.id),';
-const SAVE_POINT_BINDING = '    routeMemoryDigest: state.routeMemory.route_memory_digest,\n    releaseReceiptReference: state.latestRelease?.receipt_id || null,\n    releaseReceiptDigest: state.latestRelease?.receipt_digest || null,\n    releaseCreatedAt: state.latestRelease?.created_at || null,\n    evidenceInventory: state.caseMap.nodes.filter(node => [\'artifact\', \'source\'].includes(node.type)).map(node => node.id),';
-const CAPSULE_MARKER = 'async function exportCapsule() {\n  if (!state.savePoints.length) await makeSavePoint();';
-const CAPSULE_BINDING = "async function exportCapsule() {\n  const latestSavePoint = state.savePoints.at(-1);\n  const currentRelease = state.latestRelease;\n  if (!currentRelease) throw new Error('A current Release Receipt is required before Capsule export.');\n  if (!latestSavePoint || latestSavePoint.release_receipt_reference !== currentRelease.receipt_id || latestSavePoint.release_receipt_digest !== currentRelease.receipt_digest || latestSavePoint.release_created_at !== currentRelease.created_at) await makeSavePoint();";
-const REVIEW_MARKER = "  await put('reviews', state.latestReview, state.latestReview.review_id);\n  renderDraft();";
-const REVIEW_BINDING = "  await put('reviews', state.latestReview, state.latestReview.review_id);\n  renderDraft();\n  setTimeout(() => location.reload(), 160); // td613 lifecycle review refresh";
-const WORKSPACE_MARKER = "function setWorkspace(name) {\n  state.workspace = name;\n  qsa('.work-tab').forEach(button => button.setAttribute('aria-selected', String(button.dataset.workspace === name)));\n  qsa('.workspace').forEach(panel => panel.classList.toggle('active', panel.id === `workspace-${name}`));\n  state.mapVisible = name === 'map' && !document.hidden;\n  const prefs = JSON.parse(localStorage.getItem(PREFS_KEY) || '{}');\n  localStorage.setItem(PREFS_KEY, JSON.stringify({ ...prefs, workspace: name, mapMode: state.mapMode }));\n  if (state.mapVisible) startScheduler(); else stopScheduler();\n}";
-const WORKSPACE_BINDING = `${WORKSPACE_MARKER}\n\nwindow.__td613OpenAshWorkspace = setWorkspace; // td613 late workspace bridge`;
 
 export function injectMarrowlineLabButton(source = '') {
   const html = String(source || '');
@@ -55,54 +40,34 @@ export function injectAshLifecycleEntry(source = '') {
 }
 
 export function injectAshKeepLifecycle(source = '') {
-  let html = String(source || '');
+  const html = String(source || '');
   if (!html) throw new Error('ash-keep-source-empty');
-  if (!html.includes('name="ash-lifecycle"')) {
-    const marker = '<meta name="theme-color" content="#04130f">';
-    if (!html.includes(marker)) throw new Error('ash-keep-theme-marker-missing');
-    html = html.replace(marker, `${marker}\n  <meta name="ash-lifecycle" content="v0.1">`);
+  const ordered = ['/dome-world/ash-keep.js', '/dome-world/ash-convergence.js', ASH_LIFECYCLE_MODULE, ASH_WORKSPACE_BRIDGE_MODULE, '/dome-world/ash-case-controls.js'];
+  if (!html.includes('name="ash-lifecycle" content="v0.1"')) throw new Error('ash-lifecycle-meta-missing');
+  if (!html.includes('name="ash-constitutional-composition" content="v0.1"')) throw new Error('ash-composition-meta-missing');
+  let cursor = -1;
+  for (const module of ordered) {
+    const index = html.indexOf(module);
+    if (index < 0) throw new Error(`ash-canonical-module-missing:${module}`);
+    if (index <= cursor) throw new Error(`ash-canonical-module-order-invalid:${module}`);
+    cursor = index;
   }
-  if (!html.includes(ASH_LIFECYCLE_MODULE)) {
-    if (!html.includes(CORE_SCRIPT)) throw new Error('ash-keep-core-script-marker-missing');
-    html = html.replace(CORE_SCRIPT, `${SERVED_CORE_SCRIPT}\n  ${ARRIVAL_COMPATIBILITY_SCRIPT}\n  ${LIFECYCLE_SCRIPT}\n  ${WORKSPACE_BRIDGE_SCRIPT}`);
-  } else if (!html.includes('td613 arrival-route compatibility')) {
-    html = html.replace(SERVED_CORE_SCRIPT, `${SERVED_CORE_SCRIPT}\n  ${ARRIVAL_COMPATIBILITY_SCRIPT}`);
-  }
-  if (!html.includes(ASH_WORKSPACE_BRIDGE_MODULE)) {
-    if (!html.includes(LIFECYCLE_SCRIPT)) throw new Error('ash-lifecycle-script-marker-missing');
-    html = html.replace(LIFECYCLE_SCRIPT, `${LIFECYCLE_SCRIPT}\n  ${WORKSPACE_BRIDGE_SCRIPT}`);
-  }
-  if (html.indexOf(ASH_LIFECYCLE_MODULE) < html.indexOf('surface=ash-keep-js')) throw new Error('ash-lifecycle-loaded-before-keep-core');
-  if (html.indexOf(ASH_WORKSPACE_BRIDGE_MODULE) < html.indexOf(ASH_LIFECYCLE_MODULE)) throw new Error('ash-workspace-bridge-loaded-before-lifecycle');
+  if (html.includes('surface=ash-keep-js')) throw new Error('ash-keep-still-depends-on-rewritten-core');
   return html;
 }
 
 export function bindAshDraftsToCaseMap(source = '') {
-  let code = String(source || '');
+  const code = String(source || '');
   if (!code) throw new Error('ash-keep-js-source-empty');
-  if (code.includes(DRAFT_MARKER)) {
-    code = code.replace(DRAFT_MARKER, DRAFT_BINDING);
-  } else if (!code.includes(DRAFT_BINDING)) {
-    throw new Error('ash-keep-draft-marker-missing');
-  }
-  if (code.includes(SAVE_POINT_MARKER)) {
-    code = code.replace(SAVE_POINT_MARKER, SAVE_POINT_BINDING);
-  } else if (!code.includes(SAVE_POINT_BINDING)) {
-    throw new Error('ash-keep-save-point-release-binding-marker-missing');
-  }
-  if (code.includes(CAPSULE_MARKER)) {
-    code = code.replace(CAPSULE_MARKER, CAPSULE_BINDING);
-  } else if (!code.includes(CAPSULE_BINDING)) {
-    throw new Error('ash-keep-capsule-current-save-marker-missing');
-  }
-  if (!code.includes('td613 lifecycle review refresh')) {
-    if (!code.includes(REVIEW_MARKER)) throw new Error('ash-keep-review-marker-missing');
-    code = code.replace(REVIEW_MARKER, REVIEW_BINDING);
-  }
-  if (!code.includes('td613 late workspace bridge')) {
-    if (!code.includes(WORKSPACE_MARKER)) throw new Error('ash-keep-workspace-marker-missing');
-    code = code.replace(WORKSPACE_MARKER, WORKSPACE_BINDING);
-  }
+  for (const marker of [
+    'caseMapDigest: state.caseMap.case_map_digest',
+    'releaseReceiptReference: state.latestRelease?.receipt_id || null',
+    'releaseReceiptDigest: state.latestRelease?.receipt_digest || null',
+    'latestSavePoint.release_receipt_reference !== currentRelease.receipt_id',
+    'A current Release Receipt is required before Capsule export.',
+    'window.__td613OpenAshWorkspace = setWorkspace'
+  ]) if (!code.includes(marker)) throw new Error(`ash-native-core-binding-missing:${marker}`);
+  if (code.includes('location.reload()')) throw new Error('ash-native-core-contains-forced-reload');
   return code;
 }
 

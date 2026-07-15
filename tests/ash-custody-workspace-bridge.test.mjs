@@ -30,9 +30,8 @@ assert.equal(injectAshKeepLifecycle(renderedHtml), renderedHtml, 'bridge composi
 const keepJs = fs.readFileSync('app/dome-world/ash-keep.js', 'utf8');
 const rawKeepDraft = keepJs.match(/async function keepDraft\(\) \{[\s\S]*?\n\}/)?.[0] || '';
 const rawMakeSave = keepJs.match(/async function makeSavePoint\(\) \{[\s\S]*?\n\}/)?.[0] || '';
-assert.match(keepJs, /caseMapDigest: state\.caseMap\.case_map_digest/, 'raw Keep source should retain the unrelated Save Point digest use that exposed the scope collision');
-assert.doesNotMatch(rawKeepDraft, /caseMapDigest:/, 'raw keepDraft fixture should begin without the lifecycle binding');
-assert.doesNotMatch(rawMakeSave, /releaseReceiptReference:/, 'raw Save Point fixture should begin without the release binding');
+assert.match(rawKeepDraft, /caseMapDigest: state\.caseMap\.case_map_digest/, 'canonical keepDraft must own its Case Map binding');
+assert.match(rawMakeSave, /releaseReceiptReference: state\.latestRelease\?\.receipt_id \|\| null/, 'canonical Save Point must own its release binding');
 
 const renderedJs = bindAshDraftsToCaseMap(keepJs);
 const renderedKeepDraft = renderedJs.match(/async function keepDraft\(\) \{[\s\S]*?\n\}/)?.[0] || '';
@@ -43,8 +42,9 @@ assert.match(renderedMakeSave, /releaseReceiptReference: state\.latestRelease\?\
 assert.match(renderedMakeSave, /releaseReceiptDigest: state\.latestRelease\?\.receipt_digest \|\| null/);
 assert.match(renderedMakeSave, /releaseCreatedAt: state\.latestRelease\?\.created_at \|\| null/);
 assert.match(renderedJs, /latestSavePoint\.release_created_at !== currentRelease\.created_at/);
-assert.match(renderedJs, /window\.__td613OpenAshWorkspace = setWorkspace; \/\/ td613 late workspace bridge/);
-assert.equal(bindAshDraftsToCaseMap(renderedJs), renderedJs, 'base workspace, Draft, and continuity transformations must be idempotent');
+assert.match(renderedJs, /window\.__td613OpenAshWorkspace = setWorkspace/);
+assert.doesNotMatch(renderedJs, /location\.reload\(\)/);
+assert.equal(bindAshDraftsToCaseMap(renderedJs), renderedJs, 'shell validation must leave native bindings byte-identical');
 
 assert.equal(actionGateForLifecycleState('CASE_BOUND', 'draft').allowed, false);
 assert.equal(actionGateForLifecycleState('REBUILD_ELIGIBLE', 'draft').allowed, true);

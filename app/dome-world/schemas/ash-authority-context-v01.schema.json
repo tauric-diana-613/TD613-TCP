@@ -1,0 +1,29 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "td613.ash.authority-context/v0.1",
+  "type": "object",
+  "required": ["schema", "receipt_id", "lifecycle_rank", "current", "source_status", "evidence_basis", "missingness", "alternatives", "open_questions", "operator_notes", "closure", "authority_context_digest"],
+  "properties": {
+    "schema": { "const": "td613.ash.authority-context/v0.1" },
+    "receipt_id": { "type": "string", "minLength": 1 },
+    "case_id": { "type": ["string", "null"] },
+    "case_map_digest": { "type": ["string", "null"] },
+    "route_memory_digest": { "type": ["string", "null"] },
+    "lifecycle_rank": { "enum": ["ARRIVAL_UNPERSISTED", "READINESS_OBSERVED", "CUSTODY_ROOT_PROVISIONAL", "CUSTODY_ROOT_VERIFIED", "CASE_BOUND", "REBUILD_ELIGIBLE", "RELEASE_ELIGIBLE", "CONTINUITY_SEALED", "HELD"] },
+    "readiness_receipt_reference": { "type": ["string", "null"] },
+    "custody_root_receipt_reference": { "type": ["string", "null"] },
+    "rebuild_receipt_reference": { "type": ["string", "null"] },
+    "current_review_reference": { "type": ["string", "null"] },
+    "current_release_reference": { "type": ["string", "null"] },
+    "current_continuity_reference": { "type": ["string", "null"] },
+    "current": { "const": true },
+    "source_status": { "type": "string" },
+    "evidence_basis": { "type": "array", "items": { "type": "string" } },
+    "missingness": { "type": "array", "items": { "type": "string" } },
+    "alternatives": { "type": "array", "items": { "type": "string" } },
+    "open_questions": { "type": "array", "items": { "type": "string" } },
+    "operator_notes": { "type": "array", "items": { "type": "string" } },
+    "closure": { "type": "object", "required": ["status"] },
+    "authority_context_digest": { "type": "string", "pattern": "^sha256:" }
+  }
+}

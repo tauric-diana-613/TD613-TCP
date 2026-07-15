@@ -1,0 +1,18 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "td613.ash.deletion-receipt/v0.1",
+  "type": "object",
+  "required": ["schema", "receipt_id", "case_id", "deletion_plan_reference", "status", "remaining_orphans", "recovery_available", "local_scope_only", "external_erasure_performed", "deletion_receipt_digest"],
+  "properties": {
+    "schema": { "const": "td613.ash.deletion-receipt/v0.1" },
+    "receipt_id": { "type": "string" },
+    "case_id": { "type": "string" },
+    "deletion_plan_reference": { "type": "string" },
+    "status": { "enum": ["DELETED_LOCAL", "DELETE_PARTIAL_HOLD"] },
+    "remaining_orphans": { "type": "array" },
+    "recovery_available": { "type": "boolean" },
+    "local_scope_only": { "const": true },
+    "external_erasure_performed": { "const": false },
+    "deletion_receipt_digest": { "type": "string", "pattern": "^sha256:" }
+  }
+}

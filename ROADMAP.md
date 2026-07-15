@@ -2,7 +2,7 @@
 
 𝌋‌ U+10D613
 
-Roadmap generation: `v1.3 · constitutional convergence selected`
+Roadmap generation: `v1.4 · constitutional convergence validation gate`
 
 Date: `2026-07-15`
 
@@ -11,6 +11,7 @@ Use with:
 - [`docs/ASH_KEEP_BUILDOUT_LEDGER.md`](docs/ASH_KEEP_BUILDOUT_LEDGER.md)
 - [`docs/ASH_LIFECYCLE_ORCHESTRATION.md`](docs/ASH_LIFECYCLE_ORCHESTRATION.md)
 - [`docs/ASH_LIFECYCLE_PRODUCTION_DEMO_RECEIPT.md`](docs/ASH_LIFECYCLE_PRODUCTION_DEMO_RECEIPT.md)
+- [`docs/ASH_CONSTITUTIONAL_CONVERGENCE_RECEIPT.md`](docs/ASH_CONSTITUTIONAL_CONVERGENCE_RECEIPT.md)
 - [`KNOWN_FAILURES.md`](KNOWN_FAILURES.md)
 
 The ledger is authoritative for maturity scoring. This roadmap records shipped architecture, constitutional convergence, the selected executable packet, ordered future work, and separately tracked red lanes.
@@ -175,13 +176,30 @@ This does not rescore the organs. It records the relation among them.
 ## Ash Constitutional Convergence Closure
 
 ```text
-SELECTED_NEXT
-status: IMPLEMENTED_VALIDATION_GATED / CLOSURE_PACKET_UNBUILT
+ACTIVE_CLOSURE_PACKET
+status: IMPLEMENTED_VALIDATION_GATED / DEPLOYED_OBSERVATION_PENDING
 ```
 
 Purpose:
 
 Close the shared constitutional body rather than treating the operator surface, lifecycle, context, audit, and derivative organs as independent appendages.
+
+Current implementation evidence:
+
+```text
+canonical composition manifest                         PASS
+Authority Context and lifecycle permissions            PASS
+complete downstream stale invalidation                 PASS
+case-state and deletion recovery                       PASS
+Web Locks plus IndexedDB lease fallback                PASS
+dry compatibility audit                                PASS
+reference-only EventTarget and BroadcastChannel        PASS
+desktop / mobile / rotation local flight               PASS
+focused contract gate                                  33 / 33
+deployed convergence observation                       PENDING
+```
+
+This gate does not change `193 / 375` or `40 / 50`. Production evidence cannot be inferred from local success.
 
 Required circuit:
 
@@ -384,7 +402,7 @@ Ash threshold
 → Draft / derivative / Review / Release
 → continuity
 → lifecycle production closure [CLOSED]
-→ constitutional convergence closure [NEXT]
+→ constitutional convergence closure [VALIDATION PASSED · DEPLOYED OBSERVATION PENDING]
 → Custodian Return / Lifecycle Reconstitution
 → Choir calibration receipt binding
 → Hush intervention
