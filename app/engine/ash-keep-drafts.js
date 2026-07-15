@@ -37,6 +37,13 @@ async function verify(domain, value, field, schema, options) {
   return value[field] === await canonicalDigest(domain, without(value, field), options);
 }
 
+function optionalDigest(value, label) {
+  if (value == null || value === '') return null;
+  const digest = String(value);
+  if (!SHA256.test(digest)) throw new Error(`${label} must be a SHA-256 digest.`);
+  return digest;
+}
+
 export async function compileAshDraft(input = {}, options = {}) {
   const body = text(input.body, 'Draft body');
   const contentDigest = await canonicalDigest(DOMAINS.content, { body }, options);
@@ -44,6 +51,7 @@ export async function compileAshDraft(input = {}, options = {}) {
     schema: ASH_DRAFT_SCHEMA,
     draft_id: input.draftId || randomId('draft_', options.cryptoImpl || globalThis.crypto),
     case_id: text(input.caseId, 'Case ID'),
+    case_map_digest: optionalDigest(input.caseMapDigest, 'Case Map digest'),
     created_at: now(input.createdAt),
     version: String(input.version || '1'),
     body,
@@ -97,6 +105,7 @@ export async function compileDraftReview(input = {}, options = {}) {
     review_id: input.reviewId || randomId('review_', options.cryptoImpl || globalThis.crypto),
     draft_id: input.draft.draft_id,
     draft_digest: input.draft.draft_digest,
+    case_map_digest: input.draft.case_map_digest || null,
     created_at: now(input.createdAt),
     checks,
     status: ready ? 'READY_FOR_LOCAL_RELEASE_APPROVAL' : 'REVIEW_HELD',
@@ -125,6 +134,7 @@ export async function compileReleaseReceipt(input = {}, options = {}) {
   if (!input.review || !(await verifyDraftReview(input.review, options))) throw new Error('Release Receipt requires an untampered review.');
   if (input.review.status !== 'READY_FOR_LOCAL_RELEASE_APPROVAL' || !input.review.local_export_approved) throw new Error('Review has not approved local export.');
   if (input.review.draft_digest !== input.draft.draft_digest) throw new Error('Review is bound to a different draft.');
+  if (input.review.case_map_digest !== input.draft.case_map_digest) throw new Error('Review is bound to a different Case Map.');
   const route = text(input.route, 'Release route');
   const recipientClass = text(input.recipientClass, 'Recipient class');
   const purpose = text(input.purpose, 'Release purpose');
@@ -136,6 +146,7 @@ export async function compileReleaseReceipt(input = {}, options = {}) {
     receipt_id: input.receiptId || randomId('release_', options.cryptoImpl || globalThis.crypto),
     created_at: now(input.createdAt),
     case_id: input.draft.case_id,
+    case_map_digest: input.draft.case_map_digest || null,
     draft_id: input.draft.draft_id,
     draft_digest: input.draft.draft_digest,
     review_reference: input.review.review_id,
@@ -149,7 +160,7 @@ export async function compileReleaseReceipt(input = {}, options = {}) {
     recipient_transport: 'DEFERRED',
     transmission_performed: false,
     immutable_successor_required_on_change: true,
-    observations: ['Exact draft, route, recipient class, purpose, version, nonce, and operator gesture are bound.'],
+    observations: ['Exact draft, Case Map, route, recipient class, purpose, version, nonce, and operator gesture are bound.'],
     missingness: [],
     alternatives: [],
     open_questions: [],
@@ -162,8 +173,9 @@ export async function compileReleaseReceipt(input = {}, options = {}) {
 
 export const verifyReleaseReceipt = (value, options = {}) => verify(DOMAINS.release, value, 'receipt_digest', RELEASE_RECEIPT_SCHEMA, options);
 
-export function releaseStillMatches(receipt, { draftDigest, route, recipientClass, purpose, version } = {}) {
+export function releaseStillMatches(receipt, { caseMapDigest, draftDigest, route, recipientClass, purpose, version } = {}) {
   return Boolean(receipt &&
+    (caseMapDigest == null || receipt.case_map_digest === caseMapDigest) &&
     receipt.draft_digest === draftDigest &&
     receipt.route === route &&
     receipt.recipient_class === recipientClass &&
