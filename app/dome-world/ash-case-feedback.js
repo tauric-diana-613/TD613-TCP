@@ -16,7 +16,7 @@ export function installAshCaseFeedback(doc = globalThis.document, host = globalT
   if (!doc?.documentElement || !host?.addEventListener || host[INSTALL_MARK]) return false;
   host[INSTALL_MARK] = true;
   const timers = new Set();
-  let pendingCaseId = null;
+  let savePending = false;
   let pendingTimeout = null;
 
   const clearTimers = () => {
@@ -38,12 +38,12 @@ export function installAshCaseFeedback(doc = globalThis.document, host = globalT
   host.addEventListener('click', event => {
     const save = event.target?.closest?.('#saveCase');
     if (!save || save.disabled) return;
-    pendingCaseId = host.localStorage?.getItem?.('td613.ash-keep.current-case') || 'CURRENT_SAVED';
+    savePending = true;
     setCommandHold(true);
     if (pendingTimeout) host.clearTimeout(pendingTimeout);
     pendingTimeout = host.setTimeout(() => {
-      if (!pendingCaseId) return;
-      pendingCaseId = null;
+      if (!savePending) return;
+      savePending = false;
       setCommandHold(false);
       delete doc.documentElement.dataset.ashSaveFeedback;
       const status = currentStatus(doc);
@@ -59,7 +59,7 @@ export function installAshCaseFeedback(doc = globalThis.document, host = globalT
       host.clearTimeout(pendingTimeout);
       pendingTimeout = null;
     }
-    pendingCaseId = null;
+    savePending = false;
     setCommandHold(false);
     const marker = detail.case_id || 'CURRENT_SAVED';
     doc.documentElement.dataset.ashSaveFeedback = marker;
