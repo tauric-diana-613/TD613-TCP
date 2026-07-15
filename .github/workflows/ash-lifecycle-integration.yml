@@ -5,13 +5,16 @@ on:
     paths:
       - "api/dome-world-shell.js"
       - "api/ash-keep-shell.js"
+      - "api/ash-keep-js-shell.js"
       - "app/dome-world/ash-threshold.html"
       - "app/dome-world/ash-lifecycle.js"
       - "app/engine/ash-lifecycle.js"
+      - "app/engine/ash-keep-drafts.js"
       - "docs/ASH_KEEP_BUILDOUT_LEDGER.md"
       - "docs/ASH_LIFECYCLE_ORCHESTRATION.md"
       - "ROADMAP.md"
       - "tests/ash-lifecycle.test.mjs"
+      - "tests/ash-draft-lifecycle-binding.test.mjs"
       - "tests/ash-product-architecture.test.mjs"
       - "vercel.json"
       - ".github/workflows/ash-lifecycle-integration.yml"
@@ -42,6 +45,9 @@ jobs:
 
       - name: Run lifecycle state tests
         run: node tests/ash-lifecycle.test.mjs
+
+      - name: Run custody-bound draft tests
+        run: node tests/ash-draft-lifecycle-binding.test.mjs
 
       - name: Run lifecycle product architecture tests
         run: node tests/ash-product-architecture.test.mjs
