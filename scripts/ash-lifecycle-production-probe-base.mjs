@@ -5,6 +5,7 @@ import { chromium } from 'playwright';
 
 const base = (process.env.TD613_BASE_URL || process.argv[2] || 'https://td613.com').replace(/\/$/, '');
 const artifactDir = process.env.TD613_ARTIFACT_DIR || 'artifacts/ash-lifecycle-deployed-observation';
+const domeUrl = `${base}/dome-world`;
 const thresholdUrl = `${base}/dome-world/ash-threshold.html`;
 const keepUrl = `${base}/dome-world/ash-keep.html`;
 const DB_NAME = 'td613-ash-keep';
@@ -140,6 +141,7 @@ const report = {
   status: 'RUNNING',
   promotion_authorized: false,
   base_url: base,
+  dome_url: domeUrl,
   threshold_url: thresholdUrl,
   keep_url: keepUrl,
   browser: 'chromium-headless',
@@ -175,25 +177,29 @@ async function persistReport() {
 }
 
 try {
-  await page.goto(thresholdUrl, { waitUntil: 'networkidle', timeout: 60_000 });
-  await page.locator('#ashTitle').waitFor({ state: 'visible' });
-  assert((await page.title()).includes('TD613 Ash · Threshold'), 'Ash threshold title was not observed');
-  const thresholdLocalKeys = await page.evaluate(() => Object.keys(localStorage));
-  const thresholdSessionKeys = await page.evaluate(() => Object.keys(sessionStorage));
-  assert(thresholdLocalKeys.length === 0, 'Threshold wrote localStorage before operator action');
-  assert(thresholdSessionKeys.length === 0, 'Threshold wrote sessionStorage before operator action');
+  await page.goto(domeUrl, { waitUntil: 'networkidle', timeout: 60_000 });
+  assert((await page.title()) === 'Dome-World', 'Dome-World title was not observed before Ash selection');
+  await page.locator('.tab[data-view="ash"]').click();
+  await page.locator('[data-ash-threshold-membrane].active').waitFor({ state: 'visible' });
+  await page.locator('#ashThresholdTitle').waitFor({ state: 'visible' });
+  const thresholdLocalKeys = await page.evaluate(() => Object.keys(localStorage).sort());
+  const thresholdSessionKeys = await page.evaluate(() => Object.keys(sessionStorage).sort());
+  await page.waitForTimeout(900);
+  assert((await page.evaluate(() => location.pathname)).replace(/\/$/, '') === '/dome-world', 'Selecting Ash redirected without an operator entry gesture');
+  assert(JSON.stringify(await page.evaluate(() => Object.keys(localStorage).sort())) === JSON.stringify(thresholdLocalKeys), 'Embedded threshold changed localStorage before operator action');
+  assert(JSON.stringify(await page.evaluate(() => Object.keys(sessionStorage).sort())) === JSON.stringify(thresholdSessionKeys), 'Embedded threshold changed sessionStorage before operator action');
 
-  await page.locator('.seal[data-step="2"]').click();
-  await waitForText(page, '#riteStatus', /order broke/i);
-  assert(await page.locator('#enterKeep').isDisabled(), 'Broken ritual order enabled entry');
-  for (const step of [1, 2, 3]) await page.locator(`.seal[data-step="${step}"]`).click();
-  assert(!(await page.locator('#enterKeep').isDisabled()), 'Correct threshold sequence did not enable entry');
+  await page.locator('[data-ash-law-step="2"]').click();
+  await waitForText(page, '[data-ash-threshold-status]', /order broke/i);
+  assert((await page.locator('[data-ash-threshold-enter]').getAttribute('aria-disabled')) === 'true', 'Broken ritual order enabled entry');
+  for (const step of [1, 2, 3]) await page.locator(`[data-ash-law-step="${step}"]`).click();
+  assert((await page.locator('[data-ash-threshold-enter]').getAttribute('aria-disabled')) === 'false', 'Correct threshold sequence did not enable entry');
   const thresholdShot = path.join(artifactDir, 'ash-threshold-cleared.png');
   await page.screenshot({ path: thresholdShot, fullPage: true });
 
   await Promise.all([
-    page.waitForURL(/\/dome-world\/ash-keep\.html\?arrival=cleared/, { timeout: 30_000 }),
-    page.locator('#enterKeep').click()
+    page.waitForURL(/\/dome-world\/ash-threshold\.html\?arrival=cleared/, { timeout: 30_000 }),
+    page.locator('[data-ash-threshold-enter]').click()
   ]);
   await page.locator('meta[name="ash-lifecycle"][content="v0.1"]').waitFor({ state: 'attached' });
   await page.locator('#workspace-custody').waitFor({ state: 'attached' });

@@ -1,0 +1,99 @@
+.ash-threshold-membrane {
+  --ash-mint: #76ead4;
+  --ash-gold: #e4c66c;
+  --ash-violet: #d0a7ff;
+  --ash-paper: #fff8da;
+  --ash-muted: #9fb6ad;
+  position: relative;
+  isolation: isolate;
+  min-height: clamp(570px, 72svh, 820px);
+  overflow: hidden;
+  container-type: inline-size;
+  border-block: 1px solid rgba(118, 234, 212, .18);
+  color: var(--ash-paper);
+  background: radial-gradient(circle at 50% 42%, rgba(118, 234, 212, .08), transparent 23%), radial-gradient(circle at 50% 55%, rgba(208, 167, 255, .06), transparent 32%), #010504;
+}
+.ash-threshold-field,
+.ash-threshold-grain { position: absolute; inset: 0; width: 100%; height: 100%; pointer-events: none; }
+.ash-threshold-field { z-index: 0; }
+.ash-threshold-grain {
+  z-index: 1;
+  opacity: .28;
+  background: repeating-linear-gradient(61deg, rgba(255,255,255,.018) 0 1px, transparent 1px 23px), repeating-linear-gradient(-59deg, rgba(255,255,255,.013) 0 1px, transparent 1px 27px);
+  mask-image: radial-gradient(circle at 50% 48%, #000 0 55%, transparent 90%);
+}
+.ash-threshold-rite {
+  position: relative;
+  z-index: 2;
+  display: grid;
+  align-content: center;
+  justify-items: center;
+  width: min(980px, calc(100% - 28px));
+  min-height: inherit;
+  margin: auto;
+  padding: 28px 0 42px;
+  text-align: center;
+}
+.ash-threshold-overline { color: var(--ash-mint); font: 700 .64rem/1.2 var(--mono); letter-spacing: .2em; text-transform: uppercase; }
+.ash-threshold-title { margin: .18em 0 .12em; color: var(--ash-paper); font: 400 clamp(4.2rem, 17cqi, 10rem)/.78 var(--serif); letter-spacing: 0; text-shadow: 0 0 42px rgba(118,234,212,.12); }
+.ash-threshold-title em { color: var(--ash-gold); font-style: italic; }
+.ash-threshold-lede { max-width: 700px; margin: 10px auto 22px; color: #d2ded7; font: 400 1.05rem/1.7 var(--sans); }
+.ash-threshold-laws { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 10px; width: min(760px, 100%); margin: 8px auto 16px; }
+.ash-threshold-law {
+  position: relative;
+  min-height: 148px;
+  padding: 18px 12px 14px;
+  overflow: hidden;
+  border: 1px solid rgba(118,234,212,.22);
+  border-radius: 0;
+  color: var(--ash-paper);
+  background: linear-gradient(155deg, rgba(12,38,30,.78), rgba(2,12,9,.94));
+  clip-path: polygon(14px 0,100% 0,100% calc(100% - 14px),calc(100% - 14px) 100%,0 100%,0 14px);
+  cursor: pointer;
+  transition: .25s transform, .25s border-color, .25s filter;
+}
+.ash-threshold-law::before { content: attr(data-glyph); position: absolute; right: 10px; bottom: -14px; color: rgba(118,234,212,.11); font: 400 6rem/1 var(--serif); }
+.ash-threshold-law:hover,
+.ash-threshold-law:focus-visible { transform: translateY(-4px); border-color: rgba(228,198,108,.7); outline: 0; }
+.ash-threshold-law.cleared { border-color: rgba(228,198,108,.74); filter: brightness(1.18); box-shadow: 0 0 28px rgba(228,198,108,.09); }
+.ash-threshold-law small { display: block; color: var(--ash-muted); font-size: .58rem; letter-spacing: .16em; text-transform: uppercase; }
+.ash-threshold-law strong { display: block; margin: 15px 0 8px; font: 400 1.45rem var(--serif); }
+.ash-threshold-law span { display: block; color: #b9ccc2; font-size: .68rem; line-height: 1.45; }
+.ash-threshold-status { min-height: 24px; margin: 0; color: var(--ash-mint); font-size: .68rem; letter-spacing: .08em; text-transform: uppercase; }
+.ash-threshold-enter {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: min(360px, 100%);
+  min-height: 50px;
+  margin-top: 7px;
+  padding: 12px 18px;
+  border: 1px solid rgba(228,198,108,.7);
+  color: var(--ash-paper);
+  background: linear-gradient(135deg, rgba(228,198,108,.18), rgba(118,234,212,.12));
+  clip-path: polygon(9px 0,100% 0,100% calc(100% - 9px),calc(100% - 9px) 100%,0 100%,0 9px);
+  font: 800 .78rem/1.2 var(--mono);
+  letter-spacing: .12em;
+  text-align: center;
+  text-decoration: none;
+  text-transform: uppercase;
+}
+.ash-threshold-enter[aria-disabled="true"] { opacity: .28; cursor: not-allowed; }
+.ash-threshold-enter[aria-disabled="false"] { cursor: pointer; box-shadow: 0 0 30px rgba(228,198,108,.09); }
+.ash-threshold-compat { max-width: 650px; margin: 14px 0 0; color: var(--ash-muted); font-size: .63rem; line-height: 1.55; }
+.ash-threshold-compat b { color: var(--ash-violet); }
+.ash-threshold-pulse { position: fixed; z-index: 100; width: 18px; height: 18px; border: 1px solid var(--ash-gold); border-radius: 50%; pointer-events: none; animation: ash-threshold-pulse .7s ease-out forwards; }
+@keyframes ash-threshold-pulse { to { transform: scale(16); opacity: 0; } }
+@media (max-width: 680px) {
+  .ash-threshold-membrane { min-height: 760px; }
+  .ash-threshold-rite { align-content: start; padding-top: 7vh; }
+  .ash-threshold-laws { grid-template-columns: 1fr; }
+  .ash-threshold-law { min-height: 104px; padding-left: 18px; text-align: left; }
+  .ash-threshold-law::before { font-size: 5rem; }
+  .ash-threshold-title { font-size: clamp(4rem, 24cqi, 7rem); }
+  .ash-threshold-lede { font-size: .92rem; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .ash-threshold-membrane * { animation: none !important; transition: none !important; }
+  .ash-threshold-field { opacity: .58; }
+}

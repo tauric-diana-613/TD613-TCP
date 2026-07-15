@@ -17,6 +17,9 @@ const read = path => fs.readFileSync(new URL(`../${path}`, import.meta.url), 'ut
 const domeSource = read('app/dome-world/index.html');
 const renderedDome = renderDomeWorldShell(domeSource);
 const threshold = read('app/dome-world/ash-threshold.html');
+const thresholdMembrane = read('app/dome-world/ash-threshold-membrane.js');
+const thresholdMembraneCss = read('app/dome-world/ash-threshold-membrane.css');
+const keepEntry = read('app/dome-world/ash-keep-entry.js');
 const keepSource = read('app/dome-world/ash-keep.html');
 const renderedKeep = injectAshKeepLifecycle(keepSource);
 const keepJsSource = read('app/dome-world/ash-keep.js');
@@ -28,13 +31,15 @@ const ledger = read('docs/ASH_KEEP_BUILDOUT_LEDGER.md');
 const roadmap = read('ROADMAP.md');
 const vercel = JSON.parse(read('vercel.json'));
 
-test('Dome-World runtime shell routes Ash to the threshold without rewriting the source instrument', () => {
+test('Dome-World keeps Ash internal until the operator clears the embedded threshold', () => {
   assert.equal(ASH_THRESHOLD_ROUTE, '/dome-world/ash-threshold.html');
   assert.equal(ASH_LIFECYCLE_SHELL_CONTRACT, 'td613.ash.lifecycle-shell/v0.1');
-  assert.match(renderedDome, /class="tab"[^>]+href="\/dome-world\/ash-threshold\.html"[^>]*data-view="ash"/);
-  assert.match(renderedDome, /<h2>Ash Threshold<\/h2>/);
+  assert.match(renderedDome, /<button class="tab" data-view="ash"[^>]*><small>04<\/small><span>Ash<\/span><\/button>/);
+  assert.doesNotMatch(renderedDome, /class="tab"[^>]+href="\/dome-world\/ash-threshold\.html"[^>]*data-view="ash"/);
+  assert.match(renderedDome, /data-ash-threshold-membrane/);
+  assert.match(renderedDome, /data-ash-threshold-enter href="\/dome-world\/ash-threshold\.html"/);
+  assert.match(renderedDome, /id="ashThresholdTitle">A<em>s<\/em>h<\/h1>/);
   assert.doesNotMatch(renderedDome, /<h2>Ash Readiness<\/h2>/);
-  assert.match(renderedDome, /Ash \/ custody threshold/);
   assert.equal(injectAshLifecycleEntry(renderedDome), renderedDome, 'Ash shell injection must be idempotent');
 });
 
@@ -43,24 +48,30 @@ test('Dome shell preserves the independent Marrowline transform while installing
   assert.match(renderedDome, /<span><b>11<\/b>stations<\/span>/);
 });
 
-test('the threshold performs a bounded rite and enters the composed Keep surface directly', () => {
-  assert.match(threshold, /Arrival/);
-  assert.match(threshold, /Boundary/);
-  assert.match(threshold, /Custody/);
-  assert.match(threshold, /compileReadinessReceipt/);
-  assert.match(threshold, /sessionStorage\.setItem\('td613:ash-threshold:readiness:v0\.1'/);
-  assert.doesNotMatch(threshold, /localStorage\.setItem/);
-  assert.doesNotMatch(threshold, /type="file"/);
-  assert.match(threshold, /no raw (?:content|text), no artifact bytes, and no release authority/i);
-  assert.match(threshold, /location\.replace\('\/api\/dome-world-shell\?surface=ash-keep-html'\)/);
-  assert.doesNotMatch(threshold, /location\.replace\('\/dome-world\/ash-keep\.html/);
+test('the clearing rite lives in Dome-World and enters only after an explicit operator gesture', () => {
+  for (const law of ['Arrival', 'Boundary', 'Custody']) assert.match(renderedDome, new RegExp(law));
+  assert.match(thresholdMembrane, /compileReadinessReceipt/);
+  assert.match(thresholdMembrane, /sessionStorage\.setItem\(READINESS_KEY/);
+  assert.match(thresholdMembrane, /location\.assign\(enter\.href \|\| KEEP_ROUTE\)/);
+  assert.doesNotMatch(thresholdMembrane, /location\.replace|setTimeout\(\(\) => location/);
+  assert.doesNotMatch(thresholdMembrane, /localStorage\.setItem|type="file"/);
+  assert.match(thresholdMembraneCss, /\.ash-threshold-laws/);
+  assert.match(thresholdMembraneCss, /prefers-reduced-motion/);
+});
+
+test('the threshold route is now a direct Ash Keep delivery surface, not a second clearing rite', () => {
+  assert.match(threshold, /data-ash-public-route="\/dome-world\/ash-threshold\.html"/);
+  assert.match(threshold, /src="\/dome-world\/ash-keep-entry\.js"/);
+  assert.doesNotMatch(threshold, /data-ash-law-step|compileReadinessReceipt|location\.replace|http-equiv="refresh"/);
+  assert.match(keepEntry, /dataset\?\.ashPublicRoute/);
+  assert.match(keepEntry, /history\.replaceState\(null, '', `\$\{PUBLIC_ROUTE\}\$\{arrival\}`\)/);
 });
 
 test('the composed Keep annotates history only after the shell and transformed core load', () => {
   assert.match(renderedKeep, /src="\/api\/dome-world-shell\?surface=ash-keep-js"/);
   assert.match(renderedKeep, /td613 arrival-route compatibility/);
   assert.match(renderedKeep, /sessionStorage\.getItem\('td613:ash-threshold:readiness:v0\.1'\)/);
-  assert.match(renderedKeep, /history\.replaceState\(null,'','\/dome-world\/ash-keep\.html\?arrival=cleared'\)/);
+  assert.match(renderedKeep, /history\.replaceState\(null,'',location\.pathname\+'\?arrival=cleared'\)/);
   const coreIndex = renderedKeep.indexOf('/api/dome-world-shell?surface=ash-keep-js');
   const historyIndex = renderedKeep.indexOf('td613 arrival-route compatibility');
   const lifecycleIndex = renderedKeep.indexOf('/dome-world/ash-lifecycle.js');
@@ -99,9 +110,11 @@ test('Vercel multiplexes lifecycle surfaces through one existing function before
   assert.equal(vercel.functions['api/ash-keep-shell.js'], undefined);
   assert.equal(vercel.functions['api/ash-keep-js-shell.js'], undefined);
   const rewrites = vercel.rewrites;
+  const thresholdIndex = rewrites.findIndex(rule => rule.source === '/dome-world/ash-threshold.html' && rule.destination === '/api/dome-world-shell?surface=ash-keep-html');
   const keepIndex = rewrites.findIndex(rule => rule.source === '/dome-world/ash-keep.html' && rule.destination === '/api/dome-world-shell?surface=ash-keep-html');
   const keepJsIndex = rewrites.findIndex(rule => rule.source === '/dome-world/ash-keep.js' && rule.destination === '/api/dome-world-shell?surface=ash-keep-js');
   const genericIndex = rewrites.findIndex(rule => rule.source === '/dome-world/(.*)');
+  assert.ok(thresholdIndex >= 0 && thresholdIndex < genericIndex, 'Ash threshold entry route must precede the generic Dome route');
   assert.ok(keepIndex >= 0 && keepIndex < genericIndex, 'Ash Keep surface route must precede the generic Dome route');
   assert.ok(keepJsIndex >= 0 && keepJsIndex < genericIndex, 'Ash Keep JS surface route must precede the generic Dome route');
 });

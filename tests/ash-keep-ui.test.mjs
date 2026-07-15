@@ -152,7 +152,7 @@ assert.match(runtime, /compileRebuildTest/);
 
 assert.equal((dome.match(/class="tab(?: active)?"/g) || []).length, 8, 'Ash Keep must not become a ninth global tab.');
 assert.equal((dome.match(/class="lab-node"/g) || []).length, 10, 'Ash Keep must not alter the Lab constellation.');
-assert.match(dome, /href="\/dome-world\/ash-keep\.html"/);
+assert.match(dome, /data-ash-threshold-enter href="\/dome-world\/ash-threshold\.html"/);
 assert.match(lab, /href="\/dome-world\/ash-keep\.html"/);
 
 const retired = [

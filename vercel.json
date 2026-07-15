@@ -838,6 +838,14 @@
       "destination": "/api/dome-world-shell"
     },
     {
+      "source": "/dome-world/ash-threshold.html",
+      "destination": "/api/dome-world-shell?surface=ash-keep-html"
+    },
+    {
+      "source": "/app/dome-world/ash-threshold.html",
+      "destination": "/api/dome-world-shell?surface=ash-keep-html"
+    },
+    {
       "source": "/dome-world/ash-keep.html",
       "destination": "/api/dome-world-shell?surface=ash-keep-html"
     },

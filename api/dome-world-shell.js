@@ -1,7 +1,7 @@
 import fs from 'node:fs';
 import path from 'node:path';
 
-export const DOME_WORLD_SHELL_VERSION = 'td613.dome-world.shell/v1.1-marrowline-desktop-span';
+export const DOME_WORLD_SHELL_VERSION = 'td613.dome-world.shell/v1.2-embedded-ash-membrane';
 export const MARROWLINE_LAB_ROUTE = '/dome-world/marrowline.html';
 export const ASH_THRESHOLD_ROUTE = '/dome-world/ash-threshold.html';
 export const ASH_LIFECYCLE_SHELL_CONTRACT = 'td613.ash.lifecycle-shell/v0.1';
@@ -14,13 +14,12 @@ const DOME_SOURCE_PATH = path.join(process.cwd(), 'app', 'dome-world', 'index.ht
 const ASH_KEEP_SOURCE_PATH = path.join(process.cwd(), 'app', 'dome-world', 'ash-keep.html');
 const ASH_KEEP_JS_SOURCE_PATH = path.join(process.cwd(), 'app', 'dome-world', 'ash-keep.js');
 const MARROWLINE_BUTTON = `<button class="lab-node lab-node-marrowline" type="button" data-tone="gold" data-glyph="∴" data-open-route="${MARROWLINE_LAB_ROUTE}" style="grid-column:span 8" onclick="window.location.assign('${MARROWLINE_LAB_ROUTE}')" aria-label="Open Marrowline Kʰonapolit terminal"><span class="lab-index">11</span><strong>Marrowline</strong><small>Kʰonapolit terminal / live ingress</small></button>`;
-const ASH_TAB = `<a class="tab" href="${ASH_THRESHOLD_ROUTE}" data-view="ash" data-sigil="下" style="text-decoration:none"><small>04</small><span>Ash</span></a>`;
-const ASH_COMPATIBILITY_SECTION = `<section id="ash" class="view primary-view" data-glyph="下"><div class="view-intro"><div><div class="view-overline">下 / custody begins after the threshold</div><h2>Ash Threshold</h2><p>Clear arrival, boundary, and custody as distinct laws, then enter Ash Keep. Quick Scan remains a readiness operation inside the Keep; custody becomes the case root.</p></div><div class="view-telemetry"><span><b>0</b>raw text</span><span><b>SESSION</b>readiness</span><span><b>KEEP</b>primary</span></div></div><div class="grid"><div class="panel"><h3>Enter the Ash lifecycle</h3><p class="sub">The threshold performs no custody registration. Ash Keep binds a verified root into the Case Map and carries it through Rebuild, Draft, Release, Save Point, and Capsule.</p><div class="actions"><a class="btn primary" href="${ASH_THRESHOLD_ROUTE}">Enter Ash</a><a class="btn" href="/dome-world/ash-keep.html">Open existing Keep</a></div><p class="claim">Arrival ≠ consent; readiness ≠ custody; custody ≠ authenticity; continuity ≠ transport.</p></div><aside class="panel rel"><canvas id="ashCanvas" aria-label="Ash custody threshold field"></canvas><div class="legend"><span style="color:var(--cyan)">△ arrival boundary</span><br><span style="color:var(--gold)">◇ custody root</span><br><span style="color:var(--rose)">● held transition</span><br><span style="color:var(--violet)">∙ Quick Scan compatibility</span></div></aside></div><div hidden aria-hidden="true"><input id="ashArtifactId"><select id="ashClass"><option>sensitive-document</option></select><input id="ashMediaType" value="application/octet-stream"><input id="ashByteLength"><button id="runAsh"></button><button id="copyAsh"></button><button id="downloadAsh"></button></div><pre id="ashPre" hidden></pre></section>`;
+const ASH_TAB = `<button class="tab" data-view="ash" data-sigil="下"><small>04</small><span>Ash</span></button>`;
 const CORE_SCRIPT = '<script type="module" src="/dome-world/ash-keep.js"></script>';
 const SERVED_CORE_SCRIPT = '<script type="module" src="/api/dome-world-shell?surface=ash-keep-js"></script>';
 const LIFECYCLE_SCRIPT = `<script type="module" src="${ASH_LIFECYCLE_MODULE}"></script>`;
 const WORKSPACE_BRIDGE_SCRIPT = `<script type="module" src="${ASH_WORKSPACE_BRIDGE_MODULE}"></script>`;
-const ARRIVAL_COMPATIBILITY_SCRIPT = `<script>/* td613 arrival-route compatibility: composed shell first, history annotation only */if(sessionStorage.getItem('td613:ash-threshold:readiness:v0.1')&&(location.pathname!=='/dome-world/ash-keep.html'||location.search!=='?arrival=cleared')){history.replaceState(null,'','/dome-world/ash-keep.html?arrival=cleared')}</script>`;
+const ARRIVAL_COMPATIBILITY_SCRIPT = `<script>/* td613 arrival-route compatibility: composed shell first, history annotation only */if(sessionStorage.getItem('td613:ash-threshold:readiness:v0.1')&&location.search!=='?arrival=cleared'){history.replaceState(null,'',location.pathname+'?arrival=cleared')}</script>`;
 const DRAFT_MARKER = '    caseId: state.caseMap.case_id,\n    body: $(\'draftBody\').value,';
 const DRAFT_BINDING = '    caseId: state.caseMap.case_id,\n    caseMapDigest: state.caseMap.case_map_digest,\n    body: $(\'draftBody\').value,';
 const SAVE_POINT_MARKER = '    routeMemoryDigest: state.routeMemory.route_memory_digest,\n    evidenceInventory: state.caseMap.nodes.filter(node => [\'artifact\', \'source\'].includes(node.type)).map(node => node.id),';
@@ -46,15 +45,11 @@ export function injectMarrowlineLabButton(source = '') {
 export function injectAshLifecycleEntry(source = '') {
   let html = String(source || '');
   if (!html) throw new Error('dome-world-source-empty');
-  const oldTab = '<button class="tab" data-view="ash" data-sigil="下"><small>04</small><span>Ash</span></button>';
-  if (html.includes(oldTab)) html = html.replace(oldTab, ASH_TAB);
-  if (!html.includes(`href="${ASH_THRESHOLD_ROUTE}" data-view="ash"`)) throw new Error('dome-world-ash-tab-marker-missing');
-  const ashSection = /<section id="ash" class="view primary-view" data-glyph="下">[\s\S]*?<\/section>/;
-  if (!html.includes('<h2>Ash Threshold</h2>')) {
-    if (!ashSection.test(html)) throw new Error('dome-world-ash-section-marker-missing');
-    html = html.replace(ashSection, ASH_COMPATIBILITY_SECTION);
-  }
-  html = html.replace("ash:'Ash / readiness membrane'", "ash:'Ash / custody threshold'");
+  const linkedTab = /<a class="tab" href="\/dome-world\/ash-threshold\.html" data-view="ash"[^>]*><small>04<\/small><span>Ash<\/span><\/a>/;
+  if (linkedTab.test(html)) html = html.replace(linkedTab, ASH_TAB);
+  if (!html.includes(ASH_TAB)) throw new Error('dome-world-ash-tab-marker-missing');
+  if (!html.includes('data-ash-threshold-membrane')) throw new Error('dome-world-ash-membrane-marker-missing');
+  if (!html.includes(`data-ash-threshold-enter href="${ASH_THRESHOLD_ROUTE}"`)) throw new Error('dome-world-ash-entry-marker-missing');
   if (html.includes('<h2>Ash Readiness</h2>')) throw new Error('dome-world-visible-readiness-title-survived');
   return html;
 }

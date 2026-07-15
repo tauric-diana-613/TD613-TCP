@@ -38,7 +38,7 @@ assert.match(htmlV08, /@media\(max-width:820px\)/);
 assert.match(htmlAlias, /ash-custody-v08\.html/);
 assert.doesNotMatch(htmlAlias, /sha256:manual-placeholder|claim-ceiling/);
 assert.match(htmlV07, /Ash Custody \/\/ v0\.7 Lab/);
-assert.match(cockpit, /href="\/dome-world\/ash-custody\.html">Register Artifact<\/a>/);
+assert.match(cockpit, /data-ash-threshold-enter href="\/dome-world\/ash-threshold\.html"/);
 
 assert.match(htmlV08, /verifyReceiptDigests.*canonical-json\.js/);
 assert.match(htmlV08, /ash-custody-migrate/);

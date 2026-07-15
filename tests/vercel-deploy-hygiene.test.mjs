@@ -74,6 +74,8 @@ assertRewrite('/dome-world', '/api/dome-world-shell');
 assertRewrite('/dome-world/', '/api/dome-world-shell');
 assertRewrite('/dome-world/index.html', '/api/dome-world-shell');
 assertRewrite('/app/dome-world/index.html', '/api/dome-world-shell');
+assertRewrite('/dome-world/ash-threshold.html', '/api/dome-world-shell?surface=ash-keep-html');
+assertRewrite('/app/dome-world/ash-threshold.html', '/api/dome-world-shell?surface=ash-keep-html');
 assertRewrite('/dome-world/ash-keep.html', '/api/dome-world-shell?surface=ash-keep-html');
 assertRewrite('/app/dome-world/ash-keep.html', '/api/dome-world-shell?surface=ash-keep-html');
 assertRewrite('/dome-world/ash-keep.js', '/api/dome-world-shell?surface=ash-keep-js');

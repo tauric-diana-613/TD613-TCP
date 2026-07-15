@@ -37,9 +37,9 @@ continuity ≠ transport
 
 ### Ash threshold
 
-`/dome-world/ash-threshold.html`
+`/dome-world` → Ash tab
 
-The Dome-World Ash tab routes to an art-forward threshold rather than a readiness form. The three-step clearing rite records only that the operator acknowledged arrival, boundary, and custody as distinct laws.
+The Dome-World Ash tab contains the art-forward threshold. Selecting Ash never leaves Dome-World. The operator may continue exploring the other tabs, or clear the three laws and explicitly choose `Clear the Ash · Enter the Keep`.
 
 The threshold:
 
@@ -47,7 +47,9 @@ The threshold:
 - writes no persistent local storage;
 - performs no network request;
 - places a bounded readiness receipt in `sessionStorage` only after the clearing gesture;
-- redirects into Ash Keep.
+- opens `/dome-world/ash-threshold.html` only after the operator chooses the entry control.
+
+`/dome-world/ash-threshold.html` now serves the real Ash Keep case-entry membrane (`Start a demo` / `New case`). It contains no second clearing rite and performs no timed client redirect.
 
 ### Ash Keep
 

@@ -40,8 +40,10 @@ const ids = [...html.matchAll(/\sid="([^"]+)"/g)].map((match) => match[1]);
 
 assert.equal(title, 'Dome-World');
 assert.deepEqual(tabLabels, ['Weather', 'Rooms', 'Lab', 'Ash', 'Substrate', 'Phason', 'Aperture', 'Receipts']);
-assert.equal((html.match(/class="view(?: active)? primary-view"/g) || []).length, 7);
-assert.equal((html.match(/class="view-intro"/g) || []).length, 7);
+assert.equal((html.match(/class="view(?: active)? primary-view"/g) || []).length, 6);
+assert.equal((html.match(/class="view-intro"/g) || []).length, 6);
+assert.match(html, /id="ash" class="view ash-threshold-membrane" data-ash-threshold-membrane/);
+assert.match(html, /data-ash-threshold-enter href="\/dome-world\/ash-threshold\.html"/);
 assert.match(html, /data-sigil="米"/);
 assert.match(html, /data-glyph="hõt"/);
 assert.equal(new Set(ids).size, ids.length);
