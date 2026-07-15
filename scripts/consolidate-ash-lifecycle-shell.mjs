@@ -8,7 +8,7 @@ delete manifest.functions['api/ash-keep-shell.js'];
 delete manifest.functions['api/ash-keep-js-shell.js'];
 manifest.functions['api/dome-world-shell.js'] = {
   maxDuration: 10,
-  includeFiles: 'app/dome-world/{index.html,ash-keep.html,ash-keep.js}'
+  includeFiles: '{app/dome-world/index.html,app/dome-world/ash-keep.html,app/dome-world/ash-keep.js}'
 };
 
 const desired = new Map([
