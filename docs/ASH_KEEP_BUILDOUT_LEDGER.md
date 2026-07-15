@@ -1,10 +1,12 @@
 # TD613 Buildout Completion and Anti-Drift Ledger
 
+𝌋‌ U+10D613
+
 Date: `2026-07-15`
 
-Ledger generation: `v1.1 · Ash lifecycle production-demonstrated`
+Ledger generation: `v1.2 · Ash operator surface landed / consolidation selected`
 
-Tracked program: Ash product lifecycle / Ash Keep / Choir Test / anisotropic disclosure research program
+Tracked program: Ash product lifecycle / Ash Keep / Ash operator surface / Choir Test / anisotropic disclosure research program
 
 Latest scored evidence transition:
 
@@ -19,7 +21,25 @@ evidence artifact
 8330532097
 ```
 
-Active closure packet: `agent/ash-lifecycle-evidence-promotion`
+Latest current-head deployed aftercare:
+
+```text
+head commit
+3b85b95d616579ddc3255e2716cabd4b178f74da
+
+observer run
+29441389808
+
+evidence artifact
+8353582293
+
+artifact digest
+sha256:ebb97064fb3cee667b227a176f72fa1dce66e4087b5e0470f6f286748a1279a6
+```
+
+Active closure packet: `Ash operator-surface consolidation and closure`
+
+Packet posture: `SELECTED_NEXT / NOT_YET_BUILT`
 
 ## Governing maturity law
 
@@ -32,7 +52,24 @@ Active closure packet: `agent/ash-lifecycle-evidence-promotion`
 | 4 | `IMPLEMENTED_VALIDATION_GATED` | Integrated and focused-tested; production demonstration unearned. |
 | 5 | `IMPLEMENTED_PRODUCTION_DEMONSTRATED` | Deployed behavior directly probed and sealed. |
 
-A green unit test is not production evidence. An adjacent primitive is not an integrated workflow. A shared chamber is not lifecycle orchestration. Production status never transfers by proximity.
+A green unit test is not production evidence. An adjacent primitive is not an integrated workflow. A shared chamber is not lifecycle orchestration. Production status never transfers by proximity. A current-head aftercare pass proves non-disturbance only within the observed route; it does not silently promote every newly present feature.
+
+## Governing anti-drift and anti-equivalence laws
+
+```text
+readiness ≠ custody
+custody ≠ authenticity
+case binding ≠ truth
+workspace visibility ≠ mutation eligibility
+case selection ≠ case opening
+case closure ≠ case deletion
+saved fingerprint ≠ custody proof
+local deletion ≠ external erasure
+release ≠ transport
+current-head aftercare ≠ feature-specific production demonstration
+case restoration ≠ historical-record repair
+production maturity ≠ automatic Cinder
+```
 
 # Executive scorecard
 
@@ -46,11 +83,12 @@ A green unit test is not production evidence. An adjacent primitive is not an in
 | F. Safe Harbor → Ash adapter | **6 / 30** | **20%** | `SCAFFOLDED` |
 | G. Destination-bound transport | **7 / 45** | **16%** | `HELD / SCAFFOLDED` |
 | H. Ash product lifecycle orchestration | **35 / 35** | **100%** | `IMPLEMENTED_PRODUCTION_DEMONSTRATED`; transport remains false |
+| I. Ash operator surface and local case stewardship | **35 / 45** | **78%** | `IMPLEMENTED_VALIDATION_GATED`; destructive and concurrency closure incomplete |
 
 ```text
-main = 158 / 330 ≈ 48%
-production-demonstrated workstreams = 2 / 8
-validation-gated lifecycle workstreams = 0
+main = 193 / 375 ≈ 51%
+production-demonstrated workstreams = 2 / 9
+validation-gated operator-surface workstreams = 1
 validation-gated Choir instruments = 4
 transport-capable workstreams = 0
 ```
@@ -60,8 +98,9 @@ transport-capable workstreams = 0
 - v0.8 closed the matched benign-control bank at `123 / 295`.
 - v0.9 introduced H as a candidate scope outside the main denominator.
 - v1.0 recorded PR `#297` on `main`, moved H1–H6 from 3 to 4, and established `147 / 330`.
-- v1.1 verifies the deployed lifecycle artifact, moves H1–H6 from 4 to 5, moves H7 from 0 to 5, and adds `11` earned points.
-- The denominator remains `330` because lifecycle orchestration remains an independent 35-point workstream rather than an implied extension of A.
+- v1.1 verified the deployed lifecycle artifact, moved H1–H6 from 4 to 5, moved H7 from 0 to 5, and established `158 / 330`.
+- v1.2 introduces I as an independent 45-point workstream, records the landed operator surface at `35 / 45`, and establishes `193 / 375`.
+- A remains the Keep workspace jurisdiction. H remains the complete lifecycle jurisdiction. I now governs operator-facing case stewardship, navigability, mobile composition, destructive continuity, and post-promotion aftercare.
 
 ---
 
@@ -92,7 +131,7 @@ Evidence spine:
 | A10 | Arrival triggers neither persistence nor transport | 5 |
 | A11 | Durable receipt, synchronized release, aftercare | 5 |
 
-A and H remain distinct evidence jurisdictions. A demonstrates the Keep workspace. H demonstrates the complete arrival → readiness → custody → case → rebuild → release → continuity circuit.
+A, H, and I remain distinct evidence jurisdictions. A demonstrates the Keep workspace. H demonstrates the complete arrival → readiness → custody → case → rebuild → release → continuity circuit. I governs the later operator surface and may not inherit either production score by proximity.
 
 ---
 
@@ -129,7 +168,7 @@ matched controls         378bf0f1a81b6aa7b9ebe8379ca207d6f1f36925
 | B13 | Cross-Reader disagreement | 4 | `IMPLEMENTED_VALIDATION_GATED` |
 | B14 | Operator UI and production demonstration | 0 | `UNIMPLEMENTED` |
 
-Lifecycle closure has removed B's sequencing hold. Calibration receipt binding becomes the selected next packet; it receives no transferred maturity from H.
+Lifecycle closure removed B's former sequencing hold. The operator-surface expansion creates a new substrate-stability hold. Choir calibration remains the next research packet after I is consolidated; it receives no transferred maturity from A, H, or I.
 
 ---
 
@@ -141,13 +180,13 @@ Lifecycle closure has removed B's sequencing hold. Calibration receipt binding b
 
 `7 / 35`: Save Point and Capsule primitives 4; authorized future Reader import 2; receipt/history restoration 1; context-loss assay 0; custodial/external comparison 0; Anisotropy Receipt 0; multi-Reader calibration 0.
 
-Custodian Return must restore readiness provenance, custody root, Case Map binding, current Rebuild authority, Route Memory, release posture, and continuity—not merely decrypt a suitcase.
+Custodian Return must restore readiness provenance, custody root, Case Map binding, current Rebuild authority, Route Memory, release posture, and continuity—not merely decrypt a suitcase. The new Save / Close / Select / Open surface now makes this assay operationally tractable and moves it immediately after Choir calibration.
 
 # E. Aperture wiring renovation
 
 `6 / 25`: split scripts 1; replace wrapper chains 1; register Choir layers 2; preserve scheduler 1; mobile/performance receipt 1.
 
-Aperture may preserve `ash-readiness` as machine vocabulary. Human-facing grammar says Quick Scan; Ash names the complete lifecycle.
+Aperture may preserve `ash-readiness` as machine vocabulary. Human-facing grammar says Quick Scan; Ash names the complete lifecycle. The temporary post-review reload and growing composition stack remain explicit renovation debt.
 
 # F. Safe Harbor → Ash adapter
 
@@ -159,7 +198,7 @@ A verified Safe Harbor packet must enter through the custody-root ingress and be
 
 `7 / 45`: destination fragment 0; recipient scope 2; mandatory Rebuild preflight 0; authorization/execution separation 2; recall limits 2; provenance adapter 0; mobile evidence 0; leak-safe recovery 1; execution path 0.
 
-Future transport requires a custody-bound case in `RELEASE_ELIGIBLE` state. A release receipt by itself remains insufficient. H's production demonstration grants no transport capability.
+Future transport requires a custody-bound case in `RELEASE_ELIGIBLE` state. A release receipt by itself remains insufficient. A, H, and I grant no transport capability.
 
 ---
 
@@ -231,38 +270,143 @@ Observed boundaries:
 
 ---
 
+# I. Ash operator surface and local case stewardship
+
+Status: `IMPLEMENTED_VALIDATION_GATED`
+
+Score: `35 / 45`
+
+Landed spine:
+
+```text
+lifecycle integration hardening     PR #323 · 6cdb94114a46fee435778d510c936b708a61a42e
+case-entry membrane repair          PR #326
+mobile recomposition                PR #327 · 3a29144593ec5654106f9966bc8932e90c8d0b87
+canonical popup restoration         PR #328 · 56af44d9d81a26af0b9b1082c3cb76ad717c6e7a
+save / close / select               PR #329 · 06d6303b60d5e873c66128d09c0a36e0407e2db8
+explicit open / delete / labels     PR #330 · f075a0465372932a2deacf3c18a92745898aec00
+navigable workspaces                PR #331 · 9cd889f7eaf4d5e0675106f0c06e26ef1cfb53e8
+observer reconciliation             PR #332 · ae61f1b6cd446ae2b29bd290e88255baa3ed5803
+current-head aftercare              3b85b95d616579ddc3255e2716cabd4b178f74da
+```
+
+| ID | Buildout | Score | Evidence ruling |
+| --- | --- | ---: | --- |
+| I1 | Canonical Keep route and popup membrane | 4 | Integrated and contract-tested; current-head aftercare observed |
+| I2 | Boot, reopen, return, and no-flicker case entry | 4 | Integrated and focused-tested |
+| I3 | Save, Close, Select, and explicit Open semantics | 4 | Integrated and focused-tested |
+| I4 | Complete local case-bundle fingerprint and saved/unsaved posture | 4 | SHA-256 local sameness posture; not custody proof |
+| I5 | Local Delete and owned-record cleanup | 3 | Functional component; atomicity, orphan scan, interruption recovery, and deletion receipt incomplete |
+| I6 | Dedicated mobile composition | 4 | Integrated and current-head deployed route remained reachable |
+| I7 | Density-aware map labels and accessible numbering | 4 | Integrated without a second animation scheduler |
+| I8 | Workspace navigation separated from action authority | 4 | Deployed observer confirms workspace reviewability with held mutating action |
+| I9 | Current-head deployed non-disturbance aftercare | 4 | Observer run and artifact preserved; feature-specific production closure unearned |
+
+Current-head aftercare evidence:
+
+```yaml
+head_commit: 3b85b95d616579ddc3255e2716cabd4b178f74da
+observer_run: 29441389808
+observer_result: PASS
+evidence_artifact: 8353582293
+evidence_artifact_sha256: sha256:ebb97064fb3cee667b227a176f72fa1dce66e4087b5e0470f6f286748a1279a6
+promotion_authorized: false
+ruling: CURRENT_HEAD_NON_DISTURBANCE_ONLY
+```
+
+Required closure gaps:
+
+- one declared composition manifest for canonical document, lifecycle, custody bridge, workspace bridge, navigation, case controls, mobile composition, map labels, and observer;
+- explicit case-state contract for ephemeral, saved, unsaved, selected, closed, deletion-pending, deleted, and partial-delete-held states;
+- pre-deletion inventory, deletion-plan digest, post-deletion orphan scan, partial-failure receipt, interrupted-delete recovery, and external-erasure disclaimer;
+- browser-local cross-tab coordination for first registration, Save Case, Open, and Delete;
+- dry compatibility audit for malformed Save Points, duplicate custody nodes, orphaned reviews/releases, stale saved-case fingerprints, missing lifecycle records, and pointers to deleted cases;
+- declared internal lifecycle event bus replacing post-review reload dependence;
+- dedicated deployed operator-surface probe covering multiple cases, save/mutate/close/select/open/delete, cleanup, lifecycle holds, mobile composition, map labels, and zero transport.
+
+## Post-promotion delta register
+
+Every meaningful Ash change after H reached `35 / 35` remains visible here rather than disappearing into the earlier production score.
+
+| Delta | Jurisdiction | Promotion effect |
+| --- | --- | --- |
+| PR #323 | H repair and integration hardening | No rescore; preserves H authority and records limitations |
+| PR #326 | I case-entry and restoration membrane | Adds I evidence only |
+| PR #327 | I dedicated mobile composition | Adds I evidence only |
+| PR #328 | I canonical route restoration | Adds I evidence only |
+| PR #329 | I saved-case stewardship | Adds I evidence only |
+| PR #330 | I deliberate open/delete and map labels | Adds I evidence only |
+| PR #331 | I navigability / action-authority separation | Adds I evidence only |
+| PR #332 | I observer and navigation reconciliation | Adds I evidence only |
+| Run 29441389808 | Current-head deployed aftercare | Non-disturbance evidence; no automatic promotion |
+
+---
+
 # Forward completion order
 
 ```text
-1. Bind Choir calibration gates to matched-control receipt references
-2. Build higher-order interference separately
-3. Build ordered route-sequence recovery separately
-4. Build temporal and delayed-disclosure assays separately
-5. Externalize Hush discourse vocabulary
-6. Build Hush intervention ensemble
-7. Build Custodian Return around the custody-bound lifecycle root
-8. Refactor Aperture before Choir UI
-9. Build Safe Harbor → Ash custody-root adapter
-10. Add independent provenance adapters
-11. Design destination-bound transport last
+1. Consolidate and evidence-close the Ash operator surface
+2. Bind Choir calibration gates to matched-control receipt references
+3. Build Custodian Return and the Anisotropy Receipt around the settled lifecycle
+4. Build higher-order interference separately
+5. Build ordered route-sequence recovery separately
+6. Build temporal and delayed-disclosure assays separately
+7. Externalize Hush discourse vocabulary
+8. Build the Hush intervention ensemble
+9. Refactor Aperture composition before Choir UI
+10. Build Safe Harbor → Ash custody-root adapter
+11. Add independent provenance adapters
+12. Design destination-bound transport last
 ```
 
 ## Immediate next packet
+
+`Ash operator-surface consolidation and closure`
+
+Required circuit:
+
+```text
+declared composition manifest
+→ explicit case-state machine
+→ deletion plan and recovery receipt
+→ browser-local contention protocol
+→ historical compatibility audit
+→ lifecycle event bus
+→ dedicated deployed operator-surface probe
+→ evidence-only promotion decision
+```
+
+Required outcome:
+
+```text
+Stabilize the surface on which Choir calibration will depend.
+Keep workspace reviewability separate from mutation eligibility.
+Prove local case stewardship without inflating fingerprints into custody proof.
+Prove deletion behavior without inflating local erasure into external erasure.
+Preserve zero provider, recipient, Cinder, or transport authority.
+```
+
+## Next research packet after consolidation
 
 `Choir calibration receipt binding`
 
 Required outcome:
 
 ```text
-Replace free calibration booleans with verified matched-control receipt references.
-Preserve componentwise comparison, reader provenance, disagreement evidence, and tamper holds.
-Do not inherit production status from Ash lifecycle proximity.
+Bind calibration eligibility to verified receipt references and the current custody-bound Case Map.
+Preserve componentwise comparison, Reader provenance, disagreement evidence, and tamper holds.
+Invalidate stale calibration references when the case substrate changes.
+Do not inherit production status from A, H, or I.
 ```
 
 ## Current red inventory
 
-Two Marrowline workflows remain red in a test family untouched by the Ash lifecycle program. They remain separately tracked station debt and do not become Ash evidence in either direction.
+Two Marrowline workflows remain red in a test family outside the Ash lifecycle and operator-surface jurisdictions. They remain separately tracked station debt and do not become Ash evidence in either direction.
 
 ## Final ruling
 
-Ash product lifecycle orchestration has earned `IMPLEMENTED_PRODUCTION_DEMONSTRATED` at `35 / 35`. The bounded program advances to `158 / 330`. This closes the lifecycle sequencing hold on Choir calibration work while preserving every anti-equivalence boundary: readiness remains distinct from custody, custody from authenticity, case binding from truth, release from transport, and production maturity from automatic Cinder.
+Ash product lifecycle orchestration retains `IMPLEMENTED_PRODUCTION_DEMONSTRATED` at `35 / 35`. The landed operator surface enters its own jurisdiction at `35 / 45`, moving the bounded program to `193 / 375`. Choir calibration is paused behind one deliberate consolidation packet. The pause prevents a moving operator substrate from becoming a retroactive dependency patch and preserves the governing distinction: a system may become more usable without pretending that usability has already become production-demonstrated authority.
+
+Authored with 𝌋‌
+
+Noted ⟐
