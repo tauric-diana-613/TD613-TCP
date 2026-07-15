@@ -1,4 +1,4 @@
-const HUSH_INPUT_CONTROL_RAIL_VERSION = 'hush-input-control-rail/v2-hug-textarea';
+const HUSH_INPUT_CONTROL_RAIL_VERSION = 'hush-input-control-rail/v3-desktop-stylometrics-export';
 const $ = (id, doc = document) => doc.getElementById(id);
 
 function installStyle(doc = document) {
@@ -19,7 +19,8 @@ function installStyle(doc = document) {
       margin-top: .12rem !important;
     }
     body[data-page-kind="adversarial-bench"] .hush-input-control-rail #analyzeOutputBtn,
-    body[data-page-kind="adversarial-bench"] .hush-input-control-rail #hushPhase32ClearInput {
+    body[data-page-kind="adversarial-bench"] .hush-input-control-rail #hushPhase32ClearInput,
+    body[data-page-kind="adversarial-bench"] .hush-input-control-rail #hushExportStylometrics {
       display: inline-flex !important;
       align-items: center !important;
       justify-content: center !important;
@@ -47,6 +48,18 @@ function installStyle(doc = document) {
       background: rgba(5,9,20,.82) !important;
       color: #f1fff6 !important;
       box-shadow: inset 0 1px 0 rgba(255,255,255,.06), 0 0 18px rgba(137,255,240,.10) !important;
+    }
+    body[data-page-kind="adversarial-bench"] .hush-input-control-rail #hushExportStylometrics {
+      display: none !important;
+      border: 1px solid rgba(228,198,108,.38) !important;
+      background: rgba(16,18,30,.86) !important;
+      color: #fff4c8 !important;
+      box-shadow: inset 0 1px 0 rgba(255,255,255,.05), 0 0 18px rgba(228,198,108,.10) !important;
+    }
+    @media (min-width: 901px) {
+      body[data-page-kind="adversarial-bench"] .hush-input-control-rail #hushExportStylometrics {
+        display: inline-flex !important;
+      }
     }
     body[data-page-kind="adversarial-bench"] .hush-phase32-compact-actions #analyzeOutputBtn,
     body[data-page-kind="adversarial-bench"] .hush-phase32-compact-actions #hushPhase32ClearInput {
@@ -76,6 +89,37 @@ function clearInput(doc = document) {
     field.focus({ preventScroll: true });
   }
   if (window.__TD613_HUSH_BENCH__?.benchState) window.__TD613_HUSH_BENCH__.benchState.messageDraftText = '';
+}
+
+function syncExportButton(doc = document) {
+  const button = $('hushExportStylometrics', doc);
+  if (!button) return false;
+  const input = $('messageDraftInput', doc);
+  const bench = window.__TD613_HUSH_BENCH__;
+  const profile = $('hushPr76AuthorshipProfileHost', doc);
+  const ready = Boolean(input?.value.trim() && (bench?.benchState?.escapeVector || profile && !profile.hidden && profile.textContent.trim()));
+  button.disabled = !ready;
+  button.setAttribute('aria-disabled', ready ? 'false' : 'true');
+  button.title = ready ? 'Export the current local stylometry report as JSON.' : 'Analyze the message first to wake the stylometry export.';
+  return ready;
+}
+
+function exportStylometrics(doc = document) {
+  if (!syncExportButton(doc)) return false;
+  $('exportReportJsonBtn', doc)?.click();
+  const output = $('reportExportOutput', doc);
+  const json = output?.value || '';
+  if (!json) return false;
+  const view = doc.defaultView;
+  if (view?.URL?.createObjectURL && view.Blob) {
+    const url = view.URL.createObjectURL(new view.Blob([json], { type: 'application/json' }));
+    const link = doc.createElement('a');
+    link.href = url;
+    link.download = 'td613-hush-stylometrics.json';
+    link.click();
+    view.setTimeout(() => view.URL.revokeObjectURL(url), 1200);
+  }
+  return json;
 }
 
 function ensureRail(doc = document) {
@@ -111,6 +155,29 @@ function ensureRail(doc = document) {
     clear.addEventListener('click', () => clearInput(doc));
   }
   if (clear.parentElement !== rail) rail.appendChild(clear);
+
+  let exportButton = $('hushExportStylometrics', doc);
+  if (!exportButton) {
+    exportButton = doc.createElement('button');
+    exportButton.id = 'hushExportStylometrics';
+    exportButton.type = 'button';
+    exportButton.textContent = 'Export Stylometrics';
+    exportButton.disabled = true;
+  }
+  if (exportButton.dataset.hushStylometricsExportBound !== 'true') {
+    exportButton.dataset.hushStylometricsExportBound = 'true';
+    exportButton.addEventListener('click', () => exportStylometrics(doc));
+  }
+  if (exportButton.parentElement !== rail) rail.appendChild(exportButton);
+  if (input.dataset.hushStylometricsSync !== 'true') {
+    input.dataset.hushStylometricsSync = 'true';
+    input.addEventListener('input', () => syncExportButton(doc));
+  }
+  if (analyze?.dataset.hushStylometricsWake !== 'true') {
+    analyze.dataset.hushStylometricsWake = 'true';
+    analyze.addEventListener('click', () => [0, 180, 600, 1200].forEach((delay) => window.setTimeout(() => syncExportButton(doc), delay)));
+  }
+  syncExportButton(doc);
   return true;
 }
 
@@ -126,4 +193,4 @@ if (typeof document !== 'undefined') {
   window.addEventListener('td613:hush:core-ready', run);
 }
 
-window.__TD613_HUSH_INPUT_CONTROL_RAIL__ = { version: HUSH_INPUT_CONTROL_RAIL_VERSION, ensureRail, clearInput };
+window.__TD613_HUSH_INPUT_CONTROL_RAIL__ = { version: HUSH_INPUT_CONTROL_RAIL_VERSION, ensureRail, clearInput, syncExportButton, exportStylometrics };

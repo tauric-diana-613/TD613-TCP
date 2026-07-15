@@ -61,7 +61,8 @@
   body[data-page-kind="adversarial-bench"] #hushInputControlRail {
     grid-area: controls;
     display: grid !important;
-    grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
+    grid-template-columns: minmax(0, 1fr) !important;
+    grid-template-rows: repeat(3, minmax(42px, auto)) !important;
     gap: 10px !important;
     box-sizing: border-box !important;
     min-width: 0 !important;
@@ -73,7 +74,8 @@
   }
 
   body[data-page-kind="adversarial-bench"] #hushInputControlRail #analyzeOutputBtn,
-  body[data-page-kind="adversarial-bench"] #hushInputControlRail #hushPhase32ClearInput {
+  body[data-page-kind="adversarial-bench"] #hushInputControlRail #hushPhase32ClearInput,
+  body[data-page-kind="adversarial-bench"] #hushInputControlRail #hushExportStylometrics {
     width: 100% !important;
     min-height: 42px !important;
     border-radius: 999px !important;

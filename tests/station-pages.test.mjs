@@ -88,11 +88,16 @@ assert.ok(assetVersionsSource.includes("return 'Dome-World';"), 'asset versions 
 assert.ok(!assetVersionsSource.includes("document.title = 'TD613 Hush'"), 'asset bootstrap no longer overwrites every station title with Hush');
 
 const hushCosmeticSource = fs.readFileSync(path.join(repoRoot, 'app', 'hush-cosmetic-repair.css'), 'utf8');
+const hushRailSource = fs.readFileSync(path.join(repoRoot, 'app', 'hush-input-control-rail.js'), 'utf8');
 assert.ok(hushCosmeticSource.includes('#hushPr76AuthorshipProfileHost'), 'Hush positions the generated stylometrics host, not only its retired placeholder');
 assert.ok(hushCosmeticSource.includes('#hushSuggestedMasksPanel'), 'Hush explicitly places the later route suggestions panel');
 assert.ok(hushCosmeticSource.includes('grid-column: 1 / -1'), 'Hush route suggestions span the compact compose grid');
 assert.ok(hushCosmeticSource.includes('border-radius: 999px !important'), 'Hush preserves the native pill action grammar');
-assert.ok(hushCosmeticSource.includes('grid-template-columns: repeat(2, minmax(0, 1fr)) !important'), 'Hush keeps Analyze and Clear as one intentional desktop action rail');
+assert.ok(hushCosmeticSource.includes('grid-template-columns: minmax(0, 1fr) !important'), 'Hush stacks the desktop action rail in one column');
+assert.ok(hushCosmeticSource.includes('grid-template-rows: repeat(3, minmax(42px, auto)) !important'), 'Hush desktop rail reserves three intentional action rows');
+assert.ok(hushRailSource.includes('Export Stylometrics'), 'Hush exposes a real stylometrics export action');
+assert.ok(hushRailSource.includes('exportReportJsonBtn'), 'Hush export reuses the existing report exporter');
+assert.ok(hushRailSource.includes('button.disabled = !ready'), 'Hush keeps export asleep until analysis is ready');
 assert.ok(hushCosmeticSource.includes('padding-inline: 10px !important'), 'Hush contains the compose surface inside its desktop panel');
 
 const safeHarborHandshakeSource = fs.readFileSync(path.join(repoRoot, 'app', 'safe-harbor', 'app', 'operator-handshake-polish.css'), 'utf8');
