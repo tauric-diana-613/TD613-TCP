@@ -29,6 +29,7 @@ const CHANNEL_NAME = 'td613:ash-keep:constitutional-events:v1';
 const ownerId = crypto.randomUUID();
 const localBus = new EventTarget();
 const channel = typeof BroadcastChannel === 'function' ? new BroadcastChannel(CHANNEL_NAME) : null;
+let compositionManifest = null;
 
 function openDb() {
   return new Promise((resolve, reject) => {
@@ -340,15 +341,9 @@ export async function runDryCompatibilityAudit() {
 }
 
 async function boot() {
-  const db = await openDb();
-  try {
-    const manifest = await compileCompositionManifest();
-    await putRecord(db, 'operations', 'constitutional-composition', manifest);
-    document.documentElement.dataset.ashConvergence = ASH_CONVERGENCE_VERSION;
-    document.documentElement.dataset.ashComposition = manifest.receipt_id;
-  } finally {
-    db.close();
-  }
+  compositionManifest = await compileCompositionManifest();
+  document.documentElement.dataset.ashConvergence = ASH_CONVERGENCE_VERSION;
+  document.documentElement.dataset.ashComposition = compositionManifest.receipt_id;
   for (const type of EVENT_TYPES) window.addEventListener(`td613:ash:${type}`, event => reconcileAuthority(type).catch(console.error));
   await reconcileAuthority('convergence-boot');
   publish('convergence-ready', { case_id: localStorage.getItem(POINTER_KEY), reason: 'canonical-composition-loaded' });
@@ -366,6 +361,7 @@ window.TD613AshConvergence = Object.freeze({
   inventoryCase,
   planDeletion,
   finishDeletion,
+  composition: () => compositionManifest,
   runDryCompatibilityAudit
 });
 

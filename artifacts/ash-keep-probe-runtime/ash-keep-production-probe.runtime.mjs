@@ -82,10 +82,28 @@ async function layoutReceipt(page) {
         const rect = node.getBoundingClientRect();
         return style.display !== 'none' && style.visibility !== 'hidden' && rect.width > 0 && rect.height > 0;
       });
-    const clipped = visible
-      .map(node => ({ id: node.id || node.textContent?.trim().slice(0, 32) || node.tagName, rect: node.getBoundingClientRect() }))
-      .filter(item => item.rect.left < -1 || item.rect.right > window.innerWidth + 1)
+    const scrollLaneFor = node => {
+      let parent = node.parentElement;
+      while (parent && parent !== document.body) {
+        const style = getComputedStyle(parent);
+        const intentionallyScrollable = /(auto|scroll)/.test(style.overflowX)
+          && parent.scrollWidth > parent.clientWidth + 1;
+        if (intentionallyScrollable) return parent;
+        parent = parent.parentElement;
+      }
+      return null;
+    };
+    const positioned = visible.map(node => ({
+      id: node.id || node.textContent?.trim().slice(0, 32) || node.tagName,
+      rect: node.getBoundingClientRect(),
+      scroll_lane: scrollLaneFor(node)?.className || null
+    }));
+    const clipped = positioned
+      .filter(item => !item.scroll_lane && (item.rect.left < -1 || item.rect.right > window.innerWidth + 1))
       .map(item => item.id);
+    const scrollLaneControls = positioned
+      .filter(item => item.scroll_lane && (item.rect.left < -1 || item.rect.right > window.innerWidth + 1))
+      .map(item => ({ id: item.id, lane: item.scroll_lane }));
     const tabs = [...document.querySelectorAll('.work-tab')];
     return {
       width: window.innerWidth,
@@ -93,6 +111,7 @@ async function layoutReceipt(page) {
       document_width: document.documentElement.scrollWidth,
       horizontal_overflow: Math.max(0, document.documentElement.scrollWidth - window.innerWidth),
       clipped_controls: clipped,
+      scroll_lane_controls: scrollLaneControls,
       workspace_tab_count: tabs.length,
       selected_workspace: tabs.find(tab => tab.getAttribute('aria-selected') === 'true')?.dataset.workspace || null,
       reduced_motion: matchMedia('(prefers-reduced-motion: reduce)').matches
@@ -371,6 +390,8 @@ try {
   assert(report.stale_release.transmission_performed === false, 'Local release receipt performed transmission');
 
   await openWorkspace(page, 'draft');
+  const selectedProviderExcerpt = "The synthetic archive index changed between two public revisions.";
+  await page.locator('#draftBody').fill(selectedProviderExcerpt);
   await page.locator('#protectedLiterals').fill('Synthetic Person');
   const postsBeforeScreen = requests.filter(request => request.method === 'POST').length;
   await page.locator('#screenProvider').click();

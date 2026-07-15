@@ -464,8 +464,18 @@ async function bootCaseControls() {
       db.close();
     }
   }
-  const audit = await window.TD613AshConvergence.runDryCompatibilityAudit();
-  if (audit.findings.length && $('storageState')) $('storageState').textContent = `${audit.findings.length} compatibility finding(s) held for review`;
+  const auditDb = await openDb();
+  let hasAuditMaterial = false;
+  try {
+    const auditStores = ['cases', 'savedCases', 'lifecycle', 'reviews', 'releases', 'tombstones'];
+    hasAuditMaterial = (await Promise.all(auditStores.map(store => getAll(auditDb, store)))).some(records => records.length > 0);
+  } finally {
+    auditDb.close();
+  }
+  if (hasAuditMaterial) {
+    const audit = await window.TD613AshConvergence.runDryCompatibilityAudit();
+    if (audit.findings.length && $('storageState')) $('storageState').textContent = `${audit.findings.length} compatibility finding(s) held for review`;
+  }
 }
 
 bootCaseControls().catch(error => {

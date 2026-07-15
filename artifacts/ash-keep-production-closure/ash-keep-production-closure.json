@@ -1,0 +1,39 @@
+{
+  "schema": "td613.ash-keep.production-closure-observation/v0.1",
+  "status": "HOLD_FOR_REPAIR",
+  "promotion_authorized": false,
+  "base_url": "http://127.0.0.1:6130",
+  "keep_url": "http://127.0.0.1:6130/dome-world/ash-keep.html",
+  "browser": "chromium-headless",
+  "source_status": "LOCAL_VALIDATION",
+  "clean_arrival": {
+    "launch_visible": true,
+    "indexeddb_record_count": 0,
+    "local_storage_keys": [],
+    "non_read_requests": []
+  },
+  "continuity": {
+    "case_id": "case_688925084d907e139982",
+    "case_map_digest": "sha256:9546586e7801b2af033f06308282e9cc454cf32a4f73719d1c499ff60e34a029",
+    "reloaded": true,
+    "digest_preserved": true
+  },
+  "room_and_route_memory": null,
+  "rebuild_test": null,
+  "stale_release": null,
+  "hush_screen": null,
+  "save_and_capsule": null,
+  "large_case": null,
+  "desktop": null,
+  "mobile_portrait": null,
+  "mobile_landscape": null,
+  "rotation_return": null,
+  "network": null,
+  "storage": null,
+  "console_errors": [],
+  "evidence_files": {},
+  "error": {
+    "message": "page.waitForFunction: Timeout 30000ms exceeded.",
+    "stack": "page.waitForFunction: Timeout 30000ms exceeded.\n    at waitForText (C:\\Users\\timst\\OneDrive\\Desktop\\tcp-repository\\artifacts\\ash-keep-probe-runtime\\ash-keep-production-probe.runtime.mjs:43:14)\n    at C:\\Users\\timst\\OneDrive\\Desktop\\tcp-repository\\artifacts\\ash-keep-probe-runtime\\ash-keep-production-probe.runtime.mjs:353:9"
+  }
+}

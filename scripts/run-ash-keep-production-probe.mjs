@@ -64,7 +64,8 @@ function replaceExactlyOnce(source, target, replacement, label) {
   return source.replace(target, replacement);
 }
 
-const source = await fs.readFile(sourcePath, 'utf8');
+const sourceOnDisk = await fs.readFile(sourcePath, 'utf8');
+const source = sourceOnDisk.replace(/\r\n/g, '\n');
 let runtime = replaceExactlyOnce(source, hushTarget, hushReplacement, 'declared Hush selection');
 runtime = replaceExactlyOnce(runtime, layoutTarget, layoutReplacement, 'mobile scroll-lane classification');
 runtime = replaceExactlyOnce(runtime, returnTarget, returnReplacement, 'layout receipt return');
@@ -79,7 +80,7 @@ await fs.writeFile(manifestPath, `${JSON.stringify({
   schema: 'td613.ash-keep.production-probe-fixture-manifest/v0.1',
   source_probe: path.relative(repoRoot, sourcePath),
   runtime_probe: path.relative(repoRoot, runtimePath),
-  source_probe_sha256: sha256(source),
+  source_probe_sha256: sha256(sourceOnDisk),
   runtime_probe_sha256: sha256(runtime),
   selected_excerpt_sha256: sha256(selectedExcerpt),
   selected_excerpt_character_count: selectedExcerpt.length,

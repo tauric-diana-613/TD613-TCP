@@ -30,6 +30,14 @@ test('delivery layers validate or redirect instead of rewriting the Keep core', 
   assert.doesNotMatch(core, /location\.reload\(\)/);
 });
 
+test('clean arrival exposes composition without persisting a case-adjacent record', async () => {
+  const convergence = await read('app/dome-world/ash-convergence.js');
+  const caseControls = await read('app/dome-world/ash-case-controls.js');
+  assert.match(convergence, /composition: \(\) => compositionManifest/);
+  assert.doesNotMatch(convergence, /putRecord\(db, 'operations', 'constitutional-composition'/);
+  assert.match(caseControls, /if \(hasAuditMaterial\)/);
+});
+
 test('current convergence producers do not carry active claim-ceiling vocabulary', async () => {
   const sources = await Promise.all([
     read('app/engine/ash-constitutional-convergence.js'),

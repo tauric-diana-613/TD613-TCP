@@ -189,7 +189,7 @@ try {
   await page.waitForFunction(() => /Glasshouse Archive/i.test(document.getElementById('caseTitle')?.textContent || ''));
   await page.waitForFunction(() => document.documentElement.dataset.ashConvergence?.includes('constitutional-convergence'));
   const boot = await snapshot(page);
-  const manifest = boot.operations.find(record => record.id === 'constitutional-composition')?.value;
+  const manifest = await page.evaluate(() => window.TD613AshConvergence.composition());
   assert(manifest?.layers?.map(layer => layer.layer_id).join('>') === 'dome-threshold>quick-scan>custody-root>keep-core>lifecycle>custody-workspace-bridges>controls-mobile>flowcore-adapter>aperture-adapter>hush-adapter>observer', 'Canonical composition order diverged.');
   const beforePermission = await page.evaluate(async () => {
     try { await window.TD613AshConvergence.authorize('APERTURE_REBUILD'); return 'OPEN'; }
