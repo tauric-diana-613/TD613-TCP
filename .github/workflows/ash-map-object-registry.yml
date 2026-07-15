@@ -44,6 +44,8 @@ jobs:
           node --check scripts/ash-map-object-registry-probe.mjs
       - name: Enforce Object Registry contract
         run: node tests/ash-keep-map-object-registry.test.mjs
+      - name: Rebuild maintained Aperture download artifact
+        run: npm run aperture:export-downloads
       - name: Preserve maintained Ash Keep regressions
         run: |
           set -o pipefail
