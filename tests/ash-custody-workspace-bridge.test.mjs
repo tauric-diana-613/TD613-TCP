@@ -15,7 +15,7 @@ import {
   registrationMatchesBoundReceipt
 } from '../app/dome-world/ash-workspace-bridge.js';
 
-assert.equal(ASH_WORKSPACE_BRIDGE_VERSION, 'td613.ash-keep.workspace-bridge/v0.3-exact-action-gates');
+assert.equal(ASH_WORKSPACE_BRIDGE_VERSION, 'td613.ash-keep.workspace-bridge/v0.4-exact-action-gates-hold-preservation');
 assert.equal(ASH_WORKSPACE_BRIDGE_MODULE, '/dome-world/ash-workspace-bridge.js');
 
 const keepHtml = fs.readFileSync('app/dome-world/ash-keep.html', 'utf8');
@@ -113,6 +113,11 @@ assert.deepEqual(opened, ['custody']);
 assert.equal(document.querySelector('[data-workspace="custody"]').getAttribute('aria-selected'), 'true');
 assert.equal(document.querySelector('#workspace-custody').classList.contains('active'), true);
 assert.equal(document.querySelector('#workspace-map').classList.contains('active'), false);
+
+const heldStatus = 'Test held · RUN_CURRENT_REBUILD_TEST.';
+document.getElementById('custodyStatus').textContent = heldStatus;
+document.querySelector('[data-workspace="custody"]').click();
+assert.equal(document.getElementById('custodyStatus').textContent, heldStatus, 'programmatic Custody routing must preserve the lifecycle hold reason');
 
 const heldDraftClick = new window.MouseEvent('click', { bubbles: true, cancelable: true });
 document.getElementById('keepDraft').dispatchEvent(heldDraftClick);
