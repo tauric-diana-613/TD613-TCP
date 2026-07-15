@@ -5,19 +5,19 @@ const vercel = JSON.parse(fs.readFileSync('vercel.json', 'utf8'));
 const gitignore = fs.readFileSync('.gitignore', 'utf8');
 const configuredFunctions = Object.keys(vercel.functions || {}).sort();
 
-function findRewrite(source) { return (vercel.rewrites || []).find((entry) => entry.source === source); }
-function findHeader(source) { return (vercel.headers || []).find((entry) => entry.source === source); }
+function findRewrite(source) { return (vercel.rewrites || []).find(entry => entry.source === source); }
+function findHeader(source) { return (vercel.headers || []).find(entry => entry.source === source); }
 function cacheControlValue(source) {
   const entry = findHeader(source);
-  return (entry?.headers || []).find((item) => String(item.key || '').toLowerCase() === 'cache-control')?.value || '';
+  return (entry?.headers || []).find(item => String(item.key || '').toLowerCase() === 'cache-control')?.value || '';
 }
 function assertRewrite(source, destination) {
   assert.equal(findRewrite(source)?.destination, destination, `missing Vercel rewrite: ${source} -> ${destination}`);
 }
 function assertRewriteBefore(earlier, later) {
   const rewrites = vercel.rewrites || [];
-  const earlierIndex = rewrites.findIndex((entry) => entry.source === earlier);
-  const laterIndex = rewrites.findIndex((entry) => entry.source === later);
+  const earlierIndex = rewrites.findIndex(entry => entry.source === earlier);
+  const laterIndex = rewrites.findIndex(entry => entry.source === later);
   assert.ok(earlierIndex >= 0, `missing exact rewrite: ${earlier}`);
   assert.ok(laterIndex >= 0, `missing fallback rewrite: ${later}`);
   assert.ok(earlierIndex < laterIndex, `${earlier} must precede ${later}`);
@@ -39,10 +39,12 @@ assert.equal(vercel.version, 2);
 assert.ok(configuredFunctions.length <= 12, `configured Vercel function budget exceeded: ${configuredFunctions.length}/12 — ${configuredFunctions.join(', ')}`);
 assert.ok(!configuredFunctions.includes('api/aperture-bridge.py'), 'Phase IV must share the guarded Dome-World function');
 assert.ok(!configuredFunctions.includes('api/aperture-bridge.js'), 'Phase IV must not allocate a new JavaScript function');
+assert.ok(!configuredFunctions.includes('api/ash-keep-shell.js'), 'Ash Keep HTML must share the Dome shell function');
+assert.ok(!configuredFunctions.includes('api/ash-keep-js-shell.js'), 'Ash Keep JavaScript must share the Dome shell function');
 assert.equal(vercel.functions?.['api/hush-generate-strict.js']?.maxDuration, 60);
 assert.equal(vercel.functions?.['api/hush-generate.js']?.maxDuration, 60);
 assert.equal(vercel.functions?.['api/dome-world-shell.js']?.maxDuration, 10);
-assert.equal(vercel.functions?.['api/dome-world-shell.js']?.includeFiles, 'app/dome-world/index.html');
+assert.equal(vercel.functions?.['api/dome-world-shell.js']?.includeFiles, 'app/dome-world/{index.html,ash-keep.html,ash-keep.js}');
 assert.equal(vercel.functions?.['api/dome-world-engine.py']?.maxDuration, 60);
 assert.equal(vercel.functions?.['api/dome-world-engine-guard.py']?.maxDuration, 60);
 assert.equal(vercel.functions?.['api/ash-local-commitment.py']?.maxDuration, 60);
@@ -72,6 +74,10 @@ assertRewrite('/dome-world', '/api/dome-world-shell');
 assertRewrite('/dome-world/', '/api/dome-world-shell');
 assertRewrite('/dome-world/index.html', '/api/dome-world-shell');
 assertRewrite('/app/dome-world/index.html', '/api/dome-world-shell');
+assertRewrite('/dome-world/ash-keep.html', '/api/dome-world-shell?surface=ash-keep-html');
+assertRewrite('/app/dome-world/ash-keep.html', '/api/dome-world-shell?surface=ash-keep-html');
+assertRewrite('/dome-world/ash-keep.js', '/api/dome-world-shell?surface=ash-keep-js');
+assertRewrite('/app/dome-world/ash-keep.js', '/api/dome-world-shell?surface=ash-keep-js');
 assertRewrite('/dome-world/ash-custody.html', '/app/dome-world/ash-custody-v08.html');
 assertRewrite('/app/dome-world/ash-custody.html', '/app/dome-world/ash-custody-v08.html');
 assertRewrite('/dome-world/flow-core-context.html', '/app/dome-world/flow-core-context.html');
@@ -88,7 +94,7 @@ for (const exact of [
   '/api/dome-world/ash-custody-replay',
   '/api/dome-world/ash-custody-migrate',
   '/api/dome-world/flowcore-context',
-  '/api/dome-world/aperture-bridge',
+  '/api/dome-world/aperture-bridge'
 ]) assertRewriteBefore(exact, '/api/dome-world/(.*)');
 assertRewriteBefore('/api/ash-local-commitment', '/api/(.*)');
 assertRewriteBefore('/api/dome-world-engine', '/api/(.*)');
@@ -97,14 +103,19 @@ assertRewriteBefore('/api/aperture-bridge', '/api/(.*)');
 assertRewriteBefore('/dome-world', '/dome-world/(.*)');
 assertRewriteBefore('/dome-world/', '/dome-world/(.*)');
 assertRewriteBefore('/dome-world/index.html', '/dome-world/(.*)');
+assertRewriteBefore('/dome-world/ash-keep.html', '/dome-world/(.*)');
+assertRewriteBefore('/dome-world/ash-keep.js', '/dome-world/(.*)');
 assertRewriteBefore('/dome-world/reciprocal-bridge.html', '/dome-world/(.*)');
 assertRewriteBefore('/app/dome-world/index.html', '/app/(.*)');
+assertRewriteBefore('/app/dome-world/ash-keep.html', '/app/(.*)');
+assertRewriteBefore('/app/dome-world/ash-keep.js', '/app/(.*)');
 
 [
   '/adversarial-bench.html', '/app/adversarial-bench.html',
   '/safe-harbor/td613-flight.html', '/app/safe-harbor/td613-flight.html',
   '/asset-versions.js', '/app/asset-versions.js',
   '/dome-world', '/dome-world/', '/app/dome-world/index.html',
+  '/dome-world/ash-threshold.html', '/dome-world/ash-keep.html', '/dome-world/ash-keep.js', '/dome-world/ash-lifecycle.js',
   '/dome-world/ash-custody.html', '/app/dome-world/ash-custody-v07.html', '/app/dome-world/ash-custody-v08.html',
   '/dome-world/flow-core-context.html', '/app/dome-world/flow-core-context.html',
   '/dome-world/reciprocal-bridge.html', '/app/dome-world/reciprocal-bridge.html',
@@ -113,7 +124,7 @@ assertRewriteBefore('/app/dome-world/index.html', '/app/(.*)');
   '/api/aperture-bridge', '/api/dome-world/aperture-bridge',
   '/api/dome-world-engine', '/api/ash-local-commitment',
   '/api/flowcore-context', '/api/dome-world/flowcore-context',
-  '/api/dome-world-engine-guard', '/api/ash-local-commitment-guard',
+  '/api/dome-world-engine-guard', '/api/ash-local-commitment-guard'
 ].forEach(assertNoStore);
 
 [
@@ -128,7 +139,7 @@ assertRewriteBefore('/app/dome-world/index.html', '/app/(.*)');
   '/adversarial-bench.js', '/app/adversarial-bench.js',
   '/adversarial-bench-light.js', '/app/adversarial-bench-light.js',
   '/adversarial-bench.mjs', '/app/adversarial-bench.mjs',
-  '/hush-(.*)', '/app/hush-(.*)', '/engine/(.*)', '/app/engine/(.*)', '/dome-world/(.*)',
+  '/hush-(.*)', '/app/hush-(.*)', '/engine/(.*)', '/app/engine/(.*)', '/dome-world/(.*)'
 ].forEach(assertRevalidatingStatic);
 
 assert.match(gitignore, /(^|\r?\n)\.env(\r?\n|$)/, '.env must remain ignored');

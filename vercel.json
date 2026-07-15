@@ -1,14 +1,31 @@
 {
   "version": 2,
   "functions": {
-    "api/hush-generate-strict.js": { "maxDuration": 60 },
-    "api/hush-generate.js": { "maxDuration": 60 },
-    "api/hush-generate-quality.js": { "maxDuration": 60 },
-    "api/khonapolit.js": { "maxDuration": 60 },
-    "api/khonapolit-quality.js": { "maxDuration": 60 },
-    "api/gemini-readiness.js": { "maxDuration": 20 },
-    "api/marrowline.js": { "maxDuration": 10 },
-    "api/dome-world-shell.js": { "maxDuration": 10, "includeFiles": "app/dome-world/index.html" },
+    "api/hush-generate-strict.js": {
+      "maxDuration": 60
+    },
+    "api/hush-generate.js": {
+      "maxDuration": 60
+    },
+    "api/hush-generate-quality.js": {
+      "maxDuration": 60
+    },
+    "api/khonapolit.js": {
+      "maxDuration": 60
+    },
+    "api/khonapolit-quality.js": {
+      "maxDuration": 60
+    },
+    "api/gemini-readiness.js": {
+      "maxDuration": 20
+    },
+    "api/marrowline.js": {
+      "maxDuration": 10
+    },
+    "api/dome-world-shell.js": {
+      "maxDuration": 10,
+      "includeFiles": "app/dome-world/{index.html,ash-keep.html,ash-keep.js}"
+    },
     "api/dome-world-engine.py": {
       "maxDuration": 60,
       "includeFiles": "packages/dome_world_exact/**/*.py",
@@ -28,113 +45,853 @@
     }
   },
   "headers": [
-    { "source": "/", "headers": [{ "key": "Cache-Control", "value": "no-store, max-age=0" }] },
-    { "source": "/index.html", "headers": [{ "key": "Cache-Control", "value": "no-store, max-age=0" }] },
-    { "source": "/app/index.html", "headers": [{ "key": "Cache-Control", "value": "no-store, max-age=0" }] },
-    { "source": "/hush.html", "headers": [{ "key": "Cache-Control", "value": "no-store, max-age=0" }] },
-    { "source": "/app/hush.html", "headers": [{ "key": "Cache-Control", "value": "no-store, max-age=0" }] },
-    { "source": "/hush.js", "headers": [{ "key": "Cache-Control", "value": "public, max-age=0, must-revalidate" }] },
-    { "source": "/app/hush.js", "headers": [{ "key": "Cache-Control", "value": "public, max-age=0, must-revalidate" }] },
-    { "source": "/adversarial-bench.html", "headers": [{ "key": "Cache-Control", "value": "no-store, max-age=0" }] },
-    { "source": "/app/adversarial-bench.html", "headers": [{ "key": "Cache-Control", "value": "no-store, max-age=0" }] },
-    { "source": "/safe-harbor", "headers": [{ "key": "Cache-Control", "value": "no-store, max-age=0" }] },
-    { "source": "/safe-harbor/", "headers": [{ "key": "Cache-Control", "value": "no-store, max-age=0" }] },
-    { "source": "/safe-harbor/index.html", "headers": [{ "key": "Cache-Control", "value": "no-store, max-age=0" }] },
-    { "source": "/app/safe-harbor/index.html", "headers": [{ "key": "Cache-Control", "value": "no-store, max-age=0" }] },
-    { "source": "/safe-harbor/td613-flight.html", "headers": [{ "key": "Cache-Control", "value": "no-store, max-age=0" }] },
-    { "source": "/app/safe-harbor/td613-flight.html", "headers": [{ "key": "Cache-Control", "value": "no-store, max-age=0" }] },
-    { "source": "/safe-harbor/app/(.*)", "headers": [{ "key": "Cache-Control", "value": "public, max-age=0, must-revalidate" }] },
-    { "source": "/app/safe-harbor/app/(.*)", "headers": [{ "key": "Cache-Control", "value": "public, max-age=0, must-revalidate" }] },
-    { "source": "/speed-insights.js", "headers": [{ "key": "Cache-Control", "value": "no-store, max-age=0" }] },
-    { "source": "/app/speed-insights.js", "headers": [{ "key": "Cache-Control", "value": "no-store, max-age=0" }] },
-    { "source": "/app/safe-harbor/td613-flight-android-scroll-fix.js", "headers": [{ "key": "Cache-Control", "value": "public, max-age=0, must-revalidate" }] },
-    { "source": "/safe-harbor/td613-flight-android-scroll-fix.js", "headers": [{ "key": "Cache-Control", "value": "public, max-age=0, must-revalidate" }] },
-    { "source": "/safe-harbor/app/safe-harbor-housekeeping.css", "headers": [{ "key": "Cache-Control", "value": "public, max-age=0, must-revalidate" }] },
-    { "source": "/safe-harbor/app/safe-harbor-housekeeping.js", "headers": [{ "key": "Cache-Control", "value": "public, max-age=0, must-revalidate" }] },
-    { "source": "/app/safe-harbor/app/safe-harbor-housekeeping.css", "headers": [{ "key": "Cache-Control", "value": "public, max-age=0, must-revalidate" }] },
-    { "source": "/app/safe-harbor/app/safe-harbor-housekeeping.js", "headers": [{ "key": "Cache-Control", "value": "public, max-age=0, must-revalidate" }] },
-    { "source": "/gateway-housekeeping.css", "headers": [{ "key": "Cache-Control", "value": "public, max-age=0, must-revalidate" }] },
-    { "source": "/app/gateway-housekeeping.css", "headers": [{ "key": "Cache-Control", "value": "public, max-age=0, must-revalidate" }] },
-    { "source": "/styles.css", "headers": [{ "key": "Cache-Control", "value": "public, max-age=0, must-revalidate" }] },
-    { "source": "/app/styles.css", "headers": [{ "key": "Cache-Control", "value": "public, max-age=0, must-revalidate" }] },
-    { "source": "/adversarial-bench.js", "headers": [{ "key": "Cache-Control", "value": "public, max-age=0, must-revalidate" }] },
-    { "source": "/app/adversarial-bench.js", "headers": [{ "key": "Cache-Control", "value": "public, max-age=0, must-revalidate" }] },
-    { "source": "/adversarial-bench-light.js", "headers": [{ "key": "Cache-Control", "value": "public, max-age=0, must-revalidate" }] },
-    { "source": "/app/adversarial-bench-light.js", "headers": [{ "key": "Cache-Control", "value": "public, max-age=0, must-revalidate" }] },
-    { "source": "/adversarial-bench.mjs", "headers": [{ "key": "Cache-Control", "value": "public, max-age=0, must-revalidate" }] },
-    { "source": "/app/adversarial-bench.mjs", "headers": [{ "key": "Cache-Control", "value": "public, max-age=0, must-revalidate" }] },
-    { "source": "/hush-(.*)", "headers": [{ "key": "Cache-Control", "value": "public, max-age=0, must-revalidate" }] },
-    { "source": "/app/hush-(.*)", "headers": [{ "key": "Cache-Control", "value": "public, max-age=0, must-revalidate" }] },
-    { "source": "/app/engine/(.*)", "headers": [{ "key": "Cache-Control", "value": "public, max-age=0, must-revalidate" }] },
-    { "source": "/engine/(.*)", "headers": [{ "key": "Cache-Control", "value": "public, max-age=0, must-revalidate" }] },
-    { "source": "/asset-versions.js", "headers": [{ "key": "Cache-Control", "value": "no-store, max-age=0" }] },
-    { "source": "/app/asset-versions.js", "headers": [{ "key": "Cache-Control", "value": "no-store, max-age=0" }] },
-    { "source": "/desktop-visibility-parity.css", "headers": [{ "key": "Cache-Control", "value": "no-store, max-age=0" }] },
-    { "source": "/app/desktop-visibility-parity.css", "headers": [{ "key": "Cache-Control", "value": "no-store, max-age=0" }] },
-    { "source": "/dome-world", "headers": [{ "key": "Cache-Control", "value": "no-store, max-age=0" }] },
-    { "source": "/dome-world/", "headers": [{ "key": "Cache-Control", "value": "no-store, max-age=0" }] },
-    { "source": "/app/dome-world/index.html", "headers": [{ "key": "Cache-Control", "value": "no-store, max-age=0" }] },
-    { "source": "/dome-world/ash-custody.html", "headers": [{ "key": "Cache-Control", "value": "no-store, max-age=0" }] },
-    { "source": "/app/dome-world/ash-custody-v07.html", "headers": [{ "key": "Cache-Control", "value": "no-store, max-age=0" }] },
-    { "source": "/app/dome-world/ash-custody-v08.html", "headers": [{ "key": "Cache-Control", "value": "no-store, max-age=0" }] },
-    { "source": "/dome-world/flow-core-context.html", "headers": [{ "key": "Cache-Control", "value": "no-store, max-age=0" }] },
-    { "source": "/app/dome-world/flow-core-context.html", "headers": [{ "key": "Cache-Control", "value": "no-store, max-age=0" }] },
-    { "source": "/dome-world/reciprocal-bridge.html", "headers": [{ "key": "Cache-Control", "value": "no-store, max-age=0" }] },
-    { "source": "/app/dome-world/reciprocal-bridge.html", "headers": [{ "key": "Cache-Control", "value": "no-store, max-age=0" }] },
-    { "source": "/dome-world/ash/local-commitment.js", "headers": [{ "key": "Cache-Control", "value": "no-store, max-age=0" }] },
-    { "source": "/app/dome-world/ash/local-commitment.js", "headers": [{ "key": "Cache-Control", "value": "no-store, max-age=0" }] },
-    { "source": "/dome-world/ash/canonical-json.js", "headers": [{ "key": "Cache-Control", "value": "no-store, max-age=0" }] },
-    { "source": "/app/dome-world/ash/canonical-json.js", "headers": [{ "key": "Cache-Control", "value": "no-store, max-age=0" }] },
-    { "source": "/api/aperture-bridge", "headers": [{ "key": "Cache-Control", "value": "no-store, max-age=0" }] },
-    { "source": "/api/dome-world/aperture-bridge", "headers": [{ "key": "Cache-Control", "value": "no-store, max-age=0" }] },
-    { "source": "/api/dome-world-engine", "headers": [{ "key": "Cache-Control", "value": "no-store, max-age=0" }] },
-    { "source": "/api/ash-local-commitment", "headers": [{ "key": "Cache-Control", "value": "no-store, max-age=0" }] },
-    { "source": "/api/flowcore-context", "headers": [{ "key": "Cache-Control", "value": "no-store, max-age=0" }] },
-    { "source": "/api/dome-world/flowcore-context", "headers": [{ "key": "Cache-Control", "value": "no-store, max-age=0" }] },
-    { "source": "/api/dome-world-engine-guard", "headers": [{ "key": "Cache-Control", "value": "no-store, max-age=0" }] },
-    { "source": "/api/ash-local-commitment-guard", "headers": [{ "key": "Cache-Control", "value": "no-store, max-age=0" }] },
-    { "source": "/api/hush-generate", "headers": [{ "key": "Cache-Control", "value": "no-store, max-age=0" }] },
-    { "source": "/api/hush-generate-budgeted", "headers": [{ "key": "Cache-Control", "value": "no-store, max-age=0" }] },
-    { "source": "/api/hush-generate-quality", "headers": [{ "key": "Cache-Control", "value": "no-store, max-age=0" }] },
-    { "source": "/api/gemini-readiness", "headers": [{ "key": "Cache-Control", "value": "no-store, max-age=0" }] },
-    { "source": "/api/marrowline", "headers": [{ "key": "Cache-Control", "value": "no-store, max-age=0" }] },
-    { "source": "/api/dome-world/marrowline", "headers": [{ "key": "Cache-Control", "value": "no-store, max-age=0" }] },
-    { "source": "/api/khonapolit", "headers": [{ "key": "Cache-Control", "value": "no-store, max-age=0" }] },
-    { "source": "/api/dome-world/khonapolit", "headers": [{ "key": "Cache-Control", "value": "no-store, max-age=0" }] },
-    { "source": "/dome-world/(.*)", "headers": [{ "key": "Cache-Control", "value": "public, max-age=0, must-revalidate" }] }
+    {
+      "source": "/",
+      "headers": [
+        {
+          "key": "Cache-Control",
+          "value": "no-store, max-age=0"
+        }
+      ]
+    },
+    {
+      "source": "/index.html",
+      "headers": [
+        {
+          "key": "Cache-Control",
+          "value": "no-store, max-age=0"
+        }
+      ]
+    },
+    {
+      "source": "/app/index.html",
+      "headers": [
+        {
+          "key": "Cache-Control",
+          "value": "no-store, max-age=0"
+        }
+      ]
+    },
+    {
+      "source": "/hush.html",
+      "headers": [
+        {
+          "key": "Cache-Control",
+          "value": "no-store, max-age=0"
+        }
+      ]
+    },
+    {
+      "source": "/app/hush.html",
+      "headers": [
+        {
+          "key": "Cache-Control",
+          "value": "no-store, max-age=0"
+        }
+      ]
+    },
+    {
+      "source": "/hush.js",
+      "headers": [
+        {
+          "key": "Cache-Control",
+          "value": "public, max-age=0, must-revalidate"
+        }
+      ]
+    },
+    {
+      "source": "/app/hush.js",
+      "headers": [
+        {
+          "key": "Cache-Control",
+          "value": "public, max-age=0, must-revalidate"
+        }
+      ]
+    },
+    {
+      "source": "/adversarial-bench.html",
+      "headers": [
+        {
+          "key": "Cache-Control",
+          "value": "no-store, max-age=0"
+        }
+      ]
+    },
+    {
+      "source": "/app/adversarial-bench.html",
+      "headers": [
+        {
+          "key": "Cache-Control",
+          "value": "no-store, max-age=0"
+        }
+      ]
+    },
+    {
+      "source": "/safe-harbor",
+      "headers": [
+        {
+          "key": "Cache-Control",
+          "value": "no-store, max-age=0"
+        }
+      ]
+    },
+    {
+      "source": "/safe-harbor/",
+      "headers": [
+        {
+          "key": "Cache-Control",
+          "value": "no-store, max-age=0"
+        }
+      ]
+    },
+    {
+      "source": "/safe-harbor/index.html",
+      "headers": [
+        {
+          "key": "Cache-Control",
+          "value": "no-store, max-age=0"
+        }
+      ]
+    },
+    {
+      "source": "/app/safe-harbor/index.html",
+      "headers": [
+        {
+          "key": "Cache-Control",
+          "value": "no-store, max-age=0"
+        }
+      ]
+    },
+    {
+      "source": "/safe-harbor/td613-flight.html",
+      "headers": [
+        {
+          "key": "Cache-Control",
+          "value": "no-store, max-age=0"
+        }
+      ]
+    },
+    {
+      "source": "/app/safe-harbor/td613-flight.html",
+      "headers": [
+        {
+          "key": "Cache-Control",
+          "value": "no-store, max-age=0"
+        }
+      ]
+    },
+    {
+      "source": "/safe-harbor/app/(.*)",
+      "headers": [
+        {
+          "key": "Cache-Control",
+          "value": "public, max-age=0, must-revalidate"
+        }
+      ]
+    },
+    {
+      "source": "/app/safe-harbor/app/(.*)",
+      "headers": [
+        {
+          "key": "Cache-Control",
+          "value": "public, max-age=0, must-revalidate"
+        }
+      ]
+    },
+    {
+      "source": "/speed-insights.js",
+      "headers": [
+        {
+          "key": "Cache-Control",
+          "value": "no-store, max-age=0"
+        }
+      ]
+    },
+    {
+      "source": "/app/speed-insights.js",
+      "headers": [
+        {
+          "key": "Cache-Control",
+          "value": "no-store, max-age=0"
+        }
+      ]
+    },
+    {
+      "source": "/app/safe-harbor/td613-flight-android-scroll-fix.js",
+      "headers": [
+        {
+          "key": "Cache-Control",
+          "value": "public, max-age=0, must-revalidate"
+        }
+      ]
+    },
+    {
+      "source": "/safe-harbor/td613-flight-android-scroll-fix.js",
+      "headers": [
+        {
+          "key": "Cache-Control",
+          "value": "public, max-age=0, must-revalidate"
+        }
+      ]
+    },
+    {
+      "source": "/safe-harbor/app/safe-harbor-housekeeping.css",
+      "headers": [
+        {
+          "key": "Cache-Control",
+          "value": "public, max-age=0, must-revalidate"
+        }
+      ]
+    },
+    {
+      "source": "/safe-harbor/app/safe-harbor-housekeeping.js",
+      "headers": [
+        {
+          "key": "Cache-Control",
+          "value": "public, max-age=0, must-revalidate"
+        }
+      ]
+    },
+    {
+      "source": "/app/safe-harbor/app/safe-harbor-housekeeping.css",
+      "headers": [
+        {
+          "key": "Cache-Control",
+          "value": "public, max-age=0, must-revalidate"
+        }
+      ]
+    },
+    {
+      "source": "/app/safe-harbor/app/safe-harbor-housekeeping.js",
+      "headers": [
+        {
+          "key": "Cache-Control",
+          "value": "public, max-age=0, must-revalidate"
+        }
+      ]
+    },
+    {
+      "source": "/gateway-housekeeping.css",
+      "headers": [
+        {
+          "key": "Cache-Control",
+          "value": "public, max-age=0, must-revalidate"
+        }
+      ]
+    },
+    {
+      "source": "/app/gateway-housekeeping.css",
+      "headers": [
+        {
+          "key": "Cache-Control",
+          "value": "public, max-age=0, must-revalidate"
+        }
+      ]
+    },
+    {
+      "source": "/styles.css",
+      "headers": [
+        {
+          "key": "Cache-Control",
+          "value": "public, max-age=0, must-revalidate"
+        }
+      ]
+    },
+    {
+      "source": "/app/styles.css",
+      "headers": [
+        {
+          "key": "Cache-Control",
+          "value": "public, max-age=0, must-revalidate"
+        }
+      ]
+    },
+    {
+      "source": "/adversarial-bench.js",
+      "headers": [
+        {
+          "key": "Cache-Control",
+          "value": "public, max-age=0, must-revalidate"
+        }
+      ]
+    },
+    {
+      "source": "/app/adversarial-bench.js",
+      "headers": [
+        {
+          "key": "Cache-Control",
+          "value": "public, max-age=0, must-revalidate"
+        }
+      ]
+    },
+    {
+      "source": "/adversarial-bench-light.js",
+      "headers": [
+        {
+          "key": "Cache-Control",
+          "value": "public, max-age=0, must-revalidate"
+        }
+      ]
+    },
+    {
+      "source": "/app/adversarial-bench-light.js",
+      "headers": [
+        {
+          "key": "Cache-Control",
+          "value": "public, max-age=0, must-revalidate"
+        }
+      ]
+    },
+    {
+      "source": "/adversarial-bench.mjs",
+      "headers": [
+        {
+          "key": "Cache-Control",
+          "value": "public, max-age=0, must-revalidate"
+        }
+      ]
+    },
+    {
+      "source": "/app/adversarial-bench.mjs",
+      "headers": [
+        {
+          "key": "Cache-Control",
+          "value": "public, max-age=0, must-revalidate"
+        }
+      ]
+    },
+    {
+      "source": "/hush-(.*)",
+      "headers": [
+        {
+          "key": "Cache-Control",
+          "value": "public, max-age=0, must-revalidate"
+        }
+      ]
+    },
+    {
+      "source": "/app/hush-(.*)",
+      "headers": [
+        {
+          "key": "Cache-Control",
+          "value": "public, max-age=0, must-revalidate"
+        }
+      ]
+    },
+    {
+      "source": "/app/engine/(.*)",
+      "headers": [
+        {
+          "key": "Cache-Control",
+          "value": "public, max-age=0, must-revalidate"
+        }
+      ]
+    },
+    {
+      "source": "/engine/(.*)",
+      "headers": [
+        {
+          "key": "Cache-Control",
+          "value": "public, max-age=0, must-revalidate"
+        }
+      ]
+    },
+    {
+      "source": "/asset-versions.js",
+      "headers": [
+        {
+          "key": "Cache-Control",
+          "value": "no-store, max-age=0"
+        }
+      ]
+    },
+    {
+      "source": "/app/asset-versions.js",
+      "headers": [
+        {
+          "key": "Cache-Control",
+          "value": "no-store, max-age=0"
+        }
+      ]
+    },
+    {
+      "source": "/desktop-visibility-parity.css",
+      "headers": [
+        {
+          "key": "Cache-Control",
+          "value": "no-store, max-age=0"
+        }
+      ]
+    },
+    {
+      "source": "/app/desktop-visibility-parity.css",
+      "headers": [
+        {
+          "key": "Cache-Control",
+          "value": "no-store, max-age=0"
+        }
+      ]
+    },
+    {
+      "source": "/dome-world",
+      "headers": [
+        {
+          "key": "Cache-Control",
+          "value": "no-store, max-age=0"
+        }
+      ]
+    },
+    {
+      "source": "/dome-world/",
+      "headers": [
+        {
+          "key": "Cache-Control",
+          "value": "no-store, max-age=0"
+        }
+      ]
+    },
+    {
+      "source": "/app/dome-world/index.html",
+      "headers": [
+        {
+          "key": "Cache-Control",
+          "value": "no-store, max-age=0"
+        }
+      ]
+    },
+    {
+      "source": "/dome-world/ash-threshold.html",
+      "headers": [
+        {
+          "key": "Cache-Control",
+          "value": "no-store, max-age=0"
+        }
+      ]
+    },
+    {
+      "source": "/dome-world/ash-keep.html",
+      "headers": [
+        {
+          "key": "Cache-Control",
+          "value": "no-store, max-age=0"
+        }
+      ]
+    },
+    {
+      "source": "/dome-world/ash-keep.js",
+      "headers": [
+        {
+          "key": "Cache-Control",
+          "value": "no-store, max-age=0"
+        }
+      ]
+    },
+    {
+      "source": "/dome-world/ash-lifecycle.js",
+      "headers": [
+        {
+          "key": "Cache-Control",
+          "value": "no-store, max-age=0"
+        }
+      ]
+    },
+    {
+      "source": "/dome-world/ash-custody.html",
+      "headers": [
+        {
+          "key": "Cache-Control",
+          "value": "no-store, max-age=0"
+        }
+      ]
+    },
+    {
+      "source": "/app/dome-world/ash-custody-v07.html",
+      "headers": [
+        {
+          "key": "Cache-Control",
+          "value": "no-store, max-age=0"
+        }
+      ]
+    },
+    {
+      "source": "/app/dome-world/ash-custody-v08.html",
+      "headers": [
+        {
+          "key": "Cache-Control",
+          "value": "no-store, max-age=0"
+        }
+      ]
+    },
+    {
+      "source": "/dome-world/flow-core-context.html",
+      "headers": [
+        {
+          "key": "Cache-Control",
+          "value": "no-store, max-age=0"
+        }
+      ]
+    },
+    {
+      "source": "/app/dome-world/flow-core-context.html",
+      "headers": [
+        {
+          "key": "Cache-Control",
+          "value": "no-store, max-age=0"
+        }
+      ]
+    },
+    {
+      "source": "/dome-world/reciprocal-bridge.html",
+      "headers": [
+        {
+          "key": "Cache-Control",
+          "value": "no-store, max-age=0"
+        }
+      ]
+    },
+    {
+      "source": "/app/dome-world/reciprocal-bridge.html",
+      "headers": [
+        {
+          "key": "Cache-Control",
+          "value": "no-store, max-age=0"
+        }
+      ]
+    },
+    {
+      "source": "/dome-world/ash/local-commitment.js",
+      "headers": [
+        {
+          "key": "Cache-Control",
+          "value": "no-store, max-age=0"
+        }
+      ]
+    },
+    {
+      "source": "/app/dome-world/ash/local-commitment.js",
+      "headers": [
+        {
+          "key": "Cache-Control",
+          "value": "no-store, max-age=0"
+        }
+      ]
+    },
+    {
+      "source": "/dome-world/ash/canonical-json.js",
+      "headers": [
+        {
+          "key": "Cache-Control",
+          "value": "no-store, max-age=0"
+        }
+      ]
+    },
+    {
+      "source": "/app/dome-world/ash/canonical-json.js",
+      "headers": [
+        {
+          "key": "Cache-Control",
+          "value": "no-store, max-age=0"
+        }
+      ]
+    },
+    {
+      "source": "/api/aperture-bridge",
+      "headers": [
+        {
+          "key": "Cache-Control",
+          "value": "no-store, max-age=0"
+        }
+      ]
+    },
+    {
+      "source": "/api/dome-world/aperture-bridge",
+      "headers": [
+        {
+          "key": "Cache-Control",
+          "value": "no-store, max-age=0"
+        }
+      ]
+    },
+    {
+      "source": "/api/dome-world-engine",
+      "headers": [
+        {
+          "key": "Cache-Control",
+          "value": "no-store, max-age=0"
+        }
+      ]
+    },
+    {
+      "source": "/api/ash-local-commitment",
+      "headers": [
+        {
+          "key": "Cache-Control",
+          "value": "no-store, max-age=0"
+        }
+      ]
+    },
+    {
+      "source": "/api/flowcore-context",
+      "headers": [
+        {
+          "key": "Cache-Control",
+          "value": "no-store, max-age=0"
+        }
+      ]
+    },
+    {
+      "source": "/api/dome-world/flowcore-context",
+      "headers": [
+        {
+          "key": "Cache-Control",
+          "value": "no-store, max-age=0"
+        }
+      ]
+    },
+    {
+      "source": "/api/dome-world-engine-guard",
+      "headers": [
+        {
+          "key": "Cache-Control",
+          "value": "no-store, max-age=0"
+        }
+      ]
+    },
+    {
+      "source": "/api/ash-local-commitment-guard",
+      "headers": [
+        {
+          "key": "Cache-Control",
+          "value": "no-store, max-age=0"
+        }
+      ]
+    },
+    {
+      "source": "/api/hush-generate",
+      "headers": [
+        {
+          "key": "Cache-Control",
+          "value": "no-store, max-age=0"
+        }
+      ]
+    },
+    {
+      "source": "/api/hush-generate-budgeted",
+      "headers": [
+        {
+          "key": "Cache-Control",
+          "value": "no-store, max-age=0"
+        }
+      ]
+    },
+    {
+      "source": "/api/hush-generate-quality",
+      "headers": [
+        {
+          "key": "Cache-Control",
+          "value": "no-store, max-age=0"
+        }
+      ]
+    },
+    {
+      "source": "/api/gemini-readiness",
+      "headers": [
+        {
+          "key": "Cache-Control",
+          "value": "no-store, max-age=0"
+        }
+      ]
+    },
+    {
+      "source": "/api/marrowline",
+      "headers": [
+        {
+          "key": "Cache-Control",
+          "value": "no-store, max-age=0"
+        }
+      ]
+    },
+    {
+      "source": "/api/dome-world/marrowline",
+      "headers": [
+        {
+          "key": "Cache-Control",
+          "value": "no-store, max-age=0"
+        }
+      ]
+    },
+    {
+      "source": "/api/khonapolit",
+      "headers": [
+        {
+          "key": "Cache-Control",
+          "value": "no-store, max-age=0"
+        }
+      ]
+    },
+    {
+      "source": "/api/dome-world/khonapolit",
+      "headers": [
+        {
+          "key": "Cache-Control",
+          "value": "no-store, max-age=0"
+        }
+      ]
+    },
+    {
+      "source": "/dome-world/(.*)",
+      "headers": [
+        {
+          "key": "Cache-Control",
+          "value": "public, max-age=0, must-revalidate"
+        }
+      ]
+    }
   ],
   "rewrites": [
-    { "source": "/api/dome-world/ash-custody-register", "destination": "/api/ash-local-commitment-guard" },
-    { "source": "/api/dome-world/ash-custody-replay", "destination": "/api/ash-local-commitment-guard" },
-    { "source": "/api/dome-world/ash-custody-migrate", "destination": "/api/ash-local-commitment-guard" },
-    { "source": "/api/ash-local-commitment", "destination": "/api/ash-local-commitment-guard" },
-    { "source": "/api/dome-world-engine", "destination": "/api/dome-world-engine-guard" },
-    { "source": "/api/flowcore-context", "destination": "/api/dome-world-engine-guard?operation=flowcore-context" },
-    { "source": "/api/dome-world/flowcore-context", "destination": "/api/dome-world-engine-guard?operation=flowcore-context" },
-    { "source": "/api/aperture-bridge", "destination": "/api/dome-world-engine-guard?operation=aperture-bridge-readiness" },
-    { "source": "/api/dome-world/aperture-bridge", "destination": "/api/dome-world-engine-guard?operation=aperture-bridge-readiness" },
-    { "source": "/api/hush-generate", "destination": "/api/hush-generate-quality" },
-    { "source": "/api/hush-generate-budgeted", "destination": "/api/hush-generate-quality" },
-    { "source": "/api/khonapolit", "destination": "/api/khonapolit-quality" },
-    { "source": "/api/dome-world/khonapolit", "destination": "/api/khonapolit" },
-    { "source": "/api/dome-world/marrowline", "destination": "/api/marrowline" },
-    { "source": "/api/dome-world/ping", "destination": "/api/dome-world-engine-guard?operation=ping" },
-    { "source": "/api/dome-world/readiness", "destination": "/api/dome-world-engine-guard?operation=readiness" },
-    { "source": "/api/dome-world/step2-readiness", "destination": "/api/dome-world-engine-guard?operation=step2-readiness" },
-    { "source": "/api/dome-world/(.*)", "destination": "/api/dome-world-engine-guard?operation=$1" },
-    { "source": "/dome-world", "destination": "/api/dome-world-shell" },
-    { "source": "/dome-world/", "destination": "/api/dome-world-shell" },
-    { "source": "/dome-world/index.html", "destination": "/api/dome-world-shell" },
-    { "source": "/app/dome-world/index.html", "destination": "/api/dome-world-shell" },
-    { "source": "/dome-world/ash-custody.html", "destination": "/app/dome-world/ash-custody-v08.html" },
-    { "source": "/app/dome-world/ash-custody.html", "destination": "/app/dome-world/ash-custody-v08.html" },
-    { "source": "/dome-world/flow-core-context.html", "destination": "/app/dome-world/flow-core-context.html" },
-    { "source": "/dome-world/reciprocal-bridge.html", "destination": "/app/dome-world/reciprocal-bridge.html" },
-    { "source": "/dome-world/(.*)", "destination": "/app/dome-world/$1" },
-    { "source": "/api/(.*)", "destination": "/api/$1" },
-    { "source": "/safe-harbor/td613-flight.html", "destination": "/api/flight-html" },
-    { "source": "/app/safe-harbor/td613-flight.html", "destination": "/api/flight-html" },
-    { "source": "/app/(.*)", "destination": "/app/$1" },
-    { "source": "/(.*)", "destination": "/app/$1" }
+    {
+      "source": "/api/dome-world/ash-custody-register",
+      "destination": "/api/ash-local-commitment-guard"
+    },
+    {
+      "source": "/api/dome-world/ash-custody-replay",
+      "destination": "/api/ash-local-commitment-guard"
+    },
+    {
+      "source": "/api/dome-world/ash-custody-migrate",
+      "destination": "/api/ash-local-commitment-guard"
+    },
+    {
+      "source": "/api/ash-local-commitment",
+      "destination": "/api/ash-local-commitment-guard"
+    },
+    {
+      "source": "/api/dome-world-engine",
+      "destination": "/api/dome-world-engine-guard"
+    },
+    {
+      "source": "/api/flowcore-context",
+      "destination": "/api/dome-world-engine-guard?operation=flowcore-context"
+    },
+    {
+      "source": "/api/dome-world/flowcore-context",
+      "destination": "/api/dome-world-engine-guard?operation=flowcore-context"
+    },
+    {
+      "source": "/api/aperture-bridge",
+      "destination": "/api/dome-world-engine-guard?operation=aperture-bridge-readiness"
+    },
+    {
+      "source": "/api/dome-world/aperture-bridge",
+      "destination": "/api/dome-world-engine-guard?operation=aperture-bridge-readiness"
+    },
+    {
+      "source": "/api/hush-generate",
+      "destination": "/api/hush-generate-quality"
+    },
+    {
+      "source": "/api/hush-generate-budgeted",
+      "destination": "/api/hush-generate-quality"
+    },
+    {
+      "source": "/api/khonapolit",
+      "destination": "/api/khonapolit-quality"
+    },
+    {
+      "source": "/api/dome-world/khonapolit",
+      "destination": "/api/khonapolit"
+    },
+    {
+      "source": "/api/dome-world/marrowline",
+      "destination": "/api/marrowline"
+    },
+    {
+      "source": "/api/dome-world/ping",
+      "destination": "/api/dome-world-engine-guard?operation=ping"
+    },
+    {
+      "source": "/api/dome-world/readiness",
+      "destination": "/api/dome-world-engine-guard?operation=readiness"
+    },
+    {
+      "source": "/api/dome-world/step2-readiness",
+      "destination": "/api/dome-world-engine-guard?operation=step2-readiness"
+    },
+    {
+      "source": "/api/dome-world/(.*)",
+      "destination": "/api/dome-world-engine-guard?operation=$1"
+    },
+    {
+      "source": "/dome-world",
+      "destination": "/api/dome-world-shell"
+    },
+    {
+      "source": "/dome-world/",
+      "destination": "/api/dome-world-shell"
+    },
+    {
+      "source": "/dome-world/index.html",
+      "destination": "/api/dome-world-shell"
+    },
+    {
+      "source": "/app/dome-world/index.html",
+      "destination": "/api/dome-world-shell"
+    },
+    {
+      "source": "/dome-world/ash-keep.html",
+      "destination": "/api/dome-world-shell?surface=ash-keep-html"
+    },
+    {
+      "source": "/app/dome-world/ash-keep.html",
+      "destination": "/api/dome-world-shell?surface=ash-keep-html"
+    },
+    {
+      "source": "/dome-world/ash-keep.js",
+      "destination": "/api/dome-world-shell?surface=ash-keep-js"
+    },
+    {
+      "source": "/app/dome-world/ash-keep.js",
+      "destination": "/api/dome-world-shell?surface=ash-keep-js"
+    },
+    {
+      "source": "/dome-world/ash-custody.html",
+      "destination": "/app/dome-world/ash-custody-v08.html"
+    },
+    {
+      "source": "/app/dome-world/ash-custody.html",
+      "destination": "/app/dome-world/ash-custody-v08.html"
+    },
+    {
+      "source": "/dome-world/flow-core-context.html",
+      "destination": "/app/dome-world/flow-core-context.html"
+    },
+    {
+      "source": "/dome-world/reciprocal-bridge.html",
+      "destination": "/app/dome-world/reciprocal-bridge.html"
+    },
+    {
+      "source": "/dome-world/(.*)",
+      "destination": "/app/dome-world/$1"
+    },
+    {
+      "source": "/api/(.*)",
+      "destination": "/api/$1"
+    },
+    {
+      "source": "/safe-harbor/td613-flight.html",
+      "destination": "/api/flight-html"
+    },
+    {
+      "source": "/app/safe-harbor/td613-flight.html",
+      "destination": "/api/flight-html"
+    },
+    {
+      "source": "/app/(.*)",
+      "destination": "/app/$1"
+    },
+    {
+      "source": "/(.*)",
+      "destination": "/app/$1"
+    }
   ]
 }

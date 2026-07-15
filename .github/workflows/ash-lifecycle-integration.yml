@@ -1,0 +1,83 @@
+name: Ash lifecycle integration
+
+on:
+  pull_request:
+    paths:
+      - "api/dome-world-shell.js"
+      - "app/dome-world/ash-threshold.html"
+      - "app/dome-world/ash-lifecycle.js"
+      - "app/engine/ash-lifecycle.js"
+      - "app/engine/ash-keep-drafts.js"
+      - "docs/ASH_KEEP_BUILDOUT_LEDGER.md"
+      - "docs/ASH_LIFECYCLE_ORCHESTRATION.md"
+      - "ROADMAP.md"
+      - "scripts/consolidate-ash-lifecycle-shell.mjs"
+      - "tests/ash-lifecycle.test.mjs"
+      - "tests/ash-draft-lifecycle-binding.test.mjs"
+      - "tests/ash-product-architecture.test.mjs"
+      - "tests/dome-world-integration.test.mjs"
+      - "tests/vercel-deploy-hygiene.test.mjs"
+      - "vercel.json"
+      - ".github/workflows/ash-lifecycle-integration.yml"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: ash-lifecycle-${{ github.event.pull_request.number || github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out candidate merge
+        uses: actions/checkout@v4
+
+      - name: Set up Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Confirm Ash lifecycle surfaces are consolidated
+        run: |
+          node scripts/consolidate-ash-lifecycle-shell.mjs
+          git diff --exit-code -- vercel.json api/dome-world-shell.js api/ash-keep-shell.js api/ash-keep-js-shell.js
+
+      - name: Validate Vercel function and route hygiene
+        run: node tests/vercel-deploy-hygiene.test.mjs
+
+      - name: Run lifecycle state tests
+        run: node tests/ash-lifecycle.test.mjs
+
+      - name: Run custody-bound draft tests
+        run: node tests/ash-draft-lifecycle-binding.test.mjs
+
+      - name: Run lifecycle product architecture tests
+        run: node tests/ash-product-architecture.test.mjs
+
+      - name: Preserve existing Dome integration contract
+        run: node tests/dome-world-integration.test.mjs
+
+      - name: Preserve existing Dome shell contract
+        run: node tests/dome-world-lab-marrowline-link.test.mjs
+
+      - name: Run Ash Keep core regression
+        run: node tests/ash-keep-core.test.mjs
+
+      - name: Run Ash Keep continuity regression
+        run: node tests/ash-keep-continuity.test.mjs
+
+      - name: Run Ash Keep Hush API regression
+        run: node tests/ash-keep-hush-api.test.mjs
+
+      - name: Rebuild maintained Aperture download artifact
+        run: npm run aperture:export-downloads
+
+      - name: Run Ash Keep UI regression
+        run: node tests/ash-keep-ui.test.mjs
