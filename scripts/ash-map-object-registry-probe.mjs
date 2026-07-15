@@ -63,29 +63,16 @@ async function hoverRegistryItem(page, position = 'last') {
 }
 
 async function clickFocusedNode(page) {
-  const coordinates = await page.evaluate(() => {
+  const target = await page.evaluate(() => {
     const focus = document.getElementById('ashMapNodeFocus');
     const match = focus?.style.transform.match(/translate\((-?\d+)px,\s*(-?\d+)px\)/);
-    if (!match) return null;
-    return { x: Number(match[1]), y: Number(match[2]) };
-  });
-  assert(coordinates, 'Map focus coordinates were unavailable.');
-  await page.locator('#caseCanvas').evaluate((canvas, point) => {
+    const canvas = document.getElementById('caseCanvas');
+    if (!match || !canvas) return null;
     const rect = canvas.getBoundingClientRect();
-    const init = {
-      bubbles: true,
-      cancelable: true,
-      pointerId: 613,
-      pointerType: 'mouse',
-      isPrimary: true,
-      button: 0,
-      buttons: 1,
-      clientX: rect.left + point.x,
-      clientY: rect.top + point.y
-    };
-    canvas.dispatchEvent(new PointerEvent('pointerdown', init));
-    canvas.dispatchEvent(new PointerEvent('pointerup', { ...init, buttons: 0 }));
-  }, coordinates);
+    return { clientX: rect.left + Number(match[1]), clientY: rect.top + Number(match[2]) };
+  });
+  assert(target, 'Map focus coordinates were unavailable.');
+  await page.mouse.click(target.clientX, target.clientY);
 }
 
 await fs.mkdir(artifactDir, { recursive: true });
