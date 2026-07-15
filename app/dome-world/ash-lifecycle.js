@@ -239,7 +239,8 @@ function enforceReleaseGate() {
   const button = $('approveRelease');
   if (!button || !ui.lifecycle) return;
   const nativeReady = ui.latestReview?.status === 'READY_FOR_LOCAL_RELEASE_APPROVAL' && ui.latestReview?.local_export_approved === true;
-  button.disabled = !(nativeReady && ui.lifecycle.gates.local_release);
+  const shouldDisable = !(nativeReady && ui.lifecycle.gates.local_release);
+  if (button.disabled !== shouldDisable) button.disabled = shouldDisable;
   if (nativeReady && !ui.lifecycle.gates.local_release) $('reviewStatus').textContent = `Lifecycle hold: ${ui.lifecycle.next_action}.`;
 }
 
