@@ -40,13 +40,17 @@ for (const token of [
   'ARRIVAL_UNPERSISTED', 'READINESS_OBSERVED', 'CASE_BOUND', 'REBUILD_ELIGIBLE', 'RELEASE_ELIGIBLE', 'CONTINUITY_SEALED',
   'ash-custody-register', 'raw_artifact_in_request_body', 'provider_or_transport_requests',
   'ash-lifecycle-mobile-portrait.png', 'ash-lifecycle-mobile-landscape.png',
-  'SYNTHETIC_DRAFT', 'draft_body_sha256', 'Synthetic draft entered a request body'
+  'SYNTHETIC_DRAFT', 'draft_body_sha256', 'Synthetic draft entered a request body',
+  'draft_binding_diagnostic', 'captured_case_map_digest', 'current_case_map_digest'
 ]) assert.ok(probe.includes(token), `Lifecycle probe omitted ${token}`);
 assert.match(probeRunner, /ash-lifecycle-production-probe-base\.mjs/);
 assert.match(probeRunner, /ash-lifecycle-production-probe\.runtime\.mjs/);
 assert.match(probeRunner, /#draftBody/);
 assert.match(probeRunner, /item\.body === SYNTHETIC_DRAFT/);
-assert.match(probeRunner, /declared draft selection/);
+assert.match(probeRunner, /currentCaseMap = afterDraft\.cases\.find/);
+assert.match(probeRunner, /draft\?\.case_map_digest === currentCaseMap\.case_map_digest/);
+assert.match(probeRunner, /release\.case_map_digest === currentCaseMap\.case_map_digest/);
+assert.match(probeRunner, /savePoint\?\.case_map_digest === currentCaseMap\.case_map_digest/);
 assert.match(probe, /promotion_authorized: false/);
 assert.match(probe, /readiness is not custody/);
 assert.match(probe, /continuity is not transport/);
