@@ -1,0 +1,60 @@
+name: Ash Keep Delivery Boundary
+
+on:
+  pull_request:
+    paths:
+      - "scripts/ash-keep-delivery-boundary-probe.mjs"
+      - "tests/ash-keep-delivery-boundary-probe.test.mjs"
+      - ".github/workflows/ash-keep-delivery-boundary.yml"
+  push:
+    branches: [main]
+    paths:
+      - "scripts/ash-keep-delivery-boundary-probe.mjs"
+      - "tests/ash-keep-delivery-boundary-probe.test.mjs"
+      - ".github/workflows/ash-keep-delivery-boundary.yml"
+  workflow_dispatch:
+    inputs:
+      base_url:
+        description: "Observed base URL"
+        required: false
+        default: "https://td613.com"
+        type: string
+
+permissions:
+  contents: read
+
+concurrency:
+  group: ash-keep-delivery-boundary-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  observe:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+      - name: Install repository dependencies
+        run: npm ci
+      - name: Validate diagnostic contract
+        run: node tests/ash-keep-delivery-boundary-probe.test.mjs
+      - name: Install Chromium probe runtime
+        run: |
+          npm install --no-save --package-lock=false playwright@1.53.2
+          npx playwright install --with-deps chromium
+      - name: Observe Ash Keep browser delivery boundary
+        env:
+          TD613_BASE_URL: ${{ inputs.base_url || 'https://td613.com' }}
+          TD613_ARTIFACT_DIR: artifacts/ash-keep-delivery-boundary
+        run: node scripts/ash-keep-delivery-boundary-probe.mjs
+      - name: Preserve boundary observation
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: ash-keep-delivery-boundary-evidence
+          path: artifacts/ash-keep-delivery-boundary/
+          if-no-files-found: error
+          retention-days: 30
