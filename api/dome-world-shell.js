@@ -24,14 +24,14 @@ const WORKSPACE_BRIDGE_SCRIPT = `<script type="module" src="${ASH_WORKSPACE_BRID
 const ARRIVAL_COMPATIBILITY_SCRIPT = `<script>/* td613 arrival-route compatibility: composed shell first, history annotation only */if(sessionStorage.getItem('td613:ash-threshold:readiness:v0.1')&&(location.pathname!=='/dome-world/ash-keep.html'||location.search!=='?arrival=cleared')){history.replaceState(null,'','/dome-world/ash-keep.html?arrival=cleared')}</script>`;
 const DRAFT_MARKER = '    caseId: state.caseMap.case_id,\n    body: $(\'draftBody\').value,';
 const DRAFT_BINDING = '    caseId: state.caseMap.case_id,\n    caseMapDigest: state.caseMap.case_map_digest,\n    body: $(\'draftBody\').value,';
+const SAVE_POINT_MARKER = '    routeMemoryDigest: state.routeMemory.route_memory_digest,\n    evidenceInventory: state.caseMap.nodes.filter(node => [\'artifact\', \'source\'].includes(node.type)).map(node => node.id),';
+const SAVE_POINT_BINDING = '    routeMemoryDigest: state.routeMemory.route_memory_digest,\n    releaseReceiptReference: state.latestRelease?.receipt_id || null,\n    releaseReceiptDigest: state.latestRelease?.receipt_digest || null,\n    releaseCreatedAt: state.latestRelease?.created_at || null,\n    evidenceInventory: state.caseMap.nodes.filter(node => [\'artifact\', \'source\'].includes(node.type)).map(node => node.id),';
+const CAPSULE_MARKER = 'async function exportCapsule() {\n  if (!state.savePoints.length) await makeSavePoint();';
+const CAPSULE_BINDING = "async function exportCapsule() {\n  const latestSavePoint = state.savePoints.at(-1);\n  const currentRelease = state.latestRelease;\n  if (!currentRelease) throw new Error('A current Release Receipt is required before Capsule export.');\n  if (!latestSavePoint || latestSavePoint.release_receipt_reference !== currentRelease.receipt_id || latestSavePoint.release_receipt_digest !== currentRelease.receipt_digest || latestSavePoint.release_created_at !== currentRelease.created_at) await makeSavePoint();";
 const REVIEW_MARKER = "  await put('reviews', state.latestReview, state.latestReview.review_id);\n  renderDraft();";
 const REVIEW_BINDING = "  await put('reviews', state.latestReview, state.latestReview.review_id);\n  renderDraft();\n  setTimeout(() => location.reload(), 160); // td613 lifecycle review refresh";
 const WORKSPACE_MARKER = "function setWorkspace(name) {\n  state.workspace = name;\n  qsa('.work-tab').forEach(button => button.setAttribute('aria-selected', String(button.dataset.workspace === name)));\n  qsa('.workspace').forEach(panel => panel.classList.toggle('active', panel.id === `workspace-${name}`));\n  state.mapVisible = name === 'map' && !document.hidden;\n  const prefs = JSON.parse(localStorage.getItem(PREFS_KEY) || '{}');\n  localStorage.setItem(PREFS_KEY, JSON.stringify({ ...prefs, workspace: name, mapMode: state.mapMode }));\n  if (state.mapVisible) startScheduler(); else stopScheduler();\n}";
 const WORKSPACE_BINDING = `${WORKSPACE_MARKER}\n\nwindow.__td613OpenAshWorkspace = setWorkspace; // td613 late workspace bridge`;
-const SAVE_POINT_MARKER = '    routeMemoryDigest: state.routeMemory.route_memory_digest,\n    evidenceInventory:';
-const SAVE_POINT_BINDING = '    routeMemoryDigest: state.routeMemory.route_memory_digest,\n    releaseReceiptReference: state.latestRelease?.receipt_id || null,\n    releaseReceiptDigest: state.latestRelease?.receipt_digest || null,\n    evidenceInventory:';
-const CAPSULE_MARKER = 'async function exportCapsule() {\n  if (!state.savePoints.length) await makeSavePoint();';
-const CAPSULE_BINDING = "async function exportCapsule() {\n  const latestSavePoint = state.savePoints.at(-1);\n  const currentRelease = state.latestRelease;\n  if (!currentRelease) throw new Error('A current Release Receipt is required before Capsule export.');\n  if (!latestSavePoint || latestSavePoint.release_receipt_reference !== currentRelease.receipt_id || latestSavePoint.release_receipt_digest !== currentRelease.receipt_digest) await makeSavePoint();";
 
 export function injectMarrowlineLabButton(source = '') {
   const html = String(source || '');
@@ -91,14 +91,6 @@ export function bindAshDraftsToCaseMap(source = '') {
   } else if (!code.includes(DRAFT_BINDING)) {
     throw new Error('ash-keep-draft-marker-missing');
   }
-  if (!code.includes('td613 lifecycle review refresh')) {
-    if (!code.includes(REVIEW_MARKER)) throw new Error('ash-keep-review-marker-missing');
-    code = code.replace(REVIEW_MARKER, REVIEW_BINDING);
-  }
-  if (!code.includes('td613 late workspace bridge')) {
-    if (!code.includes(WORKSPACE_MARKER)) throw new Error('ash-keep-workspace-marker-missing');
-    code = code.replace(WORKSPACE_MARKER, WORKSPACE_BINDING);
-  }
   if (code.includes(SAVE_POINT_MARKER)) {
     code = code.replace(SAVE_POINT_MARKER, SAVE_POINT_BINDING);
   } else if (!code.includes(SAVE_POINT_BINDING)) {
@@ -108,6 +100,14 @@ export function bindAshDraftsToCaseMap(source = '') {
     code = code.replace(CAPSULE_MARKER, CAPSULE_BINDING);
   } else if (!code.includes(CAPSULE_BINDING)) {
     throw new Error('ash-keep-capsule-current-save-marker-missing');
+  }
+  if (!code.includes('td613 lifecycle review refresh')) {
+    if (!code.includes(REVIEW_MARKER)) throw new Error('ash-keep-review-marker-missing');
+    code = code.replace(REVIEW_MARKER, REVIEW_BINDING);
+  }
+  if (!code.includes('td613 late workspace bridge')) {
+    if (!code.includes(WORKSPACE_MARKER)) throw new Error('ash-keep-workspace-marker-missing');
+    code = code.replace(WORKSPACE_MARKER, WORKSPACE_BINDING);
   }
   return code;
 }

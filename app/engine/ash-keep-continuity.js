@@ -24,6 +24,11 @@ function without(value, field) {
   return output;
 }
 
+function optionalText(value, label) {
+  if (value == null || value === '') return null;
+  return text(value, label);
+}
+
 function optionalDigest(value, label) {
   if (value == null || value === '') return null;
   const digest = String(value);
@@ -68,15 +73,29 @@ async function deriveKey(passphrase, salt, iterations, cryptoImpl, TextEncoderIm
 }
 
 export async function compileSavePoint(input = {}, options = {}) {
+  const releaseReceiptReference = optionalText(input.releaseReceiptReference, 'Release Receipt reference');
+  const releaseReceiptDigest = optionalDigest(input.releaseReceiptDigest, 'Release Receipt digest');
+  const releaseCreatedAt = optionalText(input.releaseCreatedAt, 'Release Receipt created-at');
+  const releaseBindingCount = [releaseReceiptReference, releaseReceiptDigest, releaseCreatedAt].filter(Boolean).length;
+  if (releaseBindingCount !== 0 && releaseBindingCount !== 3) {
+    throw new Error('Save Point release binding requires reference, digest, and created-at together.');
+  }
+  const createdAt = now(input.createdAt);
+  const releaseTime = releaseCreatedAt ? Date.parse(releaseCreatedAt) : null;
+  const saveTime = Date.parse(createdAt);
+  if (releaseCreatedAt && (!Number.isFinite(releaseTime) || !Number.isFinite(saveTime) || saveTime < releaseTime)) {
+    throw new Error('Save Point must follow the bound Release Receipt.');
+  }
   const record = {
     schema: SAVE_POINT_SCHEMA,
     save_point_id: input.savePointId || randomId('save_', options.cryptoImpl || globalThis.crypto),
     case_id: text(input.caseId, 'Case ID'),
-    created_at: now(input.createdAt),
+    created_at: createdAt,
     case_map_digest: text(input.caseMapDigest, 'Case Map digest'),
     route_memory_digest: text(input.routeMemoryDigest, 'Route Memory digest'),
-    release_receipt_reference: input.releaseReceiptReference ? text(input.releaseReceiptReference, 'Release Receipt reference') : null,
-    release_receipt_digest: optionalDigest(input.releaseReceiptDigest, 'Release Receipt digest'),
+    release_receipt_reference: releaseReceiptReference,
+    release_receipt_digest: releaseReceiptDigest,
+    release_created_at: releaseCreatedAt,
     evidence_inventory: unique(input.evidenceInventory || []),
     unanswered_questions: unique(input.unansweredQuestions || []),
     corroboration_state: clone(input.corroborationState || []),
@@ -90,7 +109,7 @@ export async function compileSavePoint(input = {}, options = {}) {
     alternatives: unique(input.alternatives || []),
     open_questions: unique(input.openQuestions || []),
     operator_notes: unique(input.operatorNotes || []),
-    closure: { required: true, status: 'SEALED_LOCAL' },
+    closure: { required: true, status: releaseReceiptReference ? 'SEALED_POST_RELEASE_LOCAL' : 'SEALED_LOCAL_UNBOUND' },
     save_point_digest: null
   };
   record.save_point_digest = await canonicalDigest(SAVE_DOMAIN, without(record, 'save_point_digest'), options);
