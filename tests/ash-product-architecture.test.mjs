@@ -52,6 +52,15 @@ test('the threshold performs a bounded three-law rite and persists only a sessio
   assert.doesNotMatch(threshold, /localStorage\.setItem/);
   assert.doesNotMatch(threshold, /type="file"/);
   assert.match(threshold, /no raw (?:content|text), no artifact bytes, and no release authority/i);
+  assert.match(threshold, /location\.replace\('\/dome-world\/ash-keep\.html'\)/);
+  assert.doesNotMatch(threshold, /ash-keep\.html\?arrival=cleared/);
+});
+
+test('the exact Keep network route may annotate history without re-routing the request', () => {
+  assert.match(renderedKeep, /td613 arrival-route compatibility/);
+  assert.match(renderedKeep, /sessionStorage\.getItem\('td613:ash-threshold:readiness:v0\.1'\)/);
+  assert.match(renderedKeep, /history\.replaceState\(null,'','\/dome-world\/ash-keep\.html\?arrival=cleared'\)/);
+  assert.ok(renderedKeep.indexOf('td613 arrival-route compatibility') < renderedKeep.indexOf('/dome-world/ash-lifecycle.js'), 'History annotation must run only after the exact Keep surface has loaded and before lifecycle boot');
 });
 
 test('one Dome shell function composes the Keep lifecycle after the proven Keep core', () => {
