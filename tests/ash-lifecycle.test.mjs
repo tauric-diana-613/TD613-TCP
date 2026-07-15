@@ -68,6 +68,7 @@ function boundFixture(digestCharacter = 'd') {
   const latestRelease = {
     receipt_id: 'release_current',
     receipt_digest: `sha256:${'7'.repeat(64)}`,
+    created_at: '2026-07-14T00:10:00.000Z',
     case_id: caseMap.case_id,
     case_map_digest: caseMap.case_map_digest,
     draft_id: latestDraft.draft_id,
@@ -78,8 +79,10 @@ function boundFixture(digestCharacter = 'd') {
     case_id: caseMap.case_id,
     case_map_digest: caseMap.case_map_digest,
     save_point_id: 'save_current',
+    created_at: '2026-07-14T00:11:00.000Z',
     release_receipt_reference: latestRelease.receipt_id,
     release_receipt_digest: latestRelease.receipt_digest,
+    release_created_at: latestRelease.created_at,
     tamper_state: 'CLEAR'
   };
   return { caseMap, latestTest, latestDraft, latestReview, latestRelease, latestSavePoint };
@@ -95,10 +98,10 @@ test('Quick Scan readiness rejects raw content and preserves the no-custody boun
   assert.match(readiness.readiness_digest, /^sha256:[0-9a-f]{64}$/);
 });
 
-test('custody root binding reports repeated roots without duplicating topology', () => {
+test('custody root binding identifies an exact rebind without adding successor evidence', () => {
   const first = buildCustodyRoot({ caseMap: baseCase, custodyReceipt, readinessReceipt: readiness });
-  assert.equal(first.custody_reference, custodyReceipt.receipt_id);
   assert.equal(first.already_bound, false);
+  assert.equal(first.custody_reference, custodyReceipt.receipt_id);
   assert.equal(first.nodes[0].type, 'artifact');
   assert.equal(first.nodes[0].custody_reference, custodyReceipt.receipt_id);
   assert.equal(first.nodes[0].chronology_index, 0);
@@ -110,6 +113,9 @@ test('custody root binding reports repeated roots without duplicating topology',
   assert.equal(second.already_bound, true);
   assert.equal(second.nodes.length, first.nodes.length);
   assert.equal(second.root_node.id, first.root_node.id);
+  assert.deepEqual(second.evidence_basis_additions, []);
+  assert.equal(second.observation, null);
+  assert.equal(reboundCase.case_map_digest, baseCase.case_map_digest, 'an exact rebind leaves the existing Case Map digest in place');
 });
 
 test('lifecycle advances only through a contiguous custody-bound chain', () => {
@@ -161,28 +167,40 @@ test('lifecycle advances only through a contiguous custody-bound chain', () => {
   assert.equal(sealed.state, ASH_LIFECYCLE_STATES.CONTINUITY_SEALED);
 });
 
-test('a Save Point from before the current release cannot close continuity', () => {
-  const fixture = boundFixture('8');
-  const preReleaseSave = {
+test('a Save Point made before or outside the current release cannot seal continuity', () => {
+  const fixture = boundFixture();
+  const preRelease = {
     ...fixture.latestSavePoint,
     save_point_id: 'save_before_release',
-    release_receipt_reference: null,
-    release_receipt_digest: null
+    created_at: '2026-07-14T00:09:59.000Z'
   };
-  const lifecycle = deriveAshLifecycle({
+  const oldLifecycle = deriveAshLifecycle({
     readinessReceipt: readiness,
     custodyReceipt,
     custodyVerified: true,
-    caseMap: fixture.caseMap,
-    latestTest: fixture.latestTest,
-    latestDraft: fixture.latestDraft,
-    latestReview: fixture.latestReview,
-    latestRelease: fixture.latestRelease,
-    latestSavePoint: preReleaseSave
+    ...fixture,
+    latestSavePoint: preRelease
   });
-  assert.equal(lifecycle.state, ASH_LIFECYCLE_STATES.RELEASE_ELIGIBLE);
-  assert.equal(lifecycle.next_action, 'SEAL_CONTINUITY');
-  assert.equal(lifecycle.references.save_point, null);
+  assert.equal(oldLifecycle.state, ASH_LIFECYCLE_STATES.RELEASE_ELIGIBLE);
+  assert.equal(oldLifecycle.references.save_point, null);
+  assert.ok(oldLifecycle.holds.includes('CURRENT_CONTINUITY_NOT_SEALED'));
+
+  const unbound = {
+    ...fixture.latestSavePoint,
+    save_point_id: 'save_without_release',
+    release_receipt_reference: null,
+    release_receipt_digest: null,
+    release_created_at: null
+  };
+  const unboundLifecycle = deriveAshLifecycle({
+    readinessReceipt: readiness,
+    custodyReceipt,
+    custodyVerified: true,
+    ...fixture,
+    latestSavePoint: unbound
+  });
+  assert.equal(unboundLifecycle.state, ASH_LIFECYCLE_STATES.RELEASE_ELIGIBLE);
+  assert.equal(unboundLifecycle.references.save_point, null);
 });
 
 test('a pre-custody Rebuild Test becomes stale when custody changes the Case Map digest', () => {
