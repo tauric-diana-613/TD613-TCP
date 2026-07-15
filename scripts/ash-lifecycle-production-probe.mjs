@@ -36,8 +36,20 @@ runtime = replaceExactly(
 runtime = replaceExactly(
   runtime,
   "  assert(draft?.case_map_digest === caseMap.case_map_digest, 'Draft is not bound to the custody-root Case Map');",
-  "  assert(draft?.case_map_digest === caseMap.case_map_digest, 'Draft is not bound to the custody-root Case Map');\n  assert(draft?.body === SYNTHETIC_DRAFT, 'Kept draft does not match the declared synthetic derivative');",
-  'draft fixture verification'
+  "  const currentCaseMap = afterDraft.cases.find(item => item.case_id === caseMap.case_id) || caseMap;\n  report.draft_binding_diagnostic = {\n    draft_id: draft?.draft_id || null,\n    draft_case_map_digest: draft?.case_map_digest || null,\n    captured_case_map_digest: caseMap.case_map_digest,\n    current_case_map_digest: currentCaseMap.case_map_digest\n  };\n  assert(draft?.case_map_digest === currentCaseMap.case_map_digest, `Draft is not bound to the current custody-root Case Map · draft=${draft?.case_map_digest || 'null'} · captured=${caseMap.case_map_digest} · current=${currentCaseMap.case_map_digest}`);\n  assert(draft?.body === SYNTHETIC_DRAFT, 'Kept draft does not match the declared synthetic derivative');",
+  'current draft binding verification'
+);
+runtime = replaceExactly(
+  runtime,
+  "  assert(release.case_map_digest === caseMap.case_map_digest, 'Release Receipt is not bound to the custody-root Case Map');",
+  "  assert(release.case_map_digest === currentCaseMap.case_map_digest, 'Release Receipt is not bound to the current custody-root Case Map');",
+  'current release binding verification'
+);
+runtime = replaceExactly(
+  runtime,
+  "  const savePoint = finalDb.savePoints.map(item => item.value).find(item => item.case_id === caseMap.case_id);\n  assert(savePoint?.case_map_digest === caseMap.case_map_digest, 'Save Point is not bound to the custody-root Case Map');",
+  "  const savePoint = finalDb.savePoints.map(item => item.value).find(item => item.case_id === currentCaseMap.case_id);\n  assert(savePoint?.case_map_digest === currentCaseMap.case_map_digest, 'Save Point is not bound to the current custody-root Case Map');",
+  'current continuity binding verification'
 );
 runtime = replaceExactly(
   runtime,
@@ -51,6 +63,6 @@ runtime = replaceExactly(
   "  assert(providerOrTransport.length === 0, 'Lifecycle probe reached a provider or recipient transport route');\n  assert(!requests.some(item => item.post_data?.includes(SYNTHETIC_DRAFT)), 'Synthetic draft entered a request body');",
   'draft request boundary'
 );
-if (!runtime.includes(syntheticDraft) || !runtime.includes('draft_body_sha256') || !runtime.includes('item.body === SYNTHETIC_DRAFT')) throw new Error('Synthetic draft fixture compilation failed.');
+if (!runtime.includes(syntheticDraft) || !runtime.includes('draft_body_sha256') || !runtime.includes('item.body === SYNTHETIC_DRAFT') || !runtime.includes('draft_binding_diagnostic') || !runtime.includes('currentCaseMap.case_map_digest')) throw new Error('Synthetic draft fixture compilation failed.');
 await fs.writeFile(runtimeProbePath, runtime);
 await import(`${pathToFileURL(runtimeProbePath).href}?fixture=${Date.now()}`);
