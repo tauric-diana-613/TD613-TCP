@@ -1,0 +1,69 @@
+/* Contain the Renderer key panel without compressing its identifiers into columns. */
+#operatorHandshakeSection,
+#operatorHandshakeSection * {
+  min-width: 0;
+}
+
+#operatorHandshakeSection .dynamic-row {
+  display: grid;
+  grid-template-columns: auto minmax(0, 1fr);
+  align-items: center;
+  gap: 12px;
+}
+
+#operatorHandshakeSection .mini-note,
+#operatorHandshakeSection .proof-value,
+#operatorHandshakeSection .attestation-hint {
+  overflow-wrap: anywhere;
+  word-break: normal;
+}
+
+#operatorHandshakeSection .proof-row {
+  grid-template-columns: minmax(8.5rem, 0.42fr) minmax(0, 1fr);
+  align-items: start;
+}
+
+#operatorHandshakeSection .proof-value {
+  text-align: left;
+  line-height: 1.45;
+}
+
+#operatorHandshakeSection .builder-toolbar {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 8px;
+}
+
+#operatorHandshakeSection .builder-toolbar .control {
+  inline-size: 100%;
+  min-inline-size: 0;
+  white-space: normal;
+  line-height: 1.25;
+}
+
+#operatorHandshakeSection .svg-attestation-probes .attestation-summary {
+  display: block;
+  line-height: 1.55;
+  overflow-wrap: anywhere;
+}
+
+#operatorHandshakeSection .code-area,
+#operatorHandshakeSection .dynamic-target {
+  max-inline-size: 100%;
+}
+
+@media (max-width: 680px) {
+  #operatorHandshakeSection .dynamic-row,
+  #operatorHandshakeSection .proof-row,
+  #operatorHandshakeSection .builder-toolbar {
+    grid-template-columns: 1fr;
+  }
+
+  #operatorHandshakeSection .dynamic-row .control {
+    inline-size: 100%;
+  }
+
+  #operatorHandshakeSection .proof-value {
+    text-align: left;
+  }
+}

@@ -9,7 +9,22 @@
   purgeRetiredDesktopVisibility();
   window.addEventListener('pageshow', purgeRetiredDesktopVisibility);
 
-  try { document.title = 'TD613 Hush'; } catch (error) {}
+  // This file loads before most station runtimes. Keep the browser title truthful
+  // at first paint instead of briefly assigning the Hush title to every surface.
+  function pageTitle(pathname) {
+    var path = String(pathname || '').toLowerCase();
+    if (/\/safe-harbor\/td613-flight\.html$/.test(path)) return 'TD613 Flight';
+    if (/\/safe-harbor(?:\/index\.html)?$/.test(path)) return 'TD613 Safe Harbor';
+    if (/\/aperture(?:\/index\.html)?$/.test(path)) return 'TD613 Aperture';
+    if (/\/dome-world(?:\/index\.html)?$/.test(path)) return 'Dome-World';
+    if (/(?:^|\/)clone\.html(?:$|[?#])/.test(path) || /(?:^|\/)trainer\.html(?:$|[?#])/.test(path)) return 'TD613 Clone';
+    if (/(?:^|\/)(?:adversarial-bench|hush)\.html(?:$|[?#])/.test(path)) return 'TD613 Hush';
+    if (/(?:^|\/)app\/index\.html$/.test(path) || path === '/' || path === '') return 'TCP Gateway';
+    return document.title || 'TCP Gateway';
+  }
+
+  var initialTitle = pageTitle(window.location && window.location.pathname);
+  try { document.title = initialTitle; } catch (error) {}
   window.TD613_ASSET_VERSIONS = {
     styles:      '202607101945',
     data:        '202607010240',
@@ -85,7 +100,7 @@
     document.write('<script type="module" src="./hush-phase39-ui.js?v=' + V.hushPhase39 + '"><\/script>');
   } else {
     window.addEventListener('DOMContentLoaded', function () {
-      try { document.title = 'TD613 Hush'; } catch (error) {}
+      try { document.title = initialTitle; } catch (error) {}
       purgeRetiredDesktopVisibility();
       if (document.body && document.body.dataset && document.body.dataset.pageKind === 'adversarial-bench') {
         var script = document.createElement('script');

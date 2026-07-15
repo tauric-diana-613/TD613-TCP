@@ -1,0 +1,52 @@
+/* Keep the current Hush workflow compact without changing its analysis runtime. */
+@media (min-width: 901px) {
+  body[data-page-kind="adversarial-bench"] .hush-field-shell:has(#hushInputControlRail) {
+    display: grid !important;
+    grid-template-columns: minmax(0, 1fr) minmax(260px, 0.92fr) !important;
+    grid-template-areas:
+      "label label"
+      "caption caption"
+      "input input"
+      "profile controls";
+    column-gap: 14px !important;
+    align-items: start !important;
+  }
+
+  body[data-page-kind="adversarial-bench"] .hush-field-shell:has(#hushInputControlRail) > .hush-field-label {
+    grid-area: label;
+  }
+
+  body[data-page-kind="adversarial-bench"] .hush-field-shell:has(#hushInputControlRail) > .hush-field-caption {
+    grid-area: caption;
+  }
+
+  body[data-page-kind="adversarial-bench"] .hush-field-shell:has(#hushInputControlRail) > #messageDraftInput {
+    grid-area: input;
+  }
+
+  body[data-page-kind="adversarial-bench"] #messageDraftProfile {
+    grid-area: profile;
+    min-width: 0 !important;
+    margin: 0 !important;
+  }
+
+  body[data-page-kind="adversarial-bench"] #hushInputControlRail {
+    grid-area: controls;
+    display: grid !important;
+    grid-template-columns: 1fr !important;
+    grid-template-rows: repeat(2, minmax(44px, auto));
+    gap: 8px !important;
+    width: 100% !important;
+    margin: 0 !important;
+    align-content: start;
+  }
+
+  body[data-page-kind="adversarial-bench"] #hushInputControlRail #analyzeOutputBtn,
+  body[data-page-kind="adversarial-bench"] #hushInputControlRail #hushPhase32ClearInput {
+    width: 100% !important;
+    min-height: 44px !important;
+    border-radius: 0 !important;
+    font-size: 0.66rem !important;
+    letter-spacing: 0.15em !important;
+  }
+}

@@ -1197,7 +1197,7 @@
         lead: 'Reference stays reference. Probe stays probe.'
       }),
       trainer: Object.freeze({
-        title: 'TCP / Clone',
+        title: 'TD613 Clone',
         line: 'Extract / forge / validate',
         lead: 'Forge only when the field needs a real shell.'
       })
@@ -1756,7 +1756,7 @@
 
   function applyStationChrome(tab = 'homebase') {
     if (PAGE_KIND === 'gateway') {
-      document.title = 'TCP / Gateway';
+      document.title = 'TCP Gateway';
       return;
     }
     const station = normalizeArtifactTab(tab);
@@ -2478,6 +2478,7 @@
       bootTimer: null,
       revealTimer: null,
       feedbackTimer: null,
+      bootWatchdogTimer: null,
       target: {
         containment: 'on',
         mirrorLogic: targetMirror,
@@ -2951,6 +2952,11 @@
       window.clearTimeout(ingress.revealTimer);
       ingress.revealTimer = null;
     }
+
+    if (ingress.bootWatchdogTimer) {
+      window.clearTimeout(ingress.bootWatchdogTimer);
+      ingress.bootWatchdogTimer = null;
+    }
   }
 
   function setIngressStageChip(id, state) {
@@ -3207,6 +3213,15 @@
     ingress.bootTimer = window.setTimeout(() => {
       setIngressPhase('containment');
     }, INGRESS_BOOT_MS);
+
+    // The membrane is cinematic, never a prerequisite for reaching the
+    // chambers. A delayed script or interrupted animation still lands on a
+    // usable first gate instead of trapping the visitor behind the overlay.
+    ingress.bootWatchdogTimer = window.setTimeout(() => {
+      if (ingress.enabled && ingress.phase === 'booting') {
+        setIngressPhase('containment');
+      }
+    }, Math.max(INGRESS_BOOT_MS * 3, 2200));
   }
 
   function applyIngressPreset(preset) {

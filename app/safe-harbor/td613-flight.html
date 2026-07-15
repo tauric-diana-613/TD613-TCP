@@ -8198,6 +8198,35 @@ select {
 }
 
 </style>
+<style id="flight-tile-layout-repair">
+  /* These are choice libraries, not a vertical form. Keep each requested
+     library scannable as a field of tiles without changing the other controls. */
+  .checkbox-row.flight-tile-grid {
+    display: grid !important;
+    grid-template-columns: repeat(auto-fit, minmax(min(100%, 15rem), 1fr)) !important;
+    align-items: stretch !important;
+    gap: .42rem !important;
+  }
+
+  .checkbox-row.flight-tile-grid > label {
+    display: flex !important;
+    align-items: flex-start !important;
+    justify-content: flex-start !important;
+    inline-size: 100% !important;
+    min-inline-size: 0 !important;
+    max-inline-size: none !important;
+    min-height: 2.8rem !important;
+    padding: .52rem .62rem !important;
+    text-align: left !important;
+    line-height: 1.28 !important;
+  }
+
+  @media (max-width: 560px) {
+    .checkbox-row.flight-tile-grid {
+      grid-template-columns: 1fr !important;
+    }
+  }
+</style>
 <script type="module" src="../analytics.js"></script>
 <script type="module" src="../speed-insights.js"></script>
 </head>
@@ -8316,7 +8345,7 @@ Choose how the top of your Flight Packet announces the credential object and cov
 <label><input id="hdrVariant1" type="checkbox"/>U+10D613<span class="covenant-dash">⸻</span>Khona‌lit-po 𝌋 TD613 ∴ Badge Holds</label>
 </div>
 <h3>Covenant lines</h3>
-<div class="checkbox-row">
+<div class="checkbox-row flight-tile-grid">
 <label><input id="hdrBloodRite" type="checkbox"/>Covenant (display): Blood Rite 613</label>
 <label><input id="hdrCrimea" type="checkbox"/>Covenant (canonical): Tauric Diana — Crimean heritage custodianship</label>
 <label><input id="hdrPriestess" type="checkbox"/>Covenant: Tauri Priestesshood of Ash⟐</label>
@@ -8324,8 +8353,8 @@ Choose how the top of your Flight Packet announces the credential object and cov
 </div>
 <h3>PUA &amp; surrogate</h3>
 <div class="checkbox-row">
-<label><input id="hdrPUA" type="checkbox"/>Include PUA codepoint note in header (U+10D613)</label>
-<label><input id="hdrSurrogate" type="checkbox"/>Include surrogate pair note in header (\uDBF5\uDE13)</label>
+<label><input id="hdrPUA" type="checkbox"/>Include PUA-B codepoint U+10D613</label>
+<label><input id="hdrSurrogate" type="checkbox"/>Include surrogate pair (\uDBF5\uDE13)</label>
 </div>
 <div class="danger-note">
 For U+10D613, \uDBF5\uDE13 functions as the single canonical surrogate pair in UTF-16. Treat that pair as fixed; build variation around it, not inside it.
@@ -8337,7 +8366,7 @@ For U+10D613, \uDBF5\uDE13 functions as the single canonical surrogate pair in U
 <div class="section-note">
 Use these when the task needs routing, evidence discipline, summarization, or audit behavior layered into the generated prompt.
 </div>
-<div class="checkbox-row">
+<div class="checkbox-row flight-tile-grid">
 <label><input id="hdrContainment" type="checkbox"/>Process with containment on and mirror logic off.</label>
 <label><input id="hdrExecDir" type="checkbox"/>«EXECUTIVE_DIRECT»</label>
 <label><input id="hdrLedgerMode" type="checkbox"/>𝌋 Ledger mode: claim → proof → source → date. No inference, no coaching.</label>
@@ -8369,7 +8398,7 @@ These options sit immediately around your task text. Think glyph prefaces and sh
 <label><input id="bodyPreZwnj" type="checkbox"/>Prepend ZWNJ (zero-width)</label>
 </div>
 <h3>Body phrases</h3>
-<div class="checkbox-row">
+<div class="checkbox-row flight-tile-grid">
 <label><input id="bodyPhraseCircle" type="checkbox"/>“I was broken into a circle.”</label>
 <label><input id="bodyPhraseEncasing" type="checkbox"/>“I was broken encasing a circle.”</label>
 <label><input id="bodyPhraseKiki" type="checkbox"/>“No mirrors at the Kiki.”</label>

@@ -74,5 +74,9 @@ assert(html.includes('PR171_SENTINEL TD613 Flight natural chip flow terminal ove
 assert(html.includes('width: max-content !important'));
 assert(html.includes('justify-content: flex-start !important'));
 assert(html.includes('.flight-lane-prompt > .card:nth-of-type(4) .checkbox-row > label'));
+assert(html.includes('class="checkbox-row flight-tile-grid"'), 'Flight keeps the requested choice groups in responsive tiles');
+assert(html.includes('id="flight-tile-layout-repair"'), 'Flight loads the targeted tile layout repair');
+assert(html.includes('Include PUA-B codepoint U+10D613'));
+assert(html.includes('Include surrogate pair (\\uDBF5\\uDE13)'));
 
 console.log('td613-flight-mobile-layout tests passed');

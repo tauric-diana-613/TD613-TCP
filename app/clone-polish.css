@@ -1,0 +1,187 @@
+/* TD613 Clone is a station, not the retired Trainer page. */
+body[data-page-kind="clone"] .shell {
+  max-width: 1120px;
+  padding: 14px 14px 28px;
+}
+
+body[data-page-kind="clone"] .chamber-header {
+  --room-accent-rgb: 139, 233, 253;
+  --room-secondary-rgb: 189, 147, 249;
+  margin-bottom: 14px;
+  padding: 12px 14px 10px;
+}
+
+body[data-page-kind="clone"] .station-masthead {
+  padding: 0 0 10px;
+}
+
+body[data-page-kind="clone"] .station-masthead-bar {
+  margin-bottom: 8px;
+}
+
+body[data-page-kind="clone"] .station-masthead-copy {
+  display: grid;
+  grid-template-columns: auto minmax(0, 1fr);
+  align-items: end;
+  gap: 4px 16px;
+}
+
+body[data-page-kind="clone"] .station-masthead-copy h1 {
+  color: rgba(222, 248, 255, 0.96);
+  font-size: clamp(1.7rem, 3.2vw, 2.9rem);
+  letter-spacing: 0.18em;
+  line-height: 0.92;
+  text-shadow: 0 0 14px rgba(139, 233, 253, 0.2), 0 0 26px rgba(189, 147, 249, 0.14);
+}
+
+body[data-page-kind="clone"] .hero-station-line {
+  align-self: center;
+  color: rgba(139, 233, 253, 0.88);
+  font-family: var(--display);
+  font-size: 0.66rem;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+}
+
+body[data-page-kind="clone"] .station-masthead-copy .lead {
+  grid-column: 1 / -1;
+  max-width: 58ch;
+  margin: 2px 0 0;
+  color: rgba(212, 221, 236, 0.76);
+  font-size: 0.82rem;
+  line-height: 1.45;
+}
+
+body[data-page-kind="clone"] .station-masthead-links {
+  display: flex;
+  min-width: 0;
+  gap: 8px;
+}
+
+body[data-page-kind="clone"] .station-statusrail {
+  display: flex;
+  flex-wrap: nowrap;
+  gap: 7px;
+  margin-top: 0;
+  padding: 8px 0 0;
+  overflow-x: auto;
+  border-top: 1px solid rgba(139, 233, 253, 0.12);
+  scrollbar-width: thin;
+}
+
+body[data-page-kind="clone"] .station-statusrail > * {
+  flex: 0 0 auto;
+  min-height: 28px;
+  padding: 0 10px;
+  border: 1px solid rgba(139, 233, 253, 0.18);
+  border-radius: 0;
+  background: linear-gradient(120deg, rgba(12, 33, 42, 0.86), rgba(9, 10, 22, 0.92));
+  clip-path: polygon(0 7px, 7px 0, calc(100% - 8px) 0, 100% 8px, 100% calc(100% - 7px), calc(100% - 7px) 100%, 0 100%);
+  color: rgba(224, 244, 250, 0.84);
+  font-family: var(--mono);
+  font-size: 0.65rem;
+  letter-spacing: 0.1em;
+  line-height: 28px;
+  white-space: nowrap;
+}
+
+body[data-page-kind="clone"] .station-statusrail .console-status {
+  border-color: rgba(189, 147, 249, 0.32);
+  color: rgba(226, 212, 255, 0.92);
+}
+
+body[data-page-kind="clone"] .station-chamber-trainer {
+  display: grid;
+  grid-template-columns: minmax(0, 1.35fr) minmax(270px, 0.65fr);
+  gap: 14px;
+}
+
+body[data-page-kind="clone"] .trainer-panel,
+body[data-page-kind="clone"] .evidence-spine-trainer {
+  min-width: 0;
+}
+
+body[data-page-kind="clone"] .trainer-active-grid {
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 12px;
+}
+
+body[data-page-kind="clone"] .trainer-stack,
+body[data-page-kind="clone"] .trainer-surface,
+body[data-page-kind="clone"] .analysis-status {
+  border-color: rgba(139, 233, 253, 0.16);
+}
+
+body[data-page-kind="clone"] .trainer-actions {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 8px;
+}
+
+body[data-page-kind="clone"] .trainer-actions .primary-cta {
+  grid-column: 1 / -1;
+}
+
+body[data-page-kind="clone"] .trainer-readout-body,
+body[data-page-kind="clone"] textarea,
+body[data-page-kind="clone"] input {
+  min-width: 0;
+  overflow-wrap: anywhere;
+}
+
+@media (max-width: 900px) {
+  body[data-page-kind="clone"] .station-masthead-copy,
+  body[data-page-kind="clone"] .station-chamber-trainer,
+  body[data-page-kind="clone"] .trainer-active-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+@media (max-width: 640px) {
+  body[data-page-kind="clone"] .shell {
+    padding: 10px 10px calc(22px + env(safe-area-inset-bottom));
+  }
+
+  body[data-page-kind="clone"] .chamber-header {
+    padding: 10px;
+  }
+
+  body[data-page-kind="clone"] .station-masthead-copy h1 {
+    font-size: 1.7rem;
+    letter-spacing: 0.13em;
+  }
+
+  body[data-page-kind="clone"] .hero-station-line {
+    font-size: 0.58rem;
+    letter-spacing: 0.16em;
+  }
+
+  body[data-page-kind="clone"] .station-masthead-copy .lead {
+    display: block;
+    font-size: 0.76rem;
+  }
+
+  body[data-page-kind="clone"] .station-statusrail {
+    margin-inline: -2px;
+    padding-bottom: 4px;
+  }
+
+  body[data-page-kind="clone"] .station-statusrail > * {
+    min-height: 30px;
+    font-size: 0.58rem;
+    line-height: 30px;
+  }
+
+  body[data-page-kind="clone"] .trainer-actions {
+    grid-template-columns: 1fr;
+  }
+
+  body[data-page-kind="clone"] .trainer-actions .primary-cta {
+    grid-column: auto;
+  }
+
+  body[data-page-kind="clone"] textarea,
+  body[data-page-kind="clone"] input {
+    font-size: 16px;
+  }
+}

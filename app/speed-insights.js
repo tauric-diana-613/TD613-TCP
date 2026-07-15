@@ -166,7 +166,7 @@ window.si = window.si || function () {
     if (!document.body || !['trainer', 'clone'].includes(document.body.getAttribute('data-page-kind'))) return;
     const nav = document.querySelector('.station-nav');
     if (nav) nav.remove();
-    try { document.title = 'TCP / Clone'; } catch (error) {}
+    try { document.title = 'TD613 Clone'; } catch (error) {}
   }
   if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', run, { once: true });
   else run();

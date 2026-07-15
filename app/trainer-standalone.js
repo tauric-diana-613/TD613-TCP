@@ -99,7 +99,7 @@
 
   async function bootTrainerStandalone() {
     if (!document.body || !/^(?:trainer|clone)$/.test(document.body.getAttribute('data-page-kind') || '')) return;
-    document.title = 'TCP / Clone';
+    document.title = 'TD613 Clone';
     document.body.dataset.trainerBoot = 'standalone-start';
     removeExpiredStationNav();
 

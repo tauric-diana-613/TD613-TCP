@@ -5,7 +5,7 @@ const hushHub = fs.readFileSync('app/hush.html', 'utf8');
 const hushRuntime = fs.readFileSync('app/hush.js', 'utf8');
 const vercel = fs.readFileSync('vercel.json', 'utf8');
 
-assert.match(hushHub, /TD613 Hush — Current Surface/);
+assert.match(hushHub, /<title>TD613 Hush<\/title>/);
 assert.match(hushHub, /<h1>Hush Console<\/h1>/);
 assert.match(hushHub, /Open Current Hush Console/);
 assert.match(hushHub, /href="\.\/adversarial-bench\.html"/);
