@@ -45,6 +45,8 @@ for (const token of [
 assert.match(probeRunner, /ash-lifecycle-production-probe-base\.mjs/);
 assert.match(probeRunner, /ash-lifecycle-production-probe\.runtime\.mjs/);
 assert.match(probeRunner, /#draftBody/);
+assert.match(probeRunner, /item\.body === SYNTHETIC_DRAFT/);
+assert.match(probeRunner, /declared draft selection/);
 assert.match(probe, /promotion_authorized: false/);
 assert.match(probe, /readiness is not custody/);
 assert.match(probe, /continuity is not transport/);
