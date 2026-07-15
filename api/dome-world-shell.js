@@ -89,8 +89,13 @@ export function renderDomeWorldShell(source = '') {
 function requestedSurface(req) {
   const direct = Array.isArray(req.query?.surface) ? req.query.surface[0] : req.query?.surface;
   if (direct) return String(direct);
-  try { return new URL(req.url || '/', 'http://localhost').searchParams.get('surface') || 'dome-world'; }
-  catch { return 'dome-world'; }
+  try {
+    const requestUrl = new URL(req.url || '/', 'http://localhost');
+    if (requestUrl.searchParams.get('arrival') === 'cleared' || req.query?.arrival === 'cleared') return 'ash-keep-html';
+    return requestUrl.searchParams.get('surface') || 'dome-world';
+  } catch {
+    return req.query?.arrival === 'cleared' ? 'ash-keep-html' : 'dome-world';
+  }
 }
 
 function surfaceDefinition(surface) {
