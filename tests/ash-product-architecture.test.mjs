@@ -111,7 +111,9 @@ test('custody integration changes the Case Map rather than merely displaying a r
 
 test('custody affects Reader, draft, release, Save Point, and Capsule eligibility through lifecycle gates', () => {
   assert.match(lifecycleUi, /workspaceGate\(ui\.lifecycle, tab\.dataset\.workspace\)/);
-  assert.match(lifecycleUi, /button\.disabled = !\(nativeReady && ui\.lifecycle\.gates\.local_release\)/);
+  assert.match(lifecycleUi, /const shouldDisable = !\(nativeReady && ui\.lifecycle\.gates\.local_release\)/);
+  assert.match(lifecycleUi, /if \(button\.disabled !== shouldDisable\) button\.disabled = shouldDisable/);
+  assert.doesNotMatch(lifecycleUi, /button\.disabled = !\(nativeReady && ui\.lifecycle\.gates\.local_release\)/);
   assert.match(lifecycleUi, /Custody root verified and case-bound/);
   assert.match(lifecycleEngine, /CURRENT_CUSTODY_BOUND_DRAFT_ABSENT/);
   assert.match(lifecycleEngine, /CONTINUITY_SEALED/);
