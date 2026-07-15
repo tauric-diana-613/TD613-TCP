@@ -23,6 +23,8 @@ const DIGEST_B = `sha256:${'b'.repeat(64)}`;
 const draft = await compileAshDraft({
   draftId: 'draft_glasshouse',
   caseId: 'case_glasshouse',
+  caseMapDigest: DIGEST_A,
+  createdAt: '2026-07-14T00:00:00.000Z',
   body: 'Please provide the public index for the synthetic archive.',
   version: '1',
   selectedRoute: 'route_public',
@@ -48,7 +50,8 @@ const review = await compileDraftReview({
   roomBridgesReviewed: true,
   chronologyReviewed: true,
   hushLinkCheckReviewed: true,
-  approvalScope: 'LOCAL_EXPORT'
+  approvalScope: 'LOCAL_EXPORT',
+  createdAt: '2026-07-14T00:05:00.000Z'
 }, options);
 assert.equal(review.status, 'READY_FOR_LOCAL_RELEASE_APPROVAL');
 assert.equal(review.recipient_transmission_approved, false);
@@ -58,6 +61,7 @@ const releaseInput = {
   draft,
   review,
   receiptId: 'release_glasshouse',
+  createdAt: '2026-07-14T00:10:00.000Z',
   route: 'route_public',
   recipientClass: 'public records office',
   purpose: 'request public index',
@@ -69,22 +73,25 @@ const release = await compileReleaseReceipt(releaseInput, options);
 assert.equal(await verifyReleaseReceipt(release, options), true);
 assert.equal(release.transmission_performed, false);
 assert.equal(releaseStillMatches(release, {
+  caseMapDigest: DIGEST_A,
   draftDigest: draft.draft_digest,
   route: 'route_public',
   recipientClass: 'public records office',
   purpose: 'request public index',
   version: '1'
 }), true);
-assert.equal(releaseStillMatches(release, { draftDigest: draft.draft_digest, route: 'route_other', recipientClass: 'public records office', purpose: 'request public index', version: '1' }), false);
+assert.equal(releaseStillMatches(release, { caseMapDigest: DIGEST_A, draftDigest: draft.draft_digest, route: 'route_other', recipientClass: 'public records office', purpose: 'request public index', version: '1' }), false);
 await assert.rejects(compileReleaseReceipt({ ...releaseInput, usedNonces: ['nonce_glasshouse'] }, options), /already been used/);
 
 const savePoint = await compileSavePoint({
   savePointId: 'save_glasshouse',
   caseId: 'case_glasshouse',
+  createdAt: '2026-07-14T00:11:00.000Z',
   caseMapDigest: DIGEST_A,
   routeMemoryDigest: DIGEST_B,
   releaseReceiptReference: release.receipt_id,
   releaseReceiptDigest: release.receipt_digest,
+  releaseCreatedAt: release.created_at,
   evidenceInventory: ['synthetic archive index'],
   unansweredQuestions: ['which revision introduced the difference?'],
   nextStepPosture: ['request public index']
@@ -92,14 +99,38 @@ const savePoint = await compileSavePoint({
 assert.equal(await verifySavePoint(savePoint, options), true);
 assert.equal(savePoint.release_receipt_reference, release.receipt_id);
 assert.equal(savePoint.release_receipt_digest, release.receipt_digest);
+assert.equal(savePoint.release_created_at, release.created_at);
+assert.equal(savePoint.closure.status, 'SEALED_POST_RELEASE_LOCAL');
+
+const unboundSavePoint = await compileSavePoint({
+  savePointId: 'save_unbound',
+  caseId: 'case_glasshouse',
+  createdAt: '2026-07-14T00:09:00.000Z',
+  caseMapDigest: DIGEST_A,
+  routeMemoryDigest: DIGEST_B
+}, options);
+assert.equal(await verifySavePoint(unboundSavePoint, options), true);
+assert.equal(unboundSavePoint.release_receipt_reference, null);
+assert.equal(unboundSavePoint.closure.status, 'SEALED_LOCAL_UNBOUND');
+
 await assert.rejects(() => compileSavePoint({
-  savePointId: 'save_bad_release_digest',
+  savePointId: 'save_partial_binding',
   caseId: 'case_glasshouse',
   caseMapDigest: DIGEST_A,
   routeMemoryDigest: DIGEST_B,
+  releaseReceiptReference: release.receipt_id
+}, options), /reference, digest, and created-at together/);
+
+await assert.rejects(() => compileSavePoint({
+  savePointId: 'save_before_release',
+  caseId: 'case_glasshouse',
+  createdAt: '2026-07-14T00:09:59.000Z',
+  caseMapDigest: DIGEST_A,
+  routeMemoryDigest: DIGEST_B,
   releaseReceiptReference: release.receipt_id,
-  releaseReceiptDigest: 'not-a-digest'
-}, options), /Release Receipt digest must be a SHA-256 digest/);
+  releaseReceiptDigest: release.receipt_digest,
+  releaseCreatedAt: release.created_at
+}, options), /must follow the bound Release Receipt/);
 
 const capsule = await encryptAshCapsule({
   caseId: 'case_glasshouse',
