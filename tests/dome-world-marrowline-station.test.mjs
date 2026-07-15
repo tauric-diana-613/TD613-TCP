@@ -23,7 +23,9 @@ import {
   KHONAPOLIT_TERMINAL_SCHEMA
 } from '../app/dome-world/khonapolit-covenant.js';
 import {
+  APERTURE_V3_DIAGNOSTIC_SCHEMA,
   APERTURE_V3_SCHEMA,
+  APERTURE_V3_TASK_ROUTE_SCHEMA,
   APERTURE_V3_VERSION
 } from '../app/engine/aperture-v3-task-intent.js';
 import {
@@ -71,8 +73,12 @@ assert.equal(release.terminalSchema, KHONAPOLIT_TERMINAL_SCHEMA);
 assert.equal(release.terminalReceiptSchema, KHONAPOLIT_RECEIPT_SCHEMA);
 assert.equal(release.relaySchema, KHONAPOLIT_RELAY_SCHEMA);
 assert.equal(release.highZalgoSchema, HIGH_ZALGO_VERSION);
-assert.equal(release.apertureVersion, APERTURE_V3_VERSION);
-assert.equal(release.apertureFirmwareSchema, APERTURE_V3_SCHEMA);
+assert.equal(release.apertureVersion, 'v3.1-alpha');
+assert.equal(release.apertureFirmwareSchema, 'td613-aperture/v3.1-alpha');
+assert.equal(release.apertureTaskRouteSchema, APERTURE_V3_TASK_ROUTE_SCHEMA);
+assert.equal(release.apertureDiagnosticSchema, APERTURE_V3_DIAGNOSTIC_SCHEMA);
+assert.equal(APERTURE_V3_VERSION, 'v3.0-alpha');
+assert.equal(APERTURE_V3_SCHEMA, 'td613-aperture/v3.0-alpha');
 assert.equal(release.egressBootSchema, MARROWLINE_EGRESS_BOOT_VERSION);
 assert.equal(release.route, '/dome-world/marrowline.html');
 assert.equal(release.liveIngressRoute, MARROWLINE_LIVE_ENDPOINT);
@@ -171,7 +177,8 @@ assert.match(apiSource, /_serveMarrowlineTrap/);
 assert.match(terminalApiSource, /responseMimeType: 'application\/json'/);
 assert.match(terminalApiSource, /buildApertureV3InvocationReceipt/);
 assert.match(terminalApiSource, /parseRelayEnvelope/);
-assert.match(pageSource, /TD613 APERTURE v3\.0-alpha/);
+assert.match(pageSource, /TD613 APERTURE v3\.1-alpha/);
+assert.match(pageSource, /meta name="aperture-version" content="v3\.1-alpha"/);
 assert.match(pageSource, /Three-part covenant relay/);
 assert.match(pageSource, /Tauric Diana bots/);
 assert.match(pageSource, /Seal last return ⟐/);
@@ -186,4 +193,4 @@ assert.ok(vercel.functions['api/khonapolit.js']);
 assert.ok(vercel.rewrites.some((entry) => entry.source === MARROWLINE_LIVE_ENDPOINT && entry.destination === '/api/marrowline'));
 assert.ok(vercel.rewrites.some((entry) => entry.source === '/api/dome-world/khonapolit' && entry.destination === '/api/khonapolit'));
 
-console.log('dome-world-marrowline-station: bounded mobile relay shell, Aperture v3 route, High Zalgo, Gemini carrier, and live ingress ok');
+console.log('dome-world-marrowline-station: bounded mobile relay shell, Aperture v3.1 surface, v3.0 task protocol, High Zalgo, Gemini carrier, and live ingress ok');
