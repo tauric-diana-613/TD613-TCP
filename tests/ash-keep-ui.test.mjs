@@ -17,6 +17,7 @@ const caseControls = read('app/dome-world/ash-case-controls.js');
 const mapLabels = read('app/dome-world/ash-map-labels.js');
 const workspaceBridge = read('app/dome-world/ash-workspace-bridge.js');
 const workspaceNavigation = read('app/dome-world/ash-workspace-navigation.js');
+const mobileConstitutionalClosure = read('app/dome-world/ash-mobile-constitutional-closure.js');
 const worker = read('app/dome-world/ash-keep-worker.js');
 const dome = read('app/dome-world/index.html');
 const lab = read('app/dome-world/admissibility-tomography.html');
@@ -94,7 +95,13 @@ assert.match(mapLabels, /tooltip\.textContent = `\$\{record\.index\} · \$\{reco
 assert.doesNotMatch(mapLabels, /requestAnimationFrame\(/, 'The label layer must not introduce a second animation scheduler.');
 
 assert.equal(ASH_WORKSPACE_NAVIGATION_VERSION, 'td613.ash-keep.workspace-navigation/v1.0');
-assert.match(workspaceBridge, /import '\.\/ash-workspace-navigation\.js'/);
+assert.match(workspaceBridge, /import '\.\/ash-keep-mobile-composition\.js';[\s\S]*import '\.\/ash-mobile-constitutional-closure\.js';[\s\S]*import '\.\/ash-workspace-navigation\.js'/, 'The controls/mobile layer must close lifecycle layout after the base mobile composition and before navigation.');
+assert.match(mobileConstitutionalClosure, /ASH_MOBILE_CONSTITUTIONAL_CLOSURE_VERSION = 'td613\.ash-keep\.mobile-constitutional-closure\/v0\.1'/);
+assert.match(mobileConstitutionalClosure, /@media \(max-width: 760px\)/);
+assert.match(mobileConstitutionalClosure, /\.workspace-rail \{[\s\S]*grid-template-columns: repeat\(4, minmax\(0, 1fr\)\)/);
+assert.match(mobileConstitutionalClosure, /\.custody-grid,[\s\S]*\.receipt \{[\s\S]*min-width: 0;[\s\S]*max-width: 100%/);
+assert.match(mobileConstitutionalClosure, /\.custody-card input,[\s\S]*overflow-wrap: anywhere/);
+assert.doesNotMatch(mobileConstitutionalClosure, /requestAnimationFrame|localStorage|indexedDB|fetch\(/, 'The mobile closure layer must remain presentation-only.');
 assert.match(workspaceNavigation, /host\.addEventListener\('click', onClick, true\)/);
 assert.match(workspaceNavigation, /host\.__td613OpenAshWorkspace/);
 assert.match(workspaceNavigation, /Workspace open for review/);
