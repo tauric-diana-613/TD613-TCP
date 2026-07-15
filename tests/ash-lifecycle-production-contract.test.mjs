@@ -131,13 +131,18 @@ assert.match(receipt, /provider_or_transport_requests: \[\]/);
 assert.match(receipt, /lifecycle maturity promotion ≠ transport authorization/);
 
 assert.match(ledger, /H\. Ash product lifecycle orchestration \| \*\*35 \/ 35\*\*/);
-assert.match(ledger, /main = 158 \/ 330/);
-assert.match(ledger, /production-demonstrated workstreams = 2 \/ 8/);
+assert.match(ledger, /I\. Ash operator surface and local case stewardship \| \*\*35 \/ 45\*\*/);
+assert.match(ledger, /main = 193 \/ 375/);
+assert.match(ledger, /production-demonstrated workstreams = 2 \/ 9/);
 assert.match(ledger, /Status: `IMPLEMENTED_PRODUCTION_DEMONSTRATED`/);
-assert.match(ledger, /Choir calibration receipt binding/);
+assert.match(ledger, /Ash operator-surface consolidation and closure/);
+assert.match(ledger, /observer_run: 29441389808/);
+assert.match(ledger, /promotion_authorized: false/);
 assert.match(roadmap, /Ash lifecycle = 35 \/ 35 · production-demonstrated/);
-assert.match(roadmap, /full bounded program = 158 \/ 330/);
-assert.match(roadmap, /Choir calibration receipt binding \[NEXT\]/);
+assert.match(roadmap, /Ash operator surface = 35 \/ 45 · validation-gated/);
+assert.match(roadmap, /full bounded program = 193 \/ 375/);
+assert.match(roadmap, /operator-surface consolidation \[NEXT\]/);
+assert.match(roadmap, /Choir calibration receipt binding \[AFTER CONSOLIDATION\]/);
 assert.match(roadmap, /lifecycle production closure \[CLOSED\]/);
 assert.match(roadmap, /transport-capable workstreams = 0/);
 
