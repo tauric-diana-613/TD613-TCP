@@ -14,7 +14,6 @@ import {
 } from '../api/dome-world-shell.js';
 
 const read = path => fs.readFileSync(new URL(`../${path}`, import.meta.url), 'utf8');
-
 const domeSource = read('app/dome-world/index.html');
 const renderedDome = renderDomeWorldShell(domeSource);
 const threshold = read('app/dome-world/ash-threshold.html');
@@ -65,9 +64,11 @@ test('one Dome shell function composes the Keep lifecycle after the proven Keep 
   assert.equal(injectAshKeepLifecycle(renderedKeep), renderedKeep, 'Keep shell injection must be idempotent');
 });
 
-test('the same Dome shell binds every served Ash draft to the current Case Map digest', () => {
-  assert.equal(ASH_KEEP_JS_SHELL_VERSION, 'td613.ash-keep.js-shell/v0.1');
+test('the Dome shell binds Draft authority and refreshes lifecycle after exact review', () => {
+  assert.equal(ASH_KEEP_JS_SHELL_VERSION, 'td613.ash-keep.js-shell/v0.2-review-refresh');
   assert.match(renderedKeepJs, /caseMapDigest: state\.caseMap\.case_map_digest/);
+  assert.match(renderedKeepJs, /td613 lifecycle review refresh/);
+  assert.match(renderedKeepJs, /setTimeout\(\(\) => location\.reload\(\), 160\)/);
   assert.equal(bindAshDraftsToCaseMap(renderedKeepJs), renderedKeepJs, 'Keep JS binding must be idempotent');
   assert.match(draftEngine, /case_map_digest: optionalDigest\(input\.caseMapDigest/);
   assert.match(draftEngine, /Review is bound to a different Case Map/);
@@ -108,10 +109,10 @@ test('custody affects Reader, draft, release, Save Point, and Capsule eligibilit
   assert.match(lifecycleEngine, /latestSavePoint\.case_map_digest === caseMap\.case_map_digest/);
 });
 
-test('ledger and roadmap treat lifecycle orchestration as a scored workstream and directional blocker', () => {
-  assert.match(ledger, /H\. Ash product lifecycle orchestration/);
-  assert.match(ledger, /READINESS_OBSERVED/);
-  assert.match(roadmap, /Ash product lifecycle repair/);
-  assert.match(roadmap, /Production-demonstrate Ash lifecycle orchestration before enlarging Choir/i);
-  assert.match(roadmap, /Safe Harbor → Ash adapter must target the custody-root ingress/i);
+test('ledger and roadmap hold lifecycle at validation-gated while selecting deployed closure', () => {
+  assert.match(ledger, /H\. Ash product lifecycle orchestration \| \*\*24 \/ 35\*\*/);
+  assert.match(ledger, /production demonstration remains unearned/i);
+  assert.match(roadmap, /Ash lifecycle production closure/);
+  assert.match(roadmap, /SELECTED_NEXT/);
+  assert.match(roadmap, /Safe Harbor → Ash custody-root adapter/);
 });
