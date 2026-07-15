@@ -60,11 +60,15 @@ assert.equal(deliverySource, keepSource, 'Static delivery source drifted from th
 assert.match(adapter, /name="ash-delivery-adapter" content="v0\.1"/);
 assert.match(adapter, /name="ash-lifecycle" content="v0\.1"/);
 assert.match(adapterJs, /ash-keep-source\.html\?delivery=td613-static-v0\.1/);
-assert.match(adapterJs, /GOVERNED_CORE_SCRIPT/);
-assert.match(adapterJs, /\/api\/dome-world-shell\?surface=ash-keep-js/);
-assert.match(adapterJs, /html = html\.replace\(CORE_SCRIPT, GOVERNED_CORE_SCRIPT\)/);
-assert.match(adapterJs, /html\.replace\(GOVERNED_CORE_SCRIPT, `\$\{GOVERNED_CORE_SCRIPT\}/);
+assert.match(adapterJs, /ash-keep\.js\?delivery=td613-static-core-v0\.1/);
+assert.match(adapterJs, /function governCore/);
+assert.match(adapterJs, /caseMapDigest: state\.caseMap\.case_map_digest/);
+assert.match(adapterJs, /td613 lifecycle review refresh/);
+assert.match(adapterJs, /data-td613-ash-core="governed-inline"/);
+assert.match(adapterJs, /html = html\.replace\(CORE_SCRIPT, governedCore\)/);
+assert.match(adapterJs, /html\.replace\(governedCore, `\$\{governedCore\}/);
 assert.match(adapterJs, /document\.open\('text\/html', 'replace'\)/);
+assert.doesNotMatch(adapterJs, /\/api\/dome-world-shell\?surface=ash-keep-js/);
 
 const arrivalOnly = invokeShell({ method: 'GET', url: '/api/dome-world-shell?arrival=cleared', query: { arrival: 'cleared' } });
 assert.equal(arrivalOnly.statusCode, 307);
