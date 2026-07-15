@@ -1,0 +1,35 @@
+name: Ash Release Gate Source Repair
+
+on:
+  pull_request:
+    paths:
+      - "scripts/prepare-ash-release-gate-fix.mjs"
+      - ".github/workflows/ash-release-gate-source-repair.yml"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  prepare:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+      - name: Prepare exact source repair
+        run: node scripts/prepare-ash-release-gate-fix.mjs
+      - name: Verify patched source syntax
+        run: node --check app/dome-world/ash-lifecycle.js
+      - name: Verify idempotent gate marker
+        run: |
+          grep -F "const shouldDisable = !(nativeReady && ui.lifecycle.gates.local_release);" app/dome-world/ash-lifecycle.js
+          grep -F "if (button.disabled !== shouldDisable) button.disabled = shouldDisable;" app/dome-world/ash-lifecycle.js
+      - name: Upload patched lifecycle source
+        uses: actions/upload-artifact@v4
+        with:
+          name: ash-release-gate-patched-source
+          path: app/dome-world/ash-lifecycle.js
+          if-no-files-found: error
+          retention-days: 1
