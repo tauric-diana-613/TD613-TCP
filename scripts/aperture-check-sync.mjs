@@ -37,9 +37,12 @@ assert.ok(tool.metadata.globals.gatewayEmbed, 'Gateway embed global missing from
 assert.match(tool.html, /function\s+auditFlowCoreContextReceipt\s*\(/, 'returned Flow-Core receipt audit missing from tool.html');
 assert.match(tool.html, /reciprocalReceipts:true[\s\S]*reciprocalAuthority:false/, 'reciprocal receipt authority boundary missing from tool.html');
 if (/^v3\.1(?:-|$)/.test(tool.metadata.version)) {
-  assert.equal(release.observatory?.tomographyReceiptSchema, 'td613.aperture.admissibility-tomography-receipt/v0.1', 'tomography receipt schema drifted');
-  assert.equal(release.observatory?.scopeBoundary?.globalClaimCeilingGovernor, false, 'v3.1 must not install a global claim-ceiling governor');
-  assert.equal(release.ash?.phase, 'VI-A_EXPERIMENTAL_RUN_CUSTODY_AND_ELIGIBILITY', 'Ash Phase VI-A release posture drifted');
+  assert.equal(release.observatory?.tomographyReceiptSchema, 'td613.aperture.admissibility-tomography-receipt/v0.2', 'tomography receipt schema drifted');
+  assert.deepEqual(release.observatory?.evidenceRecord?.fields, ['source_status', 'evidence_basis', 'observations', 'missingness', 'alternatives', 'open_questions', 'operator_notes', 'closure'], 'v3.1 evidence record drifted');
+  assert.deepEqual(release.observatory?.evidenceRecord?.researchNotes, { default: 'OFF', humanOperated: true, modelContextInjection: false }, 'Research Notes posture drifted');
+  assert.equal(Object.hasOwn(release.observatory || {}, 'scopeBoundary'), false, 'retired claim-ceiling metadata must not return');
+  assert.equal(release.ash?.phase, 'ASH_KEEP_CASE_MAP_RUNTIME', 'Ash Keep release posture drifted');
+  assert.doesNotMatch(tool.html, /cannotEstablish|cannot_establish|claimCeiling|claim_ceiling|Claim Ceiling|promotion_conditions/i, 'retired limiting vocabulary must not be emitted by the current Aperture tool');
 }
 
 console.log(JSON.stringify({

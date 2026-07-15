@@ -71,9 +71,11 @@ const v31Release = releaseManifestFromMetadata({
 assert.equal(v31Release.domeDiagnosticReceiptSchema, 'td613.aperture.diagnostic-receipt/v3.0-alpha');
 assert.equal(v31Release.roundTripReceiptSchema, 'td613.aperture.round-trip-receipt/v3.0-alpha');
 assert.equal(v31Release.phase5Status, 'IMPLEMENTED_PRODUCTION_DEMONSTRATED');
-assert.equal(v31Release.observatory.tomographyReceiptSchema, 'td613.aperture.admissibility-tomography-receipt/v0.1');
-assert.equal(v31Release.observatory.scopeBoundary.globalClaimCeilingGovernor, false);
-assert.equal(v31Release.ash.phase, 'VI-A_EXPERIMENTAL_RUN_CUSTODY_AND_ELIGIBILITY');
+assert.equal(v31Release.observatory.tomographyReceiptSchema, 'td613.aperture.admissibility-tomography-receipt/v0.2');
+assert.deepEqual(v31Release.observatory.evidenceRecord.fields, ['source_status', 'evidence_basis', 'observations', 'missingness', 'alternatives', 'open_questions', 'operator_notes', 'closure']);
+assert.deepEqual(v31Release.observatory.evidenceRecord.researchNotes, { default: 'OFF', humanOperated: true, modelContextInjection: false });
+assert.equal(Object.hasOwn(v31Release.observatory, 'scopeBoundary'), false);
+assert.equal(v31Release.ash.phase, 'ASH_KEEP_CASE_MAP_RUNTIME');
 
 const staleWriterFixture = `<html><head>
 <meta name="aperture-version" content="v3.1-alpha">

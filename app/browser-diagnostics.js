@@ -5748,7 +5748,7 @@
         "v3-anti-epistemicide-landing-zone": "preserved-and-activated",
         "aperture-v295-compat-version": "v2.9.5",
         "v295-dromological-soul-preserved": "true",
-        "v3-claim-ceiling": "research-instrument-not-validated-detector",
+        "v3-research-notes": "human-operated-off-by-default",
         "v3-intent-boundary": "structural-candidature-separated-from-intent",
         "canonical-governance-stack": "selective-admissibility-event-rationality|field-metrics|anti-epistemicide|narrowing-regime|narrowing-chain|rupture-beacon|losslessness-zero-loss|regime-law|six-defining-properties|reality-surface|temporal-closure|rupture-assist",
         "calibration-mode": "zero-parameter-invariant-ledger",
@@ -5859,12 +5859,12 @@
         "tool-role": "counter-tool"
       },
       "fingerprint": {
-        "bytes": 1227374,
-        "lineCount": 25338,
+        "bytes": 1227381,
+        "lineCount": 25336,
         "inlineScriptCount": 83,
         "panelCount": 7,
         "buttonCount": 63,
-        "contentHashSha256": "12b1c636c396165eae2d25bf747f9a43778e336eeb80a59ce2ce386cfa2acb9f"
+        "contentHashSha256": "f8ff3db4be7ed345b3755afdccc1155161f2077fb463f673b870336b03f8e212"
       },
       "checks": [
         {
@@ -6316,10 +6316,10 @@
           "actual": null
         },
         {
-          "id": "pattern:tomography-scope-boundary",
-          "label": "receipt-local scope and promotion boundary",
+          "id": "pattern:tomography-evidence-record",
+          "label": "evidence record and human-operated Research Notes",
           "ok": true,
-          "detail": "receipt-local scope and promotion boundary present",
+          "detail": "evidence record and human-operated Research Notes present",
           "expected": null,
           "actual": null
         },

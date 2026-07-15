@@ -394,9 +394,9 @@ const ANNEX_SPECS = Object.freeze([
         pattern: /td613\.aperture\.v31-admissibility-tomography-contract\/v0\.1/i
       },
       {
-        id: 'tomography-scope-boundary',
-        label: 'receipt-local scope and promotion boundary',
-        pattern: /globalClaimCeilingGovernor["']?\s*:\s*false/i
+        id: 'tomography-evidence-record',
+        label: 'evidence record and human-operated Research Notes',
+        pattern: /evidenceRecord[\s\S]*source_status[\s\S]*evidence_basis[\s\S]*observations[\s\S]*missingness[\s\S]*alternatives[\s\S]*open_questions[\s\S]*operator_notes[\s\S]*closure[\s\S]*researchNotes[\s\S]*humanOperated\s*:\s*true[\s\S]*modelContextInjection\s*:\s*false/i
       },
       {
         id: 'tomography-compact-pointer',

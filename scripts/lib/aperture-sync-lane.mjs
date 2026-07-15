@@ -292,34 +292,37 @@ export function releaseManifestFromMetadata(metadata, currentRelease = {}) {
       status: currentRelease.observatory?.status || 'IMPLEMENTED_VALIDATION_GATED',
       productionStatus: currentRelease.observatory?.productionStatus || 'PRODUCTION_GATED',
       capabilityProfile: ['reciprocal-bridge', 'admissibility-tomography'],
-      domeExperimentSchema: 'td613.dome-world.experiment-run/v0.1',
-      flowCoreContextSeriesSchema: 'td613.flowcore.context-series/v0.1',
-      instrumentAdapterReceiptSchema: 'td613.aperture.instrument-adapter-receipt/v0.1',
-      tomographyReceiptSchema: 'td613.aperture.admissibility-tomography-receipt/v0.1',
-      tomographyReplaySchema: 'td613.aperture.tomography-replay/v0.1',
-      scopeBoundary: {
-        fields: ['scope_statement', 'cannot_establish', 'promotion_conditions', 'abstention_reason', 'source_status', 'authority_class', 'operator_closure'],
-        globalClaimCeilingGovernor: false,
-        legacyVocabularyPreserved: true,
-        interpretationSuppressionAuthorized: false
+      domeExperimentSchema: currentRelease.observatory?.domeExperimentSchema || 'td613.dome-world.experiment-run/v0.2',
+      flowCoreContextSeriesSchema: currentRelease.observatory?.flowCoreContextSeriesSchema || 'td613.flowcore.context-series/v0.2',
+      instrumentAdapterReceiptSchema: currentRelease.observatory?.instrumentAdapterReceiptSchema || 'td613.aperture.instrument-adapter-receipt/v0.2',
+      tomographyReceiptSchema: currentRelease.observatory?.tomographyReceiptSchema || 'td613.aperture.admissibility-tomography-receipt/v0.2',
+      tomographyReplaySchema: currentRelease.observatory?.tomographyReplaySchema || 'td613.aperture.tomography-replay/v0.2',
+      evidenceRecord: {
+        fields: ['source_status', 'evidence_basis', 'observations', 'missingness', 'alternatives', 'open_questions', 'operator_notes', 'closure'],
+        researchNotes: {
+          default: 'OFF',
+          humanOperated: true,
+          modelContextInjection: false
+        },
+        legacyLimitingVocabularyCurrent: false
       }
     } : currentRelease.observatory,
     ash: isV31 ? {
-      version: 'v0.9-alpha',
-      phase: 'VI-A_EXPERIMENTAL_RUN_CUSTODY_AND_ELIGIBILITY',
+      version: currentRelease.ash?.version || 'v1.0-alpha',
+      phase: currentRelease.ash?.phase || 'ASH_KEEP_CASE_MAP_RUNTIME',
       status: currentRelease.ash?.status || 'IMPLEMENTED_VALIDATION_GATED',
       productionStatus: currentRelease.ash?.productionStatus || 'PRODUCTION_GATED',
-      experimentCustodySchema: 'td613.ash.experiment-custody-manifest/v0.1',
-      snapshotBatchSchema: 'td613.ash.snapshot-batch-receipt/v0.1',
-      tomographyResultCustodySchema: 'td613.ash.tomography-result-custody/v0.1',
-      derivativeEligibilitySchema: 'td613.ash.derivative-eligibility-receipt/v0.1',
+      experimentCustodySchema: currentRelease.ash?.experimentCustodySchema || 'td613.ash.experiment-custody-manifest/v0.2',
+      snapshotBatchSchema: currentRelease.ash?.snapshotBatchSchema || 'td613.ash.snapshot-batch-receipt/v0.2',
+      tomographyResultCustodySchema: currentRelease.ash?.tomographyResultCustodySchema || 'td613.ash.tomography-result-custody/v0.2',
+      derivativeEligibilitySchema: currentRelease.ash?.derivativeEligibilitySchema || 'td613.ash.derivative-eligibility-receipt/v0.2',
       automaticCinder: false,
       transport: false
     } : currentRelease.ash,
     domeWorld: {
       ...(currentRelease.domeWorld || {}),
-      version: isV31 ? 'v0.6.0-alpha' : (currentRelease.domeWorld?.version || 'v0.5.0'),
-      schema: isV31 ? 'td613.dome-world/v0.6.0-alpha' : (currentRelease.domeWorld?.schema || 'td613.dome-world/v0.5.0'),
+      version: isV31 ? (currentRelease.domeWorld?.version || 'v0.7.0-alpha') : (currentRelease.domeWorld?.version || 'v0.5.0'),
+      schema: isV31 ? (currentRelease.domeWorld?.schema || 'td613.dome-world/v0.7.0-alpha') : (currentRelease.domeWorld?.schema || 'td613.dome-world/v0.5.0'),
       exactReceiptSchema: currentRelease.domeWorld?.exactReceiptSchema || 'td613.dome-world.exact-receipt/v0.4.3'
     },
     observedRegime: 'PRCS-A',
