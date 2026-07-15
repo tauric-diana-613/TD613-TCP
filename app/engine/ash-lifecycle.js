@@ -74,11 +74,15 @@ function currentRelease(caseMap, latestDraft, latestReview, latestRelease) {
 
 function currentSave(caseMap, latestRelease, latestSavePoint) {
   if (!caseMap || !latestRelease || !latestSavePoint) return false;
+  const releaseTime = Date.parse(latestRelease.created_at || '');
+  const saveTime = Date.parse(latestSavePoint.created_at || '');
+  const createdAfterRelease = Number.isFinite(releaseTime) && Number.isFinite(saveTime) && saveTime >= releaseTime;
   return latestSavePoint.case_id === caseMap.case_id &&
     latestSavePoint.case_map_digest === caseMap.case_map_digest &&
     latestSavePoint.release_receipt_reference === latestRelease.receipt_id &&
     latestSavePoint.release_receipt_digest === latestRelease.receipt_digest &&
-    latestSavePoint.tamper_state !== 'TAMPERED';
+    latestSavePoint.tamper_state !== 'TAMPERED' &&
+    createdAfterRelease;
 }
 
 export async function compileReadinessReceipt(input = {}, options = {}) {
@@ -149,11 +153,11 @@ export function buildCustodyRoot({ caseMap, custodyReceipt, readinessReceipt = n
     already_bound: Boolean(alreadyBound),
     root_node: clone(rootNode),
     nodes,
-    evidence_basis_additions: [
+    evidence_basis_additions: alreadyBound ? [] : [
       `custody receipt ${reference}`,
       readinessReceipt ? `readiness receipt ${readinessReceipt.receipt_id}` : null
     ].filter(Boolean),
-    observation: {
+    observation: alreadyBound ? null : {
       kind: 'ASH_CUSTODY_ROOT_BOUND',
       custody_reference: reference,
       custody_digest: digest,
