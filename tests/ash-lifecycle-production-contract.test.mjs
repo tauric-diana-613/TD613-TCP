@@ -1,5 +1,6 @@
 import assert from 'node:assert/strict';
 import fs from 'node:fs';
+import handler from '../api/dome-world-shell.js';
 
 const read = path => fs.readFileSync(path, 'utf8');
 const workflow = read('.github/workflows/ash-keep-production-closure.yml');
@@ -8,6 +9,18 @@ const shell = read('api/dome-world-shell.js');
 const receipt = read('docs/ASH_LIFECYCLE_PRODUCTION_DEMO_RECEIPT.md');
 const ledger = read('docs/ASH_KEEP_BUILDOUT_LEDGER.md');
 const roadmap = read('ROADMAP.md');
+
+function invokeShell(req) {
+  const headers = new Map();
+  let body = '';
+  const res = {
+    statusCode: 0,
+    setHeader(name, value) { headers.set(String(name).toLowerCase(), String(value)); },
+    end(value = '') { body = String(value); }
+  };
+  handler(req, res);
+  return { statusCode: res.statusCode, headers, body };
+}
 
 assert.match(workflow, /Ash Lifecycle Deployed Observation/);
 assert.match(workflow, /TD613 Ash · Threshold/);
@@ -39,6 +52,29 @@ assert.match(probe, /continuity is not transport/);
 assert.match(shell, /ASH_KEEP_JS_SHELL_VERSION = 'td613\.ash-keep\.js-shell\/v0\.2-review-refresh'/);
 assert.match(shell, /td613 lifecycle review refresh/);
 assert.match(shell, /setTimeout\(\(\) => location\.reload\(\), 160\)/);
+assert.match(shell, /searchParams\.get\('arrival'\) === 'cleared'/);
+assert.match(shell, /req\.query\?\.arrival === 'cleared'/);
+
+const arrivalOnly = invokeShell({
+  method: 'GET',
+  url: '/api/dome-world-shell?arrival=cleared',
+  query: { arrival: 'cleared' }
+});
+assert.equal(arrivalOnly.statusCode, 200);
+assert.equal(arrivalOnly.headers.get('x-td613-ash-keep-shell'), 'td613.ash-keep.shell/v0.1');
+assert.match(arrivalOnly.body, /<title>TD613 Ash Keep · Case Map<\/title>/);
+assert.match(arrivalOnly.body, /<meta name="ash-lifecycle" content="v0\.1">/);
+assert.match(arrivalOnly.body, /<script type="module" src="\/dome-world\/ash-lifecycle\.js"><\/script>/);
+assert.doesNotMatch(arrivalOnly.body, /<title>TD613 Dome-World/);
+
+const explicitSurface = invokeShell({
+  method: 'GET',
+  url: '/api/dome-world-shell?surface=ash-keep-html&arrival=cleared',
+  query: { surface: 'ash-keep-html', arrival: 'cleared' }
+});
+assert.equal(explicitSurface.statusCode, 200);
+assert.equal(explicitSurface.headers.get('x-td613-ash-keep-shell'), 'td613.ash-keep.shell/v0.1');
+assert.match(explicitSurface.body, /name="ash-lifecycle" content="v0\.1"/);
 
 assert.match(receipt, /Status: `NOT_YET_EARNED`/);
 assert.match(receipt, /promotion_authorized: false/);
