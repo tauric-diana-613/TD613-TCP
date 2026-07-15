@@ -88,6 +88,6 @@ jobs:
           fi
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          git add -A vercel.json api/ash-keep-shell.js api/ash-keep-js-shell.js
+          git add -A vercel.json api/dome-world-shell.js api/ash-keep-shell.js api/ash-keep-js-shell.js
           git commit -m "Consolidate Ash lifecycle shell surfaces"
           git push origin HEAD:${{ github.event.pull_request.head.ref || github.ref_name }}
