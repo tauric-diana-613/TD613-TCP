@@ -36,6 +36,13 @@ for (const obsolete of ['api/ash-keep-shell.js', 'api/ash-keep-js-shell.js']) {
   if (fs.existsSync(obsolete)) fs.rmSync(obsolete);
 }
 
+const domeShellPath = 'api/dome-world-shell.js';
+const domeShell = fs.readFileSync(domeShellPath, 'utf8');
+const preservedVersion = domeShell.replace(
+  "export const DOME_WORLD_SHELL_VERSION = 'td613.dome-world.shell/v1.2-ash-lifecycle';",
+  "export const DOME_WORLD_SHELL_VERSION = 'td613.dome-world.shell/v1.1-marrowline-desktop-span';"
+);
+fs.writeFileSync(domeShellPath, preservedVersion);
 fs.writeFileSync(manifestPath, `${JSON.stringify(manifest, null, 2)}\n`);
 
 const functionCount = Object.keys(manifest.functions).length;
