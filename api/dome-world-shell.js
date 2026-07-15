@@ -9,6 +9,7 @@ export const ASH_LIFECYCLE_SHELL_CONTRACT = 'td613.ash.lifecycle-shell/v0.1';
 export const ASH_KEEP_SHELL_VERSION = 'td613.ash-keep.shell/v0.1';
 export const ASH_KEEP_JS_SHELL_VERSION = 'td613.ash-keep.js-shell/v0.2-review-refresh';
 export const ASH_LIFECYCLE_MODULE = '/dome-world/ash-lifecycle.js';
+export const ASH_WORKSPACE_BRIDGE_MODULE = '/dome-world/ash-workspace-bridge.js';
 
 const DOME_SOURCE_PATH = path.join(process.cwd(), 'app', 'dome-world', 'index.html');
 const ASH_KEEP_SOURCE_PATH = path.join(process.cwd(), 'app', 'dome-world', 'ash-keep.html');
@@ -19,11 +20,14 @@ const ASH_COMPATIBILITY_SECTION = `<section id="ash" class="view primary-view" d
 const CORE_SCRIPT = '<script type="module" src="/dome-world/ash-keep.js"></script>';
 const SERVED_CORE_SCRIPT = '<script type="module" src="/api/dome-world-shell?surface=ash-keep-js"></script>';
 const LIFECYCLE_SCRIPT = `<script type="module" src="${ASH_LIFECYCLE_MODULE}"></script>`;
+const WORKSPACE_BRIDGE_SCRIPT = `<script type="module" src="${ASH_WORKSPACE_BRIDGE_MODULE}"></script>`;
 const ARRIVAL_COMPATIBILITY_SCRIPT = `<script>/* td613 arrival-route compatibility: composed shell first, history annotation only */if(sessionStorage.getItem('td613:ash-threshold:readiness:v0.1')&&(location.pathname!=='/dome-world/ash-keep.html'||location.search!=='?arrival=cleared')){history.replaceState(null,'','/dome-world/ash-keep.html?arrival=cleared')}</script>`;
 const DRAFT_MARKER = '    caseId: state.caseMap.case_id,\n    body: $(\'draftBody\').value,';
 const DRAFT_BINDING = '    caseId: state.caseMap.case_id,\n    caseMapDigest: state.caseMap.case_map_digest,\n    body: $(\'draftBody\').value,';
 const REVIEW_MARKER = "  await put('reviews', state.latestReview, state.latestReview.review_id);\n  renderDraft();";
 const REVIEW_BINDING = "  await put('reviews', state.latestReview, state.latestReview.review_id);\n  renderDraft();\n  setTimeout(() => location.reload(), 160); // td613 lifecycle review refresh";
+const WORKSPACE_MARKER = "function setWorkspace(name) {\n  state.workspace = name;\n  qsa('.work-tab').forEach(button => button.setAttribute('aria-selected', String(button.dataset.workspace === name)));\n  qsa('.workspace').forEach(panel => panel.classList.toggle('active', panel.id === `workspace-${name}`));\n  state.mapVisible = name === 'map' && !document.hidden;\n  const prefs = JSON.parse(localStorage.getItem(PREFS_KEY) || '{}');\n  localStorage.setItem(PREFS_KEY, JSON.stringify({ ...prefs, workspace: name, mapMode: state.mapMode }));\n  if (state.mapVisible) startScheduler(); else stopScheduler();\n}";
+const WORKSPACE_BINDING = `${WORKSPACE_MARKER}\n\nwindow.__td613OpenAshWorkspace = setWorkspace; // td613 late workspace bridge`;
 
 export function injectMarrowlineLabButton(source = '') {
   const html = String(source || '');
@@ -62,11 +66,16 @@ export function injectAshKeepLifecycle(source = '') {
   }
   if (!html.includes(ASH_LIFECYCLE_MODULE)) {
     if (!html.includes(CORE_SCRIPT)) throw new Error('ash-keep-core-script-marker-missing');
-    html = html.replace(CORE_SCRIPT, `${SERVED_CORE_SCRIPT}\n  ${ARRIVAL_COMPATIBILITY_SCRIPT}\n  ${LIFECYCLE_SCRIPT}`);
+    html = html.replace(CORE_SCRIPT, `${SERVED_CORE_SCRIPT}\n  ${ARRIVAL_COMPATIBILITY_SCRIPT}\n  ${LIFECYCLE_SCRIPT}\n  ${WORKSPACE_BRIDGE_SCRIPT}`);
   } else if (!html.includes('td613 arrival-route compatibility')) {
     html = html.replace(SERVED_CORE_SCRIPT, `${SERVED_CORE_SCRIPT}\n  ${ARRIVAL_COMPATIBILITY_SCRIPT}`);
   }
+  if (!html.includes(ASH_WORKSPACE_BRIDGE_MODULE)) {
+    if (!html.includes(LIFECYCLE_SCRIPT)) throw new Error('ash-lifecycle-script-marker-missing');
+    html = html.replace(LIFECYCLE_SCRIPT, `${LIFECYCLE_SCRIPT}\n  ${WORKSPACE_BRIDGE_SCRIPT}`);
+  }
   if (html.indexOf(ASH_LIFECYCLE_MODULE) < html.indexOf('surface=ash-keep-js')) throw new Error('ash-lifecycle-loaded-before-keep-core');
+  if (html.indexOf(ASH_WORKSPACE_BRIDGE_MODULE) < html.indexOf(ASH_LIFECYCLE_MODULE)) throw new Error('ash-workspace-bridge-loaded-before-lifecycle');
   return html;
 }
 
@@ -80,6 +89,10 @@ export function bindAshDraftsToCaseMap(source = '') {
   if (!code.includes('td613 lifecycle review refresh')) {
     if (!code.includes(REVIEW_MARKER)) throw new Error('ash-keep-review-marker-missing');
     code = code.replace(REVIEW_MARKER, REVIEW_BINDING);
+  }
+  if (!code.includes('td613 late workspace bridge')) {
+    if (!code.includes(WORKSPACE_MARKER)) throw new Error('ash-keep-workspace-marker-missing');
+    code = code.replace(WORKSPACE_MARKER, WORKSPACE_BINDING);
   }
   return code;
 }
