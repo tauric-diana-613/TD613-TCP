@@ -98,6 +98,12 @@ function queueOverlay(context) {
   queueMicrotask(() => renderOverlay(context));
 }
 
+function callNativeFillText(nativeFillText, context, text, x, y, maxWidth) {
+  return maxWidth === undefined
+    ? nativeFillText.call(context, text, x, y)
+    : nativeFillText.call(context, text, x, y, maxWidth);
+}
+
 function patchCanvasText() {
   const prototype = CanvasRenderingContext2D.prototype;
   if (prototype[PATCH_MARK]) return;
@@ -172,7 +178,7 @@ function patchCanvasText() {
         return undefined;
       }
     }
-    return original.fillText.call(this, text, x, y, maxWidth);
+    return callNativeFillText(original.fillText, this, text, x, y, maxWidth);
   };
 }
 
