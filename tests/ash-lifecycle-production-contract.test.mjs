@@ -145,7 +145,7 @@ assert.match(ledger, /component maturity on main = 193 \/ 375/);
 assert.match(ledger, /production-demonstrated workstreams = 2 \/ 9/);
 assert.match(ledger, /# Constitutional Synthesis Matrix/);
 assert.match(ledger, /Score: `40 \/ 50`/);
-assert.match(ledger, /Status: `IMPLEMENTED_PRODUCTION_DEMONSTRATED`/);
+assert.match(ledger, /status: IMPLEMENTED_PRODUCTION_DEMONSTRATED/);
 assert.match(ledger, /Ash Constitutional Convergence Closure/);
 assert.match(ledger, /current-head aftercare: PASS · run 29441389808/);
 assert.match(roadmap, /component maturity = 193 \/ 375/);
