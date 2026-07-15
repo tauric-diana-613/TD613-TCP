@@ -1,4 +1,4 @@
-export const ASH_CASE_FEEDBACK_VERSION = 'td613.ash-keep.case-feedback/v0.2';
+export const ASH_CASE_FEEDBACK_VERSION = 'td613.ash-keep.case-feedback/v0.3';
 
 const INSTALL_MARK = Symbol.for('td613.ash-case-feedback.installed');
 const SAVE_FEEDBACK_MS = 1600;
@@ -18,10 +18,16 @@ export function installAshCaseFeedback(doc = globalThis.document, host = globalT
   const timers = new Set();
   let savePending = false;
   let pendingTimeout = null;
+  let feedbackObserver = null;
 
   const clearTimers = () => {
     for (const timer of timers) host.clearTimeout(timer);
     timers.clear();
+  };
+
+  const stopFeedbackObserver = () => {
+    feedbackObserver?.disconnect();
+    feedbackObserver = null;
   };
 
   const setCommandHold = held => {
@@ -32,7 +38,15 @@ export function installAshCaseFeedback(doc = globalThis.document, host = globalT
   const applySavedFeedback = caseId => {
     if (doc.documentElement.dataset.ashSaveFeedback !== String(caseId || 'CURRENT_SAVED')) return;
     const status = currentStatus(doc);
-    if (status) status.textContent = 'Case saved';
+    if (status && status.textContent !== 'Case saved') status.textContent = 'Case saved';
+  };
+
+  const holdSavedFeedback = marker => {
+    stopFeedbackObserver();
+    const status = currentStatus(doc);
+    if (!status || !host.MutationObserver) return;
+    feedbackObserver = new host.MutationObserver(() => applySavedFeedback(marker));
+    feedbackObserver.observe(status, { childList: true, characterData: true, subtree: true });
   };
 
   host.addEventListener('click', event => {
@@ -45,6 +59,7 @@ export function installAshCaseFeedback(doc = globalThis.document, host = globalT
       if (!savePending) return;
       savePending = false;
       setCommandHold(false);
+      stopFeedbackObserver();
       delete doc.documentElement.dataset.ashSaveFeedback;
       const status = currentStatus(doc);
       if (status) status.textContent = 'Save confirmation held';
@@ -64,16 +79,11 @@ export function installAshCaseFeedback(doc = globalThis.document, host = globalT
     const marker = detail.case_id || 'CURRENT_SAVED';
     doc.documentElement.dataset.ashSaveFeedback = marker;
     applySavedFeedback(marker);
-    for (const delay of [0, 60, 180]) {
-      const timer = host.setTimeout(() => {
-        timers.delete(timer);
-        applySavedFeedback(marker);
-      }, delay);
-      timers.add(timer);
-    }
+    holdSavedFeedback(marker);
     const cleanup = host.setTimeout(() => {
       timers.delete(cleanup);
       if (doc.documentElement.dataset.ashSaveFeedback === marker) {
+        stopFeedbackObserver();
         delete doc.documentElement.dataset.ashSaveFeedback;
         host.__td613AshLifecycleRefresh?.().catch?.(console.error);
       }
