@@ -13,6 +13,7 @@ export const ASH_WORKSPACE_BRIDGE_MODULE = '/dome-world/ash-workspace-bridge.js'
 const DOME_SOURCE_PATH = path.join(process.cwd(), 'app', 'dome-world', 'index.html');
 const ASH_KEEP_SOURCE_PATH = path.join(process.cwd(), 'app', 'dome-world', 'ash-keep.html');
 const ASH_KEEP_JS_SOURCE_PATH = path.join(process.cwd(), 'app', 'dome-world', 'ash-keep.js');
+const ASH_KEEP_ICON_MARKER = '<link rel="icon" href="data:,">';
 const MARROWLINE_BUTTON = `<button class="lab-node lab-node-marrowline" type="button" data-tone="gold" data-glyph="∴" data-open-route="${MARROWLINE_LAB_ROUTE}" style="grid-column:span 8" onclick="window.location.assign('${MARROWLINE_LAB_ROUTE}')" aria-label="Open Marrowline Kʰonapolit terminal"><span class="lab-index">11</span><strong>Marrowline</strong><small>Kʰonapolit terminal / live ingress</small></button>`;
 const ASH_TAB = `<button class="tab" data-view="ash" data-sigil="下"><small>04</small><span>Ash</span></button>`;
 
@@ -40,11 +41,17 @@ export function injectAshLifecycleEntry(source = '') {
 }
 
 export function injectAshKeepLifecycle(source = '') {
-  const html = String(source || '');
+  let html = String(source || '');
   if (!html) throw new Error('ash-keep-source-empty');
+  if (!html.includes(ASH_KEEP_ICON_MARKER)) {
+    const headClose = html.indexOf('</head>');
+    if (headClose < 0) throw new Error('ash-keep-head-marker-missing');
+    html = `${html.slice(0, headClose)}  ${ASH_KEEP_ICON_MARKER}\n${html.slice(headClose)}`;
+  }
   const ordered = ['/dome-world/ash-keep.js', '/dome-world/ash-convergence.js', ASH_LIFECYCLE_MODULE, ASH_WORKSPACE_BRIDGE_MODULE, '/dome-world/ash-case-controls.js'];
   if (!html.includes('name="ash-lifecycle" content="v0.1"')) throw new Error('ash-lifecycle-meta-missing');
   if (!html.includes('name="ash-constitutional-composition" content="v0.1"')) throw new Error('ash-composition-meta-missing');
+  if (!html.includes(ASH_KEEP_ICON_MARKER)) throw new Error('ash-keep-explicit-icon-boundary-missing');
   let cursor = -1;
   for (const module of ordered) {
     const index = html.indexOf(module);
