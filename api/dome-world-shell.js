@@ -17,6 +17,7 @@ const ASH_TAB = `<a class="tab" href="${ASH_THRESHOLD_ROUTE}" data-view="ash" da
 const ASH_COMPATIBILITY_SECTION = `<section id="ash" class="view primary-view" data-glyph="下"><div class="view-intro"><div><div class="view-overline">下 / custody begins after the threshold</div><h2>Ash Threshold</h2><p>Clear arrival, boundary, and custody as distinct laws, then enter Ash Keep. Quick Scan remains a readiness operation inside the Keep; custody becomes the case root.</p></div><div class="view-telemetry"><span><b>0</b>raw text</span><span><b>SESSION</b>readiness</span><span><b>KEEP</b>primary</span></div></div><div class="grid"><div class="panel"><h3>Enter the Ash lifecycle</h3><p class="sub">The threshold performs no custody registration. Ash Keep binds a verified root into the Case Map and carries it through Rebuild, Draft, Release, Save Point, and Capsule.</p><div class="actions"><a class="btn primary" href="${ASH_THRESHOLD_ROUTE}">Enter Ash</a><a class="btn" href="/dome-world/ash-keep.html">Open existing Keep</a></div><p class="claim">Arrival ≠ consent; readiness ≠ custody; custody ≠ authenticity; continuity ≠ transport.</p></div><aside class="panel rel"><canvas id="ashCanvas" aria-label="Ash custody threshold field"></canvas><div class="legend"><span style="color:var(--cyan)">△ arrival boundary</span><br><span style="color:var(--gold)">◇ custody root</span><br><span style="color:var(--rose)">● held transition</span><br><span style="color:var(--violet)">∙ Quick Scan compatibility</span></div></aside></div><div hidden aria-hidden="true"><input id="ashArtifactId"><select id="ashClass"><option>sensitive-document</option></select><input id="ashMediaType" value="application/octet-stream"><input id="ashByteLength"><button id="runAsh"></button><button id="copyAsh"></button><button id="downloadAsh"></button></div><pre id="ashPre" hidden></pre></section>`;
 const CORE_SCRIPT = '<script type="module" src="/dome-world/ash-keep.js"></script>';
 const LIFECYCLE_SCRIPT = `<script type="module" src="${ASH_LIFECYCLE_MODULE}"></script>`;
+const ARRIVAL_COMPATIBILITY_SCRIPT = `<script>/* td613 arrival-route compatibility: exact network route first, history annotation only */if(sessionStorage.getItem('td613:ash-threshold:readiness:v0.1')&&location.pathname==='/dome-world/ash-keep.html'&&location.search!=='?arrival=cleared'){history.replaceState(null,'','/dome-world/ash-keep.html?arrival=cleared')}</script>`;
 const DRAFT_MARKER = '    caseId: state.caseMap.case_id,\n    body: $(\'draftBody\').value,';
 const DRAFT_BINDING = '    caseId: state.caseMap.case_id,\n    caseMapDigest: state.caseMap.case_map_digest,\n    body: $(\'draftBody\').value,';
 const REVIEW_MARKER = "  await put('reviews', state.latestReview, state.latestReview.review_id);\n  renderDraft();";
@@ -59,7 +60,9 @@ export function injectAshKeepLifecycle(source = '') {
   }
   if (!html.includes(ASH_LIFECYCLE_MODULE)) {
     if (!html.includes(CORE_SCRIPT)) throw new Error('ash-keep-core-script-marker-missing');
-    html = html.replace(CORE_SCRIPT, `${CORE_SCRIPT}\n  ${LIFECYCLE_SCRIPT}`);
+    html = html.replace(CORE_SCRIPT, `${CORE_SCRIPT}\n  ${ARRIVAL_COMPATIBILITY_SCRIPT}\n  ${LIFECYCLE_SCRIPT}`);
+  } else if (!html.includes('td613 arrival-route compatibility')) {
+    html = html.replace(CORE_SCRIPT, `${CORE_SCRIPT}\n  ${ARRIVAL_COMPATIBILITY_SCRIPT}`);
   }
   if (html.indexOf(ASH_LIFECYCLE_MODULE) < html.indexOf('/dome-world/ash-keep.js')) throw new Error('ash-lifecycle-loaded-before-keep-core');
   return html;
