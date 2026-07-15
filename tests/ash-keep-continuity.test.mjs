@@ -58,6 +58,7 @@ const releaseInput = {
   draft,
   review,
   receiptId: 'release_glasshouse',
+  createdAt: '2026-07-14T00:10:00.000Z',
   route: 'route_public',
   recipientClass: 'public records office',
   purpose: 'request public index',
@@ -81,6 +82,7 @@ await assert.rejects(compileReleaseReceipt({ ...releaseInput, usedNonces: ['nonc
 const savePoint = await compileSavePoint({
   savePointId: 'save_glasshouse',
   caseId: 'case_glasshouse',
+  createdAt: '2026-07-14T00:11:00.000Z',
   caseMapDigest: DIGEST_A,
   routeMemoryDigest: DIGEST_B,
   releaseReceiptReference: release.receipt_id,
@@ -100,6 +102,20 @@ await assert.rejects(() => compileSavePoint({
   releaseReceiptReference: release.receipt_id,
   releaseReceiptDigest: 'not-a-digest'
 }, options), /Release Receipt digest must be a SHA-256 digest/);
+await assert.rejects(() => compileSavePoint({
+  savePointId: 'save_partial_release_reference',
+  caseId: 'case_glasshouse',
+  caseMapDigest: DIGEST_A,
+  routeMemoryDigest: DIGEST_B,
+  releaseReceiptReference: release.receipt_id
+}, options), /requires both reference and digest/);
+await assert.rejects(() => compileSavePoint({
+  savePointId: 'save_partial_release_digest',
+  caseId: 'case_glasshouse',
+  caseMapDigest: DIGEST_A,
+  routeMemoryDigest: DIGEST_B,
+  releaseReceiptDigest: release.receipt_digest
+}, options), /requires both reference and digest/);
 
 const capsule = await encryptAshCapsule({
   caseId: 'case_glasshouse',
