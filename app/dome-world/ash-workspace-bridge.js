@@ -42,6 +42,25 @@ function stateAllows(state, required) {
   return Number.isInteger(STATE_RANK[state]) && STATE_RANK[state] >= STATE_RANK[required];
 }
 
+function requiredStateForGate(gate) {
+  if (gate === 'test' || gate === 'routes' || gate === 'case') return 'CASE_BOUND';
+  if (gate === 'draft' || gate === 'local_release') return 'REBUILD_ELIGIBLE';
+  if (gate === 'save') return 'RELEASE_ELIGIBLE';
+  return null;
+}
+
+export function actionGateForLifecycleState(state, gate, target = null) {
+  const required = requiredStateForGate(gate);
+  const rankOpen = Boolean(required && stateAllows(String(state || '').toUpperCase(), required));
+  const nativeOpen = gate !== 'local_release' || target?.disabled !== true;
+  return Object.freeze({
+    allowed: rankOpen && nativeOpen,
+    state: String(state || 'ARRIVAL_UNPERSISTED'),
+    gate,
+    reason: rankOpen && nativeOpen ? 'OPEN' : 'LIFECYCLE_ACTION_HELD'
+  });
+}
+
 function normalize(value) {
   return value == null ? '' : String(value);
 }
