@@ -31,8 +31,10 @@ function replaceExactly(source, marker, replacement, label) {
 function governCore(source) {
   let code = String(source || '');
   if (!code) throw new Error('Keep core source was empty');
-  if (!code.includes('caseMapDigest: state.caseMap.case_map_digest')) {
+  if (code.includes(DRAFT_MARKER)) {
     code = replaceExactly(code, DRAFT_MARKER, DRAFT_BINDING, 'Draft Case Map binding');
+  } else if (!code.includes(DRAFT_BINDING)) {
+    throw new Error('Draft Case Map binding marker is unavailable');
   }
   if (!code.includes('td613 lifecycle review refresh')) {
     code = replaceExactly(code, REVIEW_MARKER, REVIEW_BINDING, 'Draft review refresh');
@@ -40,7 +42,7 @@ function governCore(source) {
   if (!code.includes('td613 late workspace bridge')) {
     code = replaceExactly(code, WORKSPACE_MARKER, WORKSPACE_BINDING, 'Late workspace bridge');
   }
-  if (!code.includes('caseMapDigest: state.caseMap.case_map_digest')) throw new Error('Governed core omitted the current Case Map digest');
+  if (!code.includes(DRAFT_BINDING)) throw new Error('Governed core omitted the Draft Case Map binding');
   if (!code.includes('td613 lifecycle review refresh')) throw new Error('Governed core omitted the lifecycle review refresh');
   if (!code.includes('td613 late workspace bridge')) throw new Error('Governed core omitted the late workspace capability');
   return code;

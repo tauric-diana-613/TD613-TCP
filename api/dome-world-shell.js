@@ -82,9 +82,10 @@ export function injectAshKeepLifecycle(source = '') {
 export function bindAshDraftsToCaseMap(source = '') {
   let code = String(source || '');
   if (!code) throw new Error('ash-keep-js-source-empty');
-  if (!code.includes('caseMapDigest: state.caseMap.case_map_digest')) {
-    if (!code.includes(DRAFT_MARKER)) throw new Error('ash-keep-draft-marker-missing');
+  if (code.includes(DRAFT_MARKER)) {
     code = code.replace(DRAFT_MARKER, DRAFT_BINDING);
+  } else if (!code.includes(DRAFT_BINDING)) {
+    throw new Error('ash-keep-draft-marker-missing');
   }
   if (!code.includes('td613 lifecycle review refresh')) {
     if (!code.includes(REVIEW_MARKER)) throw new Error('ash-keep-review-marker-missing');
