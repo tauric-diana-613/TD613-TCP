@@ -145,6 +145,88 @@ const custodyHelperReplacement = `async function bindSyntheticCustody(page) {
   });
 }
 
+async function bindSyntheticRelease(page, body) {
+  return page.evaluate(async ({ body }) => {
+    const caseId = localStorage.getItem('td613.ash-keep.current-case');
+    const db = await new Promise((resolve, reject) => {
+      const request = indexedDB.open('td613-ash-keep');
+      request.onsuccess = () => resolve(request.result);
+      request.onerror = () => reject(request.error);
+    });
+    const read = (store, key) => new Promise((resolve, reject) => {
+      const request = db.transaction(store).objectStore(store).get(key);
+      request.onsuccess = () => resolve(request.result || null);
+      request.onerror = () => reject(request.error);
+    });
+    const caseMap = await read('cases', caseId);
+    const { compileAshDraft, compileDraftReview, compileReleaseReceipt } = await import('/engine/ash-keep-drafts.js');
+    const disclosed = caseMap.nodes.slice(0, 2).map(node => node.id);
+    const draft = await compileAshDraft({
+      caseId,
+      caseMapDigest: caseMap.case_map_digest,
+      body,
+      version: '1',
+      selectedRoute: 'route_public_request',
+      recipientClass: 'public-records-office',
+      purpose: 'request-public-index',
+      disclosedOpaqueReferences: disclosed,
+      roomIds: [...new Set(caseMap.nodes.filter(node => disclosed.includes(node.id)).map(node => node.room_id))],
+      evidenceBasis: ['synthetic local core-closure release fixture']
+    });
+    const review = await compileDraftReview({
+      draft,
+      validCustody: true,
+      sufficientTestCoverage: true,
+      unresolvedTamper: false,
+      explicitReview: true,
+      protectedIdentityReviewed: true,
+      confidentialPassagesReviewed: true,
+      metadataReviewed: true,
+      sourceReferencesReviewed: true,
+      promptInjectionReviewed: true,
+      routeHistoryReviewed: true,
+      roomBridgesReviewed: true,
+      chronologyReviewed: true,
+      hushLinkCheckReviewed: true,
+      approvalScope: 'LOCAL_EXPORT',
+      observations: ['Synthetic core probe reviewed the exact local draft.']
+    });
+    const release = await compileReleaseReceipt({
+      draft,
+      review,
+      route: 'route_public_request',
+      recipientClass: 'public-records-office',
+      purpose: 'request-public-index',
+      version: '1',
+      nonce: \`nonce_core_probe_\${crypto.randomUUID()}\`,
+      operatorGesture: 'synthetic core probe local release approval'
+    });
+    await new Promise((resolve, reject) => {
+      const transaction = db.transaction(['drafts', 'reviews', 'releases'], 'readwrite');
+      transaction.objectStore('drafts').put({ id: draft.draft_id, value: draft });
+      transaction.objectStore('reviews').put({ id: review.review_id, value: review });
+      transaction.objectStore('releases').put({ id: release.receipt_id, value: release });
+      transaction.oncomplete = resolve;
+      transaction.onerror = () => reject(transaction.error);
+      transaction.onabort = () => reject(transaction.error);
+    });
+    db.close();
+    window.dispatchEvent(new CustomEvent('td613:ash:draft-kept', { detail: { draft_reference: draft.draft_id } }));
+    window.dispatchEvent(new CustomEvent('td613:ash:review-kept', { detail: { review_reference: review.review_id } }));
+    window.dispatchEvent(new CustomEvent('td613:ash:release-kept', { detail: { release_reference: release.receipt_id } }));
+    await window.__td613AshKeep.refresh();
+    await window.__td613AshLifecycleRefresh();
+    await window.TD613AshConvergence.reconcileAuthority('synthetic-core-release-fixture');
+    return {
+      draft_reference: draft.draft_id,
+      review_reference: review.review_id,
+      release_reference: release.receipt_id,
+      release_digest: release.receipt_digest,
+      case_map_digest: release.case_map_digest
+    };
+  }, { body });
+}
+
 ${custodyHelperTarget}`;
 
 const custodyBindingTarget = `  report.continuity = {
@@ -193,6 +275,26 @@ const routeReportReplacement = `  report.room_and_route_memory = {
     route_record_class: routeRecord.entries[0].record_class
   };`;
 
+const releaseBindingTarget = `  report.hush_screen = {
+    status: screen.status,
+    provider_called: false,
+    post_requests_added: postsAfterScreen - postsBeforeScreen
+  };
+
+  await openWorkspace(page, 'save');`;
+const releaseBindingReplacement = `  report.hush_screen = {
+    status: screen.status,
+    provider_called: false,
+    post_requests_added: postsAfterScreen - postsBeforeScreen
+  };
+
+  const coreReleaseBinding = await bindSyntheticRelease(page, selectedProviderExcerpt);
+  await page.waitForFunction(() => document.body.dataset.ashLifecycle === 'RELEASE_ELIGIBLE');
+  await page.waitForFunction(async () => (await window.TD613AshConvergence.currentAuthorityContext())?.lifecycle_rank === 'RELEASE_ELIGIBLE');
+  report.hush_screen.current_release_binding = coreReleaseBinding;
+
+  await openWorkspace(page, 'save');`;
+
 function sha256(value) {
   return `sha256:${createHash('sha256').update(value).digest('hex')}`;
 }
@@ -210,11 +312,12 @@ const source = sourceOnDisk.replace(/\r\n/g, '\n');
 let runtime = replaceExactlyOnce(source, hushTarget, hushReplacement, 'declared Hush selection');
 runtime = replaceExactlyOnce(runtime, layoutTarget, layoutReplacement, 'mobile scroll-lane classification');
 runtime = replaceExactlyOnce(runtime, returnTarget, returnReplacement, 'layout receipt return');
-runtime = replaceExactlyOnce(runtime, custodyHelperTarget, custodyHelperReplacement, 'synthetic custody helper');
+runtime = replaceExactlyOnce(runtime, custodyHelperTarget, custodyHelperReplacement, 'synthetic custody and release helpers');
 runtime = replaceExactlyOnce(runtime, custodyBindingTarget, custodyBindingReplacement, 'pre-custody hold and custody binding');
 runtime = replaceExactlyOnce(runtime, routeReportTarget, routeReportReplacement, 'custody-aware Route Memory receipt');
+runtime = replaceExactlyOnce(runtime, releaseBindingTarget, releaseBindingReplacement, 'release-eligible continuity fixture');
 
-if (runtime === source || !runtime.includes('selectedProviderExcerpt') || !runtime.includes('scroll_lane_controls') || !runtime.includes('bindSyntheticCustody') || !runtime.includes('HELD_CASE_BOUND_REQUIRED')) {
+if (runtime === source || !runtime.includes('selectedProviderExcerpt') || !runtime.includes('scroll_lane_controls') || !runtime.includes('bindSyntheticCustody') || !runtime.includes('bindSyntheticRelease') || !runtime.includes('HELD_CASE_BOUND_REQUIRED') || !runtime.includes('current_release_binding')) {
   throw new Error('Fixture runner did not materialize every declared runtime seam.');
 }
 
@@ -234,7 +337,8 @@ await fs.writeFile(manifestPath, `${JSON.stringify({
   runtime_transformations: [
     'DECLARE_SELECTED_EXCERPT_AFTER_UNKEPT_DRAFT_RELOAD',
     'CLASSIFY_INTENTIONAL_HORIZONTAL_SCROLL_LANES_SEPARATELY_FROM_CLIPPING',
-    'PROVE_PRE_CUSTODY_ROUTE_HOLD_AND_BIND_SYNTHETIC_LOCAL_CUSTODY_ROOT'
+    'PROVE_PRE_CUSTODY_ROUTE_HOLD_AND_BIND_SYNTHETIC_LOCAL_CUSTODY_ROOT',
+    'BIND_VERIFIED_SYNTHETIC_LOCAL_DRAFT_REVIEW_RELEASE_BEFORE_CONTINUITY'
   ],
   scroll_lane_rule: 'overflow-x auto-or-scroll plus scrollWidth greater than clientWidth',
   promotion_authorized: false
