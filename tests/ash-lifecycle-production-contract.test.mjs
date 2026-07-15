@@ -58,6 +58,9 @@ assert.equal(deliverySource, keepSource, 'Static delivery source drifted from th
 assert.match(adapter, /name="ash-delivery-adapter" content="v0\.1"/);
 assert.match(adapter, /name="ash-lifecycle" content="v0\.1"/);
 assert.match(adapterJs, /ash-keep-source\.html\?delivery=td613-static-v0\.1/);
+assert.match(adapterJs, /SERVED_CORE_SCRIPT = '<script type="module" src="\/api\/dome-world-shell\?surface=ash-keep-js"><\/script>'/);
+assert.match(adapterJs, /html = html\.replace\(CORE_SCRIPT, SERVED_CORE_SCRIPT\)/);
+assert.match(adapterJs, /Keep core was not bound to the transformed shell surface/);
 assert.match(adapterJs, /document\.open\('text\/html', 'replace'\)/);
 
 const arrivalOnly = invokeShell({ method: 'GET', url: '/api/dome-world-shell?arrival=cleared', query: { arrival: 'cleared' } });
