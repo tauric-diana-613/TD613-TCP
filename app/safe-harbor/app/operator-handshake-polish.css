@@ -1,69 +1,113 @@
-/* Contain the Renderer key panel without compressing its identifiers into columns. */
+/* The Handshake card is narrow even on desktop. Size its content from the card,
+   not from the viewport, so identifiers never collapse into letter columns. */
+#operatorHandshakeSection {
+  container-type: inline-size;
+}
+
 #operatorHandshakeSection,
 #operatorHandshakeSection * {
+  box-sizing: border-box;
   min-width: 0;
 }
 
 #operatorHandshakeSection .dynamic-row {
-  display: grid;
-  grid-template-columns: auto minmax(0, 1fr);
-  align-items: center;
-  gap: 12px;
+  display: grid !important;
+  grid-template-columns: 1fr !important;
+  align-items: start !important;
+  gap: 8px !important;
+}
+
+#operatorHandshakeSection .dynamic-row .control {
+  inline-size: 100% !important;
 }
 
 #operatorHandshakeSection .mini-note,
 #operatorHandshakeSection .proof-value,
-#operatorHandshakeSection .attestation-hint {
+#operatorHandshakeSection .attestation-hint,
+#operatorHandshakeSection .surface-copy,
+#operatorHandshakeSection .note {
   overflow-wrap: anywhere;
   word-break: normal;
 }
 
+#operatorHandshakeSection .proof-stack {
+  gap: 7px;
+}
+
 #operatorHandshakeSection .proof-row {
-  grid-template-columns: minmax(8.5rem, 0.42fr) minmax(0, 1fr);
-  align-items: start;
+  display: grid !important;
+  grid-template-columns: 1fr !important;
+  align-items: start !important;
+  gap: 5px !important;
+  padding: 10px 12px !important;
 }
 
-#operatorHandshakeSection .proof-value {
-  text-align: left;
-  line-height: 1.45;
-}
-
-#operatorHandshakeSection .builder-toolbar {
-  display: grid;
-  grid-template-columns: repeat(2, minmax(0, 1fr));
-  gap: 8px;
-}
-
-#operatorHandshakeSection .builder-toolbar .control {
-  inline-size: 100%;
-  min-inline-size: 0;
-  white-space: normal;
+#operatorHandshakeSection .proof-label {
+  font-size: 0.64rem;
   line-height: 1.25;
 }
 
+#operatorHandshakeSection .proof-value {
+  inline-size: 100%;
+  text-align: left !important;
+  font-size: 0.76rem;
+  line-height: 1.48;
+  letter-spacing: 0;
+}
+
+#operatorHandshakeSection .builder-toolbar {
+  display: grid !important;
+  grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
+  align-items: stretch !important;
+  gap: 8px !important;
+}
+
+#operatorHandshakeSection .builder-toolbar .control {
+  inline-size: 100% !important;
+  min-inline-size: 0 !important;
+  min-block-size: 44px;
+  white-space: normal !important;
+  line-height: 1.3 !important;
+  text-align: center;
+}
+
 #operatorHandshakeSection .svg-attestation-probes .attestation-summary {
-  display: block;
-  line-height: 1.55;
+  display: block !important;
+  line-height: 1.5;
   overflow-wrap: anywhere;
+}
+
+#operatorHandshakeSection .svg-attestation-probes .attestation-hint {
+  display: block;
+  margin-top: 5px;
+  font-size: 0.68rem;
+  line-height: 1.45;
 }
 
 #operatorHandshakeSection .code-area,
 #operatorHandshakeSection .dynamic-target {
+  inline-size: 100%;
   max-inline-size: 100%;
 }
 
-@media (max-width: 680px) {
-  #operatorHandshakeSection .dynamic-row,
-  #operatorHandshakeSection .proof-row,
-  #operatorHandshakeSection .builder-toolbar {
-    grid-template-columns: 1fr;
+@container (min-width: 560px) {
+  #operatorHandshakeSection .dynamic-row {
+    grid-template-columns: auto minmax(0, 1fr) !important;
+    align-items: center !important;
   }
 
   #operatorHandshakeSection .dynamic-row .control {
-    inline-size: 100%;
+    inline-size: auto !important;
   }
 
-  #operatorHandshakeSection .proof-value {
-    text-align: left;
+  #operatorHandshakeSection .proof-row {
+    grid-template-columns: minmax(9rem, 0.42fr) minmax(0, 1fr) !important;
+    gap: 14px !important;
+  }
+}
+
+@container (max-width: 320px) {
+  #operatorHandshakeSection .builder-toolbar {
+    grid-template-columns: 1fr !important;
   }
 }

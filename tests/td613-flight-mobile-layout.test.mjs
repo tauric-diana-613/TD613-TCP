@@ -76,6 +76,8 @@ assert(html.includes('justify-content: flex-start !important'));
 assert(html.includes('.flight-lane-prompt > .card:nth-of-type(4) .checkbox-row > label'));
 assert(html.includes('class="checkbox-row flight-tile-grid"'), 'Flight keeps the requested choice groups in responsive tiles');
 assert(html.includes('id="flight-tile-layout-repair"'), 'Flight loads the targeted tile layout repair');
+assert(html.includes('html body .flight-lane-prompt .card .checkbox-row.flight-tile-grid'), 'Flight tile rule outranks the terminal flex override');
+assert(html.includes('grid-template-columns: repeat(2, minmax(0, 1fr)) !important;'), 'Flight desktop tile groups use two equal columns');
 assert(html.includes('Include PUA-B codepoint U+10D613'));
 assert(html.includes('Include surrogate pair (\\uDBF5\\uDE13)'));
 

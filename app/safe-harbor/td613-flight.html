@@ -8201,29 +8201,39 @@ select {
 <style id="flight-tile-layout-repair">
   /* These are choice libraries, not a vertical form. Keep each requested
      library scannable as a field of tiles without changing the other controls. */
-  .checkbox-row.flight-tile-grid {
+  html body .flight-lane-prompt .card .checkbox-row.flight-tile-grid {
     display: grid !important;
-    grid-template-columns: repeat(auto-fit, minmax(min(100%, 15rem), 1fr)) !important;
+    grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
     align-items: stretch !important;
+    align-content: start !important;
+    inline-size: 100% !important;
+    max-inline-size: 100% !important;
+    margin-inline: 0 !important;
     gap: .42rem !important;
   }
 
-  .checkbox-row.flight-tile-grid > label {
+  html body .flight-lane-prompt .card .checkbox-row.flight-tile-grid > label {
     display: flex !important;
     align-items: flex-start !important;
     justify-content: flex-start !important;
     inline-size: 100% !important;
     min-inline-size: 0 !important;
     max-inline-size: none !important;
-    min-height: 2.8rem !important;
+    min-height: 3rem !important;
+    height: 100% !important;
+    margin: 0 !important;
     padding: .52rem .62rem !important;
     text-align: left !important;
     line-height: 1.28 !important;
   }
 
   @media (max-width: 560px) {
-    .checkbox-row.flight-tile-grid {
+    html body .flight-lane-prompt .card .checkbox-row.flight-tile-grid {
       grid-template-columns: 1fr !important;
+    }
+
+    html body .flight-lane-prompt .card .checkbox-row.flight-tile-grid > label {
+      min-height: 0 !important;
     }
   }
 </style>

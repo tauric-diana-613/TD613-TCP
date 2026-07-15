@@ -87,4 +87,15 @@ assert.ok(assetVersionsSource.includes("return 'TD613 Aperture';"), 'asset versi
 assert.ok(assetVersionsSource.includes("return 'Dome-World';"), 'asset versions keeps Dome-World title handling explicit');
 assert.ok(!assetVersionsSource.includes("document.title = 'TD613 Hush'"), 'asset bootstrap no longer overwrites every station title with Hush');
 
+const hushCosmeticSource = fs.readFileSync(path.join(repoRoot, 'app', 'hush-cosmetic-repair.css'), 'utf8');
+assert.ok(hushCosmeticSource.includes('#hushPr76AuthorshipProfileHost'), 'Hush positions the generated stylometrics host, not only its retired placeholder');
+assert.ok(hushCosmeticSource.includes('#hushSuggestedMasksPanel'), 'Hush explicitly places the later route suggestions panel');
+assert.ok(hushCosmeticSource.includes('grid-column: 1 / -1'), 'Hush route suggestions span the compact compose grid');
+assert.ok(hushCosmeticSource.includes('border-radius: 999px !important'), 'Hush preserves the native pill action grammar');
+
+const safeHarborHandshakeSource = fs.readFileSync(path.join(repoRoot, 'app', 'safe-harbor', 'app', 'operator-handshake-polish.css'), 'utf8');
+assert.ok(safeHarborHandshakeSource.includes('container-type: inline-size'), 'Safe Harbor sizes Handshake content from its narrow card');
+assert.ok(safeHarborHandshakeSource.includes('grid-template-columns: 1fr !important'), 'Safe Harbor stacks proof values before they collapse into narrow columns');
+assert.ok(safeHarborHandshakeSource.includes('@container (min-width: 560px)'), 'Safe Harbor restores split proof rows only when the card itself is wide enough');
+
 console.log('station-pages.test.mjs passed');
