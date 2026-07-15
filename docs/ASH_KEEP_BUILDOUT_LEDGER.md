@@ -2,265 +2,200 @@
 
 Date: `2026-07-14`
 
-Ledger generation: `v0.8 · post-matched-benign-control-bank`
+Ledger generation: `v0.9 · Ash product lifecycle candidate`
 
-Tracked program: Ash Keep / Choir Test / anisotropic disclosure research program
+Tracked program: Ash product lifecycle / Ash Keep / Choir Test / anisotropic disclosure research program
 
-Latest scored transition: PR `#295`, merged at `378bf0f1a81b6aa7b9ebe8379ca207d6f1f36925`
+Latest merged scored transition: PR `#295`, merge `378bf0f1a81b6aa7b9ebe8379ca207d6f1f36925`
 
-## Purpose
+Candidate transition: `agent/ash-threshold-custody-well` · validation and production evidence pending
 
-This ledger records the present repository state after Ash production closure, pairwise Moiré, observation-state hardening, Reader provenance, Reader disagreement, and the matched benign adjacent-document control bank.
-
-It separates production-demonstrated stations, validation-gated instruments, adjacent primitives, designed-only work, and intentionally held transport work.
-
-A green unit test is not production evidence. A merged engine is not a deployed instrument. Production status does not transfer by adjacency. Provenance bound is not truth. Reader consensus is not truth. A control distribution is not a population distribution.
-
-## Maturity scale
+## Governing law
 
 | Score | Status | Meaning |
 | ---: | --- | --- |
 | 0 | `UNIMPLEMENTED` | No implementation located. |
-| 1 | `DESIGNED_ONLY` | Doctrine or roadmap exists; executable behavior does not. |
+| 1 | `DESIGNED_ONLY` | Doctrine exists; executable behavior does not. |
 | 2 | `SCAFFOLDED` | Contract or adjacent primitive exists without the complete workflow. |
 | 3 | `PARTIAL_TESTED_COMPONENT` | Functional component exists with incomplete integration or closure. |
-| 4 | `IMPLEMENTED_VALIDATION_GATED` | Integrated implementation with focused validation; production demonstration unearned. |
-| 5 | `IMPLEMENTED_PRODUCTION_DEMONSTRATED` | Deployed behavior directly probed and sealed in a production receipt. |
+| 4 | `IMPLEMENTED_VALIDATION_GATED` | Integrated and focused-tested; production demonstration unearned. |
+| 5 | `IMPLEMENTED_PRODUCTION_DEMONSTRATED` | Deployed behavior directly probed and sealed. |
 
-Scores measure implementation maturity only. They are not privacy, safety, truth, or capability probabilities.
-
----
+A green unit test is not production evidence. An adjacent primitive is not an integrated workflow. A shared chamber is not lifecycle orchestration. Production status never transfers by proximity.
 
 # Executive scorecard
 
-| Workstream | Prior | Current | Coverage | Ruling |
-| --- | ---: | ---: | ---: | --- |
-| A. Ash Keep v1.0 production closure | 54 / 55 | **54 / 55** | **98%** | `IMPLEMENTED_PRODUCTION_DEMONSTRATED`; external-provider production call remains unobserved |
-| B. Choir Test / Moiré research program | 34 / 70 | **36 / 70** | **51%** | Four validation-gated Choir instruments on `main` |
-| C. Hush intervention ensemble | 7 / 35 | **7 / 35** | **20%** | `SCAFFOLDED` |
-| D. Custodian Return / Anisotropy Receipt | 7 / 35 | **7 / 35** | **20%** | `SCAFFOLDED` |
-| E. Aperture wiring renovation | 6 / 25 | **6 / 25** | **24%** | `DESIGNED_ONLY / SCAFFOLDED` |
-| F. Safe Harbor → Ash adapter | 6 / 30 | **6 / 30** | **20%** | `SCAFFOLDED` |
-| G. Destination-bound transport | 7 / 45 | **7 / 45** | **16%** | `HELD / SCAFFOLDED` |
+| Workstream | Current | Coverage | Ruling |
+| --- | ---: | ---: | --- |
+| A. Ash Keep v1.0 production closure | **54 / 55** | **98%** | `IMPLEMENTED_PRODUCTION_DEMONSTRATED`; external-provider call remains unobserved |
+| B. Choir Test / Moiré program | **36 / 70** | **51%** | Four validation-gated instruments on `main` |
+| C. Hush intervention ensemble | **7 / 35** | **20%** | `SCAFFOLDED` |
+| D. Custodian Return / Anisotropy | **7 / 35** | **20%** | `SCAFFOLDED` |
+| E. Aperture wiring renovation | **6 / 25** | **24%** | `DESIGNED_ONLY / SCAFFOLDED` |
+| F. Safe Harbor → Ash adapter | **6 / 30** | **20%** | `SCAFFOLDED` |
+| G. Destination-bound transport | **7 / 45** | **16%** | `HELD / SCAFFOLDED` |
+| H. Ash product lifecycle orchestration | **18 / 35 candidate** | **51%** | `PARTIAL_TESTED_COMPONENT / VALIDATION_PENDING`; no production inheritance |
 
 ```text
-program maturity on main = 123 / 295 ≈ 42%
-production-demonstrated workstreams = 1 / 7
-validation-gated Choir instruments on main = 4
+main = 123 / 295 ≈ 42%
+candidate including lifecycle scope = 141 / 330 ≈ 43%
+production-demonstrated workstreams = 1 / 8
+validation-gated Choir instruments = 4
 transport-capable workstreams = 0
 ```
 
-## Arithmetic lineage
-
-- v0.4 corrected stale Choir arithmetic from `26` to `30` without inventing progress.
-- v0.5 added one point when Reader provenance moved B4 from 3 to 4.
-- v0.6 added three points when Reader disagreement moved B13 from 1 to 4.
-- v0.7 synchronized roadmap and historical PR #281 provenance without changing maturity.
-- v0.8 adds two points because B12 moved from 2 to 4.
-
----
-
-# Historical baseline: PR #281
-
-The earlier draft snapshot recorded Ash at `33 / 55`, Choir at `26 / 70`, approximately `22%` on `main`, and zero production-demonstrated workstreams. That remains historical provenance rather than current truth.
-
-PR #281 later merged at `1a01181cea77590ad3067ebd27da4518511dac5f`.
-
-The earlier correction remains valid: the first PR #281 delivery did not contain the production-closure scaffolding previously announced. Later completion does not retroactively make that earlier statement accurate.
-
----
+The H score remains outside the `main` total until merge. It may rise to 4-level maturity only after focused validation and to 5 only after a deployed browser probe and sealed receipt.
 
 # A. Ash Keep v1.0 production closure
 
-Status: `IMPLEMENTED_PRODUCTION_DEMONSTRATED`
+Status: `IMPLEMENTED_PRODUCTION_DEMONSTRATED` · score `54 / 55`
 
-Score: `54 / 55`
+Evidence spine:
 
-Evidence:
+- production promotion `5cb72bb2d7314666c7191ef5e8f9f8235e01984f`
+- deployed observer `29373962583`
+- aftercare artifact `8327164665`
+- artifact digest `sha256:44ee07bfc33fbb6446c18bd893f4fa289919e438d6b4b641c9cfc33824d7a266`
 
-- production promotion: `5cb72bb2d7314666c7191ef5e8f9f8235e01984f`
-- post-promotion observer: `29361816862`
-- latest non-disturbance observer: `29373962583`
-- latest aftercare artifact: `8327164665`
-- artifact SHA-256: `sha256:44ee07bfc33fbb6446c18bd893f4fa289919e438d6b4b641c9cfc33824d7a266`
+| ID | Buildout | Score |
+| --- | --- | ---: |
+| A1 | Case creation, IndexedDB, reload, digest continuity | 5 |
+| A2 | Room and cross-Room separation | 5 |
+| A3 | Route Memory successor entries | 5 |
+| A4 | Deterministic, benign-control, and held-out Reader trials | 5 |
+| A5 | Stale-draft and changed-route holds | 5 |
+| A6 | Hush parity and forbidden-field rejection | 4 |
+| A7 | Save Point verification | 5 |
+| A8 | Capsule round trip and failure holds | 5 |
+| A9 | Desktop/mobile/rotation/reduced-motion/scale | 5 |
+| A10 | Arrival triggers neither persistence nor transport | 5 |
+| A11 | Durable receipt, synchronized release, aftercare | 5 |
 
-| ID | Buildout | Score | Status |
-| --- | --- | ---: | --- |
-| A1 | Case creation, IndexedDB custody, reload, digest continuity | 5 | `IMPLEMENTED_PRODUCTION_DEMONSTRATED` |
-| A2 | Room and cross-Room separation | 5 | `IMPLEMENTED_PRODUCTION_DEMONSTRATED` |
-| A3 | Route Memory successor entries | 5 | `IMPLEMENTED_PRODUCTION_DEMONSTRATED` |
-| A4 | Deterministic, benign-control, and held-out Reader trials | 5 | `IMPLEMENTED_PRODUCTION_DEMONSTRATED` |
-| A5 | Stale-draft and changed-route holds | 5 | `IMPLEMENTED_PRODUCTION_DEMONSTRATED` |
-| A6 | Hush packet parity and forbidden-field rejection | 4 | `IMPLEMENTED_VALIDATION_GATED` |
-| A7 | Save Point verification | 5 | `IMPLEMENTED_PRODUCTION_DEMONSTRATED` |
-| A8 | Capsule export/import and failure holds | 5 | `IMPLEMENTED_PRODUCTION_DEMONSTRATED` |
-| A9 | Desktop/mobile/rotation/reduced-motion/scale | 5 | `IMPLEMENTED_PRODUCTION_DEMONSTRATED` |
-| A10 | Arrival triggers neither persistence nor transport | 5 | `IMPLEMENTED_PRODUCTION_DEMONSTRATED` |
-| A11 | Durable receipt, synchronized release, aftercare | 5 | `IMPLEMENTED_PRODUCTION_DEMONSTRATED` |
+A does not demonstrate H. The Keep closed before arrival, readiness, custody-root binding, and lifecycle gates became one product sequence.
 
-The retained point protects one jurisdictional fact: a no-call closure assay cannot production-demonstrate an external-provider route.
+# B. Choir Test / Moiré program
 
----
+Status: `IMPLEMENTED_VALIDATION_GATED` · score `36 / 70`
 
-# B. Choir Test / Moiré research program
-
-Status: `IMPLEMENTED_VALIDATION_GATED`
-
-Repository state: `MATCHED_CONTROLS_ON_MAIN`
-
-Score: `36 / 70`
-
-## Merge spine
+Merge spine:
 
 ```text
-pairwise core              1a01181cea77590ad3067ebd27da4518511dac5f
-observation hardening      52968efb0fb52ecc138dc4d4b80b60725473fa63
-Reader provenance          b0b600a07c8343311cdde50c2f250881e7f6091c
-Reader disagreement        3a8dbebf1ad65f7ee281c2fcd5816afd8584c984
-matched benign controls    378bf0f1a81b6aa7b9ebe8379ca207d6f1f36925
+pairwise core            1a01181cea77590ad3067ebd27da4518511dac5f
+observation hardening    52968efb0fb52ecc138dc4d4b80b60725473fa63
+Reader provenance        b0b600a07c8343311cdde50c2f250881e7f6091c
+Reader disagreement      3a8dbebf1ad65f7ee281c2fcd5816afd8584c984
+matched controls         378bf0f1a81b6aa7b9ebe8379ca207d6f1f36925
 ```
 
-## Matched-control evidence
-
-- PR: `#295`
-- validated head: `6dabad7f6164802ea544a49c3193f12a999b345e`
-- Choir run: `29373864154`
-- Ash closure run: `29373864175`
-- Phase IV run: `29373864134`
-- TCP Smoke: `29373864151`
-- static app: `29373864141`
-- post-merge observer: `29373962583`
-- aftercare artifact: `8327164665`
-- artifact SHA-256: `sha256:44ee07bfc33fbb6446c18bd893f4fa289919e438d6b4b641c9cfc33824d7a266`
-
-| ID | Buildout | Score | Status | Bring forward |
-| --- | --- | ---: | --- | --- |
-| B1 | Baseline + singleton + unordered pair observations | 4 | `IMPLEMENTED_VALIDATION_GATED` | Preserve coverage distinctions. |
-| B2 | Emergent residue | 4 | `IMPLEMENTED_VALIDATION_GATED` | Add independent fixture families. |
-| B3 | Componentwise recoverability | 4 | `IMPLEMENTED_VALIDATION_GATED` | Preserve dimensions across receipts. |
-| B4 | Named Reader classes and provenance | 4 | `IMPLEMENTED_VALIDATION_GATED` | Preserve adapter invariants. |
-| B5 | Canonical ordering | 4 | `IMPLEMENTED_VALIDATION_GATED` | Preserve projection, result, and control canonicalization. |
-| B6 | Calibration conditions | 4 | `IMPLEMENTED_VALIDATION_GATED` | Replace free booleans with receipt references. |
-| B7 | Digest verification, tamper hold, replay | 4 | `IMPLEMENTED_VALIDATION_GATED` | Bind calibration to verified control-bank digest. |
-| B8 | Higher-order combinations | 0 | `UNIMPLEMENTED` | Define bounded k-order contract later. |
-| B9 | Ordered route permutations | 0 | `UNIMPLEMENTED` | Build distinct sequence assay. |
-| B10 | Temporal spacing | 0 | `UNIMPLEMENTED` | Add declared temporal slices. |
-| B11 | Same obligations under different registers | 0 | `UNIMPLEMENTED` | Build Hush intervention bridge. |
-| B12 | Matched benign adjacent-document control bank | 4 | `IMPLEMENTED_VALIDATION_GATED` | Bind B6 calibration gates to bank receipts. |
-| B13 | Cross-Reader disagreement | 4 | `IMPLEMENTED_VALIDATION_GATED` | Interpret only through matched controls. |
-| B14 | Public/operator UI and production demonstration | 0 | `UNIMPLEMENTED` | Wait for Aperture refactor and mobile gate. |
-
-Choir now supports:
-
-```text
-pairwise recovery
-→ Reader provenance
-→ Reader disagreement
-→ matched benign controls
-```
-
-The fourth instrument preserves exclusions and residual confounds, emits no universal score, and performs no Reader or provider execution. All four remain validation-gated.
-
----
+| ID | Buildout | Score |
+| --- | --- | ---: |
+| B1 | Baseline, singleton, unordered pairs | 4 |
+| B2 | Emergent residue | 4 |
+| B3 | Componentwise recoverability | 4 |
+| B4 | Reader classes and provenance | 4 |
+| B5 | Canonical ordering | 4 |
+| B6 | Calibration conditions | 4 |
+| B7 | Digest verification, tamper hold, replay | 4 |
+| B8 | Higher-order combinations | 0 |
+| B9 | Ordered route permutations | 0 |
+| B10 | Temporal spacing | 0 |
+| B11 | Same obligations, different registers | 0 |
+| B12 | Matched benign adjacent-document controls | 4 |
+| B13 | Cross-Reader disagreement | 4 |
+| B14 | Operator UI and production demonstration | 0 |
 
 # C. Hush intervention ensemble
 
-| ID | Buildout | Score |
-| --- | --- | ---: |
-| C1 | Externalize vocabulary | 1 |
-| C2 | Hold proposition obligations constant | 2 |
-| C3 | Normalize transformation dimensions | 2 |
-| C4 | Preserve obligations while changing surface | 2 |
-| C5 | Shared Reader ensemble | 0 |
-| C6 | Componentwise comparison | 0 |
-| C7 | Intervention receipt | 0 |
+`7 / 35`: vocabulary 1; proposition obligations 2; normalized transformation dimensions 2; surface variation with obligations preserved 2; shared Reader ensemble 0; componentwise comparison 0; intervention receipt 0.
 
 # D. Custodian Return / Anisotropy
 
-| ID | Buildout | Score |
-| --- | --- | ---: |
-| D1 | Save Point and Capsule primitives | 4 |
-| D2 | Authorized future Reader import | 2 |
-| D3 | Restore receipts and history | 1 |
-| D4 | Controlled context-loss assay | 0 |
-| D5 | Custodial versus external comparison | 0 |
-| D6 | Anisotropy Receipt | 0 |
-| D7 | Multi-Reader calibration | 0 |
+`7 / 35`: Save Point and Capsule primitives 4; authorized future Reader import 2; receipt/history restoration 1; context-loss assay 0; custodial/external comparison 0; Anisotropy Receipt 0; multi-Reader calibration 0.
+
+Custodian Return must now restore the custody-bound lifecycle root and its provenance, rather than merely reopen a Capsule.
 
 # E. Aperture wiring renovation
 
-| ID | Buildout | Score |
-| --- | --- | ---: |
-| E1 | Split inline scripts | 1 |
-| E2 | Replace wrapper-chain patches | 1 |
-| E3 | Register Choir layers | 2 |
-| E4 | Preserve animation scheduler | 1 |
-| E5 | Mobile/performance receipt | 1 |
+`6 / 25`: split scripts 1; replace wrapper chains 1; register Choir layers 2; preserve scheduler 1; mobile/performance receipt 1.
+
+Aperture may preserve `ash-readiness` as a machine contract. Human-facing surfaces must present Quick Scan and may not promote readiness into the Ash product name.
 
 # F. Safe Harbor → Ash adapter
 
-| ID | Buildout | Score |
-| --- | --- | ---: |
-| F1 | Stable packet/hook surface | 3 |
-| F2 | Verified packet enters Ash node | 0 |
-| F3 | Custody reference without raw corpus | 0 |
-| F4 | Optional route-scoped relation | 1 |
-| F5 | Separate signature overlay | 1 |
-| F6 | Reject universal join key/raw default | 1 |
+`6 / 30`: stable hook 3; verified packet enters custody-root ingress 0; custody reference without raw corpus 0; optional route relation 1; separate signature overlay 1; reject universal join key/raw default 1.
+
+The adapter target has changed. A verified packet must enter through the custody-root ingress and become case-bound under H. A generic Ash node would reproduce the annex problem.
 
 # G. Destination-bound transport
 
-| ID | Buildout | Score |
-| --- | --- | ---: |
-| G1 | Destination-bound fragments | 0 |
-| G2 | Recipient-specific scope | 2 |
-| G3 | Mandatory Rebuild preflight | 0 |
-| G4 | Separate authorization/execution receipts | 2 |
-| G5 | Honest recall limits | 2 |
-| G6 | Independent provenance adapter | 0 |
-| G7 | Mobile transport evidence | 0 |
-| G8 | Failure recovery without topology widening | 1 |
-| G9 | Recipient execution path | 0 |
+`7 / 45`: destination fragment 0; recipient scope 2; mandatory Rebuild preflight 0; authorization/execution separation 2; recall limits 2; provenance adapter 0; mobile evidence 0; leak-safe recovery 1; execution path 0.
 
----
+A release receipt alone is insufficient. Future transport must require a custody-bound case in `RELEASE_ELIGIBLE` lifecycle state.
+
+# H. Ash product lifecycle orchestration
+
+Status: candidate `PARTIAL_TESTED_COMPONENT / VALIDATION_PENDING` · score `18 / 35`
+
+```text
+ARRIVAL_UNPERSISTED
+→ READINESS_OBSERVED
+→ CUSTODY_ROOT_PROVISIONAL / CUSTODY_ROOT_VERIFIED
+→ CASE_BOUND
+→ REBUILD_ELIGIBLE
+→ RELEASE_ELIGIBLE
+→ CONTINUITY_SEALED
+```
+
+| ID | Buildout | Score | Bring forward |
+| --- | --- | ---: | --- |
+| H1 | Dome Ash tab routes to art-forward threshold; arrival remains unpersisted | 3 | PR, preview, mobile, and reduced-motion evidence |
+| H2 | Quick Scan receipt rejects raw content and preserves readiness ≠ custody | 3 | Canonical sealing and session-only handoff validation |
+| H3 | L0/L1 custody registration and digest verification integrated into Keep | 3 | Live API, offline, stale-selection, and tamper evidence |
+| H4 | Verified custody becomes Case Map root and changes `case_map_digest` | 3 | Reload, idempotent rebinding, stale-test invalidation |
+| H5 | Rooms, Routes, Test, Draft release, and review use lifecycle gates | 3 | Interaction, keyboard, and accessibility receipts |
+| H6 | Save Point and Capsule inherit custody through committed Case Map | 3 | Encrypted round trip with custody-bound root |
+| H7 | Deployed production demonstration and promotion gate | 0 | Required before production status |
+
+Directional effects:
+
+- Safe Harbor → Ash targets custody-root ingress.
+- Custodian Return restores readiness provenance, custody root, case binding, route history, and continuity state.
+- Aperture keeps `ash-readiness` only as machine vocabulary; human grammar says Quick Scan.
+- Destination transport requires `RELEASE_ELIGIBLE`.
 
 # Forward completion order
 
 ```text
-1. Bind calibration gates to matched-control receipt references
-2. Build higher-order interference separately
-3. Build ordered route-sequence recovery separately
-4. Build temporal and delayed-disclosure assays separately
-5. Externalize Hush discourse vocabulary
-6. Build Hush intervention ensemble
-7. Build Custodian Return Test and Anisotropy Receipt
-8. Refactor Aperture wiring before Choir UI
-9. Build Safe Harbor → Ash adapter
-10. Add independent provenance adapters
-11. Design destination-bound transport last
+1. Validate, merge, and production-demonstrate Ash lifecycle orchestration
+2. Bind Choir calibration gates to matched-control receipt references
+3. Build higher-order interference separately
+4. Build ordered route-sequence recovery separately
+5. Build temporal and delayed-disclosure assays separately
+6. Externalize Hush discourse vocabulary
+7. Build Hush intervention ensemble
+8. Build Custodian Return around the custody-bound lifecycle root
+9. Refactor Aperture before Choir UI
+10. Build Safe Harbor → Ash custody-root adapter
+11. Add independent provenance adapters
+12. Design destination-bound transport last
 ```
 
-## Immediate next packet
+## Immediate validation packet
 
-Replace free calibration booleans with explicit matched-control receipt references:
-
-- bind bank ID and digest;
-- bind Reader set and input-contract digest;
-- verify the bank before calibration;
-- require `calibration_eligible = true`;
-- carry bank state, exclusions, matching failures, and residual confounds;
-- hold on missing, mismatched, tampered, or ineligible references;
-- replay without recomputing controls or rerunning Readers;
-- grant no operational authority.
+- render Dome-World through its runtime shell and verify threshold routing;
+- prove no persistence or network activity before the clearing gesture;
+- preserve reduced-motion, keyboard, desktop, mobile, and rotation behavior;
+- carry the session Quick Scan receipt into Ash Keep;
+- register L0 and L1 roots and hold tampered, stale, failed, and offline cases;
+- bind the root into new and existing Case Maps;
+- prove the digest changes and pre-binding tests become stale;
+- prove workspace and release gates follow lifecycle state;
+- complete Rebuild, Draft Review, Release, Save Point, and encrypted Capsule;
+- seal screenshots, storage/network observations, runtime artifacts, and digests;
+- promote only after the deployed probe passes.
 
 ## Final ruling
 
-Ash Keep remains production-demonstrated. Choir is merged, adversarially hardened, provenance-bound, disagreement-aware, matched-control calibrated, and validation-gated.
+Ash Keep remains production-demonstrated. The Ash product lifecycle is a separate candidate workstream and inherits no production status by adjacency. Choir remains validation-gated.
 
-The bounded program is **123 / 295 ≈ 42% implemented by ledger arithmetic**, with one production-demonstrated workstream and four validation-gated Choir instruments on `main`.
-
-Architecturally coherent. Still incomplete exactly where the ledger says incomplete.
-
-𝌋‌ U+10D613
-
-Marked ⟐
+Main remains **123 / 295 ≈ 42%**. The candidate branch is **141 / 330 ≈ 43%**, with one of eight workstreams production-demonstrated.
