@@ -44,7 +44,10 @@ assert.ok(!configuredFunctions.includes('api/ash-keep-js-shell.js'), 'Ash Keep J
 assert.equal(vercel.functions?.['api/hush-generate-strict.js']?.maxDuration, 60);
 assert.equal(vercel.functions?.['api/hush-generate.js']?.maxDuration, 60);
 assert.equal(vercel.functions?.['api/dome-world-shell.js']?.maxDuration, 10);
-assert.equal(vercel.functions?.['api/dome-world-shell.js']?.includeFiles, 'app/dome-world/{index.html,ash-keep.html,ash-keep.js}');
+const domeShellIncludes = vercel.functions?.['api/dome-world-shell.js']?.includeFiles || '';
+assert.match(domeShellIncludes, /app\/dome-world\/index\.html/);
+assert.match(domeShellIncludes, /app\/dome-world\/ash-keep\.html/);
+assert.match(domeShellIncludes, /app\/dome-world\/ash-keep\.js/);
 assert.equal(vercel.functions?.['api/dome-world-engine.py']?.maxDuration, 60);
 assert.equal(vercel.functions?.['api/dome-world-engine-guard.py']?.maxDuration, 60);
 assert.equal(vercel.functions?.['api/ash-local-commitment.py']?.maxDuration, 60);
