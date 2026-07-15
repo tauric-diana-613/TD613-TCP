@@ -193,7 +193,7 @@ jobs:
         run: node scripts/publish-ash-keep-observer-status.mjs
       - name: Install repository dependencies
         run: npm ci
-      - name: Wait for deployed Ash threshold and lifecycle-composed Keep
+      - name: Wait for deployed Ash lifecycle-composed threshold and Keep
         run: |
           set -euo pipefail
           mkdir -p artifacts/ash-lifecycle-deployed-observation
@@ -202,7 +202,8 @@ jobs:
           for attempt in $(seq 1 72); do
             threshold_body="$(curl -fsSL --max-time 10 "$threshold" || true)"
             keep_body="$(curl -fsSL --max-time 10 "$keep" || true)"
-            if printf '%s' "$threshold_body" | grep -q 'TD613 Ash · Threshold' \
+            if printf '%s' "$threshold_body" | grep -q 'name="ash-lifecycle" content="v0.1"' \
+              && printf '%s' "$threshold_body" | grep -q '/dome-world/ash-lifecycle.js' \
               && printf '%s' "$keep_body" | grep -q 'name="ash-lifecycle" content="v0.1"' \
               && printf '%s' "$keep_body" | grep -q '/dome-world/ash-lifecycle.js'; then
               printf '%s' "$threshold_body" > artifacts/ash-lifecycle-deployed-observation/deployed-threshold.html

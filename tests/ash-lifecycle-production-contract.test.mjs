@@ -28,11 +28,13 @@ function invokeShell(req) {
 
 for (const marker of [
   /Ash Lifecycle Deployed Observation/,
-  /TD613 Ash · Threshold/,
+  /Wait for deployed Ash lifecycle-composed threshold and Keep/,
+  /threshold_body" \| grep -q 'name="ash-lifecycle" content="v0\.1"'/,
   /name="ash-lifecycle" content="v0\.1"/,
   /Observe deployed Ash lifecycle without promotion/,
   /node scripts\/ash-lifecycle-production-probe\.mjs/
 ]) assert.match(workflow, marker);
+assert.doesNotMatch(workflow, /TD613 Ash · Threshold/, 'Deployed readiness must not require the retired standalone threshold title.');
 const deployedJob = workflow.split('  deployed-observation:')[1] || '';
 assert.doesNotMatch(deployedJob, /run-ash-keep-production-probe/);
 assert.match(deployedJob, /CONTINUITY_SEALED/);
