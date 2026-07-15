@@ -169,9 +169,18 @@ const context = await browser.newContext({ viewport: { width: 1440, height: 1000
 const page = await context.newPage();
 const consoleErrors = [];
 const requests = [];
+const httpErrors = [];
 page.on('console', message => { if (message.type() === 'error') consoleErrors.push(message.text()); });
 page.on('pageerror', error => consoleErrors.push(error.message));
 page.on('request', request => requests.push({ method: request.method(), url: request.url(), body: request.postData() }));
+page.on('response', response => {
+  if (response.status() < 400) return;
+  httpErrors.push({
+    status: response.status(),
+    url: response.url(),
+    resource_type: response.request().resourceType()
+  });
+});
 page.on('dialog', dialog => dialog.accept());
 
 const report = {
@@ -180,7 +189,9 @@ const report = {
   status: 'RUNNING',
   promotion_authorized: false,
   observations: {},
-  console_errors: consoleErrors
+  console_errors: consoleErrors,
+  http_errors: httpErrors,
+  browser_chrome_http_errors: []
 };
 
 try {
@@ -335,8 +346,28 @@ try {
   const nonRead = requests.filter(request => !['GET', 'HEAD'].includes(request.method));
   assert(nonRead.length === 0, `Convergence preview emitted non-read requests: ${nonRead.map(request => request.url).join(', ')}`);
   assert(!requests.some(request => /hush-generate|recipient|transport|cinder/i.test(request.url)), 'Convergence preview reached a provider, Cinder, or recipient route.');
-  assert(consoleErrors.length === 0, `Browser console errors: ${consoleErrors.join(' | ')}`);
-  report.observations.boundaries = { local_storage_keys: localKeys, non_read_requests: [], provider_recipient_cinder_transport_requests: [] };
+  const browserChromeHttpErrors = httpErrors.filter(item => {
+    try {
+      return new URL(item.url).pathname === '/favicon.ico' && item.resource_type === 'other';
+    } catch {
+      return false;
+    }
+  });
+  const productHttpErrors = httpErrors.filter(item => !browserChromeHttpErrors.includes(item));
+  const materialConsoleErrors = consoleErrors.filter(message => {
+    if (!/Failed to load resource: the server responded with a status of 404/i.test(message)) return true;
+    return productHttpErrors.length > 0 || browserChromeHttpErrors.length === 0;
+  });
+  report.browser_chrome_http_errors = browserChromeHttpErrors;
+  assert(productHttpErrors.length === 0, `Convergence preview loaded failing product resources: ${productHttpErrors.map(item => `${item.status} ${item.url}`).join(', ')}`);
+  assert(materialConsoleErrors.length === 0, `Browser console errors: ${materialConsoleErrors.join(' | ')}`);
+  report.observations.boundaries = {
+    local_storage_keys: localKeys,
+    non_read_requests: [],
+    provider_recipient_cinder_transport_requests: [],
+    product_http_errors: [],
+    browser_chrome_http_errors: browserChromeHttpErrors
+  };
   report.status = 'PASS';
 } catch (error) {
   report.status = 'HOLD_FOR_REPAIR';
