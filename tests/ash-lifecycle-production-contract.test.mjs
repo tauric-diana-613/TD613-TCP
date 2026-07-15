@@ -5,6 +5,7 @@ import handler from '../api/dome-world-shell.js';
 const read = path => fs.readFileSync(path, 'utf8');
 const workflow = read('.github/workflows/ash-keep-production-closure.yml');
 const probe = read('scripts/ash-lifecycle-production-probe.mjs');
+const probeCore = read('scripts/ash-lifecycle-production-probe-core.mjs');
 const shell = read('api/dome-world-shell.js');
 const adapter = read('app/dome-world/ash-keep-entry.html');
 const adapterJs = read('app/dome-world/ash-keep-entry.js');
@@ -52,6 +53,13 @@ for (const token of [
 assert.match(probe, /promotion_authorized: false/);
 assert.match(probe, /readiness is not custody/);
 assert.match(probe, /continuity is not transport/);
+assert.match(probe, /ash-lifecycle-production-probe-core\.mjs/);
+assert.match(probe, /SYNTHETIC_DRAFT_BODY/);
+assert.match(probe, /page\.locator\('#draftBody'\)\.fill/);
+assert.match(probe, /seamCount !== 1/);
+assert.match(probe, /ash-lifecycle-production-probe-runtime\.mjs/);
+assert.match(probeCore, /await openWorkspace\(page, 'draft'\);\n  await page\.locator\('#keepDraft'\)\.click\(\);/);
+assert.doesNotMatch(probeCore, /page\.locator\('#draftBody'\)\.fill/);
 
 assert.match(shell, /ASH_KEEP_ENTRY_ROUTE = '\/dome-world\/ash-keep-entry\.html'/);
 assert.match(shell, /ASH_KEEP_JS_SHELL_VERSION = 'td613\.ash-keep\.js-shell\/v0\.2-review-refresh'/);
