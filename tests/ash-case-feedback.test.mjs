@@ -30,16 +30,19 @@ assert.equal(document.documentElement.dataset.ashSavePending, 'false');
 assert.equal(document.getElementById('storageState').textContent, 'Case saved');
 assert.equal(document.documentElement.dataset.ashSaveFeedback, 'case_feedback_fixture');
 
-// Simulate lifecycle posture racing the operator confirmation.
-document.getElementById('storageState').textContent = 'CASE BOUND';
-await new Promise(resolve => window.setTimeout(resolve, 90));
-assert.equal(document.getElementById('storageState').textContent, 'Case saved', 'Save confirmation must outlive the immediate lifecycle repaint.');
+// Simulate lifecycle posture repainting repeatedly throughout the bounded acknowledgment window.
+for (const delay of [90, 420, 880]) {
+  document.getElementById('storageState').textContent = 'CASE BOUND';
+  await new Promise(resolve => window.setTimeout(resolve, delay));
+  assert.equal(document.getElementById('storageState').textContent, 'Case saved', 'Save confirmation must remain stable throughout lifecycle repaint timing.');
+}
 
-await new Promise(resolve => window.setTimeout(resolve, 1650));
+await new Promise(resolve => window.setTimeout(resolve, 350));
 assert.equal(document.documentElement.dataset.ashSaveFeedback, undefined);
 assert.equal(lifecycleRefreshes, 1, 'Lifecycle posture must be restored after the bounded confirmation window.');
 
 const source = await import('node:fs').then(fs => fs.readFileSync('app/dome-world/ash-case-feedback.js', 'utf8'));
+assert.match(source, /MutationObserver/);
 assert.doesNotMatch(source, /localStorage|indexedDB|fetch\(|requestAnimationFrame/, 'Save feedback must remain presentation-only.');
 
 dom.window.close();
