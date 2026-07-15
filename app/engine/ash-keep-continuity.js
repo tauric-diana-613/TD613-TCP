@@ -68,6 +68,11 @@ async function deriveKey(passphrase, salt, iterations, cryptoImpl, TextEncoderIm
 }
 
 export async function compileSavePoint(input = {}, options = {}) {
+  const releaseReceiptReference = input.releaseReceiptReference ? text(input.releaseReceiptReference, 'Release Receipt reference') : null;
+  const releaseReceiptDigest = optionalDigest(input.releaseReceiptDigest, 'Release Receipt digest');
+  if (Boolean(releaseReceiptReference) !== Boolean(releaseReceiptDigest)) {
+    throw new Error('Save Point release binding requires both reference and digest.');
+  }
   const record = {
     schema: SAVE_POINT_SCHEMA,
     save_point_id: input.savePointId || randomId('save_', options.cryptoImpl || globalThis.crypto),
@@ -75,8 +80,8 @@ export async function compileSavePoint(input = {}, options = {}) {
     created_at: now(input.createdAt),
     case_map_digest: text(input.caseMapDigest, 'Case Map digest'),
     route_memory_digest: text(input.routeMemoryDigest, 'Route Memory digest'),
-    release_receipt_reference: input.releaseReceiptReference ? text(input.releaseReceiptReference, 'Release Receipt reference') : null,
-    release_receipt_digest: optionalDigest(input.releaseReceiptDigest, 'Release Receipt digest'),
+    release_receipt_reference: releaseReceiptReference,
+    release_receipt_digest: releaseReceiptDigest,
     evidence_inventory: unique(input.evidenceInventory || []),
     unanswered_questions: unique(input.unansweredQuestions || []),
     corroboration_state: clone(input.corroborationState || []),
