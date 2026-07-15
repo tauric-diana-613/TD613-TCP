@@ -1,20 +1,32 @@
-export const ASH_CASE_FEEDBACK_VERSION = 'td613.ash-keep.case-feedback/v0.1';
+export const ASH_CASE_FEEDBACK_VERSION = 'td613.ash-keep.case-feedback/v0.2';
 
 const INSTALL_MARK = Symbol.for('td613.ash-case-feedback.installed');
 const SAVE_FEEDBACK_MS = 1600;
+const SAVE_PENDING_TIMEOUT_MS = 10_000;
 
 function currentStatus(doc) {
   return doc.getElementById('storageState');
+}
+
+function caseCommands(doc) {
+  return [doc.getElementById('saveCase'), doc.getElementById('closeCase')].filter(Boolean);
 }
 
 export function installAshCaseFeedback(doc = globalThis.document, host = globalThis.window) {
   if (!doc?.documentElement || !host?.addEventListener || host[INSTALL_MARK]) return false;
   host[INSTALL_MARK] = true;
   const timers = new Set();
+  let pendingCaseId = null;
+  let pendingTimeout = null;
 
   const clearTimers = () => {
     for (const timer of timers) host.clearTimeout(timer);
     timers.clear();
+  };
+
+  const setCommandHold = held => {
+    for (const command of caseCommands(doc)) command.disabled = held;
+    doc.documentElement.dataset.ashSavePending = String(held);
   };
 
   const applySavedFeedback = caseId => {
@@ -23,10 +35,32 @@ export function installAshCaseFeedback(doc = globalThis.document, host = globalT
     if (status) status.textContent = 'Case saved';
   };
 
+  host.addEventListener('click', event => {
+    const save = event.target?.closest?.('#saveCase');
+    if (!save || save.disabled) return;
+    pendingCaseId = host.localStorage?.getItem?.('td613.ash-keep.current-case') || 'CURRENT_SAVED';
+    setCommandHold(true);
+    if (pendingTimeout) host.clearTimeout(pendingTimeout);
+    pendingTimeout = host.setTimeout(() => {
+      if (!pendingCaseId) return;
+      pendingCaseId = null;
+      setCommandHold(false);
+      delete doc.documentElement.dataset.ashSaveFeedback;
+      const status = currentStatus(doc);
+      if (status) status.textContent = 'Save confirmation held';
+    }, SAVE_PENDING_TIMEOUT_MS);
+  });
+
   host.addEventListener('td613:ash:constitutional:case-state', event => {
     const detail = event.detail || {};
     if (detail.state !== 'CURRENT_SAVED') return;
     clearTimers();
+    if (pendingTimeout) {
+      host.clearTimeout(pendingTimeout);
+      pendingTimeout = null;
+    }
+    pendingCaseId = null;
+    setCommandHold(false);
     const marker = detail.case_id || 'CURRENT_SAVED';
     doc.documentElement.dataset.ashSaveFeedback = marker;
     applySavedFeedback(marker);
@@ -48,6 +82,7 @@ export function installAshCaseFeedback(doc = globalThis.document, host = globalT
   });
 
   doc.documentElement.dataset.ashCaseFeedback = ASH_CASE_FEEDBACK_VERSION;
+  doc.documentElement.dataset.ashSavePending = 'false';
   return true;
 }
 
