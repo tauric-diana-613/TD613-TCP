@@ -3,7 +3,8 @@ import path from 'node:path';
 import { createHash } from 'node:crypto';
 
 const ALLOWED_STATES = new Set(['pending', 'success', 'failure', 'error']);
-const CONTEXT = 'Ash Keep Deployed Observation';
+const ALLOWED_CONTEXTS = new Set(['Ash Keep Deployed Observation', 'Ash Lifecycle Deployed Observation']);
+const DEFAULT_CONTEXT = 'Ash Keep Deployed Observation';
 const API_VERSION = '2022-11-28';
 const ARTIFACT_ROOT = path.resolve('artifacts');
 
@@ -12,7 +13,6 @@ function required(name) {
   if (!value) throw new Error(`${name} is required.`);
   return value;
 }
-
 function sha256(value) {
   return `sha256:${createHash('sha256').update(value).digest('hex')}`;
 }
@@ -23,10 +23,12 @@ const sha = required('TD613_OBSERVED_COMMIT');
 const state = required('TD613_OBSERVER_STATUS_STATE').toLowerCase();
 const targetUrl = required('TD613_OBSERVER_RUN_URL');
 const description = required('TD613_OBSERVER_STATUS_DESCRIPTION');
+const context = String(process.env.TD613_OBSERVER_STATUS_CONTEXT || DEFAULT_CONTEXT).trim();
 const receiptPath = String(process.env.TD613_OBSERVER_STATUS_RECEIPT_PATH || '').trim();
 
 if (!/^[0-9a-f]{40}$/i.test(sha)) throw new Error('TD613_OBSERVED_COMMIT must be a full commit SHA.');
 if (!ALLOWED_STATES.has(state)) throw new Error(`Unsupported observer status state: ${state}`);
+if (!ALLOWED_CONTEXTS.has(context)) throw new Error(`Unsupported observer status context: ${context}`);
 if (!/^https:\/\/github\.com\//.test(targetUrl)) throw new Error('TD613_OBSERVER_RUN_URL must be a GitHub HTTPS URL.');
 if (description.length > 140) throw new Error('Observer status description exceeds GitHub’s 140-character limit.');
 
@@ -37,16 +39,10 @@ const response = await fetch(endpoint, {
     accept: 'application/vnd.github+json',
     authorization: `Bearer ${token}`,
     'x-github-api-version': API_VERSION,
-    'user-agent': 'td613-ash-keep-observer'
+    'user-agent': 'td613-ash-observer'
   },
-  body: JSON.stringify({
-    state,
-    target_url: targetUrl,
-    description,
-    context: CONTEXT
-  })
+  body: JSON.stringify({ state, target_url: targetUrl, description, context })
 });
-
 if (!response.ok) {
   const body = await response.text();
   throw new Error(`Observer status publication failed (${response.status}): ${body.slice(0, 1000)}`);
@@ -54,8 +50,8 @@ if (!response.ok) {
 
 const result = await response.json();
 const receiptBody = {
-  schema: 'td613.ash-keep.observer-status-publication/v0.2',
-  context: CONTEXT,
+  schema: 'td613.ash.observer-status-publication/v0.3',
+  context,
   state: result.state,
   description: result.description,
   target_url: result.target_url,
@@ -67,19 +63,13 @@ const receiptBody = {
   promotion_authorized: false
 };
 const serializedBody = `${JSON.stringify(receiptBody, null, 2)}\n`;
-const receipt = {
-  ...receiptBody,
-  receipt_sha256: sha256(serializedBody)
-};
+const receipt = { ...receiptBody, receipt_sha256: sha256(serializedBody) };
 const serializedReceipt = `${JSON.stringify(receipt, null, 2)}\n`;
 
 if (receiptPath) {
   const resolvedReceiptPath = path.resolve(receiptPath);
-  if (!resolvedReceiptPath.startsWith(`${ARTIFACT_ROOT}${path.sep}`)) {
-    throw new Error('Observer status receipt path must remain inside artifacts/.');
-  }
+  if (!resolvedReceiptPath.startsWith(`${ARTIFACT_ROOT}${path.sep}`)) throw new Error('Observer status receipt path must remain inside artifacts/.');
   await fs.mkdir(path.dirname(resolvedReceiptPath), { recursive: true });
   await fs.writeFile(resolvedReceiptPath, serializedReceipt, 'utf8');
 }
-
 process.stdout.write(serializedReceipt);
