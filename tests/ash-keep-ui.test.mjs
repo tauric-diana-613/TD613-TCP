@@ -5,7 +5,9 @@ import path from 'node:path';
 
 const read = file => fs.readFileSync(file, 'utf8');
 const html = read('app/dome-world/ash-keep.html');
+const deliverySource = read('app/dome-world/ash-keep-source.html');
 const runtime = read('app/dome-world/ash-keep.js');
+const caseControls = read('app/dome-world/ash-case-controls.js');
 const worker = read('app/dome-world/ash-keep-worker.js');
 const dome = read('app/dome-world/index.html');
 const lab = read('app/dome-world/admissibility-tomography.html');
@@ -19,9 +21,18 @@ for (const label of ['Map', 'Rooms', 'Routes', 'Test', 'Draft', 'Save']) {
 for (const label of ['Everything', 'What left', 'Before', 'After', 'What changed', 'What remains', 'Test coverage']) {
   assert.ok(html.includes(`>${label}</button>`), `Missing map mode: ${label}`);
 }
-for (const command of ['New case', 'Add a room', 'Record what left', 'Test this draft', 'Compare drafts', 'Keep this version', 'Save point', 'Export encrypted copy']) {
+for (const command of ['New case', 'Save Case', 'Close Case', 'Add a room', 'Record what left', 'Test this draft', 'Compare drafts', 'Keep this version', 'Save point', 'Export encrypted copy']) {
   assert.ok(html.includes(command), `Missing primary command: ${command}`);
 }
+assert.match(html, /id="saveCase"[^>]*>Save Case<\/button>/);
+assert.match(html, /id="closeCase"[^>]*>Close Case<\/button>/);
+assert.match(html, /<label for="selectCase">Select Case<\/label>/);
+assert.match(html, /<select id="selectCase" disabled>/);
+assert.match(html, /localStorage\.getItem\('td613\.ash-keep\.current-case'\)[\s\S]*ash-has-current-case/);
+assert.match(html, /\.launch\.hidden,\.ash-has-current-case \.launch\{display:none\}/);
+assert.match(html, /src="\/dome-world\/ash-case-controls\.js"/);
+assert.equal(deliverySource, html, 'Static Ash Keep delivery source must remain byte-identical to the canonical document.');
+
 assert.match(html, /<h3>Hush API<\/h3>/);
 assert.match(html, /Research Notes · off by default/);
 assert.match(html, /Case Map, Rooms, Route Memory, local aliases, and final recipient route stay in the browser/);
@@ -34,7 +45,21 @@ assert.match(runtime, /prefers-reduced-motion/);
 assert.match(runtime, /localStorage\.setItem\(POINTER_KEY/);
 assert.match(runtime, /localStorage\.setItem\(PREFS_KEY/);
 const localWrites = [...runtime.matchAll(/localStorage\.setItem\(([^,\n]+),/g)].map(match => match[1].trim());
-assert.deepEqual(localWrites.sort(), ['POINTER_KEY', 'PREFS_KEY'], 'Only the compact current-case pointer and UI preferences may enter localStorage.');
+assert.deepEqual(localWrites.sort(), ['POINTER_KEY', 'PREFS_KEY'], 'Only the compact current-case pointer and UI preferences may enter localStorage from the core runtime.');
+
+assert.match(caseControls, /ASH_CASE_CONTROLS_VERSION = 'td613\.ash-keep\.case-controls\/v1\.0'/);
+assert.match(caseControls, /SAVED_CASES_KEY = 'td613\.ash-keep\.saved-cases:v1'/);
+assert.match(caseControls, /async function saveCurrentCase\(\)/);
+assert.match(caseControls, /async function closeCurrentCase\(\)/);
+assert.match(caseControls, /async function populateCaseSelect\(\)/);
+assert.match(caseControls, /current unsaved/);
+assert.match(caseControls, /fingerprint === savedRecord\.fingerprint/);
+assert.match(caseControls, /crypto\.subtle\.digest\('SHA-256'/);
+assert.match(caseControls, /document\.documentElement\.classList\.remove\(PREPAINT_CLASS\)/);
+assert.match(caseControls, /location\.reload\(\)/);
+assert.match(caseControls, /select\.disabled = options\.length === 0/);
+assert.doesNotMatch(caseControls, /innerHTML\s*=\s*.*title/, 'Saved case titles must not be interpolated through innerHTML.');
+
 assert.match(worker, /self\.postMessage\(\{ id, trials \}\)/);
 assert.match(runtime, /compileRebuildTest/);
 
