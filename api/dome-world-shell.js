@@ -31,7 +31,7 @@ const WORKSPACE_BINDING = `${WORKSPACE_MARKER}\n\nwindow.__td613OpenAshWorkspace
 const SAVE_POINT_MARKER = '    routeMemoryDigest: state.routeMemory.route_memory_digest,\n    evidenceInventory:';
 const SAVE_POINT_BINDING = '    routeMemoryDigest: state.routeMemory.route_memory_digest,\n    releaseReceiptReference: state.latestRelease?.receipt_id || null,\n    releaseReceiptDigest: state.latestRelease?.receipt_digest || null,\n    evidenceInventory:';
 const CAPSULE_MARKER = 'async function exportCapsule() {\n  if (!state.savePoints.length) await makeSavePoint();';
-const CAPSULE_BINDING = "async function exportCapsule() {\n  const latestSavePoint = state.savePoints.at(-1);\n  const currentRelease = state.latestRelease;\n  if (!latestSavePoint || !currentRelease || latestSavePoint.release_receipt_reference !== currentRelease.receipt_id || latestSavePoint.release_receipt_digest !== currentRelease.receipt_digest) await makeSavePoint();";
+const CAPSULE_BINDING = "async function exportCapsule() {\n  const latestSavePoint = state.savePoints.at(-1);\n  const currentRelease = state.latestRelease;\n  if (!currentRelease) throw new Error('A current Release Receipt is required before Capsule export.');\n  if (!latestSavePoint || latestSavePoint.release_receipt_reference !== currentRelease.receipt_id || latestSavePoint.release_receipt_digest !== currentRelease.receipt_digest) await makeSavePoint();";
 
 export function injectMarrowlineLabButton(source = '') {
   const html = String(source || '');
