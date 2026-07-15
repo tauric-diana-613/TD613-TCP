@@ -1,0 +1,88 @@
+name: Ash Map Object Registry
+
+on:
+  pull_request:
+    paths:
+      - "app/dome-world/ash-map-labels.js"
+      - "app/dome-world/ash-case-controls.js"
+      - "app/dome-world/ash-keep.html"
+      - "app/dome-world/ash-keep-source.html"
+      - "app/dome-world/ash-keep.js"
+      - "tests/ash-keep-map-object-registry.test.mjs"
+      - "scripts/ash-map-object-registry-probe.mjs"
+      - ".github/workflows/ash-map-object-registry.yml"
+  push:
+    branches: [main]
+    paths:
+      - "app/dome-world/ash-map-labels.js"
+      - "app/dome-world/ash-case-controls.js"
+      - "app/dome-world/ash-keep.html"
+      - "app/dome-world/ash-keep-source.html"
+      - "app/dome-world/ash-keep.js"
+      - "tests/ash-keep-map-object-registry.test.mjs"
+      - "scripts/ash-map-object-registry-probe.mjs"
+      - ".github/workflows/ash-map-object-registry.yml"
+
+permissions:
+  contents: read
+
+jobs:
+  registry-contract-and-browser:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+      - name: Install repository dependencies
+        run: npm ci
+      - name: Validate registry and probe syntax
+        run: |
+          node --check app/dome-world/ash-map-labels.js
+          node --check scripts/ash-map-object-registry-probe.mjs
+      - name: Enforce Object Registry contract
+        run: node tests/ash-keep-map-object-registry.test.mjs
+      - name: Preserve maintained Ash Keep regressions
+        run: npm run test:ash-keep
+      - name: Install Chromium
+        run: |
+          npm install --no-save --package-lock=false playwright@1.53.2
+          npx playwright install --with-deps chromium
+      - name: Start bounded Ash Keep runtime
+        run: |
+          set -euo pipefail
+          mkdir -p artifacts
+          node scripts/ash-keep-local-closure-server.mjs 6130 > artifacts/ash-map-registry-server.log 2>&1 &
+          echo $! > artifacts/ash-map-registry-server.pid
+          for attempt in $(seq 1 30); do
+            if curl -fsS --max-time 2 http://127.0.0.1:6130/__ash_keep_closure/readiness > artifacts/ash-map-registry-readiness.json; then
+              exit 0
+            fi
+            sleep 1
+          done
+          cat artifacts/ash-map-registry-server.log || true
+          exit 1
+      - name: Run Object Registry interaction probe
+        env:
+          TD613_BASE_URL: http://127.0.0.1:6130
+          TD613_ARTIFACT_DIR: artifacts/ash-map-object-registry
+        run: node scripts/ash-map-object-registry-probe.mjs
+      - name: Preserve Object Registry evidence
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: ash-map-object-registry-evidence
+          path: |
+            artifacts/ash-map-registry-server.log
+            artifacts/ash-map-registry-readiness.json
+            artifacts/ash-map-object-registry/
+          if-no-files-found: warn
+          retention-days: 14
+      - name: Stop bounded runtime
+        if: always()
+        run: |
+          if [ -f artifacts/ash-map-registry-server.pid ]; then
+            kill "$(cat artifacts/ash-map-registry-server.pid)" 2>/dev/null || true
+          fi
