@@ -52,6 +52,147 @@ const layoutReplacement = `    const scrollLaneFor = node => {
 const returnTarget = '      clipped_controls: clipped,\n      workspace_tab_count: tabs.length,';
 const returnReplacement = '      clipped_controls: clipped,\n      scroll_lane_controls: scrollLaneControls,\n      workspace_tab_count: tabs.length,';
 
+const custodyHelperTarget = 'async function staleReleaseAssay(page) {';
+const custodyHelperReplacement = `async function bindSyntheticCustody(page) {
+  return page.evaluate(async () => {
+    const caseId = localStorage.getItem('td613.ash-keep.current-case');
+    const db = await new Promise((resolve, reject) => {
+      const request = indexedDB.open('td613-ash-keep');
+      request.onsuccess = () => resolve(request.result);
+      request.onerror = () => reject(request.error);
+    });
+    const read = (store, key) => new Promise((resolve, reject) => {
+      const request = db.transaction(store).objectStore(store).get(key);
+      request.onsuccess = () => resolve(request.result || null);
+      request.onerror = () => reject(request.error);
+    });
+    const before = await read('cases', caseId);
+    const { compileCaseMap } = await import('/engine/ash-keep-core.js');
+    const custodyReference = \`ashc_core_probe_\${crypto.randomUUID()}\`;
+    const root = {
+      id: \`node_custody_\${crypto.randomUUID().replaceAll('-', '')}\`,
+      type: 'artifact',
+      label: 'Synthetic core-probe custody root',
+      room_id: before.rooms[0]?.id || 'room_local',
+      sensitivity: 'HIGH',
+      source_status: 'OBSERVED',
+      confidence_posture: 'OPEN',
+      custody_reference: custodyReference,
+      disclosure_state: 'LOCAL',
+      chronology_index: 0
+    };
+    const after = await compileCaseMap({
+      profile: before.profile,
+      caseId: before.case_id,
+      title: before.title,
+      createdAt: before.created_at,
+      updatedAt: new Date().toISOString(),
+      custodyReference,
+      tamperState: before.tamper_state,
+      rooms: before.rooms,
+      nodes: [root, ...before.nodes.map(node => ({ ...node, chronology_index: Number(node.chronology_index || 0) + 1 }))],
+      relationships: before.relationships,
+      privateChronology: before.private_chronology,
+      intendedActions: before.intended_actions,
+      sourceStatus: before.source_status,
+      evidenceBasis: [...before.evidence_basis, 'synthetic local core-closure custody fixture'],
+      observations: [...before.observations, { kind: 'SYNTHETIC_CORE_CUSTODY_BINDING', raw_content_imported: false }],
+      missingness: before.missingness,
+      alternatives: before.alternatives,
+      openQuestions: before.open_questions,
+      operatorNotes: before.operator_notes,
+      closureStatus: before.closure?.status
+    });
+    const readiness = { receipt_id: 'ash_ready_synthetic_core_probe', state: 'READINESS_OBSERVED' };
+    const custody = {
+      receipt_id: custodyReference,
+      receipt_digest: 'sha256:synthetic-core-custody-receipt',
+      manifest_digest: 'sha256:synthetic-core-manifest',
+      source_status: 'SYNTHETIC_LOCAL_FIXTURE'
+    };
+    await new Promise((resolve, reject) => {
+      const transaction = db.transaction(['cases', 'custodyReceipts', 'lifecycle'], 'readwrite');
+      transaction.objectStore('cases').put(after);
+      transaction.objectStore('custodyReceipts').put({ id: custodyReference, value: custody });
+      transaction.objectStore('lifecycle').put({ id: caseId, value: {
+        readiness_receipt: readiness,
+        custody_receipt_reference: custodyReference,
+        custody_receipt_digest: custody.receipt_digest,
+        custody_verified: true,
+        case_map_digest: after.case_map_digest,
+        lifecycle_state: 'CASE_BOUND',
+        lifecycle_receipt: { lifecycle: { state: 'CASE_BOUND', holds: [] } }
+      } });
+      transaction.oncomplete = resolve;
+      transaction.onerror = () => reject(transaction.error);
+      transaction.onabort = () => reject(transaction.error);
+    });
+    db.close();
+    window.dispatchEvent(new CustomEvent('td613:ash:custody-bound', { detail: {
+      case_id: caseId,
+      case_map_digest: after.case_map_digest,
+      custody_root_receipt_reference: custodyReference
+    } }));
+    await window.__td613AshKeep.refresh();
+    await window.__td613AshLifecycleRefresh();
+    await window.TD613AshConvergence.reconcileAuthority('synthetic-core-closure-fixture');
+    return {
+      case_id: caseId,
+      before_digest: before.case_map_digest,
+      after_digest: after.case_map_digest,
+      custody_reference: custodyReference
+    };
+  });
+}
+
+${custodyHelperTarget}`;
+
+const custodyBindingTarget = `  report.continuity = {
+    case_id: caseId,
+    case_map_digest: caseMap.case_map_digest,
+    reloaded: true,
+    digest_preserved: true
+  };
+
+  const nodeById`;
+const custodyBindingReplacement = `  report.continuity = {
+    case_id: caseId,
+    case_map_digest: caseMap.case_map_digest,
+    reloaded: true,
+    digest_preserved: true
+  };
+
+  const preCustodyRoutePermission = await page.evaluate(async () => {
+    try {
+      await window.TD613AshConvergence.authorize('ROUTE_MEMORY_WRITE');
+      return 'OPEN';
+    } catch (error) {
+      return error.message;
+    }
+  });
+  assert(/CASE_BOUND/.test(preCustodyRoutePermission), 'Pre-custody Route Memory write did not hold on CASE_BOUND.');
+  const coreCustodyBinding = await bindSyntheticCustody(page);
+  assert(coreCustodyBinding.before_digest !== coreCustodyBinding.after_digest, 'Core closure custody binding did not change the Case Map digest.');
+  await page.waitForFunction(() => document.body.dataset.ashLifecycle === 'CASE_BOUND');
+  await page.waitForFunction(async () => (await window.TD613AshConvergence.currentAuthorityContext())?.lifecycle_rank === 'CASE_BOUND');
+
+  const nodeById`;
+
+const routeReportTarget = `  report.room_and_route_memory = {
+    room_count: caseMap.rooms.length,
+    cross_room_relationship_count: crossRoomEdges.length,
+    route_entry_count: routeRecord.entries.length,
+    route_record_class: routeRecord.entries[0].record_class
+  };`;
+const routeReportReplacement = `  report.room_and_route_memory = {
+    room_count: caseMap.rooms.length,
+    cross_room_relationship_count: crossRoomEdges.length,
+    pre_custody_route_write: 'HELD_CASE_BOUND_REQUIRED',
+    custody_binding: coreCustodyBinding,
+    route_entry_count: routeRecord.entries.length,
+    route_record_class: routeRecord.entries[0].record_class
+  };`;
+
 function sha256(value) {
   return `sha256:${createHash('sha256').update(value).digest('hex')}`;
 }
@@ -69,8 +210,11 @@ const source = sourceOnDisk.replace(/\r\n/g, '\n');
 let runtime = replaceExactlyOnce(source, hushTarget, hushReplacement, 'declared Hush selection');
 runtime = replaceExactlyOnce(runtime, layoutTarget, layoutReplacement, 'mobile scroll-lane classification');
 runtime = replaceExactlyOnce(runtime, returnTarget, returnReplacement, 'layout receipt return');
+runtime = replaceExactlyOnce(runtime, custodyHelperTarget, custodyHelperReplacement, 'synthetic custody helper');
+runtime = replaceExactlyOnce(runtime, custodyBindingTarget, custodyBindingReplacement, 'pre-custody hold and custody binding');
+runtime = replaceExactlyOnce(runtime, routeReportTarget, routeReportReplacement, 'custody-aware Route Memory receipt');
 
-if (runtime === source || !runtime.includes('selectedProviderExcerpt') || !runtime.includes('scroll_lane_controls')) {
+if (runtime === source || !runtime.includes('selectedProviderExcerpt') || !runtime.includes('scroll_lane_controls') || !runtime.includes('bindSyntheticCustody') || !runtime.includes('HELD_CASE_BOUND_REQUIRED')) {
   throw new Error('Fixture runner did not materialize every declared runtime seam.');
 }
 
@@ -89,7 +233,8 @@ await fs.writeFile(manifestPath, `${JSON.stringify({
   fixture_class: 'SYNTHETIC_OPERATOR_SELECTED_EXCERPT',
   runtime_transformations: [
     'DECLARE_SELECTED_EXCERPT_AFTER_UNKEPT_DRAFT_RELOAD',
-    'CLASSIFY_INTENTIONAL_HORIZONTAL_SCROLL_LANES_SEPARATELY_FROM_CLIPPING'
+    'CLASSIFY_INTENTIONAL_HORIZONTAL_SCROLL_LANES_SEPARATELY_FROM_CLIPPING',
+    'PROVE_PRE_CUSTODY_ROUTE_HOLD_AND_BIND_SYNTHETIC_LOCAL_CUSTODY_ROOT'
   ],
   scroll_lane_rule: 'overflow-x auto-or-scroll plus scrollWidth greater than clientWidth',
   promotion_authorized: false
