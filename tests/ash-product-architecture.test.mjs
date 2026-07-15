@@ -29,6 +29,7 @@ const lifecycleEngine = read('app/engine/ash-lifecycle.js');
 const draftEngine = read('app/engine/ash-keep-drafts.js');
 const ledger = read('docs/ASH_KEEP_BUILDOUT_LEDGER.md');
 const roadmap = read('ROADMAP.md');
+const convergenceReceipt = read('docs/ASH_CONSTITUTIONAL_CONVERGENCE_RECEIPT.md');
 const vercel = JSON.parse(read('vercel.json'));
 
 test('Dome-World keeps Ash internal until the operator clears the embedded threshold', () => {
@@ -144,19 +145,23 @@ test('custody affects Reader, draft, release, Save Point, and Capsule eligibilit
   assert.match(lifecycleEngine, /latestSavePoint\.release_receipt_digest === latestRelease\.receipt_digest/);
 });
 
-test('ledger and roadmap preserve lifecycle closure while convergence awaits deployed observation', () => {
+test('ledger and roadmap preserve Stretch 1 closure while Stretch 2 remains unopened', () => {
   assert.match(ledger, /H\. Ash product lifecycle orchestration \| \*\*35 \/ 35\*\*/);
-  assert.match(ledger, /I\. Ash operator surface and local case stewardship \| \*\*35 \/ 45\*\*/);
-  assert.match(ledger, /production-demonstrated workstreams = 2 \/ 9/);
-  assert.match(ledger, /component maturity on main = 193 \/ 375/);
+  assert.match(ledger, /I\. Ash operator surface and local case stewardship \| \*\*43 \/ 45\*\*/);
+  assert.match(ledger, /production-demonstrated workstreams = 3 \/ 9/);
+  assert.match(ledger, /component maturity on main = 201 \/ 375/);
   assert.match(ledger, /current-head aftercare ≠ feature-specific production demonstration/);
   assert.match(ledger, /# Constitutional Synthesis Matrix/);
-  assert.match(ledger, /Score: `40 \/ 50`/);
-  assert.match(roadmap, /lifecycle production closure \[CLOSED\]/);
-  assert.match(roadmap, /constitutional convergence closure \[VALIDATION PASSED .* DEPLOYED OBSERVATION PENDING\]/);
-  assert.match(roadmap, /Custodian Return \/ Lifecycle Reconstitution/);
+  assert.match(ledger, /Score: `47 \/ 50`/);
+  assert.match(ledger, /Stretch 1 · Ash Constitutional Convergence Closure[\s\S]*CLOSED \/ IMPLEMENTED_PRODUCTION_DEMONSTRATED/);
+  assert.match(ledger, /Stretch 2 · Custodian Return And Anisotropy[\s\S]*AWAITING_OPERATOR_APPROVAL \/ NOT_STARTED/);
+  assert.match(roadmap, /Stretch 1 · Ash Constitutional Convergence Closure — CLOSED/);
+  assert.match(roadmap, /Stretch 2 · Custodian Return And Anisotropy — AWAITING OPERATOR APPROVAL/);
   assert.match(roadmap, /Choir calibration receipt binding/);
-  assert.ok(roadmap.indexOf('Custodian Return / Lifecycle Reconstitution') < roadmap.indexOf('Choir calibration receipt binding'), 'Custodian Return must precede Choir calibration after convergence.');
+  assert.ok(roadmap.indexOf('Stretch 2 · Custodian Return And Anisotropy — AWAITING OPERATOR APPROVAL') < roadmap.indexOf('Choir calibration receipt binding'), 'Stretch 2 must remain the approval-gated packet before Choir calibration.');
   assert.match(roadmap, /Safe Harbor → Ash custody-root adapter/);
   assert.match(roadmap, /transport-capable workstreams = 0/);
+  assert.match(convergenceReceipt, /Status: `IMPLEMENTED_PRODUCTION_DEMONSTRATED`/);
+  assert.match(convergenceReceipt, /Observer promotion authorized: `false`/);
+  assert.match(convergenceReceipt, /29458943541/);
 });

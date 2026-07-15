@@ -17,6 +17,7 @@ const deliverySource = read('app/dome-world/ash-keep-source.html');
 const receipt = read('docs/ASH_LIFECYCLE_PRODUCTION_DEMO_RECEIPT.md');
 const ledger = read('docs/ASH_KEEP_BUILDOUT_LEDGER.md');
 const roadmap = read('ROADMAP.md');
+const convergenceReceipt = read('docs/ASH_CONSTITUTIONAL_CONVERGENCE_RECEIPT.md');
 
 function invokeShell(req) {
   const headers = new Map();
@@ -146,22 +147,23 @@ assert.match(receipt, /provider_or_transport_requests: \[\]/);
 assert.match(receipt, /lifecycle maturity promotion ≠ transport authorization/);
 
 assert.match(ledger, /H\. Ash product lifecycle orchestration \| \*\*35 \/ 35\*\*/);
-assert.match(ledger, /I\. Ash operator surface and local case stewardship \| \*\*35 \/ 45\*\*/);
-assert.match(ledger, /component maturity on main = 193 \/ 375/);
-assert.match(ledger, /production-demonstrated workstreams = 2 \/ 9/);
+assert.match(ledger, /I\. Ash operator surface and local case stewardship \| \*\*43 \/ 45\*\*/);
+assert.match(ledger, /component maturity on main = 201 \/ 375/);
+assert.match(ledger, /production-demonstrated workstreams = 3 \/ 9/);
 assert.match(ledger, /# Constitutional Synthesis Matrix/);
-assert.match(ledger, /Score: `40 \/ 50`/);
-assert.match(ledger, /status: IMPLEMENTED_PRODUCTION_DEMONSTRATED/);
-assert.match(ledger, /Ash Constitutional Convergence Closure/);
-assert.match(ledger, /current-head aftercare: PASS · run 29441389808/);
-assert.match(roadmap, /component maturity = 193 \/ 375/);
-assert.match(roadmap, /constitutional synthesis = 40 \/ 50/);
-assert.match(roadmap, /Ash Constitutional Convergence Closure/);
-assert.match(roadmap, /constitutional convergence closure \[VALIDATION PASSED .* DEPLOYED OBSERVATION PENDING\]/);
-assert.match(roadmap, /Custodian Return \/ Lifecycle Reconstitution/);
-assert.match(roadmap, /Choir calibration receipt binding/);
-assert.ok(roadmap.indexOf('Custodian Return / Lifecycle Reconstitution') < roadmap.indexOf('Choir calibration receipt binding'), 'Custodian Return must precede Choir calibration after constitutional convergence.');
-assert.match(roadmap, /lifecycle production closure \[CLOSED\]/);
+assert.match(ledger, /Score: `47 \/ 50`/);
+assert.match(ledger, /Stretch 1 · Ash Constitutional Convergence Closure[\s\S]*CLOSED \/ IMPLEMENTED_PRODUCTION_DEMONSTRATED/);
+assert.match(ledger, /Stretch 2 · Custodian Return And Anisotropy[\s\S]*AWAITING_OPERATOR_APPROVAL \/ NOT_STARTED/);
+assert.match(roadmap, /component maturity = 201 \/ 375/);
+assert.match(roadmap, /constitutional synthesis = 47 \/ 50/);
+assert.match(roadmap, /Stretch 1 · Ash Constitutional Convergence Closure — CLOSED/);
+assert.match(roadmap, /Stretch 2 · Custodian Return And Anisotropy — AWAITING OPERATOR APPROVAL/);
+assert.ok(roadmap.indexOf('Stretch 2 · Custodian Return And Anisotropy — AWAITING OPERATOR APPROVAL') < roadmap.indexOf('Choir calibration receipt binding'), 'Stretch 2 must remain the approval-gated packet before Choir calibration.');
 assert.match(roadmap, /transport-capable workstreams = 0/);
+assert.match(convergenceReceipt, /Status: `IMPLEMENTED_PRODUCTION_DEMONSTRATED`/);
+assert.match(convergenceReceipt, /Source status: `DEPLOYED_OBSERVATION`/);
+assert.match(convergenceReceipt, /29458943541/);
+assert.match(convergenceReceipt, /8360435416/);
+assert.match(convergenceReceipt, /Observer promotion authorized: `false`/);
 
 console.log('ash-lifecycle-production-contract.test.mjs passed');

@@ -1,0 +1,33 @@
+name: Ash Stretch 1 Closure
+
+on:
+  pull_request:
+    paths:
+      - "docs/ASH_KEEP_BUILDOUT_LEDGER.md"
+      - "docs/ASH_CONSTITUTIONAL_CONVERGENCE_RECEIPT.md"
+      - "ROADMAP.md"
+      - "tests/ash-stretch1-closure-contract.test.mjs"
+      - ".github/workflows/ash-stretch1-closure.yml"
+  push:
+    branches: [main]
+    paths:
+      - "docs/ASH_KEEP_BUILDOUT_LEDGER.md"
+      - "docs/ASH_CONSTITUTIONAL_CONVERGENCE_RECEIPT.md"
+      - "ROADMAP.md"
+      - "tests/ash-stretch1-closure-contract.test.mjs"
+      - ".github/workflows/ash-stretch1-closure.yml"
+
+permissions:
+  contents: read
+
+jobs:
+  evidence-closure-contract:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+      - name: Enforce Stretch 1 evidence closure
+        run: node tests/ash-stretch1-closure-contract.test.mjs
