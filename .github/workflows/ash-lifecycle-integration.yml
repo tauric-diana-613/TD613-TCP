@@ -6,6 +6,7 @@ on:
       - "api/dome-world-shell.js"
       - "app/dome-world/ash-threshold.html"
       - "app/dome-world/ash-lifecycle.js"
+      - "app/dome-world/ash-workspace-bridge.js"
       - "app/engine/ash-lifecycle.js"
       - "app/engine/ash-keep-drafts.js"
       - "docs/ASH_KEEP_BUILDOUT_LEDGER.md"
@@ -14,6 +15,7 @@ on:
       - "scripts/consolidate-ash-lifecycle-shell.mjs"
       - "tests/ash-lifecycle.test.mjs"
       - "tests/ash-lifecycle-release-gate-idempotence.test.mjs"
+      - "tests/ash-custody-workspace-bridge.test.mjs"
       - "tests/ash-draft-lifecycle-binding.test.mjs"
       - "tests/ash-product-architecture.test.mjs"
       - "tests/dome-world-integration.test.mjs"
@@ -58,6 +60,9 @@ jobs:
 
       - name: Prevent release-gate observer recursion
         run: node tests/ash-lifecycle-release-gate-idempotence.test.mjs
+
+      - name: Verify late Custody workspace delegation
+        run: node tests/ash-custody-workspace-bridge.test.mjs
 
       - name: Run custody-bound draft tests
         run: node tests/ash-draft-lifecycle-binding.test.mjs
