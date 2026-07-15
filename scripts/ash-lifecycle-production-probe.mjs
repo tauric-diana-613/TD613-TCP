@@ -29,6 +29,12 @@ runtime = replaceExactly(
 );
 runtime = replaceExactly(
   runtime,
+  "  const draft = afterDraft.drafts.map(item => item.value).find(item => item.case_id === caseMap.case_id);",
+  "  const draft = afterDraft.drafts.map(item => item.value).find(item => item.case_id === caseMap.case_id && item.body === SYNTHETIC_DRAFT);",
+  'declared draft selection'
+);
+runtime = replaceExactly(
+  runtime,
   "  assert(draft?.case_map_digest === caseMap.case_map_digest, 'Draft is not bound to the custody-root Case Map');",
   "  assert(draft?.case_map_digest === caseMap.case_map_digest, 'Draft is not bound to the custody-root Case Map');\n  assert(draft?.body === SYNTHETIC_DRAFT, 'Kept draft does not match the declared synthetic derivative');",
   'draft fixture verification'
@@ -45,6 +51,6 @@ runtime = replaceExactly(
   "  assert(providerOrTransport.length === 0, 'Lifecycle probe reached a provider or recipient transport route');\n  assert(!requests.some(item => item.post_data?.includes(SYNTHETIC_DRAFT)), 'Synthetic draft entered a request body');",
   'draft request boundary'
 );
-if (!runtime.includes(syntheticDraft) || !runtime.includes('draft_body_sha256')) throw new Error('Synthetic draft fixture compilation failed.');
+if (!runtime.includes(syntheticDraft) || !runtime.includes('draft_body_sha256') || !runtime.includes('item.body === SYNTHETIC_DRAFT')) throw new Error('Synthetic draft fixture compilation failed.');
 await fs.writeFile(runtimeProbePath, runtime);
 await import(`${pathToFileURL(runtimeProbePath).href}?fixture=${Date.now()}`);
