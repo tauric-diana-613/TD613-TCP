@@ -65,7 +65,7 @@ async function hoverRegistryItem(page, position = 'last') {
 async function clickFocusedNode(page) {
   const coordinates = await page.evaluate(() => {
     const focus = document.getElementById('ashMapNodeFocus');
-    const match = focus?.style.transform.match(/translate\((-?\d+)px,(-?\d+)px\)/);
+    const match = focus?.style.transform.match(/translate\((-?\d+)px,\s*(-?\d+)px\)/);
     if (!match) return null;
     return { x: Number(match[1]), y: Number(match[2]) };
   });
