@@ -45,7 +45,10 @@ jobs:
       - name: Enforce Object Registry contract
         run: node tests/ash-keep-map-object-registry.test.mjs
       - name: Preserve maintained Ash Keep regressions
-        run: npm run test:ash-keep
+        run: |
+          set -o pipefail
+          mkdir -p artifacts
+          npm run test:ash-keep 2>&1 | tee artifacts/ash-map-registry-maintained-tests.log
       - name: Install Chromium
         run: |
           npm install --no-save --package-lock=false playwright@1.53.2
@@ -75,6 +78,7 @@ jobs:
         with:
           name: ash-map-object-registry-evidence
           path: |
+            artifacts/ash-map-registry-maintained-tests.log
             artifacts/ash-map-registry-server.log
             artifacts/ash-map-registry-readiness.json
             artifacts/ash-map-object-registry/
