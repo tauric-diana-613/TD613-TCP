@@ -15,6 +15,10 @@ for (const marker of [
   'ash-keep-delivery-boundary.png',
   'response_headers',
   'body_text_prefix',
+  'final_url',
+  'classification',
+  'h1_count',
+  'diagnostic_timeouts',
   'promotion_authorized: false'
 ]) assert.ok(source.includes(marker), `missing delivery-boundary marker: ${marker}`);
 

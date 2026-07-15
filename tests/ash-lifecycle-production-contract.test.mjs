@@ -4,7 +4,9 @@ import handler from '../api/dome-world-shell.js';
 
 const read = path => fs.readFileSync(path, 'utf8');
 const workflow = read('.github/workflows/ash-keep-production-closure.yml');
-const probe = read('scripts/ash-lifecycle-production-probe.mjs');
+const probeCompiler = read('scripts/ash-lifecycle-production-probe.mjs');
+const probeBase = read('scripts/ash-lifecycle-production-probe-base.mjs');
+const probe = `${probeCompiler}\n${probeBase}`;
 const shell = read('api/dome-world-shell.js');
 const receipt = read('docs/ASH_LIFECYCLE_PRODUCTION_DEMO_RECEIPT.md');
 const ledger = read('docs/ASH_KEEP_BUILDOUT_LEDGER.md');
@@ -48,6 +50,12 @@ for (const token of [
 assert.match(probe, /promotion_authorized: false/);
 assert.match(probe, /readiness is not custody/);
 assert.match(probe, /continuity is not transport/);
+assert.match(probeCompiler, /ash-lifecycle-production-probe-base\.mjs/);
+assert.match(probeCompiler, /operator-visible lifecycle surface/);
+assert.match(probeCompiler, /ash-lifecycle-production-probe\.runtime\.mjs/);
+assert.match(probeCompiler, /pathToFileURL/);
+assert.match(probeBase, /meta\[name="ash-lifecycle"\]\[content="v0\.1"\]/);
+assert.match(probeBase, /#workspace-custody/);
 
 assert.match(shell, /ASH_KEEP_JS_SHELL_VERSION = 'td613\.ash-keep\.js-shell\/v0\.2-review-refresh'/);
 assert.match(shell, /td613 lifecycle review refresh/);
