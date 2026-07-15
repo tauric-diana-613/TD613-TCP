@@ -1,4 +1,4 @@
-export const ASH_WORKSPACE_BRIDGE_VERSION = 'td613.ash-keep.workspace-bridge/v0.2-action-gates';
+export const ASH_WORKSPACE_BRIDGE_VERSION = 'td613.ash-keep.workspace-bridge/v0.3-hold-preservation';
 
 const installedDocuments = new WeakSet();
 
@@ -43,7 +43,7 @@ function stateAllows(state, required) {
 
 function openCustody(doc, host, reason, actionId) {
   const status = doc.getElementById('custodyStatus');
-  if (status) status.textContent = reason;
+  if (status && reason) status.textContent = reason;
   const openWorkspace = host.__td613OpenAshWorkspace;
   if (typeof openWorkspace === 'function') {
     openWorkspace('custody');
@@ -68,7 +68,9 @@ export function installAshWorkspaceBridge(doc = globalThis.document, host = glob
     if (custodyTab) {
       event.preventDefault();
       event.stopImmediatePropagation();
-      openCustody(doc, host, 'Ash Custody opened.', 'custody-tab');
+      const existingStatus = doc.getElementById('custodyStatus')?.textContent?.trim() || '';
+      const directOpenReason = event.isTrusted && !existingStatus ? 'Ash Custody opened.' : null;
+      openCustody(doc, host, directOpenReason, 'custody-tab');
       return;
     }
 
