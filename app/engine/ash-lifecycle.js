@@ -85,7 +85,9 @@ export async function compileReadinessReceipt(input = {}, options = {}) {
     claim_ceiling: 'quick-scan-readiness-not-custody-or-intake-authority',
     readiness_digest: null
   };
-  record.readiness_digest = await canonicalDigest(DIGEST_DOMAIN_READINESS, { ...record, readiness_digest: undefined }, options);
+  const readinessSubject = { ...record };
+  delete readinessSubject.readiness_digest;
+  record.readiness_digest = await canonicalDigest(DIGEST_DOMAIN_READINESS, readinessSubject, options);
   record.receipt_id = `ash_readiness_${record.readiness_digest.slice(-20)}`;
   return Object.freeze(record);
 }
@@ -234,7 +236,9 @@ export async function compileLifecycleReceipt(lifecycle, options = {}) {
     implementation_posture: 'workflow-state-not-identity-or-truth-proof',
     lifecycle_digest: null
   };
-  record.lifecycle_digest = await canonicalDigest(DIGEST_DOMAIN_LIFECYCLE, { ...record, lifecycle_digest: undefined }, options);
+  const lifecycleSubject = { ...record };
+  delete lifecycleSubject.lifecycle_digest;
+  record.lifecycle_digest = await canonicalDigest(DIGEST_DOMAIN_LIFECYCLE, lifecycleSubject, options);
   record.receipt_id = `ash_lifecycle_${record.lifecycle_digest.slice(-20)}`;
   return Object.freeze(record);
 }
