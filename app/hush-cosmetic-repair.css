@@ -10,6 +10,10 @@
       "profile controls";
     column-gap: 14px !important;
     align-items: start !important;
+    box-sizing: border-box !important;
+    width: 100% !important;
+    max-width: 100% !important;
+    padding-inline: 10px !important;
   }
 
   body[data-page-kind="adversarial-bench"] .hush-field-shell:has(#hushInputControlRail) > .hush-field-label {
@@ -22,6 +26,10 @@
 
   body[data-page-kind="adversarial-bench"] .hush-field-shell:has(#hushInputControlRail) > #messageDraftInput {
     grid-area: input;
+    box-sizing: border-box !important;
+    min-width: 0 !important;
+    width: 100% !important;
+    max-width: 100% !important;
   }
 
   body[data-page-kind="adversarial-bench"] #messageDraftProfile {
@@ -53,13 +61,15 @@
   body[data-page-kind="adversarial-bench"] #hushInputControlRail {
     grid-area: controls;
     display: grid !important;
-    grid-template-columns: 1fr !important;
-    grid-template-rows: repeat(2, minmax(44px, auto));
-    gap: 8px !important;
+    grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
+    gap: 10px !important;
+    box-sizing: border-box !important;
+    min-width: 0 !important;
+    max-width: 100% !important;
     width: 100% !important;
     margin: 0 !important;
-    align-content: start;
-    align-self: start;
+    align-content: center;
+    align-self: center;
   }
 
   body[data-page-kind="adversarial-bench"] #hushInputControlRail #analyzeOutputBtn,

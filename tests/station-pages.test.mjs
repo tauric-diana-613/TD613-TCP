@@ -92,6 +92,8 @@ assert.ok(hushCosmeticSource.includes('#hushPr76AuthorshipProfileHost'), 'Hush p
 assert.ok(hushCosmeticSource.includes('#hushSuggestedMasksPanel'), 'Hush explicitly places the later route suggestions panel');
 assert.ok(hushCosmeticSource.includes('grid-column: 1 / -1'), 'Hush route suggestions span the compact compose grid');
 assert.ok(hushCosmeticSource.includes('border-radius: 999px !important'), 'Hush preserves the native pill action grammar');
+assert.ok(hushCosmeticSource.includes('grid-template-columns: repeat(2, minmax(0, 1fr)) !important'), 'Hush keeps Analyze and Clear as one intentional desktop action rail');
+assert.ok(hushCosmeticSource.includes('padding-inline: 10px !important'), 'Hush contains the compose surface inside its desktop panel');
 
 const safeHarborHandshakeSource = fs.readFileSync(path.join(repoRoot, 'app', 'safe-harbor', 'app', 'operator-handshake-polish.css'), 'utf8');
 assert.ok(safeHarborHandshakeSource.includes('container-type: inline-size'), 'Safe Harbor sizes Handshake content from its narrow card');

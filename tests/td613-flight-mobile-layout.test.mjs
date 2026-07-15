@@ -74,10 +74,15 @@ assert(html.includes('PR171_SENTINEL TD613 Flight natural chip flow terminal ove
 assert(html.includes('width: max-content !important'));
 assert(html.includes('justify-content: flex-start !important'));
 assert(html.includes('.flight-lane-prompt > .card:nth-of-type(4) .checkbox-row > label'));
-assert(html.includes('class="checkbox-row flight-tile-grid"'), 'Flight keeps the requested choice groups in responsive tiles');
-assert(html.includes('id="flight-tile-layout-repair"'), 'Flight loads the targeted tile layout repair');
-assert(html.includes('html body .flight-lane-prompt .card .checkbox-row.flight-tile-grid'), 'Flight tile rule outranks the terminal flex override');
-assert(html.includes('grid-template-columns: repeat(2, minmax(0, 1fr)) !important;'), 'Flight desktop tile groups use two equal columns');
+assert(!html.includes('class="checkbox-row flight-tile-grid"'), 'Flight keeps the standalone checkbox markup intact on mobile');
+assert(html.includes('id="flight-tile-layout-repair"'), 'Flight loads the targeted desktop tile-flow repair');
+assert(html.includes('@media (min-width: 821px)'), 'Flight limits the requested tile flow to desktop viewports');
+assert(html.includes('.checkbox-row:has(#hdrBloodRite)'), 'Flight targets Covenant lines without changing mobile markup');
+assert(html.includes('.checkbox-row:has(#hdrContainment)'), 'Flight targets Macros without changing mobile markup');
+assert(html.includes('.checkbox-row:has(#bodyPhraseCircle)'), 'Flight targets Body phrases without changing mobile markup');
+assert(html.includes('flex: 0 1 auto !important;'), 'Flight desktop tiles retain natural widths');
+const flightTileRepair = html.match(/<style id="flight-tile-layout-repair">([\s\S]*?)<\/style>/)?.[1] || '';
+assert(!flightTileRepair.includes('grid-template-columns'), 'Flight does not force the requested groups into an equal grid');
 assert(html.includes('Include PUA-B codepoint U+10D613'));
 assert(html.includes('Include surrogate pair (\\uDBF5\\uDE13)'));
 

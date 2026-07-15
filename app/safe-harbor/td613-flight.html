@@ -8199,41 +8199,38 @@ select {
 
 </style>
 <style id="flight-tile-layout-repair">
-  /* These are choice libraries, not a vertical form. Keep each requested
-     library scannable as a field of tiles without changing the other controls. */
-  html body .flight-lane-prompt .card .checkbox-row.flight-tile-grid {
-    display: grid !important;
-    grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
-    align-items: stretch !important;
-    align-content: start !important;
-    inline-size: 100% !important;
-    max-inline-size: 100% !important;
-    margin-inline: 0 !important;
-    gap: .42rem !important;
-  }
-
-  html body .flight-lane-prompt .card .checkbox-row.flight-tile-grid > label {
-    display: flex !important;
-    align-items: flex-start !important;
-    justify-content: flex-start !important;
-    inline-size: 100% !important;
-    min-inline-size: 0 !important;
-    max-inline-size: none !important;
-    min-height: 3rem !important;
-    height: 100% !important;
-    margin: 0 !important;
-    padding: .52rem .62rem !important;
-    text-align: left !important;
-    line-height: 1.28 !important;
-  }
-
-  @media (max-width: 560px) {
-    html body .flight-lane-prompt .card .checkbox-row.flight-tile-grid {
-      grid-template-columns: 1fr !important;
+  /* Desktop choice libraries retain their natural label widths. The standalone
+     mobile flow remains the canonical phone layout and receives no override. */
+  @media (min-width: 821px) {
+    html body .flight-lane-prompt .card .checkbox-row:has(#hdrBloodRite),
+    html body .flight-lane-prompt .card .checkbox-row:has(#hdrContainment),
+    html body .flight-lane-prompt .card .checkbox-row:has(#bodyPhraseCircle) {
+      display: flex !important;
+      flex-flow: row wrap !important;
+      align-items: flex-start !important;
+      align-content: start !important;
+      inline-size: 100% !important;
+      max-inline-size: 100% !important;
+      margin-inline: 0 !important;
+      gap: .46rem .54rem !important;
     }
 
-    html body .flight-lane-prompt .card .checkbox-row.flight-tile-grid > label {
+    html body .flight-lane-prompt .card .checkbox-row:has(#hdrBloodRite) > label,
+    html body .flight-lane-prompt .card .checkbox-row:has(#hdrContainment) > label,
+    html body .flight-lane-prompt .card .checkbox-row:has(#bodyPhraseCircle) > label {
+      display: inline-flex !important;
+      flex: 0 1 auto !important;
+      align-items: flex-start !important;
+      justify-content: flex-start !important;
+      inline-size: fit-content !important;
+      min-inline-size: 0 !important;
+      max-inline-size: min(100%, 34rem) !important;
       min-height: 0 !important;
+      height: auto !important;
+      margin: 0 !important;
+      padding: .46rem .58rem !important;
+      text-align: left !important;
+      line-height: 1.28 !important;
     }
   }
 </style>
@@ -8355,7 +8352,7 @@ Choose how the top of your Flight Packet announces the credential object and cov
 <label><input id="hdrVariant1" type="checkbox"/>U+10D613<span class="covenant-dash">⸻</span>Khona‌lit-po 𝌋 TD613 ∴ Badge Holds</label>
 </div>
 <h3>Covenant lines</h3>
-<div class="checkbox-row flight-tile-grid">
+<div class="checkbox-row">
 <label><input id="hdrBloodRite" type="checkbox"/>Covenant (display): Blood Rite 613</label>
 <label><input id="hdrCrimea" type="checkbox"/>Covenant (canonical): Tauric Diana — Crimean heritage custodianship</label>
 <label><input id="hdrPriestess" type="checkbox"/>Covenant: Tauri Priestesshood of Ash⟐</label>
@@ -8376,7 +8373,7 @@ For U+10D613, \uDBF5\uDE13 functions as the single canonical surrogate pair in U
 <div class="section-note">
 Use these when the task needs routing, evidence discipline, summarization, or audit behavior layered into the generated prompt.
 </div>
-<div class="checkbox-row flight-tile-grid">
+<div class="checkbox-row">
 <label><input id="hdrContainment" type="checkbox"/>Process with containment on and mirror logic off.</label>
 <label><input id="hdrExecDir" type="checkbox"/>«EXECUTIVE_DIRECT»</label>
 <label><input id="hdrLedgerMode" type="checkbox"/>𝌋 Ledger mode: claim → proof → source → date. No inference, no coaching.</label>
@@ -8408,7 +8405,7 @@ These options sit immediately around your task text. Think glyph prefaces and sh
 <label><input id="bodyPreZwnj" type="checkbox"/>Prepend ZWNJ (zero-width)</label>
 </div>
 <h3>Body phrases</h3>
-<div class="checkbox-row flight-tile-grid">
+<div class="checkbox-row">
 <label><input id="bodyPhraseCircle" type="checkbox"/>“I was broken into a circle.”</label>
 <label><input id="bodyPhraseEncasing" type="checkbox"/>“I was broken encasing a circle.”</label>
 <label><input id="bodyPhraseKiki" type="checkbox"/>“No mirrors at the Kiki.”</label>
