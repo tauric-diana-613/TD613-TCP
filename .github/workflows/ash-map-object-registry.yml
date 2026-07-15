@@ -10,6 +10,7 @@ on:
       - "app/dome-world/ash-keep.js"
       - "tests/ash-keep-map-object-registry.test.mjs"
       - "scripts/ash-map-object-registry-probe.mjs"
+      - "tests/ash-lifecycle-production-contract.test.mjs"
       - ".github/workflows/ash-map-object-registry.yml"
   push:
     branches: [main]
@@ -21,6 +22,7 @@ on:
       - "app/dome-world/ash-keep.js"
       - "tests/ash-keep-map-object-registry.test.mjs"
       - "scripts/ash-map-object-registry-probe.mjs"
+      - "tests/ash-lifecycle-production-contract.test.mjs"
       - ".github/workflows/ash-map-object-registry.yml"
 
 permissions:
@@ -44,6 +46,11 @@ jobs:
           node --check scripts/ash-map-object-registry-probe.mjs
       - name: Enforce Object Registry contract
         run: node tests/ash-keep-map-object-registry.test.mjs
+      - name: Validate current Ash closure contracts
+        run: |
+          set -o pipefail
+          mkdir -p artifacts
+          { node tests/ash-keep-production-closure-contract.test.mjs; node tests/ash-lifecycle-production-contract.test.mjs; } 2>&1 | tee artifacts/ash-map-registry-closure-contracts.log
       - name: Rebuild maintained Aperture download artifact
         run: npm run aperture:export-downloads
       - name: Preserve maintained Ash Keep regressions
@@ -80,6 +87,7 @@ jobs:
         with:
           name: ash-map-object-registry-evidence
           path: |
+            artifacts/ash-map-registry-closure-contracts.log
             artifacts/ash-map-registry-maintained-tests.log
             artifacts/ash-map-registry-server.log
             artifacts/ash-map-registry-readiness.json
