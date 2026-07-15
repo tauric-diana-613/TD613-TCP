@@ -12,6 +12,10 @@ import {
   ASH_KEEP_SHELL_VERSION,
   injectAshKeepLifecycle
 } from '../api/ash-keep-shell.js';
+import {
+  ASH_KEEP_JS_SHELL_VERSION,
+  bindAshDraftsToCaseMap
+} from '../api/ash-keep-js-shell.js';
 
 const read = path => fs.readFileSync(new URL(`../${path}`, import.meta.url), 'utf8');
 
@@ -20,8 +24,11 @@ const renderedDome = renderDomeWorldShell(domeSource);
 const threshold = read('app/dome-world/ash-threshold.html');
 const keepSource = read('app/dome-world/ash-keep.html');
 const renderedKeep = injectAshKeepLifecycle(keepSource);
+const keepJsSource = read('app/dome-world/ash-keep.js');
+const renderedKeepJs = bindAshDraftsToCaseMap(keepJsSource);
 const lifecycleUi = read('app/dome-world/ash-lifecycle.js');
 const lifecycleEngine = read('app/engine/ash-lifecycle.js');
+const draftEngine = read('app/engine/ash-keep-drafts.js');
 const ledger = read('docs/ASH_KEEP_BUILDOUT_LEDGER.md');
 const roadmap = read('ROADMAP.md');
 const vercel = JSON.parse(read('vercel.json'));
@@ -62,12 +69,24 @@ test('Ash Keep runtime shell loads lifecycle orchestration after the proven Keep
   assert.equal(injectAshKeepLifecycle(renderedKeep), renderedKeep, 'Keep shell injection must be idempotent');
 });
 
-test('Vercel gives the lifecycle shells specific routes before the generic Dome rewrite', () => {
+test('served Ash Keep JavaScript binds every new draft to the current Case Map digest', () => {
+  assert.equal(ASH_KEEP_JS_SHELL_VERSION, 'td613.ash-keep.js-shell/v0.1');
+  assert.match(renderedKeepJs, /caseMapDigest: state\.caseMap\.case_map_digest/);
+  assert.equal(bindAshDraftsToCaseMap(renderedKeepJs), renderedKeepJs, 'Keep JS binding must be idempotent');
+  assert.match(draftEngine, /case_map_digest: optionalDigest\(input\.caseMapDigest/);
+  assert.match(draftEngine, /Review is bound to a different Case Map/);
+  assert.match(draftEngine, /case_map_digest: input\.draft\.case_map_digest/);
+});
+
+test('Vercel gives lifecycle shells specific routes before the generic Dome rewrite', () => {
   assert.deepEqual(vercel.functions['api/ash-keep-shell.js'], { maxDuration: 10, includeFiles: 'app/dome-world/ash-keep.html' });
+  assert.deepEqual(vercel.functions['api/ash-keep-js-shell.js'], { maxDuration: 10, includeFiles: 'app/dome-world/ash-keep.js' });
   const rewrites = vercel.rewrites;
   const keepIndex = rewrites.findIndex(rule => rule.source === '/dome-world/ash-keep.html' && rule.destination === '/api/ash-keep-shell');
+  const keepJsIndex = rewrites.findIndex(rule => rule.source === '/dome-world/ash-keep.js' && rule.destination === '/api/ash-keep-js-shell');
   const genericIndex = rewrites.findIndex(rule => rule.source === '/dome-world/(.*)');
   assert.ok(keepIndex >= 0 && keepIndex < genericIndex, 'Ash Keep shell route must precede the generic Dome route');
+  assert.ok(keepJsIndex >= 0 && keepJsIndex < genericIndex, 'Ash Keep JS shell route must precede the generic Dome route');
 });
 
 test('custody integration changes the Case Map rather than merely displaying a receipt', () => {
@@ -80,10 +99,11 @@ test('custody integration changes the Case Map rather than merely displaying a r
   assert.match(lifecycleEngine, /latestTest\.case_map_digest === caseMap\.case_map_digest/);
 });
 
-test('custody affects Reader, release, Save Point, and Capsule eligibility through lifecycle gates and the committed Case Map', () => {
+test('custody affects Reader, draft, release, Save Point, and Capsule eligibility through lifecycle gates', () => {
   assert.match(lifecycleUi, /workspaceGate\(ui\.lifecycle, tab\.dataset\.workspace\)/);
   assert.match(lifecycleUi, /button\.disabled = !\(nativeReady && ui\.lifecycle\.gates\.local_release\)/);
   assert.match(lifecycleUi, /Custody root verified and case-bound/);
+  assert.match(lifecycleEngine, /CURRENT_CUSTODY_BOUND_DRAFT_ABSENT/);
   assert.match(lifecycleEngine, /CONTINUITY_SEALED/);
   assert.match(lifecycleEngine, /latestSavePoint\.case_map_digest === caseMap\.case_map_digest/);
 });
@@ -92,6 +112,6 @@ test('ledger and roadmap treat lifecycle orchestration as a scored workstream an
   assert.match(ledger, /H\. Ash product lifecycle orchestration/);
   assert.match(ledger, /READINESS_OBSERVED/);
   assert.match(roadmap, /Ash product lifecycle repair/);
-  assert.match(roadmap, /production-demonstrate Ash lifecycle orchestration/i);
+  assert.match(roadmap, /Production-demonstrate Ash lifecycle orchestration before enlarging Choir/i);
   assert.match(roadmap, /Safe Harbor → Ash adapter must target the custody-root ingress/i);
 });
