@@ -8,7 +8,7 @@ function installStyle(doc = document) {
   style.textContent = `
     body[data-page-kind="adversarial-bench"] .hush-input-control-rail {
       display: grid !important;
-      grid-template-columns: minmax(0, 1fr) minmax(0, 1fr) !important;
+      grid-template-columns: minmax(0, 1fr) !important;
       gap: .52rem !important;
       width: 100% !important;
       margin: .34rem 0 .44rem !important;
@@ -67,6 +67,7 @@ function installStyle(doc = document) {
     }
     @media (max-width: 760px) {
       body[data-page-kind="adversarial-bench"] .hush-input-control-rail {
+        grid-template-columns: 1fr 1fr !important;
         gap: .44rem !important;
         margin: .28rem 0 .38rem !important;
       }
@@ -194,3 +195,4 @@ if (typeof document !== 'undefined') {
 }
 
 window.__TD613_HUSH_INPUT_CONTROL_RAIL__ = { version: HUSH_INPUT_CONTROL_RAIL_VERSION, ensureRail, clearInput, syncExportButton, exportStylometrics };
+
