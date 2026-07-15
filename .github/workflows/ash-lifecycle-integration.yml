@@ -4,8 +4,6 @@ on:
   pull_request:
     paths:
       - "api/dome-world-shell.js"
-      - "api/ash-keep-shell.js"
-      - "api/ash-keep-js-shell.js"
       - "app/dome-world/ash-threshold.html"
       - "app/dome-world/ash-lifecycle.js"
       - "app/engine/ash-lifecycle.js"
@@ -13,15 +11,17 @@ on:
       - "docs/ASH_KEEP_BUILDOUT_LEDGER.md"
       - "docs/ASH_LIFECYCLE_ORCHESTRATION.md"
       - "ROADMAP.md"
+      - "scripts/consolidate-ash-lifecycle-shell.mjs"
       - "tests/ash-lifecycle.test.mjs"
       - "tests/ash-draft-lifecycle-binding.test.mjs"
       - "tests/ash-product-architecture.test.mjs"
+      - "tests/vercel-deploy-hygiene.test.mjs"
       - "vercel.json"
       - ".github/workflows/ash-lifecycle-integration.yml"
   workflow_dispatch:
 
 permissions:
-  contents: read
+  contents: write
 
 concurrency:
   group: ash-lifecycle-${{ github.event.pull_request.number || github.ref }}
@@ -31,8 +31,11 @@ jobs:
   validate:
     runs-on: ubuntu-latest
     steps:
-      - name: Check out candidate
+      - name: Check out candidate branch
         uses: actions/checkout@v4
+        with:
+          ref: ${{ github.event.pull_request.head.ref || github.ref_name }}
+          fetch-depth: 0
 
       - name: Set up Node
         uses: actions/setup-node@v4
@@ -42,6 +45,12 @@ jobs:
 
       - name: Install dependencies
         run: npm ci
+
+      - name: Consolidate Ash lifecycle surfaces
+        run: node scripts/consolidate-ash-lifecycle-shell.mjs
+
+      - name: Validate Vercel function and route hygiene
+        run: node tests/vercel-deploy-hygiene.test.mjs
 
       - name: Run lifecycle state tests
         run: node tests/ash-lifecycle.test.mjs
@@ -69,3 +78,16 @@ jobs:
 
       - name: Run Ash Keep UI regression
         run: node tests/ash-keep-ui.test.mjs
+
+      - name: Commit deterministic consolidation
+        shell: bash
+        run: |
+          if git diff --quiet; then
+            echo "Ash lifecycle shell already consolidated."
+            exit 0
+          fi
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add -A vercel.json api/ash-keep-shell.js api/ash-keep-js-shell.js
+          git commit -m "Consolidate Ash lifecycle shell surfaces"
+          git push origin HEAD:${{ github.event.pull_request.head.ref || github.ref_name }}
