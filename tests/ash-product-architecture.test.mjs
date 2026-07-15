@@ -77,9 +77,12 @@ test('one Dome shell function composes the Keep lifecycle after the proven Keep 
   assert.equal(injectAshKeepLifecycle(renderedKeep), renderedKeep, 'Keep shell injection must be idempotent');
 });
 
-test('the Dome shell binds Draft authority and refreshes lifecycle after exact review', () => {
-  assert.equal(ASH_KEEP_JS_SHELL_VERSION, 'td613.ash-keep.js-shell/v0.2-review-refresh');
+test('the Dome shell binds Draft authority, release-bound continuity, and exact review refresh', () => {
+  assert.equal(ASH_KEEP_JS_SHELL_VERSION, 'td613.ash-keep.js-shell/v0.3-release-bound-continuity');
   assert.match(renderedKeepJs, /caseMapDigest: state\.caseMap\.case_map_digest/);
+  assert.match(renderedKeepJs, /releaseReceiptReference: state\.latestRelease\?\.receipt_id \|\| null/);
+  assert.match(renderedKeepJs, /releaseReceiptDigest: state\.latestRelease\?\.receipt_digest \|\| null/);
+  assert.match(renderedKeepJs, /latestSavePoint\.release_receipt_reference !== currentRelease\.receipt_id/);
   assert.match(renderedKeepJs, /td613 lifecycle review refresh/);
   assert.match(renderedKeepJs, /setTimeout\(\(\) => location\.reload\(\), 160\)/);
   assert.equal(bindAshDraftsToCaseMap(renderedKeepJs), renderedKeepJs, 'Keep JS binding must be idempotent');
@@ -122,6 +125,8 @@ test('custody affects Reader, draft, release, Save Point, and Capsule eligibilit
   assert.match(lifecycleEngine, /CURRENT_CUSTODY_BOUND_DRAFT_ABSENT/);
   assert.match(lifecycleEngine, /CONTINUITY_SEALED/);
   assert.match(lifecycleEngine, /latestSavePoint\.case_map_digest === caseMap\.case_map_digest/);
+  assert.match(lifecycleEngine, /latestSavePoint\.release_receipt_reference === latestRelease\.receipt_id/);
+  assert.match(lifecycleEngine, /latestSavePoint\.release_receipt_digest === latestRelease\.receipt_digest/);
 });
 
 test('ledger and roadmap record deployed lifecycle closure while selecting Choir calibration', () => {
