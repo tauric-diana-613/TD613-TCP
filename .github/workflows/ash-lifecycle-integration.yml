@@ -13,6 +13,7 @@ on:
       - "ROADMAP.md"
       - "scripts/consolidate-ash-lifecycle-shell.mjs"
       - "tests/ash-lifecycle.test.mjs"
+      - "tests/ash-lifecycle-release-gate-idempotence.test.mjs"
       - "tests/ash-draft-lifecycle-binding.test.mjs"
       - "tests/ash-product-architecture.test.mjs"
       - "tests/dome-world-integration.test.mjs"
@@ -54,6 +55,9 @@ jobs:
 
       - name: Run lifecycle state tests
         run: node tests/ash-lifecycle.test.mjs
+
+      - name: Prevent release-gate observer recursion
+        run: node tests/ash-lifecycle-release-gate-idempotence.test.mjs
 
       - name: Run custody-bound draft tests
         run: node tests/ash-draft-lifecycle-binding.test.mjs
