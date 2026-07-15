@@ -24,6 +24,13 @@ function without(value, field) {
   return output;
 }
 
+function optionalDigest(value, label) {
+  if (value == null || value === '') return null;
+  const digest = String(value);
+  if (!SHA256.test(digest)) throw new Error(`${label} must be a SHA-256 digest.`);
+  return digest;
+}
+
 function toBase64(bytes) {
   if (typeof Buffer !== 'undefined') return Buffer.from(bytes).toString('base64');
   let binary = '';
@@ -68,6 +75,8 @@ export async function compileSavePoint(input = {}, options = {}) {
     created_at: now(input.createdAt),
     case_map_digest: text(input.caseMapDigest, 'Case Map digest'),
     route_memory_digest: text(input.routeMemoryDigest, 'Route Memory digest'),
+    release_receipt_reference: input.releaseReceiptReference ? text(input.releaseReceiptReference, 'Release Receipt reference') : null,
+    release_receipt_digest: optionalDigest(input.releaseReceiptDigest, 'Release Receipt digest'),
     evidence_inventory: unique(input.evidenceInventory || []),
     unanswered_questions: unique(input.unansweredQuestions || []),
     corroboration_state: clone(input.corroborationState || []),
