@@ -98,6 +98,8 @@ assert.ok(hushCosmeticSource.includes('grid-template-rows: repeat(3, minmax(42px
 assert.ok(hushRailSource.includes('Export Stylometrics'), 'Hush exposes a real stylometrics export action');
 assert.ok(hushRailSource.includes('exportReportJsonBtn'), 'Hush export reuses the existing report exporter');
 assert.ok(hushRailSource.includes('button.disabled = !ready'), 'Hush keeps export asleep until analysis is ready');
+const hushRescueSource = fs.readFileSync(path.join(repoRoot, 'app', 'hush-pr75-rescue.js'), 'utf8');
+assert.ok(hushRescueSource.includes('grid-template-columns:minmax(0,1fr)!important'), 'Hush rescue rail keeps the desktop stack intact');
 assert.ok(hushCosmeticSource.includes('padding-inline: 10px !important'), 'Hush contains the compose surface inside its desktop panel');
 
 const safeHarborHandshakeSource = fs.readFileSync(path.join(repoRoot, 'app', 'safe-harbor', 'app', 'operator-handshake-polish.css'), 'utf8');
@@ -106,3 +108,4 @@ assert.ok(safeHarborHandshakeSource.includes('grid-template-columns: 1fr !import
 assert.ok(safeHarborHandshakeSource.includes('@container (min-width: 560px)'), 'Safe Harbor restores split proof rows only when the card itself is wide enough');
 
 console.log('station-pages.test.mjs passed');
+
