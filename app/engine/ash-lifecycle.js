@@ -49,6 +49,29 @@ function currentRebuild(caseMap, latestTest) {
   return latestTest.case_id === caseMap.case_id && latestTest.case_map_digest === caseMap.case_map_digest && latestTest.review_state !== 'HELD';
 }
 
+function currentDraft(caseMap, latestDraft) {
+  if (!caseMap || !latestDraft) return false;
+  return latestDraft.case_id === caseMap.case_id && latestDraft.case_map_digest === caseMap.case_map_digest;
+}
+
+function currentReview(caseMap, latestDraft, latestReview) {
+  if (!currentDraft(caseMap, latestDraft) || !latestReview) return false;
+  return latestReview.draft_id === latestDraft.draft_id &&
+    latestReview.draft_digest === latestDraft.draft_digest &&
+    latestReview.case_map_digest === caseMap.case_map_digest &&
+    latestReview.status === 'READY_FOR_LOCAL_RELEASE_APPROVAL' &&
+    latestReview.local_export_approved === true;
+}
+
+function currentRelease(caseMap, latestDraft, latestReview, latestRelease) {
+  if (!currentReview(caseMap, latestDraft, latestReview) || !latestRelease) return false;
+  return latestRelease.case_id === caseMap.case_id &&
+    latestRelease.case_map_digest === caseMap.case_map_digest &&
+    latestRelease.draft_id === latestDraft.draft_id &&
+    latestRelease.draft_digest === latestDraft.draft_digest &&
+    latestRelease.review_reference === latestReview.review_id;
+}
+
 function currentSave(caseMap, latestSavePoint) {
   if (!caseMap || !latestSavePoint) return false;
   return latestSavePoint.case_id === caseMap.case_id && latestSavePoint.case_map_digest === caseMap.case_map_digest && latestSavePoint.tamper_state !== 'TAMPERED';
@@ -141,15 +164,17 @@ export function deriveAshLifecycle(input = {}) {
   const custodyVerified = input.custodyVerified === true;
   const caseMap = input.caseMap || null;
   const latestTest = input.latestTest || null;
+  const latestDraft = input.latestDraft || null;
   const latestReview = input.latestReview || null;
   const latestRelease = input.latestRelease || null;
   const latestSavePoint = input.latestSavePoint || null;
   const reference = receiptReference(custodyReceipt);
   const caseBound = Boolean(caseMap && reference && caseMap.custody_reference === reference && caseMap.nodes?.some(node => node.custody_reference === reference));
-  const rebuildCurrent = currentRebuild(caseMap, latestTest);
-  const reviewReady = Boolean(latestReview?.status === 'READY_FOR_LOCAL_RELEASE_APPROVAL' && latestReview?.local_export_approved === true);
-  const releaseCurrent = Boolean(latestRelease?.case_id === caseMap?.case_id);
-  const continuityCurrent = currentSave(caseMap, latestSavePoint);
+  const rebuildCurrent = caseBound && currentRebuild(caseMap, latestTest);
+  const draftCurrent = rebuildCurrent && currentDraft(caseMap, latestDraft);
+  const reviewReady = draftCurrent && currentReview(caseMap, latestDraft, latestReview);
+  const releaseCurrent = reviewReady && currentRelease(caseMap, latestDraft, latestReview, latestRelease);
+  const continuityCurrent = releaseCurrent && currentSave(caseMap, latestSavePoint);
 
   const holds = [];
   if (!readinessReceipt) holds.push('READINESS_NOT_OBSERVED');
@@ -157,16 +182,17 @@ export function deriveAshLifecycle(input = {}) {
   else if (!custodyVerified) holds.push('CUSTODY_DIGEST_NOT_VERIFIED');
   if (custodyVerified && !caseBound) holds.push('CUSTODY_ROOT_NOT_BOUND_TO_CASE');
   if (caseBound && !rebuildCurrent) holds.push('CURRENT_REBUILD_TEST_ABSENT');
-  if (rebuildCurrent && !reviewReady) holds.push('LOCAL_RELEASE_REVIEW_NOT_READY');
+  if (rebuildCurrent && !draftCurrent) holds.push('CURRENT_CUSTODY_BOUND_DRAFT_ABSENT');
+  if (draftCurrent && !reviewReady) holds.push('LOCAL_RELEASE_REVIEW_NOT_READY');
   if (reviewReady && !releaseCurrent) holds.push('RELEASE_RECEIPT_NOT_KEPT');
-  if (caseBound && !continuityCurrent) holds.push('CURRENT_CONTINUITY_NOT_SEALED');
+  if (releaseCurrent && !continuityCurrent) holds.push('CURRENT_CONTINUITY_NOT_SEALED');
 
   let state = ASH_LIFECYCLE_STATES.ARRIVAL_UNPERSISTED;
   if (readinessReceipt) state = ASH_LIFECYCLE_STATES.READINESS_OBSERVED;
   if (custodyReceipt) state = custodyVerified ? ASH_LIFECYCLE_STATES.CUSTODY_ROOT_VERIFIED : ASH_LIFECYCLE_STATES.CUSTODY_ROOT_PROVISIONAL;
   if (caseBound) state = ASH_LIFECYCLE_STATES.CASE_BOUND;
   if (rebuildCurrent) state = ASH_LIFECYCLE_STATES.REBUILD_ELIGIBLE;
-  if (reviewReady || releaseCurrent) state = ASH_LIFECYCLE_STATES.RELEASE_ELIGIBLE;
+  if (releaseCurrent) state = ASH_LIFECYCLE_STATES.RELEASE_ELIGIBLE;
   if (continuityCurrent) state = ASH_LIFECYCLE_STATES.CONTINUITY_SEALED;
 
   const gates = Object.freeze({
@@ -175,9 +201,9 @@ export function deriveAshLifecycle(input = {}) {
     rooms: caseBound,
     routes: caseBound,
     test: caseBound,
-    draft: caseBound,
-    local_release: caseBound && rebuildCurrent && reviewReady,
-    save: caseBound
+    draft: rebuildCurrent,
+    local_release: reviewReady,
+    save: releaseCurrent
   });
 
   const nextAction = !readinessReceipt ? 'CLEAR_ASH_THRESHOLD'
@@ -186,10 +212,11 @@ export function deriveAshLifecycle(input = {}) {
         : !caseMap ? 'CREATE_CASE'
           : !caseBound ? 'BIND_CUSTODY_ROOT_TO_CASE'
             : !rebuildCurrent ? 'RUN_CURRENT_REBUILD_TEST'
-              : !reviewReady ? 'REVIEW_EXACT_DRAFT'
-                : !releaseCurrent ? 'KEEP_RELEASE_RECEIPT'
-                  : !continuityCurrent ? 'SEAL_CONTINUITY'
-                    : 'TEND_CASE';
+              : !draftCurrent ? 'KEEP_CUSTODY_BOUND_DRAFT'
+                : !reviewReady ? 'REVIEW_EXACT_DRAFT'
+                  : !releaseCurrent ? 'KEEP_RELEASE_RECEIPT'
+                    : !continuityCurrent ? 'SEAL_CONTINUITY'
+                      : 'TEND_CASE';
 
   return Object.freeze({
     schema: ASH_LIFECYCLE_SCHEMA,
@@ -202,9 +229,10 @@ export function deriveAshLifecycle(input = {}) {
       custody_receipt: reference,
       case_id: caseMap?.case_id || null,
       case_map_digest: caseMap?.case_map_digest || null,
-      rebuild_test: latestTest?.test_id || null,
-      release_receipt: latestRelease?.receipt_id || null,
-      save_point: latestSavePoint?.save_point_id || null
+      rebuild_test: rebuildCurrent ? latestTest.test_id : null,
+      draft: draftCurrent ? latestDraft.draft_id : null,
+      release_receipt: releaseCurrent ? latestRelease.receipt_id : null,
+      save_point: continuityCurrent ? latestSavePoint.save_point_id : null
     },
     non_authority: [
       'readiness is not custody',
