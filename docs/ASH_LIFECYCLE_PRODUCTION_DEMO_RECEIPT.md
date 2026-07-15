@@ -1,29 +1,22 @@
 # Ash Lifecycle Production Demonstration Receipt
 
-Status: `NOT_YET_EARNED`
+Status: `EARNED`
 
 Receipt schema: `td613.ash.lifecycle-production-demo-receipt/v0.1`
 
 Date opened: `2026-07-15`
 
-Date refreshed: `2026-07-15`
+Date closed: `2026-07-15`
 
-Implementation spine:
+Observed runtime commit:
 
 ```text
-PR #297 · lifecycle orchestration
-af733b26f835bc5f110e251addbc49b5d75a75e0
-
-PR #299 · browser delivery-boundary witness
-901fd491ef306ff2863ada9167819ebc774b8c4b
-
-PR #303 · release-gate observer idempotence
-6a5ad63871d026668661d077bb4072dcd206c893
+e8cbd00673e86d9fa0969407c28ef3ed89af55f7
 ```
 
 ## Purpose
 
-This receipt closes only after a deployed browser observation completes the full governed route:
+This receipt closes only the deployed, governed Ash lifecycle route:
 
 ```text
 deployed threshold → readiness → custody root → case binding
@@ -32,111 +25,181 @@ deployed threshold → readiness → custody root → case binding
 → CONTINUITY_SEALED
 ```
 
-The receipt remains separate from implementation merge, unit tests, local closure, Ash Keep's earlier production status, and the evidence-producing workflow.
+The promotion recorded here concerns lifecycle maturity only. It grants no provider authority, recipient authority, destination transport, automatic Cinder, truth status, identity status, or authenticity status.
 
-## Pre-closure observation ledger
-
-### Observation A · historical direct-to-Keep probe
+## Implementation and repair spine
 
 ```text
-workflow run: 29379767208
-historical workflow head: af733b26f835bc5f110e251addbc49b5d75a75e0
-ruling: PROBE_OBSOLETE_FOR_LIFECYCLE_CLOSURE
+PR #297 · lifecycle orchestration
+af733b26f835bc5f110e251addbc49b5d75a75e0
+
+PR #299 · browser delivery-boundary witness
+901fd491ef306ff2863ada9167819ebc774b8c4b
+
+static document delivery repair
+1e2e6a90c47100ce0f96b47c1798811a3c3fe57d
+
+declared Draft fixture and exact Draft selection
+635487ab28765aaacdd19fbd73b39141345ec953
+e4115763e67a42b14e10009b6cb1132baee00156
+
+reconciled governed core and workspace delegation
+249c58b58a27112d4f0b9a120a2883f9e0a2bb55
+7db687062db4e4d158ee2f5f0b973dc9a0c5ac16
+
+keepDraft-scoped Case Map binding repair
+e8cbd00673e86d9fa0969407c28ef3ed89af55f7
 ```
 
-The historical observer entered Ash Keep directly and attempted Routes before establishing a custody root. The current product correctly redirected that action into Custody. Its later `#workspace-routes` timeout records lifecycle enforcement, not a failed custody workflow. This run cannot promote or demote the current lifecycle.
+## Causal closure
 
-### Observation B · browser delivery boundary before repair
+The final production defect came from a scope collision in the governed core transform. The transform searched the entire Keep source for:
 
 ```text
-classification: BROWSER_DOCUMENT_STALLED
-HTTP: 200
-content type: text/html
-DOM title: unavailable
-h1 count: 0
-browser-rendered bytes: 0
-screenshot: unavailable
+caseMapDigest: state.caseMap.case_map_digest
 ```
 
-The route returned the expected document and Ash shell headers, while Chromium's main thread remained starved after navigation.
+An unrelated Save Point use already contained that string, so the transform incorrectly concluded that `keepDraft()` had been bound. Commit `e8cbd00673e86d9fa0969407c28ef3ed89af55f7` scopes detection and idempotence to the `keepDraft()` body itself, inserts exactly one current Case Map digest binding, and preserves focused regressions.
 
-### Observation C · causal repair
+## Authoritative deployed observation
 
-PR #303 made the release-gate disabled-state write idempotent. The prior `MutationObserver` could wake itself by unconditionally rewriting the same `disabled` attribute. The repaired gate changes the attribute only when the required state differs.
+```yaml
+observed_commit: e8cbd00673e86d9fa0969407c28ef3ed89af55f7
+upstream_deployment_workflow_run_id: 29383285733
+observer_workflow_run_id: 29383294474
+observer_run_url: https://github.com/tauric-diana-613/TD613-TCP/actions/runs/29383294474
+evidence_artifact_id: 8330532097
+evidence_artifact_sha256: sha256:93c8c3992223af4524bf16d645de394333decd62b2ab65c88a1a7d1c4c68a249
+terminal_commit_status_id: 50486516511
+terminal_status_receipt_sha256: sha256:8d3602d2529f59ec39974280bfbde80746797168d646925bdc435277e7b90295
+lifecycle_report_sha256: sha256:bf64b8b7ef9fd392672ab311690c395ad5ad1fe612ec32cd05bbb9396a270260
+evidence_manifest_sha256: sha256:b5bd7e03c2dd3630703805d125900ee249b4b15ca30ed59cf1103803e982bdb7
+source_status: DEPLOYED_OBSERVATION
+browser: chromium-headless
+observer_result: PASS
+```
 
-The permanent regression executes the real `enforceReleaseGate()` body under a live `MutationObserver` and proves that one required transition emits one callback while a repeated gate check emits no successor mutation.
+The GitHub commit status and every observer workflow step completed successfully. The evidence artifact remains retained through `2026-08-14` under the workflow retention policy.
 
-### Observation D · browser delivery boundary after repair
+## Demonstrated lifecycle route
 
 ```text
-artifact id: 8330030234
-artifact digest: sha256:777736c61ca5fd59de270a2a5102fe36bc24e2f3d759238d732524865c50ff4b
-classification: DOCUMENT_READY
-HTTP: 200
-content type: text/html; charset=utf-8
-document title: TD613 Ash Keep · Case Map
-h1 count: 1
-browser-rendered bytes: 40498
-console errors: 0
-failed requests: 0
-diagnostic timeouts: 0
-screenshot captured: true
+ARRIVAL_UNPERSISTED
+→ READINESS_OBSERVED
+→ CUSTODY_ROOT_VERIFIED
+→ CASE_BOUND
+→ REBUILD_ELIGIBLE
+→ RELEASE_ELIGIBLE
+→ CONTINUITY_SEALED
 ```
 
-This evidence closes the first-paint and browser-delivery hold only. It does not close the complete lifecycle route.
+### Threshold and readiness
 
-## Current closure posture
+- wrong-order threshold input reset correctly;
+- Arrival → Boundary → Custody cleared in order;
+- readiness remained session-scoped;
+- readiness accepted and persisted no raw content;
+- readiness performed no transport;
+- pre-custody Test access held at `REGISTER_CUSTODY_ROOT`.
+
+### Custody and Case Map binding
+
+```yaml
+assurance_class: L1_BROWSER_LOCAL_ARTIFACT_DIGEST
+custody_receipt_id: ashc_c51727a07827e894c88f
+custody_receipt_digest: sha256:fc211b3d8c5b689e4c198d54ae0ffe6ae9d2b1b87848c51727a07827e894c88f
+custody_manifest_digest: sha256:b712e962969dbc875892d6e2cd4109e56d252479d91a9d6d0b5ef48e7e2e0ce0
+case_map_before: sha256:deef9cdaf9a941c107093cad4d17ae4f148efb9d4e0373838fd25956eada98bd
+case_map_after: sha256:502c0cb08964f5d5bb359d6e2f371d946ec6c2b52f3d8d90edfff040bdc2fb7a
+custody_root_node: node_custody_1727a07827e894c88f
+root_disclosure_state: LOCAL
+registration_posts: 1
+raw_artifact_bytes_sent: false
+```
+
+### Rebuild, Draft, Review, and Release
+
+The following artifacts all bind the same current custody-root Case Map digest:
 
 ```text
-first_paint: DEMONSTRATED
-browser_delivery: DEMONSTRATED
-full_lifecycle_route: PENDING_CURRENT_OBSERVER
-promotion_authorized: false
+sha256:502c0cb08964f5d5bb359d6e2f371d946ec6c2b52f3d8d90edfff040bdc2fb7a
 ```
 
-The next authoritative run must use the current `ash-lifecycle-production-probe.mjs`. That probe begins at the threshold, proves the pre-custody workspace hold, computes an L1 browser-local artifact commitment, registers and verifies Custody, binds the Case Map root, and only then enters Test, Draft, Release, and Continuity.
+```yaml
+rebuild_test_id: rebuild_17b7ce2ba6f10deb85e3
+rebuild_test_digest: sha256:1bd73e691af5affe9b87384969b428de41865db38eecc761dbaa74d5af9b2e1e
+draft_id: draft_1a77be47f3435a39b44d
+draft_body_sha256: sha256:657cb3231db1d6269622d6d038978ad1aa50f3e78b311b2366c530210d281c5a
+review_id: review_54ee9f993238d11d8d14
+review_status: READY_FOR_LOCAL_RELEASE_APPROVAL
+release_receipt_id: release_acd258160117af383b81
+release_state: RELEASE_ELIGIBLE
+transmission_performed: false
+recipient_transport: DEFERRED
+```
 
-A rerun of a historical job preserves its historical workflow definition. It cannot substitute for a current-workflow observation merely because it points at the current deployment.
+### Continuity and Capsule
 
-## Required evidence
+```yaml
+save_point_id: save_53ddb3128989d85cd101
+lifecycle_state: CONTINUITY_SEALED
+capsule_sha256: sha256:dfacfd0c39f083c7e053e69d6516a341286789fa9ee8a790114beaf5cde7686b
+wrong_passphrase_hold: true
+tamper_hold: true
+```
 
-- exact deployed commit;
-- upstream deployment workflow run ID;
-- lifecycle observer workflow run ID and URL;
-- evidence artifact ID and SHA-256;
-- threshold, desktop, mobile portrait, and mobile landscape screenshot digests;
-- session-only readiness receipt;
-- L1 browser-local artifact commitment;
-- custody manifest and receipt digest verification;
-- before/after Case Map digests;
-- custody-root node and reference;
-- Rebuild Test bound to the current Case Map digest;
-- Draft, Review, and Release Receipt bound to the same Case Map digest;
-- `CONTINUITY_SEALED` lifecycle receipt;
-- Capsule, wrong-passphrase, and tamper evidence;
-- storage and network boundary observations;
-- terminal commit-status ID and status-receipt digest.
+## Layout evidence
+
+```yaml
+threshold_screenshot_sha256: sha256:e11bb2b191d7f46c7220cc74c78d7b011af55cefe7984c976c8ab27843f64003
+desktop_screenshot_sha256: sha256:c1219446ed79238317b0465df05dccb07370008f63194fd842c4d63ca7362ccc
+mobile_portrait_screenshot_sha256: sha256:2a4318cf7bb704aad07bd9f9aa7403902333bf07edf0ec35f67002bd3469e159
+mobile_landscape_screenshot_sha256: sha256:4e2cc03f37e7ff08c15d17d234a9af62c58c2f7678a425efed3845048d378a34
+```
+
+Desktop, mobile portrait, and mobile landscape each reported:
+
+- `horizontal_overflow: 0`;
+- no unreachable controls;
+- `CONTINUITY_SEALED` visible;
+- Custody workspace selected;
+- reduced-motion operation.
+
+## Storage and network boundaries
+
+```yaml
+raw_artifact_in_local_storage: false
+raw_artifact_in_request_body: false
+provider_or_transport_requests: []
+disallowed_non_read_requests: []
+allowed_non_read_request:
+  method: POST
+  route: /api/dome-world/ash-custody-register
+```
+
+Declared local storage remained limited to custody receipts, the current-case pointer, Keep preferences, and lifecycle records. Readiness remained in session storage.
 
 ## Closure fields
 
 ```yaml
-status: NOT_YET_EARNED
-promotion_authorized: false
-observed_commit: null
-upstream_deployment_workflow_run_id: null
-observer_workflow_run_id: null
-observer_run_url: null
-evidence_artifact_id: null
-evidence_artifact_sha256: null
-terminal_commit_status_id: null
-terminal_status_receipt_sha256: null
-threshold_screenshot_sha256: null
-desktop_screenshot_sha256: null
-mobile_portrait_screenshot_sha256: null
-mobile_landscape_screenshot_sha256: null
-lifecycle_report_sha256: null
-evidence_manifest_sha256: null
-operator_closure: null
+status: EARNED
+promotion_authorized: true
+promotion_scope: ASH_LIFECYCLE_MATURITY_ONLY
+observed_commit: e8cbd00673e86d9fa0969407c28ef3ed89af55f7
+upstream_deployment_workflow_run_id: 29383285733
+observer_workflow_run_id: 29383294474
+observer_run_url: https://github.com/tauric-diana-613/TD613-TCP/actions/runs/29383294474
+evidence_artifact_id: 8330532097
+evidence_artifact_sha256: sha256:93c8c3992223af4524bf16d645de394333decd62b2ab65c88a1a7d1c4c68a249
+terminal_commit_status_id: 50486516511
+terminal_status_receipt_sha256: sha256:8d3602d2529f59ec39974280bfbde80746797168d646925bdc435277e7b90295
+threshold_screenshot_sha256: sha256:e11bb2b191d7f46c7220cc74c78d7b011af55cefe7984c976c8ab27843f64003
+desktop_screenshot_sha256: sha256:c1219446ed79238317b0465df05dccb07370008f63194fd842c4d63ca7362ccc
+mobile_portrait_screenshot_sha256: sha256:2a4318cf7bb704aad07bd9f9aa7403902333bf07edf0ec35f67002bd3469e159
+mobile_landscape_screenshot_sha256: sha256:4e2cc03f37e7ff08c15d17d234a9af62c58c2f7678a425efed3845048d378a34
+lifecycle_report_sha256: sha256:bf64b8b7ef9fd392672ab311690c395ad5ad1fe612ec32cd05bbb9396a270260
+evidence_manifest_sha256: sha256:b5bd7e03c2dd3630703805d125900ee249b4b15ca30ed59cf1103803e982bdb7
+operator_closure: EVIDENCE_VERIFIED_AND_LIFECYCLE_MATURITY_PROMOTED
 ```
 
 ## Non-authorities
@@ -148,11 +211,8 @@ custody ≠ authenticity
 case binding ≠ truth
 rebuild eligibility ≠ release authority
 continuity ≠ transport
-deployed first paint ≠ lifecycle closure
-deployed PASS ≠ automatic promotion
-historical workflow rerun ≠ current workflow observation
+lifecycle maturity promotion ≠ transport authorization
+production demonstration ≠ automatic Cinder
 ```
 
-The lifecycle probe may perform the one custody-registration POST required by the assay. It may not send artifact bytes, invoke a provider, contact a recipient, authorize Cinder, enable transport, or modify release metadata.
-
-A passing workflow does not edit this receipt automatically. Promotion requires a later evidence-only commit that names and verifies the preserved artifact, terminal status, screenshot digests, observed commit, and operator closure.
+The observer itself authorized no promotion. This later evidence-only receipt verifies the preserved artifact and closes the maturity gate. Ash lifecycle orchestration may now be recorded as `IMPLEMENTED_PRODUCTION_DEMONSTRATED`; transport and automatic Cinder remain false.
