@@ -1,0 +1,44 @@
+name: Ash Contract Debug
+
+on:
+  pull_request:
+    paths:
+      - ".github/workflows/ash-contract-debug.yml"
+      - "app/dome-world/ash-case-controls.js"
+      - "app/dome-world/ash-map-labels.js"
+      - "tests/ash-keep-ui.test.mjs"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  contract-debug:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          show-progress: false
+      - name: Capture exact Ash contract output
+        shell: bash
+        run: |
+          mkdir -p artifacts
+          set +e
+          {
+            echo '=== ash-keep-production-closure-contract ==='
+            node tests/ash-keep-production-closure-contract.test.mjs
+            first=$?
+            echo "exit=$first"
+            echo '=== ash-lifecycle-production-contract ==='
+            node tests/ash-lifecycle-production-contract.test.mjs
+            second=$?
+            echo "exit=$second"
+            exit $(( first || second ))
+          } > artifacts/ash-contract-debug.log 2>&1
+      - name: Upload exact contract output
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: ash-contract-debug
+          path: artifacts/ash-contract-debug.log
+          retention-days: 1
