@@ -7,7 +7,7 @@ export const ASH_THRESHOLD_ROUTE = '/dome-world/ash-threshold.html';
 export const ASH_KEEP_ENTRY_ROUTE = '/dome-world/ash-keep-entry.html';
 export const ASH_LIFECYCLE_SHELL_CONTRACT = 'td613.ash.lifecycle-shell/v0.1';
 export const ASH_KEEP_SHELL_VERSION = 'td613.ash-keep.shell/v0.1';
-export const ASH_KEEP_JS_SHELL_VERSION = 'td613.ash-keep.js-shell/v0.2-review-refresh';
+export const ASH_KEEP_JS_SHELL_VERSION = 'td613.ash-keep.js-shell/v0.3-release-bound-continuity';
 export const ASH_LIFECYCLE_MODULE = '/dome-world/ash-lifecycle.js';
 export const ASH_WORKSPACE_BRIDGE_MODULE = '/dome-world/ash-workspace-bridge.js';
 
@@ -28,6 +28,10 @@ const REVIEW_MARKER = "  await put('reviews', state.latestReview, state.latestRe
 const REVIEW_BINDING = "  await put('reviews', state.latestReview, state.latestReview.review_id);\n  renderDraft();\n  setTimeout(() => location.reload(), 160); // td613 lifecycle review refresh";
 const WORKSPACE_MARKER = "function setWorkspace(name) {\n  state.workspace = name;\n  qsa('.work-tab').forEach(button => button.setAttribute('aria-selected', String(button.dataset.workspace === name)));\n  qsa('.workspace').forEach(panel => panel.classList.toggle('active', panel.id === `workspace-${name}`));\n  state.mapVisible = name === 'map' && !document.hidden;\n  const prefs = JSON.parse(localStorage.getItem(PREFS_KEY) || '{}');\n  localStorage.setItem(PREFS_KEY, JSON.stringify({ ...prefs, workspace: name, mapMode: state.mapMode }));\n  if (state.mapVisible) startScheduler(); else stopScheduler();\n}";
 const WORKSPACE_BINDING = `${WORKSPACE_MARKER}\n\nwindow.__td613OpenAshWorkspace = setWorkspace; // td613 late workspace bridge`;
+const SAVE_POINT_MARKER = '    routeMemoryDigest: state.routeMemory.route_memory_digest,\n    evidenceInventory:';
+const SAVE_POINT_BINDING = '    routeMemoryDigest: state.routeMemory.route_memory_digest,\n    releaseReceiptReference: state.latestRelease?.receipt_id || null,\n    releaseReceiptDigest: state.latestRelease?.receipt_digest || null,\n    evidenceInventory:';
+const CAPSULE_MARKER = 'async function exportCapsule() {\n  if (!state.savePoints.length) await makeSavePoint();';
+const CAPSULE_BINDING = "async function exportCapsule() {\n  const latestSavePoint = state.savePoints.at(-1);\n  const currentRelease = state.latestRelease;\n  if (!currentRelease) throw new Error('A current Release Receipt is required before Capsule export.');\n  if (!latestSavePoint || latestSavePoint.release_receipt_reference !== currentRelease.receipt_id || latestSavePoint.release_receipt_digest !== currentRelease.receipt_digest) await makeSavePoint();";
 
 export function injectMarrowlineLabButton(source = '') {
   const html = String(source || '');
@@ -94,6 +98,16 @@ export function bindAshDraftsToCaseMap(source = '') {
   if (!code.includes('td613 late workspace bridge')) {
     if (!code.includes(WORKSPACE_MARKER)) throw new Error('ash-keep-workspace-marker-missing');
     code = code.replace(WORKSPACE_MARKER, WORKSPACE_BINDING);
+  }
+  if (code.includes(SAVE_POINT_MARKER)) {
+    code = code.replace(SAVE_POINT_MARKER, SAVE_POINT_BINDING);
+  } else if (!code.includes(SAVE_POINT_BINDING)) {
+    throw new Error('ash-keep-save-point-release-binding-marker-missing');
+  }
+  if (code.includes(CAPSULE_MARKER)) {
+    code = code.replace(CAPSULE_MARKER, CAPSULE_BINDING);
+  } else if (!code.includes(CAPSULE_BINDING)) {
+    throw new Error('ash-keep-capsule-current-save-marker-missing');
   }
   return code;
 }

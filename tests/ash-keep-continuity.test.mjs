@@ -83,11 +83,23 @@ const savePoint = await compileSavePoint({
   caseId: 'case_glasshouse',
   caseMapDigest: DIGEST_A,
   routeMemoryDigest: DIGEST_B,
+  releaseReceiptReference: release.receipt_id,
+  releaseReceiptDigest: release.receipt_digest,
   evidenceInventory: ['synthetic archive index'],
   unansweredQuestions: ['which revision introduced the difference?'],
   nextStepPosture: ['request public index']
 }, options);
 assert.equal(await verifySavePoint(savePoint, options), true);
+assert.equal(savePoint.release_receipt_reference, release.receipt_id);
+assert.equal(savePoint.release_receipt_digest, release.receipt_digest);
+await assert.rejects(() => compileSavePoint({
+  savePointId: 'save_bad_release_digest',
+  caseId: 'case_glasshouse',
+  caseMapDigest: DIGEST_A,
+  routeMemoryDigest: DIGEST_B,
+  releaseReceiptReference: release.receipt_id,
+  releaseReceiptDigest: 'not-a-digest'
+}, options), /Release Receipt digest must be a SHA-256 digest/);
 
 const capsule = await encryptAshCapsule({
   caseId: 'case_glasshouse',
@@ -104,6 +116,7 @@ assert.equal(Object.hasOwn(capsule, 'passphrase'), false);
 const opened = await decryptAshCapsule(capsule, 'correct horse battery staple', options);
 assert.equal(opened.case_id, 'case_glasshouse');
 assert.equal(opened.save_point.save_point_digest, savePoint.save_point_digest);
+assert.equal(opened.save_point.release_receipt_reference, release.receipt_id);
 await assert.rejects(decryptAshCapsule(capsule, 'incorrect passphrase', options), /nothing was imported/);
 const tamperedCapsule = structuredClone(capsule);
 tamperedCapsule.ciphertext = `${tamperedCapsule.ciphertext.slice(0, -2)}AA`;

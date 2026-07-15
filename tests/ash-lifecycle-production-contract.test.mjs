@@ -57,10 +57,15 @@ assert.match(rawCore, /caseMapDigest: state\.caseMap\.case_map_digest/, 'unrelat
 assert.doesNotMatch(rawKeepDraft, /caseMapDigest:/, 'raw keepDraft must remain the declared transformation fixture');
 
 assert.match(shell, /ASH_KEEP_ENTRY_ROUTE = '\/dome-world\/ash-keep-entry\.html'/);
-assert.match(shell, /ASH_KEEP_JS_SHELL_VERSION = 'td613\.ash-keep\.js-shell\/v0\.2-review-refresh'/);
+assert.match(shell, /ASH_KEEP_JS_SHELL_VERSION = 'td613\.ash-keep\.js-shell\/v0\.3-release-bound-continuity'/);
 assert.match(shell, /if \(code\.includes\(DRAFT_MARKER\)\)/);
 assert.match(shell, /else if \(!code\.includes\(DRAFT_BINDING\)\)/);
 assert.doesNotMatch(shell, /if \(!code\.includes\('caseMapDigest: state\.caseMap\.case_map_digest'\)\)/);
+assert.match(shell, /SAVE_POINT_MARKER/);
+assert.match(shell, /releaseReceiptReference: state\.latestRelease\?\.receipt_id \|\| null/);
+assert.match(shell, /releaseReceiptDigest: state\.latestRelease\?\.receipt_digest \|\| null/);
+assert.match(shell, /CAPSULE_MARKER/);
+assert.match(shell, /latestSavePoint\.release_receipt_reference !== currentRelease\.receipt_id/);
 assert.match(shell, /td613 lifecycle review refresh/);
 assert.match(shell, /td613 late workspace bridge/);
 assert.match(shell, /searchParams\.get\('arrival'\) === 'cleared'/);
@@ -75,6 +80,8 @@ assert.match(adapterJs, /if \(code\.includes\(DRAFT_MARKER\)\)/);
 assert.match(adapterJs, /else if \(!code\.includes\(DRAFT_BINDING\)\)/);
 assert.doesNotMatch(adapterJs, /if \(!code\.includes\('caseMapDigest: state\.caseMap\.case_map_digest'\)\)/);
 assert.match(adapterJs, /Governed core omitted the Draft Case Map binding/);
+assert.match(adapterJs, /Governed core omitted the Save Point release binding/);
+assert.match(adapterJs, /Governed core omitted the Capsule current Save Point binding/);
 assert.match(adapterJs, /td613 lifecycle review refresh/);
 assert.match(adapterJs, /td613 late workspace bridge/);
 assert.match(adapterJs, /data-td613-ash-core="governed-inline"/);
