@@ -26,9 +26,16 @@ assert.ok(
 assert.equal(injectAshKeepLifecycle(renderedHtml), renderedHtml, 'bridge composition must be idempotent');
 
 const keepJs = fs.readFileSync('app/dome-world/ash-keep.js', 'utf8');
+const rawKeepDraft = keepJs.match(/async function keepDraft\(\) \{[\s\S]*?\n\}/)?.[0] || '';
+assert.match(keepJs, /caseMapDigest: state\.caseMap\.case_map_digest/, 'raw Keep source should retain the unrelated Save Point digest use that exposed the scope collision');
+assert.doesNotMatch(rawKeepDraft, /caseMapDigest:/, 'raw keepDraft fixture should begin without the lifecycle binding');
+
 const renderedJs = bindAshDraftsToCaseMap(keepJs);
+const renderedKeepDraft = renderedJs.match(/async function keepDraft\(\) \{[\s\S]*?\n\}/)?.[0] || '';
+assert.match(renderedKeepDraft, /caseMapDigest: state\.caseMap\.case_map_digest/, 'Draft binding must be checked inside keepDraft rather than across the entire source file');
+assert.equal((renderedKeepDraft.match(/caseMapDigest:/g) || []).length, 1, 'keepDraft must receive exactly one Case Map digest binding');
 assert.match(renderedJs, /window\.__td613OpenAshWorkspace = setWorkspace; \/\/ td613 late workspace bridge/);
-assert.equal(bindAshDraftsToCaseMap(renderedJs), renderedJs, 'base workspace capability exposure must be idempotent');
+assert.equal(bindAshDraftsToCaseMap(renderedJs), renderedJs, 'base workspace and Draft transformations must be idempotent');
 
 const dom = new JSDOM(`<!doctype html><body>
   <nav>
