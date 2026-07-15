@@ -56,7 +56,7 @@ test('the threshold performs a bounded three-law rite and persists only a sessio
   assert.match(threshold, /sessionStorage\.setItem\('td613:ash-threshold:readiness:v0\.1'/);
   assert.doesNotMatch(threshold, /localStorage\.setItem/);
   assert.doesNotMatch(threshold, /type="file"/);
-  assert.match(threshold, /raw content, no artifact bytes, and no release authority/i);
+  assert.match(threshold, /no raw (?:content|text), no artifact bytes, and no release authority/i);
 });
 
 test('Ash Keep runtime shell loads lifecycle orchestration after the proven Keep core', () => {
