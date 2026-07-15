@@ -2,6 +2,12 @@ import assert from 'node:assert/strict';
 import fs from 'node:fs';
 import os from 'node:os';
 import path from 'node:path';
+import { JSDOM } from 'jsdom';
+
+import {
+  ASH_WORKSPACE_NAVIGATION_VERSION,
+  installAshWorkspaceNavigation
+} from '../app/dome-world/ash-workspace-navigation.js';
 
 const read = file => fs.readFileSync(file, 'utf8');
 const html = read('app/dome-world/ash-keep.html');
@@ -9,6 +15,8 @@ const deliverySource = read('app/dome-world/ash-keep-source.html');
 const runtime = read('app/dome-world/ash-keep.js');
 const caseControls = read('app/dome-world/ash-case-controls.js');
 const mapLabels = read('app/dome-world/ash-map-labels.js');
+const workspaceBridge = read('app/dome-world/ash-workspace-bridge.js');
+const workspaceNavigation = read('app/dome-world/ash-workspace-navigation.js');
 const worker = read('app/dome-world/ash-keep-worker.js');
 const dome = read('app/dome-world/index.html');
 const lab = read('app/dome-world/admissibility-tomography.html');
@@ -82,6 +90,62 @@ assert.match(mapLabels, /hover or tap for label/);
 assert.match(mapLabels, /data-ash-node-number/);
 assert.match(mapLabels, /tooltip\.textContent = `\$\{record\.index\} · \$\{record\.label\}`/);
 assert.doesNotMatch(mapLabels, /requestAnimationFrame\(/, 'The label layer must not introduce a second animation scheduler.');
+
+assert.equal(ASH_WORKSPACE_NAVIGATION_VERSION, 'td613.ash-keep.workspace-navigation/v1.0');
+assert.match(workspaceBridge, /import '\.\/ash-workspace-navigation\.js'/);
+assert.match(workspaceNavigation, /host\.addEventListener\('click', onClick, true\)/);
+assert.match(workspaceNavigation, /host\.__td613OpenAshWorkspace/);
+assert.match(workspaceNavigation, /Workspace open for review/);
+assert.match(workspaceNavigation, /tab\.setAttribute\('aria-disabled', 'false'\)/);
+assert.doesNotMatch(workspaceNavigation, /tab\.disabled\s*=\s*true/);
+
+const navigationDom = new JSDOM(`<!doctype html><html><head></head><body data-ash-lifecycle="READINESS_OBSERVED">
+  <nav class="workspace-rail">
+    <button class="work-tab" data-workspace="custody">Custody</button>
+    <button class="work-tab" data-workspace="map">Map</button>
+    <button class="work-tab" data-workspace="rooms">Rooms</button>
+    <button class="work-tab" data-workspace="routes">Routes</button>
+    <button class="work-tab" data-workspace="test">Test</button>
+    <button class="work-tab" data-workspace="draft">Draft</button>
+    <button class="work-tab" data-workspace="save">Save</button>
+  </nav>
+  <main>
+    <section class="workspace active" id="workspace-map"><div class="workspace-head"></div></section>
+    <section class="workspace" id="workspace-rooms"><div class="workspace-head"></div></section>
+    <section class="workspace" id="workspace-routes"><div class="workspace-head"></div></section>
+    <section class="workspace" id="workspace-test"><div class="workspace-head"></div></section>
+    <section class="workspace" id="workspace-draft"><div class="workspace-head"></div></section>
+    <section class="workspace" id="workspace-save"><div class="workspace-head"></div></section>
+  </main>
+</body></html>`, { pretendToBeVisual: true });
+const openedWorkspaces = [];
+navigationDom.window.__td613OpenAshWorkspace = name => {
+  openedWorkspaces.push(name);
+  navigationDom.window.document.querySelectorAll('.work-tab').forEach(tab => {
+    tab.setAttribute('aria-selected', String(tab.dataset.workspace === name));
+  });
+  navigationDom.window.document.querySelectorAll('.workspace').forEach(panel => {
+    panel.classList.toggle('active', panel.id === `workspace-${name}`);
+  });
+};
+assert.equal(installAshWorkspaceNavigation(navigationDom.window.document, navigationDom.window), true);
+assert.equal(installAshWorkspaceNavigation(navigationDom.window.document, navigationDom.window), false);
+const roomsClick = new navigationDom.window.MouseEvent('click', { bubbles: true, cancelable: true });
+navigationDom.window.document.querySelector('[data-workspace="rooms"]').dispatchEvent(roomsClick);
+assert.equal(roomsClick.defaultPrevented, true);
+assert.deepEqual(openedWorkspaces, ['rooms']);
+assert.equal(navigationDom.window.document.querySelector('#workspace-rooms').classList.contains('active'), true);
+assert.equal(navigationDom.window.document.querySelector('[data-workspace="rooms"]').getAttribute('aria-disabled'), 'false');
+assert.equal(navigationDom.window.document.querySelector('[data-workspace="rooms"]').dataset.lifecycleHeld, 'true');
+assert.match(navigationDom.window.document.querySelector('#workspace-rooms .workspace-lifecycle-note').textContent, /CASE_BOUND/);
+const mapClick = new navigationDom.window.MouseEvent('click', { bubbles: true, cancelable: true });
+navigationDom.window.document.querySelector('[data-workspace="map"]').dispatchEvent(mapClick);
+assert.deepEqual(openedWorkspaces, ['rooms', 'map']);
+assert.equal(navigationDom.window.document.querySelector('[data-workspace="map"]').dataset.lifecycleHeld, 'false');
+const custodyClick = new navigationDom.window.MouseEvent('click', { bubbles: true, cancelable: true });
+navigationDom.window.document.querySelector('[data-workspace="custody"]').dispatchEvent(custodyClick);
+assert.equal(custodyClick.defaultPrevented, false, 'Custody remains owned by the existing custody bridge.');
+navigationDom.window.close();
 
 assert.match(worker, /self\.postMessage\(\{ id, trials \}\)/);
 assert.match(runtime, /compileRebuildTest/);
