@@ -37,7 +37,7 @@ jobs:
       - name: Set up Node
         uses: actions/setup-node@v4
         with:
-          node-version: 20
+          node-version: 22
           cache: npm
 
       - name: Install dependencies
@@ -63,6 +63,9 @@ jobs:
 
       - name: Run Ash Keep Hush API regression
         run: node tests/ash-keep-hush-api.test.mjs
+
+      - name: Rebuild maintained Aperture download artifact
+        run: npm run aperture:export-downloads
 
       - name: Run Ash Keep UI regression
         run: node tests/ash-keep-ui.test.mjs
