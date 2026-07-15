@@ -6,7 +6,7 @@ export const MARROWLINE_LAB_ROUTE = '/dome-world/marrowline.html';
 export const ASH_THRESHOLD_ROUTE = '/dome-world/ash-threshold.html';
 export const ASH_LIFECYCLE_SHELL_CONTRACT = 'td613.ash.lifecycle-shell/v0.1';
 export const ASH_KEEP_SHELL_VERSION = 'td613.ash-keep.shell/v0.1';
-export const ASH_KEEP_JS_SHELL_VERSION = 'td613.ash-keep.js-shell/v0.1';
+export const ASH_KEEP_JS_SHELL_VERSION = 'td613.ash-keep.js-shell/v0.2-review-refresh';
 export const ASH_LIFECYCLE_MODULE = '/dome-world/ash-lifecycle.js';
 
 const DOME_SOURCE_PATH = path.join(process.cwd(), 'app', 'dome-world', 'index.html');
@@ -19,36 +19,31 @@ const CORE_SCRIPT = '<script type="module" src="/dome-world/ash-keep.js"></scrip
 const LIFECYCLE_SCRIPT = `<script type="module" src="${ASH_LIFECYCLE_MODULE}"></script>`;
 const DRAFT_MARKER = '    caseId: state.caseMap.case_id,\n    body: $(\'draftBody\').value,';
 const DRAFT_BINDING = '    caseId: state.caseMap.case_id,\n    caseMapDigest: state.caseMap.case_map_digest,\n    body: $(\'draftBody\').value,';
+const REVIEW_MARKER = "  await put('reviews', state.latestReview, state.latestReview.review_id);\n  renderDraft();";
+const REVIEW_BINDING = "  await put('reviews', state.latestReview, state.latestReview.review_id);\n  renderDraft();\n  setTimeout(() => location.reload(), 160); // td613 lifecycle review refresh";
 
 export function injectMarrowlineLabButton(source = '') {
   const html = String(source || '');
   if (!html) throw new Error('dome-world-source-empty');
   if (html.includes(`data-open-route="${MARROWLINE_LAB_ROUTE}"`)) return html;
-
   const stationCount = '<span><b>10</b>stations</span>';
   const interfaceBus = /<button class="lab-node" data-open-view="api"[\s\S]*?<\/button>/;
   if (!html.includes(stationCount)) throw new Error('dome-world-lab-station-count-marker-missing');
   if (!interfaceBus.test(html)) throw new Error('dome-world-interface-bus-marker-missing');
-
-  return html
-    .replace(stationCount, '<span><b>11</b>stations</span>')
-    .replace(interfaceBus, button => `${button}${MARROWLINE_BUTTON}`);
+  return html.replace(stationCount, '<span><b>11</b>stations</span>').replace(interfaceBus, button => `${button}${MARROWLINE_BUTTON}`);
 }
 
 export function injectAshLifecycleEntry(source = '') {
   let html = String(source || '');
   if (!html) throw new Error('dome-world-source-empty');
-
   const oldTab = '<button class="tab" data-view="ash" data-sigil="下"><small>04</small><span>Ash</span></button>';
   if (html.includes(oldTab)) html = html.replace(oldTab, ASH_TAB);
   if (!html.includes(`href="${ASH_THRESHOLD_ROUTE}" data-view="ash"`)) throw new Error('dome-world-ash-tab-marker-missing');
-
   const ashSection = /<section id="ash" class="view primary-view" data-glyph="下">[\s\S]*?<\/section>/;
   if (!html.includes('<h2>Ash Threshold</h2>')) {
     if (!ashSection.test(html)) throw new Error('dome-world-ash-section-marker-missing');
     html = html.replace(ashSection, ASH_COMPATIBILITY_SECTION);
   }
-
   html = html.replace("ash:'Ash / readiness membrane'", "ash:'Ash / custody threshold'");
   if (html.includes('<h2>Ash Readiness</h2>')) throw new Error('dome-world-visible-readiness-title-survived');
   return html;
@@ -57,28 +52,31 @@ export function injectAshLifecycleEntry(source = '') {
 export function injectAshKeepLifecycle(source = '') {
   let html = String(source || '');
   if (!html) throw new Error('ash-keep-source-empty');
-
   if (!html.includes('name="ash-lifecycle"')) {
     const marker = '<meta name="theme-color" content="#04130f">';
     if (!html.includes(marker)) throw new Error('ash-keep-theme-marker-missing');
     html = html.replace(marker, `${marker}\n  <meta name="ash-lifecycle" content="v0.1">`);
   }
-
   if (!html.includes(ASH_LIFECYCLE_MODULE)) {
     if (!html.includes(CORE_SCRIPT)) throw new Error('ash-keep-core-script-marker-missing');
     html = html.replace(CORE_SCRIPT, `${CORE_SCRIPT}\n  ${LIFECYCLE_SCRIPT}`);
   }
-
   if (html.indexOf(ASH_LIFECYCLE_MODULE) < html.indexOf('/dome-world/ash-keep.js')) throw new Error('ash-lifecycle-loaded-before-keep-core');
   return html;
 }
 
 export function bindAshDraftsToCaseMap(source = '') {
-  const code = String(source || '');
+  let code = String(source || '');
   if (!code) throw new Error('ash-keep-js-source-empty');
-  if (code.includes('caseMapDigest: state.caseMap.case_map_digest')) return code;
-  if (!code.includes(DRAFT_MARKER)) throw new Error('ash-keep-draft-marker-missing');
-  return code.replace(DRAFT_MARKER, DRAFT_BINDING);
+  if (!code.includes('caseMapDigest: state.caseMap.case_map_digest')) {
+    if (!code.includes(DRAFT_MARKER)) throw new Error('ash-keep-draft-marker-missing');
+    code = code.replace(DRAFT_MARKER, DRAFT_BINDING);
+  }
+  if (!code.includes('td613 lifecycle review refresh')) {
+    if (!code.includes(REVIEW_MARKER)) throw new Error('ash-keep-review-marker-missing');
+    code = code.replace(REVIEW_MARKER, REVIEW_BINDING);
+  }
+  return code;
 }
 
 export function renderDomeWorldShell(source = '') {
@@ -93,28 +91,9 @@ function requestedSurface(req) {
 }
 
 function surfaceDefinition(surface) {
-  if (surface === 'ash-keep-html') {
-    return {
-      path: ASH_KEEP_SOURCE_PATH,
-      contentType: 'text/html; charset=utf-8',
-      header: ['X-TD613-Ash-Keep-Shell', ASH_KEEP_SHELL_VERSION],
-      transform: injectAshKeepLifecycle
-    };
-  }
-  if (surface === 'ash-keep-js') {
-    return {
-      path: ASH_KEEP_JS_SOURCE_PATH,
-      contentType: 'text/javascript; charset=utf-8',
-      header: ['X-TD613-Ash-Keep-JS-Shell', ASH_KEEP_JS_SHELL_VERSION],
-      transform: bindAshDraftsToCaseMap
-    };
-  }
-  return {
-    path: DOME_SOURCE_PATH,
-    contentType: 'text/html; charset=utf-8',
-    header: ['X-TD613-Dome-Shell', DOME_WORLD_SHELL_VERSION],
-    transform: renderDomeWorldShell
-  };
+  if (surface === 'ash-keep-html') return { path: ASH_KEEP_SOURCE_PATH, contentType: 'text/html; charset=utf-8', header: ['X-TD613-Ash-Keep-Shell', ASH_KEEP_SHELL_VERSION], transform: injectAshKeepLifecycle };
+  if (surface === 'ash-keep-js') return { path: ASH_KEEP_JS_SOURCE_PATH, contentType: 'text/javascript; charset=utf-8', header: ['X-TD613-Ash-Keep-JS-Shell', ASH_KEEP_JS_SHELL_VERSION], transform: bindAshDraftsToCaseMap };
+  return { path: DOME_SOURCE_PATH, contentType: 'text/html; charset=utf-8', header: ['X-TD613-Dome-Shell', DOME_WORLD_SHELL_VERSION], transform: renderDomeWorldShell };
 }
 
 function send(res, status, body = '', definition = surfaceDefinition('dome-world')) {
@@ -135,7 +114,6 @@ export default function handler(req, res) {
     send(res, 405, 'Method Not Allowed', definition);
     return;
   }
-
   try {
     const source = fs.readFileSync(definition.path, 'utf8');
     const rendered = definition.transform(source);
@@ -143,13 +121,6 @@ export default function handler(req, res) {
   } catch (error) {
     res.setHeader('Content-Type', 'application/json; charset=utf-8');
     res.statusCode = 500;
-    res.end(JSON.stringify({
-      ok: false,
-      error: 'dome-world-shell-surface-unavailable',
-      surface: requestedSurface(req),
-      detail: String(error?.message || error),
-      version: DOME_WORLD_SHELL_VERSION,
-      ashLifecycle: ASH_LIFECYCLE_SHELL_CONTRACT
-    }));
+    res.end(JSON.stringify({ ok: false, error: 'dome-world-shell-surface-unavailable', surface: requestedSurface(req), detail: String(error?.message || error), version: DOME_WORLD_SHELL_VERSION, ashLifecycle: ASH_LIFECYCLE_SHELL_CONTRACT }));
   }
 }
