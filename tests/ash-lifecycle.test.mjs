@@ -68,6 +68,7 @@ function boundFixture(digestCharacter = 'd') {
   const latestRelease = {
     receipt_id: 'release_current',
     receipt_digest: `sha256:${'7'.repeat(64)}`,
+    created_at: '2026-07-14T00:10:00.000Z',
     case_id: caseMap.case_id,
     case_map_digest: caseMap.case_map_digest,
     draft_id: latestDraft.draft_id,
@@ -78,6 +79,7 @@ function boundFixture(digestCharacter = 'd') {
     case_id: caseMap.case_id,
     case_map_digest: caseMap.case_map_digest,
     save_point_id: 'save_current',
+    created_at: '2026-07-14T00:11:00.000Z',
     release_receipt_reference: latestRelease.receipt_id,
     release_receipt_digest: latestRelease.receipt_digest,
     tamper_state: 'CLEAR'
@@ -95,7 +97,7 @@ test('Quick Scan readiness rejects raw content and preserves the no-custody boun
   assert.match(readiness.readiness_digest, /^sha256:[0-9a-f]{64}$/);
 });
 
-test('custody root binding reports repeated roots without duplicating topology', () => {
+test('custody root binding reports repeated roots without duplicating topology or evidence', () => {
   const first = buildCustodyRoot({ caseMap: baseCase, custodyReceipt, readinessReceipt: readiness });
   assert.equal(first.custody_reference, custodyReceipt.receipt_id);
   assert.equal(first.already_bound, false);
@@ -110,6 +112,8 @@ test('custody root binding reports repeated roots without duplicating topology',
   assert.equal(second.already_bound, true);
   assert.equal(second.nodes.length, first.nodes.length);
   assert.equal(second.root_node.id, first.root_node.id);
+  assert.deepEqual(second.evidence_basis_additions, []);
+  assert.equal(second.observation, null);
 });
 
 test('lifecycle advances only through a contiguous custody-bound chain', () => {
@@ -161,13 +165,12 @@ test('lifecycle advances only through a contiguous custody-bound chain', () => {
   assert.equal(sealed.state, ASH_LIFECYCLE_STATES.CONTINUITY_SEALED);
 });
 
-test('a Save Point from before the current release cannot close continuity', () => {
+test('a matching Save Point created before the current release cannot close continuity', () => {
   const fixture = boundFixture('8');
   const preReleaseSave = {
     ...fixture.latestSavePoint,
     save_point_id: 'save_before_release',
-    release_receipt_reference: null,
-    release_receipt_digest: null
+    created_at: '2026-07-14T00:09:00.000Z'
   };
   const lifecycle = deriveAshLifecycle({
     readinessReceipt: readiness,
