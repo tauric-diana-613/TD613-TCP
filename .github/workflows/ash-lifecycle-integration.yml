@@ -15,13 +15,14 @@ on:
       - "tests/ash-lifecycle.test.mjs"
       - "tests/ash-draft-lifecycle-binding.test.mjs"
       - "tests/ash-product-architecture.test.mjs"
+      - "tests/dome-world-integration.test.mjs"
       - "tests/vercel-deploy-hygiene.test.mjs"
       - "vercel.json"
       - ".github/workflows/ash-lifecycle-integration.yml"
   workflow_dispatch:
 
 permissions:
-  contents: write
+  contents: read
 
 concurrency:
   group: ash-lifecycle-${{ github.event.pull_request.number || github.ref }}
@@ -31,11 +32,8 @@ jobs:
   validate:
     runs-on: ubuntu-latest
     steps:
-      - name: Check out candidate branch
+      - name: Check out candidate merge
         uses: actions/checkout@v4
-        with:
-          ref: ${{ github.event.pull_request.head.ref || github.ref_name }}
-          fetch-depth: 0
 
       - name: Set up Node
         uses: actions/setup-node@v4
@@ -46,8 +44,10 @@ jobs:
       - name: Install dependencies
         run: npm ci
 
-      - name: Consolidate Ash lifecycle surfaces
-        run: node scripts/consolidate-ash-lifecycle-shell.mjs
+      - name: Confirm Ash lifecycle surfaces are consolidated
+        run: |
+          node scripts/consolidate-ash-lifecycle-shell.mjs
+          git diff --exit-code -- vercel.json api/dome-world-shell.js api/ash-keep-shell.js api/ash-keep-js-shell.js
 
       - name: Validate Vercel function and route hygiene
         run: node tests/vercel-deploy-hygiene.test.mjs
@@ -60,6 +60,9 @@ jobs:
 
       - name: Run lifecycle product architecture tests
         run: node tests/ash-product-architecture.test.mjs
+
+      - name: Preserve existing Dome integration contract
+        run: node tests/dome-world-integration.test.mjs
 
       - name: Preserve existing Dome shell contract
         run: node tests/dome-world-lab-marrowline-link.test.mjs
@@ -78,16 +81,3 @@ jobs:
 
       - name: Run Ash Keep UI regression
         run: node tests/ash-keep-ui.test.mjs
-
-      - name: Commit deterministic consolidation
-        shell: bash
-        run: |
-          if git diff --quiet; then
-            echo "Ash lifecycle shell already consolidated."
-            exit 0
-          fi
-          git config user.name "github-actions[bot]"
-          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          git add -A vercel.json api/dome-world-shell.js api/ash-keep-shell.js api/ash-keep-js-shell.js
-          git commit -m "Consolidate Ash lifecycle shell surfaces"
-          git push origin HEAD:${{ github.event.pull_request.head.ref || github.ref_name }}

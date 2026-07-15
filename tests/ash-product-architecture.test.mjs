@@ -77,7 +77,7 @@ test('the same Dome shell binds every served Ash draft to the current Case Map d
 test('Vercel multiplexes lifecycle surfaces through one existing function before the generic Dome rewrite', () => {
   assert.deepEqual(vercel.functions['api/dome-world-shell.js'], {
     maxDuration: 10,
-    includeFiles: '{app/dome-world/index.html,app/dome-world/ash-keep.html,app/dome-world/ash-keep.js}'
+    includeFiles: 'app/dome-world/{index.html,ash-keep.html,ash-keep.js}'
   });
   assert.equal(vercel.functions['api/ash-keep-shell.js'], undefined);
   assert.equal(vercel.functions['api/ash-keep-js-shell.js'], undefined);
