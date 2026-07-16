@@ -3,7 +3,12 @@ import path from 'node:path';
 import { createHash } from 'node:crypto';
 
 const ALLOWED_STATES = new Set(['pending', 'success', 'failure', 'error']);
-const ALLOWED_CONTEXTS = new Set(['Ash Keep Deployed Observation', 'Ash Lifecycle Deployed Observation']);
+const ALLOWED_CONTEXTS = new Set([
+  'Ash Keep Deployed Observation',
+  'Ash Lifecycle Deployed Observation',
+  'Ash Custodian Return Local Observation',
+  'Ash Custodian Return Deployed Observation'
+]);
 const DEFAULT_CONTEXT = 'Ash Keep Deployed Observation';
 const API_VERSION = '2022-11-28';
 const ARTIFACT_ROOT = path.resolve('artifacts');
