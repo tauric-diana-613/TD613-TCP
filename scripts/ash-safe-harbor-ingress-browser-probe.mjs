@@ -38,7 +38,16 @@ for (const target of [page]) {
 }
 
 await page.goto(`${base}/safe-harbor/`, { waitUntil: 'domcontentloaded' });
-await page.waitForSelector('#bindPacketInAsh');
+await page.waitForSelector('#bindPacketInAsh', { state: 'attached' });
+await page.locator('#bindPacketInAsh').evaluate(element => {
+  let cursor = element.parentElement;
+  while (cursor) {
+    if (cursor instanceof HTMLDetailsElement) cursor.open = true;
+    cursor = cursor.parentElement;
+  }
+  element.scrollIntoView({ block: 'center' });
+});
+await page.locator('#bindPacketInAsh').waitFor({ state: 'visible' });
 assert.equal(await page.locator('#bindPacketInAsh').textContent(), 'Bind in Ash Keep');
 assert.equal(await page.locator('#bindPacketInAsh').isDisabled(), true);
 assert.match(await page.locator('#ashIngressStatus').textContent(), /awaits|held/i);
@@ -157,7 +166,7 @@ const materialConsoleErrors = consoleErrors.filter(value => !/favicon|404|Failed
 assert.equal(materialConsoleErrors.length, 0, `Browser console errors: ${JSON.stringify(materialConsoleErrors)}`);
 
 const receipt = {
-  schema: 'td613.ash.safe-harbor-ingress-browser-observation/v0.1',
+  schema: 'td613.ash.safe-harbor.ingress-browser-observation/v0.1',
   observed_base: base,
   viewport: { width: 390, height: 844 },
   reduced_motion: true,
