@@ -18,6 +18,7 @@ constitutional synthesis = 49 / 50
 new serverless function = false
 active serverless functions = 11
 reserved function capacity = 1
+maximum declared subset lattice = 64
 production demonstration = NOT_CLAIMED
 Stretch 7 authorization = false
 ```
