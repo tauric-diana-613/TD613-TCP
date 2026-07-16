@@ -103,4 +103,6 @@ await assert.rejects(
   /release identity/
 );
 
+await import('./frame-reload.test.mjs');
+
 console.log('aperture-composition/runtime.test.mjs passed');
