@@ -64,7 +64,11 @@ jobs:
       - name: Validate release plumbing
         run: node tests/release-plumbing.test.mjs
       - name: Validate maintained Vercel hygiene
-        run: node tests/vercel-deploy-hygiene.test.mjs
+        shell: bash
+        run: |
+          set -o pipefail
+          mkdir -p artifacts
+          node tests/vercel-deploy-hygiene.test.mjs 2>&1 | tee artifacts/phase4-vercel-hygiene.log
       - name: Validate Amari patch lane
         run: node tests/amari-patch-lane.test.mjs
       - name: Validate Phase IV release synchronization
@@ -195,6 +199,7 @@ jobs:
         with:
           name: phase4-reciprocal-receipt-demonstration
           path: |
+            artifacts/phase4-vercel-hygiene.log
             artifacts/phase4-preview-access.json
             artifacts/phase4-preview-headers.txt
             artifacts/phase4-preview-body.txt
