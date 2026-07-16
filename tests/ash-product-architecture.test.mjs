@@ -106,10 +106,7 @@ test('the canonical core owns Draft authority and release-bound continuity witho
 });
 
 test('Vercel multiplexes lifecycle surfaces through one existing function before the generic Dome rewrite', () => {
-  assert.deepEqual(vercel.functions['api/dome-world-shell.js'], {
-    maxDuration: 10,
-    includeFiles: 'app/dome-world/{index.html,ash-keep.html,ash-keep.js}'
-  });
+  assert.deepEqual(vercel.functions['api/dome-world-shell.js'], { maxDuration: 10, includeFiles: 'app/dome-world/{index.html,ash-keep.html,ash-keep.js}' });
   assert.equal(vercel.functions['api/ash-keep-shell.js'], undefined);
   assert.equal(vercel.functions['api/ash-keep-js-shell.js'], undefined);
   const rewrites = vercel.rewrites;
@@ -145,20 +142,20 @@ test('custody affects Reader, draft, release, Save Point, and Capsule eligibilit
   assert.match(lifecycleEngine, /latestSavePoint\.release_receipt_digest === latestRelease\.receipt_digest/);
 });
 
-test('ledger and roadmap preserve Stretch 1 closure while Stretch 2 remains unopened', () => {
+test('ledger and roadmap preserve Stretch 1 closure while later packets advance under separate gates', () => {
   assert.match(ledger, /H\. Ash product lifecycle orchestration \| \*\*35 \/ 35\*\*/);
   assert.match(ledger, /I\. Ash operator surface and local case stewardship \| \*\*43 \/ 45\*\*/);
   assert.match(ledger, /production-demonstrated workstreams = 3 \/ 9/);
-  assert.match(ledger, /component maturity on main = 201 \/ 375/);
+  assert.match(ledger, /component maturity on main = 216 \/ 375/);
   assert.match(ledger, /current-head aftercare ≠ feature-specific production demonstration/);
   assert.match(ledger, /# Constitutional Synthesis Matrix/);
-  assert.match(ledger, /Score: `47 \/ 50`/);
+  assert.match(ledger, /Score: `47 \/ 50`|constitutional synthesis = 47 \/ 50/);
   assert.match(ledger, /Stretch 1 · Ash Constitutional Convergence Closure[\s\S]*CLOSED \/ IMPLEMENTED_PRODUCTION_DEMONSTRATED/);
-  assert.match(ledger, /Stretch 2 · Custodian Return And Anisotropy[\s\S]*AWAITING_OPERATOR_APPROVAL \/ NOT_STARTED/);
+  assert.match(ledger, /Stretch 2 · Custodian Return And Anisotropy[\s\S]*OPEN \/ IMPLEMENTED_VALIDATION_GATED/);
   assert.match(roadmap, /Stretch 1 · Ash Constitutional Convergence Closure — CLOSED/);
-  assert.match(roadmap, /Stretch 2 · Custodian Return And Anisotropy — AWAITING OPERATOR APPROVAL/);
-  assert.match(roadmap, /Choir calibration receipt binding/);
-  assert.ok(roadmap.indexOf('Stretch 2 · Custodian Return And Anisotropy — AWAITING OPERATOR APPROVAL') < roadmap.indexOf('Choir calibration receipt binding'), 'Stretch 2 must remain the approval-gated packet before Choir calibration.');
+  assert.match(roadmap, /Stretch 2 · Custodian Return And Anisotropy — OPEN \/ VALIDATION-GATED/);
+  assert.match(roadmap, /Choir calibration receipt binding — BLOCKED/);
+  assert.ok(roadmap.indexOf('Stretch 2 · Custodian Return And Anisotropy — OPEN / VALIDATION-GATED') < roadmap.indexOf('Choir calibration receipt binding — BLOCKED'), 'Stretch 2 must remain before blocked Choir calibration.');
   assert.match(roadmap, /Safe Harbor → Ash custody-root adapter/);
   assert.match(roadmap, /transport-capable workstreams = 0/);
   assert.match(convergenceReceipt, /Status: `IMPLEMENTED_PRODUCTION_DEMONSTRATED`/);
