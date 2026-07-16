@@ -17,10 +17,8 @@ import {
   compileV31DiagnosticForV30Bridge
 } from '../engine/aperture-v31-compatibility.js';
 import { TD613_PHASE4_RECIPROCAL_BRIDGE } from '../engine/aperture-v3-reciprocal-bridge.js';
-import {
-  APERTURE_COMPOSITION_MANIFEST,
-  installApertureComposition
-} from '../engine/aperture-composition.js';
+import { APERTURE_COMPOSITION_MANIFEST } from '../engine/aperture-composition.js';
+import { installApertureCompositionForFrame } from '../engine/aperture-composition-frame.js';
 
 export const TD613_APERTURE_TASK_INTENT = Object.freeze({
   version: APERTURE_V3_VERSION,
@@ -64,7 +62,7 @@ export async function bootApertureComposition({
 } = {}) {
   if (!root || !documentImpl || !frame) throw new Error('Aperture composition bootstrap requires the stable public shim and canonical iframe.');
   try {
-    const receipt = await installApertureComposition({
+    const receipt = await installApertureCompositionForFrame({
       root,
       frame,
       manifest: APERTURE_COMPOSITION_MANIFEST,
