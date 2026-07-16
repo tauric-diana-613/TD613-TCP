@@ -76,8 +76,13 @@ jobs:
         run: node tests/ash-keep-continuity.test.mjs
       - name: Preserve Ash Keep Hush boundary
         run: node tests/ash-keep-hush-api.test.mjs
+      - name: Rebuild maintained Aperture download artifact
+        run: npm run aperture:export-downloads
       - name: Preserve Ash Keep UI contract
-        run: node tests/ash-keep-ui.test.mjs
+        shell: bash
+        run: |
+          set -o pipefail
+          node tests/ash-keep-ui.test.mjs 2>&1 | tee ash-keep-ui.log
       - name: Enforce Vercel function hygiene
         run: node tests/vercel-deploy-hygiene.test.mjs
       - name: Publish ingress validation success status
@@ -103,6 +108,7 @@ jobs:
           name: ash-safe-harbor-ingress-validation-evidence
           path: |
             ash-safe-harbor-ingress.log
+            ash-keep-ui.log
             app/dome-world/schemas/ash-safe-harbor-ingress-v01.schema.json
             artifacts/ash-safe-harbor-ingress/
           if-no-files-found: warn
