@@ -2,7 +2,7 @@
 
 𝌋‌ U+10D613
 
-Ledger generation: `v1.14 · Stretch 6 higher-order interference closure / strategic deployment law / 11+1 function covenant`
+Ledger generation: `v1.14.1 · Stretch 6 deployment witness reconciled / Stretches 7–11 bounded / strategic deployment law / 11+1 function covenant`
 
 | Workstream | Score |
 |---|---:|
@@ -18,6 +18,7 @@ Ledger generation: `v1.14 · Stretch 6 higher-order interference closure / strat
 
 ```text
 component maturity after Stretch 6 closure = 284 / 375
+remaining component maturity = 91 / 375
 production-demonstrated workstreams = 4 / 9
 validation-gated workstreams = 3 / 9
 transport-capable workstreams = 0
@@ -25,6 +26,22 @@ constitutional synthesis = 49 / 50
 ```
 
 Score: `49 / 50`
+
+```text
+remaining by workstream:
+A = 1
+B = 12
+C = 7
+D = 0
+E = 7
+F = 24
+G = 38
+H = 0
+I = 2
+total = 91
+```
+
+The numerical remainder describes unearned component maturity. Every point remains evidence-bounded and must be earned by the workstream that owns it.
 
 Aperture composition remains at `18 / 25`. Runtime installation and the cross-receipt constitution are complementary; seven points remain retained for an operator-facing presentation surface, feature-specific production browser demonstration, and deeper canonical-body decomposition.
 
@@ -57,6 +74,8 @@ count above 12 → structurally forbidden
 ```
 
 The reserved slot may be consumed only through an explicit operator-authorized emergency, repair, or migration decision. Any such use must name the reason, expected duration, restoration plan, and exact commit. CI must count the actual deployable `api/` surface and fail before Vercel receives an over-budget deployment.
+
+The covenant remains binding through Stretches 7–11. No remaining Stretch receives an implied function allocation.
 
 ## Strategic Vercel Deployment Law
 
@@ -113,11 +132,12 @@ Stretch 6 authorization: true / consumed by operator opening gesture
 ```
 
 ## Stretch 6 · Higher-Order Interference
-`CLOSED / IMPLEMENTED_VALIDATION_GATED / EVIDENCE_BOUNDED`
+`CLOSED / IMPLEMENTED_VALIDATION_GATED / EVIDENCE_BOUNDED / STRATEGIC_DEPLOYMENT_WITNESSED`
 
 ```text
 PR: 366
 validated branch commit: dc658672c736faec3e534040a1ddc0e3c9f125ad
+exact merged main commit: e9777af2b98dd56676d3affd17e95d2cc7b4ad1b
 Choir validation run/artifact: 29530385841 / 8388367840
 TCP Smoke run: 29530385835
 static validation run: 29530385895
@@ -143,11 +163,127 @@ Cinder authority: false
 Stretch 7 authorization: false
 ```
 
-One strategic Vercel deployment is authorized as the post-merge release witness for the exact green Stretch 6 closure commit. Deployment success may verify the public runtime and function surface; it may not promote maturity or grant release, transport, suppression, or Cinder authority.
+```text
+strategic Vercel deployment: SUCCESS
+strategic deployment allowance for Stretch 6: CONSUMED
+Ash Lifecycle Deployed Observation: SUCCESS
+Ash Custodian Return Local Observation: SUCCESS
+Ash Custodian Return Deployed Observation: SUCCESS
+Aperture Composition Validation: SUCCESS
+Ash Choir Calibration Validation: SUCCESS
+Ash Hush Intervention Validation: SUCCESS
+```
+
+The Stretch 6 deployment witnessed the merged closure commit and the continuing `11 active + 1 reserved` function surface. It did not promote the packet beyond validation-gated maturity.
+
+## Remaining ordered path to Stretch 11
+
+```text
+Stretch 7 closure → Stretch 8 may open
+Stretch 8 closure → Stretch 9 may open
+Stretch 9 closure → Stretch 10 may open
+Stretch 10 closure → Stretch 11 may open
+Stretch 11 remains last
+```
+
+Higher-order interference, ordered route-sequence recovery, and temporal or delayed-disclosure recovery remain separate contracts. Their evidence may be cross-referenced; their operators, holds, receipts, and maturity claims may not be collapsed.
 
 ## Stretch 7 · Ordered Route-Sequence Recovery
 `BLOCKED / NOT_AUTHORIZED`
 
+Objective: recover declared order-dependent route effects while preserving every step, transition, receipt, and alternative ordering.
+
+Closure gates:
+
+```text
+current Authority Context, Case Map, and Route Memory bindings
+declared route sequence and transition identifiers
+stepwise receipt continuity
+matched reordered and truncated controls
+missing-step, duplicate-step, reordering, stale-case, cancellation, and tamper holds
+componentwise sequence deltas
+deterministic exact replay
+operator closure receipt
+new serverless function = false
+```
+
 Stretch 7 requires a fresh operator opening gesture after Stretch 6 evidence closure and strategic deployment witness.
+
+## Stretch 8 · Temporal And Delayed-Disclosure Assays
+`BLOCKED_PENDING_STRETCH_7_CLOSURE / NOT_AUTHORIZED`
+
+Objective: test declared time dependence and delayed disclosure without collapsing time into sequence order or prediction.
+
+Closure gates:
+
+```text
+verified clock and timestamp provenance
+declared observation and disclosure windows
+current case, route, and sequence bindings
+matched immediate, delayed, and no-disclosure controls
+clock-ambiguity, missing-interval, stale-window, leakage, cancellation, and tamper holds
+componentwise temporal results
+deterministic replay
+operator closure receipt
+new serverless function = false
+```
+
+## Stretch 9 · Safe Harbor → Ash Custody-Root Adapter
+`BLOCKED_PENDING_STRETCH_8_CLOSURE / NOT_AUTHORIZED`
+
+Objective: let Ash bind a verified Safe Harbor custody reference without ingesting the underlying body or inheriting broader authority.
+
+Constitutional rules:
+
+```text
+bind reference, not body
+preserve source-local custody and revocation state
+prevent authority drift
+reject universal join key
+reject raw-corpus default
+hold on stale, revoked, missing, mismatched, or unverifiable custody roots
+new serverless function = false unless separately authorized under the emergency covenant
+```
+
+## Stretch 10 · Independent Provenance Adapters
+`BLOCKED_PENDING_STRETCH_9_CLOSURE / NOT_AUTHORIZED`
+
+Objective: add independently verifiable provenance adapters without collapsing distinct sources into one identity, corpus, authority graph, or trust score.
+
+Closure gates:
+
+```text
+adapter-specific schema and digest domain
+source-local reference and custody semantics
+independent verification and replay
+staleness, revocation, mismatch, collision, and tamper holds
+no universal join key
+no raw-corpus default
+no destination transport
+new serverless function = false unless separately authorized under the emergency covenant
+```
+
+## Stretch 11 · Destination-Bound Handoff
+`BLOCKED_PENDING_STRETCH_10_CLOSURE / LAST / NOT_AUTHORIZED`
+
+Objective: validate handoff to one named destination under explicit recipient, custody, scope, expiry, revocation, failure, and receipt conditions.
+
+Closure gates:
+
+```text
+all destination-bound handoff gates G1–G8 validated
+named destination and recipient binding
+exact custody and provenance references
+explicit payload-reference scope
+expiry and revocation behavior
+recipient receipt and replay verification
+failure, refusal, timeout, mismatch, and rollback holds
+what-left / what-remained custody accounting
+no broadcast, universal routing, or default transport
+serverless surface remains within 11 active + 1 reserved
+final operator closure receipt and strategic deployment decision
+```
+
+Stretch 11 may authorize only the exact destination-bound capability proven by its evidence. It may not convert earlier receipts into universal release or transport authority.
 
 Marked ⟐
