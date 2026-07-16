@@ -901,5 +901,11 @@
       "source": "/(.*)",
       "destination": "/app/$1"
     }
-  ]
+  ],
+  "git": {
+    "deploymentEnabled": {
+      "main": true,
+      "*": false
+    }
+  }
 }
