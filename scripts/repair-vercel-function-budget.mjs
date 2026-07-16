@@ -77,7 +77,7 @@ const replacements = new Map([
 const textExtensions = new Set(['.js', '.mjs', '.cjs', '.ts', '.tsx', '.json', '.md', '.yml', '.yaml', '.txt']);
 function rewriteReferences(directory) {
   for (const entry of fs.readdirSync(directory, { withFileTypes: true })) {
-    if (['.git', 'node_modules', 'api', 'server'].includes(entry.name)) continue;
+    if (['.git', '.github', 'node_modules', 'api', 'server'].includes(entry.name)) continue;
     const full = path.join(directory, entry.name);
     if (entry.isDirectory()) {
       rewriteReferences(full);
