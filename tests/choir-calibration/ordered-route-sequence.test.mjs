@@ -106,14 +106,13 @@ const duplicateStep = await compileOrderedRouteSequence({
   target: {
     ...input.target,
     steps: [
-      input.target.steps[0],
-      input.target.steps[1],
+      ...input.target.steps,
       {
-        ...input.target.steps[1],
-        transition_id: 'aperture_to_aperture_duplicate',
+        ...input.target.steps[2],
+        transition_id: 'choir_to_choir_duplicate',
         transition_receipt_digest: digest('7'),
-        from_step_id: 'aperture',
-        to_step_id: 'aperture'
+        from_step_id: 'choir',
+        to_step_id: 'choir'
       }
     ]
   }
