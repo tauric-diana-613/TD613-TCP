@@ -107,10 +107,13 @@ jobs:
           cat ash-safe-harbor-ingress-runtime.log
           exit 1
       - name: Observe mobile Safe Harbor to Ash ingress
+        shell: bash
         env:
           TD613_BASE_URL: http://127.0.0.1:6138
           TD613_ARTIFACT_DIR: artifacts/ash-safe-harbor-ingress-browser
-        run: node scripts/ash-safe-harbor-ingress-browser-probe.mjs
+        run: |
+          set -o pipefail
+          node scripts/ash-safe-harbor-ingress-browser-probe.mjs 2>&1 | tee ash-safe-harbor-ingress-browser.log
       - name: Stop bounded local ingress runtime
         if: always()
         shell: bash
@@ -141,6 +144,7 @@ jobs:
           name: ash-safe-harbor-ingress-validation-evidence
           path: |
             ash-safe-harbor-ingress.log
+            ash-safe-harbor-ingress-browser.log
             ash-keep-ui.log
             ash-safe-harbor-ingress-runtime.log
             app/dome-world/schemas/ash-safe-harbor-*.schema.json
