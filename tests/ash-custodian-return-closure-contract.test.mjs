@@ -9,6 +9,7 @@ const engine = read('app/engine/ash-custodian-return-closure.js');
 const probe = read('scripts/ash-custodian-return-production-probe.mjs');
 const fixture = read('scripts/ash-custodian-return-fixture.mjs');
 const workflow = read('.github/workflows/ash-custodian-return.yml');
+const statusPublisher = read('scripts/publish-ash-keep-observer-status.mjs');
 
 assert.match(bridge, /ash-return-ready-bundle\.js[\s\S]*ash-custodian-return\.js[\s\S]*ash-custodian-return-closure\.js/);
 for (const token of [
@@ -81,5 +82,11 @@ assert.match(workflow, /publish-ash-keep-observer-status\.mjs/);
 assert.match(workflow, /promotion_authorized/);
 assert.doesNotMatch(workflow, /IMPLEMENTED_PRODUCTION_DEMONSTRATED/);
 assert.equal(fs.existsSync('.github/workflows/ash-custodian-return-deployed.yml'), false, 'The unregistered standalone observer must not remain as a second authority surface.');
+
+assert.match(statusPublisher, /Ash Keep Deployed Observation/);
+assert.match(statusPublisher, /Ash Lifecycle Deployed Observation/);
+assert.match(statusPublisher, /Ash Custodian Return Local Observation/);
+assert.match(statusPublisher, /Ash Custodian Return Deployed Observation/);
+assert.match(statusPublisher, /promotion_authorized: false/);
 
 console.log('Ash Custodian Return production-closure contract: PASS');
