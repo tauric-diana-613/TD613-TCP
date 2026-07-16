@@ -2,11 +2,11 @@
 
 𝌋‌ U+10D613
 
-Roadmap generation: `v1.14.1 · Stretch 6 closed and deployment-witnessed / Stretch 7 blocked / Stretches 7–11 bounded / strategic deployment law / 11+1 function covenant`
+Roadmap generation: `v1.15 · Stretch 7 closed / Stretch 8 blocked / strategic deployment law / 11+1 function covenant`
 
 ```text
-component maturity after Stretch 6 closure = 284 / 375
-remaining component maturity = 91 / 375
+component maturity after Stretch 7 closure = 290 / 375
+remaining component maturity = 85 / 375
 constitutional synthesis = 49 / 50
 Aperture composition = 18 / 25
 production-demonstrated workstreams = 4 / 9
@@ -22,6 +22,7 @@ transport-capable workstreams = 0
 4. Stretch 4 · Hush vocabulary externalization and intervention ensemble — CLOSED
 5. Stretch 5 · Aperture composition renovation before Choir UI — CLOSED / IMPLEMENTED_VALIDATION_GATED / EVIDENCE_BOUNDED
 6. Stretch 6 · Higher-order interference — CLOSED / IMPLEMENTED_VALIDATION_GATED / EVIDENCE_BOUNDED / STRATEGIC_DEPLOYMENT_WITNESSED
+7. Stretch 7 · Ordered route-sequence recovery — CLOSED / IMPLEMENTED_VALIDATION_GATED / EVIDENCE_BOUNDED
 
 ```text
 Stretch_5_runtime_PR: 359
@@ -37,16 +38,20 @@ Stretch_6_TCP_Smoke_run: 29530385835
 Stretch_6_static_validation_run: 29530385895
 Stretch_6_strategic_Vercel_deployment: SUCCESS
 Stretch_6_deployment_allowance: CONSUMED
-Stretch_6_Ash_Lifecycle_Deployed_Observation: SUCCESS
-Stretch_6_Ash_Custodian_Return_Deployed_Observation: SUCCESS
+Stretch_7_PR: 368
+Stretch_7_validated_implementation_commit: 4fb0f8ad52457c200061af79e5346b1fdb67e09c
+Stretch_7_Choir_run/artifact: 29533391345 / 8389510269
+Stretch_7_TCP_Smoke_run: 29533391331
+Stretch_7_static_validation_run: 29533391364
+Stretch_7_strategic_Vercel_deployment: AUTHORIZED_POST_MERGE
 canonical_body_rewritten: false
 canonical_body_decomposed: false
 production_browser_observation: NOT_CLAIMED
 Choir_UI_constructed: false
-Stretch_7_authorized: false
+Stretch_8_authorized: false
 ```
 
-The stable shim continues to install the declared runtime composition around the unchanged v3.1-alpha body. Stretch 6 adds a receipt-bound higher-order interference instrument after current Authority Context, Case Map, Route Memory, calibration binding, Reader provenance, and matched-control eligibility. It evaluates only a preregistered bounded subset lattice and preserves componentwise residue without converting residue into causation, identity, intent, suppression, release, transport, or Cinder authority.
+The stable shim continues to install the declared runtime composition around the unchanged v3.1-alpha body. Stretch 6 added a receipt-bound higher-order interference instrument over a bounded subset lattice. Stretch 7 adds a separate ordered route-sequence recovery instrument that preserves step and transition receipts and compares the target route against matched reordered and truncated controls. Neither instrument converts observed deltas into causation, prediction, identity, intent, suppression, release, transport, or Cinder authority.
 
 ## Serverless function budget gate
 
@@ -72,9 +77,9 @@ before adding a function:
 
 Any roadmap item that would raise the ordinary count above 11 enters `BLOCKED_PENDING_CONSOLIDATION`. CI must fail on actual deployable count drift before merge and before strategic Vercel deployment.
 
-Stretch 6 consumed no serverless-function capacity. The instrument lives in the shared engine and validation surface; the deployable root `api/` count remains `11 active + 1 reserved`.
+Stretches 6 and 7 consumed no serverless-function capacity. Their instruments live in the shared engine and validation surface; the deployable root `api/` count remains `11 active + 1 reserved`.
 
-Stretches 7–11 receive no implied function allocation. Their first implementation route is shared code outside root `api/`, existing guarded boundaries, and rewrites where a public alias is required.
+Stretches 8–11 receive no implied function allocation. Their first implementation route is shared code outside root `api/`, existing guarded boundaries, and rewrites where a public alias is required.
 
 ## Strategic Vercel deployment law
 
@@ -93,7 +98,7 @@ deployment ≠ maturity, release, transport, suppression, or Cinder authority
 
 Authorized uses: selected-release browser observation, route/function verification, public delivery of an authorized artifact, deployment-specific repair, and rollback verification.
 
-The one post-merge strategic Vercel deployment authorized for Stretch 6 completed successfully against exact merged main commit `e9777af2b98dd56676d3affd17e95d2cc7b4ad1b`. Its allowance is consumed. The deployment witnessed the public runtime and the continuing `11 active + 1 reserved` covenant; it closed no additional maturity gap by itself.
+The post-merge strategic Vercel deployment for Stretch 6 completed successfully. One post-merge strategic Vercel deployment is authorized for Stretch 7 after the exact green closure packet merges to `main`. Its named evidence purpose is to witness the public runtime and continuing `11 active + 1 reserved` function covenant. Deployment closes no additional maturity gap by itself.
 
 ## Ordered program
 
@@ -103,14 +108,13 @@ The one post-merge strategic Vercel deployment authorized for Stretch 6 complete
 4. Stretch 4 — CLOSED.
 5. Stretch 5 — CLOSED.
 6. Higher-order interference — CLOSED.
-7. Ordered route-sequence recovery — BLOCKED / NOT AUTHORIZED.
-8. Temporal and delayed-disclosure assays — BLOCKED PENDING STRETCH 7.
+7. Ordered route-sequence recovery — CLOSED.
+8. Temporal and delayed-disclosure assays — BLOCKED / NOT AUTHORIZED.
 9. Safe Harbor → Ash custody-root adapter — BLOCKED PENDING STRETCH 8.
 10. Independent provenance adapters — BLOCKED PENDING STRETCH 9.
 11. Destination-bound handoff last — BLOCKED PENDING STRETCH 10.
 
 ```text
-Stretch 7 closure → Stretch 8 may open
 Stretch 8 closure → Stretch 9 may open
 Stretch 9 closure → Stretch 10 may open
 Stretch 10 closure → Stretch 11 may open
@@ -118,32 +122,9 @@ Stretch 10 closure → Stretch 11 may open
 
 Higher-order, ordered-sequence, and temporal recovery remain separate contracts. Safe Harbor adaptation, independent provenance adaptation, and destination-bound handoff also remain separate contracts. A later Stretch may reference an earlier receipt; it may not absorb that earlier jurisdiction or silently promote its maturity.
 
-## Stretch 7 · Ordered Route-Sequence Recovery
-
-`BLOCKED / NOT AUTHORIZED`
-
-Purpose: recover declared order-dependent route effects while preserving each step, transition, receipt, and alternative ordering.
-
-Planned deliverables:
-
-```text
-ordered-sequence schema and receipt
-current Authority Context, Case Map, and Route Memory bindings
-declared step and transition identifiers
-stepwise receipt continuity
-matched reordered and truncated controls
-missing-step, duplicate-step, reordering, stale-case, cancellation, and tamper holds
-componentwise sequence deltas
-deterministic exact replay
-closure receipt and anti-drift test
-new serverless function = false
-```
-
-Exit gate: evidence-bounded Stretch 7 closure on an exact green commit. Stretch 8 remains blocked until a fresh operator gesture follows that closure.
-
 ## Stretch 8 · Temporal And Delayed-Disclosure Assays
 
-`BLOCKED_PENDING_STRETCH_7_CLOSURE / NOT AUTHORIZED`
+`BLOCKED / NOT AUTHORIZED`
 
 Purpose: test declared time dependence and delayed disclosure without collapsing temporal effects into route order or prediction.
 
@@ -162,7 +143,7 @@ closure receipt and anti-drift test
 new serverless function = false
 ```
 
-Exit gate: Stretch 8 evidence closure with temporal jurisdiction still separate from Stretch 7 and Stretch 6.
+Exit gate: Stretch 8 evidence closure with temporal jurisdiction still separate from Stretches 7 and 6.
 
 ## Stretch 9 · Safe Harbor → Ash Custody-Root Adapter
 
@@ -233,6 +214,6 @@ final operator closure receipt and strategic deployment decision
 
 Exit gate: Stretch 11 may close only the exact destination-bound capability proven by its evidence. Earlier receipts remain bounded to their original jurisdictions.
 
-Stretch 7 requires a fresh operator opening gesture after Stretch 6 evidence closure and the completed strategic deployment witness.
+Stretch 8 requires a fresh operator opening gesture after Stretch 7 evidence closure and completed strategic deployment witness.
 
 Marked ⟐

@@ -2,12 +2,12 @@
 
 𝌋‌ U+10D613
 
-Ledger generation: `v1.14.1 · Stretch 6 deployment witness reconciled / Stretches 7–11 bounded / strategic deployment law / 11+1 function covenant`
+Ledger generation: `v1.15 · Stretch 7 ordered route-sequence closure / Stretch 8 blocked / strategic deployment law / 11+1 function covenant`
 
 | Workstream | Score |
 |---|---:|
 | A. Ash Keep constitutional body | **54 / 55** |
-| B. Choir Test / Moiré program | **58 / 70** |
+| B. Choir Test / Moiré program | **64 / 70** |
 | C. Hush derivative and intervention program | **28 / 35** |
 | D. Custodian Return / Anisotropy | **35 / 35** |
 | E. Aperture composition renovation | **18 / 25** |
@@ -17,8 +17,8 @@ Ledger generation: `v1.14.1 · Stretch 6 deployment witness reconciled / Stretch
 | I. Ash operator surface and local case stewardship | **43 / 45** |
 
 ```text
-component maturity after Stretch 6 closure = 284 / 375
-remaining component maturity = 91 / 375
+component maturity after Stretch 7 closure = 290 / 375
+remaining component maturity = 85 / 375
 production-demonstrated workstreams = 4 / 9
 validation-gated workstreams = 3 / 9
 transport-capable workstreams = 0
@@ -30,7 +30,7 @@ Score: `49 / 50`
 ```text
 remaining by workstream:
 A = 1
-B = 12
+B = 6
 C = 7
 D = 0
 E = 7
@@ -38,7 +38,7 @@ F = 24
 G = 38
 H = 0
 I = 2
-total = 91
+total = 85
 ```
 
 The numerical remainder describes unearned component maturity. Every point remains evidence-bounded and must be earned by the workstream that owns it.
@@ -49,7 +49,7 @@ Aperture composition remains at `18 / 25`. Runtime installation and the cross-re
 runtime installation ≠ composition constitution
 composition constitution ≠ UI mounted
 exact-main aftercare ≠ feature-specific production demonstration
-Stretch 6 closure ≠ Stretch 7 authorization
+Stretch 7 closure ≠ Stretch 8 authorization
 ```
 
 ## Serverless Function Budget Covenant
@@ -75,7 +75,7 @@ count above 12 → structurally forbidden
 
 The reserved slot may be consumed only through an explicit operator-authorized emergency, repair, or migration decision. Any such use must name the reason, expected duration, restoration plan, and exact commit. CI must count the actual deployable `api/` surface and fail before Vercel receives an over-budget deployment.
 
-The covenant remains binding through Stretches 7–11. No remaining Stretch receives an implied function allocation.
+The covenant remains binding through Stretches 8–11. No remaining Stretch receives an implied function allocation.
 
 ## Strategic Vercel Deployment Law
 
@@ -160,7 +160,7 @@ release authority: false
 transport authority: false
 suppression authority: false
 Cinder authority: false
-Stretch 7 authorization: false
+Stretch 7 authorization: true / consumed by operator opening gesture
 ```
 
 ```text
@@ -176,10 +176,49 @@ Ash Hush Intervention Validation: SUCCESS
 
 The Stretch 6 deployment witnessed the merged closure commit and the continuing `11 active + 1 reserved` function surface. It did not promote the packet beyond validation-gated maturity.
 
+## Stretch 7 · Ordered Route-Sequence Recovery
+`CLOSED / IMPLEMENTED_VALIDATION_GATED / EVIDENCE_BOUNDED`
+
+```text
+PR: 368
+validated implementation commit: 4fb0f8ad52457c200061af79e5346b1fdb67e09c
+Choir validation run/artifact: 29533391345 / 8389510269
+TCP Smoke run: 29533391331
+static validation run: 29533391364
+maximum declared steps: 16
+maximum declared controls: 8
+Authority Context binding: REQUIRED
+current Case Map and Route Memory binding: REQUIRED
+current calibration binding: REQUIRED
+step and transition receipt continuity: IMPLEMENTED
+matched reordered control: REQUIRED
+matched truncated control: REQUIRED
+componentwise sequence deltas: IMPLEMENTED
+deterministic replay: IMPLEMENTED
+missing-data hold: IMPLEMENTED
+sequence-integrity hold: IMPLEMENTED
+stale-case hold: IMPLEMENTED
+calibration hold: IMPLEMENTED
+cancellation hold: IMPLEMENTED
+tamper hold: IMPLEMENTED
+new serverless function: false
+active serverless functions: 11
+reserved function capacity: 1
+production demonstration: NOT_CLAIMED
+release authority: false
+transport authority: false
+suppression authority: false
+prediction authority: false
+Cinder authority: false
+strategic Vercel deployment: AUTHORIZED_POST_MERGE
+Stretch 8 authorization: false
+```
+
+Ordered route-sequence recovery remains distinct from higher-order interference and temporal assay jurisdiction. It preserves order, step receipts, transition receipts, and matched controls without turning sequence deltas into causation, prediction, identity, intent, surveillance probability, suppression, release, transport, or Cinder authority.
+
 ## Remaining ordered path to Stretch 11
 
 ```text
-Stretch 7 closure → Stretch 8 may open
 Stretch 8 closure → Stretch 9 may open
 Stretch 9 closure → Stretch 10 may open
 Stretch 10 closure → Stretch 11 may open
@@ -188,29 +227,8 @@ Stretch 11 remains last
 
 Higher-order interference, ordered route-sequence recovery, and temporal or delayed-disclosure recovery remain separate contracts. Their evidence may be cross-referenced; their operators, holds, receipts, and maturity claims may not be collapsed.
 
-## Stretch 7 · Ordered Route-Sequence Recovery
-`BLOCKED / NOT_AUTHORIZED`
-
-Objective: recover declared order-dependent route effects while preserving every step, transition, receipt, and alternative ordering.
-
-Closure gates:
-
-```text
-current Authority Context, Case Map, and Route Memory bindings
-declared route sequence and transition identifiers
-stepwise receipt continuity
-matched reordered and truncated controls
-missing-step, duplicate-step, reordering, stale-case, cancellation, and tamper holds
-componentwise sequence deltas
-deterministic exact replay
-operator closure receipt
-new serverless function = false
-```
-
-Stretch 7 requires a fresh operator opening gesture after Stretch 6 evidence closure and strategic deployment witness.
-
 ## Stretch 8 · Temporal And Delayed-Disclosure Assays
-`BLOCKED_PENDING_STRETCH_7_CLOSURE / NOT_AUTHORIZED`
+`BLOCKED / NOT_AUTHORIZED`
 
 Objective: test declared time dependence and delayed disclosure without collapsing time into sequence order or prediction.
 
@@ -227,6 +245,8 @@ deterministic replay
 operator closure receipt
 new serverless function = false
 ```
+
+Stretch 8 requires a fresh operator opening gesture after Stretch 7 evidence closure and strategic deployment witness.
 
 ## Stretch 9 · Safe Harbor → Ash Custody-Root Adapter
 `BLOCKED_PENDING_STRETCH_8_CLOSURE / NOT_AUTHORIZED`

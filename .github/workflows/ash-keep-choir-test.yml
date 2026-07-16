@@ -8,15 +8,20 @@ on:
       - "app/engine/ash-keep-reader-disagreement.js"
       - "app/engine/ash-keep-benign-controls.js"
       - "app/engine/ash-keep-choir-calibration*.js"
+      - "app/engine/ash-keep-higher-order-interference.js"
+      - "app/engine/ash-keep-ordered-route-sequence.js"
       - "app/dome-world/schemas/aperture-moire-rebuild-*.schema.json"
       - "app/dome-world/schemas/aperture-reader-*.schema.json"
       - "app/dome-world/schemas/aperture-matched-benign-control-*.schema.json"
       - "app/dome-world/schemas/aperture-choir-calibration-*.schema.json"
+      - "app/dome-world/schemas/aperture-higher-order-interference-v01.schema.json"
+      - "app/dome-world/schemas/aperture-ordered-route-sequence-v01.schema.json"
       - "tests/ash-keep-moire*.test.mjs"
       - "tests/ash-keep-reader-adapter*.test.mjs"
       - "tests/ash-keep-reader-disagreement*.test.mjs"
       - "tests/ash-keep-benign-controls*.test.mjs"
       - "tests/ash-keep-choir-calibration*.test.mjs"
+      - "tests/choir-calibration/*.test.mjs"
       - "tests/fixtures/choir-calibration-fixture.mjs"
       - "scripts/publish-ash-keep-observer-status.mjs"
       - "docs/ASH_KEEP_CHOIR_TEST.md"
@@ -24,6 +29,8 @@ on:
       - "docs/ASH_KEEP_READER_DISAGREEMENT.md"
       - "docs/ASH_KEEP_MATCHED_BENIGN_CONTROLS.md"
       - "docs/ASH_KEEP_CHOIR_CALIBRATION_BINDING.md"
+      - "docs/ASH_KEEP_STRETCH6_CLOSURE_RECEIPT.md"
+      - "docs/ASH_KEEP_STRETCH7_CLOSURE_RECEIPT.md"
       - "docs/ASH_KEEP_BUILDOUT_LEDGER.md"
       - "ROADMAP.md"
       - ".github/workflows/ash-keep-choir-test.yml"
@@ -35,15 +42,20 @@ on:
       - "app/engine/ash-keep-reader-disagreement.js"
       - "app/engine/ash-keep-benign-controls.js"
       - "app/engine/ash-keep-choir-calibration*.js"
+      - "app/engine/ash-keep-higher-order-interference.js"
+      - "app/engine/ash-keep-ordered-route-sequence.js"
       - "app/dome-world/schemas/aperture-moire-rebuild-*.schema.json"
       - "app/dome-world/schemas/aperture-reader-*.schema.json"
       - "app/dome-world/schemas/aperture-matched-benign-control-*.schema.json"
       - "app/dome-world/schemas/aperture-choir-calibration-*.schema.json"
+      - "app/dome-world/schemas/aperture-higher-order-interference-v01.schema.json"
+      - "app/dome-world/schemas/aperture-ordered-route-sequence-v01.schema.json"
       - "tests/ash-keep-moire*.test.mjs"
       - "tests/ash-keep-reader-adapter*.test.mjs"
       - "tests/ash-keep-reader-disagreement*.test.mjs"
       - "tests/ash-keep-benign-controls*.test.mjs"
       - "tests/ash-keep-choir-calibration*.test.mjs"
+      - "tests/choir-calibration/*.test.mjs"
       - "tests/fixtures/choir-calibration-fixture.mjs"
       - "scripts/publish-ash-keep-observer-status.mjs"
       - "docs/ASH_KEEP_CHOIR_TEST.md"
@@ -51,6 +63,8 @@ on:
       - "docs/ASH_KEEP_READER_DISAGREEMENT.md"
       - "docs/ASH_KEEP_MATCHED_BENIGN_CONTROLS.md"
       - "docs/ASH_KEEP_CHOIR_CALIBRATION_BINDING.md"
+      - "docs/ASH_KEEP_STRETCH6_CLOSURE_RECEIPT.md"
+      - "docs/ASH_KEEP_STRETCH7_CLOSURE_RECEIPT.md"
       - "docs/ASH_KEEP_BUILDOUT_LEDGER.md"
       - "ROADMAP.md"
       - ".github/workflows/ash-keep-choir-test.yml"
@@ -113,6 +127,8 @@ jobs:
         run: |
           set -o pipefail
           node tests/ash-keep-choir-calibration.test.mjs 2>&1 | tee choir-calibration-validation.log
+      - name: Validate ordered route-sequence recovery
+        run: node tests/choir-calibration/ordered-route-sequence.test.mjs
       - name: Publish Choir validation success status
         if: success() && github.event_name == 'push' && github.ref == 'refs/heads/main'
         env:

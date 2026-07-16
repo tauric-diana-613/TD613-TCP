@@ -1,0 +1,151 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "td613.aperture.ordered-route-sequence/v0.1",
+  "title": "TD613 Ordered Route-Sequence Recovery Receipt v0.1",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema", "version", "recovery_id", "created_at", "mode", "declared_caps",
+    "case_id", "case_map_digest", "route_memory_digest", "authority_context_reference",
+    "authority_context_digest", "calibration_binding_id", "calibration_binding_digest",
+    "target", "controls", "componentwise_sequence_deltas", "checks", "state",
+    "sequence_recovery_eligible", "failed_checks", "source_status", "missingness",
+    "alternatives", "open_questions", "operator_notes", "closure",
+    "ordered_sequence_effect_is_causation", "surveillance_probability",
+    "prediction_authorized", "identity_or_intent_inference_authorized",
+    "release_authorized", "transport_authorized", "suppression_authorized",
+    "cinder_action_authorized", "readers_reexecuted", "provider_called",
+    "network_called", "storage_mutated", "recommendation_not_command", "recovery_digest"
+  ],
+  "properties": {
+    "schema": { "const": "td613.aperture.ordered-route-sequence/v0.1" },
+    "version": { "const": "v0.1" },
+    "recovery_id": { "type": "string", "pattern": "^orderedroute_[A-Za-z0-9_-]{6,128}$" },
+    "created_at": { "type": "string" },
+    "mode": { "const": "BOUNDED_ORDERED_ROUTE_SEQUENCE_RECOVERY" },
+    "declared_caps": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["max_steps", "max_controls"],
+      "properties": {
+        "max_steps": { "type": "integer", "minimum": 2, "maximum": 16 },
+        "max_controls": { "type": "integer", "minimum": 2, "maximum": 8 }
+      }
+    },
+    "case_id": { "type": ["string", "null"] },
+    "case_map_digest": { "$ref": "#/$defs/nullableSha256" },
+    "route_memory_digest": { "$ref": "#/$defs/nullableSha256" },
+    "authority_context_reference": { "type": ["string", "null"] },
+    "authority_context_digest": { "$ref": "#/$defs/nullableSha256" },
+    "calibration_binding_id": { "type": ["string", "null"] },
+    "calibration_binding_digest": { "$ref": "#/$defs/nullableSha256" },
+    "target": { "$ref": "#/$defs/sequence" },
+    "controls": {
+      "type": "array",
+      "minItems": 2,
+      "maxItems": 8,
+      "items": { "$ref": "#/$defs/sequence" }
+    },
+    "componentwise_sequence_deltas": { "type": "object" },
+    "checks": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "authority_context_verified", "calibration_binding_verified", "current_case_binding",
+        "target_receipt_continuity", "reordered_control_observed", "truncated_control_observed",
+        "components_complete", "declared_caps_held", "cancellation_clear"
+      ],
+      "properties": {
+        "authority_context_verified": { "type": "boolean" },
+        "calibration_binding_verified": { "type": "boolean" },
+        "current_case_binding": { "type": "boolean" },
+        "target_receipt_continuity": { "type": "boolean" },
+        "reordered_control_observed": { "type": "boolean" },
+        "truncated_control_observed": { "type": "boolean" },
+        "components_complete": { "type": "boolean" },
+        "declared_caps_held": { "type": "boolean" },
+        "cancellation_clear": { "type": "boolean" }
+      }
+    },
+    "state": {
+      "enum": [
+        "ORDERED_SEQUENCE_ELIGIBLE",
+        "CANCELLED_HOLD",
+        "TAMPER_HOLD",
+        "STALE_CASE_HOLD",
+        "CALIBRATION_HOLD",
+        "SEQUENCE_INTEGRITY_HOLD",
+        "NOT_ENOUGH_TEST_DATA"
+      ]
+    },
+    "sequence_recovery_eligible": { "type": "boolean" },
+    "failed_checks": { "$ref": "#/$defs/stringArray" },
+    "source_status": { "type": "string" },
+    "missingness": { "$ref": "#/$defs/stringArray" },
+    "alternatives": { "$ref": "#/$defs/stringArray" },
+    "open_questions": { "$ref": "#/$defs/stringArray" },
+    "operator_notes": { "$ref": "#/$defs/stringArray" },
+    "closure": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["required", "status"],
+      "properties": {
+        "required": { "const": true },
+        "status": { "type": "string" }
+      }
+    },
+    "ordered_sequence_effect_is_causation": { "const": false },
+    "surveillance_probability": { "type": "null" },
+    "prediction_authorized": { "const": false },
+    "identity_or_intent_inference_authorized": { "const": false },
+    "release_authorized": { "const": false },
+    "transport_authorized": { "const": false },
+    "suppression_authorized": { "const": false },
+    "cinder_action_authorized": { "const": false },
+    "readers_reexecuted": { "const": false },
+    "provider_called": { "const": false },
+    "network_called": { "const": false },
+    "storage_mutated": { "const": false },
+    "recommendation_not_command": { "const": true },
+    "recovery_digest": { "$ref": "#/$defs/sha256" }
+  },
+  "$defs": {
+    "sha256": { "type": "string", "pattern": "^sha256:[0-9a-f]{64}$" },
+    "nullableSha256": { "anyOf": [{ "$ref": "#/$defs/sha256" }, { "type": "null" }] },
+    "stringArray": { "type": "array", "items": { "type": "string" } },
+    "step": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "position", "step_id", "step_receipt_digest", "transition_id",
+        "transition_receipt_digest", "from_step_id", "to_step_id"
+      ],
+      "properties": {
+        "position": { "type": "integer", "minimum": 0, "maximum": 15 },
+        "step_id": { "type": ["string", "null"] },
+        "step_receipt_digest": { "$ref": "#/$defs/nullableSha256" },
+        "transition_id": { "type": ["string", "null"] },
+        "transition_receipt_digest": { "$ref": "#/$defs/nullableSha256" },
+        "from_step_id": { "type": ["string", "null"] },
+        "to_step_id": { "type": ["string", "null"] }
+      }
+    },
+    "sequence": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "sequence_id", "control_kind", "state", "steps", "result_components",
+        "source_status", "sequence_digest"
+      ],
+      "properties": {
+        "sequence_id": { "type": "string" },
+        "control_kind": { "type": ["string", "null"] },
+        "state": { "type": "string" },
+        "steps": { "type": "array", "minItems": 0, "maxItems": 16, "items": { "$ref": "#/$defs/step" } },
+        "result_components": { "type": "object" },
+        "source_status": { "type": "string" },
+        "sequence_digest": { "$ref": "#/$defs/sha256" }
+      }
+    }
+  }
+}
