@@ -1,6 +1,17 @@
 name: Ash Custodian Return Deployed
 
 on:
+  push:
+    branches: [main]
+    paths:
+      - 'app/engine/ash-custodian-return*.js'
+      - 'app/dome-world/ash-custodian-return*.js'
+      - 'app/dome-world/ash-return-ready-bundle.js'
+      - 'app/dome-world/ash-workspace-bridge.js'
+      - 'scripts/ash-custodian-return*.mjs'
+      - 'tests/ash-custodian-return*.test.mjs'
+      - 'docs/ASH_CUSTODIAN_RETURN*.md'
+      - '.github/workflows/ash-custodian-return*.yml'
   workflow_run:
     workflows: ['Test and deploy static app']
     types: [completed]
@@ -24,13 +35,15 @@ permissions:
 jobs:
   deployed-observation:
     if: >-
+      github.event_name == 'push'
+      ||
       (github.event_name == 'workflow_run' && github.event.workflow_run.conclusion == 'success' && github.event.workflow_run.head_branch == 'main')
       ||
       (github.event_name == 'workflow_dispatch' && inputs.confirm_deployed_probe == 'RUN_DEPLOYED_RETURN' && inputs.base_url != '')
     runs-on: ubuntu-latest
     timeout-minutes: 25
     env:
-      TD613_DEPLOYED_BASE_URL: ${{ github.event_name == 'workflow_run' && 'https://td613.com' || inputs.base_url }}
+      TD613_DEPLOYED_BASE_URL: ${{ github.event_name == 'workflow_dispatch' && inputs.base_url || 'https://td613.com' }}
       TD613_OBSERVED_COMMIT: ${{ github.event_name == 'workflow_run' && github.event.workflow_run.head_sha || github.sha }}
       TD613_OBSERVER_RUN_URL: ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}
       TD613_OBSERVER_STATUS_CONTEXT: Ash Custodian Return Deployed Observation
