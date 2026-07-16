@@ -1,50 +1,47 @@
 import assert from 'node:assert/strict';
 import fs from 'node:fs';
 
-const read = path => fs.readFileSync(new URL(`../../${path}`, import.meta.url), 'utf8');
+const read = p => fs.readFileSync(new URL(`../../${p}`, import.meta.url), 'utf8');
 const ledger = read('docs/ASH_KEEP_BUILDOUT_LEDGER.md');
 const roadmap = read('ROADMAP.md');
+const composition = read('docs/APERTURE_COMPOSITION_RENOVATION.md');
+const closure = read('docs/APERTURE_COMPOSITION_CLOSURE_RECEIPT.md');
+const law = read('docs/STRATEGIC_VERCEL_DEPLOYMENT_LAW.md');
 const convergence = read('docs/ASH_CONSTITUTIONAL_CONVERGENCE_RECEIPT.md');
 const choir = read('docs/ASH_KEEP_CHOIR_CALIBRATION_RECEIPT.md');
 const hush = read('docs/ASH_KEEP_HUSH_INTERVENTION_RECEIPT.md');
-const composition = read('docs/APERTURE_COMPOSITION_RENOVATION.md');
 
-assert.match(ledger, /H\. Ash product lifecycle orchestration \| \*\*35 \/ 35\*\*/);
-assert.match(ledger, /I\. Ash operator surface and local case stewardship \| \*\*43 \/ 45\*\*/);
-assert.match(ledger, /D\. Custodian Return \/ Anisotropy \| \*\*35 \/ 35\*\*/);
-assert.match(ledger, /B\. Choir Test \/ Moiré program \| \*\*44 \/ 70\*\*/);
-assert.match(ledger, /C\. Hush derivative and intervention program \| \*\*28 \/ 35\*\*/);
-assert.match(ledger, /E\. Aperture composition renovation \| \*\*18 \/ 25\*\*/);
-assert.match(ledger, /production-demonstrated workstreams = 4 \/ 9/);
-assert.match(ledger, /validation-gated workstreams = 3 \/ 9/);
-assert.match(ledger, /component maturity after Stretch 5 implementation = 270 \/ 375/);
-assert.match(ledger, /current-head aftercare ≠ feature-specific production demonstration/);
-assert.match(ledger, /Score: `49 \/ 50`|constitutional synthesis = 49 \/ 50/);
-assert.match(ledger, /Stretch 5 · Aperture Composition Renovation Before Choir UI[\s\S]*OPEN \/ IMPLEMENTED_VALIDATION_GATED/);
-assert.match(ledger, /Vercel Deployment Law[\s\S]*ALLOWED \/ STRATEGIC \/ EVIDENCE-BOUNDED/);
-assert.match(ledger, /unavoidable auto-deploy ≠ strategic production promotion/);
-assert.match(ledger, /Vercel deployment ≠ release authority/);
+for (const token of [
+  'A. Ash Keep constitutional body | **54 / 55**',
+  'B. Choir Test / Moiré program | **44 / 70**',
+  'C. Hush derivative and intervention program | **28 / 35**',
+  'D. Custodian Return / Anisotropy | **35 / 35**',
+  'E. Aperture composition renovation | **18 / 25**',
+  'component maturity after Stretch 5 closure = 270 / 375',
+  'constitutional synthesis = 49 / 50',
+  'CLOSED / IMPLEMENTED_VALIDATION_GATED / EVIDENCE_BOUNDED',
+  'ALLOWED / STRATEGIC / COST-GOVERNED / EVIDENCE-BOUNDED',
+  'ordinary non-production branches should not trigger Vercel'
+]) assert.ok(ledger.includes(token), `Ledger omitted ${token}`);
 
-assert.match(roadmap, /Stretch 1 · Ash Constitutional Convergence Closure — CLOSED/);
-assert.match(roadmap, /Stretch 2 · Custodian Return And Anisotropy — CLOSED/);
-assert.match(roadmap, /Stretch 3 · Choir calibration receipt binding — CLOSED/);
-assert.match(roadmap, /Stretch 4 · Hush vocabulary externalization and intervention ensemble — CLOSED/);
-assert.match(roadmap, /Stretch 5 · Aperture composition renovation before Choir UI — OPEN \/ IMPLEMENTED_VALIDATION_GATED/);
-assert.match(roadmap, /Higher-order interference — BLOCKED \/ NOT AUTHORIZED/);
-assert.match(roadmap, /transport-capable workstreams = 0/);
-assert.match(roadmap, /Vercel deployment doctrine[\s\S]*Vercel deployment = ALLOWED/);
-assert.match(roadmap, /strategic purpose = REQUIRED/);
-assert.match(roadmap, /preview \/ production distinction = REQUIRED/);
-assert.match(roadmap, /deployment success ≠ functional validation/);
+for (const token of [
+  'Roadmap generation: `v1.12',
+  'Stretch 5 · Aperture composition renovation before Choir UI — CLOSED',
+  'Higher-order interference — BLOCKED / NOT AUTHORIZED',
+  'normal ceiling = ONE DEPLOYMENT PER COMPLETED PACKET OR RELEASE CANDIDATE',
+  'Stretch 6 requires a fresh operator opening gesture'
+]) assert.ok(roadmap.includes(token), `Roadmap omitted ${token}`);
+
 assert.match(convergence, /Status: `IMPLEMENTED_PRODUCTION_DEMONSTRATED`/);
-assert.match(convergence, /29458943541/);
 assert.match(choir, /Choir_validation_run: 29476772041/);
 assert.match(hush, /Hush_validation_run: 29483240258/);
-assert.match(hush, /Stretch_5_authorized: false/);
-assert.match(composition, /OPEN \/ IMPLEMENTED_VALIDATION_GATED/);
-assert.match(composition, /canonical_body_decomposed: false/);
-assert.match(composition, /td613\.aperture\.composition-constitution-receipt\/v0\.1/);
-assert.match(composition, /Vercel is an allowed strategic deployment instrument/);
+assert.match(composition, /CLOSED \/ IMPLEMENTED_VALIDATION_GATED \/ EVIDENCE_BOUNDED/);
 assert.match(composition, /Stretch_6_authorized: false/);
+assert.match(closure, /closure_observed_main_commit: e1fe108264045c4d75f0ef275b15654cf61b52a5/);
+assert.match(closure, /runtime_run: 29514528199/);
+assert.match(closure, /constitution_run: 29514528261/);
+assert.match(closure, /deployment_earns_maturity: false/);
+assert.match(law, /Vercel deployment remains authorized/);
+assert.match(law, /operator release gesture ≠ automatic Git event/);
 
 console.log('product-architecture/ledger.test.mjs passed');
