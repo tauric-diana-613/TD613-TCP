@@ -4,16 +4,10 @@
     "api/hush-generate-strict.js": {
       "maxDuration": 60
     },
-    "api/hush-generate.js": {
-      "maxDuration": 60
-    },
     "api/hush-generate-quality.js": {
       "maxDuration": 60
     },
     "api/khonapolit.js": {
-      "maxDuration": 60
-    },
-    "api/khonapolit-quality.js": {
       "maxDuration": 60
     },
     "api/gemini-readiness.js": {
@@ -746,6 +740,24 @@
           "value": "public, max-age=0, must-revalidate"
         }
       ]
+    },
+    {
+      "source": "/api/hush-generate-strict-pr124",
+      "headers": [
+        {
+          "key": "Cache-Control",
+          "value": "no-store, max-age=0"
+        }
+      ]
+    },
+    {
+      "source": "/api/khonapolit-quality",
+      "headers": [
+        {
+          "key": "Cache-Control",
+          "value": "no-store, max-age=0"
+        }
+      ]
     }
   ],
   "rewrites": [
@@ -792,10 +804,6 @@
     {
       "source": "/api/hush-generate-budgeted",
       "destination": "/api/hush-generate-quality"
-    },
-    {
-      "source": "/api/khonapolit",
-      "destination": "/api/khonapolit-quality"
     },
     {
       "source": "/api/dome-world/khonapolit",
@@ -880,6 +888,14 @@
     {
       "source": "/dome-world/(.*)",
       "destination": "/app/dome-world/$1"
+    },
+    {
+      "source": "/api/hush-generate-strict-pr124",
+      "destination": "/api/hush-generate-strict"
+    },
+    {
+      "source": "/api/khonapolit-quality",
+      "destination": "/api/khonapolit"
     },
     {
       "source": "/api/(.*)",

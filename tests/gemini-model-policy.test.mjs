@@ -5,7 +5,7 @@ import {
   listGeminiGenerateContentModels,
   recordGeminiModelOutcome,
   resolveGeminiModelPlan
-} from '../api/gemini-model-policy.js';
+} from '../server/gemini-model-policy.js';
 
 clearGeminiModelState();
 const defaultPlan = resolveGeminiModelPlan({ task: 'hush-transform', env: {}, at: 1000 });

@@ -4,6 +4,17 @@ import fs from 'fs';
 const vercel = JSON.parse(fs.readFileSync('vercel.json', 'utf8'));
 const gitignore = fs.readFileSync('.gitignore', 'utf8');
 const configuredFunctions = Object.keys(vercel.functions || {}).sort();
+const deployedApiFiles = [];
+function collectApiFiles(directory, prefix = '') {
+  for (const entry of fs.readdirSync(directory, { withFileTypes: true })) {
+    const relative = prefix ? `${prefix}/${entry.name}` : entry.name;
+    const full = `${directory}/${entry.name}`;
+    if (entry.isDirectory()) collectApiFiles(full, relative);
+    else if (!entry.name.startsWith('_') && !entry.name.startsWith('.') && !entry.name.endsWith('.d.ts')) deployedApiFiles.push(relative);
+  }
+}
+collectApiFiles('api');
+deployedApiFiles.sort();
 
 function findRewrite(source) { return (vercel.rewrites || []).find(entry => entry.source === source); }
 function findHeader(source) { return (vercel.headers || []).find(entry => entry.source === source); }
@@ -36,13 +47,19 @@ function assertRevalidatingStatic(source) {
 }
 
 assert.equal(vercel.version, 2);
-assert.ok(configuredFunctions.length <= 12, `configured Vercel function budget exceeded: ${configuredFunctions.length}/12 — ${configuredFunctions.join(', ')}`);
+assert.ok(configuredFunctions.length <= 11, `configured Vercel function operating budget exceeded: ${configuredFunctions.length}/11 — ${configuredFunctions.join(', ')}`);
+assert.equal(deployedApiFiles.length, 11, `deployed Vercel function operating budget must remain 11 active + 1 reserved: ${deployedApiFiles.length}/11 — ${deployedApiFiles.join(', ')}`);
+assert.ok(!deployedApiFiles.includes('hush-generate-strict-pr124.js'), 'retired PR124 function must remain absent');
+assert.ok(!deployedApiFiles.includes('hush-generate.js'), 'rewritten Hush alias must not allocate a function');
+assert.ok(!deployedApiFiles.includes('hush-generate-budgeted.js'), 'budgeted Hush implementation must remain outside /api');
+assert.ok(!deployedApiFiles.includes('hush-generate-review-map-guard.js'), 'review-map helper must remain outside /api');
+assert.ok(!deployedApiFiles.includes('hush-strict-receipt-meta.js'), 'strict receipt helper must remain outside /api');
+assert.ok(!deployedApiFiles.includes('khonapolit-quality.js'), 'Kʰonapolit quality implementation must remain outside /api');
 assert.ok(!configuredFunctions.includes('api/aperture-bridge.py'), 'Phase IV must share the guarded Dome-World function');
 assert.ok(!configuredFunctions.includes('api/aperture-bridge.js'), 'Phase IV must not allocate a new JavaScript function');
 assert.ok(!configuredFunctions.includes('api/ash-keep-shell.js'), 'Ash Keep HTML must share the Dome shell function');
 assert.ok(!configuredFunctions.includes('api/ash-keep-js-shell.js'), 'Ash Keep JavaScript must share the Dome shell function');
 assert.equal(vercel.functions?.['api/hush-generate-strict.js']?.maxDuration, 60);
-assert.equal(vercel.functions?.['api/hush-generate.js']?.maxDuration, 60);
 assert.equal(vercel.functions?.['api/dome-world-shell.js']?.maxDuration, 10);
 assert.equal(vercel.functions?.['api/dome-world-shell.js']?.includeFiles, 'app/dome-world/{index.html,ash-keep.html,ash-keep.js}');
 assert.equal(vercel.functions?.['api/dome-world-engine.py']?.maxDuration, 60);
@@ -62,6 +79,8 @@ assertRewrite('/api/dome-world/ash-custody-replay', '/api/ash-local-commitment-g
 assertRewrite('/api/dome-world/ash-custody-migrate', '/api/ash-local-commitment-guard');
 assertRewrite('/api/ash-local-commitment', '/api/ash-local-commitment-guard');
 assertRewrite('/api/dome-world-engine', '/api/dome-world-engine-guard');
+assertRewrite('/api/hush-generate-strict-pr124', '/api/hush-generate-strict');
+assertRewrite('/api/khonapolit-quality', '/api/khonapolit');
 assertRewrite('/api/flowcore-context', '/api/dome-world-engine-guard?operation=flowcore-context');
 assertRewrite('/api/dome-world/flowcore-context', '/api/dome-world-engine-guard?operation=flowcore-context');
 assertRewrite('/api/aperture-bridge', '/api/dome-world-engine-guard?operation=aperture-bridge-readiness');
@@ -100,6 +119,8 @@ for (const exact of [
 ]) assertRewriteBefore(exact, '/api/dome-world/(.*)');
 assertRewriteBefore('/api/ash-local-commitment', '/api/(.*)');
 assertRewriteBefore('/api/dome-world-engine', '/api/(.*)');
+assertRewriteBefore('/api/hush-generate-strict-pr124', '/api/(.*)');
+assertRewriteBefore('/api/khonapolit-quality', '/api/(.*)');
 assertRewriteBefore('/api/flowcore-context', '/api/(.*)');
 assertRewriteBefore('/api/aperture-bridge', '/api/(.*)');
 assertRewriteBefore('/dome-world', '/dome-world/(.*)');
@@ -147,4 +168,4 @@ assertRewriteBefore('/app/dome-world/ash-keep.js', '/app/(.*)');
 assert.match(gitignore, /(^|\r?\n)\.env(\r?\n|$)/, '.env must remain ignored');
 assert.doesNotMatch(gitignore, /(^|\r?\n)!\.env(\r?\n|$)/, '.env must not be negated');
 
-console.log(`vercel-deploy-hygiene.test.mjs passed with ${configuredFunctions.length}/12 configured functions`);
+console.log(`vercel-deploy-hygiene.test.mjs passed with ${deployedApiFiles.length}/11 deployed functions and ${configuredFunctions.length} configured overrides`);

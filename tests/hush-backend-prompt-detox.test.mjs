@@ -2,7 +2,7 @@ import assert from 'node:assert/strict';
 
 import { auditHushCatchphraseQuarantine } from '../app/engine/hush-catchphrase-quarantine.js';
 import { sanitizeHushRemoteContract } from '../app/engine/hush-contract-sanitizer.js';
-import { buildPrompt, quarantineCandidateRows } from '../api/hush-generate-budgeted.js';
+import { buildPrompt, quarantineCandidateRows } from '../server/hush-generate-budgeted.js';
 
 const rawContract = {
   sourceText: 'Please tell the team the meeting moved to Friday and ask whether the memo should stay in draft.',
