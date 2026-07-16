@@ -31,12 +31,24 @@ jobs:
   validate-and-local-observe:
     runs-on: ubuntu-latest
     timeout-minutes: 25
+    env:
+      TD613_OBSERVED_COMMIT: ${{ github.event.pull_request.head.sha || github.sha }}
+      TD613_OBSERVER_RUN_URL: ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}
+      TD613_OBSERVER_STATUS_CONTEXT: Ash Custodian Return Local Observation
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-node@v4
         with:
           node-version: 22
           cache: npm
+      - name: Publish local Return observer pending status
+        if: github.event_name == 'push'
+        env:
+          GITHUB_TOKEN: ${{ github.token }}
+          TD613_OBSERVER_STATUS_STATE: pending
+          TD613_OBSERVER_STATUS_DESCRIPTION: Stretch 2 local synthetic return is running
+          TD613_OBSERVER_STATUS_RECEIPT_PATH: artifacts/ash-custodian-return/observer-status-pending.json
+        run: node scripts/publish-ash-keep-observer-status.mjs
       - name: Install repository dependencies
         run: npm ci
       - name: Validate base Return receipts
@@ -79,7 +91,6 @@ jobs:
         env:
           TD613_BASE_URL: http://127.0.0.1:6130
           TD613_ARTIFACT_DIR: artifacts/ash-custodian-return
-          TD613_OBSERVED_COMMIT: ${{ github.event.pull_request.head.sha || github.sha }}
         run: node scripts/ash-custodian-return-production-probe.mjs
       - name: Preserve local Stretch 2 evidence
         if: always()
@@ -97,6 +108,22 @@ jobs:
           if [ -f artifacts/ash-custodian-return-server.pid ]; then
             kill "$(cat artifacts/ash-custodian-return-server.pid)" 2>/dev/null || true
           fi
+      - name: Publish local Return observer success status
+        if: github.event_name == 'push' && success()
+        env:
+          GITHUB_TOKEN: ${{ github.token }}
+          TD613_OBSERVER_STATUS_STATE: success
+          TD613_OBSERVER_STATUS_DESCRIPTION: Stretch 2 local synthetic return passed without promotion
+          TD613_OBSERVER_STATUS_RECEIPT_PATH: artifacts/ash-custodian-return/observer-status-success.json
+        run: node scripts/publish-ash-keep-observer-status.mjs
+      - name: Publish local Return observer failure status
+        if: github.event_name == 'push' && failure()
+        env:
+          GITHUB_TOKEN: ${{ github.token }}
+          TD613_OBSERVER_STATUS_STATE: failure
+          TD613_OBSERVER_STATUS_DESCRIPTION: Stretch 2 local synthetic return held
+          TD613_OBSERVER_STATUS_RECEIPT_PATH: artifacts/ash-custodian-return/observer-status-failure.json
+        run: node scripts/publish-ash-keep-observer-status.mjs
 
   deployed-observation:
     if: github.event_name == 'push'
