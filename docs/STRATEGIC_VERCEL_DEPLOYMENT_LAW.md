@@ -39,6 +39,18 @@ Vercel may not authorize maturity, release, transport, Cinder, Ash action, or th
 operator release gesture ≠ automatic Git event
 ```
 
+## Deployment authorization · 2026-07-16
+
+```text
+selected_commit: 5a9b58187ff6d8b97012775a2797f459b2a5a3fb
+target: PRODUCTION
+purpose: PUBLISH_COMPLETED_STRETCH_5_PACKET
+planned_count: 1
+operator_request_recorded: true
+```
+
+This authorization covers one deployment after branch checks pass and the receipt merges to `main`.
+
 Exceptions must be recorded in the relevant receipt.
 
 Marked ⟐
