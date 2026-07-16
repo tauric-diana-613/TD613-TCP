@@ -1,0 +1,50 @@
+import assert from 'node:assert/strict';
+import { readFile } from 'node:fs/promises';
+
+const binding = JSON.parse(await readFile(
+  new URL('../app/dome-world/schemas/aperture-choir-calibration-binding-v01.schema.json', import.meta.url),
+  'utf8'
+));
+const replay = JSON.parse(await readFile(
+  new URL('../app/dome-world/schemas/aperture-choir-calibration-replay-v01.schema.json', import.meta.url),
+  'utf8'
+));
+
+assert.equal(binding.$id, 'td613.aperture.choir-calibration-binding/v0.1');
+assert.equal(binding.properties.schema.const, binding.$id);
+assert.equal(binding.properties.mode.const, 'RECEIPT_BOUND_CHOIR_CALIBRATION');
+assert.deepEqual(binding.properties.binding_state.enum, [
+  'CALIBRATION_ELIGIBLE',
+  'TAMPER_HOLD',
+  'STALE_CASE_HOLD',
+  'SOURCE_DRIFT_HOLD',
+  'RECEIPT_REFERENCE_HOLD',
+  'NOT_ENOUGH_TEST_DATA'
+]);
+assert.equal(binding.properties.free_calibration_booleans_accepted.const, false);
+assert.equal(binding.properties.universal_calibration_score.type, 'null');
+assert.equal(binding.properties.real_surveillance_probability.type, 'null');
+assert.equal(binding.properties.readers_executed_by_binding.const, false);
+assert.equal(binding.properties.provider_call_performed.const, false);
+assert.equal(binding.properties.network_called.const, false);
+assert.equal(binding.properties.storage_mutated.const, false);
+assert.equal(binding.properties.release_authorized.const, false);
+assert.equal(binding.properties.transport_authorized.const, false);
+assert.equal(binding.properties.cinder_action_authorized.const, false);
+assert.equal(binding.properties.prediction_authorized.const, false);
+assert.equal(binding.properties.automatic_hold.const, false);
+assert.equal(binding.properties.automatic_ash_action.const, false);
+assert.equal(binding.properties.recommendation_not_command.const, true);
+assert.equal(binding.properties.componentwise_comparison.properties.source.const, 'MATCHED_BENIGN_CONTROL_BANK');
+assert.equal(binding.$defs.receiptReferences.properties.moire_assay_digests.minItems, 2);
+assert.equal(binding.$defs.receiptReferences.properties.reader_provenance_digests.minItems, 2);
+
+assert.equal(replay.$id, 'td613.aperture.choir-calibration-replay/v0.1');
+assert.equal(replay.properties.schema.const, replay.$id);
+assert.deepEqual(replay.properties.status.enum, [
+  'CHOIR_CALIBRATION_REPLAY_VERIFIED',
+  'CHOIR_CALIBRATION_REPLAY_HELD'
+]);
+assert.equal(replay.properties.replay_digest.pattern, '^sha256:[0-9a-f]{64}$');
+
+console.log('ash-keep-choir-calibration-schemas.test.mjs passed');
