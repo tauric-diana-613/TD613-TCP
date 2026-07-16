@@ -16,3 +16,11 @@ export {
   replayHigherOrderInterference,
   verifyHigherOrderInterferenceReplay
 } from './ash-keep-higher-order-interference.js';
+export {
+  ORDERED_ROUTE_SEQUENCE_SCHEMA,
+  ORDERED_ROUTE_SEQUENCE_REPLAY_SCHEMA,
+  compileOrderedRouteSequence,
+  verifyOrderedRouteSequence,
+  replayOrderedRouteSequence,
+  verifyOrderedRouteSequenceReplay
+} from './ash-keep-ordered-route-sequence.js';
