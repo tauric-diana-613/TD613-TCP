@@ -5,6 +5,7 @@ const read = p => fs.readFileSync(new URL(`../../${p}`, import.meta.url), 'utf8'
 const receipt = read('docs/APERTURE_COMPOSITION_CLOSURE_RECEIPT.md');
 const ledger = read('docs/ASH_KEEP_BUILDOUT_LEDGER.md');
 const roadmap = read('ROADMAP.md');
+const stretch6 = read('docs/ASH_KEEP_STRETCH6_CLOSURE_RECEIPT.md');
 const law = read('docs/STRATEGIC_VERCEL_DEPLOYMENT_LAW.md');
 
 for (const token of [
@@ -23,10 +24,13 @@ for (const token of [
   'Stretch_6_authorized: false'
 ]) assert.ok(receipt.includes(token), `Receipt omitted ${token}`);
 
-assert.match(ledger, /component maturity after Stretch 5 closure = 270 \/ 375/);
+assert.match(ledger, /component maturity after Stretch 6 closure = 284 \/ 375/);
 assert.match(ledger, /Vercel automatic aftercare status: SUCCESS \(not a strategic release witness\)/);
 assert.doesNotMatch(ledger, /Vercel release witness: SUCCESS/);
 assert.match(roadmap, /Stretch 5 — CLOSED/);
+assert.match(roadmap, /Stretch 6 · Higher-order interference — CLOSED/);
+assert.match(stretch6, /production demonstration = NOT_CLAIMED/);
+assert.match(stretch6, /One strategic Vercel deployment is authorized/);
 assert.match(law, /normal ceiling is one deliberate Vercel deployment per completed packet or release candidate/);
 
 console.log('aperture-composition/closure.test.mjs passed');

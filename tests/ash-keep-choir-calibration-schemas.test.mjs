@@ -9,6 +9,10 @@ const replay = JSON.parse(await readFile(
   new URL('../app/dome-world/schemas/aperture-choir-calibration-replay-v01.schema.json', import.meta.url),
   'utf8'
 ));
+const higherOrder = JSON.parse(await readFile(
+  new URL('../app/dome-world/schemas/aperture-higher-order-interference-v01.schema.json', import.meta.url),
+  'utf8'
+));
 const workflow = await readFile(new URL('../.github/workflows/ash-keep-choir-test.yml', import.meta.url), 'utf8');
 const publisher = await readFile(new URL('../scripts/publish-ash-keep-observer-status.mjs', import.meta.url), 'utf8');
 
@@ -48,6 +52,20 @@ assert.deepEqual(replay.properties.status.enum, [
   'CHOIR_CALIBRATION_REPLAY_HELD'
 ]);
 assert.equal(replay.properties.replay_digest.pattern, '^sha256:[0-9a-f]{64}$');
+
+assert.equal(higherOrder.$id, 'td613.aperture.higher-order-interference/v0.1');
+assert.equal(higherOrder.properties.schema.const, higherOrder.$id);
+assert.equal(higherOrder.properties.mode.const, 'BOUNDED_K_ORDER_INTERFERENCE');
+assert.equal(higherOrder.properties.order_k.minimum, 3);
+assert.equal(higherOrder.properties.order_k.maximum, 6);
+assert.equal(higherOrder.properties.declared_caps.properties.max_subsets.maximum, 64);
+assert.equal(higherOrder.properties.emergent_residue_is_causation.const, false);
+assert.equal(higherOrder.properties.surveillance_probability.type, 'null');
+assert.equal(higherOrder.properties.release_authorized.const, false);
+assert.equal(higherOrder.properties.transport_authorized.const, false);
+assert.equal(higherOrder.properties.suppression_authorized.const, false);
+assert.equal(higherOrder.properties.cinder_action_authorized.const, false);
+assert.equal(higherOrder.properties.recommendation_not_command.const, true);
 
 for (const token of [
   'statuses: write',

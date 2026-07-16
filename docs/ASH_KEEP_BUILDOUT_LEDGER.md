@@ -2,12 +2,12 @@
 
 𝌋‌ U+10D613
 
-Ledger generation: `v1.13 · Stretch 5 evidence closure / strategic deployment law / 11+1 function covenant`
+Ledger generation: `v1.14 · Stretch 6 higher-order interference closure / strategic deployment law / 11+1 function covenant`
 
 | Workstream | Score |
 |---|---:|
 | A. Ash Keep constitutional body | **54 / 55** |
-| B. Choir Test / Moiré program | **44 / 70** |
+| B. Choir Test / Moiré program | **58 / 70** |
 | C. Hush derivative and intervention program | **28 / 35** |
 | D. Custodian Return / Anisotropy | **35 / 35** |
 | E. Aperture composition renovation | **18 / 25** |
@@ -17,7 +17,7 @@ Ledger generation: `v1.13 · Stretch 5 evidence closure / strategic deployment l
 | I. Ash operator surface and local case stewardship | **43 / 45** |
 
 ```text
-component maturity after Stretch 5 closure = 270 / 375
+component maturity after Stretch 6 closure = 284 / 375
 production-demonstrated workstreams = 4 / 9
 validation-gated workstreams = 3 / 9
 transport-capable workstreams = 0
@@ -26,13 +26,13 @@ constitutional synthesis = 49 / 50
 
 Score: `49 / 50`
 
-Aperture composition closes at `18 / 25`. Runtime installation and the cross-receipt constitution are complementary; seven points remain retained for an operator-facing presentation surface, feature-specific production browser demonstration, and deeper canonical-body decomposition.
+Aperture composition remains at `18 / 25`. Runtime installation and the cross-receipt constitution are complementary; seven points remain retained for an operator-facing presentation surface, feature-specific production browser demonstration, and deeper canonical-body decomposition.
 
 ```text
 runtime installation ≠ composition constitution
 composition constitution ≠ UI mounted
 exact-main aftercare ≠ feature-specific production demonstration
-Stretch 5 closure ≠ Stretch 6 authorization
+Stretch 6 closure ≠ Stretch 7 authorization
 ```
 
 ## Serverless Function Budget Covenant
@@ -109,12 +109,45 @@ canonical body rewritten: false
 canonical body decomposed: false
 production browser observation: NOT_CLAIMED
 Choir UI constructed: false
-Stretch 6 authorization: false
+Stretch 6 authorization: true / consumed by operator opening gesture
 ```
 
 ## Stretch 6 · Higher-Order Interference
+`CLOSED / IMPLEMENTED_VALIDATION_GATED / EVIDENCE_BOUNDED`
+
+```text
+PR: 366
+validated branch commit: dc658672c736faec3e534040a1ddc0e3c9f125ad
+Choir validation run/artifact: 29530385841 / 8388367840
+TCP Smoke run: 29530385835
+static validation run: 29530385895
+bounded order: k = 3 through 6
+maximum declared subset lattice: 64
+Authority Context binding: REQUIRED
+current Case Map and Route Memory binding: REQUIRED
+current calibration binding: REQUIRED
+proper-subset observations: REQUIRED
+componentwise integer residue: IMPLEMENTED
+deterministic replay: IMPLEMENTED
+missing subset hold: IMPLEMENTED
+cancellation hold: IMPLEMENTED
+combinatorial cap hold: IMPLEMENTED
+new serverless function: false
+active serverless functions: 11
+reserved function capacity: 1
+production demonstration: NOT_CLAIMED
+release authority: false
+transport authority: false
+suppression authority: false
+Cinder authority: false
+Stretch 7 authorization: false
+```
+
+One strategic Vercel deployment is authorized as the post-merge release witness for the exact green Stretch 6 closure commit. Deployment success may verify the public runtime and function surface; it may not promote maturity or grant release, transport, suppression, or Cinder authority.
+
+## Stretch 7 · Ordered Route-Sequence Recovery
 `BLOCKED / NOT_AUTHORIZED`
 
-Stretch 6 requires a fresh operator opening gesture.
+Stretch 7 requires a fresh operator opening gesture after Stretch 6 evidence closure and strategic deployment witness.
 
 Marked ⟐

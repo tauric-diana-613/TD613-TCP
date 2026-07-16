@@ -8,3 +8,11 @@ export {
   replayChoirCalibrationBinding,
   verifyChoirCalibrationReplay
 } from './ash-keep-choir-calibration-replay.js';
+export {
+  HIGHER_ORDER_INTERFERENCE_SCHEMA,
+  HIGHER_ORDER_INTERFERENCE_REPLAY_SCHEMA,
+  compileHigherOrderInterference,
+  verifyHigherOrderInterference,
+  replayHigherOrderInterference,
+  verifyHigherOrderInterferenceReplay
+} from './ash-keep-higher-order-interference.js';
