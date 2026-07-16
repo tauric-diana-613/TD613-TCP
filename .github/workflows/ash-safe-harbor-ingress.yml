@@ -4,10 +4,12 @@ on:
   pull_request:
     paths:
       - "app/engine/ash-safe-harbor-ingress.js"
+      - "app/engine/ash-safe-harbor-ingress-loader.js"
+      - "app/engine/ash-keep-drafts*.js"
       - "app/safe-harbor/app/safe-harbor-ash-ingress.js"
       - "app/safe-harbor/app/safe-harbor-housekeeping*.js"
       - "app/dome-world/ash-safe-harbor-ingress.js"
-      - "app/dome-world/ash-keep*.js"
+      - "app/dome-world/ash-keep.js"
       - "app/dome-world/schemas/ash-safe-harbor-ingress-v01.schema.json"
       - "tests/ash-safe-harbor-ingress*.test.mjs"
       - "docs/ASH_KEEP_STRETCH9_CLOSURE_RECEIPT.md"
@@ -18,10 +20,12 @@ on:
     branches: [main]
     paths:
       - "app/engine/ash-safe-harbor-ingress.js"
+      - "app/engine/ash-safe-harbor-ingress-loader.js"
+      - "app/engine/ash-keep-drafts*.js"
       - "app/safe-harbor/app/safe-harbor-ash-ingress.js"
       - "app/safe-harbor/app/safe-harbor-housekeeping*.js"
       - "app/dome-world/ash-safe-harbor-ingress.js"
-      - "app/dome-world/ash-keep*.js"
+      - "app/dome-world/ash-keep.js"
       - "app/dome-world/schemas/ash-safe-harbor-ingress-v01.schema.json"
       - "tests/ash-safe-harbor-ingress*.test.mjs"
       - "docs/ASH_KEEP_STRETCH9_CLOSURE_RECEIPT.md"
@@ -66,8 +70,14 @@ jobs:
         run: node tests/ash-safe-harbor-ingress-browser.test.mjs
       - name: Preserve current Safe Harbor contracts
         run: npm run test:safe-harbor:current
-      - name: Preserve current Ash Keep contracts
-        run: npm run test:ash-keep
+      - name: Preserve Ash Keep core
+        run: node tests/ash-keep-core.test.mjs
+      - name: Preserve Ash Keep continuity
+        run: node tests/ash-keep-continuity.test.mjs
+      - name: Preserve Ash Keep Hush boundary
+        run: node tests/ash-keep-hush-api.test.mjs
+      - name: Preserve Ash Keep UI contract
+        run: node tests/ash-keep-ui.test.mjs
       - name: Enforce Vercel function hygiene
         run: node tests/vercel-deploy-hygiene.test.mjs
       - name: Publish ingress validation success status
