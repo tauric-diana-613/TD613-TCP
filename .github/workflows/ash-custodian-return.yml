@@ -3,35 +3,170 @@ name: Ash Custodian Return
 on:
   pull_request:
     paths:
-      - 'app/engine/ash-custodian-return.js'
-      - 'app/dome-world/ash-custodian-return.js'
+      - 'app/engine/ash-custodian-return*.js'
+      - 'app/dome-world/ash-custodian-return*.js'
+      - 'app/dome-world/ash-return-ready-bundle.js'
       - 'app/dome-world/ash-workspace-bridge.js'
+      - 'scripts/ash-custodian-return*.mjs'
       - 'tests/ash-custodian-return*.test.mjs'
       - '.github/workflows/ash-custodian-return.yml'
   push:
     branches: [main]
     paths:
-      - 'app/engine/ash-custodian-return.js'
-      - 'app/dome-world/ash-custodian-return.js'
+      - 'app/engine/ash-custodian-return*.js'
+      - 'app/dome-world/ash-custodian-return*.js'
+      - 'app/dome-world/ash-return-ready-bundle.js'
       - 'app/dome-world/ash-workspace-bridge.js'
+      - 'scripts/ash-custodian-return*.mjs'
       - 'tests/ash-custodian-return*.test.mjs'
       - '.github/workflows/ash-custodian-return.yml'
+  workflow_run:
+    workflows: ['Test and deploy static app']
+    types: [completed]
+  workflow_dispatch:
+    inputs:
+      base_url:
+        description: 'Optional deployed base URL for a non-promoting synthetic return observation'
+        required: false
+        default: ''
+        type: string
+      confirm_deployed_probe:
+        description: 'Type RUN_DEPLOYED_RETURN to run against base_url'
+        required: false
+        default: 'HOLD'
+        type: string
 
 permissions:
   contents: read
 
 jobs:
-  validate:
+  validate-and-local-observe:
+    if: github.event_name != 'workflow_run'
     runs-on: ubuntu-latest
-    timeout-minutes: 10
+    timeout-minutes: 25
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-node@v4
         with:
           node-version: 22
           cache: npm
-      - run: npm ci
-      - run: node tests/ash-custodian-return.test.mjs
-      - run: node tests/ash-custodian-return-contract.test.mjs
-      - run: node --check app/engine/ash-custodian-return.js
-      - run: node --check app/dome-world/ash-custodian-return.js
+      - name: Install repository dependencies
+        run: npm ci
+      - name: Validate base Return receipts
+        run: node tests/ash-custodian-return.test.mjs
+      - name: Validate base Return integration contract
+        run: node tests/ash-custodian-return-contract.test.mjs
+      - name: Validate return-ready closure fixtures
+        run: node tests/ash-custodian-return-closure.test.mjs
+      - name: Validate production-closure boundary contract
+        run: node tests/ash-custodian-return-closure-contract.test.mjs
+      - name: Validate Stretch 2 runtime and probe syntax
+        run: |
+          node --check app/engine/ash-custodian-return.js
+          node --check app/engine/ash-custodian-return-closure.js
+          node --check app/dome-world/ash-custodian-return.js
+          node --check app/dome-world/ash-custodian-return-closure.js
+          node --check app/dome-world/ash-return-ready-bundle.js
+          node --check scripts/ash-custodian-return-fixture.mjs
+          node --check scripts/ash-custodian-return-production-probe.mjs
+      - name: Install Chromium probe runtime
+        run: |
+          npm install --no-save --package-lock=false playwright@1.53.2
+          npx playwright install --with-deps chromium
+      - name: Start bounded Ash runtime
+        run: |
+          set -euo pipefail
+          mkdir -p artifacts
+          node scripts/ash-keep-local-closure-server.mjs 6130 > artifacts/ash-custodian-return-server.log 2>&1 &
+          echo $! > artifacts/ash-custodian-return-server.pid
+          for attempt in $(seq 1 30); do
+            if curl -fsS --max-time 2 http://127.0.0.1:6130/__ash_keep_closure/readiness; then
+              exit 0
+            fi
+            sleep 1
+          done
+          cat artifacts/ash-custodian-return-server.log || true
+          exit 1
+      - name: Run bounded synthetic Custodian Return observation
+        env:
+          TD613_BASE_URL: http://127.0.0.1:6130
+          TD613_ARTIFACT_DIR: artifacts/ash-custodian-return
+          TD613_OBSERVED_COMMIT: ${{ github.event.pull_request.head.sha || github.sha }}
+        run: node scripts/ash-custodian-return-production-probe.mjs
+      - name: Preserve local Stretch 2 evidence
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: ash-custodian-return-local-evidence
+          path: |
+            artifacts/ash-custodian-return/
+            artifacts/ash-custodian-return-server.log
+          if-no-files-found: warn
+          retention-days: 14
+      - name: Stop bounded Ash runtime
+        if: always()
+        run: |
+          if [ -f artifacts/ash-custodian-return-server.pid ]; then
+            kill "$(cat artifacts/ash-custodian-return-server.pid)" 2>/dev/null || true
+          fi
+
+  deployed-observation:
+    if: >-
+      (github.event_name == 'workflow_run' && github.event.workflow_run.conclusion == 'success' && github.event.workflow_run.head_branch == 'main')
+      ||
+      (github.event_name == 'workflow_dispatch' && inputs.confirm_deployed_probe == 'RUN_DEPLOYED_RETURN' && inputs.base_url != '')
+    runs-on: ubuntu-latest
+    timeout-minutes: 25
+    env:
+      TD613_DEPLOYED_BASE_URL: ${{ github.event_name == 'workflow_run' && 'https://td613.com' || inputs.base_url }}
+      TD613_OBSERVED_COMMIT: ${{ github.event_name == 'workflow_run' && github.event.workflow_run.head_sha || github.sha }}
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: ${{ env.TD613_OBSERVED_COMMIT }}
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+      - name: Install repository dependencies
+        run: npm ci
+      - name: Wait for deployed Stretch 2 closure surfaces
+        run: |
+          set -euo pipefail
+          mkdir -p artifacts/ash-custodian-return-deployed
+          bridge="${TD613_DEPLOYED_BASE_URL%/}/dome-world/ash-workspace-bridge.js"
+          closure="${TD613_DEPLOYED_BASE_URL%/}/dome-world/ash-custodian-return-closure.js"
+          for attempt in $(seq 1 72); do
+            bridge_body="$(curl -fsSL --max-time 10 "$bridge" || true)"
+            closure_body="$(curl -fsSL --max-time 10 "$closure" || true)"
+            if printf '%s' "$bridge_body" | grep -q 'ash-custodian-return-closure.js' \
+              && printf '%s' "$closure_body" | grep -q 'td613.ash.custodian-return-closure/v0.1'; then
+              printf '%s' "$bridge_body" > artifacts/ash-custodian-return-deployed/deployed-bridge.js
+              printf '%s' "$closure_body" > artifacts/ash-custodian-return-deployed/deployed-closure.js
+              printf '{"status":"RETURN_SURFACES_READY","attempt":%s}\n' "$attempt" > artifacts/ash-custodian-return-deployed/deployment-readiness.json
+              exit 0
+            fi
+            sleep 5
+          done
+          printf '{"status":"HOLD_RETURN_SURFACES_UNAVAILABLE"}\n' > artifacts/ash-custodian-return-deployed/deployment-readiness.json
+          exit 1
+      - name: Install Chromium probe runtime
+        run: |
+          npm install --no-save --package-lock=false playwright@1.53.2
+          npx playwright install --with-deps chromium
+      - name: Observe deployed synthetic Custodian Return without promotion
+        env:
+          TD613_BASE_URL: ${{ env.TD613_DEPLOYED_BASE_URL }}
+          TD613_ARTIFACT_DIR: artifacts/ash-custodian-return-deployed
+        run: node scripts/ash-custodian-return-production-probe.mjs
+      - name: Preserve deployed Stretch 2 evidence
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: ash-custodian-return-deployed-evidence
+          path: artifacts/ash-custodian-return-deployed/
+          if-no-files-found: warn
+          retention-days: 21
+      - name: Verify observer remained non-promotional
+        run: |
+          grep -q '"promotion_authorized": false' artifacts/ash-custodian-return-deployed/custodian-return-production-observation.json
