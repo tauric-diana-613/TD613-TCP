@@ -1,0 +1,37 @@
+name: Ash Custodian Return
+
+on:
+  pull_request:
+    paths:
+      - 'app/engine/ash-custodian-return.js'
+      - 'app/dome-world/ash-custodian-return.js'
+      - 'app/dome-world/ash-workspace-bridge.js'
+      - 'tests/ash-custodian-return*.test.mjs'
+      - '.github/workflows/ash-custodian-return.yml'
+  push:
+    branches: [main]
+    paths:
+      - 'app/engine/ash-custodian-return.js'
+      - 'app/dome-world/ash-custodian-return.js'
+      - 'app/dome-world/ash-workspace-bridge.js'
+      - 'tests/ash-custodian-return*.test.mjs'
+      - '.github/workflows/ash-custodian-return.yml'
+
+permissions:
+  contents: read
+
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+      - run: npm ci
+      - run: node tests/ash-custodian-return.test.mjs
+      - run: node tests/ash-custodian-return-contract.test.mjs
+      - run: node --check app/engine/ash-custodian-return.js
+      - run: node --check app/dome-world/ash-custodian-return.js
