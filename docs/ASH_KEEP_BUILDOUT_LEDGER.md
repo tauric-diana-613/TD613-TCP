@@ -2,7 +2,7 @@
 
 𝌋‌ U+10D613
 
-Ledger generation: `v1.11 · Stretch 5 validation-gated implementation / main evidence pending`
+Ledger generation: `v1.12 · Stretch 5 evidence closure / strategic deployment law`
 
 | Workstream | Score |
 |---|---:|
@@ -17,7 +17,7 @@ Ledger generation: `v1.11 · Stretch 5 validation-gated implementation / main ev
 | I. Ash operator surface and local case stewardship | **43 / 45** |
 
 ```text
-component maturity after Stretch 5 implementation = 270 / 375
+component maturity after Stretch 5 closure = 270 / 375
 production-demonstrated workstreams = 4 / 9
 validation-gated workstreams = 3 / 9
 transport-capable workstreams = 0
@@ -26,54 +26,32 @@ constitutional synthesis = 49 / 50
 
 Score: `49 / 50`
 
-Aperture composition remains `18 / 25`. The installed runtime composition and the cross-receipt composition constitution are complementary validation surfaces; their coexistence does not create additive maturity. Seven points remain retained for exact-main browser evidence, an operator-facing presentation surface, and deeper decomposition of wrapper-era concerns from the canonical body.
+Aperture composition closes at `18 / 25`. Runtime installation and the cross-receipt constitution are complementary; seven points remain retained for an operator-facing presentation surface, feature-specific production browser demonstration, and deeper canonical-body decomposition.
 
 ```text
-composition manifest ≠ runtime installation
 runtime installation ≠ composition constitution
 composition constitution ≠ UI mounted
-runtime installation ≠ production demonstration
-compatibility projection ≠ reciprocal authority
-composition receipt ≠ release authority
-canonical body preserved ≠ canonical body decomposed
-current-head aftercare ≠ feature-specific production demonstration
-Stretch 5 implementation ≠ Stretch 5 closure
+exact-main aftercare ≠ feature-specific production demonstration
 Stretch 5 closure ≠ Stretch 6 authorization
 ```
 
-## Vercel Deployment Law
+## Strategic Vercel Deployment Law
 
-`ALLOWED / STRATEGIC / EVIDENCE-BOUNDED`
+`ALLOWED / STRATEGIC / COST-GOVERNED / EVIDENCE-BOUNDED`
 
-Vercel deployment is permitted. Where repository coupling makes an automatic deployment unavoidable, the deployment remains lawful infrastructure rather than drift. Every consequential Vercel use must be handled strategically:
-
-```text
-purpose for deployment = declared
-observed commit = exact
-environment = PREVIEW or PRODUCTION, never silently conflated
-route and function hygiene = checked
-access boundary = classified
-secrets in public client bundle = prohibited
-evidence source = retained when maturity or production behavior is claimed
-rollback or repair route = identifiable
-```
-
-Vercel may support preview inspection, route verification, production browser observation, public artifact delivery, and authorized release operations. Deployment may not bypass a packet gate, manufacture authority, or award maturity by itself.
+Vercel remains authorized as a release witness, not the default development loop.
 
 ```text
-Vercel allowed ≠ Vercel required for every change
-unavoidable auto-deploy ≠ strategic production promotion
-preview deployment ≠ production deployment
-deployment success ≠ functional validation
-public reachability ≠ production observation
-production observation ≠ maturity promotion
-Vercel deployment ≠ release authority
-Vercel deployment ≠ recipient transport authority
-Vercel deployment ≠ Cinder action
+work branch → local/synthetic CI → retained evidence → anti-drift checks
+→ exact green commit → operator release gesture → strategic deployment
+branch work ≠ deployment requirement
+deployment ≠ maturity promotion
+deployment ≠ release or transport authority
 ```
+
+The normal ceiling is one deliberate deployment per completed packet or release candidate. Additional deployments require a named deployment-specific defect, failed public-runtime observation, rollback verification, or explicit operator decision. Ordinary non-production branches should not trigger Vercel where branch filtering is supported. Exceptions must record exact commit, environment, reason, deployment count, and evidence purpose.
 
 ## Stretch 1 · Ash Constitutional Convergence Closure
-
 `CLOSED / IMPLEMENTED_PRODUCTION_DEMONSTRATED / EVIDENCE_BOUNDED`
 
 ```text
@@ -84,51 +62,36 @@ current-head aftercare commit: 2c89b70e284562ebb6b842900ae1a1bd0b00f6e6
 ```
 
 ## Stretch 2 · Custodian Return And Anisotropy
-
 `CLOSED / IMPLEMENTED_PRODUCTION_DEMONSTRATED / EVIDENCE_BOUNDED`
 
 ## Stretch 3 · Choir Calibration Receipt Binding
-
 `CLOSED / IMPLEMENTED_VALIDATION_GATED / EVIDENCE_BOUNDED`
 
 ## Stretch 4 · Hush Vocabulary Externalization And Lifecycle-Bound Intervention Ensemble
+`CLOSED / IMPLEMENTED_VALIDATION_GATED / EVIDENCE_BOUNDED`
 
+## Stretch 5 · Aperture Composition Renovation Before Choir UI
 `CLOSED / IMPLEMENTED_VALIDATION_GATED / EVIDENCE_BOUNDED`
 
 ```text
-implementation PR: 357
-main commit: 995990fe3eeccb4c3d17e43cb65fa3095ae81ab8
-Hush run: 29483240258
-Hush artifact: 8369330944
-production provider execution: NOT_CLAIMED
-```
-
-## Stretch 5 · Aperture Composition Renovation Before Choir UI
-
-`OPEN / IMPLEMENTED_VALIDATION_GATED`
-
-```text
-runtime installation PR: 359
-runtime installation main commit: 872620775591f78759b5ad49070928db4feac00f
-runtime initial green branch run: 29512037788
-runtime initial branch artifact: 8381027689
-runtime initial branch artifact SHA: sha256:5b96c72b367ca1afe9c7fae3a30e0d3c68b2ff3f1b2b3989209c095c51e3a790
-composition constitution PR: 361
-composition constitution branch commit: c0a8925b294726909dc57a8dd1dd52ff9f4a858a
-composition constitution branch run: 29514228635
-composition constitution branch artifact: 8381930524
-composition constitution branch artifact SHA: sha256:7cd91c401ebf82b7a2ccadf92bfacf0c3cb50c822ef401ce72821c0b5f58de9f
-composition constitution main evidence: PENDING
+runtime PR: 359
+constitution PR: 361
+exact-main commit: e1fe108264045c4d75f0ef275b15654cf61b52a5
+runtime run/artifact: 29514528199 / 8382058122
+constitution run/artifact: 29514528261 / 8382057487
+lifecycle run/artifact: 29514548484 / 8382101606
+Return run/artifact: 29514528271 / 8382106456
+Vercel automatic aftercare status: SUCCESS (not a strategic release witness)
 canonical body rewritten: false
+canonical body decomposed: false
 production browser observation: NOT_CLAIMED
 Choir UI constructed: false
 Stretch 6 authorization: false
 ```
 
-The runtime manifest installs the preserved v3.1-alpha body and compatibility modules. The separate composition constitution binds the current Authority Context, controlled source, instrument ensemble, snapshot lattice, experiment run, tomography receipt, Choir calibration binding, and Hush intervention receipt into a read-only projection contract. Neither layer mounts the future Choir UI or transfers authority.
-
 ## Stretch 6 · Higher-Order Interference
-
 `BLOCKED / NOT_AUTHORIZED`
+
+Stretch 6 requires a fresh operator opening gesture.
 
 Marked ⟐
