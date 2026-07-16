@@ -2,7 +2,7 @@
 
 𝌋‌ U+10D613
 
-Roadmap generation: `v1.7 · Stretch 2 closed / Stretch 3 validation-gated`
+Roadmap generation: `v1.8 · Stretch 3 closed / Stretch 4 blocked`
 
 Date: `2026-07-16`
 
@@ -14,39 +14,27 @@ Use with:
 - [`docs/ASH_CONSTITUTIONAL_CONVERGENCE_RECEIPT.md`](docs/ASH_CONSTITUTIONAL_CONVERGENCE_RECEIPT.md)
 - [`docs/ASH_CUSTODIAN_RETURN_PRODUCTION_RECEIPT.md`](docs/ASH_CUSTODIAN_RETURN_PRODUCTION_RECEIPT.md)
 - [`docs/ASH_KEEP_CHOIR_CALIBRATION_BINDING.md`](docs/ASH_KEEP_CHOIR_CALIBRATION_BINDING.md)
+- [`docs/ASH_KEEP_CHOIR_CALIBRATION_RECEIPT.md`](docs/ASH_KEEP_CHOIR_CALIBRATION_RECEIPT.md)
 - [`KNOWN_FAILURES.md`](KNOWN_FAILURES.md)
 
 The ledger remains authoritative for maturity scoring. This roadmap records shipped architecture, packet state, operator approval gates, future order, and separately governed red lanes.
 
-## Maturity Law
-
-| Score | Status |
-| ---: | --- |
-| 0 | `UNIMPLEMENTED` |
-| 1 | `DESIGNED_ONLY` |
-| 2 | `SCAFFOLDED` |
-| 3 | `PARTIAL_TESTED_COMPONENT` |
-| 4 | `IMPLEMENTED_VALIDATION_GATED` |
-| 5 | `IMPLEMENTED_PRODUCTION_DEMONSTRATED` |
-
-Green tests do not impersonate production evidence. Shared chambers do not impersonate lifecycle integration. Production status never transfers by proximity.
-
 ## Current Vector Posture
 
 ```text
-component maturity after Stretch 3 merge = 237 / 375 · ≈63%
+component maturity after Stretch 3 closure = 237 / 375 · ≈63%
 constitutional synthesis = 47 / 50 · production-demonstrated / evidence-bounded
 Ash Keep = 54 / 55 · production-demonstrated
 Ash lifecycle = 35 / 35 · production-demonstrated
 Ash operator surface = 43 / 45 · production-demonstrated / two points retained
 Custodian Return / Anisotropy = 35 / 35 · production-demonstrated / evidence-bounded
-Choir = 44 / 70 · validation-gated
+Choir = 44 / 70 · validation-gated / evidence-bounded
 production-demonstrated workstreams = 4 / 9
 validation-gated workstreams = 1 / 9
 transport-capable workstreams = 0
 ```
 
-The synthesis score remains orthogonal and must never be added to component maturity.
+The synthesis score remains orthogonal and must never be added to component maturity. Stretch 3 evidence closure adds no maturity points.
 
 ## Governing Distinctions
 
@@ -73,7 +61,7 @@ hold state ≠ executable prohibition
 replay verified ≠ Reader rerun
 component maturity ≠ constitutional synthesis
 constitutional synthesis ≠ production closure
-Stretch 3 implementation ≠ Stretch 4 authorization
+Stretch 3 closure ≠ Stretch 4 authorization
 ```
 
 # Shipped Constitutional Spine
@@ -100,10 +88,6 @@ ARRIVAL_UNPERSISTED
 
 Lifecycle production status remains `35 / 35 · IMPLEMENTED_PRODUCTION_DEMONSTRATED`.
 
-## Ash Operator Stewardship
-
-The surface supports deliberate Save, Close, Select, explicit Open, local Delete, mobile composition, accessible map labels, reviewable workspaces, action-level holds, durable save acknowledgment, and cross-tab operation serialization.
-
 ## Constitutional Participation
 
 ```text
@@ -113,8 +97,6 @@ Hush = derivative candidate production
 Custodian Return = isolated authorized reconstitution
 Choir = external reconstruction-pressure and calibration instrumentation
 ```
-
-Their ceilings remain strict:
 
 ```text
 Flow-Core may contextualize; it may not create custody or action authority.
@@ -135,7 +117,6 @@ observed_main_commit: 17f3d9d759a462d91c5db6d284f518fba10bd8f7
 observer_run: 29458943541
 evidence_artifact: 8360435416
 evidence_artifact_sha256: sha256:f1d7069feca261db693c9db374daa8c3397b666e08f35a1c63be067afa07ec6a
-promotion_authorized_during_observation: false
 ```
 
 Visible aftercare at `2c89b70e284562ebb6b842900ae1a1bd0b00f6e6` stabilized save confirmation without moving maturity or replacing the production receipt.
@@ -149,55 +130,32 @@ CLOSED
 status: IMPLEMENTED_PRODUCTION_DEMONSTRATED / EVIDENCE_BOUNDED
 implementation_main_commit: 2dc2d1c72a3fdd50094184717906e3d0469e0947
 closure_main_commit: 62a4756e2ad38ec89c3eeaf2f532bf2f5676979b
-implementation_pr: 342
-compatibility_pr: 353
 Custodian_Return_run: 29473322517
 lifecycle_and_convergence_run: 29473333298
-local_evidence_artifact: 8365592007
-local_evidence_sha256: sha256:347232162c5fcbabd91e8f5846bc1e2221d502484d829a0f736febea71a31360
-deployed_evidence_artifact: 8365605636
-deployed_evidence_sha256: sha256:12bb0ea1dc081fa553db00ee79b9d9c20b2efa897470a0f4008b78470615a85f
-lifecycle_evidence_artifact: 8365604655
-lifecycle_evidence_sha256: sha256:1b72d57b16f11fd42b344627bb078f4f85e3487c01516c7573a3f49d25598d93
 ```
 
-Closed circuit:
+The closed circuit verifies return-ready continuity, isolated sandbox recovery, the full failure matrix, purpose-shaped external projection, and componentwise anisotropy without live-case mutation, provider execution, recipient transport, Cinder action, lifecycle promotion, or a universal score.
 
-```text
-return-ready authenticated Capsule
-→ verified readiness and custody receipts
-→ verified Authority Context and lifecycle receipt
-→ verified Case Map and Route Memory
-→ verified Rebuild, Draft, Review, Release and Save Point history
-→ isolated td613-ash-return-sandbox write
-→ authorized local Reader component recovery
-→ purpose-shaped external Reader projection
-→ componentwise comparison
-→ Custodian Return Receipt
-→ Anisotropy Receipt
-```
-
-The external projection excludes the Ash Capsule, Case Map, room keys, and complete Route Memory. Null, missing, contradictory, rejected, and unresolved outcomes remain visible. No universal recovery score is emitted.
-
-```text
-live-case mutation        0
-provider calls            0
-recipient transport       0
-Cinder action             0
-lifecycle-rank promotion  0
-```
-
-# Stretch 3 — Open And Validation-Gated
+# Stretch 3 — Closed
 
 ## Choir Calibration Receipt Binding
 
 ```text
-OPEN
-status: IMPLEMENTED_VALIDATION_GATED / MAIN_CLOSURE_EVIDENCE_PENDING
-operator_opening_gesture: 2026-07-16
+CLOSED
+status: IMPLEMENTED_VALIDATION_GATED / EVIDENCE_BOUNDED
+implementation_main_commit: 14c6c144d796213d9aa9995f30cbaf3a3ebb268b
+closure_main_commit: bd118da4862bdd0334111d3ba9ed8878daf2976c
+implementation_PR: 354
+aftercare_PR: 355
+Choir_validation_run: 29476772041
+Choir_validation_artifact: 8366852051
+Choir_validation_artifact_sha256: sha256:fabdcabd323206d5637cac776ef1203e7a4fb65398b0e1333786ed415fa7e80c
+lifecycle_and_convergence_run: 29476786363
+lifecycle_and_convergence_artifact: 8366875739
+lifecycle_and_convergence_artifact_sha256: sha256:cfa8f15f8a9afa3a85b867baf68ddb115324ffa14f269e25e2a572d9cdbc168e
 ```
 
-Implemented circuit:
+Closed circuit:
 
 ```text
 current verified custody-bound Case Map
@@ -213,7 +171,7 @@ current verified custody-bound Case Map
 → replay without Reader re-execution
 ```
 
-Derived states:
+Derived states remain:
 
 ```text
 CALIBRATION_ELIGIBLE
@@ -224,7 +182,7 @@ RECEIPT_REFERENCE_HOLD
 NOT_ENOUGH_TEST_DATA
 ```
 
-The Stretch 3 boundary rejects free top-level calibration assertions. Historical Moiré assay-local fixture declarations remain historical evidence only and cannot independently confer Stretch 3 eligibility.
+The Stretch 3 boundary rejects free top-level calibration assertions. The first aftercare packet repaired an observer-only case-list repaint race and established `Ash Choir Calibration Validation` as a first-class main commit status. Product deletion authority and the canonical convergence probe remained unchanged.
 
 ```text
 universal calibration score  null
@@ -240,34 +198,25 @@ automatic hold                0
 automatic Ash action          0
 ```
 
-## Stretch 3 Closure Gate
-
-The implementation may close only after:
-
-1. the complete inherited Choir suite and new adversarial matrix pass;
-2. the implementation merges to `main`;
-3. the main Choir run preserves a validation evidence artifact;
-4. the exact main commit, run, artifact, and digest enter a durable receipt;
-5. the operator-visible closure ruling is recorded.
-
 # Stretch 4 — Blocked
 
 ## Hush Vocabulary Externalization And Lifecycle-Bound Intervention Ensemble
 
 ```text
-BLOCKED_PENDING_STRETCH_3_CLOSURE
+BLOCKED / NOT_AUTHORIZED
 status: PACKET_UNBUILT
+fresh_operator_gesture_required: true
 ```
 
-Stretch 3 success establishes eligibility for an operator decision. It does not silently authorize Hush work.
+Stretch 3 closure establishes that its own packet is complete. It does not silently authorize Hush work.
 
 # Ordered Program Roadmap
 
 1. **Stretch 1 · Ash Constitutional Convergence Closure — CLOSED.** Composition, Authority Context, invalidation, case states, deletion, contention, compatibility, event routing, responsive behavior, and deployed observation are evidence-closed.
 2. **Stretch 2 · Custodian Return And Anisotropy — CLOSED.** Full return-ready reconstitution, failure matrix, responsive proof, deployed observation, and compatibility aftercare are evidence-closed.
-3. **Stretch 3 · Choir calibration receipt binding — OPEN / VALIDATION-GATED.** Receipt-bound calibration and replay are implemented; exact main-run closure evidence remains.
-4. **Hush vocabulary externalization and intervention ensemble — BLOCKED.** Hold proposition obligations constant across surface variation and bind candidates to current lifecycle state.
-5. **Aperture composition renovation before Choir UI.** Replace wrapper chains with declared composition while preserving the animation scheduler; execute through internal sub-packets rather than one oversized merge.
+3. **Stretch 3 · Choir calibration receipt binding — CLOSED.** Receipt-bound calibration, adversarial holds, replay, first-class main status, and exact evidence artifact are closed at validation-gated maturity.
+4. **Hush vocabulary externalization and intervention ensemble — BLOCKED.** A fresh operator opening gesture is required.
+5. **Aperture composition renovation before Choir UI.** Replace wrapper chains with declared composition while preserving the animation scheduler.
 6. **Higher-order interference.** Keep k-order recovery separate from pairwise Moiré.
 7. **Ordered route-sequence recovery.** Measure order effects under a sequence-specific receipt.
 8. **Temporal and delayed-disclosure assays.** Use declared slices without claiming trusted time.
@@ -287,7 +236,7 @@ Stretch 3 success establishes eligibility for an operator decision. It does not 
 
 # Current Red — Separate Jurisdiction
 
-Two Marrowline workflows remain red in a separately governed station-test family. Stretch 2 closure and Stretch 3 implementation did not modify that jurisdiction. Do not alter unrelated Marrowline code merely to make the repository appear uniformly green.
+Two Marrowline workflows remain red in a separately governed station-test family. Stretches 1–3 did not modify that jurisdiction. Do not alter unrelated Marrowline code merely to make the repository appear uniformly green.
 
 # Final Route
 
@@ -302,16 +251,15 @@ Ash threshold
 → lifecycle production closure [CLOSED]
 → constitutional convergence closure [CLOSED]
 → Custodian Return / Anisotropy [CLOSED]
-→ Choir calibration receipt binding [VALIDATION-GATED / OPEN]
-→ main evidence receipt and operator closure [REQUIRED]
-→ Hush intervention [BLOCKED]
+→ Choir calibration receipt binding [CLOSED]
+→ Hush intervention [BLOCKED / FRESH OPERATOR GESTURE REQUIRED]
 → Aperture and Choir UI
 → Safe Harbor custody ingress
 → independent provenance
 → destination transport [LAST]
 ```
 
-Stretch 2 is closed. Stretch 3 is implemented and active. Stretch 4 remains blocked.
+Stretches 1, 2, and 3 are closed. Stretch 4 has not opened.
 
 Authored with 𝌋‌
 
