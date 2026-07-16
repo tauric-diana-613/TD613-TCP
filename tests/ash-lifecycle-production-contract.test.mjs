@@ -13,6 +13,7 @@ const ledger = read('docs/ASH_KEEP_BUILDOUT_LEDGER.md');
 const roadmap = read('ROADMAP.md');
 const convergence = read('docs/ASH_CONSTITUTIONAL_CONVERGENCE_RECEIPT.md');
 const hushReceipt = read('docs/ASH_KEEP_HUSH_INTERVENTION_RECEIPT.md');
+const composition = read('docs/APERTURE_COMPOSITION_RENOVATION.md');
 
 for (const marker of [
   'Ash Lifecycle Deployed Observation',
@@ -54,16 +55,20 @@ for (const token of [
 assert.match(ledger, /H\. Ash product lifecycle orchestration \| \*\*35 \/ 35\*\*/);
 assert.match(ledger, /I\. Ash operator surface and local case stewardship \| \*\*43 \/ 45\*\*/);
 assert.match(ledger, /C\. Hush derivative and intervention program \| \*\*28 \/ 35\*\*/);
-assert.match(ledger, /component maturity after Stretch 4 closure = 258 \/ 375/);
-assert.match(ledger, /validation-gated workstreams = 2 \/ 9/);
-assert.match(ledger, /Score: `48 \/ 50`|constitutional synthesis = 48 \/ 50/);
-assert.match(ledger, /Stretch 4 · Hush Vocabulary Externalization And Lifecycle-Bound Intervention Ensemble[\s\S]*CLOSED \/ IMPLEMENTED_VALIDATION_GATED/);
-assert.match(roadmap, /Hush vocabulary externalization and intervention ensemble — CLOSED/);
-assert.match(roadmap, /Aperture composition renovation before Choir UI — BLOCKED \/ NOT AUTHORIZED/);
+assert.match(ledger, /E\. Aperture composition renovation \| \*\*18 \/ 25\*\*/);
+assert.match(ledger, /component maturity after Stretch 5 implementation = 270 \/ 375/);
+assert.match(ledger, /validation-gated workstreams = 3 \/ 9/);
+assert.match(ledger, /Score: `49 \/ 50`|constitutional synthesis = 49 \/ 50/);
+assert.match(ledger, /Stretch 5 · Aperture Composition Renovation Before Choir UI[\s\S]*OPEN \/ IMPLEMENTED_VALIDATION_GATED/);
+assert.match(roadmap, /Stretch 4 · Hush vocabulary externalization and intervention ensemble — CLOSED/);
+assert.match(roadmap, /Stretch 5 · Aperture composition renovation before Choir UI — OPEN \/ IMPLEMENTED_VALIDATION_GATED/);
+assert.match(roadmap, /Higher-order interference — BLOCKED \/ NOT AUTHORIZED/);
 assert.match(roadmap, /transport-capable workstreams = 0/);
 assert.match(convergence, /Status: `IMPLEMENTED_PRODUCTION_DEMONSTRATED`/);
 assert.match(convergence, /29458943541/);
 assert.match(hushReceipt, /Hush_validation_run: 29483240258/);
 assert.match(hushReceipt, /Stretch_5_authorized: false/);
+assert.match(composition, /canonical_body_rewritten = false/);
+assert.match(composition, /Stretch_6_authorized: false/);
 
 console.log('ash-lifecycle-production-contract.test.mjs passed');
