@@ -8,7 +8,7 @@ const engine = readFileSync('app/engine/ash-custodian-return.js', 'utf8');
 assert.match(bridge, /ash-custodian-return\.js/);
 assert.match(surface, /td613\.ash\.custodian-return\/v0\.1/);
 assert.match(surface, /td613-ash-return-sandbox/);
-assert.match(surface, /live case remained untouched/i);
+assert.match(surface, /live Ash case remained untouched/i);
 assert.match(surface, /purpose-shaped projection/i);
 assert.match(surface, /universal score/i);
 assert.match(engine, /live_case_mutated: false/);
