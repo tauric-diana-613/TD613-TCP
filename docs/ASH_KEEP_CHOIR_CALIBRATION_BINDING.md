@@ -12,15 +12,17 @@
 
 ## Status
 
-`IMPLEMENTED_VALIDATION_GATED / OPERATOR_REVIEW_REQUIRED`
+`CLOSED / IMPLEMENTED_VALIDATION_GATED / EVIDENCE_BOUNDED`
+
+Closure receipt: [`ASH_KEEP_CHOIR_CALIBRATION_RECEIPT.md`](ASH_KEEP_CHOIR_CALIBRATION_RECEIPT.md)
 
 ## Purpose
 
 This packet replaces free calibration assertions at the Stretch 3 boundary with an exact, replayable receipt chain.
 
-Historical Moiré v0.1 assays may still preserve their assay-local fixture declarations. Those declarations remain part of the historical assay record. They cannot independently confer Stretch 3 calibration eligibility.
+Historical Moiré v0.1 assays may still preserve assay-local fixture declarations. Those declarations remain historical evidence and cannot independently confer Stretch 3 calibration eligibility.
 
-Stretch 3 asks a narrower question:
+Stretch 3 asks:
 
 > Does the current custody-bound case carry the exact verified Choir receipt set required to present calibration evidence for operator review?
 
@@ -59,7 +61,7 @@ RECEIPT_REFERENCE_HOLD
 NOT_ENOUGH_TEST_DATA
 ```
 
-State precedence is explicit:
+State precedence:
 
 1. failed receipt verification produces `TAMPER_HOLD`;
 2. a mismatch with the active custody-bound Case Map or Route Memory produces `STALE_CASE_HOLD`;
@@ -68,7 +70,7 @@ State precedence is explicit:
 5. incomplete observed evidence or an ineligible control bank produces `NOT_ENOUGH_TEST_DATA`;
 6. only the fully verified circuit produces `CALIBRATION_ELIGIBLE`.
 
-A hold is an evidentiary state. It is not an automatic operational hold.
+A hold is an evidentiary state, not an automatic operational prohibition.
 
 ## Free-boolean rejection
 
@@ -97,8 +99,7 @@ The receipt seals:
 - verification of the Matched Benign Control Bank;
 - current-case binding;
 - receipt-to-case binding;
-- exact Moiré receipt references;
-- exact Reader provenance references;
+- exact Moiré and Reader-provenance references;
 - exact disagreement-ledger reference;
 - Reader-set equality;
 - disagreement-to-provenance equality;
@@ -110,14 +111,7 @@ The receipt seals:
 
 ## Replay
 
-Replay verifies:
-
-- the binding digest;
-- the supplied receipt set;
-- exact receipt references;
-- current Case Map and Route Memory alignment;
-- the Reader set;
-- the derived binding state.
+Replay verifies the binding digest, supplied receipt set, exact references, current Case Map and Route Memory alignment, Reader set, and derived binding state.
 
 Replay does not recompute the componentwise comparison and does not rerun any Reader.
 
@@ -158,9 +152,9 @@ replay verified ≠ Reader rerun
 receipt ≠ command
 ```
 
-## Validation bank
+## Closed validation bank
 
-The first Stretch 3 bank covers:
+The evidence-closed bank covers:
 
 1. one fully receipt-bound eligible circuit;
 2. free calibration-boolean rejection;
@@ -177,7 +171,7 @@ The first Stretch 3 bank covers:
 
 This packet adds no Choir UI, public production route, provider execution, higher-order interference, ordered sequence assay, temporal assay, Hush intervention, transport, release mutation, or Cinder action.
 
-Stretch 3 remains validation-gated until its branch checks, merge, and main aftercare pass.
+Stretch 3 closed on exact main evidence at commit `bd118da4862bdd0334111d3ba9ed8878daf2976c`. Stretch 4 remains blocked and requires a fresh operator opening gesture.
 
 Authored with 𝌋‌
 
