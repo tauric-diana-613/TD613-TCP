@@ -14,6 +14,8 @@ const roadmap = read('ROADMAP.md');
 const convergence = read('docs/ASH_CONSTITUTIONAL_CONVERGENCE_RECEIPT.md');
 const hushReceipt = read('docs/ASH_KEEP_HUSH_INTERVENTION_RECEIPT.md');
 const composition = read('docs/APERTURE_COMPOSITION_RENOVATION.md');
+const compositionReceipt = read('docs/APERTURE_COMPOSITION_CLOSURE_RECEIPT.md');
+const deploymentLaw = read('docs/STRATEGIC_VERCEL_DEPLOYMENT_LAW.md');
 
 for (const marker of [
   'Ash Lifecycle Deployed Observation',
@@ -56,19 +58,22 @@ assert.match(ledger, /H\. Ash product lifecycle orchestration \| \*\*35 \/ 35\*\
 assert.match(ledger, /I\. Ash operator surface and local case stewardship \| \*\*43 \/ 45\*\*/);
 assert.match(ledger, /C\. Hush derivative and intervention program \| \*\*28 \/ 35\*\*/);
 assert.match(ledger, /E\. Aperture composition renovation \| \*\*18 \/ 25\*\*/);
-assert.match(ledger, /component maturity after Stretch 5 implementation = 270 \/ 375/);
+assert.match(ledger, /component maturity after Stretch 5 closure = 270 \/ 375/);
 assert.match(ledger, /validation-gated workstreams = 3 \/ 9/);
 assert.match(ledger, /Score: `49 \/ 50`|constitutional synthesis = 49 \/ 50/);
-assert.match(ledger, /Stretch 5 · Aperture Composition Renovation Before Choir UI[\s\S]*OPEN \/ IMPLEMENTED_VALIDATION_GATED/);
+assert.match(ledger, /Stretch 5 · Aperture Composition Renovation Before Choir UI[\s\S]*CLOSED \/ IMPLEMENTED_VALIDATION_GATED \/ EVIDENCE_BOUNDED/);
 assert.match(roadmap, /Stretch 4 · Hush vocabulary externalization and intervention ensemble — CLOSED/);
-assert.match(roadmap, /Stretch 5 · Aperture composition renovation before Choir UI — OPEN \/ IMPLEMENTED_VALIDATION_GATED/);
+assert.match(roadmap, /Stretch 5 · Aperture composition renovation before Choir UI — CLOSED \/ IMPLEMENTED_VALIDATION_GATED \/ EVIDENCE_BOUNDED/);
 assert.match(roadmap, /Higher-order interference — BLOCKED \/ NOT AUTHORIZED/);
 assert.match(roadmap, /transport-capable workstreams = 0/);
 assert.match(convergence, /Status: `IMPLEMENTED_PRODUCTION_DEMONSTRATED`/);
 assert.match(convergence, /29458943541/);
 assert.match(hushReceipt, /Hush_validation_run: 29483240258/);
-assert.match(hushReceipt, /Stretch_5_authorized: false/);
-assert.match(composition, /canonical_body_rewritten = false/);
-assert.match(composition, /Stretch_6_authorized: false/);
+assert.match(composition, /CLOSED \/ IMPLEMENTED_VALIDATION_GATED \/ EVIDENCE_BOUNDED/);
+assert.match(composition, /canonical_body_decomposed: false/);
+assert.match(compositionReceipt, /Aperture_composition_artifact: 8381389270/);
+assert.match(compositionReceipt, /deployment_success_promotes_maturity: false/);
+assert.match(deploymentLaw, /deployment success ≠ feature-specific production demonstration/);
+assert.match(deploymentLaw, /operator release gesture ≠ automatic Git event/);
 
 console.log('ash-lifecycle-production-contract.test.mjs passed');
