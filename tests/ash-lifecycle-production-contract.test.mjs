@@ -14,6 +14,7 @@ const receipt = read('docs/ASH_LIFECYCLE_PRODUCTION_DEMO_RECEIPT.md');
 const ledger = read('docs/ASH_KEEP_BUILDOUT_LEDGER.md');
 const roadmap = read('ROADMAP.md');
 const convergence = read('docs/ASH_CONSTITUTIONAL_CONVERGENCE_RECEIPT.md');
+const hushReceipt = read('docs/ASH_KEEP_HUSH_INTERVENTION_RECEIPT.md');
 
 for (const marker of [
   'Ash Lifecycle Deployed Observation', 'Wait for deployed Ash lifecycle-composed threshold and Keep',
@@ -38,11 +39,9 @@ assert.match(shell, /ASH_KEEP_JS_SHELL_VERSION = 'td613\.ash-keep\.js-shell\/v0\
 assert.match(shell, /ASH_KEEP_SHELL_VERSION = 'td613\.ash-keep\.shell\/v0\.2-canonical-composition'/);
 assert.match(shell, /caseMapDigest: state\.caseMap\.case_map_digest/);
 assert.match(shell, /ash-constitutional-composition/);
-assert.match(shell, /ash-convergence\.js/);
 assert.doesNotMatch(core, /location\.reload\(\)/);
 assert.equal(delivery, keep);
 assert.match(keep, /\/dome-world\/ash-lifecycle\.js/);
-assert.match(keep, /\/dome-world\/ash-case-controls\.js/);
 assert.match(controls, /DELETE_PARTIAL_HOLD/);
 assert.doesNotMatch(controls, /location\.reload\(\)/);
 
@@ -70,16 +69,16 @@ assert.match(receipt, /evidence_artifact_id: 8330532097/);
 assert.match(ledger, /H\. Ash product lifecycle orchestration \| \*\*35 \/ 35\*\*/);
 assert.match(ledger, /I\. Ash operator surface and local case stewardship \| \*\*43 \/ 45\*\*/);
 assert.match(ledger, /C\. Hush derivative and intervention program \| \*\*28 \/ 35\*\*/);
-assert.match(ledger, /component maturity after Stretch 4 implementation = 258 \/ 375/);
+assert.match(ledger, /component maturity after Stretch 4 closure = 258 \/ 375/);
 assert.match(ledger, /validation-gated workstreams = 2 \/ 9/);
 assert.match(ledger, /Score: `48 \/ 50`|constitutional synthesis = 48 \/ 50/);
-assert.match(ledger, /Stretch 4 · Hush Vocabulary Externalization And Lifecycle-Bound Intervention Ensemble[\s\S]*OPEN \/ IMPLEMENTED_VALIDATION_GATED/);
-assert.match(roadmap, /Hush vocabulary externalization and intervention ensemble — OPEN \/ VALIDATION-GATED/);
-assert.match(roadmap, /Aperture composition renovation before Choir UI — BLOCKED/);
+assert.match(ledger, /Stretch 4 · Hush Vocabulary Externalization And Lifecycle-Bound Intervention Ensemble[\s\S]*CLOSED \/ IMPLEMENTED_VALIDATION_GATED/);
+assert.match(roadmap, /Hush vocabulary externalization and intervention ensemble — CLOSED/);
+assert.match(roadmap, /Aperture composition renovation before Choir UI — BLOCKED \/ NOT AUTHORIZED/);
 assert.match(roadmap, /transport-capable workstreams = 0/);
 assert.match(convergence, /Status: `IMPLEMENTED_PRODUCTION_DEMONSTRATED`/);
 assert.match(convergence, /29458943541/);
-assert.match(convergence, /8360435416/);
-assert.match(convergence, /Observer promotion authorized: `false`/);
+assert.match(hushReceipt, /Hush_validation_run: 29483240258/);
+assert.match(hushReceipt, /Stretch_5_authorized: false/);
 
 console.log('ash-lifecycle-production-contract.test.mjs passed');

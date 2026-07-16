@@ -2,7 +2,7 @@
 
 𝌋‌ U+10D613
 
-Ledger generation: `v1.9 · Stretch 4 validation-gated implementation / main evidence pending`
+Ledger generation: `v1.10 · Stretch 4 evidence closure / Stretch 5 blocked`
 
 | Workstream | Score |
 |---|---:|
@@ -17,7 +17,7 @@ Ledger generation: `v1.9 · Stretch 4 validation-gated implementation / main evi
 | I. Ash operator surface and local case stewardship | **43 / 45** |
 
 ```text
-component maturity after Stretch 4 implementation = 258 / 375
+component maturity after Stretch 4 closure = 258 / 375
 production-demonstrated workstreams = 4 / 9
 validation-gated workstreams = 2 / 9
 transport-capable workstreams = 0
@@ -26,7 +26,7 @@ constitutional synthesis = 48 / 50
 
 Score: `48 / 50`
 
-Hush earns `28 / 35`: screened packet `5`, vocabulary `5`, Authority/Rebuild binding `5`, receipt/holds/replay `5`, matched trials `4`, provider-log parity `4`, production operator passage `0`. Branch validation never substitutes for production evidence.
+Hush remains `28 / 35`. Evidence closure adds no points. Seven points remain retained for production Reader/provider observation and an operator-facing intervention surface.
 
 ```text
 candidate eligible ≠ candidate kept
@@ -34,7 +34,6 @@ intervention receipt ≠ Release Receipt
 provider packet ≠ provider execution
 hold state ≠ executable prohibition
 current-head aftercare ≠ feature-specific production demonstration
-Stretch 4 implementation ≠ production demonstration
 Stretch 4 closure ≠ Stretch 5 authorization
 ```
 
@@ -59,23 +58,25 @@ current-head aftercare commit: 2c89b70e284562ebb6b842900ae1a1bd0b00f6e6
 
 ## Stretch 4 · Hush Vocabulary Externalization And Lifecycle-Bound Intervention Ensemble
 
-`OPEN / IMPLEMENTED_VALIDATION_GATED`
+`CLOSED / IMPLEMENTED_VALIDATION_GATED / EVIDENCE_BOUNDED`
 
 ```text
 implementation PR: 357
-main evidence: PENDING
-branch run: 29481625828
-branch artifact: 8368717694
-branch artifact SHA: sha256:da8dec175d9dd311600ecd5f7c8a442d0f0de65346ef91cb8cdb0e50c85532db
+main commit: 995990fe3eeccb4c3d17e43cb65fa3095ae81ab8
+Hush run: 29483240258
+Hush artifact: 8369330944
+Hush artifact SHA: sha256:3cb26d0672da3905cd7afa67ae9e8dae9f21034183ba78e82fd7b5a4ef855b0a
+Lifecycle run: 29483256362
+Lifecycle artifact: 8369369722
+Lifecycle artifact SHA: sha256:54260aa12ce18e9b9590018dea6b9919597bdb378cfcaab91d6395aa285e3aac
+production provider execution: NOT_CLAIMED
 Stretch 5 authorization: false
 ```
 
-Every result remains `UNKEPT_CANDIDATE` and requires local Rebuild, local Review, and separate Ash Release authorization. No storage mutation, release, recipient handoff, Cinder action, automatic hold, or automatic Ash action is conferred.
+Every result remains `UNKEPT_CANDIDATE` and requires local Rebuild, local Review, and separate Ash Release authorization.
 
 ## Stretch 5 · Aperture Composition Renovation Before Choir UI
 
 `BLOCKED / NOT_AUTHORIZED`
-
-Full Stretch 4 doctrine and evidence boundaries live in `docs/ASH_KEEP_HUSH_INTERVENTION.md`.
 
 Marked ⟐
