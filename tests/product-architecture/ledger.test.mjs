@@ -4,6 +4,7 @@ import fs from 'node:fs';
 const read = p => fs.readFileSync(new URL(`../../${p}`, import.meta.url), 'utf8');
 const ledger = read('docs/ASH_KEEP_BUILDOUT_LEDGER.md');
 const roadmap = read('ROADMAP.md');
+const continuation = read('docs/ASH_KEEP_BUILDOUT_PLAN_SOVEREIGN_CONTINUATION_AFTER_STRETCH_9.md');
 const composition = read('docs/APERTURE_COMPOSITION_RENOVATION.md');
 const closure = read('docs/APERTURE_COMPOSITION_CLOSURE_RECEIPT.md');
 const stretch6 = read('docs/ASH_KEEP_STRETCH6_CLOSURE_RECEIPT.md');
@@ -45,6 +46,21 @@ for (const token of [
   'BLOCKED_PENDING_CONSOLIDATION',
   'Stretch 10 implementation requires a later explicit operator handoff gesture'
 ]) assert.ok(roadmap.includes(token), `Roadmap omitted ${token}`);
+
+for (const token of [
+  'Plan generation: `v2.2',
+  'Current state: `STRETCH_9_CLOSED / EXACT_GREEN_MERGE_AND_STRATEGIC_SEAL_PENDING`',
+  'docs/ASH_KEEP_BUILDOUT_LEDGER.md',
+  'ROADMAP.md',
+  'docs/ASH_KEEP_BUILDOUT_PLAN_SOVEREIGN_CONTINUATION_AFTER_STRETCH_9.md',
+  'component maturity after Stretch 9 closure = 320 / 375',
+  'Ash Safe Harbor Ingress validation run/artifact = 29539852572 / 8391987949',
+  'active serverless functions = 11',
+  'reserved function capacity = 1',
+  'Stretch 10 implementation authority = false',
+  'Stretch 11 implementation authority = false',
+  'current stop point = AFTER STRETCH 9 SUCCESSFUL STRATEGIC SEAL'
+]) assert.ok(continuation.includes(token), `Continuation plan omitted ${token}`);
 
 assert.match(convergence, /Status: `IMPLEMENTED_PRODUCTION_DEMONSTRATED`/);
 assert.match(choir, /Choir_validation_run: 29476772041/);
