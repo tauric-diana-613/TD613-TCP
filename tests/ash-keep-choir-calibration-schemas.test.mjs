@@ -13,6 +13,10 @@ const higherOrder = JSON.parse(await readFile(
   new URL('../app/dome-world/schemas/aperture-higher-order-interference-v01.schema.json', import.meta.url),
   'utf8'
 ));
+const orderedRoute = JSON.parse(await readFile(
+  new URL('../app/dome-world/schemas/aperture-ordered-route-sequence-v01.schema.json', import.meta.url),
+  'utf8'
+));
 const workflow = await readFile(new URL('../.github/workflows/ash-keep-choir-test.yml', import.meta.url), 'utf8');
 const publisher = await readFile(new URL('../scripts/publish-ash-keep-observer-status.mjs', import.meta.url), 'utf8');
 
@@ -67,10 +71,38 @@ assert.equal(higherOrder.properties.suppression_authorized.const, false);
 assert.equal(higherOrder.properties.cinder_action_authorized.const, false);
 assert.equal(higherOrder.properties.recommendation_not_command.const, true);
 
+assert.equal(orderedRoute.$id, 'td613.aperture.ordered-route-sequence/v0.1');
+assert.equal(orderedRoute.properties.schema.const, orderedRoute.$id);
+assert.equal(orderedRoute.properties.mode.const, 'BOUNDED_ORDERED_ROUTE_SEQUENCE_RECOVERY');
+assert.equal(orderedRoute.properties.declared_caps.properties.max_steps.maximum, 16);
+assert.equal(orderedRoute.properties.declared_caps.properties.max_controls.maximum, 8);
+assert.deepEqual(orderedRoute.properties.state.enum, [
+  'ORDERED_SEQUENCE_ELIGIBLE',
+  'CANCELLED_HOLD',
+  'TAMPER_HOLD',
+  'STALE_CASE_HOLD',
+  'CALIBRATION_HOLD',
+  'SEQUENCE_INTEGRITY_HOLD',
+  'NOT_ENOUGH_TEST_DATA'
+]);
+assert.equal(orderedRoute.properties.ordered_sequence_effect_is_causation.const, false);
+assert.equal(orderedRoute.properties.surveillance_probability.type, 'null');
+assert.equal(orderedRoute.properties.prediction_authorized.const, false);
+assert.equal(orderedRoute.properties.release_authorized.const, false);
+assert.equal(orderedRoute.properties.transport_authorized.const, false);
+assert.equal(orderedRoute.properties.suppression_authorized.const, false);
+assert.equal(orderedRoute.properties.cinder_action_authorized.const, false);
+assert.equal(orderedRoute.properties.readers_reexecuted.const, false);
+assert.equal(orderedRoute.properties.provider_called.const, false);
+assert.equal(orderedRoute.properties.network_called.const, false);
+assert.equal(orderedRoute.properties.storage_mutated.const, false);
+assert.equal(orderedRoute.properties.recommendation_not_command.const, true);
+
 for (const token of [
   'statuses: write',
   'Ash Choir Calibration Validation',
   'Publish Choir validation pending status',
+  'Validate ordered route-sequence recovery',
   'Publish Choir validation success status',
   'Publish Choir validation failure status',
   'Reconcile terminal Choir validation failure status',
