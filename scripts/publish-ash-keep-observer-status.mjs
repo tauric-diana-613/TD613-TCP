@@ -9,7 +9,8 @@ const ALLOWED_CONTEXTS = new Set([
   'Ash Custodian Return Local Observation',
   'Ash Custodian Return Deployed Observation',
   'Ash Choir Calibration Validation',
-  'Ash Hush Intervention Validation'
+  'Ash Hush Intervention Validation',
+  'Ash Aperture Composition Validation'
 ]);
 const DEFAULT_CONTEXT = 'Ash Keep Deployed Observation';
 const API_VERSION = '2022-11-28';

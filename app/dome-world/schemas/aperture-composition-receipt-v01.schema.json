@@ -1,0 +1,238 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "td613.aperture.composition-receipt/v0.1",
+  "title": "TD613 Aperture Composition Receipt",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema",
+    "version",
+    "receipt_id",
+    "created_at",
+    "case_id",
+    "case_map_digest",
+    "route_memory_digest",
+    "layer_order",
+    "layer_references",
+    "verified",
+    "binding_checks",
+    "missing_layers",
+    "composition_state",
+    "composition_eligible",
+    "presentation_projection_eligible",
+    "holds",
+    "tomography_posture",
+    "choir_posture",
+    "hush_posture",
+    "ui_mounted",
+    "ui_mount_authorized",
+    "instruments_executed_by_composition",
+    "readers_executed_by_composition",
+    "provider_called_by_composition",
+    "reconstruction_reexecuted",
+    "network_called",
+    "storage_mutated",
+    "promotion_authorized",
+    "release_authorized",
+    "transport_authorized",
+    "cinder_action_authorized",
+    "automatic_hold",
+    "automatic_ash_action",
+    "automatic_instrument_selection",
+    "automatic_model_selection",
+    "recommendation_not_command",
+    "universal_score",
+    "source_status",
+    "evidence_basis",
+    "missingness",
+    "alternatives",
+    "open_questions",
+    "operator_notes",
+    "closure",
+    "receipt_digest"
+  ],
+  "properties": {
+    "schema": {
+      "const": "td613.aperture.composition-receipt/v0.1"
+    },
+    "version": {
+      "const": "v0.1"
+    },
+    "receipt_id": {
+      "type": "string",
+      "pattern": "^apcomp_receipt_[A-Za-z0-9_-]{6,128}$"
+    },
+    "created_at": {
+      "type": "string"
+    },
+    "case_id": {
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "case_map_digest": {
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "route_memory_digest": {
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "layer_order": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "layer_references": {
+      "type": "object"
+    },
+    "verified": {
+      "type": "object"
+    },
+    "binding_checks": {
+      "type": "object"
+    },
+    "missing_layers": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "composition_state": {
+      "enum": [
+        "COMPOSITION_ELIGIBLE",
+        "MISSING_LAYER_HOLD",
+        "TAMPER_HOLD",
+        "STALE_AUTHORITY_HOLD",
+        "LAYER_ORDER_HOLD",
+        "SOURCE_BINDING_HOLD",
+        "EXPERIMENT_BINDING_HOLD",
+        "TOMOGRAPHY_HOLD",
+        "CHOIR_BINDING_HOLD",
+        "HUSH_BINDING_HOLD",
+        "PRESENTATION_BOUNDARY_HOLD"
+      ]
+    },
+    "composition_eligible": {
+      "type": "boolean"
+    },
+    "presentation_projection_eligible": {
+      "type": "boolean"
+    },
+    "holds": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "tomography_posture": {
+      "type": "object"
+    },
+    "choir_posture": {
+      "type": "object"
+    },
+    "hush_posture": {
+      "type": "object"
+    },
+    "ui_mounted": {
+      "const": false
+    },
+    "ui_mount_authorized": {
+      "const": false
+    },
+    "instruments_executed_by_composition": {
+      "const": false
+    },
+    "readers_executed_by_composition": {
+      "const": false
+    },
+    "provider_called_by_composition": {
+      "const": false
+    },
+    "reconstruction_reexecuted": {
+      "const": false
+    },
+    "network_called": {
+      "const": false
+    },
+    "storage_mutated": {
+      "const": false
+    },
+    "promotion_authorized": {
+      "const": false
+    },
+    "release_authorized": {
+      "const": false
+    },
+    "transport_authorized": {
+      "const": false
+    },
+    "cinder_action_authorized": {
+      "const": false
+    },
+    "automatic_hold": {
+      "const": false
+    },
+    "automatic_ash_action": {
+      "const": false
+    },
+    "automatic_instrument_selection": {
+      "const": false
+    },
+    "automatic_model_selection": {
+      "const": false
+    },
+    "recommendation_not_command": {
+      "const": true
+    },
+    "universal_score": {
+      "type": "null"
+    },
+    "source_status": {
+      "type": "string"
+    },
+    "evidence_basis": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "missingness": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "alternatives": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "open_questions": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "operator_notes": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "closure": {
+      "type": "object"
+    },
+    "receipt_digest": {
+      "type": "string",
+      "pattern": "^sha256:[0-9a-f]{64}$"
+    }
+  }
+}
