@@ -21,7 +21,7 @@ for (const token of [
   'constitutional synthesis = 49 / 50',
   'CLOSED / IMPLEMENTED_VALIDATION_GATED / EVIDENCE_BOUNDED',
   'ALLOWED / STRATEGIC / COST-GOVERNED / EVIDENCE-BOUNDED',
-  'ordinary non-production branches should not trigger Vercel'
+  'Ordinary non-production branches should not trigger Vercel'
 ]) assert.ok(ledger.includes(token), `Ledger omitted ${token}`);
 
 for (const token of [
