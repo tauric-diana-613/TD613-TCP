@@ -143,6 +143,39 @@ const matrix = {
   interrupted_import: recoveredInterrupted >= 1 ? 'PASS' : 'FAIL',
   replay: /REPLAY_VERIFIED/.test(replay || '') ? 'PASS' : 'FAIL'
 };
+const diagnostics = {
+  schema: 'td613.ash.custodian-return-probe-diagnostics/v0.1',
+  matrix,
+  statuses: {
+    valid: valid.status,
+    wrong_passphrase: wrongResult.status,
+    tamper: tamperResult.status,
+    partial_capsule: partialResult.status,
+    stale_receipt: staleResult.status,
+    mobile: mobileResult.status,
+    reduced_motion: reducedResult.status
+  },
+  hold_receipts: {
+    wrong_passphrase: wrongResult.hold_receipt,
+    tamper: tamperResult.hold_receipt,
+    partial_capsule: partialResult.hold_receipt,
+    stale_receipt: staleResult.hold_receipt
+  },
+  replay,
+  recovered_interrupted_imports: recoveredInterrupted,
+  responsive: {
+    desktop: desktop.geometry,
+    mobile: mobile.geometry,
+    reduced_motion: reduced.geometry,
+    reduced_motion_matched: reducedMotionMatched
+  },
+  provider_requests: providerRequests,
+  recipient_transport_requests: recipientTransportRequests,
+  live_case_mutations: liveCaseMutations,
+  cinder_actions: cinderActions
+};
+await fs.writeFile(path.join(artifactDir, 'probe-diagnostics.json'), `${JSON.stringify(diagnostics, null, 2)}\n`);
+
 for (const [name, value] of Object.entries(matrix)) if (value !== 'PASS') throw new Error(`Stretch 2 matrix failed: ${name}`);
 if (!/sealed/.test(mobileResult.status) || !/sealed/.test(reducedResult.status)) throw new Error('Responsive return interaction failed.');
 if (providerRequests.length || recipientTransportRequests.length || liveCaseMutations.length || cinderActions.length) {
