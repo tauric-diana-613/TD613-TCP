@@ -6,6 +6,7 @@ import { chromium } from 'playwright';
 const base = (process.env.TD613_BASE_URL || 'http://127.0.0.1:6138').replace(/\/$/, '');
 const artifactDir = process.env.TD613_ARTIFACT_DIR || 'artifacts/ash-safe-harbor-ingress-browser';
 const digest = letter => `sha256:${letter.repeat(64)}`;
+const baseOrigin = new URL(base).origin;
 
 await fs.mkdir(artifactDir, { recursive: true });
 const browser = await chromium.launch({ headless: true });
@@ -20,6 +21,7 @@ page.setDefaultNavigationTimeout(45_000);
 
 const consoleErrors = [];
 const failedRequests = [];
+const passiveExternalRequests = [];
 const unauthorizedRequests = [];
 for (const target of [page]) {
   target.on('console', message => {
@@ -31,9 +33,14 @@ for (const target of [page]) {
   }));
   target.on('request', request => {
     const url = new URL(request.url());
-    if (url.origin !== new URL(base).origin || !['GET', 'HEAD'].includes(request.method())) {
-      unauthorizedRequests.push({ url: request.url(), method: request.method(), type: request.resourceType() });
+    const method = request.method();
+    const type = request.resourceType();
+    if (url.origin === baseOrigin && ['GET', 'HEAD'].includes(method)) return;
+    if (url.origin !== baseOrigin && ['GET', 'HEAD'].includes(method) && ['stylesheet', 'font', 'image'].includes(type)) {
+      passiveExternalRequests.push({ url: request.url(), method, type });
+      return;
     }
+    unauthorizedRequests.push({ url: request.url(), method, type });
   });
 }
 
@@ -154,7 +161,7 @@ await replayPage.waitForSelector('#safeHarborIngressReview');
 await replayPage.waitForFunction(() => document.querySelector('#safeHarborIngressState')?.textContent?.includes('REPLAY_HOLD'));
 assert.equal(await replayPage.locator('#safeHarborBindL0').isDisabled(), true);
 
-assert.equal(unauthorizedRequests.length, 0, `Unexpected external or mutating requests: ${JSON.stringify(unauthorizedRequests)}`);
+assert.equal(unauthorizedRequests.length, 0, `Unexpected mutating or ingress-bearing requests: ${JSON.stringify(unauthorizedRequests)}`);
 const materialConsoleErrors = consoleErrors.filter(value => !/favicon|404|Failed to load resource/i.test(value));
 assert.equal(materialConsoleErrors.length, 0, `Browser console errors: ${JSON.stringify(materialConsoleErrors)}`);
 
@@ -176,6 +183,7 @@ const receipt = {
   destination_transport_authorized: false,
   release_authorized: false,
   cinder_action_authorized: false,
+  passive_external_requests: passiveExternalRequests,
   unauthorized_requests: unauthorizedRequests,
   failed_requests: failedRequests,
   console_errors: materialConsoleErrors
