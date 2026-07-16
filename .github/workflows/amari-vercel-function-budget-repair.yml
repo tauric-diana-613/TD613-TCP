@@ -4,6 +4,13 @@ on:
   push:
     branches:
       - amari/vercel-11-function-budget
+  pull_request:
+    branches:
+      - main
+    paths:
+      - "scripts/repair-vercel-function-budget.mjs"
+      - ".github/workflows/amari-vercel-function-budget-repair.yml"
+  workflow_dispatch:
 
 permissions:
   contents: write
