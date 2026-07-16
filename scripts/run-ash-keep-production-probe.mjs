@@ -51,6 +51,8 @@ const layoutReplacement = `    const scrollLaneFor = node => {
       .map(item => ({ id: item.id, lane: item.scroll_lane }));`;
 const returnTarget = '      clipped_controls: clipped,\n      workspace_tab_count: tabs.length,';
 const returnReplacement = '      clipped_controls: clipped,\n      scroll_lane_controls: scrollLaneControls,\n      workspace_tab_count: tabs.length,';
+const capsuleConfirmationTarget = "  await waitForText(page, '#capsuleStatus', /Encrypted copy exported/);";
+const capsuleConfirmationReplacement = "  await waitForText(page, '#capsuleStatus', /(?:return-ready\\s+)?encrypted copy exported/i);";
 
 const custodyHelperTarget = 'async function staleReleaseAssay(page) {';
 const custodyHelperReplacement = `async function bindSyntheticCustody(page) {
@@ -340,12 +342,13 @@ const source = sourceOnDisk.replace(/\r\n/g, '\n');
 let runtime = replaceExactlyOnce(source, hushTarget, hushReplacement, 'declared Hush selection');
 runtime = replaceExactlyOnce(runtime, layoutTarget, layoutReplacement, 'mobile scroll-lane classification');
 runtime = replaceExactlyOnce(runtime, returnTarget, returnReplacement, 'layout receipt return');
+runtime = replaceExactlyOnce(runtime, capsuleConfirmationTarget, capsuleConfirmationReplacement, 'return-ready Capsule confirmation');
 runtime = replaceExactlyOnce(runtime, custodyHelperTarget, custodyHelperReplacement, 'synthetic custody and release helpers');
 runtime = replaceExactlyOnce(runtime, custodyBindingTarget, custodyBindingReplacement, 'pre-custody hold and custody binding');
 runtime = replaceExactlyOnce(runtime, routeReportTarget, routeReportReplacement, 'custody-aware Route Memory receipt');
 runtime = replaceExactlyOnce(runtime, releaseBindingTarget, releaseBindingReplacement, 'release-eligible continuity fixture');
 
-if (runtime === source || !runtime.includes('selectedProviderExcerpt') || !runtime.includes('scroll_lane_controls') || !runtime.includes('bindSyntheticCustody') || !runtime.includes('bindSyntheticRelease') || !runtime.includes('HELD_CASE_BOUND_REQUIRED') || !runtime.includes('current_release_binding') || !runtime.includes('compileReadinessReceipt') || !runtime.includes('computeReceiptDigest')) {
+if (runtime === source || !runtime.includes('selectedProviderExcerpt') || !runtime.includes('scroll_lane_controls') || !runtime.includes('bindSyntheticCustody') || !runtime.includes('bindSyntheticRelease') || !runtime.includes('HELD_CASE_BOUND_REQUIRED') || !runtime.includes('current_release_binding') || !runtime.includes('compileReadinessReceipt') || !runtime.includes('computeReceiptDigest') || !runtime.includes('return-ready\\s+')) {
   throw new Error('Fixture runner did not materialize every declared runtime seam.');
 }
 
@@ -365,6 +368,7 @@ await fs.writeFile(manifestPath, `${JSON.stringify({
   runtime_transformations: [
     'DECLARE_SELECTED_EXCERPT_AFTER_UNKEPT_DRAFT_RELOAD',
     'CLASSIFY_INTENTIONAL_HORIZONTAL_SCROLL_LANES_SEPARATELY_FROM_CLIPPING',
+    'ACCEPT_RETURN_READY_CAPSULE_CONFIRMATION_WITHOUT_WEAKENING_EXPORT_GATES',
     'PROVE_PRE_CUSTODY_ROUTE_HOLD_AND_BIND_CANONICAL_SYNTHETIC_LOCAL_CUSTODY_ROOT',
     'BIND_VERIFIED_SYNTHETIC_LOCAL_DRAFT_REVIEW_RELEASE_BEFORE_CONTINUITY'
   ],
