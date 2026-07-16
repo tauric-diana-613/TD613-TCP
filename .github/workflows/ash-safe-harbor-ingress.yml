@@ -10,7 +10,7 @@ on:
       - "app/safe-harbor/app/safe-harbor-housekeeping*.js"
       - "app/dome-world/ash-safe-harbor-ingress.js"
       - "app/dome-world/ash-keep.js"
-      - "app/dome-world/schemas/ash-safe-harbor-ingress-v01.schema.json"
+      - "app/dome-world/schemas/ash-safe-harbor-*.schema.json"
       - "tests/ash-safe-harbor-ingress*.test.mjs"
       - "docs/ASH_KEEP_STRETCH9_CLOSURE_RECEIPT.md"
       - "docs/ASH_KEEP_BUILDOUT_LEDGER.md"
@@ -26,7 +26,7 @@ on:
       - "app/safe-harbor/app/safe-harbor-housekeeping*.js"
       - "app/dome-world/ash-safe-harbor-ingress.js"
       - "app/dome-world/ash-keep.js"
-      - "app/dome-world/schemas/ash-safe-harbor-ingress-v01.schema.json"
+      - "app/dome-world/schemas/ash-safe-harbor-*.schema.json"
       - "tests/ash-safe-harbor-ingress*.test.mjs"
       - "docs/ASH_KEEP_STRETCH9_CLOSURE_RECEIPT.md"
       - "docs/ASH_KEEP_BUILDOUT_LEDGER.md"
@@ -115,7 +115,7 @@ jobs:
           path: |
             ash-safe-harbor-ingress.log
             ash-keep-ui.log
-            app/dome-world/schemas/ash-safe-harbor-ingress-v01.schema.json
+            app/dome-world/schemas/ash-safe-harbor-*.schema.json
             artifacts/ash-safe-harbor-ingress/
           if-no-files-found: warn
           retention-days: 30
