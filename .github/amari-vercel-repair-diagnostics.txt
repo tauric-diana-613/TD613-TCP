@@ -1,0 +1,92 @@
+Vercel function budget repaired to 11 deployable /api files.
+
+===== tests/vercel-deploy-hygiene.test.mjs =====
+node:internal/modules/run_main:123
+    triggerUncaughtException(
+    ^
+
+AssertionError [ERR_ASSERTION]: deployed Vercel function operating budget exceeded: 13/11 — ash-local-commitment-guard.py, ash-local-commitment.py, dome-world-engine-guard.py, dome-world-engine.py, dome-world-shell.js, flight-html.js, gemini-readiness.js, hush-generate-quality.js, hush-generate-review-map-guard.js, hush-generate-strict.js, hush-strict-receipt-meta.js, khonapolit.js, marrowline.js
+    at file:///home/runner/work/TD613-TCP/TD613-TCP/tests/vercel-deploy-hygiene.test.mjs:51:8
+    at ModuleJob.run (node:internal/modules/esm/module_job:343:25)
+    at async onImport.tracePromise.__proto__ (node:internal/modules/esm/loader:681:26)
+    at async asyncRunEntryPointWithESMLoader (node:internal/modules/run_main:117:5) {
+  generatedMessage: false,
+  code: 'ERR_ASSERTION',
+  actual: false,
+  expected: true,
+  operator: '==',
+  diff: 'simple'
+}
+
+Node.js v22.23.1
+exit_status=1
+
+===== tests/gemini-quality-routing-vercel.test.mjs =====
+gemini-quality-routing-vercel.test.mjs passed
+exit_status=0
+
+===== tests/gemini-model-policy.test.mjs =====
+gemini-model-policy.test.mjs passed
+exit_status=0
+
+===== tests/hush-gemini-quality-router.test.mjs =====
+node:internal/modules/run_main:123
+    triggerUncaughtException(
+    ^
+
+AssertionError [ERR_ASSERTION]: The input did not match the regular expression /resolveGeminiModelPlan\(\{ task: 'hush-transform'/. Input:
+
+"export { default } from '../server/hush-generate-quality.js';\n" +
+  "export * from '../server/hush-generate-quality.js';\n"
+
+    at file:///home/runner/work/TD613-TCP/TD613-TCP/tests/hush-gemini-quality-router.test.mjs:7:8
+    at ModuleJob.run (node:internal/modules/esm/module_job:343:25)
+    at async onImport.tracePromise.__proto__ (node:internal/modules/esm/loader:681:26)
+    at async asyncRunEntryPointWithESMLoader (node:internal/modules/run_main:117:5) {
+  generatedMessage: true,
+  code: 'ERR_ASSERTION',
+  actual: "export { default } from '../server/hush-generate-quality.js';\n" +
+    "export * from '../server/hush-generate-quality.js';\n",
+  expected: /resolveGeminiModelPlan\(\{ task: 'hush-transform'/,
+  operator: 'match',
+  diff: 'simple'
+}
+
+Node.js v22.23.1
+exit_status=1
+
+===== tests/khonapolit-gemini-quality-router.test.mjs =====
+khonapolit-gemini-quality-router.test.mjs passed
+exit_status=0
+
+===== tests/hush-backend-prompt-detox.test.mjs =====
+Hush backend prompt detox: PASS
+exit_status=0
+
+===== tests/hush-strict-provider-integrity.test.mjs =====
+hush strict provider mask-anatomy and literal-integrity tests passed
+exit_status=0
+
+===== tests/hush-phase34-expressive-generation.test.mjs =====
+node:fs:440
+    return binding.readFileUtf8(path, stringToFlags(options.flag));
+                   ^
+
+Error: ENOENT: no such file or directory, open 'api/hush-generate.js'
+    at Object.readFileSync (node:fs:440:20)
+    at file:///home/runner/work/TD613-TCP/TD613-TCP/tests/hush-phase34-expressive-generation.test.mjs:141:18
+    at ModuleJob.run (node:internal/modules/esm/module_job:343:25)
+    at async onImport.tracePromise.__proto__ (node:internal/modules/esm/loader:681:26)
+    at async asyncRunEntryPointWithESMLoader (node:internal/modules/run_main:117:5) {
+  errno: -2,
+  code: 'ENOENT',
+  syscall: 'open',
+  path: 'api/hush-generate.js'
+}
+
+Node.js v22.23.1
+exit_status=1
+
+===== tests/khonapolit-api-contract.test.mjs =====
+khonapolit-api-contract: Aperture v3 request, structured relay, receipt, and operator-open seal contract ok
+exit_status=0
