@@ -1,0 +1,45 @@
+name: Stretch 4 Closure Contract Diagnostic
+
+on:
+  pull_request:
+    paths:
+      - "docs/ASH_KEEP_BUILDOUT_LEDGER.md"
+      - "ROADMAP.md"
+      - "docs/ASH_KEEP_HUSH_INTERVENTION_RECEIPT.md"
+      - "tests/ash-keep-production-closure-contract.test.mjs"
+      - "tests/ash-lifecycle-production-contract.test.mjs"
+      - ".github/workflows/stretch4-closure-contract-diagnostic.yml"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  retain-contract-output:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+      - name: Run and retain closure contracts
+        shell: bash
+        run: |
+          set +e
+          mkdir -p artifacts/stretch4-closure-contract-diagnostic
+          node tests/ash-keep-production-closure-contract.test.mjs > artifacts/stretch4-closure-contract-diagnostic/ash-keep-production-closure-contract.log 2>&1
+          keep_status=$?
+          node tests/ash-lifecycle-production-contract.test.mjs > artifacts/stretch4-closure-contract-diagnostic/ash-lifecycle-production-contract.log 2>&1
+          lifecycle_status=$?
+          cat artifacts/stretch4-closure-contract-diagnostic/ash-keep-production-closure-contract.log
+          cat artifacts/stretch4-closure-contract-diagnostic/ash-lifecycle-production-contract.log
+          printf '{"keep_status":%s,"lifecycle_status":%s}\n' "$keep_status" "$lifecycle_status" > artifacts/stretch4-closure-contract-diagnostic/status.json
+          exit $(( keep_status != 0 || lifecycle_status != 0 ))
+      - name: Preserve exact contract diagnostics
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: stretch4-closure-contract-diagnostic
+          path: artifacts/stretch4-closure-contract-diagnostic/
+          if-no-files-found: error
+          retention-days: 7
