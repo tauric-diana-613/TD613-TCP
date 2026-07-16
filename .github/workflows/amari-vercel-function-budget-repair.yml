@@ -1,0 +1,50 @@
+name: Amari one-shot Vercel function budget repair
+
+on:
+  push:
+    branches:
+      - amari/vercel-11-function-budget
+
+permissions:
+  contents: write
+
+jobs:
+  repair:
+    if: github.actor != 'github-actions[bot]'
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: amari/vercel-11-function-budget
+          fetch-depth: 0
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+      - name: Install dependencies without lifecycle hooks
+        run: npm ci --ignore-scripts
+      - name: Apply 11-plus-1 function-budget repair
+        run: node scripts/repair-vercel-function-budget.mjs
+      - name: Validate deployment budget and route consolidation
+        run: |
+          node tests/vercel-deploy-hygiene.test.mjs
+          node tests/gemini-quality-routing-vercel.test.mjs
+          node tests/gemini-model-policy.test.mjs
+          node tests/hush-gemini-quality-router.test.mjs
+          node tests/khonapolit-gemini-quality-router.test.mjs
+          node tests/hush-backend-prompt-detox.test.mjs
+          node tests/hush-strict-provider-integrity.test.mjs
+          node tests/hush-phase34-expressive-generation.test.mjs
+          node tests/khonapolit-api-contract.test.mjs
+      - name: Remove one-shot machinery
+        run: |
+          rm -f scripts/repair-vercel-function-budget.mjs
+          rm -f .github/workflows/amari-vercel-function-budget-repair.yml
+      - name: Commit repaired deployment surface
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add -A
+          git commit -m "Restore Vercel 11-plus-1 function budget"
+          git push origin HEAD:amari/vercel-11-function-budget
