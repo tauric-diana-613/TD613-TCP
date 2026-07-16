@@ -81,7 +81,7 @@ runtime run/artifact: 29514528199 / 8382058122
 constitution run/artifact: 29514528261 / 8382057487
 lifecycle run/artifact: 29514548484 / 8382101606
 Return run/artifact: 29514528271 / 8382106456
-Vercel release witness: SUCCESS
+Vercel automatic aftercare status: SUCCESS (not a strategic release witness)
 canonical body rewritten: false
 canonical body decomposed: false
 production browser observation: NOT_CLAIMED
