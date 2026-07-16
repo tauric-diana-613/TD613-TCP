@@ -1,0 +1,42 @@
+name: Aperture Composition Inherited Diagnostic
+
+on:
+  pull_request:
+    paths:
+      - "tests/aperture-v31-compatibility.test.mjs"
+      - "tests/aperture-phase4-bridge.test.mjs"
+      - "tests/release-manifest.test.mjs"
+      - "app/aperture/**"
+      - "app/engine/aperture-composition.js"
+      - ".github/workflows/aperture-composition-inherited-diagnostic.yml"
+
+permissions:
+  contents: read
+
+jobs:
+  v31-compatibility:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+      - run: node tests/aperture-v31-compatibility.test.mjs
+
+  phase4-bridge:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+      - run: node tests/aperture-phase4-bridge.test.mjs
+
+  hush-release-manifest:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+      - run: node tests/release-manifest.test.mjs
