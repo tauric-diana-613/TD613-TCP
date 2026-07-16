@@ -7,6 +7,7 @@ const runner = read('scripts/run-ash-keep-production-probe.mjs');
 const lifecycleRunner = read('scripts/ash-lifecycle-production-probe.mjs');
 const lifecycleBase = read('scripts/ash-lifecycle-production-probe-base.mjs');
 const convergenceProbe = read('scripts/ash-constitutional-convergence-probe.mjs');
+const convergenceRunner = read('scripts/run-ash-constitutional-convergence-probe.mjs');
 const lifecycleProbe = `${lifecycleRunner}\n${lifecycleBase}`;
 const publisher = read('scripts/publish-ash-keep-observer-status.mjs');
 const postureVerifier = read('scripts/assert-ash-keep-release-posture.mjs');
@@ -30,8 +31,15 @@ for (const token of [
 ]) assert.ok(runner.includes(token), `Core fixture runner omitted ${token}`);
 
 for (const token of [
+  'ash-constitutional-convergence-probe.runtime.mjs', 'expected one case-selection seam',
+  "select.dispatchEvent(new Event('change', { bubbles: true }))", 'remove?.disabled !== false'
+]) assert.ok(convergenceRunner.includes(token), `Convergence runner omitted ${token}`);
+assert.match(convergenceRunner, /pathToFileURL/);
+
+for (const token of [
   "new Set(['pending', 'success', 'failure', 'error'])", "required('GITHUB_TOKEN')", "required('TD613_OBSERVED_COMMIT')",
-  'TD613_OBSERVER_STATUS_RECEIPT_PATH', 'status_id: result.id', 'receipt_sha256', 'promotion_authorized: false'
+  'TD613_OBSERVER_STATUS_RECEIPT_PATH', 'status_id: result.id', 'receipt_sha256', 'promotion_authorized: false',
+  'Ash Choir Calibration Validation'
 ]) assert.ok(publisher.includes(token), `Observer publisher omitted ${token}`);
 assert.doesNotMatch(publisher, /release\.json|productionStatus|IMPLEMENTED_PRODUCTION_DEMONSTRATED/);
 
@@ -53,7 +61,8 @@ const deployedJob = workflow.split('  deployed-observation:')[1] || '';
 for (const token of [
   'Ash Keep Production Closure', 'workflow_dispatch', 'workflow_run', 'workflows: ["Test and deploy static app"]', 'statuses: write',
   'tests/ash-keep-production-closure-contract.test.mjs', 'tests/ash-keep-production-promotion-gate.test.mjs',
-  'scripts/ash-keep-production-probe.mjs', 'scripts/run-ash-keep-production-probe.mjs', 'ash-keep-production-closure-evidence'
+  'scripts/ash-keep-production-probe.mjs', 'scripts/run-ash-keep-production-probe.mjs',
+  'scripts/run-ash-constitutional-convergence-probe.mjs', 'ash-keep-production-closure-evidence'
 ]) assert.ok(workflow.includes(token), `Closure workflow omitted ${token}`);
 for (const token of [
   'td613.ash.constitutional-convergence-observation/v0.1', 'promotion_authorized: false',
@@ -63,11 +72,11 @@ for (const token of [
 assert.match(localJob, /Run bounded local core closure observation/);
 assert.match(localJob, /run-ash-keep-production-probe\.mjs/);
 assert.match(localJob, /Run constitutional convergence preview/);
-assert.match(localJob, /ash-constitutional-convergence-probe\.mjs/);
+assert.match(localJob, /run-ash-constitutional-convergence-probe\.mjs/);
 assert.match(deployedJob, /Ash Lifecycle Deployed Observation/);
 assert.match(deployedJob, /ash-lifecycle-production-probe\.mjs/);
 assert.match(deployedJob, /Observe deployed constitutional convergence without promotion/);
-assert.match(deployedJob, /ash-constitutional-convergence-probe\.mjs/);
+assert.match(deployedJob, /run-ash-constitutional-convergence-probe\.mjs/);
 assert.doesNotMatch(deployedJob, /run-ash-keep-production-probe\.mjs/);
 assert.match(lifecycleRunner, /ash-lifecycle-production-probe-base\.mjs/);
 assert.match(lifecycleRunner, /SYNTHETIC_DRAFT/);
