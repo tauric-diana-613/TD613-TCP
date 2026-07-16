@@ -1,0 +1,101 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "td613.aperture.composition-manifest/v0.1",
+  "title": "TD613 Aperture Composition Manifest v0.1",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema",
+    "version",
+    "aperture_version",
+    "aperture_schema",
+    "role",
+    "canonical_body",
+    "public_shim",
+    "components",
+    "ready_event",
+    "held_event",
+    "boundaries"
+  ],
+  "properties": {
+    "schema": { "const": "td613.aperture.composition-manifest/v0.1" },
+    "version": { "const": "v0.1" },
+    "aperture_version": { "const": "v3.1-alpha" },
+    "aperture_schema": { "const": "td613-aperture/v3.1-alpha" },
+    "role": { "const": "explicit-composition-for-stable-public-shim" },
+    "canonical_body": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["id", "source", "role", "mutated_by_composer"],
+      "properties": {
+        "id": { "const": "canonical-body" },
+        "source": { "const": "./tool.html" },
+        "role": { "const": "canonical-instrument-body" },
+        "mutated_by_composer": { "const": false }
+      }
+    },
+    "public_shim": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["source", "bootstrap", "role"],
+      "properties": {
+        "source": { "const": "./index.html" },
+        "bootstrap": { "const": "./bootstrap.js" },
+        "role": { "const": "stable-public-shim" }
+      }
+    },
+    "components": {
+      "type": "array",
+      "minItems": 4,
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["id", "order", "module", "namespace", "depends_on", "compatibility_alias", "role"],
+        "properties": {
+          "id": { "type": "string", "minLength": 1 },
+          "order": { "type": "integer", "minimum": 1 },
+          "module": { "type": "string", "pattern": "^\\.\\.?/" },
+          "namespace": { "type": "string", "pattern": "^TD613_" },
+          "depends_on": { "type": "array", "items": { "type": "string" }, "uniqueItems": true },
+          "compatibility_alias": { "type": "boolean" },
+          "ready_event": { "type": "string" },
+          "role": { "type": "string", "minLength": 1 }
+        }
+      }
+    },
+    "ready_event": { "const": "td613:aperture-composition-ready" },
+    "held_event": { "const": "td613:aperture-composition-held" },
+    "boundaries": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "network_called",
+        "storage_mutated",
+        "provider_execution",
+        "reader_execution",
+        "release_authority",
+        "recipient_transport",
+        "cinder_action",
+        "automatic_ash_action",
+        "automatic_hold",
+        "canonical_body_rewritten",
+        "compatibility_aliases_are_lineage_only",
+        "operator_closure_required"
+      ],
+      "properties": {
+        "network_called": { "const": false },
+        "storage_mutated": { "const": false },
+        "provider_execution": { "const": false },
+        "reader_execution": { "const": false },
+        "release_authority": { "const": false },
+        "recipient_transport": { "const": false },
+        "cinder_action": { "const": false },
+        "automatic_ash_action": { "const": false },
+        "automatic_hold": { "const": false },
+        "canonical_body_rewritten": { "const": false },
+        "compatibility_aliases_are_lineage_only": { "const": true },
+        "operator_closure_required": { "const": true }
+      }
+    }
+  }
+}
