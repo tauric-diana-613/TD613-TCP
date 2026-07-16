@@ -13,6 +13,7 @@ const ledger = read('docs/ASH_KEEP_BUILDOUT_LEDGER.md');
 const roadmap = read('ROADMAP.md');
 const closure = read('docs/APERTURE_COMPOSITION_CLOSURE_RECEIPT.md');
 const stretch6 = read('docs/ASH_KEEP_STRETCH6_CLOSURE_RECEIPT.md');
+const stretch7 = read('docs/ASH_KEEP_STRETCH7_CLOSURE_RECEIPT.md');
 
 for (const marker of [
   'Ash Lifecycle Deployed Observation',
@@ -51,15 +52,19 @@ for (const token of [
   'lifecycle maturity promotion ≠ transport authorization'
 ]) assert.ok(receipt.includes(token), `Lifecycle receipt omitted ${token}`);
 
-assert.match(ledger, /component maturity after Stretch 6 closure = 284 \/ 375/);
+assert.match(ledger, /component maturity after Stretch 7 closure = 290 \/ 375/);
 assert.match(ledger, /Stretch 5 · Aperture Composition Renovation Before Choir UI[\s\S]*CLOSED/);
 assert.match(ledger, /Stretch 6 · Higher-Order Interference[\s\S]*CLOSED \/ IMPLEMENTED_VALIDATION_GATED \/ EVIDENCE_BOUNDED/);
+assert.match(ledger, /Stretch 7 · Ordered Route-Sequence Recovery[\s\S]*CLOSED \/ IMPLEMENTED_VALIDATION_GATED \/ EVIDENCE_BOUNDED/);
 assert.match(roadmap, /Stretch 5 · Aperture composition renovation before Choir UI — CLOSED/);
 assert.match(roadmap, /Stretch 6 · Higher-order interference — CLOSED/);
-assert.match(roadmap, /Ordered route-sequence recovery — BLOCKED \/ NOT AUTHORIZED/);
+assert.match(roadmap, /Stretch 7 · Ordered route-sequence recovery — CLOSED/);
+assert.match(roadmap, /Temporal and delayed-disclosure assays — BLOCKED \/ NOT AUTHORIZED/);
 assert.match(stretch6, /State: `CLOSED \/ IMPLEMENTED_VALIDATION_GATED \/ EVIDENCE_BOUNDED`/);
 assert.match(stretch6, /new serverless function = false/);
-assert.match(stretch6, /Stretch 7 authorization = false/);
+assert.match(stretch7, /State: `CLOSED \/ IMPLEMENTED_VALIDATION_GATED \/ EVIDENCE_BOUNDED`/);
+assert.match(stretch7, /new serverless function = false/);
+assert.match(stretch7, /Stretch 8 authorization = false/);
 assert.match(closure, /lifecycle_run: 29514548484/);
 assert.match(closure, /deployment_authorizes_transport: false/);
 assert.match(closure, /Stretch_6_authorized: false/);
