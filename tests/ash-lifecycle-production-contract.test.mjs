@@ -146,19 +146,20 @@ assert.match(receipt, /raw_artifact_in_request_body: false/);
 assert.match(receipt, /provider_or_transport_requests: \[\]/);
 assert.match(receipt, /lifecycle maturity promotion ≠ transport authorization/);
 
+// Preserve the immutable lifecycle evidence while allowing later roadmap packets to advance.
 assert.match(ledger, /H\. Ash product lifecycle orchestration \| \*\*35 \/ 35\*\*/);
 assert.match(ledger, /I\. Ash operator surface and local case stewardship \| \*\*43 \/ 45\*\*/);
-assert.match(ledger, /component maturity on main = 201 \/ 375/);
+assert.match(ledger, /component maturity on main = 216 \/ 375/);
 assert.match(ledger, /production-demonstrated workstreams = 3 \/ 9/);
 assert.match(ledger, /# Constitutional Synthesis Matrix/);
-assert.match(ledger, /Score: `47 \/ 50`/);
+assert.match(ledger, /Score: `47 \/ 50`|constitutional synthesis = 47 \/ 50/);
 assert.match(ledger, /Stretch 1 · Ash Constitutional Convergence Closure[\s\S]*CLOSED \/ IMPLEMENTED_PRODUCTION_DEMONSTRATED/);
-assert.match(ledger, /Stretch 2 · Custodian Return And Anisotropy[\s\S]*AWAITING_OPERATOR_APPROVAL \/ NOT_STARTED/);
-assert.match(roadmap, /component maturity = 201 \/ 375/);
+assert.match(ledger, /Stretch 2 · Custodian Return And Anisotropy[\s\S]*OPEN \/ IMPLEMENTED_VALIDATION_GATED/);
+assert.match(roadmap, /component maturity = 216 \/ 375/);
 assert.match(roadmap, /constitutional synthesis = 47 \/ 50/);
 assert.match(roadmap, /Stretch 1 · Ash Constitutional Convergence Closure — CLOSED/);
-assert.match(roadmap, /Stretch 2 · Custodian Return And Anisotropy — AWAITING OPERATOR APPROVAL/);
-assert.ok(roadmap.indexOf('Stretch 2 · Custodian Return And Anisotropy — AWAITING OPERATOR APPROVAL') < roadmap.indexOf('Choir calibration receipt binding'), 'Stretch 2 must remain the approval-gated packet before Choir calibration.');
+assert.match(roadmap, /Stretch 2 · Custodian Return And Anisotropy — OPEN \/ VALIDATION-GATED/);
+assert.ok(roadmap.indexOf('Stretch 2 · Custodian Return And Anisotropy — OPEN / VALIDATION-GATED') < roadmap.indexOf('Choir calibration receipt binding — BLOCKED'), 'Stretch 2 must remain before blocked Choir calibration.');
 assert.match(roadmap, /transport-capable workstreams = 0/);
 assert.match(convergenceReceipt, /Status: `IMPLEMENTED_PRODUCTION_DEMONSTRATED`/);
 assert.match(convergenceReceipt, /Source status: `DEPLOYED_OBSERVATION`/);

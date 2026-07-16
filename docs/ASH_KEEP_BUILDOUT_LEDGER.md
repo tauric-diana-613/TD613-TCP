@@ -4,15 +4,17 @@
 
 Date: `2026-07-15`
 
-Ledger generation: `v1.5 · Stretch 1 constitutional convergence closed`
+Ledger generation: `v1.6 · Stretch 2 validation-gated implementation landed`
 
 Tracked program: Ash unified custodial lifecycle / Ash Keep / operator stewardship / Dome-World threshold / Flow-Core context / Aperture audit / Hush derivatives / Choir Test / anisotropic disclosure
 
 Closed packet: `Stretch 1 · Ash Constitutional Convergence Closure`
 
-Closure posture: `IMPLEMENTED_PRODUCTION_DEMONSTRATED / EVIDENCE_BOUNDED`
+Active packet: `Stretch 2 · Custodian Return And Anisotropy`
 
-Next packet posture: `Stretch 2 · Custodian Return And Anisotropy / AWAITING_OPERATOR_APPROVAL / NOT_STARTED`
+Current posture: `IMPLEMENTED_VALIDATION_GATED / PRODUCTION_CLOSURE_UNEARNED`
+
+Next packet posture: `Stretch 3 · Choir Calibration Receipt Binding / BLOCKED_PENDING_STRETCH_2_CLOSURE_AND_OPERATOR_APPROVAL`
 
 ## Authoritative Stretch 1 Evidence
 
@@ -38,6 +40,75 @@ sha256:38295e36dcdeec0b9a91a4ba44cc39a695004ce96270585788d088b11db3a310
 receipt
 docs/ASH_CONSTITUTIONAL_CONVERGENCE_RECEIPT.md
 ```
+
+## Post-Closure Stretch 1 Aftercare — Visible, Non-Promotional
+
+```text
+current-head aftercare commit
+2c89b70e284562ebb6b842900ae1a1bd0b00f6e6
+
+scope
+bounded save-confirmation presentation stability during repeated lifecycle repaint
+
+maturity movement
+none
+
+Stretch 1 evidence replacement
+none
+
+Stretch 2 authorization
+none
+```
+
+This entry closes the anti-drift omission identified after PR #341. Current-head aftercare remains visible without inheriting the earlier production receipt or manufacturing feature-specific maturity.
+
+## Stretch 2 Landed Implementation Evidence
+
+```text
+landed main commit
+2dc2d1c72a3fdd50094184717906e3d0469e0947
+
+implementation pull request
+#342 · Implement Stretch 2 Custodian Return and Anisotropy
+
+focused validation run
+29468144412 · PASS
+
+TCP smoke run
+29468144399 · PASS
+
+static deployment run
+29468144420 · PASS
+
+Ash lifecycle integration run
+29468144390 · PASS
+```
+
+Landed behavior:
+
+- `td613.ash.custodian-return-receipt/v0.1`;
+- `td613.aperture.anisotropy-receipt/v0.1`;
+- Return inside the existing Save workspace;
+- isolated `td613-ash-return-sandbox` recovery database;
+- authenticated Capsule, Save Point, Case Map, and digest verification before sandbox write;
+- purpose-shaped external Reader projection;
+- componentwise comparison for nodes, relationships, room bridges, source/style linkage, chronology, hypotheses, next actions, and lifecycle state;
+- explicit preservation of null, missing, contradictory, rejected, and unresolved outcomes;
+- explicit prohibition on universal scoring;
+- no live-case mutation, provider call, recipient transport, Cinder action, or lifecycle-rank promotion.
+
+## Stretch 2 Retained Closure Work
+
+Stretch 2 remains open because the implementation plan requires evidence not yet earned:
+
+- full reconstitution of readiness provenance, custody root, Route Memory, lifecycle rank, Rebuild history, derivative history, Reviews, Releases, Save Points, and continuity posture from a return-ready bundle;
+- explicit selected-receipt and custody-root verification;
+- wrong-passphrase, tamper, partial-Capsule, stale-receipt, interrupted-import, and replay matrix under the Stretch 2 gate;
+- dedicated desktop, mobile, and reduced-motion interaction proof;
+- deployed synthetic return flight;
+- durable production receipt and operator closure gesture.
+
+No documentation may describe Stretch 2 as closed until those boundaries are directly demonstrated.
 
 ## Governing Maturity Law
 
@@ -70,8 +141,12 @@ release ≠ transport
 component maturity ≠ constitutional synthesis
 constitutional synthesis ≠ production closure
 current-head aftercare ≠ feature-specific production demonstration
+validation-gated return ≠ production-closed return
+local reconstitution ≠ total restoration
+external projection ≠ Capsule disclosure
+anisotropy comparison ≠ universal score
 production maturity ≠ automatic Cinder
-Stretch 1 closure ≠ Stretch 2 authorization
+Stretch 2 implementation ≠ Stretch 3 authorization
 ```
 
 # Current Component Maturity Scorecard
@@ -81,7 +156,7 @@ Stretch 1 closure ≠ Stretch 2 authorization
 | A. Ash Keep v1.0 production closure | **54 / 55** | **98%** | `IMPLEMENTED_PRODUCTION_DEMONSTRATED`; external-provider production call remains unobserved |
 | B. Choir Test / Moiré program | **36 / 70** | **51%** | four validation-gated instruments |
 | C. Hush intervention ensemble | **7 / 35** | **20%** | `SCAFFOLDED` |
-| D. Custodian Return / Anisotropy | **7 / 35** | **20%** | `SCAFFOLDED`; Stretch 2 not started |
+| D. Custodian Return / Anisotropy | **22 / 35** | **63%** | `IMPLEMENTED_VALIDATION_GATED`; production closure retained |
 | E. Aperture wiring renovation | **6 / 25** | **24%** | `DESIGNED_ONLY / SCAFFOLDED` |
 | F. Safe Harbor → Ash adapter | **6 / 30** | **20%** | `SCAFFOLDED` |
 | G. Destination-bound transport | **7 / 45** | **16%** | `HELD / SCAFFOLDED` |
@@ -89,30 +164,26 @@ Stretch 1 closure ≠ Stretch 2 authorization
 | I. Ash operator surface and local case stewardship | **43 / 45** | **96%** | `IMPLEMENTED_PRODUCTION_DEMONSTRATED / TWO POINTS RETAINED` |
 
 ```text
-component maturity on main = 201 / 375 ≈ 54%
+component maturity on main = 216 / 375 ≈ 58%
+constitutional synthesis = 47 / 50
 production-demonstrated workstreams = 3 / 9
-validation-gated Choir instruments = 4
+validation-gated workstreams = 2 / 9
 transport-capable workstreams = 0
 ```
 
-The two retained I points protect two evidence boundaries:
-
-- **I4 remains 4/5:** the deployed route proves saved-case use and immutable state transitions, but it does not independently assay every fingerprint mutation and stale-fingerprint edge.
-- **I7 remains 4/5:** density-aware labels and the Object Registry have focused visual evidence and survived the convergence flight, but the Stretch 1 probe does not replay every bidirectional registry interaction as a feature-specific production assay.
-
-## I Workstream Detail
+### D Workstream Detail
 
 | ID | Buildout | Score | Evidence ruling |
 | --- | --- | ---: | --- |
-| I1 | Canonical Keep route and declared composition | 5 | deployed composition manifest and route readiness |
-| I2 | Boot, return, reopen, and no-reload case entry | 5 | deployed multi-case reopen without page reload |
-| I3 | Save, Close, Select, and explicit Open semantics | 5 | deployed multi-case stewardship sequence |
-| I4 | Case-bundle fingerprint and saved/unsaved posture | 4 | integrated; full fingerprint edge assay retained |
-| I5 | Local Delete, scoped cleanup, interruption recovery | 5 | deployed success plus `DELETE_PARTIAL_HOLD` recovery |
-| I6 | Dedicated mobile composition | 5 | desktop, portrait, landscape, and rotation all zero-overflow |
-| I7 | Density-aware map labels and Object Registry | 4 | validation-rich; dedicated full production interaction retained |
-| I8 | Workspace reviewability separated from action authority | 5 | deployed pre-custody hold plus earlier reviewability observation |
-| I9 | Dedicated deployed constitutional aftercare | 5 | observer run `29458943541` and preserved artifact |
+| D1 | Versioned Return and Anisotropy receipt schemas | 4 | integrated, digest-bound, focused-tested |
+| D2 | Existing Save-workspace Return surface | 4 | integrated and static-deployment validated |
+| D3 | Isolated sandbox and live-case non-mutation | 4 | integrated and boundary-tested |
+| D4 | Capsule, Save Point, Case Map, and digest verification | 3 | functional; selected-receipt/custody-root matrix retained |
+| D5 | Local versus purpose-shaped external Reader comparison | 4 | integrated and focused-tested |
+| D6 | Componentwise outcomes with no universal score | 4 | integrated and receipt-tested |
+| D7 | Full reconstitution, failure matrix, and deployed synthetic return | 1 | design and partial primitives only |
+
+The increase from `7 / 35` to `22 / 35` records directly implemented and validated behavior. It withholds all production-demonstration credit.
 
 # Constitutional Synthesis Matrix
 
@@ -120,7 +191,7 @@ Status: `IMPLEMENTED_PRODUCTION_DEMONSTRATED / EVIDENCE_BOUNDED`
 
 Score: `47 / 50`
 
-This matrix measures whether independently developed organs participate in one governed authority spine. It is orthogonal to `201 / 375` and must never be added to it.
+The synthesis score remains unchanged. Stretch 2 participates through the existing authority spine, but validation-gated return work cannot promote a production-demonstrated synthesis dimension by proximity.
 
 | ID | Synthesis dimension | Score | Ruling |
 | --- | --- | ---: | --- |
@@ -131,17 +202,9 @@ This matrix measures whether independently developed organs participate in one g
 | J5 | Eleven-layer runtime composition operates coherently | 5 | deployed manifest and responsive flight |
 | J6 | Aperture participates without manufacturing lifecycle rank | 5 | pre-rank hold and stale-audit invalidation observed |
 | J7 | Flow-Core bounded context participation | 3 | first-class context reconstruction remains incomplete |
-| J8 | Hush candidate participation under current Rebuild authority | 4 | candidate permission observed; full intervention receipt remains future work |
+| J8 | Hush candidate participation under current Rebuild authority | 4 | full intervention receipt remains future work |
 | J9 | Save, close, select, open, restore, and continue under one constitutional state | 5 | deployed multi-case circuit |
 | J10 | Eventing, contention, deletion recovery, and compatibility audit | 5 | deployed cross-tab serialization, recovery, and dry audit |
-
-```text
-component maturity = how mature the organs are
-constitutional synthesis = whether the organs share governed state and authority
-production closure = whether the declared route was directly observed and sealed
-```
-
-The retained synthesis points are not Stretch 1 failures. They preserve future component work: first-class Flow-Core reconstitution and a complete lifecycle-bound Hush intervention receipt.
 
 ## Arithmetic Lineage
 
@@ -151,23 +214,8 @@ The retained synthesis points are not Stretch 1 failures. They preserve future c
 - v1.2: operator stewardship entered independently at `35 / 45`, establishing `193 / 375`.
 - v1.3: J entered as a non-additive `40 / 50` synthesis overlay.
 - v1.4: Stretch 1 remained validation-gated with deployed evidence pending.
-- v1.5: deployed Stretch 1 evidence moved I from `35 / 45` to `43 / 45`, component maturity from `193 / 375` to `201 / 375`, production-demonstrated workstreams from `2 / 9` to `3 / 9`, and synthesis from `40 / 50` to `47 / 50`.
-
-## Historical v1.4 Baseline — Preserved, Not Current
-
-The following values remain as explicit arithmetic provenance for contract compatibility. They are no longer the current scorecard.
-
-| Workstream | Historical v1.4 value |
-| --- | ---: |
-| I. Ash operator surface and local case stewardship | **35 / 45** |
-
-```text
-component maturity on main = 193 / 375
-production-demonstrated workstreams = 2 / 9
-Score: `40 / 50`
-current-head aftercare: PASS · run 29441389808
-historical route: constitutional convergence closure [NEXT]
-```
+- v1.5: Stretch 1 evidence moved component maturity to `201 / 375` and synthesis to `47 / 50`.
+- v1.6: Stretch 2 validation-gated implementation moved D from `7 / 35` to `22 / 35` and component maturity to `216 / 375`; production-demonstrated workstreams and synthesis remained unchanged.
 
 # Constitutional Organ Map And Authority Ceilings
 
@@ -176,61 +224,39 @@ Dome-World = territorial and threshold environment
 Quick Scan = pre-persistence readiness observation
 Ash Custody = root binding and evidentiary transduction
 Ash Keep = state-bearing constitutional body
+Custodian Return = isolated authorized reconstitution
 Flow-Core = context, provenance, missingness, uncertainty, and abstention
-Aperture = observation, admissibility, audit, and route governance
+Aperture = observation, admissibility, audit, route governance, and anisotropy comparison
 Hush = derivative-production organ
 Choir = external reconstruction-pressure instrumentation
 ```
 
 ```text
-Flow-Core may contextualize and abstain; it may not create custody or action authority.
-Aperture may observe, audit, route, and hold for repair; it may not manufacture lifecycle rank.
-Hush may generate a candidate derivative; it may not release, persist, or transport by itself.
-Ash Keep may hold state and present actions; it may not turn visibility into eligibility.
-The operator alone performs closure gestures.
+Custodian Return may reconstruct inside its sandbox; it may not mutate the live case or declare total restoration.
+Aperture may compare local and external recovery; it may not emit a universal score or manufacture lifecycle rank.
+The external Reader receives a purpose-shaped projection; it may not receive the Capsule, Case Map, room keys, or complete Route Memory.
+The operator alone performs packet closure and authorizes the next stretch.
 ```
 
-# Stretch 1 Closure Ruling
+# Stretch Rulings
 
 ```text
 Stretch 1 · Ash Constitutional Convergence Closure
 CLOSED / IMPLEMENTED_PRODUCTION_DEMONSTRATED
-```
 
-Directly demonstrated:
-
-- canonical eleven-layer composition;
-- per-case Authority Context;
-- exact case-state and stewardship sequence;
-- all nine stale-reference invalidations with history preserved;
-- EventTarget and BroadcastChannel reference routing;
-- Web Locks with waiting IndexedDB lease coordination;
-- deletion inventory, plan, successful local deletion, and interrupted recovery;
-- dry compatibility audit without migration;
-- bounded Flow-Core, Aperture, and Hush authority ceilings;
-- lifecycle and convergence observations without reload dependence;
-- desktop/mobile/rotation reachability;
-- zero unauthorized provider, recipient, Cinder, or transport action.
-
-Observer posture remained `promotion_authorized:false`. This ledger records the separate evidence-only maturity closure after artifact review.
-
-# Stretch 2 Gate
-
-```text
 Stretch 2 · Custodian Return And Anisotropy
-AWAITING_OPERATOR_APPROVAL / NOT_STARTED
+OPEN / IMPLEMENTED_VALIDATION_GATED / PRODUCTION_CLOSURE_UNEARNED
+
+Stretch 3 · Choir Calibration Receipt Binding
+BLOCKED / NOT_AUTHORIZED
 ```
-
-No Stretch 2 schema, sandbox database, Return UI, import route, external-reader comparison, Anisotropy Receipt, production probe, or maturity movement has begun.
-
-The next packet may start only after explicit operator approval.
 
 # Remaining Program Order
 
 ```text
 1. Stretch 1 · Ash Constitutional Convergence Closure [CLOSED]
-2. Stretch 2 · Custodian Return And Anisotropy [AWAITING OPERATOR APPROVAL]
-3. Choir calibration receipt binding
+2. Stretch 2 · Custodian Return And Anisotropy [VALIDATION-GATED / OPEN]
+3. Choir calibration receipt binding [BLOCKED]
 4. Hush vocabulary externalization and lifecycle-bound intervention ensemble
 5. Aperture composition renovation before Choir UI
 6. Higher-order interference
@@ -243,13 +269,15 @@ The next packet may start only after explicit operator approval.
 
 ## Current Red Inventory
 
-Two Marrowline workflows remain red in a separately governed station-test family. Stretch 1 did not modify that jurisdiction and does not treat those failures as Ash evidence in either direction.
+Two Marrowline workflows remain red in a separately governed station-test family. Stretch 2 did not modify that jurisdiction and does not treat those failures as Ash evidence in either direction.
 
 ## Final Ruling
 
-Ash’s constitutional convergence is now directly production-observed and evidence-closed. The project stands at `201 / 375` component maturity and `47 / 50` constitutional synthesis, with three production-demonstrated workstreams and zero transport-capable workstreams.
+Stretch 2 has moved from scaffold to integrated, validation-gated implementation on `main`. The architecture now performs bounded sandbox return and anisotropy comparison without live-case mutation, universal scoring, provider use, recipient transport, or Cinder action.
 
-Stretch 1 is complete. Stretch 2 remains unopened.
+The project stands at `216 / 375` component maturity and `47 / 50` constitutional synthesis, with three production-demonstrated workstreams, two validation-gated workstreams, and zero transport-capable workstreams.
+
+Stretch 2 remains open until its full reconstitution matrix and deployed synthetic return are directly demonstrated and sealed. Stretch 3 remains blocked.
 
 Authored with 𝌋‌
 
