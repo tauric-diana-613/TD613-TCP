@@ -12,9 +12,13 @@
 <meta name="observed-regime" content="PRCS-A">
 <meta name="observed-regime-full" content="Eclipse-Omega PRCS-A">
 <meta name="aperture-version" content="v3.1-alpha">
+<meta name="aperture-composition" content="td613.aperture.composition-manifest/v0.1">
+<meta name="aperture-composition-runtime" content="td613.aperture.composition-runtime/v0.1">
 <meta name="phase4-bridge-contract" content="td613.phase4.reciprocal-bridge/v0.1">
+<meta name="phase4-bridge-module" content="../engine/aperture-v3-reciprocal-bridge.js">
+<meta name="phase4-bridge-ready-event" content="td613:phase4-reciprocal-bridge-ready">
 <meta name="anti-enforcement" content="true">
-<meta name="source-note" content="TD613 Aperture is the counter-tool; version details remain inside the tool body, not the browser tab title.">
+<meta name="source-note" content="TD613 Aperture is the counter-tool; the stable shim composes declared modules around the canonical body without rewriting it.">
 <title>TD613 Aperture</title>
 <style>
   html, body {
@@ -44,23 +48,6 @@
       document.title = 'TD613 Aperture';
     }, { passive: true });
   </script>
-  <script type="module">
-    import { TD613_PHASE4_RECIPROCAL_BRIDGE } from '../engine/aperture-v3-reciprocal-bridge.js';
-    const frame = document.getElementById('td613ApertureTool');
-    const install = () => {
-      try {
-        window.TD613_PHASE4_RECIPROCAL_BRIDGE = TD613_PHASE4_RECIPROCAL_BRIDGE;
-        frame.contentWindow.TD613_PHASE4_RECIPROCAL_BRIDGE = TD613_PHASE4_RECIPROCAL_BRIDGE;
-        frame.contentWindow.dispatchEvent(new frame.contentWindow.CustomEvent(
-          'td613:phase4-reciprocal-bridge-ready',
-          { detail: { schema: TD613_PHASE4_RECIPROCAL_BRIDGE.schema } }
-        ));
-      } catch (error) {
-        console.warn('TD613 Phase IV bridge attachment held:', error);
-      }
-    };
-    frame.addEventListener('load', install, { passive: true });
-    if (frame.contentDocument?.readyState === 'complete') install();
-  </script>
+  <script type="module" src="./bootstrap.js?v=20260716-composition-v01"></script>
 </body>
 </html>

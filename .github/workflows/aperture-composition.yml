@@ -1,0 +1,152 @@
+name: Aperture Composition
+
+on:
+  pull_request:
+    paths:
+      - "app/aperture/index.html"
+      - "app/aperture/bootstrap.js"
+      - "app/aperture/composition.json"
+      - "app/aperture/composition.schema.json"
+      - "app/aperture/release.json"
+      - "app/aperture/release.js"
+      - "app/engine/aperture-composition.js"
+      - "scripts/lib/aperture-sync-lane.mjs"
+      - "scripts/publish-ash-keep-observer-status.mjs"
+      - "tests/aperture-composition/**"
+      - "tests/aperture-sync-lane.test.mjs"
+      - "docs/TD613_APERTURE.md"
+      - "docs/ASH_KEEP_BUILDOUT_LEDGER.md"
+      - "ROADMAP.md"
+      - ".github/workflows/aperture-composition.yml"
+  push:
+    branches: [main]
+    paths:
+      - "app/aperture/index.html"
+      - "app/aperture/bootstrap.js"
+      - "app/aperture/composition.json"
+      - "app/aperture/composition.schema.json"
+      - "app/aperture/release.json"
+      - "app/aperture/release.js"
+      - "app/engine/aperture-composition.js"
+      - "scripts/lib/aperture-sync-lane.mjs"
+      - "scripts/publish-ash-keep-observer-status.mjs"
+      - "tests/aperture-composition/**"
+      - "tests/aperture-sync-lane.test.mjs"
+      - "docs/TD613_APERTURE.md"
+      - "docs/ASH_KEEP_BUILDOUT_LEDGER.md"
+      - "ROADMAP.md"
+      - ".github/workflows/aperture-composition.yml"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  statuses: write
+
+concurrency:
+  group: aperture-composition-${{ github.event.pull_request.number || github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  validate-composition:
+    runs-on: ubuntu-latest
+    timeout-minutes: 12
+    env:
+      TD613_OBSERVED_COMMIT: ${{ github.sha }}
+      TD613_OBSERVER_RUN_URL: ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}
+      TD613_OBSERVER_STATUS_CONTEXT: Aperture Composition Validation
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+      - name: Publish composition pending status
+        if: github.event_name == 'push'
+        env:
+          GITHUB_TOKEN: ${{ github.token }}
+          TD613_OBSERVER_STATUS_STATE: pending
+          TD613_OBSERVER_STATUS_DESCRIPTION: Aperture composition validation is running
+          TD613_OBSERVER_STATUS_RECEIPT_PATH: artifacts/aperture-composition/observer-status-pending.json
+        run: node scripts/publish-ash-keep-observer-status.mjs
+      - name: Install dependencies
+        run: npm ci
+      - name: Validate composition syntax
+        run: |
+          node --check app/engine/aperture-composition.js
+          node --check app/aperture/bootstrap.js
+          node --check scripts/publish-ash-keep-observer-status.mjs
+      - name: Validate manifest and schema
+        run: node tests/aperture-composition/manifest.test.mjs
+      - name: Validate ordered runtime installation
+        run: node tests/aperture-composition/runtime.test.mjs
+      - name: Validate receipt and replay
+        run: node tests/aperture-composition/replay.test.mjs
+      - name: Validate stable shim boundary
+        run: node tests/aperture-composition/index.test.mjs
+      - name: Validate release and promotion-lane preservation
+        run: |
+          node tests/aperture-composition/release.test.mjs
+          node tests/aperture-sync-lane.test.mjs
+      - name: Preserve v3.1 and Phase IV contracts
+        run: |
+          node tests/aperture-v31-compatibility.test.mjs
+          node tests/aperture-phase4-bridge.test.mjs
+          node tests/release-manifest.test.mjs
+      - name: Build retained composition evidence
+        if: always()
+        run: |
+          mkdir -p artifacts/aperture-composition
+          {
+            echo "schema=td613.aperture.composition-validation-evidence/v0.1"
+            echo "observed_commit=${GITHUB_SHA}"
+            echo "workflow_run_id=${GITHUB_RUN_ID}"
+            echo "source_status=VALIDATION_GATED"
+            echo "canonical_body_rewritten=false"
+            echo "network_called=false"
+            echo "storage_mutated=false"
+            echo "release_authority=false"
+            echo "recipient_transport=false"
+            echo "cinder_action=false"
+            echo "automatic_ash_action=false"
+            echo "operator_closure_required=true"
+          } > artifacts/aperture-composition/validation-summary.txt
+      - name: Publish composition success status
+        if: success() && github.event_name == 'push'
+        env:
+          GITHUB_TOKEN: ${{ github.token }}
+          TD613_OBSERVER_STATUS_STATE: success
+          TD613_OBSERVER_STATUS_DESCRIPTION: Aperture composition validation passed; canonical body remains unchanged
+          TD613_OBSERVER_STATUS_RECEIPT_PATH: artifacts/aperture-composition/observer-status-success.json
+        run: node scripts/publish-ash-keep-observer-status.mjs
+      - name: Publish composition failure status
+        if: failure() && github.event_name == 'push'
+        env:
+          GITHUB_TOKEN: ${{ github.token }}
+          TD613_OBSERVER_STATUS_STATE: failure
+          TD613_OBSERVER_STATUS_DESCRIPTION: Aperture composition held for repair
+          TD613_OBSERVER_STATUS_RECEIPT_PATH: artifacts/aperture-composition/observer-status-failure.json
+        run: node scripts/publish-ash-keep-observer-status.mjs
+      - name: Preserve composition evidence
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: aperture-composition-validation-evidence
+          path: |
+            app/aperture/index.html
+            app/aperture/bootstrap.js
+            app/aperture/composition.json
+            app/aperture/composition.schema.json
+            app/aperture/release.json
+            app/engine/aperture-composition.js
+            tests/aperture-composition/
+            artifacts/aperture-composition/
+          if-no-files-found: error
+          retention-days: 30
+      - name: Reconcile terminal composition failure status
+        if: failure() && github.event_name == 'push'
+        env:
+          GITHUB_TOKEN: ${{ github.token }}
+          TD613_OBSERVER_STATUS_STATE: failure
+          TD613_OBSERVER_STATUS_DESCRIPTION: Aperture composition validation or evidence preservation failed
+          TD613_OBSERVER_STATUS_RECEIPT_PATH: artifacts/aperture-composition/observer-status-failure-reconciled.json
+        run: node scripts/publish-ash-keep-observer-status.mjs

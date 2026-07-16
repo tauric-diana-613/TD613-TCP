@@ -1,0 +1,73 @@
+{
+  "schema": "td613.aperture.composition-manifest/v0.1",
+  "version": "v0.1",
+  "aperture_version": "v3.1-alpha",
+  "aperture_schema": "td613-aperture/v3.1-alpha",
+  "role": "explicit-composition-for-stable-public-shim",
+  "canonical_body": {
+    "id": "canonical-body",
+    "source": "./tool.html",
+    "role": "canonical-instrument-body",
+    "mutated_by_composer": false
+  },
+  "public_shim": {
+    "source": "./index.html",
+    "bootstrap": "./bootstrap.js",
+    "role": "stable-public-shim"
+  },
+  "components": [
+    {
+      "id": "release-manifest",
+      "order": 10,
+      "module": "./release.js",
+      "namespace": "TD613_APERTURE_RELEASE",
+      "depends_on": ["canonical-body"],
+      "compatibility_alias": false,
+      "role": "release-identity-and-capability-record"
+    },
+    {
+      "id": "task-intent",
+      "order": 20,
+      "module": "../engine/aperture-v3-task-intent.js",
+      "namespace": "TD613_APERTURE_TASK_INTENT",
+      "depends_on": ["release-manifest"],
+      "compatibility_alias": false,
+      "role": "requested-synthesis-and-runtime-materiality-router"
+    },
+    {
+      "id": "v31-compatibility",
+      "order": 30,
+      "module": "../engine/aperture-v31-compatibility.js",
+      "namespace": "TD613_APERTURE_V31_COMPATIBILITY",
+      "depends_on": ["release-manifest", "task-intent"],
+      "compatibility_alias": false,
+      "role": "frozen-v30-receipt-projection"
+    },
+    {
+      "id": "phase4-reciprocal-bridge",
+      "order": 40,
+      "module": "../engine/aperture-v3-reciprocal-bridge.js",
+      "namespace": "TD613_PHASE4_RECIPROCAL_BRIDGE",
+      "depends_on": ["release-manifest", "task-intent", "v31-compatibility"],
+      "compatibility_alias": true,
+      "ready_event": "td613:phase4-reciprocal-bridge-ready",
+      "role": "reciprocal-receipts-without-reciprocal-authority"
+    }
+  ],
+  "ready_event": "td613:aperture-composition-ready",
+  "held_event": "td613:aperture-composition-held",
+  "boundaries": {
+    "network_called": false,
+    "storage_mutated": false,
+    "provider_execution": false,
+    "reader_execution": false,
+    "release_authority": false,
+    "recipient_transport": false,
+    "cinder_action": false,
+    "automatic_ash_action": false,
+    "automatic_hold": false,
+    "canonical_body_rewritten": false,
+    "compatibility_aliases_are_lineage_only": true,
+    "operator_closure_required": true
+  }
+}
