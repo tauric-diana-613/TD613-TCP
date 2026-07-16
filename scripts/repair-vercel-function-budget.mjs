@@ -52,8 +52,19 @@ function insertRewriteBeforeCatchAll(source, destination) {
   else vercel.rewrites.splice(catchAll, 0, entry);
 }
 
+function ensureNoStoreHeader(source) {
+  vercel.headers ||= [];
+  if (vercel.headers.some((entry) => entry.source === source)) return;
+  vercel.headers.push({
+    source,
+    headers: [{ key: 'Cache-Control', value: 'no-store, max-age=0' }]
+  });
+}
+
 insertRewriteBeforeCatchAll('/api/hush-generate-strict-pr124', '/api/hush-generate-strict');
 insertRewriteBeforeCatchAll('/api/khonapolit-quality', '/api/khonapolit');
+ensureNoStoreHeader('/api/hush-generate-strict-pr124');
+ensureNoStoreHeader('/api/khonapolit-quality');
 write('vercel.json', `${JSON.stringify(vercel, null, 2)}\n`);
 
 const replacements = new Map([
