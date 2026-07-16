@@ -15,6 +15,7 @@ const closure = read('docs/APERTURE_COMPOSITION_CLOSURE_RECEIPT.md');
 const stretch6 = read('docs/ASH_KEEP_STRETCH6_CLOSURE_RECEIPT.md');
 const stretch7 = read('docs/ASH_KEEP_STRETCH7_CLOSURE_RECEIPT.md');
 const stretch8 = read('docs/ASH_KEEP_STRETCH8_CLOSURE_RECEIPT.md');
+const stretch9 = read('docs/ASH_KEEP_STRETCH9_CLOSURE_RECEIPT.md');
 
 for (const marker of [
   'Ash Lifecycle Deployed Observation',
@@ -53,18 +54,19 @@ for (const token of [
   'lifecycle maturity promotion ≠ transport authorization'
 ]) assert.ok(receipt.includes(token), `Lifecycle receipt omitted ${token}`);
 
-assert.match(ledger, /component maturity after Stretch 8 closure = 296 \/ 375/);
-assert.match(ledger, /Stretch 6 · Higher-Order Interference[\s\S]*CLOSED \/ IMPLEMENTED_VALIDATION_GATED \/ EVIDENCE_BOUNDED/);
+assert.match(ledger, /component maturity after Stretch 9 closure = 320 \/ 375/);
 assert.match(ledger, /Stretch 7 · Ordered Route-Sequence Recovery[\s\S]*STRATEGIC_DEPLOYMENT_SEALED/);
-assert.match(ledger, /Stretch 8 · Temporal And Delayed-Disclosure Assays[\s\S]*CLOSED \/ IMPLEMENTED_VALIDATION_GATED \/ EVIDENCE_BOUNDED/);
-assert.match(roadmap, /Stretch 7 · Ordered route-sequence recovery — CLOSED/);
+assert.match(ledger, /Stretch 8 · Temporal And Delayed-Disclosure Assays[\s\S]*DEPLOYED_OBSERVATION_SEALED/);
+assert.match(ledger, /Stretch 9 · Safe Harbor → Ash Custody-Root Adapter[\s\S]*CLOSED \/ IMPLEMENTED_VALIDATION_GATED \/ EVIDENCE_BOUNDED/);
 assert.match(roadmap, /Stretch 8 · Temporal and delayed-disclosure assays — CLOSED/);
-assert.match(roadmap, /Safe Harbor → Ash custody-root adapter — CONDITIONALLY AUTHORIZED AFTER SUCCESSFUL STRETCH 8 SEAL/);
+assert.match(roadmap, /Stretch 9 · Safe Harbor → Ash custody-root adapter — CLOSED/);
+assert.match(roadmap, /Independent provenance adapters — BLOCKED \/ NOT AUTHORIZED/);
 assert.match(stretch6, /new serverless function = false/);
 assert.match(stretch7, /new serverless function = false/);
-assert.match(stretch8, /State: `CLOSED \/ IMPLEMENTED_VALIDATION_GATED \/ EVIDENCE_BOUNDED`/);
 assert.match(stretch8, /new serverless function = false/);
-assert.match(stretch8, /Stretch 9 authorization = CONDITIONAL_ON_SUCCESSFUL_STRETCH_8_VERCEL_SEAL/);
+assert.match(stretch9, /State: `CLOSED \/ IMPLEMENTED_VALIDATION_GATED \/ EVIDENCE_BOUNDED`/);
+assert.match(stretch9, /new serverless function = false/);
+assert.match(stretch9, /Stretch 10 authorization = false/);
 assert.match(closure, /lifecycle_run: 29514548484/);
 assert.match(closure, /deployment_authorizes_transport: false/);
 assert.match(closure, /Stretch_6_authorized: false/);
