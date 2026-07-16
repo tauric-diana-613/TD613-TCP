@@ -61,6 +61,12 @@ assert.match(workflow, /ash-custodian-return-closure-contract\.test\.mjs/);
 assert.match(workflow, /ash-custodian-return-production-probe\.mjs/);
 assert.match(workflow, /workflow_run/);
 assert.match(workflow, /Test and deploy static app/);
+assert.match(workflow, /statuses: write/);
+assert.match(workflow, /Ash Custodian Return Deployed Observation/);
+assert.match(workflow, /Publish Return observer pending status/);
+assert.match(workflow, /Publish Return observer success status/);
+assert.match(workflow, /Publish Return observer failure status/);
+assert.match(workflow, /publish-ash-keep-observer-status\.mjs/);
 assert.match(workflow, /promotion_authorized/);
 assert.doesNotMatch(workflow, /IMPLEMENTED_PRODUCTION_DEMONSTRATED/);
 
