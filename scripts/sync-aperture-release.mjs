@@ -49,6 +49,15 @@ await writeText(
   `APERTURE_ROUND_TRIP_RECEIPT_SCHEMA = ${JSON.stringify(release.roundTripReceiptSchema)}\n` +
   `APERTURE_DOME_BRIDGE_POSTURE = ${JSON.stringify(release.bridgePosture)}\n` +
   `APERTURE_COMPATIBILITY_RECEIPT_VERSION = ${JSON.stringify(release.compatibility?.phase4ReceiptSchemaVersion || release.version)}\n` +
+  `APERTURE_COMPOSITION_VERSION = ${JSON.stringify(release.composition?.version || '')}\n` +
+  `APERTURE_COMPOSITION_SCHEMA = ${JSON.stringify(release.composition?.schema || '')}\n` +
+  `APERTURE_COMPOSITION_RUNTIME_SCHEMA = ${JSON.stringify(release.composition?.runtimeSchema || '')}\n` +
+  `APERTURE_COMPOSITION_RECEIPT_SCHEMA = ${JSON.stringify(release.composition?.receiptSchema || '')}\n` +
+  `APERTURE_COMPOSITION_REPLAY_SCHEMA = ${JSON.stringify(release.composition?.replaySchema || '')}\n` +
+  `APERTURE_COMPOSITION_STATUS = ${JSON.stringify(release.composition?.status || 'NOT_INSTALLED')}\n` +
+  `APERTURE_COMPOSITION_CANONICAL_BODY_REWRITTEN = ${release.composition?.canonicalBodyRewritten === true ? 'True' : 'False'}\n` +
+  `APERTURE_COMPOSITION_AUTHORITY_TRANSFER = ${release.composition?.automaticAuthorityTransfer === true ? 'True' : 'False'}\n` +
+  `APERTURE_COMPOSITION_OPERATOR_CLOSURE_REQUIRED = ${release.composition?.operatorClosureRequired === true ? 'True' : 'False'}\n` +
   `APERTURE_OBSERVATORY_STATUS = ${JSON.stringify(release.observatory?.status || 'NOT_INSTALLED')}\n` +
   `APERTURE_TOMOGRAPHY_RECEIPT_SCHEMA = ${JSON.stringify(release.observatory?.tomographyReceiptSchema || '')}\n` +
   `APERTURE_TOMOGRAPHY_REPLAY_SCHEMA = ${JSON.stringify(release.observatory?.tomographyReplaySchema || '')}\n` +
@@ -90,6 +99,7 @@ console.log(JSON.stringify({
   featureVersion: release.featureVersion,
   phase5Status: release.phase5Status,
   phase5ProductionStatus: release.phase5ProductionStatus,
+  compositionStatus: release.composition?.status || 'NOT_INSTALLED',
   targets: [
     'app/engine/td613-aperture.js',
     'app/aperture/release.js',

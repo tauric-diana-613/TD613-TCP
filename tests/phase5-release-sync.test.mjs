@@ -23,4 +23,14 @@ assert.equal(release.phase5Boundaries.automaticAshAction, false);
 assert.equal(release.phase5Boundaries.predictionAuthorized, false);
 assert.equal(release.phase5Boundaries.operatorConfirmationRequired, true);
 
+assert.equal(release.composition.schema, 'td613.aperture.composition-manifest/v0.1');
+assert.equal(release.composition.status, 'IMPLEMENTED_VALIDATION_GATED');
+assert.equal(release.composition.canonicalBodyRewritten, false);
+assert.equal(release.composition.automaticAuthorityTransfer, false);
+assert.match(releasePy, /APERTURE_COMPOSITION_SCHEMA = "td613\.aperture\.composition-manifest\/v0\.1"/);
+assert.match(releasePy, /APERTURE_COMPOSITION_AUTHORITY_TRANSFER = False/);
+assert.match(sync, /release\.composition\?\.schema/);
+assert.equal(release.compatibility.phase5RelationEnvelopeUnchanged, true);
+assert.equal(release.phase5RelationEnvelopeSchema, 'td613.relation-envelope/v0.1');
+
 console.log('phase5-release-sync.test.mjs passed');
