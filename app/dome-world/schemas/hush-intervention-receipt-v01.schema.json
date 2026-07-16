@@ -1,0 +1,81 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "td613.hush.intervention-receipt/v0.1",
+  "title": "TD613 Hush Intervention Receipt v0.1",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema", "receipt_id", "created_at", "ensemble_reference", "ensemble_digest",
+    "vocabulary_version", "case_id", "case_map_digest", "route_memory_digest",
+    "authority_context_reference", "authority_context_digest", "rebuild_receipt_reference",
+    "rebuild_receipt_digest", "intervention_id", "candidate_digest", "candidate_status",
+    "candidate_kept", "source_drift_state", "prompt_injection_state",
+    "proposition_findings", "protected_literal_findings", "transformation_history",
+    "trials", "componentwise_comparison", "universal_score", "provider_draft_used",
+    "provider_receipt_digest", "provider_log_parity", "intervention_state", "holds",
+    "next_required_passages", "local_rebuild_required", "review_required",
+    "ash_release_authorization_required", "readers_executed_by_receipt_compiler",
+    "provider_call_performed_by_receipt_compiler", "network_called", "storage_mutated",
+    "release_authorized", "transport_authorized", "cinder_action_authorized",
+    "automatic_hold", "automatic_ash_action", "recommendation_not_command", "receipt_digest"
+  ],
+  "properties": {
+    "schema": { "const": "td613.hush.intervention-receipt/v0.1" },
+    "receipt_id": { "type": "string" },
+    "created_at": { "type": "string" },
+    "ensemble_reference": { "type": "string" },
+    "ensemble_digest": { "$ref": "#/$defs/sha256" },
+    "vocabulary_version": { "const": "v0.1" },
+    "case_id": { "type": "string" },
+    "case_map_digest": { "$ref": "#/$defs/sha256" },
+    "route_memory_digest": { "$ref": "#/$defs/sha256" },
+    "authority_context_reference": { "type": "string" },
+    "authority_context_digest": { "$ref": "#/$defs/sha256" },
+    "rebuild_receipt_reference": { "type": "string" },
+    "rebuild_receipt_digest": { "$ref": "#/$defs/sha256" },
+    "intervention_id": { "type": "string" },
+    "candidate_digest": { "$ref": "#/$defs/sha256" },
+    "candidate_status": { "const": "UNKEPT_CANDIDATE" },
+    "candidate_kept": { "const": false },
+    "source_drift_state": { "type": "string" },
+    "prompt_injection_state": { "type": "string" },
+    "proposition_findings": { "type": "array", "items": { "type": "object" } },
+    "protected_literal_findings": { "type": "array", "items": { "type": "object" } },
+    "transformation_history": { "type": "array", "minItems": 1 },
+    "trials": { "type": "array", "minItems": 2, "items": { "type": "object" } },
+    "componentwise_comparison": { "type": "object" },
+    "universal_score": { "type": "null" },
+    "provider_draft_used": { "type": "boolean" },
+    "provider_receipt_digest": { "anyOf": [{ "$ref": "#/$defs/sha256" }, { "type": "null" }] },
+    "provider_log_parity": { "type": "boolean" },
+    "intervention_state": {
+      "enum": [
+        "INTERVENTION_ELIGIBLE", "TAMPER_HOLD", "STALE_AUTHORITY_HOLD",
+        "STALE_REBUILD_HOLD", "PROPOSITION_DRIFT_HOLD", "PROTECTED_LITERAL_HOLD",
+        "SOURCE_DRIFT_HOLD", "READER_SET_HOLD", "NOT_ENOUGH_TEST_DATA",
+        "PROMPT_INJECTION_HOLD", "PROVIDER_PARITY_HOLD"
+      ]
+    },
+    "holds": { "type": "array", "items": { "type": "string" } },
+    "next_required_passages": {
+      "const": ["LOCAL_REBUILD", "LOCAL_REVIEW", "ASH_RELEASE_AUTHORIZATION"]
+    },
+    "local_rebuild_required": { "const": true },
+    "review_required": { "const": true },
+    "ash_release_authorization_required": { "const": true },
+    "readers_executed_by_receipt_compiler": { "const": false },
+    "provider_call_performed_by_receipt_compiler": { "const": false },
+    "network_called": { "const": false },
+    "storage_mutated": { "const": false },
+    "release_authorized": { "const": false },
+    "transport_authorized": { "const": false },
+    "cinder_action_authorized": { "const": false },
+    "automatic_hold": { "const": false },
+    "automatic_ash_action": { "const": false },
+    "recommendation_not_command": { "const": true },
+    "receipt_digest": { "$ref": "#/$defs/sha256" }
+  },
+  "$defs": {
+    "sha256": { "type": "string", "pattern": "^sha256:[0-9a-f]{64}$" }
+  }
+}
