@@ -9,8 +9,8 @@
 ## Posture
 
 ```text
-OPEN / IMPLEMENTED_VALIDATION_GATED
-main_evidence: PENDING
+CLOSED / IMPLEMENTED_VALIDATION_GATED / EVIDENCE_BOUNDED
+main_evidence: RECORDED
 production_browser_observation: NOT_CLAIMED
 canonical_body_decomposed: false
 Choir_UI_authorized: false
@@ -19,35 +19,20 @@ Stretch_6_authorized: false
 
 ## Renovated boundary
 
-The stable public shim now loads one module entrypoint, `app/aperture/bootstrap.js`. The bootstrap installs a versioned composition manifest around the unchanged canonical instrument body at `app/aperture/tool.html`.
-
-```text
-canonical body
-→ release manifest
-→ task-intent router
-→ v3.1 compatibility projection
-→ Phase IV reciprocal bridge projection
-→ composition runtime registry
-→ composition receipt
-→ digest-only replay
-```
+The stable public shim loads one module entrypoint, `app/aperture/bootstrap.js`. The bootstrap installs a versioned composition manifest around the unchanged canonical instrument body at `app/aperture/tool.html`.
 
 The historical `TD613_PHASE4_RECIPROCAL_BRIDGE` host global remains only as a declared compatibility projection. The shim contains declarative module and event lineage but performs no direct bridge import, frame assignment, or event fabrication.
 
-## Composition records
+## Exact-main evidence
 
 ```text
-manifest: td613.aperture.composition-manifest/v0.1
-runtime: td613.aperture.composition-runtime/v0.1
-receipt: td613.aperture.composition-receipt/v0.1
-replay: td613.aperture.composition-replay/v0.1
+main_commit: 872620775591f78759b5ad49070928db4feac00f
+composition_run: 29512911459
+composition_artifact: 8381389270
+composition_artifact_SHA: sha256:e1711bb67b3764ddddc438400ffddafa6cf9a7cf5fc90de1ada318e473293ed7
 ```
 
-The manifest fixes component order, dependencies, namespaces, canonical-body identity, public-shim identity, compatibility aliases, and the non-authority ceiling.
-
-## Reload posture
-
-Iframe navigation creates a new child window while the host registry remains sealed. `aperture-composition-frame.js` verifies the existing host registry and Phase IV projection, then installs the same manifest into the new frame without replacing the host registry or inflating authority.
+The exact-main composition workflow, Vercel deployment, Custodian Return observers, and lifecycle/convergence observers passed. Vercel success confirms public availability and repository compatibility, not a feature-specific production browser demonstration.
 
 ## Preserved contracts
 
@@ -57,28 +42,23 @@ Iframe navigation creates a new child window while the host registry remains sea
 - Phase V relation envelopes remain unchanged.
 - The canonical body remains byte-separate and is not rewritten by the composer.
 - Hush, Choir, Return, lifecycle, and Ash boundaries remain intact.
+- Strategic deployment follows `docs/STRATEGIC_VERCEL_DEPLOYMENT_LAW.md`.
 
-## Authority ceiling
+## Strategic deployment posture
 
 ```text
-network_called = false
-storage_mutated = false
-provider_execution = false
-reader_execution = false
-release_authority = false
-recipient_transport = false
-cinder_action = false
-automatic_hold = false
-automatic_ash_action = false
-canonical_body_rewritten = false
-Choir_UI_constructed = false
-operator_closure_required = true
+Vercel deployment authorized = true
+Vercel as default development loop = false
+operator release gesture required = true
+exact selected commit required = true
+normal deployment ceiling per completed packet = 1
+deployment success promotes maturity = false
 ```
 
 ## Maturity ruling
 
-Aperture composition advances from `6 / 25` to `18 / 25` at validation-gated maturity.
+Aperture composition remains `18 / 25` at validation-gated maturity. Seven points remain retained for deeper canonical-body decomposition and a separately scoped feature-specific production browser observation.
 
-The retained seven points require exact-main composition evidence and further decomposition of wrapper-era concerns from the canonical body. Branch validation cannot award production demonstration.
+Closure evidence is recorded in `docs/APERTURE_COMPOSITION_CLOSURE_RECEIPT.md`.
 
 Marked ⟐
