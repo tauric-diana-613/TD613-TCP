@@ -113,7 +113,11 @@ runtime installation main commit: 872620775591f78759b5ad49070928db4feac00f
 runtime initial green branch run: 29512037788
 runtime initial branch artifact: 8381027689
 runtime initial branch artifact SHA: sha256:5b96c72b367ca1afe9c7fae3a30e0d3c68b2ff3f1b2b3989209c095c51e3a790
-composition constitution: IMPLEMENTED_ON_RECONCILIATION_BRANCH
+composition constitution PR: 361
+composition constitution branch commit: c0a8925b294726909dc57a8dd1dd52ff9f4a858a
+composition constitution branch run: 29514228635
+composition constitution branch artifact: 8381930524
+composition constitution branch artifact SHA: sha256:7cd91c401ebf82b7a2ccadf92bfacf0c3cb50c822ef401ce72821c0b5f58de9f
 composition constitution main evidence: PENDING
 canonical body rewritten: false
 production browser observation: NOT_CLAIMED
