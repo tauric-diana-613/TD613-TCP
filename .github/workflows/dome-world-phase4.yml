@@ -62,8 +62,15 @@ jobs:
       - name: Validate Vercel route and function hygiene
         run: node tests/vercel-deploy-hygiene.test.mjs
 
+      - name: Read strategic deployment gate
+        id: deployment_gate
+        run: |
+          enabled="$(node -e "const c=require('./vercel.json'); const g=c.git?.deploymentEnabled; const branch=process.env.GITHUB_HEAD_REF || process.env.GITHUB_REF_NAME; const value=g && Object.prototype.hasOwnProperty.call(g, branch) ? g[branch] : g?.['*']; process.stdout.write(value === false ? 'false' : 'true')")"
+          echo "branch_deploy=$enabled" >> "$GITHUB_OUTPUT"
+          echo "Strategic branch deployment enabled: $enabled"
+
       - name: Resolve Vercel preview alias
-        if: github.event_name == 'pull_request'
+        if: github.event_name == 'pull_request' && steps.deployment_gate.outputs.branch_deploy == 'true'
         id: preview
         env:
           GH_TOKEN: ${{ github.token }}
@@ -87,7 +94,7 @@ jobs:
           echo "Resolved Phase IV preview: $preview_url"
 
       - name: Classify preview access boundary
-        if: github.event_name == 'pull_request'
+        if: github.event_name == 'pull_request' && steps.deployment_gate.outputs.branch_deploy == 'true'
         id: preview_access
         env:
           PREVIEW_URL: ${{ steps.preview.outputs.preview_url }}
@@ -118,6 +125,18 @@ jobs:
             > artifacts/phase4-preview-access.json
           cat artifacts/phase4-preview-access.json
           echo "state=$state" >> "$GITHUB_OUTPUT"
+
+      - name: Record strategically suppressed preview
+        if: github.event_name == 'pull_request' && steps.deployment_gate.outputs.branch_deploy == 'false'
+        run: |
+          mkdir -p artifacts
+          jq -n \
+            --arg schema "td613.phase4.preview-access/v0.1" \
+            --arg state "SKIPPED_BY_STRATEGIC_DEPLOYMENT_GATE" \
+            --arg branch "${GITHUB_HEAD_REF}" \
+            '{schema:$schema,state:$state,branch:$branch,http_status:null,content_type:null,bypass_configured:false,claim:"branch-preview-suppressed-local-runtime-still-required"}' \
+            > artifacts/phase4-preview-access.json
+          cat artifacts/phase4-preview-access.json
 
       - name: Start bounded Phase IV integration runtime
         id: integration_runtime
