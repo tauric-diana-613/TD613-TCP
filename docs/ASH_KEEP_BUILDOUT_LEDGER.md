@@ -26,10 +26,12 @@ constitutional synthesis = 49 / 50
 
 Score: `49 / 50`
 
-Aperture composition advances to `18 / 25`. Seven points remain retained for exact-main browser evidence and deeper decomposition of wrapper-era concerns from the canonical body.
+Aperture composition remains `18 / 25`. The installed runtime composition and the cross-receipt composition constitution are complementary validation surfaces; their coexistence does not create additive maturity. Seven points remain retained for exact-main browser evidence, an operator-facing presentation surface, and deeper decomposition of wrapper-era concerns from the canonical body.
 
 ```text
 composition manifest ≠ runtime installation
+runtime installation ≠ composition constitution
+composition constitution ≠ UI mounted
 runtime installation ≠ production demonstration
 compatibility projection ≠ reciprocal authority
 composition receipt ≠ release authority
@@ -37,6 +39,37 @@ canonical body preserved ≠ canonical body decomposed
 current-head aftercare ≠ feature-specific production demonstration
 Stretch 5 implementation ≠ Stretch 5 closure
 Stretch 5 closure ≠ Stretch 6 authorization
+```
+
+## Vercel Deployment Law
+
+`ALLOWED / STRATEGIC / EVIDENCE-BOUNDED`
+
+Vercel deployment is permitted. Where repository coupling makes an automatic deployment unavoidable, the deployment remains lawful infrastructure rather than drift. Every consequential Vercel use must be handled strategically:
+
+```text
+purpose for deployment = declared
+observed commit = exact
+environment = PREVIEW or PRODUCTION, never silently conflated
+route and function hygiene = checked
+access boundary = classified
+secrets in public client bundle = prohibited
+evidence source = retained when maturity or production behavior is claimed
+rollback or repair route = identifiable
+```
+
+Vercel may support preview inspection, route verification, production browser observation, public artifact delivery, and authorized release operations. Deployment may not bypass a packet gate, manufacture authority, or award maturity by itself.
+
+```text
+Vercel allowed ≠ Vercel required for every change
+unavoidable auto-deploy ≠ strategic production promotion
+preview deployment ≠ production deployment
+deployment success ≠ functional validation
+public reachability ≠ production observation
+production observation ≠ maturity promotion
+Vercel deployment ≠ release authority
+Vercel deployment ≠ recipient transport authority
+Vercel deployment ≠ Cinder action
 ```
 
 ## Stretch 1 · Ash Constitutional Convergence Closure
@@ -75,18 +108,24 @@ production provider execution: NOT_CLAIMED
 `OPEN / IMPLEMENTED_VALIDATION_GATED`
 
 ```text
-implementation PR: 359
-main evidence: PENDING
-initial green branch run: 29512037788
-initial branch artifact: 8381027689
-initial branch artifact SHA: sha256:5b96c72b367ca1afe9c7fae3a30e0d3c68b2ff3f1b2b3989209c095c51e3a790
+runtime installation PR: 359
+runtime installation main commit: 872620775591f78759b5ad49070928db4feac00f
+runtime initial green branch run: 29512037788
+runtime initial branch artifact: 8381027689
+runtime initial branch artifact SHA: sha256:5b96c72b367ca1afe9c7fae3a30e0d3c68b2ff3f1b2b3989209c095c51e3a790
+composition constitution PR: 361
+composition constitution branch commit: c0a8925b294726909dc57a8dd1dd52ff9f4a858a
+composition constitution branch run: 29514228635
+composition constitution branch artifact: 8381930524
+composition constitution branch artifact SHA: sha256:7cd91c401ebf82b7a2ccadf92bfacf0c3cb50c822ef401ce72821c0b5f58de9f
+composition constitution main evidence: PENDING
 canonical body rewritten: false
 production browser observation: NOT_CLAIMED
 Choir UI constructed: false
 Stretch 6 authorization: false
 ```
 
-The composition manifest, runtime installer, receipt, replay, release sync, Phase IV projection, Phase V preservation, and iframe-reload adapter are implemented. Exact-main evidence remains required before closure.
+The runtime manifest installs the preserved v3.1-alpha body and compatibility modules. The separate composition constitution binds the current Authority Context, controlled source, instrument ensemble, snapshot lattice, experiment run, tomography receipt, Choir calibration binding, and Hush intervention receipt into a read-only projection contract. Neither layer mounts the future Choir UI or transfers authority.
 
 ## Stretch 6 · Higher-Order Interference
 

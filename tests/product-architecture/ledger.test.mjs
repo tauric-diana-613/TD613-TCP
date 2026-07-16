@@ -21,6 +21,9 @@ assert.match(ledger, /component maturity after Stretch 5 implementation = 270 \/
 assert.match(ledger, /current-head aftercare ≠ feature-specific production demonstration/);
 assert.match(ledger, /Score: `49 \/ 50`|constitutional synthesis = 49 \/ 50/);
 assert.match(ledger, /Stretch 5 · Aperture Composition Renovation Before Choir UI[\s\S]*OPEN \/ IMPLEMENTED_VALIDATION_GATED/);
+assert.match(ledger, /Vercel Deployment Law[\s\S]*ALLOWED \/ STRATEGIC \/ EVIDENCE-BOUNDED/);
+assert.match(ledger, /unavoidable auto-deploy ≠ strategic production promotion/);
+assert.match(ledger, /Vercel deployment ≠ release authority/);
 
 assert.match(roadmap, /Stretch 1 · Ash Constitutional Convergence Closure — CLOSED/);
 assert.match(roadmap, /Stretch 2 · Custodian Return And Anisotropy — CLOSED/);
@@ -29,6 +32,10 @@ assert.match(roadmap, /Stretch 4 · Hush vocabulary externalization and interven
 assert.match(roadmap, /Stretch 5 · Aperture composition renovation before Choir UI — OPEN \/ IMPLEMENTED_VALIDATION_GATED/);
 assert.match(roadmap, /Higher-order interference — BLOCKED \/ NOT AUTHORIZED/);
 assert.match(roadmap, /transport-capable workstreams = 0/);
+assert.match(roadmap, /Vercel deployment doctrine[\s\S]*Vercel deployment = ALLOWED/);
+assert.match(roadmap, /strategic purpose = REQUIRED/);
+assert.match(roadmap, /preview \/ production distinction = REQUIRED/);
+assert.match(roadmap, /deployment success ≠ functional validation/);
 assert.match(convergence, /Status: `IMPLEMENTED_PRODUCTION_DEMONSTRATED`/);
 assert.match(convergence, /29458943541/);
 assert.match(choir, /Choir_validation_run: 29476772041/);
@@ -36,6 +43,8 @@ assert.match(hush, /Hush_validation_run: 29483240258/);
 assert.match(hush, /Stretch_5_authorized: false/);
 assert.match(composition, /OPEN \/ IMPLEMENTED_VALIDATION_GATED/);
 assert.match(composition, /canonical_body_decomposed: false/);
+assert.match(composition, /td613\.aperture\.composition-constitution-receipt\/v0\.1/);
+assert.match(composition, /Vercel is an allowed strategic deployment instrument/);
 assert.match(composition, /Stretch_6_authorized: false/);
 
 console.log('product-architecture/ledger.test.mjs passed');

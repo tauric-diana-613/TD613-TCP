@@ -27,30 +27,66 @@ transport-capable workstreams = 0
 5. Stretch 5 · Aperture composition renovation before Choir UI — OPEN / IMPLEMENTED_VALIDATION_GATED
 
 ```text
-implementation_PR: 359
-main_evidence: PENDING
+runtime_installation_PR: 359
+runtime_installation_main_commit: 872620775591f78759b5ad49070928db4feac00f
+composition_constitution: IMPLEMENTED_ON_RECONCILIATION_BRANCH
+composition_constitution_main_evidence: PENDING
 canonical_body: app/aperture/tool.html
 canonical_body_rewritten: false
 public_shim: app/aperture/index.html
 bootstrap: app/aperture/bootstrap.js
 composition_manifest: td613.aperture.composition-manifest/v0.1
 composition_runtime: td613.aperture.composition-runtime/v0.1
-composition_receipt: td613.aperture.composition-receipt/v0.1
-composition_replay: td613.aperture.composition-replay/v0.1
+runtime_receipt: td613.aperture.composition-receipt/v0.1
+constitution_receipt: td613.aperture.composition-constitution-receipt/v0.1
+constitution_projection: td613.aperture.composition-constitution-projection/v0.1
 production_browser_observation: NOT_CLAIMED
 Choir_UI_constructed: false
 ```
 
-The stable shim now declares component lineage and invokes one composition bootstrap. Release, task-intent, v3.1 compatibility, and Phase IV bridge modules install in strict order around the unchanged canonical body. Iframe reload reuses the sealed host registry and installs the same manifest into the new child window.
+The stable shim installs release, task-intent, v3.1 compatibility, and Phase IV bridge modules around the unchanged canonical body. The separate composition constitution orders the current Authority Context, Aperture source-to-tomography chain, Choir calibration binding, and Hush intervention receipt before any future presentation layer.
 
 ```text
 composition manifest ≠ runtime installation
+runtime installation ≠ composition constitution
+composition constitution ≠ UI mounted
 runtime installation ≠ production demonstration
 compatibility projection ≠ reciprocal authority
+constitution projection ≠ candidate selection
 composition receipt ≠ release authority
 body preserved ≠ body decomposed
 Stretch 5 implementation ≠ Stretch 5 closure
 Stretch 5 closure ≠ Stretch 6 authorization
+```
+
+## Vercel deployment doctrine
+
+Vercel deployment is allowed and must be used strategically. Automatic deployment caused by repository coupling is treated as infrastructure, not as unauthorized drift. A consequential deployment route must declare its purpose, exact commit, environment, access boundary, route/function hygiene, and evidence use.
+
+Authorized strategic uses include:
+
+1. preview inspection before consequential production movement;
+2. route and serverless-function verification;
+3. exact-main desktop/mobile browser observation;
+4. public delivery of an already authorized artifact;
+5. rollback or repair verification.
+
+The roadmap forbids using deployment state as a substitute for validation or authority.
+
+```text
+Vercel deployment = ALLOWED
+strategic purpose = REQUIRED
+preview / production distinction = REQUIRED
+exact commit attribution = REQUIRED
+route and function hygiene = REQUIRED when applicable
+deployment evidence = REQUIRED for production-behavior claims
+unavoidable auto-deploy ≠ maturity promotion
+deployment success ≠ functional validation
+public URL ≠ production observation
+production observation ≠ operator closure
+Vercel deployment ≠ release authority
+Vercel deployment ≠ transport authority
+Vercel deployment ≠ Cinder action
 ```
 
 ## Ordered program
