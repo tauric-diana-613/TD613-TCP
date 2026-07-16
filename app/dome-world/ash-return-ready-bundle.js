@@ -132,6 +132,7 @@ async function ensureContinuity(state) {
   });
   await putWrapped(state.db, 'savePoints', point.save_point_id, point);
   window.dispatchEvent(new CustomEvent('td613:ash:continuity-kept', { detail: { case_id: state.caseMap.case_id, continuity_reference: point.save_point_id } }));
+  await window.__td613AshLifecycleRefresh?.();
   return true;
 }
 
@@ -143,6 +144,7 @@ async function buildAndExport() {
   const continuityCreated = await ensureContinuity(state);
   state.db.close();
   if (continuityCreated || state.authorityContext?.lifecycle_rank !== 'CONTINUITY_SEALED') {
+    await window.__td613AshLifecycleRefresh?.();
     await window.TD613AshConvergence?.reconcileAuthority?.('return-ready-capsule-export');
     state = await collectReturnState(caseId);
   }
