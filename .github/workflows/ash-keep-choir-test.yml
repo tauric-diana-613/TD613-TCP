@@ -18,6 +18,7 @@ on:
       - "tests/ash-keep-benign-controls*.test.mjs"
       - "tests/ash-keep-choir-calibration*.test.mjs"
       - "tests/fixtures/choir-calibration-fixture.mjs"
+      - "scripts/publish-ash-keep-observer-status.mjs"
       - "docs/ASH_KEEP_CHOIR_TEST.md"
       - "docs/ASH_KEEP_READER_ADAPTER_REGISTRY.md"
       - "docs/ASH_KEEP_READER_DISAGREEMENT.md"
@@ -44,6 +45,7 @@ on:
       - "tests/ash-keep-benign-controls*.test.mjs"
       - "tests/ash-keep-choir-calibration*.test.mjs"
       - "tests/fixtures/choir-calibration-fixture.mjs"
+      - "scripts/publish-ash-keep-observer-status.mjs"
       - "docs/ASH_KEEP_CHOIR_TEST.md"
       - "docs/ASH_KEEP_READER_ADAPTER_REGISTRY.md"
       - "docs/ASH_KEEP_READER_DISAGREEMENT.md"
@@ -56,17 +58,30 @@ on:
 
 permissions:
   contents: read
+  statuses: write
 
 jobs:
   choir-test:
     runs-on: ubuntu-latest
     timeout-minutes: 10
+    env:
+      TD613_OBSERVED_COMMIT: ${{ github.sha }}
+      TD613_OBSERVER_RUN_URL: ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}
+      TD613_OBSERVER_STATUS_CONTEXT: Ash Choir Calibration Validation
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-node@v4
         with:
           node-version: 22
           cache: npm
+      - name: Publish Choir validation pending status
+        if: github.event_name == 'push' && github.ref == 'refs/heads/main'
+        env:
+          GITHUB_TOKEN: ${{ github.token }}
+          TD613_OBSERVER_STATUS_STATE: pending
+          TD613_OBSERVER_STATUS_DESCRIPTION: Ash Choir calibration validation is running
+          TD613_OBSERVER_STATUS_RECEIPT_PATH: artifacts/choir-calibration-validation/observer-status-pending.json
+        run: node scripts/publish-ash-keep-observer-status.mjs
       - run: npm ci
       - name: Validate Choir schemas
         run: node tests/ash-keep-moire-schemas.test.mjs
@@ -98,14 +113,41 @@ jobs:
         run: |
           set -o pipefail
           node tests/ash-keep-choir-calibration.test.mjs 2>&1 | tee choir-calibration-validation.log
+      - name: Publish Choir validation success status
+        if: success() && github.event_name == 'push' && github.ref == 'refs/heads/main'
+        env:
+          GITHUB_TOKEN: ${{ github.token }}
+          TD613_OBSERVER_STATUS_STATE: success
+          TD613_OBSERVER_STATUS_DESCRIPTION: Ash Choir calibration receipts and replay passed
+          TD613_OBSERVER_STATUS_RECEIPT_PATH: artifacts/choir-calibration-validation/observer-status-success.json
+        run: node scripts/publish-ash-keep-observer-status.mjs
+      - name: Publish Choir validation failure status
+        if: failure() && github.event_name == 'push' && github.ref == 'refs/heads/main'
+        env:
+          GITHUB_TOKEN: ${{ github.token }}
+          TD613_OBSERVER_STATUS_STATE: failure
+          TD613_OBSERVER_STATUS_DESCRIPTION: Ash Choir calibration validation held for repair
+          TD613_OBSERVER_STATUS_RECEIPT_PATH: artifacts/choir-calibration-validation/observer-status-failure.json
+        run: node scripts/publish-ash-keep-observer-status.mjs
       - name: Preserve Choir calibration validation evidence
         if: always()
         uses: actions/upload-artifact@v4
         with:
           name: choir-calibration-validation-evidence
-          path: choir-calibration-validation.log
+          path: |
+            choir-calibration-validation.log
+            scripts/publish-ash-keep-observer-status.mjs
+            artifacts/choir-calibration-validation/
           if-no-files-found: error
           retention-days: 30
+      - name: Reconcile terminal Choir validation failure status
+        if: failure() && github.event_name == 'push' && github.ref == 'refs/heads/main'
+        env:
+          GITHUB_TOKEN: ${{ github.token }}
+          TD613_OBSERVER_STATUS_STATE: failure
+          TD613_OBSERVER_STATUS_DESCRIPTION: Ash Choir validation or evidence preservation failed
+          TD613_OBSERVER_STATUS_RECEIPT_PATH: artifacts/choir-calibration-validation/observer-status-failure-reconciled.json
+        run: node scripts/publish-ash-keep-observer-status.mjs
       - name: Preserve matched control failure log
         if: failure()
         uses: actions/upload-artifact@v4

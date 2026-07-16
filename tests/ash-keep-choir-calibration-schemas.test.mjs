@@ -9,6 +9,8 @@ const replay = JSON.parse(await readFile(
   new URL('../app/dome-world/schemas/aperture-choir-calibration-replay-v01.schema.json', import.meta.url),
   'utf8'
 ));
+const workflow = await readFile(new URL('../.github/workflows/ash-keep-choir-test.yml', import.meta.url), 'utf8');
+const publisher = await readFile(new URL('../scripts/publish-ash-keep-observer-status.mjs', import.meta.url), 'utf8');
 
 assert.equal(binding.$id, 'td613.aperture.choir-calibration-binding/v0.1');
 assert.equal(binding.properties.schema.const, binding.$id);
@@ -46,5 +48,19 @@ assert.deepEqual(replay.properties.status.enum, [
   'CHOIR_CALIBRATION_REPLAY_HELD'
 ]);
 assert.equal(replay.properties.replay_digest.pattern, '^sha256:[0-9a-f]{64}$');
+
+for (const token of [
+  'statuses: write',
+  'Ash Choir Calibration Validation',
+  'Publish Choir validation pending status',
+  'Publish Choir validation success status',
+  'Publish Choir validation failure status',
+  'Reconcile terminal Choir validation failure status',
+  'choir-calibration-validation-evidence',
+  'observer-status-success.json'
+]) assert.ok(workflow.includes(token), `Choir workflow omitted ${token}`);
+assert.match(workflow, /github\.event_name == 'push' && github\.ref == 'refs\/heads\/main'/);
+assert.match(publisher, /Ash Choir Calibration Validation/);
+assert.doesNotMatch(workflow, /release_authorized: true|transport_authorized: true|cinder_action_authorized: true/);
 
 console.log('ash-keep-choir-calibration-schemas.test.mjs passed');
