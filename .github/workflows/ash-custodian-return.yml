@@ -42,6 +42,7 @@ jobs:
           node-version: 22
           cache: npm
       - name: Publish local Return observer pending status
+        if: github.event_name == 'push'
         env:
           GITHUB_TOKEN: ${{ github.token }}
           TD613_OBSERVER_STATUS_STATE: pending
@@ -108,7 +109,7 @@ jobs:
             kill "$(cat artifacts/ash-custodian-return-server.pid)" 2>/dev/null || true
           fi
       - name: Publish local Return observer success status
-        if: success()
+        if: github.event_name == 'push' && success()
         env:
           GITHUB_TOKEN: ${{ github.token }}
           TD613_OBSERVER_STATUS_STATE: success
@@ -116,7 +117,7 @@ jobs:
           TD613_OBSERVER_STATUS_RECEIPT_PATH: artifacts/ash-custodian-return/observer-status-success.json
         run: node scripts/publish-ash-keep-observer-status.mjs
       - name: Publish local Return observer failure status
-        if: failure()
+        if: github.event_name == 'push' && failure()
         env:
           GITHUB_TOKEN: ${{ github.token }}
           TD613_OBSERVER_STATUS_STATE: failure
