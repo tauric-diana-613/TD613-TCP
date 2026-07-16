@@ -13,15 +13,6 @@ on:
       - '.github/workflows/ash-custodian-return*.yml'
   push:
     branches: [main]
-    paths:
-      - 'app/engine/ash-custodian-return*.js'
-      - 'app/dome-world/ash-custodian-return*.js'
-      - 'app/dome-world/ash-return-ready-bundle.js'
-      - 'app/dome-world/ash-workspace-bridge.js'
-      - 'scripts/ash-custodian-return*.mjs'
-      - 'tests/ash-custodian-return*.test.mjs'
-      - 'docs/ASH_CUSTODIAN_RETURN*.md'
-      - '.github/workflows/ash-custodian-return*.yml'
 
 permissions:
   contents: read
