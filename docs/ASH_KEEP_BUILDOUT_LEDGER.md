@@ -2,7 +2,7 @@
 
 𝌋‌ U+10D613
 
-Ledger generation: `v1.11 · Stretch 5 validation-gated implementation / main evidence pending`
+Ledger generation: `v1.12 · Stretch 5 evidence closure / strategic Vercel deployment law`
 
 | Workstream | Score |
 |---|---:|
@@ -17,7 +17,7 @@ Ledger generation: `v1.11 · Stretch 5 validation-gated implementation / main ev
 | I. Ash operator surface and local case stewardship | **43 / 45** |
 
 ```text
-component maturity after Stretch 5 implementation = 270 / 375
+component maturity after Stretch 5 closure = 270 / 375
 production-demonstrated workstreams = 4 / 9
 validation-gated workstreams = 3 / 9
 transport-capable workstreams = 0
@@ -26,7 +26,7 @@ constitutional synthesis = 49 / 50
 
 Score: `49 / 50`
 
-Aperture composition advances to `18 / 25`. Seven points remain retained for exact-main browser evidence and deeper decomposition of wrapper-era concerns from the canonical body.
+Aperture composition remains `18 / 25`. Seven points remain retained for deeper canonical-body decomposition and a separately scoped feature-specific production browser observation.
 
 ```text
 composition manifest ≠ runtime installation
@@ -34,10 +34,26 @@ runtime installation ≠ production demonstration
 compatibility projection ≠ reciprocal authority
 composition receipt ≠ release authority
 canonical body preserved ≠ canonical body decomposed
-current-head aftercare ≠ feature-specific production demonstration
-Stretch 5 implementation ≠ Stretch 5 closure
+deployment success ≠ feature-specific production demonstration
+cost control ≠ evidentiary weakening
 Stretch 5 closure ≠ Stretch 6 authorization
 ```
+
+## Strategic Vercel Deployment Law
+
+Vercel deployment is authorized as a deliberate release witness. It is not the ordinary development loop.
+
+```text
+branch work: local/synthetic CI and retained evidence
+release candidate: exact green commit selected
+production deployment: explicit operator release gesture required
+normal ceiling: one deliberate Vercel deployment per completed packet or release candidate
+additional deployment: named deployment-specific reason required
+deployment promotion authority: false
+automatic next-Stretch authority: false
+```
+
+Preview deployments, work-branch deployments, documentation-only deployments, and repeated deployments used merely to rerun local evidence are outside the ordinary route. Every exception must record the commit, reason, deployment count, and evidence purpose. See `docs/STRATEGIC_VERCEL_DEPLOYMENT_LAW.md`.
 
 ## Stretch 1 · Ash Constitutional Convergence Closure
 
@@ -72,21 +88,22 @@ production provider execution: NOT_CLAIMED
 
 ## Stretch 5 · Aperture Composition Renovation Before Choir UI
 
-`OPEN / IMPLEMENTED_VALIDATION_GATED`
+`CLOSED / IMPLEMENTED_VALIDATION_GATED / EVIDENCE_BOUNDED`
 
 ```text
 implementation PR: 359
-main evidence: PENDING
-initial green branch run: 29512037788
-initial branch artifact: 8381027689
-initial branch artifact SHA: sha256:5b96c72b367ca1afe9c7fae3a30e0d3c68b2ff3f1b2b3989209c095c51e3a790
+main commit: 872620775591f78759b5ad49070928db4feac00f
+Aperture composition run: 29512911459
+Aperture composition artifact: 8381389270
+Aperture composition artifact SHA: sha256:e1711bb67b3764ddddc438400ffddafa6cf9a7cf5fc90de1ada318e473293ed7
 canonical body rewritten: false
-production browser observation: NOT_CLAIMED
+canonical body decomposed: false
+feature-specific production browser demonstration: NOT_CLAIMED
 Choir UI constructed: false
 Stretch 6 authorization: false
 ```
 
-The composition manifest, runtime installer, receipt, replay, release sync, Phase IV projection, Phase V preservation, and iframe-reload adapter are implemented. Exact-main evidence remains required before closure.
+The composition manifest, runtime installer, receipt, replay, release sync, Phase IV projection, Phase V preservation, and iframe-reload adapter are implemented and exact-main validated. Closure evidence is recorded in `docs/APERTURE_COMPOSITION_CLOSURE_RECEIPT.md`.
 
 ## Stretch 6 · Higher-Order Interference
 
