@@ -151,23 +151,24 @@ assert.match(ledger, /H\. Ash product lifecycle orchestration \| \*\*35 \/ 35\*\
 assert.match(ledger, /I\. Ash operator surface and local case stewardship \| \*\*43 \/ 45\*\*/);
 assert.match(ledger, /D\. Custodian Return \/ Anisotropy \| \*\*35 \/ 35\*\*/);
 assert.match(ledger, /B\. Choir Test \/ Moiré program \| \*\*44 \/ 70\*\*/);
-assert.match(ledger, /component maturity after Stretch 3 merge = 237 \/ 375/);
+assert.match(ledger, /component maturity after Stretch 3 closure = 237 \/ 375/);
 assert.match(ledger, /production-demonstrated workstreams = 4 \/ 9/);
 assert.match(ledger, /validation-gated workstreams = 1 \/ 9/);
 assert.match(ledger, /# Constitutional Synthesis Matrix/);
 assert.match(ledger, /Score: `47 \/ 50`|constitutional synthesis = 47 \/ 50/);
 assert.match(ledger, /Stretch 1 · Ash Constitutional Convergence Closure[\s\S]*CLOSED \/ IMPLEMENTED_PRODUCTION_DEMONSTRATED/);
 assert.match(ledger, /Stretch 2 · Custodian Return And Anisotropy[\s\S]*CLOSED \/ IMPLEMENTED_PRODUCTION_DEMONSTRATED/);
-assert.match(ledger, /Stretch 3 · Choir Calibration Receipt Binding[\s\S]*OPEN \/ IMPLEMENTED_VALIDATION_GATED/);
-assert.match(roadmap, /component maturity after Stretch 3 merge = 237 \/ 375/);
+assert.match(ledger, /Stretch 3 · Choir Calibration Receipt Binding[\s\S]*CLOSED \/ IMPLEMENTED_VALIDATION_GATED/);
+assert.match(ledger, /Stretch 4 · Hush Vocabulary Externalization And Lifecycle-Bound Intervention Ensemble[\s\S]*BLOCKED \/ NOT_AUTHORIZED/);
+assert.match(roadmap, /component maturity after Stretch 3 closure = 237 \/ 375/);
 assert.match(roadmap, /constitutional synthesis = 47 \/ 50/);
 assert.match(roadmap, /Stretch 1 · Ash Constitutional Convergence Closure — CLOSED/);
 assert.match(roadmap, /Stretch 2 · Custodian Return And Anisotropy — CLOSED/);
-assert.match(roadmap, /Stretch 3 · Choir calibration receipt binding — OPEN \/ VALIDATION-GATED/);
+assert.match(roadmap, /Stretch 3 · Choir calibration receipt binding — CLOSED/);
 assert.ok(
-  roadmap.indexOf('Stretch 2 · Custodian Return And Anisotropy — CLOSED') < roadmap.indexOf('Stretch 3 · Choir calibration receipt binding — OPEN / VALIDATION-GATED')
-  && roadmap.indexOf('Stretch 3 · Choir calibration receipt binding — OPEN / VALIDATION-GATED') < roadmap.indexOf('Hush vocabulary externalization and intervention ensemble — BLOCKED'),
-  'Closed Return must remain before active Choir calibration and blocked Hush.'
+  roadmap.indexOf('Stretch 2 · Custodian Return And Anisotropy — CLOSED') < roadmap.indexOf('Stretch 3 · Choir calibration receipt binding — CLOSED')
+  && roadmap.indexOf('Stretch 3 · Choir calibration receipt binding — CLOSED') < roadmap.indexOf('Hush vocabulary externalization and intervention ensemble — BLOCKED'),
+  'Closed Return and Choir must remain before blocked Hush.'
 );
 assert.match(roadmap, /transport-capable workstreams = 0/);
 assert.match(convergenceReceipt, /Status: `IMPLEMENTED_PRODUCTION_DEMONSTRATED`/);
