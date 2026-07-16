@@ -6,18 +6,21 @@ Packet: `Stretch 7 · Ordered Route-Sequence Recovery`
 
 Opening authority: `GRANTED BY OPERATOR DIRECTIVE`
 
-State: `IMPLEMENTED_VALIDATION_PENDING / EVIDENCE_NOT_YET_CLOSED`
+State: `CLOSED / IMPLEMENTED_VALIDATION_GATED / EVIDENCE_BOUNDED`
 
 ```text
-branch = amari/stretch7-ordered-route-sequence
-validation run = PENDING
-validation artifact = PENDING
-exact merged main commit = PENDING
-strategic Vercel deployment = PENDING_POST_MERGE
+PR = 368
+validated implementation commit = 4fb0f8ad52457c200061af79e5346b1fdb67e09c
+Choir validation run = 29533391345
+Choir validation artifact = 8389510269
+TCP Smoke run = 29533391331
+static validation run = 29533391364
+component maturity after closure = 290 / 375
 new serverless function = false
 active serverless functions = 11
 reserved function capacity = 1
 production demonstration = NOT_CLAIMED
+strategic Vercel deployment = AUTHORIZED_POST_MERGE
 Stretch 8 authorization = false
 ```
 
@@ -74,8 +77,8 @@ Replay recompiles the exact recovery receipt from the declared source packet, pr
 
 Stretch 7 adds no file beneath root `api/`. The repository remains at `11 active + 1 reserved` serverless functions.
 
-After validation evidence closes, the packet may merge to an exact green `main` commit. One strategic Vercel deployment is authorized at the end of Stretch 7 as a public-runtime and function-budget witness. Deployment cannot grant broader release, transport, suppression, identity, intent, prediction, surveillance, or Cinder authority.
+One strategic Vercel deployment is authorized after the closed packet merges to an exact green `main` commit. The deployment serves as a public-runtime and function-budget witness only. It cannot promote the validation-gated packet into production-demonstrated maturity and cannot grant release, transport, suppression, identity, intent, prediction, surveillance, or Cinder authority.
 
-Stretch 8 remains blocked until Stretch 7 evidence closure and a fresh operator opening gesture.
+Stretch 8 remains blocked until a fresh operator opening gesture after Stretch 7 evidence closure and deployment witness.
 
 Marked ⟐
