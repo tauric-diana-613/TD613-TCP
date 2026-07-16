@@ -7,8 +7,7 @@ const safeLoader = read('app/safe-harbor/app/safe-harbor-housekeeping.js');
 const safeBase = read('app/safe-harbor/app/safe-harbor-housekeeping-base.js');
 const ash = read('app/dome-world/ash-safe-harbor-ingress.js');
 const ashKeep = read('app/dome-world/ash-keep.js');
-const draftLoader = read('app/engine/ash-keep-drafts.js');
-const draftBase = read('app/engine/ash-keep-drafts-base.js');
+const draftEngine = read('app/engine/ash-keep-drafts.js');
 const ingressLoader = read('app/engine/ash-safe-harbor-ingress-loader.js');
 const schema = JSON.parse(read('app/dome-world/schemas/ash-safe-harbor-ingress-v01.schema.json'));
 
@@ -60,13 +59,14 @@ assert.doesNotMatch(ash, /sessionStorage/);
 
 assert.match(safeLoader, /safe-harbor-housekeeping-base\.js/);
 assert.match(safeLoader, /safe-harbor-ash-ingress\.js/);
+assert.doesNotMatch(safeLoader, /document\.write/);
 assert.match(safeBase, /td613\.safe-harbor\.session\.v1/);
 assert.match(ashKeep, /compileCaseMap/);
 assert.match(ashKeep, /compileRouteMemory/);
-assert.match(draftLoader, /ash-safe-harbor-ingress-loader\.js/);
-assert.match(draftLoader, /export \* from '\.\/ash-keep-drafts-base\.js';/);
-assert.match(draftBase, /ASH_DRAFT_SCHEMA/);
-assert.match(draftBase, /compileAshDraft/);
+assert.match(draftEngine, /ash-safe-harbor-ingress-loader\.js/);
+assert.match(draftEngine, /ASH_DRAFT_SCHEMA/);
+assert.match(draftEngine, /compileAshDraft/);
+assert.match(draftEngine, /Review is bound to a different Case Map/);
 assert.match(ingressLoader, /typeof window !== 'undefined'/);
 assert.match(ingressLoader, /ash-safe-harbor-ingress\.js/);
 
