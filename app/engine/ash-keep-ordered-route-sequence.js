@@ -100,7 +100,12 @@ function receiptState(failures) {
   if (failures.some(value => value.includes('tamper'))) return 'TAMPER_HOLD';
   if (failures.some(value => value.includes('authority') || value.includes('case'))) return 'STALE_CASE_HOLD';
   if (failures.some(value => value.includes('calibration'))) return 'CALIBRATION_HOLD';
-  if (failures.some(value => value.includes('duplicate') || value.includes('transition') || value.includes('reordered') || value.includes('truncated') || value.includes('unknown-step'))) return 'SEQUENCE_INTEGRITY_HOLD';
+  if (failures.some(value => value.includes('duplicate')
+    || value.includes('transition')
+    || value.includes('reordered-control-invalid')
+    || value.includes('truncated-control-invalid')
+    || value.includes('unknown-step')
+    || value.includes('unknown-control-kind'))) return 'SEQUENCE_INTEGRITY_HOLD';
   if (failures.some(value => value.includes('missing') || value.includes('component') || value.includes('control') || value.includes('cap') || value.includes('unsafe'))) return 'NOT_ENOUGH_TEST_DATA';
   return 'ORDERED_SEQUENCE_ELIGIBLE';
 }
