@@ -31,27 +31,38 @@ jobs:
           cache: npm
       - name: Install dependencies without lifecycle hooks
         run: npm ci --ignore-scripts
-      - name: Apply 11-plus-1 function-budget repair
-        run: node scripts/repair-vercel-function-budget.mjs
-      - name: Validate deployment budget and route consolidation
+      - name: Apply repair and capture focused diagnostics
+        id: diagnose
+        shell: bash
         run: |
-          node tests/vercel-deploy-hygiene.test.mjs
-          node tests/gemini-quality-routing-vercel.test.mjs
-          node tests/gemini-model-policy.test.mjs
-          node tests/hush-gemini-quality-router.test.mjs
-          node tests/khonapolit-gemini-quality-router.test.mjs
-          node tests/hush-backend-prompt-detox.test.mjs
-          node tests/hush-strict-provider-integrity.test.mjs
-          node tests/hush-phase34-expressive-generation.test.mjs
-          node tests/khonapolit-api-contract.test.mjs
-      - name: Remove one-shot machinery
-        run: |
-          rm -f scripts/repair-vercel-function-budget.mjs
-          rm -f .github/workflows/amari-vercel-function-budget-repair.yml
-      - name: Commit repaired deployment surface
+          set +e
+          node scripts/repair-vercel-function-budget.mjs > /tmp/amari-vercel-repair-diagnostics.txt 2>&1
+          repair_status=$?
+          if [ "$repair_status" -eq 0 ]; then
+            for test_file in \
+              tests/vercel-deploy-hygiene.test.mjs \
+              tests/gemini-quality-routing-vercel.test.mjs \
+              tests/gemini-model-policy.test.mjs \
+              tests/hush-gemini-quality-router.test.mjs \
+              tests/khonapolit-gemini-quality-router.test.mjs \
+              tests/hush-backend-prompt-detox.test.mjs \
+              tests/hush-strict-provider-integrity.test.mjs \
+              tests/hush-phase34-expressive-generation.test.mjs \
+              tests/khonapolit-api-contract.test.mjs
+            do
+              printf '\n===== %s =====\n' "$test_file" >> /tmp/amari-vercel-repair-diagnostics.txt
+              node "$test_file" >> /tmp/amari-vercel-repair-diagnostics.txt 2>&1
+              test_status=$?
+              printf 'exit_status=%s\n' "$test_status" >> /tmp/amari-vercel-repair-diagnostics.txt
+            done
+          fi
+          git reset --hard HEAD
+          git clean -fd
+          cp /tmp/amari-vercel-repair-diagnostics.txt .github/amari-vercel-repair-diagnostics.txt
+      - name: Commit diagnostics receipt
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          git add -A
-          git commit -m "Restore Vercel 11-plus-1 function budget"
+          git add .github/amari-vercel-repair-diagnostics.txt
+          git commit -m "Record Vercel function budget repair diagnostics"
           git push origin HEAD:amari/vercel-11-function-budget
