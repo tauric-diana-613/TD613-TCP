@@ -40,10 +40,10 @@ for (const token of [
   'compileReturnReplayReceipt',
   'recoverInterruptedImports',
   'seedInterruptedImportForProbe',
-  'live case remained untouched',
   'No universal recovery score was emitted',
   "setAttribute('aria-live', 'polite')"
 ]) assert.ok(runtime.includes(token), `Closure runtime omitted ${token}`);
+assert.match(runtime, /live Ash case remained untouched/i);
 assert.doesNotMatch(runtime, /\/api\/hush-generate|navigator\.share|recipient_transport\s*[:=]\s*['"](?:ENABLED|ACTIVE|SENT)/i);
 
 for (const token of [
