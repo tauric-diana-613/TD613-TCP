@@ -83,6 +83,12 @@ jobs:
         run: |
           set -o pipefail
           node tests/ash-keep-ui.test.mjs 2>&1 | tee ash-keep-ui.log
+      - name: Preserve lifecycle engine
+        run: node tests/ash-lifecycle.test.mjs
+      - name: Preserve Draft lifecycle binding
+        run: node tests/ash-draft-lifecycle-binding.test.mjs
+      - name: Preserve Ash product architecture
+        run: node tests/ash-product-architecture.test.mjs
       - name: Enforce Vercel function hygiene
         run: node tests/vercel-deploy-hygiene.test.mjs
       - name: Publish ingress validation success status
