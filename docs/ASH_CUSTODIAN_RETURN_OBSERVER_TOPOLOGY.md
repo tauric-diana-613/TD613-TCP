@@ -7,17 +7,17 @@ Date: `2026-07-16`
 Status: `OBSERVER_TOPOLOGY_ACTIVE / NON_PROMOTIONAL`
 
 ```text
-Ash Custodian Return
+Ash Custodian Return / validate-and-local-observe
 = pull-request and main-push validation
 = bounded local synthetic observation
 
-Ash Custodian Return Deployed
-= post-deployment synthetic observation
+Ash Custodian Return / deployed-observation
+= main-push-only post-deployment synthetic observation
 = exact observed commit status
 = durable deployed evidence artifact
 ```
 
-The two workflows remain separate so local validation cannot suppress, impersonate, or inherit the deployed observer’s evidence class.
+The two jobs remain separately named and separately evidenced inside one registered workflow. Local validation must pass before the deployed witness begins, but local evidence cannot suppress, impersonate, or inherit the deployed observer’s evidence class.
 
 The deployed observer publishes pending, success, or failure under:
 
