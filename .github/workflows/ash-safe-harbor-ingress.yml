@@ -94,7 +94,9 @@ jobs:
       - name: Enforce Vercel function hygiene
         run: node tests/vercel-deploy-hygiene.test.mjs
       - name: Install Chromium probe runtime
-        run: npx playwright install --with-deps chromium
+        run: |
+          npm install --no-save --package-lock=false playwright@1.53.2
+          npx playwright install --with-deps chromium
       - name: Start bounded local ingress runtime
         shell: bash
         run: |
