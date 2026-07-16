@@ -53,10 +53,16 @@ runtime = replaceExactly(
 );
 runtime = replaceExactly(
   runtime,
+  "  await waitForText(page, '#capsuleStatus', /Encrypted copy exported/);",
+  "  await waitForText(page, '#capsuleStatus', /(?:return-ready\\s+)?encrypted copy exported/i);",
+  'return-ready Capsule export confirmation'
+);
+runtime = replaceExactly(
+  runtime,
   "  assert(providerOrTransport.length === 0, 'Lifecycle probe reached a provider or recipient transport route');",
   "  assert(providerOrTransport.length === 0, 'Lifecycle probe reached a provider or recipient transport route');\n  assert(!requests.some(item => item.post_data?.includes(SYNTHETIC_DRAFT)), 'Synthetic draft entered a request body');",
   'draft request boundary'
 );
-if (!runtime.includes(syntheticDraft) || !runtime.includes('draft_body_sha256') || !runtime.includes('item.body === SYNTHETIC_DRAFT') || !runtime.includes('test_workspace_navigable: true')) throw new Error('Synthetic lifecycle fixture compilation failed.');
+if (!runtime.includes(syntheticDraft) || !runtime.includes('draft_body_sha256') || !runtime.includes('item.body === SYNTHETIC_DRAFT') || !runtime.includes('test_workspace_navigable: true') || !runtime.includes('return-ready\\s+')) throw new Error('Synthetic lifecycle fixture compilation failed.');
 await fs.writeFile(runtimeProbePath, runtime);
 await import(`${pathToFileURL(runtimeProbePath).href}?fixture=${Date.now()}`);
