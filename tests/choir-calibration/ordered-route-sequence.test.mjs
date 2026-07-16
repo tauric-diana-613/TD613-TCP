@@ -105,7 +105,17 @@ const duplicateStep = await compileOrderedRouteSequence({
   ...input,
   target: {
     ...input.target,
-    steps: [input.target.steps[0], input.target.steps[0], input.target.steps[2]]
+    steps: [
+      input.target.steps[0],
+      input.target.steps[1],
+      {
+        ...input.target.steps[1],
+        transition_id: 'aperture_to_aperture_duplicate',
+        transition_receipt_digest: digest('7'),
+        from_step_id: 'aperture',
+        to_step_id: 'aperture'
+      }
+    ]
   }
 });
 assert.equal(duplicateStep.state, 'SEQUENCE_INTEGRITY_HOLD');
