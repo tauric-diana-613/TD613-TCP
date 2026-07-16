@@ -217,9 +217,9 @@ async function recordHold({ failureClass, capsule, bundle, verification, observa
 
 function classifyFailure(error, verification = null, bundle = null) {
   if (/authentication failed|passphrase/i.test(error?.message || '')) return 'WRONG_PASSPHRASE';
-  if (!bundle || /return-ready bundle/i.test(error?.message || '')) return 'PARTIAL_CAPSULE_HOLD';
   if (verification?.state === 'STALE_RECEIPT_HOLD') return 'STALE_RECEIPT_HOLD';
   if (verification?.state === 'TAMPER_HOLD') return 'TAMPER_HOLD';
+  if (!bundle || /return-ready bundle is absent/i.test(error?.message || '')) return 'PARTIAL_CAPSULE_HOLD';
   if (/interrupted/i.test(error?.message || '')) return 'INTERRUPTED_IMPORT_HOLD';
   return 'UNKNOWN_HOLD';
 }
