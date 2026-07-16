@@ -10,12 +10,14 @@ on:
       - "app/engine/ash-keep-choir-calibration*.js"
       - "app/engine/ash-keep-higher-order-interference.js"
       - "app/engine/ash-keep-ordered-route-sequence.js"
+      - "app/engine/ash-keep-temporal-disclosure.js"
       - "app/dome-world/schemas/aperture-moire-rebuild-*.schema.json"
       - "app/dome-world/schemas/aperture-reader-*.schema.json"
       - "app/dome-world/schemas/aperture-matched-benign-control-*.schema.json"
       - "app/dome-world/schemas/aperture-choir-calibration-*.schema.json"
       - "app/dome-world/schemas/aperture-higher-order-interference-v01.schema.json"
       - "app/dome-world/schemas/aperture-ordered-route-sequence-v01.schema.json"
+      - "app/dome-world/schemas/aperture-temporal-disclosure-v01.schema.json"
       - "tests/ash-keep-moire*.test.mjs"
       - "tests/ash-keep-reader-adapter*.test.mjs"
       - "tests/ash-keep-reader-disagreement*.test.mjs"
@@ -31,6 +33,7 @@ on:
       - "docs/ASH_KEEP_CHOIR_CALIBRATION_BINDING.md"
       - "docs/ASH_KEEP_STRETCH6_CLOSURE_RECEIPT.md"
       - "docs/ASH_KEEP_STRETCH7_CLOSURE_RECEIPT.md"
+      - "docs/ASH_KEEP_STRETCH8_CLOSURE_RECEIPT.md"
       - "docs/ASH_KEEP_BUILDOUT_LEDGER.md"
       - "ROADMAP.md"
       - ".github/workflows/ash-keep-choir-test.yml"
@@ -44,12 +47,14 @@ on:
       - "app/engine/ash-keep-choir-calibration*.js"
       - "app/engine/ash-keep-higher-order-interference.js"
       - "app/engine/ash-keep-ordered-route-sequence.js"
+      - "app/engine/ash-keep-temporal-disclosure.js"
       - "app/dome-world/schemas/aperture-moire-rebuild-*.schema.json"
       - "app/dome-world/schemas/aperture-reader-*.schema.json"
       - "app/dome-world/schemas/aperture-matched-benign-control-*.schema.json"
       - "app/dome-world/schemas/aperture-choir-calibration-*.schema.json"
       - "app/dome-world/schemas/aperture-higher-order-interference-v01.schema.json"
       - "app/dome-world/schemas/aperture-ordered-route-sequence-v01.schema.json"
+      - "app/dome-world/schemas/aperture-temporal-disclosure-v01.schema.json"
       - "tests/ash-keep-moire*.test.mjs"
       - "tests/ash-keep-reader-adapter*.test.mjs"
       - "tests/ash-keep-reader-disagreement*.test.mjs"
@@ -65,6 +70,7 @@ on:
       - "docs/ASH_KEEP_CHOIR_CALIBRATION_BINDING.md"
       - "docs/ASH_KEEP_STRETCH6_CLOSURE_RECEIPT.md"
       - "docs/ASH_KEEP_STRETCH7_CLOSURE_RECEIPT.md"
+      - "docs/ASH_KEEP_STRETCH8_CLOSURE_RECEIPT.md"
       - "docs/ASH_KEEP_BUILDOUT_LEDGER.md"
       - "ROADMAP.md"
       - ".github/workflows/ash-keep-choir-test.yml"
@@ -129,12 +135,14 @@ jobs:
           node tests/ash-keep-choir-calibration.test.mjs 2>&1 | tee choir-calibration-validation.log
       - name: Validate ordered route-sequence recovery
         run: node tests/choir-calibration/ordered-route-sequence.test.mjs
+      - name: Validate temporal and delayed-disclosure assays
+        run: node tests/choir-calibration/temporal-disclosure.test.mjs
       - name: Publish Choir validation success status
         if: success() && github.event_name == 'push' && github.ref == 'refs/heads/main'
         env:
           GITHUB_TOKEN: ${{ github.token }}
           TD613_OBSERVER_STATUS_STATE: success
-          TD613_OBSERVER_STATUS_DESCRIPTION: Ash Choir calibration receipts and replay passed
+          TD613_OBSERVER_STATUS_DESCRIPTION: Ash Choir calibration and temporal receipts passed
           TD613_OBSERVER_STATUS_RECEIPT_PATH: artifacts/choir-calibration-validation/observer-status-success.json
         run: node scripts/publish-ash-keep-observer-status.mjs
       - name: Publish Choir validation failure status

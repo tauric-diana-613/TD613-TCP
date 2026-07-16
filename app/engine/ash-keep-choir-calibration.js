@@ -24,3 +24,11 @@ export {
   replayOrderedRouteSequence,
   verifyOrderedRouteSequenceReplay
 } from './ash-keep-ordered-route-sequence.js';
+export {
+  TEMPORAL_DISCLOSURE_SCHEMA,
+  TEMPORAL_DISCLOSURE_REPLAY_SCHEMA,
+  compileTemporalDisclosureAssay,
+  verifyTemporalDisclosureAssay,
+  replayTemporalDisclosureAssay,
+  verifyTemporalDisclosureReplay
+} from './ash-keep-temporal-disclosure.js';

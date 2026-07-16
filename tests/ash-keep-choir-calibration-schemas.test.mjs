@@ -17,6 +17,10 @@ const orderedRoute = JSON.parse(await readFile(
   new URL('../app/dome-world/schemas/aperture-ordered-route-sequence-v01.schema.json', import.meta.url),
   'utf8'
 ));
+const temporal = JSON.parse(await readFile(
+  new URL('../app/dome-world/schemas/aperture-temporal-disclosure-v01.schema.json', import.meta.url),
+  'utf8'
+));
 const workflow = await readFile(new URL('../.github/workflows/ash-keep-choir-test.yml', import.meta.url), 'utf8');
 const publisher = await readFile(new URL('../scripts/publish-ash-keep-observer-status.mjs', import.meta.url), 'utf8');
 
@@ -98,11 +102,39 @@ assert.equal(orderedRoute.properties.network_called.const, false);
 assert.equal(orderedRoute.properties.storage_mutated.const, false);
 assert.equal(orderedRoute.properties.recommendation_not_command.const, true);
 
+assert.equal(temporal.$id, 'td613.aperture.temporal-disclosure-assay/v0.1');
+assert.equal(temporal.properties.schema.const, temporal.$id);
+assert.equal(temporal.properties.mode.const, 'BOUNDED_TEMPORAL_AND_DELAYED_DISCLOSURE_ASSAY');
+assert.equal(temporal.properties.declared_caps.properties.max_observations.maximum, 24);
+assert.equal(temporal.properties.declared_caps.properties.max_sessions.maximum, 8);
+assert.deepEqual(temporal.properties.state.enum, [
+  'TEMPORAL_ASSAY_ELIGIBLE', 'CANCELLED_HOLD', 'TAMPER_HOLD', 'STALE_CASE_HOLD',
+  'CALIBRATION_HOLD', 'SEQUENCE_COMPATIBILITY_HOLD', 'LEAKAGE_HOLD',
+  'CLOCK_AMBIGUITY_HOLD', 'STALE_WINDOW_HOLD', 'RESET_FAILURE_HOLD',
+  'INTERRUPTED_HOLD', 'MISSING_INTERVAL_HOLD', 'NOT_ENOUGH_TEST_DATA'
+]);
+assert.equal(temporal.properties.trusted_external_time_observed.const, false);
+assert.equal(temporal.properties.browser_clock_is_trusted_time.const, false);
+assert.equal(temporal.properties.operator_declared_spacing_is_trusted_time.const, false);
+assert.equal(temporal.properties.temporal_effect_is_causation.const, false);
+assert.equal(temporal.properties.surveillance_probability.type, 'null');
+assert.equal(temporal.properties.prediction_authorized.const, false);
+assert.equal(temporal.properties.release_authorized.const, false);
+assert.equal(temporal.properties.transport_authorized.const, false);
+assert.equal(temporal.properties.suppression_authorized.const, false);
+assert.equal(temporal.properties.cinder_action_authorized.const, false);
+assert.equal(temporal.properties.readers_reexecuted.const, false);
+assert.equal(temporal.properties.provider_called.const, false);
+assert.equal(temporal.properties.network_called.const, false);
+assert.equal(temporal.properties.storage_mutated.const, false);
+assert.equal(temporal.properties.recommendation_not_command.const, true);
+
 for (const token of [
   'statuses: write',
   'Ash Choir Calibration Validation',
   'Publish Choir validation pending status',
   'Validate ordered route-sequence recovery',
+  'Validate temporal and delayed-disclosure assays',
   'Publish Choir validation success status',
   'Publish Choir validation failure status',
   'Reconcile terminal Choir validation failure status',

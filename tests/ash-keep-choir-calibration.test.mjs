@@ -3,5 +3,6 @@ await import('./choir-calibration/holds.test.mjs');
 await import('./choir-calibration/replay.test.mjs');
 await import('./choir-calibration/higher-order.test.mjs');
 await import('./choir-calibration/ordered-route-sequence.test.mjs');
+await import('./choir-calibration/temporal-disclosure.test.mjs');
 
 console.log('ash-keep-choir-calibration.test.mjs passed');

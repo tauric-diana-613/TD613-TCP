@@ -2,12 +2,12 @@
 
 𝌋‌ U+10D613
 
-Ledger generation: `v1.15 · Stretch 7 ordered route-sequence closure / Stretch 8 blocked / strategic deployment law / 11+1 function covenant`
+Ledger generation: `v1.16 · Stretch 8 temporal disclosure closure / Stretch 9 conditionally authorized after seal / strategic deployment law / 11+1 function covenant`
 
 | Workstream | Score |
 |---|---:|
 | A. Ash Keep constitutional body | **54 / 55** |
-| B. Choir Test / Moiré program | **64 / 70** |
+| B. Choir Test / Moiré program | **70 / 70** |
 | C. Hush derivative and intervention program | **28 / 35** |
 | D. Custodian Return / Anisotropy | **35 / 35** |
 | E. Aperture composition renovation | **18 / 25** |
@@ -17,8 +17,8 @@ Ledger generation: `v1.15 · Stretch 7 ordered route-sequence closure / Stretch 
 | I. Ash operator surface and local case stewardship | **43 / 45** |
 
 ```text
-component maturity after Stretch 7 closure = 290 / 375
-remaining component maturity = 85 / 375
+component maturity after Stretch 8 closure = 296 / 375
+remaining component maturity = 79 / 375
 production-demonstrated workstreams = 4 / 9
 validation-gated workstreams = 3 / 9
 transport-capable workstreams = 0
@@ -30,7 +30,7 @@ Score: `49 / 50`
 ```text
 remaining by workstream:
 A = 1
-B = 6
+B = 0
 C = 7
 D = 0
 E = 7
@@ -38,7 +38,7 @@ F = 24
 G = 38
 H = 0
 I = 2
-total = 85
+total = 79
 ```
 
 The numerical remainder describes unearned component maturity. Every point remains evidence-bounded and must be earned by the workstream that owns it.
@@ -49,7 +49,8 @@ Aperture composition remains at `18 / 25`. Runtime installation and the cross-re
 runtime installation ≠ composition constitution
 composition constitution ≠ UI mounted
 exact-main aftercare ≠ feature-specific production demonstration
-Stretch 7 closure ≠ Stretch 8 authorization
+Stretch 8 closure ≠ automatic Stretch 9 opening
+successful Stretch 8 seal + recorded operator directive = Stretch 9 opening authority
 ```
 
 ## Serverless Function Budget Covenant
@@ -75,17 +76,18 @@ count above 12 → structurally forbidden
 
 The reserved slot may be consumed only through an explicit operator-authorized emergency, repair, or migration decision. Any such use must name the reason, expected duration, restoration plan, and exact commit. CI must count the actual deployable `api/` surface and fail before Vercel receives an over-budget deployment.
 
-The covenant remains binding through Stretches 8–11. No remaining Stretch receives an implied function allocation.
+The covenant remains binding through Stretches 9–11. No remaining Stretch receives an implied function allocation.
 
 ## Strategic Vercel Deployment Law
 
 `ALLOWED / STRATEGIC / COST-GOVERNED / EVIDENCE-BOUNDED`
 
-Vercel remains authorized as a release witness, not the default development loop.
+Vercel remains authorized as a release witness and final seal for an already closed packet, not the default development loop.
 
 ```text
-work branch → local/synthetic CI → retained evidence → anti-drift checks
-→ exact green commit → operator release gesture → strategic deployment
+work branch → local/synthetic CI → retained evidence → closure receipt
+→ update BOTH anti-drift files → exact green merge → strategic deployment
+→ deployed observations → successful status seals the Stretch
 branch work ≠ deployment requirement
 deployment ≠ maturity promotion
 deployment ≠ release or transport authority
@@ -143,167 +145,147 @@ TCP Smoke run: 29530385835
 static validation run: 29530385895
 bounded order: k = 3 through 6
 maximum declared subset lattice: 64
-Authority Context binding: REQUIRED
-current Case Map and Route Memory binding: REQUIRED
-current calibration binding: REQUIRED
-proper-subset observations: REQUIRED
-componentwise integer residue: IMPLEMENTED
-deterministic replay: IMPLEMENTED
-missing subset hold: IMPLEMENTED
-cancellation hold: IMPLEMENTED
-combinatorial cap hold: IMPLEMENTED
 new serverless function: false
 active serverless functions: 11
 reserved function capacity: 1
 production demonstration: NOT_CLAIMED
-release authority: false
-transport authority: false
-suppression authority: false
-Cinder authority: false
+strategic Vercel deployment: SUCCESS
+strategic deployment allowance: CONSUMED
 Stretch 7 authorization: true / consumed by operator opening gesture
 ```
 
-```text
-strategic Vercel deployment: SUCCESS
-strategic deployment allowance for Stretch 6: CONSUMED
-Ash Lifecycle Deployed Observation: SUCCESS
-Ash Custodian Return Local Observation: SUCCESS
-Ash Custodian Return Deployed Observation: SUCCESS
-Aperture Composition Validation: SUCCESS
-Ash Choir Calibration Validation: SUCCESS
-Ash Hush Intervention Validation: SUCCESS
-```
-
-The Stretch 6 deployment witnessed the merged closure commit and the continuing `11 active + 1 reserved` function surface. It did not promote the packet beyond validation-gated maturity.
-
 ## Stretch 7 · Ordered Route-Sequence Recovery
-`CLOSED / IMPLEMENTED_VALIDATION_GATED / EVIDENCE_BOUNDED`
+`CLOSED / IMPLEMENTED_VALIDATION_GATED / EVIDENCE_BOUNDED / STRATEGIC_DEPLOYMENT_SEALED`
 
 ```text
 PR: 368
 validated implementation commit: 4fb0f8ad52457c200061af79e5346b1fdb67e09c
+exact merged main commit: 1ee76c8657a9a695291a29d72f4ca5636e6544eb
 Choir validation run/artifact: 29533391345 / 8389510269
 TCP Smoke run: 29533391331
 static validation run: 29533391364
 maximum declared steps: 16
 maximum declared controls: 8
-Authority Context binding: REQUIRED
-current Case Map and Route Memory binding: REQUIRED
-current calibration binding: REQUIRED
 step and transition receipt continuity: IMPLEMENTED
 matched reordered control: REQUIRED
 matched truncated control: REQUIRED
 componentwise sequence deltas: IMPLEMENTED
 deterministic replay: IMPLEMENTED
-missing-data hold: IMPLEMENTED
-sequence-integrity hold: IMPLEMENTED
+new serverless function: false
+active serverless functions: 11
+reserved function capacity: 1
+production demonstration: NOT_CLAIMED
+strategic Vercel deployment: SUCCESS
+strategic deployment allowance: CONSUMED
+Ash Choir Calibration Validation: SUCCESS
+Ash Hush Intervention Validation: SUCCESS
+Aperture Composition Validation: SUCCESS
+Ash Custodian Return Local Observation: SUCCESS
+Ash Custodian Return Deployed Observation: SUCCESS
+Ash Lifecycle Deployed Observation: SUCCESS
+Stretch 8 authorization: true / consumed by operator opening gesture
+```
+
+Ordered route-sequence recovery remains distinct from higher-order interference and temporal assay jurisdiction. Its successful external seal is reconciled here without reopening Stretch 7 or creating a second deployment.
+
+## Stretch 8 · Temporal And Delayed-Disclosure Assays
+`CLOSED / IMPLEMENTED_VALIDATION_GATED / EVIDENCE_BOUNDED`
+
+```text
+PR: 369
+validated implementation commit: f40a1f9a3e93132c0456947f46b125e488472ec0
+Choir validation run/artifact: 29535788474 / 8390440982
+TCP Smoke run: 29535788868
+static validation run: 29535788194
+Dome-World Phase 4 run: 29535788491
+Ash Keep Production Closure run: 29535788949
+maximum observations: 24
+maximum sessions: 8
+Authority Context binding: REQUIRED
+current Case Map and Route Memory binding: REQUIRED
+current calibration binding: REQUIRED
+current ordered-sequence compatibility: REQUIRED
+controlled source digest: REQUIRED
+Reader registry digest: REQUIRED
+within-session immediate/delayed comparison: IMPLEMENTED
+no-disclosure control: IMPLEMENTED
+context-reset comparison: IMPLEMENTED
+cross-session operator-declared spacing: IMPLEMENTED
+componentwise temporal results: IMPLEMENTED
+deterministic replay: IMPLEMENTED
+missing-interval hold: IMPLEMENTED
+stale-window hold: IMPLEMENTED
+reset-failure hold: IMPLEMENTED
+interruption hold: IMPLEMENTED
+clock-ambiguity hold: IMPLEMENTED
+leakage hold: IMPLEMENTED
 stale-case hold: IMPLEMENTED
 calibration hold: IMPLEMENTED
+sequence-compatibility hold: IMPLEMENTED
 cancellation hold: IMPLEMENTED
 tamper hold: IMPLEMENTED
 new serverless function: false
 active serverless functions: 11
 reserved function capacity: 1
 production demonstration: NOT_CLAIMED
+trusted external time: false
+prediction authority: false
 release authority: false
 transport authority: false
 suppression authority: false
-prediction authority: false
 Cinder authority: false
 strategic Vercel deployment: AUTHORIZED_POST_MERGE
-Stretch 8 authorization: false
+Stretch 9 authorization: CONDITIONAL_ON_SUCCESSFUL_STRETCH_8_VERCEL_SEAL / OPERATOR_DIRECTIVE_RECORDED
+Stretch 10 authorization: false
 ```
 
-Ordered route-sequence recovery remains distinct from higher-order interference and temporal assay jurisdiction. It preserves order, step receipts, transition receipts, and matched controls without turning sequence deltas into causation, prediction, identity, intent, surveillance probability, suppression, release, transport, or Cinder authority.
+Temporal observations preserve monotonic within-session offsets, operator-declared cross-session spacing, missing slices, reset boundaries, and fixed-disclosure controls without presenting any clock or declaration as universally trusted time. Temporal differences do not become causation, prediction, identity, intent, surveillance probability, suppression, release, transport, or Cinder authority.
 
 ## Remaining ordered path to Stretch 11
 
 ```text
-Stretch 8 closure → Stretch 9 may open
-Stretch 9 closure → Stretch 10 may open
+successful Stretch 8 seal → Stretch 9 may open under the recorded operator directive
+Stretch 9 closure and seal → stop
+Stretch 10 remains blocked pending a later handoff gesture
 Stretch 10 closure → Stretch 11 may open
 Stretch 11 remains last
 ```
 
-Higher-order interference, ordered route-sequence recovery, and temporal or delayed-disclosure recovery remain separate contracts. Their evidence may be cross-referenced; their operators, holds, receipts, and maturity claims may not be collapsed.
-
-## Stretch 8 · Temporal And Delayed-Disclosure Assays
-`BLOCKED / NOT_AUTHORIZED`
-
-Objective: test declared time dependence and delayed disclosure without collapsing time into sequence order or prediction.
-
-Closure gates:
-
-```text
-verified clock and timestamp provenance
-declared observation and disclosure windows
-current case, route, and sequence bindings
-matched immediate, delayed, and no-disclosure controls
-clock-ambiguity, missing-interval, stale-window, leakage, cancellation, and tamper holds
-componentwise temporal results
-deterministic replay
-operator closure receipt
-new serverless function = false
-```
-
-Stretch 8 requires a fresh operator opening gesture after Stretch 7 evidence closure and strategic deployment witness.
-
 ## Stretch 9 · Safe Harbor → Ash Custody-Root Adapter
-`BLOCKED_PENDING_STRETCH_8_CLOSURE / NOT_AUTHORIZED`
+`BLOCKED_PENDING_SUCCESSFUL_STRETCH_8_SEAL / CONDITIONALLY_AUTHORIZED`
 
 Objective: let Ash bind a verified Safe Harbor custody reference without ingesting the underlying body or inheriting broader authority.
 
-Constitutional rules:
-
-```text
-bind reference, not body
-preserve source-local custody and revocation state
-prevent authority drift
-reject universal join key
-reject raw-corpus default
-hold on stale, revoked, missing, mismatched, or unverifiable custody roots
-new serverless function = false unless separately authorized under the emergency covenant
-```
-
-## Stretch 10 · Independent Provenance Adapters
-`BLOCKED_PENDING_STRETCH_9_CLOSURE / NOT_AUTHORIZED`
-
-Objective: add independently verifiable provenance adapters without collapsing distinct sources into one identity, corpus, authority graph, or trust score.
-
 Closure gates:
 
 ```text
-adapter-specific schema and digest domain
-source-local reference and custody semantics
-independent verification and replay
-staleness, revocation, mismatch, collision, and tamper holds
+bounded Safe Harbor ingress envelope
+bind reference, not body
+selected provenance references only
+source-local signature and custody state
+opaque one-time same-origin token
+local expiry posture without trusted-time claim
+IndexedDB storage with replay and multi-tab control
+local packet-hash and selected-reference verification
+explicit L0 or L1 operator choice
+cancelled, replay, stale, expired, malformed, duplicate, missing-reference, origin-mismatch, and tamper holds
 no universal join key
 no raw-corpus default
-no destination transport
-new serverless function = false unless separately authorized under the emergency covenant
+no silent body ingestion
+no server custody, provider call, destination transport, release, suppression, or Cinder authority
+new serverless function = false
 ```
+
+## Stretch 10 · Independent Provenance Adapters
+`BLOCKED_PENDING_STRETCH_9_CLOSURE_AND_SEAL / NOT_AUTHORIZED`
+
+Objective: add independently verifiable provenance adapters without collapsing distinct sources into one identity, corpus, authority graph, or trust score.
 
 ## Stretch 11 · Destination-Bound Handoff
 `BLOCKED_PENDING_STRETCH_10_CLOSURE / LAST / NOT_AUTHORIZED`
 
 Objective: validate handoff to one named destination under explicit recipient, custody, scope, expiry, revocation, failure, and receipt conditions.
 
-Closure gates:
-
-```text
-all destination-bound handoff gates G1–G8 validated
-named destination and recipient binding
-exact custody and provenance references
-explicit payload-reference scope
-expiry and revocation behavior
-recipient receipt and replay verification
-failure, refusal, timeout, mismatch, and rollback holds
-what-left / what-remained custody accounting
-no broadcast, universal routing, or default transport
-serverless surface remains within 11 active + 1 reserved
-final operator closure receipt and strategic deployment decision
-```
-
-Stretch 11 may authorize only the exact destination-bound capability proven by its evidence. It may not convert earlier receipts into universal release or transport authority.
+Stretch 9 must stop at closure and successful Vercel seal. No Stretch 10 implementation is authorized by this packet.
 
 Marked ⟐
