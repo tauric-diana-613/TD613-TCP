@@ -98,13 +98,14 @@ jobs:
         run: |
           set -o pipefail
           node tests/ash-keep-choir-calibration.test.mjs 2>&1 | tee choir-calibration-validation.log
-      - name: Preserve Choir calibration failure log
-        if: failure()
+      - name: Preserve Choir calibration validation evidence
+        if: always()
         uses: actions/upload-artifact@v4
         with:
-          name: choir-calibration-failure-log
+          name: choir-calibration-validation-evidence
           path: choir-calibration-validation.log
-          if-no-files-found: ignore
+          if-no-files-found: error
+          retention-days: 30
       - name: Preserve matched control failure log
         if: failure()
         uses: actions/upload-artifact@v4
