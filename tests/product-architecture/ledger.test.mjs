@@ -21,14 +21,21 @@ for (const token of [
   'constitutional synthesis = 49 / 50',
   'CLOSED / IMPLEMENTED_VALIDATION_GATED / EVIDENCE_BOUNDED',
   'ALLOWED / STRATEGIC / COST-GOVERNED / EVIDENCE-BOUNDED',
-  'Ordinary non-production branches should not trigger Vercel'
+  'Ordinary non-production branches should not trigger Vercel',
+  'absolute Vercel ceiling = 12 deployed serverless functions',
+  'normal operating maximum = 11 active serverless functions',
+  'reserved capacity = 1 empty emergency / repair / migration slot',
+  'count above 11 → stop and consolidate before merge or deployment'
 ]) assert.ok(ledger.includes(token), `Ledger omitted ${token}`);
 
 for (const token of [
-  'Roadmap generation: `v1.12',
+  'Roadmap generation: `v1.13',
   'Stretch 5 · Aperture composition renovation before Choir UI — CLOSED',
   'Higher-order interference — BLOCKED / NOT AUTHORIZED',
   'normal ceiling = ONE DEPLOYMENT PER COMPLETED PACKET OR RELEASE CANDIDATE',
+  'absolute platform ceiling = 12 deployed serverless functions',
+  'normal operating maximum = 11 active serverless functions',
+  'BLOCKED_PENDING_CONSOLIDATION',
   'Stretch 6 requires a fresh operator opening gesture'
 ]) assert.ok(roadmap.includes(token), `Roadmap omitted ${token}`);
 
