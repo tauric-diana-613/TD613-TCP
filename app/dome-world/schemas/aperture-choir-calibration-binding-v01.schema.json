@@ -1,0 +1,141 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "td613.aperture.choir-calibration-binding/v0.1",
+  "title": "TD613 Choir Calibration Binding v0.1",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema", "version", "binding_id", "created_at", "mode", "case_id",
+    "case_map_digest", "route_memory_digest", "receipt_references", "reader_ids",
+    "verification", "binding_checks", "binding_state", "calibration_eligible",
+    "review_state", "failed_checks", "componentwise_comparison",
+    "free_calibration_booleans_accepted", "universal_calibration_score",
+    "real_surveillance_probability", "readers_executed_by_binding",
+    "provider_call_performed", "network_called", "storage_mutated",
+    "release_authorized", "transport_authorized", "cinder_action_authorized",
+    "prediction_authorized", "automatic_hold", "automatic_ash_action",
+    "recommendation_not_command", "source_status", "evidence_basis", "missingness",
+    "alternatives", "open_questions", "operator_notes", "closure", "binding_digest"
+  ],
+  "properties": {
+    "schema": { "const": "td613.aperture.choir-calibration-binding/v0.1" },
+    "version": { "const": "v0.1" },
+    "binding_id": { "type": "string", "pattern": "^choircal_[A-Za-z0-9_-]{6,128}$" },
+    "created_at": { "type": "string" },
+    "mode": { "const": "RECEIPT_BOUND_CHOIR_CALIBRATION" },
+    "case_id": { "type": ["string", "null"] },
+    "case_map_digest": { "$ref": "#/$defs/nullableSha256" },
+    "route_memory_digest": { "$ref": "#/$defs/nullableSha256" },
+    "receipt_references": { "$ref": "#/$defs/receiptReferences" },
+    "reader_ids": { "$ref": "#/$defs/stringArray" },
+    "verification": { "$ref": "#/$defs/verification" },
+    "binding_checks": { "$ref": "#/$defs/bindingChecks" },
+    "binding_state": {
+      "enum": [
+        "CALIBRATION_ELIGIBLE", "TAMPER_HOLD", "STALE_CASE_HOLD",
+        "SOURCE_DRIFT_HOLD", "RECEIPT_REFERENCE_HOLD", "NOT_ENOUGH_TEST_DATA"
+      ]
+    },
+    "calibration_eligible": { "type": "boolean" },
+    "review_state": { "enum": ["OPERATOR_REVIEW_REQUIRED", "EVIDENCE_HELD_FOR_REPAIR"] },
+    "failed_checks": { "$ref": "#/$defs/stringArray" },
+    "componentwise_comparison": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["source", "set_components", "numeric_components", "pairwise_disagreement"],
+      "properties": {
+        "source": { "const": "MATCHED_BENIGN_CONTROL_BANK" },
+        "set_components": { "type": "object" },
+        "numeric_components": { "type": "object" },
+        "pairwise_disagreement": { "type": "object" }
+      }
+    },
+    "free_calibration_booleans_accepted": { "const": false },
+    "universal_calibration_score": { "type": "null" },
+    "real_surveillance_probability": { "type": "null" },
+    "readers_executed_by_binding": { "const": false },
+    "provider_call_performed": { "const": false },
+    "network_called": { "const": false },
+    "storage_mutated": { "const": false },
+    "release_authorized": { "const": false },
+    "transport_authorized": { "const": false },
+    "cinder_action_authorized": { "const": false },
+    "prediction_authorized": { "const": false },
+    "automatic_hold": { "const": false },
+    "automatic_ash_action": { "const": false },
+    "recommendation_not_command": { "const": true },
+    "source_status": { "type": "string" },
+    "evidence_basis": { "$ref": "#/$defs/stringArray" },
+    "missingness": { "$ref": "#/$defs/stringArray" },
+    "alternatives": { "$ref": "#/$defs/stringArray" },
+    "open_questions": { "$ref": "#/$defs/stringArray" },
+    "operator_notes": { "$ref": "#/$defs/stringArray" },
+    "closure": { "$ref": "#/$defs/closure" },
+    "binding_digest": { "$ref": "#/$defs/sha256" }
+  },
+  "$defs": {
+    "sha256": { "type": "string", "pattern": "^sha256:[0-9a-f]{64}$" },
+    "nullableSha256": { "anyOf": [{ "$ref": "#/$defs/sha256" }, { "type": "null" }] },
+    "stringArray": { "type": "array", "items": { "type": "string" } },
+    "receiptReferences": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "moire_assay_digests", "reader_provenance_digests",
+        "disagreement_ledger_digest", "matched_control_bank_digest"
+      ],
+      "properties": {
+        "moire_assay_digests": { "type": "array", "minItems": 2, "items": { "$ref": "#/$defs/sha256" } },
+        "reader_provenance_digests": { "type": "array", "minItems": 2, "items": { "$ref": "#/$defs/sha256" } },
+        "disagreement_ledger_digest": { "$ref": "#/$defs/nullableSha256" },
+        "matched_control_bank_digest": { "$ref": "#/$defs/nullableSha256" }
+      }
+    },
+    "verification": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["case_map", "route_memory", "moire_assays", "reader_provenances", "disagreement_ledger", "matched_control_bank"],
+      "properties": {
+        "case_map": { "type": "boolean" },
+        "route_memory": { "type": "boolean" },
+        "moire_assays": { "type": "boolean" },
+        "reader_provenances": { "type": "boolean" },
+        "disagreement_ledger": { "type": "boolean" },
+        "matched_control_bank": { "type": "boolean" }
+      }
+    },
+    "bindingChecks": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "verified_receipts", "current_case_binding", "receipt_case_binding",
+        "exact_moire_references", "exact_provenance_references",
+        "exact_disagreement_reference", "reader_set_binding",
+        "disagreement_provenance_binding", "source_drift_held",
+        "observations_complete", "provenances_bound", "disagreement_observed",
+        "control_bank_eligible"
+      ],
+      "properties": {
+        "verified_receipts": { "type": "boolean" },
+        "current_case_binding": { "type": "boolean" },
+        "receipt_case_binding": { "type": "boolean" },
+        "exact_moire_references": { "type": "boolean" },
+        "exact_provenance_references": { "type": "boolean" },
+        "exact_disagreement_reference": { "type": "boolean" },
+        "reader_set_binding": { "type": "boolean" },
+        "disagreement_provenance_binding": { "type": "boolean" },
+        "source_drift_held": { "type": "boolean" },
+        "observations_complete": { "type": "boolean" },
+        "provenances_bound": { "type": "boolean" },
+        "disagreement_observed": { "type": "boolean" },
+        "control_bank_eligible": { "type": "boolean" }
+      }
+    },
+    "closure": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["required", "status"],
+      "properties": { "required": { "const": true }, "status": { "type": "string" } }
+    }
+  }
+}

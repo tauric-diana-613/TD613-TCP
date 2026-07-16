@@ -7,18 +7,24 @@ on:
       - "app/engine/ash-keep-reader-adapters.js"
       - "app/engine/ash-keep-reader-disagreement.js"
       - "app/engine/ash-keep-benign-controls.js"
+      - "app/engine/ash-keep-choir-calibration*.js"
       - "app/dome-world/schemas/aperture-moire-rebuild-*.schema.json"
       - "app/dome-world/schemas/aperture-reader-*.schema.json"
       - "app/dome-world/schemas/aperture-matched-benign-control-*.schema.json"
+      - "app/dome-world/schemas/aperture-choir-calibration-*.schema.json"
       - "tests/ash-keep-moire*.test.mjs"
       - "tests/ash-keep-reader-adapter*.test.mjs"
       - "tests/ash-keep-reader-disagreement*.test.mjs"
       - "tests/ash-keep-benign-controls*.test.mjs"
+      - "tests/ash-keep-choir-calibration*.test.mjs"
+      - "tests/fixtures/choir-calibration-fixture.mjs"
       - "docs/ASH_KEEP_CHOIR_TEST.md"
       - "docs/ASH_KEEP_READER_ADAPTER_REGISTRY.md"
       - "docs/ASH_KEEP_READER_DISAGREEMENT.md"
       - "docs/ASH_KEEP_MATCHED_BENIGN_CONTROLS.md"
+      - "docs/ASH_KEEP_CHOIR_CALIBRATION_BINDING.md"
       - "docs/ASH_KEEP_BUILDOUT_LEDGER.md"
+      - "ROADMAP.md"
       - ".github/workflows/ash-keep-choir-test.yml"
   push:
     branches: [main]
@@ -27,18 +33,24 @@ on:
       - "app/engine/ash-keep-reader-adapters.js"
       - "app/engine/ash-keep-reader-disagreement.js"
       - "app/engine/ash-keep-benign-controls.js"
+      - "app/engine/ash-keep-choir-calibration*.js"
       - "app/dome-world/schemas/aperture-moire-rebuild-*.schema.json"
       - "app/dome-world/schemas/aperture-reader-*.schema.json"
       - "app/dome-world/schemas/aperture-matched-benign-control-*.schema.json"
+      - "app/dome-world/schemas/aperture-choir-calibration-*.schema.json"
       - "tests/ash-keep-moire*.test.mjs"
       - "tests/ash-keep-reader-adapter*.test.mjs"
       - "tests/ash-keep-reader-disagreement*.test.mjs"
       - "tests/ash-keep-benign-controls*.test.mjs"
+      - "tests/ash-keep-choir-calibration*.test.mjs"
+      - "tests/fixtures/choir-calibration-fixture.mjs"
       - "docs/ASH_KEEP_CHOIR_TEST.md"
       - "docs/ASH_KEEP_READER_ADAPTER_REGISTRY.md"
       - "docs/ASH_KEEP_READER_DISAGREEMENT.md"
       - "docs/ASH_KEEP_MATCHED_BENIGN_CONTROLS.md"
+      - "docs/ASH_KEEP_CHOIR_CALIBRATION_BINDING.md"
       - "docs/ASH_KEEP_BUILDOUT_LEDGER.md"
+      - "ROADMAP.md"
       - ".github/workflows/ash-keep-choir-test.yml"
   workflow_dispatch:
 
@@ -79,10 +91,25 @@ jobs:
         run: |
           set -o pipefail
           node tests/ash-keep-benign-controls.test.mjs 2>&1 | tee matched-control-validation.log
+      - name: Validate Choir calibration binding schemas
+        run: node tests/ash-keep-choir-calibration-schemas.test.mjs
+      - name: Validate receipt-bound Choir calibration
+        shell: bash
+        run: |
+          set -o pipefail
+          node tests/ash-keep-choir-calibration.test.mjs 2>&1 | tee choir-calibration-validation.log
+      - name: Preserve Choir calibration validation evidence
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: choir-calibration-validation-evidence
+          path: choir-calibration-validation.log
+          if-no-files-found: error
+          retention-days: 30
       - name: Preserve matched control failure log
         if: failure()
         uses: actions/upload-artifact@v4
         with:
           name: matched-control-failure-log
           path: matched-control-validation.log
-          if-no-files-found: error
+          if-no-files-found: ignore

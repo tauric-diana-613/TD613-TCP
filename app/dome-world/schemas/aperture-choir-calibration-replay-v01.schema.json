@@ -1,0 +1,14 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "td613.aperture.choir-calibration-replay/v0.1",
+  "title": "TD613 Choir Calibration Replay v0.1",
+  "type": "object",
+  "required": ["schema", "version", "replay_id", "status", "replay_digest"],
+  "properties": {
+    "schema": { "const": "td613.aperture.choir-calibration-replay/v0.1" },
+    "version": { "const": "v0.1" },
+    "replay_id": { "type": "string" },
+    "status": { "enum": ["CHOIR_CALIBRATION_REPLAY_VERIFIED", "CHOIR_CALIBRATION_REPLAY_HELD"] },
+    "replay_digest": { "type": "string", "pattern": "^sha256:[0-9a-f]{64}$" }
+  }
+}
