@@ -74,6 +74,7 @@ function createPanel() {
   panel.id = 'safeHarborIngressReview';
   panel.className = 'ash-panel ash-safe-harbor-ingress';
   panel.setAttribute('data-td613-skip', 'true');
+  panel.setAttribute('tabindex', '-1');
   panel.innerHTML = `
     <div class="section-label">Safe Harbor custody-root adapter</div>
     <h2>Reference arrived; custody has not.</h2>
@@ -107,8 +108,19 @@ function disable(panel, disabled = true) {
   panel.querySelectorAll('button').forEach(button => { button.disabled = disabled; });
 }
 
+function revealIngressReview(panel) {
+  const launch = document.getElementById('launch');
+  if (launch) {
+    launch.classList.add('hidden');
+    launch.setAttribute('aria-hidden', 'true');
+  }
+  panel.focus({ preventScroll: true });
+  panel.scrollIntoView({ block: 'start' });
+}
+
 async function renderToken(token) {
   const panel = createPanel();
+  revealIngressReview(panel);
   const cleanUrl = new URL(window.location.href);
   cleanUrl.searchParams.delete('safe_harbor_token');
   window.history.replaceState({}, document.title, cleanUrl.href);
@@ -197,6 +209,7 @@ function boot() {
   if (!token) return;
   renderToken(token).catch(error => {
     const panel = document.getElementById('safeHarborIngressReview') || createPanel();
+    revealIngressReview(panel);
     setText('safeHarborIngressState', `INGRESS_ENVELOPE_HOLD: ${error?.message || 'unknown error'}`);
     disable(panel);
   });
