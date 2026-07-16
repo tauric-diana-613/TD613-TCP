@@ -63,10 +63,13 @@ assert.match(validationWorkflow, /ash-custodian-return-production-probe\.mjs/);
 assert.doesNotMatch(validationWorkflow, /workflow_run|statuses: write|TD613_OBSERVER_STATUS_CONTEXT/);
 
 assert.match(deployedWorkflow, /Ash Custodian Return Deployed/);
+assert.match(deployedWorkflow, /push:[\s\S]*branches: \[main\]/);
+assert.match(deployedWorkflow, /github\.event_name == 'push'/);
 assert.match(deployedWorkflow, /workflow_run/);
 assert.match(deployedWorkflow, /Test and deploy static app/);
 assert.match(deployedWorkflow, /statuses: write/);
 assert.match(deployedWorkflow, /Ash Custodian Return Deployed Observation/);
+assert.match(deployedWorkflow, /Wait for deployed Stretch 2 closure surfaces/);
 assert.match(deployedWorkflow, /Publish Return observer pending status/);
 assert.match(deployedWorkflow, /Publish Return observer success status/);
 assert.match(deployedWorkflow, /Publish Return observer failure status/);
