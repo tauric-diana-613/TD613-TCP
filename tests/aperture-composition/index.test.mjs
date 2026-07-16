@@ -9,9 +9,10 @@ const tool = fs.readFileSync(new URL('../../app/aperture/tool.html', import.meta
 assert.match(index, /name="aperture-composition" content="td613\.aperture\.composition-manifest\/v0\.1"/);
 assert.match(index, /<iframe id="td613ApertureTool" src="\.\/tool\.html\?v=[^"]+"/);
 assert.match(index, /<script type="module" src="\.\/bootstrap\.js\?v=[^"]+"><\/script>/);
-assert.doesNotMatch(index, /aperture-v3-reciprocal-bridge\.js/);
+assert.match(index, /name="phase4-bridge-module" content="\.\.\/engine\/aperture-v3-reciprocal-bridge\.js"/);
+assert.match(index, /name="phase4-bridge-ready-event" content="td613:phase4-reciprocal-bridge-ready"/);
+assert.doesNotMatch(index, /<script[^>]+src="[^"]*aperture-v3-reciprocal-bridge\.js/);
 assert.doesNotMatch(index, /frame\.contentWindow\.TD613_PHASE4_RECIPROCAL_BRIDGE/);
-assert.doesNotMatch(index, /td613:phase4-reciprocal-bridge-ready/);
 assert.equal((index.match(/<script type="module"/g) || []).length, 1);
 
 assert.match(bootstrap, /installApertureComposition/);
