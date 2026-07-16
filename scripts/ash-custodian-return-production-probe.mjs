@@ -55,9 +55,10 @@ async function openSurface({ viewport, reducedMotion = 'no-preference', label })
   page.on('request', request => {
     const url = request.url();
     const method = request.method();
-    if (/\/api\/hush-generate|provider/i.test(url)) providerRequests.push({ label, method, url });
-    if (method !== 'GET' && method !== 'HEAD' && !/ash-custodian-return/i.test(url)) recipientTransportRequests.push({ label, method, url });
-    if (/cinder/i.test(url)) cinderActions.push({ label, method, url });
+    const executable = method !== 'GET' && method !== 'HEAD';
+    if (executable && /\/api\/hush-generate|provider/i.test(url)) providerRequests.push({ label, method, url });
+    if (executable && !/ash-custodian-return/i.test(url)) recipientTransportRequests.push({ label, method, url });
+    if (executable && /cinder/i.test(url)) cinderActions.push({ label, method, url });
   });
   await page.goto(`${baseUrl}/dome-world/ash-keep.html?arrival=cleared`, { waitUntil: 'networkidle', timeout: 90000 });
   await page.waitForFunction(() => document.documentElement.dataset.ashCustodianReturnClosure === 'td613.ash.custodian-return-closure/v0.1', null, { timeout: 30000 });
