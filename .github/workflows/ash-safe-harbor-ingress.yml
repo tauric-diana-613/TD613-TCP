@@ -11,6 +11,7 @@ on:
       - "app/dome-world/ash-safe-harbor-ingress.js"
       - "app/dome-world/ash-keep.js"
       - "app/dome-world/schemas/ash-safe-harbor-*.schema.json"
+      - "scripts/ash-safe-harbor-ingress-browser-probe.mjs"
       - "tests/ash-safe-harbor-ingress*.test.mjs"
       - "docs/ASH_KEEP_STRETCH9_CLOSURE_RECEIPT.md"
       - "docs/ASH_KEEP_BUILDOUT_LEDGER.md"
@@ -27,6 +28,7 @@ on:
       - "app/dome-world/ash-safe-harbor-ingress.js"
       - "app/dome-world/ash-keep.js"
       - "app/dome-world/schemas/ash-safe-harbor-*.schema.json"
+      - "scripts/ash-safe-harbor-ingress-browser-probe.mjs"
       - "tests/ash-safe-harbor-ingress*.test.mjs"
       - "docs/ASH_KEEP_STRETCH9_CLOSURE_RECEIPT.md"
       - "docs/ASH_KEEP_BUILDOUT_LEDGER.md"
@@ -41,7 +43,7 @@ permissions:
 jobs:
   validate-ingress:
     runs-on: ubuntu-latest
-    timeout-minutes: 15
+    timeout-minutes: 20
     env:
       TD613_OBSERVED_COMMIT: ${{ github.sha }}
       TD613_OBSERVER_RUN_URL: ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}
@@ -91,6 +93,31 @@ jobs:
         run: node tests/ash-product-architecture.test.mjs
       - name: Enforce Vercel function hygiene
         run: node tests/vercel-deploy-hygiene.test.mjs
+      - name: Install Chromium probe runtime
+        run: npx playwright install --with-deps chromium
+      - name: Start bounded local ingress runtime
+        shell: bash
+        run: |
+          node scripts/ash-keep-local-closure-server.mjs 6138 > ash-safe-harbor-ingress-runtime.log 2>&1 &
+          echo $! > ash-safe-harbor-ingress-runtime.pid
+          for attempt in $(seq 1 60); do
+            if curl --fail --silent http://127.0.0.1:6138/__ash_keep_closure/readiness > /dev/null; then exit 0; fi
+            sleep 1
+          done
+          cat ash-safe-harbor-ingress-runtime.log
+          exit 1
+      - name: Observe mobile Safe Harbor to Ash ingress
+        env:
+          TD613_BASE_URL: http://127.0.0.1:6138
+          TD613_ARTIFACT_DIR: artifacts/ash-safe-harbor-ingress-browser
+        run: node scripts/ash-safe-harbor-ingress-browser-probe.mjs
+      - name: Stop bounded local ingress runtime
+        if: always()
+        shell: bash
+        run: |
+          if [ -f ash-safe-harbor-ingress-runtime.pid ]; then
+            kill "$(cat ash-safe-harbor-ingress-runtime.pid)" 2>/dev/null || true
+          fi
       - name: Publish ingress validation success status
         if: success() && github.event_name == 'push' && github.ref == 'refs/heads/main'
         env:
@@ -115,7 +142,9 @@ jobs:
           path: |
             ash-safe-harbor-ingress.log
             ash-keep-ui.log
+            ash-safe-harbor-ingress-runtime.log
             app/dome-world/schemas/ash-safe-harbor-*.schema.json
             artifacts/ash-safe-harbor-ingress/
+            artifacts/ash-safe-harbor-ingress-browser/
           if-no-files-found: warn
           retention-days: 30
