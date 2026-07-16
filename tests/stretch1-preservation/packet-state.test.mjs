@@ -20,6 +20,9 @@ assert.match(ledger, /Stretch 4 · Hush Vocabulary Externalization And Lifecycle
 assert.match(ledger, /Stretch 5 · Aperture Composition Renovation Before Choir UI[\s\S]*OPEN \/ IMPLEMENTED_VALIDATION_GATED/);
 assert.match(ledger, /current-head aftercare commit:[\s\S]*2c89b70e284562ebb6b842900ae1a1bd0b00f6e6/);
 assert.match(ledger, /transport-capable workstreams = 0/);
+assert.match(ledger, /Vercel Deployment Law/);
+assert.match(ledger, /preview deployment ≠ production deployment/);
+assert.match(ledger, /production observation ≠ maturity promotion/);
 
 assert.match(roadmap, /Roadmap generation: `v1\.11 · Stretch 5 validation-gated \/ Stretch 6 blocked`/);
 assert.match(roadmap, /component maturity after Stretch 5 implementation = 270 \/ 375/);
@@ -32,6 +35,9 @@ assert.match(roadmap, /Stretch 3 · Choir calibration receipt binding — CLOSED
 assert.match(roadmap, /Stretch 4 · Hush vocabulary externalization and intervention ensemble — CLOSED/);
 assert.match(roadmap, /Stretch 5 · Aperture composition renovation before Choir UI — OPEN \/ IMPLEMENTED_VALIDATION_GATED/);
 assert.match(roadmap, /Higher-order interference — BLOCKED \/ NOT AUTHORIZED/);
+assert.match(roadmap, /Vercel deployment = ALLOWED/);
+assert.match(roadmap, /exact commit attribution = REQUIRED/);
+assert.match(roadmap, /Vercel deployment ≠ transport authority/);
 assert.match(roadmap, /Stretch 6 requires a fresh operator opening gesture after Stretch 5 evidence closure/);
 
 console.log('stretch1-preservation/packet-state.test.mjs passed');

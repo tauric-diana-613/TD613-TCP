@@ -60,15 +60,20 @@ assert.match(ledger, /component maturity after Stretch 5 implementation = 270 \/
 assert.match(ledger, /validation-gated workstreams = 3 \/ 9/);
 assert.match(ledger, /Score: `49 \/ 50`|constitutional synthesis = 49 \/ 50/);
 assert.match(ledger, /Stretch 5 · Aperture Composition Renovation Before Choir UI[\s\S]*OPEN \/ IMPLEMENTED_VALIDATION_GATED/);
+assert.match(ledger, /Vercel Deployment Law[\s\S]*Vercel deployment is permitted/);
 assert.match(roadmap, /Stretch 4 · Hush vocabulary externalization and intervention ensemble — CLOSED/);
 assert.match(roadmap, /Stretch 5 · Aperture composition renovation before Choir UI — OPEN \/ IMPLEMENTED_VALIDATION_GATED/);
 assert.match(roadmap, /Higher-order interference — BLOCKED \/ NOT AUTHORIZED/);
 assert.match(roadmap, /transport-capable workstreams = 0/);
+assert.match(roadmap, /Vercel deployment = ALLOWED/);
+assert.match(roadmap, /production observation ≠ operator closure/);
 assert.match(convergence, /Status: `IMPLEMENTED_PRODUCTION_DEMONSTRATED`/);
 assert.match(convergence, /29458943541/);
 assert.match(hushReceipt, /Hush_validation_run: 29483240258/);
 assert.match(hushReceipt, /Stretch_5_authorized: false/);
 assert.match(composition, /canonical_body_rewritten = false/);
+assert.match(composition, /td613\.aperture\.composition-constitution-projection\/v0\.1/);
+assert.match(composition, /Vercel allowed ≠ deployment earns maturity/);
 assert.match(composition, /Stretch_6_authorized: false/);
 
 console.log('ash-lifecycle-production-contract.test.mjs passed');

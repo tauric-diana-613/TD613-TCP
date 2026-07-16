@@ -1,0 +1,177 @@
+name: Ash Aperture Composition Constitution
+
+on:
+  pull_request:
+    paths:
+      - "app/engine/aperture-composition-constitution.js"
+      - "app/engine/aperture-composition-common.js"
+      - "app/engine/aperture-composition-plan.js"
+      - "app/engine/aperture-composition-inspect.js"
+      - "app/engine/aperture-composition-record.js"
+      - "app/engine/aperture-composition-receipt.js"
+      - "app/engine/aperture-composition-projection.js"
+      - "app/engine/aperture-composition-replay.js"
+      - "app/dome-world/schemas/aperture-composition-constitution-*.schema.json"
+      - "tests/aperture-composition/constitution-*.test.mjs"
+      - "tests/fixtures/aperture-composition-fixture.mjs"
+      - "scripts/publish-ash-keep-observer-status.mjs"
+      - "docs/ASH_KEEP_APERTURE_COMPOSITION.md"
+      - ".github/workflows/ash-aperture-composition-constitution.yml"
+  push:
+    branches: [main]
+    paths:
+      - "app/engine/aperture-composition-constitution.js"
+      - "app/engine/aperture-composition-common.js"
+      - "app/engine/aperture-composition-plan.js"
+      - "app/engine/aperture-composition-inspect.js"
+      - "app/engine/aperture-composition-record.js"
+      - "app/engine/aperture-composition-receipt.js"
+      - "app/engine/aperture-composition-projection.js"
+      - "app/engine/aperture-composition-replay.js"
+      - "app/dome-world/schemas/aperture-composition-constitution-*.schema.json"
+      - "tests/aperture-composition/constitution-*.test.mjs"
+      - "tests/fixtures/aperture-composition-fixture.mjs"
+      - "scripts/publish-ash-keep-observer-status.mjs"
+      - "docs/ASH_KEEP_APERTURE_COMPOSITION.md"
+      - ".github/workflows/ash-aperture-composition-constitution.yml"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  statuses: write
+
+concurrency:
+  group: aperture-composition-constitution-${{ github.event.pull_request.number || github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  validate-constitution:
+    runs-on: ubuntu-latest
+    timeout-minutes: 18
+    env:
+      TD613_OBSERVED_COMMIT: ${{ github.sha }}
+      TD613_OBSERVER_RUN_URL: ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}
+      TD613_OBSERVER_STATUS_CONTEXT: Aperture Composition Constitution Validation
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+      - name: Publish constitution pending status
+        if: github.event_name == 'push'
+        env:
+          GITHUB_TOKEN: ${{ github.token }}
+          TD613_OBSERVER_STATUS_STATE: pending
+          TD613_OBSERVER_STATUS_DESCRIPTION: Aperture composition constitution validation is running
+          TD613_OBSERVER_STATUS_RECEIPT_PATH: artifacts/aperture-composition-constitution/observer-status-pending.json
+        run: node scripts/publish-ash-keep-observer-status.mjs
+      - name: Install dependencies
+        run: npm ci
+      - name: Validate constitution syntax
+        run: |
+          node --check app/engine/aperture-composition.js
+          node --check app/engine/aperture-composition-constitution.js
+          node --check app/engine/aperture-composition-common.js
+          node --check app/engine/aperture-composition-plan.js
+          node --check app/engine/aperture-composition-inspect.js
+          node --check app/engine/aperture-composition-record.js
+          node --check app/engine/aperture-composition-receipt.js
+          node --check app/engine/aperture-composition-projection.js
+          node --check app/engine/aperture-composition-replay.js
+          node --check tests/fixtures/aperture-composition-fixture.mjs
+      - name: Validate constitution schemas
+        run: |
+          node tests/aperture-composition/constitution-schema-identity.test.mjs
+          node tests/aperture-composition/constitution-schema-boundaries.test.mjs
+      - name: Validate eligible constitution, projection, and replay
+        run: node tests/aperture-composition/constitution-eligible.test.mjs
+      - name: Validate integrity and layer-order holds
+        run: node tests/aperture-composition/constitution-integrity-holds.test.mjs
+      - name: Validate Aperture receipt-binding holds
+        run: node tests/aperture-composition/constitution-aperture-binding-holds.test.mjs
+      - name: Validate Choir, Hush, presentation, and authority holds
+        run: node tests/aperture-composition/constitution-downstream-holds.test.mjs
+      - name: Validate forbidden-body projection boundary
+        run: node tests/aperture-composition/constitution-projection-boundary.test.mjs
+      - name: Preserve installed composition runtime
+        run: |
+          node tests/aperture-composition/manifest.test.mjs
+          node tests/aperture-composition/runtime.test.mjs
+          node tests/aperture-composition/replay.test.mjs
+          node tests/aperture-composition/index.test.mjs
+          node tests/aperture-composition/release.test.mjs
+      - name: Preserve Aperture v3.1 instrument regressions
+        run: npm run test:aperture:v31
+      - name: Preserve Choir, Hush, and lifecycle boundaries
+        run: |
+          node tests/choir-calibration/eligible.test.mjs
+          node tests/hush-intervention/eligible.test.mjs
+          node tests/ash-lifecycle.test.mjs
+          node tests/ash-constitutional-convergence.test.mjs
+      - name: Build retained constitution evidence
+        if: always()
+        run: |
+          mkdir -p artifacts/aperture-composition-constitution
+          {
+            echo "schema=td613.aperture.composition-constitution-validation-evidence/v0.1"
+            echo "observed_commit=${GITHUB_SHA}"
+            echo "workflow_run_id=${GITHUB_RUN_ID}"
+            echo "source_status=VALIDATION_GATED"
+            echo "runtime_manifest_preserved=true"
+            echo "future_choir_ui_mounted=false"
+            echo "instrument_execution=false"
+            echo "reader_execution=false"
+            echo "provider_execution=false"
+            echo "storage_mutated=false"
+            echo "release_authority=false"
+            echo "recipient_transport=false"
+            echo "cinder_action=false"
+            echo "automatic_hold=false"
+            echo "automatic_ash_action=false"
+            echo "operator_closure_required=true"
+          } > artifacts/aperture-composition-constitution/validation-summary.txt
+      - name: Publish constitution success status
+        if: success() && github.event_name == 'push'
+        env:
+          GITHUB_TOKEN: ${{ github.token }}
+          TD613_OBSERVER_STATUS_STATE: success
+          TD613_OBSERVER_STATUS_DESCRIPTION: Composition constitution passed; runtime and UI authority remain separate
+          TD613_OBSERVER_STATUS_RECEIPT_PATH: artifacts/aperture-composition-constitution/observer-status-success.json
+        run: node scripts/publish-ash-keep-observer-status.mjs
+      - name: Publish constitution failure status
+        if: failure() && github.event_name == 'push'
+        env:
+          GITHUB_TOKEN: ${{ github.token }}
+          TD613_OBSERVER_STATUS_STATE: failure
+          TD613_OBSERVER_STATUS_DESCRIPTION: Aperture composition constitution held for repair
+          TD613_OBSERVER_STATUS_RECEIPT_PATH: artifacts/aperture-composition-constitution/observer-status-failure.json
+        run: node scripts/publish-ash-keep-observer-status.mjs
+      - name: Preserve constitution evidence
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: aperture-composition-constitution-validation-evidence
+          path: |
+            app/engine/aperture-composition-constitution.js
+            app/engine/aperture-composition-common.js
+            app/engine/aperture-composition-plan.js
+            app/engine/aperture-composition-inspect.js
+            app/engine/aperture-composition-record.js
+            app/engine/aperture-composition-receipt.js
+            app/engine/aperture-composition-projection.js
+            app/engine/aperture-composition-replay.js
+            app/dome-world/schemas/aperture-composition-constitution-*.schema.json
+            tests/aperture-composition/constitution-*.test.mjs
+            tests/fixtures/aperture-composition-fixture.mjs
+            artifacts/aperture-composition-constitution/
+          if-no-files-found: error
+          retention-days: 30
+      - name: Reconcile terminal constitution failure status
+        if: failure() && github.event_name == 'push'
+        env:
+          GITHUB_TOKEN: ${{ github.token }}
+          TD613_OBSERVER_STATUS_STATE: failure
+          TD613_OBSERVER_STATUS_DESCRIPTION: Constitution validation or evidence preservation failed
+          TD613_OBSERVER_STATUS_RECEIPT_PATH: artifacts/aperture-composition-constitution/observer-status-failure-reconciled.json
+        run: node scripts/publish-ash-keep-observer-status.mjs

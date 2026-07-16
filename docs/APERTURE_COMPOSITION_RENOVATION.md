@@ -17,9 +17,11 @@ Choir_UI_authorized: false
 Stretch_6_authorized: false
 ```
 
-## Renovated boundary
+## Two complementary composition layers
 
-The stable public shim now loads one module entrypoint, `app/aperture/bootstrap.js`. The bootstrap installs a versioned composition manifest around the unchanged canonical instrument body at `app/aperture/tool.html`.
+### Runtime installation composition
+
+The stable public shim loads `app/aperture/bootstrap.js`, which installs the versioned runtime manifest around the unchanged canonical body at `app/aperture/tool.html`.
 
 ```text
 canonical body
@@ -28,13 +30,11 @@ canonical body
 → v3.1 compatibility projection
 → Phase IV reciprocal bridge projection
 → composition runtime registry
-→ composition receipt
-→ digest-only replay
+→ runtime composition receipt
+→ digest-only runtime replay
 ```
 
-The historical `TD613_PHASE4_RECIPROCAL_BRIDGE` host global remains only as a declared compatibility projection. The shim contains declarative module and event lineage but performs no direct bridge import, frame assignment, or event fabrication.
-
-## Composition records
+Records:
 
 ```text
 manifest: td613.aperture.composition-manifest/v0.1
@@ -43,11 +43,50 @@ receipt: td613.aperture.composition-receipt/v0.1
 replay: td613.aperture.composition-replay/v0.1
 ```
 
-The manifest fixes component order, dependencies, namespaces, canonical-body identity, public-shim identity, compatibility aliases, and the non-authority ceiling.
+### Cross-receipt composition constitution
 
-## Reload posture
+The composition constitution governs how already-sealed Ash, Aperture, Choir, and Hush evidence may be assembled before any future Choir UI:
 
-Iframe navigation creates a new child window while the host registry remains sealed. `aperture-composition-frame.js` verifies the existing host registry and Phase IV projection, then installs the same manifest into the new frame without replacing the host registry or inflating authority.
+```text
+current Authority Context
+→ controlled source
+→ instrument ensemble
+→ snapshot lattice
+→ experiment run
+→ tomography receipt
+→ Choir calibration binding
+→ Hush intervention receipt
+→ read-only presentation projection
+```
+
+Records:
+
+```text
+plan: td613.aperture.composition-constitution-plan/v0.1
+receipt: td613.aperture.composition-constitution-receipt/v0.1
+projection: td613.aperture.composition-constitution-projection/v0.1
+replay: td613.aperture.composition-constitution-replay/v0.1
+```
+
+The constitution derives explicit missing, tamper, stale-authority, order, source, experiment, tomography, Choir, Hush, and presentation-boundary holds. Authority Context integrity and currentness remain separate jurisdictions.
+
+## Presentation boundary
+
+The projection contains references, digests, layer order, verification state, holds, and componentwise postures. It excludes raw source, candidate body, Case Map body, Route Memory body, room keys, private aliases, provider logs, and Reader-result bodies.
+
+The projection is read-only. Provenance and warnings remain visible. Instruments, models, and candidates remain unselectable. No UI is mounted by the constitution.
+
+## Vercel deployment law
+
+Vercel is an allowed strategic deployment instrument. Automatic deployment caused by repository coupling remains infrastructure rather than drift. Preview and production must stay explicitly classified, and exact-main deployment may support route verification or browser observation only when its purpose and evidence chain are declared.
+
+```text
+Vercel allowed ≠ deployment earns maturity
+preview deployment ≠ production deployment
+deployment success ≠ validated composition
+public URL ≠ observed production behavior
+production observation ≠ operator closure
+```
 
 ## Preserved contracts
 
@@ -55,7 +94,7 @@ Iframe navigation creates a new child window while the host registry remains sea
 - Frozen v3.0 diagnostic and round-trip receipt schemas remain unchanged.
 - Phase IV reciprocal receipts retain zero reciprocal authority.
 - Phase V relation envelopes remain unchanged.
-- The canonical body remains byte-separate and is not rewritten by the composer.
+- The canonical body remains byte-separate and is not rewritten by either composer.
 - Hush, Choir, Return, lifecycle, and Ash boundaries remain intact.
 
 ## Authority ceiling
@@ -77,8 +116,6 @@ operator_closure_required = true
 
 ## Maturity ruling
 
-Aperture composition advances from `6 / 25` to `18 / 25` at validation-gated maturity.
-
-The retained seven points require exact-main composition evidence and further decomposition of wrapper-era concerns from the canonical body. Branch validation cannot award production demonstration.
+Aperture composition remains `18 / 25` at validation-gated maturity. The complementary constitution does not double-count the same workstream. The retained seven points require exact-main evidence, an operator-facing presentation surface, and deeper decomposition of wrapper-era concerns from the canonical body.
 
 Marked ⟐
