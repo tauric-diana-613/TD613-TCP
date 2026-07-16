@@ -56,6 +56,10 @@ assert.match(fixture, /SYNTHETIC|Synthetic/);
 assert.match(fixture, /returnReadyBundle/);
 
 assert.match(workflow, /Ash Custodian Return/);
+assert.match(workflow, /pull_request:[\s\S]*paths:/);
+assert.match(workflow, /push:\n    branches: \[main\]\n\npermissions:/);
+const pushBlock = workflow.split('  push:')[1]?.split('\n\npermissions:')[0] || '';
+assert.doesNotMatch(pushBlock, /paths:/, 'Stretch 2 closure observation must run on every main commit until closure.');
 assert.match(workflow, /validate-and-local-observe:/);
 assert.match(workflow, /deployed-observation:/);
 assert.match(workflow, /if: github\.event_name == 'push'/);
