@@ -9,8 +9,12 @@ function collectApiFiles(directory, prefix = '') {
   for (const entry of fs.readdirSync(directory, { withFileTypes: true })) {
     const relative = prefix ? `${prefix}/${entry.name}` : entry.name;
     const full = `${directory}/${entry.name}`;
-    if (entry.isDirectory()) collectApiFiles(full, relative);
-    else if (!entry.name.startsWith('_') && !entry.name.startsWith('.') && !entry.name.endsWith('.d.ts')) deployedApiFiles.push(relative);
+    if (entry.isDirectory()) {
+      if (entry.name === '__pycache__' || entry.name.startsWith('.') || entry.name.startsWith('_')) continue;
+      collectApiFiles(full, relative);
+    } else if (!entry.name.startsWith('_') && !entry.name.startsWith('.') && !entry.name.endsWith('.d.ts') && !entry.name.endsWith('.pyc')) {
+      deployedApiFiles.push(relative);
+    }
   }
 }
 collectApiFiles('api');
