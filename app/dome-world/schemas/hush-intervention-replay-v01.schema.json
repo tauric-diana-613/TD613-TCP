@@ -1,0 +1,35 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "td613.hush.intervention-replay/v0.1",
+  "title": "TD613 Hush Intervention Replay v0.1",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema", "replay_id", "created_at", "source_receipt_reference",
+    "source_receipt_digest", "status", "intervention_reexecuted",
+    "readers_reexecuted", "provider_reexecuted", "candidate_kept",
+    "release_authorized", "transport_authorized", "cinder_action_authorized",
+    "replay_digest"
+  ],
+  "properties": {
+    "schema": { "const": "td613.hush.intervention-replay/v0.1" },
+    "replay_id": { "type": "string" },
+    "created_at": { "type": "string" },
+    "source_receipt_reference": { "type": "string" },
+    "source_receipt_digest": { "$ref": "#/$defs/sha256" },
+    "status": {
+      "enum": ["HUSH_INTERVENTION_REPLAY_VERIFIED", "HUSH_INTERVENTION_REPLAY_HELD"]
+    },
+    "intervention_reexecuted": { "const": false },
+    "readers_reexecuted": { "const": false },
+    "provider_reexecuted": { "const": false },
+    "candidate_kept": { "const": false },
+    "release_authorized": { "const": false },
+    "transport_authorized": { "const": false },
+    "cinder_action_authorized": { "const": false },
+    "replay_digest": { "$ref": "#/$defs/sha256" }
+  },
+  "$defs": {
+    "sha256": { "type": "string", "pattern": "^sha256:[0-9a-f]{64}$" }
+  }
+}

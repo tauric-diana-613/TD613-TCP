@@ -1,0 +1,83 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "td613.hush.intervention-ensemble/v0.1",
+  "title": "TD613 Hush Intervention Ensemble v0.1",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema", "ensemble_id", "created_at", "vocabulary_version", "case_id",
+    "case_map_digest", "route_memory_digest", "authority_context_reference",
+    "authority_context_digest", "rebuild_receipt_reference", "rebuild_receipt_digest",
+    "source_text_digest", "discourse_mode", "propositions", "protected_literals",
+    "interventions", "trial_plan", "default_reader_classes",
+    "provider_use_requires_explicit_provider_draft_gesture", "complete_case_map_allowed",
+    "room_keys_allowed", "route_memory_body_allowed", "private_alias_table_allowed",
+    "raw_custody_material_allowed", "candidate_only", "persistence_authorized",
+    "release_authorized", "transport_authorized", "cinder_action_authorized",
+    "automatic_hold", "automatic_ash_action", "ensemble_digest"
+  ],
+  "properties": {
+    "schema": { "const": "td613.hush.intervention-ensemble/v0.1" },
+    "ensemble_id": { "type": "string" },
+    "created_at": { "type": "string" },
+    "vocabulary_version": { "const": "v0.1" },
+    "case_id": { "type": "string" },
+    "case_map_digest": { "$ref": "#/$defs/sha256" },
+    "route_memory_digest": { "$ref": "#/$defs/sha256" },
+    "authority_context_reference": { "type": "string" },
+    "authority_context_digest": { "$ref": "#/$defs/sha256" },
+    "rebuild_receipt_reference": { "type": "string" },
+    "rebuild_receipt_digest": { "$ref": "#/$defs/sha256" },
+    "source_text_digest": { "$ref": "#/$defs/sha256" },
+    "discourse_mode": {
+      "enum": [
+        "NEUTRAL_RECORDS_REQUEST", "PUBLIC_SUMMARY", "PROTECTIVE_PARAPXRASE",
+        "STRUCTURAL_SURROGATE", "QUESTION_PRESERVING_BRIEF",
+        "LOCAL_SYNTHETIC_READER_FIXTURE"
+      ]
+    },
+    "propositions": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["proposition_id", "proposition_digest", "obligation"],
+        "properties": {
+          "proposition_id": { "type": "string" },
+          "proposition_digest": { "$ref": "#/$defs/sha256" },
+          "obligation": {
+            "enum": [
+              "PRESERVE_EXACTLY", "PRESERVE_MEANING", "MAY_GENERALIZE",
+              "MAY_OMIT", "QUESTION_ONLY", "MUST_ABSTAIN"
+            ]
+          }
+        }
+      }
+    },
+    "protected_literals": { "type": "array", "items": { "type": "object" } },
+    "interventions": { "type": "array", "minItems": 1, "items": { "type": "object" } },
+    "trial_plan": { "type": "object" },
+    "default_reader_classes": {
+      "type": "array",
+      "contains": { "const": "LOCAL_DETERMINISTIC" }
+    },
+    "provider_use_requires_explicit_provider_draft_gesture": { "const": true },
+    "complete_case_map_allowed": { "const": false },
+    "room_keys_allowed": { "const": false },
+    "route_memory_body_allowed": { "const": false },
+    "private_alias_table_allowed": { "const": false },
+    "raw_custody_material_allowed": { "const": false },
+    "candidate_only": { "const": true },
+    "persistence_authorized": { "const": false },
+    "release_authorized": { "const": false },
+    "transport_authorized": { "const": false },
+    "cinder_action_authorized": { "const": false },
+    "automatic_hold": { "const": false },
+    "automatic_ash_action": { "const": false },
+    "ensemble_digest": { "$ref": "#/$defs/sha256" }
+  },
+  "$defs": {
+    "sha256": { "type": "string", "pattern": "^sha256:[0-9a-f]{64}$" }
+  }
+}
