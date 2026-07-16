@@ -10,6 +10,7 @@ const ashKeep = read('app/dome-world/ash-keep.js');
 const draftEngine = read('app/engine/ash-keep-drafts.js');
 const ingressLoader = read('app/engine/ash-safe-harbor-ingress-loader.js');
 const schema = JSON.parse(read('app/dome-world/schemas/ash-safe-harbor-ingress-v01.schema.json'));
+const bindingSchema = JSON.parse(read('app/dome-world/schemas/ash-safe-harbor-custody-binding-v01.schema.json'));
 
 assert.equal(schema.$id, 'td613.ash.safe-harbor-ingress/v0.1');
 assert.equal(schema.properties.raw_body_included.const, false);
@@ -26,6 +27,22 @@ assert.equal(schema.properties.destination_transport_authorized.const, false);
 assert.equal(schema.properties.release_authorized.const, false);
 assert.equal(schema.properties.suppression_authorized.const, false);
 assert.equal(schema.properties.cinder_action_authorized.const, false);
+
+assert.equal(bindingSchema.$id, 'td613.ash.safe-harbor-custody-binding/v0.1');
+assert.deepEqual(bindingSchema.properties.binding_level.enum, ['L0', 'L1', null]);
+assert.equal(bindingSchema.properties.custody_root_created.const, false);
+assert.equal(bindingSchema.properties.case_created.const, false);
+assert.equal(bindingSchema.properties.relation_created.const, false);
+assert.equal(bindingSchema.properties.authenticity_concluded.const, false);
+assert.equal(bindingSchema.properties.identity_concluded.const, false);
+assert.equal(bindingSchema.properties.authorship_concluded.const, false);
+assert.equal(bindingSchema.properties.truth_concluded.const, false);
+assert.equal(bindingSchema.properties.trusted_external_time_observed.const, false);
+assert.equal(bindingSchema.properties.server_custody_created.const, false);
+assert.equal(bindingSchema.properties.destination_transport_authorized.const, false);
+assert.equal(bindingSchema.properties.release_authorized.const, false);
+assert.equal(bindingSchema.properties.suppression_authorized.const, false);
+assert.equal(bindingSchema.properties.cinder_action_authorized.const, false);
 
 for (const token of [
   'Bind in Ash Keep',
