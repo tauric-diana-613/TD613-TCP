@@ -26,3 +26,7 @@ export {
   replayHushInterventionReceipt,
   verifyHushInterventionReplay
 } from './hush-intervention-replay.js';
+export {
+  compileHushInterventionProviderPacket,
+  verifyHushInterventionProviderPacket
+} from './hush-intervention-provider.js';
