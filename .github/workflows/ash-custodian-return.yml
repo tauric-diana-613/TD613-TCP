@@ -52,12 +52,14 @@ jobs:
           cache: npm
       - name: Install repository dependencies
         run: npm ci
-      - name: Validate return receipts and closure contracts
-        run: |
-          node tests/ash-custodian-return.test.mjs
-          node tests/ash-custodian-return-contract.test.mjs
-          node tests/ash-custodian-return-closure.test.mjs
-          node tests/ash-custodian-return-closure-contract.test.mjs
+      - name: Validate base Return receipts
+        run: node tests/ash-custodian-return.test.mjs
+      - name: Validate base Return integration contract
+        run: node tests/ash-custodian-return-contract.test.mjs
+      - name: Validate return-ready closure fixtures
+        run: node tests/ash-custodian-return-closure.test.mjs
+      - name: Validate production-closure boundary contract
+        run: node tests/ash-custodian-return-closure-contract.test.mjs
       - name: Validate Stretch 2 runtime and probe syntax
         run: |
           node --check app/engine/ash-custodian-return.js
