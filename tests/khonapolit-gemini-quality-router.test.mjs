@@ -1,9 +1,9 @@
 import assert from 'node:assert/strict';
 import fs from 'node:fs';
-import handler from '../api/khonapolit-quality.js';
-import { clearGeminiModelState } from '../api/gemini-model-policy.js';
+import handler from '../server/khonapolit-quality.js';
+import { clearGeminiModelState } from '../server/gemini-model-policy.js';
 
-const source = fs.readFileSync('api/khonapolit-quality.js', 'utf8');
+const source = fs.readFileSync('server/khonapolit-quality.js', 'utf8');
 assert.match(source, /resolveGeminiModelPlan\(\{ task: 'khonapolit-dialogue'/);
 assert.match(source, /sticky-success-promotion-disabled/);
 assert.doesNotMatch(source, /gemini-flash-lite-latest/);

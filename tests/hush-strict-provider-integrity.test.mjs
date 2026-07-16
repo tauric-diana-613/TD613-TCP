@@ -1,7 +1,7 @@
 import assert from 'node:assert/strict';
 import fs from 'node:fs';
 import { buildProtectedLiteralList, checkProtectedLiteralIntegrity } from '../app/engine/hush-protected-literals.js';
-import { buildPrompt, candidateIntegrity, compactStyle, protectedLiteralsOf } from '../api/hush-generate-budgeted.js';
+import { buildPrompt, candidateIntegrity, compactStyle, protectedLiteralsOf } from '../server/hush-generate-budgeted.js';
 
 const sourceText = 'At 02:18:44Z, HUSH-613.42 kept public_default_allowed false for FILE-72 on 2026-06-18.';
 const expected = ['02:18:44Z', 'HUSH-613.42', 'public_default_allowed', 'FILE-72', '2026-06-18'];

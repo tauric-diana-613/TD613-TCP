@@ -1,9 +1,9 @@
 import assert from 'node:assert/strict';
 import fs from 'node:fs';
 import handler from '../api/hush-generate-quality.js';
-import { clearGeminiModelState } from '../api/gemini-model-policy.js';
+import { clearGeminiModelState } from '../server/gemini-model-policy.js';
 
-const source = fs.readFileSync('api/hush-generate-quality.js', 'utf8');
+const source = fs.readFileSync('server/hush-generate-quality.js', 'utf8');
 assert.match(source, /resolveGeminiModelPlan\(\{ task: 'hush-transform'/);
 assert.match(source, /sticky-success-promotion-disabled/);
 assert.match(source, /moving-latest-alias-disabled-by-default/);
