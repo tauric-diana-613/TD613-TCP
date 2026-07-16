@@ -33,16 +33,30 @@ lifecycle_run: 29514548484
 lifecycle_artifact: 8382101606
 Return_run: 29514528271
 Return_artifact: 8382106456
-Vercel: SUCCESS
 ```
 
 The runtime composer preserves the canonical v3.1-alpha body. The constitution binds sealed evidence through Authority Context, source, instruments, snapshots, experiment, tomography, Choir, Hush, and a read-only presentation projection. It excludes raw source, candidate bodies, Case Map bodies, Route Memory bodies, room keys, private aliases, provider logs, and Reader-result bodies.
+
+## Observed pre-law Vercel deployment
+
+```text
+Vercel_status: SUCCESS
+Vercel_environment: PRODUCTION
+Vercel_observed_commit: e1fe108264045c4d75f0ef275b15654cf61b52a5
+Vercel_deployment_count_for_observed_commit: 1
+Vercel_access_boundary: PUBLIC
+Vercel_evidence_use: EXACT_MAIN_AFTERCARE_ONLY
+Vercel_operator_release_gesture: NOT_RECORDED_PRE_LAW_AUTOMATIC_DEPLOYMENT
+Vercel_strategic_release_claim: false
+```
+
+This deployment preceded the strategic-deployment law and is retained as exact-main infrastructure evidence only. It does not retroactively manufacture operator consent, maturity, release authority, or transport authority.
 
 ## Strategic deployment ruling
 
 ```text
 Vercel_deployment: ALLOWED
-role: STRATEGIC_RELEASE_WITNESS
+role: STRATEGIC_RELEASE_WITNESS_WHEN_OPERATOR_AUTHORIZED
 default_loop: LOCAL_AND_SYNTHETIC_CI
 normal_ceiling: ONE_PER_COMPLETED_PACKET_OR_RELEASE_CANDIDATE
 operator_release_gesture_required: true
