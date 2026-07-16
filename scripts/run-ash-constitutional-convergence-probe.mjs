@@ -29,7 +29,7 @@ const replacement = `  await page.locator('#selectCase').selectOption(secondCase
 await fs.mkdir(artifactDir, { recursive: true });
 const source = await fs.readFile(sourceUrl, 'utf8');
 const count = source.split(target).length - 1;
-if (count !== 1) throw new Error(`Convergence observer expected one atomic case-deletion seam; observed ${count}.`);
+if (count !== 1) throw new Error(`Convergence observer expected one case-selection seam and one atomic case-deletion seam; observed ${count}.`);
 const runtime = source.replace(target, replacement);
 if (!runtime.includes("select.dispatchEvent(new Event('change', { bubbles: true }))") || !runtime.includes('remove.click()')) {
   throw new Error('Convergence observer repaint-atomic delete gesture was not materialized.');
