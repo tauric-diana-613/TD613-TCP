@@ -68,6 +68,8 @@ const custodyHelperReplacement = `async function bindSyntheticCustody(page) {
     });
     const before = await read('cases', caseId);
     const { compileCaseMap } = await import('/engine/ash-keep-core.js');
+    const { compileReadinessReceipt } = await import('/engine/ash-lifecycle.js');
+    const { computeManifestDigest, computeReceiptDigest } = await import('/dome-world/ash/canonical-json.js');
     const custodyReference = \`ashc_core_probe_\${crypto.randomUUID()}\`;
     const root = {
       id: \`node_custody_\${crypto.randomUUID().replaceAll('-', '')}\`,
@@ -103,13 +105,39 @@ const custodyHelperReplacement = `async function bindSyntheticCustody(page) {
       operatorNotes: before.operator_notes,
       closureStatus: before.closure?.status
     });
-    const readiness = { receipt_id: 'ash_ready_synthetic_core_probe', state: 'READINESS_OBSERVED' };
-    const custody = {
-      receipt_id: custodyReference,
-      receipt_digest: 'sha256:synthetic-core-custody-receipt',
-      manifest_digest: 'sha256:synthetic-core-manifest',
-      source_status: 'SYNTHETIC_LOCAL_FIXTURE'
+    const readiness = await compileReadinessReceipt({
+      observedAt: new Date().toISOString(),
+      sourceSurface: 'ash-keep-core-production-probe',
+      artifactClass: 'synthetic-core-custody-root',
+      mediaType: 'application/json',
+      byteLength: 613,
+      arrivalAcknowledged: true,
+      boundaryAcknowledged: true,
+      custodyAcknowledged: true,
+      observations: ['Synthetic core probe compiled canonical readiness.']
+    });
+    const manifest = {
+      schema: 'td613.ash.custody-manifest/v0.8',
+      source_environment: 'synthetic-core-probe',
+      source_locator: { label: 'Synthetic core-probe custody root', path_or_ref: null },
+      artifact_metadata: {
+        media_type: 'application/json',
+        byte_length: 613,
+        artifact_digest: \`sha256:\${'a'.repeat(64)}\`
+      },
+      manifest_digest: null
     };
+    manifest.manifest_digest = await computeManifestDigest(manifest);
+    const custody = {
+      schema: 'td613.ash.custody-receipt/v0.8',
+      receipt_id: custodyReference,
+      assurance_class: 'L1_BROWSER_LOCAL_COMMITMENT',
+      source_status: 'SYNTHETIC_LOCAL_FIXTURE',
+      manifest,
+      manifest_digest: manifest.manifest_digest,
+      receipt_digest: null
+    };
+    custody.receipt_digest = await computeReceiptDigest(custody);
     await new Promise((resolve, reject) => {
       const transaction = db.transaction(['cases', 'custodyReceipts', 'lifecycle'], 'readwrite');
       transaction.objectStore('cases').put(after);
@@ -317,7 +345,7 @@ runtime = replaceExactlyOnce(runtime, custodyBindingTarget, custodyBindingReplac
 runtime = replaceExactlyOnce(runtime, routeReportTarget, routeReportReplacement, 'custody-aware Route Memory receipt');
 runtime = replaceExactlyOnce(runtime, releaseBindingTarget, releaseBindingReplacement, 'release-eligible continuity fixture');
 
-if (runtime === source || !runtime.includes('selectedProviderExcerpt') || !runtime.includes('scroll_lane_controls') || !runtime.includes('bindSyntheticCustody') || !runtime.includes('bindSyntheticRelease') || !runtime.includes('HELD_CASE_BOUND_REQUIRED') || !runtime.includes('current_release_binding')) {
+if (runtime === source || !runtime.includes('selectedProviderExcerpt') || !runtime.includes('scroll_lane_controls') || !runtime.includes('bindSyntheticCustody') || !runtime.includes('bindSyntheticRelease') || !runtime.includes('HELD_CASE_BOUND_REQUIRED') || !runtime.includes('current_release_binding') || !runtime.includes('compileReadinessReceipt') || !runtime.includes('computeReceiptDigest')) {
   throw new Error('Fixture runner did not materialize every declared runtime seam.');
 }
 
@@ -337,7 +365,7 @@ await fs.writeFile(manifestPath, `${JSON.stringify({
   runtime_transformations: [
     'DECLARE_SELECTED_EXCERPT_AFTER_UNKEPT_DRAFT_RELOAD',
     'CLASSIFY_INTENTIONAL_HORIZONTAL_SCROLL_LANES_SEPARATELY_FROM_CLIPPING',
-    'PROVE_PRE_CUSTODY_ROUTE_HOLD_AND_BIND_SYNTHETIC_LOCAL_CUSTODY_ROOT',
+    'PROVE_PRE_CUSTODY_ROUTE_HOLD_AND_BIND_CANONICAL_SYNTHETIC_LOCAL_CUSTODY_ROOT',
     'BIND_VERIFIED_SYNTHETIC_LOCAL_DRAFT_REVIEW_RELEASE_BEFORE_CONTINUITY'
   ],
   scroll_lane_rule: 'overflow-x auto-or-scroll plus scrollWidth greater than clientWidth',
