@@ -2,7 +2,7 @@
 
 𝌋‌ U+10D613
 
-Ledger generation: `v1.12 · Stretch 5 evidence closure / strategic deployment law`
+Ledger generation: `v1.13 · Stretch 5 evidence closure / strategic deployment law / 11+1 function covenant`
 
 | Workstream | Score |
 |---|---:|
@@ -34,6 +34,29 @@ composition constitution ≠ UI mounted
 exact-main aftercare ≠ feature-specific production demonstration
 Stretch 5 closure ≠ Stretch 6 authorization
 ```
+
+## Serverless Function Budget Covenant
+
+`HARD ANTI-DRIFT RULE / CURRENT MINIPROJECT / REPOSITORY-WIDE`
+
+```text
+absolute Vercel ceiling = 12 deployed serverless functions
+normal operating maximum = 11 active serverless functions
+reserved capacity = 1 empty emergency / repair / migration slot
+11 active + 1 reserved = 12 absolute ceiling
+```
+
+Every deployable file under the root `api/` directory counts toward the platform ceiling, whether or not it appears in `vercel.json.functions`. A route alias, compatibility endpoint, helper, guard, readiness surface, or phase-specific patch may not quietly become an additional function.
+
+```text
+new route request → reuse or rewrite into an existing guarded boundary
+shared implementation → place outside root api/
+ordinary feature work → never consume the reserved twelfth slot
+count above 11 → stop and consolidate before merge or deployment
+count above 12 → structurally forbidden
+```
+
+The reserved slot may be consumed only through an explicit operator-authorized emergency, repair, or migration decision. Any such use must name the reason, expected duration, restoration plan, and exact commit. CI must count the actual deployable `api/` surface and fail before Vercel receives an over-budget deployment.
 
 ## Strategic Vercel Deployment Law
 
