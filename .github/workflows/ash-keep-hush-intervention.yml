@@ -1,0 +1,149 @@
+name: Ash Hush Intervention
+
+on:
+  pull_request:
+    paths:
+      - "app/engine/hush-intervention*.js"
+      - "app/engine/ash-keep-provider.js"
+      - "app/dome-world/schemas/hush-intervention-*.schema.json"
+      - "api/hush-generate-quality.js"
+      - "tests/hush-intervention/**"
+      - "tests/fixtures/hush-intervention-fixture.mjs"
+      - "tests/ash-keep-hush-api.test.mjs"
+      - "scripts/publish-ash-keep-observer-status.mjs"
+      - "docs/ASH_KEEP_HUSH_INTERVENTION.md"
+      - "docs/ASH_KEEP_BUILDOUT_LEDGER.md"
+      - "ROADMAP.md"
+      - ".github/workflows/ash-keep-hush-intervention.yml"
+  push:
+    branches: [main]
+    paths:
+      - "app/engine/hush-intervention*.js"
+      - "app/engine/ash-keep-provider.js"
+      - "app/dome-world/schemas/hush-intervention-*.schema.json"
+      - "api/hush-generate-quality.js"
+      - "tests/hush-intervention/**"
+      - "tests/fixtures/hush-intervention-fixture.mjs"
+      - "tests/ash-keep-hush-api.test.mjs"
+      - "scripts/publish-ash-keep-observer-status.mjs"
+      - "docs/ASH_KEEP_HUSH_INTERVENTION.md"
+      - "docs/ASH_KEEP_BUILDOUT_LEDGER.md"
+      - "ROADMAP.md"
+      - ".github/workflows/ash-keep-hush-intervention.yml"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  statuses: write
+
+concurrency:
+  group: ash-hush-intervention-${{ github.event.pull_request.number || github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  hush-intervention-validation:
+    runs-on: ubuntu-latest
+    timeout-minutes: 12
+    env:
+      TD613_OBSERVED_COMMIT: ${{ github.sha }}
+      TD613_OBSERVER_RUN_URL: ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}
+      TD613_OBSERVER_STATUS_CONTEXT: Ash Hush Intervention Validation
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+      - name: Publish Hush validation pending status
+        if: github.event_name == 'push'
+        env:
+          GITHUB_TOKEN: ${{ github.token }}
+          TD613_OBSERVER_STATUS_STATE: pending
+          TD613_OBSERVER_STATUS_DESCRIPTION: Hush intervention validation is running
+          TD613_OBSERVER_STATUS_RECEIPT_PATH: artifacts/hush-intervention/observer-status-pending.json
+        run: node scripts/publish-ash-keep-observer-status.mjs
+      - name: Install dependencies
+        run: npm ci
+      - name: Validate Hush intervention syntax
+        run: |
+          node --check app/engine/hush-intervention-vocabulary.js
+          node --check app/engine/hush-intervention-common.js
+          node --check app/engine/hush-intervention-authority.js
+          node --check app/engine/hush-intervention-ensemble.js
+          node --check app/engine/hush-intervention-findings.js
+          node --check app/engine/hush-intervention-trials.js
+          node --check app/engine/hush-intervention-state.js
+          node --check app/engine/hush-intervention-receipt.js
+          node --check app/engine/hush-intervention-replay.js
+          node --check app/engine/hush-intervention-provider.js
+          node --check app/engine/hush-intervention.js
+      - name: Validate Hush intervention schemas
+        run: node tests/hush-intervention/schemas.test.mjs
+      - name: Validate eligible intervention and replay
+        run: node tests/hush-intervention/eligible.test.mjs
+      - name: Validate authority and tamper holds
+        run: node tests/hush-intervention/authority-holds.test.mjs
+      - name: Validate semantic and evidence holds
+        run: node tests/hush-intervention/semantic-holds.test.mjs
+      - name: Validate provider-draft boundary
+        run: node tests/hush-intervention/provider.test.mjs
+      - name: Preserve inherited Hush API boundary
+        run: node tests/ash-keep-hush-api.test.mjs
+      - name: Preserve lifecycle and constitutional regressions
+        run: |
+          node tests/ash-lifecycle.test.mjs
+          node tests/ash-draft-lifecycle-binding.test.mjs
+          node tests/ash-constitutional-convergence.test.mjs
+      - name: Build retained Hush validation log
+        if: always()
+        run: |
+          mkdir -p artifacts/hush-intervention
+          {
+            echo "schema=td613.hush.intervention-validation-evidence/v0.1"
+            echo "observed_commit=${GITHUB_SHA}"
+            echo "workflow_run_id=${GITHUB_RUN_ID}"
+            echo "source_status=VALIDATION_GATED"
+            echo "provider_execution_observed=false"
+            echo "release_authorized=false"
+            echo "transport_authorized=false"
+            echo "cinder_action_authorized=false"
+            echo "automatic_hold=false"
+            echo "automatic_ash_action=false"
+          } > artifacts/hush-intervention/validation-summary.txt
+      - name: Publish Hush validation success status
+        if: success() && github.event_name == 'push'
+        env:
+          GITHUB_TOKEN: ${{ github.token }}
+          TD613_OBSERVER_STATUS_STATE: success
+          TD613_OBSERVER_STATUS_DESCRIPTION: Hush intervention validation passed; provider execution remains separate
+          TD613_OBSERVER_STATUS_RECEIPT_PATH: artifacts/hush-intervention/observer-status-success.json
+        run: node scripts/publish-ash-keep-observer-status.mjs
+      - name: Publish Hush validation failure status
+        if: failure() && github.event_name == 'push'
+        env:
+          GITHUB_TOKEN: ${{ github.token }}
+          TD613_OBSERVER_STATUS_STATE: failure
+          TD613_OBSERVER_STATUS_DESCRIPTION: Hush intervention validation held for repair
+          TD613_OBSERVER_STATUS_RECEIPT_PATH: artifacts/hush-intervention/observer-status-failure.json
+        run: node scripts/publish-ash-keep-observer-status.mjs
+      - name: Preserve Hush intervention evidence
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: hush-intervention-validation-evidence
+          path: |
+            app/engine/hush-intervention*.js
+            app/dome-world/schemas/hush-intervention-*.schema.json
+            tests/hush-intervention/
+            tests/fixtures/hush-intervention-fixture.mjs
+            artifacts/hush-intervention/
+          if-no-files-found: error
+          retention-days: 30
+      - name: Reconcile terminal Hush validation failure status
+        if: failure() && github.event_name == 'push'
+        env:
+          GITHUB_TOKEN: ${{ github.token }}
+          TD613_OBSERVER_STATUS_STATE: failure
+          TD613_OBSERVER_STATUS_DESCRIPTION: Hush validation or evidence preservation failed
+          TD613_OBSERVER_STATUS_RECEIPT_PATH: artifacts/hush-intervention/observer-status-failure-reconciled.json
+        run: node scripts/publish-ash-keep-observer-status.mjs
