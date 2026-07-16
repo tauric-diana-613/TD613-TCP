@@ -55,8 +55,18 @@ jobs:
         run: node tests/aperture-phase4-bridge.test.mjs
       - name: Validate deployment probe contract
         run: node tests/phase4-deployment-probe.test.mjs
-      - name: Validate maintained release suite
-        run: npm run test:release
+      - name: Validate release manifest
+        run: node tests/release-manifest.test.mjs
+      - name: Validate documentation surface
+        run: node tests/docs-surface.test.mjs
+      - name: Validate release hardening
+        run: node tests/release-hardening.test.mjs
+      - name: Validate release plumbing
+        run: node tests/release-plumbing.test.mjs
+      - name: Validate maintained Vercel hygiene
+        run: node tests/vercel-deploy-hygiene.test.mjs
+      - name: Validate Amari patch lane
+        run: node tests/amari-patch-lane.test.mjs
       - name: Validate Phase IV release synchronization
         run: node tests/phase4-release-sync.test.mjs
       - name: Validate Vercel route and function hygiene
