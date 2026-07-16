@@ -80,7 +80,7 @@ const staleAuthority = await compileHigherOrderInterference({
   ...input,
   authorityContext: { ...authorityContext, current: false }
 });
-assert.equal(staleAuthority.state, 'TAMPER_HOLD');
+assert.equal(staleAuthority.state, 'STALE_CASE_HOLD');
 assert.equal(staleAuthority.interference_eligible, false);
 
 console.log('higher-order.test.mjs passed');
