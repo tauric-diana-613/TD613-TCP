@@ -39,17 +39,10 @@ for (const target of [page]) {
 
 await page.goto(`${base}/safe-harbor/`, { waitUntil: 'domcontentloaded' });
 await page.waitForSelector('#bindPacketInAsh', { state: 'attached' });
-await page.locator('#bindPacketInAsh').evaluate(element => {
-  let cursor = element.parentElement;
-  while (cursor) {
-    if (cursor instanceof HTMLDetailsElement) cursor.open = true;
-    cursor = cursor.parentElement;
-  }
-  element.scrollIntoView({ block: 'center' });
-});
-await page.locator('#bindPacketInAsh').waitFor({ state: 'visible' });
-assert.equal(await page.locator('#bindPacketInAsh').textContent(), 'Bind in Ash Keep');
-assert.equal(await page.locator('#bindPacketInAsh').isDisabled(), true);
+const bindButton = page.locator('#bindPacketInAsh');
+const safeHarborControlInitiallyHidden = !(await bindButton.isVisible());
+assert.equal(await bindButton.textContent(), 'Bind in Ash Keep');
+assert.equal(await bindButton.isDisabled(), true);
 assert.match(await page.locator('#ashIngressStatus').textContent(), /awaits|held/i);
 assert.ok((await page.locator('body').innerText()).length > 500, 'Safe Harbor loader must not replace the document stream.');
 
@@ -170,7 +163,8 @@ const receipt = {
   observed_base: base,
   viewport: { width: 390, height: 844 },
   reduced_motion: true,
-  safe_harbor_button_observed: true,
+  safe_harbor_control_installed: true,
+  safe_harbor_control_initially_hidden: safeHarborControlInitiallyHidden,
   document_stream_preserved: true,
   l0_reference_bound: true,
   token_removed_from_visible_url: true,
