@@ -2,7 +2,7 @@
 
 𝌋‌ U+10D613
 
-Ledger generation: `v1.14 · Stretch 6 higher-order interference closure / strategic deployment law / 11+1 function covenant`
+Ledger generation: `v1.15 · Stretch 6 strategic deployment witnessed / Stretch 7 blocked / 11+1 function covenant`
 
 | Workstream | Score |
 |---|---:|
@@ -31,7 +31,7 @@ Aperture composition remains at `18 / 25`. Runtime installation and the cross-re
 ```text
 runtime installation ≠ composition constitution
 composition constitution ≠ UI mounted
-exact-main aftercare ≠ feature-specific production demonstration
+exact-main deployment witness ≠ feature-specific production demonstration
 Stretch 6 closure ≠ Stretch 7 authorization
 ```
 
@@ -118,6 +118,7 @@ Stretch 6 authorization: true / consumed by operator opening gesture
 ```text
 PR: 366
 validated branch commit: dc658672c736faec3e534040a1ddc0e3c9f125ad
+exact-main closure commit: e9777af2b98dd56676d3affd17e95d2cc7b4ad1b
 Choir validation run/artifact: 29530385841 / 8388367840
 TCP Smoke run: 29530385835
 static validation run: 29530385895
@@ -135,7 +136,14 @@ combinatorial cap hold: IMPLEMENTED
 new serverless function: false
 active serverless functions: 11
 reserved function capacity: 1
-production demonstration: NOT_CLAIMED
+strategic Vercel deployment witness: COMPLETE
+Vercel deployment reference: 8CwceEWF23omB2FqYE6YwHyQ8FXk
+Vercel status: SUCCESS / READY
+Ash Lifecycle Deployed Observation run: 29531420735 / SUCCESS
+function-budget witness: 11 active + 1 reserved
+strategic deployment budget: CONSUMED
+feature-specific production browser observation: NOT_CLAIMED
+additional maturity transfer from deployment: false
 release authority: false
 transport authority: false
 suppression authority: false
@@ -143,11 +151,13 @@ Cinder authority: false
 Stretch 7 authorization: false
 ```
 
-One strategic Vercel deployment is authorized as the post-merge release witness for the exact green Stretch 6 closure commit. Deployment success may verify the public runtime and function surface; it may not promote maturity or grant release, transport, suppression, or Cinder authority.
+The post-merge strategic Vercel deployment witnessed the exact green Stretch 6 closure commit and confirmed that the public runtime remained deployable under the `11 active + 1 reserved` covenant. The witness completed the authorized deployment gesture; it did not promote the validation-gated packet into production-demonstrated maturity and granted no release, transport, suppression, or Cinder authority.
+
+No additional Stretch 6 deployment is authorized by default. A further deployment requires a named deployment-specific defect, failed public-runtime observation, rollback verification, or a fresh explicit operator decision.
 
 ## Stretch 7 · Ordered Route-Sequence Recovery
 `BLOCKED / NOT_AUTHORIZED`
 
-Stretch 7 requires a fresh operator opening gesture after Stretch 6 evidence closure and strategic deployment witness.
+Stretch 7 requires a fresh operator opening gesture after Stretch 6 evidence closure and the completed strategic deployment witness.
 
 Marked ⟐
