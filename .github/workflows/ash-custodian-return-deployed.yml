@@ -1,0 +1,109 @@
+name: Ash Custodian Return Deployed
+
+on:
+  workflow_run:
+    workflows: ['Test and deploy static app']
+    types: [completed]
+  workflow_dispatch:
+    inputs:
+      base_url:
+        description: 'Optional deployed base URL for a non-promoting synthetic return observation'
+        required: false
+        default: ''
+        type: string
+      confirm_deployed_probe:
+        description: 'Type RUN_DEPLOYED_RETURN to run against base_url'
+        required: false
+        default: 'HOLD'
+        type: string
+
+permissions:
+  contents: read
+  statuses: write
+
+jobs:
+  deployed-observation:
+    if: >-
+      (github.event_name == 'workflow_run' && github.event.workflow_run.conclusion == 'success' && github.event.workflow_run.head_branch == 'main')
+      ||
+      (github.event_name == 'workflow_dispatch' && inputs.confirm_deployed_probe == 'RUN_DEPLOYED_RETURN' && inputs.base_url != '')
+    runs-on: ubuntu-latest
+    timeout-minutes: 25
+    env:
+      TD613_DEPLOYED_BASE_URL: ${{ github.event_name == 'workflow_run' && 'https://td613.com' || inputs.base_url }}
+      TD613_OBSERVED_COMMIT: ${{ github.event_name == 'workflow_run' && github.event.workflow_run.head_sha || github.sha }}
+      TD613_OBSERVER_RUN_URL: ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}
+      TD613_OBSERVER_STATUS_CONTEXT: Ash Custodian Return Deployed Observation
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: ${{ env.TD613_OBSERVED_COMMIT }}
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+      - name: Publish Return observer pending status
+        env:
+          GITHUB_TOKEN: ${{ github.token }}
+          TD613_OBSERVER_STATUS_STATE: pending
+          TD613_OBSERVER_STATUS_DESCRIPTION: Stretch 2 deployed synthetic return is running
+          TD613_OBSERVER_STATUS_RECEIPT_PATH: artifacts/ash-custodian-return-deployed/observer-status-pending.json
+        run: node scripts/publish-ash-keep-observer-status.mjs
+      - name: Install repository dependencies
+        run: npm ci
+      - name: Wait for deployed Stretch 2 closure surfaces
+        run: |
+          set -euo pipefail
+          mkdir -p artifacts/ash-custodian-return-deployed
+          bridge="${TD613_DEPLOYED_BASE_URL%/}/dome-world/ash-workspace-bridge.js"
+          closure="${TD613_DEPLOYED_BASE_URL%/}/dome-world/ash-custodian-return-closure.js"
+          for attempt in $(seq 1 72); do
+            bridge_body="$(curl -fsSL --max-time 10 "$bridge" || true)"
+            closure_body="$(curl -fsSL --max-time 10 "$closure" || true)"
+            if printf '%s' "$bridge_body" | grep -q 'ash-custodian-return-closure.js' \
+              && printf '%s' "$closure_body" | grep -q 'td613.ash.custodian-return-closure/v0.1'; then
+              printf '%s' "$bridge_body" > artifacts/ash-custodian-return-deployed/deployed-bridge.js
+              printf '%s' "$closure_body" > artifacts/ash-custodian-return-deployed/deployed-closure.js
+              printf '{"status":"RETURN_SURFACES_READY","attempt":%s}\n' "$attempt" > artifacts/ash-custodian-return-deployed/deployment-readiness.json
+              exit 0
+            fi
+            sleep 5
+          done
+          printf '{"status":"HOLD_RETURN_SURFACES_UNAVAILABLE"}\n' > artifacts/ash-custodian-return-deployed/deployment-readiness.json
+          exit 1
+      - name: Install Chromium probe runtime
+        run: |
+          npm install --no-save --package-lock=false playwright@1.53.2
+          npx playwright install --with-deps chromium
+      - name: Observe deployed synthetic Custodian Return without promotion
+        env:
+          TD613_BASE_URL: ${{ env.TD613_DEPLOYED_BASE_URL }}
+          TD613_ARTIFACT_DIR: artifacts/ash-custodian-return-deployed
+        run: node scripts/ash-custodian-return-production-probe.mjs
+      - name: Verify observer remained non-promotional
+        run: |
+          grep -q '"promotion_authorized": false' artifacts/ash-custodian-return-deployed/custodian-return-production-observation.json
+      - name: Publish Return observer success status
+        if: success()
+        env:
+          GITHUB_TOKEN: ${{ github.token }}
+          TD613_OBSERVER_STATUS_STATE: success
+          TD613_OBSERVER_STATUS_DESCRIPTION: Stretch 2 deployed synthetic return passed without promotion
+          TD613_OBSERVER_STATUS_RECEIPT_PATH: artifacts/ash-custodian-return-deployed/observer-status-success.json
+        run: node scripts/publish-ash-keep-observer-status.mjs
+      - name: Publish Return observer failure status
+        if: failure()
+        env:
+          GITHUB_TOKEN: ${{ github.token }}
+          TD613_OBSERVER_STATUS_STATE: failure
+          TD613_OBSERVER_STATUS_DESCRIPTION: Stretch 2 deployed synthetic return held
+          TD613_OBSERVER_STATUS_RECEIPT_PATH: artifacts/ash-custodian-return-deployed/observer-status-failure.json
+        run: node scripts/publish-ash-keep-observer-status.mjs
+      - name: Preserve deployed Stretch 2 evidence and status receipts
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: ash-custodian-return-deployed-evidence
+          path: artifacts/ash-custodian-return-deployed/
+          if-no-files-found: warn
+          retention-days: 21
