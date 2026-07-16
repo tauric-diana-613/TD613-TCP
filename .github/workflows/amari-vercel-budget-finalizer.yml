@@ -1,7 +1,12 @@
-# manual rerun trigger: 2026-07-16T18:52Z
+# PR-triggered finalization: 2026-07-16T19:00Z
 name: Amari Vercel budget finalizer
 
 on:
+  pull_request:
+    branches:
+      - main
+    paths:
+      - ".github/workflows/amari-vercel-budget-finalizer.yml"
   push:
     branches:
       - amari/vercel-11-function-budget
