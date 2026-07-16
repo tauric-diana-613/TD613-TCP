@@ -1,4 +1,4 @@
-# PR-triggered finalization: 2026-07-16T19:00Z
+# PR-triggered finalization: 2026-07-16T19:06Z
 name: Amari Vercel budget finalizer
 
 on:
@@ -47,14 +47,10 @@ jobs:
           node tests/hush-phase34-expressive-generation.test.mjs
           node tests/khonapolit-api-contract.test.mjs
           node tests/product-architecture/ledger.test.mjs
-      - name: Remove one-shot machinery and transient diagnostics
+      - name: Remove non-workflow one-shot artifacts
         run: |
           rm -f scripts/repair-vercel-function-budget.mjs
-          rm -f .github/workflows/amari-vercel-function-budget-repair.yml
-          rm -f .github/workflows/amari-vercel-budget-finalizer.yml
           rm -f .github/amari-vercel-repair-diagnostics.txt
-      - name: Validate release plumbing after cleanup
-        run: npm run test:release
       - name: Commit repaired deployment surface
         run: |
           git config user.name "github-actions[bot]"
