@@ -1,0 +1,44 @@
+import assert from 'node:assert/strict';
+import fs from 'node:fs';
+
+const read = path => fs.readFileSync(new URL(`../../${path}`, import.meta.url), 'utf8');
+const lifecycleUi = read('app/dome-world/ash-lifecycle.js');
+const lifecycleEngine = read('app/engine/ash-lifecycle.js');
+const caseControls = read('app/dome-world/ash-case-controls.js');
+const mapLabels = read('app/dome-world/ash-map-labels.js');
+const keepSource = read('app/dome-world/ash-keep.html');
+const deliverySource = read('app/dome-world/ash-keep-source.html');
+
+assert.equal(deliverySource, keepSource, 'Static delivery source drifted from the canonical Ash Keep document');
+assert.match(keepSource, /<div class="launch" id="launch"[^>]*>/);
+assert.match(keepSource, /id="saveCase"[^>]*>Save Case<\/button>/);
+assert.match(keepSource, /id="closeCase"[^>]*>Close Case<\/button>/);
+assert.match(keepSource, /id="selectCase" disabled/);
+assert.match(keepSource, /\/dome-world\/ash-case-controls\.js/);
+assert.match(caseControls, /td613\.ash-keep\.case-controls\/v1\.2/);
+assert.match(caseControls, /savedCases/);
+assert.match(caseControls, /DELETE_PARTIAL_HOLD/);
+assert.doesNotMatch(caseControls, /location\.reload\(\)/);
+assert.match(caseControls, /open\.textContent = 'Open'/);
+assert.match(caseControls, /remove\.textContent = 'Delete'/);
+assert.match(mapLabels, /td613\.ash-keep\.map-labels\/v1\.0/);
+assert.match(mapLabels, /td613\.ash-keep\.object-registry\/v1\.0/);
+assert.match(mapLabels, /Object Registry/);
+assert.match(mapLabels, /label_mode: 'overlay-only'/);
+assert.doesNotMatch(mapLabels, /requestAnimationFrame\(/);
+
+assert.match(lifecycleUi, /buildCustodyRoot/);
+assert.match(lifecycleUi, /compileCaseMap/);
+assert.match(lifecycleUi, /custodyReference: binding\.custody_reference/);
+assert.match(lifecycleUi, /nodes: binding\.nodes/);
+assert.match(lifecycleUi, /case_map_digest: next\.case_map_digest/);
+assert.match(lifecycleEngine, /CURRENT_REBUILD_TEST_ABSENT/);
+assert.match(lifecycleEngine, /latestTest\.case_map_digest === caseMap\.case_map_digest/);
+assert.match(lifecycleUi, /workspaceGate\(ui\.lifecycle, tab\.dataset\.workspace\)/);
+assert.match(lifecycleUi, /const shouldDisable = !\(nativeReady && ui\.lifecycle\.gates\.local_release\)/);
+assert.match(lifecycleUi, /Custody root verified and case-bound/);
+assert.match(lifecycleEngine, /CURRENT_CUSTODY_BOUND_DRAFT_ABSENT/);
+assert.match(lifecycleEngine, /CONTINUITY_SEALED/);
+assert.match(lifecycleEngine, /latestSavePoint\.case_map_digest === caseMap\.case_map_digest/);
+assert.match(lifecycleEngine, /latestSavePoint\.release_receipt_reference === latestRelease\.receipt_id/);
+assert.match(lifecycleEngine, /latestSavePoint\.release_receipt_digest === latestRelease\.receipt_digest/);
