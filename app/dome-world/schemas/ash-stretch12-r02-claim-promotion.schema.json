@@ -1,0 +1,9 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://td613.com/schemas/ash-stretch12-r02-claim-promotion.schema.json",
+  "title": "ash-stretch12-r02-claim-promotion",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["schema","record_id","proposed_claim","qualification_reference","status","automatic_approval","automatic_release","operator_closure","record_digest"],
+  "properties": {"schema":{"type":"string"},"record_id":{},"proposed_claim":{},"qualification_reference":{},"status":{},"automatic_approval":{},"automatic_release":{},"operator_closure":{},"record_digest":{}}
+}
