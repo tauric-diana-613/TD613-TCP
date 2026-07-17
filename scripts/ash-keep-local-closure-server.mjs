@@ -7,6 +7,8 @@ const here = path.dirname(fileURLToPath(import.meta.url));
 const repoRoot = path.resolve(here, '..');
 const port = Number(process.argv[2] || process.env.PORT || 6130);
 
+await import('./prepare-ash-profile-closure-fixture.mjs');
+
 const MIME_TYPES = Object.freeze({
   '.html': 'text/html; charset=utf-8',
   '.js': 'text/javascript; charset=utf-8',

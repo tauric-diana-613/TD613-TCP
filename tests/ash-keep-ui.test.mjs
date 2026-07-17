@@ -94,7 +94,7 @@ assert.match(mapLabels, /data-ash-node-number/);
 assert.match(mapLabels, /tooltip\.textContent = `\$\{record\.index\} · \$\{record\.label\}`/);
 assert.doesNotMatch(mapLabels, /requestAnimationFrame\(/, 'The label layer must not introduce a second animation scheduler.');
 
-assert.equal(ASH_WORKSPACE_NAVIGATION_VERSION, 'td613.ash-keep.workspace-navigation/v1.0');
+assert.equal(ASH_WORKSPACE_NAVIGATION_VERSION, 'td613.ash-keep.workspace-navigation/v1.1-capsule-recovery-entry');
 assert.match(workspaceBridge, /import '\.\/ash-keep-mobile-composition\.js';[\s\S]*import '\.\/ash-mobile-constitutional-closure\.js';[\s\S]*import '\.\/ash-workspace-navigation\.js'/, 'The controls/mobile layer must close lifecycle layout after the base mobile composition and before navigation.');
 assert.match(mobileConstitutionalClosure, /ASH_MOBILE_CONSTITUTIONAL_CLOSURE_VERSION = 'td613\.ash-keep\.mobile-constitutional-closure\/v0\.1'/);
 assert.match(mobileConstitutionalClosure, /@media \(max-width: 760px\)/);
@@ -106,6 +106,9 @@ assert.match(workspaceNavigation, /host\.addEventListener\('click', onClick, tru
 assert.match(workspaceNavigation, /host\.__td613OpenAshWorkspace/);
 assert.match(workspaceNavigation, /Workspace open for review/);
 assert.match(workspaceNavigation, /tab\.setAttribute\('aria-disabled', 'false'\)/);
+assert.match(workspaceNavigation, /openCapsuleRecovery/);
+assert.match(workspaceNavigation, /returnToCaseLaunch/);
+assert.match(workspaceNavigation, /Restore an authenticated Ash Capsule without creating or opening a case first/);
 assert.doesNotMatch(workspaceNavigation, /tab\.disabled\s*=\s*true/);
 
 const navigationDom = new JSDOM(`<!doctype html><html><head></head><body data-ash-lifecycle="READINESS_OBSERVED">
@@ -124,9 +127,10 @@ const navigationDom = new JSDOM(`<!doctype html><html><head></head><body data-as
     <section class="workspace" id="workspace-routes"><div class="workspace-head"></div></section>
     <section class="workspace" id="workspace-test"><div class="workspace-head"></div></section>
     <section class="workspace" id="workspace-draft"><div class="workspace-head"></div></section>
-    <section class="workspace" id="workspace-save"><div class="workspace-head"></div></section>
+    <section class="workspace" id="workspace-save"><div class="workspace-head"></div><input id="capsuleFile" type="file"></section>
   </main>
-</body></html>`, { pretendToBeVisual: true });
+  <div class="launch" id="launch"><section class="launch-panel"><input id="newTitle"><div class="actions"><button id="newCase">New case</button></div></section></div>
+</body></html>`, { pretendToBeVisual: true, url: 'https://td613.test/dome-world/ash-keep.html' });
 const openedWorkspaces = [];
 navigationDom.window.__td613OpenAshWorkspace = name => {
   openedWorkspaces.push(name);
@@ -154,6 +158,16 @@ assert.equal(navigationDom.window.document.querySelector('[data-workspace="map"]
 const custodyClick = new navigationDom.window.MouseEvent('click', { bubbles: true, cancelable: true });
 navigationDom.window.document.querySelector('[data-workspace="custody"]').dispatchEvent(custodyClick);
 assert.equal(custodyClick.defaultPrevented, false, 'Custody remains owned by the existing custody bridge.');
+const recoveryEntry = navigationDom.window.document.getElementById('openCapsuleRecovery');
+assert.ok(recoveryEntry, 'Blank-browser launch must expose encrypted Capsule recovery.');
+assert.equal(recoveryEntry.hidden, false);
+recoveryEntry.dispatchEvent(new navigationDom.window.MouseEvent('click', { bubbles: true, cancelable: true }));
+assert.equal(navigationDom.window.document.getElementById('launch').classList.contains('hidden'), true);
+assert.equal(navigationDom.window.document.getElementById('workspace-save').classList.contains('active'), true);
+assert.equal(openedWorkspaces.at(-1), 'save');
+assert.equal(navigationDom.window.document.querySelector('.capsule-recovery-navigation').hidden, false);
+navigationDom.window.document.getElementById('returnToCaseLaunch').dispatchEvent(new navigationDom.window.MouseEvent('click', { bubbles: true, cancelable: true }));
+assert.equal(navigationDom.window.document.getElementById('launch').classList.contains('hidden'), false);
 navigationDom.window.close();
 
 assert.match(worker, /self\.postMessage\(\{ id, trials \}\)/);
