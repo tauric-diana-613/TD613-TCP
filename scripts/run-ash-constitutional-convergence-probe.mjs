@@ -12,14 +12,20 @@ const readinessTarget = `  await page.goto(keepUrl, { waitUntil: 'networkidle' }
   await page.waitForFunction(() => document.documentElement.dataset.ashConvergence?.includes('constitutional-convergence'));`;
 const readinessReplacement = `  await page.goto(keepUrl, { waitUntil: 'networkidle' });
   await page.waitForFunction(() => Boolean(window.__td613AshKeep?.version)
-    && typeof window.TD613AshConvergence?.composition === 'function', null, { timeout: 60000 });
+    && typeof window.TD613AshConvergence?.composition === 'function'
+    && window.__td613AshProfileDemos?.profiles?.includes('political_campaign'), null, { timeout: 60000 });
   report.observations.boot_readiness = {
     keep_core_ready: true,
     convergence_runtime_ready: true,
-    demo_click_deferred_until_ready: true
+    profile_demo_registry_ready: true,
+    demo_click_deferred_until_ready: true,
+    profile_selected_explicitly: true
   };
+  await page.locator('#newProfile').selectOption('political_campaign');
+  await page.waitForFunction(() => !document.getElementById('startDemo')?.disabled
+    && /Political Campaign/.test(document.getElementById('startDemo')?.textContent || ''), null, { timeout: 60000 });
   await page.locator('#startDemo').click();
-  await page.waitForFunction(() => /Glasshouse Archive/i.test(document.getElementById('caseTitle')?.textContent || ''), null, { timeout: 60000 });
+  await page.waitForFunction(() => /Harbor City Mayoral Campaign/i.test(document.getElementById('caseTitle')?.textContent || ''), null, { timeout: 60000 });
   await page.waitForFunction(() => document.documentElement.dataset.ashConvergence?.includes('constitutional-convergence'), null, { timeout: 60000 });`;
 
 const testWorkspaceTarget = `  await page.locator('[data-workspace="test"]').click();`;
@@ -73,8 +79,12 @@ if (testWorkspaceCount !== 1) throw new Error(`Convergence observer expected one
 if (mapWorkspaceCount !== 1) throw new Error(`Convergence observer expected one legacy Map workspace seam; observed ${mapWorkspaceCount}.`);
 if (deletionCount !== 1) throw new Error(`Convergence observer expected one case-selection seam and one atomic case-deletion seam; observed ${deletionCount}.`);
 const runtime = source.replace(readinessTarget, readinessReplacement).replace(testWorkspaceTarget, testWorkspaceReplacement).replace(mapWorkspaceTarget, mapWorkspaceReplacement).replace(deletionTarget, deletionReplacement);
-if (!runtime.includes('demo_click_deferred_until_ready: true') || !runtime.includes('window.__td613AshKeep?.version')) {
-  throw new Error('Convergence observer boot-readiness gate was not materialized.');
+if (!runtime.includes('demo_click_deferred_until_ready: true')
+  || !runtime.includes('profile_selected_explicitly: true')
+  || !runtime.includes("selectOption('political_campaign')")
+  || !runtime.includes('Harbor City Mayoral Campaign')
+  || !runtime.includes('window.__td613AshProfileDemos?.profiles?.includes')) {
+  throw new Error('Convergence observer explicit profile readiness gate was not materialized.');
 }
 if (!runtime.includes("open('test')") || !runtime.includes("open('map')") || runtime.includes("page.locator('[data-workspace=\"test\"]').click()")) {
   throw new Error('Convergence observer guided workspace migration was not materialized.');
