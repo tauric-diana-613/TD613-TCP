@@ -126,11 +126,24 @@ function investigationStepState(snapshot, step) {
   return current > threshold ? 'complete' : current === threshold ? 'current' : 'held';
 }
 
+function ensureGuidanceHost(doc, id, body) {
+  let host = byId(doc, id);
+  if (!host) {
+    host = doc.createElement('div');
+    host.id = id;
+    host.className = 'guided-stable-host';
+    body.before(host);
+  }
+  return host;
+}
+
 function renderInvestigationGuidance(doc, snapshot) {
   const home = byId(doc, 'premiumHomeBody');
   const work = byId(doc, 'premiumWorkBody');
   if (!home || !work || snapshot?.profile !== 'investigation') return;
   doc.documentElement.dataset.ashGuidedProfile = 'investigation';
+  const homeHost = ensureGuidanceHost(doc, 'investigationTaskSpineHost', home);
+  const workHost = ensureGuidanceHost(doc, 'investigationAiShareGuideHost', work);
 
   if (!byId(doc, 'investigationTaskSpine')) {
     const spine = doc.createElement('section');
@@ -146,7 +159,7 @@ function renderInvestigationGuidance(doc, snapshot) {
         ${taskStep('Seal', 'Keep continuity or export an encrypted Capsule', 'capsule', investigationStepState(snapshot, 'seal'))}
       </div>
       <p>Start with the highlighted step. Exact receipts remain available underneath each decision, but they stay folded until deliberately opened.</p>`;
-    home.querySelector('.premium-hero')?.insertAdjacentElement('afterend', spine);
+    homeHost.append(spine);
   }
 
   if (!byId(doc, 'investigationAiShareGuide')) {
@@ -165,7 +178,7 @@ function renderInvestigationGuidance(doc, snapshot) {
       </ol>
       <div class="guided-action-row"><button type="button" class="premium-action primary" data-route-workspace="test">Test current AI packet</button><button type="button" class="premium-action" data-route-workspace="draft">Prepare bounded AI share</button><button type="button" class="premium-action gold" data-route-workspace="capsule">Seal for replay</button></div>
       <details class="guided-claim-ceiling"><summary>What this warning can and cannot mean</summary><p>Ash can surface reconstruction exposure under declared Readers and routes. It cannot establish guilt, intent, identity, authorship, truth, surveillance probability, future conduct, or automatic action.</p></details>`;
-    work.prepend(guide);
+    workHost.append(guide);
   }
 
   const primary = home.querySelector('.priority-sheet [data-route-workspace="work"]');
@@ -173,8 +186,8 @@ function renderInvestigationGuidance(doc, snapshot) {
 }
 
 function removeInvestigationGuidance(doc) {
-  byId(doc, 'investigationTaskSpine')?.remove();
-  byId(doc, 'investigationAiShareGuide')?.remove();
+  byId(doc, 'investigationTaskSpineHost')?.remove();
+  byId(doc, 'investigationAiShareGuideHost')?.remove();
   delete doc.documentElement.dataset.ashGuidedProfile;
 }
 
