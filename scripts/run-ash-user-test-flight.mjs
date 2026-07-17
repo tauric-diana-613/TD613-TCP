@@ -30,6 +30,17 @@ const postCaseReplacement = `  report.observations.case_creation = { case_id: aw
 
   await page.locator('#objectName').fill('Held-before-custody');`;
 
+const reviewTarget = `  const reviewInputs = page.locator('[data-review]:not(:disabled)');
+  for (let index = 0; index < await reviewInputs.count(); index += 1) await reviewInputs.nth(index).check();`;
+const reviewReplacement = `  const premiumReviewGroups = await page.locator('#reviewChecks details.review-group').count();
+  if (premiumReviewGroups) {
+    await page.evaluate(() => document.querySelectorAll('#reviewChecks details.review-group').forEach(group => { group.open = true; }));
+    await page.waitForFunction(() => [...document.querySelectorAll('[data-review]:not(:disabled)')].every(input => input.getClientRects().length > 0));
+  }
+  const reviewInputs = page.locator('[data-review]:not(:disabled)');
+  for (let index = 0; index < await reviewInputs.count(); index += 1) await reviewInputs.nth(index).check();
+  report.observations.rebuild.premium_review_groups_opened = premiumReviewGroups;`;
+
 const exportTarget = `  await page.locator('#capsulePassphrase').fill(passphrase);
   const downloadPromise = page.waitForEvent('download');
   await page.locator('#exportCapsule').click();
@@ -104,22 +115,26 @@ const source = await fs.readFile(sourceUrl, 'utf8');
 const navigationCount = source.split(navigationTarget).length - 1;
 const initialBootCount = source.split(initialBootTarget).length - 1;
 const postCaseCount = source.split(postCaseTarget).length - 1;
+const reviewCount = source.split(reviewTarget).length - 1;
 const exportCount = source.split(exportTarget).length - 1;
 const recoveryCount = source.split(recoveryTarget).length - 1;
 if (navigationCount !== 1) throw new Error(`Ash user flight expected one pathname-dependent arrival seam; observed ${navigationCount}.`);
 if (initialBootCount !== 1) throw new Error(`Ash user flight expected one uncomposed local threshold seam; observed ${initialBootCount}.`);
 if (postCaseCount !== 1) throw new Error(`Ash user flight expected one post-case workspace seam; observed ${postCaseCount}.`);
+if (reviewCount !== 1) throw new Error(`Ash user flight expected one exact-review seam; observed ${reviewCount}.`);
 if (exportCount !== 1) throw new Error(`Ash user flight expected one candidate export seam; observed ${exportCount}.`);
 if (recoveryCount !== 1) throw new Error(`Ash user flight expected one modal-obscured recovery seam; observed ${recoveryCount}.`);
 const runtime = source
   .replace(navigationTarget, navigationReplacement)
   .replace(initialBootTarget, initialBootReplacement)
   .replace(postCaseTarget, postCaseReplacement)
+  .replace(reviewTarget, reviewReplacement)
   .replace(exportTarget, exportReplacement)
   .replace(recoveryTarget, recoveryReplacement);
 if (runtime.includes('page.waitForURL(/\\/dome-world\\/ash-keep\\.html/')) throw new Error('Ash user flight retained pathname-dependent arrival logic.');
 if (!runtime.includes('throughThreshold: !syntheticCustody')) throw new Error('Ash user flight failed to separate deployed threshold evidence from uncomposed local entry.');
 if (!runtime.includes("window.__td613AshPremiumUI.open('map')")) throw new Error('Ash user flight failed to acknowledge the premium Home arrival before its map assay.');
+if (!runtime.includes('premium_review_groups_opened')) throw new Error('Ash user flight failed to acknowledge grouped review disclosure.');
 if (!runtime.includes('td613-ash-capsule-local-')) throw new Error('Ash user flight failed to materialize a synthetic core Capsule export.');
 if (!runtime.includes("locator('#openCapsuleRecovery')")) throw new Error('Ash user flight failed to materialize the launch recovery gesture.');
 await fs.writeFile(runtimePath, runtime, 'utf8');
