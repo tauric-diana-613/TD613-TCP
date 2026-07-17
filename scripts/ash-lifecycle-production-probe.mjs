@@ -77,9 +77,9 @@ runtime = replaceExactly(
 );
 runtime = replaceExactly(
   runtime,
-  "  await waitForText(page, '#capsuleStatus', /Encrypted copy exported/);",
-  "  await waitForText(page, '#capsuleStatus', /(?:return-ready\\s+)?encrypted copy exported/i);",
-  'return-ready Capsule export confirmation'
+  "  const passphrase = 'td613-ash-lifecycle-production-probe';\n  await page.locator('#capsulePassphrase').fill(passphrase);\n  const downloadPromise = page.waitForEvent('download');\n  await page.locator('#exportCapsule').click();\n  const download = await downloadPromise;\n  const capsulePath = path.join(artifactDir, 'ash-lifecycle-probe-capsule.json');\n  await download.saveAs(capsulePath);\n  await waitForText(page, '#capsuleStatus', /Encrypted copy exported/);\n  await page.locator('#capsuleFile').setInputFiles(capsulePath);\n  await page.locator('#capsulePassphrase').fill('wrong-passphrase');\n  await page.locator('#importCapsule').click();\n  const wrongPassphrase = await waitForText(page, '#capsuleStatus', /nothing was imported|authentication failed/i);\n  await page.locator('#capsuleFile').setInputFiles(capsulePath);\n  await page.locator('#capsulePassphrase').fill(passphrase);\n  await page.locator('#importCapsule').click();\n  await waitForText(page, '#capsuleStatus', /Authenticated capsule opened/);\n  const capsule = JSON.parse(await fs.readFile(capsulePath, 'utf8'));\n  capsule.ciphertext = `${capsule.ciphertext.slice(0, -2)}AA`;\n  const tamperedPath = path.join(artifactDir, 'ash-lifecycle-probe-capsule-tampered.json');\n  await fs.writeFile(tamperedPath, `${JSON.stringify(capsule, null, 2)}\\n`);\n  await page.locator('#capsuleFile').setInputFiles(tamperedPath);\n  await page.locator('#capsulePassphrase').fill(passphrase);\n  await page.locator('#importCapsule').click();\n  const tamper = await waitForText(page, '#capsuleStatus', /verification failed|nothing was imported/i);",
+  "  const passphrase = 'td613-ash-lifecycle-production-probe';\n  await openWorkspace(page, 'capsule');\n  await page.locator('#premiumCapsulePassphrase').waitFor({ state: 'visible' });\n  await page.locator('#premiumCapsulePassphrase').fill(passphrase);\n  const downloadPromise = page.waitForEvent('download');\n  await page.locator('#premiumExportCapsule').click();\n  const download = await downloadPromise;\n  const capsulePath = path.join(artifactDir, 'ash-lifecycle-probe-capsule.json');\n  await download.saveAs(capsulePath);\n  await waitForText(page, '#capsuleStatus', /(?:return-ready\\s+)?encrypted copy exported/i);\n  await openWorkspace(page, 'capsule');\n  await page.locator('#premiumCapsuleFile').setInputFiles(capsulePath);\n  await page.locator('#premiumCapsulePassphrase').fill('wrong-passphrase');\n  await page.locator('#premiumImportCapsule').click();\n  const wrongPassphrase = await waitForText(page, '#capsuleStatus', /nothing was imported|authentication failed/i);\n  await openWorkspace(page, 'capsule');\n  await page.locator('#premiumCapsuleFile').setInputFiles(capsulePath);\n  await page.locator('#premiumCapsulePassphrase').fill(passphrase);\n  await page.locator('#premiumImportCapsule').click();\n  await waitForText(page, '#capsuleStatus', /Authenticated capsule opened/);\n  const capsule = JSON.parse(await fs.readFile(capsulePath, 'utf8'));\n  capsule.ciphertext = `${capsule.ciphertext.slice(0, -2)}AA`;\n  const tamperedPath = path.join(artifactDir, 'ash-lifecycle-probe-capsule-tampered.json');\n  await fs.writeFile(tamperedPath, `${JSON.stringify(capsule, null, 2)}\\n`);\n  await openWorkspace(page, 'capsule');\n  await page.locator('#premiumCapsuleFile').setInputFiles(tamperedPath);\n  await page.locator('#premiumCapsulePassphrase').fill(passphrase);\n  await page.locator('#premiumImportCapsule').click();\n  const tamper = await waitForText(page, '#capsuleStatus', /verification failed|nothing was imported/i);",
+  'guided Capsule continuity observation'
 );
 runtime = replaceExactly(
   runtime,
@@ -96,6 +96,11 @@ if (!runtime.includes(syntheticDraft)
   || !runtime.includes('draft_body_sha256')
   || !runtime.includes('item.body === SYNTHETIC_DRAFT')
   || !runtime.includes('test_workspace_navigable: true')
-  || !runtime.includes('return-ready\\s+')) throw new Error('Synthetic guided lifecycle fixture compilation failed.');
+  || !runtime.includes("openWorkspace(page, 'capsule')")
+  || !runtime.includes("locator('#premiumCapsulePassphrase')")
+  || !runtime.includes("locator('#premiumCapsuleFile')")
+  || !runtime.includes("locator('#premiumExportCapsule')")
+  || !runtime.includes("locator('#premiumImportCapsule')")
+  || runtime.includes("locator('#capsulePassphrase').fill(passphrase)")) throw new Error('Synthetic guided lifecycle fixture compilation failed.');
 await fs.writeFile(runtimeProbePath, runtime);
 await import(`${pathToFileURL(runtimeProbePath).href}?fixture=${Date.now()}`);
