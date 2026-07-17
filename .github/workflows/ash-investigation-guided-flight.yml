@@ -52,7 +52,10 @@ jobs:
       - name: Verify Ash Court trust-boundary contract
         run: node tests/ash-investigation-guidance.test.mjs
       - name: Verify destination-posture jurisdiction
-        run: node tests/ash-destination-posture.test.mjs
+        shell: bash
+        run: |
+          set -o pipefail
+          node tests/ash-destination-posture.test.mjs 2>&1 | tee /tmp/ash-destination-posture.log
       - name: Verify guided closure contract
         run: node tests/ash-keep-investigation-guidance-closure.test.mjs
       - name: Verify guided module syntax
@@ -91,6 +94,7 @@ jobs:
           path: |
             artifacts/ash-investigation-guided-flight
             /tmp/ash-investigation-flight.log
+            /tmp/ash-destination-posture.log
           if-no-files-found: warn
           retention-days: 30
 
