@@ -1,0 +1,55 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+  <title>TD613 · Ash Destination Handoff</title>
+  <style>
+    :root{color-scheme:dark;background:#0a0c10;color:#edf2f6;font-family:Inter,system-ui,sans-serif}*{box-sizing:border-box}body{margin:0;min-height:100vh;background:radial-gradient(circle at 20% 0,#18222a 0,#0a0c10 45%);padding:clamp(16px,4vw,48px)}main{max-width:1100px;margin:auto}.seal{letter-spacing:.08em;color:#b9c9d3}.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(270px,1fr));gap:16px}.card{border:1px solid #31404a;background:#11171dcc;border-radius:18px;padding:18px;box-shadow:0 18px 50px #0007}.wide{grid-column:1/-1}label{display:block;font-size:.78rem;text-transform:uppercase;letter-spacing:.08em;color:#aab8c1;margin:12px 0 6px}input,textarea,button{width:100%;border-radius:11px;border:1px solid #43545f;background:#0b1116;color:#f3f6f8;padding:11px;font:inherit}textarea{min-height:110px}button{cursor:pointer;background:#d8e7ef;color:#0c1216;font-weight:750;margin-top:10px}button.secondary{background:#17232b;color:#dbe7ed}.status{display:inline-block;border:1px solid #48606c;border-radius:999px;padding:6px 10px;font-size:.78rem}pre{white-space:pre-wrap;overflow-wrap:anywhere;background:#080c10;border-radius:12px;padding:14px;max-height:380px;overflow:auto}.hold{color:#ffcf99}.ok{color:#b8f0cf}iframe{width:100%;height:180px;border:1px solid #31404a;border-radius:12px;background:#0b1116}small{color:#95a6b0}h1{margin-bottom:4px}h2{font-size:1rem;text-transform:uppercase;letter-spacing:.08em;color:#c8d5dc}
+  </style>
+</head>
+<body>
+<main>
+  <p class="seal">􍘓 · 𝌋‌ TD613 · Stretch 11</p>
+  <h1>Ash Destination-Bound Handoff</h1>
+  <p>One exact manifest. One named destination. One named recipient. No raw body, corpus, broadcast, universal routing, or Cinder authority.</p>
+  <p><span id="state" class="status">NOT PREPARED</span></p>
+  <div class="grid">
+    <section class="card">
+      <h2>G1 · Destination and recipient</h2>
+      <label for="destinationId">Destination</label><input id="destinationId" value="destination:same-origin-closure-witness">
+      <label for="recipientId">Recipient</label><input id="recipientId" value="recipient:ash-closure-witness">
+      <label for="route">Route</label><input id="route" value="SAME_ORIGIN_MESSAGE_CHANNEL" readonly>
+    </section>
+    <section class="card">
+      <h2>G2–G5 · Scope and prerequisites</h2>
+      <label for="references">Reference IDs, one per line</label><textarea id="references">reference:artifact-one
+reference:receipt-one</textarea>
+      <label for="purpose">Purpose</label><input id="purpose" value="VALIDATE_FINAL_DESTINATION_HANDOFF">
+      <label><input id="current" type="checkbox" checked style="width:auto"> Provenance and custody references current</label>
+      <label><input id="authorize" type="checkbox" style="width:auto"> Authorize this exact handoff</label>
+    </section>
+    <section class="card wide">
+      <h2>What leaves / what remains</h2>
+      <div class="grid"><div><small>WHAT LEAVES</small><pre id="leaves">Nothing.</pre></div><div><small>WHAT REMAINS</small><pre id="remains">All references remain in local custody until delivery.</pre></div></div>
+      <button id="prepare">Prepare exact handoff</button>
+      <button id="send" disabled>Authorize and deliver to named recipient</button>
+      <button id="cancel" class="secondary">Cancel / hold</button>
+    </section>
+    <section class="card">
+      <h2>Named recipient</h2>
+      <iframe id="recipientFrame" title="Named Ash handoff recipient" src="/app/dome-world/ash-destination-recipient.html?recipient=recipient%3Aash-closure-witness&destination=destination%3Asame-origin-closure-witness"></iframe>
+    </section>
+    <section class="card">
+      <h2>G6–G8 · Terminal accounting</h2>
+      <pre id="receipt">No recipient receipt.</pre>
+    </section>
+    <section class="card wide">
+      <h2>Receipt chain</h2>
+      <pre id="chain">No handoff receipts.</pre>
+    </section>
+  </div>
+</main>
+<script type="module" src="/app/dome-world/ash-destination-handoff.js"></script>
+</body>
+</html>
