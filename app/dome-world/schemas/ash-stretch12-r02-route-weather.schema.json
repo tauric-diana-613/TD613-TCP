@@ -1,0 +1,9 @@
+{
+  "$schema":"https://json-schema.org/draft/2020-12/schema",
+  "$id":"https://td613.com/schemas/ash-stretch12-r02-route-weather.schema.json",
+  "title":"ash-stretch12-r02-route-weather",
+  "type":"object",
+  "additionalProperties":false,
+  "required":["schema","weather_receipt_id","environment_profile_reference","artifact_blind","components","dominant_fold","intervention","automatic_release","automatic_ash_action","prediction_authorized","record_digest"],
+  "properties":{"schema":{"type":"string"},"weather_receipt_id":{},"environment_profile_reference":{},"artifact_blind":{},"components":{},"dominant_fold":{},"intervention":{},"automatic_release":{},"automatic_ash_action":{},"prediction_authorized":{},"record_digest":{}}
+}
