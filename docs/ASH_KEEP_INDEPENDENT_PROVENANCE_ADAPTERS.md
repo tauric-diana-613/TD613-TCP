@@ -8,7 +8,22 @@
 
 ## Status
 
-`IMPLEMENTATION_BRANCH_OPEN / VALIDATION_PENDING / EVIDENCE_BOUNDED`
+`CLOSED / IMPLEMENTED_VALIDATION_GATED / EVIDENCE_BOUNDED / AWAITING_POST_MERGE_STRATEGIC_SEAL`
+
+## Validation spine
+
+```text
+PR = 372
+validated implementation commit = 33c8f881095aa3c601e35d4c45793f072695dfbb
+Ash Independent Provenance Validation = SUCCESS / run 29546756631
+TCP Smoke = SUCCESS / run 29546756592
+Test and deploy static app = SUCCESS / run 29546756646
+Ash Keep Production Closure = SUCCESS / run 29546756596
+new serverless function = false
+active serverless functions = 11
+reserved function capacity = 1
+production demonstration = NOT_CLAIMED
+```
 
 ## Purpose
 
@@ -72,17 +87,17 @@ The receipt is sealed inside the adapter-specific digest domain. A verified arti
 ## Hold precedence
 
 ```text
-cancelled operator action            → CANCELLED_HOLD
-replay beyond declared jurisdiction  → REPLAY_HOLD
-digest mismatch or malformed digest  → TAMPER_HOLD
-wrong adapter digest domain          → WRONG_DOMAIN_HOLD
-unsupported adapter or evidence class→ UNSUPPORTED_DOMAIN_HOLD
-source identifier or syntax mismatch → SOURCE_MISMATCH_HOLD
-revoked source-local posture         → REVOKED_REFERENCE_HOLD
-stale source-local posture           → STALE_REFERENCE_HOLD
-unresolved collision                 → COLLISION_HOLD
-missing required reference           → MISSING_REFERENCE_HOLD
-fully matched bounded evidence       → INDEPENDENT_PROVENANCE_VERIFIED
+cancelled operator action             → CANCELLED_HOLD
+replay beyond declared jurisdiction   → REPLAY_HOLD
+digest mismatch or malformed digest   → TAMPER_HOLD
+wrong adapter digest domain           → WRONG_DOMAIN_HOLD
+unsupported adapter or evidence class → UNSUPPORTED_DOMAIN_HOLD
+source identifier or syntax mismatch  → SOURCE_MISMATCH_HOLD
+revoked source-local posture          → REVOKED_REFERENCE_HOLD
+stale source-local posture            → STALE_REFERENCE_HOLD
+unresolved collision                  → COLLISION_HOLD
+missing required reference            → MISSING_REFERENCE_HOLD
+fully matched bounded evidence        → INDEPENDENT_PROVENANCE_VERIFIED
 ```
 
 ## Replay
@@ -121,5 +136,7 @@ Stretch 10 adds no root `api/` file. The serverless surface remains:
 ```text
 11 active + 1 reserved
 ```
+
+One strategic Vercel deployment is authorized after the exact green closure packet merges. Deployment cannot promote this validation-gated instrument into production-demonstrated maturity or grant destination, recipient, transport, release, suppression, or Cinder authority.
 
 Marked ⟐
