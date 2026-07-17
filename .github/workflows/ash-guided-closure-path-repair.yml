@@ -1,4 +1,5 @@
 name: Guided Ash Closure Path Repair
+# One-time main maintenance trigger for permanent Production Closure coverage.
 
 on:
   push:
