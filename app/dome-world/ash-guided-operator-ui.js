@@ -12,12 +12,14 @@ const RECEIPT_LABELS = Object.freeze({
 const byId = (doc, id) => doc.getElementById(id);
 
 function ensureStyles(doc) {
-  if (byId(doc, 'td613-ash-guided-operator-css')) return;
-  const link = doc.createElement('link');
-  link.id = 'td613-ash-guided-operator-css';
-  link.rel = 'stylesheet';
-  link.href = '/dome-world/ash-guided-operator-ui.css';
-  doc.head.append(link);
+  let link = byId(doc, 'td613-ash-guided-operator-css');
+  if (!link) {
+    link = doc.createElement('link');
+    link.id = 'td613-ash-guided-operator-css';
+    link.rel = 'stylesheet';
+    doc.head.append(link);
+  }
+  link.href = '/dome-world/ash-guided-operator-ui.css?v=20260717-investigation-v3';
 }
 
 function ensureLaunchPromise(doc) {
