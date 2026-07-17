@@ -85,6 +85,7 @@ export function installAshPremiumCompatibility(doc = globalThis.document) {
     }
   `;
   doc.head.append(style);
+  doc.documentElement.dataset.ashPremiumUi = globalThis.window?.__td613AshPremiumUI?.version || 'td613.ash.premium-ui/v0.1-command-instrument';
   doc.documentElement.dataset.ashPremiumCompatibility = ASH_PREMIUM_COMPATIBILITY_VERSION;
   return true;
 }
