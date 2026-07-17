@@ -40,6 +40,19 @@ assert.doesNotMatch(lifecycle, /#workspace-test \.workspace-lifecycle-note/,
   'Lifecycle observer still requires an internal state token to remain visible copy');
 assert.doesNotMatch(lifecycle, /navigationNote/,
   'Lifecycle observer still conflates visible guidance with exact lifecycle state');
+assert.match(lifecycle, /openWorkspace\(page, 'capsule'\)/);
+assert.match(lifecycle, /#premiumCapsulePassphrase/);
+assert.match(lifecycle, /#premiumCapsuleFile/);
+assert.match(lifecycle, /#premiumExportCapsule/);
+assert.match(lifecycle, /#premiumImportCapsule/);
+assert.doesNotMatch(lifecycle, /locator\('#capsulePassphrase'\)\.fill\(/,
+  'Lifecycle observer still fills the hidden legacy Capsule passphrase input');
+assert.doesNotMatch(lifecycle, /locator\('#capsuleFile'\)\.setInputFiles\(/,
+  'Lifecycle observer still uploads through the hidden legacy Capsule file input');
+assert.doesNotMatch(lifecycle, /locator\('#exportCapsule'\)\.click\(/,
+  'Lifecycle observer still exports through the hidden legacy Capsule control');
+assert.doesNotMatch(lifecycle, /locator\('#importCapsule'\)\.click\(/,
+  'Lifecycle observer still imports through the hidden legacy Capsule control');
 
 for (const source of [core, coreRunner, convergenceRunner, lifecycle]) {
   assert.doesNotMatch(source, /prediction_authorized\s*:\s*true/);
