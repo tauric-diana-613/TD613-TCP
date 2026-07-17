@@ -4,10 +4,13 @@ on:
   pull_request:
     paths:
       - 'app/dome-world/ash-*'
+      - 'app/dome-world/fixtures/ash-keep-demo-*'
       - 'app/engine/ash-*'
       - 'scripts/ash-user-test-flight.mjs'
       - 'scripts/run-ash-user-test-flight.mjs'
+      - 'scripts/ash-profile-demo-browser-probe.mjs'
       - 'tests/ash-user-test-flight*'
+      - 'tests/ash-profile-demos.test.mjs'
       - 'tests/ash-capsule-recovery-entry.test.mjs'
       - 'tests/ash-keep-ui.test.mjs'
       - '.github/workflows/ash-user-test-flight.yml'
@@ -15,10 +18,13 @@ on:
     branches: [main]
     paths:
       - 'app/dome-world/ash-*'
+      - 'app/dome-world/fixtures/ash-keep-demo-*'
       - 'app/engine/ash-*'
       - 'scripts/ash-user-test-flight.mjs'
       - 'scripts/run-ash-user-test-flight.mjs'
+      - 'scripts/ash-profile-demo-browser-probe.mjs'
       - 'tests/ash-user-test-flight*'
+      - 'tests/ash-profile-demos.test.mjs'
       - 'tests/ash-capsule-recovery-entry.test.mjs'
       - 'tests/ash-keep-ui.test.mjs'
       - '.github/workflows/ash-user-test-flight.yml'
@@ -36,7 +42,7 @@ jobs:
     name: Ash User Flight · Local Candidate
     if: github.event_name != 'push'
     runs-on: ubuntu-latest
-    timeout-minutes: 25
+    timeout-minutes: 30
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-node@v4
@@ -45,6 +51,8 @@ jobs:
           cache: npm
       - name: Install repository dependencies
         run: npm ci
+      - name: Verify profile demo contracts
+        run: node tests/ash-profile-demos.test.mjs
       - name: Verify Capsule recovery survives launch recomposition
         run: node tests/ash-capsule-recovery-entry.test.mjs
       - name: Install browser runtime
@@ -61,6 +69,11 @@ jobs:
           done
           cat /tmp/ash-user-flight-local.log || true
           exit 1
+      - name: Fly Political Campaign and Fundraiser demos
+        env:
+          TD613_BASE_URL: http://127.0.0.1:6130
+          TD613_ARTIFACT_DIR: artifacts/ash-user-flight-local/profile-demos
+        run: node scripts/ash-profile-demo-browser-probe.mjs
       - name: Fly the local candidate
         env:
           TD613_BASE_URL: http://127.0.0.1:6130
@@ -90,7 +103,7 @@ jobs:
   deployed-current:
     name: Ash User Flight · Deployed Current
     runs-on: ubuntu-latest
-    timeout-minutes: 25
+    timeout-minutes: 30
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-node@v4
@@ -99,6 +112,8 @@ jobs:
           cache: npm
       - name: Install repository dependencies
         run: npm ci
+      - name: Verify profile demo contracts
+        run: node tests/ash-profile-demos.test.mjs
       - name: Verify Capsule recovery survives launch recomposition
         run: node tests/ash-capsule-recovery-entry.test.mjs
       - name: Install browser runtime
@@ -111,13 +126,19 @@ jobs:
         run: |
           for attempt in $(seq 1 60); do
             if [ "$TD613_EVENT_NAME" = "push" ]; then
-              if curl -fsS https://td613.com/dome-world/ash-workspace-navigation.js | grep -q 'v1.1-capsule-recovery-entry'; then exit 0; fi
+              if curl -fsS https://td613.com/dome-world/ash-profile-demo-hydration.js | grep -q 'v0.2-campaign-fundraiser'; then exit 0; fi
             elif curl -fsS https://td613.com/dome-world/ash-threshold.html | grep -q 'Ash Keep'; then
               exit 0
             fi
             sleep 2
           done
           exit 1
+      - name: Fly deployed Political Campaign and Fundraiser demos
+        if: github.event_name == 'push'
+        env:
+          TD613_BASE_URL: https://td613.com
+          TD613_ARTIFACT_DIR: artifacts/ash-user-flight-deployed/profile-demos
+        run: node scripts/ash-profile-demo-browser-probe.mjs
       - name: Fly the deployed current release
         continue-on-error: ${{ github.event_name == 'pull_request' }}
         env:
