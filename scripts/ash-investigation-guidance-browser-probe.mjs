@@ -1,0 +1,212 @@
+import assert from 'node:assert/strict';
+import fs from 'node:fs';
+import fsp from 'node:fs/promises';
+import path from 'node:path';
+import { chromium } from 'playwright';
+
+const base = String(process.env.TD613_BASE_URL || 'http://127.0.0.1:6130').replace(/\/$/, '');
+const artifactDir = path.resolve(process.env.TD613_ARTIFACT_DIR || 'artifacts/ash-investigation-guidance');
+const keepUrl = `${base}/dome-world/ash-keep.html`;
+
+function browserExecutable() {
+  const requested = process.env.TD613_BROWSER_EXECUTABLE;
+  if (requested && fs.existsSync(requested)) return requested;
+  return ['/usr/bin/google-chrome', '/usr/bin/chromium', '/usr/bin/chromium-browser'].find(candidate => fs.existsSync(candidate)) || null;
+}
+
+async function clearCaseData(page) {
+  await page.evaluate(async () => {
+    for (const key of ['td613.ash-keep.current-case', 'td613.ash-keep.preferences']) localStorage.removeItem(key);
+    sessionStorage.clear();
+    await new Promise(resolve => {
+      const request = indexedDB.deleteDatabase('td613-ash-keep');
+      request.onsuccess = request.onerror = request.onblocked = () => resolve();
+    });
+  });
+}
+
+async function currentCase(page) {
+  return page.evaluate(() => new Promise((resolve, reject) => {
+    const caseId = localStorage.getItem('td613.ash-keep.current-case');
+    const request = indexedDB.open('td613-ash-keep');
+    request.onsuccess = () => {
+      const db = request.result;
+      const tx = db.transaction(['cases', 'routeMemory']);
+      const caseRequest = tx.objectStore('cases').get(caseId);
+      const routeRequest = tx.objectStore('routeMemory').get(caseId);
+      tx.oncomplete = () => {
+        db.close();
+        resolve({ caseMap: caseRequest.result || null, routeMemory: routeRequest.result?.value || null });
+      };
+      tx.onerror = () => { db.close(); reject(tx.error); };
+    };
+    request.onerror = () => reject(request.error);
+  }));
+}
+
+async function layoutReceipt(page) {
+  return page.evaluate(() => {
+    const visible = [...document.querySelectorAll('button,a,input,select,textarea,[role="tab"]')].filter(node => {
+      const style = getComputedStyle(node);
+      const rect = node.getBoundingClientRect();
+      return style.display !== 'none' && style.visibility !== 'hidden' && rect.width > 0 && rect.height > 0;
+    });
+    const inScrollLane = node => {
+      let parent = node.parentElement;
+      while (parent && parent !== document.body) {
+        const style = getComputedStyle(parent);
+        if (/(auto|scroll)/.test(style.overflowX) && parent.scrollWidth > parent.clientWidth + 1) return true;
+        parent = parent.parentElement;
+      }
+      return false;
+    };
+    const clipped = visible.filter(node => {
+      const rect = node.getBoundingClientRect();
+      return !inScrollLane(node) && (rect.left < -1 || rect.right > innerWidth + 1);
+    }).map(node => node.id || node.textContent?.trim().slice(0, 36) || node.tagName);
+    return {
+      viewport: { width: innerWidth, height: innerHeight },
+      horizontal_overflow: Math.max(0, document.documentElement.scrollWidth - innerWidth),
+      clipped_controls: clipped,
+      dock_targets: [...document.querySelectorAll('#premiumPrimaryDock button')].map(node => Math.round(node.getBoundingClientRect().height))
+    };
+  });
+}
+
+await fsp.mkdir(artifactDir, { recursive: true });
+const executablePath = browserExecutable();
+const browser = await chromium.launch({ headless: true, ...(executablePath ? { executablePath } : {}) });
+const context = await browser.newContext({ viewport: { width: 1440, height: 1000 }, reducedMotion: 'reduce', acceptDownloads: true });
+const page = await context.newPage();
+page.setDefaultTimeout(60_000);
+const errors = [];
+const badResponses = [];
+page.on('pageerror', error => errors.push(error.message));
+page.on('console', message => { if (message.type() === 'error') errors.push(message.text()); });
+page.on('response', response => { if (response.status() >= 400 && !/favicon\.ico/.test(response.url())) badResponses.push(`${response.status()} ${response.url()}`); });
+
+const report = {
+  schema: 'td613.ash.investigation-guided-flight/v0.2',
+  status: 'RUNNING',
+  base_url: base,
+  production_promotion_authorized: false,
+  prediction_authorized: false,
+  automatic_action_authorized: false,
+  observations: {},
+  errors,
+  http_errors: badResponses,
+  hold: null
+};
+
+try {
+  await page.goto(keepUrl, { waitUntil: 'networkidle' });
+  await page.waitForFunction(() => Boolean(window.__td613AshKeep?.version)
+    && Boolean(window.__td613AshPremiumUI?.version)
+    && Boolean(window.__td613AshGuidedOperatorUI?.version)
+    && window.__td613AshInvestigationDemo?.version === 'td613.ash.investigation-demo/v0.1-glass-meridian');
+  await clearCaseData(page);
+  await page.reload({ waitUntil: 'networkidle' });
+  await page.waitForFunction(() => Boolean(window.__td613AshGuidedOperatorUI?.version)
+    && window.__td613AshInvestigationDemo?.version === 'td613.ash.investigation-demo/v0.1-glass-meridian');
+
+  assert(await page.locator('#launch').isVisible(), 'Investigation flight did not begin at explicit launch.');
+  assert(await page.locator('#guidedLaunchPromise').isVisible(), 'Custodial AI-access product promise is absent.');
+  assert.match(await page.locator('#guidedLaunchPromise').textContent(), /Protect the case before AI sees the case/);
+
+  await page.locator('#newProfile').selectOption('investigation');
+  await page.waitForFunction(() => !document.getElementById('startDemo')?.disabled && /Investigation/.test(document.getElementById('startDemo')?.textContent || ''));
+  assert(await page.locator('#startDemo').isEnabled(), 'Investigation demo did not activate.');
+  const started = Date.now();
+  await page.locator('#startDemo').click();
+  await page.waitForFunction(() => document.documentElement.dataset.ashDemoProfile === 'investigation');
+  await page.waitForFunction(() => document.documentElement.dataset.ashPremiumWorkspace === 'home');
+  await page.locator('#investigationTaskSpine').waitFor({ state: 'visible' });
+  const orientationMs = Date.now() - started;
+  assert(orientationMs < 10_000, 'Investigation exceeded the ten-second useful-state measure.');
+
+  const current = await currentCase(page);
+  assert.equal(current.caseMap?.profile, 'investigation');
+  assert.equal(current.caseMap?.rooms?.length, 12);
+  assert.equal(current.caseMap?.nodes?.length, 56);
+  assert.equal(current.caseMap?.relationships?.length, 72);
+  assert.equal(current.routeMemory?.entries?.length, 4);
+  assert.equal(await page.locator('#investigationTaskSpine .guided-spine-steps button').count(), 5);
+  assert.match(await page.locator('#investigationTaskSpine').textContent(), /Protect → Map → Test → Share → Seal/);
+  assert.match(await page.locator('#premiumNextAction').textContent(), /Preserve|Compare|Prepare|Run|Seal/i);
+
+  await page.locator('#premiumPrimaryDock [data-premium-workspace="work"]').click();
+  await page.locator('#investigationAiShareGuide').waitFor({ state: 'visible' });
+  assert.equal(await page.locator('#investigationAiShareGuide ol li').count(), 6);
+  assert.match(await page.locator('#investigationAiShareGuide').textContent(), /Send the question, not the whole investigation/);
+  assert.match(await page.locator('#investigationAiShareGuide').textContent(), /cannot establish guilt, intent, identity, authorship, truth, surveillance probability/i);
+  assert.equal(await page.locator('#routeId').inputValue(), 'route_llm_analysis');
+  assert.match(await page.locator('#draftBody').inputValue(), /observable differences and unresolved provenance gaps/i);
+  assert.match(await page.locator('#providerTask').inputValue(), /bounded comparison/i);
+  assert.match(await page.locator('#protectedLiterals').inputValue(), /protected source alias/i);
+
+  await page.locator('#premiumPrimaryDock [data-premium-workspace="map"]').click();
+  const normalHeight = await page.locator('#mapStage').evaluate(node => Math.round(node.getBoundingClientRect().height));
+  await page.locator('#guidedMapFocus').click();
+  assert(await page.locator('#workspace-map').evaluate(node => node.classList.contains('guided-map-focus')));
+  const focusedHeight = await page.locator('#mapStage').evaluate(node => Math.round(node.getBoundingClientRect().height));
+  assert(focusedHeight >= normalHeight, 'Focused map became smaller.');
+  await page.locator('#guidedMapZoomIn').click();
+  await page.locator('#guidedMapZoomOut').click();
+  await page.screenshot({ path: path.join(artifactDir, 'investigation-desktop-map-focus.png'), fullPage: true });
+  await page.locator('#guidedMapFocus').click();
+
+  await page.locator('#premiumPrimaryDock [data-premium-workspace="choir"]').click();
+  assert.equal(await page.locator('[data-choir-projection]').count(), 4);
+  await page.locator('#runPremiumChoir').click();
+  await page.waitForFunction(() => /"mode": "PAIRWISE_MOIRE_REBUILD"/.test(document.getElementById('premiumChoirReceipt')?.textContent || ''));
+  const choirReceipt = JSON.parse(await page.locator('#premiumChoirReceipt').textContent());
+  assert.equal(choirReceipt.real_surveillance_probability, null);
+  assert.equal(choirReceipt.automatic_ash_action, false);
+  assert.equal(choirReceipt.prediction_authorized, false);
+  assert(!(await page.locator('#premiumChoirReceipt').evaluate(node => node.closest('details')?.open)), 'Exact Choir receipt opened by default.');
+
+  await page.locator('#premiumPrimaryDock [data-premium-workspace="capsule"]').click();
+  assert(await page.locator('#premiumCapsulePassphrase').isVisible());
+  assert(await page.locator('#premiumImportCapsule').isEnabled());
+  await page.waitForFunction(() => document.querySelectorAll('details.guided-receipt').length >= 3);
+  assert((await page.locator('details.guided-receipt').count()) >= 3, 'Exact receipts were not compressed behind disclosure controls.');
+
+  await page.setViewportSize({ width: 390, height: 844 });
+  await page.locator('#premiumPrimaryDock [data-premium-workspace="home"]').click();
+  await page.waitForTimeout(250);
+  const mobile = await layoutReceipt(page);
+  assert.equal(mobile.horizontal_overflow, 0, 'Investigation mobile document overflowed.');
+  assert.deepEqual(mobile.clipped_controls, [], 'Investigation mobile controls clipped.');
+  assert(mobile.dock_targets.every(value => value >= 48), 'A primary dock target fell below 48 px.');
+  await page.screenshot({ path: path.join(artifactDir, 'investigation-mobile-command-deck.png'), fullPage: true });
+
+  assert.deepEqual(errors, [], `Investigation browser errors: ${errors.join(' | ')}`);
+  assert.deepEqual(badResponses, [], `Investigation HTTP errors: ${badResponses.join(' | ')}`);
+  report.status = 'PASS';
+  report.observations = {
+    orientation_ms: orientationMs,
+    room_count: current.caseMap.rooms.length,
+    node_count: current.caseMap.nodes.length,
+    relationship_count: current.caseMap.relationships.length,
+    route_count: current.routeMemory.entries.length,
+    task_spine_steps: 5,
+    ai_share_steps: 6,
+    map_height_normal: normalHeight,
+    map_height_focused: focusedHeight,
+    exact_receipts_folded: true,
+    choir_pair_count: choirReceipt.pairwise_residue.length,
+    choir_claim_ceiling_preserved: true,
+    mobile
+  };
+} catch (error) {
+  report.status = 'HOLD_FOR_REPAIR';
+  report.hold = { message: error.message, stack: error.stack };
+  try { await page.screenshot({ path: path.join(artifactDir, 'investigation-held.png'), fullPage: true }); } catch {}
+  throw error;
+} finally {
+  await fsp.writeFile(path.join(artifactDir, 'ash-investigation-guidance-flight.json'), `${JSON.stringify(report, null, 2)}\n`);
+  await context.close();
+  await browser.close();
+}
+
+console.log('ash-investigation-guidance-browser-probe.mjs passed');
