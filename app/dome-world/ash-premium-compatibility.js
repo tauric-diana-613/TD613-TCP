@@ -55,15 +55,7 @@ export function installAshPremiumCompatibility(doc = globalThis.document) {
       box-shadow:inset 0 -1px var(--premium-mint)!important;
     }
     html[data-ash-premium-ready="true"] body .ash-lifecycle-rail{
-      position:absolute!important;
-      width:1px!important;
-      height:1px!important;
-      margin:-1px!important;
-      padding:0!important;
-      overflow:hidden!important;
-      clip:rect(0,0,0,0)!important;
-      white-space:nowrap!important;
-      border:0!important;
+      display:none!important;
     }
     @media(max-width:760px){
       html[data-ash-premium-ready="true"] body .workspace-rail{
