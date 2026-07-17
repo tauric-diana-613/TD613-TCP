@@ -1,0 +1,101 @@
+name: Ash User Test Flight
+
+on:
+  pull_request:
+    paths:
+      - 'app/dome-world/ash-*'
+      - 'app/engine/ash-*'
+      - 'scripts/ash-user-test-flight.mjs'
+      - 'tests/ash-user-test-flight*'
+      - '.github/workflows/ash-user-test-flight.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: ash-user-test-flight-${{ github.event.pull_request.number || github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  local-candidate:
+    name: Ash User Flight · Local Candidate
+    runs-on: ubuntu-latest
+    timeout-minutes: 25
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 24
+          cache: npm
+      - name: Install repository dependencies
+        run: npm ci
+      - name: Install browser runtime
+        run: |
+          npm install --no-save --package-lock=false playwright@1.54.1
+          npx playwright install --with-deps chromium
+      - name: Start bounded Ash candidate runtime
+        run: |
+          node scripts/ash-keep-local-closure-server.mjs 6130 > /tmp/ash-user-flight-local.log 2>&1 &
+          echo $! > /tmp/ash-user-flight-local.pid
+          for attempt in $(seq 1 30); do
+            if curl -fsS http://127.0.0.1:6130/dome-world/ash-threshold.html >/dev/null; then exit 0; fi
+            sleep 1
+          done
+          cat /tmp/ash-user-flight-local.log || true
+          exit 1
+      - name: Fly the local candidate
+        env:
+          TD613_BASE_URL: http://127.0.0.1:6130
+          TD613_ARTIFACT_DIR: artifacts/ash-user-flight-local
+          TD613_SYNTHETIC_CUSTODY: '1'
+        run: node scripts/ash-user-test-flight.mjs
+      - name: Stop bounded Ash candidate runtime
+        if: always()
+        run: kill "$(cat /tmp/ash-user-flight-local.pid)" 2>/dev/null || true
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: ash-user-flight-local-evidence
+          path: |
+            artifacts/ash-user-flight-local
+            /tmp/ash-user-flight-local.log
+          if-no-files-found: error
+          retention-days: 30
+
+  deployed-current:
+    name: Ash User Flight · Deployed Current
+    runs-on: ubuntu-latest
+    timeout-minutes: 25
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 24
+          cache: npm
+      - name: Install repository dependencies
+        run: npm ci
+      - name: Install browser runtime
+        run: |
+          npm install --no-save --package-lock=false playwright@1.54.1
+          npx playwright install --with-deps chromium
+      - name: Wait for deployed Ash
+        run: |
+          for attempt in $(seq 1 30); do
+            if curl -fsS https://td613.com/dome-world/ash-threshold.html | grep -q 'Ash Keep'; then exit 0; fi
+            sleep 2
+          done
+          exit 1
+      - name: Fly the deployed current release
+        env:
+          TD613_BASE_URL: https://td613.com
+          TD613_ARTIFACT_DIR: artifacts/ash-user-flight-deployed
+          TD613_SYNTHETIC_CUSTODY: '0'
+        run: node scripts/ash-user-test-flight.mjs
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: ash-user-flight-deployed-evidence
+          path: artifacts/ash-user-flight-deployed
+          if-no-files-found: error
+          retention-days: 30
