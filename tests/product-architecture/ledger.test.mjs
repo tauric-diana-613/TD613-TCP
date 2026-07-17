@@ -11,6 +11,7 @@ const stretch6 = read('docs/ASH_KEEP_STRETCH6_CLOSURE_RECEIPT.md');
 const stretch7 = read('docs/ASH_KEEP_STRETCH7_CLOSURE_RECEIPT.md');
 const stretch8 = read('docs/ASH_KEEP_STRETCH8_CLOSURE_RECEIPT.md');
 const stretch9 = read('docs/ASH_KEEP_STRETCH9_CLOSURE_RECEIPT.md');
+const stretch10 = read('docs/ASH_KEEP_STRETCH10_CLOSURE_RECEIPT.md');
 const law = read('docs/STRATEGIC_VERCEL_DEPLOYMENT_LAW.md');
 const convergence = read('docs/ASH_CONSTITUTIONAL_CONVERGENCE_RECEIPT.md');
 const choir = read('docs/ASH_KEEP_CHOIR_CALIBRATION_RECEIPT.md');
@@ -23,12 +24,12 @@ for (const token of [
   'D. Custodian Return / Anisotropy | **35 / 35**',
   'E. Aperture composition renovation | **18 / 25**',
   'F. Safe Harbor custody-root adapter | **30 / 30**',
-  'component maturity after Stretch 9 closure = 320 / 375',
-  'remaining component maturity = 55 / 375',
-  'validation-gated workstreams = 4 / 9',
+  'G. Destination-bound handoff | **25 / 45**',
+  'component maturity after Stretch 10 closure = 338 / 375',
+  'remaining component maturity = 37 / 375',
+  'validation-gated workstreams = 5 / 9',
   'constitutional synthesis = 49 / 50',
   'CLOSED / IMPLEMENTED_VALIDATION_GATED / EVIDENCE_BOUNDED',
-  'ALLOWED / STRATEGIC / COST-GOVERNED / EVIDENCE-BOUNDED',
   'absolute Vercel ceiling = 12 deployed serverless functions',
   'normal operating maximum = 11 active serverless functions',
   'reserved capacity = 1 empty emergency / repair / migration slot',
@@ -36,30 +37,29 @@ for (const token of [
 ]) assert.ok(ledger.includes(token), `Ledger omitted ${token}`);
 
 for (const token of [
-  'Roadmap generation: `v1.17',
-  'Stretch 8 · Temporal and delayed-disclosure assays — CLOSED',
+  'Roadmap generation: `v1.18',
   'Stretch 9 · Safe Harbor → Ash custody-root adapter — CLOSED',
-  'Independent provenance adapters — BLOCKED / NOT AUTHORIZED',
+  'Stretch 10 · Independent provenance adapters — CLOSED',
+  'Destination-bound handoff last — BLOCKED PENDING STRETCH 10 SEAL',
   'normal ceiling = ONE DEPLOYMENT PER COMPLETED PACKET OR RELEASE CANDIDATE',
   'absolute platform ceiling = 12 deployed serverless functions',
   'normal operating maximum = 11 active serverless functions',
   'BLOCKED_PENDING_CONSOLIDATION',
-  'Stretch 10 implementation requires a later explicit operator handoff gesture'
+  'Stretch 11 implementation requires a later explicit operator handoff gesture'
 ]) assert.ok(roadmap.includes(token), `Roadmap omitted ${token}`);
 
 for (const token of [
-  'Plan generation: `v2.2',
-  'Current state: `STRETCH_9_CLOSED / EXACT_GREEN_MERGE_AND_STRATEGIC_SEAL_PENDING`',
+  'Plan generation: `v2.4',
+  'Current state: `STRETCH_10_CLOSED / EXACT_GREEN_MERGE_AND_STRATEGIC_SEAL_PENDING / STRETCH_11_NOT_AUTHORIZED`',
   'docs/ASH_KEEP_BUILDOUT_LEDGER.md',
   'ROADMAP.md',
   'docs/ASH_KEEP_BUILDOUT_PLAN_SOVEREIGN_CONTINUATION_AFTER_STRETCH_9.md',
-  'component maturity after Stretch 9 closure = 320 / 375',
-  'Ash Safe Harbor Ingress validation run/artifact = 29539852572 / 8391987949',
+  'component maturity after Stretch 10 closure = 338 / 375',
+  'Ash Independent Provenance Validation = SUCCESS / run 29546756631',
   'active serverless functions = 11',
   'reserved function capacity = 1',
-  'Stretch 10 implementation authority = false',
   'Stretch 11 implementation authority = false',
-  'current stop point = AFTER STRETCH 9 SUCCESSFUL STRATEGIC SEAL'
+  'current stop point = AFTER STRETCH 10 SUCCESSFUL STRATEGIC SEAL'
 ]) assert.ok(continuation.includes(token), `Continuation plan omitted ${token}`);
 
 assert.match(convergence, /Status: `IMPLEMENTED_PRODUCTION_DEMONSTRATED`/);
@@ -73,13 +73,13 @@ assert.match(stretch6, /State: `CLOSED \/ IMPLEMENTED_VALIDATION_GATED \/ EVIDEN
 assert.match(stretch7, /State: `CLOSED \/ IMPLEMENTED_VALIDATION_GATED \/ EVIDENCE_BOUNDED`/);
 assert.match(stretch8, /State: `CLOSED \/ IMPLEMENTED_VALIDATION_GATED \/ EVIDENCE_BOUNDED`/);
 assert.match(stretch9, /State: `CLOSED \/ IMPLEMENTED_VALIDATION_GATED \/ EVIDENCE_BOUNDED`/);
-assert.match(stretch9, /validated implementation commit = 05e1e3909cac255dea4f94c10b68be725578d522/);
-assert.match(stretch9, /Ash Safe Harbor Ingress validation run = 29537810372/);
-assert.match(stretch9, /Ash Safe Harbor Ingress validation artifact = 8391245036/);
-assert.match(stretch9, /component maturity after closure = 320 \/ 375/);
-assert.match(stretch9, /active serverless functions = 11/);
-assert.match(stretch9, /reserved function capacity = 1/);
-assert.match(stretch9, /Stretch 10 authorization = false/);
+assert.match(stretch10, /State: `CLOSED \/ IMPLEMENTED_VALIDATION_GATED \/ EVIDENCE_BOUNDED`/);
+assert.match(stretch10, /validated implementation commit = 33c8f881095aa3c601e35d4c45793f072695dfbb/);
+assert.match(stretch10, /Ash Independent Provenance Validation = SUCCESS \/ run 29546756631/);
+assert.match(stretch10, /component maturity after closure = 338 \/ 375/);
+assert.match(stretch10, /active serverless functions = 11/);
+assert.match(stretch10, /reserved function capacity = 1/);
+assert.match(stretch10, /Stretch 11 authorization = false/);
 assert.match(law, /Vercel deployment remains authorized/);
 assert.match(law, /operator release gesture ≠ automatic Git event/);
 
