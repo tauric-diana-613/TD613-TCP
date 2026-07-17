@@ -14,6 +14,12 @@ function browserExecutable() {
   return ['/usr/bin/google-chrome', '/usr/bin/chromium', '/usr/bin/chromium-browser'].find(candidate => fs.existsSync(candidate)) || null;
 }
 
+function railIsVisuallyHidden(rail) {
+  const onePixel = rail.width <= 1.1 && rail.height <= 1.1;
+  const clipped = rail.position === 'absolute' && rail.overflow === 'hidden' && /inset\(50%\)/.test(rail.clip_path);
+  return onePixel || clipped;
+}
+
 async function clearCaseData(page) {
   await page.evaluate(async () => {
     for (const key of ['td613.ash-keep.current-case', 'td613.ash-keep.preferences']) localStorage.removeItem(key);
@@ -126,6 +132,8 @@ try {
   await page.reload({ waitUntil: 'networkidle' });
   await page.waitForFunction(() => Boolean(window.__td613AshGuidedOperatorUI?.version)
     && window.__td613AshInvestigationDemo?.version === 'td613.ash.investigation-demo/v0.1-glass-meridian');
+  assert.equal(await page.locator('html').getAttribute('data-ash-guided-ui'), 'td613.ash.guided-operator-ui/v0.1-investigation-flight');
+  assert.equal(await page.locator('html').getAttribute('data-ash-guided-u-i'), null);
 
   assert(await page.locator('#launch').isVisible(), 'Investigation flight did not begin at explicit launch.');
   assert(await page.locator('#guidedLaunchPromise').isVisible(), 'Custodial AI-access product promise is absent.');
@@ -154,7 +162,7 @@ try {
 
   const desktopRails = await legacyRailReceipt(page);
   assert(desktopRails.length >= 2, 'Legacy rail receipts were unavailable.');
-  assert(desktopRails.every(rail => rail.width <= 1.1 && rail.height <= 1.1), 'A legacy rail remained visually exposed beneath the guided command surface.');
+  assert(desktopRails.every(railIsVisuallyHidden), `A legacy rail remained visually exposed beneath the guided command surface: ${JSON.stringify(desktopRails)}`);
 
   await page.locator('#premiumPrimaryDock [data-premium-workspace="work"]').click();
   await page.locator('#investigationAiShareGuide').waitFor({ state: 'visible' });
@@ -219,7 +227,7 @@ try {
   assert.deepEqual(mobile.clipped_controls, [], 'Investigation mobile controls clipped.');
   assert(mobile.dock_targets.every(value => value >= 48), 'A primary dock target fell below 48 px.');
   assert(mobile.hero_title_font_px != null && mobile.hero_title_font_px <= 20, `Mobile hero title remained oversized at ${mobile.hero_title_font_px}px.`);
-  assert(mobileRails.every(rail => rail.width <= 1.1 && rail.height <= 1.1), 'A legacy rail reappeared on mobile.');
+  assert(mobileRails.every(railIsVisuallyHidden), `A legacy rail reappeared on mobile: ${JSON.stringify(mobileRails)}`);
   await page.screenshot({ path: path.join(artifactDir, 'investigation-mobile-command-deck.png'), fullPage: true });
 
   assert.deepEqual(errors, [], `Investigation browser errors: ${errors.join(' | ')}`);
