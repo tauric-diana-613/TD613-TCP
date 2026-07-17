@@ -16,8 +16,7 @@ function browserExecutable() {
 
 function railIsVisuallyHidden(rail) {
   const onePixel = rail.width <= 1.1 && rail.height <= 1.1;
-  const clipped = rail.position === 'absolute' && rail.overflow === 'hidden' && /inset\(50%\)/.test(rail.clip_path);
-  return onePixel || clipped;
+  return rail.display === 'none' || onePixel;
 }
 
 async function clearCaseData(page) {
@@ -58,6 +57,7 @@ async function legacyRailReceipt(page) {
       class_name: node.className,
       width: rect.width,
       height: rect.height,
+      display: style.display,
       overflow: style.overflow,
       clip_path: style.clipPath,
       position: style.position
@@ -162,7 +162,7 @@ try {
 
   const desktopRails = await legacyRailReceipt(page);
   assert(desktopRails.length >= 2, 'Legacy rail receipts were unavailable.');
-  assert(desktopRails.every(railIsVisuallyHidden), `A legacy rail remained visually exposed beneath the guided command surface: ${JSON.stringify(desktopRails)}`);
+  assert(desktopRails.every(railIsVisuallyHidden), `A legacy rail retained visible layout beneath the guided command surface: ${JSON.stringify(desktopRails)}`);
 
   await page.locator('#premiumPrimaryDock [data-premium-workspace="work"]').click();
   await page.locator('#investigationAiShareGuide').waitFor({ state: 'visible' });
@@ -227,7 +227,7 @@ try {
   assert.deepEqual(mobile.clipped_controls, [], 'Investigation mobile controls clipped.');
   assert(mobile.dock_targets.every(value => value >= 48), 'A primary dock target fell below 48 px.');
   assert(mobile.hero_title_font_px != null && mobile.hero_title_font_px <= 20, `Mobile hero title remained oversized at ${mobile.hero_title_font_px}px.`);
-  assert(mobileRails.every(railIsVisuallyHidden), `A legacy rail reappeared on mobile: ${JSON.stringify(mobileRails)}`);
+  assert(mobileRails.every(railIsVisuallyHidden), `A legacy rail retained mobile layout: ${JSON.stringify(mobileRails)}`);
   await page.screenshot({ path: path.join(artifactDir, 'investigation-mobile-command-deck.png'), fullPage: true });
 
   assert.deepEqual(errors, [], `Investigation browser errors: ${errors.join(' | ')}`);
