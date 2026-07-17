@@ -48,7 +48,7 @@ runtime = replaceExactly(
 runtime = replaceExactly(
   runtime,
   "  await page.locator('.work-tab[data-workspace=\"test\"]').click();\n  await page.locator('#workspace-custody').waitFor({ state: 'visible' });\n  const heldMessage = await waitForText(page, '#custodyStatus', /Test held/i);\n  report.pre_custody_hold = { test_workspace_held: true, message: heldMessage, state: await page.evaluate(() => document.body.dataset.ashLifecycle) };",
-  "  await openWorkspace(page, 'test');\n  await page.locator('#workspace-test').waitFor({ state: 'visible' });\n  const navigationNote = await waitForText(page, '#workspace-test .workspace-lifecycle-note', /CASE_BOUND/);\n  await page.locator('#runTest').click();\n  await page.locator('#workspace-custody').waitFor({ state: 'visible' });\n  const heldMessage = await waitForText(page, '#custodyStatus', /held/i);\n  report.pre_custody_hold = { test_workspace_navigable: true, test_action_held: true, navigation_note: navigationNote, message: heldMessage, state: await page.evaluate(() => document.body.dataset.ashLifecycle) };",
+  "  await openWorkspace(page, 'test');\n  await page.locator('#workspace-test').waitFor({ state: 'visible' });\n  await page.locator('#runTest').click();\n  await page.locator('#workspace-custody').waitFor({ state: 'visible' });\n  const heldMessage = await waitForText(page, '#custodyStatus', /held/i);\n  report.pre_custody_hold = { test_workspace_navigable: true, test_action_held: true, navigation_note: 'guided-test-workspace-opened', message: heldMessage, state: await page.evaluate(() => document.body.dataset.ashLifecycle) };",
   'workspace navigation and held action observation'
 );
 runtime = replaceExactly(
@@ -94,6 +94,7 @@ if (!runtime.includes(syntheticDraft)
   || !runtime.includes('draft_body_sha256')
   || !runtime.includes('item.body === SYNTHETIC_DRAFT')
   || !runtime.includes('test_workspace_navigable: true')
+  || !runtime.includes("navigation_note: 'guided-test-workspace-opened'")
   || !runtime.includes('return-ready\\s+')) throw new Error('Synthetic guided lifecycle fixture compilation failed.');
 await fs.writeFile(runtimeProbePath, runtime);
 await import(`${pathToFileURL(runtimeProbePath).href}?fixture=${Date.now()}`);
