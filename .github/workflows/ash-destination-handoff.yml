@@ -50,12 +50,14 @@ jobs:
           node tests/ash-destination-handoff-schemas.test.mjs
           node tests/ash-destination-handoff-ui.test.mjs
           node tests/ash-destination-handoff-closure.test.mjs
-      - name: Preserve anti-drift and lifecycle contracts
-        run: |
-          node tests/product-architecture/ledger.test.mjs
-          node tests/stretch1-preservation/packet-state.test.mjs
-          node tests/aperture-composition/closure.test.mjs
-          node tests/ash-lifecycle-production-contract.test.mjs
+      - name: Preserve final anti-drift ledger
+        run: node tests/product-architecture/ledger.test.mjs
+      - name: Preserve packet-state lineage
+        run: node tests/stretch1-preservation/packet-state.test.mjs
+      - name: Preserve Aperture closure
+        run: node tests/aperture-composition/closure.test.mjs
+      - name: Preserve lifecycle production boundary
+        run: node tests/ash-lifecycle-production-contract.test.mjs
       - name: Verify 11 plus 1 function covenant
         shell: bash
         run: |
