@@ -3,6 +3,7 @@ import './ash-keep-mobile-composition.js';
 import './ash-mobile-constitutional-closure.js';
 import './ash-operation-coordinator.js';
 import './ash-case-feedback.js';
+import './ash-profile-demo-hydration.js';
 import './ash-workspace-navigation.js';
 import './ash-return-ready-bundle.js';
 import './ash-custodian-return.js';
