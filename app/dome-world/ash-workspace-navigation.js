@@ -93,6 +93,22 @@ function updateRecoveryPosture(doc, host) {
   if (returnBar) returnBar.hidden = current;
 }
 
+function bindRecoveryEntry(entry, doc, host, launch) {
+  if (entry.dataset.ashRecoveryBound === 'true') return;
+  entry.dataset.ashRecoveryBound = 'true';
+  entry.addEventListener('click', event => {
+    event.preventDefault();
+    event.stopImmediatePropagation();
+    launch.classList.add('hidden');
+    const openWorkspace = host.__td613OpenAshWorkspace;
+    if (typeof openWorkspace === 'function') openWorkspace('save');
+    showWorkspaceNote(doc, workspacePosture(doc, 'save'));
+    updateTabPostures(doc);
+    updateRecoveryPosture(doc, host);
+    doc.getElementById('capsuleFile')?.focus?.();
+  });
+}
+
 function ensureCapsuleRecoveryEntry(doc, host) {
   const launch = doc.getElementById('launch');
   const launchPanel = launch?.querySelector('.launch-panel');
@@ -100,33 +116,26 @@ function ensureCapsuleRecoveryEntry(doc, host) {
   const savePanel = doc.getElementById('workspace-save');
   if (!launch || !launchActions || !savePanel) return false;
 
+  const recoveryHost = launchActions.querySelector('.launch-action-group-left') || launchActions;
   let entry = doc.getElementById('openCapsuleRecovery');
   if (!entry) {
     entry = doc.createElement('button');
     entry.id = 'openCapsuleRecovery';
     entry.type = 'button';
-    entry.className = 'btn';
+    entry.className = 'btn launch-case-button';
     entry.textContent = 'Open encrypted copy';
     entry.setAttribute('aria-describedby', 'capsuleRecoveryLaunchDescription');
-    launchActions.append(entry);
+  }
+  bindRecoveryEntry(entry, doc, host, launch);
+  if (entry.parentElement !== recoveryHost) recoveryHost.append(entry);
 
-    const description = doc.createElement('p');
+  let description = doc.getElementById('capsuleRecoveryLaunchDescription');
+  if (!description) {
+    description = doc.createElement('p');
     description.id = 'capsuleRecoveryLaunchDescription';
     description.className = 'sub';
     description.textContent = 'Restore an authenticated Ash Capsule without creating or opening a case first.';
     launchActions.insertAdjacentElement('afterend', description);
-
-    entry.addEventListener('click', event => {
-      event.preventDefault();
-      event.stopImmediatePropagation();
-      launch.classList.add('hidden');
-      const openWorkspace = host.__td613OpenAshWorkspace;
-      if (typeof openWorkspace === 'function') openWorkspace('save');
-      showWorkspaceNote(doc, workspacePosture(doc, 'save'));
-      updateTabPostures(doc);
-      updateRecoveryPosture(doc, host);
-      doc.getElementById('capsuleFile')?.focus?.();
-    });
   }
 
   let returnBar = savePanel.querySelector('.capsule-recovery-navigation');
@@ -181,6 +190,7 @@ export function installAshWorkspaceNavigation(doc = globalThis.document, host = 
 
   if (doc.body && typeof host.MutationObserver === 'function') {
     new host.MutationObserver(() => {
+      ensureCapsuleRecoveryEntry(doc, host);
       updateTabPostures(doc);
       updateRecoveryPosture(doc, host);
     }).observe(doc.body, {
@@ -192,7 +202,10 @@ export function installAshWorkspaceNavigation(doc = globalThis.document, host = 
   }
 
   for (const type of ['core-mutated', 'case-opened', 'case-created', 'capsule-opened']) {
-    host.addEventListener(`td613:ash:${type}`, () => updateRecoveryPosture(doc, host));
+    host.addEventListener(`td613:ash:${type}`, () => {
+      ensureCapsuleRecoveryEntry(doc, host);
+      updateRecoveryPosture(doc, host);
+    });
   }
 
   doc.documentElement.dataset.ashWorkspaceNavigation = ASH_WORKSPACE_NAVIGATION_VERSION;
