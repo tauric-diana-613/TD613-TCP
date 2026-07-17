@@ -211,7 +211,8 @@ function enhance(doc, host) {
   const snapshot = host.__td613AshPremiumUI?.snapshot?.();
   if (snapshot?.profile === 'investigation') renderInvestigationGuidance(doc, snapshot);
   else removeInvestigationGuidance(doc);
-  doc.documentElement.dataset.ashGuidedUI = ASH_GUIDED_OPERATOR_UI_VERSION;
+  doc.documentElement.removeAttribute('data-ash-guided-u-i');
+  doc.documentElement.setAttribute('data-ash-guided-ui', ASH_GUIDED_OPERATOR_UI_VERSION);
 }
 
 export function installAshGuidedOperatorUI(doc = globalThis.document, host = globalThis.window) {
