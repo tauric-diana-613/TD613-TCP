@@ -1,0 +1,7 @@
+{
+  "$schema":"https://json-schema.org/draft/2020-12/schema",
+  "$id":"https://td613.com/schemas/ash-stretch12-r02-tomography.schema.json",
+  "title":"ash-stretch12-r02-tomography","type":"object","additionalProperties":false,
+  "required":["schema","record_id","strata","cells","folds","zero_mean_does_not_erase_structure","fold_establishes_intent","record_digest"],
+  "properties":{"schema":{"type":"string"},"record_id":{},"strata":{},"cells":{},"folds":{},"zero_mean_does_not_erase_structure":{},"fold_establishes_intent":{},"record_digest":{}}
+}
