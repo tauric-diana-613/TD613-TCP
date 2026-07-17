@@ -62,7 +62,14 @@ jobs:
           TD613_BASE_URL: http://127.0.0.1:6130
           TD613_ARTIFACT_DIR: artifacts/ash-user-flight-local
           TD613_SYNTHETIC_CUSTODY: '1'
-        run: node scripts/run-ash-user-test-flight.mjs
+        shell: bash
+        run: |
+          mkdir -p artifacts/ash-user-flight-local
+          set +e
+          node scripts/run-ash-user-test-flight.mjs 2>&1 | tee artifacts/ash-user-flight-local/runner-output.log
+          status=${PIPESTATUS[0]}
+          set -e
+          exit "$status"
       - name: Stop bounded Ash candidate runtime
         if: always()
         run: kill "$(cat /tmp/ash-user-flight-local.pid)" 2>/dev/null || true
