@@ -2,7 +2,7 @@ import assert from 'node:assert/strict';
 import fs from 'node:fs';
 import { JSDOM } from 'jsdom';
 
-const source = fs.readFileSync('app/dome-world/ash-lifecycle.js', 'utf8');
+const source = fs.readFileSync('app/dome-world/ash-lifecycle-core.js', 'utf8');
 const match = source.match(/function enforceReleaseGate\(\) \{[\s\S]*?\n\}/);
 assert.ok(match, 'enforceReleaseGate source must remain discoverable');
 assert.doesNotMatch(source, /button\.disabled = !\(nativeReady && ui\.lifecycle\.gates\.local_release\);/);
