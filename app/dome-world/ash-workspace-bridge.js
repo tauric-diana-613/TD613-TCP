@@ -9,6 +9,7 @@ import './ash-premium-ui.js';
 import './ash-guided-operator-ui.js?v=20260717-investigation-v2';
 import './ash-guided-trust-boundary-court.js?v=20260717-trust-boundary-v1';
 import './ash-guided-destination-posture.js?v=20260717-destination-posture-v1';
+import './ash-stretch12-operator.js?v=20260717-stretch12-v1';
 import './ash-premium-compatibility.js';
 import './ash-workspace-navigation.js';
 import './ash-return-ready-bundle.js';

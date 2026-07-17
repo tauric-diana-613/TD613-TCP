@@ -1,0 +1,140 @@
+name: Ash Stretch 12 Portable Anisotropy
+
+on:
+  pull_request:
+    paths:
+      - 'app/engine/ash-stretch12-*'
+      - 'app/dome-world/ash-stretch12-*'
+      - 'app/dome-world/ash-portable-anisotropy.*'
+      - 'app/dome-world/ash-workspace-bridge.js'
+      - 'scripts/ash-stretch12-*'
+      - 'tests/ash-stretch12-*'
+      - 'docs/ASH_KEEP_STRETCH12_*'
+      - '.github/workflows/ash-stretch12-portable-anisotropy.yml'
+  push:
+    branches: [main]
+    paths:
+      - 'app/engine/ash-stretch12-*'
+      - 'app/dome-world/ash-stretch12-*'
+      - 'app/dome-world/ash-portable-anisotropy.*'
+      - 'app/dome-world/ash-workspace-bridge.js'
+      - 'scripts/ash-stretch12-*'
+      - 'tests/ash-stretch12-*'
+      - 'docs/ASH_KEEP_STRETCH12_*'
+      - '.github/workflows/ash-stretch12-portable-anisotropy.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: ash-stretch12-portable-anisotropy-${{ github.event.pull_request.number || github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  mathematical-and-custody-core:
+    name: Stretch 12 · Mathematical and Custody Core
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 24
+          cache: npm
+      - run: npm ci
+      - name: Verify quantum-derived portable anisotropy
+        run: node tests/ash-stretch12-portable-anisotropy.test.mjs
+      - name: Verify encrypted live-state envelope
+        run: node tests/ash-stretch12-live-state-crypto.test.mjs
+      - name: Verify origin integrity and signatures
+        run: node tests/ash-stretch12-origin-integrity.test.mjs
+      - name: Verify operator surface and authority ceiling
+        run: node tests/ash-stretch12-operator-ui.test.mjs
+      - name: Verify syntax
+        run: |
+          node --check app/engine/ash-stretch12-origin-integrity.js
+          node --check app/engine/ash-stretch12-live-state-crypto.js
+          node --check app/engine/ash-stretch12-portable-anisotropy.js
+          node --check app/dome-world/ash-stretch12-operator.js
+          node --check app/dome-world/ash-portable-anisotropy.js
+          node --check scripts/ash-stretch12-origin-manifest.mjs
+          node --check scripts/ash-stretch12-browser-probe.mjs
+      - name: Preserve candidate Origin Manifest
+        env:
+          TD613_ARTIFACT_DIR: artifacts/ash-stretch12-origin
+        run: node scripts/ash-stretch12-origin-manifest.mjs
+      - uses: actions/upload-artifact@v4
+        with:
+          name: ash-stretch12-origin-manifest
+          path: artifacts/ash-stretch12-origin
+          if-no-files-found: error
+          retention-days: 30
+
+  browser-observation:
+    name: Stretch 12 · Local Browser Observation
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 24
+          cache: npm
+      - run: npm ci
+      - name: Install Chromium observation runtime
+        run: |
+          npm install --no-save --package-lock=false playwright@1.54.1
+          npx playwright install --with-deps chromium
+      - name: Start bounded candidate runtime
+        run: |
+          node scripts/ash-keep-local-closure-server.mjs 6130 > /tmp/ash-stretch12-runtime.log 2>&1 &
+          echo $! > /tmp/ash-stretch12-runtime.pid
+          for attempt in $(seq 1 30); do
+            if curl -fsS http://127.0.0.1:6130/dome-world/ash-portable-anisotropy.html >/dev/null; then exit 0; fi
+            sleep 1
+          done
+          cat /tmp/ash-stretch12-runtime.log || true
+          exit 1
+      - name: Observe endpoint Court and zero-external-request lab
+        env:
+          TD613_BASE_URL: http://127.0.0.1:6130
+          TD613_ARTIFACT_DIR: artifacts/ash-stretch12-browser-observation
+        run: node scripts/ash-stretch12-browser-probe.mjs
+      - name: Stop candidate runtime
+        if: always()
+        run: kill "$(cat /tmp/ash-stretch12-runtime.pid)" 2>/dev/null || true
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: ash-stretch12-browser-observation
+          path: |
+            artifacts/ash-stretch12-browser-observation
+            /tmp/ash-stretch12-runtime.log
+          if-no-files-found: error
+          retention-days: 30
+
+  preservation:
+    name: Stretch 12 · Ash Preservation
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 24
+          cache: npm
+      - run: npm ci
+      - name: Preserve trust-boundary Court
+        run: |
+          node tests/ash-investigation-guidance.test.mjs
+          node tests/ash-destination-posture.test.mjs
+      - name: Preserve Ash Keep core
+        run: npm run test:ash-keep
+      - name: Preserve Custodian Return
+        run: |
+          node tests/ash-custodian-return.test.mjs
+          node tests/ash-custodian-return-contract.test.mjs
+          node tests/ash-custodian-return-closure.test.mjs
+      - name: Preserve serverless covenant
+        run: node tests/product-architecture/ledger.test.mjs
