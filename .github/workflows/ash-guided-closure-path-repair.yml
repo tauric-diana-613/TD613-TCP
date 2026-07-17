@@ -2,7 +2,7 @@ name: Guided Ash Closure Path Repair
 
 on:
   push:
-    branches: [agent/ash-investigation-demo-hydration]
+    branches: [main]
 
 permissions:
   contents: write
@@ -14,7 +14,7 @@ jobs:
     steps:
       - uses: actions/checkout@v4
         with:
-          ref: agent/ash-investigation-demo-hydration
+          ref: main
       - name: Bind guided operator files into Production Closure
         run: |
           python - <<'PY'
@@ -28,6 +28,7 @@ jobs:
             '      - "app/dome-world/ash-guided-*"\n'
             '      - "app/dome-world/fixtures/ash-investigation-*"\n'
             '      - "tests/ash-investigation-guidance.test.mjs"\n'
+            '      - "tests/ash-keep-investigation-guidance-closure.test.mjs"\n'
             '      - "scripts/ash-investigation-guidance-browser-probe.mjs"\n'
           )
           if source.count(anchor) != 2:
@@ -43,4 +44,4 @@ jobs:
           git config user.email 41898282+github-actions[bot]@users.noreply.github.com
           git add .github/workflows/ash-keep-production-closure.yml
           git commit -m "Bind guided Ash surfaces to Production Closure"
-          git push origin HEAD:agent/ash-investigation-demo-hydration
+          git push origin HEAD:main
