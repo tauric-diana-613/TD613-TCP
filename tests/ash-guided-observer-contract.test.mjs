@@ -33,7 +33,13 @@ assert.match(lifecycle, /selectOption\('political_campaign'\)/);
 assert.match(lifecycle, /Harbor City Mayoral Campaign/);
 assert.match(lifecycle, /node_kickoff, node_launch_message, node_press_inquiry/);
 assert.match(lifecycle, /td613\.ash\.cache-flush\.epoch/);
+assert.match(lifecycle, /preCustodyExactState === 'READINESS_OBSERVED'/);
+assert.match(lifecycle, /pre_custody_exact_state: preCustodyExactState/);
 assert.match(lifecycle, /test_workspace_navigable: true/);
+assert.doesNotMatch(lifecycle, /#workspace-test \.workspace-lifecycle-note/,
+  'Lifecycle observer still requires an internal state token to remain visible copy');
+assert.doesNotMatch(lifecycle, /navigationNote/,
+  'Lifecycle observer still conflates visible guidance with exact lifecycle state');
 
 for (const source of [core, coreRunner, convergenceRunner, lifecycle]) {
   assert.doesNotMatch(source, /prediction_authorized\s*:\s*true/);
