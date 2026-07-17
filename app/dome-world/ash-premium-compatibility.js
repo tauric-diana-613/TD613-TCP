@@ -1,33 +1,7 @@
-export const ASH_PREMIUM_COMPATIBILITY_VERSION = 'td613.ash.premium.compatibility/v0.6-settlement-window';
+export const ASH_PREMIUM_COMPATIBILITY_VERSION = 'td613.ash.premium.compatibility/v0.1-exact-rail';
 
-function preserveIntentionalWorkspace(doc, host) {
-  let intentionalWorkspace = doc.documentElement.dataset.ashPremiumWorkspace || null;
-
-  doc.addEventListener('click', event => {
-    const control = event.target?.closest?.('[data-premium-workspace],[data-route-workspace],[data-command-workspace],.work-tab[data-workspace]');
-    const workspace = control?.dataset?.premiumWorkspace
-      || control?.dataset?.routeWorkspace
-      || control?.dataset?.commandWorkspace
-      || control?.dataset?.workspace;
-    if (workspace) intentionalWorkspace = workspace;
-  }, true);
-
-  const restore = () => {
-    const workspace = intentionalWorkspace || doc.documentElement.dataset.ashPremiumWorkspace;
-    if (!workspace || workspace === 'home') return;
-    const reopen = () => {
-      if (typeof host.__td613AshPremiumUI?.open === 'function') host.__td613AshPremiumUI.open(workspace);
-    };
-    host.setTimeout(reopen, 0);
-    host.setTimeout(reopen, 48);
-    host.setTimeout(reopen, 180);
-  };
-  host.addEventListener('td613:ash:case-opened', restore);
-  host.addEventListener('td613:ash:capsule-opened', restore);
-}
-
-export function installAshPremiumCompatibility(doc = globalThis.document, host = globalThis.window) {
-  if (!doc?.head || !host || doc.getElementById('td613-ash-premium-compatibility')) return false;
+export function installAshPremiumCompatibility(doc = globalThis.document) {
+  if (!doc?.head || doc.getElementById('td613-ash-premium-compatibility')) return false;
   const style = doc.createElement('style');
   style.id = 'td613-ash-premium-compatibility';
   style.dataset.td613Version = ASH_PREMIUM_COMPATIBILITY_VERSION;
@@ -103,10 +77,9 @@ export function installAshPremiumCompatibility(doc = globalThis.document, host =
     }
   `;
   doc.head.append(style);
-  preserveIntentionalWorkspace(doc, host);
-  doc.documentElement.dataset.ashPremiumUi = host.__td613AshPremiumUI?.version || 'td613.ash.premium-ui/v0.1-command-instrument';
+  doc.documentElement.dataset.ashPremiumUi = globalThis.window?.__td613AshPremiumUI?.version || 'td613.ash.premium-ui/v0.1-command-instrument';
   doc.documentElement.dataset.ashPremiumCompatibility = ASH_PREMIUM_COMPATIBILITY_VERSION;
   return true;
 }
 
-if (typeof document !== 'undefined' && typeof window !== 'undefined') installAshPremiumCompatibility(document, window);
+if (typeof document !== 'undefined') installAshPremiumCompatibility(document);
