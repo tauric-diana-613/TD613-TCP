@@ -18,10 +18,12 @@ page.on('console', message => { if (message.type() === 'error') consoleErrors.pu
 await page.goto(`${base}/dome-world/ash-stretch12-r02-qualification.html`, { waitUntil:'networkidle' });
 await page.selectOption('#route','PUBLIC_SECTOR_MANAGED_PROVIDER');
 await page.click('#qualify');
+await page.waitForFunction(() => /HARD HOLD/.test(document.querySelector('#status')?.textContent || ''));
 const managed = await page.textContent('#status');
 await page.selectOption('#route','OFFLINE_LOCAL_MODEL');
 await page.check('#providerAction');
 await page.click('#qualify');
+await page.waitForFunction(() => /ROUTE MISMATCH/.test(document.querySelector('#status')?.textContent || ''));
 const mismatch = await page.textContent('#status');
 await page.screenshot({ path:path.join(out,'qualification-court.png'), fullPage:true });
 const observation = {
