@@ -398,7 +398,7 @@ export function installAshInvestigationDemo() {
   const button = byId('startDemo');
   if (!select || !button) return false;
   select.addEventListener('change', () => queueMicrotask(updateControls));
-  document.addEventListener('click', event => {
+  window.addEventListener('click', event => {
     const target = event.target?.closest?.('#startDemo');
     if (!target || select.value !== PROFILE) return;
     event.preventDefault();
