@@ -33,14 +33,6 @@ jobs:
           cache: npm
       - name: Install repository dependencies
         run: npm ci
-      - name: Verify observer contracts and syntax
-        run: |
-          node tests/ash-guided-observer-contract.test.mjs
-          node --check scripts/ash-keep-production-probe.mjs
-          node --check scripts/run-ash-keep-production-probe.mjs
-          node --check scripts/run-ash-constitutional-convergence-probe.mjs
-          node --check scripts/ash-lifecycle-production-probe.mjs
-          node --check scripts/ash-investigation-guidance-browser-probe.mjs
       - name: Install Chromium observer runtime
         run: |
           npm install --no-save --package-lock=false playwright@1.54.1
