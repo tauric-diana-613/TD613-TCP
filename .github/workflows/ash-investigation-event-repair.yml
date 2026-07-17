@@ -1,0 +1,34 @@
+name: Ash Investigation Event Repair
+
+on:
+  push:
+    branches: [agent/ash-investigation-demo-hydration]
+
+permissions:
+  contents: write
+
+jobs:
+  patch:
+    if: github.actor != 'github-actions[bot]'
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: agent/ash-investigation-demo-hydration
+      - name: Move the profile-specific event listener
+        run: |
+          python - <<'PY'
+          from pathlib import Path
+          path = Path('app/dome-world/ash-investigation-demo-hydration.js')
+          source = path.read_text()
+          source = source.replace("  document.addEventListener('click', event => {", "  window.addEventListener('click', event => {", 1)
+          path.write_text(source)
+          PY
+          git rm .github/workflows/ash-investigation-event-repair.yml
+      - name: Commit repair
+        run: |
+          git config user.name github-actions[bot]
+          git config user.email 41898282+github-actions[bot]@users.noreply.github.com
+          git add app/dome-world/ash-investigation-demo-hydration.js
+          git commit -m "Move Investigation demo listener to window"
+          git push origin HEAD:agent/ash-investigation-demo-hydration
