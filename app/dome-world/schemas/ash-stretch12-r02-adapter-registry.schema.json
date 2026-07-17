@@ -1,0 +1,7 @@
+{
+  "$schema":"https://json-schema.org/draft/2020-12/schema",
+  "$id":"https://td613.com/schemas/ash-stretch12-r02-adapter-registry.schema.json",
+  "title":"ash-stretch12-r02-adapter-registry","type":"object","additionalProperties":false,
+  "required":["schema","record_id","adapters","full_case_cloud_route_present","universal_transport","universal_join_key","automatic_recipient_reuse","record_digest"],
+  "properties":{"schema":{"type":"string"},"record_id":{},"adapters":{},"full_case_cloud_route_present":{},"universal_transport":{},"universal_join_key":{},"automatic_recipient_reuse":{},"record_digest":{}}
+}
