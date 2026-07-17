@@ -321,7 +321,8 @@ async function hydrateDemo(profile) {
   }
 }
 
-function install() {
+export function installAshProfileDemoHydration() {
+  if (typeof document === 'undefined' || typeof window === 'undefined') return false;
   ensureStyles();
   const select = ensureProfileOptions();
   const startDemo = byId('startDemo');
@@ -351,4 +352,6 @@ function install() {
   return true;
 }
 
-install();
+if (typeof document !== 'undefined' && typeof window !== 'undefined') {
+  installAshProfileDemoHydration();
+}
