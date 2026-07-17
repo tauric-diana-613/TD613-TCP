@@ -12,12 +12,24 @@ const RECEIPT_LABELS = Object.freeze({
 const byId = (doc, id) => doc.getElementById(id);
 
 function ensureStyles(doc) {
-  if (byId(doc, 'td613-ash-guided-operator-css')) return;
-  const link = doc.createElement('link');
-  link.id = 'td613-ash-guided-operator-css';
-  link.rel = 'stylesheet';
-  link.href = '/dome-world/ash-guided-operator-ui.css';
-  doc.head.append(link);
+  let link = byId(doc, 'td613-ash-guided-operator-css');
+  if (!link) {
+    link = doc.createElement('link');
+    link.id = 'td613-ash-guided-operator-css';
+    link.rel = 'stylesheet';
+    doc.head.append(link);
+  }
+  link.href = '/dome-world/ash-guided-operator-ui.css?v=20260717-investigation-v3';
+}
+
+function collapseLegacyRails(doc) {
+  for (const rail of doc.querySelectorAll('.workspace-rail,.ash-lifecycle-rail')) {
+    rail.setAttribute('aria-hidden', 'true');
+    rail.setAttribute('inert', '');
+    rail.style.setProperty('display', 'none', 'important');
+    rail.style.setProperty('min-height', '0', 'important');
+    rail.style.setProperty('max-height', '0', 'important');
+  }
 }
 
 function ensureLaunchPromise(doc) {
@@ -206,12 +218,14 @@ function removeInvestigationGuidance(doc) {
 function enhance(doc, host) {
   ensureLaunchPromise(doc);
   ensureMapControls(doc);
+  collapseLegacyRails(doc);
   compressReceipts(doc);
   compressCrossingTimeline(doc);
   const snapshot = host.__td613AshPremiumUI?.snapshot?.();
   if (snapshot?.profile === 'investigation') renderInvestigationGuidance(doc, snapshot);
   else removeInvestigationGuidance(doc);
-  doc.documentElement.dataset.ashGuidedUI = ASH_GUIDED_OPERATOR_UI_VERSION;
+  doc.documentElement.removeAttribute('data-ash-guided-u-i');
+  doc.documentElement.setAttribute('data-ash-guided-ui', ASH_GUIDED_OPERATOR_UI_VERSION);
 }
 
 export function installAshGuidedOperatorUI(doc = globalThis.document, host = globalThis.window) {

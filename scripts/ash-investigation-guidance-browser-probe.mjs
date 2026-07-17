@@ -14,6 +14,11 @@ function browserExecutable() {
   return ['/usr/bin/google-chrome', '/usr/bin/chromium', '/usr/bin/chromium-browser'].find(candidate => fs.existsSync(candidate)) || null;
 }
 
+function railIsVisuallyHidden(rail) {
+  const onePixel = rail.width <= 1.1 && rail.height <= 1.1;
+  return rail.display === 'none' || onePixel;
+}
+
 async function clearCaseData(page) {
   await page.evaluate(async () => {
     for (const key of ['td613.ash-keep.current-case', 'td613.ash-keep.preferences']) localStorage.removeItem(key);
@@ -44,6 +49,22 @@ async function currentCase(page) {
   }));
 }
 
+async function legacyRailReceipt(page) {
+  return page.evaluate(() => [...document.querySelectorAll('.workspace-rail,.ash-lifecycle-rail')].map(node => {
+    const rect = node.getBoundingClientRect();
+    const style = getComputedStyle(node);
+    return {
+      class_name: node.className,
+      width: rect.width,
+      height: rect.height,
+      display: style.display,
+      overflow: style.overflow,
+      clip_path: style.clipPath,
+      position: style.position
+    };
+  }));
+}
+
 async function layoutReceipt(page) {
   return page.evaluate(() => {
     const visible = [...document.querySelectorAll('button,a,input,select,textarea,[role="tab"]')].filter(node => {
@@ -64,11 +85,14 @@ async function layoutReceipt(page) {
       const rect = node.getBoundingClientRect();
       return !inScrollLane(node) && (rect.left < -1 || rect.right > innerWidth + 1);
     }).map(node => node.id || node.textContent?.trim().slice(0, 36) || node.tagName);
+    const hero = document.querySelector('#premiumHomeBody .premium-hero h3');
     return {
       viewport: { width: innerWidth, height: innerHeight },
       horizontal_overflow: Math.max(0, document.documentElement.scrollWidth - innerWidth),
       clipped_controls: clipped,
-      dock_targets: [...document.querySelectorAll('#premiumPrimaryDock button')].map(node => Math.round(node.getBoundingClientRect().height))
+      dock_targets: [...document.querySelectorAll('#premiumPrimaryDock button')].map(node => Math.round(node.getBoundingClientRect().height)),
+      hero_title_font_px: hero ? Number.parseFloat(getComputedStyle(hero).fontSize) : null,
+      hero_title_lines: hero ? Math.round(hero.getBoundingClientRect().height / Number.parseFloat(getComputedStyle(hero).lineHeight)) : null
     };
   });
 }
@@ -86,7 +110,7 @@ page.on('console', message => { if (message.type() === 'error') errors.push(mess
 page.on('response', response => { if (response.status() >= 400 && !/favicon\.ico/.test(response.url())) badResponses.push(`${response.status()} ${response.url()}`); });
 
 const report = {
-  schema: 'td613.ash.investigation-guided-flight/v0.2',
+  schema: 'td613.ash.investigation-guided-flight/v0.3',
   status: 'RUNNING',
   base_url: base,
   production_promotion_authorized: false,
@@ -108,6 +132,8 @@ try {
   await page.reload({ waitUntil: 'networkidle' });
   await page.waitForFunction(() => Boolean(window.__td613AshGuidedOperatorUI?.version)
     && window.__td613AshInvestigationDemo?.version === 'td613.ash.investigation-demo/v0.1-glass-meridian');
+  assert.equal(await page.locator('html').getAttribute('data-ash-guided-ui'), 'td613.ash.guided-operator-ui/v0.1-investigation-flight');
+  assert.equal(await page.locator('html').getAttribute('data-ash-guided-u-i'), null);
 
   assert(await page.locator('#launch').isVisible(), 'Investigation flight did not begin at explicit launch.');
   assert(await page.locator('#guidedLaunchPromise').isVisible(), 'Custodial AI-access product promise is absent.');
@@ -134,6 +160,10 @@ try {
   assert.match(await page.locator('#investigationTaskSpine').textContent(), /Protect → Map → Test → Share → Seal/);
   assert.match(await page.locator('#premiumNextAction').textContent(), /Preserve|Compare|Prepare|Run|Seal/i);
 
+  const desktopRails = await legacyRailReceipt(page);
+  assert(desktopRails.length >= 2, 'Legacy rail receipts were unavailable.');
+  assert(desktopRails.every(railIsVisuallyHidden), `A legacy rail retained visible layout beneath the guided command surface: ${JSON.stringify(desktopRails)}`);
+
   await page.locator('#premiumPrimaryDock [data-premium-workspace="work"]').click();
   await page.locator('#investigationAiShareGuide').waitFor({ state: 'visible' });
   assert.equal(await page.locator('#investigationAiShareGuide ol li').count(), 6);
@@ -148,8 +178,25 @@ try {
   const normalHeight = await page.locator('#mapStage').evaluate(node => Math.round(node.getBoundingClientRect().height));
   await page.locator('#guidedMapFocus').click();
   assert(await page.locator('#workspace-map').evaluate(node => node.classList.contains('guided-map-focus')));
+  await page.waitForFunction(() => {
+    const dock = document.getElementById('premiumPrimaryDock');
+    const heading = document.querySelector('#workspace-map > .workspace-head');
+    return dock && heading && getComputedStyle(dock).pointerEvents === 'none' && Number.parseFloat(getComputedStyle(dock).opacity) <= 0.01 && getComputedStyle(heading).display === 'none';
+  });
   const focusedHeight = await page.locator('#mapStage').evaluate(node => Math.round(node.getBoundingClientRect().height));
   assert(focusedHeight >= normalHeight, 'Focused map became smaller.');
+  const focusVisual = await page.evaluate(() => {
+    const dock = document.getElementById('premiumPrimaryDock');
+    const heading = document.querySelector('#workspace-map > .workspace-head');
+    return {
+      dock_pointer_events: getComputedStyle(dock).pointerEvents,
+      dock_opacity: Number.parseFloat(getComputedStyle(dock).opacity),
+      workspace_heading_display: getComputedStyle(heading).display
+    };
+  });
+  assert.equal(focusVisual.dock_pointer_events, 'none');
+  assert(focusVisual.dock_opacity <= 0.01, 'Primary dock remained visible over focused tomography.');
+  assert.equal(focusVisual.workspace_heading_display, 'none');
   await page.locator('#guidedMapZoomIn').click();
   await page.locator('#guidedMapZoomOut').click();
   await page.screenshot({ path: path.join(artifactDir, 'investigation-desktop-map-focus.png'), fullPage: true });
@@ -175,9 +222,12 @@ try {
   await page.locator('#premiumPrimaryDock [data-premium-workspace="home"]').click();
   await page.waitForTimeout(250);
   const mobile = await layoutReceipt(page);
+  const mobileRails = await legacyRailReceipt(page);
   assert.equal(mobile.horizontal_overflow, 0, 'Investigation mobile document overflowed.');
   assert.deepEqual(mobile.clipped_controls, [], 'Investigation mobile controls clipped.');
   assert(mobile.dock_targets.every(value => value >= 48), 'A primary dock target fell below 48 px.');
+  assert(mobile.hero_title_font_px != null && mobile.hero_title_font_px <= 20, `Mobile hero title remained oversized at ${mobile.hero_title_font_px}px.`);
+  assert(mobileRails.every(railIsVisuallyHidden), `A legacy rail retained mobile layout: ${JSON.stringify(mobileRails)}`);
   await page.screenshot({ path: path.join(artifactDir, 'investigation-mobile-command-deck.png'), fullPage: true });
 
   assert.deepEqual(errors, [], `Investigation browser errors: ${errors.join(' | ')}`);
@@ -193,6 +243,8 @@ try {
     ai_share_steps: 6,
     map_height_normal: normalHeight,
     map_height_focused: focusedHeight,
+    map_focus_visual: focusVisual,
+    legacy_rails_hidden: true,
     exact_receipts_folded: true,
     choir_pair_count: choirReceipt.pairwise_residue.length,
     choir_claim_ceiling_preserved: true,

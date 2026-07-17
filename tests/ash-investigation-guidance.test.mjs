@@ -17,6 +17,7 @@ const hydration = read('app/dome-world/ash-investigation-demo-hydration.js');
 const guidance = read('app/dome-world/ash-guided-operator-ui.js');
 const css = read('app/dome-world/ash-guided-operator-ui.css');
 const bridge = read('app/dome-world/ash-workspace-bridge.js');
+const probe = read('scripts/ash-investigation-guidance-browser-probe.mjs');
 
 assert.equal(profile.profile, 'investigation');
 assert.equal(profile.source_status, 'SIMULATED');
@@ -75,13 +76,31 @@ assert.match(guidance, /guidedMapZoomIn/);
 assert.match(guidance, /guidedMapFocus/);
 assert.match(guidance, /Provider boundary/);
 assert.match(guidance, /compressCrossingTimeline/);
+assert.match(guidance, /function collapseLegacyRails/);
+assert.match(guidance, /style\.setProperty\('display', 'none', 'important'\)/);
+assert.match(guidance, /setAttribute\('inert', ''\)/);
+assert.match(guidance, /ash-guided-operator-ui\.css\?v=20260717-investigation-v3/);
+assert.match(guidance, /setAttribute\('data-ash-guided-ui', ASH_GUIDED_OPERATOR_UI_VERSION\)/);
+assert.match(guidance, /removeAttribute\('data-ash-guided-u-i'\)/);
+assert.doesNotMatch(guidance, /dataset\.ashGuidedUI\s*=/);
 assert.match(css, /guided-dome-drift/);
 assert.match(css, /Iowan Old Style/);
+assert.match(css, /workspace-rail,\s*\nhtml\[data-ash-guided-ui\] \.ash-lifecycle-rail/);
+assert.match(css, /clip-path:inset\(50%\)!important/);
 assert.match(css, /map-stage[^\{]*\{[^}]*min-height:68vh/);
 assert.match(css, /guided-receipt/);
 assert.match(css, /guided-crossing-history/);
+assert.match(css, /#workspace-map\.guided-map-focus>\.workspace-head\{display:none!important\}/);
+assert.match(css, /html:has\(#workspace-map\.guided-map-focus\) \.premium-primary-dock/);
+assert.match(css, /pointer-events:none/);
 assert.match(css, /guided-spine-steps button:nth-child\(5\)/);
+assert.match(css, /premium-hero h3\{font-size:1\.18rem/);
 assert.match(css, /@media\(prefers-reduced-motion:reduce\)/);
+assert.match(probe, /legacyRailReceipt/);
+assert.match(probe, /visible layout beneath the guided command surface/);
+assert.match(probe, /Primary dock remained visible over focused tomography/);
+assert.match(probe, /Mobile hero title remained oversized/);
+assert.match(probe, /investigation-guided-flight\/v0\.3/);
 
 for (const forbidden of [
   /attribution_established\s*:\s*true/,

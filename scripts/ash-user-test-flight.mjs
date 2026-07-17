@@ -208,6 +208,17 @@ async function screenshot(page, name) {
   await page.screenshot({ path: path.join(artifactDir, name), fullPage: true });
 }
 
+async function openGuidedWorkspace(page, workspace) {
+  await page.evaluate(name => {
+    const open = window.__td613AshPremiumUI?.open
+      || window.__td613OpenAshWorkspace
+      || window.__td613AshKeep?.openWorkspace;
+    if (typeof open !== 'function') throw new Error('Ash guided workspace API is unavailable.');
+    open(name);
+  }, workspace);
+  await page.waitForFunction(name => document.getElementById(`workspace-${name}`)?.classList.contains('active'), workspace);
+}
+
 await fsp.mkdir(artifactDir, { recursive: true });
 const executablePath = browserExecutable();
 const browser = await chromium.launch({ headless: true, ...(executablePath ? { executablePath } : {}) });
@@ -287,7 +298,7 @@ try {
   await waitAuthority(page, 'CASE_BOUND');
   await screenshot(page, '02-custody-bound.png');
 
-  await page.locator('.work-tab[data-workspace="rooms"]').click();
+  await openGuidedWorkspace(page, 'rooms');
   await page.locator('#roomName').fill('Source chamber');
   await page.locator('#addRoom').click();
   await page.waitForFunction(() => /Source chamber/.test(document.getElementById('roomList')?.textContent || ''));
@@ -297,7 +308,7 @@ try {
   await page.locator('#saveRule').click();
   await page.waitForFunction(() => /Rule kept/.test(document.getElementById('roomStatus')?.textContent || ''));
 
-  await page.locator('.work-tab[data-workspace="map"]').click();
+  await openGuidedWorkspace(page, 'map');
   for (const [label, type, source] of [
     ['Public filing index', 'artifact', 'OBSERVED'],
     ['Unpublished working inference', 'hypothesis', 'INFERRED'],
@@ -324,7 +335,7 @@ try {
   assert(await page.locator('#accessibleTable').isVisible(), 'Accessible map table did not open.');
   report.observations.case_map = { rooms: caseAfterObjects.rooms.length, user_nodes: [filing.id, inference.id, gap.id], accessible_table_opened: true };
 
-  await page.locator('.work-tab[data-workspace="routes"]').click();
+  await openGuidedWorkspace(page, 'routes');
   await page.locator('#routeId').fill('route_user_flight');
   await page.locator('#routeRecipient').fill('bounded-test-recipient');
   await page.locator('#routePurpose').fill('test-purpose-shaped-index');
@@ -334,7 +345,7 @@ try {
   await page.waitForFunction(() => /immutable successor entry/i.test(document.getElementById('routeStatus')?.textContent || ''));
   report.observations.route_memory = { recorded_reference: filing.id };
 
-  await page.locator('.work-tab[data-workspace="test"]').click();
+  await openGuidedWorkspace(page, 'test');
   await page.locator('#readerClass').selectOption('deterministic-baseline');
   await page.locator('#testRefs').fill([filing.id, inference.id, gap.id].join(', '));
   await page.locator('#runTest').click();
@@ -349,7 +360,7 @@ try {
   await page.waitForFunction(() => /shared structure/i.test(document.getElementById('linkStatus')?.textContent || ''));
   report.observations.rebuild = { lifecycle: 'REBUILD_ELIGIBLE', replay_visible: true, link_check_visible: true };
 
-  await page.locator('.work-tab[data-workspace="draft"]').click();
+  await openGuidedWorkspace(page, 'draft');
   await page.locator('#draftBody').fill('Please provide the public filing index and the date range represented by that index.');
   await page.locator('#draftRoute').fill('route_user_flight');
   await page.locator('#draftRecipient').fill('bounded-test-recipient');
@@ -368,7 +379,7 @@ try {
   await page.waitForFunction(() => document.body.dataset.ashLifecycle === 'RELEASE_ELIGIBLE');
   report.observations.release = { lifecycle: 'RELEASE_ELIGIBLE', exact_review_checks: await page.locator('[data-review]:checked').count() };
 
-  await page.locator('.work-tab[data-workspace="save"]').click();
+  await openGuidedWorkspace(page, 'save');
   await page.locator('#saveQuestions').fill('What additional public index confirms the range?');
   await page.locator('#saveNext').fill('Request the bounded public index.');
   await page.locator('#makeSave').click();
