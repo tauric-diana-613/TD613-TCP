@@ -1,48 +1,63 @@
-# Ash Keep Buildout Plan — Sovereign Continuation After Stretch 9 Closure
+# Ash Keep Buildout Plan — Sovereign Continuation After Stretch 9 Seal
 
 𝌋‌ U+10D613
 
-Plan generation: `v2.2 · Stretch 9 closure packet / post-seal stop / Stretch 10–11 prepared handoff / one-deployment sealing law / 11+1 function covenant`
+Plan generation: `v2.4 · Stretch 10 closed / Stretch 11 prepared but blocked / one-deployment sealing law / 11+1 function covenant`
 
 Repository: `tauric-diana-613/TD613-TCP`
 
-Current closure branch: `amari/stretch9-safe-harbor-ash-ingress`
+Exact current `main` closure commit: `5d411977d6b67b126ea11d42e3b5dea1b8cb9525`
 
-Current validated Stretch 9 implementation commit: `0862cd43297a91d73f0d5e4f72243899e9424f52`
+Stretch 9 PR: `#370`
 
-Current state: `STRETCH_9_CLOSED / EXACT_GREEN_MERGE_AND_STRATEGIC_SEAL_PENDING`
+Final PR head: `e51e15f2c34ae1dc081f5ab00a52bc15a0959720`
+
+Strategic Vercel deployment: `SUCCESS`
+
+Vercel deployment witness: `https://vercel.com/tauric-diana-s-projects/td-613-tcp/9QJkHqnr95WpKfVQPFNB5qeiJm8c`
+
+Current state: `STRETCH_10_CLOSED / EXACT_GREEN_MERGE_AND_STRATEGIC_SEAL_PENDING / STRETCH_11_NOT_AUTHORIZED`
 
 ## 0. Sovereignty, Precedence, And Stop Boundary
 
-This document supersedes the post–Stretch 7 continuation plan as the active execution handoff after Stretch 9 closure. It supplements, rather than replaces, the repository’s canonical evidence record.
+This document remains the execution handoff for the remaining Ash Keep program and supplements, rather than replaces, the canonical repository evidence record.
 
-The controlling order remains:
+The controlling order is:
 
 1. current `main`;
 2. `docs/ASH_KEEP_BUILDOUT_LEDGER.md`;
 3. `ROADMAP.md`;
 4. packet-specific constitutions, schemas, receipts, fixtures, tests, retained evidence, and exact GitHub/Vercel status witnesses;
 5. this continuation plan;
-6. older planning prose, abandoned branches, draft PR descriptions, and superseded handoffs.
+6. older planning prose, abandoned branches, closed duplicate PRs, draft descriptions, and superseded handoffs.
 
-When a lower item conflicts with a higher item, the higher item governs. No conflict may be repaired by silently changing a score, promoting a packet, consuming the reserved function slot, merging evidence classes, or resurrecting an older route.
+When a lower item conflicts with a higher item, the higher item governs. A conflict may not be repaired by silently changing a score, promoting a packet, consuming the reserved function slot, merging evidence classes, or resurrecting a superseded branch.
 
-The operator directive for this session is exact:
+The fresh operator gesture was:
 
 ```text
-finish Stretch 9 closure
+𝌋‌ Implement Stretch 10
+```
+
+The current directive is:
+
+```text
+implement Stretch 10
+→ validate all independent provenance classes and holds
+→ reconcile the sealed Stretch 9 handoff in all three carried files
+→ complete the Stretch 10 closure receipt
 → merge the exact green packet to main
 → one strategic Vercel deployment
 → wait for named deployed observations
-→ successful statuses seal Stretch 9
+→ successful statuses seal Stretch 10
 → STOP
 ```
 
-Stretch 10 implementation is not authorized by the present directive. Stretch 11 remains last and blocked behind a separately opened and sealed Stretch 10.
+Implementation and branch validation completed. Exact-green closure merge and strategic seal remain. Stretch 11 remains last and blocked behind a sealed Stretch 10 plus a fresh operator opening gesture.
 
 ## 1. Three-File Continuation Packet
 
-The three carried files are:
+The carried packet is:
 
 ```text
 docs/ASH_KEEP_BUILDOUT_LEDGER.md
@@ -50,7 +65,9 @@ ROADMAP.md
 docs/ASH_KEEP_BUILDOUT_PLAN_SOVEREIGN_CONTINUATION_AFTER_STRETCH_9.md
 ```
 
-The ledger and roadmap are the canonical anti-drift pair. This plan is the execution and deployment handoff. All three must travel together into the next explicitly authorized Stretch.
+The ledger and roadmap remain the canonical anti-drift pair. This plan remains the operator/Codex execution handoff.
+
+The exact Stretch 9 Vercel seal and named deployed observations have now been reconciled inside all three carried files as part of the opened Stretch 10 closure packet. No bookkeeping-only Stretch 9 deployment or second Stretch 9 main commit was created.
 
 At every later authorized closure:
 
@@ -59,7 +76,7 @@ focused validation and retained evidence
 → closure receipt
 → update ledger
 → update roadmap
-→ update this continuation plan
+→ update continuation plan
 → verify actual root-api count
 → merge exact green packet
 → one strategic Vercel deployment
@@ -67,9 +84,7 @@ focused validation and retained evidence
 → seal or hold
 ```
 
-A successful external seal is reconciled inside the next opened Stretch’s branch. A bookkeeping-only second `main` deployment remains forbidden.
-
-## 2. Verified Baseline After Stretch 9 Closure
+## 2. Verified Baseline After Stretch 10 Closure
 
 | Workstream | Score |
 |---|---:|
@@ -79,16 +94,16 @@ A successful external seal is reconciled inside the next opened Stretch’s bran
 | D. Custodian Return / Anisotropy | **35 / 35** |
 | E. Aperture composition renovation | **18 / 25** |
 | F. Safe Harbor custody-root adapter | **30 / 30** |
-| G. Destination-bound handoff | **7 / 45** |
+| G. Destination-bound handoff | **25 / 45** |
 | H. Ash product lifecycle orchestration | **35 / 35** |
 | I. Ash operator surface and local case stewardship | **43 / 45** |
 
 ```text
-component maturity after Stretch 9 closure = 320 / 375
-remaining component maturity = 55 / 375
+component maturity after Stretch 10 closure = 338 / 375
+remaining component maturity = 37 / 375
 constitutional synthesis = 49 / 50
 production-demonstrated workstreams = 4 / 9
-validation-gated workstreams = 4 / 9
+validation-gated workstreams = 5 / 9
 transport-capable workstreams = 0
 ```
 
@@ -101,21 +116,20 @@ C = 7
 D = 0
 E = 7
 F = 0
-G = 38
+G = 20
 H = 0
 I = 2
-total = 55
+total = 37
 ```
 
-No remaining point is pre-awarded to Stretch 10 or Stretch 11. Proximity to a future handoff surface does not transfer maturity between workstreams.
+Stretch 10 earns eighteen evidence-bounded points inside workstream G. The remaining twenty G points stay unearned for Stretch 11's destination-bound G1–G8 execution, recipient receipt, failure, rollback, and custody-accounting jurisdiction. No remaining point is pre-awarded.
 
 ## 3. Stretch 8 Seal Reconciliation
 
-Stretch 8 is closed and sealed by its exact-main named deployed observations.
+Stretch 8 remains closed and sealed by its exact-main named deployed observations.
 
 ```text
 PR = 369
-validated implementation commit = f40a1f9a3e93132c0456947f46b125e488472ec0
 exact merged main commit = 9c305da25043fde81cfe32fae54957ec975c1185
 Choir validation run/artifact = 29535788474 / 8390440982
 TCP Smoke run = 29535788868
@@ -131,40 +145,67 @@ Ash Lifecycle Deployed Observation = SUCCESS
 separate Vercel status context surfaced by GitHub = false
 ```
 
-The missing separate Vercel context must not be invented. The named deployed observations supplied the condition that consumed the recorded Stretch 9 opening directive.
+The absent separate Vercel context is not invented. The named deployed observations satisfied the recorded condition that opened Stretch 9.
 
-## 4. Stretch 9 Closure Evidence
+## 4. Stretch 9 Final Closure And Seal Evidence
 
 Packet: `Stretch 9 · Safe Harbor → Ash Custody-Root Adapter`
 
 ```text
 PR = 370
-latest validated implementation commit = 0862cd43297a91d73f0d5e4f72243899e9424f52
-Ash Safe Harbor Ingress validation run/artifact = 29539852572 / 8391987949
-TCP Smoke run = 29539852574
-static validation run = 29539852802
-Ash Keep Production Closure run = 29539852567
-Ash Keep Choir Test run = 29539852632
-Ash lifecycle integration run = 29539852644
-Aperture Composition run = 29539852565
-Ash Hush Intervention run = 29539852556
-Ash Map Object Registry run = 29539852557
-Ash Stretch 1 Closure run = 29539852559
+final PR head = e51e15f2c34ae1dc081f5ab00a52bc15a0959720
+prior validated implementation checkpoint = 0862cd43297a91d73f0d5e4f72243899e9424f52
+exact merged main commit = 5d411977d6b67b126ea11d42e3b5dea1b8cb9525
+Vercel = SUCCESS
+Vercel deployment witness = 9QJkHqnr95WpKfVQPFNB5qeiJm8c
 new serverless function = false
 active serverless functions = 11
 reserved function capacity = 1
 production demonstration = NOT_CLAIMED
-strategic Vercel deployment = AUTHORIZED_POST_MERGE
 Stretch 10 authorization = false
 ```
 
-The exact merged `main` commit, Vercel witness, and deployed-observation statuses remain external post-merge seal fields. They are to be recorded in the next explicitly opened Stretch, never through a second bookkeeping-only deployment.
+Final PR-head validation:
 
-### 4.1 Implemented jurisdiction
+```text
+Ash Safe Harbor Ingress = SUCCESS / run 29542368584
+TCP Smoke = SUCCESS / run 29542368612
+static app validation = SUCCESS / run 29542368603
+Ash Keep Production Closure = SUCCESS / run 29542368556
+Ash Keep Choir Test = SUCCESS / run 29542368583
+Ash lifecycle integration = SUCCESS / run 29542368560
+Aperture Composition = SUCCESS / run 29542368581
+Ash Hush Intervention = SUCCESS / run 29542368621
+Ash Map Object Registry = SUCCESS / run 29542368562
+Ash Stretch 1 Closure = SUCCESS / run 29542368561
+```
+
+Exact-main sealing statuses:
+
+```text
+Vercel = SUCCESS
+Aperture Composition Validation = SUCCESS / run 29543664447
+Ash Choir Calibration Validation = SUCCESS / run 29543664475
+Ash Hush Intervention Validation = SUCCESS / run 29543664481
+Ash Custodian Return Local Observation = SUCCESS / run 29543664478
+Ash Custodian Return Deployed Observation = SUCCESS / run 29543664478
+Ash Lifecycle Deployed Observation = SUCCESS / run 29543675932
+```
+
+Stretch 9 is therefore:
+
+```text
+CLOSED
+IMPLEMENTED_VALIDATION_GATED
+EVIDENCE_BOUNDED
+STRATEGIC_VERCEL_SEALED
+```
+
+## 5. Stretch 9 Implemented Jurisdiction
 
 Stretch 9 provides a bounded, explicit, operator-controlled Safe Harbor reference route into Ash Keep consideration.
 
-It implements:
+Implemented:
 
 ```text
 packet-hash replay before ingress
@@ -191,7 +232,7 @@ visible-URL token removal
 token consumption after successful binding
 ```
 
-The route excludes by construction:
+Excluded by construction:
 
 ```text
 raw corpus
@@ -206,7 +247,7 @@ provider credentials
 universal join key
 ```
 
-### 4.2 Authority ceiling
+Authority ceiling:
 
 ```text
 arrival ≠ custody
@@ -228,7 +269,22 @@ Safe Harbor ingress ≠ Cinder authority
 
 Stretch 9 creates no server custody, performs no provider call, contacts no recipient, selects no destination, carries no raw body, and grants no release, transport, suppression, deletion, authenticity, identity, authorship, truth, or Cinder authority.
 
-## 5. Repository-Wide Function Covenant
+## 6. Pull-Request Reconciliation
+
+This one-pass cleanup completed:
+
+```text
+PR #360 = CLOSED / SUPERSEDED BY PR #361 AND LATER STRETCH 5 CLOSURE
+PR #367 = CLOSED / STALE STRETCH 6 DOCUMENTATION ALREADY RECONCILED
+PR #371 = CLOSED / ACCIDENTAL DUPLICATE / NEVER MERGED
+PR #370 = MERGED / SOVEREIGN STRETCH 9 LANE
+PR #372 = OPEN / SOVEREIGN STRETCH 10 CLOSURE LANE
+current open pull requests = 1
+```
+
+Closed branches and PR descriptions remain historical evidence only. None may be revived over current `main`.
+
+## 7. Repository-Wide Function Covenant
 
 ```text
 absolute Vercel ceiling = 12 deployed serverless functions
@@ -237,7 +293,7 @@ reserved capacity = 1 empty emergency / repair / migration slot
 11 active + 1 reserved = 12 absolute ceiling
 ```
 
-Every deployable root `api/` file counts, whether or not it appears in `vercel.json.functions`.
+Every deployable root `api/` file counts.
 
 ```text
 new public route → prefer rewrite
@@ -247,11 +303,9 @@ count above 11 → BLOCKED_PENDING_CONSOLIDATION
 count above 12 → STRUCTURALLY_FORBIDDEN
 ```
 
-The twelfth slot requires explicit operator emergency authority naming the reason, exact commit, expected duration, restoration plan, and proof of return to eleven active functions. Neither Stretch 10 nor Stretch 11 receives an implied function allocation.
+The twelfth slot requires explicit operator emergency authority naming the reason, exact commit, expected duration, restoration plan, and proof of return to eleven active functions. Stretch 11 receives no implied function allocation.
 
-## 6. Strategic Deployment And Sealing Law
-
-Vercel remains a strategic release witness, not a development loop.
+## 8. Strategic Deployment And Sealing Law
 
 ```text
 exact green closure packet = REQUIRED
@@ -265,30 +319,35 @@ successful deployment ≠ authenticity
 successful deployment ≠ identity
 successful deployment ≠ truth
 successful deployment ≠ release or universal transport authority
+bookkeeping-only second deployment = FORBIDDEN
 ```
 
-For Stretch 9, the deployment evidence purpose is limited to witnessing:
+Stretch 9 consumed its one strategic deployment allowance successfully. Stretch 10 receives one post-merge strategic deployment allowance for its exact green closure packet. No bookkeeping-only or duplicate deployment is authorized.
+
+## 9. Stretch 10 Closure — Independent Provenance Adapters
+
+Status: `CLOSED / IMPLEMENTED_VALIDATION_GATED / EVIDENCE_BOUNDED / AWAITING_POST_MERGE_STRATEGIC_SEAL`
+
+Opening evidence:
 
 ```text
-the exact merged closure commit
-public Safe Harbor surface availability
-public Ash Keep surface availability
-continuing 11 active + 1 reserved function posture
-named deployed-observation continuity
-absence of automatic custody-root, release, transport, suppression, or Cinder authority
+fresh operator gesture = 𝌋‌ Implement Stretch 10
+base main commit = 5d411977d6b67b126ea11d42e3b5dea1b8cb9525
+branch = stretch10-independent-provenance-adapters
+PR = 372
+validated implementation commit = 33c8f881095aa3c601e35d4c45793f072695dfbb
 ```
 
-A failed deployment or failed named observation places the packet in a bounded repair hold. It does not authorize Stretch 10.
+Validation evidence:
 
-## 7. Stretch 10 Prepared Handoff — Independent Provenance Adapters
+```text
+Ash Independent Provenance Validation = SUCCESS / run 29546756631
+TCP Smoke = SUCCESS / run 29546756592
+Test and deploy static app = SUCCESS / run 29546756646
+Ash Keep Production Closure = SUCCESS / run 29546756596
+```
 
-Status: `BLOCKED_PENDING_FRESH_OPERATOR_HANDOFF / NOT_AUTHORIZED`
-
-Purpose: add independently verifiable provenance adapters without collapsing distinct sources into one identity, corpus, authority graph, trust score, or universal join key.
-
-### 7.1 Required evidence-class separation
-
-Stretch 10 must preserve at least these evidence classes as distinct domains:
+Implemented evidence-class separation:
 
 ```text
 artifact digest
@@ -304,34 +363,26 @@ external timestamp or clock claim
 recipient or destination declaration
 ```
 
-A domain may be omitted where unavailable. Omission must be explicit. One adapter may not silently substitute for another.
-
-### 7.2 Adapter contract
-
-Each adapter requires:
+Implemented contract:
 
 ```text
-adapter-specific schema id and version
-adapter-specific digest domain
+eleven adapter-specific schema identities
+eleven pairwise-distinct digest domains
 source-local reference syntax
-source-local custody and revocation posture
-explicit evidence class
-verification inputs
-verification result
-missingness fields
-staleness posture
-revocation posture
-collision posture
-wrong-domain posture
-tamper posture
-deterministic replay receipt
+source-local source-ID binding
+source-local custody, staleness, revocation, and collision posture
+explicit evidence classes
+independent verification receipts
+deterministic replay receipts
+missingness and operator-note preservation
 no provider re-execution during replay
 no Reader re-execution during replay
-no raw-corpus ingestion
+no raw-body or raw-corpus ingestion
 no universal join key
+no universal trust score
 ```
 
-### 7.3 Mandatory holds
+Implemented holds:
 
 ```text
 missing required reference → MISSING_REFERENCE_HOLD
@@ -346,7 +397,7 @@ cancelled operator action → CANCELLED_HOLD
 replay beyond declared jurisdiction → REPLAY_HOLD
 ```
 
-### 7.4 Prohibited inferences
+Authority ceiling:
 
 ```text
 verified digest ≠ identity
@@ -356,70 +407,46 @@ provider reference ≠ truth
 custody reference ≠ authenticity
 relation reference ≠ intent
 operator declaration ≠ external fact
+external-time claim ≠ trusted external time
+recipient declaration ≠ recipient behavior
 adapter agreement ≠ universal trust score
 multiple references ≠ universal join key
 provenance verification ≠ destination transport
+receipt ≠ command
 ```
 
-### 7.5 Stretch 10 closure gate
-
-Before Stretch 10 may close:
+Function posture:
 
 ```text
-fresh operator opening gesture recorded
-Stretch 9 exact-main seal reconciled in all three files
-adapter schemas complete
-fixtures cover positive, missing, stale, revoked, wrong-domain, collision, cancellation, replay, and tamper cases
-deterministic replay proven
-no raw-body ingestion proven
-no automatic identity/authorship/truth inference proven
-root api count remains 11 active + 1 reserved
-closure receipt complete
-all three carried files updated
-exact green commit merged
-one strategic Vercel deployment succeeds
-named deployed observations succeed
+new root-api function = false
+active serverless functions = 11
+reserved function capacity = 1
+production demonstration = NOT_CLAIMED
+transport-capable workstreams = 0
 ```
 
-Only a sealed Stretch 10 may make Stretch 11 eligible to open. Eligibility remains distinct from authorization.
+Stretch 10 closure gate is satisfied through branch validation, closure receipt, and reconciliation of all three carried files. The remaining gate is the exact-green merge plus one strategic Vercel deployment and all named deployed observations. Only that seal may make Stretch 11 eligible for a later opening gesture.
 
-## 8. Stretch 11 Prepared Handoff — Destination-Bound Delivery
+## 10. Stretch 11 Prepared Handoff — Destination-Bound Delivery
 
-Status: `BLOCKED_PENDING_STRETCH_10_CLOSURE / LAST / NOT_AUTHORIZED`
+Status: `BLOCKED_PENDING_STRETCH_10_SEAL_AND_FRESH_OPERATOR_HANDOFF / LAST / NOT_AUTHORIZED`
 
 Purpose: validate one named destination-bound handoff under explicit recipient, custody, provenance, scope, expiry, revocation, failure, rollback, and receipt conditions.
 
-Destination-bound delivery remains narrower than general release. It must never become broadcast, universal routing, default transport, or transferable authority.
-
-### 8.1 Gates G1–G8
+Gates:
 
 ```text
 G1 — Named destination and recipient
-     one destination id, one recipient binding, explicit destination domain
-
 G2 — Exact payload-reference scope
-     reference set declared; raw body excluded unless separately and explicitly authorized
-
 G3 — Current custody and provenance prerequisites
-     verified current references; no stale, revoked, wrong-domain, collided, or tampered prerequisite
-
 G4 — Operator authorization and recipient posture
-     explicit operator handoff gesture; recipient readiness or acceptance represented only by direct evidence
-
 G5 — Expiry and revocation
-     bounded expiry posture; revocation path; no trusted-time claim beyond the evidence source
-
 G6 — Delivery execution and recipient receipt
-     exact destination-bound attempt; independently verifiable receipt; no broadcast fallback
-
 G7 — Failure and rollback
-     refusal, timeout, mismatch, partial delivery, duplicate, replay, cancellation, and rollback holds
-
 G8 — Custody accounting
-     what left, what remained, what was received, what was refused, and what was rolled back
 ```
 
-### 8.2 Required holds
+Required holds:
 
 ```text
 missing destination → DESTINATION_HOLD
@@ -438,9 +465,7 @@ operator cancellation → CANCELLED_HOLD
 tamper → TAMPER_HOLD
 ```
 
-### 8.3 Authority ceiling
-
-Stretch 11 may authorize only the exact destination-bound capability proven by its own evidence.
+Authority ceiling:
 
 ```text
 one named handoff ≠ general release
@@ -453,49 +478,38 @@ custody accounting ≠ external deletion proof
 handoff completion ≠ Cinder authority
 ```
 
-### 8.4 Stretch 11 closure gate
+Stretch 11 remains blocked. A successful Stretch 10 seal makes it eligible for a later opening gesture; eligibility remains distinct from authorization.
+
+## 11. Next-Session Opening Procedure
+
+The present session stops after the successful Stretch 10 strategic seal.
+
+A valid Stretch 11 opening must:
 
 ```text
-Stretch 10 closed and sealed
-fresh Stretch 11 opening gesture recorded
-G1–G8 validated
-all failure and rollback holds tested
-what-left / what-remained accounting complete
-root api count within 11 active + 1 reserved
-all three carried files updated
-final closure receipt complete
-exact green commit merged
-one final strategic deployment decision recorded
-named deployed observations complete
-```
-
-## 9. Next-Session Opening Procedure
-
-After the Stretch 9 strategic seal, stop. The next session begins only through a fresh explicit handoff gesture.
-
-A valid Stretch 10 opening must do the following before implementation:
-
-```text
-verify current main
-verify Stretch 9 exact merged commit
-verify Vercel and named deployed-observation seal
-reconcile the external Stretch 9 seal in ledger
-reconcile the external Stretch 9 seal in roadmap
-reconcile the external Stretch 9 seal in this plan
+verify the exact merged Stretch 10 main commit
+verify the Stretch 10 Vercel seal and named deployed observations
+reconcile the external Stretch 10 seal in the ledger
+reconcile the external Stretch 10 seal in the roadmap
+reconcile the external Stretch 10 seal in this plan
 confirm root api count = 11 active
 confirm reserved slot = 1
-record Stretch 10 opening authority
-create a new Stretch 10 branch from verified main
+record a fresh Stretch 11 opening authority
+create a new Stretch 11 branch from verified main
 ```
 
-A status question, roadmap question, or request to inspect evidence does not open Stretch 10.
+A status question, roadmap request, evidence inspection, or file-delivery request cannot open Stretch 11.
 
-## 10. Final Anti-Drift Summary
+## 12. Final Anti-Drift Summary
 
 ```text
-current authorized action = COMPLETE STRETCH 9 MERGE AND SEAL
-current stop point = AFTER STRETCH 9 SUCCESSFUL STRATEGIC SEAL
-Stretch 10 implementation authority = false
+current authorized action = COMPLETE STRETCH 10 CLOSURE MERGE AND STRATEGIC SEAL
+current stop point = AFTER STRETCH 10 SUCCESSFUL STRATEGIC SEAL
+Stretch 9 exact merged main commit = 5d411977d6b67b126ea11d42e3b5dea1b8cb9525
+Stretch 9 Vercel = SUCCESS
+Stretch 10 PR = 372
+Stretch 10 validated implementation commit = 33c8f881095aa3c601e35d4c45793f072695dfbb
+Stretch 10 closure state = CLOSED / AWAITING POST-MERGE STRATEGIC SEAL
 Stretch 11 implementation authority = false
 transport-capable workstreams = 0
 new root-api function allocation = 0
@@ -503,7 +517,6 @@ active serverless functions = 11
 reserved function capacity = 1
 universal join key = forbidden
 raw-corpus default = forbidden
-automatic custody-root creation = forbidden
 automatic identity/authorship/truth inference = forbidden
 broadcast or universal transport = forbidden
 Cinder authority = false
