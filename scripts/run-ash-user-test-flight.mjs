@@ -8,7 +8,7 @@ const runtimePath = path.join(artifactDir, 'ash-user-test-flight.runtime.mjs');
 
 const navigationTarget = String.raw`  await page.waitForURL(/\/dome-world\/ash-keep\.html/, { timeout: 60000 });`;
 const navigationReplacement = `  await page.waitForFunction(() => location.pathname === '/dome-world/ash-keep.html'
-    || Boolean(window.__td613AshKeep?.version), null, { timeout: 60000 });`;
+     || Boolean(window.__td613AshKeep?.version), null, { timeout: 60000 });`;
 
 const initialBootTarget = `  await bootAsh(page);`;
 const initialBootReplacement = `  await bootAsh(page, { throughThreshold: !syntheticCustody });`;
@@ -66,7 +66,7 @@ const exportReplacement = `  if (syntheticCustody) {
         request.onsuccess = () => resolve((request.result || []).map(row => row?.value ?? row));
         request.onerror = () => reject(request.error);
       });
-      const caseId = localStorage.getItem('td613-ash-keep.current-case')
+      const caseId = localStorage.getItem('td613.ash-keep.current-case')
         || window.__td613AshPremiumUI?.snapshot?.()?.caseMap?.case_id;
       if (!caseId) throw new Error('Synthetic Capsule export requires the current premium Case Map reference.');
       const caseMap = await read('cases', caseId);
@@ -82,8 +82,8 @@ const exportReplacement = `  if (syntheticCustody) {
         caseBundle: { caseMap, roomRules, routeMemory }
       });
     }, passphrase);
-    downloadedCapsule = path.join(artifactDir, \`td613-ash-capsule-local-\${capsule.case_id}.json\`);
-    await fsp.writeFile(downloadedCapsule, \`\${JSON.stringify(capsule, null, 2)}\\n\`);
+    downloadedCapsule = path.join(artifactDir, `td613-ash-capsule-local-${capsule.case_id}.json`);
+    await fsp.writeFile(downloadedCapsule, `${JSON.stringify(capsule, null, 2)}\n`);
   } else {
     await page.locator('#capsulePassphrase').fill(passphrase);
     const downloadPromise = page.waitForEvent('download');
@@ -133,9 +133,11 @@ const runtime = source
   .replace(reviewTarget, reviewReplacement)
   .replace(exportTarget, exportReplacement)
   .replace(recoveryTarget, recoveryReplacement);
-if (runtime.includes('page.waitForURL(/\\/dome-world\\/ash-keep\\.html/')) throw new Error('Ash user flight retained pathname-dependent arrival logic.');
+if (runtime.includes('page.waitForURL(/\/dome-world\/ash-keep\.html/')) throw new Error('Ash user flight retained pathname-dependent arrival logic.');
 if (!runtime.includes('throughThreshold: !syntheticCustody')) throw new Error('Ash user flight failed to separate deployed threshold evidence from uncomposed local entry.');
 if (!runtime.includes("window.__td613AshPremiumUI.open('map')")) throw new Error('Ash user flight failed to acknowledge the premium Home arrival before its map assay.');
+if (!runtime.includes("openGuidedWorkspace(page, 'rooms')") || !runtime.includes("openGuidedWorkspace(page, 'save')")) throw new Error('Ash user flight failed to route lifecycle workspaces through the guided navigation contract.');
+if (/page\.locator\('\.work-tab\[data-workspace="(?:rooms|routes|test|draft)"\]'\)\.click\(\)/.test(runtime)) throw new Error('Ash user flight retained a direct click on a hidden legacy workspace tab.');
 if (!runtime.includes('premium_review_groups_opened')) throw new Error('Ash user flight failed to acknowledge grouped review disclosure.');
 if (!runtime.includes('Synthetic Capsule export requires the current premium Case Map reference.')) throw new Error('Ash user flight failed to bind synthetic Capsule export to the premium snapshot.');
 if (!runtime.includes('td613-ash-capsule-local-')) throw new Error('Ash user flight failed to materialize a synthetic core Capsule export.');
