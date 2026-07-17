@@ -6,10 +6,26 @@ const artifactDir = path.resolve(process.env.TD613_ARTIFACT_DIR || 'artifacts/as
 const sourceUrl = new URL('./ash-constitutional-convergence-probe.mjs', import.meta.url);
 const runtimePath = path.join(artifactDir, 'ash-constitutional-convergence-probe.runtime.mjs');
 
-const target = `  await page.locator('#selectCase').selectOption(secondCase);
+const readinessTarget = `  await page.goto(keepUrl, { waitUntil: 'networkidle' });
+  await page.locator('#startDemo').click();
+  await page.waitForFunction(() => /Glasshouse Archive/i.test(document.getElementById('caseTitle')?.textContent || ''));
+  await page.waitForFunction(() => document.documentElement.dataset.ashConvergence?.includes('constitutional-convergence'));`;
+const readinessReplacement = `  await page.goto(keepUrl, { waitUntil: 'networkidle' });
+  await page.waitForFunction(() => Boolean(window.__td613AshKeep?.version)
+    && typeof window.TD613AshConvergence?.composition === 'function', null, { timeout: 60000 });
+  report.observations.boot_readiness = {
+    keep_core_ready: true,
+    convergence_runtime_ready: true,
+    demo_click_deferred_until_ready: true
+  };
+  await page.locator('#startDemo').click();
+  await page.waitForFunction(() => /Glasshouse Archive/i.test(document.getElementById('caseTitle')?.textContent || ''), null, { timeout: 60000 });
+  await page.waitForFunction(() => document.documentElement.dataset.ashConvergence?.includes('constitutional-convergence'), null, { timeout: 60000 });`;
+
+const deletionTarget = `  await page.locator('#selectCase').selectOption(secondCase);
   await page.waitForFunction(() => document.getElementById('deleteSelectedCase')?.disabled === false);
   await page.locator('#deleteSelectedCase').click();`;
-const replacement = `  await page.locator('#selectCase').selectOption(secondCase);
+const deletionReplacement = `  await page.locator('#selectCase').selectOption(secondCase);
   await page.waitForFunction(id => {
     const select = document.getElementById('selectCase');
     const remove = document.getElementById('deleteSelectedCase');
@@ -28,9 +44,14 @@ const replacement = `  await page.locator('#selectCase').selectOption(secondCase
 
 await fs.mkdir(artifactDir, { recursive: true });
 const source = await fs.readFile(sourceUrl, 'utf8');
-const count = source.split(target).length - 1;
-if (count !== 1) throw new Error(`Convergence observer expected one case-selection seam and one atomic case-deletion seam; observed ${count}.`);
-const runtime = source.replace(target, replacement);
+const readinessCount = source.split(readinessTarget).length - 1;
+const deletionCount = source.split(deletionTarget).length - 1;
+if (readinessCount !== 1) throw new Error(`Convergence observer expected one Ash boot-readiness seam; observed ${readinessCount}.`);
+if (deletionCount !== 1) throw new Error(`Convergence observer expected one case-selection seam and one atomic case-deletion seam; observed ${deletionCount}.`);
+const runtime = source.replace(readinessTarget, readinessReplacement).replace(deletionTarget, deletionReplacement);
+if (!runtime.includes('demo_click_deferred_until_ready: true') || !runtime.includes('window.__td613AshKeep?.version')) {
+  throw new Error('Convergence observer boot-readiness gate was not materialized.');
+}
 if (!runtime.includes("select.dispatchEvent(new Event('change', { bubbles: true }))") || !runtime.includes('remove.click()')) {
   throw new Error('Convergence observer repaint-atomic delete gesture was not materialized.');
 }
