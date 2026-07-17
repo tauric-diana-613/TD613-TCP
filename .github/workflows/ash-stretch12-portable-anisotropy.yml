@@ -129,8 +129,14 @@ jobs:
         run: |
           node tests/ash-investigation-guidance.test.mjs
           node tests/ash-destination-posture.test.mjs
-      - name: Preserve Ash Keep core
-        run: npm run test:ash-keep
+      - name: Preserve Ash Keep core engine
+        run: node tests/ash-keep-core.test.mjs
+      - name: Preserve Ash Keep continuity
+        run: node tests/ash-keep-continuity.test.mjs
+      - name: Preserve Ash Keep Hush API boundary
+        run: node tests/ash-keep-hush-api.test.mjs
+      - name: Preserve Ash Keep operator UI
+        run: node tests/ash-keep-ui.test.mjs
       - name: Preserve Custodian Return
         run: |
           node tests/ash-custodian-return.test.mjs
