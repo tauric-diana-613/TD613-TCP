@@ -136,7 +136,10 @@ jobs:
       - name: Preserve Ash Keep Hush API boundary
         run: node tests/ash-keep-hush-api.test.mjs
       - name: Preserve Ash Keep operator UI
-        run: node tests/ash-keep-ui.test.mjs
+        shell: bash
+        run: |
+          set -o pipefail
+          node tests/ash-keep-ui.test.mjs 2>&1 | tail -n 80
       - name: Preserve Custodian Return
         run: |
           node tests/ash-custodian-return.test.mjs
