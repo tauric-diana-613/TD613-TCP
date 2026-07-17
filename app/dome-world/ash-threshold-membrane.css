@@ -6,8 +6,12 @@
   --ash-muted: #9fb6ad;
   position: relative;
   isolation: isolate;
-  min-height: clamp(570px, 72svh, 820px);
-  overflow: hidden;
+  height: clamp(570px, 72svh, 820px);
+  min-height: 0;
+  overflow-x: hidden;
+  overflow-y: auto;
+  overscroll-behavior: contain;
+  scrollbar-gutter: stable both-edges;
   container-type: inline-size;
   border-block: 1px solid rgba(118, 234, 212, .18);
   color: var(--ash-paper);
@@ -29,7 +33,7 @@
   align-content: center;
   justify-items: center;
   width: min(980px, calc(100% - 28px));
-  min-height: inherit;
+  min-height: 100%;
   margin: auto;
   padding: 28px 0 42px;
   text-align: center;
@@ -85,7 +89,12 @@
 .ash-threshold-pulse { position: fixed; z-index: 100; width: 18px; height: 18px; border: 1px solid var(--ash-gold); border-radius: 50%; pointer-events: none; animation: ash-threshold-pulse .7s ease-out forwards; }
 @keyframes ash-threshold-pulse { to { transform: scale(16); opacity: 0; } }
 @media (max-width: 680px) {
-  .ash-threshold-membrane { min-height: 760px; }
+  .ash-threshold-membrane {
+    height: auto;
+    min-height: 760px;
+    overflow: visible;
+    scrollbar-gutter: auto;
+  }
   .ash-threshold-rite { align-content: start; padding-top: 7vh; }
   .ash-threshold-laws { grid-template-columns: 1fr; }
   .ash-threshold-law { min-height: 104px; padding-left: 18px; text-align: left; }
