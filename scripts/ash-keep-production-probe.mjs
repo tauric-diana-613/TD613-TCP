@@ -49,8 +49,14 @@ async function waitForText(page, selector, pattern, timeout = 30_000) {
 }
 
 async function openWorkspace(page, name) {
-  await page.locator(`[data-workspace="${name}"]`).click();
-  await page.locator(`#workspace-${name}`).waitFor({ state: 'visible' });
+  await page.evaluate(workspace => {
+    const open = window.__td613AshPremiumUI?.open
+      || window.__td613OpenAshWorkspace
+      || window.__td613AshKeep?.openWorkspace;
+    if (typeof open !== 'function') throw new Error('Ash guided workspace API is unavailable.');
+    open(workspace);
+  }, name);
+  await page.waitForFunction(workspace => document.getElementById(`workspace-${workspace}`)?.classList.contains('active'), name);
 }
 
 async function databaseSnapshot(page) {
@@ -94,7 +100,7 @@ async function layoutReceipt(page) {
       horizontal_overflow: Math.max(0, document.documentElement.scrollWidth - window.innerWidth),
       clipped_controls: clipped,
       workspace_tab_count: tabs.length,
-      selected_workspace: tabs.find(tab => tab.getAttribute('aria-selected') === 'true')?.dataset.workspace || null,
+      selected_workspace: document.documentElement.dataset.ashPremiumWorkspace || document.querySelector('.workspace.active')?.id?.replace('workspace-', '') || null,
       reduced_motion: matchMedia('(prefers-reduced-motion: reduce)').matches
     };
   });
