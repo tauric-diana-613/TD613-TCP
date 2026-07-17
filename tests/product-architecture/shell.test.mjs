@@ -43,6 +43,14 @@ assert.match(thresholdMembrane, /location\.assign\(enter\.href \|\| KEEP_ROUTE\)
 assert.doesNotMatch(thresholdMembrane, /location\.replace|setTimeout\(\(\) => location/);
 assert.doesNotMatch(thresholdMembrane, /localStorage\.setItem|type="file"/);
 assert.match(thresholdMembraneCss, /prefers-reduced-motion/);
+assert.match(thresholdMembraneCss, /height:\s*clamp\(570px,\s*72svh,\s*820px\)/);
+assert.match(thresholdMembraneCss, /overflow-x:\s*hidden/);
+assert.match(thresholdMembraneCss, /overflow-y:\s*auto/);
+assert.match(thresholdMembraneCss, /scrollbar-gutter:\s*stable both-edges/);
+assert.match(thresholdMembraneCss, /\.ash-threshold-rite[\s\S]*min-height:\s*100%/);
+assert.match(thresholdMembraneCss, /@media \(max-width:\s*680px\)[\s\S]*height:\s*auto[\s\S]*overflow:\s*visible/);
+const membraneBlock = thresholdMembraneCss.match(/\.ash-threshold-membrane\s*\{([\s\S]*?)\n\}/)?.[1] || '';
+assert.doesNotMatch(membraneBlock, /overflow:\s*hidden/);
 
 assert.match(threshold, /data-ash-public-route="\/dome-world\/ash-threshold\.html"/);
 assert.match(threshold, /src="\/dome-world\/ash-keep-entry\.js"/);
