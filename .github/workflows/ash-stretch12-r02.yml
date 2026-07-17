@@ -1,0 +1,47 @@
+name: Ash Stretch 12 Revision 0.2
+
+on:
+  pull_request:
+    paths:
+      - 'docs/ASH_KEEP_STRETCH12_*'
+      - 'app/engine/ash-stretch12-r02-*'
+      - 'app/dome-world/ash-stretch12-r02-*'
+      - 'app/dome-world/fixtures/ash-stretch12-r02-*'
+      - 'app/dome-world/schemas/ash-stretch12-r02-*'
+      - 'scripts/ash-stretch12-r02-*'
+      - 'tests/ash-stretch12-r02-*'
+      - '.github/workflows/ash-stretch12-r02.yml'
+  push:
+    branches: [main]
+    paths:
+      - 'docs/ASH_KEEP_STRETCH12_*'
+      - 'app/engine/ash-stretch12-r02-*'
+      - 'app/dome-world/ash-stretch12-r02-*'
+      - 'app/dome-world/fixtures/ash-stretch12-r02-*'
+      - 'app/dome-world/schemas/ash-stretch12-r02-*'
+      - 'scripts/ash-stretch12-r02-*'
+      - 'tests/ash-stretch12-r02-*'
+      - '.github/workflows/ash-stretch12-r02.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: ash-stretch12-r02-${{ github.event.pull_request.number || github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  specification:
+    name: S12-SPEC · Constitutional reconciliation
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 24
+          cache: npm
+      - run: npm ci
+      - run: node tests/ash-stretch12-r02-spec.test.mjs
+      - run: node tests/product-architecture/ledger.test.mjs
