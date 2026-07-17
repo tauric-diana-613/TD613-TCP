@@ -7,7 +7,7 @@ import { chromium } from 'playwright';
 const base = (process.env.TD613_BASE_URL || 'http://127.0.0.1:6130').replace(/\/$/, '');
 const artifactDir = process.env.TD613_ARTIFACT_DIR || 'artifacts/ash-constitutional-convergence';
 const keepUrl = `${base}/dome-world/ash-keep.html`;
-const allowedLocalKeys = new Set(['td613.ash-keep.current-case', 'td613.ash-keep.preferences']);
+const allowedLocalKeys = new Set(['td613.ash-keep.current-case', 'td613.ash-keep.preferences', 'td613.ash.cache-flush.epoch']);
 
 function assert(condition, message) {
   if (!condition) throw new Error(message);
