@@ -33,6 +33,10 @@ jobs:
           cache: npm
       - name: Install repository dependencies
         run: npm ci
+      - name: Prepare canonical observer fixtures
+        run: |
+          node scripts/prepare-ash-profile-closure-fixture.mjs
+          node scripts/prepare-ash-premium-closure-fixture.mjs
       - name: Install Chromium observer runtime
         run: |
           npm install --no-save --package-lock=false playwright@1.54.1
