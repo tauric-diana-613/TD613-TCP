@@ -1,4 +1,4 @@
-export const ASH_PREMIUM_COMPATIBILITY_VERSION = 'td613.ash.premium.compatibility/v0.4-deliberate-workspace-intent';
+export const ASH_PREMIUM_COMPATIBILITY_VERSION = 'td613.ash.premium.compatibility/v0.5-settled-workspace-intent';
 
 function preserveIntentionalWorkspace(doc, host) {
   let intentionalWorkspace = doc.documentElement.dataset.ashPremiumWorkspace || null;
@@ -15,9 +15,9 @@ function preserveIntentionalWorkspace(doc, host) {
   const restore = () => {
     const workspace = intentionalWorkspace || doc.documentElement.dataset.ashPremiumWorkspace;
     if (!workspace || workspace === 'home') return;
-    queueMicrotask(() => {
+    host.setTimeout(() => {
       if (typeof host.__td613AshPremiumUI?.open === 'function') host.__td613AshPremiumUI.open(workspace);
-    });
+    }, 0);
   };
   host.addEventListener('td613:ash:case-opened', restore);
   host.addEventListener('td613:ash:capsule-opened', restore);
