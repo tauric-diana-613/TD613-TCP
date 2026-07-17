@@ -135,11 +135,23 @@ jobs:
         run: node tests/ash-keep-continuity.test.mjs
       - name: Preserve Ash Keep Hush API boundary
         run: node tests/ash-keep-hush-api.test.mjs
-      - name: Preserve Ash Keep operator UI
+      - name: Capture Ash Keep operator UI witness
+        id: ash-ui
+        continue-on-error: true
         shell: bash
+        run: node tests/ash-keep-ui.test.mjs > /tmp/ash-keep-ui.log 2>&1
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: ash-stretch12-ui-preservation-log
+          path: /tmp/ash-keep-ui.log
+          if-no-files-found: error
+          retention-days: 30
+      - name: Enforce Ash Keep operator UI witness
+        if: steps.ash-ui.outcome == 'failure'
         run: |
-          set -o pipefail
-          node tests/ash-keep-ui.test.mjs 2>&1 | tail -n 80
+          cat /tmp/ash-keep-ui.log
+          exit 1
       - name: Preserve Custodian Return
         run: |
           node tests/ash-custodian-return.test.mjs
