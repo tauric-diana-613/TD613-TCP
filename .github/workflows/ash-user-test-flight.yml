@@ -8,6 +8,17 @@ on:
       - 'scripts/ash-user-test-flight.mjs'
       - 'scripts/run-ash-user-test-flight.mjs'
       - 'tests/ash-user-test-flight*'
+      - 'tests/ash-keep-ui.test.mjs'
+      - '.github/workflows/ash-user-test-flight.yml'
+  push:
+    branches: [main]
+    paths:
+      - 'app/dome-world/ash-*'
+      - 'app/engine/ash-*'
+      - 'scripts/ash-user-test-flight.mjs'
+      - 'scripts/run-ash-user-test-flight.mjs'
+      - 'tests/ash-user-test-flight*'
+      - 'tests/ash-keep-ui.test.mjs'
       - '.github/workflows/ash-user-test-flight.yml'
   workflow_dispatch:
 
@@ -21,6 +32,7 @@ concurrency:
 jobs:
   local-candidate:
     name: Ash User Flight · Local Candidate
+    if: github.event_name != 'push'
     runs-on: ubuntu-latest
     timeout-minutes: 25
     steps:
@@ -88,6 +100,7 @@ jobs:
           done
           exit 1
       - name: Fly the deployed current release
+        continue-on-error: ${{ github.event_name == 'pull_request' }}
         env:
           TD613_BASE_URL: https://td613.com
           TD613_ARTIFACT_DIR: artifacts/ash-user-flight-deployed
