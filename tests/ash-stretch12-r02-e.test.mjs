@@ -1,0 +1,26 @@
+import assert from 'node:assert/strict';
+import {ENVIRONMENT_GROUPS,compileEnvironmentProfile,compileSensorBundle,compileSensorObservation} from '../app/engine/ash-stretch12-r02-environment.js';
+import {compileAdapterRegistry,compileExecutionPlan,compilePortableDomeBundle,compilePortableDomeImport,compilePortableDomeReturn} from '../app/engine/ash-stretch12-r02-adapters.js';
+const now=()=>new Date('2026-07-17T12:00:00.000Z');
+async function makeProfile(routeClass){const observations=[];for(const group of ENVIRONMENT_GROUPS)observations.push(await compileSensorObservation({case_id:'case_e',environment_id:`env_${routeClass}`,sensor_id:`sensor_${routeClass}_${group}`,group,field:`field_${group}`,value:true,source_status:'OBSERVED',observed_at:now().toISOString(),fresh_until:'2026-07-18T00:00:00.000Z'},{now}));const bundle=await compileSensorBundle({case_id:'case_e',environment_id:`env_${routeClass}`,observations,compiled_at:now().toISOString()},{now});return compileEnvironmentProfile({case_id:'case_e',environment_id:`env_${routeClass}`,route_class:routeClass,sensor_bundle:bundle,created_at:now().toISOString()},{now});}
+const registry=await compileAdapterRegistry({case_id:'case_e',created_at:now().toISOString()},{now});
+assert.equal(registry.universal_transport,false);assert.equal(registry.universal_join_key,false);assert.equal(registry.automatic_recipient_reuse,false);assert.equal(registry.full_case_cloud_route_present,false);assert.equal(registry.adapters.length,11);
+const managedPlan=await compileExecutionPlan({environment_profile:await makeProfile('PUBLIC_SECTOR_MANAGED_PROVIDER'),registry,projection_class:'REDACTED_BOUNDED_PACKET',created_at:now().toISOString()},{now});
+assert.equal(managedPlan.eligible,false);assert.ok(managedPlan.holds.some(item=>item.includes('HARD_HOLD')));
+const offline=await makeProfile('OFFLINE_LOCAL_MODEL');
+const mismatch=await compileExecutionPlan({environment_profile:offline,registry,projection_class:'LOCAL_PURPOSE_PROJECTION',provider_action:true,created_at:now().toISOString()},{now});
+assert.equal(mismatch.eligible,false);assert.ok(mismatch.holds.includes('PROVIDER_ACTION_CANNOT_IMPERSONATE_OFFLINE_ROUTE'));
+const cloud=await makeProfile('CONSUMER_CLOUD_PROVIDER');
+const fullCase=await compileExecutionPlan({environment_profile:cloud,registry,projection_class:'REDACTED_BOUNDED_PACKET',full_case:true,created_at:now().toISOString()},{now});
+assert.equal(fullCase.eligible,false);assert.ok(fullCase.holds.includes('FULL_CASE_CLOUD_ROUTE_STRUCTURALLY_ABSENT'));
+const local=await makeProfile('LOCAL_DRIVE');
+const localPlan=await compileExecutionPlan({environment_profile:local,registry,projection_class:'ENCRYPTED_CAPSULE',full_case:true,created_at:now().toISOString()},{now});
+assert.equal(localPlan.eligible,true);
+const bundle=await compilePortableDomeBundle({case_id:'case_e',execution_plan:localPlan,origin_manifest_reference:'origin:1',origin_witness_reference:'origin-witness:1',capsule_reference:'capsule:1',environment_profile_template:{route_class:'LOCAL_DRIVE'},projection_manifest_reference:'projection:1',key_topology_receipt_reference:'key:1',flowcore_weather_reference:'weather:1',reader_ensemble_reference:'readers:1',qualification_instructions:['verify environment','quarantine Return'],return_procedure:'QUARANTINE_AND_REASSAY',created_at:now().toISOString()},{now});
+assert.equal(bundle.secret_key_embedded,false);assert.equal(bundle.universal_transport,false);
+await assert.rejects(()=>compilePortableDomeBundle({case_id:'case_e',execution_plan:localPlan,passphrase:'forbidden'}),/passphrase cannot enter/);
+const importReceipt=await compilePortableDomeImport(bundle,{expected_execution_plan_digest:localPlan.record_digest,qualified_environment_digest:local.record_digest,current_environment_digest:'sha256:changed',created_at:now().toISOString()},{now});
+assert.ok(importReceipt.holds.includes('ENVIRONMENT_CHANGE_INVALIDATES_PRIOR_ELIGIBILITY'));assert.equal(importReceipt.automatic_case_merge,false);
+const returned=await compilePortableDomeReturn({case_id:'case_e',bundle_reference:bundle.record_id,returned_object_digest:'sha256:return',prompt_injection_status:'DETECTED',created_at:now().toISOString()},{now});
+assert.equal(returned.quarantine_state,'QUARANTINED');assert.equal(returned.reassay_required,true);
+console.log('ash-stretch12-r02-e.test.mjs passed');
