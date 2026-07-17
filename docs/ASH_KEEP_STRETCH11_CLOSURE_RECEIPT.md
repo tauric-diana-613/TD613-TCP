@@ -11,8 +11,9 @@ State: `CLOSED / IMPLEMENTED_VALIDATION_GATED / EVIDENCE_BOUNDED / PENDING_EXACT
 ```text
 base main commit = 5afb33b254c777f5504c53e53f40533b6d547e9c
 branch = stretch11-destination-bound-handoff
-pull request = TO_BE_ASSIGNED
-exact closure head = TO_BE_RECORDED
+pull request = 374
+validated implementation head before receipt reconciliation = ba15eeab7a50b66331991eb63c612005ab11982b
+final PR head = RECORDED_BY_GITHUB_PR_METADATA
 component maturity after local closure = 358 / 375
 workstream G = 45 / 45
 remaining maturity = 17 / 375
