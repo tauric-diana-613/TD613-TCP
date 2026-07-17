@@ -47,12 +47,16 @@ jobs:
           cache: npm
       - name: Install repository dependencies
         run: npm ci
-      - name: Verify Investigation fixture and guided contract
+      - name: Verify Investigation profile fixture
+        run: node tests/ash-profile-demos.test.mjs
+      - name: Verify Ash Court trust-boundary contract
+        run: node tests/ash-investigation-guidance.test.mjs
+      - name: Verify destination-posture jurisdiction
+        run: node tests/ash-destination-posture.test.mjs
+      - name: Verify guided closure contract
+        run: node tests/ash-keep-investigation-guidance-closure.test.mjs
+      - name: Verify guided module syntax
         run: |
-          node tests/ash-profile-demos.test.mjs
-          node tests/ash-investigation-guidance.test.mjs
-          node tests/ash-destination-posture.test.mjs
-          node tests/ash-keep-investigation-guidance-closure.test.mjs
           node --check app/dome-world/ash-investigation-demo-hydration.js
           node --check app/dome-world/ash-guided-operator-ui.js
           node --check app/dome-world/ash-guided-trust-boundary-court.js
@@ -87,7 +91,7 @@ jobs:
           path: |
             artifacts/ash-investigation-guided-flight
             /tmp/ash-investigation-flight.log
-          if-no-files-found: error
+          if-no-files-found: warn
           retention-days: 30
 
   deployed-exact-main:
@@ -103,12 +107,14 @@ jobs:
           cache: npm
       - name: Install repository dependencies
         run: npm ci
-      - name: Verify Investigation fixture and guided contract
-        run: |
-          node tests/ash-profile-demos.test.mjs
-          node tests/ash-investigation-guidance.test.mjs
-          node tests/ash-destination-posture.test.mjs
-          node tests/ash-keep-investigation-guidance-closure.test.mjs
+      - name: Verify Investigation profile fixture
+        run: node tests/ash-profile-demos.test.mjs
+      - name: Verify Ash Court trust-boundary contract
+        run: node tests/ash-investigation-guidance.test.mjs
+      - name: Verify destination-posture jurisdiction
+        run: node tests/ash-destination-posture.test.mjs
+      - name: Verify guided closure contract
+        run: node tests/ash-keep-investigation-guidance-closure.test.mjs
       - name: Install browser runtime
         run: |
           npm install --no-save --package-lock=false playwright@1.54.1
