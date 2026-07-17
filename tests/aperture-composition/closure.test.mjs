@@ -8,6 +8,7 @@ const roadmap = read('ROADMAP.md');
 const stretch6 = read('docs/ASH_KEEP_STRETCH6_CLOSURE_RECEIPT.md');
 const stretch7 = read('docs/ASH_KEEP_STRETCH7_CLOSURE_RECEIPT.md');
 const stretch8 = read('docs/ASH_KEEP_STRETCH8_CLOSURE_RECEIPT.md');
+const stretch9 = read('docs/ASH_KEEP_STRETCH9_CLOSURE_RECEIPT.md');
 const law = read('docs/STRATEGIC_VERCEL_DEPLOYMENT_LAW.md');
 
 for (const token of [
@@ -26,19 +27,19 @@ for (const token of [
   'Stretch_6_authorized: false'
 ]) assert.ok(receipt.includes(token), `Receipt omitted ${token}`);
 
-assert.match(ledger, /component maturity after Stretch 8 closure = 296 \/ 375/);
+assert.match(ledger, /component maturity after Stretch 9 closure = 320 \/ 375/);
 assert.match(ledger, /Vercel automatic aftercare status: SUCCESS \(not a strategic release witness\)/);
 assert.doesNotMatch(ledger, /Vercel release witness: SUCCESS/);
 assert.match(roadmap, /Stretch 5 — CLOSED/);
 assert.match(roadmap, /Stretch 6 · Higher-order interference — CLOSED/);
 assert.match(roadmap, /Stretch 7 · Ordered route-sequence recovery — CLOSED/);
 assert.match(roadmap, /Stretch 8 · Temporal and delayed-disclosure assays — CLOSED/);
+assert.match(roadmap, /Stretch 9 · Safe Harbor → Ash custody-root adapter — CLOSED/);
 assert.match(stretch6, /production demonstration = NOT_CLAIMED/);
-assert.match(stretch6, /One strategic Vercel deployment is authorized/);
 assert.match(stretch7, /production demonstration = NOT_CLAIMED/);
-assert.match(stretch7, /One strategic Vercel deployment is authorized/);
 assert.match(stretch8, /production demonstration = NOT_CLAIMED/);
-assert.match(stretch8, /One strategic Vercel deployment is authorized/);
+assert.match(stretch9, /production demonstration = NOT_CLAIMED/);
+assert.match(stretch9, /One strategic Vercel deployment is authorized/);
 assert.match(law, /normal ceiling is one deliberate Vercel deployment per completed packet or release candidate/);
 
 console.log('aperture-composition/closure.test.mjs passed');

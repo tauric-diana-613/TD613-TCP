@@ -1,3 +1,4 @@
+import './ash-safe-harbor-ingress-loader.js';
 import { canonicalDigest } from '../dome-world/ash/canonical-json.js';
 import { clone, freeze, randomId, text } from './aperture-v31-core.js';
 
