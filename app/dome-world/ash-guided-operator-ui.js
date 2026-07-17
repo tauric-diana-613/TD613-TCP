@@ -113,6 +113,18 @@ function compressReceipts(doc) {
   }
 }
 
+function compressCrossingTimeline(doc) {
+  const timeline = doc.querySelector('#premiumHomeBody .crossing-timeline');
+  if (!timeline || timeline.closest('details.guided-crossing-history')) return;
+  const count = timeline.querySelectorAll(':scope > li').length;
+  const details = doc.createElement('details');
+  details.className = 'guided-crossing-history';
+  const summary = doc.createElement('summary');
+  summary.innerHTML = `<span>Open crossing history</span><b>${count} remembered</b>`;
+  timeline.before(details);
+  details.append(summary, timeline);
+}
+
 function taskStep(label, note, workspace, state = '') {
   return `<button type="button" data-route-workspace="${workspace}" data-step-state="${state}"><b>${label}</b><span>${note}</span></button>`;
 }
@@ -195,6 +207,7 @@ function enhance(doc, host) {
   ensureLaunchPromise(doc);
   ensureMapControls(doc);
   compressReceipts(doc);
+  compressCrossingTimeline(doc);
   const snapshot = host.__td613AshPremiumUI?.snapshot?.();
   if (snapshot?.profile === 'investigation') renderInvestigationGuidance(doc, snapshot);
   else removeInvestigationGuidance(doc);
