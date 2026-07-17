@@ -17,7 +17,9 @@ export const CASE_PROFILES = Object.freeze({
   legal: 'Matter Map',
   archive: 'Archive Map',
   organizing: 'Organizing Map',
-  unpublished: 'Work Map'
+  unpublished: 'Work Map',
+  political_campaign: 'Campaign Map',
+  fundraiser: 'Fundraising Map'
 });
 
 export const NODE_TYPES = Object.freeze(['entity', 'artifact', 'event', 'claim', 'hypothesis', 'evidence-gap', 'source', 'intended-action']);
@@ -32,7 +34,7 @@ const DOMAINS = Object.freeze({
   reader: 'TD613:ASH-KEEP:READER:v1',
   rebuild: 'TD613:ASH-KEEP:REBUILD:v1',
   replay: 'TD613:ASH-KEEP:REBUILD-REPLAY:v1',
-  link: 'TD613:ASH-KEEP:LINK-CHECK:v1',
+  link: 'TD613:HUSH:LINK-CHECK:v1',
   unexpected: 'TD613:ASH-KEEP:UNEXPECTED-DETAIL:v1'
 });
 
