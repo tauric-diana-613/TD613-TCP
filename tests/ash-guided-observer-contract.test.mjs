@@ -40,6 +40,10 @@ assert.doesNotMatch(lifecycle, /#workspace-test \.workspace-lifecycle-note/,
   'Lifecycle observer still requires an internal state token to remain visible copy');
 assert.doesNotMatch(lifecycle, /navigationNote/,
   'Lifecycle observer still conflates visible guidance with exact lifecycle state');
+assert.match(lifecycle, /Authenticated capsule opened[\s\S]*openWorkspace\(page, 'save'\)[\s\S]*#capsulePassphrase/,
+  'Lifecycle observer does not return to the guided Capsule workspace after authenticated import');
+assert.match(lifecycle, /guided Capsule return before tamper assay/,
+  'Lifecycle observer compiler does not name the post-import return seam');
 
 for (const source of [core, coreRunner, convergenceRunner, lifecycle]) {
   assert.doesNotMatch(source, /prediction_authorized\s*:\s*true/);
