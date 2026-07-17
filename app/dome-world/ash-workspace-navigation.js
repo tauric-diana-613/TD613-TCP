@@ -89,7 +89,7 @@ function updateRecoveryPosture(doc, host) {
   const current = hasCurrentCase(host);
   const entry = doc.getElementById('openCapsuleRecovery');
   const returnBar = doc.querySelector('.capsule-recovery-navigation');
-  if (entry) entry.hidden = current;
+  if (entry) entry.hidden = false;
   if (returnBar) returnBar.hidden = current;
 }
 
