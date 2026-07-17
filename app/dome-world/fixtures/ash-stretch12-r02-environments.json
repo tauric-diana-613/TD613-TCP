@@ -1,0 +1,18 @@
+{
+  "schema": "td613.ash.environment-fixture-bank/v0.1",
+  "source_status": "CONSTRUCTED",
+  "claim_ceiling": "FIXTURE_ONLY",
+  "profiles": [
+    {"id":"llm-chat","route_class":"CONSUMER_CLOUD_PROVIDER","expected":["provider persistence unresolved","full-case upload forbidden"]},
+    {"id":"consumer-cloud","route_class":"CONSUMER_CLOUD_PROVIDER","expected":["metadata surface partial"]},
+    {"id":"encrypted-cloud-object","route_class":"CLIENT_SIDE_ENCRYPTED_CLOUD_OBJECT","expected":["ciphertext confidentiality separable from metadata"]},
+    {"id":"managed-enterprise","route_class":"MANAGED_ENTERPRISE_PROVIDER","expected":["HARD_HOLD"]},
+    {"id":"public-sector","route_class":"PUBLIC_SECTOR_MANAGED_PROVIDER","expected":["HARD_HOLD"]},
+    {"id":"local-drive","route_class":"LOCAL_DRIVE","expected":["sync inspection required"]},
+    {"id":"removable-media","route_class":"REMOVABLE_MEDIA","expected":["carrier is not endpoint"]},
+    {"id":"offline-local-model","route_class":"OFFLINE_LOCAL_MODEL","expected":["network-denied runner required"]},
+    {"id":"remote-self-hosted","route_class":"REMOTE_SELF_HOSTED_MODEL","expected":["administrator strata required"]},
+    {"id":"td613-export","route_class":"TD613_SIGNED_EXPORT","expected":["portable governed bundle"]},
+    {"id":"unresolved","route_class":"UNRESOLVED_ROUTE","expected":["HARD_HOLD"]}
+  ]
+}
