@@ -4,6 +4,7 @@ import fs from 'node:fs';
 const read = path => fs.readFileSync(path, 'utf8');
 const workflow = read('.github/workflows/ash-keep-production-closure.yml');
 const probe = `${read('scripts/ash-lifecycle-production-probe.mjs')}\n${read('scripts/ash-lifecycle-production-probe-base.mjs')}`;
+const convergenceRunner = read('scripts/run-ash-constitutional-convergence-probe.mjs');
 const core = read('app/dome-world/ash-keep.js');
 const controls = read('app/dome-world/ash-case-controls.js');
 const keep = read('app/dome-world/ash-keep.html');
@@ -31,6 +32,15 @@ for (const token of [
   'provider_or_transport_requests', 'SYNTHETIC_DRAFT', 'draft_body_sha256',
   'promotion_authorized: false', 'readiness is not custody', 'continuity is not transport'
 ]) assert.ok(probe.includes(token), `Lifecycle probe omitted ${token}`);
+
+for (const token of [
+  'const readinessTarget', 'const readinessReplacement', 'window.__td613AshKeep?.version',
+  "typeof window.TD613AshConvergence?.composition === 'function'",
+  'demo_click_deferred_until_ready: true', 'timeout: 60000',
+  'Convergence observer boot-readiness gate was not materialized.'
+]) assert.ok(convergenceRunner.includes(token), `Convergence runner omitted ${token}`);
+const readinessReplacement = convergenceRunner.slice(convergenceRunner.indexOf('const readinessReplacement'));
+assert.ok(readinessReplacement.indexOf('window.__td613AshKeep?.version') < readinessReplacement.indexOf("page.locator('#startDemo').click()"), 'Convergence runner clicked the demo before Ash boot readiness.');
 
 assert.doesNotMatch(core, /location\.reload\(\)/);
 assert.equal(delivery, keep);
