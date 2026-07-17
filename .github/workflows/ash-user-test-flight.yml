@@ -173,5 +173,5 @@ jobs:
         with:
           name: ash-user-flight-deployed-evidence
           path: artifacts/ash-user-flight-deployed
-          if-no-files-found: error
+          if-no-files-found: ${{ github.event_name == 'push' && 'error' || 'warn' }}
           retention-days: 30
