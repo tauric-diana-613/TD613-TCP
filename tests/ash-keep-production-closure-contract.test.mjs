@@ -14,6 +14,10 @@ const postureVerifier = read('scripts/assert-ash-keep-release-posture.mjs');
 const receipt = read('app/dome-world/docs/ASH_KEEP_V1_PRODUCTION_DEMO_RECEIPT.md');
 const workflow = read('.github/workflows/ash-keep-production-closure.yml');
 const release = JSON.parse(read('app/aperture/release.json'));
+const premium = read('app/dome-world/ash-premium-ui.js');
+const premiumCss = read('app/dome-world/ash-premium-ui.css');
+const premiumCompatibility = read('app/dome-world/ash-premium-compatibility.js');
+const premiumFlight = read('scripts/ash-premium-ui-browser-probe.mjs');
 
 for (const token of [
   'td613.ash-keep.production-closure-observation/v0.1', 'promotion_authorized: false', "const DB_NAME = 'td613-ash-keep'",
@@ -55,6 +59,25 @@ const productionPosture = release.ash.status === 'IMPLEMENTED_PRODUCTION_DEMONST
 assert.equal(productionPosture, true, 'Ash Keep production posture is incoherent.');
 assert.equal(release.ash.transport, false);
 assert.equal(release.ash.automaticCinder, false);
+
+for (const token of [
+  'td613.ash.premium-ui/v0.1-command-instrument',
+  "['home', 'Home'", "['map', 'Map'", "['work', 'Work'", "['choir', 'Choir'", "['capsule', 'Capsule'",
+  'runDeterministicMoireAssay', 'verifyMoireRebuildAssay', 'replayMoireRebuildAssay', 'verifyMoireRebuildReplay',
+  'Pairwise residue ≠ intent', 'automatic_ash_action: false', 'transport_authorized: false',
+  '/safe-harbor/index.html', '/dome-world/ash-destination-handoff.html'
+]) assert.ok(premium.includes(token), `Premium command instrument omitted ${token}`);
+assert.match(premiumCss, /grid-template-columns:repeat\(5,1fr\)/);
+assert.match(premiumCss, /@media\(prefers-reduced-motion:reduce\)/);
+assert.match(premiumCompatibility, /display:none!important/);
+assert.match(premiumCompatibility, /Exact chambers/);
+for (const token of [
+  'td613.ash.premium-ui-browser-flight/v0.1', 'orientationMs < 10_000',
+  'real_surveillance_probability', 'MOIRE_REPLAY_VERIFIED', 'horizontal_overflow',
+  'clipped_controls', 'item.height >= 48', 'production_promotion_authorized: false'
+]) assert.ok(premiumFlight.includes(token), `Premium browser closure omitted ${token}`);
+assert.doesNotMatch(premium, /recipient_transport\s*:\s*true|automatic_ash_action\s*:\s*true/);
+assert.doesNotMatch(premiumFlight, /production_promotion_authorized:\s*true|transport_authorized:\s*true|cinder_authorized:\s*true/);
 
 const localJob = workflow.split('  local-closure-validation:')[1]?.split('  deployed-observation:')[0] || '';
 const deployedJob = workflow.split('  deployed-observation:')[1] || '';
