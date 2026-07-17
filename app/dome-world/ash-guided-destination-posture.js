@@ -6,6 +6,7 @@ const ROUTE_STATUS_ID = 'ashCourtRouteStatus';
 const EXCERPT_ATTESTATION_ID = 'ashCourtExcerptAttestation';
 const ORIGINAL_ATTESTATION_ID = 'ashCourtOriginalAttestation';
 const GATE_STATUS_ID = 'ashCourtGateStatus';
+const MAX_COMPOSITION_ATTEMPTS = 8;
 
 const byId = (doc, id) => doc.getElementById(id);
 
@@ -161,12 +162,19 @@ function providerAttemptHandler(doc, host) {
 export function installAshDestinationPosture(doc = globalThis.document, host = globalThis.window) {
   if (!doc?.body || !host || installedHosts.has(host)) return false;
   let scheduled = false;
+  let compositionAttempts = 0;
   const schedule = () => {
     if (scheduled) return;
     scheduled = true;
     host.setTimeout(() => {
       scheduled = false;
       enhance(doc);
+      if (!byId(doc, ROUTE_POSTURE_ID) && compositionAttempts < MAX_COMPOSITION_ATTEMPTS) {
+        compositionAttempts += 1;
+        schedule();
+      } else {
+        compositionAttempts = 0;
+      }
     }, 40);
   };
   host.addEventListener('click', providerAttemptHandler(doc, host), true);
