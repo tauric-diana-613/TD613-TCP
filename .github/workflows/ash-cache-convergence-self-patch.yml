@@ -1,0 +1,37 @@
+name: Ash Cache Convergence Self Patch
+
+on:
+  push:
+    branches: [agent/ash-one-time-cache-flush-v3]
+
+permissions:
+  contents: write
+
+jobs:
+  patch:
+    if: github.actor != 'github-actions[bot]'
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: agent/ash-one-time-cache-flush-v3
+      - name: Permit only the named cache epoch in convergence observation
+        run: |
+          python - <<'PY'
+          from pathlib import Path
+          path = Path('scripts/ash-constitutional-convergence-probe.mjs')
+          source = path.read_text()
+          old = "const allowedLocalKeys = new Set(['td613.ash-keep.current-case', 'td613.ash-keep.preferences']);"
+          new = "const allowedLocalKeys = new Set(['td613.ash-keep.current-case', 'td613.ash-keep.preferences', 'td613.ash.cache-flush.epoch']);"
+          if old not in source and new not in source:
+              raise SystemExit('Convergence localStorage allowlist seam not found.')
+          path.write_text(source.replace(old, new))
+          PY
+          git rm .github/workflows/ash-cache-convergence-self-patch.yml
+      - name: Commit bounded observer repair
+        run: |
+          git config user.name github-actions[bot]
+          git config user.email 41898282+github-actions[bot]@users.noreply.github.com
+          git add scripts/ash-constitutional-convergence-probe.mjs
+          git commit -m "Permit named Ash cache epoch in convergence observer"
+          git push origin HEAD:agent/ash-one-time-cache-flush-v3
