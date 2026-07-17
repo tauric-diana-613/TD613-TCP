@@ -57,16 +57,18 @@ const convergenceReplacement = {
   await page.waitForFunction(() => document.documentElement.dataset.ashConvergence?.includes('constitutional-convergence'), null, { timeout: 60000 });\`;`,
   to: `const readinessReplacement = \`  await page.goto(keepUrl, { waitUntil: 'networkidle' });
   await page.waitForFunction(() => Boolean(window.__td613AshKeep?.version)
-    && Boolean(window.__td613AshProfileDemos?.version)
-    && typeof window.TD613AshConvergence?.composition === 'function', null, { timeout: 60000 });
+    && typeof window.TD613AshConvergence?.composition === 'function'
+    && window.__td613AshProfileDemos?.profiles?.includes('political_campaign'), null, { timeout: 60000 });
   report.observations.boot_readiness = {
     keep_core_ready: true,
-    profile_demo_ready: true,
     convergence_runtime_ready: true,
-    demo_click_deferred_until_ready: true
+    profile_demo_registry_ready: true,
+    demo_click_deferred_until_ready: true,
+    profile_selected_explicitly: true
   };
   await page.locator('#newProfile').selectOption('political_campaign');
-  assert(await page.locator('#startDemo').isEnabled(), 'Political Campaign demo did not become available for convergence observation.');
+  await page.waitForFunction(() => !document.getElementById('startDemo')?.disabled
+    && /Political Campaign/.test(document.getElementById('startDemo')?.textContent || ''), null, { timeout: 60000 });
   await page.locator('#startDemo').click();
   await page.waitForFunction(() => /Harbor City Mayoral Campaign/i.test(document.getElementById('caseTitle')?.textContent || ''), null, { timeout: 60000 });
   await page.waitForFunction(() => document.documentElement.dataset.ashConvergence?.includes('constitutional-convergence'), null, { timeout: 60000 });\`;`
@@ -84,8 +86,10 @@ function isProbePrepared(source) {
 }
 
 function isConvergencePrepared(source) {
-  return source.includes("#newProfile').selectOption('political_campaign')")
-    && source.includes('profile_demo_ready: true')
+  return source.includes("selectOption('political_campaign')")
+    && source.includes('profile_demo_registry_ready: true')
+    && source.includes('profile_selected_explicitly: true')
+    && source.includes("window.__td613AshProfileDemos?.profiles?.includes('political_campaign')")
     && source.includes('Harbor City Mayoral Campaign');
 }
 
