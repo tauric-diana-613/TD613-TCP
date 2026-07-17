@@ -1,3 +1,4 @@
+// One-time maintenance epoch only: preserves Ash cases, receipts, Capsules, and IndexedDB records.
 export const ASH_CACHE_FLUSH_EPOCH = 'td613.ash.cache-flush/2026-07-17-premium-v1';
 
 const MARKER_KEY = 'td613.ash.cache-flush.epoch';
