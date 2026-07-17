@@ -17,7 +17,7 @@ const navigationTarget = `async function bootAsh(page, { throughThreshold = true
 }`;
 
 const navigationReplacement = `async function bootAsh(page, { throughThreshold = true } = {}) {
-  await page.goto(throughThreshold ? thresholdUrl : keepUrl, { waitUntil: 'networkidle' });
+  await page.goto(throughThreshold ? thresholdUrl : keepUrl, { waitUntil: 'domcontentloaded' });
   await page.waitForFunction(() => Boolean(window.__td613AshKeep?.version)
     && typeof window.__td613AshLifecycleRefresh === 'function'
     && typeof window.TD613AshConvergence?.authorize === 'function'
@@ -32,16 +32,38 @@ const navigationReplacement = `async function bootAsh(page, { throughThreshold =
 const exportStatusTarget = `await page.waitForFunction(() => /Encrypted copy exported/.test(document.getElementById('capsuleStatus')?.textContent || ''));`;
 const exportStatusReplacement = `await page.waitForFunction(() => /encrypted copy exported/i.test(document.getElementById('capsuleStatus')?.textContent || ''));`;
 
+const recoveryTarget = `  await recoveryPage.locator('.work-tab[data-workspace="save"]').click();
+  await recoveryPage.waitForTimeout(250);`;
+const recoveryReplacement = `  const recoveryEntry = recoveryPage.locator('#openCapsuleRecovery');
+  const recoveryEntryVisible = await recoveryEntry.isVisible().catch(() => false);
+  if (!recoveryEntryVisible) {
+    report.seams.push({
+      id: 'CAPSULE_RECOVERY_ENTRY_MISSING',
+      severity: 'HIGH',
+      surface: 'blank-browser launch',
+      evidence: { launch_visible: await recoveryPage.locator('#launch').isVisible(), recovery_entry_visible: false },
+      required_patch: 'Expose a launch-level encrypted Capsule recovery gesture before case creation.'
+    });
+    await screenshot(recoveryPage, '05-blank-browser-recovery.png');
+    throw new Error('Blank-browser launch omitted the encrypted Capsule recovery entry.');
+  }
+  await recoveryEntry.click();
+  await recoveryPage.waitForTimeout(250);`;
+
 await fs.mkdir(artifactDir, { recursive: true });
 const source = await fs.readFile(sourceUrl, 'utf8');
 const navigationCount = source.split(navigationTarget).length - 1;
 const exportStatusCount = source.split(exportStatusTarget).length - 1;
+const recoveryCount = source.split(recoveryTarget).length - 1;
 if (navigationCount !== 1) throw new Error(`Ash user flight expected one pathname-dependent arrival seam; observed ${navigationCount}.`);
 if (exportStatusCount !== 1) throw new Error(`Ash user flight expected one legacy capsule export status seam; observed ${exportStatusCount}.`);
+if (recoveryCount !== 1) throw new Error(`Ash user flight expected one modal-obscured recovery seam; observed ${recoveryCount}.`);
 const runtime = source
   .replace(navigationTarget, navigationReplacement)
-  .replace(exportStatusTarget, exportStatusReplacement);
+  .replace(exportStatusTarget, exportStatusReplacement)
+  .replace(recoveryTarget, recoveryReplacement);
 if (runtime.includes('page.waitForURL(/\\/dome-world\\/ash-keep\\.html/')) throw new Error('Ash user flight retained pathname-dependent arrival logic.');
 if (runtime.includes('/Encrypted copy exported/')) throw new Error('Ash user flight retained case-sensitive legacy capsule status logic.');
+if (!runtime.includes("locator('#openCapsuleRecovery')")) throw new Error('Ash user flight failed to materialize the launch recovery gesture.');
 await fs.writeFile(runtimePath, runtime, 'utf8');
 await import(`${pathToFileURL(runtimePath).href}?flight=${Date.now()}`);
