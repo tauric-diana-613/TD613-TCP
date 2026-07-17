@@ -1,0 +1,7 @@
+{
+  "$schema":"https://json-schema.org/draft/2020-12/schema",
+  "$id":"https://td613.com/schemas/ash-stretch12-r02-encrypted-capsule.schema.json",
+  "title":"ash-stretch12-r02-encrypted-capsule","type":"object","additionalProperties":false,
+  "required":["schema","record_id","case_id","key_wrap","records","origin_root","custody_root","plaintext_persisted","passphrase_persisted","data_key_persisted","record_digest"],
+  "properties":{"schema":{"type":"string"},"record_id":{},"case_id":{},"key_wrap":{},"records":{},"origin_root":{},"custody_root":{},"plaintext_persisted":{},"passphrase_persisted":{},"data_key_persisted":{},"record_digest":{}}
+}
