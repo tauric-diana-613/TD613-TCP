@@ -22,6 +22,16 @@ function ensureStyles(doc) {
   link.href = '/dome-world/ash-guided-operator-ui.css?v=20260717-investigation-v3';
 }
 
+function collapseLegacyRails(doc) {
+  for (const rail of doc.querySelectorAll('.workspace-rail,.ash-lifecycle-rail')) {
+    rail.setAttribute('aria-hidden', 'true');
+    rail.setAttribute('inert', '');
+    rail.style.setProperty('display', 'none', 'important');
+    rail.style.setProperty('min-height', '0', 'important');
+    rail.style.setProperty('max-height', '0', 'important');
+  }
+}
+
 function ensureLaunchPromise(doc) {
   const panel = doc.querySelector('.launch-panel');
   if (!panel || byId(doc, 'guidedLaunchPromise')) return;
@@ -208,6 +218,7 @@ function removeInvestigationGuidance(doc) {
 function enhance(doc, host) {
   ensureLaunchPromise(doc);
   ensureMapControls(doc);
+  collapseLegacyRails(doc);
   compressReceipts(doc);
   compressCrossingTimeline(doc);
   const snapshot = host.__td613AshPremiumUI?.snapshot?.();
