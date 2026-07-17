@@ -83,6 +83,12 @@ runtime = replaceExactly(
 );
 runtime = replaceExactly(
   runtime,
+  "  await page.locator('#importCapsule').click();\n  await waitForText(page, '#capsuleStatus', /Authenticated capsule opened/);\n  const capsule = JSON.parse(await fs.readFile(capsulePath, 'utf8'));",
+  "  await page.locator('#importCapsule').click();\n  await waitForText(page, '#capsuleStatus', /Authenticated capsule opened/);\n  await openWorkspace(page, 'save');\n  await page.locator('#capsulePassphrase').waitFor({ state: 'visible' });\n  const capsule = JSON.parse(await fs.readFile(capsulePath, 'utf8'));",
+  'guided Capsule return before tamper assay'
+);
+runtime = replaceExactly(
+  runtime,
   "  assert(providerOrTransport.length === 0, 'Lifecycle probe reached a provider or recipient transport route');",
   "  assert(providerOrTransport.length === 0, 'Lifecycle probe reached a provider or recipient transport route');\n  assert(!requests.some(item => item.post_data?.includes(SYNTHETIC_DRAFT)), 'Synthetic draft entered a request body');",
   'draft request boundary'
@@ -93,6 +99,7 @@ if (!runtime.includes(syntheticDraft)
   || !runtime.includes('td613.ash.cache-flush.epoch')
   || !runtime.includes('pre_custody_exact_state: preCustodyExactState')
   || runtime.includes("#workspace-test .workspace-lifecycle-note")
+  || !runtime.includes("guided Capsule return before tamper assay") && !runtime.includes("await openWorkspace(page, 'save');\n  await page.locator('#capsulePassphrase').waitFor({ state: 'visible' });")
   || !runtime.includes('draft_body_sha256')
   || !runtime.includes('item.body === SYNTHETIC_DRAFT')
   || !runtime.includes('test_workspace_navigable: true')
