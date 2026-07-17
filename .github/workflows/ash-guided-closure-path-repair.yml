@@ -1,0 +1,46 @@
+name: Guided Ash Closure Path Repair
+
+on:
+  push:
+    branches: [agent/ash-investigation-demo-hydration]
+
+permissions:
+  contents: write
+
+jobs:
+  patch:
+    if: github.actor != 'github-actions[bot]'
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: agent/ash-investigation-demo-hydration
+      - name: Bind guided operator files into Production Closure
+        run: |
+          python - <<'PY'
+          from pathlib import Path
+          path = Path('.github/workflows/ash-keep-production-closure.yml')
+          source = path.read_text()
+          anchor = '      - "app/dome-world/ash-convergence.js"\n'
+          addition = (
+            '      - "app/dome-world/ash-workspace-bridge.js"\n'
+            '      - "app/dome-world/ash-investigation-*"\n'
+            '      - "app/dome-world/ash-guided-*"\n'
+            '      - "app/dome-world/fixtures/ash-investigation-*"\n'
+            '      - "tests/ash-investigation-guidance.test.mjs"\n'
+            '      - "scripts/ash-investigation-guidance-browser-probe.mjs"\n'
+          )
+          if source.count(anchor) != 2:
+              raise SystemExit(f'Expected two closure path anchors; observed {source.count(anchor)}.')
+          if 'app/dome-world/ash-investigation-*' not in source:
+              source = source.replace(anchor, anchor + addition)
+          path.write_text(source)
+          PY
+          git rm .github/workflows/ash-guided-closure-path-repair.yml
+      - name: Commit closure path binding
+        run: |
+          git config user.name github-actions[bot]
+          git config user.email 41898282+github-actions[bot]@users.noreply.github.com
+          git add .github/workflows/ash-keep-production-closure.yml
+          git commit -m "Bind guided Ash surfaces to Production Closure"
+          git push origin HEAD:agent/ash-investigation-demo-hydration
