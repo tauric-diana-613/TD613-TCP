@@ -1,0 +1,11 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://td613.com/schemas/ash-stretch12-r02-environment-profile.schema.json",
+  "title": "ash-stretch12-r02-environment-profile",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["schema","environment_id","created_at","descriptor","route_class","hard_holds","missingness","record_digest"],
+  "properties": {
+    "schema":{"type":"string"},"environment_id":{},"created_at":{},"descriptor":{},"route_class":{},"hard_holds":{},"missingness":{},"record_digest":{}
+  }
+}
