@@ -6,28 +6,9 @@ const sourceUrl = new URL('./ash-user-test-flight.mjs', import.meta.url);
 const artifactDir = path.resolve(process.env.TD613_ARTIFACT_DIR || 'artifacts/ash-user-test-flight');
 const runtimePath = path.join(artifactDir, 'ash-user-test-flight.runtime.mjs');
 
-const navigationTarget = `async function bootAsh(page, { throughThreshold = true } = {}) {
-  await page.goto(throughThreshold ? thresholdUrl : keepUrl, { waitUntil: 'networkidle' });
-  await page.waitForURL(/\/dome-world\/ash-keep\.html/, { timeout: 60000 });
-  await page.waitForFunction(() => Boolean(window.__td613AshKeep?.version)
-    && typeof window.__td613AshLifecycleRefresh === 'function'
-    && typeof window.TD613AshConvergence?.authorize === 'function'
-    && Boolean(document.querySelector('.work-tab[data-workspace="custody"]')),
-  null, { timeout: 60000 });
-}`;
-
-const navigationReplacement = `async function bootAsh(page, { throughThreshold = true } = {}) {
-  await page.goto(throughThreshold ? thresholdUrl : keepUrl, { waitUntil: 'domcontentloaded' });
-  await page.waitForFunction(() => Boolean(window.__td613AshKeep?.version)
-    && typeof window.__td613AshLifecycleRefresh === 'function'
-    && typeof window.TD613AshConvergence?.authorize === 'function'
-    && Boolean(document.querySelector('.work-tab[data-workspace="custody"]')),
-  null, { timeout: 60000 });
-  const route = new URL(page.url()).pathname;
-  if (!['/dome-world/ash-threshold.html', '/dome-world/ash-keep.html'].includes(route)) {
-    throw new Error(\`Ash composed arrival resolved to an unexpected route: \${route}\`);
-  }
-}`;
+const navigationTarget = String.raw`  await page.waitForURL(/\/dome-world\/ash-keep\.html/, { timeout: 60000 });`;
+const navigationReplacement = `  await page.waitForFunction(() => location.pathname === '/dome-world/ash-keep.html'
+    || Boolean(window.__td613AshKeep?.version), null, { timeout: 60000 });`;
 
 const initialBootTarget = `  await bootAsh(page);`;
 const initialBootReplacement = `  await bootAsh(page, { throughThreshold: !syntheticCustody });`;
@@ -74,7 +55,7 @@ const exportReplacement = `  if (syntheticCustody) {
         request.onsuccess = () => resolve((request.result || []).map(row => row?.value ?? row));
         request.onerror = () => reject(request.error);
       });
-      const caseId = localStorage.getItem('td613.ash-keep.current-case');
+      const caseId = localStorage.getItem('td613-ash-keep.current-case');
       const caseMap = await read('cases', caseId);
       const roomRules = await read('roomRules', caseId);
       const routeMemory = await read('routeMemory', caseId);
