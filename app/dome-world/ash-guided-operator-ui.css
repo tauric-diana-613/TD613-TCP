@@ -16,11 +16,16 @@ html[data-ash-guided-ui] .brand h1{font-size:clamp(1.05rem,2vw,1.45rem);letter-s
 html[data-ash-guided-ui] .mast{min-height:58px;padding-block:8px}
 html[data-ash-guided-ui] main{width:min(1680px,100%);padding-top:14px}
 html[data-ash-guided-ui] .premium-context-bar{top:58px}
+html[data-ash-guided-ui] .workspace-rail,
+html[data-ash-guided-ui] .ash-lifecycle-rail{
+  position:absolute!important;width:1px!important;height:1px!important;padding:0!important;margin:-1px!important;
+  overflow:hidden!important;clip:rect(0,0,0,0)!important;clip-path:inset(50%)!important;white-space:nowrap!important;border:0!important;
+}
 html[data-ash-guided-ui] .premium-workspace-head{margin-bottom:12px;padding-bottom:10px}
 html[data-ash-guided-ui] .premium-workspace-head h2{font-size:clamp(1.65rem,3.4vw,3rem)}
 html[data-ash-guided-ui] .premium-workspace-head p:not(.premium-kicker){font-size:.79rem;line-height:1.5}
 html[data-ash-guided-ui] .premium-hero{min-height:168px;padding:clamp(20px,3vw,32px);border-radius:20px}
-html[data-ash-guided-ui] .premium-hero h3{font-size:clamp(1.65rem,4vw,3.25rem);line-height:1}
+html[data-ash-guided-ui] .premium-hero h3{font-size:clamp(1.65rem,4vw,3.25rem);line-height:1;text-wrap:balance}
 html[data-ash-guided-ui] .premium-hero p{font-size:.85rem;line-height:1.55}
 html[data-ash-guided-ui] .premium-metric{min-height:82px;padding:13px 14px}
 html[data-ash-guided-ui] .premium-metric strong{margin-top:10px;font-size:clamp(1.2rem,2.3vw,1.75rem)}
@@ -94,9 +99,12 @@ html[data-ash-guided-ui] .map-stage,html[data-ash-guided-ui] .map-stage canvas{m
 html[data-ash-guided-ui] .inspector{padding:13px;border-radius:13px;clip-path:none}
 .guided-map-control{font:700 1rem var(--sans)!important}
 .guided-map-status{align-self:center;padding:7px 9px;border:1px solid rgba(231,222,188,.08);border-radius:9px;background:rgba(2,8,6,.74);color:#90a49b;font:600 .54rem var(--sans);white-space:nowrap}
+#workspace-map.guided-map-focus>.workspace-head{display:none!important}
 #workspace-map.guided-map-focus .map-layout{grid-template-columns:1fr}
-#workspace-map.guided-map-focus .map-stage,#workspace-map.guided-map-focus .map-stage canvas{min-height:calc(100vh - 165px)}
+#workspace-map.guided-map-focus .map-stage,#workspace-map.guided-map-focus .map-stage canvas{min-height:calc(100vh - 115px)}
 #workspace-map.guided-map-focus .inspector,#workspace-map.guided-map-focus>.tools-grid,#workspace-map.guided-map-focus>.accessible-table{display:none!important}
+html:has(#workspace-map.guided-map-focus) .premium-primary-dock{opacity:0;pointer-events:none;transform:translate(-50%,145%)}
+html:has(#workspace-map.guided-map-focus) main{padding-bottom:18px}
 @media(max-width:900px){
   .guided-launch-promise{grid-template-columns:1fr}.guided-launch-promise ol{grid-template-columns:repeat(2,minmax(0,1fr))}
   .guided-spine-steps{grid-template-columns:repeat(5,minmax(118px,1fr));overflow-x:auto;padding-bottom:4px}
@@ -106,10 +114,10 @@ html[data-ash-guided-ui] .inspector{padding:13px;border-radius:13px;clip-path:no
 }
 @media(max-width:620px){
   html[data-ash-guided-ui] .premium-context-bar{top:51px}
-  html[data-ash-guided-ui] .premium-workspace-head h2{font-size:1.42rem}
-  html[data-ash-guided-ui] .premium-hero{min-height:0;padding:15px}
-  html[data-ash-guided-ui] .premium-hero h3{font-size:1.42rem;line-height:1.03}
-  html[data-ash-guided-ui] .premium-hero p{font-size:.76rem;line-height:1.45}
+  html[data-ash-guided-ui] .premium-workspace-head h2{font-size:1.32rem}
+  html[data-ash-guided-ui] .premium-hero{min-height:0;padding:14px}
+  html[data-ash-guided-ui] .premium-hero h3{font-size:1.18rem;line-height:1.08;text-wrap:balance}
+  html[data-ash-guided-ui] .premium-hero p{font-size:.74rem;line-height:1.42}
   html[data-ash-guided-ui] .premium-metric-grid,html[data-ash-guided-ui] .work-overview{grid-template-columns:repeat(2,minmax(0,1fr))}
   .guided-launch-promise{padding:14px}.guided-launch-promise ol{grid-template-columns:1fr 1fr}
   .guided-section-head{display:block}.guided-section-head>span{display:inline-block;margin-top:8px}
