@@ -1,0 +1,97 @@
+name: Ash Public Observer Seal
+
+on:
+  pull_request:
+    paths:
+      - '.github/workflows/ash-public-observer-seal.yml'
+      - 'scripts/ash-keep-production-probe.mjs'
+      - 'scripts/run-ash-keep-production-probe.mjs'
+      - 'scripts/ash-constitutional-convergence-probe.mjs'
+      - 'scripts/run-ash-constitutional-convergence-probe.mjs'
+      - 'scripts/ash-lifecycle-production-probe.mjs'
+      - 'scripts/ash-lifecycle-production-probe-base.mjs'
+      - 'scripts/ash-investigation-guidance-browser-probe.mjs'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: ash-public-observer-seal-${{ github.event.pull_request.number || github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  observe-live-product:
+    name: Observe live guided Ash product
+    runs-on: ubuntu-latest
+    timeout-minutes: 35
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 24
+          cache: npm
+      - name: Install repository dependencies
+        run: npm ci
+      - name: Verify observer contracts and syntax
+        run: |
+          node tests/ash-guided-observer-contract.test.mjs
+          node --check scripts/ash-keep-production-probe.mjs
+          node --check scripts/run-ash-keep-production-probe.mjs
+          node --check scripts/run-ash-constitutional-convergence-probe.mjs
+          node --check scripts/ash-lifecycle-production-probe.mjs
+          node --check scripts/ash-investigation-guidance-browser-probe.mjs
+      - name: Install Chromium observer runtime
+        run: |
+          npm install --no-save --package-lock=false playwright@1.54.1
+          npx playwright install --with-deps chromium
+      - name: Observe public core closure
+        env:
+          TD613_BASE_URL: https://td613.com
+          TD613_ARTIFACT_DIR: artifacts/ash-public-core-closure
+        run: node scripts/run-ash-keep-production-probe.mjs
+      - name: Observe public lifecycle
+        env:
+          TD613_BASE_URL: https://td613.com
+          TD613_ARTIFACT_DIR: artifacts/ash-public-lifecycle
+        run: node scripts/ash-lifecycle-production-probe.mjs
+      - name: Observe public guided Investigation
+        env:
+          TD613_BASE_URL: https://td613.com
+          TD613_ARTIFACT_DIR: artifacts/ash-public-investigation
+        run: node scripts/ash-investigation-guidance-browser-probe.mjs
+      - name: Write split-provenance witness
+        env:
+          OBSERVER_COMMIT: ${{ github.event.pull_request.head.sha || github.sha }}
+          DEPLOYED_PRODUCT_COMMIT: 6d461aa2a5c6ee4dce9f36a7a927478350a36d70
+        run: |
+          node - <<'NODE'
+          const fs = require('fs');
+          const path = require('path');
+          const target = 'artifacts/ash-public-observer-seal';
+          fs.mkdirSync(target, { recursive: true });
+          fs.writeFileSync(path.join(target, 'split-provenance-witness.json'), JSON.stringify({
+            schema: 'td613.ash.public-observer-seal/v0.1',
+            status: 'PASS',
+            observed_url: 'https://td613.com',
+            deployed_product_commit: process.env.DEPLOYED_PRODUCT_COMMIT,
+            observer_code_commit: process.env.OBSERVER_COMMIT,
+            exact_sha_equivalence_claimed: false,
+            product_bytes_changed_by_observer_packet: false,
+            prediction_authorized: false,
+            automatic_action_authorized: false,
+            recipient_transport_authorized: false,
+            note: 'Observer-only main commit was Vercel rate-limited. Live product bytes derive from the previously successful guided-product deployment; current main observer code performed this public witness.'
+          }, null, 2) + '\n');
+          NODE
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: ash-public-observer-seal-evidence
+          path: |
+            artifacts/ash-public-core-closure
+            artifacts/ash-public-lifecycle
+            artifacts/ash-public-investigation
+            artifacts/ash-public-observer-seal
+          if-no-files-found: error
+          retention-days: 30
