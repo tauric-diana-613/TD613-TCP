@@ -1,0 +1,134 @@
+name: Ash Destination Handoff
+
+on:
+  pull_request:
+    paths:
+      - 'app/engine/ash-destination-handoff*'
+      - 'app/dome-world/ash-destination-handoff*'
+      - 'app/dome-world/schemas/ash-destination-handoff-*'
+      - 'tests/ash-destination-handoff*'
+      - 'scripts/ash-destination-handoff-probe.mjs'
+      - 'docs/ASH_KEEP_STRETCH11_*'
+      - 'docs/ASH_KEEP_BUILDOUT_*'
+      - 'ROADMAP.md'
+      - '.github/workflows/ash-destination-handoff.yml'
+  push:
+    branches: [main]
+    paths:
+      - 'app/engine/ash-destination-handoff*'
+      - 'app/dome-world/ash-destination-handoff*'
+      - 'app/dome-world/schemas/ash-destination-handoff-*'
+      - 'tests/ash-destination-handoff*'
+      - 'scripts/ash-destination-handoff-probe.mjs'
+      - 'docs/ASH_KEEP_STRETCH11_*'
+      - 'docs/ASH_KEEP_BUILDOUT_*'
+      - 'ROADMAP.md'
+      - '.github/workflows/ash-destination-handoff.yml'
+
+permissions:
+  contents: read
+  statuses: write
+
+jobs:
+  validate-destination-handoff:
+    name: Ash Destination Handoff Validation
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 24
+          cache: npm
+      - name: Install repository dependencies
+        run: npm ci
+      - name: Validate Stretch 11 engine and contracts
+        run: |
+          node --check app/engine/ash-destination-handoff.js
+          node --check app/dome-world/ash-destination-handoff.js
+          node --check app/dome-world/ash-destination-recipient.js
+          node tests/ash-destination-handoff.test.mjs
+          node tests/ash-destination-handoff-schemas.test.mjs
+          node tests/ash-destination-handoff-ui.test.mjs
+          node tests/ash-destination-handoff-closure.test.mjs
+      - name: Preserve final anti-drift ledger
+        run: node tests/product-architecture/ledger.test.mjs
+      - name: Preserve packet-state lineage
+        run: node tests/stretch1-preservation/packet-state.test.mjs
+      - name: Preserve Aperture closure
+        run: node tests/aperture-composition/closure.test.mjs
+      - name: Preserve lifecycle production boundary
+        run: node tests/ash-lifecycle-production-contract.test.mjs
+      - name: Verify 11 plus 1 function covenant
+        shell: bash
+        run: |
+          count="$(find api -maxdepth 1 -type f | wc -l | tr -d ' ')"
+          test "$count" = "11"
+          echo "active_serverless_functions=$count" | tee function-count.txt
+          echo "reserved_function_capacity=1" | tee -a function-count.txt
+      - name: Install browser probe
+        run: |
+          npm install --no-save playwright@1.54.1
+          npx playwright install --with-deps chromium
+      - name: Start bounded local static runtime
+        run: |
+          python3 -m http.server 6130 > /tmp/ash-destination-http.log 2>&1 &
+          echo $! > /tmp/ash-destination-http.pid
+          for attempt in $(seq 1 30); do curl -fsS http://127.0.0.1:6130/app/dome-world/ash-destination-handoff.html >/dev/null && exit 0; sleep 1; done
+          exit 1
+      - name: Observe local named destination handoff
+        env:
+          TD613_BASE_URL: http://127.0.0.1:6130
+          TD613_ARTIFACT_DIR: artifacts/ash-destination-handoff-local
+        run: node scripts/ash-destination-handoff-probe.mjs
+      - name: Stop bounded local runtime
+        if: always()
+        run: kill "$(cat /tmp/ash-destination-http.pid)" 2>/dev/null || true
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: ash-destination-handoff-validation-evidence
+          path: |
+            artifacts/ash-destination-handoff-local
+            function-count.txt
+          if-no-files-found: warn
+
+  deployed-destination-handoff:
+    name: Ash Destination Handoff Deployed Observation
+    if: github.event_name == 'push' && github.ref == 'refs/heads/main'
+    needs: validate-destination-handoff
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: ${{ github.sha }}
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 24
+          cache: npm
+      - name: Install observer dependencies
+        run: |
+          npm ci
+          npm install --no-save playwright@1.54.1
+          npx playwright install --with-deps chromium
+      - name: Wait for exact deployed Stretch 11 surface
+        shell: bash
+        run: |
+          for attempt in $(seq 1 90); do
+            if curl -fsS https://td613.com/app/dome-world/ash-destination-handoff.html | grep -q 'Ash Destination-Bound Handoff'; then exit 0; fi
+            sleep 5
+          done
+          exit 1
+      - name: Observe deployed named recipient handoff without authority expansion
+        env:
+          TD613_BASE_URL: https://td613.com
+          TD613_ARTIFACT_DIR: artifacts/ash-destination-handoff-deployed
+        run: node scripts/ash-destination-handoff-probe.mjs
+      - name: Verify observer remained bounded
+        run: |
+          node -e "const r=require('./artifacts/ash-destination-handoff-deployed/observation.json'); if(r.status!=='DESTINATION_HANDOFF_BROWSER_OBSERVED'||r.promotion_authorized!==false||r.observations.serverless_function_used!==false||r.observations.external_deletion_proven!==false) process.exit(1)"
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: ash-destination-handoff-deployed-evidence
+          path: artifacts/ash-destination-handoff-deployed
+          if-no-files-found: error

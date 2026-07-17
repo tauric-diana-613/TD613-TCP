@@ -1,0 +1,27 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "td613.ash.destination-handoff-authorization/v0.1",
+  "type": "object",
+  "required": ["schema","version","state","authorization_digest","raw_body_present","raw_corpus_present","universal_join_key","identity_inferred","authorship_inferred","truth_inferred","broadcast_authorized","universal_transport_authorized","external_deletion_proven","suppression_authorized","cinder_action_authorized"],
+  "properties": {
+    "schema": {"const": "td613.ash.destination-handoff-authorization/v0.1"},
+    "version": {"const": "v0.1"},
+    "state": {"type": "string"},
+    "authorization_digest": {"type": "string", "pattern": "^sha256:[0-9a-f]{64}$"},
+    "raw_body_present": {"const": false},
+    "raw_corpus_present": {"const": false},
+    "universal_join_key": {"type": ["null"]},
+    "identity_inferred": {"const": false},
+    "authorship_inferred": {"const": false},
+    "truth_inferred": {"const": false},
+    "broadcast_authorized": {"const": false},
+    "universal_transport_authorized": {"const": false},
+    "external_deletion_proven": {"const": false},
+    "suppression_authorized": {"const": false},
+    "cinder_action_authorized": {"const": false}
+  },
+  "additionalProperties": true,
+  "x-td613-success-state": "DESTINATION_HANDOFF_AUTHORIZED",
+  "x-td613-digest-field": "authorization_digest",
+  "x-td613-authority-ceiling": {"general_release_authority": false,"broadcast_authority": false,"universal_transport_authority": false,"cinder_authority": false}
+}

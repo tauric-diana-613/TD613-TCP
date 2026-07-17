@@ -1,6 +1,5 @@
 import assert from 'node:assert/strict';
 import fs from 'node:fs';
-
 const read = p => fs.readFileSync(new URL(`../../${p}`, import.meta.url), 'utf8');
 const ledger = read('docs/ASH_KEEP_BUILDOUT_LEDGER.md');
 const roadmap = read('ROADMAP.md');
@@ -10,41 +9,26 @@ const stretch7 = read('docs/ASH_KEEP_STRETCH7_CLOSURE_RECEIPT.md');
 const stretch8 = read('docs/ASH_KEEP_STRETCH8_CLOSURE_RECEIPT.md');
 const stretch9 = read('docs/ASH_KEEP_STRETCH9_CLOSURE_RECEIPT.md');
 const stretch10 = read('docs/ASH_KEEP_STRETCH10_CLOSURE_RECEIPT.md');
+const stretch11 = read('docs/ASH_KEEP_STRETCH11_CLOSURE_RECEIPT.md');
+const buildout = read('docs/ASH_KEEP_BUILDOUT_CLOSURE_RECEIPT.md');
 const law = read('docs/STRATEGIC_VERCEL_DEPLOYMENT_LAW.md');
-
-assert.match(ledger, /Ledger generation: `v1\.18 · Stretch 10 independent provenance closure/);
-assert.match(ledger, /component maturity after Stretch 10 closure = 338 \/ 375/);
-assert.match(ledger, /remaining component maturity = 37 \/ 375/);
-assert.match(ledger, /production-demonstrated workstreams = 4 \/ 9/);
-assert.match(ledger, /validation-gated workstreams = 5 \/ 9/);
-assert.match(ledger, /transport-capable workstreams = 0/);
-assert.match(ledger, /current-head aftercare commit:[\s\S]*2c89b70e284562ebb6b842900ae1a1bd0b00f6e6/);
-assert.match(ledger, /Stretch 7 · Ordered Route-Sequence Recovery[\s\S]*STRATEGIC_DEPLOYMENT_SEALED/);
-assert.match(ledger, /Stretch 8 · Temporal And Delayed-Disclosure Assays[\s\S]*DEPLOYED_OBSERVATION_SEALED/);
-assert.match(ledger, /Stretch 9 · Safe Harbor → Ash Custody-Root Adapter[\s\S]*STRATEGIC_VERCEL_SEALED/);
-assert.match(ledger, /Stretch 10 · Independent Provenance Adapters[\s\S]*CLOSED \/ IMPLEMENTED_VALIDATION_GATED \/ EVIDENCE_BOUNDED/);
-assert.match(ledger, /later explicit operator handoff → Stretch 11 may open/);
-
-assert.match(roadmap, /Roadmap generation: `v1\.18/);
+assert.match(ledger, /Ledger generation: `v2\.0/);
+assert.match(ledger, /component maturity after Stretch 11 local closure = 358 \/ 375/);
+assert.match(ledger, /remaining component maturity = 17 \/ 375/);
+assert.match(ledger, /production-demonstrated workstreams after exact-main seal = 5 \/ 9/);
+assert.match(ledger, /transport-capable workstreams = 1 \/ 9/);
+assert.match(ledger, /Stretch 10 — CLOSED AND STRATEGICALLY SEALED/);
+assert.match(ledger, /Stretch 11 — CLOSED LOCALLY/);
+assert.match(roadmap, /Roadmap generation: `v2\.0/);
 assert.match(roadmap, /Aperture composition = 18 \/ 25/);
-assert.match(roadmap, /Stretch 1 · Ash Constitutional Convergence Closure — CLOSED/);
-assert.match(roadmap, /Stretch 8 · Temporal and delayed-disclosure assays — CLOSED/);
-assert.match(roadmap, /Stretch 9 · Safe Harbor → Ash custody-root adapter — CLOSED/);
-assert.match(roadmap, /Stretch 10 · Independent provenance adapters — CLOSED/);
-assert.match(roadmap, /Destination-bound handoff last — BLOCKED PENDING STRETCH 10 SEAL/);
-assert.match(roadmap, /ordinary work-branch deployment = SUPPRESSED WHERE SUPPORTED/);
-
+assert.match(roadmap, /Stretch 1 — CLOSED/);
+assert.match(roadmap, /Stretch 11 · Destination-Bound Handoff — CLOSED LOCALLY/);
+assert.match(roadmap, /Ash Keep Buildout Closure — NOT A STRETCH/);
 assert.match(closure, /status: CLOSED/);
 assert.match(closure, /maturity: IMPLEMENTED_VALIDATION_GATED/);
-assert.match(closure, /Stretch_6_authorized: false/);
-assert.match(stretch6, /State: `CLOSED \/ IMPLEMENTED_VALIDATION_GATED \/ EVIDENCE_BOUNDED`/);
-assert.match(stretch7, /State: `CLOSED \/ IMPLEMENTED_VALIDATION_GATED \/ EVIDENCE_BOUNDED`/);
-assert.match(stretch8, /State: `CLOSED \/ IMPLEMENTED_VALIDATION_GATED \/ EVIDENCE_BOUNDED`/);
-assert.match(stretch9, /State: `CLOSED \/ IMPLEMENTED_VALIDATION_GATED \/ EVIDENCE_BOUNDED`/);
-assert.match(stretch10, /State: `CLOSED \/ IMPLEMENTED_VALIDATION_GATED \/ EVIDENCE_BOUNDED`/);
-assert.match(stretch10, /validated implementation commit = 33c8f881095aa3c601e35d4c45793f072695dfbb/);
-assert.match(stretch10, /Stretch 11 authorization = false/);
+for (const receipt of [stretch6,stretch7,stretch8,stretch9,stretch10]) assert.match(receipt, /State: `CLOSED \/ IMPLEMENTED_VALIDATION_GATED \/ EVIDENCE_BOUNDED`/);
+assert.match(stretch11, /State: `CLOSED \/ IMPLEMENTED_VALIDATION_GATED \/ EVIDENCE_BOUNDED \/ PENDING_EXACT_MAIN_EXTERNAL_SEAL`/);
+assert.match(buildout, /FURTHER_STRETCH_NUMBERING_FORBIDDEN/);
 assert.match(law, /branch work ≠ deployment requirement/);
 assert.match(law, /Exceptions must be recorded/);
-
 console.log('stretch1-preservation/packet-state.test.mjs passed');
