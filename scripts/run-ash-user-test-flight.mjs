@@ -29,13 +29,19 @@ const navigationReplacement = `async function bootAsh(page, { throughThreshold =
   }
 }`;
 
+const exportStatusTarget = `await page.waitForFunction(() => /Encrypted copy exported/.test(document.getElementById('capsuleStatus')?.textContent || ''));`;
+const exportStatusReplacement = `await page.waitForFunction(() => /encrypted copy exported/i.test(document.getElementById('capsuleStatus')?.textContent || ''));`;
+
 await fs.mkdir(artifactDir, { recursive: true });
 const source = await fs.readFile(sourceUrl, 'utf8');
-const count = source.split(navigationTarget).length - 1;
-if (count !== 1) throw new Error(`Ash user flight expected one pathname-dependent arrival seam; observed ${count}.`);
-const runtime = source.replace(navigationTarget, navigationReplacement);
-if (runtime.includes('page.waitForURL(/\\/dome-world\\/ash-keep\\.html/')) {
-  throw new Error('Ash user flight retained pathname-dependent arrival logic.');
-}
+const navigationCount = source.split(navigationTarget).length - 1;
+const exportStatusCount = source.split(exportStatusTarget).length - 1;
+if (navigationCount !== 1) throw new Error(`Ash user flight expected one pathname-dependent arrival seam; observed ${navigationCount}.`);
+if (exportStatusCount !== 1) throw new Error(`Ash user flight expected one legacy capsule export status seam; observed ${exportStatusCount}.`);
+const runtime = source
+  .replace(navigationTarget, navigationReplacement)
+  .replace(exportStatusTarget, exportStatusReplacement);
+if (runtime.includes('page.waitForURL(/\\/dome-world\\/ash-keep\\.html/')) throw new Error('Ash user flight retained pathname-dependent arrival logic.');
+if (runtime.includes('/Encrypted copy exported/')) throw new Error('Ash user flight retained case-sensitive legacy capsule status logic.');
 await fs.writeFile(runtimePath, runtime, 'utf8');
 await import(`${pathToFileURL(runtimePath).href}?flight=${Date.now()}`);
