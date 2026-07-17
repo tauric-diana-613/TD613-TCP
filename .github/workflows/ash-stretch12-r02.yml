@@ -32,10 +32,10 @@ concurrency:
   cancel-in-progress: true
 
 jobs:
-  specification:
-    name: S12-SPEC · Constitutional reconciliation
+  work-package:
+    name: Revision 0.2 · Available work packages
     runs-on: ubuntu-latest
-    timeout-minutes: 10
+    timeout-minutes: 20
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-node@v4
@@ -43,5 +43,21 @@ jobs:
           node-version: 24
           cache: npm
       - run: npm ci
-      - run: node tests/ash-stretch12-r02-spec.test.mjs
-      - run: node tests/product-architecture/ledger.test.mjs
+      - name: Verify Revision 0.2 contracts
+        shell: bash
+        run: |
+          set -euo pipefail
+          for test in tests/ash-stretch12-r02-*.test.mjs; do
+            echo "== $test =="
+            node "$test"
+          done
+      - name: Verify Revision 0.2 syntax
+        shell: bash
+        run: |
+          set -euo pipefail
+          for file in app/engine/ash-stretch12-r02-*.js app/dome-world/ash-stretch12-r02-*.js scripts/ash-stretch12-r02-*.mjs; do
+            [ -e "$file" ] || continue
+            node --check "$file"
+          done
+      - name: Preserve Eleven-Stretch and function covenant
+        run: node tests/product-architecture/ledger.test.mjs
