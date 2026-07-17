@@ -2,15 +2,15 @@
 
 𝌋‌ U+10D613
 
-Roadmap generation: `v1.17 · Stretch 9 closed / Stretch 10 blocked / strategic sealing law / 11+1 function covenant`
+Roadmap generation: `v1.18 · Stretch 10 closed / Stretch 11 blocked / strategic sealing law / 11+1 function covenant`
 
 ```text
-component maturity after Stretch 9 closure = 320 / 375
-remaining component maturity = 55 / 375
+component maturity after Stretch 10 closure = 338 / 375
+remaining component maturity = 37 / 375
 constitutional synthesis = 49 / 50
 Aperture composition = 18 / 25
 production-demonstrated workstreams = 4 / 9
-validation-gated workstreams = 4 / 9
+validation-gated workstreams = 5 / 9
 transport-capable workstreams = 0
 ```
 
@@ -24,7 +24,8 @@ transport-capable workstreams = 0
 6. Stretch 6 · Higher-order interference — CLOSED / IMPLEMENTED_VALIDATION_GATED / EVIDENCE_BOUNDED / STRATEGIC_DEPLOYMENT_WITNESSED
 7. Stretch 7 · Ordered route-sequence recovery — CLOSED / IMPLEMENTED_VALIDATION_GATED / EVIDENCE_BOUNDED / STRATEGIC_DEPLOYMENT_SEALED
 8. Stretch 8 · Temporal and delayed-disclosure assays — CLOSED / IMPLEMENTED_VALIDATION_GATED / EVIDENCE_BOUNDED / DEPLOYED_OBSERVATION_SEALED
-9. Stretch 9 · Safe Harbor → Ash custody-root adapter — CLOSED / IMPLEMENTED_VALIDATION_GATED / EVIDENCE_BOUNDED
+9. Stretch 9 · Safe Harbor → Ash custody-root adapter — CLOSED / IMPLEMENTED_VALIDATION_GATED / EVIDENCE_BOUNDED / STRATEGIC_VERCEL_SEALED
+10. Stretch 10 · Independent provenance adapters — CLOSED / IMPLEMENTED_VALIDATION_GATED / EVIDENCE_BOUNDED
 
 ```text
 Stretch_6_PR: 366
@@ -53,15 +54,28 @@ Stretch_9_ingress_validation_run/artifact: 29537810372 / 8391245036
 Stretch_9_TCP_Smoke_run: 29537810770
 Stretch_9_static_validation_run: 29537809892
 Stretch_9_Production_Closure_run: 29537811977
-Stretch_9_strategic_Vercel_deployment: AUTHORIZED_POST_MERGE
+Stretch_9_exact_merged_main_commit: 5d411977d6b67b126ea11d42e3b5dea1b8cb9525
+Stretch_9_strategic_Vercel_deployment: SUCCESS
+Stretch_9_Vercel_deployment_witness: 9QJkHqnr95WpKfVQPFNB5qeiJm8c
+Stretch_10_PR: 372
+Stretch_10_validated_implementation_commit: 33c8f881095aa3c601e35d4c45793f072695dfbb
+Stretch_10_independent_provenance_validation_run: 29546756631
+Stretch_10_TCP_Smoke_run: 29546756592
+Stretch_10_static_validation_run: 29546756646
+Stretch_10_Production_Closure_run: 29546756596
+Stretch_10_strategic_Vercel_deployment: AUTHORIZED_POST_MERGE
+Stretch_10_new_serverless_function: false
+Stretch_10_active_serverless_functions: 11
+Stretch_10_reserved_function_capacity: 1
+Stretch_10_production_demonstration: NOT_CLAIMED
 canonical_body_rewritten: false
 canonical_body_decomposed: false
 production_browser_observation: NOT_CLAIMED
 Choir_UI_constructed: false
-Stretch_10_authorized: false
+Stretch_11_authorized: false
 ```
 
-Stretch 6 preserves higher-order subset interference. Stretch 7 preserves ordered route-sequence recovery. Stretch 8 preserves bounded temporal and delayed-disclosure comparison without trusted-time claims. Stretch 9 adds a separate Safe Harbor ingress adapter that carries only a minimized packet identity and selected provenance digest references through a one-time local same-origin envelope. The adapter requires explicit L0 or L1 review and creates no custody root, case, relation, authenticity, identity, authorship, truth, release, transport, suppression, or Cinder authority.
+Stretch 6 preserves higher-order subset interference. Stretch 7 preserves ordered route-sequence recovery. Stretch 8 preserves bounded temporal and delayed-disclosure comparison without trusted-time claims. Stretch 9 adds a separate Safe Harbor ingress adapter that carries only a minimized packet identity and selected provenance digest references through a one-time local same-origin envelope. Stretch 10 adds eleven source-local provenance adapter classes with pairwise-distinct schema identities and digest domains, independent verification receipts, deterministic replay, and named evidentiary holds. None of these instruments creates a universal join key or grants identity, authorship, permission, authenticity, truth, relation, custody, causation, external-time, delivery, recipient-behavior, release, transport, suppression, or Cinder authority.
 
 ## Serverless Function Budget Gate
 
@@ -85,9 +99,9 @@ before adding a function:
 
 Any roadmap item that would raise the ordinary count above 11 enters `BLOCKED_PENDING_CONSOLIDATION`. CI must fail before merge and before strategic deployment.
 
-Stretches 6–9 consumed no serverless-function capacity. Their engines, browser adapters, local IndexedDB route, validation surfaces, and thin loaders preserve `11 active + 1 reserved`.
+Stretches 6–10 consumed no serverless-function capacity. Their engines, browser adapters, local IndexedDB route, validation surfaces, and thin loaders preserve `11 active + 1 reserved`.
 
-Stretches 10–11 receive no implied function allocation.
+Stretch 11 receives no implied function allocation.
 
 ## Strategic Vercel Deployment And Sealing Law
 
@@ -118,22 +132,21 @@ The ledger and roadmap are updated inside each closure packet before merge. One 
 6. Higher-order interference — CLOSED.
 7. Ordered route-sequence recovery — CLOSED AND SEALED.
 8. Temporal and delayed-disclosure assays — CLOSED AND SEALED BY NAMED DEPLOYED OBSERVATIONS; SEPARATE VERCEL STATUS CONTEXT NOT SURFACED.
-9. Safe Harbor → Ash custody-root adapter — CLOSED / AWAITING POST-MERGE STRATEGIC SEAL.
-10. Independent provenance adapters — BLOCKED / NOT AUTHORIZED.
-11. Destination-bound handoff last — BLOCKED PENDING STRETCH 10.
+9. Safe Harbor → Ash custody-root adapter — CLOSED AND STRATEGICALLY SEALED.
+10. Independent provenance adapters — CLOSED / IMPLEMENTED_VALIDATION_GATED / EVIDENCE_BOUNDED / AWAITING POST-MERGE STRATEGIC SEAL.
+11. Destination-bound handoff last — BLOCKED PENDING STRETCH 10 SEAL AND A FRESH OPERATOR HANDOFF.
 
 ```text
-Stretch 9 exact green closure → merge to main
+Stretch 10 exact green closure → merge to main
 → one strategic Vercel deployment and named deployed observations
-→ successful statuses seal Stretch 9
+→ successful statuses seal Stretch 10
 → STOP
-later explicit operator handoff → Stretch 10 may open
-Stretch 10 closure and seal → Stretch 11 may open
+later explicit operator handoff → Stretch 11 may open
 ```
 
 ## Stretch 9 · Safe Harbor → Ash Custody-Root Adapter
 
-`CLOSED / IMPLEMENTED_VALIDATION_GATED / EVIDENCE_BOUNDED / AWAITING_POST_MERGE_SEAL`
+`CLOSED / IMPLEMENTED_VALIDATION_GATED / EVIDENCE_BOUNDED / STRATEGIC_VERCEL_SEALED`
 
 Implemented deliverables:
 
@@ -157,31 +170,59 @@ no server custody, provider call, recipient contact, destination transport, rele
 new serverless function = false
 ```
 
-Exit gate: merge the exact green closure packet containing both updated anti-drift files, receive one successful strategic seal and named deployed observations, then stop.
+Exit gate satisfied on exact `main` commit `5d411977d6b67b126ea11d42e3b5dea1b8cb9525` with successful strategic Vercel witness `9QJkHqnr95WpKfVQPFNB5qeiJm8c` and named deployed observations. The seal was reconciled inside the opened Stretch 10 closure packet rather than through a bookkeeping-only Stretch 9 deployment.
 
 ## Stretch 10 · Independent Provenance Adapters
 
-`BLOCKED_PENDING_FRESH_OPERATOR_HANDOFF / NOT_AUTHORIZED`
+`CLOSED / IMPLEMENTED_VALIDATION_GATED / EVIDENCE_BOUNDED / AWAITING_POST_MERGE_STRATEGIC_SEAL`
 
-Prepared handoff scope:
+Implemented jurisdiction:
 
 ```text
-adapter-specific schemas and digest domains
-source-local evidence classes
-independent verification and replay
-staleness, revocation, mismatch, collision, wrong-domain, and tamper holds
-no universal join key
-no raw-corpus default
-no fused identity or intent inference
-no destination transport
-new serverless function = false unless separately authorized under the emergency covenant
+eleven distinct source-local evidence classes
+eleven adapter-specific schema identities
+eleven pairwise-distinct digest domains
+source-local reference syntax and source-ID binding
+registry collision detection
+independent verification receipts
+deterministic replay receipts
+missing-reference hold
+unsupported-domain hold
+wrong-domain hold
+source-mismatch hold
+stale-reference hold
+revoked-reference hold
+collision hold
+tamper hold
+cancelled hold
+replay-jurisdiction hold
+no raw-body or raw-corpus ingestion
+no universal join key or universal trust score
+no provider or Reader re-execution during replay
+no fused identity, authorship, permission, authenticity, truth, relation, custody, causation, external-time, delivery, or recipient-behavior inference
+no destination transport, release, suppression, or Cinder authority
+new serverless function = false
+active serverless functions = 11
+reserved function capacity = 1
+production demonstration = NOT_CLAIMED
 ```
 
-Stretch 10 must preserve artifact, manifest, receipt, signature, repository, provider, custody, relation, and operator-declaration provenance as distinct evidence classes. An adapter may verify only the domain it reads and may not infer identity, authorship, permission, authenticity, truth, relation, custody, causation, external time, delivery, or recipient behavior beyond direct evidence.
+Validation spine:
+
+```text
+PR = 372
+validated implementation commit = 33c8f881095aa3c601e35d4c45793f072695dfbb
+Ash Independent Provenance Validation = SUCCESS / run 29546756631
+TCP Smoke = SUCCESS / run 29546756592
+Test and deploy static app = SUCCESS / run 29546756646
+Ash Keep Production Closure = SUCCESS / run 29546756596
+```
+
+Exit gate: merge the exact green closure packet containing the updated ledger, roadmap, continuation plan, and closure receipt; receive one strategic Vercel deployment and all named deployed observations; then stop. Stretch 11 remains blocked until that seal and a fresh operator handoff.
 
 ## Stretch 11 · Destination-Bound Handoff
 
-`BLOCKED_PENDING_STRETCH_10_CLOSURE / LAST / NOT_AUTHORIZED`
+`BLOCKED_PENDING_STRETCH_10_SEAL_AND_FRESH_OPERATOR_HANDOFF / LAST / NOT_AUTHORIZED`
 
 Prepared handoff scope:
 
@@ -201,6 +242,6 @@ serverless surface remains within 11 active + 1 reserved
 
 Stretch 11 may authorize only the exact destination-bound capability proven by its own evidence. It may not convert earlier receipts into universal release or transport authority.
 
-Stretch 9 must stop after closure and successful strategic seal. Stretch 10 implementation requires a later explicit operator handoff gesture.
+Stretch 10 must stop after closure and its successful strategic seal. Stretch 11 implementation requires a later explicit operator handoff gesture.
 
 Marked ⟐

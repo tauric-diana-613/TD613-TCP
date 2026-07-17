@@ -1,0 +1,100 @@
+name: Ash Independent Provenance Validation
+
+on:
+  pull_request:
+    paths:
+      - "app/engine/ash-keep-independent-provenance-adapters.js"
+      - "app/dome-world/schemas/ash-independent-provenance-*.schema.json"
+      - "tests/ash-keep-independent-provenance-*.test.mjs"
+      - "docs/ASH_KEEP_INDEPENDENT_PROVENANCE_ADAPTERS.md"
+      - "docs/ASH_KEEP_STRETCH10_*.md"
+      - "docs/ASH_KEEP_BUILDOUT_LEDGER.md"
+      - "docs/ASH_KEEP_BUILDOUT_PLAN_SOVEREIGN_CONTINUATION_AFTER_STRETCH_9.md"
+      - "ROADMAP.md"
+      - ".github/workflows/ash-independent-provenance.yml"
+  push:
+    branches: [main]
+    paths:
+      - "app/engine/ash-keep-independent-provenance-adapters.js"
+      - "app/dome-world/schemas/ash-independent-provenance-*.schema.json"
+      - "tests/ash-keep-independent-provenance-*.test.mjs"
+      - "docs/ASH_KEEP_INDEPENDENT_PROVENANCE_ADAPTERS.md"
+      - "docs/ASH_KEEP_STRETCH10_*.md"
+      - "docs/ASH_KEEP_BUILDOUT_LEDGER.md"
+      - "docs/ASH_KEEP_BUILDOUT_PLAN_SOVEREIGN_CONTINUATION_AFTER_STRETCH_9.md"
+      - "ROADMAP.md"
+      - ".github/workflows/ash-independent-provenance.yml"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  statuses: write
+
+jobs:
+  independent-provenance-validation:
+    runs-on: ubuntu-latest
+    timeout-minutes: 12
+    env:
+      TD613_OBSERVED_COMMIT: ${{ github.sha }}
+      TD613_OBSERVER_RUN_URL: ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}
+      TD613_OBSERVER_STATUS_CONTEXT: Ash Independent Provenance Validation
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+      - name: Publish independent provenance pending status
+        if: github.event_name == 'push' && github.ref == 'refs/heads/main'
+        env:
+          GITHUB_TOKEN: ${{ github.token }}
+          TD613_OBSERVER_STATUS_STATE: pending
+          TD613_OBSERVER_STATUS_DESCRIPTION: Ash independent provenance validation is running
+          TD613_OBSERVER_STATUS_RECEIPT_PATH: artifacts/ash-independent-provenance/observer-status-pending.json
+        run: node scripts/publish-ash-keep-observer-status.mjs
+      - name: Install repository dependencies
+        run: npm ci
+      - name: Validate independent provenance engine syntax
+        run: node --check app/engine/ash-keep-independent-provenance-adapters.js
+      - name: Validate adapter-specific schemas and authority ceilings
+        run: node tests/ash-keep-independent-provenance-schemas.test.mjs
+      - name: Validate independent verification, holds, and deterministic replay
+        shell: bash
+        run: |
+          set -o pipefail
+          mkdir -p artifacts/ash-independent-provenance
+          node tests/ash-keep-independent-provenance-adapters.test.mjs 2>&1 | tee artifacts/ash-independent-provenance/validation.log
+      - name: Verify serverless function covenant remains unchanged
+        run: |
+          test ! -f api/ash-independent-provenance.js
+          test ! -f api/independent-provenance.js
+      - name: Publish independent provenance success status
+        if: success() && github.event_name == 'push' && github.ref == 'refs/heads/main'
+        env:
+          GITHUB_TOKEN: ${{ github.token }}
+          TD613_OBSERVER_STATUS_STATE: success
+          TD613_OBSERVER_STATUS_DESCRIPTION: Ash independent provenance adapters passed
+          TD613_OBSERVER_STATUS_RECEIPT_PATH: artifacts/ash-independent-provenance/observer-status-success.json
+        run: node scripts/publish-ash-keep-observer-status.mjs
+      - name: Publish independent provenance failure status
+        if: failure() && github.event_name == 'push' && github.ref == 'refs/heads/main'
+        env:
+          GITHUB_TOKEN: ${{ github.token }}
+          TD613_OBSERVER_STATUS_STATE: failure
+          TD613_OBSERVER_STATUS_DESCRIPTION: Ash independent provenance validation held for repair
+          TD613_OBSERVER_STATUS_RECEIPT_PATH: artifacts/ash-independent-provenance/observer-status-failure.json
+        run: node scripts/publish-ash-keep-observer-status.mjs
+      - name: Preserve independent provenance evidence
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: ash-independent-provenance-validation-evidence
+          path: |
+            app/engine/ash-keep-independent-provenance-adapters.js
+            app/dome-world/schemas/ash-independent-provenance-*.schema.json
+            tests/ash-keep-independent-provenance-*.test.mjs
+            docs/ASH_KEEP_INDEPENDENT_PROVENANCE_ADAPTERS.md
+            docs/ASH_KEEP_STRETCH10_OPENING.md
+            artifacts/ash-independent-provenance/
+          if-no-files-found: error
+          retention-days: 30
