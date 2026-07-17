@@ -11,14 +11,14 @@ const manifestPath = path.resolve(
     || path.join(repoRoot, 'artifacts', 'ash-keep-probe-runtime', 'premium-fixture-manifest.json')
 );
 
-const target = `  await page.locator('#capsuleFile').setInputFiles(capsulePath);
+const capsuleTarget = `  await page.locator('#capsuleFile').setInputFiles(capsulePath);
   await page.locator('#capsulePassphrase').fill(passphrase);
   await page.locator('#importCapsule').click();
   await waitForText(page, '#capsuleStatus', /Authenticated capsule opened/);
 
   const capsule = JSON.parse(await fs.readFile(capsulePath, 'utf8'));`;
 
-const replacement = `  await page.locator('#capsuleFile').setInputFiles(capsulePath);
+const capsuleReplacement = `  await page.locator('#capsuleFile').setInputFiles(capsulePath);
   await page.locator('#capsulePassphrase').fill(passphrase);
   await page.locator('#importCapsule').click();
   await waitForText(page, '#capsuleStatus', /Authenticated capsule opened/);
@@ -31,34 +31,102 @@ const replacement = `  await page.locator('#capsuleFile').setInputFiles(capsuleP
 
   const capsule = JSON.parse(await fs.readFile(capsulePath, 'utf8'));`;
 
-const marker = 'const premiumCommandInstrument = await page.evaluate';
+const allowedKeysTarget = `const ALLOWED_LOCAL_KEYS = new Set([
+  'td613.ash-keep.current-case',
+  'td613.ash-keep.preferences'
+]);`;
+const allowedKeysReplacement = `const ALLOWED_LOCAL_KEYS = new Set([
+  'td613.ash-keep.current-case',
+  'td613.ash-keep.preferences',
+  'td613.ash.cache-flush.epoch'
+]);`;
+
+const cleanArrivalTarget = `  const cleanKeys = await page.evaluate(() => Object.keys(localStorage));
+  const initialNonGet = requests.filter(request => request.method !== 'GET' && request.method !== 'HEAD');
+  assert(cleanCount === 0, 'Clean arrival created case records before operator action');
+  assert(cleanKeys.length === 0, 'Clean arrival wrote localStorage before operator action');
+  assert(initialNonGet.length === 0, 'Clean arrival emitted a non-read network request');
+  report.clean_arrival = {
+    launch_visible: true,
+    indexeddb_record_count: cleanCount,
+    local_storage_keys: cleanKeys,
+    non_read_requests: initialNonGet
+  };`;
+
+const cleanArrivalReplacement = `  const cleanEntries = await page.evaluate(() => Object.fromEntries(Object.entries(localStorage)));
+  const cleanKeys = Object.keys(cleanEntries);
+  const cleanMaintenanceKeys = new Set(['td613.ash.cache-flush.epoch']);
+  const initialNonGet = requests.filter(request => request.method !== 'GET' && request.method !== 'HEAD');
+  assert(cleanCount === 0, 'Clean arrival created case records before operator action');
+  assert(cleanKeys.every(key => cleanMaintenanceKeys.has(key)), 'Clean arrival wrote case-adjacent localStorage before operator action');
+  if (cleanEntries['td613.ash.cache-flush.epoch']) {
+    assert(cleanEntries['td613.ash.cache-flush.epoch'] === 'td613.ash.cache-flush/2026-07-17-premium-v1', 'Clean arrival carried an unknown cache-maintenance epoch');
+  }
+  assert(initialNonGet.length === 0, 'Clean arrival emitted a non-read network request');
+  report.clean_arrival = {
+    launch_visible: true,
+    indexeddb_record_count: cleanCount,
+    local_storage_keys: cleanKeys,
+    one_time_cache_epoch: cleanEntries['td613.ash.cache-flush.epoch'] || null,
+    case_adjacent_storage_written: false,
+    non_read_requests: initialNonGet
+  };`;
+
+const premiumMarker = 'const premiumCommandInstrument = await page.evaluate';
+const cacheMarker = 'const cleanMaintenanceKeys = new Set';
 const sha256 = value => `sha256:${createHash('sha256').update(value).digest('hex')}`;
 
 const original = (await fs.readFile(probePath, 'utf8')).replace(/\r\n/g, '\n');
 let prepared = original;
-let posture = 'ALREADY_PREPARED';
-if (!original.includes(marker)) {
-  const count = original.split(target).length - 1;
+const transformations = [];
+
+if (!prepared.includes(premiumMarker)) {
+  const count = prepared.split(capsuleTarget).length - 1;
   if (count !== 1) throw new Error(`Premium closure fixture expected one authenticated-import seam; observed ${count}.`);
-  prepared = original.replace(target, replacement);
-  posture = 'PREPARED_NOW';
+  prepared = prepared.replace(capsuleTarget, capsuleReplacement);
+  transformations.push('REOPEN_EXACT_SAVE_AFTER_AUTHENTICATED_CAPSULE_BEFORE_TAMPER_ASSAY');
 }
 
-if (!prepared.includes(marker)
+if (!prepared.includes("'td613.ash.cache-flush.epoch'")) {
+  const count = prepared.split(allowedKeysTarget).length - 1;
+  if (count !== 1) throw new Error(`Cache closure fixture expected one localStorage allowlist seam; observed ${count}.`);
+  prepared = prepared.replace(allowedKeysTarget, allowedKeysReplacement);
+  transformations.push('ALLOW_NAMED_CACHE_EPOCH_AFTER_OPERATOR_ACTION');
+}
+
+if (!prepared.includes(cacheMarker)) {
+  const count = prepared.split(cleanArrivalTarget).length - 1;
+  if (count !== 1) throw new Error(`Cache closure fixture expected one clean-arrival assertion seam; observed ${count}.`);
+  prepared = prepared.replace(cleanArrivalTarget, cleanArrivalReplacement);
+  transformations.push('ALLOW_ONLY_NAMED_NON_CASE_CACHE_EPOCH_ON_CLEAN_ARRIVAL');
+}
+
+if (!prepared.includes(premiumMarker)
   || !prepared.includes("window.__td613AshPremiumUI.open('save')")
-  || !prepared.includes("document.getElementById('workspace-save')?.classList.contains('active')")) {
-  throw new Error('Premium closure fixture did not materialize the exact Save re-entry seam.');
+  || !prepared.includes(cacheMarker)
+  || !prepared.includes('case_adjacent_storage_written: false')
+  || !prepared.includes("'td613.ash.cache-flush.epoch'")) {
+  throw new Error('Premium/cache closure fixture did not materialize every bounded observation seam.');
 }
 
 if (prepared !== original) await fs.writeFile(probePath, prepared, 'utf8');
 await fs.mkdir(path.dirname(manifestPath), { recursive: true });
 await fs.writeFile(manifestPath, `${JSON.stringify({
-  schema: 'td613.ash-keep.premium-production-closure-fixture/v0.1',
+  schema: 'td613.ash-keep.premium-production-closure-fixture/v0.2-cache-epoch',
   source_probe: path.relative(repoRoot, probePath),
-  posture,
+  posture: transformations.length ? 'PREPARED_NOW' : 'ALREADY_PREPARED',
   source_sha256: sha256(original),
   prepared_sha256: sha256(prepared),
-  transformation: 'REOPEN_EXACT_SAVE_AFTER_AUTHENTICATED_CAPSULE_BEFORE_TAMPER_ASSAY',
+  transformations,
+  permitted_clean_arrival_local_storage: {
+    key: 'td613.ash.cache-flush.epoch',
+    value: 'td613.ash.cache-flush/2026-07-17-premium-v1',
+    classification: 'NON_CASE_ONE_TIME_MAINTENANCE_MARKER'
+  },
+  case_pointer_allowed_before_operator_action: false,
+  lifecycle_record_allowed_before_operator_action: false,
+  receipt_allowed_before_operator_action: false,
+  preferences_allowed_before_operator_action: false,
   source_file_mutated_in_ephemeral_ci_checkout_only: true,
   product_ui_mutated: false,
   promotion_authorized: false,
@@ -66,4 +134,4 @@ await fs.writeFile(manifestPath, `${JSON.stringify({
   cinder_authorized: false
 }, null, 2)}\n`);
 
-console.log(`prepare-ash-premium-closure-fixture.mjs passed · ${posture}`);
+console.log(`prepare-ash-premium-closure-fixture.mjs passed · ${transformations.length ? 'PREPARED_NOW' : 'ALREADY_PREPARED'}`);
