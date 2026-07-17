@@ -132,3 +132,5 @@ html:has(#workspace-map.guided-map-focus) main{padding-bottom:18px}
   html[data-ash-guided-ui] body::after{animation:none!important}
   .guided-spine-steps button,.guided-map-control{transition:none!important}
 }
+html[data-ash-guided-ui] body > .workspace-rail,
+html[data-ash-guided-ui] body > .ash-lifecycle-rail{display:none!important}
