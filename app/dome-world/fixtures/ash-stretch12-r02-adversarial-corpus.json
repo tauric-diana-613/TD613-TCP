@@ -1,0 +1,19 @@
+{
+  "schema":"td613.aperture.synthetic-adversarial-corpus/v0.1",
+  "source_status":"CONSTRUCTED",
+  "claim_ceiling":"PA1_PA2_FIXTURE_ONLY",
+  "fixtures":[
+    {"id":"positive-identity","control_class":"POSITIVE","features":["exact date","job title","city"]},
+    {"id":"benign-role","control_class":"MATCHED_BENIGN","features":["job title","region"]},
+    {"id":"null-empty","control_class":"NULL","features":[]},
+    {"id":"missing-date","control_class":"MISSING","features":["job title"]},
+    {"id":"contradictory-city","control_class":"CONTRADICTORY","features":["two cities"]},
+    {"id":"heldout-sequence","control_class":"HELD_OUT","features":["event sequence"]},
+    {"id":"shuffled-order","control_class":"SHUFFLED","features":["reordered events"]},
+    {"id":"truncated-chronology","control_class":"TRUNCATED","features":["partial sequence"]},
+    {"id":"route-order","control_class":"ROUTE_ORDER","features":["same packet different destination"]},
+    {"id":"delayed-disclosure","control_class":"DELAYED_DISCLOSURE","features":["time lag"]},
+    {"id":"cross-session","control_class":"CROSS_SESSION","features":["session boundary"]},
+    {"id":"source-drift","control_class":"SOURCE_DRIFT","features":["changed source"]}
+  ]
+}
