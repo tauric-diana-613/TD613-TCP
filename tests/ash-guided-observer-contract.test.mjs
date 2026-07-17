@@ -28,6 +28,13 @@ assert.match(convergenceRunner, /open\('map'\)/);
 assert.match(convergenceRunner, /workspace-test/);
 assert.match(convergenceRunner, /workspace-map/);
 assert.match(convergenceRunner, /guided workspace migration was not materialized/);
+assert.match(convergenceRunner, /selectOption\('political_campaign'\)/);
+assert.match(convergenceRunner, /Harbor City Mayoral Campaign/);
+assert.match(convergenceRunner, /profile_selected_explicitly: true/);
+assert.match(convergenceRunner, /window\.__td613AshProfileDemos\?\.profiles\?\.includes/);
+assert.match(convergenceRunner, /explicit profile readiness gate was not materialized/);
+assert.doesNotMatch(convergenceRunner, /await page\.locator\('#startDemo'\)\.click\(\);\n  await page\.waitForFunction\(\(\) => \/Glasshouse Archive/,
+  'Convergence observer retained an unprofiled legacy demo launch');
 assert.doesNotMatch(convergenceRunner, /const runtime = source\.replace\(readinessTarget, readinessReplacement\)\.replace\(deletionTarget/);
 assert.match(lifecycle, /selectOption\('political_campaign'\)/);
 assert.match(lifecycle, /Harbor City Mayoral Campaign/);
