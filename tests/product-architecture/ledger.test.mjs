@@ -24,7 +24,7 @@ for (const token of [
   'normal active maximum = 11','reserved capacity = 1','no Stretch 12'
 ]) assert.ok(roadmap.includes(token), `Roadmap omitted ${token}`);
 for (const token of [
-  'Plan generation: `v3.1','G1–G8 closure','SAME_ORIGIN_MESSAGE_CHANNEL','MessagePort',
+  'Plan generation: `v3.1','G1–G8 closure','browser `MessageChannel`','MessagePort',
   'active functions after Stretch 11 = 11','component maturity = 358 / 375','No Stretch 12 follows'
 ]) assert.ok(plan.includes(token), `Plan omitted ${token}`);
 assert.match(legacy, /active sovereign handoff/);
