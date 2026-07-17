@@ -3,10 +3,23 @@ const recipientId = params.get('recipient') || '';
 const destinationId = params.get('destination') || '';
 const status = document.getElementById('status');
 document.getElementById('identity').textContent = `${destinationId} → ${recipientId}`;
+
+function announceReady() {
+  window.parent.postMessage({
+    type: 'TD613_ASH_RECIPIENT_READY',
+    recipient_id: recipientId,
+    destination_id: destinationId
+  }, location.origin);
+}
+
 window.addEventListener('message', event => {
   if (event.origin !== location.origin) return;
-  const port = event.ports?.[0];
   const packet = event.data;
+  if (packet?.type === 'TD613_ASH_RECIPIENT_PING') {
+    announceReady();
+    return;
+  }
+  const port = event.ports?.[0];
   if (!port || packet?.type !== 'TD613_ASH_DESTINATION_HANDOFF') return;
   const references = Array.isArray(packet.reference_ids) ? [...new Set(packet.reference_ids.map(String))].sort() : [];
   const accepted = packet.destination_id === destinationId
@@ -32,4 +45,5 @@ window.addEventListener('message', event => {
   });
   port.close();
 });
-window.parent.postMessage({ type: 'TD613_ASH_RECIPIENT_READY', recipient_id: recipientId, destination_id: destinationId }, location.origin);
+
+announceReady();
