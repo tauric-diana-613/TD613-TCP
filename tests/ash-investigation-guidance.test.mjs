@@ -74,10 +74,13 @@ assert.match(guidance, /View exact Rebuild receipt/);
 assert.match(guidance, /guidedMapZoomIn/);
 assert.match(guidance, /guidedMapFocus/);
 assert.match(guidance, /Provider boundary/);
+assert.match(guidance, /compressCrossingTimeline/);
 assert.match(css, /guided-dome-drift/);
 assert.match(css, /Iowan Old Style/);
 assert.match(css, /map-stage[^\{]*\{[^}]*min-height:68vh/);
 assert.match(css, /guided-receipt/);
+assert.match(css, /guided-crossing-history/);
+assert.match(css, /guided-spine-steps button:nth-child\(5\)/);
 assert.match(css, /@media\(prefers-reduced-motion:reduce\)/);
 
 for (const forbidden of [
