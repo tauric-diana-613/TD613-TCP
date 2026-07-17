@@ -1,0 +1,7 @@
+{
+  "$schema":"https://json-schema.org/draft/2020-12/schema",
+  "$id":"https://td613.com/schemas/ash-stretch12-r02-key-topology.schema.json",
+  "title":"ash-stretch12-r02-key-topology","type":"object","additionalProperties":false,
+  "required":["schema","record_id","case_id","nodes","edges","dangerous_topology","secret_material_persisted","record_digest"],
+  "properties":{"schema":{"type":"string"},"record_id":{},"case_id":{},"nodes":{},"edges":{},"dangerous_topology":{},"secret_material_persisted":{},"record_digest":{}}
+}
