@@ -26,8 +26,8 @@ for (const required of [
 assert.doesNotMatch(source, /fetch\(|indexedDB|localStorage/, 'Destination posture must not acquire storage or network authority.');
 assert.match(bridge, /ash-guided-destination-posture\.js\?v=20260717-destination-posture-v1/);
 assert.ok(
-  bridge.indexOf('ash-guided-destination-posture.js') < bridge.indexOf('ash-guided-trust-boundary-court.js'),
-  'Destination posture must register its capture hold before the provider-court listener.'
+  bridge.indexOf('ash-guided-trust-boundary-court.js') < bridge.indexOf('ash-guided-destination-posture.js'),
+  'Ash Court must compose before destination posture decorates and governs its provider gate.'
 );
 
 const dom = new JSDOM(`<!doctype html><html><head></head><body>
@@ -39,9 +39,9 @@ const dom = new JSDOM(`<!doctype html><html><head></head><body>
   <textarea id="draftBody"></textarea><input id="localTextFile" type="file">
 </body></html>`, { pretendToBeVisual: true, url: 'https://td613.test/dome-world/ash-keep.html' });
 
+assert.equal(installAshTrustBoundaryCourt(dom.window.document, dom.window), true);
 assert.equal(installAshDestinationPosture(dom.window.document, dom.window), true);
 assert.equal(installAshDestinationPosture(dom.window.document, dom.window), false);
-assert.equal(installAshTrustBoundaryCourt(dom.window.document, dom.window), true);
 await new Promise(resolve => dom.window.setTimeout(resolve, 140));
 
 const doc = dom.window.document;
