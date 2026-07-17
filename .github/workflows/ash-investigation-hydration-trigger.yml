@@ -1,4 +1,5 @@
 name: Ash Investigation Hydration Trigger
+# Bounded materializer for the sealed synthetic fixture and its profile wiring.
 
 on:
   push:
