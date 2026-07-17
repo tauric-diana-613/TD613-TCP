@@ -4,10 +4,11 @@ import { createHash } from 'node:crypto';
 import { fileURLToPath } from 'node:url';
 
 const here = path.dirname(fileURLToPath(import.meta.url));
+const repoRoot = path.join(here, '..');
 const probePath = path.join(here, 'ash-keep-production-probe.mjs');
 const manifestPath = path.resolve(
   process.env.TD613_PROFILE_CLOSURE_FIXTURE_MANIFEST
-    || path.join(here, '..', 'artifacts', 'ash-keep-probe-runtime', 'profile-fixture-manifest.json')
+    || path.join(repoRoot, 'artifacts', 'ash-keep-probe-runtime', 'profile-fixture-manifest.json')
 );
 
 const replacements = [
@@ -44,6 +45,13 @@ function sha256(value) {
   return `sha256:${createHash('sha256').update(value).digest('hex')}`;
 }
 
+function isPrepared(source) {
+  return source.includes("selectOption('political_campaign')")
+    && source.includes('Harbor City Mayoral Campaign')
+    && source.includes('entries.length === 4')
+    && !source.includes('Glasshouse Archive inquiry');
+}
+
 function replaceExactlyOnce(source, replacement) {
   const count = source.split(replacement.from).length - 1;
   if (count !== 1) {
@@ -54,22 +62,24 @@ function replaceExactlyOnce(source, replacement) {
 
 const original = (await fs.readFile(probePath, 'utf8')).replace(/\r\n/g, '\n');
 let prepared = original;
-for (const replacement of replacements) prepared = replaceExactlyOnce(prepared, replacement);
+let posture = 'ALREADY_PREPARED';
+if (!isPrepared(original)) {
+  posture = 'PREPARED_NOW';
+  for (const replacement of replacements) prepared = replaceExactlyOnce(prepared, replacement);
+}
 
-if (!prepared.includes("selectOption('political_campaign')")
-  || !prepared.includes('Harbor City Mayoral Campaign')
-  || !prepared.includes('entries.length === 4')
-  || prepared.includes('Glasshouse Archive inquiry')) {
+if (!isPrepared(prepared)) {
   throw new Error('Profile closure fixture did not materialize every declared campaign-demo seam.');
 }
 
-await fs.writeFile(probePath, prepared, 'utf8');
+if (prepared !== original) await fs.writeFile(probePath, prepared, 'utf8');
 await fs.mkdir(path.dirname(manifestPath), { recursive: true });
 await fs.writeFile(manifestPath, `${JSON.stringify({
   schema: 'td613.ash-keep.profile-closure-fixture/v0.1',
-  source_probe: path.relative(path.join(here, '..'), probePath),
+  source_probe: path.relative(repoRoot, probePath),
   profile: 'political_campaign',
   demo_id: 'demo_political_campaign_rapid_response_v1',
+  posture,
   source_sha256: sha256(original),
   prepared_sha256: sha256(prepared),
   replacements: replacements.map(item => item.label),
@@ -80,4 +90,4 @@ await fs.writeFile(manifestPath, `${JSON.stringify({
   cinder_authorized: false
 }, null, 2)}\n`);
 
-console.log('prepare-ash-profile-closure-fixture.mjs passed');
+console.log(`prepare-ash-profile-closure-fixture.mjs passed · ${posture}`);
