@@ -5,6 +5,7 @@ import './ash-operation-coordinator.js';
 import './ash-case-feedback.js';
 import './ash-profile-demo-hydration.js';
 import './ash-premium-ui.js';
+import './ash-premium-compatibility.js';
 import './ash-workspace-navigation.js';
 import './ash-return-ready-bundle.js';
 import './ash-custodian-return.js';
