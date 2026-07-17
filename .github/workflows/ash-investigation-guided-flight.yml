@@ -9,6 +9,7 @@ on:
       - 'app/dome-world/fixtures/ash-investigation-*'
       - 'scripts/ash-investigation-guidance-browser-probe.mjs'
       - 'tests/ash-investigation-guidance.test.mjs'
+      - 'tests/ash-destination-posture.test.mjs'
       - 'tests/ash-keep-investigation-guidance-closure.test.mjs'
       - '.github/workflows/ash-investigation-guided-flight.yml'
   push:
@@ -20,6 +21,7 @@ on:
       - 'app/dome-world/fixtures/ash-investigation-*'
       - 'scripts/ash-investigation-guidance-browser-probe.mjs'
       - 'tests/ash-investigation-guidance.test.mjs'
+      - 'tests/ash-destination-posture.test.mjs'
       - 'tests/ash-keep-investigation-guidance-closure.test.mjs'
       - '.github/workflows/ash-investigation-guided-flight.yml'
   workflow_dispatch:
@@ -49,9 +51,12 @@ jobs:
         run: |
           node tests/ash-profile-demos.test.mjs
           node tests/ash-investigation-guidance.test.mjs
+          node tests/ash-destination-posture.test.mjs
           node tests/ash-keep-investigation-guidance-closure.test.mjs
           node --check app/dome-world/ash-investigation-demo-hydration.js
           node --check app/dome-world/ash-guided-operator-ui.js
+          node --check app/dome-world/ash-guided-trust-boundary-court.js
+          node --check app/dome-world/ash-guided-destination-posture.js
           node --check scripts/ash-investigation-guidance-browser-probe.mjs
       - name: Install browser runtime
         run: |
@@ -102,6 +107,7 @@ jobs:
         run: |
           node tests/ash-profile-demos.test.mjs
           node tests/ash-investigation-guidance.test.mjs
+          node tests/ash-destination-posture.test.mjs
           node tests/ash-keep-investigation-guidance-closure.test.mjs
       - name: Install browser runtime
         run: |
