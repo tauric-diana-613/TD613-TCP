@@ -1,0 +1,9 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://td613.com/schemas/ash-stretch12-r02-qualification-receipt.schema.json",
+  "title": "ash-stretch12-r02-qualification-receipt",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["schema","record_id","state","environment_profile_reference","method_requirements_satisfied","eligible_for_human_claim_review","operator_closure","claim_ceiling","record_digest"],
+  "properties": {"schema":{"type":"string"},"record_id":{},"state":{},"environment_profile_reference":{},"method_requirements_satisfied":{},"eligible_for_human_claim_review":{},"operator_closure":{},"claim_ceiling":{},"record_digest":{}}
+}
