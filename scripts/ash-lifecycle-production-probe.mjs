@@ -48,7 +48,7 @@ runtime = replaceExactly(
 runtime = replaceExactly(
   runtime,
   "  await page.locator('.work-tab[data-workspace=\"test\"]').click();\n  await page.locator('#workspace-custody').waitFor({ state: 'visible' });\n  const heldMessage = await waitForText(page, '#custodyStatus', /Test held/i);\n  report.pre_custody_hold = { test_workspace_held: true, message: heldMessage, state: await page.evaluate(() => document.body.dataset.ashLifecycle) };",
-  "  await openWorkspace(page, 'test');\n  await page.locator('#workspace-test').waitFor({ state: 'visible' });\n  const navigationNote = await waitForText(page, '#workspace-test .workspace-lifecycle-note', /CASE_BOUND/);\n  await page.locator('#runTest').click();\n  await page.locator('#workspace-custody').waitFor({ state: 'visible' });\n  const heldMessage = await waitForText(page, '#custodyStatus', /held/i);\n  report.pre_custody_hold = { test_workspace_navigable: true, test_action_held: true, navigation_note: navigationNote, message: heldMessage, state: await page.evaluate(() => document.body.dataset.ashLifecycle) };",
+  "  await openWorkspace(page, 'test');\n  await page.locator('#workspace-test').waitFor({ state: 'visible' });\n  const preCustodyExactState = await page.evaluate(() => document.body.dataset.ashLifecycle || null);\n  assert(preCustodyExactState === 'READINESS_OBSERVED', `Guided Test opened under unexpected lifecycle state: ${preCustodyExactState}`);\n  await page.locator('#runTest').click();\n  await page.locator('#workspace-custody').waitFor({ state: 'visible' });\n  const heldMessage = await waitForText(page, '#custodyStatus', /held/i);\n  report.pre_custody_hold = { test_workspace_navigable: true, test_action_held: true, pre_custody_exact_state: preCustodyExactState, message: heldMessage, state: await page.evaluate(() => document.body.dataset.ashLifecycle) };",
   'workspace navigation and held action observation'
 );
 runtime = replaceExactly(
@@ -91,6 +91,8 @@ if (!runtime.includes(syntheticDraft)
   || !runtime.includes("selectOption('political_campaign')")
   || !runtime.includes('Ash guided workspace API is unavailable.')
   || !runtime.includes('td613.ash.cache-flush.epoch')
+  || !runtime.includes('pre_custody_exact_state: preCustodyExactState')
+  || runtime.includes("#workspace-test .workspace-lifecycle-note")
   || !runtime.includes('draft_body_sha256')
   || !runtime.includes('item.body === SYNTHETIC_DRAFT')
   || !runtime.includes('test_workspace_navigable: true')
