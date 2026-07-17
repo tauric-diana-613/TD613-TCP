@@ -1,0 +1,121 @@
+name: Ash Investigation Guided Flight
+
+on:
+  pull_request:
+    paths:
+      - 'app/dome-world/ash-guided-operator-ui.*'
+      - 'app/dome-world/ash-investigation-demo-hydration.js'
+      - 'app/dome-world/ash-workspace-bridge.js'
+      - 'app/dome-world/fixtures/ash-investigation-*'
+      - 'scripts/ash-investigation-guidance-browser-probe.mjs'
+      - 'tests/ash-investigation-guidance.test.mjs'
+      - '.github/workflows/ash-investigation-guidance.yml'
+  push:
+    branches:
+      - main
+      - agent/ash-investigation-demo-hydration
+    paths:
+      - 'app/dome-world/ash-guided-operator-ui.*'
+      - 'app/dome-world/ash-investigation-demo-hydration.js'
+      - 'app/dome-world/ash-workspace-bridge.js'
+      - 'app/dome-world/fixtures/ash-investigation-*'
+      - 'scripts/ash-investigation-guidance-browser-probe.mjs'
+      - 'tests/ash-investigation-guidance.test.mjs'
+      - '.github/workflows/ash-investigation-guidance.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: ash-investigation-guided-flight-${{ github.event.pull_request.number || github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  local-candidate:
+    name: Investigation · Local Guided Flight
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 24
+          cache: npm
+      - name: Install repository dependencies
+        run: npm ci
+      - name: Verify Investigation fixture and guidance contracts
+        run: node tests/ash-investigation-guidance.test.mjs
+      - name: Install Chromium flight runtime
+        run: |
+          npm install --no-save --package-lock=false playwright@1.54.1
+          npx playwright install --with-deps chromium
+      - name: Start bounded local Ash runtime
+        run: |
+          node scripts/ash-keep-local-closure-server.mjs 6130 > /tmp/ash-investigation-guidance.log 2>&1 &
+          echo $! > /tmp/ash-investigation-guidance.pid
+          for attempt in $(seq 1 45); do
+            if curl -fsS http://127.0.0.1:6130/dome-world/ash-keep.html >/dev/null; then exit 0; fi
+            sleep 1
+          done
+          cat /tmp/ash-investigation-guidance.log || true
+          exit 1
+      - name: Fly the guided Investigation surface
+        env:
+          TD613_BASE_URL: http://127.0.0.1:6130
+          TD613_ARTIFACT_DIR: artifacts/ash-investigation-guidance-local
+        run: node scripts/ash-investigation-guidance-browser-probe.mjs
+      - name: Stop bounded runtime
+        if: always()
+        run: kill "$(cat /tmp/ash-investigation-guidance.pid)" 2>/dev/null || true
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: ash-investigation-guidance-local-evidence
+          path: |
+            artifacts/ash-investigation-guidance-local
+            /tmp/ash-investigation-guidance.log
+          if-no-files-found: error
+          retention-days: 30
+
+  deployed-main:
+    name: Investigation · Deployed Guided Flight
+    if: github.event_name == 'push' && github.ref == 'refs/heads/main'
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 24
+          cache: npm
+      - name: Install repository dependencies
+        run: npm ci
+      - name: Install Chromium flight runtime
+        run: |
+          npm install --no-save --package-lock=false playwright@1.54.1
+          npx playwright install --with-deps chromium
+      - name: Wait for exact Investigation deployment
+        run: |
+          for attempt in $(seq 1 90); do
+            bridge="$(curl -fsS https://td613.com/dome-world/ash-workspace-bridge.js || true)"
+            guided="$(curl -fsS https://td613.com/dome-world/ash-guided-operator-ui.js || true)"
+            investigation="$(curl -fsS https://td613.com/dome-world/ash-investigation-demo-hydration.js || true)"
+            if printf '%s' "$bridge" | grep -q 'ash-guided-operator-ui.js' \
+              && printf '%s' "$guided" | grep -q 'v0.1-investigation-flight' \
+              && printf '%s' "$investigation" | grep -q 'v0.1-glass-meridian'; then exit 0; fi
+            sleep 2
+          done
+          exit 1
+      - name: Fly deployed Investigation surface
+        env:
+          TD613_BASE_URL: https://td613.com
+          TD613_ARTIFACT_DIR: artifacts/ash-investigation-guidance-deployed
+        run: node scripts/ash-investigation-guidance-browser-probe.mjs
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: ash-investigation-guidance-deployed-evidence
+          path: artifacts/ash-investigation-guidance-deployed
+          if-no-files-found: error
+          retention-days: 30
