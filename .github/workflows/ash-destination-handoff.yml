@@ -8,6 +8,7 @@ on:
       - 'app/dome-world/schemas/ash-destination-handoff-*'
       - 'tests/ash-destination-handoff*'
       - 'scripts/ash-destination-handoff-probe.mjs'
+      - 'scripts/publish-ash-keep-observer-status.mjs'
       - 'docs/ASH_KEEP_STRETCH11_*'
       - 'docs/ASH_KEEP_BUILDOUT_*'
       - 'ROADMAP.md'
@@ -20,6 +21,7 @@ on:
       - 'app/dome-world/schemas/ash-destination-handoff-*'
       - 'tests/ash-destination-handoff*'
       - 'scripts/ash-destination-handoff-probe.mjs'
+      - 'scripts/publish-ash-keep-observer-status.mjs'
       - 'docs/ASH_KEEP_STRETCH11_*'
       - 'docs/ASH_KEEP_BUILDOUT_*'
       - 'ROADMAP.md'
@@ -39,6 +41,16 @@ jobs:
         with:
           node-version: 24
           cache: npm
+      - name: Publish destination-handoff validation pending status
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          TD613_OBSERVED_COMMIT: ${{ github.event.pull_request.head.sha || github.sha }}
+          TD613_OBSERVER_STATUS_STATE: pending
+          TD613_OBSERVER_STATUS_CONTEXT: Ash Destination Handoff Validation
+          TD613_OBSERVER_STATUS_DESCRIPTION: Stretch 11 validation and local named-recipient observation are running.
+          TD613_OBSERVER_RUN_URL: ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}
+          TD613_OBSERVER_STATUS_RECEIPT_PATH: artifacts/ash-destination-handoff-status/validation-pending.json
+        run: node scripts/publish-ash-keep-observer-status.mjs
       - name: Install repository dependencies
         run: npm ci
       - name: Validate Stretch 11 engine and contracts
@@ -83,12 +95,35 @@ jobs:
       - name: Stop bounded local runtime
         if: always()
         run: kill "$(cat /tmp/ash-destination-http.pid)" 2>/dev/null || true
+      - name: Publish destination-handoff validation success status
+        if: success()
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          TD613_OBSERVED_COMMIT: ${{ github.event.pull_request.head.sha || github.sha }}
+          TD613_OBSERVER_STATUS_STATE: success
+          TD613_OBSERVER_STATUS_CONTEXT: Ash Destination Handoff Validation
+          TD613_OBSERVER_STATUS_DESCRIPTION: Stretch 11 validation and local named-recipient observation succeeded.
+          TD613_OBSERVER_RUN_URL: ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}
+          TD613_OBSERVER_STATUS_RECEIPT_PATH: artifacts/ash-destination-handoff-status/validation-success.json
+        run: node scripts/publish-ash-keep-observer-status.mjs
+      - name: Publish destination-handoff validation failure status
+        if: failure()
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          TD613_OBSERVED_COMMIT: ${{ github.event.pull_request.head.sha || github.sha }}
+          TD613_OBSERVER_STATUS_STATE: failure
+          TD613_OBSERVER_STATUS_CONTEXT: Ash Destination Handoff Validation
+          TD613_OBSERVER_STATUS_DESCRIPTION: Stretch 11 validation or local named-recipient observation failed.
+          TD613_OBSERVER_RUN_URL: ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}
+          TD613_OBSERVER_STATUS_RECEIPT_PATH: artifacts/ash-destination-handoff-status/validation-failure.json
+        run: node scripts/publish-ash-keep-observer-status.mjs
       - uses: actions/upload-artifact@v4
         if: always()
         with:
           name: ash-destination-handoff-validation-evidence
           path: |
             artifacts/ash-destination-handoff-local
+            artifacts/ash-destination-handoff-status
             function-count.txt
           if-no-files-found: warn
 
@@ -105,6 +140,16 @@ jobs:
         with:
           node-version: 24
           cache: npm
+      - name: Publish deployed handoff pending status
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          TD613_OBSERVED_COMMIT: ${{ github.sha }}
+          TD613_OBSERVER_STATUS_STATE: pending
+          TD613_OBSERVER_STATUS_CONTEXT: Ash Destination Handoff Deployed Observation
+          TD613_OBSERVER_STATUS_DESCRIPTION: Deployed named-recipient handoff observation is running.
+          TD613_OBSERVER_RUN_URL: ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}
+          TD613_OBSERVER_STATUS_RECEIPT_PATH: artifacts/ash-destination-handoff-status/deployed-pending.json
+        run: node scripts/publish-ash-keep-observer-status.mjs
       - name: Install observer dependencies
         run: |
           npm ci
@@ -126,9 +171,33 @@ jobs:
       - name: Verify observer remained bounded
         run: |
           node -e "const r=require('./artifacts/ash-destination-handoff-deployed/observation.json'); if(r.status!=='DESTINATION_HANDOFF_BROWSER_OBSERVED'||r.promotion_authorized!==false||r.observations.serverless_function_used!==false||r.observations.external_deletion_proven!==false) process.exit(1)"
+      - name: Publish deployed handoff success status
+        if: success()
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          TD613_OBSERVED_COMMIT: ${{ github.sha }}
+          TD613_OBSERVER_STATUS_STATE: success
+          TD613_OBSERVER_STATUS_CONTEXT: Ash Destination Handoff Deployed Observation
+          TD613_OBSERVER_STATUS_DESCRIPTION: Deployed named-recipient handoff observation succeeded without authority expansion.
+          TD613_OBSERVER_RUN_URL: ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}
+          TD613_OBSERVER_STATUS_RECEIPT_PATH: artifacts/ash-destination-handoff-status/deployed-success.json
+        run: node scripts/publish-ash-keep-observer-status.mjs
+      - name: Publish deployed handoff failure status
+        if: failure()
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          TD613_OBSERVED_COMMIT: ${{ github.sha }}
+          TD613_OBSERVER_STATUS_STATE: failure
+          TD613_OBSERVER_STATUS_CONTEXT: Ash Destination Handoff Deployed Observation
+          TD613_OBSERVER_STATUS_DESCRIPTION: Deployed named-recipient handoff observation failed or exceeded its claim ceiling.
+          TD613_OBSERVER_RUN_URL: ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}
+          TD613_OBSERVER_STATUS_RECEIPT_PATH: artifacts/ash-destination-handoff-status/deployed-failure.json
+        run: node scripts/publish-ash-keep-observer-status.mjs
       - uses: actions/upload-artifact@v4
         if: always()
         with:
           name: ash-destination-handoff-deployed-evidence
-          path: artifacts/ash-destination-handoff-deployed
+          path: |
+            artifacts/ash-destination-handoff-deployed
+            artifacts/ash-destination-handoff-status
           if-no-files-found: error

@@ -11,7 +11,9 @@ const ALLOWED_CONTEXTS = new Set([
   'Ash Choir Calibration Validation',
   'Ash Hush Intervention Validation',
   'Aperture Composition Validation',
-  'Aperture Composition Constitution Validation'
+  'Aperture Composition Constitution Validation',
+  'Ash Destination Handoff Validation',
+  'Ash Destination Handoff Deployed Observation'
 ]);
 const DEFAULT_CONTEXT = 'Ash Keep Deployed Observation';
 const API_VERSION = '2022-11-28';
