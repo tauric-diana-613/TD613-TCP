@@ -8,6 +8,7 @@ const repoRoot = path.resolve(here, '..');
 const port = Number(process.argv[2] || process.env.PORT || 6130);
 
 await import('./prepare-ash-profile-closure-fixture.mjs');
+await import('./prepare-ash-premium-closure-fixture.mjs');
 
 const MIME_TYPES = Object.freeze({
   '.html': 'text/html; charset=utf-8',
