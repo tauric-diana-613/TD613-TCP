@@ -1,7 +1,17 @@
-export const ASH_PREMIUM_COMPATIBILITY_VERSION = 'td613.ash.premium.compatibility/v0.1-exact-rail';
+export const ASH_PREMIUM_COMPATIBILITY_VERSION = 'td613.ash.premium.compatibility/v0.2-intent-preservation';
 
-export function installAshPremiumCompatibility(doc = globalThis.document) {
-  if (!doc?.head || doc.getElementById('td613-ash-premium-compatibility')) return false;
+function preserveIntentionalWorkspace(doc, host) {
+  host.addEventListener('td613:ash:case-opened', () => {
+    const workspace = doc.documentElement.dataset.ashPremiumWorkspace;
+    if (!workspace || workspace === 'home') return;
+    queueMicrotask(() => {
+      if (typeof host.__td613AshPremiumUI?.open === 'function') host.__td613AshPremiumUI.open(workspace);
+    });
+  });
+}
+
+export function installAshPremiumCompatibility(doc = globalThis.document, host = globalThis.window) {
+  if (!doc?.head || !host || doc.getElementById('td613-ash-premium-compatibility')) return false;
   const style = doc.createElement('style');
   style.id = 'td613-ash-premium-compatibility';
   style.dataset.td613Version = ASH_PREMIUM_COMPATIBILITY_VERSION;
@@ -77,9 +87,10 @@ export function installAshPremiumCompatibility(doc = globalThis.document) {
     }
   `;
   doc.head.append(style);
-  doc.documentElement.dataset.ashPremiumUi = globalThis.window?.__td613AshPremiumUI?.version || 'td613.ash.premium-ui/v0.1-command-instrument';
+  preserveIntentionalWorkspace(doc, host);
+  doc.documentElement.dataset.ashPremiumUi = host.__td613AshPremiumUI?.version || 'td613.ash.premium-ui/v0.1-command-instrument';
   doc.documentElement.dataset.ashPremiumCompatibility = ASH_PREMIUM_COMPATIBILITY_VERSION;
   return true;
 }
 
-if (typeof document !== 'undefined') installAshPremiumCompatibility(document);
+if (typeof document !== 'undefined' && typeof window !== 'undefined') installAshPremiumCompatibility(document, window);
