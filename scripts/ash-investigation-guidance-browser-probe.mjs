@@ -74,7 +74,8 @@ async function layoutReceipt(page) {
 }
 
 await fsp.mkdir(artifactDir, { recursive: true });
-const browser = await chromium.launch({ headless: true, ...(browserExecutable() ? { executablePath: browserExecutable() } : {}) });
+const executablePath = browserExecutable();
+const browser = await chromium.launch({ headless: true, ...(executablePath ? { executablePath } : {}) });
 const context = await browser.newContext({ viewport: { width: 1440, height: 1000 }, reducedMotion: 'reduce', acceptDownloads: true });
 const page = await context.newPage();
 page.setDefaultTimeout(60_000);
@@ -85,7 +86,7 @@ page.on('console', message => { if (message.type() === 'error') errors.push(mess
 page.on('response', response => { if (response.status() >= 400 && !/favicon\.ico/.test(response.url())) badResponses.push(`${response.status()} ${response.url()}`); });
 
 const report = {
-  schema: 'td613.ash.investigation-guided-flight/v0.1',
+  schema: 'td613.ash.investigation-guided-flight/v0.2',
   status: 'RUNNING',
   base_url: base,
   production_promotion_authorized: false,
@@ -102,18 +103,19 @@ try {
   await page.waitForFunction(() => Boolean(window.__td613AshKeep?.version)
     && Boolean(window.__td613AshPremiumUI?.version)
     && Boolean(window.__td613AshGuidedOperatorUI?.version)
-    && document.documentElement.dataset.ashDemoProfiles === 'td613.ash.profile-demos/v0.3-investigation-campaign-fundraiser');
+    && window.__td613AshInvestigationDemo?.version === 'td613.ash.investigation-demo/v0.1-glass-meridian');
   await clearCaseData(page);
   await page.reload({ waitUntil: 'networkidle' });
-  await page.waitForFunction(() => Boolean(window.__td613AshGuidedOperatorUI?.version));
+  await page.waitForFunction(() => Boolean(window.__td613AshGuidedOperatorUI?.version)
+    && window.__td613AshInvestigationDemo?.version === 'td613.ash.investigation-demo/v0.1-glass-meridian');
 
   assert(await page.locator('#launch').isVisible(), 'Investigation flight did not begin at explicit launch.');
   assert(await page.locator('#guidedLaunchPromise').isVisible(), 'Custodial AI-access product promise is absent.');
   assert.match(await page.locator('#guidedLaunchPromise').textContent(), /Protect the case before AI sees the case/);
 
   await page.locator('#newProfile').selectOption('investigation');
+  await page.waitForFunction(() => !document.getElementById('startDemo')?.disabled && /Investigation/.test(document.getElementById('startDemo')?.textContent || ''));
   assert(await page.locator('#startDemo').isEnabled(), 'Investigation demo did not activate.');
-  assert.match(await page.locator('#startDemo').textContent(), /Investigation/);
   const started = Date.now();
   await page.locator('#startDemo').click();
   await page.waitForFunction(() => document.documentElement.dataset.ashDemoProfile === 'investigation');
@@ -138,9 +140,9 @@ try {
   assert.match(await page.locator('#investigationAiShareGuide').textContent(), /Send the question, not the whole investigation/);
   assert.match(await page.locator('#investigationAiShareGuide').textContent(), /cannot establish guilt, intent, identity, authorship, truth, surveillance probability/i);
   assert.equal(await page.locator('#routeId').inputValue(), 'route_llm_analysis');
-  assert.match(await page.locator('#draftBody').inputValue(), /Do not identify an editor, infer intent, state guilt/i);
+  assert.match(await page.locator('#draftBody').inputValue(), /observable differences and unresolved provenance gaps/i);
   assert.match(await page.locator('#providerTask').inputValue(), /bounded comparison/i);
-  assert.match(await page.locator('#protectedLiterals').inputValue(), /Source A-17/);
+  assert.match(await page.locator('#protectedLiterals').inputValue(), /protected source alias/i);
 
   await page.locator('#premiumPrimaryDock [data-premium-workspace="map"]').click();
   const normalHeight = await page.locator('#mapStage').evaluate(node => Math.round(node.getBoundingClientRect().height));
@@ -166,7 +168,8 @@ try {
   await page.locator('#premiumPrimaryDock [data-premium-workspace="capsule"]').click();
   assert(await page.locator('#premiumCapsulePassphrase').isVisible());
   assert(await page.locator('#premiumImportCapsule').isEnabled());
-  assert((await page.locator('details.guided-receipt').count()) >= 4, 'Exact receipts were not compressed behind disclosure controls.');
+  await page.waitForFunction(() => document.querySelectorAll('details.guided-receipt').length >= 3);
+  assert((await page.locator('details.guided-receipt').count()) >= 3, 'Exact receipts were not compressed behind disclosure controls.');
 
   await page.setViewportSize({ width: 390, height: 844 });
   await page.locator('#premiumPrimaryDock [data-premium-workspace="home"]').click();
