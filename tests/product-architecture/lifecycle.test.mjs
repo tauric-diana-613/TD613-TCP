@@ -2,7 +2,7 @@ import assert from 'node:assert/strict';
 import fs from 'node:fs';
 
 const read = path => fs.readFileSync(new URL(`../../${path}`, import.meta.url), 'utf8');
-const lifecycleUi = read('app/dome-world/ash-lifecycle.js');
+const lifecycleUi = read('app/dome-world/ash-lifecycle-core.js');
 const lifecycleEngine = read('app/engine/ash-lifecycle.js');
 const caseControls = read('app/dome-world/ash-case-controls.js');
 const mapLabels = read('app/dome-world/ash-map-labels.js');
