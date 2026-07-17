@@ -73,7 +73,7 @@ assert.match(guidance, /Early warning ≠ guilt/);
 assert.match(guidance, /View exact Rebuild receipt/);
 assert.match(guidance, /guidedMapZoomIn/);
 assert.match(guidance, /guidedMapFocus/);
-assert.match(guidance, /configured LLM/);
+assert.match(guidance, /Provider boundary/);
 assert.match(css, /guided-dome-drift/);
 assert.match(css, /Iowan Old Style/);
 assert.match(css, /map-stage[^\{]*\{[^}]*min-height:68vh/);
