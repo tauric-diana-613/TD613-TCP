@@ -33,7 +33,7 @@ concurrency:
 
 jobs:
   work-package:
-    name: Revision 0.2 · Available work packages
+    name: Revision 0.2 · S12-A through S12-F
     runs-on: ubuntu-latest
     timeout-minutes: 20
     steps:
@@ -61,3 +61,46 @@ jobs:
           done
       - name: Preserve Eleven-Stretch and function covenant
         run: node tests/product-architecture/ledger.test.mjs
+
+  browser-observation:
+    name: Revision 0.2 · Qualification Court observation
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 24
+          cache: npm
+      - run: npm ci
+      - name: Install Chromium observation runtime
+        run: |
+          npm install --no-save --package-lock=false playwright@1.54.1
+          npx playwright install --with-deps chromium
+      - name: Start bounded candidate runtime
+        run: |
+          node scripts/ash-keep-local-closure-server.mjs 6130 > /tmp/ash-r02-runtime.log 2>&1 &
+          echo $! > /tmp/ash-r02-runtime.pid
+          for attempt in $(seq 1 30); do
+            if curl -fsS http://127.0.0.1:6130/dome-world/ash-stretch12-r02-qualification.html >/dev/null; then exit 0; fi
+            sleep 1
+          done
+          cat /tmp/ash-r02-runtime.log || true
+          exit 1
+      - name: Observe managed hold, route mismatch, and zero external requests
+        env:
+          TD613_BASE_URL: http://127.0.0.1:6130
+          TD613_ARTIFACT_DIR: artifacts/ash-stretch12-r02
+        run: node scripts/ash-stretch12-r02-browser-probe.mjs
+      - name: Stop bounded candidate runtime
+        if: always()
+        run: kill "$(cat /tmp/ash-r02-runtime.pid)" 2>/dev/null || true
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: ash-stretch12-r02-qualification-evidence
+          path: |
+            artifacts/ash-stretch12-r02
+            /tmp/ash-r02-runtime.log
+          if-no-files-found: error
+          retention-days: 30
