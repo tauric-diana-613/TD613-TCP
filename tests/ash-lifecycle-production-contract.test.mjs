@@ -16,14 +16,12 @@ const stretch6 = read('docs/ASH_KEEP_STRETCH6_CLOSURE_RECEIPT.md');
 const stretch7 = read('docs/ASH_KEEP_STRETCH7_CLOSURE_RECEIPT.md');
 const stretch8 = read('docs/ASH_KEEP_STRETCH8_CLOSURE_RECEIPT.md');
 const stretch9 = read('docs/ASH_KEEP_STRETCH9_CLOSURE_RECEIPT.md');
+const stretch10 = read('docs/ASH_KEEP_STRETCH10_CLOSURE_RECEIPT.md');
 
 for (const marker of [
-  'Ash Lifecycle Deployed Observation',
-  'Wait for deployed Ash lifecycle-composed threshold and Keep',
-  'Observe deployed Ash lifecycle without promotion',
-  'Observe deployed constitutional convergence without promotion',
-  'CONTINUITY_SEALED',
-  'promotion remains separate'
+  'Ash Lifecycle Deployed Observation', 'Wait for deployed Ash lifecycle-composed threshold and Keep',
+  'Observe deployed Ash lifecycle without promotion', 'Observe deployed constitutional convergence without promotion',
+  'CONTINUITY_SEALED', 'promotion remains separate'
 ]) assert.ok(workflow.includes(marker), `Lifecycle workflow omitted ${marker}`);
 assert.doesNotMatch(workflow, /TD613 Ash · Threshold/);
 
@@ -42,31 +40,29 @@ assert.match(controls, /DELETE_PARTIAL_HOLD/);
 assert.doesNotMatch(controls, /location\.reload\(\)/);
 
 for (const token of [
-  'Status: `EARNED`',
-  'observed_commit: e8cbd00673e86d9fa0969407c28ef3ed89af55f7',
-  'observer_workflow_run_id: 29383294474',
-  'evidence_artifact_id: 8330532097',
-  'promotion_authorized: true',
-  'promotion_scope: ASH_LIFECYCLE_MATURITY_ONLY',
-  'CONTINUITY_SEALED',
-  'raw_artifact_in_request_body: false',
-  'provider_or_transport_requests: []',
-  'lifecycle maturity promotion ≠ transport authorization'
+  'Status: `EARNED`', 'observed_commit: e8cbd00673e86d9fa0969407c28ef3ed89af55f7',
+  'observer_workflow_run_id: 29383294474', 'evidence_artifact_id: 8330532097',
+  'promotion_authorized: true', 'promotion_scope: ASH_LIFECYCLE_MATURITY_ONLY',
+  'CONTINUITY_SEALED', 'raw_artifact_in_request_body: false',
+  'provider_or_transport_requests: []', 'lifecycle maturity promotion ≠ transport authorization'
 ]) assert.ok(receipt.includes(token), `Lifecycle receipt omitted ${token}`);
 
-assert.match(ledger, /component maturity after Stretch 9 closure = 320 \/ 375/);
+assert.match(ledger, /component maturity after Stretch 10 closure = 338 \/ 375/);
 assert.match(ledger, /Stretch 7 · Ordered Route-Sequence Recovery[\s\S]*STRATEGIC_DEPLOYMENT_SEALED/);
 assert.match(ledger, /Stretch 8 · Temporal And Delayed-Disclosure Assays[\s\S]*DEPLOYED_OBSERVATION_SEALED/);
-assert.match(ledger, /Stretch 9 · Safe Harbor → Ash Custody-Root Adapter[\s\S]*CLOSED \/ IMPLEMENTED_VALIDATION_GATED \/ EVIDENCE_BOUNDED/);
+assert.match(ledger, /Stretch 9 · Safe Harbor → Ash Custody-Root Adapter[\s\S]*STRATEGIC_VERCEL_SEALED/);
+assert.match(ledger, /Stretch 10 · Independent Provenance Adapters[\s\S]*CLOSED \/ IMPLEMENTED_VALIDATION_GATED \/ EVIDENCE_BOUNDED/);
 assert.match(roadmap, /Stretch 8 · Temporal and delayed-disclosure assays — CLOSED/);
 assert.match(roadmap, /Stretch 9 · Safe Harbor → Ash custody-root adapter — CLOSED/);
-assert.match(roadmap, /Independent provenance adapters — BLOCKED \/ NOT AUTHORIZED/);
+assert.match(roadmap, /Stretch 10 · Independent provenance adapters — CLOSED/);
 assert.match(stretch6, /new serverless function = false/);
 assert.match(stretch7, /new serverless function = false/);
 assert.match(stretch8, /new serverless function = false/);
 assert.match(stretch9, /State: `CLOSED \/ IMPLEMENTED_VALIDATION_GATED \/ EVIDENCE_BOUNDED`/);
 assert.match(stretch9, /new serverless function = false/);
-assert.match(stretch9, /Stretch 10 authorization = false/);
+assert.match(stretch10, /State: `CLOSED \/ IMPLEMENTED_VALIDATION_GATED \/ EVIDENCE_BOUNDED`/);
+assert.match(stretch10, /new serverless function = false/);
+assert.match(stretch10, /Stretch 11 authorization = false/);
 assert.match(closure, /lifecycle_run: 29514548484/);
 assert.match(closure, /deployment_authorizes_transport: false/);
 assert.match(closure, /Stretch_6_authorized: false/);
