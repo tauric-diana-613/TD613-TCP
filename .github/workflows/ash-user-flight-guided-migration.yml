@@ -1,0 +1,64 @@
+name: Ash User Flight Guided Migration
+
+on:
+  push:
+    branches: [maintenance/ash-investigation-arrival-seal]
+
+permissions:
+  contents: write
+
+jobs:
+  migrate:
+    if: github.actor != 'github-actions[bot]'
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: maintenance/ash-investigation-arrival-seal
+      - name: Route canonical lifecycle flight through guided workspaces
+        run: |
+          python - <<'PY'
+          from pathlib import Path
+          path = Path('scripts/ash-user-test-flight.mjs')
+          source = path.read_text()
+          anchor = """async function screenshot(page, name) {
+            await page.screenshot({ path: path.join(artifactDir, name), fullPage: true });
+          }"""
+          helper = """async function screenshot(page, name) {
+            await page.screenshot({ path: path.join(artifactDir, name), fullPage: true });
+          }
+
+          async function openGuidedWorkspace(page, workspace) {
+            await page.evaluate(name => {
+              const open = window.__td613AshPremiumUI?.open
+                || window.__td613OpenAshWorkspace
+                || window.__td613AshKeep?.openWorkspace;
+              if (typeof open !== 'function') throw new Error('Ash guided workspace API is unavailable.');
+              open(name);
+            }, workspace);
+            await page.waitForFunction(name => document.getElementById(`workspace-${name}`)?.classList.contains('active'), workspace);
+          }"""
+          if anchor not in source and helper not in source:
+              raise SystemExit('Screenshot helper anchor was not found.')
+          source = source.replace(anchor, helper, 1)
+          for name in ('rooms', 'map', 'routes', 'test', 'draft'):
+              old = f"  await page.locator('.work-tab[data-workspace=\"{name}\"]').click();"
+              new = f"  await openGuidedWorkspace(page, '{name}');"
+              if old not in source and new not in source:
+                  raise SystemExit(f'Legacy {name} transition was not found.')
+              source = source.replace(old, new, 1)
+          old_save = "  await page.locator('.work-tab[data-workspace=\"save\"]').click();"
+          new_save = "  await openGuidedWorkspace(page, 'save');"
+          if old_save not in source and new_save not in source:
+              raise SystemExit('Legacy Save transition was not found.')
+          source = source.replace(old_save, new_save, 1)
+          path.write_text(source)
+          PY
+          git rm .github/workflows/ash-user-flight-guided-migration.yml
+      - name: Commit guided lifecycle flight
+        run: |
+          git config user.name github-actions[bot]
+          git config user.email 41898282+github-actions[bot]@users.noreply.github.com
+          git add scripts/ash-user-test-flight.mjs
+          git commit -m "Fly Ash lifecycle through guided workspaces"
+          git push origin HEAD:maintenance/ash-investigation-arrival-seal
