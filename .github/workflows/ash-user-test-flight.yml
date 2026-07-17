@@ -8,6 +8,7 @@ on:
       - 'scripts/ash-user-test-flight.mjs'
       - 'scripts/run-ash-user-test-flight.mjs'
       - 'tests/ash-user-test-flight*'
+      - 'tests/ash-capsule-recovery-entry.test.mjs'
       - 'tests/ash-keep-ui.test.mjs'
       - '.github/workflows/ash-user-test-flight.yml'
   push:
@@ -18,6 +19,7 @@ on:
       - 'scripts/ash-user-test-flight.mjs'
       - 'scripts/run-ash-user-test-flight.mjs'
       - 'tests/ash-user-test-flight*'
+      - 'tests/ash-capsule-recovery-entry.test.mjs'
       - 'tests/ash-keep-ui.test.mjs'
       - '.github/workflows/ash-user-test-flight.yml'
   workflow_dispatch:
@@ -43,6 +45,8 @@ jobs:
           cache: npm
       - name: Install repository dependencies
         run: npm ci
+      - name: Verify Capsule recovery survives launch recomposition
+        run: node tests/ash-capsule-recovery-entry.test.mjs
       - name: Install browser runtime
         run: |
           npm install --no-save --package-lock=false playwright@1.54.1
@@ -95,14 +99,22 @@ jobs:
           cache: npm
       - name: Install repository dependencies
         run: npm ci
+      - name: Verify Capsule recovery survives launch recomposition
+        run: node tests/ash-capsule-recovery-entry.test.mjs
       - name: Install browser runtime
         run: |
           npm install --no-save --package-lock=false playwright@1.54.1
           npx playwright install --with-deps chromium
       - name: Wait for deployed Ash
+        env:
+          TD613_EVENT_NAME: ${{ github.event_name }}
         run: |
-          for attempt in $(seq 1 30); do
-            if curl -fsS https://td613.com/dome-world/ash-threshold.html | grep -q 'Ash Keep'; then exit 0; fi
+          for attempt in $(seq 1 60); do
+            if [ "$TD613_EVENT_NAME" = "push" ]; then
+              if curl -fsS https://td613.com/dome-world/ash-workspace-navigation.js | grep -q 'v1.1-capsule-recovery-entry'; then exit 0; fi
+            elif curl -fsS https://td613.com/dome-world/ash-threshold.html | grep -q 'Ash Keep'; then
+              exit 0
+            fi
             sleep 2
           done
           exit 1
