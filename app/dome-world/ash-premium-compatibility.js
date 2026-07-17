@@ -1,8 +1,19 @@
-export const ASH_PREMIUM_COMPATIBILITY_VERSION = 'td613.ash.premium.compatibility/v0.3-capsule-intent-preservation';
+export const ASH_PREMIUM_COMPATIBILITY_VERSION = 'td613.ash.premium.compatibility/v0.4-deliberate-workspace-intent';
 
 function preserveIntentionalWorkspace(doc, host) {
+  let intentionalWorkspace = doc.documentElement.dataset.ashPremiumWorkspace || null;
+
+  doc.addEventListener('click', event => {
+    const control = event.target?.closest?.('[data-premium-workspace],[data-route-workspace],[data-command-workspace],.work-tab[data-workspace]');
+    const workspace = control?.dataset?.premiumWorkspace
+      || control?.dataset?.routeWorkspace
+      || control?.dataset?.commandWorkspace
+      || control?.dataset?.workspace;
+    if (workspace) intentionalWorkspace = workspace;
+  }, true);
+
   const restore = () => {
-    const workspace = doc.documentElement.dataset.ashPremiumWorkspace;
+    const workspace = intentionalWorkspace || doc.documentElement.dataset.ashPremiumWorkspace;
     if (!workspace || workspace === 'home') return;
     queueMicrotask(() => {
       if (typeof host.__td613AshPremiumUI?.open === 'function') host.__td613AshPremiumUI.open(workspace);
