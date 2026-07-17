@@ -17,6 +17,17 @@ function browserExecutable() {
   return ['/usr/bin/google-chrome', '/usr/bin/chromium', '/usr/bin/chromium-browser'].find(candidate => fs.existsSync(candidate)) || null;
 }
 
+async function openWorkspace(page, name) {
+  await page.evaluate(workspace => {
+    const open = window.__td613AshPremiumUI?.open
+      || window.__td613OpenAshWorkspace
+      || window.__td613AshKeep?.openWorkspace;
+    if (typeof open !== 'function') throw new Error('Ash guided workspace API is unavailable.');
+    open(workspace);
+  }, name);
+  await page.waitForFunction(workspace => document.getElementById(`workspace-${workspace}`)?.classList.contains('active'), name);
+}
+
 async function readCurrent(page) {
   return page.evaluate(() => new Promise((resolve, reject) => {
     const caseId = localStorage.getItem('td613.ash-keep.current-case');
@@ -41,10 +52,14 @@ async function layoutReceipt(page) {
     viewport: { width: innerWidth, height: innerHeight },
     horizontal_overflow: Math.max(0, document.documentElement.scrollWidth - innerWidth),
     active_workspace: document.querySelector('.workspace.active')?.id || null,
-    visible_tabs: [...document.querySelectorAll('.work-tab')].filter(node => {
+    visible_legacy_tabs: [...document.querySelectorAll('.work-tab')].filter(node => {
       const rect = node.getBoundingClientRect();
-      return rect.width > 0 && rect.height > 0;
+      return getComputedStyle(node).display !== 'none' && rect.width > 0 && rect.height > 0;
     }).map(node => node.dataset.workspace),
+    visible_primary_destinations: [...document.querySelectorAll('[data-premium-workspace]')].filter(node => {
+      const rect = node.getBoundingClientRect();
+      return getComputedStyle(node).display !== 'none' && rect.width > 0 && rect.height > 0;
+    }).map(node => node.dataset.premiumWorkspace),
     demo_profile: document.documentElement.dataset.ashDemoProfile || null,
     demo_version: document.documentElement.dataset.ashDemoProfiles || null
   }));
@@ -54,7 +69,7 @@ await fsp.mkdir(artifactDir, { recursive: true });
 const executablePath = browserExecutable();
 const browser = await chromium.launch({ headless: true, ...(executablePath ? { executablePath } : {}) });
 const report = {
-  schema: 'td613.ash.profile-demo-flight/v0.1',
+  schema: 'td613.ash.profile-demo-flight/v0.2-guided-navigation',
   base_url: base,
   status: 'RUNNING',
   profiles: {},
@@ -74,6 +89,8 @@ async function fly(profile, expected) {
   await page.goto(keepUrl, { waitUntil: 'domcontentloaded' });
   await page.waitForFunction(() => Boolean(window.__td613AshKeep?.version)
     && Boolean(window.__td613AshProfileDemos?.version)
+    && Boolean(window.__td613AshPremiumUI?.version)
+    && Boolean(window.__td613AshGuidedOperatorUI?.version)
     && document.documentElement.dataset.ashDemoProfiles === 'td613.ash.profile-demos/v0.2-campaign-fundraiser');
   assert(await page.locator('#launch').isVisible(), `${profile}: launch was not visible in a blank browser.`);
 
@@ -105,19 +122,21 @@ async function fly(profile, expected) {
   assert((await page.locator('#testRefs').inputValue()).split(',').length >= 5, `${profile}: test reference bank is too thin.`);
   assert((await page.locator('#researchNotes').inputValue()).includes('Synthetic'), `${profile}: synthetic-use note is absent.`);
 
-  await page.locator('.work-tab[data-workspace="routes"]').click();
+  await openWorkspace(page, 'routes');
   assert(await page.locator('#routeList .route-card').count() === 3, `${profile}: hydrated routes are not visible.`);
   await page.screenshot({ path: path.join(artifactDir, `${profile}-desktop-routes.png`), fullPage: true });
 
-  await page.locator('.work-tab[data-workspace="draft"]').click();
+  await openWorkspace(page, 'draft');
   assert(await page.locator('#workspace-draft').evaluate(node => node.classList.contains('active')), `${profile}: Draft workspace did not open.`);
   await page.screenshot({ path: path.join(artifactDir, `${profile}-desktop-draft.png`), fullPage: true });
 
   await page.setViewportSize({ width: 390, height: 844 });
-  await page.locator('.work-tab[data-workspace="map"]').click();
+  await openWorkspace(page, 'map');
   await page.waitForTimeout(150);
   const mobile = await layoutReceipt(page);
   assert(mobile.horizontal_overflow === 0, `${profile}: mobile document overflowed horizontally.`);
+  assert(mobile.visible_legacy_tabs.length === 0, `${profile}: legacy workspace tabs reappeared.`);
+  assert(mobile.visible_primary_destinations.length === 5, `${profile}: premium destination dock is incomplete.`);
   await page.screenshot({ path: path.join(artifactDir, `${profile}-mobile-map.png`), fullPage: true });
 
   report.profiles[profile] = {
@@ -129,6 +148,7 @@ async function fly(profile, expected) {
     relationship_count: current.caseMap.relationships.length,
     route_count: current.routeMemory.entries.length,
     desktop_route_cards: 3,
+    guided_navigation: true,
     mobile
   };
   await context.close();
