@@ -1,0 +1,54 @@
+name: Ash Core Observer Guided Migration
+
+on:
+  push:
+    branches: [maintenance/ash-lifecycle-guided-observer]
+
+permissions:
+  contents: write
+
+jobs:
+  migrate:
+    if: github.actor != 'github-actions[bot]'
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: maintenance/ash-lifecycle-guided-observer
+      - name: Route core closure observer through guided workspaces
+        run: |
+          python - <<'PY'
+          from pathlib import Path
+          path = Path('scripts/ash-keep-production-probe.mjs')
+          source = path.read_text()
+          old_helper = '''async function openWorkspace(page, name) {
+            await page.locator(`[data-workspace="${name}"]`).click();
+            await page.locator(`#workspace-${name}`).waitFor({ state: 'visible' });
+          }'''
+          new_helper = '''async function openWorkspace(page, name) {
+            await page.evaluate(workspace => {
+              const open = window.__td613AshPremiumUI?.open
+                || window.__td613OpenAshWorkspace
+                || window.__td613AshKeep?.openWorkspace;
+              if (typeof open !== 'function') throw new Error('Ash guided workspace API is unavailable.');
+              open(workspace);
+            }, name);
+            await page.waitForFunction(workspace => document.getElementById(`workspace-${workspace}`)?.classList.contains('active'), name);
+          }'''
+          old_selected = '''      selected_workspace: tabs.find(tab => tab.getAttribute('aria-selected') === 'true')?.dataset.workspace || null,'''
+          new_selected = '''      selected_workspace: document.documentElement.dataset.ashPremiumWorkspace || document.querySelector('.workspace.active')?.id?.replace('workspace-', '') || null,'''
+          if old_helper not in source and new_helper not in source:
+              raise SystemExit('Core observer workspace helper seam not found.')
+          if old_selected not in source and new_selected not in source:
+              raise SystemExit('Core observer active-workspace receipt seam not found.')
+          source = source.replace(old_helper, new_helper, 1).replace(old_selected, new_selected, 1)
+          path.write_text(source)
+          PY
+          git rm .github/workflows/ash-core-observer-guided-migration.yml
+      - name: Commit guided core observer
+        run: |
+          git config user.name github-actions[bot]
+          git config user.email 41898282+github-actions[bot]@users.noreply.github.com
+          git add scripts/ash-keep-production-probe.mjs
+          git commit -m "Migrate core Ash observer to guided workspaces"
+          git push origin HEAD:maintenance/ash-lifecycle-guided-observer
