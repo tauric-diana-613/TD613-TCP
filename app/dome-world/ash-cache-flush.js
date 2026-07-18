@@ -28,7 +28,7 @@ function writeReceipt(receipt) {
   catch {}
 }
 
-function validThresholdReadiness(host = globalThis, storage = host.sessionStorage) {
+export function validThresholdReadiness(host = globalThis, storage = host.sessionStorage) {
   try {
     const url = new URL(host.location.href);
     if (url.searchParams.get('arrival') !== 'cleared') return false;
@@ -56,7 +56,7 @@ function validThresholdReadiness(host = globalThis, storage = host.sessionStorag
   }
 }
 
-function resetActiveSession(host = globalThis) {
+export function resetActiveSession(host = globalThis) {
   const clearedSessionKeys = [];
   const preservedSessionKeys = [];
   try {
