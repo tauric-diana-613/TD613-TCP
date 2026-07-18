@@ -1,0 +1,49 @@
+name: Recover Ash Final Cut
+
+on:
+  push:
+    branches:
+      - hotfix/ash-live-ingress-demos-cache
+    paths:
+      - scripts/recover-ash-final-cut.mjs
+      - .github/workflows/recover-ash-final-cut.yml
+
+permissions:
+  contents: write
+
+concurrency:
+  group: recover-ash-final-cut
+  cancel-in-progress: false
+
+jobs:
+  recover:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: hotfix/ash-live-ingress-demos-cache
+          fetch-depth: 0
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 24
+      - name: Apply final-cut recovery
+        run: node scripts/recover-ash-final-cut.mjs
+      - name: Verify focused contracts
+        run: |
+          node --check app/dome-world/ash-ingress-layout-hydration.js
+          node --check scripts/ash-live-release-browser-probe.mjs
+          node --check scripts/ash-keep-production-probe.mjs
+          node tests/ash-live-ingress-demos-cache.test.mjs
+          node tests/ash-keep-production-closure-contract.test.mjs
+          node tests/vercel-deploy-hygiene.test.mjs
+          node tests/product-architecture/shell.test.mjs
+      - name: Commit converged candidate
+        run: |
+          git config user.name "td613-final-cut"
+          git config user.email "actions@users.noreply.github.com"
+          git add app/dome-world/ash-ingress-layout-hydration.js tests/ash-live-ingress-demos-cache.test.mjs scripts/ash-live-release-browser-probe.mjs scripts/ash-keep-production-probe.mjs tests/ash-keep-production-closure-contract.test.mjs scripts/recover-ash-final-cut.mjs .github/workflows/recover-ash-final-cut.yml
+          git commit -m "Converge Ash final-cut release packet"
+          git push origin HEAD:hotfix/ash-live-ingress-demos-cache
+      - name: Remove accidental temporary ref
+        run: git push origin --delete tmp-ignore || true
