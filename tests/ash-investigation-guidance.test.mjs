@@ -48,17 +48,19 @@ for (const edge of fixture.relationships) { assert(nodeIds.has(edge.from)); asse
 for (const rule of fixture.rules) { for (const roomId of rule.allowed_room_ids) assert(roomIds.has(roomId)); for (const edgeId of rule.local_link_keys) assert(edgeIds.has(edgeId)); }
 for (const reference of [...fixture.defaults.test_refs,...fixture.defaults.route.refs,...fixture.defaults.draft.refs,...fixture.routes.entries.flatMap(entry => entry.disclosed_opaque_references)]) assert(nodeIds.has(reference), `Unknown method reference ${reference}`);
 
-for (const token of ['Protect → Map → Test → Share → Seal','Send the question, not the whole investigation','Early warning ≠ guilt','View exact Rebuild receipt','guidedMapZoomIn','guidedMapFocus','Provider boundary','compressCrossingTimeline','function collapseLegacyRails']) assert(guidance.includes(token), `Guidance omitted ${token}`);
+for (const token of ['Protect → Map → Test → Share → Seal','Send the question, not the whole investigation','Early warning ≠ guilt','View exact Rebuild receipt','guidedMapControlLegend','guidedMapZoomIn','guidedMapFocus','Provider boundary','compressCrossingTimeline','function collapseLegacyRails']) assert(guidance.includes(token), `Guidance omitted ${token}`);
 assert.match(guidance, /style\.setProperty\('display', 'none', 'important'\)/);
 assert.match(guidance, /setAttribute\('inert', ''\)/);
-assert.match(guidance, /ash-guided-operator-ui\.css\?v=20260717-investigation-v3/);
-assert.match(css, /guided-dome-drift/);
+assert.match(guidance, /ash-guided-operator-ui\.css\?v=20260718-stable-membrane-v4/);
+assert.doesNotMatch(css, /guided-dome-drift/);
+assert.match(css, /guided-map-control-legend/);
 assert.match(css, /Iowan Old Style/);
 assert.match(css, /guided-map-focus/);
 assert.match(css, /prefers-reduced-motion:reduce/);
 assert.match(probe, /legacyRailReceipt/);
 assert.match(probe, /Primary dock remained visible over focused tomography/);
 assert.match(probe, /Mobile hero title remained oversized/);
+assert.match(probe, /Map control legend escaped the bottom-left corner/);
 
 for (const forbidden of [/attribution_established\s*:\s*true/,/identity_established\s*:\s*true/,/prediction_authorized\s*:\s*true/,/automatic_action_authorized\s*:\s*true/,/surveillance_probability\s*:\s*[01]/]) assert.doesNotMatch(runtime + specs + guidance, forbidden);
 

@@ -1,4 +1,4 @@
-export const ASH_GUIDED_OPERATOR_UI_VERSION = 'td613.ash.guided-operator-ui/v0.1-investigation-flight';
+export const ASH_GUIDED_OPERATOR_UI_VERSION = 'td613.ash.guided-operator-ui/v0.2-stable-membrane';
 
 const installedHosts = new WeakSet();
 const RECEIPT_LABELS = Object.freeze({
@@ -19,16 +19,16 @@ function ensureStyles(doc) {
     link.rel = 'stylesheet';
     doc.head.append(link);
   }
-  link.href = '/dome-world/ash-guided-operator-ui.css?v=20260717-investigation-v3';
+  link.href = '/dome-world/ash-guided-operator-ui.css?v=20260718-stable-membrane-v4';
 }
 
 function collapseLegacyRails(doc) {
   for (const rail of doc.querySelectorAll('.workspace-rail,.ash-lifecycle-rail')) {
-    rail.setAttribute('aria-hidden', 'true');
-    rail.setAttribute('inert', '');
-    rail.style.setProperty('display', 'none', 'important');
-    rail.style.setProperty('min-height', '0', 'important');
-    rail.style.setProperty('max-height', '0', 'important');
+    if (rail.getAttribute('aria-hidden') !== 'true') rail.setAttribute('aria-hidden', 'true');
+    if (!rail.hasAttribute('inert')) rail.setAttribute('inert', '');
+    if (rail.style.getPropertyValue('display') !== 'none') rail.style.setProperty('display', 'none', 'important');
+    if (rail.style.getPropertyValue('min-height') !== '0px') rail.style.setProperty('min-height', '0', 'important');
+    if (rail.style.getPropertyValue('max-height') !== '0px') rail.style.setProperty('max-height', '0', 'important');
   }
 }
 
@@ -50,13 +50,31 @@ function ensureMapControls(doc) {
   const tools = doc.querySelector('#workspace-map .map-tools');
   const canvas = byId(doc, 'caseCanvas');
   const workspace = byId(doc, 'workspace-map');
-  if (!tools || !canvas || !workspace || byId(doc, 'guidedMapFocus')) return;
+  const stage = canvas?.closest('.map-stage');
+  if (!tools || !canvas || !workspace || !stage || byId(doc, 'guidedMapControlLegend')) return;
 
   const zoom = (deltaY, label) => {
     canvas.dispatchEvent(new WheelEvent('wheel', { deltaY, bubbles: true, cancelable: true }));
     const status = byId(doc, 'guidedMapStatus');
     if (status) status.textContent = label;
   };
+
+  const legend = doc.createElement('div');
+  legend.id = 'guidedMapControlLegend';
+  legend.className = 'guided-map-control-legend';
+  legend.setAttribute('role', 'group');
+  legend.setAttribute('aria-label', 'Map controls');
+
+  const title = doc.createElement('span');
+  title.className = 'guided-map-control-title';
+  title.textContent = 'Map';
+
+  const reset = byId(doc, 'resetView');
+  const table = byId(doc, 'toggleTable');
+  for (const control of [reset, table]) {
+    if (!control) continue;
+    control.classList.add('guided-map-control');
+  }
 
   const out = doc.createElement('button');
   out.className = 'icon-btn guided-map-control';
@@ -92,13 +110,17 @@ function ensureMapControls(doc) {
     if (status) status.textContent = active ? 'Map expanded. Pinch, drag, or use + and −.' : 'Map workspace restored.';
   });
 
-  tools.append(out, inside, focus);
   const status = doc.createElement('span');
   status.id = 'guidedMapStatus';
   status.className = 'guided-map-status';
   status.setAttribute('aria-live', 'polite');
   status.textContent = 'Pinch, drag, or use + and −.';
-  tools.append(status);
+
+  legend.append(title);
+  if (reset) legend.append(reset);
+  if (table) legend.append(table);
+  legend.append(out, inside, focus, status);
+  stage.append(legend);
 }
 
 function wrapReceipt(doc, receipt) {
@@ -206,7 +228,7 @@ function renderInvestigationGuidance(doc, snapshot) {
   }
 
   const primary = home.querySelector('.priority-sheet [data-route-workspace="work"]');
-  if (primary) primary.textContent = 'Open investigation flight';
+  if (primary && primary.textContent !== 'Open investigation flight') primary.textContent = 'Open investigation flight';
 }
 
 function removeInvestigationGuidance(doc) {
@@ -244,7 +266,17 @@ export function installAshGuidedOperatorUI(doc = globalThis.document, host = glo
     host.addEventListener(`td613:ash:${type}`, schedule);
   }
   if (typeof host.MutationObserver === 'function') {
-    new host.MutationObserver(schedule).observe(doc.body, { childList: true, subtree: true });
+    new host.MutationObserver(mutations => {
+      const relevant = mutations.some(mutation => {
+        const root = mutation.target?.nodeType === 1 ? mutation.target : mutation.target?.parentElement;
+        if (root?.closest?.('#premiumHomeBody,#premiumWorkBody,#workspace-map,#reviewChecks')) return true;
+        return [...mutation.addedNodes, ...mutation.removedNodes].some(node => node?.nodeType === 1 && (
+          node.matches?.('#premiumHomeBody,#premiumWorkBody,#workspace-map,.receipt,.crossing-timeline')
+          || node.querySelector?.('#premiumHomeBody,#premiumWorkBody,#workspace-map,.receipt,.crossing-timeline')
+        ));
+      });
+      if (relevant) schedule();
+    }).observe(doc.body, { childList: true, subtree: true });
   }
   installedHosts.add(host);
   schedule();
