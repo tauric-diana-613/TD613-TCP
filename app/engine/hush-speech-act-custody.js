@@ -1,4 +1,4 @@
-export const HUSH_SPEECH_ACT_CUSTODY_VERSION = 'hush-speech-act-custody/v1';
+export const HUSH_SPEECH_ACT_CUSTODY_VERSION = 'hush-speech-act-custody/v1.1';
 
 const safe = (value = '') => String(value ?? '').trim();
 const clamp = (value) => Math.max(0, Math.min(1, Number(Number(value || 0).toFixed(4))));
@@ -63,19 +63,20 @@ export function auditHushSpeechActCustody(sourceText = '', candidateText = '') {
   const candidateValue = safe(candidateText);
   const questionFormPreserved = !source.preserve_question_form || candidate.question_count >= source.required_question_floor;
   const directiveForcePreserved = !source.preserve_directive_force || candidate.directive_count > 0;
-  const answerDrift = source.preserve_question_form && !questionFormPreserved && (ANSWER_LEAD.test(candidateValue) || ANSWER_BODY.test(candidateValue) || META_RESPONSE.test(candidateValue));
+  const questionAnswerDrift = source.preserve_question_form && !questionFormPreserved && (ANSWER_LEAD.test(candidateValue) || ANSWER_BODY.test(candidateValue) || META_RESPONSE.test(candidateValue));
   const complianceDrift = source.preserve_directive_force && !directiveForcePreserved && (COMPLIANCE_LEAD.test(candidateValue) || COMPLETION_BODY.test(candidateValue) || META_RESPONSE.test(candidateValue));
   const responsePostureDrift = (source.preserve_question_form || source.preserve_directive_force) && META_RESPONSE.test(candidateValue);
+  const blockingResponseDrift = questionAnswerDrift || (source.preserve_directive_force && !directiveForcePreserved) || responsePostureDrift;
   const questionPreservationScore = source.question_count ? clamp(candidate.question_count / Math.max(1, source.question_count)) : 1;
   const directivePreservationScore = source.directive_count ? clamp(candidate.directive_count / Math.max(1, source.directive_count)) : 1;
   const warnings = uniq([
     ...(!questionFormPreserved ? ['speech-act-question-form-loss'] : []),
     ...(!directiveForcePreserved ? ['speech-act-directive-force-loss'] : []),
-    ...(answerDrift ? ['speech-act-question-answered'] : []),
+    ...(questionAnswerDrift ? ['speech-act-question-answered'] : []),
     ...(complianceDrift ? ['speech-act-instruction-obeyed'] : []),
     ...(responsePostureDrift ? ['speech-act-meta-response-drift'] : [])
   ]);
-  const passed = questionFormPreserved && directiveForcePreserved && !answerDrift && !complianceDrift && !responsePostureDrift;
+  const passed = questionFormPreserved && directiveForcePreserved && !questionAnswerDrift && !complianceDrift && !responsePostureDrift;
   return Object.freeze({
     version: HUSH_SPEECH_ACT_CUSTODY_VERSION,
     passed,
@@ -85,7 +86,8 @@ export function auditHushSpeechActCustody(sourceText = '', candidateText = '') {
     directive_force_preserved: directiveForcePreserved,
     question_preservation_score: questionPreservationScore,
     directive_preservation_score: directivePreservationScore,
-    answer_drift: answerDrift,
+    question_answer_drift: questionAnswerDrift,
+    answer_drift: blockingResponseDrift,
     compliance_drift: complianceDrift,
     response_posture_drift: responsePostureDrift,
     warnings: Object.freeze(warnings)
