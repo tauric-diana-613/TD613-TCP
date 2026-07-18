@@ -1,11 +1,12 @@
-export const ASH_RESEARCH_CONTROL_STATE_VERSION = 'td613.ash.research-control-state/v0.2-idempotent';
+export const ASH_RESEARCH_CONTROL_STATE_VERSION = 'td613.ash.research-control-state/v0.3-blank-case';
 
 const PROFILE = 'research';
 
 function elements(doc = document) {
   return {
     profile: doc.getElementById('newProfile'),
-    button: doc.getElementById('startDemo')
+    button: doc.getElementById('startDemo'),
+    newCase: doc.getElementById('newCase')
   };
 }
 
@@ -19,7 +20,7 @@ function setDatasetIfChanged(node, name, value) {
 }
 
 export function reconcileResearchDemoControl(doc = document) {
-  const { profile, button } = elements(doc);
+  const { profile, button, newCase } = elements(doc);
   if (!profile || !button || profile.value !== PROFILE) return false;
   const busy = button.getAttribute('aria-busy') === 'true' || /Hydrating Research method/i.test(button.textContent || '');
   if (button.disabled !== busy) button.disabled = busy;
@@ -29,6 +30,11 @@ export function reconcileResearchDemoControl(doc = document) {
     button.classList.add('demo-available');
     button.classList.remove('demo-unavailable');
     if (button.textContent !== 'Start Research qualification demo') button.textContent = 'Start Research qualification demo';
+  }
+  if (newCase) {
+    if (newCase.disabled) newCase.disabled = false;
+    setAttributeIfChanged(newCase, 'aria-disabled', false);
+    setDatasetIfChanged(newCase, 'ashResearchBlankCaseState', 'READY');
   }
   setDatasetIfChanged(button, 'ashResearchControlState', busy ? 'BUSY' : 'READY');
   return true;
