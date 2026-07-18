@@ -45,9 +45,16 @@ jobs:
           cache: npm
       - run: npm ci
       - name: Verify profile method contracts
-        run: node tests/ash-profile-demos.test.mjs
+        shell: bash
+        run: |
+          set -o pipefail
+          mkdir -p artifacts/ash-method-profile/contracts
+          node tests/ash-profile-demos.test.mjs 2>&1 | tee artifacts/ash-method-profile/contracts/profile-contracts.log
       - name: Verify Investigation method and guided boundaries
-        run: node tests/ash-investigation-guidance.test.mjs
+        shell: bash
+        run: |
+          set -o pipefail
+          node tests/ash-investigation-guidance.test.mjs 2>&1 | tee artifacts/ash-method-profile/contracts/investigation-contracts.log
       - name: Verify syntax
         run: |
           node --check app/dome-world/ash-apeq-paia-method-kernel.js
@@ -59,6 +66,13 @@ jobs:
           node --check scripts/ash-investigation-guidance-browser-probe.mjs
       - name: Preserve product architecture
         run: node tests/product-architecture/ledger.test.mjs
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: ash-apeq-paia-contract-evidence
+          path: artifacts/ash-method-profile/contracts
+          if-no-files-found: warn
+          retention-days: 30
 
   chromium-flight:
     runs-on: ubuntu-latest
