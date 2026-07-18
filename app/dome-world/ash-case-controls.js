@@ -1,6 +1,6 @@
 import './ash-map-labels.js';
 
-export const ASH_CASE_CONTROLS_VERSION = 'td613.ash-keep.case-controls/v1.3-case-list-coalescing';
+export const ASH_CASE_CONTROLS_VERSION = 'td613.ash-keep.case-controls/v1.4-selection-retention';
 
 const DB_NAME = 'td613-ash-keep';
 const POINTER_KEY = 'td613.ash-keep.current-case';
@@ -203,9 +203,10 @@ async function selectableCases(db) {
 async function populateCaseSelectOnce(preferredCaseId = '') {
   const select = $('selectCase');
   if (!select) return;
+  const retainedCaseId = preferredCaseId || select.value || '';
   select.dataset.caseListState = 'LOADING';
   select.disabled = true;
-  setChoiceAvailability(false);
+  if (!retainedCaseId) setChoiceAvailability(false);
   const db = await openDb();
   try {
     const options = await selectableCases(db);
@@ -214,7 +215,7 @@ async function populateCaseSelectOnce(preferredCaseId = '') {
     select.add(placeholder);
     for (const item of options) select.add(new Option(item.label, item.caseId));
     select.disabled = options.length === 0;
-    select.value = options.some(item => item.caseId === preferredCaseId) ? preferredCaseId : '';
+    select.value = options.some(item => item.caseId === retainedCaseId) ? retainedCaseId : '';
     setChoiceAvailability(Boolean(select.value));
   } finally {
     db.close();
