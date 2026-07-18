@@ -8,6 +8,8 @@ import './ash-keep-mobile-composition.js';
 import './ash-mobile-constitutional-closure.js';
 import './ash-premium-ui.js';
 import './ash-workspace-navigation.js';
+import './ash-custodian-return.js';
+import './ash-custodian-return-closure.js';
 */
 import './ash-keep-mobile-composition.js?v=20260718-emergency-stability-v5';
 import './ash-mobile-constitutional-closure.js?v=20260718-emergency-stability-v5';
