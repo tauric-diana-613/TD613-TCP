@@ -61,7 +61,8 @@ async function layoutReceipt(page) {
       return getComputedStyle(node).display !== 'none' && rect.width > 0 && rect.height > 0;
     }).map(node => node.dataset.premiumWorkspace),
     demo_profile: document.documentElement.dataset.ashDemoProfile || null,
-    demo_version: document.documentElement.dataset.ashDemoProfiles || null
+    demo_version: document.documentElement.dataset.ashDemoProfiles || null,
+    research_hydration: document.documentElement.dataset.ashResearchHydration || null
   }));
 }
 
@@ -69,7 +70,7 @@ await fsp.mkdir(artifactDir, { recursive: true });
 const executablePath = browserExecutable();
 const browser = await chromium.launch({ headless: true, ...(executablePath ? { executablePath } : {}) });
 const report = {
-  schema: 'td613.ash.profile-demo-flight/v0.2-guided-navigation',
+  schema: 'td613.ash.profile-demo-flight/v0.3-research-qualification',
   base_url: base,
   status: 'RUNNING',
   profiles: {},
@@ -89,6 +90,7 @@ async function fly(profile, expected) {
   await page.goto(keepUrl, { waitUntil: 'domcontentloaded' });
   await page.waitForFunction(() => Boolean(window.__td613AshKeep?.version)
     && Boolean(window.__td613AshProfileDemos?.version)
+    && Boolean(window.__td613AshResearchHydration?.version)
     && Boolean(window.__td613AshPremiumUI?.version)
     && Boolean(window.__td613AshGuidedOperatorUI?.version)
     && document.documentElement.dataset.ashDemoProfiles === 'td613.ash.profile-demos/v0.2-campaign-fundraiser');
@@ -99,12 +101,16 @@ async function fly(profile, expected) {
     assert(await page.locator('#startDemo').isDisabled(), 'Demo button was active with no selected profile.');
     assert(await page.locator('#newCase').isDisabled(), 'New Case was active with no selected profile.');
     await page.locator('#newProfile').selectOption('research');
-    assert(await page.locator('#startDemo').isDisabled(), 'Research incorrectly inherited another profile demo.');
-    assert(await page.locator('#startDemo').evaluate(node => node.classList.contains('demo-unavailable')), 'Unavailable demo did not use the dead visual posture.');
+    await page.waitForFunction(() => /Research qualification demo/.test(document.getElementById('startDemo')?.textContent || '') && !document.getElementById('startDemo')?.disabled);
     assert(await page.locator('#newCase').isEnabled(), 'Blank Research workspace should remain available.');
+    await page.locator('#newProfile').selectOption('');
+    await page.waitForFunction(() => document.getElementById('startDemo')?.disabled === true);
   }
 
   await page.locator('#newProfile').selectOption(profile);
+  if (profile === 'research') {
+    await page.waitForFunction(() => /Research qualification demo/.test(document.getElementById('startDemo')?.textContent || '') && !document.getElementById('startDemo')?.disabled);
+  }
   assert(await page.locator('#startDemo').isEnabled(), `${profile}: demo button did not activate.`);
   assert((await page.locator('#startDemo').textContent()).includes(expected.button), `${profile}: demo button label is ambiguous.`);
   await page.locator('#startDemo').click();
@@ -116,14 +122,22 @@ async function fly(profile, expected) {
   assert(current.caseMap?.rooms?.length === expected.rooms, `${profile}: Room count drifted.`);
   assert(current.caseMap?.nodes?.length === expected.nodes, `${profile}: object count drifted.`);
   assert(current.caseMap?.relationships?.length === expected.relationships, `${profile}: relation count drifted.`);
-  assert(current.routeMemory?.entries?.length === 3, `${profile}: Route Memory was not hydrated.`);
+  assert(current.routeMemory?.entries?.length === expected.routes, `${profile}: Route Memory was not hydrated.`);
   assert(await page.locator('#routeId').inputValue() === expected.route, `${profile}: route default did not hydrate.`);
   assert((await page.locator('#draftBody').inputValue()).length > 80, `${profile}: working draft did not hydrate.`);
   assert((await page.locator('#testRefs').inputValue()).split(',').length >= 5, `${profile}: test reference bank is too thin.`);
-  assert((await page.locator('#researchNotes').inputValue()).includes('Synthetic'), `${profile}: synthetic-use note is absent.`);
+  const notes = await page.locator('#researchNotes').inputValue();
+  assert(profile === 'research' ? /source bytes/i.test(notes) : /Synthetic/.test(notes), `${profile}: synthetic-use note is absent.`);
+
+  if (profile === 'research') {
+    const audit = page.locator('#researchHydrationAudit');
+    await audit.waitFor({ state:'visible' });
+    assert(await audit.getAttribute('data-hydration-class') === 'QUALIFICATION_HYDRATION', 'Research audit class drifted.');
+    assert(/PA2/.test(await audit.textContent()), 'Research audit omitted its PA2 ceiling.');
+  }
 
   await openWorkspace(page, 'routes');
-  assert(await page.locator('#routeList .route-card').count() === 3, `${profile}: hydrated routes are not visible.`);
+  assert(await page.locator('#routeList .route-card').count() === expected.routes, `${profile}: hydrated routes are not visible.`);
   await page.screenshot({ path: path.join(artifactDir, `${profile}-desktop-routes.png`), fullPage: true });
 
   await openWorkspace(page, 'draft');
@@ -147,7 +161,9 @@ async function fly(profile, expected) {
     node_count: current.caseMap.nodes.length,
     relationship_count: current.caseMap.relationships.length,
     route_count: current.routeMemory.entries.length,
-    desktop_route_cards: 3,
+    hydration_class: expected.hydration,
+    assurance_ceiling: profile === 'research' ? 'PA2' : 'BASELINE_ONLY',
+    desktop_route_cards: expected.routes,
     guided_navigation: true,
     mobile
   };
@@ -161,7 +177,9 @@ try {
     rooms: 9,
     nodes: 32,
     relationships: 34,
-    route: 'route_reporter_response'
+    routes: 3,
+    route: 'route_reporter_response',
+    hydration: 'BASELINE_HYDRATION'
   });
   await fly('fundraiser', {
     button: 'Fundraiser',
@@ -169,7 +187,19 @@ try {
     rooms: 10,
     nodes: 33,
     relationships: 35,
-    route: 'route_lead_host_brief'
+    routes: 3,
+    route: 'route_lead_host_brief',
+    hydration: 'BASELINE_HYDRATION'
+  });
+  await fly('research', {
+    button: 'Research qualification',
+    title: 'Civic AI Triage Study',
+    rooms: 11,
+    nodes: 47,
+    relationships: 49,
+    routes: 4,
+    route: 'route_blinded_peer_review',
+    hydration: 'QUALIFICATION_HYDRATION'
   });
   assert(report.console_errors.length === 0, `Profile flights emitted console errors: ${JSON.stringify(report.console_errors)}`);
   assert(report.http_errors.length === 0, `Profile flights emitted HTTP errors: ${JSON.stringify(report.http_errors)}`);
