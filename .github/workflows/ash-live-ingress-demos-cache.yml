@@ -51,7 +51,7 @@ jobs:
   contracts:
     name: Live release contracts
     runs-on: ubuntu-latest
-    timeout-minutes: 15
+    timeout-minutes: 20
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-node@v4
@@ -59,10 +59,24 @@ jobs:
           node-version: 24
           cache: npm
       - run: npm ci
-      - name: Verify live ingress, cache, profile, and Case List contracts
-        run: |
-          node tests/ash-live-ingress-demos-cache.test.mjs
-          node tests/ash-keep-ui.test.mjs
+      - name: Verify live ingress, cache, and profile contracts
+        run: node tests/ash-live-ingress-demos-cache.test.mjs
+      - name: Verify Case List and workspace UI contracts
+        run: node tests/ash-keep-ui.test.mjs
+      - name: Verify Ash Keep core suite
+        run: npm run test:ash-keep
+      - name: Verify lifecycle state contract
+        run: node tests/ash-lifecycle.test.mjs
+      - name: Verify draft lifecycle binding
+        run: node tests/ash-draft-lifecycle-binding.test.mjs
+      - name: Verify product shell lane
+        run: node tests/product-architecture/shell.test.mjs
+      - name: Verify product lifecycle lane
+        run: node tests/product-architecture/lifecycle.test.mjs
+      - name: Verify product ledger lane
+        run: node tests/product-architecture/ledger.test.mjs
+      - name: Verify Aperture composition closure lane
+        run: node tests/aperture-composition/closure.test.mjs
       - name: Verify syntax
         run: |
           node --check api/dome-world-shell.js
@@ -80,8 +94,6 @@ jobs:
           node --check app/dome-world/ash-apeq-paia-profile-demos.js
           node --check app/dome-world/ash-case-controls.js
           node --check scripts/ash-live-release-browser-probe.mjs
-      - name: Preserve function covenant
-        run: node tests/product-architecture/ledger.test.mjs
 
   browser-matrix:
     name: ${{ matrix.browser }} · live ingress and profile release
