@@ -26,7 +26,7 @@ import {
 
 assert.equal(CASE_PROFILES.political_campaign, 'Campaign Map');
 assert.equal(CASE_PROFILES.fundraiser, 'Fundraising Map');
-assert.equal(CASE_PROFILES.investigation, 'Investigation Map');
+assert.equal(CASE_PROFILES.investigation, 'Case Map');
 assert.equal(ASH_APEQ_PAIA_PROFILE_DEMOS_VERSION, 'td613.ash.apeq-paia-profile-demos/v0.1');
 assert.equal(ASH_INVESTIGATION_APEQ_PAIA_VERSION, 'td613.ash.investigation-demo/v0.2-apeq-paia');
 
@@ -43,6 +43,10 @@ assert.match(investigationWrapper, /ash-apeq-paia-profile-demos\.js/);
 assert.doesNotMatch(profileWrapper + investigationWrapper + runtime, /fixtures\/ash-keep-demo-political-campaign|fixtures\/ash-keep-demo-fundraiser|ash-investigation-nodes-/);
 assert.doesNotMatch(runtime, /fetch\(/, 'Method hydration must not depend on legacy fixture fetches.');
 assert.match(runtime, /Select a profile…/);
+assert.match(runtime, /demo-unavailable/);
+assert.match(runtime, /political_campaign/);
+assert.match(runtime, /fundraiser/);
+assert.match(runtime, /investigation/);
 assert.match(runtime, /stopImmediatePropagation/);
 assert.match(runtime, /Environment Profile/);
 assert.match(runtime, /Joining-key registry/);
