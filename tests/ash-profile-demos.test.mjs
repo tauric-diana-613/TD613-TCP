@@ -1,8 +1,6 @@
 import assert from 'node:assert/strict';
 import fs from 'node:fs';
-import path from 'node:path';
 import { webcrypto } from 'node:crypto';
-import { fileURLToPath } from 'node:url';
 
 if (!globalThis.crypto) globalThis.crypto = webcrypto;
 
@@ -15,107 +13,148 @@ import {
   verifyRoomRules,
   verifyRouteMemory
 } from '../app/engine/ash-keep-core.js';
-
-const root = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..');
-const fixtures = [
-  ['political_campaign', 'app/dome-world/fixtures/ash-keep-demo-political-campaign.json', 9, 32, 34],
-  ['fundraiser', 'app/dome-world/fixtures/ash-keep-demo-fundraiser.json', 10, 33, 35]
-];
+import {
+  ASH_APEQ_PAIA_PROFILE_DEMOS_VERSION,
+  ASH_INVESTIGATION_APEQ_PAIA_VERSION,
+  buildApeqPaiaProfileFixture
+} from '../app/dome-world/ash-apeq-paia-profile-demos.js';
+import {
+  APEQ_CONTROL_CLASSES,
+  PAIA_STRATA,
+  APEQ_PAIA_COUNTS
+} from '../app/dome-world/ash-apeq-paia-method-kernel.js';
 
 assert.equal(CASE_PROFILES.political_campaign, 'Campaign Map');
 assert.equal(CASE_PROFILES.fundraiser, 'Fundraising Map');
-assert.equal(fs.existsSync(path.join(root, 'app/dome-world/fixtures/ash-keep-demo.json')), false, 'Archaic universal demo fixture still exists.');
+assert.equal(CASE_PROFILES.investigation, 'Investigation Map');
+assert.equal(ASH_APEQ_PAIA_PROFILE_DEMOS_VERSION, 'td613.ash.apeq-paia-profile-demos/v0.1');
+assert.equal(ASH_INVESTIGATION_APEQ_PAIA_VERSION, 'td613.ash.investigation-demo/v0.2-apeq-paia');
 
-const bridge = fs.readFileSync(path.join(root, 'app/dome-world/ash-workspace-bridge.js'), 'utf8');
-const hydration = fs.readFileSync(path.join(root, 'app/dome-world/ash-profile-demo-hydration.js'), 'utf8');
+const bridge = fs.readFileSync('app/dome-world/ash-workspace-bridge.js', 'utf8');
+const profileWrapper = fs.readFileSync('app/dome-world/ash-profile-demo-hydration.js', 'utf8');
+const investigationWrapper = fs.readFileSync('app/dome-world/ash-investigation-demo-hydration.js', 'utf8');
+const runtime = fs.readFileSync('app/dome-world/ash-apeq-paia-profile-demos.js', 'utf8');
+const specs = fs.readFileSync('app/dome-world/ash-apeq-paia-profile-specs.js', 'utf8');
+
 assert.match(bridge, /ash-profile-demo-hydration\.js/);
-assert.match(hydration, /Select a profile…/);
-assert.match(hydration, /demo-unavailable/);
-assert.match(hydration, /political_campaign/);
-assert.match(hydration, /fundraiser/);
-assert.match(hydration, /stopImmediatePropagation/);
+assert.match(bridge, /ash-investigation-demo-hydration\.js/);
+assert.match(profileWrapper, /ash-apeq-paia-profile-demos\.js/);
+assert.match(investigationWrapper, /ash-apeq-paia-profile-demos\.js/);
+assert.doesNotMatch(profileWrapper + investigationWrapper + runtime, /fixtures\/ash-keep-demo-political-campaign|fixtures\/ash-keep-demo-fundraiser|ash-investigation-nodes-/);
+assert.doesNotMatch(runtime, /fetch\(/, 'Method hydration must not depend on legacy fixture fetches.');
+assert.match(runtime, /Select a profile…/);
+assert.match(runtime, /stopImmediatePropagation/);
+assert.match(runtime, /Environment Profile/);
+assert.match(runtime, /Joining-key registry/);
+assert.match(runtime, /Heterostratigraphic field/);
+assert.match(runtime, /PA2 ceiling/);
+assert.match(specs, /Harbor City Mayoral Campaign/);
+assert.match(specs, /Northstar Arts Benefit/);
+assert.match(specs, /Glass Meridian Vendor Integrity Inquiry/);
 
-for (const [profile, relative, roomMinimum, nodeMinimum, edgeMinimum] of fixtures) {
-  const fixture = JSON.parse(fs.readFileSync(path.join(root, relative), 'utf8'));
-  assert.equal(fixture.schema, 'td613.ash.keep-demo/v0.2');
-  assert.equal(fixture.profile, profile);
-  assert.equal(fixture.source_status, 'SIMULATED');
-  assert.ok(fixture.stress_targets.some(value => /Choir/.test(value)), `${profile} does not prepare future Choir stress.`);
-  assert.ok(fixture.case.rooms.length >= roomMinimum);
-  assert.ok(fixture.case.nodes.length >= nodeMinimum);
-  assert.ok(fixture.case.relationships.length >= edgeMinimum);
-  assert.ok(fixture.room_rules.length >= 5);
-  assert.ok(fixture.route_memory.entries.length >= 3);
-  assert.ok(fixture.disclosure_sequence.length >= 7);
-  assert.ok(fixture.defaults.test_refs.length >= 5);
-  assert.ok(fixture.defaults.draft.refs.length >= 3);
-  assert.ok(fixture.defaults.route.refs.length >= 3);
-  assert.equal(fixture.observations[0].kind, 'SYNTHETIC_PROFILE_DEMO');
-  assert.equal(Object.values(fixture.observations[0]).some(value => value === true), false, 'Synthetic disclaimer unexpectedly asserted a real-world fact.');
+const contracts = {
+  political_campaign: {
+    title: /Harbor City Mayoral Campaign/,
+    route: 'route_reporter_response',
+    protected: /priority call-time queue/,
+    ceiling: /NO_VOTER_INTENT_ATTRIBUTION_OR_ELECTION_PREDICTION/
+  },
+  fundraiser: {
+    title: /Northstar Arts Benefit/,
+    route: 'route_lead_host_brief',
+    protected: /major prospect queue/,
+    ceiling: /NO_DONOR_INTENT_PAYMENT_STATUS_OR_CONVERSION_PREDICTION/
+  },
+  investigation: {
+    title: /Glass Meridian Vendor Integrity Inquiry/,
+    route: 'route_llm_analysis',
+    protected: /protected source alias/,
+    ceiling: /NO_IDENTITY_INTENT_GUILT_AUTHORSHIP_SURVEILLANCE_OR_TRUTH_FINDING/
+  }
+};
 
-  const roomIds = new Set(fixture.case.rooms.map(room => room.id));
-  const nodeIds = new Set(fixture.case.nodes.map(node => node.id));
-  const edgeIds = new Set(fixture.case.relationships.map(edge => edge.id));
-  assert.equal(roomIds.size, fixture.case.rooms.length);
-  assert.equal(nodeIds.size, fixture.case.nodes.length);
-  assert.equal(edgeIds.size, fixture.case.relationships.length);
-  for (const node of fixture.case.nodes) assert.ok(roomIds.has(node.room_id), `${profile} node ${node.id} has an unknown Room.`);
-  for (const edge of fixture.case.relationships) {
-    assert.ok(nodeIds.has(edge.from), `${profile} relation ${edge.id} has an unknown source.`);
-    assert.ok(nodeIds.has(edge.to), `${profile} relation ${edge.id} has an unknown target.`);
+for (const [profile, contract] of Object.entries(contracts)) {
+  const fixture = buildApeqPaiaProfileFixture(profile);
+  assert.equal(fixture.schema, 'td613.ash.apeq-paia-profile-demo/v0.1');
+  assert.equal(fixture.profile.id, profile);
+  assert.match(fixture.profile.title, contract.title);
+  assert.deepEqual(fixture.counts, APEQ_PAIA_COUNTS);
+  assert.equal(fixture.assay.source_status, 'CONSTRUCTED');
+  assert.equal(fixture.assay.maximum_assurance, 'PA2_LOCALLY_EXECUTED');
+  assert.equal(fixture.assay.promotion_authorized, false);
+  assert.equal(fixture.assay.automatic_release, false);
+  assert.equal(fixture.assay.human_review_required, true);
+  assert.equal(fixture.assay.unknown_readers, 'UNMEASURED');
+  assert.equal(fixture.assay.universal_secrecy, false);
+  assert.match(fixture.assay.claim_ceiling, contract.ceiling);
+  assert.deepEqual(fixture.assay.controls.map(control => control.class), [...APEQ_CONTROL_CLASSES]);
+  assert.deepEqual(fixture.assay.strata, [...PAIA_STRATA]);
+  assert.equal(fixture.assay.joining_keys.length, 8);
+  assert(fixture.assay.joining_keys.every(key => key.local_only === true));
+  assert.equal(fixture.assay.held_outs.length, 8);
+  assert.equal(fixture.routes.entries.length, 6);
+  assert.equal(fixture.rules.length, 8);
+  assert.equal(fixture.defaults.route.id, contract.route);
+  assert.equal(fixture.defaults.draft.route, contract.route);
+  assert.match(fixture.defaults.protected_literals.join(' '), contract.protected);
+  assert.match(fixture.defaults.research_notes, /capped at PA2/);
+
+  const roomIds = new Set(fixture.rooms.map(room => room.id));
+  const nodeIds = new Set(fixture.nodes.map(node => node.id));
+  const edgeIds = new Set(fixture.relationships.map(edge => edge.id));
+  assert.equal(roomIds.size, 14);
+  assert.equal(nodeIds.size, 72);
+  assert.equal(edgeIds.size, 112);
+  for (const node of fixture.nodes) assert(roomIds.has(node.room_id), `${profile}: unknown Room for ${node.id}`);
+  for (const edge of fixture.relationships) {
+    assert(nodeIds.has(edge.from), `${profile}: unknown source for ${edge.id}`);
+    assert(nodeIds.has(edge.to), `${profile}: unknown target for ${edge.id}`);
   }
-  for (const rule of fixture.room_rules) {
-    for (const roomId of rule.allowed_room_ids) assert.ok(roomIds.has(roomId), `${profile} rule ${rule.route_id} has an unknown Room.`);
-    for (const edgeId of rule.local_link_keys) assert.ok(edgeIds.has(edgeId), `${profile} rule ${rule.route_id} has an unknown local link.`);
+  for (const rule of fixture.rules) {
+    for (const roomId of rule.allowed_room_ids) assert(roomIds.has(roomId), `${profile}: unknown Room in ${rule.route_id}`);
+    for (const edgeId of rule.local_link_keys) assert(edgeIds.has(edgeId), `${profile}: unknown local link in ${rule.route_id}`);
   }
-  for (const entry of fixture.route_memory.entries) {
-    assert.match(entry.draft_digest, /^sha256:[0-9a-f]{64}$/);
-    for (const reference of entry.disclosed_opaque_references) assert.ok(nodeIds.has(reference), `${profile} route ${entry.entry_id} has an unknown reference.`);
+  for (const route of fixture.routes.entries) {
+    assert.match(route.draft_digest, /^sha256:[0-9a-f]{64}$/);
+    for (const reference of route.disclosed_opaque_references) assert(nodeIds.has(reference), `${profile}: unknown route reference ${reference}`);
   }
-  for (const reference of [
-    ...fixture.defaults.test_refs,
-    ...fixture.defaults.route.refs,
-    ...fixture.defaults.draft.refs,
-    ...fixture.disclosure_sequence.flat()
-  ]) assert.ok(nodeIds.has(reference), `${profile} default references unknown object ${reference}.`);
 
   const caseMap = await compileCaseMap({
     profile,
-    caseId: `case_demo_${profile}`,
-    title: fixture.title,
-    rooms: fixture.case.rooms,
-    nodes: fixture.case.nodes,
-    relationships: fixture.case.relationships,
-    privateChronology: fixture.case.privateChronology,
-    intendedActions: fixture.case.intendedActions,
-    sourceStatus: fixture.source_status,
-    evidenceBasis: [`synthetic ${profile} fixture`],
-    observations: fixture.observations,
-    missingness: fixture.missingness,
-    alternatives: fixture.alternatives,
-    openQuestions: fixture.open_questions,
-    operatorNotes: [`demo_profile:${profile}`]
+    caseId: `case_demo_${profile}_apeq_paia`,
+    title: fixture.profile.title,
+    rooms: fixture.rooms,
+    nodes: fixture.nodes,
+    relationships: fixture.relationships,
+    privateChronology: fixture.profile.chronology,
+    intendedActions: fixture.profile.actions,
+    sourceStatus: 'SIMULATED',
+    evidenceBasis: [`synthetic ${profile} APEQ/PAIA fixture`],
+    observations: fixture.profile.observations,
+    missingness: fixture.profile.missingness,
+    alternatives: fixture.profile.alternatives,
+    openQuestions: fixture.profile.open_questions,
+    operatorNotes: [`demo_profile:${profile}`, 'assurance_ceiling:PA2_LOCALLY_EXECUTED']
   });
-  const roomRules = await compileRoomRules({ caseId: caseMap.case_id, rules: fixture.room_rules, sourceStatus: 'SIMULATED' });
+  const roomRules = await compileRoomRules({ caseId: caseMap.case_id, rules: fixture.rules, sourceStatus: 'SIMULATED' });
   const routeMemory = await compileRouteMemory({
     caseId: caseMap.case_id,
-    entries: fixture.route_memory.entries,
-    operatorDeclaredAssumptions: fixture.route_memory.operator_declared_assumptions,
-    unknown: fixture.route_memory.unknown,
+    entries: fixture.routes.entries,
+    operatorDeclaredAssumptions: fixture.routes.operator_declared_assumptions,
+    unknown: fixture.routes.unknown,
     sourceStatus: 'SIMULATED'
   });
   assert.equal(await verifyCaseMap(caseMap), true);
   assert.equal(await verifyRoomRules(roomRules), true);
   assert.equal(await verifyRouteMemory(routeMemory), true);
-  assert.equal(caseMap.profile, profile);
-  assert.equal(routeMemory.entries.length, fixture.route_memory.entries.length);
+  assert.equal(routeMemory.entries.length, 6);
 
   const crossRoomEdges = caseMap.relationships.filter(edge => {
     const left = caseMap.nodes.find(node => node.id === edge.from)?.room_id;
     const right = caseMap.nodes.find(node => node.id === edge.to)?.room_id;
     return left && right && left !== right;
   });
-  assert.ok(crossRoomEdges.length >= 10, `${profile} does not exert enough cross-Room pressure.`);
+  assert(crossRoomEdges.length >= 40, `${profile}: insufficient cross-Room pressure.`);
 }
 
 console.log('ash-profile-demos.test.mjs passed');
