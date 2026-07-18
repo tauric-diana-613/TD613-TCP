@@ -71,16 +71,18 @@ const deletionReplacement = `  await page.locator('#selectCase').selectOption(se
 const authorityTarget = `  await page.waitForFunction(async () => (await window.TD613AshConvergence.currentAuthorityContext())?.lifecycle_rank === 'REBUILD_ELIGIBLE');
   authority = await page.evaluate(() => window.TD613AshConvergence.currentAuthorityContext());
   const hushPermission = await page.evaluate(() => window.TD613AshConvergence.authorize('HUSH_CANDIDATE'));`;
-const authorityReplacement = `  await page.waitForFunction(async () => {
-    try {
-      const decision = await window.TD613AshConvergence.authorize('HUSH_CANDIDATE');
-      return decision?.authorized === true;
-    } catch {
-      return false;
+const authorityReplacement = `  const hushPermission = await page.evaluate(async () => {
+    const deadline = Date.now() + 60000;
+    while (Date.now() < deadline) {
+      try {
+        const decision = await window.TD613AshConvergence.authorize('HUSH_CANDIDATE');
+        if (decision?.authorized === true) return decision;
+      } catch {}
+      await new Promise(resolve => setTimeout(resolve, 50));
     }
-  }, null, { timeout: 60000 });
-  authority = await page.evaluate(() => window.TD613AshConvergence.currentAuthorityContext());
-  const hushPermission = await page.evaluate(() => window.TD613AshConvergence.authorize('HUSH_CANDIDATE'));`;
+    throw new Error('HUSH_CANDIDATE authorization did not become available within 60000ms.');
+  });
+  authority = await page.evaluate(() => window.TD613AshConvergence.currentAuthorityContext());`;
 
 await fs.mkdir(artifactDir, { recursive: true });
 const source = await fs.readFile(sourceUrl, 'utf8');
@@ -113,8 +115,8 @@ if (!runtime.includes("open('test')") || !runtime.includes("open('map')") || run
 if (!runtime.includes("select.dispatchEvent(new Event('change', { bubbles: true }))") || !runtime.includes('remove.click()')) {
   throw new Error('Convergence observer repaint-atomic delete gesture was not materialized.');
 }
-if (!runtime.includes("authorize('HUSH_CANDIDATE')") || !runtime.includes('decision?.authorized === true')) {
-  throw new Error('Convergence observer authority-readiness gate was not materialized.');
+if (!runtime.includes("authorize('HUSH_CANDIDATE')") || !runtime.includes('if (decision?.authorized === true) return decision')) {
+  throw new Error('Convergence observer single-decision authority gate was not materialized.');
 }
 await fs.writeFile(runtimePath, runtime, 'utf8');
 await import(`${pathToFileURL(runtimePath).href}?aftercare=${Date.now()}`);
