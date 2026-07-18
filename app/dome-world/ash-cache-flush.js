@@ -5,6 +5,7 @@ const MARKER_KEY = 'td613.ash.cache-flush.epoch';
 const RECEIPT_KEY = 'td613.ash.cache-flush.receipt';
 const QUERY_KEY = 'ash_flush';
 const EVICTION_ROUTE = '/api/dome-world-shell?surface=cache-evict';
+const LOCAL_HOSTS = new Set(['localhost', '127.0.0.1', '[::1]']);
 
 function readMarker() {
   try { return localStorage.getItem(MARKER_KEY); }
@@ -22,6 +23,15 @@ function writeReceipt(receipt) {
 }
 
 async function requestHttpCacheEviction(host) {
+  const hostname = String(host.location?.hostname || '').toLowerCase();
+  if (LOCAL_HOSTS.has(hostname)) {
+    return Object.freeze({
+      attempted:false,
+      observed:false,
+      reason:'LOCAL_BOUNDED_RUNTIME_HAS_NO_VERCEL_HEADER_SURFACE',
+      claim_ceiling:'LOCAL_RUNTIME_SKIPPED_HEADER_ONLY_EVICTION__CACHE_STORAGE_AND_SERVICE_WORKER_CONTROLS_REMAIN_ACTIVE'
+    });
+  }
   if (typeof host.fetch !== 'function') return Object.freeze({ attempted:false, observed:false, reason:'FETCH_UNAVAILABLE' });
   try {
     const url = new URL(EVICTION_ROUTE, host.location.href);
