@@ -67,7 +67,7 @@ function observe(page, surface, report){
 }
 
 await fsp.mkdir(out,{recursive:true});
-const report={schema:'td613.ash.live-release-browser-flight/v0.2-canonical-membrane',browser:engineName,status:'RUNNING',cache_epoch:ASH_CACHE_FLUSH_EPOCH,ingress:null,session_logout:null,profiles:{},legacy_fixture_requests:[],external_requests:[],console_errors:[],http_errors:[],seams:[]};
+const report={schema:'td613.ash.live-release-browser-flight/v0.3-canonical-no-reload',browser:engineName,status:'RUNNING',cache_epoch:ASH_CACHE_FLUSH_EPOCH,ingress:null,session_logout:null,profiles:{},legacy_fixture_requests:[],external_requests:[],console_errors:[],http_errors:[],seams:[]};
 let browser=null,terminalError=null;
 try{
   if(!engine)throw new Error(`Unsupported browser engine: ${engineName}`);
@@ -85,12 +85,18 @@ try{
     const membraneStates=[];
     await page.addInitScript(()=>{
       window.__ashMembraneStates=[];
-      const record=()=>window.__ashMembraneStates.push({
-        ready:document.documentElement.dataset.ashMembraneReady||null,
-        session:document.documentElement.dataset.ashSessionOpen||null,
-        launch:document.getElementById('launch')?.className||null
-      });
-      new MutationObserver(record).observe(document.documentElement,{attributes:true,subtree:true,childList:true});
+      const start=()=>{
+        const root=document.documentElement;
+        if(!root){document.addEventListener('readystatechange',start,{once:true});return;}
+        const record=()=>window.__ashMembraneStates.push({
+          ready:root.dataset.ashMembraneReady||null,
+          session:root.dataset.ashSessionOpen||null,
+          launch:document.getElementById('launch')?.className||null
+        });
+        record();
+        new MutationObserver(record).observe(root,{attributes:true,subtree:true,childList:true});
+      };
+      start();
     });
     await page.goto(cleanUrl(),{waitUntil:'domcontentloaded'});
     await waitForRuntime(page);
@@ -104,13 +110,15 @@ try{
       url:location.href,
       launch_visible:getComputedStyle(document.getElementById('launch')).display!=='none',
       final_ready:document.documentElement.dataset.ashMembraneReady,
-      composition:document.documentElement.dataset.ashMembraneComposition
+      composition:document.documentElement.dataset.ashMembraneComposition,
+      cache_navigation_replaced:window.__td613AshCacheTransition?.navigation_replaced
     }));
     assert(storage.pointer===null,'Stale demo pointer survived cache/session migration.');
     assert(storage.session===null,'Stale Ash session epoch survived cache/session migration.');
     assert(storage.old_readiness===null,'Stale Ash sessionStorage survived cache/session migration.');
     assert(storage.launch_visible,'Canonical membrane is not visible after final composition.');
     assert(storage.final_ready==='true','Canonical membrane never reached final-ready posture.');
+    assert(storage.cache_navigation_replaced===false,'Cache migration replaced the active document.');
     assert(!/[?&](?:ash_flush|asset_epoch|cache_nonce|arrival)=/.test(storage.url),'Transition query markers survived canonical cleanup.');
     assert(measurement.horizontal_overflow===0,'Compressed ingress has horizontal overflow.');
     assert(measurement.panel_nested_scroll===false,'Ingress retained nested panel scrolling.');
@@ -119,10 +127,12 @@ try{
     await page.locator('#launch').evaluate(node=>node.scrollTo({top:node.scrollHeight,behavior:'auto'}));
     assert(await page.locator('#startDemo').isVisible(),'Demo action is unreachable after native membrane scroll.');
     assert(await page.locator('#newCase').isVisible(),'New case action is unreachable after native membrane scroll.');
-    const visibleHistoricalStates=membraneStates.filter(state=>state.ready==='true'&&state.launch&&state.launch!=='launch hidden');
-    assert(visibleHistoricalStates.length<=2,`Membrane exposed repeated visible historical states: ${JSON.stringify(visibleHistoricalStates)}`);
+    const visibleHistoricalStates=[...new Map(membraneStates
+      .filter(state=>state.ready==='true'&&state.launch&&state.launch!=='launch hidden')
+      .map(state=>[JSON.stringify(state),state])).values()];
+    assert(visibleHistoricalStates.length===1,`Membrane exposed multiple visible compositions: ${JSON.stringify(visibleHistoricalStates)}`);
     await page.screenshot({path:path.join(out,`${engineName}-canonical-ingress.png`),fullPage:true});
-    report.ingress={...measurement,storage,visible_historical_state_count:visibleHistoricalStates.length};
+    report.ingress={...measurement,storage,visible_membrane_compositions:visibleHistoricalStates};
     await context.close();
   }
 
