@@ -113,7 +113,7 @@ jobs:
             investigation="$(curl -fsS https://td613.com/dome-world/ash-investigation-demo-hydration.js || true)"
             guided="$(curl -fsS https://td613.com/dome-world/ash-guided-operator-ui.js || true)"
             if printf '%s' "$investigation" | grep -q 'v0.1-glass-meridian' \
-              && printf '%s' "$guided" | grep -q 'v0.1-investigation-flight'; then exit 0; fi
+              && printf '%s' "$guided" | grep -q 'v0.2-stable-membrane'; then exit 0; fi
             sleep 2
           done
           exit 1
