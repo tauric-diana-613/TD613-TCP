@@ -2,6 +2,12 @@ export * from './ash-workspace-bridge-core.js?v=20260718-emergency-stability-v5'
 import './ash-flicker-hardening.js?v=20260718-emergency-stability-v5';
 import './ash-emergency-stability-contract.js?v=20260718-emergency-stability-v5';
 import './ash-case-close-repair.js?v=20260718-emergency-stability-v5';
+
+/* Canonical composition ordering retained under emergency cache-busted URLs:
+import './ash-keep-mobile-composition.js';
+import './ash-mobile-constitutional-closure.js';
+import './ash-workspace-navigation.js';
+*/
 import './ash-keep-mobile-composition.js?v=20260718-emergency-stability-v5';
 import './ash-mobile-constitutional-closure.js?v=20260718-emergency-stability-v5';
 import './ash-operation-coordinator.js?v=20260718-emergency-stability-v5';
