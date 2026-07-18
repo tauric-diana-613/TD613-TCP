@@ -1,12 +1,13 @@
 import fs from 'node:fs';
 import path from 'node:path';
+import { stabilizeAshKeepSource } from '../app/dome-world/ash-keep-delivery-transform.js';
 
 export const DOME_WORLD_SHELL_VERSION = 'td613.dome-world.shell/v1.3-live-cache-transition';
 export const MARROWLINE_LAB_ROUTE = '/dome-world/marrowline.html';
 export const ASH_THRESHOLD_ROUTE = '/dome-world/ash-threshold.html';
 export const ASH_LIFECYCLE_SHELL_CONTRACT = 'td613.ash.lifecycle-shell/v0.1';
 export const ASH_KEEP_SHELL_VERSION = 'td613.ash-keep.shell/v0.2-canonical-composition';
-export const ASH_KEEP_JS_SHELL_VERSION = 'td613.ash-keep.js-shell/v0.4-native-bindings';
+export const ASH_KEEP_JS_SHELL_VERSION = 'td613.ash-keep.js-shell/v0.5-event-driven-map';
 export const ASH_CACHE_TRANSITION_CONTRACT = 'td613.ash.cache-transition/v0.2-live-ingress';
 export const ASH_LIFECYCLE_MODULE = '/dome-world/ash-lifecycle.js';
 export const ASH_WORKSPACE_BRIDGE_MODULE = '/dome-world/ash-workspace-bridge.js';
@@ -107,17 +108,18 @@ export function injectAshKeepLifecycle(source = '') {
 }
 
 export function bindAshDraftsToCaseMap(source = '') {
-  const code = String(source || '');
-  if (!code) throw new Error('ash-keep-js-source-empty');
+  let code = stabilizeAshKeepSource(source);
   for (const marker of [
     'caseMapDigest: state.caseMap.case_map_digest',
     'releaseReceiptReference: state.latestRelease?.receipt_id || null',
     'releaseReceiptDigest: state.latestRelease?.receipt_digest || null',
     'latestSavePoint.release_receipt_reference !== currentRelease.receipt_id',
     'A current Release Receipt is required before Capsule export.',
-    'window.__td613OpenAshWorkspace = setWorkspace'
+    'window.__td613OpenAshWorkspace = setWorkspace',
+    "mode: 'EVENT_DRIVEN_COALESCED'"
   ]) if (!code.includes(marker)) throw new Error(`ash-native-core-binding-missing:${marker}`);
   if (code.includes('location.reload()')) throw new Error('ash-native-core-contains-forced-reload');
+  if (code.includes('state.frame = scheduleFrame(frame);')) throw new Error('ash-native-core-perpetual-scheduler-survived');
   return code;
 }
 
