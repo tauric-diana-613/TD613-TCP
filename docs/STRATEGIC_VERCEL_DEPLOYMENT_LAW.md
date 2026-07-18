@@ -8,54 +8,37 @@ Vercel deployment remains authorized. It is a governed release witness, not the 
 branch work ≠ deployment requirement
 local CI ≠ public release
 green packet ≠ automatic deployment
-deployment ≠ maturity promotion
-deployment ≠ release or transport authority
+merge ≠ automatic deployment
 cost control ≠ evidentiary weakening
 ```
 
-## Ordinary route
+## Canonical route
 
-1. Develop on a non-production branch.
-2. Run contracts, local/synthetic browser probes, replay, retained artifacts, and anti-drift checks.
-3. Select an exact commit only after the packet is green.
-4. Require an explicit operator release gesture.
-5. Deploy for public-runtime observation, deployment-specific repair, rollback verification, or completed-packet release.
-6. Bind deployed evidence to the exact selected commit.
+1. Develop and test without Vercel deployment.
+2. Complete the packet and select the exact green `main` commit.
+3. Receive one explicit operator release gesture in chat.
+4. The assistant/Codex executes the bounded Vercel release route.
+5. One deployment is attempted and its result is reported and sealed.
+
+```text
+operator authorization → assistant/Codex execution → one Vercel deployment
+```
+
+The operator is not required to operate Vercel, GitHub Actions, or deployment plumbing. The operator authorizes. The assistant/Codex executes, observes, and reports.
 
 ## Cost ceiling
 
-The normal ceiling is one deliberate Vercel deployment per completed packet or release candidate. Additional deployments require a named deployment-specific defect, failed public-runtime observation, rollback verification, or explicit operator decision.
+The normal ceiling is one deliberate Vercel deployment per completed packet or release candidate. Additional deployments require a named deployment-specific defect, failed public-runtime observation, rollback verification, or a new explicit operator decision.
 
-Ordinary non-production branches should not trigger Vercel where branch filtering is supported. Main or an explicitly designated release branch may deploy after required checks pass.
-
-Every consequential deployment record must identify exact commit, PREVIEW or PRODUCTION environment, strategic purpose, deployment count, access boundary, evidence use, and operator release gesture.
+Ordinary branches, pull requests, and `main` pushes must not trigger Vercel.
 
 ```text
-Vercel may host and expose a selected release.
-Vercel may provide status and public-runtime evidence.
-Vercel may not choose release timing.
-Vercel may not convert a branch push into operator consent.
-Vercel may not authorize maturity, release, transport, Cinder, Ash action, or the next Stretch.
-operator release gesture ≠ automatic Git event
+one authorization = one deployment ceiling
+failed deployment ≠ automatic retry authorization
+bookkeeping commit ≠ deployment reason
 ```
 
-## Deployment authorization · 2026-07-16
-
-```text
-selected_commit: 5a9b58187ff6d8b97012775a2797f459b2a5a3fb
-target: PRODUCTION
-purpose: PUBLISH_COMPLETED_STRETCH_5_PACKET
-planned_count: 1
-operator_request_recorded: true
-```
-
-This authorization covers one deployment after branch checks pass and the receipt merges to `main`.
-
-Exceptions must be recorded in the relevant receipt.
-
-Marked ⟐
-
-## Executable enforcement · 2026-07-18
+## Executable lock
 
 `vercel.json` disables Git-triggered deployment for every branch:
 
@@ -67,18 +50,37 @@ Marked ⟐
 }
 ```
 
-A merge, push, green workflow, release-candidate label, or branch name cannot create a Vercel deployment. A deployment must be initiated manually only after the operator gives an explicit release instruction naming the exact commit and PREVIEW or PRODUCTION target.
+A merge, push, green workflow, release-candidate label, or branch name cannot create a Vercel deployment.
+
+## Assistant/Codex release conduit
+
+The permanent conduit is GitHub issue **#405, “TD613 Vercel Release Gate.”** After explicit operator authorization in chat, the assistant/Codex posts one exact release command to that issue:
+
+```text
+/td613-vercel-release PRODUCTION <40-character-current-main-sha>
+```
+
+The release workflow accepts only:
+
+- issue #405;
+- the repository-owner identity;
+- the exact current `main` SHA;
+- the named `PRODUCTION` target;
+- one deployment invocation.
+
+The issue comment is an execution mechanism used by the assistant/Codex. It is not a task transferred to the operator.
 
 ```text
 merge ≠ deploy
 main push ≠ operator gesture
 workflow success ≠ operator gesture
-manual Vercel action after explicit instruction = permitted release route
+operator authorization in chat = release authority
+assistant/Codex gate invocation = permitted execution route
 ```
 
-## Final-cut convergence guard · 2026-07-18
+## Final-cut convergence guard
 
-A public release candidate must be verified as the complete merge result, not merely as the head of an older feature branch. Later changes already accepted into `main` and the selected release packet must coexist in the exact merge candidate before deployment authorization can be earned.
+A public release candidate must be verified as the complete merge result, not merely as an older feature head.
 
 ```text
 feature-head green ≠ final cut complete
@@ -88,11 +90,11 @@ exact deployed commit = required
 partial surface success ≠ whole-product release success
 ```
 
-The release witness must prove the intended surfaces together: current TD613 Flight behavior, Ash ingress geometry, cache-epoch transition, local-custody preservation, profile hydration, and the governing deployment lock. A successful deployment of one surface cannot stand in for evidence that the remaining packet reached production.
+The release witness must prove the intended surfaces together: TD613 Flight behavior, Ash ingress geometry, cache-epoch transition, local-custody preservation, profile hydration, and the deployment lock.
 
 ## Cache-epoch storage boundary
 
-`td613.ash.cache-flush.epoch` is maintenance state used only to make the one-time cache eviction idempotent across navigation. It may persist beside the current-case pointer and display preferences, while remaining categorically outside Case Maps, receipts, Save Points, Capsules, source material, and user-authored content.
+`td613.ash.cache-flush.epoch` is maintenance state used only to make one-time cache eviction idempotent across navigation. It remains outside Case Maps, receipts, Save Points, Capsules, source material, and user-authored content.
 
 ```text
 cache epoch marker = permitted maintenance state
@@ -100,3 +102,5 @@ cache epoch marker ≠ case data
 cache eviction ≠ IndexedDB deletion
 cache eviction ≠ local-custody erasure
 ```
+
+Sealed ⟐
