@@ -1,5 +1,6 @@
 export * from './ash-workspace-bridge-core.js?v=20260718-emergency-stability-v5';
 import './ash-flicker-hardening.js?v=20260718-emergency-stability-v5';
+import './ash-emergency-stability-contract.js?v=20260718-emergency-stability-v5';
 import './ash-case-close-repair.js?v=20260718-emergency-stability-v5';
 import './ash-keep-mobile-composition.js?v=20260718-emergency-stability-v5';
 import './ash-mobile-constitutional-closure.js?v=20260718-emergency-stability-v5';
