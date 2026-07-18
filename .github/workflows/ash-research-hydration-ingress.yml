@@ -47,11 +47,12 @@ jobs:
         run: node tests/ash-research-demo-hydration.test.mjs
       - name: Verify ingress and cache transition
         run: node tests/ash-ingress-cache-eviction.test.mjs
-      - name: Preserve prior profile demos and UI
-        run: |
-          node tests/ash-profile-demos.test.mjs
-          node tests/ash-premium-ui.test.mjs
-          node tests/ash-keep-ui.test.mjs
+      - name: Preserve Campaign and Fundraiser demos
+        run: node tests/ash-profile-demos.test.mjs
+      - name: Preserve premium command UI
+        run: node tests/ash-premium-ui.test.mjs
+      - name: Preserve canonical Ash UI
+        run: node tests/ash-keep-ui.test.mjs
       - name: Verify syntax
         run: |
           node --check api/dome-world-shell.js
