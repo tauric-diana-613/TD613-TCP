@@ -87,7 +87,6 @@ async function hydrateProfile(page, profile, expectedTitle) {
       && document.getElementById('caseTitle')?.textContent?.includes(title)
       && document.getElementById('apeqPaiaMethodDocket'),
   { profile, title: expectedTitle }, { timeout: 60_000 });
-  assert.equal(document ? true : true, true);
   await page.evaluate(() => window.__td613AshPremiumUI.open('home'));
   await page.waitForFunction(title =>
     document.documentElement.dataset.ashPremiumWorkspace === 'home'
