@@ -95,7 +95,7 @@ for (const token of [
 ]) assert(closeRepair.includes(token), `Close logout omitted ${token}`);
 assert.doesNotMatch(closeRepair, /retainClosedSelection/);
 
-for (const token of ['HIDDEN_UNTIL_FINAL_COMPOSITION','REQUIRED_MEMBRANE_IDS','data.ashMembraneReady','canonical-membrane-ready']) {
+for (const token of ['HIDDEN_UNTIL_FINAL_COMPOSITION','REQUIRED_MEMBRANE_IDS','dataset.ashMembraneReady','canonical-membrane-ready']) {
   assert(emergency.includes(token), `Final composition gate omitted ${token}`);
 }
 assert.doesNotMatch(navigation, /new host\.MutationObserver/);
