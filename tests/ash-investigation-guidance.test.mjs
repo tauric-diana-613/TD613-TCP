@@ -20,6 +20,7 @@ const cacheFlush = read('app/dome-world/ash-cache-flush.js');
 const lifecycle = read('app/dome-world/ash-lifecycle.js');
 const ingress = read('app/dome-world/ash-ingress-layout-hydration.js');
 const navigation = read('app/dome-world/ash-workspace-navigation.js');
+const deliveryTransform = read('app/dome-world/ash-keep-delivery-transform.js');
 const probe = read('scripts/ash-investigation-guidance-browser-probe.mjs');
 
 assert.equal(ASH_INVESTIGATION_APEQ_PAIA_VERSION, 'td613.ash.investigation-demo/v0.2-apeq-paia');
@@ -82,6 +83,12 @@ assert.doesNotMatch(hardening, /host\.requestAnimationFrame\s*=/);
 assert.doesNotMatch(hardening, /Object\.defineProperty\(host, 'MutationObserver'/);
 assert.doesNotMatch(hardening, /contain:layout paint style/);
 
+assert.match(deliveryTransform, /v1\.0-event-driven-map/);
+assert.match(deliveryTransform, /EVENT_DRIVEN_COALESCED/);
+assert.match(deliveryTransform, /function requestMapDraw\(\)/);
+assert.match(deliveryTransform, /ash-keep-perpetual-recursion-survived/);
+assert.doesNotMatch(deliveryTransform, /globalThis\.requestAnimationFrame\s*=/);
+
 assert.match(emergency, /td613\.ash\.emergency-stability\/2026-07-18-v6-canonical-membrane/);
 assert.match(emergency, /STATIC_SURFACE_NATIVE_SCROLL/);
 assert.match(emergency, /HIDDEN_UNTIL_FINAL_COMPOSITION/);
@@ -115,7 +122,8 @@ assert.match(probe, /legacyRailReceipt/);
 assert.match(probe, /Primary dock remained visible over focused tomography/);
 assert.match(probe, /Mobile hero title remained oversized/);
 assert.match(probe, /Map control legend escaped the bottom-left corner/);
-assert.match(probe, /Ash map frame loop continued while idle/);
+assert.match(probe, /EVENT_DRIVEN_COALESCED/);
+assert.match(probe, /Ash map retained a pending frame while idle/);
 assert.match(probe, /Ash command membrane mutated while idle/);
 
 for (const forbidden of [/attribution_established\s*:\s*true/,/identity_established\s*:\s*true/,/prediction_authorized\s*:\s*true/,/automatic_action_authorized\s*:\s*true/,/surveillance_probability\s*:\s*[01]/]) assert.doesNotMatch(runtime + specs + guidance, forbidden);
