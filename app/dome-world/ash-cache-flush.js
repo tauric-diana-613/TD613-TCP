@@ -1,12 +1,14 @@
-// Emergency live release transition only: preserves Ash cases, receipts, Capsules, IndexedDB, and local case pointers.
-export const ASH_CACHE_FLUSH_EPOCH = 'td613.ash.cache-flush/2026-07-18-emergency-stability-v5';
+// Canonical membrane transition: preserves IndexedDB cases and receipts while evicting stale active-session state.
+export const ASH_CACHE_FLUSH_EPOCH = 'td613.ash.cache-flush/2026-07-18-canonical-membrane-v6';
 
 const MARKER_KEY = 'td613.ash.cache-flush.epoch';
 const RECEIPT_KEY = 'td613.ash.cache-flush.receipt';
-const QUERY_KEY = 'ash_flush';
-const ASSET_EPOCH = '20260718-emergency-stability-v5';
+const POINTER_KEY = 'td613.ash-keep.current-case';
+const SESSION_EPOCH_KEY = 'td613.ash.session.epoch';
+const ASSET_EPOCH = '20260718-canonical-membrane-v6';
 const EVICTION_ROUTE = '/api/dome-world-shell?surface=cache-evict';
 const LOCAL_HOSTS = new Set(['localhost', '127.0.0.1', '[::1]']);
+const TRANSITION_QUERY_KEYS = ['ash_flush', 'asset_epoch', 'cache_nonce', 'arrival'];
 
 function readMarker() {
   try { return localStorage.getItem(MARKER_KEY); }
@@ -21,6 +23,49 @@ function writeMarker() {
 function writeReceipt(receipt) {
   try { sessionStorage.setItem(RECEIPT_KEY, JSON.stringify(receipt)); }
   catch {}
+}
+
+function resetActiveSession(host = globalThis) {
+  const clearedSessionKeys = [];
+  try {
+    host.localStorage?.removeItem?.(POINTER_KEY);
+    host.localStorage?.removeItem?.(SESSION_EPOCH_KEY);
+  } catch {}
+  try {
+    const storage = host.sessionStorage;
+    if (storage) {
+      for (let index = storage.length - 1; index >= 0; index -= 1) {
+        const key = storage.key(index);
+        if (key && /^td613(?::|\.)ash/i.test(key)) {
+          storage.removeItem(key);
+          clearedSessionKeys.push(key);
+        }
+      }
+    }
+  } catch {}
+  try {
+    host.document?.documentElement?.classList?.remove?.('ash-has-current-case');
+    if (host.document?.documentElement) host.document.documentElement.dataset.ashSessionOpen = 'false';
+    if (host.document?.body) host.document.body.dataset.ashCaseClosed = 'true';
+  } catch {}
+  return clearedSessionKeys;
+}
+
+function cleanTransitionUrl(host = globalThis) {
+  try {
+    const url = new URL(host.location.href);
+    let changed = false;
+    for (const key of TRANSITION_QUERY_KEYS) {
+      if (url.searchParams.has(key)) {
+        url.searchParams.delete(key);
+        changed = true;
+      }
+    }
+    if (changed) host.history?.replaceState?.(null, '', `${url.pathname}${url.search}${url.hash}`);
+    return changed;
+  } catch {
+    return false;
+  }
 }
 
 async function requestHttpCacheEviction(host) {
@@ -74,20 +119,24 @@ async function unregisterSameOriginWorkers() {
 
 export async function runAshCacheFlush(host = globalThis) {
   if (!host?.location || readMarker() === ASH_CACHE_FLUSH_EPOCH) {
+    const transition_url_cleaned = cleanTransitionUrl(host);
     const receipt = Object.freeze({
-      schema:'td613.ash.cache-transition-receipt/v0.3-emergency-release',
+      schema:'td613.ash.cache-transition-receipt/v0.5-canonical-no-reload',
       epoch:ASH_CACHE_FLUSH_EPOCH,
       performed:false,
       reload_required:false,
+      navigation_replaced:false,
       indexeddb_preserved:true,
-      local_case_pointer_preserved:true,
-      storage_cleared:false
+      case_data_preserved:true,
+      active_session_reset:false,
+      transition_url_cleaned
     });
     writeReceipt(receipt);
     host.__td613AshCacheTransition = receipt;
     return receipt;
   }
 
+  const cleared_session_keys = resetActiveSession(host);
   const [http_cache, first_cache_names, worker_scopes] = await Promise.all([
     requestHttpCacheEviction(host),
     clearCacheStorage().catch(() => []),
@@ -95,31 +144,28 @@ export async function runAshCacheFlush(host = globalThis) {
   ]);
   const second_cache_names = await clearCacheStorage().catch(() => []);
   writeMarker();
+  const transition_url_cleaned = cleanTransitionUrl(host);
 
-  const url = new URL(host.location.href);
-  const alreadyReloaded = url.searchParams.get(QUERY_KEY) === ASH_CACHE_FLUSH_EPOCH;
   const receipt = Object.freeze({
-    schema:'td613.ash.cache-transition-receipt/v0.3-emergency-release',
+    schema:'td613.ash.cache-transition-receipt/v0.5-canonical-no-reload',
     epoch:ASH_CACHE_FLUSH_EPOCH,
     performed:true,
-    reload_required:!alreadyReloaded,
+    reload_required:false,
+    navigation_replaced:false,
     http_cache,
     cache_names:[...new Set([...first_cache_names, ...second_cache_names])],
     worker_scopes,
     indexeddb_preserved:true,
-    local_case_pointer_preserved:true,
+    case_data_preserved:true,
+    active_session_reset:true,
+    local_case_pointer_preserved:false,
+    cleared_session_keys,
     storage_cleared:false,
+    transition_url_cleaned,
     release_asset_epoch:ASSET_EPOCH
   });
   writeReceipt(receipt);
   host.__td613AshCacheTransition = receipt;
-
-  if (!alreadyReloaded) {
-    url.searchParams.set(QUERY_KEY, ASH_CACHE_FLUSH_EPOCH);
-    url.searchParams.set('asset_epoch', ASSET_EPOCH);
-    url.searchParams.set('cache_nonce', crypto.randomUUID());
-    host.location.replace(url.toString());
-  }
   return receipt;
 }
 

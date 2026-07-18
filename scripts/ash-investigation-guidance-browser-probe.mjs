@@ -28,7 +28,7 @@ const errors=[],badResponses=[];
 page.on('pageerror',error=>errors.push(error.message));
 page.on('console',message=>{if(message.type()==='error')errors.push(message.text());});
 page.on('response',response=>{if(response.status()>=400&&!/favicon\.ico/.test(response.url()))badResponses.push(`${response.status()} ${response.url()}`);});
-const report={schema:'td613.ash.investigation-guided-flight/v0.6-static-compositor',status:'RUNNING',base_url:base,production_promotion_authorized:false,prediction_authorized:false,automatic_action_authorized:false,observations:{},errors,http_errors:badResponses,hold:null};
+const report={schema:'td613.ash.investigation-guided-flight/v0.7-event-driven-map',status:'RUNNING',base_url:base,production_promotion_authorized:false,prediction_authorized:false,automatic_action_authorized:false,observations:{},errors,http_errors:badResponses,hold:null};
 
 try{
   await page.goto(keepUrl,{waitUntil:'networkidle'});
@@ -92,15 +92,15 @@ try{
     let attributeMutations=0;
     const observer=new MutationObserver(records=>{for(const record of records){if(record.type==='childList')childListMutations+=1;if(record.type==='attributes')attributeMutations+=1;}});
     observer.observe(root,{childList:true,subtree:true,attributes:true});
-    const before=window.__td613AshFlickerHardening.diagnostics();
+    const before=window.__td613AshKeep.mapScheduler();
     const legendStyle=getComputedStyle(document.getElementById('guidedMapControlLegend'));
     await new Promise(resolve=>setTimeout(resolve,1800));
-    const after=window.__td613AshFlickerHardening.diagnostics();
+    const after=window.__td613AshKeep.mapScheduler();
     observer.disconnect();
     return{before,after,childListMutations,attributeMutations,legendBackdrop:legendStyle.backdropFilter||legendStyle.webkitBackdropFilter||'none'};
   });
-  assert(idleStability.after.blockedAshMapFrames>=1,'Ash map frame guard never intercepted the perpetual scheduler.');
-  assert(idleStability.after.blockedAshMapFrames-idleStability.before.blockedAshMapFrames<=1,`Ash map frame loop continued while idle: ${JSON.stringify(idleStability)}`);
+  assert.equal(idleStability.after.mode,'EVENT_DRIVEN_COALESCED','Ash map scheduler mode drifted.');
+  assert.equal(idleStability.after.frame_pending,false,`Ash map retained a pending frame while idle: ${JSON.stringify(idleStability)}`);
   assert.equal(idleStability.childListMutations,0,`Ash command membrane mutated while idle: ${JSON.stringify(idleStability)}`);
   assert.equal(idleStability.attributeMutations,0,`Ash command membrane attributes churned while idle: ${JSON.stringify(idleStability)}`);
   assert(['none',''].includes(idleStability.legendBackdrop),`Map legend retained GPU blur: ${idleStability.legendBackdrop}`);

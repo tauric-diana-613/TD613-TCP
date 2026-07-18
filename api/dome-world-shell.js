@@ -1,22 +1,61 @@
 import fs from 'node:fs';
 import path from 'node:path';
+import { stabilizeAshKeepSource } from '../app/dome-world/ash-keep-delivery-transform.js';
 
 export const DOME_WORLD_SHELL_VERSION = 'td613.dome-world.shell/v1.3-live-cache-transition';
 export const MARROWLINE_LAB_ROUTE = '/dome-world/marrowline.html';
 export const ASH_THRESHOLD_ROUTE = '/dome-world/ash-threshold.html';
 export const ASH_LIFECYCLE_SHELL_CONTRACT = 'td613.ash.lifecycle-shell/v0.1';
 export const ASH_KEEP_SHELL_VERSION = 'td613.ash-keep.shell/v0.2-canonical-composition';
-export const ASH_KEEP_JS_SHELL_VERSION = 'td613.ash-keep.js-shell/v0.4-native-bindings';
+export const ASH_KEEP_JS_SHELL_VERSION = 'td613.ash-keep.js-shell/v0.5-event-driven-map';
 export const ASH_CACHE_TRANSITION_CONTRACT = 'td613.ash.cache-transition/v0.2-live-ingress';
 export const ASH_LIFECYCLE_MODULE = '/dome-world/ash-lifecycle.js';
 export const ASH_WORKSPACE_BRIDGE_MODULE = '/dome-world/ash-workspace-bridge.js';
+export const ASH_CANONICAL_MEMBRANE_EPOCH = '20260718-canonical-membrane-v6';
 
 const DOME_SOURCE_PATH = path.join(process.cwd(), 'app', 'dome-world', 'index.html');
 const ASH_KEEP_SOURCE_PATH = path.join(process.cwd(), 'app', 'dome-world', 'ash-keep.html');
 const ASH_KEEP_JS_SOURCE_PATH = path.join(process.cwd(), 'app', 'dome-world', 'ash-keep.js');
 const ASH_KEEP_ICON_MARKER = '<link rel="icon" href="data:,">';
+const ASH_CANONICAL_BOOT_MARKER = '<meta name="ash-canonical-membrane" content="v1.0">';
 const MARROWLINE_BUTTON = `<button class="lab-node lab-node-marrowline" type="button" data-tone="gold" data-glyph="∴" data-open-route="${MARROWLINE_LAB_ROUTE}" style="grid-column:span 8" onclick="window.location.assign('${MARROWLINE_LAB_ROUTE}')" aria-label="Open Marrowline Kʰonapolit terminal"><span class="lab-index">11</span><strong>Marrowline</strong><small>Kʰonapolit terminal / live ingress</small></button>`;
 const ASH_TAB = `<button class="tab" data-view="ash" data-sigil="下"><small>04</small><span>Ash</span></button>`;
+
+function canonicalAshBoot() {
+  return `${ASH_CANONICAL_BOOT_MARKER}
+  <style id="td613-ash-canonical-first-paint">
+    html[data-ash-membrane-ready="false"] #launch{visibility:hidden!important;opacity:0!important}
+    html[data-ash-membrane-ready="true"] #launch{visibility:visible!important;opacity:1!important}
+    html[data-ash-session-open="true"] #launch{display:none!important}
+    html[data-ash-session-open="false"] #launch:not(.hidden){display:flex!important}
+    html,body{overflow-x:hidden!important;overscroll-behavior-y:auto!important;scroll-behavior:auto!important}
+    body{overflow-y:auto!important;-webkit-overflow-scrolling:touch}
+    #launch.launch{align-items:flex-start!important;justify-content:center!important;overflow-y:auto!important;overflow-x:hidden!important;overscroll-behavior-y:auto!important;-webkit-overflow-scrolling:touch}
+    #launch .launch-panel{max-height:none!important;overflow:visible!important;margin:auto!important}
+    main,.workspace{overflow:visible!important}
+    .map-stage canvas{touch-action:pan-y pinch-zoom!important}
+  </style>
+  <script id="td613-ash-canonical-first-paint-script">
+  (()=>{try{
+    const pointerKey='td613.ash-keep.current-case';
+    const sessionKey='td613.ash.session.epoch';
+    const epoch='${ASH_CANONICAL_MEMBRANE_EPOCH}';
+    const pointer=localStorage.getItem(pointerKey);
+    const sessionOpen=Boolean(pointer&&localStorage.getItem(sessionKey)===epoch);
+    if(!sessionOpen){
+      localStorage.removeItem(pointerKey);
+      localStorage.removeItem(sessionKey);
+      document.documentElement.classList.remove('ash-has-current-case');
+    }
+    document.documentElement.dataset.ashSessionOpen=String(sessionOpen);
+    document.documentElement.dataset.ashMembraneReady='false';
+    document.documentElement.dataset.ashCanonicalMembrane=epoch;
+  }catch{
+    document.documentElement.dataset.ashSessionOpen='false';
+    document.documentElement.dataset.ashMembraneReady='false';
+  }})();
+  </script>`;
+}
 
 export function injectMarrowlineLabButton(source = '') {
   const html = String(source || '');
@@ -44,15 +83,19 @@ export function injectAshLifecycleEntry(source = '') {
 export function injectAshKeepLifecycle(source = '') {
   let html = String(source || '');
   if (!html) throw new Error('ash-keep-source-empty');
-  if (!html.includes(ASH_KEEP_ICON_MARKER)) {
-    const headClose = html.indexOf('</head>');
-    if (headClose < 0) throw new Error('ash-keep-head-marker-missing');
-    html = `${html.slice(0, headClose)}  ${ASH_KEEP_ICON_MARKER}\n${html.slice(headClose)}`;
-  }
+  const headClose = html.indexOf('</head>');
+  if (headClose < 0) throw new Error('ash-keep-head-marker-missing');
+
+  const additions = [];
+  if (!html.includes(ASH_KEEP_ICON_MARKER)) additions.push(ASH_KEEP_ICON_MARKER);
+  if (!html.includes(ASH_CANONICAL_BOOT_MARKER)) additions.push(canonicalAshBoot());
+  if (additions.length) html = `${html.slice(0, headClose)}  ${additions.join('\n  ')}\n${html.slice(headClose)}`;
+
   const ordered = ['/dome-world/ash-keep.js', '/dome-world/ash-convergence.js', ASH_LIFECYCLE_MODULE, ASH_WORKSPACE_BRIDGE_MODULE, '/dome-world/ash-case-controls.js'];
   if (!html.includes('name="ash-lifecycle" content="v0.1"')) throw new Error('ash-lifecycle-meta-missing');
   if (!html.includes('name="ash-constitutional-composition" content="v0.1"')) throw new Error('ash-composition-meta-missing');
   if (!html.includes(ASH_KEEP_ICON_MARKER)) throw new Error('ash-keep-explicit-icon-boundary-missing');
+  if (!html.includes(ASH_CANONICAL_BOOT_MARKER)) throw new Error('ash-canonical-membrane-first-paint-missing');
   let cursor = -1;
   for (const module of ordered) {
     const index = html.indexOf(module);
@@ -65,17 +108,18 @@ export function injectAshKeepLifecycle(source = '') {
 }
 
 export function bindAshDraftsToCaseMap(source = '') {
-  const code = String(source || '');
-  if (!code) throw new Error('ash-keep-js-source-empty');
+  let code = stabilizeAshKeepSource(source);
   for (const marker of [
     'caseMapDigest: state.caseMap.case_map_digest',
     'releaseReceiptReference: state.latestRelease?.receipt_id || null',
     'releaseReceiptDigest: state.latestRelease?.receipt_digest || null',
     'latestSavePoint.release_receipt_reference !== currentRelease.receipt_id',
     'A current Release Receipt is required before Capsule export.',
-    'window.__td613OpenAshWorkspace = setWorkspace'
+    'window.__td613OpenAshWorkspace = setWorkspace',
+    "mode: 'EVENT_DRIVEN_COALESCED'"
   ]) if (!code.includes(marker)) throw new Error(`ash-native-core-binding-missing:${marker}`);
   if (code.includes('location.reload()')) throw new Error('ash-native-core-contains-forced-reload');
+  if (code.includes('state.frame = scheduleFrame(frame);')) throw new Error('ash-native-core-perpetual-scheduler-survived');
   return code;
 }
 
@@ -108,17 +152,18 @@ function send(res, status, body = '', definition = surfaceDefinition('dome-world
   res.setHeader('X-Content-Type-Options', 'nosniff');
   res.setHeader(definition.header[0], definition.header[1]);
   res.setHeader('X-TD613-Ash-Lifecycle', ASH_LIFECYCLE_SHELL_CONTRACT);
+  res.setHeader('X-TD613-Ash-Canonical-Membrane', ASH_CANONICAL_MEMBRANE_EPOCH);
   res.end(body);
 }
 
 function sendCacheEviction(res, method) {
   const body = JSON.stringify({
     ok:true,
-    schema:'td613.ash.cache-transition-response/v0.2-live-release',
+    schema:'td613.ash.cache-transition-response/v0.3-canonical-membrane',
     scope:'HTTP_CACHE_ONLY',
     indexeddb_preserved:true,
-    local_storage_preserved:true,
-    session_storage_preserved:true,
+    case_data_preserved:true,
+    active_session_reset_by_client:true,
     physical_erasure_verified:false,
     contract:ASH_CACHE_TRANSITION_CONTRACT
   });
@@ -129,6 +174,7 @@ function sendCacheEviction(res, method) {
   res.setHeader('X-Content-Type-Options', 'nosniff');
   res.setHeader('X-TD613-Ash-Cache-Transition', ASH_CACHE_TRANSITION_CONTRACT);
   res.setHeader('X-TD613-Ash-Lifecycle', ASH_LIFECYCLE_SHELL_CONTRACT);
+  res.setHeader('X-TD613-Ash-Canonical-Membrane', ASH_CANONICAL_MEMBRANE_EPOCH);
   res.end(method === 'HEAD' ? '' : body);
 }
 

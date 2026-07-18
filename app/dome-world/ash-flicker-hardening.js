@@ -1,120 +1,19 @@
 export const ASH_FLICKER_HARDENING_VERSION = 'td613.ash.flicker-hardening/v0.3-emergency-static-surface';
+export const ASH_CANONICAL_COMPOSITOR_VERSION = 'td613.ash.flicker-hardening/v1.0-native-compositor';
 
 const host = globalThis.window;
 const doc = globalThis.document;
 
 const diagnostics = {
-  blockedAshMapFrames: 0,
-  filteredLifecycleMutations: 0,
   cancelledAnimations: 0,
+  global_animation_frame_wrapped: false,
+  global_mutation_observer_wrapped: false,
   installedAt: new Date().toISOString()
 };
 
-function isAshMapFrame(callback) {
-  if (typeof callback !== 'function') return false;
-  try {
-    const source = Function.prototype.toString.call(callback);
-    return source.includes('drawMap')
-      && source.includes('scheduleFrame')
-      && source.includes('mapVisible');
-  } catch {
-    return false;
-  }
-}
-
-function installStaticMapScheduler() {
-  if (!host?.requestAnimationFrame || host.__td613AshStaticMapSchedulerInstalled) return;
-  const nativeRequestAnimationFrame = host.requestAnimationFrame.bind(host);
-  const nativeCancelAnimationFrame = host.cancelAnimationFrame.bind(host);
-  let ashFrameExecuting = false;
-  let syntheticFrameId = -1;
-
-  host.requestAnimationFrame = callback => {
-    if (!isAshMapFrame(callback)) return nativeRequestAnimationFrame(callback);
-    if (ashFrameExecuting) {
-      diagnostics.blockedAshMapFrames += 1;
-      return syntheticFrameId--;
-    }
-    return nativeRequestAnimationFrame(time => {
-      ashFrameExecuting = true;
-      try {
-        callback(time);
-      } finally {
-        ashFrameExecuting = false;
-      }
-    });
-  };
-
-  host.cancelAnimationFrame = frameId => {
-    if (Number(frameId) < 0) return;
-    nativeCancelAnimationFrame(frameId);
-  };
-
-  Object.defineProperty(host, '__td613AshStaticMapSchedulerInstalled', {
-    value: true,
-    configurable: false,
-    enumerable: false,
-    writable: false
-  });
-}
-
-function installStableLifecycleObserver() {
-  const NativeMutationObserver = host?.MutationObserver;
-  if (!NativeMutationObserver || host.__td613AshStableLifecycleObserverInstalled) return;
-
-  const filterRecords = records => records.filter(record => {
-    const duplicateLifecycleWrite = record.type === 'attributes'
-      && record.attributeName === 'data-ash-lifecycle'
-      && record.oldValue === record.target?.getAttribute?.('data-ash-lifecycle');
-    if (duplicateLifecycleWrite) diagnostics.filteredLifecycleMutations += 1;
-    return !duplicateLifecycleWrite;
-  });
-
-  class StableMutationObserver {
-    constructor(callback) {
-      this.callback = callback;
-      this.observer = new NativeMutationObserver(records => {
-        const filtered = filterRecords(records);
-        if (filtered.length) callback(filtered, this);
-      });
-    }
-
-    observe(target, options = {}) {
-      const stableOptions = { ...options };
-      if (stableOptions.attributes
-        && Array.isArray(stableOptions.attributeFilter)
-        && stableOptions.attributeFilter.includes('data-ash-lifecycle')) {
-        stableOptions.attributeOldValue = true;
-      }
-      return this.observer.observe(target, stableOptions);
-    }
-
-    disconnect() {
-      return this.observer.disconnect();
-    }
-
-    takeRecords() {
-      return filterRecords(this.observer.takeRecords());
-    }
-  }
-
-  Object.defineProperty(host, 'MutationObserver', {
-    value: StableMutationObserver,
-    configurable: true,
-    enumerable: false,
-    writable: true
-  });
-  Object.defineProperty(host, '__td613AshStableLifecycleObserverInstalled', {
-    value: true,
-    configurable: false,
-    enumerable: false,
-    writable: false
-  });
-}
-
 function cancelDocumentAnimations() {
   if (typeof doc?.getAnimations !== 'function') return;
-  for (const animation of doc.getAnimations({ subtree: true })) {
+  for (const animation of doc.getAnimations({ subtree:true })) {
     try {
       animation.cancel();
       diagnostics.cancelledAnimations += 1;
@@ -123,20 +22,31 @@ function cancelDocumentAnimations() {
 }
 
 function installCompositorStyles() {
-  if (!doc?.head || doc.getElementById('td613-ash-flicker-hardening-css')) return;
-  const style = doc.createElement('style');
-  style.id = 'td613-ash-flicker-hardening-css';
+  if (!doc?.head) return;
+  let style = doc.getElementById('td613-ash-flicker-hardening-css');
+  if (!style) {
+    style = doc.createElement('style');
+    style.id = 'td613-ash-flicker-hardening-css';
+    doc.head.append(style);
+  }
   style.textContent = `
+    html[data-ash-flicker-hardening],
     html[data-ash-flicker-hardening] body{
+      overflow-x:hidden!important;
+      overscroll-behavior-y:auto!important;
+      scroll-behavior:auto!important;
+    }
+    html[data-ash-flicker-hardening] body{
+      overflow-y:auto!important;
       background-attachment:scroll!important;
       background-image:none!important;
       background-color:#03100c!important;
+      -webkit-overflow-scrolling:touch;
     }
     html[data-ash-flicker-hardening] body::before,
     html[data-ash-flicker-hardening] body::after{
       content:none!important;
       display:none!important;
-      animation:none!important;
     }
     html[data-ash-flicker-hardening] *,
     html[data-ash-flicker-hardening] *::before,
@@ -160,15 +70,16 @@ function installCompositorStyles() {
       backdrop-filter:none!important;
       will-change:auto!important;
     }
-    html[data-ash-flicker-hardening] .premium-workspace,
+    html[data-ash-flicker-hardening] main,
     html[data-ash-flicker-hardening] .workspace,
+    html[data-ash-flicker-hardening] .premium-workspace,
     html[data-ash-flicker-hardening] .premium-sheet,
     html[data-ash-flicker-hardening] .guided-stable-host{
+      overflow:visible!important;
       animation:none!important;
       will-change:auto!important;
     }
     html[data-ash-flicker-hardening] .map-stage{
-      contain:layout paint style;
       isolation:isolate;
       transform:none!important;
       will-change:auto!important;
@@ -178,24 +89,22 @@ function installCompositorStyles() {
       transition:none!important;
       will-change:auto!important;
       transform:none!important;
+      touch-action:pan-y pinch-zoom!important;
     }
   `;
-  doc.head.append(style);
 }
 
 export function installAshFlickerHardening() {
   if (!host || !doc || host.__td613AshFlickerHardening) return false;
-  installStaticMapScheduler();
-  installStableLifecycleObserver();
   installCompositorStyles();
   cancelDocumentAnimations();
-  host.addEventListener('td613:ash:core-ready', cancelDocumentAnimations, { once: true });
-  host.addEventListener('td613:ash:case-opened', cancelDocumentAnimations);
-  host.addEventListener('td613:ash:case-created', cancelDocumentAnimations);
+  host.addEventListener('td613:ash:core-ready', cancelDocumentAnimations, { once:true });
   doc.documentElement.dataset.ashFlickerHardening = ASH_FLICKER_HARDENING_VERSION;
+  doc.documentElement.dataset.ashCanonicalCompositor = ASH_CANONICAL_COMPOSITOR_VERSION;
   host.__td613AshFlickerHardening = Object.freeze({
-    version: ASH_FLICKER_HARDENING_VERSION,
-    diagnostics: () => Object.freeze({ ...diagnostics })
+    version:ASH_FLICKER_HARDENING_VERSION,
+    canonical_version:ASH_CANONICAL_COMPOSITOR_VERSION,
+    diagnostics:() => Object.freeze({ ...diagnostics })
   });
   return true;
 }

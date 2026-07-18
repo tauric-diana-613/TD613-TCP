@@ -68,17 +68,27 @@ const deletionReplacement = `  await page.locator('#selectCase').selectOption(se
     return true;
   }, secondCase);`;
 
+const localKeysTarget = `const allowedLocalKeys = new Set(['td613.ash-keep.current-case', 'td613.ash-keep.preferences', 'td613.ash.cache-flush.epoch']);`;
+const localKeysReplacement = `const allowedLocalKeys = new Set(['td613.ash-keep.current-case', 'td613.ash-keep.preferences', 'td613.ash.cache-flush.epoch', 'td613.ash.session.epoch']);`;
+
 await fs.mkdir(artifactDir, { recursive: true });
 const source = await fs.readFile(sourceUrl, 'utf8');
 const readinessCount = source.split(readinessTarget).length - 1;
 const testWorkspaceCount = source.split(testWorkspaceTarget).length - 1;
 const mapWorkspaceCount = source.split(mapWorkspaceTarget).length - 1;
 const deletionCount = source.split(deletionTarget).length - 1;
+const localKeysCount = source.split(localKeysTarget).length - 1;
 if (readinessCount !== 1) throw new Error(`Convergence observer expected one Ash boot-readiness seam; observed ${readinessCount}.`);
 if (testWorkspaceCount !== 1) throw new Error(`Convergence observer expected one legacy Test workspace seam; observed ${testWorkspaceCount}.`);
 if (mapWorkspaceCount !== 1) throw new Error(`Convergence observer expected one legacy Map workspace seam; observed ${mapWorkspaceCount}.`);
 if (deletionCount !== 1) throw new Error(`Convergence observer expected one case-selection seam and one atomic case-deletion seam; observed ${deletionCount}.`);
-const runtime = source.replace(readinessTarget, readinessReplacement).replace(testWorkspaceTarget, testWorkspaceReplacement).replace(mapWorkspaceTarget, mapWorkspaceReplacement).replace(deletionTarget, deletionReplacement);
+if (localKeysCount !== 1) throw new Error(`Convergence observer expected one localStorage allowlist seam; observed ${localKeysCount}.`);
+const runtime = source
+  .replace(readinessTarget, readinessReplacement)
+  .replace(testWorkspaceTarget, testWorkspaceReplacement)
+  .replace(mapWorkspaceTarget, mapWorkspaceReplacement)
+  .replace(deletionTarget, deletionReplacement)
+  .replace(localKeysTarget, localKeysReplacement);
 if (!runtime.includes('demo_click_deferred_until_ready: true')
   || !runtime.includes('profile_selected_explicitly: true')
   || !runtime.includes("selectOption('political_campaign')")
@@ -91,6 +101,9 @@ if (!runtime.includes("open('test')") || !runtime.includes("open('map')") || run
 }
 if (!runtime.includes("select.dispatchEvent(new Event('change', { bubbles: true }))") || !runtime.includes('remove.click()')) {
   throw new Error('Convergence observer repaint-atomic delete gesture was not materialized.');
+}
+if (!runtime.includes("'td613.ash.session.epoch'")) {
+  throw new Error('Convergence observer canonical session epoch allowlist was not materialized.');
 }
 await fs.writeFile(runtimePath, runtime, 'utf8');
 await import(`${pathToFileURL(runtimePath).href}?aftercare=${Date.now()}`);

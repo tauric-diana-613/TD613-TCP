@@ -71,11 +71,14 @@ assert.match(renderedKeep, /name="ash-lifecycle" content="v0\.1"/);
 assert.match(renderedKeep, /name="ash-constitutional-composition" content="v0\.1"/);
 assert.equal(injectAshKeepLifecycle(renderedKeep), renderedKeep);
 
-assert.equal(ASH_KEEP_JS_SHELL_VERSION, 'td613.ash-keep.js-shell/v0.4-native-bindings');
+assert.equal(ASH_KEEP_JS_SHELL_VERSION, 'td613.ash-keep.js-shell/v0.5-event-driven-map');
 assert.match(renderedKeepJs, /caseMapDigest: state\.caseMap\.case_map_digest/);
 assert.match(renderedKeepJs, /releaseReceiptReference: state\.latestRelease\?\.receipt_id \|\| null/);
 assert.match(renderedKeepJs, /releaseReceiptDigest: state\.latestRelease\?\.receipt_digest \|\| null/);
 assert.match(renderedKeepJs, /latestSavePoint\.release_receipt_reference !== currentRelease\.receipt_id/);
+assert.match(renderedKeepJs, /EVENT_DRIVEN_COALESCED/);
+assert.match(renderedKeepJs, /function requestMapDraw\(\)/);
+assert.doesNotMatch(renderedKeepJs, /state\.frame = scheduleFrame\(frame\)/);
 assert.doesNotMatch(renderedKeepJs, /location\.reload\(\)/);
 assert.equal(bindAshDraftsToCaseMap(renderedKeepJs), renderedKeepJs);
 assert.match(draftEngine, /Review is bound to a different Case Map/);
