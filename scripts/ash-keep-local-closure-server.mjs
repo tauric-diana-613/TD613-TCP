@@ -10,6 +10,7 @@ const port = Number(process.argv[2] || process.env.PORT || 6130);
 
 await import('./prepare-ash-profile-closure-fixture.mjs');
 await import('./prepare-ash-premium-closure-fixture.mjs');
+await import('./prepare-ash-canonical-cache-closure-fixture.mjs');
 
 const MIME_TYPES = Object.freeze({
   '.html': 'text/html; charset=utf-8',
@@ -54,11 +55,13 @@ const server = http.createServer(async (req, res) => {
   if (url.pathname === '/__ash_keep_closure/readiness') {
     return sendJson(res, 200, {
       ok: true,
-      schema: 'td613.ash-keep.local-closure-readiness/v0.2-event-driven-map',
+      schema: 'td613.ash-keep.local-closure-readiness/v0.3-canonical-cache-browser-receipt',
       recipient_transport: false,
       provider_route: false,
       production_promotion: false,
-      ash_keep_delivery_transform: true
+      ash_keep_delivery_transform: true,
+      cache_navigation_required: false,
+      browser_state_read_via_page_evaluate: true
     });
   }
   if (req.method !== 'GET' && req.method !== 'HEAD') return sendJson(res, 405, { ok: false, error: 'method-not-allowed' });
