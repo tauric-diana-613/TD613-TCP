@@ -36,9 +36,9 @@ const probeReplacements = [
     to: `  await waitForText(page, '#caseTitle', /Harbor City Mayoral Campaign/);`
   },
   {
-    label: 'prehydrated Route Memory successor count',
+    label: 'qualified Route Memory successor count',
     from: `  assert(routeRecord?.entries.length === 1, 'Route Memory did not append exactly one successor entry');`,
-    to: `  assert(routeRecord?.entries.length === 4, 'Profile Route Memory did not preserve three hydrated entries and append one successor entry');`
+    to: `  assert(routeRecord?.entries.length === 7, 'Profile Route Memory did not preserve six qualified entries and append one successor entry');`
   }
 ];
 
@@ -81,7 +81,8 @@ function sha256(value) {
 function isProbePrepared(source) {
   return source.includes("selectOption('political_campaign')")
     && source.includes('Harbor City Mayoral Campaign')
-    && source.includes('entries.length === 4')
+    && source.includes('entries.length === 7')
+    && source.includes('six qualified entries')
     && !source.includes('Glasshouse Archive inquiry');
 }
 
@@ -108,7 +109,7 @@ if (!isProbePrepared(originalProbe)) {
   probePosture = 'PREPARED_NOW';
   for (const replacement of probeReplacements) preparedProbe = replaceExactlyOnce(preparedProbe, replacement);
 }
-if (!isProbePrepared(preparedProbe)) throw new Error('Profile closure fixture did not materialize every campaign-demo seam.');
+if (!isProbePrepared(preparedProbe)) throw new Error('Profile closure fixture did not materialize every campaign-method seam.');
 if (preparedProbe !== originalProbe) await fs.writeFile(probePath, preparedProbe, 'utf8');
 
 const originalConvergenceRunner = (await fs.readFile(convergenceRunnerPath, 'utf8')).replace(/\r\n/g, '\n');
@@ -118,14 +119,16 @@ if (!isConvergencePrepared(originalConvergenceRunner)) {
   convergencePosture = 'PREPARED_NOW';
   preparedConvergenceRunner = replaceExactlyOnce(originalConvergenceRunner, convergenceReplacement);
 }
-if (!isConvergencePrepared(preparedConvergenceRunner)) throw new Error('Convergence profile fixture did not materialize its campaign-demo seam.');
+if (!isConvergencePrepared(preparedConvergenceRunner)) throw new Error('Convergence profile fixture did not materialize its campaign-method seam.');
 if (preparedConvergenceRunner !== originalConvergenceRunner) await fs.writeFile(convergenceRunnerPath, preparedConvergenceRunner, 'utf8');
 
 await fs.mkdir(path.dirname(manifestPath), { recursive: true });
 await fs.writeFile(manifestPath, `${JSON.stringify({
-  schema: 'td613.ash-keep.profile-closure-fixture/v0.2',
+  schema: 'td613.ash-keep.profile-closure-fixture/v0.3-apeq-paia',
   profile: 'political_campaign',
-  demo_id: 'demo_political_campaign_rapid_response_v1',
+  demo_id: 'demo_political_campaign_harbor_city_apeq_paia_v2',
+  qualified_route_count: 6,
+  expected_route_count_after_successor: 7,
   production_probe: {
     path: path.relative(repoRoot, probePath),
     posture: probePosture,
