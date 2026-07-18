@@ -6,6 +6,7 @@ import './ash-case-close-repair.js?v=20260718-emergency-stability-v5';
 /* Canonical composition ordering retained under emergency cache-busted URLs:
 import './ash-keep-mobile-composition.js';
 import './ash-mobile-constitutional-closure.js';
+import './ash-premium-ui.js';
 import './ash-workspace-navigation.js';
 */
 import './ash-keep-mobile-composition.js?v=20260718-emergency-stability-v5';
