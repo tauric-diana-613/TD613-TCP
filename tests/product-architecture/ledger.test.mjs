@@ -33,5 +33,6 @@ assert.match(stretch10, /State: `CLOSED \/ IMPLEMENTED_VALIDATION_GATED \/ EVIDE
 assert.match(stretch11, /PENDING_EXACT_MAIN_EXTERNAL_SEAL/);
 assert.match(buildout, /EFFECTIVE_AFTER_OFFICIAL_STRETCH_11_EXTERNAL_SEAL/);
 assert.match(law, /Vercel deployment remains authorized/);
-assert.match(law, /operator release gesture ≠ automatic Git event/);
+assert.match(law, /operator authorization → assistant\/Codex execution → one Vercel deployment/);
+assert.match(law, /The operator is not required to operate Vercel, GitHub Actions, or deployment plumbing/);
 console.log('product-architecture/ledger.test.mjs passed');
