@@ -89,3 +89,14 @@ partial surface success ≠ whole-product release success
 ```
 
 The release witness must prove the intended surfaces together: current TD613 Flight behavior, Ash ingress geometry, cache-epoch transition, local-custody preservation, profile hydration, and the governing deployment lock. A successful deployment of one surface cannot stand in for evidence that the remaining packet reached production.
+
+## Cache-epoch storage boundary
+
+`td613.ash.cache-flush.epoch` is maintenance state used only to make the one-time cache eviction idempotent across navigation. It may persist beside the current-case pointer and display preferences, while remaining categorically outside Case Maps, receipts, Save Points, Capsules, source material, and user-authored content.
+
+```text
+cache epoch marker = permitted maintenance state
+cache epoch marker ≠ case data
+cache eviction ≠ IndexedDB deletion
+cache eviction ≠ local-custody erasure
+```
