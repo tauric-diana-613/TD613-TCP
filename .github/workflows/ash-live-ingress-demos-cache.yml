@@ -95,6 +95,39 @@ jobs:
           node --check app/dome-world/ash-case-controls.js
           node --check scripts/ash-live-release-browser-probe.mjs
 
+  ui-diagnostic:
+    name: Preserve exact UI contract output
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 24
+          cache: npm
+      - run: npm ci
+      - name: Capture UI contract output
+        id: ui
+        continue-on-error: true
+        run: |
+          mkdir -p artifacts/ash-ui-contract
+          set +e
+          node tests/ash-keep-ui.test.mjs > artifacts/ash-ui-contract/output.log 2>&1
+          status=$?
+          echo "$status" > artifacts/ash-ui-contract/exit-code.txt
+          cat artifacts/ash-ui-contract/output.log
+          exit "$status"
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: ash-ui-contract-output
+          path: artifacts/ash-ui-contract
+          if-no-files-found: error
+          retention-days: 14
+      - name: Enforce diagnostic result
+        if: steps.ui.outcome != 'success'
+        run: exit 1
+
   browser-matrix:
     name: ${{ matrix.browser }} · live ingress and profile release
     runs-on: ubuntu-latest
