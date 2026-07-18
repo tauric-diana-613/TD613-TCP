@@ -10,7 +10,8 @@ const keepUrl = `${base}/dome-world/ash-keep.html`;
 const DB_NAME = 'td613-ash-keep';
 const ALLOWED_LOCAL_KEYS = new Set([
   'td613.ash-keep.current-case',
-  'td613.ash-keep.preferences'
+  'td613.ash-keep.preferences',
+  'td613.ash.cache-flush.epoch'
 ]);
 
 function assert(condition, message) {

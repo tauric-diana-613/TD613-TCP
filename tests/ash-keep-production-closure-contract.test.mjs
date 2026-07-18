@@ -27,6 +27,7 @@ for (const token of [
 assert.match(probe, /real_surveillance_probability === null/);
 assert.match(probe, /automatic_hold === false/);
 assert.match(probe, /transmission_performed === false/);
+assert.match(probe, /ALLOWED_LOCAL_KEYS[\s\S]*td613\.ash\.cache-flush\.epoch/, 'Cache epoch must remain an allowed maintenance key after case creation');
 assert.doesNotMatch(probe, /IMPLEMENTED_PRODUCTION_DEMONSTRATED/);
 
 for (const token of [
