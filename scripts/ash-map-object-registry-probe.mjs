@@ -6,6 +6,9 @@ import { chromium } from 'playwright';
 const base = (process.env.TD613_BASE_URL || 'http://127.0.0.1:6130').replace(/\/$/, '');
 const artifactDir = process.env.TD613_ARTIFACT_DIR || 'artifacts/ash-map-object-registry';
 const keepUrl = `${base}/dome-world/ash-keep.html`;
+const METHOD_VERSION = 'td613.ash.apeq-paia-profile-demos/v0.1';
+const DEMO_PROFILE = 'political_campaign';
+const DEMO_TITLE = 'Harbor City Mayoral Campaign';
 
 function assert(condition, message) {
   if (!condition) throw new Error(message);
@@ -99,10 +102,11 @@ page.on('console', message => { if (message.type() === 'error') consoleErrors.pu
 page.on('pageerror', error => consoleErrors.push(error.message));
 
 const report = {
-  schema: 'td613.ash-keep.object-registry-observation/v0.1',
+  schema: 'td613.ash-keep.object-registry-observation/v0.2-explicit-profile',
   status: 'RUNNING',
   source_status: base.includes('127.0.0.1') || base.includes('localhost') ? 'LOCAL_VALIDATION' : 'DEPLOYED_OBSERVATION',
   promotion_authorized: false,
+  profile: DEMO_PROFILE,
   desktop: null,
   mobile: null,
   console_errors: consoleErrors,
@@ -111,8 +115,20 @@ const report = {
 
 try {
   await page.goto(keepUrl, { waitUntil: 'networkidle' });
+  await page.waitForFunction(version => window.__td613AshProfileDemos?.version === version, METHOD_VERSION);
+  assert(await page.locator('#startDemo').isDisabled(), 'Demo action was active before explicit profile selection.');
+  await page.locator('#newProfile').selectOption(DEMO_PROFILE);
+  await page.waitForFunction(profile => {
+    const button = document.getElementById('startDemo');
+    return document.getElementById('newProfile')?.value === profile
+      && button
+      && !button.disabled
+      && button.getAttribute('aria-disabled') === 'false'
+      && button.dataset.ashMethodDemoState === 'READY';
+  }, DEMO_PROFILE);
   await page.locator('#startDemo').click();
-  await page.waitForFunction(() => /Glasshouse Archive/i.test(document.getElementById('caseTitle')?.textContent || ''));
+  await page.waitForFunction(profile => document.documentElement.dataset.ashDemoProfile === profile, DEMO_PROFILE);
+  await page.waitForFunction(title => document.getElementById('caseTitle')?.textContent?.includes(title), DEMO_TITLE);
   await waitForRegistry(page);
 
   let snapshot = await registrySnapshot(page);
