@@ -16,7 +16,6 @@ on:
       - 'app/dome-world/ash-case-controls.js'
       - 'api/dome-world-shell.js'
       - 'scripts/ash-live-release-browser-probe.mjs'
-      - 'scripts/retain-ash-case-selection.mjs'
       - 'tests/ash-live-ingress-demos-cache.test.mjs'
       - 'tests/ash-keep-ui.test.mjs'
       - 'tests/product-architecture/lifecycle.test.mjs'
@@ -44,47 +43,13 @@ on:
   workflow_dispatch:
 
 permissions:
-  contents: write
+  contents: read
 
 concurrency:
   group: ash-live-ingress-demos-cache-${{ github.event.pull_request.number || github.ref }}
   cancel-in-progress: true
 
 jobs:
-  retain-case-selection:
-    name: Apply one-time Case List selection retention
-    if: github.event_name == 'pull_request' && github.head_ref == 'hotfix/ash-live-ingress-demos-cache'
-    runs-on: ubuntu-latest
-    timeout-minutes: 15
-    steps:
-      - uses: actions/checkout@v4
-        with:
-          ref: hotfix/ash-live-ingress-demos-cache
-          fetch-depth: 0
-      - uses: actions/setup-node@v4
-        with:
-          node-version: 24
-      - name: Apply selection-retention repair
-        run: |
-          if [ ! -f scripts/retain-ash-case-selection.mjs ]; then
-            echo 'Selection-retention repair already applied.'
-            exit 0
-          fi
-          node scripts/retain-ash-case-selection.mjs
-          node --check app/dome-world/ash-case-controls.js
-          node tests/product-architecture/lifecycle.test.mjs
-      - name: Commit repaired Case List behavior
-        run: |
-          if git diff --quiet; then
-            echo 'No repair commit required.'
-            exit 0
-          fi
-          git config user.name "td613-case-selection"
-          git config user.email "actions@users.noreply.github.com"
-          git add app/dome-world/ash-case-controls.js tests/ash-keep-ui.test.mjs tests/product-architecture/lifecycle.test.mjs scripts/retain-ash-case-selection.mjs
-          git commit -m "Retain Ash Case List selection across refreshes"
-          git push origin HEAD:hotfix/ash-live-ingress-demos-cache
-
   contracts:
     name: Live release contracts
     runs-on: ubuntu-latest
