@@ -1,42 +1,18 @@
 export const ASH_APEQ_PAIA_METHOD_VERSION = 'td613.ash.apeq-paia-method/v0.1';
 
 export const APEQ_CONTROL_CLASSES = Object.freeze([
-  'POSITIVE',
-  'MATCHED_BENIGN',
-  'NULL',
-  'MISSING',
-  'CONTRADICTORY',
-  'SHUFFLED',
-  'TRUNCATED',
-  'ROUTE_ORDER',
-  'DELAYED_DISCLOSURE',
-  'CROSS_SESSION',
-  'SOURCE_DRIFT',
-  'METADATA_ONLY'
+  'POSITIVE', 'MATCHED_BENIGN', 'NULL', 'MISSING', 'CONTRADICTORY', 'SHUFFLED',
+  'TRUNCATED', 'ROUTE_ORDER', 'DELAYED_DISCLOSURE', 'CROSS_SESSION', 'SOURCE_DRIFT', 'METADATA_ONLY'
 ]);
 
 export const PAIA_STRATA = Object.freeze([
-  'content',
-  'projection',
-  'cryptographic',
-  'endpoint',
-  'provider',
-  'reader',
-  'metadata',
-  'temporal',
-  'custody',
-  'human'
+  'content', 'projection', 'cryptographic', 'endpoint', 'provider',
+  'reader', 'metadata', 'temporal', 'custody', 'human'
 ]);
 
 export const APEQ_HELD_DIMENSIONS = Object.freeze([
-  'rare_fact_conjunctions',
-  'chronology',
-  'source_identity',
-  'hypotheses',
-  'lifecycle_state',
-  'metadata_linkage',
-  'document_provenance',
-  'unknown_reader'
+  'rare_fact_conjunctions', 'chronology', 'source_identity', 'hypotheses',
+  'lifecycle_state', 'metadata_linkage', 'document_provenance', 'unknown_reader'
 ]);
 
 export const APEQ_PAIA_COUNTS = Object.freeze({
@@ -152,14 +128,24 @@ function buildRelationships(spec, nodes) {
   return relationships;
 }
 
-function resolveReferences(references) {
+function resolveReferences(references, nodes) {
+  const nodeIds = new Set(nodes.map(node => node.id));
   return references.map(reference => {
-    if (typeof reference === 'string') return reference;
-    return nodeReference(reference[0], reference[1]);
+    if (typeof reference === 'string') {
+      if (!nodeIds.has(reference)) throw new Error(`Unknown explicit object reference ${reference}.`);
+      return reference;
+    }
+    const exact = nodeReference(reference[0], reference[1]);
+    if (nodeIds.has(exact)) return exact;
+    const labelSlug = slug(reference[1]);
+    const matches = nodes.filter(node => slug(node.label) === labelSlug);
+    if (matches.length === 1) return matches[0].id;
+    if (matches.length > 1) throw new Error(`Ambiguous object label ${reference[1]} across ${matches.length} Rooms.`);
+    throw new Error(`Unknown object reference ${reference[0]} :: ${reference[1]}.`);
   });
 }
 
-function buildRulesAndRoutes(spec) {
+function buildRulesAndRoutes(spec, nodes) {
   const routeDefinitions = spec.routes;
   const ruleDefinitions = [...routeDefinitions, ...spec.internal_rules];
   const rules = ruleDefinitions.map((definition, index) => ({
@@ -178,7 +164,7 @@ function buildRulesAndRoutes(spec) {
     purpose: definition.purpose,
     recipient_class: definition.recipient,
     recorded_at: `2026-07-18T0${index + 1}:10:00Z`,
-    disclosed_opaque_references: resolveReferences(definition.refs),
+    disclosed_opaque_references: resolveReferences(definition.refs, nodes),
     recall_state: 'NOT_RECALLED'
   }));
   return { rules, entries };
@@ -261,13 +247,13 @@ export function buildApeqPaiaFixture(spec) {
   }));
   const nodes = buildNodes(spec);
   const relationships = buildRelationships(spec, nodes);
-  const { rules, entries } = buildRulesAndRoutes(spec);
+  const { rules, entries } = buildRulesAndRoutes(spec, nodes);
   const assay = buildAssay(spec, nodes);
   const defaults = {
     ...spec.defaults,
-    test_refs: resolveReferences(spec.defaults.test_refs),
-    route: { ...spec.defaults.route, refs: resolveReferences(spec.defaults.route.refs) },
-    draft: { ...spec.defaults.draft, refs: resolveReferences(spec.defaults.draft.refs) }
+    test_refs: resolveReferences(spec.defaults.test_refs, nodes),
+    route: { ...spec.defaults.route, refs: resolveReferences(spec.defaults.route.refs, nodes) },
+    draft: { ...spec.defaults.draft, refs: resolveReferences(spec.defaults.draft.refs, nodes) }
   };
   const fixture = {
     schema: 'td613.ash.apeq-paia-profile-demo/v0.1',
