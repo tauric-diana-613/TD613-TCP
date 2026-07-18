@@ -28,7 +28,8 @@ assert.doesNotMatch(cache,/indexedDB\.deleteDatabase|localStorage\.clear|session
 assert.match(lifecycle,/ash-ingress-layout-hydration\.js\?v=20260717-research-ingress-v2/);
 assert.match(lifecycle,/ash-research-demo-hydration\.js\?v=20260717-research-v1/);
 assert.match(bridge,/ash-research-demo-hydration\.js\?v=20260717-research-v1/);
-assert.match(bridge,/ash-profile-demo-hydration\.js\?v=20260717-research-ingress-v2/);
+assert.match(bridge,/import '\.\/ash-profile-demo-hydration\.js';/);
+assert.match(bridge,/ash-guided-trust-boundary-court\.js\?v=20260717-trust-boundary-v1/);
 assert.match(evict,/performs no storage deletion/);
 assert.match(shell,/cache-evict/);
 assert.match(shell,/Clear-Site-Data/);
