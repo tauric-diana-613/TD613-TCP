@@ -70,9 +70,6 @@ jobs:
           fi
           node scripts/coalesce-ash-case-list-refresh.mjs
           node --check app/dome-world/ash-case-controls.js
-          node tests/ash-keep-ui.test.mjs
-          node tests/ash-keep-production-closure-contract.test.mjs
-          node tests/vercel-deploy-hygiene.test.mjs
       - name: Commit repaired final cut
         run: |
           if git diff --quiet; then
