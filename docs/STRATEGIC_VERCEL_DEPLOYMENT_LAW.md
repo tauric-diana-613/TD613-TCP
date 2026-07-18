@@ -75,3 +75,17 @@ main push ≠ operator gesture
 workflow success ≠ operator gesture
 manual Vercel action after explicit instruction = permitted release route
 ```
+
+## Final-cut convergence guard · 2026-07-18
+
+A public release candidate must be verified as the complete merge result, not merely as the head of an older feature branch. Later changes already accepted into `main` and the selected release packet must coexist in the exact merge candidate before deployment authorization can be earned.
+
+```text
+feature-head green ≠ final cut complete
+newer main change ≠ permission to strand an older packet
+merge-ref verification = required
+exact deployed commit = required
+partial surface success ≠ whole-product release success
+```
+
+The release witness must prove the intended surfaces together: current TD613 Flight behavior, Ash ingress geometry, cache-epoch transition, local-custody preservation, profile hydration, and the governing deployment lock. A successful deployment of one surface cannot stand in for evidence that the remaining packet reached production.
