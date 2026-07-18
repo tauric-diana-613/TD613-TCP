@@ -72,7 +72,8 @@ assert.match(premiumCss, /@media\(prefers-reduced-motion:reduce\)/);
 assert.match(premiumCompatibility, /display:none!important/);
 assert.match(premiumCompatibility, /Exact chambers/);
 for (const token of [
-  'td613.ash.premium-ui-browser-flight/v0.1', 'orientationMs < 10_000',
+  'td613.ash.premium-ui-browser-flight/v0.2-apeq-paia', 'orientationMs < 10_000',
+  'method_first_arrival: true', 'qualified_route_projections: 6',
   'real_surveillance_probability', 'MOIRE_REPLAY_VERIFIED', 'horizontal_overflow',
   'clipped_controls', 'item.height >= 48', 'production_promotion_authorized: false'
 ]) assert.ok(premiumFlight.includes(token), `Premium browser closure omitted ${token}`);
