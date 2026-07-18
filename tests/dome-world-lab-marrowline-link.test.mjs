@@ -13,7 +13,7 @@ const renderedAgain = injectMarrowlineLabButton(rendered);
 const dom = new JSDOM(rendered);
 const { document } = dom.window;
 
-assert.equal(DOME_WORLD_SHELL_VERSION, 'td613.dome-world.shell/v1.2-embedded-ash-membrane');
+assert.equal(DOME_WORLD_SHELL_VERSION, 'td613.dome-world.shell/v1.3-live-cache-transition');
 assert.equal(MARROWLINE_LAB_ROUTE, '/dome-world/marrowline.html');
 assert.equal(renderedAgain, rendered, 'Lab injection must be idempotent');
 assert.equal(document.querySelectorAll('.lab-node').length, 11);
@@ -38,4 +38,4 @@ assert.match(rendered, /data-glyph="∴"/);
 assert.match(rendered, /Claim ceiling: dev-hidden-compatibility-workflow-not-production-custody/);
 assert.match(rendered, /data-ash-threshold-membrane/);
 
-console.log('dome-world-lab-marrowline-link: desktop span, embedded Ash membrane, and mobile overrides ok');
+console.log('dome-world-lab-marrowline-link: desktop span, embedded Ash membrane, live cache transition, and mobile overrides ok');
