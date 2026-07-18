@@ -1,0 +1,54 @@
+name: Vercel Deployment Law
+
+on:
+  pull_request:
+    paths:
+      - vercel.json
+      - docs/STRATEGIC_VERCEL_DEPLOYMENT_LAW.md
+      - tests/vercel-deploy-hygiene.test.mjs
+      - tests/product-architecture/shell.test.mjs
+      - .github/workflows/vercel-deployment-law.yml
+  push:
+    branches:
+      - main
+    paths:
+      - vercel.json
+      - docs/STRATEGIC_VERCEL_DEPLOYMENT_LAW.md
+      - tests/vercel-deploy-hygiene.test.mjs
+      - tests/product-architecture/shell.test.mjs
+      - .github/workflows/vercel-deployment-law.yml
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: vercel-deployment-law-${{ github.event.pull_request.number || github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  verify:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 24
+      - name: Verify executable deployment law
+        run: |
+          node tests/vercel-deploy-hygiene.test.mjs
+          node tests/product-architecture/shell.test.mjs
+      - name: Reject Git-triggered deployments
+        run: |
+          node --input-type=module <<'NODE'
+          import fs from 'node:fs';
+          const config = JSON.parse(fs.readFileSync('vercel.json', 'utf8'));
+          if (config.git?.deploymentEnabled !== false) {
+            throw new Error('Vercel Git deployments must remain globally disabled. Explicit operator release is required.');
+          }
+          if (typeof config.git.deploymentEnabled !== 'boolean') {
+            throw new Error('Branch deployment maps are forbidden.');
+          }
+          console.log('merge ≠ deploy · main push ≠ operator gesture');
+          NODE
