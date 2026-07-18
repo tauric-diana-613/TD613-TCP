@@ -3,21 +3,21 @@ export const ASH_WORKSPACE_NAVIGATION_VERSION = 'td613.ash-keep.workspace-naviga
 const installedHosts = new WeakSet();
 const POINTER_KEY = 'td613.ash-keep.current-case';
 const STATE_RANK = Object.freeze({
-  ARRIVAL_UNPERSISTED: 0,
-  READINESS_OBSERVED: 1,
-  CUSTODY_ROOT_PROVISIONAL: 2,
-  CUSTODY_ROOT_VERIFIED: 3,
-  CASE_BOUND: 4,
-  REBUILD_ELIGIBLE: 5,
-  RELEASE_ELIGIBLE: 6,
-  CONTINUITY_SEALED: 7
+  ARRIVAL_UNPERSISTED:0,
+  READINESS_OBSERVED:1,
+  CUSTODY_ROOT_PROVISIONAL:2,
+  CUSTODY_ROOT_VERIFIED:3,
+  CASE_BOUND:4,
+  REBUILD_ELIGIBLE:5,
+  RELEASE_ELIGIBLE:6,
+  CONTINUITY_SEALED:7
 });
 const WORKSPACE_REQUIREMENTS = Object.freeze({
-  rooms: 'CASE_BOUND',
-  routes: 'CASE_BOUND',
-  test: 'CASE_BOUND',
-  draft: 'REBUILD_ELIGIBLE',
-  save: 'RELEASE_ELIGIBLE'
+  rooms:'CASE_BOUND',
+  routes:'CASE_BOUND',
+  test:'CASE_BOUND',
+  draft:'REBUILD_ELIGIBLE',
+  save:'RELEASE_ELIGIBLE'
 });
 
 function lifecycleState(doc) {
@@ -31,16 +31,13 @@ function workspacePosture(doc, workspace) {
     workspace,
     state,
     required,
-    allowed: !required || (Number.isInteger(STATE_RANK[state]) && STATE_RANK[state] >= STATE_RANK[required])
+    allowed:!required || (Number.isInteger(STATE_RANK[state]) && STATE_RANK[state] >= STATE_RANK[required])
   });
 }
 
 function hasCurrentCase(host) {
-  try {
-    return Boolean(host?.localStorage?.getItem?.(POINTER_KEY));
-  } catch {
-    return false;
-  }
+  try { return Boolean(host?.localStorage?.getItem?.(POINTER_KEY)); }
+  catch { return false; }
 }
 
 function ensureStyles(doc) {
@@ -176,7 +173,6 @@ export function installAshWorkspaceNavigation(doc = globalThis.document, host = 
     if (!tab || tab.dataset.workspace === 'custody') return;
     const openWorkspace = host.__td613OpenAshWorkspace;
     if (typeof openWorkspace !== 'function') return;
-
     event.preventDefault();
     event.stopImmediatePropagation();
     const posture = workspacePosture(doc, tab.dataset.workspace);
@@ -188,27 +184,21 @@ export function installAshWorkspaceNavigation(doc = globalThis.document, host = 
   host.addEventListener('click', onClick, true);
   updateTabPostures(doc);
 
-  if (doc.body && typeof host.MutationObserver === 'function') {
-    new host.MutationObserver(() => {
-      ensureCapsuleRecoveryEntry(doc, host);
-      updateTabPostures(doc);
-      updateRecoveryPosture(doc, host);
-    }).observe(doc.body, {
-      attributes: true,
-      attributeFilter: ['data-ash-lifecycle'],
-      childList: true,
-      subtree: true
-    });
+  const refresh = () => {
+    ensureCapsuleRecoveryEntry(doc, host);
+    updateTabPostures(doc);
+    updateRecoveryPosture(doc, host);
+  };
+  for (const type of ['core-mutated', 'case-opened', 'case-created', 'capsule-opened', 'case-closed']) {
+    host.addEventListener(`td613:ash:${type}`, refresh);
   }
-
-  for (const type of ['core-mutated', 'case-opened', 'case-created', 'capsule-opened']) {
-    host.addEventListener(`td613:ash:${type}`, () => {
-      ensureCapsuleRecoveryEntry(doc, host);
-      updateRecoveryPosture(doc, host);
-    });
-  }
+  host.addEventListener('td613:ash:lifecycle-rendered', refresh);
 
   doc.documentElement.dataset.ashWorkspaceNavigation = ASH_WORKSPACE_NAVIGATION_VERSION;
+  host.__td613AshWorkspaceNavigation = Object.freeze({
+    version:ASH_WORKSPACE_NAVIGATION_VERSION,
+    refresh
+  });
   installedHosts.add(host);
   return true;
 }
