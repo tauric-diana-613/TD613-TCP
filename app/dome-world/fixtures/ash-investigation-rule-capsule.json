@@ -1,1 +1,0 @@
-{"route_id":"route_capsule_handoff","allowed_room_ids":["room_continuity","room_routes","room_mandate","room_actions"],"local_link_keys":["edge_save_capsule","edge_capsule_replay"],"allowed_node_types":["artifact","claim","intended-action"]}
