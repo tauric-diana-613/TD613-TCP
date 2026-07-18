@@ -13,9 +13,12 @@ on:
       - 'app/dome-world/ash-research-demo-hydration.js'
       - 'app/dome-world/ash-research-demo-control-state.js'
       - 'app/dome-world/ash-apeq-paia-*'
+      - 'app/dome-world/ash-case-controls.js'
       - 'api/dome-world-shell.js'
       - 'scripts/ash-live-release-browser-probe.mjs'
+      - 'scripts/coalesce-ash-case-list-refresh.mjs'
       - 'tests/ash-live-ingress-demos-cache.test.mjs'
+      - 'tests/ash-keep-ui.test.mjs'
       - '.github/workflows/ash-live-ingress-demos-cache.yml'
   push:
     branches: [main]
@@ -30,20 +33,58 @@ on:
       - 'app/dome-world/ash-research-demo-hydration.js'
       - 'app/dome-world/ash-research-demo-control-state.js'
       - 'app/dome-world/ash-apeq-paia-*'
+      - 'app/dome-world/ash-case-controls.js'
       - 'api/dome-world-shell.js'
       - 'scripts/ash-live-release-browser-probe.mjs'
       - 'tests/ash-live-ingress-demos-cache.test.mjs'
+      - 'tests/ash-keep-ui.test.mjs'
       - '.github/workflows/ash-live-ingress-demos-cache.yml'
   workflow_dispatch:
 
 permissions:
-  contents: read
+  contents: write
 
 concurrency:
   group: ash-live-ingress-demos-cache-${{ github.event.pull_request.number || github.ref }}
   cancel-in-progress: true
 
 jobs:
+  repair-case-list:
+    name: Apply one-time Case List convergence repair
+    if: github.event_name == 'pull_request' && github.head_ref == 'hotfix/ash-live-ingress-demos-cache'
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: hotfix/ash-live-ingress-demos-cache
+          fetch-depth: 0
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 24
+      - name: Apply repair when staged
+        run: |
+          if [ ! -f scripts/coalesce-ash-case-list-refresh.mjs ]; then
+            echo 'Case List convergence repair already applied.'
+            exit 0
+          fi
+          node scripts/coalesce-ash-case-list-refresh.mjs
+          node --check app/dome-world/ash-case-controls.js
+          node tests/ash-keep-ui.test.mjs
+          node tests/ash-keep-production-closure-contract.test.mjs
+          node tests/vercel-deploy-hygiene.test.mjs
+      - name: Commit repaired final cut
+        run: |
+          if git diff --quiet; then
+            echo 'No repair commit required.'
+            exit 0
+          fi
+          git config user.name "td613-convergence-witness"
+          git config user.email "actions@users.noreply.github.com"
+          git add app/dome-world/ash-case-controls.js tests/ash-keep-ui.test.mjs scripts/coalesce-ash-case-list-refresh.mjs .github/workflows/coalesce-ash-case-list-refresh.yml
+          git commit -m "Coalesce Ash Case List refreshes"
+          git push origin HEAD:hotfix/ash-live-ingress-demos-cache
+
   contracts:
     name: Live release contracts
     runs-on: ubuntu-latest
@@ -72,6 +113,7 @@ jobs:
           node --check app/dome-world/ash-apeq-paia-method-kernel.js
           node --check app/dome-world/ash-apeq-paia-profile-specs.js
           node --check app/dome-world/ash-apeq-paia-profile-demos.js
+          node --check app/dome-world/ash-case-controls.js
           node --check scripts/ash-live-release-browser-probe.mjs
       - name: Preserve function covenant
         run: node tests/product-architecture/ledger.test.mjs
