@@ -38,6 +38,11 @@ async function waitForRegistry(page) {
   });
 }
 
+async function openWorkspace(page, name) {
+  await page.evaluate(value => (window.__td613AshPremiumUI?.open || window.__td613OpenAshWorkspace)(value), name);
+  await page.waitForFunction(value => document.getElementById(`workspace-${value}`)?.classList.contains('active'), name);
+}
+
 async function registrySnapshot(page) {
   return page.evaluate(() => {
     const registry = document.getElementById('ashObjectRegistry');
@@ -129,6 +134,7 @@ try {
   await page.locator('#startDemo').click();
   await page.waitForFunction(profile => document.documentElement.dataset.ashDemoProfile === profile, DEMO_PROFILE);
   await page.waitForFunction(title => document.getElementById('caseTitle')?.textContent?.includes(title), DEMO_TITLE);
+  await openWorkspace(page, 'map');
   await waitForRegistry(page);
 
   let snapshot = await registrySnapshot(page);
@@ -150,10 +156,12 @@ try {
 
   await page.setViewportSize({ width: 390, height: 844 });
   await page.reload({ waitUntil: 'networkidle' });
+  await openWorkspace(page, 'map');
   await waitForRegistry(page);
   const mobileItems = page.locator('#ashObjectRegistryList [data-object-index]');
   const mobileCount = await mobileItems.count();
   const mobileItem = mobileItems.nth(Math.max(0, mobileCount - 1));
+  await mobileItem.scrollIntoViewIfNeeded();
   const mobileLabel = (await mobileItem.locator('strong').textContent())?.trim();
   await mobileItem.click();
   await page.waitForFunction(expected => {
