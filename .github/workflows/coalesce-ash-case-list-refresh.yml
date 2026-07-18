@@ -1,5 +1,6 @@
 name: Coalesce Ash Case List Refresh
 
+# One-time self-removing final-cut repair.
 on:
   push:
     branches:
