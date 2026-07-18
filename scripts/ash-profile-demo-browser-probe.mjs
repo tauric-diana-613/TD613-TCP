@@ -69,10 +69,11 @@ await fsp.mkdir(artifactDir, { recursive: true });
 const executablePath = browserExecutable();
 const browser = await chromium.launch({ headless: true, ...(executablePath ? { executablePath } : {}) });
 const report = {
-  schema: 'td613.ash.profile-demo-flight/v0.2-guided-navigation',
+  schema: 'td613.ash.profile-demo-flight/v0.3-research-registered',
   base_url: base,
   status: 'RUNNING',
   profiles: {},
+  research_registration: null,
   seams: [],
   console_errors: [],
   http_errors: []
@@ -89,6 +90,8 @@ async function fly(profile, expected) {
   await page.goto(keepUrl, { waitUntil: 'domcontentloaded' });
   await page.waitForFunction(() => Boolean(window.__td613AshKeep?.version)
     && Boolean(window.__td613AshProfileDemos?.version)
+    && Boolean(window.__td613AshResearchDemo?.version)
+    && Boolean(window.__td613AshResearchControlState?.version)
     && Boolean(window.__td613AshPremiumUI?.version)
     && Boolean(window.__td613AshGuidedOperatorUI?.version)
     && document.documentElement.dataset.ashDemoProfiles === 'td613.ash.profile-demos/v0.2-campaign-fundraiser');
@@ -99,9 +102,21 @@ async function fly(profile, expected) {
     assert(await page.locator('#startDemo').isDisabled(), 'Demo button was active with no selected profile.');
     assert(await page.locator('#newCase').isDisabled(), 'New Case was active with no selected profile.');
     await page.locator('#newProfile').selectOption('research');
-    assert(await page.locator('#startDemo').isDisabled(), 'Research incorrectly inherited another profile demo.');
-    assert(await page.locator('#startDemo').evaluate(node => node.classList.contains('demo-unavailable')), 'Unavailable demo did not use the dead visual posture.');
+    await page.waitForFunction(() => {
+      const button = document.getElementById('startDemo');
+      return button && !button.disabled && button.getAttribute('aria-disabled') === 'false'
+        && button.dataset.ashResearchControlState === 'READY'
+        && /Research qualification demo/.test(button.textContent || '');
+    });
+    assert(await page.locator('#startDemo').isEnabled(), 'Research qualification demo did not register.');
+    assert(await page.locator('#startDemo').evaluate(node => node.classList.contains('demo-available')), 'Research demo did not use the available visual posture.');
     assert(await page.locator('#newCase').isEnabled(), 'Blank Research workspace should remain available.');
+    report.research_registration = await page.evaluate(() => ({
+      version: window.__td613AshResearchDemo.version,
+      control_state_version: window.__td613AshResearchControlState.version,
+      counts: window.__td613AshResearchDemo.counts,
+      assurance: window.__td613AshResearchDemo.assurance
+    }));
   }
 
   await page.locator('#newProfile').selectOption(profile);
@@ -171,6 +186,8 @@ try {
     relationships: 35,
     route: 'route_lead_host_brief'
   });
+  assert(report.research_registration?.assurance?.maximum === 'PA2_LOCALLY_EXECUTED', 'Research registration lost its PA2 ceiling.');
+  assert(report.research_registration?.assurance?.unknown_readers === 'UNMEASURED', 'Research registration flattened unknown Readers.');
   assert(report.console_errors.length === 0, `Profile flights emitted console errors: ${JSON.stringify(report.console_errors)}`);
   assert(report.http_errors.length === 0, `Profile flights emitted HTTP errors: ${JSON.stringify(report.http_errors)}`);
   report.status = 'PASS';
