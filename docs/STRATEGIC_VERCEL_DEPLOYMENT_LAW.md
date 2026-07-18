@@ -54,3 +54,24 @@ This authorization covers one deployment after branch checks pass and the receip
 Exceptions must be recorded in the relevant receipt.
 
 Marked ⟐
+
+## Executable enforcement · 2026-07-18
+
+`vercel.json` disables Git-triggered deployment for every branch:
+
+```json
+{
+  "git": {
+    "deploymentEnabled": false
+  }
+}
+```
+
+A merge, push, green workflow, release-candidate label, or branch name cannot create a Vercel deployment. A deployment must be initiated manually only after the operator gives an explicit release instruction naming the exact commit and PREVIEW or PRODUCTION target.
+
+```text
+merge ≠ deploy
+main push ≠ operator gesture
+workflow success ≠ operator gesture
+manual Vercel action after explicit instruction = permitted release route
+```
