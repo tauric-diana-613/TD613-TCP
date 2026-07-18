@@ -9,6 +9,7 @@ const artifactDir=path.resolve(process.env.TD613_ARTIFACT_DIR||'artifacts/ash-in
 const keepUrl=`${base}/dome-world/ash-keep.html`;
 const VERSION='td613.ash.investigation-demo/v0.2-apeq-paia';
 const GUIDED_VERSION='td613.ash.guided-operator-ui/v0.2-stable-membrane';
+const HARDENING_VERSION='td613.ash.flicker-hardening/v0.1-static-compositor';
 const EXPECTED={rooms:14,nodes:72,relationships:112,routes:6,controls:12,held_outs:8,strata:10,joining_keys:8};
 
 function browserExecutable(){const requested=process.env.TD613_BROWSER_EXECUTABLE;if(requested&&fs.existsSync(requested))return requested;return ['/usr/bin/google-chrome','/usr/bin/chromium','/usr/bin/chromium-browser'].find(candidate=>fs.existsSync(candidate))||null;}
@@ -21,21 +22,22 @@ async function layoutReceipt(page){return page.evaluate(()=>{const visible=[...d
 await fsp.mkdir(artifactDir,{recursive:true});
 const executablePath=browserExecutable();
 const browser=await chromium.launch({headless:true,...(executablePath?{executablePath}:{})});
-const context=await browser.newContext({viewport:{width:1440,height:1000},reducedMotion:'reduce',acceptDownloads:true});
+const context=await browser.newContext({viewport:{width:1440,height:1000},reducedMotion:'no-preference',acceptDownloads:true});
 const page=await context.newPage();page.setDefaultTimeout(60000);
 const errors=[],badResponses=[];
 page.on('pageerror',error=>errors.push(error.message));
 page.on('console',message=>{if(message.type()==='error')errors.push(message.text());});
 page.on('response',response=>{if(response.status()>=400&&!/favicon\.ico/.test(response.url()))badResponses.push(`${response.status()} ${response.url()}`);});
-const report={schema:'td613.ash.investigation-guided-flight/v0.5-stable-membrane',status:'RUNNING',base_url:base,production_promotion_authorized:false,prediction_authorized:false,automatic_action_authorized:false,observations:{},errors,http_errors:badResponses,hold:null};
+const report={schema:'td613.ash.investigation-guided-flight/v0.6-static-compositor',status:'RUNNING',base_url:base,production_promotion_authorized:false,prediction_authorized:false,automatic_action_authorized:false,observations:{},errors,http_errors:badResponses,hold:null};
 
 try{
   await page.goto(keepUrl,{waitUntil:'networkidle'});
-  await page.waitForFunction(version=>Boolean(window.__td613AshKeep?.version)&&Boolean(window.__td613AshPremiumUI?.version)&&Boolean(window.__td613AshGuidedOperatorUI?.version)&&window.__td613AshInvestigationDemo?.version===version,VERSION);
+  await page.waitForFunction(version=>Boolean(window.__td613AshKeep?.version)&&Boolean(window.__td613AshPremiumUI?.version)&&Boolean(window.__td613AshGuidedOperatorUI?.version)&&Boolean(window.__td613AshFlickerHardening?.version)&&window.__td613AshInvestigationDemo?.version===version,VERSION);
   await clearCaseData(page);
   await page.reload({waitUntil:'networkidle'});
-  await page.waitForFunction(version=>Boolean(window.__td613AshGuidedOperatorUI?.version)&&window.__td613AshInvestigationDemo?.version===version,VERSION);
+  await page.waitForFunction(version=>Boolean(window.__td613AshGuidedOperatorUI?.version)&&Boolean(window.__td613AshFlickerHardening?.version)&&window.__td613AshInvestigationDemo?.version===version,VERSION);
   assert.equal(await page.locator('html').getAttribute('data-ash-guided-ui'),GUIDED_VERSION);
+  assert.equal(await page.locator('html').getAttribute('data-ash-flicker-hardening'),HARDENING_VERSION);
   assert.equal(await page.locator('html').getAttribute('data-ash-guided-u-i'),null);
   assert(await page.locator('#launch').isVisible(),'Investigation flight did not begin at explicit launch.');
   assert(await page.locator('#guidedLaunchPromise').isVisible(),'Custodial AI-access product promise is absent.');
@@ -83,6 +85,25 @@ try{
   assert.deepEqual(controlLabels,['⌂','≡','−','+','⛶'],'Map control legend order drifted.');
   const controlPlacement=await page.evaluate(()=>{const legend=document.getElementById('guidedMapControlLegend')?.getBoundingClientRect(),stage=document.getElementById('mapStage')?.getBoundingClientRect();return legend&&stage?{left:Math.round(legend.left-stage.left),bottom:Math.round(stage.bottom-legend.bottom)}:null;});
   assert(controlPlacement&&controlPlacement.left<=24&&controlPlacement.bottom<=24,`Map control legend escaped the bottom-left corner: ${JSON.stringify(controlPlacement)}`);
+  await page.waitForTimeout(350);
+  const idleStability=await page.evaluate(async()=>{
+    const root=document.querySelector('main');
+    let childListMutations=0;
+    let attributeMutations=0;
+    const observer=new MutationObserver(records=>{for(const record of records){if(record.type==='childList')childListMutations+=1;if(record.type==='attributes')attributeMutations+=1;}});
+    observer.observe(root,{childList:true,subtree:true,attributes:true});
+    const before=window.__td613AshFlickerHardening.diagnostics();
+    const legendStyle=getComputedStyle(document.getElementById('guidedMapControlLegend'));
+    await new Promise(resolve=>setTimeout(resolve,1800));
+    const after=window.__td613AshFlickerHardening.diagnostics();
+    observer.disconnect();
+    return{before,after,childListMutations,attributeMutations,legendBackdrop:legendStyle.backdropFilter||legendStyle.webkitBackdropFilter||'none'};
+  });
+  assert(idleStability.after.blockedAshMapFrames>=1,'Ash map frame guard never intercepted the perpetual scheduler.');
+  assert(idleStability.after.blockedAshMapFrames-idleStability.before.blockedAshMapFrames<=1,`Ash map frame loop continued while idle: ${JSON.stringify(idleStability)}`);
+  assert.equal(idleStability.childListMutations,0,`Ash command membrane mutated while idle: ${JSON.stringify(idleStability)}`);
+  assert.equal(idleStability.attributeMutations,0,`Ash command membrane attributes churned while idle: ${JSON.stringify(idleStability)}`);
+  assert(['none',''].includes(idleStability.legendBackdrop),`Map legend retained GPU blur: ${idleStability.legendBackdrop}`);
   const normalHeight=await page.locator('#mapStage').evaluate(node=>Math.round(node.getBoundingClientRect().height));
   await page.locator('#guidedMapFocus').click();assert(await page.locator('#workspace-map').evaluate(node=>node.classList.contains('guided-map-focus')));
   await page.waitForFunction(()=>{const dock=document.getElementById('premiumPrimaryDock'),heading=document.querySelector('#workspace-map > .workspace-head');return dock&&heading&&getComputedStyle(dock).pointerEvents==='none'&&Number.parseFloat(getComputedStyle(dock).opacity)<=0.01&&getComputedStyle(heading).display==='none';});
@@ -98,7 +119,7 @@ try{
   await page.setViewportSize({width:390,height:844});await page.locator('#premiumPrimaryDock [data-premium-workspace="home"]').click();await page.waitForTimeout(250);const mobile=await layoutReceipt(page),mobileRails=await legacyRailReceipt(page);assert.equal(mobile.horizontal_overflow,0,'Investigation mobile document overflowed.');assert.deepEqual(mobile.clipped_controls,[],'Investigation mobile controls clipped.');assert(mobile.dock_targets.every(value=>value>=48),'A primary dock target fell below 48 px.');assert(mobile.hero_title_font_px!=null&&mobile.hero_title_font_px<=20,`Mobile hero title remained oversized at ${mobile.hero_title_font_px}px.`);assert(mobileRails.every(railIsVisuallyHidden),`A legacy rail retained mobile layout: ${JSON.stringify(mobileRails)}`);await page.screenshot({path:path.join(artifactDir,'investigation-mobile-command-deck.png'),fullPage:true});
 
   assert.deepEqual(errors,[],`Investigation browser errors: ${errors.join(' | ')}`);assert.deepEqual(badResponses,[],`Investigation HTTP errors: ${badResponses.join(' | ')}`);
-  report.status='PASS';report.observations={orientation_ms:orientationMs,room_count:current.caseMap.rooms.length,node_count:current.caseMap.nodes.length,relationship_count:current.caseMap.relationships.length,route_count:current.routeMemory.entries.length,controls:method.counts.controls,held_outs:method.counts.held_outs,strata:method.counts.strata,joining_keys:method.counts.joining_keys,method_docket_visible:true,task_spine_steps:5,ai_share_steps:6,map_control_labels:controlLabels,map_control_placement:controlPlacement,map_height_normal:normalHeight,map_height_focused:focusedHeight,map_focus_visual:focusVisual,legacy_rails_hidden:true,exact_receipts_folded:true,choir_projection_cards:EXPECTED.routes,choir_pair_count:choirReceipt.pairwise_residue.length,choir_claim_ceiling_preserved:true,mobile};
+  report.status='PASS';report.observations={orientation_ms:orientationMs,room_count:current.caseMap.rooms.length,node_count:current.caseMap.nodes.length,relationship_count:current.caseMap.relationships.length,route_count:current.routeMemory.entries.length,controls:method.counts.controls,held_outs:method.counts.held_outs,strata:method.counts.strata,joining_keys:method.counts.joining_keys,method_docket_visible:true,task_spine_steps:5,ai_share_steps:6,map_control_labels:controlLabels,map_control_placement:controlPlacement,idle_stability:idleStability,map_height_normal:normalHeight,map_height_focused:focusedHeight,map_focus_visual:focusVisual,legacy_rails_hidden:true,exact_receipts_folded:true,choir_projection_cards:EXPECTED.routes,choir_pair_count:choirReceipt.pairwise_residue.length,choir_claim_ceiling_preserved:true,mobile};
 }catch(error){report.status='HOLD_FOR_REPAIR';report.hold={message:error.message,stack:error.stack};try{await page.screenshot({path:path.join(artifactDir,'investigation-held.png'),fullPage:true});}catch{}throw error;}
 finally{await fsp.writeFile(path.join(artifactDir,'ash-investigation-guidance-flight.json'),`${JSON.stringify(report,null,2)}\n`);await context.close();await browser.close();}
 console.log('ash-investigation-guidance-browser-probe.mjs passed');

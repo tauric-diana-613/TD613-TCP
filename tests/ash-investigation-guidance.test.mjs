@@ -13,6 +13,7 @@ const specs = read('app/dome-world/ash-apeq-paia-profile-specs.js');
 const guidance = read('app/dome-world/ash-guided-operator-ui.js');
 const css = read('app/dome-world/ash-guided-operator-ui.css');
 const bridge = read('app/dome-world/ash-workspace-bridge.js');
+const hardening = read('app/dome-world/ash-flicker-hardening.js');
 const probe = read('scripts/ash-investigation-guidance-browser-probe.mjs');
 
 assert.equal(ASH_INVESTIGATION_APEQ_PAIA_VERSION, 'td613.ash.investigation-demo/v0.2-apeq-paia');
@@ -39,6 +40,8 @@ assert.doesNotMatch(runtime, /fetch\(/);
 assert.match(specs, /Glass Meridian Vendor Integrity Inquiry/);
 assert.match(bridge, /ash-investigation-demo-hydration\.js/);
 assert.match(bridge, /ash-guided-operator-ui\.js/);
+assert.match(bridge, /ash-flicker-hardening\.js\?v=20260718-static-compositor-v1/);
+assert(bridge.indexOf('ash-flicker-hardening.js') < bridge.indexOf('ash-premium-ui.js'), 'Flicker hardening must install before Premium composition.');
 
 const roomIds = new Set(fixture.rooms.map(room => room.id));
 const nodeIds = new Set(fixture.nodes.map(node => node.id));
@@ -57,10 +60,23 @@ assert.match(css, /guided-map-control-legend/);
 assert.match(css, /Iowan Old Style/);
 assert.match(css, /guided-map-focus/);
 assert.match(css, /prefers-reduced-motion:reduce/);
+
+assert.match(hardening, /td613\.ash\.flicker-hardening\/v0\.1-static-compositor/);
+assert.match(hardening, /source\.includes\('state\.mapVisible'\)/);
+assert.match(hardening, /source\.includes\('scheduleFrame\(frame\)'\)/);
+assert.match(hardening, /ashFrameExecuting/);
+assert.match(hardening, /filteredLifecycleMutations/);
+assert.match(hardening, /attributeOldValue = true/);
+assert.match(hardening, /backdrop-filter:none!important/);
+assert.match(hardening, /\.premium-workspace\{animation:none!important\}/);
+assert.match(hardening, /\.guided-map-control-legend/);
+
 assert.match(probe, /legacyRailReceipt/);
 assert.match(probe, /Primary dock remained visible over focused tomography/);
 assert.match(probe, /Mobile hero title remained oversized/);
 assert.match(probe, /Map control legend escaped the bottom-left corner/);
+assert.match(probe, /Ash map frame loop continued while idle/);
+assert.match(probe, /Ash command membrane mutated while idle/);
 
 for (const forbidden of [/attribution_established\s*:\s*true/,/identity_established\s*:\s*true/,/prediction_authorized\s*:\s*true/,/automatic_action_authorized\s*:\s*true/,/surveillance_probability\s*:\s*[01]/]) assert.doesNotMatch(runtime + specs + guidance, forbidden);
 
