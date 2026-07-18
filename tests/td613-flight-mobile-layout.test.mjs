@@ -1,8 +1,10 @@
 import assert from 'assert';
 import fs from 'fs';
+import { JSDOM } from 'jsdom';
 
 const html = fs.readFileSync('app/safe-harbor/td613-flight.html', 'utf8');
 const analytics = fs.readFileSync('app/analytics.js', 'utf8');
+const speedInsights = fs.readFileSync('app/speed-insights.js', 'utf8');
 const chamberBootstrap = fs.readFileSync('app/chamber-bootstrap.js', 'utf8');
 
 assert(html.includes('TD613 Flight'));
@@ -85,5 +87,33 @@ const flightTileRepair = html.match(/<style id="flight-tile-layout-repair">([\s\
 assert(!flightTileRepair.includes('grid-template-columns'), 'Flight does not force the requested groups into an equal grid');
 assert(html.includes('Include PUA-B codepoint U+10D613'));
 assert(html.includes('Include surrogate pair (\\uDBF5\\uDE13)'));
+
+assert(speedInsights.includes('TD613FlightSealGlyphModeSwitch'));
+assert(speedInsights.includes("window.addEventListener('input', syncSealGlyphModeBeforeRebuild, true)"));
+
+const sealDom = new JSDOM(`<!doctype html><title>TD613 Flight</title>
+  <input id="sealUseDiamond" type="checkbox">
+  <input id="sealUseSacDiamond" type="checkbox">`, {
+  url: 'https://td613.com/safe-harbor/td613-flight.html',
+  runScripts: 'outside-only'
+});
+sealDom.window.eval(speedInsights);
+const minimalSeal = sealDom.window.document.getElementById('sealUseDiamond');
+const sacSeal = sealDom.window.document.getElementById('sealUseSacDiamond');
+const observedDuringRebuild = [];
+minimalSeal.addEventListener('input', () => observedDuringRebuild.push([minimalSeal.checked, sacSeal.checked]));
+sacSeal.checked = true;
+minimalSeal.checked = true;
+minimalSeal.dispatchEvent(new sealDom.window.Event('input', { bubbles: true }));
+assert.deepEqual(observedDuringRebuild.at(-1), [true, false], 'Minimal seal must win before Flight rebuilds output');
+assert.equal(minimalSeal.checked, true);
+assert.equal(sacSeal.checked, false);
+
+sacSeal.addEventListener('input', () => observedDuringRebuild.push([minimalSeal.checked, sacSeal.checked]));
+sacSeal.checked = true;
+sacSeal.dispatchEvent(new sealDom.window.Event('input', { bubbles: true }));
+assert.deepEqual(observedDuringRebuild.at(-1), [false, true], 'SAC seal must still replace minimal seal in one click');
+assert.equal(minimalSeal.checked, false);
+assert.equal(sacSeal.checked, true);
 
 console.log('td613-flight-mobile-layout tests passed');
