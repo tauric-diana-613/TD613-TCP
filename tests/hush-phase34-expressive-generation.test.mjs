@@ -104,7 +104,8 @@ const contractV2 = buildHushLlmPromptContractV2({ sourceText: TECH_JOB_SIGNAL_SA
 assert.equal(contractV2.promptVersion, 'hush-llm-candidate-v3');
 assert.equal(contractV2.ontologyRoute.propositionMap.questionCount, 2);
 assert(contractV2.ontologyRoute.routeType === 'question-legibility' || contractV2.ontologyRoute.routeType === 'everyday-question');
-assert(contractV2.rules.includes('Preserve meaning, questions, caveats, negations, uncertainty, and intent.'));
+assert(contractV2.rules.some((rule) => /Preserve meaning.*speech act/i.test(rule)));
+assert.equal(contractV2.speechActManifest.question_count, 2);
 assert(!Object.prototype.hasOwnProperty.call(contractV2, 'apiKey'));
 assert(!Object.prototype.hasOwnProperty.call(contractV2, 'ledger'));
 
