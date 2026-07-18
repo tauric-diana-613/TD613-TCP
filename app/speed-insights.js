@@ -97,6 +97,30 @@ window.si = window.si || function () {
   window.addEventListener('click', hardSignOut, true);
 })();
 
+(function installFlightSealGlyphModeSwitch() {
+  const route = window.location.pathname + window.location.search + window.location.hash;
+  const flight = /\/safe-harbor\/td613-flight\.html(?:$|[?#])/i.test(route) || /TD613 Flight/i.test(document.title || '');
+  if (!flight) return;
+
+  function syncSealGlyphModeBeforeRebuild(event) {
+    const target = event.target;
+    if (!target || (target.id !== 'sealUseDiamond' && target.id !== 'sealUseSacDiamond')) return;
+    if (!target.checked) return;
+    const otherId = target.id === 'sealUseDiamond' ? 'sealUseSacDiamond' : 'sealUseDiamond';
+    const other = document.getElementById(otherId);
+    if (other) other.checked = false;
+  }
+
+  // Flight's generic checkbox input handler rebuilds output immediately. Run
+  // first in the capture phase so the newly selected seal mode wins in one click.
+  window.addEventListener('input', syncSealGlyphModeBeforeRebuild, true);
+  window.addEventListener('change', syncSealGlyphModeBeforeRebuild, true);
+  window.TD613FlightSealGlyphModeSwitch = {
+    version: 'td613-flight-seal-glyph-mode-switch/v1',
+    sync: syncSealGlyphModeBeforeRebuild
+  };
+})();
+
 (function loadSafeHarborDesktopRescueStylesheet() {
   const route = window.location.pathname + window.location.search + window.location.hash;
   const safeHarbor = /\/safe-harbor\/(?:index\.html)?(?:$|[?#])/i.test(route) || /TD613 Safe Harbor/i.test(document.title || '');
