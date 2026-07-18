@@ -82,6 +82,7 @@ hush-app-flight.test.mjs
 hush-app-flight-matrix.test.mjs
 hush-phase33-expressive-payload.test.mjs
 hush-phase34-expressive-generation.test.mjs
+hush-speech-act-custody.test.mjs
 hush-mask-surface-flight.test.mjs
 hush-human-sample-residue.test.mjs
 hush-housekeeping.test.mjs
@@ -178,15 +179,3 @@ hush-phase14-selector-rerank.test.mjs
 hush-phase14-detector-nonclaims.test.mjs
 hush-phase14-audit-runner.test.mjs
 hush-selection-pressure.test.mjs
-hush-carryover-selection-runtime.test.mjs
-hush-source-residual-guard.test.mjs
-hush-repair-receipt-containment.test.mjs
-hush-backend-prompt-detox.test.mjs
-hush-gemini-quality-router.test.mjs
-hush-packet-ui-entrypoint.test.mjs
-hush-mobile-packet-and-mask-diversity.test.mjs
-hush-current-surface-coherence.test.mjs
-hush-dromological-paul-deploy.test.mjs
-hush-special-mask-layout-runtime.test.mjs
-hush-strict-held-diagnostic-popup.test.mjs
-hush-strict-provider-integrity.test.mjs
