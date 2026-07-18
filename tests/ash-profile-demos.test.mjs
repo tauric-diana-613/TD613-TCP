@@ -38,7 +38,7 @@ assert.match(hydration, /demo-unavailable/);
 assert.match(hydration, /political_campaign/);
 assert.match(hydration, /fundraiser/);
 assert.match(hydration, /stopImmediatePropagation/);
-assert.match(researchHydration, /QUALIFICATION_HYDRATION/);
+assert.match(researchHydration, /ASH_RESEARCH_HYDRATION_VERSION/);
 assert.match(researchHydration, /Constructed evidence remains capped at PA2/);
 
 for (const spec of fixtures) {
