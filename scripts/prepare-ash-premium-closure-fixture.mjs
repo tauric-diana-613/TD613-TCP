@@ -53,14 +53,20 @@ const cleanArrivalTarget = `  const cleanKeys = await page.evaluate(() => Object
     non_read_requests: initialNonGet
   };`;
 
+const permittedEpochs = [
+  'td613.ash.cache-flush/2026-07-17-premium-v1',
+  'td613.ash.cache-flush/2026-07-17-research-ingress-v2'
+];
+
 const cleanArrivalReplacement = `  const cleanEntries = await page.evaluate(() => Object.fromEntries(Object.entries(localStorage)));
   const cleanKeys = Object.keys(cleanEntries);
   const cleanMaintenanceKeys = new Set(['td613.ash.cache-flush.epoch']);
+  const permittedCacheEpochs = new Set(${JSON.stringify(permittedEpochs)});
   const initialNonGet = requests.filter(request => request.method !== 'GET' && request.method !== 'HEAD');
   assert(cleanCount === 0, 'Clean arrival created case records before operator action');
   assert(cleanKeys.every(key => cleanMaintenanceKeys.has(key)), 'Clean arrival wrote case-adjacent localStorage before operator action');
   if (cleanEntries['td613.ash.cache-flush.epoch']) {
-    assert(cleanEntries['td613.ash.cache-flush.epoch'] === 'td613.ash.cache-flush/2026-07-17-premium-v1', 'Clean arrival carried an unknown cache-maintenance epoch');
+    assert(permittedCacheEpochs.has(cleanEntries['td613.ash.cache-flush.epoch']), 'Clean arrival carried an unknown cache-maintenance epoch');
   }
   assert(initialNonGet.length === 0, 'Clean arrival emitted a non-read network request');
   report.clean_arrival = {
@@ -68,12 +74,14 @@ const cleanArrivalReplacement = `  const cleanEntries = await page.evaluate(() =
     indexeddb_record_count: cleanCount,
     local_storage_keys: cleanKeys,
     one_time_cache_epoch: cleanEntries['td613.ash.cache-flush.epoch'] || null,
+    permitted_cache_epochs: [...permittedCacheEpochs],
     case_adjacent_storage_written: false,
     non_read_requests: initialNonGet
   };`;
 
 const premiumMarker = 'const premiumCommandInstrument = await page.evaluate';
 const cacheMarker = 'const cleanMaintenanceKeys = new Set';
+const cacheSetMarker = 'const permittedCacheEpochs = new Set';
 const sha256 = value => `sha256:${createHash('sha256').update(value).digest('hex')}`;
 
 const original = (await fs.readFile(probePath, 'utf8')).replace(/\r\n/g, '\n');
@@ -94,16 +102,17 @@ if (!prepared.includes("'td613.ash.cache-flush.epoch'")) {
   transformations.push('ALLOW_NAMED_CACHE_EPOCH_AFTER_OPERATOR_ACTION');
 }
 
-if (!prepared.includes(cacheMarker)) {
+if (!prepared.includes(cacheSetMarker)) {
   const count = prepared.split(cleanArrivalTarget).length - 1;
   if (count !== 1) throw new Error(`Cache closure fixture expected one clean-arrival assertion seam; observed ${count}.`);
   prepared = prepared.replace(cleanArrivalTarget, cleanArrivalReplacement);
-  transformations.push('ALLOW_ONLY_NAMED_NON_CASE_CACHE_EPOCH_ON_CLEAN_ARRIVAL');
+  transformations.push('ALLOW_ONLY_EXACT_NON_CASE_CACHE_EPOCHS_ON_CLEAN_ARRIVAL');
 }
 
 if (!prepared.includes(premiumMarker)
   || !prepared.includes("window.__td613AshPremiumUI.open('save')")
   || !prepared.includes(cacheMarker)
+  || !prepared.includes(cacheSetMarker)
   || !prepared.includes('case_adjacent_storage_written: false')
   || !prepared.includes("'td613.ash.cache-flush.epoch'")) {
   throw new Error('Premium/cache closure fixture did not materialize every bounded observation seam.');
@@ -112,7 +121,7 @@ if (!prepared.includes(premiumMarker)
 if (prepared !== original) await fs.writeFile(probePath, prepared, 'utf8');
 await fs.mkdir(path.dirname(manifestPath), { recursive: true });
 await fs.writeFile(manifestPath, `${JSON.stringify({
-  schema: 'td613.ash-keep.premium-production-closure-fixture/v0.2-cache-epoch',
+  schema: 'td613.ash-keep.premium-production-closure-fixture/v0.3-cache-epoch-set',
   source_probe: path.relative(repoRoot, probePath),
   posture: transformations.length ? 'PREPARED_NOW' : 'ALREADY_PREPARED',
   source_sha256: sha256(original),
@@ -120,8 +129,8 @@ await fs.writeFile(manifestPath, `${JSON.stringify({
   transformations,
   permitted_clean_arrival_local_storage: {
     key: 'td613.ash.cache-flush.epoch',
-    value: 'td613.ash.cache-flush/2026-07-17-premium-v1',
-    classification: 'NON_CASE_ONE_TIME_MAINTENANCE_MARKER'
+    values: permittedEpochs,
+    classification: 'EXACT_NON_CASE_ONE_TIME_MAINTENANCE_MARKER_SET'
   },
   case_pointer_allowed_before_operator_action: false,
   lifecycle_record_allowed_before_operator_action: false,
