@@ -8,12 +8,12 @@ await fs.mkdir(out, { recursive: true });
 
 const engines = { chromium, firefox, webkit };
 const viewports = [
-  { name:'wide-1080', width:1920, height:1080, expect:'centered' },
-  { name:'standard-864', width:1536, height:864, expect:'centered-or-scroll' },
-  { name:'compact-768', width:1366, height:768, expect:'centered-or-scroll' },
-  { name:'short-700', width:1440, height:700, expect:'scroll' },
-  { name:'short-600', width:1280, height:600, expect:'scroll' },
-  { name:'narrow-desktop', width:1024, height:768, expect:'centered-or-scroll' }
+  { name:'wide-1080', width:1920, height:1080 },
+  { name:'standard-864', width:1536, height:864 },
+  { name:'compact-768', width:1366, height:768 },
+  { name:'short-700', width:1440, height:700 },
+  { name:'short-600', width:1280, height:600 },
+  { name:'narrow-desktop', width:1024, height:768 }
 ];
 
 const report = {
@@ -23,6 +23,7 @@ const report = {
   engines:{},
   external_requests:[],
   console_errors:[],
+  http_errors:[],
   universal_cache_eviction_claim:false,
   research_assurance_ceiling:'PA2'
 };
@@ -33,6 +34,7 @@ for (const [engineName, launcher] of Object.entries(engines)) {
   const page = await context.newPage();
   const external = [];
   const errors = [];
+  const httpErrors = [];
   page.on('request', request => {
     const url = new URL(request.url());
     if (url.origin !== new URL(base).origin) external.push(request.url());
@@ -41,6 +43,9 @@ for (const [engineName, launcher] of Object.entries(engines)) {
     if (message.type() === 'error') errors.push(message.text());
   });
   page.on('pageerror', error => errors.push(error.message));
+  page.on('response', response => {
+    if (response.status() >= 400) httpErrors.push({ status:response.status(), url:response.url() });
+  });
 
   await page.goto(`${base}/dome-world/ash-keep.html?arrival=cleared`, { waitUntil:'domcontentloaded', timeout:60000 });
   await page.waitForFunction(() => document.documentElement.dataset.ashResearchHydration?.includes('2026-07-17-v1'), null, { timeout:60000 });
@@ -54,6 +59,9 @@ for (const [engineName, launcher] of Object.entries(engines)) {
   });
   if (!engineReport.cache_receipt?.preserves_case_storage) throw new Error(`${engineName}: cache receipt missing case-storage preservation.`);
   if (engineReport.cache_receipt?.clears_http_cache_universally !== false) throw new Error(`${engineName}: cache receipt overclaimed universal HTTP-cache eviction.`);
+  if (!engineReport.cache_receipt?.revalidated_assets?.length || engineReport.cache_receipt.revalidated_assets.some(asset => !asset.ok)) {
+    throw new Error(`${engineName}: declared critical asset revalidation failed: ${JSON.stringify(engineReport.cache_receipt?.revalidated_assets || [])}`);
+  }
 
   for (const viewport of viewports) {
     await page.setViewportSize({ width:viewport.width, height:viewport.height });
@@ -65,7 +73,7 @@ for (const [engineName, launcher] of Object.entries(engines)) {
       const lr = launch.getBoundingClientRect();
       const pr = panel.getBoundingClientRect();
       const ar = actions.getBoundingClientRect();
-      const fits = panel.scrollHeight <= launch.clientHeight;
+      const fits = launch.scrollHeight <= launch.clientHeight + 1;
       const panelCenter = pr.top + pr.height / 2;
       const launchCenter = lr.top + lr.height / 2;
       return {
@@ -128,13 +136,20 @@ for (const [engineName, launcher] of Object.entries(engines)) {
   if (!/PA2/.test(engineReport.research.audit_text || '')) throw new Error(`${engineName}: Research audit omitted its PA2 ceiling.`);
   await page.screenshot({ path:path.join(out,`${engineName}-research.png`), fullPage:true });
 
+  const productHttpErrors = httpErrors.filter(item => !/\/favicon\.ico(?:\?|$)/.test(item.url));
+  const materialConsoleErrors = errors.filter(message => {
+    if (!/Failed to load resource: the server responded with a status of 404/i.test(message)) return true;
+    return productHttpErrors.length > 0 || !httpErrors.some(item => /\/favicon\.ico(?:\?|$)/.test(item.url));
+  });
   report.engines[engineName] = engineReport;
   report.external_requests.push(...external.map(url => ({ engine:engineName, url })));
-  report.console_errors.push(...errors.map(error => ({ engine:engineName, error })));
+  report.console_errors.push(...materialConsoleErrors.map(error => ({ engine:engineName, error })));
+  report.http_errors.push(...productHttpErrors.map(error => ({ engine:engineName, ...error })));
   await browser.close();
 }
 
 await fs.writeFile(path.join(out,'observation.json'), JSON.stringify(report,null,2));
 if (report.external_requests.length) throw new Error(`External requests observed: ${JSON.stringify(report.external_requests)}`);
+if (report.http_errors.length) throw new Error(`Product HTTP errors observed: ${JSON.stringify(report.http_errors)}`);
 if (report.console_errors.length) throw new Error(`Console errors observed: ${JSON.stringify(report.console_errors)}`);
 console.log(JSON.stringify(report));
