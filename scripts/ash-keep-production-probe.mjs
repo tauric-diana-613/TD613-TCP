@@ -282,6 +282,16 @@ async function persistReport() {
 
 try {
   await page.goto(keepUrl, { waitUntil: 'networkidle', timeout: 60_000 });
+  // ASH_CACHE_EPOCH_STABLE: the one-time eviction may navigate after first paint.
+  await page.waitForURL(url => url.searchParams.has('ash_flush'), { timeout: 60_000 });
+  await page.waitForLoadState('networkidle');
+  await page.waitForFunction(() => {
+    const epoch = localStorage.getItem('td613.ash.cache-flush.epoch');
+    const url = new URL(location.href);
+    return Boolean(epoch)
+      && url.searchParams.get('ash_flush') === epoch
+      && window.__td613AshCacheTransition?.epoch === epoch;
+  }, { timeout: 60_000 });
   await page.locator('h1').waitFor({ state: 'visible' });
   assert((await page.title()).includes('TD613 Ash Keep'), 'Ash Keep title was not observed');
   assert(await page.locator('#launch').isVisible(), 'Clean profile did not begin at the explicit launch gate');

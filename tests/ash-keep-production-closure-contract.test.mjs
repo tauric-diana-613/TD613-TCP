@@ -22,7 +22,7 @@ const premiumFlight = read('scripts/ash-premium-ui-browser-probe.mjs');
 for (const token of [
   'td613.ash-keep.production-closure-observation/v0.1', 'promotion_authorized: false', "const DB_NAME = 'td613-ash-keep'",
   'indexeddb_record_count', 'recipient_transport_requests', 'case_map_digest', 'WHAT_ACTUALLY_LEFT', 'REPLAY_VERIFIED',
-  'wrong_passphrase_hold', 'tamper_hold', 'mobile_portrait', 'mobile_landscape', 'evidence-manifest.json'
+  'wrong_passphrase_hold', 'tamper_hold', 'mobile_portrait', 'mobile_landscape', 'evidence-manifest.json', 'ASH_CACHE_EPOCH_STABLE'
 ]) assert.ok(probe.includes(token), `Core production probe omitted ${token}`);
 assert.match(probe, /real_surveillance_probability === null/);
 assert.match(probe, /automatic_hold === false/);

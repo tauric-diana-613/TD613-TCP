@@ -43,7 +43,7 @@ async function current(page){
 
 async function waitForRuntime(page){
   await page.waitForFunction(epoch=>Boolean(window.__td613AshKeep?.version)
-    && window.__td613AshIngressLayout?.version==='td613.ash.ingress-layout/v0.3-live-release'
+    && window.__td613AshIngressLayout?.version==='td613.ash.ingress-layout/v0.4-final-cut'
     && window.__td613AshProfileDemos?.version==='td613.ash.apeq-paia-profile-demos/v0.1'
     && window.__td613AshResearchDemo?.version==='td613.ash.research-demo/v0.2-lumen-atlas'
     && window.__td613AshResearchControlState?.version==='td613.ash.research-control-state/v0.3-blank-case'
@@ -73,6 +73,10 @@ try{
     assert(measurement.panel.width<=780.5,'Ingress panel exceeded live width ceiling.');
     assert(measurement.panel.scrollable===true,'Compressed ingress did not activate the inner scroll membrane.');
     await page.locator('#launch .launch-panel').evaluate(node=>node.scrollTo({top:node.scrollHeight,behavior:'auto'}));
+    await page.waitForFunction(() => document.querySelector('#launch .launch-panel')?.classList.contains('ash-scrollbar-active'));
+    assert(await page.locator('#launch .launch-panel').evaluate(node=>node.classList.contains('ash-scrollbar-active')),'Thin scrollbar did not reveal during scroll.');
+    await page.waitForTimeout(900);
+    assert(!(await page.locator('#launch .launch-panel').evaluate(node=>node.classList.contains('ash-scrollbar-active'))),'Thin scrollbar did not fade after rest.');
     assert(await page.locator('#startDemo').isVisible(),'Demo action is unreachable after ingress scroll.');
     assert(await page.locator('#newCase').isVisible(),'New case action is unreachable after ingress scroll.');
     await page.screenshot({path:path.join(out,`${engineName}-compressed-ingress.png`),fullPage:true});

@@ -28,7 +28,7 @@ const investigationWrapper = read('app/dome-world/ash-investigation-demo-hydrati
 const shell = read('api/dome-world-shell.js');
 
 assert.equal(ASH_APEQ_PAIA_PROFILE_DEMOS_VERSION, 'td613.ash.apeq-paia-profile-demos/v0.1');
-for (const token of ['width:min(780px', 'max-height:calc(100dvh - 32px)', 'overflow-y:auto!important', 'scrollbar-gutter:stable']) {
+for (const token of ['td613.ash.ingress-layout/v0.4-final-cut', 'width:min(780px', 'max-height:calc(100dvh - 32px)', 'overflow-y:auto!important', 'scrollbar-gutter:stable', 'scrollbar-width:thin', '::-webkit-scrollbar', 'ash-scrollbar-active', 'SCROLLBAR_FADE_DELAY = 760', 'installScrollbarFade(membrane, host)', 'installScrollbarFade(panel, host)']) {
   assert(ingress.includes(token), `Ingress omitted ${token}`);
 }
 assert.match(cache, /2026-07-18-live-ingress-v3/);

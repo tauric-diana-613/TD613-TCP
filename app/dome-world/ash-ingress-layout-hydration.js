@@ -1,6 +1,9 @@
-export const ASH_INGRESS_LAYOUT_VERSION = 'td613.ash.ingress-layout/v0.3-live-release';
+export const ASH_INGRESS_LAYOUT_VERSION = 'td613.ash.ingress-layout/v0.4-final-cut';
 
 const STYLE_ID = 'td613-ash-ingress-scroll-membrane';
+const SCROLLBAR_ACTIVE_CLASS = 'ash-scrollbar-active';
+const SCROLLBAR_FADE_DELAY = 760;
+const scrollbarTimers = new WeakMap();
 
 function ensureStyle(doc = document) {
   if (doc.getElementById(STYLE_ID)) return;
@@ -32,7 +35,42 @@ function ensureStyle(doc = document) {
       margin:auto!important;
       flex:0 0 auto;
     }
+    #launch.launch,
+    #launch .launch-panel{
+      scrollbar-width:thin;
+      scrollbar-color:transparent transparent;
+    }
+    #launch.launch::-webkit-scrollbar,
+    #launch .launch-panel::-webkit-scrollbar{width:7px;height:7px}
+    #launch.launch::-webkit-scrollbar-track,
+    #launch .launch-panel::-webkit-scrollbar-track{background:transparent}
+    #launch.launch::-webkit-scrollbar-thumb,
+    #launch .launch-panel::-webkit-scrollbar-thumb{
+      background-color:transparent;
+      background-clip:padding-box;
+      border:2px solid transparent;
+      border-radius:999px;
+      transition:background-color .18s ease;
+    }
+    #launch.launch.ash-scrollbar-active,
+    #launch .launch-panel.ash-scrollbar-active,
+    #launch.launch:hover,
+    #launch .launch-panel:hover,
+    #launch.launch:focus-within,
+    #launch .launch-panel:focus-within{
+      scrollbar-color:rgba(118,234,212,.48) transparent;
+    }
+    #launch.launch.ash-scrollbar-active::-webkit-scrollbar-thumb,
+    #launch .launch-panel.ash-scrollbar-active::-webkit-scrollbar-thumb,
+    #launch.launch:hover::-webkit-scrollbar-thumb,
+    #launch .launch-panel:hover::-webkit-scrollbar-thumb,
+    #launch.launch:focus-within::-webkit-scrollbar-thumb,
+    #launch .launch-panel:focus-within::-webkit-scrollbar-thumb{background-color:rgba(118,234,212,.48)}
     #launch .launch-panel:focus-within{outline:1px solid rgba(118,234,212,.28);outline-offset:3px}
+    @media (prefers-reduced-motion:reduce){
+      #launch.launch::-webkit-scrollbar-thumb,
+      #launch .launch-panel::-webkit-scrollbar-thumb{transition:none}
+    }
     @supports not (height:100dvh){
       #launch .launch-panel{max-height:calc(100vh - 32px)!important}
     }
@@ -46,6 +84,25 @@ function ensureStyle(doc = document) {
     }
   `;
   doc.head.append(style);
+}
+
+function installScrollbarFade(node, host = window) {
+  if (!node || node.dataset.ashScrollbarFade === 'true') return false;
+  node.dataset.ashScrollbarFade = 'true';
+  const reveal = () => {
+    node.classList.add(SCROLLBAR_ACTIVE_CLASS);
+    const prior = scrollbarTimers.get(node);
+    if (prior) host.clearTimeout(prior);
+    const timer = host.setTimeout(() => {
+      node.classList.remove(SCROLLBAR_ACTIVE_CLASS);
+      scrollbarTimers.delete(node);
+    }, SCROLLBAR_FADE_DELAY);
+    scrollbarTimers.set(node, timer);
+  };
+  node.addEventListener('scroll', reveal, { passive:true });
+  node.addEventListener('pointerenter', reveal, { passive:true });
+  node.addEventListener('focusin', reveal);
+  return true;
 }
 
 export function measureAshIngress(host = window) {
@@ -73,6 +130,11 @@ export function measureAshIngress(host = window) {
       x:Math.round(center.x - viewport.width / 2),
       y:Math.round(center.y - viewport.height / 2)
     },
+    scrollbar:{
+      width:getComputedStyle(panel).scrollbarWidth || 'auto',
+      active:panel.classList.contains(SCROLLBAR_ACTIVE_CLASS),
+      fade_delay_ms:SCROLLBAR_FADE_DELAY
+    },
     horizontal_overflow:Math.max(0, host.document.documentElement.scrollWidth - viewport.width)
   });
 }
@@ -81,11 +143,14 @@ export function installAshIngressLayout(doc = document, host = window) {
   if (!doc?.head || !host) return false;
   ensureStyle(doc);
   doc.documentElement.dataset.ashIngressLayout = ASH_INGRESS_LAYOUT_VERSION;
+  const membrane = doc.getElementById('launch');
   const panel = doc.querySelector('#launch .launch-panel');
   if (panel) {
     panel.setAttribute('tabindex','-1');
     panel.dataset.ashScrollMembrane = 'true';
   }
+  installScrollbarFade(membrane, host);
+  installScrollbarFade(panel, host);
   host.__td613AshIngressLayout = Object.freeze({
     version:ASH_INGRESS_LAYOUT_VERSION,
     measure:() => measureAshIngress(host),
