@@ -1,12 +1,13 @@
 import fs from 'node:fs';
 import path from 'node:path';
 
-export const DOME_WORLD_SHELL_VERSION = 'td613.dome-world.shell/v1.2-embedded-ash-membrane';
+export const DOME_WORLD_SHELL_VERSION = 'td613.dome-world.shell/v1.3-live-cache-transition';
 export const MARROWLINE_LAB_ROUTE = '/dome-world/marrowline.html';
 export const ASH_THRESHOLD_ROUTE = '/dome-world/ash-threshold.html';
 export const ASH_LIFECYCLE_SHELL_CONTRACT = 'td613.ash.lifecycle-shell/v0.1';
 export const ASH_KEEP_SHELL_VERSION = 'td613.ash-keep.shell/v0.2-canonical-composition';
 export const ASH_KEEP_JS_SHELL_VERSION = 'td613.ash-keep.js-shell/v0.4-native-bindings';
+export const ASH_CACHE_TRANSITION_CONTRACT = 'td613.ash.cache-transition/v0.2-live-ingress';
 export const ASH_LIFECYCLE_MODULE = '/dome-world/ash-lifecycle.js';
 export const ASH_WORKSPACE_BRIDGE_MODULE = '/dome-world/ash-workspace-bridge.js';
 
@@ -103,22 +104,47 @@ function surfaceDefinition(surface) {
 function send(res, status, body = '', definition = surfaceDefinition('dome-world')) {
   res.statusCode = status;
   res.setHeader('Content-Type', definition.contentType);
-  res.setHeader('Cache-Control', 'no-store, max-age=0');
+  res.setHeader('Cache-Control', 'no-store, max-age=0, must-revalidate');
   res.setHeader('X-Content-Type-Options', 'nosniff');
   res.setHeader(definition.header[0], definition.header[1]);
   res.setHeader('X-TD613-Ash-Lifecycle', ASH_LIFECYCLE_SHELL_CONTRACT);
   res.end(body);
 }
 
+function sendCacheEviction(res, method) {
+  const body = JSON.stringify({
+    ok:true,
+    schema:'td613.ash.cache-transition-response/v0.2-live-release',
+    scope:'HTTP_CACHE_ONLY',
+    indexeddb_preserved:true,
+    local_storage_preserved:true,
+    session_storage_preserved:true,
+    physical_erasure_verified:false,
+    contract:ASH_CACHE_TRANSITION_CONTRACT
+  });
+  res.statusCode = 200;
+  res.setHeader('Content-Type', 'application/json; charset=utf-8');
+  res.setHeader('Cache-Control', 'no-store, max-age=0, must-revalidate');
+  res.setHeader('Clear-Site-Data', '"cache"');
+  res.setHeader('X-Content-Type-Options', 'nosniff');
+  res.setHeader('X-TD613-Ash-Cache-Transition', ASH_CACHE_TRANSITION_CONTRACT);
+  res.setHeader('X-TD613-Ash-Lifecycle', ASH_LIFECYCLE_SHELL_CONTRACT);
+  res.end(method === 'HEAD' ? '' : body);
+}
+
 export default function handler(req, res) {
   const method = String(req.method || 'GET').toUpperCase();
   const surface = requestedSurface(req);
-  const definition = surfaceDefinition(surface);
   if (!['GET', 'HEAD'].includes(method)) {
     res.setHeader('Allow', 'GET, HEAD');
-    send(res, 405, 'Method Not Allowed', definition);
+    send(res, 405, 'Method Not Allowed', surfaceDefinition(surface === 'cache-evict' ? 'dome-world' : surface));
     return;
   }
+  if (surface === 'cache-evict') {
+    sendCacheEviction(res, method);
+    return;
+  }
+  const definition = surfaceDefinition(surface);
   try {
     const source = fs.readFileSync(definition.path, 'utf8');
     const rendered = definition.transform(source);
