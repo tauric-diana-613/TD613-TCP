@@ -8,7 +8,9 @@ on:
       - 'app/dome-world/ash-workspace-bridge.js'
       - 'app/dome-world/ash-research-profile-hydration.js'
       - 'app/dome-world/fixtures/ash-keep-demo-*.json'
+      - 'scripts/ash-profile-demo-browser-probe.mjs'
       - 'scripts/ash-research-profile-browser-probe.mjs'
+      - 'tests/ash-profile-demos.test.mjs'
       - 'tests/ash-research-profile-hydration.test.mjs'
       - 'docs/ASH_RESEARCH_PROFILE_HYDRATION_AUDIT_2026-07-17.md'
       - '.github/workflows/ash-research-hydration-flight.yml'
@@ -20,7 +22,9 @@ on:
       - 'app/dome-world/ash-workspace-bridge.js'
       - 'app/dome-world/ash-research-profile-hydration.js'
       - 'app/dome-world/fixtures/ash-keep-demo-*.json'
+      - 'scripts/ash-profile-demo-browser-probe.mjs'
       - 'scripts/ash-research-profile-browser-probe.mjs'
+      - 'tests/ash-profile-demos.test.mjs'
       - 'tests/ash-research-profile-hydration.test.mjs'
       - 'docs/ASH_RESEARCH_PROFILE_HYDRATION_AUDIT_2026-07-17.md'
       - '.github/workflows/ash-research-hydration-flight.yml'
@@ -53,11 +57,42 @@ jobs:
           node --check app/dome-world/ash-lifecycle.js
           node --check app/dome-world/ash-workspace-bridge.js
           node --check app/dome-world/ash-research-profile-hydration.js
+          node --check scripts/ash-profile-demo-browser-probe.mjs
           node --check scripts/ash-research-profile-browser-probe.mjs
-      - name: Preserve ingress launch contract
-        run: node tests/ash-keep-launch-membrane.test.mjs
-      - name: Preserve eleven-plus-one function covenant
-        run: node tests/product-architecture/ledger.test.mjs
+      - name: Retain contested preservation witnesses
+        shell: bash
+        run: |
+          mkdir -p artifacts/ash-research-contracts
+          set +e
+          node tests/ash-keep-launch-membrane.test.mjs > artifacts/ash-research-contracts/launch.log 2>&1
+          launch=$?
+          node tests/ash-profile-demos.test.mjs > artifacts/ash-research-contracts/profiles.log 2>&1
+          profiles=$?
+          node tests/ash-investigation-guidance.test.mjs > artifacts/ash-research-contracts/investigation.log 2>&1
+          investigation=$?
+          node tests/product-architecture/ledger.test.mjs > artifacts/ash-research-contracts/ledger.log 2>&1
+          ledger=$?
+          printf 'launch=%s\nprofiles=%s\ninvestigation=%s\nledger=%s\n' "$launch" "$profiles" "$investigation" "$ledger" | tee artifacts/ash-research-contracts/status.env
+          exit 0
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: ash-research-hydration-contract-evidence
+          path: artifacts/ash-research-contracts
+          if-no-files-found: error
+          retention-days: 30
+      - name: Enforce contested preservation witnesses
+        shell: bash
+        run: |
+          source artifacts/ash-research-contracts/status.env
+          cat artifacts/ash-research-contracts/launch.log
+          cat artifacts/ash-research-contracts/profiles.log
+          cat artifacts/ash-research-contracts/investigation.log
+          cat artifacts/ash-research-contracts/ledger.log
+          test "$launch" -eq 0
+          test "$profiles" -eq 0
+          test "$investigation" -eq 0
+          test "$ledger" -eq 0
 
   multi-engine:
     name: Research hydration · Chromium Firefox WebKit
