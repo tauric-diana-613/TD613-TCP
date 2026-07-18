@@ -1,0 +1,108 @@
+name: Ash APEQ PAIA Profile Hydration
+
+on:
+  pull_request:
+    paths:
+      - 'app/dome-world/ash-apeq-paia-*'
+      - 'app/dome-world/ash-profile-demo-hydration.js'
+      - 'app/dome-world/ash-investigation-demo-hydration.js'
+      - 'scripts/ash-profile-demo-browser-probe.mjs'
+      - 'scripts/ash-investigation-guidance-browser-probe.mjs'
+      - 'tests/ash-profile-demos.test.mjs'
+      - 'tests/ash-investigation-guidance.test.mjs'
+      - 'docs/ASH_KEEP_APEQ_PAIA_PROFILE_REHYDRATION_2026-07-18.md'
+      - '.github/workflows/ash-apeq-paia-profile-hydration.yml'
+  push:
+    branches: [main]
+    paths:
+      - 'app/dome-world/ash-apeq-paia-*'
+      - 'app/dome-world/ash-profile-demo-hydration.js'
+      - 'app/dome-world/ash-investigation-demo-hydration.js'
+      - 'scripts/ash-profile-demo-browser-probe.mjs'
+      - 'scripts/ash-investigation-guidance-browser-probe.mjs'
+      - 'tests/ash-profile-demos.test.mjs'
+      - 'tests/ash-investigation-guidance.test.mjs'
+      - 'docs/ASH_KEEP_APEQ_PAIA_PROFILE_REHYDRATION_2026-07-18.md'
+      - '.github/workflows/ash-apeq-paia-profile-hydration.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: ash-apeq-paia-profile-hydration-${{ github.event.pull_request.number || github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  contracts:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 24
+          cache: npm
+      - run: npm ci
+      - name: Verify profile method contracts
+        run: node tests/ash-profile-demos.test.mjs
+      - name: Verify Investigation method and guided boundaries
+        run: node tests/ash-investigation-guidance.test.mjs
+      - name: Verify syntax
+        run: |
+          node --check app/dome-world/ash-apeq-paia-method-kernel.js
+          node --check app/dome-world/ash-apeq-paia-profile-specs.js
+          node --check app/dome-world/ash-apeq-paia-profile-demos.js
+          node --check app/dome-world/ash-profile-demo-hydration.js
+          node --check app/dome-world/ash-investigation-demo-hydration.js
+          node --check scripts/ash-profile-demo-browser-probe.mjs
+          node --check scripts/ash-investigation-guidance-browser-probe.mjs
+      - name: Preserve product architecture
+        run: node tests/product-architecture/ledger.test.mjs
+
+  chromium-flight:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 24
+          cache: npm
+      - run: npm ci
+      - name: Install Chromium
+        run: |
+          npm install --no-save --package-lock=false playwright@1.54.1
+          npx playwright install --with-deps chromium
+      - name: Start bounded Ash runtime
+        run: |
+          node scripts/ash-keep-local-closure-server.mjs 6130 > /tmp/ash-method-profile.log 2>&1 &
+          echo $! > /tmp/ash-method-profile.pid
+          for attempt in $(seq 1 30); do
+            if curl -fsS http://127.0.0.1:6130/dome-world/ash-keep.html >/dev/null; then exit 0; fi
+            sleep 1
+          done
+          cat /tmp/ash-method-profile.log || true
+          exit 1
+      - name: Fly Campaign and Fundraiser
+        env:
+          TD613_BASE_URL: http://127.0.0.1:6130
+          TD613_ARTIFACT_DIR: artifacts/ash-method-profile/campaign-fundraiser
+        run: node scripts/ash-profile-demo-browser-probe.mjs
+      - name: Fly Investigation
+        env:
+          TD613_BASE_URL: http://127.0.0.1:6130
+          TD613_ARTIFACT_DIR: artifacts/ash-method-profile/investigation
+        run: node scripts/ash-investigation-guidance-browser-probe.mjs
+      - name: Stop bounded Ash runtime
+        if: always()
+        run: kill "$(cat /tmp/ash-method-profile.pid)" 2>/dev/null || true
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: ash-apeq-paia-profile-evidence
+          path: |
+            artifacts/ash-method-profile
+            /tmp/ash-method-profile.log
+          if-no-files-found: error
+          retention-days: 30
