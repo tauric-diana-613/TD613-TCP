@@ -5,11 +5,10 @@ const MARKER_KEY = 'td613.ash.cache-flush.epoch';
 const RECEIPT_KEY = 'td613.ash.cache-flush.receipt';
 const POINTER_KEY = 'td613.ash-keep.current-case';
 const SESSION_EPOCH_KEY = 'td613.ash.session.epoch';
-const QUERY_KEY = 'ash_flush';
 const ASSET_EPOCH = '20260718-canonical-membrane-v6';
 const EVICTION_ROUTE = '/api/dome-world-shell?surface=cache-evict';
 const LOCAL_HOSTS = new Set(['localhost', '127.0.0.1', '[::1]']);
-const TRANSITION_QUERY_KEYS = [QUERY_KEY, 'asset_epoch', 'cache_nonce', 'arrival'];
+const TRANSITION_QUERY_KEYS = ['ash_flush', 'asset_epoch', 'cache_nonce', 'arrival'];
 
 function readMarker() {
   try { return localStorage.getItem(MARKER_KEY); }
@@ -122,10 +121,11 @@ export async function runAshCacheFlush(host = globalThis) {
   if (!host?.location || readMarker() === ASH_CACHE_FLUSH_EPOCH) {
     const transition_url_cleaned = cleanTransitionUrl(host);
     const receipt = Object.freeze({
-      schema:'td613.ash.cache-transition-receipt/v0.4-canonical-membrane',
+      schema:'td613.ash.cache-transition-receipt/v0.5-canonical-no-reload',
       epoch:ASH_CACHE_FLUSH_EPOCH,
       performed:false,
       reload_required:false,
+      navigation_replaced:false,
       indexeddb_preserved:true,
       case_data_preserved:true,
       active_session_reset:false,
@@ -144,14 +144,14 @@ export async function runAshCacheFlush(host = globalThis) {
   ]);
   const second_cache_names = await clearCacheStorage().catch(() => []);
   writeMarker();
+  const transition_url_cleaned = cleanTransitionUrl(host);
 
-  const url = new URL(host.location.href);
-  const alreadyReloaded = url.searchParams.get(QUERY_KEY) === ASH_CACHE_FLUSH_EPOCH;
   const receipt = Object.freeze({
-    schema:'td613.ash.cache-transition-receipt/v0.4-canonical-membrane',
+    schema:'td613.ash.cache-transition-receipt/v0.5-canonical-no-reload',
     epoch:ASH_CACHE_FLUSH_EPOCH,
     performed:true,
-    reload_required:!alreadyReloaded,
+    reload_required:false,
+    navigation_replaced:false,
     http_cache,
     cache_names:[...new Set([...first_cache_names, ...second_cache_names])],
     worker_scopes,
@@ -161,19 +161,11 @@ export async function runAshCacheFlush(host = globalThis) {
     local_case_pointer_preserved:false,
     cleared_session_keys,
     storage_cleared:false,
+    transition_url_cleaned,
     release_asset_epoch:ASSET_EPOCH
   });
   writeReceipt(receipt);
   host.__td613AshCacheTransition = receipt;
-
-  if (!alreadyReloaded) {
-    url.searchParams.set(QUERY_KEY, ASH_CACHE_FLUSH_EPOCH);
-    url.searchParams.set('asset_epoch', ASSET_EPOCH);
-    url.searchParams.set('cache_nonce', crypto.randomUUID());
-    host.location.replace(url.toString());
-  } else {
-    cleanTransitionUrl(host);
-  }
   return receipt;
 }
 
