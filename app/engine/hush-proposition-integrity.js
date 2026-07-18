@@ -1,7 +1,8 @@
 import { buildPropositionMap, questionFormScore, newClaimRisk } from './hush-proposition-map.js';
 import { collapseSurfaceScore } from './hush-generator-provider.js';
+import { auditHushSpeechActCustody } from './hush-speech-act-custody.js';
 
-export const HUSH_PROPOSITION_INTEGRITY_VERSION = 'phase-36.1-proposition-coverage-integrity';
+export const HUSH_PROPOSITION_INTEGRITY_VERSION = 'phase-36.2-proposition-coverage+speech-act-custody';
 
 const safe = (value) => String(value ?? '').trim();
 const advicePattern = /\b(apply|linkedin|portfolio|bootcamp|certification|take a course|build projects|job board|mentor|referral)\b/i;
@@ -72,8 +73,6 @@ function allowedMissingUnitCount(weightedRows = [], sourceWordCount = 0) {
 
 function coverageAudit(sourceText = '', outputText = '') {
   const units = contentUnits(sourceText);
-  // Source units stay compact. Output terms must use the full output corpus.
-  // The previous gate capped output terms at 18, which made valid longer rewrites fail.
   const outputTerms = new Set(keyTerms(outputText, { limit: 0 }));
   const rows = units.map((unit) => ({
     id: unit.id,
@@ -117,11 +116,15 @@ export function auditPropositionIntegrity(sourceText = '', outputText = '') {
   const claimRisk = newClaimRisk(sourceText, outputText);
   const collapse = collapseSurfaceScore(outputText);
   const coverage = coverageAudit(sourceText, outputText);
+  const speechActCustody = auditHushSpeechActCustody(sourceText, outputText);
   const outputPreservesQuestion = qScore >= 0.5;
-  const answeredQuestion = sourceMap.questionCount > 0 && !outputPreservesQuestion && (directAnswerPattern.test(outputText) || yesNoAnswerPattern.test(outputText) || advicePattern.test(outputText));
+  const legacyAnsweredQuestion = sourceMap.questionCount > 0 && !outputPreservesQuestion && (directAnswerPattern.test(outputText) || yesNoAnswerPattern.test(outputText) || advicePattern.test(outputText));
+  const answeredQuestion = speechActCustody.answer_drift || legacyAnsweredQuestion;
   const inventedAdvice = sourceMap.questionCount > 0 && advicePattern.test(outputText) && !advicePattern.test(sourceText) && !outputPreservesQuestion;
+  const instructionObeyed = speechActCustody.compliance_drift;
+  const responsePostureDrift = speechActCustody.response_posture_drift;
   const strengthenedClaim = sourceMap.claimCount > 0 && /\b(obviously|clearly|proved|fraud|guilty|responsible|confirmed)\b/i.test(outputText) && !/\b(obviously|clearly|proved|fraud|guilty|responsible|confirmed)\b/i.test(sourceText);
-  const passed = qScore >= 0.5 && coverage.passed && !answeredQuestion && !inventedAdvice && !strengthenedClaim && collapse < 0.34 && claimRisk.score < 0.35;
+  const passed = qScore >= 0.5 && coverage.passed && speechActCustody.passed && !answeredQuestion && !inventedAdvice && !instructionObeyed && !responsePostureDrift && !strengthenedClaim && collapse < 0.34 && claimRisk.score < 0.35;
   return {
     version: HUSH_PROPOSITION_INTEGRITY_VERSION,
     passed,
@@ -130,9 +133,12 @@ export function auditPropositionIntegrity(sourceText = '', outputText = '') {
     questionFormScore: qScore,
     newClaimRisk: claimRisk,
     coverage,
+    speechActCustody,
     collapseSurfaceScore: collapse,
     answeredQuestion,
     inventedAdvice,
+    instructionObeyed,
+    responsePostureDrift,
     strengthenedClaim,
     warnings: [
       ...(qScore < 0.5 ? ['question-form-loss'] : []),
@@ -141,9 +147,12 @@ export function auditPropositionIntegrity(sourceText = '', outputText = '') {
       ...(coverage.missingUnitCount > coverage.allowedMissingUnits ? ['missing-source-units'] : []),
       ...(answeredQuestion ? ['question-answered'] : []),
       ...(inventedAdvice ? ['invented-advice'] : []),
+      ...(instructionObeyed ? ['instruction-obeyed-instead-of-transformed'] : []),
+      ...(responsePostureDrift ? ['response-posture-drift'] : []),
       ...(strengthenedClaim ? ['claim-strengthened'] : []),
       ...(collapse >= 0.34 ? ['custody-collapse-surface'] : []),
-      ...(claimRisk.score >= 0.35 ? ['new-claim-risk'] : [])
+      ...(claimRisk.score >= 0.35 ? ['new-claim-risk'] : []),
+      ...speechActCustody.warnings
     ]
   };
 }
