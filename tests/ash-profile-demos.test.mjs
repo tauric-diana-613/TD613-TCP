@@ -18,40 +18,57 @@ import {
 
 const root = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..');
 const fixtures = [
-  ['political_campaign', 'app/dome-world/fixtures/ash-keep-demo-political-campaign.json', 9, 32, 34],
-  ['fundraiser', 'app/dome-world/fixtures/ash-keep-demo-fundraiser.json', 10, 33, 35]
+  { profile:'political_campaign', relative:'app/dome-world/fixtures/ash-keep-demo-political-campaign.json', rooms:9, nodes:32, edges:34, routes:3, hydration:'BASELINE_HYDRATION' },
+  { profile:'fundraiser', relative:'app/dome-world/fixtures/ash-keep-demo-fundraiser.json', rooms:10, nodes:33, edges:35, routes:3, hydration:'BASELINE_HYDRATION' },
+  { profile:'research', relative:'app/dome-world/fixtures/ash-keep-demo-research.json', rooms:11, nodes:47, edges:49, routes:4, hydration:'QUALIFICATION_HYDRATION' }
 ];
 
 assert.equal(CASE_PROFILES.political_campaign, 'Campaign Map');
 assert.equal(CASE_PROFILES.fundraiser, 'Fundraising Map');
+assert.equal(CASE_PROFILES.research, 'Research Map');
 assert.equal(fs.existsSync(path.join(root, 'app/dome-world/fixtures/ash-keep-demo.json')), false, 'Archaic universal demo fixture still exists.');
 
 const bridge = fs.readFileSync(path.join(root, 'app/dome-world/ash-workspace-bridge.js'), 'utf8');
 const hydration = fs.readFileSync(path.join(root, 'app/dome-world/ash-profile-demo-hydration.js'), 'utf8');
+const researchHydration = fs.readFileSync(path.join(root, 'app/dome-world/ash-research-profile-hydration.js'), 'utf8');
 assert.match(bridge, /ash-profile-demo-hydration\.js/);
+assert.match(bridge, /ash-research-profile-hydration\.js/);
 assert.match(hydration, /Select a profile…/);
 assert.match(hydration, /demo-unavailable/);
 assert.match(hydration, /political_campaign/);
 assert.match(hydration, /fundraiser/);
 assert.match(hydration, /stopImmediatePropagation/);
+assert.match(researchHydration, /QUALIFICATION_HYDRATION/);
+assert.match(researchHydration, /Constructed evidence remains capped at PA2/);
 
-for (const [profile, relative, roomMinimum, nodeMinimum, edgeMinimum] of fixtures) {
+for (const spec of fixtures) {
+  const { profile, relative, rooms:roomMinimum, nodes:nodeMinimum, edges:edgeMinimum, routes:routeMinimum, hydration:hydrationClass } = spec;
   const fixture = JSON.parse(fs.readFileSync(path.join(root, relative), 'utf8'));
   assert.equal(fixture.schema, 'td613.ash.keep-demo/v0.2');
   assert.equal(fixture.profile, profile);
   assert.equal(fixture.source_status, 'SIMULATED');
-  assert.ok(fixture.stress_targets.some(value => /Choir/.test(value)), `${profile} does not prepare future Choir stress.`);
+  if (hydrationClass === 'BASELINE_HYDRATION') {
+    assert.ok(fixture.stress_targets.some(value => /Choir/.test(value)), `${profile} does not prepare future Choir stress.`);
+    assert.equal(fixture.observations[0].kind, 'SYNTHETIC_PROFILE_DEMO');
+    assert.equal(Object.values(fixture.observations[0]).some(value => value === true), false, 'Synthetic disclaimer unexpectedly asserted a real-world fact.');
+  } else {
+    assert.equal(fixture.hydration_class, hydrationClass);
+    assert.equal(fixture.minimum_assurance_ceiling, 'PA2');
+    assert.ok(fixture.missingness.length >= 3);
+    assert.ok(fixture.alternatives.length >= 3);
+    assert.ok(fixture.open_questions.length >= 3);
+    assert.ok(fixture.case.nodes.some(node => node.source_status === 'UNRESOLVED'));
+    assert.ok(fixture.case.nodes.some(node => node.type === 'evidence-gap'));
+  }
   assert.ok(fixture.case.rooms.length >= roomMinimum);
   assert.ok(fixture.case.nodes.length >= nodeMinimum);
   assert.ok(fixture.case.relationships.length >= edgeMinimum);
   assert.ok(fixture.room_rules.length >= 5);
-  assert.ok(fixture.route_memory.entries.length >= 3);
+  assert.ok(fixture.route_memory.entries.length >= routeMinimum);
   assert.ok(fixture.disclosure_sequence.length >= 7);
   assert.ok(fixture.defaults.test_refs.length >= 5);
   assert.ok(fixture.defaults.draft.refs.length >= 3);
   assert.ok(fixture.defaults.route.refs.length >= 3);
-  assert.equal(fixture.observations[0].kind, 'SYNTHETIC_PROFILE_DEMO');
-  assert.equal(Object.values(fixture.observations[0]).some(value => value === true), false, 'Synthetic disclaimer unexpectedly asserted a real-world fact.');
 
   const roomIds = new Set(fixture.case.rooms.map(room => room.id));
   const nodeIds = new Set(fixture.case.nodes.map(node => node.id));
