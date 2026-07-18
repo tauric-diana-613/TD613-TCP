@@ -60,6 +60,7 @@ jobs:
           node --check api/dome-world-shell.js
           node --check app/dome-world/ash-ingress-layout-hydration.js
           node --check app/dome-world/ash-research-demo-hydration.js
+          node --check app/dome-world/ash-research-demo-control-state.js
           node --check app/dome-world/ash-cache-flush.js
           node --check scripts/ash-research-ingress-browser-probe.mjs
           node --check scripts/ash-profile-demo-browser-probe.mjs
@@ -100,7 +101,11 @@ jobs:
           TD613_BASE_URL: http://127.0.0.1:6130
           TD613_BROWSER: ${{ matrix.browser }}
           TD613_ARTIFACT_DIR: artifacts/ash-research-ingress/${{ matrix.browser }}
-        run: node scripts/ash-research-ingress-browser-probe.mjs
+        shell: bash
+        run: |
+          set -euo pipefail
+          mkdir -p "$TD613_ARTIFACT_DIR"
+          node scripts/ash-research-ingress-browser-probe.mjs 2>&1 | tee "$TD613_ARTIFACT_DIR/${TD613_BROWSER}-probe.log"
       - name: Stop bounded Ash runtime
         if: always()
         run: kill "$(cat /tmp/ash-research-ingress.pid)" 2>/dev/null || true
