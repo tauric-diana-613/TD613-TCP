@@ -1,4 +1,5 @@
 export const ASH_KEEP_DELIVERY_TRANSFORM_VERSION = 'td613.ash-keep.delivery-transform/v1.2-event-driven-map';
+export const ASH_KEEP_DELIVERY_TRANSFORM_LINEAGE = 'td613.ash-keep.delivery-transform/v1.0-event-driven-map';
 
 const PERPETUAL_SCHEDULER = `const scheduleFrame = callback => requestAnimationFrame(callback);
 
