@@ -1,0 +1,103 @@
+name: Ash Research Hydration and Ingress Flight
+
+on:
+  pull_request:
+    paths:
+      - 'app/dome-world/ash-cache-flush.js'
+      - 'app/dome-world/ash-lifecycle.js'
+      - 'app/dome-world/ash-workspace-bridge.js'
+      - 'app/dome-world/ash-research-profile-hydration.js'
+      - 'app/dome-world/fixtures/ash-keep-demo-*.json'
+      - 'scripts/ash-research-profile-browser-probe.mjs'
+      - 'tests/ash-research-profile-hydration.test.mjs'
+      - 'docs/ASH_RESEARCH_PROFILE_HYDRATION_AUDIT_2026-07-17.md'
+      - '.github/workflows/ash-research-hydration-flight.yml'
+  push:
+    branches: [main]
+    paths:
+      - 'app/dome-world/ash-cache-flush.js'
+      - 'app/dome-world/ash-lifecycle.js'
+      - 'app/dome-world/ash-workspace-bridge.js'
+      - 'app/dome-world/ash-research-profile-hydration.js'
+      - 'app/dome-world/fixtures/ash-keep-demo-*.json'
+      - 'scripts/ash-research-profile-browser-probe.mjs'
+      - 'tests/ash-research-profile-hydration.test.mjs'
+      - 'docs/ASH_RESEARCH_PROFILE_HYDRATION_AUDIT_2026-07-17.md'
+      - '.github/workflows/ash-research-hydration-flight.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: ash-research-hydration-${{ github.event.pull_request.number || github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  contracts:
+    name: Research hydration · contracts and cache law
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 24
+          cache: npm
+      - run: npm ci
+      - name: Verify Research hydration, ingress, and cache contracts
+        run: node tests/ash-research-profile-hydration.test.mjs
+      - name: Verify syntax
+        run: |
+          node --check app/dome-world/ash-cache-flush.js
+          node --check app/dome-world/ash-lifecycle.js
+          node --check app/dome-world/ash-workspace-bridge.js
+          node --check app/dome-world/ash-research-profile-hydration.js
+          node --check scripts/ash-research-profile-browser-probe.mjs
+      - name: Preserve launch and function covenants
+        run: |
+          node tests/ash-keep-launch-membrane.test.mjs
+          node tests/product-architecture/ledger.test.mjs
+
+  multi-engine:
+    name: Research hydration · Chromium Firefox WebKit
+    runs-on: ubuntu-latest
+    timeout-minutes: 35
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 24
+          cache: npm
+      - run: npm ci
+      - name: Install browser engines
+        run: |
+          npm install --no-save --package-lock=false playwright@1.54.1
+          npx playwright install --with-deps chromium firefox webkit
+      - name: Start bounded Ash runtime
+        run: |
+          node scripts/ash-keep-local-closure-server.mjs 6130 > /tmp/ash-research-hydration.log 2>&1 &
+          echo $! > /tmp/ash-research-hydration.pid
+          for attempt in $(seq 1 45); do
+            if curl -fsS http://127.0.0.1:6130/dome-world/ash-keep.html >/dev/null; then exit 0; fi
+            sleep 1
+          done
+          cat /tmp/ash-research-hydration.log || true
+          exit 1
+      - name: Fly ingress and Research qualification demo
+        env:
+          TD613_BASE_URL: http://127.0.0.1:6130
+          TD613_ARTIFACT_DIR: artifacts/ash-research-hydration
+        run: node scripts/ash-research-profile-browser-probe.mjs
+      - name: Stop bounded Ash runtime
+        if: always()
+        run: kill "$(cat /tmp/ash-research-hydration.pid)" 2>/dev/null || true
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: ash-research-hydration-browser-evidence
+          path: |
+            artifacts/ash-research-hydration
+            /tmp/ash-research-hydration.log
+          if-no-files-found: error
+          retention-days: 30
