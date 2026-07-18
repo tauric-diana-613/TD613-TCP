@@ -6,6 +6,7 @@ import './ash-case-feedback.js';
 import './ash-profile-demo-hydration.js';
 import './ash-investigation-demo-hydration.js?v=20260717-investigation-v2';
 import './ash-research-demo-hydration.js?v=20260717-research-v1';
+import './ash-research-demo-control-state.js?v=20260717-research-v1';
 import './ash-premium-ui.js';
 import './ash-guided-operator-ui.js?v=20260717-investigation-v2';
 import './ash-guided-trust-boundary-court.js?v=20260717-trust-boundary-v1';
