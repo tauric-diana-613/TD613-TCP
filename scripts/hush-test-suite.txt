@@ -82,6 +82,7 @@ hush-app-flight.test.mjs
 hush-app-flight-matrix.test.mjs
 hush-phase33-expressive-payload.test.mjs
 hush-phase34-expressive-generation.test.mjs
+hush-speech-act-custody.test.mjs
 hush-mask-surface-flight.test.mjs
 hush-human-sample-residue.test.mjs
 hush-housekeeping.test.mjs
