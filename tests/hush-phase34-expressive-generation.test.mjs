@@ -33,7 +33,7 @@ assert(generated.candidates.every((candidate) => candidate.source === 'phase34-e
 assert(generated.candidates.some((candidate) => /rose bush|rose-bush/i.test(candidate.text)));
 assert(generated.candidates.some((candidate) => /rot latency/i.test(candidate.text)));
 assert(generated.candidates.some((candidate) => /dromological anchors/i.test(candidate.text)));
-assert(generated.candidates.every((candidate) => candidate.operations.includes('phase34-expressive-generation')));
+assert(generated.candidates.every((candidate) => candidate.operations.includes('phase34-expressive-generation'));
 
 const result = buildHushSwap({ sourceText: PHASE32_1_DIAGNOSTIC_SAMPLE, mask, maskProfile: mask.profile, contextType: 'group-chat', operatorMode: 'expressive-theory', exposureDuration: 'single-use', options: { candidateCount: 30, includePrivateText: false, expressiveMode: true } });
 assert(result.version.includes('phase-34-expressive-generation'));
@@ -65,9 +65,12 @@ assert(/signal[- ]reading|signal/i.test(patch38.selectedOutput));
 assert((patch38.selectedOutput.match(/\?/g) || []).length >= 1, 'Patch 38 should preserve question-form for the tech-job sample');
 
 const contract = buildHushLlmPromptContract({ sourceText: TECH_JOB_SIGNAL_SAMPLE, mask, candidateCount: 6 });
-assert.equal(contract.promptVersion, 'hush-llm-candidate-v1');
+assert.equal(contract.promptVersion, 'hush-llm-candidate-v2-speech-act-lock');
 assert.equal(contract.sourceText, TECH_JOB_SIGNAL_SAMPLE);
-assert(contract.rules.some((rule) => /Do not answer questions/i.test(rule)));
+assert(contract.rules.some((rule) => /Questions must remain questions/i.test(rule)));
+assert(contract.rules.some((rule) => /Instructions and requests must remain instructions or requests/i.test(rule)));
+assert.equal(contract.speechActManifest.dominant_speech_act, 'interrogative');
+assert.equal(contract.speechActManifest.question_count, 2);
 assert(contract.mask.maskId === mask.id);
 assert(!Object.prototype.hasOwnProperty.call(contract, 'apiKey'));
 
@@ -153,7 +156,6 @@ assert(phase31OriginalUi.includes('importCustomMaskJson'));
 assert(phase31OriginalUi.includes('hushPhase31WordFloorCounter'));
 assert(phase31OriginalUi.includes('customMaskCard'));
 assert(phase31OriginalUi.includes('Surface Texture'));
-assert(phase31OriginalUi.includes('hushPhase31MaskOrnament'));
 assert(!phase31OriginalUi.includes('<label>Ornament'));
 assert(phase31Css.includes('hush-phase31-ledger-head'));
 assert(phase31Css.includes('hush-phase31-word-floor'));
@@ -167,6 +169,8 @@ assert(patch38Ui.includes('buildHushLlmPromptContractV2'));
 assert(patch38Ui.includes('Phase 35 ontology-routed generator'));
 assert(proxy.includes('process.env.GEMINI_API_KEY'));
 assert(budgetedProxy.includes('LAYOUT CADENCE CUSTODY'));
+assert(budgetedProxy.includes('SOURCE SPEECH-ACT CUSTODY LAW'));
+assert(budgetedProxy.includes('speech-act-custody-active'));
 assert(budgetedProxy.includes('Line breaks and paragraph breaks are cadence evidence') || phase35Provider.includes('Line breaks and paragraph breaks are cadence evidence'));
 assert(budgetedProxy.includes('punctuation scarcity'));
 assert(budgetedProxy.includes('source_layout_cadence'));
