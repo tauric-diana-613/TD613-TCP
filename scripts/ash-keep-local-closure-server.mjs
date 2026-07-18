@@ -2,6 +2,7 @@ import http from 'node:http';
 import fs from 'node:fs/promises';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
+import { stabilizeAshKeepSource } from '../app/dome-world/ash-keep-delivery-transform.js';
 
 const here = path.dirname(fileURLToPath(import.meta.url));
 const repoRoot = path.resolve(here, '..');
@@ -31,9 +32,7 @@ const ROUTE_PREFIXES = Object.freeze([
 function resolvePublicPath(pathname) {
   if (pathname === '/' || pathname === '/dome-world') return 'app/dome-world/index.html';
   for (const [publicPrefix, repositoryPrefix] of ROUTE_PREFIXES) {
-    if (pathname.startsWith(publicPrefix)) {
-      return `${repositoryPrefix}${pathname.slice(publicPrefix.length)}`;
-    }
+    if (pathname.startsWith(publicPrefix)) return `${repositoryPrefix}${pathname.slice(publicPrefix.length)}`;
   }
   return pathname.replace(/^\//, '');
 }
@@ -55,15 +54,14 @@ const server = http.createServer(async (req, res) => {
   if (url.pathname === '/__ash_keep_closure/readiness') {
     return sendJson(res, 200, {
       ok: true,
-      schema: 'td613.ash-keep.local-closure-readiness/v0.1',
+      schema: 'td613.ash-keep.local-closure-readiness/v0.2-event-driven-map',
       recipient_transport: false,
       provider_route: false,
-      production_promotion: false
+      production_promotion: false,
+      ash_keep_delivery_transform: true
     });
   }
-  if (req.method !== 'GET' && req.method !== 'HEAD') {
-    return sendJson(res, 405, { ok: false, error: 'method-not-allowed' });
-  }
+  if (req.method !== 'GET' && req.method !== 'HEAD') return sendJson(res, 405, { ok: false, error: 'method-not-allowed' });
 
   const relative = decodeURIComponent(resolvePublicPath(url.pathname));
   const candidate = path.resolve(repoRoot, relative);
@@ -80,16 +78,21 @@ const server = http.createServer(async (req, res) => {
   }
 
   try {
-    const body = await fs.readFile(finalPath);
+    const extension = path.extname(finalPath).toLowerCase();
+    let body = await fs.readFile(finalPath);
+    if (url.pathname === '/dome-world/ash-keep.js') {
+      body = Buffer.from(stabilizeAshKeepSource(body.toString('utf8')), 'utf8');
+    }
     res.writeHead(200, {
-      'content-type': MIME_TYPES[path.extname(finalPath).toLowerCase()] || 'application/octet-stream',
-      'cache-control': 'no-store'
+      'content-type': MIME_TYPES[extension] || 'application/octet-stream',
+      'cache-control': 'no-store',
+      ...(url.pathname === '/dome-world/ash-keep.js' ? { 'x-td613-ash-map-scheduler': 'EVENT_DRIVEN_COALESCED' } : {})
     });
     if (req.method === 'HEAD') return res.end();
     return res.end(body);
-  } catch {
+  } catch (error) {
     res.writeHead(404, { 'content-type': 'text/plain; charset=utf-8' });
-    return res.end('Not found');
+    return res.end(`Not found: ${String(error?.message || error)}`);
   }
 });
 
