@@ -1,8 +1,7 @@
-export const ASH_CASE_CLOSE_REPAIR_VERSION = 'td613.ash.case-close-repair/v1.0-pointer-release';
+export const ASH_CASE_CLOSE_REPAIR_VERSION = 'td613.ash.case-close-repair/v1.1-pointer-release';
 
 const DB_NAME = 'td613-ash-keep';
 const POINTER_KEY = 'td613.ash-keep.current-case';
-const LAST_CLOSED_KEY = 'td613.ash-keep.last-closed-case';
 const PREPAINT_CLASS = 'ash-has-current-case';
 const CASE_BUNDLE_STORES = ['cases', 'roomRules', 'routeMemory', 'tests', 'drafts', 'reviews', 'releases', 'savePoints', 'unexpectedDetails', 'notes'];
 let closing = false;
@@ -96,8 +95,7 @@ async function saveBeforeClose(caseId) {
   }
 }
 
-function exposeMembrane(caseId) {
-  localStorage.setItem(LAST_CLOSED_KEY, caseId);
+function exposeMembrane() {
   localStorage.removeItem(POINTER_KEY);
   document.documentElement.classList.remove(PREPAINT_CLASS);
   const launch = byId('launch');
@@ -148,8 +146,10 @@ async function closeToMembrane() {
     } catch (error) {
       console.warn('Ash close transition receipt held; membrane release continues.', error);
     }
-    exposeMembrane(caseId);
-    await window.__td613AshLifecycleRefresh?.().catch?.(() => {});
+    exposeMembrane();
+    try {
+      await window.__td613AshLifecycleRefresh?.();
+    } catch {}
     window.dispatchEvent(new CustomEvent('td613:ash:case-closed', { detail: { case_id: caseId, saved_before_close: Boolean(saved) } }));
     await retainClosedSelection(caseId);
   } finally {
@@ -169,10 +169,6 @@ function install() {
       if (state) state.textContent = `Close held · ${error.message}`;
       console.error('Ash close-to-membrane repair held:', error);
     });
-  }, true);
-  document.addEventListener('click', event => {
-    if (!event.target?.closest?.('#openSelectedCase')) return;
-    localStorage.removeItem(LAST_CLOSED_KEY);
   }, true);
   document.documentElement.dataset.ashCaseCloseRepair = ASH_CASE_CLOSE_REPAIR_VERSION;
   window.__td613AshCaseCloseRepair = Object.freeze({
