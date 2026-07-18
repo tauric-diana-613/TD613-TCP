@@ -1,1 +1,0 @@
-{"route_id":"route_internal_review","allowed_room_ids":["room_mandate","room_custody","room_people","room_chronology","room_claims","room_hypotheses","room_gaps","room_ai","room_safety","room_actions"],"local_link_keys":["edge_identity_alias","edge_personal_packet"],"allowed_node_types":["entity","artifact","event","claim","hypothesis","evidence-gap","source","intended-action"]}
