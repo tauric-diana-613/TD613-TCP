@@ -54,10 +54,10 @@ jobs:
           node --check app/dome-world/ash-workspace-bridge.js
           node --check app/dome-world/ash-research-profile-hydration.js
           node --check scripts/ash-research-profile-browser-probe.mjs
-      - name: Preserve launch and function covenants
-        run: |
-          node tests/ash-keep-launch-membrane.test.mjs
-          node tests/product-architecture/ledger.test.mjs
+      - name: Preserve ingress launch contract
+        run: node tests/ash-keep-launch-membrane.test.mjs
+      - name: Preserve eleven-plus-one function covenant
+        run: node tests/product-architecture/ledger.test.mjs
 
   multi-engine:
     name: Research hydration · Chromium Firefox WebKit
