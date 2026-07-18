@@ -1,0 +1,204 @@
+name: Vercel Operator Release
+
+on:
+  issue_comment:
+    types: [created]
+
+permissions:
+  contents: read
+  issues: write
+
+concurrency:
+  group: td613-vercel-production-release
+  cancel-in-progress: false
+
+jobs:
+  release:
+    if: >-
+      github.event.issue.number == 405 &&
+      github.event.issue.pull_request == null &&
+      github.event.comment.user.login == github.repository_owner &&
+      startsWith(github.event.comment.body, '/td613-vercel-release ')
+    runs-on: ubuntu-latest
+    timeout-minutes: 45
+    env:
+      RELEASE_GATE_ISSUE: '405'
+      VERCEL_PROJECT: td-613-tcp
+      VERCEL_SCOPE: tauric-diana-s-projects
+      VERCEL_TOKEN: ${{ secrets.VERCEL_TOKEN }}
+      GH_TOKEN: ${{ github.token }}
+
+    steps:
+      - name: Check out current main
+        uses: actions/checkout@v4
+        with:
+          ref: main
+          fetch-depth: 1
+
+      - name: Set up Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: 24
+          cache: npm
+
+      - name: Validate operator authorization and exact commit
+        id: authorize
+        shell: bash
+        env:
+          AUTHORIZATION: ${{ github.event.comment.body }}
+        run: |
+          set -euo pipefail
+          read -r COMMAND TARGET SELECTED_SHA EXTRA <<< "$AUTHORIZATION"
+          if [[ "$COMMAND" != "/td613-vercel-release" ]]; then
+            echo 'Unexpected release command.' >&2
+            exit 1
+          fi
+          if [[ "$TARGET" != "PRODUCTION" ]]; then
+            echo 'Only the explicitly named PRODUCTION target is accepted.' >&2
+            exit 1
+          fi
+          if [[ -n "${EXTRA:-}" ]]; then
+            echo 'Release command must contain exactly the command, target, and 40-character SHA.' >&2
+            exit 1
+          fi
+          if [[ ! "$SELECTED_SHA" =~ ^[0-9a-f]{40}$ ]]; then
+            echo 'Release command omitted a valid 40-character commit SHA.' >&2
+            exit 1
+          fi
+          CURRENT_MAIN="$(git rev-parse HEAD)"
+          if [[ "$SELECTED_SHA" != "$CURRENT_MAIN" ]]; then
+            echo "Authorized SHA $SELECTED_SHA is not current main $CURRENT_MAIN." >&2
+            exit 1
+          fi
+          node --input-type=module <<'NODE'
+          import fs from 'node:fs';
+          const config = JSON.parse(fs.readFileSync('vercel.json', 'utf8'));
+          if (config.git?.deploymentEnabled !== false) {
+            throw new Error('Git-triggered Vercel deployment lock is not active.');
+          }
+          NODE
+          echo "selected_sha=$SELECTED_SHA" >> "$GITHUB_OUTPUT"
+
+      - name: Record accepted release gesture
+        shell: bash
+        run: |
+          gh api "repos/$GITHUB_REPOSITORY/issues/$RELEASE_GATE_ISSUE/comments" \
+            -f body="$(cat <<EOF
+          𝌋 Operator release gesture accepted.
+
+          \`\`\`text
+          target = PRODUCTION
+          selected_commit = ${{ steps.authorize.outputs.selected_sha }}
+          deployment_ceiling = 1
+          git_auto_deploy = disabled
+          workflow_run = $GITHUB_SERVER_URL/$GITHUB_REPOSITORY/actions/runs/$GITHUB_RUN_ID
+          \`\`\`
+
+          The gate will run closure checks, build once, and invoke one Vercel production deployment. ⟐
+          EOF
+          )"
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Verify release-critical contracts
+        run: |
+          node tests/vercel-deploy-hygiene.test.mjs
+          node tests/product-architecture/shell.test.mjs
+          node tests/ash-live-ingress-demos-cache.test.mjs
+          node tests/td613-flight-mobile-layout.test.mjs
+
+      - name: Verify Vercel credential bridge
+        shell: bash
+        run: |
+          if [[ -z "${VERCEL_TOKEN:-}" ]]; then
+            echo 'Repository secret VERCEL_TOKEN is absent; assistant-triggered deployment bridge cannot authenticate.' >&2
+            exit 1
+          fi
+
+      - name: Link exact repository to the existing Vercel project
+        shell: bash
+        run: |
+          set -euo pipefail
+          npx --yes vercel@latest link \
+            --yes \
+            --project "$VERCEL_PROJECT" \
+            --scope "$VERCEL_SCOPE" \
+            --token "$VERCEL_TOKEN"
+
+      - name: Pull production environment and build once
+        shell: bash
+        run: |
+          set -euo pipefail
+          npx --yes vercel@latest pull \
+            --yes \
+            --environment=production \
+            --scope "$VERCEL_SCOPE" \
+            --token "$VERCEL_TOKEN"
+          npx --yes vercel@latest build \
+            --prod \
+            --scope "$VERCEL_SCOPE" \
+            --token "$VERCEL_TOKEN"
+
+      - name: Deploy the completed packet once
+        id: deploy
+        shell: bash
+        env:
+          VERCEL_GIT_COMMIT_SHA: ${{ steps.authorize.outputs.selected_sha }}
+          VERCEL_GIT_COMMIT_REF: main
+          VERCEL_GIT_REPO_SLUG: TD613-TCP
+          VERCEL_GIT_REPO_OWNER: tauric-diana-613
+        run: |
+          set -euo pipefail
+          DEPLOY_LOG="$(mktemp)"
+          npx --yes vercel@latest deploy \
+            --prebuilt \
+            --prod \
+            --yes \
+            --scope "$VERCEL_SCOPE" \
+            --token "$VERCEL_TOKEN" | tee "$DEPLOY_LOG"
+          DEPLOY_URL="$(grep -Eo 'https://[^[:space:]]+' "$DEPLOY_LOG" | tail -n 1)"
+          if [[ -z "$DEPLOY_URL" ]]; then
+            echo 'Vercel returned no deployment URL.' >&2
+            exit 1
+          fi
+          echo "deployment_url=$DEPLOY_URL" >> "$GITHUB_OUTPUT"
+
+      - name: Seal successful production release
+        if: success()
+        shell: bash
+        run: |
+          gh api "repos/$GITHUB_REPOSITORY/issues/$RELEASE_GATE_ISSUE/comments" \
+            -f body="$(cat <<EOF
+          𝌋 Vercel production release completed.
+
+          \`\`\`text
+          selected_commit = ${{ steps.authorize.outputs.selected_sha }}
+          target = PRODUCTION
+          deployment_count = 1
+          deployment_url = ${{ steps.deploy.outputs.deployment_url }}
+          git_auto_deploy = disabled
+          \`\`\`
+
+          Sealed ⟐
+          EOF
+          )"
+
+      - name: Record held release
+        if: failure()
+        shell: bash
+        run: |
+          gh api "repos/$GITHUB_REPOSITORY/issues/$RELEASE_GATE_ISSUE/comments" \
+            -f body="$(cat <<EOF
+          𝌋 Vercel production release held.
+
+          \`\`\`text
+          selected_commit = ${{ steps.authorize.outputs.selected_sha || 'unresolved' }}
+          target = PRODUCTION
+          deployment_ceiling = 1
+          workflow_run = $GITHUB_SERVER_URL/$GITHUB_REPOSITORY/actions/runs/$GITHUB_RUN_ID
+          \`\`\`
+
+          No additional deployment attempt is authorized by this failure. ⟐
+          EOF
+          )"
