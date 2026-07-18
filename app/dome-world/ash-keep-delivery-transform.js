@@ -1,4 +1,4 @@
-export const ASH_KEEP_DELIVERY_TRANSFORM_VERSION = 'td613.ash-keep.delivery-transform/v1.0-event-driven-map';
+export const ASH_KEEP_DELIVERY_TRANSFORM_VERSION = 'td613.ash-keep.delivery-transform/v1.1-event-driven-map';
 
 const PERPETUAL_SCHEDULER = `const scheduleFrame = callback => requestAnimationFrame(callback);
 
@@ -44,6 +44,8 @@ function stopScheduler() {
 }
 `;
 
+const RECURSIVE_FRAME_PATTERN = /function frame\(time\) \{[\s\S]*?drawMap\(time\);\s*state\.frame = scheduleFrame\(frame\);[\s\S]*?\n\}/;
+
 export function stabilizeAshKeepSource(source = '') {
   let code = String(source || '');
   if (!code) throw new Error('ash-keep-delivery-source-empty');
@@ -51,7 +53,7 @@ export function stabilizeAshKeepSource(source = '') {
   const perpetualCount = code.split(PERPETUAL_SCHEDULER).length - 1;
   if (perpetualCount === 1) code = code.replace(PERPETUAL_SCHEDULER, EVENT_DRIVEN_SCHEDULER);
   else if (perpetualCount > 1) throw new Error(`ash-keep-perpetual-scheduler-ambiguous:${perpetualCount}`);
-  else if (!code.includes('function requestMapDraw()') || code.includes('state.frame = scheduleFrame(frame);')) {
+  else if (!code.includes('function requestMapDraw()') || RECURSIVE_FRAME_PATTERN.test(code)) {
     throw new Error('ash-keep-event-driven-scheduler-seam-missing');
   }
 
@@ -64,8 +66,11 @@ export function stabilizeAshKeepSource(source = '') {
     "openWorkspace: setWorkspace,\n    mapScheduler: () => Object.freeze({ mode: 'EVENT_DRIVEN_COALESCED', frame_pending: Boolean(state.frame), map_visible: state.mapVisible })\n  });"
   );
 
-  if ((code.match(/requestAnimationFrame\(/g) || []).length !== 1) throw new Error('ash-keep-scheduler-count-not-one');
-  if (code.includes('state.frame = scheduleFrame(frame);')) throw new Error('ash-keep-perpetual-recursion-survived');
+  const rafCalls = (code.match(/requestAnimationFrame\(/g) || []).length;
+  const queueAssignments = (code.match(/state\.frame = scheduleFrame\(frame\);/g) || []).length;
+  if (rafCalls !== 1) throw new Error(`ash-keep-scheduler-count-not-one:${rafCalls}`);
+  if (queueAssignments !== 1) throw new Error(`ash-keep-queue-assignment-count-not-one:${queueAssignments}`);
+  if (RECURSIVE_FRAME_PATTERN.test(code)) throw new Error('ash-keep-perpetual-recursion-survived');
   for (const marker of [
     "version: 'td613.ash-keep.browser-core/v1.2-event-driven-map'",
     "mode: 'EVENT_DRIVEN_COALESCED'",
