@@ -51,6 +51,8 @@ jobs:
         run: node tests/ash-profile-demos.test.mjs
       - name: Preserve premium command UI
         run: node tests/ash-premium-ui.test.mjs
+      - name: Rebuild maintained Aperture download witness
+        run: npm run aperture:export-downloads
       - name: Preserve canonical Ash UI
         run: node tests/ash-keep-ui.test.mjs
       - name: Verify syntax
