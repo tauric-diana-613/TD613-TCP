@@ -919,6 +919,9 @@
     }
   ],
   "git": {
-    "deploymentEnabled": false
+    "deploymentEnabled": {
+      "main": true,
+      "*": false
+    }
   }
 }
