@@ -99,7 +99,8 @@ try{
     observer.disconnect();
     return{before,after,childListMutations,attributeMutations,legendBackdrop:legendStyle.backdropFilter||legendStyle.webkitBackdropFilter||'none'};
   });
-  assert(idleStability.after.blockedAshMapFrames>idleStability.before.blockedAshMapFrames,'Ash map frame loop continued while idle.');
+  assert(idleStability.after.blockedAshMapFrames>=1,'Ash map frame guard never intercepted the perpetual scheduler.');
+  assert(idleStability.after.blockedAshMapFrames-idleStability.before.blockedAshMapFrames<=1,`Ash map frame loop continued while idle: ${JSON.stringify(idleStability)}`);
   assert.equal(idleStability.childListMutations,0,`Ash command membrane mutated while idle: ${JSON.stringify(idleStability)}`);
   assert.equal(idleStability.attributeMutations,0,`Ash command membrane attributes churned while idle: ${JSON.stringify(idleStability)}`);
   assert(['none',''].includes(idleStability.legendBackdrop),`Map legend retained GPU blur: ${idleStability.legendBackdrop}`);
