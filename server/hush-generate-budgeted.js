@@ -1,6 +1,7 @@
 import { buildProtectedLiteralList, checkProtectedLiteralIntegrity } from '../app/engine/hush-protected-literals.js';
 import { auditHushCatchphraseQuarantine } from '../app/engine/hush-catchphrase-quarantine.js';
 import { hushSanitizerReceipt, sanitizeHushRemoteContract } from '../app/engine/hush-contract-sanitizer.js';
+import { auditHushSpeechActCustody, speechActPromptLaw } from '../app/engine/hush-speech-act-custody.js';
 
 const corsHeaders = {
   'access-control-allow-origin': '*',
@@ -9,7 +10,7 @@ const corsHeaders = {
   'access-control-max-age': '86400'
 };
 
-const VERSION = 'hush-generate-budgeted-pr188.17-backend-prompt-detox';
+const VERSION = 'hush-generate-budgeted-pr188.18-speech-act-custody';
 const DEFAULT_MODEL_ORDER = ['gemini-2.5-flash-lite', 'gemini-flash-lite-latest', 'gemini-2.5-flash'];
 const FAST_CALL_TIMEOUT_MS = 5200;
 const NORMAL_CALL_TIMEOUT_MS = 7600;
@@ -134,12 +135,14 @@ function candidateIntegrity(candidate = {}, contract = {}) {
   const literalCheck = checkProtectedLiteralIntegrity(candidate.text || '', protectedLiteralsOf(contract));
   const dropped = arr(candidate.dropped_propositions).map(safe).filter(Boolean);
   const newClaims = arr(candidate.new_claims).map(safe).filter(Boolean);
+  const speechActCustody = auditHushSpeechActCustody(sourceTextOf(contract), candidate.text || '');
   const warnings = [
     ...literalCheck.missing.map((literal) => `missing-protected-literal:${literal}`),
     ...(dropped.length ? ['provider-reported-dropped-propositions'] : []),
-    ...(newClaims.length ? ['provider-reported-new-claims'] : [])
+    ...(newClaims.length ? ['provider-reported-new-claims'] : []),
+    ...speechActCustody.warnings
   ];
-  return { passed: literalCheck.passed && !dropped.length && !newClaims.length, literalCheck, dropped, newClaims, warnings };
+  return { passed: literalCheck.passed && !dropped.length && !newClaims.length && speechActCustody.passed, literalCheck, dropped, newClaims, speechActCustody, warnings };
 }
 function aaveAcademicDrift(text = '', contract = {}) {
   if (!isAaveRoute(contract)) return false;
@@ -173,10 +176,13 @@ function buildPrompt(rawContract = {}) {
 - Use natural Black vernacular syntax with restraint. Do not costume the route with catchphrases, generic slang, "look," "think about that," "proof is in the pudding," or exaggerated dialect spelling.
 - The output must sound transformed, not like a cleaned-up school paragraph or a short note card.` : '';
   const layoutLaw = layoutCadenceLaw(contract, style);
+  const speechActLaw = speechActPromptLaw(sourceText);
   const protectedLiterals = protectedLiteralsOf(contract);
   return `Return JSON only. Schema: {"candidates":[{"text":"string","style_note":"string","style_operation":"${schemaOperation}","preserved_propositions":[],"dropped_propositions":[],"changed_questions":[],"new_claims":[],"authorship_moves":[],"risk_flags":[],"mask_surface_notes":{"rhythm":"string","diction":"string","structure":"string","coverage":"string"}}]}
 
 STRICT BUDGETED UPSTREAM. Generate exactly ${count} transformed candidate(s). No review maps, ledgers, summaries, diagnostics, P-row reports, or analysis. Candidate text must be the transformed message itself.
+
+${speechActLaw}
 
 ${aaveRule}
 ${layoutLaw}
@@ -287,7 +293,7 @@ function quarantineCandidateRows(candidates = [], contract = {}) {
     const academicDrift = aaveAcademicDrift(candidate.text, contract);
     const compressionDrift = !academicDrift && aaveCompressionDrift(candidate.text, contract);
     const passed = catchphraseQuarantine.passed && integrity.passed && !academicDrift && !compressionDrift;
-    return { candidate, catchphraseQuarantine, integrity, academicDrift, compressionDrift, passed };
+    return { candidate, catchphraseQuarantine, integrity, speechActCustody: integrity.speechActCustody, academicDrift, compressionDrift, passed };
   });
 }
 function detoxReceipt(extra = {}) { return hushSanitizerReceipt(extra); }
@@ -302,15 +308,15 @@ function heldPayload({ contract, attempts, startedAt, reason = 'strict_budgeted_
     error: reason,
     reason,
     candidates: [],
-    warnings: [reason, 'strict-budgeted-upstream', 'strict-upstream-budget-honored', 'strict-api-no-usable-candidates', 'no-local-fallback', 'prompt-detox-active'],
+    warnings: [reason, 'strict-budgeted-upstream', 'strict-upstream-budget-honored', 'strict-api-no-usable-candidates', 'no-local-fallback', 'prompt-detox-active', 'speech-act-custody-active'],
     attempts,
-    requestReceipt: { strictDirect: true, strictNoFallback: true, strictBudgetedUpstream: true, strictBudgetHonored: true, strictUpstreamBudgetMs: wallBudget(contract), strictAttemptBudget: attemptBudget(contract), strictFastUpstream: isFast(contract), aaveRoute: isAaveRoute(contract), modelOrder: attempts.map((a) => a.model), elapsedMs: Date.now() - startedAt, rotationVersion: VERSION, ...detoxReceipt({ catchphraseRejected }) }
+    requestReceipt: { strictDirect: true, strictNoFallback: true, strictBudgetedUpstream: true, strictBudgetHonored: true, strictUpstreamBudgetMs: wallBudget(contract), strictAttemptBudget: attemptBudget(contract), strictFastUpstream: isFast(contract), aaveRoute: isAaveRoute(contract), modelOrder: attempts.map((a) => a.model), elapsedMs: Date.now() - startedAt, rotationVersion: VERSION, speechActCustody: true, ...detoxReceipt({ catchphraseRejected }) }
   };
 }
 
 export default async function handler(req, res) {
   if (req.method === 'OPTIONS') return send(res, 200, { ok: true });
-  if (req.method === 'GET') return send(res, 200, { ok: true, route: 'hush-generate-budgeted', version: VERSION, strictBudgetedUpstream: true, promptDetoxActive: true, configuredModels: configuredModels(), preferredWorkingModel });
+  if (req.method === 'GET') return send(res, 200, { ok: true, route: 'hush-generate-budgeted', version: VERSION, strictBudgetedUpstream: true, promptDetoxActive: true, speechActCustodyActive: true, configuredModels: configuredModels(), preferredWorkingModel });
   if (req.method !== 'POST') return send(res, 405, { ok: false, error: 'method-not-allowed', version: VERSION });
   if (!process.env.GEMINI_API_KEY) return send(res, 500, { ok: false, error: 'missing-gemini-api-key', version: VERSION });
 
@@ -342,14 +348,15 @@ export default async function handler(req, res) {
     const academicRejected = candidateRows.filter((row) => row.catchphraseQuarantine.passed && row.academicDrift);
     const compressedRejected = candidateRows.filter((row) => row.catchphraseQuarantine.passed && row.compressionDrift);
     const integrityRejected = candidateRows.filter((row) => row.catchphraseQuarantine.passed && !row.integrity.passed);
+    const speechActRejected = candidateRows.filter((row) => !row.speechActCustody?.passed);
     catchphraseRejected += catchphraseRows.length;
     const usable = candidateRows
       .filter((row) => row.passed)
-      .map((row) => ({ ...row.candidate, literal_integrity: row.integrity.literalCheck, catchphrase_quarantine: row.catchphraseQuarantine }));
-    attempts.push({ model: normModel(model), ok: response.ok, status: response.status, timedOut, parsedCandidates: parsed.candidates.length, usableCandidates: usable.length, catchphraseRejected: catchphraseRows.length, literalIntegrityRejected: integrityRejected.length, literalIntegrityWarnings: uniq(integrityRejected.flatMap((row) => row.integrity.warnings)), aaveAcademicRejected: academicRejected.length, aaveCompressedRejected: compressedRejected.length, warnings: [...parsed.warnings, 'prompt-detox-active', ...(catchphraseRows.length ? ['catchphrase-quarantine-rejected-provider-candidate'] : []), ...(integrityRejected.length ? ['candidate-integrity-gate-rejected'] : []), ...(academicRejected.length ? ['aave-academic-summary-drift'] : []), ...(compressedRejected.length ? ['aave-compression-drift'] : [])], error: response.ok ? null : summarizeProviderError(payload), textPreview: rawText.slice(0, 180), strictBudgetedUpstream: true, strictFastUpstream: isFast(contract), aaveRoute: isAaveRoute(contract) });
+      .map((row) => ({ ...row.candidate, literal_integrity: row.integrity.literalCheck, speech_act_custody: row.speechActCustody, catchphrase_quarantine: row.catchphraseQuarantine }));
+    attempts.push({ model: normModel(model), ok: response.ok, status: response.status, timedOut, parsedCandidates: parsed.candidates.length, usableCandidates: usable.length, catchphraseRejected: catchphraseRows.length, literalIntegrityRejected: integrityRejected.length, speechActRejected: speechActRejected.length, literalIntegrityWarnings: uniq(integrityRejected.flatMap((row) => row.integrity.warnings)), aaveAcademicRejected: academicRejected.length, aaveCompressedRejected: compressedRejected.length, warnings: [...parsed.warnings, 'prompt-detox-active', 'speech-act-custody-active', ...(catchphraseRows.length ? ['catchphrase-quarantine-rejected-provider-candidate'] : []), ...(integrityRejected.length ? ['candidate-integrity-gate-rejected'] : []), ...(speechActRejected.length ? ['speech-act-custody-rejected-provider-candidate'] : []), ...(academicRejected.length ? ['aave-academic-summary-drift'] : []), ...(compressedRejected.length ? ['aave-compression-drift'] : [])], error: response.ok ? null : summarizeProviderError(payload), textPreview: rawText.slice(0, 180), strictBudgetedUpstream: true, strictFastUpstream: isFast(contract), aaveRoute: isAaveRoute(contract) });
     if (response.ok && usable.length) {
       preferredWorkingModel = normModel(model);
-      return send(res, 200, { ok: true, provider: 'gemini', model: preferredWorkingModel, deterministic, version: VERSION, rotationVersion: VERSION, candidates: usable, warnings: [...parsed.warnings, 'prompt-detox-active', 'strict-budgeted-upstream', 'strict-upstream-budget-honored', ...(catchphraseRejected ? ['catchphrase-quarantine-rejected-provider-candidate'] : []), ...(isFast(contract) ? ['strict-fast-upstream-applied'] : ['strict-normal-upstream-budget-applied']), ...(isAaveRoute(contract) ? ['aave-route-budgeted-upstream', 'aave-register-fidelity-law-applied', 'aave-compression-gate-applied'] : [])], attempts, rawText: parsed.rawText, requestReceipt: { deterministic, strictDirect: true, strictNoFallback: true, strictBudgetedUpstream: true, strictBudgetHonored: true, strictUpstreamBudgetMs: wallMs, strictAttemptBudget: maxAttempts, strictFastUpstream: isFast(contract), aaveRoute: isAaveRoute(contract), aaveRegisterFidelityLaw: isAaveRoute(contract), aaveCompressionGate: isAaveRoute(contract), elapsedMs: Date.now() - startedAt, rotationVersion: VERSION, ...detoxReceipt({ catchphraseRejected }) } });
+      return send(res, 200, { ok: true, provider: 'gemini', model: preferredWorkingModel, deterministic, version: VERSION, rotationVersion: VERSION, candidates: usable, warnings: [...parsed.warnings, 'prompt-detox-active', 'speech-act-custody-active', 'strict-budgeted-upstream', 'strict-upstream-budget-honored', ...(catchphraseRejected ? ['catchphrase-quarantine-rejected-provider-candidate'] : []), ...(speechActRejected.length ? ['speech-act-custody-rejected-provider-candidate'] : []), ...(isFast(contract) ? ['strict-fast-upstream-applied'] : ['strict-normal-upstream-budget-applied']), ...(isAaveRoute(contract) ? ['aave-route-budgeted-upstream', 'aave-register-fidelity-law-applied', 'aave-compression-gate-applied'] : [])], attempts, rawText: parsed.rawText, requestReceipt: { deterministic, strictDirect: true, strictNoFallback: true, strictBudgetedUpstream: true, strictBudgetHonored: true, strictUpstreamBudgetMs: wallMs, strictAttemptBudget: maxAttempts, strictFastUpstream: isFast(contract), aaveRoute: isAaveRoute(contract), aaveRegisterFidelityLaw: isAaveRoute(contract), aaveCompressionGate: isAaveRoute(contract), speechActCustody: true, elapsedMs: Date.now() - startedAt, rotationVersion: VERSION, ...detoxReceipt({ catchphraseRejected }) } });
     }
   }
 
