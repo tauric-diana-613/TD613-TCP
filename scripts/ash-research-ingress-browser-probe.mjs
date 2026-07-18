@@ -10,6 +10,7 @@ const engine={chromium,firefox,webkit}[engineName];
 const executable=process.env.TD613_BROWSER_EXECUTABLE;
 const launchOptions={headless:true,...(executable&&fs.existsSync(executable)?{executablePath:executable}:{})};
 const viewports=[
+  {name:'desktop-compressed',width:1280,height:360},
   {name:'desktop-short',width:1280,height:480},
   {name:'desktop-standard',width:1366,height:768},
   {name:'desktop-wide',width:1440,height:900},
@@ -84,7 +85,8 @@ try{
       await context.close();
     }
   }
-  assert(report.ingress.some(item=>item.panel.scrollable),`${engineName}: no desktop viewport exercised the scroll membrane.`);
+  const compressed=report.ingress.find(item=>item.name==='desktop-compressed');
+  assert(compressed?.panel.scrollable===true,`${engineName}: compressed desktop viewport did not exercise the scroll membrane.`);
   assert(report.external_requests.length===0,`External requests: ${report.external_requests.join(', ')}`);
   assert(report.console_errors.length===0,`Console errors: ${JSON.stringify(report.console_errors)}`);
   assert(report.http_errors.length===0,`HTTP errors: ${JSON.stringify(report.http_errors)}`);
