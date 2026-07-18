@@ -31,17 +31,21 @@ assert.equal(ASH_APEQ_PAIA_PROFILE_DEMOS_VERSION, 'td613.ash.apeq-paia-profile-d
 for (const token of ['td613.ash.ingress-layout/v0.4-final-cut', 'width:min(780px', 'max-height:calc(100dvh - 32px)', 'overflow-y:auto!important', 'scrollbar-gutter:stable', 'scrollbar-width:thin', '::-webkit-scrollbar', 'ash-scrollbar-active', 'SCROLLBAR_FADE_DELAY = 760', 'installScrollbarFade(membrane, host)', 'installScrollbarFade(panel, host)']) {
   assert(ingress.includes(token), `Ingress omitted ${token}`);
 }
-assert.match(cache, /2026-07-18-live-ingress-v3/);
+assert.match(cache, /2026-07-18-emergency-stability-v5/);
 assert.match(cache, /Clear-Site-Data|cache-evict/);
 assert.match(cache, /caches\.keys/);
 assert.match(cache, /registration\.unregister/);
+assert.match(cache, /unregisterSameOriginWorkers/);
+assert.match(cache, /cache:'no-store'/);
+assert.doesNotMatch(cache, /2026-07-18-live-ingress-v3/);
 assert.doesNotMatch(cache, /indexedDB\.deleteDatabase|localStorage\.clear|sessionStorage\.clear/);
-assert.match(lifecycle, /ash-ingress-layout-hydration\.js\?v=20260718-live-ingress-v3/);
-assert.match(lifecycle, /ash-cache-flush\.js\?v=20260718-live-ingress-v3/);
-assert.match(bridge, /ash-profile-demo-hydration\.js\?v=20260718-live-ingress-v3/);
-assert.match(bridge, /ash-investigation-demo-hydration\.js\?v=20260718-live-ingress-v3/);
-assert.match(bridge, /ash-research-demo-hydration\.js\?v=20260718-live-ingress-v3/);
-assert.match(bridge, /ash-research-demo-control-state\.js\?v=20260718-live-ingress-v3/);
+assert.match(lifecycle, /ash-ingress-layout-hydration\.js\?v=20260718-emergency-stability-v5/);
+assert.match(lifecycle, /ash-cache-flush\.js\?v=20260718-emergency-stability-v5/);
+assert.match(bridge, /ash-profile-demo-hydration\.js\?v=20260718-emergency-stability-v5/);
+assert.match(bridge, /ash-investigation-demo-hydration\.js\?v=20260718-emergency-stability-v5/);
+assert.match(bridge, /ash-research-demo-hydration\.js\?v=20260718-emergency-stability-v5/);
+assert.match(bridge, /ash-research-demo-control-state\.js\?v=20260718-emergency-stability-v5/);
+assert.match(bridge, /ash-case-close-repair\.js\?v=20260718-emergency-stability-v5/);
 assert.doesNotMatch(profileWrapper + investigationWrapper, /fixtures\//);
 assert.match(shell, /Clear-Site-Data/);
 assert.match(shell, /HTTP_CACHE_ONLY/);

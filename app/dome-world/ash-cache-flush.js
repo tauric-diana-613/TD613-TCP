@@ -1,9 +1,10 @@
-// One-time live release transition only: preserves Ash cases, receipts, Capsules, and IndexedDB records.
-export const ASH_CACHE_FLUSH_EPOCH = 'td613.ash.cache-flush/2026-07-18-live-ingress-v3';
+// Emergency live release transition only: preserves Ash cases, receipts, Capsules, IndexedDB, and local case pointers.
+export const ASH_CACHE_FLUSH_EPOCH = 'td613.ash.cache-flush/2026-07-18-emergency-stability-v5';
 
 const MARKER_KEY = 'td613.ash.cache-flush.epoch';
 const RECEIPT_KEY = 'td613.ash.cache-flush.receipt';
 const QUERY_KEY = 'ash_flush';
+const ASSET_EPOCH = '20260718-emergency-stability-v5';
 const EVICTION_ROUTE = '/api/dome-world-shell?surface=cache-evict';
 const LOCAL_HOSTS = new Set(['localhost', '127.0.0.1', '[::1]']);
 
@@ -35,11 +36,12 @@ async function requestHttpCacheEviction(host) {
   try {
     const url = new URL(EVICTION_ROUTE, host.location.href);
     url.searchParams.set('epoch', ASH_CACHE_FLUSH_EPOCH);
+    url.searchParams.set('asset_epoch', ASSET_EPOCH);
     url.searchParams.set('nonce', crypto.randomUUID());
     const response = await host.fetch(url, {
-      cache:'reload',
+      cache:'no-store',
       credentials:'same-origin',
-      headers:{ 'Cache-Control':'no-cache', 'Pragma':'no-cache' }
+      headers:{ 'Cache-Control':'no-cache, no-store, max-age=0', 'Pragma':'no-cache' }
     });
     return Object.freeze({
       attempted:true,
@@ -59,13 +61,12 @@ async function clearCacheStorage() {
   return names;
 }
 
-async function unregisterDomeWorkers() {
+async function unregisterSameOriginWorkers() {
   if (!navigator.serviceWorker?.getRegistrations) return [];
   const registrations = await navigator.serviceWorker.getRegistrations();
   const affected = registrations.filter(registration => {
-    const scope = new URL(registration.scope, location.href);
-    const script = registration.active?.scriptURL || registration.waiting?.scriptURL || registration.installing?.scriptURL || '';
-    return scope.origin === location.origin && (/\/dome-world(?:\/|$)/.test(scope.pathname) || /(?:ash|dome-world)/i.test(script));
+    try { return new URL(registration.scope, location.href).origin === location.origin; }
+    catch { return false; }
   });
   await Promise.all(affected.map(registration => registration.unregister()));
   return affected.map(registration => registration.scope);
@@ -74,11 +75,12 @@ async function unregisterDomeWorkers() {
 export async function runAshCacheFlush(host = globalThis) {
   if (!host?.location || readMarker() === ASH_CACHE_FLUSH_EPOCH) {
     const receipt = Object.freeze({
-      schema:'td613.ash.cache-transition-receipt/v0.2-live-release',
+      schema:'td613.ash.cache-transition-receipt/v0.3-emergency-release',
       epoch:ASH_CACHE_FLUSH_EPOCH,
       performed:false,
       reload_required:false,
       indexeddb_preserved:true,
+      local_case_pointer_preserved:true,
       storage_cleared:false
     });
     writeReceipt(receipt);
@@ -86,34 +88,36 @@ export async function runAshCacheFlush(host = globalThis) {
     return receipt;
   }
 
-  const [http_cache, cache_names, worker_scopes] = await Promise.all([
+  const [http_cache, first_cache_names, worker_scopes] = await Promise.all([
     requestHttpCacheEviction(host),
     clearCacheStorage().catch(() => []),
-    unregisterDomeWorkers().catch(() => [])
+    unregisterSameOriginWorkers().catch(() => [])
   ]);
+  const second_cache_names = await clearCacheStorage().catch(() => []);
   writeMarker();
 
   const url = new URL(host.location.href);
   const alreadyReloaded = url.searchParams.get(QUERY_KEY) === ASH_CACHE_FLUSH_EPOCH;
   const receipt = Object.freeze({
-    schema:'td613.ash.cache-transition-receipt/v0.2-live-release',
+    schema:'td613.ash.cache-transition-receipt/v0.3-emergency-release',
     epoch:ASH_CACHE_FLUSH_EPOCH,
     performed:true,
     reload_required:!alreadyReloaded,
     http_cache,
-    cache_names,
+    cache_names:[...new Set([...first_cache_names, ...second_cache_names])],
     worker_scopes,
     indexeddb_preserved:true,
     local_case_pointer_preserved:true,
     storage_cleared:false,
-    release_asset_epoch:'20260718-live-ingress-v3'
+    release_asset_epoch:ASSET_EPOCH
   });
   writeReceipt(receipt);
   host.__td613AshCacheTransition = receipt;
 
   if (!alreadyReloaded) {
     url.searchParams.set(QUERY_KEY, ASH_CACHE_FLUSH_EPOCH);
-    url.searchParams.set('asset_epoch', '20260718-live-ingress-v3');
+    url.searchParams.set('asset_epoch', ASSET_EPOCH);
+    url.searchParams.set('cache_nonce', crypto.randomUUID());
     host.location.replace(url.toString());
   }
   return receipt;
