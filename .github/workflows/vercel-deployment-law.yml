@@ -6,8 +6,10 @@ on:
       - vercel.json
       - docs/STRATEGIC_VERCEL_DEPLOYMENT_LAW.md
       - tests/vercel-deploy-hygiene.test.mjs
+      - tests/vercel-operator-release-gate.test.mjs
       - tests/product-architecture/shell.test.mjs
       - .github/workflows/vercel-deployment-law.yml
+      - .github/workflows/vercel-operator-release.yml
   push:
     branches:
       - main
@@ -15,8 +17,10 @@ on:
       - vercel.json
       - docs/STRATEGIC_VERCEL_DEPLOYMENT_LAW.md
       - tests/vercel-deploy-hygiene.test.mjs
+      - tests/vercel-operator-release-gate.test.mjs
       - tests/product-architecture/shell.test.mjs
       - .github/workflows/vercel-deployment-law.yml
+      - .github/workflows/vercel-operator-release.yml
   workflow_dispatch:
 
 permissions:
@@ -38,6 +42,7 @@ jobs:
       - name: Verify executable deployment law
         run: |
           node tests/vercel-deploy-hygiene.test.mjs
+          node tests/vercel-operator-release-gate.test.mjs
           node tests/product-architecture/shell.test.mjs
       - name: Reject Git-triggered deployments
         run: |
@@ -50,5 +55,5 @@ jobs:
           if (typeof config.git.deploymentEnabled !== 'boolean') {
             throw new Error('Branch deployment maps are forbidden.');
           }
-          console.log('merge ≠ deploy · main push ≠ operator gesture');
+          console.log('operator authorizes · assistant/Codex executes · one bounded Vercel deployment');
           NODE
