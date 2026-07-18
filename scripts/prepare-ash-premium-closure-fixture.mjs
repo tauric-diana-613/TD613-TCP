@@ -41,6 +41,32 @@ const allowedKeysReplacement = `const ALLOWED_LOCAL_KEYS = new Set([
   'td613.ash.cache-flush.epoch'
 ]);`;
 
+const navigationTarget = `  await page.goto(keepUrl, { waitUntil: 'networkidle', timeout: 60_000 });
+  // ASH_CACHE_EPOCH_STABLE: the one-time eviction may navigate after first paint.
+  await page.waitForURL(url => url.searchParams.has('ash_flush'), { timeout: 60_000 });
+  await page.waitForLoadState('networkidle');
+  await page.waitForFunction(() => {
+    const epoch = localStorage.getItem('td613.ash.cache-flush.epoch');
+    const url = new URL(location.href);
+    return Boolean(epoch)
+      && url.searchParams.get('ash_flush') === epoch
+      && window.__td613AshCacheTransition?.epoch === epoch;
+  }, { timeout: 60_000 });`;
+
+const navigationReplacement = `  await page.goto(keepUrl, { waitUntil: 'networkidle', timeout: 60_000 });
+  // ASH_CACHE_EPOCH_STABLE: canonical migration must finish in-place without replacing the active document.
+  await page.waitForFunction(() => {
+    const epoch = localStorage.getItem('td613.ash.cache-flush.epoch');
+    const url = new URL(location.href);
+    const transition = window.__td613AshCacheTransition;
+    return Boolean(epoch)
+      && !url.searchParams.has('ash_flush')
+      && !url.searchParams.has('asset_epoch')
+      && transition?.epoch === epoch
+      && transition?.navigation_replaced === false
+      && transition?.reload_required === false;
+  }, { timeout: 60_000 });`;
+
 const cleanArrivalTarget = `  const cleanKeys = await page.evaluate(() => Object.keys(localStorage));
   const initialNonGet = requests.filter(request => request.method !== 'GET' && request.method !== 'HEAD');
   assert(cleanCount === 0, 'Clean arrival created case records before operator action');
@@ -78,6 +104,7 @@ const cleanArrivalReplacement = `  const cleanEntries = await page.evaluate(() =
     local_storage_keys: cleanKeys,
     one_time_cache_epoch: cleanEntries['td613.ash.cache-flush.epoch'] || null,
     permitted_cache_epochs: [...permittedCacheEpochs],
+    cache_navigation_replaced: window.__td613AshCacheTransition?.navigation_replaced ?? null,
     case_adjacent_storage_written: false,
     non_read_requests: initialNonGet
   };`;
@@ -85,6 +112,7 @@ const cleanArrivalReplacement = `  const cleanEntries = await page.evaluate(() =
 const premiumMarker = 'const premiumCommandInstrument = await page.evaluate';
 const cacheMarker = 'const cleanMaintenanceKeys = new Set';
 const cacheSetMarker = 'const permittedCacheEpochs = new Set';
+const inPlaceMarker = 'transition?.navigation_replaced === false';
 const sha256 = value => `sha256:${createHash('sha256').update(value).digest('hex')}`;
 
 const original = (await fs.readFile(probePath, 'utf8')).replace(/\r\n/g, '\n');
@@ -105,6 +133,13 @@ if (!prepared.includes("'td613.ash.cache-flush.epoch'")) {
   transformations.push('ALLOW_NAMED_CACHE_EPOCH_AFTER_OPERATOR_ACTION');
 }
 
+if (!prepared.includes(inPlaceMarker)) {
+  const count = prepared.split(navigationTarget).length - 1;
+  if (count !== 1) throw new Error(`Cache closure fixture expected one navigation seam; observed ${count}.`);
+  prepared = prepared.replace(navigationTarget, navigationReplacement);
+  transformations.push('REQUIRE_IN_PLACE_CACHE_MIGRATION_WITHOUT_DOCUMENT_REPLACEMENT');
+}
+
 if (!prepared.includes(cacheSetMarker)) {
   const count = prepared.split(cleanArrivalTarget).length - 1;
   if (count !== 1) throw new Error(`Cache closure fixture expected one clean-arrival assertion seam; observed ${count}.`);
@@ -116,6 +151,7 @@ if (!prepared.includes(premiumMarker)
   || !prepared.includes("window.__td613AshPremiumUI.open('save')")
   || !prepared.includes(cacheMarker)
   || !prepared.includes(cacheSetMarker)
+  || !prepared.includes(inPlaceMarker)
   || !prepared.includes('case_adjacent_storage_written: false')
   || !prepared.includes("'td613.ash.cache-flush.epoch'")) {
   throw new Error('Premium/cache closure fixture did not materialize every bounded observation seam.');
@@ -124,7 +160,7 @@ if (!prepared.includes(premiumMarker)
 if (prepared !== original) await fs.writeFile(probePath, prepared, 'utf8');
 await fs.mkdir(path.dirname(manifestPath), { recursive: true });
 await fs.writeFile(manifestPath, `${JSON.stringify({
-  schema: 'td613.ash-keep.premium-production-closure-fixture/v0.6-canonical-cache-epoch-set',
+  schema: 'td613.ash-keep.premium-production-closure-fixture/v0.7-canonical-in-place-cache-epoch-set',
   source_probe: path.relative(repoRoot, probePath),
   posture: transformations.length ? 'PREPARED_NOW' : 'ALREADY_PREPARED',
   source_sha256: sha256(original),
@@ -135,6 +171,8 @@ await fs.writeFile(manifestPath, `${JSON.stringify({
     values: permittedEpochs,
     classification: 'EXACT_NON_CASE_ONE_TIME_MAINTENANCE_MARKER_SET'
   },
+  cache_navigation_required: false,
+  active_document_replacement_allowed: false,
   case_pointer_allowed_before_operator_action: false,
   lifecycle_record_allowed_before_operator_action: false,
   receipt_allowed_before_operator_action: false,
