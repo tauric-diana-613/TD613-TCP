@@ -37,7 +37,10 @@ assert.match(bridge,/ash-guided-trust-boundary-court\.js\?v=20260717-trust-bound
 assert.match(control,/aria-disabled/);
 assert.match(control,/aria-busy/);
 assert.match(control,/MutationObserver/);
-assert.match(control,/data.*ashResearchControlState|ashResearchControlState/);
+assert.match(control,/ashResearchControlState/);
+assert.match(control,/newCase/);
+assert.match(control,/ashResearchBlankCaseState/);
+assert.match(control,/newCase\.disabled\s*=\s*false/);
 assert.match(evict,/performs no storage deletion/);
 assert.match(shell,/cache-evict/);
 assert.match(shell,/Clear-Site-Data/);
