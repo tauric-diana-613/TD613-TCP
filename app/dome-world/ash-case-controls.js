@@ -1,6 +1,6 @@
 import './ash-map-labels.js';
 
-export const ASH_CASE_CONTROLS_VERSION = 'td613.ash-keep.case-controls/v1.2';
+export const ASH_CASE_CONTROLS_VERSION = 'td613.ash-keep.case-controls/v1.4-selection-retention';
 
 const DB_NAME = 'td613-ash-keep';
 const POINTER_KEY = 'td613.ash-keep.current-case';
@@ -12,6 +12,8 @@ const CASE_STORES = [
   'authorityContexts', 'authorityBindings', 'invalidations', 'lifecycle', 'savedCases', 'custodyReceipts'
 ];
 const $ = id => document.getElementById(id);
+let caseListPopulation = null;
+let queuedPreferredCaseId = '';
 
 async function readSavedCases(db) {
   const records = await getAll(db, 'savedCases');
@@ -198,12 +200,13 @@ async function selectableCases(db) {
   return options.sort((left, right) => Number(right.current) - Number(left.current) || left.title.localeCompare(right.title));
 }
 
-async function populateCaseSelect(preferredCaseId = '') {
+async function populateCaseSelectOnce(preferredCaseId = '') {
   const select = $('selectCase');
   if (!select) return;
+  const retainedCaseId = preferredCaseId || select.value || '';
   select.dataset.caseListState = 'LOADING';
   select.disabled = true;
-  setChoiceAvailability(false);
+  if (!retainedCaseId) setChoiceAvailability(false);
   const db = await openDb();
   try {
     const options = await selectableCases(db);
@@ -212,11 +215,30 @@ async function populateCaseSelect(preferredCaseId = '') {
     select.add(placeholder);
     for (const item of options) select.add(new Option(item.label, item.caseId));
     select.disabled = options.length === 0;
-    select.value = options.some(item => item.caseId === preferredCaseId) ? preferredCaseId : '';
+    select.value = options.some(item => item.caseId === retainedCaseId) ? retainedCaseId : '';
     setChoiceAvailability(Boolean(select.value));
   } finally {
     db.close();
     select.dataset.caseListState = 'READY';
+  }
+}
+
+async function populateCaseSelect(preferredCaseId = '') {
+  if (preferredCaseId) queuedPreferredCaseId = preferredCaseId;
+  if (caseListPopulation) return caseListPopulation;
+  caseListPopulation = (async () => {
+    let initialPreferredCaseId = preferredCaseId;
+    do {
+      const requestedCaseId = queuedPreferredCaseId || initialPreferredCaseId;
+      queuedPreferredCaseId = '';
+      initialPreferredCaseId = '';
+      await populateCaseSelectOnce(requestedCaseId);
+    } while (queuedPreferredCaseId);
+  })();
+  try {
+    return await caseListPopulation;
+  } finally {
+    caseListPopulation = null;
   }
 }
 

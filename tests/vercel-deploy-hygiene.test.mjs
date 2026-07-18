@@ -51,6 +51,8 @@ function assertRevalidatingStatic(source) {
 }
 
 assert.equal(vercel.version, 2);
+assert.equal(vercel.git?.deploymentEnabled, false, 'Vercel Git deployments must remain globally disabled; merge is not deployment consent');
+assert.equal(typeof vercel.git?.deploymentEnabled, 'boolean', 'branch maps are forbidden because they can silently re-enable main deployments');
 assert.ok(configuredFunctions.length <= 11, `configured Vercel function operating budget exceeded: ${configuredFunctions.length}/11 — ${configuredFunctions.join(', ')}`);
 assert.equal(deployedApiFiles.length, 11, `deployed Vercel function operating budget must remain 11 active + 1 reserved: ${deployedApiFiles.length}/11 — ${deployedApiFiles.join(', ')}`);
 assert.ok(!deployedApiFiles.includes('hush-generate-strict-pr124.js'), 'retired PR124 function must remain absent');

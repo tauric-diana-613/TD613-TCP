@@ -83,8 +83,7 @@ assert.match(draftEngine, /Review is bound to a different Case Map/);
 assert.deepEqual(vercel.functions['api/dome-world-shell.js'], { maxDuration: 10, includeFiles: 'app/dome-world/{index.html,ash-keep.html,ash-keep.js}' });
 assert.equal(vercel.functions['api/ash-keep-shell.js'], undefined);
 assert.equal(vercel.functions['api/ash-keep-js-shell.js'], undefined);
-assert.equal(vercel.git?.deploymentEnabled?.main, true);
-assert.equal(vercel.git?.deploymentEnabled?.['*'], false);
+assert.equal(vercel.git?.deploymentEnabled, false, 'Git-triggered Vercel deployments require an explicit operator release gesture');
 const rewrites = vercel.rewrites;
 const genericIndex = rewrites.findIndex(rule => rule.source === '/dome-world/(.*)');
 for (const [source, destination] of [

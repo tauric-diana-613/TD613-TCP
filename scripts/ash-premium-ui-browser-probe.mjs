@@ -72,11 +72,26 @@ async function layoutReceipt(page) {
 async function hydrateProfile(page, profile, expectedTitle) {
   await page.locator('#newProfile').selectOption(profile);
   const demo = page.locator('#startDemo');
+  await page.waitForFunction(value => {
+    const button = document.getElementById('startDemo');
+    return document.getElementById('newProfile')?.value === value
+      && button && !button.disabled
+      && button.getAttribute('aria-disabled') === 'false'
+      && button.dataset.ashMethodDemoState === 'READY';
+  }, profile, { timeout: 60_000 });
   assert(await demo.isEnabled(), `${profile} demo did not become available`);
   const started = Date.now();
   await demo.click();
-  await page.waitForFunction(title => document.getElementById('premiumCaseLabel')?.textContent?.includes(title), expectedTitle, { timeout: 60_000 });
-  await page.waitForFunction(() => document.documentElement.dataset.ashPremiumWorkspace === 'home');
+  await page.waitForFunction(({ profile: value, title }) =>
+    document.documentElement.dataset.ashDemoProfile === value
+      && document.getElementById('caseTitle')?.textContent?.includes(title)
+      && document.getElementById('apeqPaiaMethodDocket'),
+  { profile, title: expectedTitle }, { timeout: 60_000 });
+  await page.evaluate(() => window.__td613AshPremiumUI.open('home'));
+  await page.waitForFunction(title =>
+    document.documentElement.dataset.ashPremiumWorkspace === 'home'
+      && document.getElementById('premiumCaseLabel')?.textContent?.includes(title),
+  expectedTitle, { timeout: 60_000 });
   const orientationMs = Date.now() - started;
   assert(orientationMs < 10_000, `${profile} exceeded ten-second useful-state measure`);
   return orientationMs;
@@ -110,7 +125,7 @@ async function flightProfile(context, profile, title) {
 
     stage = 'hydrate-profile';
     const orientationMs = await hydrateProfile(page, profile, title);
-    assert(await page.locator('#workspace-home').isVisible(), 'Hydration must arrive on Home');
+    assert(await page.locator('#workspace-home').isVisible(), 'Hydration must arrive on Home after explicit premium navigation');
     assert(await page.locator('#premiumHomeBody .premium-hero').isVisible(), 'Command Deck hero missing');
     assert.match(await page.locator('#premiumProfileLabel').textContent(), profile === 'political_campaign' ? /Political Campaign/ : /Fundraiser/);
     assert.notEqual((await page.locator('#premiumNextAction').textContent()).trim(), '', 'Next lawful action must be visible');
@@ -124,7 +139,7 @@ async function flightProfile(context, profile, title) {
     stage = 'run-choir';
     await page.locator('[data-premium-workspace="choir"]').click();
     assert(await page.locator('#workspace-choir').isVisible(), 'Choir destination did not open');
-    assert((await page.locator('[data-choir-projection]').count()) >= 2, 'Choir needs at least two hydrated route projections');
+    assert.equal(await page.locator('[data-choir-projection]').count(), 6, 'Choir must expose all six qualified route projections');
     await page.locator('#runPremiumChoir').click();
     await page.waitForFunction(() => {
       const text = document.getElementById('premiumChoirReceipt')?.textContent || '';
@@ -176,6 +191,9 @@ async function flightProfile(context, profile, title) {
     return {
       profile,
       orientation_ms: orientationMs,
+      method_first_arrival: true,
+      premium_home_opened_explicitly: true,
+      qualified_route_projections: 6,
       mobile,
       choir: {
         assay_id: receipt.assay_id,
@@ -207,7 +225,7 @@ const context = await browser.newContext({
 });
 
 const report = {
-  schema: 'td613.ash.premium-ui-browser-flight/v0.1',
+  schema: 'td613.ash.premium-ui-browser-flight/v0.2-apeq-paia',
   status: 'RUNNING',
   base_url: base,
   production_promotion_authorized: false,
