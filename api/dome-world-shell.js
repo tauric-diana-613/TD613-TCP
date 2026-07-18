@@ -1,7 +1,7 @@
 import fs from 'node:fs';
 import path from 'node:path';
 
-export const DOME_WORLD_SHELL_VERSION = 'td613.dome-world.shell/v1.3-ash-cache-transition';
+export const DOME_WORLD_SHELL_VERSION = 'td613.dome-world.shell/v1.2-embedded-ash-membrane';
 export const MARROWLINE_LAB_ROUTE = '/dome-world/marrowline.html';
 export const ASH_THRESHOLD_ROUTE = '/dome-world/ash-threshold.html';
 export const ASH_LIFECYCLE_SHELL_CONTRACT = 'td613.ash.lifecycle-shell/v0.1';
