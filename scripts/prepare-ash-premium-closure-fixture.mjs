@@ -57,7 +57,8 @@ const permittedEpochs = [
   'td613.ash.cache-flush/2026-07-17-premium-v1',
   'td613.ash.cache-flush/2026-07-17-research-ingress-v2',
   'td613.ash.cache-flush/2026-07-18-live-ingress-v3',
-  'td613.ash.cache-flush/2026-07-18-emergency-stability-v5'
+  'td613.ash.cache-flush/2026-07-18-emergency-stability-v5',
+  'td613.ash.cache-flush/2026-07-18-canonical-membrane-v6'
 ];
 
 const cleanArrivalReplacement = `  const cleanEntries = await page.evaluate(() => Object.fromEntries(Object.entries(localStorage)));
@@ -123,7 +124,7 @@ if (!prepared.includes(premiumMarker)
 if (prepared !== original) await fs.writeFile(probePath, prepared, 'utf8');
 await fs.mkdir(path.dirname(manifestPath), { recursive: true });
 await fs.writeFile(manifestPath, `${JSON.stringify({
-  schema: 'td613.ash-keep.premium-production-closure-fixture/v0.5-emergency-cache-epoch-set',
+  schema: 'td613.ash-keep.premium-production-closure-fixture/v0.6-canonical-cache-epoch-set',
   source_probe: path.relative(repoRoot, probePath),
   posture: transformations.length ? 'PREPARED_NOW' : 'ALREADY_PREPARED',
   source_sha256: sha256(original),
