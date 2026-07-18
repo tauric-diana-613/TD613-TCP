@@ -107,6 +107,22 @@ function setSessionOpen(open, doc = document, host = window) {
   return next;
 }
 
+function bindDeliberateEntry(doc = document, host = window) {
+  if (doc.documentElement.dataset.ashDeliberateEntryBound === 'true') return;
+  doc.documentElement.dataset.ashDeliberateEntryBound = 'true';
+  doc.addEventListener('click', event => {
+    const action = event.target?.closest?.('#startDemo,#newCase,#openSelectedCase,#importCapsule');
+    if (!action) return;
+    const reconcile = () => {
+      try {
+        if (host.localStorage.getItem(POINTER_KEY)) setSessionOpen(true, doc, host);
+      } catch {}
+    };
+    host.setTimeout(reconcile, 0);
+    host.setTimeout(reconcile, 120);
+  }, true);
+}
+
 export function measureAshIngress(host = window) {
   const panel = host.document?.querySelector('#launch .launch-panel');
   const membrane = host.document?.getElementById('launch');
@@ -152,6 +168,7 @@ export function installAshIngressLayout(doc = document, host = window) {
     panel.dataset.ashScrollMembrane = 'false';
   }
   setSessionOpen(sessionOpen(host), doc, host);
+  bindDeliberateEntry(doc, host);
 
   for (const type of ['case-opened', 'case-created', 'profile-demo-hydrated', 'capsule-opened']) {
     host.addEventListener(`td613:ash:${type}`, () => setSessionOpen(true, doc, host));
