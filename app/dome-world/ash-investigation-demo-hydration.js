@@ -6,3 +6,4 @@ export {
 } from './ash-apeq-paia-profile-demos.js';
 
 import './ash-apeq-paia-profile-demos.js';
+import './ash-investigation-method-docket-composition.js';
