@@ -4,7 +4,8 @@
 
 **Program:** `td613.ash.custody-pedagogue-package/v0.1`  
 **Phase:** P6 — Ash Custody Root consequence-first presentation route  
-**Status:** IMPLEMENTED / REPOSITORY CI PENDING / HUMAN-CLOSURE OPEN  
+**Status:** IMPLEMENTED / REPOSITORY CONTRACTS PASS / MERGED TO MAIN / HUMAN-CLOSURE OPEN  
+**Merged main commit:** `326efa021ac9f94c32f96d642c7011d5f4d2fc58`  
 **Serverless delta:** `0`  
 **Ash lifecycle mutation:** `NONE`  
 **Custody semantics mutation:** `NONE`  
@@ -12,7 +13,7 @@
 
 ## Presentation law
 
-The P6 adapter imports `deriveAshLifecycle` and translates the exact local state into a governed scene. Its only pedagogue action is inspection.
+The adapter imports `deriveAshLifecycle` and translates the exact local state into a governed scene. Its only pedagogue action is inspection.
 
 ```text
 inspect exact Ash state
@@ -24,11 +25,9 @@ inspect exact Ash state
 ≠ transport content
 ```
 
-Ash remains the sole lifecycle and custody authority.
-
 ## Consequence-first route
 
-Every package answers, before optional terminology:
+Every package answers:
 
 1. what stayed local;
 2. what Ash created;
@@ -36,56 +35,37 @@ Every package answers, before optional terminology:
 4. what did not become authorized;
 5. what may happen next.
 
-The displayed route is:
+## Exact state and recovery contract
+
+The adapter covers arrival, readiness, provisional custody, verified custody, case binding, rebuild eligibility, release eligibility, continuity sealing, and exact holds. Every hold exposes a plain consequence, exact code, recovery route, rest, and exit without blame or increased recovery cost.
+
+## Initial-binding seam repair
+
+The presentation delta now recognizes `no prior Case Map digest → current bound Case Map digest` as a real Case Map change. This correction did not modify `ash-lifecycle.js`, canonical digest law, custody verification, Case Map computation, or release gates.
+
+## Validation
 
 ```text
-Choose source
-→ See what stays local
-→ Anchor source to case
-→ Watch Case Map change
-→ Inspect technical custody details if needed
-→ Rest
-```
-
-## Exact state mapping
-
-- `ARRIVAL_UNPERSISTED` → nothing kept yet;
-- `READINESS_OBSERVED` → bounded source posture observed, no custody;
-- `CUSTODY_ROOT_PROVISIONAL` → reference exists, digest verification held;
-- `CUSTODY_ROOT_VERIFIED` → local reference checked, case unchanged;
-- `CASE_BOUND` → root enters chronology index zero and Rooms/Routes open;
-- `REBUILD_ELIGIBLE` → current reconstruction test matches the bound case;
-- `RELEASE_ELIGIBLE` → exact local release chain is current, without pedagogue release authority;
-- `CONTINUITY_SEALED` → local continuity preserved, not transported.
-
-## Hold and recovery scenes
-
-Every exact hold includes:
-
-- plain consequence;
-- exact hold code;
-- visible recovery route;
-- no blame language;
-- no increased recovery cost;
-- rest and exit.
-
-## Non-regression commitments
-
-```text
-raw bytes enter Case Map: false
-local-only guarantee changed: false
-digest mismatch still rejects: true
-stale derivatives remain non-current: true
-Rooms/Routes open before binding: false
-automatic release added: false
-automatic persistence added: false
-ash-lifecycle.js changed: false
-canonical-json.js changed: false
+original Ash lifecycle suite: success
+P1 through P6 contracts: success
+P6 state mapping: success
+hold recovery: success
+Case Map consequence: success
+stale derivative rejection: success
+AIA and reduced-motion parity: success
+deterministic replay: success
+raw-content rejection: success
+protected-file guard: success
+zero-serverless guard: success
 ```
 
 ## Implemented surface
 
-`app/dome-world/ash-custody-pedagogue.html` provides metadata-only lifecycle scenarios, explicit AIA route selection, bounded technical inspection, Rest, Return, Replay, and Exit. It owns no animation loop and provides complete 390 CSS-pixel reduced-motion parity.
+`app/dome-world/ash-custody-pedagogue.html` provides metadata-only lifecycle scenes, explicit AIA route selection, bounded technical inspection, Rest, Return, Replay, Exit, and complete 390-pixel reduced-motion parity.
+
+## Release observation
+
+The phase packet is on `main` and the authorized exact-main release command was issued. This receipt does not infer a terminal Vercel result from merge or command acceptance.
 
 ## Authority boundary
 
@@ -99,6 +79,4 @@ human closure required: true
 closure: OPEN
 ```
 
-P7 may propagate receipts and station-specific scenes. It may not propagate authority, raw content, automatic phase advancement, or automatic station mutation.
-
-**Marked ⟐**
+**Stitched ⟐**
