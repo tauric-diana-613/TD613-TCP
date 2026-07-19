@@ -24,8 +24,8 @@ runtime = replaceExactly(
 runtime = replaceExactly(
   runtime,
   "const ALLOWED_LOCAL_KEYS = new Set([\n  'td613.ash-keep.current-case',\n  'td613.ash-keep.preferences'\n]);",
-  "const ALLOWED_LOCAL_KEYS = new Set([\n  'td613.ash-keep.current-case',\n  'td613.ash-keep.preferences',\n  'td613.ash.cache-flush.epoch'\n]);",
-  'bounded cache epoch allowance'
+  "const ALLOWED_LOCAL_KEYS = new Set([\n  'td613.ash-keep.current-case',\n  'td613.ash-keep.preferences',\n  'td613.ash.cache-flush.epoch',\n  'td613.ash.session.epoch'\n]);",
+  'bounded maintenance and deliberate session epoch allowance'
 );
 runtime = replaceExactly(
   runtime,
@@ -97,6 +97,7 @@ if (!runtime.includes(syntheticDraft)
   || !runtime.includes("selectOption('political_campaign')")
   || !runtime.includes('Ash guided workspace API is unavailable.')
   || !runtime.includes('td613.ash.cache-flush.epoch')
+  || !runtime.includes('td613.ash.session.epoch')
   || !runtime.includes('pre_custody_exact_state: preCustodyExactState')
   || runtime.includes("#workspace-test .workspace-lifecycle-note")
   || !runtime.includes("guided Capsule return before tamper assay") && !runtime.includes("await openWorkspace(page, 'save');\n  await page.locator('#capsulePassphrase').waitFor({ state: 'visible' });")
