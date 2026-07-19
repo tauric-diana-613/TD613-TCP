@@ -2,13 +2,13 @@ import fs from 'node:fs';
 import path from 'node:path';
 import { stabilizeAshKeepSource } from '../app/dome-world/ash-keep-delivery-transform.js';
 
-export const DOME_WORLD_SHELL_VERSION = 'td613.dome-world.shell/v1.4-lifecycle-cache-boundary';
+export const DOME_WORLD_SHELL_VERSION = 'td613.dome-world.shell/v1.3-live-cache-transition';
 export const MARROWLINE_LAB_ROUTE = '/dome-world/marrowline.html';
 export const ASH_THRESHOLD_ROUTE = '/dome-world/ash-threshold.html';
 export const ASH_LIFECYCLE_SHELL_CONTRACT = 'td613.ash.lifecycle-shell/v0.1';
-export const ASH_KEEP_SHELL_VERSION = 'td613.ash-keep.shell/v0.3-lifecycle-cache-boundary';
+export const ASH_KEEP_SHELL_VERSION = 'td613.ash-keep.shell/v0.2-canonical-composition';
 export const ASH_KEEP_JS_SHELL_VERSION = 'td613.ash-keep.js-shell/v0.5-event-driven-map';
-export const ASH_CACHE_TRANSITION_CONTRACT = 'td613.ash.cache-transition/v0.3-v7-readiness-boundary';
+export const ASH_CACHE_TRANSITION_CONTRACT = 'td613.ash.cache-transition/v0.2-live-ingress';
 export const ASH_LIFECYCLE_ASSET_EPOCH = '20260718-canonical-membrane-v7-readiness-boundary';
 export const ASH_LIFECYCLE_SOURCE_MODULE = '/dome-world/ash-lifecycle.js';
 export const ASH_LIFECYCLE_MODULE = `${ASH_LIFECYCLE_SOURCE_MODULE}?v=${ASH_LIFECYCLE_ASSET_EPOCH}`;
