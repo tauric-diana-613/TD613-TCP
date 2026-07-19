@@ -168,9 +168,10 @@ assert.match(renderedKeep, /src="\/dome-world\/ash-lifecycle\.js\?v=20260718-can
 assert.doesNotMatch(renderedKeep, /src="\/dome-world\/ash-lifecycle\.js"/);
 assert.equal(injectAshKeepLifecycle(renderedKeep), renderedKeep, 'Lifecycle cache-boundary injection is not idempotent.');
 
-for (const module of ['ash-profile-demo-hydration','ash-investigation-demo-hydration','ash-research-demo-hydration','ash-research-demo-control-state','ash-case-close-repair']) {
+for (const module of ['ash-profile-demo-hydration','ash-investigation-demo-hydration','ash-research-demo-hydration','ash-research-demo-control-state']) {
   assert.match(bridge, new RegExp(`${module}\\.js\\?v=20260718-canonical-membrane-v6`));
 }
+assert.match(bridge, /ash-case-close-repair\.js\?v=20260719-ingress-readiness-boundary-v1/);
 assert(bridge.indexOf('ash-emergency-stability-contract.js') > bridge.indexOf('ash-workspace-navigation.js'), 'Final membrane reveal must load after all membrane composition modules.');
 assert.doesNotMatch(profileWrapper + investigationWrapper, /fixtures\//);
 
@@ -189,15 +190,19 @@ for (const token of [
 ]) assert(shell.includes(token), `Shell omitted ${token}`);
 
 for (const token of [
-  'v1.2-session-logout',
+  'v1.3-ingress-readiness-boundary',
+  'validThresholdReadiness',
   'clearAshSessionStorage',
   'cleanUrl',
   'resetTransientUi',
   'localStorage.removeItem(POINTER_KEY)',
   'localStorage.removeItem(SESSION_EPOCH_KEY)',
+  'preserveReadiness:true',
   "select.value = ''",
   'session_logged_out:true'
-]) assert(closeRepair.includes(token), `Close logout omitted ${token}`);
+]) assert(closeRepair.includes(token), `Close/ingress boundary omitted ${token}`);
+assert.match(closeRepair, /async function closeToMembrane\(\)[\s\S]*?exposeMembrane\(\);/);
+assert.match(closeRepair, /if \(!localStorage\.getItem\(POINTER_KEY\)\) exposeMembrane\(\{ preserveReadiness:true \}\);/);
 assert.doesNotMatch(closeRepair, /retainClosedSelection/);
 
 for (const token of ['HIDDEN_UNTIL_FINAL_COMPOSITION','REQUIRED_MEMBRANE_IDS','dataset.ashMembraneReady','canonical-membrane-ready']) {
