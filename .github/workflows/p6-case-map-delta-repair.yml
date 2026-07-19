@@ -1,0 +1,39 @@
+name: One-use P6 Case Map Delta Repair
+
+on:
+  push:
+    branches:
+      - agent/flowcore-p6-ash-custody-pedagogue
+    paths:
+      - '.github/workflows/p6-case-map-delta-repair.yml'
+
+permissions:
+  contents: write
+
+jobs:
+  repair:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: agent/flowcore-p6-ash-custody-pedagogue
+          fetch-depth: 0
+      - name: Replace the exact presentation-only Case Map predicate
+        shell: bash
+        run: |
+          set -euo pipefail
+          python - <<'PY'
+          from pathlib import Path
+          path = Path('app/engine/ash-pedagogue-adapter.js')
+          source = path.read_text(encoding='utf-8')
+          old = "const caseMapChanged = Boolean(beforeDigest && afterDigest && beforeDigest !== afterDigest);"
+          new = "const caseMapChanged = Boolean(afterDigest && beforeDigest !== afterDigest);"
+          if source.count(old) != 1:
+              raise SystemExit('Expected exactly one stale Case Map predicate.')
+          path.write_text(source.replace(old, new), encoding='utf-8')
+          PY
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add app/engine/ash-pedagogue-adapter.js
+          git commit -m 'Recognize initial Case Map binding in P6 delta'
+          git push origin HEAD:agent/flowcore-p6-ash-custody-pedagogue
