@@ -1,0 +1,40 @@
+name: Flow-Core Pedagogue P3 Visual Contracts
+
+on:
+  pull_request:
+    branches: [ main ]
+    paths:
+      - 'app/dome-world/flowcore-pedagogue-visual.js'
+      - 'app/dome-world/flowcore-pedagogue.css'
+      - 'tests/flowcore-pedagogue-visual.test.mjs'
+      - '.github/workflows/flowcore-pedagogue-p3.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  visual-contracts:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+          cache: npm
+      - run: npm ci
+      - name: Run visual, reduced-motion, scheduler, and mobile contracts
+        run: node --test tests/flowcore-pedagogue-visual.test.mjs
+      - name: Assert P3 changes allocate no serverless function
+        shell: bash
+        run: |
+          BASE_SHA="${{ github.event.pull_request.base.sha }}"
+          if [[ -z "$BASE_SHA" ]]; then
+            BASE_SHA="$(git rev-parse origin/main)"
+          fi
+          if git diff --name-only "$BASE_SHA" "${{ github.sha }}" | grep -Eq '^(api/|vercel\.json$)'; then
+            echo 'P3 may not change api/ or vercel.json'
+            exit 1
+          fi
