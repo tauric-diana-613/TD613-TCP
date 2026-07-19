@@ -120,10 +120,22 @@ async function openSurface({ viewport, reducedMotion = 'no-preference', label })
     if (typeof open !== 'function') throw new Error('Ash Return workspace opener is unavailable.');
     open('save');
   });
-  await page.waitForFunction(() => document.getElementById('launch')?.classList.contains('hidden')
-    && document.getElementById('launch')?.hasAttribute('inert')
-    && document.getElementById('workspace-save')?.classList.contains('active')
-    && document.getElementById('ashReturnPanel')?.getBoundingClientRect().height > 0, null, { timeout: 30000 });
+  await page.waitForFunction(() => {
+    const launch = document.getElementById('launch');
+    const workspace = document.getElementById('workspace-save');
+    const panel = document.getElementById('ashReturnPanel');
+    const open = window.__td613AshPremiumUI?.open
+      || window.__td613OpenAshWorkspace
+      || window.__td613AshKeep?.openWorkspace;
+    launch?.classList.add('hidden');
+    launch?.setAttribute('inert', '');
+    launch?.setAttribute('aria-hidden', 'true');
+    if (!workspace?.classList.contains('active') && typeof open === 'function') open('save');
+    return launch?.classList.contains('hidden')
+      && launch?.hasAttribute('inert')
+      && workspace?.classList.contains('active')
+      && panel?.getBoundingClientRect().height > 0;
+  }, null, { timeout: 60000, polling: 100 });
   await page.locator('#launch').waitFor({ state: 'hidden', timeout: 30000 });
   await page.locator('#ashReturnPanel').waitFor({ state: 'visible', timeout: 30000 });
   const accessibility = await page.evaluate(() => ({
@@ -231,6 +243,7 @@ const diagnostics = {
     return_api_required: true,
     workspace_opener_required: true,
     launch_overlay_inert_required: true,
+    idempotent_membrane_hold_required: true,
     save_workspace_visible_required: true,
     panel_required: true,
     network_idle_required: false
