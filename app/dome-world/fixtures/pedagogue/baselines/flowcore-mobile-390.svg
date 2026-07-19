@@ -1,0 +1,19 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="390" height="844" viewBox="0 0 390 844" role="img" aria-labelledby="title desc">
+  <title id="title">Flow-Core mobile baseline</title>
+  <desc id="desc">Static single-column 390 CSS-pixel Flow-Core baseline with no horizontal overflow.</desc>
+  <rect width="390" height="844" fill="#090b14"/>
+  <rect x="12" y="12" width="366" height="820" rx="22" fill="#111528" stroke="#d9d4ff"/>
+  <text x="28" y="48" fill="#f3f0ff" font-family="system-ui,sans-serif" font-size="17">U+10D613 · Mobile 390</text>
+  <text x="28" y="76" fill="#c7c0ff" font-family="system-ui,sans-serif" font-size="13">single column · no horizontal overflow</text>
+  <g font-family="system-ui,sans-serif" fill="#f3f0ff">
+    <rect x="28" y="104" width="334" height="92" rx="14" fill="#1a2038" stroke="#8d86d9"/><text x="44" y="136" font-size="16">1 · Notice the visible condition</text><text x="44" y="166" font-size="14">Source, missingness, ceiling.</text>
+    <rect x="28" y="214" width="334" height="92" rx="14" fill="#1a2038" stroke="#8d86d9"/><text x="44" y="246" font-size="16">2 · Choose one bounded act</text><text x="44" y="276" font-size="14">Authority and reversibility visible.</text>
+    <rect x="28" y="324" width="334" height="92" rx="14" fill="#1a2038" stroke="#8d86d9"/><text x="44" y="356" font-size="16">3 · See what changed</text><text x="44" y="386" font-size="14">Causal trace or unresolved relation.</text>
+    <rect x="28" y="434" width="334" height="92" rx="14" fill="#1a2038" stroke="#8d86d9"/><text x="44" y="466" font-size="16">4 · Name the relation</text><text x="44" y="496" font-size="14">Terminology follows consequence.</text>
+    <rect x="28" y="544" width="334" height="92" rx="14" fill="#1a2038" stroke="#8d86d9"/><text x="44" y="576" font-size="16">5 · 𝄐 Rest</text><text x="44" y="606" font-size="14">Replay · Return · Exit.</text>
+  </g>
+  <rect x="28" y="660" width="334" height="112" rx="14" fill="#0d1120" stroke="#6f6aa6"/>
+  <text x="44" y="694" fill="#f3f0ff" font-family="system-ui,sans-serif" font-size="15">Static parity</text>
+  <text x="44" y="722" fill="#d9d4ff" font-family="system-ui,sans-serif" font-size="13">44px touch floor · focus visible</text>
+  <text x="44" y="746" fill="#d9d4ff" font-family="system-ui,sans-serif" font-size="13">human closure required · ⟐</text>
+</svg>
