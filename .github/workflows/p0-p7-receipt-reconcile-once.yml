@@ -1,5 +1,6 @@
 name: One-use P0-P7 Receipt Reconciliation
 
+# Second push activates the workflow after its definition exists.
 on:
   push:
     branches:
