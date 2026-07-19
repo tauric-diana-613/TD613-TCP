@@ -9,8 +9,47 @@ import { buildSyntheticReturnFixtures } from './ash-custodian-return-fixture.mjs
 const baseUrl = String(process.env.TD613_BASE_URL || process.env.TD613_DEPLOYED_BASE_URL || 'http://127.0.0.1:6130').replace(/\/$/, '');
 const artifactDir = process.env.TD613_ARTIFACT_DIR || 'artifacts/ash-custodian-return';
 const observedCommit = process.env.TD613_OBSERVED_COMMIT || process.env.GITHUB_SHA || null;
+let probeStage = 'BOOTSTRAP';
+let terminalFailureCaptured = false;
 
 await fs.mkdir(artifactDir, { recursive: true });
+
+async function markStage(stage, detail = null) {
+  probeStage = stage;
+  await fs.writeFile(path.join(artifactDir, 'probe-stage.json'), `${JSON.stringify({
+    schema:'td613.ash.custodian-return-probe-stage/v0.1',
+    stage,
+    detail,
+    observed_base_url:baseUrl,
+    observed_commit:observedCommit,
+    recorded_at:new Date().toISOString()
+  }, null, 2)}\n`);
+}
+
+async function captureTerminalFailure(error) {
+  if (terminalFailureCaptured) return;
+  terminalFailureCaptured = true;
+  const failure = {
+    schema:'td613.ash.custodian-return-probe-failure/v0.1',
+    stage:probeStage,
+    observed_base_url:baseUrl,
+    observed_commit:observedCommit,
+    message:error?.message || String(error),
+    stack:error?.stack || null,
+    recorded_at:new Date().toISOString()
+  };
+  await fs.writeFile(path.join(artifactDir, 'probe-failure.json'), `${JSON.stringify(failure, null, 2)}\n`);
+}
+
+process.on('uncaughtException', error => {
+  captureTerminalFailure(error).finally(() => process.exit(1));
+});
+process.on('unhandledRejection', reason => {
+  const error = reason instanceof Error ? reason : new Error(String(reason));
+  captureTerminalFailure(error).finally(() => process.exit(1));
+});
+
+await markStage('FIXTURE_COMPILATION');
 const fixtures = await buildSyntheticReturnFixtures();
 const fixturePaths = {};
 for (const [name, value] of Object.entries({
@@ -108,14 +147,18 @@ async function runCapsule(page, filePath, passphrase, expected) {
   }));
 }
 
+await markStage('DESKTOP_OPEN');
 const desktop = await openSurface({ viewport: { width: 1440, height: 1000 }, label: 'desktop' });
+await markStage('DESKTOP_VALID_RETURN');
 const beforeCases = await indexedCaseCount(desktop.page);
 const valid = await runCapsule(desktop.page, fixturePaths.valid, fixtures.passphrase, /sealed; live case untouched/i);
 const afterCases = await indexedCaseCount(desktop.page);
 if (afterCases !== beforeCases) liveCaseMutations.push({ before: beforeCases, after: afterCases, surface: 'desktop' });
+await markStage('DESKTOP_REPLAY');
 await desktop.page.click('#replayCustodianReturn');
 await desktop.page.waitForFunction(() => /REPLAY_VERIFIED/.test(document.getElementById('returnStatus')?.textContent || ''), null, { timeout: 30000 });
 const replay = await desktop.page.textContent('#returnReplayReceipt');
+await markStage('DESKTOP_INTERRUPTED_RECOVERY');
 const interruptedId = await desktop.page.evaluate(() => window.TD613AshCustodianReturnClosure.seedInterruptedImportForProbe());
 const recoveredInterrupted = await desktop.page.evaluate(() => window.TD613AshCustodianReturnClosure.recoverInterruptedImports());
 if (recoveredInterrupted < 1) throw new Error(`Interrupted import ${interruptedId} was not recovered.`);
@@ -123,29 +166,42 @@ const desktopShot = path.join(artifactDir, 'custodian-return-desktop.png');
 await desktop.page.screenshot({ path: desktopShot, fullPage: true });
 screenshots.desktop = desktopShot;
 
+await markStage('WRONG_PASSPHRASE_OPEN');
 const wrong = await openSurface({ viewport: { width: 1280, height: 900 }, label: 'wrong-passphrase' });
+await markStage('WRONG_PASSPHRASE_RUN');
 const wrongResult = await runCapsule(wrong.page, fixturePaths.valid, 'wrong-passphrase', /authentication failed/i);
 
+await markStage('TAMPER_OPEN');
 const tamper = await openSurface({ viewport: { width: 1280, height: 900 }, label: 'tamper' });
+await markStage('TAMPER_RUN');
 const tamperResult = await runCapsule(tamper.page, fixturePaths.tampered, fixtures.passphrase, /verification held/i);
 
+await markStage('PARTIAL_CAPSULE_OPEN');
 const partial = await openSurface({ viewport: { width: 1280, height: 900 }, label: 'partial-capsule' });
+await markStage('PARTIAL_CAPSULE_RUN');
 const partialResult = await runCapsule(partial.page, fixturePaths.partial, fixtures.passphrase, /return-ready bundle is absent/i);
 
+await markStage('STALE_RECEIPT_OPEN');
 const stale = await openSurface({ viewport: { width: 1280, height: 900 }, label: 'stale-receipt' });
+await markStage('STALE_RECEIPT_RUN');
 const staleResult = await runCapsule(stale.page, fixturePaths.stale, fixtures.passphrase, /verification held/i);
 
+await markStage('MOBILE_OPEN');
 const mobile = await openSurface({ viewport: { width: 390, height: 844 }, label: 'mobile' });
+await markStage('MOBILE_VALID_RETURN');
 const mobileResult = await runCapsule(mobile.page, fixturePaths.valid, fixtures.passphrase, /sealed; live case untouched/i);
 const mobileShot = path.join(artifactDir, 'custodian-return-mobile.png');
 await mobile.page.screenshot({ path: mobileShot, fullPage: true });
 screenshots.mobile = mobileShot;
 
+await markStage('REDUCED_MOTION_OPEN');
 const reduced = await openSurface({ viewport: { width: 1024, height: 768 }, reducedMotion: 'reduce', label: 'reduced-motion' });
+await markStage('REDUCED_MOTION_VALID_RETURN');
 const reducedResult = await runCapsule(reduced.page, fixturePaths.valid, fixtures.passphrase, /sealed; live case untouched/i);
 const reducedMotionMatched = await reduced.page.evaluate(() => matchMedia('(prefers-reduced-motion: reduce)').matches);
 if (!reducedMotionMatched) throw new Error('Reduced-motion context did not report the declared preference.');
 
+await markStage('MATRIX_VALIDATION');
 const matrix = {
   valid_return: /sealed/.test(valid.status) ? 'PASS' : 'FAIL',
   wrong_passphrase: /WRONG_PASSPHRASE/.test(wrongResult.hold_receipt) ? 'PASS' : 'FAIL',
@@ -204,6 +260,7 @@ if (providerRequests.length || recipientTransportRequests.length || liveCaseMuta
   throw new Error('Stretch 2 crossed a prohibited provider, transport, live-case, or Cinder boundary.');
 }
 
+await markStage('OBSERVATION_COMPILATION');
 const observation = await compileReturnProductionObservation({
   observedBaseUrl: baseUrl,
   observedCommit,
@@ -247,6 +304,7 @@ const manifest = {
 };
 await fs.writeFile(path.join(artifactDir, 'evidence-manifest.json'), `${JSON.stringify(manifest, null, 2)}\n`);
 
+await markStage('COMPLETE');
 for (const surface of [desktop, wrong, tamper, partial, stale, mobile, reduced]) await surface.context.close();
 await browser.close();
 
