@@ -1,0 +1,88 @@
+body {
+  margin: 0;
+  min-block-size: 100vh;
+  font-family: ui-sans-serif, system-ui, sans-serif;
+  background: radial-gradient(circle at 50% 0%, rgba(98, 94, 177, 0.22), transparent 38%), #090b14;
+  color: #f3f0ff;
+}
+
+.information-dome {
+  inline-size: min(76rem, calc(100% - 2rem));
+  margin-inline: auto;
+  padding-block: clamp(1rem, 4vw, 3rem);
+}
+
+.information-dome__header,
+.information-dome__status,
+.information-dome__controls {
+  border: 1px solid rgba(243, 240, 255, 0.28);
+  border-radius: 1rem;
+  padding: clamp(1rem, 3vw, 1.5rem);
+  background: rgba(9, 11, 20, 0.82);
+}
+
+.information-dome__eyebrow {
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+}
+
+.information-dome__choices,
+.information-dome__controls {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.75rem;
+}
+
+.information-dome__choice,
+.information-dome__controls button,
+.information-dome__exit {
+  border: 1px solid currentColor;
+  border-radius: 999px;
+  padding: 0.65rem 1rem;
+  background: transparent;
+  color: inherit;
+  font: inherit;
+  text-decoration: none;
+}
+
+.information-dome__choice[aria-pressed="true"] {
+  background: #f3f0ff;
+  color: #090b14;
+}
+
+.information-dome__nonclaim {
+  border-inline-start: 0.3rem solid currentColor;
+  padding-inline-start: 0.8rem;
+  font-weight: 700;
+}
+
+.information-dome__inspection {
+  max-inline-size: 100%;
+  overflow: auto;
+  white-space: pre-wrap;
+  overflow-wrap: anywhere;
+}
+
+[data-resting="true"] [data-scene-stage] {
+  opacity: 0.72;
+}
+
+@media (max-width: 390px) {
+  .information-dome {
+    inline-size: min(100% - 1rem, 100%);
+  }
+
+  .information-dome__choices,
+  .information-dome__controls {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .information-dome__choice,
+  .information-dome__controls button,
+  .information-dome__exit {
+    inline-size: 100%;
+    box-sizing: border-box;
+    text-align: center;
+  }
+}

@@ -1,0 +1,45 @@
+name: Flow-Core Pedagogue P4 Information-Dome Contracts
+
+on:
+  pull_request:
+    branches: [ main ]
+    paths:
+      - 'app/engine/information-dome-field.js'
+      - 'app/dome-world/information-dome-pedagogue*'
+      - 'app/dome-world/schemas/information-dome-field-v01.schema.json'
+      - 'tests/information-dome-scenes.test.mjs'
+      - '.github/workflows/flowcore-pedagogue-p4.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  information-dome-contracts:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+          cache: npm
+      - run: npm ci
+      - name: Run P1 through P4 pedagogue contracts
+        run: |
+          node --test tests/flowcore-pedagogue-core.test.mjs
+          node --test tests/flowcore-pedagogue-aia.test.mjs
+          node --test tests/flowcore-pedagogue-visual.test.mjs
+          node --test tests/information-dome-scenes.test.mjs
+      - name: Assert P4 changes allocate no serverless function
+        shell: bash
+        run: |
+          BASE_SHA="${{ github.event.pull_request.base.sha }}"
+          if [[ -z "$BASE_SHA" ]]; then
+            BASE_SHA="$(git rev-parse origin/main)"
+          fi
+          if git diff --name-only "$BASE_SHA" "${{ github.sha }}" | grep -Eq '^(api/|vercel\.json$)'; then
+            echo 'P4 may not change api/ or vercel.json'
+            exit 1
+          fi
