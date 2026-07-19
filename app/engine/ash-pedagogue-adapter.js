@@ -180,7 +180,7 @@ export function compileAshCustodyWorldDelta(beforeSnapshot = null, afterSnapshot
   const afterCopy = stateCopy(after);
   const beforeDigest = before?.references?.case_map_digest || beforeSnapshot?.caseMap?.case_map_digest || null;
   const afterDigest = after.references?.case_map_digest || afterSnapshot?.caseMap?.case_map_digest || null;
-  const caseMapChanged = Boolean(beforeDigest && afterDigest && beforeDigest !== afterDigest);
+  const caseMapChanged = Boolean(afterDigest && beforeDigest !== afterDigest);
   const gatesOpened = Object.entries(after.gates || {})
     .filter(([key, value]) => value === true && before?.gates?.[key] !== true)
     .map(([key]) => key)
