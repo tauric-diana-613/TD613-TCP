@@ -1,0 +1,44 @@
+name: Flow-Core Pedagogue P1 Contracts
+
+on:
+  pull_request:
+    branches: [ main ]
+    paths:
+      - 'app/engine/flowcore-pedagogue-*.js'
+      - 'app/dome-world/data/flowcore-*-registry-v01.js'
+      - 'app/dome-world/data/flowcore-glyph-semantics-v01.js'
+      - 'app/dome-world/schemas/flowcore-*.schema.json'
+      - 'app/dome-world/schemas/aia-view-v01.schema.json'
+      - 'app/dome-world/fixtures/pedagogue/**'
+      - 'tests/flowcore-pedagogue-core.test.mjs'
+      - '.github/workflows/flowcore-pedagogue-p1.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  deterministic-contracts:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+          cache: 'npm'
+      - run: npm ci
+      - name: Run deterministic pedagogue kernel and Unicode parity gate
+        run: node --test tests/flowcore-pedagogue-core.test.mjs
+      - name: Assert P1 changes allocate no serverless function
+        shell: bash
+        run: |
+          BASE_SHA="${{ github.event.pull_request.base.sha }}"
+          if [[ -z "$BASE_SHA" ]]; then
+            BASE_SHA="$(git rev-parse origin/main)"
+          fi
+          if git diff --name-only "$BASE_SHA" "${{ github.sha }}" | grep -Eq '^(api/|vercel\.json$)'; then
+            echo 'P1 may not change api/ or vercel.json'
+            exit 1
+          fi
