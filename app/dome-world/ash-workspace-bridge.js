@@ -1,5 +1,6 @@
 export * from './ash-workspace-bridge-core.js?v=20260718-canonical-membrane-v6';
 import './ash-flicker-hardening.js?v=20260718-canonical-membrane-v6';
+// Initial ingress may preserve one validated readiness receipt; operator Close Case always clears the Ash session.
 import './ash-case-close-repair.js?v=20260719-ingress-readiness-boundary-v1';
 
 /* Canonical composition ordering retained under cache-busted URLs:
