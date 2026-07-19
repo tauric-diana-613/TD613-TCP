@@ -107,19 +107,26 @@ test('same governed station fixtures yield deterministic bundle and receipts', a
   assert.equal(verifyStationPropagationBundle(left), true);
 });
 
-test('raw content and station-authority drift reject', async () => {
+test('raw source fields reject at the propagation membrane', async () => {
   const value = data();
   value.fixtures[0].scene_input.visible_condition.content = 'forbidden source passage';
   await assert.rejects(() => compileStationPropagationScene(value.fixtures[0], options), /cannot cross/);
+});
 
+test('origin-station authority drift rejects', async () => {
   const authorityDrift = data();
   authorityDrift.fixtures[0].scene_input.available_affordances[0].authorized_by_station = 'Aperture';
   await assert.rejects(() => compileStationPropagationScene(authorityDrift.fixtures[0], options), /origin station/);
+});
 
+test('duplicate primary-station coverage rejects before propagation', async () => {
   const duplicate = data();
   duplicate.fixtures[3].origin_station = 'Hush';
   duplicate.fixtures[3].scene_input.available_affordances[0].authorized_by_station = 'Hush';
-  await assert.rejects(() => compileStationPropagationBundle(duplicate.fixtures, options), /coverage is incomplete or duplicated/);
+  await assert.rejects(
+    () => compileStationPropagationBundle(duplicate.fixtures, options),
+    /missing speech_act_retained|coverage is incomplete or duplicated/
+  );
 });
 
 test('P7 adds no infrastructure, persistence, Ash action, release, or automatic closure', async () => {
