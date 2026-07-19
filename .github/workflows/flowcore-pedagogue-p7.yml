@@ -1,0 +1,63 @@
+name: Flow-Core Pedagogue P7 Cross-Station Contracts
+
+on:
+  pull_request:
+    branches: [ main ]
+    paths:
+      - 'app/engine/flowcore-station-propagation.js'
+      - 'app/dome-world/station-propagation-observatory*'
+      - 'app/dome-world/fixtures/pedagogue/cross-station-propagation.json'
+      - 'app/dome-world/schemas/flowcore-station-propagation-v01.schema.json'
+      - 'tests/flowcore-station-propagation.test.mjs'
+      - '.github/workflows/flowcore-pedagogue-p7.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  cross-station-contracts:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+          cache: npm
+      - run: npm ci
+      - name: Run exact Ash lifecycle non-regression
+        run: node --test tests/ash-lifecycle.test.mjs
+      - name: Run Flow-Core P1 contracts
+        run: node --test tests/flowcore-pedagogue-core.test.mjs
+      - name: Run Flow-Core P2 contracts
+        run: node --test tests/flowcore-pedagogue-aia.test.mjs
+      - name: Run Flow-Core P3 contracts
+        run: node --test tests/flowcore-pedagogue-visual.test.mjs
+      - name: Run Information-Dome P4 contracts
+        run: node --test tests/information-dome-scenes.test.mjs
+      - name: Run route-burden P5 contracts
+        run: node --test tests/flowcore-route-burden.test.mjs
+      - name: Run Ash custody pedagogue P6 contracts
+        run: node --test tests/ash-pedagogue-custody-route.test.mjs
+      - name: Run cross-station propagation P7 contracts
+        run: node --test tests/flowcore-station-propagation.test.mjs
+      - name: Assert P7 adds no serverless, persistence, or protected-law mutation
+        shell: bash
+        run: |
+          BASE_SHA="${{ github.event.pull_request.base.sha }}"
+          if [[ -z "$BASE_SHA" ]]; then
+            BASE_SHA="$(git rev-parse origin/main)"
+          fi
+          CHANGED="$(git diff --name-only "$BASE_SHA" "${{ github.sha }}")"
+          if grep -Eq '^(api/|vercel\.json$)' <<< "$CHANGED"; then
+            echo 'P7 may not change api/ or vercel.json'
+            exit 1
+          fi
+          for protected in app/engine/ash-lifecycle.js app/dome-world/ash/canonical-json.js app/engine/flowcore-pedagogue-core.js; do
+            if grep -Fxq "$protected" <<< "$CHANGED"; then
+              echo "P7 may not mutate protected station or canonical law: $protected"
+              exit 1
+            fi
+          done
