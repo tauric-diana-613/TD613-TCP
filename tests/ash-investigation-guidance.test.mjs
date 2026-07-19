@@ -45,9 +45,10 @@ assert.match(runtime, /Heterostratigraphic field/);
 assert.match(runtime, /PA2 ceiling/);
 assert.doesNotMatch(runtime, /fetch\(/);
 assert.match(specs, /Glass Meridian Vendor Integrity Inquiry/);
-for (const module of ['ash-investigation-demo-hydration','ash-guided-operator-ui','ash-flicker-hardening','ash-emergency-stability-contract','ash-case-close-repair']) {
+for (const module of ['ash-investigation-demo-hydration','ash-guided-operator-ui','ash-flicker-hardening','ash-emergency-stability-contract']) {
   assert.match(bridge, new RegExp(`${module}\\.js\\?v=20260718-canonical-membrane-v6`));
 }
+assert.match(bridge, /ash-case-close-repair\.js\?v=20260719-ingress-readiness-boundary-v1/);
 assert(bridge.indexOf('ash-flicker-hardening.js') < bridge.indexOf('ash-premium-ui.js'), 'Static compositor must install before Premium composition.');
 assert(bridge.indexOf('ash-case-close-repair.js') < bridge.indexOf('ash-premium-ui.js'), 'Close logout must install before Premium composition.');
 assert(bridge.indexOf('ash-emergency-stability-contract.js') > bridge.indexOf('ash-workspace-navigation.js'), 'Membrane reveal must run after final composition.');
@@ -94,8 +95,11 @@ assert.match(emergency, /STATIC_SURFACE_NATIVE_SCROLL/);
 assert.match(emergency, /HIDDEN_UNTIL_FINAL_COMPOSITION/);
 assert.match(emergency, /SAVE_CLEAR_SESSION_RETURN_UNSELECTED_TO_MEMBRANE/);
 assert.match(emergency, /REQUIRED_MEMBRANE_IDS/);
+assert.match(closeRepair, /v1\.3-ingress-readiness-boundary/);
 assert.match(closeRepair, /saveBeforeClose/);
+assert.match(closeRepair, /validThresholdReadiness/);
 assert.match(closeRepair, /clearAshSessionStorage/);
+assert.match(closeRepair, /preserveReadiness:true/);
 assert.match(closeRepair, /localStorage\.removeItem\(POINTER_KEY\)/);
 assert.match(closeRepair, /localStorage\.removeItem\(SESSION_EPOCH_KEY\)/);
 assert.match(closeRepair, /launch\?\.classList\.remove\('hidden'\)/);
@@ -103,13 +107,15 @@ assert.match(closeRepair, /automatic-close-boundary/);
 assert.match(closeRepair, /operator-closed-current-case-session-logout/);
 assert.match(closeRepair, /session_logged_out:true/);
 assert.match(closeRepair, /select\.value = ''/);
+assert.match(closeRepair, /async function closeToMembrane\(\)[\s\S]*?exposeMembrane\(\);/);
 assert.doesNotMatch(closeRepair, /retainClosedSelection/);
-assert.match(cacheFlush, /2026-07-18-canonical-membrane-v6/);
+assert.match(cacheFlush, /2026-07-18-canonical-membrane-v7/);
+assert.match(cacheFlush, /v0\.7-readiness-boundary/);
 assert.match(cacheFlush, /unregisterSameOriginWorkers/);
 assert.match(cacheFlush, /cache:'no-store'/);
 assert.match(cacheFlush, /local_case_pointer_preserved:false/);
 assert.match(cacheFlush, /active_session_reset:true/);
-assert.match(lifecycle, /ash-cache-flush\.js\?v=20260718-canonical-membrane-v6/);
+assert.match(lifecycle, /ash-cache-flush\.js\?v=20260718-canonical-membrane-v7-readiness-boundary/);
 assert.doesNotMatch(cacheFlush, /2026-07-18-(?:live-ingress-v3|emergency-stability-v5)/);
 
 assert.match(ingress, /td613\.ash\.ingress-layout\/v1\.0-canonical-native-scroll/);
