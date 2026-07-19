@@ -1,0 +1,60 @@
+{
+  "schema": "td613.flowcore.p0-p7-baseline-evidence/v0.1",
+  "namespace": "U+10D613",
+  "unicode_normalization": "NONE",
+  "writerly_lane": "𝌋‌",
+  "baseline_media": {
+    "desktop": {
+      "path": "app/dome-world/fixtures/pedagogue/baselines/flowcore-desktop-1120.svg",
+      "viewport": { "width": 1120, "height": 760 },
+      "animated": false
+    },
+    "mobile": {
+      "path": "app/dome-world/fixtures/pedagogue/baselines/flowcore-mobile-390.svg",
+      "viewport": { "width": 390, "height": 844 },
+      "horizontal_overflow_allowed": false,
+      "animated": false
+    },
+    "reduced_motion": {
+      "path": "app/dome-world/fixtures/pedagogue/baselines/flowcore-reduced-motion-390.svg",
+      "viewport": { "width": 390, "height": 844 },
+      "prefers_reduced_motion": true,
+      "autoplay": false,
+      "flashing": false,
+      "oscillation": false
+    }
+  },
+  "ash_dom_fixture": {
+    "path": "app/dome-world/fixtures/pedagogue/baselines/ash-custody-root-dom-fixture.html",
+    "lifecycle_state": "CASE_BOUND",
+    "case_map_digest_changed": true,
+    "chronology_root_index": 0,
+    "bytes_outside_case_map": true,
+    "release_authorized": false,
+    "transport_authorized": false
+  },
+  "phase_main_commits": {
+    "P0_P1": "f56914d788fbb86ef5b9741d0065bf00d74aed84",
+    "P2": "a3aebfad8c3232447cff0749aa7bcbbe040a3337",
+    "P3": "9736206696f254a4b51148694d507a927b00b790",
+    "P4": "91158eb4af827599273b8ca17a11bb9f89356b32",
+    "P5": "4c995bd372702d748ed659ff7b6c5421ab5ba27e",
+    "P6": "326efa021ac9f94c32f96d642c7011d5f4d2fc58",
+    "P7": "fbbf1426234a5923489b9e3f166e6138240a6118"
+  },
+  "release_posture": {
+    "operator_authorization_received": true,
+    "phase_commands_issued": true,
+    "terminal_vercel_receipts_embedded_here": false,
+    "no_success_inferred_without_terminal_receipt": true
+  },
+  "authority": {
+    "flowcore_commands_station": false,
+    "automatic_ash_action": false,
+    "release_authorized_by_baseline": false,
+    "station_authority_transferred": false,
+    "human_closure_required": true
+  },
+  "closure": { "status": "OPEN", "closed_by": null },
+  "seal": "⟐"
+}

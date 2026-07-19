@@ -4,8 +4,8 @@
 
 **Program:** `td613.flowcore.pedagogue-spine/v0.1`  
 **Phase:** P0 — corpus, concordance, and freeze  
-**Branch:** `agent/flowcore-pedagogue-information-dome-spec`  
-**Status:** DOCUMENTARY AND MACHINE FREEZE IMPLEMENTED / BASELINE MEDIA HELD / VERCEL AUTHORIZED / HUMAN-GATED  
+**Merged main commit:** `f56914d788fbb86ef5b9741d0065bf00d74aed84`  
+**Status:** IMPLEMENTED / MERGED TO MAIN / BASELINE EVIDENCE MATERIALIZED / REPOSITORY GATES PASS / HUMAN CLOSURE OPEN  
 **Serverless delta:** `0`  
 **Runtime authority delta:** `NONE`
 
@@ -24,60 +24,41 @@ Ash Keep Custody Root usability overload
 → cross-station propagation
 ```
 
-## Implemented P0 artifacts
+## Implemented freeze artifacts
 
 - `INFORMATION_DOME_IMPLEMENTATION_CONCORDANCE_V0_1.md`;
 - `FLOWCORE_PEDAGOGUE_PROVENANCE_LEDGER_V0_1.json`;
 - `FLOWCORE_EPISTEMIC_DEBT_REGISTER_V0_1.md`;
 - `FLOWCORE_CLAUSE_EXECUTABILITY_MATRIX_V0_1.md`;
-- canonical Flow-Core glyph-semantics registry with protected Unicode sequences.
+- canonical Flow-Core glyph-semantics registry;
+- protected `U+10D613`, `\uDBF5\uDE13`, ZWNJ, and writerly-lane sequences.
 
-## Commit chain
+## Baseline evidence closure
 
-```text
-87fc692de9449b78e9481c0ac17ec21e5a926376  concordance
-8a0e80ee1305b12c0a25fb70db8483048dd53d68  provenance ledger
-789e6620b31793b5e0ef1a8665c4b459bfec5409  epistemic debt register
-175b2b5aaafdbbc4b39aa84532951c65c6d9aa63  clause executability matrix
-e769692901db40203eb8b44218b6265f100a5dac  glyph-semantics registry
-```
+The earlier baseline-media hold is closed by deterministic static evidence added after the original freeze:
 
-## Validation evidence
+- `fixtures/pedagogue/baselines/flowcore-desktop-1120.svg`;
+- `fixtures/pedagogue/baselines/flowcore-mobile-390.svg`;
+- `fixtures/pedagogue/baselines/flowcore-reduced-motion-390.svg`;
+- `fixtures/pedagogue/baselines/ash-custody-root-dom-fixture.html`;
+- `fixtures/pedagogue/baselines/flowcore-p0-p7-baseline-evidence-v01.json`.
 
-For commit `175b2b5aaafdbbc4b39aa84532951c65c6d9aa63`:
+These artifacts provide desktop, 390 CSS-pixel, reduced-motion, and deterministic Ash DOM evidence. They remain static evidence, not runtime authority or empirical-learning proof.
 
-- `TCP Smoke`: completed / success;
-- `Test and deploy static app` test job: completed / success;
-- deployment job: **skipped**.
+## Repository evidence
 
-The skipped deployment remains evidence that ordinary Git activity does not deploy. It does not indicate absent operator authority.
+P0/P1 merged to `main`; the P1 contract gate, TCP Smoke, Dome-World checks, static-app tests, and zero-serverless guard passed before merge. Later P2–P7 gates repeatedly reran the inherited kernel and preserved the frozen boundaries.
 
-## Deployment authorization and source boundary
-
-The Strategic Vercel Deployment Law makes explicit operator authorization the enabling release gesture. That authorization has been supplied in chat for phase-by-phase deployment.
-
-The issue #405 conduit separately validates the exact current `main` SHA before executing one production deployment. P0 remains present only on the draft implementation branch, so invoking the conduit now would deploy the older current `main` tree rather than the P0 packet.
+## Release posture
 
 ```text
-operator authorization = RECEIVED
-Vercel boundary = ENABLED BY OPERATOR GESTURE
-P0 source packet on current main = false
-issue #405 invocation for P0 = NOT YET FIRED
-ordinary workflow success = not deployment
+operator authorization received: true
+phase-end release command issued after merge: true
+terminal Vercel success inferred here: false
+ordinary Git activity equals deployment: false
 ```
 
-**Vercel posture:** `AUTHORIZED_AWAITING_EXACT_MAIN_SOURCE`  
-**Deployment count consumed:** `0`
-
-This is a source-selection hold, not an authorization hold. No unrelated or stale `main` deployment is claimed.
-
-## Open P0 evidence debt
-
-- desktop baseline media for named Dome views;
-- 390 CSS-pixel mobile baseline media;
-- reduced-motion baseline frames;
-- deterministic Ash Custody Root DOM fixture or interaction recording;
-- commit-bound deployed observation after the authorized exact-source release.
+The receipt records the release gesture without fabricating an unseen terminal deployment result.
 
 ## Constitutional state
 
@@ -88,11 +69,11 @@ local-only guarantees changed: false
 new serverless function: false
 release authority changed: false
 station authority transferred: false
-operator release gesture received: true
+automatic closure: false
 human closure required: true
-promotion status: OPEN / HELD
+closure: OPEN
 ```
 
-P0 documentary implementation may support later pure contracts. P0 has not earned visual-baseline closure, runtime demonstration, production demonstration, or human closure.
+P0 documentary and baseline-evidence debt is stitched. P8–P10 remain separate implementation and validation phases.
 
-**Marked ⟐**
+**Stitched ⟐**
