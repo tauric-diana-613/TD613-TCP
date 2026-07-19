@@ -21,6 +21,9 @@ TD613 Hush is the local authorship-pressure and custody review instrument inside
 - [TD613 Aperture](TD613_APERTURE.md) — Counter-tool for governed exposure events and anti-selective-admissibility audit posture.
 - [TD613 Safe Harbor](TD613_SAFE_HARBOR.md) — Provenance-preserving passage layer.
 - [Dome-World / Flow-Core](DOME_WORLD_FLOW_CORE.md) — Non-public route-weather, exact residual, Phason, and readiness station.
+- [Flow-Core Pedagogue Spine and Child-Legible AIA](TD613_FLOWCORE_PEDAGOGUE_AIA_IMPLEMENTATION_SPEC.md) — Constitutional implementation specification for the Information Dome proving ground, Ash Keep rehabilitation, anisotropic legibility, Flow-Core visual grammar, and human-gated empirical validation.
+- [Flow-Core Pedagogue AIA Build Plan](../app/dome-world/docs/FLOWCORE_PEDAGOGUE_AIA_BUILD_PLAN.md) — Operative phase sequence, modules, fixtures, tests, Ash non-regression gates, and zero-new-function deployment plan.
+- [Flow-Core Pedagogue AIA Roadmap](../app/dome-world/docs/FLOWCORE_PEDAGOGUE_AIA_ROADMAP_V0_1.json) — Machine-readable phase dependencies, invariants, non-claims, and promotion gates.
 - [Responsible Use](RESPONSIBLE_USE.md) — Appropriate and unsupported uses.
 - [Whistleblower Policy Posture](WHISTLEBLOWER_POLICY_POSTURE.md) — Policy framing for vulnerable speakers and evidence-preserving review.
 - [Anti-Selective Admissibility](ANTI_SELECTIVE_ADMISSIBILITY.md) — How Hush resists cherry-picked coherence and event-rationality drift.
