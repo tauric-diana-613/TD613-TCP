@@ -1,0 +1,75 @@
+name: Flow-Core Pedagogue P6 Ash Custody Contracts
+
+on:
+  pull_request:
+    branches: [ main ]
+    paths:
+      - 'app/engine/ash-pedagogue-adapter.js'
+      - 'app/dome-world/ash-custody-pedagogue*'
+      - 'app/dome-world/fixtures/pedagogue/ash-custody-pedagogue-scenarios.json'
+      - 'app/dome-world/schemas/ash-custody-pedagogue-v01.schema.json'
+      - 'tests/ash-pedagogue-custody-route.test.mjs'
+      - '.github/workflows/flowcore-pedagogue-p6.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  ash-custody-pedagogue-contracts:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+          cache: npm
+      - run: npm ci
+      - name: Run original Ash lifecycle law
+        run: node --test tests/ash-lifecycle.test.mjs
+      - name: Run inherited Flow-Core P1 contracts
+        run: node --test tests/flowcore-pedagogue-core.test.mjs
+      - name: Run inherited Flow-Core P2 contracts
+        run: node --test tests/flowcore-pedagogue-aia.test.mjs
+      - name: Run inherited Flow-Core P3 contracts
+        run: node --test tests/flowcore-pedagogue-visual.test.mjs
+      - name: Run inherited Information-Dome P4 contracts
+        run: node --test tests/information-dome-scenes.test.mjs
+      - name: Run inherited route-burden P5 contracts
+        run: node --test tests/flowcore-route-burden.test.mjs
+      - name: P6 state mapping remains bounded
+        run: node --test --test-name-pattern='exact Ash lifecycle maps' tests/ash-pedagogue-custody-route.test.mjs
+      - name: P6 provisional hold remains recoverable
+        run: node --test --test-name-pattern='provisional custody yields' tests/ash-pedagogue-custody-route.test.mjs
+      - name: P6 Case Map consequence remains bounded
+        run: node --test --test-name-pattern='case binding explains' tests/ash-pedagogue-custody-route.test.mjs
+      - name: P6 stale derivatives remain non-current
+        run: node --test --test-name-pattern='stale pre-custody derivatives' tests/ash-pedagogue-custody-route.test.mjs
+      - name: P6 AIA and reduced-motion parity
+        run: node --test --test-name-pattern='all four AIA views' tests/ash-pedagogue-custody-route.test.mjs
+      - name: P6 deterministic package replay
+        run: node --test --test-name-pattern='same exact local snapshot' tests/ash-pedagogue-custody-route.test.mjs
+      - name: P6 raw-content rejection
+        run: node --test --test-name-pattern='raw content cannot enter' tests/ash-pedagogue-custody-route.test.mjs
+      - name: P6 consequence-first surface contract
+        run: node --test --test-name-pattern='P6 surface is consequence-first' tests/ash-pedagogue-custody-route.test.mjs
+      - name: Assert P6 is presentation-only with zero serverless delta
+        shell: bash
+        run: |
+          BASE_SHA="${{ github.event.pull_request.base.sha }}"
+          if [[ -z "$BASE_SHA" ]]; then
+            BASE_SHA="$(git rev-parse origin/main)"
+          fi
+          CHANGED="$(git diff --name-only "$BASE_SHA" "${{ github.sha }}")"
+          if grep -Eq '^(api/|vercel\.json$)' <<< "$CHANGED"; then
+            echo 'P6 may not change api/ or vercel.json'
+            exit 1
+          fi
+          for protected in app/engine/ash-lifecycle.js app/dome-world/ash/canonical-json.js; do
+            if grep -Fxq "$protected" <<< "$CHANGED"; then
+              echo "P6 may not mutate protected Ash law: $protected"
+              exit 1
+            fi
+          done
