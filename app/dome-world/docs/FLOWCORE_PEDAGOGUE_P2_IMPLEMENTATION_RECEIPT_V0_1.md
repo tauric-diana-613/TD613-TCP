@@ -4,7 +4,8 @@
 
 **Program:** `td613.flowcore.pedagogue-aia/v0.1`  
 **Phase:** P2 — anisotropic view compiler  
-**Status:** IMPLEMENTED / LOCAL CONTRACT TESTS PASS / REPOSITORY CI PENDING / HUMAN-CLOSURE OPEN  
+**Status:** IMPLEMENTED / LOCAL CONTRACT TESTS PASS / REPOSITORY CONTRACTS PASS / MERGED TO MAIN / HUMAN-CLOSURE OPEN  
+**Merged main commit:** `a3aebfad8c3232447cff0749aa7bcbbe040a3337`  
 **Serverless delta:** `0`  
 **Vercel authorization:** EXPRESSLY RECEIVED FOR PHASE-END RELEASE
 
@@ -25,16 +26,22 @@ Every route preserves provenance, source and observation status, missingness, co
 
 The four surfaces remain non-equivalent. Lower terminology density in the experiential route cannot delete missingness, uncertainty, alternatives, provenance, or authority boundaries.
 
-## Local validation
+## Validation
 
 ```text
 node --test tests/flowcore-pedagogue-aia.test.mjs
 7 tests
 7 passed
 0 failed
+repository P2 gate: success
+inherited P1 gate: success
+TCP Smoke: success
+static-app test: success
 ```
 
-The suite covers all six pairwise route comparisons, explicit-selection-only law, deterministic identity, bounded technical projection, source-transition matching, authority parity, and no route inference from behavior or device.
+## Release observation
+
+The phase packet is on `main` and the authorized exact-main release command was issued. This receipt does not infer a terminal Vercel result from merge or command acceptance.
 
 ## Authority state
 
@@ -48,6 +55,4 @@ human closure required: true
 closure: OPEN
 ```
 
-The operator’s Vercel authorization governs deployment of the completed exact-main phase packet. It does not grant any AIA view runtime station authority.
-
-**Marked ⟐**
+**Stitched ⟐**
