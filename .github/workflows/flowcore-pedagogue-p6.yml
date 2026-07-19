@@ -39,8 +39,22 @@ jobs:
         run: node --test tests/information-dome-scenes.test.mjs
       - name: Run inherited route-burden P5 contracts
         run: node --test tests/flowcore-route-burden.test.mjs
-      - name: Run Ash custody pedagogue P6 contracts
-        run: node --test tests/ash-pedagogue-custody-route.test.mjs
+      - name: P6 state mapping remains bounded
+        run: node --test --test-name-pattern='exact Ash lifecycle maps' tests/ash-pedagogue-custody-route.test.mjs
+      - name: P6 provisional hold remains recoverable
+        run: node --test --test-name-pattern='provisional custody yields' tests/ash-pedagogue-custody-route.test.mjs
+      - name: P6 Case Map consequence remains bounded
+        run: node --test --test-name-pattern='case binding explains' tests/ash-pedagogue-custody-route.test.mjs
+      - name: P6 stale derivatives remain non-current
+        run: node --test --test-name-pattern='stale pre-custody derivatives' tests/ash-pedagogue-custody-route.test.mjs
+      - name: P6 AIA and reduced-motion parity
+        run: node --test --test-name-pattern='all four AIA views' tests/ash-pedagogue-custody-route.test.mjs
+      - name: P6 deterministic package replay
+        run: node --test --test-name-pattern='same exact local snapshot' tests/ash-pedagogue-custody-route.test.mjs
+      - name: P6 raw-content rejection
+        run: node --test --test-name-pattern='raw content cannot enter' tests/ash-pedagogue-custody-route.test.mjs
+      - name: P6 consequence-first surface contract
+        run: node --test --test-name-pattern='P6 surface is consequence-first' tests/ash-pedagogue-custody-route.test.mjs
       - name: Assert P6 is presentation-only with zero serverless delta
         shell: bash
         run: |
