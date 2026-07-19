@@ -5,7 +5,7 @@
 **Program:** `td613.flowcore.pedagogue-spine/v0.1`  
 **Phase:** P0 — corpus, concordance, and freeze  
 **Branch:** `agent/flowcore-pedagogue-information-dome-spec`  
-**Status:** DOCUMENTARY AND MACHINE FREEZE IMPLEMENTED / BASELINE MEDIA HELD / HUMAN-GATED  
+**Status:** DOCUMENTARY AND MACHINE FREEZE IMPLEMENTED / BASELINE MEDIA HELD / VERCEL AUTHORIZED / HUMAN-GATED  
 **Serverless delta:** `0`  
 **Runtime authority delta:** `NONE`
 
@@ -50,21 +50,26 @@ For commit `175b2b5aaafdbbc4b39aa84532951c65c6d9aa63`:
 - `Test and deploy static app` test job: completed / success;
 - deployment job: **skipped**.
 
-The skipped deployment remains evidence of the repository lock rather than a failed phase claim.
+The skipped deployment remains evidence that ordinary Git activity does not deploy. It does not indicate absent operator authority.
 
-## Deployment boundary
+## Deployment authorization and source boundary
 
-The Strategic Vercel Deployment Law disables Git-triggered Vercel deployment on ordinary branches and accepts only an explicitly authorized production release for the exact current `main` SHA through issue #405.
+The Strategic Vercel Deployment Law makes explicit operator authorization the enabling release gesture. That authorization has been supplied in chat for phase-by-phase deployment.
 
-Therefore:
+The issue #405 conduit separately validates the exact current `main` SHA before executing one production deployment. P0 remains present only on the draft implementation branch, so invoking the conduit now would deploy the older current `main` tree rather than the P0 packet.
 
 ```text
-P0 branch commit ≠ deployable Vercel production SHA
-operator intent ≠ permission to bypass exact-main lock
-workflow success ≠ Vercel deployment
+operator authorization = RECEIVED
+Vercel boundary = ENABLED BY OPERATOR GESTURE
+P0 source packet on current main = false
+issue #405 invocation for P0 = NOT YET FIRED
+ordinary workflow success = not deployment
 ```
 
-The requested phase deployment remains `HELD_BY_EXISTING_RELEASE_LAW` until a completed packet exists on the exact current `main` commit. No branch preview or production deployment is claimed.
+**Vercel posture:** `AUTHORIZED_AWAITING_EXACT_MAIN_SOURCE`  
+**Deployment count consumed:** `0`
+
+This is a source-selection hold, not an authorization hold. No unrelated or stale `main` deployment is claimed.
 
 ## Open P0 evidence debt
 
@@ -72,7 +77,7 @@ The requested phase deployment remains `HELD_BY_EXISTING_RELEASE_LAW` until a co
 - 390 CSS-pixel mobile baseline media;
 - reduced-motion baseline frames;
 - deterministic Ash Custody Root DOM fixture or interaction recording;
-- commit-bound deployed observation after a lawful release.
+- commit-bound deployed observation after the authorized exact-source release.
 
 ## Constitutional state
 
@@ -83,10 +88,11 @@ local-only guarantees changed: false
 new serverless function: false
 release authority changed: false
 station authority transferred: false
+operator release gesture received: true
 human closure required: true
 promotion status: OPEN / HELD
 ```
 
-P0 documentary implementation may support later pure contracts. P0 has not earned visual-baseline closure, runtime demonstration, production demonstration, or human promotion.
+P0 documentary implementation may support later pure contracts. P0 has not earned visual-baseline closure, runtime demonstration, production demonstration, or human closure.
 
 **Marked ⟐**
