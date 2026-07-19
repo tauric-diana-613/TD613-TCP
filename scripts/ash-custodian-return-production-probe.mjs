@@ -61,14 +61,24 @@ async function openSurface({ viewport, reducedMotion = 'no-preference', label })
     if (executable && /cinder/i.test(url)) cinderActions.push({ label, method, url });
   });
   await page.goto(`${baseUrl}/dome-world/ash-keep.html?arrival=cleared`, { waitUntil: 'domcontentloaded', timeout: 90000 });
-  await page.waitForFunction(() => document.documentElement.dataset.ashCustodianReturnClosure === 'td613.ash.custodian-return-closure/v0.1'
+  await page.waitForFunction(() => Boolean(window.__td613AshCacheTransition)
+    && document.documentElement.dataset.ashCustodianReturnClosure === 'td613.ash.custodian-return-closure/v0.1'
     && typeof window.TD613AshCustodianReturnClosure?.recoverInterruptedImports === 'function'
-    && Boolean(document.getElementById('ashReturnPanel')), null, { timeout: 60000 });
+    && Boolean(document.getElementById('ashReturnPanel'))
+    && (typeof window.__td613AshPremiumUI?.open === 'function'
+      || typeof window.__td613OpenAshWorkspace === 'function'
+      || typeof window.__td613AshKeep?.openWorkspace === 'function'), null, { timeout: 60000 });
   await page.evaluate(() => {
     document.getElementById('launch')?.classList.add('hidden');
-    window.__td613OpenAshWorkspace?.('save');
+    const open = window.__td613AshPremiumUI?.open
+      || window.__td613OpenAshWorkspace
+      || window.__td613AshKeep?.openWorkspace;
+    if (typeof open !== 'function') throw new Error('Ash Return workspace opener is unavailable.');
+    open('save');
   });
-  await page.waitForSelector('#ashReturnPanel');
+  await page.waitForFunction(() => document.getElementById('workspace-save')?.classList.contains('active')
+    && document.getElementById('ashReturnPanel')?.getBoundingClientRect().height > 0, null, { timeout: 30000 });
+  await page.locator('#ashReturnPanel').waitFor({ state: 'visible', timeout: 30000 });
   const accessibility = await page.evaluate(() => ({
     live_status: document.getElementById('returnStatus')?.getAttribute('aria-live') === 'polite',
     atomic_status: document.getElementById('returnStatus')?.getAttribute('aria-atomic') === 'true',
@@ -150,8 +160,11 @@ const diagnostics = {
   matrix,
   navigation_readiness: {
     wait_until: 'domcontentloaded',
+    cache_transition_required: true,
     closure_dataset_required: true,
     return_api_required: true,
+    workspace_opener_required: true,
+    save_workspace_visible_required: true,
     panel_required: true,
     network_idle_required: false
   },
