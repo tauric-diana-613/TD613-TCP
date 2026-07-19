@@ -191,7 +191,7 @@ function sceneInput(model, fixture) {
     scene_kind: 'GENERIC',
     station_owner: 'Dome-World',
     source_status: 'E4',
-    observation_status: 'MODELED',
+    observation_status: 'OBSERVED',
     world_state_reference: fixture.fixture_id,
     provenance: {
       source_references: ['app/engine/flowcore-physical-scene.js', fixture.fixture_id],
@@ -238,7 +238,7 @@ function sceneInput(model, fixture) {
 function worldDelta(model) {
   const ledger = model.mechanical_ledger;
   return {
-    observation_status: 'MODELED',
+    observation_status: 'OBSERVED',
     before: {
       reserve_millijoules: ledger.prior_reserve_millijoules,
       optional_load_served_millijoules: 0,
@@ -264,7 +264,7 @@ function worldDelta(model) {
     missingness: ['real pipe geometry, turbulence, leakage, maintenance condition, and measured thermal converter performance are outside this synthetic fixture'],
     contradictions: ['stored energy is visible while full recovery remains impossible', 'thermal energy exists while mechanical transfer remains zero'],
     unresolved_relations: ['real installation performance requires measured calibration'],
-    glyph_candidates: ['storage-and-stabilization', 'release-and-transformation', 'structural-rest'],
+    glyph_candidates: ['created-potential', 'released-tendency', 'structural-rest'],
     static_equivalent: {
       summary: 'The static ledger shows input, stored potential, lift loss, descent loss, delivered work, optional output, protected reserve, and separate thermal storage.',
       steps: ['show optional input', 'show lifted storage', 'show losses', 'show delivered work', 'show optional output cap', 'show protected reserve', 'show separate thermal ledger', 'show rest and claim ceiling']
@@ -306,7 +306,7 @@ export async function compilePhysicalFlowCoreScene(fixture, options = {}) {
   });
   const nameSpec = {
     plain_language: 'Water stores potential when lifted, returns less work after losses, and cannot spend thermal storage as mechanical work without conversion.',
-    glyph_relation: 'storage-and-stabilization',
+    glyph_relation: 'created-potential',
     technical_term: 'bounded gravitational storage ledger',
     non_equivalence: [
       'stored potential is not delivered work',
