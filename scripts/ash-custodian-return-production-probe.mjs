@@ -88,6 +88,15 @@ async function indexedCaseCount(page) {
   });
 }
 
+function holdLaunchOverlay(launch) {
+  if (!launch) return;
+  launch.classList.add('hidden');
+  launch.setAttribute('inert', '');
+  launch.setAttribute('aria-hidden', 'true');
+  launch.style.setProperty('display', 'none', 'important');
+  launch.style.setProperty('pointer-events', 'none', 'important');
+}
+
 async function openSurface({ viewport, reducedMotion = 'no-preference', label }) {
   const context = await browser.newContext({ viewport, reducedMotion });
   const page = await context.newPage();
@@ -111,9 +120,13 @@ async function openSurface({ viewport, reducedMotion = 'no-preference', label })
       || typeof window.__td613AshKeep?.openWorkspace === 'function'), null, { timeout: 60000 });
   await page.evaluate(() => {
     const launch = document.getElementById('launch');
-    launch?.classList.add('hidden');
-    launch?.setAttribute('inert', '');
-    launch?.setAttribute('aria-hidden', 'true');
+    if (launch) {
+      launch.classList.add('hidden');
+      launch.setAttribute('inert', '');
+      launch.setAttribute('aria-hidden', 'true');
+      launch.style.setProperty('display', 'none', 'important');
+      launch.style.setProperty('pointer-events', 'none', 'important');
+    }
     const open = window.__td613AshPremiumUI?.open
       || window.__td613OpenAshWorkspace
       || window.__td613AshKeep?.openWorkspace;
@@ -127,11 +140,16 @@ async function openSurface({ viewport, reducedMotion = 'no-preference', label })
     const open = window.__td613AshPremiumUI?.open
       || window.__td613OpenAshWorkspace
       || window.__td613AshKeep?.openWorkspace;
-    launch?.classList.add('hidden');
-    launch?.setAttribute('inert', '');
-    launch?.setAttribute('aria-hidden', 'true');
+    if (launch) {
+      launch.classList.add('hidden');
+      launch.setAttribute('inert', '');
+      launch.setAttribute('aria-hidden', 'true');
+      launch.style.setProperty('display', 'none', 'important');
+      launch.style.setProperty('pointer-events', 'none', 'important');
+    }
     if (!workspace?.classList.contains('active') && typeof open === 'function') open('save');
-    return launch?.classList.contains('hidden')
+    return getComputedStyle(launch).display === 'none'
+      && getComputedStyle(launch).pointerEvents === 'none'
       && launch?.hasAttribute('inert')
       && workspace?.classList.contains('active')
       && panel?.getBoundingClientRect().height > 0;
@@ -243,6 +261,8 @@ const diagnostics = {
     return_api_required: true,
     workspace_opener_required: true,
     launch_overlay_inert_required: true,
+    launch_overlay_display_none_required: true,
+    launch_overlay_pointer_events_none_required: true,
     idempotent_membrane_hold_required: true,
     save_workspace_visible_required: true,
     panel_required: true,
