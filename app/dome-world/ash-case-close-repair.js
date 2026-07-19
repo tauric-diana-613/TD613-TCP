@@ -1,8 +1,11 @@
-export const ASH_CASE_CLOSE_REPAIR_VERSION = 'td613.ash.case-close-repair/v1.2-session-logout';
+import { validThresholdReadiness } from './ash-cache-flush.js?v=20260718-canonical-membrane-v7-readiness-boundary';
+
+export const ASH_CASE_CLOSE_REPAIR_VERSION = 'td613.ash.case-close-repair/v1.3-ingress-readiness-boundary';
 
 const DB_NAME = 'td613-ash-keep';
 const POINTER_KEY = 'td613.ash-keep.current-case';
 const SESSION_EPOCH_KEY = 'td613.ash.session.epoch';
+const READINESS_KEY = 'td613:ash-threshold:readiness:v0.1';
 const PREPAINT_CLASS = 'ash-has-current-case';
 const CASE_BUNDLE_STORES = ['cases', 'roomRules', 'routeMemory', 'tests', 'drafts', 'reviews', 'releases', 'savePoints', 'unexpectedDetails', 'notes'];
 const QUERY_KEYS = ['arrival', 'ash_flush', 'asset_epoch', 'cache_nonce', 'case', 'demo'];
@@ -98,18 +101,26 @@ async function saveBeforeClose(caseId) {
   }
 }
 
-function clearAshSessionStorage() {
+function clearAshSessionStorage({ preserveReadiness = false } = {}) {
   const removed = [];
+  const preserved = [];
+  let keepReadiness = false;
+  try {
+    keepReadiness = preserveReadiness && validThresholdReadiness(globalThis, sessionStorage);
+  } catch {}
   try {
     for (let index = sessionStorage.length - 1; index >= 0; index -= 1) {
       const key = sessionStorage.key(index);
-      if (key && /^td613(?::|\.)ash/i.test(key)) {
-        sessionStorage.removeItem(key);
-        removed.push(key);
+      if (!key || !/^td613(?::|\.)ash/i.test(key)) continue;
+      if (key === READINESS_KEY && keepReadiness) {
+        preserved.push(key);
+        continue;
       }
+      sessionStorage.removeItem(key);
+      removed.push(key);
     }
   } catch {}
-  return removed;
+  return Object.freeze({ removed, preserved });
 }
 
 function cleanUrl() {
@@ -137,17 +148,18 @@ function resetTransientUi() {
   byId('premiumCommandSearch')?.setAttribute('value', '');
 }
 
-function exposeMembrane() {
+function exposeMembrane({ preserveReadiness = false } = {}) {
   try {
     localStorage.removeItem(POINTER_KEY);
     localStorage.removeItem(SESSION_EPOCH_KEY);
   } catch {}
-  clearAshSessionStorage();
+  const sessionBoundary = clearAshSessionStorage({ preserveReadiness });
   cleanUrl();
   resetTransientUi();
   document.documentElement.classList.remove(PREPAINT_CLASS);
   document.documentElement.dataset.ashSessionOpen = 'false';
   document.documentElement.dataset.ashMembraneReady = 'true';
+  document.documentElement.dataset.ashReadinessPreserved = String(sessionBoundary.preserved.includes(READINESS_KEY));
   const launch = byId('launch');
   launch?.classList.remove('hidden');
   launch?.scrollTo?.({ top:0, behavior:'auto' });
@@ -157,6 +169,7 @@ function exposeMembrane() {
     const button = byId(id);
     if (button) button.disabled = true;
   }
+  return sessionBoundary;
 }
 
 async function resetCaseSelection() {
@@ -214,7 +227,7 @@ function install() {
       console.error('Ash close-to-membrane repair held:', error);
     });
   }, true);
-  if (!localStorage.getItem(POINTER_KEY)) exposeMembrane();
+  if (!localStorage.getItem(POINTER_KEY)) exposeMembrane({ preserveReadiness:true });
   document.documentElement.dataset.ashCaseCloseRepair = ASH_CASE_CLOSE_REPAIR_VERSION;
   window.__td613AshCaseCloseRepair = Object.freeze({
     version:ASH_CASE_CLOSE_REPAIR_VERSION,
