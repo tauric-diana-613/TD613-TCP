@@ -4,7 +4,8 @@
 
 **Program:** `td613.flowcore.station-propagation-bundle/v0.1`  
 **Phase:** P7 — cross-station propagation  
-**Status:** IMPLEMENTED / REPOSITORY CI PENDING / HUMAN-CLOSURE OPEN  
+**Status:** IMPLEMENTED / REPOSITORY CONTRACTS PASS / MERGED TO MAIN / HUMAN-CLOSURE OPEN  
+**Merged main commit:** `fbbf1426234a5923489b9e3f166e6138240a6118`  
 **Serverless delta:** `0`  
 **Persistence delta:** `0`  
 **Raw-source transport delta:** `0`  
@@ -12,40 +13,48 @@
 
 ## Primary station scenes
 
-- **Hush:** retained speech act, retained anchors, changed register, visible source residue, visible non-compliance boundary, and visible release holds.
+- **Hush:** retained speech act and anchors, changed register, visible residue, visible non-compliance boundary, and release holds.
 - **Aperture:** held source, registry change, observed differences, candidate reconstructions, residuals, and abstention.
 - **Safe Harbor:** bounded arrival, local shelter reference, transport false, return route, and structural rest.
-- **Phason:** stationary source digest, visible hidden coordinate, visible acceptance window, exact projection decision, source mutation false, and publication authority false.
+- **Phason:** stationary source digest, hidden coordinate, acceptance window, exact projection decision, source mutation false, and publication authority false.
 
-The station scenes remain non-equivalent. Dome-World hosts their presentation; the origin station retains its own operational action.
+The scenes remain non-equivalent. Dome-World hosts presentation while each origin station retains its operational act.
 
 ## Annotation-only sidecars
 
-- **EO-RFD:** rupture observation.
-- **ACEDIT:** encoding and rendering observation.
-- **KIRA:** identifiability and coverage preflight.
-
-Each sidecar records:
-
-```text
-can_advance_cycle: false
-can_mutate_station: false
-can_authorize_ash_action: false
-can_authorize_release: false
-raw_source_included: false
-receipt_may_cross: true
-authority_may_cross: false
-```
+EO-RFD, ACEDIT, and KIRA may add bounded observations. They cannot advance the cycle, mutate a station, authorize Ash action, authorize release, include raw source, or transfer authority.
 
 ## Responsibility receipt
 
-The deterministic propagation receipt names which stations:
+The deterministic receipt identifies which station observed, contextualized, reconstructed, rendered, and decided.
 
-- observed;
-- contextualized;
-- reconstructed;
-- rendered;
-- decided.
+## Validation
+
+```text
+exact Ash lifecycle non-regression: success
+P1 through P7 contracts: success
+canonical station registries: success
+four station scenes: success
+non-equivalent station evidence: success
+responsibility matrix: success
+deterministic replay: success
+raw-source rejection: success
+origin-authority rejection: success
+duplicate-station rejection: success
+static and mobile parity: success
+protected-law guard: success
+zero-serverless guard: success
+```
+
+The duplicate-station test requires rejection without over-specifying which valid validator must speak first. The negative boundary itself remains intact.
+
+## Observatory
+
+`app/dome-world/station-propagation-observatory.html` provides explicit station and AIA route selection, station-specific evidence, responsibility inspection, sidecar inspection, deterministic receipts, Rest, Return, Replay, Exit, 390-pixel layout, reduced-motion parity, and no animation loop.
+
+## Release observation
+
+The phase packet is on `main` and the authorized exact-main release command was issued. This receipt does not infer a terminal Vercel result from merge or command acceptance.
 
 ## Propagation boundary
 
@@ -58,24 +67,10 @@ automatic phase advance: false
 automatic station mutation: false
 automatic Ash action: false
 release authorized: false
-```
-
-## Implemented observatory
-
-`app/dome-world/station-propagation-observatory.html` provides explicit station and AIA-route selection, station-specific evidence, the responsibility matrix, sidecar inspection, deterministic receipts, Rest, Return, Replay, Exit, 390 CSS-pixel layout, and reduced-motion parity. It owns no animation loop.
-
-## Constitutional state
-
-```text
-Flow-Core commands station: false
-station authority transferred: false
-serverless delta: 0
-persistence delta: 0
-raw-source transport added: false
 human closure required: true
 closure: OPEN
 ```
 
-P8 remains separate. P7 does not make empirical claims, close the full program, or authorize propagation beyond the declared receipt membrane.
+P8 remains a separate physical-model phase. P7 makes no empirical-learning claim and does not close the program.
 
-**Marked ⟐**
+**Stitched ⟐**
