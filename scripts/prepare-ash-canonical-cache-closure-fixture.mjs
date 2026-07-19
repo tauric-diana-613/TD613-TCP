@@ -8,6 +8,7 @@ const repoRoot = path.resolve(here, '..');
 const probePath = path.join(here, 'ash-keep-production-probe.mjs');
 const manifestPath = path.join(repoRoot, 'artifacts', 'ash-keep-probe-runtime', 'canonical-cache-fixture-manifest.json');
 const sha256 = value => `sha256:${createHash('sha256').update(value).digest('hex')}`;
+const v6Epoch = 'td613.ash.cache-flush/2026-07-18-canonical-membrane-v6';
 const v7Epoch = 'td613.ash.cache-flush/2026-07-18-canonical-membrane-v7';
 
 const scopeTarget = `  const cleanEntries = await page.evaluate(() => Object.fromEntries(Object.entries(localStorage)));
@@ -22,11 +23,8 @@ const sessionKeyTarget = `  'td613.ash.cache-flush.epoch'
 const sessionKeyReplacement = `  'td613.ash.cache-flush.epoch',
   'td613.ash.session.epoch'
 ]);`;
-const v7EpochTarget = `  'td613.ash.cache-flush/2026-07-18-canonical-membrane-v6'
-];`;
-const v7EpochReplacement = `  'td613.ash.cache-flush/2026-07-18-canonical-membrane-v6',
-  '${v7Epoch}'
-];`;
+const v7EpochTarget = `"${v6Epoch}"]);`;
+const v7EpochReplacement = `"${v6Epoch}","${v7Epoch}"]);`;
 
 const original = (await fs.readFile(probePath, 'utf8')).replace(/\r\n/g, '\n');
 let prepared = original;
@@ -51,9 +49,9 @@ if (!prepared.includes("'td613.ash.session.epoch'")) {
   transformations.push('ALLOW_CANONICAL_ACTIVE_SESSION_EPOCH_AFTER_DELIBERATE_ENTRY');
 }
 
-if (!prepared.includes(`'${v7Epoch}'`)) {
+if (!prepared.includes(v7Epoch)) {
   const count = prepared.split(v7EpochTarget).length - 1;
-  if (count !== 1) throw new Error(`Canonical cache fixture expected one v6 epoch seam; observed ${count}.`);
+  if (count !== 1) throw new Error(`Canonical cache fixture expected one serialized v6 epoch seam; observed ${count}.`);
   prepared = prepared.replace(v7EpochTarget, v7EpochReplacement);
   transformations.push('ADMIT_V7_ONE_TIME_CACHE_MIGRATION_EPOCH');
 }
@@ -61,7 +59,7 @@ if (!prepared.includes(`'${v7Epoch}'`)) {
 if (!prepared.includes('const cleanTransition = await page.evaluate')
   || !prepared.includes(valueReplacement)
   || !prepared.includes("'td613.ash.session.epoch'")
-  || !prepared.includes(`'${v7Epoch}'`)
+  || !prepared.includes(v7Epoch)
   || prepared.includes(valueTarget)) {
   throw new Error('Canonical cache closure fixture did not isolate browser state or admit v7 correctly.');
 }
