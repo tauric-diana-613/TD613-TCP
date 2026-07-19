@@ -60,8 +60,10 @@ async function openSurface({ viewport, reducedMotion = 'no-preference', label })
     if (executable && !/ash-custodian-return/i.test(url)) recipientTransportRequests.push({ label, method, url });
     if (executable && /cinder/i.test(url)) cinderActions.push({ label, method, url });
   });
-  await page.goto(`${baseUrl}/dome-world/ash-keep.html?arrival=cleared`, { waitUntil: 'networkidle', timeout: 90000 });
-  await page.waitForFunction(() => document.documentElement.dataset.ashCustodianReturnClosure === 'td613.ash.custodian-return-closure/v0.1', null, { timeout: 30000 });
+  await page.goto(`${baseUrl}/dome-world/ash-keep.html?arrival=cleared`, { waitUntil: 'domcontentloaded', timeout: 90000 });
+  await page.waitForFunction(() => document.documentElement.dataset.ashCustodianReturnClosure === 'td613.ash.custodian-return-closure/v0.1'
+    && typeof window.TD613AshCustodianReturnClosure?.recoverInterruptedImports === 'function'
+    && Boolean(document.getElementById('ashReturnPanel')), null, { timeout: 60000 });
   await page.evaluate(() => {
     document.getElementById('launch')?.classList.add('hidden');
     window.__td613OpenAshWorkspace?.('save');
@@ -146,6 +148,13 @@ const matrix = {
 const diagnostics = {
   schema: 'td613.ash.custodian-return-probe-diagnostics/v0.1',
   matrix,
+  navigation_readiness: {
+    wait_until: 'domcontentloaded',
+    closure_dataset_required: true,
+    return_api_required: true,
+    panel_required: true,
+    network_idle_required: false
+  },
   statuses: {
     valid: valid.status,
     wrong_passphrase: wrongResult.status,
