@@ -51,8 +51,12 @@ jobs:
         run: node --test --test-name-pattern='responsibility receipt names' tests/flowcore-station-propagation.test.mjs
       - name: P7 deterministic bundle replay
         run: node --test --test-name-pattern='same governed station fixtures' tests/flowcore-station-propagation.test.mjs
-      - name: P7 raw-source and authority rejection
-        run: node --test --test-name-pattern='raw content and station-authority drift' tests/flowcore-station-propagation.test.mjs
+      - name: P7 raw-source rejection
+        run: node --test --test-name-pattern='raw source fields reject' tests/flowcore-station-propagation.test.mjs
+      - name: P7 origin-station authority rejection
+        run: node --test --test-name-pattern='origin-station authority drift' tests/flowcore-station-propagation.test.mjs
+      - name: P7 duplicate station coverage rejection
+        run: node --test --test-name-pattern='duplicate primary-station coverage' tests/flowcore-station-propagation.test.mjs
       - name: P7 infrastructure and closure boundary
         run: node --test --test-name-pattern='P7 adds no infrastructure' tests/flowcore-station-propagation.test.mjs
       - name: P7 observatory static and mobile parity
