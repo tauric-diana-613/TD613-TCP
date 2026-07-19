@@ -7,7 +7,7 @@
 **Branch:** `agent/flowcore-pedagogue-information-dome-spec`  
 **Implementation commit:** `34c5156c1ebf60f697e36812b67166de141156b2`  
 **CI-gate commits:** `9577ad5f97a2802ee9033525de66ba85147c281f`, `667d0cdcfae945a916154427f0b2add98f682b66`  
-**Status:** IMPLEMENTED / LOCAL DETERMINISTIC TESTS PASS / REPOSITORY CI PENDING / VERCEL HELD / HUMAN-GATED  
+**Status:** IMPLEMENTED / LOCAL AND REPOSITORY TESTS PASS / VERCEL AUTHORIZED / EXACT-SOURCE ADMISSION PENDING / HUMAN-GATED  
 **Serverless delta:** `0`
 
 ## Implemented contracts
@@ -86,9 +86,9 @@ ZWNJ: U+200C
 
 Valid scalar sequences remain unnormalized. Unpaired surrogates remain rejected by the canonical serializer. Composed and decomposed sequences remain distinct inputs and produce distinct receipts.
 
-## Local test evidence
+## Test evidence
 
-Command:
+Local command:
 
 ```text
 node --test tests/flowcore-pedagogue-core.test.mjs
@@ -102,6 +102,15 @@ Result:
 0 failed
 ```
 
+Repository observations:
+
+- Flow-Core Pedagogue P1 Contracts: success;
+- TCP Smoke: success;
+- Dome-World Phase 3: success;
+- zero-serverless-allocation guard: success;
+- static-app test: success;
+- ordinary static-app deployment job: skipped by design.
+
 Covered gates:
 
 1. canonical phase and AIA route registry;
@@ -112,12 +121,6 @@ Covered gates:
 6. rejection of premature naming, hidden profiling, authority widening, punitive rest, closed exit, automatic closure, and raw content;
 7. causal-trace or explicit-unresolved requirement for WORLD_ANSWERS;
 8. operator-controlled phase advancement with closure open.
-
-## Repository CI
-
-`.github/workflows/flowcore-pedagogue-p1.yml` adds a Node 22 contract gate for the deterministic suite and a hard failure when the P1 diff touches `api/` or `vercel.json`.
-
-At receipt authorship, repository execution of the new gate remains pending. Local passing evidence cannot impersonate GitHub-hosted CI.
 
 ## Station boundaries
 
@@ -143,19 +146,24 @@ human_closure_required: true
 closure.status: OPEN
 ```
 
-## Deployment boundary
+## Deployment authorization and exact-source condition
 
-The user authorized phase-by-phase deployment intent. The existing Strategic Vercel Deployment Law nevertheless requires the exact current `main` SHA and forbids ordinary branch-triggered Vercel deployments. P1 remains on a draft PR branch and therefore cannot lawfully invoke issue #405.
+The user’s explicit phase-by-phase authorization is the enabling event for the Vercel boundary. That authorization has been received.
+
+The issue #405 workflow then requires the selected packet to equal the exact current `main` SHA. P1 remains on draft PR #416. Firing the conduit at the current `main` SHA would redeploy a tree that does not contain P1, while firing it at the branch SHA would be rejected by the executable gate.
 
 ```text
-P1 implemented ≠ production demonstrated
-P1 local tests pass ≠ repository CI complete
-P1 branch head ≠ current main SHA
-operator authorization ≠ authority to bypass exact-main gate
+operator authorization = RECEIVED
+Vercel boundary = ENABLED
+P1 source packet on current main = false
+issue #405 command for P1 = NOT YET FIRED
+deployment attempts consumed = 0
 ```
 
-**Vercel status:** `HELD_BY_EXACT_MAIN_RELEASE_LAW`  
+**Vercel status:** `AUTHORIZED_AWAITING_EXACT_MAIN_SOURCE`  
 **Promotion status:** `HUMAN_GATED / OPEN`
+
+This is not an authorization hold. It preserves exact-source deployment and avoids spending the one-deployment ceiling on an older application tree.
 
 ## Non-regression statement
 
