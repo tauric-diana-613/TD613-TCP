@@ -1,0 +1,40 @@
+name: Flow-Core Pedagogue P2 AIA Contracts
+
+on:
+  pull_request:
+    branches: [ main ]
+    paths:
+      - 'app/engine/flowcore-pedagogue-aia.js'
+      - 'app/dome-world/schemas/aia-view-v01.schema.json'
+      - 'tests/flowcore-pedagogue-aia.test.mjs'
+      - '.github/workflows/flowcore-pedagogue-p2.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  aia-contracts:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+          cache: npm
+      - run: npm ci
+      - name: Run AIA non-equivalence and invariant gate
+        run: node --test tests/flowcore-pedagogue-aia.test.mjs
+      - name: Assert P2 changes allocate no serverless function
+        shell: bash
+        run: |
+          BASE_SHA="${{ github.event.pull_request.base.sha }}"
+          if [[ -z "$BASE_SHA" ]]; then
+            BASE_SHA="$(git rev-parse origin/main)"
+          fi
+          if git diff --name-only "$BASE_SHA" "${{ github.sha }}" | grep -Eq '^(api/|vercel\.json$)'; then
+            echo 'P2 may not change api/ or vercel.json'
+            exit 1
+          fi
