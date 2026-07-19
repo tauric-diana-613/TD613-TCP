@@ -1,0 +1,130 @@
+body {
+  margin: 0;
+  min-block-size: 100vh;
+  font-family: ui-sans-serif, system-ui, sans-serif;
+  background: radial-gradient(circle at 50% 0%, rgba(158, 109, 86, 0.2), transparent 36%), #0b0c12;
+  color: #f4f0e8;
+}
+
+.ash-pedagogue {
+  inline-size: min(78rem, calc(100% - 2rem));
+  margin-inline: auto;
+  padding-block: clamp(1rem, 4vw, 3rem);
+}
+
+.ash-pedagogue__header,
+.ash-pedagogue__controls,
+.ash-pedagogue__live,
+.ash-pedagogue__card {
+  border: 1px solid rgba(244, 240, 232, 0.28);
+  border-radius: 1rem;
+  padding: clamp(1rem, 3vw, 1.5rem);
+  background: rgba(11, 12, 18, 0.86);
+}
+
+.ash-pedagogue__eyebrow {
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+}
+
+.ash-pedagogue__controls,
+.ash-pedagogue__choices {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.75rem;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.ash-pedagogue__choice,
+.ash-pedagogue__controls button,
+.ash-pedagogue__controls a {
+  min-block-size: 44px;
+  border: 1px solid currentColor;
+  border-radius: 999px;
+  padding: 0.65rem 1rem;
+  background: transparent;
+  color: inherit;
+  font: inherit;
+  text-decoration: none;
+  box-sizing: border-box;
+}
+
+.ash-pedagogue__choice[aria-pressed="true"] {
+  background: #f4f0e8;
+  color: #0b0c12;
+}
+
+.ash-pedagogue__comprehension,
+.ash-pedagogue__stage {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 1rem;
+  margin-block: 1rem;
+}
+
+.ash-pedagogue__comprehension .ash-pedagogue__card:first-child,
+.ash-pedagogue__comprehension .ash-pedagogue__card:last-child {
+  grid-column: 1 / -1;
+}
+
+.ash-pedagogue__nonclaim {
+  border-inline-start: 0.3rem solid currentColor;
+  padding-inline-start: 0.8rem;
+  font-weight: 700;
+}
+
+.ash-pedagogue__inspection {
+  max-inline-size: 100%;
+  overflow: auto;
+  white-space: pre-wrap;
+  overflow-wrap: anywhere;
+}
+
+[data-resting="true"] .ash-pedagogue__stage,
+[data-resting="true"] .ash-pedagogue__comprehension {
+  opacity: 0.72;
+}
+
+[data-held="true"] .ash-pedagogue__stage {
+  opacity: 0.58;
+}
+
+@media (max-width: 700px) {
+  .ash-pedagogue__comprehension,
+  .ash-pedagogue__stage {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .ash-pedagogue__comprehension .ash-pedagogue__card:first-child,
+  .ash-pedagogue__comprehension .ash-pedagogue__card:last-child {
+    grid-column: auto;
+  }
+}
+
+@media (max-width: 390px) {
+  .ash-pedagogue {
+    inline-size: min(100% - 1rem, 100%);
+  }
+
+  .ash-pedagogue__controls,
+  .ash-pedagogue__choices {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .ash-pedagogue__choice,
+  .ash-pedagogue__controls button,
+  .ash-pedagogue__controls a {
+    inline-size: 100%;
+    text-align: center;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    scroll-behavior: auto !important;
+    transition: none !important;
+    animation: none !important;
+  }
+}
