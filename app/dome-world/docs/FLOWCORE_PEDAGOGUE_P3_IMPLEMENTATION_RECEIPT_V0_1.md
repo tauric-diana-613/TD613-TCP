@@ -4,7 +4,8 @@
 
 **Program:** `td613.flowcore.pedagogue-visual/v0.1`  
 **Phase:** P3 — Flow-Core visual and animated grammar  
-**Status:** IMPLEMENTED / LOCAL CONTRACT TESTS PASS / REPOSITORY CI PENDING / HUMAN-CLOSURE OPEN  
+**Status:** IMPLEMENTED / LOCAL CONTRACT TESTS PASS / REPOSITORY CONTRACTS PASS / MERGED TO MAIN / HUMAN-CLOSURE OPEN  
+**Merged main commit:** `9736206696f254a4b51148694d507a927b00b790`  
 **Serverless delta:** `0`  
 **Vercel authorization:** EXPRESSLY RECEIVED FOR PHASE-END RELEASE
 
@@ -19,32 +20,30 @@
 - structured DOM summary and bounded ARIA announcement;
 - responsive 390 CSS-pixel layout contract;
 - 44 CSS-pixel touch floor and visible focus;
-- complete reduced-motion simultaneous causal frame;
-- CSS reduced-motion and mobile protections.
+- complete reduced-motion simultaneous causal frame.
 
-## Local validation
+## Validation
 
 ```text
 node --test tests/flowcore-pedagogue-visual.test.mjs
 6 tests
 6 passed
 0 failed
+repository P3 gate: success
+TCP Smoke: success
+static-app test: success
 ```
 
-The suite proves:
+The suite proves one animation crown, hidden-view zero work, five-channel agreement, complete reduced-motion parity, deterministic receipts, and coordinator registration without loop ownership.
 
-1. the module contains no `requestAnimationFrame` call;
-2. inactive views perform zero draws;
-3. all five channels describe one transition;
-4. reduced motion preserves start, route, end, residual, and claim ceiling;
-5. deterministic visual receipts expose renderer, operators, modeled status, input boundary, and claim ceiling;
-6. the adapter registers into the existing coordinator without owning its loop.
+## Release observation
+
+The phase packet is on `main` and the authorized exact-main release command was issued. This receipt does not infer a terminal Vercel result from merge or command acceptance.
 
 ## Constitutional boundary
 
-Visual coherence cannot confer truth, station authority, Ash action, release authority, or automatic closure. Beauty remains evidence of constraint rather than authority.
-
 ```text
+visual coherence grants truth authority: false
 Flow-Core commands station: false
 automatic Ash action: false
 release authorized by render: false
@@ -52,4 +51,4 @@ human closure required: true
 closure: OPEN
 ```
 
-**Marked ⟐**
+**Stitched ⟐**
