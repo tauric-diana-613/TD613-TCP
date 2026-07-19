@@ -1,0 +1,52 @@
+name: Flow-Core Pedagogue P5 Route-Burden Contracts
+
+on:
+  pull_request:
+    branches: [ main ]
+    paths:
+      - 'app/engine/flowcore-route-burden.js'
+      - 'app/dome-world/route-burden-observatory*'
+      - 'app/dome-world/fixtures/pedagogue/ash-custody-root-route.json'
+      - 'app/dome-world/schemas/flowcore-route-burden-v01.schema.json'
+      - 'tests/flowcore-route-burden.test.mjs'
+      - '.github/workflows/flowcore-pedagogue-p5.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  route-burden-contracts:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+          cache: npm
+      - run: npm ci
+      - name: Run P1 through P5 Flow-Core contracts
+        run: |
+          node --test tests/flowcore-pedagogue-core.test.mjs
+          node --test tests/flowcore-pedagogue-aia.test.mjs
+          node --test tests/flowcore-pedagogue-visual.test.mjs
+          node --test tests/information-dome-scenes.test.mjs
+          node --test tests/flowcore-route-burden.test.mjs
+      - name: Assert P5 changes allocate no serverless function or mutate Ash lifecycle
+        shell: bash
+        run: |
+          BASE_SHA="${{ github.event.pull_request.base.sha }}"
+          if [[ -z "$BASE_SHA" ]]; then
+            BASE_SHA="$(git rev-parse origin/main)"
+          fi
+          CHANGED="$(git diff --name-only "$BASE_SHA" "${{ github.sha }}")"
+          if grep -Eq '^(api/|vercel\.json$)' <<< "$CHANGED"; then
+            echo 'P5 may not change api/ or vercel.json'
+            exit 1
+          fi
+          if grep -Fxq 'app/engine/ash-lifecycle.js' <<< "$CHANGED"; then
+            echo 'P5 may observe Ash route structure but may not mutate Ash lifecycle law'
+            exit 1
+          fi
