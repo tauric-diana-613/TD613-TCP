@@ -1,0 +1,125 @@
+body {
+  margin: 0;
+  min-block-size: 100vh;
+  font-family: ui-sans-serif, system-ui, sans-serif;
+  background: radial-gradient(circle at 50% 0%, rgba(74, 125, 171, 0.22), transparent 38%), #090b14;
+  color: #f2f5ff;
+}
+
+.station-propagation {
+  inline-size: min(80rem, calc(100% - 2rem));
+  margin-inline: auto;
+  padding-block: clamp(1rem, 4vw, 3rem);
+}
+
+.station-propagation__header,
+.station-propagation__controls,
+.station-propagation__live,
+.station-propagation__matrix,
+.station-propagation__panel {
+  border: 1px solid rgba(242, 245, 255, 0.28);
+  border-radius: 1rem;
+  padding: clamp(1rem, 3vw, 1.5rem);
+  background: rgba(9, 11, 20, 0.86);
+}
+
+.station-propagation__eyebrow {
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+}
+
+.station-propagation__law,
+.station-propagation__nonclaim {
+  border-inline-start: 0.3rem solid currentColor;
+  padding-inline-start: 0.8rem;
+}
+
+.station-propagation__controls,
+.station-propagation__choices {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.75rem;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.station-propagation__choice,
+.station-propagation__controls button,
+.station-propagation__controls a {
+  min-block-size: 44px;
+  border: 1px solid currentColor;
+  border-radius: 999px;
+  padding: 0.65rem 1rem;
+  background: transparent;
+  color: inherit;
+  font: inherit;
+  text-decoration: none;
+  box-sizing: border-box;
+}
+
+.station-propagation__choice[aria-pressed="true"] {
+  background: #f2f5ff;
+  color: #090b14;
+}
+
+.station-propagation__responsibilities,
+.station-propagation__stage {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 1rem;
+  margin-block: 1rem;
+}
+
+.station-propagation__responsibility {
+  border-inline-start: 0.25rem solid currentColor;
+  padding-inline-start: 0.9rem;
+}
+
+.station-propagation__inspection {
+  max-inline-size: 100%;
+  overflow: auto;
+  white-space: pre-wrap;
+  overflow-wrap: anywhere;
+}
+
+[data-resting="true"] .station-propagation__stage {
+  opacity: 0.72;
+}
+
+[data-held="true"] .station-propagation__stage {
+  opacity: 0.58;
+}
+
+@media (max-width: 700px) {
+  .station-propagation__responsibilities,
+  .station-propagation__stage {
+    grid-template-columns: minmax(0, 1fr);
+  }
+}
+
+@media (max-width: 390px) {
+  .station-propagation {
+    inline-size: min(100% - 1rem, 100%);
+  }
+
+  .station-propagation__controls,
+  .station-propagation__choices {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .station-propagation__choice,
+  .station-propagation__controls button,
+  .station-propagation__controls a {
+    inline-size: 100%;
+    text-align: center;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    scroll-behavior: auto !important;
+    transition: none !important;
+    animation: none !important;
+  }
+}
