@@ -38,8 +38,20 @@ jobs:
           node --test tests/flowcore-route-burden.test.mjs
           node --test tests/ash-pedagogue-custody-route.test.mjs
           node --test tests/flowcore-station-propagation.test.mjs
-      - name: Run P8 physical Flow-Core contracts
-        run: node --test tests/flowcore-physical-scene.test.mjs
+      - name: P8 integer energy accounting
+        run: node --test --test-name-pattern='bounded integer energy accounting' tests/flowcore-physical-scene.test.mjs
+      - name: P8 thermal ledger separation
+        run: node --test --test-name-pattern='thermal ledger mechanically unavailable' tests/flowcore-physical-scene.test.mjs
+      - name: P8 essential-service and converter rejection
+        run: node --test --test-name-pattern='refuses essential-service dependence' tests/flowcore-physical-scene.test.mjs
+      - name: P8 protected reserve floor
+        run: node --test --test-name-pattern='optional output can never cross' tests/flowcore-physical-scene.test.mjs
+      - name: P8 complete consequence-first package
+        run: node --test --test-name-pattern='complete consequence-first scene' tests/flowcore-physical-scene.test.mjs
+      - name: P8 deterministic package replay
+        run: node --test --test-name-pattern='scene package is deterministic' tests/flowcore-physical-scene.test.mjs
+      - name: P8 static surface parity
+        run: node --test --test-name-pattern='static proving surface exposes' tests/flowcore-physical-scene.test.mjs
       - name: Assert P8 adds no serverless, custody, release, or hardware authority
         shell: bash
         run: |
