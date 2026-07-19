@@ -2,14 +2,16 @@ import fs from 'node:fs';
 import path from 'node:path';
 import { stabilizeAshKeepSource } from '../app/dome-world/ash-keep-delivery-transform.js';
 
-export const DOME_WORLD_SHELL_VERSION = 'td613.dome-world.shell/v1.3-live-cache-transition';
+export const DOME_WORLD_SHELL_VERSION = 'td613.dome-world.shell/v1.4-lifecycle-cache-boundary';
 export const MARROWLINE_LAB_ROUTE = '/dome-world/marrowline.html';
 export const ASH_THRESHOLD_ROUTE = '/dome-world/ash-threshold.html';
 export const ASH_LIFECYCLE_SHELL_CONTRACT = 'td613.ash.lifecycle-shell/v0.1';
-export const ASH_KEEP_SHELL_VERSION = 'td613.ash-keep.shell/v0.2-canonical-composition';
+export const ASH_KEEP_SHELL_VERSION = 'td613.ash-keep.shell/v0.3-lifecycle-cache-boundary';
 export const ASH_KEEP_JS_SHELL_VERSION = 'td613.ash-keep.js-shell/v0.5-event-driven-map';
-export const ASH_CACHE_TRANSITION_CONTRACT = 'td613.ash.cache-transition/v0.2-live-ingress';
-export const ASH_LIFECYCLE_MODULE = '/dome-world/ash-lifecycle.js';
+export const ASH_CACHE_TRANSITION_CONTRACT = 'td613.ash.cache-transition/v0.3-v7-readiness-boundary';
+export const ASH_LIFECYCLE_ASSET_EPOCH = '20260718-canonical-membrane-v7-readiness-boundary';
+export const ASH_LIFECYCLE_SOURCE_MODULE = '/dome-world/ash-lifecycle.js';
+export const ASH_LIFECYCLE_MODULE = `${ASH_LIFECYCLE_SOURCE_MODULE}?v=${ASH_LIFECYCLE_ASSET_EPOCH}`;
 export const ASH_WORKSPACE_BRIDGE_MODULE = '/dome-world/ash-workspace-bridge.js';
 export const ASH_CANONICAL_MEMBRANE_EPOCH = '20260718-canonical-membrane-v6';
 
@@ -91,6 +93,12 @@ export function injectAshKeepLifecycle(source = '') {
   if (!html.includes(ASH_CANONICAL_BOOT_MARKER)) additions.push(canonicalAshBoot());
   if (additions.length) html = `${html.slice(0, headClose)}  ${additions.join('\n  ')}\n${html.slice(headClose)}`;
 
+  if (!html.includes(ASH_LIFECYCLE_MODULE)) {
+    const lifecycleCount = html.split(ASH_LIFECYCLE_SOURCE_MODULE).length - 1;
+    if (lifecycleCount !== 1) throw new Error(`ash-lifecycle-source-module-count:${lifecycleCount}`);
+    html = html.replace(ASH_LIFECYCLE_SOURCE_MODULE, ASH_LIFECYCLE_MODULE);
+  }
+
   const ordered = ['/dome-world/ash-keep.js', '/dome-world/ash-convergence.js', ASH_LIFECYCLE_MODULE, ASH_WORKSPACE_BRIDGE_MODULE, '/dome-world/ash-case-controls.js'];
   if (!html.includes('name="ash-lifecycle" content="v0.1"')) throw new Error('ash-lifecycle-meta-missing');
   if (!html.includes('name="ash-constitutional-composition" content="v0.1"')) throw new Error('ash-composition-meta-missing');
@@ -103,12 +111,13 @@ export function injectAshKeepLifecycle(source = '') {
     if (index <= cursor) throw new Error(`ash-canonical-module-order-invalid:${module}`);
     cursor = index;
   }
+  if (html.includes(`src="${ASH_LIFECYCLE_SOURCE_MODULE}"`)) throw new Error('ash-lifecycle-unversioned-module-survived');
   if (html.includes('surface=ash-keep-js')) throw new Error('ash-keep-still-depends-on-rewritten-core');
   return html;
 }
 
 export function bindAshDraftsToCaseMap(source = '') {
-  let code = stabilizeAshKeepSource(source);
+  const code = stabilizeAshKeepSource(source);
   for (const marker of [
     'caseMapDigest: state.caseMap.case_map_digest',
     'releaseReceiptReference: state.latestRelease?.receipt_id || null',
@@ -152,6 +161,7 @@ function send(res, status, body = '', definition = surfaceDefinition('dome-world
   res.setHeader('X-Content-Type-Options', 'nosniff');
   res.setHeader(definition.header[0], definition.header[1]);
   res.setHeader('X-TD613-Ash-Lifecycle', ASH_LIFECYCLE_SHELL_CONTRACT);
+  res.setHeader('X-TD613-Ash-Lifecycle-Asset', ASH_LIFECYCLE_ASSET_EPOCH);
   res.setHeader('X-TD613-Ash-Canonical-Membrane', ASH_CANONICAL_MEMBRANE_EPOCH);
   res.end(body);
 }
@@ -159,13 +169,14 @@ function send(res, status, body = '', definition = surfaceDefinition('dome-world
 function sendCacheEviction(res, method) {
   const body = JSON.stringify({
     ok:true,
-    schema:'td613.ash.cache-transition-response/v0.3-canonical-membrane',
+    schema:'td613.ash.cache-transition-response/v0.4-v7-readiness-boundary',
     scope:'HTTP_CACHE_ONLY',
     indexeddb_preserved:true,
     case_data_preserved:true,
     active_session_reset_by_client:true,
     physical_erasure_verified:false,
-    contract:ASH_CACHE_TRANSITION_CONTRACT
+    contract:ASH_CACHE_TRANSITION_CONTRACT,
+    lifecycle_asset_epoch:ASH_LIFECYCLE_ASSET_EPOCH
   });
   res.statusCode = 200;
   res.setHeader('Content-Type', 'application/json; charset=utf-8');
@@ -174,6 +185,7 @@ function sendCacheEviction(res, method) {
   res.setHeader('X-Content-Type-Options', 'nosniff');
   res.setHeader('X-TD613-Ash-Cache-Transition', ASH_CACHE_TRANSITION_CONTRACT);
   res.setHeader('X-TD613-Ash-Lifecycle', ASH_LIFECYCLE_SHELL_CONTRACT);
+  res.setHeader('X-TD613-Ash-Lifecycle-Asset', ASH_LIFECYCLE_ASSET_EPOCH);
   res.setHeader('X-TD613-Ash-Canonical-Membrane', ASH_CANONICAL_MEMBRANE_EPOCH);
   res.end(method === 'HEAD' ? '' : body);
 }
@@ -198,6 +210,6 @@ export default function handler(req, res) {
   } catch (error) {
     res.setHeader('Content-Type', 'application/json; charset=utf-8');
     res.statusCode = 500;
-    res.end(JSON.stringify({ ok: false, error: 'dome-world-shell-surface-unavailable', surface, detail: String(error?.message || error), version: DOME_WORLD_SHELL_VERSION, ashLifecycle: ASH_LIFECYCLE_SHELL_CONTRACT }));
+    res.end(JSON.stringify({ ok:false, error:'dome-world-shell-surface-unavailable', surface, detail:String(error?.message || error), version:DOME_WORLD_SHELL_VERSION, ashLifecycle:ASH_LIFECYCLE_SHELL_CONTRACT }));
   }
 }

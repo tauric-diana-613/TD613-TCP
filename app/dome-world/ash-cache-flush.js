@@ -1,37 +1,38 @@
 // Canonical membrane transition: preserves IndexedDB cases and receipts while evicting stale active-session state.
-export const ASH_CACHE_FLUSH_EPOCH = 'td613.ash.cache-flush/2026-07-18-canonical-membrane-v6';
+export const ASH_CACHE_FLUSH_EPOCH = 'td613.ash.cache-flush/2026-07-18-canonical-membrane-v7';
 
 const MARKER_KEY = 'td613.ash.cache-flush.epoch';
 const RECEIPT_KEY = 'td613.ash.cache-flush.receipt';
 const READINESS_KEY = 'td613:ash-threshold:readiness:v0.1';
 const POINTER_KEY = 'td613.ash-keep.current-case';
 const SESSION_EPOCH_KEY = 'td613.ash.session.epoch';
-const ASSET_EPOCH = '20260718-canonical-membrane-v6-readiness-hotfix';
+const ASSET_EPOCH = '20260718-canonical-membrane-v7-readiness-boundary';
 const EVICTION_ROUTE = '/api/dome-world-shell?surface=cache-evict';
 const LOCAL_HOSTS = new Set(['localhost', '127.0.0.1', '[::1]']);
 const TRANSITION_QUERY_KEYS = ['ash_flush', 'asset_epoch', 'cache_nonce', 'arrival'];
 const READINESS_MAX_AGE_MS = 15 * 60 * 1000;
 const READINESS_CLOCK_SKEW_MS = 60 * 1000;
+const READINESS_ROUTES = new Set(['/dome-world/ash-threshold.html', '/dome-world/ash-keep.html']);
 
-function readMarker() {
-  try { return localStorage.getItem(MARKER_KEY); }
+function readMarker(host = globalThis) {
+  try { return host.localStorage?.getItem?.(MARKER_KEY) || null; }
   catch { return null; }
 }
 
-function writeMarker() {
-  try { localStorage.setItem(MARKER_KEY, ASH_CACHE_FLUSH_EPOCH); }
+function writeMarker(host = globalThis) {
+  try { host.localStorage?.setItem?.(MARKER_KEY, ASH_CACHE_FLUSH_EPOCH); }
   catch {}
 }
 
-function writeReceipt(receipt) {
-  try { sessionStorage.setItem(RECEIPT_KEY, JSON.stringify(receipt)); }
+function writeReceipt(receipt, host = globalThis) {
+  try { host.sessionStorage?.setItem?.(RECEIPT_KEY, JSON.stringify(receipt)); }
   catch {}
 }
 
 export function validThresholdReadiness(host = globalThis, storage = host.sessionStorage) {
   try {
     const url = new URL(host.location.href);
-    if (url.searchParams.get('arrival') !== 'cleared') return false;
+    if (!READINESS_ROUTES.has(url.pathname)) return false;
     const receipt = JSON.parse(storage?.getItem?.(READINESS_KEY) || 'null');
     const observedAt = Date.parse(receipt?.observed_at || '');
     const age = Date.now() - observedAt;
@@ -47,7 +48,7 @@ export function validThresholdReadiness(host = globalThis, storage = host.sessio
       && receipt?.transport_performed === false
       && receipt?.readiness_is_custody === false
       && typeof receipt?.readiness_digest === 'string'
-      && receipt.readiness_digest.startsWith('sha256:')
+      && /^sha256:[0-9a-f]{64}$/i.test(receipt.readiness_digest)
       && Number.isFinite(observedAt)
       && age >= -READINESS_CLOCK_SKEW_MS
       && age <= READINESS_MAX_AGE_MS;
@@ -135,18 +136,19 @@ async function requestHttpCacheEviction(host) {
   }
 }
 
-async function clearCacheStorage() {
-  if (!globalThis.caches?.keys) return [];
-  const names = await caches.keys();
-  await Promise.all(names.map(name => caches.delete(name)));
+async function clearCacheStorage(host = globalThis) {
+  const cacheStorage = host.caches;
+  if (!cacheStorage?.keys) return [];
+  const names = await cacheStorage.keys();
+  await Promise.all(names.map(name => cacheStorage.delete(name)));
   return names;
 }
 
-async function unregisterSameOriginWorkers() {
-  if (!navigator.serviceWorker?.getRegistrations) return [];
-  const registrations = await navigator.serviceWorker.getRegistrations();
+async function unregisterSameOriginWorkers(host = globalThis) {
+  if (!host.navigator?.serviceWorker?.getRegistrations) return [];
+  const registrations = await host.navigator.serviceWorker.getRegistrations();
   const affected = registrations.filter(registration => {
-    try { return new URL(registration.scope, location.href).origin === location.origin; }
+    try { return new URL(registration.scope, host.location.href).origin === host.location.origin; }
     catch { return false; }
   });
   await Promise.all(affected.map(registration => registration.unregister()));
@@ -154,10 +156,10 @@ async function unregisterSameOriginWorkers() {
 }
 
 export async function runAshCacheFlush(host = globalThis) {
-  if (!host?.location || readMarker() === ASH_CACHE_FLUSH_EPOCH) {
+  if (!host?.location || readMarker(host) === ASH_CACHE_FLUSH_EPOCH) {
     const transition_url_cleaned = cleanTransitionUrl(host);
     const receipt = Object.freeze({
-      schema:'td613.ash.cache-transition-receipt/v0.6-readiness-preservation',
+      schema:'td613.ash.cache-transition-receipt/v0.7-readiness-boundary',
       epoch:ASH_CACHE_FLUSH_EPOCH,
       performed:false,
       reload_required:false,
@@ -165,10 +167,10 @@ export async function runAshCacheFlush(host = globalThis) {
       indexeddb_preserved:true,
       case_data_preserved:true,
       active_session_reset:false,
-      readiness_receipt_preserved:false,
+      readiness_receipt_preserved:Boolean(host.sessionStorage?.getItem?.(READINESS_KEY)),
       transition_url_cleaned
     });
-    writeReceipt(receipt);
+    writeReceipt(receipt, host);
     host.__td613AshCacheTransition = receipt;
     return receipt;
   }
@@ -176,15 +178,15 @@ export async function runAshCacheFlush(host = globalThis) {
   const sessionReset = resetActiveSession(host);
   const [http_cache, first_cache_names, worker_scopes] = await Promise.all([
     requestHttpCacheEviction(host),
-    clearCacheStorage().catch(() => []),
-    unregisterSameOriginWorkers().catch(() => [])
+    clearCacheStorage(host).catch(() => []),
+    unregisterSameOriginWorkers(host).catch(() => [])
   ]);
-  const second_cache_names = await clearCacheStorage().catch(() => []);
-  writeMarker();
+  const second_cache_names = await clearCacheStorage(host).catch(() => []);
+  writeMarker(host);
   const transition_url_cleaned = cleanTransitionUrl(host);
 
   const receipt = Object.freeze({
-    schema:'td613.ash.cache-transition-receipt/v0.6-readiness-preservation',
+    schema:'td613.ash.cache-transition-receipt/v0.7-readiness-boundary',
     epoch:ASH_CACHE_FLUSH_EPOCH,
     performed:true,
     reload_required:false,
@@ -203,7 +205,7 @@ export async function runAshCacheFlush(host = globalThis) {
     transition_url_cleaned,
     release_asset_epoch:ASSET_EPOCH
   });
-  writeReceipt(receipt);
+  writeReceipt(receipt, host);
   host.__td613AshCacheTransition = receipt;
   return receipt;
 }
