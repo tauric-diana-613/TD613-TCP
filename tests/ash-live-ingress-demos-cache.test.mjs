@@ -18,6 +18,7 @@ import {
 } from '../app/dome-world/ash-apeq-paia-profile-demos.js';
 import { buildResearchFixture } from '../app/dome-world/ash-research-demo-hydration.js';
 import { resetActiveSession, validThresholdReadiness } from '../app/dome-world/ash-cache-flush.js';
+import { ASH_LIFECYCLE_MODULE, injectAshKeepLifecycle } from '../api/dome-world-shell.js';
 
 const read = file => fs.readFileSync(file, 'utf8');
 const ingress = read('app/dome-world/ash-ingress-layout-hydration.js');
@@ -27,6 +28,7 @@ const bridge = read('app/dome-world/ash-workspace-bridge.js');
 const profileWrapper = read('app/dome-world/ash-profile-demo-hydration.js');
 const investigationWrapper = read('app/dome-world/ash-investigation-demo-hydration.js');
 const shell = read('api/dome-world-shell.js');
+const keepHtml = read('app/dome-world/ash-keep.html');
 const closeRepair = read('app/dome-world/ash-case-close-repair.js');
 const emergency = read('app/dome-world/ash-emergency-stability-contract.js');
 const navigation = read('app/dome-world/ash-workspace-navigation.js');
@@ -63,7 +65,7 @@ const validReadiness = (overrides = {}) => ({
 function cleanupHost(href, receipt = validReadiness()) {
   const documentElement = { classList:{ remove() {} }, dataset:{} };
   return {
-    location:{ href },
+    location:{ href, origin:new URL(href).origin },
     localStorage:new MemoryStorage({
       'td613.ash-keep.current-case':'case_demo',
       'td613.ash.session.epoch':'old-session'
@@ -77,36 +79,42 @@ function cleanupHost(href, receipt = validReadiness()) {
   };
 }
 
-const clearedArrivalHost = cleanupHost('https://td613.test/dome-world/ash-threshold.html?arrival=cleared');
-assert.equal(validThresholdReadiness(clearedArrivalHost), true, 'Fresh cleared-threshold readiness was rejected.');
-const clearedArrivalReset = resetActiveSession(clearedArrivalHost);
-assert.deepEqual(clearedArrivalReset.preservedSessionKeys, [readinessKey]);
-assert.ok(clearedArrivalReset.clearedSessionKeys.includes('td613:ash-stale-ui'));
-assert.equal(clearedArrivalHost.sessionStorage.getItem(readinessKey) !== null, true, 'Fresh threshold readiness was deleted.');
-assert.equal(clearedArrivalHost.sessionStorage.getItem('td613:ash-stale-ui'), null);
-assert.equal(clearedArrivalHost.sessionStorage.getItem('unrelated.session'), 'keep');
-assert.equal(clearedArrivalHost.localStorage.getItem('td613.ash-keep.current-case'), null);
-assert.equal(clearedArrivalHost.localStorage.getItem('td613.ash.session.epoch'), null);
-assert.equal(clearedArrivalHost.document.documentElement.dataset.ashSessionOpen, 'false');
-assert.equal(clearedArrivalHost.document.body.dataset.ashCaseClosed, 'true');
+for (const href of [
+  'https://td613.test/dome-world/ash-threshold.html?arrival=cleared',
+  'https://td613.test/dome-world/ash-threshold.html',
+  'https://td613.test/dome-world/ash-keep.html'
+]) {
+  const host = cleanupHost(href);
+  assert.equal(validThresholdReadiness(host), true, `Fresh validated readiness was rejected on ${href}.`);
+  const reset = resetActiveSession(host);
+  assert.deepEqual(reset.preservedSessionKeys, [readinessKey]);
+  assert.ok(reset.clearedSessionKeys.includes('td613:ash-stale-ui'));
+  assert.equal(host.sessionStorage.getItem(readinessKey) !== null, true, `Fresh readiness was deleted on ${href}.`);
+  assert.equal(host.sessionStorage.getItem('td613:ash-stale-ui'), null);
+  assert.equal(host.sessionStorage.getItem('unrelated.session'), 'keep');
+  assert.equal(host.localStorage.getItem('td613.ash-keep.current-case'), null);
+  assert.equal(host.localStorage.getItem('td613.ash.session.epoch'), null);
+  assert.equal(host.document.documentElement.dataset.ashSessionOpen, 'false');
+  assert.equal(host.document.body.dataset.ashCaseClosed, 'true');
+}
 
-const directHost = cleanupHost('https://td613.test/dome-world/ash-keep.html');
-assert.equal(validThresholdReadiness(directHost), false, 'Direct Keep load accepted a threshold readiness receipt.');
-const directReset = resetActiveSession(directHost);
-assert.deepEqual(directReset.preservedSessionKeys, []);
-assert.equal(directHost.sessionStorage.getItem(readinessKey), null, 'Direct-load readiness survived cleanup.');
+const unrelatedRouteHost = cleanupHost('https://td613.test/safe-harbor/index.html');
+assert.equal(validThresholdReadiness(unrelatedRouteHost), false, 'A non-Ash route accepted threshold readiness.');
+assert.equal(resetActiveSession(unrelatedRouteHost).clearedSessionKeys.includes(readinessKey), true);
+assert.equal(unrelatedRouteHost.sessionStorage.getItem(readinessKey), null);
 
-const staleHost = cleanupHost('https://td613.test/dome-world/ash-threshold.html?arrival=cleared', validReadiness({ observed_at:new Date(Date.now() - 16 * 60 * 1000).toISOString() }));
+const staleHost = cleanupHost('https://td613.test/dome-world/ash-keep.html', validReadiness({ observed_at:new Date(Date.now() - 16 * 60 * 1000).toISOString() }));
 assert.equal(validThresholdReadiness(staleHost), false, 'Expired threshold readiness was accepted.');
 assert.equal(resetActiveSession(staleHost).clearedSessionKeys.includes(readinessKey), true);
 
 for (const invalid of [
   validReadiness({ readiness_digest:'not-a-digest' }),
+  validReadiness({ readiness_digest:`sha256:${'g'.repeat(64)}` }),
   validReadiness({ source_surface:'other-surface' }),
   validReadiness({ threshold_gestures:{ arrival_acknowledged:true, boundary_acknowledged:false, custody_acknowledged:true } }),
   validReadiness({ raw_content_persisted:true })
 ]) {
-  const host = cleanupHost('https://td613.test/dome-world/ash-threshold.html?arrival=cleared', invalid);
+  const host = cleanupHost('https://td613.test/dome-world/ash-keep.html', invalid);
   assert.equal(validThresholdReadiness(host), false, 'Malformed or over-authorized readiness was accepted.');
   resetActiveSession(host);
   assert.equal(host.sessionStorage.getItem(readinessKey), null);
@@ -130,10 +138,11 @@ for (const forbidden of ['SCROLLBAR_FADE_DELAY', 'installScrollbarFade', 'scroll
   assert.equal(ingress.includes(forbidden), false, `Canonical ingress retained ${forbidden}`);
 }
 
-assert.match(cache, /2026-07-18-canonical-membrane-v6/);
-assert.match(cache, /v0\.6-readiness-preservation/);
+assert.match(cache, /2026-07-18-canonical-membrane-v7/);
+assert.match(cache, /v0\.7-readiness-boundary/);
+assert.match(cache, /READINESS_ROUTES/);
+assert.match(cache, /\^sha256:\[0-9a-f\]\{64\}/i);
 assert.match(cache, /validThresholdReadiness/);
-assert.match(cache, /arrival.*cleared/);
 assert.match(cache, /READINESS_MAX_AGE_MS/);
 assert.match(cache, /preserved_session_keys/);
 assert.match(cache, /readiness_receipt_preserved/);
@@ -144,7 +153,7 @@ assert.match(cache, /active_session_reset:true/);
 assert.match(cache, /local_case_pointer_preserved:false/);
 assert.match(cache, /case_data_preserved:true/);
 assert.match(cache, /Clear-Site-Data|cache-evict/);
-assert.match(cache, /caches\.keys/);
+assert.match(cache, /cacheStorage\.keys/);
 assert.match(cache, /registration\.unregister/);
 assert.match(cache, /unregisterSameOriginWorkers/);
 assert.match(cache, /cache:'no-store'/);
@@ -152,7 +161,13 @@ assert.doesNotMatch(cache, /2026-07-18-(?:live-ingress-v3|emergency-stability-v5
 assert.doesNotMatch(cache, /indexedDB\.deleteDatabase|localStorage\.clear|sessionStorage\.clear/);
 
 assert.match(lifecycle, /ash-ingress-layout-hydration\.js\?v=20260718-canonical-membrane-v6/);
-assert.match(lifecycle, /ash-cache-flush\.js\?v=20260718-canonical-membrane-v6-readiness-hotfix/);
+assert.match(lifecycle, /ash-cache-flush\.js\?v=20260718-canonical-membrane-v7-readiness-boundary/);
+assert.equal(ASH_LIFECYCLE_MODULE, '/dome-world/ash-lifecycle.js?v=20260718-canonical-membrane-v7-readiness-boundary');
+const renderedKeep = injectAshKeepLifecycle(keepHtml);
+assert.match(renderedKeep, /src="\/dome-world\/ash-lifecycle\.js\?v=20260718-canonical-membrane-v7-readiness-boundary"/);
+assert.doesNotMatch(renderedKeep, /src="\/dome-world\/ash-lifecycle\.js"/);
+assert.equal(injectAshKeepLifecycle(renderedKeep), renderedKeep, 'Lifecycle cache-boundary injection is not idempotent.');
+
 for (const module of ['ash-profile-demo-hydration','ash-investigation-demo-hydration','ash-research-demo-hydration','ash-research-demo-control-state','ash-case-close-repair']) {
   assert.match(bridge, new RegExp(`${module}\\.js\\?v=20260718-canonical-membrane-v6`));
 }
@@ -161,10 +176,12 @@ assert.doesNotMatch(profileWrapper + investigationWrapper, /fixtures\//);
 
 for (const token of [
   'ASH_CANONICAL_MEMBRANE_EPOCH',
+  'ASH_LIFECYCLE_ASSET_EPOCH',
   'ash-canonical-membrane',
   'data-ash-membrane-ready',
   'data-ash-session-open',
   'td613.ash.session.epoch',
+  'X-TD613-Ash-Lifecycle-Asset',
   'X-TD613-Ash-Canonical-Membrane',
   'Clear-Site-Data',
   'HTTP_CACHE_ONLY',
