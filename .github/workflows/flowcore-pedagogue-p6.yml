@@ -27,15 +27,20 @@ jobs:
           node-version: '22'
           cache: npm
       - run: npm ci
-      - name: Run original Ash lifecycle and P1 through P6 contracts
-        run: |
-          node --test tests/ash-lifecycle.test.mjs
-          node --test tests/flowcore-pedagogue-core.test.mjs
-          node --test tests/flowcore-pedagogue-aia.test.mjs
-          node --test tests/flowcore-pedagogue-visual.test.mjs
-          node --test tests/information-dome-scenes.test.mjs
-          node --test tests/flowcore-route-burden.test.mjs
-          node --test tests/ash-pedagogue-custody-route.test.mjs
+      - name: Run original Ash lifecycle law
+        run: node --test tests/ash-lifecycle.test.mjs
+      - name: Run inherited Flow-Core P1 contracts
+        run: node --test tests/flowcore-pedagogue-core.test.mjs
+      - name: Run inherited Flow-Core P2 contracts
+        run: node --test tests/flowcore-pedagogue-aia.test.mjs
+      - name: Run inherited Flow-Core P3 contracts
+        run: node --test tests/flowcore-pedagogue-visual.test.mjs
+      - name: Run inherited Information-Dome P4 contracts
+        run: node --test tests/information-dome-scenes.test.mjs
+      - name: Run inherited route-burden P5 contracts
+        run: node --test tests/flowcore-route-burden.test.mjs
+      - name: Run Ash custody pedagogue P6 contracts
+        run: node --test tests/ash-pedagogue-custody-route.test.mjs
       - name: Assert P6 is presentation-only with zero serverless delta
         shell: bash
         run: |
