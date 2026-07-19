@@ -1,6 +1,6 @@
 export * from './ash-workspace-bridge-core.js?v=20260718-canonical-membrane-v6';
 import './ash-flicker-hardening.js?v=20260718-canonical-membrane-v6';
-import './ash-case-close-repair.js?v=20260718-canonical-membrane-v6';
+import './ash-case-close-repair.js?v=20260719-ingress-readiness-boundary-v1';
 
 /* Canonical composition ordering retained under cache-busted URLs:
 import './ash-keep-mobile-composition.js';
