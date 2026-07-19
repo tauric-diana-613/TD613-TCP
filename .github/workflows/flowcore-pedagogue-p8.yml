@@ -1,0 +1,58 @@
+name: Flow-Core Pedagogue P8 Physical Contracts
+
+on:
+  pull_request:
+    branches: [ main ]
+    paths:
+      - 'app/engine/flowcore-physical-scene.js'
+      - 'app/dome-world/physical-flowcore*'
+      - 'app/dome-world/fixtures/pedagogue/physical-flowcore-cycle.json'
+      - 'app/dome-world/schemas/flowcore-physical-scene-v01.schema.json'
+      - 'tests/flowcore-physical-scene.test.mjs'
+      - '.github/workflows/flowcore-pedagogue-p8.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  physical-contracts:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+          cache: npm
+      - run: npm ci
+      - name: Run stitched P0-P7 baseline contracts
+        run: node --test tests/flowcore-p0-p7-seam-closure.test.mjs
+      - name: Run inherited P1-P7 contracts
+        run: |
+          node --test tests/flowcore-pedagogue-core.test.mjs
+          node --test tests/flowcore-pedagogue-aia.test.mjs
+          node --test tests/flowcore-pedagogue-visual.test.mjs
+          node --test tests/information-dome-scenes.test.mjs
+          node --test tests/flowcore-route-burden.test.mjs
+          node --test tests/ash-pedagogue-custody-route.test.mjs
+          node --test tests/flowcore-station-propagation.test.mjs
+      - name: Run P8 physical Flow-Core contracts
+        run: node --test tests/flowcore-physical-scene.test.mjs
+      - name: Assert P8 adds no serverless, custody, release, or hardware authority
+        shell: bash
+        run: |
+          BASE_SHA="${{ github.event.pull_request.base.sha }}"
+          if [[ -z "$BASE_SHA" ]]; then
+            BASE_SHA="$(git rev-parse origin/main)"
+          fi
+          CHANGED="$(git diff --name-only "$BASE_SHA" "${{ github.sha }}")"
+          if grep -Eq '^(api/|vercel\.json$|app/engine/ash-lifecycle\.js|app/dome-world/ash/canonical-json\.js)' <<< "$CHANGED"; then
+            echo 'P8 may not mutate serverless, Ash lifecycle, or canonical digest law.'
+            exit 1
+          fi
+          if grep -R -Eq 'essential_service_depends_on_participant_input["'"': ]+true|thermal_to_mechanical_transfer_millijoules["'"': ]+[1-9]|flowcore_commands_physical_system["'"': ]+true' app/engine/flowcore-physical-scene.js app/dome-world/fixtures/pedagogue/physical-flowcore-cycle.json; then
+            echo 'P8 physical safety or authority boundary widened.'
+            exit 1
+          fi
