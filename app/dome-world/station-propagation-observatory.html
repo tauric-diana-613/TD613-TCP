@@ -1,0 +1,53 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="color-scheme" content="dark">
+  <title>Flow-Core Cross-Station Propagation</title>
+  <link rel="stylesheet" href="./station-propagation-observatory.css">
+</head>
+<body>
+  <main class="station-propagation" data-station-propagation aria-busy="true">
+    <header class="station-propagation__header">
+      <p class="station-propagation__eyebrow">U+10D613 · Flow-Core P7</p>
+      <h1>Cross-station propagation membrane</h1>
+      <p>Compare station-specific scenes, receipts, and bounded observations without making the stations equivalent.</p>
+      <p class="station-propagation__law"><strong>Receipts may cross.</strong> <strong>Authority does not.</strong></p>
+    </header>
+
+    <section class="station-propagation__controls" aria-labelledby="station-heading">
+      <div>
+        <h2 id="station-heading">Choose a primary station</h2>
+        <div class="station-propagation__choices" data-station-nav></div>
+      </div>
+      <p><strong>Origin station:</strong> <span data-origin-station>Loading…</span></p>
+    </section>
+
+    <section class="station-propagation__controls" aria-labelledby="route-heading">
+      <div>
+        <h2 id="route-heading">Choose an explicit AIA route</h2>
+        <div class="station-propagation__choices" data-route-nav></div>
+      </div>
+    </section>
+
+    <p class="station-propagation__live" role="status" aria-live="polite" data-bounded-live>Compiling station receipts…</p>
+
+    <section class="station-propagation__matrix" aria-labelledby="matrix-heading">
+      <h2 id="matrix-heading">Responsibility matrix</h2>
+      <div class="station-propagation__responsibilities" data-responsibility-matrix></div>
+    </section>
+
+    <div class="station-propagation__stage" data-station-stage></div>
+
+    <section class="station-propagation__controls" aria-label="Rest and return controls">
+      <button type="button" data-rest>𝄐 Rest</button>
+      <button type="button" data-return>Return</button>
+      <button type="button" data-replay>Replay bundle</button>
+      <a href="./ash-custody-pedagogue.html">Return to Ash pedagogue</a>
+      <a href="./index.html">Exit to Dome-World</a>
+    </section>
+  </main>
+  <script type="module" src="./station-propagation-observatory.js"></script>
+</body>
+</html>
