@@ -17,7 +17,8 @@ document.documentElement.dataset.ashAia3 = 'td613.ash.aia3-composition/v0.2-stab
 await Promise.all([
   ensureStyle('/dome-world/ash-keep-aia.css?v=20260720-ak-aia-2-rescue', 'data-ash-live-aia'),
   ensureStyle('/dome-world/ash-keep-aia3.css?v=20260720-aia3-production-recovery-v1', 'data-ash-aia3-style'),
-  ensureStyle('/dome-world/ash-keep-aia3-compact.css?v=20260720-aia3-production-recovery-v1', 'data-ash-aia3-compact')
+  ensureStyle('/dome-world/ash-keep-aia3-compact.css?v=20260720-aia3-production-recovery-v1', 'data-ash-aia3-compact'),
+  ensureStyle('/dome-world/ash-keep-aia3-interaction.css?v=20260720-aia3-production-recovery-v1', 'data-ash-aia3-interaction')
 ]);
 await import('./ash-keep-aia.js?v=20260720-aia3-production-recovery-v1');
 await import('./ash-aia3-composition.js?v=20260720-aia3-production-recovery-v1');
