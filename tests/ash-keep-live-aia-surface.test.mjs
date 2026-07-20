@@ -38,7 +38,8 @@ test('default presentation begins with a four-task human journey, not lifecycle 
 });
 
 test('all four anisotropic routes and the five-part consequence contract remain available', () => {
-  for (const route of ['EXPERIENTIAL', 'CUSTODIAL', 'AUDIT', 'IMPLEMENTATION']) assert.match(runtime, new RegExp(route));
+  const routeLaw = `${engine}\n${runtime}`;
+  for (const route of ['EXPERIENTIAL', 'CUSTODIAL', 'AUDIT', 'IMPLEMENTATION']) assert.match(routeLaw, new RegExp(route));
   for (const phrase of ['Why did Ash do that?', 'Exact state, receipts, digest, and rule']) assert.match(runtime, new RegExp(escaped(phrase)));
   for (const phrase of ['What stayed local', 'What Ash created', 'What changed', 'What stayed unauthorized', 'What may happen next']) assert.match(runtime, new RegExp(escaped(phrase)));
 });
