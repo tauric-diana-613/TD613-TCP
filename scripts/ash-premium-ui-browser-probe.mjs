@@ -107,7 +107,7 @@ async function flightProfile(context, profile, title) {
   page.on('response', response => { if (response.status() >= 400 && !/favicon\.ico/.test(response.url())) badResponses.push(`${response.status()} ${response.url()}`); });
 
   try {
-    await page.goto(`${base}/dome-world/ash-keep.html`, { waitUntil: 'networkidle', timeout: 60_000 });
+    await page.goto(`${base}/dome-world/ash-keep.html?presentation=legacy`, { waitUntil: 'networkidle', timeout: 60_000 });
     await waitForPremium(page);
     await clearLocalAsh(page);
     await page.reload({ waitUntil: 'networkidle', timeout: 60_000 });
