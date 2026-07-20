@@ -1,17 +1,22 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
 import fs from 'node:fs';
+import path from 'node:path';
 
-const read = path => fs.readFileSync(path, 'utf8');
+const read = file => fs.readFileSync(file, 'utf8');
+const collectSource = directory => fs.readdirSync(directory, { withFileTypes: true }).map(entry => {
+  const location = path.join(directory, entry.name);
+  if (entry.isDirectory()) return collectSource(location);
+  return /\.(?:html|js|mjs)$/.test(entry.name) ? read(location) : '';
+}).join('\n');
+
 const loader = read('app/dome-world/ash-lifecycle.js');
 const runtime = read('app/dome-world/ash-keep-aia.js');
 const bridge = read('app/dome-world/ash-keep-aia-workspace-bridge.js');
 const styles = read('app/dome-world/ash-keep-aia.css');
 const engine = read('app/engine/ash-live-aia.js');
-const ashKeep = read('app/dome-world/ash-keep.js');
-const lifecycle = read('app/dome-world/ash-lifecycle-core.js');
+const ashSurface = collectSource('app/dome-world');
 const vercel = read('vercel.json');
-
 const escaped = value => value.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
 
 test('loader makes the presentation atomic: stylesheet first, then controller, then exact-ingress bridge', () => {
@@ -59,7 +64,7 @@ test('exact workspaces remain operable without route ejection', () => {
 test('live membrane calls existing Ash commands rather than duplicating station actions', () => {
   for (const id of ['compileQuickScan', 'registerCustodyRoot', 'bindCustodyRoot', 'runTest', 'keepDraft', 'reviewDraft', 'approveRelease', 'makeSave']) {
     assert.match(runtime, new RegExp(`['"]${id}['"]`));
-    assert.match(ashKeep + lifecycle, new RegExp(`id=['"]${id}['"]|\\$\\('${id}'\\)|${id}\\(`));
+    assert.match(ashSurface, new RegExp(`id=['"]${id}['"]|getElementById\(['"]${id}['"]\)|\\$\\(['"]#?${id}['"]\\)|${id}\\(`));
   }
   assert.doesNotMatch(runtime, /fetch\(['"]\/api\/dome-world\/ash-custody-register/);
   assert.doesNotMatch(runtime, /compileCaseMap|compileRebuildTest|compileAshDraft|compileReleaseReceipt|compileSavePoint/);
