@@ -1,0 +1,50 @@
+name: Ash Keep live child-legible AIA
+
+on:
+  pull_request:
+    paths:
+      - 'app/engine/ash-live-aia.js'
+      - 'app/dome-world/ash-keep-aia.js'
+      - 'app/dome-world/ash-keep-aia.css'
+      - 'app/dome-world/ash-lifecycle.js'
+      - 'app/dome-world/docs/ASH_KEEP_LIVE_CHILD_LEGIBLE_AIA_IMPLEMENTATION_RECEIPT_V0_1.md'
+      - 'tests/ash-keep-live-aia-*.test.mjs'
+      - '.github/workflows/ash-keep-live-aia.yml'
+  push:
+    branches: [main]
+    paths:
+      - 'app/engine/ash-live-aia.js'
+      - 'app/dome-world/ash-keep-aia.js'
+      - 'app/dome-world/ash-keep-aia.css'
+      - 'app/dome-world/ash-lifecycle.js'
+      - 'app/dome-world/docs/ASH_KEEP_LIVE_CHILD_LEGIBLE_AIA_IMPLEMENTATION_RECEIPT_V0_1.md'
+      - 'tests/ash-keep-live-aia-*.test.mjs'
+      - '.github/workflows/ash-keep-live-aia.yml'
+
+permissions:
+  contents: read
+
+jobs:
+  contracts:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+      - run: npm ci
+      - name: Live AIA engine and surface contracts
+        run: |
+          node tests/ash-keep-live-aia-engine.test.mjs
+          node tests/ash-keep-live-aia-surface.test.mjs
+      - name: Inherited Flow-Core and Ash non-regression
+        run: |
+          node tests/ash-pedagogue-custody-route.test.mjs
+          node tests/ash-lifecycle.test.mjs
+          npm run test:ash-keep
+      - name: Static delivery and TCP smoke
+        run: |
+          node tests/dome-world-ash-custody.test.mjs
+          node tests/tcp-smoke.test.mjs
