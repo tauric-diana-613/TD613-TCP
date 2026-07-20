@@ -1,9 +1,29 @@
+function legacyCaseOpen() {
+  const root = document.documentElement;
+  try {
+    return Boolean(localStorage.getItem('td613.ash-keep.current-case'))
+      || root.classList.contains('ash-has-current-case')
+      || root.dataset.ashSessionOpen === 'true';
+  } catch {
+    return root.classList.contains('ash-has-current-case')
+      || root.dataset.ashSessionOpen === 'true';
+  }
+}
+
 function composeLaunchForRoute() {
   const launch = document.querySelector('body > .launch');
   if (!launch) return;
   const explicitLegacy = new URLSearchParams(location.search).get('presentation') === 'legacy';
   const route = document.body.dataset.ashAiaRoute;
-  if (!explicitLegacy && (route === 'EXPERIENTIAL' || route === 'CUSTODIAL')) {
+
+  if (explicitLegacy) {
+    launch.style.removeProperty('display');
+    delete launch.dataset.ashAiaComposed;
+    if (!legacyCaseOpen()) launch.classList.remove('hidden');
+    return;
+  }
+
+  if (route === 'EXPERIENTIAL' || route === 'CUSTODIAL') {
     launch.style.setProperty('display', 'none', 'important');
     launch.dataset.ashAiaComposed = 'HIDDEN_BEHIND_CONSEQUENCE_ROUTE';
   } else {
@@ -18,6 +38,11 @@ function installLaunchComposition() {
     attributes: true,
     attributeFilter: ['data-ash-aia-route']
   });
+  new MutationObserver(composeLaunchForRoute).observe(document.documentElement, {
+    attributes: true,
+    attributeFilter: ['class', 'data-ash-session-open']
+  });
+  window.addEventListener('td613:ash:lifecycle-updated', composeLaunchForRoute);
   document.addEventListener('click', event => {
     const launch = event.target.closest('.ash-aia__launch-button');
     if (!launch) return;
