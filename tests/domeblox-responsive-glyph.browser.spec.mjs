@@ -21,6 +21,12 @@ async function capture(page, base, prefix, strict) {
   await page.screenshot({ path:path.join(OUT, `${prefix}-boot.png`), fullPage:true });
 
   const boot = await page.locator('#bootPanel').boundingBox();
+  const bootTitle = await page.locator('#bootPanel h1').boundingBox();
+  const bootChrome = await page.evaluate(() => ({
+    hudVisibility:getComputedStyle(document.getElementById('hud')).visibility,
+    interactionVisibility:getComputedStyle(document.getElementById('interactionCard')).visibility,
+    touchVisibility:getComputedStyle(document.getElementById('touchControls')).visibility,
+  }));
   const scalar = page.locator('.canonical-mark .canonical-scalar');
   const fontReady = await page.evaluate(async () => {
     const glyph = String.fromCodePoint(0x10D613);
@@ -35,10 +41,17 @@ async function capture(page, base, prefix, strict) {
   });
   const viewport = page.viewportSize();
 
+  if (strict) {
+    expect(bootChrome.hudVisibility).toBe('hidden');
+    expect(bootChrome.interactionVisibility).toBe('hidden');
+    expect(bootChrome.touchVisibility).toBe('hidden');
+    expect(bootTitle.x).toBeGreaterThanOrEqual(boot.x);
+    expect(bootTitle.x + bootTitle.width).toBeLessThanOrEqual(boot.x + boot.width + 1);
+  }
   if (strict && viewport.width >= 1000) {
     expect(boot.x).toBeLessThan(90);
-    expect(boot.width).toBeLessThan(450);
-    expect(boot.x + boot.width).toBeLessThan(470);
+    expect(boot.width).toBeLessThan(390);
+    expect(boot.x + boot.width).toBeLessThan(430);
     expect(fontReady).toBe(true);
     expect(computedFamily).toContain('TD613 FlowCore');
     expect(scalarVisibility.opacity).toBe(1);
@@ -64,6 +77,7 @@ async function capture(page, base, prefix, strict) {
       viewport:{ width:innerWidth, height:innerHeight },
       overflowX:document.documentElement.scrollWidth - innerWidth,
       hud:rect('hud'),
+      hudVisibility:getComputedStyle(document.getElementById('hud')).visibility,
       hudBodyHidden:document.getElementById('hudBody').hidden,
       interaction:rect('interactionCard'),
       touch:rect('touchPad'),
@@ -76,6 +90,7 @@ async function capture(page, base, prefix, strict) {
   if (strict) {
     expect(metrics.overflowX).toBeLessThanOrEqual(0);
     expect(metrics.runtimeVersion).toBe('1.1.0');
+    expect(metrics.hudVisibility).toBe('visible');
     expect(consoleErrors).toEqual([]);
     expect(pageErrors).toEqual([]);
     expect(requestFailures).toEqual([]);
@@ -90,7 +105,7 @@ async function capture(page, base, prefix, strict) {
       expect(metrics.interaction.left).toBeGreaterThan(390);
     }
   }
-  return { base, prefix, strict, boot, fontReady, computedFamily, scalarVisibility, metrics, consoleErrors, pageErrors, requestFailures };
+  return { base, prefix, strict, boot, bootTitle, bootChrome, fontReady, computedFamily, scalarVisibility, metrics, consoleErrors, pageErrors, requestFailures };
 }
 
 test('capture production baseline and branch repair', async ({ browser }) => {
