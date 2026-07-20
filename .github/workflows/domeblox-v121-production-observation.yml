@@ -1,0 +1,33 @@
+name: DomeBlox v1.2.1 Production Observation
+
+on:
+  pull_request:
+    paths:
+      - 'tests/domeblox-v121-production.browser.spec.mjs'
+      - '.github/workflows/domeblox-v121-production-observation.yml'
+
+permissions:
+  contents: read
+
+jobs:
+  observe:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Install Chromium observation runtime
+        run: |
+          npm install --no-save --ignore-scripts @playwright/test@1.55.0
+          npx playwright install --with-deps chromium
+      - name: Observe deployed DomeBlox v1.2.1 resilience
+        run: npx playwright test tests/domeblox-v121-production.browser.spec.mjs --reporter=line
+      - name: Upload deployed resilience receipt
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: domeblox-v121-production-observation
+          path: domeblox-v121-production-observation/
+          if-no-files-found: error
+          retention-days: 7
