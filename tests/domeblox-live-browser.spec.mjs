@@ -69,7 +69,7 @@ test('DomeBlox production browser interaction', async ({ page }) => {
     mark('game-registry');
     await page.locator('[data-panel="registry"]').click();
     await expect(page.locator('#gameList .game-card')).toHaveCount(2);
-    await expect(page.locator('#registryPosture')).toContainText('READY');
+    await expect(page.locator('#registryPosture')).toContainText('OBSERVED');
 
     mark('receipt-ledger');
     await page.locator('[data-panel="receipts"]').click();
