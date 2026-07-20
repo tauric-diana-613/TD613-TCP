@@ -20,7 +20,7 @@ jobs:
       github.event.comment.user.login == github.repository_owner &&
       startsWith(github.event.comment.body, '/td613-vercel-release ')
     runs-on: ubuntu-latest
-    timeout-minutes: 75
+    timeout-minutes: 90
     env:
       RELEASE_GATE_ISSUE: '405'
       VERCEL_PROJECT: td-613-tcp
@@ -92,19 +92,20 @@ jobs:
           workflow_run = $GITHUB_SERVER_URL/$GITHUB_REPOSITORY/actions/runs/$GITHUB_RUN_ID
           \`\`\`
 
-          The gate will run the complete Flow-Core closure, choose one bounded credential route, deploy once, observe exact production content, and run the browser matrix. ⟐
+          The gate will run the complete Flow-Core and Ash Keep closure, choose one bounded credential route, deploy once, observe exact production content, and run both browser matrices. ⟐
           EOF_COMMENT
           )"
 
       - name: Install dependencies
         run: npm ci
 
-      - name: Verify release-critical and Flow-Core closure contracts
+      - name: Verify release-critical, Flow-Core, and Ash Keep closure contracts
         run: |
           node tests/vercel-deploy-hygiene.test.mjs
           node tests/vercel-operator-release-gate.test.mjs
           node tests/product-architecture/shell.test.mjs
           node tests/ash-live-ingress-demos-cache.test.mjs
+          node tests/ash-keep-live-aia-surface.test.mjs
           node tests/td613-flight-mobile-layout.test.mjs
           node tests/flowcore-p0-p10-completion.test.mjs
           node tests/flowcore-p0-p7-seam-closure.test.mjs
@@ -112,6 +113,7 @@ jobs:
           node tests/flowcore-empirical-validation.test.mjs
           node tests/flowcore-production-promotion.test.mjs
           node tests/flowcore-runtime-browser-probe.test.mjs
+          node --check scripts/ash-keep-aia2-task-journey-v5.mjs
 
       - name: Choose one bounded Vercel release route
         id: mode
@@ -208,6 +210,19 @@ jobs:
           TD613_ARTIFACT_DIR: artifacts/flowcore-production-observation
         run: node scripts/flowcore-runtime-browser-probe.mjs
 
+      - name: Observe the deployed Ash Keep AIA2 task matrix
+        env:
+          TD613_BASE_URL: ${{ steps.deployed.outputs.url }}
+          TD613_SOURCE_PACKET_COMMIT: ${{ steps.authorize.outputs.selected_sha }}
+          TD613_PRODUCTION_OBSERVATION: 'true'
+        run: |
+          set -euo pipefail
+          for browser in chromium firefox webkit; do
+            TD613_BROWSER="$browser" \
+            TD613_ARTIFACT_DIR="artifacts/ash-aia2-production/$browser" \
+            node scripts/ash-keep-aia2-task-journey-v5.mjs
+          done
+
       - name: Verify production observations remained bounded
         run: |
           node --input-type=module <<'NODE'
@@ -215,17 +230,25 @@ jobs:
           const content = JSON.parse(fs.readFileSync('artifacts/flowcore-production-observation/flowcore-production-content-observation.json', 'utf8'));
           const runtime = JSON.parse(fs.readFileSync('artifacts/flowcore-production-observation/flowcore-runtime-browser-evidence.json', 'utf8'));
           if (content.status !== 'PASS' || content.exact_source_content_verified !== true || content.application_tree_drift !== 'none') throw new Error('Exact production content observation held.');
-          if (runtime.status !== 'PASS') throw new Error('Production browser matrix held.');
-          if (runtime.source_packet_commit !== content.source_packet_commit) throw new Error('Production observations disagree on the source packet.');
-          if (runtime.authority.counts_as_human_evidence !== false || runtime.authority.authorizes_public_route_promotion !== false || runtime.authority.closes_program !== false) throw new Error('Production observer widened authority.');
+          if (runtime.status !== 'PASS') throw new Error('Production Flow-Core browser matrix held.');
+          if (runtime.source_packet_commit !== content.source_packet_commit) throw new Error('Production Flow-Core observations disagree on the source packet.');
+          if (runtime.authority.counts_as_human_evidence !== false || runtime.authority.authorizes_public_route_promotion !== false || runtime.authority.closes_program !== false) throw new Error('Production Flow-Core observer widened authority.');
+          for (const browser of ['chromium', 'firefox', 'webkit']) {
+            const receipt = JSON.parse(fs.readFileSync(`artifacts/ash-aia2-production/${browser}/ash-aia2-task-continuity.json`, 'utf8'));
+            if (receipt.status !== 'PASS') throw new Error(`Production Ash Keep ${browser} task journey held.`);
+            if (receipt.source_packet_commit !== content.source_packet_commit) throw new Error(`Production Ash Keep ${browser} source packet drifted.`);
+            if (receipt.authority.counts_as_human_evidence !== false || receipt.authority.authorizes_child_study !== false || receipt.authority.authorizes_release !== false || receipt.authority.closes_program !== false) throw new Error(`Production Ash Keep ${browser} observer widened authority.`);
+          }
           NODE
 
       - name: Preserve production evidence
         if: always()
         uses: actions/upload-artifact@v4
         with:
-          name: flowcore-production-release-evidence
-          path: artifacts/flowcore-production-observation/
+          name: flowcore-and-ash-production-release-evidence
+          path: |
+            artifacts/flowcore-production-observation/
+            artifacts/ash-aia2-production/
           if-no-files-found: warn
           retention-days: 45
 
@@ -263,7 +286,10 @@ jobs:
           deployment_count = 1
           deployment_url = ${{ steps.deployed.outputs.url }}
           exact_source_content = PASS
-          browser_matrix = PASS
+          flowcore_browser_matrix = PASS
+          ash_keep_aia2_task_matrix = PASS
+          ash_keep_desktop = PASS
+          ash_keep_mobile_390x844 = PASS
           mobile_portrait = PASS
           mobile_landscape = PASS
           rotation_equivalent = PASS
@@ -272,12 +298,13 @@ jobs:
           high_contrast = PASS
           performance_observation = PASS
           counts_as_human_evidence = false
+          child_study_authorized = false
           public_route_promotion_authorized = false
           application_tree_drift = none
           git_auto_deploy = disabled
           \`\`\`
 
-          The production observation closes the runtime and exact-source seams. It does not satisfy the held adult empirical gate, authorize public route promotion, or close the program. Sealed ⟐
+          The production observation closes the exact-source, Flow-Core runtime, and Ash Keep task-continuity seams. It does not satisfy the held adult empirical gate, authorize a child study, authorize public route promotion, or close the program. Sealed ⟐
           EOF_COMMENT
           )"
 
@@ -300,4 +327,4 @@ jobs:
 
           The fallback lock-restoration step was attempted when applicable. No additional deployment attempt is authorized by this failure. ⟐
           EOF_COMMENT
-          )"
+          )

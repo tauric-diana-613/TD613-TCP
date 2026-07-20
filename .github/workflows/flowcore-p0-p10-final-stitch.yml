@@ -11,6 +11,7 @@ on:
       - 'app/dome-world/docs/FLOWCORE_P0_P10_IMPLEMENTATION_COMPLETION_LEDGER_V0_1.md'
       - 'app/dome-world/docs/FLOWCORE_RUNTIME_RELEASE_CLOSURE_RECEIPT_V0_1.md'
       - 'app/dome-world/docs/FLOWCORE_PRODUCTION_OBSERVATION_REPAIR_RECEIPT_V0_1.md'
+      - 'app/dome-world/docs/ASH_KEEP_AIA2_PRODUCTION_WITNESS_LAW_RECEIPT_V0_1.md'
       - 'app/dome-world/fixtures/pedagogue/flowcore-promotion-evidence.json'
       - 'app/dome-world/route-burden-observatory.css'
       - 'app/dome-world/flowcore-promotion-dashboard.css'
@@ -25,6 +26,8 @@ on:
       - 'docs/STRATEGIC_VERCEL_DEPLOYMENT_LAW.md'
       - '.github/workflows/flowcore-runtime-evidence.yml'
       - '.github/workflows/flowcore-production-observation.yml'
+      - '.github/workflows/ash-keep-aia2-production-observation.yml'
+      - '.github/workflows/vercel-deployment-law.yml'
       - '.github/workflows/vercel-operator-release.yml'
       - '.github/workflows/flowcore-p0-p10-final-stitch.yml'
   workflow_dispatch:
@@ -80,16 +83,20 @@ jobs:
             exit 0
           fi
 
-          grep -Fxq 'app/dome-world/docs/FLOWCORE_PRODUCTION_OBSERVATION_REPAIR_RECEIPT_V0_1.md' <<< "$CHANGED" || {
-            echo 'Production observation repair requires its named receipt.' >&2
+          if ! grep -Fxq 'app/dome-world/docs/FLOWCORE_PRODUCTION_OBSERVATION_REPAIR_RECEIPT_V0_1.md' <<< "$CHANGED" \
+            && ! grep -Fxq 'app/dome-world/docs/ASH_KEEP_AIA2_PRODUCTION_WITNESS_LAW_RECEIPT_V0_1.md' <<< "$CHANGED"; then
+            echo 'Production observation repair requires a named Flow-Core or Ash witness receipt.' >&2
             exit 1
-          }
+          fi
 
           ALLOWED="$(cat <<'EOF_ALLOWED'
+          .github/workflows/ash-keep-aia2-production-observation.yml
           .github/workflows/flowcore-p0-p10-final-stitch.yml
           .github/workflows/flowcore-production-observation.yml
           .github/workflows/flowcore-runtime-evidence.yml
+          .github/workflows/vercel-deployment-law.yml
           .github/workflows/vercel-operator-release.yml
+          app/dome-world/docs/ASH_KEEP_AIA2_PRODUCTION_WITNESS_LAW_RECEIPT_V0_1.md
           app/dome-world/docs/FLOWCORE_P0_P10_IMPLEMENTATION_COMPLETION_LEDGER_V0_1.md
           app/dome-world/docs/FLOWCORE_PEDAGOGUE_P10_IMPLEMENTATION_RECEIPT_V0_1.md
           app/dome-world/docs/FLOWCORE_PEDAGOGUE_PROGRAM_INDEX_V0_1.md
