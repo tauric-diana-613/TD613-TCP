@@ -28,17 +28,18 @@ for (const match of gameHtml.matchAll(/(?:src|href)="(\.\/[^"#?]+)"/g)) {
   if (!exists(relative)) throw new Error(`broken playable reference: ${relative}`);
 }
 
-for (const file of ['game/core.js','game/render.js','game/sim.js','game/main.js']) {
+for (const file of ['game/core.js','game/state-resilience.js','game/render.js','game/sim.js','game/main.js']) {
   if (!exists(file)) throw new Error(`missing playable module ${file}`);
 }
 
 const gameCore = read('game/core.js');
+const stateResilience = read('game/state-resilience.js');
 const gameRender = read('game/render.js');
 const gameSim = read('game/sim.js');
 const gameMain = read('game/main.js');
 
 for (const token of [
-  "td613.domeblox.browser-world/v1",
+  'td613.domeblox.browser-world/v1',
   'for (let index = 0; index < 12; index += 1)',
   "add('fountain'",
   "add('care'",
@@ -47,10 +48,14 @@ for (const token of [
   "add('loom'",
   "add('keep'",
   "add('battery'",
-  'localStorage.setItem',
-  'localStorage.getItem'
+  'readStoredState',
+  'writeStoredState',
+  'clearStoredState'
 ]) {
   if (!gameCore.includes(token)) throw new Error(`playable world contract missing: ${token}`);
+}
+for (const token of ['hydrateState', 'readStoredState', 'writeStoredState', 'clearStoredState']) {
+  if (!stateResilience.includes(token)) throw new Error(`save resilience contract missing: ${token}`);
 }
 if (!gameRender.includes('drawDomeGrid')) throw new Error('Dome renderer missing');
 if (!gameRender.includes('drawAnimal')) throw new Error('animal renderer missing');
@@ -59,6 +64,7 @@ if (!gameSim.includes("window.open('./forward-battery/'")) throw new Error('Forw
 if (!gameSim.includes('The browser port records a local replay receipt') && !gameHtml.includes('The browser port records a local replay receipt')) throw new Error('local-only Springald boundary missing');
 if (!gameMain.includes('TD613_DOME_BLOX_GAME')) throw new Error('playable inspection API missing');
 if (!gameMain.includes('touchPad')) throw new Error('touch controls missing');
+if (!gameMain.includes("version:'1.2.1'")) throw new Error('playable runtime version drift');
 
 // The old instrument must remain reachable at its subordinate route.
 const batteryHtml = read('forward-battery/index.html');
