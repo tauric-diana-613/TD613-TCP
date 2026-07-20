@@ -1,0 +1,98 @@
+name: Ash Keep live AIA browser witness
+
+on:
+  pull_request:
+    paths:
+      - 'app/engine/ash-live-aia.js'
+      - 'app/dome-world/ash-keep-aia.js'
+      - 'app/dome-world/ash-keep-aia.css'
+      - 'app/dome-world/ash-keep-aia-workspace-bridge.js'
+      - 'app/dome-world/ash-lifecycle.js'
+      - 'scripts/ash-keep-live-aia-browser-probe.mjs'
+      - '.github/workflows/ash-keep-live-aia-browser.yml'
+  push:
+    branches: [main]
+    paths:
+      - 'app/engine/ash-live-aia.js'
+      - 'app/dome-world/ash-keep-aia.js'
+      - 'app/dome-world/ash-keep-aia.css'
+      - 'app/dome-world/ash-keep-aia-workspace-bridge.js'
+      - 'app/dome-world/ash-lifecycle.js'
+      - 'scripts/ash-keep-live-aia-browser-probe.mjs'
+      - '.github/workflows/ash-keep-live-aia-browser.yml'
+  workflow_dispatch:
+    inputs:
+      base_url:
+        description: Optional deployed base URL for a read-only AIA observation
+        required: false
+        default: ''
+        type: string
+      source_packet_commit:
+        description: Exact source packet commit being observed
+        required: false
+        default: ''
+        type: string
+
+permissions:
+  contents: read
+
+jobs:
+  browser-witness:
+    name: ${{ matrix.browser }} live membrane
+    runs-on: ubuntu-latest
+    timeout-minutes: 35
+    strategy:
+      fail-fast: false
+      matrix:
+        browser: [chromium, firefox, webkit]
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+      - run: npm ci
+      - name: Validate witness syntax
+        run: node --check scripts/ash-keep-live-aia-browser-probe.mjs
+      - name: Install browser witness runtime
+        run: |
+          npm install --no-save --package-lock=false playwright@1.53.2
+          npx playwright install --with-deps ${{ matrix.browser }}
+      - name: Start bounded local Ash Keep runtime
+        if: ${{ inputs.base_url == '' }}
+        run: |
+          mkdir -p artifacts
+          node scripts/ash-keep-local-closure-server.mjs 6130 > artifacts/ash-live-aia-local-server.log 2>&1 &
+          echo $! > artifacts/ash-live-aia-local-server.pid
+          for attempt in $(seq 1 40); do
+            if curl -fsS --max-time 2 http://127.0.0.1:6130/__ash_keep_closure/readiness > artifacts/ash-live-aia-local-readiness.json; then
+              cat artifacts/ash-live-aia-local-readiness.json
+              exit 0
+            fi
+            sleep 1
+          done
+          cat artifacts/ash-live-aia-local-server.log || true
+          exit 1
+      - name: Observe live child-legible AIA
+        env:
+          TD613_BROWSER: ${{ matrix.browser }}
+          TD613_BASE_URL: ${{ inputs.base_url || 'http://127.0.0.1:6130' }}
+          TD613_SOURCE_PACKET_COMMIT: ${{ inputs.source_packet_commit || github.sha }}
+          TD613_PRODUCTION_OBSERVATION: ${{ inputs.base_url != '' }}
+          TD613_ARTIFACT_DIR: artifacts/ash-live-aia-${{ matrix.browser }}
+        run: node scripts/ash-keep-live-aia-browser-probe.mjs
+      - name: Stop bounded local runtime
+        if: ${{ always() && inputs.base_url == '' }}
+        run: |
+          test -f artifacts/ash-live-aia-local-server.pid && kill "$(cat artifacts/ash-live-aia-local-server.pid)" || true
+      - name: Preserve browser evidence
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: ash-live-aia-${{ matrix.browser }}-evidence
+          path: |
+            artifacts/ash-live-aia-${{ matrix.browser }}/
+            artifacts/ash-live-aia-local-server.log
+            artifacts/ash-live-aia-local-readiness.json
+          if-no-files-found: warn
+          retention-days: 45
