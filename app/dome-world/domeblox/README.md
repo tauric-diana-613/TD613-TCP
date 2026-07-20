@@ -1,16 +1,16 @@
-# DomeBlox Forward Battery
+# DomeBlox Forward Battery v1.1
 
 Static local-first counter-adversarial station for `/dome-world/domeblox/`.
 
 ## Closed capabilities
 
-- invariant-source packet family generation
-- operator-supplied output comparison
-- protected-anchor and U+10D613 preservation checks
-- differential admissibility scoring
-- pair-emergent moiré residue
-- local hash-chained receipts
-- human-authorized consequence packet compilation
-- modular future-game registry
+- invariant source nucleus separated from packet framing and digests
+- coverage-aware operator-supplied output comparison
+- protected-anchor and exact U+10D613 preservation checks
+- differential admissibility scoring with explicit abstention
+- pair-emergent moiré analysis separating missing terms from novel substitutions
+- tab-local SHA-256 receipt continuity
+- human-authorized consequence packet compilation without transmission
+- validated future-game registry with duplicate rejection
 
-No external system is contacted by the assay engine. The only fetches are same-origin game manifests.
+No external system is contacted by the assay engine. The station fetches only same-origin versioned game manifests listed in `games/index.json`. The binary Roblox handoff is distributed separately and registered by digest.
