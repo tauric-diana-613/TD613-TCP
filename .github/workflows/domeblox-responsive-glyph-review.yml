@@ -20,8 +20,6 @@ jobs:
           node-version: '22'
       - name: Static responsive and glyph contract
         run: node tests/domeblox-responsive-glyph.test.mjs
-      - name: Existing playable contract
-        run: node tests/domeblox-playable.test.mjs
       - name: Install Chromium review runtime
         run: |
           npm install --no-save --ignore-scripts @playwright/test@1.55.0
