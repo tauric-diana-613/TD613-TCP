@@ -1,6 +1,6 @@
 import './ash-cache-flush.js?v=20260718-canonical-membrane-v7-readiness-boundary';
 import './ash-cache-eviction-aia3.js?v=20260720-aia3-production-recovery-v1';
-import './ash-ingress-layout-hydration.js?v=20260720-aia3-session-v1';
+import './ash-ingress-layout-hydration.js?v=20260718-canonical-membrane-v6';
 import './ash-lifecycle-core.js?v=20260720-ak-aia-3';
 
 const legacyPresentation = new URLSearchParams(location.search).get('presentation') === 'legacy';
