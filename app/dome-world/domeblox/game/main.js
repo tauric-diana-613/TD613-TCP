@@ -1,5 +1,5 @@
 import { CANONICAL, G, buildWorldObjects, seedAnimals, saveState, exportState, message } from './core.js';
-import { resize, drawWorld } from './render-responsive.js';
+import { resize, drawWorld, renderDiagnostics } from './render-centered.js';
 import { update, findInteraction, interact, renderHud, toggleHud, toggleMap, closeSpringald, witnessSpringald, armSpringald, releaseSpringald, resetWorld } from './sim-responsive.js';
 
 const compactViewport = matchMedia('(pointer:coarse), (max-width:820px)').matches;
@@ -9,8 +9,9 @@ seedAnimals();
 resize();
 renderHud();
 findInteraction();
-if (compactViewport && !G.hudCollapsed) toggleHud();
+if (!G.hudCollapsed) toggleHud();
 addEventListener('resize', resize, { passive: true });
+visualViewport?.addEventListener('resize', resize, { passive: true });
 addEventListener('orientationchange', () => setTimeout(resize, 80), { passive: true });
 
 addEventListener('keydown', event => {
@@ -84,10 +85,11 @@ function frame(time) {
 requestAnimationFrame(frame);
 
 window.TD613_DOME_BLOX_GAME = Object.freeze({
-  version:'1.1.0',
+  version:'1.2.0',
   canonical:CANONICAL,
   save:() => saveState('api'),
   snapshot:() => structuredClone(G.state),
+  renderDiagnostics,
   enter:() => G.ui.enterGame.click(),
   interact,
 });
