@@ -1,0 +1,139 @@
+body {
+  margin: 0;
+  min-block-size: 100vh;
+  font-family: ui-sans-serif, system-ui, sans-serif;
+  background: radial-gradient(circle at 50% 0%, rgba(74, 116, 153, 0.24), transparent 40%), #081019;
+  color: #eef7ff;
+}
+
+.physical-flowcore {
+  inline-size: min(76rem, calc(100% - 2rem));
+  margin-inline: auto;
+  padding-block: clamp(1rem, 4vw, 3rem);
+}
+
+.physical-flowcore__header,
+.physical-flowcore__status,
+.physical-flowcore__controls,
+.physical-flowcore__footer {
+  border: 1px solid rgba(238, 247, 255, 0.28);
+  border-radius: 1rem;
+  padding: clamp(1rem, 3vw, 1.5rem);
+  background: rgba(8, 16, 25, 0.86);
+}
+
+.physical-flowcore__eyebrow {
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+}
+
+.physical-flowcore__choices,
+.physical-flowcore__controls {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.75rem;
+  margin-block: 1rem;
+}
+
+.physical-flowcore__choice,
+.physical-flowcore__controls button,
+.physical-flowcore__exit {
+  min-block-size: 44px;
+  border: 1px solid currentColor;
+  border-radius: 999px;
+  padding: 0.65rem 1rem;
+  background: transparent;
+  color: inherit;
+  font: inherit;
+  text-decoration: none;
+}
+
+.physical-flowcore__choice[aria-pressed="true"] {
+  background: #eef7ff;
+  color: #081019;
+}
+
+.physical-flowcore__stage {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 1rem;
+  margin-block: 1rem;
+}
+
+.physical-flowcore__card {
+  min-inline-size: 0;
+  border: 1px solid rgba(238, 247, 255, 0.22);
+  border-radius: 1rem;
+  padding: 1rem;
+  background: rgba(13, 28, 43, 0.84);
+}
+
+.physical-flowcore__ledger {
+  display: grid;
+  grid-template-columns: minmax(0, 1.4fr) minmax(0, 1fr);
+  gap: 0.6rem 1rem;
+}
+
+.physical-flowcore__ledger dt,
+.physical-flowcore__ledger dd {
+  margin: 0;
+  overflow-wrap: anywhere;
+}
+
+.physical-flowcore__ledger dd {
+  text-align: end;
+  font-variant-numeric: tabular-nums;
+}
+
+[data-resting="true"] [data-stage] {
+  opacity: 0.72;
+}
+
+button:focus-visible,
+a:focus-visible {
+  outline: 3px solid currentColor;
+  outline-offset: 3px;
+}
+
+@media (max-width: 720px) {
+  .physical-flowcore__stage {
+    grid-template-columns: minmax(0, 1fr);
+  }
+}
+
+@media (max-width: 390px) {
+  .physical-flowcore {
+    inline-size: min(100% - 1rem, 100%);
+  }
+
+  .physical-flowcore__choices,
+  .physical-flowcore__controls {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .physical-flowcore__choice,
+  .physical-flowcore__controls button,
+  .physical-flowcore__exit {
+    inline-size: 100%;
+    box-sizing: border-box;
+    text-align: center;
+  }
+
+  .physical-flowcore__ledger {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .physical-flowcore__ledger dd {
+    text-align: start;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    scroll-behavior: auto !important;
+    transition-duration: 0.001ms !important;
+    animation-duration: 0.001ms !important;
+    animation-iteration-count: 1 !important;
+  }
+}

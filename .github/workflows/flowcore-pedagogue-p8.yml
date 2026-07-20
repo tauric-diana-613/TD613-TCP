@@ -1,0 +1,69 @@
+name: Flow-Core Pedagogue P8 Physical Contracts
+
+on:
+  pull_request:
+    branches: [ main ]
+    paths:
+      - 'app/engine/flowcore-physical-scene.js'
+      - 'app/dome-world/physical-flowcore*'
+      - 'app/dome-world/fixtures/pedagogue/physical-flowcore-cycle.json'
+      - 'app/dome-world/schemas/flowcore-physical-scene-v01.schema.json'
+      - 'app/dome-world/docs/FLOWCORE_PEDAGOGUE_P8_IMPLEMENTATION_RECEIPT_V0_1.md'
+      - 'tests/flowcore-physical-scene.test.mjs'
+      - '.github/workflows/flowcore-pedagogue-p8.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  physical-contracts:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+          cache: npm
+      - run: npm ci
+      - name: Run stitched P0-P7 baseline contracts
+        run: node --test tests/flowcore-p0-p7-seam-closure.test.mjs
+      - name: Run inherited P1-P7 contracts
+        run: |
+          node --test tests/flowcore-pedagogue-core.test.mjs
+          node --test tests/flowcore-pedagogue-aia.test.mjs
+          node --test tests/flowcore-pedagogue-visual.test.mjs
+          node --test tests/information-dome-scenes.test.mjs
+          node --test tests/flowcore-route-burden.test.mjs
+          node --test tests/ash-pedagogue-custody-route.test.mjs
+          node --test tests/flowcore-station-propagation.test.mjs
+      - name: P8 integer energy accounting
+        run: node --test --test-name-pattern='bounded integer energy accounting' tests/flowcore-physical-scene.test.mjs
+      - name: P8 thermal ledger separation
+        run: node --test --test-name-pattern='thermal ledger mechanically unavailable' tests/flowcore-physical-scene.test.mjs
+      - name: P8 essential-service and converter rejection
+        run: node --test --test-name-pattern='refuses essential-service dependence' tests/flowcore-physical-scene.test.mjs
+      - name: P8 protected reserve floor
+        run: node --test --test-name-pattern='optional output can never cross' tests/flowcore-physical-scene.test.mjs
+      - name: P8 complete consequence-first package
+        run: node --test --test-name-pattern='complete consequence-first scene' tests/flowcore-physical-scene.test.mjs
+      - name: P8 deterministic package replay
+        run: node --test --test-name-pattern='scene package is deterministic' tests/flowcore-physical-scene.test.mjs
+      - name: P8 static surface parity
+        run: node --test --test-name-pattern='static proving surface exposes' tests/flowcore-physical-scene.test.mjs
+      - name: Assert P8 protected files and infrastructure are unchanged
+        shell: bash
+        run: |
+          BASE_SHA="${{ github.event.pull_request.base.sha }}"
+          if [[ -z "$BASE_SHA" ]]; then
+            BASE_SHA="$(git rev-parse origin/main)"
+          fi
+          CHANGED="$(git diff --name-only "$BASE_SHA" "${{ github.sha }}")"
+          if grep -Eq '^(api/|vercel\.json$|app/engine/ash-lifecycle\.js|app/dome-world/ash/canonical-json\.js)' <<< "$CHANGED"; then
+            echo 'P8 may not mutate serverless, Ash lifecycle, or canonical digest law.'
+            exit 1
+          fi
+      - name: Re-run structured physical safety assertions
+        run: node --test --test-name-pattern='refuses essential-service dependence|optional output can never cross|thermal ledger mechanically unavailable|complete consequence-first scene' tests/flowcore-physical-scene.test.mjs
