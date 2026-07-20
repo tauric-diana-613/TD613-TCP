@@ -1,0 +1,48 @@
+name: Delete Flow-Core diagnostic refs once
+
+on:
+  pull_request:
+    branches: [main]
+    paths:
+      - '.github/workflows/delete-flowcore-diagnostic-refs-once.yml'
+
+permissions:
+  contents: write
+  pull-requests: write
+
+jobs:
+  reconcile:
+    if: github.head_ref == 'ops/delete-flowcore-diagnostic-refs-once'
+    runs-on: ubuntu-latest
+    steps:
+      - name: Delete abandoned diagnostic refs
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          set -euo pipefail
+          delete_ref() {
+            local ref="$1"
+            if gh api "repos/$GITHUB_REPOSITORY/git/ref/heads/$ref" >/dev/null 2>&1; then
+              gh api -X DELETE "repos/$GITHUB_REPOSITORY/git/refs/heads/$ref"
+              echo "deleted=$ref"
+            else
+              echo "already_absent=$ref"
+            fi
+          }
+          delete_ref 'agent/flowcore-release-receipt-diagnostic'
+          delete_ref 'agent/flowcore-final-release-readback'
+
+      - name: Close disposable pull request
+        env:
+          GH_TOKEN: ${{ github.token }}
+          PR_NUMBER: ${{ github.event.pull_request.number }}
+        run: |
+          gh api -X PATCH "repos/$GITHUB_REPOSITORY/pulls/$PR_NUMBER" -f state=closed >/dev/null
+          echo "closed_pr=$PR_NUMBER"
+
+      - name: Delete disposable housekeeping ref
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          gh api -X DELETE "repos/$GITHUB_REPOSITORY/git/refs/heads/$GITHUB_HEAD_REF"
+          echo "deleted=$GITHUB_HEAD_REF"
