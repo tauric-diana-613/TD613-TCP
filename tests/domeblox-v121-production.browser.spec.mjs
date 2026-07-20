@@ -113,6 +113,7 @@ test('observe deployed DomeBlox v1.2.1 resilience packet', async ({ browser }) =
     const denied = await openGame(deniedContext, 'storage-denied-390x844.png');
     const saveResult = await denied.page.evaluate(() => window.TD613_DOME_BLOX_GAME.save());
     expect(saveResult).toBe(false);
+    await denied.page.locator('#toggleHud').click();
     await expect(denied.page.locator('#messageLog')).toContainText('Local storage is unavailable');
     const downloadPromise = denied.page.waitForEvent('download');
     await denied.page.locator('#exportButton').click();
