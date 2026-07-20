@@ -1,4 +1,4 @@
-name: DomeBlox Forward Battery
+name: DomeBlox Playable Game
 
 on:
   pull_request:
@@ -27,7 +27,14 @@ jobs:
       - uses: actions/setup-node@v4
         with:
           node-version: '22'
-      - run: node tests/domeblox-static.test.mjs
+      - name: Parse playable browser modules
+        run: |
+          node --check app/dome-world/domeblox/game/core.js
+          node --check app/dome-world/domeblox/game/render.js
+          node --check app/dome-world/domeblox/game/sim.js
+          node --check app/dome-world/domeblox/game/main.js
+      - name: Verify playable game and Forward Battery contracts
+        run: node tests/domeblox-static.test.mjs
       - name: Confirm deployment and serverless boundaries
         run: |
           node --input-type=module <<'NODE'
@@ -36,4 +43,6 @@ jobs:
           if (manifest.serverless_delta !== 0) throw new Error('DomeBlox serverless delta changed');
           if (manifest.deployment_lock_mutated !== false) throw new Error('DomeBlox changed deployment lock');
           if (manifest.route !== '/dome-world/domeblox/') throw new Error('Unexpected DomeBlox route');
+          if (manifest.route_role !== 'playable-browser-game') throw new Error('Principal route is not registered as the playable game');
+          if (manifest.forward_battery_route !== '/dome-world/domeblox/forward-battery/') throw new Error('Forward Battery subordinate route drifted');
           NODE
