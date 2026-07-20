@@ -1,0 +1,64 @@
+name: Flow-Core P0-P10 Final Stitch
+
+on:
+  pull_request:
+    branches: [ main ]
+    paths:
+      - 'app/dome-world/docs/FLOWCORE_PEDAGOGUE_P8_IMPLEMENTATION_RECEIPT_V0_1.md'
+      - 'app/dome-world/docs/FLOWCORE_PEDAGOGUE_P9_IMPLEMENTATION_RECEIPT_V0_1.md'
+      - 'app/dome-world/docs/FLOWCORE_PEDAGOGUE_P10_IMPLEMENTATION_RECEIPT_V0_1.md'
+      - 'app/dome-world/docs/FLOWCORE_P0_P10_IMPLEMENTATION_COMPLETION_LEDGER_V0_1.md'
+      - 'tests/flowcore-p0-p10-completion.test.mjs'
+      - '.github/workflows/flowcore-p0-p10-final-stitch.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  final-stitch:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+          cache: npm
+      - run: npm ci
+      - name: P8-P10 merged receipt state
+        run: node --test --test-name-pattern='P8-P10 receipts record' tests/flowcore-p0-p10-completion.test.mjs
+      - name: P0-P10 phase ancestry ledger
+        run: node --test --test-name-pattern='completion ledger preserves' tests/flowcore-p0-p10-completion.test.mjs
+      - name: P9 human-evidence hold
+        run: node --test --test-name-pattern='P9 retains' tests/flowcore-p0-p10-completion.test.mjs
+      - name: P10 HARDENED promotion hold
+        run: node --test --test-name-pattern='P10 retains' tests/flowcore-p0-p10-completion.test.mjs
+      - name: Final stitch temporary-workflow and mutation boundary
+        run: node --test --test-name-pattern='final stitch introduces' tests/flowcore-p0-p10-completion.test.mjs
+      - name: Re-run stitched baseline and P8-P10 contracts
+        run: |
+          node --test tests/flowcore-p0-p7-seam-closure.test.mjs
+          node --test tests/flowcore-physical-scene.test.mjs
+          node --test tests/flowcore-empirical-validation.test.mjs
+          node --test tests/flowcore-production-promotion.test.mjs
+      - name: Assert final stitch is documentary only
+        shell: bash
+        run: |
+          BASE_SHA="${{ github.event.pull_request.base.sha }}"
+          if [[ -z "$BASE_SHA" ]]; then
+            BASE_SHA="$(git rev-parse origin/main)"
+          fi
+          CHANGED="$(git diff --name-only "$BASE_SHA" "${{ github.sha }}")"
+          while IFS= read -r path; do
+            [[ -z "$path" ]] && continue
+            case "$path" in
+              app/dome-world/docs/*|tests/flowcore-p0-p10-completion.test.mjs|.github/workflows/flowcore-p0-p10-final-stitch.yml) ;;
+              *) echo "Final stitch changed a non-documentary path: $path"; exit 1 ;;
+            esac
+          done <<< "$CHANGED"
+          if grep -Eq '^(api/|vercel\.json$|app/engine/|app/dome-world/ash/|app/dome-world/data/)' <<< "$CHANGED"; then
+            echo 'Final stitch may not mutate runtime, serverless, canonical, or promotion configuration.'
+            exit 1
+          fi

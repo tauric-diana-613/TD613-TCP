@@ -4,10 +4,11 @@
 
 **Program:** `td613.flowcore.validation-bundle/v0.1`  
 **Phase:** P9 — empirical-validation instrument  
-**Status:** IMPLEMENTED / REPOSITORY CONTRACTS PASS / READY FOR MERGE / HUMAN ADULT STUDY NOT EXECUTED / EMPIRICAL EXIT GATE HELD / HUMAN CLOSURE OPEN  
+**Status:** IMPLEMENTED / REPOSITORY CONTRACTS PASS / MERGED TO MAIN / PHASE RELEASE GATE ACCEPTED / TERMINAL RELEASE RECEIPT NOT OBSERVED / HUMAN ADULT STUDY NOT EXECUTED / EMPIRICAL EXIT GATE HELD / HUMAN CLOSURE OPEN  
+**Merged main commit:** `f2478b157a062a8908592b93fe8e05cb74d657cf`  
 **Serverless delta:** `0`  
 **Persistence delta:** `0`  
-**Vercel authorization:** EXPRESSLY RECEIVED FOR PHASE-END RELEASE
+**Vercel authorization:** EXPRESSLY RECEIVED AND USED FOR ONE PHASE-END GESTURE
 
 ## Adult-first protocol
 
@@ -19,18 +20,7 @@ B_COPY_ONLY
 C_FULL_AIA_PEDAGOGUE
 ```
 
-and the required metrics:
-
-- next-state prediction;
-- causal-route explanation;
-- terminology retention after consequence;
-- missingness recognition;
-- station-ownership recognition;
-- recovery success;
-- abandonment;
-- transfer to a new scene;
-- time to first meaningful consequence;
-- confidence calibration.
+and the required metrics: next-state prediction, causal-route explanation, terminology retention after consequence, missingness recognition, station-ownership recognition, recovery success, abandonment, transfer, time to first meaningful consequence, and confidence calibration.
 
 ## Consent and privacy
 
@@ -51,7 +41,7 @@ The instrument accepts an ephemeral session reference only. It rejects stable id
 
 ## Synthetic pipeline fixture
 
-The repository includes one synthetic observation for each controlled condition. These fixtures validate compilation, comparison, adverse-finding publication, deterministic receipts, mobile presentation, and the child-pilot firewall.
+One synthetic observation exists for each controlled condition. These fixtures validate compilation, comparison, adverse-finding publication, deterministic receipts, mobile presentation, and the child-pilot firewall.
 
 ```text
 synthetic pipeline counts as human evidence: false
@@ -64,7 +54,7 @@ Synthetic condition differences are not empirical findings about people.
 
 ## Adverse findings
 
-The bundle records abandonment, recovery failure, missingness and station-ownership misses, coercive-route reports, flattened-difference reports, and other declared adverse observations. Unfavorable findings remain publishable and cannot be suppressed or converted into an automatic redesign command.
+The bundle records abandonment, recovery failure, missingness and station-ownership misses, coercive-route reports, flattened-difference reports, and declared adverse observations. Unfavorable findings remain publishable and cannot become an automatic redesign command.
 
 ## Child-pilot gate
 
@@ -88,7 +78,7 @@ child-pilot firewall: success
 
 ## Honest completion state
 
-The P9 software, protocol, schemas, synthetic pipeline, lab surface, and guardrails are implemented. No human adult cohort was recruited or observed in this repository task. Therefore:
+No human adult cohort was recruited or observed in this repository task.
 
 ```text
 human adult evidence present: false
@@ -96,6 +86,10 @@ empirical promotion evidence complete: false
 empirical exit gate passed: false
 hold reason: HUMAN_VOLUNTARY_ADULT_EVIDENCE_ABSENT
 ```
+
+## Release observation
+
+Issue #405 contains the exact selected commit for the P9 release gesture. No terminal `source_packet_commit` receipt for this SHA was observed during the final audit. Deployment therefore remains unconfirmed and cannot satisfy the empirical gate.
 
 ## Constitutional state
 
@@ -110,6 +104,4 @@ human closure required: true
 closure: OPEN
 ```
 
-P10 may implement the production-promotion and rollback machinery, but it must preserve this empirical hold rather than promoting the program from merge or deployment alone.
-
-**Marked ⟐**
+**Stitched ⟐**
