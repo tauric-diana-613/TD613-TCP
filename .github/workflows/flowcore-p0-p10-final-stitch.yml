@@ -141,8 +141,13 @@ jobs:
               [[ -z "$path" ]] && continue
               grep -Fxq "$path" <<< "$ALLOWED" || { echo "AIA3 recovery changed an unauthorized path: $path" >&2; exit 1; }
             done <<< "$CHANGED"
-            if grep -Eq '^(vercel\.json$|app/dome-world/ash/|app/dome-world/data/|api/(?!dome-world-shell\.js$))' <<< "$CHANGED"; then
-              echo 'AIA3 recovery may not mutate Vercel configuration, canonical Ash/data stores, or add another API surface.' >&2
+            if grep -Eq '^(vercel\.json$|app/dome-world/ash/|app/dome-world/data/)' <<< "$CHANGED"; then
+              echo 'AIA3 recovery may not mutate Vercel configuration or canonical Ash/data stores.' >&2
+              exit 1
+            fi
+            UNEXPECTED_API="$(grep '^api/' <<< "$CHANGED" | grep -Fvx 'api/dome-world-shell.js' || true)"
+            if [[ -n "$UNEXPECTED_API" ]]; then
+              echo "AIA3 recovery may not add or alter another API surface: $UNEXPECTED_API" >&2
               exit 1
             fi
             echo 'Completion mode: bounded Ash AIA3 production recovery.'
