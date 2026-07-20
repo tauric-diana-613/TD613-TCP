@@ -6,9 +6,15 @@ const sourceUrl = new URL('./ash-user-test-flight.mjs', import.meta.url);
 const artifactDir = path.resolve(process.env.TD613_ARTIFACT_DIR || 'artifacts/ash-user-test-flight');
 const runtimePath = path.join(artifactDir, 'ash-user-test-flight.runtime.mjs');
 
+const keepRouteTarget = "const keepUrl = `${base}/dome-world/ash-keep.html`;";
+const keepRouteReplacement = "const keepUrl = `${base}/dome-world/ash-keep.html?presentation=legacy`;";
+
 const navigationTarget = String.raw`  await page.waitForURL(/\/dome-world\/ash-keep\.html/, { timeout: 60000 });`;
 const navigationReplacement = `  await page.waitForFunction(() => location.pathname === '/dome-world/ash-keep.html'
-     || Boolean(window.__td613AshKeep?.version), null, { timeout: 60000 });`;
+      || Boolean(window.__td613AshKeep?.version), null, { timeout: 60000 });
+  if (throughThreshold && new URL(page.url()).searchParams.get('presentation') !== 'legacy') {
+    await page.goto(keepUrl, { waitUntil: 'networkidle' });
+  }`;
 
 const initialBootTarget = `  await bootAsh(page);`;
 const initialBootReplacement = `  await bootAsh(page, { throughThreshold: !syntheticCustody });`;
@@ -78,7 +84,7 @@ const exportReplacement = `  if (syntheticCustody) {
       });
     }, passphrase);
     downloadedCapsule = path.join(artifactDir, 'td613-ash-capsule-local-' + capsule.case_id + '.json');
-    await fsp.writeFile(downloadedCapsule, JSON.stringify(capsule, null, 2) + String.fromCharCode(10));
+    await fs.writeFile(downloadedCapsule, JSON.stringify(capsule, null, 2) + String.fromCharCode(10));
   } else {
     await page.locator('#capsulePassphrase').fill(passphrase);
     const downloadPromise = page.waitForEvent('download');
@@ -109,12 +115,14 @@ const recoveryReplacement = `  const recoveryEntry = recoveryPage.locator('#open
 
 await fs.mkdir(artifactDir, { recursive: true });
 const source = await fs.readFile(sourceUrl, 'utf8');
+const keepRouteCount = source.split(keepRouteTarget).length - 1;
 const navigationCount = source.split(navigationTarget).length - 1;
 const initialBootCount = source.split(initialBootTarget).length - 1;
 const postCaseCount = source.split(postCaseTarget).length - 1;
 const reviewCount = source.split(reviewTarget).length - 1;
 const exportCount = source.split(exportTarget).length - 1;
 const recoveryCount = source.split(recoveryTarget).length - 1;
+if (keepRouteCount !== 1) throw new Error(`Ash user flight expected one undeclared specialist route; observed ${keepRouteCount}.`);
 if (navigationCount !== 1) throw new Error(`Ash user flight expected one pathname-dependent arrival seam; observed ${navigationCount}.`);
 if (initialBootCount !== 1) throw new Error(`Ash user flight expected one uncomposed local threshold seam; observed ${initialBootCount}.`);
 if (postCaseCount !== 1) throw new Error(`Ash user flight expected one post-case workspace seam; observed ${postCaseCount}.`);
@@ -122,14 +130,17 @@ if (reviewCount !== 1) throw new Error(`Ash user flight expected one exact-revie
 if (exportCount !== 1) throw new Error(`Ash user flight expected one candidate export seam; observed ${exportCount}.`);
 if (recoveryCount !== 1) throw new Error(`Ash user flight expected one modal-obscured recovery seam; observed ${recoveryCount}.`);
 const runtime = source
+  .replace(keepRouteTarget, keepRouteReplacement)
   .replace(navigationTarget, navigationReplacement)
   .replace(initialBootTarget, initialBootReplacement)
   .replace(postCaseTarget, postCaseReplacement)
   .replace(reviewTarget, reviewReplacement)
   .replace(exportTarget, exportReplacement)
   .replace(recoveryTarget, recoveryReplacement);
+if (!runtime.includes('ash-keep.html?presentation=legacy')) throw new Error('Ash user flight failed to declare the specialist presentation route.');
 if (runtime.includes('page.waitForURL(/\/dome-world\/ash-keep\.html/')) throw new Error('Ash user flight retained pathname-dependent arrival logic.');
 if (!runtime.includes('throughThreshold: !syntheticCustody')) throw new Error('Ash user flight failed to separate deployed threshold evidence from uncomposed local entry.');
+if (!runtime.includes("new URL(page.url()).searchParams.get('presentation') !== 'legacy'")) throw new Error('Ash user flight failed to transition from threshold evidence into the declared specialist route.');
 if (!runtime.includes("openGuidedWorkspace(page, 'map')")) throw new Error('Ash user flight failed to acknowledge the premium Home arrival before its map assay.');
 if (!runtime.includes("openGuidedWorkspace(page, 'rooms')") || !runtime.includes("openGuidedWorkspace(page, 'save')")) throw new Error('Ash user flight failed to route lifecycle workspaces through the guided navigation contract.');
 if (/page\.locator\('\.work-tab\[data-workspace="(?:rooms|map|routes|test|draft)"\]'\)\.click\(\)/.test(runtime)) throw new Error('Ash user flight retained a direct click on a hidden legacy workspace tab.');
