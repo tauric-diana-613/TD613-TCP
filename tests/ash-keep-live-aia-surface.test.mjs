@@ -16,11 +16,7 @@ const bridge = read('app/dome-world/ash-keep-aia-workspace-bridge.js');
 const composition = read('app/dome-world/ash-aia3-composition.js');
 const cacheEviction = read('app/dome-world/ash-cache-eviction-aia3.js');
 const baseStyles = read('app/dome-world/ash-keep-aia.css');
-const aia3Styles = [
-  read('app/dome-world/ash-keep-aia3.css'),
-  read('app/dome-world/ash-keep-aia3-compact.css'),
-  read('app/dome-world/ash-keep-aia3-interaction.css')
-].join('\n');
+const aia3Styles = [read('app/dome-world/ash-keep-aia3.css'), read('app/dome-world/ash-keep-aia3-compact.css'), read('app/dome-world/ash-keep-aia3-interaction.css')].join('\n');
 const engine = read('app/engine/ash-live-aia.js');
 const ashSurface = collectSource('app/dome-world');
 const vercel = read('vercel.json');
@@ -29,7 +25,7 @@ const escaped = value => value.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
 test('loader preserves legacy rollback and atomically mounts AIA3 only for the AIA presentation', () => {
   assert.match(loader, /ash-cache-eviction-aia3\.js/);
   assert.match(loader, /legacyPresentation/);
-  assert.match(loader, /data-ash-aia-legacy/);
+  assert.match(loader, /dataset\.ashAiaLegacy/);
   assert.match(loader, /td613\.ash\.aia3-composition\/v0\.3-atomic-ingress-readiness/);
   assert.match(loader, /data-ash-aia3-style/);
   assert.match(loader, /data-ash-aia3-compact/);
