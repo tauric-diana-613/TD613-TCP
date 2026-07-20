@@ -1,0 +1,39 @@
+name: Apply Ash Keep AIA2 controller once
+
+on:
+  pull_request:
+    types: [synchronize]
+
+permissions:
+  contents: write
+
+jobs:
+  apply:
+    if: github.event.pull_request.head.ref == 'agent/ash-keep-aia2-usability-rescue'
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: ${{ github.event.pull_request.head.ref }}
+          fetch-depth: 0
+      - name: Reconstruct controller
+        shell: bash
+        run: |
+          set -euo pipefail
+          cat .aia2-stage/ash-keep-aia.js.b64.* | tr -d '\n\r' | base64 --decode > app/dome-world/ash-keep-aia.js
+          test "$(wc -c < app/dome-world/ash-keep-aia.js | tr -d ' ')" = "31618"
+          node --check app/dome-world/ash-keep-aia.js
+      - name: Remove one-use repair material
+        run: |
+          rm -rf .aia2-stage
+          rm .github/workflows/apply-ash-aia2-controller-once.yml
+      - name: Commit durable controller
+        shell: bash
+        run: |
+          set -euo pipefail
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add app/dome-world/ash-keep-aia.js .aia2-stage .github/workflows/apply-ash-aia2-controller-once.yml
+          git commit -m 'Replace Ash Keep facade with task-continuity controller'
+          git push origin HEAD:${{ github.event.pull_request.head.ref }}
