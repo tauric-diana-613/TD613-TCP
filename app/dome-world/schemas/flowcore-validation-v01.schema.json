@@ -1,0 +1,90 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "td613.flowcore.validation/v0.1",
+  "title": "Flow-Core empirical validation protocol, trial, and bundle",
+  "$defs": {
+    "condition": { "enum": ["A_CURRENT_FORM", "B_COPY_ONLY", "C_FULL_AIA_PEDAGOGUE"] },
+    "evidenceClass": { "enum": ["SYNTHETIC_PIPELINE_ONLY", "HUMAN_VOLUNTARY_ADULT"] },
+    "openClosure": {
+      "type": "object",
+      "required": ["status", "closed_by"],
+      "properties": { "status": { "const": "OPEN" }, "closed_by": { "type": "null" } },
+      "additionalProperties": false
+    },
+    "metrics": {
+      "type": "object",
+      "required": [
+        "next_state_prediction", "causal_route_explanation", "terminology_retention_after_consequence",
+        "missingness_recognition", "station_ownership_recognition", "recovery_success", "abandonment",
+        "transfer_to_new_scene", "time_to_first_meaningful_consequence_ms", "confidence_calibration_millipoints"
+      ],
+      "properties": {
+        "next_state_prediction": { "type": "boolean" },
+        "causal_route_explanation": { "type": "boolean" },
+        "terminology_retention_after_consequence": { "type": "boolean" },
+        "missingness_recognition": { "type": "boolean" },
+        "station_ownership_recognition": { "type": "boolean" },
+        "recovery_success": { "type": "boolean" },
+        "abandonment": { "type": "boolean" },
+        "transfer_to_new_scene": { "type": "boolean" },
+        "time_to_first_meaningful_consequence_ms": { "type": "integer", "minimum": 0, "maximum": 3600000 },
+        "confidence_calibration_millipoints": { "type": "integer", "minimum": 0, "maximum": 1000 }
+      },
+      "additionalProperties": false
+    }
+  },
+  "oneOf": [
+    {
+      "type": "object",
+      "required": ["schema", "protocol_id", "baseline_cohort", "conditions", "metrics", "consent", "child_pilot", "authority", "closure"],
+      "properties": {
+        "schema": { "const": "td613.flowcore.validation-protocol/v0.1" },
+        "protocol_id": { "type": "string", "pattern": "^flowcore_validation_protocol_" },
+        "baseline_cohort": { "const": "ADULT_OPERATORS_FIRST" },
+        "conditions": { "type": "array", "items": { "$ref": "#/$defs/condition" }, "minItems": 3, "maxItems": 3, "uniqueItems": true },
+        "metrics": { "type": "array", "minItems": 10, "uniqueItems": true },
+        "consent": { "type": "object" },
+        "child_pilot": { "type": "object" },
+        "authority": { "type": "object" },
+        "closure": { "$ref": "#/$defs/openClosure" }
+      }
+    },
+    {
+      "type": "object",
+      "required": ["schema", "trial_id", "trial_digest", "evidence_class", "synthetic_pipeline_only", "cohort", "condition", "metrics", "source_boundary", "empirical_authority", "closure"],
+      "properties": {
+        "schema": { "const": "td613.flowcore.validation-trial/v0.1" },
+        "trial_id": { "type": "string", "pattern": "^flowcore_trial_" },
+        "trial_digest": { "type": "string", "pattern": "^sha256:[0-9a-f]{64}$" },
+        "evidence_class": { "$ref": "#/$defs/evidenceClass" },
+        "synthetic_pipeline_only": { "type": "boolean" },
+        "cohort": { "const": "ADULT_OPERATOR" },
+        "condition": { "$ref": "#/$defs/condition" },
+        "metrics": { "$ref": "#/$defs/metrics" },
+        "source_boundary": { "type": "object" },
+        "empirical_authority": { "type": "object" },
+        "closure": { "$ref": "#/$defs/openClosure" }
+      }
+    },
+    {
+      "type": "object",
+      "required": ["schema", "bundle_id", "bundle_digest", "protocol", "trials", "comparison", "adverse_findings", "evidence_posture", "child_pilot", "promotion", "serverless_delta", "persistence_delta", "authority", "closure"],
+      "properties": {
+        "schema": { "const": "td613.flowcore.validation-bundle/v0.1" },
+        "bundle_id": { "type": "string", "pattern": "^flowcore_validation_" },
+        "bundle_digest": { "type": "string", "pattern": "^sha256:[0-9a-f]{64}$" },
+        "protocol": { "type": "object" },
+        "trials": { "type": "array", "minItems": 1 },
+        "comparison": { "type": "object" },
+        "adverse_findings": { "type": "object" },
+        "evidence_posture": { "type": "object" },
+        "child_pilot": { "type": "object" },
+        "promotion": { "type": "object" },
+        "serverless_delta": { "const": 0 },
+        "persistence_delta": { "const": 0 },
+        "authority": { "type": "object" },
+        "closure": { "$ref": "#/$defs/openClosure" }
+      }
+    }
+  ]
+}
