@@ -1,0 +1,33 @@
+name: DomeBlox Playable Production Observation
+
+on:
+  pull_request:
+    paths:
+      - 'tests/domeblox-playable-live.spec.mjs'
+      - '.github/workflows/domeblox-playable-live-observation.yml'
+
+permissions:
+  contents: read
+
+jobs:
+  chromium-play:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Install Chromium observation runtime
+        run: |
+          npm install --no-save --ignore-scripts @playwright/test@1.55.0
+          npx playwright install --with-deps chromium
+      - name: Play the deployed DomeBlox loop
+        run: npx playwright test tests/domeblox-playable-live.spec.mjs --reporter=line
+      - name: Upload playable observation receipt
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: domeblox-playable-production-observation
+          path: domeblox-playable-observation/
+          if-no-files-found: warn
+          retention-days: 7
