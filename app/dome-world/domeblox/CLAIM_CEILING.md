@@ -1,7 +1,9 @@
-# DomeBlox claim ceiling v1.1
+# DomeBlox playable-port claim ceiling
 
-DomeBlox closes the following proposition:
+DomeBlox closes the following browser-runtime proposition:
 
-> An operator can locally generate packet families whose protected source nucleus remains invariant, compare operator-supplied outputs from authorized information environments, measure differential admissibility and pair-emergent distortion with explicit coverage posture, preserve those observations in a SHA-256 receipt chain, and compile a human-authorized consequence packet without automatic transmission.
+> A player can open `/dome-world/domeblox/` in a standards-compliant browser, enter and move through a rendered Dome-World village, interact with its care, water, food, bamboo, Loom, cleansing, rest, release, Ash Keep, and Springald systems, observe day/weather/needs/ecology state, preserve a local save, and export that save without contacting an external service.
 
-Incomplete observation produces abstention or a partial posture rather than simulated completeness. The station does not establish external intent, identity, compromise, blindness, enforcement, publication, or legal sufficiency. Those remain separate evidence and authority questions.
+The browser port preserves the game loop and TD613/Dome-World hooks in a web-native implementation. It does not claim pixel-for-pixel Roblox-engine equivalence, Roblox multiplayer parity, Roblox physics parity, or proof of behavior outside the observed browser runtime.
+
+The Forward Battery retains its separate claim ceiling at `/dome-world/domeblox/forward-battery/`.
