@@ -5,16 +5,19 @@ import fs from 'node:fs';
 const read = path => fs.readFileSync(path, 'utf8');
 const loader = read('app/dome-world/ash-lifecycle.js');
 const runtime = read('app/dome-world/ash-keep-aia.js');
+const bridge = read('app/dome-world/ash-keep-aia-workspace-bridge.js');
 const styles = read('app/dome-world/ash-keep-aia.css');
 const engine = read('app/engine/ash-live-aia.js');
 const ashKeep = read('app/dome-world/ash-keep.js');
 const lifecycle = read('app/dome-world/ash-lifecycle-core.js');
 const vercel = read('vercel.json');
 
-test('Ash lifecycle loader installs the live AIA membrane after the exact lifecycle core', () => {
+test('Ash lifecycle loader installs the live AIA membrane and exact-workspace bridge after lifecycle core', () => {
   assert.match(loader, /ash-lifecycle-core\.js/);
   assert.match(loader, /ash-keep-aia\.js/);
+  assert.match(loader, /ash-keep-aia-workspace-bridge\.js/);
   assert.ok(loader.indexOf('ash-lifecycle-core.js') < loader.indexOf('ash-keep-aia.js'));
+  assert.ok(loader.indexOf('ash-keep-aia.js') < loader.indexOf('ash-keep-aia-workspace-bridge.js'));
 });
 
 test('live surface exposes all four AIA routes and consequence-first disclosure depths', () => {
@@ -30,6 +33,13 @@ test('live membrane bridges to existing Ash commands rather than reimplementing 
   }
   assert.doesNotMatch(runtime, /fetch\(['\"]\/api\/dome-world\/ash-custody-register/);
   assert.doesNotMatch(runtime, /compileCaseMap|compileRebuildTest|compileAshDraft|compileReleaseReceipt|compileSavePoint/);
+});
+
+test('opening an exact workspace explicitly crosses into Audit without inferring a user route', () => {
+  assert.match(bridge, /__td613OpenAshWorkspace/);
+  assert.match(bridge, /setRoute\('AUDIT'\)/);
+  assert.match(bridge, /AUDIT_ON_EXACT_OPEN/);
+  assert.doesNotMatch(bridge, /navigator\.webdriver|userAgent|analytics|telemetry/);
 });
 
 test('animation remains finite, gesture-triggered, replay-only, and reduced-motion complete', () => {
@@ -60,6 +70,6 @@ test('legacy Audit and Implementation routes remain available as rollback and ex
 });
 
 test('implementation adds no serverless route and leaves the deployment lock contract intact', () => {
-  assert.doesNotMatch(engine + runtime, /\/api\//);
+  assert.doesNotMatch(engine + runtime + bridge, /\/api\//);
   assert.match(vercel, /"deploymentEnabled"\s*:\s*false/);
 });
