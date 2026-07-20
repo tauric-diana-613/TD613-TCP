@@ -1,68 +1,96 @@
-name: One-use Custodian Return observer repair
+name: Ash lifecycle integration
 
 on:
   pull_request:
-    branches: [main]
-    types: [opened, synchronize]
     paths:
-      - '.github/workflows/ash-lifecycle-integration.yml'
+      - "api/dome-world-shell.js"
+      - "app/dome-world/ash-threshold.html"
+      - "app/dome-world/ash-lifecycle.js"
+      - "app/dome-world/ash-workspace-bridge.js"
+      - "app/engine/ash-lifecycle.js"
+      - "app/engine/ash-keep-drafts.js"
+      - "docs/APERTURE_COMPOSITION_CLOSURE_RECEIPT.md"
+      - "docs/APERTURE_COMPOSITION_RENOVATION.md"
+      - "docs/ASH_KEEP_BUILDOUT_LEDGER.md"
+      - "docs/ASH_LIFECYCLE_ORCHESTRATION.md"
+      - "docs/STRATEGIC_VERCEL_DEPLOYMENT_LAW.md"
+      - "ROADMAP.md"
+      - "scripts/consolidate-ash-lifecycle-shell.mjs"
+      - "tests/aperture-composition/closure.test.mjs"
+      - "tests/ash-lifecycle.test.mjs"
+      - "tests/ash-lifecycle-release-gate-idempotence.test.mjs"
+      - "tests/ash-custody-workspace-bridge.test.mjs"
+      - "tests/ash-draft-lifecycle-binding.test.mjs"
+      - "tests/ash-product-architecture.test.mjs"
+      - "tests/dome-world-integration.test.mjs"
+      - "tests/vercel-deploy-hygiene.test.mjs"
+      - "vercel.json"
+      - ".github/workflows/ash-lifecycle-integration.yml"
+  workflow_dispatch:
 
 permissions:
-  contents: write
+  contents: read
+
+concurrency:
+  group: ash-lifecycle-${{ github.event.pull_request.number || github.ref }}
+  cancel-in-progress: true
 
 jobs:
-  patch:
-    if: github.head_ref == 'agent/custodian-return-aia-observer-aftercare'
+  validate:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
+      - name: Check out candidate merge
+        uses: actions/checkout@v4
+
+      - name: Set up Node
+        uses: actions/setup-node@v4
         with:
-          ref: agent/custodian-return-aia-observer-aftercare
-          fetch-depth: 0
-      - name: Declare specialist route and core workspace owner
+          node-version: 22
+          cache: npm
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Confirm Ash lifecycle surfaces are consolidated
         run: |
-          python - <<'PY'
-          from pathlib import Path
+          node scripts/consolidate-ash-lifecycle-shell.mjs
+          git diff --exit-code -- vercel.json api/dome-world-shell.js api/ash-keep-shell.js api/ash-keep-js-shell.js
 
-          path = Path('scripts/ash-custodian-return-production-probe.mjs')
-          text = path.read_text()
+      - name: Validate Vercel function and route hygiene
+        run: node tests/vercel-deploy-hygiene.test.mjs
 
-          old_url = "await page.goto(`${baseUrl}/dome-world/ash-keep.html?arrival=cleared`, { waitUntil: 'domcontentloaded', timeout: 90000 });"
-          new_url = "await page.goto(`${baseUrl}/dome-world/ash-keep.html?arrival=cleared&presentation=legacy`, { waitUntil: 'domcontentloaded', timeout: 90000 });"
-          if text.count(old_url) != 1:
-              raise SystemExit(f'expected one undeclared Return route, observed {text.count(old_url)}')
-          text = text.replace(old_url, new_url)
+      - name: Run lifecycle state tests
+        run: node tests/ash-lifecycle.test.mjs
 
-          old_open = """const open = window.__td613AshPremiumUI?.open
-      || window.__td613OpenAshWorkspace
-      || window.__td613AshKeep?.openWorkspace;"""
-          new_open = """const open = window.__td613AshKeep?.openWorkspace
-      || window.__td613AshPremiumUI?.open
-      || window.__td613OpenAshWorkspace;"""
-          if text.count(old_open) != 2:
-              raise SystemExit(f'expected two AIA-wrapped Return opener seams, observed {text.count(old_open)}')
-          text = text.replace(old_open, new_open)
+      - name: Prevent release-gate observer recursion
+        run: node tests/ash-lifecycle-release-gate-idempotence.test.mjs
 
-          old_diag = """navigation_readiness: {
-    wait_until: 'domcontentloaded',"""
-          new_diag = """navigation_readiness: {
-    wait_until: 'domcontentloaded',
-    presentation_route: 'legacy',
-    workspace_open_owner: 'core-first',"""
-          if text.count(old_diag) != 1:
-              raise SystemExit(f'expected one Return navigation diagnostic seam, observed {text.count(old_diag)}')
-          text = text.replace(old_diag, new_diag)
+      - name: Verify late Custody workspace delegation
+        run: node tests/ash-custody-workspace-bridge.test.mjs
 
-          path.write_text(text)
-          PY
-      - name: Restore workflow and publish observer aftercare
-        run: |
-          git show origin/main:.github/workflows/ash-lifecycle-integration.yml > .github/workflows/ash-lifecycle-integration.yml
-          grep -F 'arrival=cleared&presentation=legacy' scripts/ash-custodian-return-production-probe.mjs
-          test "$(grep -c 'const open = window.__td613AshKeep?.openWorkspace' scripts/ash-custodian-return-production-probe.mjs)" = '2'
-          grep -F "presentation_route: 'legacy'" scripts/ash-custodian-return-production-probe.mjs
-          git config user.name 'td613-housekeeping'
-          git config user.email 'td613-housekeeping@users.noreply.github.com'
-          git add scripts/ash-custodian-return-production-probe.mjs .github/workflows/ash-lifecycle-integration.yml
-          git commit -m 'Declare legacy route in Custodian Return observer'
-          git push origin HEAD:agent/custodian-return-aia-observer-aftercare
+      - name: Run custody-bound draft tests
+        run: node tests/ash-draft-lifecycle-binding.test.mjs
+
+      - name: Run lifecycle product architecture tests
+        run: node tests/ash-product-architecture.test.mjs
+
+      - name: Preserve existing Dome integration contract
+        run: node tests/dome-world-integration.test.mjs
+
+      - name: Preserve existing Dome shell contract
+        run: node tests/dome-world-lab-marrowline-link.test.mjs
+
+      - name: Run Ash Keep core regression
+        run: node tests/ash-keep-core.test.mjs
+
+      - name: Run Ash Keep continuity regression
+        run: node tests/ash-keep-continuity.test.mjs
+
+      - name: Run Ash Keep Hush API regression
+        run: node tests/ash-keep-hush-api.test.mjs
+
+      - name: Rebuild maintained Aperture download artifact
+        run: npm run aperture:export-downloads
+
+      - name: Run Ash Keep UI regression
+        run: node tests/ash-keep-ui.test.mjs
