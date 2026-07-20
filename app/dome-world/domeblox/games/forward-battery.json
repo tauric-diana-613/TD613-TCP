@@ -1,0 +1,29 @@
+{
+  "schema": "td613.domeblox.game-manifest/v1",
+  "id": "domeblox-forward-battery-web",
+  "title": "DomeBlox Forward Battery",
+  "version": "1.0.0",
+  "status": "operable-local",
+  "entrypoint": "./index.html",
+  "description": "Browser-local invariant packet forge, differential admissibility assay, moiré interaction analysis, custody receipt ledger, and human-authorized consequence compiler.",
+  "capabilities": [
+    "packet-family-generation",
+    "operator-recovery",
+    "moire-residue",
+    "consequence-compilation",
+    "plugin-registry"
+  ],
+  "assays": [
+    "differential-admissibility",
+    "pair-emergent-moire"
+  ],
+  "consequence_adapters": [
+    "download-only-route-packet"
+  ],
+  "claim_ceiling": "authorized-local-counter-adversarial-operation",
+  "authority_boundary": [
+    "operator-supplied outputs",
+    "no telemetry",
+    "no autonomous transmission"
+  ]
+}
