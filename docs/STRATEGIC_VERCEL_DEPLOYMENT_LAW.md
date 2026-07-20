@@ -18,7 +18,9 @@ cost control ≠ evidentiary weakening
 2. Complete the packet and select the exact green `main` commit.
 3. Receive one explicit operator release gesture in chat.
 4. The assistant/Codex executes the bounded Vercel release route.
-5. One deployment is attempted and its result is reported and sealed.
+5. One deployment is attempted.
+6. The deployed Flow-Core bytes and browser surfaces are observed.
+7. The exact result is reported and sealed.
 
 ```text
 operator authorization → assistant/Codex execution → one Vercel deployment
@@ -26,7 +28,7 @@ operator authorization → assistant/Codex execution → one Vercel deployment
 
 The operator is not required to operate Vercel, GitHub Actions, or deployment plumbing. The operator authorizes. The assistant/Codex executes, observes, and reports.
 
-## Cost ceiling
+## Cost and attempt ceiling
 
 The normal ceiling is one deliberate Vercel deployment per completed packet or release candidate. Additional deployments require a named deployment-specific defect, failed public-runtime observation, rollback verification, or a new explicit operator decision.
 
@@ -36,6 +38,7 @@ Ordinary branches, pull requests, and `main` pushes must not trigger Vercel.
 one authorization = one deployment ceiling
 failed deployment ≠ automatic retry authorization
 bookkeeping commit ≠ deployment reason
+browser observation ≠ second deployment
 ```
 
 ## Executable lock
@@ -66,6 +69,7 @@ The release workflow accepts only:
 - the repository-owner identity;
 - the exact current `main` SHA;
 - the named `PRODUCTION` target;
+- one mutually exclusive credential route;
 - one deployment invocation.
 
 The issue comment is an execution mechanism used by the assistant/Codex. It is not a task transferred to the operator.
@@ -78,6 +82,81 @@ operator authorization in chat = release authority
 assistant/Codex gate invocation = permitted execution route
 ```
 
+## Credential routes
+
+The **direct token bridge** is preferred. When `VERCEL_TOKEN` is present, the gate links the existing project, pulls the production environment, builds once, and invokes one prebuilt production deployment.
+
+When the token bridge is absent, the gate may use the repository's **bounded Git fallback**:
+
+1. begin only while `git.deploymentEnabled` is `false`;
+2. change only the Vercel Git deployment lock to `true`;
+3. create and push one transient release commit;
+4. allow the connected Vercel Git integration to create one production deployment;
+5. observe exact application-content parity against the authorized source packet;
+6. restore the lock to `false` in a relock commit, even when observation fails.
+
+```text
+direct token bridge OR bounded Git fallback
+credential route count = 1
+deployment count ceiling = 1
+fallback application-tree drift = none
+relock push with deployment disabled ≠ second deployment
+```
+
+The fallback may not alter application code, protected law, custody state, API allocation, or the selected source packet. Its transient commits exist only to open and close the deployment lock.
+
+## Required terminal receipt
+
+A successful release receipt must name the authorized packet with the exact field:
+
+```text
+source_packet_commit = <40-character-current-main-sha>
+```
+
+It must also report the credential route, release and relock commits when applicable, deployment URL, deployment count, exact-source content result, browser matrix, mobile portrait and landscape, rotation-equivalent observation, reduced motion, zoom-equivalent reflow, high contrast, performance observation, application-tree drift, and final lock state.
+
+Gate acceptance alone is not a terminal receipt.
+
+```text
+selected_commit = accepted authorization
+source_packet_commit = terminal observed release identity
+accepted gesture ≠ completed deployment
+completed deployment ≠ human empirical validation
+```
+
+## Flow-Core production observation
+
+The release witness must run the complete P0–P10 closure contracts before deployment and observe the deployed Flow-Core surfaces after deployment.
+
+The **Flow-Core browser matrix** covers:
+
+- Chromium desktop and Android-sized viewport;
+- Firefox desktop;
+- WebKit iOS-sized viewport;
+- 390-pixel portrait;
+- landscape and rotation-equivalent layout;
+- keyboard-only reachability;
+- reduced-motion runtime parity;
+- 200%-zoom-equivalent reflow;
+- forced-colors/high-contrast behavior;
+- bounded navigation and long-task observations.
+
+The production content observer hashes declared Flow-Core files locally and compares them with the deployed bytes. A successful receipt requires:
+
+```text
+exact_source_content = PASS
+application_tree_drift = none
+browser_matrix = PASS
+```
+
+Runtime observation remains non-promotional:
+
+```text
+runtime observation counts as human evidence: false
+runtime observation authorizes public route promotion: false
+runtime observation closes the program: false
+```
+
 ## Final-cut convergence guard
 
 A public release candidate must be verified as the complete merge result, not merely as an older feature head.
@@ -86,11 +165,11 @@ A public release candidate must be verified as the complete merge result, not me
 feature-head green ≠ final cut complete
 newer main change ≠ permission to strand an older packet
 merge-ref verification = required
-exact deployed commit = required
+exact deployed source packet = required
 partial surface success ≠ whole-product release success
 ```
 
-The release witness must prove the intended surfaces together: TD613 Flight behavior, Ash ingress geometry, cache-epoch transition, local-custody preservation, profile hydration, and the deployment lock.
+The release witness must prove the intended surfaces together: TD613 Flight behavior, Ash ingress geometry, cache-epoch transition, local-custody preservation, profile hydration, Flow-Core exact-source parity, the Flow-Core browser matrix, and the deployment lock.
 
 ## Cache-epoch storage boundary
 
