@@ -1,7 +1,7 @@
 {
   "fixture_schema": "td613.flowcore.promotion-evidence-fixture/v0.1",
   "determinism": {
-    "frozenClock": "2026-07-20T00:45:00Z",
+    "frozenClock": "2026-07-20T01:28:02Z",
     "idSeed": "td613-p10-promotion-packet"
   },
   "program_reference": "td613.flowcore.pedagogue-program/v0.1",
@@ -37,71 +37,87 @@
         "tests/flowcore-station-propagation.test.mjs",
         "tests/flowcore-physical-scene.test.mjs",
         "tests/flowcore-empirical-validation.test.mjs",
-        "tests/flowcore-production-promotion.test.mjs"
+        "tests/flowcore-production-promotion.test.mjs",
+        "tests/flowcore-runtime-browser-probe.test.mjs"
       ],
-      "observed_at": "2026-07-20T00:45:00Z",
+      "observed_at": "2026-07-20T01:28:02Z",
       "observation_is_merge_inference": false
     },
     "browser_matrix": {
-      "status": "CONTRACT_ONLY",
-      "references": ["app/dome-world/docs/FLOWCORE_PEDAGOGUE_AIA_BUILD_PLAN.md#browser-matrix"],
+      "status": "PASS",
+      "references": [
+        ".github/workflows/flowcore-runtime-evidence.yml",
+        "scripts/flowcore-runtime-browser-probe.mjs",
+        "https://github.com/tauric-diana-613/TD613-TCP/actions/runs/29710926793",
+        "artifact:8448946188:flowcore-runtime-chromium-evidence",
+        "artifact:8448945287:flowcore-runtime-firefox-evidence",
+        "artifact:8448945870:flowcore-runtime-webkit-evidence"
+      ],
       "matrix": {
-        "chromium_desktop": "CONTRACT_ONLY",
-        "chromium_android_viewport": "CONTRACT_ONLY",
-        "webkit_ios_viewport": "NOT_OBSERVED",
-        "keyboard_only": "CONTRACT_ONLY",
-        "zoom_200_percent": "CONTRACT_ONLY",
-        "high_contrast": "NOT_OBSERVED"
+        "chromium_desktop": "PASS",
+        "firefox_desktop": "PASS",
+        "webkit_ios_viewport": "PASS",
+        "chromium_android_viewport": "PASS",
+        "keyboard_only": "PASS",
+        "zoom_200_percent": "PASS",
+        "high_contrast": "PASS"
       },
-      "observed_at": null,
+      "observed_at": "2026-07-20T01:28:02Z",
       "observation_is_merge_inference": false
     },
     "mobile_evidence": {
-      "status": "CONTRACT_ONLY",
+      "status": "PASS",
       "references": [
-        "app/dome-world/fixtures/pedagogue/baselines/flowcore-mobile-390.svg",
-        "app/dome-world/fixtures/pedagogue/baselines/flowcore-reduced-motion-390.svg"
+        "scripts/flowcore-runtime-browser-probe.mjs",
+        "https://github.com/tauric-diana-613/TD613-TCP/actions/runs/29710926793",
+        "artifact:8448946188:flowcore-runtime-chromium-evidence",
+        "artifact:8448945870:flowcore-runtime-webkit-evidence"
       ],
-      "portrait": "STATIC_AND_CONTRACT",
-      "landscape": "NOT_OBSERVED",
-      "rotation": "NOT_OBSERVED",
-      "observed_at": null,
+      "portrait": "PASS",
+      "landscape": "PASS",
+      "rotation": "PASS",
+      "observed_at": "2026-07-20T01:28:02Z",
       "observation_is_merge_inference": false
     },
     "reduced_motion_evidence": {
-      "status": "CONTRACT_ONLY",
+      "status": "PASS",
       "references": [
-        "app/dome-world/fixtures/pedagogue/baselines/flowcore-reduced-motion-390.svg",
-        "tests/flowcore-pedagogue-visual.test.mjs"
+        "scripts/flowcore-runtime-browser-probe.mjs",
+        "tests/flowcore-pedagogue-visual.test.mjs",
+        "https://github.com/tauric-diana-613/TD613-TCP/actions/runs/29710926793"
       ],
       "static_parity": true,
-      "browser_runtime_observed": false,
-      "observed_at": null,
+      "browser_runtime_observed": true,
+      "observed_at": "2026-07-20T01:28:02Z",
       "observation_is_merge_inference": false
     },
     "performance_evidence": {
-      "status": "CONTRACT_ONLY",
+      "status": "PASS",
       "references": [
+        "scripts/flowcore-runtime-browser-probe.mjs",
         "app/dome-world/flowcore-pedagogue-visual.js",
-        "tests/flowcore-pedagogue-visual.test.mjs"
+        "https://github.com/tauric-diana-613/TD613-TCP/actions/runs/29710926793"
       ],
       "one_scheduler_contract": true,
       "hidden_view_zero_draw_contract": true,
-      "browser_frame_trace_observed": false,
-      "observed_at": null,
+      "browser_frame_trace_observed": true,
+      "long_task_ceiling_milliseconds": 1200,
+      "navigation_ceiling_milliseconds": 20000,
+      "observed_at": "2026-07-20T01:28:02Z",
       "observation_is_merge_inference": false
     },
     "privacy_persistence_review": {
       "status": "PASS",
       "references": [
         "tests/flowcore-empirical-validation.test.mjs",
-        "app/engine/flowcore-empirical-validation.js"
+        "app/engine/flowcore-empirical-validation.js",
+        "tests/flowcore-runtime-browser-probe.test.mjs"
       ],
       "covert_telemetry": false,
       "stable_participant_identity": false,
       "new_persistence": false,
       "raw_content_transport": false,
-      "observed_at": "2026-07-20T00:45:00Z",
+      "observed_at": "2026-07-20T01:28:02Z",
       "observation_is_merge_inference": false
     },
     "station_jurisdiction_audit": {
@@ -130,7 +146,11 @@
     },
     "production_probe_receipt": {
       "status": "NOT_OBSERVED",
-      "references": [],
+      "references": [
+        "scripts/flowcore-release-content-probe.mjs",
+        ".github/workflows/vercel-operator-release.yml",
+        "https://github.com/tauric-diana-613/TD613-TCP/issues/405"
+      ],
       "exact_main_sha_verified": false,
       "production_url_verified": false,
       "application_tree_drift": "UNOBSERVED",

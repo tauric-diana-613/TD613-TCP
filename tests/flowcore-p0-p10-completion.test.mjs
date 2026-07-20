@@ -32,13 +32,11 @@ const allPhaseShas = [
   '990daa1634161003b20ab5ddfbe7f86809dc21ed'
 ];
 
-test('P8-P10 receipts record merged state and keep terminal releases unconfirmed', () => {
+test('P8-P10 receipts retain merged ancestry and open human closure', () => {
   for (const [phase, record] of Object.entries(receipts)) {
     const source = read(record.path);
     assert.match(source, /MERGED TO MAIN/);
     assert.match(source, new RegExp(record.sha));
-    assert.match(source, /PHASE RELEASE GATE ACCEPTED/);
-    assert.match(source, /TERMINAL RELEASE RECEIPT NOT OBSERVED/);
     assert.doesNotMatch(source, /READY FOR MERGE|REPOSITORY CI PENDING/);
     assert.match(source, /human closure required: true|HUMAN CLOSURE OPEN/);
     assert.match(source, /closure: OPEN/);
@@ -46,18 +44,30 @@ test('P8-P10 receipts record merged state and keep terminal releases unconfirmed
     assert.match(source, /⟐/);
     assert.ok(phase);
   }
+  for (const phase of ['P8', 'P9']) {
+    const source = read(receipts[phase].path);
+    assert.match(source, /PHASE RELEASE GATE ACCEPTED/);
+    assert.match(source, /TERMINAL RELEASE RECEIPT NOT OBSERVED/);
+  }
 });
 
-test('completion ledger preserves the entire P0-P10 ancestry', () => {
+test('completion ledger preserves P0-P10 ancestry and the current release posture', () => {
   const ledger = read('app/dome-world/docs/FLOWCORE_P0_P10_IMPLEMENTATION_COMPLETION_LEDGER_V0_1.md');
   assert.match(ledger, /U\+10D613/);
   for (const sha of allPhaseShas) assert.match(ledger, new RegExp(sha));
   assert.match(ledger, /IMPLEMENTATION COMPLETE THROUGH P10/);
   assert.match(ledger, /promotion state: HARDENED/);
+  assert.match(ledger, /browser runtime matrix: PASS/);
+  for (const browser of ['Chromium', 'Firefox', 'WebKit']) assert.match(ledger, new RegExp(`${browser}: PASS`));
+  assert.match(ledger, /mobile landscape: PASS/);
+  assert.match(ledger, /rotation-equivalent: PASS/);
+  assert.match(ledger, /reduced motion: PASS/);
+  assert.match(ledger, /high contrast: PASS/);
   assert.match(ledger, /human adult empirical evidence: absent/);
   assert.match(ledger, /empirical exit gate: held/);
-  assert.match(ledger, /production probe: not observed/);
-  assert.match(ledger, /additional release attempt is authorized by this ledger|additional release attempt authorized by this ledger: false|additional release attempt authorized here: false/);
+  assert.match(ledger, /production probe: pending post-merge release/);
+  assert.match(ledger, /fresh explicit production authorization/);
+  assert.match(ledger, /one bounded release after merge/);
   assert.match(ledger, /human promotion required: true/);
   assert.match(ledger, /human closure required: true/);
   assert.match(ledger, /closure: OPEN/);
@@ -72,19 +82,43 @@ test('P9 retains the human-evidence hold', () => {
   assert.match(source, /synthetic pipeline counts as human evidence: false/);
 });
 
-test('P10 retains HARDENED rather than runtime or production demonstration', () => {
+test('P10 records browser observation while retaining HARDENED and production holds', () => {
   const source = read(receipts.P10.path);
   assert.match(source, /CURRENT STATE HARDENED/);
-  assert.match(source, /RUNTIME AND PRODUCTION DEMONSTRATION HELD/);
+  assert.match(source, /BROWSER RUNTIME OBSERVED/);
+  assert.match(source, /PRODUCTION PROBE PENDING/);
   assert.match(source, /current promotion state: HARDENED/);
+  assert.match(source, /browser runtime observed: true/);
+  assert.match(source, /production probe observed: false/);
   assert.match(source, /promotion complete: false/);
   assert.match(source, /state inferred from merge: false/);
   assert.match(source, /state inferred from deployment: false/);
+  assert.match(source, /runtime evidence counts as human evidence: false/);
   assert.match(source, /feature enabled by packet: false/);
+  assert.match(source, /public route promotion authorized: false/);
   assert.match(source, /program closure authorized by packet: false/);
 });
 
-test('final stitch introduces no temporary workflow or implementation mutation', () => {
+test('runtime closure receipt and program index expose the observed evidence and held authority', () => {
+  const receipt = read('app/dome-world/docs/FLOWCORE_RUNTIME_RELEASE_CLOSURE_RECEIPT_V0_1.md');
+  const index = read('app/dome-world/docs/FLOWCORE_PEDAGOGUE_PROGRAM_INDEX_V0_1.md');
+  for (const source of [receipt, index]) {
+    assert.match(source, /Chromium.*PASS/s);
+    assert.match(source, /Firefox.*PASS/s);
+    assert.match(source, /WebKit.*PASS/s);
+    assert.match(source, /human adult.*absent/is);
+    assert.match(source, /public route promotion.*false|public route promotion.*not authorized/is);
+    assert.match(source, /feature gate default: OFF/);
+    assert.match(source, /closure: OPEN/);
+  }
+  assert.match(receipt, /125px/);
+  assert.match(receipt, /217px/);
+  assert.match(receipt, /source_packet_commit/);
+  assert.match(index, /FLOWCORE_P0_P10_IMPLEMENTATION_COMPLETION_LEDGER_V0_1\.md/);
+  assert.match(index, /FLOWCORE_RUNTIME_RELEASE_CLOSURE_RECEIPT_V0_1\.md/);
+});
+
+test('final closure introduces no temporary workflow or authority mutation', () => {
   const workflowNames = fs.readdirSync('.github/workflows');
   assert.equal(workflowNames.some(name => /reconcile-once|case-map-delta-repair|duplicate-rejection-repair/.test(name)), false);
   const ledger = read('app/dome-world/docs/FLOWCORE_P0_P10_IMPLEMENTATION_COMPLETION_LEDGER_V0_1.md');

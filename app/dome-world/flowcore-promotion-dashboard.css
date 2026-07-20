@@ -1,9 +1,21 @@
+html {
+  overflow-x: clip;
+}
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+  min-inline-size: 0;
+}
+
 body {
   margin: 0;
   min-block-size: 100vh;
-  font-family: ui-sans-serif, system-ui, sans-serif;
+  overflow-wrap: anywhere;
   background: radial-gradient(circle at 50% 0%, rgba(117, 102, 168, 0.24), transparent 42%), #090b13;
   color: #f5f2ff;
+  font-family: ui-sans-serif, system-ui, sans-serif;
 }
 
 .promotion-dashboard {
@@ -16,9 +28,11 @@ body {
 .promotion-dashboard__status,
 .promotion-dashboard__controls,
 .promotion-dashboard__footer {
+  max-inline-size: 100%;
   border: 1px solid rgba(245, 242, 255, 0.28);
   border-radius: 1rem;
   padding: clamp(1rem, 3vw, 1.5rem);
+  overflow-wrap: anywhere;
   background: rgba(9, 11, 19, 0.88);
 }
 
@@ -35,16 +49,25 @@ body {
   margin-block: 1rem;
 }
 
+.promotion-dashboard__choices > *,
+.promotion-dashboard__controls > * {
+  max-inline-size: 100%;
+}
+
 .promotion-dashboard__choice,
 .promotion-dashboard__controls button,
 .promotion-dashboard__controls a {
   min-block-size: 44px;
+  max-inline-size: 100%;
   border: 1px solid currentColor;
   border-radius: 999px;
   padding: 0.65rem 1rem;
+  overflow-wrap: anywhere;
+  white-space: normal;
   background: transparent;
   color: inherit;
   font: inherit;
+  text-align: center;
   text-decoration: none;
 }
 
@@ -62,22 +85,41 @@ body {
 
 .promotion-dashboard__card {
   min-inline-size: 0;
+  max-inline-size: 100%;
   border: 1px solid rgba(245, 242, 255, 0.22);
   border-radius: 1rem;
   padding: 1rem;
+  overflow: hidden;
+  overflow-wrap: anywhere;
   background: rgba(23, 21, 40, 0.84);
+}
+
+.promotion-dashboard__card h2,
+.promotion-dashboard__card ul,
+.promotion-dashboard__card li {
+  max-inline-size: 100%;
+  overflow-wrap: anywhere;
+  word-break: break-word;
+}
+
+.promotion-dashboard__card ul {
+  padding-inline-start: 1.25rem;
 }
 
 .promotion-dashboard__grid {
   display: grid;
   grid-template-columns: minmax(0, 1.4fr) minmax(0, 1fr);
   gap: 0.6rem 1rem;
+  max-inline-size: 100%;
 }
 
 .promotion-dashboard__grid dt,
 .promotion-dashboard__grid dd {
+  min-inline-size: 0;
+  max-inline-size: 100%;
   margin: 0;
   overflow-wrap: anywhere;
+  word-break: break-word;
 }
 
 .promotion-dashboard__grid dd {
@@ -97,22 +139,25 @@ a:focus-visible {
   .promotion-dashboard__stage { grid-template-columns: minmax(0, 1fr); }
 }
 
-@media (max-width: 390px) {
-  .promotion-dashboard { inline-size: min(100% - 1rem, 100%); }
+@media (max-width: 700px) {
   .promotion-dashboard__choices,
   .promotion-dashboard__controls {
     display: grid;
     grid-template-columns: minmax(0, 1fr);
   }
+
   .promotion-dashboard__choice,
   .promotion-dashboard__controls button,
   .promotion-dashboard__controls a {
     inline-size: 100%;
-    box-sizing: border-box;
-    text-align: center;
   }
+
   .promotion-dashboard__grid { grid-template-columns: minmax(0, 1fr); }
   .promotion-dashboard__grid dd { text-align: start; }
+}
+
+@media (max-width: 390px) {
+  .promotion-dashboard { inline-size: min(calc(100% - 1rem), 100%); }
 }
 
 @media (prefers-reduced-motion: reduce) {

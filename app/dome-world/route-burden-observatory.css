@@ -1,9 +1,21 @@
+html {
+  overflow-x: clip;
+}
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+  min-inline-size: 0;
+}
+
 body {
   margin: 0;
   min-block-size: 100vh;
-  font-family: ui-sans-serif, system-ui, sans-serif;
+  overflow-wrap: anywhere;
   background: radial-gradient(circle at 20% 0%, rgba(120, 94, 177, 0.22), transparent 34%), #090b14;
   color: #f3f0ff;
+  font-family: ui-sans-serif, system-ui, sans-serif;
 }
 
 .route-burden {
@@ -17,9 +29,11 @@ body {
 .route-burden__panel,
 .route-burden__footer,
 .route-burden__live {
+  max-inline-size: 100%;
   border: 1px solid rgba(243, 240, 255, 0.26);
   border-radius: 1rem;
   padding: clamp(1rem, 3vw, 1.5rem);
+  overflow-wrap: anywhere;
   background: rgba(9, 11, 20, 0.84);
 }
 
@@ -38,17 +52,26 @@ body {
   justify-content: space-between;
 }
 
+.route-burden__controls > *,
+.route-burden__footer > *,
+.route-burden__choices > * {
+  max-inline-size: 100%;
+}
+
 .route-burden__choice,
 .route-burden__footer a {
   min-block-size: 44px;
+  max-inline-size: 100%;
   border: 1px solid currentColor;
   border-radius: 999px;
   padding: 0.65rem 1rem;
+  overflow-wrap: anywhere;
+  white-space: normal;
   background: transparent;
   color: inherit;
   font: inherit;
+  text-align: center;
   text-decoration: none;
-  box-sizing: border-box;
 }
 
 .route-burden__choice[aria-pressed="true"] {
@@ -75,11 +98,11 @@ body {
 
 .route-burden__meter {
   position: relative;
-  overflow: hidden;
+  display: grid;
   min-block-size: 3rem;
+  overflow: hidden;
   border: 1px solid currentColor;
   border-radius: 999px;
-  display: grid;
   place-items: center;
   isolation: isolate;
 }
@@ -112,27 +135,33 @@ body {
 }
 
 @media (max-width: 700px) {
-  .route-burden__stage {
+  .route-burden__stage,
+  .route-burden__controls,
+  .route-burden__footer,
+  .route-burden__choices {
     grid-template-columns: minmax(0, 1fr);
   }
-}
 
-@media (max-width: 390px) {
-  .route-burden {
-    inline-size: min(100% - 1rem, 100%);
+  .route-burden__stage {
+    display: grid;
   }
 
   .route-burden__controls,
   .route-burden__footer,
   .route-burden__choices {
     display: grid;
-    grid-template-columns: minmax(0, 1fr);
+    justify-content: stretch;
   }
 
   .route-burden__choice,
   .route-burden__footer a {
     inline-size: 100%;
-    text-align: center;
+  }
+}
+
+@media (max-width: 390px) {
+  .route-burden {
+    inline-size: min(calc(100% - 1rem), 100%);
   }
 }
 

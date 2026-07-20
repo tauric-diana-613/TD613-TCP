@@ -3,8 +3,8 @@
 # Flow-Core Pedagogue Program Index v0.1
 
 **Namespace:** `U+10D613`  
-**Program:** P0 through P10  
-**Status:** IMPLEMENTATION INDEX COMPLETE / EMPIRICAL AND PRODUCTION DEMONSTRATION HOLDS VISIBLE / HUMAN CLOSURE OPEN
+**Program:** P0 through P10 plus runtime/release closure  
+**Status:** IMPLEMENTATION INDEX COMPLETE / BROWSER RUNTIME OBSERVED / PRODUCTION PROBE PENDING / EMPIRICAL HOLD VISIBLE / HUMAN CLOSURE OPEN
 
 ## Constitutional source set
 
@@ -14,6 +14,8 @@
 4. `FLOWCORE_PEDAGOGUE_AIA_AUTHORSHIP_RECEIPT.md`
 5. `INFORMATION_DOME_IMPLEMENTATION_CONCORDANCE_V0_1.md`
 6. `FLOWCORE_P0_P7_SEAM_CLOSURE_LEDGER_V0_1.md`
+7. `FLOWCORE_P0_P10_IMPLEMENTATION_COMPLETION_LEDGER_V0_1.md`
+8. `FLOWCORE_RUNTIME_RELEASE_CLOSURE_RECEIPT_V0_1.md`
 
 ## Phase receipts
 
@@ -54,31 +56,46 @@
 - `flowcore-validation-lab.html`
 - `flowcore-promotion-dashboard.html`
 
-## Evidence and promotion artifacts
+## Evidence and release instruments
 
 - `fixtures/pedagogue/baselines/flowcore-p0-p7-baseline-evidence-v01.json`
 - `fixtures/pedagogue/physical-flowcore-cycle.json`
 - `fixtures/pedagogue/flowcore-validation-synthetic-pipeline.json`
 - `fixtures/pedagogue/flowcore-promotion-evidence.json`
 - `data/flowcore-promotion-config-v01.js`
+- `scripts/flowcore-runtime-browser-probe.mjs`
+- `scripts/flowcore-release-content-probe.mjs`
+- `.github/workflows/flowcore-runtime-evidence.yml`
+- `.github/workflows/vercel-operator-release.yml`
 - `FLOWCORE_PEDAGOGUE_ROLLBACK_PROCEDURE_V0_1.md`
 
 ## Current honest promotion posture
 
 ```text
 implementation state: HARDENED
-runtime browser demonstration: incomplete
+runtime browser matrix: PASS
+Chromium observation: PASS
+Firefox observation: PASS
+WebKit/iOS-sized observation: PASS
+mobile portrait: PASS
+mobile landscape: PASS
+rotation-equivalent: PASS
+reduced motion runtime: PASS
+zoom-equivalent reflow: PASS
+high contrast: PASS
+browser performance observation: PASS
 human adult validation evidence: absent
 empirical exit gate: held
 production probe: not observed
 production demonstrated: false
 feature gate default: OFF
+public route promotion authorized: false
 human promotion required: true
 human closure required: true
 closure: OPEN
 ```
 
-`HARDENED` describes repository implementation and guard evidence only. It does not mean the adult study, runtime browser matrix, production probe, or public promotion has completed.
+`HARDENED` remains the correct promotion state because the state machine requires the held human adult empirical gate before `RUNTIME_DEMONSTRATED`. Observed browser evidence does not substitute for human evidence. Production observation will be externalized through the exact `source_packet_commit` issue #405 receipt after the authorized post-merge release.
 
 ## Stable constitutional boundary
 
@@ -90,6 +107,7 @@ new serverless function: false
 new learner persistence: false
 receipts may cross: true
 authority may cross: false
+runtime evidence counts as human evidence: false
 merge equals promotion: false
 deployment equals empirical validation: false
 only the human promotes and closes
