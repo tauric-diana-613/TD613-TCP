@@ -1,0 +1,37 @@
+/* AK-AIA-3 compact crown and first-use correction layer. */
+html[data-ash-aia3] #launch .launch-panel>p:first-of-type{grid-area:intro!important}
+html[data-ash-aia3] #launch .launch-panel>p:nth-of-type(2):not(.demo-profile-status):not(.aia3-restore-note){display:none!important}
+html[data-ash-aia3][data-ash-session-open="true"] #ashAiaMembrane{gap:4px!important;padding:7px!important}
+html[data-ash-aia3][data-ash-session-open="true"] .ash-aia__eyebrow{font-size:.52rem;margin-bottom:2px}
+html[data-ash-aia3][data-ash-session-open="true"] .ash-aia__header{padding-bottom:4px!important}
+html[data-ash-aia3][data-ash-session-open="true"] .ash-aia__header h2{font-size:1.22rem!important;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+html[data-ash-aia3][data-ash-session-open="true"] .ash-aia__posture{display:none}
+html[data-ash-aia3][data-ash-session-open="true"] .ash-aia__state span{padding:4px 6px;font-size:.5rem}
+html[data-ash-aia3][data-ash-session-open="true"] .ash-aia__routes button{min-height:30px!important}
+html[data-ash-aia3][data-ash-session-open="true"] .ash-aia__tasks button{min-height:40px!important;padding:4px!important}
+html[data-ash-aia3][data-ash-session-open="true"] .ash-aia__tasks small{display:none!important}
+html[data-ash-aia3][data-ash-session-open="true"] .ash-aia__body{gap:5px!important}
+html[data-ash-aia3][data-ash-session-open="true"] .ash-aia__guide,html[data-ash-aia3][data-ash-session-open="true"] .ash-aia__work{padding:6px!important}
+html[data-ash-aia3][data-ash-session-open="true"] .ash-aia__guide-head h3,html[data-ash-aia3][data-ash-session-open="true"] .ash-aia__work h3{font-size:.88rem!important;line-height:1.15}
+html[data-ash-aia3][data-ash-session-open="true"] .ash-aia__guide-head button{min-height:30px!important;padding:4px 7px!important;font-size:.52rem!important}
+html[data-ash-aia3][data-ash-session-open="true"] .ash-aia__stage{min-height:76px!important;height:76px!important;margin-top:3px!important}
+html[data-ash-aia3][data-ash-session-open="true"] .ash-aia__stage svg{height:76px!important}
+html[data-ash-aia3][data-ash-session-open="true"] .ash-aia__frame-copy{left:5px!important;top:5px!important;width:min(225px,38%)!important;padding:5px!important}
+html[data-ash-aia3][data-ash-session-open="true"] .ash-aia__frame-copy span{font-size:.48rem!important}
+html[data-ash-aia3][data-ash-session-open="true"] .ash-aia__frame-copy h4{font-size:.76rem!important;margin:2px 0!important}
+html[data-ash-aia3][data-ash-session-open="true"] .ash-aia__frame-copy p{font-size:.52rem!important;line-height:1.25!important;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
+html[data-ash-aia3][data-ash-session-open="true"] .ash-aia__live{min-height:14px!important;font-size:.52rem!important}
+html[data-ash-aia3][data-ash-session-open="true"] .ash-aia__lesson-controls button,html[data-ash-aia3][data-ash-session-open="true"] .ash-aia__action-controls button{min-height:29px!important;padding:3px!important;font-size:.49rem!important}
+html[data-ash-aia3][data-ash-session-open="true"] .ash-aia__work>.ash-aia__step-label,html[data-ash-aia3][data-ash-session-open="true"] .ash-aia__work>.ash-aia__boundary,html[data-ash-aia3][data-ash-session-open="true"] .ash-aia__work>p:not(.ash-aia__expected){display:none!important}
+html[data-ash-aia3][data-ash-session-open="true"] .ash-aia__expected{padding:5px!important;margin:3px 0!important;font-size:.55rem!important;line-height:1.25!important;max-height:44px;overflow:hidden}
+html[data-ash-aia3][data-ash-session-open="true"] .ash-aia__consequences>summary{padding:5px!important}
+html[data-ash-aia3][data-ash-session-open="true"] body[data-ash-aia-route="EXPERIENTIAL"] .ash-aia__depths,html[data-ash-aia3][data-ash-session-open="true"] body[data-ash-aia-route="CUSTODIAL"] .ash-aia__depths{display:none!important}
+html[data-ash-aia3][data-ash-session-open="true"] body[data-ash-aia-route="AUDIT"] .ash-aia__depths,html[data-ash-aia3][data-ash-session-open="true"] body[data-ash-aia-route="IMPLEMENTATION"] .ash-aia__depths{display:grid!important}
+@media(max-width:760px){
+  html[data-ash-aia3][data-ash-session-open="true"] .ash-aia__header h2{white-space:normal;font-size:1rem!important}
+  html[data-ash-aia3][data-ash-session-open="true"] .ash-aia__stage{height:86px!important;min-height:86px!important}
+  html[data-ash-aia3][data-ash-session-open="true"] .ash-aia__stage svg{height:48px!important;margin-top:0!important}
+  html[data-ash-aia3][data-ash-session-open="true"] .ash-aia__frame-copy{position:absolute!important;left:4px!important;top:4px!important;width:calc(100% - 8px)!important;border:0!important;background:rgba(2,8,6,.94)!important}
+  html[data-ash-aia3][data-ash-session-open="true"] .ash-aia__tasks button{min-height:36px!important}
+  html[data-ash-aia3][data-ash-session-open="true"] .ash-aia__consequences,html[data-ash-aia3][data-ash-session-open="true"] .ash-aia__depths{margin-top:2px!important}
+}
