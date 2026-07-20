@@ -1,7 +1,7 @@
 import assert from 'node:assert/strict';
 import fs from 'node:fs';
 const read = path => fs.readFileSync(path, 'utf8');
-const workflow = read('.github/workflows/ash-keep-production-closure.yml');
+const workflow = `${read('.github/workflows/ash-keep-production-closure.yml')}\n${read('.github/workflows/ash-lifecycle-deployed-observation.yml')}`;
 const probe = `${read('scripts/ash-lifecycle-production-probe.mjs')}\n${read('scripts/ash-lifecycle-production-probe-base.mjs')}`;
 const convergenceRunner = read('scripts/run-ash-constitutional-convergence-probe.mjs');
 const core = read('app/dome-world/ash-keep.js');
