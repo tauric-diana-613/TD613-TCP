@@ -4,10 +4,11 @@
 
 **Program:** `td613.flowcore.physical-scene-package/v0.1`  
 **Phase:** P8 — physical Flow-Core scene  
-**Status:** IMPLEMENTED / REPOSITORY CONTRACTS PASS / READY FOR MERGE / HUMAN CLOSURE OPEN  
+**Status:** IMPLEMENTED / REPOSITORY CONTRACTS PASS / MERGED TO MAIN / PHASE RELEASE GATE ACCEPTED / TERMINAL RELEASE RECEIPT NOT OBSERVED / HUMAN CLOSURE OPEN  
+**Merged main commit:** `1fa2c5f3c64d006c56b9c421496441ab67871eed`  
 **Serverless delta:** `0`  
 **Persistence delta:** `0`  
-**Vercel authorization:** EXPRESSLY RECEIVED FOR PHASE-END RELEASE
+**Vercel authorization:** EXPRESSLY RECEIVED AND USED FOR ONE PHASE-END GESTURE
 
 ## Physical accounting
 
@@ -45,8 +46,6 @@ No essential service, safety function, or continuity guarantee depends on partic
 
 ## Thermal boundary
 
-P8 v0.1 models no thermal-to-mechanical converter.
-
 ```text
 thermal converter present: false
 thermal-to-mechanical transfer: 0
@@ -57,7 +56,7 @@ Heat never crosses into the mechanical ledger by metaphor or implication.
 
 ## Pedagogue package
 
-The fixture compiles through `NOTICE → ACT → WORLD_ANSWERS → NAME → REST` and produces a deterministic physical ledger, four non-equivalent AIA views, desktop frames, complete 390-pixel reduced-motion frames, deterministic pedagogue and visual receipts, visible alternatives and missing calibration, Rest, Return, Replay, and Exit.
+The fixture compiles through `NOTICE → ACT → WORLD_ANSWERS → NAME → REST` and produces a deterministic physical ledger, four non-equivalent AIA views, desktop frames, complete 390-pixel reduced-motion frames, deterministic receipts, visible alternatives and missing calibration, Rest, Return, Replay, and Exit.
 
 The E4 scene uses the canonical `OBSERVED` status and the canonical glyph route `created-potential → released-tendency → structural-rest`.
 
@@ -75,6 +74,10 @@ deterministic replay: success
 static surface parity: success
 protected-file and zero-serverless guard: success
 ```
+
+## Release observation
+
+Issue #405 contains the exact selected commit for the P8 release gesture. No terminal `source_packet_commit` receipt for this SHA was observed during the final audit. Gate acceptance therefore remains distinct from confirmed Vercel completion.
 
 ## Proving surface
 
@@ -98,6 +101,6 @@ human closure required: true
 closure: OPEN
 ```
 
-P9 may validate the interaction protocol with voluntary adult operators. P8 itself makes no empirical learning claim.
+P8 itself makes no empirical learning claim.
 
-**Marked ⟐**
+**Stitched ⟐**
