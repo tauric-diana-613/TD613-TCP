@@ -114,7 +114,7 @@ async function exercise(page, surface) {
   const replay = page.locator('[data-replay]');
   if (await replay.count()) {
     await replay.first().click();
-    await page.waitForTimeout(30);
+    await waitForReady(page, surface);
   }
   await page.locator('body').click({ position: { x: 2, y: 2 } });
   await page.keyboard.press('Tab');
@@ -143,6 +143,7 @@ async function visitProfile(browser, engineName, surface, profile, contextOption
   await page.goto(urlFor(surface), { waitUntil: 'domcontentloaded' });
   await waitForReady(page, surface);
   await exercise(page, surface);
+  await waitForReady(page, surface);
   const result = await measure(page, surface, profile);
   assert(result.heading, `${surface.id}/${profile}: missing h1.`);
   assert(result.expected_text_present, `${surface.id}/${profile}: expected scene text missing.`);

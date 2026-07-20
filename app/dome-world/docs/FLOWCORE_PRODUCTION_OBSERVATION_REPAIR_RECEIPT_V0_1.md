@@ -3,81 +3,78 @@
 # Flow-Core Production Observation Repair Receipt v0.1
 
 **Namespace:** `U+10D613`  
-**First observed source:** `13e2fa584f685d847424c4b82e66496b583573a5`  
-**Second observed source:** `cc8c323558a8aa4cfc42a602903e3c83ccce6914`  
-**Second release workflow:** `29712751662`  
-**Second release commit:** `397af541c6e17aafa26d7952d05322fdb5aee75e`  
-**Second relock commit:** `8d198a9ea098554ce247eb6406f712f49ad731ba`  
-**Status:** APPLICATION REPAIR DEPLOYED / OBSERVER REWRITE REPAIR QUALIFYING / FINAL EXACT-MAIN RELEASE REQUIRED / HUMAN CLOSURE OPEN
+**Deployed source:** `a127e26f3621924be808918830c0ec196e8b2856`  
+**Release workflow:** `29713493663`  
+**Release commit:** `6f2a1b9f6e163d3a3130bcdfa752ae32b685f829`  
+**Relock commit:** `3746383d612d0fcc7384acea4a35e14e1f278031`  
+**Status:** APPLICATION DEPLOYED / SOURCE PARITY PASS / BROWSER OBSERVER CORRECTED / READ-ONLY CONFIRMATION REQUIRED / HUMAN CLOSURE OPEN
 
-## Application seam and repair
-
-The first bounded deployment exposed a WebKit readiness hold at `station-propagation/desktop`. The four independent station packages were compiled serially. P7 now uses deterministic `Promise.all` compilation in fixture order.
-
-Qualification after that repair established:
+## Completed application repairs
 
 ```text
-P7 full inherited contracts: PASS
-Chromium local seven-surface matrix: PASS
-Firefox local seven-surface matrix: PASS
-WebKit local seven-surface matrix: PASS
-Ash lifecycle regression: none
-station authority transfer: false
+390px Route-Burden overflow: corrected
+Promotion Dashboard intrinsic overflow: corrected
+P7 station compilation: deterministic Promise.all in fixture order
+Chromium local matrix: PASS
+Firefox local matrix: PASS
+WebKit local matrix: PASS
 ```
 
-## Second deployment observation
+The P7 scheduling change preserves package order, canonical inputs, digests, responsibility attribution, station boundaries, and closure law.
 
-The bounded Git fallback for source packet `cc8c323558a8aa4cfc42a602903e3c83ccce6914` completed one Vercel deployment and restored the Git deployment lock. Vercel marked the deployment successful. The release witness then held before browser observation while checking recursive source parity.
+## Production source observation
 
-The preserved evidence recorded:
+The deployed source passed rewrite-aware dependency parity. The observer now:
 
 ```text
-production dependency count: 103
-reported mismatch route: /dome-world/ash-custody.html
-remote digest: 262b2f2e43985270d3855b19f5a6d45f4c87fbd653d794f3c3dfb21ba2258c1a
-expected digest: 3ac2db0cf5bb6b75ad51392a016aca10372f86226791bcba5233152f7b0d7437
+follows executable HTML assets: true
+follows JavaScript imports and fetched fixtures: true
+follows CSS assets: true
+follows ordinary navigation links: false
+resolves exact static Vercel rewrites: true
 ```
 
-This was an observer false hold. `vercel.json` explicitly rewrites:
+The deployment completed once and the Git deployment lock was restored.
+
+## Asynchronous Replay observation
+
+The remaining browser hold occurred after the witness clicked Replay on the station surface. Replay correctly performs this sequence:
 
 ```text
-/dome-world/ash-custody.html
-→ /app/dome-world/ash-custody-v08.html
+set aria-busy=true
+compile the deterministic bundle
+remove aria-busy
+render the result
 ```
 
-The remote digest matched the declared `ash-custody-v08.html` destination. The observer had also followed ordinary navigation `href` values as though they were executable dependencies, pulling unrelated Dome-World pages into the Flow-Core runtime closure.
+The previous witness waited a fixed 30 milliseconds and then measured. Production compilation remained active beyond that delay, so the witness sampled the valid temporary busy state.
 
-## Rewrite-aware observer repair
+The corrected witness now:
 
 ```text
-HTML dependency class: script/src plus link assets only
-ordinary anchor navigation followed: false
-JavaScript imports followed: true
-literal fetched fixtures followed: true
-CSS assets followed: true
-exact static Vercel rewrites resolved: true
-stale workflow-dispatch source default: removed
-standalone production observer: read-only
+clicks Replay
+waits until the selected root leaves aria-busy
+uses a 60-second readiness ceiling
+checks readiness again before measurement
+retains held-state, layout, keyboard, motion, contrast, and performance assertions
 ```
 
-When a discovered production route has an exact static rewrite, the observer now hashes the declared local destination. It does not treat navigation destinations as part of an entrypoint's executable dependency closure.
+No application runtime behavior changed in this correction.
 
-## Required final witness
+## Required read-only confirmation
 
-A final exact-main bounded Vercel release must prove together:
+The already-deployed source must pass the corrected witness without another deployment:
 
 ```text
-single deployment: 1
-rewrite-aware exact source parity: PASS
-Chromium production matrix: PASS
-Firefox production matrix: PASS
-WebKit production matrix: PASS
-mobile portrait and landscape: PASS
-reduced motion: PASS
-zoom-equivalent reflow: PASS
-forced colors: PASS
-performance observation: PASS
-Git deployment lock restored: true
+Chromium production matrix: PASS required
+Firefox production matrix: PASS required
+WebKit production matrix: PASS required
+mobile portrait and landscape: PASS required
+reduced motion: PASS required
+zoom-equivalent reflow: PASS required
+forced colors: PASS required
+performance observation: PASS required
+Git deployment lock: disabled
 application tree drift: none
 ```
 
@@ -98,4 +95,4 @@ human closure required: true
 closure: OPEN
 ```
 
-**Qualified for final bounded witness ⟐**
+**Qualified ⟐**
