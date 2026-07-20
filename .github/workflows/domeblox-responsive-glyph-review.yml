@@ -5,6 +5,7 @@ on:
     paths:
       - 'app/dome-world/domeblox/**'
       - 'tests/domeblox-responsive-glyph.*'
+      - 'tests/domeblox-state-resilience.test.mjs'
       - '.github/workflows/domeblox-responsive-glyph-review.yml'
 
 permissions:
@@ -20,6 +21,8 @@ jobs:
           node-version: '22'
       - name: Static responsive and glyph contract
         run: node tests/domeblox-responsive-glyph.test.mjs
+      - name: Save resilience contract
+        run: node tests/domeblox-state-resilience.test.mjs
       - name: Install Chromium review runtime
         run: |
           npm install --no-save --ignore-scripts @playwright/test@1.55.0
