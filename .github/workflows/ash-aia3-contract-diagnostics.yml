@@ -1,0 +1,37 @@
+name: Ash AIA3 Contract Diagnostics
+
+on:
+  pull_request:
+    branches: [main]
+    paths:
+      - 'scripts/ash-aia3-contract-diagnostics.mjs'
+      - '.github/workflows/ash-aia3-contract-diagnostics.yml'
+      - 'tests/**/*.test.mjs'
+      - '.github/workflows/vercel-operator-release.yml'
+      - '.github/workflows/ash-lifecycle-deployed-observation.yml'
+
+permissions:
+  contents: read
+
+jobs:
+  diagnose:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 24
+          cache: npm
+      - run: npm ci --ignore-scripts
+      - name: Capture exact contract output
+        env:
+          TD613_ARTIFACT_DIR: artifacts/ash-aia3-contract-diagnostics
+        run: node scripts/ash-aia3-contract-diagnostics.mjs
+      - if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: ash-aia3-contract-diagnostics
+          path: artifacts/ash-aia3-contract-diagnostics/
+          if-no-files-found: error
+          retention-days: 7
