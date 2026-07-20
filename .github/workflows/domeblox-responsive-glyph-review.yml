@@ -1,0 +1,43 @@
+name: DomeBlox Responsive Glyph Review
+
+on:
+  pull_request:
+    paths:
+      - 'app/dome-world/domeblox/**'
+      - 'tests/domeblox-responsive-glyph.*'
+      - '.github/workflows/domeblox-responsive-glyph-review.yml'
+
+permissions:
+  contents: read
+
+jobs:
+  responsive-review:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Static responsive and glyph contract
+        run: node tests/domeblox-responsive-glyph.test.mjs
+      - name: Install Chromium review runtime
+        run: |
+          npm install --no-save --ignore-scripts @playwright/test@1.55.0
+          npx playwright install --with-deps chromium
+      - name: Start branch-local game server
+        run: |
+          python3 -m http.server 4173 --directory app/dome-world/domeblox > /tmp/domeblox-responsive-server.log 2>&1 &
+          echo $! > /tmp/domeblox-responsive-server.pid
+          for attempt in {1..20}; do curl -fsS http://127.0.0.1:4173/ >/dev/null && exit 0; sleep 1; done
+          cat /tmp/domeblox-responsive-server.log
+          exit 1
+      - name: Capture production baseline and repaired branch
+        run: npx playwright test tests/domeblox-responsive-glyph.browser.spec.mjs --reporter=line
+      - name: Upload desktop and mobile screenshots
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: domeblox-responsive-glyph-review
+          path: domeblox-responsive-review/
+          if-no-files-found: error
+          retention-days: 14
