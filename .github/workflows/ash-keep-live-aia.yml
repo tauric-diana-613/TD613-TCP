@@ -35,16 +35,17 @@ jobs:
           node-version: 22
           cache: npm
       - run: npm ci
-      - name: Live AIA engine and surface contracts
-        run: |
-          node tests/ash-keep-live-aia-engine.test.mjs
-          node tests/ash-keep-live-aia-surface.test.mjs
-      - name: Inherited Flow-Core and Ash non-regression
-        run: |
-          node tests/ash-pedagogue-custody-route.test.mjs
-          node tests/ash-lifecycle.test.mjs
-          npm run test:ash-keep
-      - name: Static delivery and TCP smoke
-        run: |
-          node tests/dome-world-ash-custody.test.mjs
-          node tests/tcp-smoke.test.mjs
+      - name: Live AIA engine contracts
+        run: node tests/ash-keep-live-aia-engine.test.mjs
+      - name: Live AIA surface contracts
+        run: node tests/ash-keep-live-aia-surface.test.mjs
+      - name: Inherited P6 pedagogue contracts
+        run: node tests/ash-pedagogue-custody-route.test.mjs
+      - name: Exact lifecycle contracts
+        run: node tests/ash-lifecycle.test.mjs
+      - name: Ash Keep core and UI non-regression
+        run: npm run test:ash-keep
+      - name: Static custody delivery
+        run: node tests/dome-world-ash-custody.test.mjs
+      - name: TCP smoke
+        run: node tests/tcp-smoke.test.mjs
