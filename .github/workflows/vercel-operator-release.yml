@@ -35,53 +35,32 @@ jobs:
         with:
           ref: main
           fetch-depth: 0
-
       - name: Set up Node
         uses: actions/setup-node@v4
         with:
           node-version: 24
           cache: npm
-
       - name: Validate operator authorization and exact commit
         id: authorize
-        shell: bash
         env:
           AUTHORIZATION: ${{ github.event.comment.body }}
         run: |
           set -euo pipefail
           read -r COMMAND TARGET SELECTED_SHA EXTRA <<< "$AUTHORIZATION"
-          if [[ "$COMMAND" != "/td613-vercel-release" ]]; then
-            echo 'Unexpected release command.' >&2
-            exit 1
-          fi
-          if [[ "$TARGET" != "PRODUCTION" ]]; then
-            echo 'Only the explicitly named PRODUCTION target is accepted.' >&2
-            exit 1
-          fi
-          if [[ -n "${EXTRA:-}" ]]; then
-            echo 'Release command must contain exactly the command, target, and 40-character SHA.' >&2
-            exit 1
-          fi
-          if [[ ! "$SELECTED_SHA" =~ ^[0-9a-f]{40}$ ]]; then
-            echo 'Release command omitted a valid 40-character commit SHA.' >&2
-            exit 1
-          fi
+          [[ "$COMMAND" == "/td613-vercel-release" ]] || { echo 'Unexpected release command.' >&2; exit 1; }
+          [[ "$TARGET" == "PRODUCTION" ]] || { echo 'Only PRODUCTION is accepted.' >&2; exit 1; }
+          [[ -z "${EXTRA:-}" && "$SELECTED_SHA" =~ ^[0-9a-f]{40}$ ]] || { echo 'Exact 40-character SHA required.' >&2; exit 1; }
           CURRENT_MAIN="$(git rev-parse HEAD)"
-          if [[ "$SELECTED_SHA" != "$CURRENT_MAIN" ]]; then
-            echo "Authorized SHA $SELECTED_SHA is not current main $CURRENT_MAIN." >&2
-            exit 1
-          fi
+          [[ "$SELECTED_SHA" == "$CURRENT_MAIN" ]] || { echo "Authorized SHA $SELECTED_SHA is not current main $CURRENT_MAIN." >&2; exit 1; }
           node --input-type=module <<'NODE'
           import fs from 'node:fs';
-          const config = JSON.parse(fs.readFileSync('vercel.json', 'utf8'));
+          const config = JSON.parse(fs.readFileSync('vercel.json','utf8'));
           if (config.git?.deploymentEnabled !== false) throw new Error('Git-triggered Vercel deployment lock is not active.');
           NODE
           echo "selected_sha=$SELECTED_SHA" >> "$GITHUB_OUTPUT"
-
       - name: Record accepted release gesture
         run: |
-          gh api "repos/$GITHUB_REPOSITORY/issues/$RELEASE_GATE_ISSUE/comments" \
-            -f body="$(cat <<EOF_COMMENT
+          gh api "repos/$GITHUB_REPOSITORY/issues/$RELEASE_GATE_ISSUE/comments" -f body="$(cat <<EOF_COMMENT
           𝌋 Operator release gesture accepted.
 
           \`\`\`text
@@ -91,15 +70,12 @@ jobs:
           git_auto_deploy = disabled
           workflow_run = $GITHUB_SERVER_URL/$GITHUB_REPOSITORY/actions/runs/$GITHUB_RUN_ID
           \`\`\`
-
-          The gate will run the complete Flow-Core and Ash Keep closure, choose one bounded credential route, deploy once, observe exact production content, and run both browser matrices. ⟐
+          The gate will run Flow-Core and Ash AIA3 closure, deploy once, verify exact production bytes, observe all browser matrices, and restore the lock. ⟐
           EOF_COMMENT
           )"
-
       - name: Install dependencies
         run: npm ci
-
-      - name: Verify release-critical, Flow-Core, and Ash Keep closure contracts
+      - name: Verify release-critical, Flow-Core, and Ash AIA3 closure contracts
         run: |
           node tests/vercel-deploy-hygiene.test.mjs
           node tests/vercel-operator-release-gate.test.mjs
@@ -113,30 +89,20 @@ jobs:
           node tests/flowcore-empirical-validation.test.mjs
           node tests/flowcore-production-promotion.test.mjs
           node tests/flowcore-runtime-browser-probe.test.mjs
-          node --check scripts/ash-keep-aia2-task-journey-v5.mjs
-
+          node --check scripts/ash-keep-aia3-task-journey-v2.mjs
       - name: Choose one bounded Vercel release route
         id: mode
         run: |
-          if [[ -n "${VERCEL_TOKEN:-}" ]]; then
-            echo 'mode=direct-token' >> "$GITHUB_OUTPUT"
-          else
-            echo 'mode=git-fallback' >> "$GITHUB_OUTPUT"
-          fi
-
+          if [[ -n "${VERCEL_TOKEN:-}" ]]; then echo 'mode=direct-token' >> "$GITHUB_OUTPUT"; else echo 'mode=git-fallback' >> "$GITHUB_OUTPUT"; fi
       - name: Link exact repository to the existing Vercel project
         if: steps.mode.outputs.mode == 'direct-token'
-        run: |
-          set -euo pipefail
-          npx --yes vercel@latest link --yes --project "$VERCEL_PROJECT" --scope "$VERCEL_SCOPE" --token "$VERCEL_TOKEN"
-
+        run: npx --yes vercel@latest link --yes --project "$VERCEL_PROJECT" --scope "$VERCEL_SCOPE" --token "$VERCEL_TOKEN"
       - name: Pull production environment and build once
         if: steps.mode.outputs.mode == 'direct-token'
         run: |
           set -euo pipefail
           npx --yes vercel@latest pull --yes --environment=production --scope "$VERCEL_SCOPE" --token "$VERCEL_TOKEN"
           npx --yes vercel@latest build --prod --scope "$VERCEL_SCOPE" --token "$VERCEL_TOKEN"
-
       - name: Deploy the completed packet once through the token bridge
         if: steps.mode.outputs.mode == 'direct-token'
         id: direct_deploy
@@ -152,7 +118,6 @@ jobs:
           DEPLOY_URL="$(grep -Eo 'https://[^[:space:]]+' "$DEPLOY_LOG" | tail -n 1)"
           [[ -n "$DEPLOY_URL" ]] || { echo 'Vercel returned no deployment URL.' >&2; exit 1; }
           echo "deployment_url=$DEPLOY_URL" >> "$GITHUB_OUTPUT"
-
       - name: Create one bounded Git-fallback release commit
         if: steps.mode.outputs.mode == 'git-fallback'
         id: fallback_release
@@ -160,11 +125,9 @@ jobs:
           set -euo pipefail
           node --input-type=module <<'NODE'
           import fs from 'node:fs';
-          const path = 'vercel.json';
-          const config = JSON.parse(fs.readFileSync(path, 'utf8'));
-          if (config.git?.deploymentEnabled !== false) throw new Error('Fallback requires the deployment lock to begin closed.');
-          config.git.deploymentEnabled = true;
-          fs.writeFileSync(path, `${JSON.stringify(config, null, 2)}\n`);
+          const path='vercel.json'; const config=JSON.parse(fs.readFileSync(path,'utf8'));
+          if (config.git?.deploymentEnabled !== false) throw new Error('Fallback requires the lock closed.');
+          config.git.deploymentEnabled=true; fs.writeFileSync(path,`${JSON.stringify(config,null,2)}\n`);
           NODE
           git config user.name 'github-actions[bot]'
           git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
@@ -174,18 +137,12 @@ jobs:
           git push origin HEAD:main
           echo "release_sha=$RELEASE_SHA" >> "$GITHUB_OUTPUT"
           echo "deployment_url=$TD613_CANONICAL_PRODUCTION_URL" >> "$GITHUB_OUTPUT"
-
       - name: Resolve deployed production URL
         id: deployed
         run: |
-          if [[ "${{ steps.mode.outputs.mode }}" == 'direct-token' ]]; then
-            URL='${{ steps.direct_deploy.outputs.deployment_url }}'
-          else
-            URL='${{ steps.fallback_release.outputs.deployment_url }}'
-          fi
-          [[ -n "$URL" ]] || { echo 'Release route produced no production URL.' >&2; exit 1; }
+          if [[ "${{ steps.mode.outputs.mode }}" == 'direct-token' ]]; then URL='${{ steps.direct_deploy.outputs.deployment_url }}'; else URL='${{ steps.fallback_release.outputs.deployment_url }}'; fi
+          [[ -n "$URL" ]] || { echo 'Release route produced no URL.' >&2; exit 1; }
           echo "url=$URL" >> "$GITHUB_OUTPUT"
-
       - name: Verify deployed bytes match the authorized source packet
         env:
           TD613_BASE_URL: ${{ steps.deployed.outputs.url }}
@@ -194,13 +151,11 @@ jobs:
           TD613_PROBE_ATTEMPTS: ${{ steps.mode.outputs.mode == 'git-fallback' && '72' || '24' }}
           TD613_PROBE_DELAY_MS: '5000'
         run: node scripts/flowcore-release-content-probe.mjs
-
       - name: Install production browser observers
         run: |
           npm install --no-save --package-lock=false playwright@1.53.2
           npx playwright install --with-deps chromium firefox webkit
-
-      - name: Observe the deployed Flow-Core browser matrix
+      - name: Observe deployed Flow-Core browser matrix
         env:
           TD613_BASE_URL: ${{ steps.deployed.outputs.url }}
           TD613_FLOWCORE_ROUTE_PREFIX: dome-world
@@ -209,8 +164,7 @@ jobs:
           TD613_PRODUCTION_OBSERVATION: 'true'
           TD613_ARTIFACT_DIR: artifacts/flowcore-production-observation
         run: node scripts/flowcore-runtime-browser-probe.mjs
-
-      - name: Observe the deployed Ash Keep AIA2 task matrix
+      - name: Observe deployed Ash Keep AIA3 task matrix
         env:
           TD613_BASE_URL: ${{ steps.deployed.outputs.url }}
           TD613_SOURCE_PACKET_COMMIT: ${{ steps.authorize.outputs.selected_sha }}
@@ -218,63 +172,50 @@ jobs:
         run: |
           set -euo pipefail
           for browser in chromium firefox webkit; do
-            TD613_BROWSER="$browser" \
-            TD613_ARTIFACT_DIR="artifacts/ash-aia2-production/$browser" \
-            node scripts/ash-keep-aia2-task-journey-v5.mjs
+            TD613_BROWSER="$browser" TD613_ARTIFACT_DIR="artifacts/ash-aia3-production/$browser" node scripts/ash-keep-aia3-task-journey-v2.mjs
           done
-
       - name: Verify production observations remained bounded
         run: |
           node --input-type=module <<'NODE'
           import fs from 'node:fs';
-          const content = JSON.parse(fs.readFileSync('artifacts/flowcore-production-observation/flowcore-production-content-observation.json', 'utf8'));
-          const runtime = JSON.parse(fs.readFileSync('artifacts/flowcore-production-observation/flowcore-runtime-browser-evidence.json', 'utf8'));
-          if (content.status !== 'PASS' || content.exact_source_content_verified !== true || content.application_tree_drift !== 'none') throw new Error('Exact production content observation held.');
-          if (runtime.status !== 'PASS') throw new Error('Production Flow-Core browser matrix held.');
-          if (runtime.source_packet_commit !== content.source_packet_commit) throw new Error('Production Flow-Core observations disagree on the source packet.');
-          if (runtime.authority.counts_as_human_evidence !== false || runtime.authority.authorizes_public_route_promotion !== false || runtime.authority.closes_program !== false) throw new Error('Production Flow-Core observer widened authority.');
-          for (const browser of ['chromium', 'firefox', 'webkit']) {
-            const receipt = JSON.parse(fs.readFileSync(`artifacts/ash-aia2-production/${browser}/ash-aia2-task-continuity.json`, 'utf8'));
-            if (receipt.status !== 'PASS') throw new Error(`Production Ash Keep ${browser} task journey held.`);
-            if (receipt.source_packet_commit !== content.source_packet_commit) throw new Error(`Production Ash Keep ${browser} source packet drifted.`);
-            if (receipt.authority.counts_as_human_evidence !== false || receipt.authority.authorizes_child_study !== false || receipt.authority.authorizes_release !== false || receipt.authority.closes_program !== false) throw new Error(`Production Ash Keep ${browser} observer widened authority.`);
+          const content=JSON.parse(fs.readFileSync('artifacts/flowcore-production-observation/flowcore-production-content-observation.json','utf8'));
+          const runtime=JSON.parse(fs.readFileSync('artifacts/flowcore-production-observation/flowcore-runtime-browser-evidence.json','utf8'));
+          if(content.status!=='PASS'||content.exact_source_content_verified!==true||content.application_tree_drift!=='none')throw new Error('Exact production content held.');
+          if(runtime.status!=='PASS'||runtime.source_packet_commit!==content.source_packet_commit)throw new Error('Flow-Core production matrix held.');
+          if(runtime.authority.counts_as_human_evidence!==false||runtime.authority.authorizes_public_route_promotion!==false||runtime.authority.closes_program!==false)throw new Error('Flow-Core observer widened authority.');
+          for(const browser of ['chromium','firefox','webkit']){
+            const receipt=JSON.parse(fs.readFileSync(`artifacts/ash-aia3-production/${browser}/ash-aia3-task-continuity.json`,'utf8'));
+            if(receipt.status!=='PASS'||receipt.source_packet_commit!==content.source_packet_commit)throw new Error(`${browser} AIA3 production journey held or drifted.`);
+            if(receipt.authority.counts_as_human_evidence!==false||receipt.authority.authorizes_child_study!==false||receipt.authority.authorizes_release!==false||receipt.authority.closes_program!==false)throw new Error(`${browser} AIA3 observer widened authority.`);
           }
           NODE
-
       - name: Preserve production evidence
         if: always()
         uses: actions/upload-artifact@v4
         with:
-          name: flowcore-and-ash-production-release-evidence
+          name: flowcore-and-ash-aia3-production-release-evidence
           path: |
             artifacts/flowcore-production-observation/
-            artifacts/ash-aia2-production/
+            artifacts/ash-aia3-production/
           if-no-files-found: warn
           retention-days: 45
-
       - name: Restore the Git deployment lock after fallback
         if: always() && steps.mode.outputs.mode == 'git-fallback' && steps.fallback_release.outputs.release_sha != ''
         id: relock
         run: |
           set -euo pipefail
           node --input-type=module <<'NODE'
-          import fs from 'node:fs';
-          const path = 'vercel.json';
-          const config = JSON.parse(fs.readFileSync(path, 'utf8'));
-          config.git = { ...(config.git || {}), deploymentEnabled: false };
-          fs.writeFileSync(path, `${JSON.stringify(config, null, 2)}\n`);
+          import fs from 'node:fs'; const path='vercel.json'; const config=JSON.parse(fs.readFileSync(path,'utf8')); config.git={...(config.git||{}),deploymentEnabled:false}; fs.writeFileSync(path,`${JSON.stringify(config,null,2)}\n`);
           NODE
           git add vercel.json
           git commit -m "release: restore Vercel deployment lock for ${{ steps.authorize.outputs.selected_sha }}"
           RELOCK_SHA="$(git rev-parse HEAD)"
           git push origin HEAD:main
           echo "relock_sha=$RELOCK_SHA" >> "$GITHUB_OUTPUT"
-
       - name: Seal successful production release
         if: success()
         run: |
-          gh api "repos/$GITHUB_REPOSITORY/issues/$RELEASE_GATE_ISSUE/comments" \
-            -f body="$(cat <<EOF_COMMENT
+          gh api "repos/$GITHUB_REPOSITORY/issues/$RELEASE_GATE_ISSUE/comments" -f body="$(cat <<EOF_COMMENT
           𝌋 Vercel production release completed and observed.
 
           \`\`\`text
@@ -287,44 +228,23 @@ jobs:
           deployment_url = ${{ steps.deployed.outputs.url }}
           exact_source_content = PASS
           flowcore_browser_matrix = PASS
-          ash_keep_aia2_task_matrix = PASS
+          ash_keep_aia3_task_matrix = PASS
           ash_keep_desktop = PASS
           ash_keep_mobile_390x844 = PASS
-          mobile_portrait = PASS
-          mobile_landscape = PASS
-          rotation_equivalent = PASS
-          reduced_motion = PASS
-          zoom_200_equivalent = PASS
-          high_contrast = PASS
-          performance_observation = PASS
+          canonical_fixed_ingress = PASS
+          cache_storage_eviction = PASS
+          service_worker_eviction = PASS
+          indexeddb_cases_preserved = true
           counts_as_human_evidence = false
           child_study_authorized = false
           public_route_promotion_authorized = false
           application_tree_drift = none
           git_auto_deploy = disabled
           \`\`\`
-
-          The production observation closes the exact-source, Flow-Core runtime, and Ash Keep task-continuity seams. It does not satisfy the held adult empirical gate, authorize a child study, authorize public route promotion, or close the program. Sealed ⟐
+          The production observation closes the exact-source, Flow-Core, AIA3 task-continuity, and tester-cache seams. It does not satisfy the human-study gate, authorize a child study, authorize public promotion, or close the program. Sealed ⟐
           EOF_COMMENT
           )"
-
       - name: Record held release
         if: failure()
         run: |
-          gh api "repos/$GITHUB_REPOSITORY/issues/$RELEASE_GATE_ISSUE/comments" \
-            -f body="$(cat <<EOF_COMMENT
-          𝌋 Vercel production release held.
-
-          \`\`\`text
-          source_packet_commit = ${{ steps.authorize.outputs.selected_sha || 'unresolved' }}
-          release_mode = ${{ steps.mode.outputs.mode || 'unresolved' }}
-          release_commit = ${{ steps.fallback_release.outputs.release_sha || 'not-created' }}
-          relock_commit = ${{ steps.relock.outputs.relock_sha || 'not-created' }}
-          target = PRODUCTION
-          deployment_ceiling = 1
-          workflow_run = $GITHUB_SERVER_URL/$GITHUB_REPOSITORY/actions/runs/$GITHUB_RUN_ID
-          \`\`\`
-
-          The fallback lock-restoration step was attempted when applicable. No additional deployment attempt is authorized by this failure. ⟐
-          EOF_COMMENT
-          )
+          gh api "repos/$GITHUB_REPOSITORY/issues/$RELEASE_GATE_ISSUE/comments" -f body="𝌋 Vercel production release held. Source: ${{ steps.authorize.outputs.selected_sha || 'unresolved' }}. Mode: ${{ steps.mode.outputs.mode || 'unresolved' }}. Release: ${{ steps.fallback_release.outputs.release_sha || 'not-created' }}. Relock: ${{ steps.relock.outputs.relock_sha || 'not-created' }}. Workflow: $GITHUB_SERVER_URL/$GITHUB_REPOSITORY/actions/runs/$GITHUB_RUN_ID. The fallback relock was attempted when applicable. No additional deployment attempt is authorized by this failure. ⟐"
