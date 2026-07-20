@@ -132,7 +132,7 @@ const liveGameIndex = JSON.parse(fetched.get('games/index.json'));
 if (liveGameIndex.schema !== 'td613.domeblox.game-index/v1') throw new Error('live game index schema drift');
 if (!Array.isArray(liveGameIndex.manifests) || liveGameIndex.manifests.length < 2) throw new Error('live game index incomplete');
 for (const relative of liveGameIndex.manifests) {
-  const key = relative.replace(/^\.\//, 'games/');
+  const key = relative.replace(/^\.\//, '');
   const loaded = fetched.get(key) || (await liveFetch(key)).body;
   const game = JSON.parse(loaded);
   if (game.schema !== 'td613.domeblox.game-manifest/v1') throw new Error(`live game manifest drift: ${key}`);
