@@ -12,18 +12,43 @@ on:
       - 'app/dome-world/docs/FLOWCORE_RUNTIME_RELEASE_CLOSURE_RECEIPT_V0_1.md'
       - 'app/dome-world/docs/FLOWCORE_PRODUCTION_OBSERVATION_REPAIR_RECEIPT_V0_1.md'
       - 'app/dome-world/docs/ASH_KEEP_AIA2_PRODUCTION_WITNESS_LAW_RECEIPT_V0_1.md'
+      - 'app/dome-world/docs/ASH_KEEP_AIA3_PRODUCTION_RECOVERY_RECEIPT_V0_1.md'
       - 'app/dome-world/fixtures/pedagogue/flowcore-promotion-evidence.json'
+      - 'app/dome-world/ash-aia3-composition.js'
+      - 'app/dome-world/ash-cache-eviction-aia3.js'
+      - 'app/dome-world/ash-guided-operator-ui.js'
+      - 'app/dome-world/ash-ingress-layout-hydration.js'
+      - 'app/dome-world/ash-keep-aia-workspace-bridge.js'
+      - 'app/dome-world/ash-keep-aia3*.css'
+      - 'app/dome-world/ash-lifecycle.js'
       - 'app/dome-world/route-burden-observatory.css'
       - 'app/dome-world/flowcore-promotion-dashboard.css'
       - 'app/engine/flowcore-station-propagation.js'
+      - 'api/dome-world-shell.js'
+      - 'scripts/ash-aia3-production-forensics.mjs'
+      - 'scripts/ash-keep-aia3-task-journey-v2.mjs'
       - 'scripts/flowcore-runtime-browser-probe.mjs'
       - 'scripts/flowcore-release-content-probe.mjs'
+      - 'tests/ash-investigation-guidance.test.mjs'
+      - 'tests/ash-keep-live-aia-surface.test.mjs'
+      - 'tests/ash-keep-production-closure-contract.test.mjs'
+      - 'tests/ash-lifecycle-production-contract.test.mjs'
+      - 'tests/dome-world-lab-marrowline-link.test.mjs'
+      - 'tests/product-architecture/shell.test.mjs'
       - 'tests/flowcore-p0-p10-completion.test.mjs'
       - 'tests/flowcore-production-promotion.test.mjs'
       - 'tests/flowcore-runtime-browser-probe.test.mjs'
       - 'tests/flowcore-production-observation.test.mjs'
       - 'tests/vercel-operator-release-gate.test.mjs'
       - 'docs/STRATEGIC_VERCEL_DEPLOYMENT_LAW.md'
+      - '.github/workflows/ash-aia3-production-forensics.yml'
+      - '.github/workflows/ash-investigation-guided-flight.yml'
+      - '.github/workflows/ash-keep-aia2-usability.yml'
+      - '.github/workflows/ash-keep-aia3-production-observation.yml'
+      - '.github/workflows/ash-keep-live-aia-browser.yml'
+      - '.github/workflows/ash-keep-production-closure.yml'
+      - '.github/workflows/ash-lifecycle-deployed-observation.yml'
+      - '.github/workflows/ash-lifecycle-integration.yml'
       - '.github/workflows/flowcore-runtime-evidence.yml'
       - '.github/workflows/flowcore-production-observation.yml'
       - '.github/workflows/ash-keep-aia2-production-observation.yml'
@@ -65,21 +90,62 @@ jobs:
         run: |
           set -euo pipefail
           BASE_SHA="${{ github.event.pull_request.base.sha }}"
-          if [[ -z "$BASE_SHA" ]]; then
-            BASE_SHA="$(git rev-parse origin/main)"
-          fi
+          if [[ -z "$BASE_SHA" ]]; then BASE_SHA="$(git rev-parse origin/main)"; fi
           CHANGED="$(git diff --name-only "$BASE_SHA" "${{ github.sha }}")"
-          MODE='documentary'
+
+          DOCUMENTARY_ONLY=true
           while IFS= read -r path; do
             [[ -z "$path" ]] && continue
             case "$path" in
               app/dome-world/docs/*|tests/flowcore-p0-p10-completion.test.mjs|.github/workflows/flowcore-p0-p10-final-stitch.yml) ;;
-              *) MODE='runtime-release' ;;
+              *) DOCUMENTARY_ONLY=false ;;
             esac
           done <<< "$CHANGED"
+          if [[ "$DOCUMENTARY_ONLY" == true ]]; then echo 'Completion mode: documentary-only.'; exit 0; fi
 
-          if [[ "$MODE" == 'documentary' ]]; then
-            echo 'Completion mode: documentary-only.'
+          if grep -Fxq 'app/dome-world/docs/ASH_KEEP_AIA3_PRODUCTION_RECOVERY_RECEIPT_V0_1.md' <<< "$CHANGED"; then
+            ALLOWED="$(cat <<'EOF_ALLOWED'
+          .github/workflows/ash-aia3-production-forensics.yml
+          .github/workflows/ash-investigation-guided-flight.yml
+          .github/workflows/ash-keep-aia2-usability.yml
+          .github/workflows/ash-keep-aia3-production-observation.yml
+          .github/workflows/ash-keep-live-aia-browser.yml
+          .github/workflows/ash-keep-production-closure.yml
+          .github/workflows/ash-lifecycle-deployed-observation.yml
+          .github/workflows/ash-lifecycle-integration.yml
+          .github/workflows/flowcore-p0-p10-final-stitch.yml
+          .github/workflows/vercel-operator-release.yml
+          api/dome-world-shell.js
+          app/dome-world/ash-aia3-composition.js
+          app/dome-world/ash-cache-eviction-aia3.js
+          app/dome-world/ash-guided-operator-ui.js
+          app/dome-world/ash-ingress-layout-hydration.js
+          app/dome-world/ash-keep-aia-workspace-bridge.js
+          app/dome-world/ash-keep-aia3-compact.css
+          app/dome-world/ash-keep-aia3-interaction.css
+          app/dome-world/ash-keep-aia3.css
+          app/dome-world/ash-lifecycle.js
+          app/dome-world/docs/ASH_KEEP_AIA3_PRODUCTION_RECOVERY_RECEIPT_V0_1.md
+          scripts/ash-aia3-production-forensics.mjs
+          scripts/ash-keep-aia3-task-journey-v2.mjs
+          tests/ash-investigation-guidance.test.mjs
+          tests/ash-keep-live-aia-surface.test.mjs
+          tests/ash-keep-production-closure-contract.test.mjs
+          tests/ash-lifecycle-production-contract.test.mjs
+          tests/dome-world-lab-marrowline-link.test.mjs
+          tests/product-architecture/shell.test.mjs
+          tests/vercel-operator-release-gate.test.mjs
+          EOF_ALLOWED
+          )"
+            while IFS= read -r path; do
+              [[ -z "$path" ]] && continue
+              grep -Fxq "$path" <<< "$ALLOWED" || { echo "AIA3 recovery changed an unauthorized path: $path" >&2; exit 1; }
+            done <<< "$CHANGED"
+            if grep -Eq '^(vercel\.json$|app/dome-world/ash/|app/dome-world/data/|api/(?!dome-world-shell\.js$))' <<< "$CHANGED"; then
+              echo 'AIA3 recovery may not mutate Vercel configuration, canonical Ash/data stores, or add another API surface.' >&2
+              exit 1
+            fi
+            echo 'Completion mode: bounded Ash AIA3 production recovery.'
             exit 0
           fi
 
@@ -116,15 +182,10 @@ jobs:
           tests/vercel-operator-release-gate.test.mjs
           EOF_ALLOWED
           )"
-
           while IFS= read -r path; do
             [[ -z "$path" ]] && continue
-            grep -Fxq "$path" <<< "$ALLOWED" || {
-              echo "Production observation repair changed an unauthorized path: $path" >&2
-              exit 1
-            }
+            grep -Fxq "$path" <<< "$ALLOWED" || { echo "Production observation repair changed an unauthorized path: $path" >&2; exit 1; }
           done <<< "$CHANGED"
-
           if grep -Eq '^(api/|vercel\.json$|app/dome-world/ash/|app/dome-world/data/)' <<< "$CHANGED"; then
             echo 'Production observation repair may not mutate serverless, Ash, canonical, or promotion configuration.' >&2
             exit 1
