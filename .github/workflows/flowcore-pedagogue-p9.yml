@@ -1,0 +1,58 @@
+name: Flow-Core Pedagogue P9 Validation Contracts
+
+on:
+  pull_request:
+    branches: [ main ]
+    paths:
+      - 'app/engine/flowcore-empirical-validation.js'
+      - 'app/dome-world/flowcore-validation-lab*'
+      - 'app/dome-world/fixtures/pedagogue/flowcore-validation-synthetic-pipeline.json'
+      - 'app/dome-world/schemas/flowcore-validation-v01.schema.json'
+      - 'app/dome-world/docs/FLOWCORE_PEDAGOGUE_P9_IMPLEMENTATION_RECEIPT_V0_1.md'
+      - 'tests/flowcore-empirical-validation.test.mjs'
+      - '.github/workflows/flowcore-pedagogue-p9.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  validation-contracts:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+          cache: npm
+      - run: npm ci
+      - name: Run stitched P0-P7 baseline contracts
+        run: node --test tests/flowcore-p0-p7-seam-closure.test.mjs
+      - name: Run inherited P1-P8 contracts
+        run: |
+          node --test tests/flowcore-pedagogue-core.test.mjs
+          node --test tests/flowcore-pedagogue-aia.test.mjs
+          node --test tests/flowcore-pedagogue-visual.test.mjs
+          node --test tests/information-dome-scenes.test.mjs
+          node --test tests/flowcore-route-burden.test.mjs
+          node --test tests/ash-pedagogue-custody-route.test.mjs
+          node --test tests/flowcore-station-propagation.test.mjs
+          node --test tests/flowcore-physical-scene.test.mjs
+      - name: Run P9 empirical-validation contracts
+        run: node --test tests/flowcore-empirical-validation.test.mjs
+      - name: Assert P9 protected files and infrastructure are unchanged
+        shell: bash
+        run: |
+          BASE_SHA="${{ github.event.pull_request.base.sha }}"
+          if [[ -z "$BASE_SHA" ]]; then
+            BASE_SHA="$(git rev-parse origin/main)"
+          fi
+          CHANGED="$(git diff --name-only "$BASE_SHA" "${{ github.sha }}")"
+          if grep -Eq '^(api/|vercel\.json$|app/engine/ash-lifecycle\.js|app/dome-world/ash/canonical-json\.js|app/engine/flowcore-pedagogue-core\.js)' <<< "$CHANGED"; then
+            echo 'P9 may not mutate serverless, Ash, canonical, or pedagogue core law.'
+            exit 1
+          fi
+      - name: Re-run privacy, identity, and synthetic evidence firewalls
+        run: node --test --test-name-pattern='rejects incomplete conditions|rejects non-adult trials|synthetic trials preserve|synthetic-only bundle keeps|human adult evidence remains necessary|lab exposes conditions' tests/flowcore-empirical-validation.test.mjs
