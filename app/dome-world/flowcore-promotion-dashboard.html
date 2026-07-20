@@ -1,0 +1,32 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>Flow-Core Promotion Dashboard · U+10D613</title>
+  <link rel="stylesheet" href="./flowcore-promotion-dashboard.css">
+</head>
+<body>
+  <main class="promotion-dashboard" data-promotion-dashboard aria-busy="true">
+    <header class="promotion-dashboard__header">
+      <p class="promotion-dashboard__eyebrow">𝌋‌ · U+10D613 · P10 promotion evidence</p>
+      <h1>Promotion is evidence, not momentum</h1>
+      <p>Merge and deployment do not advance the promotion state. The feature gate defaults off; governed state remains untouched.</p>
+    </header>
+
+    <section class="promotion-dashboard__status" aria-live="polite" data-bounded-live>Compiling the promotion packet…</section>
+    <nav class="promotion-dashboard__choices" aria-label="Promotion evidence" data-evidence-nav></nav>
+    <section class="promotion-dashboard__stage" data-stage></section>
+    <section class="promotion-dashboard__controls">
+      <button type="button" data-rest>Rest</button>
+      <button type="button" data-return>Return</button>
+      <button type="button" data-replay>Replay</button>
+      <a href="./" data-exit>Exit</a>
+    </section>
+    <footer class="promotion-dashboard__footer">
+      <p>The dashboard can inspect a packet. It cannot enable the feature, authorize release, promote the program, mutate governed state, or close. ⟐</p>
+    </footer>
+  </main>
+  <script type="module" src="./flowcore-promotion-dashboard.js"></script>
+</body>
+</html>
