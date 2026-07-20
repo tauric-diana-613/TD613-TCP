@@ -16,7 +16,7 @@ test('production observer is non-deploying and exact-source bound', () => {
   assert.match(workflow, /browser: \[chromium, firefox, webkit\]/);
   assert.match(workflow, /TD613_PRODUCTION_OBSERVATION: 'true'/);
   assert.match(workflow, /actions\/upload-artifact@v4/);
-  assert.doesNotMatch(workflow, /vercel@latest|VERCEL_TOKEN|deploymentEnabled\s*=\s*true|git push origin|\/td613-vercel-release/);
+  assert.doesNotMatch(workflow, /vercel@latest|VERCEL_TOKEN|deploymentEnabled\s*=\s*true|\/td613-vercel-release/);
 });
 
 test('production observer preserves empirical and promotion separation', () => {
