@@ -33,21 +33,47 @@ jobs:
         with:
           ref: ${{ github.event.pull_request.head.ref }}
           fetch-depth: 0
-      - name: Apply only while staging exists
+      - name: Detect staging
+        id: staging
+        run: echo "present=$([[ -d .aia2-stage ]] && echo true || echo false)" >> "$GITHUB_OUTPUT"
+      - name: Decode staged controller
+        if: steps.staging.outputs.present == 'true'
         shell: bash
         run: |
           set -euo pipefail
-          if [[ ! -d .aia2-stage ]]; then
-            echo 'Staged controller already applied.'
-            exit 0
-          fi
+          mkdir -p artifacts/aia2-controller
           cat .aia2-stage/ash-keep-aia.js.b64.* | tr -d '\n\r' | base64 --decode > app/dome-world/ash-keep-aia.js
-          test "$(wc -c < app/dome-world/ash-keep-aia.js | tr -d ' ')" -gt 25000
-          grep -Fq 'td613.ash.live-aia-browser/v0.2-task-continuity' app/dome-world/ash-keep-aia.js
-          grep -Fq 'task_continuity_required: true' app/dome-world/ash-keep-aia.js
-          grep -Fq 'Open a local document' app/dome-world/ash-keep-aia.js
-          node --check app/dome-world/ash-keep-aia.js
-          sha256sum app/dome-world/ash-keep-aia.js
+          cp app/dome-world/ash-keep-aia.js artifacts/aia2-controller/ash-keep-aia.js
+          wc -c app/dome-world/ash-keep-aia.js | tee artifacts/aia2-controller/bytes.txt
+          sha256sum app/dome-world/ash-keep-aia.js | tee artifacts/aia2-controller/sha256.txt
+      - name: Verify controller size
+        if: steps.staging.outputs.present == 'true'
+        run: test "$(wc -c < app/dome-world/ash-keep-aia.js | tr -d ' ')" -gt 25000
+      - name: Verify controller identity
+        if: steps.staging.outputs.present == 'true'
+        run: grep -F 'td613.ash.live-aia-browser/v0.2-task-continuity' app/dome-world/ash-keep-aia.js
+      - name: Verify task continuity law
+        if: steps.staging.outputs.present == 'true'
+        run: grep -F 'task_continuity_required: true' app/dome-world/ash-keep-aia.js
+      - name: Verify local document task
+        if: steps.staging.outputs.present == 'true'
+        run: grep -F 'Open a local document' app/dome-world/ash-keep-aia.js
+      - name: Verify JavaScript syntax
+        if: steps.staging.outputs.present == 'true'
+        run: node --check app/dome-world/ash-keep-aia.js
+      - name: Preserve reconstructed controller
+        if: always() && steps.staging.outputs.present == 'true'
+        uses: actions/upload-artifact@v4
+        with:
+          name: ash-aia2-reconstructed-controller
+          path: artifacts/aia2-controller/
+          if-no-files-found: warn
+          retention-days: 7
+      - name: Commit durable controller
+        if: steps.staging.outputs.present == 'true'
+        shell: bash
+        run: |
+          set -euo pipefail
           rm -rf .aia2-stage
           rm -f .github/workflows/apply-ash-aia2-controller-once.yml
           git config user.name 'github-actions[bot]'
@@ -55,32 +81,6 @@ jobs:
           git add app/dome-world/ash-keep-aia.js .aia2-stage .github/workflows/apply-ash-aia2-controller-once.yml
           git commit -m 'Replace Ash Keep facade with task-continuity controller'
           git push origin HEAD:${{ github.event.pull_request.head.ref }}
-
-  production-diagnosis:
-    name: Observe current production desktop and mobile
-    runs-on: ubuntu-latest
-    timeout-minutes: 25
-    steps:
-      - uses: actions/checkout@v4
-      - uses: actions/setup-node@v4
-        with:
-          node-version: 22
-          cache: npm
-      - run: npm ci
-      - run: npm install --no-save --package-lock=false playwright@1.53.2
-      - run: npx playwright install --with-deps chromium
-      - name: Observe current production without mutation
-        env:
-          TD613_BASE_URL: https://td613.com
-          TD613_ARTIFACT_DIR: artifacts/ash-aia2-production-diagnosis
-        run: node scripts/ash-keep-aia2-production-diagnosis.mjs
-      - if: always()
-        uses: actions/upload-artifact@v4
-        with:
-          name: ash-aia2-production-diagnosis
-          path: artifacts/ash-aia2-production-diagnosis/
-          if-no-files-found: error
-          retention-days: 45
 
   inherited-contracts:
     name: Preserve Ash law while rescue is in progress
