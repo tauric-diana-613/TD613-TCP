@@ -7,7 +7,9 @@
 **Release workflow:** `29713493663`  
 **Release commit:** `6f2a1b9f6e163d3a3130bcdfa752ae32b685f829`  
 **Relock commit:** `3746383d612d0fcc7384acea4a35e14e1f278031`  
-**Status:** APPLICATION DEPLOYED / SOURCE PARITY PASS / BROWSER OBSERVER CORRECTED / READ-ONLY CONFIRMATION REQUIRED / HUMAN CLOSURE OPEN
+**Observer correction merge:** `0cf4428f9721bc199c7526ccd58bda15955b8259`  
+**Read-only production witness:** `29714066035`  
+**Status:** APPLICATION DEPLOYED / SOURCE PARITY PASS / PRODUCTION BROWSER MATRIX PASS / GIT LOCK RESTORED / HUMAN CLOSURE OPEN
 
 ## Completed application repairs
 
@@ -32,13 +34,14 @@ follows JavaScript imports and fetched fixtures: true
 follows CSS assets: true
 follows ordinary navigation links: false
 resolves exact static Vercel rewrites: true
+application tree drift: none
 ```
 
 The deployment completed once and the Git deployment lock was restored.
 
 ## Asynchronous Replay observation
 
-The remaining browser hold occurred after the witness clicked Replay on the station surface. Replay correctly performs this sequence:
+The earlier browser hold occurred after the witness clicked Replay on the station surface. Replay correctly performs this sequence:
 
 ```text
 set aria-busy=true
@@ -61,22 +64,27 @@ retains held-state, layout, keyboard, motion, contrast, and performance assertio
 
 No application runtime behavior changed in this correction.
 
-## Required read-only confirmation
+## Completed read-only confirmation
 
-The already-deployed source must pass the corrected witness without another deployment:
+Run `29714066035` observed the already-deployed source without another deployment:
 
 ```text
-Chromium production matrix: PASS required
-Firefox production matrix: PASS required
-WebKit production matrix: PASS required
-mobile portrait and landscape: PASS required
-reduced motion: PASS required
-zoom-equivalent reflow: PASS required
-forced colors: PASS required
-performance observation: PASS required
+rewrite-aware exact source parity: PASS
+Chromium production matrix: PASS
+Firefox production matrix: PASS
+WebKit production matrix: PASS
+mobile portrait: PASS
+mobile landscape: PASS
+rotation-equivalent layout: PASS
+reduced motion: PASS
+zoom-equivalent reflow: PASS
+forced colors: PASS
+performance observation: PASS
 Git deployment lock: disabled
 application tree drift: none
 ```
+
+The one-use witness workflow was removed before the observer correction merged.
 
 ## Preserved boundary
 
@@ -95,4 +103,4 @@ human closure required: true
 closure: OPEN
 ```
 
-**Qualified ⟐**
+**Observed and sealed ⟐**
