@@ -22,4 +22,5 @@ html[data-ash-aia3][data-ash-session-open="true"] .ash-aia__consequences,html[da
   html[data-ash-aia3][data-ash-session-open="true"] body>.workspace-rail .work-tab{min-width:0!important;width:100%!important;white-space:normal!important;overflow-wrap:anywhere!important}
   html[data-ash-aia3][data-ash-session-open="true"] .premium-primary-dock{left:8px!important;right:8px!important;width:auto!important;max-width:calc(100% - 16px)!important;transform:none!important;grid-template-columns:repeat(5,minmax(0,1fr))!important}
   html[data-ash-aia3][data-ash-session-open="true"] .premium-primary-dock button{min-width:0!important;width:100%!important}
+  html[data-ash-aia3][data-ash-session-open="true"] #rebuildValue,html[data-ash-aia3][data-ash-session-open="true"] #workValue,html[data-ash-aia3][data-ash-session-open="true"] input[type="range"]{display:block!important;min-width:0!important;width:100%!important;max-width:100%!important;box-sizing:border-box!important}
 }
