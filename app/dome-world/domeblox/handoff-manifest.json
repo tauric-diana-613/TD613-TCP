@@ -1,8 +1,8 @@
 {
   "schema": "td613.domeblox.handoff-manifest/v1",
   "filename": "DomeWorld_v3_1_Armored_FlowCore_DomeBlox_ForwardBattery_Erin_Potato_Handoff.zip",
-  "sha256": "2944bcf530b3c01fbd78bc85228ee87f471d60c1021af6277518b9fa09ce2bb7",
-  "file_count": 98,
+  "sha256": "b79f2cb3c292a4cef36c1eb1f45f2e73602cdf424b9b241853bf8789e79be845",
+  "file_count": 100,
   "distribution": "separate operator handoff; not embedded in repository",
   "route_package_status": "manifest-only"
 }
