@@ -9,7 +9,7 @@ on:
       - 'app/dome-world/ash-keep-aia2-layout.css'
       - 'app/dome-world/ash-keep-aia-workspace-bridge.js'
       - 'app/dome-world/ash-lifecycle.js'
-      - 'scripts/ash-keep-aia2-task-journey-v3.mjs'
+      - 'scripts/ash-keep-aia2-task-journey-v4.mjs'
       - '.github/workflows/ash-keep-live-aia-browser.yml'
   push:
     branches: [main]
@@ -20,7 +20,7 @@ on:
       - 'app/dome-world/ash-keep-aia2-layout.css'
       - 'app/dome-world/ash-keep-aia-workspace-bridge.js'
       - 'app/dome-world/ash-lifecycle.js'
-      - 'scripts/ash-keep-aia2-task-journey-v3.mjs'
+      - 'scripts/ash-keep-aia2-task-journey-v4.mjs'
       - '.github/workflows/ash-keep-live-aia-browser.yml'
   workflow_dispatch:
     inputs:
@@ -59,7 +59,7 @@ jobs:
           cache: npm
       - run: npm ci
       - name: Validate task witness syntax
-        run: node --check scripts/ash-keep-aia2-task-journey-v3.mjs
+        run: node --check scripts/ash-keep-aia2-task-journey-v4.mjs
       - name: Install browser witness runtime
         run: |
           npm install --no-save --package-lock=false playwright@1.53.2
@@ -86,7 +86,7 @@ jobs:
           TD613_SOURCE_PACKET_COMMIT: ${{ inputs.source_packet_commit || github.sha }}
           TD613_PRODUCTION_OBSERVATION: ${{ inputs.base_url != '' }}
           TD613_ARTIFACT_DIR: artifacts/ash-aia2-${{ matrix.browser }}
-        run: node scripts/ash-keep-aia2-task-journey-v3.mjs
+        run: node scripts/ash-keep-aia2-task-journey-v4.mjs
       - name: Stop bounded local runtime
         if: ${{ always() && inputs.base_url == '' }}
         run: |
