@@ -2,6 +2,9 @@
 name: Patch Ash AIA projection identity and legacy probe synchronization
 
 on:
+  pull_request:
+    paths:
+      - '.github/workflows/ash-aia-projection-identity-patch.yml'
   push:
     branches:
       - agent/ash-keep-live-child-legible-aia
