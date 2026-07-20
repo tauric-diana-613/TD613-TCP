@@ -1,102 +1,43 @@
 name: Ash Keep AIA2 usability rescue
 
 on:
-  push:
-    branches: [agent/ash-keep-aia2-usability-rescue]
-    paths:
-      - '.aia2-stage/**'
-      - 'app/dome-world/ash-keep*.html'
-      - 'app/dome-world/ash-keep-aia*.js'
-      - 'app/dome-world/ash-keep-aia*.css'
-      - 'app/dome-world/ash-lifecycle.js'
-      - 'app/engine/ash-live-aia.js'
-      - 'scripts/ash-keep-aia2-*.mjs'
-      - 'tests/ash-keep-aia2-*.test.mjs'
-      - '.github/workflows/apply-ash-aia2-controller-once.yml'
-      - '.github/workflows/ash-keep-aia2-usability.yml'
   pull_request:
     paths:
-      - 'app/dome-world/ash-keep*.html'
       - 'app/dome-world/ash-keep-aia*.js'
       - 'app/dome-world/ash-keep-aia*.css'
       - 'app/dome-world/ash-lifecycle.js'
       - 'app/engine/ash-live-aia.js'
       - 'scripts/ash-keep-aia2-*.mjs'
+      - 'tests/ash-keep-live-aia-surface.test.mjs'
       - 'tests/ash-keep-aia2-*.test.mjs'
+      - 'app/dome-world/docs/ASH_KEEP_AIA2_USABILITY_RESCUE_RECEIPT_V0_1.md'
+      - '.github/workflows/ash-keep-aia2-usability.yml'
+  push:
+    branches: [main]
+    paths:
+      - 'app/dome-world/ash-keep-aia*.js'
+      - 'app/dome-world/ash-keep-aia*.css'
+      - 'app/dome-world/ash-lifecycle.js'
+      - 'app/engine/ash-live-aia.js'
+      - 'scripts/ash-keep-aia2-*.mjs'
+      - 'tests/ash-keep-live-aia-surface.test.mjs'
+      - 'tests/ash-keep-aia2-*.test.mjs'
+      - 'app/dome-world/docs/ASH_KEEP_AIA2_USABILITY_RESCUE_RECEIPT_V0_1.md'
       - '.github/workflows/ash-keep-aia2-usability.yml'
   workflow_dispatch:
 
 permissions:
-  contents: write
+  contents: read
 
 concurrency:
-  group: ash-keep-aia2-${{ github.ref }}
+  group: ash-keep-aia2-${{ github.event.pull_request.number || github.ref }}
   cancel-in-progress: true
 
 jobs:
-  apply-staged-controller:
-    name: Apply staged task-continuity controller once
-    if: github.event_name == 'push' && github.ref_name == 'agent/ash-keep-aia2-usability-rescue'
+  contracts:
+    name: Task continuity and inherited Ash law
     runs-on: ubuntu-latest
-    timeout-minutes: 10
-    steps:
-      - uses: actions/checkout@v4
-        with:
-          ref: agent/ash-keep-aia2-usability-rescue
-          fetch-depth: 0
-      - name: Detect staging
-        id: staging
-        run: echo "present=$([[ -d .aia2-stage ]] && echo true || echo false)" >> "$GITHUB_OUTPUT"
-      - name: Decode staged controller
-        if: steps.staging.outputs.present == 'true'
-        shell: bash
-        run: |
-          set -euo pipefail
-          mkdir -p artifacts/aia2-controller
-          cat .aia2-stage/ash-keep-aia.js.b64.* | tr -d '\n\r' | base64 --decode > app/dome-world/ash-keep-aia.js
-          cp app/dome-world/ash-keep-aia.js artifacts/aia2-controller/ash-keep-aia.js
-          wc -c app/dome-world/ash-keep-aia.js | tee artifacts/aia2-controller/bytes.txt
-          sha256sum app/dome-world/ash-keep-aia.js | tee artifacts/aia2-controller/sha256.txt
-      - name: Verify controller size
-        if: steps.staging.outputs.present == 'true'
-        run: test "$(wc -c < app/dome-world/ash-keep-aia.js | tr -d ' ')" -gt 25000
-      - name: Verify controller identity
-        if: steps.staging.outputs.present == 'true'
-        run: grep -F 'td613.ash.live-aia-browser/v0.2-task-continuity' app/dome-world/ash-keep-aia.js
-      - name: Verify task continuity law
-        if: steps.staging.outputs.present == 'true'
-        run: grep -F 'task_continuity_required: true' app/dome-world/ash-keep-aia.js
-      - name: Verify local document task
-        if: steps.staging.outputs.present == 'true'
-        run: grep -F 'Open a local document' app/dome-world/ash-keep-aia.js
-      - name: Verify JavaScript syntax
-        if: steps.staging.outputs.present == 'true'
-        run: node --check app/dome-world/ash-keep-aia.js
-      - name: Preserve reconstructed controller
-        if: always() && steps.staging.outputs.present == 'true'
-        uses: actions/upload-artifact@v4
-        with:
-          name: ash-aia2-reconstructed-controller
-          path: artifacts/aia2-controller/
-          if-no-files-found: warn
-          retention-days: 7
-      - name: Commit durable controller
-        if: steps.staging.outputs.present == 'true'
-        shell: bash
-        run: |
-          set -euo pipefail
-          rm -rf .aia2-stage
-          rm -f .github/workflows/apply-ash-aia2-controller-once.yml
-          git config user.name 'github-actions[bot]'
-          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
-          git add app/dome-world/ash-keep-aia.js .aia2-stage .github/workflows/apply-ash-aia2-controller-once.yml
-          git commit -m 'Replace Ash Keep facade with task-continuity controller'
-          git push origin HEAD:agent/ash-keep-aia2-usability-rescue
-
-  inherited-contracts:
-    name: Preserve Ash law while rescue is in progress
-    runs-on: ubuntu-latest
-    timeout-minutes: 20
+    timeout-minutes: 25
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-node@v4
@@ -104,9 +45,27 @@ jobs:
           node-version: 22
           cache: npm
       - run: npm ci
-      - run: node tests/ash-keep-live-aia-engine.test.mjs
-      - run: node tests/ash-lifecycle.test.mjs
-      - run: node tests/ash-keep-core.test.mjs
-      - run: node tests/ash-keep-continuity.test.mjs
-      - run: node tests/ash-keep-hush-api.test.mjs
-      - run: node tests/tcp-smoke.test.mjs
+      - name: Validate rescue scripts
+        run: |
+          node --check app/dome-world/ash-keep-aia.js
+          node --check app/dome-world/ash-keep-aia-workspace-bridge.js
+          node --check scripts/ash-keep-aia2-production-diagnosis.mjs
+          node --check scripts/ash-keep-aia2-task-journey.mjs
+      - name: Live presentation and task-continuity contracts
+        run: node tests/ash-keep-live-aia-surface.test.mjs
+      - name: Live AIA engine contracts
+        run: node tests/ash-keep-live-aia-engine.test.mjs
+      - name: Inherited P6 pedagogue contracts
+        run: node tests/ash-pedagogue-custody-route.test.mjs
+      - name: Exact lifecycle contracts
+        run: node tests/ash-lifecycle.test.mjs
+      - name: Ash Keep core contracts
+        run: node tests/ash-keep-core.test.mjs
+      - name: Ash Keep continuity contracts
+        run: node tests/ash-keep-continuity.test.mjs
+      - name: Ash Keep Hush API contracts
+        run: node tests/ash-keep-hush-api.test.mjs
+      - name: Static delivery and smoke
+        run: |
+          node tests/dome-world-ash-custody.test.mjs
+          node tests/tcp-smoke.test.mjs
