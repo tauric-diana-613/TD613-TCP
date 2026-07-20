@@ -1,0 +1,96 @@
+name: Flow-Core Production Observation
+
+on:
+  pull_request:
+    branches: [main]
+    paths:
+      - '.github/workflows/flowcore-production-observation.yml'
+      - 'scripts/flowcore-release-content-probe.mjs'
+      - 'scripts/flowcore-runtime-browser-probe.mjs'
+      - 'tests/flowcore-production-observation.test.mjs'
+  workflow_dispatch:
+    inputs:
+      source_packet_commit:
+        description: Exact deployed source-packet commit to observe
+        required: true
+        default: 13e2fa584f685d847424c4b82e66496b583573a5
+
+permissions:
+  contents: read
+
+env:
+  TD613_PRODUCTION_BASE_URL: https://td613.com
+  TD613_SOURCE_PACKET_COMMIT: ${{ github.event_name == 'workflow_dispatch' && inputs.source_packet_commit || '13e2fa584f685d847424c4b82e66496b583573a5' }}
+
+jobs:
+  exact-source-content:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: ${{ env.TD613_SOURCE_PACKET_COMMIT }}
+          fetch-depth: 1
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+          cache: npm
+      - run: npm ci
+      - name: Verify observer contract
+        run: node --test tests/flowcore-production-observation.test.mjs
+      - name: Observe exact production bytes without deploying
+        env:
+          TD613_BASE_URL: ${{ env.TD613_PRODUCTION_BASE_URL }}
+          TD613_ARTIFACT_DIR: artifacts/flowcore-production-content
+          TD613_PROBE_ATTEMPTS: '3'
+          TD613_PROBE_DELAY_MS: '2000'
+        run: node scripts/flowcore-release-content-probe.mjs
+      - name: Preserve exact-source evidence
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: flowcore-production-content-evidence
+          path: artifacts/flowcore-production-content/
+          if-no-files-found: warn
+          retention-days: 45
+
+  browser-observation:
+    name: ${{ matrix.browser }} production observation
+    runs-on: ubuntu-latest
+    timeout-minutes: 45
+    strategy:
+      fail-fast: false
+      matrix:
+        browser: [chromium, firefox, webkit]
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: ${{ env.TD613_SOURCE_PACKET_COMMIT }}
+          fetch-depth: 1
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+          cache: npm
+      - run: npm ci
+      - name: Verify observer contract
+        run: node --test tests/flowcore-production-observation.test.mjs
+      - name: Install bounded browser runtime
+        run: |
+          npm install --no-save --package-lock=false playwright@1.53.2
+          npx playwright install --with-deps ${{ matrix.browser }}
+      - name: Observe current production without deploying
+        env:
+          TD613_BASE_URL: ${{ env.TD613_PRODUCTION_BASE_URL }}
+          TD613_FLOWCORE_ROUTE_PREFIX: dome-world
+          TD613_BROWSERS: ${{ matrix.browser }}
+          TD613_PRODUCTION_OBSERVATION: 'true'
+          TD613_ARTIFACT_DIR: artifacts/flowcore-production-${{ matrix.browser }}
+        run: node scripts/flowcore-runtime-browser-probe.mjs
+      - name: Preserve browser evidence
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: flowcore-production-${{ matrix.browser }}-evidence
+          path: artifacts/flowcore-production-${{ matrix.browser }}/
+          if-no-files-found: warn
+          retention-days: 45
