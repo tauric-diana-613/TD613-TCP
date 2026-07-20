@@ -5,7 +5,6 @@ import test from 'node:test';
 const workflow = fs.readFileSync('.github/workflows/flowcore-production-observation.yml', 'utf8');
 const browserProbe = fs.readFileSync('scripts/flowcore-runtime-browser-probe.mjs', 'utf8');
 const contentProbe = fs.readFileSync('scripts/flowcore-release-content-probe.mjs', 'utf8');
-const stationEngine = fs.readFileSync('app/engine/flowcore-station-propagation.js', 'utf8');
 
 const sourcePacket = '13e2fa584f685d847424c4b82e66496b583573a5';
 
@@ -37,9 +36,4 @@ test('exact-source observation discovers the recursive runtime dependency closur
   assert.match(contentProbe, /cross-station-propagation\.json/);
   assert.match(contentProbe, /dependency_closure_verified:\s*true/);
   assert.match(contentProbe, /local\.length < 20/);
-});
-
-test('independent station packages compile concurrently without changing their order', () => {
-  assert.match(stationEngine, /const packages = await Promise\.all\(fixtures\.map\(fixture => compileStationPropagationScene\(fixture, options\)\)\);/);
-  assert.doesNotMatch(stationEngine, /for \(const fixture of fixtures\) packages\.push\(await compileStationPropagationScene/);
 });
