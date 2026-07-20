@@ -1,4 +1,5 @@
-/* AK-AIA-3 interaction containment: neighboring guide/work/evidence cards may never overlap hit targets. */
+/* AK-AIA-3 interaction containment: the membrane is one vertical task stack, never a squeezed horizontal row. */
+html[data-ash-aia3][data-ash-session-open="true"] #ashAiaMembrane{flex-direction:column!important;align-items:stretch!important;justify-content:flex-start!important}
 html[data-ash-aia3][data-ash-session-open="true"] .ash-aia__body{position:relative!important;z-index:10!important;grid-template-columns:minmax(0,1fr) minmax(250px,340px)!important;align-items:stretch!important;overflow:hidden!important;isolation:isolate!important}
 html[data-ash-aia3][data-ash-session-open="true"] .ash-aia__tasks{position:relative!important;z-index:15!important;isolation:isolate!important}
 html[data-ash-aia3][data-ash-session-open="true"] .ash-aia__guide,html[data-ash-aia3][data-ash-session-open="true"] .ash-aia__work{position:relative!important;min-width:0!important;max-width:100%!important;overflow:hidden!important;isolation:isolate!important}
