@@ -203,9 +203,14 @@ function render() {
 
 async function compileCurrent(trigger = 'STATE_OBSERVED') {
   const token = ++state.refreshToken, receipt = parseLifecycleReceipt(); if (!receipt) return;
-  const lifecycle = receipt.lifecycle, before = state.previousLifecycle, frozenClock = receipt.observed_at || new Date().toISOString();
+  const lifecycle = receipt.lifecycle;
+  const presentationOnly = ['ROUTE_CHANGED', 'EXPLICIT_REPLAY', 'MOTION_PREFERENCE_CHANGED'].includes(trigger);
+  const sameLifecycleReceipt = state.lifecycleReceipt?.lifecycle_digest === receipt.lifecycle_digest;
+  const reusePackage = Boolean(presentationOnly && sameLifecycleReceipt && state.packageView);
+  const before = presentationOnly ? lifecycle : state.previousLifecycle;
+  const frozenClock = receipt.observed_at || new Date().toISOString();
   const seed = receipt.lifecycle_digest || `${lifecycle.state}:${lifecycle.references?.case_map_digest || 'unbound'}`;
-  const packageView = await compileAshCustodyPedagogueScene({ lifecycle }, {
+  const packageView = reusePackage ? state.packageView : await compileAshCustodyPedagogueScene({ lifecycle }, {
     frozenClock, idSeed: `ash-live-aia:${seed}`, cryptoImpl: globalThis.crypto,
     beforeSnapshot: before ? { lifecycle: before } : null,
     desktopViewport: { width: 1120, height: 760, devicePixelRatio: devicePixelRatio || 1 },
@@ -225,7 +230,8 @@ async function compileCurrent(trigger = 'STATE_OBSERVED') {
     remember(state.latestActionReceipt); state.playing = !state.reducedMotion;
   } else if (trigger === 'EXPLICIT_REPLAY') state.playing = !state.reducedMotion;
   if (state.playing) setTimeout(() => { state.playing = false; $('[data-aia-stage]')?.setAttribute('data-playing', 'false'); }, state.animationPlan.duration_ms + 120);
-  state.previousLifecycle = structuredClone(lifecycle); render();
+  if (!presentationOnly) state.previousLifecycle = structuredClone(lifecycle);
+  render();
 }
 
 function confirmAction(target) {
