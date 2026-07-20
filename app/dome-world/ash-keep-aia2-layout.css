@@ -1,0 +1,8 @@
+.ash-aia{display:flex;flex-direction:column}
+.ash-aia__header,.ash-aia__routes{order:0}
+.ash-aia__body{order:1;margin-top:10px}
+.ash-aia__tasks{order:2}
+.ash-aia__consequences{order:3}
+.ash-aia__depths{order:4}
+.ash-aia__holds{order:5}
+@media(max-width:620px){.ash-aia__body{margin-top:8px}.ash-aia__work{order:-1}.ash-aia__tasks{margin-top:8px}}
