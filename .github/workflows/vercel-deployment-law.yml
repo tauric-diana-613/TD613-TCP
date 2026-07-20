@@ -10,6 +10,7 @@ on:
       - tests/product-architecture/shell.test.mjs
       - .github/workflows/vercel-deployment-law.yml
       - .github/workflows/vercel-operator-release.yml
+      - .github/workflows/ash-keep-aia2-production-observation.yml
   push:
     branches:
       - main
@@ -21,6 +22,7 @@ on:
       - tests/product-architecture/shell.test.mjs
       - .github/workflows/vercel-deployment-law.yml
       - .github/workflows/vercel-operator-release.yml
+      - .github/workflows/ash-keep-aia2-production-observation.yml
   workflow_dispatch:
 
 permissions:
