@@ -1,8 +1,9 @@
 function composeLaunchForRoute() {
   const launch = document.querySelector('body > .launch');
   if (!launch) return;
+  const explicitLegacy = new URLSearchParams(location.search).get('presentation') === 'legacy';
   const route = document.body.dataset.ashAiaRoute;
-  if (route === 'EXPERIENTIAL' || route === 'CUSTODIAL') {
+  if (!explicitLegacy && (route === 'EXPERIENTIAL' || route === 'CUSTODIAL')) {
     launch.style.setProperty('display', 'none', 'important');
     launch.dataset.ashAiaComposed = 'HIDDEN_BEHIND_CONSEQUENCE_ROUTE';
   } else {
