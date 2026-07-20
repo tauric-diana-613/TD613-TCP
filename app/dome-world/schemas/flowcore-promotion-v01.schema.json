@@ -1,0 +1,81 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "td613.flowcore.promotion/v0.1",
+  "title": "Flow-Core promotion packet and rollback plan",
+  "$defs": {
+    "state": { "enum": ["DESIGNED", "IMPLEMENTED", "HARDENED", "RUNTIME_DEMONSTRATED", "PRODUCTION_DEMONSTRATED"] },
+    "status": { "enum": ["PASS", "PRESENT", "CONTRACT_ONLY", "NOT_OBSERVED", "HELD", "FAIL"] },
+    "openClosure": {
+      "type": "object",
+      "required": ["status", "closed_by"],
+      "properties": { "status": { "const": "OPEN" }, "closed_by": { "type": "null" } },
+      "additionalProperties": false
+    },
+    "evidence": {
+      "type": "object",
+      "required": ["status", "references", "observation_is_merge_inference"],
+      "properties": {
+        "status": { "$ref": "#/$defs/status" },
+        "references": { "type": "array", "items": { "type": "string" } },
+        "observation_is_merge_inference": { "type": "boolean" }
+      }
+    }
+  },
+  "oneOf": [
+    {
+      "type": "object",
+      "required": ["schema", "feature_gate_path", "default_enabled", "restores_prior_ui", "preserves", "rollback_mutates_governed_state", "human_authorization_required", "closure"],
+      "properties": {
+        "schema": { "const": "td613.flowcore.rollback-plan/v0.1" },
+        "feature_gate_path": { "const": "presentation-layer-only" },
+        "default_enabled": { "const": false },
+        "restores_prior_ui": { "const": true },
+        "preserves": {
+          "type": "array",
+          "items": { "enum": ["custody_records", "case_maps", "receipts", "route_memory", "release_state", "local_commitments"] },
+          "minItems": 6,
+          "uniqueItems": true
+        },
+        "rollback_mutates_governed_state": { "const": false },
+        "human_authorization_required": { "const": true },
+        "closure": { "$ref": "#/$defs/openClosure" }
+      }
+    },
+    {
+      "type": "object",
+      "required": ["schema", "packet_id", "packet_digest", "current_state", "state_order", "evidence", "empirical_validation", "feature_gate", "rollback", "promotion_holds", "promotion_complete", "state_inferred_from_merge", "state_inferred_from_deployment", "serverless_delta", "persistence_delta", "authority", "closure"],
+      "properties": {
+        "schema": { "const": "td613.flowcore.promotion-packet/v0.1" },
+        "packet_id": { "type": "string", "pattern": "^flowcore_promotion_" },
+        "packet_digest": { "type": "string", "pattern": "^sha256:[0-9a-f]{64}$" },
+        "current_state": { "$ref": "#/$defs/state" },
+        "state_order": { "type": "array", "minItems": 5, "maxItems": 5, "uniqueItems": true, "items": { "$ref": "#/$defs/state" } },
+        "evidence": {
+          "type": "object",
+          "required": ["phase_receipts", "test_inventory", "browser_matrix", "mobile_evidence", "reduced_motion_evidence", "performance_evidence", "privacy_persistence_review", "station_jurisdiction_audit", "rollback_procedure", "documentation_index", "production_probe_receipt"],
+          "additionalProperties": { "$ref": "#/$defs/evidence" }
+        },
+        "empirical_validation": { "type": "object" },
+        "feature_gate": {
+          "type": "object",
+          "required": ["default_enabled", "presentation_layer_only", "governed_state_mutation_allowed", "public_route_promotion_authorized"],
+          "properties": {
+            "default_enabled": { "const": false },
+            "presentation_layer_only": { "const": true },
+            "governed_state_mutation_allowed": { "const": false },
+            "public_route_promotion_authorized": { "const": false }
+          }
+        },
+        "rollback": { "type": "object" },
+        "promotion_holds": { "type": "array" },
+        "promotion_complete": { "type": "boolean" },
+        "state_inferred_from_merge": { "const": false },
+        "state_inferred_from_deployment": { "const": false },
+        "serverless_delta": { "const": 0 },
+        "persistence_delta": { "const": 0 },
+        "authority": { "type": "object" },
+        "closure": { "$ref": "#/$defs/openClosure" }
+      }
+    }
+  ]
+}
