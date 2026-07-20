@@ -27,8 +27,16 @@ jobs:
           node-version: '22'
           cache: npm
       - run: npm ci
-      - name: Run P0-P10 completion contracts
-        run: node --test tests/flowcore-p0-p10-completion.test.mjs
+      - name: P8-P10 merged receipt state
+        run: node --test --test-name-pattern='P8-P10 receipts record' tests/flowcore-p0-p10-completion.test.mjs
+      - name: P0-P10 phase ancestry ledger
+        run: node --test --test-name-pattern='completion ledger preserves' tests/flowcore-p0-p10-completion.test.mjs
+      - name: P9 human-evidence hold
+        run: node --test --test-name-pattern='P9 retains' tests/flowcore-p0-p10-completion.test.mjs
+      - name: P10 HARDENED promotion hold
+        run: node --test --test-name-pattern='P10 retains' tests/flowcore-p0-p10-completion.test.mjs
+      - name: Final stitch temporary-workflow and mutation boundary
+        run: node --test --test-name-pattern='final stitch introduces' tests/flowcore-p0-p10-completion.test.mjs
       - name: Re-run stitched baseline and P8-P10 contracts
         run: |
           node --test tests/flowcore-p0-p7-seam-closure.test.mjs
