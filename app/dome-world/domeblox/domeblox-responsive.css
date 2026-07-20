@@ -46,6 +46,13 @@
   max-width:100%;
 }
 
+#bootPanel:not([hidden]) ~ #hud,
+#bootPanel:not([hidden]) ~ #interactionCard,
+#bootPanel:not([hidden]) ~ #touchControls{
+  visibility:hidden;
+  pointer-events:none;
+}
+
 .overlay-panel{
   overflow:auto;
   overscroll-behavior:contain;
@@ -56,12 +63,17 @@
     left:clamp(24px,3.4vw,56px);
     top:50%;
     transform:translateY(-50%);
-    width:min(420px,calc(var(--desktop-rail) - 40px));
+    width:min(360px,calc(var(--desktop-rail) - 40px));
     max-height:calc(100svh - 64px);
     overflow:auto;
     padding:30px;
   }
-  .modal-card h1{font-size:clamp(48px,5.6vw,72px)}
+  .modal-card h1{
+    font-size:58px;
+    line-height:.96;
+    letter-spacing:-.055em;
+    white-space:nowrap;
+  }
   #hud{
     left:24px;
     top:24px;
