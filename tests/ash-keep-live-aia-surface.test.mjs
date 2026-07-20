@@ -12,64 +12,82 @@ const ashKeep = read('app/dome-world/ash-keep.js');
 const lifecycle = read('app/dome-world/ash-lifecycle-core.js');
 const vercel = read('vercel.json');
 
-test('Ash lifecycle loader installs the live AIA membrane and exact-workspace bridge after lifecycle core', () => {
+const escaped = value => value.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+
+test('loader makes the presentation atomic: stylesheet first, then controller, then exact-ingress bridge', () => {
   assert.match(loader, /ash-lifecycle-core\.js/);
-  assert.match(loader, /ash-keep-aia\.js/);
-  assert.match(loader, /ash-keep-aia-workspace-bridge\.js/);
-  assert.ok(loader.indexOf('ash-lifecycle-core.js') < loader.indexOf('ash-keep-aia.js'));
-  assert.ok(loader.indexOf('ash-keep-aia.js') < loader.indexOf('ash-keep-aia-workspace-bridge.js'));
+  assert.match(loader, /data-ash-live-aia/);
+  assert.match(loader, /await import\('\.\/ash-keep-aia\.js/);
+  assert.match(loader, /await import\('\.\/ash-keep-aia-workspace-bridge\.js/);
+  assert.ok(loader.indexOf('data-ash-live-aia') < loader.indexOf("await import('./ash-keep-aia.js"));
+  assert.ok(loader.indexOf("await import('./ash-keep-aia.js") < loader.indexOf("await import('./ash-keep-aia-workspace-bridge.js"));
 });
 
-test('live surface exposes all four AIA routes and consequence-first disclosure depths', () => {
-  for (const route of ['EXPERIENTIAL', 'CUSTODIAL', 'AUDIT', 'IMPLEMENTATION']) assert.match(runtime, new RegExp(route));
-  for (const phrase of ['Now', 'Why did Ash do that?', 'Exact state, receipts, digest, and rule']) assert.match(runtime, new RegExp(phrase.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')));
-  for (const phrase of ['What stayed local', 'What Ash created', 'What changed', 'What stayed unauthorized', 'What may happen next']) assert.match(runtime, new RegExp(phrase));
-});
-
-test('live membrane bridges to existing Ash commands rather than reimplementing station actions', () => {
-  for (const id of ['compileQuickScan', 'registerCustodyRoot', 'bindCustodyRoot', 'runTest', 'keepDraft', 'reviewDraft', 'approveRelease', 'makeSave']) {
-    assert.match(runtime, new RegExp(`['\"]${id}['\"]`));
-    assert.match(ashKeep + lifecycle, new RegExp(`id=['\"]${id}['\"]|\\$\\('${id}'\\)|${id}\\(`));
+test('default presentation begins with a four-task human journey, not lifecycle ontology', () => {
+  for (const phrase of ['Set up workspace', 'Open a local document', 'Keep and check', 'Map, test, review, save']) {
+    assert.match(runtime, new RegExp(escaped(phrase)));
   }
-  assert.doesNotMatch(runtime, /fetch\(['\"]\/api\/dome-world\/ash-custody-register/);
+  assert.match(runtime, /Begin with a private workspace—not a technical threshold/);
+  assert.match(runtime, /task_continuity_required: true/);
+  assert.match(runtime, /data-aia-primary-task/);
+});
+
+test('all four anisotropic routes and the five-part consequence contract remain available', () => {
+  for (const route of ['EXPERIENTIAL', 'CUSTODIAL', 'AUDIT', 'IMPLEMENTATION']) assert.match(runtime, new RegExp(route));
+  for (const phrase of ['Why did Ash do that?', 'Exact state, receipts, digest, and rule']) assert.match(runtime, new RegExp(escaped(phrase)));
+  for (const phrase of ['What stayed local', 'What Ash created', 'What changed', 'What stayed unauthorized', 'What may happen next']) assert.match(runtime, new RegExp(escaped(phrase)));
+});
+
+test('the exact original ingress is integrated into the guide rather than hidden or reimplemented', () => {
+  assert.match(runtime, /data-aia-ingress-slot/);
+  assert.match(bridge, /slot\.append\(launch\)/);
+  assert.match(bridge, /INTEGRATED_EXACT_CONTROLS/);
+  assert.match(bridge, /__td613AshAIAIngress/);
+  assert.doesNotMatch(bridge, /setRoute\(['"]AUDIT['"]\)/);
+  assert.doesNotMatch(bridge, /HIDDEN_BEHIND_CONSEQUENCE_ROUTE/);
+  assert.match(styles, /ash-aia__ingress-slot #launch\.launch/);
+});
+
+test('exact workspaces remain operable without route ejection', () => {
+  assert.match(runtime, /__td613OpenAshWorkspace \|\| window\.__td613AshKeep\?\.openWorkspace/);
+  assert.match(runtime, /openExactWorkspace\('draft', '#localTextFile'\)/);
+  assert.doesNotMatch(runtime, /setRoute\(['"]AUDIT['"]\).*openExactWorkspace|openExactWorkspace.*setRoute\(['"]AUDIT['"]\)/s);
+  assert.doesNotMatch(styles, /body\[data-ash-aia-route="(?:EXPERIENTIAL|CUSTODIAL)"\][^{]*>main/);
+  assert.match(styles, /data-ash-aia-case-open="false"\]\>main/);
+});
+
+test('live membrane calls existing Ash commands rather than duplicating station actions', () => {
+  for (const id of ['compileQuickScan', 'registerCustodyRoot', 'bindCustodyRoot', 'runTest', 'keepDraft', 'reviewDraft', 'approveRelease', 'makeSave']) {
+    assert.match(runtime, new RegExp(`['"]${id}['"]`));
+    assert.match(ashKeep + lifecycle, new RegExp(`id=['"]${id}['"]|\\$\\('${id}'\\)|${id}\\(`));
+  }
+  assert.doesNotMatch(runtime, /fetch\(['"]\/api\/dome-world\/ash-custody-register/);
   assert.doesNotMatch(runtime, /compileCaseMap|compileRebuildTest|compileAshDraft|compileReleaseReceipt|compileSavePoint/);
 });
 
-test('opening an exact workspace explicitly crosses into Audit without inferring a user route', () => {
-  assert.match(bridge, /__td613OpenAshWorkspace/);
-  assert.match(bridge, /setRoute\('AUDIT'\)/);
-  assert.match(bridge, /AUDIT_ON_EXACT_OPEN/);
-  assert.doesNotMatch(bridge, /navigator\.webdriver|userAgent|analytics|telemetry/);
-});
-
-test('animation remains finite, gesture-triggered, replay-only, and reduced-motion complete', () => {
+test('tutorial is finite, deterministic, gesture-triggered, non-operative, and reduced-motion complete', () => {
   assert.match(engine, /FINITE_GESTURE_TRIGGERED_CAUSAL_SEQUENCE/);
   assert.match(engine, /EXPLICIT_HUMAN_GESTURE_OR_EXPLICIT_REPLAY/);
   assert.match(engine, /replay_reperforms_ash_action: false/);
   assert.match(engine, /continuous_animation: false/);
+  assert.match(runtime, /No Ash action is performed/);
+  assert.match(runtime, /state\.frame < TASKS\.length - 1/);
   assert.match(styles, /@media\(prefers-reduced-motion:reduce\)/);
   assert.match(styles, /ash-aia__static-sequence/);
-  assert.equal((runtime.match(/requestAnimationFrame\(/g) || []).length, 0, 'The membrane must not introduce a second scheduler.');
+  assert.equal((runtime.match(/requestAnimationFrame\(/g) || []).length, 0, 'The guide must not introduce a second scheduler.');
 });
 
-test('privacy, evidence, and child-study boundaries remain visible and non-telemetric', () => {
-  assert.match(runtime, /adult human evidence absent/);
+test('privacy, evidence, child-study, and rollback boundaries remain explicit', () => {
   assert.match(runtime, /child study locked/);
   assert.match(runtime, /no telemetry/);
-  assert.match(engine, /child_study_authorized: false/);
-  assert.match(engine, /telemetry_present: false/);
+  assert.match(runtime, /child_study_authorized: false/);
+  assert.match(runtime, /telemetry_present: false/);
   assert.match(engine, /raw_content_recorded: false/);
+  assert.match(runtime, /presentation.*legacy/);
   assert.doesNotMatch(runtime, /navigator\.sendBeacon|sendBeacon\(|fetch\([^)]*(?:analytics|telemetry|aia-receipt)/i);
 });
 
-test('legacy Audit and Implementation routes remain available as rollback and exact inspection surfaces', () => {
-  assert.match(runtime, /presentation.*legacy/);
-  assert.match(styles, /data-ash-aia-route="AUDIT"/);
-  assert.match(styles, /data-ash-aia-route="IMPLEMENTATION"/);
-  assert.match(runtime, /Open exact .* workspace/);
-});
-
-test('implementation adds no serverless route and leaves the deployment lock contract intact', () => {
+test('implementation adds no serverless route and leaves the deployment lock intact', () => {
   assert.doesNotMatch(engine + runtime + bridge, /\/api\//);
   assert.match(vercel, /"deploymentEnabled"\s*:\s*false/);
 });
