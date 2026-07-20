@@ -5,7 +5,7 @@ import { chromium } from 'playwright';
 
 const base=String(process.env.TD613_BASE_URL||'http://127.0.0.1:6130').replace(/\/$/,'');
 const out=path.resolve(process.env.TD613_ARTIFACT_DIR||'artifacts/ash-profile-demo-flight');
-const url=`${base}/dome-world/ash-keep.html`;
+const url=`${base}/dome-world/ash-keep.html?presentation=legacy`;
 const METHOD='td613.ash.apeq-paia-profile-demos/v0.1';
 const expectedCounts={rooms:14,nodes:72,relationships:112,rules:8,routes:6,controls:12,held_outs:8,strata:10,joining_keys:8};
 const plans={
