@@ -1,0 +1,9 @@
+/* AK-AIA-3 interaction containment: neighboring guide/work cards may never overlap hit targets. */
+html[data-ash-aia3][data-ash-session-open="true"] .ash-aia__body{grid-template-columns:minmax(0,1fr) minmax(250px,340px)!important;align-items:stretch!important}
+html[data-ash-aia3][data-ash-session-open="true"] .ash-aia__guide,html[data-ash-aia3][data-ash-session-open="true"] .ash-aia__work{position:relative!important;min-width:0!important;max-width:100%!important;overflow:hidden!important;isolation:isolate!important}
+html[data-ash-aia3][data-ash-session-open="true"] .ash-aia__guide{z-index:2!important}
+html[data-ash-aia3][data-ash-session-open="true"] .ash-aia__work{z-index:1!important}
+html[data-ash-aia3][data-ash-session-open="true"] .ash-aia__guide-head{position:relative!important;z-index:3!important;display:grid!important;grid-template-columns:minmax(0,1fr) max-content!important;align-items:start!important;gap:8px!important;isolation:isolate!important}
+html[data-ash-aia3][data-ash-session-open="true"] [data-aia-play]{position:relative!important;z-index:4!important;pointer-events:auto!important;white-space:nowrap!important}
+html[data-ash-aia3][data-ash-session-open="true"] .ash-aia__work h3,html[data-ash-aia3][data-ash-session-open="true"] .ash-aia__work p{max-width:100%!important;overflow-wrap:anywhere!important}
+@media(max-width:760px){html[data-ash-aia3][data-ash-session-open="true"] .ash-aia__body{grid-template-columns:1fr!important}html[data-ash-aia3][data-ash-session-open="true"] .ash-aia__guide-head{grid-template-columns:1fr!important}html[data-ash-aia3][data-ash-session-open="true"] [data-aia-play]{width:100%!important}}
