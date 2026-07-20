@@ -35,6 +35,7 @@ assert.equal((workflow.match(/config\.git\.deploymentEnabled = true/g) || []).le
 assert.equal((workflow.match(/deploymentEnabled: false/g) || []).length, 1, 'fallback must close the lock once');
 
 for (const testFile of [
+  'ash-keep-live-aia-surface.test.mjs',
   'flowcore-p0-p10-completion.test.mjs',
   'flowcore-p0-p7-seam-closure.test.mjs',
   'flowcore-physical-scene.test.mjs',
@@ -44,12 +45,17 @@ for (const testFile of [
 ]) assert.match(workflow, new RegExp(testFile.replaceAll('.', '\\.')));
 assert.match(workflow, /flowcore-release-content-probe\.mjs/);
 assert.match(workflow, /flowcore-runtime-browser-probe\.mjs/);
+assert.match(workflow, /ash-keep-aia2-task-journey-v5\.mjs/);
+assert.match(workflow, /for browser in chromium firefox webkit/);
 assert.match(workflow, /playwright install --with-deps chromium firefox webkit/);
-assert.match(workflow, /flowcore-production-release-evidence/);
+assert.match(workflow, /flowcore-and-ash-production-release-evidence/);
 assert.match(workflow, /exact_source_content = PASS/);
-assert.match(workflow, /browser_matrix = PASS/);
+assert.match(workflow, /flowcore_browser_matrix = PASS/);
+assert.match(workflow, /ash_keep_aia2_task_matrix = PASS/);
+assert.match(workflow, /ash_keep_mobile_390x844 = PASS/);
 assert.match(workflow, /source_packet_commit = \$\{\{ steps\.authorize\.outputs\.selected_sha \}\}/);
 assert.match(workflow, /counts_as_human_evidence = false/);
+assert.match(workflow, /child_study_authorized = false/);
 assert.match(workflow, /public_route_promotion_authorized = false/);
 assert.match(workflow, /application_tree_drift = none/);
 assert.match(workflow, /No additional deployment attempt is authorized by this failure/, 'a failed release must not silently authorize retries');
