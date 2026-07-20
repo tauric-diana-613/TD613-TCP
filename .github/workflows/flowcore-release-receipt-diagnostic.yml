@@ -1,0 +1,32 @@
+name: Flow-Core Release Receipt Diagnostic
+
+on:
+  pull_request:
+    branches: [main]
+    paths:
+      - '.github/workflows/flowcore-release-receipt-diagnostic.yml'
+
+permissions:
+  actions: read
+  contents: read
+  issues: read
+
+jobs:
+  diagnose:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Read latest release-gate comments
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          gh api "repos/$GITHUB_REPOSITORY/issues/405/comments?per_page=100" \
+            --jq '.[-3:] | .[] | {id,created_at,body}'
+      - name: Read latest Vercel Operator Release run
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          RUN_ID="$(gh run list --workflow 'Vercel Operator Release' --event issue_comment --limit 1 --json databaseId --jq '.[0].databaseId')"
+          echo "release_run_id=$RUN_ID"
+          gh run view "$RUN_ID" --json databaseId,status,conclusion,url,jobs
+          echo '--- failed log ---'
+          gh run view "$RUN_ID" --log-failed || true
