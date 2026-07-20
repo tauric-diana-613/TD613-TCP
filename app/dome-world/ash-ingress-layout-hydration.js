@@ -1,9 +1,9 @@
-export const ASH_INGRESS_LAYOUT_VERSION = 'td613.ash.ingress-layout/v1.0-canonical-native-scroll';
+export const ASH_INGRESS_LAYOUT_VERSION = 'td613.ash.ingress-layout/v1.1-aia3-session';
 
 const STYLE_ID = 'td613-ash-ingress-scroll-membrane';
 const POINTER_KEY = 'td613.ash-keep.current-case';
 const SESSION_EPOCH_KEY = 'td613.ash.session.epoch';
-const SESSION_EPOCH = '20260718-canonical-membrane-v6';
+const SESSION_EPOCH = '20260720-aia3-session-v1';
 
 function ensureStyle(doc = document) {
   let style = doc.getElementById(STYLE_ID);
