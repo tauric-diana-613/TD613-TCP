@@ -15,19 +15,18 @@ jobs:
   readback:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
       - name: Print latest release-gate comments
         env:
           GH_TOKEN: ${{ github.token }}
         run: |
           gh api "repos/$GITHUB_REPOSITORY/issues/405/comments?per_page=100" \
             --jq '.[-3:] | .[] | {id,created_at,body}'
-      - name: Print latest Vercel Operator Release result
+      - name: Print compact latest release result
         env:
           GH_TOKEN: ${{ github.token }}
         run: |
-          RUN_ID="$(gh run list --workflow 'Vercel Operator Release' --event issue_comment --limit 1 --json databaseId --jq '.[0].databaseId')"
+          RUN_ID="$(gh run list -R "$GITHUB_REPOSITORY" --workflow 'Vercel Operator Release' --event issue_comment --limit 1 --json databaseId --jq '.[0].databaseId')"
           echo "release_run_id=$RUN_ID"
-          gh run view "$RUN_ID" --json databaseId,status,conclusion,url,jobs
+          gh run view -R "$GITHUB_REPOSITORY" "$RUN_ID" --json databaseId,status,conclusion,url
           echo '--- failed log, if any ---'
-          gh run view "$RUN_ID" --log-failed || true
+          gh run view -R "$GITHUB_REPOSITORY" "$RUN_ID" --log-failed || true
