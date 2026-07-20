@@ -1,4 +1,4 @@
-name: Ash Keep live AIA browser witness
+name: Ash Keep AIA3 browser witness
 
 on:
   pull_request:
@@ -6,10 +6,14 @@ on:
       - 'app/engine/ash-live-aia.js'
       - 'app/dome-world/ash-keep-aia.js'
       - 'app/dome-world/ash-keep-aia.css'
-      - 'app/dome-world/ash-keep-aia2-layout.css'
+      - 'app/dome-world/ash-keep-aia3*.css'
+      - 'app/dome-world/ash-aia3-composition.js'
+      - 'app/dome-world/ash-cache-eviction-aia3.js'
       - 'app/dome-world/ash-keep-aia-workspace-bridge.js'
+      - 'app/dome-world/ash-ingress-layout-hydration.js'
       - 'app/dome-world/ash-lifecycle.js'
-      - 'scripts/ash-keep-aia2-task-journey-v5.mjs'
+      - 'api/dome-world-shell.js'
+      - 'scripts/ash-keep-aia3-task-journey-v2.mjs'
       - '.github/workflows/ash-keep-live-aia-browser.yml'
   push:
     branches: [main]
@@ -17,15 +21,19 @@ on:
       - 'app/engine/ash-live-aia.js'
       - 'app/dome-world/ash-keep-aia.js'
       - 'app/dome-world/ash-keep-aia.css'
-      - 'app/dome-world/ash-keep-aia2-layout.css'
+      - 'app/dome-world/ash-keep-aia3*.css'
+      - 'app/dome-world/ash-aia3-composition.js'
+      - 'app/dome-world/ash-cache-eviction-aia3.js'
       - 'app/dome-world/ash-keep-aia-workspace-bridge.js'
+      - 'app/dome-world/ash-ingress-layout-hydration.js'
       - 'app/dome-world/ash-lifecycle.js'
-      - 'scripts/ash-keep-aia2-task-journey-v5.mjs'
+      - 'api/dome-world-shell.js'
+      - 'scripts/ash-keep-aia3-task-journey-v2.mjs'
       - '.github/workflows/ash-keep-live-aia-browser.yml'
   workflow_dispatch:
     inputs:
       base_url:
-        description: Optional deployed base URL for a read-only task-continuity observation
+        description: Optional deployed base URL for a read-only AIA3 observation
         required: false
         default: ''
         type: string
@@ -39,12 +47,12 @@ permissions:
   contents: read
 
 concurrency:
-  group: ash-aia2-browser-${{ github.event.pull_request.number || github.ref }}
+  group: ash-aia3-browser-${{ github.event.pull_request.number || github.ref }}
   cancel-in-progress: true
 
 jobs:
   browser-witness:
-    name: ${{ matrix.browser }} desktop and mobile task journey
+    name: ${{ matrix.browser }} desktop and mobile AIA3 journey
     runs-on: ubuntu-latest
     timeout-minutes: 45
     strategy:
@@ -55,11 +63,11 @@ jobs:
       - uses: actions/checkout@v4
       - uses: actions/setup-node@v4
         with:
-          node-version: 22
+          node-version: 24
           cache: npm
       - run: npm ci
-      - name: Validate task witness syntax
-        run: node --check scripts/ash-keep-aia2-task-journey-v5.mjs
+      - name: Validate AIA3 task witness syntax
+        run: node --check scripts/ash-keep-aia3-task-journey-v2.mjs
       - name: Install browser witness runtime
         run: |
           npm install --no-save --package-lock=false playwright@1.53.2
@@ -68,37 +76,37 @@ jobs:
         if: ${{ inputs.base_url == '' }}
         run: |
           mkdir -p artifacts
-          node scripts/ash-keep-local-closure-server.mjs 6130 > artifacts/ash-aia2-local-server.log 2>&1 &
-          echo $! > artifacts/ash-aia2-local-server.pid
+          node scripts/ash-keep-local-closure-server.mjs 6130 > artifacts/ash-aia3-local-server.log 2>&1 &
+          echo $! > artifacts/ash-aia3-local-server.pid
           for attempt in $(seq 1 40); do
-            if curl -fsS --max-time 2 http://127.0.0.1:6130/__ash_keep_closure/readiness > artifacts/ash-aia2-local-readiness.json; then
-              cat artifacts/ash-aia2-local-readiness.json
+            if curl -fsS --max-time 2 http://127.0.0.1:6130/__ash_keep_closure/readiness > artifacts/ash-aia3-local-readiness.json; then
+              cat artifacts/ash-aia3-local-readiness.json
               exit 0
             fi
             sleep 1
           done
-          cat artifacts/ash-aia2-local-server.log || true
+          cat artifacts/ash-aia3-local-server.log || true
           exit 1
-      - name: Exercise first-use task continuity
+      - name: Exercise recovered ingress, guide, exact work, and cache boundary
         env:
           TD613_BROWSER: ${{ matrix.browser }}
           TD613_BASE_URL: ${{ inputs.base_url || 'http://127.0.0.1:6130' }}
           TD613_SOURCE_PACKET_COMMIT: ${{ inputs.source_packet_commit || github.sha }}
           TD613_PRODUCTION_OBSERVATION: ${{ inputs.base_url != '' }}
-          TD613_ARTIFACT_DIR: artifacts/ash-aia2-${{ matrix.browser }}
-        run: node scripts/ash-keep-aia2-task-journey-v5.mjs
+          TD613_ARTIFACT_DIR: artifacts/ash-aia3-${{ matrix.browser }}
+        run: node scripts/ash-keep-aia3-task-journey-v2.mjs
       - name: Stop bounded local runtime
         if: ${{ always() && inputs.base_url == '' }}
         run: |
-          test -f artifacts/ash-aia2-local-server.pid && kill "$(cat artifacts/ash-aia2-local-server.pid)" || true
+          test -f artifacts/ash-aia3-local-server.pid && kill "$(cat artifacts/ash-aia3-local-server.pid)" || true
       - name: Preserve browser evidence
         if: always()
         uses: actions/upload-artifact@v4
         with:
-          name: ash-aia2-${{ matrix.browser }}-evidence
+          name: ash-aia3-${{ matrix.browser }}-evidence
           path: |
-            artifacts/ash-aia2-${{ matrix.browser }}/
-            artifacts/ash-aia2-local-server.log
-            artifacts/ash-aia2-local-readiness.json
+            artifacts/ash-aia3-${{ matrix.browser }}/
+            artifacts/ash-aia3-local-server.log
+            artifacts/ash-aia3-local-readiness.json
           if-no-files-found: warn
           retention-days: 45
