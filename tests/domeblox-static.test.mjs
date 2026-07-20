@@ -20,6 +20,7 @@ for (const id of [
   if (!gameHtml.includes(`id="${id}"`)) throw new Error(`playable DOM missing ${id}`);
 }
 if (!gameHtml.includes('Content-Security-Policy')) throw new Error('playable CSP missing');
+if (gameHtml.includes("frame-ancestors 'self'")) throw new Error('unsupported meta frame-ancestors directive restored');
 if (!gameHtml.includes(canonical)) throw new Error('exact U+10D613 scalar missing from playable route');
 if (gameHtml.includes('𐌀')) throw new Error('wrong placeholder glyph restored');
 for (const match of gameHtml.matchAll(/(?:src|href)="(\.\/[^"#?]+)"/g)) {
@@ -61,6 +62,7 @@ if (!gameMain.includes('touchPad')) throw new Error('touch controls missing');
 
 // The old instrument must remain reachable at its subordinate route.
 const batteryHtml = read('forward-battery/index.html');
+const batteryCss = read('domeblox.css');
 if (!batteryHtml.includes('<base href="../"')) throw new Error('Forward Battery base route missing');
 if (!batteryHtml.includes('<title>DomeBlox · Forward Battery</title>')) throw new Error('Forward Battery title missing');
 for (const id of [
@@ -70,6 +72,9 @@ for (const id of [
   if (!batteryHtml.includes(`id="${id}"`)) throw new Error(`Forward Battery DOM missing ${id}`);
 }
 if (!batteryHtml.includes(canonical)) throw new Error('exact U+10D613 scalar missing from Forward Battery');
+if (/\sstyle=/.test(batteryHtml)) throw new Error('CSP-blocked inline style restored');
+if (!batteryHtml.includes('class="return-link"')) throw new Error('Battery return link class missing');
+if (!batteryCss.includes('.return-link{color:inherit}')) throw new Error('Battery return link stylesheet rule missing');
 
 // Existing Forward Battery engines remain syntactically valid and bounded.
 for (const file of ['domeblox-hooks.js', 'domeblox-core.js']) {
