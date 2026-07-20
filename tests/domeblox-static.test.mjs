@@ -28,12 +28,13 @@ for (const match of gameHtml.matchAll(/(?:src|href)="(\.\/[^"#?]+)"/g)) {
   if (!exists(relative)) throw new Error(`broken playable reference: ${relative}`);
 }
 
-for (const file of ['game/core.js','game/state-resilience.js','game/render.js','game/sim.js','game/main.js']) {
+for (const file of ['game/core.js','game/state-resilience.js','game/navigation.js','game/render.js','game/sim.js','game/main.js']) {
   if (!exists(file)) throw new Error(`missing playable module ${file}`);
 }
 
 const gameCore = read('game/core.js');
 const stateResilience = read('game/state-resilience.js');
+const gameNavigation = read('game/navigation.js');
 const gameRender = read('game/render.js');
 const gameSim = read('game/sim.js');
 const gameMain = read('game/main.js');
@@ -57,14 +58,19 @@ for (const token of [
 for (const token of ['hydrateState', 'readStoredState', 'writeStoredState', 'clearStoredState']) {
   if (!stateResilience.includes(token)) throw new Error(`save resilience contract missing: ${token}`);
 }
+if (!gameNavigation.includes('openRouteInNewTab')) throw new Error('safe route helper missing');
+if (!gameNavigation.includes("mode: 'same-tab-fallback'")) throw new Error('navigation fallback receipt missing');
+if (gameNavigation.includes("'_blank', 'noopener'")) throw new Error('ambiguous noopener popup return restored');
 if (!gameRender.includes('drawDomeGrid')) throw new Error('Dome renderer missing');
 if (!gameRender.includes('drawAnimal')) throw new Error('animal renderer missing');
 if (!gameSim.includes('springald.armedUntil = Date.now() + 15000')) throw new Error('two-stage Springald timer missing');
-if (!gameSim.includes("window.open('./forward-battery/'")) throw new Error('Forward Battery route missing from village');
+if (!gameSim.includes("openRouteInNewTab('./forward-battery/')")) throw new Error('Forward Battery route missing from village');
 if (!gameSim.includes('The browser port records a local replay receipt') && !gameHtml.includes('The browser port records a local replay receipt')) throw new Error('local-only Springald boundary missing');
 if (!gameMain.includes('TD613_DOME_BLOX_GAME')) throw new Error('playable inspection API missing');
 if (!gameMain.includes('touchPad')) throw new Error('touch controls missing');
-if (!gameMain.includes("version:'1.2.1'")) throw new Error('playable runtime version drift');
+if (!gameMain.includes("version:'1.2.2'")) throw new Error('playable runtime version drift');
+if (!gameMain.includes('globalThis.visualViewport?.addEventListener')) throw new Error('safe visualViewport access missing');
+if (!gameMain.includes('isInteractiveTarget(event.target)')) throw new Error('focused controls do not yield gameplay shortcuts');
 
 // The old instrument must remain reachable at its subordinate route.
 const batteryHtml = read('forward-battery/index.html');
@@ -122,5 +128,6 @@ if (!assayDuplicateRejected) throw new Error('duplicate assay registration was n
 const handoff = JSON.parse(read('handoff-manifest.json'));
 if (handoff.distribution !== 'separate operator handoff; browser station stores metadata only') throw new Error('handoff distribution drift');
 if (!(handoff.sha256 === 'SEE_SIBLING_ZIP_SHA256_SIDECAR' || /^[a-f0-9]{64}$/.test(handoff.sha256))) throw new Error('handoff digest must be external marker or final SHA-256');
+if (handoff.browser_runtime_version !== '1.2.2') throw new Error('handoff browser runtime version drift');
 
 console.log('DomeBlox playable browser contract PASS');
