@@ -5,4 +5,11 @@
 .ash-aia__consequences{order:3}
 .ash-aia__depths{order:4}
 .ash-aia__holds{order:5}
+body[data-ash-aia-case-open="false"] .ash-aia__body{grid-template-columns:1fr}
+body[data-ash-aia-case-open="false"] .ash-aia__guide,
+body[data-ash-aia-case-open="false"] .ash-aia__tasks,
+body[data-ash-aia-case-open="false"] .ash-aia__consequences,
+body[data-ash-aia-case-open="false"] .ash-aia__depths,
+body[data-ash-aia-case-open="false"] .ash-aia__holds{display:none}
+body[data-ash-aia-case-open="false"] .ash-aia__work{width:min(920px,100%);margin-inline:auto}
 @media(max-width:620px){.ash-aia__body{margin-top:8px}.ash-aia__work{order:-1}.ash-aia__tasks{margin-top:8px}}
