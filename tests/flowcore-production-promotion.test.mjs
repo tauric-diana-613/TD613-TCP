@@ -25,7 +25,7 @@ test('P10 promotion state order is explicit and merge-independent', () => {
   assert.equal(FLOWCORE_PROMOTION_CONFIG.authority.human_promotion_required, true);
 });
 
-test('current evidence compiles to HARDENED with empirical, runtime, and production holds', async () => {
+test('observed runtime evidence remains HARDENED while empirical and production gates are held', async () => {
   const data = fixture();
   const packet = await compilePromotionPacket(data, options(data));
   assert.equal(packet.current_state, 'HARDENED');
@@ -33,9 +33,19 @@ test('current evidence compiles to HARDENED with empirical, runtime, and product
   assert.equal(packet.state_inferred_from_merge, false);
   assert.equal(packet.state_inferred_from_deployment, false);
   assert.deepEqual(Object.keys(packet.evidence), REQUIRED_PROMOTION_ARTIFACTS);
+  for (const key of ['browser_matrix', 'mobile_evidence', 'reduced_motion_evidence', 'performance_evidence']) {
+    assert.equal(packet.evidence[key].status, 'PASS', `${key} must remain observed PASS`);
+    assert.equal(packet.evidence[key].observation_is_merge_inference, false);
+  }
+  assert.equal(packet.evidence.browser_matrix.matrix.firefox_desktop, 'PASS');
+  assert.equal(packet.evidence.browser_matrix.matrix.webkit_ios_viewport, 'PASS');
+  assert.equal(packet.evidence.mobile_evidence.landscape, 'PASS');
+  assert.equal(packet.evidence.mobile_evidence.rotation, 'PASS');
+  assert.equal(packet.evidence.reduced_motion_evidence.browser_runtime_observed, true);
+  assert.equal(packet.evidence.performance_evidence.browser_frame_trace_observed, true);
   const codes = packet.promotion_holds.map(item => item.code);
   assert.ok(codes.includes('EMPIRICAL_EXIT_GATE_HELD'));
-  assert.ok(codes.includes('RUNTIME_EVIDENCE_INCOMPLETE'));
+  assert.ok(!codes.includes('RUNTIME_EVIDENCE_INCOMPLETE'));
   assert.ok(codes.includes('PRODUCTION_PROBE_NOT_OBSERVED'));
   assert.ok(codes.includes('PRODUCTION_PROMOTION_NOT_COMPLETE'));
   assert.equal(packet.empirical_validation.merge_may_satisfy_gate, false);
@@ -88,7 +98,6 @@ test('promotion packet rejects missing artifacts and a self-enabling feature gat
 
 test('runtime state requires observed runtime evidence and the empirical exit gate', async () => {
   const data = fixture();
-  for (const key of ['browser_matrix', 'mobile_evidence', 'reduced_motion_evidence', 'performance_evidence']) data.evidence[key].status = 'PASS';
   data.empirical_validation.empirical_exit_gate_passed = true;
   data.empirical_validation.human_adult_evidence_present = true;
   data.empirical_validation.reason = 'HUMAN_REVIEW_THRESHOLD_SATISFIED';
@@ -101,14 +110,13 @@ test('runtime state requires observed runtime evidence and the empirical exit ga
 
 test('production state additionally requires an observed exact-main probe', async () => {
   const data = fixture();
-  for (const key of ['browser_matrix', 'mobile_evidence', 'reduced_motion_evidence', 'performance_evidence']) data.evidence[key].status = 'PASS';
   data.evidence.production_probe_receipt = {
     status: 'PASS',
     references: ['issue-405-terminal-receipt'],
     exact_main_sha_verified: true,
     production_url_verified: true,
     application_tree_drift: 'none',
-    observed_at: '2026-07-20T00:44:00Z',
+    observed_at: '2026-07-20T01:28:02Z',
     observation_is_merge_inference: false
   };
   data.empirical_validation.empirical_exit_gate_passed = true;
