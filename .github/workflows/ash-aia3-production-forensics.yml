@@ -1,0 +1,46 @@
+name: Ash AIA3 Production Forensics
+
+on:
+  pull_request:
+    branches: [main]
+    paths:
+      - 'scripts/ash-aia3-production-forensics.mjs'
+      - '.github/workflows/ash-aia3-production-forensics.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  production-forensics:
+    strategy:
+      fail-fast: false
+      matrix:
+        browser: [chromium, firefox, webkit]
+    runs-on: ubuntu-latest
+    timeout-minutes: 40
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '24'
+          cache: npm
+      - run: npm ci --ignore-scripts
+      - name: Install ${{ matrix.browser }} observer
+        run: |
+          npm install --no-save --package-lock=false playwright@1.53.2
+          npx playwright install --with-deps ${{ matrix.browser }}
+      - name: Observe live desktop/mobile composition and ingress
+        env:
+          TD613_BASE_URL: https://td613.com
+          TD613_BROWSER: ${{ matrix.browser }}
+          TD613_ARTIFACT_DIR: artifacts/ash-aia3-${{ matrix.browser }}
+        run: node scripts/ash-aia3-production-forensics.mjs
+      - name: Preserve forensic evidence
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: ash-aia3-${{ matrix.browser }}-production-forensics
+          path: artifacts/ash-aia3-${{ matrix.browser }}/
+          if-no-files-found: error
+          retention-days: 30
