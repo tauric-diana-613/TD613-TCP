@@ -10,17 +10,21 @@ on:
       - 'app/dome-world/docs/FLOWCORE_PEDAGOGUE_PROGRAM_INDEX_V0_1.md'
       - 'app/dome-world/docs/FLOWCORE_P0_P10_IMPLEMENTATION_COMPLETION_LEDGER_V0_1.md'
       - 'app/dome-world/docs/FLOWCORE_RUNTIME_RELEASE_CLOSURE_RECEIPT_V0_1.md'
+      - 'app/dome-world/docs/FLOWCORE_PRODUCTION_OBSERVATION_REPAIR_RECEIPT_V0_1.md'
       - 'app/dome-world/fixtures/pedagogue/flowcore-promotion-evidence.json'
       - 'app/dome-world/route-burden-observatory.css'
       - 'app/dome-world/flowcore-promotion-dashboard.css'
+      - 'app/engine/flowcore-station-propagation.js'
       - 'scripts/flowcore-runtime-browser-probe.mjs'
       - 'scripts/flowcore-release-content-probe.mjs'
       - 'tests/flowcore-p0-p10-completion.test.mjs'
       - 'tests/flowcore-production-promotion.test.mjs'
       - 'tests/flowcore-runtime-browser-probe.test.mjs'
+      - 'tests/flowcore-production-observation.test.mjs'
       - 'tests/vercel-operator-release-gate.test.mjs'
       - 'docs/STRATEGIC_VERCEL_DEPLOYMENT_LAW.md'
       - '.github/workflows/flowcore-runtime-evidence.yml'
+      - '.github/workflows/flowcore-production-observation.yml'
       - '.github/workflows/vercel-operator-release.yml'
       - '.github/workflows/flowcore-p0-p10-final-stitch.yml'
   workflow_dispatch:
@@ -51,6 +55,7 @@ jobs:
       - name: Run runtime and release observer contracts
         run: |
           node --test tests/flowcore-runtime-browser-probe.test.mjs
+          node --test tests/flowcore-production-observation.test.mjs
           node tests/vercel-operator-release-gate.test.mjs
       - name: Assert bounded completion mode
         shell: bash
@@ -75,26 +80,30 @@ jobs:
             exit 0
           fi
 
-          grep -Fxq 'app/dome-world/docs/FLOWCORE_RUNTIME_RELEASE_CLOSURE_RECEIPT_V0_1.md' <<< "$CHANGED" || {
-            echo 'Runtime-release closure requires its named receipt.' >&2
+          grep -Fxq 'app/dome-world/docs/FLOWCORE_PRODUCTION_OBSERVATION_REPAIR_RECEIPT_V0_1.md' <<< "$CHANGED" || {
+            echo 'Production observation repair requires its named receipt.' >&2
             exit 1
           }
 
           ALLOWED="$(cat <<'EOF_ALLOWED'
           .github/workflows/flowcore-p0-p10-final-stitch.yml
+          .github/workflows/flowcore-production-observation.yml
           .github/workflows/flowcore-runtime-evidence.yml
           .github/workflows/vercel-operator-release.yml
           app/dome-world/docs/FLOWCORE_P0_P10_IMPLEMENTATION_COMPLETION_LEDGER_V0_1.md
           app/dome-world/docs/FLOWCORE_PEDAGOGUE_P10_IMPLEMENTATION_RECEIPT_V0_1.md
           app/dome-world/docs/FLOWCORE_PEDAGOGUE_PROGRAM_INDEX_V0_1.md
+          app/dome-world/docs/FLOWCORE_PRODUCTION_OBSERVATION_REPAIR_RECEIPT_V0_1.md
           app/dome-world/docs/FLOWCORE_RUNTIME_RELEASE_CLOSURE_RECEIPT_V0_1.md
           app/dome-world/fixtures/pedagogue/flowcore-promotion-evidence.json
           app/dome-world/flowcore-promotion-dashboard.css
           app/dome-world/route-burden-observatory.css
+          app/engine/flowcore-station-propagation.js
           docs/STRATEGIC_VERCEL_DEPLOYMENT_LAW.md
           scripts/flowcore-release-content-probe.mjs
           scripts/flowcore-runtime-browser-probe.mjs
           tests/flowcore-p0-p10-completion.test.mjs
+          tests/flowcore-production-observation.test.mjs
           tests/flowcore-production-promotion.test.mjs
           tests/flowcore-runtime-browser-probe.test.mjs
           tests/vercel-operator-release-gate.test.mjs
@@ -104,13 +113,13 @@ jobs:
           while IFS= read -r path; do
             [[ -z "$path" ]] && continue
             grep -Fxq "$path" <<< "$ALLOWED" || {
-              echo "Runtime-release closure changed an unauthorized path: $path" >&2
+              echo "Production observation repair changed an unauthorized path: $path" >&2
               exit 1
             }
           done <<< "$CHANGED"
 
-          if grep -Eq '^(api/|vercel\.json$|app/engine/|app/dome-world/ash/|app/dome-world/data/)' <<< "$CHANGED"; then
-            echo 'Runtime-release closure may not mutate serverless, engine, Ash, canonical, or promotion configuration.' >&2
+          if grep -Eq '^(api/|vercel\.json$|app/dome-world/ash/|app/dome-world/data/)' <<< "$CHANGED"; then
+            echo 'Production observation repair may not mutate serverless, Ash, canonical, or promotion configuration.' >&2
             exit 1
           fi
-          echo 'Completion mode: bounded runtime-release closure.'
+          echo 'Completion mode: bounded production observation repair.'
