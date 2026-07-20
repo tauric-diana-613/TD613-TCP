@@ -22,4 +22,7 @@ body[data-ash-aia-case-open="false"] .ash-aia__header{grid-template-columns:1fr;
 body[data-ash-aia-case-open="false"] .ash-aia__header h2{max-width:none;font-size:clamp(1.35rem,3vw,2rem)}
 body[data-ash-aia-case-open="false"] .ash-aia__body{margin-top:7px}
 body[data-ash-aia-case-open="false"] .ash-aia__work{width:min(920px,100%);margin-inline:auto;padding:8px}
+html[data-ash-aia-ready="true"] body[data-ash-aia-case-open="true"]>main{display:block!important}
+html[data-ash-aia-ready="true"] body[data-ash-aia-case-open="true"]>.workspace-rail{display:grid!important}
+@media(max-width:900px){html[data-ash-aia-ready="true"] body[data-ash-aia-case-open="true"]>.workspace-rail{grid-template-columns:repeat(6,minmax(92px,1fr))!important}}
 @media(max-width:620px){.ash-aia__body{margin-top:8px}.ash-aia__work{order:-1}.ash-aia__tasks{margin-top:8px}}
