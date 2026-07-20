@@ -23,6 +23,12 @@ runtime = replaceExactly(
 );
 runtime = replaceExactly(
   runtime,
+  "const keepUrl = `${base}/dome-world/ash-keep.html`;",
+  "const keepUrl = `${base}/dome-world/ash-keep.html?presentation=legacy`;",
+  'specialist presentation route declaration'
+);
+runtime = replaceExactly(
+  runtime,
   "const ALLOWED_LOCAL_KEYS = new Set([\n  'td613.ash-keep.current-case',\n  'td613.ash-keep.preferences'\n]);",
   "const ALLOWED_LOCAL_KEYS = new Set([\n  'td613.ash-keep.current-case',\n  'td613.ash-keep.preferences',\n  'td613.ash.cache-flush.epoch',\n  'td613.ash.session.epoch'\n]);",
   'bounded maintenance and deliberate session epoch allowance'
@@ -38,6 +44,12 @@ runtime = replaceExactly(
   "      selected_workspace: document.querySelector('.work-tab[aria-selected=\"true\"]')?.dataset.workspace || null,",
   "      selected_workspace: document.documentElement.dataset.ashPremiumWorkspace || document.querySelector('.workspace.active')?.id?.replace('workspace-', '') || null,",
   'active workspace receipt'
+);
+runtime = replaceExactly(
+  runtime,
+  "  report.readiness = readiness;\n\n  await page.locator('#startDemo').click();",
+  "  report.readiness = readiness;\n\n  await page.goto(keepUrl, { waitUntil: 'domcontentloaded', timeout: 60_000 });\n  await page.waitForFunction(() => new URL(location.href).searchParams.get('presentation') === 'legacy'\n    && document.body.dataset.ashLifecycle === 'READINESS_OBSERVED'\n    && window.__td613AshLiveAIA?.current?.().route === 'IMPLEMENTATION'\n    && window.__td613AshProfileDemos?.profiles?.includes('political_campaign')\n    && document.getElementById('newProfile')?.getClientRects().length > 0, null, { timeout: 60_000 });\n  report.threshold.specialist_presentation_route = 'legacy';\n\n  await page.locator('#startDemo').click();",
+  'post-threshold specialist route transition'
 );
 runtime = replaceExactly(
   runtime,
@@ -94,12 +106,15 @@ runtime = replaceExactly(
   'draft request boundary'
 );
 if (!runtime.includes(syntheticDraft)
+  || !runtime.includes('ash-keep.html?presentation=legacy')
+  || !runtime.includes("specialist_presentation_route = 'legacy'")
+  || !runtime.includes("current?.().route === 'IMPLEMENTATION'")
   || !runtime.includes("selectOption('political_campaign')")
   || !runtime.includes('Ash guided workspace API is unavailable.')
   || !runtime.includes('td613.ash.cache-flush.epoch')
   || !runtime.includes('td613.ash.session.epoch')
   || !runtime.includes('pre_custody_exact_state: preCustodyExactState')
-  || runtime.includes("#workspace-test .workspace-lifecycle-note")
+  || runtime.includes('#workspace-test .workspace-lifecycle-note')
   || !runtime.includes("guided Capsule return before tamper assay") && !runtime.includes("await openWorkspace(page, 'save');\n  await page.locator('#capsulePassphrase').waitFor({ state: 'visible' });")
   || !runtime.includes('draft_body_sha256')
   || !runtime.includes('item.body === SYNTHETIC_DRAFT')
