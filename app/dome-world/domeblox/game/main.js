@@ -1,8 +1,7 @@
-import { CANONICAL, G, buildWorldObjects, seedAnimals, saveState, exportState, message } from './core.js';
+import { CANONICAL, G, buildWorldObjects, seedAnimals, saveState, exportState, message, writeStateSnapshot } from './core.js';
 import { resize, drawWorld, renderDiagnostics } from './render-centered.js';
 import { update, findInteraction, interact, renderHud, toggleHud, toggleMap, closeSpringald, witnessSpringald, armSpringald, releaseSpringald, resetWorld } from './sim-responsive.js';
 
-const compactViewport = matchMedia('(pointer:coarse), (max-width:820px)').matches;
 document.fonts?.load('48px "TD613 FlowCore"', CANONICAL).catch(() => {});
 buildWorldObjects();
 seedAnimals();
@@ -36,13 +35,18 @@ G.ui.enterGame.addEventListener('click', () => {
 G.ui.resetGame.addEventListener('click', () => { if (confirm('Reset the local Dome-World save?')) resetWorld(); });
 G.ui.saveButton.addEventListener('click', () => saveState('manual'));
 G.ui.exportButton.addEventListener('click', exportState);
-G.ui.batteryButton.addEventListener('click', () => window.open('./forward-battery/', '_blank', 'noopener'));
+G.ui.batteryButton.addEventListener('click', openForwardBattery);
 G.ui.toggleHud.addEventListener('click', toggleHud);
 G.ui.closeMap.addEventListener('click', toggleMap);
 G.ui.closeSpringald.addEventListener('click', closeSpringald);
 G.ui.witnessSpringald.addEventListener('click', witnessSpringald);
 G.ui.armSpringald.addEventListener('click', armSpringald);
 G.ui.releaseSpringald.addEventListener('click', releaseSpringald);
+
+function openForwardBattery() {
+  const opened = window.open('./forward-battery/', '_blank', 'noopener');
+  if (!opened) location.assign('./forward-battery/');
+}
 
 let touchOrigin = null;
 function updateTouch(event) {
@@ -57,6 +61,13 @@ function updateTouch(event) {
   if (length > max) { G.pointer.x = dx / length; G.pointer.y = dy / length; }
   G.ui.touchStick.style.transform = `translate(${G.pointer.x * max}px,${G.pointer.y * max}px)`;
 }
+function releaseTouch() {
+  touchOrigin = null;
+  G.pointer.active = false;
+  G.pointer.x = 0;
+  G.pointer.y = 0;
+  G.ui.touchStick.style.transform = '';
+}
 G.ui.touchPad.addEventListener('touchstart', event => {
   const rect = G.ui.touchPad.getBoundingClientRect();
   touchOrigin = { x:rect.left + rect.width / 2, y:rect.top + rect.height / 2 };
@@ -64,16 +75,13 @@ G.ui.touchPad.addEventListener('touchstart', event => {
   updateTouch(event);
 }, { passive:false });
 G.ui.touchPad.addEventListener('touchmove', event => { event.preventDefault(); updateTouch(event); }, { passive:false });
-G.ui.touchPad.addEventListener('touchend', () => {
-  touchOrigin = null;
-  G.pointer.active = false;
-  G.pointer.x = 0;
-  G.pointer.y = 0;
-  G.ui.touchStick.style.transform = '';
-});
+G.ui.touchPad.addEventListener('touchend', releaseTouch);
+G.ui.touchPad.addEventListener('touchcancel', releaseTouch);
+addEventListener('blur', () => { G.keys.clear(); releaseTouch(); });
 
-document.addEventListener('visibilitychange', () => { if (document.hidden) saveState('visibility'); });
-addEventListener('beforeunload', () => localStorage.setItem('td613.domeblox.browser-world/v1', JSON.stringify(G.state)));
+document.addEventListener('visibilitychange', () => { if (document.hidden) writeStateSnapshot(); });
+addEventListener('pagehide', () => writeStateSnapshot());
+addEventListener('beforeunload', () => writeStateSnapshot());
 
 function frame(time) {
   const delta = Math.min(.05, (time - G.lastFrame) / 1000);
@@ -85,7 +93,7 @@ function frame(time) {
 requestAnimationFrame(frame);
 
 window.TD613_DOME_BLOX_GAME = Object.freeze({
-  version:'1.2.0',
+  version:'1.2.1',
   canonical:CANONICAL,
   save:() => saveState('api'),
   snapshot:() => structuredClone(G.state),
