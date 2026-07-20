@@ -67,3 +67,101 @@ if (handoff.distribution !== 'separate operator handoff; browser station stores 
 if (!(handoff.sha256 === 'SEE_SIBLING_ZIP_SHA256_SIDECAR' || /^[a-f0-9]{64}$/.test(handoff.sha256))) throw new Error('handoff digest must be external marker or final SHA-256');
 
 console.log('DomeBlox static contract PASS');
+
+// Temporary production observation lane. This branch is never merged.
+const LIVE_BASE = 'https://td613.com/dome-world/domeblox/';
+const exactScalar = String.fromCodePoint(0x10D613);
+
+async function liveFetch(relative = '') {
+  const url = new URL(relative, LIVE_BASE);
+  const response = await fetch(url, {
+    redirect: 'follow',
+    headers: {
+      'user-agent': 'TD613-DomeBlox-Deployed-Observation/1.1',
+      'cache-control': 'no-cache',
+    },
+    signal: AbortSignal.timeout(20_000),
+  });
+  const body = await response.text();
+  if (response.status !== 200) {
+    throw new Error(`live fetch failed ${response.status}: ${url}`);
+  }
+  if (!body.trim()) throw new Error(`live response empty: ${url}`);
+  return { response, body, url: response.url };
+}
+
+const liveIndex = await liveFetch('');
+if (!liveIndex.url.includes('/dome-world/domeblox')) throw new Error(`unexpected final route: ${liveIndex.url}`);
+if (!liveIndex.body.includes('<title>DomeBlox · Counter-Adversarial Bastion</title>')) throw new Error('live title missing');
+if (!liveIndex.body.includes('Content-Security-Policy')) throw new Error('live CSP missing');
+if (!liveIndex.body.includes(exactScalar)) throw new Error('live exact U+10D613 scalar missing');
+if (liveIndex.body.includes('𐌀')) throw new Error('live wrong placeholder glyph present');
+for (const id of ['sourceNucleus','runAssay','runMoire','compileConsequence','gameList','ledgerView']) {
+  if (!liveIndex.body.includes(`id="${id}"`)) throw new Error(`live DOM missing ${id}`);
+}
+
+const liveAssets = {
+  'domeblox.css': 'text/css',
+  'domeblox-hooks.js': 'javascript',
+  'domeblox-core.js': 'javascript',
+  'games/index.json': 'json',
+  'games/domeworld-roblox.json': 'json',
+  'games/forward-battery.json': 'json',
+  'games/GAME_TEMPLATE.json': 'json',
+  'handoff-manifest.json': 'json',
+  'ROUTE_READINESS.json': 'json',
+  'CLAIM_CEILING.md': '',
+  'CONTRIBUTORS.md': '',
+};
+
+const fetched = new Map();
+for (const [relative, typeHint] of Object.entries(liveAssets)) {
+  const asset = await liveFetch(relative);
+  const contentType = asset.response.headers.get('content-type') || '';
+  if (typeHint && !contentType.toLowerCase().includes(typeHint)) {
+    throw new Error(`unexpected content type for ${relative}: ${contentType}`);
+  }
+  fetched.set(relative, asset.body);
+}
+
+for (const script of ['domeblox-hooks.js', 'domeblox-core.js']) {
+  new vm.Script(fetched.get(script), { filename: `live:${script}` });
+}
+
+const liveGameIndex = JSON.parse(fetched.get('games/index.json'));
+if (liveGameIndex.schema !== 'td613.domeblox.game-index/v1') throw new Error('live game index schema drift');
+if (!Array.isArray(liveGameIndex.manifests) || liveGameIndex.manifests.length < 2) throw new Error('live game index incomplete');
+for (const relative of liveGameIndex.manifests) {
+  const key = relative.replace(/^\.\//, 'games/');
+  const loaded = fetched.get(key) || (await liveFetch(key)).body;
+  const game = JSON.parse(loaded);
+  if (game.schema !== 'td613.domeblox.game-manifest/v1') throw new Error(`live game manifest drift: ${key}`);
+}
+
+const liveHandoff = JSON.parse(fetched.get('handoff-manifest.json'));
+if (liveHandoff.distribution !== 'separate operator handoff; browser station stores metadata only') {
+  throw new Error('live handoff distribution drift');
+}
+const liveReadiness = JSON.parse(fetched.get('ROUTE_READINESS.json'));
+if (!String(liveReadiness.status || '').includes('PATCHED_READY_FOR_OPERATOR_REVIEW')) {
+  throw new Error(`unexpected live readiness: ${liveReadiness.status}`);
+}
+if (!fetched.get('CLAIM_CEILING.md').includes('ABSTAIN_INSUFFICIENT_COVERAGE')) {
+  throw new Error('live claim-ceiling coverage abstention missing');
+}
+if (!fetched.get('CONTRIBUTORS.md').includes('Erin / Pally / Potato')) {
+  throw new Error('live contributor provenance missing');
+}
+
+console.log(JSON.stringify({
+  schema: 'td613.domeblox.deployed-browser-surface-observation/v1',
+  url: LIVE_BASE,
+  status: 'PASS',
+  final_url: liveIndex.url,
+  title: 'DomeBlox · Counter-Adversarial Bastion',
+  exact_u10d613_present: true,
+  dependent_assets_verified: Object.keys(liveAssets).length,
+  game_manifests_verified: liveGameIndex.manifests.length,
+  javascript_parse: 'PASS',
+  authority: 'external GitHub runner observation; no user data submitted',
+}, null, 2));
