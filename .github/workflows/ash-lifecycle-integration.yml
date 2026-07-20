@@ -1,10 +1,9 @@
-# One-use observer aftercare; self-restores from main.
 name: One-use Custodian Return observer repair
 
 on:
-  push:
-    branches:
-      - agent/custodian-return-aia-observer-aftercare
+  pull_request:
+    branches: [main]
+    types: [opened, synchronize]
     paths:
       - '.github/workflows/ash-lifecycle-integration.yml'
 
@@ -13,6 +12,7 @@ permissions:
 
 jobs:
   patch:
+    if: github.head_ref == 'agent/custodian-return-aia-observer-aftercare'
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
