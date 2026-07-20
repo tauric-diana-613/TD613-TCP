@@ -84,6 +84,7 @@ test('production DomeBlox is an operable playable village', async ({ page }) => 
     expect(battery?.status()).toBe(200);
     await expect(page).toHaveTitle('DomeBlox · Forward Battery');
     await expect(page.locator('#sourceNucleus')).toBeVisible();
+    await page.locator('[data-panel="assay"]').click();
     await expect(page.locator('#runAssay')).toBeVisible();
     await expect(page.locator('.canonical-scalar')).toHaveText(String.fromCodePoint(0x10D613));
 
