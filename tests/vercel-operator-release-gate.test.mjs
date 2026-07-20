@@ -2,6 +2,7 @@ import assert from 'node:assert/strict';
 import fs from 'node:fs';
 
 const workflow = fs.readFileSync('.github/workflows/vercel-operator-release.yml', 'utf8');
+const observer = fs.readFileSync('.github/workflows/ash-keep-aia2-production-observation.yml', 'utf8');
 const law = fs.readFileSync('docs/STRATEGIC_VERCEL_DEPLOYMENT_LAW.md', 'utf8');
 const vercel = JSON.parse(fs.readFileSync('vercel.json', 'utf8'));
 
@@ -60,6 +61,23 @@ assert.match(workflow, /public_route_promotion_authorized = false/);
 assert.match(workflow, /application_tree_drift = none/);
 assert.match(workflow, /No additional deployment attempt is authorized by this failure/, 'a failed release must not silently authorize retries');
 assert.match(workflow, /Sealed ⟐/, 'successful release receipt must seal');
+
+assert.match(observer, /^\s{2}issue_comment:\s*$/m, 'read-only Ash observation must use the release-gate issue conduit');
+assert.match(observer, /github\.event\.issue\.number == 405/);
+assert.match(observer, /startsWith\(github\.event\.comment\.body, '\/td613-ash-aia2-observe '\)/);
+assert.match(observer, /^\s{2}contents: read$/m, 'Ash production observer must not have repository write authority');
+assert.doesNotMatch(observer, /contents: write|git push|vercel@latest deploy|deploymentEnabled = true/, 'Ash production observer must remain read-only');
+assert.match(observer, /git merge-base --is-ancestor/);
+assert.match(observer, /ash-keep-aia2-task-journey-v5\.mjs/);
+assert.match(observer, /for browser in chromium firefox webkit/);
+assert.match(observer, /deployment_count = 0/);
+assert.match(observer, /chromium_desktop_mobile = PASS/);
+assert.match(observer, /firefox_desktop_mobile = PASS/);
+assert.match(observer, /webkit_desktop_mobile = PASS/);
+assert.match(observer, /counts_as_human_evidence = false/);
+assert.match(observer, /child_study_authorized = false/);
+assert.match(observer, /release_authorized = false/);
+assert.match(observer, /human_closure_required = true/);
 
 assert.match(law, /operator authorization → assistant\/Codex execution → one Vercel deployment/, 'written law must preserve the operator-authorizes, assistant-executes route');
 assert.match(law, /The operator is not required to operate Vercel, GitHub Actions, or deployment plumbing/, 'written law must remove deployment burden from the operator');
