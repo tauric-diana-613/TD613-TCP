@@ -14,6 +14,7 @@ export const ASH_LIFECYCLE_SOURCE_MODULE = '/dome-world/ash-lifecycle.js';
 export const ASH_LIFECYCLE_MODULE = `${ASH_LIFECYCLE_SOURCE_MODULE}?v=${ASH_LIFECYCLE_ASSET_EPOCH}`;
 export const ASH_WORKSPACE_BRIDGE_MODULE = '/dome-world/ash-workspace-bridge.js';
 export const ASH_CANONICAL_MEMBRANE_EPOCH = '20260720-aia3-session-v1';
+export const ASH_AIA3_COMPOSITION_VERSION = 'td613.ash.aia3-composition/v0.3-atomic-ingress-readiness';
 
 const DOME_SOURCE_PATH = path.join(process.cwd(), 'app', 'dome-world', 'index.html');
 const ASH_KEEP_SOURCE_PATH = path.join(process.cwd(), 'app', 'dome-world', 'ash-keep.html');
@@ -52,7 +53,7 @@ function canonicalAshBoot() {
     document.documentElement.dataset.ashSessionOpen=String(sessionOpen);
     document.documentElement.dataset.ashMembraneReady='false';
     document.documentElement.dataset.ashCanonicalMembrane=epoch;
-    document.documentElement.dataset.ashAia3='td613.ash.aia3-composition/v0.1-ingress-first-compact-guide';
+    document.documentElement.dataset.ashAia3='${ASH_AIA3_COMPOSITION_VERSION}';
   }catch{
     document.documentElement.dataset.ashSessionOpen='false';
     document.documentElement.dataset.ashMembraneReady='false';
