@@ -5,7 +5,7 @@
   "version": "0.1.0",
   "status": "experimental",
   "entrypoint": "./index.html",
-  "description": "Describe the game and its counter-adversarial function.",
+  "description": "Describe the game and its bounded counter-adversarial function.",
   "capabilities": [
     "local-assay"
   ],
@@ -21,5 +21,8 @@
     "no silent authority expansion",
     "no external destructive action",
     "human-controlled consequence"
+  ],
+  "open_verification": [
+    "declare runtime and production tests still pending"
   ]
 }
