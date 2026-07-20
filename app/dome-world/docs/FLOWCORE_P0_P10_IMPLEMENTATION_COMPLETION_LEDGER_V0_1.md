@@ -11,7 +11,7 @@
 
 ```text
 P0–P1 f56914d788fbb86ef5b9741d0065bf00d74aed84
-P2 a3aebfad8c3232447cff0741d0065bf00d74aed84
+P2 a3aebfad8c3232447cff0749aa7bcbbe040a3337
 P3 9736206696f254a4b51148694d507a927b00b790
 P4 91158eb4af827599273b8ca17a11bb9f89356b32
 P5 4c995bd372702d748ed659ff7b6c5421ab5ba27e
@@ -21,8 +21,6 @@ P8 1fa2c5f3c64d006c56b9c421496441ab67871eed
 P9 f2478b157a062a8908592b93fe8e05cb74d657cf
 P10 990daa1634161003b20ab5ddfbe7f86809dc21ed
 ```
-
-> Correction note: the canonical P2 commit remains `a3aebfad8c3232447cff0749aa7bcbbe040a3337`; any truncated or transposed rendering above must never be used as a release identifier.
 
 P0–P10 code, contracts, schemas, receipts, proving surfaces, evidence controls, rollback law, and documentation index are implemented. Temporary repair workflows are absent. P6, P7, and P8 integration seams were repaired without changing Ash lifecycle or canonical digest law. P9 synthetic evidence remains barred from human-study and child-pilot authority. P10 cannot infer promotion from merge or deployment.
 
