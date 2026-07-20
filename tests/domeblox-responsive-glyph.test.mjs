@@ -37,6 +37,8 @@ if (!render.includes('TD613 FlowCore')) throw new Error('Canvas custom font fami
 if (!render.includes('ctx.font = `16px ${GLYPH_FONT}`')) throw new Error('map custom glyph font missing');
 if (!centered.includes('centerX: innerWidth / 2')) throw new Error('true viewport centering missing');
 if (!centered.includes('drawPersistentStations')) throw new Error('zoom-invariant station layer missing');
+if (!centered.includes('drawBaseWithoutLegacyLabels')) throw new Error('legacy plaque suppression missing');
+if (!centered.includes('legacyLabelsSuppressed: true')) throw new Error('label suppression receipt missing');
 if (!centered.includes("schema: 'td613.domeblox.render-diagnostics/v1.2'")) throw new Error('render diagnostics missing');
 if (!centered.includes("item.kind !== 'home'")) throw new Error('station visibility inventory missing');
 if (!sim.includes("from './render-responsive.js'")) throw new Error('responsive map renderer not routed');
