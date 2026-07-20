@@ -1,5 +1,6 @@
 /* AK-AIA-3 interaction containment: neighboring guide/work cards may never overlap hit targets. */
-html[data-ash-aia3][data-ash-session-open="true"] .ash-aia__body{grid-template-columns:minmax(0,1fr) minmax(250px,340px)!important;align-items:stretch!important}
+html[data-ash-aia3][data-ash-session-open="true"] .ash-aia__body{position:relative!important;z-index:1!important;grid-template-columns:minmax(0,1fr) minmax(250px,340px)!important;align-items:stretch!important;overflow:hidden!important}
+html[data-ash-aia3][data-ash-session-open="true"] .ash-aia__tasks{position:relative!important;z-index:5!important;isolation:isolate!important}
 html[data-ash-aia3][data-ash-session-open="true"] .ash-aia__guide,html[data-ash-aia3][data-ash-session-open="true"] .ash-aia__work{position:relative!important;min-width:0!important;max-width:100%!important;overflow:hidden!important;isolation:isolate!important}
 html[data-ash-aia3][data-ash-session-open="true"] .ash-aia__guide{z-index:2!important}
 html[data-ash-aia3][data-ash-session-open="true"] .ash-aia__work{z-index:1!important}
@@ -13,8 +14,8 @@ html[data-ash-aia3][data-ash-session-open="true"] .ash-aia__work h3,html[data-as
   html[data-ash-aia3][data-ash-session-open="true"] [data-aia-play]{width:100%!important;white-space:normal!important}
   html[data-ash-aia3][data-ash-session-open="true"] .ash-aia__routes{display:grid!important;grid-template-columns:repeat(2,minmax(0,1fr))!important;overflow:visible!important;width:100%!important}
   html[data-ash-aia3][data-ash-session-open="true"] .ash-aia__routes button{min-width:0!important;width:100%!important;flex:none!important;white-space:normal!important}
-  html[data-ash-aia3][data-ash-session-open="true"] .ash-aia__tasks{grid-template-columns:repeat(2,minmax(0,1fr))!important;width:100%!important}
-  html[data-ash-aia3][data-ash-session-open="true"] .ash-aia__tasks button{min-width:0!important;width:100%!important}
+  html[data-ash-aia3][data-ash-session-open="true"] .ash-aia__tasks{grid-template-columns:repeat(2,minmax(0,1fr))!important;width:100%!important;pointer-events:auto!important}
+  html[data-ash-aia3][data-ash-session-open="true"] .ash-aia__tasks button{position:relative!important;z-index:6!important;min-width:0!important;width:100%!important;pointer-events:auto!important}
   html[data-ash-aia3][data-ash-session-open="true"] body>.workspace-rail{position:static!important;grid-template-columns:repeat(3,minmax(0,1fr))!important;width:100%!important;max-width:100%!important;overflow:visible!important}
   html[data-ash-aia3][data-ash-session-open="true"] body>.workspace-rail .work-tab{min-width:0!important;width:100%!important;white-space:normal!important;overflow-wrap:anywhere!important}
   html[data-ash-aia3][data-ash-session-open="true"] .premium-primary-dock{left:8px!important;right:8px!important;width:auto!important;max-width:calc(100% - 16px)!important;transform:none!important;grid-template-columns:repeat(5,minmax(0,1fr))!important}
