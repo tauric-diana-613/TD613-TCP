@@ -52,7 +52,7 @@ jobs:
         run: node --test --test-name-pattern='scene package is deterministic' tests/flowcore-physical-scene.test.mjs
       - name: P8 static surface parity
         run: node --test --test-name-pattern='static proving surface exposes' tests/flowcore-physical-scene.test.mjs
-      - name: Assert P8 adds no serverless, custody, release, or hardware authority
+      - name: Assert P8 protected files and infrastructure are unchanged
         shell: bash
         run: |
           BASE_SHA="${{ github.event.pull_request.base.sha }}"
@@ -64,7 +64,5 @@ jobs:
             echo 'P8 may not mutate serverless, Ash lifecycle, or canonical digest law.'
             exit 1
           fi
-          if grep -R -Eq 'essential_service_depends_on_participant_input["'"': ]+true|thermal_to_mechanical_transfer_millijoules["'"': ]+[1-9]|flowcore_commands_physical_system["'"': ]+true' app/engine/flowcore-physical-scene.js app/dome-world/fixtures/pedagogue/physical-flowcore-cycle.json; then
-            echo 'P8 physical safety or authority boundary widened.'
-            exit 1
-          fi
+      - name: Re-run structured physical safety assertions
+        run: node --test --test-name-pattern='refuses essential-service dependence|optional output can never cross|thermal ledger mechanically unavailable|complete consequence-first scene' tests/flowcore-physical-scene.test.mjs
