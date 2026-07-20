@@ -24,6 +24,7 @@ const entrypoints = Object.freeze([
 const allowedExtensions = new Set(['.html', '.js', '.mjs', '.css', '.json', '.svg']);
 const sha256 = value => crypto.createHash('sha256').update(value).digest('hex');
 const sleep = ms => new Promise(resolve => setTimeout(resolve, ms));
+const vercelConfig = JSON.parse(await fsp.readFile('vercel.json', 'utf8'));
 
 function localToRemote(localPath) {
   const normalized = localPath.replaceAll('\\', '/');
@@ -35,7 +36,19 @@ function localToRemote(localPath) {
 function remoteToLocal(reference) {
   if (reference.startsWith('/dome-world/')) return `app/dome-world/${reference.slice('/dome-world/'.length)}`;
   if (reference.startsWith('/engine/')) return `app/engine/${reference.slice('/engine/'.length)}`;
+  if (reference.startsWith('/app/dome-world/')) return reference.slice(1);
+  if (reference.startsWith('/app/engine/')) return reference.slice(1);
   return null;
+}
+
+function exactStaticRewrite(remotePath) {
+  const rewrite = (vercelConfig.rewrites || []).find(candidate => candidate?.source === remotePath);
+  if (!rewrite) return null;
+  const destination = String(rewrite.destination || '').split('?', 1)[0];
+  const localPath = remoteToLocal(destination);
+  return localPath && allowedExtensions.has(path.extname(localPath).toLowerCase())
+    ? { source: remotePath, destination, local_path: localPath }
+    : null;
 }
 
 function referencesFor(filePath, source) {
@@ -44,7 +57,10 @@ function referencesFor(filePath, source) {
   const collect = expression => {
     for (const match of source.matchAll(expression)) if (match[1]) references.push(match[1]);
   };
-  if (extension === '.html') collect(/(?:src|href)\s*=\s*["']([^"'#?]+)["']/g);
+  if (extension === '.html') {
+    collect(/\bsrc\s*=\s*["']([^"'#?]+)["']/gi);
+    collect(/<link\b[^>]*\bhref\s*=\s*["']([^"'#?]+)["'][^>]*>/gi);
+  }
   if (extension === '.js' || extension === '.mjs') {
     collect(/(?:import\s+(?:[^"']+?\s+from\s+)?|export\s+[^"']*?\s+from\s+|import\s*\()\s*["']([^"']+)["']/g);
     collect(/fetch\s*\(\s*["']([^"']+)["']/g);
@@ -88,12 +104,20 @@ async function discoverRuntimeClosure() {
 
 await fsp.mkdir(out, { recursive: true });
 const closure = await discoverRuntimeClosure();
-const local = closure.map(([localPath, value]) => ({
-  local_path: localPath,
-  remote_path: localToRemote(localPath),
-  discovered_from: value.discovered_from,
-  sha256: sha256(value.bytes),
-  size: value.bytes.length
+const local = await Promise.all(closure.map(async ([localPath, value]) => {
+  const remotePath = localToRemote(localPath);
+  const rewrite = exactStaticRewrite(remotePath);
+  const expectedLocalPath = rewrite?.local_path || localPath;
+  const expectedBytes = expectedLocalPath === localPath ? value.bytes : await fsp.readFile(expectedLocalPath);
+  return {
+    local_path: localPath,
+    expected_local_path: expectedLocalPath,
+    remote_path: remotePath,
+    declared_rewrite: rewrite,
+    discovered_from: value.discovered_from,
+    sha256: sha256(expectedBytes),
+    size: expectedBytes.length
+  };
 }));
 
 for (const required of [
@@ -104,6 +128,9 @@ for (const required of [
   if (!local.some(item => item.local_path === required)) throw new Error(`Runtime dependency closure omitted ${required}.`);
 }
 if (local.length < 20) throw new Error(`Runtime dependency closure is unexpectedly small (${local.length}).`);
+if (local.some(item => item.discovered_from !== 'entrypoint' && item.local_path.endsWith('.html'))) {
+  throw new Error('Runtime dependency closure followed a navigational HTML document.');
+}
 
 let observation = null;
 let lastError = null;
@@ -118,16 +145,29 @@ for (let attempt = 1; attempt <= attempts; attempt += 1) {
       if (!response.ok) throw new Error(`${item.remote_path} returned ${response.status}.`);
       const bytes = Buffer.from(await response.arrayBuffer());
       const digest = sha256(bytes);
-      if (digest !== item.sha256) throw new Error(`${item.remote_path} digest ${digest} does not match source ${item.sha256}.`);
-      remote.push({ remote_path: item.remote_path, final_url: response.url, sha256: digest, size: bytes.length, status: response.status });
+      if (digest !== item.sha256) {
+        const rewriteDetail = item.declared_rewrite ? ` after declared rewrite to ${item.declared_rewrite.destination}` : '';
+        throw new Error(`${item.remote_path} digest ${digest} does not match source ${item.sha256}${rewriteDetail}.`);
+      }
+      remote.push({
+        remote_path: item.remote_path,
+        expected_local_path: item.expected_local_path,
+        declared_rewrite: item.declared_rewrite,
+        final_url: response.url,
+        sha256: digest,
+        size: bytes.length,
+        status: response.status
+      });
     }
     observation = {
-      schema: 'td613.flowcore.production-content-observation/v0.2-dependency-closure',
+      schema: 'td613.flowcore.production-content-observation/v0.3-rewrite-aware-asset-closure',
       status: 'PASS',
       source_packet_commit: sourcePacketCommit,
       production_base_url: base,
       exact_source_content_verified: true,
       dependency_closure_verified: true,
+      navigation_links_excluded: true,
+      declared_static_rewrites_resolved: true,
       dependency_count: local.length,
       application_tree_drift: 'none',
       attempt,
@@ -149,12 +189,14 @@ for (let attempt = 1; attempt <= attempts; attempt += 1) {
 
 if (!observation) {
   observation = {
-    schema: 'td613.flowcore.production-content-observation/v0.2-dependency-closure',
+    schema: 'td613.flowcore.production-content-observation/v0.3-rewrite-aware-asset-closure',
     status: 'HELD',
     source_packet_commit: sourcePacketCommit,
     production_base_url: base,
     exact_source_content_verified: false,
     dependency_closure_verified: false,
+    navigation_links_excluded: true,
+    declared_static_rewrites_resolved: true,
     dependency_count: local.length,
     application_tree_drift: 'UNRESOLVED',
     hold_reason: lastError?.message || 'Production content was not observed.',
