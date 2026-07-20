@@ -6,7 +6,7 @@ import { chromium } from 'playwright';
 
 const base=String(process.env.TD613_BASE_URL||'http://127.0.0.1:6130').replace(/\/$/,'');
 const artifactDir=path.resolve(process.env.TD613_ARTIFACT_DIR||'artifacts/ash-investigation-guidance');
-const keepUrl=`${base}/dome-world/ash-keep.html`;
+const keepUrl=`${base}/dome-world/ash-keep.html?presentation=legacy`;
 const VERSION='td613.ash.investigation-demo/v0.2-apeq-paia';
 const GUIDED_VERSION='td613.ash.guided-operator-ui/v0.2-stable-membrane';
 const HARDENING_VERSION='td613.ash.flicker-hardening/v0.1-static-compositor';
