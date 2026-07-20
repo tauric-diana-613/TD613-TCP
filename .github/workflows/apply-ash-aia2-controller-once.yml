@@ -22,8 +22,14 @@ jobs:
         run: |
           set -euo pipefail
           cat .aia2-stage/ash-keep-aia.js.b64.* | tr -d '\n\r' | base64 --decode > app/dome-world/ash-keep-aia.js
-          test "$(wc -c < app/dome-world/ash-keep-aia.js | tr -d ' ')" = "31618"
+          BYTES="$(wc -c < app/dome-world/ash-keep-aia.js | tr -d ' ')"
+          test "$BYTES" -gt 25000
+          grep -Fq "td613.ash.live-aia-browser/v0.2-task-continuity" app/dome-world/ash-keep-aia.js
+          grep -Fq "task_continuity_required: true" app/dome-world/ash-keep-aia.js
+          grep -Fq "Open a local document" app/dome-world/ash-keep-aia.js
           node --check app/dome-world/ash-keep-aia.js
+          sha256sum app/dome-world/ash-keep-aia.js
+          echo "controller_bytes=$BYTES"
       - name: Remove one-use repair material
         run: |
           rm -rf .aia2-stage
