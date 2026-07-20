@@ -1,0 +1,49 @@
+name: Ash Keep AIA2 post-case diagnosis
+
+on:
+  pull_request:
+    paths:
+      - 'scripts/ash-keep-aia2-postcase-diagnosis.mjs'
+      - '.github/workflows/ash-keep-aia2-postcase-diagnosis.yml'
+
+permissions:
+  contents: read
+
+jobs:
+  diagnose:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+      - run: npm ci
+      - run: npm install --no-save --package-lock=false playwright@1.53.2
+      - run: npx playwright install --with-deps chromium
+      - name: Start bounded local Ash Keep runtime
+        run: |
+          mkdir -p artifacts
+          node scripts/ash-keep-local-closure-server.mjs 6130 > artifacts/ash-aia2-postcase-server.log 2>&1 &
+          echo $! > artifacts/ash-aia2-postcase-server.pid
+          for attempt in $(seq 1 40); do
+            curl -fsS --max-time 2 http://127.0.0.1:6130/__ash_keep_closure/readiness && exit 0
+            sleep 1
+          done
+          exit 1
+      - name: Inspect post-case visibility
+        env:
+          TD613_ARTIFACT_DIR: artifacts/ash-aia2-postcase-diagnosis
+        run: node scripts/ash-keep-aia2-postcase-diagnosis.mjs
+      - if: always()
+        run: test -f artifacts/ash-aia2-postcase-server.pid && kill "$(cat artifacts/ash-aia2-postcase-server.pid)" || true
+      - if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: ash-aia2-postcase-diagnosis
+          path: |
+            artifacts/ash-aia2-postcase-diagnosis/
+            artifacts/ash-aia2-postcase-server.log
+          if-no-files-found: error
+          retention-days: 7
