@@ -1,22 +1,14 @@
 name: Ash AIA3 Production Forensics
 
 on:
-  pull_request:
-    branches: [main]
-    paths:
-      - 'scripts/ash-aia3-production-forensics.mjs'
-      - '.github/workflows/ash-aia3-production-forensics.yml'
-      - 'app/dome-world/ash-keep-aia3.css'
-      - 'app/dome-world/ash-aia3-composition.js'
-      - 'app/dome-world/ash-cache-eviction-aia3.js'
-      - 'app/dome-world/ash-lifecycle.js'
-      - 'app/dome-world/ash-keep-aia-workspace-bridge.js'
-      - 'app/dome-world/ash-guided-operator-ui.js'
-      - 'api/dome-world-shell.js'
   workflow_dispatch:
 
 permissions:
   contents: read
+
+concurrency:
+  group: ash-aia3-production-forensics
+  cancel-in-progress: false
 
 jobs:
   production-forensics:
