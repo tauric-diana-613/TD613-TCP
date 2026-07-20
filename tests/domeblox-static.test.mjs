@@ -146,8 +146,9 @@ const liveReadiness = JSON.parse(fetched.get('ROUTE_READINESS.json'));
 if (!String(liveReadiness.status || '').includes('PATCHED_READY_FOR_OPERATOR_REVIEW')) {
   throw new Error(`unexpected live readiness: ${liveReadiness.status}`);
 }
-if (!fetched.get('CLAIM_CEILING.md').includes('ABSTAIN_INSUFFICIENT_COVERAGE')) {
-  throw new Error('live claim-ceiling coverage abstention missing');
+const liveClaimCeiling = fetched.get('CLAIM_CEILING.md');
+if (!liveClaimCeiling.includes('Incomplete observation produces abstention or a partial posture')) {
+  throw new Error('live claim-ceiling abstention contract missing');
 }
 if (!fetched.get('CONTRIBUTORS.md').includes('Erin / Pally / Potato')) {
   throw new Error('live contributor provenance missing');
