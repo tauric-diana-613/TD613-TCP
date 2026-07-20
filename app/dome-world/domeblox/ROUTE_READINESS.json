@@ -1,0 +1,11 @@
+{
+  "schema": "td613.domeblox.route-readiness/v1",
+  "route": "/dome-world/domeblox/",
+  "status": "READY_FOR_OPERATOR_REVIEW",
+  "repository_static_contract": "PASS_LOCAL",
+  "serverless_delta": 0,
+  "deployment_lock_changed": false,
+  "production_observation": "PENDING",
+  "roblox_studio_runtime": "PENDING",
+  "human_closure": "OPEN"
+}
