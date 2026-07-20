@@ -1,0 +1,25 @@
+{
+  "schema": "td613.domeblox.game-manifest/v1",
+  "id": "replace-me",
+  "title": "New DomeBlox Game",
+  "version": "0.1.0",
+  "status": "experimental",
+  "entrypoint": "./index.html",
+  "description": "Describe the game and its counter-adversarial function.",
+  "capabilities": [
+    "local-assay"
+  ],
+  "assays": [],
+  "consequence_adapters": [],
+  "hooks": {
+    "before_assay": null,
+    "after_assay": null,
+    "before_consequence": null
+  },
+  "claim_ceiling": "declare-the-highest-closed-proposition",
+  "authority_boundary": [
+    "no silent authority expansion",
+    "no external destructive action",
+    "human-controlled consequence"
+  ]
+}
