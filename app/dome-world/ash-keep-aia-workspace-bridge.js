@@ -1,8 +1,9 @@
 const LEGACY = new URLSearchParams(location.search).get('presentation') === 'legacy';
 const POINTER_KEY = 'td613.ash-keep.current-case';
-let railObserver = null;
+let exactWorkObserver = null;
 function caseOpen() { try { return Boolean(window.__td613AshKeep?.current?.().case_id || localStorage.getItem(POINTER_KEY)); } catch { return Boolean(window.__td613AshKeep?.current?.().case_id); } }
-function railIsRestored(rail) { return rail?.style.getPropertyValue('display') === 'grid' && rail.style.getPropertyPriority('display') === 'important' && rail.style.getPropertyValue('min-height') === '54px' && rail.style.getPropertyValue('max-height') === 'none'; }
+function openBoundaryMatches(main, rail) { return !main.hasAttribute('inert') && !rail.hasAttribute('inert') && rail.style.getPropertyValue('display') === 'grid' && rail.style.getPropertyPriority('display') === 'important' && rail.style.getPropertyValue('min-height') === '54px' && rail.style.getPropertyValue('max-height') === 'none'; }
+function closedBoundaryMatches(main, rail) { return main.hasAttribute('inert') && rail.hasAttribute('inert') && main.getAttribute('aria-hidden') === 'true' && rail.getAttribute('aria-hidden') === 'true'; }
 function composeExactWork(open) {
   const main = document.querySelector('body > main');
   const rail = document.querySelector('body > .workspace-rail');
@@ -20,9 +21,13 @@ function composeExactWork(open) {
       delete rail.dataset.ashAiaExactNavigation;
     }
   }
-  if (!railObserver) {
-    railObserver = new MutationObserver(() => { if (caseOpen() && !railIsRestored(rail)) queueMicrotask(sync); });
-    railObserver.observe(rail, { attributes: true, attributeFilter: ['style', 'inert', 'aria-hidden'] });
+  if (!exactWorkObserver) {
+    exactWorkObserver = new MutationObserver(() => {
+      const nowOpen = caseOpen();
+      const matches = nowOpen ? openBoundaryMatches(main, rail) : closedBoundaryMatches(main, rail);
+      if (!matches) queueMicrotask(sync);
+    });
+    for (const node of [main, rail]) exactWorkObserver.observe(node, { attributes: true, attributeFilter: ['style', 'inert', 'aria-hidden'] });
   }
 }
 function sync() {
@@ -48,7 +53,7 @@ async function boot() {
   if (LEGACY) return;
   for (let attempt = 0; attempt < 200; attempt += 1) {
     if (window.__td613AshLiveAIA && document.getElementById('launch')) {
-      window.__td613AshAIAIngress = Object.freeze({ version: 'td613.ash.aia-ingress/v0.3-canonical-fixed-membrane', refresh: sync, show });
+      window.__td613AshAIAIngress = Object.freeze({ version: 'td613.ash.aia-ingress/v0.4-two-state-exact-work-boundary', refresh: sync, show });
       sync();
       for (const type of ['case-opened', 'case-created', 'profile-demo-hydrated', 'capsule-opened', 'case-closed', 'lifecycle-updated']) window.addEventListener(`td613:ash:${type}`, () => setTimeout(sync, 0));
       window.addEventListener('td613:ash:aia-ready', sync);
