@@ -1,0 +1,108 @@
+name: Flow-Core Runtime Browser Evidence
+
+on:
+  pull_request:
+    branches: [main]
+    paths:
+      - 'app/engine/flowcore-*.js'
+      - 'app/dome-world/*flowcore*'
+      - 'app/dome-world/information-dome-pedagogue*'
+      - 'app/dome-world/route-burden-observatory*'
+      - 'app/dome-world/ash-custody-pedagogue*'
+      - 'app/dome-world/station-propagation-observatory*'
+      - 'app/dome-world/fixtures/pedagogue/flowcore-*'
+      - 'scripts/flowcore-runtime-browser-probe.mjs'
+      - 'scripts/flowcore-release-content-probe.mjs'
+      - 'tests/flowcore-runtime-browser-probe.test.mjs'
+      - '.github/workflows/flowcore-runtime-evidence.yml'
+  push:
+    branches: [main]
+    paths:
+      - 'app/engine/flowcore-*.js'
+      - 'app/dome-world/*flowcore*'
+      - 'app/dome-world/information-dome-pedagogue*'
+      - 'app/dome-world/route-burden-observatory*'
+      - 'app/dome-world/ash-custody-pedagogue*'
+      - 'app/dome-world/station-propagation-observatory*'
+      - 'app/dome-world/fixtures/pedagogue/flowcore-*'
+      - 'scripts/flowcore-runtime-browser-probe.mjs'
+      - 'scripts/flowcore-release-content-probe.mjs'
+      - 'tests/flowcore-runtime-browser-probe.test.mjs'
+      - '.github/workflows/flowcore-runtime-evidence.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  runtime-evidence:
+    name: ${{ matrix.browser }} Flow-Core observation
+    runs-on: ubuntu-latest
+    timeout-minutes: 40
+    strategy:
+      fail-fast: false
+      matrix:
+        browser: [chromium, firefox, webkit]
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+          cache: npm
+      - run: npm ci
+      - name: Verify observer contracts
+        run: node --test tests/flowcore-runtime-browser-probe.test.mjs
+      - name: Install bounded browser runtime
+        run: |
+          npm install --no-save --package-lock=false playwright@1.53.2
+          npx playwright install --with-deps ${{ matrix.browser }}
+      - name: Start bounded TD613 static runtime
+        run: |
+          set -euo pipefail
+          mkdir -p artifacts/flowcore-runtime-${{ matrix.browser }}
+          node scripts/serve-td613-localhost.mjs 6130 > artifacts/flowcore-runtime-${{ matrix.browser }}/server.log 2>&1 &
+          echo $! > artifacts/flowcore-runtime-${{ matrix.browser }}/server.pid
+          for attempt in $(seq 1 45); do
+            if curl -fsS --max-time 2 http://127.0.0.1:6130/app/dome-world/flowcore-promotion-dashboard.html >/dev/null; then
+              exit 0
+            fi
+            sleep 1
+          done
+          cat artifacts/flowcore-runtime-${{ matrix.browser }}/server.log || true
+          exit 1
+      - name: Observe Flow-Core runtime
+        env:
+          TD613_BASE_URL: http://127.0.0.1:6130
+          TD613_FLOWCORE_ROUTE_PREFIX: app/dome-world
+          TD613_BROWSERS: ${{ matrix.browser }}
+          TD613_SOURCE_PACKET_COMMIT: ${{ github.event.pull_request.head.sha || github.sha }}
+          TD613_ARTIFACT_DIR: artifacts/flowcore-runtime-${{ matrix.browser }}
+        run: node scripts/flowcore-runtime-browser-probe.mjs
+      - name: Verify bounded PASS receipt
+        env:
+          RECEIPT: artifacts/flowcore-runtime-${{ matrix.browser }}/flowcore-runtime-browser-evidence.json
+        run: |
+          node --input-type=module <<'NODE'
+          import fs from 'node:fs';
+          const receipt = JSON.parse(fs.readFileSync(process.env.RECEIPT, 'utf8'));
+          if (receipt.status !== 'PASS') throw new Error(`Runtime evidence held: ${receipt.hold_reason || 'unknown'}`);
+          if (receipt.authority.counts_as_human_evidence !== false || receipt.authority.authorizes_public_route_promotion !== false || receipt.authority.closes_program !== false) {
+            throw new Error('Runtime observer widened authority.');
+          }
+          NODE
+      - name: Preserve runtime evidence
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: flowcore-runtime-${{ matrix.browser }}-evidence
+          path: artifacts/flowcore-runtime-${{ matrix.browser }}/
+          if-no-files-found: warn
+          retention-days: 30
+      - name: Stop bounded runtime
+        if: always()
+        run: |
+          if [ -f artifacts/flowcore-runtime-${{ matrix.browser }}/server.pid ]; then
+            kill "$(cat artifacts/flowcore-runtime-${{ matrix.browser }}/server.pid)" 2>/dev/null || true
+          fi
