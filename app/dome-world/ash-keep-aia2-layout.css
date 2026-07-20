@@ -6,10 +6,20 @@
 .ash-aia__depths{order:4}
 .ash-aia__holds{order:5}
 body[data-ash-aia-case-open="false"] .ash-aia__body{grid-template-columns:1fr}
+body[data-ash-aia-case-open="false"] .ash-aia__routes,
+body[data-ash-aia-case-open="false"] .ash-aia__posture,
+body[data-ash-aia-case-open="false"] .ash-aia__state,
 body[data-ash-aia-case-open="false"] .ash-aia__guide,
 body[data-ash-aia-case-open="false"] .ash-aia__tasks,
 body[data-ash-aia-case-open="false"] .ash-aia__consequences,
 body[data-ash-aia-case-open="false"] .ash-aia__depths,
-body[data-ash-aia-case-open="false"] .ash-aia__holds{display:none}
-body[data-ash-aia-case-open="false"] .ash-aia__work{width:min(920px,100%);margin-inline:auto}
+body[data-ash-aia-case-open="false"] .ash-aia__holds,
+body[data-ash-aia-case-open="false"] .ash-aia__work>.ash-aia__step-label,
+body[data-ash-aia-case-open="false"] .ash-aia__work>h3,
+body[data-ash-aia-case-open="false"] .ash-aia__work>p,
+body[data-ash-aia-case-open="false"] .ash-aia__action-controls{display:none}
+body[data-ash-aia-case-open="false"] .ash-aia__header{grid-template-columns:1fr;padding-bottom:6px}
+body[data-ash-aia-case-open="false"] .ash-aia__header h2{max-width:none;font-size:clamp(1.35rem,3vw,2rem)}
+body[data-ash-aia-case-open="false"] .ash-aia__body{margin-top:7px}
+body[data-ash-aia-case-open="false"] .ash-aia__work{width:min(920px,100%);margin-inline:auto;padding:8px}
 @media(max-width:620px){.ash-aia__body{margin-top:8px}.ash-aia__work{order:-1}.ash-aia__tasks{margin-top:8px}}
