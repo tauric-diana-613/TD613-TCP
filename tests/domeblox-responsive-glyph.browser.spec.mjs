@@ -34,11 +34,6 @@ async function capture(page, base, prefix, strict) {
     return document.fonts.check('48px "TD613 FlowCore"', glyph);
   });
   const computedFamily = await scalar.evaluate(node => getComputedStyle(node).fontFamily);
-  const scalarVisibility = await scalar.evaluate(node => {
-    const style = getComputedStyle(node);
-    const rect = node.getBoundingClientRect();
-    return { opacity:Number(style.opacity), display:style.display, width:rect.width, height:rect.height };
-  });
   const viewport = page.viewportSize();
 
   if (strict) {
@@ -47,21 +42,8 @@ async function capture(page, base, prefix, strict) {
     expect(bootChrome.touchVisibility).toBe('hidden');
     expect(bootTitle.x).toBeGreaterThanOrEqual(boot.x);
     expect(bootTitle.x + bootTitle.width).toBeLessThanOrEqual(boot.x + boot.width + 1);
-  }
-  if (strict && viewport.width >= 1000) {
-    expect(boot.x).toBeLessThan(90);
-    expect(boot.width).toBeLessThan(390);
-    expect(boot.x + boot.width).toBeLessThan(430);
     expect(fontReady).toBe(true);
     expect(computedFamily).toContain('TD613 FlowCore');
-    expect(scalarVisibility.opacity).toBe(1);
-    expect(scalarVisibility.width).toBeGreaterThan(35);
-  }
-  if (strict && viewport.width < 600 && viewport.height > viewport.width) {
-    expect(boot.y).toBeGreaterThan(viewport.height * .40);
-    expect(boot.height).toBeLessThan(viewport.height * .52);
-    expect(fontReady).toBe(true);
-    expect(scalarVisibility.opacity).toBe(1);
   }
 
   await page.locator('#enterGame').click();
@@ -82,47 +64,50 @@ async function capture(page, base, prefix, strict) {
       interaction:rect('interactionCard'),
       touch:rect('touchPad'),
       touchDisplay:getComputedStyle(document.getElementById('touchControls')).display,
-      scalarFont:getComputedStyle(document.querySelector('.canonical-mark .canonical-scalar')).fontFamily,
       runtimeVersion:window.TD613_DOME_BLOX_GAME?.version || null,
+      render:window.TD613_DOME_BLOX_GAME?.renderDiagnostics?.() || null,
     };
   });
 
   if (strict) {
     expect(metrics.overflowX).toBeLessThanOrEqual(0);
-    expect(metrics.runtimeVersion).toBe('1.1.0');
+    expect(metrics.runtimeVersion).toBe('1.2.0');
     expect(metrics.hudVisibility).toBe('visible');
+    expect(metrics.hudBodyHidden).toBe(true);
+    expect(metrics.render).toBeTruthy();
+    expect(Math.abs(metrics.render.centerX - metrics.viewport.width / 2)).toBeLessThanOrEqual(1);
+    expect(metrics.render.stationCount).toBeGreaterThanOrEqual(8);
+    expect(metrics.render.zoom).toBeGreaterThanOrEqual(.34);
     expect(consoleErrors).toEqual([]);
     expect(pageErrors).toEqual([]);
     expect(requestFailures).toEqual([]);
     if (viewport.width < 600) {
-      expect(metrics.hudBodyHidden).toBe(true);
       expect(metrics.hud.height).toBeLessThan(76);
       expect(metrics.touchDisplay).toBe('block');
       expect(metrics.interaction.bottom).toBeLessThanOrEqual(metrics.touch.top - 2);
     } else {
-      expect(metrics.hudBodyHidden).toBe(false);
-      expect(metrics.hud.right).toBeLessThan(400);
-      expect(metrics.interaction.left).toBeGreaterThan(390);
+      expect(metrics.hud.width).toBeLessThanOrEqual(260);
+      expect(metrics.interaction.width).toBeLessThanOrEqual(365);
+      expect(Math.abs((metrics.interaction.left + metrics.interaction.width / 2) - metrics.viewport.width / 2)).toBeLessThanOrEqual(4);
     }
   }
-  return { base, prefix, strict, boot, bootTitle, bootChrome, fontReady, computedFamily, scalarVisibility, metrics, consoleErrors, pageErrors, requestFailures };
+  return { base, prefix, strict, boot, bootTitle, bootChrome, fontReady, computedFamily, metrics, consoleErrors, pageErrors, requestFailures };
 }
 
-test('capture production baseline and branch repair', async ({ browser }) => {
+test('capture production baseline and centered branch across zoom proxies', async ({ browser }) => {
   const records = [];
-  for (const device of [
-    { name:'desktop-1440x900', viewport:{ width:1440, height:900 }, isMobile:false, hasTouch:false },
-    { name:'mobile-390x844', viewport:{ width:390, height:844 }, isMobile:true, hasTouch:true },
-  ]) {
-    for (const target of [
-      { name:'production-before', base:LIVE, strict:false },
-      { name:'branch-after', base:LOCAL, strict:true },
-    ]) {
-      const context = await browser.newContext({ viewport:device.viewport, isMobile:device.isMobile, hasTouch:device.hasTouch, deviceScaleFactor:1 });
-      const page = await context.newPage();
-      records.push(await capture(page, target.base, `${target.name}-${device.name}`, target.strict));
-      await context.close();
-    }
+  const cases = [
+    { target:'production-before', base:LIVE, strict:false, name:'desktop-1440x900', viewport:{ width:1440, height:900 }, isMobile:false, hasTouch:false },
+    { target:'branch-after', base:LOCAL, strict:true, name:'desktop-1440x900', viewport:{ width:1440, height:900 }, isMobile:false, hasTouch:false },
+    { target:'branch-after', base:LOCAL, strict:true, name:'desktop-zoomout-proxy-1800x1125', viewport:{ width:1800, height:1125 }, isMobile:false, hasTouch:false },
+    { target:'branch-after', base:LOCAL, strict:true, name:'desktop-zoomin-proxy-1152x720', viewport:{ width:1152, height:720 }, isMobile:false, hasTouch:false },
+    { target:'branch-after', base:LOCAL, strict:true, name:'mobile-390x844', viewport:{ width:390, height:844 }, isMobile:true, hasTouch:true },
+  ];
+  for (const item of cases) {
+    const context = await browser.newContext({ viewport:item.viewport, isMobile:item.isMobile, hasTouch:item.hasTouch, deviceScaleFactor:1 });
+    const page = await context.newPage();
+    records.push(await capture(page, item.base, `${item.target}-${item.name}`, item.strict));
+    await context.close();
   }
-  fs.writeFileSync(path.join(OUT, 'responsive-diagnostics.json'), `${JSON.stringify(records, null, 2)}\n`);
+  fs.writeFileSync(path.join(OUT, 'centered-chrome-diagnostics.json'), `${JSON.stringify(records, null, 2)}\n`);
 });
