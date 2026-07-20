@@ -27,7 +27,34 @@ jobs:
       - uses: actions/setup-node@v4
         with:
           node-version: '22'
-      - run: node tests/domeblox-static.test.mjs
+      - name: Run DomeBlox contract and live observation
+        id: observation
+        shell: bash
+        run: |
+          set +e
+          node tests/domeblox-static.test.mjs > domeblox-live-observation.log 2>&1
+          status=$?
+          printf '%s\n' "$status" > domeblox-live-observation.exit-code
+          cat domeblox-live-observation.log
+          exit 0
+      - name: Upload DomeBlox observation receipt
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: domeblox-live-observation-receipt
+          path: |
+            domeblox-live-observation.log
+            domeblox-live-observation.exit-code
+          if-no-files-found: error
+          retention-days: 7
+      - name: Enforce DomeBlox observation result
+        shell: bash
+        run: |
+          status="$(cat domeblox-live-observation.exit-code)"
+          if [ "$status" != "0" ]; then
+            echo "DomeBlox observation failed with exit code $status"
+            exit "$status"
+          fi
       - name: Confirm deployment and serverless boundaries
         run: |
           node --input-type=module <<'NODE'
