@@ -1,6 +1,7 @@
 import assert from 'node:assert/strict';
 import fs from 'node:fs';
 import {
+  ASH_AIA3_COMPOSITION_VERSION,
   ASH_KEEP_JS_SHELL_VERSION,
   ASH_KEEP_SHELL_VERSION,
   ASH_LIFECYCLE_ASSET_EPOCH,
@@ -29,6 +30,7 @@ const vercel = JSON.parse(read('vercel.json'));
 
 assert.equal(ASH_THRESHOLD_ROUTE, '/dome-world/ash-threshold.html');
 assert.equal(ASH_LIFECYCLE_SHELL_CONTRACT, 'td613.ash.lifecycle-shell/v0.1');
+assert.equal(ASH_AIA3_COMPOSITION_VERSION, 'td613.ash.aia3-composition/v0.3-atomic-ingress-readiness');
 assert.match(renderedDome, /<button class="tab" data-view="ash"[^>]*><small>04<\/small><span>Ash<\/span><\/button>/);
 assert.doesNotMatch(renderedDome, /class="tab"[^>]+href="\/dome-world\/ash-threshold\.html"[^>]*data-view="ash"/);
 assert.match(renderedDome, /data-ash-threshold-membrane/);
@@ -75,7 +77,7 @@ assert.match(renderedKeep, /src="\/dome-world\/ash-lifecycle\.js\?v=20260720-aia
 assert.doesNotMatch(renderedKeep, /src="\/dome-world\/ash-lifecycle\.js"/);
 assert.match(renderedKeep, /name="ash-lifecycle" content="v0\.1"/);
 assert.match(renderedKeep, /name="ash-constitutional-composition" content="v0\.1"/);
-assert.match(renderedKeep, /data-ash-aia3='td613\.ash\.aia3-composition\/v0\.1-ingress-first-compact-guide'/);
+assert.match(renderedKeep, /data-ash-aia3='td613\.ash\.aia3-composition\/v0\.3-atomic-ingress-readiness'/);
 assert.equal(injectAshKeepLifecycle(renderedKeep), renderedKeep);
 
 assert.equal(ASH_KEEP_JS_SHELL_VERSION, 'td613.ash-keep.js-shell/v0.5-event-driven-map');
