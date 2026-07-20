@@ -48,6 +48,21 @@ async function capture(page, base, prefix, strict) {
 
   await page.locator('#enterGame').click();
   await page.waitForTimeout(900);
+
+  if (strict) {
+    await page.locator('#toggleHud').focus();
+    await page.keyboard.press('Space');
+    await expect(page.locator('#hudBody')).toBeVisible();
+    await page.locator('#toggleHud').click();
+    await expect(page.locator('#hudBody')).toBeHidden();
+
+    await page.locator('#gameCanvas').focus();
+    await page.keyboard.press('m');
+    await expect(page.locator('#mapPanel')).toBeVisible();
+    await page.keyboard.press('Escape');
+    await expect(page.locator('#mapPanel')).toBeHidden();
+  }
+
   await page.screenshot({ path:path.join(OUT, `${prefix}-game.png`), fullPage:true });
 
   const metrics = await page.evaluate(() => {
@@ -71,7 +86,7 @@ async function capture(page, base, prefix, strict) {
 
   if (strict) {
     expect(metrics.overflowX).toBeLessThanOrEqual(0);
-    expect(metrics.runtimeVersion).toBe('1.2.1');
+    expect(metrics.runtimeVersion).toBe('1.2.2');
     expect(metrics.hudVisibility).toBe('visible');
     expect(metrics.hudBodyHidden).toBe(true);
     expect(metrics.render).toBeTruthy();
