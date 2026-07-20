@@ -1,0 +1,173 @@
+{
+  "fixture_schema": "td613.flowcore.promotion-evidence-fixture/v0.1",
+  "determinism": {
+    "frozenClock": "2026-07-20T00:45:00Z",
+    "idSeed": "td613-p10-promotion-packet"
+  },
+  "program_reference": "td613.flowcore.pedagogue-program/v0.1",
+  "evidence": {
+    "phase_receipts": {
+      "status": "PASS",
+      "references": [
+        "app/dome-world/docs/FLOWCORE_PEDAGOGUE_P0_IMPLEMENTATION_RECEIPT_V0_1.md",
+        "app/dome-world/docs/FLOWCORE_PEDAGOGUE_P1_IMPLEMENTATION_RECEIPT_V0_1.md",
+        "app/dome-world/docs/FLOWCORE_PEDAGOGUE_P2_IMPLEMENTATION_RECEIPT_V0_1.md",
+        "app/dome-world/docs/FLOWCORE_PEDAGOGUE_P3_IMPLEMENTATION_RECEIPT_V0_1.md",
+        "app/dome-world/docs/FLOWCORE_PEDAGOGUE_P4_IMPLEMENTATION_RECEIPT_V0_1.md",
+        "app/dome-world/docs/FLOWCORE_PEDAGOGUE_P5_IMPLEMENTATION_RECEIPT_V0_1.md",
+        "app/dome-world/docs/FLOWCORE_PEDAGOGUE_P6_IMPLEMENTATION_RECEIPT_V0_1.md",
+        "app/dome-world/docs/FLOWCORE_PEDAGOGUE_P7_IMPLEMENTATION_RECEIPT_V0_1.md",
+        "app/dome-world/docs/FLOWCORE_PEDAGOGUE_P8_IMPLEMENTATION_RECEIPT_V0_1.md",
+        "app/dome-world/docs/FLOWCORE_PEDAGOGUE_P9_IMPLEMENTATION_RECEIPT_V0_1.md",
+        "app/dome-world/docs/FLOWCORE_PEDAGOGUE_P10_IMPLEMENTATION_RECEIPT_V0_1.md"
+      ],
+      "observed_at": "2026-07-20T00:45:00Z",
+      "observation_is_merge_inference": false
+    },
+    "test_inventory": {
+      "status": "PASS",
+      "references": [
+        "tests/flowcore-p0-p7-seam-closure.test.mjs",
+        "tests/flowcore-pedagogue-core.test.mjs",
+        "tests/flowcore-pedagogue-aia.test.mjs",
+        "tests/flowcore-pedagogue-visual.test.mjs",
+        "tests/information-dome-scenes.test.mjs",
+        "tests/flowcore-route-burden.test.mjs",
+        "tests/ash-pedagogue-custody-route.test.mjs",
+        "tests/flowcore-station-propagation.test.mjs",
+        "tests/flowcore-physical-scene.test.mjs",
+        "tests/flowcore-empirical-validation.test.mjs",
+        "tests/flowcore-production-promotion.test.mjs"
+      ],
+      "observed_at": "2026-07-20T00:45:00Z",
+      "observation_is_merge_inference": false
+    },
+    "browser_matrix": {
+      "status": "CONTRACT_ONLY",
+      "references": ["app/dome-world/docs/FLOWCORE_PEDAGOGUE_AIA_BUILD_PLAN.md#browser-matrix"],
+      "matrix": {
+        "chromium_desktop": "CONTRACT_ONLY",
+        "chromium_android_viewport": "CONTRACT_ONLY",
+        "webkit_ios_viewport": "NOT_OBSERVED",
+        "keyboard_only": "CONTRACT_ONLY",
+        "zoom_200_percent": "CONTRACT_ONLY",
+        "high_contrast": "NOT_OBSERVED"
+      },
+      "observed_at": null,
+      "observation_is_merge_inference": false
+    },
+    "mobile_evidence": {
+      "status": "CONTRACT_ONLY",
+      "references": [
+        "app/dome-world/fixtures/pedagogue/baselines/flowcore-mobile-390.svg",
+        "app/dome-world/fixtures/pedagogue/baselines/flowcore-reduced-motion-390.svg"
+      ],
+      "portrait": "STATIC_AND_CONTRACT",
+      "landscape": "NOT_OBSERVED",
+      "rotation": "NOT_OBSERVED",
+      "observed_at": null,
+      "observation_is_merge_inference": false
+    },
+    "reduced_motion_evidence": {
+      "status": "CONTRACT_ONLY",
+      "references": [
+        "app/dome-world/fixtures/pedagogue/baselines/flowcore-reduced-motion-390.svg",
+        "tests/flowcore-pedagogue-visual.test.mjs"
+      ],
+      "static_parity": true,
+      "browser_runtime_observed": false,
+      "observed_at": null,
+      "observation_is_merge_inference": false
+    },
+    "performance_evidence": {
+      "status": "CONTRACT_ONLY",
+      "references": [
+        "app/dome-world/flowcore-pedagogue-visual.js",
+        "tests/flowcore-pedagogue-visual.test.mjs"
+      ],
+      "one_scheduler_contract": true,
+      "hidden_view_zero_draw_contract": true,
+      "browser_frame_trace_observed": false,
+      "observed_at": null,
+      "observation_is_merge_inference": false
+    },
+    "privacy_persistence_review": {
+      "status": "PASS",
+      "references": [
+        "tests/flowcore-empirical-validation.test.mjs",
+        "app/engine/flowcore-empirical-validation.js"
+      ],
+      "covert_telemetry": false,
+      "stable_participant_identity": false,
+      "new_persistence": false,
+      "raw_content_transport": false,
+      "observed_at": "2026-07-20T00:45:00Z",
+      "observation_is_merge_inference": false
+    },
+    "station_jurisdiction_audit": {
+      "status": "PASS",
+      "references": [
+        "tests/flowcore-station-propagation.test.mjs",
+        "app/dome-world/docs/FLOWCORE_P0_P7_SEAM_CLOSURE_LEDGER_V0_1.md"
+      ],
+      "station_authority_transferred": false,
+      "flowcore_commands_station": false,
+      "automatic_ash_action": false,
+      "observed_at": "2026-07-20T00:45:00Z",
+      "observation_is_merge_inference": false
+    },
+    "rollback_procedure": {
+      "status": "PRESENT",
+      "references": ["app/dome-world/docs/FLOWCORE_PEDAGOGUE_ROLLBACK_PROCEDURE_V0_1.md"],
+      "observed_at": "2026-07-20T00:45:00Z",
+      "observation_is_merge_inference": false
+    },
+    "documentation_index": {
+      "status": "PRESENT",
+      "references": ["app/dome-world/docs/FLOWCORE_PEDAGOGUE_PROGRAM_INDEX_V0_1.md"],
+      "observed_at": "2026-07-20T00:45:00Z",
+      "observation_is_merge_inference": false
+    },
+    "production_probe_receipt": {
+      "status": "NOT_OBSERVED",
+      "references": [],
+      "exact_main_sha_verified": false,
+      "production_url_verified": false,
+      "application_tree_drift": "UNOBSERVED",
+      "observed_at": null,
+      "observation_is_merge_inference": false
+    }
+  },
+  "empirical_validation": {
+    "empirical_exit_gate_passed": false,
+    "human_adult_evidence_present": false,
+    "reason": "HUMAN_VOLUNTARY_ADULT_EVIDENCE_ABSENT"
+  },
+  "feature_gate": {
+    "config_reference": "app/dome-world/data/flowcore-promotion-config-v01.js",
+    "default_enabled": false,
+    "presentation_layer_only": true,
+    "governed_state_mutation_allowed": false,
+    "public_route_promotion_authorized": false
+  },
+  "rollback": {
+    "feature_gate_path": "presentation-layer-only",
+    "rollback_action": "omit guarded Flow-Core presentation routes and restore prior Dome-World navigation",
+    "preserves": [
+      "custody_records",
+      "case_maps",
+      "receipts",
+      "route_memory",
+      "release_state",
+      "local_commitments"
+    ],
+    "rollback_mutates_governed_state": false,
+    "verification_steps": [
+      "confirm guarded routes are absent from promoted navigation",
+      "confirm custody and Case Map digests are unchanged",
+      "confirm receipts and route memory remain readable",
+      "confirm release state and local commitments are unchanged",
+      "confirm no additional deployment or transport occurred"
+    ]
+  }
+}
