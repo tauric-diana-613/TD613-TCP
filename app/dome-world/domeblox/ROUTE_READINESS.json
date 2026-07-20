@@ -8,5 +8,6 @@
   "production_observation": "PENDING",
   "roblox_studio_runtime": "PENDING",
   "human_closure": "OPEN",
-  "seam_audit": "PATCHED_V1_1"
+  "seam_audit": "PATCHED_V1_1",
+  "archive_sha256": "50de9d5ef11b322b8ac95dbcf09d6a4f788b791790d2106e692abd1592480386"
 }
