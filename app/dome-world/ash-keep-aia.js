@@ -8,211 +8,215 @@ import {
   verifyAshLivePresentationBoundary
 } from '../engine/ash-live-aia.js';
 
+const LEGACY = new URLSearchParams(location.search).get('presentation') === 'legacy';
 const ROUTE_KEY = 'td613:ash-keep:aia-route:v0.1';
 const RECEIPT_KEY = 'td613:ash-keep:aia-receipts:v0.1';
-const GOVERNED_BUTTONS = new Set([
+const STYLE_URL = '/dome-world/ash-keep-aia.css?v=20260720-ak-aia-2-rescue';
+const GOVERNED = new Set([
   'compileQuickScan', 'registerCustodyRoot', 'bindCustodyRoot', 'newCase', 'startDemo',
   'runTest', 'loadSeed', 'keepDraft', 'reviewDraft', 'approveRelease', 'makeSave'
 ]);
-const ACTION_ALIASES = Object.freeze({ loadSeed: 'runTest', startDemo: 'newCase' });
-const PORTAL_SELECTOR = Object.freeze({
-  CLEAR_ASH_THRESHOLD: '#compileQuickScan',
-  REGISTER_CUSTODY_ROOT: '#registerCustodyRoot',
-  VERIFY_CUSTODY_DIGEST_SPINE: '#registerCustodyRoot',
-  CREATE_CASE: '#newCase',
-  BIND_CUSTODY_ROOT_TO_CASE: '#bindCustodyRoot',
-  RUN_CURRENT_REBUILD_TEST: '#runTest',
-  KEEP_CUSTODY_BOUND_DRAFT: '#keepDraft',
-  REVIEW_EXACT_DRAFT: '#reviewDraft',
-  KEEP_RELEASE_RECEIPT: '#approveRelease',
-  SEAL_CONTINUITY: '#makeSave'
-});
+const ALIASES = Object.freeze({ loadSeed: 'runTest', startDemo: 'newCase' });
+const TASKS = Object.freeze([
+  ['setup', 'Set up workspace', 'Choose a profile, create a case, or open a saved case.'],
+  ['document', 'Open a local document', 'Choose a local text file. Its bytes stay in this browser.'],
+  ['custody', 'Keep and check', 'Create and verify a custody reference through an explicit gesture.'],
+  ['work', 'Map, test, review, save', 'Use the exact Ash workspaces while consequence guidance stays visible.']
+]);
 
 const state = {
   route: readRoute(), packageView: null, lifecycleReceipt: null, previousLifecycle: null,
   actionPlan: null, animationPlan: null, latestActionReceipt: null, latestRenderReceipt: null,
-  pendingAction: null, pendingTimer: 0, resting: false, playing: false, refreshToken: 0,
-  reducedMotion: matchMedia('(prefers-reduced-motion: reduce)').matches,
-  bypass: new WeakSet(), portalMoves: []
+  pendingAction: null, pendingTimer: 0, resting: false, playing: false, frame: 0,
+  frameTimer: 0, refreshToken: 0, reducedMotion: matchMedia('(prefers-reduced-motion: reduce)').matches,
+  bypass: new WeakSet()
 };
-
 const $ = selector => document.querySelector(selector);
 const $$ = selector => [...document.querySelectorAll(selector)];
-const safeJson = value => JSON.stringify(value, null, 2);
-const escapeHtml = value => String(value ?? '').replace(/[&<>"']/g, character => ({
-  '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;'
-})[character]);
+const esc = value => String(value ?? '').replace(/[&<>"']/g, ch => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' })[ch]);
+const json = value => JSON.stringify(value, null, 2);
+const delay = ms => new Promise(resolve => setTimeout(resolve, ms));
 
 function readRoute() {
-  if (new URLSearchParams(location.search).get('presentation') === 'legacy') return 'IMPLEMENTATION';
-  const stored = sessionStorage.getItem(ROUTE_KEY);
-  return ASH_LIVE_AIA_ROUTES.includes(stored) ? stored : 'EXPERIENTIAL';
+  if (LEGACY) return 'IMPLEMENTATION';
+  try {
+    const stored = sessionStorage.getItem(ROUTE_KEY);
+    return ASH_LIVE_AIA_ROUTES.includes(stored) ? stored : 'EXPERIENTIAL';
+  } catch { return 'EXPERIENTIAL'; }
 }
-
-function ensureSurface() {
-  if (!document.querySelector('link[data-ash-live-aia]')) {
-    const link = document.createElement('link');
-    link.rel = 'stylesheet';
-    link.href = '/dome-world/ash-keep-aia.css?v=20260720-ak-aia-1';
-    link.dataset.ashLiveAia = 'true';
-    document.head.append(link);
-  }
-  if ($('#ashAiaMembrane')) return;
-  const root = document.createElement('section');
-  root.id = 'ashAiaMembrane';
-  root.className = 'ash-aia';
-  root.dataset.ashAia = '';
-  root.setAttribute('aria-labelledby', 'ashAiaTitle');
-  root.innerHTML = `
-    <header class="ash-aia__header">
-      <div><p class="ash-aia__eyebrow">U+10D613 · AK-AIA-1 · Child-legible Anisotropic Information Architecture</p>
-      <h2 id="ashAiaTitle">Ash tells you what changed before naming the machinery.</h2>
-      <p class="ash-aia__posture">Child-legible design · adult human evidence absent · child study locked · no telemetry</p></div>
-      <div class="ash-aia__state"><span data-aia-state>Waiting for exact Ash state…</span><span>Human closure open</span></div>
-    </header>
-    <nav class="ash-aia__routes" aria-label="Ash presentation routes">${ASH_LIVE_AIA_ROUTES.map(route => `<button type="button" data-aia-route="${route}" aria-pressed="false">${route[0] + route.slice(1).toLowerCase()}</button>`).join('')}</nav>
-    <div class="ash-aia__progress" data-aia-progress aria-label="Ash lifecycle progress"></div>
-    <div class="ash-aia__layout">
-      <section class="ash-aia__stage-card"><div class="ash-aia__stage-head"><div><p class="ash-aia__step-label">Now</p><h3 data-aia-consequence>Reading the exact local state…</h3></div><button type="button" data-aia-play>Play explanation</button></div><div class="ash-aia__stage" data-aia-stage></div><p class="ash-aia__live" role="status" aria-live="polite" data-aia-live>Flow-Core is waiting for Ash to answer.</p></section>
-      <aside class="ash-aia__next"><p class="ash-aia__step-label">Next lawful action</p><h3 data-aia-action-label>Wait for Ash</h3><p data-aia-action-purpose></p><p class="ash-aia__expected" data-aia-action-consequence></p><div class="ash-aia__portal" data-aia-portal></div><div class="ash-aia__next-controls"><button type="button" data-aia-open-workspace>Open exact workspace</button><button type="button" data-aia-rest>𝄐 Rest</button><button type="button" data-aia-return hidden>Return</button></div></aside>
-    </div>
-    <section class="ash-aia__five" data-aia-five aria-label="Five-part custody consequence"></section>
-    <div class="ash-aia__depths">
-      <details data-aia-why><summary>Why did Ash do that?</summary><div data-aia-why-body></div></details>
-      <details data-aia-exact><summary>Exact state, receipts, digest, and rule</summary><div class="ash-aia__exact-grid"><section><h3>Lifecycle</h3><pre data-aia-lifecycle></pre></section><section><h3>Latest action receipt</h3><pre data-aia-action-receipt>No action receipt yet.</pre></section><section><h3>Latest render receipt</h3><pre data-aia-render-receipt>No render receipt yet.</pre></section><section><h3>Pedagogue package</h3><pre data-aia-package></pre></section></div></details>
-    </div>
-    <section class="ash-aia__holds" data-aia-holds hidden></section>
-    <dialog class="ash-aia__confirm" data-aia-confirm><form method="dialog"><p class="ash-aia__step-label">Before Ash acts</p><h2 data-confirm-title>Confirm exact action</h2><p data-confirm-purpose></p><div class="ash-aia__confirm-grid"><section><h3>Expected consequence</h3><p data-confirm-consequence></p></section><section><h3>Still unauthorized</h3><ul data-confirm-nonauthority></ul></section></div><p class="ash-aia__confirm-note">The animation explains Ash’s observed answer. It does not perform, predict, or certify that answer.</p><div class="ash-aia__dialog-actions"><button value="cancel">Return</button><button value="confirm" class="primary">Confirm this exact gesture</button></div></form></dialog>`;
-  ($('.workspace-rail') || document.querySelector('main')).before(root);
+function caseOpen() {
+  try { return Boolean(window.__td613AshKeep?.current?.().case_id || localStorage.getItem('td613.ash-keep.current-case')); }
+  catch { return Boolean(window.__td613AshKeep?.current?.().case_id); }
 }
-
+function documentOpen() { return Boolean($('#draftBody')?.value?.trim() || $('#localTextFile')?.files?.length); }
 function parseLifecycleReceipt() {
   try {
-    const value = JSON.parse($('#lifecycleReceipt')?.textContent || 'null');
-    return value?.lifecycle?.schema === 'td613.ash.lifecycle/v0.1' ? value : null;
+    const receipt = JSON.parse($('#lifecycleReceipt')?.textContent || 'null');
+    return receipt?.lifecycle?.schema === 'td613.ash.lifecycle/v0.1' ? receipt : null;
   } catch { return null; }
 }
-
 function remember(receipt) {
   if (!receipt) return;
   try {
     const list = JSON.parse(sessionStorage.getItem(RECEIPT_KEY) || '[]');
     list.push(receipt);
     sessionStorage.setItem(RECEIPT_KEY, JSON.stringify(list.slice(-40)));
-  } catch { /* visible receipts remain available */ }
+  } catch {}
 }
-
-function restorePortal() {
-  for (const move of state.portalMoves.splice(0)) if (move.placeholder.isConnected) move.placeholder.replaceWith(move.node);
-  $('[data-aia-portal]')?.replaceChildren();
-}
-
-function portalAction(plan) {
-  restorePortal();
-  if (!['EXPERIENTIAL', 'CUSTODIAL'].includes(state.route) || state.resting) return;
-  const selector = PORTAL_SELECTOR[plan.lifecycle_next_action];
-  const control = selector ? document.querySelector(selector) : null;
-  if (!control) return;
-  const node = control.closest('.custody-card, .tool-section, .launch-panel');
-  if (!node || node.closest('#ashAiaMembrane')) return;
-  if (node.classList.contains('launch-panel')) {
-    const button = document.createElement('button');
-    button.type = 'button'; button.className = 'ash-aia__launch-button'; button.textContent = 'Open local case setup';
-    button.onclick = () => { $('#launch')?.classList.remove('hidden'); $('#newTitle')?.focus(); };
-    $('[data-aia-portal]').append(button); return;
+async function ensureStylesheet() {
+  let link = document.querySelector('link[data-ash-live-aia]');
+  if (link?.sheet) return;
+  if (!link) {
+    link = document.createElement('link');
+    link.rel = 'stylesheet'; link.href = STYLE_URL; link.dataset.ashLiveAia = 'true';
+    document.head.append(link);
   }
-  const placeholder = document.createComment(`ash-aia-portal:${selector}`);
-  node.before(placeholder); state.portalMoves.push({ node, placeholder }); $('[data-aia-portal]').append(node);
+  await Promise.race([
+    new Promise((resolve, reject) => {
+      if (link.sheet) return resolve();
+      link.addEventListener('load', resolve, { once: true });
+      link.addEventListener('error', () => reject(new Error('Ash AIA stylesheet failed to load.')), { once: true });
+    }),
+    delay(8000).then(() => { throw new Error('Ash AIA stylesheet timed out.'); })
+  ]);
 }
-
+function ensureSurface() {
+  if ($('#ashAiaMembrane')) return;
+  const root = document.createElement('section');
+  root.id = 'ashAiaMembrane'; root.className = 'ash-aia'; root.dataset.ashAia = 'task-continuity';
+  root.setAttribute('aria-labelledby', 'ashAiaTitle');
+  root.innerHTML = `
+    <header class="ash-aia__header"><div><p class="ash-aia__eyebrow">U+10D613 · AK-AIA-2 · Child-legible Anisotropic Information Architecture</p><h2 id="ashAiaTitle">Start with the work. Ash explains each consequence as you go.</h2><p class="ash-aia__posture">Local-first · explicit gestures · no route inference · no telemetry · child study locked</p></div><div class="ash-aia__state"><span data-aia-state>Reading Ash…</span><span data-aia-session>No case open</span></div></header>
+    <nav class="ash-aia__routes" aria-label="Explanation depth">${ASH_LIVE_AIA_ROUTES.map(route => `<button type="button" data-aia-route="${route}" aria-pressed="false">${route[0] + route.slice(1).toLowerCase()}</button>`).join('')}</nav>
+    <ol class="ash-aia__tasks" aria-label="Ash Keep task path">${TASKS.map(([id, label, detail], index) => `<li><button type="button" data-aia-task="${id}" aria-current="false"><span>${index + 1}</span><strong>${label}</strong><small>${detail}</small></button></li>`).join('')}</ol>
+    <div class="ash-aia__body">
+      <section class="ash-aia__guide" aria-labelledby="ashAiaNow"><div class="ash-aia__guide-head"><div><p class="ash-aia__step-label">Now</p><h3 id="ashAiaNow" data-aia-consequence>Preparing the task path…</h3></div><button type="button" data-aia-play>Play explanation</button></div><div class="ash-aia__stage" data-aia-stage></div><p class="ash-aia__live" role="status" aria-live="polite" data-aia-live>Ash is preparing a stable explanation.</p><div class="ash-aia__lesson-controls"><button type="button" data-aia-previous>Previous lesson</button><button type="button" data-aia-next>Next lesson</button><button type="button" data-aia-rest>𝄐 Rest</button><button type="button" data-aia-return hidden>Return</button></div></section>
+      <aside class="ash-aia__work" aria-labelledby="ashAiaWork"><p class="ash-aia__step-label">Do the work here</p><h3 id="ashAiaWork" data-aia-action-label>Set up a private workspace</h3><p data-aia-action-purpose>Choose a profile and create or open a case.</p><p class="ash-aia__expected" data-aia-action-consequence>Workspace setup changes local case structure only.</p><div class="ash-aia__ingress-slot" data-aia-ingress-slot></div><div class="ash-aia__action-controls"><button type="button" data-aia-primary-task>Set up workspace</button><button type="button" data-aia-open-workspace hidden>Open exact workspace</button></div><p class="ash-aia__boundary">The exact Ash control performs the action. This guide only explains, focuses, and witnesses it.</p></aside>
+    </div>
+    <details class="ash-aia__consequences" open><summary>What changed—and what did not</summary><section class="ash-aia__five" data-aia-five></section></details>
+    <div class="ash-aia__depths"><details data-aia-why><summary>Why did Ash do that?</summary><div data-aia-why-body></div></details><details data-aia-exact><summary>Exact state, receipts, digest, and rule</summary><div class="ash-aia__exact-grid"><section><h3>Lifecycle</h3><pre data-aia-lifecycle></pre></section><section><h3>Latest action receipt</h3><pre data-aia-action-receipt>No action receipt yet.</pre></section><section><h3>Latest render receipt</h3><pre data-aia-render-receipt>No render receipt yet.</pre></section><section><h3>Pedagogue package</h3><pre data-aia-package></pre></section></div></details></div>
+    <section class="ash-aia__holds" data-aia-holds hidden></section>
+    <dialog class="ash-aia__confirm" data-aia-confirm><form method="dialog"><p class="ash-aia__step-label">Before Ash acts</p><h2 data-confirm-title>Confirm exact action</h2><p data-confirm-purpose></p><div class="ash-aia__confirm-grid"><section><h3>Expected consequence</h3><p data-confirm-consequence></p></section><section><h3>Still unauthorized</h3><ul data-confirm-nonauthority></ul></section></div><p>The explanation witnesses Ash’s answer. It never performs or certifies the action.</p><div class="ash-aia__dialog-actions"><button value="cancel">Return</button><button value="confirm" class="primary">Confirm this exact gesture</button></div></form></dialog>`;
+  ($('.workspace-rail') || $('main') || document.body.firstChild).before(root);
+}
 function setRoute(route) {
   if (!ASH_LIVE_AIA_ROUTES.includes(route)) return;
-  restorePortal(); state.route = route; state.resting = false;
-  sessionStorage.setItem(ROUTE_KEY, route); document.body.dataset.ashAiaRoute = route;
+  state.route = route; state.resting = false;
+  try { sessionStorage.setItem(ROUTE_KEY, route); } catch {}
+  document.body.dataset.ashAiaRoute = route;
   $$('[data-aia-route]').forEach(button => button.setAttribute('aria-pressed', String(button.dataset.aiaRoute === route)));
   if (state.packageView) compileCurrent('ROUTE_CHANGED').catch(hold);
 }
-
-const STAGES = Object.freeze([
-  ['ARRIVAL_UNPERSISTED', 'Arrive'], ['READINESS_OBSERVED', 'Notice'], ['CUSTODY_ROOT_PROVISIONAL', 'Hold'],
-  ['CUSTODY_ROOT_VERIFIED', 'Check'], ['CASE_BOUND', 'Anchor'], ['REBUILD_ELIGIBLE', 'Test'],
-  ['RELEASE_ELIGIBLE', 'Review'], ['CONTINUITY_SEALED', 'Rest']
-]);
-
-function renderProgress(lifecycle) {
-  const rank = Object.fromEntries(STAGES.map(([id], index) => [id, index]));
-  const current = rank[lifecycle.state] ?? 0;
-  $('[data-aia-progress]').innerHTML = STAGES.map(([id, label], index) => `<div class="ash-aia__progress-step ${index <= current ? 'complete' : ''} ${id === lifecycle.state ? 'current' : ''} ${id === lifecycle.state && lifecycle.holds.length ? 'held' : ''}" aria-current="${id === lifecycle.state ? 'step' : 'false'}"><span>${label}</span><small>${id.replaceAll('_', ' ')}</small></div>`).join('');
+function activeTask() {
+  if (!caseOpen()) return 'setup';
+  if (!documentOpen()) return 'document';
+  const order = ['ARRIVAL_UNPERSISTED', 'READINESS_OBSERVED', 'CUSTODY_ROOT_PROVISIONAL', 'CUSTODY_ROOT_VERIFIED'];
+  return order.includes(state.packageView?.lifecycle?.state) ? 'custody' : 'work';
 }
-
-function renderStage(packageView) {
-  const lifecycle = packageView.lifecycle, refs = lifecycle.references || {}, plan = state.animationPlan;
-  const caseOpen = Boolean(refs.case_id && refs.case_map_digest), currentWork = Boolean(refs.rebuild_test), release = Boolean(refs.release_receipt), continuity = Boolean(refs.save_point);
-  const host = $('[data-aia-stage]'); host.dataset.playing = String(state.playing && !state.reducedMotion);
-  host.innerHTML = `<svg viewBox="0 0 800 330" role="img" aria-labelledby="aiaTitle aiaDesc"><title id="aiaTitle">Ash custody lifecycle causal exhibit</title><desc id="aiaDesc">The source stays local. A separate custody reference may be verified, bound to a case, tested, reviewed, and sealed through explicit human actions.</desc><defs><marker id="aiaArrow" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto"><path d="M0,0 L0,6 L7,3 z"/></marker></defs><g class="aia-zone"><rect x="28" y="54" width="190" height="220" rx="24"/><text x="52" y="86">THIS DEVICE</text><g class="aia-source"><rect x="70" y="126" width="106" height="76" rx="12"/><path d="M92 152h62M92 170h46M92 188h55"/><text x="123" y="226" text-anchor="middle">local source</text></g></g><line class="aia-boundary" x1="254" y1="42" x2="254" y2="290"/><text x="268" y="66">RAW BYTES DO NOT CROSS</text><path class="aia-causal-line ${refs.custody_receipt ? 'is-active' : ''}" d="M218 164C294 164 300 116 360 116" marker-end="url(#aiaArrow)"/><g class="aia-reference ${refs.custody_receipt ? 'is-complete' : ''}"><circle cx="404" cy="116" r="42"/><text x="404" y="112" text-anchor="middle">REFERENCE</text><text x="404" y="130" text-anchor="middle">≠ ARTIFACT</text></g><path class="aia-causal-line ${caseOpen ? 'is-active' : ''}" d="M446 136C490 158 492 188 526 196" marker-end="url(#aiaArrow)"/><g class="aia-case ${caseOpen ? 'is-complete' : ''}"><path d="M550 112L686 112L730 162L708 254L578 272L520 214Z"/><circle cx="620" cy="190" r="20" class="aia-root"/><circle cx="574" cy="148" r="11"/><circle cx="682" cy="160" r="11"/><circle cx="674" cy="232" r="11"/><circle cx="564" cy="232" r="11"/><path d="M620 190L574 148M620 190L682 160M620 190L674 232M620 190L564 232"/><text x="620" y="307" text-anchor="middle">CASE MAP ROOT</text></g><g class="aia-gates"><rect x="322" y="238" width="76" height="34" rx="17" class="${caseOpen ? 'is-open' : ''}"/><text x="360" y="260" text-anchor="middle">ROOMS</text><rect x="406" y="238" width="76" height="34" rx="17" class="${currentWork ? 'is-open' : ''}"/><text x="444" y="260" text-anchor="middle">TEST</text><rect x="490" y="286" width="88" height="34" rx="17" class="${release ? 'is-open' : ''}"/><text x="534" y="308" text-anchor="middle">RELEASE</text><rect x="588" y="286" width="104" height="34" rx="17" class="${continuity ? 'is-open' : ''}"/><text x="640" y="308" text-anchor="middle">CONTINUITY</text></g></svg><ol class="ash-aia__static-sequence">${plan.steps.map((item, index) => `<li class="${item.complete ? 'complete' : ''} ${item.current ? 'current' : ''} ${item.held ? 'held' : ''}"><span>${index + 1}</span><div><strong>${escapeHtml(item.label)}</strong><p>${escapeHtml(item.detail)}</p></div></li>`).join('')}</ol>`;
+function workspaceForTask(task = activeTask()) {
+  if (task === 'document') return 'draft';
+  if (task === 'custody') return state.actionPlan?.workspace || 'map';
+  if (task === 'work') return state.actionPlan?.workspace || (state.packageView?.lifecycle?.state === 'REBUILD_ELIGIBLE' ? 'test' : 'map');
+  return 'map';
 }
-
-function consequenceCard(title, text, className = '') { return `<article class="ash-aia__five-card ${className}"><h3>${escapeHtml(title)}</h3><p>${escapeHtml(text)}</p></article>`; }
-
-function renderFive(packageView) {
-  const c = packageView.comprehension_contract;
-  $('[data-aia-five]').innerHTML = [
-    consequenceCard('What stayed local', c.what_stayed_local), consequenceCard('What Ash created', c.what_ash_created),
-    consequenceCard('What changed', c.what_changed_in_case), consequenceCard('What stayed unauthorized', c.what_remains_unauthorized, 'nonclaim'),
-    consequenceCard('What may happen next', c.what_may_happen_next)
-  ].join('');
+function openExactWorkspace(name, focusSelector = null) {
+  const open = window.__td613OpenAshWorkspace || window.__td613AshKeep?.openWorkspace;
+  if (typeof open !== 'function') return hold(new Error('Exact Ash workspace API is not available yet.'));
+  open(name);
+  document.querySelector(`#workspace-${name}`)?.scrollIntoView({ block: 'start', behavior: state.reducedMotion ? 'auto' : 'smooth' });
+  if (focusSelector) setTimeout(() => $(focusSelector)?.focus(), state.reducedMotion ? 0 : 300);
 }
-
-function renderWhy(packageView) {
-  const view = packageView.aia_views[state.route];
-  $('[data-aia-why-body]').innerHTML = `<section><h3>Causal trace</h3><ol>${packageView.world_delta.causal_trace.map(item => `<li>${escapeHtml(item)}</li>`).join('')}</ol></section><section><h3>Route order</h3><ol>${view.surface.order.map(item => `<li>${escapeHtml(item)}</li>`).join('')}</ol></section><section><h3>Contradictions remain visible</h3><ul>${view.invariants.contradictions.map(item => `<li>${escapeHtml(item)}</li>`).join('')}</ul></section><section><h3>Claim ceiling</h3><p>${escapeHtml(view.claim_ceiling.allowed_claims.join(' · '))}</p><p class="nonclaim">Forbidden: ${escapeHtml(view.claim_ceiling.forbidden_claims.join(' · '))}</p></section>`;
+function performTask(task = activeTask()) {
+  if (task === 'setup') {
+    window.__td613AshAIAIngress?.show?.();
+    $('[data-aia-ingress-slot]')?.scrollIntoView({ block: 'center', behavior: state.reducedMotion ? 'auto' : 'smooth' });
+  } else if (task === 'document') {
+    openExactWorkspace('draft', '#localTextFile');
+  } else if (task === 'custody') {
+    const control = state.actionPlan?.command_id ? document.getElementById(state.actionPlan.command_id) : null;
+    const workspace = control?.closest('.workspace')?.id?.replace('workspace-', '') || workspaceForTask(task);
+    openExactWorkspace(workspace);
+    control?.scrollIntoView({ block: 'center', behavior: state.reducedMotion ? 'auto' : 'smooth' });
+    setTimeout(() => control?.focus(), state.reducedMotion ? 0 : 300);
+  } else openExactWorkspace(workspaceForTask(task));
 }
-
-function renderHolds(packageView) {
-  const host = $('[data-aia-holds]'), holds = packageView.hold_scenes || [];
+function frames() {
+  const lifecycle = state.packageView?.lifecycle;
+  const next = lifecycle?.next_action?.replaceAll('_', ' ').toLowerCase() || 'wait for Ash';
+  return TASKS.map(([id, label, detail], index) => ({ id, label, detail: id === 'custody' && lifecycle ? `Exact state: ${lifecycle.state.replaceAll('_', ' ').toLowerCase()}. Next lawful action: ${next}.` : detail, index }));
+}
+function renderTutorial() {
+  const host = $('[data-aia-stage]'); if (!host || !state.packageView) return;
+  const items = frames(); const current = items[Math.max(0, Math.min(state.frame, items.length - 1))];
+  host.dataset.playing = String(state.playing && !state.reducedMotion); host.dataset.frame = current.id;
+  const complete = id => id === 'setup' ? caseOpen() : id === 'document' ? documentOpen() : false;
+  host.innerHTML = `<div class="ash-aia__frame-copy"><span>Lesson ${current.index + 1} of ${items.length}</span><h4>${esc(current.label)}</h4><p>${esc(current.detail)}</p></div><svg viewBox="0 0 720 220" role="img" aria-labelledby="aiaTitle aiaDesc"><title id="aiaTitle">Ash Keep task and custody explanation</title><desc id="aiaDesc">A workspace is chosen, a local document remains on this device, a separate custody reference may be created, and exact Ash workspaces remain available.</desc>${items.map((item, index) => `<g class="aia-step ${complete(item.id) ? 'is-complete' : ''} ${item.id === current.id ? 'is-current' : ''}" transform="translate(${24 + index * 180} 46)"><rect width="142" height="118" rx="18"/><text x="71" y="42" text-anchor="middle">${esc(item.label.toUpperCase())}</text><text x="71" y="72" text-anchor="middle">${index === 1 ? 'bytes stay local' : index === 2 ? 'reference ≠ artifact' : index === 3 ? 'same exact Ash' : 'human gesture'}</text></g>${index < 3 ? `<path class="aia-link ${(index === 0 && caseOpen()) || (index === 1 && documentOpen()) ? 'is-active' : ''}" d="M${166 + index * 180} 105H${204 + index * 180}"/>` : ''}`).join('')}</svg><ol class="ash-aia__static-sequence">${items.map((item, index) => `<li class="${item.id === current.id ? 'current' : ''}"><span>${index + 1}</span><div><strong>${esc(item.label)}</strong><p>${esc(item.detail)}</p></div></li>`).join('')}</ol>`;
+}
+function card(title, text, cls = '') { return `<article class="ash-aia__five-card ${cls}"><h3>${esc(title)}</h3><p>${esc(text)}</p></article>`; }
+function renderFive(p) {
+  const c = p.comprehension_contract;
+  $('[data-aia-five]').innerHTML = [card('What stayed local', c.what_stayed_local), card('What Ash created', c.what_ash_created), card('What changed', c.what_changed_in_case), card('What stayed unauthorized', c.what_remains_unauthorized, 'nonclaim'), card('What may happen next', c.what_may_happen_next)].join('');
+}
+function renderWhy(p) {
+  const view = p.aia_views[state.route];
+  $('[data-aia-why-body]').innerHTML = `<section><h3>Causal trace</h3><ol>${p.world_delta.causal_trace.map(item => `<li>${esc(item)}</li>`).join('')}</ol></section><section><h3>Route order</h3><ol>${view.surface.order.map(item => `<li>${esc(item)}</li>`).join('')}</ol></section><section><h3>Claim ceiling</h3><p>${esc(view.claim_ceiling.allowed_claims.join(' · '))}</p><p>Forbidden: ${esc(view.claim_ceiling.forbidden_claims.join(' · '))}</p></section>`;
+}
+function renderHolds(p) {
+  const host = $('[data-aia-holds]'); const holds = p.hold_scenes || [];
   host.hidden = holds.length === 0;
-  host.innerHTML = holds.map(item => `<article><h3>${escapeHtml(item.code.replaceAll('_', ' '))}</h3><p>${escapeHtml(item.consequence)}</p><p><strong>Recovery:</strong> ${escapeHtml(item.recovery)}</p><p>Rest and exit remain available. No blame or increased recovery cost.</p></article>`).join('');
+  host.innerHTML = holds.map(item => `<article><h3>${esc(item.code.replaceAll('_', ' '))}</h3><p>${esc(item.consequence)}</p><p><strong>Recovery:</strong> ${esc(item.recovery)}</p><p>Rest and exit remain available. No blame or increased recovery cost.</p></article>`).join('');
 }
-
-function renderExact(packageView) {
-  $('[data-aia-lifecycle]').textContent = safeJson({ lifecycle_receipt: state.lifecycleReceipt, action_plan: state.actionPlan, animation_plan: state.animationPlan });
-  $('[data-aia-action-receipt]').textContent = state.latestActionReceipt ? safeJson(state.latestActionReceipt) : 'No explicit action receipt yet.';
-  $('[data-aia-render-receipt]').textContent = state.latestRenderReceipt ? safeJson(state.latestRenderReceipt) : 'No render receipt yet.';
-  $('[data-aia-package]').textContent = safeJson({ package_id: packageView.package_id, package_digest: packageView.package_digest, lifecycle: packageView.lifecycle, world_delta: packageView.world_delta, authority: packageView.authority, closure: packageView.closure });
+function renderExact(p) {
+  $('[data-aia-lifecycle]').textContent = json({ lifecycle_receipt: state.lifecycleReceipt, action_plan: state.actionPlan, animation_plan: state.animationPlan });
+  $('[data-aia-action-receipt]').textContent = state.latestActionReceipt ? json(state.latestActionReceipt) : 'No explicit action receipt yet.';
+  $('[data-aia-render-receipt]').textContent = state.latestRenderReceipt ? json(state.latestRenderReceipt) : 'No render receipt yet.';
+  $('[data-aia-package]').textContent = json({ package_id: p.package_id, package_digest: p.package_digest, lifecycle: p.lifecycle, world_delta: p.world_delta, authority: p.authority, closure: p.closure });
 }
-
 function renderAction() {
-  const plan = state.actionPlan;
-  $('[data-aia-action-label]').textContent = plan.label; $('[data-aia-action-purpose]').textContent = plan.purpose; $('[data-aia-action-consequence]').textContent = plan.expected_consequence;
-  const open = $('[data-aia-open-workspace]'); open.textContent = `Open exact ${plan.workspace} workspace`;
-  open.onclick = () => { restorePortal(); window.__td613OpenAshWorkspace?.(plan.workspace); setRoute('AUDIT'); document.querySelector(`#workspace-${plan.workspace}`)?.scrollIntoView({ block: 'start' }); };
-  portalAction(plan);
+  const task = activeTask(); const primary = $('[data-aia-primary-task]'); const exact = $('[data-aia-open-workspace]');
+  if (task === 'setup') {
+    $('[data-aia-action-label]').textContent = 'Set up a private workspace';
+    $('[data-aia-action-purpose]').textContent = 'Choose a workspace profile, create a new case, run the synthetic tutorial, or open a saved case.';
+    $('[data-aia-action-consequence]').textContent = 'Workspace setup changes local case structure only. No artifact enters custody and no transport occurs.';
+    primary.textContent = 'Set up workspace'; exact.hidden = true;
+  } else if (task === 'document') {
+    $('[data-aia-action-label]').textContent = 'Open a local document';
+    $('[data-aia-action-purpose]').textContent = 'Open the Draft workspace and choose a local text document or paste a selected excerpt.';
+    $('[data-aia-action-consequence]').textContent = 'The selected bytes remain local. Choosing a file does not upload, release, or send it.';
+    primary.textContent = 'Open local document'; exact.textContent = 'Open Draft workspace'; exact.hidden = false;
+  } else {
+    const plan = state.actionPlan;
+    $('[data-aia-action-label]').textContent = plan.label;
+    $('[data-aia-action-purpose]').textContent = plan.purpose;
+    $('[data-aia-action-consequence]').textContent = plan.expected_consequence;
+    primary.textContent = task === 'custody' ? 'Continue custody path' : 'Continue exact work';
+    exact.textContent = `Open ${workspaceForTask(task)} workspace`; exact.hidden = false;
+  }
+  primary.onclick = () => performTask(task); exact.onclick = () => performTask(task);
+  $$('[data-aia-task]').forEach(button => button.setAttribute('aria-current', button.dataset.aiaTask === task ? 'step' : 'false'));
 }
-
 function render() {
-  if (!state.packageView) return;
+  if (!state.packageView || LEGACY) return;
   const p = state.packageView;
-  document.body.dataset.ashAiaRoute = state.route; document.body.dataset.ashAiaResting = String(state.resting);
+  document.body.dataset.ashAiaRoute = state.route; document.body.dataset.ashAiaResting = String(state.resting); document.body.dataset.ashAiaCaseOpen = String(caseOpen());
   $$('[data-aia-route]').forEach(button => button.setAttribute('aria-pressed', String(button.dataset.aiaRoute === state.route)));
-  $('[data-aia-state]').textContent = p.lifecycle.state.replaceAll('_', ' ');
-  $('[data-aia-consequence]').textContent = state.resting ? 'Demand stops. The exact state, return, recovery, and exit remain available.' : p.world_delta.primary_consequence;
-  $('[data-aia-live]').textContent = state.resting ? '𝄐 Rest holds the current exact consequence. Nothing advances.' : `${p.lifecycle.state.replaceAll('_', ' ')} · next: ${p.lifecycle.next_action.replaceAll('_', ' ').toLowerCase()}.`;
+  $('[data-aia-state]').textContent = `${p.lifecycle.state.replaceAll('_', ' ')} · ${TASKS.find(([id]) => id === activeTask())?.[1]}`;
+  $('[data-aia-session]').textContent = caseOpen() ? 'Private case open' : 'No case open';
+  $('[data-aia-consequence]').textContent = state.resting ? 'Demand stops. The exact state, return, recovery, and exit remain available.' : (activeTask() === 'setup' ? 'Begin with a private workspace—not a technical threshold.' : activeTask() === 'document' ? 'Bring one local document into view without sending it anywhere.' : p.world_delta.primary_consequence);
+  $('[data-aia-live]').textContent = state.resting ? '𝄐 Rest holds the current exact consequence. Nothing advances.' : `${p.lifecycle.state.replaceAll('_', ' ')} · task ${TASKS.findIndex(([id]) => id === activeTask()) + 1} of ${TASKS.length}.`;
   $('[data-aia-rest]').hidden = state.resting; $('[data-aia-return]').hidden = !state.resting;
-  renderProgress(p.lifecycle); renderStage(p); renderFive(p); renderWhy(p); renderHolds(p); renderExact(p); renderAction();
+  renderTutorial(); renderFive(p); renderWhy(p); renderHolds(p); renderExact(p); renderAction();
+  window.__td613AshAIAIngress?.refresh?.();
 }
-
 async function compileCurrent(trigger = 'STATE_OBSERVED') {
-  const token = ++state.refreshToken, receipt = parseLifecycleReceipt(); if (!receipt) return;
-  const lifecycle = receipt.lifecycle;
-  const presentationOnly = ['ROUTE_CHANGED', 'EXPLICIT_REPLAY', 'MOTION_PREFERENCE_CHANGED'].includes(trigger);
-  const sameLifecycleReceipt = state.lifecycleReceipt?.lifecycle_digest === receipt.lifecycle_digest;
-  const reusePackage = Boolean(presentationOnly && sameLifecycleReceipt && state.packageView);
-  const before = presentationOnly ? lifecycle : state.previousLifecycle;
+  const token = ++state.refreshToken; const receipt = parseLifecycleReceipt(); if (!receipt) return;
+  const lifecycle = receipt.lifecycle; const presentationOnly = ['ROUTE_CHANGED', 'EXPLICIT_REPLAY', 'MOTION_PREFERENCE_CHANGED', 'TASK_CHANGED'].includes(trigger);
+  const same = state.lifecycleReceipt?.lifecycle_digest === receipt.lifecycle_digest;
   const frozenClock = receipt.observed_at || new Date().toISOString();
   const seed = receipt.lifecycle_digest || `${lifecycle.state}:${lifecycle.references?.case_map_digest || 'unbound'}`;
-  const packageView = reusePackage ? state.packageView : await compileAshCustodyPedagogueScene({ lifecycle }, {
-    frozenClock, idSeed: `ash-live-aia:${seed}`, cryptoImpl: globalThis.crypto,
-    beforeSnapshot: before ? { lifecycle: before } : null,
+  const before = presentationOnly ? lifecycle : state.previousLifecycle;
+  const packageView = presentationOnly && same && state.packageView ? state.packageView : await compileAshCustodyPedagogueScene({ lifecycle }, {
+    frozenClock, idSeed: `ash-live-aia:${seed}`, cryptoImpl: globalThis.crypto, beforeSnapshot: before ? { lifecycle: before } : null,
     desktopViewport: { width: 1120, height: 760, devicePixelRatio: devicePixelRatio || 1 },
     mobileViewport: { width: 390, height: 844, devicePixelRatio: Math.min(devicePixelRatio || 1, 2) }
   });
@@ -227,57 +231,94 @@ async function compileCurrent(trigger = 'STATE_OBSERVED') {
     clearTimeout(state.pendingTimer); const pending = state.pendingAction; state.pendingAction = null;
     state.latestActionReceipt = await compileAshLiveActionReceipt({ beforeLifecycle: pending.beforeLifecycle, afterLifecycle: lifecycle, actionPlan: pending.actionPlan, gesture: pending.gesture, outcome: 'OBSERVED_AFTER_EXPLICIT_GESTURE' }, { frozenClock, idSeed: `ash-live-aia-action:${pending.idSeed}:${receipt.lifecycle_digest}`, cryptoImpl: globalThis.crypto });
     if (!verifyAshLivePresentationBoundary(state.latestActionReceipt).valid) throw new Error('Live AIA action boundary verification failed.');
-    remember(state.latestActionReceipt); state.playing = !state.reducedMotion;
-  } else if (trigger === 'EXPLICIT_REPLAY') state.playing = !state.reducedMotion;
-  if (state.playing) setTimeout(() => { state.playing = false; $('[data-aia-stage]')?.setAttribute('data-playing', 'false'); }, state.animationPlan.duration_ms + 120);
+    remember(state.latestActionReceipt);
+  }
   if (!presentationOnly) state.previousLifecycle = structuredClone(lifecycle);
   render();
 }
-
 function confirmAction(target) {
   const plan = state.actionPlan;
-  if (!plan || (ACTION_ALIASES[target.id] || target.id) !== plan.command_id) return Promise.resolve(true);
-  const dialog = $('[data-aia-confirm]'); $('[data-confirm-title]').textContent = plan.label; $('[data-confirm-purpose]').textContent = plan.purpose; $('[data-confirm-consequence]').textContent = plan.expected_consequence;
-  $('[data-confirm-nonauthority]').innerHTML = plan.visible_non_authority.map(item => `<li>${escapeHtml(item)}</li>`).join('');
-  return new Promise(resolve => { const close = () => { dialog.removeEventListener('close', close); resolve(dialog.returnValue === 'confirm'); }; dialog.addEventListener('close', close); dialog.showModal(); });
+  if (!plan || (ALIASES[target.id] || target.id) !== plan.command_id) return Promise.resolve(true);
+  const dialog = $('[data-aia-confirm]');
+  $('[data-confirm-title]').textContent = plan.label; $('[data-confirm-purpose]').textContent = plan.purpose; $('[data-confirm-consequence]').textContent = plan.expected_consequence;
+  $('[data-confirm-nonauthority]').innerHTML = plan.visible_non_authority.map(item => `<li>${esc(item)}</li>`).join('');
+  return new Promise(resolve => {
+    const close = () => { dialog.removeEventListener('close', close); resolve(dialog.returnValue === 'confirm'); };
+    dialog.addEventListener('close', close); dialog.showModal();
+  });
 }
-
 async function interceptAction(event) {
-  if (!['EXPERIENTIAL', 'CUSTODIAL'].includes(state.route) || state.resting) return;
-  const target = event.target.closest('button'); if (!target || !GOVERNED_BUTTONS.has(target.id) || state.bypass.has(target)) return;
-  if (!state.packageView || (ACTION_ALIASES[target.id] || target.id) !== state.actionPlan?.command_id) return;
-  event.preventDefault(); event.stopImmediatePropagation(); if (!(await confirmAction(target))) return;
-  const beforeLifecycle = structuredClone(state.packageView.lifecycle), idSeed = state.lifecycleReceipt?.lifecycle_digest || `${beforeLifecycle.state}:${Date.now()}`;
+  if (LEGACY || !['EXPERIENTIAL', 'CUSTODIAL'].includes(state.route) || state.resting) return;
+  const target = event.target.closest('button');
+  if (!target || !GOVERNED.has(target.id) || state.bypass.has(target)) return;
+  if (!state.packageView || (ALIASES[target.id] || target.id) !== state.actionPlan?.command_id) return;
+  event.preventDefault(); event.stopImmediatePropagation();
+  if (!(await confirmAction(target))) return;
+  const beforeLifecycle = structuredClone(state.packageView.lifecycle);
+  const idSeed = state.lifecycleReceipt?.lifecycle_digest || `${beforeLifecycle.state}:${Date.now()}`;
   state.pendingAction = { beforeLifecycle, actionPlan: state.actionPlan, gesture: { type: 'button', target_id: target.id, confirmed: true }, idSeed };
   state.pendingTimer = setTimeout(async () => {
-    if (!state.pendingAction) return; const pending = state.pendingAction; state.pendingAction = null; const receipt = parseLifecycleReceipt(); if (!receipt) return;
+    if (!state.pendingAction) return;
+    const pending = state.pendingAction; state.pendingAction = null; const receipt = parseLifecycleReceipt(); if (!receipt) return;
     state.latestActionReceipt = await compileAshLiveActionReceipt({ beforeLifecycle: pending.beforeLifecycle, afterLifecycle: receipt.lifecycle, actionPlan: pending.actionPlan, gesture: pending.gesture, outcome: 'HELD_NO_NEW_LIFECYCLE_RECEIPT_WITHIN_WINDOW' }, { frozenClock: new Date().toISOString(), idSeed: `ash-live-aia-held:${pending.idSeed}`, cryptoImpl: globalThis.crypto });
-    remember(state.latestActionReceipt); $('[data-aia-live]').textContent = 'Ash did not publish a new lifecycle receipt within the observation window. No success is inferred.'; renderExact(state.packageView);
+    remember(state.latestActionReceipt); $('[data-aia-live]').textContent = 'Ash published no new lifecycle receipt inside the observation window. No success is inferred.'; renderExact(state.packageView);
   }, 12000);
   state.bypass.add(target); target.click(); queueMicrotask(() => state.bypass.delete(target));
 }
-
+function playExplanation() {
+  clearTimeout(state.frameTimer); state.frame = 0;
+  if (state.reducedMotion) { state.playing = false; renderTutorial(); $('[data-aia-live]').textContent = 'Reduced motion: all four deterministic lesson frames remain visible in order.'; return; }
+  state.playing = true;
+  const advance = () => {
+    renderTutorial(); $('[data-aia-live]').textContent = `Lesson ${state.frame + 1}: ${TASKS[state.frame][1]}. No Ash action is performed.`;
+    if (state.frame < TASKS.length - 1) { state.frame += 1; state.frameTimer = setTimeout(advance, 720); }
+    else state.frameTimer = setTimeout(() => { state.playing = false; renderTutorial(); }, 720);
+  };
+  advance();
+}
 function bind() {
   $$('[data-aia-route]').forEach(button => button.onclick = () => setRoute(button.dataset.aiaRoute));
-  $('[data-aia-rest]').onclick = () => { restorePortal(); state.resting = true; render(); };
+  $$('[data-aia-task]').forEach(button => button.onclick = () => performTask(button.dataset.aiaTask));
+  $('[data-aia-rest]').onclick = () => { state.resting = true; render(); };
   $('[data-aia-return]').onclick = () => { state.resting = false; render(); };
-  $('[data-aia-play]').onclick = () => compileCurrent('EXPLICIT_REPLAY').catch(hold);
+  $('[data-aia-play]').onclick = playExplanation;
+  $('[data-aia-previous]').onclick = () => { state.frame = Math.max(0, state.frame - 1); renderTutorial(); };
+  $('[data-aia-next]').onclick = () => { state.frame = Math.min(TASKS.length - 1, state.frame + 1); renderTutorial(); };
   document.addEventListener('click', event => interceptAction(event).catch(hold), true);
   window.addEventListener('td613:ash:lifecycle-updated', () => compileCurrent().catch(hold));
+  for (const type of ['case-opened', 'case-created', 'profile-demo-hydrated', 'capsule-opened', 'core-ready']) window.addEventListener(`td613:ash:${type}`, () => setTimeout(() => compileCurrent('TASK_CHANGED').catch(hold), 0));
+  $('#localTextFile')?.addEventListener('change', () => setTimeout(() => compileCurrent('TASK_CHANGED').catch(hold), 0));
+  $('#draftBody')?.addEventListener('input', () => renderAction());
   const motion = matchMedia('(prefers-reduced-motion: reduce)');
   motion.addEventListener?.('change', event => { state.reducedMotion = event.matches; compileCurrent('MOTION_PREFERENCE_CHANGED').catch(hold); });
 }
-
-function hold(error) { console.error('Ash live AIA held:', error); if ($('[data-aia-live]')) $('[data-aia-live]').textContent = `Presentation held without Ash mutation: ${error.message}`; document.body.dataset.ashAiaHeld = 'true'; }
-async function waitForLifecycle() { for (let i = 0; i < 80; i += 1) { if (parseLifecycleReceipt()) return true; await new Promise(resolve => setTimeout(resolve, 75)); } return false; }
-
-async function boot() {
-  ensureSurface(); bind(); setRoute(state.route); if (!(await waitForLifecycle())) throw new Error('Exact Ash lifecycle did not become available.'); await compileCurrent('BOOT');
+function hold(error) {
+  console.error('Ash live AIA held:', error);
+  if ($('[data-aia-live]')) $('[data-aia-live]').textContent = `Presentation held without Ash mutation: ${error.message}`;
+  document.body.dataset.ashAiaHeld = 'true';
+}
+async function waitForExactAsh() {
+  for (let attempt = 0; attempt < 160; attempt += 1) {
+    if (parseLifecycleReceipt() && typeof (window.__td613OpenAshWorkspace || window.__td613AshKeep?.openWorkspace) === 'function' && window.__td613AshKeep) return true;
+    await delay(50);
+  }
+  return false;
+}
+function exposeApi() {
   window.__td613AshLiveAIA = Object.freeze({
-    version: 'td613.ash.live-aia-browser/v0.1',
-    current: () => ({ route: state.route, lifecycle_state: state.packageView?.lifecycle?.state || null, lifecycle_next_action: state.packageView?.lifecycle?.next_action || null, package_digest: state.packageView?.package_digest || null, latest_action_receipt: state.latestActionReceipt?.receipt_id || null, latest_render_receipt: state.latestRenderReceipt?.receipt_id || null, resting: state.resting, child_study_authorized: false, telemetry_present: false }),
-    replay: () => compileCurrent('EXPLICIT_REPLAY'), setRoute, refresh: () => compileCurrent('EXPLICIT_REFRESH')
+    version: 'td613.ash.live-aia-browser/v0.2-task-continuity',
+    current: () => ({ route: state.route, lifecycle_state: state.packageView?.lifecycle?.state || null, lifecycle_next_action: state.packageView?.lifecycle?.next_action || null, task: activeTask(), package_digest: state.packageView?.package_digest || null, latest_action_receipt: state.latestActionReceipt?.receipt_id || null, latest_render_receipt: state.latestRenderReceipt?.receipt_id || null, resting: state.resting, child_study_authorized: false, telemetry_present: false, task_continuity_required: true }),
+    replay: playExplanation, setRoute, openWorkspace: openExactWorkspace, performTask, refresh: () => compileCurrent('EXPLICIT_REFRESH')
   });
 }
-
+async function boot() {
+  exposeApi();
+  if (LEGACY) { document.documentElement.dataset.ashAiaLegacy = 'true'; return; }
+  await ensureStylesheet();
+  ensureSurface(); bind(); setRoute(state.route);
+  if (!(await waitForExactAsh())) throw new Error('Exact Ash lifecycle or workspace API did not become available.');
+  await compileCurrent('BOOT');
+  document.documentElement.dataset.ashAiaReady = 'true';
+  window.dispatchEvent(new CustomEvent('td613:ash:aia-ready', { detail: window.__td613AshLiveAIA.current() }));
+}
 boot().catch(hold);
