@@ -41,6 +41,32 @@ function persistentScale() {
   return Math.max(zoomPressure, browserPressure);
 }
 
+function drawBaseWithoutLegacyLabels() {
+  const { ctx } = G;
+  const originalFillRect = ctx.fillRect;
+  const originalFillText = ctx.fillText;
+
+  ctx.fillRect = function fillRectWithoutLegacyLabel(x, y, width, height) {
+    const legacyPlaque = Math.abs(height - 20) < .01 && width < 220;
+    if (legacyPlaque) return;
+    return originalFillRect.call(this, x, y, width, height);
+  };
+  ctx.fillText = function fillTextWithoutLegacyLabel(text, x, y, maxWidth) {
+    const fontSize = Number.parseFloat(this.font) || 0;
+    const legacyLabel = fontSize <= 12.1 && this.font.includes('TD613 FlowCore');
+    if (legacyLabel) return;
+    if (maxWidth === undefined) return originalFillText.call(this, text, x, y);
+    return originalFillText.call(this, text, x, y, maxWidth);
+  };
+
+  try {
+    baseDrawWorld();
+  } finally {
+    ctx.fillRect = originalFillRect;
+    ctx.fillText = originalFillText;
+  }
+}
+
 function drawPersistentStations() {
   const { ctx } = G;
   const scale = persistentScale();
@@ -54,7 +80,7 @@ function drawPersistentStations() {
     const point = worldToScreen(item.x, item.y);
     const near = G.currentInteraction?.id === item.id;
     const radius = near ? 10.5 : 7.5 * scale;
-    const alpha = near ? .98 : reinforce ? .88 : .42;
+    const alpha = near ? .98 : reinforce ? .88 : .48;
 
     ctx.globalAlpha = alpha;
     ctx.beginPath();
@@ -78,7 +104,7 @@ function drawPersistentStations() {
 }
 
 export function drawWorld() {
-  baseDrawWorld();
+  drawBaseWithoutLegacyLabels();
   drawPersistentStations();
 }
 
@@ -93,6 +119,7 @@ export function renderDiagnostics() {
     devicePixelRatio: devicePixelRatio || 1,
     persistentScale: persistentScale(),
     stationCount: G.objects.filter(item => item.kind !== 'home').length,
+    legacyLabelsSuppressed: true,
     frame,
   };
 }
