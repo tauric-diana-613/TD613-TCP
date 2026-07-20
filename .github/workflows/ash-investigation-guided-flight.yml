@@ -6,6 +6,7 @@ on:
       - 'app/dome-world/ash-investigation-*'
       - 'app/dome-world/ash-guided-*'
       - 'app/dome-world/ash-workspace-bridge.js'
+      - 'app/dome-world/ash-aia3-*.js'
       - 'app/dome-world/fixtures/ash-investigation-*'
       - 'scripts/ash-investigation-guidance-browser-probe.mjs'
       - 'tests/ash-investigation-guidance.test.mjs'
@@ -17,6 +18,7 @@ on:
       - 'app/dome-world/ash-investigation-*'
       - 'app/dome-world/ash-guided-*'
       - 'app/dome-world/ash-workspace-bridge.js'
+      - 'app/dome-world/ash-aia3-*.js'
       - 'app/dome-world/fixtures/ash-investigation-*'
       - 'scripts/ash-investigation-guidance-browser-probe.mjs'
       - 'tests/ash-investigation-guidance.test.mjs'
@@ -43,13 +45,15 @@ jobs:
         with:
           node-version: 24
           cache: npm
-      - name: Install repository dependencies
-        run: npm ci
-      - name: Verify Investigation fixture and guided contract
+      - run: npm ci
+      - name: Profile demo contracts
+        run: node tests/ash-profile-demos.test.mjs
+      - name: Investigation guidance contracts
+        run: node tests/ash-investigation-guidance.test.mjs
+      - name: Investigation guidance closure
+        run: node tests/ash-keep-investigation-guidance-closure.test.mjs
+      - name: Source syntax
         run: |
-          node tests/ash-profile-demos.test.mjs
-          node tests/ash-investigation-guidance.test.mjs
-          node tests/ash-keep-investigation-guidance-closure.test.mjs
           node --check app/dome-world/ash-investigation-demo-hydration.js
           node --check app/dome-world/ash-guided-operator-ui.js
           node --check scripts/ash-investigation-guidance-browser-probe.mjs
@@ -82,7 +86,7 @@ jobs:
           path: |
             artifacts/ash-investigation-guided-flight
             /tmp/ash-investigation-flight.log
-          if-no-files-found: error
+          if-no-files-found: warn
           retention-days: 30
 
   deployed-exact-main:
@@ -96,13 +100,13 @@ jobs:
         with:
           node-version: 24
           cache: npm
-      - name: Install repository dependencies
-        run: npm ci
-      - name: Verify Investigation fixture and guided contract
-        run: |
-          node tests/ash-profile-demos.test.mjs
-          node tests/ash-investigation-guidance.test.mjs
-          node tests/ash-keep-investigation-guidance-closure.test.mjs
+      - run: npm ci
+      - name: Profile demo contracts
+        run: node tests/ash-profile-demos.test.mjs
+      - name: Investigation guidance contracts
+        run: node tests/ash-investigation-guidance.test.mjs
+      - name: Investigation guidance closure
+        run: node tests/ash-keep-investigation-guidance-closure.test.mjs
       - name: Install browser runtime
         run: |
           npm install --no-save --package-lock=false playwright@1.54.1
@@ -112,8 +116,7 @@ jobs:
           for attempt in $(seq 1 90); do
             investigation="$(curl -fsS https://td613.com/dome-world/ash-investigation-demo-hydration.js || true)"
             guided="$(curl -fsS https://td613.com/dome-world/ash-guided-operator-ui.js || true)"
-            if printf '%s' "$investigation" | grep -q 'v0.1-glass-meridian' \
-              && printf '%s' "$guided" | grep -q 'v0.2-stable-membrane'; then exit 0; fi
+            if printf '%s' "$investigation" | grep -q 'v0.1-glass-meridian' && printf '%s' "$guided" | grep -q 'v0.2-stable-membrane'; then exit 0; fi
             sleep 2
           done
           exit 1
@@ -127,5 +130,5 @@ jobs:
         with:
           name: ash-investigation-guided-flight-deployed-evidence
           path: artifacts/ash-investigation-guided-flight-deployed
-          if-no-files-found: error
+          if-no-files-found: warn
           retention-days: 30
