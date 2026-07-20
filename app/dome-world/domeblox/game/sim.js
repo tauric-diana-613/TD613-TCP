@@ -1,4 +1,5 @@
 import { CANONICAL, G, clamp, lerp, distance, format, capitalize, objectives, appendLedger, message, saveState, clearSavedState } from './core.js';
+import { openRouteInNewTab } from './navigation.js';
 import { drawMap } from './render.js';
 
 const seasons = ['spring', 'summer', 'autumn', 'winter'];
@@ -95,10 +96,6 @@ export function findInteraction() {
 }
 
 export function interact() { if (G.running && G.currentInteraction) performAction(G.currentInteraction); }
-function openForwardBattery() {
-  const opened = window.open('./forward-battery/', '_blank', 'noopener');
-  if (!opened) location.assign('./forward-battery/');
-}
 function performAction(item) {
   const player = G.state.player; const world = G.state.world; const inventory = player.inventory;
   switch (item.action) {
@@ -114,7 +111,7 @@ function performAction(item) {
     case 'release': player.needs.release = clamp(player.needs.release + .6); message('出 Release restores room for the next cycle.'); break;
     case 'home': homeAction(item); break;
     case 'springald': G.springaldOpen = true; G.ui.springaldPanel.hidden = false; updateSpringaldPanel(); break;
-    case 'battery': openForwardBattery(); message('Forward Battery opened.'); break;
+    case 'battery': openRouteInNewTab('./forward-battery/'); message('Forward Battery opened.'); break;
   }
   renderHud();
 }

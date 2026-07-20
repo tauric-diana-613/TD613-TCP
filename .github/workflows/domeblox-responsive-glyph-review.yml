@@ -6,6 +6,7 @@ on:
       - 'app/dome-world/domeblox/**'
       - 'tests/domeblox-responsive-glyph.*'
       - 'tests/domeblox-state-resilience.test.mjs'
+      - 'tests/domeblox-navigation.test.mjs'
       - '.github/workflows/domeblox-responsive-glyph-review.yml'
 
 permissions:
@@ -23,6 +24,8 @@ jobs:
         run: node tests/domeblox-responsive-glyph.test.mjs
       - name: Save resilience contract
         run: node tests/domeblox-state-resilience.test.mjs
+      - name: Navigation fallback contract
+        run: node tests/domeblox-navigation.test.mjs
       - name: Install Chromium review runtime
         run: |
           npm install --no-save --ignore-scripts @playwright/test@1.55.0

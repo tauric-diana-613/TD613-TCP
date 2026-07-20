@@ -1,13 +1,19 @@
 {
-  "schema": "td613.domeblox.playable-route-readiness/v1.1",
+  "schema": "td613.domeblox.playable-route-readiness/v1.2",
   "route": "/dome-world/domeblox/",
   "route_role": "playable-browser-game",
   "forward_battery_route": "/dome-world/domeblox/forward-battery/",
   "status": "PRODUCTION_PLAYABLE",
-  "browser_runtime_version": "1.2.1",
+  "browser_runtime_version": "1.2.2",
   "repository_static_contract": "PASS_CANDIDATE_PENDING_PR_GATES",
   "serverless_delta": 0,
   "deployment_lock_changed": false,
+  "runtime_closure": {
+    "safe_visual_viewport_access": true,
+    "focused_controls_yield_gameplay_shortcuts": true,
+    "overlay_escape_recovery": true,
+    "forward_battery_navigation": "preopened-new-tab-with-same-tab-fallback"
+  },
   "last_production_observation": {
     "status": "PASS",
     "observed_runtime": "1.2.0",
