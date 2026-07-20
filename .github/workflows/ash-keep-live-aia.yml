@@ -43,8 +43,14 @@ jobs:
         run: node tests/ash-pedagogue-custody-route.test.mjs
       - name: Exact lifecycle contracts
         run: node tests/ash-lifecycle.test.mjs
-      - name: Ash Keep core and UI non-regression
-        run: npm run test:ash-keep
+      - name: Ash Keep core contracts
+        run: node tests/ash-keep-core.test.mjs
+      - name: Ash Keep continuity contracts
+        run: node tests/ash-keep-continuity.test.mjs
+      - name: Ash Keep Hush API contracts
+        run: node tests/ash-keep-hush-api.test.mjs
+      - name: Ash Keep UI contracts
+        run: node tests/ash-keep-ui.test.mjs
       - name: Static custody delivery
         run: node tests/dome-world-ash-custody.test.mjs
       - name: TCP smoke
