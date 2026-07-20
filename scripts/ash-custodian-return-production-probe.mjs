@@ -108,7 +108,7 @@ async function openSurface({ viewport, reducedMotion = 'no-preference', label })
     if (executable && !/ash-custodian-return/i.test(url)) recipientTransportRequests.push({ label, method, url });
     if (executable && /cinder/i.test(url)) cinderActions.push({ label, method, url });
   });
-  await page.goto(`${baseUrl}/dome-world/ash-keep.html?arrival=cleared`, { waitUntil: 'domcontentloaded', timeout: 90000 });
+  await page.goto(`${baseUrl}/dome-world/ash-keep.html?arrival=cleared&presentation=legacy`, { waitUntil: 'domcontentloaded', timeout: 90000 });
   await page.waitForFunction(() => Boolean(window.__td613AshCacheTransition)
     && Boolean(document.documentElement.dataset.ashCaseCloseRepair)
     && document.documentElement.dataset.ashMembraneReady === 'true'
@@ -127,9 +127,9 @@ async function openSurface({ viewport, reducedMotion = 'no-preference', label })
       launch.style.setProperty('display', 'none', 'important');
       launch.style.setProperty('pointer-events', 'none', 'important');
     }
-    const open = window.__td613AshPremiumUI?.open
-      || window.__td613OpenAshWorkspace
-      || window.__td613AshKeep?.openWorkspace;
+    const open = window.__td613AshKeep?.openWorkspace
+      || window.__td613AshPremiumUI?.open
+      || window.__td613OpenAshWorkspace;
     if (typeof open !== 'function') throw new Error('Ash Return workspace opener is unavailable.');
     open('save');
   });
@@ -137,9 +137,9 @@ async function openSurface({ viewport, reducedMotion = 'no-preference', label })
     const launch = document.getElementById('launch');
     const workspace = document.getElementById('workspace-save');
     const panel = document.getElementById('ashReturnPanel');
-    const open = window.__td613AshPremiumUI?.open
-      || window.__td613OpenAshWorkspace
-      || window.__td613AshKeep?.openWorkspace;
+    const open = window.__td613AshKeep?.openWorkspace
+      || window.__td613AshPremiumUI?.open
+      || window.__td613OpenAshWorkspace;
     if (launch) {
       launch.classList.add('hidden');
       launch.setAttribute('inert', '');
@@ -254,6 +254,8 @@ const diagnostics = {
   matrix,
   navigation_readiness: {
     wait_until: 'domcontentloaded',
+    presentation_route: 'legacy',
+    workspace_open_owner: 'core-first',
     cache_transition_required: true,
     case_close_repair_required: true,
     membrane_settled_required: true,
