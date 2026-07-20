@@ -4,26 +4,26 @@ on:
   pull_request:
     branches: [main]
     paths:
-      - 'app/dome-world/ash-keep-aia3.css'
+      - 'app/dome-world/ash-keep-aia3*.css'
       - 'app/dome-world/ash-aia3-composition.js'
       - 'app/dome-world/ash-cache-eviction-aia3.js'
       - 'app/dome-world/ash-lifecycle.js'
       - 'app/dome-world/ash-keep-aia-workspace-bridge.js'
       - 'app/dome-world/ash-guided-operator-ui.js'
       - 'api/dome-world-shell.js'
-      - 'scripts/ash-keep-aia3-task-journey.mjs'
+      - 'scripts/ash-keep-aia3-task-journey-v2.mjs'
       - '.github/workflows/ash-aia3-task-continuity.yml'
   push:
     branches: [main]
     paths:
-      - 'app/dome-world/ash-keep-aia3.css'
+      - 'app/dome-world/ash-keep-aia3*.css'
       - 'app/dome-world/ash-aia3-composition.js'
       - 'app/dome-world/ash-cache-eviction-aia3.js'
       - 'app/dome-world/ash-lifecycle.js'
       - 'app/dome-world/ash-keep-aia-workspace-bridge.js'
       - 'app/dome-world/ash-guided-operator-ui.js'
       - 'api/dome-world-shell.js'
-      - 'scripts/ash-keep-aia3-task-journey.mjs'
+      - 'scripts/ash-keep-aia3-task-journey-v2.mjs'
       - '.github/workflows/ash-aia3-task-continuity.yml'
 
 permissions:
@@ -52,12 +52,13 @@ jobs:
           node --check app/dome-world/ash-keep-aia-workspace-bridge.js
           node --check app/dome-world/ash-guided-operator-ui.js
           node --check api/dome-world-shell.js
-          node --check scripts/ash-keep-aia3-task-journey.mjs
+          node --check scripts/ash-keep-aia3-task-journey-v2.mjs
           grep -q 'CANONICAL_FIXED_MEMBRANE' app/dome-world/ash-keep-aia-workspace-bridge.js
           ! grep -q 'slot.append(launch)' app/dome-world/ash-keep-aia-workspace-bridge.js
           grep -q '20260720-aia3-production-recovery-v1' api/dome-world-shell.js
           grep -q 'indexeddb_preserved: true' app/dome-world/ash-cache-eviction-aia3.js
           grep -q 'case_data_preserved: true' app/dome-world/ash-cache-eviction-aia3.js
+          grep -q 'lifecycle_semantics' scripts/ash-keep-aia3-task-journey-v2.mjs
 
   browser:
     name: ${{ matrix.browser }} desktop and mobile recovery journey
@@ -95,7 +96,7 @@ jobs:
           TD613_BASE_URL: http://127.0.0.1:6130
           TD613_SOURCE_PACKET_COMMIT: ${{ github.sha }}
           TD613_ARTIFACT_DIR: artifacts/ash-aia3-${{ matrix.browser }}
-        run: node scripts/ash-keep-aia3-task-journey.mjs
+        run: node scripts/ash-keep-aia3-task-journey-v2.mjs
       - name: Stop local runtime
         if: always()
         run: test -f artifacts/ash-aia3-local-server.pid && kill "$(cat artifacts/ash-aia3-local-server.pid)" || true
