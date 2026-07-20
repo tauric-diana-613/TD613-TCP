@@ -29,4 +29,11 @@ html[data-ash-aia-ready="true"] body[data-ash-aia-case-open="true"]>.workspace-r
 html[data-ash-session-open="true"] body>.workspace-rail,
 html.ash-has-current-case body>.workspace-rail{display:grid!important}
 @media(max-width:900px){html[data-ash-aia-ready="true"] body[data-ash-aia-case-open="true"]>.workspace-rail,html[data-ash-session-open="true"] body>.workspace-rail,html.ash-has-current-case body>.workspace-rail{grid-template-columns:repeat(6,minmax(92px,1fr))!important}}
-@media(max-width:620px){.ash-aia__body{margin-top:8px}.ash-aia__work{order:-1}.ash-aia__tasks{margin-top:8px}}
+@media(max-width:620px){
+  .ash-aia__body{margin-top:8px}.ash-aia__work{order:-1}.ash-aia__tasks{margin-top:8px}
+  body[data-ash-aia-case-open="false"] .ash-aia__header{display:none}
+  body[data-ash-aia-case-open="false"] .ash-aia__body{margin-top:0}
+  body[data-ash-aia-case-open="false"] .ash-aia__work{padding:5px}
+  body[data-ash-aia-case-open="false"] .ash-aia__ingress-slot .launch .actions{display:grid!important;grid-template-columns:1fr 1fr!important;gap:6px!important}
+  body[data-ash-aia-case-open="false"] .ash-aia__ingress-slot .launch .btn{min-width:0!important;padding-inline:6px!important}
+}
