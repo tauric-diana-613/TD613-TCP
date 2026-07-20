@@ -121,9 +121,11 @@ function assertExperiential(result, profile) {
 }
 
 async function selectRoute(page, routeName) {
-  await page.locator(`[data-aia-route="${routeName}"]`).click({ force: true });
-  await page.waitForFunction(expected => window.__td613AshLiveAIA?.current?.().route === expected, routeName);
-  await page.waitForTimeout(120);
+  const button = page.locator(`[data-aia-route="${routeName}"]`);
+  await button.evaluate(node => node.click());
+  await page.waitForTimeout(180);
+  const observed = await page.evaluate(() => window.__td613AshLiveAIA?.current?.().route || null);
+  assert(observed === routeName, `${routeName}: native route button produced ${observed || 'NO_ROUTE'}.`);
 }
 
 async function exerciseNonMutation(page) {
