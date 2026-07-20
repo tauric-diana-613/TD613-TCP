@@ -80,28 +80,33 @@ jobs:
             exit 1
           }
 
+          ALLOWED="$(cat <<'EOF_ALLOWED'
+          .github/workflows/flowcore-p0-p10-final-stitch.yml
+          .github/workflows/flowcore-runtime-evidence.yml
+          .github/workflows/vercel-operator-release.yml
+          app/dome-world/docs/FLOWCORE_P0_P10_IMPLEMENTATION_COMPLETION_LEDGER_V0_1.md
+          app/dome-world/docs/FLOWCORE_PEDAGOGUE_P10_IMPLEMENTATION_RECEIPT_V0_1.md
+          app/dome-world/docs/FLOWCORE_PEDAGOGUE_PROGRAM_INDEX_V0_1.md
+          app/dome-world/docs/FLOWCORE_RUNTIME_RELEASE_CLOSURE_RECEIPT_V0_1.md
+          app/dome-world/fixtures/pedagogue/flowcore-promotion-evidence.json
+          app/dome-world/flowcore-promotion-dashboard.css
+          app/dome-world/route-burden-observatory.css
+          docs/STRATEGIC_VERCEL_DEPLOYMENT_LAW.md
+          scripts/flowcore-release-content-probe.mjs
+          scripts/flowcore-runtime-browser-probe.mjs
+          tests/flowcore-p0-p10-completion.test.mjs
+          tests/flowcore-production-promotion.test.mjs
+          tests/flowcore-runtime-browser-probe.test.mjs
+          tests/vercel-operator-release-gate.test.mjs
+          EOF_ALLOWED
+          )"
+
           while IFS= read -r path; do
             [[ -z "$path" ]] && continue
-            case "$path" in
-              .github/workflows/flowcore-p0-p10-final-stitch.yml|
-              .github/workflows/flowcore-runtime-evidence.yml|
-              .github/workflows/vercel-operator-release.yml|
-              app/dome-world/docs/FLOWCORE_P0_P10_IMPLEMENTATION_COMPLETION_LEDGER_V0_1.md|
-              app/dome-world/docs/FLOWCORE_PEDAGOGUE_P10_IMPLEMENTATION_RECEIPT_V0_1.md|
-              app/dome-world/docs/FLOWCORE_PEDAGOGUE_PROGRAM_INDEX_V0_1.md|
-              app/dome-world/docs/FLOWCORE_RUNTIME_RELEASE_CLOSURE_RECEIPT_V0_1.md|
-              app/dome-world/fixtures/pedagogue/flowcore-promotion-evidence.json|
-              app/dome-world/flowcore-promotion-dashboard.css|
-              app/dome-world/route-burden-observatory.css|
-              docs/STRATEGIC_VERCEL_DEPLOYMENT_LAW.md|
-              scripts/flowcore-release-content-probe.mjs|
-              scripts/flowcore-runtime-browser-probe.mjs|
-              tests/flowcore-p0-p10-completion.test.mjs|
-              tests/flowcore-production-promotion.test.mjs|
-              tests/flowcore-runtime-browser-probe.test.mjs|
-              tests/vercel-operator-release-gate.test.mjs) ;;
-              *) echo "Runtime-release closure changed an unauthorized path: $path" >&2; exit 1 ;;
-            esac
+            grep -Fxq "$path" <<< "$ALLOWED" || {
+              echo "Runtime-release closure changed an unauthorized path: $path" >&2
+              exit 1
+            }
           done <<< "$CHANGED"
 
           if grep -Eq '^(api/|vercel\.json$|app/engine/|app/dome-world/ash/|app/dome-world/data/)' <<< "$CHANGED"; then
