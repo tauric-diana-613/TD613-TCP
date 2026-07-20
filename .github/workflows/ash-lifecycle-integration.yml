@@ -1,96 +1,54 @@
-name: Ash lifecycle integration
+name: One-use user-flight route repair
 
 on:
-  pull_request:
+  push:
+    branches:
+      - agent/ash-keep-live-child-legible-aia
     paths:
-      - "api/dome-world-shell.js"
-      - "app/dome-world/ash-threshold.html"
-      - "app/dome-world/ash-lifecycle.js"
-      - "app/dome-world/ash-workspace-bridge.js"
-      - "app/engine/ash-lifecycle.js"
-      - "app/engine/ash-keep-drafts.js"
-      - "docs/APERTURE_COMPOSITION_CLOSURE_RECEIPT.md"
-      - "docs/APERTURE_COMPOSITION_RENOVATION.md"
-      - "docs/ASH_KEEP_BUILDOUT_LEDGER.md"
-      - "docs/ASH_LIFECYCLE_ORCHESTRATION.md"
-      - "docs/STRATEGIC_VERCEL_DEPLOYMENT_LAW.md"
-      - "ROADMAP.md"
-      - "scripts/consolidate-ash-lifecycle-shell.mjs"
-      - "tests/aperture-composition/closure.test.mjs"
-      - "tests/ash-lifecycle.test.mjs"
-      - "tests/ash-lifecycle-release-gate-idempotence.test.mjs"
-      - "tests/ash-custody-workspace-bridge.test.mjs"
-      - "tests/ash-draft-lifecycle-binding.test.mjs"
-      - "tests/ash-product-architecture.test.mjs"
-      - "tests/dome-world-integration.test.mjs"
-      - "tests/vercel-deploy-hygiene.test.mjs"
-      - "vercel.json"
-      - ".github/workflows/ash-lifecycle-integration.yml"
-  workflow_dispatch:
+      - '.github/workflows/ash-lifecycle-integration.yml'
 
 permissions:
-  contents: read
-
-concurrency:
-  group: ash-lifecycle-${{ github.event.pull_request.number || github.ref }}
-  cancel-in-progress: true
+  contents: write
 
 jobs:
-  validate:
+  patch:
     runs-on: ubuntu-latest
     steps:
-      - name: Check out candidate merge
-        uses: actions/checkout@v4
-
-      - name: Set up Node
-        uses: actions/setup-node@v4
+      - uses: actions/checkout@v4
         with:
-          node-version: 22
-          cache: npm
-
-      - name: Install dependencies
-        run: npm ci
-
-      - name: Confirm Ash lifecycle surfaces are consolidated
+          ref: agent/ash-keep-live-child-legible-aia
+          fetch-depth: 0
+      - name: Declare specialist route after threshold observation
         run: |
-          node scripts/consolidate-ash-lifecycle-shell.mjs
-          git diff --exit-code -- vercel.json api/dome-world-shell.js api/ash-keep-shell.js api/ash-keep-js-shell.js
+          python - <<'PY'
+          from pathlib import Path
 
-      - name: Validate Vercel function and route hygiene
-        run: node tests/vercel-deploy-hygiene.test.mjs
-
-      - name: Run lifecycle state tests
-        run: node tests/ash-lifecycle.test.mjs
-
-      - name: Prevent release-gate observer recursion
-        run: node tests/ash-lifecycle-release-gate-idempotence.test.mjs
-
-      - name: Verify late Custody workspace delegation
-        run: node tests/ash-custody-workspace-bridge.test.mjs
-
-      - name: Run custody-bound draft tests
-        run: node tests/ash-draft-lifecycle-binding.test.mjs
-
-      - name: Run lifecycle product architecture tests
-        run: node tests/ash-product-architecture.test.mjs
-
-      - name: Preserve existing Dome integration contract
-        run: node tests/dome-world-integration.test.mjs
-
-      - name: Preserve existing Dome shell contract
-        run: node tests/dome-world-lab-marrowline-link.test.mjs
-
-      - name: Run Ash Keep core regression
-        run: node tests/ash-keep-core.test.mjs
-
-      - name: Run Ash Keep continuity regression
-        run: node tests/ash-keep-continuity.test.mjs
-
-      - name: Run Ash Keep Hush API regression
-        run: node tests/ash-keep-hush-api.test.mjs
-
-      - name: Rebuild maintained Aperture download artifact
-        run: npm run aperture:export-downloads
-
-      - name: Run Ash Keep UI regression
-        run: node tests/ash-keep-ui.test.mjs
+          path = Path('scripts/ash-user-test-flight.mjs')
+          text = path.read_text()
+          old_url = "const keepUrl = `${base}/dome-world/ash-keep.html`;"
+          new_url = "const keepUrl = `${base}/dome-world/ash-keep.html?presentation=legacy`;"
+          old_boot = """  await page.goto(throughThreshold ? thresholdUrl : keepUrl, { waitUntil: 'networkidle' });
+  await page.waitForURL(/\\/dome-world\\/ash-keep\\.html/, { timeout: 60000 });
+  await page.waitForFunction(() => Boolean(window.__td613AshKeep?.version)"""
+          new_boot = """  await page.goto(throughThreshold ? thresholdUrl : keepUrl, { waitUntil: 'networkidle' });
+  await page.waitForURL(/\\/dome-world\\/ash-keep\\.html/, { timeout: 60000 });
+  if (throughThreshold && new URL(page.url()).searchParams.get('presentation') !== 'legacy') {
+    await page.goto(keepUrl, { waitUntil: 'networkidle' });
+  }
+  await page.waitForFunction(() => Boolean(window.__td613AshKeep?.version)"""
+          if text.count(old_url) != 1:
+              raise SystemExit(f'expected one undeclared user-flight Keep route, observed {text.count(old_url)}')
+          if text.count(old_boot) != 1:
+              raise SystemExit(f'expected one threshold-to-specialist transition seam, observed {text.count(old_boot)}')
+          path.write_text(text.replace(old_url, new_url).replace(old_boot, new_boot))
+          PY
+      - name: Restore workflow and publish user-flight repair
+        run: |
+          git show origin/main:.github/workflows/ash-lifecycle-integration.yml > .github/workflows/ash-lifecycle-integration.yml
+          grep -F 'ash-keep.html?presentation=legacy' scripts/ash-user-test-flight.mjs
+          grep -F "throughThreshold && new URL(page.url()).searchParams.get('presentation') !== 'legacy'" scripts/ash-user-test-flight.mjs
+          git config user.name 'td613-housekeeping'
+          git config user.email 'td613-housekeeping@users.noreply.github.com'
+          git add scripts/ash-user-test-flight.mjs .github/workflows/ash-lifecycle-integration.yml
+          git commit -m 'Declare legacy route in full user-flight observer'
+          git push origin HEAD:agent/ash-keep-live-child-legible-aia
