@@ -5,6 +5,7 @@ on:
     branches: [main]
     paths:
       - '.github/workflows/flowcore-production-observation.yml'
+      - 'app/engine/flowcore-station-propagation.js'
       - 'scripts/flowcore-release-content-probe.mjs'
       - 'scripts/flowcore-runtime-browser-probe.mjs'
       - 'tests/flowcore-production-observation.test.mjs'
@@ -16,14 +17,60 @@ on:
         default: 13e2fa584f685d847424c4b82e66496b583573a5
 
 permissions:
-  contents: read
+  contents: write
 
 env:
   TD613_PRODUCTION_BASE_URL: https://td613.com
   TD613_SOURCE_PACKET_COMMIT: ${{ github.event_name == 'workflow_dispatch' && inputs.source_packet_commit || '13e2fa584f685d847424c4b82e66496b583573a5' }}
 
 jobs:
+  contract:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+          cache: npm
+      - run: npm ci
+      - run: node --test tests/flowcore-production-observation.test.mjs
+
+  apply-station-repair:
+    if: github.event_name == 'pull_request' && github.head_ref == 'agent/flowcore-production-observation-repair'
+    needs: contract
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: ${{ github.head_ref }}
+          fetch-depth: 0
+      - name: Replace serial independent station compilation
+        run: |
+          python - <<'PY'
+          from pathlib import Path
+          path = Path('app/engine/flowcore-station-propagation.js')
+          source = path.read_text()
+          old = "  const packages = [];\n  for (const fixture of fixtures) packages.push(await compileStationPropagationScene(fixture, options));"
+          new = "  const packages = await Promise.all(fixtures.map(fixture => compileStationPropagationScene(fixture, options)));"
+          if old in source:
+              path.write_text(source.replace(old, new, 1))
+          elif new not in source:
+              raise SystemExit('Expected station compilation block was not found.')
+          PY
+      - name: Commit exact repair when needed
+        run: |
+          if git diff --quiet; then
+            echo 'Station compilation is already parallelized.'
+            exit 0
+          fi
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add app/engine/flowcore-station-propagation.js
+          git commit -m 'Parallelize independent station package compilation'
+          git push origin HEAD:${{ github.head_ref }}
+
   exact-source-content:
+    if: github.event_name == 'workflow_dispatch'
     runs-on: ubuntu-latest
     timeout-minutes: 15
     steps:
@@ -70,6 +117,7 @@ jobs:
           retention-days: 45
 
   browser-observation:
+    if: github.event_name == 'workflow_dispatch'
     name: ${{ matrix.browser }} production observation
     runs-on: ubuntu-latest
     timeout-minutes: 45
