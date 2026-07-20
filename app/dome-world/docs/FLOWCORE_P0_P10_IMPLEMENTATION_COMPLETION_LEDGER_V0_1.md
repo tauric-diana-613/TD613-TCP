@@ -36,6 +36,8 @@ feature gate default: OFF
 new serverless function: false
 new persistence: false
 raw-content transport added: false
+Ash lifecycle changed: false
+canonical digest law changed: false
 station authority transferred: false
 automatic promotion: false
 automatic closure: false
