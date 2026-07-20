@@ -1,4 +1,4 @@
-import { CANONICAL, G, SAVE_KEY, clamp, lerp, distance, format, capitalize, objectives, appendLedger, message, saveState } from './core.js';
+import { CANONICAL, G, clamp, lerp, distance, format, capitalize, objectives, appendLedger, message, saveState, clearSavedState } from './core.js';
 import { drawMap } from './render.js';
 
 const seasons = ['spring', 'summer', 'autumn', 'winter'];
@@ -95,6 +95,10 @@ export function findInteraction() {
 }
 
 export function interact() { if (G.running && G.currentInteraction) performAction(G.currentInteraction); }
+function openForwardBattery() {
+  const opened = window.open('./forward-battery/', '_blank', 'noopener');
+  if (!opened) location.assign('./forward-battery/');
+}
 function performAction(item) {
   const player = G.state.player; const world = G.state.world; const inventory = player.inventory;
   switch (item.action) {
@@ -110,7 +114,7 @@ function performAction(item) {
     case 'release': player.needs.release = clamp(player.needs.release + .6); message('出 Release restores room for the next cycle.'); break;
     case 'home': homeAction(item); break;
     case 'springald': G.springaldOpen = true; G.ui.springaldPanel.hidden = false; updateSpringaldPanel(); break;
-    case 'battery': window.open('./forward-battery/', '_blank', 'noopener'); message('Forward Battery opened in a separate tab.'); break;
+    case 'battery': openForwardBattery(); message('Forward Battery opened.'); break;
   }
   renderHud();
 }
@@ -155,4 +159,10 @@ export function renderHud() {
 
 export function toggleHud() { G.hudCollapsed = !G.hudCollapsed; G.ui.hudBody.hidden = G.hudCollapsed; G.ui.toggleHud.textContent = G.hudCollapsed ? '+' : '−'; }
 export function toggleMap() { G.mapOpen = !G.mapOpen; G.ui.mapPanel.hidden = !G.mapOpen; if (G.mapOpen) drawMap(); }
-export function resetWorld() { localStorage.removeItem(SAVE_KEY); location.reload(); }
+export function resetWorld() {
+  if (!clearSavedState()) {
+    message('Local storage is unavailable. The current world was not reset.');
+    return;
+  }
+  location.reload();
+}
