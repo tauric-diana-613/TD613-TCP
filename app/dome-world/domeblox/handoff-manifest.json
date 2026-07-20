@@ -3,6 +3,9 @@
   "filename": "DomeWorld_v3_1_Armored_FlowCore_DomeBlox_ForwardBattery_v1_1_Erin_Potato_Handoff.zip",
   "sha256": "50de9d5ef11b322b8ac95dbcf09d6a4f788b791790d2106e692abd1592480386",
   "file_count": 109,
+  "archive_lineage": "Roblox Studio and FlowCore handoff v1.1",
+  "browser_runtime_version": "1.2.1",
+  "browser_runtime_distribution": "repository route; not embedded in the external Roblox archive",
   "distribution": "separate operator handoff; browser station stores metadata only",
   "route_package_status": "external-archive-digest-registered"
 }
