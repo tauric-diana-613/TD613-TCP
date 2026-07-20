@@ -8,6 +8,7 @@ on:
       - 'app/dome-world/physical-flowcore*'
       - 'app/dome-world/fixtures/pedagogue/physical-flowcore-cycle.json'
       - 'app/dome-world/schemas/flowcore-physical-scene-v01.schema.json'
+      - 'app/dome-world/docs/FLOWCORE_PEDAGOGUE_P8_IMPLEMENTATION_RECEIPT_V0_1.md'
       - 'tests/flowcore-physical-scene.test.mjs'
       - '.github/workflows/flowcore-pedagogue-p8.yml'
   workflow_dispatch:
