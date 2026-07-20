@@ -23,6 +23,14 @@ function ensureStyles(doc) {
 }
 
 function collapseLegacyRails(doc) {
+  if (doc.documentElement.dataset.ashAia3) {
+    for (const rail of doc.querySelectorAll('.workspace-rail,.ash-lifecycle-rail')) {
+      rail.removeAttribute('aria-hidden');
+      rail.removeAttribute('inert');
+      for (const property of ['display', 'min-height', 'max-height', 'opacity']) rail.style.removeProperty(property);
+    }
+    return;
+  }
   for (const rail of doc.querySelectorAll('.workspace-rail,.ash-lifecycle-rail')) {
     if (rail.getAttribute('aria-hidden') !== 'true') rail.setAttribute('aria-hidden', 'true');
     if (!rail.hasAttribute('inert')) rail.setAttribute('inert', '');

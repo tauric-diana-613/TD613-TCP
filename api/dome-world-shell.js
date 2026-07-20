@@ -2,18 +2,18 @@ import fs from 'node:fs';
 import path from 'node:path';
 import { stabilizeAshKeepSource } from '../app/dome-world/ash-keep-delivery-transform.js';
 
-export const DOME_WORLD_SHELL_VERSION = 'td613.dome-world.shell/v1.4-lifecycle-cache-boundary';
+export const DOME_WORLD_SHELL_VERSION = 'td613.dome-world.shell/v1.5-aia3-production-recovery';
 export const MARROWLINE_LAB_ROUTE = '/dome-world/marrowline.html';
 export const ASH_THRESHOLD_ROUTE = '/dome-world/ash-threshold.html';
 export const ASH_LIFECYCLE_SHELL_CONTRACT = 'td613.ash.lifecycle-shell/v0.1';
-export const ASH_KEEP_SHELL_VERSION = 'td613.ash-keep.shell/v0.3-lifecycle-cache-boundary';
+export const ASH_KEEP_SHELL_VERSION = 'td613.ash-keep.shell/v0.4-aia3-production-recovery';
 export const ASH_KEEP_JS_SHELL_VERSION = 'td613.ash-keep.js-shell/v0.5-event-driven-map';
-export const ASH_CACHE_TRANSITION_CONTRACT = 'td613.ash.cache-transition/v0.3-v7-readiness-boundary';
-export const ASH_LIFECYCLE_ASSET_EPOCH = '20260718-canonical-membrane-v7-readiness-boundary';
+export const ASH_CACHE_TRANSITION_CONTRACT = 'td613.ash.cache-transition/v0.4-aia3-production-recovery';
+export const ASH_LIFECYCLE_ASSET_EPOCH = '20260720-aia3-production-recovery-v1';
 export const ASH_LIFECYCLE_SOURCE_MODULE = '/dome-world/ash-lifecycle.js';
 export const ASH_LIFECYCLE_MODULE = `${ASH_LIFECYCLE_SOURCE_MODULE}?v=${ASH_LIFECYCLE_ASSET_EPOCH}`;
 export const ASH_WORKSPACE_BRIDGE_MODULE = '/dome-world/ash-workspace-bridge.js';
-export const ASH_CANONICAL_MEMBRANE_EPOCH = '20260718-canonical-membrane-v6';
+export const ASH_CANONICAL_MEMBRANE_EPOCH = '20260720-aia3-session-v1';
 
 const DOME_SOURCE_PATH = path.join(process.cwd(), 'app', 'dome-world', 'index.html');
 const ASH_KEEP_SOURCE_PATH = path.join(process.cwd(), 'app', 'dome-world', 'ash-keep.html');
@@ -52,6 +52,7 @@ function canonicalAshBoot() {
     document.documentElement.dataset.ashSessionOpen=String(sessionOpen);
     document.documentElement.dataset.ashMembraneReady='false';
     document.documentElement.dataset.ashCanonicalMembrane=epoch;
+    document.documentElement.dataset.ashAia3='td613.ash.aia3-composition/v0.1-ingress-first-compact-guide';
   }catch{
     document.documentElement.dataset.ashSessionOpen='false';
     document.documentElement.dataset.ashMembraneReady='false';
@@ -169,7 +170,7 @@ function send(res, status, body = '', definition = surfaceDefinition('dome-world
 function sendCacheEviction(res, method) {
   const body = JSON.stringify({
     ok:true,
-    schema:'td613.ash.cache-transition-response/v0.4-v7-readiness-boundary',
+    schema:'td613.ash.cache-transition-response/v0.5-aia3-production-recovery',
     scope:'HTTP_CACHE_ONLY',
     indexeddb_preserved:true,
     case_data_preserved:true,
