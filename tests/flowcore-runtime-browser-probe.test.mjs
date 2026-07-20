@@ -30,6 +30,12 @@ test('runtime observer covers the complete Flow-Core surface and browser matrix'
   assert.doesNotMatch(browserProbe, /localStorage|indexedDB|sendBeacon|method:\s*['"]POST['"]/);
 });
 
+test('runtime observer waits for asynchronous Replay before measuring readiness', () => {
+  assert.match(browserProbe, /await replay\.first\(\)\.click\(\);\s*await waitForReady\(page, surface\);/s);
+  assert.match(browserProbe, /await exercise\(page, surface\);\s*await waitForReady\(page, surface\);/s);
+  assert.doesNotMatch(browserProbe, /await replay\.first\(\)\.click\(\);\s*await page\.waitForTimeout\(30\);/s);
+});
+
 test('production content observer binds deployed bytes to the selected source packet', () => {
   assert.match(contentProbe, /TD613_SOURCE_PACKET_COMMIT/);
   assert.match(contentProbe, /\^\[0-9a-f\]\{40\}\$/);
