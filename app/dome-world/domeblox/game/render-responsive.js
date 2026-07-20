@@ -59,7 +59,7 @@ function skyColor() {
   return hour < 20 ? '#5f4c4b' : '#101522';
 }
 
-export function drawWorld() {
+export function drawWorld({ showLabels = true } = {}) {
   const { ctx } = G;
   ctx.fillStyle = skyColor();
   ctx.fillRect(0, 0, innerWidth, innerHeight);
@@ -78,7 +78,7 @@ export function drawWorld() {
     ...G.animals.map((animal, index) => ({ ...animal, id:`animal-${index}`, kind:'animal' })),
     { ...G.state.player, id:'player', kind:'player' },
   ].sort((a, b) => a.y - b.y);
-  for (const entity of entities) drawEntity(entity, z);
+  for (const entity of entities) drawEntity(entity, z, showLabels);
   drawWeather();
   drawVignette();
 }
@@ -124,7 +124,7 @@ function drawMound(center, z) {
   ellipse(ctx, center.x, center.y - z, 25 * z, 16 * z, palette.water);
 }
 
-function drawEntity(item, z) {
+function drawEntity(item, z, showLabels) {
   const point = worldToScreen(item.x, item.y);
   if (item.kind === 'player') return drawPlayer(point, z);
   if (item.kind === 'animal') return drawAnimal(item, point, z);
@@ -139,7 +139,7 @@ function drawEntity(item, z) {
   else if (item.kind === 'loom') drawLoom(point, z);
   else if (item.kind === 'keep') drawKeep(item, point, z);
   else drawStation(item, point, z);
-  if (near || G.camera.zoom > .78) drawLabel(item, point, z, near);
+  if (showLabels && (near || G.camera.zoom > .78)) drawLabel(item, point, z, near);
   ctx.restore();
 }
 
