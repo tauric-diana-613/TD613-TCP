@@ -6,12 +6,124 @@ on:
     paths:
       - 'scripts/ash-aia3-production-forensics.mjs'
       - '.github/workflows/ash-aia3-production-forensics.yml'
+      - 'app/dome-world/ash-keep-aia3.css'
+      - 'app/dome-world/ash-aia3-composition.js'
+      - 'app/dome-world/ash-cache-eviction-aia3.js'
+      - 'app/dome-world/ash-lifecycle.js'
+      - 'app/dome-world/ash-keep-aia-workspace-bridge.js'
   workflow_dispatch:
 
 permissions:
-  contents: read
+  contents: write
 
 jobs:
+  apply-aia3-patch:
+    if: github.head_ref == 'agent/ash-keep-aia3-production-recovery'
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: agent/ash-keep-aia3-production-recovery
+          fetch-depth: 0
+      - name: Patch shell epoch and release competing rail ownership
+        run: |
+          python - <<'PY'
+          from pathlib import Path
+          shell = Path('api/dome-world-shell.js')
+          text = shell.read_text()
+          replacements = {
+            "td613.dome-world.shell/v1.4-lifecycle-cache-boundary": "td613.dome-world.shell/v1.5-aia3-production-recovery",
+            "td613.ash-keep.shell/v0.3-lifecycle-cache-boundary": "td613.ash-keep.shell/v0.4-aia3-production-recovery",
+            "td613.ash.cache-transition/v0.3-v7-readiness-boundary": "td613.ash.cache-transition/v0.4-aia3-production-recovery",
+            "20260718-canonical-membrane-v7-readiness-boundary": "20260720-aia3-production-recovery-v1",
+            "20260718-canonical-membrane-v6": "20260720-aia3-session-v1",
+            "td613.ash.cache-transition-response/v0.4-v7-readiness-boundary": "td613.ash.cache-transition-response/v0.5-aia3-production-recovery"
+          }
+          for old, new in replacements.items():
+            if old not in text:
+              raise SystemExit(f'missing shell marker: {old}')
+            text = text.replace(old, new)
+          needle = "document.documentElement.dataset.ashCanonicalMembrane=epoch;"
+          if needle not in text:
+            raise SystemExit('missing canonical boot marker')
+          text = text.replace(needle, needle + "\n    document.documentElement.dataset.ashAia3='td613.ash.aia3-composition/v0.1-ingress-first-compact-guide';")
+          shell.write_text(text)
+
+          guided = Path('app/dome-world/ash-guided-operator-ui.js')
+          g = guided.read_text()
+          old = "function collapseLegacyRails(doc) {\n  for (const rail of doc.querySelectorAll('.workspace-rail,.ash-lifecycle-rail')) {"
+          new = "function collapseLegacyRails(doc) {\n  if (doc.documentElement.dataset.ashAia3) {\n    for (const rail of doc.querySelectorAll('.workspace-rail,.ash-lifecycle-rail')) {\n      rail.removeAttribute('aria-hidden');\n      rail.removeAttribute('inert');\n      for (const property of ['display', 'min-height', 'max-height', 'opacity']) rail.style.removeProperty(property);\n    }\n    return;\n  }\n  for (const rail of doc.querySelectorAll('.workspace-rail,.ash-lifecycle-rail')) {"
+          if old not in g:
+            raise SystemExit('missing guided rail marker')
+          guided.write_text(g.replace(old, new))
+          PY
+      - name: Verify patch and restore read-only workflow
+        run: |
+          node --check api/dome-world-shell.js
+          node --check app/dome-world/ash-guided-operator-ui.js
+          grep -q "20260720-aia3-production-recovery-v1" api/dome-world-shell.js
+          grep -q "dataset.ashAia3" app/dome-world/ash-guided-operator-ui.js
+          cat > .github/workflows/ash-aia3-production-forensics.yml <<'EOF'
+          name: Ash AIA3 Production Forensics
+
+          on:
+            pull_request:
+              branches: [main]
+              paths:
+                - 'scripts/ash-aia3-production-forensics.mjs'
+                - '.github/workflows/ash-aia3-production-forensics.yml'
+                - 'app/dome-world/ash-keep-aia3.css'
+                - 'app/dome-world/ash-aia3-composition.js'
+                - 'app/dome-world/ash-cache-eviction-aia3.js'
+                - 'app/dome-world/ash-lifecycle.js'
+                - 'app/dome-world/ash-keep-aia-workspace-bridge.js'
+                - 'app/dome-world/ash-guided-operator-ui.js'
+                - 'api/dome-world-shell.js'
+            workflow_dispatch:
+
+          permissions:
+            contents: read
+
+          jobs:
+            production-forensics:
+              strategy:
+                fail-fast: false
+                matrix:
+                  browser: [chromium, firefox, webkit]
+              runs-on: ubuntu-latest
+              timeout-minutes: 40
+              steps:
+                - uses: actions/checkout@v4
+                - uses: actions/setup-node@v4
+                  with:
+                    node-version: '24'
+                    cache: npm
+                - run: npm ci --ignore-scripts
+                - name: Install ${{ matrix.browser }} observer
+                  run: |
+                    npm install --no-save --package-lock=false playwright@1.53.2
+                    npx playwright install --with-deps ${{ matrix.browser }}
+                - name: Observe live desktop/mobile composition and ingress
+                  env:
+                    TD613_BASE_URL: https://td613.com
+                    TD613_BROWSER: ${{ matrix.browser }}
+                    TD613_ARTIFACT_DIR: artifacts/ash-aia3-${{ matrix.browser }}
+                  run: node scripts/ash-aia3-production-forensics.mjs
+                - name: Preserve forensic evidence
+                  if: always()
+                  uses: actions/upload-artifact@v4
+                  with:
+                    name: ash-aia3-${{ matrix.browser }}-production-forensics
+                    path: artifacts/ash-aia3-${{ matrix.browser }}/
+                    if-no-files-found: error
+                    retention-days: 30
+          EOF
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add api/dome-world-shell.js app/dome-world/ash-guided-operator-ui.js .github/workflows/ash-aia3-production-forensics.yml
+          git commit -m "fix: establish Ash AIA3 shell epoch and single presentation owner"
+          git push origin HEAD:agent/ash-keep-aia3-production-recovery
+
   production-forensics:
     strategy:
       fail-fast: false
