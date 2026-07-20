@@ -1,44 +1,96 @@
-name: One-use Ash readiness route repair
+name: Ash lifecycle integration
 
 on:
-  push:
-    branches:
-      - agent/ash-keep-live-child-legible-aia
+  pull_request:
     paths:
-      - '.github/workflows/ash-lifecycle-integration.yml'
+      - "api/dome-world-shell.js"
+      - "app/dome-world/ash-threshold.html"
+      - "app/dome-world/ash-lifecycle.js"
+      - "app/dome-world/ash-workspace-bridge.js"
+      - "app/engine/ash-lifecycle.js"
+      - "app/engine/ash-keep-drafts.js"
+      - "docs/APERTURE_COMPOSITION_CLOSURE_RECEIPT.md"
+      - "docs/APERTURE_COMPOSITION_RENOVATION.md"
+      - "docs/ASH_KEEP_BUILDOUT_LEDGER.md"
+      - "docs/ASH_LIFECYCLE_ORCHESTRATION.md"
+      - "docs/STRATEGIC_VERCEL_DEPLOYMENT_LAW.md"
+      - "ROADMAP.md"
+      - "scripts/consolidate-ash-lifecycle-shell.mjs"
+      - "tests/aperture-composition/closure.test.mjs"
+      - "tests/ash-lifecycle.test.mjs"
+      - "tests/ash-lifecycle-release-gate-idempotence.test.mjs"
+      - "tests/ash-custody-workspace-bridge.test.mjs"
+      - "tests/ash-draft-lifecycle-binding.test.mjs"
+      - "tests/ash-product-architecture.test.mjs"
+      - "tests/dome-world-integration.test.mjs"
+      - "tests/vercel-deploy-hygiene.test.mjs"
+      - "vercel.json"
+      - ".github/workflows/ash-lifecycle-integration.yml"
+  workflow_dispatch:
 
 permissions:
-  contents: write
+  contents: read
+
+concurrency:
+  group: ash-lifecycle-${{ github.event.pull_request.number || github.ref }}
+  cancel-in-progress: true
 
 jobs:
-  patch:
+  validate:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
-        with:
-          ref: agent/ash-keep-live-child-legible-aia
-          fetch-depth: 0
-      - name: Preserve explicit presentation during readiness cleanup
-        run: |
-          python - <<'PY'
-          from pathlib import Path
+      - name: Check out candidate merge
+        uses: actions/checkout@v4
 
-          path = Path('app/dome-world/ash-keep.html')
-          text = path.read_text()
-          old = "<script>if(sessionStorage.getItem('td613:ash-threshold:readiness:v0.1')&&location.search!=='?arrival=cleared')history.replaceState(null,'',location.pathname+'?arrival=cleared')</script>"
-          new = "<script>if(sessionStorage.getItem('td613:ash-threshold:readiness:v0.1')){const url=new URL(location.href);if(url.searchParams.get('arrival')!=='cleared'){url.searchParams.set('arrival','cleared');history.replaceState(null,'',url.pathname+url.search+url.hash)}}</script>"
-          count = text.count(old)
-          if count != 1:
-              raise SystemExit(f'expected one destructive readiness-query seam, observed {count}')
-          path.write_text(text.replace(old, new))
-          PY
-      - name: Restore workflow and publish exact product repair
+      - name: Set up Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Confirm Ash lifecycle surfaces are consolidated
         run: |
-          git show origin/main:.github/workflows/ash-lifecycle-integration.yml > .github/workflows/ash-lifecycle-integration.yml
-          grep -F "url.searchParams.set('arrival','cleared')" app/dome-world/ash-keep.html
-          grep -F "url.pathname+url.search+url.hash" app/dome-world/ash-keep.html
-          git config user.name 'td613-housekeeping'
-          git config user.email 'td613-housekeeping@users.noreply.github.com'
-          git add app/dome-world/ash-keep.html .github/workflows/ash-lifecycle-integration.yml
-          git commit -m 'Preserve Ash presentation route during readiness cleanup'
-          git push origin HEAD:agent/ash-keep-live-child-legible-aia
+          node scripts/consolidate-ash-lifecycle-shell.mjs
+          git diff --exit-code -- vercel.json api/dome-world-shell.js api/ash-keep-shell.js api/ash-keep-js-shell.js
+
+      - name: Validate Vercel function and route hygiene
+        run: node tests/vercel-deploy-hygiene.test.mjs
+
+      - name: Run lifecycle state tests
+        run: node tests/ash-lifecycle.test.mjs
+
+      - name: Prevent release-gate observer recursion
+        run: node tests/ash-lifecycle-release-gate-idempotence.test.mjs
+
+      - name: Verify late Custody workspace delegation
+        run: node tests/ash-custody-workspace-bridge.test.mjs
+
+      - name: Run custody-bound draft tests
+        run: node tests/ash-draft-lifecycle-binding.test.mjs
+
+      - name: Run lifecycle product architecture tests
+        run: node tests/ash-product-architecture.test.mjs
+
+      - name: Preserve existing Dome integration contract
+        run: node tests/dome-world-integration.test.mjs
+
+      - name: Preserve existing Dome shell contract
+        run: node tests/dome-world-lab-marrowline-link.test.mjs
+
+      - name: Run Ash Keep core regression
+        run: node tests/ash-keep-core.test.mjs
+
+      - name: Run Ash Keep continuity regression
+        run: node tests/ash-keep-continuity.test.mjs
+
+      - name: Run Ash Keep Hush API regression
+        run: node tests/ash-keep-hush-api.test.mjs
+
+      - name: Rebuild maintained Aperture download artifact
+        run: npm run aperture:export-downloads
+
+      - name: Run Ash Keep UI regression
+        run: node tests/ash-keep-ui.test.mjs
