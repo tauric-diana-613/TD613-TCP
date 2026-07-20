@@ -1,0 +1,112 @@
+name: Ash AIA3 task continuity
+
+on:
+  pull_request:
+    branches: [main]
+    paths:
+      - 'app/dome-world/ash-keep-aia3.css'
+      - 'app/dome-world/ash-aia3-composition.js'
+      - 'app/dome-world/ash-cache-eviction-aia3.js'
+      - 'app/dome-world/ash-lifecycle.js'
+      - 'app/dome-world/ash-keep-aia-workspace-bridge.js'
+      - 'app/dome-world/ash-guided-operator-ui.js'
+      - 'api/dome-world-shell.js'
+      - 'scripts/ash-keep-aia3-task-journey.mjs'
+      - '.github/workflows/ash-aia3-task-continuity.yml'
+  push:
+    branches: [main]
+    paths:
+      - 'app/dome-world/ash-keep-aia3.css'
+      - 'app/dome-world/ash-aia3-composition.js'
+      - 'app/dome-world/ash-cache-eviction-aia3.js'
+      - 'app/dome-world/ash-lifecycle.js'
+      - 'app/dome-world/ash-keep-aia-workspace-bridge.js'
+      - 'app/dome-world/ash-guided-operator-ui.js'
+      - 'api/dome-world-shell.js'
+      - 'scripts/ash-keep-aia3-task-journey.mjs'
+      - '.github/workflows/ash-aia3-task-continuity.yml'
+
+permissions:
+  contents: read
+
+concurrency:
+  group: ash-aia3-${{ github.event.pull_request.number || github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  contracts:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 24
+          cache: npm
+      - run: npm ci --ignore-scripts
+      - name: Validate AIA3 source
+        run: |
+          node --check app/dome-world/ash-lifecycle.js
+          node --check app/dome-world/ash-aia3-composition.js
+          node --check app/dome-world/ash-cache-eviction-aia3.js
+          node --check app/dome-world/ash-keep-aia-workspace-bridge.js
+          node --check app/dome-world/ash-guided-operator-ui.js
+          node --check api/dome-world-shell.js
+          node --check scripts/ash-keep-aia3-task-journey.mjs
+          grep -q 'CANONICAL_FIXED_MEMBRANE' app/dome-world/ash-keep-aia-workspace-bridge.js
+          ! grep -q 'slot.append(launch)' app/dome-world/ash-keep-aia-workspace-bridge.js
+          grep -q '20260720-aia3-production-recovery-v1' api/dome-world-shell.js
+          grep -q 'indexeddb_preserved: true' app/dome-world/ash-cache-eviction-aia3.js
+          grep -q 'case_data_preserved: true' app/dome-world/ash-cache-eviction-aia3.js
+
+  browser:
+    name: ${{ matrix.browser }} desktop and mobile recovery journey
+    runs-on: ubuntu-latest
+    timeout-minutes: 45
+    strategy:
+      fail-fast: false
+      matrix:
+        browser: [chromium, firefox, webkit]
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 24
+          cache: npm
+      - run: npm ci --ignore-scripts
+      - name: Install browser
+        run: |
+          npm install --no-save --package-lock=false playwright@1.53.2
+          npx playwright install --with-deps ${{ matrix.browser }}
+      - name: Start bounded local Ash runtime
+        run: |
+          mkdir -p artifacts
+          node scripts/ash-keep-local-closure-server.mjs 6130 > artifacts/ash-aia3-local-server.log 2>&1 &
+          echo $! > artifacts/ash-aia3-local-server.pid
+          for attempt in $(seq 1 40); do
+            if curl -fsS --max-time 2 http://127.0.0.1:6130/__ash_keep_closure/readiness > artifacts/ash-aia3-local-readiness.json; then cat artifacts/ash-aia3-local-readiness.json; exit 0; fi
+            sleep 1
+          done
+          cat artifacts/ash-aia3-local-server.log || true
+          exit 1
+      - name: Exercise recovered ingress, guide, exact work, and cache boundary
+        env:
+          TD613_BROWSER: ${{ matrix.browser }}
+          TD613_BASE_URL: http://127.0.0.1:6130
+          TD613_SOURCE_PACKET_COMMIT: ${{ github.sha }}
+          TD613_ARTIFACT_DIR: artifacts/ash-aia3-${{ matrix.browser }}
+        run: node scripts/ash-keep-aia3-task-journey.mjs
+      - name: Stop local runtime
+        if: always()
+        run: test -f artifacts/ash-aia3-local-server.pid && kill "$(cat artifacts/ash-aia3-local-server.pid)" || true
+      - name: Preserve browser evidence
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: ash-aia3-${{ matrix.browser }}-recovery-evidence
+          path: |
+            artifacts/ash-aia3-${{ matrix.browser }}/
+            artifacts/ash-aia3-local-server.log
+            artifacts/ash-aia3-local-readiness.json
+          if-no-files-found: warn
+          retention-days: 45
