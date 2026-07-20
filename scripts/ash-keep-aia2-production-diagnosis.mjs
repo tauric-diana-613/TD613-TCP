@@ -1,3 +1,4 @@
+// Read-only baseline trigger: the durable rescue workflow removes staged controller material before review.
 import fs from 'node:fs/promises';
 import path from 'node:path';
 import { chromium } from 'playwright';
