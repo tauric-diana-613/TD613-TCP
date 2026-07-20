@@ -68,13 +68,14 @@ const coreIndex = renderedKeep.indexOf('/dome-world/ash-keep.js');
 const convergenceIndex = renderedKeep.indexOf('/dome-world/ash-convergence.js');
 const lifecycleIndex = renderedKeep.indexOf(ASH_LIFECYCLE_MODULE);
 assert.ok(historyIndex >= 0 && coreIndex > historyIndex && convergenceIndex > coreIndex && lifecycleIndex > convergenceIndex);
-assert.equal(ASH_KEEP_SHELL_VERSION, 'td613.ash-keep.shell/v0.3-lifecycle-cache-boundary');
-assert.equal(ASH_LIFECYCLE_ASSET_EPOCH, '20260718-canonical-membrane-v7-readiness-boundary');
-assert.equal(ASH_LIFECYCLE_MODULE, '/dome-world/ash-lifecycle.js?v=20260718-canonical-membrane-v7-readiness-boundary');
-assert.match(renderedKeep, /src="\/dome-world\/ash-lifecycle\.js\?v=20260718-canonical-membrane-v7-readiness-boundary"/);
+assert.equal(ASH_KEEP_SHELL_VERSION, 'td613.ash-keep.shell/v0.4-aia3-production-recovery');
+assert.equal(ASH_LIFECYCLE_ASSET_EPOCH, '20260720-aia3-production-recovery-v1');
+assert.equal(ASH_LIFECYCLE_MODULE, '/dome-world/ash-lifecycle.js?v=20260720-aia3-production-recovery-v1');
+assert.match(renderedKeep, /src="\/dome-world\/ash-lifecycle\.js\?v=20260720-aia3-production-recovery-v1"/);
 assert.doesNotMatch(renderedKeep, /src="\/dome-world\/ash-lifecycle\.js"/);
 assert.match(renderedKeep, /name="ash-lifecycle" content="v0\.1"/);
 assert.match(renderedKeep, /name="ash-constitutional-composition" content="v0\.1"/);
+assert.match(renderedKeep, /data-ash-aia3='td613\.ash\.aia3-composition\/v0\.1-ingress-first-compact-guide'/);
 assert.equal(injectAshKeepLifecycle(renderedKeep), renderedKeep);
 
 assert.equal(ASH_KEEP_JS_SHELL_VERSION, 'td613.ash-keep.js-shell/v0.5-event-driven-map');
