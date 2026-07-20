@@ -10,6 +10,17 @@ function legacyCaseOpen() {
   }
 }
 
+function capsuleRecoveryOpen() {
+  const workspace = document.getElementById('workspace-save');
+  const returnBar = workspace?.querySelector('.capsule-recovery-navigation');
+  return Boolean(
+    !legacyCaseOpen()
+      && workspace?.classList.contains('active')
+      && returnBar
+      && returnBar.hidden === false
+  );
+}
+
 function composeLaunchForRoute() {
   const launch = document.querySelector('body > .launch');
   if (!launch) return;
@@ -19,7 +30,7 @@ function composeLaunchForRoute() {
   if (explicitLegacy) {
     launch.style.removeProperty('display');
     delete launch.dataset.ashAiaComposed;
-    if (!legacyCaseOpen()) launch.classList.remove('hidden');
+    if (!legacyCaseOpen() && !capsuleRecoveryOpen()) launch.classList.remove('hidden');
     return;
   }
 
