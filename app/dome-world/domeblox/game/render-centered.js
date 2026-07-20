@@ -41,32 +41,6 @@ function persistentScale() {
   return Math.max(zoomPressure, browserPressure);
 }
 
-function drawBaseWithoutLegacyLabels() {
-  const { ctx } = G;
-  const originalFillRect = ctx.fillRect;
-  const originalFillText = ctx.fillText;
-
-  ctx.fillRect = function fillRectWithoutLegacyLabel(x, y, width, height) {
-    const legacyPlaque = Math.abs(height - 20) < .01 && width < 220;
-    if (legacyPlaque) return;
-    return originalFillRect.call(this, x, y, width, height);
-  };
-  ctx.fillText = function fillTextWithoutLegacyLabel(text, x, y, maxWidth) {
-    const fontSize = Number.parseFloat(this.font) || 0;
-    const legacyLabel = fontSize <= 12.1 && this.font.includes('TD613 FlowCore');
-    if (legacyLabel) return;
-    if (maxWidth === undefined) return originalFillText.call(this, text, x, y);
-    return originalFillText.call(this, text, x, y, maxWidth);
-  };
-
-  try {
-    baseDrawWorld();
-  } finally {
-    ctx.fillRect = originalFillRect;
-    ctx.fillText = originalFillText;
-  }
-}
-
 function drawPersistentStations() {
   const { ctx } = G;
   const scale = persistentScale();
@@ -104,14 +78,14 @@ function drawPersistentStations() {
 }
 
 export function drawWorld() {
-  drawBaseWithoutLegacyLabels();
+  baseDrawWorld({ showLabels: false });
   drawPersistentStations();
 }
 
 export function renderDiagnostics() {
   const frame = visualFrame();
   return {
-    schema: 'td613.domeblox.render-diagnostics/v1.2',
+    schema: 'td613.domeblox.render-diagnostics/v1.2.1',
     centerX: G.camera.centerX,
     centerY: G.camera.centerY,
     viewportCenterX: innerWidth / 2,
@@ -120,6 +94,7 @@ export function renderDiagnostics() {
     persistentScale: persistentScale(),
     stationCount: G.objects.filter(item => item.kind !== 'home').length,
     legacyLabelsSuppressed: true,
+    labelSuppressionMode: 'explicit-render-option',
     frame,
   };
 }
