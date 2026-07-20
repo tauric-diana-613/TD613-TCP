@@ -88,16 +88,17 @@ jobs:
               raise SystemExit(f'production closure readiness seam count: {text.count(old)}')
           closure.write_text(text.replace(old, new))
           PY
-      - name: Remove stranded temporary workflow and publish repair
+      - name: Remove temporary workflows and publish repair
         run: |
           rm -f .github/workflows/ash-aia-projection-identity-patch.yml
+          rm -f .github/workflows/apply-ash-aia-projection-repair.yml
           grep -F "const presentationOnly = ['ROUTE_CHANGED', 'EXPLICIT_REPLAY', 'MOTION_PREFERENCE_CHANGED'].includes(trigger);" app/dome-world/ash-keep-aia.js
           grep -F "const packageView = reusePackage ? state.packageView" app/dome-world/ash-keep-aia.js
           grep -F "window.__td613AshLiveAIA?.current?.().route==='IMPLEMENTATION'" scripts/ash-live-release-browser-probe.mjs
           grep -F "window.__td613AshLiveAIA?.current?.().route === 'IMPLEMENTATION'" scripts/ash-keep-production-probe.mjs
           git config user.name 'td613-housekeeping'
           git config user.email 'td613-housekeeping@users.noreply.github.com'
-          git add app/dome-world/ash-keep-aia.js scripts/ash-live-release-browser-probe.mjs scripts/ash-keep-production-probe.mjs .github/workflows/ash-aia-projection-identity-patch.yml
+          git add app/dome-world/ash-keep-aia.js scripts/ash-live-release-browser-probe.mjs scripts/ash-keep-production-probe.mjs .github/workflows/ash-aia-projection-identity-patch.yml .github/workflows/apply-ash-aia-projection-repair.yml
           git commit -m 'Preserve AIA package identity across projections'
           git push origin HEAD:agent/ash-keep-live-child-legible-aia
       - name: Close disposable PR and delete disposable ref
@@ -105,4 +106,4 @@ jobs:
           GH_TOKEN: ${{ github.token }}
         run: |
           gh api -X PATCH "repos/${{ github.repository }}/pulls/${{ github.event.pull_request.number }}" -f state=closed
-          gh api -X DELETE "repos/${{ github.repository }}/git/refs/heads/ops/apply-ash-aia-projection-repair"
+          gh api -X DELETE "repos/${{ github.repository }}/git/refs/heads/${{ github.head_ref }}"
