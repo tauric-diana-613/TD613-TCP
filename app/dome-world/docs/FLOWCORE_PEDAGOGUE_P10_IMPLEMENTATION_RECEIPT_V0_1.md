@@ -4,7 +4,7 @@
 
 **Program:** `td613.flowcore.promotion-packet/v0.1`  
 **Phase:** P10 — production-promotion machinery  
-**Status:** IMPLEMENTED / REPOSITORY CI PENDING / CURRENT STATE HARDENED / RUNTIME AND PRODUCTION DEMONSTRATION HELD / HUMAN CLOSURE OPEN  
+**Status:** IMPLEMENTED / REPOSITORY CONTRACTS PASS / READY FOR MERGE / CURRENT STATE HARDENED / RUNTIME AND PRODUCTION DEMONSTRATION HELD / HUMAN CLOSURE OPEN  
 **Serverless delta:** `0`  
 **Persistence delta:** `0`  
 **Feature gate default:** `OFF`  
@@ -52,6 +52,19 @@ WebKit/iOS runtime observed: false
 browser performance trace observed: false
 exact-main production probe attached: false
 production demonstrated: false
+```
+
+## Repository validation
+
+```text
+stitched P0-P7 baseline: success
+inherited P1-P9 contracts: success
+P10 promotion contracts: success
+protected-file and zero-serverless guard: success
+promotion-state firewall: success
+rollback-preservation firewall: success
+merge and deployment non-inference: success
+exact-main production-probe requirement: success
 ```
 
 ## Feature gate
