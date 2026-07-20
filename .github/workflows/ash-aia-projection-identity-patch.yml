@@ -1,0 +1,102 @@
+name: Patch Ash AIA projection identity and legacy probe synchronization
+
+on:
+  push:
+    branches:
+      - agent/ash-keep-live-child-legible-aia
+    paths:
+      - '.github/workflows/ash-aia-projection-identity-patch.yml'
+
+permissions:
+  contents: write
+
+jobs:
+  patch:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: agent/ash-keep-live-child-legible-aia
+          fetch-depth: 0
+      - name: Freeze package identity across presentation-only changes
+        run: |
+          python - <<'PY'
+          from pathlib import Path
+
+          path = Path('app/dome-world/ash-keep-aia.js')
+          text = path.read_text()
+          old = """async function compileCurrent(trigger = 'STATE_OBSERVED') {
+  const token = ++state.refreshToken, receipt = parseLifecycleReceipt(); if (!receipt) return;
+  const lifecycle = receipt.lifecycle, before = state.previousLifecycle, frozenClock = receipt.observed_at || new Date().toISOString();
+  const seed = receipt.lifecycle_digest || `${lifecycle.state}:${lifecycle.references?.case_map_digest || 'unbound'}`;
+  const packageView = await compileAshCustodyPedagogueScene({ lifecycle }, {
+    frozenClock, idSeed: `ash-live-aia:${seed}`, cryptoImpl: globalThis.crypto,
+    beforeSnapshot: before ? { lifecycle: before } : null,
+    desktopViewport: { width: 1120, height: 760, devicePixelRatio: devicePixelRatio || 1 },
+    mobileViewport: { width: 390, height: 844, devicePixelRatio: Math.min(devicePixelRatio || 1, 2) }
+  });
+"""
+          new = """async function compileCurrent(trigger = 'STATE_OBSERVED') {
+  const token = ++state.refreshToken, receipt = parseLifecycleReceipt(); if (!receipt) return;
+  const lifecycle = receipt.lifecycle;
+  const presentationOnly = ['ROUTE_CHANGED', 'EXPLICIT_REPLAY', 'MOTION_PREFERENCE_CHANGED'].includes(trigger);
+  const sameLifecycleReceipt = state.lifecycleReceipt?.lifecycle_digest === receipt.lifecycle_digest;
+  const reusePackage = Boolean(presentationOnly && sameLifecycleReceipt && state.packageView);
+  const before = presentationOnly ? lifecycle : state.previousLifecycle;
+  const frozenClock = receipt.observed_at || new Date().toISOString();
+  const seed = receipt.lifecycle_digest || `${lifecycle.state}:${lifecycle.references?.case_map_digest || 'unbound'}`;
+  const packageView = reusePackage ? state.packageView : await compileAshCustodyPedagogueScene({ lifecycle }, {
+    frozenClock, idSeed: `ash-live-aia:${seed}`, cryptoImpl: globalThis.crypto,
+    beforeSnapshot: before ? { lifecycle: before } : null,
+    desktopViewport: { width: 1120, height: 760, devicePixelRatio: devicePixelRatio || 1 },
+    mobileViewport: { width: 390, height: 844, devicePixelRatio: Math.min(devicePixelRatio || 1, 2) }
+  });
+"""
+          if text.count(old) != 1:
+              raise SystemExit(f'compileCurrent opening seam count: {text.count(old)}')
+          text = text.replace(old, new)
+          old_tail = "  state.previousLifecycle = structuredClone(lifecycle); render();\n}"
+          new_tail = "  if (!presentationOnly) state.previousLifecycle = structuredClone(lifecycle);\n  render();\n}"
+          if text.count(old_tail) != 1:
+              raise SystemExit(f'compileCurrent tail seam count: {text.count(old_tail)}')
+          path.write_text(text.replace(old_tail, new_tail))
+          PY
+      - name: Synchronize specialist probes to explicit Implementation route
+        run: |
+          python - <<'PY'
+          from pathlib import Path
+
+          release = Path('scripts/ash-live-release-browser-probe.mjs')
+          text = release.read_text()
+          old = """    && window.__td613AshCacheTransition?.epoch===epoch
+    && document.documentElement.dataset.ashMembraneReady==='true',"""
+          new = """    && window.__td613AshCacheTransition?.epoch===epoch
+    && document.documentElement.dataset.ashMembraneReady==='true'
+    && window.__td613AshLiveAIA?.current?.().route==='IMPLEMENTATION',"""
+          if text.count(old) != 1:
+              raise SystemExit(f'live release readiness seam count: {text.count(old)}')
+          release.write_text(text.replace(old, new))
+
+          closure = Path('scripts/ash-keep-production-probe.mjs')
+          text = closure.read_text()
+          old = """  await page.locator('h1').waitFor({ state: 'visible' });
+  assert((await page.title()).includes('TD613 Ash Keep'), 'Ash Keep title was not observed');"""
+          new = """  await page.waitForFunction(() => window.__td613AshLiveAIA?.current?.().route === 'IMPLEMENTATION', { timeout: 60_000 });
+  await page.locator('h1').waitFor({ state: 'visible' });
+  assert((await page.title()).includes('TD613 Ash Keep'), 'Ash Keep title was not observed');"""
+          if text.count(old) != 1:
+              raise SystemExit(f'production closure readiness seam count: {text.count(old)}')
+          closure.write_text(text.replace(old, new))
+          PY
+      - name: Verify, self-remove, and publish exact patch
+        run: |
+          grep -F "const presentationOnly = ['ROUTE_CHANGED', 'EXPLICIT_REPLAY', 'MOTION_PREFERENCE_CHANGED'].includes(trigger);" app/dome-world/ash-keep-aia.js
+          grep -F "const packageView = reusePackage ? state.packageView" app/dome-world/ash-keep-aia.js
+          grep -F "window.__td613AshLiveAIA?.current?.().route==='IMPLEMENTATION'" scripts/ash-live-release-browser-probe.mjs
+          grep -F "window.__td613AshLiveAIA?.current?.().route === 'IMPLEMENTATION'" scripts/ash-keep-production-probe.mjs
+          rm .github/workflows/ash-aia-projection-identity-patch.yml
+          git config user.name 'td613-housekeeping'
+          git config user.email 'td613-housekeeping@users.noreply.github.com'
+          git add app/dome-world/ash-keep-aia.js scripts/ash-live-release-browser-probe.mjs scripts/ash-keep-production-probe.mjs .github/workflows/ash-aia-projection-identity-patch.yml
+          git commit -m 'Preserve AIA package identity across projections'
+          git push origin HEAD:agent/ash-keep-live-child-legible-aia
