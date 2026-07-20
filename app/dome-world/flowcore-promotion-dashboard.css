@@ -1,4 +1,5 @@
 html {
+  max-inline-size: 100%;
   overflow-x: clip;
 }
 
@@ -12,6 +13,8 @@ html {
 body {
   margin: 0;
   min-block-size: 100vh;
+  max-inline-size: 100%;
+  overflow-x: hidden;
   overflow-wrap: anywhere;
   background: radial-gradient(circle at 50% 0%, rgba(117, 102, 168, 0.24), transparent 42%), #090b13;
   color: #f5f2ff;
@@ -19,9 +22,17 @@ body {
 }
 
 .promotion-dashboard {
-  inline-size: min(78rem, calc(100% - 2rem));
+  inline-size: min(78rem, 100%);
+  max-inline-size: 100%;
   margin-inline: auto;
-  padding-block: clamp(1rem, 4vw, 3rem);
+  padding: clamp(1rem, 4vw, 3rem) 1rem;
+  overflow-x: clip;
+  contain: inline-size;
+}
+
+.promotion-dashboard > * {
+  min-inline-size: 0;
+  max-inline-size: 100%;
 }
 
 .promotion-dashboard__header,
@@ -80,6 +91,7 @@ body {
   display: grid;
   grid-template-columns: repeat(2, minmax(0, 1fr));
   gap: 1rem;
+  max-inline-size: 100%;
   margin-block: 1rem;
 }
 
@@ -96,10 +108,19 @@ body {
 
 .promotion-dashboard__card h2,
 .promotion-dashboard__card ul,
-.promotion-dashboard__card li {
+.promotion-dashboard__card li,
+.promotion-dashboard__card dl,
+.promotion-dashboard__card dt,
+.promotion-dashboard__card dd {
+  min-inline-size: 0;
   max-inline-size: 100%;
   overflow-wrap: anywhere;
   word-break: break-word;
+}
+
+.promotion-dashboard__card ul,
+.promotion-dashboard__card dl {
+  margin-inline: 0;
 }
 
 .promotion-dashboard__card ul {
@@ -157,7 +178,7 @@ a:focus-visible {
 }
 
 @media (max-width: 390px) {
-  .promotion-dashboard { inline-size: min(calc(100% - 1rem), 100%); }
+  .promotion-dashboard { padding-inline: 0.5rem; }
 }
 
 @media (prefers-reduced-motion: reduce) {
