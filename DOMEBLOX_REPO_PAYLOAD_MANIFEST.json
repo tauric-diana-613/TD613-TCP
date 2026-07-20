@@ -1,12 +1,12 @@
 {
   "schema": "td613.domeblox.repo-payload/v1",
   "route": "/dome-world/domeblox/",
-  "file_count": 15,
+  "file_count": 16,
   "bundle": "DomeWorld_v3_1_Armored_FlowCore_DomeBlox_ForwardBattery_Erin_Potato_Handoff.zip",
-  "bundle_sha256": "2944bcf530b3c01fbd78bc85228ee87f471d60c1021af6277518b9fa09ce2bb7",
+  "bundle_sha256": "b79f2cb3c292a4cef36c1eb1f45f2e73602cdf424b9b241853bf8789e79be845",
   "deployment_lock_mutated": false,
   "serverless_delta": 0,
   "claim_ceiling": "authorized-local-counter-adversarial-operation",
   "bundle_distribution": "separate handoff; repository stores digest manifest only",
-  "bundle_file_count": 98
+  "bundle_file_count": 100
 }
