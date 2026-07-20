@@ -1,0 +1,44 @@
+name: Flow-Core Station Parallel Repair Once
+
+on:
+  push:
+    branches: [agent/flowcore-production-observation-repair]
+    paths:
+      - 'tests/flowcore-production-observation.test.mjs'
+
+permissions:
+  contents: write
+
+jobs:
+  repair:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: agent/flowcore-production-observation-repair
+          fetch-depth: 0
+      - name: Replace serial independent station compilation
+        run: |
+          python - <<'PY'
+          from pathlib import Path
+          path = Path('app/engine/flowcore-station-propagation.js')
+          source = path.read_text()
+          old = "  const packages = [];\n  for (const fixture of fixtures) packages.push(await compileStationPropagationScene(fixture, options));"
+          new = "  const packages = await Promise.all(fixtures.map(fixture => compileStationPropagationScene(fixture, options)));"
+          if old in source:
+              source = source.replace(old, new, 1)
+              path.write_text(source)
+          elif new not in source:
+              raise SystemExit('Expected station compilation block was not found.')
+          PY
+      - name: Commit exact repair when needed
+        run: |
+          if git diff --quiet; then
+            echo 'Station compilation is already parallelized.'
+            exit 0
+          fi
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add app/engine/flowcore-station-propagation.js
+          git commit -m 'Parallelize independent station package compilation'
+          git push origin HEAD:agent/flowcore-production-observation-repair
