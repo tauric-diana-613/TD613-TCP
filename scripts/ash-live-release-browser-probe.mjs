@@ -20,9 +20,10 @@ const plans={
 };
 const assert=(value,message)=>{if(!value)throw new Error(message);};
 
-function cleanUrl(){return new URL('/dome-world/ash-keep.html',base).toString();}
+function cleanUrl(){const url=new URL('/dome-world/ash-keep.html',base);url.searchParams.set('presentation','legacy');return url.toString();}
 function epochUrl(){
   const url=new URL('/dome-world/ash-keep.html',base);
+  url.searchParams.set('presentation','legacy');
   url.searchParams.set('ash_flush',ASH_CACHE_FLUSH_EPOCH);
   url.searchParams.set('asset_epoch',sessionEpoch);
   return url.toString();

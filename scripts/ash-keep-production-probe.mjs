@@ -6,7 +6,7 @@ import { chromium } from 'playwright';
 
 const base = (process.env.TD613_BASE_URL || process.argv[2] || 'http://127.0.0.1:6130').replace(/\/$/, '');
 const artifactDir = process.env.TD613_ARTIFACT_DIR || 'artifacts/ash-keep-production-closure';
-const keepUrl = `${base}/dome-world/ash-keep.html`;
+const keepUrl = `${base}/dome-world/ash-keep.html?presentation=legacy`;
 const DB_NAME = 'td613-ash-keep';
 const ALLOWED_LOCAL_KEYS = new Set([
   'td613.ash-keep.current-case',
