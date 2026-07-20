@@ -323,8 +323,7 @@ function responsibilityMatrix(packages) {
 
 export async function compileStationPropagationBundle(fixtures, options = {}) {
   if (!Array.isArray(fixtures) || fixtures.length !== PRIMARY_PROPAGATION_STATIONS.length) throw new Error('P7 requires exactly four primary station fixtures.');
-  const packages = [];
-  for (const fixture of fixtures) packages.push(await compileStationPropagationScene(fixture, options));
+  const packages = await Promise.all(fixtures.map(fixture => compileStationPropagationScene(fixture, options)));
   const stations = [...new Set(packages.map(item => item.origin_station))].sort();
   if (canonicalJson(stations) !== canonicalJson([...PRIMARY_PROPAGATION_STATIONS].sort())) throw new Error('Primary station coverage is incomplete or duplicated.');
   const matrix = responsibilityMatrix(packages);

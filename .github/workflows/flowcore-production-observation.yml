@@ -1,0 +1,129 @@
+name: Flow-Core Production Observation
+
+on:
+  pull_request:
+    branches: [main]
+    paths:
+      - '.github/workflows/flowcore-production-observation.yml'
+      - 'app/engine/flowcore-station-propagation.js'
+      - 'scripts/flowcore-release-content-probe.mjs'
+      - 'scripts/flowcore-runtime-browser-probe.mjs'
+      - 'tests/flowcore-production-observation.test.mjs'
+  workflow_dispatch:
+    inputs:
+      source_packet_commit:
+        description: Exact deployed source-packet commit to observe
+        required: true
+        default: 13e2fa584f685d847424c4b82e66496b583573a5
+
+permissions:
+  contents: read
+
+env:
+  TD613_PRODUCTION_BASE_URL: https://td613.com
+  TD613_SOURCE_PACKET_COMMIT: ${{ github.event_name == 'workflow_dispatch' && inputs.source_packet_commit || '13e2fa584f685d847424c4b82e66496b583573a5' }}
+
+jobs:
+  contract:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+          cache: npm
+      - run: npm ci
+      - run: node --test tests/flowcore-production-observation.test.mjs
+
+  exact-source-content:
+    if: github.event_name == 'workflow_dispatch'
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+          cache: npm
+      - run: npm ci
+      - name: Verify observer contract
+        run: node --test tests/flowcore-production-observation.test.mjs
+      - name: Verify observed source surfaces did not drift after the release packet
+        run: |
+          set -euo pipefail
+          git cat-file -e "$TD613_SOURCE_PACKET_COMMIT^{commit}"
+          git diff --exit-code "$TD613_SOURCE_PACKET_COMMIT" -- \
+            app/dome-world/information-dome-pedagogue.html \
+            app/dome-world/information-dome-pedagogue-page.js \
+            app/dome-world/route-burden-observatory.html \
+            app/dome-world/ash-custody-pedagogue.html \
+            app/dome-world/station-propagation-observatory.html \
+            app/dome-world/physical-flowcore.html \
+            app/dome-world/flowcore-validation-lab.html \
+            app/dome-world/flowcore-promotion-dashboard.html \
+            app/dome-world/fixtures/pedagogue/flowcore-promotion-evidence.json \
+            scripts/flowcore-release-content-probe.mjs \
+            scripts/flowcore-runtime-browser-probe.mjs
+      - name: Observe exact production bytes without deploying
+        env:
+          TD613_BASE_URL: ${{ env.TD613_PRODUCTION_BASE_URL }}
+          TD613_ARTIFACT_DIR: artifacts/flowcore-production-content
+          TD613_PROBE_ATTEMPTS: '3'
+          TD613_PROBE_DELAY_MS: '2000'
+        run: node scripts/flowcore-release-content-probe.mjs
+      - name: Preserve exact-source evidence
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: flowcore-production-content-evidence
+          path: artifacts/flowcore-production-content/
+          if-no-files-found: warn
+          retention-days: 45
+
+  browser-observation:
+    if: github.event_name == 'workflow_dispatch'
+    name: ${{ matrix.browser }} production observation
+    runs-on: ubuntu-latest
+    timeout-minutes: 45
+    strategy:
+      fail-fast: false
+      matrix:
+        browser: [chromium, firefox, webkit]
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+          cache: npm
+      - run: npm ci
+      - name: Verify observer contract
+        run: node --test tests/flowcore-production-observation.test.mjs
+      - name: Verify browser probe did not drift after the release packet
+        run: |
+          set -euo pipefail
+          git cat-file -e "$TD613_SOURCE_PACKET_COMMIT^{commit}"
+          git diff --exit-code "$TD613_SOURCE_PACKET_COMMIT" -- scripts/flowcore-runtime-browser-probe.mjs
+      - name: Install bounded browser runtime
+        run: |
+          npm install --no-save --package-lock=false playwright@1.53.2
+          npx playwright install --with-deps ${{ matrix.browser }}
+      - name: Observe current production without deploying
+        env:
+          TD613_BASE_URL: ${{ env.TD613_PRODUCTION_BASE_URL }}
+          TD613_FLOWCORE_ROUTE_PREFIX: dome-world
+          TD613_BROWSERS: ${{ matrix.browser }}
+          TD613_PRODUCTION_OBSERVATION: 'true'
+          TD613_ARTIFACT_DIR: artifacts/flowcore-production-${{ matrix.browser }}
+        run: node scripts/flowcore-runtime-browser-probe.mjs
+      - name: Preserve browser evidence
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: flowcore-production-${{ matrix.browser }}-evidence
+          path: artifacts/flowcore-production-${{ matrix.browser }}/
+          if-no-files-found: warn
+          retention-days: 45
