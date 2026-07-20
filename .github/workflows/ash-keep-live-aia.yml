@@ -6,6 +6,7 @@ on:
       - 'app/engine/ash-live-aia.js'
       - 'app/dome-world/ash-keep-aia.js'
       - 'app/dome-world/ash-keep-aia.css'
+      - 'app/dome-world/ash-keep-aia-workspace-bridge.js'
       - 'app/dome-world/ash-lifecycle.js'
       - 'app/dome-world/docs/ASH_KEEP_LIVE_CHILD_LEGIBLE_AIA_IMPLEMENTATION_RECEIPT_V0_1.md'
       - 'tests/ash-keep-live-aia-*.test.mjs'
@@ -16,6 +17,7 @@ on:
       - 'app/engine/ash-live-aia.js'
       - 'app/dome-world/ash-keep-aia.js'
       - 'app/dome-world/ash-keep-aia.css'
+      - 'app/dome-world/ash-keep-aia-workspace-bridge.js'
       - 'app/dome-world/ash-lifecycle.js'
       - 'app/dome-world/docs/ASH_KEEP_LIVE_CHILD_LEGIBLE_AIA_IMPLEMENTATION_RECEIPT_V0_1.md'
       - 'tests/ash-keep-live-aia-*.test.mjs'
@@ -49,6 +51,8 @@ jobs:
         run: node tests/ash-keep-continuity.test.mjs
       - name: Ash Keep Hush API contracts
         run: node tests/ash-keep-hush-api.test.mjs
+      - name: Rebuild maintained Aperture download artifact
+        run: npm run aperture:export-downloads
       - name: Ash Keep UI contracts
         run: node tests/ash-keep-ui.test.mjs
       - name: Static custody delivery
