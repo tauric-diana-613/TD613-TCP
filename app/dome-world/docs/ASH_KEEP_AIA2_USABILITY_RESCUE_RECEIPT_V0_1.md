@@ -1,6 +1,6 @@
 # Ash Keep AK-AIA-2 Usability Rescue Receipt v0.1
 
-Status: IMPLEMENTED / OBSERVED / READY FOR MERGE
+Status: IMPLEMENTED / MERGED / DEPLOYED / PRODUCTION-OBSERVED
 
 ## Purpose
 
@@ -26,9 +26,9 @@ This packet repairs the live Ash Keep child-legible AIA migration after the prio
 - Stacked mobile Draft tradeoff sliders so Firefox keeps every range control inside the viewport.
 - Required the browser witness to wait for exact case/reference/gate lifecycle convergence before testing tutorial non-mutation.
 
-## Observed browser evidence
+## Pre-merge browser evidence
 
-GitHub Actions run `29773573412` passed the complete v5 task-continuity matrix:
+GitHub Actions run `29773802029` passed the complete v5 task-continuity matrix at the final receipt head:
 
 - Chromium desktop 1440×900: PASS
 - Chromium mobile 390×844: PASS
@@ -49,9 +49,39 @@ Every profile proved:
 - Rest and Return preserved exact work;
 - zero horizontal overflow, clipped controls, duplicate IDs, console errors, page errors, failed HTTP responses, external requests, or write requests.
 
+## Merge and Vercel production record
+
+```text
+merge_commit = 159ebf8bcefc01cdbd5a31cbbaf4ef9dd8018e50
+release_commit = 94aae0d94bbaea38c45b2b4c704a8b29c35f5ed0
+relock_commit = 694e7af2c477d12689f8dd4fc4a5c9d9588b05de
+deployment_count = 1
+Vercel_status = SUCCESS
+exact_source_content = PASS
+application_tree_drift = none
+Git_auto_deploy = disabled
+```
+
+The bounded Git fallback opened the Vercel gate once, produced one successful deployment, and restored `git.deploymentEnabled = false`. The release and relock commits changed only Vercel gate state; application code remained identical to merge `159ebf8bcefc01cdbd5a31cbbaf4ef9dd8018e50`.
+
+## Read-only production task evidence
+
+After deployment, the permanent read-only issue-#405 conduit observed source packet `159ebf8bcefc01cdbd5a31cbbaf4ef9dd8018e50` at `https://td613.com` with deployment count zero:
+
+- Chromium desktop/mobile: PASS
+- Firefox desktop/mobile: PASS
+- WebKit desktop/mobile: PASS
+- exact ingress: PASS
+- local-document path: PASS
+- route continuity: PASS
+- deterministic tutorial non-mutation: PASS
+- Rest/Return: PASS
+
+The production observation carried no repository-write authority, deployment authority, human-evidence authority, child-study authority, release authority, or closure authority.
+
 ## Inherited evidence
 
-At source head `07504728f961d9636a9b4d6bad05018f1b6f6e03`, the following passed:
+The final rescue head also passed:
 
 - Ash Keep Production Closure
 - Ash User Test Flight
@@ -75,10 +105,11 @@ station authority transferred: false
 automatic Ash action added: false
 route inference added: false
 telemetry added: false
+counts as human evidence: false
 child study authorized: false
 human closure required: true
 ```
 
-## Release posture
+## Closure posture
 
-Merge and production deployment remain human-gated. This receipt records repository and local-browser evidence; it does not claim a production deployment or human comprehension study.
+The repository, local-browser, Vercel, exact-source, and deployed task-continuity seams are observed closed. Human comprehension research and any child study remain separately governed and unperformed. Program closure remains human-gated.
