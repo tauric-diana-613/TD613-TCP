@@ -45,9 +45,7 @@ assert.match(runtime, /Heterostratigraphic field/);
 assert.match(runtime, /PA2 ceiling/);
 assert.doesNotMatch(runtime, /fetch\(/);
 assert.match(specs, /Glass Meridian Vendor Integrity Inquiry/);
-for (const module of ['ash-investigation-demo-hydration','ash-guided-operator-ui','ash-flicker-hardening','ash-emergency-stability-contract']) {
-  assert.match(bridge, new RegExp(`${module}\\.js\\?v=20260718-canonical-membrane-v6`));
-}
+for (const module of ['ash-investigation-demo-hydration','ash-guided-operator-ui','ash-flicker-hardening','ash-emergency-stability-contract']) assert.match(bridge, new RegExp(`${module}\\.js\\?v=20260718-canonical-membrane-v6`));
 assert.match(bridge, /ash-case-close-repair\.js\?v=20260719-ingress-readiness-boundary-v1/);
 assert(bridge.indexOf('ash-flicker-hardening.js') < bridge.indexOf('ash-premium-ui.js'), 'Static compositor must install before Premium composition.');
 assert(bridge.indexOf('ash-case-close-repair.js') < bridge.indexOf('ash-premium-ui.js'), 'Close logout must install before Premium composition.');
@@ -118,7 +116,8 @@ assert.match(cacheFlush, /active_session_reset:true/);
 assert.match(lifecycle, /ash-cache-flush\.js\?v=20260718-canonical-membrane-v7-readiness-boundary/);
 assert.doesNotMatch(cacheFlush, /2026-07-18-(?:live-ingress-v3|emergency-stability-v5)/);
 
-assert.match(ingress, /td613\.ash\.ingress-layout\/v1\.0-canonical-native-scroll/);
+assert.match(ingress, /td613\.ash\.ingress-layout\/v1\.1-aia3-session/);
+assert.match(ingress, /SESSION_EPOCH = '20260720-aia3-session-v1'/);
 assert.match(ingress, /panel_nested_scroll:false/);
 assert.match(ingress, /touch-action:pan-y pinch-zoom!important/);
 assert.doesNotMatch(ingress, /installScrollbarFade|SCROLLBAR_FADE_DELAY/);
@@ -133,5 +132,4 @@ assert.match(probe, /Ash map retained a pending frame while idle/);
 assert.match(probe, /Ash command membrane mutated while idle/);
 
 for (const forbidden of [/attribution_established\s*:\s*true/,/identity_established\s*:\s*true/,/prediction_authorized\s*:\s*true/,/automatic_action_authorized\s*:\s*true/,/surveillance_probability\s*:\s*[01]/]) assert.doesNotMatch(runtime + specs + guidance, forbidden);
-
 console.log('ash-investigation-guidance.test.mjs passed');
