@@ -1,4 +1,22 @@
+function installLaunchComposition() {
+  if (!document.querySelector('style[data-ash-aia-launch-composition]')) {
+    const style = document.createElement('style');
+    style.dataset.ashAiaLaunchComposition = 'true';
+    style.textContent = `
+      body[data-ash-aia-route="EXPERIENTIAL"] > .launch,
+      body[data-ash-aia-route="CUSTODIAL"] > .launch { display: none !important; }
+    `;
+    document.head.append(style);
+  }
+  document.addEventListener('click', event => {
+    const launch = event.target.closest('.ash-aia__launch-button');
+    if (!launch) return;
+    window.__td613AshLiveAIA?.setRoute?.('AUDIT');
+  }, true);
+}
+
 async function bindExactWorkspaceRoute() {
+  installLaunchComposition();
   for (let attempt = 0; attempt < 240; attempt += 1) {
     const open = window.__td613OpenAshWorkspace;
     const membrane = window.__td613AshLiveAIA;
