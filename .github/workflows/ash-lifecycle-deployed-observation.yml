@@ -1,0 +1,145 @@
+name: Ash Lifecycle Deployed Observation
+
+on:
+  workflow_run:
+    workflows: ["Test and deploy static app"]
+    types: [completed]
+  workflow_dispatch:
+    inputs:
+      base_url:
+        required: true
+        default: https://td613.com
+        type: string
+      confirm_deployed_probe:
+        required: true
+        default: HOLD
+        type: string
+
+permissions:
+  contents: read
+  statuses: write
+
+jobs:
+  deployed-observation:
+    if: >-
+      (github.event_name == 'workflow_dispatch' && inputs.confirm_deployed_probe == 'RUN_DEPLOYED_OBSERVATION' && inputs.base_url != '')
+      ||
+      (github.event_name == 'workflow_run' && github.event.workflow_run.conclusion == 'success' && github.event.workflow_run.head_branch == 'main')
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    env:
+      TD613_DEPLOYED_BASE_URL: ${{ github.event_name == 'workflow_run' && 'https://td613.com' || inputs.base_url }}
+      TD613_OBSERVED_COMMIT: ${{ github.event_name == 'workflow_run' && github.event.workflow_run.head_sha || github.sha }}
+      TD613_UPSTREAM_WORKFLOW_RUN_ID: ${{ github.event_name == 'workflow_run' && github.event.workflow_run.id || '' }}
+      TD613_OBSERVER_RUN_URL: ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}
+      TD613_OBSERVER_STATUS_CONTEXT: Ash Lifecycle Deployed Observation
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: ${{ env.TD613_OBSERVED_COMMIT }}
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+      - name: Publish lifecycle observer pending status
+        env:
+          GITHUB_TOKEN: ${{ github.token }}
+          TD613_OBSERVER_STATUS_STATE: pending
+          TD613_OBSERVER_STATUS_DESCRIPTION: Ash lifecycle deployed observation is running
+          TD613_OBSERVER_STATUS_RECEIPT_PATH: artifacts/ash-lifecycle-deployed-observation/observer-status-pending.json
+        run: node scripts/publish-ash-keep-observer-status.mjs
+      - run: npm ci
+      - name: Wait for deployed Ash lifecycle-composed threshold and Keep
+        run: |
+          set -euo pipefail
+          mkdir -p artifacts/ash-lifecycle-deployed-observation
+          threshold="${TD613_DEPLOYED_BASE_URL%/}/dome-world/ash-threshold.html"
+          keep="${TD613_DEPLOYED_BASE_URL%/}/dome-world/ash-keep.html"
+          for attempt in $(seq 1 72); do
+            threshold_body="$(curl -fsSL --max-time 10 "$threshold" || true)"
+            keep_body="$(curl -fsSL --max-time 10 "$keep" || true)"
+            if printf '%s' "$threshold_body" | grep -q 'name="ash-lifecycle" content="v0.1"' \
+              && printf '%s' "$threshold_body" | grep -q '/dome-world/ash-lifecycle.js' \
+              && printf '%s' "$keep_body" | grep -q 'name="ash-lifecycle" content="v0.1"' \
+              && printf '%s' "$keep_body" | grep -q '/dome-world/ash-lifecycle.js' \
+              && printf '%s' "$keep_body" | grep -q 'name="ash-constitutional-composition" content="v0.1"' \
+              && printf '%s' "$keep_body" | grep -q '/dome-world/ash-convergence.js'; then
+              printf '%s' "$threshold_body" > artifacts/ash-lifecycle-deployed-observation/deployed-threshold.html
+              printf '%s' "$keep_body" > artifacts/ash-lifecycle-deployed-observation/deployed-keep.html
+              printf '{"threshold":"%s","keep":"%s","attempt":%s,"status":"LIFECYCLE_READY"}\n' "$threshold" "$keep" "$attempt" > artifacts/ash-lifecycle-deployed-observation/deployment-readiness.json
+              exit 0
+            fi
+            sleep 5
+          done
+          exit 1
+      - name: Record lifecycle observer context
+        env:
+          TD613_OBSERVER_RUN_ID: ${{ github.run_id }}
+          TD613_OBSERVER_RUN_ATTEMPT: ${{ github.run_attempt }}
+          TD613_TRIGGER_EVENT: ${{ github.event_name }}
+        run: |
+          node <<'NODE'
+          const fs=require('node:fs'),crypto=require('node:crypto');
+          const context={schema:'td613.ash.lifecycle-deployment-observer-context/v0.1',observed_base_url:process.env.TD613_DEPLOYED_BASE_URL,observed_runtime_commit:process.env.TD613_OBSERVED_COMMIT,upstream_deployment_workflow_run_id:process.env.TD613_UPSTREAM_WORKFLOW_RUN_ID||null,observer_workflow_run_id:process.env.TD613_OBSERVER_RUN_ID,observer_workflow_run_attempt:process.env.TD613_OBSERVER_RUN_ATTEMPT,observer_run_url:process.env.TD613_OBSERVER_RUN_URL,observer_status_context:process.env.TD613_OBSERVER_STATUS_CONTEXT,trigger_event:process.env.TD613_TRIGGER_EVENT,source_status:'DEPLOYED_OBSERVATION',promotion_authorized:false};
+          const subject=`${JSON.stringify(context,null,2)}\n`;context.context_sha256=`sha256:${crypto.createHash('sha256').update(subject).digest('hex')}`;fs.writeFileSync('artifacts/ash-lifecycle-deployed-observation/deployment-observer-context.json',`${JSON.stringify(context,null,2)}\n`);
+          NODE
+      - name: Install Chromium probe runtime
+        run: |
+          npm install --no-save --package-lock=false playwright@1.53.2
+          npx playwright install --with-deps chromium
+      - name: Observe deployed Ash lifecycle without promotion
+        env:
+          TD613_BASE_URL: ${{ env.TD613_DEPLOYED_BASE_URL }}
+          TD613_ARTIFACT_DIR: artifacts/ash-lifecycle-deployed-observation
+        run: node scripts/ash-lifecycle-production-probe.mjs
+      - name: Observe deployed constitutional convergence without promotion
+        env:
+          TD613_BASE_URL: ${{ env.TD613_DEPLOYED_BASE_URL }}
+          TD613_ARTIFACT_DIR: artifacts/ash-constitutional-convergence-deployed
+        run: node scripts/run-ash-constitutional-convergence-probe.mjs
+      - name: Validate deployed lifecycle observation class
+        run: |
+          node <<'NODE'
+          const fs=require('node:fs');const report=JSON.parse(fs.readFileSync('artifacts/ash-lifecycle-deployed-observation/ash-lifecycle-production-closure.json','utf8'));
+          if(report.status!=='PASS'||report.source_status!=='DEPLOYED_OBSERVATION'||report.promotion_authorized!==false)throw new Error('Lifecycle deployed observation held or widened authority.');
+          if(report.network?.disallowed_non_read_requests?.length||report.network?.provider_or_transport_requests?.length||report.network?.raw_artifact_in_request_body!==false)throw new Error('Lifecycle network boundary held.');
+          if(report.continuity?.lifecycle_state!=='CONTINUITY_SEALED')throw new Error('Lifecycle did not seal continuity.');
+          NODE
+      - name: Validate deployed convergence observation class
+        run: |
+          node <<'NODE'
+          const fs=require('node:fs');const report=JSON.parse(fs.readFileSync('artifacts/ash-constitutional-convergence-deployed/ash-constitutional-convergence.json','utf8'));
+          if(report.status!=='PASS'||report.source_status!=='DEPLOYED_OBSERVATION'||report.promotion_authorized!==false)throw new Error('Convergence deployed observation held or widened authority.');
+          if(report.observations?.boundaries?.non_read_requests?.length||report.observations?.boundaries?.provider_recipient_cinder_transport_requests?.length||report.observations?.multi_tab?.serialized!==true)throw new Error('Convergence boundary held.');
+          NODE
+      - name: Verify checked-out Ash Keep release posture
+        if: always()
+        env:
+          TD613_RELEASE_POSTURE_RECEIPT_PATH: artifacts/ash-lifecycle-deployed-observation/release-posture-verification.json
+        run: node scripts/assert-ash-keep-release-posture.mjs
+      - name: Publish lifecycle observer success status
+        if: success()
+        env:
+          GITHUB_TOKEN: ${{ github.token }}
+          TD613_OBSERVER_STATUS_STATE: success
+          TD613_OBSERVER_STATUS_DESCRIPTION: Ash lifecycle observation passed; promotion remains separate
+          TD613_OBSERVER_STATUS_RECEIPT_PATH: artifacts/ash-lifecycle-deployed-observation/observer-status-success.json
+        run: node scripts/publish-ash-keep-observer-status.mjs
+      - name: Publish lifecycle observer failure status
+        if: failure()
+        env:
+          GITHUB_TOKEN: ${{ github.token }}
+          TD613_OBSERVER_STATUS_STATE: failure
+          TD613_OBSERVER_STATUS_DESCRIPTION: Ash lifecycle observation held for repair
+          TD613_OBSERVER_STATUS_RECEIPT_PATH: artifacts/ash-lifecycle-deployed-observation/observer-status-failure.json
+        run: node scripts/publish-ash-keep-observer-status.mjs
+      - name: Preserve lifecycle observation and status receipts
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: ash-lifecycle-deployed-observation-evidence
+          path: |
+            artifacts/ash-lifecycle-deployed-observation/
+            artifacts/ash-constitutional-convergence-deployed/
+          if-no-files-found: error
+          retention-days: 30
