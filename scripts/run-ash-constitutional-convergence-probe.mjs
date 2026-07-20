@@ -44,6 +44,19 @@ const testWorkspaceReplacement = `  await page.evaluate(() => {
 });
 await page.waitForFunction(() => document.getElementById('workspace-test')?.classList.contains('active'));`;
 
+const authorityTarget = `  authority = await page.evaluate(() => window.TD613AshConvergence.currentAuthorityContext());
+  const hushPermission = await page.evaluate(() => window.TD613AshConvergence.authorize('HUSH_CANDIDATE'));`;
+const authorityReplacement = `  await page.waitForFunction(async () => {
+    try {
+      const decision = await window.TD613AshConvergence.authorize('HUSH_CANDIDATE');
+      return decision?.authorized === true;
+    } catch {
+      return false;
+    }
+  }, null, { timeout: 60000 });
+  authority = await page.evaluate(() => window.TD613AshConvergence.currentAuthorityContext());
+  const hushPermission = await page.evaluate(() => window.TD613AshConvergence.authorize('HUSH_CANDIDATE'));`;
+
 const mapWorkspaceTarget = `  await page.locator('[data-workspace="map"]').click();`;
 const mapWorkspaceReplacement = `  await page.evaluate(() => {
   const open = window.__td613AshPremiumUI?.open
@@ -92,6 +105,7 @@ const source = await fs.readFile(sourceUrl, 'utf8');
 const legacyUrlCount = source.split(legacyUrlTarget).length - 1;
 const readinessCount = source.split(readinessTarget).length - 1;
 const testWorkspaceCount = source.split(testWorkspaceTarget).length - 1;
+const authorityCount = source.split(authorityTarget).length - 1;
 const mapWorkspaceCount = source.split(mapWorkspaceTarget).length - 1;
 const deletionCount = source.split(deletionTarget).length - 1;
 const secondTabCount = source.split(secondTabTarget).length - 1;
@@ -100,6 +114,7 @@ const localKeysCount = source.split(localKeysTarget).length - 1;
 if (legacyUrlCount !== 1) throw new Error(`Convergence observer expected one undeclared presentation route; observed ${legacyUrlCount}.`);
 if (readinessCount !== 1) throw new Error(`Convergence observer expected one Ash boot-readiness seam; observed ${readinessCount}.`);
 if (testWorkspaceCount !== 1) throw new Error(`Convergence observer expected one legacy Test workspace seam; observed ${testWorkspaceCount}.`);
+if (authorityCount !== 1) throw new Error(`Convergence observer expected one permission-stabilization seam; observed ${authorityCount}.`);
 if (mapWorkspaceCount !== 1) throw new Error(`Convergence observer expected one legacy Map workspace seam; observed ${mapWorkspaceCount}.`);
 if (deletionCount !== 1) throw new Error(`Convergence observer expected one case-selection seam and one atomic case-deletion seam; observed ${deletionCount}.`);
 if (secondTabCount !== 1) throw new Error(`Convergence observer expected one second-tab readiness seam; observed ${secondTabCount}.`);
@@ -109,6 +124,7 @@ const runtime = source
   .replace(legacyUrlTarget, legacyUrlReplacement)
   .replace(readinessTarget, readinessReplacement)
   .replace(testWorkspaceTarget, testWorkspaceReplacement)
+  .replace(authorityTarget, authorityReplacement)
   .replace(mapWorkspaceTarget, mapWorkspaceReplacement)
   .replace(deletionTarget, deletionReplacement)
   .replace(secondTabTarget, secondTabReplacement)
@@ -116,6 +132,9 @@ const runtime = source
   .replace(localKeysTarget, localKeysReplacement);
 if (!runtime.includes("ash-keep.html?presentation=legacy")) {
   throw new Error('Convergence observer failed to declare the legacy presentation route.');
+}
+if (!runtime.includes("authorize('HUSH_CANDIDATE')") || !runtime.includes('decision?.authorized === true')) {
+  throw new Error('Convergence observer failed to wait for the actual Hush permission boundary.');
 }
 if (!runtime.includes('demo_click_deferred_until_ready: true')
   || !runtime.includes('profile_selected_explicitly: true')
