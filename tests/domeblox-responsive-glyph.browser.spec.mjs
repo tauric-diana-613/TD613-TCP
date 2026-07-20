@@ -71,10 +71,12 @@ async function capture(page, base, prefix, strict) {
 
   if (strict) {
     expect(metrics.overflowX).toBeLessThanOrEqual(0);
-    expect(metrics.runtimeVersion).toBe('1.2.0');
+    expect(metrics.runtimeVersion).toBe('1.2.1');
     expect(metrics.hudVisibility).toBe('visible');
     expect(metrics.hudBodyHidden).toBe(true);
     expect(metrics.render).toBeTruthy();
+    expect(metrics.render.schema).toBe('td613.domeblox.render-diagnostics/v1.2.1');
+    expect(metrics.render.labelSuppressionMode).toBe('explicit-render-option');
     expect(Math.abs(metrics.render.centerX - metrics.viewport.width / 2)).toBeLessThanOrEqual(1);
     expect(metrics.render.stationCount).toBeGreaterThanOrEqual(8);
     expect(metrics.render.zoom).toBeGreaterThanOrEqual(.34);

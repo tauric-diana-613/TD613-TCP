@@ -1,3 +1,5 @@
+import { clearStoredState, readStoredState, writeStoredState } from './state-resilience.js';
+
 export const CANONICAL = String.fromCodePoint(0x10D613);
 export const SAVE_KEY = 'td613.domeblox.browser-world/v1';
 export const TAU = Math.PI * 2;
@@ -49,14 +51,8 @@ export function defaultState() {
   };
 }
 
-export function loadState() {
-  try {
-    const parsed = JSON.parse(localStorage.getItem(SAVE_KEY));
-    if (parsed?.schema === 1 && parsed.world && parsed.player) return parsed;
-  } catch (error) {
-    console.warn('[DomeBlox] save could not be read', error);
-  }
-  return defaultState();
+export function loadState(storage = globalThis.localStorage) {
+  return readStoredState(storage, SAVE_KEY, defaultState);
 }
 
 const canvas = document.querySelector('#gameCanvas');
@@ -84,12 +80,27 @@ export function message(text) {
   appendLedger('message', text);
 }
 
-export function saveState(reason = 'manual') {
+export function writeStateSnapshot(storage = globalThis.localStorage) {
   G.state.savedAt = nowIso();
+  G.state.ledger = G.state.ledger.slice(-200);
+  return writeStoredState(storage, SAVE_KEY, G.state);
+}
+
+export function clearSavedState(storage = globalThis.localStorage) {
+  return clearStoredState(storage, SAVE_KEY);
+}
+
+export function saveState(reason = 'manual') {
   G.state.ledger = G.state.ledger.slice(-160);
   appendLedger('save', `Local world saved (${reason}).`);
-  localStorage.setItem(SAVE_KEY, JSON.stringify(G.state));
-  message('Local world saved.');
+  const saved = writeStateSnapshot();
+  const announce = reason === 'manual' || reason === 'api';
+  if (saved && announce) G.ui.messageLog.textContent = 'Local world saved.';
+  if (!saved) {
+    appendLedger('save_failed', `Local save unavailable (${reason}). Export remains available.`);
+    G.ui.messageLog.textContent = 'Local storage is unavailable. Export remains available.';
+  }
+  return saved;
 }
 
 export function exportState() {
@@ -98,8 +109,11 @@ export function exportState() {
   const link = document.createElement('a');
   link.href = url;
   link.download = `domeblox-save-day-${G.state.world.day}.json`;
+  link.hidden = true;
+  document.body.append(link);
   link.click();
-  URL.revokeObjectURL(url);
+  link.remove();
+  setTimeout(() => URL.revokeObjectURL(url), 0);
   message('Local save exported.');
 }
 
@@ -124,7 +138,7 @@ export function buildWorldObjects() {
   add('cleansing', 'Cascade cleansing', '≈', 150, -120, 48, palette.waterDark, 'cleanse', 'Wash dishes, bathe, and air cloth.', 'water');
   add('release', 'Release court', '出', 70, -155, 38, '#cf8d68', 'release', 'Release restores room for the next cycle.');
   add('keep', 'Ash Keep and Springald', '⟐', 0, -285, 58, palette.keep, 'springald', 'Witness and locally release accumulated contradiction.', 'keep');
-  add('battery', 'Forward Battery console', '𝌋', 255, -125, 38, '#855d8f', 'battery', 'Open the counter-adversarial station in a new page.', 'console');
+  add('battery', 'Forward Battery console', '𝌋', 255, -125, 38, '#855d8f', 'battery', 'Open the Forward Battery in a new page.', 'console');
 }
 
 export function seedAnimals() {

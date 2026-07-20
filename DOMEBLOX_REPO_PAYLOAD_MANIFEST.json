@@ -1,17 +1,19 @@
 {
-  "schema": "td613.domeblox.repo-payload/v1.2",
+  "schema": "td613.domeblox.repo-payload/v1.3",
   "route": "/dome-world/domeblox/",
   "route_role": "playable-browser-game",
   "forward_battery_route": "/dome-world/domeblox/forward-battery/",
   "browser_game": {
     "status": "playable-local-village-simulation",
     "runtime": "canvas-es-modules",
-    "persistence": "browser-local-storage",
+    "runtime_version": "1.2.1",
+    "persistence": "browser-local-storage-with-shape-hydration-and-export-fallback",
+    "storage_failure_posture": "bounded-abstention",
     "network_transmission": false,
     "multiplayer": false,
     "source_lineage": "DomeWorld_Full_Aperture_v3_1_Armored_FlowCore"
   },
-  "repository_file_count": 23,
+  "repository_file_count": 24,
   "bundle": "DomeWorld_v3_1_Armored_FlowCore_DomeBlox_ForwardBattery_v1_1_Erin_Potato_Handoff.zip",
   "bundle_sha256": "50de9d5ef11b322b8ac95dbcf09d6a4f788b791790d2106e692abd1592480386",
   "bundle_file_count": 109,

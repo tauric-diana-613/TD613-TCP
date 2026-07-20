@@ -10,6 +10,7 @@ const css = read('domeblox-responsive.css');
 const chrome = read('domeblox-chrome-v12.css');
 const render = read('game/render-responsive.js');
 const centered = read('game/render-centered.js');
+const resilience = read('game/state-resilience.js');
 const sim = read('game/sim-responsive.js');
 const main = read('game/main.js');
 const scalar = String.fromCodePoint(0x10D613);
@@ -35,18 +36,26 @@ for (const token of [
 }
 if (!render.includes('TD613 FlowCore')) throw new Error('Canvas custom font family missing');
 if (!render.includes('ctx.font = `16px ${GLYPH_FONT}`')) throw new Error('map custom glyph font missing');
+if (!render.includes('drawWorld({ showLabels = true } = {})')) throw new Error('explicit label-control API missing');
+if (!render.includes('showLabels && (near || G.camera.zoom > .78)')) throw new Error('label-control gate missing');
 if (!centered.includes('centerX: innerWidth / 2')) throw new Error('true viewport centering missing');
 if (!centered.includes('drawPersistentStations')) throw new Error('zoom-invariant station layer missing');
-if (!centered.includes('drawBaseWithoutLegacyLabels')) throw new Error('legacy plaque suppression missing');
+if (!centered.includes('baseDrawWorld({ showLabels: false })')) throw new Error('explicit label-free rendering missing');
+if (centered.includes('ctx.fillRect = function')) throw new Error('Canvas monkey patch restored');
 if (!centered.includes('legacyLabelsSuppressed: true')) throw new Error('label suppression receipt missing');
-if (!centered.includes("schema: 'td613.domeblox.render-diagnostics/v1.2'")) throw new Error('render diagnostics missing');
+if (!centered.includes("schema: 'td613.domeblox.render-diagnostics/v1.2.1'")) throw new Error('render diagnostics missing');
 if (!centered.includes("item.kind !== 'home'")) throw new Error('station visibility inventory missing');
+if (!resilience.includes('hydrateState')) throw new Error('save hydration missing');
+if (!resilience.includes('writeStoredState')) throw new Error('storage abstention helper missing');
 if (!sim.includes("from './render-responsive.js'")) throw new Error('responsive map renderer not routed');
 if (!main.includes("document.fonts?.load('48px \"TD613 FlowCore\"', CANONICAL)")) throw new Error('custom font preload missing');
 if (!main.includes('if (!G.hudCollapsed) toggleHud()')) throw new Error('compact HUD default missing');
-if (!main.includes("version:'1.2.0'")) throw new Error('centered runtime version missing');
+if (!main.includes("version:'1.2.1'")) throw new Error('runtime version missing');
 if (!main.includes("from './render-centered.js'")) throw new Error('centered renderer not active');
 if (!main.includes('visualViewport?.addEventListener')) throw new Error('browser zoom resize listener missing');
+if (!main.includes("addEventListener('touchcancel', releaseTouch)")) throw new Error('touch cancellation recovery missing');
+if (!main.includes("addEventListener('blur'")) throw new Error('stuck-input recovery missing');
+if (!main.includes("addEventListener('pagehide'")) throw new Error('mobile background persistence missing');
 if (!main.includes("from './sim-responsive.js'")) throw new Error('responsive simulation adapter not active');
 
-console.log('DomeBlox centered chrome and zoom-invariant glyph contract PASS');
+console.log('DomeBlox runtime resilience and centered glyph contract PASS');
