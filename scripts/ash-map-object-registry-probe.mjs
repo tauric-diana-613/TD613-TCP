@@ -5,7 +5,7 @@ import { chromium } from 'playwright';
 
 const base = (process.env.TD613_BASE_URL || 'http://127.0.0.1:6130').replace(/\/$/, '');
 const artifactDir = process.env.TD613_ARTIFACT_DIR || 'artifacts/ash-map-object-registry';
-const keepUrl = `${base}/dome-world/ash-keep.html`;
+const keepUrl = `${base}/dome-world/ash-keep.html?presentation=legacy`;
 const METHOD_VERSION = 'td613.ash.apeq-paia-profile-demos/v0.1';
 const DEMO_PROFILE = 'political_campaign';
 const DEMO_TITLE = 'Harbor City Mayoral Campaign';

@@ -7,8 +7,13 @@ const core = read('app/dome-world/ash-keep.js');
 const controls = read('app/dome-world/ash-case-controls.js');
 const html = read('app/dome-world/ash-keep.html');
 const delivery = read('app/dome-world/ash-keep-source.html');
+const registryProbe = read('scripts/ash-map-object-registry-probe.mjs');
 
 assert.equal(delivery, html, 'Static Ash Keep delivery source must remain byte-identical to the canonical document.');
+assert.match(html, /url\.searchParams\.set\('arrival','cleared'\)/, 'Readiness cleanup must update only its transition marker.');
+assert.match(html, /url\.pathname\+url\.search\+url\.hash/, 'Readiness cleanup must preserve explicit presentation and unrelated query state.');
+assert.doesNotMatch(html, /location\.pathname\+'\?arrival=cleared'/, 'Readiness cleanup must not replace the entire query string.');
+assert.match(registryProbe, /ash-keep\.html\?presentation=legacy/, 'The specialist registry observer must declare the legacy presentation route.');
 assert.match(controls, /import '\.\/ash-map-labels\.js'/, 'The case-control composition must retain the map registry layer.');
 assert.match(module, /ASH_OBJECT_REGISTRY_VERSION = 'td613\.ash-keep\.object-registry\/v1\.0'/);
 assert.match(module, /id="ashObjectRegistryTitle">Object Registry<\/h4>/);
