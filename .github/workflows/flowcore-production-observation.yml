@@ -29,8 +29,7 @@ jobs:
     steps:
       - uses: actions/checkout@v4
         with:
-          ref: ${{ env.TD613_SOURCE_PACKET_COMMIT }}
-          fetch-depth: 1
+          fetch-depth: 0
       - uses: actions/setup-node@v4
         with:
           node-version: '22'
@@ -38,6 +37,22 @@ jobs:
       - run: npm ci
       - name: Verify observer contract
         run: node --test tests/flowcore-production-observation.test.mjs
+      - name: Verify observed source surfaces did not drift after the release packet
+        run: |
+          set -euo pipefail
+          git cat-file -e "$TD613_SOURCE_PACKET_COMMIT^{commit}"
+          git diff --exit-code "$TD613_SOURCE_PACKET_COMMIT" -- \
+            app/dome-world/information-dome-pedagogue.html \
+            app/dome-world/information-dome-pedagogue-page.js \
+            app/dome-world/route-burden-observatory.html \
+            app/dome-world/ash-custody-pedagogue.html \
+            app/dome-world/station-propagation-observatory.html \
+            app/dome-world/physical-flowcore.html \
+            app/dome-world/flowcore-validation-lab.html \
+            app/dome-world/flowcore-promotion-dashboard.html \
+            app/dome-world/fixtures/pedagogue/flowcore-promotion-evidence.json \
+            scripts/flowcore-release-content-probe.mjs \
+            scripts/flowcore-runtime-browser-probe.mjs
       - name: Observe exact production bytes without deploying
         env:
           TD613_BASE_URL: ${{ env.TD613_PRODUCTION_BASE_URL }}
@@ -65,8 +80,7 @@ jobs:
     steps:
       - uses: actions/checkout@v4
         with:
-          ref: ${{ env.TD613_SOURCE_PACKET_COMMIT }}
-          fetch-depth: 1
+          fetch-depth: 0
       - uses: actions/setup-node@v4
         with:
           node-version: '22'
@@ -74,6 +88,11 @@ jobs:
       - run: npm ci
       - name: Verify observer contract
         run: node --test tests/flowcore-production-observation.test.mjs
+      - name: Verify browser probe did not drift after the release packet
+        run: |
+          set -euo pipefail
+          git cat-file -e "$TD613_SOURCE_PACKET_COMMIT^{commit}"
+          git diff --exit-code "$TD613_SOURCE_PACKET_COMMIT" -- scripts/flowcore-runtime-browser-probe.mjs
       - name: Install bounded browser runtime
         run: |
           npm install --no-save --package-lock=false playwright@1.53.2
