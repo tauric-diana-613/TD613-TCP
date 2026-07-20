@@ -12,6 +12,7 @@ const render = read('game/render-responsive.js');
 const centered = read('game/render-centered.js');
 const resilience = read('game/state-resilience.js');
 const sim = read('game/sim-responsive.js');
+const navigation = read('game/navigation.js');
 const main = read('game/main.js');
 const scalar = String.fromCodePoint(0x10D613);
 
@@ -48,14 +49,19 @@ if (!centered.includes("item.kind !== 'home'")) throw new Error('station visibil
 if (!resilience.includes('hydrateState')) throw new Error('save hydration missing');
 if (!resilience.includes('writeStoredState')) throw new Error('storage abstention helper missing');
 if (!sim.includes("from './render-responsive.js'")) throw new Error('responsive map renderer not routed');
+if (!navigation.includes("environment.open?.('', '_blank')")) throw new Error('pre-opened safe navigation helper missing');
+if (!navigation.includes("mode: 'same-tab-fallback'")) throw new Error('same-tab fallback receipt missing');
+if (navigation.includes("'_blank', 'noopener'")) throw new Error('ambiguous noopener popup return restored');
 if (!main.includes("document.fonts?.load('48px \"TD613 FlowCore\"', CANONICAL)")) throw new Error('custom font preload missing');
 if (!main.includes('if (!G.hudCollapsed) toggleHud()')) throw new Error('compact HUD default missing');
-if (!main.includes("version:'1.2.1'")) throw new Error('runtime version missing');
+if (!main.includes("version:'1.2.2'")) throw new Error('runtime version missing');
 if (!main.includes("from './render-centered.js'")) throw new Error('centered renderer not active');
-if (!main.includes('visualViewport?.addEventListener')) throw new Error('browser zoom resize listener missing');
+if (!main.includes('globalThis.visualViewport?.addEventListener')) throw new Error('safe browser zoom resize listener missing');
+if (!main.includes('isInteractiveTarget(event.target)')) throw new Error('focused control keyboard guard missing');
+if (!main.includes("key === 'escape'")) throw new Error('overlay escape recovery missing');
 if (!main.includes("addEventListener('touchcancel', releaseTouch)")) throw new Error('touch cancellation recovery missing');
 if (!main.includes("addEventListener('blur'")) throw new Error('stuck-input recovery missing');
 if (!main.includes("addEventListener('pagehide'")) throw new Error('mobile background persistence missing');
 if (!main.includes("from './sim-responsive.js'")) throw new Error('responsive simulation adapter not active');
 
-console.log('DomeBlox runtime resilience and centered glyph contract PASS');
+console.log('DomeBlox v1.2.2 runtime closure and centered glyph contract PASS');
