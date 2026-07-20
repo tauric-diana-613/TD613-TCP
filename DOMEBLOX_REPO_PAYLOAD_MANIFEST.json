@@ -3,9 +3,10 @@
   "route": "/dome-world/domeblox/",
   "file_count": 12,
   "bundle": "DomeWorld_v3_1_Armored_FlowCore_DomeBlox_ForwardBattery_Erin_Potato_Handoff.zip",
-  "bundle_sha256": "85146b131118e84f28ba18ce6b08e6edfdd2b50bcaa73fe184d3cf6d38cceb5f",
+  "bundle_sha256": "d3668e045addf195d8c2541040fdbae417a89270b076f824f19a0dd7510f5273",
   "deployment_lock_mutated": false,
   "serverless_delta": 0,
   "claim_ceiling": "authorized-local-counter-adversarial-operation",
-  "bundle_distribution": "separate handoff; repository stores digest manifest only"
+  "bundle_distribution": "separate handoff; repository stores digest manifest only",
+  "bundle_file_count": 93
 }
