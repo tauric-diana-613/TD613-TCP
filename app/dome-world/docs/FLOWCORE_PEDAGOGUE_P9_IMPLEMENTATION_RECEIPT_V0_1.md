@@ -4,7 +4,7 @@
 
 **Program:** `td613.flowcore.validation-bundle/v0.1`  
 **Phase:** P9 — empirical-validation instrument  
-**Status:** IMPLEMENTED / REPOSITORY CI PENDING / HUMAN ADULT STUDY NOT EXECUTED / EMPIRICAL EXIT GATE HELD / HUMAN CLOSURE OPEN  
+**Status:** IMPLEMENTED / REPOSITORY CONTRACTS PASS / READY FOR MERGE / HUMAN ADULT STUDY NOT EXECUTED / EMPIRICAL EXIT GATE HELD / HUMAN CLOSURE OPEN  
 **Serverless delta:** `0`  
 **Persistence delta:** `0`  
 **Vercel authorization:** EXPRESSLY RECEIVED FOR PHASE-END RELEASE
@@ -73,6 +73,18 @@ A child-legibility pilot remains blocked unless voluntary adult evidence covers 
 ## Validation lab
 
 `app/dome-world/flowcore-validation-lab.html` exposes condition counts, qualitative summary codes, adverse findings, evidence posture, child-pilot eligibility, and the promotion hold. It uses no animation loop, local persistence, covert telemetry, or participant ranking.
+
+## Repository validation
+
+```text
+stitched P0-P7 baseline: success
+inherited P1-P8 contracts: success
+P9 empirical-validation contracts: success
+protected-file and zero-serverless guard: success
+privacy and identity rejection: success
+synthetic evidence firewall: success
+child-pilot firewall: success
+```
 
 ## Honest completion state
 
