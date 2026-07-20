@@ -84,7 +84,7 @@ const exportReplacement = `  if (syntheticCustody) {
       });
     }, passphrase);
     downloadedCapsule = path.join(artifactDir, 'td613-ash-capsule-local-' + capsule.case_id + '.json');
-    await fs.writeFile(downloadedCapsule, JSON.stringify(capsule, null, 2) + String.fromCharCode(10));
+    await fsp.writeFile(downloadedCapsule, JSON.stringify(capsule, null, 2) + String.fromCharCode(10));
   } else {
     await page.locator('#capsulePassphrase').fill(passphrase);
     const downloadPromise = page.waitForEvent('download');
@@ -147,6 +147,7 @@ if (/page\.locator\('\.work-tab\[data-workspace="(?:rooms|map|routes|test|draft)
 if (!runtime.includes('premium_review_groups_opened')) throw new Error('Ash user flight failed to acknowledge grouped review disclosure.');
 if (!runtime.includes('Synthetic Capsule export requires the current premium Case Map reference.')) throw new Error('Ash user flight failed to bind synthetic Capsule export to the premium snapshot.');
 if (!runtime.includes('td613-ash-capsule-local-')) throw new Error('Ash user flight failed to materialize a synthetic core Capsule export.');
+if (!runtime.includes('await fsp.writeFile(downloadedCapsule')) throw new Error('Ash user flight failed to use the promise-based Capsule writer in the generated runtime.');
 if (!runtime.includes("locator('#openCapsuleRecovery')")) throw new Error('Ash user flight failed to materialize the launch recovery gesture.');
 await fs.writeFile(runtimePath, runtime, 'utf8');
 await import(`${pathToFileURL(runtimePath).href}?flight=${Date.now()}`);
