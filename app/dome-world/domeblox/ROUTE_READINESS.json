@@ -1,0 +1,13 @@
+{
+  "schema": "td613.domeblox.route-readiness/v1.1",
+  "route": "/dome-world/domeblox/",
+  "status": "PATCHED_READY_FOR_OPERATOR_REVIEW",
+  "repository_static_contract": "PASS_LOCAL",
+  "serverless_delta": 0,
+  "deployment_lock_changed": false,
+  "production_observation": "PENDING",
+  "roblox_studio_runtime": "PENDING",
+  "human_closure": "OPEN",
+  "seam_audit": "PATCHED_V1_1",
+  "archive_sha256": "50de9d5ef11b322b8ac95dbcf09d6a4f788b791790d2106e692abd1592480386"
+}

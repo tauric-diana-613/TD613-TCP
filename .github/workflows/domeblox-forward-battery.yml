@@ -1,0 +1,39 @@
+name: DomeBlox Forward Battery
+
+on:
+  pull_request:
+    paths:
+      - 'app/dome-world/domeblox/**'
+      - 'tests/domeblox-static.test.mjs'
+      - 'docs/DOMEBLOX_REPOSITORY_INTEGRATION.md'
+      - 'DOMEBLOX_REPO_PAYLOAD_MANIFEST.json'
+      - '.github/workflows/domeblox-forward-battery.yml'
+  push:
+    branches: [main]
+    paths:
+      - 'app/dome-world/domeblox/**'
+      - 'tests/domeblox-static.test.mjs'
+      - 'docs/DOMEBLOX_REPOSITORY_INTEGRATION.md'
+      - 'DOMEBLOX_REPO_PAYLOAD_MANIFEST.json'
+
+permissions:
+  contents: read
+
+jobs:
+  static-contract:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - run: node tests/domeblox-static.test.mjs
+      - name: Confirm deployment and serverless boundaries
+        run: |
+          node --input-type=module <<'NODE'
+          import fs from 'node:fs';
+          const manifest = JSON.parse(fs.readFileSync('DOMEBLOX_REPO_PAYLOAD_MANIFEST.json', 'utf8'));
+          if (manifest.serverless_delta !== 0) throw new Error('DomeBlox serverless delta changed');
+          if (manifest.deployment_lock_mutated !== false) throw new Error('DomeBlox changed deployment lock');
+          if (manifest.route !== '/dome-world/domeblox/') throw new Error('Unexpected DomeBlox route');
+          NODE

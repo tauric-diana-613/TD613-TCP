@@ -1,0 +1,31 @@
+{
+  "schema": "td613.domeblox.game-manifest/v1",
+  "id": "domeworld-roblox-armored",
+  "title": "Dome-World Roblox Armored Bastion",
+  "version": "3.1-alpha+flowcore+domeblox.1.1",
+  "status": "studio-verification-pending",
+  "entrypoint": "./handoff-manifest.json",
+  "description": "Server-authoritative Dome-World game with FlowCore glyph integrity, bounded operator-supplied assays, pair-emergent moire analysis, SHA-256 receipt continuity, a two-step human springald gate, and future-game hooks.",
+  "capabilities": [
+    "server-authoritative-simulation",
+    "operator-supplied-local-adversarial-assay",
+    "moire-assay",
+    "sha256-receipt-chain",
+    "flowcore-glyph-membrane",
+    "server-stored-springald-replay"
+  ],
+  "assays": [
+    "roblox-local-admissibility",
+    "roblox-local-moire"
+  ],
+  "consequence_adapters": [
+    "server-stored-replay-bundle"
+  ],
+  "claim_ceiling": "operable-local-counter-adversarial-game-device; Studio runtime verification pending",
+  "authority_boundary": [
+    "no external intrusion",
+    "no autonomous publication",
+    "operator-confirmed consequence"
+  ],
+  "package_distribution": "operator handoff archive; see manifest digest"
+}
