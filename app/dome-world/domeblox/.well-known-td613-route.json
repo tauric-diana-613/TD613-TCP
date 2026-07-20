@@ -1,0 +1,8 @@
+{
+  "schema": "td613.route-registration/v1",
+  "route": "/dome-world/domeblox/",
+  "station": "DomeBlox Forward Battery",
+  "canonical": "U+10D613",
+  "alias_namespace": "tauric.diana.613",
+  "status": "READY_FOR_OPERATOR_REVIEW"
+}
