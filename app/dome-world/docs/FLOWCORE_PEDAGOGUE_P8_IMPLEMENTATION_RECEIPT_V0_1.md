@@ -4,7 +4,7 @@
 
 **Program:** `td613.flowcore.physical-scene-package/v0.1`  
 **Phase:** P8 — physical Flow-Core scene  
-**Status:** IMPLEMENTED / REPOSITORY CI PENDING / HUMAN CLOSURE OPEN  
+**Status:** IMPLEMENTED / REPOSITORY CONTRACTS PASS / READY FOR MERGE / HUMAN CLOSURE OPEN  
 **Serverless delta:** `0`  
 **Persistence delta:** `0`  
 **Vercel authorization:** EXPRESSLY RECEIVED FOR PHASE-END RELEASE
@@ -53,25 +53,28 @@ thermal-to-mechanical transfer: 0
 thermal store mechanically spendable: false
 ```
 
-A later measured fixture may declare a converter, but heat never crosses into the mechanical ledger by metaphor or implication.
+Heat never crosses into the mechanical ledger by metaphor or implication.
 
 ## Pedagogue package
 
-The fixture compiles through:
+The fixture compiles through `NOTICE → ACT → WORLD_ANSWERS → NAME → REST` and produces a deterministic physical ledger, four non-equivalent AIA views, desktop frames, complete 390-pixel reduced-motion frames, deterministic pedagogue and visual receipts, visible alternatives and missing calibration, Rest, Return, Replay, and Exit.
+
+The E4 scene uses the canonical `OBSERVED` status and the canonical glyph route `created-potential → released-tendency → structural-rest`.
+
+## Validation
 
 ```text
-NOTICE → ACT → WORLD_ANSWERS → NAME → REST
+stitched P0-P7 baseline: success
+inherited P1-P7 contracts: success
+integer energy accounting: success
+thermal ledger separation: success
+essential-service and converter rejection: success
+protected reserve floor: success
+complete consequence-first package: success
+deterministic replay: success
+static surface parity: success
+protected-file and zero-serverless guard: success
 ```
-
-and produces:
-
-- deterministic physical ledger;
-- four non-equivalent AIA views;
-- desktop frames;
-- complete 390-pixel reduced-motion frames;
-- deterministic pedagogue and visual receipts;
-- visible alternatives, missing calibration, expected failures, falsifier, and abstention conditions;
-- Rest, Return, Replay, and Exit.
 
 ## Proving surface
 
