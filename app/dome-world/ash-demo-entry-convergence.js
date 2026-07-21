@@ -1,15 +1,9 @@
-export const ASH_DEMO_ENTRY_CONVERGENCE_VERSION = 'td613.ash.demo-entry-convergence/v0.1-two-frame-visible-workspace';
+export const ASH_DEMO_ENTRY_CONVERGENCE_VERSION = 'td613.ash.demo-entry-convergence/v0.2-idle-stable-two-frame-workspace';
 
 const host = globalThis.window;
 const doc = globalThis.document;
 const byId = id => doc?.getElementById(id);
-const ENTRY_FALLBACK = Object.freeze({
-  investigation:'home',
-  political_campaign:'map',
-  fundraiser:'work',
-  research:'work',
-  legal:'home'
-});
+const ENTRY_FALLBACK = Object.freeze({ investigation:'home', political_campaign:'map', fundraiser:'work', research:'work', legal:'home' });
 let token = 0;
 let frame = 0;
 let timeout = 0;
@@ -37,13 +31,7 @@ function ensureStyles() {
   if (byId('td613-ash-demo-entry-convergence-css')) return;
   const style = doc.createElement('style');
   style.id = 'td613-ash-demo-entry-convergence-css';
-  style.textContent = `
-    html[data-ash-demo-entry-hydrating="true"] body>main{opacity:0!important;pointer-events:none!important;user-select:none!important}
-    #ashDemoEntryStatus{grid-column:1/-1;display:flex;align-items:center;justify-content:space-between;gap:12px;width:100%;margin-top:7px;padding:7px 9px;border:1px solid rgba(228,198,108,.24);background:rgba(228,198,108,.05);color:var(--muted);font:700 .56rem/1.3 var(--mono);text-transform:uppercase}
-    #ashDemoEntryStatus strong{color:var(--gold)}
-    #ashDemoEntryStatus[data-posture="READY"]{border-color:rgba(118,234,212,.25);color:var(--mint)}
-    #ashDemoEntryStatus[data-posture="HELD"]{border-color:rgba(255,139,157,.45);color:var(--rose)}
-  `;
+  style.textContent = `html[data-ash-demo-entry-hydrating="true"] body>main{opacity:0!important;pointer-events:none!important;user-select:none!important}#ashDemoEntryStatus{grid-column:1/-1;display:flex;align-items:center;justify-content:space-between;gap:12px;width:100%;margin-top:7px;padding:7px 9px;border:1px solid rgba(228,198,108,.24);background:rgba(228,198,108,.05);color:var(--muted);font:700 .56rem/1.3 var(--mono);text-transform:uppercase}#ashDemoEntryStatus strong{color:var(--gold)}#ashDemoEntryStatus[data-posture="READY"]{border-color:rgba(118,234,212,.25);color:var(--mint)}#ashDemoEntryStatus[data-posture="HELD"]{border-color:rgba(255,139,157,.45);color:var(--rose)}`;
   doc.head.append(style);
 }
 
@@ -58,8 +46,9 @@ function renderStatus(profile, workspace, posture, detail) {
     node.setAttribute('aria-live', 'polite');
     context.append(node);
   }
-  node.dataset.posture = posture;
-  node.innerHTML = `<strong>${profile.replaceAll('_',' ')}</strong><span>${detail || `${workspace} workspace`}</span>`;
+  if (node.dataset.posture !== posture) node.dataset.posture = posture;
+  const markup = `<strong>${profile.replaceAll('_',' ')}</strong><span>${detail || `${workspace} workspace`}</span>`;
+  if (node.innerHTML !== markup) node.innerHTML = markup;
   return node;
 }
 
@@ -69,23 +58,23 @@ function exactReady(workspace) {
   const rail = doc.querySelector('body > .workspace-rail');
   return Boolean(panel?.classList.contains('active'))
     && doc.documentElement.dataset.ashPremiumWorkspace === workspace
-    && visible(panel)
-    && visible(main)
-    && visible(rail)
-    && !main?.hasAttribute('inert')
-    && !rail?.hasAttribute('inert');
+    && visible(panel) && visible(main) && visible(rail)
+    && !main?.hasAttribute('inert') && !rail?.hasAttribute('inert');
 }
 
 function publish(profile, workspace, posture, stableFrames) {
+  if (state.profile === profile && state.workspace === workspace && state.posture === posture && state.stable_frames === stableFrames) return state;
   state = Object.freeze({ profile, workspace, posture, stable_frames:stableFrames });
   doc.documentElement.dataset.ashDemoEntryConvergence = ASH_DEMO_ENTRY_CONVERGENCE_VERSION;
-  doc.documentElement.dataset.ashDemoEntryPosture = posture;
+  if (doc.documentElement.dataset.ashDemoEntryPosture !== posture) doc.documentElement.dataset.ashDemoEntryPosture = posture;
   host.__td613AshDemoEntryConvergenceState = state;
+  return state;
 }
 
 function release(profile, workspace, stableFrames) {
   clearTimeout(timeout);
   delete doc.documentElement.dataset.ashDemoEntryHydrating;
+  delete doc.documentElement.dataset.ashDemoEntryHold;
   doc.documentElement.dataset.ashDemoEntryReady = `${profile}:${workspace}`;
   publish(profile, workspace, 'READY', stableFrames);
   renderStatus(profile, workspace, 'READY', `${workspace} ready · four-step route remains available`);
@@ -101,7 +90,9 @@ function converge(profile, workspace, currentToken, stableFrames = 0) {
     release(profile, workspace, nextStable);
     return;
   }
-  if (!ready) openWorkspace(workspace);
+  const panel = byId(`workspace-${workspace}`);
+  const wrongWorkspace = doc.documentElement.dataset.ashPremiumWorkspace !== workspace || !panel?.classList.contains('active');
+  if (wrongWorkspace) openWorkspace(workspace);
   publish(profile, workspace, 'OPENING', nextStable);
   frame = host.requestAnimationFrame(() => converge(profile, workspace, currentToken, nextStable));
 }
@@ -114,6 +105,7 @@ function begin(event) {
   if (frame) host.cancelAnimationFrame(frame);
   clearTimeout(timeout);
   delete doc.documentElement.dataset.ashDemoEntryReady;
+  delete doc.documentElement.dataset.ashDemoEntryHold;
   doc.documentElement.dataset.ashDemoEntryHydrating = 'true';
   publish(profile, workspace, 'OPENING', 0);
   renderStatus(profile, workspace, 'OPENING', `opening ${workspace} workspace…`);
@@ -133,12 +125,7 @@ export function installAshDemoEntryConvergence() {
   if (!host || !doc?.body || host.__td613AshDemoEntryConvergence) return false;
   ensureStyles();
   host.addEventListener('td613:ash:profile-demo-hydrated', begin);
-  host.__td613AshDemoEntryConvergence = Object.freeze({
-    version:ASH_DEMO_ENTRY_CONVERGENCE_VERSION,
-    begin,
-    current:() => state,
-    ready:() => state.posture === 'READY'
-  });
+  host.__td613AshDemoEntryConvergence = Object.freeze({ version:ASH_DEMO_ENTRY_CONVERGENCE_VERSION, begin, current:() => state, ready:() => state.posture === 'READY' });
   doc.documentElement.dataset.ashDemoEntryConvergence = ASH_DEMO_ENTRY_CONVERGENCE_VERSION;
   return true;
 }
