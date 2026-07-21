@@ -151,6 +151,21 @@ async function waitForCaseComposition(page) {
   });
 }
 
+async function waitForLifecycleCaseBinding(page, expectedText) {
+  await page.waitForFunction(expected => {
+    const caseId = window.__td613AshKeep?.current?.().case_id || null;
+    let lifecycle = null;
+    try { lifecycle = JSON.parse(document.querySelector('#lifecycleReceipt')?.textContent || 'null')?.lifecycle || null; } catch {}
+    return Boolean(caseId) &&
+      localStorage.getItem('td613.ash-keep.current-case') === caseId &&
+      document.querySelector('#draftBody')?.value?.includes(expected) &&
+      window.__td613AshLiveAIA?.current?.().task === 'custody' &&
+      lifecycle?.references?.case_id === caseId &&
+      Boolean(lifecycle?.references?.case_map_digest) &&
+      lifecycle?.gates?.map === true;
+  }, expectedText);
+}
+
 async function runFresh(browser, config, report) {
   const context = await browser.newContext({ viewport:config.viewport, isMobile:config.mobile, hasTouch:config.mobile, colorScheme:'dark' });
   await installTrace(context);
@@ -184,8 +199,7 @@ async function runFresh(browser, config, report) {
   await page.waitForFunction(() => document.querySelector('#workspace-draft')?.classList.contains('active'));
   const text = `AIA3 local ${config.name}; no recipient route.`;
   await page.locator('#localTextFile').setInputFiles({ name:'aia3.txt', mimeType:'text/plain', buffer:Buffer.from(text) });
-  await page.waitForFunction(expected => document.querySelector('#draftBody')?.value?.includes(expected) && window.__td613AshLiveAIA?.current?.().task === 'custody', text);
-  await page.waitForTimeout(250);
+  await waitForLifecycleCaseBinding(page, text);
   const before = await snapshot(page, `${config.name}-before-lesson`);
   report.steps.push(before);
   await page.locator('[data-aia-play]').click();

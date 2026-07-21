@@ -32,6 +32,15 @@ test('browser witness waits for coherent case, pointer, membrane, and exact work
   assert.match(journeySource, /opened\.pointer === opened\.case_id/);
 });
 
+test('browser witness waits for lifecycle case binding before tutorial baseline', () => {
+  assert.match(journeySource, /async function waitForLifecycleCaseBinding/);
+  assert.match(journeySource, /lifecycle\?\.references\?\.case_id === caseId/);
+  assert.match(journeySource, /Boolean\(lifecycle\?\.references\?\.case_map_digest\)/);
+  assert.match(journeySource, /lifecycle\?\.gates\?\.map === true/);
+  assert.match(journeySource, /await waitForLifecycleCaseBinding\(page, text\)/);
+  assert.doesNotMatch(journeySource, /waitForTimeout\(250\);\n  const before/);
+});
+
 class MemoryStorage {
   constructor(entries = {}) { this.values = new Map(Object.entries(entries)); }
   get length() { return this.values.size; }
