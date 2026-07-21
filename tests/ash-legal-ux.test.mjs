@@ -84,6 +84,9 @@ assert.equal(await verifyRouteMemory(routeMemory), true);
 
 assert.match(lifecycleSource, /data-ash-composition-hydrating/);
 assert.match(lifecycleSource, /Preparing Ash Keep · preserving local cases/);
+assert.match(lifecycleSource, /html\[data-ash-composition-hydrating="true"\] body\{opacity:0!important;pointer-events:none!important;user-select:none!important\}/);
+assert(lifecycleSource.indexOf('td613-ash-composition-veil-style') < lifecycleSource.indexOf('dataset.ashCompositionHydrating'), 'Veil CSS must exist before hydration state becomes observable.');
+assert.doesNotMatch(lifecycleSource, /data-ash-composition-hydrating="true"\] body>\*\{visibility:hidden/);
 assert.match(lifecycleSource, /v0\.5-human-profile-choice/);
 assert.match(compositionSource, /REQUIRED_ROUTE_COUNT = 4/);
 assert.match(compositionSource, /REQUIRED_TASK_COUNT = 4/);
@@ -91,6 +94,9 @@ assert.match(compositionSource, /WAITING_LIFECYCLE_STATE/);
 assert.match(compositionSource, /WAITING_COMPLETE_ROUTE_TASK_GRAPH/);
 assert.match(compositionSource, /setExactWork\(open && ready\)/);
 assert.match(compositionSource, /dataset\.ashAia3ReadinessHold/);
+assert.match(compositionSource, /ashAia3DefaultApplied/);
+assert.match(compositionSource, /ashAia3SelectedProfile/);
+assert.doesNotMatch(compositionSource, /if \(select\.value !== DEFAULT_PROFILE\)/);
 assert.match(rescueSource, /scrollToWorkspace/);
 assert.match(rescueSource, /stickyOffset/);
 assert.match(rescueSource, /stopImmediatePropagation/);
@@ -106,6 +112,9 @@ assert.match(browserProbe, /location\.search\.includes\(`ash_epoch=\$\{epoch\}`\
 assert.match(browserProbe, /composition\?\.lifecycle_state/);
 assert.match(browserProbe, /composition\?\.route_count >= 4/);
 assert.match(browserProbe, /composition\?\.task_count >= 4/);
+assert.match(browserProbe, /body_composed_visible/);
+assert.match(browserProbe, /body_opacity/);
+assert.match(browserProbe, /v0\.3-composed-veil/);
 assert.doesNotMatch(browserProbe, /ash-keep\.html\?ash_epoch=20260721-legal-demo-ux-v1/);
 assert.doesNotMatch(rescueSource + legalSource, /transport_authorized:\s*true|legal_advice_provided:\s*true|child_study_authorized:\s*true/);
 
