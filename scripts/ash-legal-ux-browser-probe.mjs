@@ -104,7 +104,7 @@ await page.addInitScript(() => {
   addEventListener('DOMContentLoaded', sample);
 });
 
-const report = { schema:'td613.ash.legal-ux-browser/v0.4-map-docket-visibility', browser:browserName, status:'RUNNING', errors, http_errors:httpErrors, observations:{} };
+const report = { schema:'td613.ash.legal-ux-browser/v0.5-traced-finite-explanation', browser:browserName, status:'RUNNING', errors, http_errors:httpErrors, observations:{} };
 try {
   await page.goto(`${base}/dome-world/ash-keep.html?presentation=aia&profile=legal&nonce=${Date.now()}`, { waitUntil:'domcontentloaded' });
   await waitForStableIngress(page);
@@ -162,12 +162,17 @@ try {
   await play.scrollIntoViewIfNeeded();
   await play.click();
   await page.waitForFunction(() => document.documentElement.dataset.ashExplanationMotion === 'PLAYING');
-  const first = await page.locator('.ash-ux-motion-track').getAttribute('data-step');
-  await page.waitForTimeout(900);
-  const second = await page.locator('.ash-ux-motion-track').getAttribute('data-step');
-  assert(first !== second, 'Explanation animation did not visibly advance.');
+  await page.waitForFunction(() => {
+    try { return new Set(JSON.parse(document.documentElement.dataset.ashExplanationTrace || '[]')).size >= 2; }
+    catch { return false; }
+  }, null, { timeout:10_000 });
+  const partialAnimationTrace = await page.evaluate(() => JSON.parse(document.documentElement.dataset.ashExplanationTrace || '[]'));
+  assert(new Set(partialAnimationTrace).size >= 2, 'Explanation frame trace did not record visible motion.');
   await page.waitForFunction(() => document.documentElement.dataset.ashExplanationMotion === 'COMPLETE', null, { timeout:10_000 });
+  const animationTrace = await page.evaluate(() => JSON.parse(document.documentElement.dataset.ashExplanationTrace || '[]'));
+  assert([0, 1, 2, 3].every(step => animationTrace.includes(step)), `Explanation trace incomplete: ${JSON.stringify(animationTrace)}.`);
   assert(await page.locator('.ash-ux-motion-track').isVisible(), 'Visible explanation track missing.');
+  assert(await page.locator('.ash-ux-motion-track').getAttribute('data-step') === '3', 'Explanation track did not finish on Exact work.');
 
   await page.setViewportSize({ width:390, height:844 });
   await page.locator('[data-premium-workspace="capsule"]').click();
@@ -191,7 +196,7 @@ try {
   assert(errors.length === 0, `Browser errors: ${errors.join(' | ')}`);
   assert(httpErrors.length === 0, `HTTP errors: ${httpErrors.join(' | ')}`);
   report.status = 'PASS';
-  report.observations = { composition_samples:trace.length, hydrating_samples:hydrating.length, map, work, mobile, animation_steps:[first, second] };
+  report.observations = { composition_samples:trace.length, hydrating_samples:hydrating.length, map, work, mobile, animation_trace:animationTrace };
 } catch (error) {
   report.status = 'HOLD';
   report.hold = { message:error.message, stack:error.stack };
