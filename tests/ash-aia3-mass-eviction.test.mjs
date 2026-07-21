@@ -12,6 +12,7 @@ import { runAshCacheFlush } from '../app/dome-world/ash-cache-flush.js';
 const shellSource = fs.readFileSync('api/dome-world-shell.js', 'utf8');
 const journeySource = fs.readFileSync('scripts/ash-keep-aia3-task-journey-v3.mjs', 'utf8');
 const compositionSource = fs.readFileSync('app/dome-world/ash-aia3-composition.js', 'utf8');
+const recoverySource = fs.readFileSync('app/safe-harbor/ash-keep-recovery.html', 'utf8');
 
 test('server preflight bypasses exact legacy rollback and republishes the governed receipt', () => {
   assert.match(shellSource, /legacyPresentation/);
@@ -68,6 +69,19 @@ test('browser witness waits for lifecycle case binding before tutorial baseline'
   assert.doesNotMatch(journeySource, /await navigator\.serviceWorker\.ready;/, 'The stale-client witness must not contain an unbounded service-worker readiness wait.');
   assert.doesNotMatch(journeySource, /waitForTimeout\(250\);\n  const before/);
 });
+
+test('controlled stale clients leave the retired Dome-World scope before returning to Ash', () => {
+  assert.match(shellSource, /const recoveryBridge='\/safe-harbor\/ash-keep-recovery\.html'/);
+  assert.match(shellSource, /controllerPresent=Boolean\(navigator\.serviceWorker\?\.controller\)/);
+  assert.match(shellSource, /cross_scope_recovery_required:controllerPresent/);
+  assert.match(shellSource, /location\.replace\(bridge\.pathname\+bridge\.search\)/);
+  assert.match(recoverySource, /source_scope:'\/dome-world\/'/);
+  assert.match(recoverySource, /bridge_scope:'\/safe-harbor\/'/);
+  assert.match(recoverySource, /indexeddb_preserved:true/);
+  assert.match(recoverySource, /case_data_preserved:true/);
+  assert.match(recoverySource, /ash_recovered','cross-scope'/);
+});
+
 
 class MemoryStorage {
   constructor(entries = {}) { this.values = new Map(Object.entries(entries)); }

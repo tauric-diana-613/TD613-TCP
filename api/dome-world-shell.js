@@ -49,6 +49,7 @@ function cachePreflightBoot() {
     const receiptKey='td613.ash.cache-preflight.receipt';
     const pointerKey='td613.ash-keep.current-case';
     const sessionKey='td613.ash.session.epoch';
+    const recoveryBridge='/safe-harbor/ash-keep-recovery.html';
     const publish=receipt=>{try{sessionStorage.setItem(receiptKey,JSON.stringify(receipt))}catch{}window.__td613AshAia3PreflightReceipt=receipt;window.__td613AshAia3Preflight=Promise.resolve(receipt);return receipt};
     const legacyPresentation=new URLSearchParams(location.search).get('presentation')==='legacy';
     if(legacyPresentation){
@@ -78,6 +79,7 @@ function cachePreflightBoot() {
     window.__td613AshAia3Preflight=(async()=>{
       const pointer=(()=>{try{return localStorage.getItem(pointerKey)}catch{return null}})();
       const sessionBefore=(()=>{try{return localStorage.getItem(sessionKey)}catch{return null}})();
+      const controllerPresent=Boolean(navigator.serviceWorker?.controller);
       const cleared=[];const workers=[];let http={attempted:false,observed:false};
       try{if(globalThis.caches?.keys){const names=await caches.keys();for(const name of names){if(await caches.delete(name))cleared.push(name)}}}catch{}
       try{if(navigator.serviceWorker?.getRegistrations){const registrations=await navigator.serviceWorker.getRegistrations();for(const registration of registrations){try{if(new URL(registration.scope,location.href).origin===location.origin&&await registration.unregister())workers.push(registration.scope)}catch{}}}}catch{}
@@ -99,11 +101,19 @@ function cachePreflightBoot() {
       const receipt={
         schema:'td613.ash.cache-preflight-receipt/v0.2',epoch,asset_epoch:assetEpoch,performed:true,http_cache:http,
         cache_names:cleared,worker_scopes:workers,indexeddb_preserved:true,case_data_preserved:true,active_session_reset:false,
+        controller_present_before_eviction:controllerPresent,cross_scope_recovery_required:controllerPresent,
         local_case_pointer_preserved:(()=>{try{return localStorage.getItem(pointerKey)===pointer}catch{return false}})(),
         session_epoch_preserved_or_migrated:(()=>{try{return pointer?localStorage.getItem(sessionKey)===canonicalSessionEpoch:localStorage.getItem(sessionKey)===sessionBefore}catch{return false}})(),
         session_epoch_migrated:sessionMigrated
       };
       publish(receipt);
+      if(controllerPresent&&location.pathname.startsWith('/dome-world/')){
+        const bridge=new URL(recoveryBridge,location.href);
+        bridge.searchParams.set('return',location.pathname+location.search+location.hash);
+        bridge.searchParams.set('epoch',assetEpoch);
+        location.replace(bridge.pathname+bridge.search);
+        return new Promise(()=>{});
+      }
       const current=new URL(location.href);
       if(current.searchParams.get('ash_epoch')!==assetEpoch){
         current.searchParams.set('ash_epoch',assetEpoch);
