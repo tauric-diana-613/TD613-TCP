@@ -20,7 +20,7 @@ jobs:
       github.event.comment.user.login == github.repository_owner &&
       startsWith(github.event.comment.body, '/td613-vercel-release ')
     runs-on: ubuntu-latest
-    timeout-minutes: 90
+    timeout-minutes: 100
     env:
       RELEASE_GATE_ISSUE: '405'
       VERCEL_PROJECT: td-613-tcp
@@ -50,27 +50,12 @@ jobs:
         run: |
           set -euo pipefail
           read -r COMMAND TARGET SELECTED_SHA EXTRA <<< "$AUTHORIZATION"
-          if [[ "$COMMAND" != "/td613-vercel-release" ]]; then
-            echo 'Unexpected release command.' >&2
-            exit 1
-          fi
-          if [[ "$TARGET" != "PRODUCTION" ]]; then
-            echo 'Only the explicitly named PRODUCTION target is accepted.' >&2
-            exit 1
-          fi
-          if [[ -n "${EXTRA:-}" ]]; then
-            echo 'Release command must contain exactly the command, target, and 40-character SHA.' >&2
-            exit 1
-          fi
-          if [[ ! "$SELECTED_SHA" =~ ^[0-9a-f]{40}$ ]]; then
-            echo 'Release command omitted a valid 40-character commit SHA.' >&2
-            exit 1
-          fi
+          [[ "$COMMAND" == '/td613-vercel-release' ]] || { echo 'Unexpected release command.' >&2; exit 1; }
+          [[ "$TARGET" == 'PRODUCTION' ]] || { echo 'Only the explicitly named PRODUCTION target is accepted.' >&2; exit 1; }
+          [[ -z "${EXTRA:-}" ]] || { echo 'Release command must contain exactly command, target, and SHA.' >&2; exit 1; }
+          [[ "$SELECTED_SHA" =~ ^[0-9a-f]{40}$ ]] || { echo 'Release command omitted a valid 40-character commit SHA.' >&2; exit 1; }
           CURRENT_MAIN="$(git rev-parse HEAD)"
-          if [[ "$SELECTED_SHA" != "$CURRENT_MAIN" ]]; then
-            echo "Authorized SHA $SELECTED_SHA is not current main $CURRENT_MAIN." >&2
-            exit 1
-          fi
+          [[ "$SELECTED_SHA" == "$CURRENT_MAIN" ]] || { echo "Authorized SHA $SELECTED_SHA is not current main $CURRENT_MAIN." >&2; exit 1; }
           node --input-type=module <<'NODE'
           import fs from 'node:fs';
           const config = JSON.parse(fs.readFileSync('vercel.json', 'utf8'));
@@ -88,24 +73,26 @@ jobs:
           target = PRODUCTION
           selected_commit = ${{ steps.authorize.outputs.selected_sha }}
           deployment_ceiling = 1
+          ash_generation = AIA3
           git_auto_deploy = disabled
           workflow_run = $GITHUB_SERVER_URL/$GITHUB_REPOSITORY/actions/runs/$GITHUB_RUN_ID
           \`\`\`
 
-          The gate will run the complete Flow-Core and Ash Keep closure, choose one bounded credential route, deploy once, observe exact production content, and run both browser matrices. ⟐
+          The gate will run the complete Flow-Core and Ash Keep AIA3 closure, choose one bounded credential route, deploy once, observe exact production content, and run both browser matrices. ⟐
           EOF_COMMENT
           )"
 
       - name: Install dependencies
         run: npm ci
 
-      - name: Verify release-critical, Flow-Core, and Ash Keep closure contracts
+      - name: Verify release-critical, Flow-Core, and Ash Keep AIA3 closure contracts
         run: |
           node tests/vercel-deploy-hygiene.test.mjs
           node tests/vercel-operator-release-gate.test.mjs
           node tests/product-architecture/shell.test.mjs
           node tests/ash-live-ingress-demos-cache.test.mjs
-          node tests/ash-keep-live-aia-surface.test.mjs
+          node tests/ash-aia3-mass-eviction.test.mjs
+          node --test tests/ash-keep-live-aia-surface.test.mjs
           node tests/td613-flight-mobile-layout.test.mjs
           node tests/flowcore-p0-p10-completion.test.mjs
           node tests/flowcore-p0-p7-seam-closure.test.mjs
@@ -113,7 +100,8 @@ jobs:
           node tests/flowcore-empirical-validation.test.mjs
           node tests/flowcore-production-promotion.test.mjs
           node tests/flowcore-runtime-browser-probe.test.mjs
-          node --check scripts/ash-keep-aia2-task-journey-v5.mjs
+          node --check scripts/ash-keep-local-closure-server.mjs
+          node --check scripts/ash-keep-aia3-task-journey-v3.mjs
 
       - name: Choose one bounded Vercel release route
         id: mode
@@ -126,9 +114,7 @@ jobs:
 
       - name: Link exact repository to the existing Vercel project
         if: steps.mode.outputs.mode == 'direct-token'
-        run: |
-          set -euo pipefail
-          npx --yes vercel@latest link --yes --project "$VERCEL_PROJECT" --scope "$VERCEL_SCOPE" --token "$VERCEL_TOKEN"
+        run: npx --yes vercel@latest link --yes --project "$VERCEL_PROJECT" --scope "$VERCEL_SCOPE" --token "$VERCEL_TOKEN"
 
       - name: Pull production environment and build once
         if: steps.mode.outputs.mode == 'direct-token'
@@ -210,7 +196,7 @@ jobs:
           TD613_ARTIFACT_DIR: artifacts/flowcore-production-observation
         run: node scripts/flowcore-runtime-browser-probe.mjs
 
-      - name: Observe the deployed Ash Keep AIA2 task matrix
+      - name: Observe the deployed Ash Keep AIA3 task matrix
         env:
           TD613_BASE_URL: ${{ steps.deployed.outputs.url }}
           TD613_SOURCE_PACKET_COMMIT: ${{ steps.authorize.outputs.selected_sha }}
@@ -219,8 +205,8 @@ jobs:
           set -euo pipefail
           for browser in chromium firefox webkit; do
             TD613_BROWSER="$browser" \
-            TD613_ARTIFACT_DIR="artifacts/ash-aia2-production/$browser" \
-            node scripts/ash-keep-aia2-task-journey-v5.mjs
+            TD613_ARTIFACT_DIR="artifacts/ash-aia3-production/$browser" \
+            node scripts/ash-keep-aia3-task-journey-v3.mjs
           done
 
       - name: Verify production observations remained bounded
@@ -234,10 +220,11 @@ jobs:
           if (runtime.source_packet_commit !== content.source_packet_commit) throw new Error('Production Flow-Core observations disagree on the source packet.');
           if (runtime.authority.counts_as_human_evidence !== false || runtime.authority.authorizes_public_route_promotion !== false || runtime.authority.closes_program !== false) throw new Error('Production Flow-Core observer widened authority.');
           for (const browser of ['chromium', 'firefox', 'webkit']) {
-            const receipt = JSON.parse(fs.readFileSync(`artifacts/ash-aia2-production/${browser}/ash-aia2-task-continuity.json`, 'utf8'));
-            if (receipt.status !== 'PASS') throw new Error(`Production Ash Keep ${browser} task journey held.`);
-            if (receipt.source_packet_commit !== content.source_packet_commit) throw new Error(`Production Ash Keep ${browser} source packet drifted.`);
-            if (receipt.authority.counts_as_human_evidence !== false || receipt.authority.authorizes_child_study !== false || receipt.authority.authorizes_release !== false || receipt.authority.closes_program !== false) throw new Error(`Production Ash Keep ${browser} observer widened authority.`);
+            const receipt = JSON.parse(fs.readFileSync(`artifacts/ash-aia3-production/${browser}/ash-aia3-task-continuity.json`, 'utf8'));
+            if (receipt.status !== 'PASS') throw new Error(`Production Ash Keep AIA3 ${browser} task journey held.`);
+            if (receipt.source_packet_commit !== content.source_packet_commit) throw new Error(`Production Ash Keep AIA3 ${browser} source packet drifted.`);
+            const authority = receipt.authority || {};
+            if (authority.counts_as_human_evidence !== false || authority.authorizes_child_study !== false || authority.authorizes_release !== false || authority.closes_program !== false) throw new Error(`Production Ash Keep AIA3 ${browser} observer widened authority.`);
           }
           NODE
 
@@ -245,10 +232,10 @@ jobs:
         if: always()
         uses: actions/upload-artifact@v4
         with:
-          name: flowcore-and-ash-production-release-evidence
+          name: flowcore-and-ash-aia3-production-release-evidence
           path: |
             artifacts/flowcore-production-observation/
-            artifacts/ash-aia2-production/
+            artifacts/ash-aia3-production/
           if-no-files-found: warn
           retention-days: 45
 
@@ -287,16 +274,12 @@ jobs:
           deployment_url = ${{ steps.deployed.outputs.url }}
           exact_source_content = PASS
           flowcore_browser_matrix = PASS
-          ash_keep_aia2_task_matrix = PASS
+          ash_keep_aia3_task_matrix = PASS
+          ash_keep_fresh_client = PASS
+          ash_keep_retired_aia2_eviction = PASS
+          ash_keep_case_preservation = PASS
           ash_keep_desktop = PASS
           ash_keep_mobile_390x844 = PASS
-          mobile_portrait = PASS
-          mobile_landscape = PASS
-          rotation_equivalent = PASS
-          reduced_motion = PASS
-          zoom_200_equivalent = PASS
-          high_contrast = PASS
-          performance_observation = PASS
           counts_as_human_evidence = false
           child_study_authorized = false
           public_route_promotion_authorized = false
@@ -304,7 +287,7 @@ jobs:
           git_auto_deploy = disabled
           \`\`\`
 
-          The production observation closes the exact-source, Flow-Core runtime, and Ash Keep task-continuity seams. It does not satisfy the held adult empirical gate, authorize a child study, authorize public route promotion, or close the program. Sealed ⟐
+          The production observation closes the exact-source, Flow-Core runtime, Ash Keep AIA3 task-continuity, and retired-client delivery seams. It does not satisfy the held adult empirical gate, authorize a child study, authorize public route promotion, or close the program. Sealed ⟐
           EOF_COMMENT
           )"
 
@@ -327,4 +310,4 @@ jobs:
 
           The fallback lock-restoration step was attempted when applicable. No additional deployment attempt is authorized by this failure. ⟐
           EOF_COMMENT
-          )
+          )"
