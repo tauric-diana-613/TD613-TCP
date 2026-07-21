@@ -21,10 +21,22 @@ assert.match(waitForAsh, /ashResearchCustodyPosture/);
 assert.match(waitForAsh, /PRESENT_AT_CORE_HYDRATION/);
 assert.match(waitForAsh, /AUDIT_AFTER_CASE_HYDRATION/);
 
-assert.match(researchSource, /async function waitForOpenComposition\(caseId\)/);
-assert.match(researchSource, /composition\?\.lifecycle_state/);
-assert.match(researchSource, /composition\?\.route_count >= 4/);
-assert.match(researchSource, /composition\?\.task_count >= 4/);
+const waitForOpenComposition = researchSource.match(/async function waitForOpenComposition\(caseId\) \{[\s\S]*?\n\}/)?.[0] || '';
+assert(waitForOpenComposition, 'Research presentation-foundation readiness function is missing.');
+assert.match(waitForOpenComposition, /currentCaseId !== caseId/);
+assert.match(waitForOpenComposition, /pointer !== caseId/);
+assert.match(waitForOpenComposition, /premiumPrimaryDock/);
+assert.match(waitForOpenComposition, /premiumContextBar/);
+assert.match(waitForOpenComposition, /if \(!composition\) return true/);
+assert.match(waitForOpenComposition, /composition\.session_open === true/);
+assert.match(waitForOpenComposition, /composition\.membrane_ready === true/);
+assert.match(waitForOpenComposition, /composition\.lifecycle_state/);
+assert.match(waitForOpenComposition, /composition\.route_count >= 4/);
+assert.match(waitForOpenComposition, /composition\.task_count >= 4/);
+assert.match(waitForOpenComposition, /Research project opened before its current presentation foundation converged/);
+assert.match(researchSource, /ashResearchCompositionPosture/);
+assert.match(researchSource, /AIA3_LIFECYCLE_BOUND/);
+assert.match(researchSource, /LEGACY_PREMIUM_BOUND/);
 assert.match(researchSource, /const surfaceReport = auditResearchSurfaces\(\)/);
 assert.match(researchSource, /renderSurfaceLedger\(surfaceReport\)/);
 
@@ -46,5 +58,6 @@ assert.match(premiumProbe, /flightProfile\(context, 'fundraiser', 'Northstar Art
 
 assert.equal(fs.existsSync(path.join(root, '.github/workflows/ash-final-rehydration-patch.yml')), false, 'One-use patch workflow survived cleanup.');
 assert.equal(fs.existsSync(path.join(root, 'tests/.ash-final-rehydration-trigger')), false, 'One-use patch trigger survived cleanup.');
+assert.equal(fs.existsSync(path.join(root, 'tests/.ash-research-legacy-composition-trigger')), false, 'Research presentation patch trigger survived cleanup.');
 
 console.log('ash-final-rehydration-boundaries.test.mjs passed');
