@@ -21,6 +21,7 @@ import './ash-research-demo-hydration.js?v=20260721-legal-demo-ux-v1';
 import './ash-research-demo-control-state.js?v=20260721-legal-demo-ux-v1';
 import './ash-legal-demo-control-state.js?v=20260721-legal-demo-ux-v1';
 import './ash-premium-ui.js?v=20260721-legal-demo-ux-v1';
+import './ash-premium-readiness-bridge.js?v=20260721-legal-demo-ux-v1';
 import './ash-guided-operator-ui.js?v=20260721-legal-demo-ux-v1';
 import './ash-premium-compatibility.js?v=20260721-legal-demo-ux-v1';
 import './ash-workspace-navigation.js?v=20260721-legal-demo-ux-v1';
