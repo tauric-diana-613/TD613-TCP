@@ -256,8 +256,25 @@ async function runStale(browser, report) {
     sessionStorage.setItem('__td613_aia3_paint_trace', '[]');
     const cache = await caches.open('td613-retired-aia2-assets');
     await cache.put('/dome-world/ash-lifecycle.js?v=retired-aia2', new Response("document.documentElement.dataset.staleAia2Asset='cached';", { headers:{ 'content-type':'text/javascript' } }));
-    await navigator.serviceWorker.register('/__ash_keep_closure/stale-aia2-worker.js', { scope:'/dome-world/' });
-    await navigator.serviceWorker.ready;
+    const registration = await navigator.serviceWorker.register('/__ash_keep_closure/stale-aia2-worker.js', { scope:'/dome-world/' });
+    const worker = registration.installing || registration.waiting || registration.active;
+    await Promise.race([
+      new Promise((resolve, reject) => {
+        if (!worker) return reject(new Error('Retired AIA2 worker registration exposed no worker.'));
+        if (worker.state === 'activated') return resolve();
+        const onStateChange = () => {
+          if (worker.state === 'activated') {
+            worker.removeEventListener('statechange', onStateChange);
+            resolve();
+          } else if (worker.state === 'redundant') {
+            worker.removeEventListener('statechange', onStateChange);
+            reject(new Error('Retired AIA2 worker became redundant before activation.'));
+          }
+        };
+        worker.addEventListener('statechange', onStateChange);
+      }),
+      new Promise((_, reject) => setTimeout(() => reject(new Error('Retired AIA2 worker did not activate within 20 seconds.')), 20000))
+    ]);
   });
   await page.goto(`${route}&profile=stale&phase=evict&nonce=${Date.now()}`, { waitUntil:'domcontentloaded' });
   await page.waitForFunction(({ expectedCase, epoch }) => {
