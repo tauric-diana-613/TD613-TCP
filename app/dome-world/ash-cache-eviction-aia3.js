@@ -1,7 +1,9 @@
 export const ASH_AIA3_CACHE_EPOCH = 'td613.ash.cache-flush/2026-07-20-aia3-mass-eviction-v2';
 export const ASH_AIA3_ASSET_EPOCH = '20260720-aia3-mass-eviction-v2';
+export const ASH_LEGACY_CACHE_EPOCH = 'td613.ash.cache-flush/2026-07-18-canonical-membrane-v7';
 const MARKER_KEY = 'td613.ash.cache-flush.aia3.epoch';
 const PREFLIGHT_MARKER_KEY = 'td613.ash.cache-preflight.epoch';
+const LEGACY_MARKER_KEY = 'td613.ash.cache-flush.epoch';
 const RECEIPT_KEY = 'td613.ash.cache-flush.aia3.receipt';
 const POINTER_KEY = 'td613.ash-keep.current-case';
 const SESSION_KEY = 'td613.ash.session.epoch';
@@ -18,6 +20,7 @@ function writeMarker(host) {
   try {
     host.localStorage?.setItem?.(MARKER_KEY, ASH_AIA3_CACHE_EPOCH);
     host.localStorage?.setItem?.(PREFLIGHT_MARKER_KEY, ASH_AIA3_CACHE_EPOCH);
+    host.localStorage?.setItem?.(LEGACY_MARKER_KEY, ASH_LEGACY_CACHE_EPOCH);
   } catch {}
 }
 
@@ -73,10 +76,12 @@ export async function runAshAia3CacheEviction(host = globalThis) {
   const pointerBefore = (() => { try { return host.localStorage?.getItem?.(POINTER_KEY) || null; } catch { return null; } })();
   const sessionBefore = (() => { try { return host.localStorage?.getItem?.(SESSION_KEY) || null; } catch { return null; } })();
   if (!host?.location || readMarker(host) === ASH_AIA3_CACHE_EPOCH) {
+    writeMarker(host);
     const receipt = Object.freeze({
       schema:'td613.ash.cache-transition-receipt/v0.9-aia3-mass-eviction',
       epoch:ASH_AIA3_CACHE_EPOCH,
       asset_epoch:ASH_AIA3_ASSET_EPOCH,
+      legacy_reset_suppressed:true,
       performed:false,
       indexeddb_preserved:true,
       case_data_preserved:true,
@@ -104,6 +109,7 @@ export async function runAshAia3CacheEviction(host = globalThis) {
     schema:'td613.ash.cache-transition-receipt/v0.9-aia3-mass-eviction',
     epoch:ASH_AIA3_CACHE_EPOCH,
     asset_epoch:ASH_AIA3_ASSET_EPOCH,
+    legacy_reset_suppressed:true,
     performed:true,
     http_cache,
     cache_names:[...new Set([...firstNames, ...secondNames])],
