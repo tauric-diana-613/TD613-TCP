@@ -3,165 +3,119 @@ name: Ash Research Project Rehydration
 on:
   pull_request:
     paths:
-      - 'tests/.ash-final-rehydration-trigger'
+      - 'app/dome-world/ash-research-demo-hydration.js'
+      - 'app/dome-world/ash-research-demo-control-state.js'
+      - 'app/dome-world/ash-aia3-composition.js'
+      - 'app/dome-world/ash-lifecycle.js'
+      - 'app/dome-world/ash-profile-demo-hydration.js'
+      - 'app/dome-world/ash-premium-ui.js'
+      - 'app/dome-world/ash-workspace-bridge.js'
+      - 'tests/ash-research-ux-rehydration.test.mjs'
+      - 'scripts/ash-research-ux-browser-probe.mjs'
       - '.github/workflows/ash-research-ux.yml'
+  push:
+    branches: [main]
+    paths:
+      - 'app/dome-world/ash-research-demo-hydration.js'
+      - 'app/dome-world/ash-research-demo-control-state.js'
+      - 'app/dome-world/ash-aia3-composition.js'
+      - 'app/dome-world/ash-lifecycle.js'
+      - 'app/dome-world/ash-profile-demo-hydration.js'
+      - 'app/dome-world/ash-premium-ui.js'
+      - 'app/dome-world/ash-workspace-bridge.js'
+      - 'tests/ash-research-ux-rehydration.test.mjs'
+      - 'scripts/ash-research-ux-browser-probe.mjs'
+      - '.github/workflows/ash-research-ux.yml'
+  workflow_dispatch:
 
 permissions:
-  contents: write
+  contents: read
 
 concurrency:
-  group: ash-final-rehydration-patch-${{ github.event.pull_request.number }}
+  group: ash-research-ux-${{ github.event.pull_request.number || github.ref }}
   cancel-in-progress: true
 
 jobs:
-  final-rehydration-patch:
+  static-contract:
     runs-on: ubuntu-latest
     timeout-minutes: 15
     steps:
       - uses: actions/checkout@v4
-        with:
-          ref: agent/ash-legal-demo-navigation-animation
-          fetch-depth: 0
       - uses: actions/setup-node@v4
         with:
           node-version: 24
-      - name: Verify one-use trigger
-        run: test -f tests/.ash-final-rehydration-trigger
-      - name: Patch Research readiness and Premium observer
-        shell: bash
+          cache: npm
+      - run: npm ci
+      - name: Verify Research and readiness syntax
         run: |
-          python - <<'PY'
-          from pathlib import Path
-          import re
-
-          def replace_once(text, pattern, replacement, label):
-              output, count = re.subn(pattern, replacement, text, count=1)
-              print(f'{label}: {count}')
-              if count != 1:
-                  raise SystemExit(f'{label} replacement count: {count}')
-              return output
-
-          research = Path('app/dome-world/ash-research-demo-hydration.js')
-          text = research.read_text()
-          text = replace_once(
-              text,
-              r"async function waitForAsh\(\) \{[\s\S]*?Research project hydration readiness timed out\.\'\);\n\}",
-              """async function waitForAsh() {
-            await waitFor(() => host.__td613AshKeep?.refresh
-              && host.__td613AshPremiumUI?.refresh
-              && byId('workspace-home')
-              && byId('workspace-work'), 'Research project core hydration readiness timed out.');
-            doc.documentElement.dataset.ashResearchCustodyPosture = byId('workspace-custody')
-              ? 'PRESENT_AT_CORE_HYDRATION'
-              : 'AUDIT_AFTER_CASE_HYDRATION';
-          }""",
-              'Research readiness'
-          )
-          research.write_text(text)
-
-          premium = Path('scripts/ash-premium-ui-browser-probe.mjs')
-          text = premium.read_text()
-          text = replace_once(
-              text,
-              r"async function clearLocalAsh\(page\) \{",
-              """async function waitVisibleWorkspace(page, name) {
-            await page.waitForFunction(value => {
-              const panel = document.getElementById(`workspace-${value}`);
-              const style = panel ? getComputedStyle(panel) : null;
-              const rect = panel?.getBoundingClientRect();
-              return document.documentElement.dataset.ashPremiumWorkspace === value
-                && panel?.classList.contains('active')
-                && style?.display !== 'none'
-                && style?.visibility !== 'hidden'
-                && Number(style?.opacity) > 0
-                && style?.pointerEvents !== 'none'
-                && rect?.width > 0
-                && rect?.height > 0;
-            }, name, { timeout: 60_000 });
+          mkdir -p artifacts/ash-research-static
+          {
+            node --check app/dome-world/ash-research-demo-hydration.js
+            node --check app/dome-world/ash-research-demo-control-state.js
+            node --check app/dome-world/ash-aia3-composition.js
+            node --check app/dome-world/ash-lifecycle.js
+            node --check app/dome-world/ash-profile-demo-hydration.js
+            node --check scripts/ash-research-ux-browser-probe.mjs
+          } > artifacts/ash-research-static/syntax.log 2>&1 || {
+            cat artifacts/ash-research-static/syntax.log
+            exit 1
           }
-
-          async function clearLocalAsh(page) {""",
-              'Premium visibility helper'
-          )
-          text = replace_once(
-              text,
-              r"async function hydrateProfile\(page, profile, expectedTitle\) \{",
-              "async function hydrateProfile(page, profile, expectedTitle, entryWorkspace) {",
-              'Premium hydrate signature'
-          )
-          text = replace_once(
-              text,
-              r"  await page\.waitForFunction\(\(\{ profile: value, title \}\) =>[\s\S]*?expectedTitle, \{ timeout: 60_000 \}\);",
-              """  await page.waitForFunction(({ profile: value, title, entry }) => {
-            const caseId = localStorage.getItem('td613.ash-keep.current-case');
-            const convergence = window.__td613AshDemoEntryConvergence?.current?.() || null;
-            return Boolean(caseId)
-              && document.documentElement.dataset.ashDemoProfile === value
-              && document.getElementById('caseTitle')?.textContent?.includes(title)
-              && document.documentElement.dataset.ashDemoEntryReady === `${value}:${entry}`
-              && document.documentElement.dataset.ashDemoEntryCase === caseId
-              && document.documentElement.dataset.ashDemoEntryHydrating !== 'true'
-              && !document.documentElement.dataset.ashDemoEntryHold
-              && convergence?.profile === value
-              && convergence?.workspace === entry
-              && convergence?.posture === 'READY'
-              && convergence?.phase === 'VISIBLE';
-          }, { profile, title: expectedTitle, entry: entryWorkspace }, { timeout: 60_000 });
-            await page.evaluate(() => (window.__td613AshUiUxRescue?.open || window.__td613AshPremiumUI.open)('home'));
-            await waitVisibleWorkspace(page, 'home');
-            await page.waitForFunction(title => document.getElementById('premiumCaseLabel')?.textContent?.includes(title), expectedTitle, { timeout: 60_000 });""",
-              'Premium entry convergence'
-          )
-          destination_patterns = [
-              (
-                  r"    await page\.locator\('\[data-premium-workspace=\"work\"\]'\)\.click\(\);\n\s*assert\(await page\.locator\('#workspace-work'\)\.isVisible\(\), 'Work destination did not open'\);",
-                  "    await page.locator('[data-premium-workspace=\"work\"]').click();\n    await waitVisibleWorkspace(page, 'work');",
-                  'Premium Work destination'
-              ),
-              (
-                  r"    await page\.locator\('\[data-premium-workspace=\"choir\"\]'\)\.click\(\);\n\s*assert\(await page\.locator\('#workspace-choir'\)\.isVisible\(\), 'Choir destination did not open'\);",
-                  "    await page.locator('[data-premium-workspace=\"choir\"]').click();\n    await waitVisibleWorkspace(page, 'choir');",
-                  'Premium Choir destination'
-              ),
-              (
-                  r"    await page\.locator\('\[data-premium-workspace=\"capsule\"\]'\)\.click\(\);\n\s*assert\(await page\.locator\('#workspace-capsule'\)\.isVisible\(\), 'Capsule destination did not open'\);",
-                  "    await page.locator('[data-premium-workspace=\"capsule\"]').click();\n    await waitVisibleWorkspace(page, 'capsule');",
-                  'Premium Capsule destination'
-              ),
-              (
-                  r"    await page\.evaluate\(\(\) => window\.__td613AshPremiumUI\.open\('draft'\)\);\n\s*await page\.waitForFunction\(\(\) => document\.documentElement\.dataset\.ashPremiumWorkspace === 'draft'\);",
-                  "    await page.evaluate(() => (window.__td613AshUiUxRescue?.open || window.__td613AshPremiumUI.open)('draft'));\n    await waitVisibleWorkspace(page, 'draft');",
-                  'Premium Draft destination'
-              )
-          ]
-          for pattern, replacement, label in destination_patterns:
-              text = replace_once(text, pattern, replacement, label)
-          text = replace_once(
-              text,
-              r"schema: 'td613\.ash\.premium-ui-browser-flight/v0\.2-apeq-paia'",
-              "schema: 'td613.ash.premium-ui-browser-flight/v0.3-entry-converged-destinations'",
-              'Premium schema'
-          )
-          text = replace_once(
-              text,
-              r"flightProfile\(context, 'political_campaign', 'Harbor City Mayoral Campaign'\)",
-              "flightProfile(context, 'political_campaign', 'Harbor City Mayoral Campaign', 'map')",
-              'Campaign entry call'
-          )
-          text = replace_once(
-              text,
-              r"flightProfile\(context, 'fundraiser', 'Northstar Arts Benefit'\)",
-              "flightProfile(context, 'fundraiser', 'Northstar Arts Benefit', 'work')",
-              'Fundraiser entry call'
-          )
-          premium.write_text(text)
-          PY
-          node --check app/dome-world/ash-research-demo-hydration.js
-          node --check scripts/ash-premium-ui-browser-probe.mjs
-      - name: Commit durable code only
+      - name: Verify Research fixture, surface ledger, and boundaries
         run: |
-          git config user.name 'github-actions[bot]'
-          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
-          git add app/dome-world/ash-research-demo-hydration.js scripts/ash-premium-ui-browser-probe.mjs
-          git commit -m 'fix(ash): decouple Research core hydration and converge Premium flight'
-          git push origin HEAD:agent/ash-legal-demo-navigation-animation
+          node tests/ash-research-ux-rehydration.test.mjs > artifacts/ash-research-static/contract.log 2>&1 || {
+            cat artifacts/ash-research-static/contract.log
+            exit 1
+          }
+          cat artifacts/ash-research-static/contract.log
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: ash-research-static-diagnostics
+          path: artifacts/ash-research-static/
+          if-no-files-found: error
+          retention-days: 30
+
+  browser-witness:
+    runs-on: ubuntu-latest
+    timeout-minutes: 55
+    strategy:
+      fail-fast: false
+      matrix:
+        browser: [chromium, firefox, webkit]
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 24
+          cache: npm
+      - run: npm ci
+      - run: npm install --no-save --package-lock=false playwright@1.53.2
+      - run: npx playwright install --with-deps ${{ matrix.browser }}
+      - name: Start bounded local Ash runtime
+        run: |
+          node scripts/ash-keep-local-closure-server.mjs > artifacts-ash-research-server.log 2>&1 &
+          echo $! > ash-research-server.pid
+          for attempt in $(seq 1 60); do
+            if curl -fsS http://127.0.0.1:6130/dome-world/ash-keep.html >/dev/null; then exit 0; fi
+            sleep 1
+          done
+          cat artifacts-ash-research-server.log
+          exit 1
+      - name: Exercise Research hydration, interface ledger, navigation, dormancy, and mobile geometry
+        env:
+          TD613_BROWSER: ${{ matrix.browser }}
+          TD613_BASE_URL: http://127.0.0.1:6130
+          TD613_ARTIFACT_DIR: artifacts/ash-research-ux-${{ matrix.browser }}
+        run: node scripts/ash-research-ux-browser-probe.mjs
+      - name: Stop bounded local runtime
+        if: always()
+        run: |
+          if [ -f ash-research-server.pid ]; then kill $(cat ash-research-server.pid) || true; fi
+          cat artifacts-ash-research-server.log || true
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: ash-research-ux-${{ matrix.browser }}-evidence
+          path: artifacts/ash-research-ux-${{ matrix.browser }}/
+          if-no-files-found: error
+          retention-days: 30
