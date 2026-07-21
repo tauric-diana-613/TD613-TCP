@@ -23,6 +23,7 @@ const flickerSource = read('app/dome-world/ash-flicker-hardening.js');
 const lifecycleSource = read('app/dome-world/ash-lifecycle.js');
 const bridgeSource = read('app/dome-world/ash-workspace-bridge.js');
 const facadeSource = read('app/dome-world/ash-profile-demo-hydration.js');
+const browserProbe = read('scripts/ash-legal-ux-browser-probe.mjs');
 
 assert.equal(ASH_LEGAL_DEMO_VERSION, 'td613.ash.legal-demo/v0.1-matter-workspace');
 const fixture = buildLegalMatterDemoFixture();
@@ -87,6 +88,9 @@ assert.match(rescueSource, /consecutiveReadyFrames/);
 assert.match(flickerSource, /cancelRunawayAnimations/);
 assert.match(flickerSource, /iterations === Infinity/);
 assert.doesNotMatch(flickerSource, /html\[data-ash-flicker-hardening\] \*,[\s\S]*animation:none!important/);
+assert.match(browserProbe, /presentation=aia&profile=legal&nonce=\$\{Date\.now\(\)\}/);
+assert.match(browserProbe, /location\.search\.includes\(`ash_epoch=\$\{epoch\}`\)/);
+assert.doesNotMatch(browserProbe, /ash-keep\.html\?ash_epoch=20260721-legal-demo-ux-v1/);
 assert.doesNotMatch(rescueSource + legalSource, /transport_authorized:\s*true|legal_advice_provided:\s*true|child_study_authorized:\s*true/);
 
 console.log('ash-legal-ux.test.mjs passed');
