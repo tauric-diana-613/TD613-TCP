@@ -15,8 +15,14 @@ const roadmap = read('ROADMAP.md');
 const stretch11 = read('docs/ASH_KEEP_STRETCH11_CLOSURE_RECEIPT.md');
 for (const marker of ['Ash Lifecycle Deployed Observation','Observe deployed Ash lifecycle without promotion','CONTINUITY_SEALED','promotion remains separate']) assert.ok(workflow.includes(marker));
 for (const token of ['ARRIVAL_UNPERSISTED','CASE_BOUND','REBUILD_ELIGIBLE','RELEASE_ELIGIBLE','CONTINUITY_SEALED','promotion_authorized: false','continuity is not transport']) assert.ok(probe.includes(token));
-for (const token of ['legacy_bypass === true', "dataset.ashCachePreflight === 'complete'", 'aia3_route_required: false', 'reload_required: false']) {
-  assert.ok(lifecycleCompiler.includes(token), `Lifecycle observer omitted exact legacy-bypass contract: ${token}`);
+for (const token of [
+  'legacy_bypass === true',
+  "dataset.ashCachePreflight === 'complete'",
+  'aia3_route_required: false',
+  'reload_required: false',
+  "url.searchParams.get('arrival') === 'cleared'"
+]) {
+  assert.ok(lifecycleCompiler.includes(token), `Lifecycle observer omitted exact threshold/legacy contract: ${token}`);
 }
 assert.ok(lifecycleCompiler.includes('runtime.includes("current?.().route === \'IMPLEMENTATION\'")'),
   'Lifecycle compiler must reject a generated rollback probe that restores the stale AIA3 route requirement');
