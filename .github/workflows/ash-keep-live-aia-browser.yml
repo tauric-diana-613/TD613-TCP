@@ -1,10 +1,11 @@
 name: Apply Ash module-admission barrier through trusted lane
 
 on:
-  pull_request:
+  push:
+    branches: [agent/ash-aia3-eviction-final3]
     paths:
       - 'scripts/apply-ash-module-admission-barrier.mjs'
-      - '.github/workflows/ash-module-admission-barrier-apply.yml'
+      - 'scripts/apply-ash-deferred-bootstrap.mjs'
       - '.github/workflows/ash-keep-live-aia-browser.yml'
 
 permissions:
@@ -16,7 +17,7 @@ concurrency:
 
 jobs:
   apply:
-    if: github.event.pull_request.head.ref == 'agent/ash-aia3-eviction-final3'
+    if: github.ref == 'refs/heads/agent/ash-aia3-eviction-final3'
     runs-on: ubuntu-latest
     timeout-minutes: 20
     steps:
@@ -51,5 +52,3 @@ jobs:
           git add -A
           git commit -m 'fix: admit Ash modules only after cache preflight'
           git push origin HEAD:agent/ash-aia3-eviction-final3
-
-# scheduler-revision: 2
