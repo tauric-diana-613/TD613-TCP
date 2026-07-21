@@ -1,0 +1,101 @@
+name: Ash Legal UX contract convergence
+
+on:
+  push:
+    branches: [agent/ash-legal-demo-navigation-animation]
+
+permissions:
+  contents: write
+
+concurrency:
+  group: ash-legal-contract-converge
+  cancel-in-progress: false
+
+jobs:
+  converge:
+    if: ${{ !contains(github.event.head_commit.message, '[contracts-converged]') }}
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: agent/ash-legal-demo-navigation-animation
+          fetch-depth: 0
+      - name: Migrate exact inherited contracts and remove this one-use workflow
+        run: |
+          python - <<'PY'
+          from pathlib import Path
+
+          old_asset = '20260720-aia3-mass-eviction-v2'
+          new_asset = '20260721-legal-demo-ux-v1'
+          old_cache = 'td613.ash.cache-flush/2026-07-20-aia3-mass-eviction-v2'
+          new_cache = 'td613.ash.cache-flush/2026-07-21-legal-demo-ux-v1'
+
+          def replace(pathname, pairs):
+            path = Path(pathname)
+            text = path.read_text()
+            original = text
+            for old, new in pairs:
+              if old not in text:
+                raise SystemExit(f'Missing governed marker in {pathname}: {old}')
+              text = text.replace(old, new)
+            if text == original:
+              raise SystemExit(f'No change applied to {pathname}')
+            path.write_text(text)
+
+          replace('app/dome-world/ash-cache-flush.js', [(old_cache, new_cache)])
+
+          replace('tests/product-architecture/shell.test.mjs', [
+            ("'td613.ash-keep.shell/v0.4-aia3-mass-eviction'", "'td613.ash-keep.shell/v0.5-legal-demo-ux'"),
+            ("'20260720-aia3-mass-eviction-v2'", "'20260721-legal-demo-ux-v1'"),
+            ("'/dome-world/ash-lifecycle.js?v=20260720-aia3-mass-eviction-v2'", "'/dome-world/ash-lifecycle.js?v=20260721-legal-demo-ux-v1'"),
+            ("'td613.ash.cache-flush/2026-07-20-aia3-mass-eviction-v2'", "'td613.ash.cache-flush/2026-07-21-legal-demo-ux-v1'"),
+            ('name="ash-cache-preflight" content="aia3-mass-eviction-v2"', 'name="ash-cache-preflight" content="legal-demo-ux-v1"')
+          ])
+
+          replace('tests/dome-world-lab-marrowline-link.test.mjs', [
+            ("'td613.dome-world.shell/v1.5-aia3-mass-eviction'", "'td613.dome-world.shell/v1.6-legal-demo-ux'")
+          ])
+
+          path = Path('tests/ash-investigation-guidance.test.mjs')
+          text = path.read_text()
+          old = """for (const module of ['ash-investigation-demo-hydration','ash-guided-operator-ui','ash-flicker-hardening','ash-emergency-stability-contract']) {
+  assert.match(bridge, new RegExp(`${module}\\.js\\?v=20260718-canonical-membrane-v6`));
+}
+assert.match(bridge, /ash-case-close-repair\\.js\\?v=20260719-ingress-readiness-boundary-v1/);"""
+          new = """for (const module of ['ash-investigation-demo-hydration','ash-guided-operator-ui','ash-flicker-hardening','ash-emergency-stability-contract','ash-case-close-repair','ash-ui-ux-rescue']) {
+  assert.match(bridge, new RegExp(`${module}\\.js\\?v=20260721-legal-demo-ux-v1`));
+}"""
+          if old not in text: raise SystemExit('Investigation bridge epoch block not found')
+          text = text.replace(old, new)
+          old = """assert.match(hardening, /td613\\.ash\\.flicker-hardening\\/v0\\.3-emergency-static-surface/);
+assert.match(hardening, /td613\\.ash\\.flicker-hardening\\/v1\\.0-native-compositor/);
+assert.match(hardening, /body::after/);
+assert.match(hardening, /content:none!important/);
+assert.match(hardening, /animation-name:none!important/);
+assert.match(hardening, /transition:none!important/);
+assert.match(hardening, /backdrop-filter:none!important/);
+assert.match(hardening, /cancelDocumentAnimations/);
+assert.match(hardening, /touch-action:pan-y pinch-zoom!important/);"""
+          new = """assert.match(hardening, /td613\\.ash\\.flicker-hardening\\/v0\\.4-stable-finite-motion/);
+assert.match(hardening, /td613\\.ash\\.flicker-hardening\\/v1\\.1-stable-finite-compositor/);
+assert.match(hardening, /cancelRunawayAnimations/);
+assert.match(hardening, /iterations === Infinity/);
+assert.match(hardening, /backdrop-filter:none!important/);
+assert.match(hardening, /touch-action:pan-y pinch-zoom!important/);
+assert.doesNotMatch(hardening, /animation-name:none!important/);
+assert.doesNotMatch(hardening, /transition:none!important/);"""
+          if old not in text: raise SystemExit('Investigation hardening block not found')
+          text = text.replace(old, new)
+          old = "assert.match(lifecycle, /ash-cache-flush\\.js\\?v=20260718-canonical-membrane-v7-readiness-boundary/);"
+          new = "assert.match(lifecycle, /ash-cache-flush\\.js\\?v=20260721-legal-demo-ux-v1/);"
+          if old not in text: raise SystemExit('Investigation lifecycle epoch assertion not found')
+          path.write_text(text.replace(old, new))
+
+          Path('.github/workflows/ash-legal-contract-converge.yml').unlink()
+          PY
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add app/dome-world/ash-cache-flush.js tests/product-architecture/shell.test.mjs tests/dome-world-lab-marrowline-link.test.mjs tests/ash-investigation-guidance.test.mjs .github/workflows/ash-legal-contract-converge.yml
+          git commit -m 'fix(ash): converge Legal UX continuity and inherited law [contracts-converged]'
+          git push origin HEAD:agent/ash-legal-demo-navigation-animation
