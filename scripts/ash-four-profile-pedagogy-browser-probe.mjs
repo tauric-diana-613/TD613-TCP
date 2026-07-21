@@ -23,6 +23,8 @@ async function waitIngress(page) {
     const composition = window.__td613AshAia3Composition?.current?.() || null;
     return location.search.includes(`ash_epoch=${epoch}`)
       && document.documentElement.dataset.ashCompositionStable?.includes('stable-navigation-motion')
+      && document.documentElement.dataset.ashCompositionRelease === 'READY_TWO_CONSECUTIVE_FRAMES'
+      && document.documentElement.dataset.ashPremiumReady === 'true'
       && document.documentElement.dataset.ashDemoPedagogy
       && window.__td613AshDemoPedagogy?.version
       && window.__td613AshUiUxRescue?.version
@@ -36,6 +38,7 @@ async function waitHydrated(page, profile) {
     const composition = window.__td613AshAia3Composition?.current?.() || null;
     const premium = window.__td613AshPremiumUI?.snapshot?.() || null;
     const pedagogy = window.__td613AshDemoPedagogy?.current?.() || null;
+    const routebar = document.getElementById('ashDemoPedagogyRouteBar');
     return document.documentElement.dataset.ashDemoProfile === value
       && document.documentElement.dataset.ashPedagogyProfile === value
       && premium?.profile === value
@@ -44,7 +47,9 @@ async function waitHydrated(page, profile) {
       && Boolean(composition?.lifecycle_state)
       && composition?.route_count >= 4
       && composition?.task_count >= 4
-      && document.getElementById('ashDemoPedagogyLedger')?.dataset.profile === value;
+      && document.getElementById('ashDemoPedagogyLedger')?.dataset.profile === value
+      && routebar?.dataset.profile === value
+      && routebar.querySelectorAll('[data-demo-pedagogy-workspace]').length === 4;
   }, profile, { timeout:90_000 });
 }
 
@@ -64,6 +69,8 @@ async function snapshot(page, profile) {
       audit:current?.audit || null,
       task_labels:[...document.querySelectorAll('#ashDemoPedagogyLedger [data-demo-pedagogy-workspace] strong')].map(node => node.textContent.trim()),
       task_workspaces:[...document.querySelectorAll('#ashDemoPedagogyLedger [data-demo-pedagogy-workspace]')].map(node => node.dataset.demoPedagogyWorkspace),
+      routebar_labels:[...document.querySelectorAll('#ashDemoPedagogyRouteBar [data-demo-pedagogy-workspace] span')].map(node => node.textContent.trim().replace(/^\d+ · /, '')),
+      routebar_visible:visible(document.getElementById('ashDemoPedagogyRouteBar')),
       motion_labels:[...document.querySelectorAll('.ash-ux-motion-node b')].map(node => node.textContent.trim()),
       root_visible:visible(document.getElementById('ashAiaMembrane')),
       ledger_visible:visible(document.getElementById('ashDemoPedagogyLedger')),
@@ -108,18 +115,23 @@ async function runProfile(browser, profile, spec, report) {
     const initial = await snapshot(page, profile);
     assert(initial.case_profile === profile, `${profile}: premium case profile drifted.`);
     assert(initial.pedagogy_profile === profile, `${profile}: pedagogy profile drifted.`);
-    assert(initial.root_visible && initial.ledger_visible && initial.main_visible && initial.rail_visible, `${profile}: coherent work surface missing.`);
+    assert(initial.root_visible && initial.ledger_visible && initial.routebar_visible && initial.main_visible && initial.rail_visible, `${profile}: coherent work surface missing.`);
     assert(initial.audit?.missing?.length === 0, `${profile}: missing surfaces ${JSON.stringify(initial.audit?.missing)}.`);
     assert(initial.audit?.drift?.length === 0, `${profile}: dormant/separate surface drift ${JSON.stringify(initial.audit?.drift)}.`);
     assert(JSON.stringify(initial.task_labels) === JSON.stringify(spec.tasks), `${profile}: task spine drifted ${JSON.stringify(initial.task_labels)}.`);
+    assert(JSON.stringify(initial.routebar_labels) === JSON.stringify(spec.tasks), `${profile}: persistent route labels drifted ${JSON.stringify(initial.routebar_labels)}.`);
     assert(JSON.stringify(initial.motion_labels) === JSON.stringify(spec.tasks), `${profile}: motion grammar drifted ${JSON.stringify(initial.motion_labels)}.`);
     assert(initial.dormant.provider_checked === false && initial.dormant.release_disabled === true && !initial.dormant.unexpected && !initial.dormant.imported && !initial.dormant.passphrase, `${profile}: intentionally dormant surfaces were over-hydrated.`);
 
     const routes = [];
-    for (const button of await page.locator('#ashDemoPedagogyLedger [data-demo-pedagogy-workspace]').all()) {
+    const routebar = page.locator('#ashDemoPedagogyRouteBar [data-demo-pedagogy-workspace]');
+    assert(await routebar.count() === 4, `${profile}: persistent routebar does not contain four steps.`);
+    for (let index = 0; index < 4; index += 1) {
+      const button = routebar.nth(index);
       const workspace = await button.getAttribute('data-demo-pedagogy-workspace');
       await button.click();
       await page.waitForFunction(value => document.documentElement.dataset.ashPremiumWorkspace === value && document.getElementById(`workspace-${value}`)?.classList.contains('active'), workspace);
+      assert(await page.locator('#ashDemoPedagogyRouteBar').isVisible(), `${profile}: routebar disappeared in ${workspace}.`);
       routes.push(workspace);
     }
     assert(new Set(routes).size === 4, `${profile}: profile route did not exercise four distinct workspaces.`);
@@ -138,6 +150,7 @@ async function runProfile(browser, profile, spec, report) {
     assert(mobile.overflow === 0, `${profile}: mobile overflow ${mobile.overflow}.`);
     assert(mobile.clipped.length === 0, `${profile}: clipped controls ${mobile.clipped.join(', ')}.`);
     assert(await page.locator('#ashDemoPedagogyLedger').isVisible(), `${profile}: pedagogy ledger disappeared on mobile.`);
+    assert(await page.locator('#ashDemoPedagogyRouteBar').isVisible(), `${profile}: persistent routebar disappeared on mobile.`);
     await page.screenshot({ path:path.join(out, `${browserName}-${profile}.png`), fullPage:true });
     assert(errors.length === 0, `${profile}: browser errors ${errors.join(' | ')}`);
     assert(httpErrors.length === 0, `${profile}: HTTP errors ${httpErrors.join(' | ')}`);
@@ -153,7 +166,7 @@ async function runProfile(browser, profile, spec, report) {
 
 await fs.mkdir(out, { recursive:true });
 const browser = await engine.launch({ headless:true });
-const report = { schema:'td613.ash.four-profile-pedagogy-browser/v0.1', browser:browserName, status:'RUNNING', profiles:{}, authority:{ counts_as_human_evidence:false, child_study_authorized:false, transport_authorized:false, closes_program:false } };
+const report = { schema:'td613.ash.four-profile-pedagogy-browser/v0.2-persistent-routebar', browser:browserName, status:'RUNNING', profiles:{}, authority:{ counts_as_human_evidence:false, child_study_authorized:false, transport_authorized:false, closes_program:false } };
 let terminal = null;
 try {
   for (const [profile, spec] of Object.entries(profiles)) await runProfile(browser, profile, spec, report);
