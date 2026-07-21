@@ -1,4 +1,4 @@
-export const ASH_UI_UX_RESCUE_VERSION = 'td613.ash.ui-ux-rescue/v0.3-settled-navigation-motion-ready-frames';
+export const ASH_UI_UX_RESCUE_VERSION = 'td613.ash.ui-ux-rescue/v0.3-stable-navigation-motion-settled-receipts';
 
 const host = globalThis.window;
 const doc = globalThis.document;
