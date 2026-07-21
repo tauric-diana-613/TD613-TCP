@@ -7,6 +7,7 @@ on:
       - 'app/dome-world/ash-research-demo-control-state.js'
       - 'app/dome-world/ash-aia3-composition.js'
       - 'app/dome-world/ash-lifecycle.js'
+      - 'app/dome-world/ash-profile-demo-hydration.js'
       - 'app/dome-world/ash-premium-ui.js'
       - 'app/dome-world/ash-workspace-bridge.js'
       - 'tests/ash-research-ux-rehydration.test.mjs'
@@ -19,6 +20,7 @@ on:
       - 'app/dome-world/ash-research-demo-control-state.js'
       - 'app/dome-world/ash-aia3-composition.js'
       - 'app/dome-world/ash-lifecycle.js'
+      - 'app/dome-world/ash-profile-demo-hydration.js'
       - 'app/dome-world/ash-premium-ui.js'
       - 'app/dome-world/ash-workspace-bridge.js'
       - 'tests/ash-research-ux-rehydration.test.mjs'
@@ -51,6 +53,8 @@ jobs:
             node --check app/dome-world/ash-research-demo-hydration.js
             node --check app/dome-world/ash-research-demo-control-state.js
             node --check app/dome-world/ash-aia3-composition.js
+            node --check app/dome-world/ash-lifecycle.js
+            node --check app/dome-world/ash-profile-demo-hydration.js
             node --check scripts/ash-research-ux-browser-probe.mjs
           } > artifacts/ash-research-static/syntax.log 2>&1 || {
             cat artifacts/ash-research-static/syntax.log
