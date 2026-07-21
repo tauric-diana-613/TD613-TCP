@@ -8,8 +8,8 @@ const browserType = { chromium, firefox, webkit }[browserName];
 const outputDir = path.resolve(process.env.TD613_ARTIFACT_DIR || `artifacts/ash-aia3-${browserName}`);
 const sourcePacket = process.env.TD613_SOURCE_PACKET_COMMIT || null;
 const productionObservation = process.env.TD613_PRODUCTION_OBSERVATION === 'true';
-const EPOCH = '20260720-aia3-mass-eviction-v2';
-const CACHE_EPOCH = 'td613.ash.cache-flush/2026-07-20-aia3-mass-eviction-v2';
+const EPOCH = '20260721-legal-demo-ux-v1';
+const CACHE_EPOCH = 'td613.ash.cache-flush/2026-07-21-legal-demo-ux-v1';
 const route = `${base}/dome-world/ash-keep.html?presentation=aia`;
 const assert = (value, message) => { if (!value) throw new Error(message); };
 
