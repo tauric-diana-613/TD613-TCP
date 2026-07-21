@@ -39,6 +39,7 @@ async function waitHydrated(page, profile) {
     const premium = window.__td613AshPremiumUI?.snapshot?.() || null;
     const pedagogy = window.__td613AshDemoPedagogy?.current?.() || null;
     const routebar = document.getElementById('ashDemoPedagogyRouteBar');
+    const active = document.documentElement.dataset.ashPremiumWorkspace || null;
     return document.documentElement.dataset.ashDemoProfile === value
       && document.documentElement.dataset.ashPedagogyProfile === value
       && premium?.profile === value
@@ -49,7 +50,9 @@ async function waitHydrated(page, profile) {
       && composition?.task_count >= 4
       && document.getElementById('ashDemoPedagogyLedger')?.dataset.profile === value
       && routebar?.dataset.profile === value
-      && routebar.querySelectorAll('[data-demo-pedagogy-workspace]').length === 4;
+      && routebar.querySelectorAll('[data-demo-pedagogy-workspace]').length === 4
+      && active
+      && document.getElementById(`workspace-${active}`)?.classList.contains('active');
   }, profile, { timeout:90_000 });
 }
 
@@ -61,6 +64,8 @@ async function snapshot(page, profile) {
       return style.display !== 'none' && style.visibility !== 'hidden' && Number(style.opacity) > 0 && rect.width > 0 && rect.height > 0;
     };
     const current = window.__td613AshDemoPedagogy?.current?.() || null;
+    const activeWorkspace = document.documentElement.dataset.ashPremiumWorkspace || null;
+    const ledger = document.getElementById('ashDemoPedagogyLedger');
     return {
       profile:value,
       case_profile:window.__td613AshPremiumUI?.snapshot?.()?.profile || null,
@@ -73,7 +78,10 @@ async function snapshot(page, profile) {
       routebar_visible:visible(document.getElementById('ashDemoPedagogyRouteBar')),
       motion_labels:[...document.querySelectorAll('.ash-ux-motion-node b')].map(node => node.textContent.trim()),
       root_visible:visible(document.getElementById('ashAiaMembrane')),
-      ledger_visible:visible(document.getElementById('ashDemoPedagogyLedger')),
+      ledger_attached:Boolean(ledger),
+      ledger_visible:visible(ledger),
+      active_workspace:activeWorkspace,
+      active_workspace_visible:visible(activeWorkspace ? document.getElementById(`workspace-${activeWorkspace}`) : null),
       main_visible:visible(document.querySelector('body > main')),
       rail_visible:visible(document.querySelector('body > .workspace-rail')),
       dormant:{
@@ -115,7 +123,7 @@ async function runProfile(browser, profile, spec, report) {
     const initial = await snapshot(page, profile);
     assert(initial.case_profile === profile, `${profile}: premium case profile drifted.`);
     assert(initial.pedagogy_profile === profile, `${profile}: pedagogy profile drifted.`);
-    assert(initial.root_visible && initial.ledger_visible && initial.routebar_visible && initial.main_visible && initial.rail_visible, `${profile}: coherent work surface missing.`);
+    assert(initial.root_visible && initial.ledger_attached && initial.routebar_visible && initial.main_visible && initial.rail_visible && initial.active_workspace_visible, `${profile}: coherent active work surface missing.`);
     assert(initial.audit?.missing?.length === 0, `${profile}: missing surfaces ${JSON.stringify(initial.audit?.missing)}.`);
     assert(initial.audit?.drift?.length === 0, `${profile}: dormant/separate surface drift ${JSON.stringify(initial.audit?.drift)}.`);
     assert(JSON.stringify(initial.task_labels) === JSON.stringify(spec.tasks), `${profile}: task spine drifted ${JSON.stringify(initial.task_labels)}.`);
@@ -147,9 +155,9 @@ async function runProfile(browser, profile, spec, report) {
     await page.locator('[data-premium-workspace="home"]').click();
     await page.waitForFunction(() => document.documentElement.dataset.ashPremiumWorkspace === 'home');
     const mobile = await snapshot(page, profile);
+    assert(mobile.ledger_visible, `${profile}: full hydration ledger did not return in Home.`);
     assert(mobile.overflow === 0, `${profile}: mobile overflow ${mobile.overflow}.`);
     assert(mobile.clipped.length === 0, `${profile}: clipped controls ${mobile.clipped.join(', ')}.`);
-    assert(await page.locator('#ashDemoPedagogyLedger').isVisible(), `${profile}: pedagogy ledger disappeared on mobile.`);
     assert(await page.locator('#ashDemoPedagogyRouteBar').isVisible(), `${profile}: persistent routebar disappeared on mobile.`);
     await page.screenshot({ path:path.join(out, `${browserName}-${profile}.png`), fullPage:true });
     assert(errors.length === 0, `${profile}: browser errors ${errors.join(' | ')}`);
@@ -166,7 +174,7 @@ async function runProfile(browser, profile, spec, report) {
 
 await fs.mkdir(out, { recursive:true });
 const browser = await engine.launch({ headless:true });
-const report = { schema:'td613.ash.four-profile-pedagogy-browser/v0.2-persistent-routebar', browser:browserName, status:'RUNNING', profiles:{}, authority:{ counts_as_human_evidence:false, child_study_authorized:false, transport_authorized:false, closes_program:false } };
+const report = { schema:'td613.ash.four-profile-pedagogy-browser/v0.3-active-workspace-coherence', browser:browserName, status:'RUNNING', profiles:{}, authority:{ counts_as_human_evidence:false, child_study_authorized:false, transport_authorized:false, closes_program:false } };
 let terminal = null;
 try {
   for (const [profile, spec] of Object.entries(profiles)) await runProfile(browser, profile, spec, report);
