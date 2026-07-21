@@ -1,3 +1,4 @@
+// One-use guarded patcher trigger: 2026-07-21T01:03Z
 import fs from 'node:fs';
 import assert from 'node:assert/strict';
 
