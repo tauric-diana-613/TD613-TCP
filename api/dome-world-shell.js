@@ -22,6 +22,7 @@ const ASH_KEEP_JS_SOURCE_PATH = path.join(process.cwd(), 'app', 'dome-world', 'a
 const ASH_KEEP_ICON_MARKER = '<link rel="icon" href="data:,">';
 const ASH_CANONICAL_BOOT_MARKER = '<meta name="ash-canonical-membrane" content="v1.0">';
 const ASH_MASS_EVICTION_MARKER = '<meta name="ash-cache-preflight" content="aia3-mass-eviction-v2">';
+const ASH_MODULE_ADMISSION_MARKER = 'td613-ash-module-admission';
 const MARROWLINE_BUTTON = `<button class="lab-node lab-node-marrowline" type="button" data-tone="gold" data-glyph="∴" data-open-route="${MARROWLINE_LAB_ROUTE}" style="grid-column:span 8" onclick="window.location.assign('${MARROWLINE_LAB_ROUTE}')" aria-label="Open Marrowline Kʰonapolit terminal"><span class="lab-index">11</span><strong>Marrowline</strong><small>Kʰonapolit terminal / live ingress</small></button>`;
 const ASH_TAB = `<button class="tab" data-view="ash" data-sigil="下"><small>04</small><span>Ash</span></button>`;
 
@@ -151,6 +152,15 @@ function canonicalAshBoot() {
   </script>`;
 }
 
+function ashModuleAdmissionLoader() {
+  const modules = ASH_VERSIONED_MODULES.map(([, versioned]) => versioned);
+  return `<script type="module" id="${ASH_MODULE_ADMISSION_MARKER}">
+  await (window.__td613AshAia3Preflight || Promise.resolve());
+  for (const module of ${JSON.stringify(modules)}) await import(module);
+  document.documentElement.dataset.ashModuleAdmission='complete';
+  </script>`;
+}
+
 export function injectMarrowlineLabButton(source = '') {
   const html = String(source || '');
   if (!html) throw new Error('dome-world-source-empty');
@@ -186,7 +196,9 @@ export function injectAshKeepLifecycle(source = '') {
   if (!html.includes(ASH_CANONICAL_BOOT_MARKER)) additions.push(canonicalAshBoot());
   if (additions.length) html = `${html.slice(0, headClose)}  ${additions.join('\n  ')}\n${html.slice(headClose)}`;
 
+  const admissionPresent = html.includes(`id="${ASH_MODULE_ADMISSION_MARKER}"`);
   for (const [sourceModule, versionedModule] of ASH_VERSIONED_MODULES) {
+    if (admissionPresent && html.includes(versionedModule)) continue;
     const versionedTag = `src="${versionedModule}"`;
     if (html.includes(versionedTag)) continue;
     const unversionedTag = `src="${sourceModule}"`;
@@ -195,11 +207,22 @@ export function injectAshKeepLifecycle(source = '') {
   }
 
   const ordered = ASH_VERSIONED_MODULES.map(([, versioned]) => versioned);
+  if (!admissionPresent) {
+    for (const module of ordered) {
+      const tag = `<script type="module" src="${module}"></script>`;
+      if (!html.includes(tag)) throw new Error(`ash-static-entry-module-tag-missing:${module}`);
+      html = html.replace(tag, '');
+    }
+    const bodyClose = html.lastIndexOf('</body>');
+    if (bodyClose < 0) throw new Error('ash-keep-body-marker-missing');
+    html = `${html.slice(0, bodyClose)}  ${ashModuleAdmissionLoader()}\n${html.slice(bodyClose)}`;
+  }
   if (!html.includes('name="ash-lifecycle" content="v0.1"')) throw new Error('ash-lifecycle-meta-missing');
   if (!html.includes('name="ash-constitutional-composition" content="v0.1"')) throw new Error('ash-composition-meta-missing');
   if (!html.includes(ASH_KEEP_ICON_MARKER)) throw new Error('ash-keep-explicit-icon-boundary-missing');
   if (!html.includes(ASH_MASS_EVICTION_MARKER)) throw new Error('ash-cache-preflight-missing');
   if (!html.includes(ASH_CANONICAL_BOOT_MARKER)) throw new Error('ash-canonical-membrane-first-paint-missing');
+  if (!html.includes(`id="${ASH_MODULE_ADMISSION_MARKER}"`)) throw new Error('ash-module-admission-barrier-missing');
   let cursor = -1;
   for (const module of ordered) {
     const index = html.indexOf(module);
