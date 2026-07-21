@@ -256,7 +256,10 @@ async function runStale(browser, report) {
     sessionStorage.setItem('__td613_aia3_paint_trace', '[]');
     const cache = await caches.open('td613-retired-aia2-assets');
     await cache.put('/dome-world/ash-lifecycle.js?v=retired-aia2', new Response("document.documentElement.dataset.staleAia2Asset='cached';", { headers:{ 'content-type':'text/javascript' } }));
-    const registration = await navigator.serviceWorker.register('/__ash_keep_closure/stale-aia2-worker.js', { scope:'/dome-world/' });
+    const registration = await Promise.race([
+      navigator.serviceWorker.register('/__ash_keep_closure/stale-aia2-worker.js', { scope:'/dome-world/' }),
+      new Promise((_, reject) => setTimeout(() => reject(new Error('Retired AIA2 worker registration did not resolve within 20 seconds.')), 20000))
+    ]);
     const worker = registration.installing || registration.waiting || registration.active;
     await Promise.race([
       new Promise((resolve, reject) => {

@@ -64,6 +64,7 @@ test('browser witness waits for lifecycle case binding before tutorial baseline'
   assert.match(journeySource, /await waitForLifecycleCaseBinding\(page, text\)/);
   assert.match(journeySource, /worker\.state === 'activated'/, 'The stale-client witness must require actual service-worker activation.');
   assert.match(journeySource, /did not activate within 20 seconds/, 'The stale-client worker activation wait must remain bounded.');
+  assert.match(journeySource, /registration did not resolve within 20 seconds/, 'The stale-client worker registration wait must remain bounded.');
   assert.doesNotMatch(journeySource, /await navigator\.serviceWorker\.ready;/, 'The stale-client witness must not contain an unbounded service-worker readiness wait.');
   assert.doesNotMatch(journeySource, /waitForTimeout\(250\);\n  const before/);
 });
