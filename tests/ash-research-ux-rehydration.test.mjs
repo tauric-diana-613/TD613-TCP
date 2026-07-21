@@ -48,6 +48,10 @@ assert.deepEqual({
   held_outs:fixture.assay.held_outs.length,
   strata:fixture.assay.strata.length
 }, fixture.counts, 'Research declarations drifted from the generated fixture.');
+const localRelationships = fixture.relationships.filter(edge => !edge.id.startsWith('edge_cross_'));
+const crossRelationships = fixture.relationships.filter(edge => edge.id.startsWith('edge_cross_'));
+assert.equal(localRelationships.length, 58, 'Research local chains must reflect twelve five-node Rooms and two six-node Rooms.');
+assert.equal(crossRelationships.length, 54, 'Research cross-room graph must complete the 112-relation fixture without overfilling it.');
 assert.equal(fixture.assay.maximum_assurance, 'PA2_LOCALLY_EXECUTED');
 assert.equal(fixture.assay.unknown_readers, 'UNMEASURED');
 assert.equal(fixture.assay.universal_secrecy, false);
