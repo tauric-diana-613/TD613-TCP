@@ -5,6 +5,15 @@ export {
   hydrateApeqPaiaProfileDemo,
   rehydrateCurrentApeqPaiaDemo,
   installApeqPaiaProfileDemos
-} from './ash-apeq-paia-profile-demos.js?v=20260718-live-ingress-v3';
+} from './ash-apeq-paia-profile-demos.js?v=20260721-legal-demo-ux-v1';
 
-import './ash-apeq-paia-profile-demos.js?v=20260718-live-ingress-v3';
+export {
+  ASH_LEGAL_DEMO_VERSION,
+  buildLegalMatterDemoFixture,
+  hydrateLegalMatterDemo,
+  rehydrateLegalMatterDemo,
+  installLegalMatterDemo
+} from './ash-legal-profile-demo.js?v=20260721-legal-demo-ux-v1';
+
+import './ash-apeq-paia-profile-demos.js?v=20260721-legal-demo-ux-v1';
+import './ash-legal-profile-demo.js?v=20260721-legal-demo-ux-v1';
