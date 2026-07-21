@@ -99,20 +99,20 @@ async function hydrateProfile(page, profile, expectedTitle, entryWorkspace) {
   const started = Date.now();
   await demo.click();
   await page.waitForFunction(({ profile: value, title, entry }) => {
-  const caseId = localStorage.getItem('td613.ash-keep.current-case');
-  const convergence = window.__td613AshDemoEntryConvergence?.current?.() || null;
-  return Boolean(caseId)
-    && document.documentElement.dataset.ashDemoProfile === value
-    && document.getElementById('caseTitle')?.textContent?.includes(title)
-    && document.documentElement.dataset.ashDemoEntryReady === `${value}:${entry}`
-    && document.documentElement.dataset.ashDemoEntryCase === caseId
-    && document.documentElement.dataset.ashDemoEntryHydrating !== 'true'
-    && !document.documentElement.dataset.ashDemoEntryHold
-    && convergence?.profile === value
-    && convergence?.workspace === entry
-    && convergence?.posture === 'READY'
-    && convergence?.phase === 'VISIBLE';
-}, { profile, title: expectedTitle, entry: entryWorkspace }, { timeout: 60_000 });
+    const caseId = localStorage.getItem('td613.ash-keep.current-case');
+    const convergence = window.__td613AshDemoEntryConvergence?.current?.() || null;
+    return Boolean(caseId)
+      && document.documentElement.dataset.ashDemoProfile === value
+      && document.getElementById('caseTitle')?.textContent?.includes(title)
+      && document.documentElement.dataset.ashDemoEntryReady === `${value}:${entry}`
+      && document.documentElement.dataset.ashDemoEntryCase === caseId
+      && document.documentElement.dataset.ashDemoEntryHydrating !== 'true'
+      && !document.documentElement.dataset.ashDemoEntryHold
+      && convergence?.profile === value
+      && convergence?.workspace === entry
+      && convergence?.posture === 'READY'
+      && convergence?.phase === 'VISIBLE';
+  }, { profile, title: expectedTitle, entry: entryWorkspace }, { timeout: 60_000 });
   await page.evaluate(() => (window.__td613AshUiUxRescue?.open || window.__td613AshPremiumUI.open)('home'));
   await waitVisibleWorkspace(page, 'home');
   await page.waitForFunction(title => document.getElementById('premiumCaseLabel')?.textContent?.includes(title), expectedTitle, { timeout: 60_000 });
@@ -121,7 +121,7 @@ async function hydrateProfile(page, profile, expectedTitle, entryWorkspace) {
   return orientationMs;
 }
 
-async function flightProfile(context, profile, title) {
+async function flightProfile(context, profile, title, entryWorkspace) {
   const page = await context.newPage();
   const errors = [];
   const badResponses = [];
@@ -148,7 +148,7 @@ async function flightProfile(context, profile, title) {
     assert(!(await page.locator('#startDemo').isEnabled()), 'Demo must remain inert before profile selection');
 
     stage = 'hydrate-profile';
-    const orientationMs = await hydrateProfile(page, profile, title);
+    const orientationMs = await hydrateProfile(page, profile, title, entryWorkspace);
     assert(await page.locator('#workspace-home').isVisible(), 'Hydration must arrive on Home after explicit premium navigation');
     assert(await page.locator('#premiumHomeBody .premium-hero').isVisible(), 'Command Deck hero missing');
     assert.match(await page.locator('#premiumProfileLabel').textContent(), profile === 'political_campaign' ? /Political Campaign/ : /Fundraiser/);
