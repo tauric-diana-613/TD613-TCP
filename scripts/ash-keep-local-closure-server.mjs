@@ -54,6 +54,23 @@ const server = http.createServer(async (req, res) => {
     res.writeHead(204, { 'cache-control': 'no-store' });
     return res.end();
   }
+  if (url.pathname === '/__ash_keep_closure/stale-aia2-worker.js') {
+    const worker = `self.addEventListener('install', event => event.waitUntil(self.skipWaiting()));
+self.addEventListener('activate', event => event.waitUntil(self.clients.claim()));
+self.addEventListener('fetch', event => {
+  const url = new URL(event.request.url);
+  if (url.pathname === '/dome-world/ash-lifecycle.js') {
+    event.respondWith(new Response("document.documentElement.dataset.staleAia2Asset='served';", { headers:{ 'content-type':'text/javascript; charset=utf-8', 'cache-control':'public, max-age=31536000, immutable' } }));
+  }
+});
+`;
+    res.writeHead(200, {
+      'content-type':'text/javascript; charset=utf-8',
+      'cache-control':'no-store',
+      'service-worker-allowed':'/dome-world/'
+    });
+    return res.end(worker);
+  }
   if (url.pathname === '/__ash_keep_closure/readiness') {
     return sendJson(res, 200, {
       ok: true,
