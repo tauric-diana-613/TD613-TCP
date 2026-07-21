@@ -9,8 +9,8 @@ import {
 } from '../app/dome-world/ash-cache-eviction-aia3.js';
 import { runAshCacheFlush } from '../app/dome-world/ash-cache-flush.js';
 
-// User-authored exact-head trigger: adjudicate the immutable parser-stop repair without changing product behavior.
 const shellSource = fs.readFileSync('api/dome-world-shell.js', 'utf8');
+const journeySource = fs.readFileSync('scripts/ash-keep-aia3-task-journey-v3.mjs', 'utf8');
 
 test('server preflight bypasses exact legacy rollback and republishes the governed receipt', () => {
   assert.match(shellSource, /legacyPresentation/);
@@ -19,7 +19,17 @@ test('server preflight bypasses exact legacy rollback and republishes the govern
   assert.match(shellSource, /publish\(receipt\)/);
   assert.match(shellSource, /Updating Ash Keep · preserving local cases/);
   assert.match(shellSource, /td613-ash-cache-preflight-veil/);
-  assert.match(shellSource, /window.stop()/);
+  assert.match(shellSource, /window\.stop\(\)/);
+});
+
+test('browser witness waits for coherent case, pointer, membrane, and exact work', () => {
+  assert.match(journeySource, /async function waitForCaseComposition/);
+  assert.match(journeySource, /localStorage\.getItem\('td613\.ash-keep\.current-case'\) === caseId/);
+  assert.match(journeySource, /composition\?\.session_open === true/);
+  assert.match(journeySource, /composition\?\.membrane_ready === true/);
+  assert.match(journeySource, /visible\(main\) && visible\(rail\)/);
+  assert.match(journeySource, /await waitForCaseComposition\(page\)/);
+  assert.match(journeySource, /opened\.pointer === opened\.case_id/);
 });
 
 class MemoryStorage {
