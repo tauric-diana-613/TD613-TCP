@@ -1,0 +1,63 @@
+name: Ash AIA3 bounded worker registration patch
+
+on:
+  push:
+    branches:
+      - agent/ash-legal-demo-navigation-animation
+    paths:
+      - 'scripts/ash-keep-aia3-task-journey-v3.mjs'
+      - 'tests/ash-aia3-mass-eviction.test.mjs'
+      - '.github/workflows/ash-aia3-bounded-registration-patch.yml'
+
+permissions:
+  contents: write
+
+concurrency:
+  group: ash-aia3-bounded-registration-patch
+  cancel-in-progress: false
+
+jobs:
+  patch:
+    if: github.actor != 'github-actions[bot]'
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: agent/ash-legal-demo-navigation-animation
+          fetch-depth: 0
+      - name: Bound registration and activation separately
+        run: |
+          python - <<'PY'
+          from pathlib import Path
+          script = Path('scripts/ash-keep-aia3-task-journey-v3.mjs')
+          text = script.read_text()
+          old = """    const registration = await navigator.serviceWorker.register('/__ash_keep_closure/stale-aia2-worker.js', { scope:'/dome-world/' });
+              const worker = registration.installing || registration.waiting || registration.active;"""
+          new = """    const registration = await Promise.race([
+                navigator.serviceWorker.register('/__ash_keep_closure/stale-aia2-worker.js', { scope:'/dome-world/' }),
+                new Promise((_, reject) => setTimeout(() => reject(new Error('Retired AIA2 worker registration did not resolve within 20 seconds.')), 20000))
+              ]);
+              const worker = registration.installing || registration.waiting || registration.active;"""
+          if old not in text:
+              raise SystemExit('Expected worker registration block was not found.')
+          script.write_text(text.replace(old, new))
+
+          test = Path('tests/ash-aia3-mass-eviction.test.mjs')
+          test_text = test.read_text()
+          anchor = "  assert.match(journeySource, /did not activate within 20 seconds/, 'The stale-client worker activation wait must remain bounded.');"
+          addition = "\n  assert.match(journeySource, /registration did not resolve within 20 seconds/, 'The stale-client worker registration wait must remain bounded.');"
+          if 'registration did not resolve within 20 seconds' not in test_text:
+              if anchor not in test_text:
+                  raise SystemExit('Expected bounded activation contract anchor was not found.')
+              test.write_text(test_text.replace(anchor, anchor + addition))
+          PY
+          node --check scripts/ash-keep-aia3-task-journey-v3.mjs
+          node tests/ash-aia3-mass-eviction.test.mjs
+      - name: Remove one-use patch workflow and commit durable repair
+        run: |
+          rm .github/workflows/ash-aia3-bounded-registration-patch.yml
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add scripts/ash-keep-aia3-task-journey-v3.mjs tests/ash-aia3-mass-eviction.test.mjs .github/workflows/ash-aia3-bounded-registration-patch.yml
+          git commit -m 'test(ash): bound retired worker registration witness'
+          git push origin HEAD:agent/ash-legal-demo-navigation-animation
