@@ -7,10 +7,12 @@ on:
       - docs/STRATEGIC_VERCEL_DEPLOYMENT_LAW.md
       - tests/vercel-deploy-hygiene.test.mjs
       - tests/vercel-operator-release-gate.test.mjs
+      - tests/vercel-relock-safety.test.mjs
       - tests/product-architecture/shell.test.mjs
       - .github/workflows/vercel-deployment-law.yml
       - .github/workflows/vercel-operator-release.yml
-      - .github/workflows/ash-keep-aia2-production-observation.yml
+      - .github/workflows/vercel-relock-safety.yml
+      - .github/workflows/ash-keep-aia3-production-observation.yml
   push:
     branches:
       - main
@@ -19,10 +21,12 @@ on:
       - docs/STRATEGIC_VERCEL_DEPLOYMENT_LAW.md
       - tests/vercel-deploy-hygiene.test.mjs
       - tests/vercel-operator-release-gate.test.mjs
+      - tests/vercel-relock-safety.test.mjs
       - tests/product-architecture/shell.test.mjs
       - .github/workflows/vercel-deployment-law.yml
       - .github/workflows/vercel-operator-release.yml
-      - .github/workflows/ash-keep-aia2-production-observation.yml
+      - .github/workflows/vercel-relock-safety.yml
+      - .github/workflows/ash-keep-aia3-production-observation.yml
   workflow_dispatch:
 
 permissions:
@@ -45,6 +49,7 @@ jobs:
         run: |
           node tests/vercel-deploy-hygiene.test.mjs
           node tests/vercel-operator-release-gate.test.mjs
+          node tests/vercel-relock-safety.test.mjs
           node tests/product-architecture/shell.test.mjs
       - name: Reject Git-triggered deployments
         run: |
