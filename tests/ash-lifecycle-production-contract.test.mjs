@@ -2,7 +2,8 @@ import assert from 'node:assert/strict';
 import fs from 'node:fs';
 const read = path => fs.readFileSync(path, 'utf8');
 const workflow = read('.github/workflows/ash-keep-production-closure.yml');
-const probe = `${read('scripts/ash-lifecycle-production-probe.mjs')}\n${read('scripts/ash-lifecycle-production-probe-base.mjs')}`;
+const lifecycleCompiler = read('scripts/ash-lifecycle-production-probe.mjs');
+const probe = `${lifecycleCompiler}\n${read('scripts/ash-lifecycle-production-probe-base.mjs')}`;
 const convergenceRunner = read('scripts/run-ash-constitutional-convergence-probe.mjs');
 const core = read('app/dome-world/ash-keep.js');
 const controls = read('app/dome-world/ash-case-controls.js');
@@ -14,6 +15,11 @@ const roadmap = read('ROADMAP.md');
 const stretch11 = read('docs/ASH_KEEP_STRETCH11_CLOSURE_RECEIPT.md');
 for (const marker of ['Ash Lifecycle Deployed Observation','Observe deployed Ash lifecycle without promotion','CONTINUITY_SEALED','promotion remains separate']) assert.ok(workflow.includes(marker));
 for (const token of ['ARRIVAL_UNPERSISTED','CASE_BOUND','REBUILD_ELIGIBLE','RELEASE_ELIGIBLE','CONTINUITY_SEALED','promotion_authorized: false','continuity is not transport']) assert.ok(probe.includes(token));
+for (const token of ['legacy_bypass === true', "dataset.ashCachePreflight === 'complete'", 'aia3_route_required: false', 'reload_required: false']) {
+  assert.ok(lifecycleCompiler.includes(token), `Lifecycle observer omitted exact legacy-bypass contract: ${token}`);
+}
+assert.doesNotMatch(lifecycleCompiler, /current\?\.\(\)\.route === 'IMPLEMENTATION'/,
+  'Legacy lifecycle observer still requires an AIA3 route inside the rollback presentation');
 for (const token of ['window.__td613AshKeep?.version','demo_click_deferred_until_ready: true','timeout: 60000']) assert.ok(convergenceRunner.includes(token));
 assert.doesNotMatch(core, /location\.reload\(\)/);
 assert.equal(delivery, keep);
