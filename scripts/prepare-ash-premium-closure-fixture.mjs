@@ -74,7 +74,9 @@ const cleanArrivalTarget = `  const cleanKeys = await page.evaluate(() => Object
     non_read_requests: initialNonGet
   };`;
 
-const maintenanceEntries = {};
+const maintenanceEntries = {
+  'td613.ash.cache-flush.epoch':legacyEpoch
+};
 
 const cleanArrivalReplacement = `  const cleanEntries = await page.evaluate(() => Object.fromEntries(Object.entries(localStorage)));
   const cleanKeys = Object.keys(cleanEntries);
@@ -144,13 +146,13 @@ for (const required of [premiumMarker, navigationMarker, cacheMarker, 'mass_evic
 if (prepared !== original) await fs.writeFile(probePath, prepared, 'utf8');
 await fs.mkdir(path.dirname(manifestPath), { recursive: true });
 await fs.writeFile(manifestPath, `${JSON.stringify({
-  schema:'td613.ash-keep.premium-production-closure-fixture/v0.9-legacy-bypass-diagnostic',
+  schema:'td613.ash-keep.premium-production-closure-fixture/v1.0-exact-legacy-marker',
   source_probe:path.relative(repoRoot, probePath),
   posture:transformations.length ? 'PREPARED_NOW' : 'ALREADY_PREPARED',
   source_sha256:sha256(original),
   prepared_sha256:sha256(prepared),
   transformations,
-  permitted_clean_arrival_local_storage:{ entries:maintenanceEntries, classification:'NONE_UNTIL_EXACT_KEY_IDENTIFIED' },
+  permitted_clean_arrival_local_storage:{ entries:maintenanceEntries, classification:'EXACT_NON_CASE_LEGACY_CACHE_MARKER' },
   cache_navigation_required:false,
   active_document_replacement_allowed:false,
   case_pointer_allowed_before_operator_action:false,
