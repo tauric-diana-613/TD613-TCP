@@ -279,15 +279,26 @@ async function waitForAsh() {
 
 async function waitForOpenComposition(caseId) {
   await waitFor(() => {
+    const currentCaseId = host.__td613AshKeep?.current?.().case_id || null;
+    const pointer = host.localStorage?.getItem?.(POINTER_KEY) || null;
+    const premiumReady = Boolean(host.__td613AshPremiumUI?.refresh
+      && byId('premiumPrimaryDock')
+      && byId('premiumContextBar')
+      && byId('workspace-home')
+      && byId('workspace-work'));
+    if (currentCaseId !== caseId || pointer !== caseId || !premiumReady) return false;
     const composition = host.__td613AshAia3Composition?.current?.() || null;
-    return host.__td613AshKeep?.current?.().case_id === caseId
-      && composition?.session_open === true
-      && composition?.membrane_ready === true
-      && composition?.hold == null
-      && Boolean(composition?.lifecycle_state)
-      && composition?.route_count >= 4
-      && composition?.task_count >= 4;
-  }, 'Research project opened before its lifecycle and visible AIA composition converged.');
+    if (!composition) return true;
+    return composition.session_open === true
+      && composition.membrane_ready === true
+      && composition.hold == null
+      && Boolean(composition.lifecycle_state)
+      && composition.route_count >= 4
+      && composition.task_count >= 4;
+  }, 'Research project opened before its current presentation foundation converged.');
+  doc.documentElement.dataset.ashResearchCompositionPosture = host.__td613AshAia3Composition?.current?.()
+    ? 'AIA3_LIFECYCLE_BOUND'
+    : 'LEGACY_PREMIUM_BOUND';
 }
 
 function setValue(id, value) {
