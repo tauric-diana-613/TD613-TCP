@@ -4,16 +4,16 @@ if (preflight && typeof preflight.then === 'function') await preflight;
 const legacyPresentation = new URLSearchParams(location.search).get('presentation') === 'legacy';
 
 if (!legacyPresentation) {
-  document.documentElement.dataset.ashCompositionHydrating = 'true';
   if (!document.getElementById('td613-ash-composition-veil-style')) {
     const style = document.createElement('style');
     style.id = 'td613-ash-composition-veil-style';
     style.textContent = `
-      html[data-ash-composition-hydrating="true"] body>*{visibility:hidden!important}
-      html[data-ash-composition-hydrating="true"]::before{content:"Preparing Ash Keep · preserving local cases";visibility:visible!important;position:fixed;inset:0;z-index:2147483646;display:grid;place-items:center;padding:24px;background:#010806;color:#fff8da;font:600 13px/1.5 ui-monospace,monospace;letter-spacing:.04em;text-align:center}
+      html[data-ash-composition-hydrating="true"] body{opacity:0!important;pointer-events:none!important;user-select:none!important}
+      html[data-ash-composition-hydrating="true"]::before{content:"Preparing Ash Keep · preserving local cases";position:fixed;inset:0;z-index:2147483646;display:grid;place-items:center;padding:24px;background:#010806;color:#fff8da;font:600 13px/1.5 ui-monospace,monospace;letter-spacing:.04em;text-align:center}
     `;
     document.head.append(style);
   }
+  document.documentElement.dataset.ashCompositionHydrating = 'true';
 }
 
 await import('./ash-cache-flush.js?v=20260721-legal-demo-ux-v1');
