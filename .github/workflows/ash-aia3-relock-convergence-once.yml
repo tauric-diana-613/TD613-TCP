@@ -1,0 +1,147 @@
+name: Ash AIA3 Relock Convergence Once
+
+on:
+  pull_request:
+    branches: [main]
+    paths:
+      - '.github/workflows/ash-aia3-relock-convergence-once.yml'
+
+permissions:
+  contents: write
+
+jobs:
+  converge:
+    if: github.event.pull_request.head.ref == 'agent/ash-aia3-relock-convergence'
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: agent/ash-aia3-relock-convergence
+          fetch-depth: 0
+      - name: Converge on current main and close lock
+        shell: bash
+        run: |
+          set -euo pipefail
+          git fetch origin main
+          git reset --hard origin/main
+          python - <<'PY'
+          import json
+          from pathlib import Path
+
+          vercel = Path('vercel.json')
+          config = json.loads(vercel.read_text())
+          assert config.get('git', {}).get('deploymentEnabled') is True, 'Expected stranded open Vercel lock.'
+          config['git'] = {**config.get('git', {}), 'deploymentEnabled': False}
+          vercel.write_text(json.dumps(config, indent=2) + '\n')
+
+          release = Path('.github/workflows/vercel-operator-release.yml')
+          source = release.read_text()
+          old = '''      - name: Restore the Git deployment lock after fallback
+        if: always() && steps.mode.outputs.mode == 'git-fallback' && steps.fallback_release.outputs.release_sha != ''
+        id: relock
+        run: |
+          set -euo pipefail
+          node --input-type=module <<'NODE'
+          import fs from 'node:fs';
+          const path = 'vercel.json';
+          const config = JSON.parse(fs.readFileSync(path, 'utf8'));
+          config.git = { ...(config.git || {}), deploymentEnabled: false };
+          fs.writeFileSync(path, `${JSON.stringify(config, null, 2)}\\n`);
+          NODE
+          git add vercel.json
+          git commit -m "release: restore Vercel deployment lock for ${{ steps.authorize.outputs.selected_sha }}"
+          RELOCK_SHA="$(git rev-parse HEAD)"
+          git push origin HEAD:main
+          echo "relock_sha=$RELOCK_SHA" >> "$GITHUB_OUTPUT"
+'''
+          new = '''      - name: Restore the Git deployment lock after fallback
+        if: always() && steps.mode.outputs.mode == 'git-fallback' && steps.fallback_release.outputs.release_sha != ''
+        id: relock
+        run: |
+          set -euo pipefail
+          git fetch origin main
+          git reset --hard origin/main
+          git merge-base --is-ancestor "${{ steps.authorize.outputs.selected_sha }}" HEAD || {
+            echo 'Current main no longer descends from the authorized source packet.' >&2
+            exit 1
+          }
+          node --input-type=module <<'NODE'
+          import fs from 'node:fs';
+          const path = 'vercel.json';
+          const config = JSON.parse(fs.readFileSync(path, 'utf8'));
+          config.git = { ...(config.git || {}), deploymentEnabled: false };
+          fs.writeFileSync(path, `${JSON.stringify(config, null, 2)}\\n`);
+          NODE
+          if git diff --quiet -- vercel.json; then
+            RELOCK_SHA="$(git rev-parse HEAD)"
+          else
+            git add vercel.json
+            git commit -m "release: restore Vercel deployment lock for ${{ steps.authorize.outputs.selected_sha }}"
+            RELOCK_SHA="$(git rev-parse HEAD)"
+            git push origin HEAD:main
+          fi
+          echo "relock_sha=$RELOCK_SHA" >> "$GITHUB_OUTPUT"
+'''
+          assert old in source, 'Expected relock block not found.'
+          release.write_text(source.replace(old, new))
+
+          test = Path('tests/vercel-operator-release-gate.test.mjs')
+          source = test.read_text()
+          marker = "assert.match(workflow, /Restore the Git deployment lock after fallback/);\n"
+          addition = marker + "assert.match(workflow, /git fetch origin main/);\nassert.match(workflow, /git reset --hard origin\/main/);\nassert.match(workflow, /git merge-base --is-ancestor/);\n"
+          assert marker in source
+          test.write_text(source.replace(marker, addition))
+
+          stitch = Path('.github/workflows/flowcore-p0-p10-final-stitch.yml')
+          source = stitch.read_text()
+          source = source.replace("      - 'app/dome-world/docs/ASH_KEEP_AIA3_RELEASE_RECONCILIATION_RECEIPT_V0_1.md'\n", "      - 'app/dome-world/docs/ASH_KEEP_AIA3_RELEASE_RECONCILIATION_RECEIPT_V0_1.md'\n      - 'app/dome-world/docs/ASH_KEEP_AIA3_RELOCK_CONVERGENCE_RECEIPT_V0_1.md'\n      - 'vercel.json'\n")
+          source = source.replace("            && ! grep -Fxq 'app/dome-world/docs/ASH_KEEP_AIA3_RELEASE_RECONCILIATION_RECEIPT_V0_1.md' <<< \"$CHANGED\"; then", "            && ! grep -Fxq 'app/dome-world/docs/ASH_KEEP_AIA3_RELEASE_RECONCILIATION_RECEIPT_V0_1.md' <<< \"$CHANGED\" \\\n            && ! grep -Fxq 'app/dome-world/docs/ASH_KEEP_AIA3_RELOCK_CONVERGENCE_RECEIPT_V0_1.md' <<< \"$CHANGED\"; then")
+          source = source.replace("          app/dome-world/docs/ASH_KEEP_AIA3_RELEASE_RECONCILIATION_RECEIPT_V0_1.md\n", "          app/dome-world/docs/ASH_KEEP_AIA3_RELEASE_RECONCILIATION_RECEIPT_V0_1.md\n          app/dome-world/docs/ASH_KEEP_AIA3_RELOCK_CONVERGENCE_RECEIPT_V0_1.md\n")
+          source = source.replace("          tests/vercel-operator-release-gate.test.mjs\n", "          tests/vercel-operator-release-gate.test.mjs\n          vercel.json\n")
+          source = source.replace("          if grep -Eq '^(api/|vercel\\.json$|app/dome-world/ash/|app/dome-world/data/)' <<< \"$CHANGED\"; then", "          if grep -Eq '^(api/|app/dome-world/ash/|app/dome-world/data/)' <<< \"$CHANGED\"; then")
+          stitch.write_text(source)
+
+          receipt = Path('app/dome-world/docs/ASH_KEEP_AIA3_RELOCK_CONVERGENCE_RECEIPT_V0_1.md')
+          receipt.write_text('''# Ash Keep AIA3 Relock Convergence Receipt v0.1
+
+𝌋‌ U+10D613
+
+## Status
+
+```text
+packet: ASH_KEEP_AIA3_RELOCK_CONVERGENCE
+status: IMPLEMENTED / PRE-MERGE / CI-GATED
+source_packet_commit: eef583bd28e1d3baf93e3208818bbc1fb5279272
+release_commit: 03b1191de58e1f7cab352c87ee47c845d89d6134
+Vercel deployment: SUCCESS
+concurrent main preserved: true
+Git auto-deploy before repair: enabled
+Git auto-deploy after repair: disabled
+application source changed by packet: false
+Ash lifecycle changed: false
+canonical digest law changed: false
+Case Map changed: false
+serverless allocation changed: false
+human closure required: true
+closure: OPEN
+```
+
+The bounded deployment succeeded, but concurrent observer-only commits advanced `main` after the transient release commit and before the release job could fast-forward its local relock commit. This packet restores the lock on top of current `main` and hardens the permanent release workflow to fetch and reset to live `origin/main` before closing the lock.
+
+```text
+successful deployment ≠ permission to leave Git auto-deploy open
+concurrent main advancement ≠ permission to overwrite or strand work
+relock convergence = latest main + lock false
+```
+
+No second deployment is authorized or required by this repair.
+
+Sealed ⟐
+''')
+          PY
+          rm -f .github/workflows/ash-aia3-relock-convergence-once.yml
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add vercel.json .github/workflows/vercel-operator-release.yml .github/workflows/flowcore-p0-p10-final-stitch.yml tests/vercel-operator-release-gate.test.mjs app/dome-world/docs/ASH_KEEP_AIA3_RELOCK_CONVERGENCE_RECEIPT_V0_1.md .github/workflows/ash-aia3-relock-convergence-once.yml
+          git commit -m 'Repair AIA3 release relock convergence'
+          git push --force-with-lease origin HEAD:agent/ash-aia3-relock-convergence
