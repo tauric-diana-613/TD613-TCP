@@ -22,6 +22,12 @@ test('server preflight bypasses exact legacy rollback and republishes the govern
   assert.match(shellSource, /window\.stop\(\)/);
 });
 
+test('browser witness is bound to the exact current Legal UX delivery epochs', () => {
+  assert.match(journeySource, /const EPOCH = '20260721-legal-demo-ux-v1'/);
+  assert.match(journeySource, /const CACHE_EPOCH = 'td613\.ash\.cache-flush\/2026-07-21-legal-demo-ux-v1'/);
+  assert.doesNotMatch(journeySource, /20260720-aia3-mass-eviction-v2/);
+});
+
 test('browser witness waits for coherent case, pointer, membrane, and exact work', () => {
   assert.match(journeySource, /async function waitForCaseComposition/);
   assert.match(journeySource, /localStorage\.getItem\('td613\.ash-keep\.current-case'\) === caseId/);
