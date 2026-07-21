@@ -35,9 +35,7 @@ const COMMON = Object.freeze({
 
 export const ASH_DEMO_PEDAGOGY_MANIFESTS = Object.freeze({
   investigation: Object.freeze({
-    profile:'investigation',
-    label:'Investigation',
-    title:'Preserve before alleging.',
+    profile:'investigation', label:'Investigation', title:'Preserve before alleging.',
     consequence:'Ash keeps originals, contradictions, alternatives, and source boundaries visible before any finding.',
     stress_question:'Can the interface support urgent inquiry work without turning a difference into identity, intent, guilt, authorship, or truth?',
     entry_workspace:'home',
@@ -48,20 +46,12 @@ export const ASH_DEMO_PEDAGOGY_MANIFESTS = Object.freeze({
       step('Human-review finding', 'Prepare one nonaccusatory derivative while identity, intent, guilt, and truth remain outside the claim ceiling.', 'draft')
     ]),
     active_workspaces:Object.freeze(['home','custody','map','rooms','routes','test','work','choir','draft','save']),
-    destination_copy:Object.freeze({
-      home:'Read mandate, evidence gaps, and the next preservation duty.',
-      map:'Inspect provenance, chronology, contradictions, and competing explanations.',
-      work:'Route preservation, interview, comparison, and review tasks.',
-      choir:'Compare remembered routes without converting residue into attribution.',
-      capsule:'Inspect continuity posture; sealing remains a separate human gesture.'
-    }),
+    destination_copy:Object.freeze({ home:'Read mandate, evidence gaps, and the next preservation duty.', map:'Inspect provenance, chronology, contradictions, and competing explanations.', work:'Route preservation, interview, comparison, and review tasks.', choir:'Compare remembered routes without converting residue into attribution.', capsule:'Inspect continuity posture; sealing remains a separate human gesture.' }),
     keep_quiet:'Provider output, release approval, passphrases, invented novelty, and automatic findings stay dormant.',
     claim_ceiling:'No identity, intent, guilt, authorship, surveillance probability, or truth finding.'
   }),
   political_campaign: Object.freeze({
-    profile:'political_campaign',
-    label:'Political Campaign',
-    title:'Separate public launch facts from the private campaign map.',
+    profile:'political_campaign', label:'Political Campaign', title:'Separate public launch facts from the private campaign map.',
     consequence:'Ash preserves mandate, compliance, field, fundraising, and message joins while routing only the public facts each recipient needs.',
     stress_question:'Can the interface move launch work quickly without leaking donor, host, targeting, security, or route-order joins?',
     entry_workspace:'map',
@@ -72,20 +62,12 @@ export const ASH_DEMO_PEDAGOGY_MANIFESTS = Object.freeze({
       step('Human-review claim', 'Prepare one bounded public derivative without voter-intent or election prediction claims.', 'draft')
     ]),
     active_workspaces:Object.freeze(['home','map','rooms','routes','work','draft','test','choir','save']),
-    destination_copy:Object.freeze({
-      home:'Read launch authority, open decisions, and the next bounded action.',
-      map:'Inspect mandate, electorate, finance, field, message, safety, and claims together.',
-      work:'Route launch approvals, field gaps, compliance, and message review.',
-      choir:'Assay route combinations without recovering donor, host, or targeting joins.',
-      capsule:'Inspect continuity; campaign release remains separately authorized.'
-    }),
+    destination_copy:Object.freeze({ home:'Read launch authority, open decisions, and the next bounded action.', map:'Inspect mandate, electorate, finance, field, message, safety, and claims together.', work:'Route launch approvals, field gaps, compliance, and message review.', choir:'Assay route combinations without recovering donor, host, or targeting joins.', capsule:'Inspect continuity; campaign release remains separately authorized.' }),
     keep_quiet:'Private donor/host sequences, provider generation, release approval, passphrases, and election prediction stay dormant.',
     claim_ceiling:'No voter intent, donor identity, persuasion effect, or election prediction.'
   }),
   fundraiser: Object.freeze({
-    profile:'fundraiser',
-    label:'Fundraiser',
-    title:'Move the ask without moving the relationship map.',
+    profile:'fundraiser', label:'Fundraiser', title:'Move the ask without moving the relationship map.',
     consequence:'Ash keeps revenue, donor, guest, sponsor, payment, and stewardship joins local while exposing the next human-reviewed action.',
     stress_question:'Can the interface support a time-bound fundraising sprint without turning prospects, payments, guests, or asks into inferred intent?',
     entry_workspace:'work',
@@ -96,20 +78,12 @@ export const ASH_DEMO_PEDAGOGY_MANIFESTS = Object.freeze({
       step('Human-review ask', 'Prepare bounded ask language while donor intent, payment status, and conversion prediction remain held.', 'draft')
     ]),
     active_workspaces:Object.freeze(['home','work','map','rooms','routes','draft','test','choir','save']),
-    destination_copy:Object.freeze({
-      home:'Read the revenue gap, open commitments, and next approved ask.',
-      map:'Inspect goals, donors, hosts, sponsors, guests, payments, and stewardship.',
-      work:'Route asks, approvals, seat assignments, reconciliation, and follow-up.',
-      choir:'Compare route combinations without reconstructing the private relationship map.',
-      capsule:'Inspect continuity; donor and guest data never become a portable default.'
-    }),
+    destination_copy:Object.freeze({ home:'Read the revenue gap, open commitments, and next approved ask.', map:'Inspect goals, donors, hosts, sponsors, guests, payments, and stewardship.', work:'Route asks, approvals, seat assignments, reconciliation, and follow-up.', choir:'Compare route combinations without reconstructing the private relationship map.', capsule:'Inspect continuity; donor and guest data never become a portable default.' }),
     keep_quiet:'Prospect identity, payment status, provider output, release approval, passphrases, and conversion prediction stay dormant.',
     claim_ceiling:'No donor intent, payment status, guest identity, or conversion prediction.'
   }),
   research: Object.freeze({
-    profile:'research',
-    label:'Research Project',
-    title:'Make the method inspectable before making the claim.',
+    profile:'research', label:'Research Project', title:'Make the method inspectable before making the claim.',
     consequence:'Ash keeps question, provenance, ethics, nulls, alternatives, reproducibility, and route limits visible before publication language hardens.',
     stress_question:'Can the interface hold methods, nulls, consent, missingness, and replication gaps together without over-hydrating unsupported conclusions?',
     entry_workspace:'map',
@@ -120,13 +94,7 @@ export const ASH_DEMO_PEDAGOGY_MANIFESTS = Object.freeze({
       step('Human-review publication', 'Prepare a bounded claim while null-compatible outcomes and generalization limits remain visible.', 'draft')
     ]),
     active_workspaces:Object.freeze(['home','map','rooms','routes','test','choir','work','draft','save','custody']),
-    destination_copy:Object.freeze({
-      home:'Read the question, commitments, evidence posture, and next methodological duty.',
-      map:'Inspect sources, methods, data, ethics, coding, models, results, alternatives, and replication.',
-      work:'Route preservation, calibration, ablation, retest, and claim-review tasks.',
-      choir:'Compare review routes without turning reconstruction into validity or truth.',
-      capsule:'Inspect continuity; archive and publication remain separately authorized.'
-    }),
+    destination_copy:Object.freeze({ home:'Read the question, commitments, evidence posture, and next methodological duty.', map:'Inspect sources, methods, data, ethics, coding, models, results, alternatives, and replication.', work:'Route preservation, calibration, ablation, retest, and claim-review tasks.', choir:'Compare review routes without turning reconstruction into validity or truth.', capsule:'Inspect continuity; archive and publication remain separately authorized.' }),
     keep_quiet:'Provider output, release approval, passphrases, invented novelty, and universal generalization stay dormant.',
     claim_ceiling:'No universal generalization, causal certainty, validity inflation, or policy prediction.'
   })
@@ -171,10 +139,10 @@ function nodeVisible(node) {
 
 function dormantState(node) {
   if (!node) return 'MISSING';
-  const empty = 'value' in node ? String(node.value || '').trim() === '' : true;
-  const unchecked = 'checked' in node ? node.checked === false : true;
-  const held = node.disabled || node.getAttribute('aria-disabled') === 'true' || (empty && unchecked);
-  return held ? 'DORMANT_OK' : 'DRIFT';
+  if ('checked' in node) return node.checked ? 'DRIFT' : 'DORMANT_OK';
+  if (node.disabled || node.getAttribute('aria-disabled') === 'true') return 'DORMANT_OK';
+  if ('value' in node) return String(node.value || '').trim() === '' ? 'DORMANT_OK' : 'DRIFT';
+  return 'DORMANT_OK';
 }
 
 function inspectSurface(item, expected) {
@@ -183,32 +151,22 @@ function inspectSurface(item, expected) {
   if (expected === 'GESTURE_READY' && node) state = !node.disabled && node.getAttribute('aria-disabled') !== 'true' ? 'READY' : 'HELD';
   if (expected === 'LIFECYCLE_HELD' && node) state = node.disabled || node.getAttribute('aria-disabled') === 'true' ? 'HELD' : 'READY_AFTER_SEQUENCE';
   if (expected === 'INTENTIONALLY_DORMANT') state = dormantState(node);
-  if (expected === 'SEPARATE_BOUNDARY' && node) state = node instanceof HTMLAnchorElement ? 'SEPARATE' : 'DRIFT';
+  if (expected === 'SEPARATE_BOUNDARY' && node) state = node.tagName === 'A' ? 'SEPARATE' : 'DRIFT';
   return Object.freeze({ ...item, expected, state, visible:nodeVisible(node) });
 }
 
 function auditManifest(manifest) {
   const hydrated = manifest.active_workspaces.map(workspace => Object.freeze({
-    id:`workspace_${workspace}`,
-    label:workspace.replaceAll('_',' '),
-    selector:`#workspace-${workspace}`,
-    reason:manifest.destination_copy[workspace] || 'Profile workspace remains available.',
-    expected:'HYDRATED_VIEW',
-    state:byId(`workspace-${workspace}`) ? 'PRESENT' : 'MISSING',
-    visible:nodeVisible(byId(`workspace-${workspace}`))
+    id:`workspace_${workspace}`, label:workspace.replaceAll('_',' '), selector:`#workspace-${workspace}`,
+    reason:manifest.destination_copy[workspace] || 'Profile workspace remains available.', expected:'HYDRATED_VIEW',
+    state:byId(`workspace-${workspace}`) ? 'PRESENT' : 'MISSING', visible:nodeVisible(byId(`workspace-${workspace}`))
   }));
   const gesture = COMMON.gesture_ready.map(item => inspectSurface(item, 'GESTURE_READY'));
   const held = COMMON.lifecycle_held.map(item => inspectSurface(item, 'LIFECYCLE_HELD'));
   const dormant = COMMON.intentionally_dormant.map(item => inspectSurface(item, 'INTENTIONALLY_DORMANT'));
   const separate = COMMON.separate_boundary.map(item => inspectSurface(item, 'SEPARATE_BOUNDARY'));
   const all = [...hydrated, ...gesture, ...held, ...dormant, ...separate];
-  return Object.freeze({
-    profile:manifest.profile,
-    version:ASH_DEMO_PEDAGOGY_VERSION,
-    hydrated, gesture_ready:gesture, lifecycle_held:held, intentionally_dormant:dormant, separate_boundary:separate,
-    missing:all.filter(item => item.state === 'MISSING').map(item => item.id),
-    drift:all.filter(item => item.state === 'DRIFT').map(item => item.id)
-  });
+  return Object.freeze({ profile:manifest.profile, version:ASH_DEMO_PEDAGOGY_VERSION, hydrated, gesture_ready:gesture, lifecycle_held:held, intentionally_dormant:dormant, separate_boundary:separate, missing:all.filter(item => item.state === 'MISSING').map(item => item.id), drift:all.filter(item => item.state === 'DRIFT').map(item => item.id) });
 }
 
 function group(label, items) {
@@ -232,9 +190,7 @@ function openWorkspace(name) {
 
 function updateMotionLabels(manifest) {
   const labels = manifest.task_spine.map(item => item.label);
-  doc.querySelectorAll('.ash-ux-motion-node b').forEach((node, index) => {
-    if (labels[index] && node.textContent !== labels[index]) node.textContent = labels[index];
-  });
+  doc.querySelectorAll('.ash-ux-motion-node b').forEach((node, index) => { if (labels[index] && node.textContent !== labels[index]) node.textContent = labels[index]; });
 }
 
 function decorateDestinations(manifest) {
@@ -261,11 +217,7 @@ function render(manifest) {
     home.querySelector('.workspace-head')?.insertAdjacentElement('afterend', panel);
   }
   panel.dataset.profile = manifest.profile;
-  panel.innerHTML = `
-    <header><div><p class="premium-kicker">${manifest.label} · child-legible profile route</p><h3>${manifest.title}</h3><p>${manifest.consequence}</p><p><strong>Stress question:</strong> ${manifest.stress_question}</p></div><span class="ash-demo-pedagogy__chip">${manifest.entry_workspace} first</span></header>
-    <ol class="ash-demo-pedagogy__steps">${manifest.task_spine.map((item,index) => `<li><button type="button" data-demo-pedagogy-workspace="${item.workspace}" data-demo-step="${index}" data-current="${doc.documentElement.dataset.ashPremiumWorkspace === item.workspace}"><span>${index + 1} · ${item.workspace}</span><strong>${item.label}</strong><small>${item.detail}</small></button></li>`).join('')}</ol>
-    <details class="ash-demo-pedagogy__ledger"><summary>Hydration ledger · what should work, wait, stay quiet, or remain separate</summary><div class="ash-demo-pedagogy__groups">${group('Hydrated now', audit.hydrated)}${group('Ready for gesture', audit.gesture_ready)}${group('Held by sequence', audit.lifecycle_held)}${group('Quiet on purpose', audit.intentionally_dormant)}${group('Separate boundary', audit.separate_boundary)}</div><p>${manifest.keep_quiet}</p></details>
-    <p class="ash-demo-pedagogy__ceiling">Claim ceiling · ${manifest.claim_ceiling}</p>`;
+  panel.innerHTML = `<header><div><p class="premium-kicker">${manifest.label} · child-legible profile route</p><h3>${manifest.title}</h3><p>${manifest.consequence}</p><p><strong>Stress question:</strong> ${manifest.stress_question}</p></div><span class="ash-demo-pedagogy__chip">${manifest.entry_workspace} first</span></header><ol class="ash-demo-pedagogy__steps">${manifest.task_spine.map((item,index) => `<li><button type="button" data-demo-pedagogy-workspace="${item.workspace}" data-demo-step="${index}" data-current="${doc.documentElement.dataset.ashPremiumWorkspace === item.workspace}"><span>${index + 1} · ${item.workspace}</span><strong>${item.label}</strong><small>${item.detail}</small></button></li>`).join('')}</ol><details class="ash-demo-pedagogy__ledger"><summary>Hydration ledger · what should work, wait, stay quiet, or remain separate</summary><div class="ash-demo-pedagogy__groups">${group('Hydrated now', audit.hydrated)}${group('Ready for gesture', audit.gesture_ready)}${group('Held by sequence', audit.lifecycle_held)}${group('Quiet on purpose', audit.intentionally_dormant)}${group('Separate boundary', audit.separate_boundary)}</div><p>${manifest.keep_quiet}</p></details><p class="ash-demo-pedagogy__ceiling">Claim ceiling · ${manifest.claim_ceiling}</p>`;
   doc.documentElement.dataset.ashPedagogyProfile = manifest.profile;
   doc.documentElement.dataset.ashPedagogyVersion = ASH_DEMO_PEDAGOGY_VERSION;
   doc.documentElement.dataset.ashPedagogyAudit = JSON.stringify({ missing:audit.missing, drift:audit.drift });
@@ -302,21 +254,11 @@ export function installAshDemoPedagogy(docArg = document, hostArg = window) {
     event.preventDefault();
     openWorkspace(button.dataset.demoPedagogyWorkspace);
   }, true);
-  for (const type of ['profile-demo-hydrated','case-opened','case-created','aia3-readiness-changed','ux-workspace-opened','lifecycle-updated','explanation-frame']) {
-    hostArg.addEventListener(`td613:ash:${type}`, schedule);
-  }
-  new MutationObserver(records => {
-    if (records.some(record => record.addedNodes.length || record.removedNodes.length)) schedule();
-  }).observe(docArg.body, { childList:true, subtree:true });
+  for (const type of ['profile-demo-hydrated','case-opened','case-created','aia3-readiness-changed','ux-workspace-opened','lifecycle-updated','explanation-frame']) hostArg.addEventListener(`td613:ash:${type}`, schedule);
+  new MutationObserver(records => { if (records.some(record => record.addedNodes.length || record.removedNodes.length)) schedule(); }).observe(docArg.body, { childList:true, subtree:true });
   hostArg.__td613AshDemoPedagogy = Object.freeze({
-    version:ASH_DEMO_PEDAGOGY_VERSION,
-    profiles:PROFILE_ORDER,
-    manifests:ASH_DEMO_PEDAGOGY_MANIFESTS,
-    hydrate:profile => {
-      if (!ASH_DEMO_PEDAGOGY_MANIFESTS[profile]) throw new Error(`No pedagogy manifest for ${profile}.`);
-      docArg.documentElement.dataset.ashDemoProfile = profile;
-      return render(ASH_DEMO_PEDAGOGY_MANIFESTS[profile]);
-    },
+    version:ASH_DEMO_PEDAGOGY_VERSION, profiles:PROFILE_ORDER, manifests:ASH_DEMO_PEDAGOGY_MANIFESTS,
+    hydrate:profile => { if (!ASH_DEMO_PEDAGOGY_MANIFESTS[profile]) throw new Error(`No pedagogy manifest for ${profile}.`); docArg.documentElement.dataset.ashDemoProfile = profile; return render(ASH_DEMO_PEDAGOGY_MANIFESTS[profile]); },
     audit:profile => auditManifest(ASH_DEMO_PEDAGOGY_MANIFESTS[profile || currentProfile()]),
     current:() => hostArg.__td613AshDemoPedagogyState || null,
     open:openWorkspace
