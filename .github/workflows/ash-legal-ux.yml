@@ -4,6 +4,7 @@ on:
   pull_request:
     paths:
       - 'app/dome-world/ash-legal-profile-demo.js'
+      - 'app/dome-world/ash-legal-demo-control-state.js'
       - 'app/dome-world/ash-ui-ux-rescue.js'
       - 'app/dome-world/ash-flicker-hardening.js'
       - 'app/dome-world/ash-aia3-composition.js'
@@ -11,12 +12,14 @@ on:
       - 'app/dome-world/ash-profile-demo-hydration.js'
       - 'app/dome-world/ash-workspace-bridge.js'
       - 'tests/ash-legal-ux.test.mjs'
+      - 'tests/ash-legal-control-state.test.mjs'
       - 'scripts/ash-legal-ux-browser-probe.mjs'
       - '.github/workflows/ash-legal-ux.yml'
   push:
     branches: [main]
     paths:
       - 'app/dome-world/ash-legal-profile-demo.js'
+      - 'app/dome-world/ash-legal-demo-control-state.js'
       - 'app/dome-world/ash-ui-ux-rescue.js'
       - 'app/dome-world/ash-flicker-hardening.js'
       - 'app/dome-world/ash-aia3-composition.js'
@@ -24,6 +27,7 @@ on:
       - 'app/dome-world/ash-profile-demo-hydration.js'
       - 'app/dome-world/ash-workspace-bridge.js'
       - 'tests/ash-legal-ux.test.mjs'
+      - 'tests/ash-legal-control-state.test.mjs'
       - 'scripts/ash-legal-ux-browser-probe.mjs'
       - '.github/workflows/ash-legal-ux.yml'
   workflow_dispatch:
@@ -46,9 +50,12 @@ jobs:
           node-version: 24
           cache: npm
       - run: npm ci
-      - run: node tests/ash-legal-ux.test.mjs
+      - run: |
+          node tests/ash-legal-ux.test.mjs
+          node tests/ash-legal-control-state.test.mjs
       - run: |
           node --check app/dome-world/ash-legal-profile-demo.js
+          node --check app/dome-world/ash-legal-demo-control-state.js
           node --check app/dome-world/ash-ui-ux-rescue.js
           node --check app/dome-world/ash-flicker-hardening.js
           node --check app/dome-world/ash-aia3-composition.js
