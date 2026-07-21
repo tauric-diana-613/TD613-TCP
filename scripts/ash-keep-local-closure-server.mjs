@@ -3,6 +3,7 @@ import fs from 'node:fs/promises';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { stabilizeAshKeepSource } from '../app/dome-world/ash-keep-delivery-transform.js';
+import { injectAshKeepLifecycle, ASH_LIFECYCLE_ASSET_EPOCH, ASH_MASS_EVICTION_EPOCH } from '../api/dome-world-shell.js';
 
 const here = path.dirname(fileURLToPath(import.meta.url));
 const repoRoot = path.resolve(here, '..');
@@ -38,10 +39,11 @@ function resolvePublicPath(pathname) {
   return pathname.replace(/^\//, '');
 }
 
-function sendJson(res, status, payload) {
+function sendJson(res, status, payload, headers = {}) {
   res.writeHead(status, {
     'content-type': 'application/json; charset=utf-8',
-    'cache-control': 'no-store'
+    'cache-control': 'no-store',
+    ...headers
   });
   res.end(`${JSON.stringify(payload)}\n`);
 }
@@ -55,13 +57,30 @@ const server = http.createServer(async (req, res) => {
   if (url.pathname === '/__ash_keep_closure/readiness') {
     return sendJson(res, 200, {
       ok: true,
-      schema: 'td613.ash-keep.local-closure-readiness/v0.3-canonical-cache-browser-receipt',
+      schema: 'td613.ash-keep.local-closure-readiness/v0.4-aia3-mass-eviction',
       recipient_transport: false,
       provider_route: false,
       production_promotion: false,
       ash_keep_delivery_transform: true,
-      cache_navigation_required: false,
-      browser_state_read_via_page_evaluate: true
+      cache_navigation_required: true,
+      browser_state_read_via_page_evaluate: true,
+      lifecycle_asset_epoch: ASH_LIFECYCLE_ASSET_EPOCH,
+      mass_eviction_epoch: ASH_MASS_EVICTION_EPOCH
+    });
+  }
+  if (url.pathname === '/api/dome-world-shell' && url.searchParams.get('surface') === 'cache-evict') {
+    return sendJson(res, 200, {
+      ok:true,
+      schema:'td613.ash.cache-transition-response/v0.5-aia3-mass-eviction',
+      scope:'HTTP_CACHE_AND_SERVICE_WORKER_CLIENT_EVICTION',
+      indexeddb_preserved:true,
+      case_data_preserved:true,
+      active_session_reset_by_client:false,
+      lifecycle_asset_epoch:ASH_LIFECYCLE_ASSET_EPOCH,
+      mass_eviction_epoch:ASH_MASS_EVICTION_EPOCH
+    }, {
+      'clear-site-data':'"cache"',
+      'x-td613-ash-cache-preflight':ASH_MASS_EVICTION_EPOCH
     });
   }
   if (req.method !== 'GET' && req.method !== 'HEAD') return sendJson(res, 405, { ok: false, error: 'method-not-allowed' });
@@ -86,10 +105,17 @@ const server = http.createServer(async (req, res) => {
     if (url.pathname === '/dome-world/ash-keep.js') {
       body = Buffer.from(stabilizeAshKeepSource(body.toString('utf8')), 'utf8');
     }
+    if (url.pathname === '/dome-world/ash-keep.html') {
+      body = Buffer.from(injectAshKeepLifecycle(body.toString('utf8')), 'utf8');
+    }
     res.writeHead(200, {
       'content-type': MIME_TYPES[extension] || 'application/octet-stream',
       'cache-control': 'no-store',
-      ...(url.pathname === '/dome-world/ash-keep.js' ? { 'x-td613-ash-map-scheduler': 'EVENT_DRIVEN_COALESCED' } : {})
+      ...(url.pathname === '/dome-world/ash-keep.js' ? { 'x-td613-ash-map-scheduler': 'EVENT_DRIVEN_COALESCED' } : {}),
+      ...(url.pathname === '/dome-world/ash-keep.html' ? {
+        'x-td613-ash-lifecycle-asset':ASH_LIFECYCLE_ASSET_EPOCH,
+        'x-td613-ash-cache-preflight':ASH_MASS_EVICTION_EPOCH
+      } : {})
     });
     if (req.method === 'HEAD') return res.end();
     return res.end(body);
