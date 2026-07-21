@@ -81,13 +81,29 @@ async function workspaceState(page, workspace) {
   }, workspace);
 }
 
+async function waitForWorkspaceGeometry(page, workspace) {
+  await page.waitForFunction(name => {
+    const panel = document.getElementById(`workspace-${name}`);
+    if (!panel?.classList.contains('active')) return false;
+    const style = getComputedStyle(panel);
+    const rect = panel.getBoundingClientRect();
+    return document.documentElement.dataset.ashUxScrollTarget === name
+      && document.documentElement.dataset.ashPremiumWorkspace === name
+      && style.display !== 'none'
+      && style.visibility !== 'hidden'
+      && Number(style.opacity) > 0
+      && rect.width > 0
+      && rect.height > 0;
+  }, workspace);
+  await page.evaluate(() => new Promise(resolve => requestAnimationFrame(() => requestAnimationFrame(resolve))));
+}
+
 async function openWorkDock(page) {
   const current = await page.evaluate(() => document.documentElement.dataset.ashPremiumWorkspace || null);
   if (current !== 'work') {
     const button = page.locator('#premiumPrimaryDock [data-premium-workspace="work"]');
     await button.click();
-    await page.waitForFunction(() => document.documentElement.dataset.ashUxScrollTarget === 'work'
-      && document.getElementById('workspace-work')?.classList.contains('active'));
+    await waitForWorkspaceGeometry(page, 'work');
   }
   await page.locator('#researchHydrationLedger').waitFor({ state:'visible' });
 }
@@ -95,14 +111,14 @@ async function openWorkDock(page) {
 async function openFromLedger(page, workspace) {
   if (workspace === 'work') {
     await openWorkDock(page);
+    await waitForWorkspaceGeometry(page, 'work');
     return workspaceState(page, 'work');
   }
   await openWorkDock(page);
   const button = page.locator(`[data-research-open="${workspace}"]`).first();
   await button.scrollIntoViewIfNeeded();
   await button.click();
-  await page.waitForFunction(name => document.documentElement.dataset.ashUxScrollTarget === name
-    && document.getElementById(`workspace-${name}`)?.classList.contains('active'), workspace);
+  await waitForWorkspaceGeometry(page, workspace);
   return workspaceState(page, workspace);
 }
 
@@ -113,7 +129,7 @@ const page = await context.newPage();
 page.setDefaultTimeout(60_000);
 
 const report = {
-  schema:'td613.ash.research-ux-browser-evidence/v0.1-child-legible-surface-ledger',
+  schema:'td613.ash.research-ux-browser-evidence/v0.2-composed-workspace-geometry',
   browser:browserName,
   status:'RUNNING',
   console_errors:[],
