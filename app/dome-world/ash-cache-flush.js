@@ -6,6 +6,8 @@ const RECEIPT_KEY = 'td613.ash.cache-flush.receipt';
 const READINESS_KEY = 'td613:ash-threshold:readiness:v0.1';
 const POINTER_KEY = 'td613.ash-keep.current-case';
 const SESSION_EPOCH_KEY = 'td613.ash.session.epoch';
+const MASS_EVICTION_MARKER_KEYS = ['td613.ash.cache-flush.aia3.epoch', 'td613.ash.cache-preflight.epoch'];
+const MASS_EVICTION_EPOCH = 'td613.ash.cache-flush/2026-07-20-aia3-mass-eviction-v2';
 const ASSET_EPOCH = '20260718-canonical-membrane-v7-readiness-boundary';
 const EVICTION_ROUTE = '/api/dome-world-shell?surface=cache-evict';
 const LOCAL_HOSTS = new Set(['localhost', '127.0.0.1', '[::1]']);
@@ -17,6 +19,11 @@ const READINESS_ROUTES = new Set(['/dome-world/ash-threshold.html', '/dome-world
 function readMarker(host = globalThis) {
   try { return host.localStorage?.getItem?.(MARKER_KEY) || null; }
   catch { return null; }
+}
+
+function massEvictionCurrent(host = globalThis) {
+  try { return MASS_EVICTION_MARKER_KEYS.some(key => host.localStorage?.getItem?.(key) === MASS_EVICTION_EPOCH); }
+  catch { return false; }
 }
 
 function writeMarker(host = globalThis) {
@@ -156,7 +163,9 @@ async function unregisterSameOriginWorkers(host = globalThis) {
 }
 
 export async function runAshCacheFlush(host = globalThis) {
-  if (!host?.location || readMarker(host) === ASH_CACHE_FLUSH_EPOCH) {
+  const supersededByMassEviction = massEvictionCurrent(host);
+  if (!host?.location || readMarker(host) === ASH_CACHE_FLUSH_EPOCH || supersededByMassEviction) {
+    if (supersededByMassEviction) writeMarker(host);
     const transition_url_cleaned = cleanTransitionUrl(host);
     const receipt = Object.freeze({
       schema:'td613.ash.cache-transition-receipt/v0.7-readiness-boundary',
@@ -167,6 +176,7 @@ export async function runAshCacheFlush(host = globalThis) {
       indexeddb_preserved:true,
       case_data_preserved:true,
       active_session_reset:false,
+      superseded_by_mass_eviction:supersededByMassEviction,
       readiness_receipt_preserved:Boolean(host.sessionStorage?.getItem?.(READINESS_KEY)),
       transition_url_cleaned
     });
