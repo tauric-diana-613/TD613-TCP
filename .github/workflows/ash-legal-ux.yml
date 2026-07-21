@@ -1,0 +1,98 @@
+name: Ash Legal Demo and UX Rescue
+
+on:
+  pull_request:
+    paths:
+      - 'app/dome-world/ash-legal-profile-demo.js'
+      - 'app/dome-world/ash-ui-ux-rescue.js'
+      - 'app/dome-world/ash-flicker-hardening.js'
+      - 'app/dome-world/ash-lifecycle.js'
+      - 'app/dome-world/ash-profile-demo-hydration.js'
+      - 'app/dome-world/ash-workspace-bridge.js'
+      - 'tests/ash-legal-ux.test.mjs'
+      - 'scripts/ash-legal-ux-browser-probe.mjs'
+      - '.github/workflows/ash-legal-ux.yml'
+  push:
+    branches: [main]
+    paths:
+      - 'app/dome-world/ash-legal-profile-demo.js'
+      - 'app/dome-world/ash-ui-ux-rescue.js'
+      - 'app/dome-world/ash-flicker-hardening.js'
+      - 'app/dome-world/ash-lifecycle.js'
+      - 'app/dome-world/ash-profile-demo-hydration.js'
+      - 'app/dome-world/ash-workspace-bridge.js'
+      - 'tests/ash-legal-ux.test.mjs'
+      - 'scripts/ash-legal-ux-browser-probe.mjs'
+      - '.github/workflows/ash-legal-ux.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: ash-legal-ux-${{ github.event.pull_request.number || github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  static-contract:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 24
+          cache: npm
+      - run: npm ci
+      - run: node tests/ash-legal-ux.test.mjs
+      - run: |
+          node --check app/dome-world/ash-legal-profile-demo.js
+          node --check app/dome-world/ash-ui-ux-rescue.js
+          node --check app/dome-world/ash-flicker-hardening.js
+          node --check app/dome-world/ash-lifecycle.js
+          node --check scripts/ash-legal-ux-browser-probe.mjs
+
+  browser-witness:
+    runs-on: ubuntu-latest
+    timeout-minutes: 55
+    strategy:
+      fail-fast: false
+      matrix:
+        browser: [chromium, firefox, webkit]
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 24
+          cache: npm
+      - run: npm ci
+      - run: npm install --no-save --package-lock=false playwright@1.53.2
+      - run: npx playwright install --with-deps ${{ matrix.browser }}
+      - name: Start bounded local Ash runtime
+        run: |
+          node scripts/ash-keep-local-closure-server.mjs > artifacts-ash-legal-server.log 2>&1 &
+          echo $! > ash-legal-server.pid
+          for attempt in $(seq 1 60); do
+            if curl -fsS http://127.0.0.1:6130/dome-world/ash-keep.html >/dev/null; then exit 0; fi
+            sleep 1
+          done
+          cat artifacts-ash-legal-server.log
+          exit 1
+      - name: Exercise Legal matter demo, stable composition, navigation, and finite animation
+        env:
+          TD613_BROWSER: ${{ matrix.browser }}
+          TD613_BASE_URL: http://127.0.0.1:6130
+          TD613_ARTIFACT_DIR: artifacts/ash-legal-ux-${{ matrix.browser }}
+        run: node scripts/ash-legal-ux-browser-probe.mjs
+      - name: Stop bounded local runtime
+        if: always()
+        run: |
+          if [ -f ash-legal-server.pid ]; then kill $(cat ash-legal-server.pid) || true; fi
+          cat artifacts-ash-legal-server.log || true
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: ash-legal-ux-${{ matrix.browser }}-evidence
+          path: artifacts/ash-legal-ux-${{ matrix.browser }}/
+          if-no-files-found: error
+          retention-days: 30
