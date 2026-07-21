@@ -8,6 +8,7 @@ const engine = engines[browserName];
 if (!engine) throw new Error(`Unsupported browser: ${browserName}`);
 const base = String(process.env.TD613_BASE_URL || 'http://127.0.0.1:6130').replace(/\/$/, '');
 const out = path.resolve(process.env.TD613_ARTIFACT_DIR || `artifacts/ash-legal-ux-${browserName}`);
+const EPOCH = '20260721-legal-demo-ux-v1';
 const assert = (value, message) => { if (!value) throw new Error(message); };
 
 async function clearAsh(page) {
@@ -44,6 +45,18 @@ async function workspaceGeometry(page, name) {
   }, name);
 }
 
+async function waitForStableIngress(page) {
+  await page.waitForFunction(epoch => {
+    const composition = window.__td613AshAia3Composition?.current?.() || null;
+    return document.documentElement.dataset.ashCompositionStable?.includes('stable-navigation-motion')
+      && window.__td613AshLegalDemo?.version
+      && window.__td613AshUiUxRescue?.version
+      && composition?.membrane_ready === true
+      && composition?.hold == null
+      && location.search.includes(`ash_epoch=${epoch}`);
+  }, EPOCH, { timeout:60_000 });
+}
+
 await fs.mkdir(out, { recursive: true });
 const browser = await engine.launch({ headless: true });
 const context = await browser.newContext({ viewport: { width: 1440, height: 1000 }, locale: 'en-US', reducedMotion: 'no-preference' });
@@ -62,19 +75,26 @@ await page.addInitScript(() => {
       id: node.id,
       visible: getComputedStyle(node).visibility !== 'hidden'
     })) : [];
-    window.__ashCompositionTrace.push({ time: performance.now(), hydrating: root.dataset.ashCompositionHydrating || null, stable: root.dataset.ashCompositionStable || null, children });
+    window.__ashCompositionTrace.push({
+      time: performance.now(),
+      hydrating: root.dataset.ashCompositionHydrating || null,
+      stable: root.dataset.ashCompositionStable || null,
+      aia3_ready: root.dataset.ashAia3Ready || null,
+      hold: root.dataset.ashAia3ReadinessHold || null,
+      children
+    });
   };
   new MutationObserver(sample).observe(document, { subtree: true, childList: true, attributes: true });
   addEventListener('DOMContentLoaded', sample);
 });
 
-const report = { schema: 'td613.ash.legal-ux-browser/v0.1', browser: browserName, status: 'RUNNING', errors, http_errors: httpErrors, observations: {} };
+const report = { schema: 'td613.ash.legal-ux-browser/v0.2-governed-preflight', browser: browserName, status: 'RUNNING', errors, http_errors: httpErrors, observations: {} };
 try {
-  await page.goto(`${base}/dome-world/ash-keep.html`, { waitUntil: 'domcontentloaded' });
-  await page.waitForFunction(() => document.documentElement.dataset.ashCompositionStable?.includes('stable-navigation-motion') && window.__td613AshLegalDemo?.version && window.__td613AshUiUxRescue?.version, null, { timeout: 60_000 });
+  await page.goto(`${base}/dome-world/ash-keep.html?presentation=aia&profile=legal&nonce=${Date.now()}`, { waitUntil: 'domcontentloaded' });
+  await waitForStableIngress(page);
   await clearAsh(page);
-  await page.goto(`${base}/dome-world/ash-keep.html?ash_epoch=20260721-legal-demo-ux-v1`, { waitUntil: 'commit' }).catch(() => null);
-  await page.waitForFunction(() => document.documentElement.dataset.ashCompositionStable?.includes('stable-navigation-motion') && window.__td613AshLegalDemo?.version && window.__td613AshUiUxRescue?.version, null, { timeout: 60_000 });
+  await page.goto(`${base}/dome-world/ash-keep.html?presentation=aia&profile=legal&nonce=${Date.now()}`, { waitUntil: 'domcontentloaded' });
+  await waitForStableIngress(page);
 
   const trace = await page.evaluate(() => window.__ashCompositionTrace);
   const hydrating = trace.filter(item => item.hydrating === 'true');
@@ -91,9 +111,16 @@ try {
       && /Legal matter/.test(button.textContent || '');
   });
   await page.locator('#startDemo').click();
-  await page.waitForFunction(() => document.documentElement.dataset.ashDemoProfile === 'legal'
-    && document.getElementById('caseTitle')?.textContent?.includes('Cedar House Housing Matter')
-    && document.documentElement.dataset.ashPremiumWorkspace === 'home');
+  await page.waitForFunction(() => {
+    const composition = window.__td613AshAia3Composition?.current?.() || null;
+    return document.documentElement.dataset.ashDemoProfile === 'legal'
+      && document.getElementById('caseTitle')?.textContent?.includes('Cedar House Housing Matter')
+      && document.documentElement.dataset.ashPremiumWorkspace === 'home'
+      && composition?.membrane_ready === true
+      && composition?.lifecycle_state
+      && composition?.route_count >= 4
+      && composition?.task_count >= 4;
+  });
   assert(await page.locator('#apeqPaiaMethodDocket').isVisible(), 'Legal method docket missing.');
   assert((await page.locator('#apeqPaiaMethodDocket').textContent()).includes('no legal advice'), 'Legal claim ceiling missing.');
 
