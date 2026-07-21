@@ -114,7 +114,12 @@ assert.match(browserProbe, /composition\?\.route_count >= 4/);
 assert.match(browserProbe, /composition\?\.task_count >= 4/);
 assert.match(browserProbe, /body_composed_visible/);
 assert.match(browserProbe, /body_opacity/);
-assert.match(browserProbe, /v0\.3-composed-veil/);
+assert.match(browserProbe, /v0\.4-map-docket-visibility/);
+assert.match(browserProbe, /docket\.waitFor\(\{ state:'attached' \}\)/);
+assert.match(browserProbe, /data-premium-workspace=\"map\"/);
+assert.match(browserProbe, /docket\.waitFor\(\{ state:'visible' \}\)/);
+assert(browserProbe.indexOf("docket.waitFor({ state:'attached' })") < browserProbe.indexOf("data-premium-workspace=\"map\""), 'Legal docket must be attached before Map is opened.');
+assert(browserProbe.indexOf("data-premium-workspace=\"map\"") < browserProbe.indexOf("docket.waitFor({ state:'visible' })"), 'Legal docket visibility must be asserted only after Map opens.');
 assert.doesNotMatch(browserProbe, /ash-keep\.html\?ash_epoch=20260721-legal-demo-ux-v1/);
 assert.doesNotMatch(rescueSource + legalSource, /transport_authorized:\s*true|legal_advice_provided:\s*true|child_study_authorized:\s*true/);
 
