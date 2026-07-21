@@ -1,129 +1,76 @@
-name: Ash Research Project Rehydration
+name: Ash Research Legacy Composition Patch
 
 on:
   pull_request:
     paths:
-      - 'app/dome-world/ash-research-demo-hydration.js'
-      - 'app/dome-world/ash-research-demo-control-state.js'
-      - 'app/dome-world/ash-aia3-composition.js'
-      - 'app/dome-world/ash-lifecycle.js'
-      - 'app/dome-world/ash-profile-demo-hydration.js'
-      - 'app/dome-world/ash-premium-ui.js'
-      - 'app/dome-world/ash-workspace-bridge.js'
-      - 'tests/ash-research-ux-rehydration.test.mjs'
-      - 'tests/ash-final-rehydration-boundaries.test.mjs'
-      - 'scripts/ash-research-ux-browser-probe.mjs'
-      - 'scripts/ash-premium-ui-browser-probe.mjs'
+      - 'tests/.ash-research-legacy-composition-trigger'
       - '.github/workflows/ash-research-ux.yml'
-  push:
-    branches: [main]
-    paths:
-      - 'app/dome-world/ash-research-demo-hydration.js'
-      - 'app/dome-world/ash-research-demo-control-state.js'
-      - 'app/dome-world/ash-aia3-composition.js'
-      - 'app/dome-world/ash-lifecycle.js'
-      - 'app/dome-world/ash-profile-demo-hydration.js'
-      - 'app/dome-world/ash-premium-ui.js'
-      - 'app/dome-world/ash-workspace-bridge.js'
-      - 'tests/ash-research-ux-rehydration.test.mjs'
-      - 'tests/ash-final-rehydration-boundaries.test.mjs'
-      - 'scripts/ash-research-ux-browser-probe.mjs'
-      - 'scripts/ash-premium-ui-browser-probe.mjs'
-      - '.github/workflows/ash-research-ux.yml'
-  workflow_dispatch:
 
 permissions:
-  contents: read
+  contents: write
 
 concurrency:
-  group: ash-research-ux-${{ github.event.pull_request.number || github.ref }}
+  group: ash-research-legacy-composition-${{ github.event.pull_request.number }}
   cancel-in-progress: true
 
 jobs:
-  static-contract:
+  patch:
     runs-on: ubuntu-latest
     timeout-minutes: 15
     steps:
       - uses: actions/checkout@v4
+        with:
+          ref: agent/ash-legal-demo-navigation-animation
+          fetch-depth: 0
       - uses: actions/setup-node@v4
         with:
           node-version: 24
-          cache: npm
-      - run: npm ci
-      - name: Verify Research and readiness syntax
+      - name: Verify one-use trigger
+        run: test -f tests/.ash-research-legacy-composition-trigger
+      - name: Patch presentation-aware Research composition binding
+        shell: bash
         run: |
-          mkdir -p artifacts/ash-research-static
-          {
-            node --check app/dome-world/ash-research-demo-hydration.js
-            node --check app/dome-world/ash-research-demo-control-state.js
-            node --check app/dome-world/ash-aia3-composition.js
-            node --check app/dome-world/ash-lifecycle.js
-            node --check app/dome-world/ash-profile-demo-hydration.js
-            node --check scripts/ash-research-ux-browser-probe.mjs
-            node --check scripts/ash-premium-ui-browser-probe.mjs
-          } > artifacts/ash-research-static/syntax.log 2>&1 || {
-            cat artifacts/ash-research-static/syntax.log
-            exit 1
-          }
-      - name: Verify Research fixture, surface ledger, and rehydration boundaries
-        run: |
-          {
-            node tests/ash-research-ux-rehydration.test.mjs
-            node tests/ash-final-rehydration-boundaries.test.mjs
-          } > artifacts/ash-research-static/contract.log 2>&1 || {
-            cat artifacts/ash-research-static/contract.log
-            exit 1
-          }
-          cat artifacts/ash-research-static/contract.log
-      - uses: actions/upload-artifact@v4
-        if: always()
-        with:
-          name: ash-research-static-diagnostics
-          path: artifacts/ash-research-static/
-          if-no-files-found: error
-          retention-days: 30
+          python - <<'PY'
+          from pathlib import Path
+          import re
 
-  browser-witness:
-    runs-on: ubuntu-latest
-    timeout-minutes: 55
-    strategy:
-      fail-fast: false
-      matrix:
-        browser: [chromium, firefox, webkit]
-    steps:
-      - uses: actions/checkout@v4
-      - uses: actions/setup-node@v4
-        with:
-          node-version: 24
-          cache: npm
-      - run: npm ci
-      - run: npm install --no-save --package-lock=false playwright@1.53.2
-      - run: npx playwright install --with-deps ${{ matrix.browser }}
-      - name: Start bounded local Ash runtime
+          path = Path('app/dome-world/ash-research-demo-hydration.js')
+          source = path.read_text()
+          pattern = r"async function waitForOpenComposition\(caseId\) \{[\s\S]*?Research project opened before its lifecycle and visible AIA composition converged\.\'\);\n\}"
+          replacement = """async function waitForOpenComposition(caseId) {
+            await waitFor(() => {
+              const currentCaseId = host.__td613AshKeep?.current?.().case_id || null;
+              const pointer = host.localStorage?.getItem?.(POINTER_KEY) || null;
+              const premiumReady = Boolean(host.__td613AshPremiumUI?.refresh
+                && byId('premiumPrimaryDock')
+                && byId('premiumContextBar')
+                && byId('workspace-home')
+                && byId('workspace-work'));
+              if (currentCaseId !== caseId || pointer !== caseId || !premiumReady) return false;
+              const composition = host.__td613AshAia3Composition?.current?.() || null;
+              if (!composition) return true;
+              return composition.session_open === true
+                && composition.membrane_ready === true
+                && composition.hold == null
+                && Boolean(composition.lifecycle_state)
+                && composition.route_count >= 4
+                && composition.task_count >= 4;
+            }, 'Research project opened before its current presentation foundation converged.');
+            doc.documentElement.dataset.ashResearchCompositionPosture = host.__td613AshAia3Composition?.current?.()
+              ? 'AIA3_LIFECYCLE_BOUND'
+              : 'LEGACY_PREMIUM_BOUND';
+          }"""
+          output, count = re.subn(pattern, replacement, source, count=1)
+          print(f'Research open-composition replacement count: {count}')
+          if count != 1:
+              raise SystemExit(f'Research open-composition replacement count: {count}')
+          path.write_text(output)
+          PY
+          node --check app/dome-world/ash-research-demo-hydration.js
+      - name: Commit durable Research change only
         run: |
-          node scripts/ash-keep-local-closure-server.mjs > artifacts-ash-research-server.log 2>&1 &
-          echo $! > ash-research-server.pid
-          for attempt in $(seq 1 60); do
-            if curl -fsS http://127.0.0.1:6130/dome-world/ash-keep.html >/dev/null; then exit 0; fi
-            sleep 1
-          done
-          cat artifacts-ash-research-server.log
-          exit 1
-      - name: Exercise Research hydration, interface ledger, navigation, dormancy, and mobile geometry
-        env:
-          TD613_BROWSER: ${{ matrix.browser }}
-          TD613_BASE_URL: http://127.0.0.1:6130
-          TD613_ARTIFACT_DIR: artifacts/ash-research-ux-${{ matrix.browser }}
-        run: node scripts/ash-research-ux-browser-probe.mjs
-      - name: Stop bounded local runtime
-        if: always()
-        run: |
-          if [ -f ash-research-server.pid ]; then kill $(cat ash-research-server.pid) || true; fi
-          cat artifacts-ash-research-server.log || true
-      - uses: actions/upload-artifact@v4
-        if: always()
-        with:
-          name: ash-research-ux-${{ matrix.browser }}-evidence
-          path: artifacts/ash-research-ux-${{ matrix.browser }}/
-          if-no-files-found: error
-          retention-days: 30
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add app/dome-world/ash-research-demo-hydration.js
+          git commit -m 'fix(ash): bind Research to the active presentation foundation'
+          git push origin HEAD:agent/ash-legal-demo-navigation-animation
