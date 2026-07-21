@@ -79,6 +79,7 @@ const maintenanceEntries = {
 };
 
 const cleanArrivalReplacement = `  const cleanEntries = await page.evaluate(() => Object.fromEntries(Object.entries(localStorage)));
+  const cleanTransition = await page.evaluate(() => window.__td613AshCacheTransition || null);
   const cleanKeys = Object.keys(cleanEntries);
   const cleanMaintenanceEntries = ${JSON.stringify(maintenanceEntries)};
   const cleanMaintenanceKeys = new Set(Object.keys(cleanMaintenanceEntries));
@@ -95,8 +96,8 @@ const cleanArrivalReplacement = `  const cleanEntries = await page.evaluate(() =
     local_storage_keys: cleanKeys,
     maintenance_entries: cleanEntries,
     permitted_maintenance_entries: cleanMaintenanceEntries,
-    cache_navigation_replaced: window.__td613AshCacheTransition?.navigation_replaced ?? null,
-    mass_eviction_superseded_legacy_reset: window.__td613AshCacheTransition?.superseded_by_mass_eviction === true,
+    cache_navigation_replaced: cleanTransition?.navigation_replaced ?? null,
+    mass_eviction_superseded_legacy_reset: cleanTransition?.superseded_by_mass_eviction === true,
     case_adjacent_storage_written: false,
     non_read_requests: initialNonGet
   };`;
@@ -146,13 +147,14 @@ for (const required of [premiumMarker, navigationMarker, cacheMarker, 'mass_evic
 if (prepared !== original) await fs.writeFile(probePath, prepared, 'utf8');
 await fs.mkdir(path.dirname(manifestPath), { recursive: true });
 await fs.writeFile(manifestPath, `${JSON.stringify({
-  schema:'td613.ash-keep.premium-production-closure-fixture/v1.0-exact-legacy-marker',
+  schema:'td613.ash-keep.premium-production-closure-fixture/v1.1-browser-bound-transition',
   source_probe:path.relative(repoRoot, probePath),
   posture:transformations.length ? 'PREPARED_NOW' : 'ALREADY_PREPARED',
   source_sha256:sha256(original),
   prepared_sha256:sha256(prepared),
   transformations,
   permitted_clean_arrival_local_storage:{ entries:maintenanceEntries, classification:'EXACT_NON_CASE_LEGACY_CACHE_MARKER' },
+  browser_transition_read_via_page_evaluate:true,
   cache_navigation_required:false,
   active_document_replacement_allowed:false,
   case_pointer_allowed_before_operator_action:false,
