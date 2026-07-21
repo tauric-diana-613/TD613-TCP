@@ -10,6 +10,8 @@ on:
       - 'app/dome-world/ash-research-demo-hydration.js'
       - 'app/dome-world/ash-aia3-composition.js'
       - 'app/dome-world/ash-ui-ux-rescue.js'
+      - 'app/dome-world/ash-premium-readiness-bridge.js'
+      - 'app/dome-world/ash-workspace-bridge.js'
       - 'tests/ash-four-profile-pedagogy.test.mjs'
       - 'scripts/ash-four-profile-pedagogy-browser-probe.mjs'
       - '.github/workflows/ash-four-profile-pedagogy.yml'
@@ -23,6 +25,8 @@ on:
       - 'app/dome-world/ash-research-demo-hydration.js'
       - 'app/dome-world/ash-aia3-composition.js'
       - 'app/dome-world/ash-ui-ux-rescue.js'
+      - 'app/dome-world/ash-premium-readiness-bridge.js'
+      - 'app/dome-world/ash-workspace-bridge.js'
       - 'tests/ash-four-profile-pedagogy.test.mjs'
       - 'scripts/ash-four-profile-pedagogy-browser-probe.mjs'
       - '.github/workflows/ash-four-profile-pedagogy.yml'
@@ -50,6 +54,8 @@ jobs:
       - run: |
           node --check app/dome-world/ash-demo-pedagogy-rehydration.js
           node --check app/dome-world/ash-profile-demo-hydration.js
+          node --check app/dome-world/ash-premium-readiness-bridge.js
+          node --check app/dome-world/ash-workspace-bridge.js
           node --check scripts/ash-four-profile-pedagogy-browser-probe.mjs
 
   browser-matrix:
