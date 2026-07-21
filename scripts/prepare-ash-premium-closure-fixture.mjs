@@ -58,19 +58,9 @@ const navigationTarget = `  await page.goto(keepUrl, { waitUntil: 'networkidle',
   }, { timeout: 60_000 });`;
 
 const navigationReplacement = `  await page.goto(keepUrl, { waitUntil: 'networkidle', timeout: 60_000 });
-  // ASH_AIA3_MASS_EVICTION_STABLE: one pre-module replacement admits the current asset graph.
-  await page.waitForURL(url => url.searchParams.get('ash_epoch') === ${JSON.stringify(assetEpoch)}, { timeout: 60_000 });
-  await page.waitForLoadState('networkidle');
-  await page.waitForFunction(({ legacyEpoch, massEpoch, assetEpoch }) => {
-    const url = new URL(location.href);
-    const transition = window.__td613AshCacheTransition;
-    return url.searchParams.get('ash_epoch') === assetEpoch
-      && localStorage.getItem('td613.ash.cache-flush.epoch') === legacyEpoch
-      && localStorage.getItem('td613.ash.cache-flush.aia3.epoch') === massEpoch
-      && localStorage.getItem('td613.ash.cache-preflight.epoch') === massEpoch
-      && transition?.superseded_by_mass_eviction === true
-      && transition?.active_session_reset === false;
-  }, { legacyEpoch:${JSON.stringify(legacyEpoch)}, massEpoch:${JSON.stringify(massEpoch)}, assetEpoch:${JSON.stringify(assetEpoch)} }, { timeout: 60_000 });`;
+  // ASH_AIA3_LEGACY_BYPASS_STABLE: rollback loads exact legacy work without an AIA eviction reload.
+  await page.waitForFunction(() => window.__td613AshAia3PreflightReceipt?.legacy_bypass === true
+    && document.documentElement.dataset.ashCachePreflight === 'complete', null, { timeout: 60_000 });`;
 
 const cleanArrivalTarget = `  const cleanKeys = await page.evaluate(() => Object.keys(localStorage));
   const initialNonGet = requests.filter(request => request.method !== 'GET' && request.method !== 'HEAD');
@@ -84,11 +74,7 @@ const cleanArrivalTarget = `  const cleanKeys = await page.evaluate(() => Object
     non_read_requests: initialNonGet
   };`;
 
-const maintenanceEntries = {
-  'td613.ash.cache-flush.epoch':legacyEpoch,
-  'td613.ash.cache-flush.aia3.epoch':massEpoch,
-  'td613.ash.cache-preflight.epoch':massEpoch
-};
+const maintenanceEntries = {};
 
 const cleanArrivalReplacement = `  const cleanEntries = await page.evaluate(() => Object.fromEntries(Object.entries(localStorage)));
   const cleanKeys = Object.keys(cleanEntries);
@@ -116,7 +102,7 @@ const cleanArrivalReplacement = `  const cleanEntries = await page.evaluate(() =
 const premiumMarker = 'const premiumCommandInstrument = await page.evaluate';
 const allowlistMarker = "'td613.ash.session.epoch'";
 const cacheMarker = 'const cleanMaintenanceEntries =';
-const navigationMarker = 'ASH_AIA3_MASS_EVICTION_STABLE';
+const navigationMarker = 'ASH_AIA3_LEGACY_BYPASS_STABLE';
 const sha256 = value => `sha256:${createHash('sha256').update(value).digest('hex')}`;
 
 const original = (await fs.readFile(probePath, 'utf8')).replace(/\r\n/g, '\n');
@@ -168,8 +154,8 @@ await fs.writeFile(manifestPath, `${JSON.stringify({
     entries:maintenanceEntries,
     classification:'EXACT_NON_CASE_MAINTENANCE_MARKERS'
   },
-  cache_navigation_required:true,
-  active_document_replacement_allowed:'ONE_EXACT_ASH_EPOCH_REPLACEMENT',
+  cache_navigation_required:false,
+  active_document_replacement_allowed:false,
   case_pointer_allowed_before_operator_action:false,
   lifecycle_record_allowed_before_operator_action:false,
   receipt_allowed_before_operator_action:false,

@@ -1,50 +1,123 @@
-name: Apply Ash parser-stop cache gate through trusted lane
+name: Ash Keep AIA3 mass-eviction browser witness
 
 on:
   pull_request:
     paths:
-      - 'scripts/apply-ash-parser-stop-gate.mjs'
+      - 'api/dome-world-shell.js'
+      - 'app/engine/ash-live-aia.js'
+      - 'app/dome-world/ash-keep-aia.js'
+      - 'app/dome-world/ash-keep-aia.css'
+      - 'app/dome-world/ash-keep-aia3*.css'
+      - 'app/dome-world/ash-aia3-composition.js'
+      - 'app/dome-world/ash-cache-eviction-aia3.js'
+      - 'app/dome-world/ash-keep-aia-workspace-bridge.js'
+      - 'app/dome-world/ash-lifecycle.js'
+      - 'scripts/ash-keep-local-closure-server.mjs'
+      - 'scripts/ash-keep-aia3-task-journey-v3.mjs'
+      - 'tests/ash-aia3-mass-eviction.test.mjs'
+      - 'tests/ash-keep-live-aia-surface.test.mjs'
       - '.github/workflows/ash-keep-live-aia-browser.yml'
+  push:
+    branches: [main]
+    paths:
+      - 'api/dome-world-shell.js'
+      - 'app/engine/ash-live-aia.js'
+      - 'app/dome-world/ash-keep-aia.js'
+      - 'app/dome-world/ash-keep-aia.css'
+      - 'app/dome-world/ash-keep-aia3*.css'
+      - 'app/dome-world/ash-aia3-composition.js'
+      - 'app/dome-world/ash-cache-eviction-aia3.js'
+      - 'app/dome-world/ash-keep-aia-workspace-bridge.js'
+      - 'app/dome-world/ash-lifecycle.js'
+      - 'scripts/ash-keep-local-closure-server.mjs'
+      - 'scripts/ash-keep-aia3-task-journey-v3.mjs'
+      - 'tests/ash-aia3-mass-eviction.test.mjs'
+      - 'tests/ash-keep-live-aia-surface.test.mjs'
+      - '.github/workflows/ash-keep-live-aia-browser.yml'
+  workflow_dispatch:
+    inputs:
+      base_url:
+        description: Optional deployed base URL for a read-only AIA3 observation
+        required: false
+        default: ''
+        type: string
+      source_packet_commit:
+        description: Exact source packet commit being observed
+        required: false
+        default: ''
+        type: string
 
 permissions:
-  contents: write
+  contents: read
 
 concurrency:
-  group: ash-parser-stop-gate
-  cancel-in-progress: false
+  group: ash-aia3-mass-eviction-${{ github.event.pull_request.number || github.ref }}
+  cancel-in-progress: true
 
 jobs:
-  apply:
-    if: github.event.pull_request.head.ref == 'agent/ash-aia3-eviction-final4'
+  browser-witness:
+    name: ${{ matrix.browser }} fresh, stale, desktop, and mobile AIA3 journey
     runs-on: ubuntu-latest
-    timeout-minutes: 20
+    timeout-minutes: 55
+    strategy:
+      fail-fast: false
+      matrix:
+        browser: [chromium, firefox, webkit]
     steps:
       - uses: actions/checkout@v4
-        with:
-          ref: agent/ash-aia3-eviction-final4
-          fetch-depth: 2
       - uses: actions/setup-node@v4
         with:
           node-version: 24
           cache: npm
       - run: npm ci
-      - name: Apply guarded parser-stop gate
-        run: node scripts/apply-ash-parser-stop-gate.mjs
-      - name: Validate parser stop and exact legacy bypass
+      - name: Validate case-preserving mass eviction
+        run: node tests/ash-aia3-mass-eviction.test.mjs
+      - name: Validate AIA3 surface and presentation boundaries
+        run: node --test tests/ash-keep-live-aia-surface.test.mjs
+      - name: Validate browser witness and shell syntax
         run: |
-          node --check api/dome-world-shell.js
-          node tests/ash-aia3-mass-eviction.test.mjs
-          node tests/product-architecture/shell.test.mjs
-          node --check scripts/prepare-ash-premium-closure-fixture.mjs
           node --check scripts/ash-keep-aia3-task-journey-v3.mjs
-      - name: Remove patch script and restore read-only witness
+          node --check scripts/ash-keep-local-closure-server.mjs
+          node --check api/dome-world-shell.js
+      - name: Install browser witness runtime
         run: |
-          rm -f scripts/apply-ash-parser-stop-gate.mjs
-          git checkout HEAD^ -- .github/workflows/ash-keep-live-aia-browser.yml
-      - name: Commit durable parser gate
+          npm install --no-save --package-lock=false playwright@1.53.2
+          npx playwright install --with-deps ${{ matrix.browser }}
+      - name: Start bounded local Ash Keep runtime
+        if: ${{ inputs.base_url == '' }}
         run: |
-          git config user.name 'github-actions[bot]'
-          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
-          git add -A
-          git commit -m 'fix: stop stale Ash module requests during eviction'
-          git push origin HEAD:agent/ash-aia3-eviction-final4
+          mkdir -p artifacts
+          node scripts/ash-keep-local-closure-server.mjs 6130 > artifacts/ash-aia3-local-server.log 2>&1 &
+          echo $! > artifacts/ash-aia3-local-server.pid
+          for attempt in $(seq 1 40); do
+            if curl -fsS --max-time 2 http://127.0.0.1:6130/__ash_keep_closure/readiness > artifacts/ash-aia3-local-readiness.json; then
+              cat artifacts/ash-aia3-local-readiness.json
+              exit 0
+            fi
+            sleep 1
+          done
+          cat artifacts/ash-aia3-local-server.log || true
+          exit 1
+      - name: Exercise fresh ingress, retired AIA2 eviction, exact work, and case preservation
+        env:
+          TD613_BROWSER: ${{ matrix.browser }}
+          TD613_BASE_URL: ${{ inputs.base_url || 'http://127.0.0.1:6130' }}
+          TD613_SOURCE_PACKET_COMMIT: ${{ inputs.source_packet_commit || github.sha }}
+          TD613_PRODUCTION_OBSERVATION: ${{ inputs.base_url != '' }}
+          TD613_ARTIFACT_DIR: artifacts/ash-aia3-${{ matrix.browser }}
+        run: node scripts/ash-keep-aia3-task-journey-v3.mjs
+      - name: Stop bounded local runtime
+        if: ${{ always() && inputs.base_url == '' }}
+        run: |
+          test -f artifacts/ash-aia3-local-server.pid && kill "$(cat artifacts/ash-aia3-local-server.pid)" || true
+      - name: Preserve browser evidence
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: ash-aia3-${{ matrix.browser }}-mass-eviction-evidence
+          path: |
+            artifacts/ash-aia3-${{ matrix.browser }}/
+            artifacts/ash-aia3-local-server.log
+            artifacts/ash-aia3-local-readiness.json
+          if-no-files-found: warn
+          retention-days: 45

@@ -17,6 +17,8 @@ test('server preflight bypasses exact legacy rollback and republishes the govern
   assert.match(shellSource, /__td613AshAia3PreflightReceipt/);
   assert.match(shellSource, /publish\(receipt\)/);
   assert.match(shellSource, /Updating Ash Keep · preserving local cases/);
+  assert.match(shellSource, /td613-ash-cache-preflight-veil/);
+  assert.match(shellSource, /window.stop()/);
 });
 
 class MemoryStorage {

@@ -67,6 +67,14 @@ function cachePreflightBoot() {
       return;
     }
     document.documentElement.dataset.ashCachePreflight='pending';
+    const veil=document.createElement('div');
+    veil.id='td613-ash-cache-preflight-veil';
+    veil.textContent='Updating Ash Keep · preserving local cases';
+    veil.setAttribute('role','status');
+    veil.setAttribute('aria-live','polite');
+    veil.style.cssText='position:fixed;inset:0;z-index:2147483647;display:grid;place-items:center;padding:24px;background:#010806;color:#fff8da;font:600 13px/1.5 ui-monospace,monospace;letter-spacing:.04em;text-align:center';
+    document.documentElement.append(veil);
+    window.stop();
     window.__td613AshAia3Preflight=(async()=>{
       const pointer=(()=>{try{return localStorage.getItem(pointerKey)}catch{return null}})();
       const sessionBefore=(()=>{try{return localStorage.getItem(sessionKey)}catch{return null}})();

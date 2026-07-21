@@ -87,6 +87,8 @@ for (const source of ['/dome-world/ash-keep.js', '/dome-world/ash-convergence.js
 }
 assert.match(renderedKeep, /name="ash-cache-preflight" content="aia3-mass-eviction-v2"/);
 assert.match(renderedKeep, /Updating Ash Keep · preserving local cases/);
+assert.match(renderedKeep, /td613-ash-cache-preflight-veil/);
+assert.match(renderedKeep, /window.stop()/);
 assert.match(renderedKeep, /session_epoch_preserved_or_migrated/);
 assert.match(renderedKeep, /name="ash-lifecycle" content="v0\.1"/);
 assert.match(renderedKeep, /name="ash-constitutional-composition" content="v0\.1"/);
