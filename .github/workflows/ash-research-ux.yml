@@ -32,18 +32,21 @@ jobs:
         run: |
           python - <<'PY'
           from pathlib import Path
+          import re
+
+          def replace_once(text, pattern, replacement, label, flags=0):
+              output, count = re.subn(pattern, replacement, text, count=1, flags=flags)
+              print(f'{label}: {count}')
+              if count != 1:
+                  raise SystemExit(f'{label} replacement count: {count}')
+              return output
 
           research = Path('app/dome-world/ash-research-demo-hydration.js')
           text = research.read_text()
-          old = """async function waitForAsh() {
-            await waitFor(() => host.__td613AshKeep?.refresh
-              && host.__td613AshPremiumUI?.refresh
-              && host.__td613AshAia3Composition?.current
-              && byId('workspace-home')
-              && byId('workspace-work')
-              && byId('workspace-custody'), 'Research project hydration readiness timed out.');
-          }"""
-          new = """async function waitForAsh() {
+          text = replace_once(
+              text,
+              r"async function waitForAsh\(\) \{[\s\S]*?Research project hydration readiness timed out\.\'\);\n\}",
+              """async function waitForAsh() {
             await waitFor(() => host.__td613AshKeep?.refresh
               && host.__td613AshPremiumUI?.refresh
               && byId('workspace-home')
@@ -51,15 +54,17 @@ jobs:
             doc.documentElement.dataset.ashResearchCustodyPosture = byId('workspace-custody')
               ? 'PRESENT_AT_CORE_HYDRATION'
               : 'AUDIT_AFTER_CASE_HYDRATION';
-          }"""
-          if text.count(old) != 1:
-              raise SystemExit(f'Research readiness seam count: {text.count(old)}')
-          research.write_text(text.replace(old, new))
+          }""",
+              'Research readiness'
+          )
+          research.write_text(text)
 
           premium = Path('scripts/ash-premium-ui-browser-probe.mjs')
           text = premium.read_text()
-          marker = "async function clearLocalAsh(page) {"
-          helper = """async function waitVisibleWorkspace(page, name) {
+          text = replace_once(
+              text,
+              r"async function clearLocalAsh\(page\) \{",
+              """async function waitVisibleWorkspace(page, name) {
             await page.waitForFunction(value => {
               const panel = document.getElementById(`workspace-${value}`);
               const style = panel ? getComputedStyle(panel) : null;
@@ -75,25 +80,19 @@ jobs:
             }, name, { timeout: 60_000 });
           }
 
-          async function clearLocalAsh(page) {"""
-          if text.count(marker) != 1:
-              raise SystemExit(f'Premium helper insertion seam count: {text.count(marker)}')
-          text = text.replace(marker, helper)
-          old_signature = "async function hydrateProfile(page, profile, expectedTitle) {"
-          if text.count(old_signature) != 1:
-              raise SystemExit(f'Premium signature seam count: {text.count(old_signature)}')
-          text = text.replace(old_signature, "async function hydrateProfile(page, profile, expectedTitle, entryWorkspace) {")
-          old_hydrate = """  await page.waitForFunction(({ profile: value, title }) =>
-            document.documentElement.dataset.ashDemoProfile === value
-              && document.getElementById('caseTitle')?.textContent?.includes(title)
-              && document.getElementById('apeqPaiaMethodDocket'),
-          { profile, title: expectedTitle }, { timeout: 60_000 });
-            await page.evaluate(() => window.__td613AshPremiumUI.open('home'));
-            await page.waitForFunction(title =>
-              document.documentElement.dataset.ashPremiumWorkspace === 'home'
-                && document.getElementById('premiumCaseLabel')?.textContent?.includes(title),
-            expectedTitle, { timeout: 60_000 });"""
-          new_hydrate = """  await page.waitForFunction(({ profile: value, title, entry }) => {
+          async function clearLocalAsh(page) {""",
+              'Premium visibility helper'
+          )
+          text = replace_once(
+              text,
+              r"async function hydrateProfile\(page, profile, expectedTitle\) \{",
+              "async function hydrateProfile(page, profile, expectedTitle, entryWorkspace) {",
+              'Premium hydrate signature'
+          )
+          text = replace_once(
+              text,
+              r"  await page\.waitForFunction\(\(\{ profile: value, title \}\) =>[\s\S]*?expectedTitle, \{ timeout: 60_000 \}\);",
+              """  await page.waitForFunction(({ profile: value, title, entry }) => {
             const caseId = localStorage.getItem('td613.ash-keep.current-case');
             const convergence = window.__td613AshDemoEntryConvergence?.current?.() || null;
             return Boolean(caseId)
@@ -110,31 +109,51 @@ jobs:
           }, { profile, title: expectedTitle, entry: entryWorkspace }, { timeout: 60_000 });
             await page.evaluate(() => (window.__td613AshUiUxRescue?.open || window.__td613AshPremiumUI.open)('home'));
             await waitVisibleWorkspace(page, 'home');
-            await page.waitForFunction(title => document.getElementById('premiumCaseLabel')?.textContent?.includes(title), expectedTitle, { timeout: 60_000 });"""
-          if text.count(old_hydrate) != 1:
-              raise SystemExit(f'Premium hydrate seam count: {text.count(old_hydrate)}')
-          text = text.replace(old_hydrate, new_hydrate)
-          replacements = {
-            """    await page.locator('[data-premium-workspace=\"work\"]').click();
-              assert(await page.locator('#workspace-work').isVisible(), 'Work destination did not open');""": """    await page.locator('[data-premium-workspace=\"work\"]').click();
-              await waitVisibleWorkspace(page, 'work');""",
-            """    await page.locator('[data-premium-workspace=\"choir\"]').click();
-              assert(await page.locator('#workspace-choir').isVisible(), 'Choir destination did not open');""": """    await page.locator('[data-premium-workspace=\"choir\"]').click();
-              await waitVisibleWorkspace(page, 'choir');""",
-            """    await page.locator('[data-premium-workspace=\"capsule\"]').click();
-              assert(await page.locator('#workspace-capsule').isVisible(), 'Capsule destination did not open');""": """    await page.locator('[data-premium-workspace=\"capsule\"]').click();
-              await waitVisibleWorkspace(page, 'capsule');""",
-            """    await page.evaluate(() => window.__td613AshPremiumUI.open('draft'));
-              await page.waitForFunction(() => document.documentElement.dataset.ashPremiumWorkspace === 'draft');""": """    await page.evaluate(() => (window.__td613AshUiUxRescue?.open || window.__td613AshPremiumUI.open)('draft'));
-              await waitVisibleWorkspace(page, 'draft');"""
-          }
-          for old, new in replacements.items():
-              if text.count(old) != 1:
-                  raise SystemExit(f'Premium destination seam count {text.count(old)} for {old[:60]!r}')
-              text = text.replace(old, new)
-          text = text.replace("schema: 'td613.ash.premium-ui-browser-flight/v0.2-apeq-paia'", "schema: 'td613.ash.premium-ui-browser-flight/v0.3-entry-converged-destinations'")
-          text = text.replace("flightProfile(context, 'political_campaign', 'Harbor City Mayoral Campaign')", "flightProfile(context, 'political_campaign', 'Harbor City Mayoral Campaign', 'map')")
-          text = text.replace("flightProfile(context, 'fundraiser', 'Northstar Arts Benefit')", "flightProfile(context, 'fundraiser', 'Northstar Arts Benefit', 'work')")
+            await page.waitForFunction(title => document.getElementById('premiumCaseLabel')?.textContent?.includes(title), expectedTitle, { timeout: 60_000 });""",
+              'Premium entry convergence'
+          )
+          destination_patterns = [
+              (
+                  r"    await page\.locator\('\[data-premium-workspace=\"work\"\]'\)\.click\(\);\n\s*assert\(await page\.locator\('#workspace-work'\)\.isVisible\(\), 'Work destination did not open'\);",
+                  "    await page.locator('[data-premium-workspace=\"work\"]').click();\n    await waitVisibleWorkspace(page, 'work');",
+                  'Premium Work destination'
+              ),
+              (
+                  r"    await page\.locator\('\[data-premium-workspace=\"choir\"\]'\)\.click\(\);\n\s*assert\(await page\.locator\('#workspace-choir'\)\.isVisible\(\), 'Choir destination did not open'\);",
+                  "    await page.locator('[data-premium-workspace=\"choir\"]').click();\n    await waitVisibleWorkspace(page, 'choir');",
+                  'Premium Choir destination'
+              ),
+              (
+                  r"    await page\.locator\('\[data-premium-workspace=\"capsule\"\]'\)\.click\(\);\n\s*assert\(await page\.locator\('#workspace-capsule'\)\.isVisible\(\), 'Capsule destination did not open'\);",
+                  "    await page.locator('[data-premium-workspace=\"capsule\"]').click();\n    await waitVisibleWorkspace(page, 'capsule');",
+                  'Premium Capsule destination'
+              ),
+              (
+                  r"    await page\.evaluate\(\(\) => window\.__td613AshPremiumUI\.open\('draft'\)\);\n\s*await page\.waitForFunction\(\(\) => document\.documentElement\.dataset\.ashPremiumWorkspace === 'draft'\);",
+                  "    await page.evaluate(() => (window.__td613AshUiUxRescue?.open || window.__td613AshPremiumUI.open)('draft'));\n    await waitVisibleWorkspace(page, 'draft');",
+                  'Premium Draft destination'
+              )
+          ]
+          for pattern, replacement, label in destination_patterns:
+              text = replace_once(text, pattern, replacement, label)
+          text = replace_once(
+              text,
+              r"schema: 'td613\.ash\.premium-ui-browser-flight/v0\.2-apeq-paia'",
+              "schema: 'td613.ash.premium-ui-browser-flight/v0.3-entry-converged-destinations'",
+              'Premium schema'
+          )
+          text = replace_once(
+              text,
+              r"flightProfile\(context, 'political_campaign', 'Harbor City Mayoral Campaign'\)",
+              "flightProfile(context, 'political_campaign', 'Harbor City Mayoral Campaign', 'map')",
+              'Campaign entry call'
+          )
+          text = replace_once(
+              text,
+              r"flightProfile\(context, 'fundraiser', 'Northstar Arts Benefit'\)",
+              "flightProfile(context, 'fundraiser', 'Northstar Arts Benefit', 'work')",
+              'Fundraiser entry call'
+          )
           premium.write_text(text)
           PY
           node --check app/dome-world/ash-research-demo-hydration.js
