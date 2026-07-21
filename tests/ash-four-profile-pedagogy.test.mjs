@@ -5,11 +5,13 @@ import { pathToFileURL } from 'node:url';
 
 const root = path.resolve(import.meta.dirname, '..');
 const modulePath = path.join(root, 'app/dome-world/ash-demo-pedagogy-rehydration.js');
+const routebarPath = path.join(root, 'app/dome-world/ash-demo-pedagogy-routebar.js');
 const wrapperPath = path.join(root, 'app/dome-world/ash-profile-demo-hydration.js');
 const premiumReadinessPath = path.join(root, 'app/dome-world/ash-premium-readiness-bridge.js');
 const compositionCompatibilityPath = path.join(root, 'app/dome-world/ash-composition-receipt-compatibility.js');
 const workspaceBridgePath = path.join(root, 'app/dome-world/ash-workspace-bridge.js');
 const moduleSource = fs.readFileSync(modulePath, 'utf8');
+const routebarSource = fs.readFileSync(routebarPath, 'utf8');
 const wrapperSource = fs.readFileSync(wrapperPath, 'utf8');
 const premiumReadinessSource = fs.readFileSync(premiumReadinessPath, 'utf8');
 const compositionCompatibilitySource = fs.readFileSync(compositionCompatibilityPath, 'utf8');
@@ -62,6 +64,19 @@ assert.match(moduleSource, /capsulePassphrase/);
 assert.doesNotMatch(moduleSource, /transport_authorized:\s*true|child_study_authorized:\s*true|automatic_ash_action:\s*true/);
 assert.match(wrapperSource, /ash-demo-pedagogy-rehydration\.js\?v=20260721-legal-demo-ux-v1/);
 
+assert.match(routebarSource, /td613\.ash\.demo-pedagogy-routebar\/v0\.1-persistent-four-step-route/);
+assert.match(routebarSource, /premiumContextBar/);
+assert.match(routebarSource, /ashDemoPedagogyRouteBar/);
+assert.match(routebarSource, /grid-template-columns:repeat\(4,minmax\(0,1fr\)\)/);
+assert.match(routebarSource, /@media\(max-width:620px\)[\s\S]*grid-template-columns:repeat\(2,minmax\(0,1fr\)\)/);
+assert.match(routebarSource, /data-demo-pedagogy-workspace/);
+assert.match(routebarSource, /aria-current/);
+assert.match(routebarSource, /premium-ready/);
+assert.match(routebarSource, /demo-pedagogy-hydrated/);
+assert.match(routebarSource, /ux-workspace-opened/);
+assert.match(routebarSource, /lastSignature/);
+assert.doesNotMatch(routebarSource, /new MutationObserver/);
+
 assert.match(premiumReadinessSource, /td613\.ash\.premium-readiness\/v0\.1-exact-instrument-graph/);
 for (const marker of ['premiumPrimaryDock','premiumContextBar','workspace-home','workspace-work']) assert.match(premiumReadinessSource, new RegExp(marker));
 assert.match(premiumReadinessSource, /dataset\.ashPremiumReady = String\(state\.ready\)/);
@@ -71,6 +86,6 @@ assert.match(compositionCompatibilitySource, /td613\.ash\.composition-receipt-co
 assert.match(compositionCompatibilitySource, /stable-navigation-motion/);
 assert.match(compositionCompatibilitySource, /td613:ash:composition-stable/);
 assert.match(compositionCompatibilitySource, /dataset\.ashCompositionRelease/);
-assert.match(workspaceBridgeSource, /ash-premium-ui\.js\?v=20260721-legal-demo-ux-v1[\s\S]*ash-premium-readiness-bridge\.js\?v=20260721-legal-demo-ux-v1[\s\S]*ash-ui-ux-rescue\.js\?v=20260721-legal-demo-ux-v1[\s\S]*ash-composition-receipt-compatibility\.js\?v=20260721-legal-demo-ux-v1/);
+assert.match(workspaceBridgeSource, /ash-premium-ui\.js\?v=20260721-legal-demo-ux-v1[\s\S]*ash-premium-readiness-bridge\.js\?v=20260721-legal-demo-ux-v1[\s\S]*ash-ui-ux-rescue\.js\?v=20260721-legal-demo-ux-v1[\s\S]*ash-composition-receipt-compatibility\.js\?v=20260721-legal-demo-ux-v1[\s\S]*ash-demo-pedagogy-routebar\.js\?v=20260721-legal-demo-ux-v1/);
 
 console.log('ash-four-profile-pedagogy.test.mjs passed');
