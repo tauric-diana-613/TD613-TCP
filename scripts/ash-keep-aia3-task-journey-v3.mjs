@@ -81,7 +81,7 @@ async function snapshot(page, label) {
     const ids = [...document.querySelectorAll('[id]')].map(node => node.id);
     let lifecycleReceipt = null, preflight = null, trace = [];
     try { lifecycleReceipt = JSON.parse(document.querySelector('#lifecycleReceipt')?.textContent || 'null'); } catch {}
-    try { preflight = JSON.parse(sessionStorage.getItem('td613.ash.cache-preflight.receipt') || 'null'); } catch {}
+    try { preflight = window.__td613AshAia3PreflightReceipt || JSON.parse(sessionStorage.getItem('td613.ash.cache-preflight.receipt') || 'null'); } catch {}
     try { trace = JSON.parse(sessionStorage.getItem('__td613_aia3_paint_trace') || '[]'); } catch {}
     const lifecycle = lifecycleReceipt?.lifecycle || {};
     const launch = document.querySelector('#launch'), root = document.querySelector('#ashAiaMembrane');

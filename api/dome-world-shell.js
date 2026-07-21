@@ -49,12 +49,21 @@ function cachePreflightBoot() {
     const receiptKey='td613.ash.cache-preflight.receipt';
     const pointerKey='td613.ash-keep.current-case';
     const sessionKey='td613.ash.session.epoch';
+    const publish=receipt=>{try{sessionStorage.setItem(receiptKey,JSON.stringify(receipt))}catch{}window.__td613AshAia3PreflightReceipt=receipt;window.__td613AshAia3Preflight=Promise.resolve(receipt);return receipt};
+    const legacyPresentation=new URLSearchParams(location.search).get('presentation')==='legacy';
+    if(legacyPresentation){
+      const receipt=publish({schema:'td613.ash.cache-preflight-receipt/v0.2',epoch,asset_epoch:assetEpoch,performed:false,legacy_bypass:true,indexeddb_preserved:true,case_data_preserved:true,active_session_reset:false,local_case_pointer_preserved:true,session_epoch_preserved_or_migrated:true});
+      document.documentElement.dataset.ashCachePreflight='complete';
+      return;
+    }
     let moduleMarker=null,preflightMarker=null;
     try{moduleMarker=localStorage.getItem(moduleMarkerKey);preflightMarker=localStorage.getItem(preflightMarkerKey)}catch{}
     if(moduleMarker===epoch||preflightMarker===epoch){
       try{localStorage.setItem(moduleMarkerKey,epoch);localStorage.setItem(preflightMarkerKey,epoch)}catch{}
+      let receipt={schema:'td613.ash.cache-preflight-receipt/v0.2',epoch,asset_epoch:assetEpoch,performed:false,indexeddb_preserved:true,case_data_preserved:true,active_session_reset:false,local_case_pointer_preserved:true,session_epoch_preserved_or_migrated:true};
+      try{receipt=JSON.parse(sessionStorage.getItem(receiptKey)||'null')||receipt}catch{}
+      publish(receipt);
       document.documentElement.dataset.ashCachePreflight='complete';
-      window.__td613AshAia3Preflight=Promise.resolve({epoch,asset_epoch:assetEpoch,performed:false,indexeddb_preserved:true,case_data_preserved:true,active_session_reset:false});
       return;
     }
     document.documentElement.dataset.ashCachePreflight='pending';
@@ -86,13 +95,14 @@ function cachePreflightBoot() {
         session_epoch_preserved_or_migrated:(()=>{try{return pointer?localStorage.getItem(sessionKey)===canonicalSessionEpoch:localStorage.getItem(sessionKey)===sessionBefore}catch{return false}})(),
         session_epoch_migrated:sessionMigrated
       };
-      try{sessionStorage.setItem(receiptKey,JSON.stringify(receipt))}catch{}
+      publish(receipt);
       const current=new URL(location.href);
       if(current.searchParams.get('ash_epoch')!==assetEpoch){
         current.searchParams.set('ash_epoch',assetEpoch);
         location.replace(current.pathname+current.search+current.hash);
         return new Promise(()=>{});
       }
+      publish(receipt);
       document.documentElement.dataset.ashCachePreflight='complete';
       return receipt;
     })();

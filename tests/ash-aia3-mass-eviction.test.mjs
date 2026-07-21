@@ -1,5 +1,6 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
+import fs from 'node:fs';
 import {
   runAshAia3CacheEviction,
   ASH_AIA3_CACHE_EPOCH,
@@ -7,6 +8,16 @@ import {
   ASH_LEGACY_CACHE_EPOCH
 } from '../app/dome-world/ash-cache-eviction-aia3.js';
 import { runAshCacheFlush } from '../app/dome-world/ash-cache-flush.js';
+
+const shellSource = fs.readFileSync('api/dome-world-shell.js', 'utf8');
+
+test('server preflight bypasses exact legacy rollback and republishes the governed receipt', () => {
+  assert.match(shellSource, /legacyPresentation/);
+  assert.match(shellSource, /legacy_bypass:true/);
+  assert.match(shellSource, /__td613AshAia3PreflightReceipt/);
+  assert.match(shellSource, /publish\(receipt\)/);
+  assert.match(shellSource, /Updating Ash Keep · preserving local cases/);
+});
 
 class MemoryStorage {
   constructor(entries = {}) { this.values = new Map(Object.entries(entries)); }
