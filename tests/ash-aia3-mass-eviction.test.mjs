@@ -11,6 +11,7 @@ import { runAshCacheFlush } from '../app/dome-world/ash-cache-flush.js';
 
 const shellSource = fs.readFileSync('api/dome-world-shell.js', 'utf8');
 const journeySource = fs.readFileSync('scripts/ash-keep-aia3-task-journey-v3.mjs', 'utf8');
+const compositionSource = fs.readFileSync('app/dome-world/ash-aia3-composition.js', 'utf8');
 
 test('server preflight bypasses exact legacy rollback and republishes the governed receipt', () => {
   assert.match(shellSource, /legacyPresentation/);
@@ -33,9 +34,26 @@ test('browser witness waits for coherent case, pointer, membrane, and exact work
   assert.match(journeySource, /localStorage\.getItem\('td613\.ash-keep\.current-case'\) === caseId/);
   assert.match(journeySource, /composition\?\.session_open === true/);
   assert.match(journeySource, /composition\?\.membrane_ready === true/);
+  assert.match(journeySource, /composition\?\.hold == null/);
+  assert.match(journeySource, /composition\?\.route_count >= 4/);
+  assert.match(journeySource, /composition\?\.task_count >= 4/);
+  assert.match(journeySource, /Boolean\(current\?\.lifecycle_state\)/);
+  assert.match(journeySource, /visible\(root\)/);
   assert.match(journeySource, /visible\(main\) && visible\(rail\)/);
+  assert.match(journeySource, /Boolean\(document\.documentElement\.dataset\.ashCompositionStable\)/);
   assert.match(journeySource, /await waitForCaseComposition\(page\)/);
   assert.match(journeySource, /opened\.pointer === opened\.case_id/);
+});
+
+test('stale-client recovery cannot finish during the blank remount interval', () => {
+  assert.match(compositionSource, /v0\.4-open-case-render-readiness/);
+  assert.match(compositionSource, /WAITING_LIFECYCLE_STATE/);
+  assert.match(compositionSource, /WAITING_COMPLETE_ROUTE_TASK_GRAPH/);
+  assert.match(journeySource, /document\.documentElement\.dataset\.ashCompositionHydrating !== 'true'/);
+  assert.match(journeySource, /root\?\.querySelectorAll\('\[data-aia-route\]'\)\.length >= 4/);
+  assert.match(journeySource, /root\?\.querySelectorAll\('\[data-aia-task\]'\)\.length >= 4/);
+  assert.match(journeySource, /final\.lifecycle\.state && final\.composition\?\.lifecycle_state/);
+  assert.match(journeySource, /Stale client was snapshotted before lifecycle and composition release converged/);
 });
 
 test('browser witness waits for lifecycle case binding before tutorial baseline', () => {
