@@ -59,7 +59,7 @@ Every profile must distinguish these states visibly and mechanically:
 - Premium navigation opens the named workspace and may not force the page back to the obstructing top panel.
 - Explanation motion remains finite, user-triggered, and information-equivalent to its reduced-motion static sequence.
 - Stale-client eviction preserves IndexedDB case data and the active local case pointer while removing retired cache and service-worker delivery surfaces.
-- Synthetic retired-worker activation waits are bounded and must either reach `activated` or fail with a named hold.
+- Synthetic retired-worker registration and activation are separately bounded. Registration must resolve within 20 seconds; the resulting worker must reach `activated` within a further 20 seconds or fail with a named hold. Neither stage may wait indefinitely.
 
 ## Evidence ceiling
 
