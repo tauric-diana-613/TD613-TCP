@@ -36,7 +36,7 @@ const CACHE_EPOCH = 'td613.ash.cache-flush/2026-07-21-legal-demo-ux-v1';
   assert.match(loader, /ash-cache-eviction-aia3\.js/);
   assert.match(loader, /legacyPresentation/);
   assert.match(loader, /dataset\.ashAiaLegacy/);
-  assert.match(loader, /td613\.ash\.aia3-composition\/v0\.4-open-case-render-readiness/);
+  assert.match(loader, /td613\.ash\.aia3-composition\/v0\.5-human-profile-choice/);
   for (const marker of ['data-ash-aia3-style', 'data-ash-aia3-compact', 'data-ash-aia3-interaction']) assert.match(loader, new RegExp(marker));
   for (const asset of ['ash-cache-flush.js', 'ash-ingress-layout-hydration.js', 'ash-lifecycle-core.js', 'ash-cache-eviction-aia3.js', 'ash-keep-aia.css', 'ash-keep-aia3.css', 'ash-keep-aia3-compact.css', 'ash-keep-aia3-interaction.css', 'ash-keep-aia.js', 'ash-aia3-composition.js', 'ash-keep-aia-workspace-bridge.js']) {
     assert.match(loader, new RegExp(`${escaped(asset)}\\?v=${EPOCH}`), `Loader omitted current epoch for ${asset}.`);

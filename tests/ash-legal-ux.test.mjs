@@ -84,7 +84,7 @@ assert.equal(await verifyRouteMemory(routeMemory), true);
 
 assert.match(lifecycleSource, /data-ash-composition-hydrating/);
 assert.match(lifecycleSource, /Preparing Ash Keep · preserving local cases/);
-assert.match(lifecycleSource, /v0\.4-open-case-render-readiness/);
+assert.match(lifecycleSource, /v0\.5-human-profile-choice/);
 assert.match(compositionSource, /REQUIRED_ROUTE_COUNT = 4/);
 assert.match(compositionSource, /REQUIRED_TASK_COUNT = 4/);
 assert.match(compositionSource, /WAITING_LIFECYCLE_STATE/);

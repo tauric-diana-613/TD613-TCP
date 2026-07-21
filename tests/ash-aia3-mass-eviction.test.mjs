@@ -46,7 +46,7 @@ test('browser witness waits for coherent case, pointer, membrane, and exact work
 });
 
 test('stale-client recovery cannot finish during the blank remount interval', () => {
-  assert.match(compositionSource, /v0\.4-open-case-render-readiness/);
+  assert.match(compositionSource, /v0\.5-human-profile-choice/);
   assert.match(compositionSource, /WAITING_LIFECYCLE_STATE/);
   assert.match(compositionSource, /WAITING_COMPLETE_ROUTE_TASK_GRAPH/);
   assert.match(journeySource, /document\.documentElement\.dataset\.ashCompositionHydrating !== 'true'/);
