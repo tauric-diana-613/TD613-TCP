@@ -1,10 +1,11 @@
-export const ASH_UI_UX_RESCUE_VERSION = 'td613.ash.ui-ux-rescue/v0.1-stable-navigation-motion';
+export const ASH_UI_UX_RESCUE_VERSION = 'td613.ash.ui-ux-rescue/v0.2-stable-navigation-motion-ready-frames';
 
 const host = globalThis.window;
 const doc = globalThis.document;
 const REDUCED = () => host?.matchMedia?.('(prefers-reduced-motion: reduce)').matches === true;
 const DESTINATION_SELECTOR = '[data-premium-workspace],[data-route-workspace],[data-command-workspace]';
 let releaseTimer = 0;
+let releaseFrame = 0;
 let animationTimer = 0;
 let animationToken = 0;
 
@@ -162,7 +163,9 @@ function compositionReady() {
 }
 
 function releaseCompositionVeil(reason = 'READY') {
+  if (doc.documentElement.dataset.ashCompositionStable) return;
   clearTimeout(releaseTimer);
+  if (releaseFrame) host.cancelAnimationFrame(releaseFrame);
   delete doc.documentElement.dataset.ashCompositionHydrating;
   doc.documentElement.dataset.ashCompositionStable = ASH_UI_UX_RESCUE_VERSION;
   doc.documentElement.dataset.ashCompositionRelease = reason;
@@ -171,18 +174,18 @@ function releaseCompositionVeil(reason = 'READY') {
 }
 
 function installCompositionRelease() {
-  let quietTimer = 0;
-  const check = () => {
-    clearTimeout(quietTimer);
-    if (!compositionReady()) return;
-    quietTimer = host.setTimeout(() => {
-      if (compositionReady()) releaseCompositionVeil('READY_AND_QUIET');
-    }, 180);
+  let consecutiveReadyFrames = 0;
+  const checkFrame = () => {
+    if (doc.documentElement.dataset.ashCompositionStable) return;
+    consecutiveReadyFrames = compositionReady() ? consecutiveReadyFrames + 1 : 0;
+    if (consecutiveReadyFrames >= 2) {
+      releaseCompositionVeil('READY_TWO_CONSECUTIVE_FRAMES');
+      return;
+    }
+    releaseFrame = host.requestAnimationFrame(checkFrame);
   };
-  new MutationObserver(check).observe(doc.documentElement, { attributes: true, subtree: true, childList: true, attributeFilter: ['data-ash-aia3-ready', 'data-ash-membrane-ready', 'data-ash-premium-ready', 'class', 'style'] });
-  for (const type of ['core-ready', 'aia-ready', 'aia3-ready', 'profile-demo-hydrated']) host.addEventListener(`td613:ash:${type}`, check);
   releaseTimer = host.setTimeout(() => releaseCompositionVeil('TIMEOUT_FAIL_OPEN'), 9000);
-  check();
+  releaseFrame = host.requestAnimationFrame(checkFrame);
 }
 
 export function installAshUiUxRescue() {
