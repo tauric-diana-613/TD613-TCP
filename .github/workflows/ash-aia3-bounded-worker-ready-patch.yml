@@ -1,0 +1,79 @@
+name: Ash AIA3 bounded worker readiness patch
+
+on:
+  push:
+    branches:
+      - agent/ash-legal-demo-navigation-animation
+    paths:
+      - 'scripts/ash-keep-aia3-task-journey-v3.mjs'
+      - 'tests/ash-aia3-mass-eviction.test.mjs'
+      - '.github/workflows/ash-aia3-bounded-worker-ready-patch.yml'
+
+permissions:
+  contents: write
+
+concurrency:
+  group: ash-aia3-bounded-worker-ready-patch
+  cancel-in-progress: false
+
+jobs:
+  patch:
+    if: github.actor != 'github-actions[bot]'
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: agent/ash-legal-demo-navigation-animation
+          fetch-depth: 0
+      - name: Replace unbounded service-worker readiness with exact activation gate
+        run: |
+          python - <<'PY'
+          from pathlib import Path
+          script = Path('scripts/ash-keep-aia3-task-journey-v3.mjs')
+          text = script.read_text()
+          old = """    await navigator.serviceWorker.register('/__ash_keep_closure/stale-aia2-worker.js', { scope:'/dome-world/' });
+              await navigator.serviceWorker.ready;"""
+          new = """    const registration = await navigator.serviceWorker.register('/__ash_keep_closure/stale-aia2-worker.js', { scope:'/dome-world/' });
+              const worker = registration.installing || registration.waiting || registration.active;
+              await Promise.race([
+                new Promise((resolve, reject) => {
+                  if (!worker) return reject(new Error('Retired AIA2 worker registration exposed no worker.'));
+                  if (worker.state === 'activated') return resolve();
+                  const onStateChange = () => {
+                    if (worker.state === 'activated') {
+                      worker.removeEventListener('statechange', onStateChange);
+                      resolve();
+                    } else if (worker.state === 'redundant') {
+                      worker.removeEventListener('statechange', onStateChange);
+                      reject(new Error('Retired AIA2 worker became redundant before activation.'));
+                    }
+                  };
+                  worker.addEventListener('statechange', onStateChange);
+                }),
+                new Promise((_, reject) => setTimeout(() => reject(new Error('Retired AIA2 worker did not activate within 20 seconds.')), 20000))
+              ]);"""
+          if old not in text:
+              raise SystemExit('Expected unbounded service-worker readiness block was not found.')
+          script.write_text(text.replace(old, new))
+
+          test = Path('tests/ash-aia3-mass-eviction.test.mjs')
+          test_text = test.read_text()
+          anchor = "assert.match(browserWitness, /await waitForLifecycleCaseBinding\(page, text\)/, 'The tutorial baseline must wait for exact lifecycle-case binding.');"
+          addition = """\nassert.match(browserWitness, /worker\.state === 'activated'/, 'The stale-client witness must require actual service-worker activation.');
+          assert.match(browserWitness, /did not activate within 20 seconds/, 'The stale-client worker activation wait must remain bounded.');
+          assert.doesNotMatch(browserWitness, /await navigator\.serviceWorker\.ready;/, 'The stale-client witness must not contain an unbounded service-worker readiness wait.');"""
+          if addition.strip() not in test_text:
+              if anchor not in test_text:
+                  raise SystemExit('Expected AIA3 witness contract anchor was not found.')
+              test.write_text(test_text.replace(anchor, anchor + addition))
+          PY
+          node --check scripts/ash-keep-aia3-task-journey-v3.mjs
+          node tests/ash-aia3-mass-eviction.test.mjs
+      - name: Remove one-use patch workflow and commit durable repair
+        run: |
+          rm .github/workflows/ash-aia3-bounded-worker-ready-patch.yml
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add scripts/ash-keep-aia3-task-journey-v3.mjs tests/ash-aia3-mass-eviction.test.mjs .github/workflows/ash-aia3-bounded-worker-ready-patch.yml
+          git commit -m 'test(ash): bound retired worker activation witness'
+          git push origin HEAD:agent/ash-legal-demo-navigation-animation
