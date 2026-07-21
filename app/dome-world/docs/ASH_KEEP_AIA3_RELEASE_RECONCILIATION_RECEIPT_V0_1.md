@@ -6,8 +6,8 @@
 
 ```text
 packet: ASH_KEEP_AIA3_RELEASE_RECONCILIATION
-status: IMPLEMENTED / PRE-MERGE / CI-GATED
-application source changed: false
+status: IMPLEMENTED / RELEASED / OBSERVER-RECONCILIATION-GATED
+application source changed by this observer repair: false
 Ash lifecycle changed: false
 canonical digest law changed: false
 Case Map computation changed: false
@@ -17,62 +17,70 @@ human closure required: true
 closure: OPEN
 ```
 
-## Observed seam
+## Observed seams
 
-The completed AIA3 application packet at `7c455b656a158887ea97d626ffd1483577af54e0` reached Vercel through one bounded Git-fallback release. Exact-source observation and the Flow-Core production matrix passed. The terminal workflow held because permanent production infrastructure still invoked the retired AIA2 witness:
+The completed AIA3 application packet at `7c455b656a158887ea97d626ffd1483577af54e0` reached Vercel through bounded release infrastructure. The AIA3 task matrix passed across Chromium, Firefox, and WebKit. The automatic lifecycle status later held because its observer harness was taken from the selected deployed application SHA and still required an AIA3 `IMPLEMENTATION` route inside the exact `?presentation=legacy` rollback path.
 
-```text
-scripts/ash-keep-aia2-task-journey-v5.mjs
-```
-
-The deployed application generation and the production witness generation were non-identical.
+Two non-identities must remain explicit:
 
 ```text
-AIA3 application ≠ AIA2 production witness
-release deployment success ≠ generation-correct terminal receipt
+AIA3 application ≠ retired AIA2 production witness
+selected deployed application source ≠ current observer harness
+legacy rollback presentation ≠ AIA3 route ownership
 ```
 
-The Vercel lock was restored by `8112ff144d0c5423de1308baff1e5969c99cfd9d`.
+The Vercel lock is restored. The exact-source observer has zero deployment authority.
 
 ## Reconciliation
 
-This packet:
+This program now:
 
-1. replaces the Ash task matrix in `.github/workflows/vercel-operator-release.yml` with `scripts/ash-keep-aia3-task-journey-v3.mjs`;
-2. changes production artifacts and receipt verification from `ash-aia2-production` to `ash-aia3-production`;
-3. replaces `ash_keep_aia2_task_matrix` with `ash_keep_aia3_task_matrix`;
-4. creates the read-only `/td613-ash-aia3-observe` conduit;
-5. retires `.github/workflows/ash-keep-aia2-production-observation.yml`;
-6. adds executable assertions forbidding retired AIA2 witness names from release infrastructure;
-7. updates the strategic deployment law to require current-generation Ash evidence.
+1. uses `scripts/ash-keep-aia3-task-journey-v3.mjs` for the deployed Ash task matrix;
+2. preserves the read-only `/td613-ash-aia3-observe` issue conduit;
+3. keeps current `main` checked out as the observer harness;
+4. validates that the selected application source is a 40-character ancestor of current `main`;
+5. labels AIA3 receipts, lifecycle evidence, and commit status with that selected application source;
+6. runs the lifecycle assay with `scripts/ash-lifecycle-production-probe.mjs` from the current harness;
+7. requires the exact legacy-bypass receipt, completed preflight, `READINESS_OBSERVED`, and `CONTINUITY_SEALED`;
+8. forbids restoring an AIA3 route requirement inside legacy presentation;
+9. publishes `Ash Lifecycle Deployed Observation` on the selected source;
+10. preserves `contents: read`, deployment count zero, and all non-promotion boundaries.
 
 ## Required merge evidence
 
 Before merge, the exact branch head must pass:
 
 - Vercel deployment-law contracts;
-- Ash Keep AIA3 mass-eviction contracts;
-- Ash Keep live surface contracts;
-- Flow-Core P0–P10 closure;
+- exact-source AIA3 observer contracts;
+- Ash Keep production-closure contracts;
+- Flow-Core P0–P10 closure where triggered;
 - TCP Smoke and static application checks;
 - YAML and JavaScript syntax checks.
 
-## Required release evidence
+## Required post-merge observation
 
-After merge and one explicit authorized release, the terminal receipt must report:
+The owner-only issue command must name the deployed application source:
 
 ```text
-source_packet_commit = exact merged main SHA
-exact_source_content = PASS
-flowcore_browser_matrix = PASS
-ash_keep_aia3_task_matrix = PASS
-ash_keep_fresh_client = PASS
-ash_keep_retired_aia2_eviction = PASS
-ash_keep_case_preservation = PASS
-application_tree_drift = none
-git_auto_deploy = disabled
+/td613-ash-aia3-observe PRODUCTION <40-character application source SHA>
 ```
 
-The release witness remains non-promotional and cannot count as human evidence, authorize a child study, or close the program.
+The terminal receipt must report:
+
+```text
+application_source_commit = selected deployed source
+observer_harness_commit = current main
+chromium_desktop_mobile = PASS
+firefox_desktop_mobile = PASS
+webkit_desktop_mobile = PASS
+legacy_bypass = PASS
+lifecycle_continuity = PASS
+retired_aia2_delivery = ABSENT
+deployment_count = 0
+release_authorized = false
+human_closure_required = true
+```
+
+The observer status is evidence routing, not deployment, promotion, trusted timestamping, human comprehension evidence, child-study authorization, or program closure.
 
 Sealed ⟐
