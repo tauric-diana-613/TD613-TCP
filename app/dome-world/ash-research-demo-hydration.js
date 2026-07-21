@@ -130,7 +130,7 @@ export function buildResearchFixture() {
     }
   }
   const ordered = nodes.map(node => node.id);
-  for (let index = 0; index < 54; index += 1) {
+  for (let index = 0; index < 56; index += 1) {
     const from = ordered[(index * 7) % ordered.length];
     const candidate = ordered[(index * 11 + 17) % ordered.length];
     relationships.push({
