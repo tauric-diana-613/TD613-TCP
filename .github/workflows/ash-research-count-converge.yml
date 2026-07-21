@@ -1,0 +1,44 @@
+name: Ash Research relationship convergence
+
+on:
+  push:
+    branches: [agent/ash-legal-demo-navigation-animation]
+    paths:
+      - '.github/workflows/ash-research-count-converge.yml'
+      - 'tests/ash-research-ux-rehydration.test.mjs'
+
+permissions:
+  contents: write
+
+concurrency:
+  group: ash-research-relationship-convergence
+  cancel-in-progress: false
+
+jobs:
+  converge:
+    if: ${{ !contains(github.event.head_commit.message, '[research-count-converged]') }}
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: agent/ash-legal-demo-navigation-animation
+          fetch-depth: 0
+      - name: Restore declared 112-relation Research fixture and remove helper
+        run: |
+          python - <<'PY'
+          from pathlib import Path
+          path = Path('app/dome-world/ash-research-demo-hydration.js')
+          text = path.read_text()
+          old = 'for (let index = 0; index < 54; index += 1) {'
+          new = 'for (let index = 0; index < 56; index += 1) {'
+          if text.count(old) != 1:
+              raise SystemExit(f'Expected one Research cross-link loop, found {text.count(old)}')
+          path.write_text(text.replace(old, new))
+          Path('.github/workflows/ash-research-count-converge.yml').unlink()
+          PY
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add app/dome-world/ash-research-demo-hydration.js .github/workflows/ash-research-count-converge.yml
+          git commit -m 'fix(ash): restore 112-relation Research fixture [research-count-converged]'
+          git push origin HEAD:agent/ash-legal-demo-navigation-animation
