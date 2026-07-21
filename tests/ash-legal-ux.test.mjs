@@ -62,16 +62,11 @@ for (const route of fixture.routes) {
 }
 
 const caseMap = await compileCaseMap({
-  profile: 'legal',
-  caseId: 'case_demo_legal_matter',
-  title: fixture.title,
-  rooms: fixture.rooms,
-  nodes: fixture.nodes,
-  relationships: fixture.relationships,
+  profile: 'legal', caseId: 'case_demo_legal_matter', title: fixture.title,
+  rooms: fixture.rooms, nodes: fixture.nodes, relationships: fixture.relationships,
   privateChronology: ['scope frozen', 'deadline verified', 'human review remains open'],
   intendedActions: fixture.nodes.filter(node => node.type === 'intended-action').map(node => node.label),
-  sourceStatus: 'SIMULATED',
-  evidenceBasis: ['synthetic Legal matter test fixture'],
+  sourceStatus: 'SIMULATED', evidenceBasis: ['synthetic Legal matter test fixture'],
   operatorNotes: ['demo_profile:legal']
 });
 const roomRules = await compileRoomRules({ caseId: caseMap.case_id, rules: fixture.rules, sourceStatus: 'SIMULATED' });
@@ -87,11 +82,11 @@ assert.match(rescueSource, /stickyOffset/);
 assert.match(rescueSource, /stopImmediatePropagation/);
 assert.match(rescueSource, /ash-ux-motion-track/);
 assert.match(rescueSource, /dataset\.ashExplanationMotion/);
-assert.match(rescueSource, /READY_AND_QUIET/);
+assert.match(rescueSource, /READY_TWO_CONSECUTIVE_FRAMES/);
+assert.match(rescueSource, /consecutiveReadyFrames/);
 assert.match(flickerSource, /cancelRunawayAnimations/);
 assert.match(flickerSource, /iterations === Infinity/);
 assert.doesNotMatch(flickerSource, /html\[data-ash-flicker-hardening\] \*,[\s\S]*animation:none!important/);
 assert.doesNotMatch(rescueSource + legalSource, /transport_authorized:\s*true|legal_advice_provided:\s*true|child_study_authorized:\s*true/);
 
-// Included path trigger for the one-use inherited-contract convergence job.
 console.log('ash-legal-ux.test.mjs passed');
