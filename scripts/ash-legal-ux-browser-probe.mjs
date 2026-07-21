@@ -104,7 +104,7 @@ await page.addInitScript(() => {
   addEventListener('DOMContentLoaded', sample);
 });
 
-const report = { schema:'td613.ash.legal-ux-browser/v0.3-composed-veil', browser:browserName, status:'RUNNING', errors, http_errors:httpErrors, observations:{} };
+const report = { schema:'td613.ash.legal-ux-browser/v0.4-map-docket-visibility', browser:browserName, status:'RUNNING', errors, http_errors:httpErrors, observations:{} };
 try {
   await page.goto(`${base}/dome-world/ash-keep.html?presentation=aia&profile=legal&nonce=${Date.now()}`, { waitUntil:'domcontentloaded' });
   await waitForStableIngress(page);
@@ -125,6 +125,7 @@ try {
     return document.getElementById('newProfile')?.value === 'legal'
       && button && !button.disabled
       && button.dataset.ashMethodDemoState === 'READY'
+      && button.dataset.ashLegalControlState === 'READY'
       && /Legal matter/.test(button.textContent || '');
   });
   await page.locator('#startDemo').click();
@@ -138,11 +139,13 @@ try {
       && composition?.route_count >= 4
       && composition?.task_count >= 4;
   });
-  assert(await page.locator('#apeqPaiaMethodDocket').isVisible(), 'Legal method docket missing.');
-  assert((await page.locator('#apeqPaiaMethodDocket').textContent()).includes('no legal advice'), 'Legal claim ceiling missing.');
+  const docket = page.locator('#apeqPaiaMethodDocket');
+  await docket.waitFor({ state:'attached' });
+  assert((await docket.textContent()).includes('no legal advice'), 'Legal claim ceiling missing.');
 
   await page.locator('[data-premium-workspace="map"]').click();
   await page.waitForFunction(() => document.documentElement.dataset.ashUxScrollTarget === 'map');
+  await docket.waitFor({ state:'visible' });
   const map = await workspaceGeometry(page, 'map');
   assert(map.active, 'Map destination did not activate.');
   assert(map.premiumWorkspace === 'map', 'Map premium workspace state drifted.');
