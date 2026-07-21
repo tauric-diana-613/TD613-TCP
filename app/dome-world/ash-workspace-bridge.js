@@ -26,6 +26,7 @@ import './ash-guided-operator-ui.js?v=20260721-legal-demo-ux-v1';
 import './ash-premium-compatibility.js?v=20260721-legal-demo-ux-v1';
 import './ash-workspace-navigation.js?v=20260721-legal-demo-ux-v1';
 import './ash-ui-ux-rescue.js?v=20260721-legal-demo-ux-v1';
+import './ash-composition-receipt-compatibility.js?v=20260721-legal-demo-ux-v1';
 import './ash-return-ready-bundle.js?v=20260721-legal-demo-ux-v1';
 import './ash-custodian-return.js?v=20260721-legal-demo-ux-v1';
 import './ash-custodian-return-closure.js?v=20260721-legal-demo-ux-v1';
