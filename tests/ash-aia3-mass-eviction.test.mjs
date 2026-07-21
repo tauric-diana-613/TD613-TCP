@@ -9,6 +9,7 @@ import {
 } from '../app/dome-world/ash-cache-eviction-aia3.js';
 import { runAshCacheFlush } from '../app/dome-world/ash-cache-flush.js';
 
+// User-authored exact-head trigger: adjudicate the immutable parser-stop repair without changing product behavior.
 const shellSource = fs.readFileSync('api/dome-world-shell.js', 'utf8');
 
 test('server preflight bypasses exact legacy rollback and republishes the governed receipt', () => {
