@@ -1,0 +1,45 @@
+name: Apply Ash AIA3 mass eviction v2
+
+on:
+  push:
+    branches: [agent/ash-aia3-mass-eviction-v2]
+    paths:
+      - 'scripts/apply-ash-aia3-mass-eviction-v2.mjs'
+      - '.github/workflows/ash-aia3-mass-eviction-apply.yml'
+
+permissions:
+  contents: write
+
+concurrency:
+  group: ash-aia3-mass-eviction-apply
+  cancel-in-progress: false
+
+jobs:
+  apply:
+    if: github.actor != 'github-actions[bot]'
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: agent/ash-aia3-mass-eviction-v2
+          fetch-depth: 0
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 24
+      - name: Apply guarded patch
+        run: node scripts/apply-ash-aia3-mass-eviction-v2.mjs
+      - name: Validate patched syntax and JSON
+        run: |
+          node --check api/dome-world-shell.js
+          node --check app/dome-world/ash-lifecycle.js
+          node --check app/dome-world/ash-cache-eviction-aia3.js
+          node -e "JSON.parse(require('fs').readFileSync('vercel.json','utf8'))"
+      - name: Remove one-use patch machinery
+        run: rm scripts/apply-ash-aia3-mass-eviction-v2.mjs .github/workflows/ash-aia3-mass-eviction-apply.yml
+      - name: Commit guarded result
+        run: |
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add api/dome-world-shell.js vercel.json app/dome-world/ash-lifecycle.js app/dome-world/ash-cache-eviction-aia3.js scripts/apply-ash-aia3-mass-eviction-v2.mjs .github/workflows/ash-aia3-mass-eviction-apply.yml
+          git commit -m 'fix: evict stale Ash client graph before composition'
+          git push origin HEAD:agent/ash-aia3-mass-eviction-v2
