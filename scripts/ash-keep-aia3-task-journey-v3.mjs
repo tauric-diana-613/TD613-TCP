@@ -128,6 +128,29 @@ async function deliveryState(page) {
   }));
 }
 
+async function waitForCaseComposition(page) {
+  await page.waitForFunction(() => {
+    const visible = node => {
+      if (!node) return false;
+      const style = getComputedStyle(node), rect = node.getBoundingClientRect();
+      return style.display !== 'none' && style.visibility !== 'hidden' && Number(style.opacity) > 0 && rect.width > 0 && rect.height > 0;
+    };
+    const caseId = window.__td613AshKeep?.current?.().case_id || null;
+    const composition = window.__td613AshAia3Composition?.current?.() || null;
+    const main = document.querySelector('body > main');
+    const rail = document.querySelector('body > .workspace-rail');
+    return Boolean(caseId) &&
+      localStorage.getItem('td613.ash-keep.current-case') === caseId &&
+      window.__td613AshLiveAIA?.current?.().task === 'document' &&
+      composition?.session_open === true &&
+      composition?.membrane_ready === true &&
+      visible(document.querySelector('#ashAiaMembrane')) &&
+      !visible(document.querySelector('#launch')) &&
+      visible(main) && visible(rail) &&
+      !main?.hasAttribute('inert') && !rail?.hasAttribute('inert');
+  });
+}
+
 async function runFresh(browser, config, report) {
   const context = await browser.newContext({ viewport:config.viewport, isMobile:config.mobile, hasTouch:config.mobile, colorScheme:'dark' });
   await installTrace(context);
@@ -149,10 +172,11 @@ async function runFresh(browser, config, report) {
 
   await page.locator('#newTitle').fill(`AIA3 ${config.name} case`);
   await page.locator('#newCase').click();
-  await page.waitForFunction(() => Boolean(window.__td613AshKeep?.current?.().case_id) && window.__td613AshLiveAIA?.current?.().task === 'document');
+  await waitForCaseComposition(page);
   const opened = await snapshot(page, `${config.name}-case-open`);
   report.steps.push(opened);
-  assert(opened.case_id && !opened.launch.visible && opened.root.visible && opened.root.routes === 4 && opened.root.tasks === 4, `${config.name}: case composition incomplete.`);
+  assert(opened.case_id && opened.pointer === opened.case_id && !opened.launch.visible && opened.root.visible && opened.root.routes === 4 && opened.root.tasks === 4, `${config.name}: case composition incomplete.`);
+  assert(opened.composition?.session_open === true && opened.composition?.membrane_ready === true, `${config.name}: composition receipt incomplete.`);
   assert(opened.main.visible && opened.rail.visible && !opened.main.inert && !opened.rail.inert, `${config.name}: exact work unavailable.`);
   assert(opened.root.rect.height <= (config.name === 'desktop' ? 620 : 1050), `${config.name}: AIA crown too tall.`);
 
@@ -195,7 +219,7 @@ async function runStale(browser, report) {
   await waitReady(page);
   await page.locator('#newTitle').fill(`AIA3 stale ${browserName} case`);
   await page.locator('#newCase').click();
-  await page.waitForFunction(() => Boolean(window.__td613AshKeep?.current?.().case_id));
+  await waitForCaseComposition(page);
   const caseId = await page.evaluate(() => window.__td613AshKeep.current().case_id);
   await page.evaluate(async () => {
     localStorage.setItem('td613.ash.cache-preflight.epoch', 'td613.ash.cache-flush/retired-aia2');
@@ -207,7 +231,7 @@ async function runStale(browser, report) {
     await navigator.serviceWorker.ready;
   });
   await page.goto(`${route}&profile=stale&phase=evict&nonce=${Date.now()}`, { waitUntil:'domcontentloaded' });
-  await page.waitForFunction(({ expectedCase, epoch }) => window.__td613AshKeep?.current?.().case_id === expectedCase && document.documentElement.dataset.ashAia3Ready === 'true' && location.search.includes(`ash_epoch=${epoch}`), { expectedCase:caseId, epoch:EPOCH });
+  await page.waitForFunction(({ expectedCase, epoch }) => window.__td613AshKeep?.current?.().case_id === expectedCase && localStorage.getItem('td613.ash-keep.current-case') === expectedCase && window.__td613AshAia3Composition?.current?.().session_open === true && window.__td613AshAia3Composition?.current?.().membrane_ready === true && document.documentElement.dataset.ashAia3Ready === 'true' && location.search.includes(`ash_epoch=${epoch}`), { expectedCase:caseId, epoch:EPOCH });
   const final = await snapshot(page, 'stale-client-complete');
   report.steps.push(final);
   assert(final.case_id === caseId && final.pointer === caseId, 'Stale client lost the local case pointer.');
