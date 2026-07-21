@@ -6,7 +6,7 @@ const engines = { chromium, firefox, webkit };
 const browserName = process.env.TD613_BROWSER || 'chromium';
 const engine = engines[browserName];
 if (!engine) throw new Error(`Unsupported browser: ${browserName}`);
-const base = String(process.env.TD613_BASE_URL || 'http://127.0.0.1:6130').replace(/\/$/,'');
+const base = String(process.env.TD613_BASE_URL || 'http://127.0.0.1:6130').replace(/\/$/, '');
 const out = path.resolve(process.env.TD613_ARTIFACT_DIR || `artifacts/ash-legal-ux-${browserName}`);
 const assert = (value, message) => { if (!value) throw new Error(message); };
 
@@ -73,7 +73,7 @@ try {
   await page.goto(`${base}/dome-world/ash-keep.html`, { waitUntil: 'domcontentloaded' });
   await page.waitForFunction(() => document.documentElement.dataset.ashCompositionStable?.includes('stable-navigation-motion') && window.__td613AshLegalDemo?.version && window.__td613AshUiUxRescue?.version, null, { timeout: 60_000 });
   await clearAsh(page);
-  await page.reload({ waitUntil: 'domcontentloaded' });
+  await page.goto(`${base}/dome-world/ash-keep.html?ash_epoch=20260721-legal-demo-ux-v1`, { waitUntil: 'commit' }).catch(() => null);
   await page.waitForFunction(() => document.documentElement.dataset.ashCompositionStable?.includes('stable-navigation-motion') && window.__td613AshLegalDemo?.version && window.__td613AshUiUxRescue?.version, null, { timeout: 60_000 });
 
   const trace = await page.evaluate(() => window.__ashCompositionTrace);
