@@ -4,6 +4,7 @@ on:
   pull_request:
     paths:
       - 'app/dome-world/ash-demo-pedagogy-rehydration.js'
+      - 'app/dome-world/ash-demo-pedagogy-persistence.js'
       - 'app/dome-world/ash-demo-pedagogy-routebar.js'
       - 'app/dome-world/ash-profile-demo-hydration.js'
       - 'app/dome-world/ash-apeq-paia-profile-demos.js'
@@ -21,6 +22,7 @@ on:
     branches: [main]
     paths:
       - 'app/dome-world/ash-demo-pedagogy-rehydration.js'
+      - 'app/dome-world/ash-demo-pedagogy-persistence.js'
       - 'app/dome-world/ash-demo-pedagogy-routebar.js'
       - 'app/dome-world/ash-profile-demo-hydration.js'
       - 'app/dome-world/ash-apeq-paia-profile-demos.js'
@@ -57,6 +59,7 @@ jobs:
       - run: node tests/ash-four-profile-pedagogy.test.mjs
       - run: |
           node --check app/dome-world/ash-demo-pedagogy-rehydration.js
+          node --check app/dome-world/ash-demo-pedagogy-persistence.js
           node --check app/dome-world/ash-demo-pedagogy-routebar.js
           node --check app/dome-world/ash-profile-demo-hydration.js
           node --check app/dome-world/ash-premium-readiness-bridge.js
