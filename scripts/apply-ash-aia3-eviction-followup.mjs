@@ -1,8 +1,8 @@
-// One-use guarded patcher trigger: 2026-07-21T01:03Z
 import fs from 'node:fs';
 import assert from 'node:assert/strict';
 
 function replaceOne(source, from, to, label) {
+  if (source.includes(to)) return source;
   const count = source.split(from).length - 1;
   assert.equal(count, 1, `${label}: expected one match, observed ${count}`);
   return source.replace(from, to);
@@ -12,6 +12,7 @@ function patch(path, transforms) {
   let source = fs.readFileSync(path, 'utf8');
   for (const [from, to, label] of transforms) source = replaceOne(source, from, to, `${path}:${label}`);
   fs.writeFileSync(path, source);
+  console.log(`patched ${path}`);
 }
 
 patch('api/dome-world-shell.js', [[
@@ -81,7 +82,7 @@ test('server preflight bypasses exact legacy rollback and republishes the govern
   assert.match(shellSource, /legacyPresentation/);
   assert.match(shellSource, /legacy_bypass:true/);
   assert.match(shellSource, /__td613AshAia3PreflightReceipt/);
-  assert.match(shellSource, /publish\(receipt\)/);
+  assert.match(shellSource, /publish\\(receipt\\)/);
   assert.match(shellSource, /Updating Ash Keep · preserving local cases/);
 });
 
@@ -98,7 +99,7 @@ patch('tests/ash-custody-workspace-bridge.test.mjs', [[
 'import asset epoch'
 ],[
 `assert.match(renderedHtml, /src="\/dome-world\/ash-workspace-bridge\.js"/);`,
-`assert.match(renderedHtml, new RegExp(`src="\\/dome-world\\/ash-workspace-bridge\\.js\\?v=\${ASH_LIFECYCLE_ASSET_EPOCH}"`));`,
+"assert.match(renderedHtml, new RegExp(`src=\"\\/dome-world\\/ash-workspace-bridge\\.js\\?v=${ASH_LIFECYCLE_ASSET_EPOCH}\"`));",
 'accept exact versioned workspace bridge'
 ]]);
 
@@ -108,6 +109,22 @@ patch('tests/dome-world-lab-marrowline-link.test.mjs', [[
 'migrate shell version'
 ]]);
 
+const inheritedNewBlock = [
+  "assert.match(lifecycle, /ash-cache-eviction-aia3\\.js\\?v=\\$\\{assetEpoch\\}/);",
+  "assert.match(lifecycle, /ash-ingress-layout-hydration\\.js\\?v=\\$\\{assetEpoch\\}/);",
+  "assert.doesNotMatch(lifecycle, /ash-cache-flush\\.js/);",
+  "assert.equal(ASH_LIFECYCLE_MODULE, '/dome-world/ash-lifecycle.js?v=20260720-aia3-mass-eviction-v2');",
+  "const renderedKeep = injectAshKeepLifecycle(keepHtml);",
+  "for (const module of ['ash-keep.js', 'ash-convergence.js', 'ash-lifecycle.js', 'ash-workspace-bridge.js', 'ash-case-controls.js']) {",
+  "  const escaped = module.replace('.', '\\\\.');",
+  "  assert.match(renderedKeep, new RegExp(`src=\"\\/dome-world\\/${escaped}\\?v=20260720-aia3-mass-eviction-v2\"`));",
+  "}",
+  "assert.match(renderedKeep, /ash-cache-preflight/);",
+  "assert.match(renderedKeep, /Updating Ash Keep · preserving local cases/);",
+  "assert.match(renderedKeep, /local_case_pointer_preserved/);",
+  "assert.equal(injectAshKeepLifecycle(renderedKeep), renderedKeep, 'Lifecycle cache-boundary injection is not idempotent.');"
+].join('\n');
+
 patch('tests/ash-live-ingress-demos-cache.test.mjs', [[
 `assert.match(lifecycle, /ash-ingress-layout-hydration\\.js\\?v=20260718-canonical-membrane-v6/);
 assert.match(lifecycle, /ash-cache-flush\\.js\\?v=20260718-canonical-membrane-v7-readiness-boundary/);
@@ -116,19 +133,7 @@ const renderedKeep = injectAshKeepLifecycle(keepHtml);
 assert.match(renderedKeep, /src="\\/dome-world\\/ash-lifecycle\\.js\\?v=20260718-canonical-membrane-v7-readiness-boundary"/);
 assert.doesNotMatch(renderedKeep, /src="\\/dome-world\\/ash-lifecycle\\.js"/);
 assert.equal(injectAshKeepLifecycle(renderedKeep), renderedKeep, 'Lifecycle cache-boundary injection is not idempotent.');`,
-`assert.match(lifecycle, /ash-cache-eviction-aia3\\.js\\?v=\\$\\{assetEpoch\\}/);
-assert.match(lifecycle, /ash-ingress-layout-hydration\\.js\\?v=\\$\\{assetEpoch\\}/);
-assert.doesNotMatch(lifecycle, /ash-cache-flush\\.js/);
-assert.equal(ASH_LIFECYCLE_MODULE, '/dome-world/ash-lifecycle.js?v=20260720-aia3-mass-eviction-v2');
-const renderedKeep = injectAshKeepLifecycle(keepHtml);
-for (const module of ['ash-keep.js', 'ash-convergence.js', 'ash-lifecycle.js', 'ash-workspace-bridge.js', 'ash-case-controls.js']) {
-  const escaped = module.replace('.', '\\\\.');
-  assert.match(renderedKeep, new RegExp(`src="\\/dome-world\\/\${escaped}\\?v=20260720-aia3-mass-eviction-v2"`));
-}
-assert.match(renderedKeep, /ash-cache-preflight/);
-assert.match(renderedKeep, /Updating Ash Keep · preserving local cases/);
-assert.match(renderedKeep, /local_case_pointer_preserved/);
-assert.equal(injectAshKeepLifecycle(renderedKeep), renderedKeep, 'Lifecycle cache-boundary injection is not idempotent.');`,
+inheritedNewBlock,
 'migrate inherited lifecycle delivery law'
 ],[
 `  'HTTP_CACHE_ONLY',`,
@@ -136,11 +141,4 @@ assert.equal(injectAshKeepLifecycle(renderedKeep), renderedKeep, 'Lifecycle cach
 'migrate cache scope'
 ]]);
 
-console.log(JSON.stringify({ status:'PATCHED', files:[
-  'api/dome-world-shell.js',
-  'scripts/ash-keep-aia3-task-journey-v3.mjs',
-  'tests/ash-aia3-mass-eviction.test.mjs',
-  'tests/ash-custody-workspace-bridge.test.mjs',
-  'tests/dome-world-lab-marrowline-link.test.mjs',
-  'tests/ash-live-ingress-demos-cache.test.mjs'
-] }, null, 2));
+console.log(JSON.stringify({ status:'PATCHED' }, null, 2));
