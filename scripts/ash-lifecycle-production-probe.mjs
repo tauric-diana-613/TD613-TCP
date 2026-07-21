@@ -29,6 +29,12 @@ runtime = replaceExactly(
 );
 runtime = replaceExactly(
   runtime,
+  "    page.waitForURL(/\\/dome-world\\/ash-threshold\\.html\\?arrival=cleared/, { timeout: 30_000 }),",
+  "    page.waitForURL(url => url.pathname === '/dome-world/ash-threshold.html' && url.searchParams.get('arrival') === 'cleared', { timeout: 30_000 }),",
+  'query-order independent threshold arrival'
+);
+runtime = replaceExactly(
+  runtime,
   "const ALLOWED_LOCAL_KEYS = new Set([\n  'td613.ash-keep.current-case',\n  'td613.ash-keep.preferences'\n]);",
   "const ALLOWED_LOCAL_KEYS = new Set([\n  'td613.ash-keep.current-case',\n  'td613.ash-keep.preferences',\n  'td613.ash.cache-flush.epoch',\n  'td613.ash.session.epoch'\n]);",
   'bounded maintenance and deliberate session epoch allowance'
@@ -106,6 +112,7 @@ runtime = replaceExactly(
   'draft request boundary'
 );
 if (!runtime.includes(syntheticDraft)
+  || !runtime.includes("url.searchParams.get('arrival') === 'cleared'")
   || !runtime.includes('ash-keep.html?presentation=legacy')
   || !runtime.includes("specialist_presentation_route = 'legacy'")
   || !runtime.includes('legacy_bypass === true')
