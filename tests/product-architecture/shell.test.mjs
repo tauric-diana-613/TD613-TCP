@@ -70,10 +70,10 @@ const versionedModules = [
   `/dome-world/ash-workspace-bridge.js?v=${ASH_LIFECYCLE_ASSET_EPOCH}`,
   `/dome-world/ash-case-controls.js?v=${ASH_LIFECYCLE_ASSET_EPOCH}`
 ];
-assert.equal(ASH_KEEP_SHELL_VERSION, 'td613.ash-keep.shell/v0.4-aia3-mass-eviction');
-assert.equal(ASH_LIFECYCLE_ASSET_EPOCH, '20260720-aia3-mass-eviction-v2');
-assert.equal(ASH_LIFECYCLE_MODULE, '/dome-world/ash-lifecycle.js?v=20260720-aia3-mass-eviction-v2');
-assert.equal(ASH_MASS_EVICTION_EPOCH, 'td613.ash.cache-flush/2026-07-20-aia3-mass-eviction-v2');
+assert.equal(ASH_KEEP_SHELL_VERSION, 'td613.ash-keep.shell/v0.5-legal-demo-ux');
+assert.equal(ASH_LIFECYCLE_ASSET_EPOCH, '20260721-legal-demo-ux-v1');
+assert.equal(ASH_LIFECYCLE_MODULE, '/dome-world/ash-lifecycle.js?v=20260721-legal-demo-ux-v1');
+assert.equal(ASH_MASS_EVICTION_EPOCH, 'td613.ash.cache-flush/2026-07-21-legal-demo-ux-v1');
 assert.ok(historyIndex >= 0);
 let cursor = historyIndex;
 for (const module of versionedModules) {
@@ -85,10 +85,10 @@ for (const module of versionedModules) {
 for (const source of ['/dome-world/ash-keep.js', '/dome-world/ash-convergence.js', '/dome-world/ash-lifecycle.js', '/dome-world/ash-workspace-bridge.js', '/dome-world/ash-case-controls.js']) {
   assert.doesNotMatch(renderedKeep, new RegExp(`src="${source.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')}"`));
 }
-assert.match(renderedKeep, /name="ash-cache-preflight" content="aia3-mass-eviction-v2"/);
+assert.match(renderedKeep, /name="ash-cache-preflight" content="legal-demo-ux-v1"/);
 assert.match(renderedKeep, /Updating Ash Keep · preserving local cases/);
 assert.match(renderedKeep, /td613-ash-cache-preflight-veil/);
-assert.match(renderedKeep, /window.stop()/);
+assert.match(renderedKeep, /window.stop\(\)/);
 assert.match(renderedKeep, /session_epoch_preserved_or_migrated/);
 assert.match(renderedKeep, /name="ash-lifecycle" content="v0\.1"/);
 assert.match(renderedKeep, /name="ash-constitutional-composition" content="v0\.1"/);
