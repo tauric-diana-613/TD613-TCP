@@ -1,4 +1,4 @@
-export const ASH_UI_UX_RESCUE_VERSION = 'td613.ash.ui-ux-rescue/v0.3-stable-navigation-motion-settled-receipts';
+export const ASH_UI_UX_RESCUE_VERSION = 'td613.ash.ui-ux-rescue/v0.4-stable-navigation-motion-traced-explanation';
 
 const host = globalThis.window;
 const doc = globalThis.document;
@@ -168,6 +168,21 @@ function ensureMotionTrack() {
   return track;
 }
 
+function resetMotionTrace() {
+  doc.documentElement.dataset.ashExplanationTrace = '[]';
+}
+
+function recordMotionStep(step) {
+  let trace = [];
+  try { trace = JSON.parse(doc.documentElement.dataset.ashExplanationTrace || '[]'); } catch {}
+  if (trace.at(-1) !== step) trace.push(step);
+  trace = trace.slice(-8);
+  doc.documentElement.dataset.ashExplanationTrace = JSON.stringify(trace);
+  host.dispatchEvent(new CustomEvent('td613:ash:explanation-frame', {
+    detail:{ version:ASH_UI_UX_RESCUE_VERSION, step, trace:[...trace] }
+  }));
+}
+
 function paintMotionStep(track, step) {
   track.dataset.step = String(step);
   track.querySelectorAll('.ash-ux-motion-node').forEach((node, index) => {
@@ -175,6 +190,7 @@ function paintMotionStep(track, step) {
     node.dataset.complete = String(index < step);
   });
   doc.documentElement.dataset.ashExplanationFrame = String(step + 1);
+  recordMotionStep(step);
 }
 
 function startVisibleExplanation() {
@@ -182,12 +198,14 @@ function startVisibleExplanation() {
   const token = ++animationToken;
   const track = ensureMotionTrack();
   if (!track) return false;
+  resetMotionTrace();
   if (REDUCED()) {
     track.dataset.step = '3';
     track.querySelectorAll('.ash-ux-motion-node').forEach(node => {
       node.dataset.active = 'false';
       node.dataset.complete = 'true';
     });
+    for (const step of [0, 1, 2, 3]) recordMotionStep(step);
     doc.documentElement.dataset.ashExplanationMotion = 'STATIC_COMPLETE';
     return true;
   }
@@ -271,6 +289,7 @@ export function installAshUiUxRescue() {
       scroll_pending:doc.documentElement.dataset.ashUxScrollPending || null,
       scroll_posture:doc.documentElement.dataset.ashUxScrollPosture || null,
       explanation_motion:doc.documentElement.dataset.ashExplanationMotion || null,
+      explanation_trace:doc.documentElement.dataset.ashExplanationTrace || '[]',
       composition_release:doc.documentElement.dataset.ashCompositionRelease || null
     })
   });
