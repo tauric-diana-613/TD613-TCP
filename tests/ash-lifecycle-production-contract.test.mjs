@@ -18,8 +18,8 @@ for (const token of ['ARRIVAL_UNPERSISTED','CASE_BOUND','REBUILD_ELIGIBLE','RELE
 for (const token of ['legacy_bypass === true', "dataset.ashCachePreflight === 'complete'", 'aia3_route_required: false', 'reload_required: false']) {
   assert.ok(lifecycleCompiler.includes(token), `Lifecycle observer omitted exact legacy-bypass contract: ${token}`);
 }
-assert.doesNotMatch(lifecycleCompiler, /current\?\.\(\)\.route === 'IMPLEMENTATION'/,
-  'Legacy lifecycle observer still requires an AIA3 route inside the rollback presentation');
+assert.ok(lifecycleCompiler.includes('runtime.includes("current?.().route === \'IMPLEMENTATION\'")'),
+  'Lifecycle compiler must reject a generated rollback probe that restores the stale AIA3 route requirement');
 for (const token of ['window.__td613AshKeep?.version','demo_click_deferred_until_ready: true','timeout: 60000']) assert.ok(convergenceRunner.includes(token));
 assert.doesNotMatch(core, /location\.reload\(\)/);
 assert.equal(delivery, keep);
