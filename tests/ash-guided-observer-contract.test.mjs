@@ -54,8 +54,8 @@ assert.match(lifecycle, /legacy_bypass === true/);
 assert.match(lifecycle, /dataset\.ashCachePreflight === 'complete'/);
 assert.match(lifecycle, /aia3_route_required: false/);
 assert.match(lifecycle, /reload_required: false/);
-assert.doesNotMatch(lifecycle, /current\?\.\(\)\.route === 'IMPLEMENTATION'/,
-  'Lifecycle observer still demands the AIA3 implementation route inside legacy presentation');
+assert.ok(lifecycle.includes('runtime.includes("current?.().route === \'IMPLEMENTATION\'")'),
+  'Lifecycle observer compiler must reject regeneration of the stale AIA3 route requirement');
 assert.doesNotMatch(lifecycle, /#workspace-test \.workspace-lifecycle-note/,
   'Lifecycle observer still requires an internal state token to remain visible copy');
 assert.doesNotMatch(lifecycle, /navigationNote/,
