@@ -63,18 +63,24 @@ assert.match(threshold, /src="\/dome-world\/ash-keep-entry\.js"/);
 assert.doesNotMatch(threshold, /data-ash-law-step|compileReadinessReceipt|location\.replace|http-equiv="refresh"/);
 assert.match(keepEntry, /window\.location\.replace\(canonicalKeepRoute\(\)\)/);
 
+const preflightIndex = renderedKeep.indexOf('id="td613-ash-cache-preflight-script"');
 const historyIndex = renderedKeep.indexOf("sessionStorage.getItem('td613:ash-threshold:readiness:v0.1')");
-const coreIndex = renderedKeep.indexOf('/dome-world/ash-keep.js');
-const convergenceIndex = renderedKeep.indexOf('/dome-world/ash-convergence.js');
+const coreIndex = renderedKeep.indexOf('/dome-world/ash-keep.js?v=20260720-aia3-mass-eviction-v2');
+const convergenceIndex = renderedKeep.indexOf('/dome-world/ash-convergence.js?v=20260720-aia3-mass-eviction-v2');
 const lifecycleIndex = renderedKeep.indexOf(ASH_LIFECYCLE_MODULE);
-assert.ok(historyIndex >= 0 && coreIndex > historyIndex && convergenceIndex > coreIndex && lifecycleIndex > convergenceIndex);
-assert.equal(ASH_KEEP_SHELL_VERSION, 'td613.ash-keep.shell/v0.3-lifecycle-cache-boundary');
-assert.equal(ASH_LIFECYCLE_ASSET_EPOCH, '20260718-canonical-membrane-v7-readiness-boundary');
-assert.equal(ASH_LIFECYCLE_MODULE, '/dome-world/ash-lifecycle.js?v=20260718-canonical-membrane-v7-readiness-boundary');
-assert.match(renderedKeep, /src="\/dome-world\/ash-lifecycle\.js\?v=20260718-canonical-membrane-v7-readiness-boundary"/);
-assert.doesNotMatch(renderedKeep, /src="\/dome-world\/ash-lifecycle\.js"/);
+assert.ok(preflightIndex >= 0 && historyIndex > preflightIndex && coreIndex > historyIndex && convergenceIndex > coreIndex && lifecycleIndex > convergenceIndex);
+assert.equal(ASH_KEEP_SHELL_VERSION, 'td613.ash-keep.shell/v0.4-aia3-mass-eviction');
+assert.equal(ASH_LIFECYCLE_ASSET_EPOCH, '20260720-aia3-mass-eviction-v2');
+assert.equal(ASH_LIFECYCLE_MODULE, '/dome-world/ash-lifecycle.js?v=20260720-aia3-mass-eviction-v2');
+for (const module of ['ash-keep.js', 'ash-convergence.js', 'ash-lifecycle.js', 'ash-workspace-bridge.js', 'ash-case-controls.js']) {
+  assert.match(renderedKeep, new RegExp(`src="\\/dome-world\\/${module.replace('.', '\\.') }\\?v=20260720-aia3-mass-eviction-v2"`));
+  assert.doesNotMatch(renderedKeep, new RegExp(`src="\\/dome-world\\/${module.replace('.', '\\.')}"`));
+}
 assert.match(renderedKeep, /name="ash-lifecycle" content="v0\.1"/);
 assert.match(renderedKeep, /name="ash-constitutional-composition" content="v0\.1"/);
+assert.match(renderedKeep, /Updating Ash Keep · preserving local cases/);
+assert.match(renderedKeep, /indexeddb_preserved:true/);
+assert.match(renderedKeep, /local_case_pointer_preserved/);
 assert.equal(injectAshKeepLifecycle(renderedKeep), renderedKeep);
 
 assert.equal(ASH_KEEP_JS_SHELL_VERSION, 'td613.ash-keep.js-shell/v0.5-event-driven-map');
@@ -93,6 +99,11 @@ assert.deepEqual(vercel.functions['api/dome-world-shell.js'], { maxDuration: 10,
 assert.equal(vercel.functions['api/ash-keep-shell.js'], undefined);
 assert.equal(vercel.functions['api/ash-keep-js-shell.js'], undefined);
 assert.equal(vercel.git?.deploymentEnabled, false, 'Git-triggered Vercel deployments require an explicit operator release gesture');
+for (const source of ['/dome-world/ash-(.*)', '/app/dome-world/ash-(.*)']) {
+  const header = vercel.headers.find(entry => entry.source === source);
+  assert(header, `${source} no-store boundary missing`);
+  assert.match(header.headers?.find(item => item.key === 'Cache-Control')?.value || '', /no-store/);
+}
 const rewrites = vercel.rewrites;
 const genericIndex = rewrites.findIndex(rule => rule.source === '/dome-world/(.*)');
 for (const [source, destination] of [
@@ -103,3 +114,5 @@ for (const [source, destination] of [
   const index = rewrites.findIndex(rule => rule.source === source && rule.destination === destination);
   assert.ok(index >= 0 && index < genericIndex, `${source} must precede the generic Dome route`);
 }
+
+console.log('product-architecture/shell.test.mjs passed');
