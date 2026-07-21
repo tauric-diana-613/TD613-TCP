@@ -86,7 +86,8 @@ assert.doesNotMatch(hardening, /contain:layout paint style/);
 assert.match(rescue, /stopImmediatePropagation/);
 assert.match(rescue, /scrollToWorkspace/);
 assert.match(rescue, /ash-ux-motion-track/);
-assert.match(rescue, /READY_AND_QUIET/);
+assert.match(rescue, /READY_TWO_CONSECUTIVE_FRAMES/);
+assert.match(rescue, /consecutiveReadyFrames/);
 
 assert.match(deliveryTransform, /v1\.0-event-driven-map/);
 assert.match(deliveryTransform, /EVENT_DRIVEN_COALESCED/);
