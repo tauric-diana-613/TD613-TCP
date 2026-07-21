@@ -1,0 +1,107 @@
+name: Vercel Relock Safety
+
+on:
+  issue_comment:
+    types: [created]
+
+permissions:
+  contents: write
+  issues: write
+
+concurrency:
+  group: td613-vercel-production-release
+  cancel-in-progress: false
+
+jobs:
+  relock-safety:
+    if: >-
+      github.event.issue.number == 405 &&
+      github.event.issue.pull_request == null &&
+      github.event.comment.user.login == github.repository_owner &&
+      startsWith(github.event.comment.body, '/td613-vercel-release ')
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    env:
+      RELEASE_GATE_ISSUE: '405'
+      GH_TOKEN: ${{ github.token }}
+
+    steps:
+      - name: Check out live main after the release lane
+        uses: actions/checkout@v4
+        with:
+          ref: main
+          fetch-depth: 0
+
+      - name: Validate authorized source ancestry and close stranded lock
+        id: relock
+        env:
+          AUTHORIZATION: ${{ github.event.comment.body }}
+        shell: bash
+        run: |
+          set -euo pipefail
+          read -r COMMAND TARGET SELECTED_SHA EXTRA <<< "$AUTHORIZATION"
+          [[ "$COMMAND" == '/td613-vercel-release' ]] || { echo 'Unexpected command.' >&2; exit 1; }
+          [[ "$TARGET" == 'PRODUCTION' ]] || { echo 'Unexpected target.' >&2; exit 1; }
+          [[ -z "${EXTRA:-}" && "$SELECTED_SHA" =~ ^[0-9a-f]{40}$ ]] || { echo 'Malformed release command.' >&2; exit 1; }
+
+          git fetch origin main
+          git reset --hard origin/main
+          git merge-base --is-ancestor "$SELECTED_SHA" HEAD || {
+            echo 'Live main no longer descends from the authorized source packet.' >&2
+            exit 1
+          }
+
+          LOCK_STATE="$(node --input-type=module <<'NODE'
+          import fs from 'node:fs';
+          const config = JSON.parse(fs.readFileSync('vercel.json', 'utf8'));
+          process.stdout.write(String(config.git?.deploymentEnabled));
+          NODE
+          )"
+
+          if [[ "$LOCK_STATE" == 'false' ]]; then
+            echo 'changed=false' >> "$GITHUB_OUTPUT"
+            echo "relock_sha=$(git rev-parse HEAD)" >> "$GITHUB_OUTPUT"
+            exit 0
+          fi
+          [[ "$LOCK_STATE" == 'true' ]] || { echo "Unexpected Vercel lock state: $LOCK_STATE" >&2; exit 1; }
+
+          node --input-type=module <<'NODE'
+          import fs from 'node:fs';
+          const path = 'vercel.json';
+          const config = JSON.parse(fs.readFileSync(path, 'utf8'));
+          config.git = { ...(config.git || {}), deploymentEnabled: false };
+          fs.writeFileSync(path, `${JSON.stringify(config, null, 2)}\n`);
+          NODE
+
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add vercel.json
+          git commit -m "release: safety-relock Vercel for $SELECTED_SHA"
+          git push origin HEAD:main
+          echo 'changed=true' >> "$GITHUB_OUTPUT"
+          echo "relock_sha=$(git rev-parse HEAD)" >> "$GITHUB_OUTPUT"
+
+      - name: Record relock safety receipt
+        if: success()
+        run: |
+          gh api "repos/$GITHUB_REPOSITORY/issues/$RELEASE_GATE_ISSUE/comments" \
+            -f body="$(cat <<EOF_COMMENT
+          𝌋 Vercel relock safety completed.
+
+          \`\`\`text
+          source_packet_commit = $(awk '{print $3}' <<< '${{ github.event.comment.body }}')
+          safety_relock_changed_main = ${{ steps.relock.outputs.changed }}
+          relock_commit = ${{ steps.relock.outputs.relock_sha }}
+          git_auto_deploy = disabled
+          deployment_count = 0
+          \`\`\`
+
+          This queued safety membrane creates no deployment. It only closes a stranded Git deployment lock on the latest descendant of the authorized source packet. Sealed ⟐
+          EOF_COMMENT
+          )"
+
+      - name: Record relock safety hold
+        if: failure()
+        run: |
+          gh api "repos/$GITHUB_REPOSITORY/issues/$RELEASE_GATE_ISSUE/comments" \
+            -f body="𝌋 Vercel relock safety held. No deployment or retry authority follows. Inspect workflow $GITHUB_SERVER_URL/$GITHUB_REPOSITORY/actions/runs/$GITHUB_RUN_ID. ⟐"
