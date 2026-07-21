@@ -1,0 +1,98 @@
+name: Ash cross-scope stale-client recovery patch
+
+on:
+  push:
+    branches:
+      - agent/ash-legal-demo-navigation-animation
+    paths:
+      - 'app/safe-harbor/ash-keep-recovery.html'
+      - 'api/dome-world-shell.js'
+      - 'tests/ash-aia3-mass-eviction.test.mjs'
+      - '.github/workflows/ash-cross-scope-recovery-patch.yml'
+
+permissions:
+  contents: write
+
+concurrency:
+  group: ash-cross-scope-recovery-patch
+  cancel-in-progress: false
+
+jobs:
+  patch:
+    if: github.actor != 'github-actions[bot]'
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: agent/ash-legal-demo-navigation-animation
+          fetch-depth: 0
+      - name: Route controlled stale clients through the recovery bridge
+        run: |
+          python - <<'PY'
+          from pathlib import Path
+          shell = Path('api/dome-world-shell.js')
+          text = shell.read_text()
+          replacements = [
+            ("""    const sessionKey='td613.ash.session.epoch';
+              const publish=""", """    const sessionKey='td613.ash.session.epoch';
+              const recoveryBridge='/safe-harbor/ash-keep-recovery.html';
+              const publish="""),
+            ("""      const cleared=[];const workers=[];let http={attempted:false,observed:false};""", """      const controllerPresent=Boolean(navigator.serviceWorker?.controller);
+              const cleared=[];const workers=[];let http={attempted:false,observed:false};"""),
+            ("""        cache_names:cleared,worker_scopes:workers,indexeddb_preserved:true,case_data_preserved:true,active_session_reset:false,
+                local_case_pointer_preserved:""", """        cache_names:cleared,worker_scopes:workers,indexeddb_preserved:true,case_data_preserved:true,active_session_reset:false,
+                controller_present_before_eviction:controllerPresent,cross_scope_recovery_required:controllerPresent,
+                local_case_pointer_preserved:"""),
+            ("""      publish(receipt);
+              const current=new URL(location.href);""", """      publish(receipt);
+              if(controllerPresent&&location.pathname.startsWith('/dome-world/')){
+                const bridge=new URL(recoveryBridge,location.href);
+                bridge.searchParams.set('return',location.pathname+location.search+location.hash);
+                bridge.searchParams.set('epoch',assetEpoch);
+                location.replace(bridge.pathname+bridge.search);
+                return new Promise(()=>{});
+              }
+              const current=new URL(location.href);""")
+          ]
+          for old, new in replacements:
+              if old not in text:
+                  raise SystemExit(f'Expected shell patch anchor missing: {old[:80]}')
+              text = text.replace(old, new, 1)
+          shell.write_text(text)
+
+          test = Path('tests/ash-aia3-mass-eviction.test.mjs')
+          test_text = test.read_text()
+          if "ash-keep-recovery.html" not in test_text:
+              test_text = test_text.replace(
+                "const compositionSource = fs.readFileSync('app/dome-world/ash-aia3-composition.js', 'utf8');",
+                "const compositionSource = fs.readFileSync('app/dome-world/ash-aia3-composition.js', 'utf8');\nconst recoverySource = fs.readFileSync('app/safe-harbor/ash-keep-recovery.html', 'utf8');"
+              )
+              anchor = "test('browser witness is bound to the exact current Legal UX delivery epochs', () => {"
+              addition = """test('controlled stale clients leave the retired Dome-World scope before returning to Ash', () => {
+                assert.match(shellSource, /const recoveryBridge='\\/safe-harbor\\/ash-keep-recovery\\.html'/);
+                assert.match(shellSource, /controllerPresent=Boolean\\(navigator\\.serviceWorker\\?\\.controller\\)/);
+                assert.match(shellSource, /cross_scope_recovery_required:controllerPresent/);
+                assert.match(shellSource, /location\\.replace\\(bridge\\.pathname\\+bridge\\.search\\)/);
+                assert.match(recoverySource, /source_scope:'\\/dome-world\\/'/);
+                assert.match(recoverySource, /bridge_scope:'\\/safe-harbor\\/'/);
+                assert.match(recoverySource, /indexeddb_preserved:true/);
+                assert.match(recoverySource, /case_data_preserved:true/);
+                assert.match(recoverySource, /ash_recovered','cross-scope'/);
+              });
+
+              """
+              if anchor not in test_text:
+                  raise SystemExit('Expected AIA3 epoch test anchor missing.')
+              test_text = test_text.replace(anchor, addition + anchor, 1)
+          test.write_text(test_text)
+          PY
+          node --check api/dome-world-shell.js
+          node tests/ash-aia3-mass-eviction.test.mjs
+      - name: Remove one-use patch workflow and commit durable repair
+        run: |
+          rm .github/workflows/ash-cross-scope-recovery-patch.yml
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add api/dome-world-shell.js tests/ash-aia3-mass-eviction.test.mjs app/safe-harbor/ash-keep-recovery.html .github/workflows/ash-cross-scope-recovery-patch.yml
+          git commit -m 'fix(ash): escape retired worker scope before recovery'
+          git push origin HEAD:agent/ash-legal-demo-navigation-animation
