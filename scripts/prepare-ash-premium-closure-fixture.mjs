@@ -58,19 +58,9 @@ const navigationTarget = `  await page.goto(keepUrl, { waitUntil: 'networkidle',
   }, { timeout: 60_000 });`;
 
 const navigationReplacement = `  await page.goto(keepUrl, { waitUntil: 'networkidle', timeout: 60_000 });
-  // ASH_AIA3_MASS_EVICTION_STABLE: one pre-module replacement admits the current asset graph.
-  await page.waitForURL(url => url.searchParams.get('ash_epoch') === ${JSON.stringify(assetEpoch)}, { timeout: 60_000 });
-  await page.waitForLoadState('networkidle');
-  await page.waitForFunction(({ legacyEpoch, massEpoch, assetEpoch }) => {
-    const url = new URL(location.href);
-    const transition = window.__td613AshCacheTransition;
-    return url.searchParams.get('ash_epoch') === assetEpoch
-      && localStorage.getItem('td613.ash.cache-flush.epoch') === legacyEpoch
-      && localStorage.getItem('td613.ash.cache-flush.aia3.epoch') === massEpoch
-      && localStorage.getItem('td613.ash.cache-preflight.epoch') === massEpoch
-      && transition?.superseded_by_mass_eviction === true
-      && transition?.active_session_reset === false;
-  }, { legacyEpoch:${JSON.stringify(legacyEpoch)}, massEpoch:${JSON.stringify(massEpoch)}, assetEpoch:${JSON.stringify(assetEpoch)} }, { timeout: 60_000 });`;
+  // ASH_AIA3_LEGACY_BYPASS_STABLE: rollback loads exact legacy work without an AIA eviction reload.
+  await page.waitForFunction(() => window.__td613AshAia3PreflightReceipt?.legacy_bypass === true
+    && document.documentElement.dataset.ashCachePreflight === 'complete', null, { timeout: 60_000 });`;
 
 const cleanArrivalTarget = `  const cleanKeys = await page.evaluate(() => Object.keys(localStorage));
   const initialNonGet = requests.filter(request => request.method !== 'GET' && request.method !== 'HEAD');
@@ -84,11 +74,7 @@ const cleanArrivalTarget = `  const cleanKeys = await page.evaluate(() => Object
     non_read_requests: initialNonGet
   };`;
 
-const maintenanceEntries = {
-  'td613.ash.cache-flush.epoch':legacyEpoch,
-  'td613.ash.cache-flush.aia3.epoch':massEpoch,
-  'td613.ash.cache-preflight.epoch':massEpoch
-};
+const maintenanceEntries = {};
 
 const cleanArrivalReplacement = `  const cleanEntries = await page.evaluate(() => Object.fromEntries(Object.entries(localStorage)));
   const cleanKeys = Object.keys(cleanEntries);
@@ -107,8 +93,9 @@ const cleanArrivalReplacement = `  const cleanEntries = await page.evaluate(() =
     local_storage_keys: cleanKeys,
     maintenance_entries: cleanEntries,
     permitted_maintenance_entries: cleanMaintenanceEntries,
-    cache_navigation_replaced: window.__td613AshCacheTransition?.navigation_replaced ?? null,
-    mass_eviction_superseded_legacy_reset: window.__td613AshCacheTransition?.superseded_by_mass_eviction === true,
+    cache_navigation_replaced: false,
+    mass_eviction_superseded_legacy_reset: false,
+    legacy_bypass: window.__td613AshAia3PreflightReceipt?.legacy_bypass === true,
     case_adjacent_storage_written: false,
     non_read_requests: initialNonGet
   };`;
@@ -116,7 +103,7 @@ const cleanArrivalReplacement = `  const cleanEntries = await page.evaluate(() =
 const premiumMarker = 'const premiumCommandInstrument = await page.evaluate';
 const allowlistMarker = "'td613.ash.session.epoch'";
 const cacheMarker = 'const cleanMaintenanceEntries =';
-const navigationMarker = 'ASH_AIA3_MASS_EVICTION_STABLE';
+const navigationMarker = 'ASH_AIA3_LEGACY_BYPASS_STABLE';
 const sha256 = value => `sha256:${createHash('sha256').update(value).digest('hex')}`;
 
 const original = (await fs.readFile(probePath, 'utf8')).replace(/\r\n/g, '\n');
@@ -141,24 +128,24 @@ if (!prepared.includes(navigationMarker)) {
   const count = prepared.split(navigationTarget).length - 1;
   if (count !== 1) throw new Error(`Mass-eviction fixture expected one navigation seam; observed ${count}.`);
   prepared = prepared.replace(navigationTarget, navigationReplacement);
-  transformations.push('REQUIRE_ONE_EXACT_PRE_MODULE_ASSET_REPLACEMENT');
+  transformations.push('REQUIRE_EXPLICIT_LEGACY_BYPASS_WITHOUT_AIA_RELOAD');
 }
 
 if (!prepared.includes(cacheMarker)) {
   const count = prepared.split(cleanArrivalTarget).length - 1;
   if (count !== 1) throw new Error(`Mass-eviction fixture expected one clean-arrival assertion seam; observed ${count}.`);
   prepared = prepared.replace(cleanArrivalTarget, cleanArrivalReplacement);
-  transformations.push('ALLOW_ONLY_THREE_EXACT_NON_CASE_MAINTENANCE_MARKERS');
+  transformations.push('FORBID_CASE_AND_MAINTENANCE_WRITES_ON_LEGACY_CLEAN_ARRIVAL');
 }
 
-for (const required of [premiumMarker, navigationMarker, cacheMarker, 'mass_eviction_superseded_legacy_reset', allowlistMarker]) {
+for (const required of [premiumMarker, navigationMarker, cacheMarker, 'legacy_bypass', allowlistMarker]) {
   if (!prepared.includes(required)) throw new Error(`Premium/mass-eviction fixture omitted ${required}.`);
 }
 
 if (prepared !== original) await fs.writeFile(probePath, prepared, 'utf8');
 await fs.mkdir(path.dirname(manifestPath), { recursive: true });
 await fs.writeFile(manifestPath, `${JSON.stringify({
-  schema:'td613.ash-keep.premium-production-closure-fixture/v0.8-aia3-mass-eviction',
+  schema:'td613.ash-keep.premium-production-closure-fixture/v0.9-aia3-legacy-bypass',
   source_probe:path.relative(repoRoot, probePath),
   posture:transformations.length ? 'PREPARED_NOW' : 'ALREADY_PREPARED',
   source_sha256:sha256(original),
@@ -166,10 +153,10 @@ await fs.writeFile(manifestPath, `${JSON.stringify({
   transformations,
   permitted_clean_arrival_local_storage:{
     entries:maintenanceEntries,
-    classification:'EXACT_NON_CASE_MAINTENANCE_MARKERS'
+    classification:'NO_CASE_OR_MAINTENANCE_MARKERS_ON_LEGACY_CLEAN_ARRIVAL'
   },
-  cache_navigation_required:true,
-  active_document_replacement_allowed:'ONE_EXACT_ASH_EPOCH_REPLACEMENT',
+  cache_navigation_required:false,
+  active_document_replacement_allowed:false,
   case_pointer_allowed_before_operator_action:false,
   lifecycle_record_allowed_before_operator_action:false,
   receipt_allowed_before_operator_action:false,
