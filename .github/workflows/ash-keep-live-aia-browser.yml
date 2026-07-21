@@ -70,10 +70,12 @@ jobs:
           node-version: 24
           cache: npm
       - run: npm ci
-      - name: Validate mass-eviction and AIA3 contracts
+      - name: Validate case-preserving mass eviction
+        run: node tests/ash-aia3-mass-eviction.test.mjs
+      - name: Validate AIA3 surface and presentation boundaries
+        run: node --test tests/ash-keep-live-aia-surface.test.mjs
+      - name: Validate browser witness and shell syntax
         run: |
-          node tests/ash-aia3-mass-eviction.test.mjs
-          node --test tests/ash-keep-live-aia-surface.test.mjs
           node --check scripts/ash-keep-aia3-task-journey-v3.mjs
           node --check scripts/ash-keep-local-closure-server.mjs
           node --check api/dome-world-shell.js
