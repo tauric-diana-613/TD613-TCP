@@ -98,7 +98,7 @@ assert.match(compositionSource, /ashAia3DefaultApplied/);
 assert.match(compositionSource, /ashAia3SelectedProfile/);
 assert.doesNotMatch(compositionSource, /if \(select\.value !== DEFAULT_PROFILE\)/);
 
-assert.match(rescueSource, /v0\.3-settled-navigation-motion-ready-frames/);
+assert.match(rescueSource, /v0\.3-stable-navigation-motion-settled-receipts/);
 assert.match(rescueSource, /scrollToWorkspace/);
 assert.match(rescueSource, /stickyOffset/);
 assert.match(rescueSource, /desiredWorkspaceScroll/);
