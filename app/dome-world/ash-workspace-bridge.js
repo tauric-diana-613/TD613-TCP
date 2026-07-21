@@ -19,6 +19,7 @@ import './ash-profile-demo-hydration.js?v=20260721-legal-demo-ux-v1';
 import './ash-investigation-demo-hydration.js?v=20260721-legal-demo-ux-v1';
 import './ash-research-demo-hydration.js?v=20260721-legal-demo-ux-v1';
 import './ash-research-demo-control-state.js?v=20260721-legal-demo-ux-v1';
+import './ash-legal-demo-control-state.js?v=20260721-legal-demo-ux-v1';
 import './ash-premium-ui.js?v=20260721-legal-demo-ux-v1';
 import './ash-guided-operator-ui.js?v=20260721-legal-demo-ux-v1';
 import './ash-premium-compatibility.js?v=20260721-legal-demo-ux-v1';
