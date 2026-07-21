@@ -48,53 +48,14 @@ on:
         type: string
 
 permissions:
-  contents: write
+  contents: read
 
 concurrency:
   group: ash-aia3-mass-eviction-${{ github.event.pull_request.number || github.ref }}
   cancel-in-progress: true
 
 jobs:
-  apply-followup:
-    if: github.event_name == 'pull_request' && github.event.pull_request.head.ref == 'agent/ash-aia3-eviction-release'
-    runs-on: ubuntu-latest
-    timeout-minutes: 15
-    steps:
-      - uses: actions/checkout@v4
-        with:
-          ref: agent/ash-aia3-eviction-release
-          fetch-depth: 2
-      - uses: actions/setup-node@v4
-        with:
-          node-version: 24
-          cache: npm
-      - run: npm ci
-      - name: Apply guarded compatibility patch
-        run: node scripts/apply-ash-aia3-eviction-followup.mjs
-      - name: Validate exact compatibility repair
-        run: |
-          node --check api/dome-world-shell.js
-          node --check scripts/ash-keep-aia3-task-journey-v3.mjs
-          node tests/ash-aia3-mass-eviction.test.mjs
-          node tests/ash-custody-workspace-bridge.test.mjs
-          node tests/dome-world-lab-marrowline-link.test.mjs
-          node tests/ash-live-ingress-demos-cache.test.mjs
-          node tests/product-architecture/shell.test.mjs
-      - name: Remove one-use machinery and restore permanent workflow
-        run: |
-          rm -f scripts/apply-ash-aia3-eviction-followup.mjs .github/workflows/ash-aia3-eviction-followup.yml
-          git checkout HEAD^ -- .github/workflows/ash-keep-live-aia-browser.yml
-      - name: Commit canonical follow-up
-        run: |
-          git config user.name 'github-actions[bot]'
-          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
-          git add -A
-          git commit -m 'fix: preserve legacy rollback and eviction receipts'
-          git push origin HEAD:agent/ash-aia3-eviction-release
-
   browser-witness:
-    needs: apply-followup
-    if: always() && (needs.apply-followup.result == 'success' || needs.apply-followup.result == 'skipped')
     name: ${{ matrix.browser }} fresh, stale, desktop, and mobile AIA3 journey
     runs-on: ubuntu-latest
     timeout-minutes: 55
