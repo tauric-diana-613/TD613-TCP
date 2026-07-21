@@ -66,18 +66,24 @@ assert.match(moduleSource, /capsulePassphrase/);
 assert.doesNotMatch(moduleSource, /transport_authorized:\s*true|child_study_authorized:\s*true|automatic_ash_action:\s*true/);
 assert.match(wrapperSource, /ash-demo-pedagogy-rehydration\.js\?v=20260721-legal-demo-ux-v1/);
 
-assert.match(entrySource, /td613\.ash\.demo-entry-convergence\/v0\.3-case-bound-idempotent-entry/);
+assert.match(entrySource, /td613\.ash\.demo-entry-convergence\/v0\.4-two-phase-visible-release/);
 assert.match(entrySource, /data-ash-demo-entry-hydrating/);
-assert.match(entrySource, /stableFrames \+ 1/);
+assert.match(entrySource, /function structuralReady/);
+assert.match(entrySource, /function visibleReady/);
+assert.match(entrySource, /phase === 'STRUCTURAL'/);
+assert.match(entrySource, /phase === 'VISIBLE'/);
 assert.match(entrySource, /nextStable >= 2/);
-assert.match(entrySource, /WORKSPACE_NOT_VISIBLE/);
+assert.match(entrySource, /delete doc\.documentElement\.dataset\.ashDemoEntryHydrating/);
+assert.match(entrySource, /publish\(caseId, profile, workspace, 'REVEALING', 'VISIBLE', 0\)/);
 assert.match(entrySource, /td613:ash:demo-entry-ready/);
+assert.match(entrySource, /WORKSPACE_NOT_VISIBLE/);
 assert.match(entrySource, /wrongWorkspace/);
 assert.match(entrySource, /if \(wrongWorkspace\) openWorkspace\(workspace\)/);
 assert.match(entrySource, /currentCaseId/);
 assert.match(entrySource, /state\.case_id === caseId/);
-assert.match(entrySource, /\['OPENING','READY'\]\.includes\(state\.posture\)/);
+assert.match(entrySource, /\['OPENING','REVEALING','READY'\]\.includes\(state\.posture\)/);
 assert.match(entrySource, /dataset\.ashDemoEntryCase = caseId/);
+assert.match(entrySource, /boxReady\(main, \{ opacity:true, pointer:true \}\)/);
 assert.doesNotMatch(entrySource, /if \(!ready\) openWorkspace\(workspace\)/);
 assert.doesNotMatch(entrySource, /new MutationObserver/);
 
