@@ -8,6 +8,7 @@ on:
       - 'app/dome-world/ash-ui-ux-rescue.js'
       - 'app/dome-world/ash-flicker-hardening.js'
       - 'app/dome-world/ash-aia3-composition.js'
+      - 'app/dome-world/ash-premium-readiness-bridge.js'
       - 'app/dome-world/ash-lifecycle.js'
       - 'app/dome-world/ash-profile-demo-hydration.js'
       - 'app/dome-world/ash-workspace-bridge.js'
@@ -23,6 +24,7 @@ on:
       - 'app/dome-world/ash-ui-ux-rescue.js'
       - 'app/dome-world/ash-flicker-hardening.js'
       - 'app/dome-world/ash-aia3-composition.js'
+      - 'app/dome-world/ash-premium-readiness-bridge.js'
       - 'app/dome-world/ash-lifecycle.js'
       - 'app/dome-world/ash-profile-demo-hydration.js'
       - 'app/dome-world/ash-workspace-bridge.js'
@@ -59,6 +61,7 @@ jobs:
           node --check app/dome-world/ash-ui-ux-rescue.js
           node --check app/dome-world/ash-flicker-hardening.js
           node --check app/dome-world/ash-aia3-composition.js
+          node --check app/dome-world/ash-premium-readiness-bridge.js
           node --check app/dome-world/ash-lifecycle.js
           node --check scripts/ash-legal-ux-browser-probe.mjs
 
