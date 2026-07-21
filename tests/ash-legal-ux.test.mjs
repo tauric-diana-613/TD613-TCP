@@ -21,6 +21,7 @@ const legalSource = read('app/dome-world/ash-legal-profile-demo.js');
 const rescueSource = read('app/dome-world/ash-ui-ux-rescue.js');
 const flickerSource = read('app/dome-world/ash-flicker-hardening.js');
 const lifecycleSource = read('app/dome-world/ash-lifecycle.js');
+const compositionSource = read('app/dome-world/ash-aia3-composition.js');
 const bridgeSource = read('app/dome-world/ash-workspace-bridge.js');
 const facadeSource = read('app/dome-world/ash-profile-demo-hydration.js');
 const browserProbe = read('scripts/ash-legal-ux-browser-probe.mjs');
@@ -63,21 +64,33 @@ for (const route of fixture.routes) {
 }
 
 const caseMap = await compileCaseMap({
-  profile: 'legal', caseId: 'case_demo_legal_matter', title: fixture.title,
-  rooms: fixture.rooms, nodes: fixture.nodes, relationships: fixture.relationships,
-  privateChronology: ['scope frozen', 'deadline verified', 'human review remains open'],
-  intendedActions: fixture.nodes.filter(node => node.type === 'intended-action').map(node => node.label),
-  sourceStatus: 'SIMULATED', evidenceBasis: ['synthetic Legal matter test fixture'],
-  operatorNotes: ['demo_profile:legal']
+  profile:'legal',
+  caseId:'case_demo_legal_matter',
+  title:fixture.title,
+  rooms:fixture.rooms,
+  nodes:fixture.nodes,
+  relationships:fixture.relationships,
+  privateChronology:['scope frozen', 'deadline verified', 'human review remains open'],
+  intendedActions:fixture.nodes.filter(node => node.type === 'intended-action').map(node => node.label),
+  sourceStatus:'SIMULATED',
+  evidenceBasis:['synthetic Legal matter test fixture'],
+  operatorNotes:['demo_profile:legal']
 });
-const roomRules = await compileRoomRules({ caseId: caseMap.case_id, rules: fixture.rules, sourceStatus: 'SIMULATED' });
-const routeMemory = await compileRouteMemory({ caseId: caseMap.case_id, entries: fixture.routes, sourceStatus: 'SIMULATED' });
+const roomRules = await compileRoomRules({ caseId:caseMap.case_id, rules:fixture.rules, sourceStatus:'SIMULATED' });
+const routeMemory = await compileRouteMemory({ caseId:caseMap.case_id, entries:fixture.routes, sourceStatus:'SIMULATED' });
 assert.equal(await verifyCaseMap(caseMap), true);
 assert.equal(await verifyRoomRules(roomRules), true);
 assert.equal(await verifyRouteMemory(routeMemory), true);
 
 assert.match(lifecycleSource, /data-ash-composition-hydrating/);
 assert.match(lifecycleSource, /Preparing Ash Keep · preserving local cases/);
+assert.match(lifecycleSource, /v0\.4-open-case-render-readiness/);
+assert.match(compositionSource, /REQUIRED_ROUTE_COUNT = 4/);
+assert.match(compositionSource, /REQUIRED_TASK_COUNT = 4/);
+assert.match(compositionSource, /WAITING_LIFECYCLE_STATE/);
+assert.match(compositionSource, /WAITING_COMPLETE_ROUTE_TASK_GRAPH/);
+assert.match(compositionSource, /setExactWork\(open && ready\)/);
+assert.match(compositionSource, /dataset\.ashAia3ReadinessHold/);
 assert.match(rescueSource, /scrollToWorkspace/);
 assert.match(rescueSource, /stickyOffset/);
 assert.match(rescueSource, /stopImmediatePropagation/);
@@ -90,6 +103,9 @@ assert.match(flickerSource, /iterations === Infinity/);
 assert.doesNotMatch(flickerSource, /html\[data-ash-flicker-hardening\] \*,[\s\S]*animation:none!important/);
 assert.match(browserProbe, /presentation=aia&profile=legal&nonce=\$\{Date\.now\(\)\}/);
 assert.match(browserProbe, /location\.search\.includes\(`ash_epoch=\$\{epoch\}`\)/);
+assert.match(browserProbe, /composition\?\.lifecycle_state/);
+assert.match(browserProbe, /composition\?\.route_count >= 4/);
+assert.match(browserProbe, /composition\?\.task_count >= 4/);
 assert.doesNotMatch(browserProbe, /ash-keep\.html\?ash_epoch=20260721-legal-demo-ux-v1/);
 assert.doesNotMatch(rescueSource + legalSource, /transport_authorized:\s*true|legal_advice_provided:\s*true|child_study_authorized:\s*true/);
 
