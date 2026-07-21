@@ -160,12 +160,18 @@ assert.match(cache, /cache:'no-store'/);
 assert.doesNotMatch(cache, /2026-07-18-(?:live-ingress-v3|emergency-stability-v5)/);
 assert.doesNotMatch(cache, /indexedDB\.deleteDatabase|localStorage\.clear|sessionStorage\.clear/);
 
-assert.match(lifecycle, /ash-ingress-layout-hydration\.js\?v=20260718-canonical-membrane-v6/);
-assert.match(lifecycle, /ash-cache-flush\.js\?v=20260718-canonical-membrane-v7-readiness-boundary/);
-assert.equal(ASH_LIFECYCLE_MODULE, '/dome-world/ash-lifecycle.js?v=20260718-canonical-membrane-v7-readiness-boundary');
+assert.match(lifecycle, /ash-cache-eviction-aia3\.js\?v=\$\{assetEpoch\}/);
+assert.match(lifecycle, /ash-ingress-layout-hydration\.js\?v=\$\{assetEpoch\}/);
+assert.doesNotMatch(lifecycle, /ash-cache-flush\.js/);
+assert.equal(ASH_LIFECYCLE_MODULE, '/dome-world/ash-lifecycle.js?v=20260720-aia3-mass-eviction-v2');
 const renderedKeep = injectAshKeepLifecycle(keepHtml);
-assert.match(renderedKeep, /src="\/dome-world\/ash-lifecycle\.js\?v=20260718-canonical-membrane-v7-readiness-boundary"/);
-assert.doesNotMatch(renderedKeep, /src="\/dome-world\/ash-lifecycle\.js"/);
+for (const module of ['ash-keep.js', 'ash-convergence.js', 'ash-lifecycle.js', 'ash-workspace-bridge.js', 'ash-case-controls.js']) {
+  const escaped = module.replace('.', '\\.');
+  assert.match(renderedKeep, new RegExp(`src="\\/dome-world\\/${escaped}\\?v=20260720-aia3-mass-eviction-v2"`));
+}
+assert.match(renderedKeep, /ash-cache-preflight/);
+assert.match(renderedKeep, /Updating Ash Keep · preserving local cases/);
+assert.match(renderedKeep, /local_case_pointer_preserved/);
 assert.equal(injectAshKeepLifecycle(renderedKeep), renderedKeep, 'Lifecycle cache-boundary injection is not idempotent.');
 
 for (const module of ['ash-profile-demo-hydration','ash-investigation-demo-hydration','ash-research-demo-hydration','ash-research-demo-control-state']) {
@@ -185,7 +191,7 @@ for (const token of [
   'X-TD613-Ash-Lifecycle-Asset',
   'X-TD613-Ash-Canonical-Membrane',
   'Clear-Site-Data',
-  'HTTP_CACHE_ONLY',
+  'HTTP_CACHE_AND_SERVICE_WORKER_CLIENT_EVICTION',
   'case_data_preserved:true'
 ]) assert(shell.includes(token), `Shell omitted ${token}`);
 
