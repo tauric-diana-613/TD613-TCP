@@ -14,7 +14,7 @@ const premiumReadinessSource = fs.readFileSync(premiumReadinessPath, 'utf8');
 const workspaceBridgeSource = fs.readFileSync(workspaceBridgePath, 'utf8');
 const { ASH_DEMO_PEDAGOGY_VERSION, ASH_DEMO_PEDAGOGY_MANIFESTS } = await import(pathToFileURL(modulePath));
 
-assert.equal(ASH_DEMO_PEDAGOGY_VERSION, 'td613.ash.demo-pedagogy/v0.1-four-profile-rehydration');
+assert.equal(ASH_DEMO_PEDAGOGY_VERSION, 'td613.ash.demo-pedagogy/v0.2-event-driven-idle-stable');
 assert.deepEqual(Object.keys(ASH_DEMO_PEDAGOGY_MANIFESTS).sort(), ['fundraiser','investigation','political_campaign','research']);
 
 const expected = {
@@ -48,6 +48,10 @@ assert.match(moduleSource, /td613:ash:demo-pedagogy-hydrated/);
 assert.match(moduleSource, /data-demo-pedagogy-workspace/);
 assert.match(moduleSource, /updateMotionLabels/);
 assert.match(moduleSource, /decorateDestinations/);
+assert.match(moduleSource, /renderSignature/);
+assert.match(moduleSource, /lastRenderSignature/);
+assert.match(moduleSource, /premium-ready/);
+assert.doesNotMatch(moduleSource, /new MutationObserver/);
 assert.match(moduleSource, /if \('checked' in node\) return node\.checked \? 'DRIFT' : 'DORMANT_OK'/);
 assert.match(moduleSource, /node\.tagName === 'A' \? 'SEPARATE' : 'DRIFT'/);
 assert.match(moduleSource, /providerApproval/);
