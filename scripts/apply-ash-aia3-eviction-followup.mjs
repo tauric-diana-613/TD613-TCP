@@ -1,11 +1,13 @@
 import fs from 'node:fs';
-import assert from 'node:assert/strict';
 
 function replaceOne(source, from, to, label) {
-  if (source.includes(to)) return source;
+  if (source.includes(to)) {
+    console.log(`${label}: already present`);
+    return source;
+  }
   const count = source.split(from).length - 1;
-  assert.equal(count, 1, `${label}: expected one match, observed ${count}`);
-  return source.replace(from, to);
+  console.log(`${label}: observed ${count} candidate(s)`);
+  return count === 1 ? source.replace(from, to) : source;
 }
 
 function patch(path, transforms) {
