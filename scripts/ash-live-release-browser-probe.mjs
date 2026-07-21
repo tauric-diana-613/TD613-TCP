@@ -16,7 +16,7 @@ const plans={
   political_campaign:{title:'Harbor City Mayoral Campaign',docket:'apeqPaiaMethodDocket',entry:'map'},
   fundraiser:{title:'Northstar Arts Benefit',docket:'apeqPaiaMethodDocket',entry:'work'},
   investigation:{title:'Glass Meridian Vendor Integrity Inquiry',docket:'apeqPaiaMethodDocket',entry:'home'},
-  research:{title:'Lumen Atlas Study',docket:'researchMethodDocket',entry:'work'}
+  research:{title:'Lumen Atlas Research Project',docket:'researchMethodDocket',entry:'work'}
 };
 const assert=(value,message)=>{if(!value)throw new Error(message);};
 
