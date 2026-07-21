@@ -1,9 +1,8 @@
-export const ASH_DEMO_PEDAGOGY_ROUTEBAR_VERSION = 'td613.ash.demo-pedagogy-routebar/v0.1-persistent-four-step-route';
+export const ASH_DEMO_PEDAGOGY_ROUTEBAR_VERSION = 'td613.ash.demo-pedagogy-routebar/v0.2-event-driven-persistent-route';
 
 const host = globalThis.window;
 const doc = globalThis.document;
 const byId = id => doc?.getElementById(id);
-let retryTimer = 0;
 let lastSignature = '';
 
 function ensureStyles() {
@@ -27,13 +26,9 @@ function currentState() {
 }
 
 function render() {
-  clearTimeout(retryTimer);
   const context = byId('premiumContextBar');
   const state = currentState();
-  if (!context || !state?.manifest?.task_spine) {
-    retryTimer = host.setTimeout(render, 60);
-    return false;
-  }
+  if (!context || !state?.manifest?.task_spine) return false;
   ensureStyles();
   let nav = byId('ashDemoPedagogyRouteBar');
   if (!nav) {
@@ -57,7 +52,7 @@ function render() {
 
 export function installAshDemoPedagogyRoutebar() {
   if (!host || !doc?.body || host.__td613AshDemoPedagogyRoutebar) return false;
-  for (const type of ['premium-ready','profile-demo-hydrated','demo-pedagogy-hydrated','ux-workspace-opened','case-opened']) host.addEventListener(`td613:ash:${type}`, render);
+  for (const type of ['premium-ready','profile-demo-hydrated','demo-pedagogy-hydrated','demo-entry-ready','ux-workspace-opened','case-opened']) host.addEventListener(`td613:ash:${type}`, render);
   host.__td613AshDemoPedagogyRoutebar = Object.freeze({ version:ASH_DEMO_PEDAGOGY_ROUTEBAR_VERSION, refresh:render, current:() => Object.freeze({ profile:currentState()?.profile || null, active:doc.documentElement.dataset.ashPremiumWorkspace || null, visible:Boolean(byId('ashDemoPedagogyRouteBar')) }) });
   render();
   return true;
