@@ -81,7 +81,23 @@ async function workspaceState(page, workspace) {
   }, workspace);
 }
 
+async function openWorkDock(page) {
+  const current = await page.evaluate(() => document.documentElement.dataset.ashPremiumWorkspace || null);
+  if (current !== 'work') {
+    const button = page.locator('#premiumPrimaryDock [data-premium-workspace="work"]');
+    await button.click();
+    await page.waitForFunction(() => document.documentElement.dataset.ashUxScrollTarget === 'work'
+      && document.getElementById('workspace-work')?.classList.contains('active'));
+  }
+  await page.locator('#researchHydrationLedger').waitFor({ state:'visible' });
+}
+
 async function openFromLedger(page, workspace) {
+  if (workspace === 'work') {
+    await openWorkDock(page);
+    return workspaceState(page, 'work');
+  }
+  await openWorkDock(page);
   const button = page.locator(`[data-research-open="${workspace}"]`).first();
   await button.scrollIntoViewIfNeeded();
   await button.click();
