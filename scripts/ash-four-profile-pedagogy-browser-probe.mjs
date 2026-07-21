@@ -12,10 +12,10 @@ const EPOCH = '20260721-legal-demo-ux-v1';
 const assert = (value, message) => { if (!value) throw new Error(message); };
 
 const profiles = Object.freeze({
-  investigation:{ tasks:['Preserve source','Map contradictions','Test alternatives','Human-review finding'] },
-  political_campaign:{ tasks:['Confirm mandate','Split public and private','Route launch work','Human-review claim'] },
-  fundraiser:{ tasks:['State the gap','Protect relationship joins','Route asks + stewardship','Human-review ask'] },
-  research:{ tasks:['Frame the question','Inspect method + provenance','Test + reproduce','Human-review publication'] }
+  investigation:{ entry:'home', tasks:['Preserve source','Map contradictions','Test alternatives','Human-review finding'] },
+  political_campaign:{ entry:'map', tasks:['Confirm mandate','Split public and private','Route launch work','Human-review claim'] },
+  fundraiser:{ entry:'work', tasks:['State the gap','Protect relationship joins','Route asks + stewardship','Human-review ask'] },
+  research:{ entry:'work', tasks:['Frame the question','Inspect method + provenance','Test + reproduce','Human-review publication'] }
 });
 
 async function waitIngress(page) {
@@ -27,23 +27,32 @@ async function waitIngress(page) {
       && document.documentElement.dataset.ashPremiumReady === 'true'
       && document.documentElement.dataset.ashDemoPedagogy
       && window.__td613AshDemoPedagogy?.version
+      && window.__td613AshDemoEntryConvergence?.version
       && window.__td613AshUiUxRescue?.version
       && composition?.membrane_ready === true
       && composition?.hold == null;
   }, EPOCH, { timeout:60_000 });
 }
 
-async function waitHydrated(page, profile) {
-  await page.waitForFunction(value => {
+async function waitHydrated(page, profile, entry) {
+  await page.waitForFunction(({ value, expectedEntry }) => {
     const composition = window.__td613AshAia3Composition?.current?.() || null;
     const premium = window.__td613AshPremiumUI?.snapshot?.() || null;
     const pedagogy = window.__td613AshDemoPedagogy?.current?.() || null;
+    const convergence = window.__td613AshDemoEntryConvergence?.current?.() || null;
     const routebar = document.getElementById('ashDemoPedagogyRouteBar');
     const active = document.documentElement.dataset.ashPremiumWorkspace || null;
     return document.documentElement.dataset.ashDemoProfile === value
       && document.documentElement.dataset.ashPedagogyProfile === value
+      && document.documentElement.dataset.ashDemoEntryReady === `${value}:${expectedEntry}`
+      && document.documentElement.dataset.ashDemoEntryHydrating !== 'true'
+      && !document.documentElement.dataset.ashDemoEntryHold
       && premium?.profile === value
       && pedagogy?.profile === value
+      && convergence?.profile === value
+      && convergence?.workspace === expectedEntry
+      && convergence?.posture === 'READY'
+      && active === expectedEntry
       && composition?.membrane_ready === true
       && Boolean(composition?.lifecycle_state)
       && composition?.route_count >= 4
@@ -51,9 +60,8 @@ async function waitHydrated(page, profile) {
       && document.getElementById('ashDemoPedagogyLedger')?.dataset.profile === value
       && routebar?.dataset.profile === value
       && routebar.querySelectorAll('[data-demo-pedagogy-workspace]').length === 4
-      && active
       && document.getElementById(`workspace-${active}`)?.classList.contains('active');
-  }, profile, { timeout:90_000 });
+  }, { value:profile, expectedEntry:entry }, { timeout:90_000 });
 }
 
 async function snapshot(page, profile) {
@@ -64,6 +72,7 @@ async function snapshot(page, profile) {
       return style.display !== 'none' && style.visibility !== 'hidden' && Number(style.opacity) > 0 && rect.width > 0 && rect.height > 0;
     };
     const current = window.__td613AshDemoPedagogy?.current?.() || null;
+    const entry = window.__td613AshDemoEntryConvergence?.current?.() || null;
     const activeWorkspace = document.documentElement.dataset.ashPremiumWorkspace || null;
     const ledger = document.getElementById('ashDemoPedagogyLedger');
     return {
@@ -71,6 +80,9 @@ async function snapshot(page, profile) {
       case_profile:window.__td613AshPremiumUI?.snapshot?.()?.profile || null,
       case_title:document.getElementById('caseTitle')?.textContent || window.__td613AshPremiumUI?.snapshot?.()?.title || null,
       pedagogy_profile:current?.profile || null,
+      entry,
+      entry_receipt:document.documentElement.dataset.ashDemoEntryReady || null,
+      entry_hold:document.documentElement.dataset.ashDemoEntryHold || null,
       audit:current?.audit || null,
       task_labels:[...document.querySelectorAll('#ashDemoPedagogyLedger [data-demo-pedagogy-workspace] strong')].map(node => node.textContent.trim()),
       task_workspaces:[...document.querySelectorAll('#ashDemoPedagogyLedger [data-demo-pedagogy-workspace]')].map(node => node.dataset.demoPedagogyWorkspace),
@@ -119,10 +131,12 @@ async function runProfile(browser, profile, spec, report) {
       return document.getElementById('newProfile')?.value === value && button && !button.disabled && button.getAttribute('aria-busy') !== 'true';
     }, profile);
     await page.locator('#startDemo').click();
-    await waitHydrated(page, profile);
+    await waitHydrated(page, profile, spec.entry);
     const initial = await snapshot(page, profile);
     assert(initial.case_profile === profile, `${profile}: premium case profile drifted.`);
     assert(initial.pedagogy_profile === profile, `${profile}: pedagogy profile drifted.`);
+    assert(initial.entry_receipt === `${profile}:${spec.entry}` && initial.entry?.posture === 'READY' && !initial.entry_hold, `${profile}: entry convergence receipt drifted.`);
+    assert(initial.active_workspace === spec.entry, `${profile}: expected ${spec.entry} entry, got ${initial.active_workspace}.`);
     assert(initial.root_visible && initial.ledger_attached && initial.routebar_visible && initial.main_visible && initial.rail_visible && initial.active_workspace_visible, `${profile}: coherent active work surface missing.`);
     assert(initial.audit?.missing?.length === 0, `${profile}: missing surfaces ${JSON.stringify(initial.audit?.missing)}.`);
     assert(initial.audit?.drift?.length === 0, `${profile}: dormant/separate surface drift ${JSON.stringify(initial.audit?.drift)}.`);
@@ -174,7 +188,7 @@ async function runProfile(browser, profile, spec, report) {
 
 await fs.mkdir(out, { recursive:true });
 const browser = await engine.launch({ headless:true });
-const report = { schema:'td613.ash.four-profile-pedagogy-browser/v0.3-active-workspace-coherence', browser:browserName, status:'RUNNING', profiles:{}, authority:{ counts_as_human_evidence:false, child_study_authorized:false, transport_authorized:false, closes_program:false } };
+const report = { schema:'td613.ash.four-profile-pedagogy-browser/v0.4-entry-converged', browser:browserName, status:'RUNNING', profiles:{}, authority:{ counts_as_human_evidence:false, child_study_authorized:false, transport_authorized:false, closes_program:false } };
 let terminal = null;
 try {
   for (const [profile, spec] of Object.entries(profiles)) await runProfile(browser, profile, spec, report);
