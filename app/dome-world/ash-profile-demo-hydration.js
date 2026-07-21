@@ -15,5 +15,16 @@ export {
   installLegalMatterDemo
 } from './ash-legal-profile-demo.js?v=20260721-legal-demo-ux-v1';
 
+export {
+  ASH_RESEARCH_DEMO_VERSION,
+  ASH_RESEARCH_SURFACE_LEDGER_VERSION,
+  ASH_RESEARCH_SURFACE_PLAN,
+  buildResearchFixture,
+  auditResearchSurfaces,
+  hydrateResearchDemo,
+  installAshResearchDemo
+} from './ash-research-demo-hydration.js?v=20260721-legal-demo-ux-v1';
+
 import './ash-apeq-paia-profile-demos.js?v=20260721-legal-demo-ux-v1';
 import './ash-legal-profile-demo.js?v=20260721-legal-demo-ux-v1';
+import './ash-research-demo-hydration.js?v=20260721-legal-demo-ux-v1';
