@@ -13,6 +13,7 @@ on:
       - 'app/dome-world/docs/FLOWCORE_PRODUCTION_OBSERVATION_REPAIR_RECEIPT_V0_1.md'
       - 'app/dome-world/docs/ASH_KEEP_AIA2_PRODUCTION_WITNESS_LAW_RECEIPT_V0_1.md'
       - 'app/dome-world/docs/ASH_KEEP_AIA3_RELEASE_RECONCILIATION_RECEIPT_V0_1.md'
+      - 'app/dome-world/docs/ASH_KEEP_AIA3_RELOCK_SAFETY_RECEIPT_V0_1.md'
       - 'app/dome-world/fixtures/pedagogue/flowcore-promotion-evidence.json'
       - 'app/dome-world/route-burden-observatory.css'
       - 'app/dome-world/flowcore-promotion-dashboard.css'
@@ -24,6 +25,7 @@ on:
       - 'tests/flowcore-runtime-browser-probe.test.mjs'
       - 'tests/flowcore-production-observation.test.mjs'
       - 'tests/vercel-operator-release-gate.test.mjs'
+      - 'tests/vercel-relock-safety.test.mjs'
       - 'docs/STRATEGIC_VERCEL_DEPLOYMENT_LAW.md'
       - '.github/workflows/flowcore-runtime-evidence.yml'
       - '.github/workflows/flowcore-production-observation.yml'
@@ -31,6 +33,7 @@ on:
       - '.github/workflows/ash-keep-aia3-production-observation.yml'
       - '.github/workflows/vercel-deployment-law.yml'
       - '.github/workflows/vercel-operator-release.yml'
+      - '.github/workflows/vercel-relock-safety.yml'
       - '.github/workflows/flowcore-p0-p10-final-stitch.yml'
   workflow_dispatch:
 
@@ -62,6 +65,7 @@ jobs:
           node --test tests/flowcore-runtime-browser-probe.test.mjs
           node --test tests/flowcore-production-observation.test.mjs
           node tests/vercel-operator-release-gate.test.mjs
+          node tests/vercel-relock-safety.test.mjs
       - name: Assert bounded completion mode
         shell: bash
         run: |
@@ -87,7 +91,8 @@ jobs:
 
           if ! grep -Fxq 'app/dome-world/docs/FLOWCORE_PRODUCTION_OBSERVATION_REPAIR_RECEIPT_V0_1.md' <<< "$CHANGED" \
             && ! grep -Fxq 'app/dome-world/docs/ASH_KEEP_AIA2_PRODUCTION_WITNESS_LAW_RECEIPT_V0_1.md' <<< "$CHANGED" \
-            && ! grep -Fxq 'app/dome-world/docs/ASH_KEEP_AIA3_RELEASE_RECONCILIATION_RECEIPT_V0_1.md' <<< "$CHANGED"; then
+            && ! grep -Fxq 'app/dome-world/docs/ASH_KEEP_AIA3_RELEASE_RECONCILIATION_RECEIPT_V0_1.md' <<< "$CHANGED" \
+            && ! grep -Fxq 'app/dome-world/docs/ASH_KEEP_AIA3_RELOCK_SAFETY_RECEIPT_V0_1.md' <<< "$CHANGED"; then
             echo 'Production observation repair requires a named Flow-Core or Ash witness receipt.' >&2
             exit 1
           fi
@@ -100,8 +105,10 @@ jobs:
           .github/workflows/flowcore-runtime-evidence.yml
           .github/workflows/vercel-deployment-law.yml
           .github/workflows/vercel-operator-release.yml
+          .github/workflows/vercel-relock-safety.yml
           app/dome-world/docs/ASH_KEEP_AIA2_PRODUCTION_WITNESS_LAW_RECEIPT_V0_1.md
           app/dome-world/docs/ASH_KEEP_AIA3_RELEASE_RECONCILIATION_RECEIPT_V0_1.md
+          app/dome-world/docs/ASH_KEEP_AIA3_RELOCK_SAFETY_RECEIPT_V0_1.md
           app/dome-world/docs/FLOWCORE_P0_P10_IMPLEMENTATION_COMPLETION_LEDGER_V0_1.md
           app/dome-world/docs/FLOWCORE_PEDAGOGUE_P10_IMPLEMENTATION_RECEIPT_V0_1.md
           app/dome-world/docs/FLOWCORE_PEDAGOGUE_PROGRAM_INDEX_V0_1.md
@@ -119,6 +126,7 @@ jobs:
           tests/flowcore-production-promotion.test.mjs
           tests/flowcore-runtime-browser-probe.test.mjs
           tests/vercel-operator-release-gate.test.mjs
+          tests/vercel-relock-safety.test.mjs
           EOF_ALLOWED
           )"
 
@@ -134,4 +142,4 @@ jobs:
             echo 'Production observation repair may not mutate serverless, Ash, canonical, or promotion configuration.' >&2
             exit 1
           fi
-          echo 'Completion mode: bounded Ash Keep AIA3 production observation repair.'
+          echo 'Completion mode: bounded Ash Keep AIA3 relock safety repair.'
