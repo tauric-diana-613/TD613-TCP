@@ -15,6 +15,7 @@ const runtime = read('app/dome-world/ash-keep-aia.js');
 const bridge = read('app/dome-world/ash-keep-aia-workspace-bridge.js');
 const composition = read('app/dome-world/ash-aia3-composition.js');
 const cacheEviction = read('app/dome-world/ash-cache-eviction-aia3.js');
+const shell = read('api/dome-world-shell.js');
 const baseStyles = read('app/dome-world/ash-keep-aia.css');
 const aia3Styles = [
   read('app/dome-world/ash-keep-aia3.css'),
@@ -26,17 +27,20 @@ const ashSurface = collectSource('app/dome-world');
 const vercel = read('vercel.json');
 const escaped = value => value.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
 
-test('loader preserves legacy rollback and atomically mounts AIA3 only for the AIA presentation', () => {
+const EPOCH = '20260720-aia3-mass-eviction-v2';
+const CACHE_EPOCH = 'td613.ash.cache-flush/2026-07-20-aia3-mass-eviction-v2';
+
+test('loader preserves legacy rollback and gates the entire AIA3 graph behind preflight', () => {
+  assert.match(loader, /__td613AshAia3Preflight/);
+  assert.match(loader, /preflight\.then/);
   assert.match(loader, /ash-cache-eviction-aia3\.js/);
   assert.match(loader, /legacyPresentation/);
   assert.match(loader, /dataset\.ashAiaLegacy/);
   assert.match(loader, /td613\.ash\.aia3-composition\/v0\.3-atomic-ingress-readiness/);
-  assert.match(loader, /data-ash-aia3-style/);
-  assert.match(loader, /data-ash-aia3-compact/);
-  assert.match(loader, /data-ash-aia3-interaction/);
-  assert.match(loader, /await import\('\.\/ash-keep-aia\.js/);
-  assert.match(loader, /await import\('\.\/ash-aia3-composition\.js/);
-  assert.match(loader, /await import\('\.\/ash-keep-aia-workspace-bridge\.js/);
+  for (const marker of ['data-ash-aia3-style', 'data-ash-aia3-compact', 'data-ash-aia3-interaction']) assert.match(loader, new RegExp(marker));
+  for (const asset of ['ash-cache-flush.js', 'ash-ingress-layout-hydration.js', 'ash-lifecycle-core.js', 'ash-cache-eviction-aia3.js', 'ash-keep-aia.css', 'ash-keep-aia3.css', 'ash-keep-aia3-compact.css', 'ash-keep-aia3-interaction.css', 'ash-keep-aia.js', 'ash-aia3-composition.js', 'ash-keep-aia-workspace-bridge.js']) {
+    assert.match(loader, new RegExp(`${escaped(asset)}\\?v=${EPOCH}`), `Loader omitted current epoch for ${asset}.`);
+  }
   assert.ok(loader.indexOf('data-ash-aia3-interaction') < loader.indexOf("await import('./ash-keep-aia.js"));
 });
 
@@ -97,15 +101,28 @@ test('tutorial is finite, deterministic, gesture-triggered, non-operative, and r
   assert.equal((runtime.match(/requestAnimationFrame\(/g) || []).length, 0, 'The guide must not introduce a second scheduler.');
 });
 
-test('mass eviction is one-epoch, case-preserving, and excludes IndexedDB deletion', () => {
-  assert.match(cacheEviction, /2026-07-20-aia3-production-recovery-v1/);
+test('mass eviction precedes stale modules, preserves local cases, and excludes IndexedDB deletion', () => {
+  assert.match(cacheEviction, new RegExp(escaped(CACHE_EPOCH)));
+  assert.match(cacheEviction, new RegExp(EPOCH));
   assert.match(cacheEviction, /clearCacheStorage/);
   assert.match(cacheEviction, /unregisterWorkers/);
   assert.match(cacheEviction, /surface=cache-evict/);
-  assert.match(cacheEviction, /indexeddb_preserved: true/);
-  assert.match(cacheEviction, /case_data_preserved: true/);
-  assert.match(cacheEviction, /active_session_reset: true/);
-  assert.doesNotMatch(cacheEviction, /deleteDatabase|indexedDB\.delete/);
+  assert.match(cacheEviction, /indexeddb_preserved:true/);
+  assert.match(cacheEviction, /case_data_preserved:true/);
+  assert.match(cacheEviction, /active_session_reset:false/);
+  assert.match(cacheEviction, /local_case_pointer_preserved:pointerAfter === pointerBefore/);
+  assert.match(cacheEviction, /session_epoch_preserved:sessionAfter === sessionBefore/);
+  assert.doesNotMatch(cacheEviction, /removeItem\?\.\(POINTER_KEY\)|removeItem\?\.\(SESSION_KEY\)|deleteDatabase|indexedDB\.delete|localStorage\.clear|sessionStorage\.clear/);
+  assert.match(shell, /ash-cache-preflight/);
+  assert.match(shell, /Updating Ash Keep · preserving local cases/);
+  assert.match(shell, /__td613AshAia3Preflight/);
+  assert.match(shell, /location\.replace/);
+  assert.match(shell, /CDN-Cache-Control/);
+  assert.match(shell, /Vercel-CDN-Cache-Control/);
+  assert.match(shell, /Clear-Site-Data/);
+  assert.match(shell, /active_session_reset_by_client:false/);
+  assert.match(shell, /local_case_pointer_preserved/);
+  assert.doesNotMatch(shell, /indexedDB\.deleteDatabase|localStorage\.clear\(|sessionStorage\.clear\(/);
 });
 
 test('privacy, evidence, child-study, and rollback boundaries remain explicit', () => {
