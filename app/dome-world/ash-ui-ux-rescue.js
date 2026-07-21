@@ -1,11 +1,15 @@
-export const ASH_UI_UX_RESCUE_VERSION = 'td613.ash.ui-ux-rescue/v0.2-stable-navigation-motion-ready-frames';
+export const ASH_UI_UX_RESCUE_VERSION = 'td613.ash.ui-ux-rescue/v0.3-settled-navigation-motion-ready-frames';
 
 const host = globalThis.window;
 const doc = globalThis.document;
 const REDUCED = () => host?.matchMedia?.('(prefers-reduced-motion: reduce)').matches === true;
 const DESTINATION_SELECTOR = '[data-premium-workspace],[data-route-workspace],[data-command-workspace]';
+const ALIGNMENT_TOLERANCE_PX = 6;
+const ALIGNMENT_DEADLINE_MS = 1400;
 let releaseTimer = 0;
 let releaseFrame = 0;
+let navigationFrame = 0;
+let navigationToken = 0;
 let animationTimer = 0;
 let animationToken = 0;
 
@@ -23,14 +27,76 @@ function stickyOffset() {
   return visibleHeight('.mast') + visibleHeight('.premium-context-bar') + visibleHeight('body > .workspace-rail') + 14;
 }
 
+function desiredWorkspaceScroll(panel) {
+  return Math.max(0, panel.getBoundingClientRect().top + host.scrollY - stickyOffset());
+}
+
+function workspaceAlignment(panel) {
+  const offset = stickyOffset();
+  const top = panel.getBoundingClientRect().top;
+  const maxScroll = Math.max(0, doc.documentElement.scrollHeight - host.innerHeight);
+  return Object.freeze({
+    top,
+    offset,
+    delta:top - offset,
+    max_scroll:maxScroll,
+    at_document_end:host.scrollY >= maxScroll - 1
+  });
+}
+
+function publishWorkspaceAlignment(name, panel, posture, alignment) {
+  panel.setAttribute('tabindex', '-1');
+  panel.focus({ preventScroll:true });
+  delete doc.documentElement.dataset.ashUxScrollPending;
+  doc.documentElement.dataset.ashUxScrollTarget = name;
+  doc.documentElement.dataset.ashUxScrollPosture = posture;
+  host.dispatchEvent(new CustomEvent('td613:ash:ux-workspace-aligned', {
+    detail:{
+      workspace:name,
+      version:ASH_UI_UX_RESCUE_VERSION,
+      posture,
+      top:alignment.top,
+      offset:alignment.offset,
+      delta:alignment.delta
+    }
+  }));
+}
+
+function settleWorkspaceScroll(name, panel, token, startedAt, forced = false) {
+  if (token !== navigationToken) return;
+  const alignment = workspaceAlignment(panel);
+  const aligned = Math.abs(alignment.delta) <= ALIGNMENT_TOLERANCE_PX;
+  const clamped = alignment.at_document_end && alignment.delta > ALIGNMENT_TOLERANCE_PX;
+  if (aligned || clamped) {
+    publishWorkspaceAlignment(name, panel, aligned ? (forced ? 'FORCED_EXACT_ALIGNMENT' : 'SETTLED_EXACT_ALIGNMENT') : 'CLAMPED_DOCUMENT_END', alignment);
+    return;
+  }
+
+  const elapsed = (host.performance?.now?.() || Date.now()) - startedAt;
+  if (!forced && elapsed >= ALIGNMENT_DEADLINE_MS) {
+    host.scrollTo({ top:desiredWorkspaceScroll(panel), behavior:'auto' });
+    navigationFrame = host.requestAnimationFrame(() => host.requestAnimationFrame(() => settleWorkspaceScroll(name, panel, token, startedAt, true)));
+    return;
+  }
+
+  if (forced) {
+    publishWorkspaceAlignment(name, panel, 'FORCED_BOUNDED_ALIGNMENT', workspaceAlignment(panel));
+    return;
+  }
+  navigationFrame = host.requestAnimationFrame(() => settleWorkspaceScroll(name, panel, token, startedAt, false));
+}
+
 function scrollToWorkspace(name) {
   const panel = byId(`workspace-${name}`);
   if (!panel) return false;
-  const top = Math.max(0, panel.getBoundingClientRect().top + host.scrollY - stickyOffset());
-  host.scrollTo({ top, behavior: REDUCED() ? 'auto' : 'smooth' });
-  panel.setAttribute('tabindex', '-1');
-  panel.focus({ preventScroll: true });
-  doc.documentElement.dataset.ashUxScrollTarget = name;
+  if (navigationFrame) host.cancelAnimationFrame(navigationFrame);
+  const token = ++navigationToken;
+  const startedAt = host.performance?.now?.() || Date.now();
+  delete doc.documentElement.dataset.ashUxScrollTarget;
+  doc.documentElement.dataset.ashUxScrollPending = name;
+  doc.documentElement.dataset.ashUxScrollPosture = 'SCROLLING_TO_DESTINATION';
+  host.scrollTo({ top:desiredWorkspaceScroll(panel), behavior:REDUCED() ? 'auto' : 'smooth' });
+  navigationFrame = host.requestAnimationFrame(() => settleWorkspaceScroll(name, panel, token, startedAt, false));
   return true;
 }
 
@@ -45,7 +111,7 @@ function openWorkspace(name) {
   byId('premiumCommandSheet')?.close?.();
   if (['home', 'work', 'choir', 'capsule'].includes(name)) host.__td613AshPremiumUI?.refresh?.();
   host.requestAnimationFrame(() => host.requestAnimationFrame(() => scrollToWorkspace(name)));
-  host.dispatchEvent(new CustomEvent('td613:ash:ux-workspace-opened', { detail: { workspace: name } }));
+  host.dispatchEvent(new CustomEvent('td613:ash:ux-workspace-opened', { detail:{ workspace:name } }));
   return true;
 }
 
@@ -150,7 +216,7 @@ function installExplanationRepair() {
     host.requestAnimationFrame(startVisibleExplanation);
   }, true);
   const observer = new MutationObserver(() => ensureMotionTrack());
-  observer.observe(doc.body, { childList: true, subtree: true });
+  observer.observe(doc.body, { childList:true, subtree:true });
   ensureMotionTrack();
 }
 
@@ -170,7 +236,7 @@ function releaseCompositionVeil(reason = 'READY') {
   doc.documentElement.dataset.ashCompositionStable = ASH_UI_UX_RESCUE_VERSION;
   doc.documentElement.dataset.ashCompositionRelease = reason;
   byId('td613AshCompositionVeil')?.remove();
-  host.dispatchEvent(new CustomEvent('td613:ash:composition-stable', { detail: { reason, version: ASH_UI_UX_RESCUE_VERSION } }));
+  host.dispatchEvent(new CustomEvent('td613:ash:composition-stable', { detail:{ reason, version:ASH_UI_UX_RESCUE_VERSION } }));
 }
 
 function installCompositionRelease() {
@@ -195,15 +261,17 @@ export function installAshUiUxRescue() {
   installExplanationRepair();
   installCompositionRelease();
   host.__td613AshUiUxRescue = Object.freeze({
-    version: ASH_UI_UX_RESCUE_VERSION,
-    open: openWorkspace,
-    scrollTo: scrollToWorkspace,
-    play: startVisibleExplanation,
-    current: () => Object.freeze({
-      workspace: doc.documentElement.dataset.ashPremiumWorkspace || null,
-      scroll_target: doc.documentElement.dataset.ashUxScrollTarget || null,
-      explanation_motion: doc.documentElement.dataset.ashExplanationMotion || null,
-      composition_release: doc.documentElement.dataset.ashCompositionRelease || null
+    version:ASH_UI_UX_RESCUE_VERSION,
+    open:openWorkspace,
+    scrollTo:scrollToWorkspace,
+    play:startVisibleExplanation,
+    current:() => Object.freeze({
+      workspace:doc.documentElement.dataset.ashPremiumWorkspace || null,
+      scroll_target:doc.documentElement.dataset.ashUxScrollTarget || null,
+      scroll_pending:doc.documentElement.dataset.ashUxScrollPending || null,
+      scroll_posture:doc.documentElement.dataset.ashUxScrollPosture || null,
+      explanation_motion:doc.documentElement.dataset.ashExplanationMotion || null,
+      composition_release:doc.documentElement.dataset.ashCompositionRelease || null
     })
   });
   doc.documentElement.dataset.ashUiUxRescue = ASH_UI_UX_RESCUE_VERSION;
