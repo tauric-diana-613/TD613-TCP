@@ -45,6 +45,8 @@ async function installTrace(context) {
       const entry = {
         preflight:document.documentElement.dataset.ashCachePreflight || null,
         session:document.documentElement.dataset.ashSessionOpen || null,
+        aia3_ready:document.documentElement.dataset.ashAia3Ready || null,
+        readiness_hold:document.documentElement.dataset.ashAia3ReadinessHold || null,
         root_visible:visible(document.querySelector('#ashAiaMembrane')),
         launch_visible:visible(document.querySelector('#launch')),
         stale_asset:document.documentElement.dataset.staleAia2Asset || null
@@ -89,6 +91,7 @@ async function snapshot(page, label) {
       label:labelValue,
       current:window.__td613AshLiveAIA?.current?.() || null,
       composition:window.__td613AshAia3Composition?.current?.() || null,
+      composition_release:document.documentElement.dataset.ashCompositionRelease || null,
       preflight,
       paint_trace:trace,
       case_id:window.__td613AshKeep?.current?.().case_id || null,
@@ -112,7 +115,10 @@ async function snapshot(page, label) {
 }
 
 async function waitReady(page) {
-  await page.waitForFunction(epoch => document.documentElement.dataset.ashAia3Ready === 'true' && window.__td613AshAia3Composition?.current?.().membrane_ready === true && document.querySelector('#newProfile')?.value === 'investigation' && location.search.includes(`ash_epoch=${epoch}`), EPOCH);
+  await page.waitForFunction(epoch => document.documentElement.dataset.ashAia3Ready === 'true'
+    && window.__td613AshAia3Composition?.current?.().membrane_ready === true
+    && document.querySelector('#newProfile')?.value === 'investigation'
+    && location.search.includes(`ash_epoch=${epoch}`), EPOCH);
 }
 
 function assertCleanPaint(value, label) {
@@ -137,17 +143,26 @@ async function waitForCaseComposition(page) {
     };
     const caseId = window.__td613AshKeep?.current?.().case_id || null;
     const composition = window.__td613AshAia3Composition?.current?.() || null;
+    const current = window.__td613AshLiveAIA?.current?.() || null;
+    const root = document.querySelector('#ashAiaMembrane');
     const main = document.querySelector('body > main');
     const rail = document.querySelector('body > .workspace-rail');
-    return Boolean(caseId) &&
-      localStorage.getItem('td613.ash-keep.current-case') === caseId &&
-      window.__td613AshLiveAIA?.current?.().task === 'document' &&
-      composition?.session_open === true &&
-      composition?.membrane_ready === true &&
-      visible(document.querySelector('#ashAiaMembrane')) &&
-      !visible(document.querySelector('#launch')) &&
-      visible(main) && visible(rail) &&
-      !main?.hasAttribute('inert') && !rail?.hasAttribute('inert');
+    return Boolean(caseId)
+      && localStorage.getItem('td613.ash-keep.current-case') === caseId
+      && current?.task === 'document'
+      && Boolean(current?.lifecycle_state)
+      && composition?.session_open === true
+      && composition?.membrane_ready === true
+      && composition?.hold == null
+      && composition?.route_count >= 4
+      && composition?.task_count >= 4
+      && root?.querySelectorAll('[data-aia-route]').length >= 4
+      && root?.querySelectorAll('[data-aia-task]').length >= 4
+      && visible(root)
+      && !visible(document.querySelector('#launch'))
+      && visible(main) && visible(rail)
+      && !main?.hasAttribute('inert') && !rail?.hasAttribute('inert')
+      && Boolean(document.documentElement.dataset.ashCompositionStable);
   });
 }
 
@@ -156,13 +171,13 @@ async function waitForLifecycleCaseBinding(page, expectedText) {
     const caseId = window.__td613AshKeep?.current?.().case_id || null;
     let lifecycle = null;
     try { lifecycle = JSON.parse(document.querySelector('#lifecycleReceipt')?.textContent || 'null')?.lifecycle || null; } catch {}
-    return Boolean(caseId) &&
-      localStorage.getItem('td613.ash-keep.current-case') === caseId &&
-      document.querySelector('#draftBody')?.value?.includes(expected) &&
-      window.__td613AshLiveAIA?.current?.().task === 'custody' &&
-      lifecycle?.references?.case_id === caseId &&
-      Boolean(lifecycle?.references?.case_map_digest) &&
-      lifecycle?.gates?.map === true;
+    return Boolean(caseId)
+      && localStorage.getItem('td613.ash-keep.current-case') === caseId
+      && document.querySelector('#draftBody')?.value?.includes(expected)
+      && window.__td613AshLiveAIA?.current?.().task === 'custody'
+      && lifecycle?.references?.case_id === caseId
+      && Boolean(lifecycle?.references?.case_map_digest)
+      && lifecycle?.gates?.map === true;
   }, expectedText);
 }
 
@@ -191,7 +206,7 @@ async function runFresh(browser, config, report) {
   const opened = await snapshot(page, `${config.name}-case-open`);
   report.steps.push(opened);
   assert(opened.case_id && opened.pointer === opened.case_id && !opened.launch.visible && opened.root.visible && opened.root.routes === 4 && opened.root.tasks === 4, `${config.name}: case composition incomplete.`);
-  assert(opened.composition?.session_open === true && opened.composition?.membrane_ready === true, `${config.name}: composition receipt incomplete.`);
+  assert(opened.composition?.session_open === true && opened.composition?.membrane_ready === true && opened.composition?.hold == null, `${config.name}: composition receipt incomplete.`);
   assert(opened.main.visible && opened.rail.visible && !opened.main.inert && !opened.rail.inert, `${config.name}: exact work unavailable.`);
   assert(opened.root.rect.height <= (config.name === 'desktop' ? 620 : 1050), `${config.name}: AIA crown too tall.`);
 
@@ -245,11 +260,37 @@ async function runStale(browser, report) {
     await navigator.serviceWorker.ready;
   });
   await page.goto(`${route}&profile=stale&phase=evict&nonce=${Date.now()}`, { waitUntil:'domcontentloaded' });
-  await page.waitForFunction(({ expectedCase, epoch }) => window.__td613AshKeep?.current?.().case_id === expectedCase && localStorage.getItem('td613.ash-keep.current-case') === expectedCase && window.__td613AshAia3Composition?.current?.().session_open === true && window.__td613AshAia3Composition?.current?.().membrane_ready === true && document.documentElement.dataset.ashAia3Ready === 'true' && location.search.includes(`ash_epoch=${epoch}`), { expectedCase:caseId, epoch:EPOCH });
+  await page.waitForFunction(({ expectedCase, epoch }) => {
+    const visible = node => {
+      if (!node) return false;
+      const style = getComputedStyle(node), rect = node.getBoundingClientRect();
+      return style.display !== 'none' && style.visibility !== 'hidden' && Number(style.opacity) > 0 && rect.width > 0 && rect.height > 0;
+    };
+    const current = window.__td613AshLiveAIA?.current?.() || null;
+    const composition = window.__td613AshAia3Composition?.current?.() || null;
+    const root = document.querySelector('#ashAiaMembrane');
+    return window.__td613AshKeep?.current?.().case_id === expectedCase
+      && localStorage.getItem('td613.ash-keep.current-case') === expectedCase
+      && composition?.session_open === true
+      && composition?.membrane_ready === true
+      && composition?.hold == null
+      && Boolean(composition?.lifecycle_state)
+      && composition?.route_count >= 4
+      && composition?.task_count >= 4
+      && Boolean(current?.lifecycle_state)
+      && root?.querySelectorAll('[data-aia-route]').length >= 4
+      && root?.querySelectorAll('[data-aia-task]').length >= 4
+      && visible(root)
+      && Boolean(document.documentElement.dataset.ashCompositionStable)
+      && document.documentElement.dataset.ashCompositionHydrating !== 'true'
+      && document.documentElement.dataset.ashAia3Ready === 'true'
+      && location.search.includes(`ash_epoch=${epoch}`);
+  }, { expectedCase:caseId, epoch:EPOCH });
   const final = await snapshot(page, 'stale-client-complete');
   report.steps.push(final);
   assert(final.case_id === caseId && final.pointer === caseId, 'Stale client lost the local case pointer.');
-  assert(final.root.visible && !final.launch.visible && final.main.visible && final.rail.visible, 'Stale client did not recover exact work.');
+  assert(final.root.visible && final.root.routes >= 4 && final.root.tasks >= 4 && !final.launch.visible && final.main.visible && final.rail.visible, 'Stale client did not recover complete exact work.');
+  assert(final.lifecycle.state && final.composition?.lifecycle_state && final.composition?.hold == null && final.composition_release, 'Stale client was snapshotted before lifecycle and composition release converged.');
   assert(final.preflight?.performed === true && final.preflight?.local_case_pointer_preserved === true && final.preflight?.session_epoch_preserved_or_migrated === true, 'Stale client preservation receipt failed.');
   assert(final.preflight?.cache_names?.includes('td613-retired-aia2-assets'), 'Retired cache missing from eviction receipt.');
   assert(final.preflight?.worker_scopes?.some(scope => scope.includes('/dome-world/')), 'Retired worker missing from eviction receipt.');
@@ -265,7 +306,7 @@ async function runStale(browser, report) {
 assert(browserType, `Unsupported browser ${browserName}`);
 await fs.mkdir(outputDir, { recursive:true });
 const report = {
-  schema:'td613.ash.aia3-task-continuity-browser-evidence/v0.3-mass-eviction',
+  schema:'td613.ash.aia3-task-continuity-browser-evidence/v0.4-render-readiness',
   status:'RUNNING', browser:browserName, base_url:base, source_packet_commit:sourcePacket,
   production_observation:productionObservation, profiles:{}, steps:[], console_errors:[], page_errors:[], http_errors:[], external_requests:[], non_read_requests:[],
   authority:{ counts_as_human_evidence:false, authorizes_child_study:false, authorizes_release:false, closes_program:false }
