@@ -243,7 +243,10 @@ try{
     assert(state.caseMap?.relationships?.length===expected.relationships,`${profile}: relation count drifted.`);
     assert(state.routeMemory?.entries?.length===expected.routes,`${profile}: route count drifted.`);
     const docketText=await page.locator(`#${plan.docket}`).textContent();
-    assert(/PA2/.test(docketText)&&/Unknown Readers UNMEASURED/.test(docketText),`${profile}: qualification ceiling is absent.`);
+    const ceilingPresent=profile==='research'
+      ? /PA2/.test(docketText)&&/Claim ceiling/.test(docketText)&&/publication authority/.test(docketText)
+      : /PA2/.test(docketText)&&/Unknown Readers UNMEASURED/.test(docketText);
+    assert(ceilingPresent,`${profile}: qualification ceiling is absent.`);
     report.profiles[profile]={case_id:state.caseMap.case_id,case_map_digest:state.caseMap.case_map_digest,route_memory_digest:state.routeMemory.route_memory_digest,entry_workspace:plan.entry,...expected,docket:plan.docket};
     await context.close();
   }
