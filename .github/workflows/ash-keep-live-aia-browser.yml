@@ -42,7 +42,7 @@ jobs:
           node --check scripts/ash-keep-aia3-task-journey-v3.mjs
       - name: Remove patch machinery and restore read-only witness
         run: |
-          rm -f scripts/apply-ash-module-admission-barrier.mjs .github/workflows/ash-module-admission-barrier-apply.yml
+          rm -f scripts/apply-ash-module-admission-barrier.mjs scripts/apply-ash-deferred-bootstrap.mjs .github/workflows/ash-module-admission-barrier-apply.yml
           git checkout HEAD^ -- .github/workflows/ash-keep-live-aia-browser.yml
       - name: Commit durable barrier
         run: |
@@ -51,3 +51,5 @@ jobs:
           git add -A
           git commit -m 'fix: admit Ash modules only after cache preflight'
           git push origin HEAD:agent/ash-aia3-eviction-final3
+
+# scheduler-revision: 2
