@@ -2,26 +2,26 @@ import fs from 'node:fs';
 import path from 'node:path';
 import { stabilizeAshKeepSource } from '../app/dome-world/ash-keep-delivery-transform.js';
 
-export const DOME_WORLD_SHELL_VERSION = 'td613.dome-world.shell/v1.5-aia3-mass-eviction';
+export const DOME_WORLD_SHELL_VERSION = 'td613.dome-world.shell/v1.6-legal-demo-ux';
 export const MARROWLINE_LAB_ROUTE = '/dome-world/marrowline.html';
 export const ASH_THRESHOLD_ROUTE = '/dome-world/ash-threshold.html';
 export const ASH_LIFECYCLE_SHELL_CONTRACT = 'td613.ash.lifecycle-shell/v0.1';
-export const ASH_KEEP_SHELL_VERSION = 'td613.ash-keep.shell/v0.4-aia3-mass-eviction';
+export const ASH_KEEP_SHELL_VERSION = 'td613.ash-keep.shell/v0.5-legal-demo-ux';
 export const ASH_KEEP_JS_SHELL_VERSION = 'td613.ash-keep.js-shell/v0.5-event-driven-map';
-export const ASH_CACHE_TRANSITION_CONTRACT = 'td613.ash.cache-transition/v0.4-aia3-mass-eviction';
-export const ASH_LIFECYCLE_ASSET_EPOCH = '20260720-aia3-mass-eviction-v2';
+export const ASH_CACHE_TRANSITION_CONTRACT = 'td613.ash.cache-transition/v0.5-legal-demo-ux';
+export const ASH_LIFECYCLE_ASSET_EPOCH = '20260721-legal-demo-ux-v1';
 export const ASH_LIFECYCLE_SOURCE_MODULE = '/dome-world/ash-lifecycle.js';
 export const ASH_LIFECYCLE_MODULE = `${ASH_LIFECYCLE_SOURCE_MODULE}?v=${ASH_LIFECYCLE_ASSET_EPOCH}`;
 export const ASH_WORKSPACE_BRIDGE_MODULE = '/dome-world/ash-workspace-bridge.js';
 export const ASH_CANONICAL_MEMBRANE_EPOCH = '20260718-canonical-membrane-v6';
-export const ASH_MASS_EVICTION_EPOCH = 'td613.ash.cache-flush/2026-07-20-aia3-mass-eviction-v2';
+export const ASH_MASS_EVICTION_EPOCH = 'td613.ash.cache-flush/2026-07-21-legal-demo-ux-v1';
 
 const DOME_SOURCE_PATH = path.join(process.cwd(), 'app', 'dome-world', 'index.html');
 const ASH_KEEP_SOURCE_PATH = path.join(process.cwd(), 'app', 'dome-world', 'ash-keep.html');
 const ASH_KEEP_JS_SOURCE_PATH = path.join(process.cwd(), 'app', 'dome-world', 'ash-keep.js');
 const ASH_KEEP_ICON_MARKER = '<link rel="icon" href="data:,">';
 const ASH_CANONICAL_BOOT_MARKER = '<meta name="ash-canonical-membrane" content="v1.0">';
-const ASH_MASS_EVICTION_MARKER = '<meta name="ash-cache-preflight" content="aia3-mass-eviction-v2">';
+const ASH_MASS_EVICTION_MARKER = '<meta name="ash-cache-preflight" content="legal-demo-ux-v1">';
 const MARROWLINE_BUTTON = `<button class="lab-node lab-node-marrowline" type="button" data-tone="gold" data-glyph="∴" data-open-route="${MARROWLINE_LAB_ROUTE}" style="grid-column:span 8" onclick="window.location.assign('${MARROWLINE_LAB_ROUTE}')" aria-label="Open Marrowline Kʰonapolit terminal"><span class="lab-index">11</span><strong>Marrowline</strong><small>Kʰonapolit terminal / live ingress</small></button>`;
 const ASH_TAB = `<button class="tab" data-view="ash" data-sigil="下"><small>04</small><span>Ash</span></button>`;
 
