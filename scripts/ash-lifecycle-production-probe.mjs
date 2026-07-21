@@ -48,7 +48,7 @@ runtime = replaceExactly(
 runtime = replaceExactly(
   runtime,
   "  report.readiness = readiness;\n\n  await page.locator('#startDemo').click();",
-  "  report.readiness = readiness;\n\n  await page.goto(keepUrl, { waitUntil: 'domcontentloaded', timeout: 60_000 });\n  await page.waitForFunction(() => new URL(location.href).searchParams.get('presentation') === 'legacy'\n    && document.body.dataset.ashLifecycle === 'READINESS_OBSERVED'\n    && window.__td613AshLiveAIA?.current?.().route === 'IMPLEMENTATION'\n    && window.__td613AshProfileDemos?.profiles?.includes('political_campaign')\n    && document.getElementById('newProfile')?.getClientRects().length > 0, null, { timeout: 60_000 });\n  report.threshold.specialist_presentation_route = 'legacy';\n\n  await page.locator('#startDemo').click();",
+  "  report.readiness = readiness;\n\n  await page.goto(keepUrl, { waitUntil: 'domcontentloaded', timeout: 60_000 });\n  await page.waitForFunction(() => new URL(location.href).searchParams.get('presentation') === 'legacy'\n    && window.__td613AshAia3PreflightReceipt?.legacy_bypass === true\n    && document.documentElement.dataset.ashCachePreflight === 'complete'\n    && document.body.dataset.ashLifecycle === 'READINESS_OBSERVED'\n    && window.__td613AshProfileDemos?.profiles?.includes('political_campaign')\n    && document.getElementById('newProfile')?.getClientRects().length > 0, null, { timeout: 60_000 });\n  report.threshold.specialist_presentation_route = 'legacy';\n  report.threshold.specialist_cache_preflight = { legacy_bypass: true, aia3_route_required: false, reload_required: false };\n\n  await page.locator('#startDemo').click();",
   'post-threshold specialist route transition'
 );
 runtime = replaceExactly(
@@ -108,7 +108,10 @@ runtime = replaceExactly(
 if (!runtime.includes(syntheticDraft)
   || !runtime.includes('ash-keep.html?presentation=legacy')
   || !runtime.includes("specialist_presentation_route = 'legacy'")
-  || !runtime.includes("current?.().route === 'IMPLEMENTATION'")
+  || !runtime.includes('legacy_bypass === true')
+  || !runtime.includes("dataset.ashCachePreflight === 'complete'")
+  || !runtime.includes('aia3_route_required: false')
+  || runtime.includes("current?.().route === 'IMPLEMENTATION'")
   || !runtime.includes("selectOption('political_campaign')")
   || !runtime.includes('Ash guided workspace API is unavailable.')
   || !runtime.includes('td613.ash.cache-flush.epoch')
