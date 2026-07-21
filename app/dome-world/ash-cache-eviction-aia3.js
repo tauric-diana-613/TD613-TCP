@@ -1,6 +1,7 @@
 export const ASH_AIA3_CACHE_EPOCH = 'td613.ash.cache-flush/2026-07-20-aia3-mass-eviction-v2';
 export const ASH_AIA3_ASSET_EPOCH = '20260720-aia3-mass-eviction-v2';
 const MARKER_KEY = 'td613.ash.cache-flush.aia3.epoch';
+const PREFLIGHT_MARKER_KEY = 'td613.ash.cache-preflight.epoch';
 const RECEIPT_KEY = 'td613.ash.cache-flush.aia3.receipt';
 const POINTER_KEY = 'td613.ash-keep.current-case';
 const SESSION_KEY = 'td613.ash.session.epoch';
@@ -8,13 +9,16 @@ const EVICTION_ROUTE = '/api/dome-world-shell?surface=cache-evict';
 const LOCAL_HOSTS = new Set(['localhost', '127.0.0.1', '[::1]']);
 
 function readMarker(host) {
-  try { return host.localStorage?.getItem?.(MARKER_KEY) || null; }
-  catch { return null; }
+  try {
+    return host.localStorage?.getItem?.(MARKER_KEY) || host.localStorage?.getItem?.(PREFLIGHT_MARKER_KEY) || null;
+  } catch { return null; }
 }
 
 function writeMarker(host) {
-  try { host.localStorage?.setItem?.(MARKER_KEY, ASH_AIA3_CACHE_EPOCH); }
-  catch {}
+  try {
+    host.localStorage?.setItem?.(MARKER_KEY, ASH_AIA3_CACHE_EPOCH);
+    host.localStorage?.setItem?.(PREFLIGHT_MARKER_KEY, ASH_AIA3_CACHE_EPOCH);
+  } catch {}
 }
 
 function writeReceipt(host, receipt) {
