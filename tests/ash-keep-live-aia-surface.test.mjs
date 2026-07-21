@@ -30,13 +30,13 @@ const escaped = value => value.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
 const EPOCH = '20260721-legal-demo-ux-v1';
 const CACHE_EPOCH = 'td613.ash.cache-flush/2026-07-21-legal-demo-ux-v1';
 
-test('loader preserves legacy rollback and gates the entire AIA3 graph behind preflight', () => {
+ test('loader preserves legacy rollback and gates the entire AIA3 graph behind preflight', () => {
   assert.match(loader, /__td613AshAia3Preflight/);
   assert.match(loader, /preflight\.then/);
   assert.match(loader, /ash-cache-eviction-aia3\.js/);
   assert.match(loader, /legacyPresentation/);
   assert.match(loader, /dataset\.ashAiaLegacy/);
-  assert.match(loader, /td613\.ash\.aia3-composition\/v0\.3-atomic-ingress-readiness/);
+  assert.match(loader, /td613\.ash\.aia3-composition\/v0\.4-open-case-render-readiness/);
   for (const marker of ['data-ash-aia3-style', 'data-ash-aia3-compact', 'data-ash-aia3-interaction']) assert.match(loader, new RegExp(marker));
   for (const asset of ['ash-cache-flush.js', 'ash-ingress-layout-hydration.js', 'ash-lifecycle-core.js', 'ash-cache-eviction-aia3.js', 'ash-keep-aia.css', 'ash-keep-aia3.css', 'ash-keep-aia3-compact.css', 'ash-keep-aia3-interaction.css', 'ash-keep-aia.js', 'ash-aia3-composition.js', 'ash-keep-aia-workspace-bridge.js']) {
     assert.match(loader, new RegExp(`${escaped(asset)}\\?v=${EPOCH}`), `Loader omitted current epoch for ${asset}.`);
@@ -67,8 +67,21 @@ test('the original ingress remains a fixed canonical membrane rather than an emb
   assert.match(aia3Styles, /#launch\.launch:not\(\.hidden\)[\s\S]*position:fixed!important/);
   assert.match(aia3Styles, /body\[data-ash-aia-case-open="false"\] #ashAiaMembrane\{display:none!important\}/);
   assert.match(composition, /DEFAULT_PROFILE = 'investigation'/);
-  assert.match(composition, /button\.disabled=false/);
-  assert.match(composition, /dataset\.ashAia3Ready=String\(ingressReady\)/);
+  assert.match(composition, /button\.disabled = false/);
+});
+
+test('an open case cannot advertise readiness before lifecycle and the four-route four-task graph exist', () => {
+  assert.match(composition, /REQUIRED_ROUTE_COUNT = 4/);
+  assert.match(composition, /REQUIRED_TASK_COUNT = 4/);
+  assert.match(composition, /WAITING_LIFECYCLE_STATE/);
+  assert.match(composition, /WAITING_COMPLETE_ROUTE_TASK_GRAPH/);
+  assert.match(composition, /route_count: root\?\.querySelectorAll\('\[data-aia-route\]'\)\.length \|\| 0/);
+  assert.match(composition, /task_count: root\?\.querySelectorAll\('\[data-aia-task\]'\)\.length \|\| 0/);
+  assert.match(composition, /setExactWork\(open && ready\)/);
+  assert.match(composition, /dataset\.ashAia3Ready = String\(ready\)/);
+  assert.match(composition, /dataset\.ashAia3ReadinessHold/);
+  assert.match(composition, /td613:ash:aia3-readiness-changed/);
+  assert.doesNotMatch(composition, /const ingressReady=open\|\|ensureDefaultProfile/);
 });
 
 test('exact workspaces remain operable after case creation without route ejection', () => {
