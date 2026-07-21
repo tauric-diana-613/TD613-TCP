@@ -3,26 +3,38 @@ name: Ash Keep AIA3 inherited law
 on:
   pull_request:
     paths:
+      - 'api/dome-world-shell.js'
+      - 'vercel.json'
       - 'app/dome-world/ash-keep-aia*.js'
       - 'app/dome-world/ash-keep-aia*.css'
       - 'app/dome-world/ash-aia3-*.js'
       - 'app/dome-world/ash-cache-eviction-aia3.js'
       - 'app/dome-world/ash-lifecycle.js'
       - 'app/engine/ash-live-aia.js'
-      - 'scripts/ash-keep-aia3-task-journey-v2.mjs'
+      - 'scripts/ash-keep-aia3-task-journey-v3.mjs'
+      - 'scripts/ash-keep-local-closure-server.mjs'
+      - 'tests/ash-aia3-mass-eviction.test.mjs'
       - 'tests/ash-keep-live-aia-surface.test.mjs'
+      - 'tests/ash-live-ingress-demos-cache.test.mjs'
+      - 'tests/product-architecture/shell.test.mjs'
       - '.github/workflows/ash-keep-aia2-usability.yml'
   push:
     branches: [main]
     paths:
+      - 'api/dome-world-shell.js'
+      - 'vercel.json'
       - 'app/dome-world/ash-keep-aia*.js'
       - 'app/dome-world/ash-keep-aia*.css'
       - 'app/dome-world/ash-aia3-*.js'
       - 'app/dome-world/ash-cache-eviction-aia3.js'
       - 'app/dome-world/ash-lifecycle.js'
       - 'app/engine/ash-live-aia.js'
-      - 'scripts/ash-keep-aia3-task-journey-v2.mjs'
+      - 'scripts/ash-keep-aia3-task-journey-v3.mjs'
+      - 'scripts/ash-keep-local-closure-server.mjs'
+      - 'tests/ash-aia3-mass-eviction.test.mjs'
       - 'tests/ash-keep-live-aia-surface.test.mjs'
+      - 'tests/ash-live-ingress-demos-cache.test.mjs'
+      - 'tests/product-architecture/shell.test.mjs'
       - '.github/workflows/ash-keep-aia2-usability.yml'
   workflow_dispatch:
 
@@ -45,14 +57,19 @@ jobs:
           node-version: 24
           cache: npm
       - run: npm ci
-      - name: Validate durable AIA3 source and witness
+      - name: Validate durable AIA3 source and canonical witness
         run: |
           node --check app/dome-world/ash-keep-aia.js
           node --check app/dome-world/ash-aia3-composition.js
           node --check app/dome-world/ash-cache-eviction-aia3.js
           node --check app/dome-world/ash-keep-aia-workspace-bridge.js
           node --check app/dome-world/ash-lifecycle.js
-          node --check scripts/ash-keep-aia3-task-journey-v2.mjs
+          node --check scripts/ash-keep-aia3-task-journey-v3.mjs
+          node --check scripts/ash-keep-local-closure-server.mjs
+          node --check api/dome-world-shell.js
+          node tests/ash-aia3-mass-eviction.test.mjs
+          node tests/product-architecture/shell.test.mjs
+          node tests/ash-live-ingress-demos-cache.test.mjs
       - name: Live presentation and task-continuity contracts
         run: node tests/ash-keep-live-aia-surface.test.mjs
       - name: Live AIA engine contracts
