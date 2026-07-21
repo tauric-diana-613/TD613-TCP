@@ -1,4 +1,4 @@
-export const ASH_DEMO_ENTRY_CONVERGENCE_VERSION = 'td613.ash.demo-entry-convergence/v0.2-idle-stable-two-frame-workspace';
+export const ASH_DEMO_ENTRY_CONVERGENCE_VERSION = 'td613.ash.demo-entry-convergence/v0.3-case-bound-idempotent-entry';
 
 const host = globalThis.window;
 const doc = globalThis.document;
@@ -7,7 +7,7 @@ const ENTRY_FALLBACK = Object.freeze({ investigation:'home', political_campaign:
 let token = 0;
 let frame = 0;
 let timeout = 0;
-let state = Object.freeze({ profile:null, workspace:null, posture:'IDLE', stable_frames:0 });
+let state = Object.freeze({ case_id:null, profile:null, workspace:null, posture:'IDLE', stable_frames:0 });
 
 function visible(node) {
   if (!node) return false;
@@ -18,6 +18,10 @@ function visible(node) {
 function intendedWorkspace(profile) {
   if (profile === 'research') return 'work';
   return host.__td613AshDemoPedagogy?.manifests?.[profile]?.entry_workspace || ENTRY_FALLBACK[profile] || 'home';
+}
+
+function currentCaseId(event) {
+  return event?.detail?.case_id || host.__td613AshKeep?.current?.().case_id || host.localStorage?.getItem?.('td613.ash-keep.current-case') || null;
 }
 
 function openWorkspace(workspace) {
@@ -62,61 +66,65 @@ function exactReady(workspace) {
     && !main?.hasAttribute('inert') && !rail?.hasAttribute('inert');
 }
 
-function publish(profile, workspace, posture, stableFrames) {
-  if (state.profile === profile && state.workspace === workspace && state.posture === posture && state.stable_frames === stableFrames) return state;
-  state = Object.freeze({ profile, workspace, posture, stable_frames:stableFrames });
+function publish(caseId, profile, workspace, posture, stableFrames) {
+  if (state.case_id === caseId && state.profile === profile && state.workspace === workspace && state.posture === posture && state.stable_frames === stableFrames) return state;
+  state = Object.freeze({ case_id:caseId, profile, workspace, posture, stable_frames:stableFrames });
   doc.documentElement.dataset.ashDemoEntryConvergence = ASH_DEMO_ENTRY_CONVERGENCE_VERSION;
   if (doc.documentElement.dataset.ashDemoEntryPosture !== posture) doc.documentElement.dataset.ashDemoEntryPosture = posture;
   host.__td613AshDemoEntryConvergenceState = state;
   return state;
 }
 
-function release(profile, workspace, stableFrames) {
+function release(caseId, profile, workspace, stableFrames) {
   clearTimeout(timeout);
   delete doc.documentElement.dataset.ashDemoEntryHydrating;
   delete doc.documentElement.dataset.ashDemoEntryHold;
   doc.documentElement.dataset.ashDemoEntryReady = `${profile}:${workspace}`;
-  publish(profile, workspace, 'READY', stableFrames);
+  doc.documentElement.dataset.ashDemoEntryCase = caseId || '';
+  publish(caseId, profile, workspace, 'READY', stableFrames);
   renderStatus(profile, workspace, 'READY', `${workspace} ready · four-step route remains available`);
-  host.dispatchEvent(new CustomEvent('td613:ash:demo-entry-ready', { detail:{ profile, workspace, stable_frames:stableFrames, version:ASH_DEMO_ENTRY_CONVERGENCE_VERSION } }));
+  host.dispatchEvent(new CustomEvent('td613:ash:demo-entry-ready', { detail:{ case_id:caseId, profile, workspace, stable_frames:stableFrames, version:ASH_DEMO_ENTRY_CONVERGENCE_VERSION } }));
   host.setTimeout(() => byId('ashDemoEntryStatus')?.remove(), 1200);
 }
 
-function converge(profile, workspace, currentToken, stableFrames = 0) {
+function converge(caseId, profile, workspace, currentToken, stableFrames = 0) {
   if (currentToken !== token) return;
   const ready = exactReady(workspace);
   const nextStable = ready ? stableFrames + 1 : 0;
   if (nextStable >= 2) {
-    release(profile, workspace, nextStable);
+    release(caseId, profile, workspace, nextStable);
     return;
   }
   const panel = byId(`workspace-${workspace}`);
   const wrongWorkspace = doc.documentElement.dataset.ashPremiumWorkspace !== workspace || !panel?.classList.contains('active');
   if (wrongWorkspace) openWorkspace(workspace);
-  publish(profile, workspace, 'OPENING', nextStable);
-  frame = host.requestAnimationFrame(() => converge(profile, workspace, currentToken, nextStable));
+  publish(caseId, profile, workspace, 'OPENING', nextStable);
+  frame = host.requestAnimationFrame(() => converge(caseId, profile, workspace, currentToken, nextStable));
 }
 
 function begin(event) {
   const profile = event?.detail?.profile || doc.documentElement.dataset.ashDemoProfile || null;
   if (!profile) return false;
+  const caseId = currentCaseId(event);
+  if (caseId && state.case_id === caseId && state.profile === profile && ['OPENING','READY'].includes(state.posture)) return false;
   const workspace = intendedWorkspace(profile);
   const currentToken = ++token;
   if (frame) host.cancelAnimationFrame(frame);
   clearTimeout(timeout);
   delete doc.documentElement.dataset.ashDemoEntryReady;
+  delete doc.documentElement.dataset.ashDemoEntryCase;
   delete doc.documentElement.dataset.ashDemoEntryHold;
   doc.documentElement.dataset.ashDemoEntryHydrating = 'true';
-  publish(profile, workspace, 'OPENING', 0);
+  publish(caseId, profile, workspace, 'OPENING', 0);
   renderStatus(profile, workspace, 'OPENING', `opening ${workspace} workspace…`);
   openWorkspace(workspace);
-  frame = host.requestAnimationFrame(() => converge(profile, workspace, currentToken, 0));
+  frame = host.requestAnimationFrame(() => converge(caseId, profile, workspace, currentToken, 0));
   timeout = host.setTimeout(() => {
     if (currentToken !== token || exactReady(workspace)) return;
-    publish(profile, workspace, 'HELD', 0);
+    publish(caseId, profile, workspace, 'HELD', 0);
     doc.documentElement.dataset.ashDemoEntryHold = `WORKSPACE_NOT_VISIBLE:${profile}:${workspace}`;
     renderStatus(profile, workspace, 'HELD', `${workspace} held · exact work did not become visible`);
-    host.dispatchEvent(new CustomEvent('td613:ash:demo-entry-held', { detail:{ profile, workspace, code:'WORKSPACE_NOT_VISIBLE', version:ASH_DEMO_ENTRY_CONVERGENCE_VERSION } }));
+    host.dispatchEvent(new CustomEvent('td613:ash:demo-entry-held', { detail:{ case_id:caseId, profile, workspace, code:'WORKSPACE_NOT_VISIBLE', version:ASH_DEMO_ENTRY_CONVERGENCE_VERSION } }));
   }, 5000);
   return true;
 }
