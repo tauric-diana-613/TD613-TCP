@@ -82,9 +82,9 @@ const cleanArrivalReplacement = `  const cleanEntries = await page.evaluate(() =
   const cleanMaintenanceKeys = new Set(Object.keys(cleanMaintenanceEntries));
   const initialNonGet = requests.filter(request => request.method !== 'GET' && request.method !== 'HEAD');
   assert(cleanCount === 0, 'Clean arrival created case records before operator action');
-  assert(cleanKeys.every(key => cleanMaintenanceKeys.has(key)), 'Clean arrival wrote case-adjacent localStorage before operator action');
+  assert(cleanKeys.every(key => cleanMaintenanceKeys.has(key)), \`Clean arrival wrote case-adjacent localStorage before operator action: \${JSON.stringify(cleanEntries)}\`);
   for (const [key, value] of Object.entries(cleanMaintenanceEntries)) {
-    assert(cleanEntries[key] === value, \`Clean arrival carried an unknown maintenance epoch for \${key}\`);
+    assert(cleanEntries[key] === value, \`Clean arrival carried an unknown maintenance epoch for \${key}: \${JSON.stringify(cleanEntries)}\`);
   }
   assert(initialNonGet.length === 0, 'Clean arrival emitted a non-read network request');
   report.clean_arrival = {
@@ -127,14 +127,14 @@ if (!prepared.includes(navigationMarker)) {
   const count = prepared.split(navigationTarget).length - 1;
   if (count !== 1) throw new Error(`Mass-eviction fixture expected one navigation seam; observed ${count}.`);
   prepared = prepared.replace(navigationTarget, navigationReplacement);
-  transformations.push('REQUIRE_ONE_EXACT_PRE_MODULE_ASSET_REPLACEMENT');
+  transformations.push('PRESERVE_EXACT_AIA3_LEGACY_BYPASS_WITHOUT_RELOAD');
 }
 
 if (!prepared.includes(cacheMarker)) {
   const count = prepared.split(cleanArrivalTarget).length - 1;
   if (count !== 1) throw new Error(`Mass-eviction fixture expected one clean-arrival assertion seam; observed ${count}.`);
   prepared = prepared.replace(cleanArrivalTarget, cleanArrivalReplacement);
-  transformations.push('ALLOW_ONLY_THREE_EXACT_NON_CASE_MAINTENANCE_MARKERS');
+  transformations.push('REPORT_EXACT_CLEAN_ARRIVAL_STORAGE');
 }
 
 for (const required of [premiumMarker, navigationMarker, cacheMarker, 'mass_eviction_superseded_legacy_reset', allowlistMarker]) {
@@ -144,16 +144,13 @@ for (const required of [premiumMarker, navigationMarker, cacheMarker, 'mass_evic
 if (prepared !== original) await fs.writeFile(probePath, prepared, 'utf8');
 await fs.mkdir(path.dirname(manifestPath), { recursive: true });
 await fs.writeFile(manifestPath, `${JSON.stringify({
-  schema:'td613.ash-keep.premium-production-closure-fixture/v0.8-aia3-mass-eviction',
+  schema:'td613.ash-keep.premium-production-closure-fixture/v0.9-legacy-bypass-diagnostic',
   source_probe:path.relative(repoRoot, probePath),
   posture:transformations.length ? 'PREPARED_NOW' : 'ALREADY_PREPARED',
   source_sha256:sha256(original),
   prepared_sha256:sha256(prepared),
   transformations,
-  permitted_clean_arrival_local_storage:{
-    entries:maintenanceEntries,
-    classification:'EXACT_NON_CASE_MAINTENANCE_MARKERS'
-  },
+  permitted_clean_arrival_local_storage:{ entries:maintenanceEntries, classification:'NONE_UNTIL_EXACT_KEY_IDENTIFIED' },
   cache_navigation_required:false,
   active_document_replacement_allowed:false,
   case_pointer_allowed_before_operator_action:false,
