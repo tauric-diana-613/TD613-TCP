@@ -18,7 +18,12 @@ import {
 } from '../app/dome-world/ash-apeq-paia-profile-demos.js';
 import { buildResearchFixture } from '../app/dome-world/ash-research-demo-hydration.js';
 import { resetActiveSession, validThresholdReadiness } from '../app/dome-world/ash-cache-flush.js';
-import { ASH_LIFECYCLE_MODULE, injectAshKeepLifecycle } from '../api/dome-world-shell.js';
+import {
+  ASH_LIFECYCLE_ASSET_EPOCH,
+  ASH_LIFECYCLE_MODULE,
+  ASH_MASS_EVICTION_EPOCH,
+  injectAshKeepLifecycle
+} from '../api/dome-world-shell.js';
 
 const read = file => fs.readFileSync(file, 'utf8');
 const ingress = read('app/dome-world/ash-ingress-layout-hydration.js');
@@ -160,13 +165,19 @@ assert.match(cache, /cache:'no-store'/);
 assert.doesNotMatch(cache, /2026-07-18-(?:live-ingress-v3|emergency-stability-v5)/);
 assert.doesNotMatch(cache, /indexedDB\.deleteDatabase|localStorage\.clear|sessionStorage\.clear/);
 
-assert.match(lifecycle, /ash-ingress-layout-hydration\.js\?v=20260718-canonical-membrane-v6/);
-assert.match(lifecycle, /ash-cache-flush\.js\?v=20260718-canonical-membrane-v7-readiness-boundary/);
-assert.equal(ASH_LIFECYCLE_MODULE, '/dome-world/ash-lifecycle.js?v=20260718-canonical-membrane-v7-readiness-boundary');
+assert.equal(ASH_LIFECYCLE_ASSET_EPOCH, '20260720-aia3-mass-eviction-v2');
+assert.equal(ASH_MASS_EVICTION_EPOCH, 'td613.ash.cache-flush/2026-07-20-aia3-mass-eviction-v2');
+assert.match(lifecycle, new RegExp(`ash-ingress-layout-hydration\\.js\\?v=${ASH_LIFECYCLE_ASSET_EPOCH}`));
+assert.match(lifecycle, new RegExp(`ash-cache-flush\\.js\\?v=${ASH_LIFECYCLE_ASSET_EPOCH}`));
+assert.equal(ASH_LIFECYCLE_MODULE, `/dome-world/ash-lifecycle.js?v=${ASH_LIFECYCLE_ASSET_EPOCH}`);
 const renderedKeep = injectAshKeepLifecycle(keepHtml);
-assert.match(renderedKeep, /src="\/dome-world\/ash-lifecycle\.js\?v=20260718-canonical-membrane-v7-readiness-boundary"/);
-assert.doesNotMatch(renderedKeep, /src="\/dome-world\/ash-lifecycle\.js"/);
-assert.equal(injectAshKeepLifecycle(renderedKeep), renderedKeep, 'Lifecycle cache-boundary injection is not idempotent.');
+for (const source of ['ash-keep.js', 'ash-convergence.js', 'ash-lifecycle.js', 'ash-workspace-bridge.js', 'ash-case-controls.js']) {
+  assert.match(renderedKeep, new RegExp(`src="/dome-world/${source.replace('.', '\\.')}\\?v=${ASH_LIFECYCLE_ASSET_EPOCH}"`));
+  assert.doesNotMatch(renderedKeep, new RegExp(`src="/dome-world/${source.replace('.', '\\.')}"`));
+}
+assert.match(renderedKeep, /name="ash-cache-preflight" content="aia3-mass-eviction-v2"/);
+assert.match(renderedKeep, /Updating Ash Keep · preserving local cases/);
+assert.equal(injectAshKeepLifecycle(renderedKeep), renderedKeep, 'Mass-eviction injection is not idempotent.');
 
 for (const module of ['ash-profile-demo-hydration','ash-investigation-demo-hydration','ash-research-demo-hydration','ash-research-demo-control-state']) {
   assert.match(bridge, new RegExp(`${module}\\.js\\?v=20260718-canonical-membrane-v6`));
@@ -178,15 +189,20 @@ assert.doesNotMatch(profileWrapper + investigationWrapper, /fixtures\//);
 for (const token of [
   'ASH_CANONICAL_MEMBRANE_EPOCH',
   'ASH_LIFECYCLE_ASSET_EPOCH',
+  'ASH_MASS_EVICTION_EPOCH',
   'ash-canonical-membrane',
+  'ash-cache-preflight',
   'data-ash-membrane-ready',
   'data-ash-session-open',
   'td613.ash.session.epoch',
   'X-TD613-Ash-Lifecycle-Asset',
   'X-TD613-Ash-Canonical-Membrane',
+  'X-TD613-Ash-Cache-Preflight',
   'Clear-Site-Data',
-  'HTTP_CACHE_ONLY',
-  'case_data_preserved:true'
+  'HTTP_CACHE_AND_SERVICE_WORKER_CLIENT_EVICTION',
+  'case_data_preserved:true',
+  'active_session_reset_by_client:false',
+  'session_epoch_preserved_or_migrated'
 ]) assert(shell.includes(token), `Shell omitted ${token}`);
 
 for (const token of [

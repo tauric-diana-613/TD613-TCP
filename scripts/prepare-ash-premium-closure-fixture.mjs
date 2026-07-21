@@ -11,6 +11,10 @@ const manifestPath = path.resolve(
     || path.join(repoRoot, 'artifacts', 'ash-keep-probe-runtime', 'premium-fixture-manifest.json')
 );
 
+const legacyEpoch = 'td613.ash.cache-flush/2026-07-18-canonical-membrane-v7';
+const massEpoch = 'td613.ash.cache-flush/2026-07-20-aia3-mass-eviction-v2';
+const assetEpoch = '20260720-aia3-mass-eviction-v2';
+
 const capsuleTarget = `  await page.locator('#capsuleFile').setInputFiles(capsulePath);
   await page.locator('#capsulePassphrase').fill(passphrase);
   await page.locator('#importCapsule').click();
@@ -31,14 +35,14 @@ const capsuleReplacement = `  await page.locator('#capsuleFile').setInputFiles(c
 
   const capsule = JSON.parse(await fs.readFile(capsulePath, 'utf8'));`;
 
-const allowedKeysTarget = `const ALLOWED_LOCAL_KEYS = new Set([
-  'td613.ash-keep.current-case',
-  'td613.ash-keep.preferences'
-]);`;
+const allowedKeysPattern = /const ALLOWED_LOCAL_KEYS = new Set\(\[[\s\S]*?\n\]\);/;
 const allowedKeysReplacement = `const ALLOWED_LOCAL_KEYS = new Set([
   'td613.ash-keep.current-case',
   'td613.ash-keep.preferences',
-  'td613.ash.cache-flush.epoch'
+  'td613.ash.cache-flush.epoch',
+  'td613.ash.cache-flush.aia3.epoch',
+  'td613.ash.cache-preflight.epoch',
+  'td613.ash.session.epoch'
 ]);`;
 
 const navigationTarget = `  await page.goto(keepUrl, { waitUntil: 'networkidle', timeout: 60_000 });
@@ -54,18 +58,9 @@ const navigationTarget = `  await page.goto(keepUrl, { waitUntil: 'networkidle',
   }, { timeout: 60_000 });`;
 
 const navigationReplacement = `  await page.goto(keepUrl, { waitUntil: 'networkidle', timeout: 60_000 });
-  // ASH_CACHE_EPOCH_STABLE: canonical migration must finish in-place without replacing the active document.
-  await page.waitForFunction(() => {
-    const epoch = localStorage.getItem('td613.ash.cache-flush.epoch');
-    const url = new URL(location.href);
-    const transition = window.__td613AshCacheTransition;
-    return Boolean(epoch)
-      && !url.searchParams.has('ash_flush')
-      && !url.searchParams.has('asset_epoch')
-      && transition?.epoch === epoch
-      && transition?.navigation_replaced === false
-      && transition?.reload_required === false;
-  }, { timeout: 60_000 });`;
+  // ASH_AIA3_LEGACY_BYPASS_STABLE: rollback loads exact legacy work without an AIA eviction reload.
+  await page.waitForFunction(() => window.__td613AshAia3PreflightReceipt?.legacy_bypass === true
+    && document.documentElement.dataset.ashCachePreflight === 'complete', null, { timeout: 60_000 });`;
 
 const cleanArrivalTarget = `  const cleanKeys = await page.evaluate(() => Object.keys(localStorage));
   const initialNonGet = requests.filter(request => request.method !== 'GET' && request.method !== 'HEAD');
@@ -79,40 +74,38 @@ const cleanArrivalTarget = `  const cleanKeys = await page.evaluate(() => Object
     non_read_requests: initialNonGet
   };`;
 
-const permittedEpochs = [
-  'td613.ash.cache-flush/2026-07-17-premium-v1',
-  'td613.ash.cache-flush/2026-07-17-research-ingress-v2',
-  'td613.ash.cache-flush/2026-07-18-live-ingress-v3',
-  'td613.ash.cache-flush/2026-07-18-emergency-stability-v5',
-  'td613.ash.cache-flush/2026-07-18-canonical-membrane-v6'
-];
+const maintenanceEntries = {
+  'td613.ash.cache-flush.epoch':legacyEpoch
+};
 
 const cleanArrivalReplacement = `  const cleanEntries = await page.evaluate(() => Object.fromEntries(Object.entries(localStorage)));
+  const cleanTransition = await page.evaluate(() => window.__td613AshCacheTransition || null);
   const cleanKeys = Object.keys(cleanEntries);
-  const cleanMaintenanceKeys = new Set(['td613.ash.cache-flush.epoch']);
-  const permittedCacheEpochs = new Set(${JSON.stringify(permittedEpochs)});
+  const cleanMaintenanceEntries = ${JSON.stringify(maintenanceEntries)};
+  const cleanMaintenanceKeys = new Set(Object.keys(cleanMaintenanceEntries));
   const initialNonGet = requests.filter(request => request.method !== 'GET' && request.method !== 'HEAD');
   assert(cleanCount === 0, 'Clean arrival created case records before operator action');
-  assert(cleanKeys.every(key => cleanMaintenanceKeys.has(key)), 'Clean arrival wrote case-adjacent localStorage before operator action');
-  if (cleanEntries['td613.ash.cache-flush.epoch']) {
-    assert(permittedCacheEpochs.has(cleanEntries['td613.ash.cache-flush.epoch']), 'Clean arrival carried an unknown cache-maintenance epoch');
+  assert(cleanKeys.every(key => cleanMaintenanceKeys.has(key)), \`Clean arrival wrote case-adjacent localStorage before operator action: \${JSON.stringify(cleanEntries)}\`);
+  for (const [key, value] of Object.entries(cleanMaintenanceEntries)) {
+    assert(cleanEntries[key] === value, \`Clean arrival carried an unknown maintenance epoch for \${key}: \${JSON.stringify(cleanEntries)}\`);
   }
   assert(initialNonGet.length === 0, 'Clean arrival emitted a non-read network request');
   report.clean_arrival = {
     launch_visible: true,
     indexeddb_record_count: cleanCount,
     local_storage_keys: cleanKeys,
-    one_time_cache_epoch: cleanEntries['td613.ash.cache-flush.epoch'] || null,
-    permitted_cache_epochs: [...permittedCacheEpochs],
-    cache_navigation_replaced: window.__td613AshCacheTransition?.navigation_replaced ?? null,
+    maintenance_entries: cleanEntries,
+    permitted_maintenance_entries: cleanMaintenanceEntries,
+    cache_navigation_replaced: cleanTransition?.navigation_replaced ?? null,
+    mass_eviction_superseded_legacy_reset: cleanTransition?.superseded_by_mass_eviction === true,
     case_adjacent_storage_written: false,
     non_read_requests: initialNonGet
   };`;
 
 const premiumMarker = 'const premiumCommandInstrument = await page.evaluate';
-const cacheMarker = 'const cleanMaintenanceKeys = new Set';
-const cacheSetMarker = 'const permittedCacheEpochs = new Set';
-const inPlaceMarker = 'transition?.navigation_replaced === false';
+const allowlistMarker = "'td613.ash.session.epoch'";
+const cacheMarker = 'const cleanMaintenanceEntries =';
+const navigationMarker = 'ASH_AIA3_LEGACY_BYPASS_STABLE';
 const sha256 = value => `sha256:${createHash('sha256').update(value).digest('hex')}`;
 
 const original = (await fs.readFile(probePath, 'utf8')).replace(/\r\n/g, '\n');
@@ -126,62 +119,53 @@ if (!prepared.includes(premiumMarker)) {
   transformations.push('REOPEN_EXACT_SAVE_AFTER_AUTHENTICATED_CAPSULE_BEFORE_TAMPER_ASSAY');
 }
 
-if (!prepared.includes("'td613.ash.cache-flush.epoch'")) {
-  const count = prepared.split(allowedKeysTarget).length - 1;
-  if (count !== 1) throw new Error(`Cache closure fixture expected one localStorage allowlist seam; observed ${count}.`);
-  prepared = prepared.replace(allowedKeysTarget, allowedKeysReplacement);
-  transformations.push('ALLOW_NAMED_CACHE_EPOCH_AFTER_OPERATOR_ACTION');
+if (!prepared.includes(allowlistMarker)) {
+  const matches = prepared.match(allowedKeysPattern) || [];
+  if (matches.length !== 1) throw new Error(`Mass-eviction fixture expected one localStorage allowlist declaration; observed ${matches.length}.`);
+  prepared = prepared.replace(allowedKeysPattern, allowedKeysReplacement);
+  transformations.push('ALLOW_ONLY_NAMED_MAINTENANCE_KEYS_AFTER_OPERATOR_ACTION');
 }
 
-if (!prepared.includes(inPlaceMarker)) {
+if (!prepared.includes(navigationMarker)) {
   const count = prepared.split(navigationTarget).length - 1;
-  if (count !== 1) throw new Error(`Cache closure fixture expected one navigation seam; observed ${count}.`);
+  if (count !== 1) throw new Error(`Mass-eviction fixture expected one navigation seam; observed ${count}.`);
   prepared = prepared.replace(navigationTarget, navigationReplacement);
-  transformations.push('REQUIRE_IN_PLACE_CACHE_MIGRATION_WITHOUT_DOCUMENT_REPLACEMENT');
+  transformations.push('PRESERVE_EXACT_AIA3_LEGACY_BYPASS_WITHOUT_RELOAD');
 }
 
-if (!prepared.includes(cacheSetMarker)) {
+if (!prepared.includes(cacheMarker)) {
   const count = prepared.split(cleanArrivalTarget).length - 1;
-  if (count !== 1) throw new Error(`Cache closure fixture expected one clean-arrival assertion seam; observed ${count}.`);
+  if (count !== 1) throw new Error(`Mass-eviction fixture expected one clean-arrival assertion seam; observed ${count}.`);
   prepared = prepared.replace(cleanArrivalTarget, cleanArrivalReplacement);
-  transformations.push('ALLOW_ONLY_EXACT_NON_CASE_CACHE_EPOCHS_ON_CLEAN_ARRIVAL');
+  transformations.push('REPORT_EXACT_CLEAN_ARRIVAL_STORAGE');
 }
 
-if (!prepared.includes(premiumMarker)
-  || !prepared.includes("window.__td613AshPremiumUI.open('save')")
-  || !prepared.includes(cacheMarker)
-  || !prepared.includes(cacheSetMarker)
-  || !prepared.includes(inPlaceMarker)
-  || !prepared.includes('case_adjacent_storage_written: false')
-  || !prepared.includes("'td613.ash.cache-flush.epoch'")) {
-  throw new Error('Premium/cache closure fixture did not materialize every bounded observation seam.');
+for (const required of [premiumMarker, navigationMarker, cacheMarker, 'mass_eviction_superseded_legacy_reset', allowlistMarker]) {
+  if (!prepared.includes(required)) throw new Error(`Premium/mass-eviction fixture omitted ${required}.`);
 }
 
 if (prepared !== original) await fs.writeFile(probePath, prepared, 'utf8');
 await fs.mkdir(path.dirname(manifestPath), { recursive: true });
 await fs.writeFile(manifestPath, `${JSON.stringify({
-  schema: 'td613.ash-keep.premium-production-closure-fixture/v0.7-canonical-in-place-cache-epoch-set',
-  source_probe: path.relative(repoRoot, probePath),
-  posture: transformations.length ? 'PREPARED_NOW' : 'ALREADY_PREPARED',
-  source_sha256: sha256(original),
-  prepared_sha256: sha256(prepared),
+  schema:'td613.ash-keep.premium-production-closure-fixture/v1.1-browser-bound-transition',
+  source_probe:path.relative(repoRoot, probePath),
+  posture:transformations.length ? 'PREPARED_NOW' : 'ALREADY_PREPARED',
+  source_sha256:sha256(original),
+  prepared_sha256:sha256(prepared),
   transformations,
-  permitted_clean_arrival_local_storage: {
-    key: 'td613.ash.cache-flush.epoch',
-    values: permittedEpochs,
-    classification: 'EXACT_NON_CASE_ONE_TIME_MAINTENANCE_MARKER_SET'
-  },
-  cache_navigation_required: false,
-  active_document_replacement_allowed: false,
-  case_pointer_allowed_before_operator_action: false,
-  lifecycle_record_allowed_before_operator_action: false,
-  receipt_allowed_before_operator_action: false,
-  preferences_allowed_before_operator_action: false,
-  source_file_mutated_in_ephemeral_ci_checkout_only: true,
-  product_ui_mutated: false,
-  promotion_authorized: false,
-  transport_authorized: false,
-  cinder_authorized: false
+  permitted_clean_arrival_local_storage:{ entries:maintenanceEntries, classification:'EXACT_NON_CASE_LEGACY_CACHE_MARKER' },
+  browser_transition_read_via_page_evaluate:true,
+  cache_navigation_required:false,
+  active_document_replacement_allowed:false,
+  case_pointer_allowed_before_operator_action:false,
+  lifecycle_record_allowed_before_operator_action:false,
+  receipt_allowed_before_operator_action:false,
+  preferences_allowed_before_operator_action:false,
+  source_file_mutated_in_ephemeral_ci_checkout_only:true,
+  product_ui_mutated:false,
+  promotion_authorized:false,
+  transport_authorized:false,
+  cinder_authorized:false
 }, null, 2)}\n`);
 
 console.log(`prepare-ash-premium-closure-fixture.mjs passed · ${transformations.length ? 'PREPARED_NOW' : 'ALREADY_PREPARED'}`);

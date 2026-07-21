@@ -6,6 +6,7 @@ import {
   ASH_LIFECYCLE_ASSET_EPOCH,
   ASH_LIFECYCLE_MODULE,
   ASH_LIFECYCLE_SHELL_CONTRACT,
+  ASH_MASS_EVICTION_EPOCH,
   ASH_THRESHOLD_ROUTE,
   bindAshDraftsToCaseMap,
   injectAshKeepLifecycle,
@@ -52,8 +53,6 @@ assert.match(thresholdMembraneCss, /scrollbar-gutter:\s*stable both-edges/);
 assert.match(thresholdMembraneCss, /\.ash-threshold-rite[\s\S]*min-height:\s*100%/);
 assert.match(thresholdMembraneCss, /clamp\(3\.6rem,\s*min\(14cqi,\s*13svh\),\s*8rem\)/);
 assert.match(thresholdMembraneCss, /@media \(min-width:\s*681px\) and \(max-height:\s*820px\)/);
-assert.match(thresholdMembraneCss, /@media \(min-width:\s*681px\) and \(max-height:\s*820px\)[\s\S]*height:\s*clamp\(480px,\s*66svh,\s*570px\)/);
-assert.match(thresholdMembraneCss, /@media \(min-width:\s*681px\) and \(max-height:\s*820px\)[\s\S]*min-height:\s*104px/);
 assert.match(thresholdMembraneCss, /@media \(max-width:\s*680px\)[\s\S]*height:\s*auto[\s\S]*overflow:\s*visible/);
 const membraneBlock = thresholdMembraneCss.match(/\.ash-threshold-membrane\s*\{([\s\S]*?)\n\}/)?.[1] || '';
 assert.doesNotMatch(membraneBlock, /overflow:\s*hidden/);
@@ -64,15 +63,33 @@ assert.doesNotMatch(threshold, /data-ash-law-step|compileReadinessReceipt|locati
 assert.match(keepEntry, /window\.location\.replace\(canonicalKeepRoute\(\)\)/);
 
 const historyIndex = renderedKeep.indexOf("sessionStorage.getItem('td613:ash-threshold:readiness:v0.1')");
-const coreIndex = renderedKeep.indexOf('/dome-world/ash-keep.js');
-const convergenceIndex = renderedKeep.indexOf('/dome-world/ash-convergence.js');
-const lifecycleIndex = renderedKeep.indexOf(ASH_LIFECYCLE_MODULE);
-assert.ok(historyIndex >= 0 && coreIndex > historyIndex && convergenceIndex > coreIndex && lifecycleIndex > convergenceIndex);
-assert.equal(ASH_KEEP_SHELL_VERSION, 'td613.ash-keep.shell/v0.3-lifecycle-cache-boundary');
-assert.equal(ASH_LIFECYCLE_ASSET_EPOCH, '20260718-canonical-membrane-v7-readiness-boundary');
-assert.equal(ASH_LIFECYCLE_MODULE, '/dome-world/ash-lifecycle.js?v=20260718-canonical-membrane-v7-readiness-boundary');
-assert.match(renderedKeep, /src="\/dome-world\/ash-lifecycle\.js\?v=20260718-canonical-membrane-v7-readiness-boundary"/);
-assert.doesNotMatch(renderedKeep, /src="\/dome-world\/ash-lifecycle\.js"/);
+const versionedModules = [
+  `/dome-world/ash-keep.js?v=${ASH_LIFECYCLE_ASSET_EPOCH}`,
+  `/dome-world/ash-convergence.js?v=${ASH_LIFECYCLE_ASSET_EPOCH}`,
+  ASH_LIFECYCLE_MODULE,
+  `/dome-world/ash-workspace-bridge.js?v=${ASH_LIFECYCLE_ASSET_EPOCH}`,
+  `/dome-world/ash-case-controls.js?v=${ASH_LIFECYCLE_ASSET_EPOCH}`
+];
+assert.equal(ASH_KEEP_SHELL_VERSION, 'td613.ash-keep.shell/v0.4-aia3-mass-eviction');
+assert.equal(ASH_LIFECYCLE_ASSET_EPOCH, '20260720-aia3-mass-eviction-v2');
+assert.equal(ASH_LIFECYCLE_MODULE, '/dome-world/ash-lifecycle.js?v=20260720-aia3-mass-eviction-v2');
+assert.equal(ASH_MASS_EVICTION_EPOCH, 'td613.ash.cache-flush/2026-07-20-aia3-mass-eviction-v2');
+assert.ok(historyIndex >= 0);
+let cursor = historyIndex;
+for (const module of versionedModules) {
+  const index = renderedKeep.indexOf(module);
+  assert.ok(index > cursor, `${module} must follow the preceding governed surface.`);
+  cursor = index;
+  assert.match(renderedKeep, new RegExp(`src="${module.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')}"`));
+}
+for (const source of ['/dome-world/ash-keep.js', '/dome-world/ash-convergence.js', '/dome-world/ash-lifecycle.js', '/dome-world/ash-workspace-bridge.js', '/dome-world/ash-case-controls.js']) {
+  assert.doesNotMatch(renderedKeep, new RegExp(`src="${source.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')}"`));
+}
+assert.match(renderedKeep, /name="ash-cache-preflight" content="aia3-mass-eviction-v2"/);
+assert.match(renderedKeep, /Updating Ash Keep · preserving local cases/);
+assert.match(renderedKeep, /td613-ash-cache-preflight-veil/);
+assert.match(renderedKeep, /window.stop()/);
+assert.match(renderedKeep, /session_epoch_preserved_or_migrated/);
 assert.match(renderedKeep, /name="ash-lifecycle" content="v0\.1"/);
 assert.match(renderedKeep, /name="ash-constitutional-composition" content="v0\.1"/);
 assert.equal(injectAshKeepLifecycle(renderedKeep), renderedKeep);

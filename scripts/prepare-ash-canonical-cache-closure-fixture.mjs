@@ -10,6 +10,7 @@ const manifestPath = path.join(repoRoot, 'artifacts', 'ash-keep-probe-runtime', 
 const sha256 = value => `sha256:${createHash('sha256').update(value).digest('hex')}`;
 const v6Epoch = 'td613.ash.cache-flush/2026-07-18-canonical-membrane-v6';
 const v7Epoch = 'td613.ash.cache-flush/2026-07-18-canonical-membrane-v7';
+const legacyBypassMarker = 'ASH_AIA3_LEGACY_BYPASS_STABLE';
 
 const scopeTarget = `  const cleanEntries = await page.evaluate(() => Object.fromEntries(Object.entries(localStorage)));
   const cleanKeys = Object.keys(cleanEntries);`;
@@ -49,35 +50,38 @@ if (!prepared.includes("'td613.ash.session.epoch'")) {
   transformations.push('ALLOW_CANONICAL_ACTIVE_SESSION_EPOCH_AFTER_DELIBERATE_ENTRY');
 }
 
-if (!prepared.includes(v7Epoch)) {
+const exactLegacyBypass = prepared.includes(legacyBypassMarker);
+if (!exactLegacyBypass && !prepared.includes(v7Epoch)) {
   const count = prepared.split(v7EpochTarget).length - 1;
   if (count !== 1) throw new Error(`Canonical cache fixture expected one serialized v6 epoch seam; observed ${count}.`);
   prepared = prepared.replace(v7EpochTarget, v7EpochReplacement);
   transformations.push('ADMIT_V7_ONE_TIME_CACHE_MIGRATION_EPOCH');
 }
+if (exactLegacyBypass) transformations.push('PRESERVE_EXACT_AIA3_LEGACY_BYPASS_WITHOUT_CACHE_NAVIGATION');
 
 if (!prepared.includes('const cleanTransition = await page.evaluate')
   || !prepared.includes(valueReplacement)
   || !prepared.includes("'td613.ash.session.epoch'")
-  || !prepared.includes(v7Epoch)
+  || (!exactLegacyBypass && !prepared.includes(v7Epoch))
   || prepared.includes(valueTarget)) {
-  throw new Error('Canonical cache closure fixture did not isolate browser state or admit v7 correctly.');
+  throw new Error('Canonical cache closure fixture did not isolate browser state or preserve the selected cache posture correctly.');
 }
 
 if (prepared !== original) await fs.writeFile(probePath, prepared, 'utf8');
 await fs.mkdir(path.dirname(manifestPath), { recursive: true });
 await fs.writeFile(manifestPath, `${JSON.stringify({
-  schema:'td613.ash-keep.canonical-cache-closure-fixture/v0.3-v7-epoch',
+  schema:'td613.ash-keep.canonical-cache-closure-fixture/v0.4-aia3-legacy-aware',
   source_probe:path.relative(repoRoot, probePath),
   posture:transformations.length ? 'PREPARED_NOW' : 'ALREADY_PREPARED',
   source_sha256:sha256(original),
   prepared_sha256:sha256(prepared),
   transformations,
   browser_state_read_via_page_evaluate:true,
+  exact_legacy_bypass:exactLegacyBypass,
   cache_navigation_required:false,
   active_document_replacement_allowed:false,
   permitted_active_session_key:'td613.ash.session.epoch',
-  permitted_cache_migration_epoch:v7Epoch,
+  permitted_cache_migration_epoch:exactLegacyBypass ? null : v7Epoch,
   session_epoch_written_only_after_deliberate_entry:true,
   product_ui_mutated:false,
   promotion_authorized:false,

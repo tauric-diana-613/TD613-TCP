@@ -3,6 +3,7 @@ import fs from 'node:fs';
 import { JSDOM } from 'jsdom';
 
 import {
+  ASH_LIFECYCLE_ASSET_EPOCH,
   ASH_LIFECYCLE_MODULE,
   ASH_WORKSPACE_BRIDGE_MODULE,
   bindAshDraftsToCaseMap,
@@ -20,9 +21,10 @@ assert.equal(ASH_WORKSPACE_BRIDGE_MODULE, '/dome-world/ash-workspace-bridge.js')
 
 const keepHtml = fs.readFileSync('app/dome-world/ash-keep.html', 'utf8');
 const renderedHtml = injectAshKeepLifecycle(keepHtml);
-assert.match(renderedHtml, /src="\/dome-world\/ash-workspace-bridge\.js"/);
+assert.match(renderedHtml, new RegExp(`src="/dome-world/ash-workspace-bridge\\.js\\?v=${ASH_LIFECYCLE_ASSET_EPOCH}"`));
+assert.doesNotMatch(renderedHtml, /src="\/dome-world\/ash-workspace-bridge\.js"/);
 assert.ok(
-  renderedHtml.indexOf(ASH_WORKSPACE_BRIDGE_MODULE) > renderedHtml.indexOf(ASH_LIFECYCLE_MODULE),
+  renderedHtml.indexOf(`${ASH_WORKSPACE_BRIDGE_MODULE}?v=${ASH_LIFECYCLE_ASSET_EPOCH}`) > renderedHtml.indexOf(ASH_LIFECYCLE_MODULE),
   'Custody bridge must load after lifecycle injection has created the late workspace tab'
 );
 assert.equal(injectAshKeepLifecycle(renderedHtml), renderedHtml, 'bridge composition must be idempotent');
