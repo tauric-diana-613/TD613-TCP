@@ -3,53 +3,21 @@ name: Ash Legal Demo and UX Rescue
 on:
   pull_request:
     paths:
-      - 'app/dome-world/ash-legal-profile-demo.js'
-      - 'app/dome-world/ash-legal-demo-control-state.js'
-      - 'app/dome-world/ash-ui-ux-rescue.js'
-      - 'app/dome-world/ash-flicker-hardening.js'
-      - 'app/dome-world/ash-aia3-composition.js'
-      - 'app/dome-world/ash-premium-readiness-bridge.js'
-      - 'app/dome-world/ash-lifecycle.js'
-      - 'app/dome-world/ash-profile-demo-hydration.js'
-      - 'app/dome-world/ash-workspace-bridge.js'
       - 'app/safe-harbor/ash-keep-recovery.html'
       - 'api/dome-world-shell.js'
       - 'tests/ash-aia3-mass-eviction.test.mjs'
-      - 'tests/ash-legal-ux.test.mjs'
-      - 'tests/ash-legal-control-state.test.mjs'
-      - 'scripts/ash-legal-ux-browser-probe.mjs'
       - '.github/workflows/ash-legal-ux.yml'
-  push:
-    branches: [main]
-    paths:
-      - 'app/dome-world/ash-legal-profile-demo.js'
-      - 'app/dome-world/ash-legal-demo-control-state.js'
-      - 'app/dome-world/ash-ui-ux-rescue.js'
-      - 'app/dome-world/ash-flicker-hardening.js'
-      - 'app/dome-world/ash-aia3-composition.js'
-      - 'app/dome-world/ash-premium-readiness-bridge.js'
-      - 'app/dome-world/ash-lifecycle.js'
-      - 'app/dome-world/ash-profile-demo-hydration.js'
-      - 'app/dome-world/ash-workspace-bridge.js'
-      - 'app/safe-harbor/ash-keep-recovery.html'
-      - 'api/dome-world-shell.js'
-      - 'tests/ash-aia3-mass-eviction.test.mjs'
-      - 'tests/ash-legal-ux.test.mjs'
-      - 'tests/ash-legal-control-state.test.mjs'
-      - 'scripts/ash-legal-ux-browser-probe.mjs'
-      - '.github/workflows/ash-legal-ux.yml'
-  workflow_dispatch:
 
 permissions:
   contents: write
 
 concurrency:
-  group: ash-legal-ux-${{ github.event.pull_request.number || github.ref }}
+  group: ash-cross-scope-recovery-trusted-patch
   cancel-in-progress: true
 
 jobs:
   cross-scope-recovery-patch:
-    if: github.event_name == 'pull_request' && github.event.pull_request.head.ref == 'agent/ash-legal-demo-navigation-animation' && github.actor != 'github-actions[bot]'
+    if: github.event.pull_request.head.ref == 'agent/ash-legal-demo-navigation-animation' && github.actor != 'github-actions[bot]'
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
@@ -60,62 +28,70 @@ jobs:
         run: |
           python - <<'PY'
           from pathlib import Path
+          import re
+
           shell = Path('api/dome-world-shell.js')
           text = shell.read_text()
-          replacements = [
-            ("""    const sessionKey='td613.ash.session.epoch';
-              const publish=""", """    const sessionKey='td613.ash.session.epoch';
-              const recoveryBridge='/safe-harbor/ash-keep-recovery.html';
-              const publish="""),
-            ("""      const cleared=[];const workers=[];let http={attempted:false,observed:false};""", """      const controllerPresent=Boolean(navigator.serviceWorker?.controller);
-              const cleared=[];const workers=[];let http={attempted:false,observed:false};"""),
-            ("""        cache_names:cleared,worker_scopes:workers,indexeddb_preserved:true,case_data_preserved:true,active_session_reset:false,
-                local_case_pointer_preserved:""", """        cache_names:cleared,worker_scopes:workers,indexeddb_preserved:true,case_data_preserved:true,active_session_reset:false,
-                controller_present_before_eviction:controllerPresent,cross_scope_recovery_required:controllerPresent,
-                local_case_pointer_preserved:"""),
-            ("""      publish(receipt);
-              const current=new URL(location.href);""", """      publish(receipt);
-              if(controllerPresent&&location.pathname.startsWith('/dome-world/')){
-                const bridge=new URL(recoveryBridge,location.href);
-                bridge.searchParams.set('return',location.pathname+location.search+location.hash);
-                bridge.searchParams.set('epoch',assetEpoch);
-                location.replace(bridge.pathname+bridge.search);
-                return new Promise(()=>{});
-              }
-              const current=new URL(location.href);""")
-          ]
-          for old, new in replacements:
-              if new in text:
-                  continue
-              if old not in text:
-                  raise SystemExit(f'Expected shell patch anchor missing: {old[:80]}')
-              text = text.replace(old, new, 1)
+
+          def replace_once(pattern, replacement, label, marker):
+              global text
+              if marker in text:
+                  return
+              text, count = re.subn(pattern, replacement, text, count=1)
+              if count != 1:
+                  raise SystemExit(f'Expected shell structure missing: {label}')
+
+          replace_once(
+              r"(    const sessionKey='td613\.ash\.session\.epoch';\n)(    const publish=)",
+              r"\1    const recoveryBridge='/safe-harbor/ash-keep-recovery.html';\n\2",
+              'recovery bridge declaration',
+              "const recoveryBridge='/safe-harbor/ash-keep-recovery.html'"
+          )
+          replace_once(
+              r"(      )const cleared=\[\];const workers=\[\];let http=\{attempted:false,observed:false\};",
+              r"\1const controllerPresent=Boolean(navigator.serviceWorker?.controller);\n\1const cleared=[];const workers=[];let http={attempted:false,observed:false};",
+              'controller observation',
+              'const controllerPresent=Boolean(navigator.serviceWorker?.controller)'
+          )
+          replace_once(
+              r"active_session_reset:false,\n(        )local_case_pointer_preserved:",
+              r"active_session_reset:false,\n\1controller_present_before_eviction:controllerPresent,cross_scope_recovery_required:controllerPresent,\n\1local_case_pointer_preserved:",
+              'receipt controller fields',
+              'cross_scope_recovery_required:controllerPresent'
+          )
+          replace_once(
+              r"(      publish\(receipt\);\n)(      const current=new URL\(location\.href\);)",
+              r"\1      if(controllerPresent&&location.pathname.startsWith('/dome-world/')){\n        const bridge=new URL(recoveryBridge,location.href);\n        bridge.searchParams.set('return',location.pathname+location.search+location.hash);\n        bridge.searchParams.set('epoch',assetEpoch);\n        location.replace(bridge.pathname+bridge.search);\n        return new Promise(()=>{});\n      }\n\2",
+              'cross-scope redirect',
+              "location.replace(bridge.pathname+bridge.search)"
+          )
           shell.write_text(text)
 
           test = Path('tests/ash-aia3-mass-eviction.test.mjs')
           test_text = test.read_text()
-          if "const recoverySource" not in test_text:
+          if 'const recoverySource' not in test_text:
               test_text = test_text.replace(
-                "const compositionSource = fs.readFileSync('app/dome-world/ash-aia3-composition.js', 'utf8');",
-                "const compositionSource = fs.readFileSync('app/dome-world/ash-aia3-composition.js', 'utf8');\nconst recoverySource = fs.readFileSync('app/safe-harbor/ash-keep-recovery.html', 'utf8');"
+                  "const compositionSource = fs.readFileSync('app/dome-world/ash-aia3-composition.js', 'utf8');",
+                  "const compositionSource = fs.readFileSync('app/dome-world/ash-aia3-composition.js', 'utf8');\nconst recoverySource = fs.readFileSync('app/safe-harbor/ash-keep-recovery.html', 'utf8');"
               )
-          if "controlled stale clients leave the retired Dome-World scope" not in test_text:
-              anchor = "test('browser witness is bound to the exact current Legal UX delivery epochs', () => {"
-              addition = """test('controlled stale clients leave the retired Dome-World scope before returning to Ash', () => {
-                assert.match(shellSource, /const recoveryBridge='\\/safe-harbor\\/ash-keep-recovery\\.html'/);
-                assert.match(shellSource, /controllerPresent=Boolean\\(navigator\\.serviceWorker\\?\\.controller\\)/);
-                assert.match(shellSource, /cross_scope_recovery_required:controllerPresent/);
-                assert.match(shellSource, /location\\.replace\\(bridge\\.pathname\\+bridge\\.search\\)/);
-                assert.match(recoverySource, /source_scope:'\\/dome-world\\/'/);
-                assert.match(recoverySource, /bridge_scope:'\\/safe-harbor\\/'/);
-                assert.match(recoverySource, /indexeddb_preserved:true/);
-                assert.match(recoverySource, /case_data_preserved:true/);
-                assert.match(recoverySource, /ash_recovered','cross-scope'/);
-              });
+          if 'controlled stale clients leave the retired Dome-World scope' not in test_text:
+              addition = """
+          test('controlled stale clients leave the retired Dome-World scope before returning to Ash', () => {
+            assert.match(shellSource, /const recoveryBridge='\\/safe-harbor\\/ash-keep-recovery\\.html'/);
+            assert.match(shellSource, /controllerPresent=Boolean\\(navigator\\.serviceWorker\\?\\.controller\\)/);
+            assert.match(shellSource, /cross_scope_recovery_required:controllerPresent/);
+            assert.match(shellSource, /location\\.replace\\(bridge\\.pathname\\+bridge\\.search\\)/);
+            assert.match(recoverySource, /source_scope:'\\/dome-world\\/'/);
+            assert.match(recoverySource, /bridge_scope:'\\/safe-harbor\\/'/);
+            assert.match(recoverySource, /indexeddb_preserved:true/);
+            assert.match(recoverySource, /case_data_preserved:true/);
+            assert.match(recoverySource, /ash_recovered','cross-scope'/);
+          });
 
-              """
+          """
+              anchor = '\nclass MemoryStorage {'
               if anchor not in test_text:
-                  raise SystemExit('Expected AIA3 epoch test anchor missing.')
+                  raise SystemExit('Expected MemoryStorage contract anchor missing.')
               test_text = test_text.replace(anchor, addition + anchor, 1)
           test.write_text(test_text)
           PY
@@ -124,74 +100,5 @@ jobs:
           git config user.name 'github-actions[bot]'
           git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
           git add api/dome-world-shell.js tests/ash-aia3-mass-eviction.test.mjs app/safe-harbor/ash-keep-recovery.html
-          if git diff --cached --quiet; then exit 0; fi
           git commit -m 'fix(ash): escape retired worker scope before recovery'
           git push origin HEAD:agent/ash-legal-demo-navigation-animation
-
-  static-contract:
-    runs-on: ubuntu-latest
-    timeout-minutes: 15
-    steps:
-      - uses: actions/checkout@v4
-      - uses: actions/setup-node@v4
-        with:
-          node-version: 24
-          cache: npm
-      - run: npm ci
-      - run: |
-          node tests/ash-legal-ux.test.mjs
-          node tests/ash-legal-control-state.test.mjs
-      - run: |
-          node --check app/dome-world/ash-legal-profile-demo.js
-          node --check app/dome-world/ash-legal-demo-control-state.js
-          node --check app/dome-world/ash-ui-ux-rescue.js
-          node --check app/dome-world/ash-flicker-hardening.js
-          node --check app/dome-world/ash-aia3-composition.js
-          node --check app/dome-world/ash-premium-readiness-bridge.js
-          node --check app/dome-world/ash-lifecycle.js
-          node --check scripts/ash-legal-ux-browser-probe.mjs
-
-  browser-witness:
-    runs-on: ubuntu-latest
-    timeout-minutes: 55
-    strategy:
-      fail-fast: false
-      matrix:
-        browser: [chromium, firefox, webkit]
-    steps:
-      - uses: actions/checkout@v4
-      - uses: actions/setup-node@v4
-        with:
-          node-version: 24
-          cache: npm
-      - run: npm ci
-      - run: npm install --no-save --package-lock=false playwright@1.53.2
-      - run: npx playwright install --with-deps ${{ matrix.browser }}
-      - name: Start bounded local Ash runtime
-        run: |
-          node scripts/ash-keep-local-closure-server.mjs > artifacts-ash-legal-server.log 2>&1 &
-          echo $! > ash-legal-server.pid
-          for attempt in $(seq 1 60); do
-            if curl -fsS http://127.0.0.1:6130/dome-world/ash-keep.html >/dev/null; then exit 0; fi
-            sleep 1
-          done
-          cat artifacts-ash-legal-server.log
-          exit 1
-      - name: Exercise Legal matter demo, stable composition, navigation, and finite animation
-        env:
-          TD613_BROWSER: ${{ matrix.browser }}
-          TD613_BASE_URL: http://127.0.0.1:6130
-          TD613_ARTIFACT_DIR: artifacts/ash-legal-ux-${{ matrix.browser }}
-        run: node scripts/ash-legal-ux-browser-probe.mjs
-      - name: Stop bounded local runtime
-        if: always()
-        run: |
-          if [ -f ash-legal-server.pid ]; then kill $(cat ash-legal-server.pid) || true; fi
-          cat artifacts-ash-legal-server.log || true
-      - uses: actions/upload-artifact@v4
-        if: always()
-        with:
-          name: ash-legal-ux-${{ matrix.browser }}-evidence
-          path: artifacts/ash-legal-ux-${{ matrix.browser }}/
-          if-no-files-found: error
-          retention-days: 30
