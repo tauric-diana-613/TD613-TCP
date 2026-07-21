@@ -38,6 +38,16 @@ assert.equal(fixture.profile.demo_id, 'demo_research_lumen_atlas_v3');
 assert.match(fixture.profile.title, /Lumen Atlas Research Project/);
 assert.match(fixture.profile.plain_language_question, /how much of the cooling claim can responsibly remain/i);
 assert.deepEqual(fixture.counts, { rooms:14, nodes:72, relationships:112, rules:8, routes:6, controls:12, held_outs:8, strata:10 });
+assert.deepEqual({
+  rooms:fixture.rooms.length,
+  nodes:fixture.nodes.length,
+  relationships:fixture.relationships.length,
+  rules:fixture.rules.length,
+  routes:fixture.routes.entries.length,
+  controls:fixture.assay.controls.length,
+  held_outs:fixture.assay.held_outs.length,
+  strata:fixture.assay.strata.length
+}, fixture.counts, 'Research declarations drifted from the generated fixture.');
 assert.equal(fixture.assay.maximum_assurance, 'PA2_LOCALLY_EXECUTED');
 assert.equal(fixture.assay.unknown_readers, 'UNMEASURED');
 assert.equal(fixture.assay.universal_secrecy, false);
