@@ -1,4 +1,4 @@
-export const ASH_AIA3_COMPOSITION_VERSION = 'td613.ash.aia3-composition/v0.4-open-case-render-readiness';
+export const ASH_AIA3_COMPOSITION_VERSION = 'td613.ash.aia3-composition/v0.5-human-profile-choice';
 
 const POINTER_KEY = 'td613.ash-keep.current-case';
 const DEFAULT_PROFILE = 'investigation';
@@ -39,8 +39,8 @@ function renderedMembraneState() {
   const root = byId('ashAiaMembrane');
   return Object.freeze({
     root,
-    route_count: root?.querySelectorAll('[data-aia-route]').length || 0,
-    task_count: root?.querySelectorAll('[data-aia-task]').length || 0
+    route_count:root?.querySelectorAll('[data-aia-route]').length || 0,
+    task_count:root?.querySelectorAll('[data-aia-task]').length || 0
   });
 }
 
@@ -87,25 +87,36 @@ function updateLaunchPromise() {
   promise.innerHTML = `<div><p class="guided-kicker">Four exact steps · one local case</p><h3>Start here. Ash explains the consequence after each deliberate action.</h3></div><p>Your case structure and document bytes remain in this browser. A custody reference, Case Map change, test, review, or Capsule appears only after the named Ash action completes.</p><ol><li><b>1 · Set up</b><span>Choose a profile and open a private case.</span></li><li><b>2 · Open</b><span>Bring a local text document into view without uploading it.</span></li><li><b>3 · Keep + check</b><span>Create or verify a separate custody reference.</span></li><li><b>4 · Work</b><span>Map, test, review, save, or seal through exact Ash controls.</span></li></ol><small>Explanation ≠ action. Early warning ≠ guilt, intent, identity, authorship, truth, surveillance probability, or prediction.</small>`;
 }
 
-function ensureDefaultProfile() {
+function profileTitle(option) {
+  const label = option?.textContent?.trim() || 'case';
+  return `New ${label.toLowerCase()} case`;
+}
+
+function ensureIngressProfile() {
   const select = byId('newProfile');
   if (!select || caseOpen()) return false;
-  const option = select.querySelector(`option[value="${DEFAULT_PROFILE}"]`);
-  if (!option) return false;
-  if (select.value !== DEFAULT_PROFILE) {
-    select.value = DEFAULT_PROFILE;
-    select.dispatchEvent(new Event('input', { bubbles:true }));
-    select.dispatchEvent(new Event('change', { bubbles:true }));
+
+  if (!select.dataset.ashAia3DefaultApplied) {
+    if (!select.value) select.value = DEFAULT_PROFILE;
+    select.dataset.ashAia3DefaultApplied = 'true';
+    select.dataset.ashAia3Default = DEFAULT_PROFILE;
   }
+
+  const selected = select.value;
+  const option = selected ? select.querySelector(`option[value="${selected}"]`) : null;
+  if (!option) return false;
+
   const title = byId('newTitle');
-  if (title && (!title.value || /^(Untitled|unclassified · Ash) case$/i.test(title.value))) title.value = 'New investigation case';
+  const generatedTitle = /^(?:Untitled|unclassified · Ash|New (?:investigation|research project|legal matter|archive|organizing|unpublished work) case)$/i;
+  if (title && (!title.value || generatedTitle.test(title.value))) title.value = profileTitle(option);
+
   const button = byId('newCase');
-  if (button && select.value === DEFAULT_PROFILE) {
+  if (button) {
     button.disabled = false;
     button.setAttribute('aria-disabled', 'false');
   }
-  select.dataset.ashAia3Default = DEFAULT_PROFILE;
-  return Boolean(button && !button.disabled && select.value === DEFAULT_PROFILE);
+  select.dataset.ashAia3SelectedProfile = selected;
+  return Boolean(button && !button.disabled && selected);
 }
 
 function closeDeepPanels() {
@@ -138,6 +149,7 @@ function publishReadiness(ready, hold, detail) {
       hold,
       session_open:caseOpen(),
       case_id:currentCaseId(),
+      profile:byId('newProfile')?.value || null,
       lifecycle_state:detail.lifecycle_state || null,
       route_count:detail.route_count || 0,
       task_count:detail.task_count || 0
@@ -149,7 +161,7 @@ function sync() {
   if (!doc?.documentElement || !doc.body) return;
   const open = caseOpen();
   const openState = open ? openCaseReadiness() : null;
-  const ready = open ? openState.ready : ensureDefaultProfile();
+  const ready = open ? openState.ready : ensureIngressProfile();
   const hold = open ? openState.hold : ready ? null : 'WAITING_INGRESS_PROFILE';
   const detail = openState || { lifecycle_state:null, route_count:0, task_count:0 };
 
@@ -187,7 +199,9 @@ export function installAshAia3Composition() {
     host.addEventListener(`td613:ash:${type}`, schedule);
   }
   doc.addEventListener('change', event => {
-    if (event.target?.id === 'newProfile') schedule();
+    if (event.target?.id !== 'newProfile') return;
+    event.target.dataset.ashAia3SelectedProfile = event.target.value;
+    schedule();
   });
   observer = new MutationObserver(records => {
     if (records.some(record => record.addedNodes.length || record.removedNodes.length)) schedule();
@@ -198,7 +212,13 @@ export function installAshAia3Composition() {
     refresh:sync,
     current:() => {
       const open = caseOpen();
-      const state = open ? openCaseReadiness() : { ready:doc.documentElement.dataset.ashMembraneReady === 'true', hold:doc.documentElement.dataset.ashAia3ReadinessHold || null, lifecycle_state:null, route_count:0, task_count:0 };
+      const state = open ? openCaseReadiness() : {
+        ready:doc.documentElement.dataset.ashMembraneReady === 'true',
+        hold:doc.documentElement.dataset.ashAia3ReadinessHold || null,
+        lifecycle_state:null,
+        route_count:0,
+        task_count:0
+      };
       return Object.freeze({
         session_open:open,
         case_id:currentCaseId(),
