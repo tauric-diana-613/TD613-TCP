@@ -6,8 +6,12 @@ import { pathToFileURL } from 'node:url';
 const root = path.resolve(import.meta.dirname, '..');
 const modulePath = path.join(root, 'app/dome-world/ash-demo-pedagogy-rehydration.js');
 const wrapperPath = path.join(root, 'app/dome-world/ash-profile-demo-hydration.js');
+const premiumReadinessPath = path.join(root, 'app/dome-world/ash-premium-readiness-bridge.js');
+const workspaceBridgePath = path.join(root, 'app/dome-world/ash-workspace-bridge.js');
 const moduleSource = fs.readFileSync(modulePath, 'utf8');
 const wrapperSource = fs.readFileSync(wrapperPath, 'utf8');
+const premiumReadinessSource = fs.readFileSync(premiumReadinessPath, 'utf8');
+const workspaceBridgeSource = fs.readFileSync(workspaceBridgePath, 'utf8');
 const { ASH_DEMO_PEDAGOGY_VERSION, ASH_DEMO_PEDAGOGY_MANIFESTS } = await import(pathToFileURL(modulePath));
 
 assert.equal(ASH_DEMO_PEDAGOGY_VERSION, 'td613.ash.demo-pedagogy/v0.1-four-profile-rehydration');
@@ -44,10 +48,19 @@ assert.match(moduleSource, /td613:ash:demo-pedagogy-hydrated/);
 assert.match(moduleSource, /data-demo-pedagogy-workspace/);
 assert.match(moduleSource, /updateMotionLabels/);
 assert.match(moduleSource, /decorateDestinations/);
+assert.match(moduleSource, /if \('checked' in node\) return node\.checked \? 'DRIFT' : 'DORMANT_OK'/);
+assert.match(moduleSource, /node\.tagName === 'A' \? 'SEPARATE' : 'DRIFT'/);
 assert.match(moduleSource, /providerApproval/);
 assert.match(moduleSource, /approveRelease/);
 assert.match(moduleSource, /capsulePassphrase/);
 assert.doesNotMatch(moduleSource, /transport_authorized:\s*true|child_study_authorized:\s*true|automatic_ash_action:\s*true/);
 assert.match(wrapperSource, /ash-demo-pedagogy-rehydration\.js\?v=20260721-legal-demo-ux-v1/);
+
+assert.match(premiumReadinessSource, /td613\.ash\.premium-readiness\/v0\.1-exact-instrument-graph/);
+for (const marker of ['premiumPrimaryDock','premiumContextBar','workspace-home','workspace-work']) assert.match(premiumReadinessSource, new RegExp(marker));
+assert.match(premiumReadinessSource, /dataset\.ashPremiumReady = String\(state\.ready\)/);
+assert.match(premiumReadinessSource, /td613:ash:premium-ready/);
+assert.match(premiumReadinessSource, /api && dock && context && home && work/);
+assert.match(workspaceBridgeSource, /ash-premium-ui\.js\?v=20260721-legal-demo-ux-v1[\s\S]*ash-premium-readiness-bridge\.js\?v=20260721-legal-demo-ux-v1[\s\S]*ash-ui-ux-rescue\.js\?v=20260721-legal-demo-ux-v1/);
 
 console.log('ash-four-profile-pedagogy.test.mjs passed');
