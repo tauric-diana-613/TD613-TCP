@@ -19,7 +19,7 @@ cost control ≠ evidentiary weakening
 3. Receive one explicit operator release gesture in chat.
 4. The assistant/Codex executes the bounded Vercel release route.
 5. One deployment is attempted.
-6. The deployed Flow-Core bytes and browser surfaces are observed.
+6. The deployed Flow-Core bytes, Flow-Core browser surfaces, and current Ash Keep generation are observed.
 7. The exact result is reported and sealed.
 
 ```text
@@ -113,7 +113,7 @@ A successful release receipt must name the authorized packet with the exact fiel
 source_packet_commit = <40-character-current-main-sha>
 ```
 
-It must also report the credential route, release and relock commits when applicable, deployment URL, deployment count, exact-source content result, browser matrix, mobile portrait and landscape, rotation-equivalent observation, reduced motion, zoom-equivalent reflow, high contrast, performance observation, application-tree drift, and final lock state.
+It must also report the credential route, release and relock commits when applicable, deployment URL, deployment count, exact-source content result, Flow-Core browser matrix, current Ash Keep generation matrix, mobile evidence, application-tree drift, and final lock state.
 
 Gate acceptance alone is not a terminal receipt.
 
@@ -146,7 +146,7 @@ The production content observer hashes declared Flow-Core files locally and comp
 ```text
 exact_source_content = PASS
 application_tree_drift = none
-browser_matrix = PASS
+flowcore_browser_matrix = PASS
 ```
 
 Runtime observation remains non-promotional:
@@ -156,6 +156,41 @@ runtime observation counts as human evidence: false
 runtime observation authorizes public route promotion: false
 runtime observation closes the program: false
 ```
+
+## Ash Keep AIA3 production observation
+
+The release witness must execute the current **Ash Keep AIA3** task-continuity browser witness, `scripts/ash-keep-aia3-task-journey-v3.mjs`, in Chromium, Firefox, and WebKit.
+
+The AIA3 witness must observe:
+
+- fixed first-use ingress without an obstructing AIA crown;
+- exact profile and New Case controls;
+- local case creation and pointer preservation;
+- exact main and workspace-rail availability after case creation;
+- local-document opening without transport;
+- deterministic tutorial non-mutation;
+- route continuity across Experiential, Custodial, Audit, and Implementation;
+- desktop and 390×844 mobile geometry;
+- stale-client eviction of retired AIA2 CacheStorage and service-worker graphs;
+- preservation of IndexedDB cases, case pointer, and session continuity;
+- absence of unexpected external or write requests.
+
+```text
+ash_keep_aia3_task_matrix = PASS
+ash_keep_fresh_client = PASS
+ash_keep_retired_aia2_eviction = PASS
+ash_keep_case_preservation = PASS
+```
+
+A retired AIA2 witness cannot certify an AIA3 release. Generation-specific release and read-only observation infrastructure must name and execute the current AIA3 witness. AIA2 remains a migration adversary to evict, not a production authority.
+
+The read-only observation command is:
+
+```text
+/td613-ash-aia3-observe PRODUCTION <40-character-ancestor-sha>
+```
+
+That conduit may observe an already-deployed source packet but has zero deployment, branch-write, retry, child-study, release, or closure authority.
 
 ## Final-cut convergence guard
 
@@ -169,7 +204,7 @@ exact deployed source packet = required
 partial surface success ≠ whole-product release success
 ```
 
-The release witness must prove the intended surfaces together: TD613 Flight behavior, Ash ingress geometry, cache-epoch transition, local-custody preservation, profile hydration, Flow-Core exact-source parity, the Flow-Core browser matrix, and the deployment lock.
+The release witness must prove the intended surfaces together: TD613 Flight behavior, Ash ingress geometry, cache-epoch transition, local-custody preservation, profile hydration, Flow-Core exact-source parity, the Flow-Core browser matrix, Ash Keep AIA3 task continuity, stale-client recovery, and the deployment lock.
 
 ## Cache-epoch storage boundary
 

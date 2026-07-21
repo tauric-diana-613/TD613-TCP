@@ -1,4 +1,4 @@
-name: Ash Keep AIA2 Production Observation
+name: Ash Keep AIA3 Production Observation
 
 on:
   issue_comment:
@@ -9,7 +9,7 @@ permissions:
   issues: write
 
 concurrency:
-  group: td613-ash-aia2-production-observation
+  group: td613-ash-aia3-production-observation
   cancel-in-progress: false
 
 jobs:
@@ -18,9 +18,9 @@ jobs:
       github.event.issue.number == 405 &&
       github.event.issue.pull_request == null &&
       github.event.comment.user.login == github.repository_owner &&
-      startsWith(github.event.comment.body, '/td613-ash-aia2-observe ')
+      startsWith(github.event.comment.body, '/td613-ash-aia3-observe ')
     runs-on: ubuntu-latest
-    timeout-minutes: 65
+    timeout-minutes: 75
     env:
       RELEASE_GATE_ISSUE: '405'
       TD613_CANONICAL_PRODUCTION_URL: https://td613.com
@@ -33,28 +33,28 @@ jobs:
           ref: main
           fetch-depth: 0
 
-      - name: Validate exact read-only observation command
+      - name: Validate exact read-only AIA3 observation command
         id: authorize
         env:
           AUTHORIZATION: ${{ github.event.comment.body }}
         run: |
           set -euo pipefail
           read -r COMMAND TARGET SELECTED_SHA EXTRA <<< "$AUTHORIZATION"
-          [[ "$COMMAND" == '/td613-ash-aia2-observe' ]] || { echo 'Unexpected observation command.' >&2; exit 1; }
+          [[ "$COMMAND" == '/td613-ash-aia3-observe' ]] || { echo 'Unexpected observation command.' >&2; exit 1; }
           [[ "$TARGET" == 'PRODUCTION' ]] || { echo 'Only the named PRODUCTION target is accepted.' >&2; exit 1; }
           [[ -z "${EXTRA:-}" ]] || { echo 'Observation command must contain exactly command, target, and SHA.' >&2; exit 1; }
           [[ "$SELECTED_SHA" =~ ^[0-9a-f]{40}$ ]] || { echo 'Observation command omitted a 40-character SHA.' >&2; exit 1; }
           git cat-file -e "$SELECTED_SHA^{commit}"
           git merge-base --is-ancestor "$SELECTED_SHA" HEAD || { echo 'Selected source packet is not an ancestor of current main.' >&2; exit 1; }
           git checkout --detach "$SELECTED_SHA"
-          test -f scripts/ash-keep-aia2-task-journey-v5.mjs
+          test -f scripts/ash-keep-aia3-task-journey-v3.mjs
           echo "selected_sha=$SELECTED_SHA" >> "$GITHUB_OUTPUT"
 
-      - name: Record accepted read-only observation
+      - name: Record accepted read-only AIA3 observation
         run: |
           gh api "repos/$GITHUB_REPOSITORY/issues/$RELEASE_GATE_ISSUE/comments" \
             -f body="$(cat <<EOF_COMMENT
-          𝌋 Ash Keep AIA2 read-only production observation accepted.
+          𝌋 Ash Keep AIA3 read-only production observation accepted.
 
           \`\`\`text
           source_packet_commit = ${{ steps.authorize.outputs.selected_sha }}
@@ -64,7 +64,7 @@ jobs:
           workflow_run = $GITHUB_SERVER_URL/$GITHUB_REPOSITORY/actions/runs/$GITHUB_RUN_ID
           \`\`\`
 
-          This conduit observes the deployed task journey only. It cannot deploy, relock, mutate Ash, authorize a child study, or close the program. ⟐
+          This conduit observes the deployed AIA3 task journey and stale-client recovery only. It cannot deploy, relock, mutate Ash, authorize a child study, or close the program. ⟐
           EOF_COMMENT
           )"
 
@@ -79,7 +79,7 @@ jobs:
           npm install --no-save --package-lock=false playwright@1.53.2
           npx playwright install --with-deps chromium firefox webkit
 
-      - name: Observe exact deployed Ash Keep task journey
+      - name: Observe exact deployed Ash Keep AIA3 task journey
         env:
           TD613_BASE_URL: ${{ env.TD613_CANONICAL_PRODUCTION_URL }}
           TD613_SOURCE_PACKET_COMMIT: ${{ steps.authorize.outputs.selected_sha }}
@@ -88,43 +88,43 @@ jobs:
           set -euo pipefail
           for browser in chromium firefox webkit; do
             TD613_BROWSER="$browser" \
-            TD613_ARTIFACT_DIR="artifacts/ash-aia2-production/$browser" \
-            node scripts/ash-keep-aia2-task-journey-v5.mjs
+            TD613_ARTIFACT_DIR="artifacts/ash-aia3-production/$browser" \
+            node scripts/ash-keep-aia3-task-journey-v3.mjs
           done
 
-      - name: Verify bounded production receipts
+      - name: Verify bounded AIA3 production receipts
         run: |
           node --input-type=module <<'NODE'
           import fs from 'node:fs';
           const expected = '${{ steps.authorize.outputs.selected_sha }}';
           for (const browser of ['chromium', 'firefox', 'webkit']) {
-            const path = `artifacts/ash-aia2-production/${browser}/ash-aia2-task-continuity.json`;
+            const path = `artifacts/ash-aia3-production/${browser}/ash-aia3-task-continuity.json`;
             const receipt = JSON.parse(fs.readFileSync(path, 'utf8'));
-            if (receipt.status !== 'PASS') throw new Error(`${browser} production journey held.`);
-            if (receipt.source_packet_commit !== expected) throw new Error(`${browser} source-packet label drifted.`);
+            if (receipt.status !== 'PASS') throw new Error(`${browser} AIA3 production journey held.`);
+            if (receipt.source_packet_commit !== expected) throw new Error(`${browser} AIA3 source-packet label drifted.`);
             if (receipt.production_observation !== true) throw new Error(`${browser} was not marked as production observation.`);
             const authority = receipt.authority || {};
             if (authority.counts_as_human_evidence !== false || authority.authorizes_child_study !== false || authority.authorizes_release !== false || authority.closes_program !== false) {
-              throw new Error(`${browser} observer widened authority.`);
+              throw new Error(`${browser} AIA3 observer widened authority.`);
             }
           }
           NODE
 
-      - name: Preserve Ash Keep production evidence
+      - name: Preserve Ash Keep AIA3 production evidence
         if: always()
         uses: actions/upload-artifact@v4
         with:
-          name: ash-aia2-production-observation
-          path: artifacts/ash-aia2-production/
+          name: ash-aia3-production-observation
+          path: artifacts/ash-aia3-production/
           if-no-files-found: warn
           retention-days: 45
 
-      - name: Seal successful read-only observation
+      - name: Seal successful read-only AIA3 observation
         if: success()
         run: |
           gh api "repos/$GITHUB_REPOSITORY/issues/$RELEASE_GATE_ISSUE/comments" \
             -f body="$(cat <<EOF_COMMENT
-          𝌋 Ash Keep AIA2 production task continuity observed.
+          𝌋 Ash Keep AIA3 production task continuity observed.
 
           \`\`\`text
           source_packet_commit = ${{ steps.authorize.outputs.selected_sha }}
@@ -137,23 +137,24 @@ jobs:
           local_document_path = PASS
           route_continuity = PASS
           tutorial_non_mutation = PASS
-          rest_return = PASS
+          stale_client_recovery = OBSERVED_BY_LOCAL_CLOSURE_AND_RELEASE_PACKET
+          retired_aia2_delivery = ABSENT
           counts_as_human_evidence = false
           child_study_authorized = false
           release_authorized = false
           human_closure_required = true
           \`\`\`
 
-          The deployed Ash Keep task journey is observed across all three engines. This receipt does not authorize another deployment, a child study, or program closure. Sealed ⟐
+          The deployed Ash Keep AIA3 task journey is observed across all three engines. This receipt does not authorize another deployment, a child study, or program closure. Sealed ⟐
           EOF_COMMENT
           )"
 
-      - name: Record held read-only observation
+      - name: Record held read-only AIA3 observation
         if: failure()
         run: |
           gh api "repos/$GITHUB_REPOSITORY/issues/$RELEASE_GATE_ISSUE/comments" \
             -f body="$(cat <<EOF_COMMENT
-          𝌋 Ash Keep AIA2 production observation held.
+          𝌋 Ash Keep AIA3 production observation held.
 
           \`\`\`text
           source_packet_commit = ${{ steps.authorize.outputs.selected_sha || 'unresolved' }}
