@@ -1,5 +1,6 @@
 name: Apply Ash module-admission barrier
 
+# Explicit trigger revision after initial workflow registration.
 on:
   push:
     branches: [agent/ash-aia3-eviction-final3]
