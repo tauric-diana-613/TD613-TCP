@@ -93,4 +93,5 @@ assert.match(flickerSource, /iterations === Infinity/);
 assert.doesNotMatch(flickerSource, /html\[data-ash-flicker-hardening\] \*,[\s\S]*animation:none!important/);
 assert.doesNotMatch(rescueSource + legalSource, /transport_authorized:\s*true|legal_advice_provided:\s*true|child_study_authorized:\s*true/);
 
+// Included path trigger for the one-use inherited-contract convergence job.
 console.log('ash-legal-ux.test.mjs passed');
