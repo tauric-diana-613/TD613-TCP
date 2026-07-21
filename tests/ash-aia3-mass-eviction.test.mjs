@@ -13,6 +13,7 @@ const shellSource = fs.readFileSync('api/dome-world-shell.js', 'utf8');
 const journeySource = fs.readFileSync('scripts/ash-keep-aia3-task-journey-v3.mjs', 'utf8');
 const compositionSource = fs.readFileSync('app/dome-world/ash-aia3-composition.js', 'utf8');
 const recoverySource = fs.readFileSync('app/safe-harbor/ash-keep-recovery.html', 'utf8');
+const closureServerSource = fs.readFileSync('scripts/ash-keep-local-closure-server.mjs', 'utf8');
 
 test('server preflight bypasses exact legacy rollback and republishes the governed receipt', () => {
   assert.match(shellSource, /legacyPresentation/);
@@ -70,6 +71,12 @@ test('browser witness waits for lifecycle case binding before tutorial baseline'
   assert.doesNotMatch(journeySource, /waitForTimeout\(250\);\n  const before/);
 });
 
+test('retired worker fixture controls the next navigation without claiming the active page', () => {
+  assert.match(closureServerSource, /self\.addEventListener\('activate', \(\) => \{\}\)/);
+  assert.doesNotMatch(closureServerSource, /clients\.claim\(\)/);
+  assert.match(closureServerSource, /service-worker-allowed':'\/dome-world\/'/);
+});
+
 test('controlled stale clients leave the retired Dome-World scope before returning to Ash', () => {
   assert.match(shellSource, /const recoveryBridge='\/safe-harbor\/ash-keep-recovery\.html'/);
   assert.match(shellSource, /controllerPresent=Boolean\(navigator\.serviceWorker\?\.controller\)/);
@@ -81,7 +88,6 @@ test('controlled stale clients leave the retired Dome-World scope before returni
   assert.match(recoverySource, /case_data_preserved:true/);
   assert.match(recoverySource, /ash_recovered','cross-scope'/);
 });
-
 
 class MemoryStorage {
   constructor(entries = {}) { this.values = new Map(Object.entries(entries)); }
