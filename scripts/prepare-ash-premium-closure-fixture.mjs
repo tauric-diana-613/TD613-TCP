@@ -35,11 +35,7 @@ const capsuleReplacement = `  await page.locator('#capsuleFile').setInputFiles(c
 
   const capsule = JSON.parse(await fs.readFile(capsulePath, 'utf8'));`;
 
-const allowedKeysTarget = `const ALLOWED_LOCAL_KEYS = new Set([
-  'td613.ash-keep.current-case',
-  'td613.ash-keep.preferences',
-  'td613.ash.cache-flush.epoch'
-]);`;
+const allowedKeysPattern = /const ALLOWED_LOCAL_KEYS = new Set\(\[[\s\S]*?\n\]\);/;
 const allowedKeysReplacement = `const ALLOWED_LOCAL_KEYS = new Set([
   'td613.ash-keep.current-case',
   'td613.ash-keep.preferences',
@@ -118,6 +114,7 @@ const cleanArrivalReplacement = `  const cleanEntries = await page.evaluate(() =
   };`;
 
 const premiumMarker = 'const premiumCommandInstrument = await page.evaluate';
+const allowlistMarker = "'td613.ash.session.epoch'";
 const cacheMarker = 'const cleanMaintenanceEntries =';
 const navigationMarker = 'ASH_AIA3_MASS_EVICTION_STABLE';
 const sha256 = value => `sha256:${createHash('sha256').update(value).digest('hex')}`;
@@ -133,10 +130,10 @@ if (!prepared.includes(premiumMarker)) {
   transformations.push('REOPEN_EXACT_SAVE_AFTER_AUTHENTICATED_CAPSULE_BEFORE_TAMPER_ASSAY');
 }
 
-if (!prepared.includes("'td613.ash.cache-flush.aia3.epoch'")) {
-  const count = prepared.split(allowedKeysTarget).length - 1;
-  if (count !== 1) throw new Error(`Mass-eviction fixture expected one localStorage allowlist seam; observed ${count}.`);
-  prepared = prepared.replace(allowedKeysTarget, allowedKeysReplacement);
+if (!prepared.includes(allowlistMarker)) {
+  const matches = prepared.match(allowedKeysPattern) || [];
+  if (matches.length !== 1) throw new Error(`Mass-eviction fixture expected one localStorage allowlist declaration; observed ${matches.length}.`);
+  prepared = prepared.replace(allowedKeysPattern, allowedKeysReplacement);
   transformations.push('ALLOW_ONLY_NAMED_MAINTENANCE_KEYS_AFTER_OPERATOR_ACTION');
 }
 
@@ -154,7 +151,7 @@ if (!prepared.includes(cacheMarker)) {
   transformations.push('ALLOW_ONLY_THREE_EXACT_NON_CASE_MAINTENANCE_MARKERS');
 }
 
-for (const required of [premiumMarker, navigationMarker, cacheMarker, 'mass_eviction_superseded_legacy_reset', "'td613.ash.session.epoch'"]) {
+for (const required of [premiumMarker, navigationMarker, cacheMarker, 'mass_eviction_superseded_legacy_reset', allowlistMarker]) {
   if (!prepared.includes(required)) throw new Error(`Premium/mass-eviction fixture omitted ${required}.`);
 }
 
