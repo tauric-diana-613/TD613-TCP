@@ -34,8 +34,8 @@ jobs:
           from pathlib import Path
           import re
 
-          def replace_once(text, pattern, replacement, label, flags=0):
-              output, count = re.subn(pattern, replacement, text, count=1, flags=flags)
+          def replace_once(text, pattern, replacement, label):
+              output, count = re.subn(pattern, replacement, text, count=1)
               print(f'{label}: {count}')
               if count != 1:
                   raise SystemExit(f'{label} replacement count: {count}')
@@ -158,14 +158,10 @@ jobs:
           PY
           node --check app/dome-world/ash-research-demo-hydration.js
           node --check scripts/ash-premium-ui-browser-probe.mjs
-      - name: Restore trusted workflow and remove temporary files
-        run: |
-          git show 9059d6492509923be4048e4d23ac7d37c278c04a:.github/workflows/ash-research-ux.yml > .github/workflows/ash-research-ux.yml
-          rm -f .github/workflows/ash-final-rehydration-patch.yml tests/.ash-final-rehydration-trigger
-      - name: Commit durable reconciliation
+      - name: Commit durable code only
         run: |
           git config user.name 'github-actions[bot]'
           git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
-          git add app/dome-world/ash-research-demo-hydration.js scripts/ash-premium-ui-browser-probe.mjs .github/workflows/ash-research-ux.yml .github/workflows/ash-final-rehydration-patch.yml tests/.ash-final-rehydration-trigger
+          git add app/dome-world/ash-research-demo-hydration.js scripts/ash-premium-ui-browser-probe.mjs
           git commit -m 'fix(ash): decouple Research core hydration and converge Premium flight'
           git push origin HEAD:agent/ash-legal-demo-navigation-animation
