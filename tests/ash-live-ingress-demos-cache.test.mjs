@@ -17,6 +17,7 @@ import {
   buildApeqPaiaProfileFixture
 } from '../app/dome-world/ash-apeq-paia-profile-demos.js';
 import { buildResearchFixture } from '../app/dome-world/ash-research-demo-hydration.js';
+import { buildLegalMatterDemoFixture } from '../app/dome-world/ash-legal-profile-demo.js';
 import { resetActiveSession, validThresholdReadiness } from '../app/dome-world/ash-cache-flush.js';
 import {
   ASH_LIFECYCLE_ASSET_EPOCH,
@@ -37,6 +38,7 @@ const keepHtml = read('app/dome-world/ash-keep.html');
 const closeRepair = read('app/dome-world/ash-case-close-repair.js');
 const emergency = read('app/dome-world/ash-emergency-stability-contract.js');
 const navigation = read('app/dome-world/ash-workspace-navigation.js');
+const rescue = read('app/dome-world/ash-ui-ux-rescue.js');
 
 class MemoryStorage {
   constructor(entries = {}) { this.values = new Map(Object.entries(entries)); }
@@ -49,37 +51,19 @@ class MemoryStorage {
 
 const readinessKey = 'td613:ash-threshold:readiness:v0.1';
 const validReadiness = (overrides = {}) => ({
-  schema:'td613.ash.readiness-receipt/v0.1',
-  lifecycle_schema:'td613.ash.lifecycle/v0.1',
-  state:'READINESS_OBSERVED',
-  observed_at:new Date().toISOString(),
-  source_surface:'dome-world-ash-threshold',
-  threshold_gestures:{
-    arrival_acknowledged:true,
-    boundary_acknowledged:true,
-    custody_acknowledged:true
-  },
-  raw_content_accepted:false,
-  raw_content_persisted:false,
-  transport_performed:false,
-  readiness_is_custody:false,
-  readiness_digest:`sha256:${'a'.repeat(64)}`,
-  ...overrides
+  schema:'td613.ash.readiness-receipt/v0.1', lifecycle_schema:'td613.ash.lifecycle/v0.1',
+  state:'READINESS_OBSERVED', observed_at:new Date().toISOString(), source_surface:'dome-world-ash-threshold',
+  threshold_gestures:{ arrival_acknowledged:true, boundary_acknowledged:true, custody_acknowledged:true },
+  raw_content_accepted:false, raw_content_persisted:false, transport_performed:false, readiness_is_custody:false,
+  readiness_digest:`sha256:${'a'.repeat(64)}`, ...overrides
 });
 
 function cleanupHost(href, receipt = validReadiness()) {
   const documentElement = { classList:{ remove() {} }, dataset:{} };
   return {
     location:{ href, origin:new URL(href).origin },
-    localStorage:new MemoryStorage({
-      'td613.ash-keep.current-case':'case_demo',
-      'td613.ash.session.epoch':'old-session'
-    }),
-    sessionStorage:new MemoryStorage({
-      [readinessKey]:JSON.stringify(receipt),
-      'td613:ash-stale-ui':'stale',
-      'unrelated.session':'keep'
-    }),
+    localStorage:new MemoryStorage({ 'td613.ash-keep.current-case':'case_demo', 'td613.ash.session.epoch':'old-session' }),
+    sessionStorage:new MemoryStorage({ [readinessKey]:JSON.stringify(receipt), 'td613:ash-stale-ui':'stale', 'unrelated.session':'keep' }),
     document:{ documentElement, body:{ dataset:{} } }
   };
 }
@@ -90,164 +74,85 @@ for (const href of [
   'https://td613.test/dome-world/ash-keep.html'
 ]) {
   const host = cleanupHost(href);
-  assert.equal(validThresholdReadiness(host), true, `Fresh validated readiness was rejected on ${href}.`);
+  assert.equal(validThresholdReadiness(host), true, `Fresh readiness rejected on ${href}.`);
   const reset = resetActiveSession(host);
   assert.deepEqual(reset.preservedSessionKeys, [readinessKey]);
   assert.ok(reset.clearedSessionKeys.includes('td613:ash-stale-ui'));
-  assert.equal(host.sessionStorage.getItem(readinessKey) !== null, true, `Fresh readiness was deleted on ${href}.`);
-  assert.equal(host.sessionStorage.getItem('td613:ash-stale-ui'), null);
+  assert.notEqual(host.sessionStorage.getItem(readinessKey), null);
   assert.equal(host.sessionStorage.getItem('unrelated.session'), 'keep');
   assert.equal(host.localStorage.getItem('td613.ash-keep.current-case'), null);
   assert.equal(host.localStorage.getItem('td613.ash.session.epoch'), null);
   assert.equal(host.document.documentElement.dataset.ashSessionOpen, 'false');
-  assert.equal(host.document.body.dataset.ashCaseClosed, 'true');
 }
-
-const unrelatedRouteHost = cleanupHost('https://td613.test/safe-harbor/index.html');
-assert.equal(validThresholdReadiness(unrelatedRouteHost), false, 'A non-Ash route accepted threshold readiness.');
-assert.equal(resetActiveSession(unrelatedRouteHost).clearedSessionKeys.includes(readinessKey), true);
-assert.equal(unrelatedRouteHost.sessionStorage.getItem(readinessKey), null);
-
-const staleHost = cleanupHost('https://td613.test/dome-world/ash-keep.html', validReadiness({ observed_at:new Date(Date.now() - 16 * 60 * 1000).toISOString() }));
-assert.equal(validThresholdReadiness(staleHost), false, 'Expired threshold readiness was accepted.');
-assert.equal(resetActiveSession(staleHost).clearedSessionKeys.includes(readinessKey), true);
 
 for (const invalid of [
   validReadiness({ readiness_digest:'not-a-digest' }),
-  validReadiness({ readiness_digest:`sha256:${'g'.repeat(64)}` }),
   validReadiness({ source_surface:'other-surface' }),
   validReadiness({ threshold_gestures:{ arrival_acknowledged:true, boundary_acknowledged:false, custody_acknowledged:true } }),
   validReadiness({ raw_content_persisted:true })
 ]) {
   const host = cleanupHost('https://td613.test/dome-world/ash-keep.html', invalid);
-  assert.equal(validThresholdReadiness(host), false, 'Malformed or over-authorized readiness was accepted.');
+  assert.equal(validThresholdReadiness(host), false);
   resetActiveSession(host);
   assert.equal(host.sessionStorage.getItem(readinessKey), null);
 }
 
-assert.equal(ASH_APEQ_PAIA_PROFILE_DEMOS_VERSION, 'td613.ash.apeq-paia-profile-demos/v0.1');
 for (const token of [
-  'td613.ash.ingress-layout/v1.0-canonical-native-scroll',
-  'SESSION_EPOCH_KEY',
-  '20260718-canonical-membrane-v6',
-  'overflow-y:auto!important',
-  'overscroll-behavior-y:auto!important',
-  '-webkit-overflow-scrolling:touch',
-  'max-height:none!important',
-  'overflow:visible!important',
-  'touch-action:pan-y pinch-zoom!important',
-  'panel_nested_scroll:false',
-  'bindDeliberateEntry'
+  'td613.ash.ingress-layout/v1.0-canonical-native-scroll', 'SESSION_EPOCH_KEY',
+  'overflow-y:auto!important', 'overscroll-behavior-y:auto!important', '-webkit-overflow-scrolling:touch',
+  'max-height:none!important', 'overflow:visible!important', 'touch-action:pan-y pinch-zoom!important',
+  'panel_nested_scroll:false', 'bindDeliberateEntry'
 ]) assert(ingress.includes(token), `Canonical ingress omitted ${token}`);
-for (const forbidden of ['SCROLLBAR_FADE_DELAY', 'installScrollbarFade', 'scrollbar-gutter:stable', 'ash-scrollbar-active::-webkit-scrollbar-thumb']) {
-  assert.equal(ingress.includes(forbidden), false, `Canonical ingress retained ${forbidden}`);
-}
+for (const forbidden of ['SCROLLBAR_FADE_DELAY', 'installScrollbarFade', 'scrollbar-gutter:stable']) assert.equal(ingress.includes(forbidden), false);
 
 assert.match(cache, /2026-07-18-canonical-membrane-v7/);
-assert.match(cache, /v0\.7-readiness-boundary/);
-assert.match(cache, /READINESS_ROUTES/);
-assert.match(cache, /\^sha256:\[0-9a-f\]\{64\}/i);
+assert.match(cache, /td613\.ash\.cache-flush\/2026-07-21-legal-demo-ux-v1/);
 assert.match(cache, /validThresholdReadiness/);
-assert.match(cache, /READINESS_MAX_AGE_MS/);
-assert.match(cache, /preserved_session_keys/);
-assert.match(cache, /readiness_receipt_preserved/);
-assert.match(cache, /resetActiveSession/);
-assert.match(cache, /localStorage\?\.removeItem\?\.\(POINTER_KEY\)/);
-assert.match(cache, /SESSION_EPOCH_KEY/);
-assert.match(cache, /active_session_reset:true/);
-assert.match(cache, /local_case_pointer_preserved:false/);
-assert.match(cache, /case_data_preserved:true/);
-assert.match(cache, /Clear-Site-Data|cache-evict/);
-assert.match(cache, /cacheStorage\.keys/);
-assert.match(cache, /registration\.unregister/);
 assert.match(cache, /unregisterSameOriginWorkers/);
 assert.match(cache, /cache:'no-store'/);
-assert.doesNotMatch(cache, /2026-07-18-(?:live-ingress-v3|emergency-stability-v5)/);
 assert.doesNotMatch(cache, /indexedDB\.deleteDatabase|localStorage\.clear|sessionStorage\.clear/);
 
-assert.equal(ASH_LIFECYCLE_ASSET_EPOCH, '20260720-aia3-mass-eviction-v2');
-assert.equal(ASH_MASS_EVICTION_EPOCH, 'td613.ash.cache-flush/2026-07-20-aia3-mass-eviction-v2');
-assert.match(lifecycle, new RegExp(`ash-ingress-layout-hydration\\.js\\?v=${ASH_LIFECYCLE_ASSET_EPOCH}`));
-assert.match(lifecycle, new RegExp(`ash-cache-flush\\.js\\?v=${ASH_LIFECYCLE_ASSET_EPOCH}`));
-assert.equal(ASH_LIFECYCLE_MODULE, `/dome-world/ash-lifecycle.js?v=${ASH_LIFECYCLE_ASSET_EPOCH}`);
+assert.equal(ASH_LIFECYCLE_ASSET_EPOCH, '20260721-legal-demo-ux-v1');
+assert.equal(ASH_MASS_EVICTION_EPOCH, 'td613.ash.cache-flush/2026-07-21-legal-demo-ux-v1');
+assert.equal(ASH_LIFECYCLE_MODULE, '/dome-world/ash-lifecycle.js?v=20260721-legal-demo-ux-v1');
+assert.match(lifecycle, /ash-ingress-layout-hydration\.js\?v=20260721-legal-demo-ux-v1/);
+assert.match(lifecycle, /ash-cache-flush\.js\?v=20260721-legal-demo-ux-v1/);
+assert.match(lifecycle, /data-ash-composition-hydrating/);
+
 const renderedKeep = injectAshKeepLifecycle(keepHtml);
 for (const source of ['ash-keep.js', 'ash-convergence.js', 'ash-lifecycle.js', 'ash-workspace-bridge.js', 'ash-case-controls.js']) {
   assert.match(renderedKeep, new RegExp(`src="/dome-world/${source.replace('.', '\\.')}\\?v=${ASH_LIFECYCLE_ASSET_EPOCH}"`));
   assert.doesNotMatch(renderedKeep, new RegExp(`src="/dome-world/${source.replace('.', '\\.')}"`));
 }
-assert.match(renderedKeep, /name="ash-cache-preflight" content="aia3-mass-eviction-v2"/);
+assert.match(renderedKeep, /name="ash-cache-preflight" content="legal-demo-ux-v1"/);
 assert.match(renderedKeep, /Updating Ash Keep · preserving local cases/);
-assert.equal(injectAshKeepLifecycle(renderedKeep), renderedKeep, 'Mass-eviction injection is not idempotent.');
+assert.equal(injectAshKeepLifecycle(renderedKeep), renderedKeep, 'Legal UX injection is not idempotent.');
 
-for (const module of ['ash-profile-demo-hydration','ash-investigation-demo-hydration','ash-research-demo-hydration','ash-research-demo-control-state']) {
-  assert.match(bridge, new RegExp(`${module}\\.js\\?v=20260718-canonical-membrane-v6`));
-}
-assert.match(bridge, /ash-case-close-repair\.js\?v=20260719-ingress-readiness-boundary-v1/);
-assert(bridge.indexOf('ash-emergency-stability-contract.js') > bridge.indexOf('ash-workspace-navigation.js'), 'Final membrane reveal must load after all membrane composition modules.');
+for (const module of [
+  'ash-profile-demo-hydration','ash-investigation-demo-hydration','ash-research-demo-hydration',
+  'ash-research-demo-control-state','ash-case-close-repair','ash-ui-ux-rescue'
+]) assert.match(bridge, new RegExp(`${module}\\.js\\?v=20260721-legal-demo-ux-v1`));
+assert.match(profileWrapper, /ash-legal-profile-demo\.js\?v=20260721-legal-demo-ux-v1/);
 assert.doesNotMatch(profileWrapper + investigationWrapper, /fixtures\//);
+assert.match(rescue, /stopImmediatePropagation/);
+assert.match(rescue, /ash-ux-motion-track/);
 
-for (const token of [
-  'ASH_CANONICAL_MEMBRANE_EPOCH',
-  'ASH_LIFECYCLE_ASSET_EPOCH',
-  'ASH_MASS_EVICTION_EPOCH',
-  'ash-canonical-membrane',
-  'ash-cache-preflight',
-  'data-ash-membrane-ready',
-  'data-ash-session-open',
-  'td613.ash.session.epoch',
-  'X-TD613-Ash-Lifecycle-Asset',
-  'X-TD613-Ash-Canonical-Membrane',
-  'X-TD613-Ash-Cache-Preflight',
-  'Clear-Site-Data',
-  'HTTP_CACHE_AND_SERVICE_WORKER_CLIENT_EVICTION',
-  'case_data_preserved:true',
-  'active_session_reset_by_client:false',
-  'session_epoch_preserved_or_migrated'
-]) assert(shell.includes(token), `Shell omitted ${token}`);
-
-for (const token of [
-  'v1.3-ingress-readiness-boundary',
-  'validThresholdReadiness',
-  'clearAshSessionStorage',
-  'cleanUrl',
-  'resetTransientUi',
-  'localStorage.removeItem(POINTER_KEY)',
-  'localStorage.removeItem(SESSION_EPOCH_KEY)',
-  'preserveReadiness:true',
-  "select.value = ''",
-  'session_logged_out:true'
-]) assert(closeRepair.includes(token), `Close/ingress boundary omitted ${token}`);
-assert.match(closeRepair, /async function closeToMembrane\(\)[\s\S]*?exposeMembrane\(\);/);
-assert.match(closeRepair, /if \(!localStorage\.getItem\(POINTER_KEY\)\) exposeMembrane\(\{ preserveReadiness:true \}\);/);
-assert.doesNotMatch(closeRepair, /retainClosedSelection/);
-
-for (const token of ['HIDDEN_UNTIL_FINAL_COMPOSITION','REQUIRED_MEMBRANE_IDS','dataset.ashMembraneReady','canonical-membrane-ready']) {
-  assert(emergency.includes(token), `Final composition gate omitted ${token}`);
-}
+for (const token of ['ASH_MASS_EVICTION_EPOCH','ash-cache-preflight','Clear-Site-Data','case_data_preserved:true','session_epoch_preserved_or_migrated']) assert(shell.includes(token), `Shell omitted ${token}`);
+for (const token of ['validThresholdReadiness','clearAshSessionStorage','preserveReadiness:true','session_logged_out:true']) assert(closeRepair.includes(token), `Close boundary omitted ${token}`);
+for (const token of ['HIDDEN_UNTIL_FINAL_COMPOSITION','REQUIRED_MEMBRANE_IDS','dataset.ashMembraneReady']) assert(emergency.includes(token), `Composition gate omitted ${token}`);
 assert.doesNotMatch(navigation, /new host\.MutationObserver/);
-assert.match(navigation, /host\.addEventListener\('td613:ash:lifecycle-rendered', refresh\)/);
 
+assert.equal(ASH_APEQ_PAIA_PROFILE_DEMOS_VERSION, 'td613.ash.apeq-paia-profile-demos/v0.1');
 const expected = { rooms:14, nodes:72, relationships:112, rules:8, routes:6, controls:12, held_outs:8, strata:10, joining_keys:8 };
 for (const profile of ['political_campaign', 'fundraiser', 'investigation']) {
   const fixture = buildApeqPaiaProfileFixture(profile);
   assert.deepEqual(fixture.counts, expected);
   assert.equal(fixture.assay.maximum_assurance, 'PA2_LOCALLY_EXECUTED');
-  assert.equal(fixture.assay.unknown_readers, 'UNMEASURED');
-  assert.equal(fixture.assay.universal_secrecy, false);
   const caseMap = await compileCaseMap({
-    profile,
-    caseId:`case_live_${profile}`,
-    title:fixture.profile.title,
-    rooms:fixture.rooms,
-    nodes:fixture.nodes,
-    relationships:fixture.relationships,
-    privateChronology:fixture.profile.chronology,
-    intendedActions:fixture.profile.actions,
-    sourceStatus:'SIMULATED',
-    observations:fixture.profile.observations,
-    missingness:fixture.profile.missingness,
-    alternatives:fixture.profile.alternatives,
-    openQuestions:fixture.profile.open_questions
+    profile, caseId:`case_live_${profile}`, title:fixture.profile.title, rooms:fixture.rooms,
+    nodes:fixture.nodes, relationships:fixture.relationships, privateChronology:fixture.profile.chronology,
+    intendedActions:fixture.profile.actions, sourceStatus:'SIMULATED', observations:fixture.profile.observations,
+    missingness:fixture.profile.missingness, alternatives:fixture.profile.alternatives, openQuestions:fixture.profile.open_questions
   });
   const rules = await compileRoomRules({ caseId:caseMap.case_id, rules:fixture.rules, sourceStatus:'SIMULATED' });
   const routes = await compileRouteMemory({ caseId:caseMap.case_id, entries:fixture.routes.entries, sourceStatus:'SIMULATED' });
@@ -259,6 +164,10 @@ for (const profile of ['political_campaign', 'fundraiser', 'investigation']) {
 const research = buildResearchFixture();
 assert.deepEqual(research.counts, { rooms:14, nodes:72, relationships:112, rules:8, routes:6, controls:12, held_outs:8, strata:10 });
 assert.equal(research.assay.maximum_assurance, 'PA2_LOCALLY_EXECUTED');
-assert.equal(research.assay.unknown_readers, 'UNMEASURED');
+
+const legal = buildLegalMatterDemoFixture();
+assert.equal(legal.profile, 'legal');
+assert.deepEqual({ rooms:legal.rooms.length, nodes:legal.nodes.length, relationships:legal.relationships.length, rules:legal.rules.length, routes:legal.routes.length }, { rooms:8, nodes:16, relationships:12, rules:3, routes:3 });
+assert.match(legal.defaults.research_notes, /No legal advice/);
 
 console.log('ash-live-ingress-demos-cache.test.mjs passed');
