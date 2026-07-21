@@ -9,6 +9,7 @@ import {
 } from '../app/dome-world/ash-cache-eviction-aia3.js';
 import { runAshCacheFlush } from '../app/dome-world/ash-cache-flush.js';
 
+// Exact-head trigger after the one-use compatibility patch; assertions remain unchanged.
 const shellSource = fs.readFileSync('api/dome-world-shell.js', 'utf8');
 
 test('server preflight bypasses exact legacy rollback and republishes the governed receipt', () => {
