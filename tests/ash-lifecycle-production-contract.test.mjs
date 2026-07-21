@@ -20,9 +20,11 @@ for (const token of [
   "dataset.ashCachePreflight === 'complete'",
   'aia3_route_required: false',
   'reload_required: false',
-  "url.searchParams.get('arrival') === 'cleared'"
+  "url.searchParams.get('arrival') === 'cleared'",
+  'td613.ash.cache-flush.aia3.epoch',
+  'td613.ash.cache-preflight.epoch'
 ]) {
-  assert.ok(lifecycleCompiler.includes(token), `Lifecycle observer omitted exact threshold/legacy contract: ${token}`);
+  assert.ok(lifecycleCompiler.includes(token), `Lifecycle observer omitted exact threshold/maintenance contract: ${token}`);
 }
 assert.ok(lifecycleCompiler.includes('runtime.includes("current?.().route === \'IMPLEMENTATION\'")'),
   'Lifecycle compiler must reject a generated rollback probe that restores the stale AIA3 route requirement');
