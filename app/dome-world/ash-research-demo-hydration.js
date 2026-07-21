@@ -270,10 +270,11 @@ async function waitFor(predicate, message, timeout = 30_000) {
 async function waitForAsh() {
   await waitFor(() => host.__td613AshKeep?.refresh
     && host.__td613AshPremiumUI?.refresh
-    && host.__td613AshAia3Composition?.current
     && byId('workspace-home')
-    && byId('workspace-work')
-    && byId('workspace-custody'), 'Research project hydration readiness timed out.');
+    && byId('workspace-work'), 'Research project core hydration readiness timed out.');
+  doc.documentElement.dataset.ashResearchCustodyPosture = byId('workspace-custody')
+    ? 'PRESENT_AT_CORE_HYDRATION'
+    : 'AUDIT_AFTER_CASE_HYDRATION';
 }
 
 async function waitForOpenComposition(caseId) {

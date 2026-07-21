@@ -15,6 +15,22 @@ async function waitForPremium(page) {
   ), null, { timeout: 60_000 });
 }
 
+async function waitVisibleWorkspace(page, name) {
+  await page.waitForFunction(value => {
+    const panel = document.getElementById(`workspace-${value}`);
+    const style = panel ? getComputedStyle(panel) : null;
+    const rect = panel?.getBoundingClientRect();
+    return document.documentElement.dataset.ashPremiumWorkspace === value
+      && panel?.classList.contains('active')
+      && style?.display !== 'none'
+      && style?.visibility !== 'hidden'
+      && Number(style?.opacity) > 0
+      && style?.pointerEvents !== 'none'
+      && rect?.width > 0
+      && rect?.height > 0;
+  }, name, { timeout: 60_000 });
+}
+
 async function clearLocalAsh(page) {
   await page.evaluate(async () => {
     localStorage.clear();
@@ -69,7 +85,7 @@ async function layoutReceipt(page) {
   });
 }
 
-async function hydrateProfile(page, profile, expectedTitle) {
+async function hydrateProfile(page, profile, expectedTitle, entryWorkspace) {
   await page.locator('#newProfile').selectOption(profile);
   const demo = page.locator('#startDemo');
   await page.waitForFunction(value => {
@@ -82,16 +98,24 @@ async function hydrateProfile(page, profile, expectedTitle) {
   assert(await demo.isEnabled(), `${profile} demo did not become available`);
   const started = Date.now();
   await demo.click();
-  await page.waitForFunction(({ profile: value, title }) =>
-    document.documentElement.dataset.ashDemoProfile === value
-      && document.getElementById('caseTitle')?.textContent?.includes(title)
-      && document.getElementById('apeqPaiaMethodDocket'),
-  { profile, title: expectedTitle }, { timeout: 60_000 });
-  await page.evaluate(() => window.__td613AshPremiumUI.open('home'));
-  await page.waitForFunction(title =>
-    document.documentElement.dataset.ashPremiumWorkspace === 'home'
-      && document.getElementById('premiumCaseLabel')?.textContent?.includes(title),
-  expectedTitle, { timeout: 60_000 });
+  await page.waitForFunction(({ profile: value, title, entry }) => {
+  const caseId = localStorage.getItem('td613.ash-keep.current-case');
+  const convergence = window.__td613AshDemoEntryConvergence?.current?.() || null;
+  return Boolean(caseId)
+    && document.documentElement.dataset.ashDemoProfile === value
+    && document.getElementById('caseTitle')?.textContent?.includes(title)
+    && document.documentElement.dataset.ashDemoEntryReady === `${value}:${entry}`
+    && document.documentElement.dataset.ashDemoEntryCase === caseId
+    && document.documentElement.dataset.ashDemoEntryHydrating !== 'true'
+    && !document.documentElement.dataset.ashDemoEntryHold
+    && convergence?.profile === value
+    && convergence?.workspace === entry
+    && convergence?.posture === 'READY'
+    && convergence?.phase === 'VISIBLE';
+}, { profile, title: expectedTitle, entry: entryWorkspace }, { timeout: 60_000 });
+  await page.evaluate(() => (window.__td613AshUiUxRescue?.open || window.__td613AshPremiumUI.open)('home'));
+  await waitVisibleWorkspace(page, 'home');
+  await page.waitForFunction(title => document.getElementById('premiumCaseLabel')?.textContent?.includes(title), expectedTitle, { timeout: 60_000 });
   const orientationMs = Date.now() - started;
   assert(orientationMs < 10_000, `${profile} exceeded ten-second useful-state measure`);
   return orientationMs;
@@ -132,13 +156,13 @@ async function flightProfile(context, profile, title) {
 
     stage = 'open-work-queue';
     await page.locator('[data-premium-workspace="work"]').click();
-    assert(await page.locator('#workspace-work').isVisible(), 'Work destination did not open');
+    await waitVisibleWorkspace(page, 'work');
     assert(await page.locator('#premiumWorkBody .priority-list').isVisible(), 'Profile work queue missing');
     assert(await page.locator('#premiumReceiptInventory').isVisible(), 'Receipt inventory missing');
 
     stage = 'run-choir';
     await page.locator('[data-premium-workspace="choir"]').click();
-    assert(await page.locator('#workspace-choir').isVisible(), 'Choir destination did not open');
+    await waitVisibleWorkspace(page, 'choir');
     assert.equal(await page.locator('[data-choir-projection]').count(), 6, 'Choir must expose all six qualified route projections');
     await page.locator('#runPremiumChoir').click();
     await page.waitForFunction(() => {
@@ -156,7 +180,7 @@ async function flightProfile(context, profile, title) {
 
     stage = 'open-capsule';
     await page.locator('[data-premium-workspace="capsule"]').click();
-    assert(await page.locator('#workspace-capsule').isVisible(), 'Capsule destination did not open');
+    await waitVisibleWorkspace(page, 'capsule');
     assert(await page.locator('#premiumCapsulePassphrase').isVisible(), 'Premium Capsule passphrase control missing');
     assert(await page.locator('#premiumImportCapsule').isEnabled(), 'Capsule recovery must remain available without a release');
 
@@ -168,8 +192,8 @@ async function flightProfile(context, profile, title) {
     await page.locator('#closePremiumCommands').click();
 
     stage = 'verify-grouped-review';
-    await page.evaluate(() => window.__td613AshPremiumUI.open('draft'));
-    await page.waitForFunction(() => document.documentElement.dataset.ashPremiumWorkspace === 'draft');
+    await page.evaluate(() => (window.__td613AshUiUxRescue?.open || window.__td613AshPremiumUI.open)('draft'));
+    await waitVisibleWorkspace(page, 'draft');
     assert.equal(await page.locator('#reviewChecks .review-group').count(), 5, 'Review checks were not grouped into five decision clusters');
 
     stage = 'verify-mobile-layout';
@@ -225,7 +249,7 @@ const context = await browser.newContext({
 });
 
 const report = {
-  schema: 'td613.ash.premium-ui-browser-flight/v0.2-apeq-paia',
+  schema: 'td613.ash.premium-ui-browser-flight/v0.3-entry-converged-destinations',
   status: 'RUNNING',
   base_url: base,
   production_promotion_authorized: false,
@@ -236,8 +260,8 @@ const report = {
 };
 
 try {
-  report.profiles.push(await flightProfile(context, 'political_campaign', 'Harbor City Mayoral Campaign'));
-  report.profiles.push(await flightProfile(context, 'fundraiser', 'Northstar Arts Benefit'));
+  report.profiles.push(await flightProfile(context, 'political_campaign', 'Harbor City Mayoral Campaign', 'map'));
+  report.profiles.push(await flightProfile(context, 'fundraiser', 'Northstar Arts Benefit', 'work'));
   report.status = 'PASS';
   await fs.writeFile(reportPath, `${JSON.stringify(report, null, 2)}\n`);
   console.log(JSON.stringify(report, null, 2));
