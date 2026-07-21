@@ -50,6 +50,12 @@ assert.match(lifecycle, /td613\.ash\.cache-flush\.epoch/);
 assert.match(lifecycle, /preCustodyExactState === 'READINESS_OBSERVED'/);
 assert.match(lifecycle, /pre_custody_exact_state: preCustodyExactState/);
 assert.match(lifecycle, /test_workspace_navigable: true/);
+assert.match(lifecycle, /legacy_bypass === true/);
+assert.match(lifecycle, /dataset\.ashCachePreflight === 'complete'/);
+assert.match(lifecycle, /aia3_route_required: false/);
+assert.match(lifecycle, /reload_required: false/);
+assert.doesNotMatch(lifecycle, /current\?\.\(\)\.route === 'IMPLEMENTATION'/,
+  'Lifecycle observer still demands the AIA3 implementation route inside legacy presentation');
 assert.doesNotMatch(lifecycle, /#workspace-test \.workspace-lifecycle-note/,
   'Lifecycle observer still requires an internal state token to remain visible copy');
 assert.doesNotMatch(lifecycle, /navigationNote/,
