@@ -37,7 +37,8 @@ const capsuleReplacement = `  await page.locator('#capsuleFile').setInputFiles(c
 
 const allowedKeysTarget = `const ALLOWED_LOCAL_KEYS = new Set([
   'td613.ash-keep.current-case',
-  'td613.ash-keep.preferences'
+  'td613.ash-keep.preferences',
+  'td613.ash.cache-flush.epoch'
 ]);`;
 const allowedKeysReplacement = `const ALLOWED_LOCAL_KEYS = new Set([
   'td613.ash-keep.current-case',
