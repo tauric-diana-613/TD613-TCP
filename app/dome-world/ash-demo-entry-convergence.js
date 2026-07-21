@@ -1,4 +1,4 @@
-export const ASH_DEMO_ENTRY_CONVERGENCE_VERSION = 'td613.ash.demo-entry-convergence/v0.4-two-phase-visible-release';
+export const ASH_DEMO_ENTRY_CONVERGENCE_VERSION = 'td613.ash.demo-entry-convergence/v0.5-premium-instrument-visible-release';
 
 const host = globalThis.window;
 const doc = globalThis.document;
@@ -65,27 +65,30 @@ function exactGraph(workspace) {
   return {
     panel:byId(`workspace-${workspace}`),
     main:doc.querySelector('body > main'),
-    rail:doc.querySelector('body > .workspace-rail')
+    context:byId('premiumContextBar'),
+    dock:byId('premiumPrimaryDock')
   };
 }
 
 function structuralReady(workspace) {
-  const { panel, main, rail } = exactGraph(workspace);
+  const { panel, main, context, dock } = exactGraph(workspace);
   return Boolean(panel?.classList.contains('active'))
     && doc.documentElement.dataset.ashPremiumWorkspace === workspace
+    && doc.documentElement.dataset.ashPremiumReady === 'true'
     && boxReady(panel)
     && boxReady(main)
-    && boxReady(rail)
-    && !main?.hasAttribute('inert')
-    && !rail?.hasAttribute('inert');
+    && boxReady(context)
+    && boxReady(dock)
+    && !main?.hasAttribute('inert');
 }
 
 function visibleReady(workspace) {
-  const { panel, main, rail } = exactGraph(workspace);
+  const { panel, main, context, dock } = exactGraph(workspace);
   return structuralReady(workspace)
     && boxReady(panel, { opacity:true, pointer:true })
     && boxReady(main, { opacity:true, pointer:true })
-    && boxReady(rail, { opacity:true, pointer:true });
+    && boxReady(context, { opacity:true, pointer:true })
+    && boxReady(dock, { opacity:true, pointer:true });
 }
 
 function publish(caseId, profile, workspace, posture, phase, stableFrames) {
@@ -154,7 +157,7 @@ function begin(event) {
     delete doc.documentElement.dataset.ashDemoEntryHydrating;
     publish(caseId, profile, workspace, 'HELD', state.phase, state.stable_frames);
     doc.documentElement.dataset.ashDemoEntryHold = `WORKSPACE_NOT_VISIBLE:${profile}:${workspace}:${state.phase}`;
-    renderStatus(profile, workspace, 'HELD', `${workspace} held · exact work did not become visibly interactive`);
+    renderStatus(profile, workspace, 'HELD', `${workspace} held · Premium instrument did not become visibly interactive`);
     host.dispatchEvent(new CustomEvent('td613:ash:demo-entry-held', { detail:{ case_id:caseId, profile, workspace, phase:state.phase, code:'WORKSPACE_NOT_VISIBLE', version:ASH_DEMO_ENTRY_CONVERGENCE_VERSION } }));
   }, 5000);
   return true;
