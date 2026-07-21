@@ -39,8 +39,8 @@ function renderedMembraneState() {
   const root = byId('ashAiaMembrane');
   return Object.freeze({
     root,
-    route_count:root?.querySelectorAll('[data-aia-route]').length || 0,
-    task_count:root?.querySelectorAll('[data-aia-task]').length || 0
+    route_count: root?.querySelectorAll('[data-aia-route]').length || 0,
+    task_count: root?.querySelectorAll('[data-aia-task]').length || 0
   });
 }
 
