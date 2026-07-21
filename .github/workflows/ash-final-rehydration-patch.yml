@@ -1,0 +1,140 @@
+name: Ash Final Rehydration Patch
+
+on:
+  push:
+    branches: [agent/ash-legal-demo-navigation-animation]
+    paths:
+      - 'tests/.ash-final-rehydration-trigger'
+
+permissions:
+  contents: write
+
+jobs:
+  patch:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: agent/ash-legal-demo-navigation-animation
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 24
+      - name: Patch Research readiness and Premium observer
+        shell: bash
+        run: |
+          python - <<'PY'
+          from pathlib import Path
+
+          research = Path('app/dome-world/ash-research-demo-hydration.js')
+          text = research.read_text()
+          old = """async function waitForAsh() {
+            await waitFor(() => host.__td613AshKeep?.refresh
+              && host.__td613AshPremiumUI?.refresh
+              && host.__td613AshAia3Composition?.current
+              && byId('workspace-home')
+              && byId('workspace-work')
+              && byId('workspace-custody'), 'Research project hydration readiness timed out.');
+          }"""
+          new = """async function waitForAsh() {
+            await waitFor(() => host.__td613AshKeep?.refresh
+              && host.__td613AshPremiumUI?.refresh
+              && host.__td613AshAia3Composition?.current
+              && byId('workspace-home')
+              && byId('workspace-work'), 'Research project core hydration readiness timed out.');
+            doc.documentElement.dataset.ashResearchCustodyPosture = byId('workspace-custody')
+              ? 'PRESENT_AT_CORE_HYDRATION'
+              : 'AUDIT_AFTER_CASE_HYDRATION';
+          }"""
+          if text.count(old) != 1:
+              raise SystemExit(f'Research readiness seam count: {text.count(old)}')
+          research.write_text(text.replace(old, new))
+
+          premium = Path('scripts/ash-premium-ui-browser-probe.mjs')
+          text = premium.read_text()
+          marker = """async function clearLocalAsh(page) {"""
+          helper = """async function waitVisibleWorkspace(page, name) {
+            await page.waitForFunction(value => {
+              const panel = document.getElementById(`workspace-${value}`);
+              const style = panel ? getComputedStyle(panel) : null;
+              const rect = panel?.getBoundingClientRect();
+              return document.documentElement.dataset.ashPremiumWorkspace === value
+                && panel?.classList.contains('active')
+                && style?.display !== 'none'
+                && style?.visibility !== 'hidden'
+                && Number(style?.opacity) > 0
+                && style?.pointerEvents !== 'none'
+                && rect?.width > 0
+                && rect?.height > 0;
+            }, name, { timeout: 60_000 });
+          }
+
+          async function clearLocalAsh(page) {"""
+          if text.count(marker) != 1:
+              raise SystemExit(f'Premium helper insertion seam count: {text.count(marker)}')
+          text = text.replace(marker, helper)
+          text = text.replace("async function hydrateProfile(page, profile, expectedTitle) {", "async function hydrateProfile(page, profile, expectedTitle, entryWorkspace) {")
+          old_hydrate = """  await page.waitForFunction(({ profile: value, title }) =>
+            document.documentElement.dataset.ashDemoProfile === value
+              && document.getElementById('caseTitle')?.textContent?.includes(title)
+              && document.getElementById('apeqPaiaMethodDocket'),
+          { profile, title: expectedTitle }, { timeout: 60_000 });
+            await page.evaluate(() => window.__td613AshPremiumUI.open('home'));
+            await page.waitForFunction(title =>
+              document.documentElement.dataset.ashPremiumWorkspace === 'home'
+                && document.getElementById('premiumCaseLabel')?.textContent?.includes(title),
+            expectedTitle, { timeout: 60_000 });"""
+          new_hydrate = """  await page.waitForFunction(({ profile: value, title, entry }) => {
+            const caseId = localStorage.getItem('td613.ash-keep.current-case');
+            const convergence = window.__td613AshDemoEntryConvergence?.current?.() || null;
+            return Boolean(caseId)
+              && document.documentElement.dataset.ashDemoProfile === value
+              && document.getElementById('caseTitle')?.textContent?.includes(title)
+              && document.documentElement.dataset.ashDemoEntryReady === `${value}:${entry}`
+              && document.documentElement.dataset.ashDemoEntryCase === caseId
+              && document.documentElement.dataset.ashDemoEntryHydrating !== 'true'
+              && !document.documentElement.dataset.ashDemoEntryHold
+              && convergence?.profile === value
+              && convergence?.workspace === entry
+              && convergence?.posture === 'READY'
+              && convergence?.phase === 'VISIBLE';
+          }, { profile, title: expectedTitle, entry: entryWorkspace }, { timeout: 60_000 });
+            await page.evaluate(() => (window.__td613AshUiUxRescue?.open || window.__td613AshPremiumUI.open)('home'));
+            await waitVisibleWorkspace(page, 'home');
+            await page.waitForFunction(title => document.getElementById('premiumCaseLabel')?.textContent?.includes(title), expectedTitle, { timeout: 60_000 });"""
+          if text.count(old_hydrate) != 1:
+              raise SystemExit(f'Premium hydrate seam count: {text.count(old_hydrate)}')
+          text = text.replace(old_hydrate, new_hydrate)
+          replacements = {
+            """    await page.locator('[data-premium-workspace=\"work\"]').click();
+              assert(await page.locator('#workspace-work').isVisible(), 'Work destination did not open');""": """    await page.locator('[data-premium-workspace=\"work\"]').click();
+              await waitVisibleWorkspace(page, 'work');""",
+            """    await page.locator('[data-premium-workspace=\"choir\"]').click();
+              assert(await page.locator('#workspace-choir').isVisible(), 'Choir destination did not open');""": """    await page.locator('[data-premium-workspace=\"choir\"]').click();
+              await waitVisibleWorkspace(page, 'choir');""",
+            """    await page.locator('[data-premium-workspace=\"capsule\"]').click();
+              assert(await page.locator('#workspace-capsule').isVisible(), 'Capsule destination did not open');""": """    await page.locator('[data-premium-workspace=\"capsule\"]').click();
+              await waitVisibleWorkspace(page, 'capsule');""",
+            """    await page.evaluate(() => window.__td613AshPremiumUI.open('draft'));
+              await page.waitForFunction(() => document.documentElement.dataset.ashPremiumWorkspace === 'draft');""": """    await page.evaluate(() => (window.__td613AshUiUxRescue?.open || window.__td613AshPremiumUI.open)('draft'));
+              await waitVisibleWorkspace(page, 'draft');"""
+          }
+          for old, new in replacements.items():
+              if text.count(old) != 1:
+                  raise SystemExit(f'Premium destination seam count {text.count(old)} for {old[:60]!r}')
+              text = text.replace(old, new)
+          text = text.replace("schema: 'td613.ash.premium-ui-browser-flight/v0.2-apeq-paia'", "schema: 'td613.ash.premium-ui-browser-flight/v0.3-entry-converged-destinations'")
+          text = text.replace("flightProfile(context, 'political_campaign', 'Harbor City Mayoral Campaign')", "flightProfile(context, 'political_campaign', 'Harbor City Mayoral Campaign', 'map')")
+          text = text.replace("flightProfile(context, 'fundraiser', 'Northstar Arts Benefit')", "flightProfile(context, 'fundraiser', 'Northstar Arts Benefit', 'work')")
+          premium.write_text(text)
+          PY
+          node --check app/dome-world/ash-research-demo-hydration.js
+          node --check scripts/ash-premium-ui-browser-probe.mjs
+      - name: Remove one-use patcher and trigger
+        run: rm -f .github/workflows/ash-final-rehydration-patch.yml tests/.ash-final-rehydration-trigger
+      - name: Commit converged patch
+        run: |
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add app/dome-world/ash-research-demo-hydration.js scripts/ash-premium-ui-browser-probe.mjs .github/workflows/ash-final-rehydration-patch.yml tests/.ash-final-rehydration-trigger
+          git commit -m 'fix(ash): decouple Research core hydration and converge Premium flight'
+          git push origin HEAD:agent/ash-legal-demo-navigation-animation
