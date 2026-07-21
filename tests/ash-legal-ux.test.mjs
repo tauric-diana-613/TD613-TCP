@@ -1,0 +1,96 @@
+import assert from 'node:assert/strict';
+import fs from 'node:fs';
+import { webcrypto } from 'node:crypto';
+if (!globalThis.crypto) globalThis.crypto = webcrypto;
+
+import {
+  compileCaseMap,
+  compileRoomRules,
+  compileRouteMemory,
+  verifyCaseMap,
+  verifyRoomRules,
+  verifyRouteMemory
+} from '../app/engine/ash-keep-core.js';
+import {
+  ASH_LEGAL_DEMO_VERSION,
+  buildLegalMatterDemoFixture
+} from '../app/dome-world/ash-legal-profile-demo.js';
+
+const read = path => fs.readFileSync(path, 'utf8');
+const legalSource = read('app/dome-world/ash-legal-profile-demo.js');
+const rescueSource = read('app/dome-world/ash-ui-ux-rescue.js');
+const flickerSource = read('app/dome-world/ash-flicker-hardening.js');
+const lifecycleSource = read('app/dome-world/ash-lifecycle.js');
+const bridgeSource = read('app/dome-world/ash-workspace-bridge.js');
+const facadeSource = read('app/dome-world/ash-profile-demo-hydration.js');
+
+assert.equal(ASH_LEGAL_DEMO_VERSION, 'td613.ash.legal-demo/v0.1-matter-workspace');
+const fixture = buildLegalMatterDemoFixture();
+assert.equal(fixture.profile, 'legal');
+assert.equal(fixture.label, 'Legal matter');
+assert.match(fixture.title, /Cedar House Housing Matter/);
+assert.equal(fixture.rooms.length, 8);
+assert.equal(fixture.nodes.length, 16);
+assert.equal(fixture.relationships.length, 12);
+assert.equal(fixture.rules.length, 3);
+assert.equal(fixture.routes.length, 3);
+assert.match(fixture.defaults.research_notes, /No legal advice/);
+assert.match(legalSource, /no legal advice, guilt, liability, merits, privilege waiver, or outcome prediction/i);
+assert.match(legalSource, /stopImmediatePropagation/);
+assert.match(legalSource, /profile-demo-hydrated/);
+assert.match(facadeSource, /ash-legal-profile-demo\.js/);
+assert.match(bridgeSource, /ash-ui-ux-rescue\.js/);
+
+const roomIds = new Set(fixture.rooms.map(room => room.id));
+const nodeIds = new Set(fixture.nodes.map(node => node.id));
+const edgeIds = new Set(fixture.relationships.map(edge => edge.id));
+assert.equal(roomIds.size, fixture.rooms.length);
+assert.equal(nodeIds.size, fixture.nodes.length);
+assert.equal(edgeIds.size, fixture.relationships.length);
+for (const node of fixture.nodes) assert(roomIds.has(node.room_id), `Unknown legal Room: ${node.id}`);
+for (const edge of fixture.relationships) {
+  assert(nodeIds.has(edge.from), `Unknown legal edge source: ${edge.id}`);
+  assert(nodeIds.has(edge.to), `Unknown legal edge target: ${edge.id}`);
+}
+for (const rule of fixture.rules) {
+  for (const roomId of rule.allowed_room_ids) assert(roomIds.has(roomId), `Unknown rule Room: ${roomId}`);
+  for (const edgeId of rule.local_link_keys) assert(edgeIds.has(edgeId), `Unknown rule edge: ${edgeId}`);
+}
+for (const route of fixture.routes) {
+  assert.match(route.draft_digest, /^sha256:[0-9a-f]{64}$/);
+  for (const ref of route.disclosed_opaque_references) assert(nodeIds.has(ref), `Unknown route reference: ${ref}`);
+}
+
+const caseMap = await compileCaseMap({
+  profile: 'legal',
+  caseId: 'case_demo_legal_matter',
+  title: fixture.title,
+  rooms: fixture.rooms,
+  nodes: fixture.nodes,
+  relationships: fixture.relationships,
+  privateChronology: ['scope frozen', 'deadline verified', 'human review remains open'],
+  intendedActions: fixture.nodes.filter(node => node.type === 'intended-action').map(node => node.label),
+  sourceStatus: 'SIMULATED',
+  evidenceBasis: ['synthetic Legal matter test fixture'],
+  operatorNotes: ['demo_profile:legal']
+});
+const roomRules = await compileRoomRules({ caseId: caseMap.case_id, rules: fixture.rules, sourceStatus: 'SIMULATED' });
+const routeMemory = await compileRouteMemory({ caseId: caseMap.case_id, entries: fixture.routes, sourceStatus: 'SIMULATED' });
+assert.equal(await verifyCaseMap(caseMap), true);
+assert.equal(await verifyRoomRules(roomRules), true);
+assert.equal(await verifyRouteMemory(routeMemory), true);
+
+assert.match(lifecycleSource, /data-ash-composition-hydrating/);
+assert.match(lifecycleSource, /Preparing Ash Keep · preserving local cases/);
+assert.match(rescueSource, /scrollToWorkspace/);
+assert.match(rescueSource, /stickyOffset/);
+assert.match(rescueSource, /stopImmediatePropagation/);
+assert.match(rescueSource, /ash-ux-motion-track/);
+assert.match(rescueSource, /dataset\.ashExplanationMotion/);
+assert.match(rescueSource, /READY_AND_QUIET/);
+assert.match(flickerSource, /cancelRunawayAnimations/);
+assert.match(flickerSource, /iterations === Infinity/);
+assert.doesNotMatch(flickerSource, /html\[data-ash-flicker-hardening\] \*,[\s\S]*animation:none!important/);
+assert.doesNotMatch(rescueSource + legalSource, /transport_authorized:\s*true|legal_advice_provided:\s*true|child_study_authorized:\s*true/);
+
+console.log('ash-legal-ux.test.mjs passed');
