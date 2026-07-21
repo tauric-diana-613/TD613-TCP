@@ -45,7 +45,7 @@ if (legacyPresentation) {
   delete document.documentElement.dataset.ashAia3Ready;
   delete document.documentElement.dataset.ashCompositionHydrating;
 } else {
-  document.documentElement.dataset.ashAia3 = 'td613.ash.aia3-composition/v0.3-atomic-ingress-readiness';
+  document.documentElement.dataset.ashAia3 = 'td613.ash.aia3-composition/v0.4-open-case-render-readiness';
   await import('./ash-cache-eviction-aia3.js?v=20260721-legal-demo-ux-v1');
   await Promise.all([
     ensureStyle('/dome-world/ash-keep-aia.css?v=20260721-legal-demo-ux-v1', 'data-ash-live-aia'),
