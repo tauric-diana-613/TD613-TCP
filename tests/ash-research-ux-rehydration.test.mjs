@@ -158,7 +158,7 @@ for (const id of ['workspace-home', 'workspace-work', 'workspace-choir', 'worksp
 for (const id of ['workspace-custody', 'compileQuickScan', 'registerCustodyRoot', 'bindCustodyRoot']) assert.match(lifecycle, new RegExp(id));
 
 assert.match(probe, /profile=research/);
-assert.match(probe, /ashResearchSurfaceReport/);
+assert.match(probe, /__td613AshResearchSurfaceReport/);
 assert.match(probe, /DORMANT_AS_DESIGNED/);
 assert.match(probe, /BLOCKED_OR_MISSING/);
 assert.match(probe, /OVERHYDRATED_REVIEW/);
