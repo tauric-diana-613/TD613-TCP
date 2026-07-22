@@ -13,7 +13,7 @@ if (doc?.documentElement) {
 }
 
 if (!browser) {
-  // Node, SSR, and static contract imports must remain quiet and side-effect free.
+  // Node, SSR, and static contract imports intentionally stop here: no dynamic portal import, DOM mutation, or error emission.
 } else if (legacy) {
   host.__td613AshFlowcoreIngressPortalLoader = Object.freeze({
     version:ASH_FLOWCORE_INGRESS_PORTAL_LOADER_VERSION,
