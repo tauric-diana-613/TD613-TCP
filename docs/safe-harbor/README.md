@@ -12,10 +12,15 @@ This folder tracks the current Safe Harbor release doctrine.
 6. Phase 9.1 maintenance seal and UI/export discipline
 7. Phase 9.1B UI surface wiring
 8. Phase 9.1C SHI + packet restore gate and hash guard
+9. Gen3 Stage 1 report constitution and evidence contract
+10. Gen3 Stage 2 authorship maturity and null-control engine
 
 ## Core docs
 
 - [Gen3 forensic authorship maturity, Blind Custody, Restorative Stylodynamics, and Temporal Bloom specification](./forensic-authorship-maturity-temporal-bloom-spec.md)
+- [Gen3 implementation and release traceability ledger](./gen3-implementation-ledger.md)
+- [Gen3 Stage 1 validation receipt](./gen3-stage1-validation-receipt.md)
+- [Gen3 Stage 2 validation receipt](./gen3-stage2-validation-receipt.md)
 - [Blind Custody Challenge specification](./blind-custody-challenge-spec-v0.1.md)
 - [Restorative Stylodynamics and Perturbation Invariance Mapping research annex](./restorative-stylodynamics-perturbation-invariance-annex-v0.1.md)
 - [Claim limits](./claim-limits.md)
@@ -38,6 +43,10 @@ Phase 9.1C hash-guard landed through PR #147 / commit `d82808ba424944a881314db02
 
 Future agents should treat PR #147 as the canonical sealed hash-guard landing.
 
+Gen3 Stage 1 landed through PR #492 / commit `c7d26b86a167c9901cd6ab4de4d3d9b5e6a66718`.
+
+Gen3 Stage 2 is governed by PR #499 and validation run `29956080946`; Release Wave A remains separately gated until the exact merged Stage 2 source commit receives and passes production release review.
+
 ## Run before editing Safe Harbor authority surfaces
 
 ```bash
@@ -48,6 +57,12 @@ For restore-gate work, also run:
 
 ```bash
 npm run test:safe-harbor:phase9.1c
+```
+
+For the complete Gen3 Wave A core, run:
+
+```bash
+npm run test:safe-harbor:gen3:wave-a
 ```
 
 ## Claim ceiling

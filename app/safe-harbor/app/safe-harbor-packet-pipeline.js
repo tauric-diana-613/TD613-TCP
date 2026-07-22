@@ -7,6 +7,8 @@ import { SAFE_HARBOR_RUNTIME_MARKERS } from './safe-harbor-policy-constants.js';
 import { verifyHashReplay } from './safe-harbor-authority-verifier.js?v=202606290125';
 import { finalizeGen3Stage1Overlay } from './safe-harbor-gen3-evidence-contract.js';
 import { attachGen3ReportContract } from './safe-harbor-gen3-report-contract.js';
+import { attachStage2InterpretiveReport } from './safe-harbor-gen3-authorship-maturity.js';
+import { attachStage2ControlReport } from './safe-harbor-gen3-stage2-controls.js';
 
 export const PIPELINE_VERSION = 'safe-harbor-packet-pipeline/v2-phase9-1-maintenance-seal-stabilized-runtime';
 
@@ -101,11 +103,17 @@ export async function finalizePacketThroughPipeline(packet, saved, options = {})
     allowV3Rebuild: false,
     rawTextExportAllowed: false,
     includeGen3Stage1: true,
+    includeGen3Stage2: true,
     gen3Context: {
       promptSetVersion: options.promptSetVersion || 'temporal-triad/v2',
       uiVersion: options.uiVersion || 'pre-temporal-bloom',
       reducedMotion: Boolean(options.reducedMotion),
-      promptTextDigests: options.promptTextDigests || {}
+      promptTextDigests: options.promptTextDigests || {},
+      promptVocabularyByLane: options.promptVocabularyByLane || {},
+      promptControlSegments: options.promptControlSegments || {},
+      promptTextsByLane: options.promptTextsByLane || {},
+      controlProfiles: options.controlProfiles || {},
+      entrantSwapProfile: options.entrantSwapProfile || null
     }
   });
   const overlaid = finalizeGen3Stage1Overlay(finalized);
@@ -122,7 +130,11 @@ export async function normalizePacketThroughPipeline(packet, saved, options = {}
   out = await attachOutsideWitnessesThroughPipeline(out, options);
   out = await applyPublicGateThroughPipeline(out, options);
   out = await applyReleaseDisciplineThroughPipeline(out, options);
-  if (gen3EvidencePresent(out)) out = attachGen3ReportContract(out, options.reportContext || {});
+  if (gen3EvidencePresent(out)) {
+    out = attachGen3ReportContract(out, options.reportContext || {});
+    out = attachStage2InterpretiveReport(out);
+    out = attachStage2ControlReport(out);
+  }
   return attachPipelineState(out);
 }
 

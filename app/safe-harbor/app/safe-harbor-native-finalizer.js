@@ -3,6 +3,7 @@ import { buildV3Issuance, canIssueV3, stableCanonicalJson } from './safe-harbor-
 import { attachPhase4Authority, verifyV3Replay } from './safe-harbor-authority-verifier.js?v=202606290125';
 import { buildPhase5ReplayHardening, applyPhase5Quarantine, detectStaleV3 } from './safe-harbor-phase5-replay-hardening.js';
 import { applyGen3Stage1Prehash } from './safe-harbor-gen3-evidence-contract.js';
+import { applyControlledGen3Stage2Prehash } from './safe-harbor-gen3-stage2-controls.js';
 
 const LANES = ['future_self', 'past_self', 'higher_self'];
 const LEGACY_PROFILE_SCHEMA = 'td613.safe-harbor.legacy-lane-profile/v1';
@@ -447,6 +448,17 @@ export async function finalizeSafeHarborPacket(packet, context = {}) {
     out = applyGen3Stage1Prehash(out, {
       ...(context.gen3Context || {}),
       segments: context.segments || context.gen3Context?.segments || {}
+    });
+  }
+  if (context.includeGen3Stage2 === true) {
+    out = await applyControlledGen3Stage2Prehash(out, {
+      ...(context.gen3Context || {}),
+      segments: context.segments || context.gen3Context?.segments || {},
+      promptVocabularyByLane: context.gen3Context?.promptVocabularyByLane || {},
+      promptControlSegments: context.gen3Context?.promptControlSegments || {},
+      promptTextsByLane: context.gen3Context?.promptTextsByLane || {},
+      controlProfiles: context.gen3Context?.controlProfiles || {},
+      entrantSwapProfile: context.gen3Context?.entrantSwapProfile || null
     });
   }
   attachPacketCapabilities(out, mode);
