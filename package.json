@@ -99,8 +99,14 @@
     "diag:release": "node scripts/run-diagnostics.mjs release",
     "diag:full": "node scripts/run-diagnostics.mjs full",
     "diag:battery": "node scripts/run-diagnostics.mjs full",
-    "validate": "node scripts/validate-samples.mjs"
+    "validate": "node scripts/validate-samples.mjs",
+    "test:safe-harbor:gen3:track-r": "node tests/safe-harbor-gen3-track-r-blind-custody.test.mjs && node tests/safe-harbor-gen3-track-r-perturbation-invariance.test.mjs && node tests/safe-harbor-gen3-track-r-gate.test.mjs && node tests/safe-harbor-gen3-track-r-schema-contract.test.mjs"
   },
-  "devDependencies": { "jsdom": "^29.1.0" },
-  "dependencies": { "@vercel/analytics": "^2.0.1", "@vercel/speed-insights": "^2.0.0" }
+  "devDependencies": {
+    "jsdom": "^29.1.0"
+  },
+  "dependencies": {
+    "@vercel/analytics": "^2.0.1",
+    "@vercel/speed-insights": "^2.0.0"
+  }
 }
