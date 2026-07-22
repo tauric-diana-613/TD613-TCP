@@ -32,6 +32,7 @@ try {
   await page.goto(`${base}/dome-world/ash-keep.html?presentation=aia&profile=investigation&nonce=${Date.now()}`, { waitUntil:'domcontentloaded' });
   await page.waitForFunction(() => window.__td613AshFlowcoreField?.version
     && window.__td613AshSessionBoundary?.version
+    && window.__td613AshIngressCopySpacing?.version
     && document.documentElement.dataset.ashCompositionStable
     && document.querySelector('.ash-flowcore-field'));
   await page.evaluate(async () => {
@@ -44,9 +45,15 @@ try {
   });
   await page.goto(`${base}/dome-world/ash-keep.html?presentation=aia&profile=investigation&nonce=${Date.now()}`, { waitUntil:'domcontentloaded' });
   await page.waitForFunction(() => window.__td613AshFlowcoreField?.current?.().artifact_required === false
+    && window.__td613AshIngressCopySpacing?.measure?.().available
     && document.documentElement.dataset.ashCompositionStable
     && document.querySelector('.ash-flowcore-field')
     && document.getElementById('launch'));
+
+  const ingressDesktop = await page.evaluate(() => window.__td613AshIngressCopySpacing.measure());
+  assert(ingressDesktop.available && ingressDesktop.ordered, `Ingress copy order failed: ${JSON.stringify(ingressDesktop)}.`);
+  assert(ingressDesktop.overlap_px === 0, `Ingress recovery copy overlaps primary copy by ${ingressDesktop.overlap_px}px.`);
+  assert(ingressDesktop.title_bottom <= ingressDesktop.recovery_top + 2, `Ash Keep title collides with recovery copy: ${JSON.stringify(ingressDesktop)}.`);
 
   const arrival = await page.evaluate(() => {
     const field = document.querySelector('.ash-flowcore-field');
@@ -87,15 +94,21 @@ try {
   assert(trace.every(item => item.artifact_required === false), 'A Flow-Core frame falsely required an artifact.');
 
   await page.setViewportSize({ width:390, height:844 });
+  await page.evaluate(() => window.__td613AshIngressCopySpacing.refresh());
+  const ingressMobile = await page.evaluate(() => window.__td613AshIngressCopySpacing.measure());
+  assert(ingressMobile.available && ingressMobile.ordered && ingressMobile.overlap_px === 0, `Mobile ingress copy overlap: ${JSON.stringify(ingressMobile)}.`);
   const mobile = await page.evaluate(() => ({
     overflow:Math.max(0, document.documentElement.scrollWidth - innerWidth),
     field_width:document.querySelector('.ash-flowcore-field')?.getBoundingClientRect().width || 0,
     static_count:document.querySelectorAll('.ash-flowcore-static li').length,
-    rest_visible:getComputedStyle(document.querySelector('.ash-flowcore-rest')).opacity !== '0'
+    rest_visible:getComputedStyle(document.querySelector('.ash-flowcore-rest')).opacity !== '0',
+    title_visible:getComputedStyle(document.getElementById('ashLaunchTitle')).display !== 'none',
+    recovery_visible:getComputedStyle(document.getElementById('capsuleRecoveryLaunchDescription')).display !== 'none'
   }));
   assert(mobile.overflow <= 2, `Mobile Flow-Core overflow: ${mobile.overflow}.`);
   assert(mobile.field_width > 320 && mobile.field_width <= 390, `Mobile field width invalid: ${mobile.field_width}.`);
   assert(mobile.static_count === 5 && mobile.rest_visible, 'Mobile/static Flow-Core parity incomplete.');
+  assert(mobile.title_visible && mobile.recovery_visible, 'Mobile ingress title or recovery guidance disappeared.');
   await page.screenshot({ path:path.join(out, `${browserName}-flowcore-mobile-rest.png`), fullPage:true });
 
   await page.locator('#newProfile').selectOption('investigation');
@@ -118,6 +131,9 @@ try {
       && style?.display !== 'none' && style?.visibility !== 'hidden'
       && main?.hasAttribute('inert') && rail?.hasAttribute('inert');
   });
+  await page.evaluate(() => window.__td613AshIngressCopySpacing.refresh());
+  const ingressAfterClose = await page.evaluate(() => window.__td613AshIngressCopySpacing.measure());
+  assert(ingressAfterClose.available && ingressAfterClose.ordered && ingressAfterClose.overlap_px === 0, `Close-return ingress copy overlap: ${JSON.stringify(ingressAfterClose)}.`);
   const close = await page.evaluate(async id => {
     const launch = document.getElementById('launch');
     const db = await new Promise((resolve,reject) => {
@@ -145,7 +161,7 @@ try {
   assert(errors.length === 0, `Browser errors: ${errors.join(' | ')}`);
   assert(httpErrors.length === 0, `HTTP errors: ${httpErrors.join(' | ')}`);
   report.status = 'PASS';
-  report.observations = { arrival, active_motion:activeMotion, phase_trace:trace, mobile, close };
+  report.observations = { ingress_desktop:ingressDesktop, arrival, active_motion:activeMotion, phase_trace:trace, ingress_mobile:ingressMobile, mobile, ingress_after_close:ingressAfterClose, close };
 } catch (error) {
   report.status = 'HOLD';
   report.hold = { message:error.message, stack:error.stack };
