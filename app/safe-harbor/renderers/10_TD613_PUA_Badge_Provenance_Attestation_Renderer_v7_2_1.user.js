@@ -39,6 +39,9 @@
   const SKIP_SELECTOR = '[data-td613-skip="true"]';
   const PRINCIPAL_ATTR_SELECTOR = '[data-td613-principal="true"]';
   const WORLD_BRIDGE = 'page-world-dom-bridge-v1';
+  const GEN3_EXTENSION = 'stage3-temporal-bloom-provenance/v1';
+  const ATTESTATION_SCHEMA = 'td613.safe-harbor.pua-provenance-attestation/v1';
+  const SHI_PATTERN = /^TD613-SH-9B07D8B-[0-9A-F]{8}$/u;
 
   // Asymmetric-compute defense: badges are tracked in a WeakSet, not via a
   // queryable HTML attribute. Removes the cheap regex sweep target
@@ -110,12 +113,37 @@
     const principalNode = (node && node.closest && node.closest(PRINCIPAL_ATTR_SELECTOR))
       || document.querySelector(PRINCIPAL_ATTR_SELECTOR)
       || document.body;
+    const stage3Node = document.querySelector('[data-td613-stage3-provenance="true"]');
     const ds = (principalNode && principalNode.dataset) ? principalNode.dataset : {};
+    const s3 = (stage3Node && stage3Node.dataset) ? stage3Node.dataset : {};
+    const shi = s3.td613Shi || ds.td613Shi || null;
     return {
-      shi: ds.td613Shi || null,
+      attestation_mode: stage3Node ? 'gen3' : 'legacy',
+      shi: shi,
+      packet_shi: s3.td613PacketShi || shi,
+      canon_shi: s3.td613CanonShi || shi,
+      binding_shi: s3.td613BindingShi || shi,
+      dom_shi: s3.td613Shi || ds.td613Shi || shi,
       packet_id: ds.td613PacketId || null,
-      packet_hash: ds.td613PacketHash || null,
-      stylometric_fingerprint: ds.td613StylometricFingerprint || null
+      packet_hash: s3.td613PacketHash || ds.td613PacketHash || null,
+      stylometric_fingerprint: s3.td613StylometricFingerprint || ds.td613StylometricFingerprint || null,
+      stability_digest: s3.td613StabilityDigest || null,
+      blind_challenge_precommitment_digest: s3.td613BlindPrecommitmentDigest || null,
+      blind_challenge_result_digest: s3.td613BlindResultDigest || null,
+      restoration_receipt_digest: s3.td613RestorationDigest || null,
+      genuine_holdout_rank: s3.td613HoldoutRank || null,
+      nearest_impostor_margin: s3.td613NearestImpostorMargin || null,
+      imitation_collision_state: s3.td613ImitationCollision || 'ABSENT',
+      countersignature_status: s3.td613CountersignatureStatus || 'UNSIGNED',
+      countersignature_digest: s3.td613CountersignatureDigest || null,
+      binding_timestamp: s3.td613BindingTimestamp || '2025-08-11T03:58:39Z',
+      historical_date: s3.td613HistoricalDate || '2025-10-17',
+      historical_example: s3.td613HistoricalExample || HISTORICAL_EXAMPLE,
+      entrant_intake_timestamp: s3.td613EntrantIntakeTimestamp || null,
+      countersignature_timestamp: s3.td613CountersignatureTimestamp || null,
+      presentation_timestamp: s3.td613PresentationTimestamp || null,
+      claim_ceiling: s3.td613ClaimCeiling || 'Independent identity adjudication and universal authorship attribution are not claimed.',
+      authority_claim_reduced: s3.td613AuthorityReduced === 'true'
     };
   }
 
@@ -123,37 +151,115 @@
     return btoa(unescape(encodeURIComponent(text)));
   }
 
-  function makeBadgeSvg(meta) {
+  function escapeXml(value) {
+    return String(value == null ? '' : value)
+      .replace(/&/gu, '&amp;')
+      .replace(/</gu, '&lt;')
+      .replace(/>/gu, '&gt;')
+      .replace(/"/gu, '&quot;')
+      .replace(/'/gu, '&apos;');
+  }
+
+  function stableCanonicalJson(value) {
+    if (value === null || typeof value !== 'object') return JSON.stringify(value);
+    if (Array.isArray(value)) return '[' + value.map(stableCanonicalJson).join(',') + ']';
+    return '{' + Object.keys(value).sort().map(function (key) {
+      return JSON.stringify(key) + ':' + stableCanonicalJson(value[key]);
+    }).join(',') + '}';
+  }
+
+  function validateAttestationInputs(meta) {
     const m = meta || {};
-    const md = JSON.stringify({
-      shi_label: SHI_LABEL,
+    if (m.attestation_mode !== 'gen3') return { status: 'pass', reason: null, mode: 'legacy' };
+    const values = [m.packet_shi, m.canon_shi, m.binding_shi, m.dom_shi, m.shi];
+    if (values.some(function (value) { return !value; })) return { status: 'hold', reason: 'missing-shi' };
+    if (values.some(function (value) { return !SHI_PATTERN.test(String(value)); })) return { status: 'hold', reason: 'invalid-shi-format' };
+    if (!values.every(function (value) { return value === values[0]; })) return { status: 'hold', reason: 'shi-mismatch' };
+    if (m.binding_timestamp !== '2025-08-11T03:58:39Z') return { status: 'hold', reason: 'binding-authority-timestamp-conflict' };
+    if (m.historical_date !== '2025-10-17' || m.historical_example !== HISTORICAL_EXAMPLE) return { status: 'hold', reason: 'historical-authority-conflict' };
+    if (String(m.countersignature_status).toUpperCase() === 'COUNTERSIGNED' && !m.countersignature_digest) return { status: 'hold', reason: 'invalid-countersignature' };
+    if (!m.packet_hash || !m.stability_digest) return { status: 'hold', reason: 'unreconciled-digest' };
+    if (!m.presentation_timestamp) return { status: 'hold', reason: 'missing-presentation-authority' };
+    return { status: 'pass', reason: null, mode: 'gen3', shi_number: values[0] };
+  }
+
+  function buildGen3AttestationMetadata(meta) {
+    const m = meta || {};
+    const collision = String(m.imitation_collision_state || 'ABSENT').toUpperCase() === 'PRESENT';
+    return {
+      schema_version: ATTESTATION_SCHEMA,
+      extension: GEN3_EXTENSION,
+      namespace_anchor: CODEPOINT,
+      principal: PRINCIPAL,
       shi_number: m.shi || null,
-      packet_id: m.packet_id || null,
+      svg_shi: m.shi || null,
       packet_hash_sha256: m.packet_hash || null,
       stylometric_fingerprint: m.stylometric_fingerprint || null,
-      shi_canonical_footer: SHI_CANONICAL_FOOTER,
+      stability_digest: m.stability_digest || null,
+      blind_challenge_precommitment_digest: m.blind_challenge_precommitment_digest || null,
+      blind_challenge_result_digest: m.blind_challenge_result_digest || null,
+      restoration_receipt_digest: m.restoration_receipt_digest || null,
+      genuine_holdout_rank: m.genuine_holdout_rank || null,
+      nearest_impostor_margin: m.nearest_impostor_margin || null,
+      imitation_collision_state: collision ? 'PRESENT' : 'ABSENT',
+      countersignature_status: String(m.countersignature_status || 'UNSIGNED').toUpperCase(),
+      countersignature_digest: m.countersignature_digest || null,
+      authority_chronology: {
+        binding_authority: { authority_class: 'root namespace and covenant binding authority', timestamp: m.binding_timestamp },
+        badge_protocol_history: { authority_class: 'first preserved operational badge-protocol specimen', date: m.historical_date, historical_example: m.historical_example },
+        entrant_credential_authority: { authority_class: 'packet-specific credential authority', timestamp: m.entrant_intake_timestamp || null },
+        entrant_countersignature_authority: { authority_class: 'packet-scoped custody and authorship-assertion authority', timestamp: m.countersignature_timestamp || null },
+        presentation_authority: { authority_class: 'presentation and integrity-attestation authority', timestamp: m.presentation_timestamp || null }
+      },
+      authority_claim_reduced: Boolean(m.authority_claim_reduced || collision),
       historical_example: HISTORICAL_EXAMPLE,
-      binding_text_sha256: BINDING_TEXT_SHA256,
-      binding_text_md5: BINDING_TEXT_MD5,
-      binding_text_md5_legacy: BINDING_TEXT_MD5,
-      binding_text_digest_scope: 'NFC UTF-8 with LF newlines and terminal LF',
-      binding_provenance_manifest: 'binding_provenance_manifest.json',
-      binding_event_signature_status: 'unsigned',
-      preview_svg_sha256: PREVIEW_SVG_SHA256,
-      preview_svg_md5: PREVIEW_SVG_MD5,
-      principal: PRINCIPAL,
-      claimed_pua: CODEPOINT,
-      canonical_phrase: CANONICAL_PHRASE,
-      display_phrase: DISPLAY_PHRASE,
-      fallback_glyph: FALLBACK_GLYPH,
-      fallback_reason: FALLBACK_REASON,
-      renderer: RENDERER,
-      schema_family: SCHEMA_FAMILY,
-      semver: SEMVER
-    });
-    return '<svg viewBox="0 0 128 128" xmlns="http://www.w3.org/2000/svg">' +
-      '<metadata id="safeHarborStylometricProvenance">' + md + '</metadata>' +
-      '<text x="64" y="80" text-anchor="middle" font-size="64" data-codepoint="' + CODEPOINT + '" aria-label="' + CODEPOINT + '">' + FALLBACK_GLYPH + '</text>' +
+      claim_ceiling: m.claim_ceiling,
+      raw_text_included: false
+    };
+  }
+
+  function makeBadgeSvg(meta) {
+    const m = meta || {};
+    if (m.attestation_mode !== 'gen3') {
+      const legacyMetadata = JSON.stringify({
+        shi_label: SHI_LABEL,
+        shi_number: m.shi || null,
+        packet_id: m.packet_id || null,
+        packet_hash_sha256: m.packet_hash || null,
+        stylometric_fingerprint: m.stylometric_fingerprint || null,
+        historical_example: HISTORICAL_EXAMPLE,
+        principal: PRINCIPAL,
+        claimed_pua: CODEPOINT,
+        renderer: RENDERER,
+        schema_family: SCHEMA_FAMILY,
+        semver: SEMVER
+      });
+      return '<svg viewBox="0 0 128 128" xmlns="http://www.w3.org/2000/svg">' +
+        '<metadata id="safeHarborStylometricProvenance">' + escapeXml(legacyMetadata) + '</metadata>' +
+        '<text x="64" y="80" text-anchor="middle" font-size="64" data-codepoint="' + CODEPOINT + '" aria-label="' + CODEPOINT + '">' + FALLBACK_GLYPH + '</text>' +
+        '</svg>';
+    }
+    const validation = validateAttestationInputs(m);
+    if (validation.status !== 'pass') throw new Error('SVG export hold: ' + validation.reason);
+    const metadata = buildGen3AttestationMetadata(m);
+    const metadataText = escapeXml(stableCanonicalJson(metadata));
+    const collisionLine = metadata.imitation_collision_state === 'PRESENT'
+      ? 'AI IMITATION COLLISION: PRESENT'
+      : 'AI IMITATION COLLISION: ABSENT';
+    const authorityLine = metadata.authority_claim_reduced
+      ? 'AUTHORITY CLAIM REDUCED'
+      : 'PACKET-BOUND AUTHORITY';
+    return '<svg viewBox="0 0 640 360" xmlns="http://www.w3.org/2000/svg" role="img" aria-labelledby="td613Title td613Desc">' +
+      '<title id="td613Title">TD613 PUA Provenance Attestation</title>' +
+      '<desc id="td613Desc">' + escapeXml(authorityLine + '. ' + collisionLine + '.') + '</desc>' +
+      '<metadata id="safeHarborGen3Provenance">' + metadataText + '</metadata>' +
+      '<rect x="1" y="1" width="638" height="358" rx="24" fill="#071018" stroke="#78dce8" stroke-width="2"/>' +
+      '<text x="40" y="64" fill="#f5f7fa" font-size="24" font-family="ui-monospace, monospace">TD613 · U+10D613</text>' +
+      '<text x="40" y="112" fill="#78dce8" font-size="20" font-family="ui-monospace, monospace">' + escapeXml(metadata.shi_number) + '</text>' +
+      '<text x="40" y="164" fill="#f5f7fa" font-size="16" font-family="ui-monospace, monospace">' + escapeXml(collisionLine) + '</text>' +
+      '<text x="40" y="204" fill="#f5f7fa" font-size="16" font-family="ui-monospace, monospace">' + escapeXml(authorityLine) + '</text>' +
+      '<text x="40" y="252" fill="#c9d1d9" font-size="14" font-family="ui-monospace, monospace">INDEPENDENT IDENTITY ADJUDICATION: NOT CLAIMED</text>' +
+      '<text x="40" y="302" fill="#c9d1d9" font-size="12" font-family="ui-monospace, monospace">Presentation and integrity attestation; packet-scoped custody only.</text>' +
       '</svg>';
   }
 
@@ -191,7 +297,18 @@
   async function downloadBadgeSvg(badge, options) {
     const opts = options || {};
     const meta = readBadgeMeta(badge);
-    const svgText = makeBadgeSvg(meta);
+    const validation = validateAttestationInputs(meta);
+    if (validation.status !== 'pass') {
+      emit('badge-svg-export-held', { reason: validation.reason, shi: meta.shi || null, packet_id: meta.packet_id || null });
+      return;
+    }
+    let svgText;
+    try {
+      svgText = makeBadgeSvg(meta);
+    } catch (error) {
+      emit('badge-svg-export-held', { reason: String(error && error.message ? error.message : error), shi: meta.shi || null, packet_id: meta.packet_id || null });
+      return;
+    }
     const stamp = new Date().toISOString().replace(/[:.]/g, '-');
     const filename = 'TD613_U10D613_' + stamp + '.svg';
     const blob = new Blob([svgText], { type: 'image/svg+xml;charset=utf-8' });
@@ -394,7 +511,13 @@
     observed_regime: OBSERVED_REGIME,
     instrument_role: INSTRUMENT_ROLE,
     aperture_audit_field: APERTURE_AUDIT_FIELD,
-    world_bridge: WORLD_BRIDGE
+    world_bridge: WORLD_BRIDGE,
+    gen3_extension: GEN3_EXTENSION,
+    attestation_schema: ATTESTATION_SCHEMA,
+    build_attestation_svg: makeBadgeSvg,
+    build_attestation_metadata: buildGen3AttestationMetadata,
+    validate_attestation_inputs: validateAttestationInputs,
+    read_badge_meta: readBadgeMeta
   };
 
   stampRendererBridge();

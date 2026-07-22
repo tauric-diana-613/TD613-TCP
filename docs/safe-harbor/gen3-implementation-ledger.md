@@ -168,15 +168,15 @@ All Track R requirements remain `research-gated` until code, nulls, calibration,
 
 | ID | Requirement family | Intended surfaces | Tests | Status |
 |---|---|---|---|---|
-| S3-001 | Temporal Bloom consumes the single counted-state authority | Stage 3 UI module | threshold-source parity | pending |
-| S3-002 | Hidden public counts and reciprocal recognition language | Stage 3 UI | public-mode DOM tests | pending |
-| S3-003 | Reduced motion, keyboard, screen reader, mobile focus | Stage 3 UI/CSS | accessibility and browser probes | pending |
-| S3-004 | Countersignature UI and visible unsigned state | Stage 3 UI | state and digest tests | pending |
-| S3-005 | SHI exact match across packet, DOM, SVG | renderer and export gate | mismatch hold battery | pending |
-| S3-006 | Separate authority chronology | sealed packet presentation | timestamp non-collapse tests | pending |
-| S3-007 | Deterministic PUA Provenance Attestation SVG | renderer | metadata snapshots | pending |
-| S3-008 | Honest authority reduction for failures and collisions | renderer | adverse-state snapshots | pending |
-| S3-009 | No telemetry and no serverless expansion | UI policy and repository checks | telemetry/serverless scans | pending |
+| S3-001 | Temporal Bloom consumes the single counted-state authority | `main.js` sanitized counted-state bridge; `safe-harbor-temporal-bloom.js` presentation consumer | threshold-source parity and no-tokenizer tests | Stage 3 PR | implemented in branch; validation pending |
+| S3-002 | Hidden public counts and reciprocal recognition language | Temporal Bloom UI and CSS | 119/120/239/240/359/360 boundary and public DOM tests | Stage 3 PR | implemented in branch; validation pending |
+| S3-003 | Reduced motion, keyboard, screen reader, mobile focus | capture guards, ARIA live region, reduced-motion and iOS CSS | accessibility and UI contract tests | Stage 3 PR | implemented in branch; browser validation pending |
+| S3-004 | Countersignature UI and visible unsigned state | explicit user-gesture event and Stage 1 countersignature function | unsigned, signed-digest, and missing-digest tests | Stage 3 PR | implemented in branch; validation pending |
+| S3-005 | SHI exact match across packet, DOM, SVG | presentation core and renderer export gate | missing, malformed, and mismatch holds | Stage 3 PR | implemented in branch; validation pending |
+| S3-006 | Separate authority chronology | provenance panel and SVG metadata | timestamp non-collapse and historical-example tests | Stage 3 PR | implemented in branch; validation pending |
+| S3-007 | Deterministic PUA Provenance Attestation SVG | Stage 3 presentation core and renderer extension | deterministic metadata/SVG snapshots | Stage 3 PR | implemented in branch; validation pending |
+| S3-008 | Honest authority reduction for failures and collisions | provenance panel and renderer | adverse-state and imitation-collision snapshots | Stage 3 PR | implemented in branch; validation pending |
+| S3-009 | No telemetry and no serverless expansion | sanitized bridge, presentation modules, repository policy | source scans and serverless boundary checks | Stage 3 PR | implemented in branch; validation pending |
 
 ## Release receipts
 
