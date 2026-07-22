@@ -6,6 +6,7 @@ on:
     paths:
       - 'app/dome-world/ash-flowcore-pedagogy-field.*'
       - 'app/dome-world/ash-session-boundary.js'
+      - 'app/dome-world/ash-ingress-copy-spacing.js'
       - 'app/dome-world/ash-workspace-bridge.js'
       - 'tests/ash-flowcore-live-field.test.mjs'
       - 'scripts/ash-flowcore-live-field-browser-probe.mjs'
@@ -26,7 +27,7 @@ jobs:
           node-version: 22
           cache: npm
       - run: npm ci
-      - name: Live Flow-Core field contract
+      - name: Live Flow-Core field and ingress-copy contract
         run: node tests/ash-flowcore-live-field.test.mjs
       - name: Inherited Flow-Core visual grammar
         run: node --test tests/flowcore-pedagogue-visual.test.mjs
@@ -71,7 +72,7 @@ jobs:
           done
           cat artifacts/ash-flowcore-field-server.log || true
           exit 1
-      - name: Observe zero-artifact Flow-Core and Close Case return
+      - name: Observe ingress copy, zero-artifact Flow-Core, and Close Case return
         env:
           TD613_BROWSER: ${{ matrix.browser }}
           TD613_BASE_URL: http://127.0.0.1:6130
