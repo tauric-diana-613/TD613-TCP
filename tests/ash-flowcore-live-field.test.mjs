@@ -29,8 +29,11 @@ assert.match(css, /data-flowcore-phase="4"/);
 assert.match(css, /prefers-reduced-motion:reduce/);
 assert.doesNotMatch(css, /animation:[^;}]*infinite/);
 
-assert.match(boundary, /v0\.1-pointer-governs-open-session/);
+assert.match(boundary, /v0\.2-pointer-governs-case-recovery-stays-open/);
 assert.match(boundary, /if \(!activePointer\) return closedCurrent\(\)/);
+assert.match(boundary, /function capsuleRecoveryOpen\(\)/);
+assert.match(boundary, /const interactive = caseOpen \|\| recoveryOpen/);
+assert.match(boundary, /CAPSULE_OPENED_SETTLED/);
 assert.match(boundary, /host\.__td613AshKeep = facade/);
 assert.match(boundary, /td613:ash:case-closed/);
 assert.match(boundary, /launch\?\.classList\.remove\('hidden'\)/);
