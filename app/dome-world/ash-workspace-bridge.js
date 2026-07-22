@@ -4,6 +4,7 @@ import './ash-flicker-hardening.js?v=20260721-legal-demo-ux-v1';
 import './ash-case-close-repair.js?v=20260721-legal-demo-ux-v1';
 // The persisted case pointer, not a stale in-memory case object, governs whether a session remains open.
 import './ash-session-boundary.js?v=20260721-flowcore-live-field-v1';
+// Release witness packet: zero-artifact Flow-Core, pointer-governed Close Case, and title → recovery → primary spacing travel together.
 
 /* Canonical composition ordering retained under cache-busted URLs:
 import './ash-keep-mobile-composition.js';
