@@ -23,6 +23,7 @@ let stageObserver = null;
 let phaseObserver = null;
 
 const reducedMotion = () => host?.matchMedia?.('(prefers-reduced-motion: reduce)').matches === true;
+const stageNode = () => doc?.querySelector('#ashAiaMembrane [data-aia-stage], .ash-aia__stage') || null;
 
 function ensureStyle() {
   if (!doc?.head || doc.querySelector('link[data-ash-flowcore-field-style]')) return;
@@ -166,7 +167,7 @@ function fieldMarkup() {
 
 function ensureField() {
   if (mounting || !doc?.body) return null;
-  const stage = doc.querySelector('#ashAiaMembrane [data-aia-stage], .ash-aia__stage');
+  const stage = stageNode();
   if (!stage) return null;
   field = stage.querySelector('.ash-flowcore-field');
   if (field) return field;
@@ -219,8 +220,14 @@ function installObservers() {
     stageObserver = new MutationObserver(records => {
       if (!records.some(record => record.addedNodes.length || record.removedNodes.length)) return;
       queueMicrotask(() => {
-        const mounted = ensureField();
-        if (mounted) applyPhase(phase, { source:'STAGE_REMOUNT', playing:false });
+        const stage = stageNode();
+        const existing = stage?.querySelector('.ash-flowcore-field') || null;
+        if (existing) {
+          field = existing;
+          return;
+        }
+        field = null;
+        if (ensureField()) applyPhase(phase, { source:'STAGE_REMOUNT', playing:false });
       });
     });
     stageObserver.observe(doc.body, { childList:true, subtree:true });
