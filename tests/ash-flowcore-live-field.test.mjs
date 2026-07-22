@@ -31,7 +31,7 @@ assert.match(css, /data-flowcore-phase="4"/);
 assert.match(css, /prefers-reduced-motion:reduce/);
 assert.doesNotMatch(css, /animation:[^;}]*infinite/);
 
-assert.match(portal, /v0\.8-canonical-play-idempotent-boundary/);
+assert.match(portal, /v0\.9-phase-atomic-canonical-play/);
 assert.match(portal, /INGRESS_HOST_ID = 'guidedLaunchPromise'/);
 assert.match(portal, /LEGACY_PROMISE_ID = 'guidedLaunchPromiseLegacy'/);
 assert.match(portal, /legacyPromise\.id = LEGACY_PROMISE_ID/);
@@ -44,6 +44,7 @@ assert.match(portal, /__td613AshFlowcoreField\?\.setPhase\?\.\(0\)/);
 assert.match(portal, /const canonicalPlay = doc\.querySelector\('\[data-aia-play\]'\)/);
 assert.match(portal, /if \(canonicalPlay\) canonicalPlay\.click\(\)/);
 assert.match(portal, /else host\.__td613AshFlowcoreField\?\.play\?\.\(\)/);
+assert.match(portal, /host\.addEventListener\('td613:ash:flowcore-field-phase', copyDynamicState\)/);
 assert.match(portal, /function applyProxyPosture\(node\)/);
 assert.match(portal, /function normalizeStageFields\(\)/);
 assert.match(portal, /classList\.add\('ash-flowcore-field--proxy'\)/);
