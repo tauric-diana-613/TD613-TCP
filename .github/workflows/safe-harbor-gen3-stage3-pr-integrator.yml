@@ -1,0 +1,92 @@
+name: Safe Harbor Gen3 Stage 3 PR integrator
+
+on:
+  pull_request:
+    branches:
+      - main
+    types:
+      - opened
+      - reopened
+      - synchronize
+      - ready_for_review
+
+permissions:
+  contents: write
+  pull-requests: read
+
+concurrency:
+  group: safe-harbor-gen3-stage3-pr-integrator
+  cancel-in-progress: false
+
+jobs:
+  integrate-test-and-clean:
+    if: github.event.pull_request.head.ref == 'safe-harbor-gen3-stage3-temporal-bloom-provenance'
+    runs-on: ubuntu-latest
+    timeout-minutes: 45
+    steps:
+      - name: Check out exact Stage 3 head branch
+        uses: actions/checkout@v4
+        with:
+          ref: safe-harbor-gen3-stage3-temporal-bloom-provenance
+          fetch-depth: 0
+
+      - name: Set up Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: '24'
+
+      - name: Apply bounded Stage 3 integration patch
+        run: node scripts/apply-safe-harbor-gen3-stage3-integration.mjs
+
+      - name: Validate Stage 3 Temporal Bloom and provenance contract
+        run: node tests/safe-harbor-gen3-stage3-temporal-bloom-provenance.test.mjs
+
+      - name: Validate Stage 3 UI wiring
+        run: node tests/safe-harbor-gen3-stage3-ui-wiring.test.mjs
+
+      - name: Validate complete Wave B contract
+        run: npm run test:safe-harbor:gen3:wave-b
+
+      - name: Validate restore gate
+        run: npm run test:safe-harbor:phase9.1c
+
+      - name: Validate current Safe Harbor authority chain
+        run: npm run test:safe-harbor:current
+
+      - name: Scan Stage 3 surfaces for concrete SHIs and temporary carriers
+        run: |
+          node --input-type=module <<'NODE'
+          import fs from 'node:fs';
+          const paths = [
+            'app/safe-harbor/app/safe-harbor-temporal-bloom.js',
+            'app/safe-harbor/app/safe-harbor-temporal-bloom.css',
+            'app/safe-harbor/schemas/td613-safe-harbor.stage3-presentation.v1.schema.json',
+            'tests/safe-harbor-gen3-stage3-temporal-bloom-provenance.test.mjs',
+            'tests/safe-harbor-gen3-stage3-ui-wiring.test.mjs',
+            'docs/safe-harbor/gen3-stage3-validation-receipt.md'
+          ];
+          const concrete = /TD613-SH-9B07D8B-[0-9A-F]{8}/gu;
+          const synthetic = 'TD613-SH-9B07D8B-A1B2C3D4';
+          const violations = [];
+          for (const path of paths) {
+            const text = fs.readFileSync(path, 'utf8');
+            for (const match of text.match(concrete) || []) if (match !== synthetic) violations.push(`${path}: ${match}`);
+          }
+          if (violations.length) throw new Error(violations.join('\n'));
+          if (fs.existsSync('.github/workflows/safe-harbor-gen3-stage3-integration.yml')) throw new Error('abandoned Stage 3 push workflow remains');
+          NODE
+
+      - name: Remove branch-local temporary mechanism
+        run: rm scripts/apply-safe-harbor-gen3-stage3-integration.mjs
+
+      - name: Commit tested integration to the Stage 3 branch
+        run: |
+          git config user.name "td613-safe-harbor-bot"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add \
+            app/safe-harbor/index.html \
+            package.json \
+            scripts/apply-safe-harbor-gen3-stage3-integration.mjs
+          git diff --cached --check
+          git commit -m "Integrate Safe Harbor Gen3 Stage 3 presentation"
+          git push origin HEAD:safe-harbor-gen3-stage3-temporal-bloom-provenance
