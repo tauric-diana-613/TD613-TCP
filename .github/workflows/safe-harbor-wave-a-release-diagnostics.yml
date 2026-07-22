@@ -12,7 +12,7 @@ on:
 
 permissions:
   actions: read
-  contents: write
+  contents: read
   pull-requests: read
 
 concurrency:
@@ -27,6 +27,7 @@ jobs:
     env:
       GH_TOKEN: ${{ github.token }}
       AUTHORIZED_SOURCE_SHA: 86cf1af84e69998ae195e53ef64372e35d8c6745
+      TD613_BASE_URL: https://td613.com
     steps:
       - name: Check out diagnostics trigger branch
         uses: actions/checkout@v4
@@ -100,31 +101,73 @@ jobs:
               lock_state_required: 'closed'
             }
           };
-          fs.mkdirSync('docs/safe-harbor', { recursive: true });
-          fs.writeFileSync('docs/safe-harbor/gen3-wave-a-held-release-diagnostic.json', `${JSON.stringify(diagnostic, null, 2)}\n`);
-          const failedSteps = jobs.flatMap((job) => job.steps.filter((step) => step.conclusion === 'failure').map((step) => `${job.name} → ${step.name}`));
-          const markdown = `# TD613 Safe Harbor Gen3 Wave A Held Release Diagnostic\n\n􍘓\n\n𝌋‌ TD613 · Tauric Diana 613\n\n**Diagnostic state:** CAPTURED / NO RETRY AUTHORITY  \n**Authorized source:** \`${process.env.AUTHORIZED_SOURCE_SHA}\`  \n**Release run:** [${run.databaseId}](${run.url})  \n**Run conclusion:** \`${run.conclusion}\`  \n**Vercel lock expectation:** closed\n\n## Failed steps\n\n${failedSteps.length ? failedSteps.map((item) => `- ${item}`).join('\n') : '- No failed step metadata was returned; inspect the bounded log tail.'}\n\n## Filtered failure tail\n\n\`\`\`text\n${selected.join('\n')}\n\`\`\`\n\n## Artifacts\n\n${diagnostic.artifacts.length ? diagnostic.artifacts.map((artifact) => `- ${artifact.name} (${artifact.size_in_bytes} bytes; expired: ${artifact.expired})`).join('\n') : '- No artifacts were retained by the held run.'}\n\n## Authority boundary\n\nThis diagnostic authorizes no deployment, retry, release, or application mutation. Any repair requires a focused PR and a newly reviewed exact source commit. The repository lock must remain closed.\n\nÀṣẹ\n\nMarked ⟐\n`;
-          fs.writeFileSync('docs/safe-harbor/gen3-wave-a-held-release-diagnostic.md', markdown);
+          fs.mkdirSync('artifacts/safe-harbor-wave-a-diagnostic', { recursive: true });
+          fs.writeFileSync('artifacts/safe-harbor-wave-a-diagnostic/gen3-wave-a-held-release-diagnostic.json', `${JSON.stringify(diagnostic, null, 2)}\n`);
           NODE
 
-      - name: Preserve diagnostic artifact before branch write
-        uses: actions/upload-artifact@v4
-        with:
-          name: safe-harbor-wave-a-held-release-diagnostic
-          path: |
-            docs/safe-harbor/gen3-wave-a-held-release-diagnostic.json
-            docs/safe-harbor/gen3-wave-a-held-release-diagnostic.md
-          if-no-files-found: error
-          retention-days: 14
-
-      - name: Commit diagnostic receipt to trigger branch
+      - name: Probe deployed Safe Harbor route matrix
         run: |
           set -euo pipefail
-          git config user.name 'td613-safe-harbor-bot'
-          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
-          git add \
-            docs/safe-harbor/gen3-wave-a-held-release-diagnostic.json \
-            docs/safe-harbor/gen3-wave-a-held-release-diagnostic.md
-          git diff --cached --check
-          git commit -m 'Record held Safe Harbor Wave A release diagnostic'
-          git push origin HEAD:safe-harbor-wave-a-diagnostic-trigger
+          node --input-type=module <<'NODE'
+          import fs from 'node:fs';
+          const base = String(process.env.TD613_BASE_URL).replace(/\/+$/u, '');
+          const nonce = process.env.AUTHORIZED_SOURCE_SHA;
+          const paths = [
+            '/safe-harbor/',
+            '/app/safe-harbor/index.html',
+            '/safe-harbor/app/safe-harbor-native-finalizer.js',
+            '/app/safe-harbor/app/safe-harbor-native-finalizer.js',
+            '/safe-harbor/app/safe-harbor-gen3-evidence-contract.js',
+            '/app/safe-harbor/app/safe-harbor-gen3-evidence-contract.js',
+            '/safe-harbor/app/safe-harbor-gen3-authorship-maturity.js',
+            '/app/safe-harbor/app/safe-harbor-gen3-authorship-maturity.js',
+            '/safe-harbor/app/safe-harbor-gen3-stage2-controls.js',
+            '/app/safe-harbor/app/safe-harbor-gen3-stage2-controls.js'
+          ];
+          const results = [];
+          for (const path of paths) {
+            const response = await fetch(`${base}${path}?td613-route-matrix=${nonce}`, {
+              cache: 'no-store',
+              redirect: 'manual',
+              headers: { 'Cache-Control': 'no-cache' }
+            });
+            const body = await response.text();
+            results.push({
+              path,
+              status: response.status,
+              location: response.headers.get('location'),
+              content_type: response.headers.get('content-type'),
+              cache_control: response.headers.get('cache-control'),
+              bytes: Buffer.byteLength(body),
+              body_prefix: body.slice(0, 120).replace(/\s+/gu, ' '),
+              has_native_finalizer_marker: body.includes('finalizeSafeHarborPacket'),
+              has_stage1_marker: body.includes('td613.safe-harbor.authorship-evidence/v1'),
+              has_stage2_marker: body.includes('td613.safe-harbor.authorship-maturity/v1'),
+              has_controls_marker: body.includes('td613.safe-harbor.stage2-control-receipt/v1')
+            });
+          }
+          const receipt = {
+            schema_version: 'td613.safe-harbor.gen3-wave-a-route-matrix/v1',
+            observed_at_utc: new Date().toISOString(),
+            source_packet_commit: process.env.AUTHORIZED_SOURCE_SHA,
+            production_url: base,
+            results,
+            authority: {
+              read_only: true,
+              deployment_authorized: false,
+              retry_authorized: false,
+              route_mutation_authorized: false
+            }
+          };
+          fs.mkdirSync('artifacts/safe-harbor-wave-a-diagnostic', { recursive: true });
+          fs.writeFileSync('artifacts/safe-harbor-wave-a-diagnostic/gen3-wave-a-route-matrix.json', `${JSON.stringify(receipt, null, 2)}\n`);
+          console.log(JSON.stringify(receipt, null, 2));
+          NODE
+
+      - name: Preserve held-release and route-matrix diagnostics
+        uses: actions/upload-artifact@v4
+        with:
+          name: safe-harbor-wave-a-held-release-and-route-matrix
+          path: artifacts/safe-harbor-wave-a-diagnostic/
+          if-no-files-found: error
+          retention-days: 14
