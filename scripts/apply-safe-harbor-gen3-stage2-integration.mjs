@@ -10,19 +10,19 @@ function replaceOnce(path, before, after) {
 replaceOnce(
   'app/safe-harbor/app/safe-harbor-native-finalizer.js',
   "import { applyGen3Stage1Prehash } from './safe-harbor-gen3-evidence-contract.js';\n",
-  "import { applyGen3Stage1Prehash } from './safe-harbor-gen3-evidence-contract.js';\nimport { applyGen3Stage2Prehash } from './safe-harbor-gen3-authorship-maturity.js';\n"
+  "import { applyGen3Stage1Prehash } from './safe-harbor-gen3-evidence-contract.js';\nimport { applyControlledGen3Stage2Prehash } from './safe-harbor-gen3-stage2-controls.js';\n"
 );
 
 replaceOnce(
   'app/safe-harbor/app/safe-harbor-native-finalizer.js',
   "  if (context.includeGen3Stage1 === true) {\n    out = applyGen3Stage1Prehash(out, {\n      ...(context.gen3Context || {}),\n      segments: context.segments || context.gen3Context?.segments || {}\n    });\n  }\n  attachPacketCapabilities(out, mode);",
-  "  if (context.includeGen3Stage1 === true) {\n    out = applyGen3Stage1Prehash(out, {\n      ...(context.gen3Context || {}),\n      segments: context.segments || context.gen3Context?.segments || {}\n    });\n  }\n  if (context.includeGen3Stage2 === true) {\n    out = await applyGen3Stage2Prehash(out, {\n      ...(context.gen3Context || {}),\n      segments: context.segments || context.gen3Context?.segments || {},\n      promptVocabularyByLane: context.gen3Context?.promptVocabularyByLane || {}\n    });\n  }\n  attachPacketCapabilities(out, mode);"
+  "  if (context.includeGen3Stage1 === true) {\n    out = applyGen3Stage1Prehash(out, {\n      ...(context.gen3Context || {}),\n      segments: context.segments || context.gen3Context?.segments || {}\n    });\n  }\n  if (context.includeGen3Stage2 === true) {\n    out = await applyControlledGen3Stage2Prehash(out, {\n      ...(context.gen3Context || {}),\n      segments: context.segments || context.gen3Context?.segments || {},\n      promptVocabularyByLane: context.gen3Context?.promptVocabularyByLane || {},\n      promptControlSegments: context.gen3Context?.promptControlSegments || {},\n      promptTextsByLane: context.gen3Context?.promptTextsByLane || {},\n      controlProfiles: context.gen3Context?.controlProfiles || {},\n      entrantSwapProfile: context.gen3Context?.entrantSwapProfile || null\n    });\n  }\n  attachPacketCapabilities(out, mode);"
 );
 
 replaceOnce(
   'app/safe-harbor/app/safe-harbor-packet-pipeline.js',
   "import { attachGen3ReportContract } from './safe-harbor-gen3-report-contract.js';\n",
-  "import { attachGen3ReportContract } from './safe-harbor-gen3-report-contract.js';\nimport { attachStage2InterpretiveReport } from './safe-harbor-gen3-authorship-maturity.js';\n"
+  "import { attachGen3ReportContract } from './safe-harbor-gen3-report-contract.js';\nimport { attachStage2InterpretiveReport } from './safe-harbor-gen3-authorship-maturity.js';\nimport { attachStage2ControlReport } from './safe-harbor-gen3-stage2-controls.js';\n"
 );
 
 replaceOnce(
@@ -34,19 +34,19 @@ replaceOnce(
 replaceOnce(
   'app/safe-harbor/app/safe-harbor-packet-pipeline.js',
   "      promptTextDigests: options.promptTextDigests || {}\n    }",
-  "      promptTextDigests: options.promptTextDigests || {},\n      promptVocabularyByLane: options.promptVocabularyByLane || {}\n    }"
+  "      promptTextDigests: options.promptTextDigests || {},\n      promptVocabularyByLane: options.promptVocabularyByLane || {},\n      promptControlSegments: options.promptControlSegments || {},\n      promptTextsByLane: options.promptTextsByLane || {},\n      controlProfiles: options.controlProfiles || {},\n      entrantSwapProfile: options.entrantSwapProfile || null\n    }"
 );
 
 replaceOnce(
   'app/safe-harbor/app/safe-harbor-packet-pipeline.js',
   "  if (gen3EvidencePresent(out)) out = attachGen3ReportContract(out, options.reportContext || {});\n  return attachPipelineState(out);",
-  "  if (gen3EvidencePresent(out)) {\n    out = attachGen3ReportContract(out, options.reportContext || {});\n    out = attachStage2InterpretiveReport(out);\n  }\n  return attachPipelineState(out);"
+  "  if (gen3EvidencePresent(out)) {\n    out = attachGen3ReportContract(out, options.reportContext || {});\n    out = attachStage2InterpretiveReport(out);\n    out = attachStage2ControlReport(out);\n  }\n  return attachPipelineState(out);"
 );
 
 replaceOnce(
   'package.json',
   '    "test:safe-harbor:gen3:stage1": "node tests/safe-harbor-gen3-stage1-evidence-contract.test.mjs",\n',
-  '    "test:safe-harbor:gen3:stage1": "node tests/safe-harbor-gen3-stage1-evidence-contract.test.mjs",\n    "test:safe-harbor:gen3:stage2": "node tests/safe-harbor-gen3-stage2-authorship-maturity.test.mjs",\n    "test:safe-harbor:gen3:wave-a": "npm run test:safe-harbor:gen3:stage1 && node tests/safe-harbor-gen3-stage1-report-contract.test.mjs && node tests/safe-harbor-gen3-stage1-schema-contract.test.mjs && npm run test:safe-harbor:gen3:stage2",\n'
+  '    "test:safe-harbor:gen3:stage1": "node tests/safe-harbor-gen3-stage1-evidence-contract.test.mjs",\n    "test:safe-harbor:gen3:stage2": "node tests/safe-harbor-gen3-stage2-authorship-maturity.test.mjs && node tests/safe-harbor-gen3-stage2-controls.test.mjs",\n    "test:safe-harbor:gen3:wave-a": "npm run test:safe-harbor:gen3:stage1 && node tests/safe-harbor-gen3-stage1-report-contract.test.mjs && node tests/safe-harbor-gen3-stage1-schema-contract.test.mjs && npm run test:safe-harbor:gen3:stage2 && node tests/safe-harbor-gen3-stage2-integration.test.mjs",\n'
 );
 
-console.log('safe-harbor-gen3-stage2 integration patch applied');
+console.log('safe-harbor-gen3-stage2 controlled integration patch applied');
