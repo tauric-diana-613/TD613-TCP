@@ -3,7 +3,7 @@ export {
   buildApeqPaiaProfileFixture,
   hydrateApeqPaiaProfileDemo,
   installApeqPaiaProfileDemos
-} from './ash-apeq-paia-profile-demos.js?v=20260718-live-ingress-v3';
+} from './ash-apeq-paia-profile-demos.js?v=20260722-stable-build-eviction-v1';
 
-import './ash-apeq-paia-profile-demos.js?v=20260718-live-ingress-v3';
-import './ash-investigation-method-docket-composition.js?v=20260718-live-ingress-v3';
+import './ash-apeq-paia-profile-demos.js?v=20260722-stable-build-eviction-v1';
+import './ash-investigation-method-docket-composition.js?v=20260722-stable-build-eviction-v1';
