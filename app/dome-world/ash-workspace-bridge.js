@@ -1,5 +1,7 @@
 export * from './ash-workspace-bridge-core.js?v=20260721-legal-demo-ux-v1';
 import './ash-flicker-hardening.js?v=20260721-legal-demo-ux-v1';
+// Close Case awaits the saved-case index rather than relying on launch-class timing.
+import './ash-case-controls-refresh-bridge.js?v=20260722-close-ingress-animation-v1';
 // Initial ingress may preserve one validated readiness receipt; operator Close Case always clears the Ash session.
 import './ash-case-close-repair.js?v=20260721-legal-demo-ux-v1';
 
