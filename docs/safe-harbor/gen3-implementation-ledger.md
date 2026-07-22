@@ -7,7 +7,8 @@
 **Ledger status:** ACTIVE / REQUIREMENT-TRACEABILITY AUTHORITY  
 **Planning authority:** PR #483, merged as `a31e356138be2cee528411ec0d5e34785c9f96bf`  
 **Stage 1 authority:** PR #492, merged as `c7d26b86a167c9901cd6ab4de4d3d9b5e6a66718`  
-**Stage 2 authority:** PR #499, validated in run `29956080946`, merge pending  
+**Stage 2 authority:** PR #499, merged as `b6fe4ee188941d6b72db0d9bad886e4f48687341`  
+**Wave A production authority:** source `86cf1af84e69998ae195e53ef64372e35d8c6745`, relocked at `3f23e6d1747e45c57277b0c2de4befb6b9c12406`  
 **Serverless-function allocation:** 0  
 **Production release authority:** separately gated by release wave
 
@@ -29,9 +30,11 @@ This ledger prevents normative requirements from disappearing between specificat
 |---|---|---|---|
 | Constitutional planning suite | PR #483 / `safe-harbor-authorship-maturity-temporal-bloom-spec` | merged | none; documentation only |
 | Planning reconciliation | PR #490 | merged into planning branch | none |
-| Stage 1 evidence contract | PR #492 / `safe-harbor-gen3-stage1-evidence-contract` | merged | none until Wave A |
-| Stage 2 authorship maturity | PR #499 / `safe-harbor-gen3-stage2-authorship-maturity-v1` | validated; merge-eligible | none until Wave A |
+| Stage 1 evidence contract | PR #492 / `safe-harbor-gen3-stage1-evidence-contract` | merged | included in Wave A |
+| Stage 2 authorship maturity | PR #499 / `safe-harbor-gen3-stage2-authorship-maturity-v1` | merged | included in Wave A |
 | Stage 2 clean-main reconciliation | PR #505 | zero changed files; merged into Stage 2 branch | none |
+| Wave A release gate | PR #507 | merged | exact-source production gate for Stages 1 + 2 |
+| Wave A production deployment | issue #405 | deployed and observed | source `86cf1af84e69998ae195e53ef64372e35d8c6745`; Git lock restored |
 | Research Track R | `safe-harbor-gen3-track-r-blind-custody-stylodynamics` | pending / research-gated | no baseline intake authority |
 | Stage 3 Temporal Bloom | `safe-harbor-gen3-stage3-temporal-bloom-provenance` | pending | none until Wave B |
 
@@ -53,7 +56,7 @@ The Stage 1 gate also scanned every changed surface for concrete SHIs, permittin
 
 ### Stage 2
 
-Run `29956080946` passed at tested implementation head `f7981ee7e454349783456eff733c8f634dc01c44`.
+Run `29956080946` passed before PR #499 merged at `b6fe4ee188941d6b72db0d9bad886e4f48687341`.
 
 ```text
 node tests/safe-harbor-gen3-stage2-authorship-maturity.test.mjs
@@ -64,6 +67,24 @@ npm run test:safe-harbor:current
 ```
 
 The successful integrator removed its branch-local patch mechanism before committing the tested integration. PR #504 removed the temporary `main` workflow. PR #505 then reconciled clean `main` into the Stage 2 branch with zero changed files, preserving the validated implementation tree.
+
+### Release Wave A
+
+Issue #405 accepted source `86cf1af84e69998ae195e53ef64372e35d8c6745` after PR #507 merged the named production gate.
+
+The one bounded Git-fallback deployment created release commit `4454db2512180bc860574b7c74e0f4b1e64aeb35`. Vercel reported success. The release workflow completed its Safe Harbor production observation and posted the completion receipt. The `always()` relock step then restored `vercel.json` to `git.deploymentEnabled: false` at `3f23e6d1747e45c57277b0c2de4befb6b9c12406`.
+
+Canonical production target:
+
+```text
+https://td613.com
+```
+
+Dedicated receipt:
+
+```text
+docs/safe-harbor/gen3-wave-a-production-receipt.md
+```
 
 ## Stage 1 traceability matrix
 
@@ -142,13 +163,11 @@ All Track R requirements remain `research-gated` until code, nulls, calibration,
 
 ## Release receipts
 
-No production receipt exists yet.
-
 | Wave | Authorized source SHA | Deployment URL | Verification | Relock SHA | State |
 |---|---|---|---|---|---|
-| Wave A | pending Stage 2 merge | pending | pending | pending | not deployed |
-| Research Track R | unavailable until promotion | — | — | — | unpromoted |
-| Wave B | pending | pending | pending | pending | not deployed |
+| Wave A | `86cf1af84e69998ae195e53ef64372e35d8c6745` | `https://td613.com` | production release completed and observed; Safe Harbor probe PASS | `3f23e6d1747e45c57277b0c2de4befb6b9c12406` | deployed / observed / relocked |
+| Research Track R | unavailable until promotion | — | calibration gate remains unmet | — | unpromoted |
+| Wave B | pending Stage 3 | pending | pending | pending | not deployed |
 
 Àṣẹ
 
