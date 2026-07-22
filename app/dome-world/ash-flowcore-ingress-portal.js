@@ -1,4 +1,4 @@
-export const ASH_FLOWCORE_INGRESS_PORTAL_VERSION = 'td613.ash.flowcore-ingress-portal/v0.4-post-controls-canonical-host';
+export const ASH_FLOWCORE_INGRESS_PORTAL_VERSION = 'td613.ash.flowcore-ingress-portal/v0.5-single-visible-field-hidden-proxy';
 
 const host = globalThis.window;
 const doc = globalThis.document;
@@ -161,18 +161,47 @@ function copyDynamicState() {
   });
 }
 
+function applyProxyPosture(node) {
+  if (!node || node === visibleField) return;
+  node.classList.add('ash-flowcore-field--proxy');
+  node.hidden = true;
+  node.inert = true;
+  node.setAttribute('aria-hidden','true');
+  stripDuplicateIds(node);
+}
+
 function observeProxy(nextProxy) {
+  if (!nextProxy || nextProxy === visibleField) return;
   if (proxyObserver) proxyObserver.disconnect();
+  if (proxyField?.isConnected && proxyField !== nextProxy) proxyField.remove();
   proxyField = nextProxy;
-  if (!proxyField) return;
-  proxyField.classList.add('ash-flowcore-field--proxy');
-  proxyField.hidden = true;
-  proxyField.inert = true;
-  proxyField.setAttribute('aria-hidden','true');
-  stripDuplicateIds(proxyField);
+  applyProxyPosture(proxyField);
   proxyObserver = new MutationObserver(copyDynamicState);
   proxyObserver.observe(proxyField, { subtree:true, childList:true, characterData:true, attributes:true });
   copyDynamicState();
+}
+
+function normalizeStageFields() {
+  const stage = stageHost();
+  if (!stage) return Object.freeze({ total:0, visible:0, proxy:0 });
+  const fields = [...stage.querySelectorAll(':scope > .ash-flowcore-field')];
+  const siblings = fields.filter(node => node !== visibleField);
+  if (proxyField && !proxyField.isConnected) {
+    proxyObserver?.disconnect();
+    proxyObserver = null;
+    proxyField = null;
+  }
+  const preferred = siblings.includes(proxyField) ? proxyField : siblings.at(-1) || null;
+  if (preferred && preferred !== proxyField) observeProxy(preferred);
+  for (const node of siblings) {
+    if (node === proxyField) applyProxyPosture(node);
+    else node.remove();
+  }
+  return Object.freeze({
+    total:[...stage.querySelectorAll(':scope > .ash-flowcore-field')].length,
+    visible:[...stage.querySelectorAll(':scope > .ash-flowcore-field')].filter(node => !node.hidden && getComputedStyle(node).display !== 'none').length,
+    proxy:proxyField?.isConnected ? 1 : 0
+  });
 }
 
 function findStageField() {
@@ -202,6 +231,7 @@ function portalToIngress() {
   if (visibleField.parentElement !== ingress) ingress.replaceChildren(visibleField);
   const nextProxy = findStageField();
   if (nextProxy && nextProxy !== proxyField) observeProxy(nextProxy);
+  normalizeStageFields();
   doc.documentElement.dataset.ashFlowcoreVisibleHost = 'INGRESS';
   return true;
 }
@@ -209,16 +239,14 @@ function portalToIngress() {
 function portalToStage() {
   const stage = stageHost();
   if (!stage || !visibleField) return false;
-  if (proxyObserver) proxyObserver.disconnect();
-  proxyObserver = null;
-  if (proxyField && proxyField !== visibleField) proxyField.remove();
-  proxyField = null;
   visibleField.hidden = false;
   visibleField.inert = false;
   visibleField.removeAttribute('aria-hidden');
+  visibleField.classList.remove('ash-flowcore-field--proxy');
   visibleField.dataset.flowcoreHost = 'aia';
   stage.classList.add('ash-flowcore-mounted');
   if (visibleField.parentElement !== stage) stage.append(visibleField);
+  normalizeStageFields();
   const ingress = doc.getElementById(INGRESS_HOST_ID);
   if (ingress?.dataset.ashFlowcoreIngressHost === 'true') {
     ingress.hidden = true;
@@ -234,6 +262,7 @@ function sync(reason = 'OBSERVED') {
   syncing = true;
   try {
     const moved = caseOpen() ? portalToStage() : portalToIngress();
+    normalizeStageFields();
     if (!caseOpen()) {
       const nextProxy = findStageField();
       if (nextProxy && nextProxy !== proxyField) observeProxy(nextProxy);
@@ -281,6 +310,8 @@ export function installAshFlowcoreIngressPortal() {
       case_open:caseOpen(),
       visible:Boolean(visibleField?.isConnected && !visibleField.hidden),
       proxy_present:Boolean(proxyField?.isConnected),
+      proxy_count:[...doc.querySelectorAll('.ash-flowcore-field--proxy')].filter(node => node.isConnected).length,
+      field_count:doc.querySelectorAll('.ash-flowcore-field').length,
       duplicate_visible_fields:[...doc.querySelectorAll('.ash-flowcore-field')].filter(node => !node.hidden && getComputedStyle(node).display !== 'none').length
     })
   });
