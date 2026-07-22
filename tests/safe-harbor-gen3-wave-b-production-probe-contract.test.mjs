@@ -62,8 +62,7 @@ assert.match(probe, /core\.validateShiSurfaces/u);
 assert.match(probe, /core\.validateAttestationMetadata/u);
 assert.match(probe, /core\.buildDeterministicAttestationSvg/u);
 assert.match(probe, /safe-harbor-gen3-wave-b-production-observation\.json/u);
-assert.match(probe, /safe-harbor-wave-b-desktop-1440x1000\.png/u);
-assert.match(probe, /safe-harbor-wave-b-mobile-390x844\.png/u);
+assert.match(probe, /safe-harbor-wave-b-\$\{label\}\.png/u);
 assert.match(probe, /safe-harbor-wave-b-provenance\.png/u);
 
 assert.doesNotMatch(probe, /TD613-SH-9B07D8B-(?!A1B2C3D4)[0-9A-F]{8}/gu, 'Wave B probe must not contain a live entrant SHI');
