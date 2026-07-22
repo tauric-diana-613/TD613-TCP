@@ -1,0 +1,173 @@
+name: Ash and Flight stable-build integrator
+
+on:
+  pull_request:
+    branches:
+      - main
+    types:
+      - opened
+      - reopened
+      - synchronize
+      - ready_for_review
+
+permissions:
+  contents: write
+  pull-requests: read
+
+concurrency:
+  group: ash-flight-stable-build-integrator
+  cancel-in-progress: false
+
+jobs:
+  integrate-test-and-clean:
+    if: github.event.pull_request.head.ref == 'ash-stable-build-mass-eviction-20260722'
+    runs-on: ubuntu-latest
+    timeout-minutes: 90
+    steps:
+      - name: Check out exact stable-build head
+        uses: actions/checkout@v4
+        with:
+          ref: ${{ github.event.pull_request.head.ref }}
+          fetch-depth: 0
+
+      - name: Set up Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: '24'
+          cache: npm
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Apply bounded Ash graph and Flight copy seams
+        run: |
+          node --input-type=module <<'NODE'
+          import fs from 'node:fs';
+          import path from 'node:path';
+
+          const assetEpoch = '20260722-stable-build-eviction-v1';
+          const cacheEpoch = 'td613.ash.cache-flush/2026-07-22-stable-build-eviction-v1';
+          const oldAssetEpoch = '20260721-legal-demo-ux-v1';
+          const oldCacheEpoch = 'td613.ash.cache-flush/2026-07-21-legal-demo-ux-v1';
+
+          function walk(root, predicate) {
+            const results = [];
+            for (const entry of fs.readdirSync(root, { withFileTypes:true })) {
+              const full = path.join(root, entry.name);
+              if (entry.isDirectory()) results.push(...walk(full, predicate));
+              else if (predicate(full)) results.push(full);
+            }
+            return results;
+          }
+
+          function writeChanged(file, transform) {
+            const before = fs.readFileSync(file, 'utf8');
+            const after = transform(before);
+            if (after !== before) fs.writeFileSync(file, after);
+            return after !== before;
+          }
+
+          const runtimeFiles = walk('app/dome-world', file => /\.(?:js|mjs)$/u.test(file));
+          const assetQuery = /((?:\.{1,2}\/|\/dome-world\/)[^"'`\s?]+\.(?:js|css))\?v=[A-Za-z0-9._-]+/gu;
+          for (const file of runtimeFiles) {
+            writeChanged(file, source => source
+              .replaceAll(oldCacheEpoch, cacheEpoch)
+              .replaceAll(oldAssetEpoch, assetEpoch)
+              .replace(assetQuery, `$1?v=${assetEpoch}`));
+          }
+
+          const ashScriptFiles = walk('scripts', file => /\/(?:ash-|prepare-ash-)[^/]*\.mjs$/u.test(file));
+          const ashTestFiles = walk('tests', file => /\/(?:ash-|dome-world-ash)[^/]*\.test\.mjs$/u.test(file));
+          ashTestFiles.push('tests/product-architecture/shell.test.mjs');
+          for (const file of [...new Set([...ashScriptFiles, ...ashTestFiles, 'api/dome-world-shell.js'])]) {
+            if (!fs.existsSync(file)) continue;
+            writeChanged(file, source => source
+              .replaceAll(oldCacheEpoch, cacheEpoch)
+              .replaceAll(oldAssetEpoch, assetEpoch)
+              .replaceAll('content="legal-demo-ux-v1"', 'content="stable-build-eviction-v1"'));
+          }
+
+          const flightPath = 'app/safe-harbor/td613-flight.html';
+          const oldPhrase = 'When authoring, stay academically rigorous yet grounded in high speculation.';
+          const newPhrase = 'When reasoning and authoring, stay academically rigorous, and rigorous (but imaginative) to forensic AI empiricism, yet both rigors grounded in high speculation.';
+          const clipboardTag = '<script src="/safe-harbor/td613-flight-clipboard-fidelity.js?v=20260722-desktop-linebreak-v1"></script>';
+          writeChanged(flightPath, source => {
+            const phraseMatches = source.split(oldPhrase).length - 1;
+            if (phraseMatches !== 1 && !source.includes(newPhrase)) throw new Error(`Expected one legacy Flight phrase, found ${phraseMatches}.`);
+            let next = source.replace(oldPhrase, newPhrase);
+            if (!next.includes(clipboardTag)) {
+              if (!next.includes('</body>\n</html>')) throw new Error('Flight closing body anchor missing.');
+              next = next.replace('</body>\n</html>', `${clipboardTag}\n</body>\n</html>`);
+            }
+            return next;
+          });
+
+          const packagePath = 'package.json';
+          const pkg = JSON.parse(fs.readFileSync(packagePath, 'utf8'));
+          const flightTest = 'node tests/td613-flight-desktop-clipboard.test.mjs';
+          if (!pkg.scripts['test:safe-harbor'].includes(flightTest)) {
+            pkg.scripts['test:safe-harbor'] = `${flightTest} && ${pkg.scripts['test:safe-harbor']}`;
+            fs.writeFileSync(packagePath, `${JSON.stringify(pkg, null, 2)}\n`);
+          }
+
+          const governed = [
+            ...runtimeFiles,
+            ...ashScriptFiles,
+            ...ashTestFiles,
+            'api/dome-world-shell.js',
+            flightPath,
+            'app/safe-harbor/td613-flight-clipboard-fidelity.js',
+            'tests/td613-flight-desktop-clipboard.test.mjs',
+            packagePath
+          ];
+          const stale = [...new Set(governed)].filter(file => fs.existsSync(file)).flatMap(file => {
+            const source = fs.readFileSync(file, 'utf8');
+            return source.includes(oldCacheEpoch) || source.includes(oldAssetEpoch) ? [file] : [];
+          });
+          if (stale.length) throw new Error(`Retired Ash epoch survived in governed paths:\n${stale.join('\n')}`);
+
+          const flight = fs.readFileSync(flightPath, 'utf8');
+          if (!flight.includes(newPhrase) || flight.includes(oldPhrase)) throw new Error('Flight body phrase replacement failed.');
+          if (!flight.includes(clipboardTag)) throw new Error('Flight clipboard fidelity layer was not loaded.');
+          console.log(`Rekeyed ${runtimeFiles.length} Ash runtime modules and patched Flight clipboard/phrase seams.`);
+          NODE
+
+      - name: Validate Flight copy and phrase contracts
+        run: |
+          node tests/td613-flight-desktop-clipboard.test.mjs
+          node tests/td613-flight-mobile-layout.test.mjs
+          node tests/td613-flight-date-refresh.test.mjs
+
+      - name: Validate Ash stable-build eviction contracts
+        run: |
+          node tests/ash-aia3-mass-eviction.test.mjs
+          node tests/ash-live-ingress-demos-cache.test.mjs
+          node tests/product-architecture/shell.test.mjs
+          node tests/ash-keep-live-aia-surface.test.mjs
+          node tests/ash-custody-workspace-bridge.test.mjs
+
+      - name: Revalidate Safe Harbor Stage 3 and release candidate
+        run: |
+          npm run test:safe-harbor:gen3:wave-b
+          npm run test:safe-harbor:current
+
+      - name: Validate syntax and diff hygiene
+        run: |
+          node --check app/safe-harbor/td613-flight-clipboard-fidelity.js
+          node --check app/dome-world/ash-cache-eviction-aia3.js
+          node --check app/dome-world/ash-cache-flush.js
+          node --check app/dome-world/ash-lifecycle.js
+          node --check app/dome-world/ash-workspace-bridge.js
+          node --check api/dome-world-shell.js
+          git diff --check
+
+      - name: Remove temporary integrator and commit tested packet
+        run: |
+          set -euo pipefail
+          rm .github/workflows/ash-flight-stable-build-integrator.yml
+          git config user.name 'td613-stable-build-bot'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add -A
+          git diff --cached --check
+          git commit -m 'Mass-evict Ash stable build and preserve Flight desktop line breaks'
+          git push origin HEAD:"${{ github.event.pull_request.head.ref }}"
