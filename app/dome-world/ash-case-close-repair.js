@@ -1,6 +1,6 @@
 import { validThresholdReadiness } from './ash-cache-flush.js?v=20260718-canonical-membrane-v7-readiness-boundary';
 
-export const ASH_CASE_CLOSE_REPAIR_VERSION = 'td613.ash.case-close-repair/v1.3-ingress-readiness-boundary';
+export const ASH_CASE_CLOSE_REPAIR_VERSION = 'td613.ash.case-close-repair/v1.4-final-close-fingerprint';
 
 const DB_NAME = 'td613-ash-keep';
 const POINTER_KEY = 'td613.ash-keep.current-case';
@@ -81,7 +81,7 @@ async function caseBundle(db, caseId) {
   };
 }
 
-async function saveBeforeClose(caseId) {
+async function saveBeforeClose(caseId, saveReason = 'automatic-close-boundary') {
   if (!caseId) return null;
   const db = await openDb();
   try {
@@ -92,7 +92,7 @@ async function saveBeforeClose(caseId) {
       title:bundle.caseMap.title || 'Untitled case',
       fingerprint:await sha256(bundle),
       saved_at:new Date().toISOString(),
-      save_reason:'automatic-close-boundary'
+      save_reason:saveReason
     };
     await putWrapped(db, 'savedCases', caseId, record);
     return record;
@@ -189,7 +189,7 @@ async function closeToMembrane() {
   closing = true;
   const caseId = localStorage.getItem(POINTER_KEY);
   try {
-    const saved = await saveBeforeClose(caseId);
+    let saved = await saveBeforeClose(caseId, 'automatic-close-boundary-pre-transition');
     if (caseId) {
       try {
         await window.TD613AshConvergence?.transitionCase?.(caseId, {
@@ -199,13 +199,14 @@ async function closeToMembrane() {
           nextState:'SELECTED_NOT_OPEN',
           reason:'operator-closed-current-case-session-logout'
         });
+        saved = await saveBeforeClose(caseId, 'automatic-close-boundary-final-state') || saved;
       } catch (error) {
         console.warn('Ash close transition receipt held; session logout continues.', error);
       }
     }
     exposeMembrane();
     window.dispatchEvent(new CustomEvent('td613:ash:case-closed', {
-      detail:{ case_id:caseId || null, saved_before_close:Boolean(saved), session_logged_out:true }
+      detail:{ case_id:caseId || null, saved_before_close:Boolean(saved), final_close_fingerprint:Boolean(saved), session_logged_out:true }
     }));
     try { await window.__td613AshLifecycleRefresh?.(); } catch {}
     await resetCaseSelection();
