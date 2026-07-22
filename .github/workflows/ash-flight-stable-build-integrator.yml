@@ -93,8 +93,8 @@ jobs:
           const clipboardTag = '<script src="/safe-harbor/td613-flight-clipboard-fidelity.js?v=20260722-desktop-linebreak-v1"></script>';
           writeChanged(flightPath, source => {
             const phraseMatches = source.split(oldPhrase).length - 1;
-            if (phraseMatches !== 1 && !source.includes(newPhrase)) throw new Error(`Expected one legacy Flight phrase, found ${phraseMatches}.`);
-            let next = source.replace(oldPhrase, newPhrase);
+            if (phraseMatches !== 2 && !source.includes(newPhrase)) throw new Error(`Expected two legacy Flight phrase anchors, found ${phraseMatches}.`);
+            let next = source.replaceAll(oldPhrase, newPhrase);
             if (!next.includes(clipboardTag)) {
               if (!next.includes('</body>\n</html>')) throw new Error('Flight closing body anchor missing.');
               next = next.replace('</body>\n</html>', `${clipboardTag}\n</body>\n</html>`);
