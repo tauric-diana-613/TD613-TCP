@@ -1,4 +1,4 @@
-export const ASH_CLOSE_INGRESS_ANIMATION_BOUNDARY_VERSION = 'td613.ash.close-ingress-animation-boundary/v0.6-bidirectional-pointer-session';
+export const ASH_CLOSE_INGRESS_ANIMATION_BOUNDARY_VERSION = 'td613.ash.close-ingress-animation-boundary/v0.7-bidirectional-session-with-isolated-return';
 
 const host = globalThis.window;
 const doc = globalThis.document;
@@ -45,6 +45,12 @@ function setAttribute(node, name, value) {
 function setData(node, key, value) {
   if (!node || node.dataset[key] === value) return false;
   node.dataset[key] = value;
+  return true;
+}
+
+function clearData(node, key) {
+  if (!node || !(key in node.dataset)) return false;
+  delete node.dataset[key];
   return true;
 }
 
@@ -138,10 +144,11 @@ function releaseOpenPresentation(reason = 'ACTIVE_POINTER_PRESENT') {
     const rail = doc.querySelector('body > .workspace-rail');
     ++settleToken;
 
+    clearData(doc.documentElement, 'ashRecoverySession');
     setData(doc.documentElement, 'ashSessionOpen', 'true');
     setData(doc.documentElement, 'ashOpenIngressBoundary', reason);
     setData(doc.body, 'ashAiaCaseOpen', 'true');
-    delete doc.body.dataset.ashCaseClosed;
+    clearData(doc.body, 'ashCaseClosed');
     doc.documentElement.classList.add('ash-has-current-case');
 
     launch?.classList.add('hidden');
@@ -171,8 +178,63 @@ function settleOpenPresentation(reason) {
   for (const delay of [80, 240, 800]) host.setTimeout(settle, delay);
 }
 
+function recoveryPresentationRequested() {
+  if (activeCasePointer()) return false;
+  const launch = byId('launch');
+  const workspace = byId('workspace-save');
+  const panel = byId('ashReturnPanel');
+  if (!launch || !workspace || !panel) return false;
+  const launchStyle = getComputedStyle(launch);
+  const panelRect = panel.getBoundingClientRect();
+  return launch.classList.contains('hidden')
+    && launch.hasAttribute('inert')
+    && launch.getAttribute('aria-hidden') === 'true'
+    && launchStyle.display === 'none'
+    && launchStyle.pointerEvents === 'none'
+    && workspace.classList.contains('active')
+    && panelRect.width > 0
+    && panelRect.height > 0;
+}
+
+function recoveryPresentationMatches() {
+  if (!recoveryPresentationRequested()) return false;
+  const main = doc.querySelector('body > main');
+  const rail = doc.querySelector('body > .workspace-rail');
+  return Boolean(main && rail)
+    && !main.hasAttribute('inert')
+    && main.getAttribute('aria-hidden') !== 'true'
+    && rail.hasAttribute('inert')
+    && rail.getAttribute('aria-hidden') === 'true'
+    && doc.documentElement.dataset.ashRecoverySession === 'ISOLATED_CAPSULE_RETURN'
+    && doc.body.dataset.ashAiaCaseOpen === 'false';
+}
+
+function releaseRecoveryPresentation(reason = 'EXPLICIT_ISOLATED_CAPSULE_RETURN') {
+  if (!doc?.documentElement || activeCasePointer() || !recoveryPresentationRequested() || enforcing) return false;
+  if (recoveryPresentationMatches()) return true;
+  enforcing = true;
+  try {
+    const main = doc.querySelector('body > main');
+    const rail = doc.querySelector('body > .workspace-rail');
+    setInert(main, false);
+    setInert(rail, true);
+    setData(doc.documentElement, 'ashSessionOpen', 'false');
+    setData(doc.documentElement, 'ashRecoverySession', 'ISOLATED_CAPSULE_RETURN');
+    setData(doc.documentElement, 'ashRecoveryBoundary', reason);
+    setData(doc.body, 'ashAiaCaseOpen', 'false');
+    setData(doc.body, 'ashCaseClosed', 'true');
+    setData(doc.documentElement, 'ashMembraneReady', 'true');
+    host.dispatchEvent(new CustomEvent('td613:ash:isolated-return-restored', {
+      detail:{ version:ASH_CLOSE_INGRESS_ANIMATION_BOUNDARY_VERSION, reason, case_pointer:null, live_case_mutation_authorized:false }
+    }));
+    return true;
+  } finally {
+    enforcing = false;
+  }
+}
+
 function closedPresentationMatches() {
-  if (!doc?.documentElement || activeCasePointer()) return false;
+  if (!doc?.documentElement || activeCasePointer() || recoveryPresentationRequested()) return false;
   const launch = byId('launch');
   const main = doc.querySelector('body > main');
   const rail = doc.querySelector('body > .workspace-rail');
@@ -196,6 +258,7 @@ function closedPresentationMatches() {
 
 function enforceClosedPresentation(reason = 'SESSION_POINTER_CLEARED') {
   if (!doc?.documentElement || activeCasePointer() || enforcing) return false;
+  if (recoveryPresentationRequested()) return releaseRecoveryPresentation('RECOVERY_REQUEST_PRECEDES_CLOSED_INGRESS');
   installPointerAuthoritativeCoreView();
   ensureAnimationAffordance();
   reconcileIngressDemoControls();
@@ -210,6 +273,7 @@ function enforceClosedPresentation(reason = 'SESSION_POINTER_CLEARED') {
       || launch?.classList.contains('hidden')
       || Boolean(localValue(SESSION_EPOCH_KEY));
 
+    clearData(doc.documentElement, 'ashRecoverySession');
     doc.documentElement.classList.remove('ash-has-current-case');
     setData(doc.documentElement, 'ashSessionOpen', 'false');
     setData(doc.documentElement, 'ashCloseIngressBoundary', reason);
@@ -219,6 +283,8 @@ function enforceClosedPresentation(reason = 'SESSION_POINTER_CLEARED') {
     launch?.classList.remove('hidden');
     launch?.removeAttribute('inert');
     launch?.removeAttribute('aria-hidden');
+    launch?.style.removeProperty('display');
+    launch?.style.removeProperty('pointer-events');
     launch?.scrollTo?.({ top:0, behavior:'auto' });
     doc.querySelector('#launch .launch-panel')?.scrollTo?.({ top:0, behavior:'auto' });
 
@@ -247,7 +313,8 @@ function settleClosedPresentation(reason) {
   const token = ++settleToken;
   const settle = () => {
     if (token !== settleToken || activeCasePointer()) return;
-    enforceClosedPresentation(reason);
+    if (recoveryPresentationRequested()) releaseRecoveryPresentation('RECOVERY_REQUEST_DURING_CLOSED_SETTLE');
+    else enforceClosedPresentation(reason);
   };
   queueMicrotask(settle);
   host.requestAnimationFrame(() => host.requestAnimationFrame(settle));
@@ -279,11 +346,20 @@ function installObserver() {
   observer = new MutationObserver(() => {
     ensureAnimationAffordance();
     const pointer = activeCasePointer();
-    if (!pointer && !closedPresentationMatches()) queueMicrotask(() => enforceClosedPresentation('POINTER_ABSENT_MUTATION_REPAIR'));
-    if (pointer && !openPresentationMatches()) queueMicrotask(() => releaseOpenPresentation('POINTER_PRESENT_MUTATION_REPAIR'));
+    if (pointer && !openPresentationMatches()) {
+      queueMicrotask(() => releaseOpenPresentation('POINTER_PRESENT_MUTATION_REPAIR'));
+      return;
+    }
+    if (!pointer && recoveryPresentationRequested() && !recoveryPresentationMatches()) {
+      queueMicrotask(() => releaseRecoveryPresentation('RECOVERY_REQUEST_MUTATION_REPAIR'));
+      return;
+    }
+    if (!pointer && !recoveryPresentationRequested() && !closedPresentationMatches()) {
+      queueMicrotask(() => enforceClosedPresentation('POINTER_ABSENT_MUTATION_REPAIR'));
+    }
   });
   observer.observe(doc.documentElement, { attributes:true, attributeFilter:['class','data-ash-session-open'] });
-  observer.observe(doc.body, { attributes:true, childList:true, subtree:true, attributeFilter:['class','hidden','inert','aria-hidden','data-ash-aia-case-open'] });
+  observer.observe(doc.body, { attributes:true, childList:true, subtree:true, attributeFilter:['class','hidden','inert','aria-hidden','data-ash-aia-case-open','style'] });
 }
 
 export function installAshCloseIngressAnimationBoundary() {
@@ -309,13 +385,17 @@ export function installAshCloseIngressAnimationBoundary() {
     version:ASH_CLOSE_INGRESS_ANIMATION_BOUNDARY_VERSION,
     enforce:reason => activeCasePointer()
       ? releaseOpenPresentation(reason || 'EXPLICIT_OPEN_ENFORCEMENT')
-      : enforceClosedPresentation(reason || 'EXPLICIT_CLOSED_ENFORCEMENT'),
+      : recoveryPresentationRequested()
+        ? releaseRecoveryPresentation(reason || 'EXPLICIT_RECOVERY_ENFORCEMENT')
+        : enforceClosedPresentation(reason || 'EXPLICIT_CLOSED_ENFORCEMENT'),
     refresh:() => {
       installPointerAuthoritativeCoreView();
       ensureAnimationAffordance();
       return activeCasePointer()
         ? releaseOpenPresentation('EXPLICIT_OPEN_REFRESH')
-        : enforceClosedPresentation('EXPLICIT_CLOSED_REFRESH');
+        : recoveryPresentationRequested()
+          ? releaseRecoveryPresentation('EXPLICIT_RECOVERY_REFRESH')
+          : enforceClosedPresentation('EXPLICIT_CLOSED_REFRESH');
     },
     current:() => Object.freeze({
       case_pointer:activeCasePointer(),
@@ -327,6 +407,8 @@ export function installAshCloseIngressAnimationBoundary() {
       core_pointer_authoritative:Boolean(host.__td613AshKeep?.pointer_authoritative_session),
       closed_presentation_matches:closedPresentationMatches(),
       open_presentation_matches:openPresentationMatches(),
+      recovery_requested:recoveryPresentationRequested(),
+      recovery_presentation_matches:recoveryPresentationMatches(),
       demo_control_busy:byId('startDemo')?.getAttribute('aria-busy') === 'true'
     })
   });
