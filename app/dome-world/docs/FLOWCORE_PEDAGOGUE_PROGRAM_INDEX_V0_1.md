@@ -3,8 +3,8 @@
 # Flow-Core Pedagogue Program Index v0.1
 
 **Namespace:** `U+10D613`  
-**Program:** P0 through P10 plus runtime/release closure  
-**Status:** IMPLEMENTATION INDEX COMPLETE / BROWSER RUNTIME OBSERVED / PRODUCTION PROBE PENDING / EMPIRICAL HOLD VISIBLE / HUMAN CLOSURE OPEN
+**Program:** P0 through P10 plus runtime/release closure and Ash whole-instrument recompilation authorship  
+**Status:** IMPLEMENTATION INDEX COMPLETE / BROWSER RUNTIME OBSERVED / ASH WHOLE-INSTRUMENT RECOMPILATION AUTHORED / EMPIRICAL HOLD VISIBLE / HUMAN CLOSURE OPEN
 
 ## Constitutional source set
 
@@ -16,6 +16,8 @@
 6. `FLOWCORE_P0_P7_SEAM_CLOSURE_LEDGER_V0_1.md`
 7. `FLOWCORE_P0_P10_IMPLEMENTATION_COMPLETION_LEDGER_V0_1.md`
 8. `FLOWCORE_RUNTIME_RELEASE_CLOSURE_RECEIPT_V0_1.md`
+9. `ASH_KEEP_WHOLE_INSTRUMENT_PEDAGOGICAL_RECOMPILATION_IMPLEMENTATION_PLAN_V0_1.md`
+10. `ASH_KEEP_WHOLE_INSTRUMENT_CHILD_LEGIBLE_AIA_SPEC_V0_1.md`
 
 ## Phase receipts
 
@@ -69,6 +71,36 @@
 - `.github/workflows/vercel-operator-release.yml`
 - `FLOWCORE_PEDAGOGUE_ROLLBACK_PROCEDURE_V0_1.md`
 
+## Ash whole-instrument recompilation extension
+
+The Ash red-pen empirical review established that the current consequence field is locally Flow-Core while much of the surrounding instrument remains organized through pre-Flow-Core forms, internal nomenclature, hidden workflow, weak navigation semantics, dead affordances, and non-anisotropic repetition.
+
+The authored extension therefore governs:
+
+- stable ingress first paint and canonical URL posture;
+- one workspace-anisotropic consequence field;
+- stateful Glyph, Motion, Shape, Language, and Inspection channels;
+- explicit and visibly non-equivalent AIA route recompilation;
+- lawful navigation and entrant viewport ownership;
+- whole-tab Home, Map, Work, Choir, and Capsule recompilation;
+- command-menu workflow rehoming;
+- unified Investigation, Political Campaign, Fundraiser, Research, Legal, and Archive demo hydration;
+- adult-first forensic AI empirical validation;
+- unchanged Ash custody, release, transport, and closure authority.
+
+```text
+whole-instrument plan: AUTHORED
+whole-instrument normative spec: AUTHORED
+implementation authority: NONE
+runtime mutation: NONE
+main merge authority: NONE
+production deployment authority: NONE
+feature gate: REQUIRED / DEFAULT OFF
+adult-first human validation: REQUIRED
+human promotion: REQUIRED
+human closure: OPEN
+```
+
 ## Current honest promotion posture
 
 ```text
@@ -95,7 +127,7 @@ human closure required: true
 closure: OPEN
 ```
 
-`HARDENED` remains the correct promotion state because the state machine requires the held human adult empirical gate before `RUNTIME_DEMONSTRATED`. Observed browser evidence does not substitute for human evidence. Production observation will be externalized through the exact `source_packet_commit` issue #405 receipt after the authorized post-merge release.
+`HARDENED` remains the correct promotion state because the state machine requires the held human adult empirical gate before `RUNTIME_DEMONSTRATED`. Observed browser evidence does not substitute for human evidence. The new whole-instrument authorship records operator-observed route-burden failures and prescribes a future recompilation; it does not retroactively promote the current façade or count authored requirements as implemented behavior.
 
 ## Stable constitutional boundary
 
