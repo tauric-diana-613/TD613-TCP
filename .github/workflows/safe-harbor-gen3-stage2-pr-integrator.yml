@@ -13,7 +13,6 @@ on:
 permissions:
   contents: write
   pull-requests: read
-  issues: write
 
 concurrency:
   group: safe-harbor-gen3-stage2-pr-integrator
@@ -45,21 +44,14 @@ jobs:
           set -o pipefail
           node tests/safe-harbor-gen3-stage2-authorship-maturity.test.mjs 2>&1 | tee /tmp/stage2-recurrence.log
 
-      - name: Report bounded Stage 2 failure tail
+      - name: Preserve bounded Stage 2 failure tail
         if: failure() && steps.recurrence.conclusion == 'failure'
-        env:
-          GH_TOKEN: ${{ github.token }}
-        run: |
-          {
-            echo '𝌋‌ Stage 2 recurrence gate failed before integration commit.'
-            echo
-            echo '```text'
-            tail -n 80 /tmp/stage2-recurrence.log
-            echo '```'
-            echo
-            echo 'No tested integration was committed. Vercel remained locked. ⟐'
-          } > /tmp/stage2-comment.md
-          gh api "repos/$GITHUB_REPOSITORY/issues/${{ github.event.pull_request.number }}/comments" -f body="$(cat /tmp/stage2-comment.md)"
+        uses: actions/upload-artifact@v4
+        with:
+          name: safe-harbor-gen3-stage2-recurrence-failure
+          path: /tmp/stage2-recurrence.log
+          if-no-files-found: error
+          retention-days: 7
 
       - name: Validate Stage 2 native pipeline integration
         run: node tests/safe-harbor-gen3-stage2-integration.test.mjs
