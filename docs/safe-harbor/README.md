@@ -14,6 +14,7 @@ This folder tracks the current Safe Harbor release doctrine.
 8. Phase 9.1C SHI + packet restore gate and hash guard
 9. Gen3 Stage 1 report constitution and evidence contract
 10. Gen3 Stage 2 authorship maturity and null-control engine
+11. Gen3 Release Wave A deployed, observed, and relocked
 
 ## Core docs
 
@@ -21,6 +22,8 @@ This folder tracks the current Safe Harbor release doctrine.
 - [Gen3 implementation and release traceability ledger](./gen3-implementation-ledger.md)
 - [Gen3 Stage 1 validation receipt](./gen3-stage1-validation-receipt.md)
 - [Gen3 Stage 2 validation receipt](./gen3-stage2-validation-receipt.md)
+- [Gen3 Wave A release-gate receipt](./gen3-wave-a-release-gate-receipt.md)
+- [Gen3 Wave A production receipt](./gen3-wave-a-production-receipt.md)
 - [Blind Custody Challenge specification](./blind-custody-challenge-spec-v0.1.md)
 - [Restorative Stylodynamics and Perturbation Invariance Mapping research annex](./restorative-stylodynamics-perturbation-invariance-annex-v0.1.md)
 - [Claim limits](./claim-limits.md)
@@ -45,7 +48,11 @@ Future agents should treat PR #147 as the canonical sealed hash-guard landing.
 
 Gen3 Stage 1 landed through PR #492 / commit `c7d26b86a167c9901cd6ab4de4d3d9b5e6a66718`.
 
-Gen3 Stage 2 is governed by PR #499 and validation run `29956080946`; Release Wave A remains separately gated until the exact merged Stage 2 source commit receives and passes production release review.
+Gen3 Stage 2 landed through PR #499 / commit `b6fe4ee188941d6b72db0d9bad886e4f48687341` after validation run `29956080946` and zero-diff clean-main reconciliation through PR #505.
+
+Release Wave A deployed source `86cf1af84e69998ae195e53ef64372e35d8c6745` to `https://td613.com` through issue #405. The one bounded fallback release commit was `4454db2512180bc860574b7c74e0f4b1e64aeb35`; the Git deployment lock was restored at `3f23e6d1747e45c57277b0c2de4befb6b9c12406` after the production observation passed.
+
+Research Track R remains separately gated. Stage 3 and Release Wave B remain pending.
 
 ## Run before editing Safe Harbor authority surfaces
 
