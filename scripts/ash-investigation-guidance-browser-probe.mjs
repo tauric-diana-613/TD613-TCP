@@ -29,7 +29,7 @@ const errors=[],badResponses=[];
 page.on('pageerror',error=>errors.push(error.message));
 page.on('console',message=>{if(message.type()==='error')errors.push(message.text());});
 page.on('response',response=>{if(response.status()>=400&&!/favicon\.ico/.test(response.url()))badResponses.push(`${response.status()} ${response.url()}`);});
-const report={schema:'td613.ash.investigation-guided-flight/v0.8-entry-converged-navigation',status:'RUNNING',base_url:base,production_promotion_authorized:false,prediction_authorized:false,automatic_action_authorized:false,observations:{},errors,http_errors:badResponses,hold:null};
+const report={schema:'td613.ash.investigation-guided-flight/v0.9-flowcore-ingress',status:'RUNNING',base_url:base,production_promotion_authorized:false,prediction_authorized:false,automatic_action_authorized:false,observations:{},errors,http_errors:badResponses,hold:null};
 
 try{
   await page.goto(keepUrl,{waitUntil:'networkidle'});
@@ -41,8 +41,22 @@ try{
   assert.equal(await page.locator('html').getAttribute('data-ash-flicker-hardening'),HARDENING_VERSION);
   assert.equal(await page.locator('html').getAttribute('data-ash-guided-u-i'),null);
   assert(await page.locator('#launch').isVisible(),'Investigation flight did not begin at explicit launch.');
-  assert(await page.locator('#guidedLaunchPromise').isVisible(),'Custodial AI-access product promise is absent.');
-  assert.match(await page.locator('#guidedLaunchPromise').textContent(),/Protect the case before AI sees the case/);
+  await page.waitForFunction(()=>{
+    const host=document.getElementById('guidedLaunchPromise');
+    const legacy=document.getElementById('guidedLaunchPromiseLegacy');
+    const field=host?.querySelector('.ash-flowcore-field:not([hidden])');
+    const play=host?.querySelector('[data-flowcore-ingress-play]');
+    return host?.dataset.ashFlowcoreIngressHost==='true'
+      && host?.dataset.ashAia3==='true'
+      && field?.dataset.flowcoreHost==='ingress'
+      && field.getBoundingClientRect().height>260
+      && play && !play.disabled
+      && legacy?.hidden===true;
+  });
+  assert(await page.locator('#guidedLaunchPromise .ash-flowcore-field').isVisible(),'Flow-Core consequence field is absent from ingress.');
+  assert.match(await page.locator('#guidedLaunchPromise').textContent(),/RAW BYTES DO NOT CROSS/);
+  assert.match(await page.locator('#guidedLaunchPromise').textContent(),/REFERENCE/);
+  assert.equal(await page.locator('#guidedLaunchPromiseLegacy').isVisible(),false,'Superseded static ingress promise remained visible.');
 
   await page.locator('#newProfile').selectOption('investigation');
   await page.waitForFunction(()=>{const button=document.getElementById('startDemo');return button&&!button.disabled&&button.dataset.ashMethodDemoState==='READY'&&/Investigation qualification/.test(button.textContent||'');});
@@ -123,7 +137,7 @@ try{
   await page.setViewportSize({width:390,height:844});await page.locator('#premiumPrimaryDock [data-premium-workspace="home"]').click();await waitVisibleWorkspace(page,'home');const mobile=await layoutReceipt(page),mobileRails=await legacyRailReceipt(page);assert.equal(mobile.horizontal_overflow,0,'Investigation mobile document overflowed.');assert.deepEqual(mobile.clipped_controls,[],'Investigation mobile controls clipped.');assert(mobile.dock_targets.every(value=>value>=48),'A primary dock target fell below 48 px.');assert(mobile.hero_title_font_px!=null&&mobile.hero_title_font_px<=20,`Mobile hero title remained oversized at ${mobile.hero_title_font_px}px.`);assert(mobileRails.every(railIsVisuallyHidden),`A legacy rail retained mobile layout: ${JSON.stringify(mobileRails)}`);await page.screenshot({path:path.join(artifactDir,'investigation-mobile-command-deck.png'),fullPage:true});
 
   assert.deepEqual(errors,[],`Investigation browser errors: ${errors.join(' | ')}`);assert.deepEqual(badResponses,[],`Investigation HTTP errors: ${badResponses.join(' | ')}`);
-  report.status='PASS';report.observations={orientation_ms:orientationMs,entry_convergence:'investigation:home',room_count:current.caseMap.rooms.length,node_count:current.caseMap.nodes.length,relationship_count:current.caseMap.relationships.length,route_count:current.routeMemory.entries.length,controls:method.counts.controls,held_outs:method.counts.held_outs,strata:method.counts.strata,joining_keys:method.counts.joining_keys,method_docket_visible:true,task_spine_steps:5,ai_share_steps:6,map_control_labels:controlLabels,map_control_placement:controlPlacement,idle_stability:idleStability,map_height_normal:normalHeight,map_height_focused:focusedHeight,map_focus_visual:focusVisual,legacy_rails_hidden:true,exact_receipts_folded:true,choir_projection_cards:EXPECTED.routes,choir_pair_count:choirReceipt.pairwise_residue.length,choir_claim_ceiling_preserved:true,mobile};
+  report.status='PASS';report.observations={orientation_ms:orientationMs,entry_convergence:'investigation:home',flowcore_ingress:true,room_count:current.caseMap.rooms.length,node_count:current.caseMap.nodes.length,relationship_count:current.caseMap.relationships.length,route_count:current.routeMemory.entries.length,controls:method.counts.controls,held_outs:method.counts.held_outs,strata:method.counts.strata,joining_keys:method.counts.joining_keys,method_docket_visible:true,task_spine_steps:5,ai_share_steps:6,map_control_labels:controlLabels,map_control_placement:controlPlacement,idle_stability:idleStability,map_height_normal:normalHeight,map_height_focused:focusedHeight,map_focus_visual:focusVisual,legacy_rails_hidden:true,exact_receipts_folded:true,choir_projection_cards:EXPECTED.routes,choir_pair_count:choirReceipt.pairwise_residue.length,choir_claim_ceiling_preserved:true,mobile};
 }catch(error){report.status='HOLD_FOR_REPAIR';report.hold={message:error.message,stack:error.stack};try{await page.screenshot({path:path.join(artifactDir,'investigation-held.png'),fullPage:true});}catch{}throw error;}
 finally{await fsp.writeFile(path.join(artifactDir,'ash-investigation-guidance-flight.json'),`${JSON.stringify(report,null,2)}\n`);await context.close();await browser.close();}
 console.log('ash-investigation-guidance-browser-probe.mjs passed');
