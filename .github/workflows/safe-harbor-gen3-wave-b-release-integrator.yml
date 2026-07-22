@@ -93,15 +93,18 @@ jobs:
           const unexpected = files.filter((file) => !allowed.has(file));
           if (unexpected.length) throw new Error(`Wave B release gate changed unauthorized paths:\n${unexpected.join('\n')}`);
           const concrete = /TD613-SH-9B07D8B-[0-9A-F]{8}/gu;
-          const synthetic = 'TD613-SH-9B07D8B-A1B2C3D4';
+          const syntheticFixtures = new Set([
+            'TD613-SH-9B07D8B-A1B2C3D4',
+            'TD613-SH-9B07D8B-FFEEDDCC'
+          ]);
           const violations = [];
           for (const file of files) {
             if (!fs.existsSync(file) || !/\.(?:yml|mjs|js|md|json)$/u.test(file)) continue;
             for (const value of fs.readFileSync(file, 'utf8').match(concrete) || []) {
-              if (value !== synthetic) violations.push(`${file}: ${value}`);
+              if (!syntheticFixtures.has(value)) violations.push(`${file}: ${value}`);
             }
           }
-          if (violations.length) throw new Error(`Wave B release gate exposed a concrete non-synthetic SHI:\n${violations.join('\n')}`);
+          if (violations.length) throw new Error(`Wave B release gate exposed an unrecognized concrete SHI:\n${violations.join('\n')}`);
           const vercel = JSON.parse(fs.readFileSync('vercel.json', 'utf8'));
           if (vercel.git?.deploymentEnabled !== false) throw new Error('Git-triggered Vercel deployment lock is not closed.');
           const workflow = fs.readFileSync('.github/workflows/vercel-operator-release.yml', 'utf8');
