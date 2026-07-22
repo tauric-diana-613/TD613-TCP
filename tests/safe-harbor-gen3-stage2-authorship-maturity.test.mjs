@@ -103,16 +103,16 @@ assert.match(short.bounded_interpretation.statement, /not recurrence-based autho
 
 const adversarial = await buildStage2AuthorshipMaturity({}, {
   segments: {
-    future_self: lane('future', (index) => index < 8 ? '.' : index < 16 ? '?!' : '!!!'),
+    future_self: lane('future', (index) => index < 6 ? '.' : index < 12 ? '?!' : '!!!'),
     past_self: lane('past', (index) => index % 2 ? '?' : '.'),
-    higher_self: lane('higher', (index) => index < 12 ? '.' : '?')
+    higher_self: lane('higher', (index) => index < 6 ? '.' : index < 12 ? '?' : '!')
   }
 });
 const adversarialStates = [
   ...Object.values(adversarial.within_lane_invariants.future_self.feature_families).map((record) => record.state),
   ...Object.values(adversarial.cross_lane_invariants.feature_families).map((record) => record.state)
 ];
-assert.ok(adversarialStates.includes('unstable') || adversarialStates.includes('context-responsive'), 'adversarial register change must not be laundered into universal stability');
+assert.ok(adversarialStates.includes('unstable') || adversarialStates.includes('context-responsive'), 'adversarial register change inside the measured 360-word field must not be laundered into universal stability');
 
 const packet = {
   schema_version: 'td613.safe-harbor.packet/v1',
