@@ -15,6 +15,9 @@ This folder tracks the current Safe Harbor release doctrine.
 
 ## Core docs
 
+- [Gen3 forensic authorship maturity, Blind Custody, Restorative Stylodynamics, and Temporal Bloom specification](./forensic-authorship-maturity-temporal-bloom-spec.md)
+- [Blind Custody Challenge specification](./blind-custody-challenge-spec-v0.1.md)
+- [Restorative Stylodynamics and Perturbation Invariance Mapping research annex](./restorative-stylodynamics-perturbation-invariance-annex-v0.1.md)
 - [Claim limits](./claim-limits.md)
 - [Operator protocol](./operator-protocol.md)
 - [Verification guide](./verification-guide.md)
@@ -50,6 +53,8 @@ npm run test:safe-harbor:phase9.1c
 ## Claim ceiling
 
 A TD613 Safe Harbor packet is a custody and replay instrument. It does not prove civil identity, legal identity, public law approval, state recognition, authorship ownership, or v3 supremacy.
+
+The Gen3 research annex may strengthen packet-internal evidence through blinded holdouts, declared controls, controlled perturbations, null models, and entrant countersignature. Those additions do not erase the claim ceiling or convert the PUA glyph into independent proof of identity or universal authorship.
 
 ## Covenant key handling
 
