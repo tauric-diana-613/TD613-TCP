@@ -15,6 +15,8 @@ This folder tracks the current Safe Harbor release doctrine.
 9. Gen3 Stage 1 report constitution and evidence contract
 10. Gen3 Stage 2 authorship maturity and null-control engine
 11. Gen3 Release Wave A deployed once, observed post-propagation, and relocked
+12. Gen3 Research Track R code-complete, research-gated, and unpromoted
+13. Gen3 Stage 3 Temporal Bloom and provenance presentation under validation
 
 ## Core docs
 
@@ -27,6 +29,7 @@ This folder tracks the current Safe Harbor release doctrine.
 - [Blind Custody Challenge specification](./blind-custody-challenge-spec-v0.1.md)
 - [Restorative Stylodynamics and Perturbation Invariance Mapping research annex](./restorative-stylodynamics-perturbation-invariance-annex-v0.1.md)
 - [Gen3 Research Track R implementation receipt](./gen3-track-r-implementation-receipt.md)
+- [Gen3 Stage 3 validation receipt](./gen3-stage3-validation-receipt.md)
 - [Claim limits](./claim-limits.md)
 - [Operator protocol](./operator-protocol.md)
 - [Verification guide](./verification-guide.md)
@@ -55,7 +58,7 @@ Release Wave A deployed source `86cf1af84e69998ae195e53ef64372e35d8c6745` to `ht
 
 Release run `29957000564` held the initial browser observation during deployment propagation. Route-matrix run `29957916811` later confirmed every clean and canonical Gen3 route at HTTP `200`. Observer-log run `29958344250` exposed a separate false source-marker expectation. Corrected read-only observer run `29958834895` then passed the complete production battery against the same deployed source at `2026-07-22T21:21:51.287Z`, with no second deployment or lock mutation.
 
-Research Track R remains separately gated. Stage 3 and Release Wave B remain pending.
+Research Track R landed through PR #538 / commit `f1e96ab5b2db2bdf096c7dbcb3a8bbb8cb4351b9`; its production promotion remains withheld. Stage 3 and Release Wave B remain pending validation and release.
 
 ## Run before editing Safe Harbor authority surfaces
 
@@ -73,6 +76,12 @@ For the complete Gen3 Wave A core, run:
 
 ```bash
 npm run test:safe-harbor:gen3:wave-a
+```
+
+For the complete Gen3 Wave B candidate, run:
+
+```bash
+npm run test:safe-harbor:gen3:wave-b
 ```
 
 ## Claim ceiling

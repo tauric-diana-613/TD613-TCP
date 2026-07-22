@@ -100,7 +100,9 @@
     "diag:full": "node scripts/run-diagnostics.mjs full",
     "diag:battery": "node scripts/run-diagnostics.mjs full",
     "validate": "node scripts/validate-samples.mjs",
-    "test:safe-harbor:gen3:track-r": "node tests/safe-harbor-gen3-track-r-blind-custody.test.mjs && node tests/safe-harbor-gen3-track-r-perturbation-invariance.test.mjs && node tests/safe-harbor-gen3-track-r-gate.test.mjs && node tests/safe-harbor-gen3-track-r-schema-contract.test.mjs"
+    "test:safe-harbor:gen3:track-r": "node tests/safe-harbor-gen3-track-r-blind-custody.test.mjs && node tests/safe-harbor-gen3-track-r-perturbation-invariance.test.mjs && node tests/safe-harbor-gen3-track-r-gate.test.mjs && node tests/safe-harbor-gen3-track-r-schema-contract.test.mjs",
+    "test:safe-harbor:gen3:stage3": "node tests/safe-harbor-gen3-stage3-temporal-bloom.test.mjs && node tests/safe-harbor-gen3-stage3-provenance.test.mjs && node tests/safe-harbor-gen3-stage3-ui-contract.test.mjs && node tests/safe-harbor-gen3-stage3-renderer.test.mjs",
+    "test:safe-harbor:gen3:wave-b": "npm run test:safe-harbor:gen3:wave-a && npm run test:safe-harbor:gen3:stage3"
   },
   "devDependencies": {
     "jsdom": "^29.1.0"

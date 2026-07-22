@@ -15,6 +15,7 @@
     } catch (error) {}
   </script>
   <link rel="stylesheet" href="app/styles.css">
+  <link rel="stylesheet" href="app/safe-harbor-temporal-bloom.css?v=20260722-gen3-stage3">
   <link rel="stylesheet" href="app/safe-harbor-pr167-packet-vault-polish.css?v=20260617-packet-vault-tight-v5">
   <link rel="stylesheet" href="app/safe-harbor-housekeeping.css?v=202606282300">
   <link rel="stylesheet" href="app/safe-harbor-pr149-recall-hotfix.css?v=202606282300">
@@ -46,7 +47,7 @@
         <div class="status-strip ingress-status">
           <span class="coherence-sigil" id="coherenceSigilIngress" data-state="dormant" aria-hidden="true">米</span>
           <div class="status-pill" id="ingressRoutePill">membrane-only</div>
-          <div class="status-pill" id="ingressProgressPill">0 / 3 lanes</div>
+          <div class="status-pill" id="ingressProgressPill">temporal field</div>
           <div class="status-pill" id="ingressVaultPill">vault sealed</div>
         </div>
       </div>
@@ -76,8 +77,13 @@
           <p class="ingress-copy ingress-step-support" id="ingressStepSupport">Speak forward first. Let the membrane hear direction before it hears revision.</p>
 
           <div class="ingress-step-entry" id="ingressStepEntry">
-            <textarea id="ingressStepInput" class="ingress-textarea" placeholder="Speak forward through the membrane."></textarea>
-            <div class="ingress-meta" id="ingressStepMeta">No line held yet.</div>
+            <textarea id="ingressStepInput" class="ingress-textarea" placeholder="Speak forward through the membrane." aria-describedby="temporalBloomReassurance temporalBloomRecognition"></textarea>
+            <div class="temporal-bloom-shell" id="temporalBloom" data-lane="future_self" data-band="waiting" data-color="grey" data-mature="false" role="status" aria-live="polite" aria-atomic="true">
+              <p class="temporal-bloom-reassurance" id="temporalBloomReassurance">Write naturally. Repetition, fragments, pauses, and unfinished thoughts are welcome.</p>
+              <div class="temporal-bloom-line" id="temporalBloomLine" data-band="waiting" data-color="grey" aria-hidden="true"></div>
+              <p class="temporal-bloom-recognition" id="temporalBloomRecognition">This page is waiting with you.</p>
+            </div>
+            <div class="ingress-meta" id="ingressStepMeta">This page is waiting with you.</div>
           </div>
 
           <div class="ingress-seal-review" id="ingressSealReview" hidden>
@@ -351,6 +357,28 @@
               </div>
               <h2>Canonical packet before the seal</h2>
               <p class="surface-copy">This chamber holds the staged packet, the packet hash, the route recommendation, and the cadence witness before any cryptographic seal is allowed to bind.</p>
+              <section class="stage3-provenance-panel" id="stage3ProvenancePanel" data-td613-stage3-provenance="true" data-state="awaiting-packet" aria-labelledby="stage3ProvenanceTitle">
+                <div class="stage3-provenance-head">
+                  <div>
+                    <span class="surface-kicker">PUA Provenance Attestation</span>
+                    <h3 class="stage3-provenance-title" id="stage3ProvenanceTitle">Packet-scoped authorship and custody</h3>
+                  </div>
+                  <span class="surface-state" id="stage3Countersignature">UNSIGNED</span>
+                </div>
+                <div class="stage3-shi" id="stage3Shi">not issued</div>
+                <dl class="stage3-authority-grid">
+                  <dt>Principal</dt><dd id="stage3Principal">tauric.diana.613</dd>
+                  <dt>Root binding authority</dt><dd id="stage3BindingAuthority">2025-08-11T03:58:39Z</dd>
+                  <dt>Badge-protocol history</dt><dd id="stage3HistoricalAuthority">payload 5 · 2025-10-17</dd>
+                  <dt>Entrant credential authority</dt><dd id="stage3EntrantIntake">unavailable</dd>
+                  <dt>Countersignature authority</dt><dd id="stage3CountersignatureAuthority">UNSIGNED</dd>
+                  <dt>Presentation authority</dt><dd id="stage3PresentationAuthority">unavailable</dd>
+                </dl>
+                <p class="stage3-authority-reduction" id="stage3AuthorityReduction">Packet evidence unavailable.</p>
+                <p class="stage3-export-state" id="stage3ExportState">SVG export held until packet issuance.</p>
+                <p class="stage3-claim-ceiling" id="stage3ClaimCeiling">Independent identity adjudication and universal authorship attribution are not claimed.</p>
+                <button class="control" id="stage3CountersignButton" type="button" disabled>Countersign Packet-Scoped Authorship &amp; Custody</button>
+              </section>
               <div class="metric-block roomy">
                 <div class="metric-row"><span class="label">SHI #</span><span class="value" id="badgeStatusReadout">not issued</span></div>
                 <div class="metric-row"><span class="label">Harbor recommendation</span><span class="value" id="harborReadout">pending</span></div>
@@ -512,7 +540,8 @@
   <script src="../operator-receipt.js?v=202606282250"></script>
   <script src="app/binding-provenance.js?v=202607022110"></script>
   <script src="app/data.js?v=202607022110"></script>
-  <script src="app/main.js?v=202607022110"></script>
+  <script src="app/main.js?v=20260722-gen3-stage3"></script>
+  <script type="module" src="app/safe-harbor-temporal-bloom.js?v=20260722-gen3-stage3"></script>
   <script src="app/safe-harbor-housekeeping.js?v=202606290035"></script>
   <script src="app/safe-harbor-pr169-packet-vault-direct.js?v=202606290700" defer></script>
 </body>
