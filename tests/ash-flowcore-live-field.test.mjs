@@ -67,14 +67,14 @@ assert.match(portal, /if \(node\?\.nodeType !== 1\) return false/);
 assert.match(portal, /records\.some\(mutationTouchesPortal\)/);
 assert.doesNotMatch(portal, /setInterval\s*\(|requestAnimationFrame\s*\(/);
 
-assert.match(portalLoader, /v0\.2-browser-aia-gate/);
+assert.match(portalLoader, /v0\.3-observer-hotfix/);
 assert.match(portalLoader, /const browser = Boolean\(host && doc\?\.documentElement\)/);
 assert.match(portalLoader, /const eligible = browser && !legacy/);
 assert.match(portalLoader, /if \(!browser\)/);
 assert.match(portalLoader, /params\.get\('presentation'\) === 'legacy'/);
 assert.match(portalLoader, /eligible:false/);
 assert.match(portalLoader, /reason:'EXPLICIT_LEGACY_PRESENTATION'/);
-assert.match(portalLoader, /import\('\.\/ash-flowcore-ingress-portal\.js\?v=20260721-flowcore-live-field-v2'\)/);
+assert.match(portalLoader, /import\('\.\/ash-flowcore-ingress-portal\.js\?v=20260722-flowcore-observer-hotfix-v3'\)/);
 assert.doesNotMatch(portalLoader, /setInterval\s*\(|requestAnimationFrame\s*\(/);
 
 assert.match(boundary, /v0\.4-pointer-governs-case-recovery-replay-stays-open/);
@@ -109,7 +109,7 @@ assert.doesNotMatch(ingressSpacing, /setInterval\s*\(|requestAnimationFrame\s*\(
 assert.match(bridge, /ash-session-boundary\.js\?v=20260721-flowcore-live-field-v1/);
 assert.match(bridge, /ash-ingress-copy-spacing\.js\?v=20260721-flowcore-live-field-v1/);
 assert.match(bridge, /ash-flowcore-pedagogy-field\.js\?v=20260721-flowcore-live-field-v1/);
-assert.match(bridge, /ash-flowcore-ingress-portal-loader\.js\?v=20260721-flowcore-live-field-v2/);
+assert.match(bridge, /ash-flowcore-ingress-portal-loader\.js\?v=20260722-flowcore-observer-hotfix-v3/);
 assert.doesNotMatch(bridge, /import '\.\/ash-flowcore-ingress-portal\.js/);
 
 console.log('ash-flowcore-live-field.test.mjs passed');
