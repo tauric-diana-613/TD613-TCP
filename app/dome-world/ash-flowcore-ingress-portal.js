@@ -1,4 +1,4 @@
-export const ASH_FLOWCORE_INGRESS_PORTAL_VERSION = 'td613.ash.flowcore-ingress-portal/v0.7-idempotent-observer-boundary';
+export const ASH_FLOWCORE_INGRESS_PORTAL_VERSION = 'td613.ash.flowcore-ingress-portal/v0.8-canonical-play-idempotent-boundary';
 
 const host = globalThis.window;
 const doc = globalThis.document;
@@ -154,7 +154,9 @@ function setAttribute(node, name, value) {
 
 function playFlowcoreField() {
   host.__td613AshFlowcoreField?.setPhase?.(0);
-  host.__td613AshFlowcoreField?.play?.();
+  const canonicalPlay = doc.querySelector('[data-aia-play]');
+  if (canonicalPlay) canonicalPlay.click();
+  else host.__td613AshFlowcoreField?.play?.();
 }
 
 function ensurePlayControl(field) {
