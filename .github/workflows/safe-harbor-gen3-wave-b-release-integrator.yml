@@ -120,11 +120,32 @@ jobs:
         run: rm scripts/apply-safe-harbor-gen3-wave-b-release-gate.mjs
 
       - name: Commit tested Wave B release gate
+        id: writeback
+        shell: bash
         run: |
-          set -euo pipefail
-          git config user.name 'td613-safe-harbor-bot'
-          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
-          git add -A
-          git diff --cached --check
-          git commit -m 'Authorize Safe Harbor Gen3 Release Wave B'
-          git push origin HEAD:"${{ github.event.pull_request.head.ref }}"
+          set -o pipefail
+          {
+            set -euo pipefail
+            HEAD_REF="${{ github.event.pull_request.head.ref }}"
+            echo "head_ref=$HEAD_REF"
+            echo "local_head=$(git rev-parse HEAD)"
+            echo "remote_head=$(git ls-remote --heads origin "$HEAD_REF" | awk '{print $1}')"
+            git status --short
+            git config user.name 'td613-safe-harbor-bot'
+            git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+            git add -A
+            git diff --cached --check
+            git diff --cached --name-status
+            git commit -m 'Authorize Safe Harbor Gen3 Release Wave B'
+            echo "committed_head=$(git rev-parse HEAD)"
+            git push origin HEAD:"$HEAD_REF"
+          } 2>&1 | tee /tmp/safe-harbor-wave-b-writeback.log
+
+      - name: Preserve Wave B writeback failure log
+        if: failure() && steps.writeback.conclusion == 'failure'
+        uses: actions/upload-artifact@v4
+        with:
+          name: safe-harbor-gen3-wave-b-writeback-failure
+          path: /tmp/safe-harbor-wave-b-writeback.log
+          if-no-files-found: error
+          retention-days: 7
