@@ -14,12 +14,14 @@ on:
       - 'app/dome-world/docs/ASH_KEEP_AIA2_PRODUCTION_WITNESS_LAW_RECEIPT_V0_1.md'
       - 'app/dome-world/docs/ASH_KEEP_AIA3_RELEASE_RECONCILIATION_RECEIPT_V0_1.md'
       - 'app/dome-world/docs/ASH_KEEP_AIA3_RELOCK_SAFETY_RECEIPT_V0_1.md'
+      - 'docs/safe-harbor/gen3-wave-a-release-gate-receipt.md'
       - 'app/dome-world/fixtures/pedagogue/flowcore-promotion-evidence.json'
       - 'app/dome-world/route-burden-observatory.css'
       - 'app/dome-world/flowcore-promotion-dashboard.css'
       - 'app/engine/flowcore-station-propagation.js'
       - 'scripts/flowcore-runtime-browser-probe.mjs'
       - 'scripts/flowcore-release-content-probe.mjs'
+      - 'scripts/safe-harbor-gen3-wave-a-production-probe.mjs'
       - 'tests/flowcore-p0-p10-completion.test.mjs'
       - 'tests/flowcore-production-promotion.test.mjs'
       - 'tests/flowcore-runtime-browser-probe.test.mjs'
@@ -79,7 +81,7 @@ jobs:
           while IFS= read -r path; do
             [[ -z "$path" ]] && continue
             case "$path" in
-              app/dome-world/docs/*|tests/flowcore-p0-p10-completion.test.mjs|.github/workflows/flowcore-p0-p10-final-stitch.yml) ;;
+              app/dome-world/docs/*|docs/safe-harbor/*|tests/flowcore-p0-p10-completion.test.mjs|.github/workflows/flowcore-p0-p10-final-stitch.yml) ;;
               *) MODE='runtime-release' ;;
             esac
           done <<< "$CHANGED"
@@ -92,8 +94,9 @@ jobs:
           if ! grep -Fxq 'app/dome-world/docs/FLOWCORE_PRODUCTION_OBSERVATION_REPAIR_RECEIPT_V0_1.md' <<< "$CHANGED" \
             && ! grep -Fxq 'app/dome-world/docs/ASH_KEEP_AIA2_PRODUCTION_WITNESS_LAW_RECEIPT_V0_1.md' <<< "$CHANGED" \
             && ! grep -Fxq 'app/dome-world/docs/ASH_KEEP_AIA3_RELEASE_RECONCILIATION_RECEIPT_V0_1.md' <<< "$CHANGED" \
-            && ! grep -Fxq 'app/dome-world/docs/ASH_KEEP_AIA3_RELOCK_SAFETY_RECEIPT_V0_1.md' <<< "$CHANGED"; then
-            echo 'Production observation repair requires a named Flow-Core or Ash witness receipt.' >&2
+            && ! grep -Fxq 'app/dome-world/docs/ASH_KEEP_AIA3_RELOCK_SAFETY_RECEIPT_V0_1.md' <<< "$CHANGED" \
+            && ! grep -Fxq 'docs/safe-harbor/gen3-wave-a-release-gate-receipt.md' <<< "$CHANGED"; then
+            echo 'Production release change requires a named Flow-Core, Ash, or Safe Harbor witness receipt.' >&2
             exit 1
           fi
 
@@ -119,8 +122,10 @@ jobs:
           app/dome-world/route-burden-observatory.css
           app/engine/flowcore-station-propagation.js
           docs/STRATEGIC_VERCEL_DEPLOYMENT_LAW.md
+          docs/safe-harbor/gen3-wave-a-release-gate-receipt.md
           scripts/flowcore-release-content-probe.mjs
           scripts/flowcore-runtime-browser-probe.mjs
+          scripts/safe-harbor-gen3-wave-a-production-probe.mjs
           tests/flowcore-p0-p10-completion.test.mjs
           tests/flowcore-production-observation.test.mjs
           tests/flowcore-production-promotion.test.mjs
@@ -133,13 +138,13 @@ jobs:
           while IFS= read -r path; do
             [[ -z "$path" ]] && continue
             grep -Fxq "$path" <<< "$ALLOWED" || {
-              echo "Production observation repair changed an unauthorized path: $path" >&2
+              echo "Production release change altered an unauthorized path: $path" >&2
               exit 1
             }
           done <<< "$CHANGED"
 
           if grep -Eq '^(api/|vercel\.json$|app/dome-world/ash/|app/dome-world/data/)' <<< "$CHANGED"; then
-            echo 'Production observation repair may not mutate serverless, Ash, canonical, or promotion configuration.' >&2
+            echo 'Production release change may not mutate serverless, Ash, canonical, or promotion configuration.' >&2
             exit 1
           fi
-          echo 'Completion mode: bounded Ash Keep AIA3 relock safety repair.'
+          echo 'Completion mode: bounded named production release gate.'
