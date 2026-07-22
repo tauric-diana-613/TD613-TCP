@@ -1,4 +1,4 @@
-export const ASH_CLOSE_INGRESS_ANIMATION_BOUNDARY_VERSION = 'td613.ash.close-ingress-animation-boundary/v0.5-ordered-ingress-copy';
+export const ASH_CLOSE_INGRESS_ANIMATION_BOUNDARY_VERSION = 'td613.ash.close-ingress-animation-boundary/v0.6-bidirectional-pointer-session';
 
 const host = globalThis.window;
 const doc = globalThis.document;
@@ -111,6 +111,66 @@ function reconcileIngressDemoControls() {
   return true;
 }
 
+function openPresentationMatches() {
+  if (!activeCasePointer()) return false;
+  const launch = byId('launch');
+  const main = doc.querySelector('body > main');
+  const rail = doc.querySelector('body > .workspace-rail');
+  return Boolean(launch && main && rail)
+    && doc.documentElement.dataset.ashSessionOpen === 'true'
+    && doc.body.dataset.ashAiaCaseOpen === 'true'
+    && launch.classList.contains('hidden')
+    && launch.hasAttribute('inert')
+    && launch.getAttribute('aria-hidden') === 'true'
+    && !main.hasAttribute('inert')
+    && main.getAttribute('aria-hidden') !== 'true'
+    && !rail.hasAttribute('inert')
+    && rail.getAttribute('aria-hidden') !== 'true';
+}
+
+function releaseOpenPresentation(reason = 'ACTIVE_POINTER_PRESENT') {
+  if (!doc?.documentElement || !activeCasePointer() || enforcing) return false;
+  if (openPresentationMatches()) return true;
+  enforcing = true;
+  try {
+    const launch = byId('launch');
+    const main = doc.querySelector('body > main');
+    const rail = doc.querySelector('body > .workspace-rail');
+    ++settleToken;
+
+    setData(doc.documentElement, 'ashSessionOpen', 'true');
+    setData(doc.documentElement, 'ashOpenIngressBoundary', reason);
+    setData(doc.body, 'ashAiaCaseOpen', 'true');
+    delete doc.body.dataset.ashCaseClosed;
+    doc.documentElement.classList.add('ash-has-current-case');
+
+    launch?.classList.add('hidden');
+    launch?.setAttribute('inert', '');
+    launch?.setAttribute('aria-hidden', 'true');
+    setInert(main, false);
+    setInert(rail, false);
+    host.__td613AshIngressLayout?.openSession?.();
+    setData(doc.documentElement, 'ashMembraneReady', 'true');
+    host.dispatchEvent(new CustomEvent('td613:ash:open-workspace-restored', {
+      detail:{ version:ASH_CLOSE_INGRESS_ANIMATION_BOUNDARY_VERSION, reason, case_pointer:activeCasePointer() }
+    }));
+    return true;
+  } finally {
+    enforcing = false;
+  }
+}
+
+function settleOpenPresentation(reason) {
+  const token = ++settleToken;
+  const settle = () => {
+    if (token !== settleToken || !activeCasePointer()) return;
+    releaseOpenPresentation(reason);
+  };
+  queueMicrotask(settle);
+  host.requestAnimationFrame(() => host.requestAnimationFrame(settle));
+  for (const delay of [80, 240, 800]) host.setTimeout(settle, delay);
+}
+
 function closedPresentationMatches() {
   if (!doc?.documentElement || activeCasePointer()) return false;
   const launch = byId('launch');
@@ -218,7 +278,9 @@ function installObserver() {
   if (observer) return;
   observer = new MutationObserver(() => {
     ensureAnimationAffordance();
-    if (!activeCasePointer() && !closedPresentationMatches()) queueMicrotask(() => enforceClosedPresentation('POINTER_ABSENT_MUTATION_REPAIR'));
+    const pointer = activeCasePointer();
+    if (!pointer && !closedPresentationMatches()) queueMicrotask(() => enforceClosedPresentation('POINTER_ABSENT_MUTATION_REPAIR'));
+    if (pointer && !openPresentationMatches()) queueMicrotask(() => releaseOpenPresentation('POINTER_PRESENT_MUTATION_REPAIR'));
   });
   observer.observe(doc.documentElement, { attributes:true, attributeFilter:['class','data-ash-session-open'] });
   observer.observe(doc.body, { attributes:true, childList:true, subtree:true, attributeFilter:['class','hidden','inert','aria-hidden','data-ash-aia-case-open'] });
@@ -231,24 +293,29 @@ export function installAshCloseIngressAnimationBoundary() {
   ensureAnimationAffordance();
   installObserver();
 
-  for (const type of ['core-ready', 'aia-ready', 'aia3-ready', 'composition-stable', 'case-closed']) {
+  for (const type of ['core-ready', 'aia-ready', 'aia3-ready', 'composition-stable', 'case-closed', 'case-opened', 'profile-demo-hydrated']) {
     host.addEventListener(`td613:ash:${type}`, () => {
       if (type === 'core-ready') installPointerAuthoritativeCoreView();
       ensureAnimationAffordance();
       if (type === 'case-closed') settleClosedPresentation('CASE_CLOSED_EVENT');
+      if (['case-opened', 'profile-demo-hydrated'].includes(type)) settleOpenPresentation(`${type.toUpperCase().replaceAll('-', '_')}_EVENT`);
     });
   }
   host.matchMedia?.('(prefers-reduced-motion: reduce)')?.addEventListener?.('change', ensureAnimationAffordance);
-  if (!activeCasePointer()) settleClosedPresentation('BOOT_WITHOUT_ACTIVE_POINTER');
+  if (activeCasePointer()) settleOpenPresentation('BOOT_WITH_ACTIVE_POINTER');
+  else settleClosedPresentation('BOOT_WITHOUT_ACTIVE_POINTER');
 
   host.__td613AshCloseIngressAnimationBoundary = Object.freeze({
     version:ASH_CLOSE_INGRESS_ANIMATION_BOUNDARY_VERSION,
-    enforce:reason => enforceClosedPresentation(reason || 'EXPLICIT_ENFORCEMENT'),
+    enforce:reason => activeCasePointer()
+      ? releaseOpenPresentation(reason || 'EXPLICIT_OPEN_ENFORCEMENT')
+      : enforceClosedPresentation(reason || 'EXPLICIT_CLOSED_ENFORCEMENT'),
     refresh:() => {
       installPointerAuthoritativeCoreView();
       ensureAnimationAffordance();
-      reconcileIngressDemoControls();
-      return activeCasePointer() ? false : enforceClosedPresentation('EXPLICIT_REFRESH');
+      return activeCasePointer()
+        ? releaseOpenPresentation('EXPLICIT_OPEN_REFRESH')
+        : enforceClosedPresentation('EXPLICIT_CLOSED_REFRESH');
     },
     current:() => Object.freeze({
       case_pointer:activeCasePointer(),
@@ -259,6 +326,7 @@ export function installAshCloseIngressAnimationBoundary() {
       explanation_presentation:doc.documentElement.dataset.ashExplanationPresentation || null,
       core_pointer_authoritative:Boolean(host.__td613AshKeep?.pointer_authoritative_session),
       closed_presentation_matches:closedPresentationMatches(),
+      open_presentation_matches:openPresentationMatches(),
       demo_control_busy:byId('startDemo')?.getAttribute('aria-busy') === 'true'
     })
   });
