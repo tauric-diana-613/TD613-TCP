@@ -45,3 +45,5 @@ import './ash-return-ready-bundle.js?v=20260721-legal-demo-ux-v1';
 import './ash-custodian-return.js?v=20260721-legal-demo-ux-v1';
 import './ash-custodian-return-closure.js?v=20260721-legal-demo-ux-v1';
 import './ash-emergency-stability-contract.js?v=20260721-legal-demo-ux-v1';
+// Final presentation authority: manual scroll wins, setup remains actionable, and descenders remain visible.
+import './ash-reviewability-repair.js?v=20260722-reviewability-v1';
