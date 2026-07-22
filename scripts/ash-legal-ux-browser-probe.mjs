@@ -104,7 +104,7 @@ await page.addInitScript(() => {
   addEventListener('DOMContentLoaded', sample);
 });
 
-const report = { schema:'td613.ash.legal-ux-browser/v0.5-traced-finite-explanation', browser:browserName, status:'RUNNING', errors, http_errors:httpErrors, observations:{} };
+const report = { schema:'td613.ash.legal-ux-browser/v0.6-flowcore-consequence-field', browser:browserName, status:'RUNNING', errors, http_errors:httpErrors, observations:{} };
 try {
   await page.goto(`${base}/dome-world/ash-keep.html?presentation=aia&profile=legal&nonce=${Date.now()}`, { waitUntil:'domcontentloaded' });
   await waitForStableIngress(page);
@@ -171,8 +171,29 @@ try {
   await page.waitForFunction(() => document.documentElement.dataset.ashExplanationMotion === 'COMPLETE', null, { timeout:10_000 });
   const animationTrace = await page.evaluate(() => JSON.parse(document.documentElement.dataset.ashExplanationTrace || '[]'));
   assert([0, 1, 2, 3].every(step => animationTrace.includes(step)), `Explanation trace incomplete: ${JSON.stringify(animationTrace)}.`);
-  assert(await page.locator('.ash-ux-motion-track').isVisible(), 'Visible explanation track missing.');
-  assert(await page.locator('.ash-ux-motion-track').getAttribute('data-step') === '3', 'Explanation track did not finish on Exact work.');
+  await page.waitForFunction(() => document.documentElement.dataset.ashFlowcorePhase === 'REST'
+    && window.__td613AshFlowcoreField?.current?.().phase_name === 'REST', null, { timeout:10_000 });
+  const flowcore = await page.evaluate(() => {
+    const field = document.querySelector('.ash-flowcore-field');
+    const rail = document.querySelector('.ash-ux-motion-track');
+    const fieldStyle = field ? getComputedStyle(field) : null;
+    const railStyle = rail ? getComputedStyle(rail) : null;
+    const current = window.__td613AshFlowcoreField?.current?.() || null;
+    return {
+      visible:Boolean(field && fieldStyle?.display !== 'none' && fieldStyle?.visibility !== 'hidden' && Number(fieldStyle?.opacity) > 0 && field.getBoundingClientRect().height > 260),
+      old_track_hidden:!rail || railStyle?.display === 'none' || railStyle?.visibility === 'hidden',
+      phase:current?.phase_name || null,
+      artifact_required:current?.artifact_required,
+      channels:current?.channels || [],
+      authority:current?.authority || null
+    };
+  });
+  assert(flowcore.visible, 'Flow-Core consequence field missing after Legal explanation.');
+  assert(flowcore.old_track_hidden, 'Obsolete four-dot explanation track remained visible.');
+  assert(flowcore.phase === 'REST', `Flow-Core field did not settle at REST: ${flowcore.phase}.`);
+  assert(flowcore.artifact_required === false, 'Flow-Core explanation falsely required an artifact.');
+  assert(['glyph','motion','shape','language','inspection'].every(channel => flowcore.channels.includes(channel)), `Flow-Core channels incomplete: ${flowcore.channels.join(', ')}.`);
+  assert(flowcore.authority?.automatic_ash_action === false && flowcore.authority?.human_closure_required === true, 'Flow-Core presentation authority ceiling drifted.');
 
   await page.setViewportSize({ width:390, height:844 });
   await page.locator('[data-premium-workspace="capsule"]').click();
@@ -196,7 +217,7 @@ try {
   assert(errors.length === 0, `Browser errors: ${errors.join(' | ')}`);
   assert(httpErrors.length === 0, `HTTP errors: ${httpErrors.join(' | ')}`);
   report.status = 'PASS';
-  report.observations = { composition_samples:trace.length, hydrating_samples:hydrating.length, map, work, mobile, animation_trace:animationTrace };
+  report.observations = { composition_samples:trace.length, hydrating_samples:hydrating.length, map, work, mobile, animation_trace:animationTrace, flowcore };
 } catch (error) {
   report.status = 'HOLD';
   report.hold = { message:error.message, stack:error.stack };
