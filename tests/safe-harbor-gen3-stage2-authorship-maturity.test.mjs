@@ -64,7 +64,9 @@ for (const laneKey of ['future_self', 'past_self', 'higher_self']) {
   assert.ok(analysis.checkpoints[0].observed_words >= 120);
   assert.ok(analysis.checkpoints[1].observed_words >= 240);
   assert.ok(analysis.checkpoints[2].observed_words >= 360);
-  assert.equal(analysis.local_windows.reduce((sum, window) => sum + window.observed_words, 0), analysis.observed_words);
+  const coveredWords = analysis.local_windows.reduce((sum, window) => sum + window.observed_words, 0);
+  assert.ok(coveredWords >= 360, 'the three canonical local windows must cover the mature 360-word field');
+  assert.ok(coveredWords <= analysis.observed_words, 'canonical local windows may leave surplus text outside the Stage 2 comparison field');
   assert.ok(Object.values(analysis.feature_families).every((record) => record.evidence_id.startsWith('AEW-')));
 }
 
