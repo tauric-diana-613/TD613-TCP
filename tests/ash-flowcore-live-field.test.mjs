@@ -4,6 +4,7 @@ import fs from 'node:fs';
 const field = fs.readFileSync('app/dome-world/ash-flowcore-pedagogy-field.js', 'utf8');
 const css = fs.readFileSync('app/dome-world/ash-flowcore-pedagogy-field.css', 'utf8');
 const portal = fs.readFileSync('app/dome-world/ash-flowcore-ingress-portal.js', 'utf8');
+const portalLoader = fs.readFileSync('app/dome-world/ash-flowcore-ingress-portal-loader.js', 'utf8');
 const boundary = fs.readFileSync('app/dome-world/ash-session-boundary.js', 'utf8');
 const ingressSpacing = fs.readFileSync('app/dome-world/ash-ingress-copy-spacing.js', 'utf8');
 const bridge = fs.readFileSync('app/dome-world/ash-workspace-bridge.js', 'utf8');
@@ -56,6 +57,13 @@ assert.match(portal, /#guidedLaunchPromise\.ash-flowcore-ingress-host/);
 assert.match(portal, /max-height:calc\(100vh - 44px\)!important/);
 assert.doesNotMatch(portal, /setInterval\s*\(|requestAnimationFrame\s*\(/);
 
+assert.match(portalLoader, /v0\.1-legacy-bypass/);
+assert.match(portalLoader, /params\.get\('presentation'\) === 'legacy'/);
+assert.match(portalLoader, /eligible:false/);
+assert.match(portalLoader, /reason:'EXPLICIT_LEGACY_PRESENTATION'/);
+assert.match(portalLoader, /import\('\.\/ash-flowcore-ingress-portal\.js\?v=20260721-flowcore-live-field-v2'\)/);
+assert.doesNotMatch(portalLoader, /setInterval\s*\(|requestAnimationFrame\s*\(/);
+
 assert.match(boundary, /v0\.4-pointer-governs-case-recovery-replay-stays-open/);
 assert.match(boundary, /if \(!activePointer\) return closedCurrent\(\)/);
 assert.match(boundary, /function capsuleRecoveryOpen\(\)/);
@@ -88,6 +96,7 @@ assert.doesNotMatch(ingressSpacing, /setInterval\s*\(|requestAnimationFrame\s*\(
 assert.match(bridge, /ash-session-boundary\.js\?v=20260721-flowcore-live-field-v1/);
 assert.match(bridge, /ash-ingress-copy-spacing\.js\?v=20260721-flowcore-live-field-v1/);
 assert.match(bridge, /ash-flowcore-pedagogy-field\.js\?v=20260721-flowcore-live-field-v1/);
-assert.match(bridge, /ash-flowcore-ingress-portal\.js\?v=20260721-flowcore-live-field-v1/);
+assert.match(bridge, /ash-flowcore-ingress-portal-loader\.js\?v=20260721-flowcore-live-field-v2/);
+assert.doesNotMatch(bridge, /import '\.\/ash-flowcore-ingress-portal\.js/);
 
 console.log('ash-flowcore-live-field.test.mjs passed');
