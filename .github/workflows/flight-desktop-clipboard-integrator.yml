@@ -77,6 +77,7 @@ jobs:
             'app/safe-harbor/td613-flight.html',
             'app/safe-harbor/td613-flight-clipboard-fidelity.js',
             'tests/td613-flight-desktop-clipboard.test.mjs',
+            'tests/tcp-smoke.test.mjs',
             'scripts/apply-flight-desktop-clipboard-repair.mjs',
             'package.json'
           ]);
