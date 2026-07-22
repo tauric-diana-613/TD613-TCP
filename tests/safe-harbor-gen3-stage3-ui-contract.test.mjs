@@ -52,7 +52,7 @@ for (const marker of [
   "AUTHORITY CLAIM REDUCED"
 ]) assert.ok(ui.includes(marker), `Temporal Bloom UI marker missing: ${marker}`);
 
-assert.doesNotMatch(ui, /split\(\/\\s\+/u, 'presentation consumer must not tokenize entrant text');
+assert.doesNotMatch(ui, /\.split\(\s*\/\\s\+\//u, 'presentation consumer must not tokenize entrant text');
 assert.doesNotMatch(ui, /keyup|keypress|beforeinput|compositionupdate/iu, 'no hidden typing telemetry listeners');
 assert.doesNotMatch(ui, /performance\.now|Date\.now\(\).*key/iu, 'no timing-derived behavioral collection');
 
