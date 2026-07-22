@@ -27,6 +27,8 @@ import './ash-premium-readiness-bridge.js?v=20260721-legal-demo-ux-v1';
 import './ash-guided-operator-ui.js?v=20260721-legal-demo-ux-v1';
 import './ash-premium-compatibility.js?v=20260721-legal-demo-ux-v1';
 import './ash-workspace-navigation.js?v=20260721-legal-demo-ux-v1';
+// Keep title, Capsule recovery guidance, and primary ingress explanation in separate readable lanes.
+import './ash-ingress-copy-spacing.js?v=20260721-flowcore-live-field-v1';
 import './ash-ui-ux-rescue.js?v=20260721-legal-demo-ux-v1';
 // Live Flow-Core interprets the existing explicit lesson clock; it owns no Ash action or ambient scheduler.
 import './ash-flowcore-pedagogy-field.js?v=20260721-flowcore-live-field-v1';
