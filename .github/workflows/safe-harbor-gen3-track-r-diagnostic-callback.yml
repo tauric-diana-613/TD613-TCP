@@ -1,0 +1,100 @@
+name: Safe Harbor Gen3 Research Track R diagnostic callback
+
+on:
+  pull_request:
+    branches:
+      - main
+    types:
+      - opened
+      - reopened
+      - synchronize
+      - ready_for_review
+
+permissions:
+  contents: read
+  issues: write
+  pull-requests: read
+
+concurrency:
+  group: safe-harbor-gen3-track-r-diagnostic-callback
+  cancel-in-progress: true
+
+jobs:
+  diagnose:
+    if: github.event.pull_request.head.ref == 'safe-harbor-gen3-track-r-blind-custody-stylodynamics'
+    runs-on: ubuntu-latest
+    timeout-minutes: 45
+    steps:
+      - name: Check out exact Research Track R head
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Set up Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: '24'
+
+      - name: Run Track R tests and preserve logs
+        id: tests
+        shell: bash
+        run: |
+          set +e
+          mkdir -p artifacts/track-r-callback
+
+          node tests/safe-harbor-gen3-blind-custody.test.mjs > artifacts/track-r-callback/blind.log 2>&1
+          BLIND=$?
+          node tests/safe-harbor-gen3-restorative-stylodynamics.test.mjs > artifacts/track-r-callback/restorative.log 2>&1
+          RESTORATIVE=$?
+          node tests/safe-harbor-gen3-research-track-r.test.mjs > artifacts/track-r-callback/wrapper.log 2>&1
+          WRAPPER=$?
+
+          echo "blind=$BLIND" >> "$GITHUB_OUTPUT"
+          echo "restorative=$RESTORATIVE" >> "$GITHUB_OUTPUT"
+          echo "wrapper=$WRAPPER" >> "$GITHUB_OUTPUT"
+
+          {
+            echo '𝌋 Track R diagnostic callback'
+            echo
+            echo '```text'
+            echo "head_sha = $GITHUB_SHA"
+            echo "workflow_run = $GITHUB_SERVER_URL/$GITHUB_REPOSITORY/actions/runs/$GITHUB_RUN_ID"
+            echo "blind_custody_exit = $BLIND"
+            echo "restorative_stylodynamics_exit = $RESTORATIVE"
+            echo "research_track_wrapper_exit = $WRAPPER"
+            echo '```'
+            echo
+            for NAME in blind restorative wrapper; do
+              echo "### $NAME"
+              echo '```text'
+              tail -n 120 "artifacts/track-r-callback/$NAME.log"
+              echo '```'
+              echo
+            done
+            echo 'This callback reports test evidence only. It grants no promotion or deployment authority. ⟐'
+          } > artifacts/track-r-callback/comment.md
+
+          exit 0
+
+      - name: Post bounded diagnostics to the pull request
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          gh api "repos/$GITHUB_REPOSITORY/issues/${{ github.event.pull_request.number }}/comments" \
+            -f body="$(cat artifacts/track-r-callback/comment.md)"
+
+      - name: Preserve complete logs
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: safe-harbor-gen3-track-r-diagnostic-callback
+          path: artifacts/track-r-callback/
+          if-no-files-found: error
+          retention-days: 30
+
+      - name: Fail when a Track R test failed
+        if: always()
+        run: |
+          test '${{ steps.tests.outputs.blind }}' = '0'
+          test '${{ steps.tests.outputs.restorative }}' = '0'
+          test '${{ steps.tests.outputs.wrapper }}' = '0'
