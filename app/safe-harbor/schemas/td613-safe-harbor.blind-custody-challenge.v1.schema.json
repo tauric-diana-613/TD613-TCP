@@ -1,0 +1,110 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "td613.safe-harbor.blind-custody-challenge/v1",
+  "title": "TD613 Safe Harbor Blind Custody Challenge v1",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema_version",
+    "protocol",
+    "source_window_policy",
+    "source_window_checksums",
+    "selection",
+    "precommitment",
+    "frozen_profile",
+    "blinded_candidates",
+    "results",
+    "failure_registry",
+    "replay",
+    "presentation_authority",
+    "raw_text_included",
+    "result_digest"
+  ],
+  "properties": {
+    "schema_version": { "const": "td613.safe-harbor.blind-custody-challenge/v1" },
+    "protocol": {
+      "type": "object",
+      "required": [
+        "protocol_version",
+        "research_mode",
+        "baseline_intake_mandatory",
+        "explicit_consent_recorded",
+        "holdout_selected_before_profile",
+        "profile_frozen_before_reveal",
+        "candidate_order_blinded",
+        "adverse_results_preserved",
+        "raw_text_exported",
+        "keystroke_telemetry_collected",
+        "pause_timing_collected",
+        "external_identity_data_consumed"
+      ],
+      "properties": {
+        "protocol_version": { "const": "td613.safe-harbor.blind-custody-protocol/v1" },
+        "baseline_intake_mandatory": { "const": false },
+        "holdout_selected_before_profile": { "const": true },
+        "profile_frozen_before_reveal": { "const": true },
+        "candidate_order_blinded": { "const": true },
+        "adverse_results_preserved": { "const": true },
+        "raw_text_exported": { "const": false },
+        "keystroke_telemetry_collected": { "const": false },
+        "pause_timing_collected": { "const": false },
+        "external_identity_data_consumed": { "const": false }
+      }
+    },
+    "source_window_policy": {
+      "type": "object",
+      "required": ["sentence_aware", "lanes", "windows_per_lane", "target_words", "required_window_count", "non_overlapping_within_lane"],
+      "properties": {
+        "sentence_aware": { "const": true },
+        "lanes": { "const": ["future_self", "past_self", "higher_self"] },
+        "windows_per_lane": { "const": 3 },
+        "target_words": { "const": 120 },
+        "required_window_count": { "const": 9 },
+        "non_overlapping_within_lane": { "const": true }
+      }
+    },
+    "source_window_checksums": { "type": "object", "minProperties": 9, "maxProperties": 9 },
+    "selection": { "type": "object" },
+    "precommitment": {
+      "type": "object",
+      "required": [
+        "schema_version",
+        "precommitment_digest",
+        "candidate_count",
+        "required_candidate_classes",
+        "profile_frozen_before_reveal",
+        "post_reveal_profile_mutation_forbidden",
+        "raw_text_included"
+      ],
+      "properties": {
+        "schema_version": { "const": "td613.safe-harbor.blind-precommitment/v1" },
+        "candidate_count": { "const": 8 },
+        "profile_frozen_before_reveal": { "const": true },
+        "post_reveal_profile_mutation_forbidden": { "const": true },
+        "raw_text_included": { "const": false },
+        "precommitment_digest": { "type": "string", "pattern": "^sha256:[0-9a-f]{64}$" }
+      }
+    },
+    "frozen_profile": { "type": "object" },
+    "blinded_candidates": { "type": "array", "minItems": 8, "maxItems": 8 },
+    "results": {
+      "type": "object",
+      "required": ["outcome", "all_outcomes_permitted", "claim_ceiling"],
+      "properties": {
+        "outcome": { "enum": ["SUPPORTED", "INCONCLUSIVE", "FAILED", "CONTAMINATED", "PROMPT-DOMINATED", "IMITATION-COLLISION"] },
+        "all_outcomes_permitted": { "const": ["SUPPORTED", "INCONCLUSIVE", "FAILED", "CONTAMINATED", "PROMPT-DOMINATED", "IMITATION-COLLISION"] }
+      }
+    },
+    "failure_registry": { "type": "array" },
+    "replay": { "type": "object" },
+    "presentation_authority": {
+      "type": "object",
+      "required": ["svg_status", "authority_reduced", "renderer_may_suppress_adverse_result"],
+      "properties": {
+        "renderer_may_suppress_adverse_result": { "const": false }
+      }
+    },
+    "raw_text_included": { "const": false },
+    "result_digest": { "type": "string", "pattern": "^sha256:[0-9a-f]{64}$" }
+  }
+}
