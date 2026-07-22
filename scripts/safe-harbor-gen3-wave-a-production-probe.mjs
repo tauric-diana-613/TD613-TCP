@@ -1,9 +1,16 @@
 import assert from 'node:assert/strict';
 import { chromium } from 'playwright';
+import {
+  DEFAULT_ASSET_ATTEMPTS,
+  DEFAULT_ASSET_DELAY_MS,
+  WAVE_A_ASSETS
+} from './safe-harbor-gen3-wave-a-production-assets.mjs';
 
 const baseUrl = String(process.env.TD613_BASE_URL || 'https://td613.com').replace(/\/+$/u, '');
 const sourceCommit = String(process.env.TD613_SOURCE_PACKET_COMMIT || '').trim();
 const artifactDir = String(process.env.TD613_ARTIFACT_DIR || 'artifacts/safe-harbor-gen3-wave-a-production').replace(/\/+$/u, '');
+const assetAttempts = Math.max(1, Number.parseInt(process.env.TD613_SAFE_HARBOR_ASSET_ATTEMPTS || String(DEFAULT_ASSET_ATTEMPTS), 10));
+const assetDelayMs = Math.max(0, Number.parseInt(process.env.TD613_SAFE_HARBOR_ASSET_DELAY_MS || String(DEFAULT_ASSET_DELAY_MS), 10));
 
 if (!/^[0-9a-f]{40}$/u.test(sourceCommit)) {
   throw new Error('TD613_SOURCE_PACKET_COMMIT must be the exact authorized 40-character SHA.');
@@ -12,53 +19,52 @@ if (!/^[0-9a-f]{40}$/u.test(sourceCommit)) {
 const fs = await import('node:fs/promises');
 await fs.mkdir(artifactDir, { recursive: true });
 
-const assets = [
-  {
-    path: '/safe-harbor/',
-    markers: ['TD613 Safe Harbor', 'ingressStepInput', 'mintStagedPacket'],
-    cache: /no-store/u
-  },
-  {
-    path: '/safe-harbor/app/safe-harbor-gen3-evidence-contract.js',
-    markers: ['td613.safe-harbor.authorship-evidence/v1', 'validateGen3ShiExactMatch', 'historical_example'],
-    cache: /max-age=0/u
-  },
-  {
-    path: '/safe-harbor/app/safe-harbor-gen3-authorship-maturity.js',
-    markers: ['td613.safe-harbor.authorship-maturity/v1', 'buildStage2AuthorshipMaturity', 'prompt_vocabulary_excluded_from_authorship_features'],
-    cache: /max-age=0/u
-  },
-  {
-    path: '/safe-harbor/app/safe-harbor-gen3-stage2-controls.js',
-    markers: ['td613.safe-harbor.stage2-control-receipt/v1', 'chronology_destruction', 'adverse_results_preserved'],
-    cache: /max-age=0/u
-  },
-  {
-    path: '/safe-harbor/app/safe-harbor-native-finalizer.js',
-    markers: ['applyControlledGen3Stage2Prehash', 'includeGen3Stage2', 'authorship_evidence'],
-    cache: /max-age=0/u
-  },
-  {
-    path: '/safe-harbor/app/safe-harbor-packet-pipeline.js',
-    markers: ['attachStage2InterpretiveReport', 'attachStage2ControlReport', 'includeGen3Stage2: true'],
-    cache: /max-age=0/u
+function sleep(milliseconds) {
+  return new Promise((resolve) => setTimeout(resolve, milliseconds));
+}
+
+async function fetchReadyAsset(asset) {
+  let last = null;
+  for (let attempt = 1; attempt <= assetAttempts; attempt += 1) {
+    const response = await fetch(`${baseUrl}${asset.path}?td613-wave-a=${sourceCommit}&attempt=${attempt}`, {
+      cache: 'no-store',
+      headers: { 'Cache-Control': 'no-cache' }
+    });
+    const text = await response.text();
+    const missingMarkers = asset.markers.filter((marker) => !text.includes(marker));
+    const cacheControl = response.headers.get('cache-control') || '';
+    const cacheMatches = asset.cache.test(cacheControl);
+    last = {
+      response,
+      text,
+      missingMarkers,
+      cacheControl,
+      cacheMatches,
+      attempt
+    };
+    if (response.status === 200 && missingMarkers.length === 0 && cacheMatches) return last;
+    if (attempt < assetAttempts) await sleep(assetDelayMs);
   }
-];
+  assert.equal(last.response.status, 200, `${asset.path} must return HTTP 200 after ${assetAttempts} propagation attempts`);
+  assert.deepEqual(last.missingMarkers, [], `${asset.path} missing markers after ${assetAttempts} propagation attempts: ${last.missingMarkers.join(', ')}`);
+  assert.match(last.cacheControl, asset.cache, `${asset.path} cache policy drifted after ${assetAttempts} propagation attempts: ${last.cacheControl}`);
+  return last;
+}
 
 const assetObservations = [];
-for (const asset of assets) {
-  const response = await fetch(`${baseUrl}${asset.path}?td613-wave-a=${sourceCommit}`, {
-    cache: 'no-store',
-    headers: { 'Cache-Control': 'no-cache' }
-  });
-  const text = await response.text();
-  assert.equal(response.status, 200, `${asset.path} must return HTTP 200`);
-  for (const marker of asset.markers) assert.ok(text.includes(marker), `${asset.path} missing marker: ${marker}`);
-  const cacheControl = response.headers.get('cache-control') || '';
-  assert.match(cacheControl, asset.cache, `${asset.path} cache policy drifted: ${cacheControl}`);
-  const concreteShis = text.match(/TD613-SH-9B07D8B-[0-9A-F]{8}/gu) || [];
+for (const asset of WAVE_A_ASSETS) {
+  const observed = await fetchReadyAsset(asset);
+  const concreteShis = observed.text.match(/TD613-SH-9B07D8B-[0-9A-F]{8}/gu) || [];
   assert.ok(concreteShis.every((value) => value === 'TD613-SH-9B07D8B-A1B2C3D4'), `${asset.path} exposed a non-synthetic concrete SHI`);
-  assetObservations.push({ path: asset.path, status: response.status, cache_control: cacheControl, bytes: Buffer.byteLength(text), markers: asset.markers });
+  assetObservations.push({
+    path: asset.path,
+    source_file: asset.source_file,
+    status: observed.response.status,
+    cache_control: observed.cacheControl,
+    bytes: Buffer.byteLength(observed.text),
+    markers: Array.from(asset.markers),
+    propagation_attempts: observed.attempt
+  });
 }
 
 const browser = await chromium.launch({ headless: true });
