@@ -1,0 +1,68 @@
+name: Safe Harbor Gen3 Stage 1 PR integrator
+
+on:
+  pull_request:
+    branches:
+      - main
+    types:
+      - opened
+      - reopened
+      - synchronize
+      - ready_for_review
+
+permissions:
+  contents: write
+  pull-requests: read
+
+concurrency:
+  group: safe-harbor-gen3-stage1-pr-integrator
+  cancel-in-progress: false
+
+jobs:
+  integrate-test-and-clean:
+    if: github.event.pull_request.head.ref == 'safe-harbor-gen3-stage1-evidence-contract'
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    steps:
+      - name: Check out exact Stage 1 head branch
+        uses: actions/checkout@v4
+        with:
+          ref: safe-harbor-gen3-stage1-evidence-contract
+          fetch-depth: 0
+
+      - name: Set up Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+
+      - name: Apply bounded integration patch
+        run: node scripts/apply-safe-harbor-gen3-stage1-integration.mjs
+
+      - name: Validate Stage 1 contract
+        run: npm run test:safe-harbor:gen3:stage1
+
+      - name: Validate restore gate
+        run: npm run test:safe-harbor:phase9.1c
+
+      - name: Validate current Safe Harbor authority chain
+        run: npm run test:safe-harbor:current
+
+      - name: Remove branch-local temporary mechanisms
+        run: |
+          rm scripts/apply-safe-harbor-gen3-stage1-integration.mjs
+          rm .github/workflows/safe-harbor-gen3-stage1-integration.yml
+
+      - name: Commit tested integration to the Stage 1 branch
+        run: |
+          git config user.name "td613-safe-harbor-bot"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add \
+            app/safe-harbor/app/safe-harbor-native-finalizer.js \
+            app/safe-harbor/app/safe-harbor-packet-pipeline.js \
+            package.json \
+            tests/safe-harbor-gen3-stage1-evidence-contract.test.mjs \
+            scripts/apply-safe-harbor-gen3-stage1-integration.mjs \
+            .github/workflows/safe-harbor-gen3-stage1-integration.yml
+          git diff --cached --check
+          git commit -m "Integrate Safe Harbor Gen3 Stage 1 contract"
+          git push origin HEAD:safe-harbor-gen3-stage1-evidence-contract
