@@ -1,8 +1,9 @@
-export const ASH_FLOWCORE_INGRESS_PORTAL_VERSION = 'td613.ash.flowcore-ingress-portal/v0.2-single-visible-field-styled';
+export const ASH_FLOWCORE_INGRESS_PORTAL_VERSION = 'td613.ash.flowcore-ingress-portal/v0.3-dedicated-post-controls-host';
 
 const host = globalThis.window;
 const doc = globalThis.document;
 const POINTER_KEY = 'td613.ash-keep.current-case';
+const INGRESS_HOST_ID = 'ashFlowcoreIngressHost';
 let visibleField = null;
 let proxyField = null;
 let bodyObserver = null;
@@ -15,7 +16,27 @@ function caseOpen() {
 }
 
 function ingressHost() {
-  return doc.getElementById('guidedLaunchPromise');
+  const panel = doc.querySelector('#launch .launch-panel');
+  if (!panel) return null;
+  panel.classList.add('ash-flowcore-launch-panel');
+  const legacyPromise = doc.getElementById('guidedLaunchPromise');
+  if (legacyPromise) {
+    legacyPromise.hidden = true;
+    legacyPromise.inert = true;
+    legacyPromise.setAttribute('aria-hidden','true');
+    legacyPromise.dataset.ashFlowcoreSuperseded = 'true';
+  }
+  let ingress = doc.getElementById(INGRESS_HOST_ID);
+  if (!ingress) {
+    ingress = doc.createElement('section');
+    ingress.id = INGRESS_HOST_ID;
+    ingress.className = 'ash-flowcore-ingress-host';
+    ingress.setAttribute('aria-label','Flow-Core consequence field');
+    const actions = panel.querySelector(':scope > .actions');
+    if (actions) actions.insertAdjacentElement('afterend', ingress);
+    else panel.append(ingress);
+  }
+  return ingress;
 }
 
 function stageHost() {
@@ -27,27 +48,34 @@ function ensurePortalStyles() {
   const style = doc.createElement('style');
   style.id = 'td613-ash-flowcore-ingress-portal-css';
   style.textContent = `
-    .guided-launch-promise.ash-flowcore-ingress-host{
+    #launch .launch-panel.ash-flowcore-launch-panel{
+      max-height:calc(100vh - 44px)!important;
+      overflow-y:auto!important;
+      overscroll-behavior:contain;
+      scrollbar-gutter:stable;
+    }
+    #guidedLaunchPromise[data-ash-flowcore-superseded="true"]{display:none!important}
+    #ashFlowcoreIngressHost.ash-flowcore-ingress-host{
       display:block!important;
-      grid-column:1/-1!important;
       width:100%!important;
       max-width:none!important;
-      margin:12px 0 14px!important;
+      margin:16px 0 0!important;
       padding:0!important;
-      border-color:rgba(118,234,212,.22)!important;
+      border:1px solid rgba(118,234,212,.22)!important;
       border-radius:14px!important;
       overflow:hidden!important;
       background:#010705!important;
+      clear:both;
     }
     .ash-flowcore-field[data-flowcore-host="ingress"]{
       min-height:0!important;
       padding:13px!important;
     }
     .ash-flowcore-field[data-flowcore-host="ingress"] .ash-flowcore-field__canvas{
-      min-height:280px!important;
+      min-height:270px!important;
     }
     .ash-flowcore-field[data-flowcore-host="ingress"] .ash-flowcore-field__canvas svg{
-      min-height:280px!important;
+      min-height:270px!important;
     }
     .ash-flowcore-field__play{
       position:relative;
@@ -67,7 +95,8 @@ function ensurePortalStyles() {
     .ash-flowcore-field__play:focus-visible{outline:2px solid var(--fc-mint,#76ead4);outline-offset:3px}
     .ash-flowcore-field--proxy{display:none!important}
     @media(max-width:760px){
-      .guided-launch-promise.ash-flowcore-ingress-host{margin:8px 0 10px!important}
+      #launch .launch-panel.ash-flowcore-launch-panel{max-height:calc(100vh - 16px)!important}
+      #ashFlowcoreIngressHost.ash-flowcore-ingress-host{margin:10px 0 0!important}
       .ash-flowcore-field[data-flowcore-host="ingress"]{padding:8px!important}
       .ash-flowcore-field[data-flowcore-host="ingress"] .ash-flowcore-field__header{grid-template-columns:1fr!important}
       .ash-flowcore-field__play{justify-self:start}
@@ -160,7 +189,9 @@ function portalToIngress() {
   visibleField.removeAttribute('aria-hidden');
   visibleField.classList.remove('ash-flowcore-field--proxy');
   visibleField.dataset.flowcoreHost = 'ingress';
-  ingress.classList.add('ash-flowcore-ingress-host');
+  ingress.hidden = false;
+  ingress.inert = false;
+  ingress.removeAttribute('aria-hidden');
   if (visibleField.parentElement !== ingress) ingress.replaceChildren(visibleField);
   const nextProxy = findStageField();
   if (nextProxy && nextProxy !== proxyField) observeProxy(nextProxy);
@@ -181,7 +212,12 @@ function portalToStage() {
   visibleField.dataset.flowcoreHost = 'aia';
   stage.classList.add('ash-flowcore-mounted');
   if (visibleField.parentElement !== stage) stage.append(visibleField);
-  ingressHost()?.classList.remove('ash-flowcore-ingress-host');
+  const ingress = doc.getElementById(INGRESS_HOST_ID);
+  if (ingress) {
+    ingress.hidden = true;
+    ingress.inert = true;
+    ingress.setAttribute('aria-hidden','true');
+  }
   doc.documentElement.dataset.ashFlowcoreVisibleHost = 'AIA';
   return true;
 }
