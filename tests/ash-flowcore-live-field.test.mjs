@@ -60,11 +60,14 @@ assert.match(portal, /#guidedLaunchPromise\.ash-flowcore-ingress-host/);
 assert.match(portal, /max-height:calc\(100vh - 44px\)!important/);
 assert.doesNotMatch(portal, /setInterval\s*\(|requestAnimationFrame\s*\(/);
 
-assert.match(portalLoader, /v0\.1-legacy-bypass/);
+assert.match(portalLoader, /v0\.2-browser-gated-legacy-bypass/);
+assert.match(portalLoader, /const browserReady = Boolean\(host && doc\?\.documentElement\)/);
+assert.match(portalLoader, /if \(!browserReady\)/);
 assert.match(portalLoader, /params\.get\('presentation'\) === 'legacy'/);
 assert.match(portalLoader, /eligible:false/);
 assert.match(portalLoader, /reason:'EXPLICIT_LEGACY_PRESENTATION'/);
 assert.match(portalLoader, /import\('\.\/ash-flowcore-ingress-portal\.js\?v=20260721-flowcore-live-field-v2'\)/);
+assert.match(portalLoader, /if \(doc\?\.documentElement\) doc\.documentElement\.dataset\.ashFlowcorePortalLoaderHold/);
 assert.doesNotMatch(portalLoader, /setInterval\s*\(|requestAnimationFrame\s*\(/);
 
 assert.match(boundary, /v0\.4-pointer-governs-case-recovery-replay-stays-open/);
