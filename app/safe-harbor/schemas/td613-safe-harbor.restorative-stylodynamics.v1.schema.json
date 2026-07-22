@@ -1,0 +1,185 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "td613.safe-harbor.restorative-stylodynamics/v1",
+  "title": "TD613 Safe Harbor Restorative Stylodynamics v1",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema_version",
+    "protocol",
+    "precommitment",
+    "transparent_feature_lane",
+    "latent_representation_lane",
+    "null_models",
+    "mimicry_under_deformation",
+    "critical_deformation_threshold",
+    "failure_registry",
+    "restoration_receipt",
+    "promotion_gate",
+    "claim_ceiling",
+    "raw_text_included",
+    "result_digest"
+  ],
+  "properties": {
+    "schema_version": { "const": "td613.safe-harbor.restorative-stylodynamics/v1" },
+    "protocol": {
+      "type": "object",
+      "required": [
+        "protocol_version",
+        "research_mode",
+        "baseline_intake_mandatory",
+        "explicit_consent_recorded",
+        "bounded_adversarial_research",
+        "private_vulnerability_targeting",
+        "adaptive_emotional_pressure",
+        "keystroke_telemetry_collected",
+        "pause_timing_collected",
+        "covert_behavioral_biometrics_collected",
+        "raw_text_exported",
+        "external_identity_data_consumed"
+      ],
+      "properties": {
+        "protocol_version": { "const": "td613.safe-harbor.perturbation-invariance-protocol/v1" },
+        "baseline_intake_mandatory": { "const": false },
+        "bounded_adversarial_research": { "const": true },
+        "private_vulnerability_targeting": { "const": false },
+        "adaptive_emotional_pressure": { "const": false },
+        "keystroke_telemetry_collected": { "const": false },
+        "pause_timing_collected": { "const": false },
+        "covert_behavioral_biometrics_collected": { "const": false },
+        "raw_text_exported": { "const": false },
+        "external_identity_data_consumed": { "const": false }
+      }
+    },
+    "precommitment": {
+      "type": "object",
+      "required": [
+        "schema_version",
+        "protocol_version",
+        "transparent_policy_digest",
+        "input_manifest_digest",
+        "research_mode_required",
+        "explicit_consent_required",
+        "raw_text_exported",
+        "keystroke_telemetry_collected",
+        "pause_timing_collected",
+        "private_vulnerability_targeting",
+        "adaptive_emotional_pressure",
+        "precommitment_digest"
+      ],
+      "properties": {
+        "schema_version": { "const": "td613.safe-harbor.restorative-precommitment/v1" },
+        "protocol_version": { "const": "td613.safe-harbor.perturbation-invariance-protocol/v1" },
+        "research_mode_required": { "const": true },
+        "explicit_consent_required": { "const": true },
+        "raw_text_exported": { "const": false },
+        "keystroke_telemetry_collected": { "const": false },
+        "pause_timing_collected": { "const": false },
+        "private_vulnerability_targeting": { "const": false },
+        "adaptive_emotional_pressure": { "const": false },
+        "precommitment_digest": { "type": "string", "pattern": "^sha256:[0-9a-f]{64}$" }
+      }
+    },
+    "transparent_feature_lane": {
+      "type": "object",
+      "required": ["description", "scales", "feature_trajectories", "trajectory_invariants", "structural_substitutions", "raw_text_included"],
+      "properties": {
+        "scales": {
+          "type": "object",
+          "required": ["micro", "meso", "macro"]
+        },
+        "feature_trajectories": { "type": "array" },
+        "trajectory_invariants": { "type": "array" },
+        "structural_substitutions": { "type": "array" },
+        "raw_text_included": { "const": false }
+      }
+    },
+    "latent_representation_lane": {
+      "type": "object",
+      "required": ["status", "model_dependent", "raw_text_included"],
+      "properties": {
+        "model_dependent": { "const": true },
+        "raw_text_included": { "const": false }
+      }
+    },
+    "null_models": {
+      "type": "object",
+      "required": ["required", "missing_or_insufficient", "results", "adverse_results_preserved", "raw_text_included"],
+      "properties": {
+        "required": {
+          "const": [
+            "shuffled-trajectory-null",
+            "prompt-only-control",
+            "topic-matched-control",
+            "semantic-paraphrase-control",
+            "same-author-static-baseline",
+            "different-author-same-prompt-control",
+            "lane-vocabulary-ablation",
+            "feature-family-ablation",
+            "embedding-model-substitution",
+            "chronology-destruction",
+            "mimicry-under-deformation"
+          ]
+        },
+        "adverse_results_preserved": { "const": true },
+        "raw_text_included": { "const": false }
+      }
+    },
+    "mimicry_under_deformation": { "type": "object" },
+    "critical_deformation_threshold": { "type": "object" },
+    "failure_registry": { "type": "array" },
+    "restoration_receipt": {
+      "type": "object",
+      "required": [
+        "schema_version",
+        "protocol_version",
+        "precommitment_digest",
+        "transparent_lane_digest",
+        "verified_displacement_feature_count",
+        "total_feature_count",
+        "response_classes",
+        "failures_preserved",
+        "identity_probability",
+        "psychological_inference_performed",
+        "demographic_inference_performed",
+        "cognitive_access_claimed",
+        "literal_physical_force_claimed",
+        "raw_text_included",
+        "uncertainty",
+        "restoration_receipt_digest"
+      ],
+      "properties": {
+        "schema_version": { "const": "td613.safe-harbor.restoration-receipt/v1" },
+        "protocol_version": { "const": "td613.safe-harbor.perturbation-invariance-protocol/v1" },
+        "identity_probability": { "type": "null" },
+        "psychological_inference_performed": { "const": false },
+        "demographic_inference_performed": { "const": false },
+        "cognitive_access_claimed": { "const": false },
+        "literal_physical_force_claimed": { "const": false },
+        "raw_text_included": { "const": false },
+        "restoration_receipt_digest": { "type": "string", "pattern": "^sha256:[0-9a-f]{64}$" }
+      }
+    },
+    "promotion_gate": {
+      "type": "object",
+      "required": [
+        "state",
+        "calibration_triads_observed",
+        "calibration_triads_required",
+        "blockers",
+        "production_deployment_authorized",
+        "baseline_intake_promotion_authorized",
+        "separate_promotion_pr_required"
+      ],
+      "properties": {
+        "calibration_triads_required": { "const": 12 },
+        "production_deployment_authorized": { "const": false },
+        "baseline_intake_promotion_authorized": { "const": false },
+        "separate_promotion_pr_required": { "const": true }
+      }
+    },
+    "claim_ceiling": { "type": "object" },
+    "raw_text_included": { "const": false },
+    "result_digest": { "type": "string", "pattern": "^sha256:[0-9a-f]{64}$" }
+  }
+}
