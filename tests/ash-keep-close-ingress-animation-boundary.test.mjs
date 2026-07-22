@@ -52,7 +52,7 @@ for (const token of [
   'Reduced motion is on, so Ash shows the four deterministic frames statically'
 ]) assert.ok(boundary.includes(token), `Animation affordance omitted ${token}`);
 
-assert.match(aia, /\[data-aia-play\]\.onclick = playExplanation/,
+assert.ok(aia.includes("$('[data-aia-play]').onclick = playExplanation;"),
   'Explanation animation lost its explicit play gesture.');
 assert.match(aia, /function playExplanation\(\)[\s\S]*state\.frame = 0[\s\S]*state\.frame < TASKS\.length - 1/,
   'Four-step explanation animation no longer advances deterministically.');
