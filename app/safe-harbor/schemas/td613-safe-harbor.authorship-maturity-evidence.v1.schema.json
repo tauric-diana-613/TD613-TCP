@@ -1,0 +1,102 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "td613.safe-harbor.authorship-maturity-evidence/v1",
+  "title": "TD613 Safe Harbor Authorship Maturity Evidence v1",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema_version",
+    "engine_version",
+    "window_policy",
+    "lanes",
+    "family_summaries",
+    "prompt_conditioned_features",
+    "stability_receipt",
+    "anti_sameness_audit",
+    "forbidden_inference_audit",
+    "null_models",
+    "raw_text_included",
+    "evidence_digest"
+  ],
+  "properties": {
+    "schema_version": { "const": "td613.safe-harbor.authorship-maturity-evidence/v1" },
+    "engine_version": { "const": "td613.safe-harbor.authorship-maturity-engine/v1" },
+    "window_policy": { "$ref": "#/$defs/windowPolicy" },
+    "lanes": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["future_self", "past_self", "higher_self"],
+      "properties": {
+        "future_self": { "$ref": "#/$defs/laneEvidence" },
+        "past_self": { "$ref": "#/$defs/laneEvidence" },
+        "higher_self": { "$ref": "#/$defs/laneEvidence" }
+      }
+    },
+    "family_summaries": { "type": "object", "minProperties": 5 },
+    "prompt_conditioned_features": {
+      "type": "object",
+      "required": ["mean_prompt_overlap_rate", "prompt_control", "prompt_dominated", "vocabulary_ablation_applied", "prompt_text_exported"],
+      "properties": {
+        "mean_prompt_overlap_rate": { "type": "number", "minimum": 0, "maximum": 1 },
+        "prompt_dominated": { "type": "boolean" },
+        "vocabulary_ablation_applied": { "const": true },
+        "prompt_text_exported": { "const": false },
+        "prompt_control": { "type": "object" }
+      }
+    },
+    "stability_receipt": { "$ref": "#/$defs/stabilityReceipt" },
+    "anti_sameness_audit": { "type": "object" },
+    "forbidden_inference_audit": { "type": "object" },
+    "null_models": { "type": "object" },
+    "raw_text_included": { "const": false },
+    "evidence_digest": { "type": "string", "pattern": "^sha256:[0-9a-f]{64}$" }
+  },
+  "$defs": {
+    "windowPolicy": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["schema_version", "sentence_aware", "checkpoint_targets", "local_target_words", "required_local_windows_per_lane", "non_overlapping_local_windows", "boundary_rule"],
+      "properties": {
+        "schema_version": { "const": "td613.safe-harbor.window-policy/v1" },
+        "sentence_aware": { "const": true },
+        "checkpoint_targets": { "const": [120, 240, 360] },
+        "local_target_words": { "const": 120 },
+        "required_local_windows_per_lane": { "const": 3 },
+        "non_overlapping_local_windows": { "const": true },
+        "boundary_rule": { "type": "string", "minLength": 1 }
+      }
+    },
+    "laneEvidence": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["lane", "observed_words", "sufficiency_state", "sentence_count", "checkpoint_snapshots", "local_windows", "within_lane_recurrence", "prompt_overlap_rate", "chronology_null", "raw_text_included"],
+      "properties": {
+        "lane": { "enum": ["future_self", "past_self", "higher_self"] },
+        "observed_words": { "type": "integer", "minimum": 0 },
+        "sufficiency_state": { "enum": ["insufficient", "provisional", "comparative", "stability-eligible"] },
+        "sentence_count": { "type": "integer", "minimum": 0 },
+        "checkpoint_snapshots": { "type": "object" },
+        "local_windows": { "type": "array", "minItems": 3, "maxItems": 3 },
+        "within_lane_recurrence": { "type": "object" },
+        "prompt_overlap_rate": { "type": "number", "minimum": 0, "maximum": 1 },
+        "chronology_null": { "type": "object" },
+        "raw_text_included": { "const": false }
+      }
+    },
+    "stabilityReceipt": {
+      "type": "object",
+      "required": ["schema_version", "engine_version", "window_policy_version", "maturity_state", "blockers", "family_summaries", "weighted_within_lane_recurrence", "weighted_cross_lane_recurrence", "prompt_overlap_rate", "prompt_control", "chronology_nulls", "supplied_control_nulls", "uncertainty", "stability_digest", "status", "identity_probability", "raw_text_included"],
+      "properties": {
+        "schema_version": { "const": "td613.safe-harbor.stability-receipt/v1" },
+        "engine_version": { "const": "td613.safe-harbor.authorship-maturity-engine/v1" },
+        "window_policy_version": { "const": "td613.safe-harbor.window-policy/v1" },
+        "maturity_state": { "enum": ["insufficient", "provisional", "comparative", "prompt-dominated", "mature-recurrent", "mature-context-responsive", "unstable-evidence"] },
+        "blockers": { "type": "array", "items": { "type": "string" } },
+        "stability_digest": { "type": "string", "pattern": "^sha256:[0-9a-f]{64}$" },
+        "status": { "enum": ["measured", "bounded-with-blockers"] },
+        "identity_probability": { "type": "null" },
+        "raw_text_included": { "const": false }
+      }
+    }
+  }
+}
