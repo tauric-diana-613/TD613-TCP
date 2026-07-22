@@ -1,0 +1,63 @@
+name: Safe Harbor Gen3 Stage 3 test diagnostics
+
+on:
+  pull_request:
+    branches:
+      - main
+    types:
+      - opened
+      - reopened
+      - synchronize
+
+permissions:
+  contents: read
+  pull-requests: read
+
+jobs:
+  diagnose-stage3-tests:
+    if: startsWith(github.event.pull_request.head.ref, 'safe-harbor-gen3-stage3-temporal-bloom-provenance')
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    steps:
+      - name: Check out exact Stage 3 branch
+        uses: actions/checkout@v4
+        with:
+          ref: ${{ github.event.pull_request.head.ref }}
+          fetch-depth: 0
+
+      - name: Set up Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: '24'
+
+      - name: Normalize temporary Stage 3 patch anchors
+        run: |
+          node --input-type=module <<'NODE'
+          import fs from 'node:fs';
+          const path = 'scripts/apply-safe-harbor-gen3-stage3-integration.mjs';
+          let source = fs.readFileSync(path, 'utf8');
+          source = source.replace("'          <div class=\"status-pill\" id=\"ingressProgressPill\">0 / 3 lanes</div>',", "'<div class=\"status-pill\" id=\"ingressProgressPill\">0 / 3 lanes</div>',");
+          source = source.replace("'          <div class=\"status-pill\" id=\"ingressProgressPill\">temporal field</div>'", "'<div class=\"status-pill\" id=\"ingressProgressPill\">temporal field</div>'");
+          source = source.replace('\n             <div class="ingress-meta" id="ingressStepMeta">No line held yet.</div>`', '\n            <div class="ingress-meta" id="ingressStepMeta">No line held yet.</div>`');
+          fs.writeFileSync(path, source);
+          NODE
+
+      - name: Apply Stage 3 candidate in diagnostic workspace
+        run: |
+          node scripts/apply-safe-harbor-gen3-stage3-integration.mjs
+          node scripts/apply-safe-harbor-gen3-stage3-docs.mjs
+
+      - name: Run Stage 3 test suite and retain output
+        id: tests
+        run: |
+          set -o pipefail
+          npm run test:safe-harbor:gen3:stage3 2>&1 | tee /tmp/stage3-tests.log
+
+      - name: Upload bounded Stage 3 test log
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: safe-harbor-gen3-stage3-test-log
+          path: /tmp/stage3-tests.log
+          if-no-files-found: error
+          retention-days: 7
