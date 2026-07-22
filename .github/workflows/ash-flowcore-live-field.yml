@@ -7,11 +7,15 @@ on:
       - 'app/dome-world/ash-flowcore-pedagogy-field.*'
       - 'app/dome-world/ash-flowcore-ingress-portal.js'
       - 'app/dome-world/ash-flowcore-ingress-portal-loader.js'
+      - 'app/dome-world/ash-post-ingress-motion-restoration.js'
+      - 'app/dome-world/ash-threshold.html'
       - 'app/dome-world/ash-session-boundary.js'
       - 'app/dome-world/ash-ingress-copy-spacing.js'
       - 'app/dome-world/ash-workspace-bridge.js'
       - 'tests/ash-flowcore-live-field.test.mjs'
+      - 'tests/ash-ingress-polish.test.mjs'
       - 'scripts/ash-flowcore-live-field-browser-probe.mjs'
+      - 'scripts/ash-ingress-polish-browser-probe.mjs'
       - '.github/workflows/ash-flowcore-live-field.yml'
   workflow_dispatch:
 
@@ -34,13 +38,17 @@ jobs:
           node --check app/dome-world/ash-flowcore-pedagogy-field.js
           node --check app/dome-world/ash-flowcore-ingress-portal.js
           node --check app/dome-world/ash-flowcore-ingress-portal-loader.js
+          node --check app/dome-world/ash-post-ingress-motion-restoration.js
           node --check app/dome-world/ash-session-boundary.js
           node --check app/dome-world/ash-ingress-copy-spacing.js
-      - name: Live Flow-Core field and ingress-copy contract
+      - name: Live Flow-Core field and ingress-polish contracts
         run: |
           mkdir -p artifacts
           set +e
-          node tests/ash-flowcore-live-field.test.mjs > artifacts/ash-flowcore-contract.log 2>&1
+          {
+            node tests/ash-flowcore-live-field.test.mjs
+            node tests/ash-ingress-polish.test.mjs
+          } > artifacts/ash-flowcore-contract.log 2>&1
           status=$?
           cat artifacts/ash-flowcore-contract.log
           exit "$status"
@@ -64,7 +72,7 @@ jobs:
   browser-witness:
     name: ${{ matrix.browser }} consequence field
     runs-on: ubuntu-latest
-    timeout-minutes: 15
+    timeout-minutes: 18
     strategy:
       fail-fast: false
       matrix:
@@ -79,9 +87,11 @@ jobs:
       - name: Syntax-check witness and product modules
         run: |
           node --check scripts/ash-flowcore-live-field-browser-probe.mjs
+          node --check scripts/ash-ingress-polish-browser-probe.mjs
           node --check app/dome-world/ash-flowcore-pedagogy-field.js
           node --check app/dome-world/ash-flowcore-ingress-portal.js
           node --check app/dome-world/ash-flowcore-ingress-portal-loader.js
+          node --check app/dome-world/ash-post-ingress-motion-restoration.js
           node --check app/dome-world/ash-session-boundary.js
           node --check app/dome-world/ash-ingress-copy-spacing.js
       - name: Install browser witness runtime
@@ -108,6 +118,12 @@ jobs:
           TD613_BASE_URL: http://127.0.0.1:6130
           TD613_ARTIFACT_DIR: artifacts/ash-flowcore-field-${{ matrix.browser }}
         run: timeout --foreground --signal=INT --kill-after=15s 480s node scripts/ash-flowcore-live-field-browser-probe.mjs
+      - name: Observe caption clearance, profile prompt, and one canonical field
+        env:
+          TD613_BROWSER: ${{ matrix.browser }}
+          TD613_BASE_URL: http://127.0.0.1:6130
+          TD613_ARTIFACT_DIR: artifacts/ash-ingress-polish-${{ matrix.browser }}
+        run: timeout --foreground --signal=INT --kill-after=15s 360s node scripts/ash-ingress-polish-browser-probe.mjs
       - name: Stop bounded local runtime
         if: always()
         run: |
@@ -119,6 +135,7 @@ jobs:
           name: ash-flowcore-field-${{ matrix.browser }}-evidence
           path: |
             artifacts/ash-flowcore-field-${{ matrix.browser }}/
+            artifacts/ash-ingress-polish-${{ matrix.browser }}/
             artifacts/ash-flowcore-field-server.log
             artifacts/ash-flowcore-field-readiness.json
           if-no-files-found: warn

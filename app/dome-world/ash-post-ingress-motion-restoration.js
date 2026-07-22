@@ -1,4 +1,4 @@
-export const ASH_POST_INGRESS_MOTION_RESTORATION_VERSION = 'td613.ash.post-ingress-motion-restoration/v0.2-event-bound-geometry';
+export const ASH_POST_INGRESS_MOTION_RESTORATION_VERSION = 'td613.ash.post-ingress-motion-restoration/v0.3-canonical-field-ingress-polish';
 
 const host = globalThis.window;
 const doc = globalThis.document;
@@ -26,7 +26,7 @@ function installStyles() {
     .ash-flowcore-mounted>.ash-aia__static-sequence{
       display:none!important;
     }
-    .ash-flowcore-mounted>.ash-flowcore-field{
+    .ash-flowcore-mounted>.ash-flowcore-field:not(.ash-flowcore-field--proxy){
       order:1;
       display:grid!important;
       width:100%!important;
@@ -37,7 +37,17 @@ function installStyles() {
       visibility:visible!important;
       opacity:1!important;
     }
-    .ash-flowcore-mounted>.ash-flowcore-field .ash-flowcore-field__canvas{
+    .ash-flowcore-mounted>.ash-flowcore-field--proxy{
+      display:none!important;
+      visibility:hidden!important;
+      opacity:0!important;
+      width:0!important;
+      height:0!important;
+      min-height:0!important;
+      overflow:hidden!important;
+      pointer-events:none!important;
+    }
+    .ash-flowcore-mounted>.ash-flowcore-field:not(.ash-flowcore-field--proxy) .ash-flowcore-field__canvas{
       display:block!important;
       width:100%!important;
       height:auto!important;
@@ -46,10 +56,28 @@ function installStyles() {
       visibility:visible!important;
       opacity:1!important;
     }
-    .ash-flowcore-mounted>.ash-flowcore-field .ash-flowcore-field__canvas>svg{
+    .ash-flowcore-mounted>.ash-flowcore-field:not(.ash-flowcore-field--proxy) .ash-flowcore-field__canvas>svg{
       display:block!important;
       visibility:visible!important;
       opacity:1!important;
+    }
+    .ash-flowcore-field[data-flowcore-host="ingress"] .ash-flowcore-field__canvas{
+      display:grid!important;
+      grid-template-columns:minmax(0,1fr)!important;
+      grid-template-rows:auto auto!important;
+      min-height:0!important;
+      overflow:visible!important;
+    }
+    .ash-flowcore-field[data-flowcore-host="ingress"] .ash-flowcore-field__caption{
+      position:relative!important;
+      inset:auto!important;
+      left:auto!important;
+      right:auto!important;
+      bottom:auto!important;
+      width:100%!important;
+      max-width:none!important;
+      margin:0!important;
+      box-sizing:border-box!important;
     }
     .ash-flowcore-mounted>.ash-ux-motion-track{
       order:2;
@@ -80,6 +108,8 @@ function installStyles() {
     @media(max-width:760px){
       .ash-flowcore-mounted{gap:8px!important;padding-bottom:8px!important}
       .ash-flowcore-mounted>.ash-ux-motion-track{margin:0 8px 2px!important;grid-template-columns:repeat(4,minmax(0,1fr))!important}
+      .ash-flowcore-field[data-flowcore-host="ingress"] .ash-flowcore-field__caption{grid-template-columns:1fr!important}
+      .ash-flowcore-field[data-flowcore-host="ingress"] .ash-flowcore-field__caption span{text-align:left!important}
     }
   `;
   doc.head.append(style);
@@ -100,16 +130,52 @@ function activeParts() {
     : doc?.querySelector('#ashAiaMembrane [data-aia-stage], #ashAiaMembrane .ash-aia__stage');
   const canvas = field?.querySelector('.ash-flowcore-field__canvas');
   const svg = canvas?.querySelector('svg');
+  const caption = field?.querySelector('.ash-flowcore-field__caption');
   const rail = stage?.querySelector(':scope > .ash-ux-motion-track');
   const guide = stage?.closest('.ash-aia__guide');
   const body = stage?.closest('.ash-aia__body');
-  return { stage, field, canvas, svg, rail, guide, body };
+  const proxies = [...(stage?.querySelectorAll(':scope > .ash-flowcore-field--proxy') || [])];
+  return { stage, field, canvas, svg, caption, rail, guide, body, proxies };
+}
+
+function quarantineProxies(proxies = []) {
+  for (const proxy of proxies) {
+    proxy.hidden = true;
+    proxy.inert = true;
+    proxy.setAttribute('aria-hidden', 'true');
+    setImportant(proxy, 'display', 'none');
+    setImportant(proxy, 'visibility', 'hidden');
+    setImportant(proxy, 'opacity', '0');
+    setImportant(proxy, 'width', '0px');
+    setImportant(proxy, 'height', '0px');
+    setImportant(proxy, 'min-height', '0px');
+    setImportant(proxy, 'overflow', 'hidden');
+    setImportant(proxy, 'pointer-events', 'none');
+  }
+}
+
+function stabilizeIngressCaption(field, canvas, caption) {
+  if (field?.dataset.flowcoreHost !== 'ingress') return;
+  setImportant(canvas, 'display', 'grid');
+  setImportant(canvas, 'grid-template-columns', 'minmax(0, 1fr)');
+  setImportant(canvas, 'grid-template-rows', 'auto auto');
+  setImportant(canvas, 'min-height', '0px');
+  setImportant(canvas, 'overflow', 'visible');
+  setImportant(caption, 'position', 'relative');
+  setImportant(caption, 'inset', 'auto');
+  setImportant(caption, 'left', 'auto');
+  setImportant(caption, 'right', 'auto');
+  setImportant(caption, 'bottom', 'auto');
+  setImportant(caption, 'width', '100%');
+  setImportant(caption, 'max-width', 'none');
+  setImportant(caption, 'margin', '0px');
 }
 
 function stabilizeGeometry() {
   const parts = activeParts();
-  const { stage, field, canvas, svg, rail, guide, body } = parts;
+  const { stage, field, canvas, svg, caption, rail, guide, body, proxies } = parts;
   if (stage) stage.classList.add('ash-flowcore-mounted');
+  quarantineProxies(proxies);
 
   for (const node of [body, guide, stage]) {
     setImportant(node, 'height', 'auto');
@@ -141,6 +207,7 @@ function stabilizeGeometry() {
   setImportant(svg, 'display', 'block');
   setImportant(svg, 'visibility', 'visible');
   setImportant(svg, 'opacity', '1');
+  stabilizeIngressCaption(field, canvas, caption);
 
   setImportant(rail, 'position', 'relative');
   setImportant(rail, 'inset', 'auto');
@@ -154,11 +221,57 @@ function stabilizeGeometry() {
   return parts;
 }
 
+function ensureProfilePrompt() {
+  const select = doc?.getElementById('newProfile');
+  const start = doc?.getElementById('startDemo');
+  if (!select || !start) return false;
+  let prompt = select.querySelector('option[value=""]');
+  if (!prompt) {
+    prompt = doc.createElement('option');
+    prompt.value = '';
+    prompt.textContent = 'Select a Profile...';
+    prompt.disabled = true;
+    select.prepend(prompt);
+  }
+  if (!doc.documentElement.classList.contains('ash-has-current-case') && !host.localStorage?.getItem?.('td613.ash-keep.current-case')) {
+    select.value = '';
+  }
+  const sync = () => {
+    start.disabled = !select.value;
+    start.setAttribute('aria-disabled', String(start.disabled));
+  };
+  if (select.dataset.ashProfilePromptBound !== 'true') {
+    select.dataset.ashProfilePromptBound = 'true';
+    select.addEventListener('change', sync);
+  }
+  sync();
+  return true;
+}
+
+function cleanAshTransitionUrl() {
+  try {
+    if (!['/dome-world/ash-threshold.html', '/dome-world/ash-keep.html'].includes(host.location.pathname)) return false;
+    const url = new URL(host.location.href);
+    let changed = false;
+    for (const key of ['ash_epoch', 'ash_recovered']) {
+      if (url.searchParams.has(key)) {
+        url.searchParams.delete(key);
+        changed = true;
+      }
+    }
+    if (changed) host.history.replaceState(null, '', `${url.pathname}${url.search}${url.hash}`);
+    return changed;
+  } catch {
+    return false;
+  }
+}
+
 function measure() {
-  const { stage, field, canvas, svg, rail } = activeParts();
+  const { stage, field, canvas, svg, caption, rail, proxies } = activeParts();
   const stageRect = stage?.getBoundingClientRect?.();
   const fieldRect = field?.getBoundingClientRect?.();
   const canvasRect = canvas?.getBoundingClientRect?.();
+  const captionRect = caption?.getBoundingClientRect?.();
   const railRect = rail?.getBoundingClientRect?.();
   const visible = node => {
     if (!node) return false;
@@ -166,27 +279,35 @@ function measure() {
     const rect = node.getBoundingClientRect();
     return style.display !== 'none' && style.visibility !== 'hidden' && Number(style.opacity) > 0 && rect.width > 0 && rect.height > 0;
   };
+  const visibleProxyCount = proxies.filter(visible).length;
   return Object.freeze({
     version:ASH_POST_INGRESS_MOTION_RESTORATION_VERSION,
     available:Boolean(stage && field && canvas && svg && rail),
     stage_visible:visible(stage),
     field_visible:visible(field),
     canvas_visible:visible(canvas) && visible(svg),
+    caption_visible:visible(caption),
     rail_visible:visible(rail),
+    proxy_count:proxies.length,
+    visible_proxy_count:visibleProxyCount,
     stage_height:Math.round(stageRect?.height || 0),
     field_height:Math.round(fieldRect?.height || 0),
     canvas_height:Math.round(canvasRect?.height || 0),
+    caption_height:Math.round(captionRect?.height || 0),
     rail_height:Math.round(railRect?.height || 0),
     field_clipped:Boolean(stageRect && fieldRect && fieldRect.bottom > stageRect.bottom + 2),
-    rail_clipped:Boolean(stageRect && railRect && railRect.bottom > stageRect.bottom + 2)
+    rail_clipped:Boolean(stageRect && railRect && railRect.bottom > stageRect.bottom + 2),
+    caption_overlaps_svg:Boolean(captionRect && svg?.getBoundingClientRect && captionRect.top < svg.getBoundingClientRect().bottom - 2)
   });
 }
 
 function publish(reason = 'INSTALL') {
+  cleanAshTransitionUrl();
+  ensureProfilePrompt();
   stabilizeGeometry();
   const receipt = measure();
   if (doc?.documentElement) {
-    doc.documentElement.dataset.ashPostIngressMotion = receipt.canvas_visible && receipt.rail_visible && !receipt.field_clipped && !receipt.rail_clipped ? 'VISIBLE' : 'HELD';
+    doc.documentElement.dataset.ashPostIngressMotion = receipt.canvas_visible && receipt.rail_visible && receipt.visible_proxy_count === 0 && !receipt.field_clipped && !receipt.rail_clipped && !receipt.caption_overlaps_svg ? 'VISIBLE' : 'HELD';
   }
   host?.dispatchEvent?.(new CustomEvent('td613:ash:post-ingress-motion', { detail:{ ...receipt, reason } }));
   return receipt;
@@ -195,7 +316,7 @@ function publish(reason = 'INSTALL') {
 export function installAshPostIngressMotionRestoration() {
   if (!host || !doc?.documentElement) return false;
   installStyles();
-  for (const type of ['aia-ready','aia3-ready','composition-stable','case-opened','case-created','flowcore-portal-synced','flowcore-field-phase','explanation-frame']) {
+  for (const type of ['aia-ready','aia3-ready','composition-stable','case-opened','case-created','flowcore-portal-synced','flowcore-field-phase','explanation-frame','case-closed']) {
     host.addEventListener(`td613:ash:${type}`, () => queueMicrotask(() => publish(type.toUpperCase())));
   }
   host.__td613AshPostIngressMotionRestoration = Object.freeze({
