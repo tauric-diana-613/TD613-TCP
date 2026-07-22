@@ -1,4 +1,4 @@
-export const ASH_CLOSE_INGRESS_ANIMATION_BOUNDARY_VERSION = 'td613.ash.close-ingress-animation-boundary/v0.3-idempotent-pointer-authority';
+export const ASH_CLOSE_INGRESS_ANIMATION_BOUNDARY_VERSION = 'td613.ash.close-ingress-animation-boundary/v0.4-coherent-closed-ingress';
 
 const host = globalThis.window;
 const doc = globalThis.document;
@@ -85,11 +85,38 @@ function ensureAnimationAffordance() {
   return true;
 }
 
+function reconcileIngressDemoControls() {
+  if (activeCasePointer()) return false;
+  const profile = byId('newProfile');
+  const button = byId('startDemo');
+  const status = byId('demoProfileStatus');
+  if (!profile || !button) return false;
+
+  button.disabled = false;
+  button.setAttribute('aria-disabled', 'false');
+  button.setAttribute('aria-busy', 'false');
+  button.classList.remove('demo-unavailable');
+  button.classList.add('demo-available');
+  for (const key of ['ashResearchControlState', 'ashLegalControlState', 'ashMethodDemoState']) delete button.dataset[key];
+  if (/opening|hydrating|compiling/i.test(button.textContent || '')) button.textContent = 'Start a demo';
+
+  profile.dispatchEvent(new Event('change', { bubbles:true }));
+  if (profile.value === 'research') {
+    host.__td613AshResearchControlState?.reconcile?.();
+    if (status) status.innerHTML = '<strong>Research project demo available.</strong> Open the saved project below or start a fresh synthetic Research demo.';
+  } else if (profile.value === 'legal') {
+    host.__td613AshLegalControlState?.reconcile?.();
+  }
+  setData(doc.documentElement, 'ashClosedIngressControls', 'READY');
+  return true;
+}
+
 function closedPresentationMatches() {
   if (!doc?.documentElement || activeCasePointer()) return false;
   const launch = byId('launch');
   const main = doc.querySelector('body > main');
   const rail = doc.querySelector('body > .workspace-rail');
+  const startDemo = byId('startDemo');
   return Boolean(launch && main && rail)
     && doc.documentElement.dataset.ashSessionOpen === 'false'
     && doc.body.dataset.ashAiaCaseOpen === 'false'
@@ -101,6 +128,8 @@ function closedPresentationMatches() {
     && main.getAttribute('aria-hidden') === 'true'
     && rail.hasAttribute('inert')
     && rail.getAttribute('aria-hidden') === 'true'
+    && startDemo?.getAttribute('aria-busy') !== 'true'
+    && !/opening|hydrating|compiling/i.test(startDemo?.textContent || '')
     && host.__td613AshKeep?.pointer_authoritative_session === true
     && host.__td613AshKeep?.current?.().case_id == null;
 }
@@ -109,6 +138,7 @@ function enforceClosedPresentation(reason = 'SESSION_POINTER_CLEARED') {
   if (!doc?.documentElement || activeCasePointer() || enforcing) return false;
   installPointerAuthoritativeCoreView();
   ensureAnimationAffordance();
+  reconcileIngressDemoControls();
   if (closedPresentationMatches() && !localValue(SESSION_EPOCH_KEY)) return true;
 
   enforcing = true;
@@ -142,6 +172,7 @@ function enforceClosedPresentation(reason = 'SESSION_POINTER_CLEARED') {
     }
 
     if (closeLayout) host.__td613AshIngressLayout?.closeSession?.();
+    reconcileIngressDemoControls();
     setData(doc.documentElement, 'ashMembraneReady', 'true');
     host.dispatchEvent(new CustomEvent('td613:ash:close-ingress-restored', {
       detail:{ version:ASH_CLOSE_INGRESS_ANIMATION_BOUNDARY_VERSION, reason, case_pointer:null, animation_artifact_required:false }
@@ -170,6 +201,9 @@ function installStyles() {
   style.textContent = `
     .ash-explanation-availability{margin:5px 0 8px;color:var(--aia-mint,var(--mint,#76ead4));font:700 .58rem/1.45 var(--mono,ui-monospace,monospace);letter-spacing:.02em}
     html[data-ash-session-open="false"] #launch.launch:not(.hidden){display:flex!important}
+    html[data-ash-session-open="false"] #launch .launch-panel>*{position:relative!important;inset:auto!important;transform:none!important}
+    html[data-ash-session-open="false"] #launch .launch-panel>p,
+    html[data-ash-session-open="false"] #launch .launch-panel>[role="note"]{display:block!important;margin:8px 0 14px!important;line-height:1.55!important;max-width:680px!important}
     @media(max-width:760px){.ash-explanation-availability{font-size:.53rem;margin:4px 0 6px}}
   `;
   doc.head.append(style);
@@ -208,6 +242,7 @@ export function installAshCloseIngressAnimationBoundary() {
     refresh:() => {
       installPointerAuthoritativeCoreView();
       ensureAnimationAffordance();
+      reconcileIngressDemoControls();
       return activeCasePointer() ? false : enforceClosedPresentation('EXPLICIT_REFRESH');
     },
     current:() => Object.freeze({
@@ -218,7 +253,8 @@ export function installAshCloseIngressAnimationBoundary() {
       reduced_motion:REDUCED(),
       explanation_presentation:doc.documentElement.dataset.ashExplanationPresentation || null,
       core_pointer_authoritative:Boolean(host.__td613AshKeep?.pointer_authoritative_session),
-      closed_presentation_matches:closedPresentationMatches()
+      closed_presentation_matches:closedPresentationMatches(),
+      demo_control_busy:byId('startDemo')?.getAttribute('aria-busy') === 'true'
     })
   });
   doc.documentElement.dataset.ashCloseIngressAnimationBoundary = ASH_CLOSE_INGRESS_ANIMATION_BOUNDARY_VERSION;
