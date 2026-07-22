@@ -6,6 +6,7 @@ on:
     paths:
       - 'app/dome-world/ash-flowcore-pedagogy-field.*'
       - 'app/dome-world/ash-flowcore-ingress-portal.js'
+      - 'app/dome-world/ash-flowcore-ingress-portal-loader.js'
       - 'app/dome-world/ash-session-boundary.js'
       - 'app/dome-world/ash-ingress-copy-spacing.js'
       - 'app/dome-world/ash-workspace-bridge.js'
@@ -32,6 +33,7 @@ jobs:
         run: |
           node --check app/dome-world/ash-flowcore-pedagogy-field.js
           node --check app/dome-world/ash-flowcore-ingress-portal.js
+          node --check app/dome-world/ash-flowcore-ingress-portal-loader.js
           node --check app/dome-world/ash-session-boundary.js
           node --check app/dome-world/ash-ingress-copy-spacing.js
       - name: Live Flow-Core field and ingress-copy contract
@@ -65,6 +67,7 @@ jobs:
           node --check scripts/ash-flowcore-live-field-browser-probe.mjs
           node --check app/dome-world/ash-flowcore-pedagogy-field.js
           node --check app/dome-world/ash-flowcore-ingress-portal.js
+          node --check app/dome-world/ash-flowcore-ingress-portal-loader.js
           node --check app/dome-world/ash-session-boundary.js
           node --check app/dome-world/ash-ingress-copy-spacing.js
       - name: Install browser witness runtime
