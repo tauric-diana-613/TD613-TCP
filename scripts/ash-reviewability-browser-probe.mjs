@@ -36,7 +36,7 @@ async function openKeep() {
 }
 
 const report = {
-  schema:'td613.ash.reviewability-browser/v0.1',
+  schema:'td613.ash.reviewability-browser/v0.2-post-ingress',
   browser:browserName,
   status:'RUNNING',
   errors,
@@ -62,30 +62,23 @@ try {
     && document.querySelector('#ashAiaMembrane .ash-aia__work')
     && document.getElementById('newProfile'));
 
+  // At ingress, the full-screen launch membrane owns presentation. The future AIA card
+  // only needs a valid neutral posture; its visible geometry is judged after entry.
   const ingress = await page.evaluate(() => {
     window.__td613AshReviewability.refresh();
     const work = document.querySelector('#ashAiaMembrane .ash-aia__work');
-    const note = work?.querySelector('.ash-reviewability-setup-note');
     const button = work?.querySelector('[data-aia-primary-task]');
     return {
       receipt:window.__td613AshReviewability.current(),
-      note_visible:Boolean(note && getComputedStyle(note).display !== 'none' && note.getBoundingClientRect().height > 0),
       fallback:button?.dataset.ashReviewabilityFallback || null,
       button_disabled:Boolean(button?.disabled),
-      button_aria_disabled:button?.getAttribute('aria-disabled') || null
+      button_aria_disabled:button?.getAttribute('aria-disabled') || null,
+      launch_visible:Boolean(document.getElementById('launch') && getComputedStyle(document.getElementById('launch')).display !== 'none')
     };
   });
   assert(ingress.receipt.panel_posture === 'SETUP_READY', `Ingress setup posture held: ${JSON.stringify(ingress)}.`);
-  assert(ingress.note_visible, `Ingress setup card remained blank: ${JSON.stringify(ingress)}.`);
-  assert(ingress.fallback === 'setup' && !ingress.button_disabled && ingress.button_aria_disabled === 'false', `Ingress setup button remained inert: ${JSON.stringify(ingress)}.`);
-  assert((ingress.receipt.panel_unused_space ?? 999) <= 90, `Ingress setup card retained excessive negative space: ${JSON.stringify(ingress.receipt)}.`);
-
-  await page.locator('[data-aia-primary-task]').click();
-  await page.waitForFunction(() => {
-    const launch = document.getElementById('launch');
-    const profile = document.getElementById('newProfile');
-    return launch && getComputedStyle(launch).display !== 'none' && profile;
-  });
+  assert(ingress.fallback === 'setup' && !ingress.button_disabled && ingress.button_aria_disabled === 'false', `Ingress setup action was not prepared: ${JSON.stringify(ingress)}.`);
+  assert(ingress.launch_visible, `Ingress membrane was not visible: ${JSON.stringify(ingress)}.`);
 
   await page.locator('#newProfile').selectOption('investigation');
   await page.locator('#newTitle').fill(`Reviewability ${browserName}`);
@@ -99,13 +92,17 @@ try {
   const activeCase = await page.evaluate(() => {
     const work = document.querySelector('#ashAiaMembrane .ash-aia__work');
     const button = work?.querySelector('[data-aia-primary-task]');
+    const style = work ? getComputedStyle(work) : null;
+    const rect = work?.getBoundingClientRect();
     return {
       receipt:window.__td613AshReviewability.current(),
       note_present:Boolean(work?.querySelector('.ash-reviewability-setup-note')),
       button_fallback:button?.dataset.ashReviewabilityFallback || null,
-      work_height:Math.round(work?.getBoundingClientRect().height || 0)
+      work_visible:Boolean(work && style?.display !== 'none' && style?.visibility !== 'hidden' && Number(style?.opacity ?? 1) > 0 && rect?.width > 0 && rect?.height > 0),
+      work_height:Math.round(rect?.height || 0)
     };
   });
+  assert(activeCase.work_visible, `Post-ingress setup/work card was not visible: ${JSON.stringify(activeCase)}.`);
   assert(activeCase.receipt.panel_posture === 'CASE_ACTIVE', `Active case retained setup posture: ${JSON.stringify(activeCase)}.`);
   assert(!/^Set up\b/i.test(activeCase.receipt.panel_title || ''), `Active case retained stale setup title: ${JSON.stringify(activeCase.receipt)}.`);
   assert(activeCase.receipt.panel_button_actionable, `Active case action button remained dead: ${JSON.stringify(activeCase.receipt)}.`);
