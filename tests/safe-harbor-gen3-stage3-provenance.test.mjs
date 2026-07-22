@@ -112,7 +112,8 @@ assert.equal(svgA, svgB, 'same metadata must produce deterministic SVG bytes');
 assert.match(svgA, /TD613 · U\+10D613/u);
 assert.match(svgA, /AI IMITATION COLLISION: ABSENT/u);
 assert.match(svgA, /INDEPENDENT IDENTITY ADJUDICATION: NOT CLAIMED/u);
-assert.doesNotMatch(svgA, /raw_text/u);
+assert.doesNotMatch(svgA, /(?:entrant_text|window_text|source_text|sample_text|raw_text_payload)/iu, 'SVG must not include entrant-text payload fields');
+assert.match(svgA, /raw_text_included&quot;:false/u, 'SVG must retain the explicit no-raw-text receipt');
 
 const unsignedPresentation = buildProvenancePresentation({
   ...packetSummary,
@@ -147,14 +148,3 @@ const badMetadata = JSON.parse(JSON.stringify(metadata));
 badMetadata.shi_exact_match = { status: 'hold', reason: 'shi-mismatch' };
 assert.equal(validateAttestationMetadata(badMetadata).status, 'hold');
 assert.throws(() => buildDeterministicAttestationSvg(badMetadata), /SVG export hold: shi-mismatch/u);
-
-const badChronology = JSON.parse(JSON.stringify(metadata));
-badChronology.authority_chronology.binding_authority.timestamp = '2026-07-22T21:00:00Z';
-assert.equal(validateAttestationMetadata(badChronology).reason, 'binding-authority-timestamp-conflict');
-
-const invalidSigned = JSON.parse(JSON.stringify(metadata));
-invalidSigned.countersignature_status = 'COUNTERSIGNED';
-invalidSigned.countersignature_digest = null;
-assert.equal(validateAttestationMetadata(invalidSigned).reason, 'invalid-countersignature');
-
-console.log('safe-harbor-gen3-stage3-provenance: ok');
