@@ -1,0 +1,105 @@
+name: Safe Harbor Gen3 Stage 2 PR integrator
+
+on:
+  pull_request:
+    branches:
+      - main
+    types:
+      - opened
+      - reopened
+      - synchronize
+      - ready_for_review
+
+permissions:
+  contents: write
+  pull-requests: read
+
+concurrency:
+  group: safe-harbor-gen3-stage2-pr-integrator
+  cancel-in-progress: false
+
+jobs:
+  integrate-test-and-clean:
+    if: github.event.pull_request.head.ref == 'safe-harbor-gen3-stage2-authorship-maturity'
+    runs-on: ubuntu-latest
+    timeout-minutes: 45
+    steps:
+      - name: Check out exact Stage 2 head branch
+        uses: actions/checkout@v4
+        with:
+          ref: safe-harbor-gen3-stage2-authorship-maturity
+          fetch-depth: 0
+
+      - name: Set up Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: '24'
+
+      - name: Apply bounded Stage 2 integration patch
+        run: node scripts/apply-safe-harbor-gen3-stage2-integration.mjs
+
+      - name: Validate Stage 2 maturity engine
+        run: node tests/safe-harbor-gen3-stage2-maturity-engine.test.mjs
+
+      - name: Validate Stage 2 report traceability
+        run: node tests/safe-harbor-gen3-stage2-maturity-report.test.mjs
+
+      - name: Validate Stage 2 versioned schema
+        run: node tests/safe-harbor-gen3-stage2-schema-contract.test.mjs
+
+      - name: Validate Stage 2 finalizer integration
+        run: node tests/safe-harbor-gen3-stage2-finalizer-integration.test.mjs
+
+      - name: Re-run Stage 1 contracts
+        run: |
+          node tests/safe-harbor-gen3-stage1-evidence-contract.test.mjs
+          node tests/safe-harbor-gen3-stage1-report-contract.test.mjs
+          node tests/safe-harbor-gen3-stage1-schema-contract.test.mjs
+
+      - name: Validate restore gate
+        run: npm run test:safe-harbor:phase9.1c
+
+      - name: Validate current Safe Harbor authority chain
+        run: npm run test:safe-harbor:current
+
+      - name: Scan Stage 2 branch for concrete SHIs and raw-text fixture leakage
+        run: |
+          node - <<'NODE'
+          const { execFileSync } = require('node:child_process');
+          const { readFileSync } = require('node:fs');
+          execFileSync('git', ['fetch', 'origin', 'main'], { stdio: 'inherit' });
+          const files = execFileSync('git', ['diff', '--name-only', 'origin/main...HEAD'], { encoding: 'utf8' })
+            .trim().split(/\r?\n/u).filter(Boolean);
+          const concrete = /TD613-SH-9B07D8B-[0-9A-F]{8}/gu;
+          const synthetic = 'TD613-SH-9B07D8B-A1B2C3D4';
+          const forbiddenRawKeys = /"(?:raw_text|source_text|entrant_text|window_text|prompt_text)"\s*:/u;
+          const violations = [];
+          for (const file of files) {
+            if (!/\.(?:js|mjs|json|md|html|svg|txt)$/u.test(file)) continue;
+            let text;
+            try { text = readFileSync(file, 'utf8'); } catch { continue; }
+            for (const match of text.match(concrete) || []) {
+              if (match !== synthetic) violations.push(`${file}: unexpected concrete SHI ${match}`);
+            }
+            if (file.startsWith('app/safe-harbor/app/safe-harbor-gen3-') && forbiddenRawKeys.test(text)) {
+              violations.push(`${file}: raw-text storage key found`);
+            }
+          }
+          if (violations.length) {
+            console.error(violations.join('\n'));
+            process.exit(1);
+          }
+          console.log(`Stage 2 safety scan passed across ${files.length} changed files.`);
+          NODE
+
+      - name: Remove branch-local integration patch
+        run: rm scripts/apply-safe-harbor-gen3-stage2-integration.mjs
+
+      - name: Commit tested Stage 2 integration
+        run: |
+          git config user.name "td613-safe-harbor-bot"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add -A
+          git diff --cached --check
+          git commit -m "Integrate Safe Harbor Gen3 Stage 2 maturity engine"
+          git push origin HEAD:safe-harbor-gen3-stage2-authorship-maturity
