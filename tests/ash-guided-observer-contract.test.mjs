@@ -23,6 +23,9 @@ for (const [label, source] of [['core', core], ['lifecycle', lifecycle]]) {
 
 assert.match(core, /dataset\.ashPremiumWorkspace/);
 assert.match(coreRunner, /CLASSIFY_INTENTIONAL_HORIZONTAL_SCROLL_LANES_SEPARATELY_FROM_CLIPPING/);
+assert.match(convergenceRunner, /fileURLToPath\(import\.meta\.url\)/);
+assert.match(convergenceRunner, /path\.join\(here, '\.ash-five-demo-convergence-compiler\.runtime\.mjs'\)/);
+assert.match(convergenceRunner, /await fs\.unlink\(compilerPath\)\.catch/);
 assert.match(convergenceRunner, /window\.__td613AshPremiumUI\?\.open/);
 assert.match(convergenceRunner, /open\('test'\)/);
 assert.match(convergenceRunner, /open\('map'\)/);
@@ -41,12 +44,17 @@ assert.match(convergenceRunner, /explicit profile and deferred entry-readiness g
 assert.doesNotMatch(convergenceRunner, /await page\.locator\('#startDemo'\)\.click\(\);\n  await page\.waitForFunction\(\(\) => \/Glasshouse Archive/,
   'Convergence observer retained an unprofiled legacy demo launch');
 assert.doesNotMatch(convergenceRunner, /const runtime = source\.replace\(readinessTarget, readinessReplacement\)\.replace\(deletionTarget/);
+
+assert.match(profileFixtureCompiler, /fileURLToPath\(import\.meta\.url\)/);
+assert.match(profileFixtureCompiler, /path\.join\(here, '\.prepare-ash-profile-closure-fixture\.runtime\.mjs'\)/);
+assert.match(profileFixtureCompiler, /await fs\.unlink\(runtimePath\)\.catch/);
 assert.match(profileFixtureCompiler, /profile_demo_registry_ready: true/);
 assert.match(profileFixtureCompiler, /profile_selected_explicitly: true/);
 assert.match(profileFixtureCompiler, /window\.__td613AshProfileDemos\?\.profiles\?\.includes\('political_campaign'\)/);
 assert.match(profileFixtureCompiler, /function isConvergencePrepared/);
 assert.doesNotMatch(profileFixtureCompiler, /profile_demo_ready: true/,
   'Closure fixture compiler still recognizes the superseded convergence readiness marker');
+
 assert.match(lifecycle, /selectOption\('political_campaign'\)/);
 assert.match(lifecycle, /Harbor City Mayoral Campaign/);
 assert.match(lifecycle, /node_kickoff, node_launch_message, node_press_inquiry/);
@@ -71,8 +79,8 @@ assert.match(lifecycle, /guided Capsule return before tamper assay/,
 
 for (const source of [core, coreRunner, convergenceRunner, lifecycle]) {
   assert.doesNotMatch(source, /prediction_authorized\s*:\s*true/);
-  assert.match(source, /automatic_action_authorized\s*:\s*true/);
-  assert.match(source, /recipient_transporu|s*:\s*true/);
+  assert.doesNotMatch(source, /automatic_action_authorized\s*:\s*true/);
+  assert.doesNotMatch(source, /recipient_transport\s*:\s*true/);
 }
 
 console.log('ash-guided-observer-contract.test.mjs passed');

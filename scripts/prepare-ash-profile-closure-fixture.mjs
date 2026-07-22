@@ -1,10 +1,11 @@
 import fs from 'node:fs/promises';
 import path from 'node:path';
-import { pathToFileURL } from 'node:url';
+import { fileURLToPath, pathToFileURL } from 'node:url';
 
+const here = path.dirname(fileURLToPath(import.meta.url));
 const artifactDir = path.resolve(process.env.TD613_PROFILE_CLOSURE_FIXTURE_RUNTIME_DIR || 'artifacts/ash-keep-probe-runtime');
 const sourceUrl = new URL('./prepare-ash-profile-closure-fixture.source.txt', import.meta.url);
-const runtimePath = path.join(artifactDir, 'prepare-ash-profile-closure-fixture.runtime.mjs');
+const runtimePath = path.join(here, '.prepare-ash-profile-closure-fixture.runtime.mjs');
 
 const requiredMarkers = Object.freeze([
   'function isConvergencePrepared',
@@ -63,5 +64,12 @@ source = replaceOne(source, blockTarget, blockReplacement, 'serialized compiler 
 if (!source.includes('SERIALIZED_COMPILER_SOURCE_READY') || !source.includes('combinedConvergenceSource')) {
   throw new Error('Five-demo profile fixture failed to materialize serialized compiler inspection.');
 }
-await fs.writeFile(runtimePath, source, 'utf8');
-await import(`${pathToFileURL(runtimePath).href}?five_demo_fixture_aftercare=${Date.now()}`);
+
+try {
+  await fs.writeFile(runtimePath, source, 'utf8');
+  await import(`${pathToFileURL(runtimePath).href}?five_demo_fixture_aftercare=${Date.now()}`);
+} finally {
+  await fs.unlink(runtimePath).catch(error => {
+    if (error?.code !== 'ENOENT') throw error;
+  });
+}

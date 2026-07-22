@@ -1,10 +1,11 @@
 import fs from 'node:fs/promises';
 import path from 'node:path';
-import { pathToFileURL } from 'node:url';
+import { fileURLToPath, pathToFileURL } from 'node:url';
 
+const here = path.dirname(fileURLToPath(import.meta.url));
 const artifactDir = path.resolve(process.env.TD613_ARTIFACT_DIR || 'artifacts/ash-constitutional-convergence');
 const serializedSourceUrl = new URL('./ash-five-demo-convergence-compiler.source.txt', import.meta.url);
-const compilerPath = path.join(artifactDir, 'ash-constitutional-convergence-probe.runtime.mjs');
+const compilerPath = path.join(here, '.ash-five-demo-convergence-compiler.runtime.mjs');
 const serializedQuoteSeam = `dataset.ashPremiumWorkspace === 'test""`;
 const canonicalQuote = `dataset.ashPremiumWorkspace === 'test'"`;
 
@@ -49,5 +50,12 @@ if (compiler.includes(serializedQuoteSeam)) {
 for (const marker of requiredMarkers) {
   if (!compiler.includes(marker)) throw new Error(`Five-demo convergence compiler omitted ${marker}.`);
 }
-await fs.writeFile(compilerPath, compiler, 'utf8');
-await import(`${pathToFileURL(compilerPath).href}?five_demo_aftercare=${Date.now()}`);
+
+try {
+  await fs.writeFile(compilerPath, compiler, 'utf8');
+  await import(`${pathToFileURL(compilerPath).href}?five_demo_aftercare=${Date.now()}`);
+} finally {
+  await fs.unlink(compilerPath).catch(error => {
+    if (error?.code !== 'ENOENT') throw error;
+  });
+}
