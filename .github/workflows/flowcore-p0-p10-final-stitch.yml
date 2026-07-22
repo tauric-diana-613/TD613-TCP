@@ -16,6 +16,8 @@ on:
       - 'app/dome-world/docs/ASH_KEEP_AIA3_RELOCK_SAFETY_RECEIPT_V0_1.md'
       - 'docs/safe-harbor/gen3-wave-a-release-gate-receipt.md'
       - 'docs/safe-harbor/gen3-wave-a-production-receipt.md'
+      - 'docs/safe-harbor/gen3-wave-b-release-gate-receipt.md'
+      - 'docs/safe-harbor/gen3-wave-b-production-receipt.md'
       - 'app/dome-world/fixtures/pedagogue/flowcore-promotion-evidence.json'
       - 'app/dome-world/route-burden-observatory.css'
       - 'app/dome-world/flowcore-promotion-dashboard.css'
@@ -25,6 +27,9 @@ on:
       - 'scripts/safe-harbor-gen3-wave-a-production-assets.mjs'
       - 'scripts/safe-harbor-gen3-wave-a-production-probe.mjs'
       - 'tests/safe-harbor-gen3-wave-a-production-probe-contract.test.mjs'
+      - 'scripts/safe-harbor-gen3-wave-b-production-assets.mjs'
+      - 'scripts/safe-harbor-gen3-wave-b-production-probe.mjs'
+      - 'tests/safe-harbor-gen3-wave-b-production-probe-contract.test.mjs'
       - 'tests/flowcore-p0-p10-completion.test.mjs'
       - 'tests/flowcore-production-promotion.test.mjs'
       - 'tests/flowcore-runtime-browser-probe.test.mjs'
@@ -99,7 +104,9 @@ jobs:
             && ! grep -Fxq 'app/dome-world/docs/ASH_KEEP_AIA3_RELEASE_RECONCILIATION_RECEIPT_V0_1.md' <<< "$CHANGED" \
             && ! grep -Fxq 'app/dome-world/docs/ASH_KEEP_AIA3_RELOCK_SAFETY_RECEIPT_V0_1.md' <<< "$CHANGED" \
             && ! grep -Fxq 'docs/safe-harbor/gen3-wave-a-release-gate-receipt.md' <<< "$CHANGED" \
-            && ! grep -Fxq 'docs/safe-harbor/gen3-wave-a-production-receipt.md' <<< "$CHANGED"; then
+            && ! grep -Fxq 'docs/safe-harbor/gen3-wave-a-production-receipt.md' <<< "$CHANGED" \
+            && ! grep -Fxq 'docs/safe-harbor/gen3-wave-b-release-gate-receipt.md' <<< "$CHANGED" \
+            && ! grep -Fxq 'docs/safe-harbor/gen3-wave-b-production-receipt.md' <<< "$CHANGED"; then
             echo 'Production release change requires a named Flow-Core, Ash, or Safe Harbor witness receipt.' >&2
             exit 1
           fi
@@ -128,6 +135,8 @@ jobs:
           docs/STRATEGIC_VERCEL_DEPLOYMENT_LAW.md
           docs/safe-harbor/gen3-wave-a-release-gate-receipt.md
           docs/safe-harbor/gen3-wave-a-production-receipt.md
+          docs/safe-harbor/gen3-wave-b-release-gate-receipt.md
+          docs/safe-harbor/gen3-wave-b-production-receipt.md
           docs/safe-harbor/gen3-implementation-ledger.md
           docs/safe-harbor/README.md
           scripts/flowcore-release-content-probe.mjs
@@ -135,6 +144,9 @@ jobs:
           scripts/safe-harbor-gen3-wave-a-production-assets.mjs
           scripts/safe-harbor-gen3-wave-a-production-probe.mjs
           tests/safe-harbor-gen3-wave-a-production-probe-contract.test.mjs
+          scripts/safe-harbor-gen3-wave-b-production-assets.mjs
+          scripts/safe-harbor-gen3-wave-b-production-probe.mjs
+          tests/safe-harbor-gen3-wave-b-production-probe-contract.test.mjs
           tests/flowcore-p0-p10-completion.test.mjs
           tests/flowcore-production-observation.test.mjs
           tests/flowcore-production-promotion.test.mjs
