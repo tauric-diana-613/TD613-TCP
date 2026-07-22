@@ -39,6 +39,7 @@ jobs:
         id: implementation_patch
         run: |
           set -o pipefail
+          sed -i 's/[[:space:]]\+$//' scripts/apply-safe-harbor-gen3-stage3-integration.mjs
           node scripts/apply-safe-harbor-gen3-stage3-integration.mjs 2>&1 | tee /tmp/stage3-integration.log
 
       - name: Apply bounded Stage 3 documentation seams
@@ -46,6 +47,7 @@ jobs:
         if: success()
         run: |
           set -o pipefail
+          sed -i 's/[[:space:]]\+$//' scripts/apply-safe-harbor-gen3-stage3-docs.mjs
           node scripts/apply-safe-harbor-gen3-stage3-docs.mjs 2>&1 | tee /tmp/stage3-docs.log
 
       - name: Preserve bounded Stage 3 patch diagnostics
