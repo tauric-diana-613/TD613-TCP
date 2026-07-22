@@ -29,10 +29,13 @@ assert.match(css, /data-flowcore-phase="4"/);
 assert.match(css, /prefers-reduced-motion:reduce/);
 assert.doesNotMatch(css, /animation:[^;}]*infinite/);
 
-assert.match(boundary, /v0\.2-pointer-governs-case-recovery-stays-open/);
+assert.match(boundary, /v0\.3-pointer-governs-case-explicit-recovery-stays-open/);
 assert.match(boundary, /if \(!activePointer\) return closedCurrent\(\)/);
 assert.match(boundary, /function capsuleRecoveryOpen\(\)/);
+assert.match(boundary, /Boolean\(file\?\.files\?\.length\)/);
+assert.match(boundary, /visible\(returnBar\)/);
 assert.match(boundary, /const interactive = caseOpen \|\| recoveryOpen/);
+assert.match(boundary, /RECOVERY_FILE_CHANGED/);
 assert.match(boundary, /CAPSULE_OPENED_SETTLED/);
 assert.match(boundary, /host\.__td613AshKeep = facade/);
 assert.match(boundary, /td613:ash:case-closed/);
