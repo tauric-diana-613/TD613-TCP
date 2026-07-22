@@ -9,7 +9,7 @@ const bridge = fs.readFileSync('app/dome-world/ash-workspace-bridge.js', 'utf8')
 const closeRepair = fs.readFileSync('app/dome-world/ash-case-close-repair.js', 'utf8');
 
 assert.match(field, /renderPedagogueScene, renderPedagogueStaticFrame/);
-assert.match(field, /td613\.ash\.flowcore-pedagogy-field\/v0\.1-consequence-topology/);
+assert.match(field, /td613\.ash\.flowcore-pedagogy-field\/v0\.2-consequence-topology-syntax-closed/);
 for (const phase of ['NOTICE','ACT','WORLD_ANSWERS','NAME','REST']) assert.match(field, new RegExp(`id:'${phase}'`));
 for (const glyph of ['à','上','出','米','𝄐']) assert.ok(field.includes(glyph), `Flow-Core field omitted ${glyph}`);
 for (const label of ['RAW BYTES DO NOT CROSS','REFERENCE','≠ ARTIFACT','CASE MAP RELATION FIELD','missingness stays visible']) assert.ok(field.includes(label), `Flow-Core field omitted ${label}`);
@@ -18,6 +18,8 @@ assert.match(field, /artifact_required:false/);
 assert.match(field, /EXPLICIT_PLAY_GESTURE/);
 assert.match(field, /td613:ash:explanation-frame/);
 assert.match(field, /STATIC_COMPLETE/);
+assert.match(field, /const playing = options\.playing \?\? bounded > 0/);
+assert.doesNotMatch(field, /playing:nextPhase\s*>/);
 assert.doesNotMatch(field, /setInterval\s*\(/);
 assert.doesNotMatch(field, /requestAnimationFrame\s*\(/);
 
