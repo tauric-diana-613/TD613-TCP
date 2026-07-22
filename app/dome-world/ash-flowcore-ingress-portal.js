@@ -1,4 +1,4 @@
-export const ASH_FLOWCORE_INGRESS_PORTAL_VERSION = 'td613.ash.flowcore-ingress-portal/v0.6-unique-play-hidden-proxy';
+export const ASH_FLOWCORE_INGRESS_PORTAL_VERSION = 'td613.ash.flowcore-ingress-portal/v0.9-phase-atomic-canonical-play';
 
 const host = globalThis.window;
 const doc = globalThis.document;
@@ -10,6 +10,7 @@ let proxyField = null;
 let bodyObserver = null;
 let proxyObserver = null;
 let syncing = false;
+let syncQueued = false;
 
 function caseOpen() {
   try { return Boolean(host.localStorage.getItem(POINTER_KEY)); }
@@ -24,11 +25,11 @@ function ingressHost() {
   if (ingress?.dataset.ashFlowcoreIngressHost !== 'true') {
     const legacyPromise = ingress;
     if (legacyPromise) {
-      legacyPromise.id = LEGACY_PROMISE_ID;
-      legacyPromise.hidden = true;
-      legacyPromise.inert = true;
-      legacyPromise.setAttribute('aria-hidden','true');
-      legacyPromise.dataset.ashFlowcoreSuperseded = 'true';
+      if (legacyPromise.id !== LEGACY_PROMISE_ID) legacyPromise.id = LEGACY_PROMISE_ID;
+      if (!legacyPromise.hidden) legacyPromise.hidden = true;
+      if (!legacyPromise.inert) legacyPromise.inert = true;
+      if (legacyPromise.getAttribute('aria-hidden') !== 'true') legacyPromise.setAttribute('aria-hidden','true');
+      if (legacyPromise.dataset.ashFlowcoreSuperseded !== 'true') legacyPromise.dataset.ashFlowcoreSuperseded = 'true';
     }
     ingress = null;
   }
@@ -113,7 +114,7 @@ function ensurePortalStyles() {
 }
 
 function stripDuplicateIds(root) {
-  root.removeAttribute('id');
+  if (root.id) root.removeAttribute('id');
   root.querySelectorAll('[id]').forEach(node => node.removeAttribute('id'));
   root.querySelectorAll('[aria-labelledby],[aria-describedby]').forEach(node => {
     node.removeAttribute('aria-labelledby');
@@ -121,9 +122,41 @@ function stripDuplicateIds(root) {
   });
 }
 
+function setDataset(node, name, value) {
+  if (!node) return;
+  if (value == null) {
+    if (node.dataset[name] != null) delete node.dataset[name];
+    return;
+  }
+  const next = String(value);
+  if (node.dataset[name] !== next) node.dataset[name] = next;
+}
+
+function setText(node, value) {
+  if (!node) return;
+  const next = String(value ?? '');
+  if (node.textContent !== next) node.textContent = next;
+}
+
+function setBooleanProperty(node, name, value) {
+  if (node && node[name] !== value) node[name] = value;
+}
+
+function setAttribute(node, name, value) {
+  if (!node) return;
+  if (value == null) {
+    if (node.hasAttribute(name)) node.removeAttribute(name);
+    return;
+  }
+  const next = String(value);
+  if (node.getAttribute(name) !== next) node.setAttribute(name, next);
+}
+
 function playFlowcoreField() {
   host.__td613AshFlowcoreField?.setPhase?.(0);
-  host.__td613AshFlowcoreField?.play?.();
+  const canonicalPlay = doc.querySelector('[data-aia-play]');
+  if (canonicalPlay) canonicalPlay.click();
+  else host.__td613AshFlowcoreField?.play?.();
 }
 
 function ensurePlayControl(field) {
@@ -144,35 +177,32 @@ function copyDynamicState() {
   for (const name of [
     'flowcorePhase','flowcorePhaseName','flowcorePlaying','flowcoreLifecycle','flowcoreCaseOpen',
     'flowcoreVisualSchema','flowcoreChannels','flowcoreReducedMotion','flowcoreAuthority'
-  ]) {
-    if (proxyField.dataset[name] == null) delete visibleField.dataset[name];
-    else visibleField.dataset[name] = proxyField.dataset[name];
-  }
+  ]) setDataset(visibleField, name, proxyField.dataset[name]);
+
   for (const selector of [
     '[data-flowcore-phase-label]','[data-flowcore-consequence]','[data-flowcore-technical]','[data-flowcore-exact-state]'
   ]) {
     const source = proxyField.querySelector(selector);
     const target = visibleField.querySelector(selector);
-    if (source && target) target.textContent = source.textContent;
+    if (source && target) setText(target, source.textContent);
   }
+
   const sourceSteps = proxyField.querySelectorAll('[data-static-phase]');
   const targetSteps = visibleField.querySelectorAll('[data-static-phase]');
   sourceSteps.forEach((source,index) => {
     const target = targetSteps[index];
     if (!target) return;
-    const current = source.getAttribute('aria-current');
-    if (current == null) target.removeAttribute('aria-current');
-    else target.setAttribute('aria-current', current);
+    setAttribute(target, 'aria-current', source.getAttribute('aria-current'));
   });
 }
 
 function applyProxyPosture(node) {
   if (!node || node === visibleField) return;
-  node.classList.add('ash-flowcore-field--proxy');
-  node.hidden = true;
-  node.inert = true;
-  node.setAttribute('aria-hidden','true');
-  stripDuplicateIds(node);
+  if (!node.classList.contains('ash-flowcore-field--proxy')) node.classList.add('ash-flowcore-field--proxy');
+  setBooleanProperty(node, 'hidden', true);
+  setBooleanProperty(node, 'inert', true);
+  setAttribute(node, 'aria-hidden', 'true');
+  if (node.id || node.querySelector('[id],[aria-labelledby],[aria-describedby]')) stripDuplicateIds(node);
 }
 
 function observeProxy(nextProxy) {
@@ -182,7 +212,17 @@ function observeProxy(nextProxy) {
   proxyField = nextProxy;
   applyProxyPosture(proxyField);
   proxyObserver = new MutationObserver(copyDynamicState);
-  proxyObserver.observe(proxyField, { subtree:true, childList:true, characterData:true, attributes:true });
+  proxyObserver.observe(proxyField, {
+    subtree:true,
+    childList:true,
+    characterData:true,
+    attributes:true,
+    attributeFilter:[
+      'data-flowcore-phase','data-flowcore-phase-name','data-flowcore-playing','data-flowcore-lifecycle',
+      'data-flowcore-case-open','data-flowcore-visual-schema','data-flowcore-channels',
+      'data-flowcore-reduced-motion','data-flowcore-authority','aria-current'
+    ]
+  });
   copyDynamicState();
 }
 
@@ -225,40 +265,40 @@ function portalToIngress() {
   }
   if (!visibleField) return false;
   ensurePlayControl(visibleField);
-  visibleField.hidden = false;
-  visibleField.inert = false;
-  visibleField.removeAttribute('aria-hidden');
+  setBooleanProperty(visibleField, 'hidden', false);
+  setBooleanProperty(visibleField, 'inert', false);
+  setAttribute(visibleField, 'aria-hidden', null);
   visibleField.classList.remove('ash-flowcore-field--proxy');
-  visibleField.dataset.flowcoreHost = 'ingress';
-  ingress.hidden = false;
-  ingress.inert = false;
-  ingress.removeAttribute('aria-hidden');
+  setDataset(visibleField, 'flowcoreHost', 'ingress');
+  setBooleanProperty(ingress, 'hidden', false);
+  setBooleanProperty(ingress, 'inert', false);
+  setAttribute(ingress, 'aria-hidden', null);
   if (visibleField.parentElement !== ingress) ingress.replaceChildren(visibleField);
   const nextProxy = findStageField();
   if (nextProxy && nextProxy !== proxyField) observeProxy(nextProxy);
   normalizeStageFields();
-  doc.documentElement.dataset.ashFlowcoreVisibleHost = 'INGRESS';
+  setDataset(doc.documentElement, 'ashFlowcoreVisibleHost', 'INGRESS');
   return true;
 }
 
 function portalToStage() {
   const stage = stageHost();
   if (!stage || !visibleField) return false;
-  visibleField.hidden = false;
-  visibleField.inert = false;
-  visibleField.removeAttribute('aria-hidden');
+  setBooleanProperty(visibleField, 'hidden', false);
+  setBooleanProperty(visibleField, 'inert', false);
+  setAttribute(visibleField, 'aria-hidden', null);
   visibleField.classList.remove('ash-flowcore-field--proxy');
-  visibleField.dataset.flowcoreHost = 'aia';
+  setDataset(visibleField, 'flowcoreHost', 'aia');
   stage.classList.add('ash-flowcore-mounted');
   if (visibleField.parentElement !== stage) stage.append(visibleField);
   normalizeStageFields();
   const ingress = doc.getElementById(INGRESS_HOST_ID);
   if (ingress?.dataset.ashFlowcoreIngressHost === 'true') {
-    ingress.hidden = true;
-    ingress.inert = true;
-    ingress.setAttribute('aria-hidden','true');
+    setBooleanProperty(ingress, 'hidden', true);
+    setBooleanProperty(ingress, 'inert', true);
+    setAttribute(ingress, 'aria-hidden', 'true');
   }
-  doc.documentElement.dataset.ashFlowcoreVisibleHost = 'AIA';
+  setDataset(doc.documentElement, 'ashFlowcoreVisibleHost', 'AIA');
   return true;
 }
 
@@ -266,21 +306,22 @@ function sync(reason = 'OBSERVED') {
   if (syncing || !doc?.body) return false;
   syncing = true;
   try {
-    const moved = caseOpen() ? portalToStage() : portalToIngress();
+    const open = caseOpen();
+    const moved = open ? portalToStage() : portalToIngress();
     normalizeStageFields();
-    if (!caseOpen()) {
+    if (!open) {
       const nextProxy = findStageField();
       if (nextProxy && nextProxy !== proxyField) observeProxy(nextProxy);
     }
     if (visibleField) {
-      visibleField.dataset.flowcorePortal = ASH_FLOWCORE_INGRESS_PORTAL_VERSION;
-      visibleField.dataset.flowcorePortalReason = reason;
+      setDataset(visibleField, 'flowcorePortal', ASH_FLOWCORE_INGRESS_PORTAL_VERSION);
+      setDataset(visibleField, 'flowcorePortalReason', reason);
     }
     host.dispatchEvent(new CustomEvent('td613:ash:flowcore-portal-synced', {
       detail:{
         version:ASH_FLOWCORE_INGRESS_PORTAL_VERSION,
         visible_host:doc.documentElement.dataset.ashFlowcoreVisibleHost || null,
-        case_open:caseOpen(),
+        case_open:open,
         moved,
         reason
       }
@@ -291,11 +332,28 @@ function sync(reason = 'OBSERVED') {
   }
 }
 
+function queueSync(reason) {
+  if (syncQueued) return;
+  syncQueued = true;
+  queueMicrotask(() => {
+    syncQueued = false;
+    sync(reason);
+  });
+}
+
+function mutationTouchesPortal(record) {
+  const selector = '.ash-flowcore-field,#ashAiaMembrane,.ash-aia__stage,#launch,.launch-panel,#guidedLaunchPromise,[data-aia-stage]';
+  return [...record.addedNodes, ...record.removedNodes].some(node => {
+    if (node?.nodeType !== 1) return false;
+    return node.matches?.(selector) || Boolean(node.querySelector?.(selector));
+  });
+}
+
 function installObserver() {
   if (bodyObserver) return;
   bodyObserver = new MutationObserver(records => {
-    if (!records.some(record => record.addedNodes.length || record.removedNodes.length)) return;
-    queueMicrotask(() => sync('DOM_MUTATION'));
+    if (!records.some(mutationTouchesPortal)) return;
+    queueSync('DOM_MUTATION');
   });
   bodyObserver.observe(doc.body, { childList:true, subtree:true });
 }
@@ -305,8 +363,9 @@ export function installAshFlowcoreIngressPortal() {
   ensurePortalStyles();
   installObserver();
   for (const type of ['aia-ready','aia3-ready','composition-stable','case-opened','case-created','profile-demo-hydrated','case-closed','session-boundary-reconciled']) {
-    host.addEventListener(`td613:ash:${type}`, () => queueMicrotask(() => sync(type.toUpperCase())));
+    host.addEventListener(`td613:ash:${type}`, () => queueSync(type.toUpperCase()));
   }
+  host.addEventListener('td613:ash:flowcore-field-phase', copyDynamicState);
   host.__td613AshFlowcoreIngressPortal = Object.freeze({
     version:ASH_FLOWCORE_INGRESS_PORTAL_VERSION,
     refresh:() => sync('EXPLICIT_REFRESH'),
@@ -320,7 +379,7 @@ export function installAshFlowcoreIngressPortal() {
       duplicate_visible_fields:[...doc.querySelectorAll('.ash-flowcore-field')].filter(node => !node.hidden && getComputedStyle(node).display !== 'none').length
     })
   });
-  queueMicrotask(() => sync('INSTALL'));
+  queueSync('INSTALL');
   return true;
 }
 
