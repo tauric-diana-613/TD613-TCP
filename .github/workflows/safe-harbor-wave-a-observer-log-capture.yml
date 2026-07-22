@@ -1,4 +1,4 @@
-name: Safe Harbor Wave A Observer Log Capture
+name: Safe Harbor Wave A Observer Contract Validation
 
 on:
   pull_request:
@@ -15,23 +15,25 @@ permissions:
   pull-requests: read
 
 concurrency:
-  group: safe-harbor-wave-a-observer-log-capture
+  group: safe-harbor-wave-a-observer-contract-validation
   cancel-in-progress: false
 
 jobs:
-  observe:
-    if: github.event.pull_request.head.ref == 'safe-harbor-wave-a-diagnostic-trigger'
+  validate:
+    if: github.event.pull_request.head.ref == 'safe-harbor-wave-a-observer-contract-fix'
     runs-on: ubuntu-latest
-    timeout-minutes: 40
+    timeout-minutes: 55
     env:
       TD613_BASE_URL: https://td613.com
       TD613_SOURCE_PACKET_COMMIT: 86cf1af84e69998ae195e53ef64372e35d8c6745
-      TD613_ARTIFACT_DIR: artifacts/safe-harbor-wave-a-observer-log-capture
+      TD613_ARTIFACT_DIR: artifacts/safe-harbor-wave-a-observer-contract-validation
+      TD613_SAFE_HARBOR_ASSET_ATTEMPTS: '24'
+      TD613_SAFE_HARBOR_ASSET_DELAY_MS: '5000'
     steps:
-      - name: Check out diagnostics trigger branch
+      - name: Check out exact observer-fix PR head
         uses: actions/checkout@v4
         with:
-          ref: safe-harbor-wave-a-diagnostic-trigger
+          ref: ${{ github.event.pull_request.head.sha }}
           fetch-depth: 0
 
       - name: Set up Node
@@ -40,13 +42,19 @@ jobs:
           node-version: '24'
           cache: npm
 
-      - name: Install read-only observer
+      - name: Validate marker and propagation contract
+        run: node tests/safe-harbor-gen3-wave-a-production-probe-contract.test.mjs
+
+      - name: Validate complete Wave A regression
+        run: npm run test:safe-harbor:gen3:wave-a
+
+      - name: Install read-only browser observer
         run: |
           npm ci
           npm install --no-save --package-lock=false playwright@1.53.2
           npx playwright install --with-deps chromium
 
-      - name: Run exact Wave A observer and capture bounded log
+      - name: Run corrected Wave A observer and capture bounded log
         id: observer
         shell: bash
         run: |
@@ -56,11 +64,11 @@ jobs:
             | sed -E 's/(token|secret|authorization)=([^[:space:]]+)/\1=[redacted]/Ig' \
             | tee "$TD613_ARTIFACT_DIR/observer.log"
 
-      - name: Preserve observer log and any partial runtime evidence
+      - name: Preserve corrected observer evidence
         if: always()
         uses: actions/upload-artifact@v4
         with:
-          name: safe-harbor-wave-a-observer-log-capture
-          path: artifacts/safe-harbor-wave-a-observer-log-capture/
+          name: safe-harbor-wave-a-observer-contract-validation
+          path: artifacts/safe-harbor-wave-a-observer-contract-validation/
           if-no-files-found: error
-          retention-days: 14
+          retention-days: 30

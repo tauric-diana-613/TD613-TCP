@@ -1,0 +1,109 @@
+name: Safe Harbor Gen3 Track R integrator
+
+on:
+  pull_request:
+    branches:
+      - main
+    types:
+      - opened
+      - reopened
+      - synchronize
+      - ready_for_review
+
+permissions:
+  contents: write
+  pull-requests: read
+
+concurrency:
+  group: safe-harbor-gen3-track-r-integrator
+  cancel-in-progress: false
+
+jobs:
+  integrate-test-and-clean:
+    if: github.event.pull_request.head.ref == 'safe-harbor-gen3-track-r-blind-custody-stylodynamics-v1'
+    runs-on: ubuntu-latest
+    timeout-minutes: 45
+    steps:
+      - name: Check out exact Track R head branch
+        uses: actions/checkout@v4
+        with:
+          ref: safe-harbor-gen3-track-r-blind-custody-stylodynamics-v1
+          fetch-depth: 0
+
+      - name: Set up Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: '24'
+
+      - name: Assemble bounded Track R implementation
+        run: node scripts/apply-safe-harbor-gen3-track-r.mjs
+
+      - name: Validate Track R research modules and gate
+        run: npm run test:safe-harbor:gen3:track-r
+
+      - name: Revalidate Release Wave A contract
+        run: npm run test:safe-harbor:gen3:wave-a
+
+      - name: Revalidate restore gate
+        run: npm run test:safe-harbor:phase9.1c
+
+      - name: Revalidate current Safe Harbor authority chain
+        run: npm run test:safe-harbor:current
+
+      - name: Verify Track R boundary and credential hygiene
+        run: |
+          set -euo pipefail
+          node --input-type=module <<'NODE'
+          import fs from 'node:fs';
+          const files = [
+            'app/safe-harbor/research/safe-harbor-blind-custody-challenge.js',
+            'app/safe-harbor/research/safe-harbor-perturbation-invariance.js',
+            'app/safe-harbor/research/safe-harbor-track-r.js',
+            'app/safe-harbor/schemas/td613-safe-harbor.blind-custody-challenge.v1.schema.json',
+            'app/safe-harbor/schemas/td613-safe-harbor.perturbation-invariance.v1.schema.json',
+            'tests/safe-harbor-gen3-track-r-blind-custody.test.mjs',
+            'tests/safe-harbor-gen3-track-r-perturbation-invariance.test.mjs',
+            'tests/safe-harbor-gen3-track-r-gate.test.mjs',
+            'tests/safe-harbor-gen3-track-r-schema-contract.test.mjs',
+            'docs/safe-harbor/gen3-track-r-implementation-receipt.md'
+          ];
+          const concrete = /TD613-SH-9B07D8B-[0-9A-F]{8}/gu;
+          const synthetic = 'TD613-SH-9B07D8B-A1B2C3D4';
+          const violations = [];
+          for (const file of files) {
+            const text = fs.readFileSync(file, 'utf8');
+            for (const match of text.match(concrete) || []) if (match !== synthetic) violations.push(`${file}: ${match}`);
+          }
+          if (violations.length) throw new Error(`Unexpected concrete SHI:\n${violations.join('\n')}`);
+          const gate = fs.readFileSync('app/safe-harbor/research/safe-harbor-track-r.js', 'utf8');
+          for (const marker of [
+            "export const TRACK_R_GATE = 'td613.safe-harbor.track-r-explicit-invocation/v1'",
+            "options.researchMode !== true",
+            "options.operatorGesture !== 'AUTHORIZE_TRACK_R_RESEARCH_EXECUTION'",
+            'baseline_intake_authorized: false',
+            'production_promotion_authorized: false',
+            "status: 'research-executed-unpromoted'"
+          ]) if (!gate.includes(marker)) throw new Error(`Track R gate marker missing: ${marker}`);
+          console.log('Track R research boundary and concrete-SHI hygiene: pass');
+          NODE
+
+      - name: Remove temporary branch carriers
+        run: |
+          rm -rf scripts/track-r-payload
+          rm scripts/apply-safe-harbor-gen3-track-r.mjs
+
+      - name: Commit tested Track R implementation
+        run: |
+          git config user.name 'td613-safe-harbor-bot'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add -A \
+            app/safe-harbor/research \
+            app/safe-harbor/schemas \
+            tests \
+            docs/safe-harbor \
+            package.json \
+            scripts/track-r-payload \
+            scripts/apply-safe-harbor-gen3-track-r.mjs
+          git diff --cached --check
+          git commit -m 'Implement Safe Harbor Gen3 Research Track R'
+          git push origin HEAD:safe-harbor-gen3-track-r-blind-custody-stylodynamics-v1
