@@ -75,6 +75,7 @@ jobs:
           git add \
             app/safe-harbor/app/safe-harbor-native-finalizer.js \
             app/safe-harbor/app/safe-harbor-packet-pipeline.js \
+            app/safe-harbor/app/safe-harbor-gen3-authorship-maturity.js \
             package.json \
             scripts/apply-safe-harbor-gen3-stage2-integration.mjs
           git diff --cached --check
