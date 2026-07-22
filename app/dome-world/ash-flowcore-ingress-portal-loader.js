@@ -1,16 +1,20 @@
-export const ASH_FLOWCORE_INGRESS_PORTAL_LOADER_VERSION = 'td613.ash.flowcore-ingress-portal-loader/v0.1-legacy-bypass';
+export const ASH_FLOWCORE_INGRESS_PORTAL_LOADER_VERSION = 'td613.ash.flowcore-ingress-portal-loader/v0.2-browser-aia-gate';
 
 const host = globalThis.window;
 const doc = globalThis.document;
+const browser = Boolean(host && doc?.documentElement);
 const params = new URLSearchParams(host?.location?.search || '');
 const legacy = params.get('presentation') === 'legacy';
+const eligible = browser && !legacy;
 
 if (doc?.documentElement) {
   doc.documentElement.dataset.ashFlowcorePortalLoader = ASH_FLOWCORE_INGRESS_PORTAL_LOADER_VERSION;
-  doc.documentElement.dataset.ashFlowcorePortalEligible = String(!legacy);
+  doc.documentElement.dataset.ashFlowcorePortalEligible = String(eligible);
 }
 
-if (legacy) {
+if (!browser) {
+  // Node, SSR, and static contract imports must remain quiet and side-effect free.
+} else if (legacy) {
   host.__td613AshFlowcoreIngressPortalLoader = Object.freeze({
     version:ASH_FLOWCORE_INGRESS_PORTAL_LOADER_VERSION,
     eligible:false,
@@ -30,6 +34,6 @@ if (legacy) {
     })
     .catch(error => {
       console.error('Ash Flow-Core ingress portal held:', error);
-      doc.documentElement.dataset.ashFlowcorePortalLoaderHold = error.message;
+      if (doc?.documentElement) doc.documentElement.dataset.ashFlowcorePortalLoaderHold = error.message;
     });
 }
