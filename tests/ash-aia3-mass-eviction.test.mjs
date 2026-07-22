@@ -11,6 +11,9 @@ import { runAshCacheFlush } from '../app/dome-world/ash-cache-flush.js';
 
 const shellSource = fs.readFileSync('api/dome-world-shell.js', 'utf8');
 const journeySource = fs.readFileSync('scripts/ash-keep-aia3-task-journey-v3.mjs', 'utf8');
+const compositionSource = fs.readFileSync('app/dome-world/ash-aia3-composition.js', 'utf8');
+const recoverySource = fs.readFileSync('app/safe-harbor/ash-keep-recovery.html', 'utf8');
+const closureServerSource = fs.readFileSync('scripts/ash-keep-local-closure-server.mjs', 'utf8');
 
 test('server preflight bypasses exact legacy rollback and republishes the governed receipt', () => {
   assert.match(shellSource, /legacyPresentation/);
@@ -22,14 +25,37 @@ test('server preflight bypasses exact legacy rollback and republishes the govern
   assert.match(shellSource, /window\.stop\(\)/);
 });
 
+test('browser witness is bound to the exact current Legal UX delivery epochs', () => {
+  assert.match(journeySource, /const EPOCH = '20260721-legal-demo-ux-v1'/);
+  assert.match(journeySource, /const CACHE_EPOCH = 'td613\.ash\.cache-flush\/2026-07-21-legal-demo-ux-v1'/);
+  assert.doesNotMatch(journeySource, /20260720-aia3-mass-eviction-v2/);
+});
+
 test('browser witness waits for coherent case, pointer, membrane, and exact work', () => {
   assert.match(journeySource, /async function waitForCaseComposition/);
   assert.match(journeySource, /localStorage\.getItem\('td613\.ash-keep\.current-case'\) === caseId/);
   assert.match(journeySource, /composition\?\.session_open === true/);
   assert.match(journeySource, /composition\?\.membrane_ready === true/);
+  assert.match(journeySource, /composition\?\.hold == null/);
+  assert.match(journeySource, /composition\?\.route_count >= 4/);
+  assert.match(journeySource, /composition\?\.task_count >= 4/);
+  assert.match(journeySource, /Boolean\(current\?\.lifecycle_state\)/);
+  assert.match(journeySource, /visible\(root\)/);
   assert.match(journeySource, /visible\(main\) && visible\(rail\)/);
+  assert.match(journeySource, /Boolean\(document\.documentElement\.dataset\.ashCompositionStable\)/);
   assert.match(journeySource, /await waitForCaseComposition\(page\)/);
   assert.match(journeySource, /opened\.pointer === opened\.case_id/);
+});
+
+test('stale-client recovery cannot finish during the blank remount interval', () => {
+  assert.match(compositionSource, /v0\.5-human-profile-choice/);
+  assert.match(compositionSource, /WAITING_LIFECYCLE_STATE/);
+  assert.match(compositionSource, /WAITING_COMPLETE_ROUTE_TASK_GRAPH/);
+  assert.match(journeySource, /document\.documentElement\.dataset\.ashCompositionHydrating !== 'true'/);
+  assert.match(journeySource, /root\?\.querySelectorAll\('\[data-aia-route\]'\)\.length >= 4/);
+  assert.match(journeySource, /root\?\.querySelectorAll\('\[data-aia-task\]'\)\.length >= 4/);
+  assert.match(journeySource, /final\.lifecycle\.state && final\.composition\?\.lifecycle_state/);
+  assert.match(journeySource, /Stale client was snapshotted before lifecycle and composition release converged/);
 });
 
 test('browser witness waits for lifecycle case binding before tutorial baseline', () => {
@@ -38,7 +64,45 @@ test('browser witness waits for lifecycle case binding before tutorial baseline'
   assert.match(journeySource, /Boolean\(lifecycle\?\.references\?\.case_map_digest\)/);
   assert.match(journeySource, /lifecycle\?\.gates\?\.map === true/);
   assert.match(journeySource, /await waitForLifecycleCaseBinding\(page, text\)/);
+  assert.match(journeySource, /worker\.state === 'activated'/, 'The stale-client witness must require actual service-worker activation.');
+  assert.match(journeySource, /did not activate within 20 seconds/, 'The stale-client worker activation wait must remain bounded.');
+  assert.match(journeySource, /registration did not resolve within 20 seconds/, 'The stale-client worker registration wait must remain bounded.');
+  assert.doesNotMatch(journeySource, /await navigator\.serviceWorker\.ready;/, 'The stale-client witness must not contain an unbounded service-worker readiness wait.');
   assert.doesNotMatch(journeySource, /waitForTimeout\(250\);\n  const before/);
+});
+
+test('every browser journey phase has a Node-level deadline', () => {
+  assert.match(journeySource, /const runPhase = async/);
+  assert.match(journeySource, /timeoutMs = 180000/);
+  assert.match(journeySource, /desktop fresh journey/);
+  assert.match(journeySource, /mobile fresh journey/);
+  assert.match(journeySource, /stale-client recovery journey/);
+  assert.match(journeySource, /report\.phase = label/);
+});
+
+test('browser teardown is bounded after the evidence receipt is written', () => {
+  assert.match(journeySource, /Browser close did not finish within 15 seconds/);
+  assert.match(journeySource, /report\.browser_close = browserClose/);
+  assert.match(journeySource, /await fs\.writeFile[\s\S]*process\.exit\(0\)/);
+  assert.doesNotMatch(journeySource, /finally \{\n  await browser\.close\(\);/);
+});
+
+test('retired worker fixture controls the next navigation without claiming the active page', () => {
+  assert.match(closureServerSource, /self\.addEventListener\('activate', \(\) => \{\}\)/);
+  assert.doesNotMatch(closureServerSource, /clients\.claim\(\)/);
+  assert.match(closureServerSource, /service-worker-allowed':'\/dome-world\/'/);
+});
+
+test('controlled stale clients leave the retired Dome-World scope before returning to Ash', () => {
+  assert.match(shellSource, /const recoveryBridge='\/safe-harbor\/ash-keep-recovery\.html'/);
+  assert.match(shellSource, /controllerPresent=Boolean\(navigator\.serviceWorker\?\.controller\)/);
+  assert.match(shellSource, /cross_scope_recovery_required:controllerPresent/);
+  assert.match(shellSource, /location\.replace\(bridge\.pathname\+bridge\.search\)/);
+  assert.match(recoverySource, /source_scope:'\/dome-world\/'/);
+  assert.match(recoverySource, /bridge_scope:'\/safe-harbor\/'/);
+  assert.match(recoverySource, /indexeddb_preserved:true/);
+  assert.match(recoverySource, /case_data_preserved:true/);
+  assert.match(recoverySource, /ash_recovered','cross-scope'/);
 });
 
 class MemoryStorage {

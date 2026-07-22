@@ -8,8 +8,8 @@ const browserType = { chromium, firefox, webkit }[browserName];
 const outputDir = path.resolve(process.env.TD613_ARTIFACT_DIR || `artifacts/ash-aia3-${browserName}`);
 const sourcePacket = process.env.TD613_SOURCE_PACKET_COMMIT || null;
 const productionObservation = process.env.TD613_PRODUCTION_OBSERVATION === 'true';
-const EPOCH = '20260720-aia3-mass-eviction-v2';
-const CACHE_EPOCH = 'td613.ash.cache-flush/2026-07-20-aia3-mass-eviction-v2';
+const EPOCH = '20260721-legal-demo-ux-v1';
+const CACHE_EPOCH = 'td613.ash.cache-flush/2026-07-21-legal-demo-ux-v1';
 const route = `${base}/dome-world/ash-keep.html?presentation=aia`;
 const assert = (value, message) => { if (!value) throw new Error(message); };
 
@@ -45,6 +45,8 @@ async function installTrace(context) {
       const entry = {
         preflight:document.documentElement.dataset.ashCachePreflight || null,
         session:document.documentElement.dataset.ashSessionOpen || null,
+        aia3_ready:document.documentElement.dataset.ashAia3Ready || null,
+        readiness_hold:document.documentElement.dataset.ashAia3ReadinessHold || null,
         root_visible:visible(document.querySelector('#ashAiaMembrane')),
         launch_visible:visible(document.querySelector('#launch')),
         stale_asset:document.documentElement.dataset.staleAia2Asset || null
@@ -89,6 +91,7 @@ async function snapshot(page, label) {
       label:labelValue,
       current:window.__td613AshLiveAIA?.current?.() || null,
       composition:window.__td613AshAia3Composition?.current?.() || null,
+      composition_release:document.documentElement.dataset.ashCompositionRelease || null,
       preflight,
       paint_trace:trace,
       case_id:window.__td613AshKeep?.current?.().case_id || null,
@@ -112,7 +115,10 @@ async function snapshot(page, label) {
 }
 
 async function waitReady(page) {
-  await page.waitForFunction(epoch => document.documentElement.dataset.ashAia3Ready === 'true' && window.__td613AshAia3Composition?.current?.().membrane_ready === true && document.querySelector('#newProfile')?.value === 'investigation' && location.search.includes(`ash_epoch=${epoch}`), EPOCH);
+  await page.waitForFunction(epoch => document.documentElement.dataset.ashAia3Ready === 'true'
+    && window.__td613AshAia3Composition?.current?.().membrane_ready === true
+    && document.querySelector('#newProfile')?.value === 'investigation'
+    && location.search.includes(`ash_epoch=${epoch}`), EPOCH);
 }
 
 function assertCleanPaint(value, label) {
@@ -137,17 +143,26 @@ async function waitForCaseComposition(page) {
     };
     const caseId = window.__td613AshKeep?.current?.().case_id || null;
     const composition = window.__td613AshAia3Composition?.current?.() || null;
+    const current = window.__td613AshLiveAIA?.current?.() || null;
+    const root = document.querySelector('#ashAiaMembrane');
     const main = document.querySelector('body > main');
     const rail = document.querySelector('body > .workspace-rail');
-    return Boolean(caseId) &&
-      localStorage.getItem('td613.ash-keep.current-case') === caseId &&
-      window.__td613AshLiveAIA?.current?.().task === 'document' &&
-      composition?.session_open === true &&
-      composition?.membrane_ready === true &&
-      visible(document.querySelector('#ashAiaMembrane')) &&
-      !visible(document.querySelector('#launch')) &&
-      visible(main) && visible(rail) &&
-      !main?.hasAttribute('inert') && !rail?.hasAttribute('inert');
+    return Boolean(caseId)
+      && localStorage.getItem('td613.ash-keep.current-case') === caseId
+      && current?.task === 'document'
+      && Boolean(current?.lifecycle_state)
+      && composition?.session_open === true
+      && composition?.membrane_ready === true
+      && composition?.hold == null
+      && composition?.route_count >= 4
+      && composition?.task_count >= 4
+      && root?.querySelectorAll('[data-aia-route]').length >= 4
+      && root?.querySelectorAll('[data-aia-task]').length >= 4
+      && visible(root)
+      && !visible(document.querySelector('#launch'))
+      && visible(main) && visible(rail)
+      && !main?.hasAttribute('inert') && !rail?.hasAttribute('inert')
+      && Boolean(document.documentElement.dataset.ashCompositionStable);
   });
 }
 
@@ -156,13 +171,13 @@ async function waitForLifecycleCaseBinding(page, expectedText) {
     const caseId = window.__td613AshKeep?.current?.().case_id || null;
     let lifecycle = null;
     try { lifecycle = JSON.parse(document.querySelector('#lifecycleReceipt')?.textContent || 'null')?.lifecycle || null; } catch {}
-    return Boolean(caseId) &&
-      localStorage.getItem('td613.ash-keep.current-case') === caseId &&
-      document.querySelector('#draftBody')?.value?.includes(expected) &&
-      window.__td613AshLiveAIA?.current?.().task === 'custody' &&
-      lifecycle?.references?.case_id === caseId &&
-      Boolean(lifecycle?.references?.case_map_digest) &&
-      lifecycle?.gates?.map === true;
+    return Boolean(caseId)
+      && localStorage.getItem('td613.ash-keep.current-case') === caseId
+      && document.querySelector('#draftBody')?.value?.includes(expected)
+      && window.__td613AshLiveAIA?.current?.().task === 'custody'
+      && lifecycle?.references?.case_id === caseId
+      && Boolean(lifecycle?.references?.case_map_digest)
+      && lifecycle?.gates?.map === true;
   }, expectedText);
 }
 
@@ -191,7 +206,7 @@ async function runFresh(browser, config, report) {
   const opened = await snapshot(page, `${config.name}-case-open`);
   report.steps.push(opened);
   assert(opened.case_id && opened.pointer === opened.case_id && !opened.launch.visible && opened.root.visible && opened.root.routes === 4 && opened.root.tasks === 4, `${config.name}: case composition incomplete.`);
-  assert(opened.composition?.session_open === true && opened.composition?.membrane_ready === true, `${config.name}: composition receipt incomplete.`);
+  assert(opened.composition?.session_open === true && opened.composition?.membrane_ready === true && opened.composition?.hold == null, `${config.name}: composition receipt incomplete.`);
   assert(opened.main.visible && opened.rail.visible && !opened.main.inert && !opened.rail.inert, `${config.name}: exact work unavailable.`);
   assert(opened.root.rect.height <= (config.name === 'desktop' ? 620 : 1050), `${config.name}: AIA crown too tall.`);
 
@@ -241,15 +256,61 @@ async function runStale(browser, report) {
     sessionStorage.setItem('__td613_aia3_paint_trace', '[]');
     const cache = await caches.open('td613-retired-aia2-assets');
     await cache.put('/dome-world/ash-lifecycle.js?v=retired-aia2', new Response("document.documentElement.dataset.staleAia2Asset='cached';", { headers:{ 'content-type':'text/javascript' } }));
-    await navigator.serviceWorker.register('/__ash_keep_closure/stale-aia2-worker.js', { scope:'/dome-world/' });
-    await navigator.serviceWorker.ready;
+    const registration = await Promise.race([
+      navigator.serviceWorker.register('/__ash_keep_closure/stale-aia2-worker.js', { scope:'/dome-world/' }),
+      new Promise((_, reject) => setTimeout(() => reject(new Error('Retired AIA2 worker registration did not resolve within 20 seconds.')), 20000))
+    ]);
+    const worker = registration.installing || registration.waiting || registration.active;
+    await Promise.race([
+      new Promise((resolve, reject) => {
+        if (!worker) return reject(new Error('Retired AIA2 worker registration exposed no worker.'));
+        if (worker.state === 'activated') return resolve();
+        const onStateChange = () => {
+          if (worker.state === 'activated') {
+            worker.removeEventListener('statechange', onStateChange);
+            resolve();
+          } else if (worker.state === 'redundant') {
+            worker.removeEventListener('statechange', onStateChange);
+            reject(new Error('Retired AIA2 worker became redundant before activation.'));
+          }
+        };
+        worker.addEventListener('statechange', onStateChange);
+      }),
+      new Promise((_, reject) => setTimeout(() => reject(new Error('Retired AIA2 worker did not activate within 20 seconds.')), 20000))
+    ]);
   });
   await page.goto(`${route}&profile=stale&phase=evict&nonce=${Date.now()}`, { waitUntil:'domcontentloaded' });
-  await page.waitForFunction(({ expectedCase, epoch }) => window.__td613AshKeep?.current?.().case_id === expectedCase && localStorage.getItem('td613.ash-keep.current-case') === expectedCase && window.__td613AshAia3Composition?.current?.().session_open === true && window.__td613AshAia3Composition?.current?.().membrane_ready === true && document.documentElement.dataset.ashAia3Ready === 'true' && location.search.includes(`ash_epoch=${epoch}`), { expectedCase:caseId, epoch:EPOCH });
+  await page.waitForFunction(({ expectedCase, epoch }) => {
+    const visible = node => {
+      if (!node) return false;
+      const style = getComputedStyle(node), rect = node.getBoundingClientRect();
+      return style.display !== 'none' && style.visibility !== 'hidden' && Number(style.opacity) > 0 && rect.width > 0 && rect.height > 0;
+    };
+    const current = window.__td613AshLiveAIA?.current?.() || null;
+    const composition = window.__td613AshAia3Composition?.current?.() || null;
+    const root = document.querySelector('#ashAiaMembrane');
+    return window.__td613AshKeep?.current?.().case_id === expectedCase
+      && localStorage.getItem('td613.ash-keep.current-case') === expectedCase
+      && composition?.session_open === true
+      && composition?.membrane_ready === true
+      && composition?.hold == null
+      && Boolean(composition?.lifecycle_state)
+      && composition?.route_count >= 4
+      && composition?.task_count >= 4
+      && Boolean(current?.lifecycle_state)
+      && root?.querySelectorAll('[data-aia-route]').length >= 4
+      && root?.querySelectorAll('[data-aia-task]').length >= 4
+      && visible(root)
+      && Boolean(document.documentElement.dataset.ashCompositionStable)
+      && document.documentElement.dataset.ashCompositionHydrating !== 'true'
+      && document.documentElement.dataset.ashAia3Ready === 'true'
+      && location.search.includes(`ash_epoch=${epoch}`);
+  }, { expectedCase:caseId, epoch:EPOCH });
   const final = await snapshot(page, 'stale-client-complete');
   report.steps.push(final);
   assert(final.case_id === caseId && final.pointer === caseId, 'Stale client lost the local case pointer.');
-  assert(final.root.visible && !final.launch.visible && final.main.visible && final.rail.visible, 'Stale client did not recover exact work.');
+  assert(final.root.visible && final.root.routes >= 4 && final.root.tasks >= 4 && !final.launch.visible && final.main.visible && final.rail.visible, 'Stale client did not recover complete exact work.');
+  assert(final.lifecycle.state && final.composition?.lifecycle_state && final.composition?.hold == null && final.composition_release, 'Stale client was snapshotted before lifecycle and composition release converged.');
   assert(final.preflight?.performed === true && final.preflight?.local_case_pointer_preserved === true && final.preflight?.session_epoch_preserved_or_migrated === true, 'Stale client preservation receipt failed.');
   assert(final.preflight?.cache_names?.includes('td613-retired-aia2-assets'), 'Retired cache missing from eviction receipt.');
   assert(final.preflight?.worker_scopes?.some(scope => scope.includes('/dome-world/')), 'Retired worker missing from eviction receipt.');
@@ -265,27 +326,49 @@ async function runStale(browser, report) {
 assert(browserType, `Unsupported browser ${browserName}`);
 await fs.mkdir(outputDir, { recursive:true });
 const report = {
-  schema:'td613.ash.aia3-task-continuity-browser-evidence/v0.3-mass-eviction',
+  schema:'td613.ash.aia3-task-continuity-browser-evidence/v0.4-render-readiness',
   status:'RUNNING', browser:browserName, base_url:base, source_packet_commit:sourcePacket,
   production_observation:productionObservation, profiles:{}, steps:[], console_errors:[], page_errors:[], http_errors:[], external_requests:[], non_read_requests:[],
   authority:{ counts_as_human_evidence:false, authorizes_child_study:false, authorizes_release:false, closes_program:false }
 };
 let terminal = null;
 const browser = await browserType.launch({ headless:true });
+const runPhase = async (label, operation, timeoutMs = 180000) => {
+  report.phase = label;
+  return Promise.race([
+    operation(),
+    new Promise((_, reject) => setTimeout(() => reject(new Error(`${label} exceeded ${timeoutMs}ms.`)), timeoutMs))
+  ]);
+};
 try {
-  await runFresh(browser, { name:'desktop', viewport:{ width:1440, height:900 }, mobile:false }, report);
-  await runFresh(browser, { name:'mobile', viewport:{ width:390, height:844 }, mobile:browserName === 'webkit' }, report);
-  if (!productionObservation) await runStale(browser, report);
+  await runPhase('desktop fresh journey', () => runFresh(browser, { name:'desktop', viewport:{ width:1440, height:900 }, mobile:false }, report));
+  await runPhase('mobile fresh journey', () => runFresh(browser, { name:'mobile', viewport:{ width:390, height:844 }, mobile:browserName === 'webkit' }, report));
+  if (!productionObservation) await runPhase('stale-client recovery journey', () => runStale(browser, report));
   assert(report.console_errors.length === 0 && report.page_errors.length === 0 && report.http_errors.length === 0 && report.external_requests.length === 0 && report.non_read_requests.length === 0, `Observer recorded errors: ${JSON.stringify(report)}`);
+  report.phase = 'complete';
   report.status = 'PASS';
 } catch (error) {
   terminal = error;
   report.status = 'HELD';
   report.hold_reason = error.message;
 } finally {
-  await browser.close();
   report.completed_at = new Date().toISOString();
+  let browserClose = 'CLOSED';
+  try {
+    await Promise.race([
+      browser.close(),
+      new Promise((_, reject) => setTimeout(() => reject(new Error('Browser close did not finish within 15 seconds.')), 15000))
+    ]);
+  } catch (error) {
+    browserClose = 'FORCED_PROCESS_EXIT';
+    report.browser_close_hold = error.message;
+  }
+  report.browser_close = browserClose;
   await fs.writeFile(path.join(outputDir, 'ash-aia3-task-continuity.json'), `${JSON.stringify(report, null, 2)}\n`, 'utf8');
 }
-if (terminal) throw terminal;
-console.log(JSON.stringify({ status:report.status, browser:browserName, profiles:Object.keys(report.profiles) }, null, 2));
+if (terminal) {
+  console.error(terminal);
+  process.exit(1);
+}
+console.log(JSON.stringify({ status:report.status, browser:browserName, profiles:Object.keys(report.profiles), browser_close:report.browser_close }, null, 2));
+process.exit(0);

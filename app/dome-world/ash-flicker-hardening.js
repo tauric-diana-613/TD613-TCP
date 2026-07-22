@@ -1,23 +1,35 @@
-export const ASH_FLICKER_HARDENING_VERSION = 'td613.ash.flicker-hardening/v0.3-emergency-static-surface';
-export const ASH_CANONICAL_COMPOSITOR_VERSION = 'td613.ash.flicker-hardening/v1.0-native-compositor';
+export const ASH_FLICKER_HARDENING_VERSION = 'td613.ash.flicker-hardening/v0.4-stable-finite-motion';
+export const ASH_CANONICAL_COMPOSITOR_VERSION = 'td613.ash.flicker-hardening/v1.1-stable-finite-compositor';
 
 const host = globalThis.window;
 const doc = globalThis.document;
 
 const diagnostics = {
-  cancelledAnimations: 0,
-  global_animation_frame_wrapped: false,
-  global_mutation_observer_wrapped: false,
+  cancelledInfiniteAnimations: 0,
+  preservedFiniteAnimations: 0,
   installedAt: new Date().toISOString()
 };
 
-function cancelDocumentAnimations() {
+function animationIterations(animation) {
+  try {
+    return animation.effect?.getTiming?.().iterations;
+  } catch {
+    return null;
+  }
+}
+
+function cancelRunawayAnimations() {
   if (typeof doc?.getAnimations !== 'function') return;
-  for (const animation of doc.getAnimations({ subtree:true })) {
-    try {
-      animation.cancel();
-      diagnostics.cancelledAnimations += 1;
-    } catch {}
+  for (const animation of doc.getAnimations({ subtree: true })) {
+    const iterations = animationIterations(animation);
+    if (iterations === Infinity) {
+      try {
+        animation.cancel();
+        diagnostics.cancelledInfiniteAnimations += 1;
+      } catch {}
+    } else {
+      diagnostics.preservedFiniteAnimations += 1;
+    }
   }
 }
 
@@ -39,22 +51,7 @@ function installCompositorStyles() {
     html[data-ash-flicker-hardening] body{
       overflow-y:auto!important;
       background-attachment:scroll!important;
-      background-image:none!important;
-      background-color:#03100c!important;
       -webkit-overflow-scrolling:touch;
-    }
-    html[data-ash-flicker-hardening] body::before,
-    html[data-ash-flicker-hardening] body::after{
-      content:none!important;
-      display:none!important;
-    }
-    html[data-ash-flicker-hardening] *,
-    html[data-ash-flicker-hardening] *::before,
-    html[data-ash-flicker-hardening] *::after{
-      animation:none!important;
-      animation-name:none!important;
-      transition:none!important;
-      scroll-behavior:auto!important;
     }
     html[data-ash-flicker-hardening] .mast,
     html[data-ash-flicker-hardening] .launch,
@@ -70,26 +67,28 @@ function installCompositorStyles() {
       backdrop-filter:none!important;
       will-change:auto!important;
     }
-    html[data-ash-flicker-hardening] main,
-    html[data-ash-flicker-hardening] .workspace,
-    html[data-ash-flicker-hardening] .premium-workspace,
-    html[data-ash-flicker-hardening] .premium-sheet,
-    html[data-ash-flicker-hardening] .guided-stable-host{
-      overflow:visible!important;
-      animation:none!important;
-      will-change:auto!important;
-    }
-    html[data-ash-flicker-hardening] .map-stage{
+    html[data-ash-flicker-hardening] .map-stage,
+    html[data-ash-flicker-hardening] .ash-aia__stage,
+    html[data-ash-flicker-hardening] .premium-sheet{
       isolation:isolate;
-      transform:none!important;
       will-change:auto!important;
     }
     html[data-ash-flicker-hardening] .map-stage canvas{
-      animation:none!important;
-      transition:none!important;
       will-change:auto!important;
-      transform:none!important;
       touch-action:pan-y pinch-zoom!important;
+    }
+    html[data-ash-flicker-hardening] .ash-aia__stage[data-playing="true"] .aia-step.is-current,
+    html[data-ash-flicker-hardening] .ash-ux-motion-node[data-active="true"] i{
+      animation-play-state:running!important;
+    }
+    @media(prefers-reduced-motion:reduce){
+      html[data-ash-flicker-hardening] *,
+      html[data-ash-flicker-hardening] *::before,
+      html[data-ash-flicker-hardening] *::after{
+        scroll-behavior:auto!important;
+        animation-duration:.001ms!important;
+        animation-iteration-count:1!important;
+      }
     }
   `;
 }
@@ -97,14 +96,15 @@ function installCompositorStyles() {
 export function installAshFlickerHardening() {
   if (!host || !doc || host.__td613AshFlickerHardening) return false;
   installCompositorStyles();
-  cancelDocumentAnimations();
-  host.addEventListener('td613:ash:core-ready', cancelDocumentAnimations, { once:true });
+  cancelRunawayAnimations();
+  host.addEventListener('td613:ash:core-ready', cancelRunawayAnimations, { once: true });
+  host.addEventListener('td613:ash:composition-stable', cancelRunawayAnimations, { once: true });
   doc.documentElement.dataset.ashFlickerHardening = ASH_FLICKER_HARDENING_VERSION;
   doc.documentElement.dataset.ashCanonicalCompositor = ASH_CANONICAL_COMPOSITOR_VERSION;
   host.__td613AshFlickerHardening = Object.freeze({
-    version:ASH_FLICKER_HARDENING_VERSION,
-    canonical_version:ASH_CANONICAL_COMPOSITOR_VERSION,
-    diagnostics:() => Object.freeze({ ...diagnostics })
+    version: ASH_FLICKER_HARDENING_VERSION,
+    canonical_version: ASH_CANONICAL_COMPOSITOR_VERSION,
+    diagnostics: () => Object.freeze({ ...diagnostics })
   });
   return true;
 }

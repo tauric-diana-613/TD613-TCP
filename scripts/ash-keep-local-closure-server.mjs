@@ -56,7 +56,7 @@ const server = http.createServer(async (req, res) => {
   }
   if (url.pathname === '/__ash_keep_closure/stale-aia2-worker.js') {
     const worker = `self.addEventListener('install', event => event.waitUntil(self.skipWaiting()));
-self.addEventListener('activate', event => event.waitUntil(self.clients.claim()));
+self.addEventListener('activate', () => {});
 self.addEventListener('fetch', event => {
   const url = new URL(event.request.url);
   if (url.pathname === '/dome-world/ash-lifecycle.js') {

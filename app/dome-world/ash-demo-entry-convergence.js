@@ -1,0 +1,175 @@
+export const ASH_DEMO_ENTRY_CONVERGENCE_VERSION = 'td613.ash.demo-entry-convergence/v0.5-premium-instrument-visible-release';
+
+const host = globalThis.window;
+const doc = globalThis.document;
+const byId = id => doc?.getElementById(id);
+const ENTRY_FALLBACK = Object.freeze({ investigation:'home', political_campaign:'map', fundraiser:'work', research:'work', legal:'home' });
+let token = 0;
+let frame = 0;
+let timeout = 0;
+let state = Object.freeze({ case_id:null, profile:null, workspace:null, posture:'IDLE', phase:'IDLE', stable_frames:0 });
+
+function boxReady(node, { opacity = false, pointer = false } = {}) {
+  if (!node) return false;
+  const style = getComputedStyle(node), rect = node.getBoundingClientRect();
+  return style.display !== 'none'
+    && style.visibility !== 'hidden'
+    && (!opacity || Number(style.opacity) > 0)
+    && (!pointer || style.pointerEvents !== 'none')
+    && rect.width > 0
+    && rect.height > 0;
+}
+
+function intendedWorkspace(profile) {
+  if (profile === 'research') return 'work';
+  return host.__td613AshDemoPedagogy?.manifests?.[profile]?.entry_workspace || ENTRY_FALLBACK[profile] || 'home';
+}
+
+function currentCaseId(event) {
+  return event?.detail?.case_id || host.__td613AshKeep?.current?.().case_id || host.localStorage?.getItem?.('td613.ash-keep.current-case') || null;
+}
+
+function openWorkspace(workspace) {
+  const open = host.__td613AshUiUxRescue?.open || host.__td613AshPremiumUI?.open || host.__td613OpenAshWorkspace || host.__td613AshKeep?.openWorkspace;
+  if (typeof open !== 'function') return false;
+  open(workspace);
+  return true;
+}
+
+function ensureStyles() {
+  if (byId('td613-ash-demo-entry-convergence-css')) return;
+  const style = doc.createElement('style');
+  style.id = 'td613-ash-demo-entry-convergence-css';
+  style.textContent = `html[data-ash-demo-entry-hydrating="true"] body>main{opacity:0!important;pointer-events:none!important;user-select:none!important}#ashDemoEntryStatus{grid-column:1/-1;display:flex;align-items:center;justify-content:space-between;gap:12px;width:100%;margin-top:7px;padding:7px 9px;border:1px solid rgba(228,198,108,.24);background:rgba(228,198,108,.05);color:var(--muted);font:700 .56rem/1.3 var(--mono);text-transform:uppercase}#ashDemoEntryStatus strong{color:var(--gold)}#ashDemoEntryStatus[data-posture="READY"]{border-color:rgba(118,234,212,.25);color:var(--mint)}#ashDemoEntryStatus[data-posture="HELD"]{border-color:rgba(255,139,157,.45);color:var(--rose)}`;
+  doc.head.append(style);
+}
+
+function renderStatus(profile, workspace, posture, detail) {
+  const context = byId('premiumContextBar');
+  if (!context) return null;
+  let node = byId('ashDemoEntryStatus');
+  if (!node) {
+    node = doc.createElement('div');
+    node.id = 'ashDemoEntryStatus';
+    node.setAttribute('role', 'status');
+    node.setAttribute('aria-live', 'polite');
+    context.append(node);
+  }
+  if (node.dataset.posture !== posture) node.dataset.posture = posture;
+  const markup = `<strong>${profile.replaceAll('_',' ')}</strong><span>${detail || `${workspace} workspace`}</span>`;
+  if (node.innerHTML !== markup) node.innerHTML = markup;
+  return node;
+}
+
+function exactGraph(workspace) {
+  return {
+    panel:byId(`workspace-${workspace}`),
+    main:doc.querySelector('body > main'),
+    context:byId('premiumContextBar'),
+    dock:byId('premiumPrimaryDock')
+  };
+}
+
+function structuralReady(workspace) {
+  const { panel, main, context, dock } = exactGraph(workspace);
+  return Boolean(panel?.classList.contains('active'))
+    && doc.documentElement.dataset.ashPremiumWorkspace === workspace
+    && doc.documentElement.dataset.ashPremiumReady === 'true'
+    && boxReady(panel)
+    && boxReady(main)
+    && boxReady(context)
+    && boxReady(dock)
+    && !main?.hasAttribute('inert');
+}
+
+function visibleReady(workspace) {
+  const { panel, main, context, dock } = exactGraph(workspace);
+  return structuralReady(workspace)
+    && boxReady(panel, { opacity:true, pointer:true })
+    && boxReady(main, { opacity:true, pointer:true })
+    && boxReady(context, { opacity:true, pointer:true })
+    && boxReady(dock, { opacity:true, pointer:true });
+}
+
+function publish(caseId, profile, workspace, posture, phase, stableFrames) {
+  if (state.case_id === caseId && state.profile === profile && state.workspace === workspace && state.posture === posture && state.phase === phase && state.stable_frames === stableFrames) return state;
+  state = Object.freeze({ case_id:caseId, profile, workspace, posture, phase, stable_frames:stableFrames });
+  doc.documentElement.dataset.ashDemoEntryConvergence = ASH_DEMO_ENTRY_CONVERGENCE_VERSION;
+  if (doc.documentElement.dataset.ashDemoEntryPosture !== posture) doc.documentElement.dataset.ashDemoEntryPosture = posture;
+  if (doc.documentElement.dataset.ashDemoEntryPhase !== phase) doc.documentElement.dataset.ashDemoEntryPhase = phase;
+  host.__td613AshDemoEntryConvergenceState = state;
+  return state;
+}
+
+function release(caseId, profile, workspace, stableFrames) {
+  clearTimeout(timeout);
+  delete doc.documentElement.dataset.ashDemoEntryHydrating;
+  delete doc.documentElement.dataset.ashDemoEntryHold;
+  doc.documentElement.dataset.ashDemoEntryReady = `${profile}:${workspace}`;
+  doc.documentElement.dataset.ashDemoEntryCase = caseId || '';
+  publish(caseId, profile, workspace, 'READY', 'VISIBLE', stableFrames);
+  renderStatus(profile, workspace, 'READY', `${workspace} ready · four-step route remains available`);
+  host.dispatchEvent(new CustomEvent('td613:ash:demo-entry-ready', { detail:{ case_id:caseId, profile, workspace, phase:'VISIBLE', stable_frames:stableFrames, version:ASH_DEMO_ENTRY_CONVERGENCE_VERSION } }));
+  host.setTimeout(() => byId('ashDemoEntryStatus')?.remove(), 1200);
+}
+
+function converge(caseId, profile, workspace, currentToken, phase = 'STRUCTURAL', stableFrames = 0) {
+  if (currentToken !== token) return;
+  const ready = phase === 'STRUCTURAL' ? structuralReady(workspace) : visibleReady(workspace);
+  const nextStable = ready ? stableFrames + 1 : 0;
+  if (phase === 'STRUCTURAL' && nextStable >= 2) {
+    delete doc.documentElement.dataset.ashDemoEntryHydrating;
+    publish(caseId, profile, workspace, 'REVEALING', 'VISIBLE', 0);
+    renderStatus(profile, workspace, 'REVEALING', `revealing ${workspace} workspace…`);
+    frame = host.requestAnimationFrame(() => converge(caseId, profile, workspace, currentToken, 'VISIBLE', 0));
+    return;
+  }
+  if (phase === 'VISIBLE' && nextStable >= 2) {
+    release(caseId, profile, workspace, nextStable);
+    return;
+  }
+  const panel = byId(`workspace-${workspace}`);
+  const wrongWorkspace = doc.documentElement.dataset.ashPremiumWorkspace !== workspace || !panel?.classList.contains('active');
+  if (wrongWorkspace) openWorkspace(workspace);
+  publish(caseId, profile, workspace, phase === 'STRUCTURAL' ? 'OPENING' : 'REVEALING', phase, nextStable);
+  frame = host.requestAnimationFrame(() => converge(caseId, profile, workspace, currentToken, phase, nextStable));
+}
+
+function begin(event) {
+  const profile = event?.detail?.profile || doc.documentElement.dataset.ashDemoProfile || null;
+  if (!profile) return false;
+  const caseId = currentCaseId(event);
+  if (caseId && state.case_id === caseId && state.profile === profile && ['OPENING','REVEALING','READY'].includes(state.posture)) return false;
+  const workspace = intendedWorkspace(profile);
+  const currentToken = ++token;
+  if (frame) host.cancelAnimationFrame(frame);
+  clearTimeout(timeout);
+  delete doc.documentElement.dataset.ashDemoEntryReady;
+  delete doc.documentElement.dataset.ashDemoEntryCase;
+  delete doc.documentElement.dataset.ashDemoEntryHold;
+  doc.documentElement.dataset.ashDemoEntryHydrating = 'true';
+  publish(caseId, profile, workspace, 'OPENING', 'STRUCTURAL', 0);
+  renderStatus(profile, workspace, 'OPENING', `opening ${workspace} workspace…`);
+  openWorkspace(workspace);
+  frame = host.requestAnimationFrame(() => converge(caseId, profile, workspace, currentToken, 'STRUCTURAL', 0));
+  timeout = host.setTimeout(() => {
+    if (currentToken !== token || state.posture === 'READY') return;
+    delete doc.documentElement.dataset.ashDemoEntryHydrating;
+    publish(caseId, profile, workspace, 'HELD', state.phase, state.stable_frames);
+    doc.documentElement.dataset.ashDemoEntryHold = `WORKSPACE_NOT_VISIBLE:${profile}:${workspace}:${state.phase}`;
+    renderStatus(profile, workspace, 'HELD', `${workspace} held · Premium instrument did not become visibly interactive`);
+    host.dispatchEvent(new CustomEvent('td613:ash:demo-entry-held', { detail:{ case_id:caseId, profile, workspace, phase:state.phase, code:'WORKSPACE_NOT_VISIBLE', version:ASH_DEMO_ENTRY_CONVERGENCE_VERSION } }));
+  }, 5000);
+  return true;
+}
+
+export function installAshDemoEntryConvergence() {
+  if (!host || !doc?.body || host.__td613AshDemoEntryConvergence) return false;
+  ensureStyles();
+  host.addEventListener('td613:ash:profile-demo-hydrated', begin);
+  host.__td613AshDemoEntryConvergence = Object.freeze({ version:ASH_DEMO_ENTRY_CONVERGENCE_VERSION, begin, current:() => state, ready:() => state.posture === 'READY' });
+  doc.documentElement.dataset.ashDemoEntryConvergence = ASH_DEMO_ENTRY_CONVERGENCE_VERSION;
+  return true;
+}
+
+if (host && doc) installAshDemoEntryConvergence();

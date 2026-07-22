@@ -1,0 +1,129 @@
+name: Ash Research Project Rehydration
+
+on:
+  pull_request:
+    paths:
+      - 'app/dome-world/ash-research-demo-hydration.js'
+      - 'app/dome-world/ash-research-demo-control-state.js'
+      - 'app/dome-world/ash-aia3-composition.js'
+      - 'app/dome-world/ash-lifecycle.js'
+      - 'app/dome-world/ash-profile-demo-hydration.js'
+      - 'app/dome-world/ash-premium-ui.js'
+      - 'app/dome-world/ash-workspace-bridge.js'
+      - 'tests/ash-research-ux-rehydration.test.mjs'
+      - 'tests/ash-final-rehydration-boundaries.test.mjs'
+      - 'scripts/ash-research-ux-browser-probe.mjs'
+      - 'scripts/ash-premium-ui-browser-probe.mjs'
+      - '.github/workflows/ash-research-ux.yml'
+  push:
+    branches: [main]
+    paths:
+      - 'app/dome-world/ash-research-demo-hydration.js'
+      - 'app/dome-world/ash-research-demo-control-state.js'
+      - 'app/dome-world/ash-aia3-composition.js'
+      - 'app/dome-world/ash-lifecycle.js'
+      - 'app/dome-world/ash-profile-demo-hydration.js'
+      - 'app/dome-world/ash-premium-ui.js'
+      - 'app/dome-world/ash-workspace-bridge.js'
+      - 'tests/ash-research-ux-rehydration.test.mjs'
+      - 'tests/ash-final-rehydration-boundaries.test.mjs'
+      - 'scripts/ash-research-ux-browser-probe.mjs'
+      - 'scripts/ash-premium-ui-browser-probe.mjs'
+      - '.github/workflows/ash-research-ux.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: ash-research-ux-${{ github.event.pull_request.number || github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  static-contract:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 24
+          cache: npm
+      - run: npm ci
+      - name: Verify Research and readiness syntax
+        run: |
+          mkdir -p artifacts/ash-research-static
+          {
+            node --check app/dome-world/ash-research-demo-hydration.js
+            node --check app/dome-world/ash-research-demo-control-state.js
+            node --check app/dome-world/ash-aia3-composition.js
+            node --check app/dome-world/ash-lifecycle.js
+            node --check app/dome-world/ash-profile-demo-hydration.js
+            node --check scripts/ash-research-ux-browser-probe.mjs
+            node --check scripts/ash-premium-ui-browser-probe.mjs
+          } > artifacts/ash-research-static/syntax.log 2>&1 || {
+            cat artifacts/ash-research-static/syntax.log
+            exit 1
+          }
+      - name: Verify Research fixture, surface ledger, and rehydration boundaries
+        run: |
+          {
+            node tests/ash-research-ux-rehydration.test.mjs
+            node tests/ash-final-rehydration-boundaries.test.mjs
+          } > artifacts/ash-research-static/contract.log 2>&1 || {
+            cat artifacts/ash-research-static/contract.log
+            exit 1
+          }
+          cat artifacts/ash-research-static/contract.log
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: ash-research-static-diagnostics
+          path: artifacts/ash-research-static/
+          if-no-files-found: error
+          retention-days: 30
+
+  browser-witness:
+    runs-on: ubuntu-latest
+    timeout-minutes: 55
+    strategy:
+      fail-fast: false
+      matrix:
+        browser: [chromium, firefox, webkit]
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 24
+          cache: npm
+      - run: npm ci
+      - run: npm install --no-save --package-lock=false playwright@1.53.2
+      - run: npx playwright install --with-deps ${{ matrix.browser }}
+      - name: Start bounded local Ash runtime
+        run: |
+          node scripts/ash-keep-local-closure-server.mjs > artifacts-ash-research-server.log 2>&1 &
+          echo $! > ash-research-server.pid
+          for attempt in $(seq 1 60); do
+            if curl -fsS http://127.0.0.1:6130/dome-world/ash-keep.html >/dev/null; then exit 0; fi
+            sleep 1
+          done
+          cat artifacts-ash-research-server.log
+          exit 1
+      - name: Exercise Research hydration, interface ledger, navigation, dormancy, and mobile geometry
+        env:
+          TD613_BROWSER: ${{ matrix.browser }}
+          TD613_BASE_URL: http://127.0.0.1:6130
+          TD613_ARTIFACT_DIR: artifacts/ash-research-ux-${{ matrix.browser }}
+        run: node scripts/ash-research-ux-browser-probe.mjs
+      - name: Stop bounded local runtime
+        if: always()
+        run: |
+          if [ -f ash-research-server.pid ]; then kill $(cat ash-research-server.pid) || true; fi
+          cat artifacts-ash-research-server.log || true
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: ash-research-ux-${{ matrix.browser }}-evidence
+          path: artifacts/ash-research-ux-${{ matrix.browser }}/
+          if-no-files-found: error
+          retention-days: 30

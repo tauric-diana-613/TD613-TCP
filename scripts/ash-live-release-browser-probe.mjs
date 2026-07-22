@@ -13,10 +13,10 @@ const launchOptions={headless:true,...(executable&&fs.existsSync(executable)?{ex
 const expected={rooms:14,nodes:72,relationships:112,routes:6};
 const sessionEpoch='20260718-canonical-membrane-v6';
 const plans={
-  political_campaign:{title:'Harbor City Mayoral Campaign',docket:'apeqPaiaMethodDocket'},
-  fundraiser:{title:'Northstar Arts Benefit',docket:'apeqPaiaMethodDocket'},
-  investigation:{title:'Glass Meridian Vendor Integrity Inquiry',docket:'apeqPaiaMethodDocket'},
-  research:{title:'Lumen Atlas Study',docket:'researchMethodDocket'}
+  political_campaign:{title:'Harbor City Mayoral Campaign',docket:'apeqPaiaMethodDocket',entry:'map'},
+  fundraiser:{title:'Northstar Arts Benefit',docket:'apeqPaiaMethodDocket',entry:'work'},
+  investigation:{title:'Glass Meridian Vendor Integrity Inquiry',docket:'apeqPaiaMethodDocket',entry:'home'},
+  research:{title:'Lumen Atlas Research Project',docket:'researchMethodDocket',entry:'work'}
 };
 const assert=(value,message)=>{if(!value)throw new Error(message);};
 
@@ -48,11 +48,40 @@ async function waitForRuntime(page){
   await page.waitForFunction(epoch=>Boolean(window.__td613AshKeep?.version)
     && window.__td613AshIngressLayout?.version==='td613.ash.ingress-layout/v1.0-canonical-native-scroll'
     && window.__td613AshProfileDemos?.version==='td613.ash.apeq-paia-profile-demos/v0.1'
-    && window.__td613AshResearchDemo?.version==='td613.ash.research-demo/v0.2-lumen-atlas'
-    && window.__td613AshResearchControlState?.version==='td613.ash.research-control-state/v0.3-blank-case'
+    && window.__td613AshResearchDemo?.version==='td613.ash.research-demo/v0.3-child-legible-surface-ledger'
+    && window.__td613AshResearchControlState?.version==='td613.ash.research-control-state/v0.4-child-legible-ledger'
+    && Boolean(window.__td613AshDemoEntryConvergence?.version)
     && window.__td613AshCacheTransition?.epoch===epoch
     && document.documentElement.dataset.ashMembraneReady==='true',
   ASH_CACHE_FLUSH_EPOCH,{timeout:60000});
+}
+
+async function waitForEntry(page,profile,entry){
+  await page.waitForFunction(({value,workspace})=>{
+    const caseId=localStorage.getItem('td613.ash-keep.current-case');
+    const convergence=window.__td613AshDemoEntryConvergence?.current?.()||null;
+    const panel=document.getElementById(`workspace-${workspace}`);
+    const style=panel?getComputedStyle(panel):null;
+    const rect=panel?.getBoundingClientRect();
+    return Boolean(caseId)
+      && document.documentElement.dataset.ashDemoProfile===value
+      && document.documentElement.dataset.ashDemoEntryReady===`${value}:${workspace}`
+      && document.documentElement.dataset.ashDemoEntryCase===caseId
+      && document.documentElement.dataset.ashDemoEntryHydrating!=='true'
+      && !document.documentElement.dataset.ashDemoEntryHold
+      && convergence?.profile===value
+      && convergence?.workspace===workspace
+      && convergence?.posture==='READY'
+      && convergence?.phase==='VISIBLE'
+      && document.documentElement.dataset.ashPremiumWorkspace===workspace
+      && panel?.classList.contains('active')
+      && style?.display!=='none'
+      && style?.visibility!=='hidden'
+      && Number(style?.opacity)>0
+      && style?.pointerEvents!=='none'
+      && rect?.width>0
+      && rect?.height>0;
+  },{value:profile,workspace:entry},{timeout:60000});
 }
 
 function observe(page, surface, report){
@@ -68,7 +97,7 @@ function observe(page, surface, report){
 }
 
 await fsp.mkdir(out,{recursive:true});
-const report={schema:'td613.ash.live-release-browser-flight/v0.3-canonical-no-reload',browser:engineName,status:'RUNNING',cache_epoch:ASH_CACHE_FLUSH_EPOCH,ingress:null,session_logout:null,profiles:{},legacy_fixture_requests:[],external_requests:[],console_errors:[],http_errors:[],seams:[]};
+const report={schema:'td613.ash.live-release-browser-flight/v0.4-current-profile-entry-convergence',browser:engineName,status:'RUNNING',cache_epoch:ASH_CACHE_FLUSH_EPOCH,ingress:null,session_logout:null,profiles:{},legacy_fixture_requests:[],external_requests:[],console_errors:[],http_errors:[],seams:[]};
 let browser=null,terminalError=null;
 try{
   if(!engine)throw new Error(`Unsupported browser engine: ${engineName}`);
@@ -146,6 +175,7 @@ try{
     await page.waitForFunction(()=>{const button=document.getElementById('startDemo');return button&&!button.disabled;});
     await page.locator('#startDemo').click();
     await page.waitForFunction(()=>Boolean(localStorage.getItem('td613.ash-keep.current-case'))&&localStorage.getItem('td613.ash.session.epoch')==='20260718-canonical-membrane-v6');
+    await waitForEntry(page,'investigation','home');
     const demo=await current(page);
     assert(demo.caseMap?.case_id,'Demo case did not open.');
     const scrollBefore=await page.evaluate(()=>({height:document.documentElement.scrollHeight,viewport:innerHeight,y:scrollY,touch:getComputedStyle(document.querySelector('.map-stage canvas')).touchAction}));
@@ -188,7 +218,7 @@ try{
       && getComputedStyle(document.getElementById('launch')).display==='none',demo.caseMap.case_id);
     const reopened=await current(page);
     assert(reopened.caseMap?.case_id===demo.caseMap.case_id,'Deliberate reopen did not restore the saved case.');
-    report.session_logout={case_id:demo.caseMap.case_id,closed,after_reload:afterReload,reopened:true,main_scroll_y:scrollAfter,canvas_touch_action:scrollBefore.touch};
+    report.session_logout={case_id:demo.caseMap.case_id,entry_convergence:'investigation:home',closed,after_reload:afterReload,reopened:true,main_scroll_y:scrollAfter,canvas_touch_action:scrollBefore.touch};
     await page.screenshot({path:path.join(out,`${engineName}-session-reopened.png`),fullPage:true});
     await context.close();
   }
@@ -206,14 +236,18 @@ try{
     }
     await page.locator('#startDemo').click();
     await page.waitForFunction(({profile,title,docket})=>document.documentElement.dataset.ashDemoProfile===profile&&document.getElementById('caseTitle')?.textContent?.includes(title)&&document.getElementById(docket),{profile,title:plan.title,docket:plan.docket});
+    await waitForEntry(page,profile,plan.entry);
     const state=await current(page);
     assert(state.caseMap?.rooms?.length===expected.rooms,`${profile}: Room count drifted.`);
     assert(state.caseMap?.nodes?.length===expected.nodes,`${profile}: object count drifted.`);
     assert(state.caseMap?.relationships?.length===expected.relationships,`${profile}: relation count drifted.`);
     assert(state.routeMemory?.entries?.length===expected.routes,`${profile}: route count drifted.`);
     const docketText=await page.locator(`#${plan.docket}`).textContent();
-    assert(/PA2/.test(docketText)&&/Unknown Readers UNMEASURED/.test(docketText),`${profile}: qualification ceiling is absent.`);
-    report.profiles[profile]={case_id:state.caseMap.case_id,case_map_digest:state.caseMap.case_map_digest,route_memory_digest:state.routeMemory.route_memory_digest,...expected,docket:plan.docket};
+    const ceilingPresent=profile==='research'
+      ? /PA2/.test(docketText)&&/Claim ceiling/.test(docketText)&&/publication authority/.test(docketText)
+      : /PA2/.test(docketText)&&/Unknown Readers UNMEASURED/.test(docketText);
+    assert(ceilingPresent,`${profile}: qualification ceiling is absent.`);
+    report.profiles[profile]={case_id:state.caseMap.case_id,case_map_digest:state.caseMap.case_map_digest,route_memory_digest:state.routeMemory.route_memory_digest,entry_workspace:plan.entry,...expected,docket:plan.docket};
     await context.close();
   }
 

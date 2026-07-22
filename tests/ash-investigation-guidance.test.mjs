@@ -14,6 +14,7 @@ const guidance = read('app/dome-world/ash-guided-operator-ui.js');
 const css = read('app/dome-world/ash-guided-operator-ui.css');
 const bridge = read('app/dome-world/ash-workspace-bridge.js');
 const hardening = read('app/dome-world/ash-flicker-hardening.js');
+const rescue = read('app/dome-world/ash-ui-ux-rescue.js');
 const emergency = read('app/dome-world/ash-emergency-stability-contract.js');
 const closeRepair = read('app/dome-world/ash-case-close-repair.js');
 const cacheFlush = read('app/dome-world/ash-cache-flush.js');
@@ -45,13 +46,13 @@ assert.match(runtime, /Heterostratigraphic field/);
 assert.match(runtime, /PA2 ceiling/);
 assert.doesNotMatch(runtime, /fetch\(/);
 assert.match(specs, /Glass Meridian Vendor Integrity Inquiry/);
-for (const module of ['ash-investigation-demo-hydration','ash-guided-operator-ui','ash-flicker-hardening','ash-emergency-stability-contract']) {
-  assert.match(bridge, new RegExp(`${module}\\.js\\?v=20260718-canonical-membrane-v6`));
+for (const module of ['ash-investigation-demo-hydration','ash-guided-operator-ui','ash-flicker-hardening','ash-emergency-stability-contract','ash-case-close-repair','ash-ui-ux-rescue']) {
+  assert.match(bridge, new RegExp(`${module}\\.js\\?v=20260721-legal-demo-ux-v1`));
 }
-assert.match(bridge, /ash-case-close-repair\.js\?v=20260719-ingress-readiness-boundary-v1/);
 assert(bridge.indexOf('ash-flicker-hardening.js') < bridge.indexOf('ash-premium-ui.js'), 'Static compositor must install before Premium composition.');
 assert(bridge.indexOf('ash-case-close-repair.js') < bridge.indexOf('ash-premium-ui.js'), 'Close logout must install before Premium composition.');
 assert(bridge.indexOf('ash-emergency-stability-contract.js') > bridge.indexOf('ash-workspace-navigation.js'), 'Membrane reveal must run after final composition.');
+assert(bridge.indexOf('ash-ui-ux-rescue.js') > bridge.indexOf('ash-workspace-navigation.js'), 'Destination and finite-motion rescue must install after legacy navigation so capture interception owns the click.');
 
 const roomIds = new Set(fixture.rooms.map(room => room.id));
 const nodeIds = new Set(fixture.nodes.map(node => node.id));
@@ -71,18 +72,22 @@ assert.match(css, /Iowan Old Style/);
 assert.match(css, /guided-map-focus/);
 assert.match(css, /prefers-reduced-motion:reduce/);
 
-assert.match(hardening, /td613\.ash\.flicker-hardening\/v0\.3-emergency-static-surface/);
-assert.match(hardening, /td613\.ash\.flicker-hardening\/v1\.0-native-compositor/);
-assert.match(hardening, /body::after/);
-assert.match(hardening, /content:none!important/);
-assert.match(hardening, /animation-name:none!important/);
-assert.match(hardening, /transition:none!important/);
+assert.match(hardening, /td613\.ash\.flicker-hardening\/v0\.4-stable-finite-motion/);
+assert.match(hardening, /td613\.ash\.flicker-hardening\/v1\.1-stable-finite-compositor/);
+assert.match(hardening, /cancelRunawayAnimations/);
+assert.match(hardening, /iterations === Infinity/);
 assert.match(hardening, /backdrop-filter:none!important/);
-assert.match(hardening, /cancelDocumentAnimations/);
 assert.match(hardening, /touch-action:pan-y pinch-zoom!important/);
+assert.doesNotMatch(hardening, /animation-name:none!important/);
+assert.doesNotMatch(hardening, /transition:none!important/);
 assert.doesNotMatch(hardening, /host\.requestAnimationFrame\s*=/);
 assert.doesNotMatch(hardening, /Object\.defineProperty\(host, 'MutationObserver'/);
 assert.doesNotMatch(hardening, /contain:layout paint style/);
+assert.match(rescue, /stopImmediatePropagation/);
+assert.match(rescue, /scrollToWorkspace/);
+assert.match(rescue, /ash-ux-motion-track/);
+assert.match(rescue, /READY_TWO_CONSECUTIVE_FRAMES/);
+assert.match(rescue, /consecutiveReadyFrames/);
 
 assert.match(deliveryTransform, /v1\.0-event-driven-map/);
 assert.match(deliveryTransform, /EVENT_DRIVEN_COALESCED/);
@@ -115,7 +120,8 @@ assert.match(cacheFlush, /unregisterSameOriginWorkers/);
 assert.match(cacheFlush, /cache:'no-store'/);
 assert.match(cacheFlush, /local_case_pointer_preserved:false/);
 assert.match(cacheFlush, /active_session_reset:true/);
-assert.match(lifecycle, /ash-cache-flush\.js\?v=20260718-canonical-membrane-v7-readiness-boundary/);
+assert.match(cacheFlush, /td613\.ash\.cache-flush\/2026-07-21-legal-demo-ux-v1/);
+assert.match(lifecycle, /ash-cache-flush\.js\?v=20260721-legal-demo-ux-v1/);
 assert.doesNotMatch(cacheFlush, /2026-07-18-(?:live-ingress-v3|emergency-stability-v5)/);
 
 assert.match(ingress, /td613\.ash\.ingress-layout\/v1\.0-canonical-native-scroll/);
@@ -132,6 +138,6 @@ assert.match(probe, /EVENT_DRIVEN_COALESCED/);
 assert.match(probe, /Ash map retained a pending frame while idle/);
 assert.match(probe, /Ash command membrane mutated while idle/);
 
-for (const forbidden of [/attribution_established\s*:\s*true/,/identity_established\s*:\s*true/,/prediction_authorized\s*:\s*true/,/automatic_action_authorized\s*:\s*true/,/surveillance_probability\s*:\s*[01]/]) assert.doesNotMatch(runtime + specs + guidance, forbidden);
+for (const forbidden of [/attribution_established\s*:\s*true/,/identity_established\s*:\s*true/,/prediction_authorized\s*:\s*true/,/automatic_action_authorized\s*:\s*true/,/surveillance_probability\s*:\s*[01]/]) assert.doesNotMatch(runtime + specs + guidance + rescue, forbidden);
 
 console.log('ash-investigation-guidance.test.mjs passed');
