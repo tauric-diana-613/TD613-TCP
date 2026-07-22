@@ -37,7 +37,21 @@ jobs:
           node --check app/dome-world/ash-session-boundary.js
           node --check app/dome-world/ash-ingress-copy-spacing.js
       - name: Live Flow-Core field and ingress-copy contract
-        run: node tests/ash-flowcore-live-field.test.mjs
+        run: |
+          mkdir -p artifacts
+          set +e
+          node tests/ash-flowcore-live-field.test.mjs > artifacts/ash-flowcore-contract.log 2>&1
+          status=$?
+          cat artifacts/ash-flowcore-contract.log
+          exit "$status"
+      - name: Preserve contract evidence
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: ash-flowcore-contract-evidence
+          path: artifacts/ash-flowcore-contract.log
+          if-no-files-found: warn
+          retention-days: 45
       - name: Inherited Flow-Core visual grammar
         run: node --test tests/flowcore-pedagogue-visual.test.mjs
       - name: Inherited live AIA surface
@@ -50,7 +64,7 @@ jobs:
   browser-witness:
     name: ${{ matrix.browser }} consequence field
     runs-on: ubuntu-latest
-    timeout-minutes: 35
+    timeout-minutes: 15
     strategy:
       fail-fast: false
       matrix:
@@ -93,7 +107,7 @@ jobs:
           TD613_BROWSER: ${{ matrix.browser }}
           TD613_BASE_URL: http://127.0.0.1:6130
           TD613_ARTIFACT_DIR: artifacts/ash-flowcore-field-${{ matrix.browser }}
-        run: node scripts/ash-flowcore-live-field-browser-probe.mjs
+        run: timeout --foreground --signal=INT --kill-after=15s 480s node scripts/ash-flowcore-live-field-browser-probe.mjs
       - name: Stop bounded local runtime
         if: always()
         run: |
