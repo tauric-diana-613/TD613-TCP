@@ -61,6 +61,7 @@ Every profile must distinguish these states visibly and mechanically:
 - Stale-client eviction preserves IndexedDB case data and the active local case pointer while removing retired cache and service-worker delivery surfaces.
 - Synthetic retired-worker registration and activation are separately bounded. Registration must resolve within 20 seconds; the resulting worker must reach `activated` within a further 20 seconds or fail with a named hold. Neither stage may wait indefinitely.
 - A stale client still controlled by a retired `/dome-world/` service worker must leave that scope through `/safe-harbor/ash-keep-recovery.html` before returning to the current, versioned Ash route. The bridge may clear delivery surfaces and unregister workers; it may not clear IndexedDB, reset the active case, or widen release authority.
+- Browser evidence must be written before teardown. Browser closure receives 15 seconds; a lingering service-worker process may force runner exit only after the complete PASS or HELD receipt is durable. Teardown may not rewrite the verdict.
 
 ## Evidence ceiling
 
