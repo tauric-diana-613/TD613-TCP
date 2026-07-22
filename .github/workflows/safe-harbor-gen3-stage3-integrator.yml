@@ -35,17 +35,20 @@ jobs:
         with:
           node-version: '24'
 
-      - name: Normalize the temporary progress-pill search anchor
+      - name: Normalize temporary Stage 3 HTML search anchors
         run: |
           node --input-type=module <<'NODE'
           import fs from 'node:fs';
           const path = 'scripts/apply-safe-harbor-gen3-stage3-integration.mjs';
           let source = fs.readFileSync(path, 'utf8');
-          const oldBefore = "'          <div class=\"status-pill\" id=\"ingressProgressPill\">0 / 3 lanes</div>',";
-          const oldAfter = "'          <div class=\"status-pill\" id=\"ingressProgressPill\">temporal field</div>'";
-          if (!source.includes(oldBefore) || !source.includes(oldAfter)) throw new Error('Temporary progress-pill patch anchor was not found.');
-          source = source.replace(oldBefore, "'<div class=\"status-pill\" id=\"ingressProgressPill\">0 / 3 lanes</div>',");
-          source = source.replace(oldAfter, "'<div class=\"status-pill\" id=\"ingressProgressPill\">temporal field</div>'");
+          const oldProgressBefore = "'          <div class=\"status-pill\" id=\"ingressProgressPill\">0 / 3 lanes</div>',";
+          const oldProgressAfter = "'          <div class=\"status-pill\" id=\"ingressProgressPill\">temporal field</div>'";
+          const oldMetaIndent = '\n             <div class="ingress-meta" id="ingressStepMeta">No line held yet.</div>`';
+          if (!source.includes(oldProgressBefore) || !source.includes(oldProgressAfter)) throw new Error('Temporary progress-pill patch anchor was not found.');
+          if (!source.includes(oldMetaIndent)) throw new Error('Temporary ingress-meta patch anchor was not found.');
+          source = source.replace(oldProgressBefore, "'<div class=\"status-pill\" id=\"ingressProgressPill\">0 / 3 lanes</div>',");
+          source = source.replace(oldProgressAfter, "'<div class=\"status-pill\" id=\"ingressProgressPill\">temporal field</div>'");
+          source = source.replace(oldMetaIndent, '\n            <div class="ingress-meta" id="ingressStepMeta">No line held yet.</div>`');
           fs.writeFileSync(path, source);
           NODE
 
@@ -53,7 +56,6 @@ jobs:
         id: implementation_patch
         run: |
           set -o pipefail
-          sed -i 's/[[:space:]]\+$//' scripts/apply-safe-harbor-gen3-stage3-integration.mjs
           node scripts/apply-safe-harbor-gen3-stage3-integration.mjs 2>&1 | tee /tmp/stage3-integration.log
 
       - name: Apply bounded Stage 3 documentation seams
@@ -61,7 +63,6 @@ jobs:
         if: success()
         run: |
           set -o pipefail
-          sed -i 's/[[:space:]]\+$//' scripts/apply-safe-harbor-gen3-stage3-docs.mjs
           node scripts/apply-safe-harbor-gen3-stage3-docs.mjs 2>&1 | tee /tmp/stage3-docs.log
 
       - name: Preserve bounded Stage 3 patch diagnostics
