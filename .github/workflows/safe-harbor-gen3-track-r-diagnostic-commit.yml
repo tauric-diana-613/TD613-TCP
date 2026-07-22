@@ -1,0 +1,65 @@
+name: Safe Harbor Gen3 Research Track R diagnostic commit
+
+on:
+  pull_request:
+    branches:
+      - main
+    types:
+      - ready_for_review
+
+permissions:
+  contents: write
+  pull-requests: read
+
+concurrency:
+  group: safe-harbor-gen3-track-r-diagnostic-commit
+  cancel-in-progress: true
+
+jobs:
+  diagnose:
+    if: github.event.pull_request.head.ref == 'safe-harbor-gen3-track-r-blind-custody-stylodynamics'
+    runs-on: ubuntu-latest
+    timeout-minutes: 45
+    steps:
+      - name: Check out exact Research Track R branch
+        uses: actions/checkout@v4
+        with:
+          ref: safe-harbor-gen3-track-r-blind-custody-stylodynamics
+          fetch-depth: 0
+
+      - name: Set up Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: '24'
+
+      - name: Run Track R tests and write diagnostics
+        shell: bash
+        run: |
+          set +e
+          mkdir -p tmp/track-r-diagnostics
+
+          node tests/safe-harbor-gen3-blind-custody.test.mjs > tmp/track-r-diagnostics/blind-custody.log 2>&1
+          BLIND=$?
+          node tests/safe-harbor-gen3-restorative-stylodynamics.test.mjs > tmp/track-r-diagnostics/restorative-stylodynamics.log 2>&1
+          RESTORATIVE=$?
+          node tests/safe-harbor-gen3-research-track-r.test.mjs > tmp/track-r-diagnostics/research-track-r.log 2>&1
+          WRAPPER=$?
+
+          cat > tmp/track-r-diagnostics/summary.txt <<EOF
+          head_before_diagnostics=$GITHUB_SHA
+          workflow_run=$GITHUB_SERVER_URL/$GITHUB_REPOSITORY/actions/runs/$GITHUB_RUN_ID
+          blind_custody_exit=$BLIND
+          restorative_stylodynamics_exit=$RESTORATIVE
+          research_track_wrapper_exit=$WRAPPER
+          EOF
+
+          exit 0
+
+      - name: Commit diagnostic evidence to the feature branch
+        run: |
+          git config user.name 'td613-safe-harbor-bot'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add tmp/track-r-diagnostics
+          git diff --cached --check
+          git commit -m 'chore: preserve temporary Track R diagnostics'
+          git push origin HEAD:safe-harbor-gen3-track-r-blind-custody-stylodynamics
