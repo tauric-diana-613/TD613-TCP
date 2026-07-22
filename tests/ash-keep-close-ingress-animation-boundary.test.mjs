@@ -9,6 +9,7 @@ const ingress = read('app/dome-world/ash-ingress-layout-hydration.js');
 const aia = read('app/dome-world/ash-keep-aia.js');
 const rescue = read('app/dome-world/ash-ui-ux-rescue.js');
 const compact = read('app/dome-world/ash-keep-aia3-compact.css');
+const browserProbe = read('scripts/ash-close-ingress-animation-browser-probe.mjs');
 
 assert.match(bridge, /ash-close-ingress-animation-boundary\.js\?v=20260722-close-ingress-animation-v1/,
   'Canonical workspace bridge omitted the close/animation boundary.');
@@ -25,6 +26,11 @@ for (const token of [
   'setInert(main, true)',
   'setInert(rail, true)',
   "host.__td613AshIngressLayout?.closeSession?.()",
+  'function reconcileIngressDemoControls()',
+  "button.setAttribute('aria-busy', 'false')",
+  "profile.dispatchEvent(new Event('change', { bubbles:true }))",
+  "host.__td613AshResearchControlState?.reconcile?.()",
+  'Research project demo available.',
   'function closedPresentationMatches()',
   "if (closedPresentationMatches() && !localValue(SESSION_EPOCH_KEY)) return true",
   "if (!activeCasePointer() && !closedPresentationMatches())",
@@ -56,6 +62,11 @@ for (const token of [
   'Reduced motion is on, so Ash shows the four deterministic frames statically'
 ]) assert.ok(boundary.includes(token), `Animation affordance omitted ${token}`);
 
+assert.match(boundary, /#launch \.launch-panel>\*\{position:relative!important;inset:auto!important;transform:none!important\}/,
+  'Closed ingress does not normalize direct-child copy flow.');
+assert.match(boundary, /#launch \.launch-panel>p,[\s\S]*#launch \.launch-panel>\[role="note"\]/,
+  'Closed ingress does not keep explanatory copy in normal document flow.');
+
 assert.ok(aia.includes("$('[data-aia-play]').onclick = playExplanation;"),
   'Explanation animation lost its explicit play gesture.');
 assert.match(aia, /function playExplanation\(\)[\s\S]*state\.frame = 0[\s\S]*state\.frame < TASKS\.length - 1/,
@@ -69,7 +80,16 @@ assert.match(compact, /@media\(max-width:760px\)/,
 assert.match(compact, /\.ash-aia__stage\{height:86px!important;min-height:86px!important\}/,
   'Compact screens no longer receive the bounded explanation stage.');
 
-for (const source of [boundary, closeRepair, ingress, aia, rescue]) {
+for (const token of [
+  'copy_overlap_pairs',
+  "profile_value === 'research'",
+  'demo control remained stale after close',
+  'ingress status contradicts selected Research profile',
+  'ingress copy overlaps',
+  'file_count === 0'
+]) assert.ok(browserProbe.includes(token), `Browser witness omitted ${token}`);
+
+for (const source of [boundary, closeRepair, ingress, aia, rescue, browserProbe]) {
   assert.doesNotMatch(source, /prediction_authorized\s*:\s*true/);
   assert.doesNotMatch(source, /automatic_action_authorized\s*:\s*true/);
   assert.doesNotMatch(source, /recipient_transport\s*:\s*true/);
