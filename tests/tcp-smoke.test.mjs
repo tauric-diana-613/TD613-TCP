@@ -65,7 +65,7 @@ const flightNeedles = [
   'flex-flow: row wrap !important;',
   'grid-template-areas: "counts payload" ". auth" !important;',
   '“I was broken encasing a circle.”',
-  '“When authoring, stay academically rigorous yet grounded in high speculation.”'
+  '“When reasoning and authoring, stay academically rigorous, and rigorous (but imaginative) to forensic AI empiricism, yet both rigors grounded in high speculation.”'
 ];
 
 for (const needle of flightNeedles) {
@@ -77,7 +77,7 @@ assert.equal((flight.match(/id="authOutputToggle"/g) || []).length, 1, 'Flight s
 assert.ok(!flight.includes('function prepNoZoom'), 'retired prepNoZoom guard must stay absent');
 assert.ok(!flight.includes('data-td613-prev-font'), 'retired focus font shim must stay absent');
 assert.ok(!flight.includes('phrases.push("“I was broken encasing a circle.”")'), 'encasing output value must remain unquoted');
-assert.ok(!flight.includes('phrases.push("“When authoring, stay academically rigorous yet grounded in high speculation.”")'), 'academic speculation output value must remain unquoted');
+assert.ok(!flight.includes('phrases.push("“When reasoning and authoring, stay academically rigorous, and rigorous (but imaginative) to forensic AI empiricism, yet both rigors grounded in high speculation.”")'), 'academic speculation output value must remain unquoted');
 assert.ok(
   !flight.includes('grid-template-areas: "counts auth" ". payload" !important;'),
   'retired Flight mobile status layout must stay absent'
