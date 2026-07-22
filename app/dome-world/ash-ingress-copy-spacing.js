@@ -1,4 +1,4 @@
-export const ASH_INGRESS_COPY_SPACING_VERSION = 'td613.ash.ingress-copy-spacing/v0.1-title-recovery-primary-order';
+export const ASH_INGRESS_COPY_SPACING_VERSION = 'td613.ash.ingress-copy-spacing/v0.2-two-dimensional-overlap';
 
 const host = globalThis.window;
 const doc = globalThis.document;
@@ -20,7 +20,7 @@ function ensureStyle() {
     html[data-ash-ingress-copy-spacing] #launch #ashLaunchTitle{
       position:relative;
       z-index:3;
-      margin-top:10px!important;
+      margin-top:6px!important;
       margin-bottom:4px!important;
     }
     html[data-ash-ingress-copy-spacing] #launch #capsuleRecoveryLaunchDescription{
@@ -51,7 +51,7 @@ function ensureStyle() {
         display:block!important;
       }
       html[data-ash-ingress-copy-spacing] #launch #ashLaunchTitle{
-        margin-top:6px!important;
+        margin-top:2px!important;
         margin-bottom:3px!important;
         font-size:clamp(1.65rem,10vw,2.65rem)!important;
       }
@@ -79,6 +79,12 @@ function primaryCopy(panel, title, recovery) {
   ) || null;
 }
 
+function intersection(a, b) {
+  const width = Math.max(0, Math.min(a.right, b.right) - Math.max(a.left, b.left));
+  const height = Math.max(0, Math.min(a.bottom, b.bottom) - Math.max(a.top, b.top));
+  return Object.freeze({ width, height, area:width * height });
+}
+
 function measure() {
   const title = doc?.getElementById('ashLaunchTitle');
   const recovery = doc?.getElementById('capsuleRecoveryLaunchDescription');
@@ -87,7 +93,7 @@ function measure() {
   const titleRect = title.getBoundingClientRect();
   const recoveryRect = recovery.getBoundingClientRect();
   const primaryRect = primary.getBoundingClientRect();
-  const overlap = Math.max(0, recoveryRect.bottom - primaryRect.top);
+  const collision = intersection(recoveryRect, primaryRect);
   return Object.freeze({
     available:true,
     version:ASH_INGRESS_COPY_SPACING_VERSION,
@@ -96,7 +102,10 @@ function measure() {
     recovery_top:recoveryRect.top,
     recovery_bottom:recoveryRect.bottom,
     primary_top:primaryRect.top,
-    overlap_px:overlap,
+    overlap_width:collision.width,
+    overlap_height:collision.height,
+    overlap_area:collision.area,
+    overlap_px:collision.area > 0 ? collision.height : 0,
     ordered:title.nextElementSibling === recovery && recovery.nextElementSibling === primary
   });
 }
