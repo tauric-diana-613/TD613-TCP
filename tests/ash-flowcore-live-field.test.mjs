@@ -60,7 +60,10 @@ assert.match(portal, /#guidedLaunchPromise\.ash-flowcore-ingress-host/);
 assert.match(portal, /max-height:calc\(100vh - 44px\)!important/);
 assert.doesNotMatch(portal, /setInterval\s*\(|requestAnimationFrame\s*\(/);
 
-assert.match(portalLoader, /v0\.1-legacy-bypass/);
+assert.match(portalLoader, /v0\.2-browser-aia-gate/);
+assert.match(portalLoader, /const browser = Boolean\(host && doc\?\.documentElement\)/);
+assert.match(portalLoader, /const eligible = browser && !legacy/);
+assert.match(portalLoader, /if \(!browser\)/);
 assert.match(portalLoader, /params\.get\('presentation'\) === 'legacy'/);
 assert.match(portalLoader, /eligible:false/);
 assert.match(portalLoader, /reason:'EXPLICIT_LEGACY_PRESENTATION'/);
