@@ -30,8 +30,10 @@ assert.match(css, /data-flowcore-phase="4"/);
 assert.match(css, /prefers-reduced-motion:reduce/);
 assert.doesNotMatch(css, /animation:[^;}]*infinite/);
 
-assert.match(portal, /v0\.2-single-visible-field-styled/);
-assert.match(portal, /getElementById\('guidedLaunchPromise'\)/);
+assert.match(portal, /v0\.3-dedicated-post-controls-host/);
+assert.match(portal, /INGRESS_HOST_ID = 'ashFlowcoreIngressHost'/);
+assert.match(portal, /actions\.insertAdjacentElement\('afterend', ingress\)/);
+assert.match(portal, /legacyPromise\.hidden = true/);
 assert.match(portal, /dataset\.aiaPlay = ''/);
 assert.match(portal, /classList\.add\('ash-flowcore-field--proxy'\)/);
 assert.match(portal, /proxyField\.hidden = true/);
@@ -40,7 +42,8 @@ assert.match(portal, /stripDuplicateIds\(proxyField\)/);
 assert.match(portal, /ingress\.replaceChildren\(visibleField\)/);
 assert.match(portal, /visibleField\.dataset\.flowcoreHost = 'aia'/);
 assert.match(portal, /duplicate_visible_fields/);
-assert.match(portal, /\.guided-launch-promise\.ash-flowcore-ingress-host/);
+assert.match(portal, /#ashFlowcoreIngressHost\.ash-flowcore-ingress-host/);
+assert.match(portal, /max-height:calc\(100vh - 44px\)!important/);
 assert.doesNotMatch(portal, /setInterval\s*\(|requestAnimationFrame\s*\(/);
 
 assert.match(boundary, /v0\.4-pointer-governs-case-recovery-replay-stays-open/);
