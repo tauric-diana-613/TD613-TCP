@@ -1,6 +1,7 @@
 import fs from 'node:fs';
 
 const flightPath = 'app/safe-harbor/td613-flight.html';
+const smokePath = 'tests/tcp-smoke.test.mjs';
 const packagePath = 'package.json';
 const oldPhrase = 'When authoring, stay academically rigorous yet grounded in high speculation.';
 const newPhrase = 'When reasoning and authoring, stay academically rigorous, and rigorous (but imaginative) to forensic AI empiricism, yet both rigors grounded in high speculation.';
@@ -26,6 +27,16 @@ if ((next.split(scriptTag).length - 1) !== 1) throw new Error('Flight clipboard 
 
 fs.writeFileSync(flightPath, next);
 
+const smoke = fs.readFileSync(smokePath, 'utf8');
+if (!smoke.includes(oldPhrase) && !smoke.includes(newPhrase)) {
+  throw new Error('TCP smoke Flight phrase sentinel is missing.');
+}
+const nextSmoke = smoke.replaceAll(oldPhrase, newPhrase);
+if (nextSmoke.includes(oldPhrase) || !nextSmoke.includes(newPhrase)) {
+  throw new Error('TCP smoke Flight phrase sentinel did not update.');
+}
+fs.writeFileSync(smokePath, nextSmoke);
+
 const pkg = JSON.parse(fs.readFileSync(packagePath, 'utf8'));
 const command = 'node tests/td613-flight-desktop-clipboard.test.mjs';
 if (!String(pkg.scripts['test:safe-harbor'] || '').includes(command)) {
@@ -33,4 +44,4 @@ if (!String(pkg.scripts['test:safe-harbor'] || '').includes(command)) {
   fs.writeFileSync(packagePath, `${JSON.stringify(pkg, null, 2)}\n`);
 }
 
-console.log(`Flight desktop clipboard repair applied; replaced ${oldCount} legacy phrase occurrence(s).`);
+console.log(`Flight desktop clipboard repair applied; replaced ${oldCount} legacy phrase occurrence(s) and updated the smoke sentinel.`);
