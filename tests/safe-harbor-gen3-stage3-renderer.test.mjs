@@ -4,8 +4,9 @@ import { readFileSync } from 'node:fs';
 const source = readFileSync(new URL('../app/safe-harbor/renderers/10_TD613_PUA_Badge_Provenance_Attestation_Renderer_v7_2_1.user.js', import.meta.url), 'utf8');
 
 for (const marker of [
-  '@version      7.3.0',
-  'TD613 PUA Badge Provenance Attestation Renderer v7.3.0',
+  '@version      7.2.1',
+  'TD613 PUA Badge Provenance Attestation Renderer v7.2.1',
+  "GEN3_EXTENSION = 'stage3-temporal-bloom-provenance/v1'",
   "ATTESTATION_SCHEMA = 'td613.safe-harbor.pua-provenance-attestation/v1'",
   'validateAttestationInputs',
   'buildGen3AttestationMetadata',
