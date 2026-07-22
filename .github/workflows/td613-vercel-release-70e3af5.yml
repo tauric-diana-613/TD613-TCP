@@ -1,0 +1,201 @@
+name: TD613 One-Shot Vercel Release 70e3af5
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - '.github/workflows/td613-vercel-release-70e3af5.yml'
+
+permissions:
+  contents: write
+  issues: write
+
+concurrency:
+  group: td613-vercel-production-release
+  cancel-in-progress: false
+
+jobs:
+  release:
+    runs-on: ubuntu-latest
+    timeout-minutes: 40
+    env:
+      SOURCE_PACKET_COMMIT: 70e3af5b55c158206261d99dda446f58c7138c12
+      RELEASE_GATE_ISSUE: '405'
+      TD613_CANONICAL_PRODUCTION_URL: https://td613.com
+      GH_TOKEN: ${{ github.token }}
+      WORKFLOW_PATH: .github/workflows/td613-vercel-release-70e3af5.yml
+
+    steps:
+      - name: Check out current main
+        uses: actions/checkout@v4
+        with:
+          ref: main
+          fetch-depth: 0
+
+      - name: Set up Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: 24
+          cache: npm
+
+      - name: Validate exact source packet and closed lock
+        shell: bash
+        run: |
+          set -euo pipefail
+          [[ "$(git rev-parse HEAD^)" == "$SOURCE_PACKET_COMMIT" ]] || {
+            echo "One-shot release parent is not the authorized source packet." >&2
+            exit 1
+          }
+          mapfile -t changed < <(git diff --name-only "$SOURCE_PACKET_COMMIT"..HEAD)
+          [[ "${#changed[@]}" -eq 1 && "${changed[0]}" == "$WORKFLOW_PATH" ]] || {
+            printf 'Unexpected staging drift:\n%s\n' "${changed[*]}" >&2
+            exit 1
+          }
+          node --input-type=module <<'NODE'
+          import fs from 'node:fs';
+          const config = JSON.parse(fs.readFileSync('vercel.json', 'utf8'));
+          if (config.git?.deploymentEnabled !== false) {
+            throw new Error('Vercel Git deployment lock must begin closed.');
+          }
+          NODE
+
+      - name: Record accepted fallback release
+        shell: bash
+        run: |
+          gh api "repos/$GITHUB_REPOSITORY/issues/$RELEASE_GATE_ISSUE/comments" \
+            -f body="$(cat <<EOF_COMMENT
+          𝌋 Owner-authorized Vercel release admitted through the bounded one-shot Git fallback.
+
+          \`\`\`text
+          source_packet_commit = $SOURCE_PACKET_COMMIT
+          target = PRODUCTION
+          deployment_ceiling = 1
+          application_tree_drift = none
+          git_auto_deploy = disabled
+          workflow_run = $GITHUB_SERVER_URL/$GITHUB_REPOSITORY/actions/runs/$GITHUB_RUN_ID
+          \`\`\`
+
+          The temporary workflow will delete itself in the release commit, open only the Vercel Git lock, deploy once, verify exact source content, and relock. ⟐
+          EOF_COMMENT
+          )"
+
+      - name: Install dependencies and verify release-critical closure
+        shell: bash
+        run: |
+          set -euo pipefail
+          npm ci
+          node tests/vercel-deploy-hygiene.test.mjs
+          node tests/vercel-operator-release-gate.test.mjs
+          node tests/product-architecture/shell.test.mjs
+          node tests/ash-live-ingress-demos-cache.test.mjs
+          node --test tests/ash-keep-live-aia-surface.test.mjs
+          node tests/flowcore-p0-p10-completion.test.mjs
+
+      - name: Create one deployment-only release commit
+        id: release_commit
+        shell: bash
+        run: |
+          set -euo pipefail
+          node --input-type=module <<'NODE'
+          import fs from 'node:fs';
+          const path = 'vercel.json';
+          const config = JSON.parse(fs.readFileSync(path, 'utf8'));
+          if (config.git?.deploymentEnabled !== false) {
+            throw new Error('Fallback requires the deployment lock to begin closed.');
+          }
+          config.git.deploymentEnabled = true;
+          fs.writeFileSync(path, `${JSON.stringify(config, null, 2)}\n`);
+          NODE
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git rm "$WORKFLOW_PATH"
+          git add vercel.json
+          git commit -m "release: enable one Vercel deployment for $SOURCE_PACKET_COMMIT"
+          RELEASE_SHA="$(git rev-parse HEAD)"
+          git push origin HEAD:main
+          echo "release_sha=$RELEASE_SHA" >> "$GITHUB_OUTPUT"
+
+      - name: Verify deployed bytes match the authorized source packet
+        id: observe
+        env:
+          TD613_BASE_URL: https://td613.com
+          TD613_SOURCE_PACKET_COMMIT: 70e3af5b55c158206261d99dda446f58c7138c12
+          TD613_ARTIFACT_DIR: artifacts/flowcore-production-observation
+          TD613_PROBE_ATTEMPTS: '72'
+          TD613_PROBE_DELAY_MS: '5000'
+        run: node scripts/flowcore-release-content-probe.mjs
+
+      - name: Restore lock and remove any surviving one-shot workflow
+        if: always()
+        id: relock
+        shell: bash
+        run: |
+          set -euo pipefail
+          git fetch origin main
+          git reset --hard origin/main
+          node --input-type=module <<'NODE'
+          import fs from 'node:fs';
+          const path = 'vercel.json';
+          const config = JSON.parse(fs.readFileSync(path, 'utf8'));
+          config.git = { ...(config.git || {}), deploymentEnabled: false };
+          fs.writeFileSync(path, `${JSON.stringify(config, null, 2)}\n`);
+          NODE
+          if [[ -f "$WORKFLOW_PATH" ]]; then
+            git rm "$WORKFLOW_PATH"
+          fi
+          git add vercel.json
+          if git diff --cached --quiet; then
+            echo "relock_sha=$(git rev-parse HEAD)" >> "$GITHUB_OUTPUT"
+            exit 0
+          fi
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git commit -m "release: restore Vercel deployment lock for $SOURCE_PACKET_COMMIT"
+          RELOCK_SHA="$(git rev-parse HEAD)"
+          git push origin HEAD:main
+          echo "relock_sha=$RELOCK_SHA" >> "$GITHUB_OUTPUT"
+
+      - name: Seal successful production deployment
+        if: success()
+        shell: bash
+        run: |
+          gh api "repos/$GITHUB_REPOSITORY/issues/$RELEASE_GATE_ISSUE/comments" \
+            -f body="$(cat <<EOF_COMMENT
+          𝌋 Vercel production release completed and relocked.
+
+          \`\`\`text
+          source_packet_commit = $SOURCE_PACKET_COMMIT
+          release_commit = ${{ steps.release_commit.outputs.release_sha }}
+          relock_commit = ${{ steps.relock.outputs.relock_sha }}
+          target = PRODUCTION
+          deployment_count = 1
+          deployment_url = $TD613_CANONICAL_PRODUCTION_URL
+          exact_source_content = PASS
+          application_tree_drift = none
+          git_auto_deploy = disabled
+          \`\`\`
+
+          The deployment used the exact authorized application tree. The temporary workflow was absent from the deployed release tree, and the relock push could not create a second deployment. Sealed ⟐
+          EOF_COMMENT
+          )"
+
+      - name: Record held production deployment
+        if: failure()
+        shell: bash
+        run: |
+          gh api "repos/$GITHUB_REPOSITORY/issues/$RELEASE_GATE_ISSUE/comments" \
+            -f body="$(cat <<EOF_COMMENT
+          𝌋 Vercel production release held.
+
+          \`\`\`text
+          source_packet_commit = $SOURCE_PACKET_COMMIT
+          release_commit = ${{ steps.release_commit.outputs.release_sha || 'not-created' }}
+          relock_commit = ${{ steps.relock.outputs.relock_sha || 'not-created' }}
+          target = PRODUCTION
+          deployment_ceiling = 1
+          workflow_run = $GITHUB_SERVER_URL/$GITHUB_REPOSITORY/actions/runs/$GITHUB_RUN_ID
+          \`\`\`
+
+          The lock-restoration step was attempted. No additional deployment attempt is authorized by this failure. ⟐
+          EOF_COMMENT
+          )"
