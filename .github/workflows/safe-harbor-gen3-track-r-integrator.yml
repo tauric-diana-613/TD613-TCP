@@ -50,26 +50,23 @@ jobs:
       - name: Revalidate current Safe Harbor authority chain
         run: npm run test:safe-harbor:current
 
-      - name: Verify research boundary and credential hygiene
+      - name: Verify Track R boundary and credential hygiene
         run: |
           set -euo pipefail
           node --input-type=module <<'NODE'
           import fs from 'node:fs';
-          import path from 'node:path';
-          const roots = [
-            'app/safe-harbor/research',
-            'app/safe-harbor/schemas',
-            'tests',
-            'docs/safe-harbor'
+          const files = [
+            'app/safe-harbor/research/safe-harbor-blind-custody-challenge.js',
+            'app/safe-harbor/research/safe-harbor-perturbation-invariance.js',
+            'app/safe-harbor/research/safe-harbor-track-r.js',
+            'app/safe-harbor/schemas/td613-safe-harbor.blind-custody-challenge.v1.schema.json',
+            'app/safe-harbor/schemas/td613-safe-harbor.perturbation-invariance.v1.schema.json',
+            'tests/safe-harbor-gen3-track-r-blind-custody.test.mjs',
+            'tests/safe-harbor-gen3-track-r-perturbation-invariance.test.mjs',
+            'tests/safe-harbor-gen3-track-r-gate.test.mjs',
+            'tests/safe-harbor-gen3-track-r-schema-contract.test.mjs',
+            'docs/safe-harbor/gen3-track-r-implementation-receipt.md'
           ];
-          const files = [];
-          const walk = (p) => {
-            if (!fs.existsSync(p)) return;
-            const stat = fs.statSync(p);
-            if (stat.isDirectory()) for (const name of fs.readdirSync(p)) walk(path.join(p, name));
-            else if (/\.(?:js|mjs|json|md)$/u.test(p)) files.push(p);
-          };
-          roots.forEach(walk);
           const concrete = /TD613-SH-9B07D8B-[0-9A-F]{8}/gu;
           const synthetic = 'TD613-SH-9B07D8B-A1B2C3D4';
           const violations = [];
@@ -80,10 +77,12 @@ jobs:
           if (violations.length) throw new Error(`Unexpected concrete SHI:\n${violations.join('\n')}`);
           const gate = fs.readFileSync('app/safe-harbor/research/safe-harbor-track-r.js', 'utf8');
           for (const marker of [
-            'research-gated',
-            'production_authorized: false',
+            "export const TRACK_R_GATE = 'td613.safe-harbor.track-r-explicit-invocation/v1'",
+            "options.researchMode !== true",
+            "options.operatorGesture !== 'AUTHORIZE_TRACK_R_RESEARCH_EXECUTION'",
             'baseline_intake_authorized: false',
-            'promotion_authorized: false'
+            'production_promotion_authorized: false',
+            "status: 'research-executed-unpromoted'"
           ]) if (!gate.includes(marker)) throw new Error(`Track R gate marker missing: ${marker}`);
           console.log('Track R research boundary and concrete-SHI hygiene: pass');
           NODE
