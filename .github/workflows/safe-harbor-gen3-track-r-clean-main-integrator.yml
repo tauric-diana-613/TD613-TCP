@@ -1,0 +1,125 @@
+name: Safe Harbor Gen3 Track R clean-main integrator
+
+on:
+  pull_request:
+    branches:
+      - main
+    types:
+      - opened
+      - reopened
+      - synchronize
+      - ready_for_review
+
+permissions:
+  contents: write
+  pull-requests: read
+
+concurrency:
+  group: safe-harbor-gen3-track-r-clean-main-integrator
+  cancel-in-progress: false
+
+jobs:
+  integrate-validate-commit:
+    if: github.event.pull_request.head.ref == 'safe-harbor-gen3-track-r-clean-main'
+    runs-on: ubuntu-latest
+    timeout-minutes: 45
+    steps:
+      - name: Check out exact clean-main Track R branch
+        uses: actions/checkout@v4
+        with:
+          ref: safe-harbor-gen3-track-r-clean-main
+          fetch-depth: 0
+
+      - name: Set up Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: '24'
+
+      - name: Copy only validated Track R immutable files
+        run: |
+          set -euo pipefail
+          git fetch origin safe-harbor-gen3-track-r-blind-custody-stylodynamics-v1
+          git checkout origin/safe-harbor-gen3-track-r-blind-custody-stylodynamics-v1 -- \
+            app/safe-harbor/research/safe-harbor-blind-custody-challenge.js \
+            app/safe-harbor/research/safe-harbor-perturbation-invariance.js \
+            app/safe-harbor/research/safe-harbor-track-r.js \
+            app/safe-harbor/schemas/td613-safe-harbor.blind-custody-challenge.v1.schema.json \
+            app/safe-harbor/schemas/td613-safe-harbor.perturbation-invariance.v1.schema.json \
+            tests/safe-harbor-gen3-track-r-blind-custody.test.mjs \
+            tests/safe-harbor-gen3-track-r-perturbation-invariance.test.mjs \
+            tests/safe-harbor-gen3-track-r-gate.test.mjs \
+            tests/safe-harbor-gen3-track-r-schema-contract.test.mjs \
+            docs/safe-harbor/gen3-track-r-implementation-receipt.md
+
+      - name: Reapply Track R index, ledger, and script edits onto current main
+        run: |
+          node --input-type=module <<'NODE'
+          import fs from 'node:fs';
+          const packagePath = 'package.json';
+          const pkg = JSON.parse(fs.readFileSync(packagePath, 'utf8'));
+          pkg.scripts['test:safe-harbor:gen3:track-r'] = 'node tests/safe-harbor-gen3-track-r-blind-custody.test.mjs && node tests/safe-harbor-gen3-track-r-perturbation-invariance.test.mjs && node tests/safe-harbor-gen3-track-r-gate.test.mjs && node tests/safe-harbor-gen3-track-r-schema-contract.test.mjs';
+          fs.writeFileSync(packagePath, `${JSON.stringify(pkg, null, 2)}\n`);
+
+          const readmePath = 'docs/safe-harbor/README.md';
+          let readme = fs.readFileSync(readmePath, 'utf8');
+          const anchor = '- [Restorative Stylodynamics and Perturbation Invariance Mapping research annex](./restorative-stylodynamics-perturbation-invariance-annex-v0.1.md)\n';
+          const receipt = '- [Gen3 Research Track R implementation receipt](./gen3-track-r-implementation-receipt.md)\n';
+          if (!readme.includes(anchor)) throw new Error('Safe Harbor index anchor missing.');
+          if (!readme.includes(receipt)) readme = readme.replace(anchor, `${anchor}${receipt}`);
+          fs.writeFileSync(readmePath, readme);
+
+          const ledgerPath = 'docs/safe-harbor/gen3-implementation-ledger.md';
+          let ledger = fs.readFileSync(ledgerPath, 'utf8');
+          ledger = ledger.replace(/^\| Research Track R \|.*$/m, '| Research Track R | PR #524 successor clean-main branch | implementation complete / research-gated / unpromoted | no baseline intake authority |');
+          for (const id of ['R-001','R-002','R-003','R-004','R-005','R-006','R-007','R-008','R-009']) {
+            const row = new RegExp(`(^\\| ${id} \\|[^\\n]*\\| )(?:research-gated|implemented \/ research-gated)( \\|$)`, 'm');
+            ledger = ledger.replace(row, '$1implemented / research-gated$2');
+          }
+          ledger = ledger.replace(/^\| R-010 \|.*$/m, '| R-010 | Twelve consented or synthetic-distinct triads before promotion | calibration ledger | calibration receipt | blocked; qualifying calibration corpus not present |');
+          fs.writeFileSync(ledgerPath, ledger);
+
+          const receiptPath = 'docs/safe-harbor/gen3-track-r-implementation-receipt.md';
+          fs.writeFileSync(receiptPath, fs.readFileSync(receiptPath, 'utf8').replace(/[\t ]+$/gmu, ''));
+          NODE
+
+      - name: Validate Track R and inherited authority chain
+        run: |
+          npm run test:safe-harbor:gen3:track-r
+          npm run test:safe-harbor:gen3:wave-a
+          npm run test:safe-harbor:phase9.1c
+          npm run test:safe-harbor:current
+
+      - name: Verify Track R remains research-only and credential-clean
+        run: |
+          node --input-type=module <<'NODE'
+          import fs from 'node:fs';
+          const files = [
+            'app/safe-harbor/research/safe-harbor-blind-custody-challenge.js',
+            'app/safe-harbor/research/safe-harbor-perturbation-invariance.js',
+            'app/safe-harbor/research/safe-harbor-track-r.js',
+            'app/safe-harbor/schemas/td613-safe-harbor.blind-custody-challenge.v1.schema.json',
+            'app/safe-harbor/schemas/td613-safe-harbor.perturbation-invariance.v1.schema.json',
+            'tests/safe-harbor-gen3-track-r-blind-custody.test.mjs',
+            'tests/safe-harbor-gen3-track-r-perturbation-invariance.test.mjs',
+            'tests/safe-harbor-gen3-track-r-gate.test.mjs',
+            'tests/safe-harbor-gen3-track-r-schema-contract.test.mjs',
+            'docs/safe-harbor/gen3-track-r-implementation-receipt.md'
+          ];
+          const concrete = /TD613-SH-9B07D8B-[0-9A-F]{8}/gu;
+          const synthetic = 'TD613-SH-9B07D8B-A1B2C3D4';
+          const violations = [];
+          for (const file of files) for (const match of fs.readFileSync(file, 'utf8').match(concrete) || []) if (match !== synthetic) violations.push(`${file}: ${match}`);
+          if (violations.length) throw new Error(`Unexpected concrete SHI:\n${violations.join('\n')}`);
+          const gate = fs.readFileSync('app/safe-harbor/research/safe-harbor-track-r.js', 'utf8');
+          for (const marker of ['baseline_intake_authorized: false','production_promotion_authorized: false',"status: 'research-executed-unpromoted'"]) if (!gate.includes(marker)) throw new Error(`Missing research-only marker: ${marker}`);
+          NODE
+
+      - name: Commit validated clean-main Track R implementation
+        run: |
+          set -euo pipefail
+          git config user.name 'td613-safe-harbor-bot'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add -A
+          git diff --cached --check
+          git commit -m 'Implement Safe Harbor Gen3 Research Track R from clean main'
+          git push origin HEAD:safe-harbor-gen3-track-r-clean-main
