@@ -4,6 +4,7 @@ import fs from 'node:fs';
 const field = fs.readFileSync('app/dome-world/ash-flowcore-pedagogy-field.js', 'utf8');
 const css = fs.readFileSync('app/dome-world/ash-flowcore-pedagogy-field.css', 'utf8');
 const boundary = fs.readFileSync('app/dome-world/ash-session-boundary.js', 'utf8');
+const ingressSpacing = fs.readFileSync('app/dome-world/ash-ingress-copy-spacing.js', 'utf8');
 const bridge = fs.readFileSync('app/dome-world/ash-workspace-bridge.js', 'utf8');
 const closeRepair = fs.readFileSync('app/dome-world/ash-case-close-repair.js', 'utf8');
 
@@ -34,7 +35,16 @@ assert.match(boundary, /launch\?\.classList\.remove\('hidden'\)/);
 assert.doesNotMatch(boundary, /indexedDB\.deleteDatabase/);
 assert.match(closeRepair, /localStorage\.removeItem\(POINTER_KEY\)/);
 
+assert.match(ingressSpacing, /v0\.1-title-recovery-primary-order/);
+assert.match(ingressSpacing, /title\.insertAdjacentElement\('afterend', recovery\)/);
+assert.match(ingressSpacing, /recovery\.insertAdjacentElement\('afterend', primary\)/);
+assert.match(ingressSpacing, /margin-top:10px!important/);
+assert.match(ingressSpacing, /overlap_px:overlap/);
+assert.match(ingressSpacing, /ordered:title\.nextElementSibling === recovery/);
+assert.doesNotMatch(ingressSpacing, /setInterval\s*\(|requestAnimationFrame\s*\(/);
+
 assert.match(bridge, /ash-session-boundary\.js\?v=20260721-flowcore-live-field-v1/);
+assert.match(bridge, /ash-ingress-copy-spacing\.js\?v=20260721-flowcore-live-field-v1/);
 assert.match(bridge, /ash-flowcore-pedagogy-field\.js\?v=20260721-flowcore-live-field-v1/);
 
 console.log('ash-flowcore-live-field.test.mjs passed');
