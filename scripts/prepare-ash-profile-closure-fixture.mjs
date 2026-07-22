@@ -55,22 +55,60 @@ const convergenceReplacement = {
   await page.locator('#startDemo').click();
   await page.waitForFunction(() => /Glasshouse Archive/i.test(document.getElementById('caseTitle')?.textContent || ''), null, { timeout: 60000 });
   await page.waitForFunction(() => document.documentElement.dataset.ashConvergence?.includes('constitutional-convergence'), null, { timeout: 60000 });\`;`,
-  to: `const readinessReplacement = \`  await page.goto(keepUrl, { waitUntil: 'networkidle' });
+  to: `const readinessReplacement = \`  await page.goto(keepUrl, { waitUntil: 'domcontentloaded', timeout: 90000 });
   await page.waitForFunction(() => Boolean(window.__td613AshKeep?.version)
     && typeof window.TD613AshConvergence?.composition === 'function'
-    && window.__td613AshProfileDemos?.profiles?.includes('political_campaign'), null, { timeout: 60000 });
+    && document.documentElement.dataset.ashConvergence?.includes('constitutional-convergence')
+    && document.getElementById('newProfile')
+    && document.getElementById('startDemo'), null, { timeout: 60000 });
   report.observations.boot_readiness = {
     keep_core_ready: true,
     convergence_runtime_ready: true,
-    profile_demo_registry_ready: true,
+    profile_control_ready: true,
+    profile_demo_registry_deferred_until_selection: true,
+    demo_entry_convergence_deferred_until_case_hydration: true,
     demo_click_deferred_until_ready: true,
-    profile_selected_explicitly: true
+    profile_selected_explicitly: true,
+    network_idle_not_required: true,
+    presentation_route: 'legacy'
   };
   await page.locator('#newProfile').selectOption('political_campaign');
-  await page.waitForFunction(() => !document.getElementById('startDemo')?.disabled
+  await page.waitForFunction(() => window.__td613AshProfileDemos?.profiles?.includes('political_campaign')
+    && !document.getElementById('startDemo')?.disabled
     && /Political Campaign/.test(document.getElementById('startDemo')?.textContent || ''), null, { timeout: 60000 });
+  report.observations.boot_readiness.profile_demo_registry_ready = true;
   await page.locator('#startDemo').click();
   await page.waitForFunction(() => /Harbor City Mayoral Campaign/i.test(document.getElementById('caseTitle')?.textContent || ''), null, { timeout: 60000 });
+  await page.waitForFunction(() => {
+    const caseId = localStorage.getItem('td613.ash-keep.current-case');
+    const convergenceApi = window.__td613AshDemoEntryConvergence || null;
+    const convergence = convergenceApi?.current?.() || null;
+    const panel = document.getElementById('workspace-map');
+    const style = panel ? getComputedStyle(panel) : null;
+    const rect = panel?.getBoundingClientRect();
+    return caseId
+      && convergenceApi?.version
+      && document.documentElement.dataset.ashDemoEntryReady === 'political_campaign:map'
+      && document.documentElement.dataset.ashDemoEntryCase === caseId
+      && document.documentElement.dataset.ashDemoEntryHydrating !== 'true'
+      && !document.documentElement.dataset.ashDemoEntryHold
+      && convergence?.posture === 'READY'
+      && convergence?.phase === 'VISIBLE'
+      && convergence?.workspace === 'map'
+      && panel?.classList.contains('active')
+      && style?.display !== 'none'
+      && style?.visibility !== 'hidden'
+      && Number(style?.opacity) > 0
+      && rect?.width > 0
+      && rect?.height > 0;
+  }, null, { timeout: 60000 });
+  report.observations.demo_entry_release = {
+    demo_entry_api_ready_after_hydration: true,
+    profile: 'political_campaign',
+    workspace: 'map',
+    posture: 'READY',
+    phase: 'VISIBLE'
+  };
   await page.waitForFunction(() => document.documentElement.dataset.ashConvergence?.includes('constitutional-convergence'), null, { timeout: 60000 });\`;`
 };
 
@@ -88,7 +126,11 @@ function isProbePrepared(source) {
 
 function isConvergencePrepared(source) {
   return source.includes("selectOption('political_campaign')")
-    && source.includes('profile_demo_registry_ready: true')
+    && source.includes('profile_demo_registry_deferred_until_selection: true')
+    && source.includes('boot_readiness.profile_demo_registry_ready = true')
+    && source.includes('demo_entry_convergence_deferred_until_case_hydration: true')
+    && source.includes('demo_entry_api_ready_after_hydration: true')
+    && source.includes('convergenceApi?.version')
     && source.includes('profile_selected_explicitly: true')
     && source.includes("window.__td613AshProfileDemos?.profiles?.includes('political_campaign')")
     && source.includes('Harbor City Mayoral Campaign');
@@ -122,7 +164,7 @@ if (preparedConvergenceRunner !== originalConvergenceRunner) await fs.writeFile(
 
 await fs.mkdir(path.dirname(manifestPath), { recursive: true });
 await fs.writeFile(manifestPath, `${JSON.stringify({
-  schema: 'td613.ash-keep.profile-closure-fixture/v0.3-apeq-paia',
+  schema: 'td613.ash-keep.profile-closure-fixture/v0.4-five-demo-deferred-entry',
   profile: 'political_campaign',
   demo_id: 'demo_political_campaign_harbor_city_apeq_paia_v2',
   qualified_route_count: 6,
