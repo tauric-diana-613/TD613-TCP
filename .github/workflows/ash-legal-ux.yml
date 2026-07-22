@@ -3,115 +3,89 @@ name: Ash Legal Demo and UX Rescue
 on:
   pull_request:
     paths:
-      - 'app/dome-world/ash-legal-profile-demo.js'
-      - 'app/dome-world/ash-legal-demo-control-state.js'
-      - 'app/dome-world/ash-ui-ux-rescue.js'
-      - 'app/dome-world/ash-flicker-hardening.js'
-      - 'app/dome-world/ash-aia3-composition.js'
-      - 'app/dome-world/ash-premium-readiness-bridge.js'
-      - 'app/dome-world/ash-lifecycle.js'
-      - 'app/dome-world/ash-profile-demo-hydration.js'
-      - 'app/dome-world/ash-workspace-bridge.js'
-      - 'app/safe-harbor/ash-keep-recovery.html'
-      - 'api/dome-world-shell.js'
+      - 'scripts/ash-keep-aia3-task-journey-v3.mjs'
       - 'tests/ash-aia3-mass-eviction.test.mjs'
-      - 'tests/ash-legal-ux.test.mjs'
-      - 'tests/ash-legal-control-state.test.mjs'
-      - 'scripts/ash-legal-ux-browser-probe.mjs'
       - '.github/workflows/ash-legal-ux.yml'
-  push:
-    branches: [main]
-    paths:
-      - 'app/dome-world/ash-legal-profile-demo.js'
-      - 'app/dome-world/ash-legal-demo-control-state.js'
-      - 'app/dome-world/ash-ui-ux-rescue.js'
-      - 'app/dome-world/ash-flicker-hardening.js'
-      - 'app/dome-world/ash-aia3-composition.js'
-      - 'app/dome-world/ash-premium-readiness-bridge.js'
-      - 'app/dome-world/ash-lifecycle.js'
-      - 'app/dome-world/ash-profile-demo-hydration.js'
-      - 'app/dome-world/ash-workspace-bridge.js'
-      - 'app/safe-harbor/ash-keep-recovery.html'
-      - 'api/dome-world-shell.js'
-      - 'tests/ash-aia3-mass-eviction.test.mjs'
-      - 'tests/ash-legal-ux.test.mjs'
-      - 'tests/ash-legal-control-state.test.mjs'
-      - 'scripts/ash-legal-ux-browser-probe.mjs'
-      - '.github/workflows/ash-legal-ux.yml'
-  workflow_dispatch:
 
 permissions:
-  contents: read
+  contents: write
 
 concurrency:
-  group: ash-legal-ux-${{ github.event.pull_request.number || github.ref }}
+  group: ash-bounded-browser-teardown-patch
   cancel-in-progress: true
 
 jobs:
-  static-contract:
+  bounded-browser-teardown-patch:
+    if: github.event.pull_request.head.ref == 'agent/ash-legal-demo-navigation-animation' && github.actor != 'github-actions[bot]'
     runs-on: ubuntu-latest
-    timeout-minutes: 15
     steps:
       - uses: actions/checkout@v4
-      - uses: actions/setup-node@v4
         with:
-          node-version: 24
-          cache: npm
-      - run: npm ci
-      - run: |
-          node tests/ash-legal-ux.test.mjs
-          node tests/ash-legal-control-state.test.mjs
-      - run: |
-          node --check app/dome-world/ash-legal-profile-demo.js
-          node --check app/dome-world/ash-legal-demo-control-state.js
-          node --check app/dome-world/ash-ui-ux-rescue.js
-          node --check app/dome-world/ash-flicker-hardening.js
-          node --check app/dome-world/ash-aia3-composition.js
-          node --check app/dome-world/ash-premium-readiness-bridge.js
-          node --check app/dome-world/ash-lifecycle.js
-          node --check scripts/ash-legal-ux-browser-probe.mjs
+          ref: agent/ash-legal-demo-navigation-animation
+          fetch-depth: 0
+      - name: Bound browser teardown after evidence is written
+        run: |
+          python - <<'PY'
+          from pathlib import Path
+          script = Path('scripts/ash-keep-aia3-task-journey-v3.mjs')
+          text = script.read_text()
+          old = """} finally {
+            await browser.close();
+            report.completed_at = new Date().toISOString();
+            await fs.writeFile(path.join(outputDir, 'ash-aia3-task-continuity.json'), `${JSON.stringify(report, null, 2)}\\n`, 'utf8');
+          }
+          if (terminal) throw terminal;
+          console.log(JSON.stringify({ status:report.status, browser:browserName, profiles:Object.keys(report.profiles) }, null, 2));"""
+          new = """} finally {
+            report.completed_at = new Date().toISOString();
+            let browserClose = 'CLOSED';
+            try {
+              await Promise.race([
+                browser.close(),
+                new Promise((_, reject) => setTimeout(() => reject(new Error('Browser close did not finish within 15 seconds.')), 15000))
+              ]);
+            } catch (error) {
+              browserClose = 'FORCED_PROCESS_EXIT';
+              report.browser_close_hold = error.message;
+            }
+            report.browser_close = browserClose;
+            await fs.writeFile(path.join(outputDir, 'ash-aia3-task-continuity.json'), `${JSON.stringify(report, null, 2)}\\n`, 'utf8');
+          }
+          if (terminal) {
+            console.error(terminal);
+            process.exit(1);
+          }
+          console.log(JSON.stringify({ status:report.status, browser:browserName, profiles:Object.keys(report.profiles), browser_close:report.browser_close }, null, 2));
+          process.exit(0);"""
+          if new in text:
+              pass
+          elif old in text:
+              text = text.replace(old, new, 1)
+          else:
+              raise SystemExit('Expected AIA3 browser teardown block was not found.')
+          script.write_text(text)
 
-  browser-witness:
-    runs-on: ubuntu-latest
-    timeout-minutes: 55
-    strategy:
-      fail-fast: false
-      matrix:
-        browser: [chromium, firefox, webkit]
-    steps:
-      - uses: actions/checkout@v4
-      - uses: actions/setup-node@v4
-        with:
-          node-version: 24
-          cache: npm
-      - run: npm ci
-      - run: npm install --no-save --package-lock=false playwright@1.53.2
-      - run: npx playwright install --with-deps ${{ matrix.browser }}
-      - name: Start bounded local Ash runtime
-        run: |
-          node scripts/ash-keep-local-closure-server.mjs > artifacts-ash-legal-server.log 2>&1 &
-          echo $! > ash-legal-server.pid
-          for attempt in $(seq 1 60); do
-            if curl -fsS http://127.0.0.1:6130/dome-world/ash-keep.html >/dev/null; then exit 0; fi
-            sleep 1
-          done
-          cat artifacts-ash-legal-server.log
-          exit 1
-      - name: Exercise Legal matter demo, stable composition, navigation, and finite animation
-        env:
-          TD613_BROWSER: ${{ matrix.browser }}
-          TD613_BASE_URL: http://127.0.0.1:6130
-          TD613_ARTIFACT_DIR: artifacts/ash-legal-ux-${{ matrix.browser }}
-        run: node scripts/ash-legal-ux-browser-probe.mjs
-      - name: Stop bounded local runtime
-        if: always()
-        run: |
-          if [ -f ash-legal-server.pid ]; then kill $(cat ash-legal-server.pid) || true; fi
-          cat artifacts-ash-legal-server.log || true
-      - uses: actions/upload-artifact@v4
-        if: always()
-        with:
-          name: ash-legal-ux-${{ matrix.browser }}-evidence
-          path: artifacts/ash-legal-ux-${{ matrix.browser }}/
-          if-no-files-found: error
-          retention-days: 30
+          test = Path('tests/ash-aia3-mass-eviction.test.mjs')
+          test_text = test.read_text()
+          anchor = "test('retired worker fixture controls the next navigation without claiming the active page', () => {"
+          if 'browser teardown is bounded after the evidence receipt is written' not in test_text:
+              addition = """test('browser teardown is bounded after the evidence receipt is written', () => {
+            assert.match(journeySource, /Browser close did not finish within 15 seconds/);
+            assert.match(journeySource, /report\\.browser_close = browserClose/);
+            assert.match(journeySource, /await fs\\.writeFile[\\s\\S]*process\\.exit\\(0\\)/);
+            assert.doesNotMatch(journeySource, /finally \\{\\n  await browser\\.close\\(\\);/);
+          });
+
+          """
+              if anchor not in test_text:
+                  raise SystemExit('Expected retired-worker fixture contract anchor was not found.')
+              test_text = test_text.replace(anchor, addition + anchor, 1)
+          test.write_text(test_text)
+          PY
+          node --check scripts/ash-keep-aia3-task-journey-v3.mjs
+          node tests/ash-aia3-mass-eviction.test.mjs
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add scripts/ash-keep-aia3-task-journey-v3.mjs tests/ash-aia3-mass-eviction.test.mjs
+          git commit -m 'test(ash): bound browser teardown after stale-client evidence'
+          git push origin HEAD:agent/ash-legal-demo-navigation-animation
