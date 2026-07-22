@@ -20,14 +20,14 @@ concurrency:
 
 jobs:
   integrate-validate-clean:
-    if: github.event.pull_request.head.ref == 'safe-harbor-gen3-wave-b-release-gate'
+    if: startsWith(github.event.pull_request.head.ref, 'safe-harbor-gen3-wave-b-release-gate')
     runs-on: ubuntu-latest
     timeout-minutes: 60
     steps:
       - name: Check out exact Wave B release-gate branch
         uses: actions/checkout@v4
         with:
-          ref: safe-harbor-gen3-wave-b-release-gate
+          ref: ${{ github.event.pull_request.head.ref }}
           fetch-depth: 0
 
       - name: Set up Node
@@ -124,4 +124,4 @@ jobs:
           git add -A
           git diff --cached --check
           git commit -m 'Authorize Safe Harbor Gen3 Release Wave B'
-          git push origin HEAD:safe-harbor-gen3-wave-b-release-gate
+          git push origin HEAD:"${{ github.event.pull_request.head.ref }}"
