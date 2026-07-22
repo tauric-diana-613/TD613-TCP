@@ -35,7 +35,7 @@ jobs:
         with:
           node-version: '24'
 
-      - name: Normalize the temporary progress-pill search anchor
+      - name: Normalize temporary Stage 3 source anchors
         run: |
           node --input-type=module <<'NODE'
           import fs from 'node:fs';
@@ -46,6 +46,10 @@ jobs:
           if (!source.includes(oldBefore) || !source.includes(oldAfter)) throw new Error('Temporary progress-pill patch anchor was not found.');
           source = source.replace(oldBefore, "'<div class=\"status-pill\" id=\"ingressProgressPill\">0 / 3 lanes</div>',");
           source = source.replace(oldAfter, "'<div class=\"status-pill\" id=\"ingressProgressPill\">temporal field</div>'");
+          const misalignedMeta = '\n             <div class="ingress-meta" id="ingressStepMeta">No line held yet.</div>';
+          const alignedMeta = '\n            <div class="ingress-meta" id="ingressStepMeta">No line held yet.</div>';
+          if (!source.includes(misalignedMeta)) throw new Error('Temporary ingress metadata seam anchor was not found.');
+          source = source.replace(misalignedMeta, alignedMeta);
           fs.writeFileSync(path, source);
           NODE
 
