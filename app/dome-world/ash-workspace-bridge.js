@@ -2,6 +2,8 @@ export * from './ash-workspace-bridge-core.js?v=20260721-legal-demo-ux-v1';
 import './ash-flicker-hardening.js?v=20260721-legal-demo-ux-v1';
 // Initial ingress may preserve one validated readiness receipt; operator Close Case always clears the Ash session.
 import './ash-case-close-repair.js?v=20260721-legal-demo-ux-v1';
+// The persisted case pointer, not a stale in-memory case object, governs whether a session remains open.
+import './ash-session-boundary.js?v=20260721-flowcore-live-field-v1';
 
 /* Canonical composition ordering retained under cache-busted URLs:
 import './ash-keep-mobile-composition.js';
@@ -26,6 +28,8 @@ import './ash-guided-operator-ui.js?v=20260721-legal-demo-ux-v1';
 import './ash-premium-compatibility.js?v=20260721-legal-demo-ux-v1';
 import './ash-workspace-navigation.js?v=20260721-legal-demo-ux-v1';
 import './ash-ui-ux-rescue.js?v=20260721-legal-demo-ux-v1';
+// Live Flow-Core interprets the existing explicit lesson clock; it owns no Ash action or ambient scheduler.
+import './ash-flowcore-pedagogy-field.js?v=20260721-flowcore-live-field-v1';
 import './ash-composition-receipt-compatibility.js?v=20260721-legal-demo-ux-v1';
 import './ash-demo-entry-convergence.js?v=20260721-legal-demo-ux-v1';
 import './ash-demo-pedagogy-routebar.js?v=20260721-legal-demo-ux-v1';
