@@ -16,7 +16,8 @@ This folder tracks the current Safe Harbor release doctrine.
 10. Gen3 Stage 2 authorship maturity and null-control engine
 11. Gen3 Release Wave A deployed once, observed post-propagation, and relocked
 12. Gen3 Research Track R code-complete, research-gated, and unpromoted
-13. Gen3 Stage 3 Temporal Bloom and provenance presentation under validation
+13. Gen3 Stage 3 Temporal Bloom and provenance presentation landed and validated
+14. Gen3 Release Wave B gate authored; production release pending
 
 ## Core docs
 
@@ -30,6 +31,7 @@ This folder tracks the current Safe Harbor release doctrine.
 - [Restorative Stylodynamics and Perturbation Invariance Mapping research annex](./restorative-stylodynamics-perturbation-invariance-annex-v0.1.md)
 - [Gen3 Research Track R implementation receipt](./gen3-track-r-implementation-receipt.md)
 - [Gen3 Stage 3 validation receipt](./gen3-stage3-validation-receipt.md)
+- [Gen3 Wave B release-gate receipt](./gen3-wave-b-release-gate-receipt.md)
 - [Claim limits](./claim-limits.md)
 - [Operator protocol](./operator-protocol.md)
 - [Verification guide](./verification-guide.md)
@@ -58,7 +60,7 @@ Release Wave A deployed source `86cf1af84e69998ae195e53ef64372e35d8c6745` to `ht
 
 Release run `29957000564` held the initial browser observation during deployment propagation. Route-matrix run `29957916811` later confirmed every clean and canonical Gen3 route at HTTP `200`. Observer-log run `29958344250` exposed a separate false source-marker expectation. Corrected read-only observer run `29958834895` then passed the complete production battery against the same deployed source at `2026-07-22T21:21:51.287Z`, with no second deployment or lock mutation.
 
-Research Track R landed through PR #538 / commit `f1e96ab5b2db2bdf096c7dbcb3a8bbb8cb4351b9`; its production promotion remains withheld. Stage 3 and Release Wave B remain pending validation and release.
+Research Track R landed through PR #538 / commit `f1e96ab5b2db2bdf096c7dbcb3a8bbb8cb4351b9`; its production promotion remains withheld. Stage 3 landed through PR #544 / commit `1032b29c703a758f0f4570f9b392c040c465aa7b` after successful validation run `29962920463`. Release Wave B remains pending its exact-source production gate.
 
 ## Run before editing Safe Harbor authority surfaces
 
