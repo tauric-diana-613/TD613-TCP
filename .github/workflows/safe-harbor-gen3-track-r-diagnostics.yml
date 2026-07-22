@@ -1,0 +1,87 @@
+name: Safe Harbor Gen3 Research Track R diagnostics
+
+on:
+  pull_request:
+    branches:
+      - main
+    types:
+      - opened
+      - reopened
+      - synchronize
+      - ready_for_review
+
+permissions:
+  contents: read
+  pull-requests: read
+
+concurrency:
+  group: safe-harbor-gen3-track-r-diagnostics
+  cancel-in-progress: true
+
+jobs:
+  diagnose:
+    if: github.event.pull_request.head.ref == 'safe-harbor-gen3-track-r-blind-custody-stylodynamics'
+    runs-on: ubuntu-latest
+    timeout-minutes: 45
+    steps:
+      - name: Check out exact Research Track R head
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Set up Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: '24'
+
+      - name: Create diagnostics directory
+        run: mkdir -p artifacts/track-r-validation
+
+      - name: Validate Blind Custody Challenge
+        id: blind
+        continue-on-error: true
+        run: |
+          set -o pipefail
+          node tests/safe-harbor-gen3-blind-custody.test.mjs 2>&1 | tee artifacts/track-r-validation/blind-custody.log
+
+      - name: Validate Restorative Stylodynamics
+        id: restorative
+        continue-on-error: true
+        run: |
+          set -o pipefail
+          node tests/safe-harbor-gen3-restorative-stylodynamics.test.mjs 2>&1 | tee artifacts/track-r-validation/restorative-stylodynamics.log
+
+      - name: Validate Research Track R wrapper and schemas
+        id: wrapper
+        continue-on-error: true
+        run: |
+          set -o pipefail
+          node tests/safe-harbor-gen3-research-track-r.test.mjs 2>&1 | tee artifacts/track-r-validation/research-track-r.log
+
+      - name: Record diagnostic summary
+        if: always()
+        run: |
+          cat > artifacts/track-r-validation/summary.txt <<EOF
+          blind=${{ steps.blind.outcome }}
+          restorative=${{ steps.restorative.outcome }}
+          wrapper=${{ steps.wrapper.outcome }}
+          head_sha=$GITHUB_SHA
+          workflow_run=$GITHUB_SERVER_URL/$GITHUB_REPOSITORY/actions/runs/$GITHUB_RUN_ID
+          EOF
+          cat artifacts/track-r-validation/summary.txt
+
+      - name: Preserve diagnostic evidence
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: safe-harbor-gen3-track-r-validation
+          path: artifacts/track-r-validation/
+          if-no-files-found: error
+          retention-days: 30
+
+      - name: Fail when any Research Track R test failed
+        if: always()
+        run: |
+          test '${{ steps.blind.outcome }}' = 'success'
+          test '${{ steps.restorative.outcome }}' = 'success'
+          test '${{ steps.wrapper.outcome }}' = 'success'
