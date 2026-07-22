@@ -3,6 +3,7 @@ import fs from 'node:fs';
 
 const field = fs.readFileSync('app/dome-world/ash-flowcore-pedagogy-field.js', 'utf8');
 const css = fs.readFileSync('app/dome-world/ash-flowcore-pedagogy-field.css', 'utf8');
+const portal = fs.readFileSync('app/dome-world/ash-flowcore-ingress-portal.js', 'utf8');
 const boundary = fs.readFileSync('app/dome-world/ash-session-boundary.js', 'utf8');
 const ingressSpacing = fs.readFileSync('app/dome-world/ash-ingress-copy-spacing.js', 'utf8');
 const bridge = fs.readFileSync('app/dome-world/ash-workspace-bridge.js', 'utf8');
@@ -28,6 +29,19 @@ assert.match(css, /data-flowcore-phase="0"/);
 assert.match(css, /data-flowcore-phase="4"/);
 assert.match(css, /prefers-reduced-motion:reduce/);
 assert.doesNotMatch(css, /animation:[^;}]*infinite/);
+
+assert.match(portal, /v0\.2-single-visible-field-styled/);
+assert.match(portal, /getElementById\('guidedLaunchPromise'\)/);
+assert.match(portal, /dataset\.aiaPlay = ''/);
+assert.match(portal, /classList\.add\('ash-flowcore-field--proxy'\)/);
+assert.match(portal, /proxyField\.hidden = true/);
+assert.match(portal, /proxyField\.inert = true/);
+assert.match(portal, /stripDuplicateIds\(proxyField\)/);
+assert.match(portal, /ingress\.replaceChildren\(visibleField\)/);
+assert.match(portal, /visibleField\.dataset\.flowcoreHost = 'aia'/);
+assert.match(portal, /duplicate_visible_fields/);
+assert.match(portal, /\.guided-launch-promise\.ash-flowcore-ingress-host/);
+assert.doesNotMatch(portal, /setInterval\s*\(|requestAnimationFrame\s*\(/);
 
 assert.match(boundary, /v0\.4-pointer-governs-case-recovery-replay-stays-open/);
 assert.match(boundary, /if \(!activePointer\) return closedCurrent\(\)/);
@@ -61,5 +75,6 @@ assert.doesNotMatch(ingressSpacing, /setInterval\s*\(|requestAnimationFrame\s*\(
 assert.match(bridge, /ash-session-boundary\.js\?v=20260721-flowcore-live-field-v1/);
 assert.match(bridge, /ash-ingress-copy-spacing\.js\?v=20260721-flowcore-live-field-v1/);
 assert.match(bridge, /ash-flowcore-pedagogy-field\.js\?v=20260721-flowcore-live-field-v1/);
+assert.match(bridge, /ash-flowcore-ingress-portal\.js\?v=20260721-flowcore-live-field-v1/);
 
 console.log('ash-flowcore-live-field.test.mjs passed');
