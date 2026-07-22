@@ -35,6 +35,20 @@ jobs:
         with:
           node-version: '24'
 
+      - name: Normalize the temporary progress-pill search anchor
+        run: |
+          node --input-type=module <<'NODE'
+          import fs from 'node:fs';
+          const path = 'scripts/apply-safe-harbor-gen3-stage3-integration.mjs';
+          let source = fs.readFileSync(path, 'utf8');
+          const oldBefore = "'          <div class=\"status-pill\" id=\"ingressProgressPill\">0 / 3 lanes</div>',";
+          const oldAfter = "'          <div class=\"status-pill\" id=\"ingressProgressPill\">temporal field</div>'";
+          if (!source.includes(oldBefore) || !source.includes(oldAfter)) throw new Error('Temporary progress-pill patch anchor was not found.');
+          source = source.replace(oldBefore, "'<div class=\"status-pill\" id=\"ingressProgressPill\">0 / 3 lanes</div>',");
+          source = source.replace(oldAfter, "'<div class=\"status-pill\" id=\"ingressProgressPill\">temporal field</div>'");
+          fs.writeFileSync(path, source);
+          NODE
+
       - name: Apply bounded Stage 3 implementation seams
         id: implementation_patch
         run: |
@@ -91,24 +105,15 @@ jobs:
           import { execFileSync } from 'node:child_process';
           const base = 'origin/main';
           execFileSync('git', ['fetch', 'origin', 'main'], { stdio: 'inherit' });
-          const files = execFileSync('git', ['diff', '--name-only', `${base}...HEAD`], { encoding: 'utf8' })
-            .trim().split(/\r?\n/u).filter(Boolean);
+          const files = execFileSync('git', ['diff', '--name-only', `${base}...HEAD`], { encoding: 'utf8' }).trim().split(/\r?\n/u).filter(Boolean);
           const expected = new Set([
-            'app/safe-harbor/app/main.js',
-            'app/safe-harbor/index.html',
-            'app/safe-harbor/renderers/10_TD613_PUA_Badge_Provenance_Attestation_Renderer_v7_2_1.user.js',
-            'package.json',
-            'docs/safe-harbor/README.md',
-            'docs/safe-harbor/gen3-implementation-ledger.md',
-            'docs/safe-harbor/gen3-stage3-validation-receipt.md',
-            'app/safe-harbor/app/safe-harbor-gen3-presentation-core.js',
-            'app/safe-harbor/app/safe-harbor-temporal-bloom.js',
-            'app/safe-harbor/app/safe-harbor-temporal-bloom.css',
-            'tests/safe-harbor-gen3-stage3-temporal-bloom.test.mjs',
-            'tests/safe-harbor-gen3-stage3-provenance.test.mjs',
-            'tests/safe-harbor-gen3-stage3-ui-contract.test.mjs',
-            'tests/safe-harbor-gen3-stage3-renderer.test.mjs',
-            'scripts/apply-safe-harbor-gen3-stage3-integration.mjs',
+            'app/safe-harbor/app/main.js','app/safe-harbor/index.html',
+            'app/safe-harbor/renderers/10_TD613_PUA_Badge_Provenance_Attestation_Renderer_v7_2_1.user.js','package.json',
+            'docs/safe-harbor/README.md','docs/safe-harbor/gen3-implementation-ledger.md','docs/safe-harbor/gen3-stage3-validation-receipt.md',
+            'app/safe-harbor/app/safe-harbor-gen3-presentation-core.js','app/safe-harbor/app/safe-harbor-temporal-bloom.js',
+            'app/safe-harbor/app/safe-harbor-temporal-bloom.css','tests/safe-harbor-gen3-stage3-temporal-bloom.test.mjs',
+            'tests/safe-harbor-gen3-stage3-provenance.test.mjs','tests/safe-harbor-gen3-stage3-ui-contract.test.mjs',
+            'tests/safe-harbor-gen3-stage3-renderer.test.mjs','scripts/apply-safe-harbor-gen3-stage3-integration.mjs',
             'scripts/apply-safe-harbor-gen3-stage3-docs.mjs'
           ]);
           const unexpected = files.filter((file) => !expected.has(file));
@@ -117,15 +122,10 @@ jobs:
           const concrete = /TD613-SH-9B07D8B-[0-9A-F]{8}/gu;
           const synthetic = 'TD613-SH-9B07D8B-A1B2C3D4';
           const shiViolations = [];
-          for (const file of governed) {
-            const source = fs.readFileSync(file, 'utf8');
-            for (const value of source.match(concrete) || []) if (value !== synthetic) shiViolations.push(`${file}: ${value}`);
-          }
+          for (const file of governed) for (const value of fs.readFileSync(file, 'utf8').match(concrete) || []) if (value !== synthetic) shiViolations.push(`${file}: ${value}`);
           if (shiViolations.length) throw new Error(`Unexpected concrete SHI:\n${shiViolations.join('\n')}`);
           const combined = governed.map((file) => fs.readFileSync(file, 'utf8')).join('\n');
-          for (const forbidden of [/keystroke_timing\s*:/u,/pause_timing\s*:/u,/cursor_trajectory\s*:/u,/covert_behavioral_biometrics\s*:/u]) {
-            if (forbidden.test(combined)) throw new Error(`Forbidden behavioral telemetry marker present: ${forbidden}`);
-          }
+          for (const forbidden of [/keystroke_timing\s*:/u,/pause_timing\s*:/u,/cursor_trajectory\s*:/u,/covert_behavioral_biometrics\s*:/u]) if (forbidden.test(combined)) throw new Error(`Forbidden behavioral telemetry marker present: ${forbidden}`);
           const serverless = files.filter((file) => /^(?:api|functions|netlify\/functions|vercel\/functions)\//u.test(file));
           if (serverless.length) throw new Error(`Stage 3 added serverless surfaces:\n${serverless.join('\n')}`);
           console.log(`Stage 3 hygiene passed across ${files.length} changed paths.`);
@@ -149,13 +149,10 @@ jobs:
             file === 'app/safe-harbor/app/main.js' || file === 'app/safe-harbor/index.html' ||
             file === 'app/safe-harbor/renderers/10_TD613_PUA_Badge_Provenance_Attestation_Renderer_v7_2_1.user.js' ||
             file === 'package.json' || file === 'docs/safe-harbor/README.md' ||
-            file === 'docs/safe-harbor/gen3-implementation-ledger.md' ||
-            file === 'docs/safe-harbor/gen3-stage3-validation-receipt.md' ||
+            file === 'docs/safe-harbor/gen3-implementation-ledger.md' || file === 'docs/safe-harbor/gen3-stage3-validation-receipt.md' ||
             file.startsWith('app/safe-harbor/app/safe-harbor-gen3-presentation-core.js') ||
-            file.startsWith('app/safe-harbor/app/safe-harbor-temporal-bloom.') ||
-            file.startsWith('tests/safe-harbor-gen3-stage3-') ||
-            file === 'scripts/apply-safe-harbor-gen3-stage3-integration.mjs' ||
-            file === 'scripts/apply-safe-harbor-gen3-stage3-docs.mjs'
+            file.startsWith('app/safe-harbor/app/safe-harbor-temporal-bloom.') || file.startsWith('tests/safe-harbor-gen3-stage3-') ||
+            file === 'scripts/apply-safe-harbor-gen3-stage3-integration.mjs' || file === 'scripts/apply-safe-harbor-gen3-stage3-docs.mjs'
           );
           if (!allowed) throw new Error(`Unexpected staged Stage 3 path:\n${staged.join('\n')}`);
           console.log(`Stage 3 staged-path allowlist passed for ${staged.length} paths.`);
