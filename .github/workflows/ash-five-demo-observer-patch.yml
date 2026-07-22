@@ -1,0 +1,127 @@
+name: Ash Five Demo Observer Patch
+
+on:
+  push:
+    branches: [agent/ash-five-demo-production-observer]
+    paths: [.github/ash-five-demo-observer.trigger]
+
+permissions:
+  contents: write
+
+jobs:
+  patch:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: agent/ash-five-demo-production-observer
+          fetch-depth: 0
+      - name: Reorder deployed convergence proof
+        run: |
+          python - <<'PY'
+          from pathlib import Path
+
+          path = Path('scripts/run-ash-constitutional-convergence-probe.mjs')
+          source = path.read_text()
+
+          source = source.replace(
+          """    && document.documentElement.dataset.ashConvergence?.includes('constitutional-convergence')
+              && window.__td613AshProfileDemos?.profiles?.includes('political_campaign')
+              && window.__td613AshDemoEntryConvergence?.version, null, { timeout: 60000 });""",
+          """    && document.documentElement.dataset.ashConvergence?.includes('constitutional-convergence')
+              && document.getElementById('newProfile')
+              && document.getElementById('startDemo'), null, { timeout: 60000 });""")
+
+          source = source.replace(
+          """    profile_demo_registry_ready: true,
+              demo_entry_convergence_ready: true,
+              demo_click_deferred_until_ready: true,""",
+          """    profile_control_ready: true,
+              profile_demo_registry_deferred_until_selection: true,
+              demo_entry_convergence_deferred_until_case_hydration: true,
+              demo_click_deferred_until_ready: true,""")
+
+          source = source.replace(
+          """  await page.waitForFunction(() => !document.getElementById('startDemo')?.disabled
+              && /Political Campaign/.test(document.getElementById('startDemo')?.textContent || ''), null, { timeout: 60000 });""",
+          """  await page.waitForFunction(() => window.__td613AshProfileDemos?.profiles?.includes('political_campaign')
+              && !document.getElementById('startDemo')?.disabled
+              && /Political Campaign/.test(document.getElementById('startDemo')?.textContent || ''), null, { timeout: 60000 });
+            report.observations.boot_readiness.profile_demo_registry_ready = true;""")
+
+          source = source.replace(
+          """    const convergence = window.__td613AshDemoEntryConvergence?.current?.() || null;""",
+          """    const convergenceApi = window.__td613AshDemoEntryConvergence || null;
+              const convergence = convergenceApi?.current?.() || null;""")
+
+          source = source.replace(
+          """    return caseId
+              && document.documentElement.dataset.ashDemoEntryReady === 'political_campaign:map'""",
+          """    return caseId
+              && convergenceApi?.version
+              && document.documentElement.dataset.ashDemoEntryReady === 'political_campaign:map'""")
+
+          source = source.replace(
+          """  }, null, { timeout: 60000 });
+            await page.waitForFunction(() => document.documentElement.dataset.ashConvergence?.includes('constitutional-convergence'), null, { timeout: 60000 });`;""",
+          """  }, null, { timeout: 60000 });
+            report.observations.demo_entry_release = {
+              demo_entry_api_ready_after_hydration: true,
+              profile: 'political_campaign',
+              workspace: 'map',
+              posture: 'READY',
+              phase: 'VISIBLE'
+            };
+            await page.waitForFunction(() => document.documentElement.dataset.ashConvergence?.includes('constitutional-convergence'), null, { timeout: 60000 });`;""")
+
+          source = source.replace(
+          """if (!runtime.includes('demo_entry_convergence_ready: true')
+            || !runtime.includes('demo_click_deferred_until_ready: true')""",
+          """if (!runtime.includes('demo_entry_convergence_deferred_until_case_hydration: true')
+            || !runtime.includes('demo_entry_api_ready_after_hydration: true')
+            || !runtime.includes('demo_click_deferred_until_ready: true')""")
+
+          source = source.replace(
+          """  || !runtime.includes("convergence?.phase === 'VISIBLE'")
+            || !runtime.includes('window.__td613AshProfileDemos?.profiles?.includes')) {
+            throw new Error('Convergence observer explicit profile and entry-readiness gate was not materialized.');""",
+          """  || !runtime.includes("convergence?.phase === 'VISIBLE'")
+            || !runtime.includes('convergenceApi?.version')
+            || !runtime.includes('window.__td613AshProfileDemos?.profiles?.includes')) {
+            throw new Error('Convergence observer explicit profile and deferred entry-readiness gate was not materialized.');""")
+
+          required = [
+            'profile_demo_registry_deferred_until_selection: true',
+            'demo_entry_convergence_deferred_until_case_hydration: true',
+            'demo_entry_api_ready_after_hydration: true',
+            'convergenceApi?.version',
+            'explicit profile and deferred entry-readiness gate was not materialized'
+          ]
+          missing = [item for item in required if item not in source]
+          if missing:
+            raise SystemExit(f'Observer patch incomplete: {missing}')
+          path.write_text(source)
+
+          test = Path('tests/ash-guided-observer-contract.test.mjs')
+          body = test.read_text()
+          body = body.replace(
+            "assert.match(convergenceRunner, /profile_selected_explicitly: true/);",
+            "assert.match(convergenceRunner, /profile_selected_explicitly: true/);\nassert.match(convergenceRunner, /profile_demo_registry_deferred_until_selection: true/);\nassert.match(convergenceRunner, /demo_entry_convergence_deferred_until_case_hydration: true/);\nassert.match(convergenceRunner, /demo_entry_api_ready_after_hydration: true/);\nassert.match(convergenceRunner, /convergenceApi\\?\\.version/);"
+          )
+          body = body.replace(
+            "assert.match(convergenceRunner, /explicit profile readiness gate was not materialized/);",
+            "assert.match(convergenceRunner, /explicit profile and deferred entry-readiness gate was not materialized/);"
+          )
+          test.write_text(body)
+          PY
+          node --check scripts/run-ash-constitutional-convergence-probe.mjs
+          node tests/ash-guided-observer-contract.test.mjs
+      - name: Remove one-use patch and commit durable files
+        run: |
+          rm -f .github/ash-five-demo-observer.trigger
+          rm -f .github/workflows/ash-five-demo-observer-patch.yml
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add scripts/run-ash-constitutional-convergence-probe.mjs tests/ash-guided-observer-contract.test.mjs .github/ash-five-demo-observer.trigger .github/workflows/ash-five-demo-observer-patch.yml
+          git commit -m 'fix: defer demo entry convergence until case hydration'
+          git push origin HEAD:agent/ash-five-demo-production-observer
