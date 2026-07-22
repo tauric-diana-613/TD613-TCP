@@ -9,6 +9,16 @@
   <meta name="robots" content="noindex">
   <link rel="canonical" href="/dome-world/ash-threshold.html">
   <title>TD613 Ash Keep</title>
+  <script>
+    (()=>{try{
+      const url=new URL(location.href);
+      let changed=false;
+      for(const key of ['ash_epoch','ash_recovered','asset_epoch','cache_nonce']){
+        if(url.searchParams.has(key)){url.searchParams.delete(key);changed=true}
+      }
+      if(changed)history.replaceState(null,'',url.pathname+url.search+url.hash);
+    }catch{}})();
+  </script>
   <style>
     :root{color-scheme:dark;font-family:Inter,system-ui,sans-serif;background:#020806;color:#fff8da}
     *{box-sizing:border-box}html,body{min-height:100%;margin:0}body{display:grid;place-items:center;padding:24px;background:radial-gradient(circle at 50% 42%,rgba(118,234,212,.08),transparent 28%),#020806}main{width:min(560px,100%);padding:28px;border:1px solid rgba(118,234,212,.24);background:#071a15;clip-path:polygon(12px 0,100% 0,100% calc(100% - 12px),calc(100% - 12px) 100%,0 100%,0 12px)}p{color:#9ab4aa;line-height:1.6}a{color:#76ead4}
