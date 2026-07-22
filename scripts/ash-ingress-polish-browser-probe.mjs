@@ -20,9 +20,19 @@ page.on('pageerror', error => errors.push(error.message));
 page.on('console', message => { if (message.type() === 'error') errors.push(message.text()); });
 page.on('response', response => { if (response.status() >= 400 && !/favicon\.ico/.test(response.url())) httpErrors.push(`${response.status()} ${response.url()}`); });
 
-const report = { schema:'td613.ash.ingress-polish-browser/v0.1', browser:browserName, status:'RUNNING', errors, http_errors:httpErrors, observations:{} };
+async function openKeep() {
+  const target = `${base}/dome-world/ash-keep.html?presentation=aia&nonce=${Date.now()}`;
+  try {
+    await page.goto(target, { waitUntil:'domcontentloaded' });
+  } catch (error) {
+    if (!/NS_BINDING_ABORTED|ERR_ABORTED/i.test(String(error?.message || error))) throw error;
+    await page.waitForLoadState('domcontentloaded').catch(() => {});
+  }
+}
+
+const report = { schema:'td613.ash.ingress-polish-browser/v0.2-navigation-aware', browser:browserName, status:'RUNNING', errors, http_errors:httpErrors, observations:{} };
 try {
-  await page.goto(`${base}/dome-world/ash-keep.html?presentation=aia&nonce=${Date.now()}`, { waitUntil:'domcontentloaded' });
+  await openKeep();
   await page.evaluate(async () => {
     localStorage.clear();
     sessionStorage.clear();
@@ -31,7 +41,7 @@ try {
       request.onsuccess = request.onerror = request.onblocked = () => resolve();
     });
   });
-  await page.goto(`${base}/dome-world/ash-keep.html?presentation=aia&nonce=${Date.now()}`, { waitUntil:'domcontentloaded' });
+  await openKeep();
   await page.waitForFunction(() => window.__td613AshPostIngressMotionRestoration?.version
     && window.__td613AshFlowcoreIngressPortal?.version
     && document.documentElement.dataset.ashCompositionStable
