@@ -32,8 +32,8 @@ import './ash-ingress-copy-spacing.js?v=20260721-flowcore-live-field-v1';
 import './ash-ui-ux-rescue.js?v=20260721-legal-demo-ux-v1';
 // Live Flow-Core interprets the existing explicit lesson clock; it owns no Ash action or ambient scheduler.
 import './ash-flowcore-pedagogy-field.js?v=20260721-flowcore-live-field-v1';
-// One visible field portals between clean ingress and exact work; the hidden proxy carries state only.
-import './ash-flowcore-ingress-portal.js?v=20260721-flowcore-live-field-v1';
+// AIA receives one visible Flow-Core field; explicit legacy rollback bypasses the portal entirely.
+import './ash-flowcore-ingress-portal-loader.js?v=20260721-flowcore-live-field-v2';
 import './ash-composition-receipt-compatibility.js?v=20260721-legal-demo-ux-v1';
 import './ash-demo-entry-convergence.js?v=20260721-legal-demo-ux-v1';
 import './ash-demo-pedagogy-routebar.js?v=20260721-legal-demo-ux-v1';
