@@ -10,7 +10,8 @@ assert.match(repair, /td613\.ash\.reviewability\/v0\.1-native-scroll-live-setup-
 assert.match(repair, /const guardedScrollTo = \(\.\.\.args\) =>/);
 assert.match(repair, /BACKGROUND_SCROLL_HELD/);
 assert.match(repair, /viewportOwnedByUser && now\(\) > gestureDeadline/);
-assert.match(repair, /addEventListener\('wheel',[\s\S]*?USER_/);
+assert.match(repair, /function markManualViewportOwnership\(reason\)/);
+assert.match(repair, /addEventListener\('wheel'/);
 assert.match(repair, /addEventListener\('touchmove'/);
 assert.match(repair, /DELIBERATE_GESTURE/);
 assert.match(repair, /claimViewport:/);
