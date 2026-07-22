@@ -333,11 +333,19 @@ const report = {
 };
 let terminal = null;
 const browser = await browserType.launch({ headless:true });
+const runPhase = async (label, operation, timeoutMs = 180000) => {
+  report.phase = label;
+  return Promise.race([
+    operation(),
+    new Promise((_, reject) => setTimeout(() => reject(new Error(`${label} exceeded ${timeoutMs}ms.`)), timeoutMs))
+  ]);
+};
 try {
-  await runFresh(browser, { name:'desktop', viewport:{ width:1440, height:900 }, mobile:false }, report);
-  await runFresh(browser, { name:'mobile', viewport:{ width:390, height:844 }, mobile:browserName === 'webkit' }, report);
-  if (!productionObservation) await runStale(browser, report);
+  await runPhase('desktop fresh journey', () => runFresh(browser, { name:'desktop', viewport:{ width:1440, height:900 }, mobile:false }, report));
+  await runPhase('mobile fresh journey', () => runFresh(browser, { name:'mobile', viewport:{ width:390, height:844 }, mobile:browserName === 'webkit' }, report));
+  if (!productionObservation) await runPhase('stale-client recovery journey', () => runStale(browser, report));
   assert(report.console_errors.length === 0 && report.page_errors.length === 0 && report.http_errors.length === 0 && report.external_requests.length === 0 && report.non_read_requests.length === 0, `Observer recorded errors: ${JSON.stringify(report)}`);
+  report.phase = 'complete';
   report.status = 'PASS';
 } catch (error) {
   terminal = error;

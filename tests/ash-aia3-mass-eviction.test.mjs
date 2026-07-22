@@ -71,6 +71,15 @@ test('browser witness waits for lifecycle case binding before tutorial baseline'
   assert.doesNotMatch(journeySource, /waitForTimeout\(250\);\n  const before/);
 });
 
+test('every browser journey phase has a Node-level deadline', () => {
+  assert.match(journeySource, /const runPhase = async/);
+  assert.match(journeySource, /timeoutMs = 180000/);
+  assert.match(journeySource, /desktop fresh journey/);
+  assert.match(journeySource, /mobile fresh journey/);
+  assert.match(journeySource, /stale-client recovery journey/);
+  assert.match(journeySource, /report\.phase = label/);
+});
+
 test('browser teardown is bounded after the evidence receipt is written', () => {
   assert.match(journeySource, /Browser close did not finish within 15 seconds/);
   assert.match(journeySource, /report\.browser_close = browserClose/);
