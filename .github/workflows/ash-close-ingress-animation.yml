@@ -5,6 +5,7 @@ on:
     paths:
       - 'app/dome-world/ash-close-ingress-animation-boundary.js'
       - 'app/dome-world/ash-case-close-repair.js'
+      - 'app/dome-world/ash-case-controls-refresh-bridge.js'
       - 'app/dome-world/ash-ingress-layout-hydration.js'
       - 'app/dome-world/ash-keep-aia.js'
       - 'app/dome-world/ash-ui-ux-rescue.js'
@@ -18,6 +19,7 @@ on:
     paths:
       - 'app/dome-world/ash-close-ingress-animation-boundary.js'
       - 'app/dome-world/ash-case-close-repair.js'
+      - 'app/dome-world/ash-case-controls-refresh-bridge.js'
       - 'app/dome-world/ash-ingress-layout-hydration.js'
       - 'app/dome-world/ash-keep-aia.js'
       - 'app/dome-world/ash-ui-ux-rescue.js'
@@ -49,6 +51,8 @@ jobs:
       - run: node tests/ash-keep-close-ingress-animation-boundary.test.mjs
       - run: |
           node --check app/dome-world/ash-close-ingress-animation-boundary.js
+          node --check app/dome-world/ash-case-close-repair.js
+          node --check app/dome-world/ash-case-controls-refresh-bridge.js
           node --check app/dome-world/ash-workspace-bridge.js
           node --check scripts/ash-close-ingress-animation-browser-probe.mjs
 
