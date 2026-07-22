@@ -20,14 +20,14 @@ concurrency:
 
 jobs:
   integrate-test-and-clean:
-    if: github.event.pull_request.head.ref == 'safe-harbor-gen3-stage3-temporal-bloom-provenance-v1'
+    if: startsWith(github.event.pull_request.head.ref, 'safe-harbor-gen3-stage3-temporal-bloom-provenance')
     runs-on: ubuntu-latest
     timeout-minutes: 60
     steps:
       - name: Check out exact Stage 3 head branch
         uses: actions/checkout@v4
         with:
-          ref: safe-harbor-gen3-stage3-temporal-bloom-provenance-v1
+          ref: ${{ github.event.pull_request.head.ref }}
           fetch-depth: 0
 
       - name: Set up Node
@@ -151,4 +151,4 @@ jobs:
           NODE
           git diff --cached --check
           git commit -m 'Implement Safe Harbor Gen3 Stage 3 Temporal Bloom and provenance attestation'
-          git push origin HEAD:safe-harbor-gen3-stage3-temporal-bloom-provenance-v1
+          git push origin HEAD:"${{ github.event.pull_request.head.ref }}"
