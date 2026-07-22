@@ -10,6 +10,7 @@ const aia = read('app/dome-world/ash-keep-aia.js');
 const rescue = read('app/dome-world/ash-ui-ux-rescue.js');
 const compact = read('app/dome-world/ash-keep-aia3-compact.css');
 const browserProbe = read('scripts/ash-close-ingress-animation-browser-probe.mjs');
+const returnProbe = read('scripts/ash-custodian-return-production-probe.mjs');
 
 assert.match(bridge, /ash-close-ingress-animation-boundary\.js\?v=20260722-close-ingress-animation-v1/,
   'Canonical workspace bridge omitted the close/animation boundary.');
@@ -34,6 +35,19 @@ for (const token of [
   "'case-opened', 'profile-demo-hydrated'",
   "POINTER_PRESENT_MUTATION_REPAIR",
   "BOOT_WITH_ACTIVE_POINTER",
+  'function recoveryPresentationRequested()',
+  'function recoveryPresentationMatches()',
+  'function releaseRecoveryPresentation(',
+  "byId('workspace-save')",
+  "byId('ashReturnPanel')",
+  "setData(doc.documentElement, 'ashRecoverySession', 'ISOLATED_CAPSULE_RETURN')",
+  "setData(doc.body, 'ashAiaCaseOpen', 'false')",
+  'setInert(main, false)',
+  'setInert(rail, true)',
+  "td613:ash:isolated-return-restored",
+  'live_case_mutation_authorized:false',
+  'RECOVERY_REQUEST_MUTATION_REPAIR',
+  'RECOVERY_REQUEST_PRECEDES_CLOSED_INGRESS',
   "setData(doc.documentElement, 'ashSessionOpen', 'false')",
   "launch?.classList.remove('hidden')",
   'setInert(main, true)',
@@ -102,7 +116,14 @@ for (const token of [
   'file_count === 0'
 ]) assert.ok(browserProbe.includes(token), `Browser witness omitted ${token}`);
 
-for (const source of [boundary, closeRepair, ingress, aia, rescue, browserProbe]) {
+for (const token of [
+  "open('save')",
+  "page.click('#runCustodianReturn')",
+  'live case untouched',
+  'indexedCaseCount'
+]) assert.ok(returnProbe.includes(token), `Custodian Return witness omitted ${token}`);
+
+for (const source of [boundary, closeRepair, ingress, aia, rescue, browserProbe, returnProbe]) {
   assert.doesNotMatch(source, /prediction_authorized\s*:\s*true/);
   assert.doesNotMatch(source, /automatic_action_authorized\s*:\s*true/);
   assert.doesNotMatch(source, /recipient_transport\s*:\s*true/);
