@@ -27,11 +27,12 @@ await page.addInitScript(() => {
   });
 });
 
-const report = { schema:'td613.ash.flowcore-live-field-browser/v0.3-visible-ingress-portal', browser:browserName, status:'RUNNING', errors, http_errors:httpErrors, observations:{} };
+const report = { schema:'td613.ash.flowcore-live-field-browser/v0.4-visible-dual-motion', browser:browserName, status:'RUNNING', errors, http_errors:httpErrors, observations:{} };
 try {
   await page.goto(`${base}/dome-world/ash-keep.html?presentation=aia&profile=investigation&nonce=${Date.now()}`, { waitUntil:'domcontentloaded' });
   await page.waitForFunction(() => window.__td613AshFlowcoreField?.version
     && window.__td613AshFlowcoreIngressPortal?.version
+    && window.__td613AshPostIngressMotionRestoration?.version
     && window.__td613AshSessionBoundary?.version
     && window.__td613AshIngressCopySpacing?.version
     && document.documentElement.dataset.ashCompositionStable
@@ -49,6 +50,7 @@ try {
     const portal = window.__td613AshFlowcoreIngressPortal?.current?.();
     const visible = document.querySelector('.ash-flowcore-field:not([hidden])');
     return window.__td613AshFlowcoreField?.current?.().artifact_required === false
+      && window.__td613AshPostIngressMotionRestoration?.version
       && window.__td613AshIngressCopySpacing?.measure?.().available
       && document.documentElement.dataset.ashCompositionStable
       && document.getElementById('launch')
@@ -123,24 +125,31 @@ try {
   await page.waitForFunction(() => {
     const portal = window.__td613AshFlowcoreIngressPortal?.current?.();
     const visible = document.querySelector('.ash-flowcore-field:not([hidden])');
+    const motion = window.__td613AshPostIngressMotionRestoration?.current?.();
     return Boolean(localStorage.getItem('td613.ash-keep.current-case'))
       && Boolean(window.__td613AshKeep?.current?.().case_id)
       && !document.getElementById('closeCase')?.disabled
       && portal?.visible_host === 'AIA'
       && portal?.duplicate_visible_fields === 1
       && visible?.closest?.('#ashAiaMembrane')
-      && visible.getBoundingClientRect().height > 260
+      && visible.getBoundingClientRect().height > 400
+      && motion?.canvas_visible
+      && motion?.rail_visible
+      && !motion?.field_clipped
+      && !motion?.rail_clipped
       && document.documentElement.dataset.ashFlowcorePhase === 'NOTICE';
   });
   const caseId = await page.evaluate(() => localStorage.getItem('td613.ash-keep.current-case'));
 
   const arrival = await page.evaluate(() => {
     const field = document.querySelector('.ash-flowcore-field:not([hidden])');
-    const rail = document.querySelector('.ash-ux-motion-track');
+    const rail = document.querySelector('#ashAiaMembrane .ash-ux-motion-track');
+    const canvas = field?.querySelector('.ash-flowcore-field__canvas');
     const style = getComputedStyle(field);
     const portal = window.__td613AshFlowcoreIngressPortal.current();
+    const motion = window.__td613AshPostIngressMotionRestoration.refresh();
     return {
-      visible:style.display !== 'none' && style.visibility !== 'hidden' && Number(style.opacity) > 0 && field.getBoundingClientRect().height > 260,
+      visible:style.display !== 'none' && style.visibility !== 'hidden' && Number(style.opacity) > 0 && field.getBoundingClientRect().height > 400,
       host:portal.visible_host,
       duplicate_visible_fields:portal.duplicate_visible_fields,
       phase:field.dataset.flowcorePhaseName,
@@ -149,6 +158,8 @@ try {
       draft_empty:!(document.getElementById('draftBody')?.value || '').trim(),
       channels:window.__td613AshFlowcoreField.current().channels,
       rail_display:rail ? getComputedStyle(rail).display : 'absent',
+      canvas_display:canvas ? getComputedStyle(canvas).display : 'absent',
+      motion,
       labels:field.textContent,
       svg_description:field.querySelector('desc')?.textContent || ''
     };
@@ -158,7 +169,11 @@ try {
   assert(arrival.phase === 'NOTICE', `Arrival phase drifted: ${arrival.phase}.`);
   assert(arrival.artifact_required === false && arrival.local_file_count === 0 && arrival.draft_empty, 'Flow-Core arrival incorrectly requires an artifact.');
   assert(['glyph','motion','shape','language','inspection'].every(channel => arrival.channels.includes(channel)), `Flow-Core channels incomplete: ${arrival.channels.join(', ')}.`);
-  assert(arrival.rail_display === 'none' || arrival.rail_display === 'absent', `Placeholder dot rail remains visible: ${arrival.rail_display}.`);
+  assert(arrival.rail_display === 'grid', `One-dimensional lesson rail is hidden: ${arrival.rail_display}.`);
+  assert(arrival.canvas_display === 'block', `Flow-Core topology canvas is hidden: ${arrival.canvas_display}.`);
+  assert(arrival.motion.canvas_visible && arrival.motion.rail_visible, `Post-ingress motion layers are not visible: ${JSON.stringify(arrival.motion)}.`);
+  assert(arrival.motion.canvas_height >= 300 && arrival.motion.rail_height >= 40, `Post-ingress motion geometry collapsed: ${JSON.stringify(arrival.motion)}.`);
+  assert(!arrival.motion.field_clipped && !arrival.motion.rail_clipped, `Post-ingress motion is clipped or covered: ${JSON.stringify(arrival.motion)}.`);
   for (const label of ['RAW BYTES DO NOT CROSS','REFERENCE','≠ ARTIFACT','CASE MAP RELATION FIELD']) assert(arrival.labels.includes(label) || arrival.svg_description.includes(label), `Flow-Core field omitted ${label}.`);
   await page.screenshot({ path:path.join(out, `${browserName}-zero-artifact-case-arrival.png`), fullPage:true });
 
@@ -166,13 +181,18 @@ try {
   await page.waitForFunction(() => document.documentElement.dataset.ashFlowcorePhase === 'NAME');
   const activeMotion = await page.evaluate(() => {
     const field = document.querySelector('.ash-flowcore-field:not([hidden])');
+    const rail = document.querySelector('#ashAiaMembrane .ash-ux-motion-track');
     return {
-      animations:field?.getAnimations({ subtree:true }).length || 0,
-      phase:document.documentElement.dataset.ashFlowcorePhase
+      field_animations:field?.getAnimations({ subtree:true }).length || 0,
+      rail_animations:rail?.getAnimations({ subtree:true }).length || 0,
+      phase:document.documentElement.dataset.ashFlowcorePhase,
+      motion:window.__td613AshPostIngressMotionRestoration.current()
     };
   });
   assert(activeMotion.phase === 'NAME', 'Flow-Core relation phase never became visible.');
-  assert(activeMotion.animations > 0, 'Flow-Core relation phase produced no visible finite animation.');
+  assert(activeMotion.field_animations > 0, 'Flow-Core relation phase produced no visible finite animation.');
+  assert(activeMotion.rail_animations > 0, 'One-dimensional lesson rail produced no visible finite animation.');
+  assert(activeMotion.motion.canvas_visible && activeMotion.motion.rail_visible && !activeMotion.motion.field_clipped && !activeMotion.motion.rail_clipped, `Motion layers drifted during playback: ${JSON.stringify(activeMotion.motion)}.`);
   await page.waitForFunction(() => document.documentElement.dataset.ashFlowcorePhase === 'REST', null, { timeout:15_000 });
   const trace = await page.evaluate(() => window.__ashFlowcorePhaseTrace);
   const names = new Set(trace.map(item => item.phase_name));
@@ -182,17 +202,20 @@ try {
   await page.setViewportSize({ width:390, height:844 });
   const mobile = await page.evaluate(() => {
     const field = document.querySelector('.ash-flowcore-field:not([hidden])');
+    const motion = window.__td613AshPostIngressMotionRestoration.refresh();
     return {
       overflow:Math.max(0, document.documentElement.scrollWidth - innerWidth),
       field_width:field?.getBoundingClientRect().width || 0,
       static_count:field?.querySelectorAll('.ash-flowcore-static li').length || 0,
       rest_visible:getComputedStyle(field.querySelector('.ash-flowcore-rest')).opacity !== '0',
+      motion,
       portal:window.__td613AshFlowcoreIngressPortal.current()
     };
   });
   assert(mobile.overflow <= 2, `Mobile Flow-Core overflow: ${mobile.overflow}.`);
   assert(mobile.field_width > 320 && mobile.field_width <= 390, `Mobile field width invalid: ${mobile.field_width}.`);
   assert(mobile.static_count === 5 && mobile.rest_visible, 'Mobile/static Flow-Core parity incomplete.');
+  assert(mobile.motion.canvas_visible && mobile.motion.rail_visible && !mobile.motion.field_clipped && !mobile.motion.rail_clipped, `Mobile motion layers are clipped or hidden: ${JSON.stringify(mobile.motion)}.`);
   assert(mobile.portal.visible_host === 'AIA' && mobile.portal.duplicate_visible_fields === 1, `Mobile AIA portal drifted: ${JSON.stringify(mobile.portal)}.`);
   await page.screenshot({ path:path.join(out, `${browserName}-flowcore-mobile-rest.png`), fullPage:true });
 
