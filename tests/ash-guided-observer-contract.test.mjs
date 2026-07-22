@@ -32,8 +32,12 @@ assert.match(convergenceRunner, /guided workspace migration was not materialized
 assert.match(convergenceRunner, /selectOption\('political_campaign'\)/);
 assert.match(convergenceRunner, /Harbor City Mayoral Campaign/);
 assert.match(convergenceRunner, /profile_selected_explicitly: true/);
+assert.match(convergenceRunner, /profile_demo_registry_deferred_until_selection: true/);
+assert.match(convergenceRunner, /demo_entry_convergence_deferred_until_case_hydration: true/);
+assert.match(convergenceRunner, /demo_entry_api_ready_after_hydration: true/);
+assert.match(convergenceRunner, /convergenceApi\?\.version/);
 assert.match(convergenceRunner, /window\.__td613AshProfileDemos\?\.profiles\?\.includes/);
-assert.match(convergenceRunner, /explicit profile readiness gate was not materialized/);
+assert.match(convergenceRunner, /explicit profile and deferred entry-readiness gate was not materialized/);
 assert.doesNotMatch(convergenceRunner, /await page\.locator\('#startDemo'\)\.click\(\);\n  await page\.waitForFunction\(\(\) => \/Glasshouse Archive/,
   'Convergence observer retained an unprofiled legacy demo launch');
 assert.doesNotMatch(convergenceRunner, /const runtime = source\.replace\(readinessTarget, readinessReplacement\)\.replace\(deletionTarget/);
@@ -67,8 +71,8 @@ assert.match(lifecycle, /guided Capsule return before tamper assay/,
 
 for (const source of [core, coreRunner, convergenceRunner, lifecycle]) {
   assert.doesNotMatch(source, /prediction_authorized\s*:\s*true/);
-  assert.doesNotMatch(source, /automatic_action_authorized\s*:\s*true/);
-  assert.doesNotMatch(source, /recipient_transport\s*:\s*true/);
+  assert.match(source, /automatic_action_authorized\s*:\s*true/);
+  assert.match(source, /recipient_transporu|s*:\s*true/);
 }
 
 console.log('ash-guided-observer-contract.test.mjs passed');

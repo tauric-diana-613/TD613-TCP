@@ -17,30 +17,35 @@ const readinessReplacement = `  await page.goto(keepUrl, { waitUntil: 'domconten
   await page.waitForFunction(() => Boolean(window.__td613AshKeep?.version)
     && typeof window.TD613AshConvergence?.composition === 'function'
     && document.documentElement.dataset.ashConvergence?.includes('constitutional-convergence')
-    && window.__td613AshProfileDemos?.profiles?.includes('political_campaign')
-    && window.__td613AshDemoEntryConvergence?.version, null, { timeout: 60000 });
+    && document.getElementById('newProfile')
+    && document.getElementById('startDemo'), null, { timeout: 60000 });
   report.observations.boot_readiness = {
     keep_core_ready: true,
     convergence_runtime_ready: true,
-    profile_demo_registry_ready: true,
-    demo_entry_convergence_ready: true,
+    profile_control_ready: true,
+    profile_demo_registry_deferred_until_selection: true,
+    demo_entry_convergence_deferred_until_case_hydration: true,
     demo_click_deferred_until_ready: true,
     profile_selected_explicitly: true,
     network_idle_not_required: true,
     presentation_route: 'legacy'
   };
   await page.locator('#newProfile').selectOption('political_campaign');
-  await page.waitForFunction(() => !document.getElementById('startDemo')?.disabled
+  await page.waitForFunction(() => window.__td613AshProfileDemos?.profiles?.includes('political_campaign')
+    && !document.getElementById('startDemo')?.disabled
     && /Political Campaign/.test(document.getElementById('startDemo')?.textContent || ''), null, { timeout: 60000 });
+  report.observations.boot_readiness.profile_demo_registry_ready = true;
   await page.locator('#startDemo').click();
   await page.waitForFunction(() => /Harbor City Mayoral Campaign/i.test(document.getElementById('caseTitle')?.textContent || ''), null, { timeout: 60000 });
   await page.waitForFunction(() => {
     const caseId = localStorage.getItem('td613.ash-keep.current-case');
-    const convergence = window.__td613AshDemoEntryConvergence?.current?.() || null;
+    const convergenceApi = window.__td613AshDemoEntryConvergence || null;
+    const convergence = convergenceApi?.current?.() || null;
     const panel = document.getElementById('workspace-map');
     const style = panel ? getComputedStyle(panel) : null;
     const rect = panel?.getBoundingClientRect();
     return caseId
+      && convergenceApi?.version
       && document.documentElement.dataset.ashDemoEntryReady === 'political_campaign:map'
       && document.documentElement.dataset.ashDemoEntryCase === caseId
       && document.documentElement.dataset.ashDemoEntryHydrating !== 'true'
@@ -55,6 +60,13 @@ const readinessReplacement = `  await page.goto(keepUrl, { waitUntil: 'domconten
       && rect?.width > 0
       && rect?.height > 0;
   }, null, { timeout: 60000 });
+  report.observations.demo_entry_release = {
+    demo_entry_api_ready_after_hydration: true,
+    profile: 'political_campaign',
+    workspace: 'map',
+    posture: 'READY',
+    phase: 'VISIBLE'
+  };
   await page.waitForFunction(() => document.documentElement.dataset.ashConvergence?.includes('constitutional-convergence'), null, { timeout: 60000 });`;
 
 const testWorkspaceTarget = `  await page.locator('[data-workspace="test"]').click();`;
@@ -181,7 +193,8 @@ if (!runtime.includes("ash-keep.html?presentation=legacy")) {
 if (!runtime.includes("authorize('HUSH_CANDIDATE')") || !runtime.includes('decision?.authorized === true')) {
   throw new Error('Convergence observer failed to wait for the actual Hush permission boundary.');
 }
-if (!runtime.includes('demo_entry_convergence_ready: true')
+if (!runtime.includes('demo_entry_convergence_deferred_until_case_hydration: true')
+  || !runtime.includes('demo_entry_api_ready_after_hydration: true')
   || !runtime.includes('demo_click_deferred_until_ready: true')
   || !runtime.includes('profile_selected_explicitly: true')
   || !runtime.includes('network_idle_not_required: true')
@@ -189,13 +202,14 @@ if (!runtime.includes('demo_entry_convergence_ready: true')
   || !runtime.includes('Harbor City Mayoral Campaign')
   || !runtime.includes("ashDemoEntryReady === 'political_campaign:map'")
   || !runtime.includes("convergence?.phase === 'VISIBLE'")
+  || !runtime.includes('convergenceApi?.version')
   || !runtime.includes('window.__td613AshProfileDemos?.profiles?.includes')) {
-  throw new Error('Convergence observer explicit profile and entry-readiness gate was not materialized.');
+  throw new Error('Convergence observer explicit profile and deferred entry-readiness gate was not materialized.');
 }
 if (!runtime.includes("open('test')") || !runtime.includes("open('map')") || runtime.includes("page.locator('[data-workspace=\"test\"]').click()")) {
   throw new Error('Convergence observer guided workspace migration was not materialized.');
 }
-if (!runtime.includes("dataset.ashPremiumWorkspace === 'test'") || !runtime.includes("dataset.ashPremiumWorkspace === 'map'") || !runtime.includes("Number(style?.opacity) > 0")) {
+if (!runtime.includes("dataset.ashPremiumWorkspace === 'test"") || !runtime.includes("dataset.ashPremiumWorkspace === 'map'") || !runtime.includes("Number(style?.opacity) > 0")) {
   throw new Error('Convergence observer visible workspace gates were not materialized.');
 }
 if (!runtime.includes("select.dispatchEvent(new Event('change', { bubbles: true }))") || !runtime.includes('remove.click()')) {
