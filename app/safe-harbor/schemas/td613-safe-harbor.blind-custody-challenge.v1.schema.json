@@ -1,0 +1,62 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "td613.safe-harbor.blind-custody-challenge/v1",
+  "title": "TD613 Safe Harbor Blind Custody Challenge v1",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["schema_version", "research_gate", "precommitment", "profile_construction", "challenge_set", "reveal", "results", "failure_registry", "result_digest", "raw_text_included", "psychological_inference_performed", "demographic_inference_performed", "external_identity_data_consumed", "claim_ceiling"],
+  "properties": {
+    "schema_version": { "const": "td613.safe-harbor.blind-custody-challenge/v1" },
+    "research_gate": { "$ref": "#/$defs/researchGate" },
+    "precommitment": { "type": ["object", "null"] },
+    "profile_construction": { "type": "object" },
+    "challenge_set": { "$ref": "#/$defs/challengeSet" },
+    "reveal": { "type": ["object", "null"] },
+    "results": { "$ref": "#/$defs/results" },
+    "failure_registry": { "type": "array", "items": { "type": "object" } },
+    "result_digest": { "type": "string", "pattern": "^sha256:[0-9a-f]{64}$" },
+    "raw_text_included": { "const": false },
+    "psychological_inference_performed": { "const": false },
+    "demographic_inference_performed": { "const": false },
+    "external_identity_data_consumed": { "const": false },
+    "claim_ceiling": { "type": "string", "minLength": 1 }
+  },
+  "$defs": {
+    "researchGate": {
+      "type": "object",
+      "required": ["status", "baseline_intake_authorized", "production_promotion_authorized", "calibration_triads_completed", "calibration_triads_required", "promotion_blockers"],
+      "properties": {
+        "status": { "const": "research-only-unpromoted" },
+        "baseline_intake_authorized": { "const": false },
+        "production_promotion_authorized": { "const": false },
+        "calibration_triads_required": { "const": 12 },
+        "promotion_blockers": { "type": "array" }
+      }
+    },
+    "challengeSet": {
+      "type": "object",
+      "required": ["genuine_holdout_count", "topic_matched_human_controls", "semantic_paraphrase_controls", "llm_style_transfer_controls", "entrant_register_shift_control", "candidate_order_randomized", "candidate_labels_blinded_during_ranking", "candidate_commitment_digest", "candidate_text_exported"],
+      "properties": {
+        "genuine_holdout_count": { "const": 1 },
+        "topic_matched_human_controls": { "const": 2 },
+        "semantic_paraphrase_controls": { "const": 2 },
+        "llm_style_transfer_controls": { "const": 2 },
+        "entrant_register_shift_control": { "const": 1 },
+        "candidate_order_randomized": { "const": true },
+        "candidate_labels_blinded_during_ranking": { "const": true },
+        "candidate_commitment_digest": { "type": "string", "pattern": "^sha256:[0-9a-f]{64}$" },
+        "candidate_text_exported": { "const": false }
+      }
+    },
+    "results": {
+      "type": "object",
+      "required": ["challenge_result", "complete_blinded_rank_order", "imitation_collision_state", "replay_status"],
+      "properties": {
+        "challenge_result": { "enum": ["SUPPORTED", "INCONCLUSIVE", "FAILED", "CONTAMINATED", "PROMPT-DOMINATED", "IMITATION-COLLISION"] },
+        "complete_blinded_rank_order": { "type": "array" },
+        "imitation_collision_state": { "enum": ["present", "absent"] },
+        "replay_status": { "type": "string" }
+      }
+    }
+  }
+}

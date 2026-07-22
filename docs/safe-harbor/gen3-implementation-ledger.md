@@ -35,7 +35,7 @@ This ledger prevents normative requirements from disappearing between specificat
 | Stage 2 clean-main reconciliation | PR #505 | zero changed files; merged into Stage 2 branch | none |
 | Wave A release gate | PR #507 | merged | exact-source production gate for Stages 1 + 2 |
 | Wave A production deployment | issue #405 | deployed once / observed post-propagation / relocked | source `86cf1af84e69998ae195e53ef64372e35d8c6745` |
-| Research Track R | `safe-harbor-gen3-track-r-blind-custody-stylodynamics` | pending / research-gated | no baseline intake authority |
+| Research Track R | PR #524 successor clean-main branch | implementation complete / research-gated / unpromoted | no baseline intake authority |
 | Stage 3 Temporal Bloom | `safe-harbor-gen3-stage3-temporal-bloom-provenance` | pending | none until Wave B |
 
 ## Validation authority
@@ -153,16 +153,16 @@ All Track R requirements remain `research-gated` until code, nulls, calibration,
 
 | ID | Requirement family | Intended surfaces | Promotion evidence | Status |
 |---|---|---|---|---|
-| R-001 | Deterministic nine-window holdout selection and precommitment | research modules and schema | seeded replay and mutation detection | research-gated |
-| R-002 | Eight blinded candidates and declared controls | challenge-set builder | blinding and provenance tests | research-gated |
-| R-003 | Complete adverse outcome registry | result and failure registry | failure-preservation snapshots | research-gated |
-| R-004 | Verified displacement before recovery | perturbation engine | failed-uptake negative tests | research-gated |
-| R-005 | Recovery, half-life, plasticity, restorative-force, overshoot, hysteresis | restoration receipt | trajectory tests | research-gated |
-| R-006 | Transparent and latent narrative-state lanes | research adapter | model-digest and dependence tests | research-gated |
-| R-007 | Shuffled chronology, prompt, topic, semantic, ablation, and model nulls | null battery | null comparison report | research-gated |
-| R-008 | Mimicry under deformation and critical thresholds | bounded adversarial suite | collision and threshold evidence | research-gated |
-| R-009 | No private-vulnerability targeting or behavioral telemetry | research policy gate | forbidden-input and telemetry tests | research-gated |
-| R-010 | Twelve consented or synthetic-distinct triads before promotion | calibration ledger | calibration receipt | blocked until qualifying corpus exists |
+| R-001 | Deterministic nine-window holdout selection and precommitment | research modules and schema | seeded replay and mutation detection | implemented / research-gated |
+| R-002 | Eight blinded candidates and declared controls | challenge-set builder | blinding and provenance tests | implemented / research-gated |
+| R-003 | Complete adverse outcome registry | result and failure registry | failure-preservation snapshots | implemented / research-gated |
+| R-004 | Verified displacement before recovery | perturbation engine | failed-uptake negative tests | implemented / research-gated |
+| R-005 | Recovery, half-life, plasticity, restorative-force, overshoot, hysteresis | restoration receipt | trajectory tests | implemented / research-gated |
+| R-006 | Transparent and latent narrative-state lanes | research adapter | model-digest and dependence tests | implemented / research-gated |
+| R-007 | Shuffled chronology, prompt, topic, semantic, ablation, and model nulls | null battery | null comparison report | implemented / research-gated |
+| R-008 | Mimicry under deformation and critical thresholds | bounded adversarial suite | collision and threshold evidence | implemented / research-gated |
+| R-009 | No private-vulnerability targeting or behavioral telemetry | research policy gate | forbidden-input and telemetry tests | implemented / research-gated |
+| R-010 | Twelve consented or synthetic-distinct triads before promotion | calibration ledger | calibration receipt | blocked; qualifying calibration corpus not present |
 
 ## Stage 3 traceability matrix
 
