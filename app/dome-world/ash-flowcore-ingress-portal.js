@@ -1,4 +1,4 @@
-export const ASH_FLOWCORE_INGRESS_PORTAL_VERSION = 'td613.ash.flowcore-ingress-portal/v0.5-single-visible-field-hidden-proxy';
+export const ASH_FLOWCORE_INGRESS_PORTAL_VERSION = 'td613.ash.flowcore-ingress-portal/v0.6-unique-play-hidden-proxy';
 
 const host = globalThis.window;
 const doc = globalThis.document;
@@ -121,16 +121,21 @@ function stripDuplicateIds(root) {
   });
 }
 
+function playFlowcoreField() {
+  host.__td613AshFlowcoreField?.setPhase?.(0);
+  host.__td613AshFlowcoreField?.play?.();
+}
+
 function ensurePlayControl(field) {
   const header = field?.querySelector('.ash-flowcore-field__header');
   if (!header || header.querySelector('[data-flowcore-ingress-play]')) return;
   const button = doc.createElement('button');
   button.type = 'button';
   button.className = 'ash-flowcore-field__play';
-  button.dataset.aiaPlay = '';
   button.dataset.flowcoreIngressPlay = 'true';
   button.textContent = 'Play consequence field';
   button.setAttribute('aria-label', 'Play the finite Flow-Core consequence explanation');
+  button.addEventListener('click', playFlowcoreField);
   header.append(button);
 }
 
