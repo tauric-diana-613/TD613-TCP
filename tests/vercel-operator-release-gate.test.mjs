@@ -42,6 +42,19 @@ for (const testFile of [
   'flowcore-runtime-browser-probe.test.mjs'
 ]) assert.match(workflow, new RegExp(testFile.replaceAll('.', '\\.')));
 assert.match(workflow, /flowcore-release-content-probe\.mjs/);
+assert.match(workflow, /npm run test:safe-harbor:gen3:wave-b/);
+assert.match(workflow, /npm run test:safe-harbor:gen3:track-r/);
+assert.match(workflow, /safe-harbor-gen3-wave-b-production-probe-contract\.test\.mjs/);
+assert.match(workflow, /safe-harbor-gen3-wave-b-production-assets\.mjs/);
+assert.match(workflow, /safe-harbor-gen3-wave-b-production-probe\.mjs/);
+assert.match(workflow, /Observe deployed Safe Harbor Gen3 Wave B/);
+assert.match(workflow, /safe-harbor-gen3-wave-b-production-observation\.json/);
+assert.match(workflow, /safe_harbor_gen3_wave_b = PASS/);
+assert.match(workflow, /temporal_bloom_desktop_1440x1000 = PASS/);
+assert.match(workflow, /temporal_bloom_mobile_390x844 = PASS/);
+assert.match(workflow, /provenance_deterministic_svg = PASS/);
+assert.match(workflow, /provenance_imitation_collision_reduction = PASS/);
+assert.match(workflow, /future_safe_harbor_release_authorized = false/);
 assert.match(workflow, /flowcore-runtime-browser-probe\.mjs/);
 assert.match(workflow, /ash-keep-aia3-task-journey-v3\.mjs/);
 assert.match(workflow, /for browser in chromium firefox webkit/);
