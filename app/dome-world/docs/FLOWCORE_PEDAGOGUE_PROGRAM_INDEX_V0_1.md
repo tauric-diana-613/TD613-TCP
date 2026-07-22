@@ -3,8 +3,8 @@
 # Flow-Core Pedagogue Program Index v0.1
 
 **Namespace:** `U+10D613`  
-**Program:** P0 through P10 plus runtime/release closure and Ash whole-instrument recompilation authorship  
-**Status:** IMPLEMENTATION INDEX COMPLETE / BROWSER RUNTIME OBSERVED / ASH WHOLE-INSTRUMENT RECOMPILATION AUTHORED / EMPIRICAL HOLD VISIBLE / HUMAN CLOSURE OPEN
+**Program:** P0 through P10 plus runtime/release closure and Ash whole-instrument recompilation  
+**Status:** IMPLEMENTATION INDEX COMPLETE / BROWSER RUNTIME OBSERVED / ASH RECOMPILATION AUTHORED / A0 BASELINE FROZEN / EMPIRICAL HOLD VISIBLE / HUMAN CLOSURE OPEN
 
 ## Constitutional source set
 
@@ -18,6 +18,8 @@
 8. `FLOWCORE_RUNTIME_RELEASE_CLOSURE_RECEIPT_V0_1.md`
 9. `ASH_KEEP_WHOLE_INSTRUMENT_PEDAGOGICAL_RECOMPILATION_IMPLEMENTATION_PLAN_V0_1.md`
 10. `ASH_KEEP_WHOLE_INSTRUMENT_CHILD_LEGIBLE_AIA_SPEC_V0_1.md`
+11. `ASH_KEEP_A0_BASELINE_PROVENANCE_LEDGER_V0_1.md`
+12. `ASH_KEEP_A0_IMPLEMENTATION_RECEIPT_V0_1.md`
 
 ## Phase receipts
 
@@ -34,6 +36,7 @@
 | P8 | `FLOWCORE_PEDAGOGUE_P8_IMPLEMENTATION_RECEIPT_V0_1.md` | physical water/gravity and thermal ledgers |
 | P9 | `FLOWCORE_PEDAGOGUE_P9_IMPLEMENTATION_RECEIPT_V0_1.md` | adult-first empirical-validation instrument |
 | P10 | `FLOWCORE_PEDAGOGUE_P10_IMPLEMENTATION_RECEIPT_V0_1.md` | promotion state, evidence, feature gate, rollback |
+| Ash A0 | `ASH_KEEP_A0_IMPLEMENTATION_RECEIPT_V0_1.md` | documentation-only baseline freeze, source map, control census, browser-evidence hash manifest, and authority invariant preservation |
 
 ## Engines
 
@@ -70,12 +73,13 @@
 - `.github/workflows/flowcore-runtime-evidence.yml`
 - `.github/workflows/vercel-operator-release.yml`
 - `FLOWCORE_PEDAGOGUE_ROLLBACK_PROCEDURE_V0_1.md`
+- `ASH_KEEP_A0_BASELINE_PROVENANCE_LEDGER_V0_1.md`
 
 ## Ash whole-instrument recompilation extension
 
 The Ash red-pen empirical review established that the current consequence field is locally Flow-Core while much of the surrounding instrument remains organized through pre-Flow-Core forms, internal nomenclature, hidden workflow, weak navigation semantics, dead affordances, and non-anisotropic repetition.
 
-The authored extension therefore governs:
+The authored extension governs:
 
 - stable ingress first paint and canonical URL posture;
 - one workspace-anisotropic consequence field;
@@ -91,15 +95,36 @@ The authored extension therefore governs:
 ```text
 whole-instrument plan: AUTHORED
 whole-instrument normative spec: AUTHORED
-implementation authority: NONE
-runtime mutation: NONE
-main merge authority: NONE
-production deployment authority: NONE
+A0 baseline freeze: IMPLEMENTED / DOCUMENTATION ONLY
+A0 runtime mutation: NONE
+A0 deployment authority: NONE
+next runtime stage: A1 / HELD UNTIL SEPARATE BRANCH AND EXACT-HEAD WITNESSES
 feature gate: REQUIRED / DEFAULT OFF
 adult-first human validation: REQUIRED
 human promotion: REQUIRED
 human closure: OPEN
 ```
+
+## Ash A0 evidence posture
+
+```text
+baseline source commit: 8756e9c81a7016910fb23e1e45906837505c97ed
+latest preserved Ash browser run: 29942795235
+Chromium artifact: 8538925506 / PASS
+Firefox artifact: 8538928425 / PASS
+WebKit artifact: 8538936630 / PASS
+static contract artifact: 8538880332
+principal control census: RECORDED
+command destinations: MAPPED
+five current demos: ENUMERATED
+Archive demo: HELD
+normalized first-paint timing: HELD FOR A1
+normalized navigation timing: HELD FOR A4
+physical-device closure: HUMAN-HELD
+binary artifact retention beyond 2026-09-05: OPEN
+```
+
+A0 records the exact downloaded artifact digests and extracted file SHA-256 hashes. It does not convert workflow success into human comprehension evidence or production promotion.
 
 ## Current honest promotion posture
 
@@ -127,7 +152,7 @@ human closure required: true
 closure: OPEN
 ```
 
-`HARDENED` remains the correct promotion state because the state machine requires the held human adult empirical gate before `RUNTIME_DEMONSTRATED`. Observed browser evidence does not substitute for human evidence. The new whole-instrument authorship records operator-observed route-burden failures and prescribes a future recompilation; it does not retroactively promote the current façade or count authored requirements as implemented behavior.
+`HARDENED` remains the correct promotion state because the state machine requires the held human adult empirical gate before `RUNTIME_DEMONSTRATED`. Observed browser evidence does not substitute for human evidence. A0 freezes the current façade and its known burden before future runtime recompilation; it does not count authored requirements as implemented behavior.
 
 ## Stable constitutional boundary
 
