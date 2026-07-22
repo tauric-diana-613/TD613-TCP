@@ -112,7 +112,8 @@ assert.equal(svgA, svgB, 'same metadata must produce deterministic SVG bytes');
 assert.match(svgA, /TD613 · U\+10D613/u);
 assert.match(svgA, /AI IMITATION COLLISION: ABSENT/u);
 assert.match(svgA, /INDEPENDENT IDENTITY ADJUDICATION: NOT CLAIMED/u);
-assert.doesNotMatch(svgA, /raw_text/u);
+assert.match(svgA, /&quot;raw_text_included&quot;:false/u, 'SVG metadata must attest that raw text is excluded');
+assert.doesNotMatch(svgA, /&quot;(?:raw_text|source_text|entrant_text|window_text|prompt_text)&quot;\s*:/u, 'SVG metadata must not contain raw entrant-text payload fields');
 
 const unsignedPresentation = buildProvenancePresentation({
   ...packetSummary,
