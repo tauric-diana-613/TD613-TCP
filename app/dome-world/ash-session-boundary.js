@@ -1,4 +1,4 @@
-export const ASH_SESSION_BOUNDARY_VERSION = 'td613.ash.session-boundary/v0.1-pointer-governs-open-session';
+export const ASH_SESSION_BOUNDARY_VERSION = 'td613.ash.session-boundary/v0.2-pointer-governs-case-recovery-stays-open';
 
 const host = globalThis.window;
 const doc = globalThis.document;
@@ -6,6 +6,7 @@ const POINTER_KEY = 'td613.ash-keep.current-case';
 const SESSION_EPOCH_KEY = 'td613.ash.session.epoch';
 let installed = false;
 let originalCore = null;
+let recoveryObserver = null;
 
 function pointer() {
   try { return host.localStorage.getItem(POINTER_KEY); }
@@ -24,11 +25,25 @@ function governedCurrent() {
   return Object.freeze({ case_id:activePointer, case_map_digest:null, route_memory_digest:null });
 }
 
-function exactWork(open) {
+function capsuleRecoveryOpen() {
+  if (pointer()) return false;
+  const workspace = doc.getElementById('workspace-save');
+  const panel = doc.getElementById('ashReturnPanel');
+  const run = doc.getElementById('runCustodianReturn');
+  if (!workspace?.classList.contains('active') || !panel || !run) return false;
+  const style = host.getComputedStyle?.(run);
+  return !run.disabled
+    && style?.display !== 'none'
+    && style?.visibility !== 'hidden'
+    && Number(style?.opacity ?? 1) > 0;
+}
+
+function exactWork(caseOpen, recoveryOpen) {
   const main = doc.querySelector('body > main');
   const rail = doc.querySelector('body > .workspace-rail');
   if (!main || !rail) return;
-  if (open) {
+  const interactive = caseOpen || recoveryOpen;
+  if (interactive) {
     main.removeAttribute('inert');
     main.removeAttribute('aria-hidden');
     rail.removeAttribute('inert');
@@ -44,27 +59,32 @@ function exactWork(open) {
 function reconcile(reason = 'OBSERVED') {
   const activePointer = pointer();
   const open = Boolean(activePointer);
+  const recoveryOpen = capsuleRecoveryOpen();
   doc.documentElement.dataset.ashSessionOpen = String(open);
+  doc.documentElement.dataset.ashCapsuleRecoveryOpen = String(recoveryOpen);
   doc.body.dataset.ashAiaCaseOpen = String(open);
+  doc.body.dataset.ashCapsuleRecoveryOpen = String(recoveryOpen);
   if (open) {
     doc.documentElement.classList.add('ash-has-current-case');
   } else {
     doc.documentElement.classList.remove('ash-has-current-case');
     try { host.localStorage.removeItem(SESSION_EPOCH_KEY); } catch {}
-    const launch = doc.getElementById('launch');
-    launch?.classList.remove('hidden');
-    launch?.scrollTo?.({ top:0, behavior:'auto' });
-    doc.querySelector('#launch .launch-panel')?.scrollTo?.({ top:0, behavior:'auto' });
+    if (!recoveryOpen) {
+      const launch = doc.getElementById('launch');
+      launch?.classList.remove('hidden');
+      launch?.scrollTo?.({ top:0, behavior:'auto' });
+      doc.querySelector('#launch .launch-panel')?.scrollTo?.({ top:0, behavior:'auto' });
+    }
   }
-  exactWork(open);
+  exactWork(open, recoveryOpen);
   host.__td613AshAIAIngress?.refresh?.();
   host.__td613AshAia3Composition?.refresh?.();
   host.__td613AshFlowcoreField?.refresh?.();
   doc.documentElement.dataset.ashSessionBoundaryReason = reason;
   host.dispatchEvent(new CustomEvent('td613:ash:session-boundary-reconciled', {
-    detail:{ version:ASH_SESSION_BOUNDARY_VERSION, open, case_id:activePointer, reason }
+    detail:{ version:ASH_SESSION_BOUNDARY_VERSION, open, capsule_recovery_open:recoveryOpen, case_id:activePointer, reason }
   }));
-  return Object.freeze({ open, case_id:activePointer, reason });
+  return Object.freeze({ open, capsule_recovery_open:recoveryOpen, case_id:activePointer, reason });
 }
 
 function installFacade(core) {
@@ -84,10 +104,26 @@ function installFacade(core) {
     current:governedCurrent,
     reconcile,
     pointer,
+    capsuleRecoveryOpen,
     originalCore:() => originalCore
   });
   reconcile('INSTALL');
   return true;
+}
+
+function installRecoveryObserver() {
+  const workspace = doc.getElementById('workspace-save');
+  if (!workspace || recoveryObserver) return;
+  recoveryObserver = new MutationObserver(records => {
+    if (!records.some(record => record.type === 'childList' || record.attributeName === 'class' || record.attributeName === 'hidden')) return;
+    queueMicrotask(() => reconcile('RECOVERY_WORKSPACE_POSTURE_CHANGED'));
+  });
+  recoveryObserver.observe(workspace, {
+    childList:true,
+    subtree:true,
+    attributes:true,
+    attributeFilter:['class','hidden']
+  });
 }
 
 async function boot() {
@@ -103,9 +139,15 @@ async function boot() {
     console.error('Ash session boundary held: canonical core unavailable.');
     return;
   }
-  for (const type of ['case-opened','case-created','profile-demo-hydrated','capsule-opened']) {
+  installRecoveryObserver();
+  for (const type of ['case-opened','case-created','profile-demo-hydrated']) {
     host.addEventListener(`td613:ash:${type}`, () => queueMicrotask(() => reconcile(type.toUpperCase())));
   }
+  host.addEventListener('td613:ash:capsule-opened', () => {
+    queueMicrotask(() => reconcile('CAPSULE_OPENED'));
+    host.setTimeout(() => reconcile('CAPSULE_OPENED_SETTLED'), 80);
+  });
+  host.addEventListener('td613:ash:custodian-return', () => queueMicrotask(() => reconcile('CUSTODIAN_RETURN')));
   host.addEventListener('td613:ash:case-closed', () => {
     queueMicrotask(() => reconcile('CASE_CLOSED'));
     host.setTimeout(() => reconcile('CASE_CLOSED_SETTLED'), 80);
