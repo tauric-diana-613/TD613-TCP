@@ -1,4 +1,4 @@
-export const ASH_CLOSE_INGRESS_ANIMATION_BOUNDARY_VERSION = 'td613.ash.close-ingress-animation-boundary/v0.1-pointer-authoritative';
+export const ASH_CLOSE_INGRESS_ANIMATION_BOUNDARY_VERSION = 'td613.ash.close-ingress-animation-boundary/v0.2-pointer-authoritative-core-view';
 
 const host = globalThis.window;
 const doc = globalThis.document;
@@ -13,6 +13,21 @@ const byId = id => doc?.getElementById(id);
 function activeCasePointer() {
   try { return host?.localStorage?.getItem?.(POINTER_KEY) || null; }
   catch { return null; }
+}
+
+function installPointerAuthoritativeCoreView() {
+  const core = host?.__td613AshKeep;
+  if (!core || core.pointer_authoritative_session === true || typeof core.current !== 'function') return Boolean(core?.pointer_authoritative_session);
+  const current = core.current.bind(core);
+  const refresh = typeof core.refresh === 'function' ? core.refresh.bind(core) : null;
+  host.__td613AshKeep = Object.freeze({
+    ...core,
+    pointer_authoritative_session:true,
+    current:() => activeCasePointer() ? current() : Object.freeze({ case_id:null, case_map_digest:null, route_memory_digest:null }),
+    refresh:async () => activeCasePointer() && refresh ? refresh() : null
+  });
+  doc.documentElement.dataset.ashPointerAuthoritativeSession = 'true';
+  return true;
 }
 
 function setAttribute(node, name, value) {
@@ -60,6 +75,7 @@ function enforceClosedPresentation(reason = 'SESSION_POINTER_CLEARED') {
   if (!doc?.documentElement || activeCasePointer() || enforcing) return false;
   enforcing = true;
   try {
+    installPointerAuthoritativeCoreView();
     const launch = byId('launch');
     const main = doc.querySelector('body > main');
     const rail = doc.querySelector('body > .workspace-rail');
@@ -133,11 +149,13 @@ function installObserver() {
 export function installAshCloseIngressAnimationBoundary() {
   if (!host || !doc?.body || host.__td613AshCloseIngressAnimationBoundary) return false;
   installStyles();
+  installPointerAuthoritativeCoreView();
   ensureAnimationAffordance();
   installObserver();
 
-  for (const type of ['aia-ready', 'aia3-ready', 'composition-stable', 'case-closed']) {
+  for (const type of ['core-ready', 'aia-ready', 'aia3-ready', 'composition-stable', 'case-closed']) {
     host.addEventListener(`td613:ash:${type}`, () => {
+      if (type === 'core-ready') installPointerAuthoritativeCoreView();
       ensureAnimationAffordance();
       if (type === 'case-closed') settleClosedPresentation('CASE_CLOSED_EVENT');
     });
@@ -149,6 +167,7 @@ export function installAshCloseIngressAnimationBoundary() {
     version:ASH_CLOSE_INGRESS_ANIMATION_BOUNDARY_VERSION,
     enforce:reason => enforceClosedPresentation(reason || 'EXPLICIT_ENFORCEMENT'),
     refresh:() => {
+      installPointerAuthoritativeCoreView();
       ensureAnimationAffordance();
       return activeCasePointer() ? false : enforceClosedPresentation('EXPLICIT_REFRESH');
     },
@@ -158,7 +177,8 @@ export function installAshCloseIngressAnimationBoundary() {
       launch_visible:Boolean(byId('launch') && getComputedStyle(byId('launch')).display !== 'none' && !byId('launch').classList.contains('hidden')),
       animation_artifact_required:false,
       reduced_motion:REDUCED(),
-      explanation_presentation:doc.documentElement.dataset.ashExplanationPresentation || null
+      explanation_presentation:doc.documentElement.dataset.ashExplanationPresentation || null,
+      core_pointer_authoritative:Boolean(host.__td613AshKeep?.pointer_authoritative_session)
     })
   });
   doc.documentElement.dataset.ashCloseIngressAnimationBoundary = ASH_CLOSE_INGRESS_ANIMATION_BOUNDARY_VERSION;
