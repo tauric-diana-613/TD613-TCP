@@ -1,4 +1,4 @@
-export const ASH_CLOSE_INGRESS_ANIMATION_BOUNDARY_VERSION = 'td613.ash.close-ingress-animation-boundary/v0.4-coherent-closed-ingress';
+export const ASH_CLOSE_INGRESS_ANIMATION_BOUNDARY_VERSION = 'td613.ash.close-ingress-animation-boundary/v0.5-ordered-ingress-copy';
 
 const host = globalThis.window;
 const doc = globalThis.document;
@@ -201,9 +201,14 @@ function installStyles() {
   style.textContent = `
     .ash-explanation-availability{margin:5px 0 8px;color:var(--aia-mint,var(--mint,#76ead4));font:700 .58rem/1.45 var(--mono,ui-monospace,monospace);letter-spacing:.02em}
     html[data-ash-session-open="false"] #launch.launch:not(.hidden){display:flex!important}
+    html[data-ash-session-open="false"] #launch .launch-panel{grid-auto-flow:row!important;grid-auto-rows:max-content!important;align-content:start!important}
     html[data-ash-session-open="false"] #launch .launch-panel>*{position:relative!important;inset:auto!important;transform:none!important}
+    html[data-ash-session-open="false"] #launch .launch-panel>h2,
+    html[data-ash-session-open="false"] #launch .launch-panel>p,
+    html[data-ash-session-open="false"] #launch .launch-panel>[role="note"]{grid-column:1/-1!important;grid-row:auto!important;align-self:start!important}
     html[data-ash-session-open="false"] #launch .launch-panel>p,
     html[data-ash-session-open="false"] #launch .launch-panel>[role="note"]{display:block!important;margin:8px 0 14px!important;line-height:1.55!important;max-width:680px!important}
+    html[data-ash-session-open="false"] #capsuleRecoveryLaunchDescription{position:static!important;grid-column:1/-1!important;grid-row:auto!important;align-self:start!important;margin:0 0 14px!important;max-width:680px!important;line-height:1.55!important}
     @media(max-width:760px){.ash-explanation-availability{font-size:.53rem;margin:4px 0 6px}}
   `;
   doc.head.append(style);
