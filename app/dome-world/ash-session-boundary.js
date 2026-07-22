@@ -61,14 +61,17 @@ function exactWork(caseOpen, recoveryOpen) {
   if (interactive) {
     main.removeAttribute('inert');
     main.removeAttribute('aria-hidden');
+  } else {
+    main.setAttribute('inert','');
+    main.setAttribute('aria-hidden','true');
+  }
+  if (caseOpen) {
     rail.removeAttribute('inert');
     rail.removeAttribute('aria-hidden');
-    return;
+  } else {
+    rail.setAttribute('inert','');
+    rail.setAttribute('aria-hidden','true');
   }
-  main.setAttribute('inert','');
-  main.setAttribute('aria-hidden','true');
-  rail.setAttribute('inert','');
-  rail.setAttribute('aria-hidden','true');
 }
 
 function reconcile(reason = 'OBSERVED') {
