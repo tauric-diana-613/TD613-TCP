@@ -4,9 +4,11 @@
 
 𝌋‌ TD613 · Tauric Diana 613
 
-**Receipt state:** FINAL VALIDATION RE-RUN REQUESTED  
+**Receipt state:** VALIDATION PASSED / FEATURE HEAD FREEZE REQUESTED  
 **Planning authority:** PR #483  
 **Implementation PR:** PR #492  
+**Validated implementation head:** `744334618c292afa83f7ca7fcc39eac6c0a8119a`  
+**Final receipt commit:** validated by the same read-only gate before merge  
 **Production effect:** none; Wave A remains gated on Stage 2  
 **Serverless functions added:** 0
 
@@ -36,7 +38,7 @@ The implementation preserves the existing SH3 fingerprint and credential by atta
 
 The entrant binding contains the final packet hash. It therefore remains a declared post-hash overlay. The packet-specific countersignature timestamp also remains outside the native hash preimage. Those exclusions prevent circular self-reference while leaving the evidence contract and stable provenance chronology hash-covered.
 
-## Prior integration evidence
+## Integration evidence
 
 GitHub Actions run `29953623664` completed successfully at tested Stage 1 integration head `c64e63cc38216555aae8cc30c65b0a4db4ca9fcb`.
 
@@ -50,34 +52,34 @@ npm run test:safe-harbor:current
 
 That run also removed the branch-local integration script and abandoned push-trigger workflow before committing the tested integration.
 
-## Amended final validation
+## Final validation evidence
 
-The amended head adds:
+GitHub Actions run `29954443041` completed successfully at implementation head `744334618c292afa83f7ca7fcc39eac6c0a8119a`.
 
-```text
-node tests/safe-harbor-gen3-stage1-report-contract.test.mjs
-node tests/safe-harbor-gen3-stage1-schema-contract.test.mjs
-```
-
-The final gate also repeats:
+Every final gate step passed:
 
 ```text
 node tests/safe-harbor-gen3-stage1-evidence-contract.test.mjs
+node tests/safe-harbor-gen3-stage1-report-contract.test.mjs
+node tests/safe-harbor-gen3-stage1-schema-contract.test.mjs
 npm run test:safe-harbor:phase9.1c
 npm run test:safe-harbor:current
 ```
 
-Run `29954156333` passed every substantive Stage 1, schema, restore, and current-authority test. Its final changed-file SHI scan failed before inspection because the workflow used a shallow clone that lacked the merge base needed for `origin/main...HEAD`.
+The gate also confirmed:
 
-PR #495 repaired only that read-only validator harness by fetching full history. It changed no Stage 1 runtime, schema, fixture, or claim boundary.
-
-The re-run must inspect all changed files for concrete SHIs. Only the unmistakably synthetic fixture below may occur in the changed implementation and test surfaces:
+- no branch-local Stage 1 integration script remained;
+- no abandoned branch-local integration workflow remained;
+- every changed Stage 1 surface passed the concrete-SHI scan;
+- the only concrete SHI admitted in changed implementation and test surfaces was the unmistakably synthetic fixture:
 
 ```text
 TD613-SH-9B07D8B-A1B2C3D4
 ```
 
-A final successful run ID, exact head SHA, and helper-workflow cleanup evidence will be recorded before merge.
+The earlier run `29954156333` passed every substantive Stage 1, schema, restore, and current-authority test. Its final SHI scan failed before inspection because the validator used a shallow clone that lacked the merge base. PR #495 repaired only that read-only harness. Run `29954443041` then passed the corrected scan without changing runtime authority.
+
+This receipt commit introduces no runtime, schema, fixture, or claim-boundary change. The same read-only final validator must pass once more at the receipt-bearing head. After that pass, the feature branch freezes and the validator workflow must be removed from `main` before PR #492 merges.
 
 ## Claim ceiling
 
