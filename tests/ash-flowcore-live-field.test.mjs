@@ -5,6 +5,7 @@ const field = fs.readFileSync('app/dome-world/ash-flowcore-pedagogy-field.js', '
 const css = fs.readFileSync('app/dome-world/ash-flowcore-pedagogy-field.css', 'utf8');
 const portal = fs.readFileSync('app/dome-world/ash-flowcore-ingress-portal.js', 'utf8');
 const portalLoader = fs.readFileSync('app/dome-world/ash-flowcore-ingress-portal-loader.js', 'utf8');
+const restoration = fs.readFileSync('app/dome-world/ash-post-ingress-motion-restoration.js', 'utf8');
 const boundary = fs.readFileSync('app/dome-world/ash-session-boundary.js', 'utf8');
 const ingressSpacing = fs.readFileSync('app/dome-world/ash-ingress-copy-spacing.js', 'utf8');
 const bridge = fs.readFileSync('app/dome-world/ash-workspace-bridge.js', 'utf8');
@@ -25,11 +26,21 @@ assert.doesNotMatch(field, /playing:nextPhase\s*>/);
 assert.doesNotMatch(field, /setInterval\s*\(/);
 assert.doesNotMatch(field, /requestAnimationFrame\s*\(/);
 
-assert.match(css, /\.ash-ux-motion-track\{display:none!important\}/);
+assert.match(css, /\.ash-flowcore-mounted>\.ash-ux-motion-track\{[^}]*display:grid!important/);
+assert.match(css, /\.ash-flowcore-mounted\{[^}]*height:auto!important[^}]*overflow:visible!important/);
+assert.match(css, /\.ash-flowcore-field__canvas\{[^}]*display:block!important[^}]*max-height:none!important/);
+assert.doesNotMatch(css, /\.ash-ux-motion-track\{display:none!important\}/);
 assert.match(css, /data-flowcore-phase="0"/);
 assert.match(css, /data-flowcore-phase="4"/);
 assert.match(css, /prefers-reduced-motion:reduce/);
 assert.doesNotMatch(css, /animation:[^;}]*infinite/);
+
+assert.match(restoration, /v0\.1-visible-dual-motion/);
+assert.match(restoration, /ashPostIngressMotion = receipt\.canvas_visible && receipt\.rail_visible/);
+assert.match(restoration, /field_clipped/);
+assert.match(restoration, /rail_clipped/);
+assert.match(restoration, /\.ash-flowcore-mounted>\.ash-ux-motion-track/);
+assert.doesNotMatch(restoration, /setInterval\s*\(/);
 
 assert.match(portal, /v0\.9-phase-atomic-canonical-play/);
 assert.match(portal, /INGRESS_HOST_ID = 'guidedLaunchPromise'/);
@@ -113,6 +124,7 @@ assert.match(bridge, /ash-session-boundary\.js\?v=20260721-flowcore-live-field-v
 assert.match(bridge, /ash-ingress-copy-spacing\.js\?v=20260721-flowcore-live-field-v1/);
 assert.match(bridge, /ash-flowcore-pedagogy-field\.js\?v=20260721-flowcore-live-field-v1/);
 assert.match(bridge, /ash-flowcore-ingress-portal-loader\.js\?v=20260722-flowcore-observer-hotfix-v3/);
+assert.match(bridge, /ash-post-ingress-motion-restoration\.js\?v=20260722-visible-dual-motion-v1/);
 assert.doesNotMatch(bridge, /import '\.\/ash-flowcore-ingress-portal\.js/);
 
 console.log('ash-flowcore-live-field.test.mjs passed');
