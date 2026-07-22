@@ -1,0 +1,98 @@
+name: Ash Close Ingress and Animation Boundary
+
+on:
+  pull_request:
+    paths:
+      - 'app/dome-world/ash-close-ingress-animation-boundary.js'
+      - 'app/dome-world/ash-case-close-repair.js'
+      - 'app/dome-world/ash-ingress-layout-hydration.js'
+      - 'app/dome-world/ash-keep-aia.js'
+      - 'app/dome-world/ash-ui-ux-rescue.js'
+      - 'app/dome-world/ash-keep-aia3-compact.css'
+      - 'app/dome-world/ash-workspace-bridge.js'
+      - 'tests/ash-keep-close-ingress-animation-boundary.test.mjs'
+      - 'scripts/ash-close-ingress-animation-browser-probe.mjs'
+      - '.github/workflows/ash-close-ingress-animation.yml'
+  push:
+    branches: [main]
+    paths:
+      - 'app/dome-world/ash-close-ingress-animation-boundary.js'
+      - 'app/dome-world/ash-case-close-repair.js'
+      - 'app/dome-world/ash-ingress-layout-hydration.js'
+      - 'app/dome-world/ash-keep-aia.js'
+      - 'app/dome-world/ash-ui-ux-rescue.js'
+      - 'app/dome-world/ash-keep-aia3-compact.css'
+      - 'app/dome-world/ash-workspace-bridge.js'
+      - 'tests/ash-keep-close-ingress-animation-boundary.test.mjs'
+      - 'scripts/ash-close-ingress-animation-browser-probe.mjs'
+      - '.github/workflows/ash-close-ingress-animation.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: ash-close-ingress-animation-${{ github.event.pull_request.number || github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  static-contract:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 24
+          cache: npm
+      - run: npm ci
+      - run: node tests/ash-keep-close-ingress-animation-boundary.test.mjs
+      - run: |
+          node --check app/dome-world/ash-close-ingress-animation-boundary.js
+          node --check app/dome-world/ash-workspace-bridge.js
+          node --check scripts/ash-close-ingress-animation-browser-probe.mjs
+
+  browser-matrix:
+    runs-on: ubuntu-latest
+    timeout-minutes: 60
+    strategy:
+      fail-fast: false
+      matrix:
+        browser: [chromium, firefox, webkit]
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 24
+          cache: npm
+      - run: npm ci
+      - run: npm install --no-save --package-lock=false playwright@1.53.2
+      - run: npx playwright install --with-deps ${{ matrix.browser }}
+      - name: Start bounded local Ash runtime
+        run: |
+          node scripts/ash-keep-local-closure-server.mjs > artifacts-ash-close-ingress-server.log 2>&1 &
+          echo $! > ash-close-ingress-server.pid
+          for attempt in $(seq 1 60); do
+            if curl -fsS http://127.0.0.1:6130/dome-world/ash-keep.html >/dev/null; then exit 0; fi
+            sleep 1
+          done
+          cat artifacts-ash-close-ingress-server.log
+          exit 1
+      - name: Exercise no-upload explanation and Close Case return
+        env:
+          TD613_BROWSER: ${{ matrix.browser }}
+          TD613_BASE_URL: http://127.0.0.1:6130
+          TD613_ARTIFACT_DIR: artifacts/ash-close-ingress-animation-${{ matrix.browser }}
+        run: node scripts/ash-close-ingress-animation-browser-probe.mjs
+      - name: Stop bounded local runtime
+        if: always()
+        run: |
+          if [ -f ash-close-ingress-server.pid ]; then kill $(cat ash-close-ingress-server.pid) || true; fi
+          cat artifacts-ash-close-ingress-server.log || true
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: ash-close-ingress-animation-${{ matrix.browser }}-evidence
+          path: artifacts/ash-close-ingress-animation-${{ matrix.browser }}/
+          if-no-files-found: error
+          retention-days: 30
