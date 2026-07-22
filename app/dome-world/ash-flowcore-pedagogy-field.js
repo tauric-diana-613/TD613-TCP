@@ -1,10 +1,12 @@
 import { renderPedagogueScene, renderPedagogueStaticFrame } from './flowcore-pedagogue-visual.js';
 
-export const ASH_FLOWCORE_FIELD_VERSION = 'td613.ash.flowcore-pedagogy-field/v0.1-consequence-topology';
+export const ASH_FLOWCORE_FIELD_VERSION = 'td613.ash.flowcore-pedagogy-field/v0.2-consequence-topology-syntax-closed';
 
 const host = globalThis.window;
 const doc = globalThis.document;
-const STYLE_URL = '/dome-world/ash-flowcore-pedagogy-field.css?v=20260721-flowcore-live-field-v1';
+const STYLE_URL = '/dome-world/ash-flowcore-pedagogy-field.css?v=20260721-flowcore-live-field-v2';
+const POINTER_KEY = 'td613.ash-keep.current-case';
+
 const PHASES = Object.freeze([
   Object.freeze({ id:'NOTICE', relation:'gathering-and-accumulated-obligation', glyph:'à', consequence:'Notice the local source before any custody claim.', technical:'Visible condition · source remains on this device.' }),
   Object.freeze({ id:'ACT', relation:'created-potential', glyph:'上', consequence:'The boundary blocks raw bytes; only a deliberate metadata posture may approach it.', technical:'Action boundary · raw bytes do not cross.' }),
@@ -14,14 +16,12 @@ const PHASES = Object.freeze([
 ]);
 
 let field = null;
+let phase = 0;
+let lastFrame = null;
+let mounting = false;
 let stageObserver = null;
 let phaseObserver = null;
-let lastFrame = null;
-let phase = 0;
-let played = false;
-let mounting = false;
 
-const byId = id => doc?.getElementById(id);
 const reducedMotion = () => host?.matchMedia?.('(prefers-reduced-motion: reduce)').matches === true;
 
 function ensureStyle() {
@@ -34,30 +34,41 @@ function ensureStyle() {
 }
 
 function lifecycleState() {
-  const current = host?.__td613AshLiveAIA?.current?.()?.lifecycle_state;
-  if (current) return current;
-  try { return JSON.parse(byId('lifecycleReceipt')?.textContent || 'null')?.lifecycle?.state || 'ARRIVAL_UNPERSISTED'; }
-  catch { return 'ARRIVAL_UNPERSISTED'; }
+  const live = host?.__td613AshLiveAIA?.current?.()?.lifecycle_state;
+  if (live) return live;
+  try {
+    return JSON.parse(doc?.getElementById('lifecycleReceipt')?.textContent || 'null')?.lifecycle?.state || 'ARRIVAL_UNPERSISTED';
+  } catch {
+    return 'ARRIVAL_UNPERSISTED';
+  }
 }
 
 function caseOpen() {
-  try { return Boolean(host?.localStorage?.getItem('td613.ash-keep.current-case')); }
+  try { return Boolean(host?.localStorage?.getItem(POINTER_KEY)); }
   catch { return false; }
 }
 
-function sceneFor(nextPhase) {
+function governedScene(nextPhase) {
   const exactState = lifecycleState();
-  const route = host?.__td613AshLiveAIA?.current?.()?.route || 'EXPERIENTIAL';
   const selected = PHASES[nextPhase] || PHASES[0];
+  const route = host?.__td613AshLiveAIA?.current?.()?.route || 'EXPERIENTIAL';
   const sceneId = `ash_flowcore_${exactState.toLowerCase()}`;
+  const missingness = exactState === 'ARRIVAL_UNPERSISTED'
+    ? ['No readiness receipt yet.','No custody reference yet.','No Case Map binding yet.']
+    : [];
   const scene = {
     scene_id:sceneId,
     station_owner:'ASH_KEEP',
     visible_condition:{ plain_language:selected.consequence, source_status:'OBSERVED_PRESENTATION_STATE' },
     causal_structure:{ operator:'ASH_LIFECYCLE_PRESENTATION' },
-    route_topology:{ route, nodes:['local_source','raw_byte_boundary','reference','case_map_relation_field','rest'], edges:['source_to_boundary','metadata_to_reference','reference_to_relation_field'], raw_bytes_cross:false },
+    route_topology:{
+      route,
+      nodes:['local_source','raw_byte_boundary','reference','case_map_relation_field','rest'],
+      edges:['source_to_boundary','metadata_to_reference','reference_to_relation_field'],
+      raw_bytes_cross:false
+    },
     contradictions:[],
-    missingness:exactState === 'ARRIVAL_UNPERSISTED' ? ['No readiness receipt yet.','No custody reference yet.','No Case Map binding yet.'] : [],
+    missingness,
     available_affordances:['Play explanation','Previous lesson','Next lesson','Rest','Return','Close Case'],
     claim_ceiling:{
       allowed_claims:['presentation of exact Ash lifecycle posture','reference remains distinct from artifact','human closure remains open'],
@@ -79,7 +90,7 @@ function sceneFor(nextPhase) {
       { step:'REST_WITH_FIELD_INSPECTABLE' }
     ],
     contradictions:[],
-    missingness:scene.missingness,
+    missingness,
     unresolved_relations:exactState === 'ARRIVAL_UNPERSISTED' ? ['future custody and Case Map relations remain unearned'] : [],
     authorized_actions:[],
     glyph_candidates:[selected.relation],
@@ -91,7 +102,7 @@ function sceneFor(nextPhase) {
 }
 
 function compileFrame(nextPhase) {
-  const { scene, transition } = sceneFor(nextPhase);
+  const { scene, transition } = governedScene(nextPhase);
   const viewport = {
     width:Math.max(320, field?.clientWidth || host?.innerWidth || 1120),
     height:Math.max(320, field?.clientHeight || 420),
@@ -104,6 +115,8 @@ function compileFrame(nextPhase) {
 }
 
 function fieldMarkup() {
+  const staticSteps = PHASES.map((item,index) => `
+    <li data-static-phase="${index}"><span>${index + 1}</span><div><strong>${item.id.replaceAll('_',' ')}</strong><p>${item.consequence}</p></div><b>${item.glyph}</b></li>`).join('');
   return `
     <section class="ash-flowcore-field" data-flowcore-phase="0" data-flowcore-playing="false" aria-labelledby="ashFlowcoreTitle">
       <header class="ash-flowcore-field__header">
@@ -146,7 +159,7 @@ function fieldMarkup() {
         </svg>
         <div class="ash-flowcore-field__caption" aria-live="polite"><strong data-flowcore-consequence>Notice the local source before any custody claim.</strong><span data-flowcore-technical>Visible condition · source remains on this device.</span></div>
       </div>
-      <ol class="ash-flowcore-static" aria-label="Complete static equivalent">${PHASES.map((item,index) => `<li data-static-phase="${index}"><span>${index + 1}</span><div><strong>${item.id.replaceAll('_',' ')}</strong><p>${item.consequence}</p></div><b>${item.glyph}</b></li>`).join('')}</ol>
+      <ol class="ash-flowcore-static" aria-label="Complete static equivalent">${staticSteps}</ol>
       <footer class="ash-flowcore-field__inspection"><span>glyph</span><span>motion</span><span>shape</span><span>language</span><span>inspection</span><strong data-flowcore-exact-state>ARRIVAL UNPERSISTED</strong><em>visual coherence ≠ Ash authority</em></footer>
     </section>`;
 }
@@ -164,22 +177,23 @@ function ensureField() {
     wrapper.innerHTML = fieldMarkup().trim();
     field = wrapper.firstElementChild;
     stage.append(field);
-    applyPhase(phase, { source:'MOUNT', playing:false });
-    host.dispatchEvent(new CustomEvent('td613:ash:flowcore-field-mounted', { detail:{ version:ASH_FLOWCORE_FIELD_VERSION, artifact_required:false, phase:PHASES[phase].id } }));
     return field;
-  } finally { mounting = false; }
+  } finally {
+    mounting = false;
+  }
 }
 
-function applyPhase(nextPhase, { source='EXPLICIT_FRAME', playing:nextPhase > 0 } = {}) {
+function applyPhase(nextPhase, options = {}) {
   const bounded = Math.max(0, Math.min(PHASES.length - 1, Number(nextPhase) || 0));
+  const source = options.source || 'EXPLICIT_FRAME';
+  const playing = options.playing ?? bounded > 0;
   phase = bounded;
   const root = ensureField();
   if (!root) return false;
   const selected = PHASES[bounded];
-  played = Boolean(playing || root.dataset.flowcorePlaying === 'true');
   root.dataset.flowcorePhase = String(bounded);
   root.dataset.flowcorePhaseName = selected.id;
-  root.dataset.flowcorePlaying = String(played && bounded < PHASES.length - 1);
+  root.dataset.flowcorePlaying = String(Boolean(playing) && bounded < PHASES.length - 1);
   root.dataset.flowcoreLifecycle = lifecycleState();
   root.dataset.flowcoreCaseOpen = String(caseOpen());
   root.querySelector('[data-flowcore-phase-label]').textContent = `${selected.id.replaceAll('_',' ')} · ${selected.glyph}`;
@@ -194,32 +208,40 @@ function applyPhase(nextPhase, { source='EXPLICIT_FRAME', playing:nextPhase > 0 
   root.dataset.flowcoreAuthority = 'PRESENTATION_ONLY';
   doc.documentElement.dataset.ashFlowcorePhase = selected.id;
   doc.documentElement.dataset.ashFlowcoreField = ASH_FLOWCORE_FIELD_VERSION;
-  host.dispatchEvent(new CustomEvent('td613:ash:flowcore-field-phase', { detail:{ version:ASH_FLOWCORE_FIELD_VERSION, phase:bounded, phase_name:selected.id, source, visual_schema:lastFrame.schema, artifact_required:false } }));
+  host.dispatchEvent(new CustomEvent('td613:ash:flowcore-field-phase', {
+    detail:{ version:ASH_FLOWCORE_FIELD_VERSION, phase:bounded, phase_name:selected.id, source, visual_schema:lastFrame.schema, artifact_required:false }
+  }));
   return true;
 }
 
-function installStageObserver() {
-  if (stageObserver || !doc?.body) return;
-  stageObserver = new MutationObserver(records => {
-    if (!records.some(record => record.addedNodes.length || record.removedNodes.length)) return;
-    queueMicrotask(() => ensureField());
-  });
-  stageObserver.observe(doc.body, { childList:true, subtree:true });
-}
-
-function installPhaseObserver() {
-  if (phaseObserver || !doc?.documentElement) return;
-  phaseObserver = new MutationObserver(records => {
-    if (!records.some(record => ['data-ash-explanation-motion','data-ash-explanation-frame'].includes(record.attributeName))) return;
-    const motion = doc.documentElement.dataset.ashExplanationMotion;
-    if (motion === 'COMPLETE' || motion === 'STATIC_COMPLETE') applyPhase(4, { source:motion, playing:false });
-  });
-  phaseObserver.observe(doc.documentElement, { attributes:true, attributeFilter:['data-ash-explanation-motion','data-ash-explanation-frame'] });
+function installObservers() {
+  if (!stageObserver) {
+    stageObserver = new MutationObserver(records => {
+      if (!records.some(record => record.addedNodes.length || record.removedNodes.length)) return;
+      queueMicrotask(() => {
+        const mounted = ensureField();
+        if (mounted) applyPhase(phase, { source:'STAGE_REMOUNT', playing:false });
+      });
+    });
+    stageObserver.observe(doc.body, { childList:true, subtree:true });
+  }
+  if (!phaseObserver) {
+    phaseObserver = new MutationObserver(records => {
+      if (!records.some(record => ['data-ash-explanation-motion','data-ash-explanation-frame'].includes(record.attributeName))) return;
+      const motion = doc.documentElement.dataset.ashExplanationMotion;
+      if (motion === 'COMPLETE' || motion === 'STATIC_COMPLETE') applyPhase(4, { source:motion, playing:false });
+    });
+    phaseObserver.observe(doc.documentElement, { attributes:true, attributeFilter:['data-ash-explanation-motion','data-ash-explanation-frame'] });
+  }
 }
 
 function installEvents() {
-  host.addEventListener('td613:ash:explanation-frame', event => applyPhase(Math.min(3, Number(event.detail?.step || 0)), { source:'EXPLICIT_PLAY_FRAME', playing:true }));
-  doc.addEventListener('click', event => { if (event.target?.closest?.('[data-aia-play]')) applyPhase(0, { source:'EXPLICIT_PLAY_GESTURE', playing:true }); }, true);
+  host.addEventListener('td613:ash:explanation-frame', event => {
+    applyPhase(Math.min(3, Number(event.detail?.step || 0)), { source:'EXPLICIT_PLAY_FRAME', playing:true });
+  });
+  doc.addEventListener('click', event => {
+    if (event.target?.closest?.('[data-aia-play]')) applyPhase(0, { source:'EXPLICIT_PLAY_GESTURE', playing:true });
+  }, true);
   for (const type of ['lifecycle-updated','case-opened','case-created','profile-demo-hydrated','case-closed','aia-ready']) {
     host.addEventListener(`td613:ash:${type}`, () => queueMicrotask(() => applyPhase(phase, { source:`STATE_${type.toUpperCase()}`, playing:false })));
   }
@@ -229,18 +251,31 @@ function installEvents() {
 export function installAshFlowcorePedagogyField() {
   if (!host || !doc?.body || host.__td613AshFlowcoreField) return false;
   ensureStyle();
-  installStageObserver();
-  installPhaseObserver();
+  installObservers();
   installEvents();
   ensureField();
+  applyPhase(0, { source:'INSTALL', playing:false });
   host.__td613AshFlowcoreField = Object.freeze({
     version:ASH_FLOWCORE_FIELD_VERSION,
     play:() => host.__td613AshLiveAIA?.replay?.(),
     setPhase:value => applyPhase(value, { source:'EXPLICIT_API', playing:true }),
     refresh:() => applyPhase(phase, { source:'EXPLICIT_REFRESH', playing:false }),
-    current:() => Object.freeze({ phase, phase_name:PHASES[phase].id, lifecycle_state:lifecycleState(), case_open:caseOpen(), artifact_required:false, visual_schema:lastFrame?.schema || null, channels:lastFrame ? Object.keys(lastFrame.channels) : [], authority:lastFrame?.authority || null, closure:lastFrame?.closure || null })
+    current:() => Object.freeze({
+      phase,
+      phase_name:PHASES[phase].id,
+      lifecycle_state:lifecycleState(),
+      case_open:caseOpen(),
+      artifact_required:false,
+      visual_schema:lastFrame?.schema || null,
+      channels:lastFrame ? Object.keys(lastFrame.channels) : [],
+      authority:lastFrame?.authority || null,
+      closure:lastFrame?.closure || null
+    })
   });
   doc.documentElement.dataset.ashFlowcoreField = ASH_FLOWCORE_FIELD_VERSION;
+  host.dispatchEvent(new CustomEvent('td613:ash:flowcore-field-mounted', {
+    detail:{ version:ASH_FLOWCORE_FIELD_VERSION, artifact_required:false, phase:PHASES[phase].id }
+  }));
   return true;
 }
 
