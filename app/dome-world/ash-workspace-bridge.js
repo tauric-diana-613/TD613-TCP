@@ -33,3 +33,5 @@ import './ash-return-ready-bundle.js?v=20260721-legal-demo-ux-v1';
 import './ash-custodian-return.js?v=20260721-legal-demo-ux-v1';
 import './ash-custodian-return-closure.js?v=20260721-legal-demo-ux-v1';
 import './ash-emergency-stability-contract.js?v=20260721-legal-demo-ux-v1';
+// Pointer authority wins after Close Case, even while older in-memory demo state finishes settling.
+import './ash-close-ingress-animation-boundary.js?v=20260722-close-ingress-animation-v1';
