@@ -64,8 +64,19 @@ for (const token of [
   "td613:ash:close-ingress-restored",
   "for (const delay of [80, 240, 800])",
   "type === 'case-closed'",
-  "BOOT_WITHOUT_ACTIVE_POINTER"
+  "BOOT_WITHOUT_ACTIVE_POINTER",
+  'let repairQueued = false',
+  'function repairFromCurrentState()',
+  "setData(doc.documentElement, 'ashSessionObserverScope', 'EXACT_SURFACES')",
+  "byId('workspace-save')"
 ]) assert.ok(boundary.includes(token), `Close/ingress boundary omitted ${token}`);
+
+assert.doesNotMatch(boundary, /observer\.observe\(doc\.body, \{[^}]*childList:true[^}]*subtree:true/,
+  'Session observer returned to whole-subtree mutation surveillance.');
+assert.match(boundary, /observer\.observe\(doc\.body, \{ attributes:true, attributeFilter:\['data-ash-aia-case-open'\] \}\)/,
+  'Session observer omitted the exact body posture seam.');
+assert.match(boundary, /for \(const surface of surfaces\)[\s\S]*attributeFilter:\['class','hidden','inert','aria-hidden','style'\]/,
+  'Session observer omitted exact launch, main, rail, and Save surface attributes.');
 
 assert.doesNotMatch(boundary, /deleteDatabase|objectStore\([^)]*\)\.delete|clear\(\)/,
   'Close/ingress repair must not delete IndexedDB case material.');
