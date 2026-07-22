@@ -1,0 +1,125 @@
+name: Ash Flow-Core Live Field
+
+on:
+  pull_request:
+    branches: [main]
+    paths:
+      - 'app/dome-world/ash-flowcore-pedagogy-field.*'
+      - 'app/dome-world/ash-flowcore-ingress-portal.js'
+      - 'app/dome-world/ash-flowcore-ingress-portal-loader.js'
+      - 'app/dome-world/ash-session-boundary.js'
+      - 'app/dome-world/ash-ingress-copy-spacing.js'
+      - 'app/dome-world/ash-workspace-bridge.js'
+      - 'tests/ash-flowcore-live-field.test.mjs'
+      - 'scripts/ash-flowcore-live-field-browser-probe.mjs'
+      - '.github/workflows/ash-flowcore-live-field.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  contracts:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+      - run: npm ci
+      - name: Syntax-check live product modules
+        run: |
+          node --check app/dome-world/ash-flowcore-pedagogy-field.js
+          node --check app/dome-world/ash-flowcore-ingress-portal.js
+          node --check app/dome-world/ash-flowcore-ingress-portal-loader.js
+          node --check app/dome-world/ash-session-boundary.js
+          node --check app/dome-world/ash-ingress-copy-spacing.js
+      - name: Live Flow-Core field and ingress-copy contract
+        run: |
+          mkdir -p artifacts
+          set +e
+          node tests/ash-flowcore-live-field.test.mjs > artifacts/ash-flowcore-contract.log 2>&1
+          status=$?
+          cat artifacts/ash-flowcore-contract.log
+          exit "$status"
+      - name: Preserve contract evidence
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: ash-flowcore-contract-evidence
+          path: artifacts/ash-flowcore-contract.log
+          if-no-files-found: warn
+          retention-days: 45
+      - name: Inherited Flow-Core visual grammar
+        run: node --test tests/flowcore-pedagogue-visual.test.mjs
+      - name: Inherited live AIA surface
+        run: node tests/ash-keep-live-aia-surface.test.mjs
+      - name: Inherited ingress close boundary
+        run: node tests/ash-keep-ingress-readiness-close-boundary.test.mjs
+      - name: TCP smoke
+        run: node tests/tcp-smoke.test.mjs
+
+  browser-witness:
+    name: ${{ matrix.browser }} consequence field
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    strategy:
+      fail-fast: false
+      matrix:
+        browser: [chromium, firefox, webkit]
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+      - run: npm ci
+      - name: Syntax-check witness and product modules
+        run: |
+          node --check scripts/ash-flowcore-live-field-browser-probe.mjs
+          node --check app/dome-world/ash-flowcore-pedagogy-field.js
+          node --check app/dome-world/ash-flowcore-ingress-portal.js
+          node --check app/dome-world/ash-flowcore-ingress-portal-loader.js
+          node --check app/dome-world/ash-session-boundary.js
+          node --check app/dome-world/ash-ingress-copy-spacing.js
+      - name: Install browser witness runtime
+        run: |
+          npm install --no-save --package-lock=false playwright@1.53.2
+          npx playwright install --with-deps ${{ matrix.browser }}
+      - name: Start bounded local Ash Keep runtime
+        run: |
+          mkdir -p artifacts
+          node scripts/ash-keep-local-closure-server.mjs 6130 > artifacts/ash-flowcore-field-server.log 2>&1 &
+          echo $! > artifacts/ash-flowcore-field-server.pid
+          for attempt in $(seq 1 50); do
+            if curl -fsS --max-time 2 http://127.0.0.1:6130/__ash_keep_closure/readiness > artifacts/ash-flowcore-field-readiness.json; then
+              cat artifacts/ash-flowcore-field-readiness.json
+              exit 0
+            fi
+            sleep 1
+          done
+          cat artifacts/ash-flowcore-field-server.log || true
+          exit 1
+      - name: Observe ingress copy, zero-artifact Flow-Core, and Close Case return
+        env:
+          TD613_BROWSER: ${{ matrix.browser }}
+          TD613_BASE_URL: http://127.0.0.1:6130
+          TD613_ARTIFACT_DIR: artifacts/ash-flowcore-field-${{ matrix.browser }}
+        run: timeout --foreground --signal=INT --kill-after=15s 480s node scripts/ash-flowcore-live-field-browser-probe.mjs
+      - name: Stop bounded local runtime
+        if: always()
+        run: |
+          test -f artifacts/ash-flowcore-field-server.pid && kill "$(cat artifacts/ash-flowcore-field-server.pid)" || true
+      - name: Preserve evidence
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: ash-flowcore-field-${{ matrix.browser }}-evidence
+          path: |
+            artifacts/ash-flowcore-field-${{ matrix.browser }}/
+            artifacts/ash-flowcore-field-server.log
+            artifacts/ash-flowcore-field-readiness.json
+          if-no-files-found: warn
+          retention-days: 45
