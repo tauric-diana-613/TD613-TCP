@@ -26,6 +26,7 @@ This folder tracks the current Safe Harbor release doctrine.
 - [Gen3 Wave A production receipt](./gen3-wave-a-production-receipt.md)
 - [Blind Custody Challenge specification](./blind-custody-challenge-spec-v0.1.md)
 - [Restorative Stylodynamics and Perturbation Invariance Mapping research annex](./restorative-stylodynamics-perturbation-invariance-annex-v0.1.md)
+- [Gen3 Research Track R implementation receipt](./gen3-track-r-implementation-receipt.md)
 - [Claim limits](./claim-limits.md)
 - [Operator protocol](./operator-protocol.md)
 - [Verification guide](./verification-guide.md)
