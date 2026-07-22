@@ -14,7 +14,7 @@ This folder tracks the current Safe Harbor release doctrine.
 8. Phase 9.1C SHI + packet restore gate and hash guard
 9. Gen3 Stage 1 report constitution and evidence contract
 10. Gen3 Stage 2 authorship maturity and null-control engine
-11. Gen3 Release Wave A deployed once and relocked; corrected runtime observer pending
+11. Gen3 Release Wave A deployed once, observed post-propagation, and relocked
 
 ## Core docs
 
@@ -52,7 +52,7 @@ Gen3 Stage 2 landed through PR #499 / commit `b6fe4ee188941d6b72db0d9bad886e4f48
 
 Release Wave A deployed source `86cf1af84e69998ae195e53ef64372e35d8c6745` to `https://td613.com` through issue #405. The one bounded fallback release commit was `4454db2512180bc860574b7c74e0f4b1e64aeb35`; the Git deployment lock was restored at `3f23e6d1747e45c57277b0c2de4befb6b9c12406`.
 
-Release run `29957000564` held the initial browser/runtime observation during deployment propagation. Route-matrix run `29957916811` later confirmed every clean and canonical Gen3 route at HTTP `200`. Observer-log run `29958344250` then exposed a separate observer-contract defect: the native-finalizer probe demanded the nonexistent literal marker `authorship_evidence`. The corrected read-only observer remains the completion gate. Wave A may not be described as fully observed until that gate passes.
+Release run `29957000564` held the initial browser observation during deployment propagation. Route-matrix run `29957916811` later confirmed every clean and canonical Gen3 route at HTTP `200`. Observer-log run `29958344250` exposed a separate false source-marker expectation. Corrected read-only observer run `29958834895` then passed the complete production battery against the same deployed source at `2026-07-22T21:21:51.287Z`, with no second deployment or lock mutation.
 
 Research Track R remains separately gated. Stage 3 and Release Wave B remain pending.
 
