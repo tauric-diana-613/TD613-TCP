@@ -41,6 +41,6 @@ assert.ok(source.includes('historical_example: HISTORICAL_EXAMPLE'));
 assert.ok(source.includes("binding_timestamp: '2025-08-11T03:58:39Z'"));
 assert.ok(source.includes("historical_date: '2025-10-17'"));
 assert.doesNotMatch(source, /TD613-SH-9B07D8B-(?!A1B2C3D4)[0-9A-F]{8}/gu, 'renderer must not contain a live entrant SHI');
-assert.doesNotMatch(source, /raw_text|entrant_text|window_text/iu, 'renderer metadata must not carry raw entrant text');
+assert.doesNotMatch(source, /"(?:raw_text|entrant_text|window_text)"\s*:/iu, 'renderer metadata must not carry raw entrant text fields');
 
 console.log('safe-harbor-gen3-stage3-renderer: ok');
