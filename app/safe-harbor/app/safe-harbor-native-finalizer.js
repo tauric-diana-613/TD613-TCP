@@ -2,6 +2,7 @@ import { buildSafeHarborRichStylometry, summarizeSurfaceMarkers } from './safe-h
 import { buildV3Issuance, canIssueV3, stableCanonicalJson } from './safe-harbor-stylometry-v3.js';
 import { attachPhase4Authority, verifyV3Replay } from './safe-harbor-authority-verifier.js?v=202606290125';
 import { buildPhase5ReplayHardening, applyPhase5Quarantine, detectStaleV3 } from './safe-harbor-phase5-replay-hardening.js';
+import { applyGen3Stage1Prehash } from './safe-harbor-gen3-evidence-contract.js';
 
 const LANES = ['future_self', 'past_self', 'higher_self'];
 const LEGACY_PROFILE_SCHEMA = 'td613.safe-harbor.legacy-lane-profile/v1';
@@ -41,6 +42,9 @@ const HASH_EXCLUDES = Object.freeze([
   'release_checklist',
   'pipeline_state',
   'forensic_authorship',
+  'binding_provenance.entrant_authorship_binding',
+  'temporal_lineage.entrant_countersignature_authority',
+  'gen3_evidence_contract',
   'signature.sig',
   'signature.attached_at',
   'renderer_authority_metadata.packet_hash_sha256'
@@ -427,7 +431,7 @@ export async function attachNativeV3Issuance(packet, options = {}) {
 export async function finalizeSafeHarborPacket(packet, context = {}) {
   if (!packet || typeof packet !== 'object') return packet;
   const mode = context.mode || 'native';
-  const out = clone(packet);
+  let out = clone(packet);
   if (hasSegments(context.segments)) {
     const rich = buildSafeHarborRichStylometry(context.segments, { compactCharTrigrams: true, maxCharTrigrams: 120 });
     promoteNativeRichLaneProfiles(out, rich, { mode });
@@ -439,6 +443,12 @@ export async function finalizeSafeHarborPacket(packet, context = {}) {
   out.packet_hash_sha256 = preimageHash;
   markRichHashSemantics(out, preimageHash, mode);
   await attachNativeV3Issuance(out, { allowV3Rebuild: context.allowV3Rebuild === true });
+  if (context.includeGen3Stage1 === true) {
+    out = applyGen3Stage1Prehash(out, {
+      ...(context.gen3Context || {}),
+      segments: context.segments || context.gen3Context?.segments || {}
+    });
+  }
   attachPacketCapabilities(out, mode);
   enrichForensicAuthorship(out);
   let governed = await attachPhase4Authority(out, { mode, packetHashRecomputed: true });

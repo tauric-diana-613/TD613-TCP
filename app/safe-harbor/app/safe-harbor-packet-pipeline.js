@@ -5,6 +5,8 @@ import { applyPublicDefaultGate } from './safe-harbor-public-default-gate.js?v=2
 import { applyReleaseDiscipline } from './safe-harbor-release-discipline.js';
 import { SAFE_HARBOR_RUNTIME_MARKERS } from './safe-harbor-policy-constants.js';
 import { verifyHashReplay } from './safe-harbor-authority-verifier.js?v=202606290125';
+import { finalizeGen3Stage1Overlay } from './safe-harbor-gen3-evidence-contract.js';
+import { attachGen3ReportContract } from './safe-harbor-gen3-report-contract.js';
 
 export const PIPELINE_VERSION = 'safe-harbor-packet-pipeline/v2-phase9-1-maintenance-seal-stabilized-runtime';
 
@@ -12,6 +14,7 @@ function clone(value) { return value == null ? value : JSON.parse(JSON.stringify
 function getPath(value, path) { return String(path || '').split('.').reduce((node, key) => (node && Object.prototype.hasOwnProperty.call(node, key) ? node[key] : undefined), value); }
 function nativeBorn(packet) { return Boolean(getPath(packet, 'native_spine_purification.status') === 'native'); }
 function exportHardened(packet) { return Boolean(getPath(packet, 'native_spine_purification.status') === 'export-hardened'); }
+function gen3EvidencePresent(packet) { return getPath(packet, 'authorship_evidence.schema_version') === 'td613.safe-harbor.authorship-evidence/v1'; }
 
 export function rawSegmentsFromSaved(saved) {
   let source = saved && saved.ingress && saved.ingress.segments ? saved.ingress.segments : null;
@@ -96,9 +99,17 @@ export async function finalizePacketThroughPipeline(packet, saved, options = {})
     includePhase5: true,
     includeTamperFixtures: Boolean(options.includeTamperFixtures),
     allowV3Rebuild: false,
-    rawTextExportAllowed: false
+    rawTextExportAllowed: false,
+    includeGen3Stage1: true,
+    gen3Context: {
+      promptSetVersion: options.promptSetVersion || 'temporal-triad/v2',
+      uiVersion: options.uiVersion || 'pre-temporal-bloom',
+      reducedMotion: Boolean(options.reducedMotion),
+      promptTextDigests: options.promptTextDigests || {}
+    }
   });
-  return normalizePacketThroughPipeline(finalized, saved, { ...options, skipFinalize: true });
+  const overlaid = finalizeGen3Stage1Overlay(finalized);
+  return normalizePacketThroughPipeline(overlaid, saved, { ...options, skipFinalize: true });
 }
 
 export async function normalizePacketThroughPipeline(packet, saved, options = {}) {
@@ -111,6 +122,7 @@ export async function normalizePacketThroughPipeline(packet, saved, options = {}
   out = await attachOutsideWitnessesThroughPipeline(out, options);
   out = await applyPublicGateThroughPipeline(out, options);
   out = await applyReleaseDisciplineThroughPipeline(out, options);
+  if (gen3EvidencePresent(out)) out = attachGen3ReportContract(out, options.reportContext || {});
   return attachPipelineState(out);
 }
 
