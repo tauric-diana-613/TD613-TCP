@@ -35,7 +35,9 @@ assert.match(css, /data-flowcore-phase="4"/);
 assert.match(css, /prefers-reduced-motion:reduce/);
 assert.doesNotMatch(css, /animation:[^;}]*infinite/);
 
-assert.match(restoration, /v0\.1-visible-dual-motion/);
+assert.match(restoration, /v0\.2-event-bound-geometry/);
+assert.match(restoration, /function stabilizeGeometry\(\)/);
+assert.match(restoration, /style\.setProperty\(property, value, 'important'\)/);
 assert.match(restoration, /ashPostIngressMotion = receipt\.canvas_visible && receipt\.rail_visible/);
 assert.match(restoration, /field_clipped/);
 assert.match(restoration, /rail_clipped/);
@@ -124,7 +126,7 @@ assert.match(bridge, /ash-session-boundary\.js\?v=20260721-flowcore-live-field-v
 assert.match(bridge, /ash-ingress-copy-spacing\.js\?v=20260721-flowcore-live-field-v1/);
 assert.match(bridge, /ash-flowcore-pedagogy-field\.js\?v=20260721-flowcore-live-field-v1/);
 assert.match(bridge, /ash-flowcore-ingress-portal-loader\.js\?v=20260722-flowcore-observer-hotfix-v3/);
-assert.match(bridge, /ash-post-ingress-motion-restoration\.js\?v=20260722-visible-dual-motion-v1/);
+assert.match(bridge, /ash-post-ingress-motion-restoration\.js\?v=20260722-event-bound-geometry-v2/);
 assert.doesNotMatch(bridge, /import '\.\/ash-flowcore-ingress-portal\.js/);
 
 console.log('ash-flowcore-live-field.test.mjs passed');
