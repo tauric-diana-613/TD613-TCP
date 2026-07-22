@@ -71,6 +71,13 @@ test('browser witness waits for lifecycle case binding before tutorial baseline'
   assert.doesNotMatch(journeySource, /waitForTimeout\(250\);\n  const before/);
 });
 
+test('browser teardown is bounded after the evidence receipt is written', () => {
+  assert.match(journeySource, /Browser close did not finish within 15 seconds/);
+  assert.match(journeySource, /report\.browser_close = browserClose/);
+  assert.match(journeySource, /await fs\.writeFile[\s\S]*process\.exit\(0\)/);
+  assert.doesNotMatch(journeySource, /finally \{\n  await browser\.close\(\);/);
+});
+
 test('retired worker fixture controls the next navigation without claiming the active page', () => {
   assert.match(closureServerSource, /self\.addEventListener\('activate', \(\) => \{\}\)/);
   assert.doesNotMatch(closureServerSource, /clients\.claim\(\)/);

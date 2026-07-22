@@ -344,9 +344,23 @@ try {
   report.status = 'HELD';
   report.hold_reason = error.message;
 } finally {
-  await browser.close();
   report.completed_at = new Date().toISOString();
+  let browserClose = 'CLOSED';
+  try {
+    await Promise.race([
+      browser.close(),
+      new Promise((_, reject) => setTimeout(() => reject(new Error('Browser close did not finish within 15 seconds.')), 15000))
+    ]);
+  } catch (error) {
+    browserClose = 'FORCED_PROCESS_EXIT';
+    report.browser_close_hold = error.message;
+  }
+  report.browser_close = browserClose;
   await fs.writeFile(path.join(outputDir, 'ash-aia3-task-continuity.json'), `${JSON.stringify(report, null, 2)}\n`, 'utf8');
 }
-if (terminal) throw terminal;
-console.log(JSON.stringify({ status:report.status, browser:browserName, profiles:Object.keys(report.profiles) }, null, 2));
+if (terminal) {
+  console.error(terminal);
+  process.exit(1);
+}
+console.log(JSON.stringify({ status:report.status, browser:browserName, profiles:Object.keys(report.profiles), browser_close:report.browser_close }, null, 2));
+process.exit(0);
