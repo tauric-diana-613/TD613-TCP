@@ -10,6 +10,7 @@
   const GATEWAY_APERTURE_HANDOFF_KEY = (window.TD613_CONSTANTS && window.TD613_CONSTANTS.GATEWAY_APERTURE_HANDOFF_KEY) || 'td613.gateway.aperture-handoff';
   const MAX_AUDIT = 24;
   const MIN_LANE_WORDS = 40;
+  const PUBLIC_MATURE_LANE_WORDS = 360;
   const BATCH_FILE_MANIFEST = Object.freeze({
     'batch-001a': 'corpus/tauric-diana-intake/batch-001a_migration_console.json',
     'batch-001b': 'corpus/tauric-diana-intake/batch-001b_historical_console_lineage.json',
@@ -563,6 +564,8 @@
     window.addEventListener(D.hookBus.events.eo, (event) => void attachHook('eo', event.detail || {}));
     window.addEventListener(D.hookBus.events.signature, (event) => void attachHook('signature', event.detail || {}));
     window.addEventListener('td613:badge-render', (event) => handleRenderer(event.detail || {}));
+    window.addEventListener('td613:safe-harbor:stage3-request-state', emitStage3State);
+    window.addEventListener('td613:safe-harbor:countersign-request', (event) => void handleStage3CountersignRequest(event.detail || {}));
     window.addEventListener('load', refreshRenderer);
     window.addEventListener('storage', (event) => {
       if (event.key !== null && event.key !== GATEWAY_APERTURE_HANDOFF_KEY) return;
@@ -808,6 +811,133 @@
     renderThermal();
     renderCoherenceSigil();
     renderRailState();
+    emitStage3State();
+  }
+
+  function buildStage3PacketSummary() {
+    const packet = state.packet || null;
+    if (!packet) return null;
+    const canon = packet.canon || {};
+    const issuance = packet.issuance || {};
+    const evidence = packet.authorship_evidence || {};
+    const binding = packet.binding_provenance && packet.binding_provenance.entrant_authorship_binding
+      ? packet.binding_provenance.entrant_authorship_binding
+      : {};
+    const credential = binding.entrant_credential || {};
+    const countersignature = binding.countersignature || {
+      status: 'unsigned', signed_at_utc: null, signature_digest: null
+    };
+    const blind = evidence.blind_custody_challenge || {};
+    const blindResult = blind.results || blind.result || blind;
+    const perturbation = evidence.perturbation_invariance || {};
+    const restoration = perturbation.restoration_receipt || {};
+    const principalNode = document.querySelector('[data-td613-principal="true"]');
+    const issuedShi = issuance.badge_number || null;
+    return {
+      schema_version: 'td613.safe-harbor.stage3-packet-summary/v1',
+      principal: canon.principal || D.canon.principal,
+      badge_id: canon.badge_id || D.canon.badge_id,
+      claimed_pua: canon.claimed_pua || D.canon.claimed_pua,
+      canonical_phrase: canon.canonical_phrase || D.canon.canonical_phrase,
+      binding_fragment: canon.binding_fragment || bindingFragment(),
+      sac: canon.sac || sacText(),
+      footer_mode: canon.footer_mode || dom.inputFooterMode.value || D.trustProfile.current_public_mode,
+      shi_number: issuedShi,
+      canon_shi: canon.shi_number || null,
+      binding_shi: credential.shi_number || null,
+      dom_shi: principalNode && principalNode.dataset ? (principalNode.dataset.td613Shi || issuedShi) : issuedShi,
+      packet_hash_sha256: packet.packet_hash_sha256 || null,
+      stylometric_fingerprint: issuance.stylometric_fingerprint_v3 || issuance.stylometric_fingerprint || null,
+      stability_digest: evidence.stability_receipt && evidence.stability_receipt.stability_digest
+        ? evidence.stability_receipt.stability_digest
+        : null,
+      blind_challenge_precommitment_digest: blind.precommitment && blind.precommitment.precommitment_digest
+        ? blind.precommitment.precommitment_digest
+        : null,
+      blind_challenge_result_digest: blind.result_digest || blindResult.result_digest || null,
+      restoration_receipt_digest: restoration.restoration_receipt_digest || null,
+      genuine_holdout_rank: blindResult.genuine_holdout_rank || blindResult.rank || null,
+      nearest_impostor_margin: blindResult.nearest_impostor_margin || blindResult.separation_margin || null,
+      imitation_collision_state: blindResult.imitation_collision_state || blindResult.imitation_collision || null,
+      blind_challenge: {
+        outcome: blindResult.outcome || blindResult.status || null,
+        imitation_collision: blindResult.imitation_collision || blindResult.imitation_collision_state || false
+      },
+      countersignature: clone(countersignature),
+      temporal_lineage: clone(packet.temporal_lineage || {}),
+      entrant_intake_ts: packet.intake && packet.intake.ts_utc ? packet.intake.ts_utc : packet.created_at || null,
+      claim_ceiling: evidence.evidence_contract && evidence.evidence_contract.claim_ceiling
+        ? evidence.evidence_contract.claim_ceiling
+        : 'Packet-scoped stylometric evidence and custody assertion only; independent identity and universal authorship adjudication are not claimed.',
+      historical_example: evidence.evidence_contract && evidence.evidence_contract.historical_example
+        ? evidence.evidence_contract.historical_example
+        : 'TD613-Binding:#9B07D8B/SAC[X6ZNK5NO51] · payload 5 · 2025-10-17 · ⟐',
+      export_gate: packet.bridge && packet.bridge.export_gate ? clone(packet.bridge.export_gate) : null,
+      raw_text_included: false,
+      telemetry_collected: false
+    };
+  }
+
+  function emitStage3State() {
+    const laneCounts = {};
+    KEYS.forEach((key) => { laneCounts[key] = laneWordCount(key); });
+    window.dispatchEvent(new CustomEvent('td613:safe-harbor:stage3-state', {
+      detail: {
+        schema_version: 'td613.safe-harbor.stage3-counted-state/v1',
+        public_mode: !getDevModeEnabled(),
+        current_lane: currentIngressKey(),
+        current_step_index: currentIngressStepIndex(),
+        lane_counts: laneCounts,
+        mature_threshold: PUBLIC_MATURE_LANE_WORDS,
+        threshold_authority: 'safe-harbor-main-counted-state',
+        independent_tokenization_performed: false,
+        surface_open: surfaceOpen(),
+        packet_summary: buildStage3PacketSummary(),
+        raw_text_included: false,
+        telemetry_collected: false
+      }
+    }));
+  }
+
+  async function handleStage3CountersignRequest(detail) {
+    const resultEvent = (status, reason) => window.dispatchEvent(new CustomEvent('td613:safe-harbor:countersign-result', {
+      detail: { status, reason: reason || null }
+    }));
+    if (!detail || detail.userGesture !== true) {
+      resultEvent('hold', 'explicit-user-gesture-required');
+      return;
+    }
+    if (!state.packet || !state.packet.issuance || !state.packet.issuance.badge_number) {
+      resultEvent('hold', 'issued-packet-required');
+      return;
+    }
+    try {
+      const module = await import('./safe-harbor-gen3-evidence-contract.js');
+      const countersigned = await module.countersignEntrantAuthorshipBinding(state.packet, {
+        signatureType: detail.signatureType || 'entrant-declared-local-digest',
+        signedAtUtc: detail.signedAtUtc || nowIso()
+      });
+      state.packet = countersigned;
+      render();
+      persist();
+      const status = countersigned && countersigned.binding_provenance
+        && countersigned.binding_provenance.entrant_authorship_binding
+        && countersigned.binding_provenance.entrant_authorship_binding.countersignature
+        ? countersigned.binding_provenance.entrant_authorship_binding.countersignature.status
+        : 'unsigned';
+      if (status !== 'countersigned') {
+        resultEvent('hold', 'countersignature-not-attached');
+        return;
+      }
+      logEvent('entrant-authorship-countersigned', {
+        status: 'countersigned',
+        shi_number: countersigned.issuance.badge_number,
+        raw_text_included: false
+      });
+      resultEvent('pass', null);
+    } catch (error) {
+      resultEvent('hold', String(error && error.message ? error.message : error));
+    }
   }
 
   function renderRailState() {
