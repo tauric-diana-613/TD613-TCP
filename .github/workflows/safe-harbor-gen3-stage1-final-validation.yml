@@ -26,6 +26,8 @@ jobs:
     steps:
       - name: Check out exact pull-request head
         uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
 
       - name: Set up Node
         uses: actions/setup-node@v4
@@ -58,7 +60,7 @@ jobs:
           const { execFileSync } = require('node:child_process');
           const { readFileSync } = require('node:fs');
           const base = process.env.GITHUB_BASE_REF || 'main';
-          execFileSync('git', ['fetch', 'origin', base, '--depth=1'], { stdio: 'inherit' });
+          execFileSync('git', ['fetch', 'origin', base], { stdio: 'inherit' });
           const files = execFileSync('git', ['diff', '--name-only', `origin/${base}...HEAD`], { encoding: 'utf8' })
             .trim().split(/\r?\n/u).filter(Boolean);
           const concrete = /TD613-SH-9B07D8B-[0-9A-F]{8}/gu;
