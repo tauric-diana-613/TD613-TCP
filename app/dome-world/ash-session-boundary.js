@@ -1,4 +1,4 @@
-export const ASH_SESSION_BOUNDARY_VERSION = 'td613.ash.session-boundary/v0.2-pointer-governs-case-recovery-stays-open';
+export const ASH_SESSION_BOUNDARY_VERSION = 'td613.ash.session-boundary/v0.3-pointer-governs-case-explicit-recovery-stays-open';
 
 const host = globalThis.window;
 const doc = globalThis.document;
@@ -25,17 +25,32 @@ function governedCurrent() {
   return Object.freeze({ case_id:activePointer, case_map_digest:null, route_memory_digest:null });
 }
 
+function visible(node) {
+  if (!node || node.hidden) return false;
+  const style = host.getComputedStyle?.(node);
+  return style?.display !== 'none'
+    && style?.visibility !== 'hidden'
+    && Number(style?.opacity ?? 1) > 0;
+}
+
 function capsuleRecoveryOpen() {
   if (pointer()) return false;
   const workspace = doc.getElementById('workspace-save');
   const panel = doc.getElementById('ashReturnPanel');
   const run = doc.getElementById('runCustodianReturn');
-  if (!workspace?.classList.contains('active') || !panel || !run) return false;
-  const style = host.getComputedStyle?.(run);
-  return !run.disabled
-    && style?.display !== 'none'
-    && style?.visibility !== 'hidden'
-    && Number(style?.opacity ?? 1) > 0;
+  const file = doc.getElementById('returnCapsuleFile');
+  const returnBar = workspace?.querySelector('.capsule-recovery-navigation');
+  const explicitRecovery = Boolean(file?.files?.length)
+    || visible(returnBar)
+    || doc.body.dataset.ashCapsuleRecoveryMode === 'true';
+  return Boolean(
+    workspace?.classList.contains('active')
+      && panel
+      && run
+      && !run.disabled
+      && visible(run)
+      && explicitRecovery
+  );
 }
 
 function exactWork(caseOpen, recoveryOpen) {
@@ -124,6 +139,7 @@ function installRecoveryObserver() {
     attributes:true,
     attributeFilter:['class','hidden']
   });
+  doc.getElementById('returnCapsuleFile')?.addEventListener('change', () => queueMicrotask(() => reconcile('RECOVERY_FILE_CHANGED')));
 }
 
 async function boot() {
