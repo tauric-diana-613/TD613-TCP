@@ -1,4 +1,4 @@
-export const ASH_FLOWCORE_INGRESS_PORTAL_VERSION = 'td613.ash.flowcore-ingress-portal/v0.1-single-visible-field';
+export const ASH_FLOWCORE_INGRESS_PORTAL_VERSION = 'td613.ash.flowcore-ingress-portal/v0.2-single-visible-field-styled';
 
 const host = globalThis.window;
 const doc = globalThis.document;
@@ -20,6 +20,60 @@ function ingressHost() {
 
 function stageHost() {
   return doc.querySelector('#ashAiaMembrane [data-aia-stage], .ash-aia__stage');
+}
+
+function ensurePortalStyles() {
+  if (doc.getElementById('td613-ash-flowcore-ingress-portal-css')) return;
+  const style = doc.createElement('style');
+  style.id = 'td613-ash-flowcore-ingress-portal-css';
+  style.textContent = `
+    .guided-launch-promise.ash-flowcore-ingress-host{
+      display:block!important;
+      grid-column:1/-1!important;
+      width:100%!important;
+      max-width:none!important;
+      margin:12px 0 14px!important;
+      padding:0!important;
+      border-color:rgba(118,234,212,.22)!important;
+      border-radius:14px!important;
+      overflow:hidden!important;
+      background:#010705!important;
+    }
+    .ash-flowcore-field[data-flowcore-host="ingress"]{
+      min-height:0!important;
+      padding:13px!important;
+    }
+    .ash-flowcore-field[data-flowcore-host="ingress"] .ash-flowcore-field__canvas{
+      min-height:280px!important;
+    }
+    .ash-flowcore-field[data-flowcore-host="ingress"] .ash-flowcore-field__canvas svg{
+      min-height:280px!important;
+    }
+    .ash-flowcore-field__play{
+      position:relative;
+      z-index:4;
+      flex:0 0 auto;
+      min-height:34px;
+      padding:7px 10px;
+      border:1px solid rgba(228,198,108,.5);
+      border-radius:9px;
+      background:rgba(228,198,108,.065);
+      color:var(--fc-gold,#e4c66c);
+      font:700 .56rem/1.2 var(--mono,ui-monospace,monospace);
+      text-transform:uppercase;
+      cursor:pointer;
+    }
+    .ash-flowcore-field__play:hover{background:rgba(228,198,108,.12)}
+    .ash-flowcore-field__play:focus-visible{outline:2px solid var(--fc-mint,#76ead4);outline-offset:3px}
+    .ash-flowcore-field--proxy{display:none!important}
+    @media(max-width:760px){
+      .guided-launch-promise.ash-flowcore-ingress-host{margin:8px 0 10px!important}
+      .ash-flowcore-field[data-flowcore-host="ingress"]{padding:8px!important}
+      .ash-flowcore-field[data-flowcore-host="ingress"] .ash-flowcore-field__header{grid-template-columns:1fr!important}
+      .ash-flowcore-field__play{justify-self:start}
+    }
+  `;
+  doc.head.append(style);
 }
 
 function stripDuplicateIds(root) {
@@ -171,6 +225,7 @@ function installObserver() {
 
 export function installAshFlowcoreIngressPortal() {
   if (!host || !doc?.body || host.__td613AshFlowcoreIngressPortal) return false;
+  ensurePortalStyles();
   installObserver();
   for (const type of ['aia-ready','aia3-ready','composition-stable','case-opened','case-created','profile-demo-hydrated','case-closed','session-boundary-reconciled']) {
     host.addEventListener(`td613:ash:${type}`, () => queueMicrotask(() => sync(type.toUpperCase())));
