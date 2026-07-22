@@ -34,6 +34,8 @@ import './ash-ui-ux-rescue.js?v=20260721-legal-demo-ux-v1';
 import './ash-flowcore-pedagogy-field.js?v=20260721-flowcore-live-field-v1';
 // AIA receives one visible Flow-Core field; explicit legacy rollback bypasses the portal entirely.
 import './ash-flowcore-ingress-portal-loader.js?v=20260722-flowcore-observer-hotfix-v3';
+// Keep the Flow-Core topology and inherited one-dimensional lesson rail visible together after ingress.
+import './ash-post-ingress-motion-restoration.js?v=20260722-event-bound-geometry-v2';
 import './ash-composition-receipt-compatibility.js?v=20260721-legal-demo-ux-v1';
 import './ash-demo-entry-convergence.js?v=20260721-legal-demo-ux-v1';
 import './ash-demo-pedagogy-routebar.js?v=20260721-legal-demo-ux-v1';
