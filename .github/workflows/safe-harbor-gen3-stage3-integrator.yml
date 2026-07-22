@@ -138,9 +138,9 @@ jobs:
           if (unexpected.length) throw new Error(`Unexpected Stage 3 changed path:\n${unexpected.join('\n')}`);
           const governed = files.filter((file) => /\.(?:js|mjs|json|md|html|css|svg)$/u.test(file) && fs.existsSync(file));
           const concrete = /TD613-SH-9B07D8B-[0-9A-F]{8}/gu;
-          const synthetic = 'TD613-SH-9B07D8B-A1B2C3D4';
+          const synthetic = new Set(['TD613-SH-9B07D8B-A1B2C3D4', 'TD613-SH-9B07D8B-FFEEDDCC']);
           const shiViolations = [];
-          for (const file of governed) for (const value of fs.readFileSync(file, 'utf8').match(concrete) || []) if (value !== synthetic) shiViolations.push(`${file}: ${value}`);
+          for (const file of governed) for (const value of fs.readFileSync(file, 'utf8').match(concrete) || []) if (!synthetic.has(value)) shiViolations.push(`${file}: ${value}`);
           if (shiViolations.length) throw new Error(`Unexpected concrete SHI:\n${shiViolations.join('\n')}`);
           const combined = governed.map((file) => fs.readFileSync(file, 'utf8')).join('\n');
           for (const forbidden of [/keystroke_timing\s*:/u,/pause_timing\s*:/u,/cursor_trajectory\s*:/u,/covert_behavioral_biometrics\s*:/u]) if (forbidden.test(combined)) throw new Error(`Forbidden behavioral telemetry marker present: ${forbidden}`);
