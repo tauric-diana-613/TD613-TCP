@@ -1,4 +1,4 @@
-export const ASH_SESSION_BOUNDARY_VERSION = 'td613.ash.session-boundary/v0.3-pointer-governs-case-explicit-recovery-stays-open';
+export const ASH_SESSION_BOUNDARY_VERSION = 'td613.ash.session-boundary/v0.4-pointer-governs-case-recovery-replay-stays-open';
 
 const host = globalThis.window;
 const doc = globalThis.document;
@@ -38,10 +38,12 @@ function capsuleRecoveryOpen() {
   const workspace = doc.getElementById('workspace-save');
   const panel = doc.getElementById('ashReturnPanel');
   const run = doc.getElementById('runCustodianReturn');
+  const replay = doc.getElementById('replayCustodianReturn');
   const file = doc.getElementById('returnCapsuleFile');
   const returnBar = workspace?.querySelector('.capsule-recovery-navigation');
   const explicitRecovery = Boolean(file?.files?.length)
     || visible(returnBar)
+    || Boolean(replay && !replay.disabled && visible(replay))
     || doc.body.dataset.ashCapsuleRecoveryMode === 'true';
   return Boolean(
     workspace?.classList.contains('active')
@@ -133,14 +135,14 @@ function installRecoveryObserver() {
   const workspace = doc.getElementById('workspace-save');
   if (!workspace || recoveryObserver) return;
   recoveryObserver = new MutationObserver(records => {
-    if (!records.some(record => record.type === 'childList' || record.attributeName === 'class' || record.attributeName === 'hidden')) return;
+    if (!records.some(record => record.type === 'childList' || ['class','hidden','disabled'].includes(record.attributeName))) return;
     queueMicrotask(() => reconcile('RECOVERY_WORKSPACE_POSTURE_CHANGED'));
   });
   recoveryObserver.observe(workspace, {
     childList:true,
     subtree:true,
     attributes:true,
-    attributeFilter:['class','hidden']
+    attributeFilter:['class','hidden','disabled']
   });
   doc.getElementById('returnCapsuleFile')?.addEventListener('change', () => queueMicrotask(() => reconcile('RECOVERY_FILE_CHANGED')));
 }
@@ -166,7 +168,10 @@ async function boot() {
     queueMicrotask(() => reconcile('CAPSULE_OPENED'));
     host.setTimeout(() => reconcile('CAPSULE_OPENED_SETTLED'), 80);
   });
-  host.addEventListener('td613:ash:custodian-return', () => queueMicrotask(() => reconcile('CUSTODIAN_RETURN')));
+  host.addEventListener('td613:ash:custodian-return', () => {
+    queueMicrotask(() => reconcile('CUSTODIAN_RETURN'));
+    host.setTimeout(() => reconcile('CUSTODIAN_RETURN_SETTLED'), 80);
+  });
   host.addEventListener('td613:ash:case-closed', () => {
     queueMicrotask(() => reconcile('CASE_CLOSED'));
     host.setTimeout(() => reconcile('CASE_CLOSED_SETTLED'), 80);
