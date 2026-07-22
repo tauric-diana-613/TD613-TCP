@@ -38,8 +38,8 @@ for (const marker of [
 
 assert.ok(source.includes("stage3Node ? 'gen3' : 'legacy'"), 'renderer must preserve legacy non-Safe-Harbor badge behavior while enforcing Gen3 packet inputs');
 assert.ok(source.includes('historical_example: HISTORICAL_EXAMPLE'));
-assert.ok(source.includes("binding_timestamp: '2025-08-11T03:58:39Z'"));
-assert.ok(source.includes("historical_date: '2025-10-17'"));
+assert.ok(source.includes("binding_timestamp: s3.td613BindingTimestamp || '2025-08-11T03:58:39Z'"), 'renderer must read declared Stage 3 binding authority and retain the canonical root fallback');
+assert.ok(source.includes("historical_date: s3.td613HistoricalDate || '2025-10-17'"), 'renderer must read declared Stage 3 badge-protocol history and retain the canonical historical fallback');
 assert.doesNotMatch(source, /TD613-SH-9B07D8B-(?!A1B2C3D4)[0-9A-F]{8}/gu, 'renderer must not contain a live entrant SHI');
 assert.doesNotMatch(source, /"(?:raw_text|entrant_text|window_text)"\s*:/iu, 'renderer metadata must not carry raw entrant text fields');
 
