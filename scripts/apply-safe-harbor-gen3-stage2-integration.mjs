@@ -44,6 +44,12 @@ replaceOnce(
 );
 
 replaceOnce(
+  'app/safe-harbor/app/safe-harbor-gen3-authorship-maturity.js',
+  "  if (family === 'punctuation_boundary') {\n    return round(average([\n      1 - scalarDistance(left.scalar.punctuation_density, right.scalar.punctuation_density),\n      cosineSimilarity(left.distributions.punctuation, right.distributions.punctuation),\n      cosineSimilarity(left.distributions.terminals, right.distributions.terminals)\n    ]), 6);\n  }",
+  "  if (family === 'punctuation_boundary') {\n    const densitySimilarity = 1 - scalarDistance(left.scalar.punctuation_density, right.scalar.punctuation_density);\n    const punctuationSimilarity = cosineSimilarity(left.distributions.punctuation, right.distributions.punctuation);\n    const terminalSimilarity = cosineSimilarity(left.distributions.terminals, right.distributions.terminals);\n    return round(Math.min(densitySimilarity, punctuationSimilarity, terminalSimilarity), 6);\n  }"
+);
+
+replaceOnce(
   'package.json',
   '    "test:safe-harbor:gen3:stage1": "node tests/safe-harbor-gen3-stage1-evidence-contract.test.mjs",\n',
   '    "test:safe-harbor:gen3:stage1": "node tests/safe-harbor-gen3-stage1-evidence-contract.test.mjs",\n    "test:safe-harbor:gen3:stage2": "node tests/safe-harbor-gen3-stage2-authorship-maturity.test.mjs && node tests/safe-harbor-gen3-stage2-controls.test.mjs",\n    "test:safe-harbor:gen3:wave-a": "npm run test:safe-harbor:gen3:stage1 && node tests/safe-harbor-gen3-stage1-report-contract.test.mjs && node tests/safe-harbor-gen3-stage1-schema-contract.test.mjs && npm run test:safe-harbor:gen3:stage2 && node tests/safe-harbor-gen3-stage2-integration.test.mjs",\n'
