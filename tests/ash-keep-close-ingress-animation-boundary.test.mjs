@@ -21,6 +21,19 @@ for (const token of [
   'pointer_authoritative_session:true',
   'current:() => activeCasePointer() ? current()',
   "case_id:null",
+  'function openPresentationMatches()',
+  'function releaseOpenPresentation(',
+  'function settleOpenPresentation(',
+  "setData(doc.documentElement, 'ashSessionOpen', 'true')",
+  "setData(doc.body, 'ashAiaCaseOpen', 'true')",
+  "launch?.classList.add('hidden')",
+  'setInert(main, false)',
+  'setInert(rail, false)',
+  "host.__td613AshIngressLayout?.openSession?.()",
+  "td613:ash:open-workspace-restored",
+  "'case-opened', 'profile-demo-hydrated'",
+  "POINTER_PRESENT_MUTATION_REPAIR",
+  "BOOT_WITH_ACTIVE_POINTER",
   "setData(doc.documentElement, 'ashSessionOpen', 'false')",
   "launch?.classList.remove('hidden')",
   'setInert(main, true)',
@@ -33,7 +46,7 @@ for (const token of [
   'Research project demo available.',
   'function closedPresentationMatches()',
   "if (closedPresentationMatches() && !localValue(SESSION_EPOCH_KEY)) return true",
-  "if (!activeCasePointer() && !closedPresentationMatches())",
+  "POINTER_ABSENT_MUTATION_REPAIR",
   "td613:ash:close-ingress-restored",
   "for (const delay of [80, 240, 800])",
   "type === 'case-closed'",
@@ -64,8 +77,8 @@ for (const token of [
 
 assert.match(boundary, /#launch \.launch-panel>\*\{position:relative!important;inset:auto!important;transform:none!important\}/,
   'Closed ingress does not normalize direct-child copy flow.');
-assert.match(boundary, /#launch \.launch-panel>p,[\s\S]*#launch \.launch-panel>\[role="note"\]/,
-  'Closed ingress does not keep explanatory copy in normal document flow.');
+assert.match(boundary, /#capsuleRecoveryLaunchDescription\{position:static!important;grid-column:1\/-1!important;grid-row:auto!important/,
+  'Capsule recovery description can still collide with primary ingress copy.');
 
 assert.ok(aia.includes("$('[data-aia-play]').onclick = playExplanation;"),
   'Explanation animation lost its explicit play gesture.');
