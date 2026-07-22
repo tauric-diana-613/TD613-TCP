@@ -5,6 +5,7 @@ import { applyPublicDefaultGate } from './safe-harbor-public-default-gate.js?v=2
 import { applyReleaseDiscipline } from './safe-harbor-release-discipline.js';
 import { SAFE_HARBOR_RUNTIME_MARKERS } from './safe-harbor-policy-constants.js';
 import { verifyHashReplay } from './safe-harbor-authority-verifier.js?v=202606290125';
+import { finalizeGen3Stage1Overlay } from './safe-harbor-gen3-evidence-contract.js';
 
 export const PIPELINE_VERSION = 'safe-harbor-packet-pipeline/v2-phase9-1-maintenance-seal-stabilized-runtime';
 
@@ -96,9 +97,17 @@ export async function finalizePacketThroughPipeline(packet, saved, options = {})
     includePhase5: true,
     includeTamperFixtures: Boolean(options.includeTamperFixtures),
     allowV3Rebuild: false,
-    rawTextExportAllowed: false
+    rawTextExportAllowed: false,
+    includeGen3Stage1: true,
+    gen3Context: {
+      promptSetVersion: options.promptSetVersion || 'temporal-triad/v2',
+      uiVersion: options.uiVersion || 'pre-temporal-bloom',
+      reducedMotion: Boolean(options.reducedMotion),
+      promptTextDigests: options.promptTextDigests || {}
+    }
   });
-  return normalizePacketThroughPipeline(finalized, saved, { ...options, skipFinalize: true });
+  const overlaid = finalizeGen3Stage1Overlay(finalized);
+  return normalizePacketThroughPipeline(overlaid, saved, { ...options, skipFinalize: true });
 }
 
 export async function normalizePacketThroughPipeline(packet, saved, options = {}) {

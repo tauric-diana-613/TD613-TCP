@@ -64,6 +64,17 @@ function packetFixture() {
       sac: 'SAC[X6ZNK5NO51]',
       footer_mode: 'legacy-compat'
     },
+    binding_provenance: {
+      schema_version: 'td613.safe-harbor.binding-provenance/v1',
+      principal: 'tauric.diana.613',
+      claim: {},
+      canonical_declaration: {},
+      binding_event: { recorded_ts_utc: '2025-08-11T03:58:39Z' },
+      legacy_corpus_root: {},
+      symbol_roles: {},
+      evidence_status: {},
+      claim_ceiling: 'Synthetic fixture; packet-internal custody only.'
+    },
     intake: { ts_utc: '2026-07-22T00:00:00Z', status: 'issued' },
     analysis: {
       segment_cadence_signatures: signatures,
@@ -91,6 +102,9 @@ assert.deepEqual(sufficiency.checkpoint_targets, [120, 240, 360]);
 assert.equal(buildSamplingSufficiency({ future_self: makeWords('a', 119), past_self: makeWords('b', 120), higher_self: makeWords('c', 240) }).lanes.future_self.state, 'insufficient');
 assert.equal(buildSamplingSufficiency({ future_self: makeWords('a', 119), past_self: makeWords('b', 120), higher_self: makeWords('c', 240) }).lanes.past_self.state, 'provisional');
 assert.equal(buildSamplingSufficiency({ future_self: makeWords('a', 119), past_self: makeWords('b', 120), higher_self: makeWords('c', 240) }).lanes.higher_self.state, 'comparative');
+assert.equal(buildSamplingSufficiency({ future_self: makeWords('a', 239), past_self: makeWords('b', 359), higher_self: makeWords('c', 360) }).lanes.future_self.state, 'provisional');
+assert.equal(buildSamplingSufficiency({ future_self: makeWords('a', 239), past_self: makeWords('b', 359), higher_self: makeWords('c', 360) }).lanes.past_self.state, 'comparative');
+assert.equal(buildSamplingSufficiency({ future_self: makeWords('a', 239), past_self: makeWords('b', 359), higher_self: makeWords('c', 360) }).lanes.higher_self.state, 'stability-eligible');
 
 const prehash = applyGen3Stage1Prehash(packetFixture(), { segments, promptSetVersion: 'temporal-triad/v2' });
 assert.equal(prehash.canon.shi_number, prehash.issuance.badge_number);
@@ -101,12 +115,22 @@ assert.equal(prehash.authorship_evidence.elicitation_context.keystroke_telemetry
 assert.equal(evidenceContractContainsRawText(prehash), false);
 assert.equal(JSON.stringify(prehash.authorship_evidence).includes(segments.future_self), false);
 
-const finalized = await finalizeSafeHarborPacket(prehash, {
+const baselineFinalized = await finalizeSafeHarborPacket(packetFixture(), {
   mode: 'native',
   segments,
   includePhase5: true,
   includeTamperFixtures: false
 });
+const finalized = await finalizeSafeHarborPacket(packetFixture(), {
+  mode: 'native',
+  segments,
+  includePhase5: true,
+  includeTamperFixtures: false,
+  includeGen3Stage1: true,
+  gen3Context: { promptSetVersion: 'temporal-triad/v2' }
+});
+assert.equal(finalized.issuance.stylometric_fingerprint_v3, baselineFinalized.issuance.stylometric_fingerprint_v3, 'Stage 1 must not migrate the SH3 fingerprint preimage');
+assert.equal(finalized.issuance.badge_number_v3, baselineFinalized.issuance.badge_number_v3, 'Stage 1 must not migrate the SH3 credential');
 const overlaid = finalizeGen3Stage1Overlay(finalized);
 assert.equal(overlaid.binding_provenance.entrant_authorship_binding.entrant_credential.packet_hash_sha256, finalized.packet_hash_sha256);
 assert.equal(overlaid.binding_provenance.entrant_authorship_binding.entrant_credential.shi_number, finalized.issuance.badge_number);
