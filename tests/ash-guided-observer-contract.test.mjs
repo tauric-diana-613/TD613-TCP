@@ -44,10 +44,15 @@ assert.doesNotMatch(convergenceRunner,
 assert.doesNotMatch(convergenceRunner, /await page\.locator\('#startDemo'\)\.click\(\);\n  await page\.waitForFunction\(\(\) => \/Glasshouse Archive/,
   'Convergence observer retained an unprofiled legacy demo launch');
 assert.doesNotMatch(convergenceRunner, /const runtime = source\.replace\(readinessTarget, readinessReplacement\)\.replace\(deletionTarget/);
-assert.match(profileFixtureCompiler, /profile_demo_registry_ready: true/);
+assert.match(profileFixtureCompiler, /profile_demo_registry_deferred_until_selection: true/);
+assert.match(profileFixtureCompiler, /boot_readiness\.profile_demo_registry_ready = true/);
+assert.match(profileFixtureCompiler, /demo_entry_convergence_deferred_until_case_hydration: true/);
+assert.match(profileFixtureCompiler, /demo_entry_api_ready_after_hydration: true/);
+assert.match(profileFixtureCompiler, /convergenceApi\?\.version/);
 assert.match(profileFixtureCompiler, /profile_selected_explicitly: true/);
 assert.match(profileFixtureCompiler, /window\.__td613AshProfileDemos\?\.profiles\?\.includes\('political_campaign'\)/);
 assert.match(profileFixtureCompiler, /function isConvergencePrepared/);
+assert.match(profileFixtureCompiler, /v0\.4-five-demo-deferred-entry/);
 assert.doesNotMatch(profileFixtureCompiler, /profile_demo_ready: true/,
   'Closure fixture compiler still recognizes the superseded convergence readiness marker');
 assert.match(lifecycle, /selectOption\('political_campaign'\)/);
