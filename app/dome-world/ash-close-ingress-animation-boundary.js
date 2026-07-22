@@ -1,4 +1,4 @@
-export const ASH_CLOSE_INGRESS_ANIMATION_BOUNDARY_VERSION = 'td613.ash.close-ingress-animation-boundary/v0.7-bidirectional-session-with-isolated-return';
+export const ASH_CLOSE_INGRESS_ANIMATION_BOUNDARY_VERSION = 'td613.ash.close-ingress-animation-boundary/v0.8-coalesced-exact-surface-observer';
 
 const host = globalThis.window;
 const doc = globalThis.document;
@@ -7,6 +7,7 @@ const SESSION_EPOCH_KEY = 'td613.ash.session.epoch';
 const REDUCED = () => host?.matchMedia?.('(prefers-reduced-motion: reduce)').matches === true;
 let observer = null;
 let enforcing = false;
+let repairQueued = false;
 let settleToken = 0;
 
 const byId = id => doc?.getElementById(id);
@@ -341,25 +342,40 @@ function installStyles() {
   doc.head.append(style);
 }
 
-function installObserver() {
-  if (observer) return;
-  observer = new MutationObserver(() => {
+function repairFromCurrentState() {
+  if (repairQueued) return;
+  repairQueued = true;
+  queueMicrotask(() => {
+    repairQueued = false;
     ensureAnimationAffordance();
     const pointer = activeCasePointer();
     if (pointer && !openPresentationMatches()) {
-      queueMicrotask(() => releaseOpenPresentation('POINTER_PRESENT_MUTATION_REPAIR'));
+      releaseOpenPresentation('POINTER_PRESENT_MUTATION_REPAIR');
       return;
     }
-    if (!pointer && recoveryPresentationRequested() && !recoveryPresentationMatches()) {
-      queueMicrotask(() => releaseRecoveryPresentation('RECOVERY_REQUEST_MUTATION_REPAIR'));
+    if (!pointer && recoveryPresentationRequested()) {
+      if (!recoveryPresentationMatches()) releaseRecoveryPresentation('RECOVERY_REQUEST_MUTATION_REPAIR');
       return;
     }
-    if (!pointer && !recoveryPresentationRequested() && !closedPresentationMatches()) {
-      queueMicrotask(() => enforceClosedPresentation('POINTER_ABSENT_MUTATION_REPAIR'));
-    }
+    if (!pointer && !closedPresentationMatches()) enforceClosedPresentation('POINTER_ABSENT_MUTATION_REPAIR');
   });
+}
+
+function installObserver() {
+  if (observer) return;
+  observer = new MutationObserver(repairFromCurrentState);
   observer.observe(doc.documentElement, { attributes:true, attributeFilter:['class','data-ash-session-open'] });
-  observer.observe(doc.body, { attributes:true, childList:true, subtree:true, attributeFilter:['class','hidden','inert','aria-hidden','data-ash-aia-case-open','style'] });
+  observer.observe(doc.body, { attributes:true, attributeFilter:['data-ash-aia-case-open'] });
+  const surfaces = [
+    byId('launch'),
+    doc.querySelector('body > main'),
+    doc.querySelector('body > .workspace-rail'),
+    byId('workspace-save')
+  ].filter(Boolean);
+  for (const surface of surfaces) {
+    observer.observe(surface, { attributes:true, attributeFilter:['class','hidden','inert','aria-hidden','style'] });
+  }
+  setData(doc.documentElement, 'ashSessionObserverScope', 'EXACT_SURFACES');
 }
 
 export function installAshCloseIngressAnimationBoundary() {
@@ -409,6 +425,7 @@ export function installAshCloseIngressAnimationBoundary() {
       open_presentation_matches:openPresentationMatches(),
       recovery_requested:recoveryPresentationRequested(),
       recovery_presentation_matches:recoveryPresentationMatches(),
+      observer_scope:doc.documentElement.dataset.ashSessionObserverScope || null,
       demo_control_busy:byId('startDemo')?.getAttribute('aria-busy') === 'true'
     })
   });
