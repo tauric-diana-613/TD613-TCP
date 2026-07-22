@@ -35,6 +35,7 @@ assert.match(boundary, /function capsuleRecoveryOpen\(\)/);
 assert.match(boundary, /Boolean\(file\?\.files\?\.length\)/);
 assert.match(boundary, /visible\(returnBar\)/);
 assert.match(boundary, /const interactive = caseOpen \|\| recoveryOpen/);
+assert.match(boundary, /if \(caseOpen\)[\s\S]*?rail\.removeAttribute\('inert'\)[\s\S]*?else[\s\S]*?rail\.setAttribute\('inert',''\)/);
 assert.match(boundary, /RECOVERY_FILE_CHANGED/);
 assert.match(boundary, /CAPSULE_OPENED_SETTLED/);
 assert.match(boundary, /host\.__td613AshKeep = facade/);
@@ -43,11 +44,14 @@ assert.match(boundary, /launch\?\.classList\.remove\('hidden'\)/);
 assert.doesNotMatch(boundary, /indexedDB\.deleteDatabase/);
 assert.match(closeRepair, /localStorage\.removeItem\(POINTER_KEY\)/);
 
-assert.match(ingressSpacing, /v0\.1-title-recovery-primary-order/);
+assert.match(ingressSpacing, /v0\.2-two-dimensional-overlap/);
 assert.match(ingressSpacing, /title\.insertAdjacentElement\('afterend', recovery\)/);
 assert.match(ingressSpacing, /recovery\.insertAdjacentElement\('afterend', primary\)/);
-assert.match(ingressSpacing, /margin-top:10px!important/);
-assert.match(ingressSpacing, /overlap_px:overlap/);
+assert.match(ingressSpacing, /margin-top:6px!important/);
+assert.match(ingressSpacing, /margin-top:2px!important/);
+assert.match(ingressSpacing, /Math\.min\(a\.right, b\.right\)/);
+assert.match(ingressSpacing, /overlap_area:collision\.area/);
+assert.match(ingressSpacing, /overlap_px:collision\.area > 0 \? collision\.height : 0/);
 assert.match(ingressSpacing, /ordered:title\.nextElementSibling === recovery/);
 assert.doesNotMatch(ingressSpacing, /setInterval\s*\(|requestAnimationFrame\s*\(/);
 
