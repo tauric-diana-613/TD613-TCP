@@ -4,11 +4,11 @@
 
 𝌋‌ TD613 · Tauric Diana 613
 
-**Receipt state:** DIAGNOSTIC RERUN REQUESTED  
+**Receipt state:** ARTIFACT DIAGNOSTIC RERUN REQUESTED  
 **Planning authority:** PR #483  
 **Stage 1 authority:** PR #492 / `c7d26b86a167c9901cd6ab4de4d3d9b5e6a66718`  
 **Implementation PR:** PR #499  
-**Prior failed run:** `29955662509` / recurrence test only / no integration commit  
+**Prior failed runs:** `29955662509`, `29955846822` / recurrence test only / no integration commit  
 **Production effect:** none until Release Wave A  
 **Serverless functions added:** 0
 
@@ -51,7 +51,7 @@ The gate must preserve and verify:
 
 ## Diagnostic boundary
 
-The temporary integrator now posts only the last 80 lines of a failed recurrence test to this PR. It does not change assertions, runtime code, hash policy, or deployment authority.
+The temporary integrator preserves a failed recurrence-test log as a seven-day Actions artifact. It does not change assertions, runtime code, hash policy, or deployment authority.
 
 ## Release boundary
 
