@@ -37,7 +37,9 @@ jobs:
           cache: npm
 
       - name: Apply bounded Wave B release-gate seams
-        run: node scripts/apply-safe-harbor-gen3-wave-b-release-gate.mjs
+        run: |
+          node scripts/apply-safe-harbor-gen3-wave-b-release-gate.mjs
+          node scripts/normalize-safe-harbor-gen3-wave-b-probe-fixtures.mjs
 
       - name: Install dependencies
         run: npm ci
@@ -88,7 +90,8 @@ jobs:
             'tests/vercel-operator-release-gate.test.mjs',
             'docs/safe-harbor/gen3-wave-b-release-gate-receipt.md',
             'docs/safe-harbor/README.md',
-            'scripts/apply-safe-harbor-gen3-wave-b-release-gate.mjs'
+            'scripts/apply-safe-harbor-gen3-wave-b-release-gate.mjs',
+            'scripts/normalize-safe-harbor-gen3-wave-b-probe-fixtures.mjs'
           ]);
           const unexpected = files.filter((file) => !allowed.has(file));
           if (unexpected.length) throw new Error(`Wave B release gate changed unauthorized paths:\n${unexpected.join('\n')}`);
@@ -113,8 +116,10 @@ jobs:
           console.log(`Wave B release-gate hygiene passed across ${files.length} changed paths.`);
           NODE
 
-      - name: Remove temporary Wave B patcher
-        run: rm scripts/apply-safe-harbor-gen3-wave-b-release-gate.mjs
+      - name: Remove temporary Wave B patchers
+        run: |
+          rm scripts/apply-safe-harbor-gen3-wave-b-release-gate.mjs
+          rm scripts/normalize-safe-harbor-gen3-wave-b-probe-fixtures.mjs
 
       - name: Commit tested Wave B release gate
         run: |
