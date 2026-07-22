@@ -1,8 +1,9 @@
-export const ASH_CLOSE_INGRESS_ANIMATION_BOUNDARY_VERSION = 'td613.ash.close-ingress-animation-boundary/v0.2-pointer-authoritative-core-view';
+export const ASH_CLOSE_INGRESS_ANIMATION_BOUNDARY_VERSION = 'td613.ash.close-ingress-animation-boundary/v0.3-idempotent-pointer-authority';
 
 const host = globalThis.window;
 const doc = globalThis.document;
 const POINTER_KEY = 'td613.ash-keep.current-case';
+const SESSION_EPOCH_KEY = 'td613.ash.session.epoch';
 const REDUCED = () => host?.matchMedia?.('(prefers-reduced-motion: reduce)').matches === true;
 let observer = null;
 let enforcing = false;
@@ -12,6 +13,11 @@ const byId = id => doc?.getElementById(id);
 
 function activeCasePointer() {
   try { return host?.localStorage?.getItem?.(POINTER_KEY) || null; }
+  catch { return null; }
+}
+
+function localValue(key) {
+  try { return host?.localStorage?.getItem?.(key) || null; }
   catch { return null; }
 }
 
@@ -36,24 +42,31 @@ function setAttribute(node, name, value) {
   return true;
 }
 
+function setData(node, key, value) {
+  if (!node || node.dataset[key] === value) return false;
+  node.dataset[key] = value;
+  return true;
+}
+
 function setInert(node, inert) {
   if (!node) return false;
+  let changed = false;
   if (inert) {
-    if (!node.hasAttribute('inert')) node.setAttribute('inert', '');
-    setAttribute(node, 'aria-hidden', 'true');
+    if (!node.hasAttribute('inert')) { node.setAttribute('inert', ''); changed = true; }
+    changed = setAttribute(node, 'aria-hidden', 'true') || changed;
   } else {
-    node.removeAttribute('inert');
-    node.removeAttribute('aria-hidden');
+    if (node.hasAttribute('inert')) { node.removeAttribute('inert'); changed = true; }
+    if (node.hasAttribute('aria-hidden')) { node.removeAttribute('aria-hidden'); changed = true; }
   }
-  return true;
+  return changed;
 }
 
 function ensureAnimationAffordance() {
   const play = doc?.querySelector?.('[data-aia-play]');
   if (!play) return false;
-  play.dataset.ashArtifactRequired = 'false';
-  play.title = 'Runs immediately. No artifact upload is required.';
-  play.setAttribute('aria-label', 'Play the four-step explanation; no artifact upload is required');
+  if (play.dataset.ashArtifactRequired !== 'false') play.dataset.ashArtifactRequired = 'false';
+  if (play.title !== 'Runs immediately. No artifact upload is required.') play.title = 'Runs immediately. No artifact upload is required.';
+  if (play.getAttribute('aria-label') !== 'Play the four-step explanation; no artifact upload is required') play.setAttribute('aria-label', 'Play the four-step explanation; no artifact upload is required');
 
   let note = byId('ashExplanationAvailability');
   if (!note) {
@@ -63,28 +76,55 @@ function ensureAnimationAffordance() {
     note.setAttribute('role', 'note');
     play.closest('.ash-aia__guide-head')?.insertAdjacentElement('afterend', note);
   }
-  note.textContent = REDUCED()
+  const copy = REDUCED()
     ? 'Ready now · no artifact upload required. Reduced motion is on, so Ash shows the four deterministic frames statically.'
     : 'Ready now · no artifact upload required. Compact screens use the four-step motion track.';
-  doc.documentElement.dataset.ashExplanationArtifactGate = 'NONE';
-  doc.documentElement.dataset.ashExplanationPresentation = REDUCED() ? 'STATIC_REDUCED_MOTION' : 'FINITE_FOUR_STEP_MOTION';
+  if (note.textContent !== copy) note.textContent = copy;
+  setData(doc.documentElement, 'ashExplanationArtifactGate', 'NONE');
+  setData(doc.documentElement, 'ashExplanationPresentation', REDUCED() ? 'STATIC_REDUCED_MOTION' : 'FINITE_FOUR_STEP_MOTION');
   return true;
+}
+
+function closedPresentationMatches() {
+  if (!doc?.documentElement || activeCasePointer()) return false;
+  const launch = byId('launch');
+  const main = doc.querySelector('body > main');
+  const rail = doc.querySelector('body > .workspace-rail');
+  return Boolean(launch && main && rail)
+    && doc.documentElement.dataset.ashSessionOpen === 'false'
+    && doc.body.dataset.ashAiaCaseOpen === 'false'
+    && !doc.documentElement.classList.contains('ash-has-current-case')
+    && !launch.classList.contains('hidden')
+    && !launch.hasAttribute('inert')
+    && launch.getAttribute('aria-hidden') !== 'true'
+    && main.hasAttribute('inert')
+    && main.getAttribute('aria-hidden') === 'true'
+    && rail.hasAttribute('inert')
+    && rail.getAttribute('aria-hidden') === 'true'
+    && host.__td613AshKeep?.pointer_authoritative_session === true
+    && host.__td613AshKeep?.current?.().case_id == null;
 }
 
 function enforceClosedPresentation(reason = 'SESSION_POINTER_CLEARED') {
   if (!doc?.documentElement || activeCasePointer() || enforcing) return false;
+  installPointerAuthoritativeCoreView();
+  ensureAnimationAffordance();
+  if (closedPresentationMatches() && !localValue(SESSION_EPOCH_KEY)) return true;
+
   enforcing = true;
   try {
-    installPointerAuthoritativeCoreView();
     const launch = byId('launch');
     const main = doc.querySelector('body > main');
     const rail = doc.querySelector('body > .workspace-rail');
+    const closeLayout = doc.documentElement.dataset.ashSessionOpen !== 'false'
+      || launch?.classList.contains('hidden')
+      || Boolean(localValue(SESSION_EPOCH_KEY));
 
     doc.documentElement.classList.remove('ash-has-current-case');
-    doc.documentElement.dataset.ashSessionOpen = 'false';
-    doc.documentElement.dataset.ashCloseIngressBoundary = reason;
-    doc.body.dataset.ashAiaCaseOpen = 'false';
-    doc.body.dataset.ashCaseClosed = 'true';
+    setData(doc.documentElement, 'ashSessionOpen', 'false');
+    setData(doc.documentElement, 'ashCloseIngressBoundary', reason);
+    setData(doc.body, 'ashAiaCaseOpen', 'false');
+    setData(doc.body, 'ashCaseClosed', 'true');
 
     launch?.classList.remove('hidden');
     launch?.removeAttribute('inert');
@@ -101,9 +141,8 @@ function enforceClosedPresentation(reason = 'SESSION_POINTER_CLEARED') {
       delete rail.dataset.ashAiaExactNavigation;
     }
 
-    host.__td613AshIngressLayout?.closeSession?.();
-    ensureAnimationAffordance();
-    doc.documentElement.dataset.ashMembraneReady = 'true';
+    if (closeLayout) host.__td613AshIngressLayout?.closeSession?.();
+    setData(doc.documentElement, 'ashMembraneReady', 'true');
     host.dispatchEvent(new CustomEvent('td613:ash:close-ingress-restored', {
       detail:{ version:ASH_CLOSE_INGRESS_ANIMATION_BOUNDARY_VERSION, reason, case_pointer:null, animation_artifact_required:false }
     }));
@@ -140,7 +179,7 @@ function installObserver() {
   if (observer) return;
   observer = new MutationObserver(() => {
     ensureAnimationAffordance();
-    if (!activeCasePointer()) queueMicrotask(() => enforceClosedPresentation('POINTER_ABSENT_MUTATION_REPAIR'));
+    if (!activeCasePointer() && !closedPresentationMatches()) queueMicrotask(() => enforceClosedPresentation('POINTER_ABSENT_MUTATION_REPAIR'));
   });
   observer.observe(doc.documentElement, { attributes:true, attributeFilter:['class','data-ash-session-open'] });
   observer.observe(doc.body, { attributes:true, childList:true, subtree:true, attributeFilter:['class','hidden','inert','aria-hidden','data-ash-aia-case-open'] });
@@ -178,7 +217,8 @@ export function installAshCloseIngressAnimationBoundary() {
       animation_artifact_required:false,
       reduced_motion:REDUCED(),
       explanation_presentation:doc.documentElement.dataset.ashExplanationPresentation || null,
-      core_pointer_authoritative:Boolean(host.__td613AshKeep?.pointer_authoritative_session)
+      core_pointer_authoritative:Boolean(host.__td613AshKeep?.pointer_authoritative_session),
+      closed_presentation_matches:closedPresentationMatches()
     })
   });
   doc.documentElement.dataset.ashCloseIngressAnimationBoundary = ASH_CLOSE_INGRESS_ANIMATION_BOUNDARY_VERSION;
