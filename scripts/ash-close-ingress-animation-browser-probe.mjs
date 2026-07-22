@@ -118,6 +118,7 @@ async function runViewport(browser, label, viewport, report) {
       const boundary = window.__td613AshCloseIngressAnimationBoundary?.current?.() || null;
       const main = document.querySelector('body > main');
       const rail = document.querySelector('body > .workspace-rail');
+      const button = document.getElementById('startDemo');
       const style = launch ? getComputedStyle(launch) : null;
       return !localStorage.getItem('td613.ash-keep.current-case')
         && window.__td613AshKeep?.current?.().case_id == null
@@ -127,7 +128,11 @@ async function runViewport(browser, label, viewport, report) {
         && main?.hasAttribute('inert') && rail?.hasAttribute('inert')
         && boundary?.session_open === false
         && boundary?.launch_visible === true
-        && boundary?.core_pointer_authoritative === true;
+        && boundary?.core_pointer_authoritative === true
+        && boundary?.demo_control_busy === false
+        && button?.getAttribute('aria-busy') !== 'true'
+        && !button?.disabled
+        && !/opening|hydrating|compiling/i.test(button?.textContent || '');
     }, null, { timeout:20_000 });
 
     const afterClose = await countSavedCase(page, caseId);
@@ -135,17 +140,47 @@ async function runViewport(browser, label, viewport, report) {
     assert(afterClose.saved_case_present, `${label}: Close Case omitted the automatic close-boundary save record.`);
     assert(await visible(page, '#launch'), `${label}: ingress membrane remained hidden after Close Case.`);
 
-    const closed = await page.evaluate(() => ({
-      boundary:window.__td613AshCloseIngressAnimationBoundary.current(),
-      core:window.__td613AshKeep.current(),
-      launch_class:document.getElementById('launch')?.className || null,
-      main_inert:document.querySelector('body > main')?.hasAttribute('inert'),
-      rail_inert:document.querySelector('body > .workspace-rail')?.hasAttribute('inert'),
-      note:document.getElementById('ashExplanationAvailability')?.textContent || '',
-      selected_case_options:[...document.querySelectorAll('#selectCase option')].map(option => ({ value:option.value, label:option.textContent.trim() }))
-    }));
+    const closed = await page.evaluate(() => {
+      const panel = document.querySelector('#launch .launch-panel');
+      const copyNodes = [...(panel?.querySelectorAll(':scope > h2, :scope > p, :scope > [role="note"]') || [])]
+        .filter(node => {
+          const style = getComputedStyle(node), rect = node.getBoundingClientRect();
+          return style.display !== 'none' && style.visibility !== 'hidden' && rect.width > 0 && rect.height > 0;
+        })
+        .map((node, index) => {
+          const rect = node.getBoundingClientRect();
+          return { index, tag:node.tagName, id:node.id || null, text:(node.textContent || '').trim().slice(0,160), left:rect.left, top:rect.top, right:rect.right, bottom:rect.bottom };
+        });
+      const overlapPairs = [];
+      for (let left = 0; left < copyNodes.length; left += 1) {
+        for (let right = left + 1; right < copyNodes.length; right += 1) {
+          const a = copyNodes[left], b = copyNodes[right];
+          const width = Math.max(0, Math.min(a.right, b.right) - Math.max(a.left, b.left));
+          const height = Math.max(0, Math.min(a.bottom, b.bottom) - Math.max(a.top, b.top));
+          if (width > 2 && height > 2) overlapPairs.push({ left:a.id || `${a.tag}:${a.index}`, right:b.id || `${b.tag}:${b.index}`, width, height });
+        }
+      }
+      const button = document.getElementById('startDemo');
+      return {
+        boundary:window.__td613AshCloseIngressAnimationBoundary.current(),
+        core:window.__td613AshKeep.current(),
+        launch_class:document.getElementById('launch')?.className || null,
+        main_inert:document.querySelector('body > main')?.hasAttribute('inert'),
+        rail_inert:document.querySelector('body > .workspace-rail')?.hasAttribute('inert'),
+        note:document.getElementById('ashExplanationAvailability')?.textContent || '',
+        profile_value:document.getElementById('newProfile')?.value || null,
+        demo_control:{ disabled:Boolean(button?.disabled), busy:button?.getAttribute('aria-busy'), text:(button?.textContent || '').trim(), status:(document.getElementById('demoProfileStatus')?.textContent || '').trim() },
+        copy_nodes:copyNodes,
+        copy_overlap_pairs:overlapPairs,
+        selected_case_options:[...document.querySelectorAll('#selectCase option')].map(option => ({ value:option.value, label:option.textContent.trim() }))
+      };
+    });
     assert(closed.core.case_id == null, `${label}: stale in-memory case leaked through the public core view.`);
     assert(closed.selected_case_options.some(option => option.value === caseId), `${label}: saved case did not remain available at ingress.`);
+    assert(closed.profile_value === 'research', `${label}: Close Case unexpectedly discarded the selected workspace profile.`);
+    assert(closed.demo_control.disabled === false && closed.demo_control.busy !== 'true' && !/opening|hydrating|compiling/i.test(closed.demo_control.text), `${label}: demo control remained stale after close: ${JSON.stringify(closed.demo_control)}.`);
+    assert(!/select a profile first/i.test(closed.demo_control.status), `${label}: ingress status contradicts selected Research profile.`);
+    assert(closed.copy_overlap_pairs.length === 0, `${label}: ingress copy overlaps ${JSON.stringify(closed.copy_overlap_pairs)}.`);
 
     await page.screenshot({ path:path.join(out, `${browserName}-${label}-closed-ingress.png`), fullPage:true });
     assert(consoleErrors.length === 0, `${label}: console errors ${consoleErrors.join(' | ')}`);
@@ -161,7 +196,7 @@ async function runViewport(browser, label, viewport, report) {
 await fs.mkdir(out, { recursive:true });
 const browser = await engine.launch({ headless:true });
 const report = {
-  schema:'td613.ash.close-ingress-animation-browser/v0.1',
+  schema:'td613.ash.close-ingress-animation-browser/v0.2-coherent-ingress',
   browser:browserName,
   status:'RUNNING',
   viewports:{},
