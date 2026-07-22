@@ -63,6 +63,7 @@ assert.doesNotMatch(portal, /setInterval\s*\(|requestAnimationFrame\s*\(/);
 assert.match(portalLoader, /v0\.2-browser-gated-legacy-bypass/);
 assert.match(portalLoader, /const browserReady = Boolean\(host && doc\?\.documentElement\)/);
 assert.match(portalLoader, /if \(!browserReady\)/);
+assert(portalLoader.indexOf('if (!browserReady)') < portalLoader.indexOf("import('./ash-flowcore-ingress-portal.js"), 'Portal import must remain behind the browser-runtime gate.');
 assert.match(portalLoader, /params\.get\('presentation'\) === 'legacy'/);
 assert.match(portalLoader, /eligible:false/);
 assert.match(portalLoader, /reason:'EXPLICIT_LEGACY_PRESENTATION'/);
