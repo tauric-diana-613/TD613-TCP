@@ -51,6 +51,12 @@ replaceOnce(
 
 replaceOnce(
   'tests/safe-harbor-gen3-stage1-evidence-contract.test.mjs',
+  "    intake: { ts_utc: '2026-07-22T00:00:00Z', status: 'issued' },",
+  "    binding_provenance: {\n      schema_version: 'td613.safe-harbor.binding-provenance/v1',\n      principal: 'tauric.diana.613',\n      claim: {},\n      canonical_declaration: {},\n      binding_event: { recorded_ts_utc: '2025-08-11T03:58:39Z' },\n      legacy_corpus_root: {},\n      symbol_roles: {},\n      evidence_status: {},\n      claim_ceiling: 'Synthetic fixture; packet-internal custody only.'\n    },\n    intake: { ts_utc: '2026-07-22T00:00:00Z', status: 'issued' },"
+);
+
+replaceOnce(
+  'tests/safe-harbor-gen3-stage1-evidence-contract.test.mjs',
   "const finalized = await finalizeSafeHarborPacket(prehash, {\n  mode: 'native',\n  segments,\n  includePhase5: true,\n  includeTamperFixtures: false\n});\nconst overlaid = finalizeGen3Stage1Overlay(finalized);",
   "const baselineFinalized = await finalizeSafeHarborPacket(packetFixture(), {\n  mode: 'native',\n  segments,\n  includePhase5: true,\n  includeTamperFixtures: false\n});\nconst finalized = await finalizeSafeHarborPacket(packetFixture(), {\n  mode: 'native',\n  segments,\n  includePhase5: true,\n  includeTamperFixtures: false,\n  includeGen3Stage1: true,\n  gen3Context: { promptSetVersion: 'temporal-triad/v2' }\n});\nassert.equal(finalized.issuance.stylometric_fingerprint_v3, baselineFinalized.issuance.stylometric_fingerprint_v3, 'Stage 1 must not migrate the SH3 fingerprint preimage');\nassert.equal(finalized.issuance.badge_number_v3, baselineFinalized.issuance.badge_number_v3, 'Stage 1 must not migrate the SH3 credential');\nconst overlaid = finalizeGen3Stage1Overlay(finalized);"
 );
