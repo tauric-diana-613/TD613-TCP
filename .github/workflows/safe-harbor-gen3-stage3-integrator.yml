@@ -142,11 +142,17 @@ jobs:
           const shiViolations = [];
           for (const file of governed) for (const value of fs.readFileSync(file, 'utf8').match(concrete) || []) if (value !== synthetic) shiViolations.push(`${file}: ${value}`);
           if (shiViolations.length) throw new Error(`Unexpected concrete SHI:\n${shiViolations.join('\n')}`);
-          const combined = governed.map((file) => fs.readFileSync(file, 'utf8')).join('\n');
-          for (const forbidden of [/keystroke_timing\s*:/u,/pause_timing\s*:/u,/cursor_trajectory\s*:/u,/covert_behavioral_biometrics\s*:/u]) if (forbidden.test(combined)) throw new Error(`Forbidden behavioral telemetry marker present: ${forbidden}`);
+          const runtimeSurfaces = [
+            'app/safe-harbor/app/main.js',
+            'app/safe-harbor/app/safe-harbor-gen3-presentation-core.js',
+            'app/safe-harbor/app/safe-harbor-temporal-bloom.js',
+            'app/safe-harbor/renderers/10_TD613_PUA_Badge_Provenance_Attestation_Renderer_v7_2_1.user.js'
+          ];
+          const runtimeCombined = runtimeSurfaces.map((file) => fs.readFileSync(file, 'utf8')).join('\n');
+          for (const forbidden of [/keystroke_timing\s*:/u,/pause_timing\s*:/u,/cursor_trajectory\s*:/u,/covert_behavioral_biometrics\s*:/u]) if (forbidden.test(runtimeCombined)) throw new Error(`Forbidden behavioral telemetry marker present in runtime surface: ${forbidden}`);
           const serverless = files.filter((file) => /^(?:api|functions|netlify\/functions|vercel\/functions)\//u.test(file));
           if (serverless.length) throw new Error(`Stage 3 added serverless surfaces:\n${serverless.join('\n')}`);
-          console.log(`Stage 3 hygiene passed across ${files.length} changed paths.`);
+          console.log(`Stage 3 hygiene passed across ${files.length} changed paths and ${runtimeSurfaces.length} runtime telemetry surfaces.`);
           NODE
 
       - name: Remove temporary Stage 3 mechanisms
