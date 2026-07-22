@@ -26,6 +26,8 @@ assert.match(coreRunner, /CLASSIFY_INTENTIONAL_HORIZONTAL_SCROLL_LANES_SEPARATEL
 assert.match(convergenceRunner, /fileURLToPath\(import\.meta\.url\)/);
 assert.match(convergenceRunner, /path\.join\(here, '\.ash-five-demo-convergence-compiler\.runtime\.mjs'\)/);
 assert.match(convergenceRunner, /await fs\.unlink\(compilerPath\)\.catch/);
+assert.doesNotMatch(convergenceRunner, /path\.join\(artifactDir, ['"]ash-constitutional-convergence-probe\.runtime\.mjs['"]\)/,
+  'Convergence compiler must not execute from the artifact directory');
 assert.match(convergenceRunner, /window\.__td613AshPremiumUI\?\.open/);
 assert.match(convergenceRunner, /open\('test'\)/);
 assert.match(convergenceRunner, /open\('map'\)/);
@@ -48,6 +50,8 @@ assert.doesNotMatch(convergenceRunner, /const runtime = source\.replace\(readine
 assert.match(profileFixtureCompiler, /fileURLToPath\(import\.meta\.url\)/);
 assert.match(profileFixtureCompiler, /path\.join\(here, '\.prepare-ash-profile-closure-fixture\.runtime\.mjs'\)/);
 assert.match(profileFixtureCompiler, /await fs\.unlink\(runtimePath\)\.catch/);
+assert.doesNotMatch(profileFixtureCompiler, /path\.join\(artifactDir, ['"]prepare-ash-profile-closure-fixture\.runtime\.mjs['"]\)/,
+  'Profile fixture compiler must not execute from the artifact directory');
 assert.match(profileFixtureCompiler, /profile_demo_registry_ready: true/);
 assert.match(profileFixtureCompiler, /profile_selected_explicitly: true/);
 assert.match(profileFixtureCompiler, /window\.__td613AshProfileDemos\?\.profiles\?\.includes\('political_campaign'\)/);
