@@ -73,22 +73,28 @@ jobs:
           target = PRODUCTION
           selected_commit = ${{ steps.authorize.outputs.selected_sha }}
           deployment_ceiling = 1
+          safe_harbor_release_wave = A
+          safe_harbor_stages = 1 + 2
           ash_generation = AIA3
           git_auto_deploy = disabled
           workflow_run = $GITHUB_SERVER_URL/$GITHUB_REPOSITORY/actions/runs/$GITHUB_RUN_ID
           \`\`\`
 
-          The gate will run the complete Flow-Core and Ash Keep AIA3 closure, choose one bounded credential route, deploy once, observe exact production content, and run both browser matrices. ⟐
+          The gate will run the complete Safe Harbor Gen3 Wave A, Flow-Core, and Ash Keep AIA3 closure; choose one bounded credential route; deploy once; observe exact production content; and run the browser matrices. ⟐
           EOF_COMMENT
           )"
 
       - name: Install dependencies
         run: npm ci
 
-      - name: Verify release-critical, Flow-Core, and Ash Keep AIA3 closure contracts
+      - name: Verify release-critical, Safe Harbor Gen3 Wave A, Flow-Core, and Ash Keep AIA3 closure contracts
         run: |
           node tests/vercel-deploy-hygiene.test.mjs
           node tests/vercel-operator-release-gate.test.mjs
+          node tests/safe-harbor-gen3-wave-a-release-gate.test.mjs
+          npm run test:safe-harbor:gen3:wave-a
+          npm run test:safe-harbor:phase9.1c
+          npm run test:safe-harbor:current
           node tests/product-architecture/shell.test.mjs
           node tests/ash-live-ingress-demos-cache.test.mjs
           node tests/ash-aia3-mass-eviction.test.mjs
@@ -100,6 +106,7 @@ jobs:
           node tests/flowcore-empirical-validation.test.mjs
           node tests/flowcore-production-promotion.test.mjs
           node tests/flowcore-runtime-browser-probe.test.mjs
+          node --check scripts/safe-harbor-gen3-production-probe.mjs
           node --check scripts/ash-keep-local-closure-server.mjs
           node --check scripts/ash-keep-aia3-task-journey-v3.mjs
 
@@ -186,6 +193,14 @@ jobs:
           npm install --no-save --package-lock=false playwright@1.53.2
           npx playwright install --with-deps chromium firefox webkit
 
+      - name: Observe the deployed Safe Harbor Gen3 Wave A matrix
+        env:
+          TD613_BASE_URL: ${{ steps.deployed.outputs.url }}
+          TD613_SOURCE_PACKET_COMMIT: ${{ steps.authorize.outputs.selected_sha }}
+          TD613_BROWSERS: chromium,firefox,webkit
+          TD613_ARTIFACT_DIR: artifacts/safe-harbor-gen3-production
+        run: node scripts/safe-harbor-gen3-production-probe.mjs
+
       - name: Observe the deployed Flow-Core browser matrix
         env:
           TD613_BASE_URL: ${{ steps.deployed.outputs.url }}
@@ -215,10 +230,25 @@ jobs:
           import fs from 'node:fs';
           const content = JSON.parse(fs.readFileSync('artifacts/flowcore-production-observation/flowcore-production-content-observation.json', 'utf8'));
           const runtime = JSON.parse(fs.readFileSync('artifacts/flowcore-production-observation/flowcore-runtime-browser-evidence.json', 'utf8'));
+          const safeHarbor = JSON.parse(fs.readFileSync('artifacts/safe-harbor-gen3-production/safe-harbor-gen3-wave-a-production-observation.json', 'utf8'));
           if (content.status !== 'PASS' || content.exact_source_content_verified !== true || content.application_tree_drift !== 'none') throw new Error('Exact production content observation held.');
           if (runtime.status !== 'PASS') throw new Error('Production Flow-Core browser matrix held.');
           if (runtime.source_packet_commit !== content.source_packet_commit) throw new Error('Production Flow-Core observations disagree on the source packet.');
           if (runtime.authority.counts_as_human_evidence !== false || runtime.authority.authorizes_public_route_promotion !== false || runtime.authority.closes_program !== false) throw new Error('Production Flow-Core observer widened authority.');
+          if (safeHarbor.status !== 'PASS') throw new Error('Production Safe Harbor Gen3 Wave A matrix held.');
+          if (safeHarbor.source_packet_commit !== content.source_packet_commit) throw new Error('Production Safe Harbor source packet drifted.');
+          if (safeHarbor.source_parity?.exact_source_content_verified !== true || safeHarbor.source_parity?.application_tree_drift !== 'none') throw new Error('Production Safe Harbor protected source bytes drifted.');
+          if (safeHarbor.cross_browser_determinism?.status !== 'PASS') throw new Error('Production Safe Harbor deterministic receipts diverged.');
+          if (safeHarbor.raw_text_exposure !== 'none-observed' || safeHarbor.behavioral_telemetry !== 'none-observed') throw new Error('Production Safe Harbor privacy boundary held.');
+          if (safeHarbor.authority?.counts_as_human_evidence !== false || safeHarbor.authority?.adjudicates_identity_or_ownership !== false || safeHarbor.authority?.authorizes_research_track_promotion !== false || safeHarbor.authority?.authorizes_stage3 !== false || safeHarbor.authority?.closes_program !== false) throw new Error('Production Safe Harbor observer widened authority.');
+          for (const observation of safeHarbor.browser_matrix || []) {
+            if (observation.status !== 'PASS') throw new Error(`Production Safe Harbor ${observation.browser}/${observation.profile} held.`);
+            if (observation.packet?.source_packet_commit !== content.source_packet_commit) throw new Error(`Production Safe Harbor ${observation.browser}/${observation.profile} source packet drifted.`);
+            if (observation.packet?.shi_exact_match_status !== 'pass' || observation.packet?.restored_shi_exact_match_status !== 'pass') throw new Error(`Production Safe Harbor ${observation.browser}/${observation.profile} SHI exact-match held.`);
+            if (observation.packet?.hash_replay_pass !== true || observation.packet?.export_restore_hash_pass !== true) throw new Error(`Production Safe Harbor ${observation.browser}/${observation.profile} packet replay held.`);
+            if (observation.packet?.raw_text_present !== false || observation.packet?.authority_inflation_present !== false) throw new Error(`Production Safe Harbor ${observation.browser}/${observation.profile} claim boundary held.`);
+            if ((observation.write_requests_during_synthetic_probe || []).length !== 0) throw new Error(`Production Safe Harbor ${observation.browser}/${observation.profile} emitted behavioral telemetry.`);
+          }
           for (const browser of ['chromium', 'firefox', 'webkit']) {
             const receipt = JSON.parse(fs.readFileSync(`artifacts/ash-aia3-production/${browser}/ash-aia3-task-continuity.json`, 'utf8'));
             if (receipt.status !== 'PASS') throw new Error(`Production Ash Keep AIA3 ${browser} task journey held.`);
@@ -232,8 +262,9 @@ jobs:
         if: always()
         uses: actions/upload-artifact@v4
         with:
-          name: flowcore-and-ash-aia3-production-release-evidence
+          name: safe-harbor-flowcore-and-ash-aia3-production-release-evidence
           path: |
+            artifacts/safe-harbor-gen3-production/
             artifacts/flowcore-production-observation/
             artifacts/ash-aia3-production/
           if-no-files-found: warn
@@ -273,6 +304,18 @@ jobs:
           deployment_count = 1
           deployment_url = ${{ steps.deployed.outputs.url }}
           exact_source_content = PASS
+          safe_harbor_wave_a = PASS
+          safe_harbor_source_parity = PASS
+          safe_harbor_packet_creation = PASS
+          safe_harbor_shi_exact_match = PASS
+          safe_harbor_export_restore = PASS
+          safe_harbor_browser_matrix = PASS
+          safe_harbor_desktop = PASS
+          safe_harbor_mobile_390x844 = PASS
+          safe_harbor_reduced_motion = PASS
+          safe_harbor_keyboard_focus = PASS
+          safe_harbor_raw_text_exposure = none-observed
+          safe_harbor_behavioral_telemetry = none-observed
           flowcore_browser_matrix = PASS
           ash_keep_aia3_task_matrix = PASS
           ash_keep_fresh_client = PASS
@@ -282,12 +325,14 @@ jobs:
           ash_keep_mobile_390x844 = PASS
           counts_as_human_evidence = false
           child_study_authorized = false
+          research_track_promotion_authorized = false
+          stage3_authorized_by_observer = false
           public_route_promotion_authorized = false
           application_tree_drift = none
           git_auto_deploy = disabled
           \`\`\`
 
-          The production observation closes the exact-source, Flow-Core runtime, Ash Keep AIA3 task-continuity, and retired-client delivery seams. It does not satisfy the held adult empirical gate, authorize a child study, authorize public route promotion, or close the program. Sealed ⟐
+          The production observation closes the exact-source, Safe Harbor Gen3 Wave A packet/SHI/export/restore, Flow-Core runtime, Ash Keep AIA3 task-continuity, and retired-client delivery seams. It does not adjudicate identity or ownership, promote Research Track R, authorize Stage 3 by observation alone, satisfy the held adult empirical gate, authorize a child study, authorize public route promotion, or close the program. Sealed ⟐
           EOF_COMMENT
           )"
 
