@@ -23,7 +23,7 @@ jobs:
   diagnose:
     if: github.event.pull_request.head.ref == 'safe-harbor-wave-a-diagnostic-trigger'
     runs-on: ubuntu-latest
-    timeout-minutes: 15
+    timeout-minutes: 45
     env:
       GH_TOKEN: ${{ github.token }}
       AUTHORIZED_SOURCE_SHA: 86cf1af84e69998ae195e53ef64372e35d8c6745
@@ -34,6 +34,12 @@ jobs:
         with:
           ref: safe-harbor-wave-a-diagnostic-trigger
           fetch-depth: 0
+
+      - name: Set up Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: '24'
+          cache: npm
 
       - name: Locate exact held Vercel release run
         id: locate
@@ -152,6 +158,7 @@ jobs:
             source_packet_commit: process.env.AUTHORIZED_SOURCE_SHA,
             production_url: base,
             results,
+            all_routes_ready: results.every((item) => item.status === 200),
             authority: {
               read_only: true,
               deployment_authorized: false,
@@ -161,13 +168,29 @@ jobs:
           };
           fs.mkdirSync('artifacts/safe-harbor-wave-a-diagnostic', { recursive: true });
           fs.writeFileSync('artifacts/safe-harbor-wave-a-diagnostic/gen3-wave-a-route-matrix.json', `${JSON.stringify(receipt, null, 2)}\n`);
+          if (!receipt.all_routes_ready) throw new Error('Safe Harbor route matrix remains incomplete.');
           console.log(JSON.stringify(receipt, null, 2));
           NODE
 
-      - name: Preserve held-release and route-matrix diagnostics
+      - name: Install read-only browser observer
+        run: |
+          npm ci
+          npm install --no-save --package-lock=false playwright@1.53.2
+          npx playwright install --with-deps chromium
+
+      - name: Observe deployed Safe Harbor Gen3 Wave A without redeploy
+        env:
+          TD613_SOURCE_PACKET_COMMIT: 86cf1af84e69998ae195e53ef64372e35d8c6745
+          TD613_ARTIFACT_DIR: artifacts/safe-harbor-wave-a-read-only-observation
+        run: node scripts/safe-harbor-gen3-wave-a-production-probe.mjs
+
+      - name: Preserve held-release, route-matrix, and read-only runtime evidence
+        if: always()
         uses: actions/upload-artifact@v4
         with:
-          name: safe-harbor-wave-a-held-release-and-route-matrix
-          path: artifacts/safe-harbor-wave-a-diagnostic/
-          if-no-files-found: error
-          retention-days: 14
+          name: safe-harbor-wave-a-held-release-route-and-runtime-observation
+          path: |
+            artifacts/safe-harbor-wave-a-diagnostic/
+            artifacts/safe-harbor-wave-a-read-only-observation/
+          if-no-files-found: warn
+          retention-days: 30
