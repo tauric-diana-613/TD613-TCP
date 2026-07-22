@@ -1,4 +1,4 @@
-import { validThresholdReadiness } from './ash-cache-flush.js?v=20260718-canonical-membrane-v7-readiness-boundary';
+import { validThresholdReadiness } from './ash-cache-flush.js?v=20260722-stable-build-eviction-v1';
 
 export const ASH_CASE_CLOSE_REPAIR_VERSION = 'td613.ash.case-close-repair/v1.3-ingress-readiness-boundary';
 
