@@ -1,0 +1,212 @@
+.temporal-bloom,
+.stage3-presentation {
+  border: 1px solid color-mix(in srgb, var(--gold, #d7c58b) 38%, transparent);
+  border-radius: 18px;
+  background: color-mix(in srgb, var(--panel, #11141c) 92%, transparent);
+  box-shadow: 0 18px 50px rgba(0, 0, 0, 0.18);
+}
+
+.temporal-bloom {
+  margin: 1rem 0 1.25rem;
+  padding: 1rem;
+}
+
+.temporal-bloom-head,
+.stage3-head {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 1rem;
+}
+
+.temporal-bloom h3,
+.stage3-presentation h3 {
+  margin: 0.25rem 0 0;
+  font-size: clamp(1.05rem, 2.6vw, 1.35rem);
+  line-height: 1.25;
+}
+
+.temporal-bloom-lanes {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 0.65rem;
+  margin-top: 1rem;
+}
+
+.temporal-bloom-lane {
+  min-width: 0;
+  display: flex;
+  align-items: flex-start;
+  gap: 0.6rem;
+  padding: 0.75rem;
+  border-radius: 14px;
+  background: rgba(255, 255, 255, 0.035);
+  border: 1px solid rgba(255, 255, 255, 0.07);
+}
+
+.temporal-bloom-lane strong,
+.temporal-bloom-lane small {
+  display: block;
+}
+
+.temporal-bloom-lane small {
+  margin-top: 0.25rem;
+  opacity: 0.74;
+  line-height: 1.35;
+}
+
+.bloom-dot {
+  width: 0.68rem;
+  height: 0.68rem;
+  margin-top: 0.22rem;
+  flex: 0 0 auto;
+  border-radius: 999px;
+  border: 1px solid currentColor;
+  opacity: 0.48;
+}
+
+.temporal-bloom-lane[data-state="receiving"] .bloom-dot,
+.temporal-bloom-lane[data-state="rooted"] .bloom-dot,
+.temporal-bloom-lane[data-state="forming"] .bloom-dot,
+.temporal-bloom-lane[data-state="deepening"] .bloom-dot,
+.temporal-bloom-lane[data-state="mature"] .bloom-dot {
+  background: currentColor;
+}
+
+.temporal-bloom-lane[data-state="forming"],
+.temporal-bloom-lane[data-state="deepening"],
+.temporal-bloom-lane[data-state="mature"] {
+  border-color: color-mix(in srgb, var(--gold, #d7c58b) 42%, transparent);
+}
+
+.temporal-bloom-recognition {
+  margin: 0.85rem 0 0;
+  line-height: 1.5;
+  opacity: 0.86;
+}
+
+.temporal-bloom-public #ingressProgressPill,
+.temporal-bloom-public #ingressResolvedReadout,
+.temporal-bloom-public #ingressThresholdReadout,
+.temporal-bloom-public #ingressStepMeta {
+  display: none !important;
+}
+
+.stage3-presentation {
+  margin-top: 1rem;
+  padding: 1rem;
+}
+
+.stage3-presentation[data-authority="reduced"] {
+  border-style: dashed;
+}
+
+.stage3-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 0.65rem;
+  margin: 1rem 0;
+}
+
+.stage3-grid > div {
+  min-width: 0;
+  padding: 0.7rem;
+  border-radius: 12px;
+  background: rgba(255, 255, 255, 0.035);
+}
+
+.stage3-grid span,
+.stage3-grid strong {
+  display: block;
+}
+
+.stage3-grid span {
+  font-size: 0.75rem;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  opacity: 0.68;
+}
+
+.stage3-grid strong {
+  margin-top: 0.28rem;
+  overflow-wrap: anywhere;
+}
+
+.stage3-chronology {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  display: grid;
+  gap: 0.5rem;
+}
+
+.stage3-chronology li {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(9rem, auto);
+  gap: 1rem;
+  align-items: baseline;
+  padding: 0.55rem 0;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+.stage3-chronology strong {
+  text-align: right;
+  font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+  font-size: 0.8rem;
+  overflow-wrap: anywhere;
+}
+
+.stage3-note {
+  margin: 0.9rem 0;
+  line-height: 1.5;
+  opacity: 0.86;
+}
+
+.stage3-svg-mount {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  clip-path: inset(50%);
+}
+
+#ingressContinue[hidden] {
+  display: none !important;
+}
+
+.temporal-bloom :focus-visible,
+.stage3-presentation :focus-visible {
+  outline: 3px solid currentColor;
+  outline-offset: 3px;
+}
+
+@media (max-width: 760px) {
+  .temporal-bloom-lanes,
+  .stage3-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .temporal-bloom-head,
+  .stage3-head {
+    align-items: stretch;
+    flex-direction: column;
+  }
+
+  .stage3-chronology li {
+    grid-template-columns: 1fr;
+    gap: 0.25rem;
+  }
+
+  .stage3-chronology strong {
+    text-align: left;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .temporal-bloom *,
+  .stage3-presentation * {
+    animation: none !important;
+    transition: none !important;
+    scroll-behavior: auto !important;
+  }
+}

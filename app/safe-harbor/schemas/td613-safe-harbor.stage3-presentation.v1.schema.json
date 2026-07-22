@@ -1,0 +1,25 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "td613.safe-harbor.stage3-presentation/v1",
+  "title": "TD613 Safe Harbor Stage 3 Presentation",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema_version",
+    "challenge_outcome",
+    "imitation_collision",
+    "authority_reduced",
+    "authority_label",
+    "countersignature_state",
+    "claim_ceiling"
+  ],
+  "properties": {
+    "schema_version": { "const": "td613.safe-harbor.stage3-presentation/v1" },
+    "challenge_outcome": { "type": ["string", "null"] },
+    "imitation_collision": { "type": "boolean" },
+    "authority_reduced": { "type": "boolean" },
+    "authority_label": { "enum": ["PACKET-SCOPED AUTHORITY", "AUTHORITY CLAIM REDUCED"] },
+    "countersignature_state": { "enum": ["unsigned", "countersigned"] },
+    "claim_ceiling": { "type": "string", "minLength": 1 }
+  }
+}
