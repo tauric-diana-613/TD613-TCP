@@ -1,4 +1,4 @@
-export const ASH_FLOWCORE_INGRESS_PORTAL_VERSION = 'td613.ash.flowcore-ingress-portal/v0.8-canonical-play-idempotent-boundary';
+export const ASH_FLOWCORE_INGRESS_PORTAL_VERSION = 'td613.ash.flowcore-ingress-portal/v0.9-phase-atomic-canonical-play';
 
 const host = globalThis.window;
 const doc = globalThis.document;
@@ -365,6 +365,7 @@ export function installAshFlowcoreIngressPortal() {
   for (const type of ['aia-ready','aia3-ready','composition-stable','case-opened','case-created','profile-demo-hydrated','case-closed','session-boundary-reconciled']) {
     host.addEventListener(`td613:ash:${type}`, () => queueSync(type.toUpperCase()));
   }
+  host.addEventListener('td613:ash:flowcore-field-phase', copyDynamicState);
   host.__td613AshFlowcoreIngressPortal = Object.freeze({
     version:ASH_FLOWCORE_INGRESS_PORTAL_VERSION,
     refresh:() => sync('EXPLICIT_REFRESH'),
