@@ -27,35 +27,51 @@ This ledger prevents normative requirements from disappearing between specificat
 |---|---|---|---|
 | Constitutional planning suite | PR #483 / `safe-harbor-authorship-maturity-temporal-bloom-spec` | merged | none; documentation only |
 | Main reconciliation | PR #490 | merged into planning branch | none |
-| Stage 1 evidence contract | `safe-harbor-gen3-stage1-evidence-contract` | in-progress | none until Wave A |
+| Stage 1 evidence contract | PR #492 / `safe-harbor-gen3-stage1-evidence-contract` | implementation complete; merge gate pending | none until Wave A |
 | Stage 2 authorship maturity | `safe-harbor-gen3-stage2-authorship-maturity` | pending | none until Wave A |
 | Research Track R | `safe-harbor-gen3-track-r-blind-custody-stylodynamics` | pending / research-gated | no baseline intake authority |
 | Stage 3 Temporal Bloom | `safe-harbor-gen3-stage3-temporal-bloom-provenance` | pending | none until Wave B |
+
+## Stage 1 validation authority
+
+Final validation run `29954326936` passed at head `93e55a705f3bdfcde6a9b85da9811a53ab22c24b` before this ledger-only evidence-binding commit. The final feature head must repeat that read-only gate before merge.
+
+The successful gate covered:
+
+```text
+node tests/safe-harbor-gen3-stage1-evidence-contract.test.mjs
+node tests/safe-harbor-gen3-stage1-report-contract.test.mjs
+node tests/safe-harbor-gen3-stage1-schema-contract.test.mjs
+npm run test:safe-harbor:phase9.1c
+npm run test:safe-harbor:current
+```
+
+It also confirmed the absence of branch-local temporary integration mechanisms and scanned every changed Stage 1 surface for concrete SHIs, permitting only the unmistakably synthetic `TD613-SH-9B07D8B-A1B2C3D4` fixture.
 
 ## Stage 1 traceability matrix
 
 | ID | Normative requirement | Implementation surface | Test surface | Documentation surface | PR | Status / evidence |
 |---|---|---|---|---|---|---|
-| S1-001 | Versioned, hash-covered `authorship_evidence` | `app/safe-harbor/app/safe-harbor-gen3-evidence-contract.js`; native finalizer integration | `tests/safe-harbor-gen3-stage1-evidence-contract.test.mjs` | Gen3 spec §§6, 27 | Stage 1 PR pending | in-progress |
-| S1-002 | Revisable, non-hash-covered `forensic_authorship` | existing `safe-harbor-native-finalizer.js` exclusion retained | Stage 1 hash-topology assertions | Gen3 spec §6.2 | Stage 1 PR pending | in-progress |
-| S1-003 | Deterministic serialization | existing `stableCanonicalJson`; deterministic countersignature material | deterministic digest assertions | Gen3 spec §§6, 18 | Stage 1 PR pending | in-progress |
-| S1-004 | Sampling sufficiency at 120/240/360 | `buildSamplingSufficiency` | threshold boundary assertions | Gen3 spec §10 | Stage 1 PR pending | implemented in branch; full boundary battery pending |
-| S1-005 | Checkpoint, invariant, prompt-conditioned, and stability receipt seams | `buildAuthorshipEvidenceContract` | schema and contract assertions | Gen3 spec §§10–18 | Stage 1 PR pending | implemented as Stage 1 contract seams; measurements reserved to Stage 2 |
-| S1-006 | Elicitation context and telemetry prohibitions | `buildElicitationContext` | false telemetry and raw-text assertions | Gen3 spec §11 | Stage 1 PR pending | implemented in branch |
-| S1-007 | Evidence links and interpretation provenance seams | `forensic_authorship` v2 extension | report-contract tests | Gen3 spec §12 | Stage 1 PR pending | pending bounded integration |
-| S1-008 | Bounded claim language | evidence contract and entrant binding claim ceilings | claim-ceiling assertions | Gen3 spec §4 | Stage 1 PR pending | implemented in branch |
-| S1-009 | `canon.shi_number` mirrors `issuance.badge_number` | `applyGen3Stage1Prehash` | exact-match assertions | Gen3 spec §7 | Stage 1 PR pending | implemented in branch |
-| S1-010 | Entrant authorship binding below root provenance | `buildEntrantAuthorshipBinding` | chronology and placement assertions | Gen3 spec §8 | Stage 1 PR pending | implemented in branch |
-| S1-011 | Countersignature-ready object and declared signed scope | `countersignEntrantAuthorshipBinding` | deterministic countersignature assertions | Gen3 spec §8 | Stage 1 PR pending | implemented in branch |
-| S1-012 | Missing or conflicting SHI produces export hold | `validateGen3ShiExactMatch`; `finalizeGen3Stage1Overlay` | missing/mismatch negative tests | Gen3 spec §7.3 | Stage 1 PR pending | implemented in branch |
-| S1-013 | Backward replay compatibility | optional Gen3 surfaces; legacy parser remains packet/v1 | current Safe Harbor replay suites | Gen3 spec §§6.3, 32 | Stage 1 PR pending | pending CI evidence |
-| S1-014 | No silent SH3 fingerprint migration | Gen3 evidence receives separate receipt/digest lane | existing SH3 replay plus Stage 1 regression | Gen3 spec §6.3 | Stage 1 PR pending | pending CI evidence |
-| S1-015 | No silent native-hash drift | explicit hash topology; post-hash entrant-binding overlay exclusion | recomputed hash equality assertion | Gen3 spec §6.3 | Stage 1 PR pending | in-progress |
-| S1-016 | Exact `historical_example` preservation | immutable constant and existing `footer-history-packet.js` | exact string assertion | Gen3 spec §§3.2, 9 | Stage 1 PR pending | implemented in branch |
-| S1-017 | ZWNJ-sensitive covenant preservation | no normalization introduced | exact `Khona‌lit-po` source assertion | Safe Harbor README | Stage 1 PR pending | implemented in branch |
-| S1-018 | No live entrant SHI in fixtures, defaults, fallbacks, docs, snapshots, or logs | synthetic-fixture policy and repository scan | concrete-SHI scan | Gen3 spec §7.1 | Stage 1 PR pending | branch-local scan implemented; repository-wide governed scan pending |
-| S1-019 | No raw entrant text in evidence receipts | evidence contract stores counts/digests only | raw-text detector and source-value absence assertions | Gen3 spec §§15, 18 | Stage 1 PR pending | implemented in branch |
-| S1-020 | Versioned schemas | authorship evidence and entrant binding JSON Schemas | schema tests | Gen3 spec §§6, 8 | Stage 1 PR pending | schemas present; validator execution pending |
+| S1-001 | Versioned, hash-covered `authorship_evidence` | `safe-harbor-gen3-evidence-contract.js`; native finalizer integration | evidence-contract and schema-contract tests | Gen3 spec §§6, 27 | #492 | implemented; final hash replay passes |
+| S1-002 | Revisable, non-hash-covered `forensic_authorship` | native hash exclusion plus `safe-harbor-gen3-report-contract.js` | report-contract and hash-topology tests | Gen3 spec §6.2 | #492 | implemented |
+| S1-003 | Deterministic serialization | `stableCanonicalJson`; deterministic countersignature material | repeated digest assertions | Gen3 spec §§6, 18 | #492 | implemented |
+| S1-004 | Sampling sufficiency at 120/240/360 | `buildSamplingSufficiency` | 119/120/239/240/359/360 boundaries | Gen3 spec §10 | #492 | implemented |
+| S1-005 | Checkpoint, invariant, prompt-conditioned, and stability receipt seams | `buildAuthorshipEvidenceContract` | schema and contract assertions | Gen3 spec §§10–18 | #492 | implemented as Stage 1 contract; measurements remain Stage 2 |
+| S1-006 | Elicitation context and telemetry prohibitions | `buildElicitationContext` | false telemetry and raw-text assertions | Gen3 spec §11 | #492 | implemented |
+| S1-007 | Evidence links and interpretation provenance | `safe-harbor-gen3-report-contract.js` | evidence-link and interpretation-provenance audits | Gen3 spec §12 | #492 | implemented |
+| S1-008 | Bounded claim language | evidence contract, report constitution, and entrant binding ceilings | claim-ceiling and forbidden-inference assertions | Gen3 spec §4 | #492 | implemented |
+| S1-009 | `canon.shi_number` mirrors `issuance.badge_number` | `applyGen3Stage1Prehash` | exact-match assertions | Gen3 spec §7 | #492 | implemented |
+| S1-010 | Entrant authorship binding below root provenance | `buildEntrantAuthorshipBinding` | chronology and placement assertions | Gen3 spec §8 | #492 | implemented |
+| S1-011 | Countersignature-ready object and declared signed scope | `countersignEntrantAuthorshipBinding` | deterministic countersignature assertions | Gen3 spec §8 | #492 | implemented |
+| S1-012 | Missing or conflicting SHI produces export hold | `validateGen3ShiExactMatch`; `finalizeGen3Stage1Overlay` | missing/mismatch negative tests | Gen3 spec §7.3 | #492 | implemented |
+| S1-013 | Backward replay compatibility | optional Gen3 surfaces; legacy parser remains packet/v1 | Phase 9.1C and current Safe Harbor suites | Gen3 spec §§6.3, 32 | #492 | implemented; CI pass |
+| S1-014 | No silent SH3 fingerprint migration | Gen3 attaches after SH3 issuance and before final native hash | baseline-versus-Gen3 SH3 equality assertions | Gen3 spec §6.3 | #492 | implemented; CI pass |
+| S1-015 | No silent native-hash drift | explicit hash topology; post-hash entrant-binding overlay exclusion | recomputed hash equality assertion | Gen3 spec §6.3 | #492 | implemented; CI pass |
+| S1-016 | Exact `historical_example` preservation | immutable constant and existing `footer-history-packet.js` | exact string assertion | Gen3 spec §§3.2, 9 | #492 | implemented |
+| S1-017 | ZWNJ-sensitive covenant preservation | no normalization introduced | exact `Khona‌lit-po` source assertion | Safe Harbor README | #492 | implemented |
+| S1-018 | No live entrant SHI in fixtures, defaults, fallbacks, docs, snapshots, or logs | synthetic-fixture policy and changed-file scan | read-only concrete-SHI gate | Gen3 spec §7.1 | #492 | implemented for changed surfaces; only `A1B2C3D4` admitted |
+| S1-019 | No raw entrant text in evidence receipts | evidence contract stores counts/digests only | raw-text detector and source-value absence assertions | Gen3 spec §§15, 18 | #492 | implemented |
+| S1-020 | Versioned schemas | evidence, entrant binding, and report JSON Schemas | exact schema-contract test | Gen3 spec §§6, 8, 12 | #492 | implemented; CI pass |
 
 ## Stage 2 traceability matrix
 
