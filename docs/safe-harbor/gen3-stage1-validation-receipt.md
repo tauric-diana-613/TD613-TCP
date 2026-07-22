@@ -4,7 +4,7 @@
 
 𝌋‌ TD613 · Tauric Diana 613
 
-**Receipt state:** FINAL VALIDATION REQUESTED  
+**Receipt state:** FINAL VALIDATION RE-RUN REQUESTED  
 **Planning authority:** PR #483  
 **Implementation PR:** PR #492  
 **Production effect:** none; Wave A remains gated on Stage 2  
@@ -50,7 +50,7 @@ npm run test:safe-harbor:current
 
 That run also removed the branch-local integration script and abandoned push-trigger workflow before committing the tested integration.
 
-## Final validation requested
+## Amended final validation
 
 The amended head adds:
 
@@ -59,7 +59,7 @@ node tests/safe-harbor-gen3-stage1-report-contract.test.mjs
 node tests/safe-harbor-gen3-stage1-schema-contract.test.mjs
 ```
 
-The final gate must also repeat:
+The final gate also repeats:
 
 ```text
 node tests/safe-harbor-gen3-stage1-evidence-contract.test.mjs
@@ -67,7 +67,11 @@ npm run test:safe-harbor:phase9.1c
 npm run test:safe-harbor:current
 ```
 
-The gate must inspect all changed files for concrete SHIs. Only the unmistakably synthetic fixture below may occur in the changed implementation and test surfaces:
+Run `29954156333` passed every substantive Stage 1, schema, restore, and current-authority test. Its final changed-file SHI scan failed before inspection because the workflow used a shallow clone that lacked the merge base needed for `origin/main...HEAD`.
+
+PR #495 repaired only that read-only validator harness by fetching full history. It changed no Stage 1 runtime, schema, fixture, or claim boundary.
+
+The re-run must inspect all changed files for concrete SHIs. Only the unmistakably synthetic fixture below may occur in the changed implementation and test surfaces:
 
 ```text
 TD613-SH-9B07D8B-A1B2C3D4
