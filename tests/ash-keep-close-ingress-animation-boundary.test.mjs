@@ -5,6 +5,7 @@ const read = path => fs.readFileSync(path, 'utf8');
 const boundary = read('app/dome-world/ash-close-ingress-animation-boundary.js');
 const bridge = read('app/dome-world/ash-workspace-bridge.js');
 const closeRepair = read('app/dome-world/ash-case-close-repair.js');
+const caseRefresh = read('app/dome-world/ash-case-controls-refresh-bridge.js');
 const ingress = read('app/dome-world/ash-ingress-layout-hydration.js');
 const aia = read('app/dome-world/ash-keep-aia.js');
 const rescue = read('app/dome-world/ash-ui-ux-rescue.js');
@@ -12,6 +13,8 @@ const compact = read('app/dome-world/ash-keep-aia3-compact.css');
 const browserProbe = read('scripts/ash-close-ingress-animation-browser-probe.mjs');
 const returnProbe = read('scripts/ash-custodian-return-production-probe.mjs');
 
+assert.match(bridge, /ash-case-controls-refresh-bridge\.js\?v=20260722-close-ingress-animation-v1/,
+  'Canonical workspace bridge omitted the awaited saved-case selector refresh.');
 assert.match(bridge, /ash-close-ingress-animation-boundary\.js\?v=20260722-close-ingress-animation-v1/,
   'Canonical workspace bridge omitted the close/animation boundary.');
 
@@ -80,14 +83,31 @@ assert.match(boundary, /for \(const surface of surfaces\)[\s\S]*attributeFilter:
 
 assert.doesNotMatch(boundary, /deleteDatabase|objectStore\([^)]*\)\.delete|clear\(\)/,
   'Close/ingress repair must not delete IndexedDB case material.');
-assert.match(closeRepair, /saveBeforeClose\(caseId\)/,
-  'Close Case no longer saves before ending the active session.');
+assert.match(closeRepair, /automatic-close-boundary-pre-transition/,
+  'Close Case omitted its pre-transition safety save.');
+assert.match(closeRepair, /transitionCase[\s\S]*automatic-close-boundary-final-state/,
+  'Close Case did not reseal the final closed-state fingerprint after transition.');
+assert.match(closeRepair, /final_close_fingerprint:Boolean\(saved\)/,
+  'Close Case receipt omitted final fingerprint confirmation.');
 assert.match(closeRepair, /localStorage\.removeItem\(POINTER_KEY\)/,
   'Close Case no longer clears the active-session pointer.');
 assert.match(closeRepair, /td613:ash:case-closed/,
   'Close Case no longer publishes the session-boundary event.');
 assert.match(ingress, /host\.addEventListener\('td613:ash:case-closed', \(\) => setSessionOpen\(false/,
   'Canonical ingress no longer recognizes Close Case.');
+
+for (const token of [
+  'ASH_CASE_CONTROLS_REFRESH_BRIDGE_VERSION',
+  'async function refreshCases',
+  'waitForCaseListReady',
+  "select.dataset.caseListState === 'READY'",
+  'preferred_available:preferredReady',
+  'ash-case-list-refresh-pulse-',
+  'td613:ash:case-list-refreshed',
+  'refreshCases,'
+]) assert.ok(caseRefresh.includes(token), `Case-list refresh bridge omitted ${token}`);
+assert.doesNotMatch(caseRefresh, /indexedDB\.deleteDatabase|objectStore\([^)]*\)\.delete|clear\(\)/,
+  'Case-list refresh bridge gained deletion authority.');
 
 for (const token of [
   "play.dataset.ashArtifactRequired = 'false'",
@@ -134,7 +154,7 @@ for (const token of [
   'indexedCaseCount'
 ]) assert.ok(returnProbe.includes(token), `Custodian Return witness omitted ${token}`);
 
-for (const source of [boundary, closeRepair, ingress, aia, rescue, browserProbe, returnProbe]) {
+for (const source of [boundary, closeRepair, caseRefresh, ingress, aia, rescue, browserProbe, returnProbe]) {
   assert.doesNotMatch(source, /prediction_authorized\s*:\s*true/);
   assert.doesNotMatch(source, /automatic_action_authorized\s*:\s*true/);
   assert.doesNotMatch(source, /recipient_transport\s*:\s*true/);
