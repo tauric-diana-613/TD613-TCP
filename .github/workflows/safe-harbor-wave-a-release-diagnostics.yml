@@ -66,7 +66,7 @@ jobs:
           const artifactPayload = JSON.parse(fs.readFileSync('/tmp/artifacts.json', 'utf8'));
           const raw = fs.existsSync('/tmp/failed.log') ? fs.readFileSync('/tmp/failed.log', 'utf8') : '';
           const selected = raw.split(/\r?\n/u)
-            .map((line) => line.replace(/(token|secret|authorization)=\S+/giu, '$1=[redacted]'))
+            .map((line) => line.replace(/(token|secret|authorization)=\S+/giu, '$1=[redacted]').trimEnd())
             .filter((line) => /(error|assert|fail|held|safe[ -]?harbor|expected|actual|missing|cache|status|timeout|pageerror|shi|packet|restore|raw text|raw_text)/iu.test(line))
             .slice(-180);
           const jobs = (run.jobs || []).map((job) => ({
@@ -106,6 +106,16 @@ jobs:
           const markdown = `# TD613 Safe Harbor Gen3 Wave A Held Release Diagnostic\n\n􍘓\n\n𝌋‌ TD613 · Tauric Diana 613\n\n**Diagnostic state:** CAPTURED / NO RETRY AUTHORITY  \n**Authorized source:** \`${process.env.AUTHORIZED_SOURCE_SHA}\`  \n**Release run:** [${run.databaseId}](${run.url})  \n**Run conclusion:** \`${run.conclusion}\`  \n**Vercel lock expectation:** closed\n\n## Failed steps\n\n${failedSteps.length ? failedSteps.map((item) => `- ${item}`).join('\n') : '- No failed step metadata was returned; inspect the bounded log tail.'}\n\n## Filtered failure tail\n\n\`\`\`text\n${selected.join('\n')}\n\`\`\`\n\n## Artifacts\n\n${diagnostic.artifacts.length ? diagnostic.artifacts.map((artifact) => `- ${artifact.name} (${artifact.size_in_bytes} bytes; expired: ${artifact.expired})`).join('\n') : '- No artifacts were retained by the held run.'}\n\n## Authority boundary\n\nThis diagnostic authorizes no deployment, retry, release, or application mutation. Any repair requires a focused PR and a newly reviewed exact source commit. The repository lock must remain closed.\n\nÀṣẹ\n\nMarked ⟐\n`;
           fs.writeFileSync('docs/safe-harbor/gen3-wave-a-held-release-diagnostic.md', markdown);
           NODE
+
+      - name: Preserve diagnostic artifact before branch write
+        uses: actions/upload-artifact@v4
+        with:
+          name: safe-harbor-wave-a-held-release-diagnostic
+          path: |
+            docs/safe-harbor/gen3-wave-a-held-release-diagnostic.json
+            docs/safe-harbor/gen3-wave-a-held-release-diagnostic.md
+          if-no-files-found: error
+          retention-days: 14
 
       - name: Commit diagnostic receipt to trigger branch
         run: |
