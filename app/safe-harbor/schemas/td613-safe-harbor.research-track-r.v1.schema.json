@@ -1,0 +1,102 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "td613.safe-harbor.research-track-r/v1",
+  "title": "TD613 Safe Harbor Research Track R v1",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema_version",
+    "policy_version",
+    "protocol_state",
+    "blind_custody_challenge",
+    "restorative_stylodynamics",
+    "adverse_result_registry",
+    "calibration_gate",
+    "claim_ceiling",
+    "raw_text_included",
+    "research_track_digest"
+  ],
+  "properties": {
+    "schema_version": { "const": "td613.safe-harbor.research-track-r/v1" },
+    "policy_version": { "const": "td613.safe-harbor.research-track-r-policy/v1" },
+    "protocol_state": {
+      "type": "object",
+      "required": [
+        "code_complete",
+        "research_mode",
+        "explicit_consent_recorded",
+        "baseline_intake_mandatory",
+        "separately_invoked",
+        "baseline_pipeline_integration",
+        "feature_gate_required",
+        "production_deployment_authorized",
+        "promotion_pr_required",
+        "serverless_functions_added",
+        "raw_text_exported",
+        "keystroke_telemetry_collected",
+        "pause_timing_collected",
+        "covert_behavioral_biometrics_collected",
+        "private_vulnerability_targeting",
+        "adaptive_emotional_pressure",
+        "external_identity_data_consumed"
+      ],
+      "properties": {
+        "code_complete": { "const": true },
+        "baseline_intake_mandatory": { "const": false },
+        "separately_invoked": { "const": true },
+        "baseline_pipeline_integration": { "const": false },
+        "feature_gate_required": { "const": true },
+        "production_deployment_authorized": { "const": false },
+        "promotion_pr_required": { "const": true },
+        "serverless_functions_added": { "const": 0 },
+        "raw_text_exported": { "const": false },
+        "keystroke_telemetry_collected": { "const": false },
+        "pause_timing_collected": { "const": false },
+        "covert_behavioral_biometrics_collected": { "const": false },
+        "private_vulnerability_targeting": { "const": false },
+        "adaptive_emotional_pressure": { "const": false },
+        "external_identity_data_consumed": { "const": false }
+      }
+    },
+    "blind_custody_challenge": { "$ref": "td613-safe-harbor.blind-custody-challenge.v1.schema.json" },
+    "restorative_stylodynamics": { "$ref": "td613-safe-harbor.restorative-stylodynamics.v1.schema.json" },
+    "adverse_result_registry": {
+      "type": "object",
+      "required": [
+        "blind_outcome",
+        "blind_failures",
+        "restorative_failures",
+        "blind_imitation_collision",
+        "restorative_mimicry_collision",
+        "renderer_may_suppress_adverse_results",
+        "raw_text_included"
+      ],
+      "properties": {
+        "renderer_may_suppress_adverse_results": { "const": false },
+        "raw_text_included": { "const": false }
+      }
+    },
+    "calibration_gate": {
+      "type": "object",
+      "required": [
+        "observed_triads",
+        "required_triads",
+        "blockers",
+        "state",
+        "promotion_decision",
+        "production_deployment_authorized",
+        "baseline_intake_promotion_authorized",
+        "separate_promotion_pr_required"
+      ],
+      "properties": {
+        "required_triads": { "const": 12 },
+        "production_deployment_authorized": { "const": false },
+        "baseline_intake_promotion_authorized": { "const": false },
+        "separate_promotion_pr_required": { "const": true }
+      }
+    },
+    "claim_ceiling": { "type": "object" },
+    "raw_text_included": { "const": false },
+    "research_track_digest": { "type": "string", "pattern": "^sha256:[0-9a-f]{64}$" }
+  }
+}
