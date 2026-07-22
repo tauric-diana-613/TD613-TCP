@@ -27,14 +27,14 @@ await page.addInitScript(() => {
   });
 });
 
-const report = { schema:'td613.ash.flowcore-live-field-browser/v0.1', browser:browserName, status:'RUNNING', errors, http_errors:httpErrors, observations:{} };
+const report = { schema:'td613.ash.flowcore-live-field-browser/v0.2-zero-artifact-case-arrival', browser:browserName, status:'RUNNING', errors, http_errors:httpErrors, observations:{} };
 try {
   await page.goto(`${base}/dome-world/ash-keep.html?presentation=aia&profile=investigation&nonce=${Date.now()}`, { waitUntil:'domcontentloaded' });
   await page.waitForFunction(() => window.__td613AshFlowcoreField?.version
     && window.__td613AshSessionBoundary?.version
     && window.__td613AshIngressCopySpacing?.version
     && document.documentElement.dataset.ashCompositionStable
-    && document.querySelector('.ash-flowcore-field'));
+    && document.getElementById('launch'));
   await page.evaluate(async () => {
     localStorage.clear();
     sessionStorage.clear();
@@ -47,13 +47,35 @@ try {
   await page.waitForFunction(() => window.__td613AshFlowcoreField?.current?.().artifact_required === false
     && window.__td613AshIngressCopySpacing?.measure?.().available
     && document.documentElement.dataset.ashCompositionStable
-    && document.querySelector('.ash-flowcore-field')
     && document.getElementById('launch'));
 
   const ingressDesktop = await page.evaluate(() => window.__td613AshIngressCopySpacing.measure());
   assert(ingressDesktop.available && ingressDesktop.ordered, `Ingress copy order failed: ${JSON.stringify(ingressDesktop)}.`);
-  assert(ingressDesktop.overlap_px === 0, `Ingress recovery copy overlaps primary copy by ${ingressDesktop.overlap_px}px.`);
+  assert(ingressDesktop.overlap_px === 0 && ingressDesktop.overlap_area === 0, `Ingress recovery copy overlaps primary copy: ${JSON.stringify(ingressDesktop)}.`);
   assert(ingressDesktop.title_bottom <= ingressDesktop.recovery_top + 2, `Ash Keep title collides with recovery copy: ${JSON.stringify(ingressDesktop)}.`);
+
+  await page.setViewportSize({ width:390, height:844 });
+  await page.evaluate(() => window.__td613AshIngressCopySpacing.refresh());
+  const ingressMobile = await page.evaluate(() => window.__td613AshIngressCopySpacing.measure());
+  const ingressMobileGeometry = await page.evaluate(() => ({
+    overflow:Math.max(0, document.documentElement.scrollWidth - innerWidth),
+    title_visible:getComputedStyle(document.getElementById('ashLaunchTitle')).display !== 'none',
+    recovery_visible:getComputedStyle(document.getElementById('capsuleRecoveryLaunchDescription')).display !== 'none'
+  }));
+  assert(ingressMobile.available && ingressMobile.ordered && ingressMobile.overlap_px === 0 && ingressMobile.overlap_area === 0, `Mobile ingress copy overlap: ${JSON.stringify(ingressMobile)}.`);
+  assert(ingressMobileGeometry.overflow <= 2, `Mobile ingress overflow: ${ingressMobileGeometry.overflow}.`);
+  assert(ingressMobileGeometry.title_visible && ingressMobileGeometry.recovery_visible, 'Mobile ingress title or recovery guidance disappeared.');
+
+  await page.setViewportSize({ width:1440, height:1000 });
+  await page.locator('#newProfile').selectOption('investigation');
+  await page.locator('#newTitle').fill(`Flow-Core zero-artifact ${browserName}`);
+  await page.locator('#newCase').click();
+  await page.waitForFunction(() => Boolean(localStorage.getItem('td613.ash-keep.current-case'))
+    && Boolean(window.__td613AshKeep?.current?.().case_id)
+    && !document.getElementById('closeCase')?.disabled
+    && document.querySelector('.ash-flowcore-field')?.getBoundingClientRect().height > 260
+    && document.documentElement.dataset.ashFlowcorePhase === 'NOTICE');
+  const caseId = await page.evaluate(() => localStorage.getItem('td613.ash-keep.current-case'));
 
   const arrival = await page.evaluate(() => {
     const field = document.querySelector('.ash-flowcore-field');
@@ -71,13 +93,13 @@ try {
       svg_description:field.querySelector('desc')?.textContent || ''
     };
   });
-  assert(arrival.visible, 'Flow-Core field missing at zero-artifact arrival.');
+  assert(arrival.visible, 'Flow-Core field missing in an empty local case.');
   assert(arrival.phase === 'NOTICE', `Arrival phase drifted: ${arrival.phase}.`);
   assert(arrival.artifact_required === false && arrival.local_file_count === 0 && arrival.draft_empty, 'Flow-Core arrival incorrectly requires an artifact.');
   assert(['glyph','motion','shape','language','inspection'].every(channel => arrival.channels.includes(channel)), `Flow-Core channels incomplete: ${arrival.channels.join(', ')}.`);
   assert(arrival.rail_display === 'none' || arrival.rail_display === 'absent', `Placeholder dot rail remains visible: ${arrival.rail_display}.`);
   for (const label of ['RAW BYTES DO NOT CROSS','REFERENCE','≠ ARTIFACT','CASE MAP RELATION FIELD']) assert(arrival.labels.includes(label) || arrival.svg_description.includes(label), `Flow-Core field omitted ${label}.`);
-  await page.screenshot({ path:path.join(out, `${browserName}-zero-artifact-arrival.png`), fullPage:true });
+  await page.screenshot({ path:path.join(out, `${browserName}-zero-artifact-case-arrival.png`), fullPage:true });
 
   await page.locator('[data-aia-play]').click();
   await page.waitForFunction(() => document.documentElement.dataset.ashFlowcorePhase === 'NAME');
@@ -94,30 +116,18 @@ try {
   assert(trace.every(item => item.artifact_required === false), 'A Flow-Core frame falsely required an artifact.');
 
   await page.setViewportSize({ width:390, height:844 });
-  await page.evaluate(() => window.__td613AshIngressCopySpacing.refresh());
-  const ingressMobile = await page.evaluate(() => window.__td613AshIngressCopySpacing.measure());
-  assert(ingressMobile.available && ingressMobile.ordered && ingressMobile.overlap_px === 0, `Mobile ingress copy overlap: ${JSON.stringify(ingressMobile)}.`);
   const mobile = await page.evaluate(() => ({
     overflow:Math.max(0, document.documentElement.scrollWidth - innerWidth),
     field_width:document.querySelector('.ash-flowcore-field')?.getBoundingClientRect().width || 0,
     static_count:document.querySelectorAll('.ash-flowcore-static li').length,
-    rest_visible:getComputedStyle(document.querySelector('.ash-flowcore-rest')).opacity !== '0',
-    title_visible:getComputedStyle(document.getElementById('ashLaunchTitle')).display !== 'none',
-    recovery_visible:getComputedStyle(document.getElementById('capsuleRecoveryLaunchDescription')).display !== 'none'
+    rest_visible:getComputedStyle(document.querySelector('.ash-flowcore-rest')).opacity !== '0'
   }));
   assert(mobile.overflow <= 2, `Mobile Flow-Core overflow: ${mobile.overflow}.`);
   assert(mobile.field_width > 320 && mobile.field_width <= 390, `Mobile field width invalid: ${mobile.field_width}.`);
   assert(mobile.static_count === 5 && mobile.rest_visible, 'Mobile/static Flow-Core parity incomplete.');
-  assert(mobile.title_visible && mobile.recovery_visible, 'Mobile ingress title or recovery guidance disappeared.');
   await page.screenshot({ path:path.join(out, `${browserName}-flowcore-mobile-rest.png`), fullPage:true });
 
-  await page.locator('#newProfile').selectOption('investigation');
-  await page.locator('#newTitle').fill(`Flow-Core close boundary ${browserName}`);
-  await page.locator('#newCase').click();
-  await page.waitForFunction(() => Boolean(localStorage.getItem('td613.ash-keep.current-case'))
-    && Boolean(window.__td613AshKeep?.current?.().case_id)
-    && !document.getElementById('closeCase')?.disabled);
-  const caseId = await page.evaluate(() => localStorage.getItem('td613.ash-keep.current-case'));
+  await page.setViewportSize({ width:1440, height:1000 });
   await page.locator('#closeCase').click();
   await page.waitForFunction(() => {
     const launch = document.getElementById('launch');
@@ -133,7 +143,7 @@ try {
   });
   await page.evaluate(() => window.__td613AshIngressCopySpacing.refresh());
   const ingressAfterClose = await page.evaluate(() => window.__td613AshIngressCopySpacing.measure());
-  assert(ingressAfterClose.available && ingressAfterClose.ordered && ingressAfterClose.overlap_px === 0, `Close-return ingress copy overlap: ${JSON.stringify(ingressAfterClose)}.`);
+  assert(ingressAfterClose.available && ingressAfterClose.ordered && ingressAfterClose.overlap_px === 0 && ingressAfterClose.overlap_area === 0, `Close-return ingress copy overlap: ${JSON.stringify(ingressAfterClose)}.`);
   const close = await page.evaluate(async id => {
     const launch = document.getElementById('launch');
     const db = await new Promise((resolve,reject) => {
@@ -161,7 +171,7 @@ try {
   assert(errors.length === 0, `Browser errors: ${errors.join(' | ')}`);
   assert(httpErrors.length === 0, `HTTP errors: ${httpErrors.join(' | ')}`);
   report.status = 'PASS';
-  report.observations = { ingress_desktop:ingressDesktop, arrival, active_motion:activeMotion, phase_trace:trace, ingress_mobile:ingressMobile, mobile, ingress_after_close:ingressAfterClose, close };
+  report.observations = { ingress_desktop:ingressDesktop, ingress_mobile:ingressMobile, arrival, active_motion:activeMotion, phase_trace:trace, mobile, ingress_after_close:ingressAfterClose, close };
 } catch (error) {
   report.status = 'HOLD';
   report.hold = { message:error.message, stack:error.stack };
