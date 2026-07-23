@@ -15,6 +15,12 @@ on:
       - 'app/dome-world/ash-session-boundary.js'
       - 'app/dome-world/ash-ingress-copy-spacing.js'
       - 'app/dome-world/ash-workspace-bridge.js'
+      - 'app/dome-world/ash-research-demo-hydration.js'
+      - 'app/dome-world/ash-research-demo-control-state.js'
+      - 'app/dome-world/ash-aia3-composition.js'
+      - 'app/dome-world/ash-lifecycle.js'
+      - 'app/dome-world/ash-profile-demo-hydration.js'
+      - 'app/dome-world/ash-premium-ui.js'
       - 'scripts/ash-keep-local-closure-server.mjs'
       - 'tests/ash-flowcore-live-field.test.mjs'
       - 'tests/ash-ingress-polish.test.mjs'
@@ -22,14 +28,21 @@ on:
       - 'tests/ash-live-ingress-demos-cache.test.mjs'
       - 'tests/product-architecture/shell.test.mjs'
       - 'tests/ash-reviewability.test.mjs'
+      - 'tests/ash-research-ux-rehydration.test.mjs'
+      - 'tests/ash-final-rehydration-boundaries.test.mjs'
       - 'scripts/ash-flowcore-live-field-browser-probe.mjs'
       - 'scripts/ash-ingress-polish-browser-probe.mjs'
       - 'scripts/ash-reviewability-browser-probe.mjs'
+      - 'scripts/ash-research-ux-browser-probe.mjs'
       - '.github/workflows/ash-flowcore-live-field.yml'
   workflow_dispatch:
 
 permissions:
   contents: read
+
+concurrency:
+  group: ash-flowcore-live-field-${{ github.event.pull_request.number || github.ref }}
+  cancel-in-progress: true
 
 jobs:
   contracts:
@@ -53,7 +66,10 @@ jobs:
           node --check app/dome-world/ash-reviewability-repair.js
           node --check app/dome-world/ash-session-boundary.js
           node --check app/dome-world/ash-ingress-copy-spacing.js
-      - name: Live Flow-Core field, first paint, cache, and reviewability contracts
+          node --check app/dome-world/ash-research-demo-hydration.js
+          node --check app/dome-world/ash-research-demo-control-state.js
+          node --check scripts/ash-research-ux-browser-probe.mjs
+      - name: Live field, A1 first paint, reviewability, and Research contracts
         run: |
           mkdir -p artifacts
           set +e
@@ -64,6 +80,8 @@ jobs:
             node tests/ash-live-ingress-demos-cache.test.mjs
             node tests/product-architecture/shell.test.mjs
             node tests/ash-reviewability.test.mjs
+            node tests/ash-research-ux-rehydration.test.mjs
+            node tests/ash-final-rehydration-boundaries.test.mjs
           } > artifacts/ash-flowcore-contract.log 2>&1
           status=$?
           cat artifacts/ash-flowcore-contract.log
@@ -88,7 +106,7 @@ jobs:
   browser-witness:
     name: ${{ matrix.browser }} consequence field
     runs-on: ubuntu-latest
-    timeout-minutes: 20
+    timeout-minutes: 55
     strategy:
       fail-fast: false
       matrix:
@@ -107,6 +125,7 @@ jobs:
           node --check scripts/ash-flowcore-live-field-browser-probe.mjs
           node --check scripts/ash-ingress-polish-browser-probe.mjs
           node --check scripts/ash-reviewability-browser-probe.mjs
+          node --check scripts/ash-research-ux-browser-probe.mjs
           node --check app/dome-world/ash-flowcore-pedagogy-field.js
           node --check app/dome-world/ash-flowcore-ingress-portal.js
           node --check app/dome-world/ash-flowcore-ingress-portal-loader.js
@@ -114,6 +133,8 @@ jobs:
           node --check app/dome-world/ash-reviewability-repair.js
           node --check app/dome-world/ash-session-boundary.js
           node --check app/dome-world/ash-ingress-copy-spacing.js
+          node --check app/dome-world/ash-research-demo-hydration.js
+          node --check app/dome-world/ash-research-demo-control-state.js
       - name: Install browser witness runtime
         run: |
           npm install --no-save --package-lock=false playwright@1.53.2
@@ -150,6 +171,12 @@ jobs:
           TD613_BASE_URL: http://127.0.0.1:6130
           TD613_ARTIFACT_DIR: artifacts/ash-reviewability-${{ matrix.browser }}
         run: timeout --foreground --signal=INT --kill-after=15s 420s node scripts/ash-reviewability-browser-probe.mjs
+      - name: Observe Research hydration, dormancy, and mobile geometry
+        env:
+          TD613_BROWSER: ${{ matrix.browser }}
+          TD613_BASE_URL: http://127.0.0.1:6130
+          TD613_ARTIFACT_DIR: artifacts/ash-research-ux-${{ matrix.browser }}
+        run: timeout --foreground --signal=INT --kill-after=15s 480s node scripts/ash-research-ux-browser-probe.mjs
       - name: Stop bounded local runtime
         if: always()
         run: |
@@ -163,6 +190,7 @@ jobs:
             artifacts/ash-flowcore-field-${{ matrix.browser }}/
             artifacts/ash-ingress-polish-${{ matrix.browser }}/
             artifacts/ash-reviewability-${{ matrix.browser }}/
+            artifacts/ash-research-ux-${{ matrix.browser }}/
             artifacts/ash-flowcore-field-server.log
             artifacts/ash-flowcore-field-readiness.json
           if-no-files-found: warn

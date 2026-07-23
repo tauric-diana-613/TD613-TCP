@@ -7,7 +7,7 @@ const buildout = read('docs/ASH_KEEP_BUILDOUT_CLOSURE_RECEIPT.md');
 const ledger = read('docs/ASH_KEEP_BUILDOUT_LEDGER.md');
 const roadmap = read('ROADMAP.md');
 const plan = read('docs/ASH_KEEP_BUILDOUT_PLAN_STRETCH11_AND_FINAL_CLOSURE.md');
-const workflow = read('.github/workflows/ash-destination-handoff.yml');
+const workflow = read('.github/workflows/td613-ci.yml');
 const sacred = String.fromCodePoint(0x10D613);
 for (const [name,doc] of Object.entries({ opening, closure, buildout, ledger, roadmap, plan })) {
   assert.ok(doc.includes(sacred), `${name} omitted U+10D613`);
@@ -37,7 +37,14 @@ assert.match(roadmap, /Ash Keep Buildout Closure — NOT A STRETCH/);
 assert.match(plan, /Plan generation: `v3\.1/);
 assert.match(plan, /no Stretch 12/i);
 for (const token of [
-  'name: Ash Destination Handoff','Ash Destination Handoff Validation','Ash Destination Handoff Deployed Observation',
-  'test "$count" = "11"','ash-destination-handoff-probe.mjs','https://td613.com/app/dome-world/ash-destination-handoff.html'
-]) assert.ok(workflow.includes(token), `workflow omitted ${token}`);
+  'Ash Destination Handoff contracts',
+  'node tests/ash-destination-handoff.test.mjs',
+  'node tests/ash-destination-handoff-schemas.test.mjs',
+  'node tests/ash-destination-handoff-ui.test.mjs',
+  'node tests/ash-destination-handoff-closure.test.mjs'
+]) assert.ok(workflow.includes(token), `consolidated workflow omitted ${token}`);
+assert.match(workflow, /permissions:\s*\n\s*contents: read/);
+assert.doesNotMatch(workflow, /statuses: write/);
+assert.equal(fs.existsSync(new URL('../.github/workflows/ash-destination-handoff.yml', import.meta.url)), false,
+  'Destination Handoff must remain a contract suite, not regain an independent push workflow.');
 console.log('ash-destination-handoff-closure.test.mjs passed');

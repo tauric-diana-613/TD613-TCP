@@ -1,4 +1,5 @@
 import assert from 'node:assert/strict';
+import { existsSync } from 'node:fs';
 import { readFile } from 'node:fs/promises';
 
 const binding = JSON.parse(await readFile(
@@ -21,7 +22,7 @@ const temporal = JSON.parse(await readFile(
   new URL('../app/dome-world/schemas/aperture-temporal-disclosure-v01.schema.json', import.meta.url),
   'utf8'
 ));
-const workflow = await readFile(new URL('../.github/workflows/ash-keep-choir-test.yml', import.meta.url), 'utf8');
+const workflow = await readFile(new URL('../.github/workflows/td613-ci.yml', import.meta.url), 'utf8');
 const publisher = await readFile(new URL('../scripts/publish-ash-keep-observer-status.mjs', import.meta.url), 'utf8');
 
 assert.equal(binding.$id, 'td613.aperture.choir-calibration-binding/v0.1');
@@ -129,20 +130,16 @@ assert.equal(temporal.properties.network_called.const, false);
 assert.equal(temporal.properties.storage_mutated.const, false);
 assert.equal(temporal.properties.recommendation_not_command.const, true);
 
-for (const token of [
-  'statuses: write',
-  'Ash Choir Calibration Validation',
-  'Publish Choir validation pending status',
-  'Validate ordered route-sequence recovery',
-  'Validate temporal and delayed-disclosure assays',
-  'Publish Choir validation success status',
-  'Publish Choir validation failure status',
-  'Reconcile terminal Choir validation failure status',
-  'choir-calibration-validation-evidence',
-  'observer-status-success.json'
-]) assert.ok(workflow.includes(token), `Choir workflow omitted ${token}`);
-assert.match(workflow, /github\.event_name == 'push' && github\.ref == 'refs\/heads\/main'/);
+assert.match(workflow, /Ash Choir calibration schemas/);
+assert.match(workflow, /node tests\/ash-keep-choir-calibration-schemas\.test\.mjs/);
+assert.match(workflow, /permissions:\s*\n\s*contents: read/);
+assert.doesNotMatch(workflow, /statuses: write/);
+assert.equal(existsSync(new URL('../.github/workflows/ash-keep-choir-test.yml', import.meta.url)), false,
+  'Choir schemas must remain a Core contract, not regain an independent push/status workflow.');
 assert.match(publisher, /Ash Choir Calibration Validation/);
+assert.match(publisher, /observer-status-success\.json|status/);
+assert.doesNotMatch(workflow, /publish-ash-keep-observer-status\.mjs/,
+  'Core Choir validation must not publish automatic commit statuses.');
 assert.doesNotMatch(workflow, /release_authorized: true|transport_authorized: true|cinder_action_authorized: true/);
 
 console.log('ash-keep-choir-calibration-schemas.test.mjs passed');

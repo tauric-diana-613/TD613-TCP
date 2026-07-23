@@ -1,0 +1,167 @@
+name: TD613 Core CI
+
+on:
+  pull_request:
+  push:
+    branches:
+      - main
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: td613-core-${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  core:
+    name: Core, release, and Safe Harbor
+    runs-on: ubuntu-latest
+    timeout-minutes: 35
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+      - run: npm ci
+      - run: node tests/workflow-estate.test.mjs
+      - name: Run legacy repository suite
+        id: legacy_suite
+        shell: bash
+        run: |
+          mkdir -p artifacts/core
+          set +e
+          npm test > artifacts/core/npm-test.log 2>&1
+          status=$?
+          cat artifacts/core/npm-test.log
+          exit "$status"
+      - name: Preserve held legacy suite diagnostics
+        if: failure() && steps.legacy_suite.outcome == 'failure'
+        uses: actions/upload-artifact@v4
+        with:
+          name: td613-core-legacy-suite-diagnostic
+          path: artifacts/core/npm-test.log
+          if-no-files-found: error
+          retention-days: 3
+      - run: npm run test:safe-harbor:current
+      - run: npm run test:safe-harbor:gen3:wave-b
+
+  hush:
+    name: Hush retained phase suites
+    runs-on: ubuntu-latest
+    timeout-minutes: 35
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+      - run: npm ci
+      - run: npm run test:hush:phase9
+      - run: npm run test:hush:phase10
+      - run: npm run test:hush:phase11
+      - run: npm run test:hush:phase12
+      - run: npm run test:hush:phase13
+      - run: npm run test:hush:phase14
+      - run: npm run test:hush:packets:check
+
+  dome-world:
+    name: Dome-World and Ash contracts
+    runs-on: ubuntu-latest
+    timeout-minutes: 35
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - run: npm ci
+      - name: Install shared Dome-World Python dependency
+        run: python -m pip install --disable-pip-version-check sympy
+      - name: Dome-World art and shell
+        run: npm run test:dome-world:art
+      - name: Dome-World Phase III shared boundary
+        run: npm run test:dome-world:phase3
+      - name: Ash custody contract
+        run: node tests/dome-world-ash-custody.test.mjs
+      - name: Ash leak challenge
+        run: node tests/dome-world-ash-leak-challenge.test.mjs
+      - name: Ash veil contract
+        run: node tests/dome-world-ash-veil.test.mjs
+      - name: Ash Cinder contract
+        run: node tests/dome-world-ash-cinder.test.mjs
+      - name: Ash comparison contract
+        run: node tests/dome-world-ash-compare.test.mjs
+      - name: Ash recall contract
+        run: node tests/dome-world-ash-recall.test.mjs
+      - name: Ash HCC grade gate
+        run: node tests/dome-world-ash-hcc-grade-gate.test.mjs
+      - name: Ash Keep core
+        run: node tests/ash-keep-core.test.mjs
+      - name: Ash Keep continuity
+        run: node tests/ash-keep-continuity.test.mjs
+      - name: Ash Keep Hush API
+        run: node tests/ash-keep-hush-api.test.mjs
+      - name: Export canonical Aperture Downloads witness
+        run: npm run aperture:export-downloads
+      - name: Ash Keep UI
+        run: node tests/ash-keep-ui.test.mjs
+      - name: Ash four-profile pedagogy
+        run: node tests/ash-four-profile-pedagogy.test.mjs
+      - name: Ash investigation guidance
+        run: node tests/ash-investigation-guidance.test.mjs
+      - name: Ash legal UX
+        run: node tests/ash-legal-ux.test.mjs
+      - name: Ash live ingress and demos cache
+        run: node tests/ash-live-ingress-demos-cache.test.mjs
+      - name: Ash Custodian Return contracts
+        run: |
+          node tests/ash-custodian-return.test.mjs
+          node tests/ash-custodian-return-contract.test.mjs
+          node tests/ash-custodian-return-closure.test.mjs
+          node tests/ash-custodian-return-closure-contract.test.mjs
+      - name: Ash Destination Handoff contracts
+        run: |
+          node tests/ash-destination-handoff.test.mjs
+          node tests/ash-destination-handoff-schemas.test.mjs
+          node tests/ash-destination-handoff-ui.test.mjs
+          node tests/ash-destination-handoff-closure.test.mjs
+      - name: Ash Choir calibration schemas
+        run: node tests/ash-keep-choir-calibration-schemas.test.mjs
+      - name: Ash production closure contract
+        run: node tests/ash-keep-production-closure-contract.test.mjs
+      - name: Ash lifecycle production contract
+        run: node tests/ash-lifecycle-production-contract.test.mjs
+      - name: Flow-Core P0-P7 seam closure
+        run: node tests/flowcore-p0-p7-seam-closure.test.mjs
+      - name: Flow-Core P0-P10 completion
+        run: node tests/flowcore-p0-p10-completion.test.mjs
+      - name: Flow-Core production observation contract
+        run: node tests/flowcore-production-observation.test.mjs
+      - name: Flow-Core runtime browser probe contract
+        run: node tests/flowcore-runtime-browser-probe.test.mjs
+      - name: Product architecture contracts
+        run: |
+          node tests/product-architecture/shell.test.mjs
+          node tests/product-architecture/lifecycle.test.mjs
+
+  deployment-law:
+    name: Deployment law, locked posture
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+      - run: npm ci
+      - run: node tests/vercel-deploy-hygiene.test.mjs
+      - run: node tests/vercel-operator-release-gate.test.mjs
+      - run: node tests/vercel-relock-safety.test.mjs
+      - run: node tests/release-plumbing.test.mjs

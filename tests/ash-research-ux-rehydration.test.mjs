@@ -27,7 +27,7 @@ const bridge = read('app/dome-world/ash-workspace-bridge.js');
 const premium = read('app/dome-world/ash-premium-ui.js');
 const lifecycle = read('app/dome-world/ash-lifecycle-core.js');
 const probe = read('scripts/ash-research-ux-browser-probe.mjs');
-const workflow = read('.github/workflows/ash-research-ux.yml');
+const workflow = read('.github/workflows/ash-flowcore-live-field.yml');
 
 assert.equal(ASH_RESEARCH_DEMO_VERSION, 'td613.ash.research-demo/v0.3-child-legible-surface-ledger');
 assert.equal(ASH_RESEARCH_SURFACE_LEDGER_VERSION, 'td613.ash.research-surface-ledger/v0.1');
@@ -163,6 +163,8 @@ assert.match(probe, /DORMANT_AS_DESIGNED/);
 assert.match(probe, /BLOCKED_OR_MISSING/);
 assert.match(probe, /OVERHYDRATED_REVIEW/);
 assert.match(workflow, /browser: \[chromium, firefox, webkit\]/);
+assert.match(workflow, /node tests\/ash-research-ux-rehydration\.test\.mjs/);
+assert.match(workflow, /node tests\/ash-final-rehydration-boundaries\.test\.mjs/);
 assert.match(workflow, /ash-research-ux-browser-probe\.mjs/);
 
 console.log('ash-research-ux-rehydration.test.mjs passed');
