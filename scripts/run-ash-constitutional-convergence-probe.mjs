@@ -132,6 +132,16 @@ const mapWorkspaceReplacement = `  await page.evaluate(() => {
       && rect?.height > 0;
   });`;
 
+const secondCaseTarget = `  await page.locator('#newTitle').fill('Synthetic second case');
+  await page.locator('#newCase').click();
+  await page.waitForFunction(() => /Synthetic second case/i.test(document.getElementById('caseTitle')?.textContent || ''));`;
+const secondCaseReplacement = `  await page.locator('#newTitle').fill('Synthetic second case');
+  await page.locator('#newProfile').selectOption('political_campaign');
+  await page.waitForFunction(() => document.getElementById('newProfile')?.value === 'political_campaign'
+    && document.getElementById('newCase')?.disabled !== true, null, { timeout:45000 });
+  await page.locator('#newCase').click();
+  await page.waitForFunction(() => /Synthetic second case/i.test(document.getElementById('caseTitle')?.textContent || ''), null, { timeout:45000 });`;
+
 const deletionTarget = `  await page.locator('#selectCase').selectOption(secondCase);
   await page.waitForFunction(() => document.getElementById('deleteSelectedCase')?.disabled === false);
   await page.locator('#deleteSelectedCase').click();`;
@@ -173,6 +183,7 @@ const testWorkspaceCount = source.split(testWorkspaceTarget).length - 1;
 const rebuildCount = source.split(rebuildTarget).length - 1;
 const authorityCount = source.split(authorityTarget).length - 1;
 const mapWorkspaceCount = source.split(mapWorkspaceTarget).length - 1;
+const secondCaseCount = source.split(secondCaseTarget).length - 1;
 const deletionCount = source.split(deletionTarget).length - 1;
 const secondTabCount = source.split(secondTabTarget).length - 1;
 const reloadCount = source.split(reloadTarget).length - 1;
@@ -183,6 +194,7 @@ if (testWorkspaceCount !== 1) throw new Error(`Convergence observer expected one
 if (rebuildCount !== 1) throw new Error(`Convergence observer expected one governed Rebuild confirmation seam; observed ${rebuildCount}.`);
 if (authorityCount !== 1) throw new Error(`Convergence observer expected one permission-stabilization seam; observed ${authorityCount}.`);
 if (mapWorkspaceCount !== 1) throw new Error(`Convergence observer expected one legacy Map workspace seam; observed ${mapWorkspaceCount}.`);
+if (secondCaseCount !== 1) throw new Error(`Convergence observer expected one explicit second-case profile seam; observed ${secondCaseCount}.`);
 if (deletionCount !== 1) throw new Error(`Convergence observer expected one case-selection seam and one atomic case-deletion seam; observed ${deletionCount}.`);
 if (secondTabCount !== 1) throw new Error(`Convergence observer expected one second-tab readiness seam; observed ${secondTabCount}.`);
 if (reloadCount !== 1) throw new Error(`Convergence observer expected one reload readiness seam; observed ${reloadCount}.`);
@@ -194,6 +206,7 @@ const runtime = source
   .replace(rebuildTarget, rebuildReplacement)
   .replace(authorityTarget, authorityReplacement)
   .replace(mapWorkspaceTarget, mapWorkspaceReplacement)
+  .replace(secondCaseTarget, secondCaseReplacement)
   .replace(deletionTarget, deletionReplacement)
   .replace(secondTabTarget, secondTabReplacement)
   .replace(reloadTarget, reloadReplacement)
@@ -206,6 +219,9 @@ if (!runtime.includes("authorize('HUSH_CANDIDATE')") || !runtime.includes('decis
 }
 if (!runtime.includes("getByRole('button', { name:/Confirm this exact gesture/i })")) {
   throw new Error('Convergence observer failed to materialize the governed Rebuild confirmation gesture.');
+}
+if (!runtime.includes("newProfile').selectOption('political_campaign')") || !runtime.includes('Synthetic second case')) {
+  throw new Error('Convergence observer failed to materialize the explicit profile choice for the second case.');
 }
 if (!runtime.includes('profile_demo_registry_deferred_until_selection: true')
   || !runtime.includes('demo_entry_convergence_deferred_until_case_hydration: true')
