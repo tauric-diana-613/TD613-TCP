@@ -1,15 +1,17 @@
-export const ASH_PROFILE_PROMPT_CANONICAL_VERSION = 'td613.ash.profile-prompt-canonical/v0.9-delegated-case-choice-boundary';
+export const ASH_PROFILE_PROMPT_CANONICAL_VERSION = 'td613.ash.profile-prompt-canonical/v1.0-bounded-case-choice-revision';
 
 const host = globalThis.window;
 const doc = globalThis.document;
 const POINTER_KEY = 'td613.ash-keep.current-case';
 let explicitChoice = '';
+let explicitCaseChoice = '';
 let controlObserver = null;
 let observedSelect = null;
 let observedStart = null;
 let observedCaseSelect = null;
 let reconcileQueued = false;
 let caseListReconcileQueued = false;
+let caseChoiceRestoreQueued = false;
 
 function noCaseOpen() {
   try { return !host.localStorage?.getItem?.(POINTER_KEY); }
@@ -42,16 +44,37 @@ function applyCaseChoice(select, reason = 'DELEGATED_CASE_SELECTION') {
   return true;
 }
 
+function restoreExplicitCaseChoice(select, reason = 'CASE_LIST_OPTIONS_CHANGED') {
+  if (!select || select !== doc.getElementById('selectCase')) return false;
+  if (noCaseOpen() && explicitCaseChoice && [...select.options].some(option => option.value === explicitCaseChoice)) {
+    select.value = explicitCaseChoice;
+  }
+  select.dataset.ashCaseChoiceRevision = explicitCaseChoice || 'UNSELECTED';
+  return applyCaseChoice(select, reason);
+}
+
 function captureCaseChoice(event) {
   const select = event?.target?.closest?.('#selectCase');
   if (!select) return;
-  applyCaseChoice(select);
+  explicitCaseChoice = select.value || '';
+  restoreExplicitCaseChoice(select, 'EXPLICIT_CASE_SELECTION');
+}
+
+function queueCaseChoiceRestore(reason = 'CASE_LIST_OPTIONS_CHANGED') {
+  if (caseChoiceRestoreQueued) return;
+  caseChoiceRestoreQueued = true;
+  queueMicrotask(() => {
+    caseChoiceRestoreQueued = false;
+    const current = doc.getElementById('selectCase');
+    const restored = restoreExplicitCaseChoice(current, reason);
+    doc.documentElement.dataset.ashCaseChoiceRevisionRestored = String(restored);
+  });
 }
 
 function reconcileRemountedCaseChoice(select, reason = 'CASE_LIST_IDENTITY_CHANGED') {
   if (!select) return false;
   select.dataset.ashRemountedCaseChoiceReconciled = 'true';
-  applyCaseChoice(select, reason);
+  restoreExplicitCaseChoice(select, reason);
   return true;
 }
 
@@ -109,12 +132,14 @@ function installBoundedControlObserver() {
     const currentCaseSelect = doc.getElementById('selectCase');
     const profileIdentityChanged = currentSelect !== observedSelect || currentStart !== observedStart;
     const caseIdentityChanged = currentCaseSelect !== observedCaseSelect;
-    if (!profileIdentityChanged && !caseIdentityChanged) return;
+    const caseOptionsChanged = records.some(record => currentCaseSelect && (record.target === currentCaseSelect || currentCaseSelect.contains(record.target)));
+    if (!profileIdentityChanged && !caseIdentityChanged && !caseOptionsChanged) return;
     observedSelect = currentSelect;
     observedStart = currentStart;
     observedCaseSelect = currentCaseSelect;
     if (profileIdentityChanged) queueControlReconcile('INGRESS_CONTROL_IDENTITY_CHANGED');
     if (caseIdentityChanged) queueCaseListReconcile('CASE_LIST_IDENTITY_CHANGED');
+    else if (caseOptionsChanged) queueCaseChoiceRestore('CASE_LIST_OPTIONS_CHANGED');
   });
   controlObserver.observe(launchBoundary, { childList:true, subtree:true });
   doc.documentElement.dataset.ashCanonicalProfileControlObserver = 'BOUNDED_TO_LAUNCH';
@@ -169,6 +194,7 @@ if (host && doc?.documentElement) {
     refresh:applyCanonicalProfilePrompt,
     current:() => Object.freeze({
       explicit_choice:explicitChoice || null,
+      explicit_case_choice:explicitCaseChoice || null,
       case_open:!noCaseOpen(),
       observed_selector_bound:Boolean(observedSelect?.isConnected),
       observed_start_bound:Boolean(observedStart?.isConnected),
