@@ -25,12 +25,18 @@ for (const marker of [
   'contradiction',
   'engine has no undirected relation state',
   'Storage confirmation remains pending',
-  'Stored relationship confirmed'
+  'Stored relationship confirmed',
+  'Existing Ash action owner'
 ]) assert.ok(source.includes(marker), `A8 source missing ${marker}`);
 
 for (const id of ['objectName','objectType','objectRoom','objectSource','addObject','linkFrom','linkTo','linkType','addRelationship','researchNotes']) assert.ok(source.includes(`'${id}'`), `A8 must delegate to existing ${id}`);
-assert.match(source, /byId\('addObject'\)\?\.click\(\)/);
-assert.match(source, /byId\('addRelationship'\)\?\.click\(\)/);
+assert.match(source, /function delegateLegacyAction\(id\)/);
+assert.match(source, /control\.dispatchEvent\(new MouseEvent\('click'/);
+assert.match(source, /if \(control\.disabled\)/);
+assert.match(source, /delegateLegacyAction\('addObject'\)/);
+assert.match(source, /delegateLegacyAction\('addRelationship'\)/);
+assert.doesNotMatch(source, /byId\('addObject'\)\?\.click\(\)/);
+assert.doesNotMatch(source, /byId\('addRelationship'\)\?\.click\(\)/);
 assert.match(source, /notes\.dispatchEvent\(new Event\('change'/);
 assert.match(source, /table\.classList\.add\('active'\)/);
 assert.match(source, /data-ash-a8-inspect-relation/);
@@ -54,6 +60,8 @@ console.log(JSON.stringify({
   ok:true,
   schema:'td613.ash.a8-case-map-contract/v0.1',
   existing_map_engine_delegation:true,
+  inert_owner_event_delegation:true,
+  disabled_owner_respected:true,
   relation_workshop:true,
   directed_relation_truthful:true,
   notes_change_persistence:true,
