@@ -10,6 +10,7 @@ const sourcePath = path.join(here, 'ash-keep-production-probe.mjs');
 const runnerPath = path.join(here, 'run-ash-keep-production-probe.mjs');
 const a1SourcePath = path.join(runtimeDir, 'ash-keep-production-probe.a1-source.mjs');
 const a1RunnerPath = path.join(runtimeDir, 'run-ash-keep-production-probe.a1-runtime.mjs');
+const adapterManifestPath = path.join(runtimeDir, 'a1-ingress-adapter-manifest.json');
 
 function replaceExactlyOnce(source, target, replacement, label) {
   const count = source.split(target).length - 1;
@@ -20,46 +21,37 @@ function replaceExactlyOnce(source, target, replacement, label) {
 const keepUrlTarget = "const keepUrl = `${base}/dome-world/ash-keep.html?presentation=legacy`;";
 const keepUrlReplacement = "const keepUrl = `${base}/dome-world/ash-threshold.html`;";
 
-const localKeysTarget = `const ALLOWED_LOCAL_KEYS = new Set([
-  'td613.ash-keep.current-case',
-  'td613.ash-keep.preferences',
-  'td613.ash.cache-flush.epoch'
-]);`;
-const localKeysReplacement = `const ALLOWED_LOCAL_KEYS = new Set([
-  'td613.ash-keep.current-case',
-  'td613.ash-keep.preferences',
-  'td613.ash.cache-flush.epoch',
-  'td613.ash.cache-flush.aia3.epoch',
-  'td613.ash.cache-preflight.epoch',
-  'td613.ash.session.epoch'
-]);`;
-
 const arrivalTarget = `  await page.goto(keepUrl, { waitUntil: 'networkidle', timeout: 60_000 });
-  // ASH_CACHE_EPOCH_STABLE: the one-time eviction may navigate after first paint.
-  await page.waitForURL(url => url.searchParams.has('ash_flush'), { timeout: 60_000 });
-  await page.waitForLoadState('networkidle');
-  await page.waitForFunction(() => {
-    const epoch = localStorage.getItem('td613.ash.cache-flush.epoch');
-    const url = new URL(location.href);
-    return Boolean(epoch)
-      && url.searchParams.get('ash_flush') === epoch
-      && window.__td613AshCacheTransition?.epoch === epoch;
-  }, { timeout: 60_000 });
+  // ASH_AIA3_LEGACY_BYPASS_STABLE: rollback loads exact legacy work without an AIA eviction reload.
+  await page.waitForFunction(() => window.__td613AshAia3PreflightReceipt?.legacy_bypass === true
+    && document.documentElement.dataset.ashCachePreflight === 'complete', null, { timeout: 60_000 });
   await page.locator('h1').waitFor({ state: 'visible' });
   assert((await page.title()).includes('TD613 Ash Keep'), 'Ash Keep title was not observed');
   assert(await page.locator('#launch').isVisible(), 'Clean profile did not begin at the explicit launch gate');
 
   const cleanDb = await databaseSnapshot(page);
   const cleanCount = Object.values(cleanDb).reduce((total, rows) => total + rows.length, 0);
-  const cleanKeys = await page.evaluate(() => Object.keys(localStorage));
+  const cleanEntries = await page.evaluate(() => Object.fromEntries(Object.entries(localStorage)));
+  const cleanTransition = await page.evaluate(() => window.__td613AshCacheTransition || null);
+  const cleanKeys = Object.keys(cleanEntries);
+  const cleanMaintenanceEntries = {"td613.ash.cache-flush.epoch":"td613.ash.cache-flush/2026-07-18-canonical-membrane-v7"};
+  const cleanMaintenanceKeys = new Set(Object.keys(cleanMaintenanceEntries));
   const initialNonGet = requests.filter(request => request.method !== 'GET' && request.method !== 'HEAD');
   assert(cleanCount === 0, 'Clean arrival created case records before operator action');
-  assert(cleanKeys.length === 0, 'Clean arrival wrote localStorage before operator action');
+  assert(cleanKeys.every(key => cleanMaintenanceKeys.has(key)), \`Clean arrival wrote case-adjacent localStorage before operator action: \${JSON.stringify(cleanEntries)}\`);
+  for (const [key, value] of Object.entries(cleanMaintenanceEntries)) {
+    assert(cleanEntries[key] === value, \`Clean arrival carried an unknown maintenance epoch for \${key}: \${JSON.stringify(cleanEntries)}\`);
+  }
   assert(initialNonGet.length === 0, 'Clean arrival emitted a non-read network request');
   report.clean_arrival = {
     launch_visible: true,
     indexeddb_record_count: cleanCount,
     local_storage_keys: cleanKeys,
+    maintenance_entries: cleanEntries,
+    permitted_maintenance_entries: cleanMaintenanceEntries,
+    cache_navigation_replaced: cleanTransition?.navigation_replaced ?? null,
+    mass_eviction_superseded_legacy_reset: cleanTransition?.superseded_by_mass_eviction === true,
+    case_adjacent_storage_written: false,
     non_read_requests: initialNonGet
   };`;
 
@@ -67,7 +59,7 @@ const arrivalReplacement = `  await page.goto(keepUrl, { waitUntil: 'domcontentl
   await page.waitForFunction(() => document.documentElement.dataset.ashModuleGraph === 'ready'
     && document.documentElement.dataset.ashCachePreflight === 'complete'
     && window.__td613AshAia3PreflightReceipt
-    && window.__td613AshFirstPaintWitness, { timeout: 60_000 });
+    && window.__td613AshFirstPaintWitness, null, { timeout: 60_000 });
   await page.waitForLoadState('networkidle');
   await page.locator('h1').waitFor({ state: 'visible' });
   const arrival = await page.evaluate(() => ({
@@ -87,13 +79,14 @@ const arrivalReplacement = `  await page.goto(keepUrl, { waitUntil: 'domcontentl
 
   const cleanDb = await databaseSnapshot(page);
   const cleanCount = Object.values(cleanDb).reduce((total, rows) => total + rows.length, 0);
-  const cleanKeys = await page.evaluate(() => Object.keys(localStorage));
-  const cleanValues = await page.evaluate(() => Object.values(localStorage).join('\\n'));
+  const cleanEntries = await page.evaluate(() => Object.fromEntries(Object.entries(localStorage)));
+  const cleanKeys = Object.keys(cleanEntries);
+  const cleanValues = Object.values(cleanEntries).join('\\n');
   const initialNonGet = requests.filter(request => request.method !== 'GET' && request.method !== 'HEAD');
   assert(cleanCount === 0, 'Clean arrival created case records before operator action');
-  assert(cleanKeys.every(key => ALLOWED_LOCAL_KEYS.has(key)), 'Clean arrival wrote an ungoverned localStorage key');
+  assert(cleanKeys.every(key => ALLOWED_LOCAL_KEYS.has(key)), \`Clean arrival wrote an ungoverned localStorage key: \${JSON.stringify(cleanEntries)}\`);
   assert(!cleanKeys.includes('td613.ash-keep.current-case'), 'Clean arrival bound a case before operator action');
-  assert(!cleanValues.includes('Glasshouse Archive inquiry') && !cleanValues.includes('node_archive'), 'Clean arrival stored case material in delivery markers');
+  assert(!cleanValues.includes('Harbor City Mayoral Campaign') && !cleanValues.includes('node_candidate'), 'Clean arrival stored campaign case material in delivery markers');
   assert(initialNonGet.length === 0, 'Clean arrival emitted a non-read network request');
   report.clean_arrival = {
     launch_visible: true,
@@ -103,19 +96,19 @@ const arrivalReplacement = `  await page.goto(keepUrl, { waitUntil: 'domcontentl
     preflight_performed: Boolean(arrival.preflight?.performed),
     indexeddb_record_count: cleanCount,
     local_storage_keys: cleanKeys,
+    maintenance_entries: cleanEntries,
+    case_adjacent_storage_written: false,
     non_read_requests: initialNonGet
   };`;
 
-const profileTarget = "  await page.locator('#startDemo').click();";
-const profileReplacement = `  await page.locator('#newProfile').selectOption('investigation');
-  assert(!(await page.locator('#startDemo').isDisabled()), 'Explicit Investigation profile choice did not enable Start Demo');
-  await page.locator('#startDemo').click();`;
-
 let probeSource = (await fs.readFile(sourcePath, 'utf8')).replace(/\r\n/g, '\n');
+if (!probeSource.includes('ASH_AIA3_LEGACY_BYPASS_STABLE')
+  || !probeSource.includes("selectOption('political_campaign')")
+  || !probeSource.includes('entries.length === 7')) {
+  throw new Error('A1 closure adapter received the probe before its governed profile, premium, and cache fixtures completed.');
+}
 probeSource = replaceExactlyOnce(probeSource, keepUrlTarget, keepUrlReplacement, 'canonical threshold URL');
-probeSource = replaceExactlyOnce(probeSource, localKeysTarget, localKeysReplacement, 'delivery-marker allowlist');
-probeSource = replaceExactlyOnce(probeSource, arrivalTarget, arrivalReplacement, 'canonical first-paint observation');
-probeSource = replaceExactlyOnce(probeSource, profileTarget, profileReplacement, 'explicit profile selection');
+probeSource = replaceExactlyOnce(probeSource, arrivalTarget, arrivalReplacement, 'post-fixture canonical first-paint observation');
 
 let runnerSource = (await fs.readFile(runnerPath, 'utf8')).replace(/\r\n/g, '\n');
 runnerSource = replaceExactlyOnce(
@@ -134,6 +127,19 @@ runnerSource = replaceExactlyOnce(
 await fs.mkdir(runtimeDir, { recursive:true });
 await fs.writeFile(a1SourcePath, probeSource, 'utf8');
 await fs.writeFile(a1RunnerPath, runnerSource, 'utf8');
+await fs.writeFile(adapterManifestPath, `${JSON.stringify({
+  schema:'td613.ash.a1-production-probe-adapter/v0.2',
+  source_probe:path.relative(repoRoot, sourcePath),
+  adapted_probe:path.relative(repoRoot, a1SourcePath),
+  adapted_runner:path.relative(repoRoot, a1RunnerPath),
+  input_posture:'PROFILE_PREMIUM_CACHE_FIXTURES_COMPLETE',
+  canonical_url:'/dome-world/ash-threshold.html',
+  canonical_title:'TD613 Ash',
+  visible_epoch_query:false,
+  product_source_mutated:false,
+  runtime_copy_ephemeral:true,
+  promotion_authorized:false
+}, null, 2)}\n`);
 
 const child = spawn(process.execPath, [a1RunnerPath], {
   cwd: repoRoot,
