@@ -128,11 +128,12 @@ jobs:
           node --check scripts/ash-a2-a5-browser-probe.mjs
           node --check app/dome-world/ash-whole-instrument-pedagogy.js
           node --check api/dome-world-shell.js
-      - name: Validate production closure contracts
-        run: |
-          node tests/ash-a2-a5-whole-instrument.test.mjs
-          node tests/ash-keep-production-closure-contract.test.mjs
-          node tests/ash-lifecycle-production-contract.test.mjs
+      - name: Validate A2-A5 whole-instrument contract
+        run: node tests/ash-a2-a5-whole-instrument.test.mjs
+      - name: Validate Ash Keep production closure contract
+        run: node tests/ash-keep-production-closure-contract.test.mjs
+      - name: Validate Ash lifecycle production contract
+        run: node tests/ash-lifecycle-production-contract.test.mjs
       - name: Enforce release promotion gate
         run: node tests/ash-keep-production-promotion-gate.test.mjs
       - name: Verify current Ash Keep release posture
@@ -361,6 +362,6 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ github.token }}
           TD613_OBSERVER_STATUS_STATE: failure
-          TD613_OBSERVER_STATUS_DESCRIPTION: Ash lifecycle observation or evidence preservation failed
-          TD613_OBSERVER_STATUS_RECEIPT_PATH: artifacts/ash-lifecycle-deployed-observation/observer-status-failure-reconciled.json
+          TD613_OBSERVER_STATUS_DESCRIPTION: Ash lifecycle observation held after terminal cleanup
+          TD613_OBSERVER_STATUS_RECEIPT_PATH: artifacts/ash-lifecycle-deployed-observation/observer-status-terminal-failure.json
         run: node scripts/publish-ash-keep-observer-status.mjs
