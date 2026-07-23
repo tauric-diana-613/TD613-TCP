@@ -2,13 +2,13 @@ import fs from 'node:fs';
 import path from 'node:path';
 import { stabilizeAshKeepSource } from '../app/dome-world/ash-keep-delivery-transform.js';
 
-export const DOME_WORLD_SHELL_VERSION = 'td613.dome-world.shell/v1.6-legal-demo-ux';
+export const DOME_WORLD_SHELL_VERSION = 'td613.dome-world.shell/v1.7-ash-first-paint';
 export const MARROWLINE_LAB_ROUTE = '/dome-world/marrowline.html';
 export const ASH_THRESHOLD_ROUTE = '/dome-world/ash-threshold.html';
 export const ASH_LIFECYCLE_SHELL_CONTRACT = 'td613.ash.lifecycle-shell/v0.1';
-export const ASH_KEEP_SHELL_VERSION = 'td613.ash-keep.shell/v0.5-legal-demo-ux';
+export const ASH_KEEP_SHELL_VERSION = 'td613.ash-keep.shell/v0.6-first-paint';
 export const ASH_KEEP_JS_SHELL_VERSION = 'td613.ash-keep.js-shell/v0.5-event-driven-map';
-export const ASH_CACHE_TRANSITION_CONTRACT = 'td613.ash.cache-transition/v0.5-legal-demo-ux';
+export const ASH_CACHE_TRANSITION_CONTRACT = 'td613.ash.cache-transition/v0.6-first-paint';
 export const ASH_LIFECYCLE_ASSET_EPOCH = '20260721-legal-demo-ux-v1';
 export const ASH_LIFECYCLE_SOURCE_MODULE = '/dome-world/ash-lifecycle.js';
 export const ASH_LIFECYCLE_MODULE = `${ASH_LIFECYCLE_SOURCE_MODULE}?v=${ASH_LIFECYCLE_ASSET_EPOCH}`;
@@ -20,8 +20,11 @@ const DOME_SOURCE_PATH = path.join(process.cwd(), 'app', 'dome-world', 'index.ht
 const ASH_KEEP_SOURCE_PATH = path.join(process.cwd(), 'app', 'dome-world', 'ash-keep.html');
 const ASH_KEEP_JS_SOURCE_PATH = path.join(process.cwd(), 'app', 'dome-world', 'ash-keep.js');
 const ASH_KEEP_ICON_MARKER = '<link rel="icon" href="data:,">';
+const ASH_CANONICAL_LINK_MARKER = '<link rel="canonical" href="/dome-world/ash-threshold.html">';
 const ASH_CANONICAL_BOOT_MARKER = '<meta name="ash-canonical-membrane" content="v1.0">';
 const ASH_MASS_EVICTION_MARKER = '<meta name="ash-cache-preflight" content="legal-demo-ux-v1">';
+const ASH_BOOTSTRAP_MARKER = 'td613-ash-canonical-module-bootstrap';
+const ASH_PREPARING_SHELL = '<div id="td613-ash-preparing-shell" role="status" aria-live="polite"><strong>Preparing Ash</strong><span>Preserving local cases while the current instrument resolves.</span></div>';
 const MARROWLINE_BUTTON = `<button class="lab-node lab-node-marrowline" type="button" data-tone="gold" data-glyph="∴" data-open-route="${MARROWLINE_LAB_ROUTE}" style="grid-column:span 8" onclick="window.location.assign('${MARROWLINE_LAB_ROUTE}')" aria-label="Open Marrowline Kʰonapolit terminal"><span class="lab-index">11</span><strong>Marrowline</strong><small>Kʰonapolit terminal / live ingress</small></button>`;
 const ASH_TAB = `<button class="tab" data-view="ash" data-sigil="下"><small>04</small><span>Ash</span></button>`;
 
@@ -36,11 +39,17 @@ const ASH_VERSIONED_MODULES = Object.freeze([
 function cachePreflightBoot() {
   return `${ASH_MASS_EVICTION_MARKER}
   <style id="td613-ash-cache-preflight-style">
-    html[data-ash-cache-preflight="pending"] body>*{visibility:hidden!important}
-    html[data-ash-cache-preflight="pending"] body::before{content:"Updating Ash Keep · preserving local cases";visibility:visible!important;position:fixed;inset:0;z-index:2147483647;display:grid;place-items:center;padding:24px;background:#010806;color:#fff8da;font:600 13px/1.5 ui-monospace,monospace;letter-spacing:.04em;text-align:center}
+    html[data-ash-cache-preflight="pending"] body>*:not(#td613-ash-preparing-shell){visibility:hidden!important}
+    #td613-ash-preparing-shell{position:fixed;inset:0;z-index:2147483647;display:grid;place-content:center;gap:8px;padding:24px;background:#010806;color:#fff8da;text-align:center;font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace}
+    #td613-ash-preparing-shell strong{font:600 clamp(1.35rem,4vw,2rem)/1.15 Georgia,serif}
+    #td613-ash-preparing-shell span{color:#76ead4;font-size:.78rem;line-height:1.55}
+    html[data-ash-cache-preflight="complete"] #td613-ash-preparing-shell{display:none!important}
   </style>
   <script id="td613-ash-cache-preflight-script">
   (()=>{
+    const incoming=new URL(location.href);
+    const legacyPresentation=incoming.searchParams.get('presentation')==='legacy';
+    const canonicalPath=${JSON.stringify(ASH_THRESHOLD_ROUTE)};
     const epoch=${JSON.stringify(ASH_MASS_EVICTION_EPOCH)};
     const assetEpoch=${JSON.stringify(ASH_LIFECYCLE_ASSET_EPOCH)};
     const canonicalSessionEpoch=${JSON.stringify(ASH_CANONICAL_MEMBRANE_EPOCH)};
@@ -50,36 +59,43 @@ function cachePreflightBoot() {
     const pointerKey='td613.ash-keep.current-case';
     const sessionKey='td613.ash.session.epoch';
     const recoveryBridge='/safe-harbor/ash-keep-recovery.html';
-    const publish=receipt=>{try{sessionStorage.setItem(receiptKey,JSON.stringify(receipt))}catch{}window.__td613AshAia3PreflightReceipt=receipt;window.__td613AshAia3Preflight=Promise.resolve(receipt);return receipt};
-    const legacyPresentation=new URLSearchParams(location.search).get('presentation')==='legacy';
-    if(legacyPresentation){
-      const receipt=publish({schema:'td613.ash.cache-preflight-receipt/v0.2',epoch,asset_epoch:assetEpoch,performed:false,legacy_bypass:true,indexeddb_preserved:true,case_data_preserved:true,active_session_reset:false,local_case_pointer_preserved:true,session_epoch_preserved_or_migrated:true});
-      document.documentElement.dataset.ashCachePreflight='complete';
-      return;
-    }
-    let moduleMarker=null,preflightMarker=null;
-    try{moduleMarker=localStorage.getItem(moduleMarkerKey);preflightMarker=localStorage.getItem(preflightMarkerKey)}catch{}
-    if(moduleMarker===epoch||preflightMarker===epoch){
-      try{localStorage.setItem(moduleMarkerKey,epoch);localStorage.setItem(preflightMarkerKey,epoch)}catch{}
-      let receipt={schema:'td613.ash.cache-preflight-receipt/v0.2',epoch,asset_epoch:assetEpoch,performed:false,indexeddb_preserved:true,case_data_preserved:true,active_session_reset:false,local_case_pointer_preserved:true,session_epoch_preserved_or_migrated:true};
-      try{receipt=JSON.parse(sessionStorage.getItem(receiptKey)||'null')||receipt}catch{}
-      publish(receipt);
-      document.documentElement.dataset.ashCachePreflight='complete';
-      return;
-    }
+    document.title='TD613 Ash';
+    if(location.pathname!==canonicalPath||location.search){history.replaceState(null,'',canonicalPath+location.hash)}
+    document.documentElement.dataset.ashCanonicalUrl='true';
     document.documentElement.dataset.ashCachePreflight='pending';
-    const veil=document.createElement('div');
-    veil.id='td613-ash-cache-preflight-veil';
-    veil.textContent='Updating Ash Keep · preserving local cases';
-    veil.setAttribute('role','status');
-    veil.setAttribute('aria-live','polite');
-    veil.style.cssText='position:fixed;inset:0;z-index:2147483647;display:grid;place-items:center;padding:24px;background:#010806;color:#fff8da;font:600 13px/1.5 ui-monospace,monospace;letter-spacing:.04em;text-align:center';
-    document.documentElement.append(veil);
-    window.stop();
+    window.__td613AshFirstPaintWitness=Object.freeze({
+      schema:'td613.ash.first-paint-witness/v0.1',
+      title:document.title,
+      url:location.pathname+location.search,
+      preparing_shell_present:true,
+      legacy_composition_visible:false,
+      epoch_query_visible:false
+    });
+    const publish=receipt=>{
+      try{sessionStorage.setItem(receiptKey,JSON.stringify(receipt))}catch{}
+      window.__td613AshAia3PreflightReceipt=receipt;
+      return receipt;
+    };
     window.__td613AshAia3Preflight=(async()=>{
       const pointer=(()=>{try{return localStorage.getItem(pointerKey)}catch{return null}})();
       const sessionBefore=(()=>{try{return localStorage.getItem(sessionKey)}catch{return null}})();
       const controllerPresent=Boolean(navigator.serviceWorker?.controller);
+      let moduleMarker=null,preflightMarker=null;
+      try{moduleMarker=localStorage.getItem(moduleMarkerKey);preflightMarker=localStorage.getItem(preflightMarkerKey)}catch{}
+      const current=moduleMarker===epoch||preflightMarker===epoch;
+      if(legacyPresentation){
+        const receipt=publish({schema:'td613.ash.cache-preflight-receipt/v0.3',epoch,asset_epoch:assetEpoch,performed:false,legacy_bypass:true,indexeddb_preserved:true,case_data_preserved:true,active_session_reset:false,local_case_pointer_preserved:true,session_epoch_preserved_or_migrated:true,visible_url:canonicalPath});
+        document.documentElement.dataset.ashCachePreflight='complete';
+        return receipt;
+      }
+      if(current&&!controllerPresent){
+        try{localStorage.setItem(moduleMarkerKey,epoch);localStorage.setItem(preflightMarkerKey,epoch)}catch{}
+        let receipt={schema:'td613.ash.cache-preflight-receipt/v0.3',epoch,asset_epoch:assetEpoch,performed:false,indexeddb_preserved:true,case_data_preserved:true,active_session_reset:false,local_case_pointer_preserved:true,session_epoch_preserved_or_migrated:true,visible_url:canonicalPath};
+        try{receipt=JSON.parse(sessionStorage.getItem(receiptKey)||'null')||receipt}catch{}
+        publish(receipt);
+        document.documentElement.dataset.ashCachePreflight='complete';
+        return receipt;
+      }
       const cleared=[];const workers=[];let http={attempted:false,observed:false};
       try{if(globalThis.caches?.keys){const names=await caches.keys();for(const name of names){if(await caches.delete(name))cleared.push(name)}}}catch{}
       try{if(navigator.serviceWorker?.getRegistrations){const registrations=await navigator.serviceWorker.getRegistrations();for(const registration of registrations){try{if(new URL(registration.scope,location.href).origin===location.origin&&await registration.unregister())workers.push(registration.scope)}catch{}}}}catch{}
@@ -98,29 +114,19 @@ function cachePreflightBoot() {
         localStorage.setItem(preflightMarkerKey,epoch);
         if(pointer&&sessionBefore!==canonicalSessionEpoch){localStorage.setItem(sessionKey,canonicalSessionEpoch);sessionMigrated=true}
       }catch{}
-      const receipt={
-        schema:'td613.ash.cache-preflight-receipt/v0.2',epoch,asset_epoch:assetEpoch,performed:true,http_cache:http,
+      const receipt=publish({
+        schema:'td613.ash.cache-preflight-receipt/v0.3',epoch,asset_epoch:assetEpoch,performed:true,http_cache:http,
         cache_names:cleared,worker_scopes:workers,indexeddb_preserved:true,case_data_preserved:true,active_session_reset:false,
         controller_present_before_eviction:controllerPresent,cross_scope_recovery_required:controllerPresent,
         local_case_pointer_preserved:(()=>{try{return localStorage.getItem(pointerKey)===pointer}catch{return false}})(),
         session_epoch_preserved_or_migrated:(()=>{try{return pointer?localStorage.getItem(sessionKey)===canonicalSessionEpoch:localStorage.getItem(sessionKey)===sessionBefore}catch{return false}})(),
-        session_epoch_migrated:sessionMigrated
-      };
-      publish(receipt);
-      if(controllerPresent&&location.pathname.startsWith('/dome-world/')){
-        const bridge=new URL(recoveryBridge,location.href);
-        bridge.searchParams.set('return',location.pathname+location.search+location.hash);
-        bridge.searchParams.set('epoch',assetEpoch);
-        location.replace(bridge.pathname+bridge.search);
+        session_epoch_migrated:sessionMigrated,visible_url:canonicalPath
+      });
+      if(controllerPresent&&incoming.pathname.startsWith('/dome-world/')){
+        try{sessionStorage.setItem('td613.ash.recovery.source-receipt',JSON.stringify(receipt))}catch{}
+        location.replace(recoveryBridge);
         return new Promise(()=>{});
       }
-      const current=new URL(location.href);
-      if(current.searchParams.get('ash_epoch')!==assetEpoch){
-        current.searchParams.set('ash_epoch',assetEpoch);
-        location.replace(current.pathname+current.search+current.hash);
-        return new Promise(()=>{});
-      }
-      publish(receipt);
       document.documentElement.dataset.ashCachePreflight='complete';
       return receipt;
     })();
@@ -169,6 +175,18 @@ function canonicalAshBoot() {
   </script>`;
 }
 
+function canonicalModuleBootstrap() {
+  const modules = ASH_VERSIONED_MODULES.map(([, versioned]) => versioned);
+  return `<script type="module" id="${ASH_BOOTSTRAP_MARKER}">
+    const receipt=await globalThis.__td613AshAia3Preflight;
+    const modules=${JSON.stringify(modules)};
+    for(const moduleUrl of modules){await import(moduleUrl)}
+    document.documentElement.dataset.ashModuleGraph='ready';
+    document.documentElement.dataset.ashCachePreflight='complete';
+    globalThis.dispatchEvent(new CustomEvent('td613:ash:canonical-module-graph-ready',{detail:{schema:'td613.ash.canonical-module-graph/v0.1',module_count:modules.length,asset_epoch:${JSON.stringify(ASH_LIFECYCLE_ASSET_EPOCH)},preflight_performed:Boolean(receipt?.performed)}}));
+  </script>`;
+}
+
 export function injectMarrowlineLabButton(source = '') {
   const html = String(source || '');
   if (!html) throw new Error('dome-world-source-empty');
@@ -195,22 +213,29 @@ export function injectAshLifecycleEntry(source = '') {
 export function injectAshKeepLifecycle(source = '') {
   let html = String(source || '');
   if (!html) throw new Error('ash-keep-source-empty');
+  if (html.includes(`id="${ASH_BOOTSTRAP_MARKER}"`)) return html;
   const headClose = html.indexOf('</head>');
   if (headClose < 0) throw new Error('ash-keep-head-marker-missing');
+  html = html.replace(/<title>[\s\S]*?<\/title>/, '<title>TD613 Ash</title>');
 
   const additions = [];
   if (!html.includes(ASH_KEEP_ICON_MARKER)) additions.push(ASH_KEEP_ICON_MARKER);
+  if (!html.includes(ASH_CANONICAL_LINK_MARKER)) additions.push(ASH_CANONICAL_LINK_MARKER);
   if (!html.includes(ASH_MASS_EVICTION_MARKER)) additions.push(cachePreflightBoot());
   if (!html.includes(ASH_CANONICAL_BOOT_MARKER)) additions.push(canonicalAshBoot());
   if (additions.length) html = `${html.slice(0, headClose)}  ${additions.join('\n  ')}\n${html.slice(headClose)}`;
 
-  for (const [sourceModule, versionedModule] of ASH_VERSIONED_MODULES) {
-    const versionedTag = `src="${versionedModule}"`;
-    if (html.includes(versionedTag)) continue;
-    const unversionedTag = `src="${sourceModule}"`;
-    if (!html.includes(unversionedTag)) throw new Error(`ash-canonical-module-source-missing:${sourceModule}`);
-    html = html.replace(unversionedTag, versionedTag);
+  if (!html.includes('id="td613-ash-preparing-shell"')) {
+    html = html.replace(/<body([^>]*)>/, `<body$1>\n  ${ASH_PREPARING_SHELL}`);
   }
+
+  for (const [sourceModule] of ASH_VERSIONED_MODULES) {
+    const sourceTag = `<script type="module" src="${sourceModule}"></script>`;
+    if (!html.includes(sourceTag)) throw new Error(`ash-canonical-module-source-missing:${sourceModule}`);
+    html = html.replace(sourceTag, '');
+  }
+  if (!html.includes('</body>')) throw new Error('ash-keep-body-marker-missing');
+  html = html.replace('</body>', `  ${canonicalModuleBootstrap()}\n</body>`);
 
   const ordered = ASH_VERSIONED_MODULES.map(([, versioned]) => versioned);
   if (!html.includes('name="ash-lifecycle" content="v0.1"')) throw new Error('ash-lifecycle-meta-missing');
@@ -218,6 +243,7 @@ export function injectAshKeepLifecycle(source = '') {
   if (!html.includes(ASH_KEEP_ICON_MARKER)) throw new Error('ash-keep-explicit-icon-boundary-missing');
   if (!html.includes(ASH_MASS_EVICTION_MARKER)) throw new Error('ash-cache-preflight-missing');
   if (!html.includes(ASH_CANONICAL_BOOT_MARKER)) throw new Error('ash-canonical-membrane-first-paint-missing');
+  if (!html.includes('<title>TD613 Ash</title>')) throw new Error('ash-canonical-title-missing');
   let cursor = -1;
   for (const module of ordered) {
     const index = html.indexOf(module);
@@ -257,10 +283,10 @@ function requestedSurface(req) {
   if (direct) return String(direct);
   try {
     const requestUrl = new URL(req.url || '/', 'http://localhost');
-    if (requestUrl.searchParams.get('arrival') === 'cleared' || req.query?.arrival === 'cleared') return 'ash-keep-html';
+    if (requestUrl.pathname === ASH_THRESHOLD_ROUTE || requestUrl.pathname === '/dome-world/ash-keep.html') return 'ash-keep-html';
     return requestUrl.searchParams.get('surface') || 'dome-world';
   } catch {
-    return req.query?.arrival === 'cleared' ? 'ash-keep-html' : 'dome-world';
+    return 'dome-world';
   }
 }
 
@@ -288,12 +314,13 @@ function send(res, status, body = '', definition = surfaceDefinition('dome-world
 function sendCacheEviction(res, method) {
   const body = JSON.stringify({
     ok:true,
-    schema:'td613.ash.cache-transition-response/v0.5-aia3-mass-eviction',
+    schema:'td613.ash.cache-transition-response/v0.6-first-paint',
     scope:'HTTP_CACHE_AND_SERVICE_WORKER_CLIENT_EVICTION',
     indexeddb_preserved:true,
     case_data_preserved:true,
     active_session_reset_by_client:false,
     physical_erasure_verified:false,
+    visible_url:ASH_THRESHOLD_ROUTE,
     contract:ASH_CACHE_TRANSITION_CONTRACT,
     lifecycle_asset_epoch:ASH_LIFECYCLE_ASSET_EPOCH,
     mass_eviction_epoch:ASH_MASS_EVICTION_EPOCH
