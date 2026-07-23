@@ -27,6 +27,13 @@ const shellReplacement = "  ['/dome-world/ash-case-controls.js', `/dome-world/as
 shell = replaceOnce(shell, shellAnchor, shellReplacement, 'A7 canonical bootstrap');
 write(shellPath, shell);
 
+const premiumPath = 'app/dome-world/ash-premium-ui.js';
+let premium = read(premiumPath);
+const premiumAnchor = "function renderHome(doc, snapshot) {\n  const target = byId(doc, 'premiumHomeBody');";
+const premiumReplacement = "function renderHome(doc, snapshot) {\n  const a7Renderer = globalThis.window?.__td613AshA7Home?.render;\n  if (typeof a7Renderer === 'function') { a7Renderer(snapshot); return; }\n  const target = byId(doc, 'premiumHomeBody');";
+premium = replaceOnce(premium, premiumAnchor, premiumReplacement, 'A7 Premium Home delegation');
+write(premiumPath, premium);
+
 const workflowPath = '.github/workflows/ash-flowcore-live-field.yml';
 let workflow = read(workflowPath);
 workflow = insertBefore(workflow, "      - 'scripts/ash-keep-local-closure-server.mjs'\n",
@@ -61,7 +68,7 @@ index = index.replace('PR: #582 DRAFT\npost-closure: OPEN\nVercel deployment: FO
 index = index.replace('implementation state: HARDENED THROUGH A5 / A6 VALIDATION OPEN\nruntime browser matrix: A2-A5 PASS / A6 OPEN\nChromium observation: A6 OPEN\nFirefox observation: A6 OPEN\nWebKit/iOS-sized observation: A6 OPEN', 'implementation state: HARDENED THROUGH A6 / A7 VALIDATION OPEN\nruntime browser matrix: A2-A6 PASS / A7 OPEN\nChromium observation: A6 PASS / A7 OPEN\nFirefox observation: A6 PASS / A7 OPEN\nWebKit/iOS-sized observation: A6 PASS / A7 OPEN');
 index = index.replace('A6 production demonstrated: false', 'A6 production demonstrated: true\nA7 production demonstrated: false');
 const postureAnchor = '## Current honest promotion posture\n';
-const a7Posture = `## A7 evidence posture\n\n\`\`\`text\nCurrent Priority six-answer contract: IMPLEMENTED / BROWSER WITNESS OPEN\none primary Home action: IMPLEMENTED / BROWSER WITNESS OPEN\nContinuity attached/stale/return/recheck/unsealed answers: IMPLEMENTED / BROWSER WITNESS OPEN\nWhat has already left route ledger: IMPLEMENTED / BROWSER WITNESS OPEN\nnew mass-eviction epoch: FALSE\nunique bounded module admission: TRUE\nnew serverless function: FALSE\nraw-content transport: FALSE\nAsh authority changed: FALSE\nhuman closure: OPEN\n\`\`\`\n\n`;
+const a7Posture = `## A7 evidence posture\n\n\`\`\`text\nCurrent Priority six-answer contract: IMPLEMENTED / BROWSER WITNESS OPEN\none primary Home action: IMPLEMENTED / BROWSER WITNESS OPEN\nContinuity attached/stale/return/recheck/unsealed answers: IMPLEMENTED / BROWSER WITNESS OPEN\nWhat has already left route ledger: IMPLEMENTED / BROWSER WITNESS OPEN\nPremium Home render delegation: IMPLEMENTED / BROWSER WITNESS OPEN\nnew mass-eviction epoch: FALSE\nunique bounded module admission: TRUE\nnew serverless function: FALSE\nraw-content transport: FALSE\nAsh authority changed: FALSE\nhuman closure: OPEN\n\`\`\`\n\n`;
 index = insertBefore(index, postureAnchor, a7Posture, 'A7 evidence posture');
 write(indexPath, index);
 
