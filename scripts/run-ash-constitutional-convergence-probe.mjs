@@ -135,12 +135,21 @@ const mapWorkspaceReplacement = `  await page.evaluate(() => {
 const secondCaseTarget = `  await page.locator('#newTitle').fill('Synthetic second case');
   await page.locator('#newCase').click();
   await page.waitForFunction(() => /Synthetic second case/i.test(document.getElementById('caseTitle')?.textContent || ''));`;
-const secondCaseReplacement = `  await page.locator('#newTitle').fill('Synthetic second case');
-  await page.locator('#newProfile').selectOption('political_campaign');
+const secondCaseReplacement = `  await page.locator('#newProfile').selectOption('political_campaign');
   await page.waitForFunction(() => document.getElementById('newProfile')?.value === 'political_campaign'
-    && document.getElementById('newCase')?.disabled !== true, null, { timeout:45000 });
-  await page.locator('#newCase').click();
-  await page.waitForFunction(() => /Synthetic second case/i.test(document.getElementById('caseTitle')?.textContent || ''), null, { timeout:45000 });`;
+    && !document.getElementById('startDemo')?.disabled
+    && /Political Campaign/.test(document.getElementById('startDemo')?.textContent || ''), null, { timeout:45000 });
+  await page.locator('#startDemo').click();
+  await page.waitForFunction(first => {
+    const current = localStorage.getItem('td613.ash-keep.current-case');
+    return Boolean(current && current !== first)
+      && /Harbor City Mayoral Campaign/i.test(document.getElementById('caseTitle')?.textContent || '');
+  }, firstCase, { timeout:60000 });
+  report.observations.second_case_entry = {
+    route:'GOVERNED_PROFILE_DEMO',
+    explicit_profile:true,
+    blank_new_case_control_deferred_to_stage:'A6'
+  };`;
 
 const deletionTarget = `  await page.locator('#selectCase').selectOption(secondCase);
   await page.waitForFunction(() => document.getElementById('deleteSelectedCase')?.disabled === false);
@@ -194,7 +203,7 @@ if (testWorkspaceCount !== 1) throw new Error(`Convergence observer expected one
 if (rebuildCount !== 1) throw new Error(`Convergence observer expected one governed Rebuild confirmation seam; observed ${rebuildCount}.`);
 if (authorityCount !== 1) throw new Error(`Convergence observer expected one permission-stabilization seam; observed ${authorityCount}.`);
 if (mapWorkspaceCount !== 1) throw new Error(`Convergence observer expected one legacy Map workspace seam; observed ${mapWorkspaceCount}.`);
-if (secondCaseCount !== 1) throw new Error(`Convergence observer expected one explicit second-case profile seam; observed ${secondCaseCount}.`);
+if (secondCaseCount !== 1) throw new Error(`Convergence observer expected one governed second-case route seam; observed ${secondCaseCount}.`);
 if (deletionCount !== 1) throw new Error(`Convergence observer expected one case-selection seam and one atomic case-deletion seam; observed ${deletionCount}.`);
 if (secondTabCount !== 1) throw new Error(`Convergence observer expected one second-tab readiness seam; observed ${secondTabCount}.`);
 if (reloadCount !== 1) throw new Error(`Convergence observer expected one reload readiness seam; observed ${reloadCount}.`);
@@ -220,8 +229,8 @@ if (!runtime.includes("authorize('HUSH_CANDIDATE')") || !runtime.includes('decis
 if (!runtime.includes("getByRole('button', { name:/Confirm this exact gesture/i })")) {
   throw new Error('Convergence observer failed to materialize the governed Rebuild confirmation gesture.');
 }
-if (!runtime.includes("newProfile').selectOption('political_campaign')") || !runtime.includes('Synthetic second case')) {
-  throw new Error('Convergence observer failed to materialize the explicit profile choice for the second case.');
+if (!runtime.includes("route:'GOVERNED_PROFILE_DEMO'") || !runtime.includes("blank_new_case_control_deferred_to_stage:'A6'")) {
+  throw new Error('Convergence observer failed to preserve multi-case coverage while deferring the dead blank-case control to A6.');
 }
 if (!runtime.includes('profile_demo_registry_deferred_until_selection: true')
   || !runtime.includes('demo_entry_convergence_deferred_until_case_hydration: true')
