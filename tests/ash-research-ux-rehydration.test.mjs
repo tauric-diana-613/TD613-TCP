@@ -136,8 +136,8 @@ for (const token of [
   'surface_ledger:enabled',
   'automatic_actions:none',
   'waitForOpenComposition',
-  'composition?.route_count >= 4',
-  'composition?.task_count >= 4'
+  'composition.route_count >= 4',
+  'composition.task_count >= 4'
 ]) assert(source.includes(token), `Research hydration omitted ${token}.`);
 
 assert.match(source, /setValue\('unexpectedText', ''\)/);

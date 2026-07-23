@@ -117,8 +117,10 @@ assert.doesNotMatch(cache, /indexedDB\.deleteDatabase|localStorage\.clear|sessio
 assert.equal(ASH_LIFECYCLE_ASSET_EPOCH, RELEASE_EPOCH);
 assert.equal(ASH_MASS_EVICTION_EPOCH, RELEASE_CACHE_EPOCH);
 assert.equal(ASH_LIFECYCLE_MODULE, `/dome-world/ash-lifecycle.js?v=${RELEASE_EPOCH}`);
-assert.match(lifecycle, new RegExp(`ash-ingress-layout-hydration\\.js\\?v=${RELEASE_EPOCH}`));
-assert.match(lifecycle, new RegExp(`ash-cache-flush\\.js\\?v=${RELEASE_EPOCH}`));
+assert.match(lifecycle, /const ASH_RELEASE_ASSET_EPOCH = '20260723-a2-a5-release-v1'/);
+for (const module of ['ash-ingress-layout-hydration', 'ash-cache-flush']) {
+  assert.match(lifecycle, new RegExp(`import\\(\\`\\./${module}\\.js\\?v=\\$\\{ASH_RELEASE_ASSET_EPOCH\\}\\`\\)`));
+}
 assert.match(lifecycle, /data-ash-composition-hydrating/);
 
 const renderedKeep = injectAshKeepLifecycle(keepHtml);
@@ -128,7 +130,7 @@ for (const source of ['ash-keep.js', 'ash-convergence.js', 'ash-lifecycle.js', '
   const index = renderedKeep.indexOf(module);
   assert.ok(index > moduleCursor, `Canonical bootstrap order failed for ${module}.`);
   moduleCursor = index;
-  assert.doesNotMatch(renderedKeep, new RegExp(`src="/dome-world/${source.replace('.', '\\.')}"`));
+  assert.doesNotMatch(renderedKeep, new RegExp(`src="/dome-world/${source.replace('.', '\\.')}`));
 }
 assert.match(renderedKeep, /id="td613-ash-canonical-module-bootstrap"/);
 assert.match(renderedKeep, /await globalThis\.__td613AshAia3Preflight/);
@@ -140,9 +142,8 @@ assert.equal(injectAshKeepLifecycle(renderedKeep), renderedKeep, 'First-paint in
 
 for (const module of [
   'ash-profile-demo-hydration','ash-investigation-demo-hydration','ash-research-demo-hydration',
-  'ash-research-demo-control-state','ash-ui-ux-rescue'
+  'ash-research-demo-control-state','ash-ui-ux-rescue','ash-case-close-repair'
 ]) assert.match(bridge, new RegExp(`${module}\\.js\\?v=${RELEASE_EPOCH}`));
-assert.match(bridge, /ash-case-close-repair\.js\?v=20260723-case-close-quiescence-v4/);
 assert.match(profileWrapper, new RegExp(`ash-legal-profile-demo\\.js\\?v=${RELEASE_EPOCH}`));
 assert.doesNotMatch(profileWrapper + investigationWrapper, /fixtures\//);
 assert.match(rescue, /stopImmediatePropagation/);
