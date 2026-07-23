@@ -1,5 +1,7 @@
-export const ASH_KEEP_DELIVERY_TRANSFORM_VERSION = 'td613.ash-keep.delivery-transform/v1.2-event-driven-map';
+export const ASH_KEEP_DELIVERY_TRANSFORM_VERSION = 'td613.ash-keep.delivery-transform/v1.3-document-aware-event-driven-map';
 export const ASH_KEEP_DELIVERY_TRANSFORM_LINEAGE = 'td613.ash-keep.delivery-transform/v1.0-event-driven-map';
+
+const HTML_DOCUMENT_PATTERN = /^\s*(?:<!doctype\s+html|<html\b)/i;
 
 const PERPETUAL_SCHEDULER = `const scheduleFrame = callback => requestAnimationFrame(callback);
 
@@ -51,6 +53,11 @@ const RECURSIVE_FRAME_PATTERN = /function frame\(time\) \{[\s\S]*?drawMap\(time\
 export function stabilizeAshKeepSource(source = '') {
   let code = String(source || '');
   if (!code) throw new Error('ash-keep-delivery-source-empty');
+
+  // The unified shell may pass the complete Ash HTML document through this shared
+  // boundary before lifecycle injection. HTML owns no map scheduler, so preserve it
+  // byte-for-byte and apply the scheduler contract only to JavaScript source.
+  if (HTML_DOCUMENT_PATTERN.test(code)) return code;
 
   const perpetualCount = code.split(PERPETUAL_SCHEDULER).length - 1;
   if (perpetualCount === 1) code = code.replace(PERPETUAL_SCHEDULER, EVENT_DRIVEN_SCHEDULER);
