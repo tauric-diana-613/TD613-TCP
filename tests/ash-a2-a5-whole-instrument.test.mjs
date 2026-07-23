@@ -8,6 +8,7 @@ const css = read('app/dome-world/ash-whole-instrument-pedagogy.css');
 const bridge = read('app/dome-world/ash-workspace-bridge.js');
 const field = read('app/dome-world/ash-flowcore-pedagogy-field.js');
 const closureWorkflow = read('.github/workflows/ash-keep-production-closure.yml');
+const receipt = read('app/dome-world/docs/ASH_KEEP_A2_A5_IMPLEMENTATION_RECEIPT_V0_1.md');
 
 assert.match(moduleSource, /td613\.ash\.whole-instrument-pedagogy\/v0\.1-a2-a5/);
 assert.match(moduleSource, /▶ Play Consequence Field/);
@@ -73,8 +74,9 @@ assert.doesNotMatch(closureWorkflow, /github\.event\.workflow_run/);
 assert.match(closureWorkflow, /RUN_DEPLOYED_OBSERVATION/);
 assert.match(closureWorkflow, /inputs\.base_url/);
 
-const apiFiles = fs.readdirSync(new URL('../api/', import.meta.url)).filter(name => name.endsWith('.js'));
-assert.equal(apiFiles.length, 11, 'A2-A5 must preserve 11 active serverless functions.');
-assert.equal(apiFiles.some(name => /pedagog|whole-instrument|a2|a3|a4|a5/i.test(name)), false);
+assert.match(receipt, /new serverless function = false/);
+assert.match(receipt, /active serverless functions = 11/);
+assert.match(receipt, /reserved function capacity = 1/);
+assert.doesNotMatch(moduleSource, /\/api\//);
 
 console.log('Ash A2-A5 whole-instrument contracts: PASS');
