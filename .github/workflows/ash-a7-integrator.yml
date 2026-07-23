@@ -104,8 +104,14 @@ jobs:
           ! git grep -n "ash_epoch" -- app/dome-world/ash-a7-a11-recompiler-core.js app/dome-world/ash-a7-home-recompilation.js
       - name: Commit exact tested A7 packet
         run: |
+          set -euo pipefail
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          git add -A
+          git add api/dome-world-shell.js app/dome-world/ash-keep.html app/dome-world/ash-premium-ui.js app/dome-world/docs/FLOWCORE_PEDAGOGUE_PROGRAM_INDEX_V0_1.md
+          git add -u scripts/apply-ash-a7-home-recompilation.mjs
+          staged="$(git diff --cached --name-only)"
+          printf '%s\n' "$staged"
+          test "$staged" = $'api/dome-world-shell.js\napp/dome-world/ash-keep.html\napp/dome-world/ash-premium-ui.js\napp/dome-world/docs/FLOWCORE_PEDAGOGUE_PROGRAM_INDEX_V0_1.md\nscripts/apply-ash-a7-home-recompilation.mjs'
+          git diff --cached --check
           git commit -m "Implement Ash A7 Home recompilation"
           git push origin HEAD:${{ github.event.pull_request.head.ref || github.ref_name }}
