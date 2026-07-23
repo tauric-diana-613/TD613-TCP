@@ -58,7 +58,7 @@ const localWrites = [...runtime.matchAll(/localStorage\.setItem\(([^,\n]+),/g)].
 assert.deepEqual(localWrites.sort(), ['POINTER_KEY', 'PREFS_KEY'], 'Only the compact current-case pointer and UI preferences may enter localStorage from the core runtime.');
 
 assert.match(caseControls, /import '\.\/ash-map-labels\.js'/);
-assert.match(caseControls, /ASH_CASE_CONTROLS_VERSION = 'td613\.ash-keep\.case-controls\/v1\.4-selection-retention'/);
+assert.match(caseControls, /ASH_CASE_CONTROLS_VERSION = 'td613\.ash-keep\.case-controls\/v1\.5-post-transition-fingerprint'/);
 assert.match(caseControls, /SAVED_CASES_KEY = 'td613\.ash-keep\.saved-cases:v1'/);
 assert.match(caseControls, /async function saveCurrentCase\(\)/);
 assert.match(caseControls, /async function closeCurrentCase\(\)/);
@@ -72,6 +72,7 @@ assert.match(caseControls, /item\.caseId === retainedCaseId/);
 assert.match(caseControls, /if \(!retainedCaseId\) setChoiceAvailability\(false\)/);
 assert.match(caseControls, /current unsaved/);
 assert.match(caseControls, /async function caseIsSaved/);
+assert.match(caseControls, /async function fingerprintCase\(db, caseId\)/);
 assert.match(caseControls, /putWrapped\(db, 'savedCases'/);
 assert.match(caseControls, /crypto\.subtle\.digest\('SHA-256'/);
 assert.match(caseControls, /document\.documentElement\.classList\.remove\(PREPAINT_CLASS\)/);
