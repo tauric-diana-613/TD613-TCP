@@ -29,7 +29,7 @@ const nativeFinalizer = read('app/safe-harbor/app/safe-harbor-native-finalizer.j
 const authorityVerifier = read('app/safe-harbor/app/safe-harbor-authority-verifier.js');
 const packetPipeline = read('app/safe-harbor/app/safe-harbor-packet-pipeline.js');
 const publicDefaultGate = read('app/safe-harbor/app/safe-harbor-public-default-gate.js');
-const housekeeping = read('app/safe-harbor/app/safe-harbor-housekeeping.js');
+const housekeeping = `${read('app/safe-harbor/app/safe-harbor-housekeeping.js')}\n${read('app/safe-harbor/app/safe-harbor-housekeeping-base.js')}`;
 const packetVault = read('app/safe-harbor/app/safe-harbor-pr169-packet-vault-direct.js');
 
 assert.ok(
