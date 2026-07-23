@@ -1,4 +1,4 @@
-export const ASH_PROFILE_PROMPT_CANONICAL_VERSION = 'td613.ash.profile-prompt-canonical/v0.2-explicit-choice-stable';
+export const ASH_PROFILE_PROMPT_CANONICAL_VERSION = 'td613.ash.profile-prompt-canonical/v0.3-remount-stable-explicit-choice';
 
 const host = globalThis.window;
 const doc = globalThis.document;
@@ -8,6 +8,20 @@ let explicitChoice = '';
 function noCaseOpen() {
   try { return !host.localStorage?.getItem?.(POINTER_KEY); }
   catch { return true; }
+}
+
+function captureExplicitChoice(event) {
+  const select = event?.target?.closest?.('#newProfile');
+  if (!select || !select.value) return;
+  explicitChoice = select.value;
+  select.dataset.ashProfileChoiceExplicit = 'true';
+}
+
+function installChoiceBoundary() {
+  if (!doc?.documentElement || doc.documentElement.dataset.ashCanonicalProfileChoiceBoundary === 'true') return;
+  doc.documentElement.dataset.ashCanonicalProfileChoiceBoundary = 'true';
+  doc.addEventListener('input', captureExplicitChoice, true);
+  doc.addEventListener('change', captureExplicitChoice, true);
 }
 
 export function applyCanonicalProfilePrompt({ resetSelection = false } = {}) {
@@ -25,8 +39,8 @@ export function applyCanonicalProfilePrompt({ resetSelection = false } = {}) {
   prompt.disabled = true;
 
   const firstBinding = select.dataset.ashCanonicalProfilePromptBound !== 'true';
-  const explicitChoiceAvailable = [...select.options].some(option => option.value === explicitChoice);
   if (resetSelection) explicitChoice = '';
+  const explicitChoiceAvailable = [...select.options].some(option => option.value === explicitChoice);
   if (noCaseOpen()) {
     if (resetSelection || (firstBinding && !explicitChoice)) select.value = '';
     else if (explicitChoice && explicitChoiceAvailable) select.value = explicitChoice;
@@ -38,15 +52,13 @@ export function applyCanonicalProfilePrompt({ resetSelection = false } = {}) {
     start.setAttribute('aria-disabled', String(start.disabled));
     select.dataset.ashProfileChoiceExplicit = String(Boolean(explicitChoice));
   };
-  if (firstBinding) {
-    select.dataset.ashCanonicalProfilePromptBound = 'true';
-    select.addEventListener('change', sync);
-  }
+  select.dataset.ashCanonicalProfilePromptBound = 'true';
   sync();
   return true;
 }
 
 if (host && doc?.documentElement) {
+  installChoiceBoundary();
   for (const type of ['aia-ready','aia3-ready','composition-stable']) {
     host.addEventListener(`td613:ash:${type}`, () => queueMicrotask(() => applyCanonicalProfilePrompt()));
   }
