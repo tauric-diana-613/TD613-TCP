@@ -70,36 +70,74 @@ async function inspectStage(page, stage) {
   }
 }
 
+async function preserveFailure(page, label, consoleErrors, error) {
+  const diagnostic = await page.evaluate(() => ({
+    title:document.title,
+    url:location.pathname + location.search,
+    module_graph:document.documentElement.dataset.ashModuleGraph || null,
+    premium_ready:document.documentElement.dataset.ashPremiumReady || null,
+    premium_workspace:document.documentElement.dataset.ashPremiumWorkspace || null,
+    a7_flag:document.documentElement.dataset.ashA7Recompiled || null,
+    a7_api:window.__td613AshA7Home?.version || null,
+    a7_stage_api:window.__td613AshA7?.version || null,
+    premium_api:window.__td613AshPremiumUI?.version || null,
+    snapshot:window.__td613AshPremiumUI?.snapshot?.() || null,
+    home_dataset:document.getElementById('premiumHomeBody')?.dataset?.ashA7Home || null,
+    home_html:document.getElementById('premiumHomeBody')?.innerHTML || null,
+    home_text:document.getElementById('premiumHomeBody')?.innerText || null,
+    priority_present:Boolean(document.getElementById('ashA7CurrentPriority')),
+    continuity_present:Boolean(document.getElementById('ashA7Continuity')),
+    ledger_present:Boolean(document.getElementById('ashA7RouteLedger')),
+    primary_count:document.querySelectorAll('#ashA7CurrentPriority .ash-stage-primary-action').length
+  }));
+  await fs.writeFile(path.join(artifactDir, `${browserName}-${label}-failure.json`), JSON.stringify({
+    schema:'td613.ash.a7-a11-browser-failure/v0.1',
+    browser:browserName,
+    label,
+    stages,
+    error:String(error?.stack || error),
+    console_errors:consoleErrors,
+    diagnostic
+  }, null, 2));
+  await page.screenshot({ path:path.join(artifactDir, `${browserName}-${label}-failure.png`), fullPage:true }).catch(() => {});
+}
+
 async function runViewport(label, viewport, reducedMotion) {
   const context = await browser.newContext({ viewport, reducedMotion, colorScheme:'dark' });
   const page = await context.newPage();
   const consoleErrors = [];
   page.on('console', message => { if (message.type() === 'error') consoleErrors.push(message.text()); });
   page.on('pageerror', error => consoleErrors.push(String(error?.message || error)));
-  await enterInvestigation(page);
-  for (const stage of stages) await inspectStage(page, stage);
-  const geometry = await page.evaluate(() => ({
-    viewport_width:window.innerWidth,
-    scroll_width:document.documentElement.scrollWidth,
-    horizontal_overflow:Math.max(0, document.documentElement.scrollWidth - window.innerWidth),
-    canonical_url:location.pathname + location.search,
-    title:document.title,
-    visible_field_count:[...document.querySelectorAll('.ash-flowcore-field:not([hidden])')].filter(node => {
-      const style=getComputedStyle(node); const rect=node.getBoundingClientRect();
-      return style.display!=='none' && style.visibility!=='hidden' && rect.width>0 && rect.height>0;
-    }).length,
-    stage_flags:Object.fromEntries(['A7','A8','A9','A10','A11'].map(stage => [stage, document.documentElement.dataset[`ash${stage}Recompiled`] || null])),
-    authority_changed:false,
-    source_bytes_moved:false,
-    human_closure_required:true
-  }));
-  if (geometry.horizontal_overflow !== 0) throw new Error(`${label} horizontal overflow ${geometry.horizontal_overflow}`);
-  if (geometry.visible_field_count !== 1) throw new Error(`${label} visible field count ${geometry.visible_field_count}`);
-  if (geometry.canonical_url !== '/dome-world/ash-threshold.html') throw new Error(`${label} canonical URL drift ${geometry.canonical_url}`);
-  if (consoleErrors.length) throw new Error(`${label} console errors: ${consoleErrors.join(' | ')}`);
-  await page.screenshot({ path:path.join(artifactDir, `${browserName}-${label}-${stages.join('-').toLowerCase()}.png`), fullPage:true });
-  receipts.push({ label, browser:browserName, stages, reduced_motion:reducedMotion, geometry, console_errors:consoleErrors });
-  await context.close();
+  try {
+    await enterInvestigation(page);
+    for (const stage of stages) await inspectStage(page, stage);
+    const geometry = await page.evaluate(() => ({
+      viewport_width:window.innerWidth,
+      scroll_width:document.documentElement.scrollWidth,
+      horizontal_overflow:Math.max(0, document.documentElement.scrollWidth - window.innerWidth),
+      canonical_url:location.pathname + location.search,
+      title:document.title,
+      visible_field_count:[...document.querySelectorAll('.ash-flowcore-field:not([hidden])')].filter(node => {
+        const style=getComputedStyle(node); const rect=node.getBoundingClientRect();
+        return style.display!=='none' && style.visibility!=='hidden' && rect.width>0 && rect.height>0;
+      }).length,
+      stage_flags:Object.fromEntries(['A7','A8','A9','A10','A11'].map(stage => [stage, document.documentElement.dataset[`ash${stage}Recompiled`] || null])),
+      authority_changed:false,
+      source_bytes_moved:false,
+      human_closure_required:true
+    }));
+    if (geometry.horizontal_overflow !== 0) throw new Error(`${label} horizontal overflow ${geometry.horizontal_overflow}`);
+    if (geometry.visible_field_count !== 1) throw new Error(`${label} visible field count ${geometry.visible_field_count}`);
+    if (geometry.canonical_url !== '/dome-world/ash-threshold.html') throw new Error(`${label} canonical URL drift ${geometry.canonical_url}`);
+    if (consoleErrors.length) throw new Error(`${label} console errors: ${consoleErrors.join(' | ')}`);
+    await page.screenshot({ path:path.join(artifactDir, `${browserName}-${label}-${stages.join('-').toLowerCase()}.png`), fullPage:true });
+    receipts.push({ label, browser:browserName, stages, reduced_motion:reducedMotion, geometry, console_errors:consoleErrors });
+  } catch (error) {
+    await preserveFailure(page, label, consoleErrors, error);
+    throw error;
+  } finally {
+    await context.close();
+  }
 }
 
 try {
