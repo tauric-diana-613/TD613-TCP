@@ -90,6 +90,14 @@ const testWorkspaceReplacement = `  await page.evaluate(() => {
       && rect?.height > 0;
   });`;
 
+const rebuildTarget = `  await page.locator('#loadSeed').click();
+  await page.waitForFunction(() => /"test_digest"/.test(document.getElementById('testReceipt')?.textContent || ''));`;
+const rebuildReplacement = `  await page.locator('#loadSeed').click();
+  const rebuildConfirmation = page.getByRole('button', { name:/Confirm this exact gesture/i });
+  await rebuildConfirmation.waitFor({ state:'visible', timeout:45000 });
+  await rebuildConfirmation.click();
+  await page.waitForFunction(() => /"test_digest"/.test(document.getElementById('testReceipt')?.textContent || ''), null, { timeout:45000 });`;
+
 const authorityTarget = `  authority = await page.evaluate(() => window.TD613AshConvergence.currentAuthorityContext());
   const hushPermission = await page.evaluate(() => window.TD613AshConvergence.authorize('HUSH_CANDIDATE'));`;
 const authorityReplacement = `  await page.waitForFunction(async () => {
@@ -162,6 +170,7 @@ const source = await fs.readFile(sourceUrl, 'utf8');
 const legacyUrlCount = source.split(legacyUrlTarget).length - 1;
 const readinessCount = source.split(readinessTarget).length - 1;
 const testWorkspaceCount = source.split(testWorkspaceTarget).length - 1;
+const rebuildCount = source.split(rebuildTarget).length - 1;
 const authorityCount = source.split(authorityTarget).length - 1;
 const mapWorkspaceCount = source.split(mapWorkspaceTarget).length - 1;
 const deletionCount = source.split(deletionTarget).length - 1;
@@ -171,6 +180,7 @@ const localKeysCount = source.split(localKeysTarget).length - 1;
 if (legacyUrlCount !== 1) throw new Error(`Convergence observer expected one undeclared presentation route; observed ${legacyUrlCount}.`);
 if (readinessCount !== 1) throw new Error(`Convergence observer expected one Ash boot-readiness seam; observed ${readinessCount}.`);
 if (testWorkspaceCount !== 1) throw new Error(`Convergence observer expected one legacy Test workspace seam; observed ${testWorkspaceCount}.`);
+if (rebuildCount !== 1) throw new Error(`Convergence observer expected one governed Rebuild confirmation seam; observed ${rebuildCount}.`);
 if (authorityCount !== 1) throw new Error(`Convergence observer expected one permission-stabilization seam; observed ${authorityCount}.`);
 if (mapWorkspaceCount !== 1) throw new Error(`Convergence observer expected one legacy Map workspace seam; observed ${mapWorkspaceCount}.`);
 if (deletionCount !== 1) throw new Error(`Convergence observer expected one case-selection seam and one atomic case-deletion seam; observed ${deletionCount}.`);
@@ -181,6 +191,7 @@ const runtime = source
   .replace(legacyUrlTarget, legacyUrlReplacement)
   .replace(readinessTarget, readinessReplacement)
   .replace(testWorkspaceTarget, testWorkspaceReplacement)
+  .replace(rebuildTarget, rebuildReplacement)
   .replace(authorityTarget, authorityReplacement)
   .replace(mapWorkspaceTarget, mapWorkspaceReplacement)
   .replace(deletionTarget, deletionReplacement)
@@ -192,6 +203,9 @@ if (!runtime.includes("ash-keep.html?presentation=legacy")) {
 }
 if (!runtime.includes("authorize('HUSH_CANDIDATE')") || !runtime.includes('decision?.authorized === true')) {
   throw new Error('Convergence observer failed to wait for the actual Hush permission boundary.');
+}
+if (!runtime.includes("getByRole('button', { name:/Confirm this exact gesture/i })")) {
+  throw new Error('Convergence observer failed to materialize the governed Rebuild confirmation gesture.');
 }
 if (!runtime.includes('profile_demo_registry_deferred_until_selection: true')
   || !runtime.includes('demo_entry_convergence_deferred_until_case_hydration: true')
