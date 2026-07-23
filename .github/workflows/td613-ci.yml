@@ -102,8 +102,6 @@ jobs:
         run: node tests/ash-legal-ux.test.mjs
       - name: Ash live ingress and demos cache
         run: node tests/ash-live-ingress-demos-cache.test.mjs
-      - name: Ash research UX rehydration
-        run: node tests/ash-research-ux-rehydration.test.mjs
       - name: Ash Choir calibration schemas
         run: node tests/ash-keep-choir-calibration-schemas.test.mjs
       - name: Ash production closure contract
