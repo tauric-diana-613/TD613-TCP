@@ -142,10 +142,26 @@ try {
   await page.keyboard.press('Escape');
   report.observations.command_discovery = { discovered:true, static_halo:true, profile_switcher_named:true };
 
+  // A synthetic demo may lawfully hydrate an existing local draft and arrive at custody.
+  // Return only the browser-local draft field to an empty posture so this witness can
+  // exercise the document affordances without mutating persisted case, custody, or route state.
+  await page.evaluate(async () => {
+    const draft = document.getElementById('draftBody');
+    if (draft) {
+      draft.value = '';
+      draft.dispatchEvent(new InputEvent('input', { bubbles:true, inputType:'deleteContent', data:null }));
+    }
+    await window.__td613AshLiveAIA?.refresh?.();
+    window.__td613AshA6Affordances?.refresh?.('WITNESS_DOCUMENT_POSTURE');
+  });
+  await page.waitForFunction(() => window.__td613AshLiveAIA?.current?.()?.task === 'document'
+    && document.querySelector('[data-aia-primary-task]')?.textContent?.trim() === 'Open Local Document'
+    && document.querySelector('[data-aia-open-workspace]')?.textContent?.trim() === 'Open Draft Workspace');
+
   // A6: Open Local Document and Open Draft Workspace must land in Work rather than ejecting
   // the entrant into a hidden exact-workspace coordinate.
   const task = await page.evaluate(() => window.__td613AshLiveAIA?.current?.()?.task || null);
-  if (task !== 'document') throw new Error(`A6 witness requires the document task; observed ${task}.`);
+  if (task !== 'document') throw new Error(`A6 witness could not establish the explicit document posture; observed ${task}.`);
   const primary = page.locator('[data-aia-primary-task]');
   const exact = page.locator('[data-aia-open-workspace]');
   if ((await primary.textContent())?.trim() !== 'Open Local Document') throw new Error('Open Local Document label drifted.');
