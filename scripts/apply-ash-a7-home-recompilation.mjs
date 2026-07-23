@@ -32,15 +32,14 @@ let workflow = read(workflowPath);
 workflow = insertBefore(workflow, "      - 'scripts/ash-keep-local-closure-server.mjs'\n",
   "      - 'app/dome-world/ash-a7-a11-recompiler-core.js'\n      - 'app/dome-world/ash-a7-home-recompilation.js'\n      - 'app/dome-world/docs/ASH_KEEP_A7_IMPLEMENTATION_RECEIPT_V0_1.md'\n      - 'scripts/ash-a7-a11-browser-probe.mjs'\n      - 'tests/ash-a7-home-recompilation.test.mjs'\n",
   'A7 workflow paths');
-workflow = insertBefore(workflow, '          node --check app/dome-world/ash-flowcore-ingress-portal.js\n',
-  '          node --check app/dome-world/ash-a7-a11-recompiler-core.js\n          node --check app/dome-world/ash-a7-home-recompilation.js\n          node --check scripts/ash-a7-a11-browser-probe.mjs\n',
-  'A7 contract syntax');
+const syntaxAnchor = '          node --check app/dome-world/ash-flowcore-ingress-portal.js\n';
+const syntaxInsertion = '          node --check app/dome-world/ash-a7-a11-recompiler-core.js\n          node --check app/dome-world/ash-a7-home-recompilation.js\n          node --check scripts/ash-a7-a11-browser-probe.mjs\n';
+const syntaxCount = workflow.split(syntaxAnchor).length - 1;
+if (syntaxCount !== 2) throw new Error(`A7 workflow syntax anchors: expected two, found ${syntaxCount}`);
+workflow = workflow.replaceAll(syntaxAnchor, `${syntaxInsertion}${syntaxAnchor}`);
 workflow = insertBefore(workflow, '            node tests/ash-flowcore-live-field.test.mjs\n',
   '            node tests/ash-a7-home-recompilation.test.mjs\n',
   'A7 contract execution');
-workflow = insertBefore(workflow, '          node --check app/dome-world/ash-flowcore-ingress-portal.js\n',
-  '          node --check app/dome-world/ash-a7-a11-recompiler-core.js\n          node --check app/dome-world/ash-a7-home-recompilation.js\n          node --check scripts/ash-a7-a11-browser-probe.mjs\n',
-  'A7 browser syntax');
 const browserAnchor = '      - name: Observe ingress copy, zero-artifact Flow-Core, and Close Case return\n';
 const browserStep = `      - name: Observe A7-A11 workspace recompilations\n        env:\n          TD613_BROWSER: \${{ matrix.browser }}\n          TD613_BASE_URL: http://127.0.0.1:6130\n          TD613_ASH_STAGES: A7\n          TD613_ARTIFACT_DIR: artifacts/ash-a7-a11-\${{ matrix.browser }}\n        run: timeout --foreground --signal=INT --kill-after=15s 480s node scripts/ash-a7-a11-browser-probe.mjs\n`;
 workflow = insertBefore(workflow, browserAnchor, browserStep, 'A7 browser witness step');
