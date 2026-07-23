@@ -43,7 +43,7 @@ async function openKeep() {
 }
 
 const report = {
-  schema:'td613.ash.reviewability-browser/v0.4-a5-route-heading-webkit-local-worker-boundary',
+  schema:'td613.ash.reviewability-browser/v0.5-a6-work-affordance-and-viewport-ownership',
   browser:browserName,
   status:'RUNNING',
   errors,
@@ -107,6 +107,7 @@ try {
       route_subtitle:document.querySelector('#ashAiaMembrane .ash-aia__posture')?.textContent?.trim() || '',
       note_present:Boolean(work?.querySelector('.ash-reviewability-setup-note')),
       button_fallback:button?.dataset.ashReviewabilityFallback || null,
+      button_label:button?.textContent?.trim() || null,
       work_visible:Boolean(work && style?.display !== 'none' && style?.visibility !== 'hidden' && Number(style?.opacity ?? 1) > 0 && rect?.width > 0 && rect?.height > 0),
       work_height:Math.round(rect?.height || 0)
     };
@@ -129,17 +130,34 @@ try {
     assert(title.padding_bottom > 0, `${name} lacks descender clearance: ${JSON.stringify(title)}.`);
   }
 
+  // A6 rehomes the primary local-document action inside Work. The former reviewability
+  // observer expected the retired hidden Draft tab and therefore contradicted the new
+  // affordance contract. Prove the authored Work destination and focus instead.
   await page.locator('[data-aia-primary-task]').click();
   await page.waitForFunction(() => {
-    const panel = document.getElementById('workspace-draft');
+    const panel = document.getElementById('workspace-work');
+    const target = document.getElementById('ashA6LocalDocumentSurface');
     const style = panel ? getComputedStyle(panel) : null;
-    const rect = panel?.getBoundingClientRect();
+    const rect = target?.getBoundingClientRect();
     return panel?.classList.contains('active')
       && style?.display !== 'none'
       && style?.visibility !== 'hidden'
       && Number(style?.opacity ?? 1) > 0
-      && rect?.height > 0;
+      && rect?.height > 0
+      && document.activeElement?.id === 'ashA6ChooseLocalDocument'
+      && window.__td613AshA6Affordances?.current?.()?.last_navigation_receipt?.destination_anchor === 'ashA6LocalDocumentSurface';
   });
+  const a6WorkArrival = await page.evaluate(() => ({
+    workspace:document.documentElement.dataset.ashPremiumWorkspace,
+    focused:document.activeElement?.id || null,
+    receipt:window.__td613AshA6Affordances?.current?.()?.last_navigation_receipt || null,
+    authority_changed:window.__td613AshA6Affordances?.current?.()?.authority_changed,
+    source_bytes_moved:window.__td613AshA6Affordances?.current?.()?.source_bytes_moved
+  }));
+  assert(a6WorkArrival.workspace === 'work', `A6 primary action missed Work: ${JSON.stringify(a6WorkArrival)}.`);
+  assert(a6WorkArrival.focused === 'ashA6ChooseLocalDocument', `A6 primary action missed the local-document focus target: ${JSON.stringify(a6WorkArrival)}.`);
+  assert(a6WorkArrival.receipt?.result === 'ARRIVED', `A6 primary action produced no navigation receipt: ${JSON.stringify(a6WorkArrival)}.`);
+  assert(a6WorkArrival.authority_changed === false && a6WorkArrival.source_bytes_moved === false, `A6 Work arrival widened authority or transport: ${JSON.stringify(a6WorkArrival)}.`);
 
   // Return to a stable Home layout before measuring sustained manual review scroll.
   await page.evaluate(() => window.__td613AshPremiumUI?.open?.('home'));
@@ -184,7 +202,7 @@ try {
   assert(errors.length === 0, `Browser errors: ${errors.join(' | ')}`);
   assert(httpErrors.length === 0, `HTTP errors: ${httpErrors.join(' | ')}`);
   report.status = 'PASS';
-  report.observations = { ingress, active_case:activeCase, deep, sustained };
+  report.observations = { ingress, active_case:activeCase, a6_work_arrival:a6WorkArrival, deep, sustained };
 } catch (error) {
   report.status = 'HOLD';
   report.hold = { message:error.message, stack:error.stack };
