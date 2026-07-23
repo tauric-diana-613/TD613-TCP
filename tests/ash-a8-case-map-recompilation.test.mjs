@@ -2,6 +2,7 @@ import assert from 'node:assert/strict';
 import fs from 'node:fs';
 
 const source = fs.readFileSync(new URL('../app/dome-world/ash-a8-case-map-recompilation.js', import.meta.url), 'utf8');
+const bridge = fs.readFileSync(new URL('../app/dome-world/ash-workspace-bridge.js', import.meta.url), 'utf8');
 const shell = fs.readFileSync(new URL('../api/dome-world-shell.js', import.meta.url), 'utf8');
 const html = fs.readFileSync(new URL('../app/dome-world/ash-keep.html', import.meta.url), 'utf8');
 const mirror = fs.readFileSync(new URL('../app/dome-world/ash-keep-source.html', import.meta.url), 'utf8');
@@ -42,6 +43,8 @@ assert.doesNotMatch(source, /indexedDB\.(?:open|deleteDatabase)/);
 assert.doesNotMatch(source, /fetch\s*\(/);
 assert.doesNotMatch(source, /localStorage\.(?:setItem|removeItem|clear)/);
 assert.doesNotMatch(source, /new\s+(?:Worker|SharedWorker)/);
+assert.match(bridge, /\.ash-flowcore-field--proxy \[data-aia-exact\]/);
+assert.match(bridge, /removeAttribute\('data-aia-exact'\)/);
 assert.match(shell, /ash-a8-case-map-recompilation\.js\?v=20260723-a8-v1/);
 assert.match(html, /ash-a8-case-map-recompilation\.js/);
 assert.equal(html, mirror, 'Ash source mirror must remain byte-identical');
@@ -56,6 +59,7 @@ console.log(JSON.stringify({
   notes_change_persistence:true,
   accessible_table:true,
   stored_relation_detail:true,
+  proxy_inspection_selector_quarantined:true,
   authority_changed:false,
   source_bytes_moved:false,
   human_closure_required:true,
