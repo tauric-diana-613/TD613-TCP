@@ -207,6 +207,15 @@ const reloadReplacement = `  await page.reload({ waitUntil: 'domcontentloaded', 
   await page.waitForFunction(() => Boolean(document.documentElement.dataset.ashCaseControls)
     && typeof window.TD613AshConvergence?.runDryCompatibilityAudit === 'function', null, { timeout: 60000 });`;
 
+const lockWaitTarget = `  const [firstResult, secondResult] = await Promise.all([firstLock, secondLock]);`;
+const lockWaitReplacement = `  const [firstResult, secondResult] = await Promise.race([
+    Promise.all([firstLock, secondLock]),
+    new Promise((_, reject) => setTimeout(
+      () => reject(new Error('Cross-tab lock witness exceeded 15000ms.')),
+      15000
+    ))
+  ]);`;
+
 const localKeysTarget = `const allowedLocalKeys = new Set(['td613.ash-keep.current-case', 'td613.ash-keep.preferences', 'td613.ash.cache-flush.epoch']);`;
 const localKeysReplacement = `const allowedLocalKeys = new Set(['td613.ash-keep.current-case', 'td613.ash-keep.preferences', 'td613.ash.cache-flush.epoch', 'td613.ash.session.epoch']);`;
 
@@ -223,6 +232,7 @@ const saveCloseCount = source.split(saveCloseTarget).length - 1;
 const deletionCount = source.split(deletionTarget).length - 1;
 const secondTabCount = source.split(secondTabTarget).length - 1;
 const reloadCount = source.split(reloadTarget).length - 1;
+const lockWaitCount = source.split(lockWaitTarget).length - 1;
 const localKeysCount = source.split(localKeysTarget).length - 1;
 if (legacyUrlCount !== 1) throw new Error(`Convergence observer expected one undeclared presentation route; observed ${legacyUrlCount}.`);
 if (readinessCount !== 1) throw new Error(`Convergence observer expected one Ash boot-readiness seam; observed ${readinessCount}.`);
@@ -235,6 +245,7 @@ if (saveCloseCount !== 1) throw new Error(`Convergence observer expected one sav
 if (deletionCount !== 1) throw new Error(`Convergence observer expected one case-selection seam and one atomic case-deletion seam; observed ${deletionCount}.`);
 if (secondTabCount !== 1) throw new Error(`Convergence observer expected one second-tab readiness seam; observed ${secondTabCount}.`);
 if (reloadCount !== 1) throw new Error(`Convergence observer expected one reload readiness seam; observed ${reloadCount}.`);
+if (lockWaitCount !== 1) throw new Error(`Convergence observer expected one bounded cross-tab join seam; observed ${lockWaitCount}.`);
 if (localKeysCount !== 1) throw new Error(`Convergence observer expected one localStorage allowlist seam; observed ${localKeysCount}.`);
 const runtime = source
   .replace(legacyUrlTarget, legacyUrlReplacement)
@@ -248,6 +259,7 @@ const runtime = source
   .replace(deletionTarget, deletionReplacement)
   .replace(secondTabTarget, secondTabReplacement)
   .replace(reloadTarget, reloadReplacement)
+  .replace(lockWaitTarget, lockWaitReplacement)
   .replace(localKeysTarget, localKeysReplacement);
 if (!runtime.includes("ash-keep.html?presentation=legacy")) {
   throw new Error('Convergence observer failed to declare the legacy presentation route.');
@@ -286,6 +298,9 @@ if (!runtime.includes("dataset.ashPremiumWorkspace === 'test'") || !runtime.incl
 }
 if (!runtime.includes("select.dispatchEvent(new Event('change', { bubbles: true }))") || !runtime.includes('remove.click()')) {
   throw new Error('Convergence observer repaint-atomic delete gesture was not materialized.');
+}
+if (!runtime.includes('Cross-tab lock witness exceeded 15000ms.')) {
+  throw new Error('Convergence observer bounded cross-tab join was not materialized.');
 }
 if (!runtime.includes("'td613.ash.session.epoch'")) {
   throw new Error('Convergence observer canonical session epoch allowlist was not materialized.');
