@@ -179,18 +179,41 @@ const saveCloseReplacement = `  await page.locator('#saveCase').click();
 
 const openSelectionTarget = `  await page.locator('#selectCase').selectOption(firstCase);
   await page.waitForFunction(id => document.getElementById('selectCase')?.value === id, firstCase);
-  await page.waitForFunction(() => document.getElementById('openSelectedCase')?.disabled === false);`;
-const openSelectionReplacement = `  await page.locator('#selectCase').selectOption(firstCase);
-  await page.waitForFunction(id => {
+  await page.waitForFunction(() => document.getElementById('openSelectedCase')?.disabled === false);
+  await page.evaluate(() => { window.__convergenceNoReload = crypto.randomUUID(); });
+  const noReloadMarker = await page.evaluate(() => window.__convergenceNoReload);
+  await page.locator('#openSelectedCase').click();`;
+const openSelectionReplacement = `  await page.waitForFunction(id => {
     const select = document.getElementById('selectCase');
     const open = document.getElementById('openSelectedCase');
     if (select?.dataset.caseListState !== 'READY') return false;
     if (![...select.options].some(option => option.value === id)) return false;
-    if (select.value !== id || open?.disabled !== false) {
-      select.value = id;
-      select.dispatchEvent(new Event('change', { bubbles: true }));
-    }
-    return select.value === id && open?.disabled === false;
+    select.value = id;
+    select.dispatchEvent(new Event('change', { bubbles: true }));
+    if (select.value !== id || open?.disabled !== false) return false;
+    if (open.dataset.convergenceOpenIssued === id) return true;
+    window.__convergenceNoReload = crypto.randomUUID();
+    open.dataset.convergenceOpenIssued = id;
+    open.click();
+    return true;
+  }, firstCase, { timeout:45000 });
+  const noReloadMarker = await page.evaluate(() => window.__convergenceNoReload);`;
+
+const reopenTarget = `  await page.locator('#selectCase').selectOption(firstCase);
+  await page.waitForFunction(() => document.getElementById('openSelectedCase')?.disabled === false);
+  await page.locator('#openSelectedCase').click();`;
+const reopenReplacement = `  await page.waitForFunction(id => {
+    const select = document.getElementById('selectCase');
+    const open = document.getElementById('openSelectedCase');
+    if (select?.dataset.caseListState !== 'READY') return false;
+    if (![...select.options].some(option => option.value === id)) return false;
+    select.value = id;
+    select.dispatchEvent(new Event('change', { bubbles: true }));
+    if (select.value !== id || open?.disabled !== false) return false;
+    if (open.dataset.convergenceReopenIssued === id) return true;
+    open.dataset.convergenceReopenIssued = id;
+    open.click();
+    return true;
   }, firstCase, { timeout:45000 });`;
 
 const deletionTarget = `  await page.locator('#selectCase').selectOption(secondCase);
@@ -246,6 +269,7 @@ const mapWorkspaceCount = source.split(mapWorkspaceTarget).length - 1;
 const secondCaseCount = source.split(secondCaseTarget).length - 1;
 const saveCloseCount = source.split(saveCloseTarget).length - 1;
 const openSelectionCount = source.split(openSelectionTarget).length - 1;
+const reopenCount = source.split(reopenTarget).length - 1;
 const deletionCount = source.split(deletionTarget).length - 1;
 const secondTabCount = source.split(secondTabTarget).length - 1;
 const reloadCount = source.split(reloadTarget).length - 1;
@@ -260,6 +284,7 @@ if (mapWorkspaceCount !== 1) throw new Error(`Convergence observer expected one 
 if (secondCaseCount !== 1) throw new Error(`Convergence observer expected one governed second-case route seam; observed ${secondCaseCount}.`);
 if (saveCloseCount !== 1) throw new Error(`Convergence observer expected one saved-case fingerprint seam; observed ${saveCloseCount}.`);
 if (openSelectionCount !== 1) throw new Error(`Convergence observer expected one repaint-atomic Open selection seam; observed ${openSelectionCount}.`);
+if (reopenCount !== 1) throw new Error(`Convergence observer expected one repaint-atomic Open re-entry seam; observed ${reopenCount}.`);
 if (deletionCount !== 1) throw new Error(`Convergence observer expected one case-selection seam and one atomic case-deletion seam; observed ${deletionCount}.`);
 if (secondTabCount !== 1) throw new Error(`Convergence observer expected one second-tab readiness seam; observed ${secondTabCount}.`);
 if (reloadCount !== 1) throw new Error(`Convergence observer expected one reload readiness seam; observed ${reloadCount}.`);
@@ -275,6 +300,7 @@ const runtime = source
   .replace(secondCaseTarget, secondCaseReplacement)
   .replace(saveCloseTarget, saveCloseReplacement)
   .replace(openSelectionTarget, openSelectionReplacement)
+  .replace(reopenTarget, reopenReplacement)
   .replace(deletionTarget, deletionReplacement)
   .replace(secondTabTarget, secondTabReplacement)
   .replace(reloadTarget, reloadReplacement)
@@ -315,8 +341,13 @@ if (!runtime.includes("open('test')") || !runtime.includes("open('map')") || run
 if (!runtime.includes("dataset.ashPremiumWorkspace === 'test'") || !runtime.includes("dataset.ashPremiumWorkspace === 'map'") || !runtime.includes("Number(style?.opacity) > 0")) {
   throw new Error('Convergence observer visible workspace gates were not materialized.');
 }
-if (!runtime.includes("document.getElementById('openSelectedCase')") || !runtime.includes("select.dispatchEvent(new Event('change', { bubbles: true }))") || !runtime.includes('remove.click()')) {
-  throw new Error('Convergence observer repaint-atomic Open/Delete gesture was not materialized.');
+if (!runtime.includes("document.getElementById('openSelectedCase')")
+  || !runtime.includes("select.dispatchEvent(new Event('change', { bubbles: true }))")
+  || !runtime.includes('convergenceOpenIssued')
+  || !runtime.includes('convergenceReopenIssued')
+  || !runtime.includes('open.click()')
+  || !runtime.includes('remove.click()')) {
+  throw new Error('Convergence observer repaint-atomic Open/Reopen/Delete gestures were not materialized.');
 }
 if (!runtime.includes('Cross-tab lock witness exceeded 15000ms.')) {
   throw new Error('Convergence observer bounded cross-tab join was not materialized.');
