@@ -35,8 +35,8 @@ async function waitForStableIngress(page) {
       && document.documentElement.dataset.ashCompositionStable?.includes('stable-navigation-motion')
       && document.documentElement.dataset.ashCompositionHydrating !== 'true'
       && composition?.session_open === false
-      && composition?.membrane_ready === true
-      && composition?.hold == null
+      && composition?.case_id == null
+      && [null, 'WAITING_INGRESS_PROFILE'].includes(composition?.hold)
       && window.__td613AshResearchDemo?.version
       && window.__td613AshResearchControlState?.version;
   }, null, { timeout:60_000 });
