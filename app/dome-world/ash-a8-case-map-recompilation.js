@@ -258,7 +258,9 @@ export function renderAshA8CaseMap(snapshot) {
   bindWorkshop(snapshot);
   objectPreview();
   relationPreview(snapshot);
-  publishStageWorldAnswer('A8', 'Case Map recompiled as a relation workshop. Existing map authority, source bytes, custody, release posture, and human closure remain unchanged.');
+  publishStageWorldAnswer('A8', lastCreatedRelation || lastCreatedObject
+    ? confirmation
+    : 'Case Map recompiled as a relation workshop. Existing map authority, source bytes, custody, release posture, and human closure remain unchanged.');
   return true;
 }
 
