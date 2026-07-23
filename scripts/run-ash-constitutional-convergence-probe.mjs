@@ -1,6 +1,6 @@
 import fs from 'node:fs/promises';
 import path from 'node:path';
-import { pathToFileURL } from 'node:url';
+import { spawn } from 'node:child_process';
 
 const artifactDir = path.resolve(process.env.TD613_ARTIFACT_DIR || 'artifacts/ash-constitutional-convergence');
 const sourceUrl = new URL('./ash-constitutional-convergence-probe.mjs', import.meta.url);
@@ -364,4 +364,36 @@ if (!runtime.includes("waitUntil: 'domcontentloaded'")
   throw new Error('Convergence observer explicit navigation readiness gates were not materialized.');
 }
 await fs.writeFile(runtimePath, runtime, 'utf8');
-await import(`${pathToFileURL(runtimePath).href}?aftercare=${Date.now()}`);
+const launcherPath = path.join(artifactDir, 'ash-constitutional-convergence-probe.launcher.mjs');
+await fs.writeFile(launcherPath, `import { pathToFileURL } from 'node:url';
+await import(\`${pathToFileURL(process.argv[2]).href}?isolated=\${Date.now()}\`);
+process.exit(0);
+`, 'utf8');
+
+const child = spawn(process.execPath, [launcherPath, runtimePath], {
+  cwd: process.cwd(),
+  env: process.env,
+  stdio: 'inherit'
+});
+const childResult = await new Promise((resolve, reject) => {
+  let settled = false;
+  const finish = value => {
+    if (settled) return;
+    settled = true;
+    clearTimeout(ceiling);
+    resolve(value);
+  };
+  child.once('error', reject);
+  child.once('exit', (code, signal) => finish({ code, signal }));
+  const ceiling = setTimeout(() => {
+    child.kill('SIGTERM');
+    setTimeout(() => child.kill('SIGKILL'), 5000).unref();
+    finish({ code: null, signal: 'TD613_CONVERGENCE_CHILD_TIMEOUT' });
+  }, 12 * 60 * 1000);
+});
+if (childResult.signal === 'TD613_CONVERGENCE_CHILD_TIMEOUT') {
+  throw new Error('Convergence observer child exceeded its 12-minute terminal ceiling.');
+}
+if (childResult.signal || childResult.code !== 0) {
+  throw new Error(`Convergence observer child failed: code=${childResult.code} signal=${childResult.signal || 'none'}.`);
+}
