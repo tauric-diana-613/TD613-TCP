@@ -1,4 +1,4 @@
-export const ASH_PROFILE_PROMPT_CANONICAL_VERSION = 'td613.ash.profile-prompt-canonical/v0.4-readiness-ordered-explicit-choice';
+export const ASH_PROFILE_PROMPT_CANONICAL_VERSION = 'td613.ash.profile-prompt-canonical/v0.5-post-motion-owner';
 
 const host = globalThis.window;
 const doc = globalThis.document;
@@ -62,6 +62,7 @@ if (host && doc?.documentElement) {
   for (const type of ['aia-ready','aia3-ready','composition-stable']) {
     host.addEventListener(`td613:ash:${type}`, () => queueMicrotask(() => applyCanonicalProfilePrompt()));
   }
+  host.addEventListener('td613:ash:post-ingress-motion', () => applyCanonicalProfilePrompt());
   host.addEventListener('td613:ash:case-closed', () => queueMicrotask(() => applyCanonicalProfilePrompt({ resetSelection:true })));
   host.__td613AshProfilePromptCanonical = Object.freeze({
     version:ASH_PROFILE_PROMPT_CANONICAL_VERSION,
