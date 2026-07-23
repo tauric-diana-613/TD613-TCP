@@ -65,15 +65,20 @@ jobs:
         run: npm run test:dome-world:art
       - name: Dome-World Phase III shared boundary
         run: npm run test:dome-world:phase3
-      - name: Ash custody and veil contracts
-        run: |
-          node tests/dome-world-ash-custody.test.mjs
-          node tests/dome-world-ash-leak-challenge.test.mjs
-          node tests/dome-world-ash-veil.test.mjs
-          node tests/dome-world-ash-cinder.test.mjs
-          node tests/dome-world-ash-compare.test.mjs
-          node tests/dome-world-ash-recall.test.mjs
-          node tests/dome-world-ash-hcc-grade-gate.test.mjs
+      - name: Ash custody contract
+        run: node tests/dome-world-ash-custody.test.mjs
+      - name: Ash leak challenge
+        run: node tests/dome-world-ash-leak-challenge.test.mjs
+      - name: Ash veil contract
+        run: node tests/dome-world-ash-veil.test.mjs
+      - name: Ash Cinder contract
+        run: node tests/dome-world-ash-cinder.test.mjs
+      - name: Ash comparison contract
+        run: node tests/dome-world-ash-compare.test.mjs
+      - name: Ash recall contract
+        run: node tests/dome-world-ash-recall.test.mjs
+      - name: Ash HCC grade gate
+        run: node tests/dome-world-ash-hcc-grade-gate.test.mjs
       - name: Ash Keep core contracts
         run: npm run test:ash-keep
       - name: Ash and Flow-Core retained witnesses

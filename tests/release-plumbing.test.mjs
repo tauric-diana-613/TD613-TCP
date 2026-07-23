@@ -4,7 +4,10 @@ import path from 'node:path';
 
 const workflowDir = '.github/workflows';
 const retiredFlightDateWorkflow = path.join(workflowDir, 'apply-flight-date-refresh.yml');
-const authorizedWriteWorkflow = 'vercel-operator-release.yml';
+const authorizedWriteWorkflows = new Set([
+  'vercel-operator-release.yml',
+  'vercel-relock-safety.yml',
+]);
 const forbiddenPatterns = [
   /\bgit\s+push\b/i,
   /\bgit\s+commit\b/i,
@@ -22,7 +25,7 @@ const workflowNames = fs.readdirSync(workflowDir)
   .filter((name) => name.endsWith('.yml') || name.endsWith('.yaml'));
 
 for (const fileName of workflowNames) {
-  if (fileName === authorizedWriteWorkflow) continue;
+  if (authorizedWriteWorkflows.has(fileName)) continue;
   const filePath = path.join(workflowDir, fileName);
   const content = fs.readFileSync(filePath, 'utf8');
   for (const pattern of forbiddenPatterns) {
@@ -34,19 +37,30 @@ for (const fileName of workflowNames) {
   }
 }
 
-const releasePath = path.join(workflowDir, authorizedWriteWorkflow);
-assert.equal(fs.existsSync(releasePath), true, 'bounded Vercel release conduit must remain present');
-const release = fs.readFileSync(releasePath, 'utf8');
-assert.match(release, /^\s{2}issue_comment:\s*$/m);
-assert.doesNotMatch(release, /^\s{2}(push|pull_request|workflow_dispatch):\s*$/m);
-assert.match(release, /github\.event\.issue\.number == 405/);
-assert.match(release, /github\.event\.comment\.user\.login == github\.repository_owner/);
-assert.match(release, /startsWith\(github\.event\.comment\.body, '\/td613-vercel-release '\)/);
-assert.match(release, /^\s{2}contents:\s*write\s*$/m);
-assert.equal((release.match(/git push origin HEAD:main/g) || []).length, 1);
+function readAuthorized(name) {
+  const filePath = path.join(workflowDir, name);
+  assert.equal(fs.existsSync(filePath), true, `bounded write conduit missing: ${name}`);
+  const source = fs.readFileSync(filePath, 'utf8');
+  assert.match(source, /^\s{2}issue_comment:\s*$/m);
+  assert.doesNotMatch(source, /^\s{2}(push|pull_request|workflow_dispatch):\s*$/m);
+  assert.match(source, /github\.event\.issue\.number == 405/);
+  assert.match(source, /github\.event\.comment\.user\.login == github\.repository_owner/);
+  assert.match(source, /startsWith\(github\.event\.comment\.body, '\/td613-vercel-release '\)/);
+  assert.match(source, /^\s{2}contents:\s*write\s*$/m);
+  assert.equal((source.match(/git push origin HEAD:main/g) || []).length, 1);
+  assert.doesNotMatch(source, /patch-td613-flight/i);
+  return source;
+}
+
+const release = readAuthorized('vercel-operator-release.yml');
 assert.equal((release.match(/config\.git\.deploymentEnabled = true/g) || []).length, 1);
 assert.equal((release.match(/deploymentEnabled: false/g) || []).length, 1);
-assert.doesNotMatch(release, /patch-td613-flight/i);
+assert.equal((release.match(/vercel@latest deploy/g) || []).length, 1);
+
+const relock = readAuthorized('vercel-relock-safety.yml');
+assert.equal((relock.match(/deploymentEnabled: false/g) || []).length, 1);
+assert.doesNotMatch(relock, /vercel@latest deploy/);
+assert.match(relock, /deployment_count = 0/);
 
 assert.equal(fs.existsSync('.githooks/commit-msg'), true, 'commit-msg hook must exist in .githooks');
 assert.equal(fs.existsSync('.githooks/pre-push'), true, 'pre-push hook must exist in .githooks');
