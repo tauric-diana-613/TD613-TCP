@@ -39,6 +39,45 @@ export function ensureA7A11Styles() {
   doc.head.append(style);
 }
 
+function captureStageDrafts() {
+  if (!doc) return Object.freeze({ controls:[], active:null });
+  const active = doc.activeElement;
+  const controls = [...doc.querySelectorAll('.ash-stage-form input[id],.ash-stage-form select[id],.ash-stage-form textarea[id]')].map(control => Object.freeze({
+    id:control.id,
+    value:control.value,
+    checked:'checked' in control ? Boolean(control.checked) : null
+  }));
+  return Object.freeze({
+    controls:Object.freeze(controls),
+    active:active?.id && active.closest?.('.ash-stage-form') ? Object.freeze({
+      id:active.id,
+      selection_start:Number.isInteger(active.selectionStart) ? active.selectionStart : null,
+      selection_end:Number.isInteger(active.selectionEnd) ? active.selectionEnd : null
+    }) : null
+  });
+}
+
+function restoreStageDrafts(draft) {
+  if (!doc || !draft?.controls?.length) return false;
+  let restored = false;
+  for (const saved of draft.controls) {
+    const control = byId(saved.id);
+    if (!control?.closest?.('.ash-stage-form')) continue;
+    if (control.tagName === 'SELECT' && ![...control.options].some(option => option.value === saved.value)) continue;
+    control.value = saved.value;
+    if (saved.checked !== null && 'checked' in control) control.checked = saved.checked;
+    restored = true;
+  }
+  const active = draft.active ? byId(draft.active.id) : null;
+  if (active?.closest?.('.ash-stage-form')) {
+    active.focus?.({ preventScroll:true });
+    if (draft.active.selection_start !== null && typeof active.setSelectionRange === 'function') {
+      active.setSelectionRange(draft.active.selection_start, draft.active.selection_end ?? draft.active.selection_start);
+    }
+  }
+  return restored;
+}
+
 export async function currentPremiumSnapshot() {
   const premium = host?.__td613AshPremiumUI;
   if (!premium) return null;
@@ -78,12 +117,14 @@ export function installAshStage({ stage, sync, navigationSelectors = '' }) {
   let serial = 0;
   const run = async source => {
     const token = ++serial;
+    const draft = captureStageDrafts();
     const snapshot = await currentPremiumSnapshot();
     if (token !== serial) return false;
     const result = await sync(snapshot, source);
+    const draftRestored = restoreStageDrafts(draft);
     doc.documentElement.dataset[`ash${stage}Recompiled`] = 'true';
     host.dispatchEvent(new CustomEvent(`td613:ash:${stage.toLowerCase()}-recompiled`, {
-      detail:{ stage, source, rendered:Boolean(result), authority_changed:false, source_bytes_moved:false, human_closure_required:true }
+      detail:{ stage, source, rendered:Boolean(result), draft_restored:draftRestored, authority_changed:false, source_bytes_moved:false, human_closure_required:true }
     }));
     return result;
   };
