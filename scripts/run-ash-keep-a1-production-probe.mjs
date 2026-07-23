@@ -60,7 +60,6 @@ const arrivalReplacement = `  await page.goto(keepUrl, { waitUntil: 'domcontentl
     && document.documentElement.dataset.ashCachePreflight === 'complete'
     && window.__td613AshAia3PreflightReceipt
     && window.__td613AshFirstPaintWitness, null, { timeout: 60_000 });
-  await page.waitForLoadState('networkidle');
   await page.locator('h1').waitFor({ state: 'visible' });
   const arrival = await page.evaluate(() => ({
     title: document.title,
@@ -128,7 +127,7 @@ await fs.mkdir(runtimeDir, { recursive:true });
 await fs.writeFile(a1SourcePath, probeSource, 'utf8');
 await fs.writeFile(a1RunnerPath, runnerSource, 'utf8');
 await fs.writeFile(adapterManifestPath, `${JSON.stringify({
-  schema:'td613.ash.a1-production-probe-adapter/v0.2',
+  schema:'td613.ash.a1-production-probe-adapter/v0.3',
   source_probe:path.relative(repoRoot, sourcePath),
   adapted_probe:path.relative(repoRoot, a1SourcePath),
   adapted_runner:path.relative(repoRoot, a1RunnerPath),
@@ -136,6 +135,8 @@ await fs.writeFile(adapterManifestPath, `${JSON.stringify({
   canonical_url:'/dome-world/ash-threshold.html',
   canonical_title:'TD613 Ash',
   visible_epoch_query:false,
+  network_idle_required:false,
+  readiness_source:'MODULE_GRAPH_AND_PREFLIGHT_STATE',
   product_source_mutated:false,
   runtime_copy_ephemeral:true,
   promotion_authorized:false
