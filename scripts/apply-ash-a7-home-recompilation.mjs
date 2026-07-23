@@ -76,5 +76,4 @@ const vercel = JSON.parse(read('vercel.json'));
 if (vercel.git?.deploymentEnabled !== false) throw new Error('A7 integrator requires the Vercel gate closed');
 
 fs.rmSync('scripts/apply-ash-a7-home-recompilation.mjs');
-fs.rmSync('.github/workflows/ash-a7-integrator.yml');
-console.log(JSON.stringify({ ok:true, stage:'A7', mass_eviction_epoch_changed:false, deployment_gate:'CLOSED' }, null, 2));
+console.log(JSON.stringify({ ok:true, stage:'A7', mass_eviction_epoch_changed:false, deployment_gate:'CLOSED', workflow_retained_for_writeback:true }, null, 2));
