@@ -9,9 +9,6 @@ import {
 
 export const ASH_A7_HOME_VERSION = 'td613.ash.a7-home-recompilation/v0.1';
 
-let renderingHome = false;
-let homeObserver = null;
-
 function priorityCopy(snapshot) {
   const priority = snapshot?.currentPriority || null;
   if (!snapshot?.caseMap) return Object.freeze({
@@ -74,26 +71,11 @@ function routeRows(snapshot) {
   }).join('');
 }
 
-function ensureHomeOwnership() {
-  const target = byId('premiumHomeBody');
-  if (!target || homeObserver || typeof MutationObserver !== 'function') return;
-  homeObserver = new MutationObserver(() => {
-    if (renderingHome || byId('ashA7CurrentPriority')) return;
-    queueMicrotask(() => {
-      if (renderingHome || byId('ashA7CurrentPriority')) return;
-      renderAshA7Home(globalThis.window?.__td613AshPremiumUI?.snapshot?.() || null);
-    });
-  });
-  homeObserver.observe(target, { childList:true });
-}
-
 export function renderAshA7Home(snapshot) {
   const target = byId('premiumHomeBody');
   if (!target) return false;
-  ensureHomeOwnership();
   const priority = priorityCopy(snapshot);
   const continuity = continuityRows(snapshot);
-  renderingHome = true;
   target.dataset.ashA7Home = ASH_A7_HOME_VERSION;
   target.innerHTML = `
     <section class="ash-stage-card wide" id="ashA7CurrentPriority" aria-labelledby="ashA7CurrentPriorityTitle">
@@ -135,7 +117,6 @@ export function renderAshA7Home(snapshot) {
       <p class="ash-stage-copy">The ledger separates what left from what stayed local, and keeps route, receipt, version, recipient, and later stale posture visible.</p>
       <div class="ash-stage-table-wrap"><table class="ash-stage-table"><thead><tr><th>What left</th><th>What stayed local</th><th>Recipient</th><th>Version</th><th>Route</th><th>Receipt</th><th>Later stale status</th><th>Recorded</th></tr></thead><tbody>${routeRows(snapshot)}</tbody></table></div>
     </section>`;
-  renderingHome = false;
   publishStageWorldAnswer('A7', 'Home recompiled around current condition, one bounded next action, continuity, and the route ledger. Source bytes and Ash authority remain unchanged.');
   return true;
 }
@@ -145,7 +126,6 @@ installAshStage({
   sync:renderAshA7Home,
   navigationSelectors:'[data-premium-workspace="home"],[data-route-workspace="home"],#premiumReturnHome,[data-command-action="profile"]'
 });
-queueMicrotask(ensureHomeOwnership);
 
 globalThis.window && (globalThis.window.__td613AshA7Home = Object.freeze({
   version:ASH_A7_HOME_VERSION,
