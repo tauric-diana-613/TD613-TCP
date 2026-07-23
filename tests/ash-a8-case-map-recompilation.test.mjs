@@ -3,6 +3,7 @@ import fs from 'node:fs';
 
 const core = fs.readFileSync(new URL('../app/dome-world/ash-a7-a11-recompiler-core.js', import.meta.url), 'utf8');
 const source = fs.readFileSync(new URL('../app/dome-world/ash-a8-case-map-recompilation.js', import.meta.url), 'utf8');
+const aia3 = fs.readFileSync(new URL('../app/dome-world/ash-aia3-composition.js', import.meta.url), 'utf8');
 const bridge = fs.readFileSync(new URL('../app/dome-world/ash-workspace-bridge.js', import.meta.url), 'utf8');
 const handshake = fs.readFileSync(new URL('../scripts/run-ash-constitutional-convergence-handshake.mjs', import.meta.url), 'utf8');
 const closureWorkflow = fs.readFileSync(new URL('../.github/workflows/ash-keep-production-closure.yml', import.meta.url), 'utf8');
@@ -34,12 +35,17 @@ for (const marker of [
 
 for (const id of ['objectName','objectType','objectRoom','objectSource','addObject','linkFrom','linkTo','linkType','addRelationship','researchNotes']) assert.ok(source.includes(`'${id}'`), `A8 must delegate to existing ${id}`);
 assert.match(source, /function delegateLegacyAction\(id\)/);
+assert.match(source, /td613:ash-keep:action-held/);
+assert.match(source, /event\.detail\?\.action_id === id/);
 assert.match(source, /control\.dispatchEvent\(new MouseEvent\('click'/);
 assert.match(source, /if \(control\.disabled\)/);
+assert.match(source, /if \(held\) return Object\.freeze/);
 assert.match(source, /delegateLegacyAction\('addObject'\)/);
 assert.match(source, /delegateLegacyAction\('addRelationship'\)/);
 assert.doesNotMatch(source, /byId\('addObject'\)\?\.click\(\)/);
 assert.doesNotMatch(source, /byId\('addRelationship'\)\?\.click\(\)/);
+assert.match(source, /if \(!delegation\.delegated\) \{[\s\S]*pendingObjectName = null;[\s\S]*No map state changed/);
+assert.match(source, /if \(!delegation\.delegated\) \{[\s\S]*pendingRelation = null;[\s\S]*No relation was created/);
 assert.match(source, /notes\.dispatchEvent\(new Event\('change'/);
 assert.match(source, /table\.classList\.add\('active'\)/);
 assert.match(source, /data-ash-a8-inspect-relation/);
@@ -64,6 +70,9 @@ assert.doesNotMatch(core, /MutationObserver/);
 assert.doesNotMatch(core, /localStorage\.(?:setItem|removeItem|clear)/);
 assert.doesNotMatch(core, /indexedDB\.(?:open|deleteDatabase)/);
 
+assert.match(aia3, /function closeDeepPanels\(\)/);
+assert.match(aia3, /details\.matches\('\[data-aia-exact\]'\) && details\.open/);
+assert.match(aia3, /if \(details\.matches\('\[data-aia-exact\]'\) && details\.open\) return/);
 assert.match(bridge, /\.ash-flowcore-field--proxy \[data-aia-exact\]/);
 assert.match(bridge, /removeAttribute\('data-aia-exact'\)/);
 assert.match(handshake, /td613:ash:probe-contention-release:v1/);
@@ -82,10 +91,13 @@ console.log(JSON.stringify({
   ok:true,
   schema:'td613.ash.a8-case-map-contract/v0.1',
   existing_map_engine_delegation:true,
+  lifecycle_hold_receipt_observed:true,
+  held_note_write:false,
   inert_owner_event_delegation:true,
   disabled_owner_respected:true,
   stage_form_draft_preservation:true,
   active_edit_focus_preserved:true,
+  exact_inspection_open_preserved:true,
   relation_workshop:true,
   directed_relation_truthful:true,
   notes_change_persistence:true,
