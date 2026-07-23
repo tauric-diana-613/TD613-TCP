@@ -41,11 +41,38 @@ try {
   await page.locator('#startDemo').click();
   await page.waitForFunction(() => document.documentElement.dataset.ashWholeInstrumentPedagogy
     && document.documentElement.dataset.ashAiaReady === 'true'
-    && document.querySelector('.ash-flowcore-field')
+    && document.querySelector('.ash-flowcore-field:not(.ash-flowcore-field--proxy)')
     && document.getElementById('premiumPrimaryDock'), null, { timeout:90000 });
 
   const field = await page.evaluate(() => {
-    const node = document.querySelector('.ash-flowcore-field');
+    const all = [...document.querySelectorAll('.ash-flowcore-field')];
+    const visible = all.filter(item => {
+      if (item.hidden || item.classList.contains('ash-flowcore-field--proxy')) return false;
+      const style = getComputedStyle(item);
+      const rect = item.getBoundingClientRect();
+      return style.display !== 'none'
+        && style.visibility !== 'hidden'
+        && Number(style.opacity) > 0
+        && rect.width > 0
+        && rect.height > 0;
+    });
+    const proxies = all.filter(item => item.classList.contains('ash-flowcore-field--proxy'));
+    const proxyPostures = proxies.map(item => {
+      const style = getComputedStyle(item);
+      const rect = item.getBoundingClientRect();
+      return {
+        hidden:item.hidden,
+        inert:item.inert,
+        aria_hidden:item.getAttribute('aria-hidden'),
+        display:style.display,
+        visibility:style.visibility,
+        opacity:style.opacity,
+        width:rect.width,
+        height:rect.height,
+        pointer_events:style.pointerEvents
+      };
+    });
+    const node = visible[0] || null;
     const phase = node?.querySelector('[data-flowcore-phase-label]')?.getBoundingClientRect();
     const header = node?.querySelector('.ash-flowcore-field__header')?.getBoundingClientRect();
     const play = node?.querySelector('[data-aia-play]');
@@ -54,7 +81,19 @@ try {
       active:item.dataset.channelActive
     }));
     return {
-      count:document.querySelectorAll('.ash-flowcore-field').length,
+      dom_count:all.length,
+      visible_count:visible.length,
+      proxy_count:proxies.length,
+      proxies_quarantined:proxyPostures.every(item => item.hidden
+        && item.inert
+        && item.aria_hidden === 'true'
+        && item.display === 'none'
+        && item.visibility === 'hidden'
+        && Number(item.opacity) === 0
+        && item.width === 0
+        && item.height === 0
+        && item.pointer_events === 'none'),
+      proxy_postures:proxyPostures,
       play_text:play?.textContent?.trim(),
       phase_top_right:Boolean(phase && header && phase.right <= header.right + 1 && phase.top >= header.top - 1),
       channel_names:channels.map(item => item.name),
@@ -64,7 +103,8 @@ try {
       scene:node?.dataset.ashWorkspaceScene
     };
   });
-  if (field.count !== 1) throw new Error(`Expected one field; observed ${field.count}.`);
+  if (field.visible_count !== 1) throw new Error(`Expected one visible canonical field; observed ${field.visible_count}.`);
+  if (field.proxy_count && !field.proxies_quarantined) throw new Error('Flow-Core synchronization proxy became presentational.');
   if (field.play_text !== '▶ Play Consequence Field') throw new Error(`Unexpected Play label: ${field.play_text}`);
   if (!field.phase_top_right) throw new Error('Phase chip did not occupy the field-header state position.');
   for (const name of ['glyph','motion','shape','language','inspection']) {
@@ -74,7 +114,7 @@ try {
   if (!/Claim ceiling:/i.test(field.static_truth || '')) throw new Error('Static truth omitted the claim ceiling.');
   report.observations.field = field;
 
-  await page.locator('[data-flowcore-channel="inspection"]').click();
+  await page.locator('.ash-flowcore-field:not(.ash-flowcore-field--proxy) [data-flowcore-channel="inspection"]').click();
   const inspectionOpen = await page.locator('[data-aia-exact]').evaluate(node => node.open);
   if (!inspectionOpen) throw new Error('Inspection did not open exact technical state.');
   report.observations.inspection_only_exact_descent = true;
@@ -122,15 +162,28 @@ try {
 
   await page.setViewportSize({ width:390, height:844 });
   await page.waitForTimeout(120);
-  const mobile = await page.evaluate(() => ({
-    width:innerWidth,
-    scroll_width:document.documentElement.scrollWidth,
-    overflow:document.documentElement.scrollWidth > innerWidth + 2,
-    field_count:document.querySelectorAll('.ash-flowcore-field').length,
-    route_surface_width:document.querySelector('[data-ash-route-surface]')?.getBoundingClientRect().width || 0
-  }));
+  const mobile = await page.evaluate(() => {
+    const visibleFields = [...document.querySelectorAll('.ash-flowcore-field')].filter(item => {
+      if (item.hidden || item.classList.contains('ash-flowcore-field--proxy')) return false;
+      const style = getComputedStyle(item);
+      const rect = item.getBoundingClientRect();
+      return style.display !== 'none'
+        && style.visibility !== 'hidden'
+        && Number(style.opacity) > 0
+        && rect.width > 0
+        && rect.height > 0;
+    });
+    return {
+      width:innerWidth,
+      scroll_width:document.documentElement.scrollWidth,
+      overflow:document.documentElement.scrollWidth > innerWidth + 2,
+      visible_field_count:visibleFields.length,
+      proxy_count:document.querySelectorAll('.ash-flowcore-field--proxy').length,
+      route_surface_width:document.querySelector('[data-ash-route-surface]')?.getBoundingClientRect().width || 0
+    };
+  });
   if (mobile.overflow) throw new Error(`Mobile horizontal overflow: ${mobile.scroll_width} > ${mobile.width}.`);
-  if (mobile.field_count !== 1) throw new Error('Mobile layout duplicated the canonical field.');
+  if (mobile.visible_field_count !== 1) throw new Error('Mobile layout duplicated the visible canonical field.');
   report.observations.mobile = mobile;
 
   await page.screenshot({ path:path.join(artifactDir, `${browserName}-a2-a5.png`), fullPage:true });
