@@ -1,5 +1,6 @@
 /* A2–A5 whole-instrument pedagogy: one field, one clock, semantic navigation, explicit route deltas. */
-.ash-flowcore-field{padding-bottom:64px}
+.ash-flowcore-field{grid-template-columns:minmax(0,1fr)!important;padding-bottom:64px}
+.ash-flowcore-field>*{min-width:0;max-width:100%}
 .ash-flowcore-field__header{position:relative}
 .ash-flowcore-field__phase{align-self:start;justify-self:end}
 .ash-whole-instrument-play{position:absolute;right:14px;bottom:14px;z-index:8;min-height:38px;padding:8px 12px;border:1px solid rgba(228,198,108,.62);background:#10241d;color:var(--fc-paper,#fff8da);font:700 .64rem/1.2 var(--mono,ui-monospace,monospace);text-transform:uppercase;cursor:pointer;box-shadow:0 0 0 1px rgba(228,198,108,.08),0 8px 24px rgba(0,0,0,.38)}
@@ -38,7 +39,9 @@
 @keyframes ash-command-attention{0%,100%{box-shadow:0 0 0 1px rgba(118,234,212,.24),0 0 14px rgba(118,234,212,.1)}45%{box-shadow:0 0 0 2px rgba(228,198,108,.52),0 0 28px rgba(228,198,108,.2)}}
 @media(max-width:760px){
   .ash-flowcore-field{width:100%!important;max-width:100%!important;min-width:0!important;padding-bottom:10px;overflow:hidden!important}
+  .ash-flowcore-field>*{min-width:0!important;max-width:100%!important}
   .ash-flowcore-field__header{width:100%;max-width:100%;min-width:0}
+  .ash-flowcore-field__canvas{width:100%!important;max-width:100%!important;min-width:0!important;overflow-x:auto!important}
   .ash-channel-legend,.ash-channel-disclosure,.ash-whole-instrument-static{width:calc(100% - 24px);max-width:calc(100% - 24px);min-width:0;margin-inline:12px}
   .ash-channel-legend{grid-template-columns:repeat(2,minmax(0,1fr))}
   .ash-channel-legend [data-flowcore-channel]{width:100%;max-width:100%;min-width:0;overflow-wrap:anywhere}
