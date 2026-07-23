@@ -6,8 +6,13 @@ const read = path => fs.readFileSync(new URL(`../${path}`, import.meta.url), 'ut
 const moduleSource = read('app/dome-world/ash-whole-instrument-pedagogy.js');
 const css = read('app/dome-world/ash-whole-instrument-pedagogy.css');
 const bridge = read('app/dome-world/ash-workspace-bridge.js');
+const lifecycle = read('app/dome-world/ash-lifecycle.js');
+const eviction = read('app/dome-world/ash-cache-eviction-aia3.js');
+const recovery = read('app/safe-harbor/ash-keep-recovery.html');
+const shell = read('api/dome-world-shell.js');
 const closureWorkflow = read('.github/workflows/ash-keep-production-closure.yml');
 const receipt = read('app/dome-world/docs/ASH_KEEP_A2_A5_IMPLEMENTATION_RECEIPT_V0_1.md');
+const programIndex = read('app/dome-world/docs/FLOWCORE_PEDAGOGUE_PROGRAM_INDEX_V0_1.md');
 
 assert.match(moduleSource, /td613\.ash\.whole-instrument-pedagogy\/v0\.1-a2-a5/);
 assert.match(moduleSource, /▶ Play Consequence Field/);
@@ -69,7 +74,28 @@ assert.match(css, /\.ash-flowcore-field\{grid-template-columns:minmax\(0,1fr\)!i
 assert.match(css, /\.ash-flowcore-field>\*\{min-width:0;max-width:100%\}/);
 assert.match(css, /\.ash-flowcore-field__canvas\{width:100%!important;max-width:100%!important;min-width:0!important;overflow-x:auto!important\}/);
 assert.match(css, /button\[data-flowcore-channel="inspection"\]\{grid-column:1\/-1\}/);
-assert.match(bridge, /ash-whole-instrument-pedagogy\.js\?v=20260723-a2-a5-v1/);
+
+const assetEpoch = '20260723-a2-a5-release-v1';
+const cacheEpoch = 'td613.ash.cache-flush/2026-07-23-a2-a5-release-v1';
+for (const [name, source] of [
+  ['shell', shell],
+  ['lifecycle', lifecycle],
+  ['workspace bridge', bridge],
+  ['cache eviction', eviction],
+  ['recovery bridge', recovery]
+]) {
+  assert.match(source, new RegExp(assetEpoch.replaceAll('-', '\\-')), `${name} omitted the A2-A5 asset epoch`);
+  assert.doesNotMatch(source, /20260721-legal-demo-ux-v1/, `${name} retained the superseded delivery epoch`);
+}
+assert.match(shell, new RegExp(cacheEpoch.replaceAll('/', '\\/').replaceAll('.', '\\.').replaceAll('-', '\\-')));
+assert.match(eviction, new RegExp(cacheEpoch.replaceAll('/', '\\/').replaceAll('.', '\\.').replaceAll('-', '\\-')));
+assert.match(recovery, new RegExp(cacheEpoch.replaceAll('/', '\\/').replaceAll('.', '\\.').replaceAll('-', '\\-')));
+assert.match(bridge, /ash-whole-instrument-pedagogy\.js\?v=20260723-a2-a5-release-v1/);
+assert.match(receipt, /prior asset epoch: 20260721-legal-demo-ux-v1/);
+assert.match(receipt, /replacement asset epoch: 20260723-a2-a5-release-v1/);
+assert.match(receipt, /replacement cache epoch: td613\.ash\.cache-flush\/2026-07-23-a2-a5-release-v1/);
+assert.match(programIndex, /Ash A2–A5/);
+assert.match(programIndex, /20260723-a2-a5-release-v1/);
 
 assert.doesNotMatch(closureWorkflow, /\n  workflow_run:/);
 assert.doesNotMatch(closureWorkflow, /github\.event\.workflow_run/);

@@ -4,7 +4,7 @@
 
 **Namespace:** `U+10D613`  
 **Program:** P0 through P10 plus runtime/release closure and Ash whole-instrument recompilation  
-**Status:** IMPLEMENTATION INDEX COMPLETE / BROWSER RUNTIME OBSERVED / ASH RECOMPILATION AUTHORED / A0 BASELINE FROZEN / EMPIRICAL HOLD VISIBLE / HUMAN CLOSURE OPEN
+**Status:** IMPLEMENTATION INDEX COMPLETE / BROWSER RUNTIME OBSERVED / ASH A0–A5 IMPLEMENTED LOCALLY / EMPIRICAL HOLD VISIBLE / HUMAN CLOSURE OPEN
 
 ## Constitutional source set
 
@@ -20,6 +20,7 @@
 10. `ASH_KEEP_WHOLE_INSTRUMENT_CHILD_LEGIBLE_AIA_SPEC_V0_1.md`
 11. `ASH_KEEP_A0_BASELINE_PROVENANCE_LEDGER_V0_1.md`
 12. `ASH_KEEP_A0_IMPLEMENTATION_RECEIPT_V0_1.md`
+13. `ASH_KEEP_A2_A5_IMPLEMENTATION_RECEIPT_V0_1.md`
 
 ## Phase receipts
 
@@ -37,6 +38,7 @@
 | P9 | `FLOWCORE_PEDAGOGUE_P9_IMPLEMENTATION_RECEIPT_V0_1.md` | adult-first empirical-validation instrument |
 | P10 | `FLOWCORE_PEDAGOGUE_P10_IMPLEMENTATION_RECEIPT_V0_1.md` | promotion state, evidence, feature gate, rollback |
 | Ash A0 | `ASH_KEEP_A0_IMPLEMENTATION_RECEIPT_V0_1.md` | documentation-only baseline freeze, source map, control census, browser-evidence hash manifest, and authority invariant preservation |
+| Ash A2–A5 | `ASH_KEEP_A2_A5_IMPLEMENTATION_RECEIPT_V0_1.md` | consequence-field grammar, workspace anisotropy, semantic navigation, human-facing routes, workflow repair, and final bounded release epoch |
 
 ## Engines
 
@@ -64,7 +66,7 @@
 ## Evidence and release instruments
 
 - `fixtures/pedagogue/baselines/flowcore-p0-p7-baseline-evidence-v01.json`
-- `fixtures/pedagogue/physical-flowcore-cycle.json`
+- `fixtures/pedagogue/flowcore-physical-cycle.json`
 - `fixtures/pedagogue/flowcore-validation-synthetic-pipeline.json`
 - `fixtures/pedagogue/flowcore-promotion-evidence.json`
 - `data/flowcore-promotion-config-v01.js`
@@ -74,6 +76,7 @@
 - `.github/workflows/vercel-operator-release.yml`
 - `FLOWCORE_PEDAGOGUE_ROLLBACK_PROCEDURE_V0_1.md`
 - `ASH_KEEP_A0_BASELINE_PROVENANCE_LEDGER_V0_1.md`
+- `ASH_KEEP_A2_A5_IMPLEMENTATION_RECEIPT_V0_1.md`
 
 ## Ash whole-instrument recompilation extension
 
@@ -96,9 +99,11 @@ The authored extension governs:
 whole-instrument plan: AUTHORED
 whole-instrument normative spec: AUTHORED
 A0 baseline freeze: IMPLEMENTED / DOCUMENTATION ONLY
-A0 runtime mutation: NONE
-A0 deployment authority: NONE
-next runtime stage: A1 / HELD UNTIL SEPARATE BRANCH AND EXACT-HEAD WITNESSES
+A1 first-paint and closure hardening: IMPLEMENTED / MERGED
+A2-A5 runtime recompilation: IMPLEMENTED / EXACT-HEAD RELEASE VALIDATION REQUIRED
+A6-A19: NOT INCLUDED / HELD FOR LATER STAGES
+A2-A5 release asset epoch: 20260723-a2-a5-release-v1
+A2-A5 cache epoch: td613.ash.cache-flush/2026-07-23-a2-a5-release-v1
 feature gate: REQUIRED / DEFAULT OFF
 adult-first human validation: REQUIRED
 human promotion: REQUIRED
@@ -118,32 +123,50 @@ principal control census: RECORDED
 command destinations: MAPPED
 five current demos: ENUMERATED
 Archive demo: HELD
-normalized first-paint timing: HELD FOR A1
-normalized navigation timing: HELD FOR A4
+normalized first-paint timing: IMPLEMED IN A1
+normalized navigation timing: IMPLEMED IN A4
 physical-device closure: HUMAN-HELD
 binary artifact retention beyond 2026-09-05: OPEN
 ```
 
 A0 records the exact downloaded artifact digests and extracted file SHA-256 hashes. It does not convert workflow success into human comprehension evidence or production promotion.
 
+## A2–A5 evidence posture
+
+```text
+one canonical consequence field: OBSERVED
+one existing explicit clock: PRESERVED
+stateful five-channel grammar: OBSERVED
+workspace anisotropy: OBSERVED
+semantic navigation receipts: OBSERVED
+four human-facing route recompilations: OBSERVED
+Chromium: PASS BEFORE FINAL EPOCH / MUST RE-RUN ON EPOCH HEAD
+Firefox: PASS BEFORE FINAL EPOCH / MUST RE-RUN ON EPOCH HEAD
+WebKit iOS-sized: PASS BEFORE FINAL EPOCH / MUST RE-RUN ON EPOCH HEAD
+mobile horizontal overflow: ABSENT BEFORE FINAL EPOCH / MUST RE-RUN
+constitutional convergence: MUST PASS ON FINAL EPOCH HEAD
+production deployment: NOT YET AUTHORIZED BY MERGE
+physical-device closure: HUMAN-HELD
+```
+
 ## Current honest promotion posture
 
 ```text
 implementation state: HARDENED
-runtime browser matrix: PASS
-Chromium observation: PASS
-Firefox observation: PASS
-WebKit/iOS-sized observation: PASS
-mobile portrait: PASS
-mobile landscape: PASS
-rotation-equivalent: PASS
+runtime browser matrix: PASS BEFORE FINAL EPOCH / REVALIDATION OPEN
+Chromium observation: PASS BEFORE FINAL EPOCH
+Firefox observation: PASS BEFORE FINAL EPOCH
+WebKit/iOS-sized observation: PASS BEFORE FINAL EPOCH
+mobile portrait: PASS BEFORE FINAL EPOCH
+mobile landscape: INHERITED PASS
+rotation-equivalent: INHERITED PASS
 reduced motion runtime: PASS
-zoom-equivalent reflow: PASS
-high contrast: PASS
+zoom-equivalent reflow: INHERITED PASS
+high contrast: INHERITED PASS
 browser performance observation: PASS
 human adult validation evidence: absent
 empirical exit gate: held
-production probe: not observed
+production probe: not observed for A2-A5
 production demonstrated: false
 feature gate default: OFF
 public route promotion authorized: false
@@ -152,7 +175,7 @@ human closure required: true
 closure: OPEN
 ```
 
-`HARDENED` remains the correct promotion state because the state machine requires the held human adult empirical gate before `RUNTIME_DEMONSTRATED`. Observed browser evidence does not substitute for human evidence. A0 freezes the current façade and its known burden before future runtime recompilation; it does not count authored requirements as implemented behavior.
+`HARDENED` remains the correct promotion state because the state machine requires the held human adult empirical gate before `RUNTIME_DEMONSTRATED`. Browser evidence does not substitute for human evidence. A2–A5 may merge and deploy as an authorized implementation stage while human empirical closure remains explicitly open.
 
 ## Stable constitutional boundary
 
