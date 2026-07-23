@@ -39,27 +39,42 @@ const contentionReplacement = `  const contentionEvent = 'td613:ash:probe-conten
   }), { eventName:contentionEvent, signal:releaseSignal });
   await secondPage.waitForFunction(() => localStorage.getItem('td613.ash-keep.probe-lock') === 'HELD_BY_FIRST_TAB');
   await page.waitForFunction(() => window.__td613ProbeContentionReleaseReady === true);
-  const secondLock = secondPage.evaluate(queueKey => {
-    const queuedAt = Date.now();
+  const queuedAt = await secondPage.evaluate(queueKey => {
+    const timestamp = Date.now();
     localStorage.setItem(queueKey, 'SECOND_TAB_QUEUED');
-    return window.TD613AshConvergence.withOperation('probe-contention', async () => ({
+    window.__td613ProbeSecondLock = { state:'QUEUED', queued_at:timestamp, result:null, error:null };
+    window.TD613AshConvergence.withOperation('probe-contention', async () => ({
       state:localStorage.getItem('td613.ash-keep.probe-lock'),
-      queued_at:queuedAt,
+      queued_at:timestamp,
       acquired_at:Date.now()
-    }));
+    })).then(result => {
+      window.__td613ProbeSecondLock = { state:'RESOLVED', queued_at:timestamp, result, error:null };
+    }).catch(error => {
+      window.__td613ProbeSecondLock = { state:'REJECTED', queued_at:timestamp, result:null, error:String(error?.message || error) };
+    });
+    return timestamp;
   }, queuedKey);
+  await secondPage.waitForFunction(timestamp => window.__td613ProbeSecondLock?.state === 'QUEUED'
+    && window.__td613ProbeSecondLock?.queued_at === timestamp, queuedAt);
   await page.waitForFunction(queueKey => localStorage.getItem(queueKey) === 'SECOND_TAB_QUEUED', queuedKey);
+  const secondResultWait = secondPage.waitForFunction(() => {
+    const probe = window.__td613ProbeSecondLock;
+    if (probe?.state === 'REJECTED') throw new Error(probe.error || 'Second-tab contention request rejected.');
+    return probe?.state === 'RESOLVED' ? probe.result : false;
+  }, null, { timeout:35000 }).then(handle => handle.jsonValue());
   await page.evaluate(({ eventName, signal }) => {
     window.dispatchEvent(new CustomEvent(eventName, { detail:signal }));
   }, { eventName:contentionEvent, signal:releaseSignal });
   const [firstResult, secondResult] = await Promise.race([
-    Promise.all([firstLock, secondLock]),
+    Promise.all([firstLock, secondResultWait]),
     new Promise((_, reject) => setTimeout(
       () => reject(new Error('Cross-tab lock witness exceeded 35000ms.')),
       35000
     ))
   ]);
   await page.evaluate(queueKey => localStorage.removeItem(queueKey), queuedKey);
+  await secondPage.evaluate(() => { delete window.__td613ProbeSecondLock; });
+  assert(secondResult.queued_at === queuedAt, 'Second-tab contention receipt lost its exact queued timestamp.');
   assert(secondResult.queued_at <= firstResult.released_at, 'Second-tab contention request was not queued before first-tab release.');`;
 
 const replacementDefinitions = `const lockWaitTarget = ${JSON.stringify(contentionTarget)};\nconst lockWaitReplacement = ${JSON.stringify(contentionReplacement)};`;
