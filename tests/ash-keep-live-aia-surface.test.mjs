@@ -16,6 +16,7 @@ const bridge = read('app/dome-world/ash-keep-aia-workspace-bridge.js');
 const composition = read('app/dome-world/ash-aia3-composition.js');
 const cacheEviction = read('app/dome-world/ash-cache-eviction-aia3.js');
 const shell = read('api/dome-world-shell.js');
+const recovery = read('app/safe-harbor/ash-keep-recovery.html');
 const baseStyles = read('app/dome-world/ash-keep-aia.css');
 const aia3Styles = [
   read('app/dome-world/ash-keep-aia3.css'),
@@ -30,7 +31,7 @@ const escaped = value => value.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
 const EPOCH = '20260721-legal-demo-ux-v1';
 const CACHE_EPOCH = 'td613.ash.cache-flush/2026-07-21-legal-demo-ux-v1';
 
- test('loader preserves legacy rollback and gates the entire AIA3 graph behind preflight', () => {
+test('loader preserves legacy rollback and gates the entire AIA3 graph behind preflight', () => {
   assert.match(loader, /__td613AshAia3Preflight/);
   assert.match(loader, /preflight\.then/);
   assert.match(loader, /ash-cache-eviction-aia3\.js/);
@@ -114,7 +115,7 @@ test('tutorial is finite, deterministic, gesture-triggered, non-operative, and r
   assert.equal((runtime.match(/requestAnimationFrame\(/g) || []).length, 0, 'The guide must not introduce a second scheduler.');
 });
 
-test('mass eviction precedes stale modules, preserves local cases, and excludes IndexedDB deletion', () => {
+test('mass eviction precedes current modules while first paint and the visible URL stay canonical', () => {
   assert.match(cacheEviction, new RegExp(escaped(CACHE_EPOCH)));
   assert.match(cacheEviction, new RegExp(EPOCH));
   assert.match(cacheEviction, /clearCacheStorage/);
@@ -127,16 +128,20 @@ test('mass eviction precedes stale modules, preserves local cases, and excludes 
   assert.match(cacheEviction, /session_epoch_preserved:sessionAfter === sessionBefore/);
   assert.doesNotMatch(cacheEviction, /removeItem\?\.\(POINTER_KEY\)|removeItem\?\.\(SESSION_KEY\)|deleteDatabase|indexedDB\.delete|localStorage\.clear|sessionStorage\.clear/);
   assert.match(shell, /ash-cache-preflight/);
-  assert.match(shell, /Updating Ash Keep · preserving local cases/);
+  assert.match(shell, /Preparing Ash/);
   assert.match(shell, /__td613AshAia3Preflight/);
-  assert.match(shell, /location\.replace/);
+  assert.match(shell, /await globalThis\.__td613AshAia3Preflight/);
   assert.match(shell, /session_epoch_preserved_or_migrated/);
   assert.match(shell, /CDN-Cache-Control/);
   assert.match(shell, /Vercel-CDN-Cache-Control/);
   assert.match(shell, /Clear-Site-Data/);
   assert.match(shell, /active_session_reset_by_client:false/);
   assert.match(shell, /local_case_pointer_preserved/);
+  assert.doesNotMatch(shell, /searchParams\.set\('ash_epoch'|searchParams\.set\('ash_recovered'/);
   assert.doesNotMatch(shell, /indexedDB\.deleteDatabase|localStorage\.clear\(|sessionStorage\.clear\(/);
+  assert.match(recovery, /history\.replaceState\(null,'',canonical\)/);
+  assert.match(recovery, /document\.write\(shell\)/);
+  assert.doesNotMatch(recovery, /ash_epoch|ash_recovered/);
 });
 
 test('privacy, evidence, child-study, and rollback boundaries remain explicit', () => {
