@@ -138,3 +138,18 @@ export function installAshStage({ stage, sync, navigationSelectors = '' }) {
   queueMicrotask(() => run('INSTALL'));
   return true;
 }
+
+if (host && !host.__td613AshA9ModulePromise) {
+  host.__td613AshA9ModulePromise = import('./ash-a9-work-recompilation.js?v=20260723-a9-v1').catch(error => {
+    host.dispatchEvent(new CustomEvent('td613:ash:a9-load-held', {
+      detail:Object.freeze({
+        schema:'td613.ash.a9-load-hold/v0.1',
+        message:String(error?.message || error),
+        authority_changed:false,
+        source_bytes_moved:false,
+        human_closure_required:true
+      })
+    }));
+    return null;
+  });
+}
