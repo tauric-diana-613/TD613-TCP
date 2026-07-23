@@ -168,6 +168,11 @@ if (host) {
 if (host && !host.__td613AshA9WorkspaceOwner) {
   const refreshSettledA9Work = event => {
     if (event.detail?.workspace !== 'work') return;
+    const workBody = byId('premiumWorkBody');
+    const staleStage = byId('ashA9WorkRecompilation');
+    if (workBody && staleStage && workBody.contains(staleStage)) {
+      workBody.innerHTML = '<div class="premium-skeleton" data-ash-a9-compiling="true">Compiling the current intention-shaped Work queue…</div>';
+    }
     queueMicrotask(async () => {
       await loadA9Module();
       await host.__td613AshA9?.refresh?.('UX_WORKSPACE_OPENED');
@@ -178,6 +183,7 @@ if (host && !host.__td613AshA9WorkspaceOwner) {
     version:'td613.ash.a9-workspace-owner/v0.1',
     event:'td613:ash:ux-workspace-opened',
     admission_event:'td613:ash:canonical-module-graph-ready',
+    stale_shell_replaced:true,
     automatic_consequential_action:false,
     authority_changed:false,
     source_bytes_moved:false,
