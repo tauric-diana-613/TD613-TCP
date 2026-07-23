@@ -8,23 +8,23 @@ import {
   ASH_LIFECYCLE_SHELL_CONTRACT,
   ASH_MASS_EVICTION_EPOCH,
   ASH_THRESHOLD_ROUTE,
+  bindAshDraftsToCaseMap,
   injectAshKeepLifecycle,
   injectAshLifecycleEntry,
-  stabilizeAshKeepSourceShell,
-  stabilizeDomeWorldSource
+  renderDomeWorldShell
 } from '../../api/dome-world-shell.js';
 
 const read = path => fs.readFileSync(new URL(`../../${path}`, import.meta.url), 'utf8');
 const domeSource = read('app/dome-world/index.html');
-const renderedDome = stabilizeDomeWorldSource(domeSource);
+const renderedDome = renderDomeWorldShell(domeSource);
 const threshold = read('app/dome-world/ash-threshold.html');
 const thresholdMembrane = read('app/dome-world/ash-threshold-membrane.js');
 const thresholdMembraneCss = read('app/dome-world/ash-threshold-membrane.css');
 const keepEntry = read('app/dome-world/ash-keep-entry.js');
 const keepSource = read('app/dome-world/ash-keep.html');
-const renderedKeep = stabilizeAshKeepSourceShell(keepSource);
+const renderedKeep = injectAshKeepLifecycle(keepSource);
 const keepJsSource = read('app/dome-world/ash-keep.js');
-const renderedKeepJs = keepJsSource;
+const renderedKeepJs = bindAshDraftsToCaseMap(keepJsSource);
 const draftEngine = read('app/engine/ash-keep-drafts.js');
 const recovery = read('app/safe-harbor/ash-keep-recovery.html');
 const vercel = JSON.parse(read('vercel.json'));
@@ -39,7 +39,7 @@ assert.match(renderedDome, /id="ashThresholdTitle">A<em>s<\/em>h<\/h1>/);
 assert.match(renderedDome, /data-open-route="\/dome-world\/marrowline\.html"/);
 assert.match(renderedDome, /<span><b>11<\/b>stations<\/span>/);
 assert.equal(injectAshLifecycleEntry(renderedDome), renderedDome);
-assert.equal(stabilizeDomeWorldSource(renderedDome), renderedDome);
+assert.equal(renderDomeWorldShell(renderedDome), renderedDome);
 
 for (const law of ['Arrival', 'Boundary', 'Custody']) assert.match(renderedDome, new RegExp(law));
 assert.match(thresholdMembrane, /compileReadinessReceipt/);
@@ -98,7 +98,6 @@ assert.doesNotMatch(renderedKeep, /window\.stop\(\)/);
 assert.doesNotMatch(renderedKeep, /searchParams\.set\('ash_epoch'/);
 assert.doesNotMatch(renderedKeep, /searchParams\.set\('ash_recovered'/);
 assert.equal(injectAshKeepLifecycle(renderedKeep), renderedKeep);
-assert.equal(stabilizeAshKeepSourceShell(renderedKeep), renderedKeep);
 
 assert.match(recovery, /history\.replaceState\(null,'',canonical\)/);
 assert.match(recovery, /document\.write\(shell\)/);
@@ -113,6 +112,7 @@ assert.match(renderedKeepJs, /EVENT_DRIVEN_COALESCED/);
 assert.match(renderedKeepJs, /function requestMapDraw\(\)/);
 assert.doesNotMatch(renderedKeepJs, /state\.frame = scheduleFrame\(frame\)/);
 assert.doesNotMatch(renderedKeepJs, /location\.reload\(\)/);
+assert.equal(bindAshDraftsToCaseMap(renderedKeepJs), renderedKeepJs);
 assert.match(draftEngine, /Review is bound to a different Case Map/);
 
 assert.deepEqual(vercel.functions['api/dome-world-shell.js'], { maxDuration: 10, includeFiles: 'app/dome-world/{index.html,ash-keep.html,ash-keep.js}' });
