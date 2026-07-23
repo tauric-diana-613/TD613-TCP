@@ -1,15 +1,16 @@
-export const ASH_PROFILE_PROMPT_CANONICAL_VERSION = 'td613.ash.profile-prompt-canonical/v0.1';
+export const ASH_PROFILE_PROMPT_CANONICAL_VERSION = 'td613.ash.profile-prompt-canonical/v0.2-explicit-choice-stable';
 
 const host = globalThis.window;
 const doc = globalThis.document;
 const POINTER_KEY = 'td613.ash-keep.current-case';
+let explicitChoice = '';
 
 function noCaseOpen() {
   try { return !host.localStorage?.getItem?.(POINTER_KEY); }
   catch { return true; }
 }
 
-export function applyCanonicalProfilePrompt() {
+export function applyCanonicalProfilePrompt({ resetSelection = false } = {}) {
   const select = doc?.getElementById('newProfile');
   const start = doc?.getElementById('startDemo');
   if (!select || !start) return false;
@@ -23,12 +24,20 @@ export function applyCanonicalProfilePrompt() {
   prompt.textContent = 'Select a Profile...';
   prompt.disabled = true;
 
-  if (noCaseOpen()) select.value = '';
+  const firstBinding = select.dataset.ashCanonicalProfilePromptBound !== 'true';
+  if (resetSelection) explicitChoice = '';
+  if (noCaseOpen()) {
+    if (resetSelection || (firstBinding && !explicitChoice)) select.value = '';
+    else if (explicitChoice && select.querySelector(`option[value="${CSS.escape(explicitChoice)}"]`)) select.value = explicitChoice;
+  }
+
   const sync = () => {
+    if (select.value) explicitChoice = select.value;
     start.disabled = !select.value;
     start.setAttribute('aria-disabled', String(start.disabled));
+    select.dataset.ashProfileChoiceExplicit = String(Boolean(explicitChoice));
   };
-  if (select.dataset.ashCanonicalProfilePromptBound !== 'true') {
+  if (firstBinding) {
     select.dataset.ashCanonicalProfilePromptBound = 'true';
     select.addEventListener('change', sync);
   }
@@ -37,12 +46,14 @@ export function applyCanonicalProfilePrompt() {
 }
 
 if (host && doc?.documentElement) {
-  for (const type of ['aia-ready','aia3-ready','composition-stable','case-closed']) {
-    host.addEventListener(`td613:ash:${type}`, () => queueMicrotask(applyCanonicalProfilePrompt));
+  for (const type of ['aia-ready','aia3-ready','composition-stable']) {
+    host.addEventListener(`td613:ash:${type}`, () => queueMicrotask(() => applyCanonicalProfilePrompt()));
   }
+  host.addEventListener('td613:ash:case-closed', () => queueMicrotask(() => applyCanonicalProfilePrompt({ resetSelection:true })));
   host.__td613AshProfilePromptCanonical = Object.freeze({
     version:ASH_PROFILE_PROMPT_CANONICAL_VERSION,
-    refresh:applyCanonicalProfilePrompt
+    refresh:applyCanonicalProfilePrompt,
+    current:() => Object.freeze({ explicit_choice:explicitChoice || null, case_open:!noCaseOpen() })
   });
-  queueMicrotask(applyCanonicalProfilePrompt);
+  queueMicrotask(() => applyCanonicalProfilePrompt({ resetSelection:true }));
 }
