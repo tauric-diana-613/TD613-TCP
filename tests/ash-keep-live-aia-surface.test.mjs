@@ -42,7 +42,9 @@ test('loader preserves legacy rollback and gates the entire AIA3 graph behind pr
   for (const asset of ['ash-cache-flush.js', 'ash-ingress-layout-hydration.js', 'ash-lifecycle-core.js', 'ash-cache-eviction-aia3.js', 'ash-keep-aia.css', 'ash-keep-aia3.css', 'ash-keep-aia3-compact.css', 'ash-keep-aia3-interaction.css', 'ash-keep-aia.js', 'ash-aia3-composition.js', 'ash-keep-aia-workspace-bridge.js']) {
     assert.match(loader, new RegExp(`${escaped(asset)}\\?v=${EPOCH}`), `Loader omitted current epoch for ${asset}.`);
   }
-  assert.ok(loader.indexOf('data-ash-aia3-interaction') < loader.indexOf("await import('./ash-keep-aia.js"));
+  const interactionStyleIndex = loader.indexOf('data-ash-aia3-interaction');
+  const runtimeImportIndex = loader.search(/await import\([`'"]\.\/ash-keep-aia\.js\?v=/);
+  assert.ok(interactionStyleIndex >= 0 && runtimeImportIndex >= 0 && interactionStyleIndex < runtimeImportIndex);
 });
 
 test('default presentation begins with a four-task human journey, not lifecycle ontology', () => {
