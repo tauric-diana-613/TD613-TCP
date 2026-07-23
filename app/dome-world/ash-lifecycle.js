@@ -2,6 +2,8 @@ const preflight = globalThis.__td613AshAia3Preflight;
 if (preflight && typeof preflight.then === 'function') await preflight;
 
 const legacyPresentation = new URLSearchParams(location.search).get('presentation') === 'legacy';
+const ASH_RELEASE_ASSET_EPOCH = '20260723-a2-a5-v1';
+const versioned = path => `${path}?v=${ASH_RELEASE_ASSET_EPOCH}`;
 
 if (!legacyPresentation) {
   if (!document.getElementById('td613-ash-composition-veil-style')) {
@@ -16,11 +18,12 @@ if (!legacyPresentation) {
   document.documentElement.dataset.ashCompositionHydrating = 'true';
 }
 
-await import('./ash-cache-flush.js?v=20260721-legal-demo-ux-v1');
-await import('./ash-ingress-layout-hydration.js?v=20260721-legal-demo-ux-v1');
-await import('./ash-lifecycle-core.js?v=20260721-legal-demo-ux-v1');
+await import(versioned('./ash-cache-flush.js'));
+await import(versioned('./ash-ingress-layout-hydration.js'));
+await import(versioned('./ash-lifecycle-core.js'));
 
-async function ensureStyle(href, marker) {
+async function ensureStyle(path, marker) {
+  const href = versioned(path);
   let link = document.querySelector(`link[${marker}]`);
   if (!link) {
     link = document.createElement('link');
@@ -46,14 +49,14 @@ if (legacyPresentation) {
   delete document.documentElement.dataset.ashCompositionHydrating;
 } else {
   document.documentElement.dataset.ashAia3 = 'td613.ash.aia3-composition/v0.5-human-profile-choice';
-  await import('./ash-cache-eviction-aia3.js?v=20260721-legal-demo-ux-v1');
+  await import(versioned('./ash-cache-eviction-aia3.js'));
   await Promise.all([
-    ensureStyle('/dome-world/ash-keep-aia.css?v=20260721-legal-demo-ux-v1', 'data-ash-live-aia'),
-    ensureStyle('/dome-world/ash-keep-aia3.css?v=20260721-legal-demo-ux-v1', 'data-ash-aia3-style'),
-    ensureStyle('/dome-world/ash-keep-aia3-compact.css?v=20260721-legal-demo-ux-v1', 'data-ash-aia3-compact'),
-    ensureStyle('/dome-world/ash-keep-aia3-interaction.css?v=20260721-legal-demo-ux-v1', 'data-ash-aia3-interaction')
+    ensureStyle('/dome-world/ash-keep-aia.css', 'data-ash-live-aia'),
+    ensureStyle('/dome-world/ash-keep-aia3.css', 'data-ash-aia3-style'),
+    ensureStyle('/dome-world/ash-keep-aia3-compact.css', 'data-ash-aia3-compact'),
+    ensureStyle('/dome-world/ash-keep-aia3-interaction.css', 'data-ash-aia3-interaction')
   ]);
-  await import('./ash-keep-aia.js?v=20260721-legal-demo-ux-v1');
-  await import('./ash-aia3-composition.js?v=20260721-legal-demo-ux-v1');
-  await import('./ash-keep-aia-workspace-bridge.js?v=20260721-legal-demo-ux-v1');
+  await import(versioned('./ash-keep-aia.js'));
+  await import(versioned('./ash-aia3-composition.js'));
+  await import(versioned('./ash-keep-aia-workspace-bridge.js'));
 }
