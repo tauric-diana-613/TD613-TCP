@@ -1,4 +1,4 @@
-export const ASH_PROFILE_PROMPT_CANONICAL_VERSION = 'td613.ash.profile-prompt-canonical/v0.6-bounded-remount-reconciliation';
+export const ASH_PROFILE_PROMPT_CANONICAL_VERSION = 'td613.ash.profile-prompt-canonical/v0.7-bounded-case-list-remount-reconciliation';
 
 const host = globalThis.window;
 const doc = globalThis.document;
@@ -7,7 +7,9 @@ let explicitChoice = '';
 let controlObserver = null;
 let observedSelect = null;
 let observedStart = null;
+let observedCaseSelect = null;
 let reconcileQueued = false;
+let caseListReconcileQueued = false;
 
 function noCaseOpen() {
   try { return !host.localStorage?.getItem?.(POINTER_KEY); }
@@ -20,6 +22,25 @@ function queueControlReconcile(reason = 'QUEUED') {
   queueMicrotask(() => {
     reconcileQueued = false;
     applyCanonicalProfilePrompt({ reason });
+  });
+}
+
+function queueCaseListReconcile(reason = 'CASE_LIST_IDENTITY_CHANGED') {
+  if (caseListReconcileQueued) return;
+  caseListReconcileQueued = true;
+  queueMicrotask(async () => {
+    caseListReconcileQueued = false;
+    const current = doc.getElementById('selectCase');
+    if (!current || current !== observedCaseSelect) return;
+    try {
+      await host.__td613AshCaseControls?.refreshCases?.(current.value || '');
+      const settled = doc.getElementById('selectCase');
+      if (settled) settled.dataset.ashCaseListReconcileReason = reason;
+      doc.documentElement.dataset.ashCaseListRemountReconciled = String(Boolean(settled?.dataset.caseListState === 'READY'));
+    } catch (error) {
+      doc.documentElement.dataset.ashCaseListRemountReconciled = 'false';
+      console.error('Ash case-list remount reconciliation held:', error);
+    }
   });
 }
 
@@ -44,14 +65,20 @@ function installBoundedControlObserver() {
   if (!launchBoundary) return false;
   observedSelect = doc.getElementById('newProfile');
   observedStart = doc.getElementById('startDemo');
+  observedCaseSelect = doc.getElementById('selectCase');
   controlObserver = new MutationObserver(records => {
     if (!records.some(record => record.type === 'childList' && (record.addedNodes.length || record.removedNodes.length))) return;
     const currentSelect = doc.getElementById('newProfile');
     const currentStart = doc.getElementById('startDemo');
-    if (currentSelect === observedSelect && currentStart === observedStart) return;
+    const currentCaseSelect = doc.getElementById('selectCase');
+    const profileIdentityChanged = currentSelect !== observedSelect || currentStart !== observedStart;
+    const caseIdentityChanged = currentCaseSelect !== observedCaseSelect;
+    if (!profileIdentityChanged && !caseIdentityChanged) return;
     observedSelect = currentSelect;
     observedStart = currentStart;
-    queueControlReconcile('INGRESS_CONTROL_IDENTITY_CHANGED');
+    observedCaseSelect = currentCaseSelect;
+    if (profileIdentityChanged) queueControlReconcile('INGRESS_CONTROL_IDENTITY_CHANGED');
+    if (caseIdentityChanged) queueCaseListReconcile('CASE_LIST_IDENTITY_CHANGED');
   });
   controlObserver.observe(launchBoundary, { childList:true, subtree:true });
   doc.documentElement.dataset.ashCanonicalProfileControlObserver = 'BOUNDED_TO_LAUNCH';
@@ -64,6 +91,7 @@ export function applyCanonicalProfilePrompt({ resetSelection = false, reason = '
   if (!select || !start) return false;
   observedSelect = select;
   observedStart = start;
+  observedCaseSelect = doc.getElementById('selectCase');
 
   let prompt = select.querySelector('option[value=""]');
   if (!prompt) {
@@ -108,6 +136,7 @@ if (host && doc?.documentElement) {
       case_open:!noCaseOpen(),
       observed_selector_bound:Boolean(observedSelect?.isConnected),
       observed_start_bound:Boolean(observedStart?.isConnected),
+      observed_case_selector_bound:Boolean(observedCaseSelect?.isConnected),
       observer_scope:controlObserver ? 'LAUNCH' : 'UNAVAILABLE'
     })
   });
