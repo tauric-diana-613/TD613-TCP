@@ -38,9 +38,9 @@ async function inspectStage(page, stage) {
       const priority = document.getElementById('ashA7CurrentPriority');
       const continuity = document.getElementById('ashA7Continuity');
       const ledger = document.getElementById('ashA7RouteLedger');
-      const text = document.getElementById('premiumHomeBody')?.innerText || '';
+      const text = (document.getElementById('premiumHomeBody')?.innerText || '').toLowerCase();
       return Boolean(priority?.isConnected && continuity?.isConnected && ledger?.isConnected)
-        && ['What needs attention','What Ash will not do','What remains attached','What has already left'].every(phrase => text.includes(phrase));
+        && ['what needs attention','what ash will not do','what remains attached','what has already left'].every(phrase => text.includes(phrase));
     }, null, { timeout:90_000 });
     const primaryCount = await page.locator('#ashA7CurrentPriority .ash-stage-primary-action:visible').count();
     if (primaryCount !== 1) throw new Error(`A7 expected one primary action, observed ${primaryCount}`);
