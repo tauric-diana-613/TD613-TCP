@@ -58,14 +58,25 @@ const localWrites = [...runtime.matchAll(/localStorage\.setItem\(([^,\n]+),/g)].
 assert.deepEqual(localWrites.sort(), ['POINTER_KEY', 'PREFS_KEY'], 'Only the compact current-case pointer and UI preferences may enter localStorage from the core runtime.');
 
 assert.match(caseControls, /import '\.\/ash-map-labels\.js'/);
-assert.match(caseControls, /ASH_CASE_CONTROLS_VERSION = 'td613\.ash-keep\.case-controls\/v1\.6-post-close-refresh-api'/);
+assert.match(caseControls, /ASH_CASE_CONTROLS_VERSION = 'td613\.ash-keep\.case-controls\/v1\.7-atomic-case-list-snapshot'/);
 assert.match(caseControls, /SAVED_CASES_KEY = 'td613\.ash-keep\.saved-cases:v1'/);
 assert.match(caseControls, /async function saveCurrentCase\(\)/);
 assert.match(caseControls, /async function closeCurrentCase\(\)/);
+assert.match(caseControls, /function hasGovernedCaseSnapshot\(select\)/);
+assert.match(caseControls, /function caseOptionPresent\(select, caseId\)/);
 assert.match(caseControls, /async function populateCaseSelectOnce\(/);
+assert.match(caseControls, /const preserveReadySnapshot = hasGovernedCaseSnapshot\(select\)/);
+assert.match(caseControls, /caseListRefreshState = 'REFRESHING'/);
+assert.match(caseControls, /setAttribute\('aria-busy', 'true'\)/);
+assert.match(caseControls, /if \(!preserveReadySnapshot\)/);
+assert.match(caseControls, /const optionNodes = options\.map/);
+assert.match(caseControls, /select\.replaceChildren\(placeholder, \.\.\.optionNodes\)/);
+assert.match(caseControls, /delete select\.dataset\.caseListRefreshState/);
+assert.match(caseControls, /setAttribute\('aria-busy', 'false'\)/);
 assert.match(caseControls, /async function populateCaseSelect\(/);
 assert.match(caseControls, /async function refreshCases\(preferredCaseId = ''\)/);
 assert.match(caseControls, /if \(caseListPopulation\) await caseListPopulation/);
+assert.match(caseControls, /caseOptionPresent\(select, preferredCaseId\)/);
 assert.match(caseControls, /window\.__td613AshCaseControls = Object\.freeze/);
 assert.match(caseControls, /refreshCases,/);
 assert.match(caseControls, /let caseListPopulation = null/);
