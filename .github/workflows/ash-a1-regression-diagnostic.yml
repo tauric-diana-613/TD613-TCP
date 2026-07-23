@@ -54,7 +54,22 @@ jobs:
           node-version: 22
           cache: npm
       - run: npm ci
-      - run: node tests/ash-keep-ui.test.mjs
+      - name: Capture Ash Keep UI assertion
+        run: |
+          mkdir -p artifacts/ash-a1-regression-diagnostic
+          set +e
+          node tests/ash-keep-ui.test.mjs > artifacts/ash-a1-regression-diagnostic/ash-keep-ui.log 2>&1
+          status=$?
+          cat artifacts/ash-a1-regression-diagnostic/ash-keep-ui.log
+          exit $status
+      - name: Preserve Ash Keep UI assertion
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: ash-a1-regression-ui
+          path: artifacts/ash-a1-regression-diagnostic/ash-keep-ui.log
+          if-no-files-found: error
+          retention-days: 7
 
   ash-lifecycle:
     runs-on: ubuntu-latest
@@ -87,4 +102,19 @@ jobs:
           node-version: 22
           cache: npm
       - run: npm ci
-      - run: node tests/ash-product-architecture.test.mjs
+      - name: Capture Ash product-architecture assertion
+        run: |
+          mkdir -p artifacts/ash-a1-regression-diagnostic
+          set +e
+          node tests/ash-product-architecture.test.mjs > artifacts/ash-a1-regression-diagnostic/ash-product-architecture.log 2>&1
+          status=$?
+          cat artifacts/ash-a1-regression-diagnostic/ash-product-architecture.log
+          exit $status
+      - name: Preserve Ash product-architecture assertion
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: ash-a1-regression-product-architecture
+          path: artifacts/ash-a1-regression-diagnostic/ash-product-architecture.log
+          if-no-files-found: error
+          retention-days: 7
