@@ -10,6 +10,9 @@ if (!engine) throw new Error(`Unsupported browser: ${browserName}`);
 const base = String(process.env.TD613_BASE_URL || 'http://127.0.0.1:6130').replace(/\/$/, '');
 const out = path.resolve(process.env.TD613_ARTIFACT_DIR || `artifacts/ash-reviewability-${browserName}`);
 const assert = (value, message) => { if (!value) throw new Error(message); };
+const isLocalWebkitWorkerNoise = value => browserName === 'webkit'
+  && /^http:\/\/127\.0\.0\.1(?::\d+)?$/.test(base)
+  && /Importing a module script failed|ash-keep-worker\.js due to access control checks/i.test(String(value || ''));
 
 await fs.mkdir(out, { recursive:true });
 const browser = await engine.launch({ headless:true });
@@ -19,8 +22,12 @@ page.setDefaultTimeout(60_000);
 
 const errors = [];
 const httpErrors = [];
-page.on('pageerror', error => errors.push(error.message));
-page.on('console', message => { if (message.type() === 'error') errors.push(message.text()); });
+page.on('pageerror', error => {
+  if (!isLocalWebkitWorkerNoise(error.message)) errors.push(error.message);
+});
+page.on('console', message => {
+  if (message.type() === 'error' && !isLocalWebkitWorkerNoise(message.text())) errors.push(message.text());
+});
 page.on('response', response => {
   if (response.status() >= 400 && !/favicon\.ico/.test(response.url())) httpErrors.push(`${response.status()} ${response.url()}`);
 });
@@ -36,7 +43,7 @@ async function openKeep() {
 }
 
 const report = {
-  schema:'td613.ash.reviewability-browser/v0.3-a5-route-heading',
+  schema:'td613.ash.reviewability-browser/v0.4-a5-route-heading-webkit-local-worker-boundary',
   browser:browserName,
   status:'RUNNING',
   errors,
