@@ -1,0 +1,92 @@
+name: Temporary Ash A8 Observer Reconciliation
+
+on:
+  pull_request:
+    branches: [main]
+    paths:
+      - '.github/workflows/ash-a8-observer-reconciliation.yml'
+      - 'scripts/apply-ash-a8-observer-ceiling-reconciliation.mjs'
+  workflow_dispatch:
+
+permissions:
+  contents: write
+  pull-requests: read
+
+concurrency:
+  group: temporary-ash-a8-observer-${{ github.event.pull_request.number || github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  reconcile:
+    if: github.event_name == 'workflow_dispatch' || startsWith(github.head_ref, 'agent/ash-a8-case-map-recompilation')
+    runs-on: ubuntu-latest
+    timeout-minutes: 35
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: ${{ github.event.pull_request.head.ref || github.ref_name }}
+          fetch-depth: 0
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+      - run: npm ci
+      - name: Apply finite observer ceiling reconciliation
+        run: node scripts/apply-ash-a8-observer-ceiling-reconciliation.mjs
+      - name: Validate observer source contracts
+        run: |
+          mkdir -p artifacts/ash-a8-observer-reconciliation
+          node --check scripts/ash-a2-a5-browser-probe.mjs
+          node --check scripts/run-ash-constitutional-convergence-probe.mjs
+          grep -F "open === true, null, { timeout:60000 }" scripts/ash-a2-a5-browser-probe.mjs
+          test "$(grep -o '70000' scripts/run-ash-constitutional-convergence-probe.mjs | wc -l)" -eq 3
+          test "$(node -p "require('./vercel.json').git.deploymentEnabled")" = "false"
+      - name: Install Chromium observer runtime
+        run: |
+          npm install --no-save --package-lock=false playwright@1.53.2
+          npx playwright install --with-deps chromium
+      - name: Start bounded Ash runtime
+        run: |
+          node scripts/ash-keep-local-closure-server.mjs 6130 > artifacts/ash-a8-observer-reconciliation/server.log 2>&1 &
+          echo $! > artifacts/ash-a8-observer-reconciliation/server.pid
+          for attempt in $(seq 1 50); do
+            if curl -fsS --max-time 2 http://127.0.0.1:6130/__ash_keep_closure/readiness > artifacts/ash-a8-observer-reconciliation/readiness.json; then exit 0; fi
+            sleep 1
+          done
+          cat artifacts/ash-a8-observer-reconciliation/server.log || true
+          exit 1
+      - name: Reobserve inherited A2-A6 Chromium lane
+        env:
+          TD613_BROWSER: chromium
+          TD613_BASE_URL: http://127.0.0.1:6130
+          TD613_ARTIFACT_DIR: artifacts/ash-a8-observer-reconciliation/a2-a6
+        run: timeout --foreground --signal=INT --kill-after=15s 600s node scripts/ash-a2-a5-browser-probe.mjs
+      - name: Reobserve constitutional convergence
+        env:
+          TD613_BASE_URL: http://127.0.0.1:6130
+          TD613_ARTIFACT_DIR: artifacts/ash-a8-observer-reconciliation/convergence
+        run: timeout --foreground --signal=INT --kill-after=15s 720s node scripts/run-ash-constitutional-convergence-probe.mjs
+      - name: Stop bounded runtime
+        if: always()
+        run: test -f artifacts/ash-a8-observer-reconciliation/server.pid && kill "$(cat artifacts/ash-a8-observer-reconciliation/server.pid)" || true
+      - name: Preserve reconciliation evidence
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: ash-a8-observer-reconciliation-evidence
+          path: artifacts/ash-a8-observer-reconciliation/
+          retention-days: 45
+          if-no-files-found: warn
+      - name: Commit only tested observer files
+        run: |
+          set -euo pipefail
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add scripts/ash-a2-a5-browser-probe.mjs scripts/run-ash-constitutional-convergence-probe.mjs
+          git add -u scripts/apply-ash-a8-observer-ceiling-reconciliation.mjs
+          staged="$(git diff --cached --name-only)"
+          printf '%s\n' "$staged"
+          test "$staged" = $'scripts/apply-ash-a8-observer-ceiling-reconciliation.mjs\nscripts/ash-a2-a5-browser-probe.mjs\nscripts/run-ash-constitutional-convergence-probe.mjs'
+          git diff --cached --check
+          git commit -m "Reconcile bounded Ash observer evidence ceilings"
+          git push origin HEAD:${{ github.event.pull_request.head.ref || github.ref_name }}
