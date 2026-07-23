@@ -36,8 +36,8 @@ import './ash-flowcore-pedagogy-field.js?v=20260721-flowcore-live-field-v1';
 import './ash-flowcore-ingress-portal-loader.js?v=20260722-flowcore-observer-hotfix-v3';
 // Canonical field only: quarantine the proxy and move ingress copy below the diagram.
 import './ash-post-ingress-motion-restoration.js?v=20260722-canonical-field-ingress-polish-v3';
-// Canonical neutral profile label wins after all profile-specific composition layers settle and remounted controls recover the explicit human choice.
-import './ash-profile-prompt-canonical.js?v=20260723-profile-prompt-v2';
+// One launch-scoped observer reconciles remounted profile and saved-case controls without ambient polling.
+import './ash-profile-prompt-canonical.js?v=20260723-profile-prompt-v3';
 import './ash-composition-receipt-compatibility.js?v=20260721-legal-demo-ux-v1';
 import './ash-demo-entry-convergence.js?v=20260721-legal-demo-ux-v1';
 import './ash-demo-pedagogy-routebar.js?v=20260721-legal-demo-ux-v1';
