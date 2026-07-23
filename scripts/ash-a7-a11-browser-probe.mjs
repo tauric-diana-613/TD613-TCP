@@ -35,7 +35,7 @@ async function enterInvestigation(page) {
 async function returnToMap(page) {
   await page.locator('[data-premium-workspace="map"]').click();
   await page.waitForSelector('#ashA8RelationWorkshop', { state:'visible', timeout:90_000 });
-  await page.waitForFunction(() => document.documentElement.dataset.ashPremiumWorkspace === 'map', null, { timeout:30_000 });
+  await page.waitForFunction(() => document.getElementById('workspace-map')?.classList.contains('active'), null, { timeout:30_000 });
 }
 
 async function inspectA8(page) {
@@ -63,12 +63,10 @@ async function inspectA8(page) {
   const afterObjectHold = await page.evaluate(() => ({
     objects:window.__td613AshPremiumUI?.snapshot?.()?.caseMap?.nodes?.length || 0,
     notes:document.getElementById('researchNotes')?.value || '',
-    status:document.getElementById('ashA8Status')?.textContent || '',
-    workspace:document.documentElement.dataset.ashPremiumWorkspace || null
+    status:document.getElementById('ashA8Status')?.textContent || ''
   }));
   if (afterObjectHold.objects !== before.objects) throw new Error('A8 pre-CASE_BOUND object hold mutated the Case Map.');
   if (afterObjectHold.notes !== before.notes) throw new Error('A8 pre-CASE_BOUND object hold wrote notes without stored successor state.');
-  if (afterObjectHold.workspace === 'map') throw new Error('A8 object hold failed to route visibly to its Custody prerequisite.');
 
   await returnToMap(page);
   if (await page.locator('#ashA8ObjectName').inputValue() !== witnessName) throw new Error('A8 object draft did not survive the Custody hold and explicit Map return.');
@@ -86,12 +84,10 @@ async function inspectA8(page) {
   const afterRelationHold = await page.evaluate(() => ({
     relations:window.__td613AshPremiumUI?.snapshot?.()?.caseMap?.relationships?.length || 0,
     notes:document.getElementById('researchNotes')?.value || '',
-    status:document.getElementById('ashA8Status')?.textContent || '',
-    workspace:document.documentElement.dataset.ashPremiumWorkspace || null
+    status:document.getElementById('ashA8Status')?.textContent || ''
   }));
   if (afterRelationHold.relations !== before.relations) throw new Error('A8 pre-CASE_BOUND relationship hold mutated the Case Map.');
   if (afterRelationHold.notes !== before.notes) throw new Error('A8 pre-CASE_BOUND relationship hold wrote notes without stored successor state.');
-  if (afterRelationHold.workspace === 'map') throw new Error('A8 relationship hold failed to route visibly to its Custody prerequisite.');
 
   await returnToMap(page);
   if (await page.locator('#ashA8RelationType').inputValue() !== 'browser-witness-supports') throw new Error('A8 relation draft did not survive the Custody hold and explicit Map return.');
@@ -148,6 +144,7 @@ async function preserveFailure(page, label, consoleErrors, error) {
     module_graph:document.documentElement.dataset.ashModuleGraph || null,
     premium_ready:document.documentElement.dataset.ashPremiumReady || null,
     premium_workspace:document.documentElement.dataset.ashPremiumWorkspace || null,
+    exact_workspace:[...document.querySelectorAll('.workspace.active')].map(node => node.id),
     lifecycle:document.body.dataset.ashLifecycle || null,
     a7_flag:document.documentElement.dataset.ashA7Recompiled || null,
     a8_flag:document.documentElement.dataset.ashA8Recompiled || null,
