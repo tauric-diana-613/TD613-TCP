@@ -154,11 +154,26 @@ const secondCaseReplacement = `  await page.locator('#newProfile').selectOption(
 const saveCloseTarget = `  await page.locator('#saveCase').click();
   await page.locator('#closeCase').click();`;
 const saveCloseReplacement = `  await page.locator('#saveCase').click();
-  await page.waitForFunction(() => /Case saved/i.test(document.getElementById('storageState')?.textContent || '')
-    || /^Saved$/i.test(document.getElementById('saveCase')?.textContent || ''), null, { timeout:45000 });
+  await page.waitForFunction(async id => {
+    const db = await new Promise((resolve, reject) => {
+      const request = indexedDB.open('td613-ash-keep');
+      request.onsuccess = () => resolve(request.result);
+      request.onerror = () => reject(request.error);
+    });
+    try {
+      if (!db.objectStoreNames.contains('savedCases')) return false;
+      return await new Promise((resolve, reject) => {
+        const request = db.transaction('savedCases').objectStore('savedCases').get(id);
+        request.onsuccess = () => resolve(Boolean(request.result));
+        request.onerror = () => reject(request.error);
+      });
+    } finally {
+      db.close();
+    }
+  }, secondCase, { timeout:45000 });
   report.observations.second_case_persistence = {
-    save_world_answer_observed:true,
-    closure_after_save_completion:true
+    saved_case_fingerprint_observed:true,
+    closure_after_fingerprint_completion:true
   };
   await page.locator('#closeCase').click();`;
 
@@ -216,7 +231,7 @@ if (rebuildCount !== 1) throw new Error(`Convergence observer expected one gover
 if (authorityCount !== 1) throw new Error(`Convergence observer expected one permission-stabilization seam; observed ${authorityCount}.`);
 if (mapWorkspaceCount !== 1) throw new Error(`Convergence observer expected one legacy Map workspace seam; observed ${mapWorkspaceCount}.`);
 if (secondCaseCount !== 1) throw new Error(`Convergence observer expected one governed second-case route seam; observed ${secondCaseCount}.`);
-if (saveCloseCount !== 1) throw new Error(`Convergence observer expected one saved-case world-answer seam; observed ${saveCloseCount}.`);
+if (saveCloseCount !== 1) throw new Error(`Convergence observer expected one saved-case fingerprint seam; observed ${saveCloseCount}.`);
 if (deletionCount !== 1) throw new Error(`Convergence observer expected one case-selection seam and one atomic case-deletion seam; observed ${deletionCount}.`);
 if (secondTabCount !== 1) throw new Error(`Convergence observer expected one second-tab readiness seam; observed ${secondTabCount}.`);
 if (reloadCount !== 1) throw new Error(`Convergence observer expected one reload readiness seam; observed ${reloadCount}.`);
@@ -246,8 +261,8 @@ if (!runtime.includes("getByRole('button', { name:/Confirm this exact gesture/i 
 if (!runtime.includes("route:'GOVERNED_PROFILE_DEMO'") || !runtime.includes("blank_new_case_control_deferred_to_stage:'A6'")) {
   throw new Error('Convergence observer failed to preserve multi-case coverage while deferring the dead blank-case control to A6.');
 }
-if (!runtime.includes('save_world_answer_observed:true') || !runtime.includes('closure_after_save_completion:true')) {
-  throw new Error('Convergence observer failed to wait for saved-case persistence before closure.');
+if (!runtime.includes('saved_case_fingerprint_observed:true') || !runtime.includes('closure_after_fingerprint_completion:true')) {
+  throw new Error('Convergence observer failed to wait for the saved-case fingerprint before closure.');
 }
 if (!runtime.includes('profile_demo_registry_deferred_until_selection: true')
   || !runtime.includes('demo_entry_convergence_deferred_until_case_hydration: true')
