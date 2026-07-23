@@ -151,6 +151,17 @@ const secondCaseReplacement = `  await page.locator('#newProfile').selectOption(
     blank_new_case_control_deferred_to_stage:'A6'
   };`;
 
+const saveCloseTarget = `  await page.locator('#saveCase').click();
+  await page.locator('#closeCase').click();`;
+const saveCloseReplacement = `  await page.locator('#saveCase').click();
+  await page.waitForFunction(() => /Case saved/i.test(document.getElementById('storageState')?.textContent || '')
+    || /^Saved$/i.test(document.getElementById('saveCase')?.textContent || ''), null, { timeout:45000 });
+  report.observations.second_case_persistence = {
+    save_world_answer_observed:true,
+    closure_after_save_completion:true
+  };
+  await page.locator('#closeCase').click();`;
+
 const deletionTarget = `  await page.locator('#selectCase').selectOption(secondCase);
   await page.waitForFunction(() => document.getElementById('deleteSelectedCase')?.disabled === false);
   await page.locator('#deleteSelectedCase').click();`;
@@ -193,6 +204,7 @@ const rebuildCount = source.split(rebuildTarget).length - 1;
 const authorityCount = source.split(authorityTarget).length - 1;
 const mapWorkspaceCount = source.split(mapWorkspaceTarget).length - 1;
 const secondCaseCount = source.split(secondCaseTarget).length - 1;
+const saveCloseCount = source.split(saveCloseTarget).length - 1;
 const deletionCount = source.split(deletionTarget).length - 1;
 const secondTabCount = source.split(secondTabTarget).length - 1;
 const reloadCount = source.split(reloadTarget).length - 1;
@@ -204,6 +216,7 @@ if (rebuildCount !== 1) throw new Error(`Convergence observer expected one gover
 if (authorityCount !== 1) throw new Error(`Convergence observer expected one permission-stabilization seam; observed ${authorityCount}.`);
 if (mapWorkspaceCount !== 1) throw new Error(`Convergence observer expected one legacy Map workspace seam; observed ${mapWorkspaceCount}.`);
 if (secondCaseCount !== 1) throw new Error(`Convergence observer expected one governed second-case route seam; observed ${secondCaseCount}.`);
+if (saveCloseCount !== 1) throw new Error(`Convergence observer expected one saved-case world-answer seam; observed ${saveCloseCount}.`);
 if (deletionCount !== 1) throw new Error(`Convergence observer expected one case-selection seam and one atomic case-deletion seam; observed ${deletionCount}.`);
 if (secondTabCount !== 1) throw new Error(`Convergence observer expected one second-tab readiness seam; observed ${secondTabCount}.`);
 if (reloadCount !== 1) throw new Error(`Convergence observer expected one reload readiness seam; observed ${reloadCount}.`);
@@ -216,6 +229,7 @@ const runtime = source
   .replace(authorityTarget, authorityReplacement)
   .replace(mapWorkspaceTarget, mapWorkspaceReplacement)
   .replace(secondCaseTarget, secondCaseReplacement)
+  .replace(saveCloseTarget, saveCloseReplacement)
   .replace(deletionTarget, deletionReplacement)
   .replace(secondTabTarget, secondTabReplacement)
   .replace(reloadTarget, reloadReplacement)
@@ -231,6 +245,9 @@ if (!runtime.includes("getByRole('button', { name:/Confirm this exact gesture/i 
 }
 if (!runtime.includes("route:'GOVERNED_PROFILE_DEMO'") || !runtime.includes("blank_new_case_control_deferred_to_stage:'A6'")) {
   throw new Error('Convergence observer failed to preserve multi-case coverage while deferring the dead blank-case control to A6.');
+}
+if (!runtime.includes('save_world_answer_observed:true') || !runtime.includes('closure_after_save_completion:true')) {
+  throw new Error('Convergence observer failed to wait for saved-case persistence before closure.');
 }
 if (!runtime.includes('profile_demo_registry_deferred_until_selection: true')
   || !runtime.includes('demo_entry_convergence_deferred_until_case_hydration: true')
