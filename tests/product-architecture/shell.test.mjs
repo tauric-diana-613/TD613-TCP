@@ -26,6 +26,7 @@ const renderedKeep = injectAshKeepLifecycle(keepSource);
 const keepJsSource = read('app/dome-world/ash-keep.js');
 const renderedKeepJs = bindAshDraftsToCaseMap(keepJsSource);
 const draftEngine = read('app/engine/ash-keep-drafts.js');
+const recovery = read('app/safe-harbor/ash-keep-recovery.html');
 const vercel = JSON.parse(read('vercel.json'));
 
 assert.equal(ASH_THRESHOLD_ROUTE, '/dome-world/ash-threshold.html');
@@ -62,7 +63,6 @@ assert.match(threshold, /src="\/dome-world\/ash-keep-entry\.js"/);
 assert.doesNotMatch(threshold, /data-ash-law-step|compileReadinessReceipt|location\.replace|http-equiv="refresh"/);
 assert.match(keepEntry, /window\.location\.replace\(canonicalKeepRoute\(\)\)/);
 
-const historyIndex = renderedKeep.indexOf("sessionStorage.getItem('td613:ash-threshold:readiness:v0.1')");
 const versionedModules = [
   `/dome-world/ash-keep.js?v=${ASH_LIFECYCLE_ASSET_EPOCH}`,
   `/dome-world/ash-convergence.js?v=${ASH_LIFECYCLE_ASSET_EPOCH}`,
@@ -70,29 +70,37 @@ const versionedModules = [
   `/dome-world/ash-workspace-bridge.js?v=${ASH_LIFECYCLE_ASSET_EPOCH}`,
   `/dome-world/ash-case-controls.js?v=${ASH_LIFECYCLE_ASSET_EPOCH}`
 ];
-assert.equal(ASH_KEEP_SHELL_VERSION, 'td613.ash-keep.shell/v0.5-legal-demo-ux');
+assert.equal(ASH_KEEP_SHELL_VERSION, 'td613.ash-keep.shell/v0.6-first-paint');
 assert.equal(ASH_LIFECYCLE_ASSET_EPOCH, '20260721-legal-demo-ux-v1');
 assert.equal(ASH_LIFECYCLE_MODULE, '/dome-world/ash-lifecycle.js?v=20260721-legal-demo-ux-v1');
 assert.equal(ASH_MASS_EVICTION_EPOCH, 'td613.ash.cache-flush/2026-07-21-legal-demo-ux-v1');
-assert.ok(historyIndex >= 0);
-let cursor = historyIndex;
+assert.match(renderedKeep, /<title>TD613 Ash<\/title>/);
+assert.match(renderedKeep, /rel="canonical" href="\/dome-world\/ash-threshold\.html"/);
+assert.match(renderedKeep, /id="td613-ash-preparing-shell"/);
+assert.match(renderedKeep, /id="td613-ash-canonical-module-bootstrap"/);
+assert.match(renderedKeep, /await globalThis\.__td613AshAia3Preflight/);
+let cursor = -1;
 for (const module of versionedModules) {
   const index = renderedKeep.indexOf(module);
   assert.ok(index > cursor, `${module} must follow the preceding governed surface.`);
   cursor = index;
-  assert.match(renderedKeep, new RegExp(`src="${module.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')}"`));
 }
 for (const source of ['/dome-world/ash-keep.js', '/dome-world/ash-convergence.js', '/dome-world/ash-lifecycle.js', '/dome-world/ash-workspace-bridge.js', '/dome-world/ash-case-controls.js']) {
   assert.doesNotMatch(renderedKeep, new RegExp(`src="${source.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')}"`));
 }
 assert.match(renderedKeep, /name="ash-cache-preflight" content="legal-demo-ux-v1"/);
-assert.match(renderedKeep, /Updating Ash Keep · preserving local cases/);
-assert.match(renderedKeep, /td613-ash-cache-preflight-veil/);
-assert.match(renderedKeep, /window.stop\(\)/);
+assert.match(renderedKeep, /Preparing Ash/);
 assert.match(renderedKeep, /session_epoch_preserved_or_migrated/);
 assert.match(renderedKeep, /name="ash-lifecycle" content="v0\.1"/);
 assert.match(renderedKeep, /name="ash-constitutional-composition" content="v0\.1"/);
+assert.doesNotMatch(renderedKeep, /window\.stop\(\)/);
+assert.doesNotMatch(renderedKeep, /searchParams\.set\('ash_epoch'/);
+assert.doesNotMatch(renderedKeep, /searchParams\.set\('ash_recovered'/);
 assert.equal(injectAshKeepLifecycle(renderedKeep), renderedKeep);
+
+assert.match(recovery, /history\.replaceState\(null,'',canonical\)/);
+assert.match(recovery, /document\.write\(shell\)/);
+assert.doesNotMatch(recovery, /ash_epoch|ash_recovered/);
 
 assert.equal(ASH_KEEP_JS_SHELL_VERSION, 'td613.ash-keep.js-shell/v0.5-event-driven-map');
 assert.match(renderedKeepJs, /caseMapDigest: state\.caseMap\.case_map_digest/);
