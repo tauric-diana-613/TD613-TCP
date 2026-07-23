@@ -21,12 +21,14 @@ assert.equal(ASH_WORKSPACE_BRIDGE_MODULE, '/dome-world/ash-workspace-bridge.js')
 
 const keepHtml = fs.readFileSync('app/dome-world/ash-keep.html', 'utf8');
 const renderedHtml = injectAshKeepLifecycle(keepHtml);
-assert.match(renderedHtml, new RegExp(`src="/dome-world/ash-workspace-bridge\\.js\\?v=${ASH_LIFECYCLE_ASSET_EPOCH}"`));
-assert.doesNotMatch(renderedHtml, /src="\/dome-world\/ash-workspace-bridge\.js"/);
-assert.ok(
-  renderedHtml.indexOf(`${ASH_WORKSPACE_BRIDGE_MODULE}?v=${ASH_LIFECYCLE_ASSET_EPOCH}`) > renderedHtml.indexOf(ASH_LIFECYCLE_MODULE),
-  'Custody bridge must load after lifecycle injection has created the late workspace tab'
-);
+const lifecycleIndex = renderedHtml.indexOf(ASH_LIFECYCLE_MODULE);
+const bridgeModule = `${ASH_WORKSPACE_BRIDGE_MODULE}?v=${ASH_LIFECYCLE_ASSET_EPOCH}`;
+const bridgeIndex = renderedHtml.indexOf(bridgeModule);
+assert.ok(lifecycleIndex >= 0, 'Canonical bootstrap must include the lifecycle module');
+assert.ok(bridgeIndex > lifecycleIndex, 'Custody bridge must load after lifecycle creates the late workspace tab');
+assert.match(renderedHtml, /id="td613-ash-canonical-module-bootstrap"/);
+assert.match(renderedHtml, /await globalThis\.__td613AshAia3Preflight/);
+assert.doesNotMatch(renderedHtml, /src="\/dome-world\/ash-workspace-bridge\.js/);
 assert.equal(injectAshKeepLifecycle(renderedHtml), renderedHtml, 'bridge composition must be idempotent');
 
 const keepJs = fs.readFileSync('app/dome-world/ash-keep.js', 'utf8');

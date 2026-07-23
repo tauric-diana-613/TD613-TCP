@@ -46,9 +46,10 @@ assert.match(runtime, /Heterostratigraphic field/);
 assert.match(runtime, /PA2 ceiling/);
 assert.doesNotMatch(runtime, /fetch\(/);
 assert.match(specs, /Glass Meridian Vendor Integrity Inquiry/);
-for (const module of ['ash-investigation-demo-hydration','ash-guided-operator-ui','ash-flicker-hardening','ash-emergency-stability-contract','ash-case-close-repair','ash-ui-ux-rescue']) {
+for (const module of ['ash-investigation-demo-hydration','ash-guided-operator-ui','ash-flicker-hardening','ash-emergency-stability-contract','ash-ui-ux-rescue']) {
   assert.match(bridge, new RegExp(`${module}\\.js\\?v=20260721-legal-demo-ux-v1`));
 }
+assert.match(bridge, /ash-case-close-repair\.js\?v=20260723-case-close-quiescence-v4/);
 assert(bridge.indexOf('ash-flicker-hardening.js') < bridge.indexOf('ash-premium-ui.js'), 'Static compositor must install before Premium composition.');
 assert(bridge.indexOf('ash-case-close-repair.js') < bridge.indexOf('ash-premium-ui.js'), 'Close logout must install before Premium composition.');
 assert(bridge.indexOf('ash-emergency-stability-contract.js') > bridge.indexOf('ash-workspace-navigation.js'), 'Membrane reveal must run after final composition.');
@@ -100,8 +101,14 @@ assert.match(emergency, /STATIC_SURFACE_NATIVE_SCROLL/);
 assert.match(emergency, /HIDDEN_UNTIL_FINAL_COMPOSITION/);
 assert.match(emergency, /SAVE_CLEAR_SESSION_RETURN_UNSELECTED_TO_MEMBRANE/);
 assert.match(emergency, /REQUIRED_MEMBRANE_IDS/);
-assert.match(closeRepair, /v1\.3-ingress-readiness-boundary/);
-assert.match(closeRepair, /saveBeforeClose/);
+assert.match(closeRepair, /v1\.7-case-list-quiescence/);
+assert.match(closeRepair, /saveAtCloseBoundary/);
+assert.match(closeRepair, /awaitActiveSaveOperation/);
+assert.match(closeRepair, /withOperation\(`save:\$\{caseId\}`/);
+assert.match(closeRepair, /waitForCaseListReady/);
+assert.match(closeRepair, /const refreshCases = window\.__td613AshCaseControls\?\.refreshCases/);
+assert.match(closeRepair, /await refreshCases\(expectedCaseId \|\| ''\)/);
+assert.match(closeRepair, /ashCloseCaseListQuiescent/);
 assert.match(closeRepair, /validThresholdReadiness/);
 assert.match(closeRepair, /clearAshSessionStorage/);
 assert.match(closeRepair, /preserveReadiness:true/);

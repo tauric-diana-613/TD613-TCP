@@ -30,7 +30,9 @@ async function waitForStableIngress(page) {
   await page.waitForFunction(() => {
     const composition = window.__td613AshAia3Composition?.current?.() || null;
     const url = new URL(location.href);
-    return location.pathname.endsWith('/dome-world/ash-keep.html')
+    const governedAshPath = location.pathname.endsWith('/dome-world/ash-threshold.html')
+      || location.pathname.endsWith('/dome-world/ash-keep.html');
+    return governedAshPath
       && !url.searchParams.has('ash_epoch')
       && document.documentElement.dataset.ashCompositionStable?.includes('stable-navigation-motion')
       && document.documentElement.dataset.ashCompositionHydrating !== 'true'

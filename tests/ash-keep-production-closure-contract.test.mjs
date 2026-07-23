@@ -37,7 +37,8 @@ for (const token of [
 
 for (const token of [
   'ash-constitutional-convergence-probe.runtime.mjs', 'expected one case-selection seam',
-  "select.dispatchEvent(new Event('change', { bubbles: true }))", 'remove?.disabled !== false'
+  "select.dispatchEvent(new Event('change', { bubbles: true }))", 'remove?.disabled !== false',
+  'Cross-tab lock witness exceeded 15000ms.'
 ]) assert.ok(convergenceRunner.includes(token), `Convergence runner omitted ${token}`);
 assert.match(convergenceRunner, /pathToFileURL/);
 
@@ -100,6 +101,8 @@ for (const token of [
 for (const token of [
   'td613.ash.constitutional-convergence-observation/v0.1', 'promotion_authorized: false',
   'APERTURE_REBUILD', 'HUSH_CANDIDATE', 'DELETE_PARTIAL_HOLD', 'DRY_AUDIT_ONLY',
+  'first_tab_released_at', 'second_tab_acquired_at', 'acquired_after_release',
+  'td613.ash.cache-flush.aia3.epoch', 'td613.ash.cache-preflight.epoch',
   'provider_recipient_cinder_transport_requests'
 ]) assert.ok(convergenceProbe.includes(token), `Convergence probe omitted ${token}`);
 assert.match(localJob, /Run bounded local core closure observation/);

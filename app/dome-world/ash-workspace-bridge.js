@@ -1,7 +1,7 @@
 export * from './ash-workspace-bridge-core.js?v=20260721-legal-demo-ux-v1';
 import './ash-flicker-hardening.js?v=20260721-legal-demo-ux-v1';
-// Initial ingress may preserve one validated readiness receipt; operator Close Case always clears the Ash session.
-import './ash-case-close-repair.js?v=20260721-legal-demo-ux-v1';
+// Initial ingress may preserve one validated readiness receipt; operator Close Case waits for the active save and case-list refresh to quiesce before clearing the selector and Ash session.
+import './ash-case-close-repair.js?v=20260723-case-close-quiescence-v4';
 // The persisted case pointer, not a stale in-memory case object, governs whether a session remains open.
 import './ash-session-boundary.js?v=20260721-flowcore-live-field-v1';
 
@@ -36,8 +36,8 @@ import './ash-flowcore-pedagogy-field.js?v=20260721-flowcore-live-field-v1';
 import './ash-flowcore-ingress-portal-loader.js?v=20260722-flowcore-observer-hotfix-v3';
 // Canonical field only: quarantine the proxy and move ingress copy below the diagram.
 import './ash-post-ingress-motion-restoration.js?v=20260722-canonical-field-ingress-polish-v3';
-// Canonical neutral profile label wins after all profile-specific composition layers settle.
-import './ash-profile-prompt-canonical.js?v=20260722-profile-prompt-v1';
+// One launch-scoped observer plus one delegated boundary preserve explicit profile and saved-case choices across remounts and late option commits without polling.
+import './ash-profile-prompt-canonical.js?v=20260723-profile-prompt-v6';
 import './ash-composition-receipt-compatibility.js?v=20260721-legal-demo-ux-v1';
 import './ash-demo-entry-convergence.js?v=20260721-legal-demo-ux-v1';
 import './ash-demo-pedagogy-routebar.js?v=20260721-legal-demo-ux-v1';

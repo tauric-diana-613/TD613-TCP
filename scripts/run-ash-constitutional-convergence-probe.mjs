@@ -90,6 +90,14 @@ const testWorkspaceReplacement = `  await page.evaluate(() => {
       && rect?.height > 0;
   });`;
 
+const rebuildTarget = `  await page.locator('#loadSeed').click();
+  await page.waitForFunction(() => /"test_digest"/.test(document.getElementById('testReceipt')?.textContent || ''));`;
+const rebuildReplacement = `  await page.locator('#loadSeed').click();
+  const rebuildConfirmation = page.getByRole('button', { name:/Confirm this exact gesture/i });
+  await rebuildConfirmation.waitFor({ state:'visible', timeout:45000 });
+  await rebuildConfirmation.click();
+  await page.waitForFunction(() => /"test_digest"/.test(document.getElementById('testReceipt')?.textContent || ''), null, { timeout:45000 });`;
+
 const authorityTarget = `  authority = await page.evaluate(() => window.TD613AshConvergence.currentAuthorityContext());
   const hushPermission = await page.evaluate(() => window.TD613AshConvergence.authorize('HUSH_CANDIDATE'));`;
 const authorityReplacement = `  await page.waitForFunction(async () => {
@@ -125,12 +133,88 @@ const mapWorkspaceReplacement = `  await page.evaluate(() => {
   });`;
 
 const secondCaseTarget = `  await page.locator('#newTitle').fill('Synthetic second case');
-  await page.locator('#newCase').click();`;
+  await page.locator('#newCase').click();
+  await page.waitForFunction(() => /Synthetic second case/i.test(document.getElementById('caseTitle')?.textContent || ''));`;
 const secondCaseReplacement = `  await page.locator('#newProfile').selectOption('political_campaign');
   await page.waitForFunction(() => document.getElementById('newProfile')?.value === 'political_campaign'
-    && document.getElementById('newCase')?.disabled === false, null, { timeout: 60000 });
-  await page.locator('#newTitle').fill('Synthetic second case');
-  await page.locator('#newCase').click();`;
+    && !document.getElementById('startDemo')?.disabled
+    && /Political Campaign/.test(document.getElementById('startDemo')?.textContent || ''), null, { timeout:45000 });
+  await page.locator('#startDemo').click();
+  await page.waitForFunction(first => {
+    const current = localStorage.getItem('td613.ash-keep.current-case');
+    return Boolean(current && current !== first)
+      && /Harbor City Mayoral Campaign/i.test(document.getElementById('caseTitle')?.textContent || '');
+  }, firstCase, { timeout:60000 });
+  report.observations.second_case_entry = {
+    route:'GOVERNED_PROFILE_DEMO',
+    explicit_profile:true,
+    blank_new_case_control_deferred_to_stage:'A6'
+  };`;
+
+const saveCloseTarget = `  await page.locator('#saveCase').click();
+  await page.locator('#closeCase').click();`;
+const saveCloseReplacement = `  await page.locator('#saveCase').click();
+  await page.waitForFunction(async id => {
+    const db = await new Promise((resolve, reject) => {
+      const request = indexedDB.open('td613-ash-keep');
+      request.onsuccess = () => resolve(request.result);
+      request.onerror = () => reject(request.error);
+    });
+    try {
+      if (!db.objectStoreNames.contains('savedCases')) return false;
+      return await new Promise((resolve, reject) => {
+        const request = db.transaction('savedCases').objectStore('savedCases').get(id);
+        request.onsuccess = () => resolve(Boolean(request.result));
+        request.onerror = () => reject(request.error);
+      });
+    } finally {
+      db.close();
+    }
+  }, secondCase, { timeout:45000 });
+  report.observations.second_case_persistence = {
+    saved_case_fingerprint_observed:true,
+    closure_after_fingerprint_completion:true
+  };
+  await page.locator('#closeCase').click();`;
+
+const openSelectionTarget = `  await page.locator('#selectCase').selectOption(firstCase);
+  await page.waitForFunction(id => document.getElementById('selectCase')?.value === id, firstCase);
+  await page.waitForFunction(() => document.getElementById('openSelectedCase')?.disabled === false);
+  await page.evaluate(() => { window.__convergenceNoReload = crypto.randomUUID(); });
+  const noReloadMarker = await page.evaluate(() => window.__convergenceNoReload);
+  await page.locator('#openSelectedCase').click();`;
+const openSelectionReplacement = `  await page.waitForFunction(id => {
+    const select = document.getElementById('selectCase');
+    const open = document.getElementById('openSelectedCase');
+    if (select?.dataset.caseListState !== 'READY') return false;
+    if (![...select.options].some(option => option.value === id)) return false;
+    select.value = id;
+    select.dispatchEvent(new Event('change', { bubbles: true }));
+    if (select.value !== id || open?.disabled !== false) return false;
+    if (open.dataset.convergenceOpenIssued === id) return true;
+    window.__convergenceNoReload = crypto.randomUUID();
+    open.dataset.convergenceOpenIssued = id;
+    open.click();
+    return true;
+  }, firstCase, { timeout:45000 });
+  const noReloadMarker = await page.evaluate(() => window.__convergenceNoReload);`;
+
+const reopenTarget = `  await page.locator('#selectCase').selectOption(firstCase);
+  await page.waitForFunction(() => document.getElementById('openSelectedCase')?.disabled === false);
+  await page.locator('#openSelectedCase').click();`;
+const reopenReplacement = `  await page.waitForFunction(id => {
+    const select = document.getElementById('selectCase');
+    const open = document.getElementById('openSelectedCase');
+    if (select?.dataset.caseListState !== 'READY') return false;
+    if (![...select.options].some(option => option.value === id)) return false;
+    select.value = id;
+    select.dispatchEvent(new Event('change', { bubbles: true }));
+    if (select.value !== id || open?.disabled !== false) return false;
+    if (open.dataset.convergenceReopenIssued === id) return true;
+    open.dataset.convergenceReopenIssued = id;
+    open.click();
+    return true;
+  }, firstCase, { timeout:45000 });`;
 
 const deletionTarget = `  await page.locator('#selectCase').selectOption(secondCase);
   await page.waitForFunction(() => document.getElementById('deleteSelectedCase')?.disabled === false);
@@ -162,6 +246,15 @@ const reloadReplacement = `  await page.reload({ waitUntil: 'domcontentloaded', 
   await page.waitForFunction(() => Boolean(document.documentElement.dataset.ashCaseControls)
     && typeof window.TD613AshConvergence?.runDryCompatibilityAudit === 'function', null, { timeout: 60000 });`;
 
+const lockWaitTarget = `  const [firstResult, secondResult] = await Promise.all([firstLock, secondLock]);`;
+const lockWaitReplacement = `  const [firstResult, secondResult] = await Promise.race([
+    Promise.all([firstLock, secondLock]),
+    new Promise((_, reject) => setTimeout(
+      () => reject(new Error('Cross-tab lock witness exceeded 15000ms.')),
+      15000
+    ))
+  ]);`;
+
 const localKeysTarget = `const allowedLocalKeys = new Set(['td613.ash-keep.current-case', 'td613.ash-keep.preferences', 'td613.ash.cache-flush.epoch']);`;
 const localKeysReplacement = `const allowedLocalKeys = new Set(['td613.ash-keep.current-case', 'td613.ash-keep.preferences', 'td613.ash.cache-flush.epoch', 'td613.ash.session.epoch']);`;
 
@@ -170,33 +263,48 @@ const source = await fs.readFile(sourceUrl, 'utf8');
 const legacyUrlCount = source.split(legacyUrlTarget).length - 1;
 const readinessCount = source.split(readinessTarget).length - 1;
 const testWorkspaceCount = source.split(testWorkspaceTarget).length - 1;
+const rebuildCount = source.split(rebuildTarget).length - 1;
 const authorityCount = source.split(authorityTarget).length - 1;
 const mapWorkspaceCount = source.split(mapWorkspaceTarget).length - 1;
 const secondCaseCount = source.split(secondCaseTarget).length - 1;
+const saveCloseCount = source.split(saveCloseTarget).length - 1;
+const openSelectionCount = source.split(openSelectionTarget).length - 1;
+const reopenCount = source.split(reopenTarget).length - 1;
 const deletionCount = source.split(deletionTarget).length - 1;
 const secondTabCount = source.split(secondTabTarget).length - 1;
 const reloadCount = source.split(reloadTarget).length - 1;
+const lockWaitCount = source.split(lockWaitTarget).length - 1;
 const localKeysCount = source.split(localKeysTarget).length - 1;
 if (legacyUrlCount !== 1) throw new Error(`Convergence observer expected one undeclared presentation route; observed ${legacyUrlCount}.`);
 if (readinessCount !== 1) throw new Error(`Convergence observer expected one Ash boot-readiness seam; observed ${readinessCount}.`);
 if (testWorkspaceCount !== 1) throw new Error(`Convergence observer expected one legacy Test workspace seam; observed ${testWorkspaceCount}.`);
+if (rebuildCount !== 1) throw new Error(`Convergence observer expected one governed Rebuild confirmation seam; observed ${rebuildCount}.`);
 if (authorityCount !== 1) throw new Error(`Convergence observer expected one permission-stabilization seam; observed ${authorityCount}.`);
 if (mapWorkspaceCount !== 1) throw new Error(`Convergence observer expected one legacy Map workspace seam; observed ${mapWorkspaceCount}.`);
-if (secondCaseCount !== 1) throw new Error(`Convergence observer expected one second-case explicit-profile seam; observed ${secondCaseCount}.`);
+if (secondCaseCount !== 1) throw new Error(`Convergence observer expected one governed second-case route seam; observed ${secondCaseCount}.`);
+if (saveCloseCount !== 1) throw new Error(`Convergence observer expected one saved-case fingerprint seam; observed ${saveCloseCount}.`);
+if (openSelectionCount !== 1) throw new Error(`Convergence observer expected one repaint-atomic Open selection seam; observed ${openSelectionCount}.`);
+if (reopenCount !== 1) throw new Error(`Convergence observer expected one repaint-atomic Open re-entry seam; observed ${reopenCount}.`);
 if (deletionCount !== 1) throw new Error(`Convergence observer expected one case-selection seam and one atomic case-deletion seam; observed ${deletionCount}.`);
 if (secondTabCount !== 1) throw new Error(`Convergence observer expected one second-tab readiness seam; observed ${secondTabCount}.`);
 if (reloadCount !== 1) throw new Error(`Convergence observer expected one reload readiness seam; observed ${reloadCount}.`);
+if (lockWaitCount !== 1) throw new Error(`Convergence observer expected one bounded cross-tab join seam; observed ${lockWaitCount}.`);
 if (localKeysCount !== 1) throw new Error(`Convergence observer expected one localStorage allowlist seam; observed ${localKeysCount}.`);
 const runtime = source
   .replace(legacyUrlTarget, legacyUrlReplacement)
   .replace(readinessTarget, readinessReplacement)
   .replace(testWorkspaceTarget, testWorkspaceReplacement)
+  .replace(rebuildTarget, rebuildReplacement)
   .replace(authorityTarget, authorityReplacement)
   .replace(mapWorkspaceTarget, mapWorkspaceReplacement)
   .replace(secondCaseTarget, secondCaseReplacement)
+  .replace(saveCloseTarget, saveCloseReplacement)
+  .replace(openSelectionTarget, openSelectionReplacement)
+  .replace(reopenTarget, reopenReplacement)
   .replace(deletionTarget, deletionReplacement)
   .replace(secondTabTarget, secondTabReplacement)
   .replace(reloadTarget, reloadReplacement)
+  .replace(lockWaitTarget, lockWaitReplacement)
   .replace(localKeysTarget, localKeysReplacement);
 if (!runtime.includes("ash-keep.html?presentation=legacy")) {
   throw new Error('Convergence observer failed to declare the legacy presentation route.');
@@ -204,13 +312,22 @@ if (!runtime.includes("ash-keep.html?presentation=legacy")) {
 if (!runtime.includes("authorize('HUSH_CANDIDATE')") || !runtime.includes('decision?.authorized === true')) {
   throw new Error('Convergence observer failed to wait for the actual Hush permission boundary.');
 }
+if (!runtime.includes("getByRole('button', { name:/Confirm this exact gesture/i })")) {
+  throw new Error('Convergence observer failed to materialize the governed Rebuild confirmation gesture.');
+}
+if (!runtime.includes("route:'GOVERNED_PROFILE_DEMO'") || !runtime.includes("blank_new_case_control_deferred_to_stage:'A6'")) {
+  throw new Error('Convergence observer failed to preserve multi-case coverage while deferring the dead blank-case control to A6.');
+}
+if (!runtime.includes('saved_case_fingerprint_observed:true') || !runtime.includes('closure_after_fingerprint_completion:true')) {
+  throw new Error('Convergence observer failed to wait for the saved-case fingerprint before closure.');
+}
 if (!runtime.includes('profile_demo_registry_deferred_until_selection: true')
   || !runtime.includes('demo_entry_convergence_deferred_until_case_hydration: true')
   || !runtime.includes('demo_entry_api_ready_after_hydration: true')
   || !runtime.includes('demo_click_deferred_until_ready: true')
   || !runtime.includes('profile_selected_explicitly: true')
   || !runtime.includes('network_idle_not_required: true')
-  || (runtime.match(/selectOption\('political_campaign'\)/g) || []).length !== 2
+  || !runtime.includes("selectOption('political_campaign')")
   || !runtime.includes('Harbor City Mayoral Campaign')
   || !runtime.includes("ashDemoEntryReady === 'political_campaign:map'")
   || !runtime.includes("convergence?.phase === 'VISIBLE'")
@@ -221,11 +338,19 @@ if (!runtime.includes('profile_demo_registry_deferred_until_selection: true')
 if (!runtime.includes("open('test')") || !runtime.includes("open('map')") || runtime.includes("page.locator('[data-workspace=\"test\"]').click()")) {
   throw new Error('Convergence observer guided workspace migration was not materialized.');
 }
-if (!runtime.includes("dataset.ashPremiumWorkspace === 'test'") || !runtime.includes("dataset.ashPremiumWorkspace === 'map'") || !runtime.includes('Number(style?.opacity) > 0')) {
+if (!runtime.includes("dataset.ashPremiumWorkspace === 'test'") || !runtime.includes("dataset.ashPremiumWorkspace === 'map'") || !runtime.includes("Number(style?.opacity) > 0")) {
   throw new Error('Convergence observer visible workspace gates were not materialized.');
 }
-if (!runtime.includes("select.dispatchEvent(new Event('change', { bubbles: true }))") || !runtime.includes('remove.click()')) {
-  throw new Error('Convergence observer repaint-atomic delete gesture was not materialized.');
+if (!runtime.includes("document.getElementById('openSelectedCase')")
+  || !runtime.includes("select.dispatchEvent(new Event('change', { bubbles: true }))")
+  || !runtime.includes('convergenceOpenIssued')
+  || !runtime.includes('convergenceReopenIssued')
+  || !runtime.includes('open.click()')
+  || !runtime.includes('remove.click()')) {
+  throw new Error('Convergence observer repaint-atomic Open/Reopen/Delete gestures were not materialized.');
+}
+if (!runtime.includes('Cross-tab lock witness exceeded 15000ms.')) {
+  throw new Error('Convergence observer bounded cross-tab join was not materialized.');
 }
 if (!runtime.includes("'td613.ash.session.epoch'")) {
   throw new Error('Convergence observer canonical session epoch allowlist was not materialized.');

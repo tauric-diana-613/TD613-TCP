@@ -24,10 +24,11 @@ on:
       - "tests/fixtures/aperture-release.json"
       - "scripts/ash-keep-local-closure-server.mjs"
       - "scripts/ash-keep-production-probe.mjs"
+      - "scripts/run-ash-keep-production-probe.mjs"
+      - "scripts/run-ash-keep-a1-production-probe.mjs"
       - "scripts/ash-lifecycle-production-probe.mjs"
       - "scripts/ash-constitutional-convergence-probe.mjs"
       - "scripts/run-ash-constitutional-convergence-probe.mjs"
-      - "scripts/run-ash-keep-production-probe.mjs"
       - "scripts/publish-ash-keep-observer-status.mjs"
       - "scripts/assert-ash-keep-release-posture.mjs"
       - "tests/ash-keep-*.test.mjs"
@@ -58,10 +59,11 @@ on:
       - "tests/fixtures/aperture-release.json"
       - "scripts/ash-keep-local-closure-server.mjs"
       - "scripts/ash-keep-production-probe.mjs"
+      - "scripts/run-ash-keep-production-probe.mjs"
+      - "scripts/run-ash-keep-a1-production-probe.mjs"
       - "scripts/ash-lifecycle-production-probe.mjs"
       - "scripts/ash-constitutional-convergence-probe.mjs"
       - "scripts/run-ash-constitutional-convergence-probe.mjs"
-      - "scripts/run-ash-keep-production-probe.mjs"
       - "scripts/publish-ash-keep-observer-status.mjs"
       - "scripts/assert-ash-keep-release-posture.mjs"
       - "tests/ash-keep-*.test.mjs"
@@ -104,10 +106,11 @@ jobs:
       - name: Validate closure probes, status publisher, posture verifier, and server syntax
         run: |
           node --check scripts/ash-keep-production-probe.mjs
+          node --check scripts/run-ash-keep-production-probe.mjs
+          node --check scripts/run-ash-keep-a1-production-probe.mjs
           node --check scripts/ash-lifecycle-production-probe.mjs
           node --check scripts/ash-constitutional-convergence-probe.mjs
           node --check scripts/run-ash-constitutional-convergence-probe.mjs
-          node --check scripts/run-ash-keep-production-probe.mjs
           node --check scripts/publish-ash-keep-observer-status.mjs
           node --check scripts/assert-ash-keep-release-posture.mjs
           node --check scripts/ash-keep-local-closure-server.mjs
@@ -152,7 +155,7 @@ jobs:
           TD613_BASE_URL: http://127.0.0.1:6130
           TD613_ARTIFACT_DIR: artifacts/ash-keep-production-closure
           TD613_PROBE_RUNTIME_DIR: artifacts/ash-keep-probe-runtime
-        run: node scripts/run-ash-keep-production-probe.mjs
+        run: node scripts/run-ash-keep-a1-production-probe.mjs
       - name: Run constitutional convergence preview
         env:
           TD613_BASE_URL: http://127.0.0.1:6130
@@ -166,6 +169,7 @@ jobs:
           path: |
             scripts/ash-keep-production-probe.mjs
             scripts/run-ash-keep-production-probe.mjs
+            scripts/run-ash-keep-a1-production-probe.mjs
             scripts/ash-lifecycle-production-probe.mjs
             scripts/ash-constitutional-convergence-probe.mjs
             scripts/run-ash-constitutional-convergence-probe.mjs

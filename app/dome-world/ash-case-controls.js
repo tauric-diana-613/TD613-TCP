@@ -1,6 +1,6 @@
 import './ash-map-labels.js';
 
-export const ASH_CASE_CONTROLS_VERSION = 'td613.ash-keep.case-controls/v1.4-selection-retention';
+export const ASH_CASE_CONTROLS_VERSION = 'td613.ash-keep.case-controls/v1.7-atomic-case-list-snapshot';
 
 const DB_NAME = 'td613-ash-keep';
 const POINTER_KEY = 'td613.ash-keep.current-case';
@@ -200,26 +200,50 @@ async function selectableCases(db) {
   return options.sort((left, right) => Number(right.current) - Number(left.current) || left.title.localeCompare(right.title));
 }
 
+function hasGovernedCaseSnapshot(select) {
+  return Boolean(select?.dataset.caseListState === 'READY' && [...select.options].some(option => option.value));
+}
+
+function caseOptionPresent(select, caseId) {
+  return Boolean(caseId && select && [...select.options].some(option => option.value === caseId));
+}
+
 async function populateCaseSelectOnce(preferredCaseId = '') {
   const select = $('selectCase');
   if (!select) return;
   const retainedCaseId = preferredCaseId || select.value || '';
-  select.dataset.caseListState = 'LOADING';
-  select.disabled = true;
-  if (!retainedCaseId) setChoiceAvailability(false);
+  const preserveReadySnapshot = hasGovernedCaseSnapshot(select);
+  select.dataset.caseListRefreshState = 'REFRESHING';
+  select.setAttribute('aria-busy', 'true');
+  if (!preserveReadySnapshot) {
+    select.dataset.caseListState = 'LOADING';
+    select.disabled = true;
+    if (!retainedCaseId) setChoiceAvailability(false);
+  }
   const db = await openDb();
   try {
     const options = await selectableCases(db);
-    select.replaceChildren();
+    const current = $('selectCase');
+    if (current !== select) {
+      if (preferredCaseId || retainedCaseId) queuedPreferredCaseId = preferredCaseId || retainedCaseId;
+      return;
+    }
     const placeholder = new Option('Select a case…', '', true, true);
-    select.add(placeholder);
-    for (const item of options) select.add(new Option(item.label, item.caseId));
+    const optionNodes = options.map(item => new Option(item.label, item.caseId));
+    select.replaceChildren(placeholder, ...optionNodes);
     select.disabled = options.length === 0;
     select.value = options.some(item => item.caseId === retainedCaseId) ? retainedCaseId : '';
     setChoiceAvailability(Boolean(select.value));
   } finally {
     db.close();
-    select.dataset.caseListState = 'READY';
+    const current = $('selectCase');
+    if (current === select) {
+      select.dataset.caseListState = 'READY';
+      delete select.dataset.caseListRefreshState;
+      select.setAttribute('aria-busy', 'false');
+    } else if (preferredCaseId || retainedCaseId) {
+      queuedPreferredCaseId = preferredCaseId || retainedCaseId;
+    }
   }
 }
 
@@ -240,6 +264,15 @@ async function populateCaseSelect(preferredCaseId = '') {
   } finally {
     caseListPopulation = null;
   }
+}
+
+async function refreshCases(preferredCaseId = '') {
+  if (caseListPopulation) await caseListPopulation;
+  ensureLaunchActions();
+  const select = $('selectCase');
+  if (select?.dataset.caseListState === 'READY' && (!preferredCaseId || caseOptionPresent(select, preferredCaseId))) return true;
+  await populateCaseSelect(preferredCaseId);
+  return true;
 }
 
 async function validatePointer() {
@@ -275,17 +308,21 @@ async function saveCurrentCase() {
     const button = $('saveCase');
     const db = await openDb();
     try {
-      const bundle = await caseBundle(db, caseId);
-      if (!bundle) throw new Error('Current case could not be found.');
-      const fingerprint = await sha256(bundle);
+      const existing = await caseBundle(db, caseId);
+      if (!existing) throw new Error('Current case could not be found.');
+      await window.TD613AshConvergence.transitionCase(caseId, { persisted: true, saved: true, reason: 'operator-saved-current-case' });
+      const settledBundle = await caseBundle(db, caseId);
+      if (!settledBundle) throw new Error('Saved case could not be reread after its state transition.');
+      const fingerprint = await sha256(settledBundle);
       const savedRecord = {
-      case_id: caseId,
-      title: bundle.caseMap.title || 'Untitled case',
-      fingerprint,
-      saved_at: new Date().toISOString()
+        case_id: caseId,
+        title: settledBundle.caseMap.title || 'Untitled case',
+        fingerprint,
+        saved_at: new Date().toISOString(),
+        fingerprint_posture: 'POST_TRANSITION_SETTLED_BUNDLE'
       };
       await putWrapped(db, 'savedCases', caseId, savedRecord);
-      await window.TD613AshConvergence.transitionCase(caseId, { persisted: true, saved: true, reason: 'operator-saved-current-case' });
+      if (!await caseIsSaved(db, caseId, { [caseId]: savedRecord })) throw new Error('Saved-case fingerprint did not match the settled bundle.');
       if ($('storageState')) $('storageState').textContent = 'Case saved';
       if (button) {
         const label = button.textContent;
@@ -445,7 +482,10 @@ function bindControls() {
     new MutationObserver(() => {
       const hasCase = Boolean(localStorage.getItem(POINTER_KEY));
       setCommandAvailability(hasCase);
-      if (!launch.classList.contains('hidden')) populateCaseSelect().catch(console.error);
+      if (!launch.classList.contains('hidden')) {
+        const select = $('selectCase');
+        if (select?.dataset.caseListState !== 'READY' || ![...select.options].some(option => option.value)) populateCaseSelect().catch(console.error);
+      }
     }).observe(launch, { attributes: true, attributeFilter: ['class'] });
   }
 }
@@ -499,6 +539,20 @@ async function bootCaseControls() {
     if (audit.findings.length && $('storageState')) $('storageState').textContent = `${audit.findings.length} compatibility finding(s) held for review`;
   }
 }
+
+window.__td613AshCaseControls = Object.freeze({
+  version: ASH_CASE_CONTROLS_VERSION,
+  refreshCases,
+  saveCurrentCase,
+  openSelectedCase,
+  deleteSelectedCase,
+  current: () => Object.freeze({
+    case_id: localStorage.getItem(POINTER_KEY) || null,
+    selected_case_id: $('selectCase')?.value || null,
+    case_list_state: $('selectCase')?.dataset.caseListState || null,
+    case_list_refresh_state: $('selectCase')?.dataset.caseListRefreshState || null
+  })
+});
 
 bootCaseControls().catch(error => {
   document.documentElement.classList.remove(PREPAINT_CLASS);

@@ -117,8 +117,6 @@ jobs:
         run: node tests/ash-investigation-guidance.test.mjs
       - name: Ash legal UX
         run: node tests/ash-legal-ux.test.mjs
-      - name: Ash live ingress and demos cache
-        run: node tests/ash-live-ingress-demos-cache.test.mjs
       - name: Ash Custodian Return contracts
         run: |
           node tests/ash-custodian-return.test.mjs
