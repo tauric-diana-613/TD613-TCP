@@ -100,6 +100,14 @@ const arrivalReplacement = `  await page.goto(keepUrl, { waitUntil: 'domcontentl
     non_read_requests: initialNonGet
   };`;
 
+const rebuildTarget = `  await page.locator('#loadSeed').click();
+  await waitForText(page, '#testReceipt', /"test_digest"/, 45_000);`;
+const rebuildReplacement = `  await page.locator('#loadSeed').click();
+  const rebuildConfirmation = page.getByRole('button', { name:/Confirm this exact gesture/i });
+  await rebuildConfirmation.waitFor({ state:'visible', timeout:45_000 });
+  await rebuildConfirmation.click();
+  await waitForText(page, '#testReceipt', /"test_digest"/, 45_000);`;
+
 let probeSource = (await fs.readFile(sourcePath, 'utf8')).replace(/\r\n/g, '\n');
 if (!probeSource.includes('ASH_AIA3_LEGACY_BYPASS_STABLE')
   || !probeSource.includes("selectOption('political_campaign')")
@@ -108,6 +116,7 @@ if (!probeSource.includes('ASH_AIA3_LEGACY_BYPASS_STABLE')
 }
 probeSource = replaceExactlyOnce(probeSource, keepUrlTarget, keepUrlReplacement, 'canonical threshold URL');
 probeSource = replaceExactlyOnce(probeSource, arrivalTarget, arrivalReplacement, 'post-fixture canonical first-paint observation');
+probeSource = replaceExactlyOnce(probeSource, rebuildTarget, rebuildReplacement, 'governed Rebuild confirmation');
 
 let runnerSource = (await fs.readFile(runnerPath, 'utf8')).replace(/\r\n/g, '\n');
 runnerSource = replaceExactlyOnce(
@@ -127,7 +136,7 @@ await fs.mkdir(runtimeDir, { recursive:true });
 await fs.writeFile(a1SourcePath, probeSource, 'utf8');
 await fs.writeFile(a1RunnerPath, runnerSource, 'utf8');
 await fs.writeFile(adapterManifestPath, `${JSON.stringify({
-  schema:'td613.ash.a1-production-probe-adapter/v0.3',
+  schema:'td613.ash.a1-production-probe-adapter/v0.4',
   source_probe:path.relative(repoRoot, sourcePath),
   adapted_probe:path.relative(repoRoot, a1SourcePath),
   adapted_runner:path.relative(repoRoot, a1RunnerPath),
@@ -137,6 +146,7 @@ await fs.writeFile(adapterManifestPath, `${JSON.stringify({
   visible_epoch_query:false,
   network_idle_required:false,
   readiness_source:'MODULE_GRAPH_AND_PREFLIGHT_STATE',
+  rebuild_confirmation:'EXPLICIT_NAMED_HUMAN_GESTURE_OBSERVED',
   product_source_mutated:false,
   runtime_copy_ephemeral:true,
   promotion_authorized:false
