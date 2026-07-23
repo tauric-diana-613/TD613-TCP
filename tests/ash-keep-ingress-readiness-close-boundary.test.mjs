@@ -5,15 +5,21 @@ const closeRepair = fs.readFileSync('app/dome-world/ash-case-close-repair.js', '
 const sessionBoundary = fs.readFileSync('app/dome-world/ash-session-boundary.js', 'utf8');
 const bridge = fs.readFileSync('app/dome-world/ash-workspace-bridge.js', 'utf8');
 
-assert.match(closeRepair, /td613\.ash\.case-close-repair\/v1\.3-ingress-readiness-boundary/);
+assert.match(closeRepair, /td613\.ash\.case-close-repair\/v1\.4-post-close-settled-fingerprint/);
 assert.match(closeRepair, /validThresholdReadiness/);
 assert.match(closeRepair, /function clearAshSessionStorage\(\{ preserveReadiness = false \} = \{\}\)/);
 assert.match(closeRepair, /if \(key === READINESS_KEY && keepReadiness\)/);
 assert.match(closeRepair, /if \(!localStorage\.getItem\(POINTER_KEY\)\) exposeMembrane\(\{ preserveReadiness:true \}\);/);
+assert.match(closeRepair, /async function saveAtCloseBoundary\(caseId, fingerprintPosture\)/);
+assert.match(closeRepair, /PRE_CLOSE_BACKUP/);
+assert.match(closeRepair, /POST_CLOSE_TRANSITION_SETTLED_BUNDLE/);
+assert.match(closeRepair, /POST_CLOSE_RECONCILED_BUNDLE/);
+assert.match(closeRepair, /await window\.__td613AshCaseControls\?\.refreshCases\?\.\(\)/);
+assert.match(closeRepair, /ashCloseFingerprintPosture/);
 const closeBody = closeRepair.match(/async function closeToMembrane\(\) \{[\s\S]*?\n\}/)?.[0] || '';
 assert.match(closeBody, /exposeMembrane\(\);/);
 assert.doesNotMatch(closeBody, /preserveReadiness:true/);
-assert.match(bridge, /ash-case-close-repair\.js\?v=20260721-legal-demo-ux-v1/);
+assert.match(bridge, /ash-case-close-repair\.js\?v=20260723-case-close-refresh-v1/);
 assert.match(bridge, /ash-session-boundary\.js\?v=20260721-flowcore-live-field-v1/);
 
 assert.match(sessionBoundary, /v0\.4-pointer-governs-case-recovery-replay-stays-open/);
