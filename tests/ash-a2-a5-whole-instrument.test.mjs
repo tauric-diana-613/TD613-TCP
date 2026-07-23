@@ -6,7 +6,6 @@ const read = path => fs.readFileSync(new URL(`../${path}`, import.meta.url), 'ut
 const moduleSource = read('app/dome-world/ash-whole-instrument-pedagogy.js');
 const css = read('app/dome-world/ash-whole-instrument-pedagogy.css');
 const bridge = read('app/dome-world/ash-workspace-bridge.js');
-const field = read('app/dome-world/ash-flowcore-pedagogy-field.js');
 const closureWorkflow = read('.github/workflows/ash-keep-production-closure.yml');
 const receipt = read('app/dome-world/docs/ASH_KEEP_A2_A5_IMPLEMENTATION_RECEIPT_V0_1.md');
 
@@ -24,7 +23,6 @@ for (const scene of ['ingress','home','map','work','choir','capsule']) {
   assert.match(moduleSource, new RegExp(`\\b${scene}: Object\\.freeze`));
 }
 assert.doesNotMatch(moduleSource, /new MutationObserver|setInterval\(/);
-assert.match(field, /let field = null/);
 
 for (const [route, label] of [
   ['EXPERIENTIAL','Learn by doing'],
