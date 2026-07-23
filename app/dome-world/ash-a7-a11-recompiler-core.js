@@ -139,26 +139,37 @@ export function installAshStage({ stage, sync, navigationSelectors = '' }) {
   return true;
 }
 
-if (host && !host.__td613AshA9ModulePromise) {
-  host.__td613AshA9ModulePromise = import('./ash-a9-work-recompilation.js?v=20260723-a9-v1').catch(error => {
-    host.dispatchEvent(new CustomEvent('td613:ash:a9-load-held', {
-      detail:Object.freeze({
-        schema:'td613.ash.a9-load-hold/v0.1',
-        message:String(error?.message || error),
-        authority_changed:false,
-        source_bytes_moved:false,
-        human_closure_required:true
-      })
-    }));
-    return null;
-  });
+function publishA9LoadHold(error) {
+  host?.dispatchEvent?.(new CustomEvent('td613:ash:a9-load-held', {
+    detail:Object.freeze({
+      schema:'td613.ash.a9-load-hold/v0.1',
+      message:String(error?.message || error),
+      authority_changed:false,
+      source_bytes_moved:false,
+      human_closure_required:true
+    })
+  }));
+  return null;
+}
+
+function loadA9Module() {
+  if (!host) return Promise.resolve(null);
+  if (!host.__td613AshA9ModulePromise) {
+    host.__td613AshA9ModulePromise = import('./ash-a9-work-recompilation.js?v=20260723-a9-v1').catch(publishA9LoadHold);
+  }
+  return host.__td613AshA9ModulePromise;
+}
+
+if (host) {
+  if (doc?.documentElement?.dataset?.ashModuleGraph === 'ready') queueMicrotask(loadA9Module);
+  else host.addEventListener('td613:ash:canonical-module-graph-ready', () => queueMicrotask(loadA9Module), { once:true });
 }
 
 if (host && !host.__td613AshA9WorkspaceOwner) {
   const refreshSettledA9Work = event => {
     if (event.detail?.workspace !== 'work') return;
     queueMicrotask(async () => {
-      await host.__td613AshA9ModulePromise;
+      await loadA9Module();
       await host.__td613AshA9?.refresh?.('UX_WORKSPACE_OPENED');
     });
   };
@@ -166,6 +177,7 @@ if (host && !host.__td613AshA9WorkspaceOwner) {
   host.__td613AshA9WorkspaceOwner = Object.freeze({
     version:'td613.ash.a9-workspace-owner/v0.1',
     event:'td613:ash:ux-workspace-opened',
+    admission_event:'td613:ash:canonical-module-graph-ready',
     automatic_consequential_action:false,
     authority_changed:false,
     source_bytes_moved:false,
