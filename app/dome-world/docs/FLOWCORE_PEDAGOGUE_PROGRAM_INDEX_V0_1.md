@@ -4,7 +4,7 @@
 
 **Namespace:** `U+10D613`  
 **Program:** P0 through P10 plus runtime/release closure and Ash whole-instrument recompilation  
-**Status:** IMPLEMENTATION INDEX COMPLETE / BROWSER RUNTIME OBSERVED / ASH A0–A5 MERGED AND RELEASED / ASH A6 DRAFT IMPLEMENTED / EMPIRICAL HOLD VISIBLE / HUMAN CLOSURE OPEN
+**Status:** IMPLEMENTATION INDEX COMPLETE / BROWSER RUNTIME OBSERVED / ASH A0–A6 MERGED AND RELEASED / ASH A7 IMPLEMENTED ON BOUNDED BRANCH / EMPIRICAL HOLD VISIBLE / HUMAN CLOSURE OPEN
 
 ## Constitutional source set
 
@@ -22,6 +22,8 @@
 12. `ASH_KEEP_A0_IMPLEMENTATION_RECEIPT_V0_1.md`
 13. `ASH_KEEP_A2_A5_IMPLEMENTATION_RECEIPT_V0_1.md`
 14. `ASH_KEEP_A6_IMPLEMENTATION_RECEIPT_V0_1.md`
+
+15. `ASH_KEEP_A7_IMPLEMENTATION_RECEIPT_V0_1.md`
 
 ## Phase receipts
 
@@ -41,6 +43,7 @@
 | Ash A0 | `ASH_KEEP_A0_IMPLEMENTATION_RECEIPT_V0_1.md` | documentation-only baseline freeze, source map, control census, browser-evidence hash manifest, and authority invariant preservation |
 | Ash A2–A5 | `ASH_KEEP_A2_A5_IMPLEMENTATION_RECEIPT_V0_1.md` | consequence-field grammar, workspace anisotropy, semantic navigation, human-facing routes, workflow repair, final bounded release epoch, merged release, and relock |
 | Ash A6 | `ASH_KEEP_A6_IMPLEMENTATION_RECEIPT_V0_1.md` | Work-local document and draft affordances, lesson boundary answers, structural Rest, held-control explanations, transition-delta repair, and legend semantics |
+| Ash A7 | `ASH_KEEP_A7_IMPLEMENTATION_RECEIPT_V0_1.md` | Home Current Priority, Continuity, and route-ledger recompilation |
 
 ## Engines
 
@@ -80,6 +83,7 @@
 - `ASH_KEEP_A0_BASELINE_PROVENANCE_LEDGER_V0_1.md`
 - `ASH_KEEP_A2_A5_IMPLEMENTATION_RECEIPT_V0_1.md`
 - `ASH_KEEP_A6_IMPLEMENTATION_RECEIPT_V0_1.md`
+- `ASH_KEEP_A7_IMPLEMENTATION_RECEIPT_V0_1.md`
 
 ## Ash whole-instrument recompilation extension
 
@@ -104,8 +108,9 @@ whole-instrument normative spec: AUTHORED
 A0 baseline freeze: IMPLEMENTED / DOCUMENTATION ONLY
 A1 first-paint and closure hardening: IMPLEMENTED / MERGED
 A2-A5 runtime recompilation: IMPLEMENTED / MERGED / ONE BOUNDED RELEASE / RELOCKED
-A6 affordance and drawer repair: IMPLEMENTED ON DRAFT BRANCH / EXACT-HEAD VALIDATION OPEN
-A7-A19: NOT INCLUDED / HELD FOR LATER STAGES
+A6 affordance and drawer repair: IMPLEMENTED / MERGED / ONE BOUNDED RELEASE / RELOCKED
+A7 Home recompilation: IMPLEMENTED ON BOUNDED BRANCH / EXACT-HEAD VALIDATION OPEN
+A8-A19: NOT INCLUDED / HELD FOR LATER STAGES
 A2-A5 release asset epoch: 20260723-a2-a5-release-v1
 A2-A5 cache epoch: td613.ash.cache-flush/2026-07-23-a2-a5-release-v1
 A6 cache posture: EXISTING EPOCH RETAINED BY EXPLICIT OPERATOR DIRECTION
@@ -176,20 +181,36 @@ new mass-eviction epoch: SKIPPED BY EXPLICIT OPERATOR DIRECTION
 asset/cache epoch drift: NONE
 new serverless function: FALSE
 raw-content transport: FALSE
-PR: #582 DRAFT
-post-closure: OPEN
-Vercel deployment: FORBIDDEN UNTIL POST-CLOSURE
+PR: #582 MERGED
+post-closure: COMPLETE
+Vercel deployment: ONE BOUNDED WAVE COMPLETE / RELOCKED
 physical-device closure: HUMAN-HELD
+```
+
+## A7 evidence posture
+
+```text
+Current Priority six-answer contract: IMPLEMENTED / BROWSER WITNESS OPEN
+one primary Home action: IMPLEMENTED / BROWSER WITNESS OPEN
+Continuity attached/stale/return/recheck/unsealed answers: IMPLEMENTED / BROWSER WITNESS OPEN
+What has already left route ledger: IMPLEMENTED / BROWSER WITNESS OPEN
+Premium Home render delegation: IMPLEMENTED / BROWSER WITNESS OPEN
+new mass-eviction epoch: FALSE
+unique bounded module admission: TRUE
+new serverless function: FALSE
+raw-content transport: FALSE
+Ash authority changed: FALSE
+human closure: OPEN
 ```
 
 ## Current honest promotion posture
 
 ```text
-implementation state: HARDENED THROUGH A5 / A6 VALIDATION OPEN
-runtime browser matrix: A2-A5 PASS / A6 OPEN
-Chromium observation: A6 OPEN
-Firefox observation: A6 OPEN
-WebKit/iOS-sized observation: A6 OPEN
+implementation state: HARDENED THROUGH A6 / A7 VALIDATION OPEN
+runtime browser matrix: A2-A6 PASS / A7 OPEN
+Chromium observation: A6 PASS / A7 OPEN
+Firefox observation: A6 PASS / A7 OPEN
+WebKit/iOS-sized observation: A6 PASS / A7 OPEN
 mobile portrait: A6 OPEN
 mobile landscape: INHERITED PASS / A6 OPEN
 rotation-equivalent: INHERITED PASS
@@ -200,7 +221,8 @@ browser performance observation: A6 OPEN
 human adult validation evidence: absent
 empirical exit gate: held
 A2-A5 production demonstrated: true
-A6 production demonstrated: false
+A6 production demonstrated: true
+A7 production demonstrated: false
 feature gate default: OFF
 public route promotion authorized: false
 human promotion required: true
