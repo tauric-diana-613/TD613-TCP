@@ -33,13 +33,15 @@ try {
   await page.waitForFunction(() => !document.getElementById('startDemo')?.disabled, null, { timeout:60000 });
   await page.locator('#startDemo').click();
 
+  // Observe the rendered/API state directly. Dataset receipts remain diagnostics rather than
+  // prerequisites because WebKit may settle the compiled surface before the inherited token.
   await page.waitForFunction(() => {
     const field = document.querySelector('#ashAiaMembrane .ash-flowcore-field:not(.ash-flowcore-field--proxy):not([hidden])');
     if (!field) return false;
     const style = getComputedStyle(field);
     const rect = field.getBoundingClientRect();
-    return document.documentElement.dataset.ashWholeInstrumentPedagogy
-      && document.documentElement.dataset.ashAiaReady === 'true'
+    return Boolean(window.__td613AshWholeInstrument?.version)
+      && Boolean(window.__td613AshLiveAIA?.version)
       && field.getAttribute('aria-hidden') !== 'true'
       && !field.inert
       && style.display !== 'none'
@@ -49,8 +51,18 @@ try {
       && rect.height > 0
       && field.querySelectorAll('[data-aia-play]').length === 1
       && !field.querySelector('[data-flowcore-ingress-play]')
-      && document.getElementById('premiumPrimaryDock');
+      && document.getElementById('premiumPrimaryDock')
+      && document.querySelector('[data-ash-route-surface]');
   }, null, { timeout:90000 });
+
+  report.observations.boot = await page.evaluate(() => ({
+    whole_instrument_api:window.__td613AshWholeInstrument?.version || null,
+    live_aia_api:window.__td613AshLiveAIA?.version || null,
+    whole_instrument_dataset:document.documentElement.dataset.ashWholeInstrumentPedagogy || null,
+    aia_ready_dataset:document.documentElement.dataset.ashAiaReady || null,
+    consequence_field_owner:document.documentElement.dataset.ashConsequenceFieldOwner || null,
+    post_ingress_motion:document.documentElement.dataset.ashPostIngressMotion || null
+  }));
 
   const field = await page.evaluate(() => {
     const rendered = node => {
