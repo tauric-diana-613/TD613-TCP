@@ -77,7 +77,12 @@ jobs:
           TD613_BASE_URL: http://127.0.0.1:6130
           TD613_ASH_STAGES: A7
           TD613_ARTIFACT_DIR: artifacts/ash-a7-integrator/browser
-        run: timeout --foreground --signal=INT --kill-after=15s 480s node scripts/ash-a7-a11-browser-probe.mjs
+        run: |
+          set +e
+          timeout --foreground --signal=INT --kill-after=15s 480s node scripts/ash-a7-a11-browser-probe.mjs > artifacts/ash-a7-integrator/browser-witness.log 2>&1
+          status=$?
+          cat artifacts/ash-a7-integrator/browser-witness.log
+          exit "$status"
       - name: Stop bounded runtime
         if: always()
         run: test -f artifacts/ash-a7-integrator/server.pid && kill "$(cat artifacts/ash-a7-integrator/server.pid)" || true
