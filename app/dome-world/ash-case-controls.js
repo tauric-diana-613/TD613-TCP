@@ -1,6 +1,6 @@
 import './ash-map-labels.js';
 
-export const ASH_CASE_CONTROLS_VERSION = 'td613.ash-keep.case-controls/v1.4-selection-retention';
+export const ASH_CASE_CONTROLS_VERSION = 'td613.ash-keep.case-controls/v1.5-post-transition-fingerprint';
 
 const DB_NAME = 'td613-ash-keep';
 const POINTER_KEY = 'td613.ash-keep.current-case';
@@ -275,17 +275,21 @@ async function saveCurrentCase() {
     const button = $('saveCase');
     const db = await openDb();
     try {
-      const bundle = await caseBundle(db, caseId);
-      if (!bundle) throw new Error('Current case could not be found.');
-      const fingerprint = await sha256(bundle);
+      const existing = await caseBundle(db, caseId);
+      if (!existing) throw new Error('Current case could not be found.');
+      await window.TD613AshConvergence.transitionCase(caseId, { persisted: true, saved: true, reason: 'operator-saved-current-case' });
+      const settledBundle = await caseBundle(db, caseId);
+      if (!settledBundle) throw new Error('Saved case could not be reread after its state transition.');
+      const fingerprint = await sha256(settledBundle);
       const savedRecord = {
-      case_id: caseId,
-      title: bundle.caseMap.title || 'Untitled case',
-      fingerprint,
-      saved_at: new Date().toISOString()
+        case_id: caseId,
+        title: settledBundle.caseMap.title || 'Untitled case',
+        fingerprint,
+        saved_at: new Date().toISOString(),
+        fingerprint_posture: 'POST_TRANSITION_SETTLED_BUNDLE'
       };
       await putWrapped(db, 'savedCases', caseId, savedRecord);
-      await window.TD613AshConvergence.transitionCase(caseId, { persisted: true, saved: true, reason: 'operator-saved-current-case' });
+      if (!await caseIsSaved(db, caseId, { [caseId]: savedRecord })) throw new Error('Saved-case fingerprint did not match the settled bundle.');
       if ($('storageState')) $('storageState').textContent = 'Case saved';
       if (button) {
         const label = button.textContent;
