@@ -59,7 +59,7 @@ const contentionReplacement = `  const contentionEvent = 'td613:ash:probe-conten
       35000
     ))
   ]);
-  localStorage.removeItem(queuedKey);
+  await page.evaluate(queueKey => localStorage.removeItem(queueKey), queuedKey);
   assert(secondResult.queued_at <= firstResult.released_at, 'Second-tab contention request was not queued before first-tab release.');`;
 
 const replacementDefinitions = `const lockWaitTarget = ${JSON.stringify(contentionTarget)};\nconst lockWaitReplacement = ${JSON.stringify(contentionReplacement)};`;
