@@ -35,7 +35,8 @@ const ASH_VERSIONED_MODULES = Object.freeze([
   [ASH_WORKSPACE_BRIDGE_MODULE, `${ASH_WORKSPACE_BRIDGE_MODULE}?v=${ASH_LIFECYCLE_ASSET_EPOCH}`],
   ['/dome-world/ash-case-controls.js', `/dome-world/ash-case-controls.js?v=${ASH_LIFECYCLE_ASSET_EPOCH}`],
   ['/dome-world/ash-a7-a11-recompiler-core.js', '/dome-world/ash-a7-a11-recompiler-core.js?v=20260723-a7-v1'],
-  ['/dome-world/ash-a7-home-recompilation.js', '/dome-world/ash-a7-home-recompilation.js?v=20260723-a7-v1']
+  ['/dome-world/ash-a7-home-recompilation.js', '/dome-world/ash-a7-home-recompilation.js?v=20260723-a7-v1'],
+  ['/dome-world/ash-a8-case-map-recompilation.js', '/dome-world/ash-a8-case-map-recompilation.js?v=20260723-a8-v1']
 ]);
 
 function cachePreflightBoot() {
