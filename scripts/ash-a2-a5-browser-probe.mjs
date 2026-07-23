@@ -7,7 +7,7 @@ const base = String(process.env.TD613_BASE_URL || 'http://127.0.0.1:6130').repla
 const artifactDir = path.resolve(process.env.TD613_ARTIFACT_DIR || `artifacts/ash-a2-a6-${browserName}`);
 const engine = { chromium, firefox, webkit }[browserName];
 const canonicalInspectionSelector = '.ash-flowcore-field:not(.ash-flowcore-field--proxy):not([hidden]) [data-flowcore-channel="inspection"]';
-const canonicalExactSelector = '#ashAiaMembrane > .ash-aia__depths [data-aia-exact]';
+const canonicalExactSelector = '#ashAiaMembrane [data-aia-exact]';
 if (!engine) throw new Error(`Unsupported browser: ${browserName}`);
 
 await fs.mkdir(artifactDir, { recursive:true });
@@ -187,7 +187,10 @@ try {
   }));
   if (!/Lesson 2 of 4/i.test(lessonAfter.status)) throw new Error('Next Lesson produced no visible world answer.');
 
-  await page.locator(canonicalExactSelector).evaluate(node => { node.open = false; });
+  const visibleExact = page.locator(`${canonicalExactSelector}:visible`);
+  await visibleExact.waitFor({ state:'visible', timeout:30000 });
+  if (await visibleExact.count() !== 1) throw new Error('Canonical exact disclosure ownership was ambiguous.');
+  await visibleExact.evaluate(node => { node.open = false; });
   const lifecycleBeforeRest = await page.evaluate(() => window.__td613AshLiveAIA?.current?.()?.lifecycle_state || null);
   await page.locator('[data-aia-rest]').click();
   await page.waitForFunction(() => document.body.dataset.ashAiaResting === 'true'
@@ -206,7 +209,16 @@ try {
   if (restBeforeInspection.lifecycle !== lifecycleBeforeRest) throw new Error('Structural Rest mutated lifecycle state.');
 
   await page.locator(canonicalInspectionSelector).click();
-  await page.waitForFunction(selector => document.querySelector(selector)?.open === true, canonicalExactSelector);
+  await page.waitForFunction(selector => {
+    const rendered = node => {
+      const style = getComputedStyle(node);
+      const rect = node.getBoundingClientRect();
+      return style.display !== 'none' && style.visibility !== 'hidden'
+        && Number(style.opacity) > 0 && rect.width > 0 && rect.height > 0;
+    };
+    const shown = [...document.querySelectorAll(selector)].filter(rendered);
+    return shown.length === 1 && shown[0].open === true;
+  }, canonicalExactSelector);
   const restState = { ...restBeforeInspection, exact_opened_during_rest:true };
 
   await page.locator('[data-aia-return]').click();
