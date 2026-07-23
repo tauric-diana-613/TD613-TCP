@@ -26,6 +26,7 @@ jobs:
           node-version: 22
           cache: npm
       - run: npm ci
+      - run: node tests/workflow-estate.test.mjs
       - run: npm test
       - run: npm run test:safe-harbor:current
       - run: npm run test:safe-harbor:gen3:wave-b
