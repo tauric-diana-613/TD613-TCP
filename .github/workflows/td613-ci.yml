@@ -27,7 +27,24 @@ jobs:
           cache: npm
       - run: npm ci
       - run: node tests/workflow-estate.test.mjs
-      - run: npm test
+      - name: Run legacy repository suite
+        id: legacy_suite
+        shell: bash
+        run: |
+          mkdir -p artifacts/core
+          set +e
+          npm test > artifacts/core/npm-test.log 2>&1
+          status=$?
+          cat artifacts/core/npm-test.log
+          exit "$status"
+      - name: Preserve held legacy suite diagnostics
+        if: failure() && steps.legacy_suite.outcome == 'failure'
+        uses: actions/upload-artifact@v4
+        with:
+          name: td613-core-legacy-suite-diagnostic
+          path: artifacts/core/npm-test.log
+          if-no-files-found: error
+          retention-days: 3
       - run: npm run test:safe-harbor:current
       - run: npm run test:safe-harbor:gen3:wave-b
 
