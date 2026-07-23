@@ -1,6 +1,6 @@
 import { validThresholdReadiness } from './ash-cache-flush.js?v=20260718-canonical-membrane-v7-readiness-boundary';
 
-export const ASH_CASE_CLOSE_REPAIR_VERSION = 'td613.ash.case-close-repair/v1.5-save-population-serialized';
+export const ASH_CASE_CLOSE_REPAIR_VERSION = 'td613.ash.case-close-repair/v1.6-save-operation-serialized';
 
 const DB_NAME = 'td613-ash-keep';
 const POINTER_KEY = 'td613.ash-keep.current-case';
@@ -100,6 +100,14 @@ async function saveAtCloseBoundary(caseId, fingerprintPosture) {
   } finally {
     db.close();
   }
+}
+
+async function awaitActiveSaveOperation(caseId) {
+  if (!caseId) return false;
+  const withOperation = window.TD613AshConvergence?.withOperation;
+  if (typeof withOperation !== 'function') return false;
+  await withOperation(`save:${caseId}`, async () => true);
+  return true;
 }
 
 function caseListPosture(expectedCaseId = '') {
@@ -235,6 +243,8 @@ async function closeToMembrane() {
   closing = true;
   const caseId = localStorage.getItem(POINTER_KEY);
   try {
+    const saveOperationSettled = await awaitActiveSaveOperation(caseId);
+    document.documentElement.dataset.ashCloseSaveOperationSettled = String(saveOperationSettled);
     const savePopulationSettled = await waitForCaseListReady();
     document.documentElement.dataset.ashCloseSavePopulationSettled = String(savePopulationSettled);
     const preCloseBackup = await saveAtCloseBoundary(caseId, 'PRE_CLOSE_BACKUP');
