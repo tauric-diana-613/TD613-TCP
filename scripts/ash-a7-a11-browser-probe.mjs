@@ -38,14 +38,32 @@ async function returnToMap(page) {
   await page.waitForFunction(() => document.getElementById('workspace-map')?.classList.contains('active'), null, { timeout:30_000 });
 }
 
+async function waitForStableCaseMap(page) {
+  await page.waitForFunction(() => {
+    const snapshot = window.__td613AshPremiumUI?.snapshot?.();
+    const caseMap = snapshot?.caseMap;
+    if (!caseMap?.case_map_digest) return false;
+    const signature = `${caseMap.case_map_digest}:${caseMap.nodes?.length || 0}:${caseMap.relationships?.length || 0}`;
+    const now = performance.now();
+    const prior = window.__td613A8BaselineStability;
+    if (!prior || prior.signature !== signature) {
+      window.__td613A8BaselineStability = { signature, since:now };
+      return false;
+    }
+    return now - prior.since >= 800;
+  }, null, { timeout:90_000, polling:100 });
+}
+
 async function inspectA8(page) {
   await returnToMap(page);
+  await waitForStableCaseMap(page);
   for (const selector of ['#ashA8ObjectPreview','#ashA8RelationPreview','#ashA8RelationshipList','#ashA8RelationDetail','#accessibleTable']) {
     if (!(await page.locator(selector).count())) throw new Error(`A8 missing ${selector}`);
   }
   if (await page.locator('#ashA8RelationDirection').count()) throw new Error('A8 exposed an undirected state the map engine cannot store.');
 
   const before = await page.evaluate(() => ({
+    digest:window.__td613AshPremiumUI?.snapshot?.()?.caseMap?.case_map_digest || null,
     objects:window.__td613AshPremiumUI?.snapshot?.()?.caseMap?.nodes?.length || 0,
     relations:window.__td613AshPremiumUI?.snapshot?.()?.caseMap?.relationships?.length || 0,
     notes:document.getElementById('researchNotes')?.value || '',
@@ -61,11 +79,12 @@ async function inspectA8(page) {
   await page.locator('#ashA8CommitObject').click();
   await page.waitForFunction(() => /Object held:.*CASE_BOUND required/i.test(document.getElementById('ashA8Status')?.textContent || ''), null, { timeout:30_000 });
   const afterObjectHold = await page.evaluate(() => ({
+    digest:window.__td613AshPremiumUI?.snapshot?.()?.caseMap?.case_map_digest || null,
     objects:window.__td613AshPremiumUI?.snapshot?.()?.caseMap?.nodes?.length || 0,
     notes:document.getElementById('researchNotes')?.value || '',
     status:document.getElementById('ashA8Status')?.textContent || ''
   }));
-  if (afterObjectHold.objects !== before.objects) throw new Error('A8 pre-CASE_BOUND object hold mutated the Case Map.');
+  if (afterObjectHold.digest !== before.digest || afterObjectHold.objects !== before.objects) throw new Error('A8 pre-CASE_BOUND object hold mutated the Case Map.');
   if (afterObjectHold.notes !== before.notes) throw new Error('A8 pre-CASE_BOUND object hold wrote notes without stored successor state.');
 
   await returnToMap(page);
@@ -82,11 +101,12 @@ async function inspectA8(page) {
   await page.locator('#ashA8CommitRelation').click();
   await page.waitForFunction(() => /Relationship held:.*CASE_BOUND required/i.test(document.getElementById('ashA8Status')?.textContent || ''), null, { timeout:30_000 });
   const afterRelationHold = await page.evaluate(() => ({
+    digest:window.__td613AshPremiumUI?.snapshot?.()?.caseMap?.case_map_digest || null,
     relations:window.__td613AshPremiumUI?.snapshot?.()?.caseMap?.relationships?.length || 0,
     notes:document.getElementById('researchNotes')?.value || '',
     status:document.getElementById('ashA8Status')?.textContent || ''
   }));
-  if (afterRelationHold.relations !== before.relations) throw new Error('A8 pre-CASE_BOUND relationship hold mutated the Case Map.');
+  if (afterRelationHold.digest !== before.digest || afterRelationHold.relations !== before.relations) throw new Error('A8 pre-CASE_BOUND relationship hold mutated the Case Map.');
   if (afterRelationHold.notes !== before.notes) throw new Error('A8 pre-CASE_BOUND relationship hold wrote notes without stored successor state.');
 
   await returnToMap(page);
