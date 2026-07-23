@@ -48,6 +48,20 @@ function sendJson(res, status, payload, headers = {}) {
   res.end(`${JSON.stringify(payload)}\n`);
 }
 
+async function sendCanonicalKeep(req, res) {
+  const source = await fs.readFile(path.join(repoRoot, 'app/dome-world/ash-keep.html'), 'utf8');
+  const body = injectAshKeepLifecycle(source);
+  res.writeHead(200, {
+    'content-type':'text/html; charset=utf-8',
+    'cache-control':'no-store',
+    'x-td613-ash-lifecycle-asset':ASH_LIFECYCLE_ASSET_EPOCH,
+    'x-td613-ash-cache-preflight':ASH_MASS_EVICTION_EPOCH,
+    'x-td613-ash-visible-route':'/dome-world/ash-threshold.html'
+  });
+  if (req.method === 'HEAD') return res.end();
+  res.end(body);
+}
+
 const server = http.createServer(async (req, res) => {
   const url = new URL(req.url || '/', `http://${req.headers.host || '127.0.0.1'}`);
   if (url.pathname === '/favicon.ico') {
@@ -74,12 +88,13 @@ self.addEventListener('fetch', event => {
   if (url.pathname === '/__ash_keep_closure/readiness') {
     return sendJson(res, 200, {
       ok: true,
-      schema: 'td613.ash-keep.local-closure-readiness/v0.4-aia3-mass-eviction',
+      schema: 'td613.ash-keep.local-closure-readiness/v0.5-canonical-first-paint',
       recipient_transport: false,
       provider_route: false,
       production_promotion: false,
       ash_keep_delivery_transform: true,
-      cache_navigation_required: true,
+      cache_navigation_required: false,
+      canonical_visible_route: '/dome-world/ash-threshold.html',
       browser_state_read_via_page_evaluate: true,
       lifecycle_asset_epoch: ASH_LIFECYCLE_ASSET_EPOCH,
       mass_eviction_epoch: ASH_MASS_EVICTION_EPOCH
@@ -88,11 +103,12 @@ self.addEventListener('fetch', event => {
   if (url.pathname === '/api/dome-world-shell' && url.searchParams.get('surface') === 'cache-evict') {
     return sendJson(res, 200, {
       ok:true,
-      schema:'td613.ash.cache-transition-response/v0.5-aia3-mass-eviction',
+      schema:'td613.ash.cache-transition-response/v0.6-first-paint',
       scope:'HTTP_CACHE_AND_SERVICE_WORKER_CLIENT_EVICTION',
       indexeddb_preserved:true,
       case_data_preserved:true,
       active_session_reset_by_client:false,
+      visible_url:'/dome-world/ash-threshold.html',
       lifecycle_asset_epoch:ASH_LIFECYCLE_ASSET_EPOCH,
       mass_eviction_epoch:ASH_MASS_EVICTION_EPOCH
     }, {
@@ -101,6 +117,13 @@ self.addEventListener('fetch', event => {
     });
   }
   if (req.method !== 'GET' && req.method !== 'HEAD') return sendJson(res, 405, { ok: false, error: 'method-not-allowed' });
+
+  if (url.pathname === '/api/dome-world-shell' && url.searchParams.get('surface') === 'ash-keep-html') {
+    return sendCanonicalKeep(req, res);
+  }
+  if (url.pathname === '/dome-world/ash-threshold.html' || url.pathname === '/dome-world/ash-keep.html') {
+    return sendCanonicalKeep(req, res);
+  }
 
   const relative = decodeURIComponent(resolvePublicPath(url.pathname));
   const candidate = path.resolve(repoRoot, relative);
@@ -122,17 +145,10 @@ self.addEventListener('fetch', event => {
     if (url.pathname === '/dome-world/ash-keep.js') {
       body = Buffer.from(stabilizeAshKeepSource(body.toString('utf8')), 'utf8');
     }
-    if (url.pathname === '/dome-world/ash-keep.html') {
-      body = Buffer.from(injectAshKeepLifecycle(body.toString('utf8')), 'utf8');
-    }
     res.writeHead(200, {
       'content-type': MIME_TYPES[extension] || 'application/octet-stream',
       'cache-control': 'no-store',
-      ...(url.pathname === '/dome-world/ash-keep.js' ? { 'x-td613-ash-map-scheduler': 'EVENT_DRIVEN_COALESCED' } : {}),
-      ...(url.pathname === '/dome-world/ash-keep.html' ? {
-        'x-td613-ash-lifecycle-asset':ASH_LIFECYCLE_ASSET_EPOCH,
-        'x-td613-ash-cache-preflight':ASH_MASS_EVICTION_EPOCH
-      } : {})
+      ...(url.pathname === '/dome-world/ash-keep.js' ? { 'x-td613-ash-map-scheduler': 'EVENT_DRIVEN_COALESCED' } : {})
     });
     if (req.method === 'HEAD') return res.end();
     return res.end(body);
