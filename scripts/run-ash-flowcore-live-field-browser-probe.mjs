@@ -46,6 +46,36 @@ const listenerReplacement = String.raw`await page.addInitScript(() => {
   });
 });`;
 
+const ingressReadinessTarget = String.raw`  await page.waitForFunction(() => {
+    const portal = window.__td613AshFlowcoreIngressPortal?.current?.();
+    const visible = document.querySelector('.ash-flowcore-field:not([hidden])');
+    return window.__td613AshFlowcoreField?.current?.().artifact_required === false
+      && window.__td613AshPostIngressMotionRestoration?.version
+      && window.__td613AshIngressCopySpacing?.measure?.().available
+      && document.documentElement.dataset.ashCompositionStable
+      && document.getElementById('launch')
+      && portal?.visible_host === 'INGRESS'
+      && portal?.duplicate_visible_fields === 1
+      && visible?.parentElement?.id === 'guidedLaunchPromise'
+      && visible.getBoundingClientRect().height > 260
+      && visible.querySelectorAll('[data-aia-play]').length === 1
+      && !visible.querySelector('[data-flowcore-ingress-play]');
+  });`;
+
+const ingressReadinessReplacement = String.raw`  await page.waitForFunction(() => {
+    const visible = document.querySelector('.ash-flowcore-field:not([hidden])');
+    // Portal receipts are asserted immediately after rendered readiness.
+    return window.__td613AshFlowcoreField?.current?.().artifact_required === false
+      && window.__td613AshPostIngressMotionRestoration?.version
+      && window.__td613AshIngressCopySpacing?.measure?.().available
+      && document.documentElement.dataset.ashCompositionStable
+      && document.getElementById('launch')
+      && visible?.parentElement?.id === 'guidedLaunchPromise'
+      && visible.getBoundingClientRect().height > 260
+      && visible.querySelectorAll('[data-aia-play]').length === 1
+      && !visible.querySelector('[data-flowcore-ingress-play]');
+  });`;
+
 const motionTarget = String.raw`  const activeMotionHandle = await page.waitForFunction(() => {
     if (document.documentElement.dataset.ashFlowcorePhase !== 'NAME') return false;
     const field = document.querySelector('.ash-flowcore-field:not([hidden])');
@@ -101,21 +131,26 @@ const mobileParityReplacement = String.raw`  const mobileStaticTruth = page.loca
 await fs.mkdir(artifactDir, { recursive:true });
 const source = await fs.readFile(sourceUrl, 'utf8');
 const listenerCount = source.split(listenerTarget).length - 1;
+const ingressReadinessCount = source.split(ingressReadinessTarget).length - 1;
 const motionCount = source.split(motionTarget).length - 1;
 const mobileParityCount = source.split(mobileParityTarget).length - 1;
 if (listenerCount !== 1) throw new Error(`Flow-Core witness expected one emitted-phase listener seam; observed ${listenerCount}.`);
+if (ingressReadinessCount !== 1) throw new Error(`Flow-Core witness expected one portal-gated ingress readiness seam; observed ${ingressReadinessCount}.`);
 if (motionCount !== 1) throw new Error(`Flow-Core witness expected one post-event NAME sampling seam; observed ${motionCount}.`);
 if (mobileParityCount !== 1) throw new Error(`Flow-Core witness expected one legacy mobile list-count seam; observed ${mobileParityCount}.`);
 
 const runtime = source
   .replace(listenerTarget, listenerReplacement)
+  .replace(ingressReadinessTarget, ingressReadinessReplacement)
   .replace(motionTarget, motionReplacement)
   .replace(mobileParityTarget, mobileParityReplacement)
   .replace('v0.7-atomic-name-receipt', 'v0.9-emitted-presentation-static-parity');
 
 if (!runtime.includes('dom_phase:field?.dataset.flowcorePhaseName')) throw new Error('Flow-Core emitted DOM-phase receipt was not materialized.');
+if (!runtime.includes('Portal receipts are asserted immediately after rendered readiness.')) throw new Error('Flow-Core rendered ingress readiness was not materialized.');
 if (!runtime.includes('motion:item.motion')) throw new Error('Flow-Core emitted motion receipt was not materialized.');
 if (!runtime.includes('mobileStaticTruth.isVisible()')) throw new Error('Flow-Core mobile static-truth parity was not materialized.');
+if (runtime.includes(ingressReadinessTarget)) throw new Error('Flow-Core witness retained portal receipts inside ingress readiness.');
 if (runtime.includes('activeMotionHandle')) throw new Error('Flow-Core witness retained post-event NAME sampling.');
 if (runtime.includes('mobile.static_count === 5')) throw new Error('Flow-Core witness retained the legacy exact list-count proxy.');
 
