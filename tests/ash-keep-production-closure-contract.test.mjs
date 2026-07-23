@@ -93,11 +93,17 @@ assert.doesNotMatch(premiumFlight, /production_promotion_authorized:\s*true|tran
 const localJob = workflow.split('  local-closure-validation:')[1]?.split('  deployed-observation:')[0] || '';
 const deployedJob = workflow.split('  deployed-observation:')[1] || '';
 for (const token of [
-  'Ash Keep Production Closure', 'workflow_dispatch', 'workflow_run', 'workflows: ["Test and deploy static app"]', 'statuses: write',
+  'Ash Keep Production Closure', 'workflow_dispatch', 'statuses: write', 'RUN_DEPLOYED_OBSERVATION', 'inputs.base_url',
   'tests/ash-keep-production-closure-contract.test.mjs', 'tests/ash-keep-production-promotion-gate.test.mjs',
   'scripts/ash-keep-production-probe.mjs', 'scripts/run-ash-keep-production-probe.mjs',
   'scripts/run-ash-constitutional-convergence-probe.mjs', 'ash-keep-production-closure-evidence'
 ]) assert.ok(workflow.includes(token), `Closure workflow omitted ${token}`);
+assert.doesNotMatch(workflow, /\n  workflow_run:/);
+assert.doesNotMatch(workflow, /github\.event\.workflow_run|workflows: \["Test and deploy static app"\]/);
+assert.match(deployedJob, /github\.event_name == 'workflow_dispatch'/);
+assert.match(deployedJob, /inputs\.confirm_deployed_probe == 'RUN_DEPLOYED_OBSERVATION'/);
+assert.match(deployedJob, /inputs\.base_url != ''/);
+
 for (const token of [
   'td613.ash.constitutional-convergence-observation/v0.1', 'promotion_authorized: false',
   'APERTURE_REBUILD', 'HUSH_CANDIDATE', 'DELETE_PARTIAL_HOLD', 'DRY_AUDIT_ONLY',
