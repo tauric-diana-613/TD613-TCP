@@ -39,6 +39,8 @@ const closeRepair = read('app/dome-world/ash-case-close-repair.js');
 const emergency = read('app/dome-world/ash-emergency-stability-contract.js');
 const navigation = read('app/dome-world/ash-workspace-navigation.js');
 const rescue = read('app/dome-world/ash-ui-ux-rescue.js');
+const RELEASE_EPOCH = '20260723-a2-a5-release-v1';
+const RELEASE_CACHE_EPOCH = 'td613.ash.cache-flush/2026-07-23-a2-a5-release-v1';
 
 class MemoryStorage {
   constructor(entries = {}) { this.values = new Map(Object.entries(entries)); }
@@ -106,17 +108,17 @@ for (const token of [
 for (const forbidden of ['SCROLLBAR_FADE_DELAY', 'installScrollbarFade', 'scrollbar-gutter:stable']) assert.equal(ingress.includes(forbidden), false);
 
 assert.match(cache, /2026-07-18-canonical-membrane-v7/);
-assert.match(cache, /td613\.ash\.cache-flush\/2026-07-21-legal-demo-ux-v1/);
+assert.ok(cache.includes(RELEASE_CACHE_EPOCH), 'Legacy cache flush must yield to the final mass-eviction epoch.');
 assert.match(cache, /validThresholdReadiness/);
 assert.match(cache, /unregisterSameOriginWorkers/);
 assert.match(cache, /cache:'no-store'/);
 assert.doesNotMatch(cache, /indexedDB\.deleteDatabase|localStorage\.clear|sessionStorage\.clear/);
 
-assert.equal(ASH_LIFECYCLE_ASSET_EPOCH, '20260721-legal-demo-ux-v1');
-assert.equal(ASH_MASS_EVICTION_EPOCH, 'td613.ash.cache-flush/2026-07-21-legal-demo-ux-v1');
-assert.equal(ASH_LIFECYCLE_MODULE, '/dome-world/ash-lifecycle.js?v=20260721-legal-demo-ux-v1');
-assert.match(lifecycle, /ash-ingress-layout-hydration\.js\?v=20260721-legal-demo-ux-v1/);
-assert.match(lifecycle, /ash-cache-flush\.js\?v=20260721-legal-demo-ux-v1/);
+assert.equal(ASH_LIFECYCLE_ASSET_EPOCH, RELEASE_EPOCH);
+assert.equal(ASH_MASS_EVICTION_EPOCH, RELEASE_CACHE_EPOCH);
+assert.equal(ASH_LIFECYCLE_MODULE, `/dome-world/ash-lifecycle.js?v=${RELEASE_EPOCH}`);
+assert.match(lifecycle, new RegExp(`ash-ingress-layout-hydration\\.js\\?v=${RELEASE_EPOCH}`));
+assert.match(lifecycle, new RegExp(`ash-cache-flush\\.js\\?v=${RELEASE_EPOCH}`));
 assert.match(lifecycle, /data-ash-composition-hydrating/);
 
 const renderedKeep = injectAshKeepLifecycle(keepHtml);
@@ -130,7 +132,7 @@ for (const source of ['ash-keep.js', 'ash-convergence.js', 'ash-lifecycle.js', '
 }
 assert.match(renderedKeep, /id="td613-ash-canonical-module-bootstrap"/);
 assert.match(renderedKeep, /await globalThis\.__td613AshAia3Preflight/);
-assert.match(renderedKeep, /name="ash-cache-preflight" content="legal-demo-ux-v1"/);
+assert.match(renderedKeep, /name="ash-cache-preflight" content="a2-a5-release-v1"/);
 assert.match(renderedKeep, /Preparing Ash/);
 assert.match(renderedKeep, /<title>TD613 Ash<\/title>/);
 assert.doesNotMatch(renderedKeep, /searchParams\.set\('ash_epoch'/);
@@ -138,9 +140,10 @@ assert.equal(injectAshKeepLifecycle(renderedKeep), renderedKeep, 'First-paint in
 
 for (const module of [
   'ash-profile-demo-hydration','ash-investigation-demo-hydration','ash-research-demo-hydration',
-  'ash-research-demo-control-state','ash-case-close-repair','ash-ui-ux-rescue'
-]) assert.match(bridge, new RegExp(`${module}\\.js\\?v=20260721-legal-demo-ux-v1`));
-assert.match(profileWrapper, /ash-legal-profile-demo\.js\?v=20260721-legal-demo-ux-v1/);
+  'ash-research-demo-control-state','ash-ui-ux-rescue'
+]) assert.match(bridge, new RegExp(`${module}\\.js\\?v=${RELEASE_EPOCH}`));
+assert.match(bridge, /ash-case-close-repair\.js\?v=20260723-case-close-quiescence-v4/);
+assert.match(profileWrapper, new RegExp(`ash-legal-profile-demo\\.js\\?v=${RELEASE_EPOCH}`));
 assert.doesNotMatch(profileWrapper + investigationWrapper, /fixtures\//);
 assert.match(rescue, /stopImmediatePropagation/);
 assert.match(rescue, /ash-ux-motion-track/);
