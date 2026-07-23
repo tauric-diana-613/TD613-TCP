@@ -40,38 +40,55 @@ async function inspectA8(page) {
   }
   if (await page.locator('#ashA8RelationDirection').count()) throw new Error('A8 exposed an undirected state the map engine cannot store.');
 
+  const before = await page.evaluate(() => ({
+    objects:window.__td613AshPremiumUI?.snapshot?.()?.caseMap?.nodes?.length || 0,
+    relations:window.__td613AshPremiumUI?.snapshot?.()?.caseMap?.relationships?.length || 0,
+    notes:document.getElementById('researchNotes')?.value || '',
+    lifecycle:document.body.dataset.ashLifecycle || null
+  }));
+
   const witnessName = `A8 Witness Object ${browserName}`;
   await page.locator('#ashA8ObjectName').fill(witnessName);
   await page.locator('#ashA8ObjectKnown').fill('Synthetic browser witness object.');
   await page.locator('#ashA8ObjectUncertain').fill('No human evidence inferred.');
   await page.locator('#ashA8ObjectEvidence').fill('browser-local synthetic fixture');
-  await page.locator('#ashA8ObjectNotes').fill('A8 delegated-storage witness.');
+  await page.locator('#ashA8ObjectNotes').fill('A8 constitutionally held object witness.');
   await page.locator('#ashA8CommitObject').click();
-  await page.waitForFunction(name => window.__td613AshPremiumUI?.snapshot?.()?.caseMap?.nodes?.some(node => node.label === name), witnessName, { timeout:90_000 });
-  await page.waitForFunction(name => [...document.querySelectorAll('#ashA8RelationTo option')].some(option => option.textContent === name), witnessName, { timeout:90_000 });
+  await page.waitForFunction(() => /Object held:.*CASE_BOUND required/i.test(document.getElementById('ashA8Status')?.textContent || ''), null, { timeout:30_000 });
+  const afterObjectHold = await page.evaluate(() => ({
+    objects:window.__td613AshPremiumUI?.snapshot?.()?.caseMap?.nodes?.length || 0,
+    notes:document.getElementById('researchNotes')?.value || '',
+    status:document.getElementById('ashA8Status')?.textContent || ''
+  }));
+  if (afterObjectHold.objects !== before.objects) throw new Error('A8 pre-CASE_BOUND object hold mutated the Case Map.');
+  if (afterObjectHold.notes !== before.notes) throw new Error('A8 pre-CASE_BOUND object hold wrote notes without stored successor state.');
 
-  const fromValue = await page.locator('#ashA8RelationFrom option').first().getAttribute('value');
-  await page.locator('#ashA8RelationFrom').selectOption(fromValue || '');
-  await page.locator('#ashA8RelationTo').selectOption({ label:witnessName });
+  const relationOptions = await page.locator('#ashA8RelationFrom option').evaluateAll(options => options.map(option => option.value).filter(Boolean));
+  if (relationOptions.length < 2) throw new Error('A8 requires two existing objects to test the constitutional relation hold.');
+  await page.locator('#ashA8RelationFrom').selectOption(relationOptions[0]);
+  await page.locator('#ashA8RelationTo').selectOption(relationOptions[1]);
   await page.locator('#ashA8RelationType').fill('browser-witness-supports');
   await page.locator('#ashA8RelationEvidence').fill('browser-local synthetic fixture');
   await page.locator('#ashA8RelationUncertain').fill('Relation remains open to review.');
-  await page.locator('#ashA8RelationNotes').fill('A8 delegated-relation witness.');
+  await page.locator('#ashA8RelationNotes').fill('A8 constitutionally held relation witness.');
   await page.locator('#ashA8CommitRelation').click();
-  await page.waitForFunction(name => {
-    const snapshot = window.__td613AshPremiumUI?.snapshot?.();
-    const node = snapshot?.caseMap?.nodes?.find(item => item.label === name);
-    return Boolean(node && snapshot?.caseMap?.relationships?.some(item => item.to === node.id && item.type === 'browser-witness-supports'));
-  }, witnessName, { timeout:90_000 });
-  await page.waitForFunction(() => /Stored relationship confirmed/i.test(document.getElementById('ashA8Status')?.textContent || ''), null, { timeout:90_000 });
+  await page.waitForFunction(() => /Relationship held:.*CASE_BOUND required/i.test(document.getElementById('ashA8Status')?.textContent || ''), null, { timeout:30_000 });
+  const afterRelationHold = await page.evaluate(() => ({
+    relations:window.__td613AshPremiumUI?.snapshot?.()?.caseMap?.relationships?.length || 0,
+    notes:document.getElementById('researchNotes')?.value || '',
+    status:document.getElementById('ashA8Status')?.textContent || ''
+  }));
+  if (afterRelationHold.relations !== before.relations) throw new Error('A8 pre-CASE_BOUND relationship hold mutated the Case Map.');
+  if (afterRelationHold.notes !== before.notes) throw new Error('A8 pre-CASE_BOUND relationship hold wrote notes without stored successor state.');
 
-  const inspect = page.locator('[data-ash-a8-inspect-relation]').last();
+  const inspect = page.locator('[data-ash-a8-inspect-relation]').first();
+  if (!(await inspect.count())) throw new Error('A8 demo exposed no existing relationship for lawful inspection.');
   await inspect.click();
   await page.waitForFunction(() => document.getElementById('ashA8RelationDetail')?.hidden === false);
+  const detail = await page.locator('#ashA8RelationDetail').innerText();
+  if (!/Source posture/i.test(detail) || !/Exact relation ID/i.test(detail)) throw new Error('A8 stored relationship detail omitted source posture or exact identity.');
   await page.locator('[data-ash-a8-open-table]').first().click();
   await page.waitForFunction(() => document.getElementById('accessibleTable')?.classList.contains('active'));
-  const notes = await page.locator('#researchNotes').inputValue();
-  if (!notes.includes('[A8 object]') || !notes.includes('[A8 relationship]')) throw new Error('A8 local notes/history lane did not receive both delegated records.');
 }
 
 async function inspectStage(page, stage) {
@@ -116,6 +133,7 @@ async function preserveFailure(page, label, consoleErrors, error) {
     module_graph:document.documentElement.dataset.ashModuleGraph || null,
     premium_ready:document.documentElement.dataset.ashPremiumReady || null,
     premium_workspace:document.documentElement.dataset.ashPremiumWorkspace || null,
+    lifecycle:document.body.dataset.ashLifecycle || null,
     a7_flag:document.documentElement.dataset.ashA7Recompiled || null,
     a8_flag:document.documentElement.dataset.ashA8Recompiled || null,
     a7_api:window.__td613AshA7Home?.version || null,
