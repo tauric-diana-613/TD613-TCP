@@ -35,6 +35,7 @@ for (const token of [
   'runtime_copy_ephemeral: true', 'CLASSIFY_INTENTIONAL_HORIZONTAL_SCROLL_LANES_SEPARATELY_FROM_CLIPPING', 'promotion_authorized: false'
 ]) assert.ok(runner.includes(token), `Core fixture runner omitted ${token}`);
 
+// The observer ceiling stays finite while clearing the coordinator's lawful 30-second lease.
 for (const token of [
   'ash-constitutional-convergence-probe.runtime.mjs', 'expected one case-selection seam',
   "select.dispatchEvent(new Event('change', { bubbles: true }))", 'remove?.disabled !== false',
