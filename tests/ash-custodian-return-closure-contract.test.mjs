@@ -8,7 +8,7 @@ const runtime = read('app/dome-world/ash-custodian-return-closure.js');
 const engine = read('app/engine/ash-custodian-return-closure.js');
 const probe = read('scripts/ash-custodian-return-production-probe.mjs');
 const fixture = read('scripts/ash-custodian-return-fixture.mjs');
-const workflow = read('.github/workflows/ash-custodian-return.yml');
+const workflow = read('.github/workflows/td613-ci.yml');
 const statusPublisher = read('scripts/publish-ash-keep-observer-status.mjs');
 
 assert.match(bridge, /ash-return-ready-bundle\.js[\s\S]*ash-custodian-return\.js[\s\S]*ash-custodian-return-closure\.js/);
@@ -56,37 +56,26 @@ for (const token of [
 assert.match(fixture, /SYNTHETIC|Synthetic/);
 assert.match(fixture, /returnReadyBundle/);
 
-assert.match(workflow, /Ash Custodian Return/);
-assert.match(workflow, /pull_request:[\s\S]*paths:/);
-assert.match(workflow, /push:\n    branches: \[main\]\n\npermissions:/);
-const pushBlock = workflow.split('  push:')[1]?.split('\n\npermissions:')[0] || '';
-assert.doesNotMatch(pushBlock, /paths:/, 'Stretch 2 closure observation must run on every main commit until closure.');
-assert.match(workflow, /validate-and-local-observe:/);
-assert.match(workflow, /deployed-observation:/);
-assert.match(workflow, /if: github\.event_name == 'push'/);
-assert.match(workflow, /needs: validate-and-local-observe/);
-assert.match(workflow, /ash-custodian-return-closure\.test\.mjs/);
-assert.match(workflow, /ash-custodian-return-closure-contract\.test\.mjs/);
-assert.match(workflow, /ash-custodian-return-production-probe\.mjs/);
-assert.match(workflow, /statuses: write/);
-assert.match(workflow, /Ash Custodian Return Local Observation/);
-assert.match(workflow, /Publish local Return observer pending status/);
-assert.match(workflow, /Publish local Return observer success status/);
-assert.match(workflow, /Publish local Return observer failure status/);
-assert.match(workflow, /Ash Custodian Return Deployed Observation/);
-assert.match(workflow, /Wait for deployed Stretch 2 closure surfaces/);
-assert.match(workflow, /Publish Return observer pending status/);
-assert.match(workflow, /Publish Return observer success status/);
-assert.match(workflow, /Publish Return observer failure status/);
-assert.match(workflow, /publish-ash-keep-observer-status\.mjs/);
-assert.match(workflow, /promotion_authorized/);
-assert.doesNotMatch(workflow, /IMPLEMENTED_PRODUCTION_DEMONSTRATED/);
-assert.equal(fs.existsSync('.github/workflows/ash-custodian-return-deployed.yml'), false, 'The unregistered standalone observer must not remain as a second authority surface.');
+for (const token of [
+  'Ash Custodian Return contracts',
+  'node tests/ash-custodian-return.test.mjs',
+  'node tests/ash-custodian-return-contract.test.mjs',
+  'node tests/ash-custodian-return-closure.test.mjs',
+  'node tests/ash-custodian-return-closure-contract.test.mjs'
+]) assert.match(workflow, new RegExp(token.replaceAll('.', '\\.')));
+assert.match(workflow, /permissions:\s*\n\s*contents: read/);
+assert.doesNotMatch(workflow, /statuses: write/);
+assert.equal(fs.existsSync('.github/workflows/ash-custodian-return.yml'), false,
+  'Custodian Return must remain a contract suite, not regain an independent push workflow.');
+assert.equal(fs.existsSync('.github/workflows/ash-custodian-return-deployed.yml'), false,
+  'The unregistered standalone observer must not remain as a second authority surface.');
 
 assert.match(statusPublisher, /Ash Keep Deployed Observation/);
 assert.match(statusPublisher, /Ash Lifecycle Deployed Observation/);
 assert.match(statusPublisher, /Ash Custodian Return Local Observation/);
 assert.match(statusPublisher, /Ash Custodian Return Deployed Observation/);
 assert.match(statusPublisher, /promotion_authorized: false/);
+assert.doesNotMatch(workflow, /publish-ash-keep-observer-status\.mjs/,
+  'Consolidated CI must validate Return contracts without publishing automatic commit statuses.');
 
 console.log('Ash Custodian Return production-closure contract: PASS');

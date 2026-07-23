@@ -102,6 +102,18 @@ jobs:
         run: node tests/ash-legal-ux.test.mjs
       - name: Ash live ingress and demos cache
         run: node tests/ash-live-ingress-demos-cache.test.mjs
+      - name: Ash Custodian Return contracts
+        run: |
+          node tests/ash-custodian-return.test.mjs
+          node tests/ash-custodian-return-contract.test.mjs
+          node tests/ash-custodian-return-closure.test.mjs
+          node tests/ash-custodian-return-closure-contract.test.mjs
+      - name: Ash Destination Handoff contracts
+        run: |
+          node tests/ash-destination-handoff.test.mjs
+          node tests/ash-destination-handoff-schemas.test.mjs
+          node tests/ash-destination-handoff-ui.test.mjs
+          node tests/ash-destination-handoff-closure.test.mjs
       - name: Ash Choir calibration schemas
         run: node tests/ash-keep-choir-calibration-schemas.test.mjs
       - name: Ash production closure contract
@@ -112,8 +124,10 @@ jobs:
         run: node tests/flowcore-p0-p7-seam-closure.test.mjs
       - name: Flow-Core P0-P10 completion
         run: node tests/flowcore-p0-p10-completion.test.mjs
-      - name: Flow-Core production observation
+      - name: Flow-Core production observation contract
         run: node tests/flowcore-production-observation.test.mjs
+      - name: Flow-Core runtime browser probe contract
+        run: node tests/flowcore-runtime-browser-probe.test.mjs
       - name: Product architecture contracts
         run: |
           node tests/product-architecture/shell.test.mjs

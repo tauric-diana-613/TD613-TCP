@@ -33,6 +33,7 @@ for (const name of required) {
 const retiredPatterns = [
   /^flowcore-pedagogue-p\d+\.ya?ml$/,
   /^flowcore-p0-p(?:7-seam-closure|10-final-stitch)\.ya?ml$/,
+  /^flowcore-(?:production-observation|runtime-evidence)\.ya?ml$/,
   /^hush-phase(?:9|10|11|12|13|14)\.ya?ml$/,
   /^ash-(?:legal-ux|research-ux|four-profile-pedagogy|investigation-guided-flight|user-test-flight|live-ingress-demos-cache|safe-harbor-ingress|custodian-return|destination-handoff|independent-provenance|aperture-composition-constitution)\.ya?ml$/,
   /^ash-keep-(?:aia2-usability|choir-test|delivery-boundary|hush-intervention|live-aia-browser|live-aia)\.ya?ml$/,
@@ -42,7 +43,7 @@ const retiredPatterns = [
 for (const name of workflows) {
   assert.ok(
     !retiredPatterns.some((pattern) => pattern.test(name)),
-    `Retired micro-workflow returned: ${name}. Keep its witness in tests/scripts and route it through td613-ci.yml.`,
+    `Retired micro-workflow returned: ${name}. Keep its witness in tests/scripts and route it through a durable shared workflow.`,
   );
 }
 
