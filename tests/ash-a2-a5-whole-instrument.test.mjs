@@ -59,7 +59,7 @@ assert.match(css, /ash-command-attention/);
 assert.match(css, /prefers-reduced-motion:reduce/);
 assert.match(css, /\.ash-flowcore-field\{grid-template-columns:minmax\(0,1fr\)!important/);
 assert.match(css, /\.ash-flowcore-field>\*\{min-width:0;max-width:100%\}/);
-assert.match(css, /\.ash-flowcore-field__canvas\{width:100%!important;max-width:100%!important;min-width:0!important;overflow-x:auto!important\}/);
+assert.match(css, /\.ash-flowcore-field__canvas\{box-sizing:border-box;width:100%!important;max-width:100%!important;min-width:0!important;overflow-x:auto!important\}/);
 assert.match(css, /button\[data-flowcore-channel="inspection"\]\{grid-column:1\/-1\}/);
 
 const assetEpoch = '20260723-a2-a5-release-v1';
