@@ -87,21 +87,37 @@ const motionReplacement = String.raw`  await page.waitForFunction(() => window._
     };
   });`;
 
+const mobileParityTarget = String.raw`  assert(mobile.static_count === 5 && mobile.rest_visible, 'Mobile/static Flow-Core parity incomplete.');`;
+const mobileParityReplacement = String.raw`  const mobileStaticTruth = page.locator('.ash-flowcore-field:not(.ash-flowcore-field--proxy):not([hidden]) #ashWholeInstrumentStaticTruth');
+  const mobileStaticTruthText = await mobileStaticTruth.textContent();
+  const mobilePhaseNames = await page.evaluate(() => window.__ashFlowcorePhaseTrace.map(item => item.phase_name));
+  assert(await mobileStaticTruth.isVisible()
+    && ['NOTICE','ACT','WORLD_ANSWERS','NAME','REST'].every(name => mobilePhaseNames.includes(name))
+    && /Condition:/.test(mobileStaticTruthText || '')
+    && /Consequence:/.test(mobileStaticTruthText || '')
+    && /Missingness:/.test(mobileStaticTruthText || '')
+    && /Claim ceiling:/.test(mobileStaticTruthText || ''), 'Mobile/static Flow-Core parity incomplete.');`;
+
 await fs.mkdir(artifactDir, { recursive:true });
 const source = await fs.readFile(sourceUrl, 'utf8');
 const listenerCount = source.split(listenerTarget).length - 1;
 const motionCount = source.split(motionTarget).length - 1;
+const mobileParityCount = source.split(mobileParityTarget).length - 1;
 if (listenerCount !== 1) throw new Error(`Flow-Core witness expected one emitted-phase listener seam; observed ${listenerCount}.`);
 if (motionCount !== 1) throw new Error(`Flow-Core witness expected one post-event NAME sampling seam; observed ${motionCount}.`);
+if (mobileParityCount !== 1) throw new Error(`Flow-Core witness expected one legacy mobile list-count seam; observed ${mobileParityCount}.`);
 
 const runtime = source
   .replace(listenerTarget, listenerReplacement)
   .replace(motionTarget, motionReplacement)
-  .replace('v0.7-atomic-name-receipt', 'v0.8-emitted-presentation-receipt');
+  .replace(mobileParityTarget, mobileParityReplacement)
+  .replace('v0.7-atomic-name-receipt', 'v0.9-emitted-presentation-static-parity');
 
 if (!runtime.includes('dom_phase:field?.dataset.flowcorePhaseName')) throw new Error('Flow-Core emitted DOM-phase receipt was not materialized.');
 if (!runtime.includes('motion:item.motion')) throw new Error('Flow-Core emitted motion receipt was not materialized.');
+if (!runtime.includes('mobileStaticTruth.isVisible()')) throw new Error('Flow-Core mobile static-truth parity was not materialized.');
 if (runtime.includes('activeMotionHandle')) throw new Error('Flow-Core witness retained post-event NAME sampling.');
+if (runtime.includes('mobile.static_count === 5')) throw new Error('Flow-Core witness retained the legacy exact list-count proxy.');
 
 await fs.writeFile(runtimePath, runtime, 'utf8');
 await import(`${pathToFileURL(runtimePath).href}?runtime=${Date.now()}`);
