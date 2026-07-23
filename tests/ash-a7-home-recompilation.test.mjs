@@ -30,7 +30,7 @@ for (const label of [
 ]) assert.ok(source.includes(label), `A7 source missing ${label}`);
 
 assert.match(source, /ash-stage-primary-action/);
-assert.match(source, /data-ash-a7-home/);
+assert.match(source, /dataset\.ashA7Home\s*=\s*ASH_A7_HOME_VERSION/);
 assert.match(source, /Route ledger/);
 assert.match(source, /Source bytes stay local/);
 assert.match(source, /release posture.*human closure remain unchanged/i);
