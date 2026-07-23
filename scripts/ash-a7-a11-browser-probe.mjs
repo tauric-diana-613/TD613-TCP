@@ -32,9 +32,14 @@ async function enterInvestigation(page) {
     && document.documentElement.dataset.ashPremiumWorkspace === 'home', null, { timeout:120_000 });
 }
 
-async function inspectA8(page) {
+async function returnToMap(page) {
   await page.locator('[data-premium-workspace="map"]').click();
   await page.waitForSelector('#ashA8RelationWorkshop', { state:'visible', timeout:90_000 });
+  await page.waitForFunction(() => document.documentElement.dataset.ashPremiumWorkspace === 'map', null, { timeout:30_000 });
+}
+
+async function inspectA8(page) {
+  await returnToMap(page);
   for (const selector of ['#ashA8ObjectPreview','#ashA8RelationPreview','#ashA8RelationshipList','#ashA8RelationDetail','#accessibleTable']) {
     if (!(await page.locator(selector).count())) throw new Error(`A8 missing ${selector}`);
   }
@@ -58,10 +63,15 @@ async function inspectA8(page) {
   const afterObjectHold = await page.evaluate(() => ({
     objects:window.__td613AshPremiumUI?.snapshot?.()?.caseMap?.nodes?.length || 0,
     notes:document.getElementById('researchNotes')?.value || '',
-    status:document.getElementById('ashA8Status')?.textContent || ''
+    status:document.getElementById('ashA8Status')?.textContent || '',
+    workspace:document.documentElement.dataset.ashPremiumWorkspace || null
   }));
   if (afterObjectHold.objects !== before.objects) throw new Error('A8 pre-CASE_BOUND object hold mutated the Case Map.');
   if (afterObjectHold.notes !== before.notes) throw new Error('A8 pre-CASE_BOUND object hold wrote notes without stored successor state.');
+  if (afterObjectHold.workspace === 'map') throw new Error('A8 object hold failed to route visibly to its Custody prerequisite.');
+
+  await returnToMap(page);
+  if (await page.locator('#ashA8ObjectName').inputValue() !== witnessName) throw new Error('A8 object draft did not survive the Custody hold and explicit Map return.');
 
   const relationOptions = await page.locator('#ashA8RelationFrom option').evaluateAll(options => options.map(option => option.value).filter(Boolean));
   if (relationOptions.length < 2) throw new Error('A8 requires two existing objects to test the constitutional relation hold.');
@@ -76,10 +86,15 @@ async function inspectA8(page) {
   const afterRelationHold = await page.evaluate(() => ({
     relations:window.__td613AshPremiumUI?.snapshot?.()?.caseMap?.relationships?.length || 0,
     notes:document.getElementById('researchNotes')?.value || '',
-    status:document.getElementById('ashA8Status')?.textContent || ''
+    status:document.getElementById('ashA8Status')?.textContent || '',
+    workspace:document.documentElement.dataset.ashPremiumWorkspace || null
   }));
   if (afterRelationHold.relations !== before.relations) throw new Error('A8 pre-CASE_BOUND relationship hold mutated the Case Map.');
   if (afterRelationHold.notes !== before.notes) throw new Error('A8 pre-CASE_BOUND relationship hold wrote notes without stored successor state.');
+  if (afterRelationHold.workspace === 'map') throw new Error('A8 relationship hold failed to route visibly to its Custody prerequisite.');
+
+  await returnToMap(page);
+  if (await page.locator('#ashA8RelationType').inputValue() !== 'browser-witness-supports') throw new Error('A8 relation draft did not survive the Custody hold and explicit Map return.');
 
   const inspect = page.locator('[data-ash-a8-inspect-relation]').first();
   if (!(await inspect.count())) throw new Error('A8 demo exposed no existing relationship for lawful inspection.');
