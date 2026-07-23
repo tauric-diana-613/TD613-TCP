@@ -62,6 +62,11 @@ assert.doesNotMatch(source, /makeSave/);
 assert.match(core, /ash-a9-work-recompilation\.js\?v=20260723-a9-v1/);
 assert.match(core, /__td613AshA9ModulePromise/);
 assert.match(core, /td613:ash:a9-load-held/);
+assert.match(core, /td613:ash:ux-workspace-opened/);
+assert.match(core, /__td613AshA9WorkspaceOwner/);
+assert.match(core, /await host\.__td613AshA9ModulePromise/);
+assert.match(core, /await host\.__td613AshA9\?\.refresh\?\.\('UX_WORKSPACE_OPENED'\)/);
+assert.doesNotMatch(core, /MutationObserver/);
 assert.doesNotMatch(core, /ash_epoch/);
 
 assert.match(probe, /if \(stage === 'A9'\)/);
@@ -89,6 +94,8 @@ console.log(JSON.stringify({
   human_intention_queues:true,
   action_families:8,
   native_owner_routing:true,
+  settled_workspace_ownership:true,
+  mutation_observer_added:false,
   hush_generation_automatic:false,
   consequential_action_automatic:false,
   parallel_task_engine:false,
