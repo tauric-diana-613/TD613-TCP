@@ -116,6 +116,20 @@ export function installAshStage({ stage, sync, navigationSelectors = '' }) {
   ensureA7A11Styles();
   let serial = 0;
   const run = async source => {
+    const activeStageForm = doc.activeElement?.closest?.(`[id^="ash${stage}"] .ash-stage-form`);
+    if (activeStageForm) {
+      host.dispatchEvent(new CustomEvent(`td613:ash:${stage.toLowerCase()}-recompile-deferred`, {
+        detail:Object.freeze({
+          stage,
+          source,
+          reason:'ACTIVE_STAGE_FORM',
+          authority_changed:false,
+          source_bytes_moved:false,
+          human_closure_required:true
+        })
+      }));
+      return false;
+    }
     const token = ++serial;
     const draft = captureStageDrafts();
     const snapshot = await currentPremiumSnapshot();
@@ -184,6 +198,7 @@ if (host && !host.__td613AshA9WorkspaceOwner) {
     event:'td613:ash:ux-workspace-opened',
     admission_event:'td613:ash:canonical-module-graph-ready',
     stale_shell_replaced:true,
+    active_stage_form_deferred:true,
     automatic_consequential_action:false,
     authority_changed:false,
     source_bytes_moved:false,
