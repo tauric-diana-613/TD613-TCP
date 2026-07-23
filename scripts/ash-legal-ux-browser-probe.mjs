@@ -8,7 +8,8 @@ const engine = engines[browserName];
 if (!engine) throw new Error(`Unsupported browser: ${browserName}`);
 const base = String(process.env.TD613_BASE_URL || 'http://127.0.0.1:6130').replace(/\/$/, '');
 const out = path.resolve(process.env.TD613_ARTIFACT_DIR || `artifacts/ash-legal-ux-${browserName}`);
-const EPOCH = '20260721-legal-demo-ux-v1';
+const EPOCH = '20260723-a2-a5-release-v1';
+const CACHE_EPOCH = 'td613.ash.cache-flush/2026-07-23-a2-a5-release-v1';
 const assert = (value, message) => { if (!value) throw new Error(message); };
 
 async function clearAsh(page) {
@@ -46,15 +47,18 @@ async function workspaceGeometry(page, name) {
 }
 
 async function waitForStableIngress(page) {
-  await page.waitForFunction(epoch => {
+  await page.waitForFunction(({ epoch, cacheEpoch }) => {
     const composition = window.__td613AshAia3Composition?.current?.() || null;
     return document.documentElement.dataset.ashCompositionStable?.includes('stable-navigation-motion')
       && window.__td613AshLegalDemo?.version
       && window.__td613AshUiUxRescue?.version
       && composition?.membrane_ready === true
       && composition?.hold == null
-      && location.search.includes(`ash_epoch=${epoch}`);
-  }, EPOCH, { timeout:60_000 });
+      && location.pathname === '/dome-world/ash-threshold.html'
+      && location.search === ''
+      && window.__td613AshAia3PreflightReceipt?.asset_epoch === epoch
+      && window.__td613AshAia3PreflightReceipt?.epoch === cacheEpoch;
+  }, { epoch:EPOCH, cacheEpoch:CACHE_EPOCH }, { timeout:60_000 });
 }
 
 await fs.mkdir(out, { recursive:true });
@@ -71,33 +75,21 @@ await page.addInitScript(() => {
   const sample = () => {
     const root = document.documentElement;
     const bodyStyle = document.body ? getComputedStyle(document.body) : null;
-    const bodyComposed = Boolean(bodyStyle
-      && bodyStyle.display !== 'none'
-      && bodyStyle.visibility !== 'hidden'
-      && Number(bodyStyle.opacity) > 0);
+    const bodyComposed = Boolean(bodyStyle && bodyStyle.display !== 'none' && bodyStyle.visibility !== 'hidden' && Number(bodyStyle.opacity) > 0);
     const children = document.body ? [...document.body.children].slice(0, 8).map(node => {
       const style = getComputedStyle(node);
       const rect = node.getBoundingClientRect();
       return {
-        tag:node.tagName,
-        id:node.id,
-        visible:bodyComposed
-          && style.display !== 'none'
-          && style.visibility !== 'hidden'
-          && Number(style.opacity) > 0
-          && rect.width > 0
-          && rect.height > 0
+        tag:node.tagName, id:node.id,
+        visible:bodyComposed && style.display !== 'none' && style.visibility !== 'hidden'
+          && Number(style.opacity) > 0 && rect.width > 0 && rect.height > 0
       };
     }) : [];
     window.__ashCompositionTrace.push({
-      time:performance.now(),
-      hydrating:root.dataset.ashCompositionHydrating || null,
-      stable:root.dataset.ashCompositionStable || null,
-      aia3_ready:root.dataset.ashAia3Ready || null,
-      hold:root.dataset.ashAia3ReadinessHold || null,
-      body_opacity:bodyStyle?.opacity || null,
-      body_composed_visible:bodyComposed,
-      children
+      time:performance.now(), hydrating:root.dataset.ashCompositionHydrating || null,
+      stable:root.dataset.ashCompositionStable || null, aia3_ready:root.dataset.ashAia3Ready || null,
+      hold:root.dataset.ashAia3ReadinessHold || null, body_opacity:bodyStyle?.opacity || null,
+      body_composed_visible:bodyComposed, children
     });
   };
   new MutationObserver(sample).observe(document, { subtree:true, childList:true, attributes:true });
@@ -106,10 +98,10 @@ await page.addInitScript(() => {
 
 const report = { schema:'td613.ash.legal-ux-browser/v0.6-flowcore-consequence-field', browser:browserName, status:'RUNNING', errors, http_errors:httpErrors, observations:{} };
 try {
-  await page.goto(`${base}/dome-world/ash-keep.html?presentation=aia&profile=legal&nonce=${Date.now()}`, { waitUntil:'domcontentloaded' });
+  await page.goto(`${base}/dome-world/ash-threshold.html`, { waitUntil:'domcontentloaded' });
   await waitForStableIngress(page);
   await clearAsh(page);
-  await page.goto(`${base}/dome-world/ash-keep.html?presentation=aia&profile=legal&nonce=${Date.now()}`, { waitUntil:'domcontentloaded' });
+  await page.goto(`${base}/dome-world/ash-threshold.html`, { waitUntil:'domcontentloaded' });
   await waitForStableIngress(page);
 
   const trace = await page.evaluate(() => window.__ashCompositionTrace);
@@ -182,10 +174,8 @@ try {
     return {
       visible:Boolean(field && fieldStyle?.display !== 'none' && fieldStyle?.visibility !== 'hidden' && Number(fieldStyle?.opacity) > 0 && field.getBoundingClientRect().height > 260),
       old_track_hidden:!rail || railStyle?.display === 'none' || railStyle?.visibility === 'hidden',
-      phase:current?.phase_name || null,
-      artifact_required:current?.artifact_required,
-      channels:current?.channels || [],
-      authority:current?.authority || null
+      phase:current?.phase_name || null, artifact_required:current?.artifact_required,
+      channels:current?.channels || [], authority:current?.authority || null
     };
   });
   assert(flowcore.visible, 'Flow-Core consequence field missing after Legal explanation.');
@@ -201,8 +191,7 @@ try {
   const mobile = await page.evaluate(() => ({
     overflow:Math.max(0, document.documentElement.scrollWidth - innerWidth),
     dock:[...document.querySelectorAll('#premiumPrimaryDock button')].map(button => {
-      const rect = button.getBoundingClientRect();
-      return { width:rect.width, height:rect.height };
+      const rect = button.getBoundingClientRect(); return { width:rect.width, height:rect.height };
     }),
     clipped:[...document.querySelectorAll('button,input,select,textarea,a')].filter(node => {
       const rect = node.getBoundingClientRect(), style = getComputedStyle(node);
