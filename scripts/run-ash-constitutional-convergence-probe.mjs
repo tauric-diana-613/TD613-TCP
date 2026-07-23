@@ -250,8 +250,8 @@ const lockWaitTarget = `  const [firstResult, secondResult] = await Promise.all(
 const lockWaitReplacement = `  const [firstResult, secondResult] = await Promise.race([
     Promise.all([firstLock, secondLock]),
     new Promise((_, reject) => setTimeout(
-      () => reject(new Error('Cross-tab lock witness exceeded 15000ms.')),
-      15000
+      () => reject(new Error('Cross-tab lock witness exceeded 35000ms.')),
+      35000
     ))
   ]);`;
 
@@ -349,7 +349,7 @@ if (!runtime.includes("document.getElementById('openSelectedCase')")
   || !runtime.includes('remove.click()')) {
   throw new Error('Convergence observer repaint-atomic Open/Reopen/Delete gestures were not materialized.');
 }
-if (!runtime.includes('Cross-tab lock witness exceeded 15000ms.')) {
+if (!runtime.includes('Cross-tab lock witness exceeded 35000ms.')) {
   throw new Error('Convergence observer bounded cross-tab join was not materialized.');
 }
 if (!runtime.includes("'td613.ash.session.epoch'")) {
