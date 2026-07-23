@@ -4,7 +4,16 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width,initial-scale=1">
   <meta name="robots" content="noindex,nofollow">
-  <title>Ash Keep · Recovering current interface</title>
+  <link rel="canonical" href="/dome-world/ash-threshold.html">
+  <title>TD613 Ash</title>
+  <script>
+    (()=>{try{
+      const canonical='/dome-world/ash-threshold.html';
+      if(location.pathname!==canonical||location.search)history.replaceState(null,'',canonical);
+      document.documentElement.dataset.td613AshCanonicalUrl='true';
+      window.__td613AshRecoveryFirstPaint=Object.freeze({schema:'td613.ash.recovery-first-paint/v0.1',title:document.title,url:location.pathname+location.search,legacy_visible:false});
+    }catch{}})();
+  </script>
   <style>
     :root{color-scheme:dark;background:#010806;color:#fff8da;font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace}
     *{box-sizing:border-box}
@@ -16,29 +25,30 @@
 </head>
 <body>
   <main role="status" aria-live="polite">
-    <p>Updating Ash Keep · preserving local cases</p>
-    <small>Leaving the retired delivery scope before reopening the current interface.</small>
+    <p>Preparing Ash</p>
+    <small>Preserving local cases while the current instrument resolves.</small>
   </main>
   <script>
   (()=>{
     const CURRENT_EPOCH='20260721-legal-demo-ux-v1';
     const CACHE_EPOCH='td613.ash.cache-flush/2026-07-21-legal-demo-ux-v1';
-    const params=new URLSearchParams(location.search);
-    const rawReturn=params.get('return')||'/dome-world/ash-keep.html?presentation=aia';
-    let target;
-    try{target=new URL(rawReturn,location.origin)}catch{target=new URL('/dome-world/ash-keep.html?presentation=aia',location.origin)}
-    if(target.origin!==location.origin||target.pathname!=='/dome-world/ash-keep.html')target=new URL('/dome-world/ash-keep.html?presentation=aia',location.origin);
-    target.searchParams.set('ash_epoch',params.get('epoch')||CURRENT_EPOCH);
-    target.searchParams.set('ash_recovered','cross-scope');
-    const receipt={schema:'td613.ash.cross-scope-recovery/v0.1',epoch:CACHE_EPOCH,asset_epoch:CURRENT_EPOCH,source_scope:'/dome-world/',bridge_scope:'/safe-harbor/',indexeddb_preserved:true,case_data_preserved:true,active_session_reset:false};
+    const CANONICAL='/dome-world/ash-threshold.html';
+    const receipt={schema:'td613.ash.cross-scope-recovery/v0.2',epoch:CACHE_EPOCH,asset_epoch:CURRENT_EPOCH,source_scope:'/dome-world/',bridge_scope:'/safe-harbor/',visible_url:CANONICAL,indexeddb_preserved:true,case_data_preserved:true,active_session_reset:false};
     (async()=>{
       const cachesCleared=[];const workers=[];
       try{if(globalThis.caches?.keys){for(const name of await caches.keys()){if(await caches.delete(name))cachesCleared.push(name)}}}catch{}
       try{if(navigator.serviceWorker?.getRegistrations){for(const registration of await navigator.serviceWorker.getRegistrations()){try{if(new URL(registration.scope,location.href).origin===location.origin&&await registration.unregister())workers.push(registration.scope)}catch{}}}}catch{}
       try{localStorage.setItem('td613.ash.cache-flush.aia3.epoch',CACHE_EPOCH);localStorage.setItem('td613.ash.cache-preflight.epoch',CACHE_EPOCH)}catch{}
-      try{sessionStorage.setItem('td613.ash.cross-scope-recovery.receipt',JSON.stringify({...receipt,cache_names:cachesCleared,worker_scopes:workers,controller_absent:navigator.serviceWorker?.controller==null}))}catch{}
+      const finalReceipt={...receipt,cache_names:cachesCleared,worker_scopes:workers,controller_absent:navigator.serviceWorker?.controller==null};
+      try{sessionStorage.setItem('td613.ash.cross-scope-recovery.receipt',JSON.stringify(finalReceipt))}catch{}
+      const response=await fetch('/api/dome-world-shell?surface=ash-keep-html',{cache:'no-store',credentials:'same-origin',headers:{'Cache-Control':'no-cache, no-store, max-age=0',Pragma:'no-cache'}});
+      if(!response.ok)throw new Error('Current Ash shell unavailable: '+response.status);
+      const shell=await response.text();
+      if(!shell.includes('td613-ash-canonical-module-bootstrap'))throw new Error('Current Ash canonical bootstrap missing');
       document.documentElement.dataset.td613AshRecovery='complete';
-      location.replace(target.pathname+target.search+target.hash);
+      document.open();
+      document.write(shell);
+      document.close();
     })().catch(error=>{
       document.documentElement.dataset.td613AshRecovery='held';
       document.querySelector('small').textContent=`Recovery held: ${String(error?.message||error)}`;
