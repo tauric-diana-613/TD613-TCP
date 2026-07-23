@@ -1,4 +1,4 @@
-export const ASH_PROFILE_PROMPT_CANONICAL_VERSION = 'td613.ash.profile-prompt-canonical/v0.8-bounded-case-choice-remount-reconciliation';
+export const ASH_PROFILE_PROMPT_CANONICAL_VERSION = 'td613.ash.profile-prompt-canonical/v0.9-delegated-case-choice-boundary';
 
 const host = globalThis.window;
 const doc = globalThis.document;
@@ -25,7 +25,7 @@ function queueControlReconcile(reason = 'QUEUED') {
   });
 }
 
-function applyRemountedCaseChoice(select, reason = 'REMOUNTED_CASE_SELECTION') {
+function applyCaseChoice(select, reason = 'DELEGATED_CASE_SELECTION') {
   if (!select || select !== doc.getElementById('selectCase')) return false;
   const caseId = select.value || '';
   for (const id of ['openSelectedCase', 'deleteSelectedCase']) {
@@ -36,19 +36,22 @@ function applyRemountedCaseChoice(select, reason = 'REMOUNTED_CASE_SELECTION') {
   if (caseId) {
     host.TD613AshConvergence?.transitionCase?.(caseId, {
       nextState:'SELECTED_NOT_OPEN',
-      reason:'operator-selected-remounted-case'
-    }).catch(error => console.error('Ash remounted case choice transition held:', error));
+      reason:'operator-selected-delegated-case'
+    }).catch(error => console.error('Ash delegated case choice transition held:', error));
   }
   return true;
 }
 
-function bindRemountedCaseChoice(select, reason = 'CASE_LIST_IDENTITY_CHANGED') {
+function captureCaseChoice(event) {
+  const select = event?.target?.closest?.('#selectCase');
+  if (!select) return;
+  applyCaseChoice(select);
+}
+
+function reconcileRemountedCaseChoice(select, reason = 'CASE_LIST_IDENTITY_CHANGED') {
   if (!select) return false;
-  if (select.dataset.ashRemountedCaseChoiceBound !== 'true') {
-    select.addEventListener('change', () => applyRemountedCaseChoice(select));
-    select.dataset.ashRemountedCaseChoiceBound = 'true';
-  }
-  applyRemountedCaseChoice(select, reason);
+  select.dataset.ashRemountedCaseChoiceReconciled = 'true';
+  applyCaseChoice(select, reason);
   return true;
 }
 
@@ -63,11 +66,11 @@ function queueCaseListReconcile(reason = 'CASE_LIST_IDENTITY_CHANGED') {
       await host.__td613AshCaseControls?.refreshCases?.(current.value || '');
       const settled = doc.getElementById('selectCase');
       if (settled) {
-        bindRemountedCaseChoice(settled, reason);
+        reconcileRemountedCaseChoice(settled, reason);
         settled.dataset.ashCaseListReconcileReason = reason;
       }
       doc.documentElement.dataset.ashCaseListRemountReconciled = String(Boolean(settled?.dataset.caseListState === 'READY'));
-      doc.documentElement.dataset.ashCaseChoiceRemountReconciled = String(Boolean(settled?.dataset.ashRemountedCaseChoiceBound === 'true'));
+      doc.documentElement.dataset.ashCaseChoiceRemountReconciled = String(Boolean(settled?.dataset.ashRemountedCaseChoiceReconciled === 'true'));
     } catch (error) {
       doc.documentElement.dataset.ashCaseListRemountReconciled = 'false';
       doc.documentElement.dataset.ashCaseChoiceRemountReconciled = 'false';
@@ -89,6 +92,7 @@ function installChoiceBoundary() {
   doc.documentElement.dataset.ashCanonicalProfileChoiceBoundary = 'true';
   doc.addEventListener('input', captureExplicitChoice, true);
   doc.addEventListener('change', captureExplicitChoice, true);
+  doc.addEventListener('change', captureCaseChoice, true);
 }
 
 function installBoundedControlObserver() {
