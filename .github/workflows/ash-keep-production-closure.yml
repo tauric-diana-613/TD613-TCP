@@ -34,6 +34,7 @@ on:
       - "scripts/ash-lifecycle-production-probe.mjs"
       - "scripts/ash-constitutional-convergence-probe.mjs"
       - "scripts/run-ash-constitutional-convergence-probe.mjs"
+      - "scripts/run-ash-constitutional-convergence-handshake.mjs"
       - "scripts/publish-ash-keep-observer-status.mjs"
       - "scripts/assert-ash-keep-release-posture.mjs"
       - "tests/ash-keep-*.test.mjs"
@@ -74,6 +75,7 @@ on:
       - "scripts/ash-lifecycle-production-probe.mjs"
       - "scripts/ash-constitutional-convergence-probe.mjs"
       - "scripts/run-ash-constitutional-convergence-probe.mjs"
+      - "scripts/run-ash-constitutional-convergence-handshake.mjs"
       - "scripts/publish-ash-keep-observer-status.mjs"
       - "scripts/assert-ash-keep-release-posture.mjs"
       - "tests/ash-keep-*.test.mjs"
@@ -122,6 +124,7 @@ jobs:
           node --check scripts/ash-lifecycle-production-probe.mjs
           node --check scripts/ash-constitutional-convergence-probe.mjs
           node --check scripts/run-ash-constitutional-convergence-probe.mjs
+          node --check scripts/run-ash-constitutional-convergence-handshake.mjs
           node --check scripts/publish-ash-keep-observer-status.mjs
           node --check scripts/assert-ash-keep-release-posture.mjs
           node --check scripts/ash-keep-local-closure-server.mjs
@@ -175,7 +178,7 @@ jobs:
         env:
           TD613_BASE_URL: http://127.0.0.1:6130
           TD613_ARTIFACT_DIR: artifacts/ash-constitutional-convergence
-        run: node scripts/run-ash-constitutional-convergence-probe.mjs
+        run: node scripts/run-ash-constitutional-convergence-handshake.mjs
       - name: Preserve local core-closure evidence
         if: always()
         uses: actions/upload-artifact@v4
@@ -188,6 +191,7 @@ jobs:
             scripts/ash-lifecycle-production-probe.mjs
             scripts/ash-constitutional-convergence-probe.mjs
             scripts/run-ash-constitutional-convergence-probe.mjs
+            scripts/run-ash-constitutional-convergence-handshake.mjs
             scripts/publish-ash-keep-observer-status.mjs
             scripts/assert-ash-keep-release-posture.mjs
             artifacts/ash-keep-local-server.log
@@ -294,7 +298,7 @@ jobs:
         env:
           TD613_BASE_URL: ${{ env.TD613_DEPLOYED_BASE_URL }}
           TD613_ARTIFACT_DIR: artifacts/ash-constitutional-convergence-deployed
-        run: node scripts/run-ash-constitutional-convergence-probe.mjs
+        run: node scripts/run-ash-constitutional-convergence-handshake.mjs
       - name: Validate deployed lifecycle observation class
         run: |
           node <<'NODE'
@@ -350,6 +354,7 @@ jobs:
             scripts/ash-lifecycle-production-probe.mjs
             scripts/ash-constitutional-convergence-probe.mjs
             scripts/run-ash-constitutional-convergence-probe.mjs
+            scripts/run-ash-constitutional-convergence-handshake.mjs
             scripts/publish-ash-keep-observer-status.mjs
             scripts/assert-ash-keep-release-posture.mjs
             docs/ASH_LIFECYCLE_PRODUCTION_DEMO_RECEIPT.md
