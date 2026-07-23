@@ -56,7 +56,7 @@ permissions:
   contents: read
 
 concurrency:
-  group: ash-flowcore-live-field-${{ github.event.pull_request.number || github.ref }}
+  group: ash-flowcore-live-field-${{ github.event.pull_request.number || github.ref }}-${{ github.run_attempt }}
   cancel-in-progress: true
 
 jobs:
