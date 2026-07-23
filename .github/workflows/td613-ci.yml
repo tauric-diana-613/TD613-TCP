@@ -90,6 +90,8 @@ jobs:
         run: node tests/ash-keep-continuity.test.mjs
       - name: Ash Keep Hush API
         run: node tests/ash-keep-hush-api.test.mjs
+      - name: Export canonical Aperture Downloads witness
+        run: npm run aperture:export-downloads
       - name: Ash Keep UI
         run: node tests/ash-keep-ui.test.mjs
       - name: Ash and Flow-Core retained witnesses
