@@ -94,19 +94,28 @@ jobs:
         run: npm run aperture:export-downloads
       - name: Ash Keep UI
         run: node tests/ash-keep-ui.test.mjs
-      - name: Ash and Flow-Core retained witnesses
-        run: |
-          node tests/ash-four-profile-pedagogy.test.mjs
-          node tests/ash-investigation-guidance.test.mjs
-          node tests/ash-legal-ux.test.mjs
-          node tests/ash-live-ingress-demos-cache.test.mjs
-          node tests/ash-research-ux-rehydration.test.mjs
-          node tests/ash-keep-choir-calibration-schemas.test.mjs
-          node tests/ash-keep-production-closure-contract.test.mjs
-          node tests/ash-lifecycle-production-contract.test.mjs
-          node tests/flowcore-p0-p7-seam-closure.test.mjs
-          node tests/flowcore-p0-p10-completion.test.mjs
-          node tests/flowcore-production-observation.test.mjs
+      - name: Ash four-profile pedagogy
+        run: node tests/ash-four-profile-pedagogy.test.mjs
+      - name: Ash investigation guidance
+        run: node tests/ash-investigation-guidance.test.mjs
+      - name: Ash legal UX
+        run: node tests/ash-legal-ux.test.mjs
+      - name: Ash live ingress and demos cache
+        run: node tests/ash-live-ingress-demos-cache.test.mjs
+      - name: Ash research UX rehydration
+        run: node tests/ash-research-ux-rehydration.test.mjs
+      - name: Ash Choir calibration schemas
+        run: node tests/ash-keep-choir-calibration-schemas.test.mjs
+      - name: Ash production closure contract
+        run: node tests/ash-keep-production-closure-contract.test.mjs
+      - name: Ash lifecycle production contract
+        run: node tests/ash-lifecycle-production-contract.test.mjs
+      - name: Flow-Core P0-P7 seam closure
+        run: node tests/flowcore-p0-p7-seam-closure.test.mjs
+      - name: Flow-Core P0-P10 completion
+        run: node tests/flowcore-p0-p10-completion.test.mjs
+      - name: Flow-Core production observation
+        run: node tests/flowcore-production-observation.test.mjs
       - name: Product architecture contracts
         run: |
           node tests/product-architecture/shell.test.mjs
