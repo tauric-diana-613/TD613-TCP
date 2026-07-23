@@ -6,6 +6,7 @@ const browserName = process.env.TD613_BROWSER || 'chromium';
 const base = String(process.env.TD613_BASE_URL || 'http://127.0.0.1:6130').replace(/\/+$/, '');
 const artifactDir = path.resolve(process.env.TD613_ARTIFACT_DIR || `artifacts/ash-a2-a6-${browserName}`);
 const engine = { chromium, firefox, webkit }[browserName];
+const canonicalInspectionSelector = '.ash-flowcore-field:not(.ash-flowcore-field--proxy):not([hidden]) [data-flowcore-channel="inspection"]';
 if (!engine) throw new Error(`Unsupported browser: ${browserName}`);
 
 await fs.mkdir(artifactDir, { recursive:true });
@@ -23,13 +24,6 @@ const report = {
   observations:{},
   authority:{ counts_as_human_evidence:false, authorizes_public_route_promotion:false, authorizes_release:false, closes_program:false }
 };
-
-const visible = async locator => locator.evaluate(node => {
-  const style = getComputedStyle(node);
-  const rect = node.getBoundingClientRect();
-  return style.display !== 'none' && style.visibility !== 'hidden'
-    && Number(style.opacity) > 0 && rect.width > 0 && rect.height > 0;
-});
 
 try {
   await page.goto(`${base}/dome-world/ash-keep.html`, { waitUntil:'domcontentloaded', timeout:90000 });
@@ -125,8 +119,6 @@ try {
   if (!/Cases & profiles/i.test((await page.locator('[data-command-action="profile"]').textContent()) || '')) throw new Error('Cases & profiles label drifted.');
   await page.keyboard.press('Escape');
 
-  // A demo may lawfully arrive with a local draft already present. Empty only the uncommitted
-  // DOM draft so the document affordances can be tested without changing persisted case state.
   await page.evaluate(async () => {
     const draft = document.getElementById('draftBody');
     if (draft) {
@@ -174,7 +166,6 @@ try {
   if (draftState.proxy !== draftText || draftState.exact !== draftText || draftState.workspace !== 'work') throw new Error('Local draft surface lost exact parity or Work ownership.');
   if (draftState.world_answer?.source_bytes_moved !== false || draftState.world_answer?.authority_changed !== false) throw new Error('Local draft world answer widened authority or transport.');
 
-  // Return the deterministic lesson rail to its first frame before exercising its boundaries.
   for (let index = 0; index < 4; index += 1) {
     const previous = page.locator('[data-aia-previous]');
     if (await previous.isDisabled()) break;
@@ -195,27 +186,25 @@ try {
   }));
   if (!/Lesson 2 of 4/i.test(lessonAfter.status)) throw new Error('Next Lesson produced no visible world answer.');
 
-  // Prove inspection remains available during Rest rather than assuming an earlier open-state
-  // survives unrelated route, workspace, and task recompilations.
   await page.locator('[data-aia-exact]').evaluate(node => { node.open = false; });
   const lifecycleBeforeRest = await page.evaluate(() => window.__td613AshLiveAIA?.current?.()?.lifecycle_state || null);
   await page.locator('[data-aia-rest]').click();
   await page.waitForFunction(() => document.body.dataset.ashAiaResting === 'true'
     && document.documentElement.dataset.ashA6Rest === 'STRUCTURAL_REST');
-  const restBeforeInspection = await page.evaluate(() => ({
+  const restBeforeInspection = await page.evaluate(selector => ({
     play_disabled:document.querySelector('[data-aia-play]')?.disabled,
     next_disabled:document.querySelector('[data-aia-next]')?.disabled,
     task_disabled:[...document.querySelectorAll('[data-aia-task]')].every(button => button.disabled),
-    inspection_disabled:document.querySelector('[data-flowcore-channel="inspection"]')?.disabled || false,
+    inspection_disabled:document.querySelector(selector)?.disabled || false,
     status:document.getElementById('ashA6LessonStatus')?.textContent || '',
     lifecycle:window.__td613AshLiveAIA?.current?.()?.lifecycle_state || null
-  }));
+  }), canonicalInspectionSelector);
   if (!restBeforeInspection.play_disabled || !restBeforeInspection.next_disabled || !restBeforeInspection.task_disabled) throw new Error('Structural Rest left a fresh demand control active.');
   if (restBeforeInspection.inspection_disabled) throw new Error('Structural Rest disabled Inspection.');
   if (!/current consequence|Structural Rest/i.test(restBeforeInspection.status)) throw new Error('Structural Rest lacked a visible world answer.');
   if (restBeforeInspection.lifecycle !== lifecycleBeforeRest) throw new Error('Structural Rest mutated lifecycle state.');
 
-  await page.locator('[data-flowcore-channel="inspection"]').click();
+  await page.locator(canonicalInspectionSelector).click();
   await page.waitForFunction(() => document.querySelector('[data-aia-exact]')?.open === true);
   const restState = { ...restBeforeInspection, exact_opened_during_rest:true };
 
