@@ -13,7 +13,8 @@ import { injectAshKeepLifecycle } from '../api/dome-world-shell.js';
 const shellSource = fs.readFileSync('api/dome-world-shell.js', 'utf8');
 const keepSource = fs.readFileSync('app/dome-world/ash-keep.html', 'utf8');
 const renderedKeep = injectAshKeepLifecycle(keepSource);
-const journeySource = fs.readFileSync('scripts/ash-keep-aia3-task-journey-v3.mjs', 'utf8');
+const journeyWrapperSource = fs.readFileSync('scripts/ash-keep-aia3-task-journey-v3.mjs', 'utf8');
+const journeySource = fs.readFileSync('scripts/ash-keep-aia3-task-journey-v3.source.mjs', 'utf8');
 const compositionSource = fs.readFileSync('app/dome-world/ash-aia3-composition.js', 'utf8');
 const recoverySource = fs.readFileSync('app/safe-harbor/ash-keep-recovery.html', 'utf8');
 const closureServerSource = fs.readFileSync('scripts/ash-keep-local-closure-server.mjs', 'utf8');
@@ -31,10 +32,14 @@ test('server preflight preserves the Preparing Ash shell while resolving current
   assert.match(renderedKeep, /id="td613-ash-canonical-module-bootstrap"/);
 });
 
-test('browser witness remains bound to the exact current Legal UX delivery epochs before final release epoch', () => {
+test('release journey adapts the retained AIA3 source to the exact A2-A5 delivery epoch and clean canonical URL', () => {
   assert.match(journeySource, /const EPOCH = '20260721-legal-demo-ux-v1'/);
   assert.match(journeySource, /const CACHE_EPOCH = 'td613\.ash\.cache-flush\/2026-07-21-legal-demo-ux-v1'/);
-  assert.doesNotMatch(journeySource, /20260720-aia3-mass-eviction-v2/);
+  assert.match(journeyWrapperSource, /const RELEASE_EPOCH = '20260723-a2-a5-release-v1'/);
+  assert.match(journeyWrapperSource, /const RELEASE_CACHE_EPOCH = 'td613\.ash\.cache-flush\/2026-07-23-a2-a5-release-v1'/);
+  assert.match(journeyWrapperSource, /location\.pathname === '\/dome-world\/ash-threshold\.html'/);
+  assert.match(journeyWrapperSource, /location\.search === ''/);
+  assert.match(journeyWrapperSource, /source\.includes\('location\.search\.includes\(`ash_epoch=\$\{epoch\}`\)'\)/);
 });
 
 test('browser witness waits for coherent case, pointer, membrane, and exact work', () => {
