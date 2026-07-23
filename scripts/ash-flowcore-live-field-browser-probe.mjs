@@ -27,7 +27,7 @@ await page.addInitScript(() => {
   });
 });
 
-const report = { schema:'td613.ash.flowcore-live-field-browser/v0.6-canonical-play-phase-receipts', browser:browserName, status:'RUNNING', errors, http_errors:httpErrors, observations:{} };
+const report = { schema:'td613.ash.flowcore-live-field-browser/v0.7-atomic-name-receipt', browser:browserName, status:'RUNNING', errors, http_errors:httpErrors, observations:{} };
 try {
   await page.goto(`${base}/dome-world/ash-keep.html?presentation=aia&profile=investigation&nonce=${Date.now()}`, { waitUntil:'domcontentloaded' });
   await page.waitForFunction(() => window.__td613AshFlowcoreField?.version
@@ -190,24 +190,27 @@ try {
   assert((await canonicalPlay.textContent())?.trim() === '▶ Play Consequence Field', 'Canonical Flow-Core Play label drifted before playback.');
   assert(await page.locator('.ash-flowcore-field:not(.ash-flowcore-field--proxy):not([hidden]) [data-flowcore-ingress-play]').count() === 0, 'Retired duplicate Play control returned.');
   await canonicalPlay.click();
-  await page.waitForFunction(() => document.documentElement.dataset.ashFlowcorePhase === 'NAME');
-  const activeMotion = await page.evaluate(() => {
+  const activeMotionHandle = await page.waitForFunction(() => {
+    if (document.documentElement.dataset.ashFlowcorePhase !== 'NAME') return false;
     const field = document.querySelector('.ash-flowcore-field:not([hidden])');
     const rail = document.querySelector('#ashAiaMembrane .ash-ux-motion-track');
     const canvas = field?.querySelector('.ash-flowcore-field__canvas');
     const phaseLabel = field?.querySelector('[data-flowcore-phase-label]')?.textContent || '';
+    const canvasVisible = Boolean(canvas && getComputedStyle(canvas).display !== 'none' && canvas.getBoundingClientRect().height > 0);
+    const railVisible = Boolean(rail && getComputedStyle(rail).display !== 'none' && rail.getBoundingClientRect().height > 0);
+    if (field?.dataset.flowcorePhaseName !== 'NAME' || field?.dataset.flowcorePlaying !== 'true' || !/NAME/.test(phaseLabel) || !canvasVisible || !railVisible) return false;
     return {
       phase:document.documentElement.dataset.ashFlowcorePhase,
-      field_phase:field?.dataset.flowcorePhaseName || null,
-      field_playing:field?.dataset.flowcorePlaying === 'true',
+      field_phase:field.dataset.flowcorePhaseName,
+      field_playing:true,
       phase_label:phaseLabel,
-      canvas_visible:Boolean(canvas && getComputedStyle(canvas).display !== 'none' && canvas.getBoundingClientRect().height > 0),
-      rail_visible:Boolean(rail && getComputedStyle(rail).display !== 'none' && rail.getBoundingClientRect().height > 0),
+      canvas_visible:canvasVisible,
+      rail_visible:railVisible,
       motion:window.__td613AshPostIngressMotionRestoration.current()
     };
   });
-  assert(activeMotion.phase === 'NAME' && activeMotion.field_phase === 'NAME', 'Flow-Core relation phase never became visible.');
-  assert(activeMotion.field_playing && /NAME/.test(activeMotion.phase_label), `Flow-Core NAME receipt did not remain visibly active: ${JSON.stringify(activeMotion)}.`);
+  const activeMotion = await activeMotionHandle.jsonValue();
+  assert(activeMotion.phase === 'NAME' && activeMotion.field_phase === 'NAME' && activeMotion.field_playing, 'Flow-Core relation phase receipt was not captured atomically.');
   assert(activeMotion.canvas_visible && activeMotion.rail_visible, `Flow-Core motion layers disappeared during NAME: ${JSON.stringify(activeMotion)}.`);
   assert(activeMotion.motion.canvas_visible && activeMotion.motion.rail_visible && !activeMotion.motion.field_clipped && !activeMotion.motion.rail_clipped, `Motion layers drifted during playback: ${JSON.stringify(activeMotion.motion)}.`);
   await page.waitForFunction(() => document.documentElement.dataset.ashFlowcorePhase === 'REST', null, { timeout:15_000 });
