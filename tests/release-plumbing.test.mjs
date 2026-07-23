@@ -37,7 +37,7 @@ for (const fileName of workflowNames) {
   }
 }
 
-function readAuthorized(name) {
+function readAuthorized(name, expectedPushes) {
   const filePath = path.join(workflowDir, name);
   assert.equal(fs.existsSync(filePath), true, `bounded write conduit missing: ${name}`);
   const source = fs.readFileSync(filePath, 'utf8');
@@ -47,17 +47,19 @@ function readAuthorized(name) {
   assert.match(source, /github\.event\.comment\.user\.login == github\.repository_owner/);
   assert.match(source, /startsWith\(github\.event\.comment\.body, '\/td613-vercel-release '\)/);
   assert.match(source, /^ {2}contents:\s*write\s*$/m);
-  assert.equal((source.match(/^\s*git push origin HEAD:main\s*$/gm) || []).length, 1);
+  assert.equal((source.match(/^\s*git push origin HEAD:main\s*$/gm) || []).length, expectedPushes);
   assert.doesNotMatch(source, /patch-td613-flight/i);
   return source;
 }
 
-const release = readAuthorized('vercel-operator-release.yml');
+const release = readAuthorized('vercel-operator-release.yml', 2);
 assert.equal((release.match(/config\.git\.deploymentEnabled = true/g) || []).length, 1);
 assert.equal((release.match(/deploymentEnabled: false/g) || []).length, 1);
 assert.equal((release.match(/vercel@latest deploy/g) || []).length, 1);
+assert.match(release, /Create one bounded Git-fallback release commit/);
+assert.match(release, /Restore the Git deployment lock after fallback/);
 
-const relock = readAuthorized('vercel-relock-safety.yml');
+const relock = readAuthorized('vercel-relock-safety.yml', 1);
 assert.equal((relock.match(/deploymentEnabled: false/g) || []).length, 1);
 assert.doesNotMatch(relock, /vercel@latest deploy/);
 assert.match(relock, /deployment_count = 0/);

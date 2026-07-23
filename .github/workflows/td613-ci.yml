@@ -84,8 +84,14 @@ jobs:
         run: node tests/dome-world-ash-recall.test.mjs
       - name: Ash HCC grade gate
         run: node tests/dome-world-ash-hcc-grade-gate.test.mjs
-      - name: Ash Keep core contracts
-        run: npm run test:ash-keep
+      - name: Ash Keep core
+        run: node tests/ash-keep-core.test.mjs
+      - name: Ash Keep continuity
+        run: node tests/ash-keep-continuity.test.mjs
+      - name: Ash Keep Hush API
+        run: node tests/ash-keep-hush-api.test.mjs
+      - name: Ash Keep UI
+        run: node tests/ash-keep-ui.test.mjs
       - name: Ash and Flow-Core retained witnesses
         run: |
           node tests/ash-four-profile-pedagogy.test.mjs
@@ -118,22 +124,4 @@ jobs:
       - run: node tests/vercel-deploy-hygiene.test.mjs
       - run: node tests/vercel-operator-release-gate.test.mjs
       - run: node tests/vercel-relock-safety.test.mjs
-      - name: Release plumbing contract
-        id: release_plumbing
-        continue-on-error: true
-        run: |
-          mkdir -p artifacts/release-plumbing
-          node tests/release-plumbing.test.mjs > artifacts/release-plumbing/test.log 2>&1
-      - name: Preserve held release-plumbing diagnostics
-        if: steps.release_plumbing.outcome == 'failure'
-        uses: actions/upload-artifact@v4
-        with:
-          name: release-plumbing-diagnostic
-          path: artifacts/release-plumbing/test.log
-          if-no-files-found: error
-          retention-days: 3
-      - name: Enforce release plumbing contract
-        if: steps.release_plumbing.outcome == 'failure'
-        run: |
-          cat artifacts/release-plumbing/test.log
-          exit 1
+      - run: node tests/release-plumbing.test.mjs
