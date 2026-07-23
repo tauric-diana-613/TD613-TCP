@@ -37,11 +37,13 @@
 .premium-menu-button.ash-command-discovered{box-shadow:0 0 0 1px rgba(228,198,108,.32),0 0 12px rgba(228,198,108,.09)}
 @keyframes ash-command-attention{0%,100%{box-shadow:0 0 0 1px rgba(118,234,212,.24),0 0 14px rgba(118,234,212,.1)}45%{box-shadow:0 0 0 2px rgba(228,198,108,.52),0 0 28px rgba(228,198,108,.2)}}
 @media(max-width:760px){
-  .ash-flowcore-field{padding-bottom:72px}
+  .ash-flowcore-field{width:100%!important;max-width:100%!important;min-width:0!important;padding-bottom:10px;overflow:hidden!important}
+  .ash-flowcore-field__header,.ash-channel-legend,.ash-channel-disclosure,.ash-whole-instrument-static{width:100%;max-width:100%;min-width:0}
   .ash-channel-legend{grid-template-columns:repeat(2,minmax(0,1fr))}
-  .ash-channel-legend strong{justify-self:start}
+  .ash-channel-legend [data-flowcore-channel]{width:100%;max-width:100%;min-width:0;overflow-wrap:anywhere}
+  .ash-channel-legend strong{justify-self:start;min-width:0;max-width:100%;overflow-wrap:anywhere}
   .ash-channel-disclosure>div,.ash-whole-instrument-static,.ash-route-surface,.ash-route-delta>div{grid-template-columns:1fr}
-  .ash-whole-instrument-play{right:10px;bottom:12px;max-width:calc(100% - 20px)}
+  .ash-whole-instrument-play{position:relative;right:auto;bottom:auto;display:block;width:calc(100% - 20px);max-width:calc(100% - 20px);margin:10px;white-space:normal}
 }
 @media(prefers-reduced-motion:reduce){
   .ash-command-undiscovered{animation:none!important}
