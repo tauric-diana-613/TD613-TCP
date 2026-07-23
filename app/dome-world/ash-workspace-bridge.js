@@ -88,5 +88,41 @@ function reconcileCanonicalConsequenceFieldOwner() {
   return true;
 }
 
+function navigationTarget(control) {
+  if (!control) return null;
+  if (control.matches('[data-premium-workspace]')) return { workspace:control.dataset.premiumWorkspace, anchor:null };
+  if (control.matches('[data-route-workspace]')) return { workspace:control.dataset.routeWorkspace, anchor:null };
+  if (control.matches('[data-command-workspace]')) return { workspace:control.dataset.commandWorkspace, anchor:null };
+  if (control.id === 'premiumReturnHome') return { workspace:'home', anchor:null };
+  if (control.id === 'premiumContinuityButton') return { workspace:'capsule', anchor:null };
+  if (control.dataset.commandAction === 'receipts') return { workspace:'work', anchor:'premiumReceiptInventory' };
+  return null;
+}
+
+function captureSemanticNavigation(event) {
+  const control = event.target?.closest?.(
+    '[data-premium-workspace],[data-route-workspace],[data-command-workspace],#premiumReturnHome,#premiumContinuityButton,[data-command-action="receipts"]'
+  );
+  const destination = navigationTarget(control);
+  const navigate = ashBridgeHost?.__td613AshWholeInstrument?.navigate;
+  if (!control || !destination || typeof navigate !== 'function') return;
+
+  event.preventDefault();
+  event.stopImmediatePropagation();
+  ashBridgeDocument.getElementById('premiumCommandSheet')?.close?.();
+  navigate(destination.workspace, {
+    source_control:control.id
+      || control.dataset.premiumWorkspace
+      || control.dataset.routeWorkspace
+      || control.dataset.commandWorkspace
+      || control.dataset.commandAction
+      || 'canonical-navigation-control',
+    anchor:destination.anchor,
+    open:true,
+    return_path:ashBridgeDocument.documentElement.dataset.ashPremiumWorkspace || 'home'
+  });
+}
+
+ashBridgeHost?.addEventListener?.('click', captureSemanticNavigation, true);
 ashBridgeHost?.addEventListener?.('td613:ash:whole-instrument-refreshed', reconcileCanonicalConsequenceFieldOwner);
 queueMicrotask(reconcileCanonicalConsequenceFieldOwner);
