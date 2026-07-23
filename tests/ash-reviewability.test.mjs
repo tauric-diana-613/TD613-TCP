@@ -3,6 +3,7 @@ import fs from 'node:fs';
 
 const repair = fs.readFileSync('app/dome-world/ash-reviewability-repair.js', 'utf8');
 const bridge = fs.readFileSync('app/dome-world/ash-workspace-bridge.js', 'utf8');
+const RELEASE_EPOCH = '20260723-a2-a5-release-v1';
 
 assert.match(repair, /td613\.ash\.reviewability\/v0\.1-native-scroll-live-setup-descenders/);
 
@@ -36,7 +37,7 @@ assert.match(repair, /clipped:node\.scrollHeight > node\.clientHeight \+ 1/);
 // This remains event-bound rather than an ambient correction loop.
 assert.doesNotMatch(repair, /setInterval\s*\(/);
 assert.doesNotMatch(repair, /new\s+(?:host\.)?MutationObserver/);
-assert.match(bridge, /ash-reviewability-repair\.js\?v=20260722-reviewability-v1/);
+assert.match(bridge, new RegExp(`ash-reviewability-repair\\.js\\?v=${RELEASE_EPOCH}`));
 assert.ok(bridge.lastIndexOf('ash-reviewability-repair.js') > bridge.lastIndexOf('ash-emergency-stability-contract.js'), 'Reviewability repair must load after earlier presentation authorities.');
 
 console.log('ash-reviewability.test.mjs passed');
