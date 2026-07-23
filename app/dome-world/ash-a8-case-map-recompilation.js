@@ -48,6 +48,19 @@ function copyToLegacy(id, value) {
   return true;
 }
 
+function delegateLegacyAction(id) {
+  const control = byId(id);
+  if (!control) return Object.freeze({ delegated:false, reason:`Existing Ash action owner ${id} is unavailable.` });
+  if (control.disabled) return Object.freeze({ delegated:false, reason:`Existing Ash action owner ${id} is held.` });
+  const accepted = control.dispatchEvent(new MouseEvent('click', {
+    bubbles:true,
+    cancelable:true,
+    composed:true,
+    view:host
+  }));
+  return Object.freeze({ delegated:accepted, reason:accepted ? null : `Existing Ash action owner ${id} declined the delegated gesture.` });
+}
+
 function appendResearchNote(kind, detail) {
   const notes = byId('researchNotes');
   if (!notes) return false;
@@ -137,7 +150,11 @@ function commitObject() {
   copyToLegacy('objectSource', byId('ashA8ObjectSource')?.value || 'UNRESOLVED');
   appendResearchNote('object', detail);
   pendingObjectName = name;
-  byId('addObject')?.click();
+  const delegation = delegateLegacyAction('addObject');
+  if (!delegation.delegated) {
+    pendingObjectName = null;
+    return publishStageWorldAnswer('A8', `Object held: ${delegation.reason} No map state changed.`);
+  }
   return publishStageWorldAnswer('A8', `Ash delegated “${name}” to the existing map engine. Storage confirmation remains pending until the native Case Map emits its successor state.`);
 }
 
@@ -158,7 +175,11 @@ function commitRelation(snapshot) {
   copyToLegacy('linkType', type);
   appendResearchNote('relationship', detail);
   pendingRelation = Object.freeze({ from, to, type, committed_at:new Date().toISOString() });
-  byId('addRelationship')?.click();
+  const delegation = delegateLegacyAction('addRelationship');
+  if (!delegation.delegated) {
+    pendingRelation = null;
+    return publishStageWorldAnswer('A8', `Relationship held: ${delegation.reason} No relation was created.`);
+  }
   return publishStageWorldAnswer('A8', `Ash delegated one directed relation to the existing map engine: ${nodeLabel(snapshot, from)} ${type} ${nodeLabel(snapshot, to)}. Storage confirmation remains pending.`);
 }
 
