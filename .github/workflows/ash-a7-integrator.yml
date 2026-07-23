@@ -40,15 +40,22 @@ jobs:
         run: node scripts/apply-ash-a7-home-recompilation.mjs
       - name: Syntax and static contracts
         run: |
-          node --check api/dome-world-shell.js
-          node --check app/dome-world/ash-a7-a11-recompiler-core.js
-          node --check app/dome-world/ash-a7-home-recompilation.js
-          node --check scripts/ash-a7-a11-browser-probe.mjs
-          node tests/ash-a7-home-recompilation.test.mjs
-          node tests/ash-a2-a5-whole-instrument.test.mjs
-          node tests/ash-flowcore-live-field.test.mjs
-          node tests/ash-reviewability.test.mjs
-          node tests/workflow-estate.test.mjs
+          mkdir -p artifacts/ash-a7-integrator
+          set +e
+          {
+            node --check api/dome-world-shell.js
+            node --check app/dome-world/ash-a7-a11-recompiler-core.js
+            node --check app/dome-world/ash-a7-home-recompilation.js
+            node --check scripts/ash-a7-a11-browser-probe.mjs
+            node tests/ash-a7-home-recompilation.test.mjs
+            node tests/ash-a2-a5-whole-instrument.test.mjs
+            node tests/ash-flowcore-live-field.test.mjs
+            node tests/ash-reviewability.test.mjs
+            node tests/workflow-estate.test.mjs
+          } > artifacts/ash-a7-integrator/static-contracts.log 2>&1
+          status=$?
+          cat artifacts/ash-a7-integrator/static-contracts.log
+          exit "$status"
       - name: Install Chromium witness runtime
         run: |
           npm install --no-save --package-lock=false playwright@1.53.2
