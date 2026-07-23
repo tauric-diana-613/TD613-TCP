@@ -8,24 +8,30 @@ import {
   ASH_LEGACY_CACHE_EPOCH
 } from '../app/dome-world/ash-cache-eviction-aia3.js';
 import { runAshCacheFlush } from '../app/dome-world/ash-cache-flush.js';
+import { injectAshKeepLifecycle } from '../api/dome-world-shell.js';
 
 const shellSource = fs.readFileSync('api/dome-world-shell.js', 'utf8');
+const keepSource = fs.readFileSync('app/dome-world/ash-keep.html', 'utf8');
+const renderedKeep = injectAshKeepLifecycle(keepSource);
 const journeySource = fs.readFileSync('scripts/ash-keep-aia3-task-journey-v3.mjs', 'utf8');
 const compositionSource = fs.readFileSync('app/dome-world/ash-aia3-composition.js', 'utf8');
 const recoverySource = fs.readFileSync('app/safe-harbor/ash-keep-recovery.html', 'utf8');
 const closureServerSource = fs.readFileSync('scripts/ash-keep-local-closure-server.mjs', 'utf8');
 
-test('server preflight bypasses exact legacy rollback and republishes the governed receipt', () => {
+test('server preflight preserves the Preparing Ash shell while resolving current assets', () => {
   assert.match(shellSource, /legacyPresentation/);
   assert.match(shellSource, /legacy_bypass:true/);
   assert.match(shellSource, /__td613AshAia3PreflightReceipt/);
-  assert.match(shellSource, /publish\(receipt\)/);
-  assert.match(shellSource, /Updating Ash Keep · preserving local cases/);
-  assert.match(shellSource, /td613-ash-cache-preflight-veil/);
-  assert.match(shellSource, /window\.stop\(\)/);
+  assert.match(shellSource, /Preparing Ash/);
+  assert.match(shellSource, /td613-ash-preparing-shell/);
+  assert.match(shellSource, /await globalThis\.__td613AshAia3Preflight/);
+  assert.doesNotMatch(shellSource, /window\.stop\(\)/);
+  assert.doesNotMatch(shellSource, /searchParams\.set\('ash_epoch'/);
+  assert.doesNotMatch(shellSource, /searchParams\.set\('ash_recovered'/);
+  assert.match(renderedKeep, /id="td613-ash-canonical-module-bootstrap"/);
 });
 
-test('browser witness is bound to the exact current Legal UX delivery epochs', () => {
+test('browser witness remains bound to the exact current Legal UX delivery epochs before final release epoch', () => {
   assert.match(journeySource, /const EPOCH = '20260721-legal-demo-ux-v1'/);
   assert.match(journeySource, /const CACHE_EPOCH = 'td613\.ash\.cache-flush\/2026-07-21-legal-demo-ux-v1'/);
   assert.doesNotMatch(journeySource, /20260720-aia3-mass-eviction-v2/);
@@ -93,16 +99,19 @@ test('retired worker fixture controls the next navigation without claiming the a
   assert.match(closureServerSource, /service-worker-allowed':'\/dome-world\/'/);
 });
 
-test('controlled stale clients leave the retired Dome-World scope before returning to Ash', () => {
+test('controlled stale clients adopt the canonical URL before current-shell replacement', () => {
   assert.match(shellSource, /const recoveryBridge='\/safe-harbor\/ash-keep-recovery\.html'/);
   assert.match(shellSource, /controllerPresent=Boolean\(navigator\.serviceWorker\?\.controller\)/);
   assert.match(shellSource, /cross_scope_recovery_required:controllerPresent/);
-  assert.match(shellSource, /location\.replace\(bridge\.pathname\+bridge\.search\)/);
+  assert.match(shellSource, /location\.replace\(recoveryBridge\)/);
   assert.match(recoverySource, /source_scope:'\/dome-world\/'/);
   assert.match(recoverySource, /bridge_scope:'\/safe-harbor\/'/);
   assert.match(recoverySource, /indexeddb_preserved:true/);
   assert.match(recoverySource, /case_data_preserved:true/);
-  assert.match(recoverySource, /ash_recovered','cross-scope'/);
+  assert.match(recoverySource, /history\.replaceState\(null,'',canonical\)/);
+  assert.match(recoverySource, /document\.write\(shell\)/);
+  assert.doesNotMatch(recoverySource, /ash_recovered/);
+  assert.doesNotMatch(recoverySource, /searchParams\.set\('ash_epoch'/);
 });
 
 class MemoryStorage {
