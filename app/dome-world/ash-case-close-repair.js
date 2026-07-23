@@ -1,6 +1,6 @@
 import { validThresholdReadiness } from './ash-cache-flush.js?v=20260718-canonical-membrane-v7-readiness-boundary';
 
-export const ASH_CASE_CLOSE_REPAIR_VERSION = 'td613.ash.case-close-repair/v1.3-ingress-readiness-boundary';
+export const ASH_CASE_CLOSE_REPAIR_VERSION = 'td613.ash.case-close-repair/v1.4-post-close-settled-fingerprint';
 
 const DB_NAME = 'td613-ash-keep';
 const POINTER_KEY = 'td613.ash-keep.current-case';
@@ -81,7 +81,7 @@ async function caseBundle(db, caseId) {
   };
 }
 
-async function saveBeforeClose(caseId) {
+async function saveAtCloseBoundary(caseId, fingerprintPosture) {
   if (!caseId) return null;
   const db = await openDb();
   try {
@@ -92,6 +92,7 @@ async function saveBeforeClose(caseId) {
       title:bundle.caseMap.title || 'Untitled case',
       fingerprint:await sha256(bundle),
       saved_at:new Date().toISOString(),
+      fingerprint_posture:fingerprintPosture,
       save_reason:'automatic-close-boundary'
     };
     await putWrapped(db, 'savedCases', caseId, record);
@@ -189,12 +190,12 @@ async function closeToMembrane() {
   closing = true;
   const caseId = localStorage.getItem(POINTER_KEY);
   try {
-    const saved = await saveBeforeClose(caseId);
+    const preCloseBackup = await saveAtCloseBoundary(caseId, 'PRE_CLOSE_BACKUP');
     if (caseId) {
       try {
         await window.TD613AshConvergence?.transitionCase?.(caseId, {
           persisted:true,
-          saved:Boolean(saved),
+          saved:Boolean(preCloseBackup),
           closed:true,
           nextState:'SELECTED_NOT_OPEN',
           reason:'operator-closed-current-case-session-logout'
@@ -203,11 +204,20 @@ async function closeToMembrane() {
         console.warn('Ash close transition receipt held; session logout continues.', error);
       }
     }
+    const transitionSettledSave = await saveAtCloseBoundary(caseId, 'POST_CLOSE_TRANSITION_SETTLED_BUNDLE');
     exposeMembrane();
     window.dispatchEvent(new CustomEvent('td613:ash:case-closed', {
-      detail:{ case_id:caseId || null, saved_before_close:Boolean(saved), session_logged_out:true }
+      detail:{
+        case_id:caseId || null,
+        saved_before_close:Boolean(preCloseBackup),
+        saved_after_transition:Boolean(transitionSettledSave),
+        session_logged_out:true
+      }
     }));
     try { await window.__td613AshLifecycleRefresh?.(); } catch {}
+    await Promise.resolve();
+    const postCloseSave = await saveAtCloseBoundary(caseId, 'POST_CLOSE_RECONCILED_BUNDLE');
+    document.documentElement.dataset.ashCloseFingerprintPosture = postCloseSave?.fingerprint_posture || 'NO_CASE';
     await resetCaseSelection();
   } finally {
     closing = false;
