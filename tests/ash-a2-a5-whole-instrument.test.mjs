@@ -6,6 +6,13 @@ const read = path => fs.readFileSync(new URL(`../${path}`, import.meta.url), 'ut
 const moduleSource = read('app/dome-world/ash-whole-instrument-pedagogy.js');
 const css = read('app/dome-world/ash-whole-instrument-pedagogy.css');
 const bridge = read('app/dome-world/ash-workspace-bridge.js');
+const lifecycle = read('app/dome-world/ash-lifecycle.js');
+const shell = read('api/dome-world-shell.js');
+const cacheEviction = read('app/dome-world/ash-cache-eviction-aia3.js');
+const cacheFlush = read('app/dome-world/ash-cache-flush.js');
+const recovery = read('app/safe-harbor/ash-keep-recovery.html');
+const profileHydration = read('app/dome-world/ash-profile-demo-hydration.js');
+const journeyAdapter = read('scripts/ash-keep-aia3-task-journey-v3.mjs');
 const closureWorkflow = read('.github/workflows/ash-keep-production-closure.yml');
 const receipt = read('app/dome-world/docs/ASH_KEEP_A2_A5_IMPLEMENTATION_RECEIPT_V0_1.md');
 
@@ -69,7 +76,25 @@ assert.match(css, /\.ash-flowcore-field\{grid-template-columns:minmax\(0,1fr\)!i
 assert.match(css, /\.ash-flowcore-field>\*\{min-width:0;max-width:100%\}/);
 assert.match(css, /\.ash-flowcore-field__canvas\{width:100%!important;max-width:100%!important;min-width:0!important;overflow-x:auto!important\}/);
 assert.match(css, /button\[data-flowcore-channel="inspection"\]\{grid-column:1\/-1\}/);
+
+const releaseEpoch = '20260723-a2-a5-v1';
+const massEpoch = 'td613.ash.cache-flush/2026-07-23-a2-a5-v1';
+for (const [name, source] of [
+  ['shell',shell], ['lifecycle',lifecycle], ['bridge',bridge], ['cache eviction',cacheEviction],
+  ['cache flush',cacheFlush], ['recovery',recovery], ['profile hydration',profileHydration], ['journey adapter',journeyAdapter]
+]) {
+  assert.match(source, new RegExp(releaseEpoch.replaceAll('-', '\\-')), `${name} omitted release asset epoch`);
+}
+for (const [name, source] of [['shell',shell],['cache eviction',cacheEviction],['cache flush',cacheFlush],['recovery',recovery],['journey adapter',journeyAdapter]]) {
+  assert.ok(source.includes(massEpoch), `${name} omitted mass eviction epoch`);
+}
+for (const runtime of [shell,lifecycle,bridge,cacheEviction,cacheFlush,recovery,profileHydration]) {
+  assert.doesNotMatch(runtime, /20260721-legal-demo-ux-v1|2026-07-21-legal-demo-ux-v1/);
+}
 assert.match(bridge, /ash-whole-instrument-pedagogy\.js\?v=20260723-a2-a5-v1/);
+assert.match(lifecycle, /const ASH_RELEASE_ASSET_EPOCH = '20260723-a2-a5-v1'/);
+assert.match(shell, /name="ash-cache-preflight" content="a2-a5-v1"/);
+assert.doesNotMatch(shell + recovery, /searchParams\.set\('ash_epoch'/);
 
 assert.doesNotMatch(closureWorkflow, /\n  workflow_run:/);
 assert.doesNotMatch(closureWorkflow, /github\.event\.workflow_run/);
@@ -79,6 +104,9 @@ assert.match(closureWorkflow, /inputs\.base_url/);
 assert.match(receipt, /new serverless function = false/);
 assert.match(receipt, /active serverless functions = 11/);
 assert.match(receipt, /reserved function capacity = 1/);
+assert.match(receipt, /20260721-legal-demo-ux-v1/);
+assert.match(receipt, /20260723-a2-a5-v1/);
+assert.match(receipt, /td613\.ash\.cache-flush\/2026-07-23-a2-a5-v1/);
 assert.doesNotMatch(moduleSource, /\/api\//);
 
 console.log('Ash A2-A5 whole-instrument contracts: PASS');
