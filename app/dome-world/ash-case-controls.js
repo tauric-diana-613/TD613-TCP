@@ -1,6 +1,6 @@
 import './ash-map-labels.js';
 
-export const ASH_CASE_CONTROLS_VERSION = 'td613.ash-keep.case-controls/v1.5-post-transition-fingerprint';
+export const ASH_CASE_CONTROLS_VERSION = 'td613.ash-keep.case-controls/v1.6-post-close-refresh-api';
 
 const DB_NAME = 'td613-ash-keep';
 const POINTER_KEY = 'td613.ash-keep.current-case';
@@ -240,6 +240,12 @@ async function populateCaseSelect(preferredCaseId = '') {
   } finally {
     caseListPopulation = null;
   }
+}
+
+async function refreshCases(preferredCaseId = '') {
+  if (caseListPopulation) await caseListPopulation;
+  ensureLaunchActions();
+  return populateCaseSelect(preferredCaseId);
 }
 
 async function validatePointer() {
@@ -503,6 +509,19 @@ async function bootCaseControls() {
     if (audit.findings.length && $('storageState')) $('storageState').textContent = `${audit.findings.length} compatibility finding(s) held for review`;
   }
 }
+
+window.__td613AshCaseControls = Object.freeze({
+  version: ASH_CASE_CONTROLS_VERSION,
+  refreshCases,
+  saveCurrentCase,
+  openSelectedCase,
+  deleteSelectedCase,
+  current: () => Object.freeze({
+    case_id: localStorage.getItem(POINTER_KEY) || null,
+    selected_case_id: $('selectCase')?.value || null,
+    case_list_state: $('selectCase')?.dataset.caseListState || null
+  })
+});
 
 bootCaseControls().catch(error => {
   document.documentElement.classList.remove(PREPAINT_CLASS);
