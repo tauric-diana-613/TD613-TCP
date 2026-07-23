@@ -1,4 +1,4 @@
-export const ASH_PROFILE_PROMPT_CANONICAL_VERSION = 'td613.ash.profile-prompt-canonical/v0.3-remount-stable-explicit-choice';
+export const ASH_PROFILE_PROMPT_CANONICAL_VERSION = 'td613.ash.profile-prompt-canonical/v0.4-readiness-ordered-explicit-choice';
 
 const host = globalThis.window;
 const doc = globalThis.document;
@@ -68,5 +68,5 @@ if (host && doc?.documentElement) {
     refresh:applyCanonicalProfilePrompt,
     current:() => Object.freeze({ explicit_choice:explicitChoice || null, case_open:!noCaseOpen() })
   });
-  queueMicrotask(() => applyCanonicalProfilePrompt({ resetSelection:true }));
+  applyCanonicalProfilePrompt({ resetSelection:true });
 }
