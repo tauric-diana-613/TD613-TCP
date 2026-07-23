@@ -1,6 +1,6 @@
 import { validThresholdReadiness } from './ash-cache-flush.js?v=20260718-canonical-membrane-v7-readiness-boundary';
 
-export const ASH_CASE_CLOSE_REPAIR_VERSION = 'td613.ash.case-close-repair/v1.6-save-operation-serialized';
+export const ASH_CASE_CLOSE_REPAIR_VERSION = 'td613.ash.case-close-repair/v1.7-case-list-quiescence';
 
 const DB_NAME = 'td613-ash-keep';
 const POINTER_KEY = 'td613.ash-keep.current-case';
@@ -222,9 +222,11 @@ function exposeMembrane({ preserveReadiness = false } = {}) {
 }
 
 async function resetCaseSelection(expectedCaseId) {
+  const refreshCases = window.__td613AshCaseControls?.refreshCases;
+  if (typeof refreshCases === 'function') await refreshCases(expectedCaseId || '');
   let ready = await waitForCaseListReady(expectedCaseId);
-  if (!ready) {
-    await window.__td613AshCaseControls?.refreshCases?.(expectedCaseId || '');
+  if (!ready && typeof refreshCases === 'function') {
+    await refreshCases(expectedCaseId || '');
     ready = await waitForCaseListReady(expectedCaseId);
   }
   if (expectedCaseId && !ready) throw new Error('Closed case did not reach the settled saved-case selector.');
@@ -236,6 +238,7 @@ async function resetCaseSelection(expectedCaseId) {
   byId('openSelectedCase')?.setAttribute('disabled', '');
   byId('deleteSelectedCase')?.setAttribute('disabled', '');
   byId('newTitle')?.focus?.();
+  document.documentElement.dataset.ashCloseCaseListQuiescent = 'true';
 }
 
 async function closeToMembrane() {

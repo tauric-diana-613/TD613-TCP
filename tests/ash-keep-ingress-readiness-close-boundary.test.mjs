@@ -5,7 +5,7 @@ const closeRepair = fs.readFileSync('app/dome-world/ash-case-close-repair.js', '
 const sessionBoundary = fs.readFileSync('app/dome-world/ash-session-boundary.js', 'utf8');
 const bridge = fs.readFileSync('app/dome-world/ash-workspace-bridge.js', 'utf8');
 
-assert.match(closeRepair, /td613\.ash\.case-close-repair\/v1\.6-save-operation-serialized/);
+assert.match(closeRepair, /td613\.ash\.case-close-repair\/v1\.7-case-list-quiescence/);
 assert.match(closeRepair, /validThresholdReadiness/);
 assert.match(closeRepair, /function clearAshSessionStorage\(\{ preserveReadiness = false \} = \{\}\)/);
 assert.match(closeRepair, /if \(key === READINESS_KEY && keepReadiness\)/);
@@ -23,15 +23,18 @@ assert.match(closeRepair, /ashCloseSavePopulationSettled/);
 assert.match(closeRepair, /PRE_CLOSE_BACKUP/);
 assert.match(closeRepair, /POST_CLOSE_TRANSITION_SETTLED_BUNDLE/);
 assert.match(closeRepair, /POST_CLOSE_RECONCILED_BUNDLE/);
+assert.match(closeRepair, /const refreshCases = window\.__td613AshCaseControls\?\.refreshCases/);
+assert.match(closeRepair, /if \(typeof refreshCases === 'function'\) await refreshCases\(expectedCaseId \|\| ''\)/);
 assert.match(closeRepair, /let ready = await waitForCaseListReady\(expectedCaseId\)/);
-assert.match(closeRepair, /if \(!ready\) \{[\s\S]*?refreshCases\?\.\(expectedCaseId \|\| ''\)/);
+assert.match(closeRepair, /if \(!ready && typeof refreshCases === 'function'\) \{[\s\S]*?await refreshCases\(expectedCaseId \|\| ''\)/);
 assert.match(closeRepair, /Closed case did not reach the settled saved-case selector/);
 assert.match(closeRepair, /ashCloseFingerprintPosture/);
+assert.match(closeRepair, /ashCloseCaseListQuiescent/);
 assert.match(closeRepair, /ashCloseCaseListPosture/);
 const closeBody = closeRepair.match(/async function closeToMembrane\(\) \{[\s\S]*?\n\}/)?.[0] || '';
 assert.match(closeBody, /exposeMembrane\(\);/);
 assert.doesNotMatch(closeBody, /preserveReadiness:true/);
-assert.match(bridge, /ash-case-close-repair\.js\?v=20260723-case-close-refresh-v3/);
+assert.match(bridge, /ash-case-close-repair\.js\?v=20260723-case-close-quiescence-v4/);
 assert.match(bridge, /ash-session-boundary\.js\?v=20260721-flowcore-live-field-v1/);
 
 assert.match(sessionBoundary, /v0\.4-pointer-governs-case-recovery-replay-stays-open/);
