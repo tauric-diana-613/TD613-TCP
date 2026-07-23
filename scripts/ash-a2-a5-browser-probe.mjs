@@ -40,8 +40,6 @@ try {
     const rect = field.getBoundingClientRect();
     return document.documentElement.dataset.ashWholeInstrumentPedagogy
       && document.documentElement.dataset.ashAiaReady === 'true'
-      && document.documentElement.dataset.ashConsequenceFieldOwner === 'CANONICAL_VISIBLE_FIELD'
-      && document.documentElement.dataset.ashPostIngressMotion === 'VISIBLE'
       && field.getAttribute('aria-hidden') !== 'true'
       && !field.inert
       && style.display !== 'none'
