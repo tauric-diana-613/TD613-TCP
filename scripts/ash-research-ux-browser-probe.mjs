@@ -9,7 +9,6 @@ if (!engine) throw new Error(`Unsupported browser: ${browserName}`);
 
 const base = String(process.env.TD613_BASE_URL || 'http://127.0.0.1:6130').replace(/\/$/, '');
 const outputDir = path.resolve(process.env.TD613_ARTIFACT_DIR || `artifacts/ash-research-ux-${browserName}`);
-const EPOCH = '20260721-legal-demo-ux-v1';
 const assert = (value, message) => { if (!value) throw new Error(message); };
 
 function installObservers(page, report) {
@@ -28,9 +27,11 @@ function installObservers(page, report) {
 }
 
 async function waitForStableIngress(page) {
-  await page.waitForFunction(epoch => {
+  await page.waitForFunction(() => {
     const composition = window.__td613AshAia3Composition?.current?.() || null;
-    return location.search.includes(`ash_epoch=${epoch}`)
+    const url = new URL(location.href);
+    return location.pathname.endsWith('/dome-world/ash-keep.html')
+      && !url.searchParams.has('ash_epoch')
       && document.documentElement.dataset.ashCompositionStable?.includes('stable-navigation-motion')
       && document.documentElement.dataset.ashCompositionHydrating !== 'true'
       && composition?.session_open === false
@@ -38,7 +39,7 @@ async function waitForStableIngress(page) {
       && composition?.hold == null
       && window.__td613AshResearchDemo?.version
       && window.__td613AshResearchControlState?.version;
-  }, EPOCH, { timeout:60_000 });
+  }, null, { timeout:60_000 });
 }
 
 async function waitForResearchHydration(page) {
