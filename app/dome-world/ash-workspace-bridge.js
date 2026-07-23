@@ -1,7 +1,7 @@
 export * from './ash-workspace-bridge-core.js?v=20260721-legal-demo-ux-v1';
 import './ash-flicker-hardening.js?v=20260721-legal-demo-ux-v1';
-// Initial ingress may preserve one validated readiness receipt; operator Close Case always clears the Ash session after a post-transition settled save.
-import './ash-case-close-repair.js?v=20260723-case-close-refresh-v1';
+// Initial ingress may preserve one validated readiness receipt; operator Close Case waits for the active save population, then clears the Ash session after a post-transition settled save.
+import './ash-case-close-repair.js?v=20260723-case-close-refresh-v2';
 // The persisted case pointer, not a stale in-memory case object, governs whether a session remains open.
 import './ash-session-boundary.js?v=20260721-flowcore-live-field-v1';
 
