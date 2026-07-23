@@ -26,7 +26,7 @@ async function openKeep() {
   await page.goto(`${base}${canonicalPath}`, { waitUntil:'domcontentloaded' });
 }
 
-const report = { schema:'td613.ash.first-paint-browser/v0.3', browser:browserName, status:'RUNNING', errors, http_errors:httpErrors, navigations, observations:{} };
+const report = { schema:'td613.ash.first-paint-browser/v0.4', browser:browserName, status:'RUNNING', errors, http_errors:httpErrors, navigations, observations:{} };
 try {
   await openKeep();
   await page.evaluate(async () => {
@@ -90,8 +90,27 @@ try {
   await page.screenshot({ path:path.join(out, `${browserName}-canonical-first-paint.png`), fullPage:true });
 
   await page.locator('#newProfile').selectOption('investigation');
-  const selected = await page.evaluate(() => ({ value:document.getElementById('newProfile')?.value, disabled:document.getElementById('startDemo')?.disabled }));
-  assert(selected.value === 'investigation' && selected.disabled === false, `Profile selection did not enable demo: ${JSON.stringify(selected)}.`);
+  await page.evaluate(() => {
+    const prior = document.getElementById('newProfile');
+    const replacement = prior.cloneNode(true);
+    replacement.value = '';
+    replacement.removeAttribute('data-ash-canonical-profile-prompt-bound');
+    replacement.removeAttribute('data-ash-profile-choice-explicit');
+    prior.replaceWith(replacement);
+    for (const type of ['aia-ready','aia3-ready','composition-stable']) {
+      window.dispatchEvent(new CustomEvent(`td613:ash:${type}`, { detail:{ witness:'SELECTOR_REMOUNT' } }));
+    }
+  });
+  await page.waitForFunction(() => document.getElementById('newProfile')?.value === 'investigation'
+    && document.getElementById('startDemo')?.disabled === false
+    && window.__td613AshProfilePromptCanonical?.current?.().explicit_choice === 'investigation');
+  const selected = await page.evaluate(() => ({
+    value:document.getElementById('newProfile')?.value,
+    disabled:document.getElementById('startDemo')?.disabled,
+    explicit_choice:window.__td613AshProfilePromptCanonical?.current?.().explicit_choice,
+    remounted:true
+  }));
+  assert(selected.value === 'investigation' && selected.disabled === false && selected.explicit_choice === 'investigation', `Profile choice did not survive selector remount and composition refresh: ${JSON.stringify(selected)}.`);
 
   await page.locator('#newTitle').fill(`Ingress first paint ${browserName}`);
   await page.locator('#newCase').click();
