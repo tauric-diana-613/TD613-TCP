@@ -4,6 +4,7 @@ import fs from 'node:fs';
 const read = path => fs.readFileSync(new URL(`../${path}`, import.meta.url), 'utf8');
 
 const moduleSource = read('app/dome-world/ash-whole-instrument-pedagogy.js');
+const a6Source = read('app/dome-world/ash-a6-affordance-drawer-repair.js');
 const css = read('app/dome-world/ash-whole-instrument-pedagogy.css');
 const bridge = read('app/dome-world/ash-workspace-bridge.js');
 const lifecycle = read('app/dome-world/ash-lifecycle.js');
@@ -96,4 +97,38 @@ assert.match(receipt, /active serverless functions = 11/);
 assert.match(receipt, /reserved function capacity = 1/);
 assert.doesNotMatch(moduleSource, /\/api\//);
 
-console.log('Ash A2-A5 whole-instrument contracts: PASS');
+// A6 — affordance and drawer repair.
+assert.match(a6Source, /td613\.ash\.a6-affordance-drawer-repair\/v0\.1/);
+assert.match(bridge, /ash-a6-affordance-drawer-repair\.js\?v=20260723-a2-a5-release-v1/);
+const wholeInstrumentA6Source = `${moduleSource}\n${a6Source}`;
+for (const marker of [
+  'Open Local Document', 'Open Draft Workspace', 'Previous Lesson', 'Next Lesson', '𝄐 Rest',
+  'Cases & profiles', 'Open Workspace Setup', 'What changed—and what did not'
+]) assert.match(wholeInstrumentA6Source, new RegExp(marker.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')));
+for (const marker of ['ashA6LocalDocumentSurface','ashA6DraftSurface','ashA6ChooseLocalDocument','ashA6DraftBody']) assert.match(a6Source, new RegExp(marker));
+assert.match(a6Source, /destination:\{ workspace:'work', anchor:'ashA6LocalDocumentSurface' \}/);
+assert.match(a6Source, /destination:\{ workspace:'work', anchor:'ashA6DraftSurface' \}/);
+assert.match(a6Source, /fileInput\.click\(\)/);
+assert.match(a6Source, /exact\.dispatchEvent\(new InputEvent\('input'/);
+assert.match(a6Source, /Structural Rest is active/);
+assert.match(a6Source, /current consequence remains inspectable/);
+assert.match(a6Source, /REST_DEMAND_SELECTOR/);
+assert.match(a6Source, /data-ash-a6-rest-held/);
+assert.match(a6Source, /HELD_WITH_EXPLANATION/);
+for (const field of ['missing','why','satisfy','change','unchanged']) assert.match(a6Source, new RegExp(`${field}:`));
+assert.match(a6Source, /No additional state is available in this disclosure/);
+assert.match(a6Source, /No state delta has been observed yet/);
+assert.match(a6Source, /You changed how Ash explains this case/);
+assert.match(a6Source, /The underlying case state did not change/);
+assert.match(a6Source, /LEGEND_ONLY/);
+assert.match(a6Source, /td613\.ash\.affordance-contract\/v0\.1/);
+assert.match(a6Source, /td613\.ash\.a6-world-answer\/v0\.1/);
+assert.match(a6Source, /human_closure_required:true/);
+assert.doesNotMatch(a6Source, /new MutationObserver|setInterval\(|navigator\.sendBeacon|\/api\//);
+assert.doesNotMatch(a6Source, /ASH_AIA3_CACHE_EPOCH|ASH_AIA3_ASSET_EPOCH|cache-flush\/2026-07-24|20260724/);
+for (const invariant of [
+  'authority_changed:false','source_bytes_moved:false','custody_changed:false',
+  'release_posture_changed:false','closure_changed:false'
+]) assert.match(a6Source, new RegExp(invariant));
+
+console.log('Ash A2-A6 whole-instrument contracts: PASS');
