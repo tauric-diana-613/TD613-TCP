@@ -90,10 +90,22 @@ async function inspectA8(page) {
   await returnToMap(page);
   if (await page.locator('#ashA8ObjectName').inputValue() !== witnessName) throw new Error('A8 object draft did not survive the Custody hold and explicit Map return.');
 
-  const relationOptions = await page.locator('#ashA8RelationFrom option').evaluateAll(options => options.map(option => option.value).filter(Boolean));
-  if (relationOptions.length < 2) throw new Error('A8 requires two existing objects to test the constitutional relation hold.');
-  await page.locator('#ashA8RelationFrom').selectOption(relationOptions[0]);
-  await page.locator('#ashA8RelationTo').selectOption(relationOptions[1]);
+  const relationOptions = await page.evaluate(() => {
+    const values = selector => [...document.querySelectorAll(`${selector} option`)].map(option => option.value).filter(Boolean);
+    const from = [...new Set(values('#ashA8RelationFrom'))];
+    const to = new Set(values('#ashA8RelationTo'));
+    return from.filter(value => to.has(value));
+  });
+  if (relationOptions.length < 2) throw new Error('A8 requires two distinct existing objects to test the constitutional relation hold.');
+  const [fromValue, toValue] = relationOptions;
+  if (fromValue === toValue) throw new Error('A8 witness selected the same object on both sides.');
+  await page.locator('#ashA8RelationFrom').selectOption(fromValue);
+  await page.locator('#ashA8RelationTo').selectOption(toValue);
+  await page.waitForFunction(([from, to]) => {
+    const left = document.getElementById('ashA8RelationFrom')?.value;
+    const right = document.getElementById('ashA8RelationTo')?.value;
+    return left === from && right === to && left !== right;
+  }, [fromValue, toValue], { timeout:30_000 });
   await page.locator('#ashA8RelationType').fill('browser-witness-supports');
   await page.locator('#ashA8RelationEvidence').fill('browser-local synthetic fixture');
   await page.locator('#ashA8RelationUncertain').fill('Relation remains open to review.');
@@ -189,6 +201,8 @@ async function preserveFailure(page, label, consoleErrors, error) {
     ledger_present:Boolean(document.getElementById('ashA7RouteLedger')),
     a8_workshop_present:Boolean(document.getElementById('ashA8RelationWorkshop')),
     a8_status:document.getElementById('ashA8Status')?.textContent || null,
+    a8_relation_from:document.getElementById('ashA8RelationFrom')?.value || null,
+    a8_relation_to:document.getElementById('ashA8RelationTo')?.value || null,
     a9_root_present:Boolean(document.getElementById('ashA9WorkRecompilation')),
     a9_status:document.getElementById('ashA9Status')?.textContent || null,
     accessible_table_active:document.getElementById('accessibleTable')?.classList.contains('active') || false,
