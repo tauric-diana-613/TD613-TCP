@@ -38,6 +38,7 @@ import './ash-flowcore-ingress-portal-loader.js?v=20260723-a2-a5-release-v1';
 import './ash-post-ingress-motion-restoration.js?v=20260723-a2-a5-release-v1';
 // A2-A5 recompiles the existing field, explicit routes, and semantic navigation without creating another field or clock.
 import './ash-whole-instrument-pedagogy.js?v=20260723-a2-a5-release-v1';
+// A6 closure retry marker: nonfunctional; runtime, authority, and release epoch remain unchanged.
 // A6 repairs visible affordances, structural Rest, held explanations, and disclosure bodies without changing the release epoch or Ash authority.
 import './ash-a6-affordance-drawer-repair.js?v=20260723-a2-a5-release-v1';
 // The Rest-specific world answer owns the settled status after generic lesson refresh completes.
