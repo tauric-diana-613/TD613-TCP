@@ -67,6 +67,7 @@ async function workspaceState(page, workspace) {
   return page.evaluate(name => {
     const panel = document.getElementById(`workspace-${name}`);
     const rect = panel?.getBoundingClientRect() || null;
+    const navigationReceipt = window.__td613AshWholeInstrument?.current?.()?.navigation_receipt || null;
     const visible = node => {
       if (!node) return false;
       const style = getComputedStyle(node);
@@ -78,7 +79,8 @@ async function workspaceState(page, workspace) {
       visible:visible(panel),
       top:rect ? Math.round(rect.top) : null,
       scrollY:Math.round(scrollY),
-      target:document.documentElement.dataset.ashUxScrollTarget || null,
+      target:navigationReceipt?.destination_workspace || document.documentElement.dataset.ashUxScrollTarget || null,
+      navigation_result:navigationReceipt?.result || null,
       premium_workspace:document.documentElement.dataset.ashPremiumWorkspace || null
     };
   }, workspace);
@@ -90,7 +92,10 @@ async function waitForWorkspaceGeometry(page, workspace) {
     if (!panel?.classList.contains('active')) return false;
     const style = getComputedStyle(panel);
     const rect = panel.getBoundingClientRect();
-    return document.documentElement.dataset.ashUxScrollTarget === name
+    const navigationReceipt = window.__td613AshWholeInstrument?.current?.()?.navigation_receipt || null;
+    const semanticArrival = navigationReceipt?.destination_workspace === name && navigationReceipt?.result === 'ARRIVED';
+    const legacyArrival = document.documentElement.dataset.ashUxScrollTarget === name;
+    return (semanticArrival || legacyArrival)
       && document.documentElement.dataset.ashPremiumWorkspace === name
       && style.display !== 'none'
       && style.visibility !== 'hidden'
@@ -132,7 +137,7 @@ const page = await context.newPage();
 page.setDefaultTimeout(60_000);
 
 const report = {
-  schema:'td613.ash.research-ux-browser-evidence/v0.2-composed-workspace-geometry',
+  schema:'td613.ash.research-ux-browser-evidence/v0.3-a4-semantic-navigation',
   browser:browserName,
   status:'RUNNING',
   console_errors:[],
