@@ -105,6 +105,10 @@ Route Memory or Save Points invalidated: false
 - relock with zero product drift;
 - physical-device closure remains operator-held.
 
+## Exact-head closure event
+
+The permanent Ash Flow-Core workflow now owns A7+A8 source contracts and Chromium/Firefox/WebKit witnesses. This documentation-only marker instantiates that final branch-head event after temporary integration retirement; it changes no runtime, epoch, authority, or deployment posture.
+
 **Human closure:** OPEN  
 **Promotion authority:** OPERATOR ONLY
 
