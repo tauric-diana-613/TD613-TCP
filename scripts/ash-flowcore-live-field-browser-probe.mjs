@@ -27,7 +27,7 @@ await page.addInitScript(() => {
   });
 });
 
-const report = { schema:'td613.ash.flowcore-live-field-browser/v0.5-canonical-play', browser:browserName, status:'RUNNING', errors, http_errors:httpErrors, observations:{} };
+const report = { schema:'td613.ash.flowcore-live-field-browser/v0.6-canonical-play-phase-receipts', browser:browserName, status:'RUNNING', errors, http_errors:httpErrors, observations:{} };
 try {
   await page.goto(`${base}/dome-world/ash-keep.html?presentation=aia&profile=investigation&nonce=${Date.now()}`, { waitUntil:'domcontentloaded' });
   await page.waitForFunction(() => window.__td613AshFlowcoreField?.version
@@ -194,22 +194,29 @@ try {
   const activeMotion = await page.evaluate(() => {
     const field = document.querySelector('.ash-flowcore-field:not([hidden])');
     const rail = document.querySelector('#ashAiaMembrane .ash-ux-motion-track');
+    const canvas = field?.querySelector('.ash-flowcore-field__canvas');
+    const phaseLabel = field?.querySelector('[data-flowcore-phase-label]')?.textContent || '';
     return {
-      field_animations:field?.getAnimations({ subtree:true }).length || 0,
-      rail_animations:rail?.getAnimations({ subtree:true }).length || 0,
       phase:document.documentElement.dataset.ashFlowcorePhase,
+      field_phase:field?.dataset.flowcorePhaseName || null,
+      field_playing:field?.dataset.flowcorePlaying === 'true',
+      phase_label:phaseLabel,
+      canvas_visible:Boolean(canvas && getComputedStyle(canvas).display !== 'none' && canvas.getBoundingClientRect().height > 0),
+      rail_visible:Boolean(rail && getComputedStyle(rail).display !== 'none' && rail.getBoundingClientRect().height > 0),
       motion:window.__td613AshPostIngressMotionRestoration.current()
     };
   });
-  assert(activeMotion.phase === 'NAME', 'Flow-Core relation phase never became visible.');
-  assert(activeMotion.field_animations > 0, 'Flow-Core relation phase produced no visible finite animation.');
-  assert(activeMotion.rail_animations > 0, 'One-dimensional lesson rail produced no visible finite animation.');
+  assert(activeMotion.phase === 'NAME' && activeMotion.field_phase === 'NAME', 'Flow-Core relation phase never became visible.');
+  assert(activeMotion.field_playing && /NAME/.test(activeMotion.phase_label), `Flow-Core NAME receipt did not remain visibly active: ${JSON.stringify(activeMotion)}.`);
+  assert(activeMotion.canvas_visible && activeMotion.rail_visible, `Flow-Core motion layers disappeared during NAME: ${JSON.stringify(activeMotion)}.`);
   assert(activeMotion.motion.canvas_visible && activeMotion.motion.rail_visible && !activeMotion.motion.field_clipped && !activeMotion.motion.rail_clipped, `Motion layers drifted during playback: ${JSON.stringify(activeMotion.motion)}.`);
   await page.waitForFunction(() => document.documentElement.dataset.ashFlowcorePhase === 'REST', null, { timeout:15_000 });
   const trace = await page.evaluate(() => window.__ashFlowcorePhaseTrace);
   const names = new Set(trace.map(item => item.phase_name));
   for (const name of ['NOTICE','ACT','WORLD_ANSWERS','NAME','REST']) assert(names.has(name), `Flow-Core trace omitted ${name}: ${JSON.stringify(trace)}.`);
   assert(trace.every(item => item.artifact_required === false), 'A Flow-Core frame falsely required an artifact.');
+  const orderedTrace = ['NOTICE','ACT','WORLD_ANSWERS','NAME','REST'].map(name => trace.findIndex(item => item.phase_name === name));
+  assert(orderedTrace.every(index => index >= 0) && orderedTrace.every((index, position) => position === 0 || index > orderedTrace[position - 1]), `Flow-Core phase trace lost finite causal order: ${JSON.stringify(trace)}.`);
 
   await page.setViewportSize({ width:390, height:844 });
   const mobile = await page.evaluate(() => {
