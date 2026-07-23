@@ -32,24 +32,111 @@ async function enterInvestigation(page) {
     && document.documentElement.dataset.ashPremiumWorkspace === 'home', null, { timeout:120_000 });
 }
 
+async function returnToMap(page) {
+  await page.locator('[data-premium-workspace="map"]').click();
+  await page.waitForSelector('#ashA8RelationWorkshop', { state:'visible', timeout:90_000 });
+  await page.waitForFunction(() => document.getElementById('workspace-map')?.classList.contains('active'), null, { timeout:30_000 });
+}
+
+async function waitForStableCaseMap(page) {
+  await page.waitForFunction(() => {
+    const snapshot = window.__td613AshPremiumUI?.snapshot?.();
+    const caseMap = snapshot?.caseMap;
+    if (!caseMap?.case_map_digest) return false;
+    const signature = `${caseMap.case_map_digest}:${caseMap.nodes?.length || 0}:${caseMap.relationships?.length || 0}`;
+    const now = performance.now();
+    const prior = window.__td613A8BaselineStability;
+    if (!prior || prior.signature !== signature) {
+      window.__td613A8BaselineStability = { signature, since:now };
+      return false;
+    }
+    return now - prior.since >= 800;
+  }, null, { timeout:90_000, polling:100 });
+}
+
+async function inspectA8(page) {
+  await returnToMap(page);
+  await waitForStableCaseMap(page);
+  for (const selector of ['#ashA8ObjectPreview','#ashA8RelationPreview','#ashA8RelationshipList','#ashA8RelationDetail','#accessibleTable']) {
+    if (!(await page.locator(selector).count())) throw new Error(`A8 missing ${selector}`);
+  }
+  if (await page.locator('#ashA8RelationDirection').count()) throw new Error('A8 exposed an undirected state the map engine cannot store.');
+
+  const before = await page.evaluate(() => ({
+    digest:window.__td613AshPremiumUI?.snapshot?.()?.caseMap?.case_map_digest || null,
+    objects:window.__td613AshPremiumUI?.snapshot?.()?.caseMap?.nodes?.length || 0,
+    relations:window.__td613AshPremiumUI?.snapshot?.()?.caseMap?.relationships?.length || 0,
+    notes:document.getElementById('researchNotes')?.value || '',
+    lifecycle:document.body.dataset.ashLifecycle || null
+  }));
+
+  const witnessName = `A8 Witness Object ${browserName}`;
+  await page.locator('#ashA8ObjectName').fill(witnessName);
+  await page.locator('#ashA8ObjectKnown').fill('Synthetic browser witness object.');
+  await page.locator('#ashA8ObjectUncertain').fill('No human evidence inferred.');
+  await page.locator('#ashA8ObjectEvidence').fill('browser-local synthetic fixture');
+  await page.locator('#ashA8ObjectNotes').fill('A8 constitutionally held object witness.');
+  await page.locator('#ashA8CommitObject').click();
+  await page.waitForFunction(() => /Object held:.*CASE_BOUND required/i.test(document.getElementById('ashA8Status')?.textContent || ''), null, { timeout:30_000 });
+  const afterObjectHold = await page.evaluate(() => ({
+    digest:window.__td613AshPremiumUI?.snapshot?.()?.caseMap?.case_map_digest || null,
+    objects:window.__td613AshPremiumUI?.snapshot?.()?.caseMap?.nodes?.length || 0,
+    notes:document.getElementById('researchNotes')?.value || '',
+    status:document.getElementById('ashA8Status')?.textContent || ''
+  }));
+  if (afterObjectHold.digest !== before.digest || afterObjectHold.objects !== before.objects) throw new Error('A8 pre-CASE_BOUND object hold mutated the Case Map.');
+  if (afterObjectHold.notes !== before.notes) throw new Error('A8 pre-CASE_BOUND object hold wrote notes without stored successor state.');
+
+  await returnToMap(page);
+  if (await page.locator('#ashA8ObjectName').inputValue() !== witnessName) throw new Error('A8 object draft did not survive the Custody hold and explicit Map return.');
+
+  const relationOptions = await page.locator('#ashA8RelationFrom option').evaluateAll(options => options.map(option => option.value).filter(Boolean));
+  if (relationOptions.length < 2) throw new Error('A8 requires two existing objects to test the constitutional relation hold.');
+  await page.locator('#ashA8RelationFrom').selectOption(relationOptions[0]);
+  await page.locator('#ashA8RelationTo').selectOption(relationOptions[1]);
+  await page.locator('#ashA8RelationType').fill('browser-witness-supports');
+  await page.locator('#ashA8RelationEvidence').fill('browser-local synthetic fixture');
+  await page.locator('#ashA8RelationUncertain').fill('Relation remains open to review.');
+  await page.locator('#ashA8RelationNotes').fill('A8 constitutionally held relation witness.');
+  await page.locator('#ashA8CommitRelation').click();
+  await page.waitForFunction(() => /Relationship held:.*CASE_BOUND required/i.test(document.getElementById('ashA8Status')?.textContent || ''), null, { timeout:30_000 });
+  const afterRelationHold = await page.evaluate(() => ({
+    digest:window.__td613AshPremiumUI?.snapshot?.()?.caseMap?.case_map_digest || null,
+    relations:window.__td613AshPremiumUI?.snapshot?.()?.caseMap?.relationships?.length || 0,
+    notes:document.getElementById('researchNotes')?.value || '',
+    status:document.getElementById('ashA8Status')?.textContent || ''
+  }));
+  if (afterRelationHold.digest !== before.digest || afterRelationHold.relations !== before.relations) throw new Error('A8 pre-CASE_BOUND relationship hold mutated the Case Map.');
+  if (afterRelationHold.notes !== before.notes) throw new Error('A8 pre-CASE_BOUND relationship hold wrote notes without stored successor state.');
+
+  await returnToMap(page);
+  if (await page.locator('#ashA8RelationType').inputValue() !== 'browser-witness-supports') throw new Error('A8 relation draft did not survive the Custody hold and explicit Map return.');
+
+  const inspect = page.locator('[data-ash-a8-inspect-relation]').first();
+  if (!(await inspect.count())) throw new Error('A8 demo exposed no existing relationship for lawful inspection.');
+  await inspect.click();
+  await page.waitForFunction(() => document.getElementById('ashA8RelationDetail')?.hidden === false);
+  const detail = await page.locator('#ashA8RelationDetail').innerText();
+  if (!/Source posture/i.test(detail) || !/Exact relation ID/i.test(detail)) throw new Error('A8 stored relationship detail omitted source posture or exact identity.');
+  await page.locator('[data-ash-a8-open-table]').first().click();
+  await page.waitForFunction(() => document.getElementById('accessibleTable')?.classList.contains('active'));
+}
+
 async function inspectStage(page, stage) {
   if (stage === 'A7') {
+    await page.locator('[data-premium-workspace="home"]').click();
     await page.waitForFunction(() => {
       const priority = document.getElementById('ashA7CurrentPriority');
       const continuity = document.getElementById('ashA7Continuity');
       const ledger = document.getElementById('ashA7RouteLedger');
-      const text = (document.getElementById('premiumHomeBody')?.innerText || '').toLowerCase();
+      const text = (document.getElementById('premiumHomeBody')?.textContent || '').toLowerCase();
       return Boolean(priority?.isConnected && continuity?.isConnected && ledger?.isConnected)
         && ['what needs attention','what ash will not do','what remains attached','what has already left'].every(phrase => text.includes(phrase));
     }, null, { timeout:90_000 });
     const primaryCount = await page.locator('#ashA7CurrentPriority .ash-stage-primary-action:visible').count();
     if (primaryCount !== 1) throw new Error(`A7 expected one primary action, observed ${primaryCount}`);
   }
-  if (stage === 'A8') {
-    await page.locator('[data-premium-workspace="map"]').click();
-    await page.waitForSelector('#ashA8RelationWorkshop', { state:'visible', timeout:90_000 });
-    for (const selector of ['#ashA8ObjectPreview','#ashA8RelationPreview','#ashA8RelationshipList','#accessibleTable']) if (!(await page.locator(selector).count())) throw new Error(`A8 missing ${selector}`);
-  }
+  if (stage === 'A8') await inspectA8(page);
   if (stage === 'A9') {
     await page.locator('[data-premium-workspace="work"]').click();
     await page.waitForSelector('#ashA9WorkRecompilation', { state:'visible', timeout:90_000 });
@@ -77,17 +164,23 @@ async function preserveFailure(page, label, consoleErrors, error) {
     module_graph:document.documentElement.dataset.ashModuleGraph || null,
     premium_ready:document.documentElement.dataset.ashPremiumReady || null,
     premium_workspace:document.documentElement.dataset.ashPremiumWorkspace || null,
+    exact_workspace:[...document.querySelectorAll('.workspace.active')].map(node => node.id),
+    lifecycle:document.body.dataset.ashLifecycle || null,
     a7_flag:document.documentElement.dataset.ashA7Recompiled || null,
+    a8_flag:document.documentElement.dataset.ashA8Recompiled || null,
     a7_api:window.__td613AshA7Home?.version || null,
-    a7_stage_api:window.__td613AshA7?.version || null,
+    a8_api:window.__td613AshA8CaseMap?.version || null,
     premium_api:window.__td613AshPremiumUI?.version || null,
     snapshot:window.__td613AshPremiumUI?.snapshot?.() || null,
     home_dataset:document.getElementById('premiumHomeBody')?.dataset?.ashA7Home || null,
     home_html:document.getElementById('premiumHomeBody')?.innerHTML || null,
-    home_text:document.getElementById('premiumHomeBody')?.innerText || null,
+    home_text:document.getElementById('premiumHomeBody')?.textContent || null,
     priority_present:Boolean(document.getElementById('ashA7CurrentPriority')),
     continuity_present:Boolean(document.getElementById('ashA7Continuity')),
     ledger_present:Boolean(document.getElementById('ashA7RouteLedger')),
+    a8_workshop_present:Boolean(document.getElementById('ashA8RelationWorkshop')),
+    a8_status:document.getElementById('ashA8Status')?.textContent || null,
+    accessible_table_active:document.getElementById('accessibleTable')?.classList.contains('active') || false,
     primary_count:document.querySelectorAll('#ashA7CurrentPriority .ash-stage-primary-action').length
   }));
   await fs.writeFile(path.join(artifactDir, `${browserName}-${label}-failure.json`), JSON.stringify({

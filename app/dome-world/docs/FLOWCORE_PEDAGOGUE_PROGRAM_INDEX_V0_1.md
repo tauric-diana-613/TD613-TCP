@@ -4,7 +4,7 @@
 
 **Namespace:** `U+10D613`  
 **Program:** P0 through P10 plus runtime/release closure and Ash whole-instrument recompilation  
-**Status:** IMPLEMENTATION INDEX COMPLETE / BROWSER RUNTIME OBSERVED / ASH A0–A6 MERGED AND RELEASED / ASH A7 IMPLEMENTED ON BOUNDED BRANCH / EMPIRICAL HOLD VISIBLE / HUMAN CLOSURE OPEN
+**Status:** IMPLEMENTATION INDEX COMPLETE / BROWSER RUNTIME OBSERVED / ASH A0–A6 MERGED AND RELEASED / ASH A7 MERGED AND RELEASED / ASH A8 IMPLEMENTED ON BOUNDED BRANCH / EMPIRICAL HOLD VISIBLE / HUMAN CLOSURE OPEN
 
 ## Constitutional source set
 
@@ -25,6 +25,8 @@
 
 15. `ASH_KEEP_A7_IMPLEMENTATION_RECEIPT_V0_1.md`
 
+16. `ASH_KEEP_A8_IMPLEMENTATION_RECEIPT_V0_1.md`
+
 ## Phase receipts
 
 | Phase | Receipt | Primary implementation |
@@ -44,6 +46,7 @@
 | Ash A2–A5 | `ASH_KEEP_A2_A5_IMPLEMENTATION_RECEIPT_V0_1.md` | consequence-field grammar, workspace anisotropy, semantic navigation, human-facing routes, workflow repair, final bounded release epoch, merged release, and relock |
 | Ash A6 | `ASH_KEEP_A6_IMPLEMENTATION_RECEIPT_V0_1.md` | Work-local document and draft affordances, lesson boundary answers, structural Rest, held-control explanations, transition-delta repair, and legend semantics |
 | Ash A7 | `ASH_KEEP_A7_IMPLEMENTATION_RECEIPT_V0_1.md` | Home Current Priority, Continuity, and route-ledger recompilation |
+| Ash A8 | `ASH_KEEP_A8_IMPLEMENTATION_RECEIPT_V0_1.md` | Case Map object placement, relation workshop, and inspection routes |
 
 ## Engines
 
@@ -84,6 +87,7 @@
 - `ASH_KEEP_A2_A5_IMPLEMENTATION_RECEIPT_V0_1.md`
 - `ASH_KEEP_A6_IMPLEMENTATION_RECEIPT_V0_1.md`
 - `ASH_KEEP_A7_IMPLEMENTATION_RECEIPT_V0_1.md`
+- `ASH_KEEP_A8_IMPLEMENTATION_RECEIPT_V0_1.md`
 
 ## Ash whole-instrument recompilation extension
 
@@ -109,8 +113,9 @@ A0 baseline freeze: IMPLEMENTED / DOCUMENTATION ONLY
 A1 first-paint and closure hardening: IMPLEMENTED / MERGED
 A2-A5 runtime recompilation: IMPLEMENTED / MERGED / ONE BOUNDED RELEASE / RELOCKED
 A6 affordance and drawer repair: IMPLEMENTED / MERGED / ONE BOUNDED RELEASE / RELOCKED
-A7 Home recompilation: IMPLEMENTED ON BOUNDED BRANCH / EXACT-HEAD VALIDATION OPEN
-A8-A19: NOT INCLUDED / HELD FOR LATER STAGES
+A7 Home recompilation: IMPLEMENTED / MERGED / ONE BOUNDED RELEASE / RELOCKED
+A8 Case Map recompilation: IMPLEMENTED ON BOUNDED BRANCH / EXACT-HEAD VALIDATION OPEN
+A9-A19: NOT INCLUDED / HELD FOR LATER STAGES
 A2-A5 release asset epoch: 20260723-a2-a5-release-v1
 A2-A5 cache epoch: td613.ash.cache-flush/2026-07-23-a2-a5-release-v1
 A6 cache posture: EXISTING EPOCH RETAINED BY EXPLICIT OPERATOR DIRECTION
@@ -203,6 +208,22 @@ Ash authority changed: FALSE
 human closure: OPEN
 ```
 
+## A8 evidence posture
+
+```text
+object placement sequence: IMPLEMENTED / BROWSER WITNESS OPEN
+object preview + deliberate add: IMPLEMENTED / BROWSER WITNESS OPEN
+Object A → relation → Object B workshop: IMPLEMENTED / BROWSER WITNESS OPEN
+relationship preview + explicit commit: IMPLEMENTED / BROWSER WITNESS OPEN
+graph/list/detail/notes/table inspection routes: IMPLEMENTED / BROWSER WITNESS OPEN
+existing Ash map engine ownership: PRESERVED
+new mass-eviction epoch: FALSE
+new serverless function: FALSE
+raw-content transport: FALSE
+Ash authority changed: FALSE
+human closure: OPEN
+```
+
 ## Current honest promotion posture
 
 ```text
@@ -222,7 +243,8 @@ human adult validation evidence: absent
 empirical exit gate: held
 A2-A5 production demonstrated: true
 A6 production demonstrated: true
-A7 production demonstrated: false
+A7 production demonstrated: true
+A8 production demonstrated: false
 feature gate default: OFF
 public route promotion authorized: false
 human promotion required: true

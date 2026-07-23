@@ -70,6 +70,7 @@ function reconcileCanonicalConsequenceFieldOwner() {
   const reordered = Boolean(canonicalInStage && firstField && firstField !== canonical);
   if (reordered) stage.insertBefore(canonical, firstField);
 
+  ashBridgeDocument.querySelectorAll('.ash-flowcore-field--proxy [data-aia-exact]').forEach(node => node.removeAttribute('data-aia-exact'));
   canonical.querySelectorAll('[data-flowcore-ingress-play]').forEach(control => control.remove());
   const play = ashBridgeDocument.querySelector('[data-aia-play]');
   if (play) {

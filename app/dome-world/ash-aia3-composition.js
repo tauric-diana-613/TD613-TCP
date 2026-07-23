@@ -121,7 +121,10 @@ function ensureIngressProfile() {
 
 function closeDeepPanels() {
   doc.querySelector('#ashAiaMembrane .ash-aia__consequences')?.removeAttribute('open');
-  doc.querySelectorAll('#ashAiaMembrane .ash-aia__depths details').forEach(details => details.removeAttribute('open'));
+  doc.querySelectorAll('#ashAiaMembrane .ash-aia__depths details').forEach(details => {
+    if (details.matches('[data-aia-exact]') && details.open) return;
+    details.removeAttribute('open');
+  });
 }
 
 function addRestoreNote() {
