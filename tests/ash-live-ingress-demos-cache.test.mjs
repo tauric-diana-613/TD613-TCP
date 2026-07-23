@@ -118,9 +118,8 @@ assert.equal(ASH_LIFECYCLE_ASSET_EPOCH, RELEASE_EPOCH);
 assert.equal(ASH_MASS_EVICTION_EPOCH, RELEASE_CACHE_EPOCH);
 assert.equal(ASH_LIFECYCLE_MODULE, `/dome-world/ash-lifecycle.js?v=${RELEASE_EPOCH}`);
 assert.match(lifecycle, /const ASH_RELEASE_ASSET_EPOCH = '20260723-a2-a5-release-v1'/);
-for (const module of ['ash-ingress-layout-hydration', 'ash-cache-flush']) {
-  assert.match(lifecycle, new RegExp(`import\\(\\`\\./${module}\\.js\\?v=\\$\\{ASH_RELEASE_ASSET_EPOCH\\}\\`\\)`));
-}
+assert.ok(lifecycle.includes("await import(`./ash-ingress-layout-hydration.js?v=${ASH_RELEASE_ASSET_EPOCH}`)"));
+assert.ok(lifecycle.includes("await import(`./ash-cache-flush.js?v=${ASH_RELEASE_ASSET_EPOCH}`)"));
 assert.match(lifecycle, /data-ash-composition-hydrating/);
 
 const renderedKeep = injectAshKeepLifecycle(keepHtml);
