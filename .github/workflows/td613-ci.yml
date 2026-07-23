@@ -68,7 +68,24 @@ jobs:
       - name: Ash custody contract
         run: node tests/dome-world-ash-custody.test.mjs
       - name: Ash leak challenge
-        run: node tests/dome-world-ash-leak-challenge.test.mjs
+        id: ash_leak
+        continue-on-error: true
+        run: |
+          mkdir -p artifacts/ash-leak-challenge
+          node tests/dome-world-ash-leak-challenge.test.mjs > artifacts/ash-leak-challenge/test.log 2>&1
+      - name: Preserve held Ash leak challenge diagnostics
+        if: steps.ash_leak.outcome == 'failure'
+        uses: actions/upload-artifact@v4
+        with:
+          name: ash-leak-challenge-diagnostic
+          path: artifacts/ash-leak-challenge/test.log
+          if-no-files-found: error
+          retention-days: 3
+      - name: Enforce Ash leak challenge
+        if: steps.ash_leak.outcome == 'failure'
+        run: |
+          cat artifacts/ash-leak-challenge/test.log
+          exit 1
       - name: Ash veil contract
         run: node tests/dome-world-ash-veil.test.mjs
       - name: Ash Cinder contract

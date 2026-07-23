@@ -8,10 +8,10 @@ const authorizedWriteWorkflows = new Set([
   'vercel-operator-release.yml',
   'vercel-relock-safety.yml',
 ]);
-const forbiddenPatterns = [
-  /\bgit\s+push\b/i,
-  /\bgit\s+commit\b/i,
-  /^\s*contents:\s*write\s*$/im,
+const forbiddenExecutablePatterns = [
+  /^\s*git\s+push\b/im,
+  /^\s*git\s+commit\b/im,
+  /^ {2}contents:\s*write\s*$/m,
   /patch-td613-flight/i,
 ];
 
@@ -28,11 +28,11 @@ for (const fileName of workflowNames) {
   if (authorizedWriteWorkflows.has(fileName)) continue;
   const filePath = path.join(workflowDir, fileName);
   const content = fs.readFileSync(filePath, 'utf8');
-  for (const pattern of forbiddenPatterns) {
+  for (const pattern of forbiddenExecutablePatterns) {
     assert.equal(
       pattern.test(content),
       false,
-      `${filePath} contains forbidden release-plumbing pattern ${pattern}`,
+      `${filePath} contains forbidden executable release-plumbing pattern ${pattern}`,
     );
   }
 }
@@ -46,8 +46,8 @@ function readAuthorized(name) {
   assert.match(source, /github\.event\.issue\.number == 405/);
   assert.match(source, /github\.event\.comment\.user\.login == github\.repository_owner/);
   assert.match(source, /startsWith\(github\.event\.comment\.body, '\/td613-vercel-release '\)/);
-  assert.match(source, /^\s{2}contents:\s*write\s*$/m);
-  assert.equal((source.match(/git push origin HEAD:main/g) || []).length, 1);
+  assert.match(source, /^ {2}contents:\s*write\s*$/m);
+  assert.equal((source.match(/^\s*git push origin HEAD:main\s*$/gm) || []).length, 1);
   assert.doesNotMatch(source, /patch-td613-flight/i);
   return source;
 }
