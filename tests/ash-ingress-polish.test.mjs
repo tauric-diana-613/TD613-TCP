@@ -22,7 +22,7 @@ assert.match(restoration, /position:relative!important/);
 assert.doesNotMatch(restoration, /setInterval\s*\(/);
 assert.doesNotMatch(restoration, /new MutationObserver/);
 
-assert.match(profilePrompt, /td613\.ash\.profile-prompt-canonical\/v0\.4-readiness-ordered-explicit-choice/);
+assert.match(profilePrompt, /td613\.ash\.profile-prompt-canonical\/v0\.5-post-motion-owner/);
 assert.match(profilePrompt, /let explicitChoice = ''/);
 assert.match(profilePrompt, /function captureExplicitChoice\(event\)/);
 assert.match(profilePrompt, /doc\.addEventListener\('input', captureExplicitChoice, true\)/);
@@ -32,6 +32,8 @@ assert.match(profilePrompt, /prompt\.textContent = 'Select a Profile\.\.\.'/);
 assert.match(profilePrompt, /if \(select\.value\) explicitChoice = select\.value/);
 assert.match(profilePrompt, /start\.disabled = !select\.value/);
 assert.match(profilePrompt, /for \(const type of \['aia-ready','aia3-ready','composition-stable'\]\)/);
+assert.match(profilePrompt, /td613:ash:post-ingress-motion/);
+assert.match(profilePrompt, /host\.addEventListener\('td613:ash:post-ingress-motion', \(\) => applyCanonicalProfilePrompt\(\)\)/);
 assert.match(profilePrompt, /td613:ash:case-closed/);
 assert.match(profilePrompt, /applyCanonicalProfilePrompt\(\{ resetSelection:true \}\);\n\}/);
 assert.doesNotMatch(profilePrompt, /queueMicrotask\(\(\) => applyCanonicalProfilePrompt\(\{ resetSelection:true \}\)\);\n\}/);
