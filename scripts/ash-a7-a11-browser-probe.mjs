@@ -34,12 +34,16 @@ async function enterInvestigation(page) {
 
 async function inspectStage(page, stage) {
   if (stage === 'A7') {
-    await page.waitForSelector('#ashA7CurrentPriority', { state:'visible', timeout:90_000 });
+    await page.waitForFunction(() => {
+      const priority = document.getElementById('ashA7CurrentPriority');
+      const continuity = document.getElementById('ashA7Continuity');
+      const ledger = document.getElementById('ashA7RouteLedger');
+      const text = document.getElementById('premiumHomeBody')?.innerText || '';
+      return Boolean(priority?.isConnected && continuity?.isConnected && ledger?.isConnected)
+        && ['What needs attention','What Ash will not do','What remains attached','What has already left'].every(phrase => text.includes(phrase));
+    }, null, { timeout:90_000 });
     const primaryCount = await page.locator('#ashA7CurrentPriority .ash-stage-primary-action:visible').count();
     if (primaryCount !== 1) throw new Error(`A7 expected one primary action, observed ${primaryCount}`);
-    for (const selector of ['#ashA7Continuity','#ashA7RouteLedger']) await page.waitForSelector(selector, { state:'visible' });
-    const text = await page.locator('#premiumHomeBody').innerText();
-    for (const phrase of ['What needs attention','What Ash will not do','What remains attached','What has already left']) if (!text.includes(phrase)) throw new Error(`A7 missing ${phrase}`);
   }
   if (stage === 'A8') {
     await page.locator('[data-premium-workspace="map"]').click();
