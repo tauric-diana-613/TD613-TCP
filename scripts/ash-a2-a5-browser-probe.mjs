@@ -7,7 +7,7 @@ const base = String(process.env.TD613_BASE_URL || 'http://127.0.0.1:6130').repla
 const artifactDir = path.resolve(process.env.TD613_ARTIFACT_DIR || `artifacts/ash-a2-a6-${browserName}`);
 const engine = { chromium, firefox, webkit }[browserName];
 const canonicalInspectionSelector = '.ash-flowcore-field:not(.ash-flowcore-field--proxy):not([hidden]) [data-flowcore-channel="inspection"]';
-const canonicalExactSelector = '.ash-flowcore-field:not(.ash-flowcore-field--proxy):not([hidden]) [data-aia-exact]';
+const canonicalExactSelector = '#ashAiaMembrane > .ash-aia__depths [data-aia-exact]';
 if (!engine) throw new Error(`Unsupported browser: ${browserName}`);
 
 await fs.mkdir(artifactDir, { recursive:true });
