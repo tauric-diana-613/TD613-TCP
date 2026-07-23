@@ -3,6 +3,8 @@ import fs from 'node:fs';
 
 const source = fs.readFileSync(new URL('../app/dome-world/ash-a8-case-map-recompilation.js', import.meta.url), 'utf8');
 const bridge = fs.readFileSync(new URL('../app/dome-world/ash-workspace-bridge.js', import.meta.url), 'utf8');
+const handshake = fs.readFileSync(new URL('../scripts/run-ash-constitutional-convergence-handshake.mjs', import.meta.url), 'utf8');
+const closureWorkflow = fs.readFileSync(new URL('../.github/workflows/ash-keep-production-closure.yml', import.meta.url), 'utf8');
 const shell = fs.readFileSync(new URL('../api/dome-world-shell.js', import.meta.url), 'utf8');
 const html = fs.readFileSync(new URL('../app/dome-world/ash-keep.html', import.meta.url), 'utf8');
 const mirror = fs.readFileSync(new URL('../app/dome-world/ash-keep-source.html', import.meta.url), 'utf8');
@@ -51,6 +53,13 @@ assert.doesNotMatch(source, /localStorage\.(?:setItem|removeItem|clear)/);
 assert.doesNotMatch(source, /new\s+(?:Worker|SharedWorker)/);
 assert.match(bridge, /\.ash-flowcore-field--proxy \[data-aia-exact\]/);
 assert.match(bridge, /removeAttribute\('data-aia-exact'\)/);
+assert.match(handshake, /td613:ash:probe-contention-release:v1/);
+assert.match(handshake, /RELEASE_FIRST_TAB/);
+assert.match(handshake, /Second-tab contention request was not queued before first-tab release/);
+assert.match(handshake, /Cross-tab lock witness exceeded 35000ms/);
+assert.doesNotMatch(handshake, /setTimeout\(resolve, 240\)/);
+assert.equal((closureWorkflow.match(/run-ash-constitutional-convergence-handshake\.mjs/g) || []).length >= 2, true);
+assert.match(closureWorkflow, /node --check scripts\/run-ash-constitutional-convergence-handshake\.mjs/);
 assert.match(shell, /ash-a8-case-map-recompilation\.js\?v=20260723-a8-v1/);
 assert.match(html, /ash-a8-case-map-recompilation\.js/);
 assert.equal(html, mirror, 'Ash source mirror must remain byte-identical');
@@ -68,6 +77,8 @@ console.log(JSON.stringify({
   accessible_table:true,
   stored_relation_detail:true,
   proxy_inspection_selector_quarantined:true,
+  explicit_cross_tab_handshake:true,
+  background_timer_lock_release:false,
   authority_changed:false,
   source_bytes_moved:false,
   human_closure_required:true,
