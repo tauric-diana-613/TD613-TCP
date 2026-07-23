@@ -124,6 +124,14 @@ const mapWorkspaceReplacement = `  await page.evaluate(() => {
       && rect?.height > 0;
   });`;
 
+const secondCaseTarget = `  await page.locator('#newTitle').fill('Synthetic second case');
+  await page.locator('#newCase').click();`;
+const secondCaseReplacement = `  await page.locator('#newProfile').selectOption('political_campaign');
+  await page.waitForFunction(() => document.getElementById('newProfile')?.value === 'political_campaign'
+    && document.getElementById('newCase')?.disabled === false, null, { timeout: 60000 });
+  await page.locator('#newTitle').fill('Synthetic second case');
+  await page.locator('#newCase').click();`;
+
 const deletionTarget = `  await page.locator('#selectCase').selectOption(secondCase);
   await page.waitForFunction(() => document.getElementById('deleteSelectedCase')?.disabled === false);
   await page.locator('#deleteSelectedCase').click();`;
@@ -164,6 +172,7 @@ const readinessCount = source.split(readinessTarget).length - 1;
 const testWorkspaceCount = source.split(testWorkspaceTarget).length - 1;
 const authorityCount = source.split(authorityTarget).length - 1;
 const mapWorkspaceCount = source.split(mapWorkspaceTarget).length - 1;
+const secondCaseCount = source.split(secondCaseTarget).length - 1;
 const deletionCount = source.split(deletionTarget).length - 1;
 const secondTabCount = source.split(secondTabTarget).length - 1;
 const reloadCount = source.split(reloadTarget).length - 1;
@@ -173,6 +182,7 @@ if (readinessCount !== 1) throw new Error(`Convergence observer expected one Ash
 if (testWorkspaceCount !== 1) throw new Error(`Convergence observer expected one legacy Test workspace seam; observed ${testWorkspaceCount}.`);
 if (authorityCount !== 1) throw new Error(`Convergence observer expected one permission-stabilization seam; observed ${authorityCount}.`);
 if (mapWorkspaceCount !== 1) throw new Error(`Convergence observer expected one legacy Map workspace seam; observed ${mapWorkspaceCount}.`);
+if (secondCaseCount !== 1) throw new Error(`Convergence observer expected one second-case explicit-profile seam; observed ${secondCaseCount}.`);
 if (deletionCount !== 1) throw new Error(`Convergence observer expected one case-selection seam and one atomic case-deletion seam; observed ${deletionCount}.`);
 if (secondTabCount !== 1) throw new Error(`Convergence observer expected one second-tab readiness seam; observed ${secondTabCount}.`);
 if (reloadCount !== 1) throw new Error(`Convergence observer expected one reload readiness seam; observed ${reloadCount}.`);
@@ -183,6 +193,7 @@ const runtime = source
   .replace(testWorkspaceTarget, testWorkspaceReplacement)
   .replace(authorityTarget, authorityReplacement)
   .replace(mapWorkspaceTarget, mapWorkspaceReplacement)
+  .replace(secondCaseTarget, secondCaseReplacement)
   .replace(deletionTarget, deletionReplacement)
   .replace(secondTabTarget, secondTabReplacement)
   .replace(reloadTarget, reloadReplacement)
@@ -199,7 +210,7 @@ if (!runtime.includes('profile_demo_registry_deferred_until_selection: true')
   || !runtime.includes('demo_click_deferred_until_ready: true')
   || !runtime.includes('profile_selected_explicitly: true')
   || !runtime.includes('network_idle_not_required: true')
-  || !runtime.includes("selectOption('political_campaign')")
+  || (runtime.match(/selectOption\('political_campaign'\)/g) || []).length !== 2
   || !runtime.includes('Harbor City Mayoral Campaign')
   || !runtime.includes("ashDemoEntryReady === 'political_campaign:map'")
   || !runtime.includes("convergence?.phase === 'VISIBLE'")
@@ -210,7 +221,7 @@ if (!runtime.includes('profile_demo_registry_deferred_until_selection: true')
 if (!runtime.includes("open('test')") || !runtime.includes("open('map')") || runtime.includes("page.locator('[data-workspace=\"test\"]').click()")) {
   throw new Error('Convergence observer guided workspace migration was not materialized.');
 }
-if (!runtime.includes("dataset.ashPremiumWorkspace === 'test'") || !runtime.includes("dataset.ashPremiumWorkspace === 'map'") || !runtime.includes("Number(style?.opacity) > 0")) {
+if (!runtime.includes("dataset.ashPremiumWorkspace === 'test'") || !runtime.includes("dataset.ashPremiumWorkspace === 'map'") || !runtime.includes('Number(style?.opacity) > 0')) {
   throw new Error('Convergence observer visible workspace gates were not materialized.');
 }
 if (!runtime.includes("select.dispatchEvent(new Event('change', { bubbles: true }))") || !runtime.includes('remove.click()')) {

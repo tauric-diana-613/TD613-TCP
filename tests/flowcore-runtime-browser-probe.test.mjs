@@ -4,7 +4,7 @@ import test from 'node:test';
 
 const browserProbe = fs.readFileSync('scripts/flowcore-runtime-browser-probe.mjs', 'utf8');
 const contentProbe = fs.readFileSync('scripts/flowcore-release-content-probe.mjs', 'utf8');
-const workflow = fs.readFileSync('.github/workflows/flowcore-runtime-evidence.yml', 'utf8');
+const workflow = fs.readFileSync('.github/workflows/vercel-operator-release.yml', 'utf8');
 
 const surfaces = [
   'information-dome-pedagogue.html',
@@ -46,13 +46,15 @@ test('production content observer binds deployed bytes to the selected source pa
   assert.match(contentProbe, /authorizes_public_route_promotion:\s*false/);
 });
 
-test('runtime evidence workflow is browser-observational and artifact preserving', () => {
-  assert.match(workflow, /strategy:/);
-  assert.match(workflow, /browser:\s*\[chromium, firefox, webkit\]/);
+test('the single explicit release conduit retains Flow-Core browser evidence', () => {
+  assert.match(workflow, /^\s{2}issue_comment:\s*$/m);
+  assert.doesNotMatch(workflow, /^\s{2}(push|pull_request|workflow_dispatch):\s*$/m);
   assert.match(workflow, /playwright@1\.53\.2/);
-  assert.match(workflow, /playwright install --with-deps \$\{\{ matrix\.browser \}\}/);
+  assert.match(workflow, /playwright install --with-deps chromium firefox webkit/);
   assert.match(workflow, /flowcore-runtime-browser-probe\.mjs/);
-  assert.match(workflow, /actions\/upload-artifact@v4/);
-  assert.match(workflow, /TD613_FLOWCORE_ROUTE_PREFIX:\s*app\/dome-world/);
-  assert.doesNotMatch(workflow, /VERCEL_TOKEN|deploymentEnabled|git push origin main/);
+  assert.match(workflow, /flowcore-release-content-probe\.mjs/);
+  assert.match(workflow, /flowcore-and-ash-aia3-production-release-evidence/);
+  assert.match(workflow, /TD613_FLOWCORE_ROUTE_PREFIX:\s*dome-world/);
+  assert.equal(fs.existsSync('.github/workflows/flowcore-runtime-evidence.yml'), false,
+    'Flow-Core runtime evidence must not regain an independent commit-triggered workflow.');
 });

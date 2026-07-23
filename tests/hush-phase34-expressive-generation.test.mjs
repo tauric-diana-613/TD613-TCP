@@ -33,7 +33,7 @@ assert(generated.candidates.every((candidate) => candidate.source === 'phase34-e
 assert(generated.candidates.some((candidate) => /rose bush|rose-bush/i.test(candidate.text)));
 assert(generated.candidates.some((candidate) => /rot latency/i.test(candidate.text)));
 assert(generated.candidates.some((candidate) => /dromological anchors/i.test(candidate.text)));
-assert(generated.candidates.every((candidate) => candidate.operations.includes('phase34-expressive-generation'));
+assert(generated.candidates.every((candidate) => candidate.operations.includes('phase34-expressive-generation')));
 
 const result = buildHushSwap({ sourceText: PHASE32_1_DIAGNOSTIC_SAMPLE, mask, maskProfile: mask.profile, contextType: 'group-chat', operatorMode: 'expressive-theory', exposureDuration: 'single-use', options: { candidateCount: 30, includePrivateText: false, expressiveMode: true } });
 assert(result.version.includes('phase-34-expressive-generation'));
@@ -144,6 +144,7 @@ const hushHtml = fs.readFileSync('app/adversarial-bench.html', 'utf8');
 const stableTransform = fs.readFileSync('app/hush-pr123-stable-transform.js', 'utf8');
 const proxy = fs.readFileSync('server/hush-generate-quality.js', 'utf8');
 const budgetedProxy = fs.readFileSync('server/hush-generate-budgeted.js', 'utf8');
+const speechActCustody = fs.readFileSync('app/engine/hush-speech-act-custody.js', 'utf8');
 const phase35Provider = fs.readFileSync('app/engine/hush-generator-provider-phase35.js', 'utf8');
 const envExample = fs.readFileSync('.env.example', 'utf8');
 const setupDoc = fs.readFileSync('docs/hush-remote-provider-setup.md', 'utf8');
@@ -170,7 +171,9 @@ assert(patch38Ui.includes('buildHushLlmPromptContractV2'));
 assert(patch38Ui.includes('Phase 35 ontology-routed generator'));
 assert(proxy.includes('process.env.GEMINI_API_KEY'));
 assert(budgetedProxy.includes('LAYOUT CADENCE CUSTODY'));
-assert(budgetedProxy.includes('SOURCE SPEECH-ACT CUSTODY LAW'));
+assert(budgetedProxy.includes("from '../app/engine/hush-speech-act-custody.js'"));
+assert(budgetedProxy.includes('speechActPromptLaw(sourceText)'));
+assert(speechActCustody.includes('SOURCE SPEECH-ACT CUSTODY LAW'));
 assert(budgetedProxy.includes('speech-act-custody-active'));
 assert(budgetedProxy.includes('Line breaks and paragraph breaks are cadence evidence') || phase35Provider.includes('Line breaks and paragraph breaks are cadence evidence'));
 assert(budgetedProxy.includes('punctuation scarcity'));
