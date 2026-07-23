@@ -1,0 +1,99 @@
+name: Temporary Ash A7 Integrator
+
+on:
+  pull_request:
+    branches: [main]
+    paths:
+      - '.github/workflows/ash-a7-integrator.yml'
+      - 'scripts/apply-ash-a7-home-recompilation.mjs'
+      - 'app/dome-world/ash-a7-a11-recompiler-core.js'
+      - 'app/dome-world/ash-a7-home-recompilation.js'
+      - 'scripts/ash-a7-a11-browser-probe.mjs'
+      - 'tests/ash-a7-home-recompilation.test.mjs'
+      - 'app/dome-world/docs/ASH_KEEP_A7_IMPLEMENTATION_RECEIPT_V0_1.md'
+  workflow_dispatch:
+
+permissions:
+  contents: write
+  pull-requests: read
+
+concurrency:
+  group: temporary-ash-a7-${{ github.event.pull_request.number || github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  integrate:
+    if: github.event_name == 'workflow_dispatch' || startsWith(github.head_ref, 'agent/ash-a7-home-recompilation')
+    runs-on: ubuntu-latest
+    timeout-minutes: 40
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: ${{ github.event.pull_request.head.ref || github.ref_name }}
+          fetch-depth: 0
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+      - run: npm ci
+      - name: Apply exact A7 seams and retire helper
+        run: node scripts/apply-ash-a7-home-recompilation.mjs
+      - name: Syntax and static contracts
+        run: |
+          node --check api/dome-world-shell.js
+          node --check app/dome-world/ash-a7-a11-recompiler-core.js
+          node --check app/dome-world/ash-a7-home-recompilation.js
+          node --check scripts/ash-a7-a11-browser-probe.mjs
+          node tests/ash-a7-home-recompilation.test.mjs
+          node tests/ash-a2-a5-whole-instrument.test.mjs
+          node tests/ash-flowcore-live-field.test.mjs
+          node tests/ash-reviewability.test.mjs
+          node tests/workflow-estate.test.mjs
+      - name: Install Chromium witness runtime
+        run: |
+          npm install --no-save --package-lock=false playwright@1.53.2
+          npx playwright install --with-deps chromium
+      - name: Start bounded Ash runtime
+        run: |
+          mkdir -p artifacts/ash-a7-integrator
+          node scripts/ash-keep-local-closure-server.mjs 6130 > artifacts/ash-a7-integrator/server.log 2>&1 &
+          echo $! > artifacts/ash-a7-integrator/server.pid
+          for attempt in $(seq 1 50); do
+            if curl -fsS --max-time 2 http://127.0.0.1:6130/__ash_keep_closure/readiness > artifacts/ash-a7-integrator/readiness.json; then exit 0; fi
+            sleep 1
+          done
+          cat artifacts/ash-a7-integrator/server.log || true
+          exit 1
+      - name: Observe A7 Chromium
+        env:
+          TD613_BROWSER: chromium
+          TD613_BASE_URL: http://127.0.0.1:6130
+          TD613_ASH_STAGES: A7
+          TD613_ARTIFACT_DIR: artifacts/ash-a7-integrator/browser
+        run: timeout --foreground --signal=INT --kill-after=15s 480s node scripts/ash-a7-a11-browser-probe.mjs
+      - name: Stop bounded runtime
+        if: always()
+        run: test -f artifacts/ash-a7-integrator/server.pid && kill "$(cat artifacts/ash-a7-integrator/server.pid)" || true
+      - name: Preserve A7 integration evidence
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: ash-a7-integrator-evidence
+          path: artifacts/ash-a7-integrator/
+          retention-days: 45
+          if-no-files-found: warn
+      - name: Verify bounded diff
+        run: |
+          git diff --name-only origin/main...HEAD > /tmp/a7-before.txt
+          git diff --name-only > /tmp/a7-worktree.txt
+          cat /tmp/a7-before.txt
+          cat /tmp/a7-worktree.txt
+          test "$(node -p "require('./vercel.json').git.deploymentEnabled")" = "false"
+          ! git grep -n "ash_epoch" -- app/dome-world/ash-a7-a11-recompiler-core.js app/dome-world/ash-a7-home-recompilation.js
+      - name: Commit exact tested A7 packet
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add -A
+          git commit -m "Implement Ash A7 Home recompilation"
+          git push origin HEAD:${{ github.event.pull_request.head.ref || github.ref_name }}
