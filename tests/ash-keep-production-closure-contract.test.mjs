@@ -38,9 +38,11 @@ for (const token of [
 for (const token of [
   'ash-constitutional-convergence-probe.runtime.mjs', 'expected one case-selection seam',
   "select.dispatchEvent(new Event('change', { bubbles: true }))", 'remove?.disabled !== false',
-  'Cross-tab lock witness exceeded 15000ms.'
+  'Cross-tab lock witness exceeded 35000ms.'
 ]) assert.ok(convergenceRunner.includes(token), `Convergence runner omitted ${token}`);
 assert.match(convergenceRunner, /pathToFileURL/);
+assert.match(convergenceRunner, /\b35000\b/);
+assert.doesNotMatch(convergenceRunner, /Cross-tab lock witness exceeded 15000ms\.|\b15000\b/);
 
 for (const token of [
   "new Set(['pending', 'success', 'failure', 'error'])", "required('GITHUB_TOKEN')", "required('TD613_OBSERVED_COMMIT')",
