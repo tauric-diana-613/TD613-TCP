@@ -9,28 +9,24 @@ if (!engine) throw new Error(`Unsupported browser: ${browserName}`);
 const base = String(process.env.TD613_BASE_URL || 'http://127.0.0.1:6130').replace(/\/$/, '');
 const out = path.resolve(process.env.TD613_ARTIFACT_DIR || `artifacts/ash-ingress-polish-${browserName}`);
 const assert = (value, message) => { if (!value) throw new Error(message); };
+const canonicalPath = '/dome-world/ash-threshold.html';
 
 await fs.mkdir(out, { recursive:true });
 const browser = await engine.launch({ headless:true });
 const context = await browser.newContext({ viewport:{ width:390, height:844 }, locale:'en-US', reducedMotion:'no-preference' });
 const page = await context.newPage();
 page.setDefaultTimeout(60_000);
-const errors = [], httpErrors = [];
+const errors = [], httpErrors = [], navigations = [];
 page.on('pageerror', error => errors.push(error.message));
 page.on('console', message => { if (message.type() === 'error') errors.push(message.text()); });
 page.on('response', response => { if (response.status() >= 400 && !/favicon\.ico/.test(response.url())) httpErrors.push(`${response.status()} ${response.url()}`); });
+page.on('framenavigated', frame => { if (frame === page.mainFrame()) navigations.push(frame.url()); });
 
 async function openKeep() {
-  const target = `${base}/dome-world/ash-keep.html?presentation=aia&nonce=${Date.now()}`;
-  try {
-    await page.goto(target, { waitUntil:'domcontentloaded' });
-  } catch (error) {
-    if (!/NS_BINDING_ABORTED|ERR_ABORTED/i.test(String(error?.message || error))) throw error;
-    await page.waitForLoadState('domcontentloaded').catch(() => {});
-  }
+  await page.goto(`${base}${canonicalPath}`, { waitUntil:'domcontentloaded' });
 }
 
-const report = { schema:'td613.ash.ingress-polish-browser/v0.2-navigation-aware', browser:browserName, status:'RUNNING', errors, http_errors:httpErrors, observations:{} };
+const report = { schema:'td613.ash.first-paint-browser/v0.3', browser:browserName, status:'RUNNING', errors, http_errors:httpErrors, navigations, observations:{} };
 try {
   await openKeep();
   await page.evaluate(async () => {
@@ -41,10 +37,12 @@ try {
       request.onsuccess = request.onerror = request.onblocked = () => resolve();
     });
   });
+  navigations.length = 0;
   await openKeep();
   await page.waitForFunction(() => window.__td613AshPostIngressMotionRestoration?.version
     && window.__td613AshFlowcoreIngressPortal?.version
     && document.documentElement.dataset.ashCompositionStable
+    && document.documentElement.dataset.ashModuleGraph === 'ready'
     && document.getElementById('newProfile')
     && document.querySelector('.ash-flowcore-field:not([hidden]):not(.ash-flowcore-field--proxy)'));
 
@@ -58,6 +56,12 @@ try {
     const svgRect = svg?.getBoundingClientRect();
     const captionRect = caption?.getBoundingClientRect();
     return {
+      title:document.title,
+      url:location.pathname + location.search,
+      first_paint:window.__td613AshFirstPaintWitness,
+      preflight:window.__td613AshAia3PreflightReceipt,
+      preflight_state:document.documentElement.dataset.ashCachePreflight,
+      module_graph:document.documentElement.dataset.ashModuleGraph,
       profile_value:select?.value,
       profile_prompt:select?.querySelector('option[value=""]')?.textContent,
       start_disabled:Boolean(start?.disabled),
@@ -66,22 +70,30 @@ try {
       caption_height:Math.round(captionRect?.height || 0),
       caption_below_svg:Boolean(svgRect && captionRect && captionRect.top >= svgRect.bottom - 2),
       restoration:window.__td613AshPostIngressMotionRestoration.current(),
-      url:location.pathname + location.search
+      preparing_shell_hidden:getComputedStyle(document.getElementById('td613-ash-preparing-shell')).display === 'none'
     };
   });
+  assert(ingress.title === 'TD613 Ash', `Canonical title drifted: ${JSON.stringify(ingress)}.`);
+  assert(ingress.url === canonicalPath, `Canonical URL drifted: ${JSON.stringify(ingress)}.`);
+  assert(ingress.first_paint?.title === 'TD613 Ash', `First-paint title was not canonical: ${JSON.stringify(ingress.first_paint)}.`);
+  assert(ingress.first_paint?.url === canonicalPath, `First-paint URL was not canonical: ${JSON.stringify(ingress.first_paint)}.`);
+  assert(ingress.first_paint?.preparing_shell_present === true && ingress.first_paint?.legacy_composition_visible === false, `Preparing shell did not own first paint: ${JSON.stringify(ingress.first_paint)}.`);
+  assert(ingress.preflight_state === 'complete' && ingress.module_graph === 'ready' && ingress.preparing_shell_hidden, `Canonical bootstrap did not complete: ${JSON.stringify(ingress)}.`);
+  assert(navigations.length === 1, `Unexpected duplicate navigation: ${JSON.stringify(navigations)}.`);
+  assert(navigations.every(url => !/ash_epoch|ash_recovered|asset_epoch|cache_nonce/.test(url)), `Visible epoch navigation occurred: ${JSON.stringify(navigations)}.`);
   assert(ingress.profile_value === '', `Ingress profile was not neutral: ${JSON.stringify(ingress)}.`);
   assert(ingress.profile_prompt === 'Select a Profile...', `Profile prompt missing: ${JSON.stringify(ingress)}.`);
   assert(ingress.start_disabled, 'Start Demo was enabled before a profile selection.');
   assert(ingress.field_host === 'ingress', `Flow-Core field was not at ingress: ${ingress.field_host}.`);
   assert(ingress.svg_height >= 260 && ingress.caption_height > 0 && ingress.caption_below_svg, `Ingress caption covers the diagram: ${JSON.stringify(ingress)}.`);
   assert(ingress.restoration.visible_proxy_count === 0 && ingress.restoration.caption_overlaps_svg === false, `Ingress restoration held: ${JSON.stringify(ingress.restoration)}.`);
-  await page.screenshot({ path:path.join(out, `${browserName}-ingress-caption-clear.png`), fullPage:true });
+  await page.screenshot({ path:path.join(out, `${browserName}-canonical-first-paint.png`), fullPage:true });
 
   await page.locator('#newProfile').selectOption('investigation');
   const selected = await page.evaluate(() => ({ value:document.getElementById('newProfile')?.value, disabled:document.getElementById('startDemo')?.disabled }));
   assert(selected.value === 'investigation' && selected.disabled === false, `Profile selection did not enable demo: ${JSON.stringify(selected)}.`);
 
-  await page.locator('#newTitle').fill(`Ingress polish ${browserName}`);
+  await page.locator('#newTitle').fill(`Ingress first paint ${browserName}`);
   await page.locator('#newCase').click();
   await page.waitForFunction(() => {
     const portal = window.__td613AshFlowcoreIngressPortal?.current?.();
@@ -100,6 +112,8 @@ try {
     });
     const proxies = nodes.filter(node => node.classList.contains('ash-flowcore-field--proxy'));
     return {
+      url:location.pathname+location.search,
+      title:document.title,
       total_fields:nodes.length,
       visible_fields:visible.length,
       visible_proxy_fields:visible.filter(node => node.classList.contains('ash-flowcore-field--proxy')).length,
@@ -109,6 +123,7 @@ try {
       overflow:Math.max(0, document.documentElement.scrollWidth - innerWidth)
     };
   });
+  assert(workspace.url === canonicalPath && workspace.title === 'TD613 Ash', `Workspace lost canonical title or URL: ${JSON.stringify(workspace)}.`);
   assert(workspace.visible_fields === 1, `Expected one visible consequence field: ${JSON.stringify(workspace)}.`);
   assert(workspace.visible_proxy_fields === 0 && workspace.proxy_hidden, `Flow-Core proxy leaked into presentation: ${JSON.stringify(workspace)}.`);
   assert(workspace.restoration.visible_proxy_count === 0, `Restoration reports a visible proxy: ${JSON.stringify(workspace.restoration)}.`);
@@ -125,7 +140,7 @@ try {
   try { await page.screenshot({ path:path.join(out, `${browserName}-held.png`), fullPage:true }); } catch {}
   throw error;
 } finally {
-  await fs.writeFile(path.join(out, 'ash-ingress-polish-browser.json'), `${JSON.stringify(report, null, 2)}\n`);
+  await fs.writeFile(path.join(out, 'ash-first-paint-browser.json'), `${JSON.stringify(report, null, 2)}\n`);
   await context.close();
   await browser.close();
 }
