@@ -24,10 +24,8 @@ for (const channel of ['glyph','motion','shape','language','inspection']) assert
 assert.match(moduleSource, /openInspection/);
 assert.match(moduleSource, /prefers-reduced-motion: reduce/);
 assert.match(moduleSource, /static_parity: true/);
-
 for (const scene of ['ingress','home','map','work','choir','capsule']) assert.match(moduleSource, new RegExp(`\\b${scene}: Object\\.freeze`));
 assert.doesNotMatch(moduleSource, /new MutationObserver|setInterval\(/);
-
 for (const [route, label] of [
   ['EXPERIENTIAL','Learn by doing'], ['CUSTODIAL','Protect the source'],
   ['AUDIT','Check the evidence'], ['IMPLEMENTATION','Inspect the machinery']
@@ -67,8 +65,8 @@ assert.match(css, /button\[data-flowcore-channel="inspection"\]\{grid-column:1\/
 const assetEpoch = '20260723-a2-a5-release-v1';
 const cacheEpoch = 'td613.ash.cache-flush/2026-07-23-a2-a5-release-v1';
 for (const [name, source] of [
-  ['shell',shell], ['lifecycle',lifecycle], ['workspace bridge',bridge], ['cache eviction',eviction],
-  ['cache flush',cacheFlush], ['recovery bridge',recovery], ['journey adapter',journeyAdapter]
+  ['shell',shell], ['lifecycle',lifecycle], ['workspace bridge',bridge],
+  ['cache eviction',eviction], ['recovery bridge',recovery], ['journey adapter',journeyAdapter]
 ]) assert.match(source, new RegExp(assetEpoch.replaceAll('-', '\\-')), `${name} omitted the A2-A5 asset epoch`);
 for (const [name, source] of [
   ['shell',shell], ['cache eviction',eviction], ['cache flush',cacheFlush],
