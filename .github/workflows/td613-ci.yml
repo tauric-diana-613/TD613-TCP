@@ -60,7 +60,12 @@ jobs:
         with:
           node-version: 22
           cache: npm
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
       - run: npm ci
+      - name: Install shared Dome-World Python dependency
+        run: python -m pip install --disable-pip-version-check sympy
       - name: Dome-World art and shell
         run: npm run test:dome-world:art
       - name: Dome-World Phase III shared boundary
@@ -68,24 +73,7 @@ jobs:
       - name: Ash custody contract
         run: node tests/dome-world-ash-custody.test.mjs
       - name: Ash leak challenge
-        id: ash_leak
-        continue-on-error: true
-        run: |
-          mkdir -p artifacts/ash-leak-challenge
-          node tests/dome-world-ash-leak-challenge.test.mjs > artifacts/ash-leak-challenge/test.log 2>&1
-      - name: Preserve held Ash leak challenge diagnostics
-        if: steps.ash_leak.outcome == 'failure'
-        uses: actions/upload-artifact@v4
-        with:
-          name: ash-leak-challenge-diagnostic
-          path: artifacts/ash-leak-challenge/test.log
-          if-no-files-found: error
-          retention-days: 3
-      - name: Enforce Ash leak challenge
-        if: steps.ash_leak.outcome == 'failure'
-        run: |
-          cat artifacts/ash-leak-challenge/test.log
-          exit 1
+        run: node tests/dome-world-ash-leak-challenge.test.mjs
       - name: Ash veil contract
         run: node tests/dome-world-ash-veil.test.mjs
       - name: Ash Cinder contract
@@ -130,4 +118,22 @@ jobs:
       - run: node tests/vercel-deploy-hygiene.test.mjs
       - run: node tests/vercel-operator-release-gate.test.mjs
       - run: node tests/vercel-relock-safety.test.mjs
-      - run: node tests/release-plumbing.test.mjs
+      - name: Release plumbing contract
+        id: release_plumbing
+        continue-on-error: true
+        run: |
+          mkdir -p artifacts/release-plumbing
+          node tests/release-plumbing.test.mjs > artifacts/release-plumbing/test.log 2>&1
+      - name: Preserve held release-plumbing diagnostics
+        if: steps.release_plumbing.outcome == 'failure'
+        uses: actions/upload-artifact@v4
+        with:
+          name: release-plumbing-diagnostic
+          path: artifacts/release-plumbing/test.log
+          if-no-files-found: error
+          retention-days: 3
+      - name: Enforce release plumbing contract
+        if: steps.release_plumbing.outcome == 'failure'
+        run: |
+          cat artifacts/release-plumbing/test.log
+          exit 1
