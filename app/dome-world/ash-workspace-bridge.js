@@ -64,6 +64,7 @@ function reconcileCanonicalConsequenceFieldOwner() {
   const reordered = Boolean(stage && firstField && firstField !== canonical);
   if (reordered) stage.insertBefore(canonical, firstField);
 
+  canonical.querySelectorAll('[data-flowcore-ingress-play]').forEach(control => control.remove());
   const play = ashBridgeDocument.querySelector('[data-aia-play]');
   if (play) {
     play.textContent = '▶ Play Consequence Field';
@@ -73,6 +74,7 @@ function reconcileCanonicalConsequenceFieldOwner() {
   }
 
   ashBridgeDocument.documentElement.dataset.ashConsequenceFieldOwner = 'CANONICAL_VISIBLE_FIELD';
+  ashBridgeDocument.documentElement.dataset.ashConsequencePlayCount = String(canonical.querySelectorAll('[data-aia-play]').length);
   if (reordered && !canonicalFieldRecompilationQueued) {
     canonicalFieldRecompilationQueued = true;
     queueMicrotask(() => {
