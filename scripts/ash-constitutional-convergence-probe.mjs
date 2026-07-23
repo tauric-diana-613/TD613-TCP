@@ -288,18 +288,29 @@ try {
   const secondPage = await context.newPage();
   await secondPage.goto(keepUrl, { waitUntil: 'networkidle' });
   const firstLock = page.evaluate(() => window.TD613AshConvergence.withOperation('probe-contention', async () => {
+    const acquiredAt = Date.now();
     localStorage.setItem('td613.ash-keep.probe-lock', 'HELD_BY_FIRST_TAB');
     await new Promise(resolve => setTimeout(resolve, 240));
     localStorage.setItem('td613.ash-keep.probe-lock', 'RELEASED_BY_FIRST_TAB');
-    return 'RELEASED_BY_FIRST_TAB';
+    return { state:'RELEASED_BY_FIRST_TAB', acquired_at:acquiredAt, released_at:Date.now() };
   }));
   await secondPage.waitForFunction(() => localStorage.getItem('td613.ash-keep.probe-lock') === 'HELD_BY_FIRST_TAB');
-  const secondLock = secondPage.evaluate(() => window.TD613AshConvergence.withOperation('probe-contention', async () => localStorage.getItem('td613.ash-keep.probe-lock')));
+  const secondLock = secondPage.evaluate(() => window.TD613AshConvergence.withOperation('probe-contention', async () => ({
+    state:localStorage.getItem('td613.ash-keep.probe-lock'),
+    acquired_at:Date.now()
+  })));
   const [firstResult, secondResult] = await Promise.all([firstLock, secondLock]);
-  assert(firstResult === 'RELEASED_BY_FIRST_TAB' && secondResult === 'RELEASED_BY_FIRST_TAB', 'Cross-tab lock did not serialize the same Ash operation.');
+  const acquiredAfterRelease = secondResult.acquired_at >= firstResult.released_at;
+  assert(firstResult.state === 'RELEASED_BY_FIRST_TAB' && acquiredAfterRelease, 'Cross-tab lock did not serialize the same Ash operation.');
   await page.evaluate(() => localStorage.removeItem('td613.ash-keep.probe-lock'));
   await secondPage.close();
-  report.observations.multi_tab = { serialized: true, second_tab_observed: secondResult };
+  report.observations.multi_tab = {
+    serialized:true,
+    first_tab_released_at:firstResult.released_at,
+    second_tab_acquired_at:secondResult.acquired_at,
+    acquired_after_release:acquiredAfterRelease,
+    second_tab_storage_observation:secondResult.state
+  };
 
   const deletionPlan = await page.evaluate(id => window.TD613AshConvergence.planDeletion(id, 'Synthetic interrupted case', true), firstCase);
   await page.reload({ waitUntil: 'networkidle' });

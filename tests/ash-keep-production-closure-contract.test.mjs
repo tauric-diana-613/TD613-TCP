@@ -100,6 +100,7 @@ for (const token of [
 for (const token of [
   'td613.ash.constitutional-convergence-observation/v0.1', 'promotion_authorized: false',
   'APERTURE_REBUILD', 'HUSH_CANDIDATE', 'DELETE_PARTIAL_HOLD', 'DRY_AUDIT_ONLY',
+  'first_tab_released_at', 'second_tab_acquired_at', 'acquired_after_release',
   'provider_recipient_cinder_transport_requests'
 ]) assert.ok(convergenceProbe.includes(token), `Convergence probe omitted ${token}`);
 assert.match(localJob, /Run bounded local core closure observation/);
