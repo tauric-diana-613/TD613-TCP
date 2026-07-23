@@ -258,43 +258,108 @@ export function injectAshKeepLifecycle(source = '') {
   return html;
 }
 
-export function stabilizeDomeWorldSource(source = '') {
+export function bindAshDraftsToCaseMap(source = '') {
+  const code = stabilizeAshKeepSource(source);
+  for (const marker of [
+    'caseMapDigest: state.caseMap.case_map_digest',
+    'releaseReceiptReference: state.latestRelease?.receipt_id || null',
+    'releaseReceiptDigest: state.latestRelease?.receipt_digest || null',
+    'latestSavePoint.release_receipt_reference !== currentRelease.receipt_id',
+    'A current Release Receipt is required before Capsule export.',
+    'window.__td613OpenAshWorkspace = setWorkspace',
+    "mode: 'EVENT_DRIVEN_COALESCED'"
+  ]) if (!code.includes(marker)) throw new Error(`ash-native-core-binding-missing:${marker}`);
+  if (code.includes('location.reload()')) throw new Error('ash-native-core-contains-forced-reload');
+  if (code.includes('state.frame = scheduleFrame(frame);')) throw new Error('ash-native-core-perpetual-scheduler-survived');
+  return code;
+}
+
+export function renderDomeWorldShell(source = '') {
   return injectAshLifecycleEntry(injectMarrowlineLabButton(source));
 }
 
-export function stabilizeAshKeepSourceShell(source = '') {
-  return injectAshKeepLifecycle(stabilizeAshKeepSource(source));
+function requestedSurface(req) {
+  const direct = Array.isArray(req.query?.surface) ? req.query.surface[0] : req.query?.surface;
+  if (direct) return String(direct);
+  try {
+    const requestUrl = new URL(req.url || '/', 'http://localhost');
+    if (requestUrl.pathname === ASH_THRESHOLD_ROUTE || requestUrl.pathname === '/dome-world/ash-keep.html') return 'ash-keep-html';
+    return requestUrl.searchParams.get('surface') || 'dome-world';
+  } catch {
+    return 'dome-world';
+  }
 }
 
-export default async function handler(request, response) {
-  const surface = String(request.query?.surface || 'dome-world');
-  response.setHeader('Cache-Control', 'no-store, no-cache, must-revalidate, max-age=0');
-  response.setHeader('Pragma', 'no-cache');
-  response.setHeader('Expires', '0');
+function surfaceDefinition(surface) {
+  if (surface === 'ash-keep-html') return { path:ASH_KEEP_SOURCE_PATH, contentType:'text/html; charset=utf-8', header:['X-TD613-Ash-Keep-Shell', ASH_KEEP_SHELL_VERSION], transform:injectAshKeepLifecycle };
+  if (surface === 'ash-keep-js') return { path:ASH_KEEP_JS_SOURCE_PATH, contentType:'text/javascript; charset=utf-8', header:['X-TD613-Ash-Keep-JS-Shell', ASH_KEEP_JS_SHELL_VERSION], transform:bindAshDraftsToCaseMap };
+  return { path:DOME_SOURCE_PATH, contentType:'text/html; charset=utf-8', header:['X-TD613-Dome-Shell', DOME_WORLD_SHELL_VERSION], transform:renderDomeWorldShell };
+}
 
+function send(res, status, body = '', definition = surfaceDefinition('dome-world')) {
+  res.statusCode = status;
+  res.setHeader('Content-Type', definition.contentType);
+  res.setHeader('Cache-Control', 'no-store, max-age=0, must-revalidate');
+  res.setHeader('CDN-Cache-Control', 'no-store');
+  res.setHeader('Vercel-CDN-Cache-Control', 'no-store');
+  res.setHeader('X-Content-Type-Options', 'nosniff');
+  res.setHeader(definition.header[0], definition.header[1]);
+  res.setHeader('X-TD613-Ash-Lifecycle', ASH_LIFECYCLE_SHELL_CONTRACT);
+  res.setHeader('X-TD613-Ash-Lifecycle-Asset', ASH_LIFECYCLE_ASSET_EPOCH);
+  res.setHeader('X-TD613-Ash-Canonical-Membrane', ASH_CANONICAL_MEMBRANE_EPOCH);
+  res.setHeader('X-TD613-Ash-Cache-Preflight', ASH_MASS_EVICTION_EPOCH);
+  res.end(body);
+}
+
+function sendCacheEviction(res, method) {
+  const body = JSON.stringify({
+    ok:true,
+    schema:'td613.ash.cache-transition-response/v0.6-first-paint',
+    scope:'HTTP_CACHE_AND_SERVICE_WORKER_CLIENT_EVICTION',
+    indexeddb_preserved:true,
+    case_data_preserved:true,
+    active_session_reset_by_client:false,
+    physical_erasure_verified:false,
+    visible_url:ASH_THRESHOLD_ROUTE,
+    contract:ASH_CACHE_TRANSITION_CONTRACT,
+    lifecycle_asset_epoch:ASH_LIFECYCLE_ASSET_EPOCH,
+    mass_eviction_epoch:ASH_MASS_EVICTION_EPOCH
+  });
+  res.statusCode = 200;
+  res.setHeader('Content-Type', 'application/json; charset=utf-8');
+  res.setHeader('Cache-Control', 'no-store, max-age=0, must-revalidate');
+  res.setHeader('CDN-Cache-Control', 'no-store');
+  res.setHeader('Vercel-CDN-Cache-Control', 'no-store');
+  res.setHeader('Clear-Site-Data', '"cache"');
+  res.setHeader('X-Content-Type-Options', 'nosniff');
+  res.setHeader('X-TD613-Ash-Cache-Transition', ASH_CACHE_TRANSITION_CONTRACT);
+  res.setHeader('X-TD613-Ash-Lifecycle', ASH_LIFECYCLE_SHELL_CONTRACT);
+  res.setHeader('X-TD613-Ash-Lifecycle-Asset', ASH_LIFECYCLE_ASSET_EPOCH);
+  res.setHeader('X-TD613-Ash-Canonical-Membrane', ASH_CANONICAL_MEMBRANE_EPOCH);
+  res.setHeader('X-TD613-Ash-Cache-Preflight', ASH_MASS_EVICTION_EPOCH);
+  res.end(method === 'HEAD' ? '' : body);
+}
+
+export default function handler(req, res) {
+  const method = String(req.method || 'GET').toUpperCase();
+  const surface = requestedSurface(req);
+  if (!['GET', 'HEAD'].includes(method)) {
+    res.setHeader('Allow', 'GET, HEAD');
+    send(res, 405, 'Method Not Allowed', surfaceDefinition(surface === 'cache-evict' ? 'dome-world' : surface));
+    return;
+  }
   if (surface === 'cache-evict') {
-    response.setHeader('Clear-Site-Data', '"cache"');
-    response.setHeader('Content-Type', 'application/json; charset=utf-8');
-    return response.status(200).send(JSON.stringify({
-      schema:'td613.ash.cache-eviction-http/v0.1',
-      observed:true,
-      epoch:String(request.query?.epoch || ''),
-      asset_epoch:String(request.query?.asset_epoch || ''),
-      storage_cleared:false,
-      cookies_cleared:false,
-      execution_contexts_reloaded:false
-    }));
+    sendCacheEviction(res, method);
+    return;
   }
-
-  if (surface === 'ash-keep-html') {
-    response.setHeader('Content-Type', 'text/html; charset=utf-8');
-    return response.status(200).send(stabilizeAshKeepSourceShell(fs.readFileSync(ASH_KEEP_SOURCE_PATH, 'utf8')));
+  const definition = surfaceDefinition(surface);
+  try {
+    const source = fs.readFileSync(definition.path, 'utf8');
+    const rendered = definition.transform(source);
+    send(res, 200, method === 'HEAD' ? '' : rendered, definition);
+  } catch (error) {
+    res.setHeader('Content-Type', 'application/json; charset=utf-8');
+    res.statusCode = 500;
+    res.end(JSON.stringify({ ok:false, error:'dome-world-shell-surface-unavailable', surface, detail:String(error?.message || error), version:DOME_WORLD_SHELL_VERSION, ashLifecycle:ASH_LIFECYCLE_SHELL_CONTRACT }));
   }
-  if (surface === 'ash-keep-js') {
-    response.setHeader('Content-Type', 'application/javascript; charset=utf-8');
-    return response.status(200).send(fs.readFileSync(ASH_KEEP_JS_SOURCE_PATH, 'utf8'));
-  }
-
-  response.setHeader('Content-Type', 'text/html; charset=utf-8');
-  return response.status(200).send(stabilizeDomeWorldSource(fs.readFileSync(DOME_SOURCE_PATH, 'utf8')));
 }
