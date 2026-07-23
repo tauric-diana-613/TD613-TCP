@@ -1,0 +1,90 @@
+name: Ash A1 Regression Diagnostic
+
+on:
+  pull_request:
+    paths:
+      - "app/dome-world/ash-profile-prompt-canonical.js"
+      - "app/dome-world/ash-workspace-bridge.js"
+      - "tests/ash-ingress-polish.test.mjs"
+      - ".github/workflows/ash-a1-regression-diagnostic.yml"
+
+permissions:
+  contents: read
+
+jobs:
+  ash-keep-core:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+      - run: npm ci
+      - run: node tests/ash-keep-core.test.mjs
+
+  ash-keep-continuity:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+      - run: npm ci
+      - run: node tests/ash-keep-continuity.test.mjs
+
+  ash-keep-hush-api:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+      - run: npm ci
+      - run: node tests/ash-keep-hush-api.test.mjs
+
+  ash-keep-ui:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+      - run: npm ci
+      - run: node tests/ash-keep-ui.test.mjs
+
+  ash-lifecycle:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+      - run: npm ci
+      - run: node tests/ash-lifecycle.test.mjs
+
+  ash-draft-lifecycle-binding:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+      - run: npm ci
+      - run: node tests/ash-draft-lifecycle-binding.test.mjs
+
+  ash-product-architecture:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+      - run: npm ci
+      - run: node tests/ash-product-architecture.test.mjs
