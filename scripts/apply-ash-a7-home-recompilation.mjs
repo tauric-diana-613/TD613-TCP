@@ -34,27 +34,6 @@ const premiumReplacement = "function renderHome(doc, snapshot) {\n  const a7Rend
 premium = replaceOnce(premium, premiumAnchor, premiumReplacement, 'A7 Premium Home delegation');
 write(premiumPath, premium);
 
-const workflowPath = '.github/workflows/ash-flowcore-live-field.yml';
-let workflow = read(workflowPath);
-workflow = insertBefore(workflow, "      - 'scripts/ash-keep-local-closure-server.mjs'\n",
-  "      - 'app/dome-world/ash-a7-a11-recompiler-core.js'\n      - 'app/dome-world/ash-a7-home-recompilation.js'\n      - 'app/dome-world/docs/ASH_KEEP_A7_IMPLEMENTATION_RECEIPT_V0_1.md'\n      - 'scripts/ash-a7-a11-browser-probe.mjs'\n      - 'tests/ash-a7-home-recompilation.test.mjs'\n",
-  'A7 workflow paths');
-const syntaxAnchor = '          node --check app/dome-world/ash-flowcore-ingress-portal.js\n';
-const syntaxInsertion = '          node --check app/dome-world/ash-a7-a11-recompiler-core.js\n          node --check app/dome-world/ash-a7-home-recompilation.js\n          node --check scripts/ash-a7-a11-browser-probe.mjs\n';
-const syntaxCount = workflow.split(syntaxAnchor).length - 1;
-if (syntaxCount !== 2) throw new Error(`A7 workflow syntax anchors: expected two, found ${syntaxCount}`);
-workflow = workflow.replaceAll(syntaxAnchor, `${syntaxInsertion}${syntaxAnchor}`);
-workflow = insertBefore(workflow, '            node tests/ash-flowcore-live-field.test.mjs\n',
-  '            node tests/ash-a7-home-recompilation.test.mjs\n',
-  'A7 contract execution');
-const browserAnchor = '      - name: Observe ingress copy, zero-artifact Flow-Core, and Close Case return\n';
-const browserStep = `      - name: Observe A7-A11 workspace recompilations\n        env:\n          TD613_BROWSER: \${{ matrix.browser }}\n          TD613_BASE_URL: http://127.0.0.1:6130\n          TD613_ASH_STAGES: A7\n          TD613_ARTIFACT_DIR: artifacts/ash-a7-a11-\${{ matrix.browser }}\n        run: timeout --foreground --signal=INT --kill-after=15s 480s node scripts/ash-a7-a11-browser-probe.mjs\n`;
-workflow = insertBefore(workflow, browserAnchor, browserStep, 'A7 browser witness step');
-workflow = insertBefore(workflow, '            artifacts/ash-flowcore-field-${{ matrix.browser }}/\n',
-  '            artifacts/ash-a7-a11-${{ matrix.browser }}/\n',
-  'A7 artifact retention');
-write(workflowPath, workflow);
-
 const indexPath = 'app/dome-world/docs/FLOWCORE_PEDAGOGUE_PROGRAM_INDEX_V0_1.md';
 let index = read(indexPath);
 index = index.replace(
@@ -76,4 +55,4 @@ const vercel = JSON.parse(read('vercel.json'));
 if (vercel.git?.deploymentEnabled !== false) throw new Error('A7 integrator requires the Vercel gate closed');
 
 fs.rmSync('scripts/apply-ash-a7-home-recompilation.mjs');
-console.log(JSON.stringify({ ok:true, stage:'A7', mass_eviction_epoch_changed:false, deployment_gate:'CLOSED', workflow_retained_for_writeback:true }, null, 2));
+console.log(JSON.stringify({ ok:true, stage:'A7', mass_eviction_epoch_changed:false, deployment_gate:'CLOSED', permanent_ci_registration_deferred:true }, null, 2));
