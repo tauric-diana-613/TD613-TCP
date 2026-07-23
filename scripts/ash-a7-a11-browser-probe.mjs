@@ -14,13 +14,22 @@ const browser = await browserType.launch({ headless:true });
 const receipts = [];
 
 async function enterInvestigation(page) {
-  await page.goto(`${baseUrl}/dome-world/ash-threshold.html`, { waitUntil:'domcontentloaded', timeout:90_000 });
-  await page.waitForFunction(() => document.title === 'TD613 Ash' && location.pathname === '/dome-world/ash-threshold.html' && !location.search, null, { timeout:90_000 });
-  await page.waitForSelector('#launch', { state:'visible', timeout:90_000 });
+  await page.goto(`${baseUrl}/dome-world/ash-keep.html`, { waitUntil:'domcontentloaded', timeout:90_000 });
+  await page.waitForFunction(() => Boolean(window.__td613AshKeep?.version)
+    && Boolean(window.__td613AshPremiumUI?.version)
+    && document.getElementById('newProfile')
+    && document.getElementById('startDemo')
+    && document.title === 'TD613 Ash'
+    && location.pathname === '/dome-world/ash-threshold.html'
+    && !location.search, null, { timeout:90_000 });
   const profile = page.locator('#newProfile');
   await profile.selectOption('investigation');
+  await page.waitForFunction(() => !document.getElementById('startDemo')?.disabled, null, { timeout:60_000 });
   await page.locator('#startDemo').click();
-  await page.waitForFunction(() => document.documentElement.dataset.ashPremiumReady === 'true' && document.documentElement.dataset.ashPremiumWorkspace === 'home', null, { timeout:120_000 });
+  await page.waitForFunction(() => Boolean(window.__td613AshWholeInstrument?.version)
+    && Boolean(window.__td613AshA6Affordances?.version)
+    && document.documentElement.dataset.ashPremiumReady === 'true'
+    && document.documentElement.dataset.ashPremiumWorkspace === 'home', null, { timeout:120_000 });
 }
 
 async function inspectStage(page, stage) {
