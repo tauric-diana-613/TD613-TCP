@@ -28,6 +28,7 @@ const premium = read('app/dome-world/ash-premium-ui.js');
 const lifecycle = read('app/dome-world/ash-lifecycle-core.js');
 const probe = read('scripts/ash-research-ux-browser-probe.mjs');
 const workflow = read('.github/workflows/ash-flowcore-live-field.yml');
+const RELEASE_EPOCH = '20260723-a2-a5-release-v1';
 
 assert.equal(ASH_RESEARCH_DEMO_VERSION, 'td613.ash.research-demo/v0.3-child-legible-surface-ledger');
 assert.equal(ASH_RESEARCH_SURFACE_LEDGER_VERSION, 'td613.ash.research-surface-ledger/v0.1');
@@ -152,8 +153,8 @@ assert.doesNotMatch(source, /automatic_action_authorized:true|promotion_authoriz
 assert.match(controls, /Open Research project demo/);
 assert.match(controls, /Opening Research project/);
 assert.doesNotMatch(controls, /Start Research qualification demo|Hydrating Research method/);
-assert.match(bridge, /ash-research-demo-hydration\.js\?v=20260721-legal-demo-ux-v1/);
-assert.match(bridge, /ash-research-demo-control-state\.js\?v=20260721-legal-demo-ux-v1/);
+assert.match(bridge, new RegExp(`ash-research-demo-hydration\\.js\\?v=${RELEASE_EPOCH}`));
+assert.match(bridge, new RegExp(`ash-research-demo-control-state\\.js\\?v=${RELEASE_EPOCH}`));
 for (const id of ['workspace-home', 'workspace-work', 'workspace-choir', 'workspace-capsule']) assert.match(premium, new RegExp(id));
 for (const id of ['workspace-custody', 'compileQuickScan', 'registerCustodyRoot', 'bindCustodyRoot']) assert.match(lifecycle, new RegExp(id));
 
