@@ -153,3 +153,22 @@ if (host && !host.__td613AshA9ModulePromise) {
     return null;
   });
 }
+
+if (host && !host.__td613AshA9WorkspaceOwner) {
+  const refreshSettledA9Work = event => {
+    if (event.detail?.workspace !== 'work') return;
+    queueMicrotask(async () => {
+      await host.__td613AshA9ModulePromise;
+      await host.__td613AshA9?.refresh?.('UX_WORKSPACE_OPENED');
+    });
+  };
+  host.addEventListener('td613:ash:ux-workspace-opened', refreshSettledA9Work);
+  host.__td613AshA9WorkspaceOwner = Object.freeze({
+    version:'td613.ash.a9-workspace-owner/v0.1',
+    event:'td613:ash:ux-workspace-opened',
+    automatic_consequential_action:false,
+    authority_changed:false,
+    source_bytes_moved:false,
+    human_closure_required:true
+  });
+}
