@@ -57,11 +57,12 @@ let canonicalFieldRecompilationQueued = false;
 function reconcileCanonicalConsequenceFieldOwner() {
   const stage = ashBridgeDocument?.querySelector?.('#ashAiaMembrane [data-aia-stage], #ashAiaMembrane .ash-aia__stage');
   const canonical = stage?.querySelector?.(':scope > .ash-flowcore-field:not(.ash-flowcore-field--proxy):not([hidden])')
-    || ashBridgeDocument?.querySelector?.('#ashAiaMembrane .ash-flowcore-field:not(.ash-flowcore-field--proxy):not([hidden])');
+    || ashBridgeDocument?.querySelector?.('.ash-flowcore-field:not(.ash-flowcore-field--proxy):not([hidden])');
   if (!canonical) return false;
 
   const firstField = stage?.querySelector?.(':scope > .ash-flowcore-field');
-  const reordered = Boolean(stage && firstField && firstField !== canonical);
+  const canonicalInStage = canonical.parentElement === stage;
+  const reordered = Boolean(canonicalInStage && firstField && firstField !== canonical);
   if (reordered) stage.insertBefore(canonical, firstField);
 
   canonical.querySelectorAll('[data-flowcore-ingress-play]').forEach(control => control.remove());
@@ -74,6 +75,7 @@ function reconcileCanonicalConsequenceFieldOwner() {
   }
 
   ashBridgeDocument.documentElement.dataset.ashConsequenceFieldOwner = 'CANONICAL_VISIBLE_FIELD';
+  ashBridgeDocument.documentElement.dataset.ashConsequenceFieldHost = canonical.dataset.flowcoreHost || canonical.parentElement?.id || 'UNKNOWN';
   ashBridgeDocument.documentElement.dataset.ashConsequencePlayCount = String(canonical.querySelectorAll('[data-aia-play]').length);
   if (reordered && !canonicalFieldRecompilationQueued) {
     canonicalFieldRecompilationQueued = true;
@@ -125,4 +127,7 @@ function captureSemanticNavigation(event) {
 
 ashBridgeHost?.addEventListener?.('click', captureSemanticNavigation, true);
 ashBridgeHost?.addEventListener?.('td613:ash:whole-instrument-refreshed', reconcileCanonicalConsequenceFieldOwner);
+for (const type of ['flowcore-portal-synced','case-opened','case-created','case-closed']) {
+  ashBridgeHost?.addEventListener?.(`td613:ash:${type}`, () => queueMicrotask(reconcileCanonicalConsequenceFieldOwner));
+}
 queueMicrotask(reconcileCanonicalConsequenceFieldOwner);
