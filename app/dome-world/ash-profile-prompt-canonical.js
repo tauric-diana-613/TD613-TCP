@@ -25,10 +25,11 @@ export function applyCanonicalProfilePrompt({ resetSelection = false } = {}) {
   prompt.disabled = true;
 
   const firstBinding = select.dataset.ashCanonicalProfilePromptBound !== 'true';
+  const explicitChoiceAvailable = [...select.options].some(option => option.value === explicitChoice);
   if (resetSelection) explicitChoice = '';
   if (noCaseOpen()) {
     if (resetSelection || (firstBinding && !explicitChoice)) select.value = '';
-    else if (explicitChoice && select.querySelector(`option[value="${CSS.escape(explicitChoice)}"]`)) select.value = explicitChoice;
+    else if (explicitChoice && explicitChoiceAvailable) select.value = explicitChoice;
   }
 
   const sync = () => {
