@@ -1,0 +1,96 @@
+name: TD613 Core CI
+
+on:
+  pull_request:
+  push:
+    branches:
+      - main
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: td613-core-${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  core:
+    name: Core, release, and Safe Harbor
+    runs-on: ubuntu-latest
+    timeout-minutes: 35
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+      - run: npm ci
+      - run: npm test
+      - run: npm run test:safe-harbor:current
+      - run: npm run test:safe-harbor:gen3:wave-b
+
+  hush:
+    name: Hush retained phase suites
+    runs-on: ubuntu-latest
+    timeout-minutes: 35
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+      - run: npm ci
+      - run: npm run test:hush:phase9
+      - run: npm run test:hush:phase10
+      - run: npm run test:hush:phase11
+      - run: npm run test:hush:phase12
+      - run: npm run test:hush:phase13
+      - run: npm run test:hush:phase14
+      - run: npm run test:hush:packets:check
+
+  dome-world:
+    name: Dome-World and Ash contracts
+    runs-on: ubuntu-latest
+    timeout-minutes: 35
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+      - run: npm ci
+      - run: npm run test:dome-world
+      - name: Ash and Flow-Core retained witnesses
+        run: |
+          node tests/ash-four-profile-pedagogy.test.mjs
+          node tests/ash-investigation-guidance.test.mjs
+          node tests/ash-legal-ux.test.mjs
+          node tests/ash-live-ingress-demos-cache.test.mjs
+          node tests/ash-research-ux-rehydration.test.mjs
+          node tests/ash-keep-choir-calibration-schemas.test.mjs
+          node tests/ash-keep-production-closure-contract.test.mjs
+          node tests/ash-lifecycle-production-contract.test.mjs
+          node tests/flowcore-p0-p7-seam-closure.test.mjs
+          node tests/flowcore-p0-p10-completion.test.mjs
+          node tests/flowcore-production-observation.test.mjs
+      - name: Product architecture contracts
+        run: |
+          node tests/product-architecture/shell.test.mjs
+          node tests/product-architecture/lifecycle.test.mjs
+
+  deployment-law:
+    name: Deployment law, locked posture
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+      - run: npm ci
+      - run: node tests/vercel-deploy-hygiene.test.mjs
+      - run: node tests/vercel-operator-release-gate.test.mjs
+      - run: node tests/vercel-relock-safety.test.mjs
+      - run: node tests/release-plumbing.test.mjs
