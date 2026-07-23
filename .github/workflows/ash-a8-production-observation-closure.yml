@@ -1,0 +1,188 @@
+name: Temporary Ash A8 Production Observation Closure
+
+on:
+  pull_request:
+    branches: [main]
+    paths:
+      - '.github/workflows/ash-a8-production-observation-closure.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: temporary-ash-a8-production-observation-${{ github.event.pull_request.number || github.ref }}-${{ github.run_attempt }}
+  cancel-in-progress: true
+
+env:
+  TD613_BASE_URL: https://td613.com
+  TD613_SOURCE_PACKET_COMMIT: 226873430e06a8fcb7425e8f7ada673b90d20d23
+
+jobs:
+  exact-production-content:
+    runs-on: ubuntu-latest
+    timeout-minutes: 25
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: c7050677d49e38a2b9d67efb4a8bd43e7bd9f9fe
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+      - run: npm ci
+      - name: Verify relocked source posture
+        run: |
+          node tests/vercel-deploy-hygiene.test.mjs
+          node tests/ash-a8-case-map-recompilation.test.mjs
+          test "$(node -p "require('./vercel.json').git.deploymentEnabled")" = "false"
+      - name: Verify exact deployed Ash A7-A8 bytes
+        env:
+          TD613_ARTIFACT_DIR: artifacts/ash-a8-production-content
+        run: |
+          mkdir -p "$TD613_ARTIFACT_DIR"
+          node --input-type=module <<'NODE'
+          import crypto from 'node:crypto';
+          import fs from 'node:fs/promises';
+          import path from 'node:path';
+
+          const base = process.env.TD613_BASE_URL.replace(/\/+$/, '');
+          const source = process.env.TD613_SOURCE_PACKET_COMMIT;
+          const out = process.env.TD613_ARTIFACT_DIR;
+          const files = [
+            'ash-keep.html',
+            'ash-a7-a11-recompiler-core.js',
+            'ash-a7-home-recompilation.js',
+            'ash-a8-case-map-recompilation.js',
+            'ash-aia3-composition.js',
+            'ash-workspace-bridge.js',
+            'ash-premium-ui.js'
+          ];
+          const sha = bytes => crypto.createHash('sha256').update(bytes).digest('hex');
+          const observations = [];
+          for (const name of files) {
+            const localPath = path.join('app/dome-world', name);
+            const local = await fs.readFile(localPath);
+            const url = new URL(`/dome-world/${name}`, `${base}/`);
+            url.searchParams.set('td613_source_packet', source);
+            url.searchParams.set('td613_a8_observation', '1');
+            const response = await fetch(url, { headers:{ 'cache-control':'no-cache' }, redirect:'follow' });
+            if (!response.ok) throw new Error(`${name} returned ${response.status}`);
+            const remote = Buffer.from(await response.arrayBuffer());
+            const localDigest = sha(local);
+            const remoteDigest = sha(remote);
+            if (localDigest !== remoteDigest) throw new Error(`${name} deployed digest ${remoteDigest} != source ${localDigest}`);
+            observations.push({ name, status:response.status, final_url:response.url, sha256:remoteDigest, size:remote.length });
+          }
+          const report = {
+            schema:'td613.ash.a8.production-content-observation/v0.1',
+            status:'PASS',
+            source_packet_commit:source,
+            production_base_url:base,
+            exact_source_content_verified:true,
+            application_tree_drift:'none',
+            observations,
+            authority:{ authorizes_release:false, counts_as_human_evidence:false, closes_program:false }
+          };
+          await fs.writeFile(path.join(out, 'ash-a8-production-content.json'), `${JSON.stringify(report, null, 2)}\n`);
+          console.log(JSON.stringify(report, null, 2));
+          NODE
+      - name: Preserve exact production content evidence
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: ash-a8-production-content-evidence
+          path: artifacts/ash-a8-production-content/
+          if-no-files-found: error
+          retention-days: 45
+
+  production-browser-matrix:
+    name: ${{ matrix.browser }} A8 production witness
+    runs-on: ubuntu-latest
+    timeout-minutes: 75
+    strategy:
+      fail-fast: false
+      matrix:
+        browser: [chromium, firefox, webkit]
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: c7050677d49e38a2b9d67efb4a8bd43e7bd9f9fe
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+      - run: npm ci
+      - name: Install browser runtime
+        run: |
+          npm install --no-save --package-lock=false playwright@1.53.2
+          npx playwright install --with-deps ${{ matrix.browser }}
+      - name: Observe deployed A7-A8 desktop and reduced-motion mobile
+        env:
+          TD613_BROWSER: ${{ matrix.browser }}
+          TD613_ASH_STAGES: A7,A8
+          TD613_ARTIFACT_DIR: artifacts/ash-a8-production/${{ matrix.browser }}/a7-a8
+        run: timeout --foreground --signal=INT --kill-after=15s 720s node scripts/ash-a7-a11-browser-probe.mjs
+      - name: Observe inherited A2-A6 production behavior
+        env:
+          TD613_BROWSER: ${{ matrix.browser }}
+          TD613_ARTIFACT_DIR: artifacts/ash-a8-production/${{ matrix.browser }}/a2-a6
+        run: timeout --foreground --signal=INT --kill-after=15s 720s node scripts/ash-a2-a5-browser-probe.mjs
+      - name: Observe deployed AIA3 task journey
+        env:
+          TD613_BROWSER: ${{ matrix.browser }}
+          TD613_PRODUCTION_OBSERVATION: 'true'
+          TD613_ARTIFACT_DIR: artifacts/ash-a8-production/${{ matrix.browser }}/aia3
+        run: timeout --foreground --signal=INT --kill-after=15s 720s node scripts/ash-keep-aia3-task-journey-v3.mjs
+      - name: Preserve browser evidence
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: ash-a8-production-${{ matrix.browser }}-evidence
+          path: artifacts/ash-a8-production/${{ matrix.browser }}/
+          if-no-files-found: error
+          retention-days: 45
+
+  production-lifecycle-convergence:
+    runs-on: ubuntu-latest
+    timeout-minutes: 65
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: c7050677d49e38a2b9d67efb4a8bd43e7bd9f9fe
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+      - run: npm ci
+      - name: Install Chromium runtime
+        run: |
+          npm install --no-save --package-lock=false playwright@1.53.2
+          npx playwright install --with-deps chromium
+      - name: Observe deployed lifecycle
+        env:
+          TD613_ARTIFACT_DIR: artifacts/ash-a8-production/lifecycle
+        run: timeout --foreground --signal=INT --kill-after=15s 720s node scripts/ash-lifecycle-production-probe.mjs
+      - name: Observe deployed constitutional convergence
+        env:
+          TD613_ARTIFACT_DIR: artifacts/ash-a8-production/convergence
+        run: timeout --foreground --signal=INT --kill-after=15s 720s node scripts/run-ash-constitutional-convergence-handshake.mjs
+      - name: Verify bounded production observations
+        run: |
+          node --input-type=module <<'NODE'
+          import fs from 'node:fs';
+          const lifecycle = JSON.parse(fs.readFileSync('artifacts/ash-a8-production/lifecycle/ash-lifecycle-production-closure.json', 'utf8'));
+          const convergence = JSON.parse(fs.readFileSync('artifacts/ash-a8-production/convergence/ash-constitutional-convergence.json', 'utf8'));
+          if (lifecycle.status !== 'PASS' || lifecycle.source_status !== 'DEPLOYED_OBSERVATION' || lifecycle.promotion_authorized !== false) throw new Error('Deployed lifecycle observation held or widened authority.');
+          if (convergence.status !== 'PASS' || convergence.source_status !== 'DEPLOYED_OBSERVATION' || convergence.promotion_authorized !== false) throw new Error('Deployed convergence observation held or widened authority.');
+          if (convergence.observations?.multi_tab?.serialized !== true) throw new Error('Deployed cross-tab serialization was not observed.');
+          if (convergence.observations?.boundaries?.non_read_requests?.length) throw new Error('Deployed convergence emitted non-read requests.');
+          NODE
+      - name: Preserve lifecycle and convergence evidence
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: ash-a8-production-lifecycle-convergence-evidence
+          path: artifacts/ash-a8-production/
+          if-no-files-found: error
+          retention-days: 45
