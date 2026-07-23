@@ -22,12 +22,15 @@ assert.match(restoration, /position:relative!important/);
 assert.doesNotMatch(restoration, /setInterval\s*\(/);
 assert.doesNotMatch(restoration, /new MutationObserver/);
 
-assert.match(profilePrompt, /td613\.ash\.profile-prompt-canonical\/v0\.2-explicit-choice-stable/);
+assert.match(profilePrompt, /td613\.ash\.profile-prompt-canonical\/v0\.3-remount-stable-explicit-choice/);
 assert.match(profilePrompt, /let explicitChoice = ''/);
+assert.match(profilePrompt, /function captureExplicitChoice\(event\)/);
+assert.match(profilePrompt, /doc\.addEventListener\('input', captureExplicitChoice, true\)/);
+assert.match(profilePrompt, /doc\.addEventListener\('change', captureExplicitChoice, true\)/);
+assert.match(profilePrompt, /ashCanonicalProfileChoiceBoundary/);
 assert.match(profilePrompt, /prompt\.textContent = 'Select a Profile\.\.\.'/);
 assert.match(profilePrompt, /if \(select\.value\) explicitChoice = select\.value/);
 assert.match(profilePrompt, /start\.disabled = !select\.value/);
-assert.match(profilePrompt, /select\.addEventListener\('change', sync\)/);
 assert.match(profilePrompt, /applyCanonicalProfilePrompt\(\{ resetSelection:true \}\)/);
 assert.match(profilePrompt, /for \(const type of \['aia-ready','aia3-ready','composition-stable'\]\)/);
 assert.match(profilePrompt, /td613:ash:case-closed/);
