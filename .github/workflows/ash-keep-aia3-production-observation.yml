@@ -1,0 +1,230 @@
+name: Ash Keep AIA3 Production Observation
+
+on:
+  issue_comment:
+    types: [created]
+
+permissions:
+  contents: read
+  issues: write
+  statuses: write
+
+concurrency:
+  group: td613-ash-aia3-production-observation
+  cancel-in-progress: false
+
+jobs:
+  observe:
+    if: >-
+      github.event.issue.number == 405 &&
+      github.event.issue.pull_request == null &&
+      github.event.comment.user.login == github.repository_owner &&
+      startsWith(github.event.comment.body, '/td613-ash-aia3-observe ')
+    runs-on: ubuntu-latest
+    timeout-minutes: 90
+    env:
+      RELEASE_GATE_ISSUE: '405'
+      TD613_CANONICAL_PRODUCTION_URL: https://td613.com
+      GH_TOKEN: ${{ github.token }}
+
+    steps:
+      - name: Check out current observer harness with source history
+        uses: actions/checkout@v4
+        with:
+          ref: main
+          fetch-depth: 0
+
+      - name: Validate exact read-only AIA3 observation command
+        id: authorize
+        env:
+          AUTHORIZATION: ${{ github.event.comment.body }}
+        run: |
+          set -euo pipefail
+          read -r COMMAND TARGET SELECTED_SHA EXTRA <<< "$AUTHORIZATION"
+          [[ "$COMMAND" == '/td613-ash-aia3-observe' ]] || { echo 'Unexpected observation command.' >&2; exit 1; }
+          [[ "$TARGET" == 'PRODUCTION' ]] || { echo 'Only the named PRODUCTION target is accepted.' >&2; exit 1; }
+          [[ -z "${EXTRA:-}" ]] || { echo 'Observation command must contain exactly command, target, and SHA.' >&2; exit 1; }
+          [[ "$SELECTED_SHA" =~ ^[0-9a-f]{40}$ ]] || { echo 'Observation command omitted a 40-character SHA.' >&2; exit 1; }
+          git cat-file -e "$SELECTED_SHA^{commit}"
+          git merge-base --is-ancestor "$SELECTED_SHA" HEAD || { echo 'Selected application source is not an ancestor of current main.' >&2; exit 1; }
+          test -f scripts/ash-keep-aia3-task-journey-v3.mjs
+          test -f scripts/ash-lifecycle-production-probe.mjs
+          test -f scripts/publish-ash-keep-observer-status.mjs
+          HARNESS_SHA="$(git rev-parse HEAD)"
+          echo "selected_sha=$SELECTED_SHA" >> "$GITHUB_OUTPUT"
+          echo "harness_sha=$HARNESS_SHA" >> "$GITHUB_OUTPUT"
+
+      - name: Record accepted read-only AIA3 and lifecycle observation
+        run: |
+          gh api "repos/$GITHUB_REPOSITORY/issues/$RELEASE_GATE_ISSUE/comments" \
+            -f body="$(cat <<EOF_COMMENT
+          𝌋 Ash Keep AIA3 and lifecycle read-only production observation accepted.
+
+          \`\`\`text
+          application_source_commit = ${{ steps.authorize.outputs.selected_sha }}
+          observer_harness_commit = ${{ steps.authorize.outputs.harness_sha }}
+          target = PRODUCTION
+          deployment_count = 0
+          repository_write_authority = false
+          workflow_run = $GITHUB_SERVER_URL/$GITHUB_REPOSITORY/actions/runs/$GITHUB_RUN_ID
+          \`\`\`
+
+          Current main supplies the observer harness; evidence and status remain bound to the selected deployed application source. This conduit cannot deploy, relock, mutate Ash, authorize a child study, or close the program. ⟐
+          EOF_COMMENT
+          )"
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 24
+          cache: npm
+
+      - name: Install bounded witness dependencies
+        run: |
+          npm ci
+          npm install --no-save --package-lock=false playwright@1.53.2
+          npx playwright install --with-deps chromium firefox webkit
+
+      - name: Publish lifecycle observer pending status on selected source
+        env:
+          GITHUB_TOKEN: ${{ github.token }}
+          TD613_OBSERVED_COMMIT: ${{ steps.authorize.outputs.selected_sha }}
+          TD613_OBSERVER_STATUS_STATE: pending
+          TD613_OBSERVER_STATUS_DESCRIPTION: Ash lifecycle exact-source observation is running
+          TD613_OBSERVER_RUN_URL: ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}
+          TD613_OBSERVER_STATUS_CONTEXT: Ash Lifecycle Deployed Observation
+          TD613_OBSERVER_STATUS_RECEIPT_PATH: artifacts/ash-lifecycle-production/observer-status-pending.json
+        run: |
+          mkdir -p artifacts/ash-lifecycle-production
+          node scripts/publish-ash-keep-observer-status.mjs
+
+      - name: Observe exact deployed Ash Keep AIA3 task journey
+        env:
+          TD613_BASE_URL: ${{ env.TD613_CANONICAL_PRODUCTION_URL }}
+          TD613_SOURCE_PACKET_COMMIT: ${{ steps.authorize.outputs.selected_sha }}
+          TD613_PRODUCTION_OBSERVATION: 'true'
+        run: |
+          set -euo pipefail
+          for browser in chromium firefox webkit; do
+            TD613_BROWSER="$browser" \
+            TD613_ARTIFACT_DIR="artifacts/ash-aia3-production/$browser" \
+            node scripts/ash-keep-aia3-task-journey-v3.mjs
+          done
+
+      - name: Observe exact deployed Ash lifecycle with current harness
+        env:
+          TD613_BASE_URL: ${{ env.TD613_CANONICAL_PRODUCTION_URL }}
+          TD613_ARTIFACT_DIR: artifacts/ash-lifecycle-production
+        run: node scripts/ash-lifecycle-production-probe.mjs
+
+      - name: Verify bounded AIA3 and lifecycle production receipts
+        run: |
+          node --input-type=module <<'NODE'
+          import fs from 'node:fs';
+          const expected = '${{ steps.authorize.outputs.selected_sha }}';
+          for (const browser of ['chromium', 'firefox', 'webkit']) {
+            const path = `artifacts/ash-aia3-production/${browser}/ash-aia3-task-continuity.json`;
+            const receipt = JSON.parse(fs.readFileSync(path, 'utf8'));
+            if (receipt.status !== 'PASS') throw new Error(`${browser} AIA3 production journey held.`);
+            if (receipt.source_packet_commit !== expected) throw new Error(`${browser} AIA3 source-packet label drifted.`);
+            if (receipt.production_observation !== true) throw new Error(`${browser} was not marked as production observation.`);
+            const authority = receipt.authority || {};
+            if (authority.counts_as_human_evidence !== false || authority.authorizes_child_study !== false || authority.authorizes_release !== false || authority.closes_program !== false) {
+              throw new Error(`${browser} AIA3 observer widened authority.`);
+            }
+          }
+          const lifecycle = JSON.parse(fs.readFileSync('artifacts/ash-lifecycle-production/ash-lifecycle-production-closure.json', 'utf8'));
+          if (lifecycle.status !== 'PASS') throw new Error(`Lifecycle production journey held: ${lifecycle.status}`);
+          if (lifecycle.source_status !== 'DEPLOYED_OBSERVATION') throw new Error(`Unexpected lifecycle source status: ${lifecycle.source_status}`);
+          if (lifecycle.promotion_authorized !== false) throw new Error('Lifecycle observer widened promotion authority.');
+          if (lifecycle.threshold?.specialist_cache_preflight?.legacy_bypass !== true) throw new Error('Lifecycle observer did not prove exact legacy bypass.');
+          if (lifecycle.threshold?.specialist_cache_preflight?.aia3_route_required !== false) throw new Error('Lifecycle observer restored an AIA3 route requirement inside legacy presentation.');
+          if (lifecycle.network?.disallowed_non_read_requests?.length) throw new Error('Lifecycle observer emitted disallowed non-read requests.');
+          if (lifecycle.network?.provider_or_transport_requests?.length) throw new Error('Lifecycle observer reached provider or recipient transport.');
+          if (lifecycle.continuity?.lifecycle_state !== 'CONTINUITY_SEALED') throw new Error('Lifecycle observer did not reach continuity-sealed state.');
+          NODE
+
+      - name: Publish lifecycle observer success status on selected source
+        if: success()
+        env:
+          GITHUB_TOKEN: ${{ github.token }}
+          TD613_OBSERVED_COMMIT: ${{ steps.authorize.outputs.selected_sha }}
+          TD613_OBSERVER_STATUS_STATE: success
+          TD613_OBSERVER_STATUS_DESCRIPTION: Ash lifecycle exact-source observation passed
+          TD613_OBSERVER_RUN_URL: ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}
+          TD613_OBSERVER_STATUS_CONTEXT: Ash Lifecycle Deployed Observation
+          TD613_OBSERVER_STATUS_RECEIPT_PATH: artifacts/ash-lifecycle-production/observer-status-success.json
+        run: node scripts/publish-ash-keep-observer-status.mjs
+
+      - name: Publish lifecycle observer failure status on selected source
+        if: failure()
+        env:
+          GITHUB_TOKEN: ${{ github.token }}
+          TD613_OBSERVED_COMMIT: ${{ steps.authorize.outputs.selected_sha || 'unresolved' }}
+          TD613_OBSERVER_STATUS_STATE: failure
+          TD613_OBSERVER_STATUS_DESCRIPTION: Ash lifecycle exact-source observation held
+          TD613_OBSERVER_RUN_URL: ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}
+          TD613_OBSERVER_STATUS_CONTEXT: Ash Lifecycle Deployed Observation
+          TD613_OBSERVER_STATUS_RECEIPT_PATH: artifacts/ash-lifecycle-production/observer-status-failure.json
+        run: node scripts/publish-ash-keep-observer-status.mjs
+
+      - name: Preserve Ash Keep AIA3 and lifecycle production evidence
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: ash-aia3-and-lifecycle-exact-source-production-observation
+          path: |
+            artifacts/ash-aia3-production/
+            artifacts/ash-lifecycle-production/
+          if-no-files-found: warn
+          retention-days: 45
+
+      - name: Seal successful read-only AIA3 and lifecycle observation
+        if: success()
+        run: |
+          gh api "repos/$GITHUB_REPOSITORY/issues/$RELEASE_GATE_ISSUE/comments" \
+            -f body="$(cat <<EOF_COMMENT
+          𝌋 Ash Keep AIA3 task continuity and lifecycle observed on the selected deployed source.
+
+          \`\`\`text
+          application_source_commit = ${{ steps.authorize.outputs.selected_sha }}
+          observer_harness_commit = ${{ steps.authorize.outputs.harness_sha }}
+          target = PRODUCTION
+          deployment_count = 0
+          chromium_desktop_mobile = PASS
+          firefox_desktop_mobile = PASS
+          webkit_desktop_mobile = PASS
+          exact_ingress = PASS
+          local_document_path = PASS
+          route_continuity = PASS
+          tutorial_non_mutation = PASS
+          legacy_bypass = PASS
+          lifecycle_continuity = PASS
+          retired_aia2_delivery = ABSENT
+          counts_as_human_evidence = false
+          child_study_authorized = false
+          release_authorized = false
+          human_closure_required = true
+          \`\`\`
+
+          The selected deployed source passed the current AIA3 and lifecycle observer harness. This receipt authorizes no deployment, child study, promotion, or program closure. Sealed ⟐
+          EOF_COMMENT
+          )"
+
+      - name: Record held read-only AIA3 or lifecycle observation
+        if: failure()
+        run: |
+          gh api "repos/$GITHUB_REPOSITORY/issues/$RELEASE_GATE_ISSUE/comments" \
+            -f body="$(cat <<EOF_COMMENT
+          𝌋 Ash Keep AIA3 or lifecycle exact-source production observation held.
+
+          \`\`\`text
+          application_source_commit = ${{ steps.authorize.outputs.selected_sha || 'unresolved' }}
+          observer_harness_commit = ${{ steps.authorize.outputs.harness_sha || 'unresolved' }}
+          target = PRODUCTION
+          deployment_count = 0
+          workflow_run = $GITHUB_SERVER_URL/$GITHUB_REPOSITORY/actions/runs/$GITHUB_RUN_ID
+          \`\`\`
+
+          No deployment, retry authority, child-study authority, promotion authority, or closure authority follows from this held observation. ⟐
+          EOF_COMMENT
+          )"
