@@ -22,10 +22,15 @@ assert.match(restoration, /position:relative!important/);
 assert.doesNotMatch(restoration, /setInterval\s*\(/);
 assert.doesNotMatch(restoration, /new MutationObserver/);
 
-assert.match(profilePrompt, /td613\.ash\.profile-prompt-canonical\/v0\.1/);
+assert.match(profilePrompt, /td613\.ash\.profile-prompt-canonical\/v0\.2-explicit-choice-stable/);
+assert.match(profilePrompt, /let explicitChoice = ''/);
 assert.match(profilePrompt, /prompt\.textContent = 'Select a Profile\.\.\.'/);
+assert.match(profilePrompt, /if \(select\.value\) explicitChoice = select\.value/);
 assert.match(profilePrompt, /start\.disabled = !select\.value/);
 assert.match(profilePrompt, /select\.addEventListener\('change', sync\)/);
+assert.match(profilePrompt, /applyCanonicalProfilePrompt\(\{ resetSelection:true \}\)/);
+assert.match(profilePrompt, /for \(const type of \['aia-ready','aia3-ready','composition-stable'\]\)/);
+assert.match(profilePrompt, /td613:ash:case-closed/);
 assert.doesNotMatch(profilePrompt, /setInterval\s*\(|new MutationObserver/);
 
 assert.match(threshold, /rel="canonical" href="\/dome-world\/ash-threshold\.html"/);
