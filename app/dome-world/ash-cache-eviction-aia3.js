@@ -1,5 +1,5 @@
-export const ASH_AIA3_CACHE_EPOCH = 'td613.ash.cache-flush/2026-07-21-legal-demo-ux-v1';
-export const ASH_AIA3_ASSET_EPOCH = '20260721-legal-demo-ux-v1';
+export const ASH_AIA3_CACHE_EPOCH = 'td613.ash.cache-flush/2026-07-23-a2-a5-v1';
+export const ASH_AIA3_ASSET_EPOCH = '20260723-a2-a5-v1';
 export const ASH_LEGACY_CACHE_EPOCH = 'td613.ash.cache-flush/2026-07-18-canonical-membrane-v7';
 const MARKER_KEY = 'td613.ash.cache-flush.aia3.epoch';
 const PREFLIGHT_MARKER_KEY = 'td613.ash.cache-preflight.epoch';
