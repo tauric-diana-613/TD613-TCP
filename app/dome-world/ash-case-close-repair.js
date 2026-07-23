@@ -1,6 +1,6 @@
 import { validThresholdReadiness } from './ash-cache-flush.js?v=20260718-canonical-membrane-v7-readiness-boundary';
 
-export const ASH_CASE_CLOSE_REPAIR_VERSION = 'td613.ash.case-close-repair/v1.4-post-close-settled-fingerprint';
+export const ASH_CASE_CLOSE_REPAIR_VERSION = 'td613.ash.case-close-repair/v1.5-save-population-serialized';
 
 const DB_NAME = 'td613-ash-keep';
 const POINTER_KEY = 'td613.ash-keep.current-case';
@@ -102,6 +102,46 @@ async function saveAtCloseBoundary(caseId, fingerprintPosture) {
   }
 }
 
+function caseListPosture(expectedCaseId = '') {
+  const select = byId('selectCase');
+  if (!select) return 'ABSENT';
+  if (select.dataset.caseListState !== 'READY') return 'LOADING';
+  if (!expectedCaseId) return 'READY_MATCH';
+  return [...select.options].some(option => option.value === expectedCaseId) ? 'READY_MATCH' : 'READY_MISSING';
+}
+
+function waitForCaseListReady(expectedCaseId = '', timeoutMs = 15000) {
+  const immediate = caseListPosture(expectedCaseId);
+  if (immediate === 'READY_MATCH') return Promise.resolve(true);
+  if (immediate === 'READY_MISSING') return Promise.resolve(false);
+  const launch = byId('launch');
+  if (!launch) return Promise.resolve(false);
+  return new Promise(resolve => {
+    let settled = false;
+    const finish = value => {
+      if (settled) return;
+      settled = true;
+      clearTimeout(timer);
+      observer.disconnect();
+      resolve(value);
+    };
+    const check = () => {
+      const posture = caseListPosture(expectedCaseId);
+      if (posture === 'READY_MATCH') finish(true);
+      else if (posture === 'READY_MISSING') finish(false);
+    };
+    const observer = new MutationObserver(check);
+    const timer = setTimeout(() => finish(false), timeoutMs);
+    observer.observe(launch, {
+      childList:true,
+      subtree:true,
+      attributes:true,
+      attributeFilter:['data-case-list-state','disabled']
+    });
+    queueMicrotask(check);
+  });
+}
+
 function clearAshSessionStorage({ preserveReadiness = false } = {}) {
   const removed = [];
   const preserved = [];
@@ -173,8 +213,13 @@ function exposeMembrane({ preserveReadiness = false } = {}) {
   return sessionBoundary;
 }
 
-async function resetCaseSelection() {
-  await window.__td613AshCaseControls?.refreshCases?.();
+async function resetCaseSelection(expectedCaseId) {
+  let ready = await waitForCaseListReady(expectedCaseId);
+  if (!ready) {
+    await window.__td613AshCaseControls?.refreshCases?.(expectedCaseId || '');
+    ready = await waitForCaseListReady(expectedCaseId);
+  }
+  if (expectedCaseId && !ready) throw new Error('Closed case did not reach the settled saved-case selector.');
   const select = byId('selectCase');
   if (select) {
     select.value = '';
@@ -190,6 +235,8 @@ async function closeToMembrane() {
   closing = true;
   const caseId = localStorage.getItem(POINTER_KEY);
   try {
+    const savePopulationSettled = await waitForCaseListReady();
+    document.documentElement.dataset.ashCloseSavePopulationSettled = String(savePopulationSettled);
     const preCloseBackup = await saveAtCloseBoundary(caseId, 'PRE_CLOSE_BACKUP');
     if (caseId) {
       try {
@@ -218,7 +265,8 @@ async function closeToMembrane() {
     await Promise.resolve();
     const postCloseSave = await saveAtCloseBoundary(caseId, 'POST_CLOSE_RECONCILED_BUNDLE');
     document.documentElement.dataset.ashCloseFingerprintPosture = postCloseSave?.fingerprint_posture || 'NO_CASE';
-    await resetCaseSelection();
+    await resetCaseSelection(caseId);
+    document.documentElement.dataset.ashCloseCaseListPosture = caseListPosture(caseId);
   } finally {
     closing = false;
   }
@@ -242,7 +290,8 @@ function install() {
   window.__td613AshCaseCloseRepair = Object.freeze({
     version:ASH_CASE_CLOSE_REPAIR_VERSION,
     close:closeToMembrane,
-    logout:closeToMembrane
+    logout:closeToMembrane,
+    caseListPosture
   });
   return true;
 }
