@@ -7,12 +7,15 @@ on:
       - "app/dome-world/ash-keep.html"
       - "app/dome-world/ash-keep.js"
       - "app/dome-world/ash-convergence.js"
+      - "app/dome-world/ash-whole-instrument-pedagogy.*"
+      - "app/dome-world/ash-workspace-bridge.js"
       - "app/dome-world/schemas/ash-*.schema.json"
       - "app/dome-world/ash-keep-worker.js"
       - "app/dome-world/ash-lifecycle.js"
       - "app/dome-world/ash-threshold.html"
       - "app/dome-world/fixtures/ash-keep-demo.json"
       - "app/dome-world/docs/ASH_KEEP_V1_PRODUCTION_DEMO_RECEIPT.md"
+      - "app/dome-world/docs/ASH_KEEP_A2_A5_IMPLEMENTATION_RECEIPT_V0_1.md"
       - "app/engine/ash-keep-*.js"
       - "app/engine/ash-lifecycle.js"
       - "app/engine/ash-constitutional-convergence.js"
@@ -22,6 +25,8 @@ on:
       - "docs/ASH_KEEP_BUILDOUT_LEDGER.md"
       - "ROADMAP.md"
       - "tests/fixtures/aperture-release.json"
+      - "tests/ash-a2-a5-whole-instrument.test.mjs"
+      - "scripts/ash-a2-a5-browser-probe.mjs"
       - "scripts/ash-keep-local-closure-server.mjs"
       - "scripts/ash-keep-production-probe.mjs"
       - "scripts/run-ash-keep-production-probe.mjs"
@@ -42,12 +47,15 @@ on:
       - "app/dome-world/ash-keep.html"
       - "app/dome-world/ash-keep.js"
       - "app/dome-world/ash-convergence.js"
+      - "app/dome-world/ash-whole-instrument-pedagogy.*"
+      - "app/dome-world/ash-workspace-bridge.js"
       - "app/dome-world/schemas/ash-*.schema.json"
       - "app/dome-world/ash-keep-worker.js"
       - "app/dome-world/ash-lifecycle.js"
       - "app/dome-world/ash-threshold.html"
       - "app/dome-world/fixtures/ash-keep-demo.json"
       - "app/dome-world/docs/ASH_KEEP_V1_PRODUCTION_DEMO_RECEIPT.md"
+      - "app/dome-world/docs/ASH_KEEP_A2_A5_IMPLEMENTATION_RECEIPT_V0_1.md"
       - "app/engine/ash-keep-*.js"
       - "app/engine/ash-lifecycle.js"
       - "app/engine/ash-constitutional-convergence.js"
@@ -57,6 +65,8 @@ on:
       - "docs/ASH_KEEP_BUILDOUT_LEDGER.md"
       - "ROADMAP.md"
       - "tests/fixtures/aperture-release.json"
+      - "tests/ash-a2-a5-whole-instrument.test.mjs"
+      - "scripts/ash-a2-a5-browser-probe.mjs"
       - "scripts/ash-keep-local-closure-server.mjs"
       - "scripts/ash-keep-production-probe.mjs"
       - "scripts/run-ash-keep-production-probe.mjs"
@@ -70,13 +80,10 @@ on:
       - "tests/ash-lifecycle-*.test.mjs"
       - "tests/ash-constitutional-*.test.mjs"
       - ".github/workflows/ash-keep-production-closure.yml"
-  workflow_run:
-    workflows: ["Test and deploy static app"]
-    types: [completed]
   workflow_dispatch:
     inputs:
       base_url:
-        description: "Optional deployed base URL for a non-promoting lifecycle observation"
+        description: "Named deployed base URL for a non-promoting lifecycle observation"
         required: false
         default: ""
         type: string
@@ -90,11 +97,15 @@ permissions:
   contents: read
   statuses: write
 
+concurrency:
+  group: ash-keep-production-closure-${{ github.event.pull_request.number || github.ref }}-${{ github.run_attempt }}
+  cancel-in-progress: true
+
 jobs:
   local-closure-validation:
-    if: github.event_name != 'workflow_run'
+    if: github.event_name != 'workflow_dispatch' || inputs.confirm_deployed_probe != 'RUN_DEPLOYED_OBSERVATION'
     runs-on: ubuntu-latest
-    timeout-minutes: 20
+    timeout-minutes: 25
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-node@v4
@@ -114,11 +125,15 @@ jobs:
           node --check scripts/publish-ash-keep-observer-status.mjs
           node --check scripts/assert-ash-keep-release-posture.mjs
           node --check scripts/ash-keep-local-closure-server.mjs
+          node --check scripts/ash-a2-a5-browser-probe.mjs
+          node --check app/dome-world/ash-whole-instrument-pedagogy.js
           node --check api/dome-world-shell.js
-      - name: Validate production closure contracts
-        run: |
-          node tests/ash-keep-production-closure-contract.test.mjs
-          node tests/ash-lifecycle-production-contract.test.mjs
+      - name: Validate A2-A5 whole-instrument contract
+        run: node tests/ash-a2-a5-whole-instrument.test.mjs
+      - name: Validate Ash Keep production closure contract
+        run: node tests/ash-keep-production-closure-contract.test.mjs
+      - name: Validate Ash lifecycle production contract
+        run: node tests/ash-lifecycle-production-contract.test.mjs
       - name: Enforce release promotion gate
         run: node tests/ash-keep-production-promotion-gate.test.mjs
       - name: Verify current Ash Keep release posture
@@ -190,16 +205,13 @@ jobs:
           fi
 
   deployed-observation:
-    if: >-
-      (github.event_name == 'workflow_dispatch' && inputs.confirm_deployed_probe == 'RUN_DEPLOYED_OBSERVATION' && inputs.base_url != '')
-      ||
-      (github.event_name == 'workflow_run' && github.event.workflow_run.conclusion == 'success' && github.event.workflow_run.head_branch == 'main')
+    if: github.event_name == 'workflow_dispatch' && inputs.confirm_deployed_probe == 'RUN_DEPLOYED_OBSERVATION' && inputs.base_url != ''
     runs-on: ubuntu-latest
-    timeout-minutes: 25
+    timeout-minutes: 30
     env:
-      TD613_DEPLOYED_BASE_URL: ${{ github.event_name == 'workflow_run' && 'https://td613.com' || inputs.base_url }}
-      TD613_OBSERVED_COMMIT: ${{ github.event_name == 'workflow_run' && github.event.workflow_run.head_sha || github.sha }}
-      TD613_UPSTREAM_WORKFLOW_RUN_ID: ${{ github.event_name == 'workflow_run' && github.event.workflow_run.id || '' }}
+      TD613_DEPLOYED_BASE_URL: ${{ inputs.base_url }}
+      TD613_OBSERVED_COMMIT: ${{ github.sha }}
+      TD613_UPSTREAM_WORKFLOW_RUN_ID: ''
       TD613_OBSERVER_RUN_URL: ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}
       TD613_OBSERVER_STATUS_CONTEXT: Ash Lifecycle Deployed Observation
     steps:
@@ -219,7 +231,7 @@ jobs:
         run: node scripts/publish-ash-keep-observer-status.mjs
       - name: Install repository dependencies
         run: npm ci
-      - name: Wait for deployed Ash lifecycle-composed threshold and Keep
+      - name: Wait for explicitly named deployed Ash surfaces
         run: |
           set -euo pipefail
           mkdir -p artifacts/ash-lifecycle-deployed-observation
@@ -256,7 +268,7 @@ jobs:
             schema: 'td613.ash.lifecycle-deployment-observer-context/v0.1',
             observed_base_url: process.env.TD613_DEPLOYED_BASE_URL,
             observed_runtime_commit: process.env.TD613_OBSERVED_COMMIT,
-            upstream_deployment_workflow_run_id: process.env.TD613_UPSTREAM_WORKFLOW_RUN_ID || null,
+            upstream_deployment_workflow_run_id: null,
             observer_workflow_run_id: process.env.TD613_OBSERVER_RUN_ID,
             observer_workflow_run_attempt: process.env.TD613_OBSERVER_RUN_ATTEMPT,
             observer_run_url: process.env.TD613_OBSERVER_RUN_URL,
@@ -350,6 +362,6 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ github.token }}
           TD613_OBSERVER_STATUS_STATE: failure
-          TD613_OBSERVER_STATUS_DESCRIPTION: Ash lifecycle observation or evidence preservation failed
-          TD613_OBSERVER_STATUS_RECEIPT_PATH: artifacts/ash-lifecycle-deployed-observation/observer-status-failure-reconciled.json
+          TD613_OBSERVER_STATUS_DESCRIPTION: Ash lifecycle observation held after terminal cleanup
+          TD613_OBSERVER_STATUS_RECEIPT_PATH: artifacts/ash-lifecycle-deployed-observation/observer-status-terminal-failure.json
         run: node scripts/publish-ash-keep-observer-status.mjs

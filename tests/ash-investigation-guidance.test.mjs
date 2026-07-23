@@ -46,10 +46,9 @@ assert.match(runtime, /Heterostratigraphic field/);
 assert.match(runtime, /PA2 ceiling/);
 assert.doesNotMatch(runtime, /fetch\(/);
 assert.match(specs, /Glass Meridian Vendor Integrity Inquiry/);
-for (const module of ['ash-investigation-demo-hydration','ash-guided-operator-ui','ash-flicker-hardening','ash-emergency-stability-contract','ash-ui-ux-rescue']) {
-  assert.match(bridge, new RegExp(`${module}\\.js\\?v=20260721-legal-demo-ux-v1`));
+for (const module of ['ash-investigation-demo-hydration','ash-guided-operator-ui','ash-flicker-hardening','ash-emergency-stability-contract','ash-ui-ux-rescue','ash-case-close-repair']) {
+  assert.match(bridge, new RegExp(`${module}\\.js\\?v=20260723-a2-a5-release-v1`));
 }
-assert.match(bridge, /ash-case-close-repair\.js\?v=20260723-case-close-quiescence-v4/);
 assert(bridge.indexOf('ash-flicker-hardening.js') < bridge.indexOf('ash-premium-ui.js'), 'Static compositor must install before Premium composition.');
 assert(bridge.indexOf('ash-case-close-repair.js') < bridge.indexOf('ash-premium-ui.js'), 'Close logout must install before Premium composition.');
 assert(bridge.indexOf('ash-emergency-stability-contract.js') > bridge.indexOf('ash-workspace-navigation.js'), 'Membrane reveal must run after final composition.');
@@ -127,8 +126,9 @@ assert.match(cacheFlush, /unregisterSameOriginWorkers/);
 assert.match(cacheFlush, /cache:'no-store'/);
 assert.match(cacheFlush, /local_case_pointer_preserved:false/);
 assert.match(cacheFlush, /active_session_reset:true/);
-assert.match(cacheFlush, /td613\.ash\.cache-flush\/2026-07-21-legal-demo-ux-v1/);
-assert.match(lifecycle, /ash-cache-flush\.js\?v=20260721-legal-demo-ux-v1/);
+assert.match(cacheFlush, /td613\.ash\.cache-flush\/2026-07-23-a2-a5-release-v1/);
+assert.match(lifecycle, /const ASH_RELEASE_ASSET_EPOCH = '20260723-a2-a5-release-v1'/);
+assert.ok(lifecycle.includes("await import(`./ash-cache-flush.js?v=${ASH_RELEASE_ASSET_EPOCH}`)"));
 assert.doesNotMatch(cacheFlush, /2026-07-18-(?:live-ingress-v3|emergency-stability-v5)/);
 
 assert.match(ingress, /td613\.ash\.ingress-layout\/v1\.0-canonical-native-scroll/);

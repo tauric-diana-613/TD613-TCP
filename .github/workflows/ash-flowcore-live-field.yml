@@ -7,6 +7,8 @@ on:
       - 'api/dome-world-shell.js'
       - 'app/safe-harbor/ash-keep-recovery.html'
       - 'app/dome-world/ash-flowcore-pedagogy-field.*'
+      - 'app/dome-world/ash-whole-instrument-pedagogy.*'
+      - 'app/dome-world/docs/ASH_KEEP_A2_A5_IMPLEMENTATION_RECEIPT_V0_1.md'
       - 'app/dome-world/ash-flowcore-ingress-portal.js'
       - 'app/dome-world/ash-flowcore-ingress-portal-loader.js'
       - 'app/dome-world/ash-post-ingress-motion-restoration.js'
@@ -31,6 +33,8 @@ on:
       - 'app/dome-world/ash-lifecycle.js'
       - 'app/dome-world/ash-premium-ui.js'
       - 'scripts/ash-keep-local-closure-server.mjs'
+      - 'scripts/ash-a2-a5-browser-probe.mjs'
+      - 'tests/ash-a2-a5-whole-instrument.test.mjs'
       - 'tests/ash-flowcore-live-field.test.mjs'
       - 'tests/ash-ingress-polish.test.mjs'
       - 'tests/ash-aia3-mass-eviction.test.mjs'
@@ -40,23 +44,25 @@ on:
       - 'tests/ash-research-ux-rehydration.test.mjs'
       - 'tests/ash-final-rehydration-boundaries.test.mjs'
       - 'scripts/ash-flowcore-live-field-browser-probe.mjs'
+      - 'scripts/run-ash-flowcore-live-field-browser-probe.mjs'
       - 'scripts/ash-ingress-polish-browser-probe.mjs'
       - 'scripts/ash-reviewability-browser-probe.mjs'
       - 'scripts/ash-research-ux-browser-probe.mjs'
       - '.github/workflows/ash-flowcore-live-field.yml'
+      - '.github/workflows/ash-keep-production-closure.yml'
   workflow_dispatch:
 
 permissions:
   contents: read
 
 concurrency:
-  group: ash-flowcore-live-field-${{ github.event.pull_request.number || github.ref }}
+  group: ash-flowcore-live-field-${{ github.event.pull_request.number || github.ref }}-${{ github.run_attempt }}
   cancel-in-progress: true
 
 jobs:
   contracts:
     runs-on: ubuntu-latest
-    timeout-minutes: 15
+    timeout-minutes: 18
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-node@v4
@@ -69,6 +75,7 @@ jobs:
           node --check api/dome-world-shell.js
           node --check scripts/ash-keep-local-closure-server.mjs
           node --check app/dome-world/ash-flowcore-pedagogy-field.js
+          node --check app/dome-world/ash-whole-instrument-pedagogy.js
           node --check app/dome-world/ash-flowcore-ingress-portal.js
           node --check app/dome-world/ash-flowcore-ingress-portal-loader.js
           node --check app/dome-world/ash-post-ingress-motion-restoration.js
@@ -77,12 +84,15 @@ jobs:
           node --check app/dome-world/ash-ingress-copy-spacing.js
           node --check app/dome-world/ash-research-demo-hydration.js
           node --check app/dome-world/ash-research-demo-control-state.js
+          node --check scripts/ash-a2-a5-browser-probe.mjs
+          node --check scripts/run-ash-flowcore-live-field-browser-probe.mjs
           node --check scripts/ash-research-ux-browser-probe.mjs
-      - name: Live field, A1 first paint, reviewability, and Research contracts
+      - name: A2-A5, live field, A1 first paint, reviewability, and Research contracts
         run: |
           mkdir -p artifacts
           set +e
           {
+            node tests/ash-a2-a5-whole-instrument.test.mjs
             node tests/ash-flowcore-live-field.test.mjs
             node tests/ash-ingress-polish.test.mjs
             node tests/ash-aia3-mass-eviction.test.mjs
@@ -115,7 +125,7 @@ jobs:
   browser-witness:
     name: ${{ matrix.browser }} consequence field
     runs-on: ubuntu-latest
-    timeout-minutes: 55
+    timeout-minutes: 65
     strategy:
       fail-fast: false
       matrix:
@@ -131,11 +141,14 @@ jobs:
         run: |
           node --check api/dome-world-shell.js
           node --check scripts/ash-keep-local-closure-server.mjs
+          node --check scripts/ash-a2-a5-browser-probe.mjs
           node --check scripts/ash-flowcore-live-field-browser-probe.mjs
+          node --check scripts/run-ash-flowcore-live-field-browser-probe.mjs
           node --check scripts/ash-ingress-polish-browser-probe.mjs
           node --check scripts/ash-reviewability-browser-probe.mjs
           node --check scripts/ash-research-ux-browser-probe.mjs
           node --check app/dome-world/ash-flowcore-pedagogy-field.js
+          node --check app/dome-world/ash-whole-instrument-pedagogy.js
           node --check app/dome-world/ash-flowcore-ingress-portal.js
           node --check app/dome-world/ash-flowcore-ingress-portal-loader.js
           node --check app/dome-world/ash-post-ingress-motion-restoration.js
@@ -162,12 +175,18 @@ jobs:
           done
           cat artifacts/ash-flowcore-field-server.log || true
           exit 1
+      - name: Observe A2-A5 whole-instrument recompilation
+        env:
+          TD613_BROWSER: ${{ matrix.browser }}
+          TD613_BASE_URL: http://127.0.0.1:6130
+          TD613_ARTIFACT_DIR: artifacts/ash-a2-a5-${{ matrix.browser }}
+        run: timeout --foreground --signal=INT --kill-after=15s 540s node scripts/ash-a2-a5-browser-probe.mjs
       - name: Observe ingress copy, zero-artifact Flow-Core, and Close Case return
         env:
           TD613_BROWSER: ${{ matrix.browser }}
           TD613_BASE_URL: http://127.0.0.1:6130
           TD613_ARTIFACT_DIR: artifacts/ash-flowcore-field-${{ matrix.browser }}
-        run: timeout --foreground --signal=INT --kill-after=15s 480s node scripts/ash-flowcore-live-field-browser-probe.mjs
+        run: timeout --foreground --signal=INT --kill-after=15s 480s node scripts/run-ash-flowcore-live-field-browser-probe.mjs
       - name: Observe canonical first paint, clean URL, and one field
         env:
           TD613_BROWSER: ${{ matrix.browser }}
@@ -196,6 +215,7 @@ jobs:
         with:
           name: ash-flowcore-field-${{ matrix.browser }}-evidence
           path: |
+            artifacts/ash-a2-a5-${{ matrix.browser }}/
             artifacts/ash-flowcore-field-${{ matrix.browser }}/
             artifacts/ash-ingress-polish-${{ matrix.browser }}/
             artifacts/ash-reviewability-${{ matrix.browser }}/

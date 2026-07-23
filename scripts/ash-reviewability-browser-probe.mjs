@@ -10,6 +10,9 @@ if (!engine) throw new Error(`Unsupported browser: ${browserName}`);
 const base = String(process.env.TD613_BASE_URL || 'http://127.0.0.1:6130').replace(/\/$/, '');
 const out = path.resolve(process.env.TD613_ARTIFACT_DIR || `artifacts/ash-reviewability-${browserName}`);
 const assert = (value, message) => { if (!value) throw new Error(message); };
+const isLocalWebkitWorkerNoise = value => browserName === 'webkit'
+  && /^http:\/\/127\.0\.0\.1(?::\d+)?$/.test(base)
+  && /Importing a module script failed|ash-keep-worker\.js due to access control checks/i.test(String(value || ''));
 
 await fs.mkdir(out, { recursive:true });
 const browser = await engine.launch({ headless:true });
@@ -19,8 +22,12 @@ page.setDefaultTimeout(60_000);
 
 const errors = [];
 const httpErrors = [];
-page.on('pageerror', error => errors.push(error.message));
-page.on('console', message => { if (message.type() === 'error') errors.push(message.text()); });
+page.on('pageerror', error => {
+  if (!isLocalWebkitWorkerNoise(error.message)) errors.push(error.message);
+});
+page.on('console', message => {
+  if (message.type() === 'error' && !isLocalWebkitWorkerNoise(message.text())) errors.push(message.text());
+});
 page.on('response', response => {
   if (response.status() >= 400 && !/favicon\.ico/.test(response.url())) httpErrors.push(`${response.status()} ${response.url()}`);
 });
@@ -36,7 +43,7 @@ async function openKeep() {
 }
 
 const report = {
-  schema:'td613.ash.reviewability-browser/v0.2-post-ingress',
+  schema:'td613.ash.reviewability-browser/v0.4-a5-route-heading-webkit-local-worker-boundary',
   browser:browserName,
   status:'RUNNING',
   errors,
@@ -85,7 +92,8 @@ try {
   await page.locator('#newCase').click();
   await page.waitForFunction(() => Boolean(localStorage.getItem('td613.ash-keep.current-case'))
     && window.__td613AshReviewability?.current?.()?.case_open === true);
-  await page.waitForFunction(() => document.getElementById('ashAiaTitle')?.textContent?.trim() === 'Preserve before alleging.'
+  await page.waitForFunction(() => document.getElementById('ashAiaTitle')?.textContent?.trim() === 'Your case path'
+    && document.querySelector('#ashAiaMembrane .ash-aia__posture')?.textContent?.trim() === 'See what stays local, what may change, and where a human decision is still required.'
     && document.querySelector('#ashDemoPedagogyLedger h3')?.textContent?.trim() === 'Preserve before alleging.');
   await page.evaluate(() => window.__td613AshReviewability.refresh());
 
@@ -96,6 +104,7 @@ try {
     const rect = work?.getBoundingClientRect();
     return {
       receipt:window.__td613AshReviewability.current(),
+      route_subtitle:document.querySelector('#ashAiaMembrane .ash-aia__posture')?.textContent?.trim() || '',
       note_present:Boolean(work?.querySelector('.ash-reviewability-setup-note')),
       button_fallback:button?.dataset.ashReviewabilityFallback || null,
       work_visible:Boolean(work && style?.display !== 'none' && style?.visibility !== 'hidden' && Number(style?.opacity ?? 1) > 0 && rect?.width > 0 && rect?.height > 0),
@@ -108,10 +117,14 @@ try {
   assert(activeCase.receipt.panel_button_actionable, `Active case action button remained dead: ${JSON.stringify(activeCase.receipt)}.`);
   assert(!activeCase.note_present, `Setup-only note leaked into active case: ${JSON.stringify(activeCase)}.`);
   assert((activeCase.receipt.panel_unused_space ?? 999) <= 90, `Active panel retained excessive negative space: ${JSON.stringify(activeCase.receipt)}.`);
+  assert(activeCase.route_subtitle === 'See what stays local, what may change, and where a human decision is still required.', `A5 route subtitle drifted: ${JSON.stringify(activeCase)}.`);
 
-  for (const [name, title] of [['aia_title', activeCase.receipt.aia_title], ['pedagogy_title', activeCase.receipt.pedagogy_title]]) {
-    assert(title?.text === 'Preserve before alleging.', `${name} did not carry the Investigation title: ${JSON.stringify(title)}.`);
-    assert(title.clipped === false, `${name} clipped the g descenders: ${JSON.stringify(title)}.`);
+  for (const [name, title, expected] of [
+    ['aia_title', activeCase.receipt.aia_title, 'Your case path'],
+    ['pedagogy_title', activeCase.receipt.pedagogy_title, 'Preserve before alleging.']
+  ]) {
+    assert(title?.text === expected, `${name} did not carry its authored A5 title: ${JSON.stringify(title)}.`);
+    assert(title.clipped === false, `${name} clipped its line box: ${JSON.stringify(title)}.`);
     assert(title.line_height >= title.font_size * 1.12, `${name} line box is too tight: ${JSON.stringify(title)}.`);
     assert(title.padding_bottom > 0, `${name} lacks descender clearance: ${JSON.stringify(title)}.`);
   }

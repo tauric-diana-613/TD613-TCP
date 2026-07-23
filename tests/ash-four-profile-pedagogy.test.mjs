@@ -19,6 +19,7 @@ const premiumReadinessSource = fs.readFileSync(premiumReadinessPath, 'utf8');
 const compositionCompatibilitySource = fs.readFileSync(compositionCompatibilityPath, 'utf8');
 const workspaceBridgeSource = fs.readFileSync(workspaceBridgePath, 'utf8');
 const { ASH_DEMO_PEDAGOGY_VERSION, ASH_DEMO_PEDAGOGY_MANIFESTS } = await import(pathToFileURL(modulePath));
+const RELEASE_EPOCH = '20260723-a2-a5-release-v1';
 
 assert.equal(ASH_DEMO_PEDAGOGY_VERSION, 'td613.ash.demo-pedagogy/v0.2-event-driven-idle-stable');
 assert.deepEqual(Object.keys(ASH_DEMO_PEDAGOGY_MANIFESTS).sort(), ['fundraiser','investigation','political_campaign','research']);
@@ -64,7 +65,7 @@ assert.match(moduleSource, /providerApproval/);
 assert.match(moduleSource, /approveRelease/);
 assert.match(moduleSource, /capsulePassphrase/);
 assert.doesNotMatch(moduleSource, /transport_authorized:\s*true|child_study_authorized:\s*true|automatic_ash_action:\s*true/);
-assert.match(wrapperSource, /ash-demo-pedagogy-rehydration\.js\?v=20260721-legal-demo-ux-v1/);
+assert.match(wrapperSource, new RegExp(`ash-demo-pedagogy-rehydration\\.js\\?v=${RELEASE_EPOCH}`));
 
 assert.match(entrySource, /td613\.ash\.demo-entry-convergence\/v0\.5-premium-instrument-visible-release/);
 assert.match(entrySource, /data-ash-demo-entry-hydrating/);
@@ -117,7 +118,8 @@ assert.match(compositionCompatibilitySource, /td613\.ash\.composition-receipt-co
 assert.match(compositionCompatibilitySource, /stable-navigation-motion/);
 assert.match(compositionCompatibilitySource, /td613:ash:composition-stable/);
 assert.match(compositionCompatibilitySource, /dataset\.ashCompositionRelease/);
-assert.match(workspaceBridgeSource, /ash-premium-ui\.js\?v=20260721-legal-demo-ux-v1[\s\S]*ash-premium-readiness-bridge\.js\?v=20260721-legal-demo-ux-v1[\s\S]*ash-ui-ux-rescue\.js\?v=20260721-legal-demo-ux-v1[\s\S]*ash-composition-receipt-compatibility\.js\?v=20260721-legal-demo-ux-v1[\s\S]*ash-demo-entry-convergence\.js\?v=20260721-legal-demo-ux-v1[\s\S]*ash-demo-pedagogy-routebar\.js\?v=20260721-legal-demo-ux-v1/);
+const releaseImport = module => `${module}\\.js\\?v=${RELEASE_EPOCH}`;
+assert.match(workspaceBridgeSource, new RegExp(`${releaseImport('ash-premium-ui')}[\\s\\S]*${releaseImport('ash-premium-readiness-bridge')}[\\s\\S]*${releaseImport('ash-ui-ux-rescue')}[\\s\\S]*${releaseImport('ash-composition-receipt-compatibility')}[\\s\\S]*${releaseImport('ash-demo-entry-convergence')}[\\s\\S]*${releaseImport('ash-demo-pedagogy-routebar')}`));
 assert.doesNotMatch(workspaceBridgeSource, /ash-demo-pedagogy-persistence/);
 assert.equal(fs.existsSync(path.join(root, 'app/dome-world/ash-demo-pedagogy-persistence.js')), false, 'The obstructive all-workspace ledger portal must remain removed.');
 

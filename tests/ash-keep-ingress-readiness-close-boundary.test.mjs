@@ -34,8 +34,9 @@ assert.match(closeRepair, /ashCloseCaseListPosture/);
 const closeBody = closeRepair.match(/async function closeToMembrane\(\) \{[\s\S]*?\n\}/)?.[0] || '';
 assert.match(closeBody, /exposeMembrane\(\);/);
 assert.doesNotMatch(closeBody, /preserveReadiness:true/);
-assert.match(bridge, /ash-case-close-repair\.js\?v=20260723-case-close-quiescence-v4/);
-assert.match(bridge, /ash-session-boundary\.js\?v=20260721-flowcore-live-field-v1/);
+const releaseEpoch = '20260723-a2-a5-release-v1';
+assert.match(bridge, new RegExp(`ash-case-close-repair\\.js\\?v=${releaseEpoch}`));
+assert.match(bridge, new RegExp(`ash-session-boundary\\.js\\?v=${releaseEpoch}`));
 
 assert.match(sessionBoundary, /v0\.4-pointer-governs-case-recovery-replay-stays-open/);
 assert.match(sessionBoundary, /POINTER_KEY = 'td613\.ash-keep\.current-case'/);

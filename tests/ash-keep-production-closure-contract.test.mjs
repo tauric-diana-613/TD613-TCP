@@ -35,12 +35,15 @@ for (const token of [
   'runtime_copy_ephemeral: true', 'CLASSIFY_INTENTIONAL_HORIZONTAL_SCROLL_LANES_SEPARATELY_FROM_CLIPPING', 'promotion_authorized: false'
 ]) assert.ok(runner.includes(token), `Core fixture runner omitted ${token}`);
 
+// The observer ceiling stays finite while clearing the coordinator's lawful 30-second lease.
 for (const token of [
   'ash-constitutional-convergence-probe.runtime.mjs', 'expected one case-selection seam',
   "select.dispatchEvent(new Event('change', { bubbles: true }))", 'remove?.disabled !== false',
-  'Cross-tab lock witness exceeded 15000ms.'
+  'Cross-tab lock witness exceeded 35000ms.'
 ]) assert.ok(convergenceRunner.includes(token), `Convergence runner omitted ${token}`);
 assert.match(convergenceRunner, /pathToFileURL/);
+assert.match(convergenceRunner, /\b35000\b/);
+assert.doesNotMatch(convergenceRunner, /Cross-tab lock witness exceeded 15000ms\.|\b15000\b/);
 
 for (const token of [
   "new Set(['pending', 'success', 'failure', 'error'])", "required('GITHUB_TOKEN')", "required('TD613_OBSERVED_COMMIT')",
@@ -93,11 +96,17 @@ assert.doesNotMatch(premiumFlight, /production_promotion_authorized:\s*true|tran
 const localJob = workflow.split('  local-closure-validation:')[1]?.split('  deployed-observation:')[0] || '';
 const deployedJob = workflow.split('  deployed-observation:')[1] || '';
 for (const token of [
-  'Ash Keep Production Closure', 'workflow_dispatch', 'workflow_run', 'workflows: ["Test and deploy static app"]', 'statuses: write',
+  'Ash Keep Production Closure', 'workflow_dispatch', 'statuses: write', 'RUN_DEPLOYED_OBSERVATION', 'inputs.base_url',
   'tests/ash-keep-production-closure-contract.test.mjs', 'tests/ash-keep-production-promotion-gate.test.mjs',
   'scripts/ash-keep-production-probe.mjs', 'scripts/run-ash-keep-production-probe.mjs',
   'scripts/run-ash-constitutional-convergence-probe.mjs', 'ash-keep-production-closure-evidence'
 ]) assert.ok(workflow.includes(token), `Closure workflow omitted ${token}`);
+assert.doesNotMatch(workflow, /\n  workflow_run:/);
+assert.doesNotMatch(workflow, /github\.event\.workflow_run|workflows: \["Test and deploy static app"\]/);
+assert.match(deployedJob, /github\.event_name == 'workflow_dispatch'/);
+assert.match(deployedJob, /inputs\.confirm_deployed_probe == 'RUN_DEPLOYED_OBSERVATION'/);
+assert.match(deployedJob, /inputs\.base_url != ''/);
+
 for (const token of [
   'td613.ash.constitutional-convergence-observation/v0.1', 'promotion_authorized: false',
   'APERTURE_REBUILD', 'HUSH_CANDIDATE', 'DELETE_PARTIAL_HOLD', 'DRY_AUDIT_ONLY',

@@ -27,7 +27,7 @@ await page.addInitScript(() => {
   });
 });
 
-const report = { schema:'td613.ash.flowcore-live-field-browser/v0.4-visible-dual-motion', browser:browserName, status:'RUNNING', errors, http_errors:httpErrors, observations:{} };
+const report = { schema:'td613.ash.flowcore-live-field-browser/v0.7-atomic-name-receipt', browser:browserName, status:'RUNNING', errors, http_errors:httpErrors, observations:{} };
 try {
   await page.goto(`${base}/dome-world/ash-keep.html?presentation=aia&profile=investigation&nonce=${Date.now()}`, { waitUntil:'domcontentloaded' });
   await page.waitForFunction(() => window.__td613AshFlowcoreField?.version
@@ -57,7 +57,9 @@ try {
       && portal?.visible_host === 'INGRESS'
       && portal?.duplicate_visible_fields === 1
       && visible?.parentElement?.id === 'guidedLaunchPromise'
-      && visible.getBoundingClientRect().height > 260;
+      && visible.getBoundingClientRect().height > 260
+      && visible.querySelectorAll('[data-aia-play]').length === 1
+      && !visible.querySelector('[data-flowcore-ingress-play]');
   });
 
   const ingressDesktop = await page.evaluate(() => window.__td613AshIngressCopySpacing.measure());
@@ -70,7 +72,7 @@ try {
     const portal = window.__td613AshFlowcoreIngressPortal.current();
     const style = getComputedStyle(field);
     const promise = document.getElementById('guidedLaunchPromise');
-    const play = field.querySelector('[data-flowcore-ingress-play]');
+    const play = field.querySelector('[data-aia-play]');
     return {
       visible:style.display !== 'none' && style.visibility !== 'hidden' && Number(style.opacity) > 0 && field.getBoundingClientRect().height > 260,
       host:portal.visible_host,
@@ -81,6 +83,9 @@ try {
       local_file_count:document.getElementById('localTextFile')?.files?.length || 0,
       draft_empty:!(document.getElementById('draftBody')?.value || '').trim(),
       play_visible:Boolean(play && getComputedStyle(play).display !== 'none' && play.getBoundingClientRect().height >= 30),
+      play_text:play?.textContent?.trim() || '',
+      play_count:field.querySelectorAll('[data-aia-play]').length,
+      generated_play_count:field.querySelectorAll('[data-flowcore-ingress-play]').length,
       old_four_step_copy:/Four exact steps|Start here\. Ash explains/.test(promise?.textContent || ''),
       labels:field.textContent,
       svg_description:field.querySelector('desc')?.textContent || ''
@@ -91,7 +96,8 @@ try {
   assert(ingressField.duplicate_visible_fields === 1, `More than one visible Flow-Core field: ${ingressField.duplicate_visible_fields}.`);
   assert(ingressField.phase === 'NOTICE', `Ingress phase drifted: ${ingressField.phase}.`);
   assert(ingressField.artifact_required === false && ingressField.local_file_count === 0 && ingressField.draft_empty, 'Clean ingress incorrectly required an artifact.');
-  assert(ingressField.play_visible, 'Explicit Flow-Core Play control missing at ingress.');
+  assert(ingressField.play_visible && ingressField.play_count === 1 && ingressField.generated_play_count === 0, 'Canonical Flow-Core Play control missing or duplicated at ingress.');
+  assert(ingressField.play_text === '▶ Play Consequence Field', `Canonical Flow-Core Play label drifted: ${ingressField.play_text}.`);
   assert(!ingressField.old_four_step_copy, 'Static four-step card still occupies the visible ingress pedagogy slot.');
   for (const label of ['RAW BYTES DO NOT CROSS','REFERENCE','≠ ARTIFACT','CASE MAP RELATION FIELD']) assert(ingressField.labels.includes(label) || ingressField.svg_description.includes(label), `Ingress Flow-Core field omitted ${label}.`);
   await page.screenshot({ path:path.join(out, `${browserName}-zero-artifact-ingress.png`), fullPage:true });
@@ -137,7 +143,9 @@ try {
       && motion?.rail_visible
       && !motion?.field_clipped
       && !motion?.rail_clipped
-      && document.documentElement.dataset.ashFlowcorePhase === 'NOTICE';
+      && document.documentElement.dataset.ashFlowcorePhase === 'NOTICE'
+      && visible.querySelectorAll('[data-aia-play]').length === 1
+      && !visible.querySelector('[data-flowcore-ingress-play]');
   });
   const caseId = await page.evaluate(() => localStorage.getItem('td613.ash-keep.current-case'));
 
@@ -177,27 +185,41 @@ try {
   for (const label of ['RAW BYTES DO NOT CROSS','REFERENCE','≠ ARTIFACT','CASE MAP RELATION FIELD']) assert(arrival.labels.includes(label) || arrival.svg_description.includes(label), `Flow-Core field omitted ${label}.`);
   await page.screenshot({ path:path.join(out, `${browserName}-zero-artifact-case-arrival.png`), fullPage:true });
 
-  await page.locator('.ash-flowcore-field:not([hidden]) [data-flowcore-ingress-play]').click();
-  await page.waitForFunction(() => document.documentElement.dataset.ashFlowcorePhase === 'NAME');
-  const activeMotion = await page.evaluate(() => {
+  const canonicalPlay = page.locator('.ash-flowcore-field:not(.ash-flowcore-field--proxy):not([hidden]) [data-aia-play]');
+  await canonicalPlay.waitFor({ state:'visible' });
+  assert((await canonicalPlay.textContent())?.trim() === '▶ Play Consequence Field', 'Canonical Flow-Core Play label drifted before playback.');
+  assert(await page.locator('.ash-flowcore-field:not(.ash-flowcore-field--proxy):not([hidden]) [data-flowcore-ingress-play]').count() === 0, 'Retired duplicate Play control returned.');
+  await canonicalPlay.click();
+  const activeMotionHandle = await page.waitForFunction(() => {
+    if (document.documentElement.dataset.ashFlowcorePhase !== 'NAME') return false;
     const field = document.querySelector('.ash-flowcore-field:not([hidden])');
     const rail = document.querySelector('#ashAiaMembrane .ash-ux-motion-track');
+    const canvas = field?.querySelector('.ash-flowcore-field__canvas');
+    const phaseLabel = field?.querySelector('[data-flowcore-phase-label]')?.textContent || '';
+    const canvasVisible = Boolean(canvas && getComputedStyle(canvas).display !== 'none' && canvas.getBoundingClientRect().height > 0);
+    const railVisible = Boolean(rail && getComputedStyle(rail).display !== 'none' && rail.getBoundingClientRect().height > 0);
+    if (field?.dataset.flowcorePhaseName !== 'NAME' || field?.dataset.flowcorePlaying !== 'true' || !/NAME/.test(phaseLabel) || !canvasVisible || !railVisible) return false;
     return {
-      field_animations:field?.getAnimations({ subtree:true }).length || 0,
-      rail_animations:rail?.getAnimations({ subtree:true }).length || 0,
       phase:document.documentElement.dataset.ashFlowcorePhase,
+      field_phase:field.dataset.flowcorePhaseName,
+      field_playing:true,
+      phase_label:phaseLabel,
+      canvas_visible:canvasVisible,
+      rail_visible:railVisible,
       motion:window.__td613AshPostIngressMotionRestoration.current()
     };
   });
-  assert(activeMotion.phase === 'NAME', 'Flow-Core relation phase never became visible.');
-  assert(activeMotion.field_animations > 0, 'Flow-Core relation phase produced no visible finite animation.');
-  assert(activeMotion.rail_animations > 0, 'One-dimensional lesson rail produced no visible finite animation.');
+  const activeMotion = await activeMotionHandle.jsonValue();
+  assert(activeMotion.phase === 'NAME' && activeMotion.field_phase === 'NAME' && activeMotion.field_playing, 'Flow-Core relation phase receipt was not captured atomically.');
+  assert(activeMotion.canvas_visible && activeMotion.rail_visible, `Flow-Core motion layers disappeared during NAME: ${JSON.stringify(activeMotion)}.`);
   assert(activeMotion.motion.canvas_visible && activeMotion.motion.rail_visible && !activeMotion.motion.field_clipped && !activeMotion.motion.rail_clipped, `Motion layers drifted during playback: ${JSON.stringify(activeMotion.motion)}.`);
   await page.waitForFunction(() => document.documentElement.dataset.ashFlowcorePhase === 'REST', null, { timeout:15_000 });
   const trace = await page.evaluate(() => window.__ashFlowcorePhaseTrace);
   const names = new Set(trace.map(item => item.phase_name));
   for (const name of ['NOTICE','ACT','WORLD_ANSWERS','NAME','REST']) assert(names.has(name), `Flow-Core trace omitted ${name}: ${JSON.stringify(trace)}.`);
   assert(trace.every(item => item.artifact_required === false), 'A Flow-Core frame falsely required an artifact.');
+  const orderedTrace = ['NOTICE','ACT','WORLD_ANSWERS','NAME','REST'].map(name => trace.findIndex(item => item.phase_name === name));
+  assert(orderedTrace.every(index => index >= 0) && orderedTrace.every((index, position) => position === 0 || index > orderedTrace[position - 1]), `Flow-Core phase trace lost finite causal order: ${JSON.stringify(trace)}.`);
 
   await page.setViewportSize({ width:390, height:844 });
   const mobile = await page.evaluate(() => {

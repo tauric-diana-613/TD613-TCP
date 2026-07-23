@@ -7,7 +7,7 @@ const READINESS_KEY = 'td613:ash-threshold:readiness:v0.1';
 const POINTER_KEY = 'td613.ash-keep.current-case';
 const SESSION_EPOCH_KEY = 'td613.ash.session.epoch';
 const MASS_EVICTION_MARKER_KEYS = ['td613.ash.cache-flush.aia3.epoch', 'td613.ash.cache-preflight.epoch'];
-const MASS_EVICTION_EPOCH = 'td613.ash.cache-flush/2026-07-21-legal-demo-ux-v1';
+const MASS_EVICTION_EPOCH = 'td613.ash.cache-flush/2026-07-23-a2-a5-release-v1';
 const ASSET_EPOCH = '20260718-canonical-membrane-v7-readiness-boundary';
 const EVICTION_ROUTE = '/api/dome-world-shell?surface=cache-evict';
 const LOCAL_HOSTS = new Set(['localhost', '127.0.0.1', '[::1]']);
@@ -218,8 +218,4 @@ export async function runAshCacheFlush(host = globalThis) {
   writeReceipt(receipt, host);
   host.__td613AshCacheTransition = receipt;
   return receipt;
-}
-
-if (typeof window !== 'undefined' && typeof document !== 'undefined') {
-  await runAshCacheFlush(window);
 }
