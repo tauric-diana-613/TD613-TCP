@@ -120,13 +120,21 @@ assert.match(lifecycle, /ash-cache-flush\.js\?v=20260721-legal-demo-ux-v1/);
 assert.match(lifecycle, /data-ash-composition-hydrating/);
 
 const renderedKeep = injectAshKeepLifecycle(keepHtml);
+let moduleCursor = -1;
 for (const source of ['ash-keep.js', 'ash-convergence.js', 'ash-lifecycle.js', 'ash-workspace-bridge.js', 'ash-case-controls.js']) {
-  assert.match(renderedKeep, new RegExp(`src="/dome-world/${source.replace('.', '\\.')}\\?v=${ASH_LIFECYCLE_ASSET_EPOCH}"`));
+  const module = `/dome-world/${source}?v=${ASH_LIFECYCLE_ASSET_EPOCH}`;
+  const index = renderedKeep.indexOf(module);
+  assert.ok(index > moduleCursor, `Canonical bootstrap order failed for ${module}.`);
+  moduleCursor = index;
   assert.doesNotMatch(renderedKeep, new RegExp(`src="/dome-world/${source.replace('.', '\\.')}"`));
 }
+assert.match(renderedKeep, /id="td613-ash-canonical-module-bootstrap"/);
+assert.match(renderedKeep, /await globalThis\.__td613AshAia3Preflight/);
 assert.match(renderedKeep, /name="ash-cache-preflight" content="legal-demo-ux-v1"/);
-assert.match(renderedKeep, /Updating Ash Keep · preserving local cases/);
-assert.equal(injectAshKeepLifecycle(renderedKeep), renderedKeep, 'Legal UX injection is not idempotent.');
+assert.match(renderedKeep, /Preparing Ash/);
+assert.match(renderedKeep, /<title>TD613 Ash<\/title>/);
+assert.doesNotMatch(renderedKeep, /searchParams\.set\('ash_epoch'/);
+assert.equal(injectAshKeepLifecycle(renderedKeep), renderedKeep, 'First-paint injection is not idempotent.');
 
 for (const module of [
   'ash-profile-demo-hydration','ash-investigation-demo-hydration','ash-research-demo-hydration',
@@ -137,7 +145,7 @@ assert.doesNotMatch(profileWrapper + investigationWrapper, /fixtures\//);
 assert.match(rescue, /stopImmediatePropagation/);
 assert.match(rescue, /ash-ux-motion-track/);
 
-for (const token of ['ASH_MASS_EVICTION_EPOCH','ash-cache-preflight','Clear-Site-Data','case_data_preserved:true','session_epoch_preserved_or_migrated']) assert(shell.includes(token), `Shell omitted ${token}`);
+for (const token of ['ASH_MASS_EVICTION_EPOCH','ash-cache-preflight','Clear-Site-Data','case_data_preserved:true','session_epoch_preserved_or_migrated','visible_url:canonicalPath']) assert(shell.includes(token), `Shell omitted ${token}`);
 for (const token of ['validThresholdReadiness','clearAshSessionStorage','preserveReadiness:true','session_logged_out:true']) assert(closeRepair.includes(token), `Close boundary omitted ${token}`);
 for (const token of ['HIDDEN_UNTIL_FINAL_COMPOSITION','REQUIRED_MEMBRANE_IDS','dataset.ashMembraneReady']) assert(emergency.includes(token), `Composition gate omitted ${token}`);
 assert.doesNotMatch(navigation, /new host\.MutationObserver/);
