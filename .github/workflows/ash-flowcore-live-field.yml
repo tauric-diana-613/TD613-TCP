@@ -4,6 +4,8 @@ on:
   pull_request:
     branches: [main]
     paths:
+      - 'api/dome-world-shell.js'
+      - 'app/safe-harbor/ash-keep-recovery.html'
       - 'app/dome-world/ash-flowcore-pedagogy-field.*'
       - 'app/dome-world/ash-flowcore-ingress-portal.js'
       - 'app/dome-world/ash-flowcore-ingress-portal-loader.js'
@@ -13,8 +15,12 @@ on:
       - 'app/dome-world/ash-session-boundary.js'
       - 'app/dome-world/ash-ingress-copy-spacing.js'
       - 'app/dome-world/ash-workspace-bridge.js'
+      - 'scripts/ash-keep-local-closure-server.mjs'
       - 'tests/ash-flowcore-live-field.test.mjs'
       - 'tests/ash-ingress-polish.test.mjs'
+      - 'tests/ash-aia3-mass-eviction.test.mjs'
+      - 'tests/ash-live-ingress-demos-cache.test.mjs'
+      - 'tests/product-architecture/shell.test.mjs'
       - 'tests/ash-reviewability.test.mjs'
       - 'scripts/ash-flowcore-live-field-browser-probe.mjs'
       - 'scripts/ash-ingress-polish-browser-probe.mjs'
@@ -38,6 +44,8 @@ jobs:
       - run: npm ci
       - name: Syntax-check live product modules
         run: |
+          node --check api/dome-world-shell.js
+          node --check scripts/ash-keep-local-closure-server.mjs
           node --check app/dome-world/ash-flowcore-pedagogy-field.js
           node --check app/dome-world/ash-flowcore-ingress-portal.js
           node --check app/dome-world/ash-flowcore-ingress-portal-loader.js
@@ -45,13 +53,16 @@ jobs:
           node --check app/dome-world/ash-reviewability-repair.js
           node --check app/dome-world/ash-session-boundary.js
           node --check app/dome-world/ash-ingress-copy-spacing.js
-      - name: Live Flow-Core field, ingress polish, and reviewability contracts
+      - name: Live Flow-Core field, first paint, cache, and reviewability contracts
         run: |
           mkdir -p artifacts
           set +e
           {
             node tests/ash-flowcore-live-field.test.mjs
             node tests/ash-ingress-polish.test.mjs
+            node tests/ash-aia3-mass-eviction.test.mjs
+            node tests/ash-live-ingress-demos-cache.test.mjs
+            node tests/product-architecture/shell.test.mjs
             node tests/ash-reviewability.test.mjs
           } > artifacts/ash-flowcore-contract.log 2>&1
           status=$?
@@ -91,6 +102,8 @@ jobs:
       - run: npm ci
       - name: Syntax-check witness and product modules
         run: |
+          node --check api/dome-world-shell.js
+          node --check scripts/ash-keep-local-closure-server.mjs
           node --check scripts/ash-flowcore-live-field-browser-probe.mjs
           node --check scripts/ash-ingress-polish-browser-probe.mjs
           node --check scripts/ash-reviewability-browser-probe.mjs
@@ -125,7 +138,7 @@ jobs:
           TD613_BASE_URL: http://127.0.0.1:6130
           TD613_ARTIFACT_DIR: artifacts/ash-flowcore-field-${{ matrix.browser }}
         run: timeout --foreground --signal=INT --kill-after=15s 480s node scripts/ash-flowcore-live-field-browser-probe.mjs
-      - name: Observe caption clearance, profile prompt, and one canonical field
+      - name: Observe canonical first paint, clean URL, and one field
         env:
           TD613_BROWSER: ${{ matrix.browser }}
           TD613_BASE_URL: http://127.0.0.1:6130
