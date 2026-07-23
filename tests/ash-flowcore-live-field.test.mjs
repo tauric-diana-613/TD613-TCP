@@ -122,12 +122,15 @@ assert.match(ingressSpacing, /overlap_px:collision\.area > 0 \? collision\.heigh
 assert.match(ingressSpacing, /ordered:title\.nextElementSibling === recovery/);
 assert.doesNotMatch(ingressSpacing, /setInterval\s*\(|requestAnimationFrame\s*\(/);
 
-assert.match(bridge, /ash-session-boundary\.js\?v=20260721-flowcore-live-field-v1/);
-assert.match(bridge, /ash-ingress-copy-spacing\.js\?v=20260721-flowcore-live-field-v1/);
-assert.match(bridge, /ash-flowcore-pedagogy-field\.js\?v=20260721-flowcore-live-field-v1/);
-assert.match(bridge, /ash-flowcore-ingress-portal-loader\.js\?v=20260722-flowcore-observer-hotfix-v3/);
-assert.match(bridge, /ash-post-ingress-motion-restoration\.js\?v=20260722-canonical-field-ingress-polish-v3/);
-assert.match(bridge, /ash-reviewability-repair\.js\?v=20260722-reviewability-v1/);
+const RELEASE_EPOCH = '20260723-a2-a5-release-v1';
+for (const module of [
+  'ash-session-boundary',
+  'ash-ingress-copy-spacing',
+  'ash-flowcore-pedagogy-field',
+  'ash-flowcore-ingress-portal-loader',
+  'ash-post-ingress-motion-restoration',
+  'ash-reviewability-repair'
+]) assert.match(bridge, new RegExp(`${module}\\.js\\?v=${RELEASE_EPOCH}`));
 assert.doesNotMatch(bridge, /import '\.\/ash-flowcore-ingress-portal\.js/);
 
 console.log('ash-flowcore-live-field.test.mjs passed');
