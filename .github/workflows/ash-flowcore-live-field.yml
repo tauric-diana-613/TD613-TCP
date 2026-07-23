@@ -32,9 +32,14 @@ on:
       - 'app/dome-world/ash-aia3-composition.js'
       - 'app/dome-world/ash-lifecycle.js'
       - 'app/dome-world/ash-premium-ui.js'
+      - 'app/dome-world/ash-a7-a11-recompiler-core.js'
+      - 'app/dome-world/ash-a7-home-recompilation.js'
+      - 'app/dome-world/docs/ASH_KEEP_A7_IMPLEMENTATION_RECEIPT_V0_1.md'
       - 'scripts/ash-keep-local-closure-server.mjs'
       - 'scripts/ash-a2-a5-browser-probe.mjs'
+      - 'scripts/ash-a7-a11-browser-probe.mjs'
       - 'tests/ash-a2-a5-whole-instrument.test.mjs'
+      - 'tests/ash-a7-home-recompilation.test.mjs'
       - 'tests/ash-flowcore-live-field.test.mjs'
       - 'tests/ash-ingress-polish.test.mjs'
       - 'tests/ash-aia3-mass-eviction.test.mjs'
@@ -84,15 +89,19 @@ jobs:
           node --check app/dome-world/ash-ingress-copy-spacing.js
           node --check app/dome-world/ash-research-demo-hydration.js
           node --check app/dome-world/ash-research-demo-control-state.js
+          node --check app/dome-world/ash-a7-a11-recompiler-core.js
+          node --check app/dome-world/ash-a7-home-recompilation.js
           node --check scripts/ash-a2-a5-browser-probe.mjs
+          node --check scripts/ash-a7-a11-browser-probe.mjs
           node --check scripts/run-ash-flowcore-live-field-browser-probe.mjs
           node --check scripts/ash-research-ux-browser-probe.mjs
-      - name: A2-A5, live field, A1 first paint, reviewability, and Research contracts
+      - name: A2-A7, live field, A1 first paint, reviewability, and Research contracts
         run: |
           mkdir -p artifacts
           set +e
           {
             node tests/ash-a2-a5-whole-instrument.test.mjs
+            node tests/ash-a7-home-recompilation.test.mjs
             node tests/ash-flowcore-live-field.test.mjs
             node tests/ash-ingress-polish.test.mjs
             node tests/ash-aia3-mass-eviction.test.mjs
@@ -142,6 +151,7 @@ jobs:
           node --check api/dome-world-shell.js
           node --check scripts/ash-keep-local-closure-server.mjs
           node --check scripts/ash-a2-a5-browser-probe.mjs
+          node --check scripts/ash-a7-a11-browser-probe.mjs
           node --check scripts/ash-flowcore-live-field-browser-probe.mjs
           node --check scripts/run-ash-flowcore-live-field-browser-probe.mjs
           node --check scripts/ash-ingress-polish-browser-probe.mjs
@@ -157,6 +167,8 @@ jobs:
           node --check app/dome-world/ash-ingress-copy-spacing.js
           node --check app/dome-world/ash-research-demo-hydration.js
           node --check app/dome-world/ash-research-demo-control-state.js
+          node --check app/dome-world/ash-a7-a11-recompiler-core.js
+          node --check app/dome-world/ash-a7-home-recompilation.js
       - name: Install browser witness runtime
         run: |
           npm install --no-save --package-lock=false playwright@1.53.2
@@ -181,6 +193,13 @@ jobs:
           TD613_BASE_URL: http://127.0.0.1:6130
           TD613_ARTIFACT_DIR: artifacts/ash-a2-a5-${{ matrix.browser }}
         run: timeout --foreground --signal=INT --kill-after=15s 540s node scripts/ash-a2-a5-browser-probe.mjs
+      - name: Observe A7 Home recompilation
+        env:
+          TD613_BROWSER: ${{ matrix.browser }}
+          TD613_BASE_URL: http://127.0.0.1:6130
+          TD613_ASH_STAGES: A7
+          TD613_ARTIFACT_DIR: artifacts/ash-a7-a11-${{ matrix.browser }}
+        run: timeout --foreground --signal=INT --kill-after=15s 480s node scripts/ash-a7-a11-browser-probe.mjs
       - name: Observe ingress copy, zero-artifact Flow-Core, and Close Case return
         env:
           TD613_BROWSER: ${{ matrix.browser }}
@@ -216,6 +235,7 @@ jobs:
           name: ash-flowcore-field-${{ matrix.browser }}-evidence
           path: |
             artifacts/ash-a2-a5-${{ matrix.browser }}/
+            artifacts/ash-a7-a11-${{ matrix.browser }}/
             artifacts/ash-flowcore-field-${{ matrix.browser }}/
             artifacts/ash-ingress-polish-${{ matrix.browser }}/
             artifacts/ash-reviewability-${{ matrix.browser }}/

@@ -353,6 +353,8 @@ function routeTimeline(routes = []) {
 }
 
 function renderHome(doc, snapshot) {
+  const a7Renderer = globalThis.window?.__td613AshA7Home?.render;
+  if (typeof a7Renderer === 'function') { a7Renderer(snapshot); return; }
   const target = byId(doc, 'premiumHomeBody');
   if (!target) return;
   if (!snapshot.caseMap) {
