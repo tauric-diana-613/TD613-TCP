@@ -1,4 +1,4 @@
-export const ASH_PROFILE_PROMPT_CANONICAL_VERSION = 'td613.ash.profile-prompt-canonical/v0.7-bounded-case-list-remount-reconciliation';
+export const ASH_PROFILE_PROMPT_CANONICAL_VERSION = 'td613.ash.profile-prompt-canonical/v0.8-bounded-case-choice-remount-reconciliation';
 
 const host = globalThis.window;
 const doc = globalThis.document;
@@ -25,6 +25,33 @@ function queueControlReconcile(reason = 'QUEUED') {
   });
 }
 
+function applyRemountedCaseChoice(select, reason = 'REMOUNTED_CASE_SELECTION') {
+  if (!select || select !== doc.getElementById('selectCase')) return false;
+  const caseId = select.value || '';
+  for (const id of ['openSelectedCase', 'deleteSelectedCase']) {
+    const button = doc.getElementById(id);
+    if (button) button.disabled = !caseId;
+  }
+  select.dataset.ashCaseChoiceReconcileReason = reason;
+  if (caseId) {
+    host.TD613AshConvergence?.transitionCase?.(caseId, {
+      nextState:'SELECTED_NOT_OPEN',
+      reason:'operator-selected-remounted-case'
+    }).catch(error => console.error('Ash remounted case choice transition held:', error));
+  }
+  return true;
+}
+
+function bindRemountedCaseChoice(select, reason = 'CASE_LIST_IDENTITY_CHANGED') {
+  if (!select) return false;
+  if (select.dataset.ashRemountedCaseChoiceBound !== 'true') {
+    select.addEventListener('change', () => applyRemountedCaseChoice(select));
+    select.dataset.ashRemountedCaseChoiceBound = 'true';
+  }
+  applyRemountedCaseChoice(select, reason);
+  return true;
+}
+
 function queueCaseListReconcile(reason = 'CASE_LIST_IDENTITY_CHANGED') {
   if (caseListReconcileQueued) return;
   caseListReconcileQueued = true;
@@ -35,10 +62,15 @@ function queueCaseListReconcile(reason = 'CASE_LIST_IDENTITY_CHANGED') {
     try {
       await host.__td613AshCaseControls?.refreshCases?.(current.value || '');
       const settled = doc.getElementById('selectCase');
-      if (settled) settled.dataset.ashCaseListReconcileReason = reason;
+      if (settled) {
+        bindRemountedCaseChoice(settled, reason);
+        settled.dataset.ashCaseListReconcileReason = reason;
+      }
       doc.documentElement.dataset.ashCaseListRemountReconciled = String(Boolean(settled?.dataset.caseListState === 'READY'));
+      doc.documentElement.dataset.ashCaseChoiceRemountReconciled = String(Boolean(settled?.dataset.ashRemountedCaseChoiceBound === 'true'));
     } catch (error) {
       doc.documentElement.dataset.ashCaseListRemountReconciled = 'false';
+      doc.documentElement.dataset.ashCaseChoiceRemountReconciled = 'false';
       console.error('Ash case-list remount reconciliation held:', error);
     }
   });
