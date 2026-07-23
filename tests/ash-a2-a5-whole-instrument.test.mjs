@@ -8,8 +8,11 @@ const css = read('app/dome-world/ash-whole-instrument-pedagogy.css');
 const bridge = read('app/dome-world/ash-workspace-bridge.js');
 const lifecycle = read('app/dome-world/ash-lifecycle.js');
 const eviction = read('app/dome-world/ash-cache-eviction-aia3.js');
+const cacheFlush = read('app/dome-world/ash-cache-flush.js');
 const recovery = read('app/safe-harbor/ash-keep-recovery.html');
 const shell = read('api/dome-world-shell.js');
+const journeyAdapter = read('scripts/ash-keep-aia3-task-journey-v3.mjs');
+const journeySource = read('scripts/ash-keep-aia3-task-journey-v3.source.mjs');
 const closureWorkflow = read('.github/workflows/ash-keep-production-closure.yml');
 const receipt = read('app/dome-world/docs/ASH_KEEP_A2_A5_IMPLEMENTATION_RECEIPT_V0_1.md');
 const programIndex = read('app/dome-world/docs/FLOWCORE_PEDAGOGUE_PROGRAM_INDEX_V0_1.md');
@@ -17,40 +20,26 @@ const programIndex = read('app/dome-world/docs/FLOWCORE_PEDAGOGUE_PROGRAM_INDEX_
 assert.match(moduleSource, /td613\.ash\.whole-instrument-pedagogy\/v0\.1-a2-a5/);
 assert.match(moduleSource, /▶ Play Consequence Field/);
 assert.match(moduleSource, /How this scene is speaking/);
-for (const channel of ['glyph','motion','shape','language','inspection']) {
-  assert.match(moduleSource, new RegExp(`data-flowcore-channel="${channel}"`));
-}
+for (const channel of ['glyph','motion','shape','language','inspection']) assert.match(moduleSource, new RegExp(`data-flowcore-channel="${channel}"`));
 assert.match(moduleSource, /openInspection/);
 assert.match(moduleSource, /prefers-reduced-motion: reduce/);
 assert.match(moduleSource, /static_parity: true/);
 
-for (const scene of ['ingress','home','map','work','choir','capsule']) {
-  assert.match(moduleSource, new RegExp(`\\b${scene}: Object\\.freeze`));
-}
+for (const scene of ['ingress','home','map','work','choir','capsule']) assert.match(moduleSource, new RegExp(`\\b${scene}: Object\\.freeze`));
 assert.doesNotMatch(moduleSource, /new MutationObserver|setInterval\(/);
 
 for (const [route, label] of [
-  ['EXPERIENTIAL','Learn by doing'],
-  ['CUSTODIAL','Protect the source'],
-  ['AUDIT','Check the evidence'],
-  ['IMPLEMENTATION','Inspect the machinery']
-]) {
-  assert.match(moduleSource, new RegExp(`${route}:[\\s\\S]*?label: '${label}'`));
-}
+  ['EXPERIENTIAL','Learn by doing'], ['CUSTODIAL','Protect the source'],
+  ['AUDIT','Check the evidence'], ['IMPLEMENTATION','Inspect the machinery']
+]) assert.match(moduleSource, new RegExp(`${route}:[\\s\\S]*?label: '${label}'`));
 assert.match(moduleSource, /Your case path/);
 assert.match(moduleSource, /See what stays local, what may change, and where a human decision is still required\./);
 assert.match(moduleSource, /route_inference: false/);
 assert.match(moduleSource, /td613\.ash\.transition-delta\/v0\.1/);
-for (const preserved of ['case state','authority','source bytes','custody','claim ceiling','release posture','human closure']) {
-  assert.match(moduleSource, new RegExp(`'${preserved}'`));
-}
+for (const preserved of ['case state','authority','source bytes','custody','claim ceiling','release posture','human closure']) assert.match(moduleSource, new RegExp(`'${preserved}'`));
 for (const invariant of [
-  'authority_changed: false',
-  'source_bytes_moved: false',
-  'custody_changed: false',
-  'claim_ceiling_changed: false',
-  'release_posture_changed: false',
-  'closure_changed: false'
+  'authority_changed: false','source_bytes_moved: false','custody_changed: false',
+  'claim_ceiling_changed: false','release_posture_changed: false','closure_changed: false'
 ]) assert.match(moduleSource, new RegExp(invariant));
 
 assert.match(moduleSource, /td613\.ash\.navigation-receipt\/v0\.1/);
@@ -78,18 +67,21 @@ assert.match(css, /button\[data-flowcore-channel="inspection"\]\{grid-column:1\/
 const assetEpoch = '20260723-a2-a5-release-v1';
 const cacheEpoch = 'td613.ash.cache-flush/2026-07-23-a2-a5-release-v1';
 for (const [name, source] of [
-  ['shell', shell],
-  ['lifecycle', lifecycle],
-  ['workspace bridge', bridge],
-  ['cache eviction', eviction],
-  ['recovery bridge', recovery]
-]) {
-  assert.match(source, new RegExp(assetEpoch.replaceAll('-', '\\-')), `${name} omitted the A2-A5 asset epoch`);
-  assert.doesNotMatch(source, /20260721-legal-demo-ux-v1/, `${name} retained the superseded delivery epoch`);
-}
-assert.match(shell, new RegExp(cacheEpoch.replaceAll('/', '\\/').replaceAll('.', '\\.').replaceAll('-', '\\-')));
-assert.match(eviction, new RegExp(cacheEpoch.replaceAll('/', '\\/').replaceAll('.', '\\.').replaceAll('-', '\\-')));
-assert.match(recovery, new RegExp(cacheEpoch.replaceAll('/', '\\/').replaceAll('.', '\\.').replaceAll('-', '\\-')));
+  ['shell',shell], ['lifecycle',lifecycle], ['workspace bridge',bridge], ['cache eviction',eviction],
+  ['cache flush',cacheFlush], ['recovery bridge',recovery], ['journey adapter',journeyAdapter]
+]) assert.match(source, new RegExp(assetEpoch.replaceAll('-', '\\-')), `${name} omitted the A2-A5 asset epoch`);
+for (const [name, source] of [
+  ['shell',shell], ['cache eviction',eviction], ['cache flush',cacheFlush],
+  ['recovery bridge',recovery], ['journey adapter',journeyAdapter]
+]) assert.match(source, new RegExp(cacheEpoch.replaceAll('/', '\\/').replaceAll('.', '\\.').replaceAll('-', '\\-')), `${name} omitted the A2-A5 cache epoch`);
+for (const [name, source] of [
+  ['shell',shell], ['lifecycle',lifecycle], ['workspace bridge',bridge],
+  ['cache eviction',eviction], ['cache flush',cacheFlush], ['recovery bridge',recovery]
+]) assert.doesNotMatch(source, /20260721-legal-demo-ux-v1/, `${name} retained the superseded delivery epoch`);
+assert.match(journeySource, /const EPOCH = '20260721-legal-demo-ux-v1'/);
+assert.match(journeyAdapter, /const RELEASE_EPOCH = '20260723-a2-a5-release-v1'/);
+assert.match(journeyAdapter, /location\.pathname === '\/dome-world\/ash-threshold\.html'/);
+assert.match(journeyAdapter, /location\.search === ''/);
 assert.match(bridge, /ash-whole-instrument-pedagogy\.js\?v=20260723-a2-a5-release-v1/);
 assert.match(receipt, /prior asset epoch: 20260721-legal-demo-ux-v1/);
 assert.match(receipt, /replacement asset epoch: 20260723-a2-a5-release-v1/);
@@ -101,7 +93,6 @@ assert.doesNotMatch(closureWorkflow, /\n  workflow_run:/);
 assert.doesNotMatch(closureWorkflow, /github\.event\.workflow_run/);
 assert.match(closureWorkflow, /RUN_DEPLOYED_OBSERVATION/);
 assert.match(closureWorkflow, /inputs\.base_url/);
-
 assert.match(receipt, /new serverless function = false/);
 assert.match(receipt, /active serverless functions = 11/);
 assert.match(receipt, /reserved function capacity = 1/);
