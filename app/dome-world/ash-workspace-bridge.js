@@ -40,6 +40,8 @@ import './ash-post-ingress-motion-restoration.js?v=20260723-a2-a5-release-v1';
 import './ash-whole-instrument-pedagogy.js?v=20260723-a2-a5-release-v1';
 // A6 repairs visible affordances, structural Rest, held explanations, and disclosure bodies without changing the release epoch or Ash authority.
 import './ash-a6-affordance-drawer-repair.js?v=20260723-a2-a5-release-v1';
+// The Rest-specific world answer owns the settled status after generic lesson refresh completes.
+import './ash-a6-rest-world-answer.js?v=20260723-a2-a5-release-v1';
 // One launch-scoped observer plus one delegated boundary preserve explicit profile and saved-case choices across remounts and late option commits without polling.
 import './ash-profile-prompt-canonical.js?v=20260723-a2-a5-release-v1';
 import './ash-composition-receipt-compatibility.js?v=20260723-a2-a5-release-v1';
