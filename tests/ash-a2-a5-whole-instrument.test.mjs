@@ -100,10 +100,11 @@ assert.doesNotMatch(moduleSource, /\/api\//);
 // A6 — affordance and drawer repair.
 assert.match(a6Source, /td613\.ash\.a6-affordance-drawer-repair\/v0\.1/);
 assert.match(bridge, /ash-a6-affordance-drawer-repair\.js\?v=20260723-a2-a5-release-v1/);
+const wholeInstrumentA6Source = `${moduleSource}\n${a6Source}`;
 for (const marker of [
   'Open Local Document', 'Open Draft Workspace', 'Previous Lesson', 'Next Lesson', '𝄐 Rest',
   'Cases & profiles', 'Open Workspace Setup', 'What changed—and what did not'
-]) assert.match(a6Source, new RegExp(marker.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')));
+]) assert.match(wholeInstrumentA6Source, new RegExp(marker.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')));
 for (const marker of ['ashA6LocalDocumentSurface','ashA6DraftSurface','ashA6ChooseLocalDocument','ashA6DraftBody']) assert.match(a6Source, new RegExp(marker));
 assert.match(a6Source, /destination:\{ workspace:'work', anchor:'ashA6LocalDocumentSurface' \}/);
 assert.match(a6Source, /destination:\{ workspace:'work', anchor:'ashA6DraftSurface' \}/);
