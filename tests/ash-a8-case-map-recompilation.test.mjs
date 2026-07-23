@@ -1,6 +1,7 @@
 import assert from 'node:assert/strict';
 import fs from 'node:fs';
 
+const core = fs.readFileSync(new URL('../app/dome-world/ash-a7-a11-recompiler-core.js', import.meta.url), 'utf8');
 const source = fs.readFileSync(new URL('../app/dome-world/ash-a8-case-map-recompilation.js', import.meta.url), 'utf8');
 const bridge = fs.readFileSync(new URL('../app/dome-world/ash-workspace-bridge.js', import.meta.url), 'utf8');
 const handshake = fs.readFileSync(new URL('../scripts/run-ash-constitutional-convergence-handshake.mjs', import.meta.url), 'utf8');
@@ -51,6 +52,18 @@ assert.doesNotMatch(source, /indexedDB\.(?:open|deleteDatabase)/);
 assert.doesNotMatch(source, /fetch\s*\(/);
 assert.doesNotMatch(source, /localStorage\.(?:setItem|removeItem|clear)/);
 assert.doesNotMatch(source, /new\s+(?:Worker|SharedWorker)/);
+
+assert.match(core, /function captureStageDrafts\(\)/);
+assert.match(core, /function restoreStageDrafts\(draft\)/);
+assert.match(core, /\.ash-stage-form input\[id\]/);
+assert.match(core, /const draft = captureStageDrafts\(\)/);
+assert.match(core, /const draftRestored = restoreStageDrafts\(draft\)/);
+assert.match(core, /draft_restored:draftRestored/);
+assert.match(core, /active\.focus\?\.\(\{ preventScroll:true \}\)/);
+assert.doesNotMatch(core, /MutationObserver/);
+assert.doesNotMatch(core, /localStorage\.(?:setItem|removeItem|clear)/);
+assert.doesNotMatch(core, /indexedDB\.(?:open|deleteDatabase)/);
+
 assert.match(bridge, /\.ash-flowcore-field--proxy \[data-aia-exact\]/);
 assert.match(bridge, /removeAttribute\('data-aia-exact'\)/);
 assert.match(handshake, /td613:ash:probe-contention-release:v1/);
@@ -71,6 +84,8 @@ console.log(JSON.stringify({
   existing_map_engine_delegation:true,
   inert_owner_event_delegation:true,
   disabled_owner_respected:true,
+  stage_form_draft_preservation:true,
+  active_edit_focus_preserved:true,
   relation_workshop:true,
   directed_relation_truthful:true,
   notes_change_persistence:true,
