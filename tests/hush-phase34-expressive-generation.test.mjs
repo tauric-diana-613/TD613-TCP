@@ -33,7 +33,7 @@ assert(generated.candidates.every((candidate) => candidate.source === 'phase34-e
 assert(generated.candidates.some((candidate) => /rose bush|rose-bush/i.test(candidate.text)));
 assert(generated.candidates.some((candidate) => /rot latency/i.test(candidate.text)));
 assert(generated.candidates.some((candidate) => /dromological anchors/i.test(candidate.text)));
-assert(generated.candidates.every((candidate) => candidate.operations.includes('phase34-expressive-generation'));
+assert(generated.candidates.every((candidate) => candidate.operations.includes('phase34-expressive-generation')));
 
 const result = buildHushSwap({ sourceText: PHASE32_1_DIAGNOSTIC_SAMPLE, mask, maskProfile: mask.profile, contextType: 'group-chat', operatorMode: 'expressive-theory', exposureDuration: 'single-use', options: { candidateCount: 30, includePrivateText: false, expressiveMode: true } });
 assert(result.version.includes('phase-34-expressive-generation'));
