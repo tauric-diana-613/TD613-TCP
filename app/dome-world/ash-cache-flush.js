@@ -7,7 +7,7 @@ const READINESS_KEY = 'td613:ash-threshold:readiness:v0.1';
 const POINTER_KEY = 'td613.ash-keep.current-case';
 const SESSION_EPOCH_KEY = 'td613.ash.session.epoch';
 const MASS_EVICTION_MARKER_KEYS = ['td613.ash.cache-flush.aia3.epoch', 'td613.ash.cache-preflight.epoch'];
-const MASS_EVICTION_EPOCH = 'td613.ash.cache-flush/2026-07-21-legal-demo-ux-v1';
+const MASS_EVICTION_EPOCH = 'td613.ash.cache-flush/2026-07-23-a2-a5-release-v1';
 const ASSET_EPOCH = '20260718-canonical-membrane-v7-readiness-boundary';
 const EVICTION_ROUTE = '/api/dome-world-shell?surface=cache-evict';
 const LOCAL_HOSTS = new Set(['localhost', '127.0.0.1', '[::1]']);
@@ -115,11 +115,7 @@ function cleanTransitionUrl(host = globalThis) {
 async function requestHttpCacheEviction(host) {
   const hostname = String(host.location?.hostname || '').toLowerCase();
   if (LOCAL_HOSTS.has(hostname)) {
-    return Object.freeze({
-      attempted:false,
-      observed:false,
-      reason:'LOCAL_BOUNDED_RUNTIME_HAS_NO_VERCEL_HEADER_SURFACE'
-    });
+    return Object.freeze({ attempted:false, observed:false, reason:'LOCAL_BOUNDED_RUNTIME_HAS_NO_VERCEL_HEADER_SURFACE' });
   }
   if (typeof host.fetch !== 'function') return Object.freeze({ attempted:false, observed:false, reason:'FETCH_UNAVAILABLE' });
   try {
@@ -128,16 +124,9 @@ async function requestHttpCacheEviction(host) {
     url.searchParams.set('asset_epoch', ASSET_EPOCH);
     url.searchParams.set('nonce', crypto.randomUUID());
     const response = await host.fetch(url, {
-      cache:'no-store',
-      credentials:'same-origin',
-      headers:{ 'Cache-Control':'no-cache, no-store, max-age=0', 'Pragma':'no-cache' }
+      cache:'no-store', credentials:'same-origin', headers:{ 'Cache-Control':'no-cache, no-store, max-age=0', Pragma:'no-cache' }
     });
-    return Object.freeze({
-      attempted:true,
-      observed:response.ok,
-      status:response.status,
-      clear_site_data:response.headers.get('clear-site-data') || 'UNOBSERVED'
-    });
+    return Object.freeze({ attempted:true, observed:response.ok, status:response.status, clear_site_data:response.headers.get('clear-site-data') || 'UNOBSERVED' });
   } catch (error) {
     return Object.freeze({ attempted:true, observed:false, reason:error.message });
   }
@@ -168,17 +157,10 @@ export async function runAshCacheFlush(host = globalThis) {
     if (supersededByMassEviction) writeMarker(host);
     const transition_url_cleaned = cleanTransitionUrl(host);
     const receipt = Object.freeze({
-      schema:'td613.ash.cache-transition-receipt/v0.7-readiness-boundary',
-      epoch:ASH_CACHE_FLUSH_EPOCH,
-      performed:false,
-      reload_required:false,
-      navigation_replaced:false,
-      indexeddb_preserved:true,
-      case_data_preserved:true,
-      active_session_reset:false,
-      superseded_by_mass_eviction:supersededByMassEviction,
-      readiness_receipt_preserved:Boolean(host.sessionStorage?.getItem?.(READINESS_KEY)),
-      transition_url_cleaned
+      schema:'td613.ash.cache-transition-receipt/v0.7-readiness-boundary', epoch:ASH_CACHE_FLUSH_EPOCH,
+      performed:false, reload_required:false, navigation_replaced:false, indexeddb_preserved:true,
+      case_data_preserved:true, active_session_reset:false, superseded_by_mass_eviction:supersededByMassEviction,
+      readiness_receipt_preserved:Boolean(host.sessionStorage?.getItem?.(READINESS_KEY)), transition_url_cleaned
     });
     writeReceipt(receipt, host);
     host.__td613AshCacheTransition = receipt;
@@ -187,39 +169,25 @@ export async function runAshCacheFlush(host = globalThis) {
 
   const sessionReset = resetActiveSession(host);
   const [http_cache, first_cache_names, worker_scopes] = await Promise.all([
-    requestHttpCacheEviction(host),
-    clearCacheStorage(host).catch(() => []),
-    unregisterSameOriginWorkers(host).catch(() => [])
+    requestHttpCacheEviction(host), clearCacheStorage(host).catch(() => []), unregisterSameOriginWorkers(host).catch(() => [])
   ]);
   const second_cache_names = await clearCacheStorage(host).catch(() => []);
   writeMarker(host);
   const transition_url_cleaned = cleanTransitionUrl(host);
 
   const receipt = Object.freeze({
-    schema:'td613.ash.cache-transition-receipt/v0.7-readiness-boundary',
-    epoch:ASH_CACHE_FLUSH_EPOCH,
-    performed:true,
-    reload_required:false,
-    navigation_replaced:false,
-    http_cache,
-    cache_names:[...new Set([...first_cache_names, ...second_cache_names])],
-    worker_scopes,
-    indexeddb_preserved:true,
-    case_data_preserved:true,
-    active_session_reset:true,
-    local_case_pointer_preserved:false,
-    cleared_session_keys:sessionReset.clearedSessionKeys,
+    schema:'td613.ash.cache-transition-receipt/v0.7-readiness-boundary', epoch:ASH_CACHE_FLUSH_EPOCH,
+    performed:true, reload_required:false, navigation_replaced:false, http_cache,
+    cache_names:[...new Set([...first_cache_names, ...second_cache_names])], worker_scopes,
+    indexeddb_preserved:true, case_data_preserved:true, active_session_reset:true,
+    local_case_pointer_preserved:false, cleared_session_keys:sessionReset.clearedSessionKeys,
     preserved_session_keys:sessionReset.preservedSessionKeys,
     readiness_receipt_preserved:sessionReset.preservedSessionKeys.includes(READINESS_KEY),
-    storage_cleared:false,
-    transition_url_cleaned,
-    release_asset_epoch:ASSET_EPOCH
+    storage_cleared:false, transition_url_cleaned, release_asset_epoch:ASSET_EPOCH
   });
   writeReceipt(receipt, host);
   host.__td613AshCacheTransition = receipt;
   return receipt;
 }
 
-if (typeof window !== 'undefined' && typeof document !== 'undefined') {
-  await runAshCacheFlush(window);
-}
+if (typeof window !== 'undefined' && typeof document !== 'undefined') await runAshCacheFlush(window);
