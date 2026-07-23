@@ -44,6 +44,7 @@ on:
       - 'tests/ash-research-ux-rehydration.test.mjs'
       - 'tests/ash-final-rehydration-boundaries.test.mjs'
       - 'scripts/ash-flowcore-live-field-browser-probe.mjs'
+      - 'scripts/run-ash-flowcore-live-field-browser-probe.mjs'
       - 'scripts/ash-ingress-polish-browser-probe.mjs'
       - 'scripts/ash-reviewability-browser-probe.mjs'
       - 'scripts/ash-research-ux-browser-probe.mjs'
@@ -84,6 +85,7 @@ jobs:
           node --check app/dome-world/ash-research-demo-hydration.js
           node --check app/dome-world/ash-research-demo-control-state.js
           node --check scripts/ash-a2-a5-browser-probe.mjs
+          node --check scripts/run-ash-flowcore-live-field-browser-probe.mjs
           node --check scripts/ash-research-ux-browser-probe.mjs
       - name: A2-A5, live field, A1 first paint, reviewability, and Research contracts
         run: |
@@ -141,6 +143,7 @@ jobs:
           node --check scripts/ash-keep-local-closure-server.mjs
           node --check scripts/ash-a2-a5-browser-probe.mjs
           node --check scripts/ash-flowcore-live-field-browser-probe.mjs
+          node --check scripts/run-ash-flowcore-live-field-browser-probe.mjs
           node --check scripts/ash-ingress-polish-browser-probe.mjs
           node --check scripts/ash-reviewability-browser-probe.mjs
           node --check scripts/ash-research-ux-browser-probe.mjs
@@ -183,7 +186,7 @@ jobs:
           TD613_BROWSER: ${{ matrix.browser }}
           TD613_BASE_URL: http://127.0.0.1:6130
           TD613_ARTIFACT_DIR: artifacts/ash-flowcore-field-${{ matrix.browser }}
-        run: timeout --foreground --signal=INT --kill-after=15s 480s node scripts/ash-flowcore-live-field-browser-probe.mjs
+        run: timeout --foreground --signal=INT --kill-after=15s 480s node scripts/run-ash-flowcore-live-field-browser-probe.mjs
       - name: Observe canonical first paint, clean URL, and one field
         env:
           TD613_BROWSER: ${{ matrix.browser }}
