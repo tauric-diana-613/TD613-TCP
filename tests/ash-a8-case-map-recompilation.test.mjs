@@ -21,12 +21,21 @@ for (const marker of [
   'Notes and history',
   'Accessible table',
   'unresolved',
-  'contradiction'
+  'contradiction',
+  'engine has no undirected relation state',
+  'Storage confirmation remains pending',
+  'Stored relationship confirmed'
 ]) assert.ok(source.includes(marker), `A8 source missing ${marker}`);
 
 for (const id of ['objectName','objectType','objectRoom','objectSource','addObject','linkFrom','linkTo','linkType','addRelationship','researchNotes']) assert.ok(source.includes(`'${id}'`), `A8 must delegate to existing ${id}`);
 assert.match(source, /byId\('addObject'\)\?\.click\(\)/);
 assert.match(source, /byId\('addRelationship'\)\?\.click\(\)/);
+assert.match(source, /notes\.dispatchEvent\(new Event\('change'/);
+assert.match(source, /table\.classList\.add\('active'\)/);
+assert.match(source, /data-ash-a8-inspect-relation/);
+assert.match(source, /id="ashA8RelationDetail"/);
+assert.match(source, /root\.addEventListener\('click'/);
+assert.doesNotMatch(source, /ashA8RelationDirection/);
 assert.match(source, /source_bytes_moved:false/);
 assert.match(source, /authority_changed:false/);
 assert.doesNotMatch(source, /indexedDB\.(?:open|deleteDatabase)/);
@@ -43,7 +52,10 @@ console.log(JSON.stringify({
   schema:'td613.ash.a8-case-map-contract/v0.1',
   existing_map_engine_delegation:true,
   relation_workshop:true,
+  directed_relation_truthful:true,
+  notes_change_persistence:true,
   accessible_table:true,
+  stored_relation_detail:true,
   authority_changed:false,
   source_bytes_moved:false,
   human_closure_required:true,
