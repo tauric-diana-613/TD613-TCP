@@ -49,3 +49,42 @@ import './ash-custodian-return-closure.js?v=20260721-legal-demo-ux-v1';
 import './ash-emergency-stability-contract.js?v=20260721-legal-demo-ux-v1';
 // Final presentation authority: manual scroll wins, setup remains actionable, and descenders remain visible.
 import './ash-reviewability-repair.js?v=20260722-reviewability-v1';
+
+const ashBridgeHost = globalThis.window;
+const ashBridgeDocument = globalThis.document;
+let canonicalFieldRecompilationQueued = false;
+
+function reconcileCanonicalConsequenceFieldOwner() {
+  const stage = ashBridgeDocument?.querySelector?.('#ashAiaMembrane [data-aia-stage], #ashAiaMembrane .ash-aia__stage');
+  const canonical = stage?.querySelector?.(':scope > .ash-flowcore-field:not(.ash-flowcore-field--proxy):not([hidden])')
+    || ashBridgeDocument?.querySelector?.('#ashAiaMembrane .ash-flowcore-field:not(.ash-flowcore-field--proxy):not([hidden])');
+  if (!canonical) return false;
+
+  const firstField = stage?.querySelector?.(':scope > .ash-flowcore-field');
+  const reordered = Boolean(stage && firstField && firstField !== canonical);
+  if (reordered) stage.insertBefore(canonical, firstField);
+
+  const play = ashBridgeDocument.querySelector('[data-aia-play]');
+  if (play) {
+    play.textContent = '▶ Play Consequence Field';
+    play.classList.add('ash-whole-instrument-play');
+    play.setAttribute('aria-describedby', 'ashWholeInstrumentStaticTruth');
+    if (play.parentElement !== canonical) canonical.append(play);
+  }
+
+  ashBridgeDocument.documentElement.dataset.ashConsequenceFieldOwner = 'CANONICAL_VISIBLE_FIELD';
+  if (reordered && !canonicalFieldRecompilationQueued) {
+    canonicalFieldRecompilationQueued = true;
+    queueMicrotask(() => {
+      try {
+        ashBridgeHost?.__td613AshWholeInstrument?.refresh?.('CANONICAL_FIELD_OWNER_RECONCILED');
+      } finally {
+        canonicalFieldRecompilationQueued = false;
+      }
+    });
+  }
+  return true;
+}
+
+ashBridgeHost?.addEventListener?.('td613:ash:whole-instrument-refreshed', reconcileCanonicalConsequenceFieldOwner);
+queueMicrotask(reconcileCanonicalConsequenceFieldOwner);
