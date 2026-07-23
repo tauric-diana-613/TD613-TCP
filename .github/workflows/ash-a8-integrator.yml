@@ -1,0 +1,107 @@
+name: Temporary Ash A8 Integrator
+
+on:
+  pull_request:
+    branches: [main]
+    paths:
+      - '.github/workflows/ash-a8-integrator.yml'
+      - 'scripts/apply-ash-a8-case-map-recompilation.mjs'
+      - 'app/dome-world/ash-a8-case-map-recompilation.js'
+      - 'tests/ash-a8-case-map-recompilation.test.mjs'
+      - 'app/dome-world/docs/ASH_KEEP_A8_IMPLEMENTATION_RECEIPT_V0_1.md'
+  workflow_dispatch:
+
+permissions:
+  contents: write
+  pull-requests: read
+
+concurrency:
+  group: temporary-ash-a8-${{ github.event.pull_request.number || github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  integrate:
+    if: github.event_name == 'workflow_dispatch' || startsWith(github.head_ref, 'agent/ash-a8-case-map-recompilation')
+    runs-on: ubuntu-latest
+    timeout-minutes: 42
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: ${{ github.event.pull_request.head.ref || github.ref_name }}
+          fetch-depth: 0
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+      - run: npm ci
+      - name: Apply exact A8 seams
+        run: node scripts/apply-ash-a8-case-map-recompilation.mjs
+      - name: Static contracts
+        run: |
+          mkdir -p artifacts/ash-a8-integrator
+          set +e
+          {
+            node --check api/dome-world-shell.js
+            node --check app/dome-world/ash-a8-case-map-recompilation.js
+            node --check scripts/ash-a7-a11-browser-probe.mjs
+            node tests/ash-a7-home-recompilation.test.mjs
+            node tests/ash-a8-case-map-recompilation.test.mjs
+            node tests/ash-a2-a5-whole-instrument.test.mjs
+            node tests/ash-flowcore-live-field.test.mjs
+            node tests/ash-lifecycle-production-contract.test.mjs
+            node tests/workflow-estate.test.mjs
+          } > artifacts/ash-a8-integrator/static-contracts.log 2>&1
+          status=$?
+          cat artifacts/ash-a8-integrator/static-contracts.log
+          exit "$status"
+      - name: Install Chromium
+        run: |
+          npm install --no-save --package-lock=false playwright@1.53.2
+          npx playwright install --with-deps chromium
+      - name: Start bounded Ash runtime
+        run: |
+          node scripts/ash-keep-local-closure-server.mjs 6130 > artifacts/ash-a8-integrator/server.log 2>&1 &
+          echo $! > artifacts/ash-a8-integrator/server.pid
+          for attempt in $(seq 1 50); do
+            if curl -fsS --max-time 2 http://127.0.0.1:6130/__ash_keep_closure/readiness > artifacts/ash-a8-integrator/readiness.json; then exit 0; fi
+            sleep 1
+          done
+          cat artifacts/ash-a8-integrator/server.log || true
+          exit 1
+      - name: Observe A7 and A8 Chromium
+        env:
+          TD613_BROWSER: chromium
+          TD613_BASE_URL: http://127.0.0.1:6130
+          TD613_ASH_STAGES: A7,A8
+          TD613_ARTIFACT_DIR: artifacts/ash-a8-integrator/browser
+        run: |
+          set +e
+          timeout --foreground --signal=INT --kill-after=15s 480s node scripts/ash-a7-a11-browser-probe.mjs > artifacts/ash-a8-integrator/browser.log 2>&1
+          status=$?
+          cat artifacts/ash-a8-integrator/browser.log
+          exit "$status"
+      - name: Stop bounded runtime
+        if: always()
+        run: test -f artifacts/ash-a8-integrator/server.pid && kill "$(cat artifacts/ash-a8-integrator/server.pid)" || true
+      - name: Preserve A8 evidence
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: ash-a8-integrator-evidence
+          path: artifacts/ash-a8-integrator/
+          retention-days: 45
+          if-no-files-found: warn
+      - name: Verify and commit exact tested A8 packet
+        run: |
+          set -euo pipefail
+          test "$(node -p "require('./vercel.json').git.deploymentEnabled")" = "false"
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add api/dome-world-shell.js app/dome-world/ash-keep.html app/dome-world/ash-keep-source.html app/dome-world/docs/FLOWCORE_PEDAGOGUE_PROGRAM_INDEX_V0_1.md
+          git add -u scripts/apply-ash-a8-case-map-recompilation.mjs
+          staged="$(git diff --cached --name-only)"
+          printf '%s\n' "$staged"
+          test "$staged" = $'api/dome-world-shell.js\napp/dome-world/ash-keep-source.html\napp/dome-world/ash-keep.html\napp/dome-world/docs/FLOWCORE_PEDAGOGUE_PROGRAM_INDEX_V0_1.md\nscripts/apply-ash-a8-case-map-recompilation.mjs'
+          git diff --cached --check
+          git commit -m "Implement Ash A8 Case Map recompilation"
+          git push origin HEAD:${{ github.event.pull_request.head.ref || github.ref_name }}
