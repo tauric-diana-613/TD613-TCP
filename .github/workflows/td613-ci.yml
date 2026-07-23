@@ -61,7 +61,21 @@ jobs:
           node-version: 22
           cache: npm
       - run: npm ci
-      - run: npm run test:dome-world
+      - name: Dome-World art and shell
+        run: npm run test:dome-world:art
+      - name: Dome-World Phase III shared boundary
+        run: npm run test:dome-world:phase3
+      - name: Ash custody and veil contracts
+        run: |
+          node tests/dome-world-ash-custody.test.mjs
+          node tests/dome-world-ash-leak-challenge.test.mjs
+          node tests/dome-world-ash-veil.test.mjs
+          node tests/dome-world-ash-cinder.test.mjs
+          node tests/dome-world-ash-compare.test.mjs
+          node tests/dome-world-ash-recall.test.mjs
+          node tests/dome-world-ash-hcc-grade-gate.test.mjs
+      - name: Ash Keep core contracts
+        run: npm run test:ash-keep
       - name: Ash and Flow-Core retained witnesses
         run: |
           node tests/ash-four-profile-pedagogy.test.mjs
