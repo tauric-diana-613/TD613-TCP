@@ -102,8 +102,12 @@ assert.match(flickerSource, /cancelRunawayAnimations/);
 assert.match(flickerSource, /iterations === Infinity/);
 assert.doesNotMatch(flickerSource, /html\[data-ash-flicker-hardening\] \*,[\s\S]*animation:none!important/);
 
-assert.match(browserProbe, /presentation=aia&profile=legal&nonce=\$\{Date\.now\(\)\}/);
-assert.match(browserProbe, /location\.search\.includes\(`ash_epoch=\$\{epoch\}`\)/);
+assert.match(browserProbe, /\/dome-world\/ash-threshold\.html/);
+assert.match(browserProbe, /location\.pathname === '\/dome-world\/ash-threshold\.html'/);
+assert.match(browserProbe, /location\.search === ''/);
+assert.match(browserProbe, /__td613AshAia3PreflightReceipt\?\.asset_epoch === epoch/);
+assert.match(browserProbe, /__td613AshAia3PreflightReceipt\?\.epoch === cacheEpoch/);
+assert.doesNotMatch(browserProbe, /location\.search\.includes\(`ash_epoch=\$\{epoch\}`\)|presentation=aia&profile=legal/);
 assert.match(browserProbe, /composition\?\.lifecycle_state/);
 assert.match(browserProbe, /composition\?\.route_count >= 4/);
 assert.match(browserProbe, /composition\?\.task_count >= 4/);
@@ -121,8 +125,7 @@ assert.match(browserProbe, /data-premium-workspace="map"/);
 assert.match(browserProbe, /docket\.waitFor\(\{ state:'visible' \}\)/);
 assert(browserProbe.indexOf("docket.waitFor({ state:'attached' })") < browserProbe.indexOf('data-premium-workspace="map"'), 'Legal docket must be attached before Map is opened.');
 assert(browserProbe.indexOf('data-premium-workspace="map"') < browserProbe.indexOf("docket.waitFor({ state:'visible' })"), 'Legal docket visibility must be asserted only after Map opens.');
-assert.doesNotMatch(browserProbe, /waitForTimeout\(900\)/);
-assert.doesNotMatch(browserProbe, /ash-keep\.html\?ash_epoch=20260721-legal-demo-ux-v1/);
+assert.doesNotMatch(browserProbe, /waitForTimeout\(900\)|ash_epoch=/);
 assert.doesNotMatch(rescueSource + legalSource, /transport_authorized:\s*true|legal_advice_provided:\s*true|child_study_authorized:\s*true/);
 
 console.log('ash-legal-ux.test.mjs passed');
