@@ -112,12 +112,14 @@ jobs:
         run: |
           node tests/ash-keep-production-closure-contract.test.mjs
           node tests/ash-lifecycle-production-contract.test.mjs
-      - name: Validate Flow-Core closure surfaces
-        run: |
-          node tests/flowcore-p0-p7-seam-closure.test.mjs
-          node tests/flowcore-p0-p10-completion.test.mjs
-          node tests/flowcore-production-observation.test.mjs
-          node tests/flowcore-runtime-browser-probe.test.mjs
+      - name: Validate Flow-Core P0-P7 seam closure
+        run: node tests/flowcore-p0-p7-seam-closure.test.mjs
+      - name: Validate Flow-Core P0-P10 completion
+        run: node tests/flowcore-p0-p10-completion.test.mjs
+      - name: Validate Flow-Core evidence placement
+        run: node tests/flowcore-production-observation.test.mjs
+      - name: Validate Flow-Core runtime browser contract
+        run: node tests/flowcore-runtime-browser-probe.test.mjs
       - name: Preserve diagnostics only when held
         if: failure()
         uses: actions/upload-artifact@v4
