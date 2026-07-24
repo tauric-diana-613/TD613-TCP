@@ -41,8 +41,14 @@ jobs:
           node tests/ash-a11-predeployment-cache-flush.test.mjs
           node tests/ash-a2-a5-whole-instrument.test.mjs
           node tests/ash-live-ingress-demos-cache.test.mjs
-      - name: Validate Ash Keep component estate
-        run: npm run test:ash-keep
+      - name: Validate Ash Keep core
+        run: node tests/ash-keep-core.test.mjs
+      - name: Validate Ash Keep continuity
+        run: node tests/ash-keep-continuity.test.mjs
+      - name: Validate Ash Keep Hush API
+        run: node tests/ash-keep-hush-api.test.mjs
+      - name: Validate Ash Keep UI
+        run: node tests/ash-keep-ui.test.mjs
       - name: Validate lifecycle component
         run: node tests/ash-lifecycle.test.mjs
       - name: Validate draft lifecycle binding
