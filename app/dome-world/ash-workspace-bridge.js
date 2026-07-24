@@ -17,11 +17,8 @@ import './ash-keep-mobile-composition.js?v=20260724-a12-release-v1';
 import './ash-mobile-constitutional-closure.js?v=20260724-a12-release-v1';
 import './ash-operation-coordinator.js?v=20260724-a12-release-v1';
 import './ash-case-feedback.js?v=20260724-a12-release-v1';
-import './ash-profile-demo-hydration.js?v=20260724-a12-release-v1';
-import './ash-investigation-demo-hydration.js?v=20260724-a12-release-v1';
-import './ash-research-demo-hydration.js?v=20260724-a12-release-v1';
-import './ash-research-demo-control-state.js?v=20260724-a12-release-v1';
-import './ash-legal-demo-control-state.js?v=20260724-a12-release-v1';
+// A13 installs one demo registry before dynamically admitting the bounded fixture owners beneath it.
+import './ash-profile-demo-hydration.js?v=20260724-a13-release-v1';
 import './ash-premium-ui.js?v=20260724-a12-release-v1';
 import './ash-premium-readiness-bridge.js?v=20260724-a12-release-v1';
 import './ash-guided-operator-ui.js?v=20260724-a12-release-v1';
@@ -138,4 +135,3 @@ ashBridgeHost?.addEventListener?.('td613:ash:whole-instrument-refreshed', reconc
 for (const type of ['flowcore-portal-synced','case-opened','case-created','case-closed']) {
   ashBridgeHost?.addEventListener?.(`td613:ash:${type}`, () => queueMicrotask(reconcileCanonicalConsequenceFieldOwner));
 }
-queueMicrotask(reconcileCanonicalConsequenceFieldOwner);
