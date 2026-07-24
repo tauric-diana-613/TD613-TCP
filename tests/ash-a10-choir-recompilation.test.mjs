@@ -5,7 +5,8 @@ const core = fs.readFileSync(new URL('../app/dome-world/ash-a7-a11-recompiler-co
 const source = fs.readFileSync(new URL('../app/dome-world/ash-a10-choir-recompilation.js', import.meta.url), 'utf8');
 const premium = fs.readFileSync(new URL('../app/dome-world/ash-premium-ui.js', import.meta.url), 'utf8');
 const probe = fs.readFileSync(new URL('../scripts/ash-a7-a11-browser-probe.mjs', import.meta.url), 'utf8');
-const workflow = fs.readFileSync(new URL('../.github/workflows/ash-flowcore-live-field.yml', import.meta.url), 'utf8');
+const contractRunner = fs.readFileSync(new URL('../scripts/run-td613-consolidated-contracts-worker.mjs', import.meta.url), 'utf8');
+const browserClosure = fs.readFileSync(new URL('../scripts/run-td613-full-browser-closure.mjs', import.meta.url), 'utf8');
 const receipt = fs.readFileSync(new URL('../app/dome-world/docs/ASH_KEEP_A10_IMPLEMENTATION_RECEIPT_V0_1.md', import.meta.url), 'utf8');
 const vercel = JSON.parse(fs.readFileSync(new URL('../vercel.json', import.meta.url), 'utf8'));
 const RELEASE_EPOCH = '20260724-a12-release-v1';
@@ -86,11 +87,10 @@ assert.match(probe, /#ashA10ChoirOrientation/);
 for (const marker of ['what appears only in combination','Shared','Pair-emergent','Contradictory','Missing','Unresolved','Can a Reader reconstruct what should remain hidden?']) {
   assert.ok(probe.includes(`'${marker}'`), `A10 browser witness missing ${marker}`);
 }
-for (const marker of [
-  "'app/dome-world/ash-a10-choir-recompilation.js'","'app/dome-world/docs/ASH_KEEP_A10_IMPLEMENTATION_RECEIPT_V0_1.md'",
-  "'tests/ash-a10-choir-recompilation.test.mjs'",'node --check app/dome-world/ash-a10-choir-recompilation.js',
-  'node tests/ash-a10-choir-recompilation.test.mjs','TD613_ASH_STAGES: A7,A8,A9,A10'
-]) assert.ok(workflow.includes(marker), `A10 workflow missing ${marker}`);
+assert.match(contractRunner, /tests\/ash-a10-choir-recompilation\.test\.mjs/);
+assert.match(browserClosure, /scripts\/ash-a7-a11-browser-probe\.mjs/);
+assert.match(browserClosure, /TD613_ASH_STAGES/);
+assert.match(browserClosure, /A7,A8,A9,A10,A11/);
 for (const marker of ['Choir and Rebuild Test recompilation','singleton-first','Shared','Pair-emergent','Contradictory','Missing','Unresolved','human interpretation required: true','human closure required: true']) {
   assert.ok(receipt.includes(marker), `A10 receipt missing ${marker}`);
 }
