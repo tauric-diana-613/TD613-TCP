@@ -73,10 +73,12 @@ assert.doesNotMatch(bridgeSource, /^import .*ash-research-demo-control-state\.js
 assert.doesNotMatch(bridgeSource, /^import .*ash-legal-demo-control-state\.js/m);
 
 assert.match(workflowSource, /TD613 Consolidated Validation/);
+assert.match(workflowSource, /types:\s*\[opened, synchronize, reopened, ready_for_review\]/);
 assert.match(workflowSource, /One exact-head Chromium Firefox WebKit witness/);
-assert.match(workflowSource, /if: github\.event_name == 'workflow_dispatch' && inputs\.mode == 'full-browser'/);
+assert.match(workflowSource, /github\.event_name == 'workflow_dispatch' && inputs\.mode == 'full-browser'/);
+assert.match(workflowSource, /github\.event_name == 'pull_request' && github\.event\.action == 'ready_for_review'/);
 assert.match(workflowSource, /ash-a13-demo-registry-browser-probe\.mjs/);
-assert.doesNotMatch(workflowSource, /if: github\.event_name == 'pull_request' \|\|/);
+assert.doesNotMatch(workflowSource, /github\.event\.action == 'synchronize'[\s\S]*playwright install/);
 assert.match(estateSource, /exactly four durable authority surfaces/);
 
 console.log('ash-a13-unified-demo-registry.test.mjs passed');
