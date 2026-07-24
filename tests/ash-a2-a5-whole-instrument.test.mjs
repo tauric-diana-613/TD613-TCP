@@ -14,7 +14,9 @@ const recovery = read('app/safe-harbor/ash-keep-recovery.html');
 const shell = read('api/dome-world-shell.js');
 const journeyAdapter = read('scripts/ash-keep-aia3-task-journey-v3.mjs');
 const journeySource = read('scripts/ash-keep-aia3-task-journey-v3.source.mjs');
-const closureWorkflow = read('.github/workflows/ash-keep-production-closure.yml');
+const consolidatedWorkflow = read('.github/workflows/td613-ci.yml');
+const browserClosure = read('scripts/run-td613-full-browser-closure.mjs');
+const releaseWorkflow = read('.github/workflows/vercel-operator-release.yml');
 const receipt = read('app/dome-world/docs/ASH_KEEP_A2_A5_IMPLEMENTATION_RECEIPT_V0_1.md');
 const programIndex = read('app/dome-world/docs/FLOWCORE_PEDAGOGUE_PROGRAM_INDEX_V0_1.md');
 
@@ -68,7 +70,6 @@ const historicalCacheEpoch = 'td613.ash.cache-flush/2026-07-23-a2-a5-release-v1'
 const currentAssetEpoch = '20260724-a12-release-v1';
 const currentCacheEpoch = 'td613.ash.cache-flush/2026-07-24-a11-postclosure-v1';
 
-// A2–A5 remains preserved as authored provenance while the live delivery graph lawfully advances at A11 postclosure.
 for (const [name, source] of [
   ['shell',shell], ['lifecycle',lifecycle], ['workspace bridge',bridge],
   ['cache eviction',eviction], ['recovery bridge',recovery]
@@ -93,16 +94,18 @@ assert.match(receipt, /replacement cache epoch: td613\.ash\.cache-flush\/2026-07
 assert.match(programIndex, /Ash A2–A5/);
 assert.match(programIndex, /20260723-a2-a5-release-v1/);
 
-assert.doesNotMatch(closureWorkflow, /\n  workflow_run:/);
-assert.doesNotMatch(closureWorkflow, /github\.event\.workflow_run/);
-assert.match(closureWorkflow, /RUN_DEPLOYED_OBSERVATION/);
-assert.match(closureWorkflow, /inputs\.base_url/);
+assert.match(consolidatedWorkflow, /\/td613-full-browser-closure /);
+assert.match(consolidatedWorkflow, /run-td613-full-browser-closure\.mjs/);
+assert.doesNotMatch(consolidatedWorkflow, /^\s{2}push:\s*$/m);
+assert.match(browserClosure, /run-ash-keep-a1-production-probe\.mjs/);
+assert.match(browserClosure, /run-ash-constitutional-convergence-handshake\.mjs/);
+assert.match(releaseWorkflow, /Observe deployed Ash lifecycle/);
+assert.match(releaseWorkflow, /deployment_count = 1/);
 assert.match(receipt, /new serverless function = false/);
 assert.match(receipt, /active serverless functions = 11/);
 assert.match(receipt, /reserved function capacity = 1/);
 assert.doesNotMatch(moduleSource, /\/api\//);
 
-// A6 — affordance and drawer repair.
 assert.match(a6Source, /td613\.ash\.a6-affordance-drawer-repair\/v0\.1/);
 assert.match(bridge, /ash-a6-affordance-drawer-repair\.js\?v=20260724-a12-release-v1/);
 const wholeInstrumentA6Source = `${moduleSource}\n${a6Source}`;
