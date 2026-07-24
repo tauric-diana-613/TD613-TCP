@@ -90,7 +90,9 @@ try {
   const desktop = await browser.newContext({ viewport:{ width:1280, height:900 } });
   receipts.push({ mode:'desktop', ...(await inspect(await desktop.newPage(), 'desktop')) });
   await desktop.close();
-  const mobile = await browser.newContext({ viewport:{ width:390, height:844 }, reducedMotion:'reduce', isMobile:true, hasTouch:true });
+  const mobileOptions = { viewport:{ width:390, height:844 }, reducedMotion:'reduce' };
+  if (browserName !== 'firefox') Object.assign(mobileOptions, { isMobile:true, hasTouch:true });
+  const mobile = await browser.newContext(mobileOptions);
   receipts.push({ mode:'mobile-reduced-motion', ...(await inspect(await mobile.newPage(), 'mobile-reduced-motion')) });
   await mobile.close();
   await fs.writeFile(path.join(artifactDir, browserName + '-a12-receipt.json'), JSON.stringify({ schema:'td613.ash.a12-browser-witness/v0.2', browser:browserName, receipts, authority_changed:false, source_bytes_moved:false, case_data_preserved:true, profile_inferred:false, human_closure_required:true }, null, 2));
