@@ -1,5 +1,7 @@
 export const ASH_AIA3_CACHE_EPOCH = 'td613.ash.cache-flush/2026-07-23-a2-a5-release-v1';
 export const ASH_AIA3_ASSET_EPOCH = '20260723-a2-a5-release-v1';
+export const ASH_A11_PREFLIGHT_CACHE_EPOCH = 'td613.ash.cache-flush/2026-07-24-a11-predeployment-v1';
+export const ASH_A11_PREFLIGHT_ASSET_EPOCH = '20260724-a11-predeployment-v1';
 export const ASH_LEGACY_CACHE_EPOCH = 'td613.ash.cache-flush/2026-07-18-canonical-membrane-v7';
 const MARKER_KEY = 'td613.ash.cache-flush.aia3.epoch';
 const PREFLIGHT_MARKER_KEY = 'td613.ash.cache-preflight.epoch';
@@ -16,10 +18,10 @@ function readMarker(host) {
   } catch { return null; }
 }
 
-function writeMarker(host) {
+function writeMarker(host, epoch = ASH_AIA3_CACHE_EPOCH) {
   try {
-    host.localStorage?.setItem?.(MARKER_KEY, ASH_AIA3_CACHE_EPOCH);
-    host.localStorage?.setItem?.(PREFLIGHT_MARKER_KEY, ASH_AIA3_CACHE_EPOCH);
+    host.localStorage?.setItem?.(MARKER_KEY, epoch);
+    host.localStorage?.setItem?.(PREFLIGHT_MARKER_KEY, epoch);
     host.localStorage?.setItem?.(LEGACY_MARKER_KEY, ASH_LEGACY_CACHE_EPOCH);
   } catch {}
 }
@@ -75,12 +77,18 @@ async function requestHttpEviction(host) {
 export async function runAshAia3CacheEviction(host = globalThis) {
   const pointerBefore = (() => { try { return host.localStorage?.getItem?.(POINTER_KEY) || null; } catch { return null; } })();
   const sessionBefore = (() => { try { return host.localStorage?.getItem?.(SESSION_KEY) || null; } catch { return null; } })();
-  if (!host?.location || readMarker(host) === ASH_AIA3_CACHE_EPOCH) {
-    writeMarker(host);
+  const observedEpoch = readMarker(host);
+  const a11PreflightCurrent = observedEpoch === ASH_A11_PREFLIGHT_CACHE_EPOCH;
+  const a2A5Current = observedEpoch === ASH_AIA3_CACHE_EPOCH;
+  if (!host?.location || a11PreflightCurrent || a2A5Current) {
+    const admittedEpoch = a11PreflightCurrent ? ASH_A11_PREFLIGHT_CACHE_EPOCH : ASH_AIA3_CACHE_EPOCH;
+    const admittedAssetEpoch = a11PreflightCurrent ? ASH_A11_PREFLIGHT_ASSET_EPOCH : ASH_AIA3_ASSET_EPOCH;
+    writeMarker(host, admittedEpoch);
     const receipt = Object.freeze({
       schema:'td613.ash.cache-transition-receipt/v0.9-aia3-mass-eviction',
-      epoch:ASH_AIA3_CACHE_EPOCH,
-      asset_epoch:ASH_AIA3_ASSET_EPOCH,
+      epoch:admittedEpoch,
+      asset_epoch:admittedAssetEpoch,
+      a11_predeployment_preflight_current:a11PreflightCurrent,
       legacy_reset_suppressed:true,
       performed:false,
       indexeddb_preserved:true,
@@ -101,7 +109,7 @@ export async function runAshAia3CacheEviction(host = globalThis) {
     unregisterWorkers(host).catch(() => [])
   ]);
   const secondNames = await clearCacheStorage(host).catch(() => []);
-  writeMarker(host);
+  writeMarker(host, ASH_AIA3_CACHE_EPOCH);
 
   const pointerAfter = (() => { try { return host.localStorage?.getItem?.(POINTER_KEY) || null; } catch { return null; } })();
   const sessionAfter = (() => { try { return host.localStorage?.getItem?.(SESSION_KEY) || null; } catch { return null; } })();
@@ -109,6 +117,7 @@ export async function runAshAia3CacheEviction(host = globalThis) {
     schema:'td613.ash.cache-transition-receipt/v0.9-aia3-mass-eviction',
     epoch:ASH_AIA3_CACHE_EPOCH,
     asset_epoch:ASH_AIA3_ASSET_EPOCH,
+    a11_predeployment_preflight_current:false,
     legacy_reset_suppressed:true,
     performed:true,
     http_cache,

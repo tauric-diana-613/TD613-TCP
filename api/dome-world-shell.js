@@ -2,19 +2,21 @@ import fs from 'node:fs';
 import path from 'node:path';
 import { stabilizeAshKeepSource } from '../app/dome-world/ash-keep-delivery-transform.js';
 
-export const DOME_WORLD_SHELL_VERSION = 'td613.dome-world.shell/v1.7-ash-first-paint';
+export const DOME_WORLD_SHELL_VERSION = 'td613.dome-world.shell/v1.8-a11-predeployment-cache';
 export const MARROWLINE_LAB_ROUTE = '/dome-world/marrowline.html';
 export const ASH_THRESHOLD_ROUTE = '/dome-world/ash-threshold.html';
 export const ASH_LIFECYCLE_SHELL_CONTRACT = 'td613.ash.lifecycle-shell/v0.1';
-export const ASH_KEEP_SHELL_VERSION = 'td613.ash-keep.shell/v0.6-first-paint';
+export const ASH_KEEP_SHELL_VERSION = 'td613.ash-keep.shell/v0.7-a11-predeployment-cache';
 export const ASH_KEEP_JS_SHELL_VERSION = 'td613.ash-keep.js-shell/v0.5-event-driven-map';
-export const ASH_CACHE_TRANSITION_CONTRACT = 'td613.ash.cache-transition/v0.6-first-paint';
+export const ASH_CACHE_TRANSITION_CONTRACT = 'td613.ash.cache-transition/v0.7-a11-predeployment';
 export const ASH_LIFECYCLE_ASSET_EPOCH = '20260723-a2-a5-release-v1';
 export const ASH_LIFECYCLE_SOURCE_MODULE = '/dome-world/ash-lifecycle.js';
 export const ASH_LIFECYCLE_MODULE = `${ASH_LIFECYCLE_SOURCE_MODULE}?v=${ASH_LIFECYCLE_ASSET_EPOCH}`;
 export const ASH_WORKSPACE_BRIDGE_MODULE = '/dome-world/ash-workspace-bridge.js';
 export const ASH_CANONICAL_MEMBRANE_EPOCH = '20260718-canonical-membrane-v6';
 export const ASH_MASS_EVICTION_EPOCH = 'td613.ash.cache-flush/2026-07-23-a2-a5-release-v1';
+export const ASH_A11_PREFLIGHT_ASSET_EPOCH = '20260724-a11-predeployment-v1';
+export const ASH_A11_PREFLIGHT_EVICTION_EPOCH = 'td613.ash.cache-flush/2026-07-24-a11-predeployment-v1';
 
 const DOME_SOURCE_PATH = path.join(process.cwd(), 'app', 'dome-world', 'index.html');
 const ASH_KEEP_SOURCE_PATH = path.join(process.cwd(), 'app', 'dome-world', 'ash-keep.html');
@@ -53,8 +55,8 @@ function cachePreflightBoot() {
     const incoming=new URL(location.href);
     const legacyPresentation=incoming.searchParams.get('presentation')==='legacy';
     const canonicalPath=${JSON.stringify(ASH_THRESHOLD_ROUTE)};
-    const epoch=${JSON.stringify(ASH_MASS_EVICTION_EPOCH)};
-    const assetEpoch=${JSON.stringify(ASH_LIFECYCLE_ASSET_EPOCH)};
+    const epoch=${JSON.stringify(ASH_A11_PREFLIGHT_EVICTION_EPOCH)};
+    const assetEpoch=${JSON.stringify(ASH_A11_PREFLIGHT_ASSET_EPOCH)};
     const canonicalSessionEpoch=${JSON.stringify(ASH_CANONICAL_MEMBRANE_EPOCH)};
     const moduleMarkerKey='td613.ash.cache-flush.aia3.epoch';
     const preflightMarkerKey='td613.ash.cache-preflight.epoch';
@@ -87,13 +89,13 @@ function cachePreflightBoot() {
       try{moduleMarker=localStorage.getItem(moduleMarkerKey);preflightMarker=localStorage.getItem(preflightMarkerKey)}catch{}
       const current=moduleMarker===epoch||preflightMarker===epoch;
       if(legacyPresentation){
-        const receipt=publish({schema:'td613.ash.cache-preflight-receipt/v0.3',epoch,asset_epoch:assetEpoch,performed:false,legacy_bypass:true,indexeddb_preserved:true,case_data_preserved:true,active_session_reset:false,local_case_pointer_preserved:true,session_epoch_preserved_or_migrated:true,visible_url:canonicalPath});
+        const receipt=publish({schema:'td613.ash.cache-preflight-receipt/v0.4-a11-predeployment',epoch,asset_epoch:assetEpoch,performed:false,legacy_bypass:true,indexeddb_preserved:true,case_data_preserved:true,active_session_reset:false,local_case_pointer_preserved:true,session_epoch_preserved_or_migrated:true,visible_url:canonicalPath});
         document.documentElement.dataset.ashCachePreflight='complete';
         return receipt;
       }
       if(current&&!controllerPresent){
         try{localStorage.setItem(moduleMarkerKey,epoch);localStorage.setItem(preflightMarkerKey,epoch)}catch{}
-        let receipt={schema:'td613.ash.cache-preflight-receipt/v0.3',epoch,asset_epoch:assetEpoch,performed:false,indexeddb_preserved:true,case_data_preserved:true,active_session_reset:false,local_case_pointer_preserved:true,session_epoch_preserved_or_migrated:true,visible_url:canonicalPath};
+        let receipt={schema:'td613.ash.cache-preflight-receipt/v0.4-a11-predeployment',epoch,asset_epoch:assetEpoch,performed:false,indexeddb_preserved:true,case_data_preserved:true,active_session_reset:false,local_case_pointer_preserved:true,session_epoch_preserved_or_migrated:true,visible_url:canonicalPath};
         try{receipt=JSON.parse(sessionStorage.getItem(receiptKey)||'null')||receipt}catch{}
         publish(receipt);
         document.documentElement.dataset.ashCachePreflight='complete';
@@ -118,7 +120,7 @@ function cachePreflightBoot() {
         if(pointer&&sessionBefore!==canonicalSessionEpoch){localStorage.setItem(sessionKey,canonicalSessionEpoch);sessionMigrated=true}
       }catch{}
       const receipt=publish({
-        schema:'td613.ash.cache-preflight-receipt/v0.3',epoch,asset_epoch:assetEpoch,performed:true,http_cache:http,
+        schema:'td613.ash.cache-preflight-receipt/v0.4-a11-predeployment',epoch,asset_epoch:assetEpoch,performed:true,http_cache:http,
         cache_names:cleared,worker_scopes:workers,indexeddb_preserved:true,case_data_preserved:true,active_session_reset:false,
         controller_present_before_eviction:controllerPresent,cross_scope_recovery_required:controllerPresent,
         local_case_pointer_preserved:(()=>{try{return localStorage.getItem(pointerKey)===pointer}catch{return false}})(),
@@ -158,7 +160,7 @@ function canonicalAshBoot() {
     const moduleMarkerKey='td613.ash.cache-flush.aia3.epoch';
     const preflightMarkerKey='td613.ash.cache-preflight.epoch';
     const epoch=${JSON.stringify(ASH_CANONICAL_MEMBRANE_EPOCH)};
-    const massEpoch=${JSON.stringify(ASH_MASS_EVICTION_EPOCH)};
+    const massEpoch=${JSON.stringify(ASH_A11_PREFLIGHT_EVICTION_EPOCH)};
     const pointer=localStorage.getItem(pointerKey);
     const massCurrent=localStorage.getItem(moduleMarkerKey)===massEpoch||localStorage.getItem(preflightMarkerKey)===massEpoch;
     if(pointer&&massCurrent&&localStorage.getItem(sessionKey)!==epoch){localStorage.setItem(sessionKey,epoch);document.documentElement.dataset.ashSessionMigrated='true'}
@@ -186,7 +188,7 @@ function canonicalModuleBootstrap() {
     for(const moduleUrl of modules){await import(moduleUrl)}
     document.documentElement.dataset.ashModuleGraph='ready';
     document.documentElement.dataset.ashCachePreflight='complete';
-    globalThis.dispatchEvent(new CustomEvent('td613:ash:canonical-module-graph-ready',{detail:{schema:'td613.ash.canonical-module-graph/v0.1',module_count:modules.length,asset_epoch:${JSON.stringify(ASH_LIFECYCLE_ASSET_EPOCH)},preflight_performed:Boolean(receipt?.performed)}}));
+    globalThis.dispatchEvent(new CustomEvent('td613:ash:canonical-module-graph-ready',{detail:{schema:'td613.ash.canonical-module-graph/v0.1',module_count:modules.length,asset_epoch:${JSON.stringify(ASH_LIFECYCLE_ASSET_EPOCH)},preflight_asset_epoch:${JSON.stringify(ASH_A11_PREFLIGHT_ASSET_EPOCH)},preflight_performed:Boolean(receipt?.performed)}}));
   </script>`;
 }
 
@@ -311,13 +313,15 @@ function send(res, status, body = '', definition = surfaceDefinition('dome-world
   res.setHeader('X-TD613-Ash-Lifecycle-Asset', ASH_LIFECYCLE_ASSET_EPOCH);
   res.setHeader('X-TD613-Ash-Canonical-Membrane', ASH_CANONICAL_MEMBRANE_EPOCH);
   res.setHeader('X-TD613-Ash-Cache-Preflight', ASH_MASS_EVICTION_EPOCH);
+  res.setHeader('X-TD613-Ash-A11-Preflight-Asset', ASH_A11_PREFLIGHT_ASSET_EPOCH);
+  res.setHeader('X-TD613-Ash-A11-Cache-Preflight', ASH_A11_PREFLIGHT_EVICTION_EPOCH);
   res.end(body);
 }
 
 function sendCacheEviction(res, method) {
   const body = JSON.stringify({
     ok:true,
-    schema:'td613.ash.cache-transition-response/v0.6-first-paint',
+    schema:'td613.ash.cache-transition-response/v0.7-a11-predeployment',
     scope:'HTTP_CACHE_AND_SERVICE_WORKER_CLIENT_EVICTION',
     indexeddb_preserved:true,
     case_data_preserved:true,
@@ -326,7 +330,9 @@ function sendCacheEviction(res, method) {
     visible_url:ASH_THRESHOLD_ROUTE,
     contract:ASH_CACHE_TRANSITION_CONTRACT,
     lifecycle_asset_epoch:ASH_LIFECYCLE_ASSET_EPOCH,
-    mass_eviction_epoch:ASH_MASS_EVICTION_EPOCH
+    mass_eviction_epoch:ASH_MASS_EVICTION_EPOCH,
+    a11_preflight_asset_epoch:ASH_A11_PREFLIGHT_ASSET_EPOCH,
+    a11_preflight_eviction_epoch:ASH_A11_PREFLIGHT_EVICTION_EPOCH
   });
   res.statusCode = 200;
   res.setHeader('Content-Type', 'application/json; charset=utf-8');
@@ -340,6 +346,8 @@ function sendCacheEviction(res, method) {
   res.setHeader('X-TD613-Ash-Lifecycle-Asset', ASH_LIFECYCLE_ASSET_EPOCH);
   res.setHeader('X-TD613-Ash-Canonical-Membrane', ASH_CANONICAL_MEMBRANE_EPOCH);
   res.setHeader('X-TD613-Ash-Cache-Preflight', ASH_MASS_EVICTION_EPOCH);
+  res.setHeader('X-TD613-Ash-A11-Preflight-Asset', ASH_A11_PREFLIGHT_ASSET_EPOCH);
+  res.setHeader('X-TD613-Ash-A11-Cache-Preflight', ASH_A11_PREFLIGHT_EVICTION_EPOCH);
   res.end(method === 'HEAD' ? '' : body);
 }
 
