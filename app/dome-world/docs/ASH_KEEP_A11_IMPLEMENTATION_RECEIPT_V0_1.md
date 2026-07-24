@@ -8,7 +8,7 @@
 **Program:** `td613.ash.whole-instrument-pedagogical-recompilation/v0.1`  
 **Stage:** A11 — Capsule, Save Point, and destination-handoff recompilation  
 **Implementation identity:** `td613.ash.a11-capsule-recompilation/v0.1`  
-**Status:** IMPLEMENTED / TEST-GATED / HUMAN-CLOSURE REQUIRED  
+**Status:** IMPLEMENTED / POSTCLOSURE CACHE EPOCH APPLIED / TEST-GATED / HUMAN-CLOSURE REQUIRED  
 **Deployment authority:** BOUNDED OPERATOR AUTHORIZATION RECEIVED FOR THIS LEG  
 **Serverless-function allocation:** 0  
 **Process posture:** containment on / mirror logic off
@@ -128,17 +128,26 @@ human closure required: true
 
 ## 7. Cache and deployment posture
 
-The one reserved postclosure graph-wide cache eviction remains required immediately before A11 production deployment. Its source mutation must:
+The one reserved postclosure graph-wide cache eviction has been applied as the final runtime source mutation before A11 production deployment.
 
-- advance the browser delivery epoch exactly once;
-- evict CacheStorage and same-origin worker delivery surfaces;
-- preserve IndexedDB;
-- preserve the active local case pointer;
-- preserve the session epoch;
-- preserve all custody and case data;
-- avoid creating a second deployment attempt.
+```text
+asset epoch: 20260724-a11-postclosure-v1
+cache epoch: td613.ash.cache-flush/2026-07-24-a11-postclosure-v1
+browser delivery epoch advances: exactly once
+CacheStorage eviction: enabled
+same-origin worker unregistration: enabled
+HTTP cache eviction request: enabled
+IndexedDB preserved: true
+active local case pointer preserved: true
+session epoch preserved or lawfully migrated: true
+custody and case data preserved: true
+active session reset: false
+second deployment attempt created: false
+```
 
-The Vercel Git auto-deployment lock remains closed during implementation, review, and merge. The already-authorized bounded release gesture may open one deployment aperture only after the exact A11 merge commit is green and the reserved cache-eviction commit is included.
+The epoch is carried through the canonical shell, lifecycle graph, workspace import spine, profile graph, A7–A11 recompiler imports, and cross-scope recovery bridge. Tests and documentation may still be reconciled after this receipt; runtime source remains sealed unless a genuine browser or constitutional closure defect is observed.
+
+The Vercel Git auto-deployment lock remains closed during implementation, review, and merge. The already-authorized bounded release gesture may open one deployment aperture only after the exact A11 merge commit is green and includes this postclosure epoch.
 
 ---
 
@@ -157,6 +166,6 @@ A11 reaches implementation exit when a novice-facing surface makes these distinc
 9. proof limits;
 10. human closure.
 
-**A11 implementation posture:** AUTHORED / SOURCE-BOUND / CACHE-EVICTION RESERVED / TEST-PENDING / HUMAN-GATED  
+**A11 implementation posture:** AUTHORED / SOURCE-BOUND / CACHE-EVICTION APPLIED / EXACT-HEAD TESTING / HUMAN-GATED  
 
 Sealed ⟐
