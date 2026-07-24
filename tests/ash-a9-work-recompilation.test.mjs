@@ -4,7 +4,8 @@ import fs from 'node:fs';
 const core = fs.readFileSync(new URL('../app/dome-world/ash-a7-a11-recompiler-core.js', import.meta.url), 'utf8');
 const source = fs.readFileSync(new URL('../app/dome-world/ash-a9-work-recompilation.js', import.meta.url), 'utf8');
 const probe = fs.readFileSync(new URL('../scripts/ash-a7-a11-browser-probe.mjs', import.meta.url), 'utf8');
-const workflow = fs.readFileSync(new URL('../.github/workflows/ash-flowcore-live-field.yml', import.meta.url), 'utf8');
+const contractRunner = fs.readFileSync(new URL('../scripts/run-td613-consolidated-contracts-worker.mjs', import.meta.url), 'utf8');
+const browserClosure = fs.readFileSync(new URL('../scripts/run-td613-full-browser-closure.mjs', import.meta.url), 'utf8');
 const receipt = fs.readFileSync(new URL('../app/dome-world/docs/ASH_KEEP_A9_IMPLEMENTATION_RECEIPT_V0_1.md', import.meta.url), 'utf8');
 const vercel = JSON.parse(fs.readFileSync(new URL('../vercel.json', import.meta.url), 'utf8'));
 const RELEASE_EPOCH = '20260724-a12-release-v1';
@@ -63,11 +64,10 @@ assert.doesNotMatch(core, /ash_epoch/);
 assert.match(probe, /if \(stage === 'A9'\)/);
 assert.match(probe, /ashA9WorkRecompilation/);
 assert.match(probe, /'Do now','Prepare','Waiting \/ held','Completed \/ receipted','Human approval'/);
-for (const marker of [
-  "'app/dome-world/ash-a9-work-recompilation.js'","'app/dome-world/docs/ASH_KEEP_A9_IMPLEMENTATION_RECEIPT_V0_1.md'",
-  "'tests/ash-a9-work-recompilation.test.mjs'",'node --check app/dome-world/ash-a9-work-recompilation.js',
-  'node tests/ash-a9-work-recompilation.test.mjs','TD613_ASH_STAGES: A7,A8,A9'
-]) assert.ok(workflow.includes(marker), `A9 workflow missing ${marker}`);
+assert.match(contractRunner, /tests\/ash-a9-work-recompilation\.test\.mjs/);
+assert.match(browserClosure, /scripts\/ash-a7-a11-browser-probe\.mjs/);
+assert.match(browserClosure, /TD613_ASH_STAGES/);
+assert.match(browserClosure, /A7,A8,A9,A10,A11/);
 for (const marker of ['Work recompilation','human intention','Do now','Prepare','Waiting / held','Completed / receipted','Hush integration','human closure required: true']) {
   assert.ok(receipt.includes(marker), `A9 receipt missing ${marker}`);
 }
