@@ -7,7 +7,7 @@ const workflows = readdirSync(workflowDir)
   .filter((name) => /\.ya?ml$/i.test(name))
   .sort();
 
-const MAX_DURABLE_WORKFLOWS = 8;
+const MAX_DURABLE_WORKFLOWS = 9;
 assert.ok(
   workflows.length <= MAX_DURABLE_WORKFLOWS,
   `Workflow estate expanded to ${workflows.length}; durable ceiling is ${MAX_DURABLE_WORKFLOWS}. Move stage checks into tests, scripts, or jobs inside an existing workflow.`,
@@ -18,6 +18,7 @@ const required = [
   'tcp-smoke.yml',
   'td613-ci.yml',
   'ash-flowcore-live-field.yml',
+  'calibration.yml',
   'dome-world-phase4.yml',
   'vercel-deployment-law.yml',
   'vercel-operator-release.yml',
@@ -48,6 +49,10 @@ for (const name of workflows) {
 const core = readFileSync(join(workflowDir, 'td613-ci.yml'), 'utf8');
 assert.match(core, /concurrency:/, 'td613-ci.yml must cancel superseded runs');
 assert.match(core, /cancel-in-progress:\s*true/, 'td613-ci.yml must cancel superseded runs');
+
+const calibration = readFileSync(join(workflowDir, 'calibration.yml'), 'utf8');
+assert.match(calibration, /workflow_dispatch:/, 'Calibration must remain manual.');
+assert.match(calibration, /runs-on:\s*self-hosted/, 'Calibration must remain outside hosted Ash browser compute.');
 
 const ash = readFileSync(join(workflowDir, 'ash-flowcore-live-field.yml'), 'utf8');
 assert.match(ash, /name: Ash Flow-Core Live Field/);
