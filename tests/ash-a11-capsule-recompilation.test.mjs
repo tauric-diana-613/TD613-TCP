@@ -9,33 +9,20 @@ const probe = fs.readFileSync(new URL('../scripts/ash-a7-a11-browser-probe.mjs',
 const workflow = fs.readFileSync(new URL('../.github/workflows/ash-flowcore-live-field.yml', import.meta.url), 'utf8');
 const receipt = fs.readFileSync(new URL('../app/dome-world/docs/ASH_KEEP_A11_IMPLEMENTATION_RECEIPT_V0_1.md', import.meta.url), 'utf8');
 const vercel = JSON.parse(fs.readFileSync(new URL('../vercel.json', import.meta.url), 'utf8'));
+const RELEASE_EPOCH = '20260724-a11-postclosure-v1';
 
 for (const marker of [
-  'What is preserved',
-  'What remains outside',
-  'Who may open it',
-  'What closes it',
-  'Where it may go',
-  'Which receipt follows it',
-  'How it may return',
-  'What sealing does not prove',
-  'Save Points · continuity snapshots',
-  'A Save Point preserves a return address; it does not rewind the present',
-  'Destination handoff · separate authority',
+  'What is preserved','What remains outside','Who may open it','What closes it','Where it may go','Which receipt follows it',
+  'How it may return','What sealing does not prove','Save Points · continuity snapshots',
+  'A Save Point preserves a return address; it does not rewind the present','Destination handoff · separate authority',
   'Preparation belongs in Capsule; actual handoff remains outside the seal',
   'Preservation, sealing, transport preparation, crossing, receipt, return, and closure remain distinct',
   'Native owners retain every consequential action.'
 ]) assert.ok(source.includes(marker), `A11 source missing ${marker}`);
 
 for (const question of [
-  'What is preserved',
-  'What remains outside',
-  'Who may open it',
-  'What closes it',
-  'Where it may go',
-  'Which receipt follows it',
-  'How it may return',
-  'What sealing does not prove'
+  'What is preserved','What remains outside','Who may open it','What closes it','Where it may go','Which receipt follows it',
+  'How it may return','What sealing does not prove'
 ]) assert.ok(source.includes(`question:'${question}'`), `A11 custody question missing ${question}`);
 
 assert.match(source, /const CAPSULE_QUESTIONS = Object\.freeze/);
@@ -78,7 +65,7 @@ for (const marker of ['compileDestinationHandoffPlan','compileDestinationHandoff
 }
 
 assert.match(core, /td613\.ash\.a7-a11-recompiler-core\/v0\.3/);
-assert.match(core, /ash-a11-capsule-recompilation\.js\?v=20260724-a11-v1/);
+assert.match(core, new RegExp(`ash-a11-capsule-recompilation\\.js\\?v=${RELEASE_EPOCH}`));
 assert.match(core, /__td613AshA11ModulePromise/);
 assert.match(core, /td613:ash:a11-load-held/);
 assert.match(core, /__td613AshA11WorkspaceOwner/);
