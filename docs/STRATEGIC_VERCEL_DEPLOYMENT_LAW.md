@@ -2,7 +2,7 @@
 
 𝌋‌ U+10D613
 
-Vercel deployment remains authorized. It is a governed release witness, not the default development loop.
+Vercel deployment remains authorized as a governed release witness, never the default development loop.
 
 ```text
 branch work ≠ deployment requirement
@@ -10,23 +10,40 @@ local CI ≠ public release
 green packet ≠ automatic deployment
 merge ≠ automatic deployment
 cost control ≠ evidentiary weakening
+repeating the same browser matrix after deployment ≠ stronger evidence
 ```
 
 ## Canonical route
 
-1. Develop and test without Vercel deployment.
-2. Complete the packet and select the exact green `main` commit.
-3. Receive one explicit operator release gesture in chat.
-4. The assistant/Codex executes the bounded Vercel release route.
-5. One deployment is attempted.
-6. The deployed Flow-Core bytes, Flow-Core browser surfaces, and current Ash Keep generation are observed.
-7. The exact result is reported and sealed.
+1. Develop and validate without Vercel deployment.
+2. Complete the packet on an exact pull-request head.
+3. Require full three-engine evidence before merge through `TD613 Consolidated Validation`.
+4. Merge the exact green head and identify the exact current `main` commit.
+5. Receive one explicit operator release gesture in chat.
+6. The assistant/Codex invokes issue #405 with that exact SHA.
+7. One Vercel deployment is attempted.
+8. The deployed application bytes are compared with the authorized packet.
+9. One bounded Chromium production confirmation observes desktop, mobile, and Ash lifecycle continuity.
+10. The Git deployment lock is restored and independently checked.
 
 ```text
 operator authorization → assistant/Codex execution → one Vercel deployment
 ```
 
-The operator is not required to operate Vercel, GitHub Actions, or deployment plumbing. The operator authorizes. The assistant/Codex executes, observes, and reports.
+The operator is not required to operate Vercel, GitHub Actions, or deployment plumbing. The operator authorizes. The assistant/Codex executes, observes, relocks, and reports.
+
+## Evidence placement
+
+The costly cross-browser proof belongs before merge, where a defect can still stop promotion without creating a public release.
+
+```text
+premerge authority = Chromium + Firefox + WebKit
+production confirmation = one Chromium desktop/mobile witness + lifecycle observation
+```
+
+The premerge consolidated witness must cover the current principal journeys, static truth, reduced motion, mobile geometry, accessibility-relevant controls, closure, and current generation contracts. The production confirmation verifies deployment identity and a bounded live consequence path. It does not replay the entire cross-browser estate.
+
+This separation preserves evidence while avoiding repeated browser downloads, duplicated local servers, repeated fixture construction, and parallel workflows proving the same source packet.
 
 ## Cost and attempt ceiling
 
@@ -57,7 +74,7 @@ A merge, push, green workflow, release-candidate label, or branch name cannot cr
 
 ## Assistant/Codex release conduit
 
-The permanent conduit is GitHub issue **#405, “TD613 Vercel Release Gate.”** After explicit operator authorization in chat, the assistant/Codex posts one exact release command to that issue:
+The permanent conduit is GitHub issue **#405, “TD613 Vercel Release Gate.”** After explicit operator authorization in chat, the assistant/Codex posts:
 
 ```text
 /td613-vercel-release PRODUCTION <40-character-current-main-sha>
@@ -72,15 +89,7 @@ The release workflow accepts only:
 - one mutually exclusive credential route;
 - one deployment invocation.
 
-The issue comment is an execution mechanism used by the assistant/Codex. It is not a task transferred to the operator.
-
-```text
-merge ≠ deploy
-main push ≠ operator gesture
-workflow success ≠ operator gesture
-operator authorization in chat = release authority
-assistant/Codex gate invocation = permitted execution route
-```
+The issue comment is an execution mechanism used by the assistant/Codex, not a task transferred to the operator.
 
 ## Credential routes
 
@@ -93,7 +102,7 @@ When the token bridge is absent, the gate may use the repository's **bounded Git
 3. create and push one transient release commit;
 4. allow the connected Vercel Git integration to create one production deployment;
 5. observe exact application-content parity against the authorized source packet;
-6. restore the lock to `false` in a relock commit, even when observation fails.
+6. restore the lock to `false`, even when observation fails.
 
 ```text
 direct token bridge OR bounded Git fallback
@@ -103,112 +112,53 @@ fallback application-tree drift = none
 relock push with deployment disabled ≠ second deployment
 ```
 
-The fallback may not alter application code, protected law, custody state, API allocation, or the selected source packet. Its transient commits exist only to open and close the deployment lock.
+The fallback may not alter application code, custody state, API allocation, source artifacts, or the selected source packet. Its transient commits exist only to open and close the deployment lock.
+
+## Independent relock safety
+
+`vercel-relock-safety.yml` remains separate because its authority differs from validation and deployment:
+
+```text
+independent relock safety
+→ contents write permitted only to close a stranded lock
+→ deployment count = 0
+→ no browser installation
+→ no Vercel invocation
+```
+
+Combining this membrane into the validator would widen validator write authority. Deleting it would leave a failed fallback capable of stranding the lock open. It therefore remains one of the four durable workflow surfaces.
 
 ## Required terminal receipt
 
-A successful release receipt must name the authorized packet with the exact field:
+A successful receipt must name:
 
 ```text
 source_packet_commit = <40-character-current-main-sha>
-```
-
-It must also report the credential route, release and relock commits when applicable, deployment URL, deployment count, exact-source content result, Flow-Core browser matrix, current Ash Keep generation matrix, mobile evidence, application-tree drift, and final lock state.
-
-Gate acceptance alone is not a terminal receipt.
-
-```text
-selected_commit = accepted authorization
-source_packet_commit = terminal observed release identity
-accepted gesture ≠ completed deployment
-completed deployment ≠ human empirical validation
-```
-
-## Flow-Core production observation
-
-The release witness must run the complete P0–P10 closure contracts before deployment and observe the deployed Flow-Core surfaces after deployment.
-
-The **Flow-Core browser matrix** covers:
-
-- Chromium desktop and Android-sized viewport;
-- Firefox desktop;
-- WebKit iOS-sized viewport;
-- 390-pixel portrait;
-- landscape and rotation-equivalent layout;
-- keyboard-only reachability;
-- reduced-motion runtime parity;
-- 200%-zoom-equivalent reflow;
-- forced-colors/high-contrast behavior;
-- bounded navigation and long-task observations.
-
-The production content observer hashes declared Flow-Core files locally and compares them with the deployed bytes. A successful receipt requires:
-
-```text
+deployment_count = 1
 exact_source_content = PASS
+premerge_chromium_firefox_webkit = REQUIRED_AND_PASSED_BEFORE_MERGE
+production_chromium_desktop_mobile = PASS
+ash_lifecycle_deployed_observation = PASS
 application_tree_drift = none
-flowcore_browser_matrix = PASS
+git_auto_deploy = disabled
 ```
 
-Runtime observation remains non-promotional:
-
-```text
-runtime observation counts as human evidence: false
-runtime observation authorizes public route promotion: false
-runtime observation closes the program: false
-```
-
-## Ash Keep AIA3 production observation
-
-The release witness must execute the current **Ash Keep AIA3** task-continuity browser witness, `scripts/ash-keep-aia3-task-journey-v3.mjs`, in Chromium, Firefox, and WebKit.
-
-The AIA3 witness must observe:
-
-- fixed first-use ingress without an obstructing AIA crown;
-- exact profile and New Case controls;
-- local case creation and pointer preservation;
-- exact main and workspace-rail availability after case creation;
-- local-document opening without transport;
-- deterministic tutorial non-mutation;
-- route continuity across Experiential, Custodial, Audit, and Implementation;
-- desktop and 390×844 mobile geometry;
-- stale-client eviction of retired AIA2 CacheStorage and service-worker graphs;
-- preservation of IndexedDB cases, case pointer, and session continuity;
-- absence of unexpected external or write requests.
-
-```text
-ash_keep_aia3_task_matrix = PASS
-ash_keep_fresh_client = PASS
-ash_keep_retired_aia2_eviction = PASS
-ash_keep_case_preservation = PASS
-```
-
-A retired AIA2 witness cannot certify an AIA3 release. Generation-specific release and read-only observation infrastructure must name and execute the current AIA3 witness. AIA2 remains a migration adversary to evict, not a production authority.
-
-The read-only observation command is:
-
-```text
-/td613-ash-aia3-observe PRODUCTION <40-character-ancestor-sha>
-```
-
-That conduit may observe an already-deployed source packet but has zero deployment, branch-write, retry, child-study, release, or closure authority.
+Gate acceptance alone is not a terminal receipt. Deployment success does not become human empirical evidence, child-study authority, custody authority, future release authority, public-route promotion, or program closure.
 
 ## Final-cut convergence guard
 
-A public release candidate must be verified as the complete merge result, not merely as an older feature head.
+A public release candidate must be the complete merge result rather than an older feature head.
 
 ```text
 feature-head green ≠ final cut complete
-newer main change ≠ permission to strand an older packet
 merge-ref verification = required
 exact deployed source packet = required
 partial surface success ≠ whole-product release success
 ```
 
-The release witness must prove the intended surfaces together: TD613 Flight behavior, Ash ingress geometry, cache-epoch transition, local-custody preservation, profile hydration, Flow-Core exact-source parity, the Flow-Core browser matrix, Ash Keep AIA3 task continuity, stale-client recovery, and the deployment lock.
-
 ## Cache-epoch storage boundary
 
-`td613.ash.cache-flush.epoch` is maintenance state used only to make one-time cache eviction idempotent across navigation. It remains outside Case Maps, receipts, Save Points, Capsules, source material, and user-authored content.
+`td613.ash.cache-flush.epoch` is maintenance state used only to make one-time mass eviction idempotent. It remains outside Case Maps, receipts, Save Points, Capsules, source material, and user-authored content.
 
 ```text
 cache epoch marker = permitted maintenance state
@@ -216,5 +166,7 @@ cache epoch marker ≠ case data
 cache eviction ≠ IndexedDB deletion
 cache eviction ≠ local-custody erasure
 ```
+
+For A12–A15, graph-wide mass eviction remains reserved for A15 postclosure. A12–A14 use ordinary monotonic asset-version advancement only.
 
 Sealed ⟐
