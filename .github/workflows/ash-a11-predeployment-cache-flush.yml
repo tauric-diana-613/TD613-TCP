@@ -22,7 +22,7 @@ concurrency:
 jobs:
   contracts:
     runs-on: ubuntu-latest
-    timeout-minutes: 24
+    timeout-minutes: 28
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-node@v4
@@ -41,6 +41,8 @@ jobs:
           node tests/ash-a11-predeployment-cache-flush.test.mjs
           node tests/ash-a2-a5-whole-instrument.test.mjs
           node tests/ash-live-ingress-demos-cache.test.mjs
+      - name: Rebuild maintained Aperture download artifact
+        run: npm run aperture:export-downloads
       - name: Validate Ash Keep core
         run: node tests/ash-keep-core.test.mjs
       - name: Validate Ash Keep continuity
@@ -48,7 +50,13 @@ jobs:
       - name: Validate Ash Keep Hush API
         run: node tests/ash-keep-hush-api.test.mjs
       - name: Validate Ash Keep UI
-        run: node tests/ash-keep-ui.test.mjs
+        run: |
+          mkdir -p artifacts
+          set +e
+          node tests/ash-keep-ui.test.mjs > artifacts/ash-keep-ui.log 2>&1
+          status=$?
+          cat artifacts/ash-keep-ui.log
+          exit "$status"
       - name: Validate lifecycle component
         run: node tests/ash-lifecycle.test.mjs
       - name: Validate draft lifecycle binding
@@ -60,7 +68,10 @@ jobs:
         uses: actions/upload-artifact@v4
         with:
           name: ash-a11-predeployment-cache-contracts
-          path: docs/ASH_KEEP_A11_PREFLIGHT_CACHE_EVICTION_RECEIPT.md
+          path: |
+            docs/ASH_KEEP_A11_PREFLIGHT_CACHE_EVICTION_RECEIPT.md
+            artifacts/ash-keep-ui.log
+          if-no-files-found: warn
           retention-days: 45
 
   browser-witness:
