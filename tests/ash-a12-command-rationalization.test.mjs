@@ -16,6 +16,7 @@ assert.match(moduleSource, /empty_drawers/);
 assert.match(moduleSource, /authority_changed:false/);
 assert.match(moduleSource, /source_bytes_moved:false/);
 assert.match(moduleSource, /human_closure_required:true/);
+assert.match(moduleSource, /data-command-action=\"profile\"/);
 assert.match(bridge, /ash-a12-command-rationalization\.js\?v=20260724-a12-release-v1/);
 assert.match(shell, /ASH_LIFECYCLE_ASSET_EPOCH = '20260724-a12-release-v1'/);
 assert.match(shell, /ASH_MASS_EVICTION_EPOCH = 'td613\.ash\.cache-flush\/2026-07-24-a11-postclosure-v1'/);

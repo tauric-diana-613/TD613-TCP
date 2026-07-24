@@ -42,7 +42,7 @@ function ensureCommandSurface() {
     COMMANDS.slice(3).map(commandButton).join(''),
     '</section>',
     '<section class="a12-command-group" aria-labelledby="a12ContinuityHeading"><h3 id="a12ContinuityHeading">Continuity and boundaries</h3>',
-    '<button type="button" data-a12-action="profile"><strong>Cases & Profiles</strong><small>Return to the explicit case and profile selector.</small></button>',
+    '<button type="button" data-a12-action="profile" data-command-action="profile"><strong>Cases & Profiles</strong><small>Return to the explicit case and profile selector.</small></button>',
     '<a href="/dome-world/ash-destination-handoff.html"><strong>Destination Handoff</strong><small>Open the separately gated crossing surface; this menu grants no crossing authority.</small></a>',
     '<a href="/safe-harbor/index.html"><strong>Safe Harbor</strong><small>Open the guarded source-side boundary route.</small></a>',
     '</section>',
