@@ -1,9 +1,9 @@
 const ASH_RELEASE_ASSET_EPOCH = '20260724-a13-release-v1';
 
 export {
-  ASH_DEMO_REGISTRY_VERSION as ASH_PROFILE_DEMO_VERSION,
+  ASH_DEMO_REGISTRY_VERSION,
   ASH_DEMO_ASSET_EPOCH,
-  getAshDemoRegistrySnapshot as ASH_PROFILE_DEMOS,
+  getAshDemoRegistrySnapshot,
   getAshDemoRegistryEntries,
   buildAshDemoFixture,
   hydrateAshDemo,
