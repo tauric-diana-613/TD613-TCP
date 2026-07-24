@@ -73,6 +73,8 @@ async function observe(label) {
 let report;
 try {
   await enterInvestigation();
+  // The assay begins only after a real case exists. Demo-hydration diagnostics belong to setup, not cache eviction.
+  consoleErrors.length = 0;
   const seeded = await page.evaluate(async ({ a2a5, pointerKey, sessionKey, moduleKey, preflightKey, staleCache }) => {
     const pointer = localStorage.getItem(pointerKey);
     const sessionEpoch = localStorage.getItem(sessionKey);
@@ -99,7 +101,7 @@ try {
   if (second.pointer !== seeded.pointer) throw new Error('Idempotent A11 return changed the active case pointer.');
   if (second.module?.performed !== false || second.module?.a11_predeployment_preflight_current !== true) throw new Error(`A11 module did not recognize the current preflight epoch: ${JSON.stringify(second.module)}`);
   if (second.stale_cache_present) throw new Error('Stale A10 cache reappeared after idempotent return.');
-  if (consoleErrors.length) throw new Error(`Console errors observed: ${consoleErrors.join(' | ')}`);
+  if (consoleErrors.length) throw new Error(`Cache-assay console errors observed: ${consoleErrors.join(' | ')}`);
 
   report = {
     ok:true,
