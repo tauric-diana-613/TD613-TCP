@@ -130,11 +130,11 @@ jobs:
           retention-days: 3
 
   browser:
-    name: One-install Chromium Firefox WebKit witness
+    name: One exact-head Chromium Firefox WebKit witness
     needs: contracts
-    if: github.event_name == 'pull_request' || (github.event_name == 'workflow_dispatch' && inputs.mode == 'full-browser')
+    if: github.event_name == 'workflow_dispatch' && inputs.mode == 'full-browser'
     runs-on: ubuntu-latest
-    timeout-minutes: 75
+    timeout-minutes: 120
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-node@v4
@@ -150,7 +150,7 @@ jobs:
           python -m pip install --disable-pip-version-check pytest sympy
           npm install --no-save --package-lock=false playwright@${PLAYWRIGHT_VERSION}
           npx playwright install --with-deps chromium firefox webkit
-      - name: Start one bounded Ash runtime
+      - name: Start one bounded Ash and Dome-World runtime
         run: |
           mkdir -p artifacts
           node scripts/ash-keep-local-closure-server.mjs 6130 > artifacts/ash-server.log 2>&1 &
@@ -176,6 +176,14 @@ jobs:
             TD613_ARTIFACT_DIR="artifacts/ash-reviewability-$browser" timeout --foreground --signal=INT --kill-after=15s 420s node scripts/ash-reviewability-browser-probe.mjs
             TD613_ARTIFACT_DIR="artifacts/ash-research-$browser" timeout --foreground --signal=INT --kill-after=15s 480s node scripts/ash-research-ux-browser-probe.mjs
           done
+      - name: Run complete Flow-Core runtime evidence through the same browser installation
+        env:
+          TD613_BASE_URL: http://127.0.0.1:6130
+          TD613_FLOWCORE_ROUTE_PREFIX: app/dome-world
+          TD613_BROWSERS: chromium,firefox,webkit
+          TD613_ARTIFACT_DIR: artifacts/flowcore-runtime
+          TD613_PRODUCTION_OBSERVATION: 'false'
+        run: timeout --foreground --signal=INT --kill-after=20s 3600s node scripts/flowcore-runtime-browser-probe.mjs
       - name: Run bounded closure and constitutional convergence once
         env:
           TD613_BASE_URL: http://127.0.0.1:6130
@@ -199,11 +207,11 @@ jobs:
       - name: Stop Phase IV runtime
         if: always()
         run: test ! -f artifacts/phase4-server.pid || kill "$(cat artifacts/phase4-server.pid)" 2>/dev/null || true
-      - name: Preserve bounded browser receipts
+      - name: Preserve the single exact-head browser evidence packet
         if: always()
         uses: actions/upload-artifact@v4
         with:
-          name: td613-consolidated-browser-receipts
+          name: td613-exact-head-browser-receipts
           path: artifacts/
           if-no-files-found: warn
           retention-days: 7
