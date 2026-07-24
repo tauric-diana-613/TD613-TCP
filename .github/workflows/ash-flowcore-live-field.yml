@@ -18,9 +18,8 @@ on:
       - 'tests/ash-*'
       - 'tests/product-architecture/shell.test.mjs'
       - 'tests/workflow-estate.test.mjs'
+      - 'tests/vercel-operator-release-gate.test.mjs'
       - '.github/workflows/ash-flowcore-live-field.yml'
-      - '.github/workflows/ash-keep-production-closure.yml'
-      - '.github/workflows/ash-keep-aia3-production-observation.yml'
   workflow_dispatch:
   issue_comment:
     types: [created]
@@ -82,6 +81,7 @@ jobs:
           mkdir -p artifacts
           {
             node tests/workflow-estate.test.mjs
+            node tests/vercel-operator-release-gate.test.mjs
             node tests/ash-a2-a5-whole-instrument.test.mjs
             node tests/ash-a7-home-recompilation.test.mjs
             node tests/ash-a8-case-map-recompilation.test.mjs
@@ -162,8 +162,7 @@ jobs:
         uses: actions/upload-artifact@v4
         with:
           name: ash-program-exact-head-evidence
-          path: |
-            artifacts/
+          path: artifacts/
           if-no-files-found: warn
           retention-days: 30
       - name: Stop bounded local runtime
@@ -253,13 +252,22 @@ jobs:
           for (const browser of ['chromium', 'firefox', 'webkit']) {
             const receipt = JSON.parse(fs.readFileSync(`artifacts/ash-aia3-production/${browser}/ash-aia3-task-continuity.json`, 'utf8'));
             if (receipt.status !== 'PASS') throw new Error(`${browser} AIA3 production journey held.`);
-            if (receipt.source_packet_commit !== expected || receipt.production_observation !== true) throw new Error(`${browser} source binding drifted.`);
+            if (receipt.source_packet_commit !== expected) throw new Error(`${browser} AIA3 source-packet label drifted.`);
+            if (receipt.production_observation !== true) throw new Error(`${browser} was not marked as production observation.`);
             const authority = receipt.authority || {};
-            if (authority.counts_as_human_evidence !== false || authority.authorizes_child_study !== false || authority.authorizes_release !== false || authority.closes_program !== false) throw new Error(`${browser} observer widened authority.`);
+            if (authority.counts_as_human_evidence !== false || authority.authorizes_child_study !== false || authority.authorizes_release !== false || authority.closes_program !== false) {
+              throw new Error(`${browser} AIA3 observer widened authority.`);
+            }
           }
           const lifecycle = JSON.parse(fs.readFileSync('artifacts/ash-lifecycle-production/ash-lifecycle-production-closure.json', 'utf8'));
-          if (lifecycle.status !== 'PASS' || lifecycle.source_status !== 'DEPLOYED_OBSERVATION' || lifecycle.promotion_authorized !== false) throw new Error('Lifecycle production observation held.');
-          if (lifecycle.network?.disallowed_non_read_requests?.length || lifecycle.network?.provider_or_transport_requests?.length) throw new Error('Lifecycle observer crossed a prohibited boundary.');
+          if (lifecycle.status !== 'PASS') throw new Error(`Lifecycle production journey held: ${lifecycle.status}`);
+          if (lifecycle.source_status !== 'DEPLOYED_OBSERVATION') throw new Error(`Unexpected lifecycle source status: ${lifecycle.source_status}`);
+          if (lifecycle.promotion_authorized !== false) throw new Error('Lifecycle observer widened promotion authority.');
+          if (lifecycle.threshold?.specialist_cache_preflight?.legacy_bypass !== true) throw new Error('Lifecycle observer did not prove exact legacy bypass.');
+          if (lifecycle.threshold?.specialist_cache_preflight?.aia3_route_required !== false) throw new Error('Lifecycle observer restored an AIA3 route requirement inside legacy presentation.');
+          if (lifecycle.network?.disallowed_non_read_requests?.length) throw new Error('Lifecycle observer emitted disallowed non-read requests.');
+          if (lifecycle.network?.provider_or_transport_requests?.length) throw new Error('Lifecycle observer reached provider or recipient transport.');
+          if (lifecycle.continuity?.lifecycle_state !== 'CONTINUITY_SEALED') throw new Error('Lifecycle observer did not reach continuity-sealed state.');
           NODE
       - name: Publish terminal observer status
         if: always()
