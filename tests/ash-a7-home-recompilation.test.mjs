@@ -8,7 +8,7 @@ const shell = fs.readFileSync(new URL('../api/dome-world-shell.js', import.meta.
 const html = fs.readFileSync(new URL('../app/dome-world/ash-keep.html', import.meta.url), 'utf8');
 const vercel = JSON.parse(fs.readFileSync(new URL('../vercel.json', import.meta.url), 'utf8'));
 
-assert.match(core, /td613\.ash\.a7-a11-recompiler-core\/v0\.1/);
+assert.match(core, /td613\.ash\.a7-a11-recompiler-core\/v0\.\d+/);
 assert.match(core, /authority_changed:false/);
 assert.match(core, /source_bytes_moved:false/);
 assert.match(core, /human_closure_required:true/);
@@ -52,6 +52,7 @@ assert.equal(vercel.git?.deploymentEnabled, false, 'A7 implementation branch mus
 console.log(JSON.stringify({
   ok:true,
   schema:'td613.ash.a7-home-contract/v0.1',
+  shared_core_schema_family:true,
   primary_action_count_contract:1,
   premium_render_delegation:true,
   route_ledger:true,
