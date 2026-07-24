@@ -74,30 +74,38 @@ jobs:
           node tests/aperture-phase4-bridge.test.mjs
           node tests/phase4-deployment-probe.test.mjs
           node tests/phase4-release-sync.test.mjs
-      - name: Validate Ash A0-A13 static surfaces
+      - name: Validate Ash core and ingress surfaces
         run: |
           node tests/ash-keep-core.test.mjs
           node tests/ash-keep-continuity.test.mjs
           node tests/ash-keep-hush-api.test.mjs
           node tests/ash-live-ingress-demos-cache.test.mjs
+          node tests/ash-ingress-polish.test.mjs
+          node tests/ash-reviewability.test.mjs
+      - name: Validate Ash A2-A8 surfaces
+        run: |
           node tests/ash-a2-a5-whole-instrument.test.mjs
           node tests/ash-a7-home-recompilation.test.mjs
           node tests/ash-a8-case-map-recompilation.test.mjs
+          node tests/ash-flowcore-live-field.test.mjs
+      - name: Validate Ash A9-A13 surfaces
+        run: |
           node tests/ash-a9-work-recompilation.test.mjs
           node tests/ash-a10-choir-recompilation.test.mjs
           node tests/ash-a11-capsule-recompilation.test.mjs
           node tests/ash-a11-postclosure-cache-eviction.test.mjs
           node tests/ash-a12-command-rationalization.test.mjs
           node tests/ash-a13-unified-demo-registry.test.mjs
-          node tests/ash-flowcore-live-field.test.mjs
-          node tests/ash-ingress-polish.test.mjs
-          node tests/ash-reviewability.test.mjs
+      - name: Validate Ash demo hydration surfaces
+        run: |
           node tests/ash-research-ux-rehydration.test.mjs
           node tests/ash-final-rehydration-boundaries.test.mjs
           node tests/ash-profile-demos.test.mjs
           node tests/ash-four-profile-pedagogy.test.mjs
           node tests/ash-legal-ux.test.mjs
           node tests/ash-legal-control-state.test.mjs
+      - name: Validate Ash production-closure surfaces
+        run: |
           node tests/ash-keep-production-closure-contract.test.mjs
           node tests/ash-lifecycle-production-contract.test.mjs
       - name: Validate Flow-Core closure surfaces
