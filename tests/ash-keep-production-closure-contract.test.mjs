@@ -12,7 +12,7 @@ const lifecycleProbe = `${lifecycleRunner}\n${lifecycleBase}`;
 const publisher = read('scripts/publish-ash-keep-observer-status.mjs');
 const postureVerifier = read('scripts/assert-ash-keep-release-posture.mjs');
 const receipt = read('app/dome-world/docs/ASH_KEEP_V1_PRODUCTION_DEMO_RECEIPT.md');
-const workflow = read('.github/workflows/ash-keep-production-closure.yml');
+const workflow = read('.github/workflows/ash-flowcore-live-field.yml');
 const release = JSON.parse(read('app/aperture/release.json'));
 const premium = read('app/dome-world/ash-premium-ui.js');
 const premiumCss = read('app/dome-world/ash-premium-ui.css');
@@ -35,7 +35,6 @@ for (const token of [
   'runtime_copy_ephemeral: true', 'CLASSIFY_INTENTIONAL_HORIZONTAL_SCROLL_LANES_SEPARATELY_FROM_CLIPPING', 'promotion_authorized: false'
 ]) assert.ok(runner.includes(token), `Core fixture runner omitted ${token}`);
 
-// The observer ceiling stays finite while clearing the coordinator's lawful 30-second lease.
 for (const token of [
   'ash-constitutional-convergence-probe.runtime.mjs', 'expected one case-selection seam',
   "select.dispatchEvent(new Event('change', { bubbles: true }))", 'remove?.disabled !== false',
@@ -93,19 +92,20 @@ assert.match(premiumFlight, /flightProfile\(context, 'fundraiser', 'Northstar Ar
 assert.doesNotMatch(premium, /recipient_transport\s*:\s*true|automatic_ash_action\s*:\s*true/);
 assert.doesNotMatch(premiumFlight, /production_promotion_authorized:\s*true|transport_authorized:\s*true|cinder_authorized:\s*true/);
 
-const localJob = workflow.split('  local-closure-validation:')[1]?.split('  deployed-observation:')[0] || '';
+const localJob = workflow.split('  program-validation:')[1]?.split('  deployed-observation:')[0] || '';
 const deployedJob = workflow.split('  deployed-observation:')[1] || '';
 for (const token of [
-  'Ash Keep Production Closure', 'workflow_dispatch', 'statuses: write', 'RUN_DEPLOYED_OBSERVATION', 'inputs.base_url',
+  'Ash Flow-Core Live Field', 'workflow_dispatch', 'issue_comment', 'statuses: write',
   'tests/ash-keep-production-closure-contract.test.mjs', 'tests/ash-keep-production-promotion-gate.test.mjs',
-  'scripts/ash-keep-production-probe.mjs', 'scripts/run-ash-keep-production-probe.mjs',
-  'scripts/run-ash-constitutional-convergence-probe.mjs', 'ash-keep-production-closure-evidence'
-]) assert.ok(workflow.includes(token), `Closure workflow omitted ${token}`);
+  'scripts/run-ash-keep-a1-production-probe.mjs', 'scripts/run-ash-constitutional-convergence-handshake.mjs',
+  'ash-program-exact-head-evidence'
+]) assert.ok(workflow.includes(token), `Consolidated Ash workflow omitted ${token}`);
+assert.equal(fs.existsSync('.github/workflows/ash-keep-production-closure.yml'), false);
 assert.doesNotMatch(workflow, /\n  workflow_run:/);
 assert.doesNotMatch(workflow, /github\.event\.workflow_run|workflows: \["Test and deploy static app"\]/);
-assert.match(deployedJob, /github\.event_name == 'workflow_dispatch'/);
-assert.match(deployedJob, /inputs\.confirm_deployed_probe == 'RUN_DEPLOYED_OBSERVATION'/);
-assert.match(deployedJob, /inputs\.base_url != ''/);
+assert.match(deployedJob, /github\.event_name == 'issue_comment'/);
+assert.match(deployedJob, /startsWith\(github\.event\.comment\.body, '\/td613-ash-aia3-observe '\)/);
+assert.match(deployedJob, /TD613_CANONICAL_PRODUCTION_URL/);
 
 for (const token of [
   'td613.ash.constitutional-convergence-observation/v0.1', 'promotion_authorized: false',
@@ -114,14 +114,12 @@ for (const token of [
   'td613.ash.cache-flush.aia3.epoch', 'td613.ash.cache-preflight.epoch',
   'provider_recipient_cinder_transport_requests'
 ]) assert.ok(convergenceProbe.includes(token), `Convergence probe omitted ${token}`);
-assert.match(localJob, /Run bounded local core closure observation/);
-assert.match(localJob, /run-ash-keep-production-probe\.mjs/);
-assert.match(localJob, /Run constitutional convergence preview/);
-assert.match(localJob, /run-ash-constitutional-convergence-probe\.mjs/);
+assert.match(localJob, /Run core closure and constitutional convergence once/);
+assert.match(localJob, /run-ash-keep-a1-production-probe\.mjs/);
+assert.match(localJob, /run-ash-constitutional-convergence-handshake\.mjs/);
 assert.match(deployedJob, /Ash Lifecycle Deployed Observation/);
 assert.match(deployedJob, /ash-lifecycle-production-probe\.mjs/);
-assert.match(deployedJob, /Observe deployed constitutional convergence without promotion/);
-assert.match(deployedJob, /run-ash-constitutional-convergence-probe\.mjs/);
+assert.match(deployedJob, /ash-keep-aia3-task-journey-v3\.mjs/);
 assert.doesNotMatch(deployedJob, /run-ash-keep-production-probe\.mjs/);
 assert.match(lifecycleRunner, /ash-lifecycle-production-probe-base\.mjs/);
 assert.match(lifecycleRunner, /SYNTHETIC_DRAFT/);
