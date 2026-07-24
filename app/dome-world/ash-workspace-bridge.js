@@ -56,6 +56,8 @@ import './ash-emergency-stability-contract.js?v=20260724-a12-release-v1';
 import './ash-reviewability-repair.js?v=20260724-a12-release-v1';
 // A12 rationalizes command ownership without changing Ash authority.
 import './ash-a12-command-rationalization.js?v=20260724-a12-release-v1';
+// A8 held drafts remain browser-memory local across workspace rerenders; the native map engine retains all storage authority.
+import './ash-a8-draft-durability.js?v=20260724-a12-release-v1';
 
 const ashBridgeHost = globalThis.window;
 const ashBridgeDocument = globalThis.document;
