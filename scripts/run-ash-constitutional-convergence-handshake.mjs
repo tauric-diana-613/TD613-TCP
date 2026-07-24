@@ -1,8 +1,14 @@
 import fs from 'node:fs/promises';
+import path from 'node:path';
 import { pathToFileURL } from 'node:url';
 
 const wrapperUrl = new URL('./run-ash-constitutional-convergence-probe.mjs', import.meta.url);
 const runtimeUrl = new URL('./run-ash-constitutional-convergence-probe.handshake.runtime.mjs', import.meta.url);
+const artifactDir = process.env.TD613_ARTIFACT_DIR || 'artifacts/ash-constitutional-convergence';
+const handshakeCeilingMs = Number.parseInt(process.env.TD613_CONVERGENCE_HANDSHAKE_CEILING_MS || '360000', 10);
+if (!Number.isFinite(handshakeCeilingMs) || handshakeCeilingMs < 1000) {
+  throw new Error('TD613 convergence handshake ceiling must be a finite duration of at least 1000ms.');
+}
 
 const originalDefinitionsStart = 'const lockWaitTarget =';
 const originalDefinitionsEnd = '\nconst localKeysTarget =';
@@ -197,8 +203,33 @@ if (!runtimeWrapper.includes('let diagnosticRuntime = runtime;') || !runtimeWrap
 }
 
 await fs.writeFile(runtimeUrl, runtimeWrapper, 'utf8');
+let watchdog = null;
 try {
+  watchdog = setTimeout(async () => {
+    const receipt = {
+      schema:'td613.ash.constitutional-convergence-watchdog/v0.1',
+      status:'HOLD_FOR_REPAIR',
+      reason:'HANDSHAKE_PROCESS_CEILING',
+      ceiling_ms:handshakeCeilingMs,
+      observed_at:new Date().toISOString(),
+      source_status:/localhost|127\.0\.0\.1/.test(process.env.TD613_BASE_URL || '') ? 'LOCAL_VALIDATION' : 'DEPLOYED_OBSERVATION',
+      promotion_authorized:false,
+      authority_changed:false,
+      source_bytes_moved:false,
+      human_closure_required:true
+    };
+    try {
+      await fs.mkdir(artifactDir, { recursive:true });
+      await fs.writeFile(path.join(artifactDir, 'convergence-watchdog.json'), `${JSON.stringify(receipt, null, 2)}\n`);
+      await fs.rm(runtimeUrl, { force:true });
+    } catch (error) {
+      console.error('[TD613 convergence] watchdog receipt write failed:', error);
+    }
+    console.error(`[TD613 convergence] handshake exceeded ${handshakeCeilingMs}ms; holding for repair.`);
+    process.exit(124);
+  }, handshakeCeilingMs);
   await import(`${pathToFileURL(runtimeUrl.pathname).href}?handshake=${Date.now()}`);
 } finally {
+  if (watchdog) clearTimeout(watchdog);
   await fs.rm(runtimeUrl, { force:true });
 }
