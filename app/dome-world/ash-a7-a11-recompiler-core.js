@@ -169,7 +169,7 @@ function publishA9LoadHold(error) {
 function loadA9Module() {
   if (!host) return Promise.resolve(null);
   if (!host.__td613AshA9ModulePromise) {
-    host.__td613AshA9ModulePromise = import('./ash-a9-work-recompilation.js?v=20260723-a9-v1').catch(publishA9LoadHold);
+    host.__td613AshA9ModulePromise = import('./ash-a9-work-recompilation.js?v=20260724-a11-postclosure-v1').catch(publishA9LoadHold);
   }
   return host.__td613AshA9ModulePromise;
 }
@@ -224,7 +224,7 @@ function publishA10LoadHold(error) {
 function loadA10Module() {
   if (!host) return Promise.resolve(null);
   if (!host.__td613AshA10ModulePromise) {
-    host.__td613AshA10ModulePromise = import('./ash-a10-choir-recompilation.js?v=20260723-a10-v1').catch(publishA10LoadHold);
+    host.__td613AshA10ModulePromise = import('./ash-a10-choir-recompilation.js?v=20260724-a11-postclosure-v1').catch(publishA10LoadHold);
   }
   return host.__td613AshA10ModulePromise;
 }
@@ -276,7 +276,7 @@ function publishA11LoadHold(error) {
 function loadA11Module() {
   if (!host) return Promise.resolve(null);
   if (!host.__td613AshA11ModulePromise) {
-    host.__td613AshA11ModulePromise = import('./ash-a11-capsule-recompilation.js?v=20260724-a11-v1').catch(publishA11LoadHold);
+    host.__td613AshA11ModulePromise = import('./ash-a11-capsule-recompilation.js?v=20260724-a11-postclosure-v1').catch(publishA11LoadHold);
   }
   return host.__td613AshA11ModulePromise;
 }
