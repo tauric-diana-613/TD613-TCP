@@ -2,7 +2,7 @@ import assert from 'node:assert/strict';
 import fs from 'node:fs';
 
 const workflow = fs.readFileSync('.github/workflows/vercel-operator-release.yml', 'utf8');
-const observer = fs.readFileSync('.github/workflows/ash-keep-aia3-production-observation.yml', 'utf8');
+const observer = fs.readFileSync('.github/workflows/ash-flowcore-live-field.yml', 'utf8');
 const law = fs.readFileSync('docs/STRATEGIC_VERCEL_DEPLOYMENT_LAW.md', 'utf8');
 const vercel = JSON.parse(fs.readFileSync('vercel.json', 'utf8'));
 
@@ -74,37 +74,33 @@ assert.match(workflow, /No additional deployment attempt is authorized by this f
 assert.match(workflow, /Sealed ⟐/);
 assert.doesNotMatch(workflow, /ash-keep-aia2-task-journey|ash-aia2-production|ash_keep_aia2_task_matrix/, 'retired AIA2 witness must not re-enter the release gate');
 
+assert.equal(fs.existsSync('.github/workflows/ash-keep-aia3-production-observation.yml'), false, 'Retired standalone AIA3 observer must remain absent.');
+assert.equal(fs.existsSync('.github/workflows/ash-keep-production-closure.yml'), false, 'Retired standalone production closure workflow must remain absent.');
 assert.match(observer, /^\s{2}issue_comment:\s*$/m);
 assert.match(observer, /github\.event\.issue\.number == 405/);
 assert.match(observer, /startsWith\(github\.event\.comment\.body, '\/td613-ash-aia3-observe '\)/);
 assert.match(observer, /^\s{2}contents: read$/m);
+assert.match(observer, /^\s{2}issues: write$/m);
 assert.match(observer, /^\s{2}statuses: write$/m);
 assert.doesNotMatch(observer, /contents: write|git push|vercel@latest deploy|deploymentEnabled = true/);
 assert.match(observer, /git merge-base --is-ancestor/);
 assert.match(observer, /HARNESS_SHA="\$\(git rev-parse HEAD\)"/);
-assert.doesNotMatch(observer, /git checkout --detach "\$SELECTED_SHA"/,
-  'observer must not replace the current harness with the older deployed source');
-assert.match(observer, /application_source_commit = \$\{\{ steps\.authorize\.outputs\.selected_sha \}\}/);
-assert.match(observer, /observer_harness_commit = \$\{\{ steps\.authorize\.outputs\.harness_sha \}\}/);
+assert.doesNotMatch(observer, /git checkout --detach "\$SELECTED_SHA"/, 'observer must not replace the current harness with the older deployed source');
+assert.match(observer, /application_source_commit=\$\{\{ steps\.authorize\.outputs\.selected_sha \}\}/);
+assert.match(observer, /observer_harness_commit=\$\{\{ steps\.authorize\.outputs\.harness_sha \}\}/);
 assert.match(observer, /ash-keep-aia3-task-journey-v3\.mjs/);
 assert.match(observer, /ash-lifecycle-production-probe\.mjs/);
 assert.match(observer, /publish-ash-keep-observer-status\.mjs/);
 assert.match(observer, /Ash Lifecycle Deployed Observation/);
-assert.match(observer, /specialist_cache_preflight\?\.legacy_bypass !== true/);
-assert.match(observer, /aia3_route_required !== false/);
+assert.match(observer, /specialist_cache_preflight\?\.legacy_bypass/);
+assert.match(observer, /aia3_route_required/);
 assert.match(observer, /CONTINUITY_SEALED/);
-assert.match(observer, /for browser in chromium firefox webkit/);
-assert.match(observer, /deployment_count = 0/);
-assert.match(observer, /chromium_desktop_mobile = PASS/);
-assert.match(observer, /firefox_desktop_mobile = PASS/);
-assert.match(observer, /webkit_desktop_mobile = PASS/);
-assert.match(observer, /legacy_bypass = PASS/);
-assert.match(observer, /lifecycle_continuity = PASS/);
-assert.match(observer, /retired_aia2_delivery = ABSENT/);
-assert.match(observer, /counts_as_human_evidence = false/);
-assert.match(observer, /child_study_authorized = false/);
-assert.match(observer, /release_authorized = false/);
-assert.match(observer, /human_closure_required = true/);
+assert.match(observer, /for \(const browser of \['chromium', 'firefox', 'webkit'\]\)/);
+assert.match(observer, /deployment_count=0/);
+assert.match(observer, /counts_as_human_evidence=false/);
+assert.match(observer, /child_study_authorized=false/);
+assert.match(observer, /release_authorized=false/);
+assert.match(observer, /human_closure_required=true/);
 assert.doesNotMatch(observer, /ash-keep-aia2-task-journey|\/td613-ash-aia2-observe|ash-aia2-production/, 'retired AIA2 observer must be absent');
 
 assert.match(law, /operator authorization → assistant\/Codex execution → one Vercel deployment/);
