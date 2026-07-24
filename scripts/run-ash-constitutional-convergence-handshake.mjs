@@ -41,15 +41,19 @@ const contentionReplacement = `  const contentionEvent = 'td613:ash:probe-conten
   await secondPage.waitForFunction(() => localStorage.getItem('td613.ash-keep.probe-lock') === 'HELD_BY_FIRST_TAB', null, { timeout:10000 });
   await page.waitForFunction(() => window.__td613ProbeContentionReleaseReady === true, null, { timeout:10000 });
   const preRelease = await secondPage.evaluate(async name => {
-    if (typeof navigator.locks?.request !== 'function') return { supported:false, acquired:null, observed_at:Date.now() };
-    return navigator.locks.request(name, { mode:'exclusive', ifAvailable:true }, lock => ({
+    const manager = navigator.locks;
+    const nativeRequest = manager && Object.getPrototypeOf(manager)?.request;
+    if (typeof nativeRequest !== 'function') return { supported:false, acquired:null, observed_at:Date.now() };
+    return nativeRequest.call(manager, name, { mode:'exclusive', ifAvailable:true }, lock => ({
       supported:true,
       acquired:Boolean(lock),
-      observed_at:Date.now()
+      observed_at:Date.now(),
+      observer_path:'NATIVE_LOCK_MANAGER_PROTOTYPE'
     }));
   }, lockName);
   assert(preRelease.supported === true, 'Cross-tab lock witness requires the browser lock owner used by Ash.');
   assert(preRelease.acquired === false, 'Second tab acquired the Ash operation while the first tab still held it.');
+  assert(preRelease.observer_path === 'NATIVE_LOCK_MANAGER_PROTOTYPE', 'Pre-release exclusion assay re-entered the coordinated Ash lease path.');
   const intendedAt = await secondPage.evaluate(key => {
     const timestamp = Date.now();
     localStorage.setItem(key, 'SECOND_TAB_BLOCKED_WHILE_HELD');
@@ -118,6 +122,7 @@ const contentionReplacement = `  const contentionEvent = 'td613:ash:probe-conten
     lock_name:lockName,
     intended_at:intendedAt,
     first_tab_released_at:firstResult.released_at,
+    pre_release_observer_path:preRelease.observer_path,
     post_release_lock_snapshot:postReleaseLockSnapshot,
     second_tab_started_at:secondStartedAt,
     finite_release_ceiling_ms:10000,
@@ -138,13 +143,16 @@ if (!wrapperSource.includes("if (!runtime.includes('Cross-tab lock witness excee
 let runtimeWrapper = `${wrapperSource.slice(0, start)}${replacementDefinitions}${wrapperSource.slice(end)}`;
 runtimeWrapper = runtimeWrapper.replace(
   "if (!runtime.includes('Cross-tab lock witness exceeded 35000ms.')) {\n  throw new Error('Convergence observer bounded cross-tab join was not materialized.');\n}",
-  "if (!runtime.includes('Cross-tab lock witness exceeded 35000ms.') || !runtime.includes('First-tab lock release exceeded 10000ms.') || !runtime.includes('QUERY_TIMEOUT') || !runtime.includes('DENIED_WHILE_HELD') || !runtime.includes('Second-tab contention intent was not observed before first-tab release.') || !runtime.includes('__td613ProbePostRelease')) {\n  throw new Error('Convergence observer finite cross-tab exclusion witness was not materialized.');\n}"
+  "if (!runtime.includes('Cross-tab lock witness exceeded 35000ms.') || !runtime.includes('First-tab lock release exceeded 10000ms.') || !runtime.includes('QUERY_TIMEOUT') || !runtime.includes('DENIED_WHILE_HELD') || !runtime.includes('Second-tab contention intent was not observed before first-tab release.') || !runtime.includes('__td613ProbePostRelease') || !runtime.includes('NATIVE_LOCK_MANAGER_PROTOTYPE')) {\n  throw new Error('Convergence observer finite cross-tab exclusion witness was not materialized.');\n}"
 );
 if (!runtimeWrapper.includes("contentionEvent = 'td613:ash:probe-contention-release:v4'")) {
   throw new Error('Convergence handshake shim failed to materialize the named release event.');
 }
 if (!runtimeWrapper.includes("ifAvailable:true") || !runtimeWrapper.includes("SECOND_TAB_BLOCKED_WHILE_HELD")) {
   throw new Error('Convergence handshake shim failed to materialize the nonblocking pre-release exclusion assay.');
+}
+if (!runtimeWrapper.includes('Object.getPrototypeOf(manager)?.request') || !runtimeWrapper.includes("observer_path:'NATIVE_LOCK_MANAGER_PROTOTYPE'")) {
+  throw new Error('Convergence handshake shim failed to bypass only the patched Ash lock instance for native pre-release observation.');
 }
 if (!runtimeWrapper.includes('finite_query_ceiling_ms:2000') || !runtimeWrapper.includes('post_release_lock_snapshot:postReleaseLockSnapshot') || !runtimeWrapper.includes("state:'STARTED'")) {
   throw new Error('Convergence handshake shim failed to materialize the bounded diagnostic and detached post-release Ash operation receipt.');

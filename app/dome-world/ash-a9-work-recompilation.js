@@ -6,7 +6,7 @@ import {
   publishStageWorldAnswer
 } from './ash-a7-a11-recompiler-core.js';
 
-export const ASH_A9_WORK_VERSION = 'td613.ash.a9-work-recompilation/v0.1';
+export const ASH_A9_WORK_VERSION = 'td613.ash.a9-work-recompilation/v0.2';
 
 const host = globalThis.window;
 const doc = globalThis.document;
@@ -97,6 +97,25 @@ function heldItems(snapshot) {
   return held.map(({ action, state }) => `<li><strong>${escapeHtml(action.label)}</strong><span>${escapeHtml(state.reason)}</span><small>Inspection remains available; the consequential native action stays held.</small></li>`).join('');
 }
 
+function ensureWorkRoot() {
+  const workspace = byId('workspace-work');
+  const nativeBody = byId('premiumWorkBody');
+  if (!workspace || !nativeBody) return null;
+  let root = byId('ashA9WorkRecompilation');
+  if (!root) {
+    root = doc.createElement('section');
+    root.id = 'ashA9WorkRecompilation';
+    root.className = 'ash-stage-card wide';
+    root.setAttribute('aria-labelledby', 'ashA9WorkTitle');
+    const head = workspace.querySelector('.workspace-head');
+    if (head) head.insertAdjacentElement('afterend', root);
+    else workspace.prepend(root);
+  }
+  nativeBody.hidden = true;
+  nativeBody.setAttribute('aria-hidden', 'true');
+  return root;
+}
+
 function bindWork(root) {
   if (!root || root.dataset.bound === 'true') return;
   root.dataset.bound = 'true';
@@ -112,19 +131,18 @@ function bindWork(root) {
 }
 
 export function renderAshA9Work(snapshot) {
-  const target = byId('premiumWorkBody');
+  const target = ensureWorkRoot();
   if (!target) return false;
   target.dataset.ashA9Work = ASH_A9_WORK_VERSION;
   if (!snapshot?.caseMap) {
-    target.innerHTML = `<section class="ash-stage-card wide" id="ashA9WorkRecompilation"><p class="ash-stage-kicker">Work · human intention</p><h3>Open a case before compiling work</h3><p class="ash-stage-copy">No queue, priority, draft, Hush packet, receipt, or handoff posture is inferred without an explicit local case.</p><div class="premium-action-row"><button type="button" class="premium-action primary" data-command-action="profile">Open cases & profiles</button></div><p class="ash-stage-status" id="ashA9Status" role="status" aria-live="polite">A9 is present; no case work has been compiled.</p></section>`;
-    bindWork(byId('ashA9WorkRecompilation'));
+    target.innerHTML = `<p class="ash-stage-kicker">Work · human intention</p><h3 id="ashA9WorkTitle">Open a case before compiling work</h3><p class="ash-stage-copy">No queue, priority, draft, Hush packet, receipt, or handoff posture is inferred without an explicit local case.</p><div class="premium-action-row"><button type="button" class="premium-action primary" data-command-action="profile">Open cases & profiles</button></div><p class="ash-stage-status" id="ashA9Status" role="status" aria-live="polite">A9 is present; no case work has been compiled.</p>`;
+    bindWork(target);
     return true;
   }
 
   const doNow = ACTION_FAMILIES.filter(action => ['verify','route'].includes(action.family));
   const prepare = ACTION_FAMILIES.filter(action => ['preserve','draft','review','compare','save','prepare handoff'].includes(action.family));
-  target.innerHTML = `<section class="ash-stage-card wide" id="ashA9WorkRecompilation" aria-labelledby="ashA9WorkTitle">
-    <p class="ash-stage-kicker">Work · human intention before machine module</p>
+  target.innerHTML = `<p class="ash-stage-kicker">Work · human intention before machine module</p>
     <h3 id="ashA9WorkTitle">Choose what you are trying to do, then enter the existing owner</h3>
     <p class="ash-stage-copy">Work compiles current case posture into four queues. It does not create a parallel task engine, run Hush, approve a derivative, record a route, seal continuity, cross a boundary, or close the case.</p>
     <div class="ash-stage-grid">
@@ -149,9 +167,8 @@ export function renderAshA9Work(snapshot) {
       <p class="ash-stage-kicker">Claim ceiling</p><h3 id="ashA9CeilingTitle">Queue placement grants no truth or release authority</h3>
       <ul class="ash-stage-list"><li>Ready means the Work compiler sees no stage-level prerequisite for entering the native owner; it does not certify completion, safety, truth, identity, authorship, intent, guilt, consent, or permission.</li><li>Held means the prerequisite remains visible. It does not diagnose the operator or forbid inspection.</li><li>Hush output remains a derivative candidate. Generation, review, release, destination crossing, and human closure remain separate gestures.</li></ul>
       <p class="ash-stage-status" id="ashA9Status" role="status" aria-live="polite">Work recompiled into Do now, Prepare, Waiting / held, and Completed / receipted. No Ash authority changed.</p>
-    </section>
-  </section>`;
-  bindWork(byId('ashA9WorkRecompilation'));
+    </section>`;
+  bindWork(target);
   publishStageWorldAnswer('A9', 'Work recompiled around human intention, explicit prerequisites, visible world answers, and receipt/return posture. Existing Ash owners retain every consequential action.');
   return true;
 }
@@ -166,6 +183,8 @@ host && (host.__td613AshA9Work = Object.freeze({
   version:ASH_A9_WORK_VERSION,
   render:renderAshA9Work,
   action_families:ACTION_FAMILIES.map(action => action.family),
+  stable_workspace_sibling:true,
+  native_work_body_hidden:true,
   authority_changed:false,
   source_bytes_moved:false,
   human_closure_required:true

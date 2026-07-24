@@ -18,7 +18,7 @@ for (const marker of [
   'What remains uncertain',
   'Preview waits for a plain name',
   'Add deliberately',
-  'Object A —— choose relation ——> Object B',
+  'Direction: Object A → Object B.',
   'Evidence/source',
   'Commit relationship',
   'Relationship inspection',
@@ -75,11 +75,16 @@ assert.match(aia3, /details\.matches\('\[data-aia-exact\]'\) && details\.open/);
 assert.match(aia3, /if \(details\.matches\('\[data-aia-exact\]'\) && details\.open\) return/);
 assert.match(bridge, /\.ash-flowcore-field--proxy \[data-aia-exact\]/);
 assert.match(bridge, /removeAttribute\('data-aia-exact'\)/);
-assert.match(handshake, /td613:ash:probe-contention-release:v1/);
+assert.match(handshake, /td613:ash:probe-contention-release:v4/);
 assert.match(handshake, /RELEASE_FIRST_TAB/);
-assert.match(handshake, /Second-tab contention request was not queued before first-tab release/);
+assert.match(handshake, /Second-tab contention intent was not observed before first-tab release/);
 assert.match(handshake, /Cross-tab lock witness exceeded 35000ms/);
-assert.doesNotMatch(handshake, /setTimeout\(resolve, 240\)/);
+assert.match(handshake, /First-tab lock release exceeded 10000ms/);
+assert.match(handshake, /QUERY_TIMEOUT/);
+assert.match(handshake, /Object\.getPrototypeOf\(manager\)\?\.request/);
+assert.match(handshake, /NATIVE_LOCK_MANAGER_PROTOTYPE/);
+assert.match(handshake, /Pre-release exclusion assay re-entered the coordinated Ash lease path/);
+assert.match(handshake, /if \(runtimeWrapper\.includes\('new BroadcastChannel\('\)\)/);
 assert.equal((closureWorkflow.match(/run-ash-constitutional-convergence-handshake\.mjs/g) || []).length >= 2, true);
 assert.match(closureWorkflow, /node --check scripts\/run-ash-constitutional-convergence-handshake\.mjs/);
 assert.match(shell, /ash-a8-case-map-recompilation\.js\?v=20260723-a8-v1/);
@@ -105,6 +110,8 @@ console.log(JSON.stringify({
   stored_relation_detail:true,
   proxy_inspection_selector_quarantined:true,
   explicit_cross_tab_handshake:true,
+  native_pre_release_lock_observer:true,
+  patched_coordinator_reentry:false,
   background_timer_lock_release:false,
   authority_changed:false,
   source_bytes_moved:false,
