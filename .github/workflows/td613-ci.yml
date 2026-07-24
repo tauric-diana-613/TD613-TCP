@@ -41,6 +41,8 @@ jobs:
         env:
           TD613_ARTIFACT_DIR: artifacts/td613-consolidated-ci
         run: node scripts/run-td613-consolidated-contracts.mjs
+      - name: Run retained audit calibration
+        run: npm run test:calibration 2>&1 | tee artifacts/td613-consolidated-ci/calibration.log
       - name: Preserve one contract receipt
         if: always()
         uses: actions/upload-artifact@v4
