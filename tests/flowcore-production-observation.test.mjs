@@ -51,7 +51,7 @@ test('production probes preserve empirical and promotion separation', () => {
 test('exact-source observation follows executable assets rather than navigation destinations', () => {
   assert.match(contentProbe, /discoverRuntimeClosure/);
   assert.match(contentProbe, /referencesFor/);
-  assert.match(contentProbe, /\bsrc\s*=/);
+  assert.match(contentProbe, /collect\(\/\\bsrc\\s\*=\\s\*/);
   assert.match(contentProbe, /<link\b/);
   assert.doesNotMatch(contentProbe, /\(\?:src\|href\)/);
   assert.match(contentProbe, /Runtime dependency closure followed a navigational HTML document/);
