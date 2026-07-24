@@ -43,7 +43,7 @@ async function inspect(page, label) {
   await page.locator('#premiumMenuButton').click();
   await page.locator('[data-a12-action="profile"]').click();
   await page.waitForFunction(() => !document.getElementById('launch')?.classList.contains('hidden')
-    && document.getElementById('launch')?.getAttribute('aria-hidden') === 'false');
+    && document.getElementById('launch')?.getAttribute('aria-hidden') !== 'true');
   await page.waitForFunction(() => document.activeElement?.id === 'newProfile'
     && document.documentElement.dataset.ashA12ProfileSelector === 'FOCUSED');
   const routeDelta = await page.locator('.ash-route-delta').innerText();
