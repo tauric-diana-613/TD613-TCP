@@ -75,18 +75,19 @@ jobs:
           deployment_ceiling = 1
           safe_harbor_wave_b = required
           ash_generation = AIA3
+          ash_lifecycle = required
           git_auto_deploy = disabled
           workflow_run = $GITHUB_SERVER_URL/$GITHUB_REPOSITORY/actions/runs/$GITHUB_RUN_ID
           \`\`\`
 
-          The gate will run the complete Safe Harbor Gen3 Wave B, Research Track R boundary, Flow-Core, and Ash Keep AIA3 closures; choose one bounded credential route; deploy once; observe exact production content; and run the governed browser matrices. ⟐
+          The gate will run the complete Safe Harbor Gen3 Wave B, Research Track R boundary, Flow-Core, Ash Keep AIA3, and lifecycle closures; choose one bounded credential route; deploy once; observe exact production content; and run the governed browser matrices. ⟐
           EOF_COMMENT
           )"
 
       - name: Install dependencies
         run: npm ci
 
-      - name: Verify release-critical, Safe Harbor Wave B, Flow-Core, and Ash Keep AIA3 closure contracts
+      - name: Verify release-critical, Safe Harbor Wave B, Flow-Core, Ash Keep AIA3, and lifecycle closure contracts
         run: |
           node tests/vercel-deploy-hygiene.test.mjs
           node tests/vercel-operator-release-gate.test.mjs
@@ -99,6 +100,7 @@ jobs:
           node tests/ash-live-ingress-demos-cache.test.mjs
           node tests/ash-aia3-mass-eviction.test.mjs
           node --test tests/ash-keep-live-aia-surface.test.mjs
+          node tests/ash-lifecycle-production-contract.test.mjs
           node tests/td613-flight-mobile-layout.test.mjs
           node tests/flowcore-p0-p10-completion.test.mjs
           node tests/flowcore-p0-p7-seam-closure.test.mjs
@@ -111,6 +113,7 @@ jobs:
           node --check scripts/safe-harbor-gen3-wave-b-production-probe.mjs
           node --check scripts/ash-keep-local-closure-server.mjs
           node --check scripts/ash-keep-aia3-task-journey-v3.mjs
+          node --check scripts/ash-lifecycle-production-probe.mjs
 
       - name: Choose one bounded Vercel release route
         id: mode
@@ -190,7 +193,7 @@ jobs:
           TD613_PROBE_DELAY_MS: '5000'
         run: node scripts/flowcore-release-content-probe.mjs
 
-      - name: Install production browser observers
+      - name: Install production browser observers once
         run: |
           npm install --no-save --package-lock=false playwright@1.53.2
           npx playwright install --with-deps chromium firefox webkit
@@ -232,6 +235,12 @@ jobs:
             node scripts/ash-keep-aia3-task-journey-v3.mjs
           done
 
+      - name: Observe deployed Ash lifecycle
+        env:
+          TD613_BASE_URL: ${{ steps.deployed.outputs.url }}
+          TD613_ARTIFACT_DIR: artifacts/ash-lifecycle-production
+        run: node scripts/ash-lifecycle-production-probe.mjs
+
       - name: Verify production observations remained bounded
         run: |
           node --input-type=module <<'NODE'
@@ -240,6 +249,7 @@ jobs:
           const runtime = JSON.parse(fs.readFileSync('artifacts/flowcore-production-observation/flowcore-runtime-browser-evidence.json', 'utf8'));
           const safeHarborWaveA = JSON.parse(fs.readFileSync('artifacts/safe-harbor-gen3-wave-a-production/safe-harbor-gen3-wave-a-production-observation.json', 'utf8'));
           const safeHarborWaveB = JSON.parse(fs.readFileSync('artifacts/safe-harbor-gen3-wave-b-production/safe-harbor-gen3-wave-b-production-observation.json', 'utf8'));
+          const lifecycle = JSON.parse(fs.readFileSync('artifacts/ash-lifecycle-production/ash-lifecycle-production-closure.json', 'utf8'));
           if (content.status !== 'PASS' || content.exact_source_content_verified !== true || content.application_tree_drift !== 'none') throw new Error('Exact production content observation held.');
           if (safeHarborWaveA.status !== 'PASS') throw new Error('Production Safe Harbor Gen3 Wave A observation held.');
           if (safeHarborWaveA.source_packet_commit !== content.source_packet_commit) throw new Error('Safe Harbor Wave A and Flow-Core observations disagree on the source packet.');
@@ -257,18 +267,27 @@ jobs:
             const authority = receipt.authority || {};
             if (authority.counts_as_human_evidence !== false || authority.authorizes_child_study !== false || authority.authorizes_release !== false || authority.closes_program !== false) throw new Error(`Production Ash Keep AIA3 ${browser} observer widened authority.`);
           }
+          if (lifecycle.status !== 'PASS') throw new Error(`Production Ash lifecycle journey held: ${lifecycle.status}`);
+          if (lifecycle.source_status !== 'DEPLOYED_OBSERVATION') throw new Error(`Unexpected lifecycle source status: ${lifecycle.source_status}`);
+          if (lifecycle.promotion_authorized !== false) throw new Error('Lifecycle observer widened promotion authority.');
+          if (lifecycle.threshold?.specialist_cache_preflight?.legacy_bypass !== true) throw new Error('Lifecycle observer did not prove exact legacy bypass.');
+          if (lifecycle.threshold?.specialist_cache_preflight?.aia3_route_required !== false) throw new Error('Lifecycle observer restored an AIA3 route requirement inside legacy presentation.');
+          if (lifecycle.network?.disallowed_non_read_requests?.length) throw new Error('Lifecycle observer emitted disallowed non-read requests.');
+          if (lifecycle.network?.provider_or_transport_requests?.length) throw new Error('Lifecycle observer reached provider or recipient transport.');
+          if (lifecycle.continuity?.lifecycle_state !== 'CONTINUITY_SEALED') throw new Error('Lifecycle observer did not reach continuity-sealed state.');
           NODE
 
       - name: Preserve production evidence
         if: always()
         uses: actions/upload-artifact@v4
         with:
-          name: safe-harbor-wave-a-wave-b-flowcore-and-ash-aia3-production-release-evidence
+          name: flowcore-ash-aia3-lifecycle-production-release-evidence
           path: |
             artifacts/safe-harbor-gen3-wave-a-production/
             artifacts/safe-harbor-gen3-wave-b-production/
             artifacts/flowcore-production-observation/
             artifacts/ash-aia3-production/
+            artifacts/ash-lifecycle-production/
           if-no-files-found: warn
           retention-days: 45
 
@@ -323,6 +342,7 @@ jobs:
           provenance_imitation_collision_reduction = PASS
           flowcore_browser_matrix = PASS
           ash_keep_aia3_task_matrix = PASS
+          ash_lifecycle = PASS
           ash_keep_fresh_client = PASS
           ash_keep_retired_aia2_eviction = PASS
           ash_keep_case_preservation = PASS
@@ -338,7 +358,7 @@ jobs:
           git_auto_deploy = disabled
           \`\`\`
 
-          The production observation closes the exact-source, Safe Harbor Gen3 Wave A and Wave B runtimes, Flow-Core runtime, Ash Keep AIA3 task-continuity, and retired-client delivery seams. It does not prove civil identity or universal authorship, promote Research Track R, authorize a future Safe Harbor release, satisfy the held adult empirical gate, authorize a child study, authorize public route promotion, or close the program. Sealed ⟐
+          The production observation closes the exact-source, Safe Harbor Gen3 Wave A and Wave B runtimes, Flow-Core runtime, Ash Keep AIA3 task-continuity, lifecycle continuity, and retired-client delivery seams. It does not prove civil identity or universal authorship, promote Research Track R, authorize a future Safe Harbor release, satisfy the held adult empirical gate, authorize a child study, authorize public route promotion, or close the program. Sealed ⟐
           EOF_COMMENT
           )"
 
