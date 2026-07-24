@@ -39,14 +39,18 @@ on:
       - 'app/dome-world/ash-a9-work-recompilation.js'
       - 'app/dome-world/ash-a10-choir-recompilation.js'
       - 'app/dome-world/ash-a11-capsule-recompilation.js'
+      - 'app/dome-world/ash-a12-command-rationalization.js'
       - 'app/dome-world/docs/ASH_KEEP_A7_IMPLEMENTATION_RECEIPT_V0_1.md'
       - 'app/dome-world/docs/ASH_KEEP_A8_IMPLEMENTATION_RECEIPT_V0_1.md'
       - 'app/dome-world/docs/ASH_KEEP_A9_IMPLEMENTATION_RECEIPT_V0_1.md'
       - 'app/dome-world/docs/ASH_KEEP_A10_IMPLEMENTATION_RECEIPT_V0_1.md'
       - 'app/dome-world/docs/ASH_KEEP_A11_IMPLEMENTATION_RECEIPT_V0_1.md'
+      - 'app/dome-world/docs/ASH_KEEP_A12_IMPLEMENTATION_RECEIPT_V0_1.md'
+      - 'app/dome-world/docs/ASH_KEEP_A12_A15_OPERATOR_AMENDMENT_V0_1.md'
       - 'scripts/ash-keep-local-closure-server.mjs'
       - 'scripts/ash-a2-a5-browser-probe.mjs'
       - 'scripts/ash-a7-a11-browser-probe.mjs'
+      - 'scripts/ash-a12-browser-probe.mjs'
       - 'tests/ash-a2-a5-whole-instrument.test.mjs'
       - 'tests/ash-a7-home-recompilation.test.mjs'
       - 'tests/ash-a8-case-map-recompilation.test.mjs'
@@ -54,6 +58,7 @@ on:
       - 'tests/ash-a10-choir-recompilation.test.mjs'
       - 'tests/ash-a11-capsule-recompilation.test.mjs'
       - 'tests/ash-a11-postclosure-cache-eviction.test.mjs'
+      - 'tests/ash-a12-command-rationalization.test.mjs'
       - 'tests/ash-keep-a10-choir-recompilation.test.mjs'
       - 'tests/ash-keep-a11-capsule-recompilation.test.mjs'
       - 'tests/ash-flowcore-live-field.test.mjs'
@@ -111,8 +116,10 @@ jobs:
           node --check app/dome-world/ash-a9-work-recompilation.js
           node --check app/dome-world/ash-a10-choir-recompilation.js
           node --check app/dome-world/ash-a11-capsule-recompilation.js
+          node --check app/dome-world/ash-a12-command-rationalization.js
           node --check scripts/ash-a2-a5-browser-probe.mjs
           node --check scripts/ash-a7-a11-browser-probe.mjs
+          node --check scripts/ash-a12-browser-probe.mjs
           node --check scripts/run-ash-flowcore-live-field-browser-probe.mjs
           node --check scripts/ash-research-ux-browser-probe.mjs
       - name: A2-A11, postclosure cache, live field, A1 first paint, reviewability, and Research contracts
@@ -127,6 +134,7 @@ jobs:
             node tests/ash-a10-choir-recompilation.test.mjs
             node tests/ash-a11-capsule-recompilation.test.mjs
             node tests/ash-a11-postclosure-cache-eviction.test.mjs
+            node tests/ash-a12-command-rationalization.test.mjs
             node tests/ash-flowcore-live-field.test.mjs
             node tests/ash-ingress-polish.test.mjs
             node tests/ash-aia3-mass-eviction.test.mjs
@@ -226,6 +234,12 @@ jobs:
           TD613_ASH_STAGES: A7,A8,A9,A10,A11
           TD613_ARTIFACT_DIR: artifacts/ash-a7-a11-${{ matrix.browser }}
         run: timeout --foreground --signal=INT --kill-after=15s 480s node scripts/ash-a7-a11-browser-probe.mjs
+      - name: Observe A12 command ownership, route delta, and dead-control closure
+        env:
+          TD613_BROWSER: ${{ matrix.browser }}
+          TD613_BASE_URL: http://127.0.0.1:6130
+          TD613_ARTIFACT_DIR: artifacts/ash-a12-${{ matrix.browser }}
+        run: timeout --foreground --signal=INT --kill-after=15s 420s node scripts/ash-a12-browser-probe.mjs
       - name: Observe ingress copy, zero-artifact Flow-Core, and Close Case return
         env:
           TD613_BROWSER: ${{ matrix.browser }}
@@ -262,6 +276,7 @@ jobs:
           path: |
             artifacts/ash-a2-a5-${{ matrix.browser }}/
             artifacts/ash-a7-a11-${{ matrix.browser }}/
+            artifacts/ash-a12-${{ matrix.browser }}/
             artifacts/ash-flowcore-field-${{ matrix.browser }}/
             artifacts/ash-ingress-polish-${{ matrix.browser }}/
             artifacts/ash-reviewability-${{ matrix.browser }}/
