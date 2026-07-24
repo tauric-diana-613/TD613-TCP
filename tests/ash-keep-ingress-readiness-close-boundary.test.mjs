@@ -34,7 +34,7 @@ assert.match(closeRepair, /ashCloseCaseListPosture/);
 const closeBody = closeRepair.match(/async function closeToMembrane\(\) \{[\s\S]*?\n\}/)?.[0] || '';
 assert.match(closeBody, /exposeMembrane\(\);/);
 assert.doesNotMatch(closeBody, /preserveReadiness:true/);
-const releaseEpoch = '20260723-a2-a5-release-v1';
+const releaseEpoch = '20260724-a11-postclosure-v1';
 assert.match(bridge, new RegExp(`ash-case-close-repair\\.js\\?v=${releaseEpoch}`));
 assert.match(bridge, new RegExp(`ash-session-boundary\\.js\\?v=${releaseEpoch}`));
 
