@@ -18,7 +18,7 @@ for (const marker of [
   'What remains uncertain',
   'Preview waits for a plain name',
   'Add deliberately',
-  'Object A —— choose relation ——> Object B',
+  'Direction: Object A → Object B.',
   'Evidence/source',
   'Commit relationship',
   'Relationship inspection',
