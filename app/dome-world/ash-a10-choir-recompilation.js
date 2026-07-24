@@ -11,6 +11,12 @@ export const ASH_A10_CHOIR_VERSION = 'td613.ash.a10-choir-recompilation/v0.1';
 const host = globalThis.window;
 const doc = globalThis.document;
 
+const ACTIVE_RECOMPILATION_EVENTS = Object.freeze([
+  'core-ready','case-opened','case-created','case-closed','core-mutated','profile-demo-hydrated',
+  'custody-bound','rebuild-kept','draft-kept','review-kept','release-kept','continuity-kept','capsule-opened',
+  'whole-instrument-refreshed','a6-affordance-refreshed'
+]);
+
 const RESIDUE_CLASSES = Object.freeze([
   Object.freeze({ name:'Shared', meaning:'Both singleton readings already expose the same bounded relation.' }),
   Object.freeze({ name:'Pair-emergent', meaning:'The relation appears only when the selected readings are combined.' }),
@@ -18,6 +24,44 @@ const RESIDUE_CLASSES = Object.freeze([
   Object.freeze({ name:'Missing', meaning:'A required source, route, comparison, or control is absent.' }),
   Object.freeze({ name:'Unresolved', meaning:'The available observations do not support lawful closure.' })
 ]);
+
+let ownershipSerial = 0;
+
+async function restoreActiveRecompilation(source) {
+  const workspace = doc?.documentElement?.dataset?.ashPremiumWorkspace;
+  if (!['work','choir'].includes(workspace)) return false;
+  const token = ++ownershipSerial;
+  await host?.__td613AshPremiumUI?.refresh?.();
+  if (token !== ownershipSerial) return false;
+  const stage = workspace === 'work' ? 'A9' : 'A10';
+  const compiler = host?.[`__td613Ash${stage}`];
+  if (typeof compiler?.refresh !== 'function') return false;
+  return compiler.refresh(`ACTIVE_RENDER_OWNER_${String(source || 'UNKNOWN').toUpperCase()}`);
+}
+
+function installActiveRecompilationOwner() {
+  if (!host || host.__td613AshA9A10ActiveRecompilationOwner) return false;
+  for (const type of ACTIVE_RECOMPILATION_EVENTS) {
+    host.addEventListener(`td613:ash:${type}`, () => queueMicrotask(() => restoreActiveRecompilation(`EVENT_${type}`)));
+  }
+  host.addEventListener('td613:ash:ux-workspace-opened', event => {
+    if (!['work','choir'].includes(event.detail?.workspace)) return;
+    queueMicrotask(() => restoreActiveRecompilation(`WORKSPACE_${event.detail.workspace}`));
+  });
+  host.__td613AshA9A10ActiveRecompilationOwner = Object.freeze({
+    version:'td613.ash.a9-a10-active-render-owner/v0.1',
+    work_owner:'A9',
+    choir_owner:'A10',
+    named_events:Object.freeze([...ACTIVE_RECOMPILATION_EVENTS]),
+    ambient_subtree_observer:false,
+    recurring_timer:false,
+    automatic_consequential_action:false,
+    authority_changed:false,
+    source_bytes_moved:false,
+    human_closure_required:true
+  });
+  return true;
+}
 
 function declaredRoutes(snapshot) {
   return snapshot?.routeMemory?.entries || [];
@@ -143,6 +187,8 @@ installAshStage({
   sync:renderAshA10Choir,
   navigationSelectors:'[data-premium-workspace="choir"],[data-route-workspace="choir"],[data-route-workspace="test"],#runPremiumChoir,#replayPremiumChoir'
 });
+
+installActiveRecompilationOwner();
 
 if (host) host.__td613AshA10Choir = Object.freeze({
   version:ASH_A10_CHOIR_VERSION,
