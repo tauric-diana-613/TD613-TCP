@@ -1,0 +1,198 @@
+name: Ash A12 stable profile focus repair
+
+on:
+  pull_request:
+    branches: [main]
+    types: [opened, reopened, synchronize]
+
+permissions:
+  contents: write
+  pull-requests: read
+
+concurrency:
+  group: ash-a12-stable-profile-focus
+  cancel-in-progress: false
+
+jobs:
+  repair-test-publish:
+    if: github.event.pull_request.head.ref == 'agent/ash-a12-command-rationalization'
+    runs-on: ubuntu-latest
+    timeout-minutes: 55
+    strategy:
+      fail-fast: false
+      matrix:
+        browser: [chromium, firefox, webkit]
+    steps:
+      - name: Check out exact A12 branch
+        uses: actions/checkout@v4
+        with:
+          ref: ${{ github.event.pull_request.head.ref }}
+          fetch-depth: 0
+      - name: Detect completed focus repair
+        id: state
+        run: |
+          if grep -q 'scheduleProfileFocus' app/dome-world/ash-a12-command-rationalization.js; then
+            echo 'repaired=true' >> "$GITHUB_OUTPUT"
+          else
+            echo 'repaired=false' >> "$GITHUB_OUTPUT"
+          fi
+      - name: Set up Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+          cache: npm
+      - name: Install dependencies
+        run: npm ci
+      - name: Apply bounded stable-focus repair
+        if: steps.state.outputs.repaired != 'true'
+        run: |
+          python - <<'PY'
+          from pathlib import Path
+
+          module = Path('app/dome-world/ash-a12-command-rationalization.js')
+          source = module.read_text()
+          before = """function openCasesAndProfiles() {
+  const launch = doc?.getElementById('launch');
+  const profile = doc?.getElementById('newProfile');
+  doc?.getElementById('premiumCommandSheet')?.close?.();
+  if (!launch || !profile) {
+    publish('Cases & Profiles held: the explicit selector is not available in this composition.', { result:'HELD_SELECTOR_UNAVAILABLE' });
+    return false;
+  }
+  launch.classList.remove('hidden');
+  launch.setAttribute('aria-hidden', 'false');
+  profile.focus?.({ preventScroll:false });
+  profile.scrollIntoView?.({ block:'center', behavior:host.matchMedia?.('(prefers-reduced-motion: reduce)').matches ? 'auto' : 'smooth' });
+  publish('Cases & Profiles opened. Selection remains explicit; no profile was inferred or changed.', { result:'SELECTOR_OPENED' });
+  return true;
+}
+"""
+          after = """function scheduleProfileFocus(profile) {
+  const focus = () => {
+    if (!profile?.isConnected) return false;
+    profile.focus?.({ preventScroll:false });
+    profile.scrollIntoView?.({ block:'center', behavior:host.matchMedia?.('(prefers-reduced-motion: reduce)').matches ? 'auto' : 'smooth' });
+    doc.documentElement.dataset.ashA12ProfileSelector = doc.activeElement === profile ? 'FOCUSED' : 'OPEN';
+    return doc.activeElement === profile;
+  };
+  queueMicrotask(() => {
+    if (typeof host.requestAnimationFrame === 'function') host.requestAnimationFrame(() => focus());
+    else focus();
+  });
+}
+
+function openCasesAndProfiles() {
+  const launch = doc?.getElementById('launch');
+  const profile = doc?.getElementById('newProfile');
+  doc?.getElementById('premiumCommandSheet')?.close?.();
+  if (!launch || !profile) {
+    publish('Cases & Profiles held: the explicit selector is not available in this composition.', { result:'HELD_SELECTOR_UNAVAILABLE' });
+    return false;
+  }
+  launch.classList.remove('hidden');
+  launch.setAttribute('aria-hidden', 'false');
+  doc.documentElement.dataset.ashA12ProfileSelector = 'OPEN';
+  scheduleProfileFocus(profile);
+  publish('Cases & Profiles opened. Selection remains explicit; no profile was inferred or changed.', { result:'SELECTOR_OPENED' });
+  return true;
+}
+"""
+          if source.count(before) != 1:
+              raise SystemExit(f'Expected one profile-open function, observed {source.count(before)}')
+          module.write_text(source.replace(before, after))
+
+          test = Path('tests/ash-a12-command-rationalization.test.mjs')
+          text = test.read_text()
+          additions = [
+              "assert.match(moduleSource, /function scheduleProfileFocus\\(profile\\)/);",
+              "assert.match(moduleSource, /requestAnimationFrame/);",
+              "assert.match(moduleSource, /ashA12ProfileSelector/);",
+          ]
+          anchor = "assert.match(moduleSource, /data-command-action=\\\"profile\\\"/);"
+          if anchor not in text:
+              raise SystemExit('A12 stable-selector contract anchor missing')
+          for addition in additions:
+              if addition not in text:
+                  text = text.replace(anchor, anchor + '\n' + addition)
+                  anchor = addition
+          test.write_text(text)
+
+          probe = Path('scripts/ash-a12-browser-probe.mjs')
+          text = probe.read_text()
+          before_probe = """  await page.locator('[data-a12-action=\"profile\"]').click();
+  await page.waitForFunction(() => !document.getElementById('launch')?.classList.contains('hidden') && document.activeElement?.id === 'newProfile');
+  const routeDelta = await page.locator('.ash-route-delta').innerText();
+"""
+          after_probe = """  await page.locator('[data-a12-action=\"profile\"]').click();
+  await page.waitForFunction(() => !document.getElementById('launch')?.classList.contains('hidden')
+    && document.getElementById('launch')?.getAttribute('aria-hidden') === 'false');
+  await page.waitForFunction(() => document.activeElement?.id === 'newProfile'
+    && document.documentElement.dataset.ashA12ProfileSelector === 'FOCUSED');
+  const routeDelta = await page.locator('.ash-route-delta').innerText();
+"""
+          if text.count(before_probe) != 1:
+              raise SystemExit(f'Expected one A12 probe focus wait, observed {text.count(before_probe)}')
+          probe.write_text(text.replace(before_probe, after_probe))
+          PY
+      - name: Validate static contracts
+        run: |
+          set -euo pipefail
+          node --check app/dome-world/ash-a12-command-rationalization.js
+          node --check scripts/ash-a12-browser-probe.mjs
+          node tests/ash-a12-command-rationalization.test.mjs
+          node tests/ash-a2-a5-whole-instrument.test.mjs
+          node tests/ash-a9-work-recompilation.test.mjs
+          node tests/ash-a10-choir-recompilation.test.mjs
+          node tests/ash-a11-capsule-recompilation.test.mjs
+          node tests/tcp-smoke.test.mjs
+          git diff --check
+      - name: Install browser witness runtime
+        run: |
+          npm install --no-save --package-lock=false playwright@1.53.2
+          npx playwright install --with-deps ${{ matrix.browser }}
+      - name: Start bounded local Ash runtime
+        run: |
+          mkdir -p artifacts
+          node scripts/ash-keep-local-closure-server.mjs 6130 > artifacts/a12-focus-server-${{ matrix.browser }}.log 2>&1 &
+          echo $! > artifacts/a12-focus-server-${{ matrix.browser }}.pid
+          for attempt in $(seq 1 50); do
+            if curl -fsS --max-time 2 http://127.0.0.1:6130/__ash_keep_closure/readiness > artifacts/a12-focus-readiness-${{ matrix.browser }}.json; then
+              exit 0
+            fi
+            sleep 1
+          done
+          cat artifacts/a12-focus-server-${{ matrix.browser }}.log || true
+          exit 1
+      - name: Run A12 stable-focus witness
+        env:
+          TD613_BROWSER: ${{ matrix.browser }}
+          TD613_BASE_URL: http://127.0.0.1:6130
+          TD613_ARTIFACT_DIR: artifacts/ash-a12-focus-${{ matrix.browser }}
+        run: timeout --foreground --signal=INT --kill-after=15s 540s node scripts/ash-a12-browser-probe.mjs
+      - name: Stop bounded local runtime
+        if: always()
+        run: test -f artifacts/a12-focus-server-${{ matrix.browser }}.pid && kill "$(cat artifacts/a12-focus-server-${{ matrix.browser }}.pid)" || true
+      - name: Preserve focus evidence
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: ash-a12-stable-focus-${{ matrix.browser }}-evidence
+          path: |
+            artifacts/ash-a12-focus-${{ matrix.browser }}/
+            artifacts/a12-focus-server-${{ matrix.browser }}.log
+            artifacts/a12-focus-readiness-${{ matrix.browser }}.json
+          if-no-files-found: warn
+          retention-days: 45
+      - name: Commit tested focus repair once
+        if: steps.state.outputs.repaired != 'true' && matrix.browser == 'chromium'
+        run: |
+          set -euo pipefail
+          git config user.name 'td613-ash-a12-focus-bot'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add app/dome-world/ash-a12-command-rationalization.js tests/ash-a12-command-rationalization.test.mjs scripts/ash-a12-browser-probe.mjs
+          git diff --cached --check
+          git commit -m 'Stabilize A12 profile selector focus'
+          git push origin HEAD:"${{ github.event.pull_request.head.ref }}"
+      - name: Confirm quiescence
+        if: steps.state.outputs.repaired == 'true'
+        run: echo 'A12 stable profile focus already repaired.'
