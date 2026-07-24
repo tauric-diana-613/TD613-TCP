@@ -15,8 +15,6 @@ const POINTER_KEY = 'td613.ash-keep.current-case';
 const SESSION_KEY = 'td613.ash.session.epoch';
 const MODULE_MARKER_KEY = 'td613.ash.cache-flush.aia3.epoch';
 const PREFLIGHT_MARKER_KEY = 'td613.ash.cache-preflight.epoch';
-const DB_NAME = 'td613-ash-keep';
-const CASE_STORE = 'cases';
 const STALE_CACHE = `td613-a10-stale-${browserName}`;
 
 await fs.mkdir(artifactDir, { recursive:true });
@@ -26,29 +24,6 @@ const page = await context.newPage();
 const consoleErrors = [];
 page.on('console', message => { if (message.type() === 'error') consoleErrors.push(message.text()); });
 page.on('pageerror', error => consoleErrors.push(String(error?.stack || error)));
-
-async function readCaseRecord(caseId) {
-  return page.evaluate(async ({ dbName, storeName, caseId }) => new Promise((resolve, reject) => {
-    const request = indexedDB.open(dbName);
-    request.onerror = () => reject(request.error);
-    request.onsuccess = () => {
-      const db = request.result;
-      if (!db.objectStoreNames.contains(storeName)) {
-        db.close();
-        resolve(null);
-        return;
-      }
-      const transaction = db.transaction(storeName, 'readonly');
-      const get = transaction.objectStore(storeName).get(caseId);
-      get.onerror = () => reject(get.error);
-      get.onsuccess = () => {
-        const value = get.result || null;
-        db.close();
-        resolve(value);
-      };
-    };
-  }), { dbName:DB_NAME, storeName:CASE_STORE, caseId });
-}
 
 async function createNativeBlankCase() {
   await page.goto(`${baseUrl}/dome-world/ash-threshold.html?presentation=legacy`, { waitUntil:'domcontentloaded', timeout:90_000 });
@@ -72,8 +47,7 @@ async function createNativeBlankCase() {
     session_epoch:localStorage.getItem(sessionKey),
     current:window.__td613AshKeep?.current?.() || null
   }), { pointerKey:POINTER_KEY, sessionKey:SESSION_KEY });
-  seeded.indexeddb_record = await readCaseRecord(seeded.pointer);
-  if (!seeded.indexeddb_record?.case_map_digest) throw new Error('Native blank case did not produce an IndexedDB Case Map record.');
+  if (!seeded.current?.case_map_digest) throw new Error('Native blank case did not expose a persisted Case Map digest.');
   if (!seeded.session_epoch) throw new Error('Native blank case did not establish a session epoch.');
   return seeded;
 }
@@ -88,7 +62,7 @@ async function seedStaleDelivery() {
   }, { a2a5:A2_A5_EPOCH, moduleKey:MODULE_MARKER_KEY, preflightKey:PREFLIGHT_MARKER_KEY, staleCache:STALE_CACHE });
 }
 
-async function observe(label, caseId) {
+async function observe(label) {
   await page.waitForFunction(expected => {
     const receipt = window.__td613AshAia3PreflightReceipt;
     return receipt?.epoch === expected
@@ -116,7 +90,6 @@ async function observe(label, caseId) {
       session_open:document.documentElement.dataset.ashSessionOpen || null
     };
   }, { pointerKey:POINTER_KEY, sessionKey:SESSION_KEY, moduleKey:MODULE_MARKER_KEY, preflightKey:PREFLIGHT_MARKER_KEY, staleCache:STALE_CACHE });
-  observation.indexeddb_record = await readCaseRecord(caseId);
   await fs.writeFile(path.join(artifactDir, `${browserName}-${label}.json`), JSON.stringify(observation, null, 2));
   return observation;
 }
@@ -128,29 +101,29 @@ try {
   await seedStaleDelivery();
 
   await page.goto(`${baseUrl}/dome-world/ash-threshold.html`, { waitUntil:'domcontentloaded', timeout:120_000 });
-  const first = await observe('first-eviction', seeded.pointer);
+  const first = await observe('first-eviction');
   if (first.preflight?.performed !== true) throw new Error(`First A11 preflight did not perform eviction: ${JSON.stringify(first.preflight)}`);
   if (first.preflight?.indexeddb_preserved !== true || first.preflight?.case_data_preserved !== true) throw new Error('First A11 preflight did not preserve custody substrate.');
   if (first.preflight?.local_case_pointer_preserved !== true || first.pointer !== seeded.pointer) throw new Error('A11 preflight changed the active case pointer.');
   if (first.preflight?.session_epoch_preserved_or_migrated !== true || first.session_epoch !== seeded.session_epoch) throw new Error('A11 preflight did not preserve the session epoch.');
   if (first.current?.case_id !== seeded.pointer) throw new Error('Ash did not reopen the native blank case after A11 preflight.');
-  if (first.indexeddb_record?.case_map_digest !== seeded.indexeddb_record.case_map_digest) throw new Error('A11 preflight changed or removed the IndexedDB Case Map record.');
+  if (first.current?.case_map_digest !== seeded.current.case_map_digest) throw new Error('A11 preflight did not rehydrate the same persisted Case Map digest.');
   if (first.module_marker !== A11_EPOCH || first.preflight_marker !== A11_EPOCH) throw new Error('A11 preflight markers did not converge.');
   if (first.stale_cache_present) throw new Error('Stale A10 Cache Storage survived A11 preflight.');
   if (first.url !== '/dome-world/ash-threshold.html') throw new Error(`A11 preflight exposed a transition URL: ${first.url}`);
 
   await page.reload({ waitUntil:'domcontentloaded', timeout:120_000 });
-  const second = await observe('idempotent-return', seeded.pointer);
+  const second = await observe('idempotent-return');
   if (second.pointer !== seeded.pointer || second.current?.case_id !== seeded.pointer) throw new Error('Idempotent A11 return changed the active case.');
   if (second.session_epoch !== seeded.session_epoch) throw new Error('Idempotent A11 return changed the session epoch.');
-  if (second.indexeddb_record?.case_map_digest !== seeded.indexeddb_record.case_map_digest) throw new Error('Idempotent A11 return changed the IndexedDB Case Map record.');
+  if (second.current?.case_map_digest !== seeded.current.case_map_digest) throw new Error('Idempotent A11 return did not rehydrate the same persisted Case Map digest.');
   if (second.module?.performed !== false || second.module?.a11_predeployment_preflight_current !== true) throw new Error(`A11 module did not recognize the current preflight epoch: ${JSON.stringify(second.module)}`);
   if (second.stale_cache_present) throw new Error('Stale A10 cache reappeared after idempotent return.');
   if (consoleErrors.length) throw new Error(`Cache-assay console errors observed: ${consoleErrors.join(' | ')}`);
 
   report = {
     ok:true,
-    schema:'td613.ash.a11-predeployment-cache-browser-receipt/v0.3-native-case-fixture',
+    schema:'td613.ash.a11-predeployment-cache-browser-receipt/v0.4-native-rehydration',
     browser:browserName,
     a11_epoch:A11_EPOCH,
     a11_asset_epoch:A11_ASSET_EPOCH,
@@ -171,7 +144,7 @@ try {
 } catch (error) {
   const failure = {
     ok:false,
-    schema:'td613.ash.a11-predeployment-cache-browser-failure/v0.3-native-case-fixture',
+    schema:'td613.ash.a11-predeployment-cache-browser-failure/v0.4-native-rehydration',
     browser:browserName,
     error:String(error?.stack || error),
     console_errors:consoleErrors,
