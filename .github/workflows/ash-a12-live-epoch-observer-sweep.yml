@@ -1,0 +1,127 @@
+name: Ash A12 live-epoch observer sweep
+
+on:
+  pull_request:
+    branches: [main]
+    types: [opened, reopened, synchronize]
+
+permissions:
+  contents: write
+  pull-requests: read
+
+concurrency:
+  group: ash-a12-live-epoch-observer-sweep
+  cancel-in-progress: false
+
+jobs:
+  sweep-test-publish:
+    if: github.event.pull_request.head.ref == 'agent/ash-a12-command-rationalization'
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    steps:
+      - name: Check out exact A12 branch
+        uses: actions/checkout@v4
+        with:
+          ref: ${{ github.event.pull_request.head.ref }}
+          fetch-depth: 0
+      - name: Set up Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+          cache: npm
+      - name: Install dependencies
+        run: npm ci
+      - name: Advance only live asset observers
+        id: sweep
+        run: |
+          python - <<'PY'
+          from pathlib import Path
+
+          prior = '20260724-a11-postclosure-v1'
+          current = '20260724-a12-release-v1'
+          paths = [
+              'tests/ash-reviewability.test.mjs',
+              'tests/ash-investigation-guidance.test.mjs',
+              'tests/ash-a9-work-recompilation.test.mjs',
+              'tests/ash-four-profile-pedagogy.test.mjs',
+              'tests/ash-ingress-polish.test.mjs',
+              'tests/ash-legal-control-state.test.mjs',
+              'tests/ash-live-ingress-demos-cache.test.mjs',
+              'tests/ash-research-ux-rehydration.test.mjs',
+              'tests/ash-a2-a5-whole-instrument.test.mjs',
+              'tests/ash-flowcore-live-field.test.mjs',
+              'tests/ash-a10-choir-recompilation.test.mjs',
+              'tests/ash-a11-capsule-recompilation.test.mjs',
+              'tests/product-architecture/shell.test.mjs',
+              'tests/ash-keep-live-aia-surface.test.mjs',
+              'tests/ash-keep-ingress-readiness-close-boundary.test.mjs',
+          ]
+          changed = []
+          for raw in paths:
+              path = Path(raw)
+              text = path.read_text()
+              revised = text.replace(prior, current)
+              if revised != text:
+                  path.write_text(revised)
+                  changed.append(raw)
+          for raw in paths:
+              if prior in Path(raw).read_text():
+                  raise SystemExit(f'Live observer retained prior asset epoch: {raw}')
+          mass_epoch = 'td613.ash.cache-flush/2026-07-24-a11-postclosure-v1'
+          for raw in [
+              'api/dome-world-shell.js',
+              'app/dome-world/ash-cache-eviction-aia3.js',
+              'app/dome-world/ash-cache-flush.js',
+              'app/safe-harbor/ash-keep-recovery.html',
+          ]:
+              if mass_epoch not in Path(raw).read_text():
+                  raise SystemExit(f'Retained A11 mass-eviction epoch missing from {raw}')
+          Path('/tmp/ash-a12-observer-changed.txt').write_text('\n'.join(changed))
+          print('\n'.join(changed) or 'Observer sweep already complete.')
+          PY
+          if test -s /tmp/ash-a12-observer-changed.txt; then
+            echo 'changed=true' >> "$GITHUB_OUTPUT"
+          else
+            echo 'changed=false' >> "$GITHUB_OUTPUT"
+          fi
+      - name: Validate complete A12 observer chain
+        if: steps.sweep.outputs.changed == 'true'
+        run: |
+          set -euo pipefail
+          node tests/ash-a2-a5-whole-instrument.test.mjs
+          node tests/ash-a7-home-recompilation.test.mjs
+          node tests/ash-a8-case-map-recompilation.test.mjs
+          node tests/ash-a9-work-recompilation.test.mjs
+          node tests/ash-a10-choir-recompilation.test.mjs
+          node tests/ash-a11-capsule-recompilation.test.mjs
+          node tests/ash-a11-postclosure-cache-eviction.test.mjs
+          node tests/ash-a12-command-rationalization.test.mjs
+          node tests/ash-flowcore-live-field.test.mjs
+          node tests/ash-ingress-polish.test.mjs
+          node tests/ash-aia3-mass-eviction.test.mjs
+          node tests/ash-live-ingress-demos-cache.test.mjs
+          node tests/product-architecture/shell.test.mjs
+          node tests/ash-reviewability.test.mjs
+          node tests/ash-research-ux-rehydration.test.mjs
+          node tests/ash-final-rehydration-boundaries.test.mjs
+          node --test tests/ash-keep-live-aia-surface.test.mjs
+          node tests/ash-keep-ingress-readiness-close-boundary.test.mjs
+          node tests/ash-investigation-guidance.test.mjs
+          node tests/ash-four-profile-pedagogy.test.mjs
+          node tests/ash-legal-control-state.test.mjs
+          node tests/vercel-deploy-hygiene.test.mjs
+          node tests/tcp-smoke.test.mjs
+          git diff --check
+      - name: Commit tested observer sweep
+        if: steps.sweep.outputs.changed == 'true'
+        run: |
+          set -euo pipefail
+          git config user.name 'td613-ash-a12-observer-bot'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add tests
+          git diff --cached --check
+          git commit -m 'Test A12 live asset observers'
+          git push origin HEAD:"${{ github.event.pull_request.head.ref }}"
+      - name: Confirm quiescence
+        if: steps.sweep.outputs.changed != 'true'
+        run: echo 'A12 live-asset observer sweep already quiescent.'
