@@ -1,4 +1,4 @@
-export const ASH_A7_A11_RECOMPILER_CORE_VERSION = 'td613.ash.a7-a11-recompiler-core/v0.1';
+export const ASH_A7_A11_RECOMPILER_CORE_VERSION = 'td613.ash.a7-a11-recompiler-core/v0.2';
 
 const host = globalThis.window;
 const doc = globalThis.document;
@@ -199,6 +199,56 @@ if (host && !host.__td613AshA9WorkspaceOwner) {
     admission_event:'td613:ash:canonical-module-graph-ready',
     stale_shell_replaced:true,
     active_stage_form_deferred:true,
+    automatic_consequential_action:false,
+    authority_changed:false,
+    source_bytes_moved:false,
+    human_closure_required:true
+  });
+}
+
+function publishA10LoadHold(error) {
+  host?.dispatchEvent?.(new CustomEvent('td613:ash:a10-load-held', {
+    detail:Object.freeze({
+      schema:'td613.ash.a10-load-hold/v0.1',
+      message:String(error?.message || error),
+      authority_changed:false,
+      source_bytes_moved:false,
+      human_closure_required:true
+    })
+  }));
+  return null;
+}
+
+function loadA10Module() {
+  if (!host) return Promise.resolve(null);
+  if (!host.__td613AshA10ModulePromise) {
+    host.__td613AshA10ModulePromise = import('./ash-a10-choir-recompilation.js?v=20260723-a10-v1').catch(publishA10LoadHold);
+  }
+  return host.__td613AshA10ModulePromise;
+}
+
+if (host) {
+  if (doc?.documentElement?.dataset?.ashModuleGraph === 'ready') queueMicrotask(loadA10Module);
+  else host.addEventListener('td613:ash:canonical-module-graph-ready', () => queueMicrotask(loadA10Module), { once:true });
+}
+
+if (host && !host.__td613AshA10WorkspaceOwner) {
+  const refreshSettledA10Choir = event => {
+    if (event.detail?.workspace !== 'choir') return;
+    queueMicrotask(async () => {
+      await loadA10Module();
+      await host.__td613AshA10?.refresh?.('UX_WORKSPACE_OPENED');
+    });
+  };
+  host.addEventListener('td613:ash:ux-workspace-opened', refreshSettledA10Choir);
+  host.__td613AshA10WorkspaceOwner = Object.freeze({
+    version:'td613.ash.a10-workspace-owner/v0.1',
+    event:'td613:ash:ux-workspace-opened',
+    admission_event:'td613:ash:canonical-module-graph-ready',
+    native_choir_preserved:true,
+    active_stage_form_deferred:true,
+    automatic_assay:false,
+    automatic_rebuild_test:false,
     automatic_consequential_action:false,
     authority_changed:false,
     source_bytes_moved:false,
