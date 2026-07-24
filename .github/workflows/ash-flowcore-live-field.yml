@@ -53,6 +53,7 @@ on:
       - 'tests/ash-a9-work-recompilation.test.mjs'
       - 'tests/ash-a10-choir-recompilation.test.mjs'
       - 'tests/ash-a11-capsule-recompilation.test.mjs'
+      - 'tests/ash-a11-postclosure-cache-eviction.test.mjs'
       - 'tests/ash-keep-a10-choir-recompilation.test.mjs'
       - 'tests/ash-keep-a11-capsule-recompilation.test.mjs'
       - 'tests/ash-flowcore-live-field.test.mjs'
@@ -114,7 +115,7 @@ jobs:
           node --check scripts/ash-a7-a11-browser-probe.mjs
           node --check scripts/run-ash-flowcore-live-field-browser-probe.mjs
           node --check scripts/ash-research-ux-browser-probe.mjs
-      - name: A2-A11, live field, A1 first paint, reviewability, and Research contracts
+      - name: A2-A11, postclosure cache, live field, A1 first paint, reviewability, and Research contracts
         run: |
           mkdir -p artifacts
           set -euo pipefail
@@ -125,6 +126,7 @@ jobs:
             node tests/ash-a9-work-recompilation.test.mjs
             node tests/ash-a10-choir-recompilation.test.mjs
             node tests/ash-a11-capsule-recompilation.test.mjs
+            node tests/ash-a11-postclosure-cache-eviction.test.mjs
             node tests/ash-flowcore-live-field.test.mjs
             node tests/ash-ingress-polish.test.mjs
             node tests/ash-aia3-mass-eviction.test.mjs
