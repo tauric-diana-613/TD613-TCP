@@ -92,9 +92,9 @@ const contentionReplacement = `  const contentionEvent = 'td613:ash:probe-conten
     }, secondStartedAt, { timeout:35000 });
     secondRecord = await handle.jsonValue();
   } catch (error) {
-    throw new Error(`Cross-tab lock witness exceeded 35000ms. ${error?.message || error}`);
+    throw new Error('Cross-tab lock witness exceeded 35000ms. ' + String(error?.message || error));
   }
-  if (secondRecord.state === 'REJECTED') throw new Error(`Second-tab post-release Ash operation rejected: ${secondRecord.error}`);
+  if (secondRecord.state === 'REJECTED') throw new Error('Second-tab post-release Ash operation rejected: ' + secondRecord.error);
   const secondResult = secondRecord.result;
   await secondPage.evaluate(key => {
     localStorage.removeItem(key);
