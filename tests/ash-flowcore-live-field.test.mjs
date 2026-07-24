@@ -122,7 +122,7 @@ assert.match(ingressSpacing, /overlap_px:collision\.area > 0 \? collision\.heigh
 assert.match(ingressSpacing, /ordered:title\.nextElementSibling === recovery/);
 assert.doesNotMatch(ingressSpacing, /setInterval\s*\(|requestAnimationFrame\s*\(/);
 
-const RELEASE_EPOCH = '20260723-a2-a5-release-v1';
+const RELEASE_EPOCH = '20260724-a11-postclosure-v1';
 for (const module of [
   'ash-session-boundary',
   'ash-ingress-copy-spacing',
