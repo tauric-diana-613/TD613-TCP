@@ -29,15 +29,18 @@ assert.deepEqual(Object.keys(ASH_APEQ_PAIA_PROFILE_SPECS),['political_campaign',
 
 const bridge=fs.readFileSync('app/dome-world/ash-workspace-bridge.js','utf8');
 const profileWrapper=fs.readFileSync('app/dome-world/ash-profile-demo-hydration.js','utf8');
-const investigationWrapper=fs.readFileSync('app/dome-world/ash-investigation-demo-hydration.js','utf8');
+const registry=fs.readFileSync('app/dome-world/ash-demo-registry.js','utf8');
 const runtime=fs.readFileSync('app/dome-world/ash-apeq-paia-profile-demos.js','utf8');
-assert.match(bridge,/ash-profile-demo-hydration\.js/);
-assert.match(bridge,/ash-investigation-demo-hydration\.js/);
-assert.match(profileWrapper,/ash-apeq-paia-profile-demos\.js/);
-assert.match(investigationWrapper,/ash-apeq-paia-profile-demos\.js/);
-assert.doesNotMatch(profileWrapper+investigationWrapper+runtime,/fixtures\/ash-keep-demo-political-campaign|fixtures\/ash-keep-demo-fundraiser|ash-investigation-nodes-/);
+assert.match(bridge,/ash-profile-demo-hydration\.js\?v=20260724-a13-release-v1/);
+assert.doesNotMatch(bridge,/^import .*ash-investigation-demo-hydration\.js/m);
+assert.doesNotMatch(bridge,/^import .*ash-research-demo-hydration\.js/m);
+assert.match(profileWrapper,/ash-demo-registry\.js\?v=20260724-a13-release-v1/);
+assert.match(registry,/ash-apeq-paia-profile-demos\.js\?v=\$\{ASH_DEMO_ASSET_EPOCH\}/);
+assert.match(registry,/stopImmediatePropagation/);
+assert.match(registry,/control_owner:'ASH_DEMO_REGISTRY'/);
+assert.doesNotMatch(profileWrapper+registry+runtime,/fixtures\/ash-keep-demo-political-campaign|fixtures\/ash-keep-demo-fundraiser|ash-investigation-nodes-/);
 assert.doesNotMatch(runtime,/fetch\(/,'Method hydration must not fetch legacy fixtures.');
-for(const token of ['Select a profile…','stopImmediatePropagation','Environment Profile','Joining-key registry','Heterostratigraphic field','PA2 ceiling'])assert(runtime.includes(token),`Runtime omitted ${token}.`);
+for(const token of ['Select a profile…','Environment Profile','Joining-key registry','Heterostratigraphic field','PA2 ceiling'])assert(runtime.includes(token),`Runtime omitted ${token}.`);
 
 const contracts={
   political_campaign:{title:/Harbor City Mayoral Campaign/,route:'route_reporter_response',protected:/priority call-time queue/,ceiling:/NO_VOTER_INTENT_ATTRIBUTION_OR_ELECTION_PREDICTION/},
