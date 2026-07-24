@@ -35,7 +35,7 @@ Other Ash profiles, including Organizing and Unpublished Work, remain available 
 
 The preflight stops the older profile-specific control listeners before they can compete. It delegates the explicit human gesture to `window.__td613AshDemoRegistry` and performs no automatic consequential Ash action.
 
-The Research and Legal control-state sidecars are removed from the live workspace composition. Their fixture and hydration modules remain available beneath the registry.
+The Research and Legal control-state sidecars are removed from the live workspace composition. Their fixture and hydration modules remain available beneath the registry through one normalized module identity.
 
 ### 2.2 Registry contract
 
@@ -80,7 +80,7 @@ The retained workflow now carries:
 - one constitutional-convergence observation;
 - the exact-source read-only AIA3 and lifecycle production observer.
 
-Superseded PR heads cancel in progress. Browser jobs no longer install three parallel witness environments. The durable repository workflow ceiling is reduced from twelve to eight.
+Superseded PR heads cancel in progress. Browser jobs no longer install three parallel witness environments. The durable repository workflow ceiling is reduced from twelve to nine. The ninth workflow, `calibration.yml`, remains distinct because it is manual and self-hosted rather than part of hosted Ash validation or deployment plumbing.
 
 ## 4. Cache and release posture
 
@@ -118,6 +118,7 @@ authority may cross stations: false
 
 - `tests/ash-a13-unified-demo-registry.test.mjs`
 - `tests/workflow-estate.test.mjs`
+- `tests/vercel-operator-release-gate.test.mjs`
 - inherited Ash A2–A12, lifecycle, custody, release, and product-architecture contracts.
 
 ### Browser
