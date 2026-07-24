@@ -90,10 +90,22 @@ async function inspectA8(page) {
   await returnToMap(page);
   if (await page.locator('#ashA8ObjectName').inputValue() !== witnessName) throw new Error('A8 object draft did not survive the Custody hold and explicit Map return.');
 
-  const relationOptions = await page.locator('#ashA8RelationFrom option').evaluateAll(options => options.map(option => option.value).filter(Boolean));
-  if (relationOptions.length < 2) throw new Error('A8 requires two existing objects to test the constitutional relation hold.');
-  await page.locator('#ashA8RelationFrom').selectOption(relationOptions[0]);
-  await page.locator('#ashA8RelationTo').selectOption(relationOptions[1]);
+  const relationOptions = await page.evaluate(() => {
+    const values = selector => [...document.querySelectorAll(`${selector} option`)].map(option => option.value).filter(Boolean);
+    const from = [...new Set(values('#ashA8RelationFrom'))];
+    const to = new Set(values('#ashA8RelationTo'));
+    return from.filter(value => to.has(value));
+  });
+  if (relationOptions.length < 2) throw new Error('A8 requires two distinct existing objects to test the constitutional relation hold.');
+  const [fromValue, toValue] = relationOptions;
+  if (fromValue === toValue) throw new Error('A8 witness selected the same object on both sides.');
+  await page.locator('#ashA8RelationFrom').selectOption(fromValue);
+  await page.locator('#ashA8RelationTo').selectOption(toValue);
+  await page.waitForFunction(([from, to]) => {
+    const left = document.getElementById('ashA8RelationFrom')?.value;
+    const right = document.getElementById('ashA8RelationTo')?.value;
+    return left === from && right === to && left !== right;
+  }, [fromValue, toValue], { timeout:30_000 });
   await page.locator('#ashA8RelationType').fill('browser-witness-supports');
   await page.locator('#ashA8RelationEvidence').fill('browser-local synthetic fixture');
   await page.locator('#ashA8RelationUncertain').fill('Relation remains open to review.');
@@ -139,9 +151,12 @@ async function inspectStage(page, stage) {
   if (stage === 'A8') await inspectA8(page);
   if (stage === 'A9') {
     await page.locator('[data-premium-workspace="work"]').click();
-    await page.waitForSelector('#ashA9WorkRecompilation', { state:'visible', timeout:90_000 });
-    const text = await page.locator('#ashA9WorkRecompilation').innerText();
-    for (const phrase of ['Do now','Prepare','Waiting / held','Completed / receipted','Human approval']) if (!text.includes(phrase)) throw new Error(`A9 missing ${phrase}`);
+    await page.waitForFunction(() => {
+      const root = document.getElementById('ashA9WorkRecompilation');
+      const text = root?.textContent || '';
+      return Boolean(root?.isConnected)
+        && ['Do now','Prepare','Waiting / held','Completed / receipted','Human approval'].every(phrase => text.includes(phrase));
+    }, null, { timeout:90_000 });
   }
   if (stage === 'A10') {
     await page.locator('[data-premium-workspace="choir"]').click();
@@ -168,18 +183,28 @@ async function preserveFailure(page, label, consoleErrors, error) {
     lifecycle:document.body.dataset.ashLifecycle || null,
     a7_flag:document.documentElement.dataset.ashA7Recompiled || null,
     a8_flag:document.documentElement.dataset.ashA8Recompiled || null,
+    a9_flag:document.documentElement.dataset.ashA9Recompiled || null,
     a7_api:window.__td613AshA7Home?.version || null,
     a8_api:window.__td613AshA8CaseMap?.version || null,
+    a9_api:window.__td613AshA9Work?.version || null,
+    a9_owner:window.__td613AshA9WorkspaceOwner?.version || null,
     premium_api:window.__td613AshPremiumUI?.version || null,
     snapshot:window.__td613AshPremiumUI?.snapshot?.() || null,
     home_dataset:document.getElementById('premiumHomeBody')?.dataset?.ashA7Home || null,
     home_html:document.getElementById('premiumHomeBody')?.innerHTML || null,
     home_text:document.getElementById('premiumHomeBody')?.textContent || null,
+    work_dataset:document.getElementById('premiumWorkBody')?.dataset?.ashA9Work || null,
+    work_html:document.getElementById('premiumWorkBody')?.innerHTML || null,
+    work_text:document.getElementById('premiumWorkBody')?.textContent || null,
     priority_present:Boolean(document.getElementById('ashA7CurrentPriority')),
     continuity_present:Boolean(document.getElementById('ashA7Continuity')),
     ledger_present:Boolean(document.getElementById('ashA7RouteLedger')),
     a8_workshop_present:Boolean(document.getElementById('ashA8RelationWorkshop')),
     a8_status:document.getElementById('ashA8Status')?.textContent || null,
+    a8_relation_from:document.getElementById('ashA8RelationFrom')?.value || null,
+    a8_relation_to:document.getElementById('ashA8RelationTo')?.value || null,
+    a9_root_present:Boolean(document.getElementById('ashA9WorkRecompilation')),
+    a9_status:document.getElementById('ashA9Status')?.textContent || null,
     accessible_table_active:document.getElementById('accessibleTable')?.classList.contains('active') || false,
     primary_count:document.querySelectorAll('#ashA7CurrentPriority .ash-stage-primary-action').length
   }));

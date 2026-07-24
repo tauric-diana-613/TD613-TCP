@@ -116,6 +116,20 @@ export function installAshStage({ stage, sync, navigationSelectors = '' }) {
   ensureA7A11Styles();
   let serial = 0;
   const run = async source => {
+    const activeStageForm = doc.activeElement?.closest?.(`[id^="ash${stage}"] .ash-stage-form`);
+    if (activeStageForm) {
+      host.dispatchEvent(new CustomEvent(`td613:ash:${stage.toLowerCase()}-recompile-deferred`, {
+        detail:Object.freeze({
+          stage,
+          source,
+          reason:'ACTIVE_STAGE_FORM',
+          authority_changed:false,
+          source_bytes_moved:false,
+          human_closure_required:true
+        })
+      }));
+      return false;
+    }
     const token = ++serial;
     const draft = captureStageDrafts();
     const snapshot = await currentPremiumSnapshot();
@@ -137,4 +151,57 @@ export function installAshStage({ stage, sync, navigationSelectors = '' }) {
   host[`__td613Ash${stage}`] = Object.freeze({ version:ASH_A7_A11_RECOMPILER_CORE_VERSION, refresh:run });
   queueMicrotask(() => run('INSTALL'));
   return true;
+}
+
+function publishA9LoadHold(error) {
+  host?.dispatchEvent?.(new CustomEvent('td613:ash:a9-load-held', {
+    detail:Object.freeze({
+      schema:'td613.ash.a9-load-hold/v0.1',
+      message:String(error?.message || error),
+      authority_changed:false,
+      source_bytes_moved:false,
+      human_closure_required:true
+    })
+  }));
+  return null;
+}
+
+function loadA9Module() {
+  if (!host) return Promise.resolve(null);
+  if (!host.__td613AshA9ModulePromise) {
+    host.__td613AshA9ModulePromise = import('./ash-a9-work-recompilation.js?v=20260723-a9-v1').catch(publishA9LoadHold);
+  }
+  return host.__td613AshA9ModulePromise;
+}
+
+if (host) {
+  if (doc?.documentElement?.dataset?.ashModuleGraph === 'ready') queueMicrotask(loadA9Module);
+  else host.addEventListener('td613:ash:canonical-module-graph-ready', () => queueMicrotask(loadA9Module), { once:true });
+}
+
+if (host && !host.__td613AshA9WorkspaceOwner) {
+  const refreshSettledA9Work = event => {
+    if (event.detail?.workspace !== 'work') return;
+    const workBody = byId('premiumWorkBody');
+    const staleStage = byId('ashA9WorkRecompilation');
+    if (workBody && staleStage && workBody.contains(staleStage)) {
+      workBody.innerHTML = '<div class="premium-skeleton" data-ash-a9-compiling="true">Compiling the current intention-shaped Work queue…</div>';
+    }
+    queueMicrotask(async () => {
+      await loadA9Module();
+      await host.__td613AshA9?.refresh?.('UX_WORKSPACE_OPENED');
+    });
+  };
+  host.addEventListener('td613:ash:ux-workspace-opened', refreshSettledA9Work);
+  host.__td613AshA9WorkspaceOwner = Object.freeze({
+    version:'td613.ash.a9-workspace-owner/v0.1',
+    event:'td613:ash:ux-workspace-opened',
+    admission_event:'td613:ash:canonical-module-graph-ready',
+    stale_shell_replaced:true,
+    active_stage_form_deferred:true,
+    automatic_consequential_action:false,
+    authority_changed:false,
+    source_bytes_moved:false,
+    human_closure_required:true
+  });
 }

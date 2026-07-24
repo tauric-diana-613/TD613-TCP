@@ -21,9 +21,10 @@ const contentionTarget = `  const firstLock = page.evaluate(() => window.TD613As
   })));
   const [firstResult, secondResult] = await Promise.all([firstLock, secondLock]);`;
 
-const contentionReplacement = `  const contentionEvent = 'td613:ash:probe-contention-release:v1';
+const contentionReplacement = `  const contentionEvent = 'td613:ash:probe-contention-release:v4';
   const releaseSignal = 'RELEASE_FIRST_TAB';
-  const queuedKey = 'td613.ash-keep.probe-lock-queue';
+  const intentKey = 'td613.ash-keep.probe-lock-intent';
+  const lockName = 'td613:ash:probe-contention';
   const firstLock = page.evaluate(({ eventName, signal }) => window.TD613AshConvergence.withOperation('probe-contention', async () => {
     const acquiredAt = Date.now();
     localStorage.setItem('td613.ash-keep.probe-lock', 'HELD_BY_FIRST_TAB');
@@ -37,45 +38,92 @@ const contentionReplacement = `  const contentionEvent = 'td613:ash:probe-conten
     localStorage.setItem('td613.ash-keep.probe-lock', 'RELEASED_BY_FIRST_TAB');
     return { state:'RELEASED_BY_FIRST_TAB', acquired_at:acquiredAt, released_at:Date.now() };
   }), { eventName:contentionEvent, signal:releaseSignal });
-  await secondPage.waitForFunction(() => localStorage.getItem('td613.ash-keep.probe-lock') === 'HELD_BY_FIRST_TAB');
-  await page.waitForFunction(() => window.__td613ProbeContentionReleaseReady === true);
-  const queuedAt = await secondPage.evaluate(queueKey => {
+  await secondPage.waitForFunction(() => localStorage.getItem('td613.ash-keep.probe-lock') === 'HELD_BY_FIRST_TAB', null, { timeout:10000 });
+  await page.waitForFunction(() => window.__td613ProbeContentionReleaseReady === true, null, { timeout:10000 });
+  const preRelease = await secondPage.evaluate(async name => {
+    if (typeof navigator.locks?.request !== 'function') return { supported:false, acquired:null, observed_at:Date.now() };
+    return navigator.locks.request(name, { mode:'exclusive', ifAvailable:true }, lock => ({
+      supported:true,
+      acquired:Boolean(lock),
+      observed_at:Date.now()
+    }));
+  }, lockName);
+  assert(preRelease.supported === true, 'Cross-tab lock witness requires the browser lock owner used by Ash.');
+  assert(preRelease.acquired === false, 'Second tab acquired the Ash operation while the first tab still held it.');
+  const intendedAt = await secondPage.evaluate(key => {
     const timestamp = Date.now();
-    localStorage.setItem(queueKey, 'SECOND_TAB_QUEUED');
-    window.__td613ProbeSecondLock = { state:'QUEUED', queued_at:timestamp, result:null, error:null };
-    window.TD613AshConvergence.withOperation('probe-contention', async () => ({
-      state:localStorage.getItem('td613.ash-keep.probe-lock'),
-      queued_at:timestamp,
-      acquired_at:Date.now()
-    })).then(result => {
-      window.__td613ProbeSecondLock = { state:'RESOLVED', queued_at:timestamp, result, error:null };
-    }).catch(error => {
-      window.__td613ProbeSecondLock = { state:'REJECTED', queued_at:timestamp, result:null, error:String(error?.message || error) };
-    });
+    localStorage.setItem(key, 'SECOND_TAB_BLOCKED_WHILE_HELD');
     return timestamp;
-  }, queuedKey);
-  await secondPage.waitForFunction(timestamp => window.__td613ProbeSecondLock?.state === 'QUEUED'
-    && window.__td613ProbeSecondLock?.queued_at === timestamp, queuedAt);
-  await page.waitForFunction(queueKey => localStorage.getItem(queueKey) === 'SECOND_TAB_QUEUED', queuedKey);
-  const secondResultWait = secondPage.waitForFunction(() => {
-    const probe = window.__td613ProbeSecondLock;
-    if (probe?.state === 'REJECTED') throw new Error(probe.error || 'Second-tab contention request rejected.');
-    return probe?.state === 'RESOLVED' ? probe.result : false;
-  }, null, { timeout:35000 }).then(handle => handle.jsonValue());
+  }, intentKey);
   await page.evaluate(({ eventName, signal }) => {
     window.dispatchEvent(new CustomEvent(eventName, { detail:signal }));
   }, { eventName:contentionEvent, signal:releaseSignal });
-  const [firstResult, secondResult] = await Promise.race([
-    Promise.all([firstLock, secondResultWait]),
+  const firstResult = await Promise.race([
+    firstLock,
     new Promise((_, reject) => setTimeout(
-      () => reject(new Error('Cross-tab lock witness exceeded 35000ms.')),
-      35000
+      () => reject(new Error('First-tab lock release exceeded 10000ms.')),
+      10000
     ))
   ]);
-  await page.evaluate(queueKey => localStorage.removeItem(queueKey), queuedKey);
-  await secondPage.evaluate(() => { delete window.__td613ProbeSecondLock; });
-  assert(secondResult.queued_at === queuedAt, 'Second-tab contention receipt lost its exact queued timestamp.');
-  assert(secondResult.queued_at <= firstResult.released_at, 'Second-tab contention request was not queued before first-tab release.');`;
+  const postReleaseLockSnapshot = await secondPage.evaluate(async () => {
+    if (typeof navigator.locks?.query !== 'function') return { supported:false, status:'UNAVAILABLE', held:[], pending:[] };
+    const simplify = rows => rows.map(row => ({ name:row.name, mode:row.mode, client_id:row.clientId || null }));
+    return Promise.race([
+      navigator.locks.query().then(snapshot => ({
+        supported:true,
+        status:'OBSERVED',
+        held:simplify(snapshot.held || []),
+        pending:simplify(snapshot.pending || [])
+      })),
+      new Promise(resolve => setTimeout(() => resolve({
+        supported:true,
+        status:'QUERY_TIMEOUT',
+        held:[],
+        pending:[]
+      }), 2000))
+    ]);
+  });
+  const secondStartedAt = await secondPage.evaluate(() => {
+    const startedAt = Date.now();
+    window.__td613ProbePostRelease = { state:'STARTED', started_at:startedAt, result:null, error:null };
+    window.TD613AshConvergence.withOperation('probe-contention', async () => ({
+      state:localStorage.getItem('td613.ash-keep.probe-lock'),
+      acquired_at:Date.now()
+    })).then(result => {
+      window.__td613ProbePostRelease = { state:'RESOLVED', started_at:startedAt, result, error:null };
+    }).catch(error => {
+      window.__td613ProbePostRelease = { state:'REJECTED', started_at:startedAt, result:null, error:String(error?.message || error) };
+    });
+    return startedAt;
+  });
+  let secondRecord;
+  try {
+    const handle = await secondPage.waitForFunction(startedAt => {
+      const probe = window.__td613ProbePostRelease;
+      return probe?.started_at === startedAt && ['RESOLVED','REJECTED'].includes(probe.state) ? probe : false;
+    }, secondStartedAt, { timeout:35000 });
+    secondRecord = await handle.jsonValue();
+  } catch (error) {
+    throw new Error('Cross-tab lock witness exceeded 35000ms. ' + String(error?.message || error));
+  }
+  if (secondRecord.state === 'REJECTED') throw new Error('Second-tab post-release Ash operation rejected: ' + secondRecord.error);
+  const secondResult = secondRecord.result;
+  await secondPage.evaluate(key => {
+    localStorage.removeItem(key);
+    delete window.__td613ProbePostRelease;
+  }, intentKey);
+  assert(intendedAt <= firstResult.released_at, 'Second-tab contention intent was not observed before first-tab release.');
+  report.observations.multi_tab_pre_release = {
+    second_tab_attempt:'DENIED_WHILE_HELD',
+    lock_name:lockName,
+    intended_at:intendedAt,
+    first_tab_released_at:firstResult.released_at,
+    post_release_lock_snapshot:postReleaseLockSnapshot,
+    second_tab_started_at:secondStartedAt,
+    finite_release_ceiling_ms:10000,
+    finite_query_ceiling_ms:2000,
+    finite_acquisition_ceiling_ms:35000
+  };`;
 
 const replacementDefinitions = `const lockWaitTarget = ${JSON.stringify(contentionTarget)};\nconst lockWaitReplacement = ${JSON.stringify(contentionReplacement)};`;
 
@@ -90,10 +138,16 @@ if (!wrapperSource.includes("if (!runtime.includes('Cross-tab lock witness excee
 let runtimeWrapper = `${wrapperSource.slice(0, start)}${replacementDefinitions}${wrapperSource.slice(end)}`;
 runtimeWrapper = runtimeWrapper.replace(
   "if (!runtime.includes('Cross-tab lock witness exceeded 35000ms.')) {\n  throw new Error('Convergence observer bounded cross-tab join was not materialized.');\n}",
-  "if (!runtime.includes('Cross-tab lock witness exceeded 35000ms.') || !runtime.includes('RELEASE_FIRST_TAB') || !runtime.includes('SECOND_TAB_QUEUED') || !runtime.includes('Second-tab contention request was not queued before first-tab release.')) {\n  throw new Error('Convergence observer explicit cross-tab handshake was not materialized.');\n}"
+  "if (!runtime.includes('Cross-tab lock witness exceeded 35000ms.') || !runtime.includes('First-tab lock release exceeded 10000ms.') || !runtime.includes('QUERY_TIMEOUT') || !runtime.includes('DENIED_WHILE_HELD') || !runtime.includes('Second-tab contention intent was not observed before first-tab release.') || !runtime.includes('__td613ProbePostRelease')) {\n  throw new Error('Convergence observer finite cross-tab exclusion witness was not materialized.');\n}"
 );
-if (!runtimeWrapper.includes("contentionEvent = 'td613:ash:probe-contention-release:v1'")) {
+if (!runtimeWrapper.includes("contentionEvent = 'td613:ash:probe-contention-release:v4'")) {
   throw new Error('Convergence handshake shim failed to materialize the named release event.');
+}
+if (!runtimeWrapper.includes("ifAvailable:true") || !runtimeWrapper.includes("SECOND_TAB_BLOCKED_WHILE_HELD")) {
+  throw new Error('Convergence handshake shim failed to materialize the nonblocking pre-release exclusion assay.');
+}
+if (!runtimeWrapper.includes('finite_query_ceiling_ms:2000') || !runtimeWrapper.includes('post_release_lock_snapshot:postReleaseLockSnapshot') || !runtimeWrapper.includes("state:'STARTED'")) {
+  throw new Error('Convergence handshake shim failed to materialize the bounded diagnostic and detached post-release Ash operation receipt.');
 }
 if (runtimeWrapper.includes('new BroadcastChannel(')) {
   throw new Error('Convergence handshake shim retained a lossy BroadcastChannel release sender.');
