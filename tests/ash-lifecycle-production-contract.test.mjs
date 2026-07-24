@@ -1,7 +1,7 @@
 import assert from 'node:assert/strict';
 import fs from 'node:fs';
 const read = path => fs.readFileSync(path, 'utf8');
-const workflow = read('.github/workflows/ash-keep-production-closure.yml');
+const workflow = read('.github/workflows/ash-flowcore-live-field.yml');
 const lifecycleCompiler = read('scripts/ash-lifecycle-production-probe.mjs');
 const probe = `${lifecycleCompiler}\n${read('scripts/ash-lifecycle-production-probe-base.mjs')}`;
 const convergenceRunner = read('scripts/run-ash-constitutional-convergence-probe.mjs');
@@ -13,7 +13,8 @@ const receipt = read('docs/ASH_LIFECYCLE_PRODUCTION_DEMO_RECEIPT.md');
 const ledger = read('docs/ASH_KEEP_BUILDOUT_LEDGER.md');
 const roadmap = read('ROADMAP.md');
 const stretch11 = read('docs/ASH_KEEP_STRETCH11_CLOSURE_RECEIPT.md');
-for (const marker of ['Ash Lifecycle Deployed Observation','Observe deployed Ash lifecycle without promotion','CONTINUITY_SEALED','promotion remains separate']) assert.ok(workflow.includes(marker));
+for (const marker of ['Ash Lifecycle Deployed Observation','Observe exact deployed AIA3 and lifecycle','CONTINUITY_SEALED','promotion_authorized']) assert.ok(workflow.includes(marker));
+assert.equal(fs.existsSync('.github/workflows/ash-keep-production-closure.yml'), false, 'Standalone closure workflow must remain retired.');
 for (const token of ['ARRIVAL_UNPERSISTED','CASE_BOUND','REBUILD_ELIGIBLE','RELEASE_ELIGIBLE','CONTINUITY_SEALED','promotion_authorized: false','continuity is not transport']) assert.ok(probe.includes(token));
 for (const token of [
   'legacy_bypass === true',
