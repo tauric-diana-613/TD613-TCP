@@ -90,6 +90,20 @@ function navigate(control) {
   return true;
 }
 
+function scheduleProfileFocus(profile) {
+  const focus = () => {
+    if (!profile?.isConnected) return false;
+    profile.focus?.({ preventScroll:false });
+    profile.scrollIntoView?.({ block:'center', behavior:host.matchMedia?.('(prefers-reduced-motion: reduce)').matches ? 'auto' : 'smooth' });
+    doc.documentElement.dataset.ashA12ProfileSelector = doc.activeElement === profile ? 'FOCUSED' : 'OPEN';
+    return doc.activeElement === profile;
+  };
+  queueMicrotask(() => {
+    if (typeof host.requestAnimationFrame === 'function') host.requestAnimationFrame(() => focus());
+    else focus();
+  });
+}
+
 function openCasesAndProfiles() {
   const launch = doc?.getElementById('launch');
   const profile = doc?.getElementById('newProfile');
@@ -100,8 +114,8 @@ function openCasesAndProfiles() {
   }
   launch.classList.remove('hidden');
   launch.setAttribute('aria-hidden', 'false');
-  profile.focus?.({ preventScroll:false });
-  profile.scrollIntoView?.({ block:'center', behavior:host.matchMedia?.('(prefers-reduced-motion: reduce)').matches ? 'auto' : 'smooth' });
+  doc.documentElement.dataset.ashA12ProfileSelector = 'OPEN';
+  scheduleProfileFocus(profile);
   publish('Cases & Profiles opened. Selection remains explicit; no profile was inferred or changed.', { result:'SELECTOR_OPENED' });
   return true;
 }
