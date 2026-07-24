@@ -1,5 +1,9 @@
 const ASH_RELEASE_ASSET_EPOCH = '20260724-a13-release-v1';
 
+// Provider provenance retained beneath the registry boundary:
+// ash-apeq-paia-profile-demos.js · ash-research-demo-hydration.js · ash-legal-profile-demo.js · ash-demo-pedagogy-rehydration.js
+// These modules retain fixture authority. They are admitted dynamically by ash-demo-registry.js and no longer own the shared Start Demo gesture.
+
 export {
   ASH_DEMO_REGISTRY_VERSION,
   ASH_DEMO_ASSET_EPOCH,
