@@ -1,0 +1,104 @@
+name: Ash A11 Predeployment Cache Flush
+
+on:
+  pull_request:
+    branches: [main]
+    paths:
+      - 'api/dome-world-shell.js'
+      - 'app/dome-world/ash-cache-eviction-aia3.js'
+      - 'docs/ASH_KEEP_A11_PREFLIGHT_CACHE_EVICTION_RECEIPT.md'
+      - 'tests/ash-a11-predeployment-cache-flush.test.mjs'
+      - 'scripts/ash-a11-predeployment-cache-probe.mjs'
+      - '.github/workflows/ash-a11-predeployment-cache-flush.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: ash-a11-predeployment-cache-${{ github.event.pull_request.number || github.ref }}-${{ github.run_attempt }}
+  cancel-in-progress: true
+
+jobs:
+  contracts:
+    runs-on: ubuntu-latest
+    timeout-minutes: 18
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+      - run: npm ci
+      - name: Validate A11 predeployment source syntax
+        run: |
+          node --check api/dome-world-shell.js
+          node --check app/dome-world/ash-cache-eviction-aia3.js
+          node --check scripts/ash-a11-predeployment-cache-probe.mjs
+      - name: Validate historical and A11 eviction contracts
+        run: |
+          node tests/ash-aia3-mass-eviction.test.mjs
+          node tests/ash-a11-predeployment-cache-flush.test.mjs
+          node tests/ash-a2-a5-whole-instrument.test.mjs
+          node tests/ash-live-ingress-demos-cache.test.mjs
+      - name: Preserve contract evidence
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: ash-a11-predeployment-cache-contracts
+          path: docs/ASH_KEEP_A11_PREFLIGHT_CACHE_EVICTION_RECEIPT.md
+          retention-days: 45
+
+  browser-witness:
+    name: ${{ matrix.browser }} A11 predeployment cache
+    runs-on: ubuntu-latest
+    timeout-minutes: 35
+    strategy:
+      fail-fast: false
+      matrix:
+        browser: [chromium, firefox, webkit]
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+      - run: npm ci
+      - name: Install browser witness runtime
+        run: |
+          npm install --no-save --package-lock=false playwright@1.53.2
+          npx playwright install --with-deps ${{ matrix.browser }}
+      - name: Start bounded local Ash runtime
+        run: |
+          mkdir -p artifacts
+          node scripts/ash-keep-local-closure-server.mjs 6130 > artifacts/ash-a11-predeployment-server.log 2>&1 &
+          echo $! > artifacts/ash-a11-predeployment-server.pid
+          for attempt in $(seq 1 50); do
+            if curl -fsS --max-time 2 http://127.0.0.1:6130/__ash_keep_closure/readiness > artifacts/ash-a11-predeployment-readiness.json; then
+              cat artifacts/ash-a11-predeployment-readiness.json
+              exit 0
+            fi
+            sleep 1
+          done
+          cat artifacts/ash-a11-predeployment-server.log || true
+          exit 1
+      - name: Observe custody-preserving A11 preflight eviction
+        env:
+          TD613_BROWSER: ${{ matrix.browser }}
+          TD613_BASE_URL: http://127.0.0.1:6130
+          TD613_ARTIFACT_DIR: artifacts/ash-a11-predeployment-${{ matrix.browser }}
+        run: timeout --foreground --signal=INT --kill-after=15s 720s node scripts/ash-a11-predeployment-cache-probe.mjs
+      - name: Stop bounded local runtime
+        if: always()
+        run: test -f artifacts/ash-a11-predeployment-server.pid && kill "$(cat artifacts/ash-a11-predeployment-server.pid)" || true
+      - name: Preserve browser evidence
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: ash-a11-predeployment-${{ matrix.browser }}-evidence
+          path: |
+            artifacts/ash-a11-predeployment-${{ matrix.browser }}/
+            artifacts/ash-a11-predeployment-server.log
+            artifacts/ash-a11-predeployment-readiness.json
+          if-no-files-found: warn
+          retention-days: 45
