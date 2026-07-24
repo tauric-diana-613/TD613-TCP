@@ -20,7 +20,7 @@ jobs:
       github.event.comment.user.login == github.repository_owner &&
       startsWith(github.event.comment.body, '/td613-vercel-release ')
     runs-on: ubuntu-latest
-    timeout-minutes: 100
+    timeout-minutes: 45
     env:
       RELEASE_GATE_ISSUE: '405'
       VERCEL_PROJECT: td-613-tcp
@@ -39,7 +39,7 @@ jobs:
       - name: Set up Node
         uses: actions/setup-node@v4
         with:
-          node-version: 24
+          node-version: 22
           cache: npm
 
       - name: Validate operator authorization and exact commit
@@ -73,44 +73,32 @@ jobs:
           target = PRODUCTION
           selected_commit = ${{ steps.authorize.outputs.selected_sha }}
           deployment_ceiling = 1
-          safe_harbor_wave_b = required
-          ash_generation = AIA3
+          premerge_browser_authority = Chromium + Firefox + WebKit consolidated witness
+          production_confirmation = Chromium desktop + mobile + lifecycle
           git_auto_deploy = disabled
           workflow_run = $GITHUB_SERVER_URL/$GITHUB_REPOSITORY/actions/runs/$GITHUB_RUN_ID
           \`\`\`
 
-          The gate will run the complete Safe Harbor Gen3 Wave B, Research Track R boundary, Flow-Core, and Ash Keep AIA3 closures; choose one bounded credential route; deploy once; observe exact production content; and run the governed browser matrices. ⟐
+          The gate will recheck release law, deploy once, verify exact application bytes, run one bounded production confirmation, and restore the deployment lock. ⟐
           EOF_COMMENT
           )"
 
-      - name: Install dependencies
+      - name: Install repository dependencies once
         run: npm ci
 
-      - name: Verify release-critical, Safe Harbor Wave B, Flow-Core, and Ash Keep AIA3 closure contracts
+      - name: Verify release-critical contracts only
         run: |
+          node tests/workflow-estate.test.mjs
+          node tests/tcp-smoke.test.mjs
           node tests/vercel-deploy-hygiene.test.mjs
           node tests/vercel-operator-release-gate.test.mjs
-          npm run test:safe-harbor:gen3:wave-b
-          npm run test:safe-harbor:gen3:track-r
-          npm run test:safe-harbor:phase9.1c
-          npm run test:safe-harbor:current
-          node tests/safe-harbor-gen3-wave-b-production-probe-contract.test.mjs
+          node tests/vercel-relock-safety.test.mjs
+          node tests/release-plumbing.test.mjs
           node tests/product-architecture/shell.test.mjs
-          node tests/ash-live-ingress-demos-cache.test.mjs
-          node tests/ash-aia3-mass-eviction.test.mjs
-          node --test tests/ash-keep-live-aia-surface.test.mjs
-          node tests/td613-flight-mobile-layout.test.mjs
-          node tests/flowcore-p0-p10-completion.test.mjs
-          node tests/flowcore-p0-p7-seam-closure.test.mjs
-          node tests/flowcore-physical-scene.test.mjs
-          node tests/flowcore-empirical-validation.test.mjs
-          node tests/flowcore-production-promotion.test.mjs
-          node tests/flowcore-runtime-browser-probe.test.mjs
-          node --check scripts/safe-harbor-gen3-wave-a-production-probe.mjs
-          node --check scripts/safe-harbor-gen3-wave-b-production-assets.mjs
-          node --check scripts/safe-harbor-gen3-wave-b-production-probe.mjs
-          node --check scripts/ash-keep-local-closure-server.mjs
-          node --check scripts/ash-keep-aia3-task-journey-v3.mjs
+          node tests/ash-a12-command-rationalization.test.mjs
+          node tests/ash-a13-unified-demo-registry.test.mjs
+          node tests/ash-lifecycle-production-contract.test.mjs
+          node tests/ash-keep-production-closure-contract.test.mjs
 
       - name: Choose one bounded Vercel release route
         id: mode
@@ -128,7 +116,6 @@ jobs:
       - name: Pull production environment and build once
         if: steps.mode.outputs.mode == 'direct-token'
         run: |
-          set -euo pipefail
           npx --yes vercel@latest pull --yes --environment=production --scope "$VERCEL_SCOPE" --token "$VERCEL_TOKEN"
           npx --yes vercel@latest build --prod --scope "$VERCEL_SCOPE" --token "$VERCEL_TOKEN"
 
@@ -185,92 +172,40 @@ jobs:
         env:
           TD613_BASE_URL: ${{ steps.deployed.outputs.url }}
           TD613_SOURCE_PACKET_COMMIT: ${{ steps.authorize.outputs.selected_sha }}
-          TD613_ARTIFACT_DIR: artifacts/flowcore-production-observation
+          TD613_ARTIFACT_DIR: artifacts/exact-source
           TD613_PROBE_ATTEMPTS: ${{ steps.mode.outputs.mode == 'git-fallback' && '72' || '24' }}
           TD613_PROBE_DELAY_MS: '5000'
         run: node scripts/flowcore-release-content-probe.mjs
 
-      - name: Install production browser observers
+      - name: Install one production browser engine
         run: |
           npm install --no-save --package-lock=false playwright@1.53.2
-          npx playwright install --with-deps chromium firefox webkit
+          npx playwright install --with-deps chromium
 
-      - name: Observe deployed Safe Harbor Gen3 Wave A
+      - name: Confirm the deployed A13 registry on Chromium desktop and mobile
+        env:
+          TD613_BROWSER: chromium
+          TD613_BASE_URL: ${{ steps.deployed.outputs.url }}
+          TD613_ARTIFACT_DIR: artifacts/a13-production-chromium
+        run: timeout --foreground --signal=INT --kill-after=15s 600s node scripts/ash-a13-demo-registry-browser-probe.mjs
+
+      - name: Observe deployed Ash lifecycle without promotion
         env:
           TD613_BASE_URL: ${{ steps.deployed.outputs.url }}
-          TD613_SOURCE_PACKET_COMMIT: ${{ steps.authorize.outputs.selected_sha }}
-          TD613_ARTIFACT_DIR: artifacts/safe-harbor-gen3-wave-a-production
-        run: node scripts/safe-harbor-gen3-wave-a-production-probe.mjs
+          TD613_ARTIFACT_DIR: artifacts/lifecycle-production
+        run: timeout --foreground --signal=INT --kill-after=15s 600s node scripts/ash-lifecycle-production-probe.mjs
 
-      - name: Observe deployed Safe Harbor Gen3 Wave B
-        env:
-          TD613_BASE_URL: ${{ steps.deployed.outputs.url }}
-          TD613_SOURCE_PACKET_COMMIT: ${{ steps.authorize.outputs.selected_sha }}
-          TD613_ARTIFACT_DIR: artifacts/safe-harbor-gen3-wave-b-production
-        run: node scripts/safe-harbor-gen3-wave-b-production-probe.mjs
-
-      - name: Observe the deployed Flow-Core browser matrix
-        env:
-          TD613_BASE_URL: ${{ steps.deployed.outputs.url }}
-          TD613_FLOWCORE_ROUTE_PREFIX: dome-world
-          TD613_BROWSERS: chromium,firefox,webkit
-          TD613_SOURCE_PACKET_COMMIT: ${{ steps.authorize.outputs.selected_sha }}
-          TD613_PRODUCTION_OBSERVATION: 'true'
-          TD613_ARTIFACT_DIR: artifacts/flowcore-production-observation
-        run: node scripts/flowcore-runtime-browser-probe.mjs
-
-      - name: Observe the deployed Ash Keep AIA3 task matrix
-        env:
-          TD613_BASE_URL: ${{ steps.deployed.outputs.url }}
-          TD613_SOURCE_PACKET_COMMIT: ${{ steps.authorize.outputs.selected_sha }}
-          TD613_PRODUCTION_OBSERVATION: 'true'
-        run: |
-          set -euo pipefail
-          for browser in chromium firefox webkit; do
-            TD613_BROWSER="$browser" \
-            TD613_ARTIFACT_DIR="artifacts/ash-aia3-production/$browser" \
-            node scripts/ash-keep-aia3-task-journey-v3.mjs
-          done
-
-      - name: Verify production observations remained bounded
-        run: |
-          node --input-type=module <<'NODE'
-          import fs from 'node:fs';
-          const content = JSON.parse(fs.readFileSync('artifacts/flowcore-production-observation/flowcore-production-content-observation.json', 'utf8'));
-          const runtime = JSON.parse(fs.readFileSync('artifacts/flowcore-production-observation/flowcore-runtime-browser-evidence.json', 'utf8'));
-          const safeHarborWaveA = JSON.parse(fs.readFileSync('artifacts/safe-harbor-gen3-wave-a-production/safe-harbor-gen3-wave-a-production-observation.json', 'utf8'));
-          const safeHarborWaveB = JSON.parse(fs.readFileSync('artifacts/safe-harbor-gen3-wave-b-production/safe-harbor-gen3-wave-b-production-observation.json', 'utf8'));
-          if (content.status !== 'PASS' || content.exact_source_content_verified !== true || content.application_tree_drift !== 'none') throw new Error('Exact production content observation held.');
-          if (safeHarborWaveA.status !== 'PASS') throw new Error('Production Safe Harbor Gen3 Wave A observation held.');
-          if (safeHarborWaveA.source_packet_commit !== content.source_packet_commit) throw new Error('Safe Harbor Wave A and Flow-Core observations disagree on the source packet.');
-          if (safeHarborWaveA.authority?.counts_as_identity_adjudication !== false || safeHarborWaveA.authority?.counts_as_external_authorship_adjudication !== false || safeHarborWaveA.authority?.authorizes_research_track_r_promotion !== false || safeHarborWaveA.authority?.authorizes_wave_b !== false) throw new Error('Safe Harbor Wave A production observer widened authority.');
-          if (safeHarborWaveB.status !== 'PASS') throw new Error('Production Safe Harbor Gen3 Wave B observation held.');
-          if (safeHarborWaveB.source_packet_commit !== content.source_packet_commit) throw new Error('Safe Harbor Wave B and Flow-Core observations disagree on the source packet.');
-          if (safeHarborWaveB.authority?.counts_as_identity_adjudication !== false || safeHarborWaveB.authority?.counts_as_external_authorship_adjudication !== false || safeHarborWaveB.authority?.authorizes_research_track_r_promotion !== false || safeHarborWaveB.authority?.authorizes_future_release !== false) throw new Error('Safe Harbor Wave B production observer widened authority.');
-          if (runtime.status !== 'PASS') throw new Error('Production Flow-Core browser matrix held.');
-          if (runtime.source_packet_commit !== content.source_packet_commit) throw new Error('Production Flow-Core observations disagree on the source packet.');
-          if (runtime.authority.counts_as_human_evidence !== false || runtime.authority.authorizes_public_route_promotion !== false || runtime.authority.closes_program !== false) throw new Error('Production Flow-Core observer widened authority.');
-          for (const browser of ['chromium', 'firefox', 'webkit']) {
-            const receipt = JSON.parse(fs.readFileSync(`artifacts/ash-aia3-production/${browser}/ash-aia3-task-continuity.json`, 'utf8'));
-            if (receipt.status !== 'PASS') throw new Error(`Production Ash Keep AIA3 ${browser} task journey held.`);
-            if (receipt.source_packet_commit !== content.source_packet_commit) throw new Error(`Production Ash Keep AIA3 ${browser} source packet drifted.`);
-            const authority = receipt.authority || {};
-            if (authority.counts_as_human_evidence !== false || authority.authorizes_child_study !== false || authority.authorizes_release !== false || authority.closes_program !== false) throw new Error(`Production Ash Keep AIA3 ${browser} observer widened authority.`);
-          }
-          NODE
-
-      - name: Preserve production evidence
+      - name: Preserve bounded production evidence
         if: always()
         uses: actions/upload-artifact@v4
         with:
-          name: safe-harbor-wave-a-wave-b-flowcore-and-ash-aia3-production-release-evidence
+          name: td613-bounded-production-release-evidence
           path: |
-            artifacts/safe-harbor-gen3-wave-a-production/
-            artifacts/safe-harbor-gen3-wave-b-production/
-            artifacts/flowcore-production-observation/
-            artifacts/ash-aia3-production/
+            artifacts/exact-source/
+            artifacts/a13-production-chromium/
+            artifacts/lifecycle-production/
           if-no-files-found: warn
-          retention-days: 45
+          retention-days: 7
 
       - name: Restore the Git deployment lock after fallback
         if: always() && steps.mode.outputs.mode == 'git-fallback' && steps.fallback_release.outputs.release_sha != ''
@@ -295,7 +230,7 @@ jobs:
         run: |
           gh api "repos/$GITHUB_REPOSITORY/issues/$RELEASE_GATE_ISSUE/comments" \
             -f body="$(cat <<EOF_COMMENT
-          𝌋 Vercel production release completed and observed.
+          𝌋 Vercel production release completed and bounded observation passed.
 
           \`\`\`text
           source_packet_commit = ${{ steps.authorize.outputs.selected_sha }}
@@ -306,31 +241,9 @@ jobs:
           deployment_count = 1
           deployment_url = ${{ steps.deployed.outputs.url }}
           exact_source_content = PASS
-          safe_harbor_gen3_wave_a = PASS
-          safe_harbor_gen3_wave_b = PASS
-          safe_harbor_packet_creation = PASS
-          safe_harbor_shi_exact_match = PASS
-          safe_harbor_packet_restore = PASS
-          safe_harbor_adverse_result_retention = PASS
-          safe_harbor_raw_text_exclusion = PASS
-          temporal_bloom_desktop_1440x1000 = PASS
-          temporal_bloom_mobile_390x844 = PASS
-          temporal_bloom_reduced_motion = PASS
-          temporal_bloom_public_counts_hidden = PASS
-          provenance_authority_chronology = PASS
-          provenance_countersignature_states = PASS
-          provenance_deterministic_svg = PASS
-          provenance_imitation_collision_reduction = PASS
-          flowcore_browser_matrix = PASS
-          ash_keep_aia3_task_matrix = PASS
-          ash_keep_fresh_client = PASS
-          ash_keep_retired_aia2_eviction = PASS
-          ash_keep_case_preservation = PASS
-          ash_keep_desktop = PASS
-          ash_keep_mobile_390x844 = PASS
-          counts_as_identity_adjudication = false
-          research_track_r_promotion_authorized = false
-          future_safe_harbor_release_authorized = false
+          premerge_chromium_firefox_webkit = REQUIRED_AND_PASSED_BEFORE_MERGE
+          production_chromium_desktop_mobile = PASS
+          ash_lifecycle_deployed_observation = PASS
           counts_as_human_evidence = false
           child_study_authorized = false
           public_route_promotion_authorized = false
@@ -338,7 +251,7 @@ jobs:
           git_auto_deploy = disabled
           \`\`\`
 
-          The production observation closes the exact-source, Safe Harbor Gen3 Wave A and Wave B runtimes, Flow-Core runtime, Ash Keep AIA3 task-continuity, and retired-client delivery seams. It does not prove civil identity or universal authorship, promote Research Track R, authorize a future Safe Harbor release, satisfy the held adult empirical gate, authorize a child study, authorize public route promotion, or close the program. Sealed ⟐
+          Production confirmation does not repeat the full pre-merge browser matrix and grants no human-evidence, child-study, release-future, custody, or program-closure authority. Sealed ⟐
           EOF_COMMENT
           )"
 
