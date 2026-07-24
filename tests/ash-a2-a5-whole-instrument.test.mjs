@@ -74,9 +74,8 @@ for (const [name, source] of [
   ['cache eviction',eviction], ['recovery bridge',recovery]
 ]) assert.match(source, new RegExp(currentAssetEpoch.replaceAll('-', '\\-')), `${name} omitted the current A11 asset epoch`);
 for (const [name, source] of [
-  ['shell',shell], ['cache eviction',eviction], ['recovery bridge',recovery]
+  ['shell',shell], ['cache eviction',eviction], ['cache flush',cacheFlush], ['recovery bridge',recovery]
 ]) assert.match(source, new RegExp(currentCacheEpoch.replaceAll('/', '\\/').replaceAll('.', '\\.').replaceAll('-', '\\-')), `${name} omitted the current A11 cache epoch`);
-assert.match(cacheFlush, new RegExp(historicalCacheEpoch.replaceAll('/', '\\/').replaceAll('.', '\\.').replaceAll('-', '\\-')), 'legacy cache transition lost the completed A2-A5 supersession marker');
 assert.match(journeyAdapter, new RegExp(historicalAssetEpoch.replaceAll('-', '\\-')), 'retained A2-A5 journey adapter lost its release epoch');
 assert.match(journeyAdapter, new RegExp(historicalCacheEpoch.replaceAll('/', '\\/').replaceAll('.', '\\.').replaceAll('-', '\\-')), 'retained A2-A5 journey adapter lost its cache epoch');
 for (const [name, source] of [
