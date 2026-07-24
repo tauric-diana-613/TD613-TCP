@@ -55,6 +55,9 @@ for (const token of [
 ]) assert(registrySource.includes(token), `Registry omitted ${token}.`);
 
 assert.match(registrySource, /addEventListener\('click',[\s\S]*#startDemo[\s\S]*stopImmediatePropagation/);
+assert.match(registrySource, /addEventListener\('change',[\s\S]*stopImmediatePropagation\(\)[\s\S]*true\)/);
+assert.match(registrySource, /host\.__td613AshProfileDemos = registryApi/);
+assert.match(registrySource, /ashDemoCompatibilityOwner/);
 assert.match(registrySource, /Archive demo arrives in A14/);
 assert.match(registrySource, /RESERVED_FOR_A14/);
 assert.match(registrySource, /import\(`\.\/ash-apeq-paia-profile-demos\.js\?v=\$\{ASH_DEMO_ASSET_EPOCH\}`\)/);
@@ -70,8 +73,10 @@ assert.doesNotMatch(bridgeSource, /^import .*ash-research-demo-control-state\.js
 assert.doesNotMatch(bridgeSource, /^import .*ash-legal-demo-control-state\.js/m);
 
 assert.match(workflowSource, /TD613 Consolidated Validation/);
-assert.match(workflowSource, /One-install Chromium Firefox WebKit witness/);
+assert.match(workflowSource, /One exact-head Chromium Firefox WebKit witness/);
+assert.match(workflowSource, /if: github\.event_name == 'workflow_dispatch' && inputs\.mode == 'full-browser'/);
 assert.match(workflowSource, /ash-a13-demo-registry-browser-probe\.mjs/);
+assert.doesNotMatch(workflowSource, /if: github\.event_name == 'pull_request' \|\|/);
 assert.match(estateSource, /exactly four durable authority surfaces/);
 
 console.log('ash-a13-unified-demo-registry.test.mjs passed');
