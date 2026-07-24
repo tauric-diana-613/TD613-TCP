@@ -46,6 +46,14 @@ const CAPSULE_QUESTIONS = Object.freeze([
   })
 ]);
 
+function normalizeCasesAndProfilesLabel() {
+  const label = doc?.querySelector?.('[data-command-action="profile"] strong');
+  if (!label) return false;
+  if (label.textContent !== 'Cases & Profiles') label.textContent = 'Cases & Profiles';
+  label.closest('button')?.setAttribute('aria-label', 'Cases & Profiles');
+  return true;
+}
+
 function openQuestionCount(snapshot) {
   return (snapshot?.gaps?.length || 0) + (snapshot?.openActions?.length || 0);
 }
@@ -101,6 +109,7 @@ function bindCapsule(root) {
 }
 
 export function renderAshA11Capsule(snapshot) {
+  normalizeCasesAndProfilesLabel();
   const root = ensureCapsuleRoot();
   if (!root) return false;
   const posture = continuityPosture(snapshot);
@@ -171,6 +180,11 @@ installAshStage({
   sync:renderAshA11Capsule,
   navigationSelectors:'[data-premium-workspace="capsule"],[data-route-workspace="capsule"],[data-route-workspace="save"],#premiumSealSave,#premiumExportCapsule,#premiumImportCapsule,#premiumInspectSave'
 });
+
+queueMicrotask(normalizeCasesAndProfilesLabel);
+for (const type of ['canonical-module-graph-ready','premium-ready','composition-stable']) {
+  host?.addEventListener?.(`td613:ash:${type}`, () => queueMicrotask(normalizeCasesAndProfilesLabel));
+}
 
 if (host) host.__td613AshA11Capsule = Object.freeze({
   version:ASH_A11_CAPSULE_VERSION,
