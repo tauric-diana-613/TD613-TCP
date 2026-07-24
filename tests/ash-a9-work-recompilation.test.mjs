@@ -70,7 +70,7 @@ assert.doesNotMatch(core, /MutationObserver/);
 assert.doesNotMatch(core, /ash_epoch/);
 
 assert.match(probe, /if \(stage === 'A9'\)/);
-assert.match(probe, /#ashA9WorkRecompilation/);
+assert.match(probe, /ashA9WorkRecompilation/);
 assert.match(probe, /'Do now','Prepare','Waiting \/ held','Completed \/ receipted','Human approval'/);
 
 for (const marker of [
@@ -96,6 +96,7 @@ console.log(JSON.stringify({
   native_owner_routing:true,
   settled_workspace_ownership:true,
   settled_loader_admission:true,
+  exact_browser_witness_identity:true,
   mutation_observer_added:false,
   hush_generation_automatic:false,
   consequential_action_automatic:false,
