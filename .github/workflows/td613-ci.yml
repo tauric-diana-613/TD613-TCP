@@ -63,15 +63,19 @@ jobs:
           node tests/vercel-relock-safety.test.mjs
           node tests/release-plumbing.test.mjs
           node tests/product-architecture/shell.test.mjs
-      - name: Run Dome-World, Phase IV, and Ash static contracts once
+      - name: Validate Dome-World static surfaces
         run: |
           npm run test:dome-world:art
           npm run test:dome-world:phase3
+      - name: Validate Phase IV static surfaces
+        run: |
           python -m py_compile api/dome-world-engine-guard.py packages/dome_world_exact/reciprocal_bridge.py packages/dome_world_exact/flowcore_context.py scripts/phase4-local-integration-server.py
           python -m pytest packages/dome_world_exact/tests/test_reciprocal_bridge_v01.py packages/dome_world_exact/tests/test_flowcore_context.py packages/dome_world_exact/tests/test_flowcore_context_api.py -q
           node tests/aperture-phase4-bridge.test.mjs
           node tests/phase4-deployment-probe.test.mjs
           node tests/phase4-release-sync.test.mjs
+      - name: Validate Ash A0-A13 static surfaces
+        run: |
           node tests/ash-keep-core.test.mjs
           node tests/ash-keep-continuity.test.mjs
           node tests/ash-keep-hush-api.test.mjs
@@ -96,6 +100,8 @@ jobs:
           node tests/ash-legal-control-state.test.mjs
           node tests/ash-keep-production-closure-contract.test.mjs
           node tests/ash-lifecycle-production-contract.test.mjs
+      - name: Validate Flow-Core closure surfaces
+        run: |
           node tests/flowcore-p0-p7-seam-closure.test.mjs
           node tests/flowcore-p0-p10-completion.test.mjs
           node tests/flowcore-production-observation.test.mjs
