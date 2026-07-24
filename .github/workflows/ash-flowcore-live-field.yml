@@ -18,6 +18,7 @@ on:
       - 'app/dome-world/ash-ingress-copy-spacing.js'
       - 'app/dome-world/ash-workspace-bridge.js'
       - 'app/dome-world/ash-cache-flush.js'
+      - 'app/dome-world/ash-cache-eviction-aia3.js'
       - 'app/dome-world/ash-ingress-layout-hydration.js'
       - 'app/dome-world/ash-profile-demo-hydration.js'
       - 'app/dome-world/ash-investigation-demo-hydration.js'
@@ -37,10 +38,12 @@ on:
       - 'app/dome-world/ash-a8-case-map-recompilation.js'
       - 'app/dome-world/ash-a9-work-recompilation.js'
       - 'app/dome-world/ash-a10-choir-recompilation.js'
+      - 'app/dome-world/ash-a11-capsule-recompilation.js'
       - 'app/dome-world/docs/ASH_KEEP_A7_IMPLEMENTATION_RECEIPT_V0_1.md'
       - 'app/dome-world/docs/ASH_KEEP_A8_IMPLEMENTATION_RECEIPT_V0_1.md'
       - 'app/dome-world/docs/ASH_KEEP_A9_IMPLEMENTATION_RECEIPT_V0_1.md'
       - 'app/dome-world/docs/ASH_KEEP_A10_IMPLEMENTATION_RECEIPT_V0_1.md'
+      - 'app/dome-world/docs/ASH_KEEP_A11_IMPLEMENTATION_RECEIPT_V0_1.md'
       - 'scripts/ash-keep-local-closure-server.mjs'
       - 'scripts/ash-a2-a5-browser-probe.mjs'
       - 'scripts/ash-a7-a11-browser-probe.mjs'
@@ -49,7 +52,10 @@ on:
       - 'tests/ash-a8-case-map-recompilation.test.mjs'
       - 'tests/ash-a9-work-recompilation.test.mjs'
       - 'tests/ash-a10-choir-recompilation.test.mjs'
+      - 'tests/ash-a11-capsule-recompilation.test.mjs'
+      - 'tests/ash-a11-postclosure-cache-eviction.test.mjs'
       - 'tests/ash-keep-a10-choir-recompilation.test.mjs'
+      - 'tests/ash-keep-a11-capsule-recompilation.test.mjs'
       - 'tests/ash-flowcore-live-field.test.mjs'
       - 'tests/ash-ingress-polish.test.mjs'
       - 'tests/ash-aia3-mass-eviction.test.mjs'
@@ -104,11 +110,12 @@ jobs:
           node --check app/dome-world/ash-a8-case-map-recompilation.js
           node --check app/dome-world/ash-a9-work-recompilation.js
           node --check app/dome-world/ash-a10-choir-recompilation.js
+          node --check app/dome-world/ash-a11-capsule-recompilation.js
           node --check scripts/ash-a2-a5-browser-probe.mjs
           node --check scripts/ash-a7-a11-browser-probe.mjs
           node --check scripts/run-ash-flowcore-live-field-browser-probe.mjs
           node --check scripts/ash-research-ux-browser-probe.mjs
-      - name: A2-A10, live field, A1 first paint, reviewability, and Research contracts
+      - name: A2-A11, postclosure cache, live field, A1 first paint, reviewability, and Research contracts
         run: |
           mkdir -p artifacts
           set -euo pipefail
@@ -118,6 +125,8 @@ jobs:
             node tests/ash-a8-case-map-recompilation.test.mjs
             node tests/ash-a9-work-recompilation.test.mjs
             node tests/ash-a10-choir-recompilation.test.mjs
+            node tests/ash-a11-capsule-recompilation.test.mjs
+            node tests/ash-a11-postclosure-cache-eviction.test.mjs
             node tests/ash-flowcore-live-field.test.mjs
             node tests/ash-ingress-polish.test.mjs
             node tests/ash-aia3-mass-eviction.test.mjs
@@ -185,6 +194,7 @@ jobs:
           node --check app/dome-world/ash-a8-case-map-recompilation.js
           node --check app/dome-world/ash-a9-work-recompilation.js
           node --check app/dome-world/ash-a10-choir-recompilation.js
+          node --check app/dome-world/ash-a11-capsule-recompilation.js
       - name: Install browser witness runtime
         run: |
           npm install --no-save --package-lock=false playwright@1.53.2
@@ -209,11 +219,11 @@ jobs:
           TD613_BASE_URL: http://127.0.0.1:6130
           TD613_ARTIFACT_DIR: artifacts/ash-a2-a5-${{ matrix.browser }}
         run: timeout --foreground --signal=INT --kill-after=15s 540s node scripts/ash-a2-a5-browser-probe.mjs
-      - name: Observe A7-A10 workspace recompilations
+      - name: Observe A7-A11 workspace recompilations
         env:
           TD613_BROWSER: ${{ matrix.browser }}
           TD613_BASE_URL: http://127.0.0.1:6130
-          TD613_ASH_STAGES: A7,A8,A9,A10
+          TD613_ASH_STAGES: A7,A8,A9,A10,A11
           TD613_ARTIFACT_DIR: artifacts/ash-a7-a11-${{ matrix.browser }}
         run: timeout --foreground --signal=INT --kill-after=15s 480s node scripts/ash-a7-a11-browser-probe.mjs
       - name: Observe ingress copy, zero-artifact Flow-Core, and Close Case return
