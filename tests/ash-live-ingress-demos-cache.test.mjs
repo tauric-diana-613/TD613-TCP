@@ -41,7 +41,6 @@ const navigation = read('app/dome-world/ash-workspace-navigation.js');
 const rescue = read('app/dome-world/ash-ui-ux-rescue.js');
 const RELEASE_EPOCH = '20260724-a11-postclosure-v1';
 const RELEASE_CACHE_EPOCH = 'td613.ash.cache-flush/2026-07-24-a11-postclosure-v1';
-const HISTORICAL_A2_A5_CACHE_EPOCH = 'td613.ash.cache-flush/2026-07-23-a2-a5-release-v1';
 
 class MemoryStorage {
   constructor(entries = {}) { this.values = new Map(Object.entries(entries)); }
@@ -109,7 +108,7 @@ for (const token of [
 for (const forbidden of ['SCROLLBAR_FADE_DELAY', 'installScrollbarFade', 'scrollbar-gutter:stable']) assert.equal(ingress.includes(forbidden), false);
 
 assert.match(cache, /2026-07-18-canonical-membrane-v7/);
-assert.ok(cache.includes(HISTORICAL_A2_A5_CACHE_EPOCH), 'Legacy cache transition must retain the completed A2-A5 supersession marker.');
+assert.ok(cache.includes(RELEASE_CACHE_EPOCH), 'Legacy cache transition must yield to the final A11 mass-eviction epoch.');
 assert.match(cache, /validThresholdReadiness/);
 assert.match(cache, /unregisterSameOriginWorkers/);
 assert.match(cache, /cache:'no-store'/);
