@@ -7,48 +7,44 @@ const workflows = readdirSync(workflowDir)
   .filter((name) => /\.ya?ml$/i.test(name))
   .sort();
 
-const MAX_DURABLE_WORKFLOWS = 12;
-assert.ok(
-  workflows.length <= MAX_DURABLE_WORKFLOWS,
-  `Workflow estate expanded to ${workflows.length}; durable ceiling is ${MAX_DURABLE_WORKFLOWS}. Move stage checks into tests, scripts, or jobs inside an existing workflow.`,
+const REQUIRED = ['td613-ci.yml', 'vercel-operator-release.yml'];
+assert.deepEqual(
+  workflows,
+  REQUIRED,
+  `Workflow estate must remain exactly two durable conduits: ${REQUIRED.join(', ')}. Found: ${workflows.join(', ')}`,
 );
 
-const required = [
+const ci = readFileSync(join(workflowDir, 'td613-ci.yml'), 'utf8');
+const operations = readFileSync(join(workflowDir, 'vercel-operator-release.yml'), 'utf8');
+
+assert.match(ci, /^\s{2}pull_request:\s*$/m);
+assert.match(ci, /^\s{2}push:\s*$/m);
+assert.match(ci, /^\s{2}workflow_dispatch:\s*$/m);
+assert.match(ci, /cancel-in-progress:\s*true/);
+assert.match(ci, /Enforce two-workflow estate/);
+assert.match(ci, /Ash local closure and browser field/);
+assert.match(ci, /Phase IV local integration/);
+assert.match(ci, /Run tiered cross-browser field/);
+assert.match(ci, /one shared browser runtime/i);
+
+assert.match(operations, /^\s{2}issue_comment:\s*$/m);
+assert.doesNotMatch(operations, /^\s{2}(push|pull_request|workflow_dispatch):\s*$/m);
+assert.match(operations, /td613-vercel-production-release/);
+assert.match(operations, /Restore the Git deployment lock after fallback/);
+
+const retired = [
   'pages.yml',
   'tcp-smoke.yml',
-  'td613-ci.yml',
-  'ash-flowcore-live-field.yml',
-  'ash-keep-production-closure.yml',
-  'ash-keep-aia3-production-observation.yml',
-  'dome-world-phase4.yml',
-  'vercel-deployment-law.yml',
-  'vercel-operator-release.yml',
   'vercel-relock-safety.yml',
+  'ash-keep-aia3-production-observation.yml',
+  'ash-flowcore-live-field.yml',
+  'vercel-deployment-law.yml',
+  'calibration.yml',
+  'dome-world-phase4.yml',
+  'ash-keep-production-closure.yml',
 ];
-
-for (const name of required) {
-  assert.ok(workflows.includes(name), `Required durable workflow missing: ${name}`);
+for (const name of retired) {
+  assert.equal(workflows.includes(name), false, `Superseded workflow returned: ${name}`);
 }
 
-const retiredPatterns = [
-  /^flowcore-pedagogue-p\d+\.ya?ml$/,
-  /^flowcore-p0-p(?:7-seam-closure|10-final-stitch)\.ya?ml$/,
-  /^flowcore-(?:production-observation|runtime-evidence)\.ya?ml$/,
-  /^hush-phase(?:9|10|11|12|13|14)\.ya?ml$/,
-  /^ash-(?:legal-ux|research-ux|four-profile-pedagogy|investigation-guided-flight|user-test-flight|live-ingress-demos-cache|safe-harbor-ingress|custodian-return|destination-handoff|independent-provenance|aperture-composition-constitution)\.ya?ml$/,
-  /^ash-keep-(?:aia2-usability|choir-test|delivery-boundary|hush-intervention|live-aia-browser|live-aia)\.ya?ml$/,
-  /^ash-(?:lifecycle-integration|map-object-registry|stretch1-closure)\.ya?ml$/,
-];
-
-for (const name of workflows) {
-  assert.ok(
-    !retiredPatterns.some((pattern) => pattern.test(name)),
-    `Retired micro-workflow returned: ${name}. Keep its witness in tests/scripts and route it through a durable shared workflow.`,
-  );
-}
-
-const consolidated = readFileSync(join(workflowDir, 'td613-ci.yml'), 'utf8');
-assert.match(consolidated, /concurrency:/, 'td613-ci.yml must cancel superseded runs');
-assert.match(consolidated, /cancel-in-progress:\s*true/, 'td613-ci.yml must cancel superseded runs');
-
-console.log(`Workflow estate bounded: ${workflows.length}/${MAX_DURABLE_WORKFLOWS}`);
+console.log('Workflow estate bounded: 2/2');
