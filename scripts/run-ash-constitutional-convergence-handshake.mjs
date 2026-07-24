@@ -163,9 +163,6 @@ if (runtimeWrapper.includes('new BroadcastChannel(')) {
 
 const pageCreationTarget = 'const page = await context.newPage();';
 const pageCreationReplacement = `${pageCreationTarget}\npage.setDefaultTimeout(45000);\npage.setDefaultNavigationTimeout(90000);\nconst checkpoint = async label => {\n  console.log('[TD613 convergence] ' + label);\n  await fsp.writeFile(path.join(artifactDir, 'convergence-checkpoint.json'), JSON.stringify({\n    schema:'td613.ash.constitutional-convergence-checkpoint/v0.1',\n    label,\n    observed_at:new Date().toISOString(),\n    promotion_authorized:false\n  }, null, 2) + '\\n');\n};`;
-if (!runtimeWrapper.includes(pageCreationTarget)) throw new Error('Convergence handshake shim could not locate page creation for finite action ceilings.');
-runtimeWrapper = runtimeWrapper.replace(pageCreationTarget, pageCreationReplacement);
-
 const checkpoints = [
   ["  await page.goto(keepUrl, { waitUntil: 'domcontentloaded', timeout: 90000 });", 'BOOT'],
   ['  report.observations.custody_binding = await bindSyntheticCustody(page);', 'CUSTODY_BINDING'],
@@ -178,12 +175,25 @@ const checkpoints = [
   ['  await page.setViewportSize({ width: 1440, height: 1000 });', 'LAYOUT_WITNESS'],
   ["  report.status = 'PASS';", 'PASS']
 ];
-for (const [target, label] of checkpoints) {
-  if (!runtimeWrapper.includes(target)) throw new Error(`Convergence handshake shim could not locate checkpoint seam ${label}.`);
-  runtimeWrapper = runtimeWrapper.replace(target, `  await checkpoint('${label}');\n${target}`);
-}
-if (!runtimeWrapper.includes('page.setDefaultTimeout(45000)') || !runtimeWrapper.includes("convergence-checkpoint.json") || !runtimeWrapper.includes("await checkpoint('MULTI_TAB_START')")) {
-  throw new Error('Convergence handshake shim failed to materialize finite observer diagnostics.');
+const runtimeWriteTarget = "await fs.writeFile(runtimePath, runtime, 'utf8');";
+const runtimeWriteReplacement = [
+  'let diagnosticRuntime = runtime;',
+  `const pageCreationTarget = ${JSON.stringify(pageCreationTarget)};`,
+  `const pageCreationReplacement = ${JSON.stringify(pageCreationReplacement)};`,
+  "if (!diagnosticRuntime.includes(pageCreationTarget)) throw new Error('Convergence observer could not locate page creation for finite action ceilings.');",
+  'diagnosticRuntime = diagnosticRuntime.replace(pageCreationTarget, pageCreationReplacement);',
+  `const checkpoints = ${JSON.stringify(checkpoints)};`,
+  "for (const [target, label] of checkpoints) {",
+  "  if (!diagnosticRuntime.includes(target)) throw new Error('Convergence observer could not locate checkpoint seam ' + label + '.');",
+  "  diagnosticRuntime = diagnosticRuntime.replace(target, \"  await checkpoint('\\\" + label + \"');\\n\" + target);",
+  "}",
+  "if (!diagnosticRuntime.includes('page.setDefaultTimeout(45000)') || !diagnosticRuntime.includes('convergence-checkpoint.json') || !diagnosticRuntime.includes(\"await checkpoint('MULTI_TAB_START')\")) throw new Error('Convergence observer finite diagnostics were not materialized.');",
+  "await fs.writeFile(runtimePath, diagnosticRuntime, 'utf8');"
+].join('\n');
+if (!runtimeWrapper.includes(runtimeWriteTarget)) throw new Error('Convergence handshake shim could not locate the generated observer write seam.');
+runtimeWrapper = runtimeWrapper.replace(runtimeWriteTarget, runtimeWriteReplacement);
+if (!runtimeWrapper.includes('let diagnosticRuntime = runtime;') || !runtimeWrapper.includes('convergence-checkpoint.json') || !runtimeWrapper.includes('page.setDefaultTimeout(45000)')) {
+  throw new Error('Convergence handshake shim failed to place finite diagnostics in the generated observer.');
 }
 
 await fs.writeFile(runtimeUrl, runtimeWrapper, 'utf8');
