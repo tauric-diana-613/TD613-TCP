@@ -19,7 +19,8 @@ const premiumReadinessSource = fs.readFileSync(premiumReadinessPath, 'utf8');
 const compositionCompatibilitySource = fs.readFileSync(compositionCompatibilityPath, 'utf8');
 const workspaceBridgeSource = fs.readFileSync(workspaceBridgePath, 'utf8');
 const { ASH_DEMO_PEDAGOGY_VERSION, ASH_DEMO_PEDAGOGY_MANIFESTS } = await import(pathToFileURL(modulePath));
-const RELEASE_EPOCH = '20260724-a12-release-v1';
+const INHERITED_EPOCH = '20260724-a12-release-v1';
+const REGISTRY_EPOCH = '20260724-a13-release-v1';
 
 assert.equal(ASH_DEMO_PEDAGOGY_VERSION, 'td613.ash.demo-pedagogy/v0.2-event-driven-idle-stable');
 assert.deepEqual(Object.keys(ASH_DEMO_PEDAGOGY_MANIFESTS).sort(), ['fundraiser','investigation','political_campaign','research']);
@@ -44,7 +45,7 @@ for (const [profile, manifest] of Object.entries(ASH_DEMO_PEDAGOGY_MANIFESTS)) {
   for (const destination of ['home','map','work','choir','capsule']) assert(manifest.destination_copy[destination]);
   taskSignatures.add(manifest.task_spine.map(item => `${item.label}:${item.workspace}`).join('|'));
 }
-assert.equal(taskSignatures.size, 4, 'The four profiles must not collapse into recolored copies.');
+assert.equal(taskSignatures.size, 4, 'The four inherited manifests must not collapse into recolored copies.');
 
 assert.match(moduleSource, /Hydration ledger · what should work, wait, stay quiet, or remain separate/);
 assert.match(moduleSource, /GESTURE_READY/);
@@ -65,7 +66,8 @@ assert.match(moduleSource, /providerApproval/);
 assert.match(moduleSource, /approveRelease/);
 assert.match(moduleSource, /capsulePassphrase/);
 assert.doesNotMatch(moduleSource, /transport_authorized:\s*true|child_study_authorized:\s*true|automatic_ash_action:\s*true/);
-assert.match(wrapperSource, new RegExp(`ash-demo-pedagogy-rehydration\\.js\\?v=${RELEASE_EPOCH}`));
+assert.match(wrapperSource, new RegExp(`ash-demo-pedagogy-rehydration\\.js\\?v=${REGISTRY_EPOCH}`));
+assert.match(wrapperSource, new RegExp(`ash-demo-registry\\.js\\?v=${REGISTRY_EPOCH}`));
 
 assert.match(entrySource, /td613\.ash\.demo-entry-convergence\/v0\.5-premium-instrument-visible-release/);
 assert.match(entrySource, /data-ash-demo-entry-hydrating/);
@@ -118,8 +120,9 @@ assert.match(compositionCompatibilitySource, /td613\.ash\.composition-receipt-co
 assert.match(compositionCompatibilitySource, /stable-navigation-motion/);
 assert.match(compositionCompatibilitySource, /td613:ash:composition-stable/);
 assert.match(compositionCompatibilitySource, /dataset\.ashCompositionRelease/);
-const releaseImport = module => `${module}\\.js\\?v=${RELEASE_EPOCH}`;
-assert.match(workspaceBridgeSource, new RegExp(`${releaseImport('ash-premium-ui')}[\\s\\S]*${releaseImport('ash-premium-readiness-bridge')}[\\s\\S]*${releaseImport('ash-ui-ux-rescue')}[\\s\\S]*${releaseImport('ash-composition-receipt-compatibility')}[\\s\\S]*${releaseImport('ash-demo-entry-convergence')}[\\s\\S]*${releaseImport('ash-demo-pedagogy-routebar')}`));
+const inheritedImport = module => `${module}\\.js\\?v=${INHERITED_EPOCH}`;
+assert.match(workspaceBridgeSource, new RegExp(`${inheritedImport('ash-premium-ui')}[\\s\\S]*${inheritedImport('ash-premium-readiness-bridge')}[\\s\\S]*${inheritedImport('ash-ui-ux-rescue')}[\\s\\S]*${inheritedImport('ash-composition-receipt-compatibility')}[\\s\\S]*${inheritedImport('ash-demo-entry-convergence')}[\\s\\S]*${inheritedImport('ash-demo-pedagogy-routebar')}`));
+assert.match(workspaceBridgeSource, new RegExp(`ash-profile-demo-hydration\\.js\\?v=${REGISTRY_EPOCH}`));
 assert.doesNotMatch(workspaceBridgeSource, /ash-demo-pedagogy-persistence/);
 assert.equal(fs.existsSync(path.join(root, 'app/dome-world/ash-demo-pedagogy-persistence.js')), false, 'The obstructive all-workspace ledger portal must remain removed.');
 
