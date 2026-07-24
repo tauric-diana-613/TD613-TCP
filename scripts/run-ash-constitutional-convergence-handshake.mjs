@@ -161,6 +161,31 @@ if (runtimeWrapper.includes('new BroadcastChannel(')) {
   throw new Error('Convergence handshake shim retained a lossy BroadcastChannel release sender.');
 }
 
+const pageCreationTarget = 'const page = await context.newPage();';
+const pageCreationReplacement = `${pageCreationTarget}\npage.setDefaultTimeout(45000);\npage.setDefaultNavigationTimeout(90000);\nconst checkpoint = async label => {\n  console.log('[TD613 convergence] ' + label);\n  await fsp.writeFile(path.join(artifactDir, 'convergence-checkpoint.json'), JSON.stringify({\n    schema:'td613.ash.constitutional-convergence-checkpoint/v0.1',\n    label,\n    observed_at:new Date().toISOString(),\n    promotion_authorized:false\n  }, null, 2) + '\\n');\n};`;
+if (!runtimeWrapper.includes(pageCreationTarget)) throw new Error('Convergence handshake shim could not locate page creation for finite action ceilings.');
+runtimeWrapper = runtimeWrapper.replace(pageCreationTarget, pageCreationReplacement);
+
+const checkpoints = [
+  ["  await page.goto(keepUrl, { waitUntil: 'domcontentloaded', timeout: 90000 });", 'BOOT'],
+  ['  report.observations.custody_binding = await bindSyntheticCustody(page);', 'CUSTODY_BINDING'],
+  ["  await page.locator('#loadSeed').click();", 'REBUILD_GESTURE'],
+  ["  await page.locator('#objectName').fill('Synthetic successor fact');", 'CASE_MAP_MUTATION'],
+  ["  const firstCase = await page.evaluate(() => localStorage.getItem('td613.ash-keep.current-case'));", 'FIRST_CASE_SAVED'],
+  ["  const secondCase = await page.evaluate(() => localStorage.getItem('td613.ash-keep.current-case'));", 'SECOND_CASE_OPENED'],
+  ['  const secondPage = await context.newPage();', 'MULTI_TAB_START'],
+  ["  const deletionPlan = await page.evaluate(id => window.TD613AshConvergence.planDeletion(id, 'Synthetic interrupted case', true), firstCase);", 'INTERRUPTED_DELETION'],
+  ['  await page.setViewportSize({ width: 1440, height: 1000 });', 'LAYOUT_WITNESS'],
+  ["  report.status = 'PASS';", 'PASS']
+];
+for (const [target, label] of checkpoints) {
+  if (!runtimeWrapper.includes(target)) throw new Error(`Convergence handshake shim could not locate checkpoint seam ${label}.`);
+  runtimeWrapper = runtimeWrapper.replace(target, `  await checkpoint('${label}');\n${target}`);
+}
+if (!runtimeWrapper.includes('page.setDefaultTimeout(45000)') || !runtimeWrapper.includes("convergence-checkpoint.json") || !runtimeWrapper.includes("await checkpoint('MULTI_TAB_START')")) {
+  throw new Error('Convergence handshake shim failed to materialize finite observer diagnostics.');
+}
+
 await fs.writeFile(runtimeUrl, runtimeWrapper, 'utf8');
 try {
   await import(`${pathToFileURL(runtimeUrl.pathname).href}?handshake=${Date.now()}`);
