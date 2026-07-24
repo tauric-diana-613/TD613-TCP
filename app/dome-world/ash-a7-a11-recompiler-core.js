@@ -188,15 +188,17 @@ if (host && !host.__td613AshA9WorkspaceOwner) {
       workBody.innerHTML = '<div class="premium-skeleton" data-ash-a9-compiling="true">Compiling the current intention-shaped Work queue…</div>';
     }
     queueMicrotask(async () => {
+      await host.__td613AshPremiumUI?.refresh?.();
       await loadA9Module();
       await host.__td613AshA9?.refresh?.('UX_WORKSPACE_OPENED');
     });
   };
   host.addEventListener('td613:ash:ux-workspace-opened', refreshSettledA9Work);
   host.__td613AshA9WorkspaceOwner = Object.freeze({
-    version:'td613.ash.a9-workspace-owner/v0.1',
+    version:'td613.ash.a9-workspace-owner/v0.2',
     event:'td613:ash:ux-workspace-opened',
     admission_event:'td613:ash:canonical-module-graph-ready',
+    native_workspace_settled_first:true,
     stale_shell_replaced:true,
     active_stage_form_deferred:true,
     automatic_consequential_action:false,
@@ -236,15 +238,17 @@ if (host && !host.__td613AshA10WorkspaceOwner) {
   const refreshSettledA10Choir = event => {
     if (event.detail?.workspace !== 'choir') return;
     queueMicrotask(async () => {
+      await host.__td613AshPremiumUI?.refresh?.();
       await loadA10Module();
       await host.__td613AshA10?.refresh?.('UX_WORKSPACE_OPENED');
     });
   };
   host.addEventListener('td613:ash:ux-workspace-opened', refreshSettledA10Choir);
   host.__td613AshA10WorkspaceOwner = Object.freeze({
-    version:'td613.ash.a10-workspace-owner/v0.1',
+    version:'td613.ash.a10-workspace-owner/v0.2',
     event:'td613:ash:ux-workspace-opened',
     admission_event:'td613:ash:canonical-module-graph-ready',
+    native_workspace_settled_first:true,
     native_choir_preserved:true,
     active_stage_form_deferred:true,
     automatic_assay:false,
