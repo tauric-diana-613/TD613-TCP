@@ -14,7 +14,7 @@ const recovery = read('app/safe-harbor/ash-keep-recovery.html');
 const shell = read('api/dome-world-shell.js');
 const journeyAdapter = read('scripts/ash-keep-aia3-task-journey-v3.mjs');
 const journeySource = read('scripts/ash-keep-aia3-task-journey-v3.source.mjs');
-const closureWorkflow = read('.github/workflows/ash-keep-production-closure.yml');
+const ashWorkflow = read('.github/workflows/ash-flowcore-live-field.yml');
 const receipt = read('app/dome-world/docs/ASH_KEEP_A2_A5_IMPLEMENTATION_RECEIPT_V0_1.md');
 const programIndex = read('app/dome-world/docs/FLOWCORE_PEDAGOGUE_PROGRAM_INDEX_V0_1.md');
 
@@ -93,10 +93,13 @@ assert.match(receipt, /replacement cache epoch: td613\.ash\.cache-flush\/2026-07
 assert.match(programIndex, /Ash A2–A5/);
 assert.match(programIndex, /20260723-a2-a5-release-v1/);
 
-assert.doesNotMatch(closureWorkflow, /\n  workflow_run:/);
-assert.doesNotMatch(closureWorkflow, /github\.event\.workflow_run/);
-assert.match(closureWorkflow, /RUN_DEPLOYED_OBSERVATION/);
-assert.match(closureWorkflow, /inputs\.base_url/);
+assert.doesNotMatch(ashWorkflow, /\n  workflow_run:/);
+assert.doesNotMatch(ashWorkflow, /github\.event\.workflow_run/);
+assert.match(ashWorkflow, /Run core closure and constitutional convergence once/);
+assert.match(ashWorkflow, /run-ash-keep-a1-production-probe\.mjs/);
+assert.match(ashWorkflow, /run-ash-constitutional-convergence-handshake\.mjs/);
+assert.match(ashWorkflow, /startsWith\(github\.event\.comment\.body, '\/td613-ash-aia3-observe '\)/);
+assert.equal(fs.existsSync(new URL('../.github/workflows/ash-keep-production-closure.yml', import.meta.url)), false);
 assert.match(receipt, /new serverless function = false/);
 assert.match(receipt, /active serverless functions = 11/);
 assert.match(receipt, /reserved function capacity = 1/);
