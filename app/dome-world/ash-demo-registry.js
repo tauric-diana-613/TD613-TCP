@@ -49,6 +49,7 @@ let installed = false;
 let reconciling = false;
 let busyProfile = null;
 let registryEntries = null;
+let registryApi = null;
 
 function ensureStatus() {
   let status = byId('demoProfileStatus');
@@ -85,7 +86,7 @@ function ensureOptions() {
   return select;
 }
 
-function legalManifest(fixture) {
+function legalManifest() {
   return Object.freeze({
     profile:'legal', label:'Legal Matter', title:'Separate deadline, evidence, privilege, and decision.',
     consequence:'Ash preserves deadlines, source gaps, privilege boundaries, competing explanations, and human review without offering legal advice.',
@@ -100,7 +101,7 @@ function legalManifest(fixture) {
     active_workspaces:Object.freeze(['home','map','work','choir','capsule']),
     destination_copy:Object.freeze({ home:'Read deadlines and the next preservation duty.', map:'Inspect parties, filings, evidence, privilege, alternatives, and routes.', work:'Prepare bounded human-reviewed legal work.', choir:'Compare routes without converting residue into merits or truth.', capsule:'Preserve continuity without performing a filing or disclosure.' }),
     keep_quiet:'Privileged strategy, client communications, witness contacts, provider output, release approval, and outcome prediction stay local or dormant.',
-    claim_ceiling:fixture?.defaults?.research_notes || 'Synthetic training only; no legal advice, guilt, liability, merits, privilege waiver, or outcome prediction.'
+    claim_ceiling:'Synthetic training only; no legal advice, guilt, liability, merits, privilege waiver, or outcome prediction.'
   });
 }
 
@@ -157,7 +158,7 @@ async function loadOwners() {
     );
     const legalFixture = legal.buildLegalMatterDemoFixture();
     entries.legal = normalizeEntry(
-      BASE_ENTRIES.legal, legalFixture, legalManifest(legalFixture),
+      BASE_ENTRIES.legal, legalFixture, legalManifest(),
       () => legal.hydrateLegalMatterDemo(),
       () => legal.buildLegalMatterDemoFixture()
     );
@@ -182,6 +183,11 @@ async function loadOwners() {
       automatic_consequential_action:false
     });
     registryEntries = Object.freeze(entries);
+    if (registryApi) {
+      host.__td613AshDemoRegistry = registryApi;
+      host.__td613AshProfileDemos = registryApi;
+      doc.documentElement.dataset.ashDemoCompatibilityOwner = ASH_DEMO_REGISTRY_VERSION;
+    }
     doc.documentElement.dataset.ashDemoRegistryOwners = 'APEQ_PAIA,RESEARCH,LEGAL,A14_RESERVED';
     host.dispatchEvent(new CustomEvent('td613:ash:demo-registry-ready', { detail:snapshot() }));
     scheduleReconcile();
@@ -271,7 +277,8 @@ export async function hydrateAshDemo(profile) {
   const entry = entries[profile];
   if (!entry) throw new Error(`No Ash demo registry entry exists for ${profile}.`);
   if (entry.status !== 'PROMOTED' || typeof entry.hydrate !== 'function') {
-    ensureStatus().innerHTML = `<strong>${entry.label} remains held.</strong> ${entry.claim_ceiling}`;
+    const status = ensureStatus();
+    if (status) status.innerHTML = `<strong>${entry.label} remains held.</strong> ${entry.claim_ceiling}`;
     reconcile();
     return null;
   }
@@ -304,7 +311,10 @@ export function installAshDemoRegistry() {
   const button = byId('startDemo');
   if (!select || !button) return false;
   installed = true;
-  select.addEventListener('change', scheduleReconcile);
+  select.addEventListener('change', event => {
+    event.stopImmediatePropagation();
+    scheduleReconcile();
+  }, true);
   host.addEventListener('click', event => {
     const target = event.target?.closest?.('#startDemo');
     if (!target) return;
@@ -324,7 +334,7 @@ export function installAshDemoRegistry() {
   }
   doc.documentElement.dataset.ashDemoRegistry = ASH_DEMO_REGISTRY_VERSION;
   doc.documentElement.dataset.ashDemoControlOwner = 'ASH_DEMO_REGISTRY';
-  const api = Object.freeze({
+  registryApi = Object.freeze({
     version:ASH_DEMO_REGISTRY_VERSION,
     asset_epoch:ASH_DEMO_ASSET_EPOCH,
     profiles:PROFILE_ORDER,
@@ -335,8 +345,8 @@ export function installAshDemoRegistry() {
     reconcile,
     authority:Object.freeze({ custody_changed:false, raw_content_transport:false, automatic_action:false, release_authority:false, human_review_required:true })
   });
-  host.__td613AshDemoRegistry = api;
-  host.__td613AshProfileDemos = api;
+  host.__td613AshDemoRegistry = registryApi;
+  host.__td613AshProfileDemos = registryApi;
   reconcile();
   loadOwners().catch(error => {
     console.error(error);
