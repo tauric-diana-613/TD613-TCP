@@ -9,12 +9,14 @@ export const ASH_LIFECYCLE_SHELL_CONTRACT = 'td613.ash.lifecycle-shell/v0.1';
 export const ASH_KEEP_SHELL_VERSION = 'td613.ash-keep.shell/v0.7-a11-predeployment-cache';
 export const ASH_KEEP_JS_SHELL_VERSION = 'td613.ash-keep.js-shell/v0.5-event-driven-map';
 export const ASH_CACHE_TRANSITION_CONTRACT = 'td613.ash.cache-transition/v0.7-a11-predeployment';
-export const ASH_LIFECYCLE_ASSET_EPOCH = '20260724-a11-predeployment-v1';
+export const ASH_LIFECYCLE_ASSET_EPOCH = '20260723-a2-a5-release-v1';
 export const ASH_LIFECYCLE_SOURCE_MODULE = '/dome-world/ash-lifecycle.js';
 export const ASH_LIFECYCLE_MODULE = `${ASH_LIFECYCLE_SOURCE_MODULE}?v=${ASH_LIFECYCLE_ASSET_EPOCH}`;
 export const ASH_WORKSPACE_BRIDGE_MODULE = '/dome-world/ash-workspace-bridge.js';
 export const ASH_CANONICAL_MEMBRANE_EPOCH = '20260718-canonical-membrane-v6';
-export const ASH_MASS_EVICTION_EPOCH = 'td613.ash.cache-flush/2026-07-24-a11-predeployment-v1';
+export const ASH_MASS_EVICTION_EPOCH = 'td613.ash.cache-flush/2026-07-23-a2-a5-release-v1';
+export const ASH_A11_PREFLIGHT_ASSET_EPOCH = '20260724-a11-predeployment-v1';
+export const ASH_A11_PREFLIGHT_EVICTION_EPOCH = 'td613.ash.cache-flush/2026-07-24-a11-predeployment-v1';
 
 const DOME_SOURCE_PATH = path.join(process.cwd(), 'app', 'dome-world', 'index.html');
 const ASH_KEEP_SOURCE_PATH = path.join(process.cwd(), 'app', 'dome-world', 'ash-keep.html');
@@ -22,7 +24,7 @@ const ASH_KEEP_JS_SOURCE_PATH = path.join(process.cwd(), 'app', 'dome-world', 'a
 const ASH_KEEP_ICON_MARKER = '<link rel="icon" href="data:,">';
 const ASH_CANONICAL_LINK_MARKER = '<link rel="canonical" href="/dome-world/ash-threshold.html">';
 const ASH_CANONICAL_BOOT_MARKER = '<meta name="ash-canonical-membrane" content="v1.0">';
-const ASH_MASS_EVICTION_MARKER = '<meta name="ash-cache-preflight" content="a11-predeployment-v1">';
+const ASH_MASS_EVICTION_MARKER = '<meta name="ash-cache-preflight" content="a2-a5-release-v1">';
 const ASH_BOOTSTRAP_MARKER = 'td613-ash-canonical-module-bootstrap';
 const ASH_PREPARING_SHELL = '<div id="td613-ash-preparing-shell" role="status" aria-live="polite"><strong>Preparing Ash</strong><span>Preserving local cases while the current instrument resolves.</span></div>';
 const MARROWLINE_BUTTON = `<button class="lab-node lab-node-marrowline" type="button" data-tone="gold" data-glyph="∴" data-open-route="${MARROWLINE_LAB_ROUTE}" style="grid-column:span 8" onclick="window.location.assign('${MARROWLINE_LAB_ROUTE}')" aria-label="Open Marrowline Kʰonapolit terminal"><span class="lab-index">11</span><strong>Marrowline</strong><small>Kʰonapolit terminal / live ingress</small></button>`;
@@ -53,8 +55,8 @@ function cachePreflightBoot() {
     const incoming=new URL(location.href);
     const legacyPresentation=incoming.searchParams.get('presentation')==='legacy';
     const canonicalPath=${JSON.stringify(ASH_THRESHOLD_ROUTE)};
-    const epoch=${JSON.stringify(ASH_MASS_EVICTION_EPOCH)};
-    const assetEpoch=${JSON.stringify(ASH_LIFECYCLE_ASSET_EPOCH)};
+    const epoch=${JSON.stringify(ASH_A11_PREFLIGHT_EVICTION_EPOCH)};
+    const assetEpoch=${JSON.stringify(ASH_A11_PREFLIGHT_ASSET_EPOCH)};
     const canonicalSessionEpoch=${JSON.stringify(ASH_CANONICAL_MEMBRANE_EPOCH)};
     const moduleMarkerKey='td613.ash.cache-flush.aia3.epoch';
     const preflightMarkerKey='td613.ash.cache-preflight.epoch';
@@ -158,7 +160,7 @@ function canonicalAshBoot() {
     const moduleMarkerKey='td613.ash.cache-flush.aia3.epoch';
     const preflightMarkerKey='td613.ash.cache-preflight.epoch';
     const epoch=${JSON.stringify(ASH_CANONICAL_MEMBRANE_EPOCH)};
-    const massEpoch=${JSON.stringify(ASH_MASS_EVICTION_EPOCH)};
+    const massEpoch=${JSON.stringify(ASH_A11_PREFLIGHT_EVICTION_EPOCH)};
     const pointer=localStorage.getItem(pointerKey);
     const massCurrent=localStorage.getItem(moduleMarkerKey)===massEpoch||localStorage.getItem(preflightMarkerKey)===massEpoch;
     if(pointer&&massCurrent&&localStorage.getItem(sessionKey)!==epoch){localStorage.setItem(sessionKey,epoch);document.documentElement.dataset.ashSessionMigrated='true'}
@@ -186,7 +188,7 @@ function canonicalModuleBootstrap() {
     for(const moduleUrl of modules){await import(moduleUrl)}
     document.documentElement.dataset.ashModuleGraph='ready';
     document.documentElement.dataset.ashCachePreflight='complete';
-    globalThis.dispatchEvent(new CustomEvent('td613:ash:canonical-module-graph-ready',{detail:{schema:'td613.ash.canonical-module-graph/v0.1',module_count:modules.length,asset_epoch:${JSON.stringify(ASH_LIFECYCLE_ASSET_EPOCH)},preflight_performed:Boolean(receipt?.performed)}}));
+    globalThis.dispatchEvent(new CustomEvent('td613:ash:canonical-module-graph-ready',{detail:{schema:'td613.ash.canonical-module-graph/v0.1',module_count:modules.length,asset_epoch:${JSON.stringify(ASH_LIFECYCLE_ASSET_EPOCH)},preflight_asset_epoch:${JSON.stringify(ASH_A11_PREFLIGHT_ASSET_EPOCH)},preflight_performed:Boolean(receipt?.performed)}}));
   </script>`;
 }
 
@@ -311,6 +313,8 @@ function send(res, status, body = '', definition = surfaceDefinition('dome-world
   res.setHeader('X-TD613-Ash-Lifecycle-Asset', ASH_LIFECYCLE_ASSET_EPOCH);
   res.setHeader('X-TD613-Ash-Canonical-Membrane', ASH_CANONICAL_MEMBRANE_EPOCH);
   res.setHeader('X-TD613-Ash-Cache-Preflight', ASH_MASS_EVICTION_EPOCH);
+  res.setHeader('X-TD613-Ash-A11-Preflight-Asset', ASH_A11_PREFLIGHT_ASSET_EPOCH);
+  res.setHeader('X-TD613-Ash-A11-Cache-Preflight', ASH_A11_PREFLIGHT_EVICTION_EPOCH);
   res.end(body);
 }
 
@@ -326,7 +330,9 @@ function sendCacheEviction(res, method) {
     visible_url:ASH_THRESHOLD_ROUTE,
     contract:ASH_CACHE_TRANSITION_CONTRACT,
     lifecycle_asset_epoch:ASH_LIFECYCLE_ASSET_EPOCH,
-    mass_eviction_epoch:ASH_MASS_EVICTION_EPOCH
+    mass_eviction_epoch:ASH_MASS_EVICTION_EPOCH,
+    a11_preflight_asset_epoch:ASH_A11_PREFLIGHT_ASSET_EPOCH,
+    a11_preflight_eviction_epoch:ASH_A11_PREFLIGHT_EVICTION_EPOCH
   });
   res.statusCode = 200;
   res.setHeader('Content-Type', 'application/json; charset=utf-8');
@@ -340,6 +346,8 @@ function sendCacheEviction(res, method) {
   res.setHeader('X-TD613-Ash-Lifecycle-Asset', ASH_LIFECYCLE_ASSET_EPOCH);
   res.setHeader('X-TD613-Ash-Canonical-Membrane', ASH_CANONICAL_MEMBRANE_EPOCH);
   res.setHeader('X-TD613-Ash-Cache-Preflight', ASH_MASS_EVICTION_EPOCH);
+  res.setHeader('X-TD613-Ash-A11-Preflight-Asset', ASH_A11_PREFLIGHT_ASSET_EPOCH);
+  res.setHeader('X-TD613-Ash-A11-Cache-Preflight', ASH_A11_PREFLIGHT_EVICTION_EPOCH);
   res.end(method === 'HEAD' ? '' : body);
 }
 
