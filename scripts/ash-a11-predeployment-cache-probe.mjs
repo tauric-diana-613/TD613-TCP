@@ -25,6 +25,35 @@ const consoleErrors = [];
 page.on('console', message => { if (message.type() === 'error') consoleErrors.push(message.text()); });
 page.on('pageerror', error => consoleErrors.push(String(error?.stack || error)));
 
+const phaseTrace = [];
+async function markPhase(phase, state, detail = null) {
+  const entry = { phase, state, detail, observed_at:new Date().toISOString() };
+  phaseTrace.push(entry);
+  await fs.writeFile(path.join(artifactDir, `${browserName}-phase-trace.json`), JSON.stringify({
+    schema:'td613.ash.a11-predeployment-cache-phase-trace/v0.1',
+    browser:browserName,
+    phases:phaseTrace
+  }, null, 2));
+}
+
+async function runPhase(phase, work, timeoutMs) {
+  await markPhase(phase, 'STARTED');
+  let timer;
+  try {
+    const result = await Promise.race([
+      Promise.resolve().then(work),
+      new Promise((_, reject) => { timer = setTimeout(() => reject(new Error(`${phase} exceeded ${timeoutMs}ms`)), timeoutMs); })
+    ]);
+    await markPhase(phase, 'COMPLETED');
+    return result;
+  } catch (error) {
+    await markPhase(phase, 'FAILED', String(error?.message || error));
+    throw error;
+  } finally {
+    clearTimeout(timer);
+  }
+}
+
 async function createNativeBlankCase() {
   await page.goto(`${baseUrl}/dome-world/ash-threshold.html?presentation=legacy`, { waitUntil:'domcontentloaded', timeout:90_000 });
   await page.waitForFunction(() => document.title === 'TD613 Ash'
@@ -96,12 +125,14 @@ async function observe(label) {
 
 let report;
 try {
-  const seeded = await createNativeBlankCase();
+  const seeded = await runPhase('CREATE_NATIVE_CASE', createNativeBlankCase, 120_000);
   consoleErrors.length = 0;
-  await seedStaleDelivery();
+  await runPhase('SEED_STALE_DELIVERY', seedStaleDelivery, 30_000);
 
-  await page.goto(`${baseUrl}/dome-world/ash-threshold.html`, { waitUntil:'domcontentloaded', timeout:120_000 });
-  const first = await observe('first-eviction');
+  const first = await runPhase('FIRST_EVICTION', async () => {
+    await page.goto(`${baseUrl}/dome-world/ash-threshold.html`, { waitUntil:'domcontentloaded', timeout:90_000 });
+    return observe('first-eviction');
+  }, 150_000);
   if (first.preflight?.performed !== true) throw new Error(`First A11 preflight did not perform eviction: ${JSON.stringify(first.preflight)}`);
   if (first.preflight?.indexeddb_preserved !== true || first.preflight?.case_data_preserved !== true) throw new Error('First A11 preflight did not preserve custody substrate.');
   if (first.preflight?.local_case_pointer_preserved !== true || first.pointer !== seeded.pointer) throw new Error('A11 preflight changed the active case pointer.');
@@ -112,8 +143,10 @@ try {
   if (first.stale_cache_present) throw new Error('Stale A10 Cache Storage survived A11 preflight.');
   if (first.url !== '/dome-world/ash-threshold.html') throw new Error(`A11 preflight exposed a transition URL: ${first.url}`);
 
-  await page.reload({ waitUntil:'domcontentloaded', timeout:120_000 });
-  const second = await observe('idempotent-return');
+  const second = await runPhase('IDEMPOTENT_RETURN', async () => {
+    await page.reload({ waitUntil:'domcontentloaded', timeout:90_000 });
+    return observe('idempotent-return');
+  }, 150_000);
   if (second.pointer !== seeded.pointer || second.current?.case_id !== seeded.pointer) throw new Error('Idempotent A11 return changed the active case.');
   if (second.session_epoch !== seeded.session_epoch) throw new Error('Idempotent A11 return changed the session epoch.');
   if (second.current?.case_map_digest !== seeded.current.case_map_digest) throw new Error('Idempotent A11 return did not rehydrate the same persisted Case Map digest.');
@@ -123,7 +156,7 @@ try {
 
   report = {
     ok:true,
-    schema:'td613.ash.a11-predeployment-cache-browser-receipt/v0.4-native-rehydration',
+    schema:'td613.ash.a11-predeployment-cache-browser-receipt/v0.5-phased-native-rehydration',
     browser:browserName,
     a11_epoch:A11_EPOCH,
     a11_asset_epoch:A11_ASSET_EPOCH,
@@ -131,6 +164,7 @@ try {
     first,
     second,
     console_errors:consoleErrors,
+    phase_trace:phaseTrace,
     indexeddb_preserved:true,
     case_pointer_preserved:true,
     session_epoch_preserved:true,
@@ -144,10 +178,11 @@ try {
 } catch (error) {
   const failure = {
     ok:false,
-    schema:'td613.ash.a11-predeployment-cache-browser-failure/v0.4-native-rehydration',
+    schema:'td613.ash.a11-predeployment-cache-browser-failure/v0.5-phased-native-rehydration',
     browser:browserName,
     error:String(error?.stack || error),
     console_errors:consoleErrors,
+    phase_trace:phaseTrace,
     url:page.url()
   };
   await fs.writeFile(path.join(artifactDir, `${browserName}-failure.json`), JSON.stringify(failure, null, 2));
