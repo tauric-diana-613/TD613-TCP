@@ -106,7 +106,7 @@ assert.doesNotMatch(recovery, /searchParams\.set\('ash_recovered'/);
 
 assert.match(shell, /visible_url:canonicalPath/);
 assert.match(shell, /cross_scope_recovery_required:controllerPresent/);
-const RELEASE_EPOCH = '20260723-a2-a5-release-v1';
+const RELEASE_EPOCH = '20260724-a11-postclosure-v1';
 for (const module of ['ash-post-ingress-motion-restoration', 'ash-profile-prompt-canonical']) {
   assert.match(bridge, new RegExp(`${module}\\.js\\?v=${RELEASE_EPOCH}`));
 }

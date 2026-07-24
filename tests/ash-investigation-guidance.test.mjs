@@ -23,6 +23,8 @@ const ingress = read('app/dome-world/ash-ingress-layout-hydration.js');
 const navigation = read('app/dome-world/ash-workspace-navigation.js');
 const deliveryTransform = read('app/dome-world/ash-keep-delivery-transform.js');
 const probe = read('scripts/ash-investigation-guidance-browser-probe.mjs');
+const CURRENT_RELEASE_EPOCH = '20260724-a11-postclosure-v1';
+const CURRENT_CACHE_EPOCH = 'td613.ash.cache-flush/2026-07-24-a11-postclosure-v1';
 
 assert.equal(ASH_INVESTIGATION_APEQ_PAIA_VERSION, 'td613.ash.investigation-demo/v0.2-apeq-paia');
 assert.equal(fixture.profile.id, 'investigation');
@@ -47,7 +49,7 @@ assert.match(runtime, /PA2 ceiling/);
 assert.doesNotMatch(runtime, /fetch\(/);
 assert.match(specs, /Glass Meridian Vendor Integrity Inquiry/);
 for (const module of ['ash-investigation-demo-hydration','ash-guided-operator-ui','ash-flicker-hardening','ash-emergency-stability-contract','ash-ui-ux-rescue','ash-case-close-repair']) {
-  assert.match(bridge, new RegExp(`${module}\\.js\\?v=20260723-a2-a5-release-v1`));
+  assert.match(bridge, new RegExp(`${module}\\.js\\?v=${CURRENT_RELEASE_EPOCH}`));
 }
 assert(bridge.indexOf('ash-flicker-hardening.js') < bridge.indexOf('ash-premium-ui.js'), 'Static compositor must install before Premium composition.');
 assert(bridge.indexOf('ash-case-close-repair.js') < bridge.indexOf('ash-premium-ui.js'), 'Close logout must install before Premium composition.');
@@ -126,8 +128,8 @@ assert.match(cacheFlush, /unregisterSameOriginWorkers/);
 assert.match(cacheFlush, /cache:'no-store'/);
 assert.match(cacheFlush, /local_case_pointer_preserved:false/);
 assert.match(cacheFlush, /active_session_reset:true/);
-assert.match(cacheFlush, /td613\.ash\.cache-flush\/2026-07-23-a2-a5-release-v1/);
-assert.match(lifecycle, /const ASH_RELEASE_ASSET_EPOCH = '20260723-a2-a5-release-v1'/);
+assert.match(cacheFlush, new RegExp(CURRENT_CACHE_EPOCH.replaceAll('/', '\\/').replaceAll('.', '\\.').replaceAll('-', '\\-')));
+assert.match(lifecycle, new RegExp(`const ASH_RELEASE_ASSET_EPOCH = '${CURRENT_RELEASE_EPOCH}'`));
 assert.ok(lifecycle.includes("await import(`./ash-cache-flush.js?v=${ASH_RELEASE_ASSET_EPOCH}`)"));
 assert.doesNotMatch(cacheFlush, /2026-07-18-(?:live-ingress-v3|emergency-stability-v5)/);
 

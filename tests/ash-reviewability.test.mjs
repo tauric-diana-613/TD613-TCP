@@ -3,7 +3,7 @@ import fs from 'node:fs';
 
 const repair = fs.readFileSync('app/dome-world/ash-reviewability-repair.js', 'utf8');
 const bridge = fs.readFileSync('app/dome-world/ash-workspace-bridge.js', 'utf8');
-const RELEASE_EPOCH = '20260723-a2-a5-release-v1';
+const RELEASE_EPOCH = '20260724-a11-postclosure-v1';
 
 assert.match(repair, /td613\.ash\.reviewability\/v0\.1-native-scroll-live-setup-descenders/);
 

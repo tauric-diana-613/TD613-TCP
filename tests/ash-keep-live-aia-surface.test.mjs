@@ -28,8 +28,8 @@ const ashSurface = collectSource('app/dome-world');
 const vercel = read('vercel.json');
 const escaped = value => value.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
 
-const EPOCH = '20260723-a2-a5-release-v1';
-const CACHE_EPOCH = 'td613.ash.cache-flush/2026-07-23-a2-a5-release-v1';
+const EPOCH = '20260724-a11-postclosure-v1';
+const CACHE_EPOCH = 'td613.ash.cache-flush/2026-07-24-a11-postclosure-v1';
 
 test('loader preserves legacy rollback and gates the entire AIA3 graph behind preflight', () => {
   assert.match(loader, /__td613AshAia3Preflight/);

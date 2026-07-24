@@ -28,7 +28,7 @@ const premium = read('app/dome-world/ash-premium-ui.js');
 const lifecycle = read('app/dome-world/ash-lifecycle-core.js');
 const probe = read('scripts/ash-research-ux-browser-probe.mjs');
 const workflow = read('.github/workflows/ash-flowcore-live-field.yml');
-const RELEASE_EPOCH = '20260723-a2-a5-release-v1';
+const RELEASE_EPOCH = '20260724-a11-postclosure-v1';
 
 assert.equal(ASH_RESEARCH_DEMO_VERSION, 'td613.ash.research-demo/v0.3-child-legible-surface-ledger');
 assert.equal(ASH_RESEARCH_SURFACE_LEDGER_VERSION, 'td613.ash.research-surface-ledger/v0.1');

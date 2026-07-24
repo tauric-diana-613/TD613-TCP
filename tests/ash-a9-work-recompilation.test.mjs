@@ -7,28 +7,19 @@ const probe = fs.readFileSync(new URL('../scripts/ash-a7-a11-browser-probe.mjs',
 const workflow = fs.readFileSync(new URL('../.github/workflows/ash-flowcore-live-field.yml', import.meta.url), 'utf8');
 const receipt = fs.readFileSync(new URL('../app/dome-world/docs/ASH_KEEP_A9_IMPLEMENTATION_RECEIPT_V0_1.md', import.meta.url), 'utf8');
 const vercel = JSON.parse(fs.readFileSync(new URL('../vercel.json', import.meta.url), 'utf8'));
+const RELEASE_EPOCH = '20260724-a11-postclosure-v1';
 
 for (const marker of [
-  'Do now',
-  'Prepare',
-  'Waiting / held',
-  'Completed / receipted',
-  'Purpose',
-  'Action',
-  'Expected world answer',
-  'Held prerequisites',
-  'Receipt / return posture',
+  'Do now','Prepare','Waiting / held','Completed / receipted','Purpose','Action','Expected world answer',
+  'Held prerequisites','Receipt / return posture',
   'Original → transformation purpose → protected obligations → changed register → side-by-side comparison → Human approval',
-  'Human approval',
-  'parallel task engine',
-  'separately gated destination crossing remains closed',
+  'Human approval','parallel task engine','separately gated destination crossing remains closed',
   'Queue placement grants no truth or release authority'
 ]) assert.ok(source.includes(marker), `A9 source missing ${marker}`);
 
 for (const family of ['preserve','review','draft','compare','route','verify','save','prepare handoff']) {
   assert.ok(source.includes(`family:'${family}'`), `A9 missing ${family} action family`);
 }
-
 for (const workspace of ['capsule','draft','choir','routes','test','save']) {
   assert.ok(source.includes(`workspace:'${workspace}'`), `A9 missing route to existing ${workspace} owner`);
 }
@@ -59,7 +50,7 @@ assert.doesNotMatch(source, /keepDraft/);
 assert.doesNotMatch(source, /recordRoute/);
 assert.doesNotMatch(source, /makeSave/);
 
-assert.match(core, /ash-a9-work-recompilation\.js\?v=20260723-a9-v1/);
+assert.match(core, new RegExp(`ash-a9-work-recompilation\\.js\\?v=${RELEASE_EPOCH}`));
 assert.match(core, /__td613AshA9ModulePromise/);
 assert.match(core, /td613:ash:a9-load-held/);
 assert.match(core, /td613:ash:ux-workspace-opened/);
@@ -72,38 +63,19 @@ assert.doesNotMatch(core, /ash_epoch/);
 assert.match(probe, /if \(stage === 'A9'\)/);
 assert.match(probe, /ashA9WorkRecompilation/);
 assert.match(probe, /'Do now','Prepare','Waiting \/ held','Completed \/ receipted','Human approval'/);
-
 for (const marker of [
-  "'app/dome-world/ash-a9-work-recompilation.js'",
-  "'app/dome-world/docs/ASH_KEEP_A9_IMPLEMENTATION_RECEIPT_V0_1.md'",
-  "'tests/ash-a9-work-recompilation.test.mjs'",
-  'node --check app/dome-world/ash-a9-work-recompilation.js',
-  'node tests/ash-a9-work-recompilation.test.mjs',
-  'TD613_ASH_STAGES: A7,A8,A9'
+  "'app/dome-world/ash-a9-work-recompilation.js'","'app/dome-world/docs/ASH_KEEP_A9_IMPLEMENTATION_RECEIPT_V0_1.md'",
+  "'tests/ash-a9-work-recompilation.test.mjs'",'node --check app/dome-world/ash-a9-work-recompilation.js',
+  'node tests/ash-a9-work-recompilation.test.mjs','TD613_ASH_STAGES: A7,A8,A9'
 ]) assert.ok(workflow.includes(marker), `A9 workflow missing ${marker}`);
-
 for (const marker of ['Work recompilation','human intention','Do now','Prepare','Waiting / held','Completed / receipted','Hush integration','human closure required: true']) {
   assert.ok(receipt.includes(marker), `A9 receipt missing ${marker}`);
 }
-
 assert.equal(vercel.git?.deploymentEnabled, false);
 
 console.log(JSON.stringify({
-  ok:true,
-  schema:'td613.ash.a9-work-contract/v0.1',
-  human_intention_queues:true,
-  action_families:8,
-  native_owner_routing:true,
-  settled_workspace_ownership:true,
-  settled_loader_admission:true,
-  exact_browser_witness_identity:true,
-  mutation_observer_added:false,
-  hush_generation_automatic:false,
-  consequential_action_automatic:false,
-  parallel_task_engine:false,
-  raw_content_transport:false,
-  authority_changed:false,
-  source_bytes_moved:false,
-  human_closure_required:true,
-  vercel_gate:'CLOSED'
+  ok:true,schema:'td613.ash.a9-work-contract/v0.1',human_intention_queues:true,action_families:8,native_owner_routing:true,
+  settled_workspace_ownership:true,settled_loader_admission:true,exact_browser_witness_identity:true,mutation_observer_added:false,
+  hush_generation_automatic:false,consequential_action_automatic:false,parallel_task_engine:false,raw_content_transport:false,
+  authority_changed:false,source_bytes_moved:false,human_closure_required:true,vercel_gate:'CLOSED'
 }, null, 2));
