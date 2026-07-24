@@ -36,9 +36,12 @@ for (const name of retired) {
 const consolidated = readFileSync(join(workflowDir, 'td613-ci.yml'), 'utf8');
 assert.match(consolidated, /name:\s*TD613 Consolidated Validation/);
 assert.match(consolidated, /cancel-in-progress:\s*true/);
-assert.match(consolidated, /One-install Chromium Firefox WebKit witness/);
+assert.match(consolidated, /One exact-head Chromium Firefox WebKit witness/);
+assert.match(consolidated, /if: github\.event_name == 'workflow_dispatch' && inputs\.mode == 'full-browser'/);
 assert.match(consolidated, /playwright install --with-deps chromium firefox webkit/);
 assert.match(consolidated, /Explicit self-hosted calibration/);
+assert.match(consolidated, /Explicit full-repository validation/);
+assert.doesNotMatch(consolidated, /if: github\.event_name == 'pull_request' \|\|/, 'Ordinary PR commits must not install browsers.');
 assert.doesNotMatch(consolidated, /strategy:\s*[\s\S]*matrix:\s*[\s\S]*browser:/, 'Browser engines must share one installation and one bounded job.');
 
 const pages = readFileSync(join(workflowDir, 'pages.yml'), 'utf8');
