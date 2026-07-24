@@ -11,14 +11,16 @@ const workflowDirectory = fs.readdirSync('.github/workflows');
 const vercel = JSON.parse(fs.readFileSync('vercel.json', 'utf8'));
 
 test('Flow-Core cross-browser evidence lives in one explicit exact-head dispatch', () => {
+  assert.match(consolidatedWorkflow, /types:\s*\[opened, synchronize, reopened, ready_for_review\]/);
   assert.match(consolidatedWorkflow, /mode:\s*[\s\S]*full-browser/);
-  assert.match(consolidatedWorkflow, /if: github\.event_name == 'workflow_dispatch' && inputs\.mode == 'full-browser'/);
+  assert.match(consolidatedWorkflow, /github\.event_name == 'workflow_dispatch' && inputs\.mode == 'full-browser'/);
+  assert.match(consolidatedWorkflow, /github\.event_name == 'pull_request' && github\.event\.action == 'ready_for_review'/);
   assert.match(consolidatedWorkflow, /playwright install --with-deps chromium firefox webkit/);
   assert.match(consolidatedWorkflow, /flowcore-runtime-browser-probe\.mjs/);
   assert.match(consolidatedWorkflow, /TD613_BROWSERS: chromium,firefox,webkit/);
   assert.match(consolidatedWorkflow, /TD613_PRODUCTION_OBSERVATION: 'false'/);
   assert.match(consolidatedWorkflow, /td613-exact-head-browser-receipts/);
-  assert.doesNotMatch(consolidatedWorkflow, /if: github\.event_name == 'pull_request' \|\|/);
+  assert.doesNotMatch(consolidatedWorkflow, /github\.event\.action == 'synchronize'[\s\S]*playwright install/);
   assert.equal(workflowDirectory.includes('flowcore-production-observation.yml'), false,
     'Flow-Core production observation must not regain an independent workflow.');
   assert.equal(workflowDirectory.some(name => /repair-once|one-use|receipt-diagnostic/i.test(name)), false);
