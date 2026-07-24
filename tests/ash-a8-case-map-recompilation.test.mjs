@@ -11,7 +11,6 @@ const shell = fs.readFileSync(new URL('../api/dome-world-shell.js', import.meta.
 const html = fs.readFileSync(new URL('../app/dome-world/ash-keep.html', import.meta.url), 'utf8');
 const mirror = fs.readFileSync(new URL('../app/dome-world/ash-keep-source.html', import.meta.url), 'utf8');
 const vercel = JSON.parse(fs.readFileSync(new URL('../vercel.json', import.meta.url), 'utf8'));
-const RELEASE_EPOCH = '20260724-a11-postclosure-v1';
 
 for (const marker of [
   'What are you placing?','What is known','What remains uncertain','Preview waits for a plain name','Add deliberately',
@@ -19,7 +18,6 @@ for (const marker of [
   'Notes and history','Accessible table','unresolved','contradiction','engine has no undirected relation state',
   'Storage confirmation remains pending','Stored relationship confirmed','Existing Ash action owner'
 ]) assert.ok(source.includes(marker), `A8 source missing ${marker}`);
-
 for (const id of ['objectName','objectType','objectRoom','objectSource','addObject','linkFrom','linkTo','linkType','addRelationship','researchNotes']) assert.ok(source.includes(`'${id}'`), `A8 must delegate to existing ${id}`);
 assert.match(source, /function delegateLegacyAction\(id\)/);
 assert.match(source, /td613:ash-keep:action-held/);
@@ -74,7 +72,7 @@ assert.match(handshake, /Pre-release exclusion assay re-entered the coordinated 
 assert.match(handshake, /if \(runtimeWrapper\.includes\('new BroadcastChannel\('\)\)/);
 assert.equal((closureWorkflow.match(/run-ash-constitutional-convergence-handshake\.mjs/g) || []).length >= 2, true);
 assert.match(closureWorkflow, /node --check scripts\/run-ash-constitutional-convergence-handshake\.mjs/);
-assert.match(shell, new RegExp(`ash-a8-case-map-recompilation\\.js\\?v=${RELEASE_EPOCH}`));
+assert.match(shell, /ash-a8-case-map-recompilation\.js\?v=\$\{ASH_LIFECYCLE_ASSET_EPOCH\}/);
 assert.match(html, /ash-a8-case-map-recompilation\.js/);
 assert.equal(html, mirror, 'Ash source mirror must remain byte-identical');
 assert.equal(vercel.git?.deploymentEnabled, false);
