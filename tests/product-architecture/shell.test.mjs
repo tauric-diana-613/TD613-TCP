@@ -72,8 +72,8 @@ const versionedModules = [
   `/dome-world/ash-case-controls.js?v=${ASH_LIFECYCLE_ASSET_EPOCH}`
 ];
 assert.equal(ASH_KEEP_SHELL_VERSION, 'td613.ash-keep.shell/v0.6-first-paint');
-assert.equal(ASH_LIFECYCLE_ASSET_EPOCH, '20260724-a11-postclosure-v1');
-assert.equal(ASH_LIFECYCLE_MODULE, '/dome-world/ash-lifecycle.js?v=20260724-a11-postclosure-v1');
+assert.equal(ASH_LIFECYCLE_ASSET_EPOCH, '20260724-a12-release-v1');
+assert.equal(ASH_LIFECYCLE_MODULE, '/dome-world/ash-lifecycle.js?v=20260724-a12-release-v1');
 assert.equal(ASH_MASS_EVICTION_EPOCH, 'td613.ash.cache-flush/2026-07-24-a11-postclosure-v1');
 assert.match(renderedKeep, /<title>TD613 Ash<\/title>/);
 assert.match(renderedKeep, /rel="canonical" href="\/dome-world\/ash-threshold\.html"/);

@@ -9,7 +9,7 @@ export const ASH_LIFECYCLE_SHELL_CONTRACT = 'td613.ash.lifecycle-shell/v0.1';
 export const ASH_KEEP_SHELL_VERSION = 'td613.ash-keep.shell/v0.6-first-paint';
 export const ASH_KEEP_JS_SHELL_VERSION = 'td613.ash-keep.js-shell/v0.5-event-driven-map';
 export const ASH_CACHE_TRANSITION_CONTRACT = 'td613.ash.cache-transition/v0.6-first-paint';
-export const ASH_LIFECYCLE_ASSET_EPOCH = '20260724-a11-postclosure-v1';
+export const ASH_LIFECYCLE_ASSET_EPOCH = '20260724-a12-release-v1';
 export const ASH_LIFECYCLE_SOURCE_MODULE = '/dome-world/ash-lifecycle.js';
 export const ASH_LIFECYCLE_MODULE = `${ASH_LIFECYCLE_SOURCE_MODULE}?v=${ASH_LIFECYCLE_ASSET_EPOCH}`;
 export const ASH_WORKSPACE_BRIDGE_MODULE = '/dome-world/ash-workspace-bridge.js';

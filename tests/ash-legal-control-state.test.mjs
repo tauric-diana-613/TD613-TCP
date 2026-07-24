@@ -5,7 +5,7 @@ import { ASH_LEGAL_CONTROL_STATE_VERSION } from '../app/dome-world/ash-legal-dem
 const control = fs.readFileSync('app/dome-world/ash-legal-demo-control-state.js', 'utf8');
 const bridge = fs.readFileSync('app/dome-world/ash-workspace-bridge.js', 'utf8');
 const legal = fs.readFileSync('app/dome-world/ash-legal-profile-demo.js', 'utf8');
-const RELEASE_EPOCH = '20260724-a11-postclosure-v1';
+const RELEASE_EPOCH = '20260724-a12-release-v1';
 
 assert.equal(ASH_LEGAL_CONTROL_STATE_VERSION, 'td613.ash.legal-control-state/v0.1-registered-demo-owner');
 assert.match(control, /Open Legal matter demo/);

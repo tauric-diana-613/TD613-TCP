@@ -178,7 +178,7 @@ jobs:
         env:
           TD613_BASE_URL: http://127.0.0.1:6130
           TD613_ARTIFACT_DIR: artifacts/ash-constitutional-convergence
-        run: node scripts/run-ash-constitutional-convergence-handshake.mjs
+        run: timeout --foreground --signal=INT --kill-after=15s 360s node scripts/run-ash-constitutional-convergence-handshake.mjs
       - name: Preserve local core-closure evidence
         if: always()
         uses: actions/upload-artifact@v4

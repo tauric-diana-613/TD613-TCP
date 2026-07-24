@@ -39,7 +39,7 @@ const closeRepair = read('app/dome-world/ash-case-close-repair.js');
 const emergency = read('app/dome-world/ash-emergency-stability-contract.js');
 const navigation = read('app/dome-world/ash-workspace-navigation.js');
 const rescue = read('app/dome-world/ash-ui-ux-rescue.js');
-const RELEASE_EPOCH = '20260724-a11-postclosure-v1';
+const RELEASE_EPOCH = '20260724-a12-release-v1';
 const RELEASE_CACHE_EPOCH = 'td613.ash.cache-flush/2026-07-24-a11-postclosure-v1';
 
 class MemoryStorage {
@@ -117,7 +117,7 @@ assert.doesNotMatch(cache, /indexedDB\.deleteDatabase|localStorage\.clear|sessio
 assert.equal(ASH_LIFECYCLE_ASSET_EPOCH, RELEASE_EPOCH);
 assert.equal(ASH_MASS_EVICTION_EPOCH, RELEASE_CACHE_EPOCH);
 assert.equal(ASH_LIFECYCLE_MODULE, `/dome-world/ash-lifecycle.js?v=${RELEASE_EPOCH}`);
-assert.match(lifecycle, /const ASH_RELEASE_ASSET_EPOCH = '20260724-a11-postclosure-v1'/);
+assert.match(lifecycle, /const ASH_RELEASE_ASSET_EPOCH = '20260724-a12-release-v1'/);
 assert.ok(lifecycle.includes("await import(`./ash-ingress-layout-hydration.js?v=${ASH_RELEASE_ASSET_EPOCH}`)"));
 assert.ok(lifecycle.includes("await import(`./ash-cache-flush.js?v=${ASH_RELEASE_ASSET_EPOCH}`)"));
 assert.match(lifecycle, /data-ash-composition-hydrating/);

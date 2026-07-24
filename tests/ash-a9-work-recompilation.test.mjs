@@ -7,7 +7,7 @@ const probe = fs.readFileSync(new URL('../scripts/ash-a7-a11-browser-probe.mjs',
 const workflow = fs.readFileSync(new URL('../.github/workflows/ash-flowcore-live-field.yml', import.meta.url), 'utf8');
 const receipt = fs.readFileSync(new URL('../app/dome-world/docs/ASH_KEEP_A9_IMPLEMENTATION_RECEIPT_V0_1.md', import.meta.url), 'utf8');
 const vercel = JSON.parse(fs.readFileSync(new URL('../vercel.json', import.meta.url), 'utf8'));
-const RELEASE_EPOCH = '20260724-a11-postclosure-v1';
+const RELEASE_EPOCH = '20260724-a12-release-v1';
 
 for (const marker of [
   'Do now','Prepare','Waiting / held','Completed / receipted','Purpose','Action','Expected world answer',

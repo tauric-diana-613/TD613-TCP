@@ -6,6 +6,7 @@ const source = fs.readFileSync(new URL('../app/dome-world/ash-a8-case-map-recomp
 const aia3 = fs.readFileSync(new URL('../app/dome-world/ash-aia3-composition.js', import.meta.url), 'utf8');
 const bridge = fs.readFileSync(new URL('../app/dome-world/ash-workspace-bridge.js', import.meta.url), 'utf8');
 const handshake = fs.readFileSync(new URL('../scripts/run-ash-constitutional-convergence-handshake.mjs', import.meta.url), 'utf8');
+const handshakeWorker = fs.readFileSync(new URL('../scripts/run-ash-constitutional-convergence-handshake-worker.mjs', import.meta.url), 'utf8');
 const closureWorkflow = fs.readFileSync(new URL('../.github/workflows/ash-keep-production-closure.yml', import.meta.url), 'utf8');
 const shell = fs.readFileSync(new URL('../api/dome-world-shell.js', import.meta.url), 'utf8');
 const html = fs.readFileSync(new URL('../app/dome-world/ash-keep.html', import.meta.url), 'utf8');
@@ -60,16 +61,26 @@ assert.match(aia3, /details\.matches\('\[data-aia-exact\]'\) && details\.open/);
 assert.match(aia3, /if \(details\.matches\('\[data-aia-exact\]'\) && details\.open\) return/);
 assert.match(bridge, /\.ash-flowcore-field--proxy \[data-aia-exact\]/);
 assert.match(bridge, /removeAttribute\('data-aia-exact'\)/);
-assert.match(handshake, /td613:ash:probe-contention-release:v4/);
-assert.match(handshake, /RELEASE_FIRST_TAB/);
-assert.match(handshake, /Second-tab contention intent was not observed before first-tab release/);
-assert.match(handshake, /Cross-tab lock witness exceeded 35000ms/);
-assert.match(handshake, /First-tab lock release exceeded 10000ms/);
-assert.match(handshake, /QUERY_TIMEOUT/);
-assert.match(handshake, /Object\.getPrototypeOf\(manager\)\?\.request/);
-assert.match(handshake, /NATIVE_LOCK_MANAGER_PROTOTYPE/);
-assert.match(handshake, /Pre-release exclusion assay re-entered the coordinated Ash lease path/);
-assert.match(handshake, /if \(runtimeWrapper\.includes\('new BroadcastChannel\('\)\)/);
+assert.match(handshakeWorker, /td613:ash:probe-contention-release:v4/);
+assert.match(handshakeWorker, /RELEASE_FIRST_TAB/);
+assert.match(handshakeWorker, /Second-tab contention intent was not observed before first-tab release/);
+assert.match(handshakeWorker, /Cross-tab lock witness exceeded 35000ms/);
+assert.match(handshakeWorker, /First-tab lock release exceeded 10000ms/);
+assert.match(handshakeWorker, /QUERY_TIMEOUT/);
+assert.match(handshakeWorker, /Object\.getPrototypeOf\(manager\)\?\.request/);
+assert.match(handshakeWorker, /NATIVE_LOCK_MANAGER_PROTOTYPE/);
+assert.match(handshakeWorker, /Pre-release exclusion assay re-entered the coordinated Ash lease path/);
+assert.match(handshakeWorker, /if \(runtimeWrapper\.includes\('new BroadcastChannel\('\)\)/);
+assert.match(handshake, /run-ash-constitutional-convergence-handshake-worker\.mjs/);
+assert.match(handshake, /spawn\(process\.execPath/);
+assert.match(handshake, /HANDSHAKE_CHILD_PROCESS_CEILING/);
+assert.match(handshake, /child\.kill\('SIGINT'\)/);
+assert.match(handshake, /child\.kill\('SIGKILL'\)/);
+assert.match(handshake, /process\.exitCode = 124/);
+assert.match(handshake, /promotion_authorized:false/);
+assert.match(handshake, /authority_changed:false/);
+assert.match(handshake, /source_bytes_moved:false/);
+assert.match(handshake, /human_closure_required:true/);
 assert.equal((closureWorkflow.match(/run-ash-constitutional-convergence-handshake\.mjs/g) || []).length >= 2, true);
 assert.match(closureWorkflow, /node --check scripts\/run-ash-constitutional-convergence-handshake\.mjs/);
 assert.match(shell, /ash-a8-case-map-recompilation\.js\?v=\$\{ASH_LIFECYCLE_ASSET_EPOCH\}/);
@@ -83,5 +94,5 @@ console.log(JSON.stringify({
   active_edit_focus_preserved:true,exact_inspection_open_preserved:true,relation_workshop:true,directed_relation_truthful:true,
   notes_change_persistence:true,accessible_table:true,stored_relation_detail:true,proxy_inspection_selector_quarantined:true,
   explicit_cross_tab_handshake:true,native_pre_release_lock_observer:true,patched_coordinator_reentry:false,
-  background_timer_lock_release:false,authority_changed:false,source_bytes_moved:false,human_closure_required:true,vercel_gate:'CLOSED'
+  external_process_watchdog:true,background_timer_lock_release:false,authority_changed:false,source_bytes_moved:false,human_closure_required:true,vercel_gate:'CLOSED'
 }, null, 2));

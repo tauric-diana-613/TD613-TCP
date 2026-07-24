@@ -14,9 +14,63 @@ let pendingObjectName = null;
 let pendingRelation = null;
 let lastCreatedObject = null;
 let lastCreatedRelation = null;
+const objectDraft = new Map();
+const relationDraft = new Map();
+const objectDraftIds = Object.freeze(['ashA8ObjectName','ashA8ObjectType','ashA8ObjectRoom','ashA8ObjectKnown','ashA8ObjectUncertain','ashA8ObjectEvidence','ashA8ObjectSource','ashA8ObjectNotes']);
+const relationDraftIds = Object.freeze(['ashA8RelationFrom','ashA8RelationTo','ashA8RelationType','ashA8RelationEvidence','ashA8RelationUncertain','ashA8RelationNotes']);
+const draftGroupById = new Map([
+  ...objectDraftIds.map(id => [id, objectDraft]),
+  ...relationDraftIds.map(id => [id, relationDraft])
+]);
 
 function currentSnapshot(fallback = null) {
   return host?.__td613AshPremiumUI?.snapshot?.() || fallback;
+}
+
+function captureDraftControl(control) {
+  const group = draftGroupById.get(control?.id);
+  if (!group) return false;
+  group.set(control.id, Object.freeze({
+    value:String(control.value ?? ''),
+    checked:'checked' in control ? Boolean(control.checked) : null
+  }));
+  return true;
+}
+
+function captureDelegatedDraft(event) {
+  captureDraftControl(event.target);
+}
+
+function captureWorkshopDraft() {
+  for (const id of [...objectDraftIds, ...relationDraftIds]) {
+    const control = byId(id);
+    if (control) captureDraftControl(control);
+  }
+}
+
+function restoreDraftGroup(group) {
+  let restored = false;
+  for (const [id, saved] of group) {
+    const control = byId(id);
+    if (!control) continue;
+    if (control.tagName === 'SELECT' && ![...control.options].some(option => option.value === saved.value)) continue;
+    control.value = saved.value;
+    if (saved.checked !== null && 'checked' in control) control.checked = saved.checked;
+    restored = true;
+  }
+  return restored;
+}
+
+function restoreWorkshopDraft() {
+  const restored = restoreDraftGroup(objectDraft) || restoreDraftGroup(relationDraft);
+  if (doc?.documentElement) doc.documentElement.dataset.ashA8DraftDurability = restored ? 'RESTORED_BY_A8' : 'READY';
+  return restored;
+}
+
+function clearDrafts() {
+  objectDraft.clear();
+  relationDraft.clear();
+  if (doc?.documentElement) doc.documentElement.dataset.ashA8DraftDurability = 'CLEARED';
 }
 
 function optionMarkup(select, selected = '') {
@@ -134,6 +188,7 @@ function resolvePending(snapshot) {
     if (object) {
       lastCreatedObject = Object.freeze({ id:object.id, label:object.label });
       pendingObjectName = null;
+      objectDraft.clear();
     }
   }
   if (pendingRelation) {
@@ -142,11 +197,13 @@ function resolvePending(snapshot) {
     if (relation) {
       lastCreatedRelation = Object.freeze({ id:relation.id, ...pendingRelation });
       pendingRelation = null;
+      relationDraft.clear();
     }
   }
 }
 
 function commitObject() {
+  captureWorkshopDraft();
   const name = byId('ashA8ObjectName')?.value.trim();
   if (!name) return publishStageWorldAnswer('A8', 'Object held: name what you are placing before the deliberate Add gesture. No map state changed.');
   const detail = {
@@ -170,6 +227,7 @@ function commitObject() {
 }
 
 function commitRelation(snapshot) {
+  captureWorkshopDraft();
   const from = byId('ashA8RelationFrom')?.value || '';
   const to = byId('ashA8RelationTo')?.value || '';
   const type = byId('ashA8RelationType')?.value.trim();
@@ -199,10 +257,12 @@ function bindWorkshop(snapshot) {
   if (!root || root.dataset.bound === 'true') return;
   root.dataset.bound = 'true';
   root.addEventListener('input', event => {
+    captureDraftControl(event.target);
     if (event.target.closest('#ashA8ObjectForm')) objectPreview();
     if (event.target.closest('#ashA8RelationForm')) relationPreview(currentSnapshot(snapshot));
   });
   root.addEventListener('change', event => {
+    captureDraftControl(event.target);
     if (event.target.closest('#ashA8ObjectForm')) objectPreview();
     if (event.target.closest('#ashA8RelationForm')) relationPreview(currentSnapshot(snapshot));
   });
@@ -222,6 +282,7 @@ function bindWorkshop(snapshot) {
 }
 
 export function renderAshA8CaseMap(snapshot) {
+  captureWorkshopDraft();
   const workspace = byId('workspace-map');
   const mapLayout = workspace?.querySelector('.map-layout');
   if (!workspace || !mapLayout) return false;
@@ -288,6 +349,7 @@ export function renderAshA8CaseMap(snapshot) {
       <p class="ash-stage-status" id="ashA8Status" role="status" aria-live="polite">${escapeHtml(confirmation)}</p>
     </section>`;
   bindWorkshop(snapshot);
+  restoreWorkshopDraft();
   objectPreview();
   relationPreview(snapshot);
   publishStageWorldAnswer('A8', lastCreatedRelation || lastCreatedObject
@@ -302,9 +364,18 @@ installAshStage({
   navigationSelectors:'[data-premium-workspace="map"],[data-route-workspace="map"],[data-route-workspace="rooms"],[data-route-workspace="routes"]'
 });
 
+doc?.addEventListener?.('input', captureDelegatedDraft, true);
+doc?.addEventListener?.('change', captureDelegatedDraft, true);
+
+for (const type of ['case-created','case-closed','profile-demo-hydrated']) {
+  host?.addEventListener?.(`td613:ash:${type}`, clearDrafts);
+}
+
 host && (host.__td613AshA8CaseMap = Object.freeze({
   version:ASH_A8_CASE_MAP_VERSION,
   render:renderAshA8CaseMap,
+  draft_storage:'MEMORY_ONLY',
+  delegated_capture:true,
   authority_changed:false,
   source_bytes_moved:false,
   human_closure_required:true
