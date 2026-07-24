@@ -116,8 +116,18 @@ jobs:
         run: node tests/flowcore-p0-p7-seam-closure.test.mjs
       - name: Validate Flow-Core P0-P10 completion
         run: node tests/flowcore-p0-p10-completion.test.mjs
-      - name: Validate Flow-Core evidence placement
-        run: node tests/flowcore-production-observation.test.mjs
+      - name: Flow-Core claim · exact-head matrix placement
+        run: node --test --test-name-pattern="cross-browser evidence lives" tests/flowcore-production-observation.test.mjs
+      - name: Flow-Core claim · bounded production confirmation
+        run: node --test --test-name-pattern="production release verifies source" tests/flowcore-production-observation.test.mjs
+      - name: Flow-Core claim · empirical authority separation
+        run: node --test --test-name-pattern="production probes preserve" tests/flowcore-production-observation.test.mjs
+      - name: Flow-Core claim · executable dependency closure
+        run: node --test --test-name-pattern="exact-source observation follows" tests/flowcore-production-observation.test.mjs
+      - name: Flow-Core claim · static rewrite parity
+        run: node --test --test-name-pattern="exact static Vercel rewrites" tests/flowcore-production-observation.test.mjs
+      - name: Flow-Core claim · concurrent station packages
+        run: node --test --test-name-pattern="independent station packages" tests/flowcore-production-observation.test.mjs
       - name: Validate Flow-Core runtime browser contract
         run: node tests/flowcore-runtime-browser-probe.test.mjs
       - name: Preserve diagnostics only when held
