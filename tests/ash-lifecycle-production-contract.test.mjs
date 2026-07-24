@@ -1,7 +1,8 @@
 import assert from 'node:assert/strict';
 import fs from 'node:fs';
 const read = path => fs.readFileSync(path, 'utf8');
-const workflow = read('.github/workflows/ash-keep-production-closure.yml');
+const releaseWorkflow = read('.github/workflows/vercel-operator-release.yml');
+const consolidatedWorkflow = read('.github/workflows/td613-ci.yml');
 const lifecycleCompiler = read('scripts/ash-lifecycle-production-probe.mjs');
 const probe = `${lifecycleCompiler}\n${read('scripts/ash-lifecycle-production-probe-base.mjs')}`;
 const convergenceRunner = read('scripts/run-ash-constitutional-convergence-probe.mjs');
@@ -13,21 +14,12 @@ const receipt = read('docs/ASH_LIFECYCLE_PRODUCTION_DEMO_RECEIPT.md');
 const ledger = read('docs/ASH_KEEP_BUILDOUT_LEDGER.md');
 const roadmap = read('ROADMAP.md');
 const stretch11 = read('docs/ASH_KEEP_STRETCH11_CLOSURE_RECEIPT.md');
-for (const marker of ['Ash Lifecycle Deployed Observation','Observe deployed Ash lifecycle without promotion','CONTINUITY_SEALED','promotion remains separate']) assert.ok(workflow.includes(marker));
+
+for (const marker of ['Observe deployed Ash lifecycle without promotion','ash-lifecycle-production-probe.mjs','production_chromium_desktop_mobile = PASS','ash_lifecycle_deployed_observation = PASS']) assert.ok(releaseWorkflow.includes(marker), `Bounded release omitted ${marker}`);
+assert.match(consolidatedWorkflow, /Run bounded closure and constitutional convergence once/);
 for (const token of ['ARRIVAL_UNPERSISTED','CASE_BOUND','REBUILD_ELIGIBLE','RELEASE_ELIGIBLE','CONTINUITY_SEALED','promotion_authorized: false','continuity is not transport']) assert.ok(probe.includes(token));
-for (const token of [
-  'legacy_bypass === true',
-  "dataset.ashCachePreflight === 'complete'",
-  'aia3_route_required: false',
-  'reload_required: false',
-  "url.searchParams.get('arrival') === 'cleared'",
-  'td613.ash.cache-flush.aia3.epoch',
-  'td613.ash.cache-preflight.epoch'
-]) {
-  assert.ok(lifecycleCompiler.includes(token), `Lifecycle observer omitted exact threshold/maintenance contract: ${token}`);
-}
-assert.ok(lifecycleCompiler.includes('runtime.includes("current?.().route === \'IMPLEMENTATION\'")'),
-  'Lifecycle compiler must reject a generated rollback probe that restores the stale AIA3 route requirement');
+for (const token of ['legacy_bypass === true',"dataset.ashCachePreflight === 'complete'",'aia3_route_required: false','reload_required: false',"url.searchParams.get('arrival') === 'cleared'",'td613.ash.cache-flush.aia3.epoch','td613.ash.cache-preflight.epoch']) assert.ok(lifecycleCompiler.includes(token), `Lifecycle observer omitted ${token}`);
+assert.ok(lifecycleCompiler.includes('runtime.includes("current?.().route === \'IMPLEMENTATION\'")'));
 for (const token of ['window.__td613AshKeep?.version','demo_click_deferred_until_ready: true','timeout: 60000']) assert.ok(convergenceRunner.includes(token));
 assert.doesNotMatch(core, /location\.reload\(\)/);
 assert.equal(delivery, keep);
@@ -40,4 +32,6 @@ assert.match(roadmap, /Stretch 11 · Destination-Bound Handoff — CLOSED LOCALL
 assert.match(stretch11, /new serverless function = false/);
 assert.match(stretch11, /active serverless functions = 11/);
 assert.match(stretch11, /transport capability = NAMED_SAME_ORIGIN_BROWSER_RECIPIENT_ONLY/);
-console.log('ash-lifecycle-production-contract.test.mjs passed');
+assert.equal(fs.existsSync('.github/workflows/ash-keep-production-closure.yml'), false);
+assert.equal(fs.existsSync('.github/workflows/ash-keep-aia3-production-observation.yml'), false);
+console.log('ash-lifecycle-production-contract.test.mjs passed under bounded release observation');
