@@ -2,19 +2,19 @@ import fs from 'node:fs';
 import path from 'node:path';
 import { stabilizeAshKeepSource } from '../app/dome-world/ash-keep-delivery-transform.js';
 
-export const DOME_WORLD_SHELL_VERSION = 'td613.dome-world.shell/v1.7-ash-first-paint';
+export const DOME_WORLD_SHELL_VERSION = 'td613.dome-world.shell/v1.8-a11-predeployment-cache';
 export const MARROWLINE_LAB_ROUTE = '/dome-world/marrowline.html';
 export const ASH_THRESHOLD_ROUTE = '/dome-world/ash-threshold.html';
 export const ASH_LIFECYCLE_SHELL_CONTRACT = 'td613.ash.lifecycle-shell/v0.1';
-export const ASH_KEEP_SHELL_VERSION = 'td613.ash-keep.shell/v0.6-first-paint';
+export const ASH_KEEP_SHELL_VERSION = 'td613.ash-keep.shell/v0.7-a11-predeployment-cache';
 export const ASH_KEEP_JS_SHELL_VERSION = 'td613.ash-keep.js-shell/v0.5-event-driven-map';
-export const ASH_CACHE_TRANSITION_CONTRACT = 'td613.ash.cache-transition/v0.6-first-paint';
-export const ASH_LIFECYCLE_ASSET_EPOCH = '20260723-a2-a5-release-v1';
+export const ASH_CACHE_TRANSITION_CONTRACT = 'td613.ash.cache-transition/v0.7-a11-predeployment';
+export const ASH_LIFECYCLE_ASSET_EPOCH = '20260724-a11-predeployment-v1';
 export const ASH_LIFECYCLE_SOURCE_MODULE = '/dome-world/ash-lifecycle.js';
 export const ASH_LIFECYCLE_MODULE = `${ASH_LIFECYCLE_SOURCE_MODULE}?v=${ASH_LIFECYCLE_ASSET_EPOCH}`;
 export const ASH_WORKSPACE_BRIDGE_MODULE = '/dome-world/ash-workspace-bridge.js';
 export const ASH_CANONICAL_MEMBRANE_EPOCH = '20260718-canonical-membrane-v6';
-export const ASH_MASS_EVICTION_EPOCH = 'td613.ash.cache-flush/2026-07-23-a2-a5-release-v1';
+export const ASH_MASS_EVICTION_EPOCH = 'td613.ash.cache-flush/2026-07-24-a11-predeployment-v1';
 
 const DOME_SOURCE_PATH = path.join(process.cwd(), 'app', 'dome-world', 'index.html');
 const ASH_KEEP_SOURCE_PATH = path.join(process.cwd(), 'app', 'dome-world', 'ash-keep.html');
@@ -22,7 +22,7 @@ const ASH_KEEP_JS_SOURCE_PATH = path.join(process.cwd(), 'app', 'dome-world', 'a
 const ASH_KEEP_ICON_MARKER = '<link rel="icon" href="data:,">';
 const ASH_CANONICAL_LINK_MARKER = '<link rel="canonical" href="/dome-world/ash-threshold.html">';
 const ASH_CANONICAL_BOOT_MARKER = '<meta name="ash-canonical-membrane" content="v1.0">';
-const ASH_MASS_EVICTION_MARKER = '<meta name="ash-cache-preflight" content="a2-a5-release-v1">';
+const ASH_MASS_EVICTION_MARKER = '<meta name="ash-cache-preflight" content="a11-predeployment-v1">';
 const ASH_BOOTSTRAP_MARKER = 'td613-ash-canonical-module-bootstrap';
 const ASH_PREPARING_SHELL = '<div id="td613-ash-preparing-shell" role="status" aria-live="polite"><strong>Preparing Ash</strong><span>Preserving local cases while the current instrument resolves.</span></div>';
 const MARROWLINE_BUTTON = `<button class="lab-node lab-node-marrowline" type="button" data-tone="gold" data-glyph="∴" data-open-route="${MARROWLINE_LAB_ROUTE}" style="grid-column:span 8" onclick="window.location.assign('${MARROWLINE_LAB_ROUTE}')" aria-label="Open Marrowline Kʰonapolit terminal"><span class="lab-index">11</span><strong>Marrowline</strong><small>Kʰonapolit terminal / live ingress</small></button>`;
@@ -87,13 +87,13 @@ function cachePreflightBoot() {
       try{moduleMarker=localStorage.getItem(moduleMarkerKey);preflightMarker=localStorage.getItem(preflightMarkerKey)}catch{}
       const current=moduleMarker===epoch||preflightMarker===epoch;
       if(legacyPresentation){
-        const receipt=publish({schema:'td613.ash.cache-preflight-receipt/v0.3',epoch,asset_epoch:assetEpoch,performed:false,legacy_bypass:true,indexeddb_preserved:true,case_data_preserved:true,active_session_reset:false,local_case_pointer_preserved:true,session_epoch_preserved_or_migrated:true,visible_url:canonicalPath});
+        const receipt=publish({schema:'td613.ash.cache-preflight-receipt/v0.4-a11-predeployment',epoch,asset_epoch:assetEpoch,performed:false,legacy_bypass:true,indexeddb_preserved:true,case_data_preserved:true,active_session_reset:false,local_case_pointer_preserved:true,session_epoch_preserved_or_migrated:true,visible_url:canonicalPath});
         document.documentElement.dataset.ashCachePreflight='complete';
         return receipt;
       }
       if(current&&!controllerPresent){
         try{localStorage.setItem(moduleMarkerKey,epoch);localStorage.setItem(preflightMarkerKey,epoch)}catch{}
-        let receipt={schema:'td613.ash.cache-preflight-receipt/v0.3',epoch,asset_epoch:assetEpoch,performed:false,indexeddb_preserved:true,case_data_preserved:true,active_session_reset:false,local_case_pointer_preserved:true,session_epoch_preserved_or_migrated:true,visible_url:canonicalPath};
+        let receipt={schema:'td613.ash.cache-preflight-receipt/v0.4-a11-predeployment',epoch,asset_epoch:assetEpoch,performed:false,indexeddb_preserved:true,case_data_preserved:true,active_session_reset:false,local_case_pointer_preserved:true,session_epoch_preserved_or_migrated:true,visible_url:canonicalPath};
         try{receipt=JSON.parse(sessionStorage.getItem(receiptKey)||'null')||receipt}catch{}
         publish(receipt);
         document.documentElement.dataset.ashCachePreflight='complete';
@@ -118,7 +118,7 @@ function cachePreflightBoot() {
         if(pointer&&sessionBefore!==canonicalSessionEpoch){localStorage.setItem(sessionKey,canonicalSessionEpoch);sessionMigrated=true}
       }catch{}
       const receipt=publish({
-        schema:'td613.ash.cache-preflight-receipt/v0.3',epoch,asset_epoch:assetEpoch,performed:true,http_cache:http,
+        schema:'td613.ash.cache-preflight-receipt/v0.4-a11-predeployment',epoch,asset_epoch:assetEpoch,performed:true,http_cache:http,
         cache_names:cleared,worker_scopes:workers,indexeddb_preserved:true,case_data_preserved:true,active_session_reset:false,
         controller_present_before_eviction:controllerPresent,cross_scope_recovery_required:controllerPresent,
         local_case_pointer_preserved:(()=>{try{return localStorage.getItem(pointerKey)===pointer}catch{return false}})(),
@@ -317,7 +317,7 @@ function send(res, status, body = '', definition = surfaceDefinition('dome-world
 function sendCacheEviction(res, method) {
   const body = JSON.stringify({
     ok:true,
-    schema:'td613.ash.cache-transition-response/v0.6-first-paint',
+    schema:'td613.ash.cache-transition-response/v0.7-a11-predeployment',
     scope:'HTTP_CACHE_AND_SERVICE_WORKER_CLIENT_EVICTION',
     indexeddb_preserved:true,
     case_data_preserved:true,
