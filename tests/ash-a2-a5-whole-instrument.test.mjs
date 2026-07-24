@@ -63,16 +63,22 @@ assert.match(css, /\.ash-flowcore-field>\*\{min-width:0;max-width:100%\}/);
 assert.match(css, /\.ash-flowcore-field__canvas\{box-sizing:border-box;width:100%!important;max-width:100%!important;min-width:0!important;overflow-x:auto!important\}/);
 assert.match(css, /button\[data-flowcore-channel="inspection"\]\{grid-column:1\/-1\}/);
 
-const assetEpoch = '20260723-a2-a5-release-v1';
-const cacheEpoch = 'td613.ash.cache-flush/2026-07-23-a2-a5-release-v1';
+const historicalAssetEpoch = '20260723-a2-a5-release-v1';
+const historicalCacheEpoch = 'td613.ash.cache-flush/2026-07-23-a2-a5-release-v1';
+const currentAssetEpoch = '20260724-a11-postclosure-v1';
+const currentCacheEpoch = 'td613.ash.cache-flush/2026-07-24-a11-postclosure-v1';
+
+// A2–A5 remains preserved as authored provenance while the live delivery graph lawfully advances at A11 postclosure.
 for (const [name, source] of [
   ['shell',shell], ['lifecycle',lifecycle], ['workspace bridge',bridge],
-  ['cache eviction',eviction], ['recovery bridge',recovery], ['journey adapter',journeyAdapter]
-]) assert.match(source, new RegExp(assetEpoch.replaceAll('-', '\\-')), `${name} omitted the A2-A5 asset epoch`);
+  ['cache eviction',eviction], ['recovery bridge',recovery]
+]) assert.match(source, new RegExp(currentAssetEpoch.replaceAll('-', '\\-')), `${name} omitted the current A11 asset epoch`);
 for (const [name, source] of [
-  ['shell',shell], ['cache eviction',eviction], ['cache flush',cacheFlush],
-  ['recovery bridge',recovery], ['journey adapter',journeyAdapter]
-]) assert.match(source, new RegExp(cacheEpoch.replaceAll('/', '\\/').replaceAll('.', '\\.').replaceAll('-', '\\-')), `${name} omitted the A2-A5 cache epoch`);
+  ['shell',shell], ['cache eviction',eviction], ['recovery bridge',recovery]
+]) assert.match(source, new RegExp(currentCacheEpoch.replaceAll('/', '\\/').replaceAll('.', '\\.').replaceAll('-', '\\-')), `${name} omitted the current A11 cache epoch`);
+assert.match(cacheFlush, new RegExp(historicalCacheEpoch.replaceAll('/', '\\/').replaceAll('.', '\\.').replaceAll('-', '\\-')), 'legacy cache transition lost the completed A2-A5 supersession marker');
+assert.match(journeyAdapter, new RegExp(historicalAssetEpoch.replaceAll('-', '\\-')), 'retained A2-A5 journey adapter lost its release epoch');
+assert.match(journeyAdapter, new RegExp(historicalCacheEpoch.replaceAll('/', '\\/').replaceAll('.', '\\.').replaceAll('-', '\\-')), 'retained A2-A5 journey adapter lost its cache epoch');
 for (const [name, source] of [
   ['shell',shell], ['lifecycle',lifecycle], ['workspace bridge',bridge],
   ['cache eviction',eviction], ['cache flush',cacheFlush], ['recovery bridge',recovery]
@@ -81,7 +87,7 @@ assert.match(journeySource, /const EPOCH = '20260721-legal-demo-ux-v1'/);
 assert.match(journeyAdapter, /const RELEASE_EPOCH = '20260723-a2-a5-release-v1'/);
 assert.match(journeyAdapter, /location\.pathname === '\/dome-world\/ash-threshold\.html'/);
 assert.match(journeyAdapter, /location\.search === ''/);
-assert.match(bridge, /ash-whole-instrument-pedagogy\.js\?v=20260723-a2-a5-release-v1/);
+assert.match(bridge, /ash-whole-instrument-pedagogy\.js\?v=20260724-a11-postclosure-v1/);
 assert.match(receipt, /prior asset epoch: 20260721-legal-demo-ux-v1/);
 assert.match(receipt, /replacement asset epoch: 20260723-a2-a5-release-v1/);
 assert.match(receipt, /replacement cache epoch: td613\.ash\.cache-flush\/2026-07-23-a2-a5-release-v1/);
@@ -99,7 +105,7 @@ assert.doesNotMatch(moduleSource, /\/api\//);
 
 // A6 — affordance and drawer repair.
 assert.match(a6Source, /td613\.ash\.a6-affordance-drawer-repair\/v0\.1/);
-assert.match(bridge, /ash-a6-affordance-drawer-repair\.js\?v=20260723-a2-a5-release-v1/);
+assert.match(bridge, /ash-a6-affordance-drawer-repair\.js\?v=20260724-a11-postclosure-v1/);
 const wholeInstrumentA6Source = `${moduleSource}\n${a6Source}`;
 for (const marker of [
   'Open Local Document', 'Open Draft Workspace', 'Previous Lesson', 'Next Lesson', '𝄐 Rest',
