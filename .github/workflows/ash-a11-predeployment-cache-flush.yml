@@ -22,7 +22,7 @@ concurrency:
 jobs:
   contracts:
     runs-on: ubuntu-latest
-    timeout-minutes: 18
+    timeout-minutes: 24
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-node@v4
@@ -41,6 +41,14 @@ jobs:
           node tests/ash-a11-predeployment-cache-flush.test.mjs
           node tests/ash-a2-a5-whole-instrument.test.mjs
           node tests/ash-live-ingress-demos-cache.test.mjs
+      - name: Validate Ash Keep component estate
+        run: npm run test:ash-keep
+      - name: Validate lifecycle component
+        run: node tests/ash-lifecycle.test.mjs
+      - name: Validate draft lifecycle binding
+        run: node tests/ash-draft-lifecycle-binding.test.mjs
+      - name: Validate product architecture
+        run: node tests/ash-product-architecture.test.mjs
       - name: Preserve contract evidence
         if: always()
         uses: actions/upload-artifact@v4
