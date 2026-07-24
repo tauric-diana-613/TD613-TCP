@@ -1,7 +1,8 @@
 import assert from 'node:assert/strict';
 import fs from 'node:fs';
 
-const assetEpoch = '20260724-a12-release-v1';
+const inheritedAssetEpoch = '20260724-a12-release-v1';
+const registryAssetEpoch = '20260724-a13-release-v1';
 const cacheEpoch = 'td613.ash.cache-flush/2026-07-24-a11-postclosure-v1';
 
 const shell = fs.readFileSync(new URL('../api/dome-world-shell.js', import.meta.url), 'utf8');
@@ -9,14 +10,15 @@ const eviction = fs.readFileSync(new URL('../app/dome-world/ash-cache-eviction-a
 const lifecycle = fs.readFileSync(new URL('../app/dome-world/ash-lifecycle.js', import.meta.url), 'utf8');
 const workspace = fs.readFileSync(new URL('../app/dome-world/ash-workspace-bridge.js', import.meta.url), 'utf8');
 const profile = fs.readFileSync(new URL('../app/dome-world/ash-profile-demo-hydration.js', import.meta.url), 'utf8');
+const registry = fs.readFileSync(new URL('../app/dome-world/ash-demo-registry.js', import.meta.url), 'utf8');
 const recompiler = fs.readFileSync(new URL('../app/dome-world/ash-a7-a11-recompiler-core.js', import.meta.url), 'utf8');
 const recovery = fs.readFileSync(new URL('../app/safe-harbor/ash-keep-recovery.html', import.meta.url), 'utf8');
 const vercel = JSON.parse(fs.readFileSync(new URL('../vercel.json', import.meta.url), 'utf8'));
 
-assert.ok(shell.includes(`ASH_LIFECYCLE_ASSET_EPOCH = '${assetEpoch}'`));
+assert.ok(shell.includes(`ASH_LIFECYCLE_ASSET_EPOCH = '${inheritedAssetEpoch}'`));
 assert.ok(shell.includes(`ASH_MASS_EVICTION_EPOCH = '${cacheEpoch}'`));
 assert.ok(shell.includes('content="a11-postclosure-v1"'));
-assert.match(shell, /Clear-Site-Data', '\"cache\"'/);
+assert.match(shell, /Clear-Site-Data', '"cache"'/);
 assert.match(shell, /indexeddb_preserved:true/);
 assert.match(shell, /case_data_preserved:true/);
 assert.match(shell, /active_session_reset:false/);
@@ -24,7 +26,7 @@ assert.match(shell, /local_case_pointer_preserved/);
 assert.match(shell, /session_epoch_preserved_or_migrated/);
 
 assert.ok(eviction.includes(`ASH_AIA3_CACHE_EPOCH = '${cacheEpoch}'`));
-assert.ok(eviction.includes(`ASH_AIA3_ASSET_EPOCH = '${assetEpoch}'`));
+assert.ok(eviction.includes(`ASH_AIA3_ASSET_EPOCH = '${inheritedAssetEpoch}'`));
 assert.match(eviction, /clearCacheStorage/);
 assert.match(eviction, /unregisterWorkers/);
 assert.match(eviction, /requestHttpEviction/);
@@ -38,27 +40,30 @@ assert.doesNotMatch(eviction, /indexedDB\.deleteDatabase/);
 assert.doesNotMatch(eviction, /localStorage\.clear/);
 assert.doesNotMatch(eviction, /sessionStorage\.clear/);
 
-for (const [name, source] of Object.entries({ lifecycle, workspace, profile, recompiler, recovery })) {
-  assert.ok(source.includes(assetEpoch), `${name} missing the current live asset epoch`);
+for (const [name, source] of Object.entries({ lifecycle, workspace, recompiler, recovery })) {
+  assert.ok(source.includes(inheritedAssetEpoch), `${name} missing the inherited A12 live asset epoch`);
 }
+assert.ok(profile.includes(registryAssetEpoch), 'profile façade missing the A13 registry asset epoch');
+assert.ok(registry.includes(registryAssetEpoch), 'registry missing its A13 asset epoch');
 assert.ok(recovery.includes(cacheEpoch));
-assert.equal((workspace.match(new RegExp(assetEpoch, 'g')) || []).length >= 30, true, 'workspace graph was not versioned broadly enough');
+assert.equal((workspace.match(new RegExp(inheritedAssetEpoch, 'g')) || []).length >= 25, true, 'inherited workspace graph lost broad versioning');
+assert.match(workspace, new RegExp(`ash-profile-demo-hydration\\.js\\?v=${registryAssetEpoch}`));
 for (const stage of ['ash-a9-work-recompilation.js','ash-a10-choir-recompilation.js','ash-a11-capsule-recompilation.js']) {
-  assert.ok(recompiler.includes(`${stage}?v=${assetEpoch}`), `recompiler missing ${stage} current live version`);
+  assert.ok(recompiler.includes(`${stage}?v=${inheritedAssetEpoch}`), `recompiler missing ${stage} inherited live version`);
 }
-
+assert.doesNotMatch(profile + registry, /caches\.|serviceWorker|ash_epoch|deleteDatabase|localStorage\.clear|sessionStorage\.clear/);
 assert.equal(vercel.git?.deploymentEnabled, false);
 
 console.log(JSON.stringify({
   ok:true,
-  schema:'td613.ash.a12-asset-with-a11-mass-eviction-contract/v0.1',
-  asset_epoch:assetEpoch,
+  schema:'td613.ash.a13-registry-with-a11-mass-eviction-contract/v0.1',
+  inherited_asset_epoch:inheritedAssetEpoch,
+  registry_asset_epoch:registryAssetEpoch,
   cache_epoch:cacheEpoch,
-  graph_wide_versioning:true,
-  mass_eviction_reexecuted:false,
-  cache_storage_evicted:true,
-  same_origin_workers_unregistered:true,
-  http_cache_eviction_requested:true,
+  ordinary_registry_version_advanced:true,
+  graph_wide_mass_eviction_reexecuted:false,
+  browser_cache_cleared_for_a13:false,
+  service_workers_unregistered_for_a13:false,
   indexeddb_preserved:true,
   active_case_pointer_preserved:true,
   session_epoch_preserved:true,
