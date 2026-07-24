@@ -1,7 +1,7 @@
 import assert from 'node:assert/strict';
 import fs from 'node:fs';
 
-const assetEpoch = '20260724-a11-postclosure-v1';
+const assetEpoch = '20260724-a12-release-v1';
 const cacheEpoch = 'td613.ash.cache-flush/2026-07-24-a11-postclosure-v1';
 
 const shell = fs.readFileSync(new URL('../api/dome-world-shell.js', import.meta.url), 'utf8');
@@ -39,22 +39,23 @@ assert.doesNotMatch(eviction, /localStorage\.clear/);
 assert.doesNotMatch(eviction, /sessionStorage\.clear/);
 
 for (const [name, source] of Object.entries({ lifecycle, workspace, profile, recompiler, recovery })) {
-  assert.ok(source.includes(assetEpoch), `${name} missing A11 postclosure asset epoch`);
+  assert.ok(source.includes(assetEpoch), `${name} missing the current live asset epoch`);
 }
 assert.ok(recovery.includes(cacheEpoch));
 assert.equal((workspace.match(new RegExp(assetEpoch, 'g')) || []).length >= 30, true, 'workspace graph was not versioned broadly enough');
 for (const stage of ['ash-a9-work-recompilation.js','ash-a10-choir-recompilation.js','ash-a11-capsule-recompilation.js']) {
-  assert.ok(recompiler.includes(`${stage}?v=${assetEpoch}`), `recompiler missing ${stage} postclosure version`);
+  assert.ok(recompiler.includes(`${stage}?v=${assetEpoch}`), `recompiler missing ${stage} current live version`);
 }
 
 assert.equal(vercel.git?.deploymentEnabled, false);
 
 console.log(JSON.stringify({
   ok:true,
-  schema:'td613.ash.a11-postclosure-cache-eviction-contract/v0.1',
+  schema:'td613.ash.a12-asset-with-a11-mass-eviction-contract/v0.1',
   asset_epoch:assetEpoch,
   cache_epoch:cacheEpoch,
   graph_wide_versioning:true,
+  mass_eviction_reexecuted:false,
   cache_storage_evicted:true,
   same_origin_workers_unregistered:true,
   http_cache_eviction_requested:true,

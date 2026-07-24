@@ -271,3 +271,16 @@ only the human promotes and closes
 ```
 
 **Indexed ⟐**
+
+## Ash A9–A12 continuation ledger
+
+### A12 · Command-menu rationalization and dead-control repair
+
+| Stage | Receipt | Primary implementation |
+|---|---|---|
+| A9 | `ASH_KEEP_A9_IMPLEMENTATION_RECEIPT_V0_1.md` | intention-shaped Work queues and human-gated Hush surface |
+| A10 | `ASH_KEEP_A10_IMPLEMENTATION_RECEIPT_V0_1.md` | pairwise Choir and residue laboratory |
+| A11 | `ASH_KEEP_A11_IMPLEMENTATION_RECEIPT_V0_1.md` | Capsule continuity, Save Points, and destination-preparation boundary |
+| A12 | `ASH_KEEP_A12_IMPLEMENTATION_RECEIPT_V0_1.md` | command ownership, explicit profile switching, route-delta population, dead-control closure |
+
+The A12–A15 release and cache cadence is governed by `ASH_KEEP_A12_A15_OPERATOR_AMENDMENT_V0_1.md`. A12 advances the ordinary asset epoch to `20260724-a12-release-v1` while retaining the A11 mass-eviction epoch. Human empirical closure remains open.
