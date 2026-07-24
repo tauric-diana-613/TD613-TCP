@@ -49,15 +49,17 @@ test('production content observer binds deployed bytes to the selected source pa
 
 test('one explicit exact-head dispatch retains the complete browser evidence', () => {
   assert.match(consolidated, /workflow_dispatch:/);
+  assert.match(consolidated, /types:\s*\[opened, synchronize, reopened, ready_for_review\]/);
   assert.match(consolidated, /full-browser/);
-  assert.match(consolidated, /if: github\.event_name == 'workflow_dispatch' && inputs\.mode == 'full-browser'/);
+  assert.match(consolidated, /github\.event_name == 'workflow_dispatch' && inputs\.mode == 'full-browser'/);
+  assert.match(consolidated, /github\.event_name == 'pull_request' && github\.event\.action == 'ready_for_review'/);
   assert.match(consolidated, /playwright@\$\{PLAYWRIGHT_VERSION\}/);
   assert.match(consolidated, /playwright install --with-deps chromium firefox webkit/);
   assert.match(consolidated, /flowcore-runtime-browser-probe\.mjs/);
   assert.match(consolidated, /TD613_BROWSERS: chromium,firefox,webkit/);
   assert.match(consolidated, /TD613_FLOWCORE_ROUTE_PREFIX: app\/dome-world/);
   assert.match(consolidated, /td613-exact-head-browser-receipts/);
-  assert.doesNotMatch(consolidated, /if: github\.event_name == 'pull_request' \|\|/);
+  assert.doesNotMatch(consolidated, /github\.event\.action == 'synchronize'[\s\S]*playwright install/);
   assert.equal(fs.existsSync('.github/workflows/flowcore-runtime-evidence.yml'), false,
     'Flow-Core runtime evidence must not regain an independent workflow.');
 });
