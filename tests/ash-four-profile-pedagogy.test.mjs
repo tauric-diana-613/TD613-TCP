@@ -66,7 +66,8 @@ assert.match(moduleSource, /providerApproval/);
 assert.match(moduleSource, /approveRelease/);
 assert.match(moduleSource, /capsulePassphrase/);
 assert.doesNotMatch(moduleSource, /transport_authorized:\s*true|child_study_authorized:\s*true|automatic_ash_action:\s*true/);
-assert.match(wrapperSource, new RegExp(`ash-demo-pedagogy-rehydration\\.js\\?v=${REGISTRY_EPOCH}`));
+assert.match(wrapperSource, /from '\.\/ash-demo-pedagogy-rehydration\.js'/);
+assert.doesNotMatch(wrapperSource, /ash-demo-pedagogy-rehydration\.js\?v=/, 'Legacy pedagogy module must have one URL identity beneath the A13 wrapper.');
 assert.match(wrapperSource, new RegExp(`ash-demo-registry\\.js\\?v=${REGISTRY_EPOCH}`));
 
 assert.match(entrySource, /td613\.ash\.demo-entry-convergence\/v0\.5-premium-instrument-visible-release/);
@@ -123,6 +124,7 @@ assert.match(compositionCompatibilitySource, /dataset\.ashCompositionRelease/);
 const inheritedImport = module => `${module}\\.js\\?v=${INHERITED_EPOCH}`;
 assert.match(workspaceBridgeSource, new RegExp(`${inheritedImport('ash-premium-ui')}[\\s\\S]*${inheritedImport('ash-premium-readiness-bridge')}[\\s\\S]*${inheritedImport('ash-ui-ux-rescue')}[\\s\\S]*${inheritedImport('ash-composition-receipt-compatibility')}[\\s\\S]*${inheritedImport('ash-demo-entry-convergence')}[\\s\\S]*${inheritedImport('ash-demo-pedagogy-routebar')}`));
 assert.match(workspaceBridgeSource, new RegExp(`ash-profile-demo-hydration\\.js\\?v=${REGISTRY_EPOCH}`));
+assert.doesNotMatch(workspaceBridgeSource, /ash-investigation-demo-hydration\.js\?v=|ash-research-demo-hydration\.js\?v=/, 'Workspace bridge must not reload registry-owned hydrators under parallel URLs.');
 assert.doesNotMatch(workspaceBridgeSource, /ash-demo-pedagogy-persistence/);
 assert.equal(fs.existsSync(path.join(root, 'app/dome-world/ash-demo-pedagogy-persistence.js')), false, 'The obstructive all-workspace ledger portal must remain removed.');
 
