@@ -7,7 +7,7 @@
 ## 1. Constitutional result
 
 ```text
-durable workflows before = 10
+durable workflows before = 11
 durable workflows after = 3
 routine PR dependency installs = 1
 full browser closure = exact owner command only
@@ -25,6 +25,7 @@ human closure required = true
 One unprivileged validation workflow owns:
 
 - the maintained repository contract estate;
+- retained audit calibration;
 - Hush retained phases;
 - Safe Harbor current and Gen3 Wave B contracts;
 - Dome-World JavaScript and Python contracts;
@@ -64,13 +65,14 @@ One independent, queued safety membrane remains because release failure must not
 
 The following standalone owners were deleted:
 
-1. `pages.yml`
-2. `tcp-smoke.yml`
-3. `ash-flowcore-live-field.yml`
-4. `ash-keep-production-closure.yml`
-5. `ash-keep-aia3-production-observation.yml`
-6. `dome-world-phase4.yml`
-7. `vercel-deployment-law.yml`
+1. `calibration.yml`
+2. `pages.yml`
+3. `tcp-smoke.yml`
+4. `ash-flowcore-live-field.yml`
+5. `ash-keep-production-closure.yml`
+6. `ash-keep-aia3-production-observation.yml`
+7. `dome-world-phase4.yml`
+8. `vercel-deployment-law.yml`
 
 Their required tests, probes, and authority checks moved into the retained owners or the two consolidated runners:
 
@@ -81,7 +83,7 @@ No retired workflow may return under an alternate filename or micro-workflow suf
 
 ## 4. Resource posture
 
-The prior estate repeatedly performed checkout, Node setup, `npm ci`, Python setup, Playwright package installation, browser binary installation, local-server boot, and overlapping Ash/Flow-Core contracts in separate jobs and workflows. The consolidated estate shares setup inside bounded owners and reserves the expensive three-browser assay for one exact-head closure gesture.
+The prior estate repeatedly performed checkout, Node setup, `npm ci` or `npm install`, Python setup, Playwright package installation, browser binary installation, local-server boot, and overlapping Ash/Flow-Core contracts in separate jobs and workflows. The consolidated estate shares setup inside bounded owners and reserves the expensive three-browser assay for one exact-head closure gesture.
 
 This receipt makes no universal claim about data-center water usage. It records the directly governed reduction in duplicated jobs, dependency installations, browser installations, and automatically repeated browser runs.
 
