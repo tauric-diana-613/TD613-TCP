@@ -40,30 +40,49 @@ async function inspect(page, label) {
   await page.locator('#premiumMenuButton').click();
   await page.locator('[data-a12-command="save"]').click();
   await page.waitForFunction(() => document.documentElement.dataset.ashPremiumWorkspace === 'capsule');
-  await page.locator('#premiumMenuButton').click();
-  await page.locator('[data-a12-action="profile"]').click();
-  await page.waitForFunction(() => !document.getElementById('launch')?.classList.contains('hidden')
-    && document.getElementById('launch')?.getAttribute('aria-hidden') !== 'true');
-  await page.waitForFunction(() => document.activeElement?.id === 'newProfile'
-    && document.documentElement.dataset.ashA12ProfileSelector === 'FOCUSED');
+
   const routeDelta = await page.locator('.ash-route-delta').innerText();
   if (!routeDelta.includes('Changed in explanation') || !routeDelta.includes('Preserved exactly')) throw new Error('A12 route delta remained empty.');
-  const geometry = await page.evaluate(() => ({
+  const beforeSwitch = await page.evaluate(() => ({
     width:document.documentElement.scrollWidth,
     viewport:document.documentElement.clientWidth,
     fields:document.querySelectorAll('.ash-flowcore-field:not(.ash-flowcore-field--proxy):not([hidden])').length,
     url:location.pathname + location.search,
     title:document.title,
     audit:document.documentElement.dataset.ashA12CommandAudit,
-    profile_selector:document.documentElement.dataset.ashA12ProfileSelector,
-    active_element:document.activeElement?.id || null
+    active_case:window.__td613AshKeep?.current?.()?.case_id || null
   }));
-  if (geometry.width > geometry.viewport + 1) throw new Error('Horizontal overflow ' + geometry.width + '/' + geometry.viewport);
-  if (geometry.fields !== 1) throw new Error('Expected one canonical field, observed ' + geometry.fields);
-  if (geometry.url !== '/dome-world/ash-threshold.html' || geometry.title !== 'TD613 Ash') throw new Error('Canonical first paint drift: ' + JSON.stringify(geometry));
-  if (geometry.profile_selector !== 'FOCUSED' || geometry.active_element !== 'newProfile') throw new Error('Profile selector focus drift: ' + JSON.stringify(geometry));
+  if (beforeSwitch.width > beforeSwitch.viewport + 1) throw new Error('Horizontal overflow ' + beforeSwitch.width + '/' + beforeSwitch.viewport);
+  if (beforeSwitch.fields !== 1) throw new Error('Expected one canonical field, observed ' + beforeSwitch.fields);
+  if (beforeSwitch.url !== '/dome-world/ash-threshold.html' || beforeSwitch.title !== 'TD613 Ash') throw new Error('Canonical first paint drift: ' + JSON.stringify(beforeSwitch));
+  if (!beforeSwitch.active_case) throw new Error('A12 case-switcher witness began without an active case.');
+
+  await page.locator('#premiumMenuButton').click();
+  await page.locator('[data-a12-action="profile"]').click();
+  await page.waitForFunction(() => document.body.dataset.ashCaseClosed === 'true'
+    && !localStorage.getItem('td613.ash-keep.current-case')
+    && !document.getElementById('launch')?.classList.contains('hidden'), null, { timeout:120_000 });
+  await page.waitForFunction(() => document.activeElement?.id === 'newProfile'
+    && document.documentElement.dataset.ashA12ProfileSelector === 'FOCUSED', null, { timeout:60_000 });
+
+  const afterSwitch = await page.evaluate(() => ({
+    url:location.pathname + location.search,
+    title:document.title,
+    launch_hidden:document.getElementById('launch')?.classList.contains('hidden') ?? true,
+    case_closed:document.body.dataset.ashCaseClosed || null,
+    current_pointer:localStorage.getItem('td613.ash-keep.current-case'),
+    profile_selector:document.documentElement.dataset.ashA12ProfileSelector,
+    active_element:document.activeElement?.id || null,
+    close_fingerprint_posture:document.documentElement.dataset.ashCloseFingerprintPosture || null,
+    case_list_quiescent:document.documentElement.dataset.ashCloseCaseListQuiescent || null
+  }));
+  if (afterSwitch.url !== '/dome-world/ash-threshold.html' || afterSwitch.title !== 'TD613 Ash') throw new Error('Canonical selector return drift: ' + JSON.stringify(afterSwitch));
+  if (afterSwitch.launch_hidden || afterSwitch.case_closed !== 'true' || afterSwitch.current_pointer) throw new Error('Canonical case close boundary held: ' + JSON.stringify(afterSwitch));
+  if (afterSwitch.profile_selector !== 'FOCUSED' || afterSwitch.active_element !== 'newProfile') throw new Error('Profile selector focus drift: ' + JSON.stringify(afterSwitch));
+  if (afterSwitch.case_list_quiescent !== 'true') throw new Error('Case list did not reach quiescence: ' + JSON.stringify(afterSwitch));
+
   await page.screenshot({ path:path.join(artifactDir, browserName + '-' + label + '.png'), fullPage:true });
-  return geometry;
+  return { before_switch:beforeSwitch, after_switch:afterSwitch };
 }
 
 const receipts = [];
@@ -74,7 +93,7 @@ try {
   const mobile = await browser.newContext({ viewport:{ width:390, height:844 }, reducedMotion:'reduce', isMobile:true, hasTouch:true });
   receipts.push({ mode:'mobile-reduced-motion', ...(await inspect(await mobile.newPage(), 'mobile-reduced-motion')) });
   await mobile.close();
-  await fs.writeFile(path.join(artifactDir, browserName + '-a12-receipt.json'), JSON.stringify({ schema:'td613.ash.a12-browser-witness/v0.1', browser:browserName, receipts, authority_changed:false, source_bytes_moved:false, human_closure_required:true }, null, 2));
+  await fs.writeFile(path.join(artifactDir, browserName + '-a12-receipt.json'), JSON.stringify({ schema:'td613.ash.a12-browser-witness/v0.2', browser:browserName, receipts, authority_changed:false, source_bytes_moved:false, case_data_preserved:true, profile_inferred:false, human_closure_required:true }, null, 2));
 } catch (error) {
   await fs.writeFile(path.join(artifactDir, browserName + '-a12-failure.json'), JSON.stringify({ error:String(error?.stack || error) }, null, 2));
   throw error;
