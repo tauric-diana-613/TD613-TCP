@@ -23,7 +23,7 @@ const ingress = read('app/dome-world/ash-ingress-layout-hydration.js');
 const navigation = read('app/dome-world/ash-workspace-navigation.js');
 const deliveryTransform = read('app/dome-world/ash-keep-delivery-transform.js');
 const probe = read('scripts/ash-investigation-guidance-browser-probe.mjs');
-const CURRENT_RELEASE_EPOCH = '20260724-a11-postclosure-v1';
+const CURRENT_RELEASE_EPOCH = '20260724-a12-release-v1';
 const CURRENT_CACHE_EPOCH = 'td613.ash.cache-flush/2026-07-24-a11-postclosure-v1';
 
 assert.equal(ASH_INVESTIGATION_APEQ_PAIA_VERSION, 'td613.ash.investigation-demo/v0.2-apeq-paia');

@@ -19,7 +19,7 @@ const premiumReadinessSource = fs.readFileSync(premiumReadinessPath, 'utf8');
 const compositionCompatibilitySource = fs.readFileSync(compositionCompatibilityPath, 'utf8');
 const workspaceBridgeSource = fs.readFileSync(workspaceBridgePath, 'utf8');
 const { ASH_DEMO_PEDAGOGY_VERSION, ASH_DEMO_PEDAGOGY_MANIFESTS } = await import(pathToFileURL(modulePath));
-const RELEASE_EPOCH = '20260724-a11-postclosure-v1';
+const RELEASE_EPOCH = '20260724-a12-release-v1';
 
 assert.equal(ASH_DEMO_PEDAGOGY_VERSION, 'td613.ash.demo-pedagogy/v0.2-event-driven-idle-stable');
 assert.deepEqual(Object.keys(ASH_DEMO_PEDAGOGY_MANIFESTS).sort(), ['fundraiser','investigation','political_campaign','research']);
