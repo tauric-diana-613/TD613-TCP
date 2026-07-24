@@ -4,6 +4,7 @@ import fs from 'node:fs';
 const core = fs.readFileSync(new URL('../app/dome-world/ash-a7-a11-recompiler-core.js', import.meta.url), 'utf8');
 const source = fs.readFileSync(new URL('../app/dome-world/ash-a10-choir-recompilation.js', import.meta.url), 'utf8');
 const premium = fs.readFileSync(new URL('../app/dome-world/ash-premium-ui.js', import.meta.url), 'utf8');
+const coordinator = fs.readFileSync(new URL('../app/dome-world/ash-operation-coordinator.js', import.meta.url), 'utf8');
 const probe = fs.readFileSync(new URL('../scripts/ash-a7-a11-browser-probe.mjs', import.meta.url), 'utf8');
 const workflow = fs.readFileSync(new URL('../.github/workflows/ash-flowcore-live-field.yml', import.meta.url), 'utf8');
 const receipt = fs.readFileSync(new URL('../app/dome-world/docs/ASH_KEEP_A10_IMPLEMENTATION_RECEIPT_V0_1.md', import.meta.url), 'utf8');
@@ -84,6 +85,11 @@ for (const marker of [
   'storage was not mutated'
 ]) assert.ok(premium.includes(marker), `Native Choir owner missing ${marker}`);
 
+assert.match(coordinator, /v0\.2-ifavailable-parity/);
+assert.match(coordinator, /if \(lock == null\) return actualCallback\(null\);/);
+assert.match(coordinator, /if_available_null_passthrough: true/);
+assert.doesNotMatch(coordinator, /lock => runWithLease\(String\(name\), actualCallback, lock\)/);
+
 assert.match(core, /ash-a10-choir-recompilation\.js\?v=20260723-a10-v1/);
 assert.match(core, /__td613AshA10ModulePromise/);
 assert.match(core, /td613:ash:a10-load-held/);
@@ -129,6 +135,7 @@ console.log(JSON.stringify({
   recurring_timer:false,
   automatic_assay:false,
   automatic_rebuild_test:false,
+  if_available_null_passthrough:true,
   human_interpretation_required:true,
   raw_content_transport:false,
   authority_changed:false,
