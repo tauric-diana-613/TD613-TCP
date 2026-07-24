@@ -88,14 +88,18 @@ jobs:
           node tests/ash-a7-home-recompilation.test.mjs
           node tests/ash-a8-case-map-recompilation.test.mjs
           node tests/ash-flowcore-live-field.test.mjs
-      - name: Validate Ash A9-A13 surfaces
+      - name: Validate Ash A9 Work
+        run: node tests/ash-a9-work-recompilation.test.mjs
+      - name: Validate Ash A10 Choir
+        run: node tests/ash-a10-choir-recompilation.test.mjs
+      - name: Validate Ash A11 Capsule and postclosure cache law
         run: |
-          node tests/ash-a9-work-recompilation.test.mjs
-          node tests/ash-a10-choir-recompilation.test.mjs
           node tests/ash-a11-capsule-recompilation.test.mjs
           node tests/ash-a11-postclosure-cache-eviction.test.mjs
-          node tests/ash-a12-command-rationalization.test.mjs
-          node tests/ash-a13-unified-demo-registry.test.mjs
+      - name: Validate Ash A12 command rationalization
+        run: node tests/ash-a12-command-rationalization.test.mjs
+      - name: Validate Ash A13 unified registry and workflow collapse
+        run: node tests/ash-a13-unified-demo-registry.test.mjs
       - name: Validate Ash demo hydration surfaces
         run: |
           node tests/ash-research-ux-rehydration.test.mjs
