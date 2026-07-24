@@ -60,12 +60,14 @@ assert.match(workflow, /No additional deployment attempt is authorized by this f
 assert.match(workflow, /Sealed ⟐/);
 assert.doesNotMatch(workflow, /safe-harbor-gen3-wave-[ab]-production-probe|flowcore-runtime-browser-probe\.mjs|ash-keep-aia3-task-journey-v3\.mjs|ash-keep-aia2-task-journey/);
 
+assert.match(consolidated, /types:\s*\[opened, synchronize, reopened, ready_for_review\]/);
 assert.match(consolidated, /One exact-head Chromium Firefox WebKit witness/);
-assert.match(consolidated, /if: github\.event_name == 'workflow_dispatch' && inputs\.mode == 'full-browser'/);
+assert.match(consolidated, /github\.event_name == 'workflow_dispatch' && inputs\.mode == 'full-browser'/);
+assert.match(consolidated, /github\.event_name == 'pull_request' && github\.event\.action == 'ready_for_review'/);
 assert.match(consolidated, /playwright install --with-deps chromium firefox webkit/);
 assert.match(consolidated, /for browser in chromium firefox webkit/);
 assert.match(consolidated, /ash-a13-demo-registry-browser-probe\.mjs/);
-assert.doesNotMatch(consolidated, /if: github\.event_name == 'pull_request' \|\|/);
+assert.doesNotMatch(consolidated, /github\.event\.action == 'synchronize'[\s\S]*playwright install/);
 assert.equal(fs.existsSync('.github/workflows/ash-keep-aia3-production-observation.yml'), false);
 
 assert.match(law, /operator authorization → assistant\/Codex execution → one Vercel deployment/);
