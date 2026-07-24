@@ -37,6 +37,10 @@ function captureDraftControl(control) {
   return true;
 }
 
+function captureDelegatedDraft(event) {
+  captureDraftControl(event.target);
+}
+
 function captureWorkshopDraft() {
   for (const id of [...objectDraftIds, ...relationDraftIds]) {
     const control = byId(id);
@@ -360,6 +364,9 @@ installAshStage({
   navigationSelectors:'[data-premium-workspace="map"],[data-route-workspace="map"],[data-route-workspace="rooms"],[data-route-workspace="routes"]'
 });
 
+doc?.addEventListener?.('input', captureDelegatedDraft, true);
+doc?.addEventListener?.('change', captureDelegatedDraft, true);
+
 for (const type of ['case-created','case-closed','profile-demo-hydrated']) {
   host?.addEventListener?.(`td613:ash:${type}`, clearDrafts);
 }
@@ -368,6 +375,7 @@ host && (host.__td613AshA8CaseMap = Object.freeze({
   version:ASH_A8_CASE_MAP_VERSION,
   render:renderAshA8CaseMap,
   draft_storage:'MEMORY_ONLY',
+  delegated_capture:true,
   authority_changed:false,
   source_bytes_moved:false,
   human_closure_required:true
