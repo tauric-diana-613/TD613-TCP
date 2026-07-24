@@ -42,7 +42,7 @@ function ensureCommandSurface() {
     COMMANDS.slice(3).map(commandButton).join(''),
     '</section>',
     '<section class="a12-command-group" aria-labelledby="a12ContinuityHeading"><h3 id="a12ContinuityHeading">Continuity and boundaries</h3>',
-    '<button type="button" data-a12-action="profile" data-command-action="profile"><strong>Cases & Profiles</strong><small>Return to the explicit case and profile selector.</small></button>',
+    '<button type="button" data-a12-action="profile" data-command-action="profile"><strong>Cases & Profiles</strong><small>Save and close the current case session, then return to the explicit case and profile selector.</small></button>',
     '<a href="/dome-world/ash-destination-handoff.html"><strong>Destination Handoff</strong><small>Open the separately gated crossing surface; this menu grants no crossing authority.</small></a>',
     '<a href="/safe-harbor/index.html"><strong>Safe Harbor</strong><small>Open the guarded source-side boundary route.</small></a>',
     '</section>',
@@ -90,40 +90,64 @@ function navigate(control) {
   return true;
 }
 
-function settleProfileSelector(launch, profile) {
-  const settle = () => {
-    if (!launch?.isConnected || !profile?.isConnected) return false;
-    launch.classList.remove('hidden');
-    launch.setAttribute('aria-hidden', 'false');
+function focusProfileSelector(profile) {
+  const focus = () => {
+    if (!profile?.isConnected) return false;
     profile.focus?.({ preventScroll:false });
     profile.scrollIntoView?.({ block:'center', behavior:host.matchMedia?.('(prefers-reduced-motion: reduce)').matches ? 'auto' : 'smooth' });
     doc.documentElement.dataset.ashA12ProfileSelector = doc.activeElement === profile ? 'FOCUSED' : 'OPEN';
     return doc.activeElement === profile;
   };
   queueMicrotask(() => {
-    if (typeof host.requestAnimationFrame === 'function') {
-      host.requestAnimationFrame(() => {
-        settle();
-        host.requestAnimationFrame(() => settle());
-      });
-    } else settle();
+    if (typeof host.requestAnimationFrame === 'function') host.requestAnimationFrame(() => focus());
+    else focus();
   });
 }
 
-function openCasesAndProfiles() {
+async function openCasesAndProfiles() {
   const launch = doc?.getElementById('launch');
   const profile = doc?.getElementById('newProfile');
+  const closeCase = host?.__td613AshCaseCloseRepair?.close;
+  const activeCase = Boolean(host?.__td613AshKeep?.current?.()?.case_id);
   doc?.getElementById('premiumCommandSheet')?.close?.();
   if (!launch || !profile) {
     publish('Cases & Profiles held: the explicit selector is not available in this composition.', { result:'HELD_SELECTOR_UNAVAILABLE' });
     return false;
   }
-  launch.classList.remove('hidden');
-  launch.setAttribute('aria-hidden', 'false');
-  doc.documentElement.dataset.ashA12ProfileSelector = 'OPEN';
-  settleProfileSelector(launch, profile);
-  publish('Cases & Profiles opened. Selection remains explicit; no profile was inferred or changed.', { result:'SELECTOR_OPENED' });
-  return true;
+  if (activeCase && typeof closeCase !== 'function') {
+    publish('Cases & Profiles held: the canonical save-and-close boundary has not reached readiness.', { result:'HELD_CLOSE_OWNER_UNAVAILABLE', case_session_closed:false });
+    return false;
+  }
+  doc.documentElement.dataset.ashA12ProfileSelector = activeCase ? 'CLOSING_CASE' : 'OPEN';
+  try {
+    if (activeCase) {
+      publish('Saving and closing the current case session before opening Cases & Profiles.', {
+        result:'CLOSE_BOUNDARY_IN_PROGRESS',
+        case_session_closed:false,
+        case_data_preserved:true
+      });
+      await closeCase();
+    } else {
+      host?.__td613AshAIAIngress?.show?.();
+    }
+    launch.classList.remove('hidden');
+    launch.setAttribute('aria-hidden', 'false');
+    focusProfileSelector(profile);
+    publish('Cases & Profiles opened through the canonical case boundary. Selection remains explicit; no profile was inferred.', {
+      result:activeCase ? 'CASE_CLOSED_SELECTOR_OPENED' : 'SELECTOR_OPENED',
+      case_session_closed:activeCase,
+      case_data_preserved:true,
+      profile_inferred:false
+    });
+    return true;
+  } catch (error) {
+    publish('Cases & Profiles held at the canonical close boundary: ' + (error?.message || error), {
+      result:'HELD_CLOSE_BOUNDARY',
+      case_session_closed:false,
+      case_data_preserved:true
+    });
+    return false;
+  }
 }
 
 function ensureRouteDelta() {
@@ -170,7 +194,7 @@ function bind() {
     if (action) {
       event.preventDefault();
       event.stopImmediatePropagation();
-      openCasesAndProfiles();
+      void openCasesAndProfiles();
     }
   }, true);
 }
@@ -192,6 +216,7 @@ export function installAshA12CommandRationalization() {
     refresh:refreshAshA12,
     audit:auditCommandSurface,
     commands:COMMANDS,
+    openCasesAndProfiles,
     authority_changed:false,
     source_bytes_moved:false,
     human_closure_required:true
