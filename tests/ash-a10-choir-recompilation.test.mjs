@@ -31,6 +31,16 @@ for (const residueClass of ['Shared','Pair-emergent','Contradictory','Missing','
 }
 
 assert.match(source, /const RESIDUE_CLASSES = Object\.freeze/);
+assert.match(source, /const ACTIVE_RECOMPILATION_EVENTS = Object\.freeze/);
+assert.match(source, /async function restoreActiveRecompilation\(source\)/);
+assert.match(source, /function installActiveRecompilationOwner\(\)/);
+assert.match(source, /__td613AshA9A10ActiveRecompilationOwner/);
+assert.match(source, /\['work','choir'\]\.includes\(workspace\)/);
+assert.match(source, /await host\?\.__td613AshPremiumUI\?\.refresh\?\.\(\)/);
+assert.match(source, /compiler\.refresh\(`ACTIVE_RENDER_OWNER_/);
+assert.match(source, /ambient_subtree_observer:false/);
+assert.match(source, /recurring_timer:false/);
+assert.match(source, /automatic_consequential_action:false/);
 assert.match(source, /function singletonRows\(snapshot\)/);
 assert.match(source, /function readiness\(snapshot\)/);
 assert.match(source, /function ensureOrientation\(\)/);
@@ -47,6 +57,9 @@ assert.match(source, /authority_changed:false/);
 assert.match(source, /source_bytes_moved:false/);
 assert.match(source, /human_closure_required:true/);
 
+assert.doesNotMatch(source, /MutationObserver/);
+assert.doesNotMatch(source, /setInterval\s*\(/);
+assert.doesNotMatch(source, /setTimeout\s*\(/);
 assert.doesNotMatch(source, /indexedDB\.(?:open|deleteDatabase)/);
 assert.doesNotMatch(source, /localStorage\.(?:setItem|removeItem|clear)/);
 assert.doesNotMatch(source, /sessionStorage\.(?:setItem|removeItem|clear)/);
@@ -111,6 +124,9 @@ console.log(JSON.stringify({
   residue_classes:RESIDUE_CLASSES_COUNT(),
   native_choir_preserved:true,
   native_rebuild_owner_preserved:true,
+  active_render_owner:'NAMED_EVENTS_ONLY',
+  ambient_subtree_observer:false,
+  recurring_timer:false,
   automatic_assay:false,
   automatic_rebuild_test:false,
   human_interpretation_required:true,
