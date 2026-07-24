@@ -15,6 +15,7 @@ on:
         options:
           - standard
           - full-browser
+          - full-repository
           - calibration
 
 permissions:
@@ -32,9 +33,9 @@ env:
 jobs:
   contracts:
     name: Static, constitutional, and release contracts
-    if: github.event_name != 'workflow_dispatch' || inputs.mode != 'calibration'
+    if: github.event_name != 'workflow_dispatch' || (inputs.mode != 'calibration' && inputs.mode != 'full-repository')
     runs-on: ubuntu-latest
-    timeout-minutes: 75
+    timeout-minutes: 45
     steps:
       - uses: actions/checkout@v4
         with:
@@ -50,29 +51,19 @@ jobs:
         run: |
           npm ci
           python -m pip install --disable-pip-version-check pytest sympy
-      - name: Enforce the four-workflow estate and deployment lock
+      - name: Enforce the four-workflow estate and release membrane
         run: |
           node tests/workflow-estate.test.mjs
           node tests/tcp-smoke.test.mjs
+          node tests/release-manifest.test.mjs
+          node tests/docs-surface.test.mjs
+          node tests/release-hardening.test.mjs
           node tests/vercel-deploy-hygiene.test.mjs
           node tests/vercel-operator-release-gate.test.mjs
           node tests/vercel-relock-safety.test.mjs
           node tests/release-plumbing.test.mjs
           node tests/product-architecture/shell.test.mjs
-      - name: Run the retained repository suite once
-        run: npm test
-      - name: Run current Safe Harbor and retained Hush closures
-        run: |
-          npm run test:safe-harbor:current
-          npm run test:safe-harbor:gen3:wave-b
-          npm run test:hush:phase9
-          npm run test:hush:phase10
-          npm run test:hush:phase11
-          npm run test:hush:phase12
-          npm run test:hush:phase13
-          npm run test:hush:phase14
-          npm run test:hush:packets:check
-      - name: Run Dome-World, Phase IV, and Ash static contracts
+      - name: Run Dome-World, Phase IV, and Ash static contracts once
         run: |
           npm run test:dome-world:art
           npm run test:dome-world:phase3
@@ -84,6 +75,7 @@ jobs:
           node tests/ash-keep-core.test.mjs
           node tests/ash-keep-continuity.test.mjs
           node tests/ash-keep-hush-api.test.mjs
+          node tests/ash-live-ingress-demos-cache.test.mjs
           node tests/ash-a2-a5-whole-instrument.test.mjs
           node tests/ash-a7-home-recompilation.test.mjs
           node tests/ash-a8-case-map-recompilation.test.mjs
@@ -92,7 +84,7 @@ jobs:
           node tests/ash-a11-capsule-recompilation.test.mjs
           node tests/ash-a11-postclosure-cache-eviction.test.mjs
           node tests/ash-a12-command-rationalization.test.mjs
-          test ! -f tests/ash-a13-unified-demo-registry.test.mjs || node tests/ash-a13-unified-demo-registry.test.mjs
+          node tests/ash-a13-unified-demo-registry.test.mjs
           node tests/ash-flowcore-live-field.test.mjs
           node tests/ash-ingress-polish.test.mjs
           node tests/ash-reviewability.test.mjs
@@ -160,9 +152,7 @@ jobs:
             TD613_ARTIFACT_DIR="artifacts/ash-a2-a5-$browser" timeout --foreground --signal=INT --kill-after=15s 540s node scripts/ash-a2-a5-browser-probe.mjs
             TD613_ASH_STAGES='A7,A8,A9,A10,A11' TD613_ARTIFACT_DIR="artifacts/ash-a7-a11-$browser" timeout --foreground --signal=INT --kill-after=15s 540s node scripts/ash-a7-a11-browser-probe.mjs
             TD613_ARTIFACT_DIR="artifacts/ash-a12-$browser" timeout --foreground --signal=INT --kill-after=15s 420s node scripts/ash-a12-browser-probe.mjs
-            if test -f scripts/ash-a13-demo-registry-browser-probe.mjs; then
-              TD613_ARTIFACT_DIR="artifacts/ash-a13-$browser" timeout --foreground --signal=INT --kill-after=15s 480s node scripts/ash-a13-demo-registry-browser-probe.mjs
-            fi
+            TD613_ARTIFACT_DIR="artifacts/ash-a13-$browser" timeout --foreground --signal=INT --kill-after=15s 480s node scripts/ash-a13-demo-registry-browser-probe.mjs
             TD613_ARTIFACT_DIR="artifacts/ash-flowcore-$browser" timeout --foreground --signal=INT --kill-after=15s 480s node scripts/run-ash-flowcore-live-field-browser-probe.mjs
             TD613_ARTIFACT_DIR="artifacts/ash-ingress-$browser" timeout --foreground --signal=INT --kill-after=15s 360s node scripts/ash-ingress-polish-browser-probe.mjs
             TD613_ARTIFACT_DIR="artifacts/ash-reviewability-$browser" timeout --foreground --signal=INT --kill-after=15s 420s node scripts/ash-reviewability-browser-probe.mjs
@@ -199,6 +189,21 @@ jobs:
           path: artifacts/
           if-no-files-found: warn
           retention-days: 7
+
+  full_repository:
+    name: Explicit full-repository validation
+    if: github.event_name == 'workflow_dispatch' && inputs.mode == 'full-repository'
+    runs-on: ubuntu-latest
+    timeout-minutes: 90
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+          cache: npm
+      - run: npm ci
+      - name: Run the complete repository suite only by explicit dispatch
+        run: npm test
 
   calibration:
     name: Explicit self-hosted calibration
