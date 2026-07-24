@@ -1,6 +1,8 @@
 import assert from 'node:assert/strict';
 import fs from 'node:fs';
 import {
+  ASH_A11_PREFLIGHT_ASSET_EPOCH,
+  ASH_A11_PREFLIGHT_EVICTION_EPOCH,
   ASH_KEEP_JS_SHELL_VERSION,
   ASH_KEEP_SHELL_VERSION,
   ASH_LIFECYCLE_ASSET_EPOCH,
@@ -71,10 +73,12 @@ const versionedModules = [
   `/dome-world/ash-workspace-bridge.js?v=${ASH_LIFECYCLE_ASSET_EPOCH}`,
   `/dome-world/ash-case-controls.js?v=${ASH_LIFECYCLE_ASSET_EPOCH}`
 ];
-assert.equal(ASH_KEEP_SHELL_VERSION, 'td613.ash-keep.shell/v0.6-first-paint');
+assert.equal(ASH_KEEP_SHELL_VERSION, 'td613.ash-keep.shell/v0.7-a11-predeployment-cache');
 assert.equal(ASH_LIFECYCLE_ASSET_EPOCH, '20260723-a2-a5-release-v1');
 assert.equal(ASH_LIFECYCLE_MODULE, '/dome-world/ash-lifecycle.js?v=20260723-a2-a5-release-v1');
 assert.equal(ASH_MASS_EVICTION_EPOCH, 'td613.ash.cache-flush/2026-07-23-a2-a5-release-v1');
+assert.equal(ASH_A11_PREFLIGHT_ASSET_EPOCH, '20260724-a11-predeployment-v1');
+assert.equal(ASH_A11_PREFLIGHT_EVICTION_EPOCH, 'td613.ash.cache-flush/2026-07-24-a11-predeployment-v1');
 assert.match(renderedKeep, /<title>TD613 Ash<\/title>/);
 assert.match(renderedKeep, /rel="canonical" href="\/dome-world\/ash-threshold\.html"/);
 assert.match(renderedKeep, /id="td613-ash-preparing-shell"/);
@@ -90,6 +94,8 @@ for (const source of ['/dome-world/ash-keep.js', '/dome-world/ash-convergence.js
   assert.doesNotMatch(renderedKeep, new RegExp(`src="${source.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')}"`));
 }
 assert.match(renderedKeep, /name="ash-cache-preflight" content="a2-a5-release-v1"/);
+assert.match(renderedKeep, new RegExp(ASH_A11_PREFLIGHT_EVICTION_EPOCH.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')));
+assert.match(renderedKeep, new RegExp(ASH_A11_PREFLIGHT_ASSET_EPOCH));
 assert.match(renderedKeep, /Preparing Ash/);
 assert.match(renderedKeep, /session_epoch_preserved_or_migrated/);
 assert.match(renderedKeep, /name="ash-lifecycle" content="v0\.1"/);
