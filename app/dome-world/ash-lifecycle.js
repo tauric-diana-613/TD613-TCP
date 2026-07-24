@@ -2,7 +2,7 @@ const preflight = globalThis.__td613AshAia3Preflight;
 if (preflight && typeof preflight.then === 'function') await preflight;
 
 const legacyPresentation = new URLSearchParams(location.search).get('presentation') === 'legacy';
-const ASH_RELEASE_ASSET_EPOCH = '20260724-a11-predeployment-v1';
+const ASH_RELEASE_ASSET_EPOCH = '20260723-a2-a5-release-v1';
 
 if (!legacyPresentation) {
   if (!document.getElementById('td613-ash-composition-veil-style')) {
