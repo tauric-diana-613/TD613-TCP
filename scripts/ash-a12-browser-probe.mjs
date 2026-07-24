@@ -42,7 +42,10 @@ async function inspect(page, label) {
   await page.waitForFunction(() => document.documentElement.dataset.ashPremiumWorkspace === 'capsule');
   await page.locator('#premiumMenuButton').click();
   await page.locator('[data-a12-action="profile"]').click();
-  await page.waitForFunction(() => !document.getElementById('launch')?.classList.contains('hidden') && document.activeElement?.id === 'newProfile');
+  await page.waitForFunction(() => !document.getElementById('launch')?.classList.contains('hidden')
+    && document.getElementById('launch')?.getAttribute('aria-hidden') === 'false');
+  await page.waitForFunction(() => document.activeElement?.id === 'newProfile'
+    && document.documentElement.dataset.ashA12ProfileSelector === 'FOCUSED');
   const routeDelta = await page.locator('.ash-route-delta').innerText();
   if (!routeDelta.includes('Changed in explanation') || !routeDelta.includes('Preserved exactly')) throw new Error('A12 route delta remained empty.');
   const geometry = await page.evaluate(() => ({
@@ -51,11 +54,14 @@ async function inspect(page, label) {
     fields:document.querySelectorAll('.ash-flowcore-field:not(.ash-flowcore-field--proxy):not([hidden])').length,
     url:location.pathname + location.search,
     title:document.title,
-    audit:document.documentElement.dataset.ashA12CommandAudit
+    audit:document.documentElement.dataset.ashA12CommandAudit,
+    profile_selector:document.documentElement.dataset.ashA12ProfileSelector,
+    active_element:document.activeElement?.id || null
   }));
   if (geometry.width > geometry.viewport + 1) throw new Error('Horizontal overflow ' + geometry.width + '/' + geometry.viewport);
   if (geometry.fields !== 1) throw new Error('Expected one canonical field, observed ' + geometry.fields);
   if (geometry.url !== '/dome-world/ash-threshold.html' || geometry.title !== 'TD613 Ash') throw new Error('Canonical first paint drift: ' + JSON.stringify(geometry));
+  if (geometry.profile_selector !== 'FOCUSED' || geometry.active_element !== 'newProfile') throw new Error('Profile selector focus drift: ' + JSON.stringify(geometry));
   await page.screenshot({ path:path.join(artifactDir, browserName + '-' + label + '.png'), fullPage:true });
   return geometry;
 }
