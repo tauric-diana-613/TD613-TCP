@@ -185,9 +185,9 @@ const runtimeWriteReplacement = [
   `const checkpoints = ${JSON.stringify(checkpoints)};`,
   "for (const [target, label] of checkpoints) {",
   "  if (!diagnosticRuntime.includes(target)) throw new Error('Convergence observer could not locate checkpoint seam ' + label + '.');",
-  "  diagnosticRuntime = diagnosticRuntime.replace(target, \"  await checkpoint('\\\" + label + \"');\\n\" + target);",
+  "  diagnosticRuntime = diagnosticRuntime.replace(target, '  await checkpoint(' + JSON.stringify(label) + ');\\n' + target);",
   "}",
-  "if (!diagnosticRuntime.includes('page.setDefaultTimeout(45000)') || !diagnosticRuntime.includes('convergence-checkpoint.json') || !diagnosticRuntime.includes(\"await checkpoint('MULTI_TAB_START')\")) throw new Error('Convergence observer finite diagnostics were not materialized.');",
+  "if (!diagnosticRuntime.includes('page.setDefaultTimeout(45000)') || !diagnosticRuntime.includes('convergence-checkpoint.json') || !diagnosticRuntime.includes('await checkpoint(\"MULTI_TAB_START\")')) throw new Error('Convergence observer finite diagnostics were not materialized.');",
   "await fs.writeFile(runtimePath, diagnosticRuntime, 'utf8');"
 ].join('\n');
 if (!runtimeWrapper.includes(runtimeWriteTarget)) throw new Error('Convergence handshake shim could not locate the generated observer write seam.');
