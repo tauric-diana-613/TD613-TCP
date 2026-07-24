@@ -111,7 +111,7 @@ jobs:
       - name: A2-A10, live field, A1 first paint, reviewability, and Research contracts
         run: |
           mkdir -p artifacts
-          set +e
+          set -euo pipefail
           {
             node tests/ash-a2-a5-whole-instrument.test.mjs
             node tests/ash-a7-home-recompilation.test.mjs
@@ -126,10 +126,7 @@ jobs:
             node tests/ash-reviewability.test.mjs
             node tests/ash-research-ux-rehydration.test.mjs
             node tests/ash-final-rehydration-boundaries.test.mjs
-          } > artifacts/ash-flowcore-contract.log 2>&1
-          status=$?
-          cat artifacts/ash-flowcore-contract.log
-          exit "$status"
+          } 2>&1 | tee artifacts/ash-flowcore-contract.log
       - name: Preserve contract evidence
         if: always()
         uses: actions/upload-artifact@v4
