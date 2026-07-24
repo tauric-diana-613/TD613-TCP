@@ -1,4 +1,4 @@
-export const ASH_A7_A11_RECOMPILER_CORE_VERSION = 'td613.ash.a7-a11-recompiler-core/v0.2';
+export const ASH_A7_A11_RECOMPILER_CORE_VERSION = 'td613.ash.a7-a11-recompiler-core/v0.3';
 
 const host = globalThis.window;
 const doc = globalThis.document;
@@ -253,6 +253,62 @@ if (host && !host.__td613AshA10WorkspaceOwner) {
     active_stage_form_deferred:true,
     automatic_assay:false,
     automatic_rebuild_test:false,
+    automatic_consequential_action:false,
+    authority_changed:false,
+    source_bytes_moved:false,
+    human_closure_required:true
+  });
+}
+
+function publishA11LoadHold(error) {
+  host?.dispatchEvent?.(new CustomEvent('td613:ash:a11-load-held', {
+    detail:Object.freeze({
+      schema:'td613.ash.a11-load-hold/v0.1',
+      message:String(error?.message || error),
+      authority_changed:false,
+      source_bytes_moved:false,
+      human_closure_required:true
+    })
+  }));
+  return null;
+}
+
+function loadA11Module() {
+  if (!host) return Promise.resolve(null);
+  if (!host.__td613AshA11ModulePromise) {
+    host.__td613AshA11ModulePromise = import('./ash-a11-capsule-recompilation.js?v=20260724-a11-v1').catch(publishA11LoadHold);
+  }
+  return host.__td613AshA11ModulePromise;
+}
+
+if (host) {
+  if (doc?.documentElement?.dataset?.ashModuleGraph === 'ready') queueMicrotask(loadA11Module);
+  else host.addEventListener('td613:ash:canonical-module-graph-ready', () => queueMicrotask(loadA11Module), { once:true });
+}
+
+if (host && !host.__td613AshA11WorkspaceOwner) {
+  const refreshSettledA11Capsule = event => {
+    if (event.detail?.workspace !== 'capsule') return;
+    queueMicrotask(async () => {
+      await host.__td613AshPremiumUI?.refresh?.();
+      await loadA11Module();
+      await host.__td613AshA11?.refresh?.('UX_WORKSPACE_OPENED');
+    });
+  };
+  host.addEventListener('td613:ash:ux-workspace-opened', refreshSettledA11Capsule);
+  host.__td613AshA11WorkspaceOwner = Object.freeze({
+    version:'td613.ash.a11-workspace-owner/v0.1',
+    event:'td613:ash:ux-workspace-opened',
+    admission_event:'td613:ash:canonical-module-graph-ready',
+    native_workspace_settled_first:true,
+    native_capsule_preserved:true,
+    save_point_owner_preserved:true,
+    destination_handoff_separate:true,
+    active_stage_form_deferred:true,
+    automatic_save:false,
+    automatic_export:false,
+    automatic_import:false,
+    automatic_handoff:false,
     automatic_consequential_action:false,
     authority_changed:false,
     source_bytes_moved:false,
