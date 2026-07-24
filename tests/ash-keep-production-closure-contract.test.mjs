@@ -18,6 +18,7 @@ const premium = read('app/dome-world/ash-premium-ui.js');
 const premiumCss = read('app/dome-world/ash-premium-ui.css');
 const premiumCompatibility = read('app/dome-world/ash-premium-compatibility.js');
 const premiumFlight = read('scripts/ash-premium-ui-browser-probe.mjs');
+const operationCoordinator = read('app/dome-world/ash-operation-coordinator.js');
 
 for (const token of [
   'td613.ash-keep.production-closure-observation/v0.1', 'promotion_authorized: false', "const DB_NAME = 'td613-ash-keep'",
@@ -44,6 +45,12 @@ for (const token of [
 assert.match(convergenceRunner, /pathToFileURL/);
 assert.match(convergenceRunner, /\b35000\b/);
 assert.doesNotMatch(convergenceRunner, /Cross-tab lock witness exceeded 15000ms\.|\b15000\b/);
+
+// Web Locks ifAvailable must preserve the browser's immediate null callback instead of opening a phantom IndexedDB lease wait.
+assert.match(operationCoordinator, /v0\.2-ifavailable-parity/);
+assert.match(operationCoordinator, /if \(lock == null\) return actualCallback\(null\);/);
+assert.match(operationCoordinator, /if_available_null_passthrough: true/);
+assert.doesNotMatch(operationCoordinator, /lock => runWithLease\(String\(name\), actualCallback, lock\)/);
 
 for (const token of [
   "new Set(['pending', 'success', 'failure', 'error'])", "required('GITHUB_TOKEN')", "required('TD613_OBSERVED_COMMIT')",
