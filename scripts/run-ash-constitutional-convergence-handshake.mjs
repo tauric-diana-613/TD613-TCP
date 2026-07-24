@@ -21,7 +21,7 @@ const contentionTarget = `  const firstLock = page.evaluate(() => window.TD613As
   })));
   const [firstResult, secondResult] = await Promise.all([firstLock, secondLock]);`;
 
-const contentionReplacement = `  const contentionEvent = 'td613:ash:probe-contention-release:v3';
+const contentionReplacement = `  const contentionEvent = 'td613:ash:probe-contention-release:v4';
   const releaseSignal = 'RELEASE_FIRST_TAB';
   const intentKey = 'td613.ash-keep.probe-lock-intent';
   const lockName = 'td613:ash:probe-contention';
@@ -66,10 +66,22 @@ const contentionReplacement = `  const contentionEvent = 'td613:ash:probe-conten
     ))
   ]);
   const postReleaseLockSnapshot = await secondPage.evaluate(async () => {
-    if (typeof navigator.locks?.query !== 'function') return { supported:false, held:[], pending:[] };
-    const snapshot = await navigator.locks.query();
+    if (typeof navigator.locks?.query !== 'function') return { supported:false, status:'UNAVAILABLE', held:[], pending:[] };
     const simplify = rows => rows.map(row => ({ name:row.name, mode:row.mode, client_id:row.clientId || null }));
-    return { supported:true, held:simplify(snapshot.held || []), pending:simplify(snapshot.pending || []) };
+    return Promise.race([
+      navigator.locks.query().then(snapshot => ({
+        supported:true,
+        status:'OBSERVED',
+        held:simplify(snapshot.held || []),
+        pending:simplify(snapshot.pending || [])
+      })),
+      new Promise(resolve => setTimeout(() => resolve({
+        supported:true,
+        status:'QUERY_TIMEOUT',
+        held:[],
+        pending:[]
+      }), 2000))
+    ]);
   });
   const secondStartedAt = await secondPage.evaluate(() => {
     const startedAt = Date.now();
@@ -109,6 +121,7 @@ const contentionReplacement = `  const contentionEvent = 'td613:ash:probe-conten
     post_release_lock_snapshot:postReleaseLockSnapshot,
     second_tab_started_at:secondStartedAt,
     finite_release_ceiling_ms:10000,
+    finite_query_ceiling_ms:2000,
     finite_acquisition_ceiling_ms:35000
   };`;
 
@@ -125,16 +138,16 @@ if (!wrapperSource.includes("if (!runtime.includes('Cross-tab lock witness excee
 let runtimeWrapper = `${wrapperSource.slice(0, start)}${replacementDefinitions}${wrapperSource.slice(end)}`;
 runtimeWrapper = runtimeWrapper.replace(
   "if (!runtime.includes('Cross-tab lock witness exceeded 35000ms.')) {\n  throw new Error('Convergence observer bounded cross-tab join was not materialized.');\n}",
-  "if (!runtime.includes('Cross-tab lock witness exceeded 35000ms.') || !runtime.includes('First-tab lock release exceeded 10000ms.') || !runtime.includes('DENIED_WHILE_HELD') || !runtime.includes('Second-tab contention intent was not observed before first-tab release.') || !runtime.includes('__td613ProbePostRelease')) {\n  throw new Error('Convergence observer finite cross-tab exclusion witness was not materialized.');\n}"
+  "if (!runtime.includes('Cross-tab lock witness exceeded 35000ms.') || !runtime.includes('First-tab lock release exceeded 10000ms.') || !runtime.includes('QUERY_TIMEOUT') || !runtime.includes('DENIED_WHILE_HELD') || !runtime.includes('Second-tab contention intent was not observed before first-tab release.') || !runtime.includes('__td613ProbePostRelease')) {\n  throw new Error('Convergence observer finite cross-tab exclusion witness was not materialized.');\n}"
 );
-if (!runtimeWrapper.includes("contentionEvent = 'td613:ash:probe-contention-release:v3'")) {
+if (!runtimeWrapper.includes("contentionEvent = 'td613:ash:probe-contention-release:v4'")) {
   throw new Error('Convergence handshake shim failed to materialize the named release event.');
 }
 if (!runtimeWrapper.includes("ifAvailable:true") || !runtimeWrapper.includes("SECOND_TAB_BLOCKED_WHILE_HELD")) {
   throw new Error('Convergence handshake shim failed to materialize the nonblocking pre-release exclusion assay.');
 }
-if (!runtimeWrapper.includes('post_release_lock_snapshot:postReleaseLockSnapshot') || !runtimeWrapper.includes("state:'STARTED'")) {
-  throw new Error('Convergence handshake shim failed to materialize the detached post-release Ash operation receipt.');
+if (!runtimeWrapper.includes('finite_query_ceiling_ms:2000') || !runtimeWrapper.includes('post_release_lock_snapshot:postReleaseLockSnapshot') || !runtimeWrapper.includes("state:'STARTED'")) {
+  throw new Error('Convergence handshake shim failed to materialize the bounded diagnostic and detached post-release Ash operation receipt.');
 }
 if (runtimeWrapper.includes('new BroadcastChannel(')) {
   throw new Error('Convergence handshake shim retained a lossy BroadcastChannel release sender.');
