@@ -10,7 +10,7 @@ const workflows = readdirSync(workflowDir)
 const MAX_DURABLE_WORKFLOWS = 3;
 assert.ok(
   workflows.length <= MAX_DURABLE_WORKFLOWS,
-  `Workflow estate expanded to ${workflows.length}; durable ceiling is ${MAX_DURABLE_WORKFLOWS}. Keep validation in the consolidated contract/browser runners or the bounded release membrane.`,
+  `Workflow estate expanded to ${workflows.length}; durable ceiling is ${MAX_DURABLE_WORKFLOWS}. Live workflows: ${workflows.join(', ')}. Keep validation in the consolidated contract/browser runners or the bounded release membrane.`,
 );
 
 const required = [
@@ -18,7 +18,7 @@ const required = [
   'vercel-operator-release.yml',
   'vercel-relock-safety.yml',
 ];
-assert.deepEqual(workflows, required.slice().sort(), 'Durable workflow estate must remain exactly the consolidated CI, operator release, and independent relock safety membrane.');
+assert.deepEqual(workflows, required.slice().sort(), `Durable workflow estate must remain exactly the consolidated CI, operator release, and independent relock safety membrane. Live workflows: ${workflows.join(', ')}`);
 
 const retired = [
   'pages.yml',
