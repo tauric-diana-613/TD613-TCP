@@ -1,4 +1,4 @@
-export const ASH_OPERATION_COORDINATOR_VERSION = 'td613.ash-keep.operation-coordinator/v0.1';
+export const ASH_OPERATION_COORDINATOR_VERSION = 'td613.ash-keep.operation-coordinator/v0.2-ifavailable-parity';
 
 const DB_NAME = 'td613-ash-keep';
 const DB_VERSION = 2;
@@ -142,7 +142,10 @@ export function installAshOperationCoordinator(doc = globalThis.document, host =
     const actualCallback = hasOptions ? callback : options;
     if (typeof actualCallback !== 'function') throw new TypeError('Ash operation callback is required.');
     if (!String(name).startsWith('td613:ash:')) return nativeRequest(name, actualOptions, actualCallback);
-    return nativeRequest(name, actualOptions, lock => runWithLease(String(name), actualCallback, lock));
+    return nativeRequest(name, actualOptions, lock => {
+      if (lock == null) return actualCallback(null);
+      return runWithLease(String(name), actualCallback, lock);
+    });
   };
   Object.defineProperty(manager, 'request', {
     configurable: true,
@@ -155,6 +158,7 @@ export function installAshOperationCoordinator(doc = globalThis.document, host =
     version: ASH_OPERATION_COORDINATOR_VERSION,
     owner_id: ownerId,
     lease_ms: LEASE_MS,
+    if_available_null_passthrough: true,
     reentrant_names: activeNames
   });
   return true;
