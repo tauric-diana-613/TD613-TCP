@@ -1,6 +1,6 @@
 import assert from 'node:assert/strict';
 import { readdirSync, readFileSync } from 'node:fs';
-import { join } from 'node:path';
+import { join, relative } from 'node:path';
 
 const workflowDir = join(process.cwd(), '.github', 'workflows');
 const workflows = readdirSync(workflowDir)
@@ -21,6 +21,7 @@ const required = [
 assert.deepEqual(workflows, required.slice().sort(), `Durable workflow estate must remain exactly the consolidated CI, operator release, and independent relock safety membrane. Live workflows: ${workflows.join(', ')}`);
 
 const retired = [
+  'calibration.yml',
   'pages.yml',
   'tcp-smoke.yml',
   'ash-flowcore-live-field.yml',
@@ -48,6 +49,30 @@ for (const name of workflows) {
     `Retired micro-workflow returned: ${name}. Keep its witness in tests/scripts and route it through a durable shared workflow.`,
   );
 }
+
+const intentionalReferenceFiles = new Set([
+  'tests/workflow-estate.test.mjs',
+  'tests/ash-keep-production-closure-contract.test.mjs',
+  'tests/vercel-operator-release-gate.test.mjs',
+]);
+const ghostReferences = [];
+function walkTests(directory) {
+  for (const entry of readdirSync(directory, { withFileTypes:true })) {
+    const absolute = join(directory, entry.name);
+    if (entry.isDirectory()) {
+      walkTests(absolute);
+      continue;
+    }
+    if (!/\.(?:mjs|js|cjs)$/.test(entry.name)) continue;
+    const file = relative(process.cwd(), absolute).replaceAll('\\', '/');
+    if (intentionalReferenceFiles.has(file)) continue;
+    const source = readFileSync(absolute, 'utf8');
+    const matches = retired.filter(name => source.includes(name));
+    if (matches.length) ghostReferences.push({ file, matches });
+  }
+}
+walkTests(join(process.cwd(), 'tests'));
+assert.deepEqual(ghostReferences, [], `Retired workflow filename references remain outside the consolidation-law allowlist: ${JSON.stringify(ghostReferences)}`);
 
 const consolidated = readFileSync(join(workflowDir, 'td613-ci.yml'), 'utf8');
 for (const token of [
