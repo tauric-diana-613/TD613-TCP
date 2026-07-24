@@ -9,6 +9,7 @@ on:
       - 'docs/ASH_KEEP_A11_PREFLIGHT_CACHE_EVICTION_RECEIPT.md'
       - 'tests/ash-a11-predeployment-cache-flush.test.mjs'
       - 'scripts/ash-a11-predeployment-cache-probe.mjs'
+      - 'scripts/ash-a11-predeployment-cache-firefox-probe.mjs'
       - '.github/workflows/ash-a11-predeployment-cache-flush.yml'
   workflow_dispatch:
 
@@ -16,7 +17,7 @@ permissions:
   contents: read
 
 concurrency:
-  group: ash-a11-predeployment-cache-v3-${{ github.event.pull_request.number || github.ref }}-${{ github.run_attempt }}
+  group: ash-a11-predeployment-cache-v4-${{ github.event.pull_request.number || github.ref }}-${{ github.run_attempt }}
   cancel-in-progress: true
 
 jobs:
@@ -35,6 +36,7 @@ jobs:
           node --check api/dome-world-shell.js
           node --check app/dome-world/ash-cache-eviction-aia3.js
           node --check scripts/ash-a11-predeployment-cache-probe.mjs
+          node --check scripts/ash-a11-predeployment-cache-firefox-probe.mjs
       - name: Validate historical and A11 eviction contracts
         run: |
           node tests/ash-aia3-mass-eviction.test.mjs
@@ -112,7 +114,12 @@ jobs:
           TD613_BROWSER: ${{ matrix.browser }}
           TD613_BASE_URL: http://127.0.0.1:6130
           TD613_ARTIFACT_DIR: artifacts/ash-a11-predeployment-${{ matrix.browser }}
-        run: timeout --foreground --signal=INT --kill-after=15s 720s node scripts/ash-a11-predeployment-cache-probe.mjs
+        run: |
+          if [ "${{ matrix.browser }}" = "firefox" ]; then
+            timeout --foreground --signal=INT --kill-after=15s 420s node scripts/ash-a11-predeployment-cache-firefox-probe.mjs
+          else
+            timeout --foreground --signal=INT --kill-after=15s 720s node scripts/ash-a11-predeployment-cache-probe.mjs
+          fi
       - name: Stop bounded local runtime
         if: always()
         run: test -f artifacts/ash-a11-predeployment-server.pid && kill "$(cat artifacts/ash-a11-predeployment-server.pid)" || true
