@@ -43,7 +43,7 @@ async function openKeep() {
 }
 
 const report = {
-  schema:'td613.ash.reviewability-browser/v0.6-canonical-title-clearance',
+  schema:'td613.ash.reviewability-browser/v0.7-post-refresh-title-ownership',
   browser:browserName,
   status:'RUNNING',
   errors,
@@ -93,7 +93,19 @@ try {
   await page.waitForFunction(() => document.getElementById('ashAiaTitle')?.textContent?.trim() === 'Your case path'
     && document.querySelector('#ashAiaMembrane .ash-aia__posture')?.textContent?.trim() === 'See what stays local, what may change, and where a human decision is still required.'
     && document.querySelector('#ashDemoPedagogyLedger h3')?.textContent?.trim() === 'Preserve before alleging.');
-  await page.evaluate(() => window.__td613AshReviewability.refresh());
+  await page.evaluate(async () => {
+    window.__td613AshDemoRegistry?.reconcile?.();
+    window.__td613AshReviewability?.refresh?.();
+    await new Promise(resolve => requestAnimationFrame(() => requestAnimationFrame(resolve)));
+  });
+  await page.waitForFunction(() => {
+    const registry = window.__td613AshDemoRegistry?.snapshot?.();
+    return registry?.control_owner === 'ASH_DEMO_REGISTRY'
+      && document.documentElement.dataset.ashDemoControlOwner === 'ASH_DEMO_REGISTRY'
+      && document.getElementById('ashAiaTitle')?.textContent?.trim() === 'Your case path'
+      && document.querySelector('#ashAiaMembrane .ash-aia__posture')?.textContent?.trim() === 'See what stays local, what may change, and where a human decision is still required.'
+      && document.querySelector('#ashDemoPedagogyLedger h3')?.textContent?.trim() === 'Preserve before alleging.';
+  }, null, { timeout:120_000 });
 
   const activeCase = await page.evaluate(() => {
     const work = document.querySelector('#ashAiaMembrane .ash-aia__work');
