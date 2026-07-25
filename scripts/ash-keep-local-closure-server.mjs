@@ -9,7 +9,7 @@ const here = path.dirname(fileURLToPath(import.meta.url));
 const repoRoot = path.resolve(here, '..');
 const port = Number(process.argv[2] || process.env.PORT || 6130);
 
-await import('./prepare-ash-profile-closure-fixture.mjs');
+await import('./prepare-ash-profile-closure-fixture-a13.mjs');
 await import('./prepare-ash-premium-closure-fixture.mjs');
 await import('./prepare-ash-canonical-cache-closure-fixture.mjs');
 
@@ -147,7 +147,7 @@ self.addEventListener('fetch', event => {
     }
     res.writeHead(200, {
       'content-type': MIME_TYPES[extension] || 'application/octet-stream',
-      'cache-control': 'no-store',
+      'cache-control':'no-store',
       ...(url.pathname === '/dome-world/ash-keep.js' ? { 'x-td613-ash-map-scheduler': 'EVENT_DRIVEN_COALESCED' } : {})
     });
     if (req.method === 'HEAD') return res.end();
