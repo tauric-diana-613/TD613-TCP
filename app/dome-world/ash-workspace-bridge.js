@@ -17,8 +17,8 @@ import './ash-keep-mobile-composition.js?v=20260724-a12-release-v1';
 import './ash-mobile-constitutional-closure.js?v=20260724-a12-release-v1';
 import './ash-operation-coordinator.js?v=20260724-a12-release-v1';
 import './ash-case-feedback.js?v=20260724-a12-release-v1';
-// A13 installs one demo registry before dynamically admitting the bounded fixture owners beneath it.
-import './ash-profile-demo-hydration.js?v=20260724-a13-release-v1';
+// A14 retains one registry owner and promotes Archive through its bounded accession provider.
+import './ash-profile-demo-hydration.js?v=20260725-a14-release-v1';
 import './ash-premium-ui.js?v=20260724-a12-release-v1';
 import './ash-premium-readiness-bridge.js?v=20260724-a12-release-v1';
 import './ash-guided-operator-ui.js?v=20260724-a12-release-v1';
