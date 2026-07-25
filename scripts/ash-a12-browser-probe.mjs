@@ -53,6 +53,29 @@ async function settleWorkspace(page, workspace) {
   }, workspace, { timeout:120_000 });
 }
 
+async function activateInvestigationDemo(page) {
+  if (browserName !== 'webkit') {
+    await page.locator('#startDemo').click();
+    return;
+  }
+  await page.evaluate(() => {
+    const registry = window.__td613AshDemoRegistry;
+    registry?.reconcile?.();
+    const profile = document.getElementById('newProfile');
+    const button = document.getElementById('startDemo');
+    const snapshot = registry?.snapshot?.() || null;
+    const ready = profile?.value === 'investigation'
+      && snapshot?.control_owner === 'ASH_DEMO_REGISTRY'
+      && document.documentElement.dataset.ashDemoControlOwner === 'ASH_DEMO_REGISTRY'
+      && button?.dataset.ashDemoRegistryOwner === 'td613.ash.demo-registry/v0.1-a13'
+      && button?.dataset.ashMethodDemoState === 'READY'
+      && button.disabled === false
+      && !button.matches(':disabled');
+    if (!ready) throw new Error('WebKit A12 registry-owned demo control was not atomically actionable.');
+    button.click();
+  });
+}
+
 async function enterInvestigation(page) {
   await page.goto(baseUrl + '/dome-world/ash-keep.html', { waitUntil:'domcontentloaded', timeout:90_000 });
   await page.waitForFunction(() => Boolean(window.__td613AshKeep?.version)
@@ -73,7 +96,7 @@ async function enterInvestigation(page) {
       && button?.dataset.ashMethodDemoState === 'READY'
       && button.disabled === false;
   }, null, { timeout:120_000 });
-  await page.locator('#startDemo').click();
+  await activateInvestigationDemo(page);
   await page.waitForFunction(() => document.documentElement.dataset.ashPremiumWorkspace === 'home'
     && document.documentElement.dataset.ashA12CommandAudit === 'PASS'
     && window.__td613AshDemoRegistry?.snapshot?.().control_owner === 'ASH_DEMO_REGISTRY', null, { timeout:120_000 });
@@ -156,7 +179,7 @@ try {
   const mobile = await browser.newContext(mobileOptions);
   receipts.push({ mode:'mobile-reduced-motion', ...(await inspect(await mobile.newPage(), 'mobile-reduced-motion')) });
   await mobile.close();
-  await fs.writeFile(path.join(artifactDir, browserName + '-a12-receipt.json'), JSON.stringify({ schema:'td613.ash.a12-browser-witness/v0.4-a13-owner-settled-commands', browser:browserName, receipts, authority_changed:false, source_bytes_moved:false, case_data_preserved:true, profile_inferred:false, human_closure_required:true }, null, 2));
+  await fs.writeFile(path.join(artifactDir, browserName + '-a12-receipt.json'), JSON.stringify({ schema:'td613.ash.a12-browser-witness/v0.5-webkit-atomic-registry-activation', browser:browserName, receipts, authority_changed:false, source_bytes_moved:false, case_data_preserved:true, profile_inferred:false, human_closure_required:true }, null, 2));
 } catch (error) {
   await fs.writeFile(path.join(artifactDir, browserName + '-a12-failure.json'), JSON.stringify({ error:String(error?.stack || error) }, null, 2));
   throw error;
