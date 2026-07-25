@@ -40,7 +40,7 @@ assert.match(convergenceRunner, /dataset\.ashDemoRegistry === 'td613\.ash\.demo-
 assert.match(convergenceRunner, /demo_entry_convergence_deferred_until_case_hydration: true/);
 assert.match(convergenceRunner, /demo_entry_api_ready_after_hydration: true/);
 assert.match(convergenceRunner, /convergenceApi\?\.version/);
-assert.match(convergenceRunner, /window\.__td613AshProfileDemos\?\.profiles\?\.includes/);
+assert.match(convergenceRunner, /window\.__td613AshDemoRegistry\.reconcile\(\)/);
 assert.match(convergenceRunner, /explicit profile and deferred entry-readiness gate was not materialized/);
 assert.doesNotMatch(convergenceRunner,
   /dataset\.ashConvergence\?\.includes\('constitutional-convergence'\)[\s\S]*window\.__td613AshDemoEntryConvergence\?\.version, null, \{ timeout: 60000 \}\);/,
