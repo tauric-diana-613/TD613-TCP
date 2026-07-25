@@ -1,6 +1,7 @@
 import fs from 'node:fs/promises';
 import path from 'node:path';
-import { pathToFileURL } from 'node:url';
+import { spawnSync } from 'node:child_process';
+import { fileURLToPath, pathToFileURL } from 'node:url';
 
 const wrapperUrl = new URL('./run-ash-constitutional-convergence-probe.mjs', import.meta.url);
 const runtimeUrl = new URL('./run-ash-constitutional-convergence-probe.handshake.runtime.mjs', import.meta.url);
@@ -185,6 +186,12 @@ const finiteExclusionGuard = `if (!runtime.includes('Cross-tab lock witness exce
 
 `;
 
+const scopedCloseReplacement = `const closeReplacement = \`  {
+    await page.locator('#closeCase').click();
+    const closeConfirmation = page.getByRole('button', { name:/Confirm this exact gesture/i });
+    if (await closeConfirmation.isVisible().catch(() => false)) await closeConfirmation.click();
+  }\`;`;
+
 const pageCreationTarget = 'const page = await context.newPage();';
 const pageCreationReplacement = `${pageCreationTarget}
 page.setDefaultTimeout(45000);
@@ -196,7 +203,7 @@ const checkpoint = async label => {
     label,
     observed_at:new Date().toISOString(),
     promotion_authorized:false
-  }, null, 2) + '\n');
+  }, null, 2) + '\\n');
 };`;
 
 const checkpoints = [
@@ -226,7 +233,10 @@ const runtimeWriteReplacement = [
   "  diagnosticRuntime = diagnosticRuntime.slice(0, first) + '  await checkpoint(' + JSON.stringify(label) + ');\\n' + target + diagnosticRuntime.slice(first + target.length);",
   "}",
   "if (!diagnosticRuntime.includes('page.setDefaultTimeout(45000)') || !diagnosticRuntime.includes('convergence-checkpoint.json') || !diagnosticRuntime.includes('await checkpoint(\"MULTI_TAB_START\")')) throw new Error('Convergence observer finite diagnostics were not materialized.');",
-  "await fs.writeFile(runtimePath, diagnosticRuntime, 'utf8');"
+  "await fs.writeFile(runtimePath, diagnosticRuntime, 'utf8');",
+  "const { spawnSync } = await import('node:child_process');",
+  "const observerSyntax = spawnSync(process.execPath, ['--check', runtimePath], { encoding:'utf8' });",
+  "if (observerSyntax.status !== 0) throw new Error('Convergence final observer failed syntax validation.\\n' + (observerSyntax.stderr || observerSyntax.stdout || ''));"
 ].join('\n');
 
 await fs.mkdir(artifactDir, { recursive:true });
@@ -235,6 +245,12 @@ try {
   const wrapperSource = await fs.readFile(wrapperUrl, 'utf8');
   runtimeWrapper = replaceUniquePattern(
     wrapperSource,
+    /const closeReplacement\s*=\s*`[\s\S]*?`;\s*(?=const source\s*=\s*await fs\.readFile)/,
+    scopedCloseReplacement,
+    'SCOPED_CLOSE_CONFIRMATION'
+  );
+  runtimeWrapper = replaceUniquePattern(
+    runtimeWrapper,
     /const lockWaitTarget\s*=\s*`[\s\S]*?`;\s*const lockWaitReplacement\s*=\s*`[\s\S]*?`;\s*(?=const localKeysTarget\s*=)/,
     replacementDefinitions,
     'LOCK_DEFINITIONS'
@@ -270,7 +286,10 @@ try {
     "state:'STARTED'",
     'let diagnosticRuntime = runtime;',
     'convergence-checkpoint.json',
-    'page.setDefaultTimeout(45000)'
+    'page.setDefaultTimeout(45000)',
+    "const closeReplacement = `  {",
+    "spawnSync(process.execPath, ['--check', runtimePath]",
+    'Convergence final observer failed syntax validation.'
   ]) {
     if (!runtimeWrapper.includes(token)) {
       throw new Error(`Convergence semantic materializer omitted required token: ${token}`);
@@ -281,10 +300,16 @@ try {
   }
 
   await fs.writeFile(runtimeUrl, runtimeWrapper, 'utf8');
+  const wrapperSyntax = spawnSync(process.execPath, ['--check', fileURLToPath(runtimeUrl)], { encoding:'utf8' });
+  if (wrapperSyntax.status !== 0) {
+    throw new Error('Convergence generated wrapper failed syntax validation.\n' + (wrapperSyntax.stderr || wrapperSyntax.stdout || ''));
+  }
   await fs.writeFile(path.join(artifactDir, 'convergence-worker-materialization.json'), `${JSON.stringify({
-    schema:'td613.ash.constitutional-convergence-worker-materialization/v0.2-semantic-seams',
+    schema:'td613.ash.constitutional-convergence-worker-materialization/v0.3-parse-gated-semantic-seams',
     status:'PASS',
     seams:materializedSeams,
+    generated_wrapper_syntax:'PASS',
+    final_observer_syntax_gate_materialized:true,
     runtime_write_accepts_optional_encoding_argument:true,
     whole_source_literal_replacement:false,
     product_runtime_mutated:false,
@@ -295,10 +320,12 @@ try {
   }, null, 2)}\n`);
 } catch (error) {
   await fs.writeFile(path.join(artifactDir, 'convergence-worker-materialization.json'), `${JSON.stringify({
-    schema:'td613.ash.constitutional-convergence-worker-materialization/v0.2-semantic-seams',
+    schema:'td613.ash.constitutional-convergence-worker-materialization/v0.3-parse-gated-semantic-seams',
     status:'HOLD_FOR_REPAIR',
     error:String(error?.stack || error),
     seams:materializedSeams,
+    generated_wrapper_syntax:'HOLD',
+    final_observer_syntax_gate_materialized:true,
     product_runtime_mutated:false,
     authority_changed:false,
     source_bytes_moved:false,
