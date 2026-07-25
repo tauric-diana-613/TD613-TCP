@@ -54,22 +54,36 @@ const ingressReadinessEnd = String.raw`  });
 
   const ingressDesktop =`;
 const ingressReadinessReplacement = String.raw`  await page.waitForFunction(() => {
+    const registry = window.__td613AshDemoRegistry?.snapshot?.();
     const visible = document.querySelector('.ash-flowcore-field:not([hidden])');
     return window.__td613AshFlowcoreField?.current?.().artifact_required === false
       && window.__td613AshPostIngressMotionRestoration?.version
+      && window.__td613AshDemoRegistry?.version === 'td613.ash.demo-registry/v0.1-a13'
+      && registry?.control_owner === 'ASH_DEMO_REGISTRY'
+      && document.documentElement.dataset.ashDemoControlOwner === 'ASH_DEMO_REGISTRY'
+      && document.documentElement.dataset.ashDemoRegistry === 'td613.ash.demo-registry/v0.1-a13'
+      && document.getElementById('newProfile')?.value === 'investigation'
       && document.documentElement.dataset.ashCompositionStable
       && document.getElementById('launch')
       && visible?.parentElement?.id === 'guidedLaunchPromise'
       && visible.getBoundingClientRect().height > 260;
   });
   await page.evaluate(() => {
+    window.__td613AshDemoRegistry?.reconcile?.();
+    window.__td613AshPostIngressMotionRestoration?.refresh?.();
     window.__td613AshIngressCopySpacing?.refresh?.();
     window.__td613AshFlowcoreIngressPortal?.refresh?.();
   });
   await page.waitForFunction(() => {
+    const registry = window.__td613AshDemoRegistry?.snapshot?.();
+    const portal = window.__td613AshFlowcoreIngressPortal?.current?.();
     const visible = document.querySelector('.ash-flowcore-field:not([hidden])');
-    // Portal receipts are asserted immediately after rendered readiness.
-    return window.__td613AshIngressCopySpacing?.measure?.().available
+    // Registry ownership precedes the refreshed portal and canonical Play receipt.
+    return registry?.control_owner === 'ASH_DEMO_REGISTRY'
+      && document.documentElement.dataset.ashDemoControlOwner === 'ASH_DEMO_REGISTRY'
+      && portal?.visible_host === 'INGRESS'
+      && portal?.duplicate_visible_fields === 1
+      && window.__td613AshIngressCopySpacing?.measure?.().available
       && visible?.querySelectorAll('[data-aia-play]').length === 1
       && !visible.querySelector('[data-flowcore-ingress-play]');
   });
@@ -150,14 +164,18 @@ if (motionCount !== 1) throw new Error(`Flow-Core witness expected one post-even
 if (mobileParityCount !== 1) throw new Error(`Flow-Core witness expected one legacy mobile list-count seam; observed ${mobileParityCount}.`);
 
 let runtime = source.replace(listenerTarget, listenerReplacement);
-runtime = replaceBoundedExactlyOnce(runtime, ingressReadinessStart, ingressReadinessEnd, ingressReadinessReplacement, 'portal-gated ingress readiness');
+runtime = replaceBoundedExactlyOnce(runtime, ingressReadinessStart, ingressReadinessEnd, ingressReadinessReplacement, 'registry-owned portal-gated ingress readiness');
 runtime = runtime
   .replace(motionTarget, motionReplacement)
   .replace(mobileParityTarget, mobileParityReplacement)
-  .replace('v0.7-atomic-name-receipt', 'v0.10-refreshed-ingress-receipt-owners');
+  .replace('v0.7-atomic-name-receipt', 'v0.11-registry-owned-ingress-receipt-owners');
 
 if (!runtime.includes('dom_phase:field?.dataset.flowcorePhaseName')) throw new Error('Flow-Core emitted DOM-phase receipt was not materialized.');
-if (!runtime.includes('Portal receipts are asserted immediately after rendered readiness.')) throw new Error('Flow-Core rendered ingress readiness was not materialized.');
+if (!runtime.includes('Registry ownership precedes the refreshed portal and canonical Play receipt.')) throw new Error('Flow-Core registry-owned ingress readiness was not materialized.');
+if (!runtime.includes("window.__td613AshDemoRegistry?.version === 'td613.ash.demo-registry/v0.1-a13'")) throw new Error('Flow-Core A13 registry version gate was not materialized.');
+if (!runtime.includes("registry?.control_owner === 'ASH_DEMO_REGISTRY'")) throw new Error('Flow-Core registry owner gate was not materialized.');
+if (!runtime.includes("document.documentElement.dataset.ashDemoControlOwner === 'ASH_DEMO_REGISTRY'")) throw new Error('Flow-Core DOM registry owner gate was not materialized.');
+if (!runtime.includes('window.__td613AshDemoRegistry?.reconcile?.()')) throw new Error('Flow-Core registry reconciliation was not materialized.');
 if (!runtime.includes('window.__td613AshIngressCopySpacing?.refresh?.()')) throw new Error('Flow-Core ingress spacing receipt refresh was not materialized.');
 if (!runtime.includes('window.__td613AshFlowcoreIngressPortal?.refresh?.()')) throw new Error('Flow-Core ingress portal receipt refresh was not materialized.');
 if (!runtime.includes('motion:item.motion')) throw new Error('Flow-Core emitted motion receipt was not materialized.');
