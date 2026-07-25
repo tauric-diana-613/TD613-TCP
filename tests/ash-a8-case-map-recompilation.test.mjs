@@ -18,6 +18,9 @@ for (const id of ['objectName','objectType','objectRoom','objectSource','addObje
 for (const token of ['function delegateLegacyAction(id)','td613:ash-keep:action-held','delegateLegacyAction(\'addObject\')','delegateLegacyAction(\'addRelationship\')','data-ash-a8-inspect-relation','ashA8RelationDetail','source_bytes_moved:false','authority_changed:false']) assert.ok(source.includes(token), `A8 source missing ${token}`);
 assert.match(source, /control\.dispatchEvent\(new MouseEvent\('click'/);
 assert.match(source, /notes\.dispatchEvent\(new Event\('change'/);
+assert.match(source, /const objectRestored = restoreDraftGroup\(objectDraft\);[\s\S]*?const relationRestored = restoreDraftGroup\(relationDraft\);[\s\S]*?const restored = objectRestored \|\| relationRestored;/);
+assert.match(source, /for \(const type of \['case-created','case-closed'\]\)/);
+assert.doesNotMatch(source, /\['case-created','case-closed','profile-demo-hydrated'\]/);
 assert.doesNotMatch(source, /byId\('addObject'\)\?\.click\(\)|byId\('addRelationship'\)\?\.click\(\)|indexedDB\.(?:open|deleteDatabase)|fetch\s*\(|localStorage\.(?:setItem|removeItem|clear)|new\s+(?:Worker|SharedWorker)/);
 
 for (const token of ['function captureStageDrafts()','function restoreStageDrafts(draft)','.ash-stage-form input[id]','const draft = captureStageDrafts()','const draftRestored = restoreStageDrafts(draft)','draft_restored:draftRestored','active.focus?.({ preventScroll:true })']) assert.ok(core.includes(token), `A8 core missing ${token}`);
@@ -36,4 +39,4 @@ assert.match(html, /ash-a8-case-map-recompilation\.js/);
 assert.equal(html, mirror, 'Ash source mirror must remain byte-identical');
 assert.equal(vercel.git?.deploymentEnabled, false);
 
-console.log(JSON.stringify({ok:true,schema:'td613.ash.a8-case-map-contract/v0.1',existing_map_engine_delegation:true,stage_form_draft_preservation:true,explicit_cross_tab_handshake:true,external_process_watchdog:true,authority_changed:false,source_bytes_moved:false,human_closure_required:true,vercel_gate:'CLOSED'}, null, 2));
+console.log(JSON.stringify({ok:true,schema:'td613.ash.a8-case-map-contract/v0.2-held-draft-durability',existing_map_engine_delegation:true,stage_form_draft_preservation:true,delayed_profile_hydration_cannot_clear_active_draft:true,object_and_relation_drafts_restore_independently:true,explicit_cross_tab_handshake:true,external_process_watchdog:true,authority_changed:false,source_bytes_moved:false,human_closure_required:true,vercel_gate:'CLOSED'}, null, 2));
