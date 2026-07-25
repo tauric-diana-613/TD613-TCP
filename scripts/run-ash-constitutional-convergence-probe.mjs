@@ -354,5 +354,8 @@ if (!runtime.includes('profile_demo_registry_deferred_until_selection: true')
 if (!runtime.includes("open('test')") || !runtime.includes("open('map')") || runtime.includes("page.locator('[data-workspace=\"test\"]').click()")) {
   throw new Error('Convergence observer guided workspace migration was not materialized.');
 }
+if (!runtime.includes('Cross-tab lock witness exceeded 35000ms.')) {
+  throw new Error('Convergence observer bounded cross-tab join was not materialized.');
+}
 await fs.writeFile(runtimePath, runtime, 'utf8');
 await import(`${pathToFileURL(runtimePath).href}?runtime=${Date.now()}`);
