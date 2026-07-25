@@ -107,14 +107,25 @@ const motionTarget = String.raw`  const activeMotionHandle = await page.waitForF
   });
   const activeMotion = await activeMotionHandle.jsonValue();`;
 
-const motionReplacement = String.raw`  await page.waitForFunction(() => window.__ashFlowcorePhaseTrace.some(item => item.phase_name === 'NAME'
+const motionReplacement = String.raw`  const atomicNameReceipt = item => item.phase_name === 'NAME'
+    && item.dom_phase === 'NAME'
+    && item.playing === true
+    && /NAME/.test(item.phase_label)
+    && item.canvas_visible === true
+    && item.rail_visible === true;
+  await page.waitForFunction(() => window.__ashFlowcorePhaseTrace.some(item => item.phase_name === 'NAME'
     && item.dom_phase === 'NAME'
     && item.playing === true
     && /NAME/.test(item.phase_label)
     && item.canvas_visible === true
     && item.rail_visible === true));
   const activeMotion = await page.evaluate(() => {
-    const item = [...window.__ashFlowcorePhaseTrace].reverse().find(entry => entry.phase_name === 'NAME');
+    const item = [...window.__ashFlowcorePhaseTrace].reverse().find(entry => entry.phase_name === 'NAME'
+      && entry.dom_phase === 'NAME'
+      && entry.playing === true
+      && /NAME/.test(entry.phase_label)
+      && entry.canvas_visible === true
+      && entry.rail_visible === true);
     if (!item) return null;
     return {
       phase:item.phase_name,
@@ -164,7 +175,7 @@ runtime = replaceBoundedExactlyOnce(runtime, ingressReadinessStart, ingressReadi
 runtime = runtime
   .replace(motionTarget, motionReplacement)
   .replace(mobileParityTarget, mobileParityReplacement)
-  .replace('v0.7-atomic-name-receipt', 'v0.12-registry-reconciled-ingress-receipt-owners');
+  .replace('v0.7-atomic-name-receipt', 'v0.13-registry-reconciled-atomic-name-receipt');
 
 if (!runtime.includes('dom_phase:field?.dataset.flowcorePhaseName')) throw new Error('Flow-Core emitted DOM-phase receipt was not materialized.');
 if (!runtime.includes('Registry reconciliation precedes ownership, portal, and canonical Play assertions.')) throw new Error('Flow-Core registry-reconciled ingress readiness was not materialized.');
@@ -174,6 +185,7 @@ if (!runtime.includes("document.documentElement.dataset.ashDemoControlOwner === 
 if (!runtime.includes('window.__td613AshDemoRegistry?.reconcile?.()')) throw new Error('Flow-Core registry reconciliation was not materialized.');
 if (!runtime.includes('window.__td613AshIngressCopySpacing?.refresh?.()')) throw new Error('Flow-Core ingress spacing receipt refresh was not materialized.');
 if (!runtime.includes('window.__td613AshFlowcoreIngressPortal?.refresh?.()')) throw new Error('Flow-Core ingress portal receipt refresh was not materialized.');
+if (!runtime.includes("entry.dom_phase === 'NAME'")) throw new Error('Flow-Core atomic NAME receipt selection was not materialized.');
 if (!runtime.includes('motion:item.motion')) throw new Error('Flow-Core emitted motion receipt was not materialized.');
 if (!runtime.includes('mobileStaticTruth.isVisible()')) throw new Error('Flow-Core mobile static-truth parity was not materialized.');
 if (runtime.includes('activeMotionHandle')) throw new Error('Flow-Core witness retained post-event NAME sampling.');
