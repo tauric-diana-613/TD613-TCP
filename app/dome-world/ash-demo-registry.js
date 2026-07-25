@@ -1,5 +1,5 @@
-export const ASH_DEMO_REGISTRY_VERSION = 'td613.ash.demo-registry/v0.1-a13';
-export const ASH_DEMO_ASSET_EPOCH = '20260724-a13-release-v1';
+export const ASH_DEMO_REGISTRY_VERSION = 'td613.ash.demo-registry/v0.2-a14';
+export const ASH_DEMO_ASSET_EPOCH = '20260725-a14-release-v1';
 
 const host = globalThis.window;
 const doc = globalThis.document;
@@ -21,27 +21,33 @@ const BASE_ENTRIES = Object.freeze({
   fundraiser:Object.freeze({ profile:'fundraiser', label:'Fundraiser', status:'PROMOTED', owner:'APEQ_PAIA', entry_workspace:'work' }),
   research:Object.freeze({ profile:'research', label:'Research Project', status:'PROMOTED', owner:'RESEARCH', entry_workspace:'map' }),
   legal:Object.freeze({ profile:'legal', label:'Legal Matter', status:'PROMOTED', owner:'LEGAL', entry_workspace:'home' }),
-  archive:Object.freeze({ profile:'archive', label:'Archive', status:'RESERVED_FOR_A14', owner:'A14', entry_workspace:'map' })
+  archive:Object.freeze({ profile:'archive', label:'Archive', status:'PROMOTED', owner:'ARCHIVE', entry_workspace:'map' })
 });
 
 const archiveManifest = Object.freeze({
   profile:'archive',
   label:'Archive',
   title:'Preserve lineage before granting access.',
-  consequence:'The A14 seat is named without inventing an accession fixture, access copy, restriction, or transfer receipt.',
-  stress_question:'Can the registry preserve a canonical place for Archive without presenting unfinished hydration as evidence?',
+  consequence:'Ash stages a synthetic accession, provenance gaps, restriction uncertainty, embargo review, derivatives, access copies, and delayed transfer without granting access or release authority.',
+  stress_question:'Can a synthetic archive remain useful while originals, restrictions, access approval, declassification, publication, and transfer stay human-governed?',
   entry_workspace:'map',
-  task_spine:Object.freeze([]),
+  task_spine:Object.freeze([
+    Object.freeze({ label:'Define accession scope', detail:'Separate the accession offer, inventory, and unenumerated folders.', workspace:'home' }),
+    Object.freeze({ label:'Preserve provenance', detail:'Map custody roots, chain-of-custody records, and unresolved dates.', workspace:'map' }),
+    Object.freeze({ label:'Review restrictions', detail:'Keep donor restrictions, third-party rights, and embargo decisions human-interpreted.', workspace:'work' }),
+    Object.freeze({ label:'Prepare bounded derivatives', detail:'Distinguish preservation master, redaction plan, and access copy without granting access.', workspace:'choir' }),
+    Object.freeze({ label:'Hold transfer', detail:'Prepare a manifest while destination, recipient, and release authority remain absent.', workspace:'capsule' })
+  ]),
   active_workspaces:Object.freeze(['home','map','work','choir','capsule']),
   destination_copy:Object.freeze({
-    home:'Archive orientation remains held until A14 authors the synthetic accession fixture.',
-    map:'The future accession and provenance map has a named home but no fabricated records.',
-    work:'No archive review queue is hydrated before A14.',
-    choir:'No archive comparison pair is staged before A14.',
-    capsule:'No access copy or transfer preparation is implied before A14.'
+    home:'Read the accession scope, missing inventory, and current custodial posture.',
+    map:'Inspect provenance, restrictions, embargo clocks, derivatives, access copies, and transfer holds.',
+    work:'Review unresolved rights, access approval, redaction, and destination tasks.',
+    choir:'Compare preservation-master, restricted-copy, and public-derivative routes without treating any as released.',
+    capsule:'Preserve continuity and delayed-transfer preparation without export or custody transfer.'
   }),
-  keep_quiet:'No accession data, donor restriction, public derivative, embargo, custody root, or transfer receipt is fabricated.',
-  claim_ceiling:'Registry seat only. No Archive fixture, access authority, release authority, or transfer authority.'
+  keep_quiet:'Original contents, donor-restriction text, third-party rights records, access approvals, destination credentials, passphrases, provider output, and release approval stay local or dormant.',
+  claim_ceiling:'Synthetic accession only; no access grant, release, declassification, publication, or transfer authority.'
 });
 
 let ownersPromise = null;
@@ -81,7 +87,7 @@ function ensureOptions() {
       option.value = profile;
       select.append(option);
     }
-    option.textContent = spec.status === 'RESERVED_FOR_A14' ? `${spec.label} · arrives in A14` : spec.label;
+    option.textContent = spec.label;
   }
   return select;
 }
@@ -125,7 +131,7 @@ function normalizeEntry(base, fixture, manifest, hydrate, build) {
     claim_ceiling:claimCeiling,
     missingness:Object.freeze([...(missingness || [])]),
     alternatives:Object.freeze([...(alternatives || [])]),
-    deterministic_test_journey:`ash-a13-demo-registry:${profile}`,
+    deterministic_test_journey:`ash-a14-demo-registry:${profile}`,
     static_parity:true,
     reduced_motion_parity:true,
     automatic_consequential_action:false
@@ -138,8 +144,9 @@ async function loadOwners() {
     import(`./ash-apeq-paia-profile-demos.js?v=${ASH_DEMO_ASSET_EPOCH}`),
     import(`./ash-research-demo-hydration.js?v=${ASH_DEMO_ASSET_EPOCH}`),
     import(`./ash-legal-profile-demo.js?v=${ASH_DEMO_ASSET_EPOCH}`),
+    import(`./ash-archive-profile-demo.js?v=${ASH_DEMO_ASSET_EPOCH}`),
     import(`./ash-demo-pedagogy-rehydration.js?v=${ASH_DEMO_ASSET_EPOCH}`)
-  ]).then(([apeq, research, legal, pedagogy]) => {
+  ]).then(([apeq, research, legal, archive, pedagogy]) => {
     const manifests = pedagogy.ASH_DEMO_PEDAGOGY_MANIFESTS || {};
     const entries = {};
     for (const profile of ['investigation','political_campaign','fundraiser']) {
@@ -162,33 +169,19 @@ async function loadOwners() {
       () => legal.hydrateLegalMatterDemo(),
       () => legal.buildLegalMatterDemoFixture()
     );
-    entries.archive = Object.freeze({
-      ...BASE_ENTRIES.archive,
-      promoted:false,
-      fixture:null,
-      build:null,
-      hydrate:null,
-      pedagogy_manifest:archiveManifest,
-      workspace_scenes:archiveManifest.active_workspaces,
-      aia_routes:AIA_ROUTES,
-      channel_grammar:CHANNEL_GRAMMAR,
-      menu_home_mapping:Object.freeze({ home:'home', case_map:'map', work:'work', choir:'choir', capsule:'capsule' }),
-      inspection_contract:Object.freeze({ exact_state_available:false, compulsory:false, source_bytes_exposed:false }),
-      claim_ceiling:archiveManifest.claim_ceiling,
-      missingness:Object.freeze(['Archive fixture intentionally absent until A14.']),
-      alternatives:Object.freeze([]),
-      deterministic_test_journey:'ash-a13-demo-registry:archive-held',
-      static_parity:true,
-      reduced_motion_parity:true,
-      automatic_consequential_action:false
-    });
+    const archiveFixture = archive.buildArchiveDemoFixture();
+    entries.archive = normalizeEntry(
+      BASE_ENTRIES.archive, archiveFixture, archiveManifest,
+      () => archive.hydrateArchiveDemo(),
+      () => archive.buildArchiveDemoFixture()
+    );
     registryEntries = Object.freeze(entries);
     if (registryApi) {
       host.__td613AshDemoRegistry = registryApi;
       host.__td613AshProfileDemos = registryApi;
       doc.documentElement.dataset.ashDemoCompatibilityOwner = ASH_DEMO_REGISTRY_VERSION;
     }
-    doc.documentElement.dataset.ashDemoRegistryOwners = 'APEQ_PAIA,RESEARCH,LEGAL,A14_RESERVED';
+    doc.documentElement.dataset.ashDemoRegistryOwners = 'APEQ_PAIA,RESEARCH,LEGAL,ARCHIVE';
     host.dispatchEvent(new CustomEvent('td613:ash:demo-registry-ready', { detail:snapshot() }));
     scheduleReconcile();
     return registryEntries;
@@ -230,12 +223,9 @@ function setControlState(button, entry) {
   if (!entry) {
     button.textContent = 'Start a demo';
     button.title = 'Select one explicit workspace profile first.';
-  } else if (entry.status === 'RESERVED_FOR_A14') {
-    button.textContent = 'Archive demo arrives in A14';
-    button.title = 'The canonical Archive registry seat is held until A14 authors and validates its synthetic fixture.';
   } else {
     button.textContent = busy ? `Opening ${entry.label}…` : `Open ${entry.label} demo`;
-    button.title = `Hydrate the synthetic ${entry.label} fixture locally through the governed A13 registry.`;
+    button.title = `Hydrate the synthetic ${entry.label} fixture locally through the governed registry.`;
   }
 }
 
@@ -257,7 +247,6 @@ function reconcile() {
     }
     if (status && busyProfile == null) {
       if (!entry) status.innerHTML = '<strong>Select a profile first.</strong> Demo hydration remains held until the workspace context is explicit.';
-      else if (entry.status === 'RESERVED_FOR_A14') status.innerHTML = '<strong>Archive is named but held.</strong> A14 will supply the synthetic accession, provenance, restriction, access-copy, and delayed-transfer fixture.';
       else status.innerHTML = `<strong>${entry.label} demo available.</strong> One governed registry owns selection and hydration; fixture authority remains with its bounded domain provider.`;
     }
     doc.documentElement.dataset.ashDemoRegistryProfile = profile || 'NONE';
