@@ -15,24 +15,86 @@ const finiteLockGuard = `if (!runtime.includes('Cross-tab lock witness exceeded 
   throw new Error('Convergence observer bounded cross-tab join was not materialized.');
 }`;
 const wrapperWriteMarker = "await fs.mkdir(artifactDir, { recursive:true });";
+const staleCloseTarget = "const closeTarget = `    await page.locator('#closeCase').click();`;";
+const currentCloseTarget = "const closeTarget = `  await page.locator('#closeCase').click();`;";
+const releaseDefinitionsStart = '\nconst releaseTarget = ';
+const releaseDefinitionsEnd = "\n\nconst source = await fs.readFile(sourceUrl, 'utf8');";
+const releaseArrayEntry = '  [releaseTarget, releaseReplacement]\n';
+const replacementLoopTarget = `for (const [target, replacement] of replacements) {
+  if (!runtime.includes(target)) throw new Error(\`Ash convergence runtime target missing: \${target.slice(0, 80)}\`);
+  runtime = runtime.replace(target, replacement);
+}`;
+const replacementLoopReplacement = `for (const [target, replacement] of replacements) {
+  if (!runtime.includes(target)) throw new Error(\`Ash convergence runtime target missing: \${target.slice(0, 80)}\`);
+  runtime = target === closeTarget ? runtime.split(target).join(replacement) : runtime.replace(target, replacement);
+}`;
 
 await fs.mkdir(artifactDir, { recursive:true });
 let wrapperSource = await fs.readFile(wrapperPath, 'utf8');
+let wrapperChanged = false;
 let guardMaterialized = false;
+let closeTargetNormalized = false;
+let retiredReleaseTargetRemoved = false;
+let closeReplacementWidened = false;
+
 if (!wrapperSource.includes(finiteLockGuard)) {
   const markerIndex = wrapperSource.indexOf(wrapperWriteMarker);
   if (markerIndex < 0 || wrapperSource.indexOf(wrapperWriteMarker, markerIndex + wrapperWriteMarker.length) >= 0) {
     throw new Error('Convergence handshake preflight could not locate one wrapper write boundary.');
   }
   wrapperSource = wrapperSource.replace(wrapperWriteMarker, `${finiteLockGuard}\n\n${wrapperWriteMarker}`);
-  await fs.writeFile(wrapperPath, wrapperSource, 'utf8');
+  wrapperChanged = true;
   guardMaterialized = true;
 }
+
+if (wrapperSource.includes(staleCloseTarget)) {
+  wrapperSource = wrapperSource.replace(staleCloseTarget, currentCloseTarget);
+  wrapperChanged = true;
+  closeTargetNormalized = true;
+}
+
+const releaseStart = wrapperSource.indexOf(releaseDefinitionsStart);
+if (releaseStart >= 0) {
+  const releaseEnd = wrapperSource.indexOf(releaseDefinitionsEnd, releaseStart);
+  if (releaseEnd < 0) throw new Error('Convergence handshake preflight could not bound the retired release-capsule definition.');
+  wrapperSource = wrapperSource.slice(0, releaseStart) + wrapperSource.slice(releaseEnd);
+  wrapperChanged = true;
+  retiredReleaseTargetRemoved = true;
+}
+if (wrapperSource.includes(releaseArrayEntry)) {
+  wrapperSource = wrapperSource.replace(releaseArrayEntry, '');
+  wrapperChanged = true;
+  retiredReleaseTargetRemoved = true;
+}
+
+if (wrapperSource.includes(replacementLoopTarget)) {
+  wrapperSource = wrapperSource.replace(replacementLoopTarget, replacementLoopReplacement);
+  wrapperChanged = true;
+  closeReplacementWidened = true;
+}
+
+if (!wrapperSource.includes(currentCloseTarget)
+  || wrapperSource.includes(staleCloseTarget)
+  || wrapperSource.includes('const releaseTarget =')
+  || wrapperSource.includes('[releaseTarget, releaseReplacement]')) {
+  throw new Error('Convergence handshake preflight did not normalize the current close and retired release seams.');
+}
+if (!wrapperSource.includes(replacementLoopReplacement)) {
+  throw new Error('Convergence handshake preflight did not materialize all-close confirmation handling.');
+}
+
+if (wrapperChanged) await fs.writeFile(wrapperPath, wrapperSource, 'utf8');
 await fs.writeFile(path.join(artifactDir, 'convergence-materialization-preflight.json'), `${JSON.stringify({
-  schema:'td613.ash.constitutional-convergence-materialization/v0.1',
+  schema:'td613.ash.constitutional-convergence-materialization/v0.2-current-source-seams',
   status:'PASS',
   finite_lock_guard_present:true,
   guard_materialized_in_ephemeral_checkout:guardMaterialized,
+  current_close_target_present:true,
+  close_target_normalized_in_ephemeral_checkout:closeTargetNormalized,
+  all_close_confirmations_materialized:true,
+  close_replacement_widened_in_ephemeral_checkout:closeReplacementWidened,
+  retired_release_target_absent:true,
+  retired_release_target_removed_in_ephemeral_checkout:retiredReleaseTargetRemoved,
   product_runtime_mutated:false,
   authority_changed:false,
   source_bytes_moved:false,
