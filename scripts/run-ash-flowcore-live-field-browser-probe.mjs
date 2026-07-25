@@ -47,55 +47,62 @@ const listenerReplacement = String.raw`await page.addInitScript(() => {
 });`;
 
 const ingressReadinessTarget = String.raw`  await page.waitForFunction(() => {
-    const portal = window.__td613AshFlowcoreIngressPortal?.current?.();
-    const visible = document.querySelector('.ash-flowcore-field:not([hidden])');
-    return window.__td613AshFlowcoreField?.current?.().artifact_required === false
-      && window.__td613AshPostIngressMotionRestoration?.version
-      && window.__td613AshIngressCopySpacing?.measure?.().available
-      && document.documentElement.dataset.ashCompositionStable
-      && document.getElementById('launch')
-      && portal?.visible_host === 'INGRESS'
-      && portal?.duplicate_visible_fields === 1
-      && visible?.parentElement?.id === 'guidedLaunchPromise'
-      && visible.getBoundingClientRect().height > 260
-      && visible.querySelectorAll('[data-aia-play]').length === 1
-      && !visible.querySelector('[data-flowcore-ingress-play]');
-  });`;
+     const portal = window.__td613AshFlowcoreIngressPortal?.current?.();
+     const visible = document.querySelector('.ash-flowcore-field:not([hidden])');
+     return window.__td613AshFlowcoreField?.current?.().artifact_required === false
+       && window.__td613AshPostIngressMotionRestoration?.version
+       && window.__td613AshIngressCopySpacing?.measure?.().available
+       && document.documentElement.dataset.ashCompositionStable
+       && document.getElementById('launch')
+       && portal?.visible_host === 'INGRESS'
+       && portal?.duplicate_visible_fields === 1
+       && visible?.parentElement?.id === 'guidedLaunchPromise'
+       && visible.getBoundingClientRect().height > 260
+       && visible.querySelectorAll('[data-aia-play]').length === 1
+       && !visible.querySelector('[data-flowcore-ingress-play]');
+   });`;
 
 const ingressReadinessReplacement = String.raw`  await page.waitForFunction(() => {
     const visible = document.querySelector('.ash-flowcore-field:not([hidden])');
-    // Portal receipts are asserted immediately after rendered readiness.
     return window.__td613AshFlowcoreField?.current?.().artifact_required === false
       && window.__td613AshPostIngressMotionRestoration?.version
-      && window.__td613AshIngressCopySpacing?.measure?.().available
       && document.documentElement.dataset.ashCompositionStable
       && document.getElementById('launch')
       && visible?.parentElement?.id === 'guidedLaunchPromise'
-      && visible.getBoundingClientRect().height > 260
-      && visible.querySelectorAll('[data-aia-play]').length === 1
+      && visible.getBoundingClientRect().height > 260;
+  });
+  await page.evaluate(() => {
+    window.__td613AshIngressCopySpacing?.refresh?.();
+    window.__td613AshFlowcoreIngressPortal?.refresh?.();
+  });
+  await page.waitForFunction(() => {
+    const visible = document.querySelector('.ash-flowcore-field:not([hidden])');
+    // Portal receipts are asserted immediately after rendered readiness.
+    return window.__td613AshIngressCopySpacing?.measure?.().available
+      && visible?.querySelectorAll('[data-aia-play]').length === 1
       && !visible.querySelector('[data-flowcore-ingress-play]');
   });`;
 
 const motionTarget = String.raw`  const activeMotionHandle = await page.waitForFunction(() => {
-    if (document.documentElement.dataset.ashFlowcorePhase !== 'NAME') return false;
-    const field = document.querySelector('.ash-flowcore-field:not([hidden])');
-    const rail = document.querySelector('#ashAiaMembrane .ash-ux-motion-track');
-    const canvas = field?.querySelector('.ash-flowcore-field__canvas');
-    const phaseLabel = field?.querySelector('[data-flowcore-phase-label]')?.textContent || '';
-    const canvasVisible = Boolean(canvas && getComputedStyle(canvas).display !== 'none' && canvas.getBoundingClientRect().height > 0);
-    const railVisible = Boolean(rail && getComputedStyle(rail).display !== 'none' && rail.getBoundingClientRect().height > 0);
-    if (field?.dataset.flowcorePhaseName !== 'NAME' || field?.dataset.flowcorePlaying !== 'true' || !/NAME/.test(phaseLabel) || !canvasVisible || !railVisible) return false;
-    return {
-      phase:document.documentElement.dataset.ashFlowcorePhase,
-      field_phase:field.dataset.flowcorePhaseName,
-      field_playing:true,
-      phase_label:phaseLabel,
-      canvas_visible:canvasVisible,
-      rail_visible:railVisible,
-      motion:window.__td613AshPostIngressMotionRestoration.current()
-    };
-  });
-  const activeMotion = await activeMotionHandle.jsonValue();`;
+     if (document.documentElement.dataset.ashFlowcorePhase !== 'NAME') return false;
+     const field = document.querySelector('.ash-flowcore-field:not([hidden])');
+     const rail = document.querySelector('#ashAiaMembrane .ash-ux-motion-track');
+     const canvas = field?.querySelector('.ash-flowcore-field__canvas');
+     const phaseLabel = field?.querySelector('[data-flowcore-phase-label]')?.textContent || '';
+     const canvasVisible = Boolean(canvas && getComputedStyle(canvas).display !== 'none' && canvas.getBoundingClientRect().height > 0);
+     const railVisible = Boolean(rail && getComputedStyle(rail).display !== 'none' && rail.getBoundingClientRect().height > 0);
+     if (field?.dataset.flowcorePhaseName !== 'NAME' || field?.dataset.flowcorePlaying !== 'true' || !/NAME/.test(phaseLabel) || !canvasVisible || !railVisible) return false;
+     return {
+       phase:document.documentElement.dataset.ashFlowcorePhase,
+       field_phase:field.dataset.flowcorePhaseName,
+       field_playing:true,
+       phase_label:phaseLabel,
+       canvas_visible:canvasVisible,
+       rail_visible:railVisible,
+       motion:window.__td613AshPostIngressMotionRestoration.current()
+     };
+   });
+   const activeMotion = await activeMotionHandle.jsonValue();`;
 
 const motionReplacement = String.raw`  await page.waitForFunction(() => window.__ashFlowcorePhaseTrace.some(item => item.phase_name === 'NAME'
     && item.dom_phase === 'NAME'
@@ -144,10 +151,12 @@ const runtime = source
   .replace(ingressReadinessTarget, ingressReadinessReplacement)
   .replace(motionTarget, motionReplacement)
   .replace(mobileParityTarget, mobileParityReplacement)
-  .replace('v0.7-atomic-name-receipt', 'v0.9-emitted-presentation-static-parity');
+  .replace('v0.7-atomic-name-receipt', 'v0.10-refreshed-ingress-receipt-owners');
 
 if (!runtime.includes('dom_phase:field?.dataset.flowcorePhaseName')) throw new Error('Flow-Core emitted DOM-phase receipt was not materialized.');
 if (!runtime.includes('Portal receipts are asserted immediately after rendered readiness.')) throw new Error('Flow-Core rendered ingress readiness was not materialized.');
+if (!runtime.includes('window.__td613AshIngressCopySpacing?.refresh?.()')) throw new Error('Flow-Core ingress spacing receipt refresh was not materialized.');
+if (!runtime.includes('window.__td613AshFlowcoreIngressPortal?.refresh?.()')) throw new Error('Flow-Core ingress portal receipt refresh was not materialized.');
 if (!runtime.includes('motion:item.motion')) throw new Error('Flow-Core emitted motion receipt was not materialized.');
 if (!runtime.includes('mobileStaticTruth.isVisible()')) throw new Error('Flow-Core mobile static-truth parity was not materialized.');
 if (runtime.includes(ingressReadinessTarget)) throw new Error('Flow-Core witness retained portal receipts inside ingress readiness.');
