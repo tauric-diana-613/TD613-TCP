@@ -28,7 +28,7 @@ assert.match(probe, /ALLOWED_LOCAL_KEYS[\s\S]*td613\.ash\.cache-flush\.epoch/);
 assert.doesNotMatch(probe, /IMPLEMENTED_PRODUCTION_DEMONSTRATED/);
 for (const token of ['td613.ash-keep.production-probe-fixture-manifest/v0.1','SYNTHETIC_OPERATOR_SELECTED_EXCERPT','runtime_copy_ephemeral: true','CLASSIFY_INTENTIONAL_HORIZONTAL_SCROLL_LANES_SEPARATELY_FROM_CLIPPING','promotion_authorized: false']) assert.ok(runner.includes(token));
 
-for (const token of ['ash-constitutional-convergence-probe.runtime.mjs','expected one case-selection seam',"select.dispatchEvent(new Event('change', { bubbles: true }))",'remove?.disabled !== false','Cross-tab lock witness exceeded 35000ms.']) assert.ok(convergenceRunner.includes(token));
+for (const token of ['ash-constitutional-convergence-probe.runtime.mjs','expected one case-selection seam',"select.dispatchEvent(new Event('change', { bubbles:true }))",'remove?.disabled !== false','Cross-tab lock witness exceeded 35000ms.']) assert.ok(convergenceRunner.includes(token));
 assert.match(convergenceRunner, /pathToFileURL/);
 assert.match(convergenceRunner, /\b35000\b/);
 assert.doesNotMatch(convergenceRunner, /Cross-tab lock witness exceeded 15000ms\.|\b15000\b/);
@@ -69,5 +69,4 @@ assert.match(lifecycleProbe, /draft_body_sha256/);
 assert.equal(fs.existsSync('.github/workflows/ash-keep-production-closure.yml'), false);
 assert.equal(fs.existsSync('.github/workflows/ash-keep-aia3-production-observation.yml'), false);
 
-// Synchronization sentinel: forces GitHub to regenerate the PR merge witness from the repaired A13 head.
 console.log('ash-keep-production-closure-contract.test.mjs passed under consolidated and bounded release lanes');
