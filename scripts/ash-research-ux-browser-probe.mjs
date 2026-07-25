@@ -163,7 +163,7 @@ try {
       && button && !button.disabled
       && button.dataset.ashDemoRegistryOwner === 'td613.ash.demo-registry/v0.1-a13'
       && button.dataset.ashMethodDemoState === 'READY'
-      && button.textContent === 'Open Research project demo';
+      && button.textContent === 'Open Research Project demo';
   });
   await page.locator('#startDemo').click();
   await waitForResearchHydration(page);
