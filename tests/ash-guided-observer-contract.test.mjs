@@ -54,7 +54,8 @@ assert.match(profileFixtureCompiler, /demo_entry_convergence_deferred_until_case
 assert.match(profileFixtureCompiler, /demo_entry_api_ready_after_hydration: true/);
 assert.match(profileFixtureCompiler, /convergenceApi\?\.version/);
 assert.match(profileFixtureCompiler, /profile_selected_explicitly: true/);
-assert.match(profileFixtureCompiler, /window\.__td613AshProfileDemos\?\.profiles\?\.includes\('political_campaign'\)/);
+assert.match(profileFixtureCompiler, /window\.__td613AshDemoRegistry\?\.reconcile\?\.\(\)/);
+assert.match(profileFixtureCompiler, /control_owner === 'ASH_DEMO_REGISTRY'/);
 assert.match(profileFixtureCompiler, /function isConvergencePrepared/);
 assert.match(profileFixtureCompiler, /v0\.6-constitutional-hold-class/);
 assert.doesNotMatch(profileFixtureCompiler, /profile_demo_ready: true/,
