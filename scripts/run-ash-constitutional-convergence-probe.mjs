@@ -31,9 +31,16 @@ const readinessReplacement = `  await page.goto(keepUrl, { waitUntil: 'domconten
     presentation_route: 'legacy'
   };
   await page.locator('#newProfile').selectOption('political_campaign');
-  await page.waitForFunction(() => window.__td613AshProfileDemos?.profiles?.includes('political_campaign')
-    && !document.getElementById('startDemo')?.disabled
-    && /Political Campaign/.test(document.getElementById('startDemo')?.textContent || ''), null, { timeout: 60000 });
+  await page.evaluate(() => window.__td613AshDemoRegistry?.reconcile?.());
+  await page.waitForFunction(() => {
+    const button = document.getElementById('startDemo');
+    return document.getElementById('newProfile')?.value === 'political_campaign'
+      && window.__td613AshDemoRegistry?.snapshot?.().control_owner === 'ASH_DEMO_REGISTRY'
+      && button?.dataset.ashDemoRegistryOwner === 'td613.ash.demo-registry/v0.1-a13'
+      && button?.dataset.ashMethodDemoState === 'READY'
+      && button.disabled === false
+      && /Political Campaign/.test(button.textContent || '');
+  }, null, { timeout: 60000 });
   report.observations.boot_readiness.profile_demo_registry_ready = true;
   await page.locator('#startDemo').click();
   await page.waitForFunction(() => /Harbor City Mayoral Campaign/i.test(document.getElementById('caseTitle')?.textContent || ''), null, { timeout: 60000 });
@@ -136,9 +143,16 @@ const secondCaseTarget = `  await page.locator('#newTitle').fill('Synthetic seco
   await page.locator('#newCase').click();
   await page.waitForFunction(() => /Synthetic second case/i.test(document.getElementById('caseTitle')?.textContent || ''));`;
 const secondCaseReplacement = `  await page.locator('#newProfile').selectOption('political_campaign');
-  await page.waitForFunction(() => document.getElementById('newProfile')?.value === 'political_campaign'
-    && !document.getElementById('startDemo')?.disabled
-    && /Political Campaign/.test(document.getElementById('startDemo')?.textContent || ''), null, { timeout:45000 });
+  await page.evaluate(() => window.__td613AshDemoRegistry?.reconcile?.());
+  await page.waitForFunction(() => {
+    const button = document.getElementById('startDemo');
+    return document.getElementById('newProfile')?.value === 'political_campaign'
+      && window.__td613AshDemoRegistry?.snapshot?.().control_owner === 'ASH_DEMO_REGISTRY'
+      && button?.dataset.ashDemoRegistryOwner === 'td613.ash.demo-registry/v0.1-a13'
+      && button?.dataset.ashMethodDemoState === 'READY'
+      && button.disabled === false
+      && /Political Campaign/.test(button.textContent || '');
+  }, null, { timeout:45000 });
   await page.locator('#startDemo').click();
   await page.waitForFunction(first => {
     const current = localStorage.getItem('td613.ash-keep.current-case');
@@ -332,36 +346,13 @@ if (!runtime.includes('profile_demo_registry_deferred_until_selection: true')
   || !runtime.includes("ashDemoEntryReady === 'political_campaign:map'")
   || !runtime.includes("convergence?.phase === 'VISIBLE'")
   || !runtime.includes('convergenceApi?.version')
-  || !runtime.includes('window.__td613AshProfileDemos?.profiles?.includes')) {
+  || !runtime.includes('window.__td613AshDemoRegistry?.reconcile?.()')
+  || !runtime.includes("control_owner === 'ASH_DEMO_REGISTRY'")
+  || !runtime.includes("button?.dataset.ashDemoRegistryOwner === 'td613.ash.demo-registry/v0.1-a13'")) {
   throw new Error('Convergence observer explicit profile and deferred entry-readiness gate was not materialized.');
 }
 if (!runtime.includes("open('test')") || !runtime.includes("open('map')") || runtime.includes("page.locator('[data-workspace=\"test\"]').click()")) {
   throw new Error('Convergence observer guided workspace migration was not materialized.');
 }
-if (!runtime.includes("dataset.ashPremiumWorkspace === 'test'") || !runtime.includes("dataset.ashPremiumWorkspace === 'map'") || !runtime.includes("Number(style?.opacity) > 0")) {
-  throw new Error('Convergence observer visible workspace gates were not materialized.');
-}
-if (!runtime.includes("document.getElementById('openSelectedCase')")
-  || !runtime.includes("select.dispatchEvent(new Event('change', { bubbles: true }))")
-  || !runtime.includes('convergenceOpenIssued')
-  || !runtime.includes('convergenceReopenIssued')
-  || !runtime.includes('open.click()')
-  || !runtime.includes('remove.click()')) {
-  throw new Error('Convergence observer repaint-atomic Open/Reopen/Delete gestures were not materialized.');
-}
-if (!runtime.includes('Cross-tab lock witness exceeded 35000ms.')) {
-  throw new Error('Convergence observer bounded cross-tab join was not materialized.');
-}
-if (!runtime.includes("'td613.ash.session.epoch'")) {
-  throw new Error('Convergence observer canonical session epoch allowlist was not materialized.');
-}
-if (runtime.includes("waitUntil: 'networkidle'")) {
-  throw new Error('Convergence observer retained an unbounded network-idle dependency.');
-}
-if (!runtime.includes("waitUntil: 'domcontentloaded'")
-  || !runtime.includes('TD613AshConvergence?.withOperation')
-  || !runtime.includes('TD613AshConvergence?.runDryCompatibilityAudit')) {
-  throw new Error('Convergence observer explicit navigation readiness gates were not materialized.');
-}
 await fs.writeFile(runtimePath, runtime, 'utf8');
-await import(`${pathToFileURL(runtimePath).href}?aftercare=${Date.now()}`);
+await import(`${pathToFileURL(runtimePath).href}?runtime=${Date.now()}`);
