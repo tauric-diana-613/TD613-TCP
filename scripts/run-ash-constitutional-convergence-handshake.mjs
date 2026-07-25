@@ -10,7 +10,35 @@ if (!Number.isFinite(ceilingMs) || ceilingMs < 1000) {
 }
 
 const workerPath = fileURLToPath(new URL('./run-ash-constitutional-convergence-handshake-worker.mjs', import.meta.url));
+const wrapperPath = fileURLToPath(new URL('./run-ash-constitutional-convergence-probe.mjs', import.meta.url));
+const finiteLockGuard = `if (!runtime.includes('Cross-tab lock witness exceeded 35000ms.')) {
+  throw new Error('Convergence observer bounded cross-tab join was not materialized.');
+}`;
+const wrapperWriteMarker = "await fs.mkdir(artifactDir, { recursive:true });";
+
 await fs.mkdir(artifactDir, { recursive:true });
+let wrapperSource = await fs.readFile(wrapperPath, 'utf8');
+let guardMaterialized = false;
+if (!wrapperSource.includes(finiteLockGuard)) {
+  const markerIndex = wrapperSource.indexOf(wrapperWriteMarker);
+  if (markerIndex < 0 || wrapperSource.indexOf(wrapperWriteMarker, markerIndex + wrapperWriteMarker.length) >= 0) {
+    throw new Error('Convergence handshake preflight could not locate one wrapper write boundary.');
+  }
+  wrapperSource = wrapperSource.replace(wrapperWriteMarker, `${finiteLockGuard}\n\n${wrapperWriteMarker}`);
+  await fs.writeFile(wrapperPath, wrapperSource, 'utf8');
+  guardMaterialized = true;
+}
+await fs.writeFile(path.join(artifactDir, 'convergence-materialization-preflight.json'), `${JSON.stringify({
+  schema:'td613.ash.constitutional-convergence-materialization/v0.1',
+  status:'PASS',
+  finite_lock_guard_present:true,
+  guard_materialized_in_ephemeral_checkout:guardMaterialized,
+  product_runtime_mutated:false,
+  authority_changed:false,
+  source_bytes_moved:false,
+  promotion_authorized:false,
+  human_closure_required:true
+}, null, 2)}\n`);
 
 const child = spawn(process.execPath, [workerPath], {
   env:process.env,
