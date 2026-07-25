@@ -10,17 +10,32 @@ if (!browserType) throw new Error(`Unsupported browser ${browserName}`);
 await fs.mkdir(artifactDir, { recursive:true });
 const browser = await browserType.launch({ headless:true });
 
-const promoted = ['investigation','political_campaign','fundraiser','research','legal'];
+const promoted = ['investigation','political_campaign','fundraiser','research','legal','archive'];
 
 async function selectRegistryProfile(page, profile) {
   await page.locator('#newProfile').selectOption(profile);
   await page.evaluate(() => window.__td613AshDemoRegistry?.reconcile?.());
 }
 
+async function activateInvestigation(page) {
+  await page.evaluate(() => {
+    const registry = window.__td613AshDemoRegistry;
+    const select = document.getElementById('newProfile');
+    const button = document.getElementById('startDemo');
+    select.value = 'investigation';
+    select.dispatchEvent(new Event('change', { bubbles:true }));
+    registry.reconcile();
+    if (button.dataset.ashMethodDemoState !== 'READY' || button.disabled || button.matches(':disabled')) {
+      throw new Error('Shared registry Investigation control was not atomically actionable.');
+    }
+    button.click();
+  });
+}
+
 async function inspect(page, label) {
   await page.goto(`${baseUrl}/dome-world/ash-keep.html`, { waitUntil:'domcontentloaded', timeout:90_000 });
   await page.waitForFunction(() => Boolean(window.__td613AshKeep?.version)
-    && Boolean(window.__td613AshDemoRegistry?.version)
+    && window.__td613AshDemoRegistry?.version === 'td613.ash.demo-registry/v0.2-a14'
     && document.documentElement.dataset.ashDemoControlOwner === 'ASH_DEMO_REGISTRY'
     && document.title === 'TD613 Ash'
     && location.pathname === '/dome-world/ash-threshold.html'
@@ -28,31 +43,22 @@ async function inspect(page, label) {
 
   const registry = await page.evaluate(() => window.__td613AshDemoRegistry.snapshot());
   if (registry.profiles.length !== 6) throw new Error(`Expected six registry seats: ${JSON.stringify(registry)}`);
-  if (registry.profiles.filter(entry => entry.promoted).length !== 5) throw new Error(`Expected five A13 promoted seats: ${JSON.stringify(registry)}`);
-  if (registry.profiles.find(entry => entry.profile === 'archive')?.status !== 'RESERVED_FOR_A14') throw new Error('Archive seat was not held for A14.');
+  if (registry.profiles.filter(entry => entry.promoted).length !== 6) throw new Error(`Expected six A14 promoted seats: ${JSON.stringify(registry)}`);
+  if (registry.profiles.find(entry => entry.profile === 'archive')?.status !== 'PROMOTED') throw new Error('Archive seat was not promoted in A14.');
+  if (registry.profiles.find(entry => entry.profile === 'archive')?.owner !== 'ARCHIVE') throw new Error('Archive fixture owner drifted.');
 
   for (const profile of promoted) {
     await selectRegistryProfile(page, profile);
     await page.waitForFunction(expected => {
       const button = document.getElementById('startDemo');
       return document.getElementById('newProfile')?.value === expected
-        && button?.dataset.ashDemoRegistryOwner === 'td613.ash.demo-registry/v0.1-a13'
+        && button?.dataset.ashDemoRegistryOwner === 'td613.ash.demo-registry/v0.2-a14'
         && button?.dataset.ashMethodDemoState === 'READY'
         && button.disabled === false;
     }, profile, { timeout:60_000 });
   }
 
-  await selectRegistryProfile(page, 'archive');
-  await page.waitForFunction(() => {
-    const button = document.getElementById('startDemo');
-    return button?.dataset.ashMethodDemoState === 'HELD'
-      && button.disabled === true
-      && /arrives in A14/i.test(button.textContent || '');
-  }, null, { timeout:60_000 });
-
-  await selectRegistryProfile(page, 'investigation');
-  await page.waitForFunction(() => !document.getElementById('startDemo')?.disabled);
-  await page.locator('#startDemo').click();
+  await activateInvestigation(page);
   await page.waitForFunction(() => Boolean(window.__td613AshKeep?.current?.()?.case_id)
     && document.documentElement.dataset.ashDemoRegistryProfile === 'investigation'
     && document.documentElement.dataset.ashPremiumWorkspace === 'home', null, { timeout:120_000 });
@@ -90,12 +96,13 @@ try {
   await mobile.close();
 
   await fs.writeFile(path.join(artifactDir, `${browserName}-a13-registry-receipt.json`), JSON.stringify({
-    schema:'td613.ash.a13-demo-registry-browser-witness/v0.1',
+    schema:'td613.ash.shared-demo-registry-browser-witness/v0.2-a14',
     browser:browserName,
     receipts,
     registry_owner:'ASH_DEMO_REGISTRY',
     promoted_profiles:promoted,
-    archive_status:'RESERVED_FOR_A14',
+    archive_status:'PROMOTED',
+    archive_owner:'ARCHIVE',
     custody_authority_changed:false,
     raw_content_transport:false,
     automatic_release:false,
