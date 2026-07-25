@@ -47,7 +47,9 @@ const listenerReplacement = String.raw`await page.addInitScript(() => {
 });`;
 
 const ingressReadinessStart = String.raw`  await page.waitForFunction(() => {
-    const portal = window.__td613AshFlowcoreIngressPortal?.current?.();`;
+    const portal = window.__td613AshFlowcoreIngressPortal?.current?.();
+    const visible = document.querySelector('.ash-flowcore-field:not([hidden])');
+    return window.__td613AshFlowcoreField?.current?.().artifact_required === false`;
 const ingressReadinessEnd = String.raw`  });
 
   const ingressDesktop =`;
