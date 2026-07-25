@@ -12,6 +12,11 @@ const browser = await browserType.launch({ headless:true });
 
 const promoted = ['investigation','political_campaign','fundraiser','research','legal'];
 
+async function selectRegistryProfile(page, profile) {
+  await page.locator('#newProfile').selectOption(profile);
+  await page.evaluate(() => window.__td613AshDemoRegistry?.reconcile?.());
+}
+
 async function inspect(page, label) {
   await page.goto(`${baseUrl}/dome-world/ash-keep.html`, { waitUntil:'domcontentloaded', timeout:90_000 });
   await page.waitForFunction(() => Boolean(window.__td613AshKeep?.version)
@@ -27,7 +32,7 @@ async function inspect(page, label) {
   if (registry.profiles.find(entry => entry.profile === 'archive')?.status !== 'RESERVED_FOR_A14') throw new Error('Archive seat was not held for A14.');
 
   for (const profile of promoted) {
-    await page.locator('#newProfile').selectOption(profile);
+    await selectRegistryProfile(page, profile);
     await page.waitForFunction(expected => {
       const button = document.getElementById('startDemo');
       return document.getElementById('newProfile')?.value === expected
@@ -37,7 +42,7 @@ async function inspect(page, label) {
     }, profile, { timeout:60_000 });
   }
 
-  await page.locator('#newProfile').selectOption('archive');
+  await selectRegistryProfile(page, 'archive');
   await page.waitForFunction(() => {
     const button = document.getElementById('startDemo');
     return button?.dataset.ashMethodDemoState === 'HELD'
@@ -45,7 +50,7 @@ async function inspect(page, label) {
       && /arrives in A14/i.test(button.textContent || '');
   }, null, { timeout:60_000 });
 
-  await page.locator('#newProfile').selectOption('investigation');
+  await selectRegistryProfile(page, 'investigation');
   await page.waitForFunction(() => !document.getElementById('startDemo')?.disabled);
   await page.locator('#startDemo').click();
   await page.waitForFunction(() => Boolean(window.__td613AshKeep?.current?.()?.case_id)
