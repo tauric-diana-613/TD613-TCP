@@ -15,11 +15,20 @@ async function enterInvestigation(page) {
   await page.waitForFunction(() => Boolean(window.__td613AshKeep?.version)
     && Boolean(window.__td613AshPremiumUI?.version)
     && Boolean(window.__td613AshA12?.version)
+    && Boolean(window.__td613AshDemoRegistry?.version)
     && document.title === 'TD613 Ash'
     && location.pathname === '/dome-world/ash-threshold.html'
     && !location.search, null, { timeout:120_000 });
   await page.locator('#newProfile').selectOption('investigation');
-  await page.waitForFunction(() => !document.getElementById('startDemo')?.disabled, null, { timeout:60_000 });
+  await page.evaluate(() => window.__td613AshDemoRegistry?.reconcile?.());
+  await page.waitForFunction(() => {
+    const button = document.getElementById('startDemo');
+    return document.getElementById('newProfile')?.value === 'investigation'
+      && window.__td613AshDemoRegistry?.snapshot?.().control_owner === 'ASH_DEMO_REGISTRY'
+      && button?.dataset.ashDemoRegistryOwner === 'td613.ash.demo-registry/v0.1-a13'
+      && button?.dataset.ashMethodDemoState === 'READY'
+      && button.disabled === false;
+  }, null, { timeout:60_000 });
   await page.locator('#startDemo').click();
   await page.waitForFunction(() => document.documentElement.dataset.ashPremiumWorkspace === 'home'
     && document.documentElement.dataset.ashA12CommandAudit === 'PASS', null, { timeout:120_000 });
@@ -28,7 +37,7 @@ async function enterInvestigation(page) {
 async function inspect(page, label) {
   await enterInvestigation(page);
   await page.locator('#premiumMenuButton').click();
-  await page.waitForSelector('#premiumCommandSheet[open]');
+  await page.waitForSelector('#premiumCommandSheet[open]', { timeout:60_000 });
   const commandText = await page.locator('#premiumCommandGrid').innerText();
   for (const phrase of ['Custody','Rooms','Routes','Rebuild Test','Draft & Hush','Save Points','Destination Handoff','Receipts','Cases & Profiles','Safe Harbor']) {
     if (!commandText.includes(phrase)) throw new Error('A12 missing ' + phrase);
@@ -36,10 +45,11 @@ async function inspect(page, label) {
   const audit = await page.evaluate(() => window.__td613AshA12?.audit?.());
   if (!audit?.ready || audit.inert_controls !== 0 || audit.empty_drawers !== 0) throw new Error('A12 command audit failed: ' + JSON.stringify(audit));
   await page.locator('[data-a12-command="test"]').click();
-  await page.waitForFunction(() => document.documentElement.dataset.ashPremiumWorkspace === 'choir');
+  await page.waitForFunction(() => document.documentElement.dataset.ashPremiumWorkspace === 'choir', null, { timeout:60_000 });
   await page.locator('#premiumMenuButton').click();
+  await page.waitForSelector('#premiumCommandSheet[open]', { timeout:60_000 });
   await page.locator('[data-a12-command="save"]').click();
-  await page.waitForFunction(() => document.documentElement.dataset.ashPremiumWorkspace === 'capsule');
+  await page.waitForFunction(() => document.documentElement.dataset.ashPremiumWorkspace === 'capsule', null, { timeout:60_000 });
 
   const routeDelta = await page.locator('.ash-route-delta').innerText();
   if (!routeDelta.includes('Changed in explanation') || !routeDelta.includes('Preserved exactly')) throw new Error('A12 route delta remained empty.');
@@ -58,6 +68,7 @@ async function inspect(page, label) {
   if (!beforeSwitch.active_case) throw new Error('A12 case-switcher witness began without an active case.');
 
   await page.locator('#premiumMenuButton').click();
+  await page.waitForSelector('#premiumCommandSheet[open]', { timeout:60_000 });
   await page.locator('[data-a12-action="profile"]').click();
   await page.waitForFunction(() => document.body.dataset.ashCaseClosed === 'true'
     && !localStorage.getItem('td613.ash-keep.current-case')
@@ -95,7 +106,7 @@ try {
   const mobile = await browser.newContext(mobileOptions);
   receipts.push({ mode:'mobile-reduced-motion', ...(await inspect(await mobile.newPage(), 'mobile-reduced-motion')) });
   await mobile.close();
-  await fs.writeFile(path.join(artifactDir, browserName + '-a12-receipt.json'), JSON.stringify({ schema:'td613.ash.a12-browser-witness/v0.2', browser:browserName, receipts, authority_changed:false, source_bytes_moved:false, case_data_preserved:true, profile_inferred:false, human_closure_required:true }, null, 2));
+  await fs.writeFile(path.join(artifactDir, browserName + '-a12-receipt.json'), JSON.stringify({ schema:'td613.ash.a12-browser-witness/v0.3-registry-owned-entry', browser:browserName, receipts, authority_changed:false, source_bytes_moved:false, case_data_preserved:true, profile_inferred:false, human_closure_required:true }, null, 2));
 } catch (error) {
   await fs.writeFile(path.join(artifactDir, browserName + '-a12-failure.json'), JSON.stringify({ error:String(error?.stack || error) }, null, 2));
   throw error;
