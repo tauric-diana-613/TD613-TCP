@@ -1,6 +1,7 @@
 import fs from 'node:fs/promises';
 import path from 'node:path';
-import { pathToFileURL } from 'node:url';
+import { spawnSync } from 'node:child_process';
+import { fileURLToPath, pathToFileURL } from 'node:url';
 
 const wrapperUrl = new URL('./run-ash-constitutional-convergence-probe.mjs', import.meta.url);
 const runtimeUrl = new URL('./run-ash-constitutional-convergence-probe.handshake.runtime.mjs', import.meta.url);
@@ -9,9 +10,6 @@ const handshakeCeilingMs = Number.parseInt(process.env.TD613_CONVERGENCE_HANDSHA
 if (!Number.isFinite(handshakeCeilingMs) || handshakeCeilingMs < 1000) {
   throw new Error('TD613 convergence handshake ceiling must be a finite duration of at least 1000ms.');
 }
-
-const originalDefinitionsStart = 'const lockWaitTarget =';
-const originalDefinitionsEnd = '\nconst localKeysTarget =';
 
 const contentionTarget = `  const firstLock = page.evaluate(() => window.TD613AshConvergence.withOperation('probe-contention', async () => {
     const acquiredAt = Date.now();
@@ -136,39 +134,78 @@ const contentionReplacement = `  const contentionEvent = 'td613:ash:probe-conten
     finite_acquisition_ceiling_ms:35000
   };`;
 
-const replacementDefinitions = `const lockWaitTarget = ${JSON.stringify(contentionTarget)};\nconst lockWaitReplacement = ${JSON.stringify(contentionReplacement)};`;
+const materializedSeams = [];
 
-const wrapperSource = await fs.readFile(wrapperUrl, 'utf8');
-const start = wrapperSource.indexOf(originalDefinitionsStart);
-const end = wrapperSource.indexOf(originalDefinitionsEnd, start);
-if (start < 0 || end < 0 || end <= start) throw new Error('Convergence handshake shim could not locate the bounded lock-definition seam.');
-if (!wrapperSource.includes("if (!runtime.includes('Cross-tab lock witness exceeded 35000ms.'))")) {
-  throw new Error('Convergence handshake shim expected the retained finite lock ceiling assertion.');
+function replaceUniquePattern(source, pattern, replacement, name) {
+  const flags = pattern.flags.includes('g') ? pattern.flags : `${pattern.flags}g`;
+  const matches = [...source.matchAll(new RegExp(pattern.source, flags))];
+  if (matches.length !== 1) {
+    throw new Error(`Convergence semantic seam ${name} expected exactly one match; observed ${matches.length}.`);
+  }
+  const match = matches[0];
+  materializedSeams.push(Object.freeze({
+    name,
+    start:match.index,
+    end:match.index + match[0].length,
+    prior_length:match[0].length,
+    replacement_length:replacement.length
+  }));
+  return `${source.slice(0, match.index)}${replacement}${source.slice(match.index + match[0].length)}`;
 }
 
-let runtimeWrapper = `${wrapperSource.slice(0, start)}${replacementDefinitions}${wrapperSource.slice(end)}`;
-runtimeWrapper = runtimeWrapper.replace(
-  "if (!runtime.includes('Cross-tab lock witness exceeded 35000ms.')) {\n  throw new Error('Convergence observer bounded cross-tab join was not materialized.');\n}",
-  "if (!runtime.includes('Cross-tab lock witness exceeded 35000ms.') || !runtime.includes('First-tab lock release exceeded 10000ms.') || !runtime.includes('QUERY_TIMEOUT') || !runtime.includes('DENIED_WHILE_HELD') || !runtime.includes('Second-tab contention intent was not observed before first-tab release.') || !runtime.includes('__td613ProbePostRelease') || !runtime.includes('NATIVE_LOCK_MANAGER_PROTOTYPE')) {\n  throw new Error('Convergence observer finite cross-tab exclusion witness was not materialized.');\n}"
-);
-if (!runtimeWrapper.includes("contentionEvent = 'td613:ash:probe-contention-release:v4'")) {
-  throw new Error('Convergence handshake shim failed to materialize the named release event.');
+function insertBeforeUniqueAnchor(source, anchor, insertion, name) {
+  const first = source.indexOf(anchor);
+  const second = first < 0 ? -1 : source.indexOf(anchor, first + anchor.length);
+  if (first < 0 || second >= 0) {
+    throw new Error(`Convergence semantic seam ${name} expected one anchor; observed ${first < 0 ? 0 : 2}.`);
+  }
+  materializedSeams.push(Object.freeze({
+    name,
+    start:first,
+    end:first,
+    prior_length:0,
+    replacement_length:insertion.length
+  }));
+  return `${source.slice(0, first)}${insertion}${source.slice(first)}`;
 }
-if (!runtimeWrapper.includes("ifAvailable:true") || !runtimeWrapper.includes("SECOND_TAB_BLOCKED_WHILE_HELD")) {
-  throw new Error('Convergence handshake shim failed to materialize the nonblocking pre-release exclusion assay.');
+
+const replacementDefinitions = `const lockWaitTarget = ${JSON.stringify(contentionTarget)};
+const lockWaitReplacement = ${JSON.stringify(contentionReplacement)};
+
+`;
+
+const finiteExclusionGuard = `if (!runtime.includes('Cross-tab lock witness exceeded 35000ms.')
+  || !runtime.includes('First-tab lock release exceeded 10000ms.')
+  || !runtime.includes('QUERY_TIMEOUT')
+  || !runtime.includes('DENIED_WHILE_HELD')
+  || !runtime.includes('Second-tab contention intent was not observed before first-tab release.')
+  || !runtime.includes('__td613ProbePostRelease')
+  || !runtime.includes('NATIVE_LOCK_MANAGER_PROTOTYPE')) {
+  throw new Error('Convergence observer finite cross-tab exclusion witness was not materialized.');
 }
-if (!runtimeWrapper.includes('Object.getPrototypeOf(manager)?.request') || !runtimeWrapper.includes("observer_path:'NATIVE_LOCK_MANAGER_PROTOTYPE'")) {
-  throw new Error('Convergence handshake shim failed to bypass only the patched Ash lock instance for native pre-release observation.');
-}
-if (!runtimeWrapper.includes('finite_query_ceiling_ms:2000') || !runtimeWrapper.includes('post_release_lock_snapshot:postReleaseLockSnapshot') || !runtimeWrapper.includes("state:'STARTED'")) {
-  throw new Error('Convergence handshake shim failed to materialize the bounded diagnostic and detached post-release Ash operation receipt.');
-}
-if (runtimeWrapper.includes('new BroadcastChannel(')) {
-  throw new Error('Convergence handshake shim retained a lossy BroadcastChannel release sender.');
-}
+
+`;
+
+const scopedCloseReplacement = `const closeReplacement = \`  {
+    await page.locator('#closeCase').click();
+    const closeConfirmation = page.getByRole('button', { name:/Confirm this exact gesture/i });
+    if (await closeConfirmation.isVisible().catch(() => false)) await closeConfirmation.click();
+  }\`;`;
 
 const pageCreationTarget = 'const page = await context.newPage();';
-const pageCreationReplacement = `${pageCreationTarget}\npage.setDefaultTimeout(45000);\npage.setDefaultNavigationTimeout(90000);\nconst checkpoint = async label => {\n  console.log('[TD613 convergence] ' + label);\n  await fsp.writeFile(path.join(artifactDir, 'convergence-checkpoint.json'), JSON.stringify({\n    schema:'td613.ash.constitutional-convergence-checkpoint/v0.1',\n    label,\n    observed_at:new Date().toISOString(),\n    promotion_authorized:false\n  }, null, 2) + '\\n');\n};`;
+const pageCreationReplacement = `${pageCreationTarget}
+page.setDefaultTimeout(45000);
+page.setDefaultNavigationTimeout(90000);
+const checkpoint = async label => {
+  console.log('[TD613 convergence] ' + label);
+  await fsp.writeFile(path.join(artifactDir, 'convergence-checkpoint.json'), JSON.stringify({
+    schema:'td613.ash.constitutional-convergence-checkpoint/v0.1',
+    label,
+    observed_at:new Date().toISOString(),
+    promotion_authorized:false
+  }, null, 2) + '\\n');
+};`;
+
 const checkpoints = [
   ["  await page.goto(keepUrl, { waitUntil: 'domcontentloaded', timeout: 90000 });", 'BOOT'],
   ['  report.observations.custody_binding = await bindSyntheticCustody(page);', 'CUSTODY_BINDING'],
@@ -181,7 +218,7 @@ const checkpoints = [
   ['  await page.setViewportSize({ width: 1440, height: 1000 });', 'LAYOUT_WITNESS'],
   ["  report.status = 'PASS';", 'PASS']
 ];
-const runtimeWriteTarget = "await fs.writeFile(runtimePath, runtime, 'utf8');";
+
 const runtimeWriteReplacement = [
   'let diagnosticRuntime = runtime;',
   `const pageCreationTarget = ${JSON.stringify(pageCreationTarget)};`,
@@ -190,19 +227,114 @@ const runtimeWriteReplacement = [
   'diagnosticRuntime = diagnosticRuntime.replace(pageCreationTarget, pageCreationReplacement);',
   `const checkpoints = ${JSON.stringify(checkpoints)};`,
   "for (const [target, label] of checkpoints) {",
-  "  if (!diagnosticRuntime.includes(target)) throw new Error('Convergence observer could not locate checkpoint seam ' + label + '.');",
-  "  diagnosticRuntime = diagnosticRuntime.replace(target, '  await checkpoint(' + JSON.stringify(label) + ');\\n' + target);",
+  "  const first = diagnosticRuntime.indexOf(target);",
+  "  const second = first < 0 ? -1 : diagnosticRuntime.indexOf(target, first + target.length);",
+  "  if (first < 0 || second >= 0) throw new Error('Convergence observer semantic checkpoint seam ' + label + ' expected one anchor.');",
+  "  diagnosticRuntime = diagnosticRuntime.slice(0, first) + '  await checkpoint(' + JSON.stringify(label) + ');\\n' + target + diagnosticRuntime.slice(first + target.length);",
   "}",
   "if (!diagnosticRuntime.includes('page.setDefaultTimeout(45000)') || !diagnosticRuntime.includes('convergence-checkpoint.json') || !diagnosticRuntime.includes('await checkpoint(\"MULTI_TAB_START\")')) throw new Error('Convergence observer finite diagnostics were not materialized.');",
-  "await fs.writeFile(runtimePath, diagnosticRuntime, 'utf8');"
+  "await fs.writeFile(runtimePath, diagnosticRuntime, 'utf8');",
+  "const { spawnSync } = await import('node:child_process');",
+  "const observerSyntax = spawnSync(process.execPath, ['--check', runtimePath], { encoding:'utf8' });",
+  "if (observerSyntax.status !== 0) throw new Error('Convergence final observer failed syntax validation.\\n' + (observerSyntax.stderr || observerSyntax.stdout || ''));"
 ].join('\n');
-if (!runtimeWrapper.includes(runtimeWriteTarget)) throw new Error('Convergence handshake shim could not locate the generated observer write seam.');
-runtimeWrapper = runtimeWrapper.replace(runtimeWriteTarget, runtimeWriteReplacement);
-if (!runtimeWrapper.includes('let diagnosticRuntime = runtime;') || !runtimeWrapper.includes('convergence-checkpoint.json') || !runtimeWrapper.includes('page.setDefaultTimeout(45000)')) {
-  throw new Error('Convergence handshake shim failed to place finite diagnostics in the generated observer.');
+
+await fs.mkdir(artifactDir, { recursive:true });
+let runtimeWrapper;
+try {
+  const wrapperSource = await fs.readFile(wrapperUrl, 'utf8');
+  runtimeWrapper = replaceUniquePattern(
+    wrapperSource,
+    /const closeReplacement\s*=\s*`[\s\S]*?`;\s*(?=const source\s*=\s*await fs\.readFile)/,
+    scopedCloseReplacement,
+    'SCOPED_CLOSE_CONFIRMATION'
+  );
+  runtimeWrapper = replaceUniquePattern(
+    runtimeWrapper,
+    /const lockWaitTarget\s*=\s*`[\s\S]*?`;\s*const lockWaitReplacement\s*=\s*`[\s\S]*?`;\s*(?=const localKeysTarget\s*=)/,
+    replacementDefinitions,
+    'LOCK_DEFINITIONS'
+  );
+
+  const legacyGuardPattern = /if\s*\(\s*!runtime\.includes\('Cross-tab lock witness exceeded 35000ms\.'\)\s*\)\s*\{[\s\S]*?\}\s*(?=await fs\.mkdir\(artifactDir,\s*\{\s*recursive:true\s*\}\);)/;
+  if (legacyGuardPattern.test(runtimeWrapper)) {
+    runtimeWrapper = replaceUniquePattern(runtimeWrapper, legacyGuardPattern, finiteExclusionGuard, 'FINITE_EXCLUSION_GUARD');
+  } else {
+    runtimeWrapper = insertBeforeUniqueAnchor(
+      runtimeWrapper,
+      'await fs.mkdir(artifactDir, { recursive:true });',
+      finiteExclusionGuard,
+      'FINITE_EXCLUSION_GUARD'
+    );
+  }
+
+  runtimeWrapper = replaceUniquePattern(
+    runtimeWrapper,
+    /await fs\.writeFile\(runtimePath,\s*runtime(?:,\s*['"]utf8['"])?\s*\);/,
+    runtimeWriteReplacement,
+    'RUNTIME_WRITE_AND_DIAGNOSTICS'
+  );
+
+  for (const token of [
+    "contentionEvent = 'td613:ash:probe-contention-release:v4'",
+    'ifAvailable:true',
+    'SECOND_TAB_BLOCKED_WHILE_HELD',
+    'Object.getPrototypeOf(manager)?.request',
+    "observer_path:'NATIVE_LOCK_MANAGER_PROTOTYPE'",
+    'finite_query_ceiling_ms:2000',
+    'post_release_lock_snapshot:postReleaseLockSnapshot',
+    "state:'STARTED'",
+    'let diagnosticRuntime = runtime;',
+    'convergence-checkpoint.json',
+    'page.setDefaultTimeout(45000)',
+    "const closeReplacement = `  {",
+    "spawnSync(process.execPath, ['--check', runtimePath]",
+    'Convergence final observer failed syntax validation.'
+  ]) {
+    if (!runtimeWrapper.includes(token)) {
+      throw new Error(`Convergence semantic materializer omitted required token: ${token}`);
+    }
+  }
+  if (runtimeWrapper.includes('new BroadcastChannel(')) {
+    throw new Error('Convergence semantic materializer retained a lossy BroadcastChannel release sender.');
+  }
+
+  await fs.writeFile(runtimeUrl, runtimeWrapper, 'utf8');
+  const wrapperSyntax = spawnSync(process.execPath, ['--check', fileURLToPath(runtimeUrl)], { encoding:'utf8' });
+  if (wrapperSyntax.status !== 0) {
+    throw new Error('Convergence generated wrapper failed syntax validation.\n' + (wrapperSyntax.stderr || wrapperSyntax.stdout || ''));
+  }
+  await fs.writeFile(path.join(artifactDir, 'convergence-worker-materialization.json'), `${JSON.stringify({
+    schema:'td613.ash.constitutional-convergence-worker-materialization/v0.3-parse-gated-semantic-seams',
+    status:'PASS',
+    seams:materializedSeams,
+    generated_wrapper_syntax:'PASS',
+    final_observer_syntax_gate_materialized:true,
+    runtime_write_accepts_optional_encoding_argument:true,
+    whole_source_literal_replacement:false,
+    product_runtime_mutated:false,
+    authority_changed:false,
+    source_bytes_moved:false,
+    promotion_authorized:false,
+    human_closure_required:true
+  }, null, 2)}\n`);
+} catch (error) {
+  await fs.writeFile(path.join(artifactDir, 'convergence-worker-materialization.json'), `${JSON.stringify({
+    schema:'td613.ash.constitutional-convergence-worker-materialization/v0.3-parse-gated-semantic-seams',
+    status:'HOLD_FOR_REPAIR',
+    error:String(error?.stack || error),
+    seams:materializedSeams,
+    generated_wrapper_syntax:'HOLD',
+    final_observer_syntax_gate_materialized:true,
+    product_runtime_mutated:false,
+    authority_changed:false,
+    source_bytes_moved:false,
+    promotion_authorized:false,
+    human_closure_required:true
+  }, null, 2)}\n`).catch(() => {});
+  throw error;
 }
 
-await fs.writeFile(runtimeUrl, runtimeWrapper, 'utf8');
 let watchdog = null;
 try {
   watchdog = setTimeout(async () => {

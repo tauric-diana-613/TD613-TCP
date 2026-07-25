@@ -18,7 +18,7 @@ const context = await browser.newContext({
 });
 const page = await context.newPage();
 const report = {
-  schema:'td613.ash.a2-a6-browser-observation/v0.1',
+  schema:'td613.ash.a2-a6-browser-observation/v0.2-a13-registry-settled-play',
   browser:browserName,
   base_url:base,
   status:'HOLD_FOR_REPAIR',
@@ -29,18 +29,45 @@ const report = {
 try {
   await page.goto(`${base}/dome-world/ash-keep.html`, { waitUntil:'domcontentloaded', timeout:90000 });
   await page.waitForFunction(() => Boolean(window.__td613AshKeep?.version)
+    && Boolean(window.__td613AshDemoRegistry?.version)
+    && window.__td613AshDemoRegistry?.version === 'td613.ash.demo-registry/v0.1-a13'
     && document.getElementById('newProfile')
-    && document.getElementById('startDemo'), null, { timeout:60000 });
+    && document.getElementById('startDemo'), null, { timeout:120000 });
   await page.locator('#newProfile').selectOption('political_campaign');
-  await page.waitForFunction(() => !document.getElementById('startDemo')?.disabled, null, { timeout:60000 });
+  await page.evaluate(() => window.__td613AshDemoRegistry?.reconcile?.());
+  await page.waitForFunction(() => {
+    const registry = window.__td613AshDemoRegistry?.snapshot?.();
+    const profile = document.getElementById('newProfile');
+    const button = document.getElementById('startDemo');
+    return profile?.value === 'political_campaign'
+      && registry?.control_owner === 'ASH_DEMO_REGISTRY'
+      && document.documentElement.dataset.ashDemoControlOwner === 'ASH_DEMO_REGISTRY'
+      && document.documentElement.dataset.ashDemoRegistry === 'td613.ash.demo-registry/v0.1-a13'
+      && button?.dataset.ashDemoRegistryOwner === 'td613.ash.demo-registry/v0.1-a13'
+      && button?.dataset.ashMethodDemoState === 'READY'
+      && button.disabled === false
+      && !button.matches(':disabled');
+  }, null, { timeout:120000 });
   await page.locator('#startDemo').click();
 
   await page.waitForFunction(() => {
+    const caseId = localStorage.getItem('td613.ash-keep.current-case');
+    const convergence = window.__td613AshDemoEntryConvergence?.current?.();
     const field = document.querySelector('#ashAiaMembrane .ash-flowcore-field:not(.ash-flowcore-field--proxy):not([hidden])');
     if (!field) return false;
     const style = getComputedStyle(field);
     const rect = field.getBoundingClientRect();
-    return Boolean(window.__td613AshWholeInstrument?.version)
+    return Boolean(caseId)
+      && convergence?.case_id === caseId
+      && convergence?.profile === 'political_campaign'
+      && convergence?.workspace === 'map'
+      && convergence?.posture === 'READY'
+      && convergence?.phase === 'VISIBLE'
+      && document.documentElement.dataset.ashDemoEntryReady === 'political_campaign:map'
+      && !document.documentElement.dataset.ashDemoEntryHydrating
+      && !document.documentElement.dataset.ashDemoEntryHold
+      && document.documentElement.dataset.ashPremiumWorkspace === 'map'
+      && Boolean(window.__td613AshWholeInstrument?.version)
       && Boolean(window.__td613AshLiveAIA?.version)
       && Boolean(window.__td613AshA6Affordances?.version)
       && style.display !== 'none'
@@ -48,16 +75,21 @@ try {
       && Number(style.opacity) > 0
       && rect.width > 0
       && rect.height > 0
+      && field.querySelectorAll('[data-aia-play]').length === 1
+      && !field.querySelector('[data-flowcore-ingress-play]')
+      && field.querySelector('[data-aia-play]')?.textContent?.trim() === '▶ Play Consequence Field'
       && document.getElementById('premiumPrimaryDock')
       && document.getElementById('ashA6LocalDocumentSurface')
       && document.getElementById('ashA6DraftSurface');
-  }, null, { timeout:90000 });
+  }, null, { timeout:120000 });
 
   report.observations.boot = await page.evaluate(() => ({
     whole_instrument_api:window.__td613AshWholeInstrument?.version || null,
     live_aia_api:window.__td613AshLiveAIA?.version || null,
     a6_affordance_api:window.__td613AshA6Affordances?.version || null,
     consequence_field_owner:document.documentElement.dataset.ashConsequenceFieldOwner || null,
+    registry_owner:window.__td613AshDemoRegistry?.snapshot?.().control_owner || null,
+    demo_entry:window.__td613AshDemoEntryConvergence?.current?.() || null,
     a6_state:document.documentElement.dataset.ashA6AffordanceRepair || null
   }));
 

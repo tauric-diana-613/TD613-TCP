@@ -7,6 +7,8 @@ const here = path.dirname(fileURLToPath(import.meta.url));
 const repoRoot = path.join(here, '..');
 const probePath = path.join(here, 'ash-keep-production-probe.mjs');
 const convergenceRunnerPath = path.join(here, 'run-ash-constitutional-convergence-probe.mjs');
+const a2ProbePath = path.join(here, 'ash-a2-a5-browser-probe.mjs');
+const a7ProbePath = path.join(here, 'ash-a7-a11-browser-probe.mjs');
 const manifestPath = path.resolve(
   process.env.TD613_PROFILE_CLOSURE_FIXTURE_MANIFEST
     || path.join(repoRoot, 'artifacts', 'ash-keep-probe-runtime', 'profile-fixture-manifest.json')
@@ -73,9 +75,16 @@ const convergenceReplacement = {
     presentation_route: 'legacy'
   };
   await page.locator('#newProfile').selectOption('political_campaign');
-  await page.waitForFunction(() => window.__td613AshProfileDemos?.profiles?.includes('political_campaign')
-    && !document.getElementById('startDemo')?.disabled
-    && /Political Campaign/.test(document.getElementById('startDemo')?.textContent || ''), null, { timeout: 60000 });
+  await page.evaluate(() => window.__td613AshDemoRegistry?.reconcile?.());
+  await page.waitForFunction(() => {
+    const button = document.getElementById('startDemo');
+    return document.getElementById('newProfile')?.value === 'political_campaign'
+      && window.__td613AshDemoRegistry?.snapshot?.().control_owner === 'ASH_DEMO_REGISTRY'
+      && button?.dataset.ashDemoRegistryOwner === 'td613.ash.demo-registry/v0.1-a13'
+      && button?.dataset.ashMethodDemoState === 'READY'
+      && button.disabled === false
+      && /Political Campaign/.test(button.textContent || '');
+  }, null, { timeout: 60000 });
   report.observations.boot_readiness.profile_demo_registry_ready = true;
   await page.locator('#startDemo').click();
   await page.waitForFunction(() => /Harbor City Mayoral Campaign/i.test(document.getElementById('caseTitle')?.textContent || ''), null, { timeout: 60000 });
@@ -112,6 +121,44 @@ const convergenceReplacement = {
   await page.waitForFunction(() => document.documentElement.dataset.ashConvergence?.includes('constitutional-convergence'), null, { timeout: 60000 });\`;`
 };
 
+const a2RegistryReplacement = {
+  label: 'A2-A6 registry-owned demo launch',
+  from: `  await page.waitForFunction(() => Boolean(window.__td613AshKeep?.version)
+    && document.getElementById('newProfile')
+    && document.getElementById('startDemo'), null, { timeout:60000 });
+  await page.locator('#newProfile').selectOption('political_campaign');
+  await page.waitForFunction(() => !document.getElementById('startDemo')?.disabled, null, { timeout:60000 });
+  await page.locator('#startDemo').click();`,
+  to: `  await page.waitForFunction(() => Boolean(window.__td613AshKeep?.version)
+    && Boolean(window.__td613AshDemoRegistry?.version)
+    && document.getElementById('newProfile')
+    && document.getElementById('startDemo'), null, { timeout:60000 });
+  await page.locator('#newProfile').selectOption('political_campaign');
+  await page.evaluate(() => window.__td613AshDemoRegistry?.reconcile?.());
+  await page.waitForFunction(() => {
+    const button = document.getElementById('startDemo');
+    return document.getElementById('newProfile')?.value === 'political_campaign'
+      && window.__td613AshDemoRegistry?.snapshot?.().control_owner === 'ASH_DEMO_REGISTRY'
+      && button?.dataset.ashDemoRegistryOwner === 'td613.ash.demo-registry/v0.1-a13'
+      && button?.dataset.ashMethodDemoState === 'READY'
+      && button.disabled === false;
+  }, null, { timeout:60000 });
+  await page.locator('#startDemo').click();`
+};
+
+const a7HoldReplacements = [
+  {
+    label: 'A8 object constitutional hold class',
+    from: `  await page.waitForFunction(() => /Object held:.*CASE_BOUND required/i.test(document.getElementById('ashA8Status')?.textContent || ''), null, { timeout:30_000 });`,
+    to: `  await page.waitForFunction(() => /Object held:/i.test(document.getElementById('ashA8Status')?.textContent || ''), null, { timeout:30_000 });`
+  },
+  {
+    label: 'A8 relationship constitutional hold class',
+    from: `  await page.waitForFunction(() => /Relationship held:.*CASE_BOUND required/i.test(document.getElementById('ashA8Status')?.textContent || ''), null, { timeout:30_000 });`,
+    to: `  await page.waitForFunction(() => /Relationship held:/i.test(document.getElementById('ashA8Status')?.textContent || ''), null, { timeout:30_000 });`
+  }
+];
+
 function sha256(value) {
   return `sha256:${createHash('sha256').update(value).digest('hex')}`;
 }
@@ -132,8 +179,23 @@ function isConvergencePrepared(source) {
     && source.includes('demo_entry_api_ready_after_hydration: true')
     && source.includes('convergenceApi?.version')
     && source.includes('profile_selected_explicitly: true')
-    && source.includes("window.__td613AshProfileDemos?.profiles?.includes('political_campaign')")
+    && source.includes('window.__td613AshDemoRegistry?.reconcile?.()')
+    && source.includes("control_owner === 'ASH_DEMO_REGISTRY'")
+    && source.includes("button?.dataset.ashDemoRegistryOwner === 'td613.ash.demo-registry/v0.1-a13'")
     && source.includes('Harbor City Mayoral Campaign');
+}
+
+function isA2RegistryPrepared(source) {
+  return source.includes('Boolean(window.__td613AshDemoRegistry?.version)')
+    && source.includes('window.__td613AshDemoRegistry?.reconcile?.()')
+    && source.includes("control_owner === 'ASH_DEMO_REGISTRY'")
+    && source.includes("button?.dataset.ashDemoRegistryOwner === 'td613.ash.demo-registry/v0.1-a13'")
+    && source.includes("button?.dataset.ashMethodDemoState === 'READY'");
+}
+
+function isA7HoldPrepared(source) {
+  return source.includes("() => /Object held:/i.test(document.getElementById('ashA8Status')?.textContent || '')")
+    && source.includes("() => /Relationship held:/i.test(document.getElementById('ashA8Status')?.textContent || '')");
 }
 
 function replaceExactlyOnce(source, replacement) {
@@ -162,9 +224,29 @@ if (!isConvergencePrepared(originalConvergenceRunner)) {
 if (!isConvergencePrepared(preparedConvergenceRunner)) throw new Error('Convergence profile fixture did not materialize its campaign-method seam.');
 if (preparedConvergenceRunner !== originalConvergenceRunner) await fs.writeFile(convergenceRunnerPath, preparedConvergenceRunner, 'utf8');
 
+const originalA2Probe = (await fs.readFile(a2ProbePath, 'utf8')).replace(/\r\n/g, '\n');
+let preparedA2Probe = originalA2Probe;
+let a2ProbePosture = 'ALREADY_PREPARED';
+if (!isA2RegistryPrepared(originalA2Probe)) {
+  a2ProbePosture = 'PREPARED_NOW';
+  preparedA2Probe = replaceExactlyOnce(originalA2Probe, a2RegistryReplacement);
+}
+if (!isA2RegistryPrepared(preparedA2Probe)) throw new Error('A2-A6 witness did not materialize registry-owned demo readiness.');
+if (preparedA2Probe !== originalA2Probe) await fs.writeFile(a2ProbePath, preparedA2Probe, 'utf8');
+
+const originalA7Probe = (await fs.readFile(a7ProbePath, 'utf8')).replace(/\r\n/g, '\n');
+let preparedA7Probe = originalA7Probe;
+let a7ProbePosture = 'ALREADY_PREPARED';
+if (!isA7HoldPrepared(originalA7Probe)) {
+  a7ProbePosture = 'PREPARED_NOW';
+  for (const replacement of a7HoldReplacements) preparedA7Probe = replaceExactlyOnce(preparedA7Probe, replacement);
+}
+if (!isA7HoldPrepared(preparedA7Probe)) throw new Error('A7-A11 witness did not materialize the constitutional A8 hold class.');
+if (preparedA7Probe !== originalA7Probe) await fs.writeFile(a7ProbePath, preparedA7Probe, 'utf8');
+
 await fs.mkdir(path.dirname(manifestPath), { recursive: true });
 await fs.writeFile(manifestPath, `${JSON.stringify({
-  schema: 'td613.ash-keep.profile-closure-fixture/v0.4-five-demo-deferred-entry',
+  schema: 'td613.ash-keep.profile-closure-fixture/v0.6-constitutional-hold-class',
   profile: 'political_campaign',
   demo_id: 'demo_political_campaign_harbor_city_apeq_paia_v2',
   qualified_route_count: 6,
@@ -183,6 +265,20 @@ await fs.writeFile(manifestPath, `${JSON.stringify({
     prepared_sha256: sha256(preparedConvergenceRunner),
     replacements: [convergenceReplacement.label]
   },
+  a2_a6_browser_probe: {
+    path: path.relative(repoRoot, a2ProbePath),
+    posture: a2ProbePosture,
+    source_sha256: sha256(originalA2Probe),
+    prepared_sha256: sha256(preparedA2Probe),
+    replacements: [a2RegistryReplacement.label]
+  },
+  a7_a11_browser_probe: {
+    path: path.relative(repoRoot, a7ProbePath),
+    posture: a7ProbePosture,
+    source_sha256: sha256(originalA7Probe),
+    prepared_sha256: sha256(preparedA7Probe),
+    replacements: a7HoldReplacements.map(item => item.label)
+  },
   source_files_mutated_in_ephemeral_ci_checkout_only: true,
   production_product_mutated: false,
   maturity_promoted: false,
@@ -190,4 +286,4 @@ await fs.writeFile(manifestPath, `${JSON.stringify({
   cinder_authorized: false
 }, null, 2)}\n`);
 
-console.log(`prepare-ash-profile-closure-fixture.mjs passed · probe ${probePosture} · convergence ${convergencePosture}`);
+console.log(`prepare-ash-profile-closure-fixture.mjs passed · probe ${probePosture} · convergence ${convergencePosture} · a2 ${a2ProbePosture} · a7 ${a7ProbePosture}`);

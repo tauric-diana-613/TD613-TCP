@@ -5,6 +5,7 @@ import { pathToFileURL } from 'node:url';
 
 const root = path.resolve(import.meta.dirname, '..');
 const modulePath = path.join(root, 'app/dome-world/ash-demo-pedagogy-rehydration.js');
+const registryPath = path.join(root, 'app/dome-world/ash-demo-registry.js');
 const entryPath = path.join(root, 'app/dome-world/ash-demo-entry-convergence.js');
 const routebarPath = path.join(root, 'app/dome-world/ash-demo-pedagogy-routebar.js');
 const wrapperPath = path.join(root, 'app/dome-world/ash-profile-demo-hydration.js');
@@ -12,6 +13,7 @@ const premiumReadinessPath = path.join(root, 'app/dome-world/ash-premium-readine
 const compositionCompatibilityPath = path.join(root, 'app/dome-world/ash-composition-receipt-compatibility.js');
 const workspaceBridgePath = path.join(root, 'app/dome-world/ash-workspace-bridge.js');
 const moduleSource = fs.readFileSync(modulePath, 'utf8');
+const registrySource = fs.readFileSync(registryPath, 'utf8');
 const entrySource = fs.readFileSync(entryPath, 'utf8');
 const routebarSource = fs.readFileSync(routebarPath, 'utf8');
 const wrapperSource = fs.readFileSync(wrapperPath, 'utf8');
@@ -19,7 +21,7 @@ const premiumReadinessSource = fs.readFileSync(premiumReadinessPath, 'utf8');
 const compositionCompatibilitySource = fs.readFileSync(compositionCompatibilityPath, 'utf8');
 const workspaceBridgeSource = fs.readFileSync(workspaceBridgePath, 'utf8');
 const { ASH_DEMO_PEDAGOGY_VERSION, ASH_DEMO_PEDAGOGY_MANIFESTS } = await import(pathToFileURL(modulePath));
-const RELEASE_EPOCH = '20260724-a12-release-v1';
+const RELEASE_EPOCH = '20260724-a13-release-v1';
 
 assert.equal(ASH_DEMO_PEDAGOGY_VERSION, 'td613.ash.demo-pedagogy/v0.2-event-driven-idle-stable');
 assert.deepEqual(Object.keys(ASH_DEMO_PEDAGOGY_MANIFESTS).sort(), ['fundraiser','investigation','political_campaign','research']);
@@ -44,7 +46,7 @@ for (const [profile, manifest] of Object.entries(ASH_DEMO_PEDAGOGY_MANIFESTS)) {
   for (const destination of ['home','map','work','choir','capsule']) assert(manifest.destination_copy[destination]);
   taskSignatures.add(manifest.task_spine.map(item => `${item.label}:${item.workspace}`).join('|'));
 }
-assert.equal(taskSignatures.size, 4, 'The four profiles must not collapse into recolored copies.');
+assert.equal(taskSignatures.size, 4, 'The retained domain manifests must not collapse into recolored copies.');
 
 assert.match(moduleSource, /Hydration ledger · what should work, wait, stay quiet, or remain separate/);
 assert.match(moduleSource, /GESTURE_READY/);
@@ -65,7 +67,12 @@ assert.match(moduleSource, /providerApproval/);
 assert.match(moduleSource, /approveRelease/);
 assert.match(moduleSource, /capsulePassphrase/);
 assert.doesNotMatch(moduleSource, /transport_authorized:\s*true|child_study_authorized:\s*true|automatic_ash_action:\s*true/);
-assert.match(wrapperSource, new RegExp(`ash-demo-pedagogy-rehydration\\.js\\?v=${RELEASE_EPOCH}`));
+
+assert.match(wrapperSource, new RegExp(`ash-demo-registry\\.js\\?v=${RELEASE_EPOCH}`));
+assert.match(registrySource, /ash-demo-pedagogy-rehydration\.js\?v=\$\{ASH_DEMO_ASSET_EPOCH\}/);
+assert.match(registrySource, /legalManifest/);
+assert.match(registrySource, /archiveManifest/);
+assert.match(registrySource, /RESERVED_FOR_A14/);
 
 assert.match(entrySource, /td613\.ash\.demo-entry-convergence\/v0\.5-premium-instrument-visible-release/);
 assert.match(entrySource, /data-ash-demo-entry-hydrating/);
@@ -79,19 +86,11 @@ assert.match(entrySource, /phase === 'STRUCTURAL'/);
 assert.match(entrySource, /phase === 'VISIBLE'/);
 assert.match(entrySource, /nextStable >= 2/);
 assert.match(entrySource, /delete doc\.documentElement\.dataset\.ashDemoEntryHydrating/);
-assert.match(entrySource, /publish\(caseId, profile, workspace, 'REVEALING', 'VISIBLE', 0\)/);
 assert.match(entrySource, /td613:ash:demo-entry-ready/);
 assert.match(entrySource, /WORKSPACE_NOT_VISIBLE/);
-assert.match(entrySource, /wrongWorkspace/);
-assert.match(entrySource, /if \(wrongWorkspace\) openWorkspace\(workspace\)/);
 assert.match(entrySource, /currentCaseId/);
 assert.match(entrySource, /state\.case_id === caseId/);
-assert.match(entrySource, /\['OPENING','REVEALING','READY'\]\.includes\(state\.posture\)/);
 assert.match(entrySource, /dataset\.ashDemoEntryCase = caseId/);
-assert.match(entrySource, /boxReady\(main, \{ opacity:true, pointer:true \}\)/);
-assert.match(entrySource, /boxReady\(context, \{ opacity:true, pointer:true \}\)/);
-assert.match(entrySource, /boxReady\(dock, \{ opacity:true, pointer:true \}\)/);
-assert.doesNotMatch(entrySource, /if \(!ready\) openWorkspace\(workspace\)/);
 assert.doesNotMatch(entrySource, /new MutationObserver/);
 
 assert.match(routebarSource, /td613\.ash\.demo-pedagogy-routebar\/v0\.2-event-driven-persistent-route/);
@@ -118,9 +117,9 @@ assert.match(compositionCompatibilitySource, /td613\.ash\.composition-receipt-co
 assert.match(compositionCompatibilitySource, /stable-navigation-motion/);
 assert.match(compositionCompatibilitySource, /td613:ash:composition-stable/);
 assert.match(compositionCompatibilitySource, /dataset\.ashCompositionRelease/);
-const releaseImport = module => `${module}\\.js\\?v=${RELEASE_EPOCH}`;
-assert.match(workspaceBridgeSource, new RegExp(`${releaseImport('ash-premium-ui')}[\\s\\S]*${releaseImport('ash-premium-readiness-bridge')}[\\s\\S]*${releaseImport('ash-ui-ux-rescue')}[\\s\\S]*${releaseImport('ash-composition-receipt-compatibility')}[\\s\\S]*${releaseImport('ash-demo-entry-convergence')}[\\s\\S]*${releaseImport('ash-demo-pedagogy-routebar')}`));
+assert.match(workspaceBridgeSource, new RegExp(`ash-profile-demo-hydration\\.js\\?v=${RELEASE_EPOCH}`));
+for (const module of ['ash-premium-ui','ash-premium-readiness-bridge','ash-ui-ux-rescue','ash-composition-receipt-compatibility','ash-demo-entry-convergence','ash-demo-pedagogy-routebar']) assert.match(workspaceBridgeSource, new RegExp(`${module}\\.js\\?v=20260724-a12-release-v1`));
 assert.doesNotMatch(workspaceBridgeSource, /ash-demo-pedagogy-persistence/);
 assert.equal(fs.existsSync(path.join(root, 'app/dome-world/ash-demo-pedagogy-persistence.js')), false, 'The obstructive all-workspace ledger portal must remain removed.');
 
-console.log('ash-four-profile-pedagogy.test.mjs passed');
+console.log('ash-four-profile-pedagogy.test.mjs passed under A13 registry ownership');

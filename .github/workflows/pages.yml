@@ -1,15 +1,11 @@
-name: Test and deploy static app
+name: Publish static app to GitHub Pages
 
 on:
-  push:
-    branches: [ main ]
-  pull_request:
-    branches: [ main ]
   workflow_dispatch:
     inputs:
       deploy_pages:
-        description: 'Deploy the static app to GitHub Pages'
-        required: false
+        description: 'Type true to publish the current branch app directory'
+        required: true
         default: 'false'
         type: choice
         options:
@@ -22,35 +18,26 @@ permissions:
   id-token: write
 
 concurrency:
-  group: github-pages-${{ github.ref }}
-  cancel-in-progress: true
+  group: github-pages-publication
+  cancel-in-progress: false
 
 jobs:
-  test:
+  deploy:
+    if: inputs.deploy_pages == 'true'
     runs-on: ubuntu-latest
+    timeout-minutes: 15
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-node@v4
         with:
           node-version: '22'
-          cache: 'npm'
+          cache: npm
       - run: npm ci
-      - name: Run lightweight TCP smoke gate
+      - name: Run one bounded publication smoke
         run: node tests/tcp-smoke.test.mjs
-
-  deploy:
-    needs: test
-    if: github.event_name == 'workflow_dispatch' && inputs.deploy_pages == 'true'
-    permissions:
-      contents: read
-      pages: write
-      id-token: write
-    environment:
-      name: github-pages
-      url: ${{ steps.deployment.outputs.page_url }}
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v4
       - uses: actions/configure-pages@v5
       - uses: actions/upload-pages-artifact@v3
         with:

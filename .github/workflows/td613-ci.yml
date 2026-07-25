@@ -1,165 +1,268 @@
-name: TD613 Core CI
+name: TD613 Consolidated Validation
 
 on:
   pull_request:
+    branches: [main]
+    types: [opened, synchronize, reopened, ready_for_review]
   push:
-    branches:
-      - main
+    branches: [main]
   workflow_dispatch:
+    inputs:
+      mode:
+        description: 'Validation mode'
+        required: true
+        default: standard
+        type: choice
+        options:
+          - standard
+          - full-browser
+          - full-repository
+          - calibration
 
 permissions:
   contents: read
 
 concurrency:
-  group: td613-core-${{ github.workflow }}-${{ github.ref }}
+  group: td613-validation-${{ github.event.pull_request.number || github.ref }}
   cancel-in-progress: true
 
+env:
+  NODE_VERSION: '22'
+  PYTHON_VERSION: '3.12'
+  PLAYWRIGHT_VERSION: '1.53.2'
+
 jobs:
-  core:
-    name: Core, release, and Safe Harbor
+  contracts:
+    name: Static, constitutional, and release contracts
+    if: github.event_name != 'workflow_dispatch' || (inputs.mode != 'calibration' && inputs.mode != 'full-repository')
     runs-on: ubuntu-latest
-    timeout-minutes: 35
+    timeout-minutes: 45
     steps:
       - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
       - uses: actions/setup-node@v4
         with:
-          node-version: 22
-          cache: npm
-      - run: npm ci
-      - run: node tests/workflow-estate.test.mjs
-      - name: Run legacy repository suite
-        id: legacy_suite
-        shell: bash
-        run: |
-          mkdir -p artifacts/core
-          set +e
-          npm test > artifacts/core/npm-test.log 2>&1
-          status=$?
-          cat artifacts/core/npm-test.log
-          exit "$status"
-      - name: Preserve held legacy suite diagnostics
-        if: failure() && steps.legacy_suite.outcome == 'failure'
-        uses: actions/upload-artifact@v4
-        with:
-          name: td613-core-legacy-suite-diagnostic
-          path: artifacts/core/npm-test.log
-          if-no-files-found: error
-          retention-days: 3
-      - run: npm run test:safe-harbor:current
-      - run: npm run test:safe-harbor:gen3:wave-b
-
-  hush:
-    name: Hush retained phase suites
-    runs-on: ubuntu-latest
-    timeout-minutes: 35
-    steps:
-      - uses: actions/checkout@v4
-      - uses: actions/setup-node@v4
-        with:
-          node-version: 22
-          cache: npm
-      - run: npm ci
-      - run: npm run test:hush:phase9
-      - run: npm run test:hush:phase10
-      - run: npm run test:hush:phase11
-      - run: npm run test:hush:phase12
-      - run: npm run test:hush:phase13
-      - run: npm run test:hush:phase14
-      - run: npm run test:hush:packets:check
-
-  dome-world:
-    name: Dome-World and Ash contracts
-    runs-on: ubuntu-latest
-    timeout-minutes: 35
-    steps:
-      - uses: actions/checkout@v4
-      - uses: actions/setup-node@v4
-        with:
-          node-version: 22
+          node-version: ${{ env.NODE_VERSION }}
           cache: npm
       - uses: actions/setup-python@v5
         with:
-          python-version: '3.12'
-      - run: npm ci
-      - name: Install shared Dome-World Python dependency
-        run: python -m pip install --disable-pip-version-check sympy
-      - name: Dome-World art and shell
-        run: npm run test:dome-world:art
-      - name: Dome-World Phase III shared boundary
-        run: npm run test:dome-world:phase3
-      - name: Ash custody contract
-        run: node tests/dome-world-ash-custody.test.mjs
-      - name: Ash leak challenge
-        run: node tests/dome-world-ash-leak-challenge.test.mjs
-      - name: Ash veil contract
-        run: node tests/dome-world-ash-veil.test.mjs
-      - name: Ash Cinder contract
-        run: node tests/dome-world-ash-cinder.test.mjs
-      - name: Ash comparison contract
-        run: node tests/dome-world-ash-compare.test.mjs
-      - name: Ash recall contract
-        run: node tests/dome-world-ash-recall.test.mjs
-      - name: Ash HCC grade gate
-        run: node tests/dome-world-ash-hcc-grade-gate.test.mjs
-      - name: Ash Keep core
-        run: node tests/ash-keep-core.test.mjs
-      - name: Ash Keep continuity
-        run: node tests/ash-keep-continuity.test.mjs
-      - name: Ash Keep Hush API
-        run: node tests/ash-keep-hush-api.test.mjs
-      - name: Export canonical Aperture Downloads witness
-        run: npm run aperture:export-downloads
-      - name: Ash Keep UI
-        run: node tests/ash-keep-ui.test.mjs
-      - name: Ash four-profile pedagogy
-        run: node tests/ash-four-profile-pedagogy.test.mjs
-      - name: Ash investigation guidance
-        run: node tests/ash-investigation-guidance.test.mjs
-      - name: Ash legal UX
-        run: node tests/ash-legal-ux.test.mjs
-      - name: Ash Custodian Return contracts
+          python-version: ${{ env.PYTHON_VERSION }}
+      - name: Install repository dependencies once
         run: |
-          node tests/ash-custodian-return.test.mjs
-          node tests/ash-custodian-return-contract.test.mjs
-          node tests/ash-custodian-return-closure.test.mjs
-          node tests/ash-custodian-return-closure-contract.test.mjs
-      - name: Ash Destination Handoff contracts
+          npm ci
+          python -m pip install --disable-pip-version-check pytest sympy
+      - name: Enforce the four-workflow estate and release membrane
         run: |
-          node tests/ash-destination-handoff.test.mjs
-          node tests/ash-destination-handoff-schemas.test.mjs
-          node tests/ash-destination-handoff-ui.test.mjs
-          node tests/ash-destination-handoff-closure.test.mjs
-      - name: Ash Choir calibration schemas
-        run: node tests/ash-keep-choir-calibration-schemas.test.mjs
-      - name: Ash production closure contract
-        run: node tests/ash-keep-production-closure-contract.test.mjs
-      - name: Ash lifecycle production contract
-        run: node tests/ash-lifecycle-production-contract.test.mjs
-      - name: Flow-Core P0-P7 seam closure
-        run: node tests/flowcore-p0-p7-seam-closure.test.mjs
-      - name: Flow-Core P0-P10 completion
-        run: node tests/flowcore-p0-p10-completion.test.mjs
-      - name: Flow-Core production observation contract
-        run: node tests/flowcore-production-observation.test.mjs
-      - name: Flow-Core runtime browser probe contract
-        run: node tests/flowcore-runtime-browser-probe.test.mjs
-      - name: Product architecture contracts
-        run: |
+          node tests/workflow-estate.test.mjs
+          node tests/tcp-smoke.test.mjs
+          node tests/release-manifest.test.mjs
+          node tests/docs-surface.test.mjs
+          node tests/release-hardening.test.mjs
+          node tests/vercel-deploy-hygiene.test.mjs
+          node tests/vercel-operator-release-gate.test.mjs
+          node tests/vercel-relock-safety.test.mjs
+          node tests/release-plumbing.test.mjs
           node tests/product-architecture/shell.test.mjs
-          node tests/product-architecture/lifecycle.test.mjs
+      - name: Validate Dome-World static surfaces
+        run: |
+          npm run test:dome-world:art
+          npm run test:dome-world:phase3
+      - name: Validate Phase IV static surfaces
+        run: |
+          python -m py_compile api/dome-world-engine-guard.py packages/dome_world_exact/reciprocal_bridge.py packages/dome_world_exact/flowcore_context.py scripts/phase4-local-integration-server.py
+          python -m pytest packages/dome_world_exact/tests/test_reciprocal_bridge_v01.py packages/dome_world_exact/tests/test_flowcore_context.py packages/dome_world_exact/tests/test_flowcore_context_api.py -q
+          node tests/aperture-phase4-bridge.test.mjs
+          node tests/phase4-deployment-probe.test.mjs
+          node tests/phase4-release-sync.test.mjs
+      - name: Validate Ash core and ingress surfaces
+        run: |
+          node tests/ash-keep-core.test.mjs
+          node tests/ash-keep-continuity.test.mjs
+          node tests/ash-keep-hush-api.test.mjs
+          node tests/ash-live-ingress-demos-cache.test.mjs
+          node tests/ash-ingress-polish.test.mjs
+          node tests/ash-reviewability.test.mjs
+      - name: Validate Ash A2-A8 surfaces
+        run: |
+          node tests/ash-a2-a5-whole-instrument.test.mjs
+          node tests/ash-a7-home-recompilation.test.mjs
+          node tests/ash-a8-case-map-recompilation.test.mjs
+          node tests/ash-flowcore-live-field.test.mjs
+      - name: Validate Ash A9 Work
+        run: node tests/ash-a9-work-recompilation.test.mjs
+      - name: Validate Ash A10 Choir
+        run: node tests/ash-a10-choir-recompilation.test.mjs
+      - name: Validate Ash A11 Capsule and postclosure cache law
+        run: |
+          node tests/ash-a11-capsule-recompilation.test.mjs
+          node tests/ash-a11-postclosure-cache-eviction.test.mjs
+      - name: Validate Ash A12 command rationalization
+        run: node tests/ash-a12-command-rationalization.test.mjs
+      - name: Validate Ash A13 unified registry and workflow collapse
+        run: node tests/ash-a13-unified-demo-registry.test.mjs
+      - name: Validate Ash demo hydration surfaces
+        run: |
+          node tests/ash-research-ux-rehydration.test.mjs
+          node tests/ash-final-rehydration-boundaries.test.mjs
+          node tests/ash-profile-demos.test.mjs
+          node tests/ash-four-profile-pedagogy.test.mjs
+          node tests/ash-legal-ux.test.mjs
+          node tests/ash-legal-control-state.test.mjs
+      - name: Validate Ash production-closure surfaces
+        run: |
+          node tests/ash-keep-production-closure-contract.test.mjs
+          node tests/ash-lifecycle-production-contract.test.mjs
+      - name: Validate Flow-Core P0-P7 seam closure
+        run: node tests/flowcore-p0-p7-seam-closure.test.mjs
+      - name: Validate Flow-Core P0-P10 completion
+        run: node tests/flowcore-p0-p10-completion.test.mjs
+      - name: Flow-Core claim · exact-head matrix placement
+        run: node --test --test-name-pattern="cross-browser evidence lives" tests/flowcore-production-observation.test.mjs
+      - name: Flow-Core claim · bounded production confirmation
+        run: node --test --test-name-pattern="production release verifies source" tests/flowcore-production-observation.test.mjs
+      - name: Flow-Core claim · empirical authority separation
+        run: node --test --test-name-pattern="production probes preserve" tests/flowcore-production-observation.test.mjs
+      - name: Flow-Core claim · executable dependency closure
+        run: node --test --test-name-pattern="exact-source observation follows" tests/flowcore-production-observation.test.mjs
+      - name: Flow-Core claim · static rewrite parity
+        run: node --test --test-name-pattern="exact static Vercel rewrites" tests/flowcore-production-observation.test.mjs
+      - name: Flow-Core claim · concurrent station packages
+        run: node --test --test-name-pattern="independent station packages" tests/flowcore-production-observation.test.mjs
+      - name: Validate Flow-Core runtime browser contract
+        run: node tests/flowcore-runtime-browser-probe.test.mjs
+      - name: Preserve diagnostics only when held
+        if: failure()
+        uses: actions/upload-artifact@v4
+        with:
+          name: td613-consolidated-contract-diagnostics
+          path: |
+            artifacts/
+            *.log
+          if-no-files-found: ignore
+          retention-days: 3
 
-  deployment-law:
-    name: Deployment law, locked posture
+  browser:
+    name: One exact-head Chromium Firefox WebKit witness
+    needs: contracts
+    if: >-
+      (github.event_name == 'workflow_dispatch' && inputs.mode == 'full-browser') ||
+      (github.event_name == 'pull_request' && github.event.action == 'ready_for_review')
     runs-on: ubuntu-latest
-    timeout-minutes: 15
+    timeout-minutes: 120
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-node@v4
         with:
-          node-version: 22
+          node-version: ${{ env.NODE_VERSION }}
+          cache: npm
+      - uses: actions/setup-python@v5
+        with:
+          python-version: ${{ env.PYTHON_VERSION }}
+      - name: Install dependencies and all browser engines once
+        run: |
+          npm ci
+          python -m pip install --disable-pip-version-check pytest sympy
+          npm install --no-save --package-lock=false playwright@${PLAYWRIGHT_VERSION}
+          npx playwright install --with-deps chromium firefox webkit
+      - name: Start one bounded Ash and Dome-World runtime
+        run: |
+          mkdir -p artifacts
+          node scripts/ash-keep-local-closure-server.mjs 6130 > artifacts/ash-server.log 2>&1 &
+          echo $! > artifacts/ash-server.pid
+          for attempt in $(seq 1 40); do
+            curl -fsS --max-time 2 http://127.0.0.1:6130/__ash_keep_closure/readiness > artifacts/ash-readiness.json && exit 0
+            sleep 1
+          done
+          cat artifacts/ash-server.log
+          exit 1
+      - name: Run the complete Ash witness through each installed engine
+        run: |
+          set -euo pipefail
+          for browser in chromium firefox webkit; do
+            export TD613_BROWSER="$browser"
+            export TD613_BASE_URL='http://127.0.0.1:6130'
+            TD613_ARTIFACT_DIR="artifacts/ash-a2-a5-$browser" timeout --foreground --signal=INT --kill-after=15s 540s node scripts/ash-a2-a5-browser-probe.mjs
+            TD613_ASH_STAGES='A7,A8,A9,A10,A11' TD613_ARTIFACT_DIR="artifacts/ash-a7-a11-$browser" timeout --foreground --signal=INT --kill-after=15s 540s node scripts/ash-a7-a11-browser-probe.mjs
+            TD613_ARTIFACT_DIR="artifacts/ash-a12-$browser" timeout --foreground --signal=INT --kill-after=15s 420s node scripts/ash-a12-browser-probe.mjs
+            TD613_ARTIFACT_DIR="artifacts/ash-a13-$browser" timeout --foreground --signal=INT --kill-after=15s 480s node scripts/ash-a13-demo-registry-browser-probe.mjs
+            TD613_ARTIFACT_DIR="artifacts/ash-flowcore-$browser" timeout --foreground --signal=INT --kill-after=15s 480s node scripts/run-ash-flowcore-live-field-browser-probe.mjs
+            TD613_ARTIFACT_DIR="artifacts/ash-ingress-$browser" timeout --foreground --signal=INT --kill-after=15s 360s node scripts/ash-ingress-polish-browser-probe.mjs
+            TD613_ARTIFACT_DIR="artifacts/ash-reviewability-$browser" timeout --foreground --signal=INT --kill-after=15s 420s node scripts/ash-reviewability-browser-probe.mjs
+            TD613_ARTIFACT_DIR="artifacts/ash-research-$browser" timeout --foreground --signal=INT --kill-after=15s 480s node scripts/ash-research-ux-browser-probe.mjs
+          done
+      - name: Run complete Flow-Core runtime evidence through the same browser installation
+        env:
+          TD613_BASE_URL: http://127.0.0.1:6130
+          TD613_FLOWCORE_ROUTE_PREFIX: app/dome-world
+          TD613_BROWSERS: chromium,firefox,webkit
+          TD613_ARTIFACT_DIR: artifacts/flowcore-runtime
+          TD613_PRODUCTION_OBSERVATION: 'false'
+        run: timeout --foreground --signal=INT --kill-after=20s 3600s node scripts/flowcore-runtime-browser-probe.mjs
+      - name: Run bounded closure and constitutional convergence once
+        env:
+          TD613_BASE_URL: http://127.0.0.1:6130
+          TD613_ARTIFACT_DIR: artifacts/ash-closure
+        run: |
+          node scripts/run-ash-keep-a1-production-probe.mjs
+          TD613_ARTIFACT_DIR=artifacts/ash-convergence timeout --foreground --signal=INT --kill-after=15s 360s node scripts/run-ash-constitutional-convergence-handshake.mjs
+      - name: Stop Ash runtime
+        if: always()
+        run: test ! -f artifacts/ash-server.pid || kill "$(cat artifacts/ash-server.pid)" 2>/dev/null || true
+      - name: Run Phase IV live and browser probe with the existing Chromium install
+        run: |
+          python scripts/phase4-local-integration-server.py --port 6134 > artifacts/phase4-server.log 2>&1 &
+          echo $! > artifacts/phase4-server.pid
+          for attempt in $(seq 1 30); do
+            curl -fsS --max-time 2 http://127.0.0.1:6134/api/aperture-bridge > artifacts/phase4-readiness.json && break
+            sleep 1
+          done
+          TD613_BASE_URL=http://127.0.0.1:6134 TD613_FETCH_TIMEOUT_MS=12000 node scripts/phase4-reciprocal-bridge-deployment-probe.mjs > artifacts/phase4-live-probe.json
+          TD613_BASE_URL=http://127.0.0.1:6134 TD613_ARTIFACT_DIR=artifacts/phase4-browser node scripts/phase4-reciprocal-bridge-browser-probe.mjs
+      - name: Stop Phase IV runtime
+        if: always()
+        run: test ! -f artifacts/phase4-server.pid || kill "$(cat artifacts/phase4-server.pid)" 2>/dev/null || true
+      - name: Preserve the single exact-head browser evidence packet
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: td613-exact-head-browser-receipts
+          path: artifacts/
+          if-no-files-found: warn
+          retention-days: 7
+
+  full_repository:
+    name: Explicit full-repository validation
+    if: github.event_name == 'workflow_dispatch' && inputs.mode == 'full-repository'
+    runs-on: ubuntu-latest
+    timeout-minutes: 90
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: ${{ env.NODE_VERSION }}
           cache: npm
       - run: npm ci
-      - run: node tests/vercel-deploy-hygiene.test.mjs
-      - run: node tests/vercel-operator-release-gate.test.mjs
-      - run: node tests/vercel-relock-safety.test.mjs
-      - run: node tests/release-plumbing.test.mjs
+      - name: Run the complete repository suite only by explicit dispatch
+        run: npm test
+
+  calibration:
+    name: Explicit self-hosted calibration
+    if: github.event_name == 'workflow_dispatch' && inputs.mode == 'calibration'
+    runs-on: self-hosted
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+          cache: npm
+      - run: npm ci
+      - name: Run calibration only by explicit dispatch
+        run: npm run test:calibration 2>&1 | tee calibration-output.txt
+      - if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: calibration-output
+          path: calibration-output.txt
+          retention-days: 7

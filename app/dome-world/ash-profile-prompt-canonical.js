@@ -1,4 +1,4 @@
-export const ASH_PROFILE_PROMPT_CANONICAL_VERSION = 'td613.ash.profile-prompt-canonical/v1.0-bounded-case-choice-revision';
+export const ASH_PROFILE_PROMPT_CANONICAL_VERSION = 'td613.ash.profile-prompt-canonical/v1.1-a13-registry-handoff';
 
 const host = globalThis.window;
 const doc = globalThis.document;
@@ -187,7 +187,10 @@ if (host && doc?.documentElement) {
   for (const type of ['aia-ready','aia3-ready','composition-stable']) {
     host.addEventListener(`td613:ash:${type}`, () => queueControlReconcile(type.toUpperCase()));
   }
-  host.addEventListener('td613:ash:post-ingress-motion', () => applyCanonicalProfilePrompt({ reason:'POST_INGRESS_MOTION' }));
+  host.addEventListener('td613:ash:post-ingress-motion', () => {
+    applyCanonicalProfilePrompt({ reason:'POST_INGRESS_MOTION' });
+    host.__td613AshDemoRegistry?.reconcile?.();
+  });
   host.addEventListener('td613:ash:case-closed', () => queueMicrotask(() => applyCanonicalProfilePrompt({ resetSelection:true, reason:'CASE_CLOSED' })));
   host.__td613AshProfilePromptCanonical = Object.freeze({
     version:ASH_PROFILE_PROMPT_CANONICAL_VERSION,

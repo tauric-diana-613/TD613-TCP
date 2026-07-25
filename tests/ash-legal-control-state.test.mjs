@@ -4,22 +4,23 @@ import { ASH_LEGAL_CONTROL_STATE_VERSION } from '../app/dome-world/ash-legal-dem
 
 const control = fs.readFileSync('app/dome-world/ash-legal-demo-control-state.js', 'utf8');
 const bridge = fs.readFileSync('app/dome-world/ash-workspace-bridge.js', 'utf8');
+const registry = fs.readFileSync('app/dome-world/ash-demo-registry.js', 'utf8');
 const legal = fs.readFileSync('app/dome-world/ash-legal-profile-demo.js', 'utf8');
-const RELEASE_EPOCH = '20260724-a12-release-v1';
 
 assert.equal(ASH_LEGAL_CONTROL_STATE_VERSION, 'td613.ash.legal-control-state/v0.1-registered-demo-owner');
 assert.match(control, /Open Legal matter demo/);
 assert.match(control, /Opening Legal matter/);
-assert.match(control, /dataset\.ashMethodDemoState = busy \? 'BUSY' : 'READY'/);
 assert.match(control, /dataset\.ashLegalControlState/);
-assert.match(control, /new MutationObserver\(defer\)/);
-assert.match(control, /profile-demo-hydrated/);
-assert.match(control, /aia3-readiness-changed/);
 assert.match(control, /no real client data or legal advice/i);
-assert.doesNotMatch(control, /No Legal Matter qualification demo yet|demo-unavailable['"]\);\s*return true/);
-assert.match(bridge, new RegExp(`ash-legal-demo-control-state\\.js\\?v=${RELEASE_EPOCH}`));
-assert(bridge.indexOf('ash-profile-demo-hydration.js') < bridge.indexOf('ash-legal-demo-control-state.js'), 'Legal owner must load after the shared profile registry.');
-assert.match(legal, /host\.addEventListener\('click',[\s\S]*stopImmediatePropagation\(\)[\s\S]*hydrateLegalMatterDemo/);
 assert.doesNotMatch(control + legal, /legal_advice_provided:\s*true|transport_authorized:\s*true|child_study_authorized:\s*true/);
 
-console.log('ash-legal-control-state.test.mjs passed');
+assert.doesNotMatch(bridge, /^import .*ash-legal-demo-control-state\.js/m, 'Legacy Legal control listener must not load as a runtime owner.');
+assert.match(bridge, /ash-profile-demo-hydration\.js\?v=20260724-a13-release-v1/);
+assert.match(registry, /legal:Object\.freeze\(\{ profile:'legal'/);
+assert.match(registry, /owner:'LEGAL'/);
+assert.match(registry, /hydrateLegalMatterDemo/);
+assert.match(registry, /Legal Matter/);
+assert.match(registry, /no legal advice/i);
+assert.match(registry, /control_owner:'ASH_DEMO_REGISTRY'/);
+
+console.log('ash-legal-control-state.test.mjs passed under A13 registry ownership');

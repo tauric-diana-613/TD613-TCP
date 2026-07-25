@@ -29,14 +29,18 @@ assert.match(convergenceRunner, /open\('map'\)/);
 assert.match(convergenceRunner, /workspace-test/);
 assert.match(convergenceRunner, /workspace-map/);
 assert.match(convergenceRunner, /guided workspace migration was not materialized/);
-assert.match(convergenceRunner, /selectOption\('political_campaign'\)/);
+assert.match(convergenceRunner, /select\.value = 'political_campaign'/);
+assert.match(convergenceRunner, /dispatchEvent\(new Event\('change', \{ bubbles:true \}\)\)/);
 assert.match(convergenceRunner, /Harbor City Mayoral Campaign/);
 assert.match(convergenceRunner, /profile_selected_explicitly: true/);
-assert.match(convergenceRunner, /profile_demo_registry_deferred_until_selection: true/);
+assert.match(convergenceRunner, /profile_demo_registry_ready_before_selection: true/);
+assert.match(convergenceRunner, /window\.__td613AshDemoRegistry\?\.version === 'td613\.ash\.demo-registry\/v0\.1-a13'/);
+assert.match(convergenceRunner, /dataset\.ashDemoControlOwner === 'ASH_DEMO_REGISTRY'/);
+assert.match(convergenceRunner, /dataset\.ashDemoRegistry === 'td613\.ash\.demo-registry\/v0\.1-a13'/);
 assert.match(convergenceRunner, /demo_entry_convergence_deferred_until_case_hydration: true/);
 assert.match(convergenceRunner, /demo_entry_api_ready_after_hydration: true/);
 assert.match(convergenceRunner, /convergenceApi\?\.version/);
-assert.match(convergenceRunner, /window\.__td613AshProfileDemos\?\.profiles\?\.includes/);
+assert.match(convergenceRunner, /window\.__td613AshDemoRegistry\.reconcile\(\)/);
 assert.match(convergenceRunner, /explicit profile and deferred entry-readiness gate was not materialized/);
 assert.doesNotMatch(convergenceRunner,
   /dataset\.ashConvergence\?\.includes\('constitutional-convergence'\)[\s\S]*window\.__td613AshDemoEntryConvergence\?\.version, null, \{ timeout: 60000 \}\);/,
@@ -50,9 +54,10 @@ assert.match(profileFixtureCompiler, /demo_entry_convergence_deferred_until_case
 assert.match(profileFixtureCompiler, /demo_entry_api_ready_after_hydration: true/);
 assert.match(profileFixtureCompiler, /convergenceApi\?\.version/);
 assert.match(profileFixtureCompiler, /profile_selected_explicitly: true/);
-assert.match(profileFixtureCompiler, /window\.__td613AshProfileDemos\?\.profiles\?\.includes\('political_campaign'\)/);
+assert.match(profileFixtureCompiler, /window\.__td613AshDemoRegistry\?\.reconcile\?\.\(\)/);
+assert.match(profileFixtureCompiler, /control_owner === 'ASH_DEMO_REGISTRY'/);
 assert.match(profileFixtureCompiler, /function isConvergencePrepared/);
-assert.match(profileFixtureCompiler, /v0\.4-five-demo-deferred-entry/);
+assert.match(profileFixtureCompiler, /v0\.6-constitutional-hold-class/);
 assert.doesNotMatch(profileFixtureCompiler, /profile_demo_ready: true/,
   'Closure fixture compiler still recognizes the superseded convergence readiness marker');
 assert.match(lifecycle, /selectOption\('political_campaign'\)/);

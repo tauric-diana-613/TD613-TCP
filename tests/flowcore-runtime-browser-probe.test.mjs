@@ -4,7 +4,8 @@ import test from 'node:test';
 
 const browserProbe = fs.readFileSync('scripts/flowcore-runtime-browser-probe.mjs', 'utf8');
 const contentProbe = fs.readFileSync('scripts/flowcore-release-content-probe.mjs', 'utf8');
-const workflow = fs.readFileSync('.github/workflows/vercel-operator-release.yml', 'utf8');
+const consolidated = fs.readFileSync('.github/workflows/td613-ci.yml', 'utf8');
+const release = fs.readFileSync('.github/workflows/vercel-operator-release.yml', 'utf8');
 
 const surfaces = [
   'information-dome-pedagogue.html',
@@ -46,15 +47,30 @@ test('production content observer binds deployed bytes to the selected source pa
   assert.match(contentProbe, /authorizes_public_route_promotion:\s*false/);
 });
 
-test('the single explicit release conduit retains Flow-Core browser evidence', () => {
-  assert.match(workflow, /^\s{2}issue_comment:\s*$/m);
-  assert.doesNotMatch(workflow, /^\s{2}(push|pull_request|workflow_dispatch):\s*$/m);
-  assert.match(workflow, /playwright@1\.53\.2/);
-  assert.match(workflow, /playwright install --with-deps chromium firefox webkit/);
-  assert.match(workflow, /flowcore-runtime-browser-probe\.mjs/);
-  assert.match(workflow, /flowcore-release-content-probe\.mjs/);
-  assert.match(workflow, /flowcore-and-ash-aia3-production-release-evidence/);
-  assert.match(workflow, /TD613_FLOWCORE_ROUTE_PREFIX:\s*dome-world/);
+test('one explicit exact-head dispatch retains the complete browser evidence', () => {
+  assert.match(consolidated, /workflow_dispatch:/);
+  assert.match(consolidated, /types:\s*\[opened, synchronize, reopened, ready_for_review\]/);
+  assert.match(consolidated, /full-browser/);
+  assert.match(consolidated, /github\.event_name == 'workflow_dispatch' && inputs\.mode == 'full-browser'/);
+  assert.match(consolidated, /github\.event_name == 'pull_request' && github\.event\.action == 'ready_for_review'/);
+  assert.match(consolidated, /playwright@\$\{PLAYWRIGHT_VERSION\}/);
+  assert.match(consolidated, /playwright install --with-deps chromium firefox webkit/);
+  assert.match(consolidated, /flowcore-runtime-browser-probe\.mjs/);
+  assert.match(consolidated, /TD613_BROWSERS: chromium,firefox,webkit/);
+  assert.match(consolidated, /TD613_FLOWCORE_ROUTE_PREFIX: app\/dome-world/);
+  assert.match(consolidated, /td613-exact-head-browser-receipts/);
+  assert.doesNotMatch(consolidated, /github\.event\.action == 'synchronize'[\s\S]*playwright install/);
   assert.equal(fs.existsSync('.github/workflows/flowcore-runtime-evidence.yml'), false,
-    'Flow-Core runtime evidence must not regain an independent commit-triggered workflow.');
+    'Flow-Core runtime evidence must not regain an independent workflow.');
+});
+
+test('production release uses bounded confirmation rather than replaying the matrix', () => {
+  assert.match(release, /^\s{2}issue_comment:\s*$/m);
+  assert.match(release, /flowcore-release-content-probe\.mjs/);
+  assert.match(release, /playwright install --with-deps chromium/);
+  assert.match(release, /ash-a13-demo-registry-browser-probe\.mjs/);
+  assert.match(release, /ash-lifecycle-production-probe\.mjs/);
+  assert.doesNotMatch(release, /flowcore-runtime-browser-probe\.mjs/);
+  assert.doesNotMatch(release, /playwright install --with-deps chromium firefox webkit/);
+  assert.doesNotMatch(release, /TD613_BROWSERS: chromium,firefox,webkit/);
 });

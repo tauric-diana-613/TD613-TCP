@@ -23,6 +23,44 @@ const hushReplacement = [
   "  await page.locator('#protectedLiterals').fill('Synthetic Person');"
 ].join('\n');
 
+const launchTarget = `  await page.locator('#startDemo').click();
+  await page.locator('#launch').waitFor({ state: 'hidden' });
+  await waitForText(page, '#caseTitle', /Glasshouse Archive inquiry/);`;
+const launchReplacement = `  await page.waitForFunction(() => window.__td613AshDemoRegistry?.version === 'td613.ash.demo-registry/v0.1-a13'
+    && window.__td613AshDemoRegistry?.snapshot?.().control_owner === 'ASH_DEMO_REGISTRY'
+    && document.documentElement.dataset.ashDemoControlOwner === 'ASH_DEMO_REGISTRY'
+    && document.getElementById('newProfile')?.value === ''
+    && document.getElementById('startDemo')?.dataset.ashMethodDemoState === 'HELD', null, { timeout:60000 });
+  await page.evaluate(() => {
+    const select = document.getElementById('newProfile');
+    select.value = 'investigation';
+    select.dispatchEvent(new Event('change', { bubbles:true }));
+    window.__td613AshDemoRegistry.reconcile();
+  });
+  await page.waitForFunction(() => {
+    const button = document.getElementById('startDemo');
+    return document.getElementById('newProfile')?.value === 'investigation'
+      && button?.dataset.ashDemoRegistryOwner === 'td613.ash.demo-registry/v0.1-a13'
+      && button?.dataset.ashMethodDemoState === 'READY'
+      && button.disabled === false;
+  }, null, { timeout:60000 });
+  await page.locator('#startDemo').click();
+  await page.locator('#launch').waitFor({ state: 'hidden' });
+  await waitForText(page, '#caseTitle', /Glasshouse Archive inquiry/);`;
+
+const reloadTarget = `  await page.reload({ waitUntil: 'networkidle' });
+  await page.locator('#launch').waitFor({ state: 'hidden' });
+  await waitForText(page, '#caseTitle', /Glasshouse Archive inquiry/);`;
+const reloadReplacement = `  await page.reload({ waitUntil: 'domcontentloaded', timeout:90000 });
+  await page.waitForFunction(id => window.__td613AshDemoRegistry?.version === 'td613.ash.demo-registry/v0.1-a13'
+    && window.__td613AshDemoRegistry?.snapshot?.().control_owner === 'ASH_DEMO_REGISTRY'
+    && document.documentElement.dataset.ashDemoControlOwner === 'ASH_DEMO_REGISTRY'
+    && localStorage.getItem('td613.ash-keep.current-case') === id
+    && document.getElementById('launch')?.classList.contains('hidden')
+    && /Glasshouse Archive inquiry/.test(document.getElementById('caseTitle')?.textContent || ''), caseId, { timeout:60000 });
+  await page.locator('#launch').waitFor({ state: 'hidden' });
+  await waitForText(page, '#caseTitle', /Glasshouse Archive inquiry/);`;
+
 const layoutTarget = `    const clipped = visible
       .map(node => ({ id: node.id || node.textContent?.trim().slice(0, 32) || node.tagName, rect: node.getBoundingClientRect() }))
       .filter(item => item.rect.left < -1 || item.rect.right > window.innerWidth + 1)
@@ -339,7 +377,9 @@ function replaceExactlyOnce(source, target, replacement, label) {
 
 const sourceOnDisk = await fs.readFile(sourcePath, 'utf8');
 const source = sourceOnDisk.replace(/\r\n/g, '\n');
-let runtime = replaceExactlyOnce(source, hushTarget, hushReplacement, 'declared Hush selection');
+let runtime = replaceExactlyOnce(source, launchTarget, launchReplacement, 'A13 governed demo launch');
+runtime = replaceExactlyOnce(runtime, reloadTarget, reloadReplacement, 'A13 registry-ready continuity reload');
+runtime = replaceExactlyOnce(runtime, hushTarget, hushReplacement, 'declared Hush selection');
 runtime = replaceExactlyOnce(runtime, layoutTarget, layoutReplacement, 'mobile scroll-lane classification');
 runtime = replaceExactlyOnce(runtime, returnTarget, returnReplacement, 'layout receipt return');
 runtime = replaceExactlyOnce(runtime, capsuleConfirmationTarget, capsuleConfirmationReplacement, 'return-ready Capsule confirmation');
@@ -348,7 +388,7 @@ runtime = replaceExactlyOnce(runtime, custodyBindingTarget, custodyBindingReplac
 runtime = replaceExactlyOnce(runtime, routeReportTarget, routeReportReplacement, 'custody-aware Route Memory receipt');
 runtime = replaceExactlyOnce(runtime, releaseBindingTarget, releaseBindingReplacement, 'release-eligible continuity fixture');
 
-if (runtime === source || !runtime.includes('selectedProviderExcerpt') || !runtime.includes('scroll_lane_controls') || !runtime.includes('bindSyntheticCustody') || !runtime.includes('bindSyntheticRelease') || !runtime.includes('HELD_CASE_BOUND_REQUIRED') || !runtime.includes('current_release_binding') || !runtime.includes('compileReadinessReceipt') || !runtime.includes('computeReceiptDigest') || !runtime.includes('return-ready\\s+')) {
+if (runtime === source || !runtime.includes('selectedProviderExcerpt') || !runtime.includes('scroll_lane_controls') || !runtime.includes('bindSyntheticCustody') || !runtime.includes('bindSyntheticRelease') || !runtime.includes('HELD_CASE_BOUND_REQUIRED') || !runtime.includes('current_release_binding') || !runtime.includes('compileReadinessReceipt') || !runtime.includes('computeReceiptDigest') || !runtime.includes('return-ready\\s+') || !runtime.includes("select.value = 'investigation'") || !runtime.includes("dataset.ashDemoControlOwner === 'ASH_DEMO_REGISTRY'") || !runtime.includes("waitUntil: 'domcontentloaded'")) {
   throw new Error('Fixture runner did not materialize every declared runtime seam.');
 }
 
@@ -366,6 +406,8 @@ await fs.writeFile(manifestPath, `${JSON.stringify({
   runtime_copy_ephemeral: true,
   fixture_class: 'SYNTHETIC_OPERATOR_SELECTED_EXCERPT',
   runtime_transformations: [
+    'WAIT_FOR_A13_REGISTRY_AND_SELECT_INVESTIGATION_BEFORE_DEMO_LAUNCH',
+    'RESTORE_CONTINUITY_ONLY_AFTER_A13_REGISTRY_AND_CASE_POINTER_SETTLE',
     'DECLARE_SELECTED_EXCERPT_AFTER_UNKEPT_DRAFT_RELOAD',
     'CLASSIFY_INTENTIONAL_HORIZONTAL_SCROLL_LANES_SEPARATELY_FROM_CLIPPING',
     'ACCEPT_RETURN_READY_CAPSULE_CONFIRMATION_WITHOUT_WEAKENING_EXPORT_GATES',

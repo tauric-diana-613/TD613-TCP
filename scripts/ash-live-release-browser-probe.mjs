@@ -49,7 +49,7 @@ async function waitForRuntime(page){
     && window.__td613AshIngressLayout?.version==='td613.ash.ingress-layout/v1.0-canonical-native-scroll'
     && window.__td613AshProfileDemos?.version==='td613.ash.apeq-paia-profile-demos/v0.1'
     && window.__td613AshResearchDemo?.version==='td613.ash.research-demo/v0.3-child-legible-surface-ledger'
-    && window.__td613AshResearchControlState?.version==='td613.ash.research-control-state/v0.4-child-legible-ledger'
+    && window.__td613AshDemoRegistry?.snapshot?.().control_owner==='ASH_DEMO_REGISTRY'
     && Boolean(window.__td613AshDemoEntryConvergence?.version)
     && window.__td613AshCacheTransition?.epoch===epoch
     && document.documentElement.dataset.ashMembraneReady==='true',
@@ -199,7 +199,7 @@ try{
       url:location.href,
       launch_visible:getComputedStyle(document.getElementById('launch')).display!=='none'
     }));
-    assert(closed.selected==='','Close Case retained an armed case selection.');
+    assert(closed.selected==='', 'Close Case retained an armed case selection.');
     assert(!/[?&](?:ash_flush|asset_epoch|cache_nonce|arrival|case|demo)=/.test(closed.url),'Close Case retained session query markers.');
 
     await page.reload({waitUntil:'domcontentloaded'});
@@ -218,7 +218,7 @@ try{
       && getComputedStyle(document.getElementById('launch')).display==='none',demo.caseMap.case_id);
     const reopened=await current(page);
     assert(reopened.caseMap?.case_id===demo.caseMap.case_id,'Deliberate reopen did not restore the saved case.');
-    report.session_logout={case_id:demo.caseMap.case_id,entry_convergence:'investigation:home',closed,after_reload:afterReload,reopened:true,main_scroll_y:scrollAfter,canvas_touch_action:scrollBefore.touch};
+    report.session_logout={case_id:demo.caseMap.case_id,entry_convergence:'investigation:home',closed,afterReload,reopened:true,main_scroll_y:scrollAfter,canvas_touch_action:scrollBefore.touch};
     await page.screenshot({path:path.join(out,`${engineName}-session-reopened.png`),fullPage:true});
     await context.close();
   }
@@ -230,9 +230,9 @@ try{
     await waitForRuntime(page);
     await page.locator('#newProfile').selectOption(profile);
     if(profile==='research'){
-      await page.waitForFunction(()=>{const button=document.getElementById('startDemo');return button&&!button.disabled&&button.dataset.ashResearchControlState==='READY'&&document.getElementById('newCase')?.disabled===false;});
+      await page.waitForFunction(()=>{const button=document.getElementById('startDemo');return button&&!button.disabled&&button.dataset.ashDemoRegistryOwner==='td613.ash.demo-registry/v0.1-a13'&&button.dataset.ashMethodDemoState==='READY'&&document.getElementById('newCase')?.disabled===false;});
     }else{
-      await page.waitForFunction(value=>{const button=document.getElementById('startDemo');return document.getElementById('newProfile')?.value===value&&button&&!button.disabled&&button.dataset.ashMethodDemoState==='READY';},profile);
+      await page.waitForFunction(value=>{const button=document.getElementById('startDemo');return document.getElementById('newProfile')?.value===value&&button&&!button.disabled&&button.dataset.ashDemoRegistryOwner==='td613.ash.demo-registry/v0.1-a13'&&button.dataset.ashMethodDemoState==='READY';},profile);
     }
     await page.locator('#startDemo').click();
     await page.waitForFunction(({profile,title,docket})=>document.documentElement.dataset.ashDemoProfile===profile&&document.getElementById('caseTitle')?.textContent?.includes(title)&&document.getElementById(docket),{profile,title:plan.title,docket:plan.docket});

@@ -22,7 +22,7 @@ assert.match(restoration, /position:relative!important/);
 assert.doesNotMatch(restoration, /setInterval\s*\(/);
 assert.doesNotMatch(restoration, /new MutationObserver/);
 
-assert.match(profilePrompt, /td613\.ash\.profile-prompt-canonical\/v1\.0-bounded-case-choice-revision/);
+assert.match(profilePrompt, /td613\.ash\.profile-prompt-canonical\/v1\.1-a13-registry-handoff/);
 assert.match(profilePrompt, /let explicitChoice = ''/);
 assert.match(profilePrompt, /let explicitCaseChoice = ''/);
 assert.match(profilePrompt, /let controlObserver = null/);
@@ -76,6 +76,7 @@ assert.match(profilePrompt, /applyCanonicalProfilePrompt\(\{ resetSelection:true
 assert.match(profilePrompt, /for \(const type of \['aia-ready','aia3-ready','composition-stable'\]\)/);
 assert.match(profilePrompt, /queueControlReconcile\(type\.toUpperCase\(\)\)/);
 assert.match(profilePrompt, /td613:ash:post-ingress-motion/);
+assert.match(profilePrompt, /applyCanonicalProfilePrompt\(\{ reason:'POST_INGRESS_MOTION' \}\);[\s\S]*?host\.__td613AshDemoRegistry\?\.reconcile\?\.\(\)/);
 assert.match(profilePrompt, /td613:ash:case-closed/);
 assert.match(profilePrompt, /resetSelection:true, reason:'CASE_CLOSED'/);
 assert.match(profilePrompt, /explicit_case_choice:explicitCaseChoice \|\| null/);

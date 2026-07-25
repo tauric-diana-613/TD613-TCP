@@ -62,7 +62,9 @@ function restoreDraftGroup(group) {
 }
 
 function restoreWorkshopDraft() {
-  const restored = restoreDraftGroup(objectDraft) || restoreDraftGroup(relationDraft);
+  const objectRestored = restoreDraftGroup(objectDraft);
+  const relationRestored = restoreDraftGroup(relationDraft);
+  const restored = objectRestored || relationRestored;
   if (doc?.documentElement) doc.documentElement.dataset.ashA8DraftDurability = restored ? 'RESTORED_BY_A8' : 'READY';
   return restored;
 }
@@ -151,7 +153,7 @@ function relationPreview(snapshot) {
   const to = byId('ashA8RelationTo')?.value || '';
   const type = byId('ashA8RelationType')?.value.trim() || 'choose relation';
   const target = byId('ashA8RelationPreview');
-  if (target) target.innerHTML = `<strong>${escapeHtml(nodeLabel(snapshot, from))}</strong><span> —— ${escapeHtml(type)} ——&gt; </span><strong>${escapeHtml(nodeLabel(snapshot, to))}</strong><p>Direction: Object A → Object B. Reverse it by swapping the two object cards.</p><p>Evidence: ${escapeHtml(byId('ashA8RelationEvidence')?.value.trim() || 'not yet stated')}</p><p>Uncertainty: ${escapeHtml(byId('ashA8RelationUncertain')?.value.trim() || 'not yet stated')}</p><em>Preview only. Relation authority remains with the existing Ash map engine.</em>`;
+  if (target) target.innerHTML = `<strong>${escapeHtml(nodeLabel(snapshot, from))}</strong><span> —— ${escapeHtml(type)} ——&gt; </span><strong>${escapeHtml(nodeLabel(snapshot, to))}</strong><p>Direction: Object A → Object B. Reverse it by swapping the object cards.</p><p>Evidence: ${escapeHtml(byId('ashA8RelationEvidence')?.value.trim() || 'not yet stated')}</p><p>Uncertainty: ${escapeHtml(byId('ashA8RelationUncertain')?.value.trim() || 'not yet stated')}</p><em>Preview only. Relation authority remains with the existing Ash map engine.</em>`;
 }
 
 function revealAccessibleTable() {
@@ -367,7 +369,7 @@ installAshStage({
 doc?.addEventListener?.('input', captureDelegatedDraft, true);
 doc?.addEventListener?.('change', captureDelegatedDraft, true);
 
-for (const type of ['case-created','case-closed','profile-demo-hydrated']) {
+for (const type of ['case-created','case-closed']) {
   host?.addEventListener?.(`td613:ash:${type}`, clearDrafts);
 }
 
