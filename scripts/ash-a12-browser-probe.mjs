@@ -60,15 +60,20 @@ async function activateInvestigationDemo(page) {
   }
   await page.evaluate(() => {
     const registry = window.__td613AshDemoRegistry;
-    registry?.reconcile?.();
     const profile = document.getElementById('newProfile');
     const button = document.getElementById('startDemo');
-    const snapshot = registry?.snapshot?.() || null;
-    const ready = profile?.value === 'investigation'
+    if (!registry?.version || !profile || !button) {
+      throw new Error('WebKit A12 registry-owned demo control was unavailable.');
+    }
+    profile.value = 'investigation';
+    profile.dispatchEvent(new Event('change', { bubbles:true }));
+    registry.reconcile();
+    const snapshot = registry.snapshot?.() || null;
+    const ready = profile.value === 'investigation'
       && snapshot?.control_owner === 'ASH_DEMO_REGISTRY'
       && document.documentElement.dataset.ashDemoControlOwner === 'ASH_DEMO_REGISTRY'
-      && button?.dataset.ashDemoRegistryOwner === 'td613.ash.demo-registry/v0.1-a13'
-      && button?.dataset.ashMethodDemoState === 'READY'
+      && button.dataset.ashDemoRegistryOwner === 'td613.ash.demo-registry/v0.1-a13'
+      && button.dataset.ashMethodDemoState === 'READY'
       && button.disabled === false
       && !button.matches(':disabled');
     if (!ready) throw new Error('WebKit A12 registry-owned demo control was not atomically actionable.');
@@ -179,7 +184,7 @@ try {
   const mobile = await browser.newContext(mobileOptions);
   receipts.push({ mode:'mobile-reduced-motion', ...(await inspect(await mobile.newPage(), 'mobile-reduced-motion')) });
   await mobile.close();
-  await fs.writeFile(path.join(artifactDir, browserName + '-a12-receipt.json'), JSON.stringify({ schema:'td613.ash.a12-browser-witness/v0.5-webkit-atomic-registry-activation', browser:browserName, receipts, authority_changed:false, source_bytes_moved:false, case_data_preserved:true, profile_inferred:false, human_closure_required:true }, null, 2));
+  await fs.writeFile(path.join(artifactDir, browserName + '-a12-receipt.json'), JSON.stringify({ schema:'td613.ash.a12-browser-witness/v0.6-webkit-profile-reasserted-activation', browser:browserName, receipts, authority_changed:false, source_bytes_moved:false, case_data_preserved:true, profile_inferred:false, human_closure_required:true }, null, 2));
 } catch (error) {
   await fs.writeFile(path.join(artifactDir, browserName + '-a12-failure.json'), JSON.stringify({ error:String(error?.stack || error) }, null, 2));
   throw error;
