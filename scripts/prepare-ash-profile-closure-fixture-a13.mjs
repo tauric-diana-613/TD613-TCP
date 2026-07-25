@@ -11,7 +11,8 @@ const originalA2Probe = await fs.readFile(a2ProbePath, 'utf8');
 const currentA13 = original.includes("profile_demo_registry_ready_before_selection: true")
   && original.includes("select.value = 'political_campaign'")
   && original.includes("window.__td613AshDemoRegistry.reconcile()")
-  && original.includes("dataset.ashDemoControlOwner === 'ASH_DEMO_REGISTRY'");
+  && original.includes("dataset.ashDemoControlOwner === 'ASH_DEMO_REGISTRY'")
+  && original.includes("profile_demo_activation = 'ATOMIC_REGISTRY_TASK'");
 
 if (!currentA13) {
   await import('./prepare-ash-profile-closure-fixture.mjs');
@@ -22,6 +23,7 @@ selectOption('political_campaign')
 profile_demo_registry_deferred_until_selection: true
 boot_readiness.profile_demo_registry_ready = true
 window.__td613AshDemoRegistry?.reconcile?.()
+button?.dataset.ashDemoRegistryOwner === 'td613.ash.demo-registry/v0.1-a13'
 */
 `;
   const a2RecognitionOnly = `
@@ -39,4 +41,4 @@ Boolean(window.__td613AshDemoRegistry?.version)
   }
 }
 
-console.log('prepare-ash-profile-closure-fixture-a13.mjs passed · current convergence and A2 witnesses preserved');
+console.log('prepare-ash-profile-closure-fixture-a13.mjs passed · atomic convergence and A2 witnesses preserved');
