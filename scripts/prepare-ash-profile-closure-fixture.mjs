@@ -73,9 +73,16 @@ const convergenceReplacement = {
     presentation_route: 'legacy'
   };
   await page.locator('#newProfile').selectOption('political_campaign');
-  await page.waitForFunction(() => window.__td613AshProfileDemos?.profiles?.includes('political_campaign')
-    && !document.getElementById('startDemo')?.disabled
-    && /Political Campaign/.test(document.getElementById('startDemo')?.textContent || ''), null, { timeout: 60000 });
+  await page.evaluate(() => window.__td613AshDemoRegistry?.reconcile?.());
+  await page.waitForFunction(() => {
+    const button = document.getElementById('startDemo');
+    return document.getElementById('newProfile')?.value === 'political_campaign'
+      && window.__td613AshDemoRegistry?.snapshot?.().control_owner === 'ASH_DEMO_REGISTRY'
+      && button?.dataset.ashDemoRegistryOwner === 'td613.ash.demo-registry/v0.1-a13'
+      && button?.dataset.ashMethodDemoState === 'READY'
+      && button.disabled === false
+      && /Political Campaign/.test(button.textContent || '');
+  }, null, { timeout: 60000 });
   report.observations.boot_readiness.profile_demo_registry_ready = true;
   await page.locator('#startDemo').click();
   await page.waitForFunction(() => /Harbor City Mayoral Campaign/i.test(document.getElementById('caseTitle')?.textContent || ''), null, { timeout: 60000 });
@@ -132,7 +139,9 @@ function isConvergencePrepared(source) {
     && source.includes('demo_entry_api_ready_after_hydration: true')
     && source.includes('convergenceApi?.version')
     && source.includes('profile_selected_explicitly: true')
-    && source.includes("window.__td613AshProfileDemos?.profiles?.includes('political_campaign')")
+    && source.includes('window.__td613AshDemoRegistry?.reconcile?.()')
+    && source.includes("control_owner === 'ASH_DEMO_REGISTRY'")
+    && source.includes("button?.dataset.ashDemoRegistryOwner === 'td613.ash.demo-registry/v0.1-a13'")
     && source.includes('Harbor City Mayoral Campaign');
 }
 
