@@ -43,7 +43,7 @@ async function openKeep() {
 }
 
 const report = {
-  schema:'td613.ash.reviewability-browser/v0.5-a6-work-affordance-and-viewport-ownership',
+  schema:'td613.ash.reviewability-browser/v0.6-canonical-title-clearance',
   browser:browserName,
   status:'RUNNING',
   errors,
@@ -69,8 +69,6 @@ try {
     && document.querySelector('#ashAiaMembrane .ash-aia__work')
     && document.getElementById('newProfile'));
 
-  // At ingress, the full-screen launch membrane owns presentation. The future AIA card
-  // only needs a valid neutral posture; its visible geometry is judged after entry.
   const ingress = await page.evaluate(() => {
     window.__td613AshReviewability.refresh();
     const work = document.querySelector('#ashAiaMembrane .ash-aia__work');
@@ -120,9 +118,29 @@ try {
   assert((activeCase.receipt.panel_unused_space ?? 999) <= 90, `Active panel retained excessive negative space: ${JSON.stringify(activeCase.receipt)}.`);
   assert(activeCase.route_subtitle === 'See what stays local, what may change, and where a human decision is still required.', `A5 route subtitle drifted: ${JSON.stringify(activeCase)}.`);
 
+  const authoredTitles = await page.evaluate(() => {
+    const clearance = node => {
+      if (!node) return null;
+      const style = getComputedStyle(node);
+      return {
+        text:node.textContent.trim(),
+        font_size:parseFloat(style.fontSize) || 0,
+        line_height:parseFloat(style.lineHeight) || 0,
+        padding_bottom:parseFloat(style.paddingBottom) || 0,
+        client_height:node.clientHeight,
+        scroll_height:node.scrollHeight,
+        clipped:node.scrollHeight > node.clientHeight + 1
+      };
+    };
+    return {
+      aia_title:clearance(document.querySelector('#ashAiaMembrane #ashAiaTitle')),
+      pedagogy_title:clearance(document.querySelector('#ashDemoPedagogyLedger h3'))
+    };
+  });
+
   for (const [name, title, expected] of [
-    ['aia_title', activeCase.receipt.aia_title, 'Your case path'],
-    ['pedagogy_title', activeCase.receipt.pedagogy_title, 'Preserve before alleging.']
+    ['aia_title', authoredTitles.aia_title, 'Your case path'],
+    ['pedagogy_title', authoredTitles.pedagogy_title, 'Preserve before alleging.']
   ]) {
     assert(title?.text === expected, `${name} did not carry its authored A5 title: ${JSON.stringify(title)}.`);
     assert(title.clipped === false, `${name} clipped its line box: ${JSON.stringify(title)}.`);
@@ -130,9 +148,6 @@ try {
     assert(title.padding_bottom > 0, `${name} lacks descender clearance: ${JSON.stringify(title)}.`);
   }
 
-  // A6 rehomes the primary local-document action inside Work. The former reviewability
-  // observer expected the retired hidden Draft tab and therefore contradicted the new
-  // affordance contract. Prove the authored Work destination and focus instead.
   await page.locator('[data-aia-primary-task]').click();
   await page.waitForFunction(() => {
     const panel = document.getElementById('workspace-work');
@@ -159,7 +174,6 @@ try {
   assert(a6WorkArrival.receipt?.result === 'ARRIVED', `A6 primary action produced no navigation receipt: ${JSON.stringify(a6WorkArrival)}.`);
   assert(a6WorkArrival.authority_changed === false && a6WorkArrival.source_bytes_moved === false, `A6 Work arrival widened authority or transport: ${JSON.stringify(a6WorkArrival)}.`);
 
-  // Return to a stable Home layout before measuring sustained manual review scroll.
   await page.evaluate(() => window.__td613AshPremiumUI?.open?.('home'));
   await page.waitForFunction(() => document.getElementById('workspace-home')?.classList.contains('active'));
   await page.waitForTimeout(500);
@@ -176,7 +190,6 @@ try {
   const ownedY = await page.evaluate(() => window.scrollY);
   assert(ownedY > 350, `Witness never reached a deep review position: ${ownedY}.`);
 
-  // Provoke both historical reset paths after entrant ownership is established.
   await page.evaluate(() => {
     window.__td613AshUiUxRescue?.scrollTo?.('home');
     window.dispatchEvent(new CustomEvent('td613:ash:case-opened', { detail:{ source:'REVIEWABILITY_WITNESS' } }));
@@ -202,7 +215,7 @@ try {
   assert(errors.length === 0, `Browser errors: ${errors.join(' | ')}`);
   assert(httpErrors.length === 0, `HTTP errors: ${httpErrors.join(' | ')}`);
   report.status = 'PASS';
-  report.observations = { ingress, active_case:activeCase, a6_work_arrival:a6WorkArrival, deep, sustained };
+  report.observations = { ingress, active_case:activeCase, authored_titles:authoredTitles, a6_work_arrival:a6WorkArrival, deep, sustained };
 } catch (error) {
   report.status = 'HOLD';
   report.hold = { message:error.message, stack:error.stack };
