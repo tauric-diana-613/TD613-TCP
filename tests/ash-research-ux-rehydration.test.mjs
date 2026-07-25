@@ -99,6 +99,10 @@ for (const id of ['workspace-home','workspace-work','workspace-choir','workspace
 for (const id of ['workspace-custody','compileQuickScan','registerCustodyRoot','bindCustodyRoot']) assert.match(lifecycle, new RegExp(id));
 assert.match(probe, /profile=research/);
 assert.match(probe, /__td613AshResearchSurfaceReport/);
+assert.match(probe, /window\.__td613AshDemoRegistry/);
+assert.match(probe, /control_owner === 'ASH_DEMO_REGISTRY'/);
+assert.match(probe, /ashDemoRegistryOwner === 'td613\.ash\.demo-registry\/v0\.1-a13'/);
+assert.doesNotMatch(probe, /__td613AshResearchControlState/);
 assert.match(workflow, /playwright install --with-deps chromium firefox webkit/);
 assert.match(workflow, /node tests\/ash-research-ux-rehydration\.test\.mjs/);
 assert.match(workflow, /ash-research-ux-browser-probe\.mjs/);
