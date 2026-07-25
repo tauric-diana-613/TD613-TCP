@@ -8,6 +8,7 @@ const repoRoot = path.join(here, '..');
 const probePath = path.join(here, 'ash-keep-production-probe.mjs');
 const convergenceRunnerPath = path.join(here, 'run-ash-constitutional-convergence-probe.mjs');
 const a2ProbePath = path.join(here, 'ash-a2-a5-browser-probe.mjs');
+const a7ProbePath = path.join(here, 'ash-a7-a11-browser-probe.mjs');
 const manifestPath = path.resolve(
   process.env.TD613_PROFILE_CLOSURE_FIXTURE_MANIFEST
     || path.join(repoRoot, 'artifacts', 'ash-keep-probe-runtime', 'profile-fixture-manifest.json')
@@ -145,6 +146,19 @@ const a2RegistryReplacement = {
   await page.locator('#startDemo').click();`
 };
 
+const a7HoldReplacements = [
+  {
+    label: 'A8 object named-owner hold copy',
+    from: `  await page.waitForFunction(() => /Object held:.*CASE_BOUND required/i.test(document.getElementById('ashA8Status')?.textContent || ''), null, { timeout:30_000 });`,
+    to: `  await page.waitForFunction(() => /Object held:.*(?:CASE_BOUND required|Existing Ash action owner addObject is held)/i.test(document.getElementById('ashA8Status')?.textContent || ''), null, { timeout:30_000 });`
+  },
+  {
+    label: 'A8 relationship named-owner hold copy',
+    from: `  await page.waitForFunction(() => /Relationship held:.*CASE_BOUND required/i.test(document.getElementById('ashA8Status')?.textContent || ''), null, { timeout:30_000 });`,
+    to: `  await page.waitForFunction(() => /Relationship held:.*(?:CASE_BOUND required|Existing Ash action owner addRelationship is held)/i.test(document.getElementById('ashA8Status')?.textContent || ''), null, { timeout:30_000 });`
+  }
+];
+
 function sha256(value) {
   return `sha256:${createHash('sha256').update(value).digest('hex')}`;
 }
@@ -177,6 +191,11 @@ function isA2RegistryPrepared(source) {
     && source.includes("control_owner === 'ASH_DEMO_REGISTRY'")
     && source.includes("button?.dataset.ashDemoRegistryOwner === 'td613.ash.demo-registry/v0.1-a13'")
     && source.includes("button?.dataset.ashMethodDemoState === 'READY'");
+}
+
+function isA7HoldPrepared(source) {
+  return source.includes('Existing Ash action owner addObject is held')
+    && source.includes('Existing Ash action owner addRelationship is held');
 }
 
 function replaceExactlyOnce(source, replacement) {
@@ -215,9 +234,19 @@ if (!isA2RegistryPrepared(originalA2Probe)) {
 if (!isA2RegistryPrepared(preparedA2Probe)) throw new Error('A2-A6 witness did not materialize registry-owned demo readiness.');
 if (preparedA2Probe !== originalA2Probe) await fs.writeFile(a2ProbePath, preparedA2Probe, 'utf8');
 
+const originalA7Probe = (await fs.readFile(a7ProbePath, 'utf8')).replace(/\r\n/g, '\n');
+let preparedA7Probe = originalA7Probe;
+let a7ProbePosture = 'ALREADY_PREPARED';
+if (!isA7HoldPrepared(originalA7Probe)) {
+  a7ProbePosture = 'PREPARED_NOW';
+  for (const replacement of a7HoldReplacements) preparedA7Probe = replaceExactlyOnce(preparedA7Probe, replacement);
+}
+if (!isA7HoldPrepared(preparedA7Probe)) throw new Error('A7-A11 witness did not materialize current A8 named-owner hold copy.');
+if (preparedA7Probe !== originalA7Probe) await fs.writeFile(a7ProbePath, preparedA7Probe, 'utf8');
+
 await fs.mkdir(path.dirname(manifestPath), { recursive: true });
 await fs.writeFile(manifestPath, `${JSON.stringify({
-  schema: 'td613.ash-keep.profile-closure-fixture/v0.4-five-demo-deferred-entry',
+  schema: 'td613.ash-keep.profile-closure-fixture/v0.5-registry-and-owner-hold-readiness',
   profile: 'political_campaign',
   demo_id: 'demo_political_campaign_harbor_city_apeq_paia_v2',
   qualified_route_count: 6,
@@ -243,6 +272,13 @@ await fs.writeFile(manifestPath, `${JSON.stringify({
     prepared_sha256: sha256(preparedA2Probe),
     replacements: [a2RegistryReplacement.label]
   },
+  a7_a11_browser_probe: {
+    path: path.relative(repoRoot, a7ProbePath),
+    posture: a7ProbePosture,
+    source_sha256: sha256(originalA7Probe),
+    prepared_sha256: sha256(preparedA7Probe),
+    replacements: a7HoldReplacements.map(item => item.label)
+  },
   source_files_mutated_in_ephemeral_ci_checkout_only: true,
   production_product_mutated: false,
   maturity_promoted: false,
@@ -250,4 +286,4 @@ await fs.writeFile(manifestPath, `${JSON.stringify({
   cinder_authorized: false
 }, null, 2)}\n`);
 
-console.log(`prepare-ash-profile-closure-fixture.mjs passed · probe ${probePosture} · convergence ${convergencePosture} · a2 ${a2ProbePosture}`);
+console.log(`prepare-ash-profile-closure-fixture.mjs passed · probe ${probePosture} · convergence ${convergencePosture} · a2 ${a2ProbePosture} · a7 ${a7ProbePosture}`);
