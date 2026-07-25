@@ -116,6 +116,86 @@ const saveReplacement = `  await page.locator('#makeSave').click();
   await saveConfirmation.click();
   await waitForText(page, '#saveStatus', /sealed locally/);`;
 
+const childLaunchDefinitionsTarget = `const launchTarget = \`  await page.locator('#startDemo').click();
+  await page.locator('#launch').waitFor({ state: 'hidden' });
+  await waitForText(page, '#caseTitle', /Glasshouse Archive inquiry/);\`;
+const launchReplacement = \`  await page.waitForFunction(() => window.__td613AshDemoRegistry?.version === 'td613.ash.demo-registry/v0.1-a13'
+    && window.__td613AshDemoRegistry?.snapshot?.().control_owner === 'ASH_DEMO_REGISTRY'
+    && document.documentElement.dataset.ashDemoControlOwner === 'ASH_DEMO_REGISTRY'
+    && document.getElementById('newProfile')?.value === ''
+    && document.getElementById('startDemo')?.dataset.ashMethodDemoState === 'HELD', null, { timeout:60000 });
+  await page.evaluate(() => {
+    const select = document.getElementById('newProfile');
+    select.value = 'investigation';
+    select.dispatchEvent(new Event('change', { bubbles:true }));
+    window.__td613AshDemoRegistry.reconcile();
+  });
+  await page.waitForFunction(() => {
+    const button = document.getElementById('startDemo');
+    return document.getElementById('newProfile')?.value === 'investigation'
+      && button?.dataset.ashDemoRegistryOwner === 'td613.ash.demo-registry/v0.1-a13'
+      && button?.dataset.ashMethodDemoState === 'READY'
+      && button.disabled === false;
+  }, null, { timeout:60000 });
+  await page.locator('#startDemo').click();
+  await page.locator('#launch').waitFor({ state: 'hidden' });
+  await waitForText(page, '#caseTitle', /Glasshouse Archive inquiry/);\`;`;
+
+const childLaunchDefinitionsReplacement = `const launchTarget = \`  await page.waitForFunction(() => Boolean(window.__td613AshProfileDemos?.version));
+  await page.locator('#newProfile').selectOption('political_campaign');
+  assert(await page.locator('#startDemo').isEnabled(), 'Political Campaign demo did not become available.');
+  await page.locator('#startDemo').click();
+  await page.locator('#launch').waitFor({ state: 'hidden' });
+  await waitForText(page, '#caseTitle', /Harbor City Mayoral Campaign/);\`;
+const launchReplacement = \`  await page.waitForFunction(() => window.__td613AshDemoRegistry?.version === 'td613.ash.demo-registry/v0.1-a13'
+    && window.__td613AshDemoRegistry?.snapshot?.().control_owner === 'ASH_DEMO_REGISTRY'
+    && document.documentElement.dataset.ashDemoControlOwner === 'ASH_DEMO_REGISTRY'
+    && document.getElementById('newProfile')?.value === ''
+    && document.getElementById('startDemo')?.dataset.ashMethodDemoState === 'HELD', null, { timeout:60000 });
+  await page.evaluate(() => {
+    const select = document.getElementById('newProfile');
+    select.value = 'political_campaign';
+    select.dispatchEvent(new Event('change', { bubbles:true }));
+    window.__td613AshDemoRegistry.reconcile();
+  });
+  await page.waitForFunction(() => {
+    const button = document.getElementById('startDemo');
+    return document.getElementById('newProfile')?.value === 'political_campaign'
+      && window.__td613AshDemoRegistry?.snapshot?.().control_owner === 'ASH_DEMO_REGISTRY'
+      && button?.dataset.ashDemoRegistryOwner === 'td613.ash.demo-registry/v0.1-a13'
+      && button?.dataset.ashMethodDemoState === 'READY'
+      && button.disabled === false;
+  }, null, { timeout:60000 });
+  await page.locator('#startDemo').click();
+  await page.locator('#launch').waitFor({ state: 'hidden' });
+  await waitForText(page, '#caseTitle', /Harbor City Mayoral Campaign/);\`;`;
+
+const childReloadDefinitionsTarget = `const reloadTarget = \`  await page.reload({ waitUntil: 'networkidle' });
+  await page.locator('#launch').waitFor({ state: 'hidden' });
+  await waitForText(page, '#caseTitle', /Glasshouse Archive inquiry/);\`;
+const reloadReplacement = \`  await page.reload({ waitUntil: 'domcontentloaded', timeout:90000 });
+  await page.waitForFunction(id => window.__td613AshDemoRegistry?.version === 'td613.ash.demo-registry/v0.1-a13'
+    && window.__td613AshDemoRegistry?.snapshot?.().control_owner === 'ASH_DEMO_REGISTRY'
+    && document.documentElement.dataset.ashDemoControlOwner === 'ASH_DEMO_REGISTRY'
+    && localStorage.getItem('td613.ash-keep.current-case') === id
+    && document.getElementById('launch')?.classList.contains('hidden')
+    && /Glasshouse Archive inquiry/.test(document.getElementById('caseTitle')?.textContent || ''), caseId, { timeout:60000 });
+  await page.locator('#launch').waitFor({ state: 'hidden' });
+  await waitForText(page, '#caseTitle', /Glasshouse Archive inquiry/);\`;`;
+
+const childReloadDefinitionsReplacement = `const reloadTarget = \`  await page.reload({ waitUntil: 'networkidle' });
+  await page.locator('#launch').waitFor({ state: 'hidden' });
+  await waitForText(page, '#caseTitle', /Harbor City Mayoral Campaign/);\`;
+const reloadReplacement = \`  await page.reload({ waitUntil: 'domcontentloaded', timeout:90000 });
+  await page.waitForFunction(id => window.__td613AshDemoRegistry?.version === 'td613.ash.demo-registry/v0.1-a13'
+    && window.__td613AshDemoRegistry?.snapshot?.().control_owner === 'ASH_DEMO_REGISTRY'
+    && document.documentElement.dataset.ashDemoControlOwner === 'ASH_DEMO_REGISTRY'
+    && localStorage.getItem('td613.ash-keep.current-case') === id
+    && document.getElementById('launch')?.classList.contains('hidden')
+    && /Harbor City Mayoral Campaign/.test(document.getElementById('caseTitle')?.textContent || ''), caseId, { timeout:60000 });
+  await page.locator('#launch').waitFor({ state: 'hidden' });
+  await waitForText(page, '#caseTitle', /Harbor City Mayoral Campaign/);\`;`;
+
 let probeSource = (await fs.readFile(sourcePath, 'utf8')).replace(/\r\n/g, '\n');
 if (!probeSource.includes('ASH_AIA3_LEGACY_BYPASS_STABLE')
   || !probeSource.includes("selectOption('political_campaign')")
@@ -140,21 +220,33 @@ runnerSource = replaceExactlyOnce(
   "const sourcePath = path.resolve(process.env.TD613_PROBE_SOURCE_PATH || path.join(here, 'ash-keep-production-probe.mjs'));",
   'runtime source path'
 );
+runnerSource = replaceExactlyOnce(runnerSource, childLaunchDefinitionsTarget, childLaunchDefinitionsReplacement, 'profile-prepared campaign launch compiler');
+runnerSource = replaceExactlyOnce(runnerSource, childReloadDefinitionsTarget, childReloadDefinitionsReplacement, 'profile-prepared campaign reload compiler');
+runnerSource = replaceExactlyOnce(runnerSource, "select.value = 'investigation'", "select.value = 'political_campaign'", 'campaign runtime validation');
+runnerSource = replaceExactlyOnce(
+  runnerSource,
+  'WAIT_FOR_A13_REGISTRY_AND_SELECT_INVESTIGATION_BEFORE_DEMO_LAUNCH',
+  'WAIT_FOR_A13_REGISTRY_AND_SELECT_POLITICAL_CAMPAIGN_BEFORE_DEMO_LAUNCH',
+  'campaign runtime manifest label'
+);
 
 await fs.mkdir(runtimeDir, { recursive:true });
 await fs.writeFile(a1SourcePath, probeSource, 'utf8');
 await fs.writeFile(a1RunnerPath, runnerSource, 'utf8');
 await fs.writeFile(adapterManifestPath, `${JSON.stringify({
-  schema:'td613.ash.a1-production-probe-adapter/v0.5',
+  schema:'td613.ash.a1-production-probe-adapter/v0.6-profile-prepared-registry-owner',
   source_probe:path.relative(repoRoot, sourcePath),
   adapted_probe:path.relative(repoRoot, a1SourcePath),
   adapted_runner:path.relative(repoRoot, a1RunnerPath),
   input_posture:'PROFILE_PREMIUM_CACHE_FIXTURES_COMPLETE',
+  profile:'political_campaign',
+  expected_route_count_after_successor:7,
+  registry_owner:'ASH_DEMO_REGISTRY',
   canonical_url:'/dome-world/ash-threshold.html',
   canonical_title:'TD613 Ash',
   visible_epoch_query:false,
   network_idle_required:false,
-  readiness_source:'MODULE_GRAPH_AND_PREFLIGHT_STATE',
+  readiness_source:'MODULE_GRAPH_PREFLIGHT_AND_A13_REGISTRY_OWNER',
   rebuild_confirmation:'EXPLICIT_NAMED_HUMAN_GESTURE_OBSERVED',
   save_point_confirmation:'EXPLICIT_NAMED_HUMAN_GESTURE_OBSERVED',
   product_source_mutated:false,
