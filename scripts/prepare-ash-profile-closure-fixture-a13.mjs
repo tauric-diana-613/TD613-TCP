@@ -10,7 +10,7 @@ const originalA2Probe = await fs.readFile(a2ProbePath, 'utf8');
 
 const currentA13 = original.includes("profile_demo_registry_ready_before_selection: true")
   && original.includes("select.value = 'political_campaign'")
-  && original.includes("window.__td613AshDemoRegistry.reconcile()")
+  && (original.includes('registry.reconcile()') || original.includes('window.__td613AshDemoRegistry.reconcile()'))
   && original.includes("dataset.ashDemoControlOwner === 'ASH_DEMO_REGISTRY'")
   && original.includes("profile_demo_activation = 'ATOMIC_REGISTRY_TASK'");
 
