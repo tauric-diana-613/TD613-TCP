@@ -40,7 +40,7 @@ async function waitForStableIngress(page) {
       && composition?.case_id == null
       && [null, 'WAITING_INGRESS_PROFILE'].includes(composition?.hold)
       && window.__td613AshResearchDemo?.version
-      && window.__td613AshResearchControlState?.version;
+      && window.__td613AshDemoRegistry?.snapshot?.().control_owner === 'ASH_DEMO_REGISTRY';
   }, null, { timeout:60_000 });
 }
 
@@ -161,7 +161,8 @@ try {
     const button = document.getElementById('startDemo');
     return document.getElementById('newProfile')?.value === 'research'
       && button && !button.disabled
-      && button.dataset.ashResearchControlState === 'READY'
+      && button.dataset.ashDemoRegistryOwner === 'td613.ash.demo-registry/v0.1-a13'
+      && button.dataset.ashMethodDemoState === 'READY'
       && button.textContent === 'Open Research project demo';
   });
   await page.locator('#startDemo').click();
@@ -255,4 +256,4 @@ try {
 }
 
 if (terminal) throw terminal;
-console.log(JSON.stringify({ status:report.status, browser:browserName, summary:report.observations.surface_summary }, null, 2));
+console.log(JSON.stringify({ status:report.status, browser:browserName, observations:Object.keys(report.observations) }, null, 2));
