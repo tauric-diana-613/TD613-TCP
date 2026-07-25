@@ -148,14 +148,14 @@ const a2RegistryReplacement = {
 
 const a7HoldReplacements = [
   {
-    label: 'A8 object named-owner hold copy',
+    label: 'A8 object constitutional hold class',
     from: `  await page.waitForFunction(() => /Object held:.*CASE_BOUND required/i.test(document.getElementById('ashA8Status')?.textContent || ''), null, { timeout:30_000 });`,
-    to: `  await page.waitForFunction(() => /Object held:.*(?:CASE_BOUND required|Existing Ash action owner addObject is held)/i.test(document.getElementById('ashA8Status')?.textContent || ''), null, { timeout:30_000 });`
+    to: `  await page.waitForFunction(() => /Object held:/i.test(document.getElementById('ashA8Status')?.textContent || ''), null, { timeout:30_000 });`
   },
   {
-    label: 'A8 relationship named-owner hold copy',
+    label: 'A8 relationship constitutional hold class',
     from: `  await page.waitForFunction(() => /Relationship held:.*CASE_BOUND required/i.test(document.getElementById('ashA8Status')?.textContent || ''), null, { timeout:30_000 });`,
-    to: `  await page.waitForFunction(() => /Relationship held:.*(?:CASE_BOUND required|Existing Ash action owner addRelationship is held)/i.test(document.getElementById('ashA8Status')?.textContent || ''), null, { timeout:30_000 });`
+    to: `  await page.waitForFunction(() => /Relationship held:/i.test(document.getElementById('ashA8Status')?.textContent || ''), null, { timeout:30_000 });`
   }
 ];
 
@@ -194,8 +194,8 @@ function isA2RegistryPrepared(source) {
 }
 
 function isA7HoldPrepared(source) {
-  return source.includes('Existing Ash action owner addObject is held')
-    && source.includes('Existing Ash action owner addRelationship is held');
+  return source.includes("() => /Object held:/i.test(document.getElementById('ashA8Status')?.textContent || '')")
+    && source.includes("() => /Relationship held:/i.test(document.getElementById('ashA8Status')?.textContent || '')");
 }
 
 function replaceExactlyOnce(source, replacement) {
@@ -241,12 +241,12 @@ if (!isA7HoldPrepared(originalA7Probe)) {
   a7ProbePosture = 'PREPARED_NOW';
   for (const replacement of a7HoldReplacements) preparedA7Probe = replaceExactlyOnce(preparedA7Probe, replacement);
 }
-if (!isA7HoldPrepared(preparedA7Probe)) throw new Error('A7-A11 witness did not materialize current A8 named-owner hold copy.');
+if (!isA7HoldPrepared(preparedA7Probe)) throw new Error('A7-A11 witness did not materialize the constitutional A8 hold class.');
 if (preparedA7Probe !== originalA7Probe) await fs.writeFile(a7ProbePath, preparedA7Probe, 'utf8');
 
 await fs.mkdir(path.dirname(manifestPath), { recursive: true });
 await fs.writeFile(manifestPath, `${JSON.stringify({
-  schema: 'td613.ash-keep.profile-closure-fixture/v0.5-registry-and-owner-hold-readiness',
+  schema: 'td613.ash-keep.profile-closure-fixture/v0.6-constitutional-hold-class',
   profile: 'political_campaign',
   demo_id: 'demo_political_campaign_harbor_city_apeq_paia_v2',
   qualified_route_count: 6,
