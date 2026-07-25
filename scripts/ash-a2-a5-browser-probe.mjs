@@ -29,6 +29,7 @@ const report = {
 try {
   await page.goto(`${base}/dome-world/ash-keep.html`, { waitUntil:'domcontentloaded', timeout:90000 });
   await page.waitForFunction(() => Boolean(window.__td613AshKeep?.version)
+    && Boolean(window.__td613AshDemoRegistry?.version)
     && window.__td613AshDemoRegistry?.version === 'td613.ash.demo-registry/v0.1-a13'
     && document.getElementById('newProfile')
     && document.getElementById('startDemo'), null, { timeout:120000 });
