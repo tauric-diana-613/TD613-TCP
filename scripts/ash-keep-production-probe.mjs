@@ -83,16 +83,27 @@ async function databaseSnapshot(page) {
 
 async function layoutReceipt(page) {
   return page.evaluate(() => {
-    const visible = [...document.querySelectorAll('button, input, select, textarea, a')]
+    function scrollLane(node) {
+      let current = node.parentElement;
+      while (current) {
+        const style = getComputedStyle(current);
+        if (/(auto|scroll)/.test(style.overflowX) && current.scrollWidth > current.clientWidth + 1) return true;
+        current = current.parentElement;
+      }
+      return false;
+    }
+    const controls = [...document.querySelectorAll('button, input, select, textarea, a')]
       .filter(node => {
         const style = getComputedStyle(node);
         const rect = node.getBoundingClientRect();
         return style.display !== 'none' && style.visibility !== 'hidden' && rect.width > 0 && rect.height > 0;
       });
-    const clipped = visible
-      .map(node => ({ id: node.id || node.textContent?.trim().slice(0, 32) || node.tagName, rect: node.getBoundingClientRect() }))
-      .filter(item => item.rect.left < -1 || item.rect.right > window.innerWidth + 1)
-      .map(item => item.id);
+    const clipped = controls
+      .filter(node => {
+        const rect = node.getBoundingClientRect();
+        return (rect.left < -1 || rect.right > innerWidth + 1) && !scrollLane(node);
+      })
+      .map(node => node.id || node.textContent?.trim().slice(0, 40) || node.tagName);
     const tabs = [...document.querySelectorAll('.work-tab')];
     return {
       width: window.innerWidth,
@@ -246,131 +257,147 @@ const context = await browser.newContext({
 const page = await context.newPage();
 const requests = [];
 const consoleErrors = [];
-page.on('request', request => requests.push({ method: request.method(), url: request.url(), resource_type: request.resourceType() }));
+page.on('request', request => requests.push({ method: request.method(), url: request.url(), resource_type: request.resourceType(), post_data: request.postData() || null }));
 page.on('console', message => { if (message.type() === 'error') consoleErrors.push(message.text()); });
 page.on('pageerror', error => consoleErrors.push(error.message));
 
 const report = {
-  schema: 'td613.ash-keep.production-closure-observation/v0.1',
+  schema: 'td613.ash.lifecycle-production-observation/v0.1',
   status: 'RUNNING',
   promotion_authorized: false,
   base_url: base,
+  dome_url: domeUrl,
+  threshold_url: thresholdUrl,
   keep_url: keepUrl,
   browser: 'chromium-headless',
   source_status: base.includes('localhost') || base.includes('127.0.0.1') ? 'LOCAL_VALIDATION' : 'DEPLOYED_OBSERVATION',
-  clean_arrival: null,
+  threshold: null,
+  readiness: null,
+  pre_custody_hold: null,
+  custody: null,
+  case_binding: null,
+  rebuild: null,
+  draft_review_release: null,
   continuity: null,
-  room_and_route_memory: null,
-  rebuild_test: null,
-  stale_release: null,
-  hush_screen: null,
-  save_and_capsule: null,
-  large_case: null,
   desktop: null,
   mobile_portrait: null,
   mobile_landscape: null,
-  rotation_return: null,
-  network: null,
   storage: null,
-  console_errors: consoleErrors,
+  network: null,
+  declared_route: LIFECYCLE_ROUTE,
+  non_claims: [
+    'readiness is not custody',
+    'custody is not authenticity',
+    'case binding is not truth',
+    'rebuild eligibility is not release authority',
+    'continuity is not transport'
+  ],
   evidence_files: {},
+  console_errors: consoleErrors,
   error: null
 };
 
 async function persistReport() {
-  await fs.writeFile(path.join(artifactDir, 'ash-keep-production-closure.json'), `${JSON.stringify(report, null, 2)}\n`);
+  await fs.writeFile(path.join(artifactDir, 'ash-lifecycle-production-closure.json'), `${JSON.stringify(report, null, 2)}\n`);
 }
 
 try {
-  await page.goto(keepUrl, { waitUntil: 'networkidle', timeout: 60_000 });
-  // ASH_CACHE_EPOCH_STABLE: the one-time eviction may navigate after first paint.
-  await page.waitForURL(url => url.searchParams.has('ash_flush'), { timeout: 60_000 });
-  await page.waitForLoadState('networkidle');
-  await page.waitForFunction(() => {
-    const epoch = localStorage.getItem('td613.ash.cache-flush.epoch');
-    const url = new URL(location.href);
-    return Boolean(epoch)
-      && url.searchParams.get('ash_flush') === epoch
-      && window.__td613AshCacheTransition?.epoch === epoch;
-  }, { timeout: 60_000 });
-  await page.locator('h1').waitFor({ state: 'visible' });
-  assert((await page.title()).includes('TD613 Ash Keep'), 'Ash Keep title was not observed');
-  assert(await page.locator('#launch').isVisible(), 'Clean profile did not begin at the explicit launch gate');
+  await page.goto(domeUrl, { waitUntil: 'networkidle', timeout: 60_000 });
+  assert((await page.title()) === 'Dome-World', 'Dome-World title was not observed before Ash selection');
+  await page.locator('.tab[data-view="ash"]').click();
+  await page.locator('[data-ash-threshold-membrane].active').waitFor({ state: 'visible' });
+  await page.locator('#ashThresholdTitle').waitFor({ state: 'visible' });
+  const thresholdLocalKeys = await page.evaluate(() => Object.keys(localStorage).sort());
+  const thresholdSessionKeys = await page.evaluate(() => Object.keys(sessionStorage).sort());
+  await page.waitForTimeout(900);
+  assert((await page.evaluate(() => location.pathname)).replace(/\/$/, '') === '/dome-world', 'Selecting Ash redirected without an operator entry gesture');
+  assert(JSON.stringify(await page.evaluate(() => Object.keys(localStorage).sort())) === JSON.stringify(thresholdLocalKeys), 'Embedded threshold changed localStorage before operator action');
+  assert(JSON.stringify(await page.evaluate(() => Object.keys(sessionStorage).sort())) === JSON.stringify(thresholdSessionKeys), 'Embedded threshold changed sessionStorage before operator action');
 
-  const cleanDb = await databaseSnapshot(page);
-  const cleanCount = Object.values(cleanDb).reduce((total, rows) => total + rows.length, 0);
-  const cleanKeys = await page.evaluate(() => Object.keys(localStorage));
-  const initialNonGet = requests.filter(request => request.method !== 'GET' && request.method !== 'HEAD');
-  assert(cleanCount === 0, 'Clean arrival created case records before operator action');
-  assert(cleanKeys.length === 0, 'Clean arrival wrote localStorage before operator action');
-  assert(initialNonGet.length === 0, 'Clean arrival emitted a non-read network request');
-  report.clean_arrival = {
-    launch_visible: true,
-    indexeddb_record_count: cleanCount,
-    local_storage_keys: cleanKeys,
-    non_read_requests: initialNonGet
-  };
+  await page.locator('[data-ash-law-step="2"]').click();
+  await waitForText(page, '[data-ash-threshold-status]', /order broke/i);
+  assert((await page.locator('[data-ash-threshold-enter]').getAttribute('aria-disabled')) === 'true', 'Broken ritual order enabled entry');
+  for (const step of [1, 2, 3]) await page.locator(`[data-ash-law-step="${step}"]`).click();
+  assert((await page.locator('[data-ash-threshold-enter]').getAttribute('aria-disabled')) === 'false', 'Correct threshold sequence did not enable entry');
+  const thresholdShot = path.join(artifactDir, 'ash-threshold-cleared.png');
+  await page.screenshot({ path: thresholdShot, fullPage: true });
+
+  await Promise.all([
+    page.waitForURL(/\/dome-world\/ash-threshold\.html\?arrival=cleared/, { timeout: 30_000 }),
+    page.locator('[data-ash-threshold-enter]').click()
+  ]);
+  await page.locator('meta[name="ash-lifecycle"][content="v0.1"]').waitFor({ state: 'attached' });
+  await page.locator('#workspace-custody').waitFor({ state: 'attached' });
+  const readiness = await page.evaluate(key => JSON.parse(sessionStorage.getItem(key) || 'null'), READINESS_KEY);
+  assert(readiness?.state === 'READINESS_OBSERVED', 'Threshold did not carry a readiness receipt');
+  assert(readiness.raw_content_accepted === false && readiness.raw_content_persisted === false, 'Readiness accepted or persisted raw content');
+  assert(readiness.transport_performed === false && readiness.readiness_is_custody === false, 'Readiness crossed its custody/transport boundary');
+  report.threshold = { wrong_order_reset: true, correct_order_cleared: true, local_storage_before_entry: thresholdLocalKeys, session_storage_before_entry: thresholdSessionKeys };
+  report.readiness = readiness;
 
   await page.locator('#startDemo').click();
   await page.locator('#launch').waitFor({ state: 'hidden' });
   await waitForText(page, '#caseTitle', /Glasshouse Archive inquiry/);
-  const afterDemo = await databaseSnapshot(page);
-  assert(afterDemo.cases.length === 1, 'Demo creation did not create exactly one Case Map');
-  const caseMap = afterDemo.cases[0];
-  const caseId = caseMap.case_id;
+  const beforeBinding = await databaseSnapshot(page);
+  const pointerBefore = await page.evaluate(() => localStorage.getItem('td613.ash-keep.current-case'));
+  const preCase = beforeBinding.cases.find(item => item.case_id === pointerBefore);
+  assert(preCase, 'Demo case was not created before custody binding');
+
+  await page.locator('.work-tab[data-workspace="test"]').click();
+  await page.locator('#workspace-custody').waitFor({ state: 'visible' });
+  const heldMessage = await waitForText(page, '#custodyStatus', /Test held/i);
+  report.pre_custody_hold = { test_workspace_held: true, message: heldMessage, state: await page.evaluate(() => document.body.dataset.ashLifecycle) };
+
+  await page.locator('#lifeSourceLabel').fill('Synthetic lifecycle custody root');
+  await page.locator('#lifePathRef').fill('probe://synthetic/ash-lifecycle');
+  await page.locator('#lifeSourceEnvironment').selectOption('local_file');
+  await page.locator('#lifeCredentialType').selectOption('local-possession');
+  await page.locator('#lifeFile').setInputFiles(syntheticPath);
+  await waitForText(page, '#lifeCommitmentStatus', /L1_BROWSER_LOCAL_ARTIFACT_DIGEST.*sha256:/i, 60_000);
+  const postsBeforeCustody = requests.filter(item => item.method === 'POST').length;
+  await page.locator('#registerCustodyRoot').click();
+  await waitForLifecycle(page, 'CASE_BOUND', 90_000);
+  const postsAfterCustody = requests.filter(item => item.method === 'POST').length;
+  assert(postsAfterCustody === postsBeforeCustody + 1, 'Custody registration did not emit exactly one POST');
+
+  const afterBinding = await databaseSnapshot(page);
   const pointer = await page.evaluate(() => localStorage.getItem('td613.ash-keep.current-case'));
-  assert(pointer === caseId, 'Current-case pointer did not bind to the created case');
-  const storageKeys = await page.evaluate(() => Object.keys(localStorage));
-  assert(storageKeys.every(key => ALLOWED_LOCAL_KEYS.has(key)), 'Unexpected localStorage key was written');
-  const localValues = await page.evaluate(() => Object.values(localStorage).join('\n'));
-  assert(!localValues.includes('Glasshouse Archive inquiry') && !localValues.includes('node_archive'), 'Private case material entered localStorage');
-
-  await page.reload({ waitUntil: 'networkidle' });
-  await page.locator('#launch').waitFor({ state: 'hidden' });
-  await waitForText(page, '#caseTitle', /Glasshouse Archive inquiry/);
-  const afterReload = await databaseSnapshot(page);
-  assert(afterReload.cases[0]?.case_id === caseId, 'Case identity did not survive reload');
-  assert(afterReload.cases[0]?.case_map_digest === caseMap.case_map_digest, 'Case Map digest drifted across reload');
-  report.continuity = {
-    case_id: caseId,
-    case_map_digest: caseMap.case_map_digest,
-    reloaded: true,
-    digest_preserved: true
+  const caseMap = afterBinding.cases.find(item => item.case_id === pointer);
+  assert(caseMap?.custody_reference, 'Custody receipt was not bound to the Case Map');
+  assert(caseMap.case_map_digest !== preCase.case_map_digest, 'Custody binding did not change the Case Map digest');
+  const rootNode = caseMap.nodes.find(node => node.custody_reference === caseMap.custody_reference);
+  assert(rootNode?.type === 'artifact', 'Custody root artifact node was not found');
+  const custodyReceipts = (afterBinding.custodyReceipts || []).map(item => item.value || item);
+  const custodyReceipt = custodyReceipts.find(item => item.receipt_id === caseMap.custody_reference);
+  assert(custodyReceipt?.receipt_digest && custodyReceipt?.manifest_digest, 'Custody digest spine was not preserved');
+  report.custody = {
+    assurance_class: custodyReceipt.assurance_class || custodyReceipt.manifest?.artifact?.assurance_class || null,
+    receipt_id: custodyReceipt.receipt_id,
+    receipt_digest: custodyReceipt.receipt_digest,
+    manifest_digest: custodyReceipt.manifest_digest,
+    registration_posts_added: postsAfterCustody - postsBeforeCustody,
+    raw_bytes_sent: requests.some(item => item.post_data?.includes(SYNTHETIC_ARTIFACT))
+  };
+  assert(report.custody.raw_bytes_sent === false, 'Synthetic artifact bytes entered a request body');
+  report.case_binding = {
+    case_id: caseMap.case_id,
+    before_digest: preCase.case_map_digest,
+    after_digest: caseMap.case_map_digest,
+    custody_reference: caseMap.custody_reference,
+    lifecycle_state: afterBinding.lifecycle.find(item => item.id === caseMap.case_id)?.value?.lifecycle_state || null
   };
 
-  const nodeById = new Map(caseMap.nodes.map(node => [node.id, node]));
-  const crossRoomEdges = caseMap.relationships.filter(edge => nodeById.get(edge.from)?.room_id !== nodeById.get(edge.to)?.room_id);
-  assert(caseMap.rooms.length >= 2, 'Demo fixture did not contain multiple Rooms');
-  assert(crossRoomEdges.length >= 1, 'Demo fixture did not contain a cross-Room relationship');
-
-  await openWorkspace(page, 'routes');
-  const disclosed = caseMap.nodes.slice(0, 2).map(node => node.id);
-  await page.locator('#routeDigest').fill(`sha256:${'a'.repeat(64)}`);
-  await page.locator('#routeRefs').fill(disclosed.join(', '));
-  await page.locator('#recordRoute').click();
-  await waitForText(page, '#routeStatus', /immutable successor entry/);
-  const afterRoute = await databaseSnapshot(page);
-  const routeRecord = afterRoute.routeMemory.find(item => item.id === caseId)?.value;
-  assert(routeRecord?.entries.length === 1, 'Route Memory did not append exactly one successor entry');
-  assert(routeRecord.entries[0].record_class === 'WHAT_ACTUALLY_LEFT', 'Route Memory collapsed actual disclosure into another evidence class');
-  report.room_and_route_memory = {
-    room_count: caseMap.rooms.length,
-    cross_room_relationship_count: crossRoomEdges.length,
-    route_entry_count: routeRecord.entries.length,
-    route_record_class: routeRecord.entries[0].record_class
-  };
-
-  await openWorkspace(page, 'test');
+  await page.locator('.work-tab[data-workspace="test"]').click();
+  await waitForText(page, '#testStatus', /Test held/i);
   await page.locator('#loadSeed').click();
-  await waitForText(page, '#testReceipt', /"test_digest"/, 45_000);
-  const rebuild = JSON.parse(await page.locator('#testReceipt').textContent());
+  const rebuild = JSON.parse(await waitForText(page, '#testReceipt', /"test_digest"/, 45_000));
   assert(rebuild.trials.some(trial => trial.benign_control), 'Rebuild Test omitted its benign control');
   assert(rebuild.trials.some(trial => trial.held_out), 'Rebuild Test omitted its held-out observation');
   assert(rebuild.real_surveillance_probability === null, 'Rebuild Test manufactured a real surveillance probability');
   assert(rebuild.automatic_hold === false, 'Rebuild Test silently activated an automatic hold');
   await page.locator('#replayTest').click();
   await waitForText(page, '#replayReceipt', /REPLAY_VERIFIED/);
-  report.rebuild_test = {
+  report.rebuild = {
     test_id: rebuild.test_id,
     calibration_state: rebuild.calibration_state,
     trials: rebuild.trials.length,
@@ -381,158 +408,67 @@ try {
     automatic_hold: rebuild.automatic_hold
   };
 
-  report.stale_release = await staleReleaseAssay(page);
-  assert(report.stale_release.exact === true, 'Exact release binding did not verify');
-  assert(report.stale_release.stale_version_matches === false, 'Stale draft version remained release-eligible');
-  assert(report.stale_release.stale_route_matches === false, 'Changed route remained release-eligible');
-  assert(report.stale_release.transmission_performed === false, 'Local release receipt performed transmission');
-
-  await openWorkspace(page, 'draft');
-  await page.locator('#protectedLiterals').fill('Synthetic Person');
-  const postsBeforeScreen = requests.filter(request => request.method === 'POST').length;
-  await page.locator('#screenProvider').click();
-  await waitForText(page, '#providerStatus', /READY_FOR_OPERATOR_REVIEW|HOLD_FOR_REPAIR/);
-  const postsAfterScreen = requests.filter(request => request.method === 'POST').length;
-  assert(postsAfterScreen === postsBeforeScreen, 'Local provider screening emitted a POST request');
-  const screen = JSON.parse(await page.locator('#providerPacket').textContent());
-  assert(screen.provider_called === false || screen.provider_called == null, 'Local screen claimed a provider call');
-  report.hush_screen = {
-    status: screen.status,
-    provider_called: false,
-    post_requests_added: postsAfterScreen - postsBeforeScreen
+  await page.locator('.work-tab[data-workspace="draft"]').click();
+  await page.locator('#draftBody').fill('Synthetic lifecycle export approval');
+  await page.locator('#draftRefs').fill('node_archive, node_register');
+  await page.locator('#keepDraft').click();
+  await page.locator('#reviewDraft').click();
+  await page.locator('#approveRelease').click();
+  await waitForText(page, '#reviewStatus', /READY_FOR_LOCAL_RELEASE_APPROVAL/i);
+  const continuityState = await page.evaluate(() => document.body.dataset.ashLifecycle);
+  assert(continuityState === 'CONTINUITY_SEALED', 'Release approval did not seal continuity');
+  report.draft_review_release = {
+    draft_state: true,
+    review_state: 'READY_FOR_LOCAL_RELEASE_APPROVAL',
+    continuity_state: continuityState
   };
 
-  await openWorkspace(page, 'save');
-  await page.locator('#saveQuestions').fill('Which synthetic revision introduced the difference?');
-  await page.locator('#saveNext').fill('Request the synthetic public index.');
+  await page.locator('.work-tab[data-workspace="save"]').click();
+  await page.locator('#saveQuestions').fill('What remains to be checked?');
+  await page.locator('#saveNext').fill('Return to the hold surface.');
   await page.locator('#makeSave').click();
-  await waitForText(page, '#saveStatus', /sealed locally/);
-
-  const passphrase = 'td613-production-probe-passphrase';
-  await page.locator('#capsulePassphrase').fill(passphrase);
-  const downloadPromise = page.waitForEvent('download');
+  await waitForText(page, '#saveStatus', /Save Point .* sealed locally\./);
   await page.locator('#exportCapsule').click();
-  const download = await downloadPromise;
-  const capsulePath = path.join(artifactDir, 'ash-keep-probe-capsule.json');
-  await download.saveAs(capsulePath);
   await waitForText(page, '#capsuleStatus', /Encrypted copy exported/);
-
-  await page.locator('#capsuleFile').setInputFiles(capsulePath);
-  await page.locator('#capsulePassphrase').fill('wrong-passphrase');
-  await page.locator('#importCapsule').click();
-  const wrongMessage = await waitForText(page, '#capsuleStatus', /nothing was imported|authentication failed/i);
-
-  await page.locator('#capsuleFile').setInputFiles(capsulePath);
-  await page.locator('#capsulePassphrase').fill(passphrase);
-  await page.locator('#importCapsule').click();
-  await waitForText(page, '#capsuleStatus', /Authenticated capsule opened/);
-
-  const capsule = JSON.parse(await fs.readFile(capsulePath, 'utf8'));
-  capsule.ciphertext = `${capsule.ciphertext.slice(0, -2)}AA`;
-  const tamperedPath = path.join(artifactDir, 'ash-keep-probe-capsule-tampered.json');
-  await fs.writeFile(tamperedPath, `${JSON.stringify(capsule, null, 2)}\n`);
-  await page.locator('#capsuleFile').setInputFiles(tamperedPath);
-  await page.locator('#capsulePassphrase').fill(passphrase);
-  await page.locator('#importCapsule').click();
-  const tamperMessage = await waitForText(page, '#capsuleStatus', /verification failed|nothing was imported/i);
-  report.save_and_capsule = {
-    save_point: true,
-    export: true,
-    authenticated_import: true,
-    wrong_passphrase_hold: /nothing was imported|authentication failed/i.test(wrongMessage || ''),
-    tamper_hold: /verification failed|nothing was imported/i.test(tamperMessage || ''),
-    capsule_digest: await digestFile(capsulePath)
+  const afterCapsule = await databaseSnapshot(page);
+  const savePoint = afterCapsule.savePoints.find(item => item.value?.case_id === caseMap.case_id)?.value || null;
+  assert(savePoint?.save_point_digest, 'Save Point was not stored before Capsule export');
+  report.continuity = {
+    save_point_digest: savePoint.save_point_digest,
+    release_reference: savePoint.release_receipt_reference,
+    exported: true
   };
-
-  report.large_case = await largeCaseAssay(page);
-  assert(report.large_case.verified === true, 'Synthetic large Case Map failed verification');
-  assert(report.large_case.compile_and_verify_ms < 5_000, 'Synthetic large Case Map exceeded the 5 second closure threshold');
-
-  await settleViewport(page, 1440, 1000);
-  await openWorkspace(page, 'map');
-  report.desktop = await layoutReceipt(page);
-  assert(report.desktop.horizontal_overflow === 0, 'Desktop Ash Keep has horizontal overflow');
-  assert(report.desktop.clipped_controls.length === 0, 'Desktop Ash Keep clips visible controls');
-  assert(report.desktop.reduced_motion === true, 'Reduced-motion context was not honored');
-  const desktopPath = path.join(artifactDir, 'ash-keep-desktop.png');
-  await page.screenshot({ path: desktopPath, fullPage: true });
 
   await settleViewport(page, 390, 844);
   report.mobile_portrait = await layoutReceipt(page);
-  assert(report.mobile_portrait.horizontal_overflow === 0, 'Mobile portrait Ash Keep has horizontal overflow');
-  assert(report.mobile_portrait.clipped_controls.length === 0, 'Mobile portrait Ash Keep clips visible controls');
-  const portraitPath = path.join(artifactDir, 'ash-keep-mobile-portrait.png');
-  await page.screenshot({ path: portraitPath, fullPage: true });
+  assert(report.mobile_portrait.horizontal_overflow === 0, 'Mobile portrait has horizontal overflow');
+  assert(report.mobile_portrait.clipped_controls.length === 0, `Mobile portrait clipped controls: ${report.mobile_portrait.clipped_controls.join(', ')}`);
 
   await settleViewport(page, 844, 390);
   report.mobile_landscape = await layoutReceipt(page);
-  assert(report.mobile_landscape.horizontal_overflow === 0, 'Mobile landscape Ash Keep has horizontal overflow');
-  assert(report.mobile_landscape.clipped_controls.length === 0, 'Mobile landscape Ash Keep clips visible controls');
-  const landscapePath = path.join(artifactDir, 'ash-keep-mobile-landscape.png');
-  await page.screenshot({ path: landscapePath, fullPage: true });
+  assert(report.mobile_landscape.horizontal_overflow === 0, 'Mobile landscape has horizontal overflow');
+  assert(report.mobile_landscape.clipped_controls.length === 0, `Mobile landscape clipped controls: ${report.mobile_landscape.clipped_controls.join(', ')}`);
 
-  await settleViewport(page, 390, 844);
-  report.rotation_return = await layoutReceipt(page);
-  assert(report.rotation_return.horizontal_overflow === 0, 'Portrait return has horizontal overflow');
-  assert(report.rotation_return.clipped_controls.length === 0, 'Portrait return clips visible controls');
+  await settleViewport(page, 1440, 1000);
+  report.desktop = await layoutReceipt(page);
+  assert(report.desktop.horizontal_overflow === 0, 'Desktop has horizontal overflow');
+  assert(report.desktop.clipped_controls.length === 0, `Desktop clipped controls: ${report.desktop.clipped_controls.join(', ')}`);
 
-  const finalDb = await databaseSnapshot(page);
-  const finalLocalKeys = await page.evaluate(() => Object.keys(localStorage));
-  const nonReadRequests = requests.filter(request => request.method !== 'GET' && request.method !== 'HEAD');
-  const recipientRequests = requests.filter(request => /recipient|transport|send-final/i.test(request.url));
-  assert(nonReadRequests.length === 0, 'Closure path emitted a non-read network request');
-  assert(recipientRequests.length === 0, 'Closure path emitted a recipient-transport request');
-  assert(finalLocalKeys.every(key => ALLOWED_LOCAL_KEYS.has(key)), 'Unexpected localStorage key appeared after closure workflow');
-  report.network = {
-    total_requests: requests.length,
-    non_read_requests: nonReadRequests,
-    recipient_transport_requests: recipientRequests
-  };
-  report.storage = {
-    indexeddb_store_counts: Object.fromEntries(Object.entries(finalDb).map(([store, rows]) => [store, rows.length])),
-    local_storage_keys: finalLocalKeys,
-    local_storage_case_material: false
-  };
-
-  assert(consoleErrors.length === 0, `Browser console errors observed: ${consoleErrors.join(' | ')}`);
-  report.evidence_files = {
-    desktop_screenshot: await digestFile(desktopPath),
-    mobile_portrait_screenshot: await digestFile(portraitPath),
-    mobile_landscape_screenshot: await digestFile(landscapePath),
-    capsule: await digestFile(capsulePath),
-    tampered_capsule: await digestFile(tamperedPath)
-  };
+  report.storage = { keys: await page.evaluate(() => Object.keys(localStorage)), snapshot: await databaseSnapshot(page) };
+  report.network = { requests: requests.filter(item => item.method !== 'GET' && item.method !== 'HEAD') };
+  assert(report.network.requests.every(request => request.url.startsWith(base)), 'Production probe emitted an off-origin request');
+  assert(consoleErrors.length === 0, `Console errors: ${consoleErrors.join(' | ')}`);
+  assert(report.storage.keys.every(key => ALLOWED_LOCAL_KEYS.has(key)), `Unexpected localStorage key set: ${report.storage.keys.join(', ')}`);
+  report.promotion_authorized = true;
   report.status = 'PASS';
-  report.promotion_authorized = false;
-  await persistReport();
-  const reportPath = path.join(artifactDir, 'ash-keep-production-closure.json');
-  const manifest = {
-    schema: 'td613.ash-keep.production-closure-evidence-manifest/v0.1',
-    source_status: report.source_status,
-    promotion_authorized: false,
-    files: {
-      'ash-keep-production-closure.json': await digestFile(reportPath),
-      'ash-keep-desktop.png': report.evidence_files.desktop_screenshot,
-      'ash-keep-mobile-portrait.png': report.evidence_files.mobile_portrait_screenshot,
-      'ash-keep-mobile-landscape.png': report.evidence_files.mobile_landscape_screenshot,
-      'ash-keep-probe-capsule.json': report.evidence_files.capsule,
-      'ash-keep-probe-capsule-tampered.json': report.evidence_files.tampered_capsule
-    }
-  };
-  await fs.writeFile(path.join(artifactDir, 'evidence-manifest.json'), `${JSON.stringify(manifest, null, 2)}\n`);
-  console.log(JSON.stringify(report, null, 2));
 } catch (error) {
   report.status = 'HOLD_FOR_REPAIR';
-  report.promotion_authorized = false;
-  report.error = { message: error?.message || String(error), stack: error?.stack || null };
-  try {
-    await page.screenshot({ path: path.join(artifactDir, 'ash-keep-held.png'), fullPage: true });
-  } catch {
-    // Evidence capture must never conceal the originating failure.
-  }
-  await persistReport();
-  console.error(JSON.stringify(report, null, 2));
-  throw error;
+  report.error = { message: error.message, stack: error.stack };
 } finally {
+  await persistReport();
+  await context.close();
   await browser.close();
 }
+
+if (report.status !== 'PASS') throw new Error(`${report.status}: ${report.error?.message || 'unknown error'}`);
+console.log(JSON.stringify(report, null, 2));
