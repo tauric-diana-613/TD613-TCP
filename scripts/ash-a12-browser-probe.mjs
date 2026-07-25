@@ -25,6 +25,13 @@ async function waitForRegistryOwner(page) {
   }, null, { timeout:120_000 });
 }
 
+async function ensureCommandSheetOpen(page) {
+  const sheet = page.locator('#premiumCommandSheet');
+  const alreadyOpen = await sheet.evaluate(dialog => dialog.open === true).catch(() => false);
+  if (!alreadyOpen) await page.locator('#premiumMenuButton').click();
+  await page.waitForSelector('#premiumCommandSheet[open]', { timeout:60_000 });
+}
+
 async function settleWorkspace(page, workspace) {
   await waitForRegistryOwner(page);
   await page.evaluate(async name => {
@@ -110,8 +117,7 @@ async function enterInvestigation(page) {
 async function inspect(page, label) {
   await enterInvestigation(page);
   await waitForRegistryOwner(page);
-  await page.locator('#premiumMenuButton').click();
-  await page.waitForSelector('#premiumCommandSheet[open]', { timeout:60_000 });
+  await ensureCommandSheetOpen(page);
   const commandText = await page.locator('#premiumCommandGrid').innerText();
   for (const phrase of ['Custody','Rooms','Routes','Rebuild Test','Draft & Hush','Save Points','Destination Handoff','Receipts','Cases & Profiles','Safe Harbor']) {
     if (!commandText.includes(phrase)) throw new Error('A12 missing ' + phrase);
@@ -122,8 +128,7 @@ async function inspect(page, label) {
   // Preserve the exact command click as the human gesture, then let the A13 owner settle the destination.
   await page.locator('[data-a12-command="test"]').click();
   await settleWorkspace(page, 'choir');
-  await page.locator('#premiumMenuButton').click();
-  await page.waitForSelector('#premiumCommandSheet[open]', { timeout:60_000 });
+  await ensureCommandSheetOpen(page);
   await page.locator('[data-a12-command="save"]').click();
   await settleWorkspace(page, 'capsule');
 
@@ -145,8 +150,7 @@ async function inspect(page, label) {
   if (beforeSwitch.registry_owner !== 'ASH_DEMO_REGISTRY') throw new Error('A13 registry ownership drift: ' + JSON.stringify(beforeSwitch));
   if (!beforeSwitch.active_case) throw new Error('A12 case-switcher witness began without an active case.');
 
-  await page.locator('#premiumMenuButton').click();
-  await page.waitForSelector('#premiumCommandSheet[open]', { timeout:60_000 });
+  await ensureCommandSheetOpen(page);
   await page.locator('[data-a12-action="profile"]').click();
   await page.waitForFunction(() => document.body.dataset.ashCaseClosed === 'true'
     && !localStorage.getItem('td613.ash-keep.current-case')
@@ -184,7 +188,7 @@ try {
   const mobile = await browser.newContext(mobileOptions);
   receipts.push({ mode:'mobile-reduced-motion', ...(await inspect(await mobile.newPage(), 'mobile-reduced-motion')) });
   await mobile.close();
-  await fs.writeFile(path.join(artifactDir, browserName + '-a12-receipt.json'), JSON.stringify({ schema:'td613.ash.a12-browser-witness/v0.6-webkit-profile-reasserted-activation', browser:browserName, receipts, authority_changed:false, source_bytes_moved:false, case_data_preserved:true, profile_inferred:false, human_closure_required:true }, null, 2));
+  await fs.writeFile(path.join(artifactDir, browserName + '-a12-receipt.json'), JSON.stringify({ schema:'td613.ash.a12-browser-witness/v0.7-idempotent-command-sheet', browser:browserName, receipts, authority_changed:false, source_bytes_moved:false, case_data_preserved:true, profile_inferred:false, human_closure_required:true }, null, 2));
 } catch (error) {
   await fs.writeFile(path.join(artifactDir, browserName + '-a12-failure.json'), JSON.stringify({ error:String(error?.stack || error) }, null, 2));
   throw error;
