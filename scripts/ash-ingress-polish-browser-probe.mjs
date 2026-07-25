@@ -37,6 +37,8 @@ try {
       request.onsuccess = request.onerror = request.onblocked = () => resolve();
     });
   });
+  errors.length = 0;
+  httpErrors.length = 0;
   navigations.length = 0;
   await openKeep();
   await page.waitForFunction(() => window.__td613AshPostIngressMotionRestoration?.version
