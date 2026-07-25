@@ -71,15 +71,11 @@ const ingressReadinessReplacement = String.raw`  await page.waitForFunction(() =
   });
   await page.waitForFunction(() => {
     const registry = window.__td613AshDemoRegistry?.snapshot?.();
-    const portal = window.__td613AshFlowcoreIngressPortal?.current?.();
     const visible = document.querySelector('.ash-flowcore-field:not([hidden])');
-    // Registry reconciliation precedes ownership, portal, and canonical Play assertions.
+    // Canonical ownership and visible Play settle first; portal and spacing are asserted directly below.
     return registry?.control_owner === 'ASH_DEMO_REGISTRY'
       && document.documentElement.dataset.ashDemoControlOwner === 'ASH_DEMO_REGISTRY'
       && document.documentElement.dataset.ashDemoRegistry === 'td613.ash.demo-registry/v0.1-a13'
-      && portal?.visible_host === 'INGRESS'
-      && portal?.duplicate_visible_fields === 1
-      && window.__td613AshIngressCopySpacing?.measure?.().available
       && visible?.querySelectorAll('[data-aia-play]').length === 1
       && !visible.querySelector('[data-flowcore-ingress-play]');
   });
@@ -171,14 +167,14 @@ if (motionCount !== 1) throw new Error(`Flow-Core witness expected one post-even
 if (mobileParityCount !== 1) throw new Error(`Flow-Core witness expected one legacy mobile list-count seam; observed ${mobileParityCount}.`);
 
 let runtime = source.replace(listenerTarget, listenerReplacement);
-runtime = replaceBoundedExactlyOnce(runtime, ingressReadinessStart, ingressReadinessEnd, ingressReadinessReplacement, 'registry-reconciled portal-gated ingress readiness');
+runtime = replaceBoundedExactlyOnce(runtime, ingressReadinessStart, ingressReadinessEnd, ingressReadinessReplacement, 'registry-owned DOM readiness with direct receipt assertions');
 runtime = runtime
   .replace(motionTarget, motionReplacement)
   .replace(mobileParityTarget, mobileParityReplacement)
-  .replace('v0.7-atomic-name-receipt', 'v0.13-registry-reconciled-atomic-name-receipt');
+  .replace('v0.7-atomic-name-receipt', 'v0.14-registry-owned-dom-readiness');
 
 if (!runtime.includes('dom_phase:field?.dataset.flowcorePhaseName')) throw new Error('Flow-Core emitted DOM-phase receipt was not materialized.');
-if (!runtime.includes('Registry reconciliation precedes ownership, portal, and canonical Play assertions.')) throw new Error('Flow-Core registry-reconciled ingress readiness was not materialized.');
+if (!runtime.includes('Canonical ownership and visible Play settle first; portal and spacing are asserted directly below.')) throw new Error('Flow-Core registry-owned DOM readiness was not materialized.');
 if (!runtime.includes("window.__td613AshDemoRegistry?.version === 'td613.ash.demo-registry/v0.1-a13'")) throw new Error('Flow-Core A13 registry version gate was not materialized.');
 if (!runtime.includes("registry?.control_owner === 'ASH_DEMO_REGISTRY'")) throw new Error('Flow-Core registry owner gate was not materialized.');
 if (!runtime.includes("document.documentElement.dataset.ashDemoControlOwner === 'ASH_DEMO_REGISTRY'")) throw new Error('Flow-Core DOM registry owner gate was not materialized.');
