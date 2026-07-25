@@ -92,11 +92,7 @@ async function waitForWorkspaceGeometry(page, workspace) {
     if (!panel?.classList.contains('active')) return false;
     const style = getComputedStyle(panel);
     const rect = panel.getBoundingClientRect();
-    const navigationReceipt = window.__td613AshWholeInstrument?.current?.()?.navigation_receipt || null;
-    const semanticArrival = navigationReceipt?.destination_workspace === name && navigationReceipt?.result === 'ARRIVED';
-    const legacyArrival = document.documentElement.dataset.ashUxScrollTarget === name;
-    return (semanticArrival || legacyArrival)
-      && document.documentElement.dataset.ashPremiumWorkspace === name
+    return document.documentElement.dataset.ashPremiumWorkspace === name
       && style.display !== 'none'
       && style.visibility !== 'hidden'
       && Number(style.opacity) > 0
