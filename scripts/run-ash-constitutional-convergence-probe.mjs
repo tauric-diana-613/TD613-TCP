@@ -35,22 +35,28 @@ const readinessReplacement = `  await page.goto(keepUrl, { waitUntil: 'domconten
     presentation_route: 'legacy'
   };
   await page.evaluate(() => {
+    const registry = window.__td613AshDemoRegistry;
     const select = document.getElementById('newProfile');
-    if (!select) throw new Error('A13 profile selector unavailable at convergence selection.');
+    const button = document.getElementById('startDemo');
+    if (!registry?.version || !select || !button) {
+      throw new Error('A13 registry-owned convergence demo control unavailable.');
+    }
     select.value = 'political_campaign';
     select.dispatchEvent(new Event('change', { bubbles:true }));
-    window.__td613AshDemoRegistry.reconcile();
+    registry.reconcile();
+    const snapshot = registry.snapshot?.() || null;
+    const ready = select.value === 'political_campaign'
+      && snapshot?.control_owner === 'ASH_DEMO_REGISTRY'
+      && document.documentElement.dataset.ashDemoControlOwner === 'ASH_DEMO_REGISTRY'
+      && button.dataset.ashDemoRegistryOwner === 'td613.ash.demo-registry/v0.1-a13'
+      && button.dataset.ashMethodDemoState === 'READY'
+      && button.disabled === false
+      && !button.matches(':disabled');
+    if (!ready) throw new Error('A13 registry-owned convergence demo control was not atomically actionable.');
+    button.click();
   });
-  await page.waitForFunction(() => {
-    const button = document.getElementById('startDemo');
-    return document.getElementById('newProfile')?.value === 'political_campaign'
-      && window.__td613AshDemoRegistry?.snapshot?.().control_owner === 'ASH_DEMO_REGISTRY'
-      && button?.dataset.ashDemoRegistryOwner === 'td613.ash.demo-registry/v0.1-a13'
-      && button?.dataset.ashMethodDemoState === 'READY'
-      && button.disabled === false;
-  }, null, { timeout: 60000 });
   report.observations.boot_readiness.profile_demo_registry_ready = true;
-  await page.locator('#startDemo').click();
+  report.observations.boot_readiness.profile_demo_activation = 'ATOMIC_REGISTRY_TASK';
   await page.waitForFunction(() => /Harbor City Mayoral Campaign/i.test(document.getElementById('caseTitle')?.textContent || ''), null, { timeout: 60000 });
   await page.waitForFunction(() => {
     const caseId = localStorage.getItem('td613.ash-keep.current-case');
@@ -151,20 +157,26 @@ const secondCaseTarget = `  await page.locator('#newTitle').fill('Synthetic seco
   await page.locator('#newCase').click();
   await page.waitForFunction(() => /Synthetic second case/i.test(document.getElementById('caseTitle')?.textContent || ''));`;
 const secondCaseReplacement = `  await page.evaluate(() => {
+    const registry = window.__td613AshDemoRegistry;
     const select = document.getElementById('newProfile');
+    const button = document.getElementById('startDemo');
+    if (!registry?.version || !select || !button) {
+      throw new Error('A13 registry-owned second convergence demo control unavailable.');
+    }
     select.value = 'political_campaign';
     select.dispatchEvent(new Event('change', { bubbles:true }));
-    window.__td613AshDemoRegistry.reconcile();
+    registry.reconcile();
+    const snapshot = registry.snapshot?.() || null;
+    const ready = select.value === 'political_campaign'
+      && snapshot?.control_owner === 'ASH_DEMO_REGISTRY'
+      && document.documentElement.dataset.ashDemoControlOwner === 'ASH_DEMO_REGISTRY'
+      && button.dataset.ashDemoRegistryOwner === 'td613.ash.demo-registry/v0.1-a13'
+      && button.dataset.ashMethodDemoState === 'READY'
+      && button.disabled === false
+      && !button.matches(':disabled');
+    if (!ready) throw new Error('A13 registry-owned second convergence demo control was not atomically actionable.');
+    button.click();
   });
-  await page.waitForFunction(() => {
-    const button = document.getElementById('startDemo');
-    return document.getElementById('newProfile')?.value === 'political_campaign'
-      && window.__td613AshDemoRegistry?.snapshot?.().control_owner === 'ASH_DEMO_REGISTRY'
-      && button?.dataset.ashDemoRegistryOwner === 'td613.ash.demo-registry/v0.1-a13'
-      && button?.dataset.ashMethodDemoState === 'READY'
-      && button.disabled === false;
-  }, null, { timeout:45000 });
-  await page.locator('#startDemo').click();
   await page.waitForFunction(first => {
     const current = localStorage.getItem('td613.ash-keep.current-case');
     return Boolean(current && current !== first)
@@ -173,6 +185,7 @@ const secondCaseReplacement = `  await page.evaluate(() => {
   report.observations.second_case_entry = {
     route:'GOVERNED_PROFILE_DEMO',
     explicit_profile:true,
+    activation:'ATOMIC_REGISTRY_TASK',
     blank_new_case_control_deferred_to_stage:'A6'
   };`;
 
