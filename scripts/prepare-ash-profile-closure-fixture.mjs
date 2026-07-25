@@ -7,6 +7,7 @@ const here = path.dirname(fileURLToPath(import.meta.url));
 const repoRoot = path.join(here, '..');
 const probePath = path.join(here, 'ash-keep-production-probe.mjs');
 const convergenceRunnerPath = path.join(here, 'run-ash-constitutional-convergence-probe.mjs');
+const a2ProbePath = path.join(here, 'ash-a2-a5-browser-probe.mjs');
 const manifestPath = path.resolve(
   process.env.TD613_PROFILE_CLOSURE_FIXTURE_MANIFEST
     || path.join(repoRoot, 'artifacts', 'ash-keep-probe-runtime', 'profile-fixture-manifest.json')
@@ -119,6 +120,31 @@ const convergenceReplacement = {
   await page.waitForFunction(() => document.documentElement.dataset.ashConvergence?.includes('constitutional-convergence'), null, { timeout: 60000 });\`;`
 };
 
+const a2RegistryReplacement = {
+  label: 'A2-A6 registry-owned demo launch',
+  from: `  await page.waitForFunction(() => Boolean(window.__td613AshKeep?.version)
+    && document.getElementById('newProfile')
+    && document.getElementById('startDemo'), null, { timeout:60000 });
+  await page.locator('#newProfile').selectOption('political_campaign');
+  await page.waitForFunction(() => !document.getElementById('startDemo')?.disabled, null, { timeout:60000 });
+  await page.locator('#startDemo').click();`,
+  to: `  await page.waitForFunction(() => Boolean(window.__td613AshKeep?.version)
+    && Boolean(window.__td613AshDemoRegistry?.version)
+    && document.getElementById('newProfile')
+    && document.getElementById('startDemo'), null, { timeout:60000 });
+  await page.locator('#newProfile').selectOption('political_campaign');
+  await page.evaluate(() => window.__td613AshDemoRegistry?.reconcile?.());
+  await page.waitForFunction(() => {
+    const button = document.getElementById('startDemo');
+    return document.getElementById('newProfile')?.value === 'political_campaign'
+      && window.__td613AshDemoRegistry?.snapshot?.().control_owner === 'ASH_DEMO_REGISTRY'
+      && button?.dataset.ashDemoRegistryOwner === 'td613.ash.demo-registry/v0.1-a13'
+      && button?.dataset.ashMethodDemoState === 'READY'
+      && button.disabled === false;
+  }, null, { timeout:60000 });
+  await page.locator('#startDemo').click();`
+};
+
 function sha256(value) {
   return `sha256:${createHash('sha256').update(value).digest('hex')}`;
 }
@@ -143,6 +169,14 @@ function isConvergencePrepared(source) {
     && source.includes("control_owner === 'ASH_DEMO_REGISTRY'")
     && source.includes("button?.dataset.ashDemoRegistryOwner === 'td613.ash.demo-registry/v0.1-a13'")
     && source.includes('Harbor City Mayoral Campaign');
+}
+
+function isA2RegistryPrepared(source) {
+  return source.includes('Boolean(window.__td613AshDemoRegistry?.version)')
+    && source.includes('window.__td613AshDemoRegistry?.reconcile?.()')
+    && source.includes("control_owner === 'ASH_DEMO_REGISTRY'")
+    && source.includes("button?.dataset.ashDemoRegistryOwner === 'td613.ash.demo-registry/v0.1-a13'")
+    && source.includes("button?.dataset.ashMethodDemoState === 'READY'");
 }
 
 function replaceExactlyOnce(source, replacement) {
@@ -171,6 +205,16 @@ if (!isConvergencePrepared(originalConvergenceRunner)) {
 if (!isConvergencePrepared(preparedConvergenceRunner)) throw new Error('Convergence profile fixture did not materialize its campaign-method seam.');
 if (preparedConvergenceRunner !== originalConvergenceRunner) await fs.writeFile(convergenceRunnerPath, preparedConvergenceRunner, 'utf8');
 
+const originalA2Probe = (await fs.readFile(a2ProbePath, 'utf8')).replace(/\r\n/g, '\n');
+let preparedA2Probe = originalA2Probe;
+let a2ProbePosture = 'ALREADY_PREPARED';
+if (!isA2RegistryPrepared(originalA2Probe)) {
+  a2ProbePosture = 'PREPARED_NOW';
+  preparedA2Probe = replaceExactlyOnce(originalA2Probe, a2RegistryReplacement);
+}
+if (!isA2RegistryPrepared(preparedA2Probe)) throw new Error('A2-A6 witness did not materialize registry-owned demo readiness.');
+if (preparedA2Probe !== originalA2Probe) await fs.writeFile(a2ProbePath, preparedA2Probe, 'utf8');
+
 await fs.mkdir(path.dirname(manifestPath), { recursive: true });
 await fs.writeFile(manifestPath, `${JSON.stringify({
   schema: 'td613.ash-keep.profile-closure-fixture/v0.4-five-demo-deferred-entry',
@@ -192,6 +236,13 @@ await fs.writeFile(manifestPath, `${JSON.stringify({
     prepared_sha256: sha256(preparedConvergenceRunner),
     replacements: [convergenceReplacement.label]
   },
+  a2_a6_browser_probe: {
+    path: path.relative(repoRoot, a2ProbePath),
+    posture: a2ProbePosture,
+    source_sha256: sha256(originalA2Probe),
+    prepared_sha256: sha256(preparedA2Probe),
+    replacements: [a2RegistryReplacement.label]
+  },
   source_files_mutated_in_ephemeral_ci_checkout_only: true,
   production_product_mutated: false,
   maturity_promoted: false,
@@ -199,4 +250,4 @@ await fs.writeFile(manifestPath, `${JSON.stringify({
   cinder_authorized: false
 }, null, 2)}\n`);
 
-console.log(`prepare-ash-profile-closure-fixture.mjs passed · probe ${probePosture} · convergence ${convergencePosture}`);
+console.log(`prepare-ash-profile-closure-fixture.mjs passed · probe ${probePosture} · convergence ${convergencePosture} · a2 ${a2ProbePosture}`);
