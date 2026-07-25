@@ -20,6 +20,8 @@ const currentCloseTarget = "const closeTarget = `  await page.locator('#closeCas
 const releaseDefinitionsStart = '\nconst releaseTarget = ';
 const releaseDefinitionsEnd = "\n\nconst source = await fs.readFile(sourceUrl, 'utf8');";
 const releaseArrayEntry = '  [releaseTarget, releaseReplacement]\n';
+const sessionEpochAnchor = "allowedLocalKeys.add('td613.ash.cache-preflight.epoch');";
+const sessionEpochAllowance = "allowedLocalKeys.add('td613.ash.session.epoch');";
 const replacementLoopTarget = `for (const [target, replacement] of replacements) {
   if (!runtime.includes(target)) throw new Error(\`Ash convergence runtime target missing: \${target.slice(0, 80)}\`);
   runtime = runtime.replace(target, replacement);
@@ -36,6 +38,7 @@ let guardMaterialized = false;
 let closeTargetNormalized = false;
 let retiredReleaseTargetRemoved = false;
 let closeReplacementWidened = false;
+let sessionEpochAllowanceMaterialized = false;
 
 if (!wrapperSource.includes(finiteLockGuard)) {
   const markerIndex = wrapperSource.indexOf(wrapperWriteMarker);
@@ -67,6 +70,16 @@ if (wrapperSource.includes(releaseArrayEntry)) {
   retiredReleaseTargetRemoved = true;
 }
 
+if (!wrapperSource.includes(sessionEpochAllowance)) {
+  const anchorIndex = wrapperSource.indexOf(sessionEpochAnchor);
+  if (anchorIndex < 0 || wrapperSource.indexOf(sessionEpochAnchor, anchorIndex + sessionEpochAnchor.length) >= 0) {
+    throw new Error('Convergence handshake preflight could not locate exactly one session-epoch allowlist anchor.');
+  }
+  wrapperSource = wrapperSource.replace(sessionEpochAnchor, `${sessionEpochAnchor}\n${sessionEpochAllowance}`);
+  wrapperChanged = true;
+  sessionEpochAllowanceMaterialized = true;
+}
+
 if (wrapperSource.includes(replacementLoopTarget)) {
   wrapperSource = wrapperSource.replace(replacementLoopTarget, replacementLoopReplacement);
   wrapperChanged = true;
@@ -82,10 +95,13 @@ if (!wrapperSource.includes(currentCloseTarget)
 if (!wrapperSource.includes(replacementLoopReplacement)) {
   throw new Error('Convergence handshake preflight did not materialize all-close confirmation handling.');
 }
+if (!wrapperSource.includes(sessionEpochAllowance)) {
+  throw new Error('Convergence handshake preflight did not admit the current session epoch bookkeeping key.');
+}
 
 if (wrapperChanged) await fs.writeFile(wrapperPath, wrapperSource, 'utf8');
 await fs.writeFile(path.join(artifactDir, 'convergence-materialization-preflight.json'), `${JSON.stringify({
-  schema:'td613.ash.constitutional-convergence-materialization/v0.2-current-source-seams',
+  schema:'td613.ash.constitutional-convergence-materialization/v0.3-session-epoch-allowlist',
   status:'PASS',
   finite_lock_guard_present:true,
   guard_materialized_in_ephemeral_checkout:guardMaterialized,
@@ -95,6 +111,8 @@ await fs.writeFile(path.join(artifactDir, 'convergence-materialization-preflight
   close_replacement_widened_in_ephemeral_checkout:closeReplacementWidened,
   retired_release_target_absent:true,
   retired_release_target_removed_in_ephemeral_checkout:retiredReleaseTargetRemoved,
+  session_epoch_allowance_present:true,
+  session_epoch_allowance_materialized_in_ephemeral_checkout:sessionEpochAllowanceMaterialized,
   product_runtime_mutated:false,
   authority_changed:false,
   source_bytes_moved:false,
