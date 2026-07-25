@@ -56,7 +56,7 @@ assert.match(profileFixtureCompiler, /convergenceApi\?\.version/);
 assert.match(profileFixtureCompiler, /profile_selected_explicitly: true/);
 assert.match(profileFixtureCompiler, /window\.__td613AshProfileDemos\?\.profiles\?\.includes\('political_campaign'\)/);
 assert.match(profileFixtureCompiler, /function isConvergencePrepared/);
-assert.match(profileFixtureCompiler, /v0\.4-five-demo-deferred-entry/);
+assert.match(profileFixtureCompiler, /v0\.6-constitutional-hold-class/);
 assert.doesNotMatch(profileFixtureCompiler, /profile_demo_ready: true/,
   'Closure fixture compiler still recognizes the superseded convergence readiness marker');
 assert.match(lifecycle, /selectOption\('political_campaign'\)/);
