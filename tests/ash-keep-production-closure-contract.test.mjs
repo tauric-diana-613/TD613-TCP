@@ -69,4 +69,5 @@ assert.match(lifecycleProbe, /draft_body_sha256/);
 assert.equal(fs.existsSync('.github/workflows/ash-keep-production-closure.yml'), false);
 assert.equal(fs.existsSync('.github/workflows/ash-keep-aia3-production-observation.yml'), false);
 
+// Synchronization sentinel: forces GitHub to regenerate the PR merge witness from the repaired A13 head.
 console.log('ash-keep-production-closure-contract.test.mjs passed under consolidated and bounded release lanes');
