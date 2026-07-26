@@ -30,29 +30,37 @@ assert.match(returnHandshake, /td613\.ash\.a8-map-return-handshake\/v0\.2-prehol
 for (const token of [
   "const HELD_ACTIONS = new Set(['addObject','addRelationship'])",
   "const COMMIT_SELECTOR = '#ashA8CommitObject,#ashA8CommitRelation'",
+  "const FINAL_REFRESH_SOURCE = 'A8_MAP_RETURN_SETTLEMENT'",
   'const SETTLEMENT_QUIET_MS = 150','function ensureStyles()','function captureAll()','function restoreAll()','function canonicalMapIsOpen()',
-  'let alignmentObserved = false','function captureBeforeCommit(event)','event.target?.closest?.(COMMIT_SELECTOR)','PREHOLD_COMMIT_SHADOW_CAPTURED',
+  'let alignmentObserved = false','let finalRefreshRequested = false','let finalInstrumentRefreshObserved = false','let postRefreshA8RecompileObserved = false',
+  'function captureBeforeCommit(event)','event.target?.closest?.(COMMIT_SELECTOR)','PREHOLD_COMMIT_SHADOW_CAPTURED',
   "doc.addEventListener('click', captureBeforeCommit, true)",
   'expected:draft.size','matched === draft.size','complete:draft.size > 0',
   'PREHOLD_DRAFT_CAPTURED','held = draft.size > 0','HELD_WITH_PREHOLD_DRAFT','HELD_WITHOUT_PREHOLD_DRAFT',
-  'if (held) return','MAP_RETURN_SETTLING','MAP_RETURN_RESTORE_HELD','MAP_RETURN_PARITY_WAITING_ALIGNMENT','MAP_RETURN_PARITY_ALIGNED',
-  'data-ash-a8-map-return-handshake^="MAP_RETURN_"','function clearSettlementTimer()','function finalizeSettlement(serial)','function scheduleAlignedSettlement()','function observeMapAlignment(event)',
+  'MAP_RETURN_SETTLING','MAP_RETURN_RESTORE_HELD','MAP_RETURN_PARITY_WAITING_ALIGNMENT','MAP_RETURN_PARITY_WAITING_FINAL_INSTRUMENT_REFRESH',
+  'MAP_RETURN_REQUESTING_FINAL_INSTRUMENT_REFRESH','MAP_RETURN_FINAL_INSTRUMENT_REFRESH_OBSERVED','MAP_RETURN_EXTERNAL_INSTRUMENT_REFRESH_OBSERVED','MAP_RETURN_FINAL_OWNER_PARITY_OBSERVED',
+  'data-ash-a8-map-return-handshake^="MAP_RETURN_"','function clearSettlementTimer()','function resetFinalRefreshState()','function requestFinalInstrumentRefresh()','function observeWholeInstrumentRefresh(event)','function finalizeSettlement(serial)','function scheduleFinalSettlement()','function observeMapAlignment(event)',
   "host.addEventListener('td613:ash:ux-workspace-opened', requestConfirmedMapRefresh)",
   "host.addEventListener('td613:ash:ux-workspace-aligned', observeMapAlignment)",
+  "host.addEventListener('td613:ash:whole-instrument-refreshed', observeWholeInstrumentRefresh)",
   "host.addEventListener('td613:ash:a8-recompiled', settleAfterA8Recompile)",
   "refresh?.('A8_CANONICAL_MAP_RETURN_HANDSHAKE')",
+  'owner.refresh(FINAL_REFRESH_SOURCE)','event.detail?.source === FINAL_REFRESH_SOURCE',
   'RESTORED_AFTER_CANONICAL_MAP_RETURN','td613:ash:a8-map-return-restored','PREHOLD_VISIBLE_COMMIT_CAPTURE',
-  'precommit_shadow_capture:true','canonical_map_alignment_observed:true','full_control_parity:true','quiet_window_ms:SETTLEMENT_QUIET_MS','workshop_visible_after_restore:true',
-  'alignment_observed:alignmentObserved','authority_changed:false','source_bytes_moved:false','custody_changed:false','release_posture_changed:false','human_closure_required:true'
+  'precommit_shadow_capture:true','canonical_map_alignment_observed:true','final_whole_instrument_refresh_observed:true','a8_recompiled_after_final_refresh:true','full_control_parity:true','quiet_window_ms:SETTLEMENT_QUIET_MS','workshop_visible_after_restore:true',
+  'final_refresh_requested:finalRefreshRequested','final_instrument_refresh_observed:finalInstrumentRefreshObserved','post_refresh_a8_recompile_observed:postRefreshA8RecompileObserved',
+  'authority_changed:false','source_bytes_moved:false','custody_changed:false','release_posture_changed:false','human_closure_required:true'
 ]) assert.ok(returnHandshake.includes(token), `A8 canonical Map-return handshake missing ${token}`);
 assert.match(returnHandshake, /function captureBeforeCommit\(event\)[\s\S]{0,260}captureAll\(\)/, 'A8 must capture all visible fields immediately before the delegated commit.');
-assert.match(returnHandshake, /function finalizeSettlement\(serial\)[\s\S]{0,220}!alignmentObserved/, 'A8 must not expose the workshop before canonical Map alignment.');
-assert.doesNotMatch(returnHandshake, /function arm\(event\)[\s\S]{0,260}captureAll\(\)/, 'A8 action-held receipt must not recapture after Custody has opened.');
+assert.match(returnHandshake, /function finalizeSettlement\(serial\)[\s\S]{0,400}!finalInstrumentRefreshObserved[\s\S]{0,120}!postRefreshA8RecompileObserved/, 'A8 must not expose the workshop before the final owner refresh and subsequent A8 recompile.');
+assert.match(returnHandshake, /function observeWholeInstrumentRefresh\(event\)[\s\S]{0,500}event\.detail\?\.source === FINAL_REFRESH_SOURCE[\s\S]{0,500}queueMicrotask\(requestFinalInstrumentRefresh\)/, 'External whole-instrument refreshes must invalidate and reissue the final settlement refresh.');
+assert.doesNotMatch(returnHandshake, /function arm\(event\)[\s\S]{0,300}captureAll\(\)/, 'A8 action-held receipt must not recapture after Custody has opened.');
 assert.doesNotMatch(returnHandshake, /indexedDB\.|localStorage\.(?:setItem|removeItem|clear)|sessionStorage\.(?:setItem|removeItem|clear)|fetch\s*\(|sendBeacon|caches\.|serviceWorker/);
 assert.match(bridge, /ash-a8-map-return-handshake\.js\?v=20260726-a15-empirical-v1/);
 
 for (const token of ['function captureStageDrafts()','function restoreStageDrafts(draft)','.ash-stage-form input[id]','const draft = captureStageDrafts()','const draftRestored = restoreStageDrafts(draft)','draft_restored:draftRestored','active.focus?.({ preventScroll:true })','ACTIVE_STAGE_INTERACTION','active_stage_primary_action_deferred:true']) assert.ok(core.includes(token), `A8 core missing ${token}`);
 assert.doesNotMatch(core, /MutationObserver|localStorage\.(?:setItem|removeItem|clear)|indexedDB\.(?:open|deleteDatabase)/);
+assert.match(core, /'whole-instrument-refreshed'/, 'A8 final settlement must account for the core whole-instrument recompile driver.');
 
 assert.match(aia3, /function closeDeepPanels\(\)/);
 assert.match(bridge, /\.ash-flowcore-field--proxy \[data-aia-exact\]/);
@@ -67,4 +75,4 @@ assert.match(html, /ash-a8-case-map-recompilation\.js/);
 assert.equal(html, mirror, 'Ash source mirror must remain byte-identical');
 assert.equal(vercel.git?.deploymentEnabled, false);
 
-console.log(JSON.stringify({ok:true,schema:'td613.ash.a8-case-map-contract/v0.9-alignment-bound-full-parity',existing_map_engine_delegation:true,stage_form_draft_preservation:true,held_draft_quarantine:true,prehold_form_shadow:true,visible_commit_boundary_capture:true,post_custody_recapture_forbidden:true,canonical_map_return_handshake:true,canonical_map_alignment_required:true,workshop_hidden_until_restore:true,full_saved_control_parity:true,quiet_recompile_window:true,transitioning_active_class_cannot_release_shadow_draft:true,default_dom_overwrite_held_until_canonical_map_restore:true,delayed_profile_hydration_cannot_clear_active_draft:true,object_and_relation_drafts_restore_independently:true,explicit_cross_tab_handshake:true,external_process_watchdog:true,authority_changed:false,source_bytes_moved:false,human_closure_required:true,vercel_gate:'CLOSED'}, null, 2));
+console.log(JSON.stringify({ok:true,schema:'td613.ash.a8-case-map-contract/v0.10-final-owner-refresh',existing_map_engine_delegation:true,stage_form_draft_preservation:true,held_draft_quarantine:true,prehold_form_shadow:true,visible_commit_boundary_capture:true,post_custody_recapture_forbidden:true,canonical_map_return_handshake:true,canonical_map_alignment_required:true,final_whole_instrument_refresh_required:true,a8_recompile_after_final_refresh_required:true,external_refresh_invalidates_settlement:true,workshop_hidden_until_restore:true,full_saved_control_parity:true,quiet_recompile_window:true,transitioning_active_class_cannot_release_shadow_draft:true,default_dom_overwrite_held_until_canonical_map_restore:true,delayed_profile_hydration_cannot_clear_active_draft:true,object_and_relation_drafts_restore_independently:true,explicit_cross_tab_handshake:true,external_process_watchdog:true,authority_changed:false,source_bytes_moved:false,human_closure_required:true,vercel_gate:'CLOSED'}, null, 2));
