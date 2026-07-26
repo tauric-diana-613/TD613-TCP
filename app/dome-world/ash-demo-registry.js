@@ -1,5 +1,5 @@
-export const ASH_DEMO_REGISTRY_VERSION = 'td613.ash.demo-registry/v0.2-a14';
-export const ASH_DEMO_ASSET_EPOCH = '20260725-a14-release-v1';
+export const ASH_DEMO_REGISTRY_VERSION = 'td613.ash.demo-registry/v0.3-a15';
+export const ASH_DEMO_ASSET_EPOCH = '20260726-a15-empirical-v1';
 
 const host = globalThis.window;
 const doc = globalThis.document;
@@ -14,6 +14,7 @@ const PROFILE_ORDER = Object.freeze([
 ]);
 const AIA_ROUTES = Object.freeze(['experimental', 'custodial', 'audit', 'implementation']);
 const CHANNEL_GRAMMAR = Object.freeze(['glyph', 'motion', 'shape', 'language', 'inspection']);
+const EMPIRICAL_VERSION = 'td613.ash.a15-empirical-profile-journeys/v0.1';
 
 const BASE_ENTRIES = Object.freeze({
   investigation:Object.freeze({ profile:'investigation', label:'Investigation', status:'PROMOTED', owner:'APEQ_PAIA', entry_workspace:'home' }),
@@ -50,12 +51,32 @@ const archiveManifest = Object.freeze({
   claim_ceiling:'Synthetic accession only; no access grant, release, declassification, publication, or transfer authority.'
 });
 
+function legalManifest() {
+  return Object.freeze({
+    profile:'legal', label:'Legal Matter', title:'Separate deadline, evidence, privilege, and decision.',
+    consequence:'Ash preserves deadlines, source gaps, privilege boundaries, competing explanations, and human review without offering legal advice.',
+    stress_question:'Can the interface stage a synthetic matter without implying guilt, liability, merits, privilege waiver, or outcome?',
+    entry_workspace:'home',
+    task_spine:Object.freeze([
+      Object.freeze({ label:'Verify the clock', detail:'Read the supplied deadline and preserve the service-method gap.', workspace:'home' }),
+      Object.freeze({ label:'Preserve originals', detail:'Map filings, evidence, provenance gaps, privilege, and alternatives.', workspace:'map' }),
+      Object.freeze({ label:'Prepare bounded work', detail:'Stage a filing or client update without moving privileged strategy.', workspace:'work' }),
+      Object.freeze({ label:'Human-review route', detail:'Keep outcome, merits, liability, and waiver outside the claim ceiling.', workspace:'capsule' })
+    ]),
+    active_workspaces:Object.freeze(['home','map','work','choir','capsule']),
+    destination_copy:Object.freeze({ home:'Read deadlines and the next preservation duty.', map:'Inspect parties, filings, evidence, privilege, alternatives, and routes.', work:'Prepare bounded human-reviewed legal work.', choir:'Compare routes without converting residue into merits or truth.', capsule:'Preserve continuity without performing a filing or disclosure.' }),
+    keep_quiet:'Privileged strategy, client communications, witness contacts, provider output, release approval, and outcome prediction stay local or dormant.',
+    claim_ceiling:'Synthetic training only; no legal advice, guilt, liability, merits, privilege waiver, or outcome prediction.'
+  });
+}
+
 let ownersPromise = null;
 let installed = false;
 let reconciling = false;
 let busyProfile = null;
 let registryEntries = null;
 let registryApi = null;
+let empiricalApi = null;
 
 function ensureStatus() {
   let status = byId('demoProfileStatus');
@@ -92,25 +113,6 @@ function ensureOptions() {
   return select;
 }
 
-function legalManifest() {
-  return Object.freeze({
-    profile:'legal', label:'Legal Matter', title:'Separate deadline, evidence, privilege, and decision.',
-    consequence:'Ash preserves deadlines, source gaps, privilege boundaries, competing explanations, and human review without offering legal advice.',
-    stress_question:'Can the interface stage a synthetic matter without implying guilt, liability, merits, privilege waiver, or outcome?',
-    entry_workspace:'home',
-    task_spine:Object.freeze([
-      Object.freeze({ label:'Verify the clock', detail:'Read the supplied deadline and preserve the service-method gap.', workspace:'home' }),
-      Object.freeze({ label:'Preserve originals', detail:'Map filings, evidence, provenance gaps, privilege, and alternatives.', workspace:'map' }),
-      Object.freeze({ label:'Prepare bounded work', detail:'Stage a filing or client update without moving privileged strategy.', workspace:'work' }),
-      Object.freeze({ label:'Human-review route', detail:'Keep outcome, merits, liability, and waiver outside the claim ceiling.', workspace:'capsule' })
-    ]),
-    active_workspaces:Object.freeze(['home','map','work','choir','capsule']),
-    destination_copy:Object.freeze({ home:'Read deadlines and the next preservation duty.', map:'Inspect parties, filings, evidence, privilege, alternatives, and routes.', work:'Prepare bounded human-reviewed legal work.', choir:'Compare routes without converting residue into merits or truth.', capsule:'Preserve continuity without performing a filing or disclosure.' }),
-    keep_quiet:'Privileged strategy, client communications, witness contacts, provider output, release approval, and outcome prediction stay local or dormant.',
-    claim_ceiling:'Synthetic training only; no legal advice, guilt, liability, merits, privilege waiver, or outcome prediction.'
-  });
-}
-
 function normalizeEntry(base, fixture, manifest, hydrate, build) {
   const profile = base.profile;
   const missingness = fixture?.profile?.missingness || fixture?.missingness || [];
@@ -131,7 +133,7 @@ function normalizeEntry(base, fixture, manifest, hydrate, build) {
     claim_ceiling:claimCeiling,
     missingness:Object.freeze([...(missingness || [])]),
     alternatives:Object.freeze([...(alternatives || [])]),
-    deterministic_test_journey:`ash-a14-demo-registry:${profile}`,
+    deterministic_test_journey:`ash-a15-empirical-journey:${profile}`,
     static_parity:true,
     reduced_motion_parity:true,
     automatic_consequential_action:false
@@ -145,8 +147,9 @@ async function loadOwners() {
     import(`./ash-research-demo-hydration.js?v=${ASH_DEMO_ASSET_EPOCH}`),
     import(`./ash-legal-profile-demo.js?v=${ASH_DEMO_ASSET_EPOCH}`),
     import(`./ash-archive-profile-demo.js?v=${ASH_DEMO_ASSET_EPOCH}`),
-    import(`./ash-demo-pedagogy-rehydration.js?v=${ASH_DEMO_ASSET_EPOCH}`)
-  ]).then(([apeq, research, legal, archive, pedagogy]) => {
+    import(`./ash-demo-pedagogy-rehydration.js?v=${ASH_DEMO_ASSET_EPOCH}`),
+    import(`./ash-a15-empirical-profile-journeys.js?v=${ASH_DEMO_ASSET_EPOCH}`)
+  ]).then(([apeq, research, legal, archive, pedagogy, empirical]) => {
     const manifests = pedagogy.ASH_DEMO_PEDAGOGY_MANIFESTS || {};
     const entries = {};
     for (const profile of ['investigation','political_campaign','fundraiser']) {
@@ -176,12 +179,15 @@ async function loadOwners() {
       () => archive.buildArchiveDemoFixture()
     );
     registryEntries = Object.freeze(entries);
+    empirical.installAshA15EmpiricalJourneys?.(registryEntries);
+    empiricalApi = host?.__td613AshA15EmpiricalJourneys || null;
     if (registryApi) {
       host.__td613AshDemoRegistry = registryApi;
       host.__td613AshProfileDemos = registryApi;
       doc.documentElement.dataset.ashDemoCompatibilityOwner = ASH_DEMO_REGISTRY_VERSION;
     }
     doc.documentElement.dataset.ashDemoRegistryOwners = 'APEQ_PAIA,RESEARCH,LEGAL,ARCHIVE';
+    doc.documentElement.dataset.ashDemoRegistryEmpirical = EMPIRICAL_VERSION;
     host.dispatchEvent(new CustomEvent('td613:ash:demo-registry-ready', { detail:snapshot() }));
     scheduleReconcile();
     return registryEntries;
@@ -203,6 +209,8 @@ function snapshot() {
       claim_ceiling:source[profile].claim_ceiling || null
     }))),
     control_owner:'ASH_DEMO_REGISTRY',
+    empirical_journey_version:EMPIRICAL_VERSION,
+    empirical_matrix_cells:120,
     raw_content_transport:false,
     automatic_ash_action:false,
     release_authority:false,
@@ -331,6 +339,7 @@ export function installAshDemoRegistry() {
     entries:getAshDemoRegistryEntries,
     hydrate:hydrateAshDemo,
     build:buildAshDemoFixture,
+    empirical:() => empiricalApi || host?.__td613AshA15EmpiricalJourneys || null,
     reconcile,
     authority:Object.freeze({ custody_changed:false, raw_content_transport:false, automatic_action:false, release_authority:false, human_review_required:true })
   });
