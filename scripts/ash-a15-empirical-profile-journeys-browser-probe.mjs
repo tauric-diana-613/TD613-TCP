@@ -98,14 +98,13 @@ async function armNavigationReceiptCapture(page, workspace) {
 }
 
 async function readNavigationReceiptCapture(page) {
-  const capture = await page.evaluate(() => {
+  return page.evaluate(() => {
     const state = window.__td613A15NavigationWitness || null;
     const result = state ? { expected:state.expected, observed:state.observed, receipt:state.receipt } : null;
     state?.cleanup?.();
     delete window.__td613A15NavigationWitness;
     return result;
   });
-  return capture;
 }
 
 async function openWorkspace(page, workspace) {
@@ -123,9 +122,7 @@ async function openWorkspace(page, workspace) {
     return document.documentElement.dataset.ashPremiumWorkspace === expected
       && section?.classList.contains('active') === true;
   }, workspace, { timeout:60_000 });
-  if (changed) {
-    await page.waitForFunction(expected => window.__td613A15NavigationWitness?.receipt?.destination_workspace === expected, workspace, { timeout:60_000 });
-  }
+  if (changed) await page.waitForFunction(expected => window.__td613A15NavigationWitness?.receipt?.destination_workspace === expected, workspace, { timeout:60_000 });
   const captured = changed ? await readNavigationReceiptCapture(page) : null;
   const after = await page.evaluate(() => ({
     workspace:document.documentElement.dataset.ashPremiumWorkspace || null,
@@ -276,7 +273,7 @@ async function inspectProfile(options, profile, mode) {
     };
 
     if (result.answers.length !== 20 || result.unique_messages !== 20) throw new Error(`A15 ${profile} matrix collapsed: ${JSON.stringify(result)}`);
-    if (result.captured_navigation_receipts < 12) throw new Error(`A15 ${profile} captured too few transition receipts: ${JSON.stringify(result)}`);
+    if (result.captured_navigation_receipts !== 4) throw new Error(`A15 ${profile} canonical transition receipt count drifted: ${JSON.stringify(result)}`);
     if (result.matrix_cells !== 120 || result.route_nodes !== 4 || result.task_nodes !== 4 || !result.panel_in_membrane) throw new Error(`A15 ${profile} membrane contract drifted: ${JSON.stringify(result)}`);
     if (result.release_disabled !== true || result.provider_approval_checked !== false || !result.handoff_is_link) throw new Error(`A15 ${profile} widened consequential authority: ${JSON.stringify(result)}`);
     if (result.url !== '/dome-world/ash-threshold.html' || result.title !== 'TD613 Ash' || result.overflow > 1) throw new Error(`A15 ${profile} presentation drift: ${JSON.stringify(result)}`);
@@ -319,7 +316,7 @@ try {
     if (new Set(values).size !== 6) throw new Error(`A15 cross-profile answer collapse at ${key}.`);
   }
   await fs.writeFile(path.join(artifactDir, `${browserName}-a15-empirical-receipt.json`), JSON.stringify({
-    schema:'td613.ash.a15-empirical-profile-journey-browser-witness/v0.3-navigation-event-capture',
+    schema:'td613.ash.a15-empirical-profile-journey-browser-witness/v0.4-four-canonical-transitions',
     browser:browserName,
     modes:['desktop','mobile-reduced-motion'],
     profiles:PROFILES,
@@ -328,6 +325,9 @@ try {
     receipts,
     matrix_cells:120,
     rendered_answer_observations:receipts.length * 20,
+    canonical_navigation_receipts_per_profile:4,
+    route_landing_workspace:'work',
+    explicit_transition_destinations:['home','map','choir','capsule'],
     real_profile_hydration:true,
     real_workspace_navigation:true,
     navigation_receipt_captured_at_click:true,
