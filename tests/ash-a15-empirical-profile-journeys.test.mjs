@@ -143,9 +143,10 @@ assert.match(workflow, /Validate Ash A15 empirical profile journeys/);
 assert.match(workflow, /ash-a15-empirical-profile-journeys-browser-probe\.mjs/);
 for (const token of [
   '[data-premium-workspace=','[data-aia-route=','ashA15OrientAction','real_profile_hydration:true',
-  'real_workspace_navigation:true','real_route_gestures:true','real_visible_orientation_gesture:true',
-  'command_menu_mappings_verified:true','matrix_cells:120','HELD_SENSITIVE_CONTEXT'
+  'real_workspace_navigation:true','real_route_gestures:true','route_selected_before_target_workspace:true',
+  'real_visible_orientation_gesture:true','command_menu_mappings_verified:true','matrix_cells:120','HELD_SENSITIVE_CONTEXT'
 ]) assert.ok(browserProbe.includes(token), `A15 browser witness omitted ${token}`);
+assert.match(browserProbe, /await selectRoute\(page, route\);[\s\S]{0,220}await openWorkspace\(page, workspace\);[\s\S]{0,220}await waitForVisibleCombination\(page, workspace, route\);/);
 assert.doesNotMatch(browserProbe, /empirical\.orient\(\{\s*profile,\s*workspace,\s*route/s, 'A15 matrix witness must use visible UI gestures, not direct answer-key overrides.');
 assert.match(receipt, /120 deterministic cells/);
 assert.match(receipt, /graph-wide mass eviction executed: false/);
@@ -157,7 +158,7 @@ assert.equal(vercel.git?.deploymentEnabled, false);
 
 console.log(JSON.stringify({
   ok:true,
-  schema:'td613.ash.a15-empirical-profile-journey-contract/v0.2-review-hardened-real-ui',
+  schema:'td613.ash.a15-empirical-profile-journey-contract/v0.3-route-then-workspace',
   registry_version:ASH_DEMO_REGISTRY_VERSION,
   asset_epoch:ASH_DEMO_ASSET_EPOCH,
   profiles:ASH_A15_PROFILES.length,
@@ -165,6 +166,7 @@ console.log(JSON.stringify({
   routes:ASH_A15_ROUTES.length,
   matrix_cells:matrix.length,
   real_ui_witness_required:true,
+  route_selected_before_target_workspace:true,
   international_phone_quarantine:true,
   structured_credential_quarantine:true,
   cyclic_context_quarantine:true,
