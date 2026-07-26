@@ -54,7 +54,7 @@ runtime = replaceExactly(
 runtime = replaceExactly(
   runtime,
   "  report.readiness = readiness;\n\n  await page.locator('#startDemo').click();",
-  "  report.readiness = readiness;\n\n  await page.goto(keepUrl, { waitUntil: 'domcontentloaded', timeout: 60_000 });\n  await page.waitForFunction(() => new URL(location.href).searchParams.get('presentation') === 'legacy'\n    && window.__td613AshAia3PreflightReceipt?.legacy_bypass === true\n    && document.documentElement.dataset.ashCachePreflight === 'complete'\n    && document.body.dataset.ashLifecycle === 'READINESS_OBSERVED'\n    && window.__td613AshProfileDemos?.profiles?.includes('political_campaign')\n    && document.getElementById('newProfile')?.getClientRects().length > 0, null, { timeout: 60_000 });\n  report.threshold.specialist_presentation_route = 'legacy';\n  report.threshold.specialist_cache_preflight = { legacy_bypass: true, aia3_route_required: false, reload_required: false };\n\n  await page.locator('#startDemo').click();",
+  "  report.readiness = readiness;\n\n  await page.goto(keepUrl, { waitUntil: 'domcontentloaded', timeout: 60_000 });\n  await page.waitForFunction(() => location.pathname === '/dome-world/ash-threshold.html'\n    && location.search === ''\n    && window.__td613AshAia3PreflightReceipt?.legacy_bypass === true\n    && window.__td613AshAia3PreflightReceipt?.visible_url === '/dome-world/ash-threshold.html'\n    && document.documentElement.dataset.ashCachePreflight === 'complete'\n    && document.documentElement.dataset.ashModuleGraph === 'ready'\n    && document.body.dataset.ashLifecycle === 'READINESS_OBSERVED'\n    && window.__td613AshProfileDemos?.profiles?.includes('political_campaign')\n    && document.getElementById('newProfile')?.getClientRects().length > 0, null, { timeout: 60_000 });\n  const specialistPreflight = await page.evaluate(() => window.__td613AshAia3PreflightReceipt);\n  report.threshold.specialist_presentation_request = 'legacy';\n  report.threshold.specialist_presentation_route = 'legacy-request-canonicalized';\n  report.threshold.specialist_visible_url = '/dome-world/ash-threshold.html';\n  report.threshold.specialist_cache_preflight = {\n    legacy_bypass: specialistPreflight.legacy_bypass === true,\n    visible_url: specialistPreflight.visible_url,\n    aia3_route_required: false,\n    reload_required: false\n  };\n\n  await page.locator('#startDemo').click();",
   'post-threshold specialist route transition'
 );
 runtime = replaceExactly(
@@ -114,10 +114,16 @@ runtime = replaceExactly(
 if (!runtime.includes(syntheticDraft)
   || !runtime.includes("url.searchParams.get('arrival') === 'cleared'")
   || !runtime.includes('ash-keep.html?presentation=legacy')
-  || !runtime.includes("specialist_presentation_route = 'legacy'")
+  || !runtime.includes("location.pathname === '/dome-world/ash-threshold.html'")
+  || !runtime.includes("location.search === ''")
+  || !runtime.includes("specialist_presentation_route = 'legacy-request-canonicalized'")
+  || !runtime.includes("specialist_visible_url = '/dome-world/ash-threshold.html'")
   || !runtime.includes('legacy_bypass === true')
+  || !runtime.includes("visible_url === '/dome-world/ash-threshold.html'")
   || !runtime.includes("dataset.ashCachePreflight === 'complete'")
+  || !runtime.includes("dataset.ashModuleGraph === 'ready'")
   || !runtime.includes('aia3_route_required: false')
+  || runtime.includes("searchParams.get('presentation') === 'legacy'")
   || runtime.includes("current?.().route === 'IMPLEMENTATION'")
   || !runtime.includes("selectOption('political_campaign')")
   || !runtime.includes('Ash guided workspace API is unavailable.')
