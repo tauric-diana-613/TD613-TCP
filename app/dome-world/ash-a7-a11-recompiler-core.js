@@ -1,4 +1,4 @@
-export const ASH_A7_A11_RECOMPILER_CORE_VERSION = 'td613.ash.a7-a11-recompiler-core/v0.4';
+export const ASH_A7_A11_RECOMPILER_CORE_VERSION = 'td613.ash.a7-a11-recompiler-core/v0.4-stage-guard';
 
 const host = globalThis.window;
 const doc = globalThis.document;
@@ -110,6 +110,18 @@ const EVENT_TYPES = Object.freeze([
   'whole-instrument-refreshed','a6-affordance-refreshed'
 ]);
 
+function stageGuardReason(stage, source) {
+  const guard = host?.[`__td613Ash${stage}RecompileGuard`];
+  if (!guard?.shouldDefer) return null;
+  try {
+    const decision = guard.shouldDefer(source);
+    if (!decision) return null;
+    return typeof decision === 'string' ? decision : 'STAGE_RECOMPILE_GUARD';
+  } catch {
+    return 'STAGE_RECOMPILE_GUARD_ERROR';
+  }
+}
+
 export function installAshStage({ stage, sync, navigationSelectors = '' }) {
   if (!host || !doc?.body || !stage || typeof sync !== 'function' || installedStages.has(stage)) return false;
   installedStages.add(stage);
@@ -119,12 +131,13 @@ export function installAshStage({ stage, sync, navigationSelectors = '' }) {
     const activeStageInteraction = doc.activeElement?.closest?.(
       `[id^="ash${stage}"] .ash-stage-form, [id^="ash${stage}"] .ash-stage-primary-action`
     );
-    if (activeStageInteraction) {
+    const guardReason = stageGuardReason(stage, source);
+    if (activeStageInteraction || guardReason) {
       host.dispatchEvent(new CustomEvent(`td613:ash:${stage.toLowerCase()}-recompile-deferred`, {
         detail:Object.freeze({
           stage,
           source,
-          reason:'ACTIVE_STAGE_INTERACTION',
+          reason:activeStageInteraction ? 'ACTIVE_STAGE_INTERACTION' : guardReason,
           authority_changed:false,
           source_bytes_moved:false,
           human_closure_required:true
