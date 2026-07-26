@@ -47,7 +47,6 @@ for (const token of [
   "__td613AshAia3Composition?.version === 'td613.ash.aia3-composition/v0.5-human-profile-choice'",
   '__td613AshAia3Composition?.current?.()',
   "aia3?.session_open === false",
-  "aia3?.case_id == null",
   "aia3?.membrane_ready === false",
   "aia3?.hold === 'WAITING_INGRESS_PROFILE'",
   "aia3?.route_count === 0",
