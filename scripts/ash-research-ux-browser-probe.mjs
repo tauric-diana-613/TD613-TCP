@@ -21,12 +21,13 @@ const startControlReplacement = `  await page.locator('#newProfile').selectOptio
   await page.waitForFunction(() => {
     const registry = window.__td613AshDemoRegistry?.snapshot?.() || null;
     const button = document.getElementById('startDemo');
-    return window.__td613AshDemoRegistry?.version === 'td613.ash.demo-registry/v0.2-a14'
+    return window.__td613AshDemoRegistry?.version === 'td613.ash.demo-registry/v0.3-a15'
       && registry?.control_owner === 'ASH_DEMO_REGISTRY'
+      && registry?.empirical_matrix_cells === 120
       && document.documentElement.dataset.ashDemoControlOwner === 'ASH_DEMO_REGISTRY'
       && document.getElementById('newProfile')?.value === 'research'
       && button && !button.disabled
-      && button.dataset.ashDemoRegistryOwner === 'td613.ash.demo-registry/v0.2-a14'
+      && button.dataset.ashDemoRegistryOwner === 'td613.ash.demo-registry/v0.3-a15'
       && button.dataset.ashMethodDemoState === 'READY'
       && button.textContent === 'Open Research Project demo';
   }, null, { timeout:60_000 });`;
@@ -54,10 +55,11 @@ const geometryReplacement = `async function waitForRegistryOwnedWorkspaceControl
       || window.__td613AshUiUxRescue?.open
       || window.__td613OpenAshWorkspace
       || window.__td613AshKeep?.openWorkspace;
-    return window.__td613AshDemoRegistry?.version === 'td613.ash.demo-registry/v0.2-a14'
+    return window.__td613AshDemoRegistry?.version === 'td613.ash.demo-registry/v0.3-a15'
       && registry?.control_owner === 'ASH_DEMO_REGISTRY'
+      && registry?.empirical_matrix_cells === 120
       && document.documentElement.dataset.ashDemoControlOwner === 'ASH_DEMO_REGISTRY'
-      && document.documentElement.dataset.ashDemoRegistry === 'td613.ash.demo-registry/v0.2-a14'
+      && document.documentElement.dataset.ashDemoRegistry === 'td613.ash.demo-registry/v0.3-a15'
       && typeof open === 'function';
   }, null, { timeout:60_000 });
 }
@@ -69,7 +71,7 @@ async function openGovernedWorkspace(page, workspace) {
       || window.__td613AshUiUxRescue?.open
       || window.__td613OpenAshWorkspace
       || window.__td613AshKeep?.openWorkspace;
-    if (typeof open !== 'function') throw new Error('A14 governed workspace owner unavailable.');
+    if (typeof open !== 'function') throw new Error('A15 governed workspace owner unavailable.');
     await Promise.resolve(open(name));
   }, workspace);
 }
@@ -82,6 +84,7 @@ async function waitForWorkspaceGeometry(page, workspace) {
     const style = getComputedStyle(panel);
     const rect = panel.getBoundingClientRect();
     return registry?.control_owner === 'ASH_DEMO_REGISTRY'
+      && registry?.empirical_matrix_cells === 120
       && document.documentElement.dataset.ashDemoControlOwner === 'ASH_DEMO_REGISTRY'
       && document.documentElement.dataset.ashPremiumWorkspace === name
       && style.display !== 'none'
@@ -157,20 +160,23 @@ let runtime = replaceExactlyOnce(source, startControlTarget, startControlReplace
 runtime = replaceExactlyOnce(runtime, geometryTarget, geometryReplacement, 'workspace geometry');
 runtime = replaceExactlyOnce(runtime, workDockTarget, workDockReplacement, 'Work dock');
 runtime = replaceExactlyOnce(runtime, ledgerTarget, ledgerReplacement, 'Research ledger navigation');
-runtime = runtime.replace('td613.ash.research-ux-browser-evidence/v0.3-a4-semantic-navigation', 'td613.ash.research-ux-browser-evidence/v0.6-a14-registry-owned-entry-and-navigation');
+runtime = runtime.replace('td613.ash.research-ux-browser-evidence/v0.3-a4-semantic-navigation', 'td613.ash.research-ux-browser-evidence/v0.7-a15-registry-owned-entry-and-navigation');
 
 for (const token of [
   'profile=research',
   '__td613AshResearchSurfaceReport',
   'window.__td613AshDemoRegistry',
   "control_owner === 'ASH_DEMO_REGISTRY'",
-  "button.dataset.ashDemoRegistryOwner === 'td613.ash.demo-registry/v0.2-a14'",
+  "button.dataset.ashDemoRegistryOwner === 'td613.ash.demo-registry/v0.3-a15'",
+  'empirical_matrix_cells === 120',
   'openGovernedWorkspace(page, workspace)',
   'waitForRegistryOwnedWorkspaceControl(page)'
 ]) {
   if (!runtime.includes(token)) throw new Error(`Research owner-gated runtime omitted ${token}.`);
 }
-if (runtime.includes('td613.ash.demo-registry/v0.1-a13')) throw new Error('Research runtime retained the retired A13 registry gate.');
+for (const retired of ['td613.ash.demo-registry/v0.1-a13','td613.ash.demo-registry/v0.2-a14']) {
+  if (runtime.includes(retired)) throw new Error(`Research runtime retained retired registry gate ${retired}.`);
+}
 
 await fs.writeFile(runtimePath, runtime, 'utf8');
 await import(`${pathToFileURL(runtimePath).href}?runtime=${Date.now()}`);
