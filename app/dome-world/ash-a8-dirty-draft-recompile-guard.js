@@ -29,7 +29,7 @@ function publish(posture, source = null, detail = {}) {
   if (doc?.documentElement) doc.documentElement.dataset.ashA8DirtyDraftGuard = posture;
   host?.dispatchEvent?.(new CustomEvent('td613:ash:a8-dirty-draft-guard', {
     detail:Object.freeze({
-      schema:'td613.ash.a8-dirty-draft-guard-receipt/v0.4-post-premium-refresh-recovery',
+      schema:'td613.ash.a8-dirty-draft-guard-receipt/v0.5-window-capture-admission',
       posture,
       source,
       dirty_draft_active:dirtyDraftActive,
@@ -53,7 +53,9 @@ function beginDirtyDraft(event) {
   if (!event.target?.closest?.(FORM_SELECTOR) || custodyHoldIsActive()) return false;
   host?.__td613AshA8MapReturnHandshake?.capture?.();
   dirtyDraftActive = true;
-  publish('DIRTY_DRAFT_ACTIVE', event.type);
+  publish('DIRTY_DRAFT_ACTIVE', event.type, {
+    admission_boundary:'WINDOW_CAPTURE_BEFORE_DOCUMENT_REFRESH'
+  });
   return true;
 }
 
@@ -134,8 +136,9 @@ function shouldDefer(source) {
 
 export function installAshA8DirtyDraftRecompileGuard() {
   if (!host || !doc?.body || host.__td613AshA8RecompileGuard) return false;
-  doc.addEventListener('input', beginDirtyDraft, true);
-  doc.addEventListener('change', beginDirtyDraft, true);
+  host.addEventListener('focusin', beginDirtyDraft, true);
+  host.addEventListener('input', beginDirtyDraft, true);
+  host.addEventListener('change', beginDirtyDraft, true);
   doc.addEventListener('click', admitCommit, true);
   host.addEventListener('td613:ash:a8-recompiled', recoverAfterInFlightRecompile);
   host.addEventListener('td613:ash:case-created', () => clear('CASE_CREATED'));
@@ -155,6 +158,7 @@ export function installAshA8DirtyDraftRecompileGuard() {
       recovered_premium_refreshes:recoveredPremiumRefreshes,
       recovery_serial:recoverySerial,
       posture:doc?.documentElement?.dataset?.ashA8DirtyDraftGuard || null,
+      admission_boundary:'WINDOW_CAPTURE_BEFORE_DOCUMENT_REFRESH',
       authority_changed:false,
       source_bytes_moved:false,
       human_closure_required:true
