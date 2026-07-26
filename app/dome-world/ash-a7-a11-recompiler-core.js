@@ -1,4 +1,4 @@
-export const ASH_A7_A11_RECOMPILER_CORE_VERSION = 'td613.ash.a7-a11-recompiler-core/v0.3';
+export const ASH_A7_A11_RECOMPILER_CORE_VERSION = 'td613.ash.a7-a11-recompiler-core/v0.4';
 
 const host = globalThis.window;
 const doc = globalThis.document;
@@ -116,13 +116,15 @@ export function installAshStage({ stage, sync, navigationSelectors = '' }) {
   ensureA7A11Styles();
   let serial = 0;
   const run = async source => {
-    const activeStageForm = doc.activeElement?.closest?.(`[id^="ash${stage}"] .ash-stage-form`);
-    if (activeStageForm) {
+    const activeStageInteraction = doc.activeElement?.closest?.(
+      `[id^="ash${stage}"] .ash-stage-form, [id^="ash${stage}"] .ash-stage-primary-action`
+    );
+    if (activeStageInteraction) {
       host.dispatchEvent(new CustomEvent(`td613:ash:${stage.toLowerCase()}-recompile-deferred`, {
         detail:Object.freeze({
           stage,
           source,
-          reason:'ACTIVE_STAGE_FORM',
+          reason:'ACTIVE_STAGE_INTERACTION',
           authority_changed:false,
           source_bytes_moved:false,
           human_closure_required:true
@@ -201,6 +203,7 @@ if (host && !host.__td613AshA9WorkspaceOwner) {
     native_workspace_settled_first:true,
     stale_shell_replaced:true,
     active_stage_form_deferred:true,
+    active_stage_primary_action_deferred:true,
     automatic_consequential_action:false,
     authority_changed:false,
     source_bytes_moved:false,
@@ -251,6 +254,7 @@ if (host && !host.__td613AshA10WorkspaceOwner) {
     native_workspace_settled_first:true,
     native_choir_preserved:true,
     active_stage_form_deferred:true,
+    active_stage_primary_action_deferred:true,
     automatic_assay:false,
     automatic_rebuild_test:false,
     automatic_consequential_action:false,
@@ -305,6 +309,7 @@ if (host && !host.__td613AshA11WorkspaceOwner) {
     save_point_owner_preserved:true,
     destination_handoff_separate:true,
     active_stage_form_deferred:true,
+    active_stage_primary_action_deferred:true,
     automatic_save:false,
     automatic_export:false,
     automatic_import:false,
