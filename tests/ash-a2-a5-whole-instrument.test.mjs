@@ -50,11 +50,11 @@ assert.match(css, /button\[data-flowcore-channel="inspection"\]\{grid-column:1\/
 const historicalAssetEpoch = '20260723-a2-a5-release-v1';
 const historicalCacheEpoch = 'td613.ash.cache-flush/2026-07-23-a2-a5-release-v1';
 const inheritedAssetEpoch = '20260724-a12-release-v1';
-const currentRegistryEpoch = '20260725-a14-release-v1';
+const currentRegistryEpoch = '20260726-a15-empirical-v1';
 const retainedMassEpoch = 'td613.ash.cache-flush/2026-07-24-a11-postclosure-v1';
 for (const [name, source] of [['shell',shell],['lifecycle',lifecycle],['workspace bridge',bridge],['cache eviction',eviction],['recovery bridge',recovery]]) assert.match(source, new RegExp(inheritedAssetEpoch.replaceAll('-', '\\-')), `${name} omitted inherited live asset epoch`);
-assert.match(bridge, new RegExp(currentRegistryEpoch.replaceAll('-', '\\-')), 'A14 registry asset epoch did not enter the bridge');
-assert.match(registry, new RegExp(currentRegistryEpoch.replaceAll('-', '\\-')), 'A14 registry omitted its ordinary asset epoch');
+assert.match(bridge, new RegExp(currentRegistryEpoch.replaceAll('-', '\\-')), 'A15 registry asset epoch did not enter the bridge');
+assert.match(registry, new RegExp(currentRegistryEpoch.replaceAll('-', '\\-')), 'A15 registry omitted its ordinary asset epoch');
 for (const [name, source] of [['shell',shell],['cache eviction',eviction],['cache flush',cacheFlush],['recovery bridge',recovery]]) assert.match(source, new RegExp(retainedMassEpoch.replaceAll('/', '\\/').replaceAll('.', '\\.').replaceAll('-', '\\-')), `${name} omitted retained A11 mass epoch`);
 assert.doesNotMatch(registry, /ash_epoch|caches\.|serviceWorker|deleteDatabase|localStorage\.clear|sessionStorage\.clear/);
 assert.match(journeyAdapter, new RegExp(historicalAssetEpoch.replaceAll('-', '\\-')));
@@ -75,12 +75,13 @@ assert.match(a2a6BrowserAdapter, /post-hydration exact-case convergence rebind/)
 assert.match(a2a6BrowserAdapter, /entry_exact_case_rebind/);
 assert.match(a2a6BrowserAdapter, /dataset\.ashPremiumReady === 'true'/);
 assert.match(a2a6BrowserAdapter, /convergence\.begin\(\{ detail:\{ case_id:caseId, profile:'political_campaign' \} \}\)/);
-assert.match(a2a6BrowserAdapter, /A14 A2-A6 exact-case convergence owner unavailable/);
+assert.match(a2a6BrowserAdapter, /A15 A2-A6 exact-case convergence owner unavailable/);
+assert.match(a2a6BrowserAdapter, /td613\.ash\.a15-empirical-profile-journeys\/v0\.1/);
 const historicalA2A6Blob = crypto.createHash('sha1')
   .update(`blob ${Buffer.byteLength(historicalA2A6Browser)}\0${historicalA2A6Browser}`)
   .digest('hex');
 assert.equal(historicalA2A6Blob, '7b7fa74c20b7db26c86598c7ed3284715942b937', 'Historical A13 A2-A6 browser observer changed bytes');
-assert.doesNotMatch(historicalA2A6Browser, /entry_exact_case_rebind|A14 A2-A6 exact-case/);
+assert.doesNotMatch(historicalA2A6Browser, /entry_exact_case_rebind|A14 A2-A6 exact-case|A15 A2-A6 exact-case/);
 assert.match(receipt, /new serverless function = false/);
 assert.match(receipt, /active serverless functions = 11/);
 assert.match(receipt, /reserved function capacity = 1/);
@@ -98,4 +99,4 @@ assert.doesNotMatch(a6Source, /new MutationObserver|setInterval\(|navigator\.sen
 assert.doesNotMatch(a6Source, /ASH_AIA3_CACHE_EPOCH|ASH_AIA3_ASSET_EPOCH|cache-flush\/2026-07-24|20260724/);
 for (const invariant of ['authority_changed:false','source_bytes_moved:false','custody_changed:false','release_posture_changed:false','closure_changed:false']) assert.match(a6Source, new RegExp(invariant));
 
-console.log('Ash A2-A6 whole-instrument contracts: PASS under consolidated A14 validation');
+console.log('Ash A2-A6 whole-instrument contracts: PASS under consolidated A15 validation');
