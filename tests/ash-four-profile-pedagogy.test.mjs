@@ -21,7 +21,7 @@ const premiumReadinessSource = fs.readFileSync(premiumReadinessPath, 'utf8');
 const compositionCompatibilitySource = fs.readFileSync(compositionCompatibilityPath, 'utf8');
 const workspaceBridgeSource = fs.readFileSync(workspaceBridgePath, 'utf8');
 const { ASH_DEMO_PEDAGOGY_VERSION, ASH_DEMO_PEDAGOGY_MANIFESTS } = await import(pathToFileURL(modulePath));
-const RELEASE_EPOCH = '20260724-a13-release-v1';
+const RELEASE_EPOCH = '20260725-a14-release-v1';
 
 assert.equal(ASH_DEMO_PEDAGOGY_VERSION, 'td613.ash.demo-pedagogy/v0.2-event-driven-idle-stable');
 assert.deepEqual(Object.keys(ASH_DEMO_PEDAGOGY_MANIFESTS).sort(), ['fundraiser','investigation','political_campaign','research']);
@@ -72,7 +72,8 @@ assert.match(wrapperSource, new RegExp(`ash-demo-registry\\.js\\?v=${RELEASE_EPO
 assert.match(registrySource, /ash-demo-pedagogy-rehydration\.js\?v=\$\{ASH_DEMO_ASSET_EPOCH\}/);
 assert.match(registrySource, /legalManifest/);
 assert.match(registrySource, /archiveManifest/);
-assert.match(registrySource, /RESERVED_FOR_A14/);
+assert.match(registrySource, /buildArchiveDemoFixture/);
+assert.doesNotMatch(registrySource, /RESERVED_FOR_A14|A14_RESERVED/);
 
 assert.match(entrySource, /td613\.ash\.demo-entry-convergence\/v0\.5-premium-instrument-visible-release/);
 assert.match(entrySource, /data-ash-demo-entry-hydrating/);
@@ -122,4 +123,4 @@ for (const module of ['ash-premium-ui','ash-premium-readiness-bridge','ash-ui-ux
 assert.doesNotMatch(workspaceBridgeSource, /ash-demo-pedagogy-persistence/);
 assert.equal(fs.existsSync(path.join(root, 'app/dome-world/ash-demo-pedagogy-persistence.js')), false, 'The obstructive all-workspace ledger portal must remain removed.');
 
-console.log('ash-four-profile-pedagogy.test.mjs passed under A13 registry ownership');
+console.log('ash-four-profile-pedagogy.test.mjs passed under A14 six-seat registry ownership');
