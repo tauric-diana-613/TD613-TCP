@@ -81,6 +81,33 @@ async function activateProfile(page, profile) {
   }
 }
 
+async function armNavigationReceiptCapture(page, workspace) {
+  await page.evaluate(expected => {
+    window.__td613A15NavigationWitness?.cleanup?.();
+    const state = { expected, receipt:null, observed:false, cleanup:null };
+    const handler = event => {
+      if (event.detail?.destination_workspace !== expected) return;
+      state.receipt = event.detail;
+      state.observed = true;
+      window.removeEventListener('td613:ash:navigation-receipt', handler);
+    };
+    state.cleanup = () => window.removeEventListener('td613:ash:navigation-receipt', handler);
+    window.__td613A15NavigationWitness = state;
+    window.addEventListener('td613:ash:navigation-receipt', handler);
+  }, workspace);
+}
+
+async function readNavigationReceiptCapture(page) {
+  const capture = await page.evaluate(() => {
+    const state = window.__td613A15NavigationWitness || null;
+    const result = state ? { expected:state.expected, observed:state.observed, receipt:state.receipt } : null;
+    state?.cleanup?.();
+    delete window.__td613A15NavigationWitness;
+    return result;
+  });
+  return capture;
+}
+
 async function openWorkspace(page, workspace) {
   const control = page.locator(`[data-premium-workspace="${workspace}"]:visible`).first();
   if (!(await control.count())) throw new Error(`A15 visible ${workspace} control unavailable.`);
@@ -88,21 +115,27 @@ async function openWorkspace(page, workspace) {
     workspace:document.documentElement.dataset.ashPremiumWorkspace || null,
     receipt:window.__td613AshWholeInstrument?.current?.()?.navigation_receipt || null
   }));
+  const changed = before.workspace !== workspace;
+  if (changed) await armNavigationReceiptCapture(page, workspace);
   await control.click();
   await page.waitForFunction(expected => {
     const section = document.getElementById(`workspace-${expected}`);
     return document.documentElement.dataset.ashPremiumWorkspace === expected
       && section?.classList.contains('active') === true;
   }, workspace, { timeout:60_000 });
-  if (before.workspace !== workspace) {
-    await page.waitForFunction(expected => window.__td613AshWholeInstrument?.current?.()?.navigation_receipt?.destination_workspace === expected, workspace, { timeout:60_000 });
+  if (changed) {
+    await page.waitForFunction(expected => window.__td613A15NavigationWitness?.receipt?.destination_workspace === expected, workspace, { timeout:60_000 });
   }
+  const captured = changed ? await readNavigationReceiptCapture(page) : null;
   const after = await page.evaluate(() => ({
     workspace:document.documentElement.dataset.ashPremiumWorkspace || null,
-    receipt:window.__td613AshWholeInstrument?.current?.()?.navigation_receipt || null
+    current_receipt:window.__td613AshWholeInstrument?.current?.()?.navigation_receipt || null
   }));
-  if (after.workspace !== workspace) throw new Error(`A15 ${workspace} visible workspace did not settle: ${JSON.stringify({ before, after })}`);
-  return Object.freeze({ changed:before.workspace !== workspace, before, after });
+  if (after.workspace !== workspace) throw new Error(`A15 ${workspace} visible workspace did not settle: ${JSON.stringify({ before, captured, after })}`);
+  if (changed && (!captured?.observed || captured.receipt?.destination_workspace !== workspace || captured.receipt?.result !== 'ARRIVED')) {
+    throw new Error(`A15 ${workspace} click emitted no canonical arrival receipt: ${JSON.stringify({ before, captured, after })}`);
+  }
+  return Object.freeze({ changed, receipt_captured_at_click:changed ? captured.observed : false, before, captured, after });
 }
 
 async function selectRoute(page, route) {
@@ -186,10 +219,12 @@ async function inspectProfile(options, profile, mode) {
     if (entry.manifest_profile !== profile || entry.deterministic_test_journey !== `ash-a15-empirical-journey:${profile}`) throw new Error(`A15 ${profile} provider entry drifted: ${JSON.stringify(entry)}`);
 
     const answers = [];
+    let capturedNavigationReceipts = 0;
     for (const workspace of WORKSPACES) {
       for (const route of ROUTES) {
         await selectRoute(page, route);
-        await openWorkspace(page, workspace);
+        const navigation = await openWorkspace(page, workspace);
+        if (navigation.receipt_captured_at_click) capturedNavigationReceipts += 1;
         await waitForVisibleCombination(page, workspace, route);
         const observed = await orientVisibleAction(page, profile, workspace, route);
         const answer = observed.answer;
@@ -227,6 +262,7 @@ async function inspectProfile(options, profile, mode) {
     const result = {
       profile,
       answers,
+      captured_navigation_receipts:capturedNavigationReceipts,
       unique_messages:new Set(answers.map(answer => answer.message)).size,
       sensitive_status:sensitive.status,
       manifest_profile:entry.manifest_profile,
@@ -240,6 +276,7 @@ async function inspectProfile(options, profile, mode) {
     };
 
     if (result.answers.length !== 20 || result.unique_messages !== 20) throw new Error(`A15 ${profile} matrix collapsed: ${JSON.stringify(result)}`);
+    if (result.captured_navigation_receipts < 12) throw new Error(`A15 ${profile} captured too few transition receipts: ${JSON.stringify(result)}`);
     if (result.matrix_cells !== 120 || result.route_nodes !== 4 || result.task_nodes !== 4 || !result.panel_in_membrane) throw new Error(`A15 ${profile} membrane contract drifted: ${JSON.stringify(result)}`);
     if (result.release_disabled !== true || result.provider_approval_checked !== false || !result.handoff_is_link) throw new Error(`A15 ${profile} widened consequential authority: ${JSON.stringify(result)}`);
     if (result.url !== '/dome-world/ash-threshold.html' || result.title !== 'TD613 Ash' || result.overflow > 1) throw new Error(`A15 ${profile} presentation drift: ${JSON.stringify(result)}`);
@@ -282,7 +319,7 @@ try {
     if (new Set(values).size !== 6) throw new Error(`A15 cross-profile answer collapse at ${key}.`);
   }
   await fs.writeFile(path.join(artifactDir, `${browserName}-a15-empirical-receipt.json`), JSON.stringify({
-    schema:'td613.ash.a15-empirical-profile-journey-browser-witness/v0.2-real-ui',
+    schema:'td613.ash.a15-empirical-profile-journey-browser-witness/v0.3-navigation-event-capture',
     browser:browserName,
     modes:['desktop','mobile-reduced-motion'],
     profiles:PROFILES,
@@ -293,6 +330,7 @@ try {
     rendered_answer_observations:receipts.length * 20,
     real_profile_hydration:true,
     real_workspace_navigation:true,
+    navigation_receipt_captured_at_click:true,
     idempotent_active_workspace_gesture:true,
     real_route_gestures:true,
     route_selected_before_target_workspace:true,
