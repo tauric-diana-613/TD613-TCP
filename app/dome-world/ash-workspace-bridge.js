@@ -19,6 +19,8 @@ import './ash-operation-coordinator.js?v=20260724-a12-release-v1';
 import './ash-case-feedback.js?v=20260724-a12-release-v1';
 // A15 retains one registry owner and empirically differentiates all six promoted profiles without widening fixture authority.
 import './ash-profile-demo-hydration.js?v=20260726-a15-empirical-v1';
+// A8 waits for the canonical Map-open receipt before releasing a held form draft across mobile workspace transitions.
+import './ash-a8-map-return-handshake.js?v=20260726-a15-empirical-v1';
 import './ash-premium-ui.js?v=20260724-a12-release-v1';
 import './ash-premium-readiness-bridge.js?v=20260724-a12-release-v1';
 import './ash-guided-operator-ui.js?v=20260724-a12-release-v1';
