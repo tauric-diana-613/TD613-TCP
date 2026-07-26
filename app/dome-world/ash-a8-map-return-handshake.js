@@ -9,6 +9,7 @@ const CONTROL_IDS = Object.freeze([
 ]);
 const HELD_ACTIONS = new Set(['addObject','addRelationship']);
 const COMMIT_SELECTOR = '#ashA8CommitObject,#ashA8CommitRelation';
+const MAP_DOCK_SELECTOR = '#premiumPrimaryDock [data-premium-workspace="map"]';
 const FINAL_REFRESH_SOURCE = 'A8_MAP_RETURN_SETTLEMENT';
 const SETTLEMENT_QUIET_MS = 150;
 const draft = new Map();
@@ -133,7 +134,8 @@ function captureDelegatedForm(event) {
 }
 
 function requestConfirmedMapRefresh(event) {
-  if (!held || event.detail?.workspace !== 'map') return;
+  if (!held || event.detail?.workspace !== 'map') return false;
+  if (mapReturnObserved) return true;
   mapReturnObserved = true;
   alignmentObserved = false;
   resetFinalRefreshState();
@@ -144,6 +146,18 @@ function requestConfirmedMapRefresh(event) {
     Promise.resolve(host?.__td613AshA8?.refresh?.('A8_CANONICAL_MAP_RETURN_HANDSHAKE')).catch(() => {
       if (serial === refreshSerial) mark('MAP_RETURN_RESTORE_HELD');
     });
+  });
+  return true;
+}
+
+function observeTrustedCanonicalMapGesture(event) {
+  if (!held || event.isTrusted !== true || !event.target?.closest?.(MAP_DOCK_SELECTOR)) return false;
+  return requestConfirmedMapRefresh({
+    detail:Object.freeze({
+      workspace:'map',
+      source_control:'PRIMARY_DOCK_TRUSTED_WINDOW_CAPTURE',
+      idempotent_return_admitted:true
+    })
   });
 }
 
@@ -213,11 +227,14 @@ function finalizeSettlement(serial) {
   mark('RESTORED_AFTER_CANONICAL_MAP_RETURN');
   host?.dispatchEvent?.(new CustomEvent('td613:ash:a8-map-return-restored', {
     detail:Object.freeze({
-      schema:'td613.ash.a8-map-return-receipt/v0.6-final-owner-refresh',
+      schema:'td613.ash.a8-map-return-receipt/v0.7-trusted-idempotent-return',
       restored_controls:finalParity.matched,
       expected_controls:finalParity.expected,
       full_control_parity:true,
       precommit_shadow_capture:true,
+      canonical_map_gesture_observed:true,
+      trusted_window_capture:true,
+      idempotent_map_return_admitted:true,
       canonical_map_alignment_observed:true,
       final_whole_instrument_refresh_observed:true,
       a8_recompiled_after_final_refresh:true,
@@ -286,6 +303,7 @@ function observeMapAlignment(event) {
 export function installAshA8MapReturnHandshake() {
   if (!host || !doc?.body || host.__td613AshA8MapReturnHandshake) return false;
   ensureStyles();
+  host.addEventListener('click', observeTrustedCanonicalMapGesture, true);
   doc.addEventListener('click', captureBeforeCommit, true);
   doc.addEventListener('input', captureDelegatedForm, true);
   doc.addEventListener('change', captureDelegatedForm, true);
