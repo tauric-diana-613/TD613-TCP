@@ -14,13 +14,14 @@ async function waitForRegistry(page) {
   await page.waitForFunction(() => {
     const registry = window.__td613AshDemoRegistry?.snapshot?.() || null;
     const installed = window.__td613AshDemoRegistry?.version || null;
-    return installed === 'td613.ash.demo-registry/v0.2-a14'
+    return installed === 'td613.ash.demo-registry/v0.3-a15'
       && registry?.version === installed
-      && registry?.asset_epoch === '20260725-a14-release-v1'
+      && registry?.asset_epoch === '20260726-a15-empirical-v1'
       && registry?.control_owner === 'ASH_DEMO_REGISTRY'
       && registry?.profiles?.length === 6
       && registry.profiles.filter(entry => entry.promoted).length === 6
       && registry.profiles.find(entry => entry.profile === 'archive')?.owner === 'ARCHIVE'
+      && registry.empirical_matrix_cells === 120
       && document.documentElement.dataset.ashDemoControlOwner === 'ASH_DEMO_REGISTRY'
       && document.documentElement.dataset.ashDemoRegistry === installed;
   }, null, { timeout:120_000 });
@@ -186,6 +187,7 @@ async function inspect(page, label) {
       registry_epoch:registry.asset_epoch,
       promoted_profiles:registry.profiles.filter(entry => entry.promoted).map(entry => entry.profile),
       archive_owner:registry.profiles.find(entry => entry.profile === 'archive')?.owner,
+      empirical_matrix_cells:registry.empirical_matrix_cells,
       active_case:current.case_id || null,
       case_map_digest:current.case_map_digest || null,
       route_memory_digest:current.route_memory_digest || null,
@@ -204,7 +206,7 @@ async function inspect(page, label) {
     };
   });
 
-  if (result.promoted_profiles.length !== 6 || result.archive_owner !== 'ARCHIVE') throw new Error(`A14 registry promotion held: ${JSON.stringify(result)}`);
+  if (result.promoted_profiles.length !== 6 || result.archive_owner !== 'ARCHIVE' || result.empirical_matrix_cells !== 120) throw new Error(`A14 registry promotion held: ${JSON.stringify(result)}`);
   if (!result.active_case || result.active_case !== archiveCase.case_id || result.archive_version !== 'td613.ash.archive-demo/v0.2-a14-harbor-memory' || result.workspace !== 'map') throw new Error(`A14 Harbor Memory presentation held: ${JSON.stringify({ result, archiveCase })}`);
   const normalizedDocket = result.docket_text.toLowerCase().replace(/[^a-z0-9]+/g, ' ').trim();
   for (const phrase of ['harbor memory archive','original audio','transcript','uncertain date','duplicate scan','donor restriction','missing release','embargo','public access copy','nothing has been published']) {
@@ -237,13 +239,14 @@ try {
   await mobile.close();
 
   await fs.writeFile(path.join(artifactDir, `${browserName}-a14-archive-receipt.json`), JSON.stringify({
-    schema:'td613.ash.a14-harbor-memory-browser-witness/v0.5-normalized-authority-ceiling',
+    schema:'td613.ash.a14-harbor-memory-browser-witness/v0.6-a15-registry-current',
     browser:browserName,
     receipts,
     registry_owner:'ASH_DEMO_REGISTRY',
     promoted_profiles:6,
     archive_status:'PROMOTED',
     archive_owner:'ARCHIVE',
+    empirical_matrix_cells:120,
     persisted_case_profile_verified:true,
     persisted_operator_marker_verified:true,
     mixed_media_fixture_complete:true,
