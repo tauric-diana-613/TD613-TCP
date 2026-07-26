@@ -89,6 +89,12 @@ runtime = replaceExactly(
 );
 runtime = replaceExactly(
   runtime,
+  "  report.readiness = readiness;\n\n  await page.goto(keepUrl, { waitUntil: 'domcontentloaded', timeout: 60_000 });",
+  "  report.readiness = readiness;\n\n  await page.waitForFunction(() => {\n    const aia3 = window.__td613AshAia3Composition?.current?.();\n    const portal = window.__td613AshFlowcoreIngressPortal?.current?.();\n    const loader = window.__td613AshFlowcoreIngressPortalLoader;\n    return document.documentElement.dataset.ashCachePreflight === 'complete'\n      && document.documentElement.dataset.ashModuleGraph === 'ready'\n      && document.documentElement.dataset.ashAiaReady === 'true'\n      && window.__td613AshLiveAIA?.version === 'td613.ash.live-aia-browser/v0.2-task-continuity'\n      && aia3?.membrane_ready === true\n      && aia3?.route_count === 4\n      && aia3?.task_count === 4\n      && loader?.eligible === true\n      && Boolean(loader?.portal_version)\n      && portal?.visible === true\n      && portal?.duplicate_visible_fields === 1\n      && !document.body.dataset.ashAiaHeld\n      && !document.documentElement.dataset.ashFlowcorePortalLoaderHold;\n  }, null, { timeout: 60_000 });\n  report.threshold.cleared_arrival_module_settlement = await page.evaluate(() => ({\n    cache_preflight:document.documentElement.dataset.ashCachePreflight,\n    module_graph:document.documentElement.dataset.ashModuleGraph,\n    live_aia:window.__td613AshLiveAIA?.version || null,\n    live_aia_ready:document.documentElement.dataset.ashAiaReady === 'true',\n    aia3:window.__td613AshAia3Composition?.current?.() || null,\n    flowcore_loader:window.__td613AshFlowcoreIngressPortalLoader || null,\n    flowcore_portal:window.__td613AshFlowcoreIngressPortal?.current?.() || null,\n    dependency_imports_settled:true,\n    specialist_navigation_admitted:true\n  }));\n\n  await page.goto(keepUrl, { waitUntil: 'domcontentloaded', timeout: 60_000 });",
+  'cleared-arrival module settlement before specialist navigation'
+);
+runtime = replaceExactly(
+  runtime,
   "  await page.locator('#startDemo').click();\n  await page.locator('#launch').waitFor({ state: 'hidden' });\n  await waitForText(page, '#caseTitle', /Glasshouse Archive inquiry/);",
   "  await page.locator('#newProfile').selectOption('political_campaign');\n  await page.waitForFunction(() => !document.getElementById('startDemo')?.disabled && /Political Campaign/.test(document.getElementById('startDemo')?.textContent || ''));\n  await page.locator('#startDemo').click();\n  await page.locator('#launch').waitFor({ state: 'hidden' });\n  await waitForText(page, '#caseTitle', /Harbor City Mayoral Campaign/);",
   'explicit synthetic profile launch'
@@ -175,6 +181,14 @@ if (!runtime.includes(syntheticDraft)
   || !runtime.includes("url.pathname === '/api/dome-world-shell'")
   || !runtime.includes("url.pathname === '/dome-world/ash-aia3-composition.js'")
   || !runtime.includes('Unexpected request failures observed:')
+  || !runtime.includes('cleared_arrival_module_settlement')
+  || !runtime.includes("dataset.ashAiaReady === 'true'")
+  || !runtime.includes('__td613AshLiveAIA?.version')
+  || !runtime.includes('__td613AshAia3Composition?.current?.()')
+  || !runtime.includes('__td613AshFlowcoreIngressPortalLoader')
+  || !runtime.includes('__td613AshFlowcoreIngressPortal?.current?.()')
+  || !runtime.includes('dependency_imports_settled:true')
+  || !runtime.includes('specialist_navigation_admitted:true')
   || !runtime.includes('message.location()')) throw new Error('Synthetic guided lifecycle fixture compilation failed.');
 await fs.writeFile(runtimeProbePath, runtime);
 await import(`${pathToFileURL(runtimeProbePath).href}?fixture=${Date.now()}`);
