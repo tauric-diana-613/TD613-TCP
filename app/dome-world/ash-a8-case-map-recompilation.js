@@ -6,7 +6,7 @@ import {
   publishStageWorldAnswer
 } from './ash-a7-a11-recompiler-core.js';
 
-export const ASH_A8_CASE_MAP_VERSION = 'td613.ash.a8-case-map-recompilation/v0.1';
+export const ASH_A8_CASE_MAP_VERSION = 'td613.ash.a8-case-map-recompilation/v0.2-held-draft-quarantine';
 
 const host = globalThis.window;
 const doc = globalThis.document;
@@ -14,6 +14,7 @@ let pendingObjectName = null;
 let pendingRelation = null;
 let lastCreatedObject = null;
 let lastCreatedRelation = null;
+let heldDraftRestorePending = false;
 const objectDraft = new Map();
 const relationDraft = new Map();
 const objectDraftIds = Object.freeze(['ashA8ObjectName','ashA8ObjectType','ashA8ObjectRoom','ashA8ObjectKnown','ashA8ObjectUncertain','ashA8ObjectEvidence','ashA8ObjectSource','ashA8ObjectNotes']);
@@ -41,11 +42,14 @@ function captureDelegatedDraft(event) {
   captureDraftControl(event.target);
 }
 
-function captureWorkshopDraft() {
+function captureWorkshopDraft({ allowHeldOverwrite = false } = {}) {
+  if (heldDraftRestorePending && !allowHeldOverwrite) return false;
+  let captured = false;
   for (const id of [...objectDraftIds, ...relationDraftIds]) {
     const control = byId(id);
-    if (control) captureDraftControl(control);
+    if (control) captured = captureDraftControl(control) || captured;
   }
+  return captured;
 }
 
 function restoreDraftGroup(group) {
@@ -69,9 +73,22 @@ function restoreWorkshopDraft() {
   return restored;
 }
 
+function quarantineHeldDraft() {
+  heldDraftRestorePending = true;
+  if (doc?.documentElement) doc.documentElement.dataset.ashA8DraftDurability = 'HELD_PENDING_ACTIVE_MAP_RETURN';
+}
+
+function releaseHeldDraftAfterActiveRestore(workspace, restored) {
+  if (!heldDraftRestorePending || !workspace?.classList?.contains('active') || !restored) return false;
+  heldDraftRestorePending = false;
+  if (doc?.documentElement) doc.documentElement.dataset.ashA8DraftDurability = 'RESTORED_ON_ACTIVE_MAP_RETURN';
+  return true;
+}
+
 function clearDrafts() {
   objectDraft.clear();
   relationDraft.clear();
+  heldDraftRestorePending = false;
   if (doc?.documentElement) doc.documentElement.dataset.ashA8DraftDurability = 'CLEARED';
 }
 
@@ -205,7 +222,7 @@ function resolvePending(snapshot) {
 }
 
 function commitObject() {
-  captureWorkshopDraft();
+  captureWorkshopDraft({ allowHeldOverwrite:true });
   const name = byId('ashA8ObjectName')?.value.trim();
   if (!name) return publishStageWorldAnswer('A8', 'Object held: name what you are placing before the deliberate Add gesture. No map state changed.');
   const detail = {
@@ -222,6 +239,7 @@ function commitObject() {
   const delegation = delegateLegacyAction('addObject');
   if (!delegation.delegated) {
     pendingObjectName = null;
+    quarantineHeldDraft();
     return publishStageWorldAnswer('A8', `Object held: ${delegation.reason} No map state changed.`);
   }
   appendResearchNote('object', detail);
@@ -229,7 +247,7 @@ function commitObject() {
 }
 
 function commitRelation(snapshot) {
-  captureWorkshopDraft();
+  captureWorkshopDraft({ allowHeldOverwrite:true });
   const from = byId('ashA8RelationFrom')?.value || '';
   const to = byId('ashA8RelationTo')?.value || '';
   const type = byId('ashA8RelationType')?.value.trim();
@@ -248,6 +266,7 @@ function commitRelation(snapshot) {
   const delegation = delegateLegacyAction('addRelationship');
   if (!delegation.delegated) {
     pendingRelation = null;
+    quarantineHeldDraft();
     return publishStageWorldAnswer('A8', `Relationship held: ${delegation.reason} No relation was created.`);
   }
   appendResearchNote('relationship', detail);
@@ -284,7 +303,7 @@ function bindWorkshop(snapshot) {
 }
 
 export function renderAshA8CaseMap(snapshot) {
-  captureWorkshopDraft();
+  if (!heldDraftRestorePending) captureWorkshopDraft();
   const workspace = byId('workspace-map');
   const mapLayout = workspace?.querySelector('.map-layout');
   if (!workspace || !mapLayout) return false;
@@ -351,7 +370,8 @@ export function renderAshA8CaseMap(snapshot) {
       <p class="ash-stage-status" id="ashA8Status" role="status" aria-live="polite">${escapeHtml(confirmation)}</p>
     </section>`;
   bindWorkshop(snapshot);
-  restoreWorkshopDraft();
+  const restored = restoreWorkshopDraft();
+  releaseHeldDraftAfterActiveRestore(workspace, restored);
   objectPreview();
   relationPreview(snapshot);
   publishStageWorldAnswer('A8', lastCreatedRelation || lastCreatedObject
@@ -378,6 +398,8 @@ host && (host.__td613AshA8CaseMap = Object.freeze({
   render:renderAshA8CaseMap,
   draft_storage:'MEMORY_ONLY',
   delegated_capture:true,
+  held_draft_quarantine:true,
+  heldDraftRestorePending:() => heldDraftRestorePending,
   authority_changed:false,
   source_bytes_moved:false,
   human_closure_required:true

@@ -27,6 +27,7 @@ const registry = read('app/dome-world/ash-demo-registry.js');
 const premium = read('app/dome-world/ash-premium-ui.js');
 const lifecycle = read('app/dome-world/ash-lifecycle-core.js');
 const probe = read('scripts/ash-research-ux-browser-probe.mjs');
+const probeBase = read('scripts/ash-research-ux-browser-probe-base.mjs');
 const workflow = read('.github/workflows/td613-ci.yml');
 
 assert.equal(ASH_RESEARCH_DEMO_VERSION, 'td613.ash.research-demo/v0.3-child-legible-surface-ledger');
@@ -101,10 +102,15 @@ assert.match(probe, /profile=research/);
 assert.match(probe, /__td613AshResearchSurfaceReport/);
 assert.match(probe, /window\.__td613AshDemoRegistry/);
 assert.match(probe, /control_owner === 'ASH_DEMO_REGISTRY'/);
-assert.match(probe, /ashDemoRegistryOwner === 'td613\.ash\.demo-registry\/v0\.2-a14'/);
+assert.match(probe, /const startControlTarget/);
+assert.match(probe, /const startControlReplacement/);
+assert.match(probe, /replaceExactlyOnce\(source, startControlTarget, startControlReplacement, 'registry-owned Research Start Demo control'\)/);
+assert.match(probe, /button\.dataset\.ashDemoRegistryOwner === 'td613\.ash\.demo-registry\/v0\.2-a14'/);
+assert.match(probe, /runtime\.includes\('td613\.ash\.demo-registry\/v0\.1-a13'\)/);
+assert.match(probeBase, /button\.dataset\.ashDemoRegistryOwner === 'td613\.ash\.demo-registry\/v0\.1-a13'/);
 assert.doesNotMatch(probe, /__td613AshResearchControlState/);
 assert.match(workflow, /playwright install --with-deps chromium firefox webkit/);
 assert.match(workflow, /node tests\/ash-research-ux-rehydration\.test\.mjs/);
 assert.match(workflow, /ash-research-ux-browser-probe\.mjs/);
 
-console.log('ash-research-ux-rehydration.test.mjs passed under A14 registry ownership');
+console.log('ash-research-ux-rehydration.test.mjs passed under A14 registry-owned entry and navigation');

@@ -24,10 +24,11 @@ for (const token of ['const CAPSULE_QUESTIONS = Object.freeze','function continu
 for (const pattern of [/indexedDB\.(?:open|deleteDatabase)/,/localStorage\.(?:setItem|removeItem|clear)/,/sessionStorage\.(?:setItem|removeItem|clear)/,/fetch\s*\(/,/XMLHttpRequest/,/new\s+(?:Worker|SharedWorker)/,/\.click\(\)/,/\.prepare\s*\(/,/\.send\s*\(/,/compileDestinationHandoff/,/makeSave/,/exportCapsule/,/importCapsule/]) assert.doesNotMatch(source, pattern);
 for (const marker of ['premiumCapsuleBody','premiumSealSave','premiumExportCapsule','premiumImportCapsule','premiumInspectSave','makeSave','exportCapsule','importCapsule']) assert.ok(premium.includes(marker));
 for (const marker of ['compileDestinationHandoffPlan','compileDestinationHandoffAuthorization','compileDestinationHandoffAttempt','compileDestinationHandoffRecipientReceipt','compileDestinationHandoffCustodyAccounting','replayDestinationHandoff','AUTHORIZE_EXACT_DESTINATION_HANDOFF']) assert.ok(destination.includes(marker));
-assert.match(core, /td613\.ash\.a7-a11-recompiler-core\/v0\.3/);
+assert.match(core, /td613\.ash\.a7-a11-recompiler-core\/v0\.4/);
 assert.match(core, new RegExp(`ash-a11-capsule-recompilation\\.js\\?v=${RELEASE_EPOCH}`));
-for (const token of ['__td613AshA11ModulePromise','td613:ash:a11-load-held','__td613AshA11WorkspaceOwner','await loadA11Module()','UX_WORKSPACE_OPENED','native_capsule_preserved:true','save_point_owner_preserved:true','destination_handoff_separate:true','automatic_handoff:false']) assert.ok(core.includes(token));
+for (const token of ['__td613AshA11ModulePromise','td613:ash:a11-load-held','__td613AshA11WorkspaceOwner','await loadA11Module()','UX_WORKSPACE_OPENED','native_capsule_preserved:true','save_point_owner_preserved:true','destination_handoff_separate:true','active_stage_form_deferred:true','active_stage_primary_action_deferred:true','ACTIVE_STAGE_INTERACTION','automatic_handoff:false']) assert.ok(core.includes(token), `A11 core missing ${token}`);
 assert.doesNotMatch(core, /MutationObserver|setInterval|ash_epoch/);
+assert.doesNotMatch(core, /reason:'ACTIVE_STAGE_FORM'/);
 assert.match(probe, /if \(stage === 'A11'\)/);
 assert.match(probe, /#ashA11CapsuleRecompilation/);
 for (const marker of ['What is preserved','What remains outside','Who may open it','What closes it','Where it may go','What sealing does not prove','Destination handoff']) assert.ok(probe.includes(`'${marker}'`));

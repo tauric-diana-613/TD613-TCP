@@ -5,8 +5,14 @@ const read = path => fs.readFileSync(path, 'utf8');
 const releaseWorkflow = read('.github/workflows/vercel-operator-release.yml');
 const consolidatedWorkflow = read('.github/workflows/td613-ci.yml');
 const lifecycleCompiler = read('scripts/ash-lifecycle-production-probe.mjs');
-const probe = `${lifecycleCompiler}\n${read('scripts/ash-lifecycle-production-probe-base.mjs')}`;
+const lifecycleBase = read('scripts/ash-lifecycle-production-probe-base.mjs');
+const lifecycleLoader = read('app/dome-world/ash-lifecycle.js');
+const constitutionalConvergence = read('app/dome-world/ash-convergence.js');
+const localClosureServer = read('scripts/ash-keep-local-closure-server.mjs');
+const probe = `${lifecycleCompiler}\n${lifecycleBase}`;
+const compatibilityRunner = read('scripts/run-ash-keep-a1-production-probe.mjs');
 const convergenceRunner = read('scripts/run-ash-constitutional-convergence-probe.mjs');
+const shell = read('api/dome-world-shell.js');
 const core = read('app/dome-world/ash-keep.js');
 const controls = read('app/dome-world/ash-case-controls.js');
 const keep = read('app/dome-world/ash-keep.html');
@@ -18,10 +24,56 @@ const stretch11 = read('docs/ASH_KEEP_STRETCH11_CLOSURE_RECEIPT.md');
 
 for (const marker of ['Observe deployed Ash lifecycle without promotion','ash-lifecycle-production-probe.mjs','production_chromium_desktop_mobile = PASS','ash_lifecycle_deployed_observation = PASS']) assert.ok(releaseWorkflow.includes(marker), `Bounded release omitted ${marker}`);
 assert.match(consolidatedWorkflow, /Run bounded closure and constitutional convergence once/);
+assert.match(compatibilityRunner, /await import\('\.\/ash-lifecycle-production-probe\.mjs'\)/);
+assert.doesNotMatch(compatibilityRunner, /run-ash-keep-a1-production-probe-base\.mjs/);
+assert.match(compatibilityRunner, /retired pre-lifecycle A1 closure journey/);
 for (const token of ['ARRIVAL_UNPERSISTED','CASE_BOUND','REBUILD_ELIGIBLE','RELEASE_ELIGIBLE','CONTINUITY_SEALED','promotion_authorized: false','continuity is not transport']) assert.ok(probe.includes(token));
-for (const token of ['legacy_bypass === true',"dataset.ashCachePreflight === 'complete'",'aia3_route_required: false','reload_required: false',"url.searchParams.get('arrival') === 'cleared'",'td613.ash.cache-flush.aia3.epoch','td613.ash.cache-preflight.epoch']) assert.ok(lifecycleCompiler.includes(token), `Lifecycle observer omitted ${token}`);
+for (const token of [
+  'legacy_bypass === true',
+  "location.pathname === '/dome-world/ash-threshold.html'",
+  "location.search === ''",
+  "visible_url === '/dome-world/ash-threshold.html'",
+  "dataset.ashCachePreflight === 'complete'",
+  "dataset.ashModuleGraph === 'ready'",
+  "specialist_presentation_route = 'legacy-request-canonicalized'",
+  "specialist_visible_url = '/dome-world/ash-threshold.html'",
+  'aia3_route_required: false',
+  'reload_required: false',
+  "url.searchParams.get('arrival') === 'cleared'",
+  'td613.ash.cache-flush.aia3.epoch',
+  'td613.ash.cache-preflight.epoch'
+]) assert.ok(lifecycleCompiler.includes(token), `Lifecycle observer omitted ${token}`);
+assert.ok(lifecycleCompiler.includes('runtime.includes("searchParams.get(\'presentation\') === \'legacy\'")'), 'Lifecycle compiler must reject the retired visible-query predicate');
 assert.ok(lifecycleCompiler.includes('runtime.includes("current?.().route === \'IMPLEMENTATION\'")'));
+assert.match(shell, /const legacyPresentation=incoming\.searchParams\.get\('presentation'\)==='legacy'/);
+assert.match(shell, /if\(location\.pathname!==canonicalPath\|\|location\.search\)\{history\.replaceState\(null,''?,canonicalPath\+location\.hash\)\}/);
+assert.match(shell, /legacy_bypass:true/);
+assert.match(lifecycleLoader, /await preflight/);
+assert.match(lifecycleLoader, /__td613AshAia3PreflightReceipt\?\.legacy_bypass === true/);
+assert.match(lifecycleLoader, /if \(legacyPresentation\)[\s\S]*dataset\.ashAiaLegacy = 'true'/);
+assert.doesNotMatch(lifecycleLoader.match(/if \(legacyPresentation\)[\s\S]*?\} else \{/s)?.[0] || '', /ash-keep-aia\.js|ash-aia3-composition\.js|ash-keep-aia-workspace-bridge\.js/);
 for (const token of ['window.__td613AshKeep?.version','demo_click_deferred_until_ready: true','timeout: 60000']) assert.ok(convergenceRunner.includes(token));
+for (const token of [
+  'function currentLifecycleRank(current)',
+  'const lifecycleRank = currentLifecycleRank(current)',
+  'context?.lifecycle_rank !== lifecycleRank',
+  'await reconcileAuthority(`runtime-permission:${action}`)'
+]) assert.ok(constitutionalConvergence.includes(token), `Constitutional convergence omitted ${token}`);
+const authorityFreshnessIndex = constitutionalConvergence.indexOf('context?.lifecycle_rank !== lifecycleRank');
+const authorityVerificationIndex = constitutionalConvergence.indexOf('return await verifyAuthorityContext(context');
+assert.ok(authorityFreshnessIndex >= 0 && authorityFreshnessIndex < authorityVerificationIndex, 'Lifecycle rank freshness must be checked before a bound Authority Context is accepted');
+for (const token of [
+  "const ASH_CUSTODY_REGISTER_ROUTE = '/api/dome-world/ash-custody-register'",
+  "req.method === 'POST' && url.pathname === ASH_CUSTODY_REGISTER_ROUTE",
+  'validate_l1_boundary_flags',
+  'commitment.dispatch_post(envelope)',
+  "'x-td613-ash-commitment': 'v0.8-guarded-local-closure'",
+  'MAX_POST_BODY_BYTES = 131_072'
+]) assert.ok(localClosureServer.includes(token), `Local closure server omitted ${token}`);
+const exactGuardedRoute = localClosureServer.indexOf("req.method === 'POST' && url.pathname === ASH_CUSTODY_REGISTER_ROUTE");
+const genericMethodHold = localClosureServer.indexOf("req.method !== 'GET' && req.method !== 'HEAD'");
+assert.ok(exactGuardedRoute >= 0 && exactGuardedRoute < genericMethodHold, 'Exact guarded custody POST must be admitted before the generic method hold');
+assert.doesNotMatch(localClosureServer, /req\.method === 'POST'\s*&&\s*url\.pathname\.startsWith|\/api\/dome-world\/\(\.\*\)/);
 assert.doesNotMatch(core, /location\.reload\(\)/);
 assert.equal(delivery, keep);
 assert.match(controls, /DELETE_PARTIAL_HOLD/);
@@ -35,4 +87,4 @@ assert.match(stretch11, /active serverless functions = 11/);
 assert.match(stretch11, /transport capability = NAMED_SAME_ORIGIN_BROWSER_RECIPIENT_ONLY/);
 assert.equal(fs.existsSync('.github/workflows/ash-keep-production-closure.yml'), false);
 assert.equal(fs.existsSync('.github/workflows/ash-keep-aia3-production-observation.yml'), false);
-console.log('ash-lifecycle-production-contract.test.mjs passed under bounded release observation');
+console.log('ash-lifecycle-production-contract.test.mjs passed under canonicalized legacy bypass, guarded local custody, and lifecycle-rank authority freshness');

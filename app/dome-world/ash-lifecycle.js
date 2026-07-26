@@ -1,7 +1,8 @@
 const preflight = globalThis.__td613AshAia3Preflight;
 if (preflight && typeof preflight.then === 'function') await preflight;
 
-const legacyPresentation = new URLSearchParams(location.search).get('presentation') === 'legacy';
+const legacyPresentation = new URLSearchParams(location.search).get('presentation') === 'legacy'
+  || globalThis.__td613AshAia3PreflightReceipt?.legacy_bypass === true;
 const ASH_RELEASE_ASSET_EPOCH = '20260724-a12-release-v1';
 
 if (!legacyPresentation) {

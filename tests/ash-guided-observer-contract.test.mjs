@@ -68,9 +68,17 @@ assert.match(lifecycle, /preCustodyExactState === 'READINESS_OBSERVED'/);
 assert.match(lifecycle, /pre_custody_exact_state: preCustodyExactState/);
 assert.match(lifecycle, /test_workspace_navigable: true/);
 assert.match(lifecycle, /legacy_bypass === true/);
+assert.match(lifecycle, /location\.pathname === '\/dome-world\/ash-threshold\.html'/);
+assert.match(lifecycle, /location\.search === ''/);
+assert.match(lifecycle, /visible_url === '\/dome-world\/ash-threshold\.html'/);
 assert.match(lifecycle, /dataset\.ashCachePreflight === 'complete'/);
+assert.match(lifecycle, /dataset\.ashModuleGraph === 'ready'/);
+assert.match(lifecycle, /specialist_presentation_route = 'legacy-request-canonicalized'/);
+assert.match(lifecycle, /specialist_visible_url = '\/dome-world\/ash-threshold\.html'/);
 assert.match(lifecycle, /aia3_route_required: false/);
 assert.match(lifecycle, /reload_required: false/);
+assert.ok(lifecycle.includes('runtime.includes("searchParams.get(\'presentation\') === \'legacy\'")'),
+  'Lifecycle observer compiler must reject the retired visible-query predicate');
 assert.ok(lifecycle.includes('runtime.includes("current?.().route === \'IMPLEMENTATION\'")'),
   'Lifecycle observer compiler must reject regeneration of the stale AIA3 route requirement');
 assert.doesNotMatch(lifecycle, /#workspace-test \.workspace-lifecycle-note/,

@@ -167,6 +167,12 @@ async function collectCase(db, caseId) {
   return { caseMap, routeMemory, lifecycle, currentTest, currentDraft, currentReview, currentRelease, currentSave };
 }
 
+function currentLifecycleRank(current) {
+  return current?.lifecycle?.lifecycle_state
+    || current?.lifecycle?.lifecycle_receipt?.lifecycle?.state
+    || 'ARRIVAL_UNPERSISTED';
+}
+
 export async function reconcileAuthority(reason = 'constitutional-reconcile') {
   const caseId = localStorage.getItem(POINTER_KEY);
   if (!caseId) return null;
@@ -177,7 +183,7 @@ export async function reconcileAuthority(reason = 'constitutional-reconcile') {
       if (!current) return null;
       const binding = unwrap(await getRecord(db, 'authorityBindings', caseId));
       const previous = binding?.authority_context_reference ? unwrap(await getRecord(db, 'authorityContexts', binding.authority_context_reference)) : null;
-      const lifecycleRank = current.lifecycle.lifecycle_state || current.lifecycle.lifecycle_receipt?.lifecycle?.state || 'ARRIVAL_UNPERSISTED';
+      const lifecycleRank = currentLifecycleRank(current);
       const context = await compileAuthorityContext({
         lifecycleRank,
         readinessReceiptReference: current.lifecycle.readiness_receipt?.receipt_id || null,
@@ -236,6 +242,8 @@ export async function currentAuthorityContext() {
     if (!binding?.authority_context_reference) return null;
     const context = unwrap(await getRecord(db, 'authorityContexts', binding.authority_context_reference));
     const current = await collectCase(db, caseId);
+    const lifecycleRank = currentLifecycleRank(current);
+    if (context?.lifecycle_rank !== lifecycleRank) return null;
     return await verifyAuthorityContext(context, {
       caseId,
       caseMapDigest: current?.caseMap?.case_map_digest,

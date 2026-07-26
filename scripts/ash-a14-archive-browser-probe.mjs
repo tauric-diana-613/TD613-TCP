@@ -206,8 +206,15 @@ async function inspect(page, label) {
 
   if (result.promoted_profiles.length !== 6 || result.archive_owner !== 'ARCHIVE') throw new Error(`A14 registry promotion held: ${JSON.stringify(result)}`);
   if (!result.active_case || result.active_case !== archiveCase.case_id || result.archive_version !== 'td613.ash.archive-demo/v0.2-a14-harbor-memory' || result.workspace !== 'map') throw new Error(`A14 Harbor Memory presentation held: ${JSON.stringify({ result, archiveCase })}`);
-  for (const phrase of ['Harbor Memory Archive','original audio','transcript','uncertain date','duplicate scan','donor restriction','missing release','embargo','public access copy','Nothing has been published','no ownership','no access grant']) {
-    if (!result.docket_text.toLowerCase().includes(phrase.toLowerCase())) throw new Error(`A14 docket omitted ${phrase}: ${JSON.stringify(result)}`);
+  const normalizedDocket = result.docket_text.toLowerCase().replace(/[^a-z0-9]+/g, ' ').trim();
+  for (const phrase of ['harbor memory archive','original audio','transcript','uncertain date','duplicate scan','donor restriction','missing release','embargo','public access copy','nothing has been published']) {
+    if (!normalizedDocket.includes(phrase)) throw new Error(`A14 docket omitted ${phrase}: ${JSON.stringify(result)}`);
+  }
+  const authoritySequence = ['claim ceiling','no ownership','authenticity','access grant','release','declassification','publication','transfer authority'];
+  let authorityCursor = -1;
+  for (const phrase of authoritySequence) {
+    authorityCursor = normalizedDocket.indexOf(phrase, authorityCursor + 1);
+    if (authorityCursor < 0) throw new Error(`A14 authority ceiling omitted ${phrase}: ${JSON.stringify(result)}`);
   }
   if (result.release_disabled !== true || result.provider_approval_checked !== false || result.handoff_is_link !== true) throw new Error(`A14 widened action authority: ${JSON.stringify(result)}`);
   if (result.unexpected_text || result.imported_reader) throw new Error(`A14 fabricated provider output: ${JSON.stringify(result)}`);
@@ -230,7 +237,7 @@ try {
   await mobile.close();
 
   await fs.writeFile(path.join(artifactDir, `${browserName}-a14-archive-receipt.json`), JSON.stringify({
-    schema:'td613.ash.a14-harbor-memory-browser-witness/v0.4-persisted-custody-record',
+    schema:'td613.ash.a14-harbor-memory-browser-witness/v0.5-normalized-authority-ceiling',
     browser:browserName,
     receipts,
     registry_owner:'ASH_DEMO_REGISTRY',

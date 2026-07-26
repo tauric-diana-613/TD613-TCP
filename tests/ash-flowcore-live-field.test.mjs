@@ -10,6 +10,7 @@ const boundary = fs.readFileSync('app/dome-world/ash-session-boundary.js', 'utf8
 const ingressSpacing = fs.readFileSync('app/dome-world/ash-ingress-copy-spacing.js', 'utf8');
 const bridge = fs.readFileSync('app/dome-world/ash-workspace-bridge.js', 'utf8');
 const closeRepair = fs.readFileSync('app/dome-world/ash-case-close-repair.js', 'utf8');
+const browserRunner = fs.readFileSync('scripts/run-ash-flowcore-live-field-browser-probe.mjs', 'utf8');
 
 assert.match(field, /renderPedagogueScene, renderPedagogueStaticFrame/);
 assert.match(field, /td613\.ash\.flowcore-pedagogy-field\/v0\.2-consequence-topology-syntax-closed/);
@@ -122,6 +123,13 @@ assert.match(ingressSpacing, /overlap_px:collision\.area > 0 \? collision\.heigh
 assert.match(ingressSpacing, /ordered:title\.nextElementSibling === recovery/);
 assert.doesNotMatch(ingressSpacing, /setInterval\s*\(|requestAnimationFrame\s*\(/);
 
+assert.match(browserRunner, /td613\.ash\.demo-registry\/v0\.2-a14/);
+const retiredRegistryOccurrences = browserRunner.match(/td613\.ash\.demo-registry\/v0\.1-a13/g) || [];
+assert.equal(retiredRegistryOccurrences.length, 1, 'The retired registry version may remain only as a negative generated-runtime guard.');
+assert.match(browserRunner, /if \(runtime\.includes\('td613\.ash\.demo-registry\/v0\.1-a13'\)\) throw new Error\('Flow-Core witness retained the retired A13 registry gate\.'\)/);
+assert.match(browserRunner, /v0\.15-a14-registry-owned-dom-readiness/);
+assert.match(browserRunner, /Flow-Core A14 registry version gate was not materialized/);
+
 const RELEASE_EPOCH = '20260724-a12-release-v1';
 for (const module of [
   'ash-session-boundary',
@@ -133,4 +141,4 @@ for (const module of [
 ]) assert.match(bridge, new RegExp(`${module}\\.js\\?v=${RELEASE_EPOCH}`));
 assert.doesNotMatch(bridge, /import '\.\/ash-flowcore-ingress-portal\.js/);
 
-console.log('ash-flowcore-live-field.test.mjs passed');
+console.log('ash-flowcore-live-field.test.mjs passed with A14 registry-owned browser readiness');

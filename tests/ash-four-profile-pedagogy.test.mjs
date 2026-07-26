@@ -75,7 +75,8 @@ assert.match(registrySource, /archiveManifest/);
 assert.match(registrySource, /buildArchiveDemoFixture/);
 assert.doesNotMatch(registrySource, /RESERVED_FOR_A14|A14_RESERVED/);
 
-assert.match(entrySource, /td613\.ash\.demo-entry-convergence\/v0\.5-premium-instrument-visible-release/);
+assert.match(entrySource, /td613\.ash\.demo-entry-convergence\/v0\.6-archive-entry-fallback/);
+assert.match(entrySource, /const ENTRY_FALLBACK = Object\.freeze\(\{[^\n]*archive:'map'/);
 assert.match(entrySource, /data-ash-demo-entry-hydrating/);
 assert.match(entrySource, /function structuralReady/);
 assert.match(entrySource, /function visibleReady/);
