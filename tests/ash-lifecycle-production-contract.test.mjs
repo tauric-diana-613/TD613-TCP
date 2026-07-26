@@ -7,6 +7,7 @@ const consolidatedWorkflow = read('.github/workflows/td613-ci.yml');
 const lifecycleCompiler = read('scripts/ash-lifecycle-production-probe.mjs');
 const lifecycleBase = read('scripts/ash-lifecycle-production-probe-base.mjs');
 const lifecycleLoader = read('app/dome-world/ash-lifecycle.js');
+const localClosureServer = read('scripts/ash-keep-local-closure-server.mjs');
 const probe = `${lifecycleCompiler}\n${lifecycleBase}`;
 const compatibilityRunner = read('scripts/run-ash-keep-a1-production-probe.mjs');
 const convergenceRunner = read('scripts/run-ash-constitutional-convergence-probe.mjs');
@@ -51,6 +52,18 @@ assert.match(lifecycleLoader, /__td613AshAia3PreflightReceipt\?\.legacy_bypass =
 assert.match(lifecycleLoader, /if \(legacyPresentation\)[\s\S]*dataset\.ashAiaLegacy = 'true'/);
 assert.doesNotMatch(lifecycleLoader.match(/if \(legacyPresentation\)[\s\S]*?\} else \{/s)?.[0] || '', /ash-keep-aia\.js|ash-aia3-composition\.js|ash-keep-aia-workspace-bridge\.js/);
 for (const token of ['window.__td613AshKeep?.version','demo_click_deferred_until_ready: true','timeout: 60000']) assert.ok(convergenceRunner.includes(token));
+for (const token of [
+  "const ASH_CUSTODY_REGISTER_ROUTE = '/api/dome-world/ash-custody-register'",
+  "req.method === 'POST' && url.pathname === ASH_CUSTODY_REGISTER_ROUTE",
+  'validate_l1_boundary_flags',
+  'commitment.dispatch_post(envelope)',
+  "'x-td613-ash-commitment': 'v0.8-guarded-local-closure'",
+  'MAX_POST_BODY_BYTES = 131_072'
+]) assert.ok(localClosureServer.includes(token), `Local closure server omitted ${token}`);
+const exactGuardedRoute = localClosureServer.indexOf("req.method === 'POST' && url.pathname === ASH_CUSTODY_REGISTER_ROUTE");
+const genericMethodHold = localClosureServer.indexOf("req.method !== 'GET' && req.method !== 'HEAD'");
+assert.ok(exactGuardedRoute >= 0 && exactGuardedRoute < genericMethodHold, 'Exact guarded custody POST must be admitted before the generic method hold');
+assert.doesNotMatch(localClosureServer, /req\.method === 'POST'\s*&&\s*url\.pathname\.startsWith|\/api\/dome-world\/\(\.\*\)/);
 assert.doesNotMatch(core, /location\.reload\(\)/);
 assert.equal(delivery, keep);
 assert.match(controls, /DELETE_PARTIAL_HOLD/);
@@ -64,4 +77,4 @@ assert.match(stretch11, /active serverless functions = 11/);
 assert.match(stretch11, /transport capability = NAMED_SAME_ORIGIN_BROWSER_RECIPIENT_ONLY/);
 assert.equal(fs.existsSync('.github/workflows/ash-keep-production-closure.yml'), false);
 assert.equal(fs.existsSync('.github/workflows/ash-keep-aia3-production-observation.yml'), false);
-console.log('ash-lifecycle-production-contract.test.mjs passed under canonicalized legacy-bypass lifecycle routing');
+console.log('ash-lifecycle-production-contract.test.mjs passed under canonicalized legacy-bypass and guarded local custody routing');
