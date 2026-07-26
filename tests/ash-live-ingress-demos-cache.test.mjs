@@ -123,8 +123,10 @@ const legal = buildLegalMatterDemoFixture();
 assert.deepEqual({ rooms:legal.rooms.length, nodes:legal.nodes.length, relationships:legal.relationships.length, rules:legal.rules.length, routes:legal.routes.length }, { rooms:8, nodes:16, relationships:12, rules:3, routes:3 });
 assert.match(legal.defaults.research_notes, /No legal advice/);
 const archive = buildArchiveDemoFixture();
-assert.deepEqual({ rooms:archive.rooms.length, nodes:archive.nodes.length, relationships:archive.relationships.length, rules:archive.rules.length, routes:archive.routes.length }, { rooms:8, nodes:24, relationships:15, rules:4, routes:4 });
+assert.deepEqual({ rooms:archive.rooms.length, nodes:archive.nodes.length, relationships:archive.relationships.length, rules:archive.rules.length, routes:archive.routes.length }, { rooms:8, nodes:29, relationships:23, rules:4, routes:4 });
+for (const route of archive.routes) assert.match(route.draft_digest, /^sha256:[0-9a-f]{64}$/);
+assert.match(archive.defaults.route.digest, /^sha256:[0-9a-f]{64}$/);
 assert.equal(archive.assay.release_authority, false);
 assert.equal(archive.assay.transfer_authority, false);
 
-console.log('ash-live-ingress-demos-cache.test.mjs passed under A14 registry epoch');
+console.log('ash-live-ingress-demos-cache.test.mjs passed under A14 Harbor Memory registry epoch');
