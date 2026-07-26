@@ -86,6 +86,15 @@ async function commitA8Gesture(page, fields, buttonId) {
   if (!result.committed) throw new Error(result.reason);
 }
 
+async function waitForA8DraftValue(page, id, expected, label) {
+  await page.waitForFunction(({ id, expected }) => {
+    const workspace = document.getElementById('workspace-map');
+    const control = document.getElementById(id);
+    return workspace?.classList.contains('active') && control?.isConnected && control.value === expected;
+  }, { id, expected }, { timeout:30_000, polling:100 });
+  if (await page.locator(`#${id}`).inputValue() !== expected) throw new Error(label);
+}
+
 async function inspectA8(page) {
   await returnToMap(page);
   await waitForStableCaseMap(page);
@@ -121,7 +130,7 @@ async function inspectA8(page) {
   if (afterObjectHold.notes !== before.notes) throw new Error('A8 pre-CASE_BOUND object hold wrote notes without stored successor state.');
 
   await returnToMap(page);
-  if (await page.locator('#ashA8ObjectName').inputValue() !== witnessName) throw new Error('A8 object draft did not survive the Custody hold and explicit Map return.');
+  await waitForA8DraftValue(page, 'ashA8ObjectName', witnessName, 'A8 object draft did not survive the Custody hold and explicit Map return.');
 
   const relationOptions = await page.evaluate(() => {
     const values = selector => [...document.querySelectorAll(`${selector} option`)].map(option => option.value).filter(Boolean);
@@ -151,7 +160,7 @@ async function inspectA8(page) {
   if (afterRelationHold.notes !== before.notes) throw new Error('A8 pre-CASE_BOUND relationship hold wrote notes without stored successor state.');
 
   await returnToMap(page);
-  if (await page.locator('#ashA8RelationType').inputValue() !== 'browser-witness-supports') throw new Error('A8 relation draft did not survive the Custody hold and explicit Map return.');
+  await waitForA8DraftValue(page, 'ashA8RelationType', 'browser-witness-supports', 'A8 relation draft did not survive the Custody hold and explicit Map return.');
 
   const inspect = page.locator('[data-ash-a8-inspect-relation]').first();
   if (!(await inspect.count())) throw new Error('A8 demo exposed no existing relationship for lawful inspection.');
