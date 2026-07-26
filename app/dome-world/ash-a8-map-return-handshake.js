@@ -133,6 +133,17 @@ function captureDelegatedForm(event) {
   captureAll();
 }
 
+function requestCanonicalMapAlignment(serial) {
+  if (!held || !mapReturnObserved || serial !== refreshSerial || !canonicalMapIsOpen()) return false;
+  const owner = host?.__td613AshUiUxRescue;
+  if (!owner?.scrollTo || owner.scrollTo('map') !== true) {
+    mark('MAP_RETURN_ALIGNMENT_REQUEST_HELD');
+    return false;
+  }
+  mark('MAP_RETURN_ALIGNMENT_REQUESTED');
+  return true;
+}
+
 function requestConfirmedMapRefresh(event) {
   if (!held || event.detail?.workspace !== 'map') return false;
   if (mapReturnObserved) return true;
@@ -143,9 +154,11 @@ function requestConfirmedMapRefresh(event) {
   mark('MAP_RETURN_SETTLING');
   queueMicrotask(() => {
     if (!held || !mapReturnObserved || serial !== refreshSerial) return;
-    Promise.resolve(host?.__td613AshA8?.refresh?.('A8_CANONICAL_MAP_RETURN_HANDSHAKE')).catch(() => {
-      if (serial === refreshSerial) mark('MAP_RETURN_RESTORE_HELD');
-    });
+    Promise.resolve(host?.__td613AshA8?.refresh?.('A8_CANONICAL_MAP_RETURN_HANDSHAKE'))
+      .then(() => requestCanonicalMapAlignment(serial))
+      .catch(() => {
+        if (serial === refreshSerial) mark('MAP_RETURN_RESTORE_HELD');
+      });
   });
   return true;
 }
@@ -236,6 +249,7 @@ function finalizeSettlement(serial) {
       trusted_window_capture:true,
       idempotent_map_return_admitted:true,
       canonical_map_alignment_observed:true,
+      alignment_owner:'ASH_UI_UX_RESCUE',
       final_whole_instrument_refresh_observed:true,
       a8_recompiled_after_final_refresh:true,
       quiet_window_ms:SETTLEMENT_QUIET_MS,
