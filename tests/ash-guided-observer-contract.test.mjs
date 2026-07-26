@@ -77,8 +77,8 @@ assert.match(lifecycle, /specialist_presentation_route = 'legacy-request-canonic
 assert.match(lifecycle, /specialist_visible_url = '\/dome-world\/ash-threshold\.html'/);
 assert.match(lifecycle, /aia3_route_required: false/);
 assert.match(lifecycle, /reload_required: false/);
-assert.doesNotMatch(lifecycle, /searchParams\.get\('presentation'\) === 'legacy'/,
-  'Lifecycle observer still requires the retired query string after canonicalization');
+assert.ok(lifecycle.includes('runtime.includes("searchParams.get(\'presentation\') === \'legacy\'")'),
+  'Lifecycle observer compiler must reject the retired visible-query predicate');
 assert.ok(lifecycle.includes('runtime.includes("current?.().route === \'IMPLEMENTATION\'")'),
   'Lifecycle observer compiler must reject regeneration of the stale AIA3 route requirement');
 assert.doesNotMatch(lifecycle, /#workspace-test \.workspace-lifecycle-note/,
