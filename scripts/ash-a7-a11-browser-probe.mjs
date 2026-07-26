@@ -58,17 +58,28 @@ async function commitA8Gesture(page, fields, buttonId) {
   const result = await page.evaluate(({ fields, buttonId }) => {
     const root = document.getElementById('ashA8RelationWorkshop');
     if (!root?.isConnected) return { committed:false, reason:'A8 workshop is not connected.' };
+    const prepared = [];
     for (const [id, value] of Object.entries(fields)) {
       const control = document.getElementById(id);
       if (!control?.isConnected) return { committed:false, reason:`A8 control ${id} is not connected.` };
+      if (control.tagName === 'SELECT' && ![...control.options].some(option => option.value === value)) {
+        return { committed:false, reason:`A8 control ${id} cannot select ${value}.` };
+      }
+      prepared.push([id, control, value]);
+    }
+    for (const [, control, value] of prepared) control.value = value;
+    const captureTarget = prepared.at(-1)?.[1];
+    captureTarget?.dispatchEvent(new Event('input', { bubbles:true }));
+    captureTarget?.dispatchEvent(new Event('change', { bubbles:true }));
+    for (const [id, , value] of prepared) {
+      const control = document.getElementById(id);
+      if (!control?.isConnected) return { committed:false, reason:`A8 control ${id} did not survive draft capture.` };
       control.value = value;
-      control.dispatchEvent(new Event('input', { bubbles:true }));
-      control.dispatchEvent(new Event('change', { bubbles:true }));
     }
     const button = document.getElementById(buttonId);
     if (!button?.isConnected) return { committed:false, reason:`A8 action ${buttonId} is not connected.` };
     button.click();
-    return { committed:true };
+    return { committed:true, staged_fields:prepared.length };
   }, { fields, buttonId });
   if (!result.committed) throw new Error(result.reason);
 }
