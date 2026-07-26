@@ -211,7 +211,7 @@ export function installAshStage({ stage, sync, navigationSelectors = '' }) {
     const control = navigationSelectors && event.target?.closest?.(navigationSelectors);
     if (control) queueMicrotask(() => run('EXPLICIT_NAVIGATION'));
   }, true);
-  host.addEventListener('td613:ash:canonical-module-graph-ready', () => queueMicrotask(() => run('CANONICAL_MODULE_GRAPH_READY'));
+  host.addEventListener('td613:ash:canonical-module-graph-ready', () => queueMicrotask(() => run('CANONICAL_MODULE_GRAPH_READY')));
   host[`__td613Ash${stage}`] = Object.freeze({ version:ASH_A7_A11_RECOMPILER_CORE_VERSION, refresh:run });
   queueMicrotask(() => run('INSTALL'));
   return true;
