@@ -31,20 +31,22 @@ for (const token of [
   "const HELD_ACTIONS = new Set(['addObject','addRelationship'])",
   "const COMMIT_SELECTOR = '#ashA8CommitObject,#ashA8CommitRelation'",
   'const SETTLEMENT_QUIET_MS = 150','function ensureStyles()','function captureAll()','function restoreAll()','function canonicalMapIsOpen()',
-  'function captureBeforeCommit(event)','event.target?.closest?.(COMMIT_SELECTOR)','PREHOLD_COMMIT_SHADOW_CAPTURED',
+  'let alignmentObserved = false','function captureBeforeCommit(event)','event.target?.closest?.(COMMIT_SELECTOR)','PREHOLD_COMMIT_SHADOW_CAPTURED',
   "doc.addEventListener('click', captureBeforeCommit, true)",
   'expected:draft.size','matched === draft.size','complete:draft.size > 0',
   'PREHOLD_DRAFT_CAPTURED','held = draft.size > 0','HELD_WITH_PREHOLD_DRAFT','HELD_WITHOUT_PREHOLD_DRAFT',
-  'if (held) return','MAP_RETURN_SETTLING','MAP_RETURN_RESTORE_HELD','MAP_RETURN_PARITY_OBSERVED',
-  'data-ash-a8-map-return-handshake^="MAP_RETURN_"','function clearSettlementTimer()','function finalizeSettlement(serial)',
+  'if (held) return','MAP_RETURN_SETTLING','MAP_RETURN_RESTORE_HELD','MAP_RETURN_PARITY_WAITING_ALIGNMENT','MAP_RETURN_PARITY_ALIGNED',
+  'data-ash-a8-map-return-handshake^="MAP_RETURN_"','function clearSettlementTimer()','function finalizeSettlement(serial)','function scheduleAlignedSettlement()','function observeMapAlignment(event)',
   "host.addEventListener('td613:ash:ux-workspace-opened', requestConfirmedMapRefresh)",
+  "host.addEventListener('td613:ash:ux-workspace-aligned', observeMapAlignment)",
   "host.addEventListener('td613:ash:a8-recompiled', settleAfterA8Recompile)",
   "refresh?.('A8_CANONICAL_MAP_RETURN_HANDSHAKE')",
   'RESTORED_AFTER_CANONICAL_MAP_RETURN','td613:ash:a8-map-return-restored','PREHOLD_VISIBLE_COMMIT_CAPTURE',
-  'precommit_shadow_capture:true','full_control_parity:true','quiet_window_ms:SETTLEMENT_QUIET_MS','workshop_visible_after_restore:true',
-  'authority_changed:false','source_bytes_moved:false','custody_changed:false','release_posture_changed:false','human_closure_required:true'
+  'precommit_shadow_capture:true','canonical_map_alignment_observed:true','full_control_parity:true','quiet_window_ms:SETTLEMENT_QUIET_MS','workshop_visible_after_restore:true',
+  'alignment_observed:alignmentObserved','authority_changed:false','source_bytes_moved:false','custody_changed:false','release_posture_changed:false','human_closure_required:true'
 ]) assert.ok(returnHandshake.includes(token), `A8 canonical Map-return handshake missing ${token}`);
 assert.match(returnHandshake, /function captureBeforeCommit\(event\)[\s\S]{0,260}captureAll\(\)/, 'A8 must capture all visible fields immediately before the delegated commit.');
+assert.match(returnHandshake, /function finalizeSettlement\(serial\)[\s\S]{0,220}!alignmentObserved/, 'A8 must not expose the workshop before canonical Map alignment.');
 assert.doesNotMatch(returnHandshake, /function arm\(event\)[\s\S]{0,260}captureAll\(\)/, 'A8 action-held receipt must not recapture after Custody has opened.');
 assert.doesNotMatch(returnHandshake, /indexedDB\.|localStorage\.(?:setItem|removeItem|clear)|sessionStorage\.(?:setItem|removeItem|clear)|fetch\s*\(|sendBeacon|caches\.|serviceWorker/);
 assert.match(bridge, /ash-a8-map-return-handshake\.js\?v=20260726-a15-empirical-v1/);
@@ -65,4 +67,4 @@ assert.match(html, /ash-a8-case-map-recompilation\.js/);
 assert.equal(html, mirror, 'Ash source mirror must remain byte-identical');
 assert.equal(vercel.git?.deploymentEnabled, false);
 
-console.log(JSON.stringify({ok:true,schema:'td613.ash.a8-case-map-contract/v0.8-precommit-full-parity',existing_map_engine_delegation:true,stage_form_draft_preservation:true,held_draft_quarantine:true,prehold_form_shadow:true,visible_commit_boundary_capture:true,post_custody_recapture_forbidden:true,canonical_map_return_handshake:true,workshop_hidden_until_restore:true,full_saved_control_parity:true,quiet_recompile_window:true,transitioning_active_class_cannot_release_shadow_draft:true,default_dom_overwrite_held_until_canonical_map_restore:true,delayed_profile_hydration_cannot_clear_active_draft:true,object_and_relation_drafts_restore_independently:true,explicit_cross_tab_handshake:true,external_process_watchdog:true,authority_changed:false,source_bytes_moved:false,human_closure_required:true,vercel_gate:'CLOSED'}, null, 2));
+console.log(JSON.stringify({ok:true,schema:'td613.ash.a8-case-map-contract/v0.9-alignment-bound-full-parity',existing_map_engine_delegation:true,stage_form_draft_preservation:true,held_draft_quarantine:true,prehold_form_shadow:true,visible_commit_boundary_capture:true,post_custody_recapture_forbidden:true,canonical_map_return_handshake:true,canonical_map_alignment_required:true,workshop_hidden_until_restore:true,full_saved_control_parity:true,quiet_recompile_window:true,transitioning_active_class_cannot_release_shadow_draft:true,default_dom_overwrite_held_until_canonical_map_restore:true,delayed_profile_hydration_cannot_clear_active_draft:true,object_and_relation_drafts_restore_independently:true,explicit_cross_tab_handshake:true,external_process_watchdog:true,authority_changed:false,source_bytes_moved:false,human_closure_required:true,vercel_gate:'CLOSED'}, null, 2));
