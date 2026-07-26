@@ -84,7 +84,10 @@ function completeQueuedRecovery(serial, source) {
 }
 
 function recoverAfterInFlightRecompile(event) {
-  if (!dirtyDraftActive || custodyHoldIsActive()) return false;
+  if (!dirtyDraftActive || custodyHoldIsActive()
+    || (!canonicalMapWorkshopIsActive() && !workshopIsConnected())) return false;
+  const restoreOwner = host?.__td613AshA8MapReturnHandshake?.restore;
+  if (typeof restoreOwner !== 'function') return false;
   const serial = ++recoverySerial;
   const source = event?.detail?.source || 'A8_RECOMPILED';
   publish('DIRTY_DRAFT_RECOVERY_QUEUED', source, {
