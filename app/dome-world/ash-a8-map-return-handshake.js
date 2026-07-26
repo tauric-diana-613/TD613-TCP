@@ -13,6 +13,15 @@ let held = false;
 let mapReturnObserved = false;
 let refreshSerial = 0;
 
+function ensureStyles() {
+  if (!doc?.head || byId('td613-ash-a8-map-return-handshake-css')) return;
+  const style = doc.createElement('style');
+  style.id = 'td613-ash-a8-map-return-handshake-css';
+  style.textContent = `html[data-ash-a8-map-return-handshake="MAP_RETURN_SETTLING"] #ashA8RelationWorkshop,
+html[data-ash-a8-map-return-handshake="MAP_RETURN_RESTORE_HELD"] #ashA8RelationWorkshop{visibility:hidden!important;pointer-events:none!important}`;
+  doc.head.append(style);
+}
+
 function captureAll() {
   let captured = false;
   for (const id of CONTROL_IDS) {
@@ -77,10 +86,12 @@ function requestConfirmedMapRefresh(event) {
   if (!held || event.detail?.workspace !== 'map') return;
   mapReturnObserved = true;
   const serial = ++refreshSerial;
-  mark('CANONICAL_MAP_RETURN_OBSERVED');
+  mark('MAP_RETURN_SETTLING');
   queueMicrotask(() => {
     if (!held || !mapReturnObserved || serial !== refreshSerial) return;
-    Promise.resolve(host?.__td613AshA8?.refresh?.('A8_CANONICAL_MAP_RETURN_HANDSHAKE')).catch(() => null);
+    Promise.resolve(host?.__td613AshA8?.refresh?.('A8_CANONICAL_MAP_RETURN_HANDSHAKE')).catch(() => {
+      if (serial === refreshSerial) mark('MAP_RETURN_RESTORE_HELD');
+    });
   });
 }
 
@@ -99,6 +110,7 @@ function settleAfterA8Recompile() {
       schema:'td613.ash.a8-map-return-receipt/v0.2',
       restored_controls:draft.size,
       source_posture:'PREHOLD_FORM_CAPTURE',
+      workshop_visible_after_restore:true,
       authority_changed:false,
       source_bytes_moved:false,
       custody_changed:false,
@@ -111,6 +123,7 @@ function settleAfterA8Recompile() {
 
 export function installAshA8MapReturnHandshake() {
   if (!host || !doc?.body || host.__td613AshA8MapReturnHandshake) return false;
+  ensureStyles();
   doc.addEventListener('input', captureDelegatedForm, true);
   doc.addEventListener('change', captureDelegatedForm, true);
   doc.addEventListener('td613:ash-keep:action-held', arm);
