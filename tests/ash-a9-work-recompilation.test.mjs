@@ -27,7 +27,7 @@ assert.doesNotMatch(core, /MutationObserver|ash_epoch/);
 assert.match(probe, /if \(stage === 'A9'\)/);
 assert.match(probe, /ashA9WorkRecompilation/);
 for (const marker of ['Do now','Prepare','Waiting / held','Completed / receipted','Human approval']) assert.ok(probe.includes(`'${marker}'`));
-for (const token of ['async function commitA8Gesture(page, fields, buttonId)','control.dispatchEvent(new Event(\'input\', { bubbles:true }))','button.click()','await commitA8Gesture(page, {']) assert.ok(probe.includes(token), `A8 browser witness omitted atomic gesture token ${token}`);
+for (const token of ['async function commitA8Gesture(page, fields, buttonId)','const prepared = []','for (const [, control, value] of prepared) control.value = value','const captureTarget = prepared.at(-1)?.[1]','captureTarget?.dispatchEvent(new Event(\'input\', { bubbles:true }))','for (const [id, , value] of prepared)','button.click()','await commitA8Gesture(page, {']) assert.ok(probe.includes(token), `A8 browser witness omitted two-phase atomic gesture token ${token}`);
 for (const pattern of [/locator\('#ashA8ObjectName'\)\.fill/,/locator\('#ashA8RelationFrom'\)\.selectOption/,/locator\('#ashA8CommitObject'\)\.click/,/locator\('#ashA8CommitRelation'\)\.click/]) assert.doesNotMatch(probe, pattern, 'A8 browser witness must not split one deliberate gesture across a recompilable DOM');
 for (const marker of ['node tests/ash-a9-work-recompilation.test.mjs','TD613_ASH_STAGES=\'A7,A8,A9,A10,A11\'','scripts/ash-a7-a11-browser-probe.mjs','One exact-head Chromium Firefox WebKit witness']) assert.ok(workflow.includes(marker), `Consolidated A9 witness missing ${marker}`);
 assert.match(workflow, /github\.event_name == 'workflow_dispatch' && inputs\.mode == 'full-browser'/);
