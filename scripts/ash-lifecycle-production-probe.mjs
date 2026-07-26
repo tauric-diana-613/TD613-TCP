@@ -23,6 +23,12 @@ runtime = replaceExactly(
 );
 runtime = replaceExactly(
   runtime,
+  "page.on('pageerror', error => consoleErrors.push({ text:error.message, location:null }));",
+  "page.on('pageerror', error => consoleErrors.push({ text:error.message, location:null }));\nfunction isExpectedTransitionAbort(item) {\n  if (item?.failure !== 'net::ERR_ABORTED' || item?.method !== 'GET') return false;\n  let url;\n  try { url = new URL(item.url); } catch { return false; }\n  const cacheEvictionTransition = item.resource_type === 'fetch'\n    && url.pathname === '/api/dome-world-shell'\n    && url.searchParams.get('surface') === 'cache-evict'\n    && url.searchParams.has('epoch')\n    && url.searchParams.has('asset_epoch')\n    && url.searchParams.has('nonce');\n  const supersededAia3Navigation = item.resource_type === 'script'\n    && url.pathname === '/dome-world/ash-aia3-composition.js'\n    && url.searchParams.has('v');\n  return cacheEvictionTransition || supersededAia3Navigation;\n}",
+  'named transition-abort classifier'
+);
+runtime = replaceExactly(
+  runtime,
   "  evidence_files: {},\n  console_errors: consoleErrors,",
   "  evidence_files: {},\n  http_errors: httpErrors,\n  request_failures: requestFailures,\n  console_errors: consoleErrors,",
   'diagnostic report surfaces'
@@ -32,6 +38,12 @@ runtime = replaceExactly(
   "  report.network = {\n    total_requests: requests.length,\n    non_read_requests: nonReadRequests.map(({ method, url, resource_type }) => ({ method, url, resource_type })),\n    disallowed_non_read_requests: [],\n    provider_or_transport_requests: [],\n    raw_artifact_in_request_body: false\n  };\n  assert(consoleErrors.length === 0, `Browser console errors observed: ${consoleErrors.join(' | ')}`);",
   "  report.network = {\n    total_requests: requests.length,\n    non_read_requests: nonReadRequests.map(({ method, url, resource_type }) => ({ method, url, resource_type })),\n    disallowed_non_read_requests: [],\n    provider_or_transport_requests: [],\n    http_errors:httpErrors,\n    request_failures:requestFailures,\n    raw_artifact_in_request_body: false\n  };\n  assert(httpErrors.length === 0, `HTTP resource errors observed: ${httpErrors.map(item => `${item.status} ${item.resource_type} ${item.url}`).join(' | ')}`);\n  assert(requestFailures.length === 0, `Request failures observed: ${requestFailures.map(item => `${item.failure} ${item.resource_type} ${item.url}`).join(' | ')}`);\n  assert(consoleErrors.length === 0, `Browser console errors observed: ${consoleErrors.map(item => `${item.text} @ ${item.location?.url || 'unknown'}:${item.location?.lineNumber ?? 0}`).join(' | ')}`);",
   'forensic terminal network assertions'
+);
+runtime = replaceExactly(
+  runtime,
+  "  assert(requestFailures.length === 0, `Request failures observed: ${requestFailures.map(item => `${item.failure} ${item.resource_type} ${item.url}`).join(' | ')}`);",
+  "  const expectedTransitionAborts = requestFailures.filter(isExpectedTransitionAbort);\n  const unexpectedRequestFailures = requestFailures.filter(item => !isExpectedTransitionAbort(item));\n  report.network.expected_transition_aborts = expectedTransitionAborts;\n  report.network.unexpected_request_failures = unexpectedRequestFailures;\n  assert(unexpectedRequestFailures.length === 0, `Unexpected request failures observed: ${unexpectedRequestFailures.map(item => `${item.failure} ${item.resource_type} ${item.url}`).join(' | ')}`);",
+  'named transition-abort terminal classification'
 );
 runtime = replaceExactly(
   runtime,
@@ -158,7 +170,11 @@ if (!runtime.includes(syntheticDraft)
   || !runtime.includes('return-ready\\s+')
   || !runtime.includes("page.on('response'")
   || !runtime.includes('http_errors:httpErrors')
-  || !runtime.includes('Request failures observed:')
+  || !runtime.includes('expected_transition_aborts')
+  || !runtime.includes('unexpected_request_failures')
+  || !runtime.includes("url.pathname === '/api/dome-world-shell'")
+  || !runtime.includes("url.pathname === '/dome-world/ash-aia3-composition.js'")
+  || !runtime.includes('Unexpected request failures observed:')
   || !runtime.includes('message.location()')) throw new Error('Synthetic guided lifecycle fixture compilation failed.');
 await fs.writeFile(runtimeProbePath, runtime);
 await import(`${pathToFileURL(runtimeProbePath).href}?fixture=${Date.now()}`);
