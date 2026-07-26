@@ -40,7 +40,7 @@ for (const token of [
   'td613.ash.cache-flush.aia3.epoch',
   'td613.ash.cache-preflight.epoch'
 ]) assert.ok(lifecycleCompiler.includes(token), `Lifecycle observer omitted ${token}`);
-assert.doesNotMatch(lifecycleCompiler, /searchParams\.get\('presentation'\) === 'legacy'/);
+assert.ok(lifecycleCompiler.includes('runtime.includes("searchParams.get(\'presentation\') === \'legacy\'")'), 'Lifecycle compiler must reject the retired visible-query predicate');
 assert.ok(lifecycleCompiler.includes('runtime.includes("current?.().route === \'IMPLEMENTATION\'")'));
 assert.match(shell, /const legacyPresentation=incoming\.searchParams\.get\('presentation'\)==='legacy'/);
 assert.match(shell, /if\(location\.pathname!==canonicalPath\|\|location\.search\)\{history\.replaceState\(null,''?,canonicalPath\+location\.hash\)\}/);
