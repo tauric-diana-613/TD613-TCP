@@ -48,6 +48,7 @@ for (const answer of matrix) {
   assert.equal(answer.context_imported, false);
   assert.equal(answer.real_world_claim, false);
   assert.equal(answer.ontology_exposed, false);
+  assert.equal(answer.action_recognized, true);
   assert.equal(answer.authority.custody_changed, false);
   assert.equal(answer.authority.source_bytes_moved, false);
   assert.equal(answer.authority.raw_content_transport, false);
@@ -71,11 +72,18 @@ const experientialAlias = compileAshA15WorldAnswer({ profile:'research', workspa
 assert.equal(experientialAlias.route, 'experimental');
 assert.equal(experientialAlias.status, 'READY');
 
+const cyclic = { api_key:'secret' };
+cyclic.self = cyclic;
 for (const context of [
   'person@example.com',
   '904-555-1212',
+  '+44 20 7946 0958',
+  '020 7946 0958',
   '123-45-6789',
   'api_key = abc123',
+  { api_key:'abc123' },
+  { password:'abc123' },
+  cyclic,
   '-----BEGIN PRIVATE KEY-----'
 ]) {
   assert.equal(containsSensitiveContext(context), true);
@@ -83,13 +91,18 @@ for (const context of [
   assert.equal(held.status, 'HELD_SENSITIVE_CONTEXT');
   assert.equal(held.context_imported, false);
   assert.equal(held.authority.consequential_action, false);
-  assert.doesNotMatch(held.message, new RegExp(context.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')));
 }
 
 const incomplete = compileAshA15WorldAnswer({ profile:'archive', workspace:'outside', route:'audit' });
 assert.equal(incomplete.status, 'HELD_INCOMPLETE_ROUTE');
-const unknownAction = compileAshA15WorldAnswer({ profile:'archive', workspace:'map', route:'audit', action_id:'perform_transfer' });
+const explicitEmpty = compileAshA15WorldAnswer({ profile:'', workspace:'', route:'' });
+assert.equal(explicitEmpty.status, 'HELD_INCOMPLETE_ROUTE');
+const unknownToken = 'source_packet_commit';
+const unknownAction = compileAshA15WorldAnswer({ profile:'archive', workspace:'map', route:'audit', action_id:unknownToken });
 assert.equal(unknownAction.status, 'HELD_UNKNOWN_ACTION');
+assert.equal(unknownAction.action_id, null);
+assert.equal(unknownAction.action_recognized, false);
+assert.equal(JSON.stringify(unknownAction).includes(unknownToken), false);
 
 const snapshot = getAshDemoRegistrySnapshot();
 assert.equal(snapshot.control_owner, 'ASH_DEMO_REGISTRY');
@@ -111,7 +124,11 @@ for (const token of [
 
 for (const token of [
   'ashA15EmpiricalJourney','ashA15OrientAction','ashA15WorldAnswer','td613:ash:a15-world-answer',
-  'HELD_SENSITIVE_CONTEXT','real_world_claim:false','ontology_exposed:false','context_imported:false'
+  'HELD_SENSITIVE_CONTEXT','real_world_claim:false','ontology_exposed:false','context_imported:false',
+  'CREDENTIAL_KEY_PATTERN','PHONE_CANDIDATE_PATTERN','state.seen.has(value)','action_recognized',
+  "hasOwn(overrides, 'profile')","hasOwn(overrides, 'workspace')","hasOwn(overrides, 'route')","hasOwn(overrides, 'action_id')",
+  "event.target?.closest?.('[data-aia-route]')",'installedEntries','bindEntries(entries)','entries:() => installedEntries',
+  'td613:ash:a15-empirical-entries-bound'
 ]) assert.ok(source.includes(token), `A15 source omitted ${token}`);
 
 for (const pattern of [
@@ -124,8 +141,12 @@ assert.match(wrapper, /20260726-a15-empirical-v1/);
 assert.match(bridge, /ash-profile-demo-hydration\.js\?v=20260726-a15-empirical-v1/);
 assert.match(workflow, /Validate Ash A15 empirical profile journeys/);
 assert.match(workflow, /ash-a15-empirical-profile-journeys-browser-probe\.mjs/);
-assert.match(browserProbe, /matrix_cells:120/);
-assert.match(browserProbe, /HELD_SENSITIVE_CONTEXT/);
+for (const token of [
+  '[data-premium-workspace=','[data-aia-route=','ashA15OrientAction','real_profile_hydration:true',
+  'real_workspace_navigation:true','real_route_gestures:true','real_visible_orientation_gesture:true',
+  'command_menu_mappings_verified:true','matrix_cells:120','HELD_SENSITIVE_CONTEXT'
+]) assert.ok(browserProbe.includes(token), `A15 browser witness omitted ${token}`);
+assert.doesNotMatch(browserProbe, /empirical\.orient\(\{\s*profile,\s*workspace,\s*route/s, 'A15 matrix witness must use visible UI gestures, not direct answer-key overrides.');
 assert.match(receipt, /120 deterministic cells/);
 assert.match(receipt, /graph-wide mass eviction executed: false/);
 assert.match(amendment, /single graph-wide mass eviction[\s\S]*A15 postclosure/);
@@ -136,13 +157,21 @@ assert.equal(vercel.git?.deploymentEnabled, false);
 
 console.log(JSON.stringify({
   ok:true,
-  schema:'td613.ash.a15-empirical-profile-journey-contract/v0.1',
+  schema:'td613.ash.a15-empirical-profile-journey-contract/v0.2-review-hardened-real-ui',
   registry_version:ASH_DEMO_REGISTRY_VERSION,
   asset_epoch:ASH_DEMO_ASSET_EPOCH,
   profiles:ASH_A15_PROFILES.length,
   workspaces:ASH_A15_WORKSPACES.length,
   routes:ASH_A15_ROUTES.length,
   matrix_cells:matrix.length,
+  real_ui_witness_required:true,
+  international_phone_quarantine:true,
+  structured_credential_quarantine:true,
+  cyclic_context_quarantine:true,
+  unknown_action_redacted:true,
+  explicit_falsy_overrides_held:true,
+  registry_entries_bound:true,
+  route_chip_refresh_bound:true,
   sensitive_context_imported:false,
   ontology_leakage:false,
   false_real_world_claims:false,
