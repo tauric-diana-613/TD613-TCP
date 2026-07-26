@@ -41,7 +41,12 @@ for (const token of [
   'reload_required: false',
   "url.searchParams.get('arrival') === 'cleared'",
   'td613.ash.cache-flush.aia3.epoch',
-  'td613.ash.cache-preflight.epoch'
+  'td613.ash.cache-preflight.epoch',
+  "page.on('response'",
+  'http_errors:httpErrors',
+  'request_failures:requestFailures',
+  'Request failures observed:',
+  'message.location()'
 ]) assert.ok(lifecycleCompiler.includes(token), `Lifecycle observer omitted ${token}`);
 assert.ok(lifecycleCompiler.includes('runtime.includes("searchParams.get(\'presentation\') === \'legacy\'")'), 'Lifecycle compiler must reject the retired visible-query predicate');
 assert.ok(lifecycleCompiler.includes('runtime.includes("current?.().route === \'IMPLEMENTATION\'")'));
@@ -87,4 +92,4 @@ assert.match(stretch11, /active serverless functions = 11/);
 assert.match(stretch11, /transport capability = NAMED_SAME_ORIGIN_BROWSER_RECIPIENT_ONLY/);
 assert.equal(fs.existsSync('.github/workflows/ash-keep-production-closure.yml'), false);
 assert.equal(fs.existsSync('.github/workflows/ash-keep-aia3-production-observation.yml'), false);
-console.log('ash-lifecycle-production-contract.test.mjs passed under canonicalized legacy bypass, guarded local custody, and lifecycle-rank authority freshness');
+console.log('ash-lifecycle-production-contract.test.mjs passed under canonicalized legacy bypass, guarded local custody, lifecycle-rank authority freshness, and URL-specific failure diagnostics');
