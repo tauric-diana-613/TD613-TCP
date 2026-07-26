@@ -84,13 +84,25 @@ async function activateProfile(page, profile) {
 async function openWorkspace(page, workspace) {
   const control = page.locator(`[data-premium-workspace="${workspace}"]:visible`).first();
   if (!(await control.count())) throw new Error(`A15 visible ${workspace} control unavailable.`);
+  const before = await page.evaluate(() => ({
+    workspace:document.documentElement.dataset.ashPremiumWorkspace || null,
+    receipt:window.__td613AshWholeInstrument?.current?.()?.navigation_receipt || null
+  }));
   await control.click();
   await page.waitForFunction(expected => {
     const section = document.getElementById(`workspace-${expected}`);
     return document.documentElement.dataset.ashPremiumWorkspace === expected
-      && section?.classList.contains('active') === true
-      && window.__td613AshWholeInstrument?.current?.()?.navigation_receipt?.destination_workspace === expected;
+      && section?.classList.contains('active') === true;
   }, workspace, { timeout:60_000 });
+  if (before.workspace !== workspace) {
+    await page.waitForFunction(expected => window.__td613AshWholeInstrument?.current?.()?.navigation_receipt?.destination_workspace === expected, workspace, { timeout:60_000 });
+  }
+  const after = await page.evaluate(() => ({
+    workspace:document.documentElement.dataset.ashPremiumWorkspace || null,
+    receipt:window.__td613AshWholeInstrument?.current?.()?.navigation_receipt || null
+  }));
+  if (after.workspace !== workspace) throw new Error(`A15 ${workspace} visible workspace did not settle: ${JSON.stringify({ before, after })}`);
+  return Object.freeze({ changed:before.workspace !== workspace, before, after });
 }
 
 async function selectRoute(page, route) {
@@ -281,6 +293,7 @@ try {
     rendered_answer_observations:receipts.length * 20,
     real_profile_hydration:true,
     real_workspace_navigation:true,
+    idempotent_active_workspace_gesture:true,
     real_route_gestures:true,
     route_selected_before_target_workspace:true,
     real_visible_orientation_gesture:true,
