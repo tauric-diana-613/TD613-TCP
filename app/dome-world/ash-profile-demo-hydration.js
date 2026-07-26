@@ -1,4 +1,4 @@
-const ASH_RELEASE_ASSET_EPOCH = '20260725-a14-release-v1';
+const ASH_RELEASE_ASSET_EPOCH = '20260726-a15-release-v1';
 
 // Provider provenance retained beneath the registry boundary:
 // ash-apeq-paia-profile-demos.js · ash-research-demo-hydration.js · ash-legal-profile-demo.js · ash-archive-profile-demo.js · ash-demo-pedagogy-rehydration.js
@@ -12,7 +12,7 @@ export {
   buildAshDemoFixture,
   hydrateAshDemo,
   installAshDemoRegistry
-} from './ash-demo-registry.js?v=20260725-a14-release-v1';
+} from './ash-demo-registry.js?v=20260726-a15-release-v1';
 
 import {
   ASH_DEMO_REGISTRY_VERSION,
@@ -20,7 +20,7 @@ import {
   buildAshDemoFixture,
   hydrateAshDemo,
   installAshDemoRegistry
-} from './ash-demo-registry.js?v=20260725-a14-release-v1';
+} from './ash-demo-registry.js?v=20260726-a15-release-v1';
 
 export const ASH_PROFILE_DEMO_VERSION = ASH_DEMO_REGISTRY_VERSION;
 export const ASH_PROFILE_DEMOS = getAshDemoRegistrySnapshot();
