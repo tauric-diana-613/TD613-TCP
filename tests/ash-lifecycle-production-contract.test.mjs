@@ -42,6 +42,14 @@ for (const token of [
   "visible_url === '/dome-world/ash-threshold.html'",
   "dataset.ashCachePreflight === 'complete'",
   "dataset.ashModuleGraph === 'ready'",
+  "dataset.ashAiaReady === 'true'",
+  '__td613AshLiveAIA?.version',
+  '__td613AshAia3Composition?.current?.()',
+  '__td613AshFlowcoreIngressPortalLoader',
+  '__td613AshFlowcoreIngressPortal?.current?.()',
+  'cleared_arrival_module_settlement',
+  'dependency_imports_settled:true',
+  'specialist_navigation_admitted:true',
   "specialist_presentation_route = 'legacy-request-canonicalized'",
   "specialist_visible_url = '/dome-world/ash-threshold.html'",
   'aia3_route_required: false',
@@ -61,6 +69,9 @@ for (const token of [
   'Unexpected request failures observed:',
   'message.location()'
 ]) assert.ok(lifecycleCompiler.includes(token), `Lifecycle observer omitted ${token}`);
+assert.match(lifecycleCompiler, /report\.threshold\.cleared_arrival_module_settlement[\s\S]{0,2600}await page\.goto\(keepUrl/, 'Cleared-arrival public owners must settle before specialist navigation.');
+assert.equal((lifecycleCompiler.match(/cleared-arrival module settlement before specialist navigation/g) || []).length, 1);
+assert.doesNotMatch(lifecycleCompiler, /url\.pathname === '\/engine\/ash-live-aia\.js'|url\.pathname === '\/engine\/ash-pedagogue-adapter\.js'/, 'Live AIA and pedagogue dependencies must complete rather than enter the expected-abort classifier.');
 assert.ok(lifecycleCompiler.includes('runtime.includes("searchParams.get(\'presentation\') === \'legacy\'")'), 'Lifecycle compiler must reject the retired visible-query predicate');
 assert.ok(lifecycleCompiler.includes('runtime.includes("current?.().route === \'IMPLEMENTATION\'")'));
 assert.match(shell, /const legacyPresentation=incoming\.searchParams\.get\('presentation'\)==='legacy'/);
@@ -117,4 +128,4 @@ assert.match(stretch11, /active serverless functions = 11/);
 assert.match(stretch11, /transport capability = NAMED_SAME_ORIGIN_BROWSER_RECIPIENT_ONLY/);
 assert.equal(fs.existsSync('.github/workflows/ash-keep-production-closure.yml'), false);
 assert.equal(fs.existsSync('.github/workflows/ash-keep-aia3-production-observation.yml'), false);
-console.log('ash-lifecycle-production-contract.test.mjs passed under canonicalized legacy bypass, stale-artifact quarantine, production-guard readiness parity, exact transition-abort classification, guarded local custody, lifecycle-rank authority freshness, and URL-specific failure diagnostics');
+console.log('ash-lifecycle-production-contract.test.mjs passed under canonicalized legacy bypass, cleared-arrival dependency settlement, stale-artifact quarantine, production-guard readiness parity, exact transition-abort classification, guarded local custody, lifecycle-rank authority freshness, and URL-specific failure diagnostics');
