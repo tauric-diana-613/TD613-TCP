@@ -8,17 +8,18 @@ const CONTROL_IDS = Object.freeze([
   'ashA8RelationFrom','ashA8RelationTo','ashA8RelationType','ashA8RelationEvidence','ashA8RelationUncertain','ashA8RelationNotes'
 ]);
 const HELD_ACTIONS = new Set(['addObject','addRelationship']);
+const SETTLEMENT_QUIET_MS = 150;
 const draft = new Map();
 let held = false;
 let mapReturnObserved = false;
 let refreshSerial = 0;
+let settlementTimer = null;
 
 function ensureStyles() {
   if (!doc?.head || byId('td613-ash-a8-map-return-handshake-css')) return;
   const style = doc.createElement('style');
   style.id = 'td613-ash-a8-map-return-handshake-css';
-  style.textContent = `html[data-ash-a8-map-return-handshake="MAP_RETURN_SETTLING"] #ashA8RelationWorkshop,
-html[data-ash-a8-map-return-handshake="MAP_RETURN_RESTORE_HELD"] #ashA8RelationWorkshop{visibility:hidden!important;pointer-events:none!important}`;
+  style.textContent = 'html[data-ash-a8-map-return-handshake^="MAP_RETURN_"] #ashA8RelationWorkshop{visibility:hidden!important;pointer-events:none!important}';
   doc.head.append(style);
 }
 
@@ -38,16 +39,33 @@ function captureAll() {
 }
 
 function restoreAll() {
-  let restored = false;
+  let restored = 0;
+  let matched = 0;
+  const missing = [];
   for (const [id, saved] of draft) {
     const control = byId(id);
-    if (!control?.isConnected) continue;
-    if (control.tagName === 'SELECT' && ![...control.options].some(option => option.value === saved.value)) continue;
+    if (!control?.isConnected) {
+      missing.push(id);
+      continue;
+    }
+    if (control.tagName === 'SELECT' && ![...control.options].some(option => option.value === saved.value)) {
+      missing.push(id);
+      continue;
+    }
     control.value = saved.value;
     if (saved.checked !== null && 'checked' in control) control.checked = saved.checked;
-    restored = true;
+    restored += 1;
+    const valueMatches = String(control.value ?? '') === saved.value;
+    const checkedMatches = saved.checked === null || !('checked' in control) || Boolean(control.checked) === saved.checked;
+    if (valueMatches && checkedMatches) matched += 1;
   }
-  return restored;
+  return Object.freeze({
+    expected:draft.size,
+    restored,
+    matched,
+    complete:draft.size > 0 && matched === draft.size,
+    missing:Object.freeze(missing)
+  });
 }
 
 function canonicalMapIsOpen() {
@@ -60,7 +78,13 @@ function mark(posture) {
   if (doc?.documentElement) doc.documentElement.dataset.ashA8MapReturnHandshake = posture;
 }
 
+function clearSettlementTimer() {
+  if (settlementTimer !== null) host?.clearTimeout?.(settlementTimer);
+  settlementTimer = null;
+}
+
 function clear() {
+  clearSettlementTimer();
   draft.clear();
   held = false;
   mapReturnObserved = false;
@@ -70,6 +94,7 @@ function clear() {
 
 function arm(event) {
   if (!HELD_ACTIONS.has(event.detail?.action_id)) return;
+  clearSettlementTimer();
   held = draft.size > 0;
   mapReturnObserved = false;
   refreshSerial += 1;
@@ -84,6 +109,7 @@ function captureDelegatedForm(event) {
 
 function requestConfirmedMapRefresh(event) {
   if (!held || event.detail?.workspace !== 'map') return;
+  clearSettlementTimer();
   mapReturnObserved = true;
   const serial = ++refreshSerial;
   mark('MAP_RETURN_SETTLING');
@@ -95,20 +121,24 @@ function requestConfirmedMapRefresh(event) {
   });
 }
 
-function settleAfterA8Recompile() {
-  if (!held || !mapReturnObserved || !canonicalMapIsOpen()) return false;
-  const restored = restoreAll();
-  if (!restored) {
+function finalizeSettlement(serial) {
+  if (!held || !mapReturnObserved || serial !== refreshSerial || !canonicalMapIsOpen()) return false;
+  const finalParity = restoreAll();
+  if (!finalParity.complete) {
     mark('MAP_RETURN_RESTORE_HELD');
     return false;
   }
   held = false;
   mapReturnObserved = false;
+  settlementTimer = null;
   mark('RESTORED_AFTER_CANONICAL_MAP_RETURN');
   host?.dispatchEvent?.(new CustomEvent('td613:ash:a8-map-return-restored', {
     detail:Object.freeze({
-      schema:'td613.ash.a8-map-return-receipt/v0.2',
-      restored_controls:draft.size,
+      schema:'td613.ash.a8-map-return-receipt/v0.3-full-parity',
+      restored_controls:finalParity.matched,
+      expected_controls:finalParity.expected,
+      full_control_parity:true,
+      quiet_window_ms:SETTLEMENT_QUIET_MS,
       source_posture:'PREHOLD_FORM_CAPTURE',
       workshop_visible_after_restore:true,
       authority_changed:false,
@@ -118,6 +148,20 @@ function settleAfterA8Recompile() {
       human_closure_required:true
     })
   }));
+  return true;
+}
+
+function settleAfterA8Recompile() {
+  if (!held || !mapReturnObserved || !canonicalMapIsOpen()) return false;
+  clearSettlementTimer();
+  const parity = restoreAll();
+  if (!parity.complete) {
+    mark('MAP_RETURN_RESTORE_HELD');
+    return false;
+  }
+  mark('MAP_RETURN_PARITY_OBSERVED');
+  const serial = ++refreshSerial;
+  settlementTimer = host?.setTimeout?.(() => finalizeSettlement(serial), SETTLEMENT_QUIET_MS) ?? null;
   return true;
 }
 
@@ -135,7 +179,7 @@ export function installAshA8MapReturnHandshake() {
     version:ASH_A8_MAP_RETURN_HANDSHAKE_VERSION,
     capture:captureAll,
     restore:restoreAll,
-    current:() => Object.freeze({ held, map_return_observed:mapReturnObserved, draft_controls:draft.size, posture:doc?.documentElement?.dataset?.ashA8MapReturnHandshake || null }),
+    current:() => Object.freeze({ held, map_return_observed:mapReturnObserved, draft_controls:draft.size, posture:doc?.documentElement?.dataset?.ashA8MapReturnHandshake || null, quiet_window_ms:SETTLEMENT_QUIET_MS }),
     authority:Object.freeze({ authority_changed:false, source_bytes_moved:false, custody_changed:false, release_posture_changed:false, human_closure_required:true })
   });
   host.__td613AshA8MapReturnHandshake = api;
