@@ -23,11 +23,13 @@ import {
 
 const archiveSource = fs.readFileSync('app/dome-world/ash-archive-profile-demo.js', 'utf8');
 const registrySource = fs.readFileSync('app/dome-world/ash-demo-registry.js', 'utf8');
+const empiricalSource = fs.readFileSync('app/dome-world/ash-a15-empirical-profile-journeys.js', 'utf8');
 const convergenceSource = fs.readFileSync('app/dome-world/ash-demo-entry-convergence.js', 'utf8');
 const currentObserver = fs.readFileSync('scripts/ash-a2-a5-browser-probe.mjs', 'utf8');
 const legacyObserver = fs.readFileSync('scripts/ash-a2-a5-browser-probe-a13.mjs', 'utf8');
 const a12Observer = fs.readFileSync('scripts/ash-a12-browser-probe.mjs', 'utf8');
 const a14Observer = fs.readFileSync('scripts/ash-a14-archive-browser-probe.mjs', 'utf8');
+const a15Observer = fs.readFileSync('scripts/ash-a15-empirical-profile-journeys-browser-probe.mjs', 'utf8');
 const readinessPreparer = fs.readFileSync('scripts/prepare-ash-profile-closure-fixture-a13.mjs', 'utf8');
 const shellSource = fs.readFileSync('api/dome-world-shell.js', 'utf8');
 const evictionSource = fs.readFileSync('app/dome-world/ash-cache-eviction-aia3.js', 'utf8');
@@ -36,8 +38,8 @@ const vercel = JSON.parse(fs.readFileSync('vercel.json', 'utf8'));
 
 assert.equal(ASH_ARCHIVE_DEMO_VERSION, 'td613.ash.archive-demo/v0.2-a14-harbor-memory');
 assert.equal(ASH_ARCHIVE_ACCESSION_SCHEMA, 'td613.ash.archive-accession/v0.2-harbor-memory');
-assert.equal(ASH_DEMO_REGISTRY_VERSION, 'td613.ash.demo-registry/v0.2-a14');
-assert.equal(ASH_DEMO_ASSET_EPOCH, '20260725-a14-release-v1');
+assert.equal(ASH_DEMO_REGISTRY_VERSION, 'td613.ash.demo-registry/v0.3-a15');
+assert.equal(ASH_DEMO_ASSET_EPOCH, '20260726-a15-empirical-v1');
 
 const fixture = buildArchiveDemoFixture();
 assert.equal(fixture.profile, 'archive');
@@ -119,6 +121,8 @@ assert.deepEqual(snapshot.profiles.find(entry => entry.profile === 'archive'), {
   owner:'ARCHIVE',
   claim_ceiling:null
 });
+assert.equal(snapshot.empirical_journey_version, 'td613.ash.a15-empirical-profile-journeys/v0.1');
+assert.equal(snapshot.empirical_matrix_cells, 120);
 assert.equal(snapshot.release_authority, false);
 assert.equal(snapshot.raw_content_transport, false);
 assert.equal(snapshot.automatic_ash_action, false);
@@ -134,21 +138,24 @@ for (const token of [
 
 assert.match(convergenceSource, /td613\.ash\.demo-entry-convergence\/v0\.6-archive-entry-fallback/);
 assert.match(convergenceSource, /const ENTRY_FALLBACK = Object\.freeze\(\{[^\n]*archive:'map'/);
-assert(currentObserver.includes("replaceAll('td613.ash.demo-registry/v0.1-a13', 'td613.ash.demo-registry/v0.2-a14')"));
+assert(currentObserver.includes("replaceAll('td613.ash.demo-registry/v0.1-a13', 'td613.ash.demo-registry/v0.3-a15')"));
 assert(legacyObserver.includes('td613.ash.demo-registry/v0.1-a13'));
-assert.doesNotMatch(a12Observer, /td613\.ash\.demo-registry\/v0\.1-a13/);
-assert.match(a12Observer, /td613\.ash\.demo-registry\/v0\.2-a14/);
+assert.doesNotMatch(a12Observer, /td613\.ash\.demo-registry\/v0\.[12]-(?:a13|a14)/);
+assert.match(a12Observer, /td613\.ash\.demo-registry\/v0\.3-a15/);
+assert.match(a14Observer, /registry\?\.asset_epoch === '20260726-a15-empirical-v1'/);
 assert.match(a14Observer, /const normalizedDocket = result\.docket_text\.toLowerCase\(\)\.replace/);
 assert.match(a14Observer, /const authoritySequence = \['claim ceiling','no ownership','authenticity','access grant','release','declassification','publication','transfer authority'\]/);
 assert.doesNotMatch(a14Observer, /'no access grant'/);
-assert.match(a14Observer, /v0\.5-normalized-authority-ceiling/);
+assert.match(a14Observer, /v0\.6-a15-registry-current/);
+assert.match(a15Observer, /matrix_cells:120/);
+assert.match(a15Observer, /HELD_SENSITIVE_CONTEXT/);
 assert.match(readinessPreparer, /v0\.3-read-only-exact-head/);
 assert.match(readinessPreparer, /legacy_fixture_rewriter_invoked:false/);
 assert.match(readinessPreparer, /tracked_sources_mutated:false/);
 assert.doesNotMatch(readinessPreparer, /import\(['"]\.\/prepare-ash-profile-closure-fixture\.mjs/);
 assert.doesNotMatch(readinessPreparer, /writeFile\(convergenceRunnerPath|writeFile\(currentObserverPath|writeFile\(a2ProbePath/);
-assert.doesNotMatch(archiveSource + registrySource, /fetch\(|sendBeacon|indexedDB\.deleteDatabase|localStorage\.clear|sessionStorage\.clear|caches\.|serviceWorker|Clear-Site-Data/);
-assert.doesNotMatch(archiveSource + registrySource, /access_granted:\s*true|release_authorized:\s*true|release_authority:\s*true|declassification_authorized:\s*true|publication_authorized:\s*true|transfer_executed:\s*true|transfer_authority:\s*true/);
+assert.doesNotMatch(archiveSource + registrySource + empiricalSource, /fetch\(|sendBeacon|indexedDB\.deleteDatabase|localStorage\.clear|sessionStorage\.clear|caches\.|serviceWorker|Clear-Site-Data/);
+assert.doesNotMatch(archiveSource + registrySource + empiricalSource, /access_granted:\s*true|release_authorized:\s*true|release_authority:\s*true|declassification_authorized:\s*true|publication_authorized:\s*true|transfer_executed:\s*true|transfer_authority:\s*true/);
 
 const massEpoch = 'td613.ash.cache-flush/2026-07-24-a11-postclosure-v1';
 assert(shellSource.includes(`ASH_MASS_EVICTION_EPOCH = '${massEpoch}'`));
@@ -159,11 +166,12 @@ assert.equal(vercel.git?.deploymentEnabled, false);
 
 console.log(JSON.stringify({
   ok:true,
-  schema:'td613.ash.a14-harbor-memory-archive-contract/v0.6-firefox-entry-convergence',
+  schema:'td613.ash.a14-harbor-memory-archive-contract/v0.7-a15-registry-current',
   registry_version:ASH_DEMO_REGISTRY_VERSION,
   ordinary_asset_epoch:ASH_DEMO_ASSET_EPOCH,
   archive_fixture:fixture.demo_id,
   promoted_profiles:6,
+  empirical_matrix_cells:120,
   required_mixed_media_nodes:requiredNodes.length,
   required_lineage_and_hold_relations:requiredRelations.length,
   case_map_verified:true,
