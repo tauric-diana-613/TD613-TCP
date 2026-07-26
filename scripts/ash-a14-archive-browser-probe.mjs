@@ -49,6 +49,31 @@ async function activateArchive(page) {
   });
 }
 
+async function settleMap(page) {
+  await page.evaluate(async () => {
+    const open = window.__td613AshPremiumUI?.open
+      || window.__td613AshUiUxRescue?.open
+      || window.__td613OpenAshWorkspace
+      || window.__td613AshKeep?.openWorkspace;
+    if (typeof open !== 'function') throw new Error('A14 governed Map workspace owner unavailable.');
+    await Promise.resolve(open('map'));
+  });
+  await page.waitForFunction(() => {
+    const panel = document.getElementById('workspace-map');
+    const style = panel ? getComputedStyle(panel) : null;
+    const rect = panel?.getBoundingClientRect();
+    return document.documentElement.dataset.ashDemoControlOwner === 'ASH_DEMO_REGISTRY'
+      && document.documentElement.dataset.ashPremiumWorkspace === 'map'
+      && panel?.classList.contains('active')
+      && style?.display !== 'none'
+      && style?.visibility !== 'hidden'
+      && Number(style?.opacity) > 0
+      && style?.pointerEvents !== 'none'
+      && rect?.width > 0
+      && rect?.height > 0;
+  }, null, { timeout:120_000 });
+}
+
 async function inspect(page, label) {
   await page.goto(`${baseUrl}/dome-world/ash-keep.html`, { waitUntil:'domcontentloaded', timeout:90_000 });
   await page.waitForFunction(() => Boolean(window.__td613AshKeep?.version)
@@ -104,10 +129,26 @@ async function inspect(page, label) {
       && (current.operator_notes || []).includes('demo_profile:archive')
       && document.documentElement.dataset.ashDemoProfile === 'archive'
       && document.documentElement.dataset.ashArchiveAccession === 'td613.ash.archive-demo/v0.2-a14-harbor-memory'
-      && document.documentElement.dataset.ashPremiumWorkspace === 'map'
       && document.getElementById('archiveAccessionDocket')?.dataset.profile === 'archive';
     return hydrated || /Demo registry held\./i.test(status);
   }, null, { timeout:120_000 });
+
+  const hydration = await page.evaluate(() => {
+    const current = window.__td613AshKeep?.current?.() || null;
+    return {
+      case_id:current.case_id || null,
+      profile:current.profile || null,
+      archive_marker:(current.operator_notes || []).includes('demo_profile:archive'),
+      archive_version:document.documentElement.dataset.ashArchiveAccession || null,
+      docket_present:document.getElementById('archiveAccessionDocket')?.dataset.profile === 'archive',
+      registry_status:document.getElementById('demoProfileStatus')?.textContent || '',
+      workspace:document.documentElement.dataset.ashPremiumWorkspace || null
+    };
+  });
+  if (/Demo registry held\./i.test(hydration.registry_status)) throw new Error(`A14 registry reported hydration hold: ${JSON.stringify(hydration)}`);
+  if (!hydration.case_id || hydration.profile !== 'archive' || !hydration.archive_marker || hydration.archive_version !== 'td613.ash.archive-demo/v0.2-a14-harbor-memory' || !hydration.docket_present) throw new Error(`A14 Harbor Memory hydration held: ${JSON.stringify(hydration)}`);
+
+  await settleMap(page);
 
   const result = await page.evaluate(() => {
     const current = window.__td613AshKeep?.current?.() || null;
@@ -122,6 +163,7 @@ async function inspect(page, label) {
       active_profile:current.profile || null,
       archive_marker:(current.operator_notes || []).includes('demo_profile:archive'),
       archive_version:document.documentElement.dataset.ashArchiveAccession || null,
+      workspace:document.documentElement.dataset.ashPremiumWorkspace || null,
       registry_status:document.getElementById('demoProfileStatus')?.textContent || '',
       docket_text:docket?.innerText || '',
       release_disabled:document.getElementById('approveRelease')?.disabled ?? null,
@@ -135,9 +177,8 @@ async function inspect(page, label) {
     };
   });
 
-  if (/Demo registry held\./i.test(result.registry_status)) throw new Error(`A14 registry reported hydration hold: ${result.registry_status}`);
   if (result.promoted_profiles.length !== 6 || result.archive_owner !== 'ARCHIVE') throw new Error(`A14 registry promotion held: ${JSON.stringify(result)}`);
-  if (!result.active_case || result.active_profile !== 'archive' || !result.archive_marker || result.archive_version !== 'td613.ash.archive-demo/v0.2-a14-harbor-memory') throw new Error(`A14 Harbor Memory hydration held: ${JSON.stringify(result)}`);
+  if (!result.active_case || result.active_profile !== 'archive' || !result.archive_marker || result.archive_version !== 'td613.ash.archive-demo/v0.2-a14-harbor-memory' || result.workspace !== 'map') throw new Error(`A14 Harbor Memory presentation held: ${JSON.stringify(result)}`);
   for (const phrase of ['Harbor Memory Archive','original audio','transcript','uncertain date','duplicate scan','donor restriction','missing release','embargo','public access copy','Nothing has been published','no ownership','no access grant']) {
     if (!result.docket_text.toLowerCase().includes(phrase.toLowerCase())) throw new Error(`A14 docket omitted ${phrase}: ${JSON.stringify(result)}`);
   }
@@ -162,7 +203,7 @@ try {
   await mobile.close();
 
   await fs.writeFile(path.join(artifactDir, `${browserName}-a14-archive-receipt.json`), JSON.stringify({
-    schema:'td613.ash.a14-harbor-memory-browser-witness/v0.2',
+    schema:'td613.ash.a14-harbor-memory-browser-witness/v0.3-separated-hydration-and-map',
     browser:browserName,
     receipts,
     registry_owner:'ASH_DEMO_REGISTRY',
