@@ -6,6 +6,7 @@ const releaseWorkflow = read('.github/workflows/vercel-operator-release.yml');
 const consolidatedWorkflow = read('.github/workflows/td613-ci.yml');
 const lifecycleCompiler = read('scripts/ash-lifecycle-production-probe.mjs');
 const lifecycleBase = read('scripts/ash-lifecycle-production-probe-base.mjs');
+const lifecycleLoader = read('app/dome-world/ash-lifecycle.js');
 const probe = `${lifecycleCompiler}\n${lifecycleBase}`;
 const compatibilityRunner = read('scripts/run-ash-keep-a1-production-probe.mjs');
 const convergenceRunner = read('scripts/run-ash-constitutional-convergence-probe.mjs');
@@ -45,6 +46,10 @@ assert.ok(lifecycleCompiler.includes('runtime.includes("current?.().route === \'
 assert.match(shell, /const legacyPresentation=incoming\.searchParams\.get\('presentation'\)==='legacy'/);
 assert.match(shell, /if\(location\.pathname!==canonicalPath\|\|location\.search\)\{history\.replaceState\(null,''?,canonicalPath\+location\.hash\)\}/);
 assert.match(shell, /legacy_bypass:true/);
+assert.match(lifecycleLoader, /await preflight/);
+assert.match(lifecycleLoader, /__td613AshAia3PreflightReceipt\?\.legacy_bypass === true/);
+assert.match(lifecycleLoader, /if \(legacyPresentation\)[\s\S]*dataset\.ashAiaLegacy = 'true'/);
+assert.doesNotMatch(lifecycleLoader.match(/if \(legacyPresentation\)[\s\S]*?\} else \{/s)?.[0] || '', /ash-keep-aia\.js|ash-aia3-composition\.js|ash-keep-aia-workspace-bridge\.js/);
 for (const token of ['window.__td613AshKeep?.version','demo_click_deferred_until_ready: true','timeout: 60000']) assert.ok(convergenceRunner.includes(token));
 assert.doesNotMatch(core, /location\.reload\(\)/);
 assert.equal(delivery, keep);
