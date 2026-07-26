@@ -24,7 +24,8 @@ assert.match(registry, /Legal Matter/);
 assert.match(registry, /no legal advice/i);
 assert.match(registry, /control_owner:'ASH_DEMO_REGISTRY'/);
 assert.match(registry, /empirical_matrix_cells:120/);
-assert.match(empirical, /Legal Matter:/);
+assert.match(empirical, /label:'Legal Matter'/);
+assert.match(empirical, /const message = `\$\{profileLaw\.label\}:/);
 assert.match(empirical, /No legal advice, guilt, liability, merits finding, privilege waiver, or outcome prediction/);
 
 console.log('ash-legal-control-state.test.mjs passed under A15 registry ownership');
