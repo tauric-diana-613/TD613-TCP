@@ -9,6 +9,8 @@ const lifecycleBase = read('scripts/ash-lifecycle-production-probe-base.mjs');
 const lifecycleLoader = read('app/dome-world/ash-lifecycle.js');
 const constitutionalConvergence = read('app/dome-world/ash-convergence.js');
 const localClosureServer = read('scripts/ash-keep-local-closure-server.mjs');
+const domeGuard = read('api/dome-world-engine-guard.py');
+const vercelConfig = read('vercel.json');
 const probe = `${lifecycleCompiler}\n${lifecycleBase}`;
 const compatibilityRunner = read('scripts/run-ash-keep-a1-production-probe.mjs');
 const convergenceRunner = read('scripts/run-ash-constitutional-convergence-probe.mjs');
@@ -78,11 +80,23 @@ for (const token of [
   'validate_l1_boundary_flags',
   'commitment.dispatch_post(envelope)',
   "'x-td613-ash-commitment': 'v0.8-guarded-local-closure'",
-  'MAX_POST_BODY_BYTES = 131_072'
+  'MAX_POST_BODY_BYTES = 131_072',
+  "const DOME_READINESS_ROUTE = '/api/dome-world/readiness'",
+  'dome-world-engine-guard.py',
+  'guard.guarded_readiness_receipt("readiness")',
+  'function sendGuardedDomeReadiness(res)',
+  "'x-td613-dome-world-local-closure': 'production-guard-parity'",
+  "'x-td613-custody-route': 'isolated'",
+  'url.pathname === DOME_READINESS_ROUTE'
 ]) assert.ok(localClosureServer.includes(token), `Local closure server omitted ${token}`);
+assert.match(domeGuard, /def guarded_readiness_receipt\(operation="readiness"\)/);
+assert.match(vercelConfig, /"source": "\/api\/dome-world\/readiness"[\s\S]{0,160}"destination": "\/api\/dome-world-engine-guard\?operation=readiness"/);
 const exactGuardedRoute = localClosureServer.indexOf("req.method === 'POST' && url.pathname === ASH_CUSTODY_REGISTER_ROUTE");
+const exactReadinessRoute = localClosureServer.indexOf('url.pathname === DOME_READINESS_ROUTE');
 const genericMethodHold = localClosureServer.indexOf("req.method !== 'GET' && req.method !== 'HEAD'");
+const staticFallback = localClosureServer.indexOf('const relative = decodeURIComponent(resolvePublicPath(url.pathname));');
 assert.ok(exactGuardedRoute >= 0 && exactGuardedRoute < genericMethodHold, 'Exact guarded custody POST must be admitted before the generic method hold');
+assert.ok(exactReadinessRoute >= 0 && exactReadinessRoute < genericMethodHold && exactReadinessRoute < staticFallback, 'Production-parity Dome readiness GET must be admitted before generic method and static-file fallback');
 assert.doesNotMatch(localClosureServer, /req\.method === 'POST'\s*&&\s*url\.pathname\.startsWith|\/api\/dome-world\/\(\.\*\)/);
 assert.doesNotMatch(core, /location\.reload\(\)/);
 assert.equal(delivery, keep);
@@ -97,4 +111,4 @@ assert.match(stretch11, /active serverless functions = 11/);
 assert.match(stretch11, /transport capability = NAMED_SAME_ORIGIN_BROWSER_RECIPIENT_ONLY/);
 assert.equal(fs.existsSync('.github/workflows/ash-keep-production-closure.yml'), false);
 assert.equal(fs.existsSync('.github/workflows/ash-keep-aia3-production-observation.yml'), false);
-console.log('ash-lifecycle-production-contract.test.mjs passed under canonicalized legacy bypass, stale-artifact quarantine, guarded local custody, lifecycle-rank authority freshness, and URL-specific failure diagnostics');
+console.log('ash-lifecycle-production-contract.test.mjs passed under canonicalized legacy bypass, stale-artifact quarantine, production-guard readiness parity, guarded local custody, lifecycle-rank authority freshness, and URL-specific failure diagnostics');
