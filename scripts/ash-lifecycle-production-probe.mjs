@@ -17,6 +17,24 @@ await fs.mkdir(artifactDir, { recursive: true });
 let runtime = await fs.readFile(baseProbeUrl, 'utf8');
 runtime = replaceExactly(
   runtime,
+  "const requests = [];\nconst consoleErrors = [];\npage.on('request', request => requests.push({\n  method: request.method(),\n  url: request.url(),\n  resource_type: request.resourceType(),\n  post_data: request.postData() || null\n}));\npage.on('console', message => { if (message.type() === 'error') consoleErrors.push(message.text()); });\npage.on('pageerror', error => consoleErrors.push(error.message));",
+  "const requests = [];\nconst httpErrors = [];\nconst requestFailures = [];\nconst consoleErrors = [];\npage.on('request', request => requests.push({\n  method: request.method(),\n  url: request.url(),\n  resource_type: request.resourceType(),\n  post_data: request.postData() || null\n}));\npage.on('response', response => {\n  if (response.status() >= 400) httpErrors.push({\n    status:response.status(),\n    url:response.url(),\n    resource_type:response.request().resourceType()\n  });\n});\npage.on('requestfailed', request => requestFailures.push({\n  method:request.method(),\n  url:request.url(),\n  resource_type:request.resourceType(),\n  failure:request.failure()?.errorText || 'UNKNOWN'\n}));\npage.on('console', message => {\n  if (message.type() === 'error') consoleErrors.push({\n    text:message.text(),\n    location:message.location() || null\n  });\n});\npage.on('pageerror', error => consoleErrors.push({ text:error.message, location:null }));",
+  'forensic network and console diagnostics'
+);
+runtime = replaceExactly(
+  runtime,
+  "  evidence_files: {},\n  console_errors: consoleErrors,",
+  "  evidence_files: {},\n  http_errors: httpErrors,\n  request_failures: requestFailures,\n  console_errors: consoleErrors,",
+  'diagnostic report surfaces'
+);
+runtime = replaceExactly(
+  runtime,
+  "  report.network = {\n    total_requests: requests.length,\n    non_read_requests: nonReadRequests.map(({ method, url, resource_type }) => ({ method, url, resource_type })),\n    disallowed_non_read_requests: [],\n    provider_or_transport_requests: [],\n    raw_artifact_in_request_body: false\n  };\n  assert(consoleErrors.length === 0, `Browser console errors observed: ${consoleErrors.join(' | ')}`);",
+  "  report.network = {\n    total_requests: requests.length,\n    non_read_requests: nonReadRequests.map(({ method, url, resource_type }) => ({ method, url, resource_type })),\n    disallowed_non_read_requests: [],\n    provider_or_transport_requests: [],\n    http_errors:httpErrors,\n    request_failures:requestFailures,\n    raw_artifact_in_request_body: false\n  };\n  assert(httpErrors.length === 0, `HTTP resource errors observed: ${httpErrors.map(item => `${item.status} ${item.resource_type} ${item.url}`).join(' | ')}`);\n  assert(requestFailures.length === 0, `Request failures observed: ${requestFailures.map(item => `${item.failure} ${item.resource_type} ${item.url}`).join(' | ')}`);\n  assert(consoleErrors.length === 0, `Browser console errors observed: ${consoleErrors.map(item => `${item.text} @ ${item.location?.url || 'unknown'}:${item.location?.lineNumber ?? 0}`).join(' | ')}`);",
+  'forensic terminal network assertions'
+);
+runtime = replaceExactly(
+  runtime,
   "const SYNTHETIC_ARTIFACT = 'TD613 ASH LIFECYCLE PROBE — synthetic local artifact; no recipient route.';",
   "const SYNTHETIC_ARTIFACT = 'TD613 ASH LIFECYCLE PROBE — synthetic local artifact; no recipient route.';\nconst SYNTHETIC_DRAFT = 'Synthetic public index request derived from the custody-bound case; no recipient route.';",
   'synthetic draft declaration'
@@ -137,6 +155,10 @@ if (!runtime.includes(syntheticDraft)
   || !runtime.includes('draft_body_sha256')
   || !runtime.includes('item.body === SYNTHETIC_DRAFT')
   || !runtime.includes('test_workspace_navigable: true')
-  || !runtime.includes('return-ready\\s+')) throw new Error('Synthetic guided lifecycle fixture compilation failed.');
+  || !runtime.includes('return-ready\\s+')
+  || !runtime.includes("page.on('response'")
+  || !runtime.includes('http_errors:httpErrors')
+  || !runtime.includes('Request failures observed:')
+  || !runtime.includes('message.location()')) throw new Error('Synthetic guided lifecycle fixture compilation failed.');
 await fs.writeFile(runtimeProbePath, runtime);
 await import(`${pathToFileURL(runtimeProbePath).href}?fixture=${Date.now()}`);
