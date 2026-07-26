@@ -25,6 +25,8 @@ const archiveSource = fs.readFileSync('app/dome-world/ash-archive-profile-demo.j
 const registrySource = fs.readFileSync('app/dome-world/ash-demo-registry.js', 'utf8');
 const currentObserver = fs.readFileSync('scripts/ash-a2-a5-browser-probe.mjs', 'utf8');
 const legacyObserver = fs.readFileSync('scripts/ash-a2-a5-browser-probe-a13.mjs', 'utf8');
+const a12Observer = fs.readFileSync('scripts/ash-a12-browser-probe.mjs', 'utf8');
+const a14Observer = fs.readFileSync('scripts/ash-a14-archive-browser-probe.mjs', 'utf8');
 const readinessPreparer = fs.readFileSync('scripts/prepare-ash-profile-closure-fixture-a13.mjs', 'utf8');
 const shellSource = fs.readFileSync('api/dome-world-shell.js', 'utf8');
 const evictionSource = fs.readFileSync('app/dome-world/ash-cache-eviction-aia3.js', 'utf8');
@@ -131,6 +133,12 @@ for (const token of [
 
 assert(currentObserver.includes("replaceAll('td613.ash.demo-registry/v0.1-a13', 'td613.ash.demo-registry/v0.2-a14')"));
 assert(legacyObserver.includes('td613.ash.demo-registry/v0.1-a13'));
+assert.doesNotMatch(a12Observer, /td613\.ash\.demo-registry\/v0\.1-a13/);
+assert.match(a12Observer, /td613\.ash\.demo-registry\/v0\.2-a14/);
+assert.match(a14Observer, /const normalizedDocket = result\.docket_text\.toLowerCase\(\)\.replace/);
+assert.match(a14Observer, /const authoritySequence = \['claim ceiling','no ownership','authenticity','access grant','release','declassification','publication','transfer authority'\]/);
+assert.doesNotMatch(a14Observer, /'no access grant'/);
+assert.match(a14Observer, /v0\.5-normalized-authority-ceiling/);
 assert.match(readinessPreparer, /v0\.3-read-only-exact-head/);
 assert.match(readinessPreparer, /legacy_fixture_rewriter_invoked:false/);
 assert.match(readinessPreparer, /tracked_sources_mutated:false/);
@@ -148,7 +156,7 @@ assert.equal(vercel.git?.deploymentEnabled, false);
 
 console.log(JSON.stringify({
   ok:true,
-  schema:'td613.ash.a14-harbor-memory-archive-contract/v0.4-read-only-readiness',
+  schema:'td613.ash.a14-harbor-memory-archive-contract/v0.5-normalized-observers',
   registry_version:ASH_DEMO_REGISTRY_VERSION,
   ordinary_asset_epoch:ASH_DEMO_ASSET_EPOCH,
   archive_fixture:fixture.demo_id,
@@ -159,6 +167,8 @@ console.log(JSON.stringify({
   room_rules_verified:true,
   route_memory_verified:true,
   readiness_validator_read_only:true,
+  a12_registry_observer_current:true,
+  a14_authority_ceiling_normalized:true,
   tracked_probe_sources_mutated:false,
   legacy_fixture_rewriter_invoked:false,
   mass_eviction_epoch:massEpoch,
