@@ -309,7 +309,7 @@ export async function hydrateArchiveDemo() {
 
 export function installArchiveDemo(documentRef = doc, windowRef = host) {
   if (!documentRef?.documentElement || !windowRef || windowRef.__td613AshArchiveDemo) return false;
-  windowRef.addEventListener('td613:ash:case-opened', () => setTimeout(rehydrateArchiveDemo, 0));
+  windowRef.addEventListener('td613:ash:case-opened', () => windowRef.setTimeout(rehydrateArchiveDemo, 0));
   windowRef.__td613AshArchiveDemo = Object.freeze({
     version:ASH_ARCHIVE_DEMO_VERSION,
     schema:ASH_ARCHIVE_ACCESSION_SCHEMA,
@@ -322,6 +322,7 @@ export function installArchiveDemo(documentRef = doc, windowRef = host) {
     authority:Object.freeze({ ownership:false, authenticity:false, access_granted:false, release_authority:false, declassification_authority:false, publication_authority:false, transfer_authority:false, raw_content_transport:false, human_review_required:true })
   });
   documentRef.documentElement.dataset.ashArchiveDemo = ASH_ARCHIVE_DEMO_VERSION;
+  windowRef.setTimeout(rehydrateArchiveDemo, 0);
   return true;
 }
 
