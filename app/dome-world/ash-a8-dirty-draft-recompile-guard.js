@@ -5,6 +5,7 @@ const doc = globalThis.document;
 const FORM_SELECTOR = '#ashA8ObjectForm,#ashA8RelationForm';
 const COMMIT_SELECTOR = '#ashA8CommitObject,#ashA8CommitRelation';
 let dirtyDraftActive = false;
+let recoveredInFlightRecompiles = 0;
 
 function canonicalMapWorkshopIsActive() {
   const workspace = doc?.getElementById?.('workspace-map');
@@ -18,21 +19,23 @@ function custodyHoldIsActive() {
   return host?.__td613AshA8MapReturnHandshake?.current?.().held === true;
 }
 
-function publish(posture, source = null) {
+function publish(posture, source = null, detail = {}) {
   if (doc?.documentElement) doc.documentElement.dataset.ashA8DirtyDraftGuard = posture;
   host?.dispatchEvent?.(new CustomEvent('td613:ash:a8-dirty-draft-guard', {
     detail:Object.freeze({
-      schema:'td613.ash.a8-dirty-draft-guard-receipt/v0.1',
+      schema:'td613.ash.a8-dirty-draft-guard-receipt/v0.2-inflight-recovery',
       posture,
       source,
       dirty_draft_active:dirtyDraftActive,
       map_workshop_active:canonicalMapWorkshopIsActive(),
       custody_hold_active:custodyHoldIsActive(),
+      recovered_in_flight_recompiles:recoveredInFlightRecompiles,
       authority_changed:false,
       source_bytes_moved:false,
       custody_changed:false,
       release_posture_changed:false,
-      human_closure_required:true
+      human_closure_required:true,
+      ...detail
     })
   }));
 }
@@ -52,8 +55,27 @@ function admitCommit(event) {
   return true;
 }
 
+function recoverAfterInFlightRecompile(event) {
+  if (!dirtyDraftActive || custodyHoldIsActive() || !canonicalMapWorkshopIsActive()) return false;
+  const parity = host?.__td613AshA8MapReturnHandshake?.restore?.() || null;
+  const recovered = parity?.complete === true;
+  if (recovered) recoveredInFlightRecompiles += 1;
+  publish(
+    recovered ? 'DIRTY_DRAFT_RECOVERED_AFTER_IN_FLIGHT_RECOMPILE' : 'DIRTY_DRAFT_RECOVERY_HELD',
+    event?.detail?.source || 'A8_RECOMPILED',
+    {
+      recovery_phase:'POST_CORE_GENERIC_DRAFT_RESTORE',
+      expected_controls:parity?.expected ?? 0,
+      matched_controls:parity?.matched ?? 0,
+      full_control_parity:recovered
+    }
+  );
+  return recovered;
+}
+
 function clear(source) {
   dirtyDraftActive = false;
+  recoveredInFlightRecompiles = 0;
   publish('CLEARED', source);
 }
 
@@ -68,16 +90,19 @@ export function installAshA8DirtyDraftRecompileGuard() {
   doc.addEventListener('input', beginDirtyDraft, true);
   doc.addEventListener('change', beginDirtyDraft, true);
   doc.addEventListener('click', admitCommit, true);
+  host.addEventListener('td613:ash:a8-recompiled', recoverAfterInFlightRecompile);
   host.addEventListener('td613:ash:case-created', () => clear('CASE_CREATED'));
   host.addEventListener('td613:ash:case-closed', () => clear('CASE_CLOSED'));
   host.__td613AshA8RecompileGuard = Object.freeze({
     version:ASH_A8_DIRTY_DRAFT_RECOMPILE_GUARD_VERSION,
     shouldDefer,
+    recover:recoverAfterInFlightRecompile,
     clear,
     current:() => Object.freeze({
       dirty_draft_active:dirtyDraftActive,
       map_workshop_active:canonicalMapWorkshopIsActive(),
       custody_hold_active:custodyHoldIsActive(),
+      recovered_in_flight_recompiles:recoveredInFlightRecompiles,
       posture:doc?.documentElement?.dataset?.ashA8DirtyDraftGuard || null,
       authority_changed:false,
       source_bytes_moved:false,
