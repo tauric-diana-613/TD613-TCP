@@ -1,4 +1,5 @@
 import assert from 'node:assert/strict';
+import crypto from 'node:crypto';
 import fs from 'node:fs';
 
 const read = path => fs.readFileSync(new URL(`../${path}`, import.meta.url), 'utf8');
@@ -14,6 +15,8 @@ const recovery = read('app/safe-harbor/ash-keep-recovery.html');
 const shell = read('api/dome-world-shell.js');
 const journeyAdapter = read('scripts/ash-keep-aia3-task-journey-v3.mjs');
 const journeySource = read('scripts/ash-keep-aia3-task-journey-v3.source.mjs');
+const a2a6BrowserAdapter = read('scripts/ash-a2-a5-browser-probe.mjs');
+const historicalA2A6Browser = read('scripts/ash-a2-a5-browser-probe-a13.mjs');
 const consolidatedWorkflow = read('.github/workflows/td613-ci.yml');
 const receipt = read('app/dome-world/docs/ASH_KEEP_A2_A5_IMPLEMENTATION_RECEIPT_V0_1.md');
 const programIndex = read('app/dome-world/docs/FLOWCORE_PEDAGOGUE_PROGRAM_INDEX_V0_1.md');
@@ -68,6 +71,16 @@ assert.match(consolidatedWorkflow, /node tests\/ash-a2-a5-whole-instrument\.test
 assert.match(consolidatedWorkflow, /scripts\/ash-a2-a5-browser-probe\.mjs/);
 assert.match(consolidatedWorkflow, /Run bounded closure and constitutional convergence once/);
 assert.doesNotMatch(consolidatedWorkflow, /workflow_run:/);
+assert.match(a2a6BrowserAdapter, /post-hydration exact-case convergence rebind/);
+assert.match(a2a6BrowserAdapter, /entry_exact_case_rebind/);
+assert.match(a2a6BrowserAdapter, /dataset\.ashPremiumReady === 'true'/);
+assert.match(a2a6BrowserAdapter, /convergence\.begin\(\{ detail:\{ case_id:caseId, profile:'political_campaign' \} \}\)/);
+assert.match(a2a6BrowserAdapter, /A14 A2-A6 exact-case convergence owner unavailable/);
+const historicalA2A6Blob = crypto.createHash('sha1')
+  .update(`blob ${Buffer.byteLength(historicalA2A6Browser)}\0${historicalA2A6Browser}`)
+  .digest('hex');
+assert.equal(historicalA2A6Blob, '7b7fa74c20b7db26c86598c7ed3284715942b937', 'Historical A13 A2-A6 browser observer changed bytes');
+assert.doesNotMatch(historicalA2A6Browser, /entry_exact_case_rebind|A14 A2-A6 exact-case/);
 assert.match(receipt, /new serverless function = false/);
 assert.match(receipt, /active serverless functions = 11/);
 assert.match(receipt, /reserved function capacity = 1/);
