@@ -227,6 +227,11 @@ jobs:
             cat artifacts/ash-risk-preflight/failures.tsv
             exit 1
           fi
+      - name: Run changed-risk lifecycle closure preflight
+        env:
+          TD613_BASE_URL: http://127.0.0.1:6130
+          TD613_ARTIFACT_DIR: artifacts/ash-closure-preflight
+        run: timeout --foreground --signal=INT --kill-after=15s 420s node scripts/run-ash-keep-a1-production-probe.mjs
       - name: Run the complete Ash witness through each installed engine
         run: |
           set -euo pipefail
