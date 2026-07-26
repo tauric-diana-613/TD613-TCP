@@ -69,7 +69,7 @@ function restoreCurrentShadow(posture, source, detail = {}) {
   if (!dirtyDraftActive || custodyHoldIsActive() || !workshopIsConnected()) return false;
   const parity = host?.__td613AshA8MapReturnHandshake?.restore?.() || null;
   const recovered = parity?.complete === true;
-  publish(posture, source, {
+  publish(recovered ? posture : 'DIRTY_DRAFT_RECOVERY_HELD', source, {
     expected_controls:parity?.expected ?? 0,
     matched_controls:parity?.matched ?? 0,
     full_control_parity:recovered,
