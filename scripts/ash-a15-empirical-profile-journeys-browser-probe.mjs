@@ -105,6 +105,18 @@ async function selectRoute(page, route) {
   }, { route, controlValue }, { timeout:60_000 });
 }
 
+async function waitForVisibleCombination(page, workspace, route) {
+  const controlValue = ROUTE_CONTROLS[route];
+  await page.waitForFunction(({ workspace, route, controlValue }) => {
+    const currentRoute = String(window.__td613AshLiveAIA?.current?.()?.route || '').toUpperCase();
+    return document.documentElement.dataset.ashPremiumWorkspace === workspace
+      && document.getElementById(`workspace-${workspace}`)?.classList.contains('active') === true
+      && (currentRoute === controlValue || currentRoute === route.toUpperCase())
+      && document.querySelector('[data-a15-workspace]')?.textContent?.trim() === workspace
+      && document.querySelector('[data-a15-route]')?.textContent?.trim() === route;
+  }, { workspace, route, controlValue }, { timeout:60_000 });
+}
+
 async function orientVisibleAction(page, profile, workspace, route) {
   return page.evaluate(({ profile, workspace, route }) => new Promise((resolve, reject) => {
     const button = document.getElementById('ashA15OrientAction');
@@ -163,14 +175,15 @@ async function inspectProfile(options, profile, mode) {
 
     const answers = [];
     for (const workspace of WORKSPACES) {
-      await openWorkspace(page, workspace);
       for (const route of ROUTES) {
         await selectRoute(page, route);
+        await openWorkspace(page, workspace);
+        await waitForVisibleCombination(page, workspace, route);
         const observed = await orientVisibleAction(page, profile, workspace, route);
         const answer = observed.answer;
         if (answer.status !== 'READY') throw new Error(`A15 ${profile}/${workspace}/${route} held: ${JSON.stringify(answer)}`);
-        if (answer.profile !== profile || answer.workspace !== workspace || answer.route !== route) throw new Error(`A15 visible journey normalized incorrectly: ${JSON.stringify(observed)}`);
-        if (observed.visible_text !== answer.message || observed.workspace_chip !== workspace || observed.route_chip !== route || observed.profile_chip !== profile.replaceAll('_', ' ')) throw new Error(`A15 visible chips or answer drifted: ${JSON.stringify(observed)}`);
+        if (answer.profile !== profile || answer.workspace !== workspace || answer.route !== route) throw new Error(`A15 visible journey normalized incorrectly for expected ${profile}/${workspace}/${route}: ${JSON.stringify(observed)}`);
+        if (observed.visible_text !== answer.message || observed.workspace_chip !== workspace || observed.route_chip !== route || observed.profile_chip !== profile.replaceAll('_', ' ')) throw new Error(`A15 visible chips or answer drifted for expected ${profile}/${workspace}/${route}: ${JSON.stringify(observed)}`);
         if (answer.context_imported || answer.real_world_claim || answer.ontology_exposed) throw new Error('A15 answer widened its evidence surface.');
         if (Object.entries(answer.authority).some(([key, value]) => key.startsWith('human_') ? value !== true : value !== false)) throw new Error('A15 answer widened authority.');
         if (forbiddenPublicLeak(answer)) throw new Error(`A15 public answer leaked internal ontology: ${JSON.stringify(answer)}`);
@@ -269,6 +282,7 @@ try {
     real_profile_hydration:true,
     real_workspace_navigation:true,
     real_route_gestures:true,
+    route_selected_before_target_workspace:true,
     real_visible_orientation_gesture:true,
     command_menu_mappings_verified:true,
     cross_profile_differentiation:true,
