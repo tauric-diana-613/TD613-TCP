@@ -48,6 +48,7 @@ for (const token of [
   '__td613AshFlowcoreIngressPortalLoader',
   '__td613AshFlowcoreIngressPortal?.current?.()',
   'cleared_arrival_module_settlement',
+  'neutral_ingress_preserved:true',
   'dependency_imports_settled:true',
   'specialist_navigation_admitted:true',
   "specialist_presentation_route = 'legacy-request-canonicalized'",
@@ -69,8 +70,15 @@ for (const token of [
   'Unexpected request failures observed:',
   'message.location()'
 ]) assert.ok(lifecycleCompiler.includes(token), `Lifecycle observer omitted ${token}`);
-assert.match(lifecycleCompiler, /report\.threshold\.cleared_arrival_module_settlement[\s\S]{0,2600}await page\.goto\(keepUrl/, 'Cleared-arrival public owners must settle before specialist navigation.');
-assert.equal((lifecycleCompiler.match(/cleared-arrival module settlement before specialist navigation/g) || []).length, 1);
+assert.match(lifecycleCompiler, /report\.threshold\.cleared_arrival_module_settlement[\s\S]{0,2800}await page\.goto\(keepUrl/, 'Cleared-arrival neutral ingress dependencies must settle before specialist navigation.');
+assert.equal((lifecycleCompiler.match(/cleared-arrival neutral-ingress module settlement before specialist navigation/g) || []).length, 1);
+for (const token of [
+  'aia3?.session_open === false',
+  'aia3?.case_id == null',
+  'aia3?.route_count === 0',
+  'aia3?.task_count === 0'
+]) assert.ok(lifecycleCompiler.includes(token), `Neutral-ingress lifecycle observer omitted ${token}`);
+assert.doesNotMatch(lifecycleCompiler, /aia3\?\.membrane_ready === true|aia3\?\.route_count === 4|aia3\?\.task_count === 4/, 'Pre-case lifecycle closure must not require post-case AIA3 readiness.');
 assert.doesNotMatch(lifecycleCompiler, /url\.pathname === '\/engine\/ash-live-aia\.js'|url\.pathname === '\/engine\/ash-pedagogue-adapter\.js'/, 'Live AIA and pedagogue dependencies must complete rather than enter the expected-abort classifier.');
 assert.ok(lifecycleCompiler.includes('runtime.includes("searchParams.get(\'presentation\') === \'legacy\'")'), 'Lifecycle compiler must reject the retired visible-query predicate');
 assert.ok(lifecycleCompiler.includes('runtime.includes("current?.().route === \'IMPLEMENTATION\'")'));
@@ -128,4 +136,4 @@ assert.match(stretch11, /active serverless functions = 11/);
 assert.match(stretch11, /transport capability = NAMED_SAME_ORIGIN_BROWSER_RECIPIENT_ONLY/);
 assert.equal(fs.existsSync('.github/workflows/ash-keep-production-closure.yml'), false);
 assert.equal(fs.existsSync('.github/workflows/ash-keep-aia3-production-observation.yml'), false);
-console.log('ash-lifecycle-production-contract.test.mjs passed under canonicalized legacy bypass, cleared-arrival dependency settlement, stale-artifact quarantine, production-guard readiness parity, exact transition-abort classification, guarded local custody, lifecycle-rank authority freshness, and URL-specific failure diagnostics');
+console.log('ash-lifecycle-production-contract.test.mjs passed under canonicalized legacy bypass, neutral-ingress dependency settlement, stale-artifact quarantine, production-guard readiness parity, exact transition-abort classification, guarded local custody, lifecycle-rank authority freshness, and URL-specific failure diagnostics');
