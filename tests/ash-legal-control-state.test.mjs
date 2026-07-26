@@ -15,7 +15,7 @@ assert.match(control, /no real client data or legal advice/i);
 assert.doesNotMatch(control + legal, /legal_advice_provided:\s*true|transport_authorized:\s*true|child_study_authorized:\s*true/);
 
 assert.doesNotMatch(bridge, /^import .*ash-legal-demo-control-state\.js/m, 'Legacy Legal control listener must not load as a runtime owner.');
-assert.match(bridge, /ash-profile-demo-hydration\.js\?v=20260724-a13-release-v1/);
+assert.match(bridge, /ash-profile-demo-hydration\.js\?v=20260725-a14-release-v1/);
 assert.match(registry, /legal:Object\.freeze\(\{ profile:'legal'/);
 assert.match(registry, /owner:'LEGAL'/);
 assert.match(registry, /hydrateLegalMatterDemo/);
@@ -23,4 +23,4 @@ assert.match(registry, /Legal Matter/);
 assert.match(registry, /no legal advice/i);
 assert.match(registry, /control_owner:'ASH_DEMO_REGISTRY'/);
 
-console.log('ash-legal-control-state.test.mjs passed under A13 registry ownership');
+console.log('ash-legal-control-state.test.mjs passed under A14 registry ownership');
