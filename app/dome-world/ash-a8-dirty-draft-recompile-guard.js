@@ -4,6 +4,7 @@ const host = globalThis.window;
 const doc = globalThis.document;
 const FORM_SELECTOR = '#ashA8ObjectForm,#ashA8RelationForm';
 const COMMIT_SELECTOR = '#ashA8CommitObject,#ashA8CommitRelation';
+const admittedDirtyEvents = new WeakSet();
 let dirtyDraftActive = false;
 let recoveredInFlightRecompiles = 0;
 let recoveredPremiumRefreshes = 0;
@@ -51,6 +52,8 @@ function publish(posture, source = null, detail = {}) {
 
 function beginDirtyDraft(event) {
   if (!event.target?.closest?.(FORM_SELECTOR) || custodyHoldIsActive()) return false;
+  if (admittedDirtyEvents.has(event)) return true;
+  admittedDirtyEvents.add(event);
   host?.__td613AshA8MapReturnHandshake?.capture?.();
   dirtyDraftActive = true;
   publish('DIRTY_DRAFT_ACTIVE', event.type, {
@@ -139,6 +142,8 @@ export function installAshA8DirtyDraftRecompileGuard() {
   host.addEventListener('focusin', beginDirtyDraft, true);
   host.addEventListener('input', beginDirtyDraft, true);
   host.addEventListener('change', beginDirtyDraft, true);
+  doc.addEventListener('input', beginDirtyDraft, true);
+  doc.addEventListener('change', beginDirtyDraft, true);
   doc.addEventListener('click', admitCommit, true);
   host.addEventListener('td613:ash:a8-recompiled', recoverAfterInFlightRecompile);
   host.addEventListener('td613:ash:case-created', () => clear('CASE_CREATED'));
