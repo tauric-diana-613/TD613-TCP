@@ -106,11 +106,38 @@ assert.match(wrapper, /20260726-a15-empirical-v1/);
 assert.match(bridge, /ash-profile-demo-hydration\.js\?v=20260726-a15-empirical-v1/);
 assert.match(workflow, /Validate Ash A15 empirical profile journeys/);
 assert.match(workflow, /ash-a15-empirical-profile-journeys-browser-probe\.mjs/);
-for (const token of ['[data-premium-workspace=','[data-aia-route=','ashA15OrientAction','real_profile_hydration:true','real_workspace_navigation:true','navigation_receipt_captured_at_click:true','idempotent_active_workspace_gesture:true','real_route_gestures:true','route_selected_before_target_workspace:true','real_visible_orientation_gesture:true','command_menu_mappings_verified:true','matrix_cells:120','HELD_SENSITIVE_CONTEXT','__td613A15NavigationWitness','td613:ash:navigation-receipt','workspace_transitions','captured_navigation_receipts','state_derived_transition_receipts:true','minimum_workspace_transitions_per_profile:4',"route_landing_workspace:'work'"]) assert.ok(browserProbe.includes(token), `A15 browser witness omitted ${token}`);
-assert.match(browserProbe, /await selectRoute\(page, route\);[\s\S]{0,260}await openWorkspace\(page, workspace\);[\s\S]{0,260}await waitForVisibleCombination\(page, workspace, route\);/);
+for (const token of [
+  '#premiumPrimaryDock [data-premium-workspace=',
+  '[data-aia-route=',
+  'ashA15OrientAction',
+  'real_profile_hydration:true',
+  'real_workspace_navigation:true',
+  'canonical_primary_dock_navigation:true',
+  'exact_failure_witness_context:true',
+  'navigation_receipt_captured_at_click:true',
+  'idempotent_active_workspace_gesture:true',
+  'real_route_gestures:true',
+  'route_selected_before_target_workspace:true',
+  'real_visible_orientation_gesture:true',
+  'command_menu_mappings_verified:true',
+  'matrix_cells:120',
+  'HELD_SENSITIVE_CONTEXT',
+  '__td613A15NavigationWitness',
+  'td613:ash:navigation-receipt',
+  'workspaceDiagnostic',
+  'workspace_transitions',
+  'captured_navigation_receipts',
+  'state_derived_transition_receipts:true',
+  'minimum_workspace_transitions_per_profile:4',
+  "route_landing_workspace:'work'",
+  '-held.png'
+]) assert.ok(browserProbe.includes(token), `A15 browser witness omitted ${token}`);
+assert.match(browserProbe, /await selectRoute\(page, route\);[\s\S]{0,320}await openWorkspace\(page, workspace, witness\);[\s\S]{0,320}await waitForVisibleCombination\(page, workspace, route\);/);
+assert.match(browserProbe, /const selector = `#premiumPrimaryDock \[data-premium-workspace=/);
 assert.match(browserProbe, /if \(navigation\.changed\) workspaceTransitions \+= 1/);
 assert.match(browserProbe, /captured_navigation_receipts !== result\.workspace_transitions/);
 assert.match(browserProbe, /window\.addEventListener\('td613:ash:navigation-receipt', handler\)/);
+assert.doesNotMatch(browserProbe, /const control = page\.locator\(`\[data-premium-workspace=/, 'A15 witness must not select an ambiguous non-dock workspace control.');
 assert.doesNotMatch(browserProbe, /empirical\.orient\(\{\s*profile,\s*workspace,\s*route/s, 'A15 matrix witness must use visible UI gestures, not direct answer-key overrides.');
 assert.match(receipt, /120 deterministic cells/);
 assert.match(receipt, /graph-wide mass eviction executed: false/);
@@ -122,7 +149,7 @@ assert.equal(vercel.git?.deploymentEnabled, false);
 
 console.log(JSON.stringify({
   ok:true,
-  schema:'td613.ash.a15-empirical-profile-journey-contract/v0.7-state-derived-transitions',
+  schema:'td613.ash.a15-empirical-profile-journey-contract/v0.8-canonical-primary-dock',
   registry_version:ASH_DEMO_REGISTRY_VERSION,
   asset_epoch:ASH_DEMO_ASSET_EPOCH,
   profiles:ASH_A15_PROFILES.length,
@@ -130,6 +157,8 @@ console.log(JSON.stringify({
   routes:ASH_A15_ROUTES.length,
   matrix_cells:matrix.length,
   real_ui_witness_required:true,
+  canonical_primary_dock_navigation:true,
+  exact_failure_witness_context:true,
   state_derived_transition_receipts:true,
   minimum_workspace_transitions_per_profile:4,
   route_landing_workspace:'work',
