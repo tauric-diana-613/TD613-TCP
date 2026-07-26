@@ -171,10 +171,12 @@ export function installAshStage({ stage, sync, navigationSelectors = '' }) {
     );
     const guardReason = stageGuardReason(stage, source);
     if (activeStageInteraction || guardReason) {
-      publishRecompileDeferred(stage, source, activeStageInteraction ? 'ACTIVE_STAGE_INTERACTION' : guardReason, {
+      const preRefreshDetail = {
+        reason:activeStageInteraction ? 'ACTIVE_STAGE_INTERACTION' : guardReason,
         phase:'PRE_PREMIUM_REFRESH',
         recovered_after_refresh:false
-      });
+      };
+      publishRecompileDeferred(stage, source, preRefreshDetail.reason, preRefreshDetail);
       return false;
     }
     const token = ++serial;
