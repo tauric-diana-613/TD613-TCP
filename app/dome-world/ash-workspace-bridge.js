@@ -17,8 +17,9 @@ import './ash-keep-mobile-composition.js?v=20260724-a12-release-v1';
 import './ash-mobile-constitutional-closure.js?v=20260724-a12-release-v1';
 import './ash-operation-coordinator.js?v=20260724-a12-release-v1';
 import './ash-case-feedback.js?v=20260724-a12-release-v1';
-// A14 retains one registry owner and promotes Archive through its bounded accession provider.
-import './ash-profile-demo-hydration.js?v=20260725-a14-release-v1';
+// A15 retains the six provider fixtures while one convergence owner advances the live registry identity and 120-journey stress receipt.
+import './ash-profile-demo-hydration.js?v=20260726-a15-release-v1';
+import './ash-a15-registry-convergence.js?v=20260726-a15-release-v1';
 import './ash-premium-ui.js?v=20260724-a12-release-v1';
 import './ash-premium-readiness-bridge.js?v=20260724-a12-release-v1';
 import './ash-guided-operator-ui.js?v=20260724-a12-release-v1';
@@ -117,21 +118,10 @@ function captureSemanticNavigation(event) {
   event.preventDefault();
   event.stopImmediatePropagation();
   ashBridgeDocument.getElementById('premiumCommandSheet')?.close?.();
-  navigate(destination.workspace, {
-    source_control:control.id
-      || control.dataset.premiumWorkspace
-      || control.dataset.routeWorkspace
-      || control.dataset.commandWorkspace
-      || control.dataset.commandAction
-      || 'canonical-navigation-control',
-    anchor:destination.anchor,
-    open:true,
-    return_path:ashBridgeDocument.documentElement.dataset.ashPremiumWorkspace || 'home'
-  });
+  navigate(destination.workspace, { anchor:destination.anchor, source:'semantic-navigation-bridge' });
 }
 
-ashBridgeHost?.addEventListener?.('click', captureSemanticNavigation, true);
-ashBridgeHost?.addEventListener?.('td613:ash:whole-instrument-refreshed', reconcileCanonicalConsequenceFieldOwner);
-for (const type of ['flowcore-portal-synced','case-opened','case-created','case-closed']) {
-  ashBridgeHost?.addEventListener?.(`td613:ash:${type}`, () => queueMicrotask(reconcileCanonicalConsequenceFieldOwner));
-}
+ashBridgeDocument?.addEventListener?.('click', captureSemanticNavigation, true);
+ashBridgeHost?.addEventListener?.('td613:ash:canonical-module-graph-ready', () => queueMicrotask(reconcileCanonicalConsequenceFieldOwner));
+ashBridgeHost?.addEventListener?.('td613:ash:whole-instrument-refreshed', () => queueMicrotask(reconcileCanonicalConsequenceFieldOwner));
+queueMicrotask(reconcileCanonicalConsequenceFieldOwner);
