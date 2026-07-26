@@ -47,24 +47,24 @@ const listenerReplacement = String.raw`await page.addInitScript(() => {
 });`;
 
 const ingressReadinessStart = String.raw`  await page.waitForFunction(() => {
-     const portal = window.__td613AshFlowcoreIngressPortal?.current?.();
-     const visible = document.querySelector('.ash-flowcore-field:not([hidden])');
-     return window.__td613AshFlowcoreField?.current?.().artifact_required === false`;
+    const portal = window.__td613AshFlowcoreIngressPortal?.current?.();
+    const visible = document.querySelector('.ash-flowcore-field:not([hidden])');
+    return window.__td613AshFlowcoreField?.current?.().artifact_required === false`;
 const ingressReadinessEnd = String.raw`  });
 
   const ingressDesktop =`;
 const ingressReadinessReplacement = String.raw`  await page.waitForFunction(() => {
-     const registry = window.__td613AshDemoRegistry?.snapshot?.();
-     const visible = document.querySelector('.ash-flowcore-field:not([hidden])');
-     return window.__td613AshFlowcoreField?.current?.().artifact_required === false
-       && window.__td613AshPostIngressMotionRestoration?.version
-       && window.__td613AshDemoRegistry?.version === 'td613.ash.demo-registry/v0.3-a15'
-       && registry?.empirical_matrix_cells === 120
-       && window.__td613AshA15EmpiricalJourneys?.version === 'td613.ash.a15-empirical-profile-journeys/v0.1'
-       && document.documentElement.dataset.ashCompositionStable
-       && document.getElementById('launch')
-       && visible?.parentElement?.id === 'guidedLaunchPromise'
-       && visible.getBoundingClientRect().height > 260;
+    const registry = window.__td613AshDemoRegistry?.snapshot?.();
+    const visible = document.querySelector('.ash-flowcore-field:not([hidden])');
+    return window.__td613AshFlowcoreField?.current?.().artifact_required === false
+      && window.__td613AshPostIngressMotionRestoration?.version
+      && window.__td613AshDemoRegistry?.version === 'td613.ash.demo-registry/v0.3-a15'
+      && registry?.empirical_matrix_cells === 120
+      && window.__td613AshA15EmpiricalJourneys?.version === 'td613.ash.a15-empirical-profile-journeys/v0.1'
+      && document.documentElement.dataset.ashCompositionStable
+      && document.getElementById('launch')
+      && visible?.parentElement?.id === 'guidedLaunchPromise'
+      && visible.getBoundingClientRect().height > 260;
   });
   await page.evaluate(() => {
     window.__td613AshDemoRegistry?.reconcile?.();
@@ -87,38 +87,38 @@ const ingressReadinessReplacement = String.raw`  await page.waitForFunction(() =
   const ingressDesktop =`;
 
 const motionTarget = String.raw`  const activeMotionHandle = await page.waitForFunction(() => {
-     if (document.documentElement.dataset.ashFlowcorePhase !== 'NAME') return false;
-     const field = document.querySelector('.ash-flowcore-field:not([hidden])');
-     const rail = document.querySelector('#ashAiaMembrane .ash-ux-motion-track');
-     const canvas = field?.querySelector('.ash-flowcore-field__canvas');
-     const phaseLabel = field?.querySelector('[data-flowcore-phase-label]')?.textContent || '';
-     const canvasVisible = Boolean(canvas && getComputedStyle(canvas).display !== 'none' && canvas.getBoundingClientRect().height > 0);
-     const railVisible = Boolean(rail && getComputedStyle(rail).display !== 'none' && rail.getBoundingClientRect().height > 0);
-     if (field?.dataset.flowcorePhaseName !== 'NAME' || field?.dataset.flowcorePlaying !== 'true' || !/NAME/.test(phaseLabel) || !canvasVisible || !railVisible) return false;
-     return {
-       phase:document.documentElement.dataset.ashFlowcorePhase,
-       field_phase:field.dataset.flowcorePhaseName,
-       field_playing:true,
-       phase_label:phaseLabel,
-       canvas_visible:canvasVisible,
-       rail_visible:railVisible,
-       motion:window.__td613AshPostIngressMotionRestoration.current()
-     };
+    if (document.documentElement.dataset.ashFlowcorePhase !== 'NAME') return false;
+    const field = document.querySelector('.ash-flowcore-field:not([hidden])');
+    const rail = document.querySelector('#ashAiaMembrane .ash-ux-motion-track');
+    const canvas = field?.querySelector('.ash-flowcore-field__canvas');
+    const phaseLabel = field?.querySelector('[data-flowcore-phase-label]')?.textContent || '';
+    const canvasVisible = Boolean(canvas && getComputedStyle(canvas).display !== 'none' && canvas.getBoundingClientRect().height > 0);
+    const railVisible = Boolean(rail && getComputedStyle(rail).display !== 'none' && rail.getBoundingClientRect().height > 0);
+    if (field?.dataset.flowcorePhaseName !== 'NAME' || field?.dataset.flowcorePlaying !== 'true' || !/NAME/.test(phaseLabel) || !canvasVisible || !railVisible) return false;
+    return {
+      phase:document.documentElement.dataset.ashFlowcorePhase,
+      field_phase:field.dataset.flowcorePhaseName,
+      field_playing:true,
+      phase_label:phaseLabel,
+      canvas_visible:canvasVisible,
+      rail_visible:railVisible,
+      motion:window.__td613AshPostIngressMotionRestoration.current()
+    };
   });
   const activeMotion = await activeMotionHandle.jsonValue();`;
 
 const motionReplacement = String.raw`  const atomicNameReceipt = item => item.phase_name === 'NAME'
-     && item.dom_phase === 'NAME'
-     && item.playing === true
-     && /NAME/.test(item.phase_label)
-     && item.canvas_visible === true
-     && item.rail_visible === true;
+    && item.dom_phase === 'NAME'
+    && item.playing === true
+    && /NAME/.test(item.phase_label)
+    && item.canvas_visible === true
+    && item.rail_visible === true;
   await page.waitForFunction(() => window.__ashFlowcorePhaseTrace.some(item => item.phase_name === 'NAME'
-     && item.dom_phase === 'NAME'
-     && item.playing === true
-     && /NAME/.test(item.phase_label)
-     && item.canvas_visible === true
-     && item.rail_visible === true));
+    && item.dom_phase === 'NAME'
+    && item.playing === true
+    && /NAME/.test(item.phase_label)
+    && item.canvas_visible === true
+    && item.rail_visible === true));
   const activeMotion = await page.evaluate(() => {
     const item = [...window.__ashFlowcorePhaseTrace].reverse().find(entry => entry.phase_name === 'NAME'
       && entry.dom_phase === 'NAME'
