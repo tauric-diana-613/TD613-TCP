@@ -1,4 +1,4 @@
-export const ASH_A8_MAP_RETURN_HANDSHAKE_VERSION = 'td613.ash.a8-map-return-handshake/v0.1';
+export const ASH_A8_MAP_RETURN_HANDSHAKE_VERSION = 'td613.ash.a8-map-return-handshake/v0.2-prehold-shadow';
 
 const host = globalThis.window;
 const doc = globalThis.document;
@@ -24,6 +24,7 @@ function captureAll() {
     }));
     captured = true;
   }
+  if (captured) mark('PREHOLD_DRAFT_CAPTURED');
   return captured;
 }
 
@@ -60,15 +61,15 @@ function clear() {
 
 function arm(event) {
   if (!HELD_ACTIONS.has(event.detail?.action_id)) return;
-  captureAll();
-  held = true;
+  held = draft.size > 0;
   mapReturnObserved = false;
   refreshSerial += 1;
-  mark('HELD_WAITING_FOR_CANONICAL_MAP_RETURN');
+  mark(held ? 'HELD_WITH_PREHOLD_DRAFT' : 'HELD_WITHOUT_PREHOLD_DRAFT');
 }
 
 function captureDelegatedForm(event) {
   if (!event.target?.closest?.('#ashA8ObjectForm,#ashA8RelationForm')) return;
+  if (held) return;
   captureAll();
 }
 
@@ -95,8 +96,9 @@ function settleAfterA8Recompile() {
   mark('RESTORED_AFTER_CANONICAL_MAP_RETURN');
   host?.dispatchEvent?.(new CustomEvent('td613:ash:a8-map-return-restored', {
     detail:Object.freeze({
-      schema:'td613.ash.a8-map-return-receipt/v0.1',
+      schema:'td613.ash.a8-map-return-receipt/v0.2',
       restored_controls:draft.size,
+      source_posture:'PREHOLD_FORM_CAPTURE',
       authority_changed:false,
       source_bytes_moved:false,
       custody_changed:false,
@@ -120,7 +122,7 @@ export function installAshA8MapReturnHandshake() {
     version:ASH_A8_MAP_RETURN_HANDSHAKE_VERSION,
     capture:captureAll,
     restore:restoreAll,
-    current:() => Object.freeze({ held, map_return_observed:mapReturnObserved, draft_controls:draft.size }),
+    current:() => Object.freeze({ held, map_return_observed:mapReturnObserved, draft_controls:draft.size, posture:doc?.documentElement?.dataset?.ashA8MapReturnHandshake || null }),
     authority:Object.freeze({ authority_changed:false, source_bytes_moved:false, custody_changed:false, release_posture_changed:false, human_closure_required:true })
   });
   host.__td613AshA8MapReturnHandshake = api;
