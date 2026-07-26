@@ -29,10 +29,10 @@ const geometryReplacement = `async function waitForRegistryOwnedWorkspaceControl
       || window.__td613AshUiUxRescue?.open
       || window.__td613OpenAshWorkspace
       || window.__td613AshKeep?.openWorkspace;
-    return window.__td613AshDemoRegistry?.version === 'td613.ash.demo-registry/v0.1-a13'
+    return window.__td613AshDemoRegistry?.version === 'td613.ash.demo-registry/v0.2-a14'
       && registry?.control_owner === 'ASH_DEMO_REGISTRY'
       && document.documentElement.dataset.ashDemoControlOwner === 'ASH_DEMO_REGISTRY'
-      && document.documentElement.dataset.ashDemoRegistry === 'td613.ash.demo-registry/v0.1-a13'
+      && document.documentElement.dataset.ashDemoRegistry === 'td613.ash.demo-registry/v0.2-a14'
       && typeof open === 'function';
   }, null, { timeout:60_000 });
 }
@@ -44,7 +44,7 @@ async function openGovernedWorkspace(page, workspace) {
       || window.__td613AshUiUxRescue?.open
       || window.__td613OpenAshWorkspace
       || window.__td613AshKeep?.openWorkspace;
-    if (typeof open !== 'function') throw new Error('A13 governed workspace owner unavailable.');
+    if (typeof open !== 'function') throw new Error('A14 governed workspace owner unavailable.');
     await Promise.resolve(open(name));
   }, workspace);
 }
@@ -131,14 +131,14 @@ const source = await fs.readFile(sourceUrl, 'utf8');
 let runtime = replaceExactlyOnce(source, geometryTarget, geometryReplacement, 'workspace geometry');
 runtime = replaceExactlyOnce(runtime, workDockTarget, workDockReplacement, 'Work dock');
 runtime = replaceExactlyOnce(runtime, ledgerTarget, ledgerReplacement, 'Research ledger navigation');
-runtime = runtime.replace('td613.ash.research-ux-browser-evidence/v0.3-a4-semantic-navigation', 'td613.ash.research-ux-browser-evidence/v0.4-a13-registry-owned-navigation');
+runtime = runtime.replace('td613.ash.research-ux-browser-evidence/v0.3-a4-semantic-navigation', 'td613.ash.research-ux-browser-evidence/v0.5-a14-registry-owned-navigation');
 
 for (const token of [
   'profile=research',
   '__td613AshResearchSurfaceReport',
   'window.__td613AshDemoRegistry',
   "control_owner === 'ASH_DEMO_REGISTRY'",
-  "ashDemoRegistryOwner === 'td613.ash.demo-registry/v0.1-a13'",
+  "ashDemoRegistryOwner === 'td613.ash.demo-registry/v0.2-a14'",
   'openGovernedWorkspace(page, workspace)',
   'waitForRegistryOwnedWorkspaceControl(page)'
 ]) {
