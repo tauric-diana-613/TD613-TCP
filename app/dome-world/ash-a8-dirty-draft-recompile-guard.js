@@ -1,4 +1,4 @@
-export const ASH_A8_DIRTY_DRAFT_RECOMPILE_GUARD_VERSION = 'td613.ash.a8-dirty-draft-recompile-guard/v0.1';
+export const ASH_A8_DIRTY_DRAFT_RECOMPILE_GUARD_VERSION = 'td613.ash.a8-dirty-draft-recompile-guard/v0.2-dual-map-signal';
 
 const host = globalThis.window;
 const doc = globalThis.document;
@@ -11,12 +11,20 @@ let recoveredPremiumRefreshes = 0;
 let recoverySerial = 0;
 let staleDetachedEventsHeld = 0;
 
-function canonicalMapWorkshopIsActive() {
+function mapWorkshopSignals() {
   const workspace = doc?.getElementById?.('workspace-map');
   const workshop = doc?.getElementById?.('ashA8RelationWorkshop');
-  return doc?.documentElement?.dataset?.ashPremiumWorkspace === 'map'
-    && workspace?.classList?.contains?.('active') === true
-    && workshop?.isConnected === true;
+  return Object.freeze({
+    workshop_connected:workshop?.isConnected === true,
+    premium_map_signal:doc?.documentElement?.dataset?.ashPremiumWorkspace === 'map',
+    active_map_panel_signal:workspace?.classList?.contains?.('active') === true
+  });
+}
+
+function canonicalMapWorkshopIsActive() {
+  const signals = mapWorkshopSignals();
+  return signals.workshop_connected
+    && (signals.premium_map_signal || signals.active_map_panel_signal);
 }
 
 function workshopIsConnected() {
@@ -29,14 +37,17 @@ function custodyHoldIsActive() {
 
 function publish(posture, source = null, detail = {}) {
   if (doc?.documentElement) doc.documentElement.dataset.ashA8DirtyDraftGuard = posture;
+  const signals = mapWorkshopSignals();
   host?.dispatchEvent?.(new CustomEvent('td613:ash:a8-dirty-draft-guard', {
     detail:Object.freeze({
-      schema:'td613.ash.a8-dirty-draft-guard-receipt/v0.6-stale-detached-event-quarantine',
+      schema:'td613.ash.a8-dirty-draft-guard-receipt/v0.7-dual-map-signal',
       posture,
       source,
       dirty_draft_active:dirtyDraftActive,
-      map_workshop_active:canonicalMapWorkshopIsActive(),
-      workshop_connected:workshopIsConnected(),
+      map_workshop_active:signals.workshop_connected && (signals.premium_map_signal || signals.active_map_panel_signal),
+      workshop_connected:signals.workshop_connected,
+      premium_map_signal:signals.premium_map_signal,
+      active_map_panel_signal:signals.active_map_panel_signal,
       custody_hold_active:custodyHoldIsActive(),
       recovered_in_flight_recompiles:recoveredInFlightRecompiles,
       recovered_premium_refreshes:recoveredPremiumRefreshes,
@@ -146,7 +157,9 @@ function clear(source) {
 
 function shouldDefer(source) {
   if (!dirtyDraftActive || custodyHoldIsActive() || !canonicalMapWorkshopIsActive()) return false;
-  publish('RECOMPILE_DEFERRED_DIRTY_DRAFT', source);
+  publish('RECOMPILE_DEFERRED_DIRTY_DRAFT', source, {
+    guard_basis:'CONNECTED_WORKSHOP_AND_EITHER_CANONICAL_MAP_SIGNAL'
+  });
   return 'DIRTY_STAGE_DRAFT';
 }
 
@@ -167,21 +180,27 @@ export function installAshA8DirtyDraftRecompileGuard() {
     recoverAfterRefresh:recoverAfterPremiumRefresh,
     recover:recoverAfterInFlightRecompile,
     clear,
-    current:() => Object.freeze({
-      dirty_draft_active:dirtyDraftActive,
-      map_workshop_active:canonicalMapWorkshopIsActive(),
-      workshop_connected:workshopIsConnected(),
-      custody_hold_active:custodyHoldIsActive(),
-      recovered_in_flight_recompiles:recoveredInFlightRecompiles,
-      recovered_premium_refreshes:recoveredPremiumRefreshes,
-      recovery_serial:recoverySerial,
-      stale_detached_events_held:staleDetachedEventsHeld,
-      posture:doc?.documentElement?.dataset?.ashA8DirtyDraftGuard || null,
-      admission_boundary:'WINDOW_CAPTURE_BEFORE_DOCUMENT_REFRESH',
-      authority_changed:false,
-      source_bytes_moved:false,
-      human_closure_required:true
-    })
+    current:() => {
+      const signals = mapWorkshopSignals();
+      return Object.freeze({
+        dirty_draft_active:dirtyDraftActive,
+        map_workshop_active:signals.workshop_connected && (signals.premium_map_signal || signals.active_map_panel_signal),
+        workshop_connected:signals.workshop_connected,
+        premium_map_signal:signals.premium_map_signal,
+        active_map_panel_signal:signals.active_map_panel_signal,
+        custody_hold_active:custodyHoldIsActive(),
+        recovered_in_flight_recompiles:recoveredInFlightRecompiles,
+        recovered_premium_refreshes:recoveredPremiumRefreshes,
+        recovery_serial:recoverySerial,
+        stale_detached_events_held:staleDetachedEventsHeld,
+        posture:doc?.documentElement?.dataset?.ashA8DirtyDraftGuard || null,
+        admission_boundary:'WINDOW_CAPTURE_BEFORE_DOCUMENT_REFRESH',
+        guard_basis:'CONNECTED_WORKSHOP_AND_EITHER_CANONICAL_MAP_SIGNAL',
+        authority_changed:false,
+        source_bytes_moved:false,
+        human_closure_required:true
+      });
+    }
   });
   publish('READY', 'INSTALL');
   return true;
