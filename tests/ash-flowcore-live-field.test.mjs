@@ -24,12 +24,12 @@ for (const channel of ['glyph','motion','shape','language','inspection']) assert
 assert.match(field, /const playing = options\.playing \?\? bounded > 0/);
 assert.doesNotMatch(field, /playing:nextPhase\s*>|setInterval\s*\(|requestAnimationFrame\s*\(/);
 
-for (const marker of [
-  '.ash-flowcore-mounted>.ash-ux-motion-track{display:grid!important',
-  '.ash-flowcore-mounted{height:auto!important',
-  '.ash-flowcore-field__canvas{display:block!important',
-  'data-flowcore-phase="0"','data-flowcore-phase="4"','prefers-reduced-motion:reduce'
-]) assert.ok(css.includes(marker), `Flow-Core CSS omitted ${marker}`);
+assert.match(css, /\.ash-flowcore-mounted>\.ash-ux-motion-track\{[^}]*display:grid!important/);
+assert.match(css, /\.ash-flowcore-mounted\{[^}]*height:auto!important[^}]*overflow:visible!important/);
+assert.match(css, /\.ash-flowcore-field__canvas\{[^}]*display:block!important[^}]*max-height:none!important/);
+assert.match(css, /data-flowcore-phase="0"/);
+assert.match(css, /data-flowcore-phase="4"/);
+assert.match(css, /prefers-reduced-motion:reduce/);
 assert.doesNotMatch(css, /\.ash-ux-motion-track\{display:none!important\}|animation:[^;}]*infinite/);
 
 for (const marker of [
