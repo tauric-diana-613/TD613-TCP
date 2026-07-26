@@ -106,6 +106,11 @@ jobs:
           node --check app/dome-world/ash-archive-profile-demo.js
           node --check scripts/ash-a14-archive-browser-probe.mjs
           node tests/ash-a14-archive-accession.test.mjs
+      - name: Validate Ash A15 empirical profile journeys
+        run: |
+          node --check app/dome-world/ash-a15-empirical-profile-journeys.js
+          node --check scripts/ash-a15-empirical-profile-journeys-browser-probe.mjs
+          node tests/ash-a15-empirical-profile-journeys.test.mjs
       - name: Validate Ash demo hydration surfaces
         run: |
           node tests/ash-research-ux-rehydration.test.mjs
@@ -192,6 +197,7 @@ jobs:
             TD613_ARTIFACT_DIR="artifacts/ash-a12-$browser" timeout --foreground --signal=INT --kill-after=15s 420s node scripts/ash-a12-browser-probe.mjs
             TD613_ARTIFACT_DIR="artifacts/ash-a13-$browser" timeout --foreground --signal=INT --kill-after=15s 480s node scripts/ash-a13-demo-registry-browser-probe.mjs
             TD613_ARTIFACT_DIR="artifacts/ash-a14-$browser" timeout --foreground --signal=INT --kill-after=15s 480s node scripts/ash-a14-archive-browser-probe.mjs
+            TD613_ARTIFACT_DIR="artifacts/ash-a15-$browser" timeout --foreground --signal=INT --kill-after=15s 900s node scripts/ash-a15-empirical-profile-journeys-browser-probe.mjs
             TD613_ARTIFACT_DIR="artifacts/ash-flowcore-$browser" timeout --foreground --signal=INT --kill-after=15s 480s node scripts/run-ash-flowcore-live-field-browser-probe.mjs
             TD613_ARTIFACT_DIR="artifacts/ash-ingress-$browser" timeout --foreground --signal=INT --kill-after=15s 360s node scripts/ash-ingress-polish-browser-probe.mjs
             TD613_ARTIFACT_DIR="artifacts/ash-reviewability-$browser" timeout --foreground --signal=INT --kill-after=15s 420s node scripts/ash-reviewability-browser-probe.mjs
