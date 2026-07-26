@@ -13,6 +13,12 @@ const browser = await browserType.launch({ headless:true });
 const PROFILES = ['investigation','political_campaign','fundraiser','research','legal','archive'];
 const WORKSPACES = ['home','map','work','choir','capsule'];
 const ROUTES = ['experimental','custodial','audit','implementation'];
+const ROUTE_CONTROLS = Object.freeze({
+  experimental:'EXPERIENTIAL',
+  custodial:'CUSTODIAL',
+  audit:'AUDIT',
+  implementation:'IMPLEMENTATION'
+});
 const REGISTRY_VERSION = 'td613.ash.demo-registry/v0.3-a15';
 const ASSET_EPOCH = '20260726-a15-empirical-v1';
 const EMPIRICAL_VERSION = 'td613.ash.a15-empirical-profile-journeys/v0.1';
@@ -67,11 +73,75 @@ async function activateProfile(page, profile) {
   const state = await page.evaluate(() => ({
     case_id:window.__td613AshKeep?.current?.()?.case_id || null,
     profile:document.documentElement.dataset.ashDemoProfile || null,
-    status:document.getElementById('demoProfileStatus')?.textContent || ''
+    status:document.getElementById('demoProfileStatus')?.textContent || '',
+    entries_bound:Object.keys(window.__td613AshA15EmpiricalJourneys?.entries?.() || {}).length
   }));
-  if (/Demo registry held\./i.test(state.status) || !state.case_id || state.profile !== profile) {
+  if (/Demo registry held\./i.test(state.status) || !state.case_id || state.profile !== profile || state.entries_bound !== 6) {
     throw new Error(`A15 ${profile} hydration held: ${JSON.stringify(state)}`);
   }
+}
+
+async function openWorkspace(page, workspace) {
+  const control = page.locator(`[data-premium-workspace="${workspace}"]:visible`).first();
+  if (!(await control.count())) throw new Error(`A15 visible ${workspace} control unavailable.`);
+  await control.click();
+  await page.waitForFunction(expected => {
+    const section = document.getElementById(`workspace-${expected}`);
+    return document.documentElement.dataset.ashPremiumWorkspace === expected
+      && section?.classList.contains('active') === true
+      && window.__td613AshWholeInstrument?.current?.()?.navigation_receipt?.destination_workspace === expected;
+  }, workspace, { timeout:60_000 });
+}
+
+async function selectRoute(page, route) {
+  const controlValue = ROUTE_CONTROLS[route];
+  const control = page.locator(`#ashAiaMembrane [data-aia-route="${controlValue}"]:visible`).first();
+  if (!(await control.count())) throw new Error(`A15 visible ${route} route control unavailable.`);
+  await control.click();
+  await page.waitForFunction(({ route, controlValue }) => {
+    const current = String(window.__td613AshLiveAIA?.current?.()?.route || '').toUpperCase();
+    return (current === controlValue || current === route.toUpperCase())
+      && document.querySelector('[data-a15-route]')?.textContent?.trim() === route;
+  }, { route, controlValue }, { timeout:60_000 });
+}
+
+async function orientVisibleAction(page, profile, workspace, route) {
+  return page.evaluate(({ profile, workspace, route }) => new Promise((resolve, reject) => {
+    const button = document.getElementById('ashA15OrientAction');
+    if (!button?.isConnected) return reject(new Error('A15 visible orientation gesture unavailable.'));
+    const timer = setTimeout(() => reject(new Error(`A15 visible world answer timed out for ${profile}/${workspace}/${route}.`)), 30_000);
+    const handler = event => {
+      clearTimeout(timer);
+      resolve({
+        answer:event.detail,
+        visible_text:document.getElementById('ashA15WorldAnswer')?.textContent || '',
+        profile_chip:document.querySelector('[data-a15-profile]')?.textContent?.trim() || '',
+        workspace_chip:document.querySelector('[data-a15-workspace]')?.textContent?.trim() || '',
+        route_chip:document.querySelector('[data-a15-route]')?.textContent?.trim() || ''
+      });
+    };
+    window.addEventListener('td613:ash:a15-world-answer', handler, { once:true });
+    button.click();
+  }), { profile, workspace, route });
+}
+
+async function inspectCommands(page) {
+  const menu = page.locator('#premiumMenuButton');
+  await menu.click();
+  await page.waitForFunction(() => document.getElementById('premiumCommandSheet')?.open === true);
+  const commands = await page.evaluate(() => ({
+    semantic:[...document.querySelectorAll('#premiumCommandGrid [data-a12-command]')].map(control => ({ id:control.dataset.a12Command, workspace:control.dataset.a12Workspace })),
+    profile_action:Boolean(document.querySelector('#premiumCommandGrid [data-a12-action="profile"]')),
+    destination_handoff:document.querySelector('#premiumCommandGrid a[href="/dome-world/ash-destination-handoff.html"]')?.tagName === 'A',
+    inert:[...document.querySelectorAll('#premiumCommandGrid button')].filter(control => !control.dataset.a12Command && !control.dataset.a12Action).length
+  }));
+  await page.keyboard.press('Escape');
+  const mapping = new Map(commands.semantic.map(item => [item.id, item.workspace]));
+  for (const [id, workspace] of [['custody','map'],['rooms','map'],['routes','map'],['draft','work'],['test','choir'],['save','capsule']]) {
+    if (mapping.get(id) !== workspace) throw new Error(`A15 command ${id} did not map to ${workspace}.`);
+  }
+  if (!commands.profile_action || !commands.destination_handoff || commands.inert !== 0) throw new Error(`A15 command surface drifted: ${JSON.stringify(commands)}`);
+  return commands;
 }
 
 async function inspectProfile(options, profile, mode) {
@@ -80,69 +150,69 @@ async function inspectProfile(options, profile, mode) {
   try {
     await waitForInstrument(page);
     await activateProfile(page, profile);
-    const result = await page.evaluate(async ({ profile, workspaces, routes, forbidden }) => {
-      const empirical = window.__td613AshA15EmpiricalJourneys;
-      const registry = window.__td613AshDemoRegistry;
-      const entries = await registry.entries();
-      const entry = entries[profile];
-      if (!entry?.pedagogy_manifest) throw new Error(`A15 ${profile} manifest unavailable.`);
-      if (entry.deterministic_test_journey !== `ash-a15-empirical-journey:${profile}`) throw new Error(`A15 ${profile} journey marker drifted.`);
-      const answers = [];
-      for (const workspace of workspaces) {
-        for (const route of routes) {
-          const answer = empirical.orient({
-            profile,
-            workspace,
-            route,
-            context:{ synthetic:true, action_id:'orient_next_bounded_action' }
-          });
-          if (answer.status !== 'READY') throw new Error(`A15 ${profile}/${workspace}/${route} held: ${JSON.stringify(answer)}`);
-          if (answer.profile !== profile || answer.workspace !== workspace || answer.route !== route) throw new Error('A15 normalized journey drift.');
-          if (answer.context_imported || answer.real_world_claim || answer.ontology_exposed) throw new Error('A15 answer widened its evidence surface.');
-          if (Object.entries(answer.authority).some(([key, value]) => key.startsWith('human_') ? value !== true : value !== false)) throw new Error('A15 answer widened authority.');
-          const lower = answer.message.toLowerCase();
-          if (forbidden.some(token => lower.includes(token))) throw new Error(`A15 public answer leaked ${forbidden.find(token => lower.includes(token))}.`);
-          answers.push(answer);
-        }
-      }
-      const sensitive = empirical.orient({
-        profile,
-        workspace:'work',
-        route:'audit',
-        context:'api_key = do-not-import person@example.com'
-      });
-      if (sensitive.status !== 'HELD_SENSITIVE_CONTEXT' || sensitive.context_imported !== false) throw new Error('A15 sensitive-context quarantine drifted.');
-      let visibleEvent = null;
-      window.addEventListener('td613:ash:a15-world-answer', event => { visibleEvent = event.detail; }, { once:true });
-      document.getElementById('ashA15OrientAction').click();
-      await Promise.resolve();
-      const visibleText = document.getElementById('ashA15WorldAnswer')?.textContent || '';
-      if (!visibleEvent || !visibleText || visibleEvent.profile !== profile) throw new Error('A15 shared visible action did not publish its world answer.');
-      const snapshot = registry.snapshot();
+    const entry = await page.evaluate(async profile => {
+      const entries = await window.__td613AshDemoRegistry.entries();
+      const item = entries[profile];
       return {
-        profile,
-        answers,
-        unique_messages:new Set(answers.map(answer => answer.message)).size,
-        sensitive_status:sensitive.status,
-        visible_status:visibleEvent.status,
-        visible_text:visibleText,
-        manifest_profile:entry.pedagogy_manifest.profile,
-        manifest_claim_ceiling:entry.pedagogy_manifest.claim_ceiling,
-        registry_version:snapshot.version,
-        registry_epoch:snapshot.asset_epoch,
-        empirical_version:snapshot.empirical_journey_version,
-        matrix_cells:snapshot.empirical_matrix_cells,
-        route_nodes:document.querySelectorAll('#ashAiaMembrane [data-aia-route]').length,
-        task_nodes:document.querySelectorAll('#ashAiaMembrane [data-aia-task]').length,
-        panel_in_membrane:Boolean(document.getElementById('ashA15EmpiricalJourney')?.closest('#ashAiaMembrane')),
-        release_disabled:document.getElementById('approveRelease')?.disabled ?? null,
-        provider_approval_checked:document.getElementById('providerApproval')?.checked ?? null,
-        handoff_is_link:document.querySelector('a[href="/dome-world/ash-destination-handoff.html"]')?.tagName === 'A',
-        url:location.pathname + location.search,
-        title:document.title,
-        overflow:document.documentElement.scrollWidth - document.documentElement.clientWidth
+        manifest_profile:item?.pedagogy_manifest?.profile || null,
+        manifest_claim_ceiling:item?.pedagogy_manifest?.claim_ceiling || null,
+        deterministic_test_journey:item?.deterministic_test_journey || null
       };
-    }, { profile, workspaces:WORKSPACES, routes:ROUTES, forbidden:FORBIDDEN });
+    }, profile);
+    if (entry.manifest_profile !== profile || entry.deterministic_test_journey !== `ash-a15-empirical-journey:${profile}`) throw new Error(`A15 ${profile} provider entry drifted: ${JSON.stringify(entry)}`);
+
+    const answers = [];
+    for (const workspace of WORKSPACES) {
+      await openWorkspace(page, workspace);
+      for (const route of ROUTES) {
+        await selectRoute(page, route);
+        const observed = await orientVisibleAction(page, profile, workspace, route);
+        const answer = observed.answer;
+        if (answer.status !== 'READY') throw new Error(`A15 ${profile}/${workspace}/${route} held: ${JSON.stringify(answer)}`);
+        if (answer.profile !== profile || answer.workspace !== workspace || answer.route !== route) throw new Error(`A15 visible journey normalized incorrectly: ${JSON.stringify(observed)}`);
+        if (observed.visible_text !== answer.message || observed.workspace_chip !== workspace || observed.route_chip !== route || observed.profile_chip !== profile.replaceAll('_', ' ')) throw new Error(`A15 visible chips or answer drifted: ${JSON.stringify(observed)}`);
+        if (answer.context_imported || answer.real_world_claim || answer.ontology_exposed) throw new Error('A15 answer widened its evidence surface.');
+        if (Object.entries(answer.authority).some(([key, value]) => key.startsWith('human_') ? value !== true : value !== false)) throw new Error('A15 answer widened authority.');
+        if (forbiddenPublicLeak(answer)) throw new Error(`A15 public answer leaked internal ontology: ${JSON.stringify(answer)}`);
+        answers.push(answer);
+      }
+    }
+
+    const sensitive = await page.evaluate(profile => window.__td613AshA15EmpiricalJourneys.compile({
+      profile,
+      workspace:'work',
+      route:'audit',
+      context:{ api_key:'do-not-import', contact:'+44 20 7946 0958' }
+    }), profile);
+    if (sensitive.status !== 'HELD_SENSITIVE_CONTEXT' || sensitive.context_imported !== false) throw new Error('A15 sensitive-context quarantine drifted.');
+
+    const commands = await inspectCommands(page);
+    const snapshot = await page.evaluate(() => window.__td613AshDemoRegistry.snapshot());
+    const presentation = await page.evaluate(() => ({
+      route_nodes:document.querySelectorAll('#ashAiaMembrane [data-aia-route]').length,
+      task_nodes:document.querySelectorAll('#ashAiaMembrane [data-aia-task]').length,
+      panel_in_membrane:Boolean(document.getElementById('ashA15EmpiricalJourney')?.closest('#ashAiaMembrane')),
+      release_disabled:document.getElementById('approveRelease')?.disabled ?? null,
+      provider_approval_checked:document.getElementById('providerApproval')?.checked ?? null,
+      handoff_is_link:document.querySelector('a[href="/dome-world/ash-destination-handoff.html"]')?.tagName === 'A',
+      url:location.pathname + location.search,
+      title:document.title,
+      overflow:document.documentElement.scrollWidth - document.documentElement.clientWidth
+    }));
+    const result = {
+      profile,
+      answers,
+      unique_messages:new Set(answers.map(answer => answer.message)).size,
+      sensitive_status:sensitive.status,
+      manifest_profile:entry.manifest_profile,
+      manifest_claim_ceiling:entry.manifest_claim_ceiling,
+      registry_version:snapshot.version,
+      registry_epoch:snapshot.asset_epoch,
+      empirical_version:snapshot.empirical_journey_version,
+      matrix_cells:snapshot.empirical_matrix_cells,
+      commands,
+      ...presentation
+    };
 
     if (result.answers.length !== 20 || result.unique_messages !== 20) throw new Error(`A15 ${profile} matrix collapsed: ${JSON.stringify(result)}`);
     if (result.matrix_cells !== 120 || result.route_nodes !== 4 || result.task_nodes !== 4 || !result.panel_in_membrane) throw new Error(`A15 ${profile} membrane contract drifted: ${JSON.stringify(result)}`);
@@ -153,6 +223,14 @@ async function inspectProfile(options, profile, mode) {
   } finally {
     await context.close();
   }
+}
+
+function forbiddenPublicLeak(answer) {
+  const publicPayload = { ...answer };
+  delete publicPayload.schema;
+  delete publicPayload.version;
+  const text = JSON.stringify(publicPayload).toLowerCase();
+  return FORBIDDEN.some(token => text.includes(token));
 }
 
 const receipts = [];
@@ -179,7 +257,7 @@ try {
     if (new Set(values).size !== 6) throw new Error(`A15 cross-profile answer collapse at ${key}.`);
   }
   await fs.writeFile(path.join(artifactDir, `${browserName}-a15-empirical-receipt.json`), JSON.stringify({
-    schema:'td613.ash.a15-empirical-profile-journey-browser-witness/v0.1',
+    schema:'td613.ash.a15-empirical-profile-journey-browser-witness/v0.2-real-ui',
     browser:browserName,
     modes:['desktop','mobile-reduced-motion'],
     profiles:PROFILES,
@@ -188,6 +266,11 @@ try {
     receipts,
     matrix_cells:120,
     rendered_answer_observations:receipts.length * 20,
+    real_profile_hydration:true,
+    real_workspace_navigation:true,
+    real_route_gestures:true,
+    real_visible_orientation_gesture:true,
+    command_menu_mappings_verified:true,
     cross_profile_differentiation:true,
     sensitive_context_status:'HELD_SENSITIVE_CONTEXT',
     ontology_leakage:false,
