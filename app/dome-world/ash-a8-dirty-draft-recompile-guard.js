@@ -9,6 +9,7 @@ let dirtyDraftActive = false;
 let recoveredInFlightRecompiles = 0;
 let recoveredPremiumRefreshes = 0;
 let recoverySerial = 0;
+let staleDetachedEventsHeld = 0;
 
 function canonicalMapWorkshopIsActive() {
   const workspace = doc?.getElementById?.('workspace-map');
@@ -30,7 +31,7 @@ function publish(posture, source = null, detail = {}) {
   if (doc?.documentElement) doc.documentElement.dataset.ashA8DirtyDraftGuard = posture;
   host?.dispatchEvent?.(new CustomEvent('td613:ash:a8-dirty-draft-guard', {
     detail:Object.freeze({
-      schema:'td613.ash.a8-dirty-draft-guard-receipt/v0.5-window-capture-admission',
+      schema:'td613.ash.a8-dirty-draft-guard-receipt/v0.6-stale-detached-event-quarantine',
       posture,
       source,
       dirty_draft_active:dirtyDraftActive,
@@ -40,6 +41,7 @@ function publish(posture, source = null, detail = {}) {
       recovered_in_flight_recompiles:recoveredInFlightRecompiles,
       recovered_premium_refreshes:recoveredPremiumRefreshes,
       recovery_serial:recoverySerial,
+      stale_detached_events_held:staleDetachedEventsHeld,
       authority_changed:false,
       source_bytes_moved:false,
       custody_changed:false,
@@ -51,7 +53,17 @@ function publish(posture, source = null, detail = {}) {
 }
 
 function beginDirtyDraft(event) {
-  if (!event.target?.closest?.(FORM_SELECTOR) || custodyHoldIsActive()) return false;
+  const target = event.target;
+  if (!target?.closest?.(FORM_SELECTOR) || custodyHoldIsActive()) return false;
+  if (target.isConnected !== true) {
+    staleDetachedEventsHeld += 1;
+    event.stopImmediatePropagation?.();
+    publish('STALE_DETACHED_EDIT_EVENT_HELD', event.type, {
+      admission_boundary:'WINDOW_CAPTURE_BEFORE_DOCUMENT_REFRESH',
+      stale_detached_event:true
+    });
+    return false;
+  }
   if (admittedDirtyEvents.has(event)) return true;
   admittedDirtyEvents.add(event);
   host?.__td613AshA8MapReturnHandshake?.capture?.();
@@ -128,6 +140,7 @@ function clear(source) {
   dirtyDraftActive = false;
   recoveredInFlightRecompiles = 0;
   recoveredPremiumRefreshes = 0;
+  staleDetachedEventsHeld = 0;
   publish('CLEARED', source);
 }
 
@@ -162,6 +175,7 @@ export function installAshA8DirtyDraftRecompileGuard() {
       recovered_in_flight_recompiles:recoveredInFlightRecompiles,
       recovered_premium_refreshes:recoveredPremiumRefreshes,
       recovery_serial:recoverySerial,
+      stale_detached_events_held:staleDetachedEventsHeld,
       posture:doc?.documentElement?.dataset?.ashA8DirtyDraftGuard || null,
       admission_boundary:'WINDOW_CAPTURE_BEFORE_DOCUMENT_REFRESH',
       authority_changed:false,
