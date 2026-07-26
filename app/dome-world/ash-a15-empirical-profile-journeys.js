@@ -17,6 +17,7 @@ const host = globalThis.window;
 const doc = globalThis.document;
 const byId = id => doc?.getElementById(id);
 const freeze = value => Object.freeze(value);
+const hasOwn = (value, key) => Object.prototype.hasOwnProperty.call(value, key);
 
 const PROFILE_LAW = freeze({
   investigation:freeze({
@@ -74,13 +75,14 @@ const ROUTE_ALIASES = freeze({
   IMPLEMENTATION:'implementation'
 });
 
-const SENSITIVE_PATTERNS = freeze([
+const TEXT_SENSITIVE_PATTERNS = freeze([
   /\b[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}\b/i,
-  /\b(?:\+?1[ .-]?)?(?:\(?\d{3}\)?[ .-]?)\d{3}[ .-]?\d{4}\b/,
   /\b\d{3}-\d{2}-\d{4}\b/,
   /-----BEGIN (?:RSA |EC |OPENSSH )?PRIVATE KEY-----/i,
-  /\b(?:api[_ -]?key|secret[_ -]?key|access[_ -]?token|passphrase|password)\s*[:=]/i
+  /\b(?:api[_ -]?key|secret[_ -]?key|access[_ -]?token|passphrase|password)["']?\s*[:=]/i
 ]);
+const CREDENTIAL_KEY_PATTERN = /^(?:api[_ -]?key|secret[_ -]?key|access[_ -]?token|passphrase|password)$/i;
+const PHONE_CANDIDATE_PATTERN = /(?:^|[^\w])(\+?\d[\d\s().-]{5,}\d)(?=$|[^\w])/g;
 
 const FORBIDDEN_PUBLIC_TOKENS = freeze([
   'td613.ash',
@@ -94,36 +96,74 @@ const FORBIDDEN_PUBLIC_TOKENS = freeze([
 ]);
 
 function normalizeProfile(profile) {
-  const value = String(profile || '').toLowerCase();
+  const value = String(profile ?? '').toLowerCase();
   return ASH_A15_PROFILES.includes(value) ? value : null;
 }
 
 function normalizeWorkspace(workspace) {
-  const value = String(workspace || '').toLowerCase();
+  const value = String(workspace ?? '').toLowerCase();
   const aliases = { custody:'map', rooms:'map', routes:'map', draft:'work', test:'choir', save:'capsule' };
   const normalized = aliases[value] || value;
   return ASH_A15_WORKSPACES.includes(normalized) ? normalized : null;
 }
 
 function normalizeRoute(route) {
-  const raw = String(route || 'experimental');
+  const raw = String(route ?? 'experimental');
   const normalized = ROUTE_ALIASES[raw.toUpperCase()] || raw.toLowerCase();
   return ASH_A15_ROUTES.includes(normalized) ? normalized : null;
 }
 
-function contextText(context) {
-  if (typeof context === 'string') return context;
-  try { return JSON.stringify(context || {}); } catch { return String(context || ''); }
+function textContainsPhone(text) {
+  PHONE_CANDIDATE_PATTERN.lastIndex = 0;
+  for (const match of String(text || '').matchAll(PHONE_CANDIDATE_PATTERN)) {
+    const digits = match[1].replace(/\D/g, '');
+    if (digits.length >= 7 && digits.length <= 15) return true;
+  }
+  return false;
+}
+
+function inspectContext(value, state = { seen:new WeakSet(), nodes:0, maxNodes:512, maxDepth:10 }, depth = 0) {
+  state.nodes += 1;
+  if (state.nodes > state.maxNodes || depth > state.maxDepth) return { sensitive:true, opaque:true, text:'' };
+  if (value === null || value === undefined) return { sensitive:false, opaque:false, text:String(value ?? '') };
+  const type = typeof value;
+  if (type === 'string' || type === 'number' || type === 'boolean' || type === 'bigint') {
+    const text = String(value);
+    return {
+      sensitive:TEXT_SENSITIVE_PATTERNS.some(pattern => pattern.test(text)) || textContainsPhone(text),
+      opaque:false,
+      text
+    };
+  }
+  if (type === 'function' || type === 'symbol') return { sensitive:true, opaque:true, text:'' };
+  if (type !== 'object') return { sensitive:false, opaque:false, text:String(value) };
+  if (state.seen.has(value)) return { sensitive:true, opaque:true, text:'' };
+  state.seen.add(value);
+  let entries;
+  try { entries = Object.entries(value); } catch { return { sensitive:true, opaque:true, text:'' }; }
+  const pieces = [];
+  for (const [key, child] of entries) {
+    if (CREDENTIAL_KEY_PATTERN.test(key)) return { sensitive:true, opaque:false, text:key };
+    const inspected = inspectContext(child, state, depth + 1);
+    if (inspected.sensitive || inspected.opaque) return inspected;
+    pieces.push(`${key}:${inspected.text}`);
+  }
+  return { sensitive:false, opaque:false, text:pieces.join(' ') };
 }
 
 export function containsSensitiveContext(context) {
-  const text = contextText(context);
-  return SENSITIVE_PATTERNS.some(pattern => pattern.test(text));
+  const inspected = inspectContext(context);
+  return inspected.sensitive || inspected.opaque;
 }
 
-export function publicAnswerLeaksOntology(message) {
-  const text = String(message || '').toLowerCase();
-  return FORBIDDEN_PUBLIC_TOKENS.some(token => text.includes(token));
+export function publicAnswerLeaksOntology(value) {
+  let text;
+  if (typeof value === 'string') text = value;
+  else {
+    try { text = JSON.stringify(value); } catch { return true; }
+  }
+  const lower = String(text || '').toLowerCase();
+  return FORBIDDEN_PUBLIC_TOKENS.some(token => lower.includes(token));
 }
 
 function authority() {
@@ -149,10 +189,12 @@ export function compileAshA15WorldAnswer({
   const normalizedProfile = normalizeProfile(profile);
   const normalizedWorkspace = normalizeWorkspace(workspace);
   const normalizedRoute = normalizeRoute(route);
+  const recognizedAction = action_id === ASH_A15_ACTION_ID;
   const base = {
     schema:ASH_A15_WORLD_ANSWER_SCHEMA,
     version:ASH_A15_EMPIRICAL_VERSION,
-    action_id,
+    action_id:recognizedAction ? ASH_A15_ACTION_ID : null,
+    action_recognized:recognizedAction,
     profile:normalizedProfile,
     workspace:normalizedWorkspace,
     route:normalizedRoute,
@@ -163,14 +205,14 @@ export function compileAshA15WorldAnswer({
     authority:authority()
   };
 
-  if (action_id !== ASH_A15_ACTION_ID) {
+  if (!recognizedAction) {
     return freeze({ ...base, status:'HELD_UNKNOWN_ACTION', message:'This empirical lane recognizes only the named orientation gesture. No Ash action occurred.' });
   }
   if (!normalizedProfile || !normalizedWorkspace || !normalizedRoute) {
     return freeze({ ...base, status:'HELD_INCOMPLETE_ROUTE', message:'Choose one promoted profile, one principal workspace, and one AIA route before orientation. No Ash action occurred.' });
   }
   if (containsSensitiveContext(context)) {
-    return freeze({ ...base, status:'HELD_SENSITIVE_CONTEXT', message:'Sensitive or identifying material stays outside this synthetic journey. Remove it and use bounded placeholders; nothing was imported.' });
+    return freeze({ ...base, status:'HELD_SENSITIVE_CONTEXT', message:'Sensitive, identifying, opaque, or unserializable material stays outside this synthetic journey. Remove it and use bounded placeholders; nothing was imported.' });
   }
 
   const profileLaw = PROFILE_LAW[normalizedProfile];
@@ -250,20 +292,22 @@ function decorate(panel, answer = null) {
 
 export function orientAshA15Journey(overrides = {}) {
   const answer = compileAshA15WorldAnswer({
-    profile:overrides.profile || currentProfile(),
-    workspace:overrides.workspace || currentWorkspace(),
-    route:overrides.route || currentRoute(),
-    context:overrides.context || freeze({ synthetic:true }),
-    action_id:overrides.action_id || ASH_A15_ACTION_ID
+    profile:hasOwn(overrides, 'profile') ? overrides.profile : currentProfile(),
+    workspace:hasOwn(overrides, 'workspace') ? overrides.workspace : currentWorkspace(),
+    route:hasOwn(overrides, 'route') ? overrides.route : currentRoute(),
+    context:hasOwn(overrides, 'context') ? overrides.context : freeze({ synthetic:true }),
+    action_id:hasOwn(overrides, 'action_id') ? overrides.action_id : ASH_A15_ACTION_ID
   });
   const panel = ensurePanel();
   decorate(panel, answer);
-  doc?.documentElement && (doc.documentElement.dataset.ashA15EmpiricalStatus = answer.status);
+  if (doc?.documentElement) doc.documentElement.dataset.ashA15EmpiricalStatus = answer.status;
   host?.dispatchEvent?.(new CustomEvent('td613:ash:a15-world-answer', { detail:answer }));
   return answer;
 }
 
 let installed = false;
+let installedEntries = null;
+let api = null;
 let refreshQueued = false;
 function refresh() {
   const panel = ensurePanel();
@@ -275,12 +319,23 @@ function scheduleRefresh() {
   refreshQueued = true;
   queueMicrotask(() => { refreshQueued = false; refresh(); });
 }
+function bindEntries(entries) {
+  if (entries && typeof entries === 'object') installedEntries = entries;
+  return installedEntries;
+}
 
 export function installAshA15EmpiricalJourneys(entries = null) {
-  if (!host || !doc?.body || installed) return false;
+  if (!host || !doc?.body) return false;
+  bindEntries(entries);
+  if (installed) {
+    refresh();
+    host.dispatchEvent(new CustomEvent('td613:ash:a15-empirical-entries-bound', { detail:{ entries_bound:Boolean(installedEntries), profile_count:installedEntries ? Object.keys(installedEntries).length : 0 } }));
+    return true;
+  }
   installed = true;
   ensureStyles();
   doc.addEventListener('click', event => {
+    if (event.target?.closest?.('[data-aia-route]')) scheduleRefresh();
     if (!event.target?.closest?.('#ashA15OrientAction')) return;
     event.preventDefault();
     orientAshA15Journey();
@@ -289,7 +344,7 @@ export function installAshA15EmpiricalJourneys(entries = null) {
     host.addEventListener(`td613:ash:${type}`, scheduleRefresh);
   }
   doc.documentElement.dataset.ashA15Empirical = ASH_A15_EMPIRICAL_VERSION;
-  const api = freeze({
+  api = freeze({
     version:ASH_A15_EMPIRICAL_VERSION,
     schema:ASH_A15_WORLD_ANSWER_SCHEMA,
     action_id:ASH_A15_ACTION_ID,
@@ -299,13 +354,13 @@ export function installAshA15EmpiricalJourneys(entries = null) {
     matrix:compileAshA15Matrix,
     orient:orientAshA15Journey,
     compile:compileAshA15WorldAnswer,
-    entries:() => entries,
+    entries:() => installedEntries,
     refresh,
     authority:authority()
   });
   host.__td613AshA15EmpiricalJourneys = api;
   refresh();
-  host.dispatchEvent(new CustomEvent('td613:ash:a15-empirical-ready', { detail:{ version:api.version, matrix_cells:120, authority:api.authority } }));
+  host.dispatchEvent(new CustomEvent('td613:ash:a15-empirical-ready', { detail:{ version:api.version, matrix_cells:120, entries_bound:Boolean(installedEntries), authority:api.authority } }));
   return true;
 }
 
