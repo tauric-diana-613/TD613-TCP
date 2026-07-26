@@ -45,7 +45,7 @@ assert.equal(productionPosture, true);
 assert.equal(release.ash.transport, false);
 assert.equal(release.ash.automaticCinder, false);
 
-for (const token of ['td613.ash.premium-ui/v0.1-command-instrument',"['home', 'Home'","['map', 'Map'","['work', 'Work'","['choir', 'Choir'","['capsule', 'Capsule'",'runDeterministicMoireAssay','verifyMoireRebuildAssay','replayMoireRebuildReplay','verifyMoireRebuildReplay','Pairwise residue ≠ intent','automatic_ash_action: false','transport_authorized: false','/safe-harbor/index.html','/dome-world/ash-destination-handoff.html']) assert.ok(premium.includes(token));
+for (const token of ['td613.ash.premium-ui/v0.1-command-instrument',"['home', 'Home'","['map', 'Map'","['work', 'Work'","['choir', 'Choir'","['capsule', 'Capsule'",'runDeterministicMoireAssay','verifyMoireRebuildAssay','replayMoireRebuildReplay','verifyMoireRebuildReplay','Pairwise residue ≠ intent','automatic_ash_action: false','transport_authorized: false','/safe-harbor/index.html','/dome-world/ash-destination-handoff.html']) assert.ok(premium.includes(token), `Premium UI omitted ${token}`);
 assert.match(premiumCss, /grid-template-columns:repeat\(5,1fr\)/);
 assert.match(premiumCss, /@media\(prefers-reduced-motion:reduce\)/);
 assert.match(premiumCompatibility, /display:none!important/);
