@@ -13,6 +13,7 @@ const SETTLEMENT_QUIET_MS = 150;
 const draft = new Map();
 let held = false;
 let mapReturnObserved = false;
+let alignmentObserved = false;
 let refreshSerial = 0;
 let settlementTimer = null;
 
@@ -89,6 +90,7 @@ function clear() {
   draft.clear();
   held = false;
   mapReturnObserved = false;
+  alignmentObserved = false;
   refreshSerial += 1;
   mark('CLEARED');
 }
@@ -105,6 +107,7 @@ function arm(event) {
   clearSettlementTimer();
   held = draft.size > 0;
   mapReturnObserved = false;
+  alignmentObserved = false;
   refreshSerial += 1;
   mark(held ? 'HELD_WITH_PREHOLD_DRAFT' : 'HELD_WITHOUT_PREHOLD_DRAFT');
 }
@@ -119,6 +122,7 @@ function requestConfirmedMapRefresh(event) {
   if (!held || event.detail?.workspace !== 'map') return;
   clearSettlementTimer();
   mapReturnObserved = true;
+  alignmentObserved = false;
   const serial = ++refreshSerial;
   mark('MAP_RETURN_SETTLING');
   queueMicrotask(() => {
@@ -130,7 +134,7 @@ function requestConfirmedMapRefresh(event) {
 }
 
 function finalizeSettlement(serial) {
-  if (!held || !mapReturnObserved || serial !== refreshSerial || !canonicalMapIsOpen()) return false;
+  if (!held || !mapReturnObserved || !alignmentObserved || serial !== refreshSerial || !canonicalMapIsOpen()) return false;
   const finalParity = restoreAll();
   if (!finalParity.complete) {
     mark('MAP_RETURN_RESTORE_HELD');
@@ -138,15 +142,17 @@ function finalizeSettlement(serial) {
   }
   held = false;
   mapReturnObserved = false;
+  alignmentObserved = false;
   settlementTimer = null;
   mark('RESTORED_AFTER_CANONICAL_MAP_RETURN');
   host?.dispatchEvent?.(new CustomEvent('td613:ash:a8-map-return-restored', {
     detail:Object.freeze({
-      schema:'td613.ash.a8-map-return-receipt/v0.4-precommit-full-parity',
+      schema:'td613.ash.a8-map-return-receipt/v0.5-alignment-bound-full-parity',
       restored_controls:finalParity.matched,
       expected_controls:finalParity.expected,
       full_control_parity:true,
       precommit_shadow_capture:true,
+      canonical_map_alignment_observed:true,
       quiet_window_ms:SETTLEMENT_QUIET_MS,
       source_posture:'PREHOLD_VISIBLE_COMMIT_CAPTURE',
       workshop_visible_after_restore:true,
@@ -160,6 +166,20 @@ function finalizeSettlement(serial) {
   return true;
 }
 
+function scheduleAlignedSettlement() {
+  if (!held || !mapReturnObserved || !alignmentObserved || !canonicalMapIsOpen()) return false;
+  clearSettlementTimer();
+  const parity = restoreAll();
+  if (!parity.complete) {
+    mark('MAP_RETURN_RESTORE_HELD');
+    return false;
+  }
+  mark('MAP_RETURN_PARITY_ALIGNED');
+  const serial = ++refreshSerial;
+  settlementTimer = host?.setTimeout?.(() => finalizeSettlement(serial), SETTLEMENT_QUIET_MS) ?? null;
+  return true;
+}
+
 function settleAfterA8Recompile() {
   if (!held || !mapReturnObserved || !canonicalMapIsOpen()) return false;
   clearSettlementTimer();
@@ -168,10 +188,17 @@ function settleAfterA8Recompile() {
     mark('MAP_RETURN_RESTORE_HELD');
     return false;
   }
-  mark('MAP_RETURN_PARITY_OBSERVED');
-  const serial = ++refreshSerial;
-  settlementTimer = host?.setTimeout?.(() => finalizeSettlement(serial), SETTLEMENT_QUIET_MS) ?? null;
-  return true;
+  if (!alignmentObserved) {
+    mark('MAP_RETURN_PARITY_WAITING_ALIGNMENT');
+    return true;
+  }
+  return scheduleAlignedSettlement();
+}
+
+function observeMapAlignment(event) {
+  if (!held || !mapReturnObserved || event.detail?.workspace !== 'map') return false;
+  alignmentObserved = true;
+  return scheduleAlignedSettlement();
 }
 
 export function installAshA8MapReturnHandshake() {
@@ -182,6 +209,7 @@ export function installAshA8MapReturnHandshake() {
   doc.addEventListener('change', captureDelegatedForm, true);
   doc.addEventListener('td613:ash-keep:action-held', arm);
   host.addEventListener('td613:ash:ux-workspace-opened', requestConfirmedMapRefresh);
+  host.addEventListener('td613:ash:ux-workspace-aligned', observeMapAlignment);
   host.addEventListener('td613:ash:a8-recompiled', settleAfterA8Recompile);
   host.addEventListener('td613:ash:case-created', clear);
   host.addEventListener('td613:ash:case-closed', clear);
@@ -189,7 +217,7 @@ export function installAshA8MapReturnHandshake() {
     version:ASH_A8_MAP_RETURN_HANDSHAKE_VERSION,
     capture:captureAll,
     restore:restoreAll,
-    current:() => Object.freeze({ held, map_return_observed:mapReturnObserved, draft_controls:draft.size, posture:doc?.documentElement?.dataset?.ashA8MapReturnHandshake || null, quiet_window_ms:SETTLEMENT_QUIET_MS }),
+    current:() => Object.freeze({ held, map_return_observed:mapReturnObserved, alignment_observed:alignmentObserved, draft_controls:draft.size, posture:doc?.documentElement?.dataset?.ashA8MapReturnHandshake || null, quiet_window_ms:SETTLEMENT_QUIET_MS }),
     authority:Object.freeze({ authority_changed:false, source_bytes_moved:false, custody_changed:false, release_posture_changed:false, human_closure_required:true })
   });
   host.__td613AshA8MapReturnHandshake = api;
