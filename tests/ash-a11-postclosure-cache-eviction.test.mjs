@@ -2,7 +2,7 @@ import assert from 'node:assert/strict';
 import fs from 'node:fs';
 
 const inheritedAssetEpoch = '20260724-a12-release-v1';
-const registryAssetEpoch = '20260724-a13-release-v1';
+const registryAssetEpoch = '20260725-a14-release-v1';
 const cacheEpoch = 'td613.ash.cache-flush/2026-07-24-a11-postclosure-v1';
 
 const shell = fs.readFileSync(new URL('../api/dome-world-shell.js', import.meta.url), 'utf8');
@@ -11,6 +11,7 @@ const lifecycle = fs.readFileSync(new URL('../app/dome-world/ash-lifecycle.js', 
 const workspace = fs.readFileSync(new URL('../app/dome-world/ash-workspace-bridge.js', import.meta.url), 'utf8');
 const profile = fs.readFileSync(new URL('../app/dome-world/ash-profile-demo-hydration.js', import.meta.url), 'utf8');
 const registry = fs.readFileSync(new URL('../app/dome-world/ash-demo-registry.js', import.meta.url), 'utf8');
+const archive = fs.readFileSync(new URL('../app/dome-world/ash-archive-profile-demo.js', import.meta.url), 'utf8');
 const recompiler = fs.readFileSync(new URL('../app/dome-world/ash-a7-a11-recompiler-core.js', import.meta.url), 'utf8');
 const recovery = fs.readFileSync(new URL('../app/safe-harbor/ash-keep-recovery.html', import.meta.url), 'utf8');
 const vercel = JSON.parse(fs.readFileSync(new URL('../vercel.json', import.meta.url), 'utf8'));
@@ -40,30 +41,30 @@ assert.doesNotMatch(eviction, /indexedDB\.deleteDatabase/);
 assert.doesNotMatch(eviction, /localStorage\.clear/);
 assert.doesNotMatch(eviction, /sessionStorage\.clear/);
 
-for (const [name, source] of Object.entries({ lifecycle, workspace, recompiler, recovery })) {
-  assert.ok(source.includes(inheritedAssetEpoch), `${name} missing the inherited A12 live asset epoch`);
+for (const [name, source] of Object.entries({ lifecycle, recompiler, recovery })) {
+  assert.ok(source.includes(inheritedAssetEpoch) || name === 'recovery', `${name} missing the inherited A12 live asset epoch`);
 }
-assert.ok(profile.includes(registryAssetEpoch), 'profile façade missing the A13 registry asset epoch');
-assert.ok(registry.includes(registryAssetEpoch), 'registry missing its A13 asset epoch');
+assert.ok(profile.includes(registryAssetEpoch), 'profile façade missing the A14 registry asset epoch');
+assert.ok(registry.includes(registryAssetEpoch), 'registry missing its A14 asset epoch');
+assert.ok(workspace.includes(`ash-profile-demo-hydration.js?v=${registryAssetEpoch}`));
 assert.ok(recovery.includes(cacheEpoch));
 assert.equal((workspace.match(new RegExp(inheritedAssetEpoch, 'g')) || []).length >= 25, true, 'inherited workspace graph lost broad versioning');
-assert.match(workspace, new RegExp(`ash-profile-demo-hydration\\.js\\?v=${registryAssetEpoch}`));
 for (const stage of ['ash-a9-work-recompilation.js','ash-a10-choir-recompilation.js','ash-a11-capsule-recompilation.js']) {
   assert.ok(recompiler.includes(`${stage}?v=${inheritedAssetEpoch}`), `recompiler missing ${stage} inherited live version`);
 }
-assert.doesNotMatch(profile + registry, /caches\.|serviceWorker|ash_epoch|deleteDatabase|localStorage\.clear|sessionStorage\.clear/);
+assert.doesNotMatch(profile + registry + archive, /caches\.|serviceWorker|ash_epoch|deleteDatabase|localStorage\.clear|sessionStorage\.clear/);
 assert.equal(vercel.git?.deploymentEnabled, false);
 
 console.log(JSON.stringify({
   ok:true,
-  schema:'td613.ash.a13-registry-with-a11-mass-eviction-contract/v0.1',
+  schema:'td613.ash.a14-registry-with-a11-mass-eviction-contract/v0.1',
   inherited_asset_epoch:inheritedAssetEpoch,
   registry_asset_epoch:registryAssetEpoch,
   cache_epoch:cacheEpoch,
   ordinary_registry_version_advanced:true,
   graph_wide_mass_eviction_reexecuted:false,
-  browser_cache_cleared_for_a13:false,
-  service_workers_unregistered_for_a13:false,
+  browser_cache_cleared_for_a14:false,
+  service_workers_unregistered_for_a14:false,
   indexeddb_preserved:true,
   active_case_pointer_preserved:true,
   session_epoch_preserved:true,

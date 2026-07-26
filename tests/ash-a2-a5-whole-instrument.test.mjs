@@ -47,11 +47,11 @@ assert.match(css, /button\[data-flowcore-channel="inspection"\]\{grid-column:1\/
 const historicalAssetEpoch = '20260723-a2-a5-release-v1';
 const historicalCacheEpoch = 'td613.ash.cache-flush/2026-07-23-a2-a5-release-v1';
 const inheritedAssetEpoch = '20260724-a12-release-v1';
-const currentRegistryEpoch = '20260724-a13-release-v1';
+const currentRegistryEpoch = '20260725-a14-release-v1';
 const retainedMassEpoch = 'td613.ash.cache-flush/2026-07-24-a11-postclosure-v1';
 for (const [name, source] of [['shell',shell],['lifecycle',lifecycle],['workspace bridge',bridge],['cache eviction',eviction],['recovery bridge',recovery]]) assert.match(source, new RegExp(inheritedAssetEpoch.replaceAll('-', '\\-')), `${name} omitted inherited live asset epoch`);
-assert.match(bridge, new RegExp(currentRegistryEpoch.replaceAll('-', '\\-')), 'A13 registry asset epoch did not enter the bridge');
-assert.match(registry, new RegExp(currentRegistryEpoch.replaceAll('-', '\\-')), 'A13 registry omitted its ordinary asset epoch');
+assert.match(bridge, new RegExp(currentRegistryEpoch.replaceAll('-', '\\-')), 'A14 registry asset epoch did not enter the bridge');
+assert.match(registry, new RegExp(currentRegistryEpoch.replaceAll('-', '\\-')), 'A14 registry omitted its ordinary asset epoch');
 for (const [name, source] of [['shell',shell],['cache eviction',eviction],['cache flush',cacheFlush],['recovery bridge',recovery]]) assert.match(source, new RegExp(retainedMassEpoch.replaceAll('/', '\\/').replaceAll('.', '\\.').replaceAll('-', '\\-')), `${name} omitted retained A11 mass epoch`);
 assert.doesNotMatch(registry, /ash_epoch|caches\.|serviceWorker|deleteDatabase|localStorage\.clear|sessionStorage\.clear/);
 assert.match(journeyAdapter, new RegExp(historicalAssetEpoch.replaceAll('-', '\\-')));
@@ -85,4 +85,4 @@ assert.doesNotMatch(a6Source, /new MutationObserver|setInterval\(|navigator\.sen
 assert.doesNotMatch(a6Source, /ASH_AIA3_CACHE_EPOCH|ASH_AIA3_ASSET_EPOCH|cache-flush\/2026-07-24|20260724/);
 for (const invariant of ['authority_changed:false','source_bytes_moved:false','custody_changed:false','release_posture_changed:false','closure_changed:false']) assert.match(a6Source, new RegExp(invariant));
 
-console.log('Ash A2-A6 whole-instrument contracts: PASS under consolidated A13 validation');
+console.log('Ash A2-A6 whole-instrument contracts: PASS under consolidated A14 validation');

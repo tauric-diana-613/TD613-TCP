@@ -97,6 +97,7 @@ jobs:
           node tests/product-architecture/shell.test.mjs
           node tests/ash-a12-command-rationalization.test.mjs
           node tests/ash-a13-unified-demo-registry.test.mjs
+          node tests/ash-a14-archive-accession.test.mjs
           node tests/ash-lifecycle-production-contract.test.mjs
           node tests/ash-keep-production-closure-contract.test.mjs
 
@@ -182,12 +183,13 @@ jobs:
           npm install --no-save --package-lock=false playwright@1.53.2
           npx playwright install --with-deps chromium
 
-      - name: Confirm the deployed A13 registry on Chromium desktop and mobile
+      - name: Confirm deployed A14 six-demo registry and Archive on Chromium desktop and mobile
         env:
           TD613_BROWSER: chromium
           TD613_BASE_URL: ${{ steps.deployed.outputs.url }}
-          TD613_ARTIFACT_DIR: artifacts/a13-production-chromium
-        run: timeout --foreground --signal=INT --kill-after=15s 600s node scripts/ash-a13-demo-registry-browser-probe.mjs
+        run: |
+          TD613_ARTIFACT_DIR=artifacts/a14-production-registry timeout --foreground --signal=INT --kill-after=15s 600s node scripts/ash-a13-demo-registry-browser-probe.mjs
+          TD613_ARTIFACT_DIR=artifacts/a14-production-archive timeout --foreground --signal=INT --kill-after=15s 600s node scripts/ash-a14-archive-browser-probe.mjs
 
       - name: Observe deployed Ash lifecycle without promotion
         env:
@@ -202,7 +204,8 @@ jobs:
           name: td613-bounded-production-release-evidence
           path: |
             artifacts/exact-source/
-            artifacts/a13-production-chromium/
+            artifacts/a14-production-registry/
+            artifacts/a14-production-archive/
             artifacts/lifecycle-production/
           if-no-files-found: warn
           retention-days: 7
@@ -242,6 +245,7 @@ jobs:
           deployment_url = ${{ steps.deployed.outputs.url }}
           exact_source_content = PASS
           premerge_chromium_firefox_webkit = REQUIRED_AND_PASSED_BEFORE_MERGE
+          production_a14_registry_archive = PASS
           production_chromium_desktop_mobile = PASS
           ash_lifecycle_deployed_observation = PASS
           counts_as_human_evidence = false

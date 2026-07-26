@@ -1,3 +1,4 @@
+import './contract-failure-receipt.mjs';
 import assert from 'node:assert/strict';
 import fs from 'node:fs';
 const read = path => fs.readFileSync(path, 'utf8');

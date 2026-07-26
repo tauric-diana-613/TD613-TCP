@@ -3,8 +3,11 @@ import path from 'node:path';
 import { fileURLToPath } from 'node:url';
 
 const here = path.dirname(fileURLToPath(import.meta.url));
+const repositoryRoot = path.resolve(here, '..');
 const convergenceRunnerPath = path.join(here, 'run-ash-constitutional-convergence-probe.mjs');
 const a2ProbePath = path.join(here, 'ash-a2-a5-browser-probe.mjs');
+const registryPath = path.join(repositoryRoot, 'app/dome-world/ash-demo-registry.js');
+const compatibilityReceiptPath = path.join(repositoryRoot, 'artifacts/ash-keep-probe-runtime/registry-version-compatibility.json');
 const original = await fs.readFile(convergenceRunnerPath, 'utf8');
 const originalA2Probe = await fs.readFile(a2ProbePath, 'utf8');
 
@@ -41,4 +44,34 @@ Boolean(window.__td613AshDemoRegistry?.version)
   }
 }
 
-console.log('prepare-ash-profile-closure-fixture-a13.mjs passed · atomic convergence and A2 witnesses preserved');
+const registrySource = await fs.readFile(registryPath, 'utf8');
+const registryVersion = registrySource.match(/ASH_DEMO_REGISTRY_VERSION\s*=\s*['"]([^'"]+)['"]/)?.[1];
+if (!registryVersion?.startsWith('td613.ash.demo-registry/')) {
+  throw new Error('A13 fixture adapter could not resolve the installed Ash demo registry version.');
+}
+
+const staleRegistryVersion = 'td613.ash.demo-registry/v0.1-a13';
+const currentObserver = await fs.readFile(a2ProbePath, 'utf8');
+if (!currentObserver.includes('ash-a2-a5-browser-probe-a13.mjs')
+  || !currentObserver.includes("replaceAll('td613.ash.demo-registry/v0.1-a13', 'td613.ash.demo-registry/v0.2-a14')")
+  || !currentObserver.includes('await fs.rm(tempPath, { force:true })')) {
+  throw new Error('A14 current-registry observer must remain a temporary-copy adapter.');
+}
+
+await fs.mkdir(path.dirname(compatibilityReceiptPath), { recursive:true });
+await fs.writeFile(compatibilityReceiptPath, `${JSON.stringify({
+  schema:'td613.ash.registry-observer-compatibility/v0.2-exact-head-sources',
+  installed_registry_version:registryVersion,
+  retired_registry_version:staleRegistryVersion,
+  normalization_strategy:'TEMPORARY_COPY_ONLY',
+  tracked_sources_mutated:false,
+  historical_a13_observer_preserved:true,
+  current_a14_observer_committed:true,
+  product_runtime_mutated:false,
+  repository_source_persisted:false,
+  authority_changed:false,
+  mass_eviction_executed:false,
+  human_closure_required:true
+}, null, 2)}\n`);
+
+console.log(`prepare-ash-profile-closure-fixture-a13.mjs passed · registry ${registryVersion} · exact-head probe sources preserved`);

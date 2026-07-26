@@ -38,6 +38,7 @@ for (const testFile of [
   'release-plumbing.test.mjs',
   'ash-a12-command-rationalization.test.mjs',
   'ash-a13-unified-demo-registry.test.mjs',
+  'ash-a14-archive-accession.test.mjs',
   'ash-lifecycle-production-contract.test.mjs',
   'ash-keep-production-closure-contract.test.mjs'
 ]) assert.match(workflow, new RegExp(testFile.replaceAll('.', '\\.')));
@@ -47,7 +48,9 @@ assert.match(workflow, /playwright install --with-deps chromium/);
 assert.doesNotMatch(workflow, /playwright install --with-deps chromium firefox webkit/);
 assert.doesNotMatch(workflow, /for browser in chromium firefox webkit/);
 assert.match(workflow, /ash-a13-demo-registry-browser-probe\.mjs/);
+assert.match(workflow, /ash-a14-archive-browser-probe\.mjs/);
 assert.match(workflow, /ash-lifecycle-production-probe\.mjs/);
+assert.match(workflow, /production_a14_registry_archive = PASS/);
 assert.match(workflow, /production_chromium_desktop_mobile = PASS/);
 assert.match(workflow, /premerge_chromium_firefox_webkit = REQUIRED_AND_PASSED_BEFORE_MERGE/);
 assert.match(workflow, /exact_source_content = PASS/);
@@ -67,6 +70,7 @@ assert.match(consolidated, /github\.event_name == 'pull_request' && github\.even
 assert.match(consolidated, /playwright install --with-deps chromium firefox webkit/);
 assert.match(consolidated, /for browser in chromium firefox webkit/);
 assert.match(consolidated, /ash-a13-demo-registry-browser-probe\.mjs/);
+assert.match(consolidated, /ash-a14-archive-browser-probe\.mjs/);
 assert.doesNotMatch(consolidated, /github\.event\.action == 'synchronize'[\s\S]*playwright install/);
 assert.equal(fs.existsSync('.github/workflows/ash-keep-aia3-production-observation.yml'), false);
 
@@ -79,4 +83,4 @@ assert.match(law, /full three-engine evidence before merge/i);
 assert.match(law, /one bounded Chromium production confirmation/i);
 assert.match(law, /independent relock safety/i);
 
-console.log('vercel-operator-release-gate.test.mjs passed');
+console.log('vercel-operator-release-gate.test.mjs passed for A14');

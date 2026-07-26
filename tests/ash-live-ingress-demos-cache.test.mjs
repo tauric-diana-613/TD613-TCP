@@ -7,6 +7,7 @@ import { compileCaseMap, compileRoomRules, compileRouteMemory, verifyCaseMap, ve
 import { ASH_APEQ_PAIA_PROFILE_DEMOS_VERSION, buildApeqPaiaProfileFixture } from '../app/dome-world/ash-apeq-paia-profile-demos.js';
 import { buildResearchFixture } from '../app/dome-world/ash-research-demo-hydration.js';
 import { buildLegalMatterDemoFixture } from '../app/dome-world/ash-legal-profile-demo.js';
+import { buildArchiveDemoFixture } from '../app/dome-world/ash-archive-profile-demo.js';
 import { resetActiveSession, validThresholdReadiness } from '../app/dome-world/ash-cache-flush.js';
 import { ASH_LIFECYCLE_ASSET_EPOCH, ASH_LIFECYCLE_MODULE, ASH_MASS_EVICTION_EPOCH, injectAshKeepLifecycle } from '../api/dome-world-shell.js';
 
@@ -17,6 +18,7 @@ const lifecycle = read('app/dome-world/ash-lifecycle.js');
 const bridge = read('app/dome-world/ash-workspace-bridge.js');
 const profileWrapper = read('app/dome-world/ash-profile-demo-hydration.js');
 const registry = read('app/dome-world/ash-demo-registry.js');
+const archiveSource = read('app/dome-world/ash-archive-profile-demo.js');
 const shell = read('api/dome-world-shell.js');
 const keepHtml = read('app/dome-world/ash-keep.html');
 const closeRepair = read('app/dome-world/ash-case-close-repair.js');
@@ -24,7 +26,7 @@ const emergency = read('app/dome-world/ash-emergency-stability-contract.js');
 const navigation = read('app/dome-world/ash-workspace-navigation.js');
 const rescue = read('app/dome-world/ash-ui-ux-rescue.js');
 const LIFECYCLE_EPOCH = '20260724-a12-release-v1';
-const REGISTRY_EPOCH = '20260724-a13-release-v1';
+const REGISTRY_EPOCH = '20260725-a14-release-v1';
 const MASS_EPOCH = 'td613.ash.cache-flush/2026-07-24-a11-postclosure-v1';
 
 class MemoryStorage {
@@ -93,9 +95,9 @@ assert.doesNotMatch(bridge, /^import .*ash-research-demo-hydration\.js/m);
 assert.doesNotMatch(bridge, /^import .*ash-research-demo-control-state\.js/m);
 assert.doesNotMatch(bridge, /^import .*ash-legal-demo-control-state\.js/m);
 assert.match(profileWrapper, new RegExp(`ash-demo-registry\\.js\\?v=${REGISTRY_EPOCH}`));
-for (const provider of ['ash-apeq-paia-profile-demos.js','ash-research-demo-hydration.js','ash-legal-profile-demo.js','ash-demo-pedagogy-rehydration.js']) assert.ok(profileWrapper.includes(provider));
-for (const provider of ['ash-apeq-paia-profile-demos.js','ash-research-demo-hydration.js','ash-legal-profile-demo.js','ash-demo-pedagogy-rehydration.js']) assert.match(registry, new RegExp(provider.replaceAll('.', '\\.')));
-assert.doesNotMatch(registry, /ash_epoch|caches\.|serviceWorker|deleteDatabase|localStorage\.clear|sessionStorage\.clear/);
+for (const provider of ['ash-apeq-paia-profile-demos.js','ash-research-demo-hydration.js','ash-legal-profile-demo.js','ash-archive-profile-demo.js','ash-demo-pedagogy-rehydration.js']) assert.ok(profileWrapper.includes(provider));
+for (const provider of ['ash-apeq-paia-profile-demos.js','ash-research-demo-hydration.js','ash-legal-profile-demo.js','ash-archive-profile-demo.js','ash-demo-pedagogy-rehydration.js']) assert.match(registry, new RegExp(provider.replaceAll('.', '\\.')));
+assert.doesNotMatch(registry + archiveSource, /ash_epoch|caches\.|serviceWorker|deleteDatabase|localStorage\.clear|sessionStorage\.clear/);
 assert.match(rescue, /stopImmediatePropagation|ash-ux-motion-track/);
 
 for (const token of ['ASH_MASS_EVICTION_EPOCH','ash-cache-preflight','Clear-Site-Data','case_data_preserved:true','session_epoch_preserved_or_migrated','visible_url:canonicalPath']) assert(shell.includes(token));
@@ -120,5 +122,11 @@ assert.deepEqual(research.counts, { rooms:14, nodes:72, relationships:112, rules
 const legal = buildLegalMatterDemoFixture();
 assert.deepEqual({ rooms:legal.rooms.length, nodes:legal.nodes.length, relationships:legal.relationships.length, rules:legal.rules.length, routes:legal.routes.length }, { rooms:8, nodes:16, relationships:12, rules:3, routes:3 });
 assert.match(legal.defaults.research_notes, /No legal advice/);
+const archive = buildArchiveDemoFixture();
+assert.deepEqual({ rooms:archive.rooms.length, nodes:archive.nodes.length, relationships:archive.relationships.length, rules:archive.rules.length, routes:archive.routes.length }, { rooms:8, nodes:29, relationships:23, rules:4, routes:4 });
+for (const route of archive.routes) assert.match(route.draft_digest, /^sha256:[0-9a-f]{64}$/);
+assert.match(archive.defaults.route.digest, /^sha256:[0-9a-f]{64}$/);
+assert.equal(archive.assay.release_authority, false);
+assert.equal(archive.assay.transfer_authority, false);
 
-console.log('ash-live-ingress-demos-cache.test.mjs passed under A13 registry epoch');
+console.log('ash-live-ingress-demos-cache.test.mjs passed under A14 Harbor Memory registry epoch');
