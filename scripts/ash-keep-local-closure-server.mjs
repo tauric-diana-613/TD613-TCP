@@ -1,6 +1,7 @@
 import http from 'node:http';
 import fs from 'node:fs/promises';
 import path from 'node:path';
+import { spawnSync } from 'node:child_process';
 import { fileURLToPath } from 'node:url';
 import { stabilizeAshKeepSource } from '../app/dome-world/ash-keep-delivery-transform.js';
 import { injectAshKeepLifecycle, ASH_LIFECYCLE_ASSET_EPOCH, ASH_MASS_EVICTION_EPOCH } from '../api/dome-world-shell.js';
@@ -8,6 +9,29 @@ import { injectAshKeepLifecycle, ASH_LIFECYCLE_ASSET_EPOCH, ASH_MASS_EVICTION_EP
 const here = path.dirname(fileURLToPath(import.meta.url));
 const repoRoot = path.resolve(here, '..');
 const port = Number(process.argv[2] || process.env.PORT || 6130);
+const MAX_POST_BODY_BYTES = 131_072;
+const ASH_CUSTODY_REGISTER_ROUTE = '/api/dome-world/ash-custody-register';
+const PYTHON_EXECUTABLE = process.env.PYTHON || process.env.PYTHON3 || 'python3';
+const GUARDED_CUSTODY_DISPATCH = String.raw`
+import importlib.util
+import json
+import os
+import sys
+
+root = sys.argv[1]
+guard_path = os.path.join(root, "api", "ash-local-commitment-guard.py")
+spec = importlib.util.spec_from_file_location("td613_local_closure_guard", guard_path)
+if spec is None or spec.loader is None:
+    raise RuntimeError("unable to load guarded Ash commitment boundary")
+guard = importlib.util.module_from_spec(spec)
+spec.loader.exec_module(guard)
+commitment = guard._commitment()
+envelope = guard.validate_l1_boundary_flags(
+    commitment.strict_json_loads(sys.stdin.buffer.read())
+)
+result = commitment.dispatch_post(envelope)
+sys.stdout.write(json.dumps(result, separators=(",", ":"), ensure_ascii=True))
+`;
 
 await import('./prepare-ash-profile-closure-fixture-a13.mjs');
 await import('./prepare-ash-premium-closure-fixture.mjs');
@@ -46,6 +70,43 @@ function sendJson(res, status, payload, headers = {}) {
     ...headers
   });
   res.end(`${JSON.stringify(payload)}\n`);
+}
+
+async function readBoundedBody(req) {
+  const chunks = [];
+  let size = 0;
+  for await (const chunk of req) {
+    size += chunk.length;
+    if (size > MAX_POST_BODY_BYTES) throw new Error('request body must be between 1 and 131072 bytes');
+    chunks.push(chunk);
+  }
+  if (size <= 0) throw new Error('request body must be between 1 and 131072 bytes');
+  return Buffer.concat(chunks);
+}
+
+async function sendGuardedCustodyRegistration(req, res) {
+  try {
+    const body = await readBoundedBody(req);
+    const result = spawnSync(PYTHON_EXECUTABLE, ['-c', GUARDED_CUSTODY_DISPATCH, repoRoot], {
+      cwd: repoRoot,
+      input: body,
+      encoding: 'utf8',
+      maxBuffer: 1_048_576
+    });
+    if (result.error) throw result.error;
+    if (result.status !== 0) {
+      throw new Error((result.stderr || `guarded commitment subprocess exited ${result.status}`).trim());
+    }
+    const payload = JSON.parse(result.stdout || 'null');
+    if (!payload || typeof payload !== 'object') throw new Error('guarded commitment boundary returned no JSON object');
+    return sendJson(res, 200, payload, { 'x-td613-ash-commitment': 'v0.8-guarded-local-closure' });
+  } catch (error) {
+    return sendJson(res, /between 1 and 131072 bytes/.test(String(error?.message || error)) ? 400 : 500, {
+      ok: false,
+      error: 'Ash guarded canonical digest operation failed',
+      detail: String(error?.message || error)
+    });
+  }
 }
 
 async function sendCanonicalKeep(req, res) {
@@ -88,7 +149,7 @@ self.addEventListener('fetch', event => {
   if (url.pathname === '/__ash_keep_closure/readiness') {
     return sendJson(res, 200, {
       ok: true,
-      schema: 'td613.ash-keep.local-closure-readiness/v0.5-canonical-first-paint',
+      schema: 'td613.ash-keep.local-closure-readiness/v0.6-guarded-custody-route',
       recipient_transport: false,
       provider_route: false,
       production_promotion: false,
@@ -96,6 +157,7 @@ self.addEventListener('fetch', event => {
       cache_navigation_required: false,
       canonical_visible_route: '/dome-world/ash-threshold.html',
       browser_state_read_via_page_evaluate: true,
+      guarded_custody_registration_route: ASH_CUSTODY_REGISTER_ROUTE,
       lifecycle_asset_epoch: ASH_LIFECYCLE_ASSET_EPOCH,
       mass_eviction_epoch: ASH_MASS_EVICTION_EPOCH
     });
@@ -115,6 +177,9 @@ self.addEventListener('fetch', event => {
       'clear-site-data':'"cache"',
       'x-td613-ash-cache-preflight':ASH_MASS_EVICTION_EPOCH
     });
+  }
+  if (req.method === 'POST' && url.pathname === ASH_CUSTODY_REGISTER_ROUTE) {
+    return sendGuardedCustodyRegistration(req, res);
   }
   if (req.method !== 'GET' && req.method !== 'HEAD') return sendJson(res, 405, { ok: false, error: 'method-not-allowed' });
 
