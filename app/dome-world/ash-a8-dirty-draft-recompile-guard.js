@@ -91,11 +91,11 @@ function recoverAfterInFlightRecompile(event) {
   if (typeof restoreOwner !== 'function') return false;
   const serial = ++recoverySerial;
   const source = event?.detail?.source || 'A8_RECOMPILED';
+  queueMicrotask(() => completeQueuedRecovery(serial, source));
   publish('DIRTY_DRAFT_RECOVERY_QUEUED', source, {
     recovery_phase:'A8_RECOMPILED_EVENT_DISPATCH',
     event_dispatch_settled:false
   });
-  queueMicrotask(() => completeQueuedRecovery(serial, source));
   return true;
 }
 
