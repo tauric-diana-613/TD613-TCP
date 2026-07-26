@@ -78,8 +78,10 @@ async function commitA8Gesture(page, fields, buttonId) {
     }
     const button = document.getElementById(buttonId);
     if (!button?.isConnected) return { committed:false, reason:`A8 action ${buttonId} is not connected.` };
+    button.focus({ preventScroll:true });
+    if (document.activeElement !== button) return { committed:false, reason:`A8 action ${buttonId} did not acquire gesture focus.` };
     button.click();
-    return { committed:true, staged_fields:prepared.length };
+    return { committed:true, staged_fields:prepared.length, primary_action_focused:true };
   }, { fields, buttonId });
   if (!result.committed) throw new Error(result.reason);
 }
