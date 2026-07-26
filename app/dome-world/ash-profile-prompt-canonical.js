@@ -1,10 +1,11 @@
-export const ASH_PROFILE_PROMPT_CANONICAL_VERSION = 'td613.ash.profile-prompt-canonical/v1.1-a13-registry-handoff';
+export const ASH_PROFILE_PROMPT_CANONICAL_VERSION = 'td613.ash.profile-prompt-canonical/v1.2-precanonical-choice-handoff';
 
 const host = globalThis.window;
 const doc = globalThis.document;
 const POINTER_KEY = 'td613.ash-keep.current-case';
 let explicitChoice = '';
 let explicitCaseChoice = '';
+let adoptedPreCanonicalRevision = 0;
 let controlObserver = null;
 let observedSelect = null;
 let observedStart = null;
@@ -118,6 +119,30 @@ function installChoiceBoundary() {
   doc.addEventListener('change', captureCaseChoice, true);
 }
 
+function adoptReceiptedPreCanonicalChoice(select) {
+  if (!select || !noCaseOpen()) return false;
+  const receipt = host.__td613AshPreCanonicalProfileChoice;
+  const value = String(receipt?.value || '');
+  const revision = Number(receipt?.revision || 0);
+  const datasetRevision = Number(select.dataset.ashPreCanonicalProfileChoiceRevision || 0);
+  const explicit = receipt?.explicit === true
+    && select.dataset.ashPreCanonicalProfileChoiceExplicit === 'true';
+  const available = Boolean(value) && [...select.options].some(option => option.value === value);
+  const exactReceipt = explicit
+    && revision > 0
+    && revision === datasetRevision
+    && select.dataset.ashPreCanonicalProfileChoice === value
+    && select.value === value;
+  if (!available || !exactReceipt) return false;
+  explicitChoice = value;
+  adoptedPreCanonicalRevision = revision;
+  select.dataset.ashProfileChoiceExplicit = 'true';
+  select.dataset.ashPreCanonicalProfileChoiceAdopted = 'true';
+  select.dataset.ashPreCanonicalProfileChoiceAdoptedRevision = String(revision);
+  doc.documentElement.dataset.ashPreCanonicalProfileChoiceAdopted = `${value}:${revision}`;
+  return true;
+}
+
 function installBoundedControlObserver() {
   if (controlObserver || !doc?.body) return false;
   const launchBoundary = doc.getElementById('launch');
@@ -182,7 +207,12 @@ export function applyCanonicalProfilePrompt({ resetSelection = false, reason = '
 
 if (host && doc?.documentElement) {
   installChoiceBoundary();
-  applyCanonicalProfilePrompt({ resetSelection:true, reason:'INITIAL_CANONICAL_NEUTRALITY' });
+  const initialSelect = doc.getElementById('newProfile');
+  const adoptedPreCanonicalChoice = adoptReceiptedPreCanonicalChoice(initialSelect);
+  applyCanonicalProfilePrompt({
+    resetSelection:!adoptedPreCanonicalChoice,
+    reason:adoptedPreCanonicalChoice ? 'PRECANONICAL_EXPLICIT_CHOICE_ADOPTED' : 'INITIAL_CANONICAL_NEUTRALITY'
+  });
   installBoundedControlObserver();
   for (const type of ['aia-ready','aia3-ready','composition-stable']) {
     host.addEventListener(`td613:ash:${type}`, () => queueControlReconcile(type.toUpperCase()));
@@ -198,6 +228,8 @@ if (host && doc?.documentElement) {
     current:() => Object.freeze({
       explicit_choice:explicitChoice || null,
       explicit_case_choice:explicitCaseChoice || null,
+      adopted_precanonical_revision:adoptedPreCanonicalRevision || null,
+      precanonical_receipt:host.__td613AshPreCanonicalProfileChoice || null,
       case_open:!noCaseOpen(),
       observed_selector_bound:Boolean(observedSelect?.isConnected),
       observed_start_bound:Boolean(observedStart?.isConnected),
