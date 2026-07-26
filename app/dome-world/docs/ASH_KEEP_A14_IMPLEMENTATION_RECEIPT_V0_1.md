@@ -1,9 +1,9 @@
 𝌋‌
 
-# Ash Keep A14 Implementation Receipt v0.1
+# Ash Keep A14 Implementation Receipt v0.2
 
 **Namespace:** U+10D613 — Tauric Diana 613  
-**Stage:** A14 · Archive accession, provenance, restriction, access-copy, and delayed-transfer fixture  
+**Stage:** A14 · Harbor Memory Archive mixed-media accession and access review  
 **Status:** AUTHORED / PREMERGE-VALIDATION-GATED / HUMAN-GATED  
 **Date:** 2026-07-25
 
@@ -11,16 +11,57 @@
 
 A14 promotes the sixth registry seat, `Archive`, through one bounded domain provider beneath the existing `ASH_DEMO_REGISTRY` control owner.
 
-The synthetic Nightjar Community Archive fixture separates:
+The canonical synthetic fixture is:
 
-1. accession offer and enumerated scope;
-2. custody root, chain-of-custody ledger, and provenance gaps;
-3. donor restrictions, third-party rights, and external human interpretation;
-4. embargo clock, extension hypothesis, and absent declassification decision;
-5. preservation master, redaction plan, and unapproved public derivative;
-6. restricted research and reading-room access copies;
-7. delayed transfer manifest, destination hold, and recipient-authority gap;
-8. next custodial actions that remain operator-reviewed.
+> **Harbor Memory Archive · mixed-media accession and access review**
+
+The fixture preserves eleven authored collection objects as non-equivalent:
+
+1. original audio recording;
+2. transcript;
+3. edited transcript;
+4. photograph;
+5. accession note;
+6. donor restriction;
+7. uncertain date;
+8. duplicate scan;
+9. missing release form;
+10. embargoed item;
+11. public access copy.
+
+The Case Map visibly preserves:
+
+- original audio → transcript → edited transcript lineage;
+- photograph → uncertain date and duplicate scan;
+- custody-root anchoring;
+- donor restriction and third-party-rights holds;
+- missing-release and embargo boundaries;
+- preservation-master and access-copy separation;
+- delayed transfer with no destination authority.
+
+## Flow-Core sequence
+
+```text
+NOTICE
+one collection does not imply identical provenance, rights, or access posture
+
+ACT
+anchor the original audio and record what remains uncertain
+
+WORLD ANSWERS
+lineage, restriction, missing release, date uncertainty, duplicate scan,
+access copy, embargo boundary, preservation route, and delayed transfer become visible
+
+NAME
+accession, provenance, derivative, embargo, access copy, custody root,
+continuity, and transfer restriction become available after the relations
+
+REST
+the collection remains local; nothing has been published
+
+TRANSFER
+prepare a bounded access copy or Capsule handoff without moving the complete private collection
+```
 
 ## Registry result
 
@@ -31,6 +72,7 @@ ordinary asset epoch = 20260725-a14-release-v1
 promoted profiles = 6 / 6
 Archive owner = ARCHIVE
 Archive status = PROMOTED
+Archive fixture = demo_archive_harbor_memory_v1
 second Start Demo owner = absent
 ```
 
@@ -39,6 +81,11 @@ second Start Demo owner = absent
 ```text
 real collection represented = false
 real donor represented = false
+ownership established = false
+authenticity established = false
+donor intent established = false
+public-domain status established = false
+complete chronology established = false
 access granted = false
 release authorized = false
 declassification authorized = false
@@ -50,7 +97,19 @@ automatic consequential action = false
 human review required = true
 ```
 
-A preservation master is not an access copy. A prepared derivative is not a release approval. A transfer manifest is not destination authorization.
+An original is not its transcript. A transcript is not its edited derivative. A duplicate scan is not a new original. A preservation master is not an access copy. A prepared derivative is not release approval. A transfer manifest is not destination authorization.
+
+## Current-registry observer repair
+
+The inherited A2–A6 browser journey was authored against the A13 registry token. A14 retains that exact historical probe as `scripts/ash-a2-a5-browser-probe-a13.mjs` and executes it through a bounded current-registry adapter at the original path. The adapter changes observer expectations only:
+
+```text
+retired observer token = td613.ash.demo-registry/v0.1-a13
+current observer token = td613.ash.demo-registry/v0.2-a14
+product compatibility alias added = false
+runtime registry identity weakened = false
+workflow owner added = false
+```
 
 ## Cache and eviction boundary
 
@@ -71,7 +130,7 @@ custodial case state erased = false
 
 The one graph-wide mass eviction remains reserved for A15 postclosure.
 
-## Validation placement
+## Workflow estate
 
 A14 adds no workflow. Its static contract and three-engine witness execute inside the four-surface estate established by A13:
 
@@ -80,17 +139,18 @@ A14 adds no workflow. Its static contract and three-engine witness execute insid
 3. independent zero-deployment relock safety;
 4. manual GitHub Pages publication.
 
-The A14 browser witness uses the existing single Chromium–Firefox–WebKit installation and validates desktop plus reduced-motion mobile in each engine. The bounded production lane reuses one Chromium installation to confirm the six-demo registry and Archive accession before relock.
+The consolidated validator installs Chromium, Firefox, and WebKit once. The A14 witness validates desktop plus reduced-motion mobile in each engine. The bounded production lane reuses one Chromium installation to confirm the six-demo registry and Harbor Memory Archive before relock.
 
 ## Closure sequence
 
 ```text
 Draft implementation
 → exact-head static contracts
-→ Ready three-engine consolidated packet
-→ receipt inspection
+→ one exact-head Chromium–Firefox–WebKit packet
+→ receipt and screenshot inspection
+→ Ready promotion
 → exact-head merge
-→ one authorized Vercel production release
+→ one authorized A14 Vercel production release
 → exact-source and bounded A14 deployed observation
 → release-lane relock
 → independent zero-deployment safety relock
