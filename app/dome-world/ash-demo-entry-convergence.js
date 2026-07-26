@@ -1,9 +1,9 @@
-export const ASH_DEMO_ENTRY_CONVERGENCE_VERSION = 'td613.ash.demo-entry-convergence/v0.5-premium-instrument-visible-release';
+export const ASH_DEMO_ENTRY_CONVERGENCE_VERSION = 'td613.ash.demo-entry-convergence/v0.6-archive-entry-fallback';
 
 const host = globalThis.window;
 const doc = globalThis.document;
 const byId = id => doc?.getElementById(id);
-const ENTRY_FALLBACK = Object.freeze({ investigation:'home', political_campaign:'map', fundraiser:'work', research:'work', legal:'home' });
+const ENTRY_FALLBACK = Object.freeze({ investigation:'home', political_campaign:'map', fundraiser:'work', research:'work', legal:'home', archive:'map' });
 let token = 0;
 let frame = 0;
 let timeout = 0;
