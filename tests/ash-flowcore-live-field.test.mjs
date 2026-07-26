@@ -124,7 +124,9 @@ assert.match(ingressSpacing, /ordered:title\.nextElementSibling === recovery/);
 assert.doesNotMatch(ingressSpacing, /setInterval\s*\(|requestAnimationFrame\s*\(/);
 
 assert.match(browserRunner, /td613\.ash\.demo-registry\/v0\.2-a14/);
-assert.doesNotMatch(browserRunner, /td613\.ash\.demo-registry\/v0\.1-a13/);
+const retiredRegistryOccurrences = browserRunner.match(/td613\.ash\.demo-registry\/v0\.1-a13/g) || [];
+assert.equal(retiredRegistryOccurrences.length, 1, 'The retired registry version may remain only as a negative generated-runtime guard.');
+assert.match(browserRunner, /if \(runtime\.includes\('td613\.ash\.demo-registry\/v0\.1-a13'\)\) throw new Error\('Flow-Core witness retained the retired A13 registry gate\.'\)/);
 assert.match(browserRunner, /v0\.15-a14-registry-owned-dom-readiness/);
 assert.match(browserRunner, /Flow-Core A14 registry version gate was not materialized/);
 
