@@ -23,6 +23,7 @@ import {
 
 const archiveSource = fs.readFileSync('app/dome-world/ash-archive-profile-demo.js', 'utf8');
 const registrySource = fs.readFileSync('app/dome-world/ash-demo-registry.js', 'utf8');
+const convergenceSource = fs.readFileSync('app/dome-world/ash-demo-entry-convergence.js', 'utf8');
 const currentObserver = fs.readFileSync('scripts/ash-a2-a5-browser-probe.mjs', 'utf8');
 const legacyObserver = fs.readFileSync('scripts/ash-a2-a5-browser-probe-a13.mjs', 'utf8');
 const a12Observer = fs.readFileSync('scripts/ash-a12-browser-probe.mjs', 'utf8');
@@ -131,6 +132,8 @@ for (const token of [
   'declassification_authorized:false','transfer_executed:false'
 ]) assert(archiveSource.includes(token), `Harbor Memory provider omitted ${token}.`);
 
+assert.match(convergenceSource, /td613\.ash\.demo-entry-convergence\/v0\.6-archive-entry-fallback/);
+assert.match(convergenceSource, /const ENTRY_FALLBACK = Object\.freeze\(\{[^\n]*archive:'map'/);
 assert(currentObserver.includes("replaceAll('td613.ash.demo-registry/v0.1-a13', 'td613.ash.demo-registry/v0.2-a14')"));
 assert(legacyObserver.includes('td613.ash.demo-registry/v0.1-a13'));
 assert.doesNotMatch(a12Observer, /td613\.ash\.demo-registry\/v0\.1-a13/);
@@ -156,7 +159,7 @@ assert.equal(vercel.git?.deploymentEnabled, false);
 
 console.log(JSON.stringify({
   ok:true,
-  schema:'td613.ash.a14-harbor-memory-archive-contract/v0.5-normalized-observers',
+  schema:'td613.ash.a14-harbor-memory-archive-contract/v0.6-firefox-entry-convergence',
   registry_version:ASH_DEMO_REGISTRY_VERSION,
   ordinary_asset_epoch:ASH_DEMO_ASSET_EPOCH,
   archive_fixture:fixture.demo_id,
@@ -169,6 +172,7 @@ console.log(JSON.stringify({
   readiness_validator_read_only:true,
   a12_registry_observer_current:true,
   a14_authority_ceiling_normalized:true,
+  archive_entry_fallback:'map',
   tracked_probe_sources_mutated:false,
   legacy_fixture_rewriter_invoked:false,
   mass_eviction_epoch:massEpoch,
