@@ -110,8 +110,12 @@ const EVENT_TYPES = Object.freeze([
   'whole-instrument-refreshed','a6-affordance-refreshed'
 ]);
 
+function stageGuard(stage) {
+  return host?.[`__td613Ash${stage}RecompileGuard`] || null;
+}
+
 function stageGuardReason(stage, source) {
-  const guard = host?.[`__td613Ash${stage}RecompileGuard`];
+  const guard = stageGuard(stage);
   if (!guard?.shouldDefer) return null;
   try {
     const decision = guard.shouldDefer(source);
@@ -120,6 +124,40 @@ function stageGuardReason(stage, source) {
   } catch {
     return 'STAGE_RECOMPILE_GUARD_ERROR';
   }
+}
+
+function recoverStageAfterPremiumRefresh(stage, source, detail = {}) {
+  const guard = stageGuard(stage);
+  if (!guard?.recoverAfterRefresh) return false;
+  try {
+    return guard.recoverAfterRefresh(source, detail) === true;
+  } catch {
+    host?.dispatchEvent?.(new CustomEvent(`td613:ash:${stage.toLowerCase()}-recompile-recovery-held`, {
+      detail:Object.freeze({
+        stage,
+        source,
+        phase:'POST_PREMIUM_REFRESH',
+        authority_changed:false,
+        source_bytes_moved:false,
+        human_closure_required:true
+      })
+    }));
+    return false;
+  }
+}
+
+function publishRecompileDeferred(stage, source, reason, detail = {}) {
+  host?.dispatchEvent?.(new CustomEvent(`td613:ash:${stage.toLowerCase()}-recompile-deferred`, {
+    detail:Object.freeze({
+      stage,
+      source,
+      reason,
+      authority_changed:false,
+      source_bytes_moved:false,
+      human_closure_required:true,
+      ...detail
+    })
+  }));
 }
 
 export function installAshStage({ stage, sync, navigationSelectors = '' }) {
@@ -133,22 +171,31 @@ export function installAshStage({ stage, sync, navigationSelectors = '' }) {
     );
     const guardReason = stageGuardReason(stage, source);
     if (activeStageInteraction || guardReason) {
-      host.dispatchEvent(new CustomEvent(`td613:ash:${stage.toLowerCase()}-recompile-deferred`, {
-        detail:Object.freeze({
-          stage,
-          source,
-          reason:activeStageInteraction ? 'ACTIVE_STAGE_INTERACTION' : guardReason,
-          authority_changed:false,
-          source_bytes_moved:false,
-          human_closure_required:true
-        })
-      }));
+      publishRecompileDeferred(stage, source, activeStageInteraction ? 'ACTIVE_STAGE_INTERACTION' : guardReason, {
+        phase:'PRE_PREMIUM_REFRESH',
+        recovered_after_refresh:false
+      });
       return false;
     }
     const token = ++serial;
     const draft = captureStageDrafts();
     const snapshot = await currentPremiumSnapshot();
-    if (token !== serial) return false;
+    const staleToken = token !== serial;
+    const postRefreshGuardReason = stageGuardReason(stage, source);
+    const recoveredAfterRefresh = recoverStageAfterPremiumRefresh(stage, source, {
+      phase:'POST_PREMIUM_REFRESH_PRE_STAGE_SYNC',
+      stale_token:staleToken,
+      guard_reason:postRefreshGuardReason
+    });
+    if (postRefreshGuardReason || recoveredAfterRefresh) {
+      publishRecompileDeferred(stage, source, postRefreshGuardReason || 'STAGE_DRAFT_RECOVERED_AFTER_REFRESH', {
+        phase:'POST_PREMIUM_REFRESH',
+        recovered_after_refresh:recoveredAfterRefresh,
+        stale_token:staleToken
+      });
+      return false;
+    }
+    if (staleToken) return false;
     const result = await sync(snapshot, source);
     const draftRestored = restoreStageDrafts(draft);
     doc.documentElement.dataset[`ash${stage}Recompiled`] = 'true';
@@ -162,7 +209,7 @@ export function installAshStage({ stage, sync, navigationSelectors = '' }) {
     const control = navigationSelectors && event.target?.closest?.(navigationSelectors);
     if (control) queueMicrotask(() => run('EXPLICIT_NAVIGATION'));
   }, true);
-  host.addEventListener('td613:ash:canonical-module-graph-ready', () => queueMicrotask(() => run('CANONICAL_MODULE_GRAPH_READY')));
+  host.addEventListener('td613:ash:canonical-module-graph-ready', () => queueMicrotask(() => run('CANONICAL_MODULE_GRAPH_READY'));
   host[`__td613Ash${stage}`] = Object.freeze({ version:ASH_A7_A11_RECOMPILER_CORE_VERSION, refresh:run });
   queueMicrotask(() => run('INSTALL'));
   return true;
