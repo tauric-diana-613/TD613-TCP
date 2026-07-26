@@ -49,6 +49,34 @@ async function activateArchive(page) {
   });
 }
 
+async function readArchiveCase(page) {
+  return page.evaluate(async () => {
+    const caseId = localStorage.getItem('td613.ash-keep.current-case');
+    if (!caseId) return { case_id:null, profile:null, operator_notes:[], title:null };
+    const db = await new Promise((resolve, reject) => {
+      const request = indexedDB.open('td613-ash-keep');
+      request.onsuccess = () => resolve(request.result);
+      request.onerror = () => reject(request.error);
+    });
+    try {
+      const record = await new Promise((resolve, reject) => {
+        const request = db.transaction('cases').objectStore('cases').get(caseId);
+        request.onsuccess = () => resolve(request.result || null);
+        request.onerror = () => reject(request.error);
+      });
+      return {
+        case_id:record?.case_id || null,
+        profile:record?.profile || null,
+        operator_notes:record?.operator_notes || [],
+        title:record?.title || null,
+        case_map_digest:record?.case_map_digest || null
+      };
+    } finally {
+      db.close();
+    }
+  });
+}
+
 async function settleMap(page) {
   await page.evaluate(async () => {
     const open = window.__td613AshPremiumUI?.open
@@ -122,31 +150,30 @@ async function inspect(page, label) {
 
   await activateArchive(page);
   await page.waitForFunction(() => {
-    const current = window.__td613AshKeep?.current?.() || null;
     const status = document.getElementById('demoProfileStatus')?.textContent || '';
-    const hydrated = Boolean(current?.case_id)
-      && current.profile === 'archive'
-      && (current.operator_notes || []).includes('demo_profile:archive')
+    const pointer = localStorage.getItem('td613.ash-keep.current-case');
+    const hydratedSurface = Boolean(pointer)
       && document.documentElement.dataset.ashDemoProfile === 'archive'
       && document.documentElement.dataset.ashArchiveAccession === 'td613.ash.archive-demo/v0.2-a14-harbor-memory'
       && document.getElementById('archiveAccessionDocket')?.dataset.profile === 'archive';
-    return hydrated || /Demo registry held\./i.test(status);
+    return hydratedSurface || /Demo registry held\./i.test(status);
   }, null, { timeout:120_000 });
 
-  const hydration = await page.evaluate(() => {
-    const current = window.__td613AshKeep?.current?.() || null;
-    return {
-      case_id:current.case_id || null,
-      profile:current.profile || null,
-      archive_marker:(current.operator_notes || []).includes('demo_profile:archive'),
-      archive_version:document.documentElement.dataset.ashArchiveAccession || null,
-      docket_present:document.getElementById('archiveAccessionDocket')?.dataset.profile === 'archive',
-      registry_status:document.getElementById('demoProfileStatus')?.textContent || '',
-      workspace:document.documentElement.dataset.ashPremiumWorkspace || null
-    };
-  });
-  if (/Demo registry held\./i.test(hydration.registry_status)) throw new Error(`A14 registry reported hydration hold: ${JSON.stringify(hydration)}`);
-  if (!hydration.case_id || hydration.profile !== 'archive' || !hydration.archive_marker || hydration.archive_version !== 'td613.ash.archive-demo/v0.2-a14-harbor-memory' || !hydration.docket_present) throw new Error(`A14 Harbor Memory hydration held: ${JSON.stringify(hydration)}`);
+  const archiveCase = await readArchiveCase(page);
+  const hydration = await page.evaluate(() => ({
+    archive_version:document.documentElement.dataset.ashArchiveAccession || null,
+    docket_present:document.getElementById('archiveAccessionDocket')?.dataset.profile === 'archive',
+    registry_status:document.getElementById('demoProfileStatus')?.textContent || '',
+    workspace:document.documentElement.dataset.ashPremiumWorkspace || null,
+    public_core:window.__td613AshKeep?.current?.() || null
+  }));
+  if (/Demo registry held\./i.test(hydration.registry_status)) throw new Error(`A14 registry reported hydration hold: ${JSON.stringify({ ...hydration, archiveCase })}`);
+  if (!archiveCase.case_id || archiveCase.profile !== 'archive' || !archiveCase.operator_notes.includes('demo_profile:archive') || archiveCase.title !== 'Harbor Memory Archive · mixed-media accession and access review' || hydration.archive_version !== 'td613.ash.archive-demo/v0.2-a14-harbor-memory' || !hydration.docket_present) {
+    throw new Error(`A14 Harbor Memory custody hydration held: ${JSON.stringify({ ...hydration, archiveCase })}`);
+  }
+  if (hydration.public_core?.case_id !== archiveCase.case_id || hydration.public_core?.case_map_digest !== archiveCase.case_map_digest) {
+    throw new Error(`A14 public core and persisted case diverged: ${JSON.stringify({ public_core:hydration.public_core, archiveCase })}`);
+  }
 
   await settleMap(page);
 
@@ -160,8 +187,8 @@ async function inspect(page, label) {
       promoted_profiles:registry.profiles.filter(entry => entry.promoted).map(entry => entry.profile),
       archive_owner:registry.profiles.find(entry => entry.profile === 'archive')?.owner,
       active_case:current.case_id || null,
-      active_profile:current.profile || null,
-      archive_marker:(current.operator_notes || []).includes('demo_profile:archive'),
+      case_map_digest:current.case_map_digest || null,
+      route_memory_digest:current.route_memory_digest || null,
       archive_version:document.documentElement.dataset.ashArchiveAccession || null,
       workspace:document.documentElement.dataset.ashPremiumWorkspace || null,
       registry_status:document.getElementById('demoProfileStatus')?.textContent || '',
@@ -178,7 +205,7 @@ async function inspect(page, label) {
   });
 
   if (result.promoted_profiles.length !== 6 || result.archive_owner !== 'ARCHIVE') throw new Error(`A14 registry promotion held: ${JSON.stringify(result)}`);
-  if (!result.active_case || result.active_profile !== 'archive' || !result.archive_marker || result.archive_version !== 'td613.ash.archive-demo/v0.2-a14-harbor-memory' || result.workspace !== 'map') throw new Error(`A14 Harbor Memory presentation held: ${JSON.stringify(result)}`);
+  if (!result.active_case || result.active_case !== archiveCase.case_id || result.archive_version !== 'td613.ash.archive-demo/v0.2-a14-harbor-memory' || result.workspace !== 'map') throw new Error(`A14 Harbor Memory presentation held: ${JSON.stringify({ result, archiveCase })}`);
   for (const phrase of ['Harbor Memory Archive','original audio','transcript','uncertain date','duplicate scan','donor restriction','missing release','embargo','public access copy','Nothing has been published','no ownership','no access grant']) {
     if (!result.docket_text.toLowerCase().includes(phrase.toLowerCase())) throw new Error(`A14 docket omitted ${phrase}: ${JSON.stringify(result)}`);
   }
@@ -187,7 +214,7 @@ async function inspect(page, label) {
   if (result.url !== '/dome-world/ash-threshold.html' || result.title !== 'TD613 Ash' || result.overflow > 1) throw new Error(`A14 presentation drift: ${JSON.stringify(result)}`);
 
   await page.screenshot({ path:path.join(artifactDir, `${browserName}-${label}.png`), fullPage:true });
-  return result;
+  return { ...result, persisted_profile:archiveCase.profile, persisted_archive_marker:true };
 }
 
 const receipts = [];
@@ -203,13 +230,15 @@ try {
   await mobile.close();
 
   await fs.writeFile(path.join(artifactDir, `${browserName}-a14-archive-receipt.json`), JSON.stringify({
-    schema:'td613.ash.a14-harbor-memory-browser-witness/v0.3-separated-hydration-and-map',
+    schema:'td613.ash.a14-harbor-memory-browser-witness/v0.4-persisted-custody-record',
     browser:browserName,
     receipts,
     registry_owner:'ASH_DEMO_REGISTRY',
     promoted_profiles:6,
     archive_status:'PROMOTED',
     archive_owner:'ARCHIVE',
+    persisted_case_profile_verified:true,
+    persisted_operator_marker_verified:true,
     mixed_media_fixture_complete:true,
     original_derivative_lineage_visible:true,
     route_digests_valid:true,
