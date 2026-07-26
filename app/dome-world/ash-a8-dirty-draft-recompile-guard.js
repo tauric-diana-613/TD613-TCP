@@ -72,6 +72,7 @@ function completeQueuedRecovery(serial, source) {
     recovered ? 'DIRTY_DRAFT_RECOVERED_AFTER_IN_FLIGHT_RECOMPILE' : 'DIRTY_DRAFT_RECOVERY_HELD',
     source,
     {
+      recovery_origin:'POST_CORE_GENERIC_DRAFT_RESTORE',
       recovery_phase:'POST_A8_RECOMPILED_EVENT_DISPATCH',
       event_dispatch_settled:true,
       connected_workshop_recovery:true,
