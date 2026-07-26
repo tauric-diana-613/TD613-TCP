@@ -29,11 +29,30 @@ assert.doesNotMatch(core, /reason:'ACTIVE_STAGE_FORM'/);
 assert.match(probe, /if \(stage === 'A9'\)/);
 assert.match(probe, /ashA9WorkRecompilation/);
 for (const marker of ['Do now','Prepare','Waiting / held','Completed / receipted','Human approval']) assert.ok(probe.includes(`'${marker}'`));
-for (const token of ['async function commitA8Gesture(page, fields, buttonId)','const prepared = []','for (const [, control, value] of prepared) control.value = value','const captureTarget = prepared.at(-1)?.[1]','captureTarget?.dispatchEvent(new Event(\'input\', { bubbles:true }))','for (const [id, , value] of prepared)','button.focus({ preventScroll:true })','document.activeElement !== button','primary_action_focused:true','button.click()','await commitA8Gesture(page, {']) assert.ok(probe.includes(token), `A8 browser witness omitted guarded gesture token ${token}`);
-for (const pattern of [/locator\('#ashA8ObjectName'\)\.fill/,/locator\('#ashA8RelationFrom'\)\.selectOption/,/locator\('#ashA8CommitObject'\)\.click/,/locator\('#ashA8CommitRelation'\)\.click/]) assert.doesNotMatch(probe, pattern, 'A8 browser witness must not split one deliberate gesture across a recompilable DOM');
+for (const token of [
+  'async function stageA8Field(page, id, value)',
+  "await locator.selectOption(String(value))",
+  "await locator.fill(String(value))",
+  'async function waitForConcurrentA8Staging(page, fields)',
+  'async function commitA8Gesture(page, fields, buttonId)',
+  'for (const [id, value] of Object.entries(fields)) await stageA8Field(page, id, value)',
+  'await waitForConcurrentA8Staging(page, fields)',
+  'concurrent_staging_verified:true',
+  'await button.focus()',
+  'await button.click()',
+  'await returnToMap(page, relationFields)',
+  '#premiumPrimaryDock [data-premium-workspace="map"]:visible',
+  'RESTORED_AFTER_CANONICAL_MAP_RETURN'
+]) assert.ok(probe.includes(token), `A8 browser witness omitted visible staging token ${token}`);
+for (const pattern of [
+  /page\.evaluate\(\(\{ fields, buttonId \}\)/,
+  /const prepared = \[\]/,
+  /captureTarget\?\.dispatchEvent/,
+  /for \(const \[, control, value\] of prepared\) control\.value = value/
+]) assert.doesNotMatch(probe, pattern, 'A8 browser witness must not batch hidden assignments behind one synthetic capture event.');
 for (const marker of ['node tests/ash-a9-work-recompilation.test.mjs','TD613_ASH_STAGES=\'A7,A8,A9,A10,A11\'','scripts/ash-a7-a11-browser-probe.mjs','One exact-head Chromium Firefox WebKit witness']) assert.ok(workflow.includes(marker), `Consolidated A9 witness missing ${marker}`);
 assert.match(workflow, /github\.event_name == 'workflow_dispatch' && inputs\.mode == 'full-browser'/);
 assert.match(workflow, /github\.event_name == 'pull_request' && github\.event\.action == 'ready_for_review'/);
 for (const marker of ['Work recompilation','human intention','Do now','Prepare','Waiting / held','Completed / receipted','Hush integration','human closure required: true']) assert.ok(receipt.includes(marker));
 assert.equal(vercel.git?.deploymentEnabled, false);
-console.log(JSON.stringify({ok:true,schema:'td613.ash.a9-work-contract/v0.1',action_families:8,parallel_task_engine:false,raw_content_transport:false,authority_changed:false,source_bytes_moved:false,human_closure_required:true,vercel_gate:'CLOSED'}, null, 2));
+console.log(JSON.stringify({ok:true,schema:'td613.ash.a9-work-contract/v0.2-real-a8-staging-witness',action_families:8,parallel_task_engine:false,a8_visible_field_gestures:true,a8_concurrent_staging_verified:true,raw_content_transport:false,authority_changed:false,source_bytes_moved:false,human_closure_required:true,vercel_gate:'CLOSED'}, null, 2));
