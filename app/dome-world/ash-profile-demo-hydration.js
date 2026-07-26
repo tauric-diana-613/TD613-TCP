@@ -22,6 +22,38 @@ import {
   installAshDemoRegistry
 } from './ash-demo-registry.js?v=20260726-a15-empirical-v1';
 
+const host = globalThis.window;
+const doc = globalThis.document;
+let preCanonicalChoiceRevision = 0;
+
+function receiptPreCanonicalProfileChoice(event) {
+  const select = event?.target?.closest?.('#newProfile');
+  if (!select) return false;
+  const value = String(select.value || '');
+  preCanonicalChoiceRevision += 1;
+  select.dataset.ashPreCanonicalProfileChoice = value || 'NONE';
+  select.dataset.ashPreCanonicalProfileChoiceExplicit = String(Boolean(value));
+  select.dataset.ashPreCanonicalProfileChoiceRevision = String(preCanonicalChoiceRevision);
+  host.__td613AshPreCanonicalProfileChoice = Object.freeze({
+    schema:'td613.ash.pre-canonical-profile-choice/v0.1',
+    value:value || null,
+    explicit:Boolean(value),
+    revision:preCanonicalChoiceRevision,
+    event_type:event.type,
+    authority_changed:false,
+    source_bytes_moved:false,
+    custody_changed:false,
+    human_closure_required:true
+  });
+  return true;
+}
+
+if (host && doc?.documentElement && doc.documentElement.dataset.ashPreCanonicalProfileChoiceBoundary !== 'true') {
+  doc.documentElement.dataset.ashPreCanonicalProfileChoiceBoundary = 'true';
+  doc.addEventListener('input', receiptPreCanonicalProfileChoice, true);
+  doc.addEventListener('change', receiptPreCanonicalProfileChoice, true);
+}
+
 export const ASH_PROFILE_DEMO_VERSION = ASH_DEMO_REGISTRY_VERSION;
 export const ASH_PROFILE_DEMOS = getAshDemoRegistrySnapshot();
 export const installApeqPaiaProfileDemos = installAshDemoRegistry;
