@@ -90,7 +90,9 @@ function recoverAfterPremiumRefresh(source, detail = {}) {
 }
 
 function completeQueuedRecovery(serial, source) {
-  if (serial !== recoverySerial) return false;
+  if (serial !== recoverySerial || !dirtyDraftActive || custodyHoldIsActive() || !workshopIsConnected()) return false;
+  const restoreOwner = host?.__td613AshA8MapReturnHandshake?.restore;
+  if (typeof restoreOwner !== 'function') return false;
   const recovered = restoreCurrentShadow('DIRTY_DRAFT_RECOVERED_AFTER_IN_FLIGHT_RECOMPILE', source, {
     recovery_origin:'POST_CORE_GENERIC_DRAFT_RESTORE',
     recovery_phase:'POST_A8_RECOMPILED_EVENT_DISPATCH',
