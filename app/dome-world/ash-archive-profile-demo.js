@@ -10,7 +10,12 @@ const MARKER = 'demo_profile:archive';
 const host = globalThis.window;
 const doc = globalThis.document;
 const byId = id => doc?.getElementById(id);
-const digest = value => `sha256:${String(value).repeat(64).slice(0, 64)}`;
+const digest = value => {
+  const source = [...String(value || '0')]
+    .map(character => character.codePointAt(0).toString(16).padStart(2, '0'))
+    .join('') || '0';
+  return `sha256:${source.repeat(Math.ceil(64 / source.length)).slice(0, 64)}`;
+};
 
 const ROOMS = Object.freeze([
   { id:'room_accession', label:'Accession & Scope', color:'#76ead4' },
