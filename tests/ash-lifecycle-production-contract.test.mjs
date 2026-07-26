@@ -27,6 +27,11 @@ assert.match(consolidatedWorkflow, /Run bounded closure and constitutional conve
 assert.match(compatibilityRunner, /await import\('\.\/ash-lifecycle-production-probe\.mjs'\)/);
 assert.doesNotMatch(compatibilityRunner, /run-ash-keep-a1-production-probe-base\.mjs/);
 assert.match(compatibilityRunner, /retired pre-lifecycle A1 closure journey/);
+for (const token of [
+  "await fs.rm(path.join(repoRoot, 'artifacts', staleDirectory), { recursive:true, force:true })",
+  "'ash-keep-production-closure'",
+  "'ash-keep-probe-runtime'"
+]) assert.ok(compatibilityRunner.includes(token), `Compatibility closure runner omitted stale-artifact quarantine ${token}`);
 for (const token of ['ARRIVAL_UNPERSISTED','CASE_BOUND','REBUILD_ELIGIBLE','RELEASE_ELIGIBLE','CONTINUITY_SEALED','promotion_authorized: false','continuity is not transport']) assert.ok(probe.includes(token));
 for (const token of [
   'legacy_bypass === true',
@@ -92,4 +97,4 @@ assert.match(stretch11, /active serverless functions = 11/);
 assert.match(stretch11, /transport capability = NAMED_SAME_ORIGIN_BROWSER_RECIPIENT_ONLY/);
 assert.equal(fs.existsSync('.github/workflows/ash-keep-production-closure.yml'), false);
 assert.equal(fs.existsSync('.github/workflows/ash-keep-aia3-production-observation.yml'), false);
-console.log('ash-lifecycle-production-contract.test.mjs passed under canonicalized legacy bypass, guarded local custody, lifecycle-rank authority freshness, and URL-specific failure diagnostics');
+console.log('ash-lifecycle-production-contract.test.mjs passed under canonicalized legacy bypass, stale-artifact quarantine, guarded local custody, lifecycle-rank authority freshness, and URL-specific failure diagnostics');
