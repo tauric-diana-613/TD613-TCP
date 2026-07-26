@@ -8,6 +8,7 @@ const CONTROL_IDS = Object.freeze([
   'ashA8RelationFrom','ashA8RelationTo','ashA8RelationType','ashA8RelationEvidence','ashA8RelationUncertain','ashA8RelationNotes'
 ]);
 const HELD_ACTIONS = new Set(['addObject','addRelationship']);
+const COMMIT_SELECTOR = '#ashA8CommitObject,#ashA8CommitRelation';
 const SETTLEMENT_QUIET_MS = 150;
 const draft = new Map();
 let held = false;
@@ -92,6 +93,13 @@ function clear() {
   mark('CLEARED');
 }
 
+function captureBeforeCommit(event) {
+  if (held || !event.target?.closest?.(COMMIT_SELECTOR)) return false;
+  const captured = captureAll();
+  if (captured) mark('PREHOLD_COMMIT_SHADOW_CAPTURED');
+  return captured;
+}
+
 function arm(event) {
   if (!HELD_ACTIONS.has(event.detail?.action_id)) return;
   clearSettlementTimer();
@@ -134,12 +142,13 @@ function finalizeSettlement(serial) {
   mark('RESTORED_AFTER_CANONICAL_MAP_RETURN');
   host?.dispatchEvent?.(new CustomEvent('td613:ash:a8-map-return-restored', {
     detail:Object.freeze({
-      schema:'td613.ash.a8-map-return-receipt/v0.3-full-parity',
+      schema:'td613.ash.a8-map-return-receipt/v0.4-precommit-full-parity',
       restored_controls:finalParity.matched,
       expected_controls:finalParity.expected,
       full_control_parity:true,
+      precommit_shadow_capture:true,
       quiet_window_ms:SETTLEMENT_QUIET_MS,
-      source_posture:'PREHOLD_FORM_CAPTURE',
+      source_posture:'PREHOLD_VISIBLE_COMMIT_CAPTURE',
       workshop_visible_after_restore:true,
       authority_changed:false,
       source_bytes_moved:false,
@@ -168,6 +177,7 @@ function settleAfterA8Recompile() {
 export function installAshA8MapReturnHandshake() {
   if (!host || !doc?.body || host.__td613AshA8MapReturnHandshake) return false;
   ensureStyles();
+  doc.addEventListener('click', captureBeforeCommit, true);
   doc.addEventListener('input', captureDelegatedForm, true);
   doc.addEventListener('change', captureDelegatedForm, true);
   doc.addEventListener('td613:ash-keep:action-held', arm);
