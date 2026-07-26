@@ -6,6 +6,7 @@ const FORM_SELECTOR = '#ashA8ObjectForm,#ashA8RelationForm';
 const COMMIT_SELECTOR = '#ashA8CommitObject,#ashA8CommitRelation';
 let dirtyDraftActive = false;
 let recoveredInFlightRecompiles = 0;
+let recoveredPremiumRefreshes = 0;
 let recoverySerial = 0;
 
 function canonicalMapWorkshopIsActive() {
@@ -28,7 +29,7 @@ function publish(posture, source = null, detail = {}) {
   if (doc?.documentElement) doc.documentElement.dataset.ashA8DirtyDraftGuard = posture;
   host?.dispatchEvent?.(new CustomEvent('td613:ash:a8-dirty-draft-guard', {
     detail:Object.freeze({
-      schema:'td613.ash.a8-dirty-draft-guard-receipt/v0.3-post-dispatch-recovery',
+      schema:'td613.ash.a8-dirty-draft-guard-receipt/v0.4-post-premium-refresh-recovery',
       posture,
       source,
       dirty_draft_active:dirtyDraftActive,
@@ -36,6 +37,7 @@ function publish(posture, source = null, detail = {}) {
       workshop_connected:workshopIsConnected(),
       custody_hold_active:custodyHoldIsActive(),
       recovered_in_flight_recompiles:recoveredInFlightRecompiles,
+      recovered_premium_refreshes:recoveredPremiumRefreshes,
       recovery_serial:recoverySerial,
       authority_changed:false,
       source_bytes_moved:false,
@@ -63,24 +65,39 @@ function admitCommit(event) {
   return true;
 }
 
-function completeQueuedRecovery(serial, source) {
-  if (serial !== recoverySerial || !dirtyDraftActive || custodyHoldIsActive() || !workshopIsConnected()) return false;
+function restoreCurrentShadow(posture, source, detail = {}) {
+  if (!dirtyDraftActive || custodyHoldIsActive() || !workshopIsConnected()) return false;
   const parity = host?.__td613AshA8MapReturnHandshake?.restore?.() || null;
   const recovered = parity?.complete === true;
+  publish(posture, source, {
+    expected_controls:parity?.expected ?? 0,
+    matched_controls:parity?.matched ?? 0,
+    full_control_parity:recovered,
+    ...detail
+  });
+  return recovered;
+}
+
+function recoverAfterPremiumRefresh(source, detail = {}) {
+  const recovered = restoreCurrentShadow('DIRTY_DRAFT_RECOVERED_AFTER_PREMIUM_REFRESH', source, {
+    recovery_origin:'AWAITED_PREMIUM_REFRESH',
+    recovery_phase:'POST_PREMIUM_REFRESH_PRE_STAGE_SYNC',
+    stale_token:Boolean(detail?.stale_token),
+    guard_reason:detail?.guard_reason || null
+  });
+  if (recovered) recoveredPremiumRefreshes += 1;
+  return recovered;
+}
+
+function completeQueuedRecovery(serial, source) {
+  if (serial !== recoverySerial) return false;
+  const recovered = restoreCurrentShadow('DIRTY_DRAFT_RECOVERED_AFTER_IN_FLIGHT_RECOMPILE', source, {
+    recovery_origin:'POST_CORE_GENERIC_DRAFT_RESTORE',
+    recovery_phase:'POST_A8_RECOMPILED_EVENT_DISPATCH',
+    event_dispatch_settled:true,
+    connected_workshop_recovery:true
+  });
   if (recovered) recoveredInFlightRecompiles += 1;
-  publish(
-    recovered ? 'DIRTY_DRAFT_RECOVERED_AFTER_IN_FLIGHT_RECOMPILE' : 'DIRTY_DRAFT_RECOVERY_HELD',
-    source,
-    {
-      recovery_origin:'POST_CORE_GENERIC_DRAFT_RESTORE',
-      recovery_phase:'POST_A8_RECOMPILED_EVENT_DISPATCH',
-      event_dispatch_settled:true,
-      connected_workshop_recovery:true,
-      expected_controls:parity?.expected ?? 0,
-      matched_controls:parity?.matched ?? 0,
-      full_control_parity:recovered
-    }
-  );
   return recovered;
 }
 
@@ -103,6 +120,7 @@ function clear(source) {
   recoverySerial += 1;
   dirtyDraftActive = false;
   recoveredInFlightRecompiles = 0;
+  recoveredPremiumRefreshes = 0;
   publish('CLEARED', source);
 }
 
@@ -123,6 +141,7 @@ export function installAshA8DirtyDraftRecompileGuard() {
   host.__td613AshA8RecompileGuard = Object.freeze({
     version:ASH_A8_DIRTY_DRAFT_RECOMPILE_GUARD_VERSION,
     shouldDefer,
+    recoverAfterRefresh:recoverAfterPremiumRefresh,
     recover:recoverAfterInFlightRecompile,
     clear,
     current:() => Object.freeze({
@@ -131,6 +150,7 @@ export function installAshA8DirtyDraftRecompileGuard() {
       workshop_connected:workshopIsConnected(),
       custody_hold_active:custodyHoldIsActive(),
       recovered_in_flight_recompiles:recoveredInFlightRecompiles,
+      recovered_premium_refreshes:recoveredPremiumRefreshes,
       recovery_serial:recoverySerial,
       posture:doc?.documentElement?.dataset?.ashA8DirtyDraftGuard || null,
       authority_changed:false,
