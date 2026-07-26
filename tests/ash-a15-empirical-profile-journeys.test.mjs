@@ -146,11 +146,13 @@ for (const token of [
   'real_workspace_navigation:true','navigation_receipt_captured_at_click:true','idempotent_active_workspace_gesture:true',
   'real_route_gestures:true','route_selected_before_target_workspace:true','real_visible_orientation_gesture:true',
   'command_menu_mappings_verified:true','matrix_cells:120','HELD_SENSITIVE_CONTEXT',
-  '__td613A15NavigationWitness','td613:ash:navigation-receipt','captured_navigation_receipts'
+  '__td613A15NavigationWitness','td613:ash:navigation-receipt','captured_navigation_receipts',
+  'canonical_navigation_receipts_per_profile:4',"route_landing_workspace:'work'","explicit_transition_destinations:['home','map','choir','capsule']"
 ]) assert.ok(browserProbe.includes(token), `A15 browser witness omitted ${token}`);
 assert.match(browserProbe, /await selectRoute\(page, route\);[\s\S]{0,260}await openWorkspace\(page, workspace\);[\s\S]{0,260}await waitForVisibleCombination\(page, workspace, route\);/);
 assert.match(browserProbe, /if \(changed\) await armNavigationReceiptCapture\(page, workspace\);[\s\S]{0,260}await control\.click\(\);/);
 assert.match(browserProbe, /window\.addEventListener\('td613:ash:navigation-receipt', handler\)/);
+assert.match(browserProbe, /captured_navigation_receipts !== 4/);
 assert.doesNotMatch(browserProbe, /empirical\.orient\(\{\s*profile,\s*workspace,\s*route/s, 'A15 matrix witness must use visible UI gestures, not direct answer-key overrides.');
 assert.match(receipt, /120 deterministic cells/);
 assert.match(receipt, /graph-wide mass eviction executed: false/);
@@ -162,7 +164,7 @@ assert.equal(vercel.git?.deploymentEnabled, false);
 
 console.log(JSON.stringify({
   ok:true,
-  schema:'td613.ash.a15-empirical-profile-journey-contract/v0.5-navigation-event-capture',
+  schema:'td613.ash.a15-empirical-profile-journey-contract/v0.6-four-canonical-transitions',
   registry_version:ASH_DEMO_REGISTRY_VERSION,
   asset_epoch:ASH_DEMO_ASSET_EPOCH,
   profiles:ASH_A15_PROFILES.length,
@@ -170,6 +172,9 @@ console.log(JSON.stringify({
   routes:ASH_A15_ROUTES.length,
   matrix_cells:matrix.length,
   real_ui_witness_required:true,
+  canonical_navigation_receipts_per_profile:4,
+  route_landing_workspace:'work',
+  explicit_transition_destinations:['home','map','choir','capsule'],
   navigation_receipt_captured_at_click:true,
   route_selected_before_target_workspace:true,
   idempotent_active_workspace_gesture:true,
