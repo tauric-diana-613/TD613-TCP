@@ -51,24 +51,22 @@ if (!registryVersion?.startsWith('td613.ash.demo-registry/')) {
 }
 
 const staleRegistryVersion = 'td613.ash.demo-registry/v0.1-a13';
-const normalizedFiles = [];
-for (const entry of await fs.readdir(here, { withFileTypes:true })) {
-  if (!entry.isFile() || !entry.name.endsWith('.mjs') || entry.name === path.basename(fileURLToPath(import.meta.url))) continue;
-  const targetPath = path.join(here, entry.name);
-  const source = await fs.readFile(targetPath, 'utf8');
-  const occurrences = source.split(staleRegistryVersion).length - 1;
-  if (!occurrences || registryVersion === staleRegistryVersion) continue;
-  await fs.writeFile(targetPath, source.split(staleRegistryVersion).join(registryVersion), 'utf8');
-  normalizedFiles.push({ file:entry.name, occurrences });
+const currentObserver = await fs.readFile(a2ProbePath, 'utf8');
+if (!currentObserver.includes('ash-a2-a5-browser-probe-a13.mjs')
+  || !currentObserver.includes("replaceAll('td613.ash.demo-registry/v0.1-a13', 'td613.ash.demo-registry/v0.2-a14')")
+  || !currentObserver.includes('await fs.rm(tempPath, { force:true })')) {
+  throw new Error('A14 current-registry observer must remain a temporary-copy adapter.');
 }
 
 await fs.mkdir(path.dirname(compatibilityReceiptPath), { recursive:true });
 await fs.writeFile(compatibilityReceiptPath, `${JSON.stringify({
-  schema:'td613.ash.registry-observer-compatibility/v0.1',
+  schema:'td613.ash.registry-observer-compatibility/v0.2-exact-head-sources',
   installed_registry_version:registryVersion,
   retired_registry_version:staleRegistryVersion,
-  normalized_files:normalizedFiles,
-  ephemeral_checkout_only:true,
+  normalization_strategy:'TEMPORARY_COPY_ONLY',
+  tracked_sources_mutated:false,
+  historical_a13_observer_preserved:true,
+  current_a14_observer_committed:true,
   product_runtime_mutated:false,
   repository_source_persisted:false,
   authority_changed:false,
@@ -76,4 +74,4 @@ await fs.writeFile(compatibilityReceiptPath, `${JSON.stringify({
   human_closure_required:true
 }, null, 2)}\n`);
 
-console.log(`prepare-ash-profile-closure-fixture-a13.mjs passed · registry ${registryVersion} · ${normalizedFiles.length} inherited observer files normalized`);
+console.log(`prepare-ash-profile-closure-fixture-a13.mjs passed · registry ${registryVersion} · exact-head probe sources preserved`);
