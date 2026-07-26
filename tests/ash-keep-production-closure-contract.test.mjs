@@ -44,7 +44,7 @@ assert.equal(productionPosture, true);
 assert.equal(release.ash.transport, false);
 assert.equal(release.ash.automaticCinder, false);
 
-for (const token of ['td613.ash.premium-ui/v0.1-command-instrument',"['home', 'Home'","['map', 'Map'","['work', 'Work'","['choir', 'Choir'","['capsule', 'Capsule'",'runDeterministicMoireAssay','verifyMoireRebuildAssay','replayMoireRebuildAssay','verifyMoireRebuildReplay','Pairwise residue ≠ intent','automatic_ash_action: false','transport_authorized: false','/safe-harbor/index.html','/dome-world/ash-destination-handoff.html']) assert.ok(premium.includes(token));
+for (const token of ['td613.ash.premium-ui/v0.1-command-instrument',"['home', 'Home'","['map', 'Map'","['work', 'Work'","['choir', 'Choir'","['capsule', 'Capsule'",'runDeterministicMoireAssay','verifyMoireRebuildAssay','replayMoireRebuildReplay','verifyMoireRebuildReplay','Pairwise residue ≠ intent','automatic_ash_action: false','transport_authorized: false','/safe-harbor/index.html','/dome-world/ash-destination-handoff.html']) assert.ok(premium.includes(token));
 assert.match(premiumCss, /grid-template-columns:repeat\(5,1fr\)/);
 assert.match(premiumCss, /@media\(prefers-reduced-motion:reduce\)/);
 assert.match(premiumCompatibility, /display:none!important/);
@@ -58,7 +58,7 @@ assert.match(consolidated, /github\.event_name == 'workflow_dispatch' && inputs\
 assert.match(consolidated, /github\.event_name == 'pull_request' && github\.event\.action == 'ready_for_review'/);
 assert.doesNotMatch(consolidated, /github\.event\.action == 'synchronize'[\s\S]*playwright install/);
 assert.doesNotMatch(consolidated, /workflow_run:/);
-for (const token of ['Vercel Operator Release','Verify deployed bytes match the authorized source packet','Confirm the deployed A13 registry on Chromium desktop and mobile','Observe deployed Ash lifecycle without promotion','ash-lifecycle-production-probe.mjs','production_chromium_desktop_mobile = PASS','premerge_chromium_firefox_webkit = REQUIRED_AND_PASSED_BEFORE_MERGE']) assert.ok(releaseWorkflow.includes(token), `Bounded release omitted ${token}`);
+for (const token of ['Vercel Operator Release','Verify deployed bytes match the authorized source packet','Confirm deployed A14 six-demo registry and Archive on Chromium desktop and mobile','Observe deployed Ash lifecycle without promotion','ash-a14-archive-browser-probe.mjs','ash-lifecycle-production-probe.mjs','production_a14_registry_archive = PASS','production_chromium_desktop_mobile = PASS','premerge_chromium_firefox_webkit = REQUIRED_AND_PASSED_BEFORE_MERGE']) assert.ok(releaseWorkflow.includes(token), `Bounded release omitted ${token}`);
 assert.doesNotMatch(releaseWorkflow, /for browser in chromium firefox webkit|playwright install --with-deps chromium firefox webkit|ash-keep-aia3-task-journey-v3\.mjs/);
 
 for (const token of ['td613.ash.constitutional-convergence-observation/v0.1','promotion_authorized: false','APERTURE_REBUILD','HUSH_CANDIDATE','DELETE_PARTIAL_HOLD','DRY_AUDIT_ONLY','first_tab_released_at','second_tab_acquired_at','acquired_after_release','td613.ash.cache-flush.aia3.epoch','td613.ash.cache-preflight.epoch','provider_recipient_cinder_transport_requests']) assert.ok(convergenceProbe.includes(token));
@@ -69,4 +69,4 @@ assert.match(lifecycleProbe, /draft_body_sha256/);
 assert.equal(fs.existsSync('.github/workflows/ash-keep-production-closure.yml'), false);
 assert.equal(fs.existsSync('.github/workflows/ash-keep-aia3-production-observation.yml'), false);
 
-console.log('ash-keep-production-closure-contract.test.mjs passed under consolidated and bounded release lanes');
+console.log('ash-keep-production-closure-contract.test.mjs passed under A14 consolidated and bounded release lanes');
