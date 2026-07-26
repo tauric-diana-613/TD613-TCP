@@ -4,6 +4,7 @@ import fs from 'node:fs';
 const core = fs.readFileSync(new URL('../app/dome-world/ash-a7-a11-recompiler-core.js', import.meta.url), 'utf8');
 const source = fs.readFileSync(new URL('../app/dome-world/ash-a8-case-map-recompilation.js', import.meta.url), 'utf8');
 const returnHandshake = fs.readFileSync(new URL('../app/dome-world/ash-a8-map-return-handshake.js', import.meta.url), 'utf8');
+const dirtyGuard = fs.readFileSync(new URL('../app/dome-world/ash-a8-dirty-draft-recompile-guard.js', import.meta.url), 'utf8');
 const a7a11Probe = fs.readFileSync(new URL('../scripts/ash-a7-a11-browser-probe.mjs', import.meta.url), 'utf8');
 const aia3 = fs.readFileSync(new URL('../app/dome-world/ash-aia3-composition.js', import.meta.url), 'utf8');
 const bridge = fs.readFileSync(new URL('../app/dome-world/ash-workspace-bridge.js', import.meta.url), 'utf8');
@@ -71,6 +72,21 @@ assert.doesNotMatch(returnHandshake, /indexedDB\.|localStorage\.(?:setItem|remov
 assert.match(bridge, /ash-a8-map-return-handshake\.js\?v=20260726-a15-empirical-v1/);
 
 for (const token of [
+  'td613.ash.a8-dirty-draft-recompile-guard/v0.1',
+  "const FORM_SELECTOR = '#ashA8ObjectForm,#ashA8RelationForm'",
+  "const COMMIT_SELECTOR = '#ashA8CommitObject,#ashA8CommitRelation'",
+  'let dirtyDraftActive = false','function canonicalMapWorkshopIsActive()','function custodyHoldIsActive()',
+  'function beginDirtyDraft(event)','host?.__td613AshA8MapReturnHandshake?.capture?.()','dirtyDraftActive = true','DIRTY_DRAFT_ACTIVE',
+  'function admitCommit(event)','dirtyDraftActive = false','COMMIT_GESTURE_ADMITTED',
+  'function shouldDefer(source)','!dirtyDraftActive || custodyHoldIsActive() || !canonicalMapWorkshopIsActive()','RECOMPILE_DEFERRED_DIRTY_DRAFT',"return 'DIRTY_STAGE_DRAFT'",
+  "doc.addEventListener('input', beginDirtyDraft, true)","doc.addEventListener('change', beginDirtyDraft, true)","doc.addEventListener('click', admitCommit, true)",
+  '__td613AshA8RecompileGuard','shouldDefer','dirty_draft_active:dirtyDraftActive','authority_changed:false','source_bytes_moved:false','human_closure_required:true'
+]) assert.ok(dirtyGuard.includes(token), `A8 dirty-draft guard missing ${token}`);
+assert.match(dirtyGuard, /function shouldDefer\(source\)[\s\S]{0,240}!dirtyDraftActive[\s\S]{0,180}custodyHoldIsActive\(\)[\s\S]{0,180}!canonicalMapWorkshopIsActive\(\)/, 'Dirty-draft guard must remain subordinate to active Map workshop and custody state.');
+assert.doesNotMatch(dirtyGuard, /indexedDB\.|localStorage\.|sessionStorage\.|fetch\s*\(|sendBeacon|caches\.|serviceWorker|MutationObserver|setInterval\s*\(/);
+assert.match(bridge, /ash-a8-dirty-draft-recompile-guard\.js\?v=20260726-a15-empirical-v1/);
+
+for (const token of [
   'async function stageA8Field(page, id, value)',
   'await locator.selectOption(String(value))',
   'await locator.fill(String(value))',
@@ -99,7 +115,7 @@ for (const pattern of [
   /for \(const \[, control, value\] of prepared\) control\.value = value/
 ]) assert.doesNotMatch(a7a11Probe, pattern, 'A8 browser witness must not batch hidden assignments behind one synthetic capture event.');
 
-for (const token of ['function captureStageDrafts()','function restoreStageDrafts(draft)','.ash-stage-form input[id]','const draft = captureStageDrafts()','const draftRestored = restoreStageDrafts(draft)','draft_restored:draftRestored','active.focus?.({ preventScroll:true })','ACTIVE_STAGE_INTERACTION','active_stage_primary_action_deferred:true']) assert.ok(core.includes(token), `A8 core missing ${token}`);
+for (const token of ['td613.ash.a7-a11-recompiler-core/v0.4-stage-guard','function captureStageDrafts()','function restoreStageDrafts(draft)','.ash-stage-form input[id]','function stageGuardReason(stage, source)','__td613Ash${stage}RecompileGuard','guard.shouldDefer(source)','STAGE_RECOMPILE_GUARD','STAGE_RECOMPILE_GUARD_ERROR','const guardReason = stageGuardReason(stage, source)','activeStageInteraction || guardReason',"reason:activeStageInteraction ? 'ACTIVE_STAGE_INTERACTION' : guardReason",'const draft = captureStageDrafts()','const draftRestored = restoreStageDrafts(draft)','draft_restored:draftRestored','active.focus?.({ preventScroll:true })','ACTIVE_STAGE_INTERACTION','active_stage_primary_action_deferred:true']) assert.ok(core.includes(token), `A8 core missing ${token}`);
 assert.doesNotMatch(core, /MutationObserver|localStorage\.(?:setItem|removeItem|clear)|indexedDB\.(?:open|deleteDatabase)/);
 assert.match(core, /'whole-instrument-refreshed'/, 'A8 final settlement must account for the core whole-instrument recompile driver.');
 
@@ -116,4 +132,4 @@ assert.match(html, /ash-a8-case-map-recompilation\.js/);
 assert.equal(html, mirror, 'Ash source mirror must remain byte-identical');
 assert.equal(vercel.git?.deploymentEnabled, false);
 
-console.log(JSON.stringify({ok:true,schema:'td613.ash.a8-case-map-contract/v0.13-existing-alignment-owner',existing_map_engine_delegation:true,stage_form_draft_preservation:true,held_draft_quarantine:true,prehold_form_shadow:true,visible_commit_boundary_capture:true,real_visible_field_staging_witness:true,concurrent_staging_verified_before_commit:true,canonical_map_dock_return:true,trusted_window_capture:true,idempotent_map_return_admitted:true,existing_ui_alignment_owner_reused:true,duplicate_scroll_engine_created:false,synthetic_return_gesture_admitted:false,non_dock_return_gesture_admitted:false,exact_map_return_receipt_required:true,post_custody_recapture_forbidden:true,canonical_map_return_handshake:true,canonical_map_alignment_required:true,final_whole_instrument_refresh_required:true,a8_recompile_after_final_refresh_required:true,external_refresh_invalidates_settlement:true,workshop_hidden_until_restore:true,full_saved_control_parity:true,quiet_recompile_window:true,transitioning_active_class_cannot_release_shadow_draft:true,default_dom_overwrite_held_until_canonical_map_restore:true,delayed_profile_hydration_cannot_clear_active_draft:true,object_and_relation_drafts_restore_independently:true,explicit_cross_tab_handshake:true,external_process_watchdog:true,authority_changed:false,source_bytes_moved:false,human_closure_required:true,vercel_gate:'CLOSED'}, null, 2));
+console.log(JSON.stringify({ok:true,schema:'td613.ash.a8-case-map-contract/v0.14-dirty-draft-stage-guard',existing_map_engine_delegation:true,stage_form_draft_preservation:true,focus_independent_dirty_draft_guard:true,subordinate_stage_guard_interface:true,guard_inactive_outside_active_map:true,guard_released_before_visible_commit:true,guard_inactive_during_custody_hold:true,held_draft_quarantine:true,prehold_form_shadow:true,visible_commit_boundary_capture:true,real_visible_field_staging_witness:true,concurrent_staging_verified_before_commit:true,canonical_map_dock_return:true,trusted_window_capture:true,idempotent_map_return_admitted:true,existing_ui_alignment_owner_reused:true,duplicate_scroll_engine_created:false,synthetic_return_gesture_admitted:false,non_dock_return_gesture_admitted:false,exact_map_return_receipt_required:true,post_custody_recapture_forbidden:true,canonical_map_return_handshake:true,canonical_map_alignment_required:true,final_whole_instrument_refresh_required:true,a8_recompile_after_final_refresh_required:true,external_refresh_invalidates_settlement:true,workshop_hidden_until_restore:true,full_saved_control_parity:true,quiet_recompile_window:true,transitioning_active_class_cannot_release_shadow_draft:true,default_dom_overwrite_held_until_canonical_map_restore:true,delayed_profile_hydration_cannot_clear_active_draft:true,object_and_relation_drafts_restore_independently:true,explicit_cross_tab_handshake:true,external_process_watchdog:true,authority_changed:false,source_bytes_moved:false,human_closure_required:true,vercel_gate:'CLOSED'}, null, 2));
