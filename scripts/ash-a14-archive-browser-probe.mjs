@@ -13,13 +13,16 @@ const browser = await browserType.launch({ headless:true });
 async function waitForRegistry(page) {
   await page.waitForFunction(() => {
     const registry = window.__td613AshDemoRegistry?.snapshot?.() || null;
-    return window.__td613AshDemoRegistry?.version === 'td613.ash.demo-registry/v0.2-a14'
+    const installed = window.__td613AshDemoRegistry?.version || null;
+    return installed === 'td613.ash.demo-registry/v0.2-a14'
+      && registry?.version === installed
       && registry?.asset_epoch === '20260725-a14-release-v1'
       && registry?.control_owner === 'ASH_DEMO_REGISTRY'
       && registry?.profiles?.length === 6
       && registry.profiles.filter(entry => entry.promoted).length === 6
       && registry.profiles.find(entry => entry.profile === 'archive')?.owner === 'ARCHIVE'
-      && document.documentElement.dataset.ashDemoControlOwner === 'ASH_DEMO_REGISTRY';
+      && document.documentElement.dataset.ashDemoControlOwner === 'ASH_DEMO_REGISTRY'
+      && document.documentElement.dataset.ashDemoRegistry === installed;
   }, null, { timeout:120_000 });
 }
 
@@ -37,11 +40,11 @@ async function activateArchive(page) {
       && snapshot.profiles.filter(entry => entry.promoted).length === 6
       && snapshot.profiles.find(entry => entry.profile === 'archive')?.status === 'PROMOTED'
       && document.documentElement.dataset.ashDemoControlOwner === 'ASH_DEMO_REGISTRY'
-      && button.dataset.ashDemoRegistryOwner === 'td613.ash.demo-registry/v0.2-a14'
+      && button.dataset.ashDemoRegistryOwner === registry.version
       && button.dataset.ashMethodDemoState === 'READY'
       && button.disabled === false
       && !button.matches(':disabled');
-    if (!ready) throw new Error(`A14 Archive control was not atomically actionable: ${JSON.stringify({ value:select.value, state:button.dataset.ashMethodDemoState, disabled:button.disabled })}`);
+    if (!ready) throw new Error(`A14 Archive control was not atomically actionable: ${JSON.stringify({ value:select.value, state:button.dataset.ashMethodDemoState, disabled:button.disabled, registry:registry.version })}`);
     button.click();
   });
 }
@@ -65,34 +68,45 @@ async function inspect(page, label) {
       relationships:built?.relationships?.length,
       rules:built?.rules?.length,
       routes:built?.routes?.length,
+      route_digests_valid:(built?.routes || []).every(route => /^sha256:[0-9a-f]{64}$/.test(String(route?.draft_digest || ''))),
+      default_route_digest_valid:/^sha256:[0-9a-f]{64}$/.test(String(built?.defaults?.route?.digest || '')),
+      mixed_media_fixture_complete:built?.assay?.mixed_media_fixture_complete,
+      original_derivative_lineage_visible:built?.assay?.original_derivative_lineage_visible,
       release_authority:built?.assay?.release_authority,
       transfer_authority:built?.assay?.transfer_authority,
       access_copy_created_automatically:built?.assay?.access_copy_created_automatically
     };
   });
-  if (JSON.stringify(fixture) !== JSON.stringify({
-    schema:'td613.ash.archive-accession/v0.1',
-    demo_id:'demo_archive_nightjar_accession_v1',
+  const expectedFixture = {
+    schema:'td613.ash.archive-accession/v0.2-harbor-memory',
+    demo_id:'demo_archive_harbor_memory_v1',
     rooms:8,
-    nodes:24,
-    relationships:15,
+    nodes:29,
+    relationships:23,
     rules:4,
     routes:4,
+    route_digests_valid:true,
+    default_route_digest_valid:true,
+    mixed_media_fixture_complete:true,
+    original_derivative_lineage_visible:true,
     release_authority:false,
     transfer_authority:false,
     access_copy_created_automatically:false
-  })) throw new Error(`A14 Archive fixture drift: ${JSON.stringify(fixture)}`);
+  };
+  if (JSON.stringify(fixture) !== JSON.stringify(expectedFixture)) throw new Error(`A14 Harbor Memory fixture drift: ${JSON.stringify(fixture)}`);
 
   await activateArchive(page);
   await page.waitForFunction(() => {
     const current = window.__td613AshKeep?.current?.() || null;
-    return Boolean(current?.case_id)
+    const status = document.getElementById('demoProfileStatus')?.textContent || '';
+    const hydrated = Boolean(current?.case_id)
       && current.profile === 'archive'
       && (current.operator_notes || []).includes('demo_profile:archive')
       && document.documentElement.dataset.ashDemoProfile === 'archive'
-      && document.documentElement.dataset.ashArchiveAccession === 'td613.ash.archive-demo/v0.1-a14-accession'
+      && document.documentElement.dataset.ashArchiveAccession === 'td613.ash.archive-demo/v0.2-a14-harbor-memory'
       && document.documentElement.dataset.ashPremiumWorkspace === 'map'
       && document.getElementById('archiveAccessionDocket')?.dataset.profile === 'archive';
+    return hydrated || /Demo registry held\./i.test(status);
   }, null, { timeout:120_000 });
 
   const result = await page.evaluate(() => {
@@ -107,6 +121,8 @@ async function inspect(page, label) {
       active_case:current.case_id || null,
       active_profile:current.profile || null,
       archive_marker:(current.operator_notes || []).includes('demo_profile:archive'),
+      archive_version:document.documentElement.dataset.ashArchiveAccession || null,
+      registry_status:document.getElementById('demoProfileStatus')?.textContent || '',
       docket_text:docket?.innerText || '',
       release_disabled:document.getElementById('approveRelease')?.disabled ?? null,
       provider_approval_checked:document.getElementById('providerApproval')?.checked ?? null,
@@ -119,9 +135,10 @@ async function inspect(page, label) {
     };
   });
 
+  if (/Demo registry held\./i.test(result.registry_status)) throw new Error(`A14 registry reported hydration hold: ${result.registry_status}`);
   if (result.promoted_profiles.length !== 6 || result.archive_owner !== 'ARCHIVE') throw new Error(`A14 registry promotion held: ${JSON.stringify(result)}`);
-  if (!result.active_case || result.active_profile !== 'archive' || !result.archive_marker) throw new Error(`A14 Archive hydration held: ${JSON.stringify(result)}`);
-  for (const phrase of ['Archive Accession Review','accession scope','provenance','restrictions','access copy','delayed transfer','no access grant']) {
+  if (!result.active_case || result.active_profile !== 'archive' || !result.archive_marker || result.archive_version !== 'td613.ash.archive-demo/v0.2-a14-harbor-memory') throw new Error(`A14 Harbor Memory hydration held: ${JSON.stringify(result)}`);
+  for (const phrase of ['Harbor Memory Archive','original audio','transcript','uncertain date','duplicate scan','donor restriction','missing release','embargo','public access copy','Nothing has been published','no ownership','no access grant']) {
     if (!result.docket_text.toLowerCase().includes(phrase.toLowerCase())) throw new Error(`A14 docket omitted ${phrase}: ${JSON.stringify(result)}`);
   }
   if (result.release_disabled !== true || result.provider_approval_checked !== false || result.handoff_is_link !== true) throw new Error(`A14 widened action authority: ${JSON.stringify(result)}`);
@@ -145,18 +162,24 @@ try {
   await mobile.close();
 
   await fs.writeFile(path.join(artifactDir, `${browserName}-a14-archive-receipt.json`), JSON.stringify({
-    schema:'td613.ash.a14-archive-browser-witness/v0.1',
+    schema:'td613.ash.a14-harbor-memory-browser-witness/v0.2',
     browser:browserName,
     receipts,
     registry_owner:'ASH_DEMO_REGISTRY',
     promoted_profiles:6,
     archive_status:'PROMOTED',
     archive_owner:'ARCHIVE',
+    mixed_media_fixture_complete:true,
+    original_derivative_lineage_visible:true,
+    route_digests_valid:true,
     graph_wide_mass_eviction_executed:false,
     custody_authority_changed:false,
+    ownership_authority:false,
+    authenticity_authority:false,
     access_granted:false,
     release_authority:false,
     declassification_authority:false,
+    publication_authority:false,
     transfer_authority:false,
     raw_content_transport:false,
     automatic_release:false,
