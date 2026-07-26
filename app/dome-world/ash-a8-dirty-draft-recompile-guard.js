@@ -6,6 +6,7 @@ const FORM_SELECTOR = '#ashA8ObjectForm,#ashA8RelationForm';
 const COMMIT_SELECTOR = '#ashA8CommitObject,#ashA8CommitRelation';
 let dirtyDraftActive = false;
 let recoveredInFlightRecompiles = 0;
+let recoverySerial = 0;
 
 function canonicalMapWorkshopIsActive() {
   const workspace = doc?.getElementById?.('workspace-map');
@@ -13,6 +14,10 @@ function canonicalMapWorkshopIsActive() {
   return doc?.documentElement?.dataset?.ashPremiumWorkspace === 'map'
     && workspace?.classList?.contains?.('active') === true
     && workshop?.isConnected === true;
+}
+
+function workshopIsConnected() {
+  return doc?.getElementById?.('ashA8RelationWorkshop')?.isConnected === true;
 }
 
 function custodyHoldIsActive() {
@@ -23,13 +28,15 @@ function publish(posture, source = null, detail = {}) {
   if (doc?.documentElement) doc.documentElement.dataset.ashA8DirtyDraftGuard = posture;
   host?.dispatchEvent?.(new CustomEvent('td613:ash:a8-dirty-draft-guard', {
     detail:Object.freeze({
-      schema:'td613.ash.a8-dirty-draft-guard-receipt/v0.2-inflight-recovery',
+      schema:'td613.ash.a8-dirty-draft-guard-receipt/v0.3-post-dispatch-recovery',
       posture,
       source,
       dirty_draft_active:dirtyDraftActive,
       map_workshop_active:canonicalMapWorkshopIsActive(),
+      workshop_connected:workshopIsConnected(),
       custody_hold_active:custodyHoldIsActive(),
       recovered_in_flight_recompiles:recoveredInFlightRecompiles,
+      recovery_serial:recoverySerial,
       authority_changed:false,
       source_bytes_moved:false,
       custody_changed:false,
@@ -50,21 +57,24 @@ function beginDirtyDraft(event) {
 
 function admitCommit(event) {
   if (!event.target?.closest?.(COMMIT_SELECTOR)) return false;
+  recoverySerial += 1;
   dirtyDraftActive = false;
   publish('COMMIT_GESTURE_ADMITTED', 'VISIBLE_COMMIT_CAPTURE');
   return true;
 }
 
-function recoverAfterInFlightRecompile(event) {
-  if (!dirtyDraftActive || custodyHoldIsActive() || !canonicalMapWorkshopIsActive()) return false;
+function completeQueuedRecovery(serial, source) {
+  if (serial !== recoverySerial || !dirtyDraftActive || custodyHoldIsActive() || !workshopIsConnected()) return false;
   const parity = host?.__td613AshA8MapReturnHandshake?.restore?.() || null;
   const recovered = parity?.complete === true;
   if (recovered) recoveredInFlightRecompiles += 1;
   publish(
     recovered ? 'DIRTY_DRAFT_RECOVERED_AFTER_IN_FLIGHT_RECOMPILE' : 'DIRTY_DRAFT_RECOVERY_HELD',
-    event?.detail?.source || 'A8_RECOMPILED',
+    source,
     {
-      recovery_phase:'POST_CORE_GENERIC_DRAFT_RESTORE',
+      recovery_phase:'POST_A8_RECOMPILED_EVENT_DISPATCH',
+      event_dispatch_settled:true,
+      connected_workshop_recovery:true,
       expected_controls:parity?.expected ?? 0,
       matched_controls:parity?.matched ?? 0,
       full_control_parity:recovered
@@ -73,7 +83,20 @@ function recoverAfterInFlightRecompile(event) {
   return recovered;
 }
 
+function recoverAfterInFlightRecompile(event) {
+  if (!dirtyDraftActive || custodyHoldIsActive()) return false;
+  const serial = ++recoverySerial;
+  const source = event?.detail?.source || 'A8_RECOMPILED';
+  publish('DIRTY_DRAFT_RECOVERY_QUEUED', source, {
+    recovery_phase:'A8_RECOMPILED_EVENT_DISPATCH',
+    event_dispatch_settled:false
+  });
+  queueMicrotask(() => completeQueuedRecovery(serial, source));
+  return true;
+}
+
 function clear(source) {
+  recoverySerial += 1;
   dirtyDraftActive = false;
   recoveredInFlightRecompiles = 0;
   publish('CLEARED', source);
@@ -101,8 +124,10 @@ export function installAshA8DirtyDraftRecompileGuard() {
     current:() => Object.freeze({
       dirty_draft_active:dirtyDraftActive,
       map_workshop_active:canonicalMapWorkshopIsActive(),
+      workshop_connected:workshopIsConnected(),
       custody_hold_active:custodyHoldIsActive(),
       recovered_in_flight_recompiles:recoveredInFlightRecompiles,
+      recovery_serial:recoverySerial,
       posture:doc?.documentElement?.dataset?.ashA8DirtyDraftGuard || null,
       authority_changed:false,
       source_bytes_moved:false,
