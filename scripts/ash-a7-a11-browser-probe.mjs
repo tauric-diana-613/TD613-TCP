@@ -54,6 +54,25 @@ async function waitForStableCaseMap(page) {
   }, null, { timeout:90_000, polling:100 });
 }
 
+async function commitA8Gesture(page, fields, buttonId) {
+  const result = await page.evaluate(({ fields, buttonId }) => {
+    const root = document.getElementById('ashA8RelationWorkshop');
+    if (!root?.isConnected) return { committed:false, reason:'A8 workshop is not connected.' };
+    for (const [id, value] of Object.entries(fields)) {
+      const control = document.getElementById(id);
+      if (!control?.isConnected) return { committed:false, reason:`A8 control ${id} is not connected.` };
+      control.value = value;
+      control.dispatchEvent(new Event('input', { bubbles:true }));
+      control.dispatchEvent(new Event('change', { bubbles:true }));
+    }
+    const button = document.getElementById(buttonId);
+    if (!button?.isConnected) return { committed:false, reason:`A8 action ${buttonId} is not connected.` };
+    button.click();
+    return { committed:true };
+  }, { fields, buttonId });
+  if (!result.committed) throw new Error(result.reason);
+}
+
 async function inspectA8(page) {
   await returnToMap(page);
   await waitForStableCaseMap(page);
@@ -71,12 +90,13 @@ async function inspectA8(page) {
   }));
 
   const witnessName = `A8 Witness Object ${browserName}`;
-  await page.locator('#ashA8ObjectName').fill(witnessName);
-  await page.locator('#ashA8ObjectKnown').fill('Synthetic browser witness object.');
-  await page.locator('#ashA8ObjectUncertain').fill('No human evidence inferred.');
-  await page.locator('#ashA8ObjectEvidence').fill('browser-local synthetic fixture');
-  await page.locator('#ashA8ObjectNotes').fill('A8 constitutionally held object witness.');
-  await page.locator('#ashA8CommitObject').click();
+  await commitA8Gesture(page, {
+    ashA8ObjectName:witnessName,
+    ashA8ObjectKnown:'Synthetic browser witness object.',
+    ashA8ObjectUncertain:'No human evidence inferred.',
+    ashA8ObjectEvidence:'browser-local synthetic fixture',
+    ashA8ObjectNotes:'A8 constitutionally held object witness.'
+  }, 'ashA8CommitObject');
   await page.waitForFunction(() => /Object held:.*CASE_BOUND required/i.test(document.getElementById('ashA8Status')?.textContent || ''), null, { timeout:30_000 });
   const afterObjectHold = await page.evaluate(() => ({
     digest:window.__td613AshPremiumUI?.snapshot?.()?.caseMap?.case_map_digest || null,
@@ -99,18 +119,14 @@ async function inspectA8(page) {
   if (relationOptions.length < 2) throw new Error('A8 requires two distinct existing objects to test the constitutional relation hold.');
   const [fromValue, toValue] = relationOptions;
   if (fromValue === toValue) throw new Error('A8 witness selected the same object on both sides.');
-  await page.locator('#ashA8RelationFrom').selectOption(fromValue);
-  await page.locator('#ashA8RelationTo').selectOption(toValue);
-  await page.waitForFunction(([from, to]) => {
-    const left = document.getElementById('ashA8RelationFrom')?.value;
-    const right = document.getElementById('ashA8RelationTo')?.value;
-    return left === from && right === to && left !== right;
-  }, [fromValue, toValue], { timeout:30_000 });
-  await page.locator('#ashA8RelationType').fill('browser-witness-supports');
-  await page.locator('#ashA8RelationEvidence').fill('browser-local synthetic fixture');
-  await page.locator('#ashA8RelationUncertain').fill('Relation remains open to review.');
-  await page.locator('#ashA8RelationNotes').fill('A8 constitutionally held relation witness.');
-  await page.locator('#ashA8CommitRelation').click();
+  await commitA8Gesture(page, {
+    ashA8RelationFrom:fromValue,
+    ashA8RelationTo:toValue,
+    ashA8RelationType:'browser-witness-supports',
+    ashA8RelationEvidence:'browser-local synthetic fixture',
+    ashA8RelationUncertain:'Relation remains open to review.',
+    ashA8RelationNotes:'A8 constitutionally held relation witness.'
+  }, 'ashA8CommitRelation');
   await page.waitForFunction(() => /Relationship held:.*CASE_BOUND required/i.test(document.getElementById('ashA8Status')?.textContent || ''), null, { timeout:30_000 });
   const afterRelationHold = await page.evaluate(() => ({
     digest:window.__td613AshPremiumUI?.snapshot?.()?.caseMap?.case_map_digest || null,
