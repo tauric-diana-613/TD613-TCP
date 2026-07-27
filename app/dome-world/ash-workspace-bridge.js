@@ -47,7 +47,8 @@ import './ash-a6-rest-world-answer.js?v=20260724-a12-release-v1';
 // One launch-scoped observer plus one delegated boundary preserve explicit profile and saved-case choices across remounts and late option commits without polling.
 import './ash-profile-prompt-canonical.js?v=20260724-a12-release-v1';
 import './ash-composition-receipt-compatibility.js?v=20260724-a12-release-v1';
-import './ash-demo-entry-convergence.js?v=20260724-a12-release-v1';
+// Present-state reconciliation may admit an already visible graph without claiming temporal stability frames.
+import './ash-demo-entry-convergence.js?v=20260727-a15-convergence-present-state-v2';
 import './ash-demo-pedagogy-routebar.js?v=20260724-a12-release-v1';
 import './ash-return-ready-bundle.js?v=20260724-a12-release-v1';
 import './ash-custodian-return.js?v=20260724-a12-release-v1';
@@ -62,6 +63,41 @@ const ashBridgeHost = globalThis.window;
 const ashBridgeDocument = globalThis.document;
 let canonicalFieldRecompilationQueued = false;
 
+function replayCanonicalConsequence() {
+  const replay = ashBridgeHost?.__td613AshLiveAIA?.replay;
+  if (typeof replay !== 'function') {
+    ashBridgeDocument.documentElement.dataset.ashConsequencePlayPosture = 'HELD_LIVE_AIA_REPLAY_UNAVAILABLE';
+    return false;
+  }
+  replay();
+  ashBridgeDocument.documentElement.dataset.ashConsequencePlayPosture = 'DELEGATED_TO_LIVE_AIA_REPLAY';
+  return true;
+}
+
+function ensureCanonicalPlayControl(canonical) {
+  const candidates = [...ashBridgeDocument.querySelectorAll('[data-aia-play]')];
+  let play = candidates.find(node => !node.closest('.ash-flowcore-field--proxy')) || candidates[0] || null;
+  if (!play) {
+    play = ashBridgeDocument.createElement('button');
+    play.type = 'button';
+    play.dataset.aiaPlay = 'true';
+    play.dataset.aiaPlayRecovery = 'LIVE_AIA_REPLAY_DELEGATE';
+    play.onclick = replayCanonicalConsequence;
+  }
+  for (const duplicate of candidates) {
+    if (duplicate !== play) duplicate.remove();
+  }
+  play.textContent = '▶ Play Consequence Field';
+  play.classList.add('ash-whole-instrument-play');
+  play.setAttribute('aria-label', 'Play the finite child-legible consequence explanation');
+  play.setAttribute('aria-describedby', 'ashWholeInstrumentStaticTruth');
+  play.dataset.aiaPlayOwner = play.dataset.aiaPlayRecovery === 'LIVE_AIA_REPLAY_DELEGATE'
+    ? 'LIVE_AIA_REPLAY_DELEGATE'
+    : 'LIVE_AIA_ORIGINAL_CONTROL';
+  if (play.parentElement !== canonical) canonical.append(play);
+  return play;
+}
+
 function reconcileCanonicalConsequenceFieldOwner() {
   const stage = ashBridgeDocument?.querySelector?.('#ashAiaMembrane [data-aia-stage], #ashAiaMembrane .ash-aia__stage');
   const canonical = stage?.querySelector?.(':scope > .ash-flowcore-field:not(.ash-flowcore-field--proxy):not([hidden])')
@@ -75,16 +111,11 @@ function reconcileCanonicalConsequenceFieldOwner() {
 
   ashBridgeDocument.querySelectorAll('.ash-flowcore-field--proxy [data-aia-exact]').forEach(node => node.removeAttribute('data-aia-exact'));
   canonical.querySelectorAll('[data-flowcore-ingress-play]').forEach(control => control.remove());
-  const play = ashBridgeDocument.querySelector('[data-aia-play]');
-  if (play) {
-    play.textContent = '▶ Play Consequence Field';
-    play.classList.add('ash-whole-instrument-play');
-    play.setAttribute('aria-describedby', 'ashWholeInstrumentStaticTruth');
-    if (play.parentElement !== canonical) canonical.append(play);
-  }
+  const play = ensureCanonicalPlayControl(canonical);
 
   ashBridgeDocument.documentElement.dataset.ashConsequenceFieldOwner = 'CANONICAL_VISIBLE_FIELD';
   ashBridgeDocument.documentElement.dataset.ashConsequenceFieldHost = canonical.dataset.flowcoreHost || canonical.parentElement?.id || 'UNKNOWN';
+  ashBridgeDocument.documentElement.dataset.ashConsequencePlayOwner = play.dataset.aiaPlayOwner;
   ashBridgeDocument.documentElement.dataset.ashConsequencePlayCount = String(canonical.querySelectorAll('[data-aia-play]').length);
   if (reordered && !canonicalFieldRecompilationQueued) {
     canonicalFieldRecompilationQueued = true;

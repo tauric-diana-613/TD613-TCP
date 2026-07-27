@@ -30,10 +30,12 @@
   </main>
   <script>
   (()=>{
-    const CURRENT_EPOCH='20260724-a12-release-v1';
-    const CACHE_EPOCH='td613.ash.cache-flush/2026-07-24-a11-postclosure-v1';
+    const CURRENT_EPOCH='20260727-a15-postclosure-v1';
+    const CACHE_EPOCH='td613.ash.cache-flush/2026-07-27-a15-postclosure-v1';
+    // Historical A12/A11 recovery baselines retained for A2–A6 provenance:
+    // 20260724-a12-release-v1 · td613.ash.cache-flush/2026-07-24-a11-postclosure-v1.
     const CANONICAL='/dome-world/ash-threshold.html';
-    const receipt={schema:'td613.ash.cross-scope-recovery/v0.2',epoch:CACHE_EPOCH,asset_epoch:CURRENT_EPOCH,source_scope:'/dome-world/',bridge_scope:'/safe-harbor/',visible_url:CANONICAL,indexeddb_preserved:true,case_data_preserved:true,active_session_reset:false};
+    const receipt={schema:'td613.ash.cross-scope-recovery/v0.3-a15-postclosure',epoch:CACHE_EPOCH,asset_epoch:CURRENT_EPOCH,source_scope:'/dome-world/',bridge_scope:'/safe-harbor/',visible_url:CANONICAL,indexeddb_preserved:true,case_data_preserved:true,active_session_reset:false};
     (async()=>{
       const cachesCleared=[];const workers=[];
       try{if(globalThis.caches?.keys){for(const name of await caches.keys()){if(await caches.delete(name))cachesCleared.push(name)}}}catch{}

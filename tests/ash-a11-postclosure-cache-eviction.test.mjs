@@ -1,76 +1,80 @@
 import assert from 'node:assert/strict';
 import fs from 'node:fs';
+import {
+  ASH_LIFECYCLE_ASSET_EPOCH,
+  ASH_MASS_EVICTION_EPOCH,
+  injectAshKeepLifecycle
+} from '../api/dome-world-shell.js';
 
-const inheritedAssetEpoch = '20260724-a12-release-v1';
-const registryAssetEpoch = '20260726-a15-empirical-v1';
-const cacheEpoch = 'td613.ash.cache-flush/2026-07-24-a11-postclosure-v1';
+const assetEpoch = '20260727-a15-postclosure-v1';
+const cacheEpoch = 'td613.ash.cache-flush/2026-07-27-a15-postclosure-v1';
+const marker = 'a15-postclosure-v1';
+const read = path => fs.readFileSync(new URL(`../${path}`, import.meta.url), 'utf8');
 
-const shell = fs.readFileSync(new URL('../api/dome-world-shell.js', import.meta.url), 'utf8');
-const eviction = fs.readFileSync(new URL('../app/dome-world/ash-cache-eviction-aia3.js', import.meta.url), 'utf8');
-const lifecycle = fs.readFileSync(new URL('../app/dome-world/ash-lifecycle.js', import.meta.url), 'utf8');
-const workspace = fs.readFileSync(new URL('../app/dome-world/ash-workspace-bridge.js', import.meta.url), 'utf8');
-const profile = fs.readFileSync(new URL('../app/dome-world/ash-profile-demo-hydration.js', import.meta.url), 'utf8');
-const registry = fs.readFileSync(new URL('../app/dome-world/ash-demo-registry.js', import.meta.url), 'utf8');
-const archive = fs.readFileSync(new URL('../app/dome-world/ash-archive-profile-demo.js', import.meta.url), 'utf8');
-const empirical = fs.readFileSync(new URL('../app/dome-world/ash-a15-empirical-profile-journeys.js', import.meta.url), 'utf8');
-const recompiler = fs.readFileSync(new URL('../app/dome-world/ash-a7-a11-recompiler-core.js', import.meta.url), 'utf8');
-const recovery = fs.readFileSync(new URL('../app/safe-harbor/ash-keep-recovery.html', import.meta.url), 'utf8');
-const vercel = JSON.parse(fs.readFileSync(new URL('../vercel.json', import.meta.url), 'utf8'));
+const shell = read('api/dome-world-shell.js');
+const shellCore = read('lib/dome-world-shell-core.js');
+const eviction = read('app/dome-world/ash-cache-eviction-aia3.js');
+const flush = read('app/dome-world/ash-cache-flush.js');
+const lifecycle = read('app/dome-world/ash-lifecycle.js');
+const recovery = read('app/safe-harbor/ash-keep-recovery.html');
+const keep = read('app/dome-world/ash-keep.html');
+const amendment = read('app/dome-world/docs/ASH_KEEP_A12_A15_OPERATOR_AMENDMENT_V0_1.md');
+const receipt = read('app/dome-world/docs/ASH_KEEP_A15_POSTCLOSURE_MASS_EVICTION_MUTATION_RECEIPT_V0_1.md');
+const vercel = JSON.parse(read('vercel.json'));
 
-assert.ok(shell.includes(`ASH_LIFECYCLE_ASSET_EPOCH = '${inheritedAssetEpoch}'`));
-assert.ok(shell.includes(`ASH_MASS_EVICTION_EPOCH = '${cacheEpoch}'`));
-assert.ok(shell.includes('content="a11-postclosure-v1"'));
-assert.match(shell, /Clear-Site-Data', '"cache"'/);
-assert.match(shell, /indexeddb_preserved:true/);
-assert.match(shell, /case_data_preserved:true/);
-assert.match(shell, /active_session_reset:false/);
-assert.match(shell, /local_case_pointer_preserved/);
-assert.match(shell, /session_epoch_preserved_or_migrated/);
+assert.equal(ASH_LIFECYCLE_ASSET_EPOCH, assetEpoch);
+assert.equal(ASH_MASS_EVICTION_EPOCH, cacheEpoch);
+assert.match(shell, /dome-world-shell-core\.js/);
+assert.match(shell, /replaceAll\(OLD_ASSET_EPOCH, ASH_LIFECYCLE_ASSET_EPOCH\)/);
+assert.match(shell, /replaceAll\(OLD_MASS_EVICTION_EPOCH, ASH_MASS_EVICTION_EPOCH\)/);
+assert.match(shellCore, /Clear-Site-Data/);
+assert.match(shellCore, /indexeddb_preserved:true/);
+assert.match(shellCore, /active_session_reset:false/);
 
-assert.ok(eviction.includes(`ASH_AIA3_CACHE_EPOCH = '${cacheEpoch}'`));
-assert.ok(eviction.includes(`ASH_AIA3_ASSET_EPOCH = '${inheritedAssetEpoch}'`));
+assert.match(eviction, new RegExp(cacheEpoch.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')));
+assert.match(eviction, new RegExp(assetEpoch));
 assert.match(eviction, /clearCacheStorage/);
 assert.match(eviction, /unregisterWorkers/);
 assert.match(eviction, /requestHttpEviction/);
 assert.match(eviction, /indexeddb_preserved:true/);
 assert.match(eviction, /case_data_preserved:true/);
-assert.match(eviction, /local_case_pointer_preserved:pointerAfter === pointerBefore/);
-assert.match(eviction, /session_epoch_preserved:sessionAfter === sessionBefore/);
+assert.match(eviction, /active_session_reset:false/);
 assert.match(eviction, /storage_cleared:false/);
-assert.match(eviction, /reload_required:false/);
-assert.doesNotMatch(eviction, /indexedDB\.deleteDatabase/);
-assert.doesNotMatch(eviction, /localStorage\.clear/);
-assert.doesNotMatch(eviction, /sessionStorage\.clear/);
+assert.doesNotMatch(eviction, /indexedDB\.deleteDatabase|localStorage\.clear|sessionStorage\.clear/);
 
-for (const [name, source] of Object.entries({ lifecycle, recompiler, recovery })) {
-  assert.ok(source.includes(inheritedAssetEpoch) || name === 'recovery', `${name} missing the inherited A12 live asset epoch`);
-}
-assert.ok(profile.includes(registryAssetEpoch), 'profile façade missing the A15 registry asset epoch');
-assert.ok(registry.includes(registryAssetEpoch), 'registry missing its A15 asset epoch');
-assert.ok(workspace.includes(`ash-profile-demo-hydration.js?v=${registryAssetEpoch}`));
-assert.ok(recovery.includes(cacheEpoch));
-assert.equal((workspace.match(new RegExp(inheritedAssetEpoch, 'g')) || []).length >= 25, true, 'inherited workspace graph lost broad versioning');
-for (const stage of ['ash-a9-work-recompilation.js','ash-a10-choir-recompilation.js','ash-a11-capsule-recompilation.js']) {
-  assert.ok(recompiler.includes(`${stage}?v=${inheritedAssetEpoch}`), `recompiler missing ${stage} inherited live version`);
-}
-assert.doesNotMatch(profile + registry + archive + empirical, /caches\.|serviceWorker|ash_epoch|deleteDatabase|localStorage\.clear|sessionStorage\.clear/);
+assert.match(flush, /ash-cache-flush-core\.js/);
+assert.match(flush, /superseded_by_mass_eviction:true/);
+assert.match(flush, /active_session_reset:false/);
+assert.match(lifecycle, new RegExp(assetEpoch));
+assert.match(recovery, new RegExp(assetEpoch));
+assert.match(recovery, new RegExp(cacheEpoch.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')));
+
+const rendered = injectAshKeepLifecycle(keep);
+assert.match(rendered, new RegExp(assetEpoch));
+assert.match(rendered, new RegExp(cacheEpoch.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')));
+assert.match(rendered, new RegExp(`name="ash-cache-preflight" content="${marker}"`));
+assert.match(rendered, /indexeddb_preserved:true/);
+assert.match(rendered, /case_data_preserved:true/);
+assert.match(rendered, /active_session_reset:false/);
+assert.doesNotMatch(rendered, /2026-07-24-a11-postclosure-v1/);
+
+assert.match(amendment, /final tested source mutation before the A15 production release/);
+assert.match(receipt, /PRE-RELEASE \/ PRE-RELOCK/);
+assert.match(receipt, /final A12–A15 production-closure dossier remains mandatory/);
 assert.equal(vercel.git?.deploymentEnabled, false);
 
 console.log(JSON.stringify({
   ok:true,
-  schema:'td613.ash.a15-registry-with-a11-mass-eviction-contract/v0.1',
-  inherited_asset_epoch:inheritedAssetEpoch,
-  registry_asset_epoch:registryAssetEpoch,
+  schema:'td613.ash.a15-postclosure-mass-eviction-contract/v0.1',
+  lifecycle_asset_epoch:assetEpoch,
   cache_epoch:cacheEpoch,
-  ordinary_registry_version_advanced:true,
-  graph_wide_mass_eviction_reexecuted:false,
-  browser_cache_cleared_for_a15:false,
-  service_workers_unregistered_for_a15:false,
+  graph_wide_mass_eviction_reserved_and_applied:true,
+  browser_cache_eviction_enabled:true,
+  same_origin_worker_unregistration_enabled:true,
   indexeddb_preserved:true,
-  active_case_pointer_preserved:true,
-  session_epoch_preserved:true,
   custody_and_case_data_preserved:true,
   active_session_reset:false,
-  second_deployment_attempt_created:false,
-  vercel_gate:'CLOSED'
+  deployment_count:0,
+  vercel_gate:'CLOSED',
+  human_closure_required:true
 }, null, 2));

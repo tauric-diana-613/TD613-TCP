@@ -27,7 +27,9 @@ const empiricalSource = fs.readFileSync('app/dome-world/ash-a15-empirical-profil
 const convergenceSource = fs.readFileSync('app/dome-world/ash-demo-entry-convergence.js', 'utf8');
 const currentObserver = fs.readFileSync('scripts/ash-a2-a5-browser-probe.mjs', 'utf8');
 const legacyObserver = fs.readFileSync('scripts/ash-a2-a5-browser-probe-a13.mjs', 'utf8');
-const a12Observer = fs.readFileSync('scripts/ash-a12-browser-probe.mjs', 'utf8');
+const a12ObserverWrapper = fs.readFileSync('scripts/ash-a12-browser-probe.mjs', 'utf8');
+const a12ObserverCore = fs.readFileSync('scripts/ash-a12-browser-probe-stable-entry.mjs', 'utf8');
+const a12Observer = `${a12ObserverWrapper}\n${a12ObserverCore}`;
 const a14Observer = fs.readFileSync('scripts/ash-a14-archive-browser-probe.mjs', 'utf8');
 const a15Observer = fs.readFileSync('scripts/ash-a15-empirical-profile-journeys-browser-probe.mjs', 'utf8');
 const readinessPreparer = fs.readFileSync('scripts/prepare-ash-profile-closure-fixture-a13.mjs', 'utf8');
@@ -156,6 +158,10 @@ assert.match(convergenceSource, /phase === 'VISIBLE' && nextStable >= 2/);
 assert.doesNotMatch(convergenceSource, /setInterval\s*\(/);
 assert(currentObserver.includes("replaceAll('td613.ash.demo-registry/v0.1-a13', 'td613.ash.demo-registry/v0.3-a15')"));
 assert(legacyObserver.includes('td613.ash.demo-registry/v0.1-a13'));
+assert.match(a12ObserverWrapper, /ash-a12-browser-probe-stable-entry\.mjs/);
+assert.match(a12ObserverWrapper, /POST_CLICK_CASE_QUIET_MS = 220/);
+assert.match(a12ObserverWrapper, /waitForPostClickCaseSettlement\(page, attempt\)/);
+assert.match(a12ObserverWrapper, /td613\.ash\.a12-present-state-convergence-rebind\/v0\.2-post-click-settled/);
 assert.doesNotMatch(a12Observer, /td613\.ash\.demo-registry\/v0\.[12]-(?:a13|a14)/);
 assert.match(a12Observer, /td613\.ash\.demo-registry\/v0\.3-a15/);
 assert.match(a14Observer, /registry\?\.asset_epoch === '20260726-a15-empirical-v1'/);
@@ -182,7 +188,7 @@ assert.equal(vercel.git?.deploymentEnabled, false);
 
 console.log(JSON.stringify({
   ok:true,
-  schema:'td613.ash.a14-harbor-memory-archive-contract/v0.8-coalesced-entry-clock',
+  schema:'td613.ash.a14-harbor-memory-archive-contract/v1.0-composed-settled-a12-observer',
   registry_version:ASH_DEMO_REGISTRY_VERSION,
   ordinary_asset_epoch:ASH_DEMO_ASSET_EPOCH,
   archive_fixture:fixture.demo_id,
@@ -195,6 +201,9 @@ console.log(JSON.stringify({
   route_memory_verified:true,
   readiness_validator_read_only:true,
   a12_registry_observer_current:true,
+  a12_observer_composed:true,
+  a12_post_click_case_settlement:true,
+  a12_present_state_convergence_adapter:true,
   a14_authority_ceiling_normalized:true,
   archive_entry_fallback:'map',
   coalesced_entry_clock:true,

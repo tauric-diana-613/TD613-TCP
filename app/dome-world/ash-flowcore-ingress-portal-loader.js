@@ -1,4 +1,4 @@
-export const ASH_FLOWCORE_INGRESS_PORTAL_LOADER_VERSION = 'td613.ash.flowcore-ingress-portal-loader/v0.3-observer-hotfix';
+export const ASH_FLOWCORE_INGRESS_PORTAL_LOADER_VERSION = 'td613.ash.flowcore-ingress-portal-loader/v0.4-stage-owner-reacquisition';
 
 const host = globalThis.window;
 const doc = globalThis.document;
@@ -21,7 +21,7 @@ if (!browser) {
     reason:'EXPLICIT_LEGACY_PRESENTATION'
   });
 } else {
-  import('./ash-flowcore-ingress-portal.js?v=20260722-flowcore-observer-hotfix-v3')
+  import('./ash-flowcore-ingress-portal.js?v=20260727-flowcore-stage-owner-v4')
     .then(module => {
       host.__td613AshFlowcoreIngressPortalLoader = Object.freeze({
         version:ASH_FLOWCORE_INGRESS_PORTAL_LOADER_VERSION,
