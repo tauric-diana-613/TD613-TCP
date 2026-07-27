@@ -78,10 +78,13 @@ const ROUTE_ALIASES = freeze({
 const TEXT_SENSITIVE_PATTERNS = freeze([
   /\b[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}\b/i,
   /\b\d{3}-\d{2}-\d{4}\b/,
-  /-----BEGIN (?:RSA |EC |OPENSSH )?PRIVATE KEY-----/i,
-  /\b(?:api[_ -]?key|secret[_ -]?key|access[_ -]?token|passphrase|password)["']?\s*[:=]/i
+  /-----BEGIN (?:[A-Z0-9]+(?: [A-Z0-9]+)* )?PRIVATE KEY-----/i,
+  /\b(?:api[_ -]?key|secret[_ -]?key|access[_ -]?token|passphrase|password)["']?\s*[:=]/i,
+  /\bauthorization["']?\s*[:=]\s*["']?\s*bearer\b/i,
+  /\bbearer\s+[A-Z0-9._~+\/-]{8,}={0,2}\b/i
 ]);
-const CREDENTIAL_KEY_PATTERN = /^(?:api[_ -]?key|secret[_ -]?key|access[_ -]?token|passphrase|password)$/i;
+const CREDENTIAL_KEY_PATTERN = /^(?:api[_ -]?key|secret[_ -]?key|access[_ -]?token|passphrase|password|authorization)$/i;
+const PHONE_KEY_PATTERN = /^(?:phone|telephone|tel|mobile|cell|fax)$/i;
 const PHONE_CANDIDATE_PATTERN = /(?:^|[^\w])(\+?\d[\d\s().-]{5,}\d)(?=$|[^\w])/g;
 
 const FORBIDDEN_PUBLIC_TOKENS = freeze([
@@ -113,13 +116,31 @@ function normalizeRoute(route) {
   return ASH_A15_ROUTES.includes(normalized) ? normalized : null;
 }
 
-function textContainsPhone(text) {
+function textContainsPhone(text, { keyAware = false } = {}) {
   PHONE_CANDIDATE_PATTERN.lastIndex = 0;
   for (const match of String(text || '').matchAll(PHONE_CANDIDATE_PATTERN)) {
-    const digits = match[1].replace(/\D/g, '');
-    if (digits.length >= 7 && digits.length <= 15) return true;
+    const candidate = match[1];
+    const digits = candidate.replace(/\D/g, '');
+    const separators = (candidate.match(/[\s().-]/g) || []).length;
+    const formatted = candidate.startsWith('+') || /[()]/.test(candidate) || separators >= 2;
+    if (digits.length >= 7 && digits.length <= 15 && (keyAware || formatted)) return true;
   }
   return false;
+}
+
+function hasExplicitValue(value) {
+  return value !== null && value !== undefined && String(value).trim() !== '';
+}
+
+function structuredEntries(value) {
+  if (Array.isArray(value)) return Object.entries(value);
+  const tag = Object.prototype.toString.call(value);
+  if (tag === '[object Map]') return [...value.entries()];
+  if (tag === '[object Set]') return [...value.values()].map((child, index) => [String(index), child]);
+  if (tag === '[object URLSearchParams]') return [...value.entries()];
+  const prototype = Object.getPrototypeOf(value);
+  if (prototype === Object.prototype || prototype === null) return Object.entries(value);
+  return null;
 }
 
 function inspectContext(value, state = { seen:new WeakSet(), nodes:0, maxNodes:512, maxDepth:10 }, depth = 0) {
@@ -127,7 +148,7 @@ function inspectContext(value, state = { seen:new WeakSet(), nodes:0, maxNodes:5
   if (state.nodes > state.maxNodes || depth > state.maxDepth) return { sensitive:true, opaque:true, text:'' };
   if (value === null || value === undefined) return { sensitive:false, opaque:false, text:String(value ?? '') };
   const type = typeof value;
-  if (type === 'string' || type === 'number' || type === 'boolean' || type === 'bigint') {
+  if (type === 'string') {
     const text = String(value);
     return {
       sensitive:TEXT_SENSITIVE_PATTERNS.some(pattern => pattern.test(text)) || textContainsPhone(text),
@@ -135,15 +156,26 @@ function inspectContext(value, state = { seen:new WeakSet(), nodes:0, maxNodes:5
       text
     };
   }
+  if (type === 'number' || type === 'bigint') {
+    const text = String(value);
+    return { sensitive:TEXT_SENSITIVE_PATTERNS.some(pattern => pattern.test(text)), opaque:false, text };
+  }
+  if (type === 'boolean') return { sensitive:false, opaque:false, text:String(value) };
   if (type === 'function' || type === 'symbol') return { sensitive:true, opaque:true, text:'' };
   if (type !== 'object') return { sensitive:false, opaque:false, text:String(value) };
   if (state.seen.has(value)) return { sensitive:true, opaque:true, text:'' };
   state.seen.add(value);
   let entries;
-  try { entries = Object.entries(value); } catch { return { sensitive:true, opaque:true, text:'' }; }
+  try { entries = structuredEntries(value); } catch { return { sensitive:true, opaque:true, text:'' }; }
+  if (!entries) return { sensitive:true, opaque:true, text:'' };
   const pieces = [];
-  for (const [key, child] of entries) {
+  for (const [rawKey, child] of entries) {
+    const key = String(rawKey);
     if (CREDENTIAL_KEY_PATTERN.test(key)) return { sensitive:true, opaque:false, text:key };
+    if (PHONE_KEY_PATTERN.test(key)) {
+      const phoneText = typeof child === 'string' || typeof child === 'number' || typeof child === 'bigint' ? String(child) : '';
+      if (textContainsPhone(phoneText, { keyAware:true })) return { sensitive:true, opaque:false, text:key };
+    }
     const inspected = inspectContext(child, state, depth + 1);
     if (inspected.sensitive || inspected.opaque) return inspected;
     pieces.push(`${key}:${inspected.text}`);
@@ -238,11 +270,13 @@ export function compileAshA15Matrix() {
 }
 
 function currentProfile() {
-  return normalizeProfile(
-    doc?.documentElement?.dataset?.ashDemoProfile
-    || host?.__td613AshPremiumUI?.snapshot?.()?.profile
-    || byId('newProfile')?.value
-  ) || 'investigation';
+  const premiumSnapshot = host?.__td613AshPremiumUI?.snapshot?.() || null;
+  const rawSnapshotProfile = premiumSnapshot?.profile ?? premiumSnapshot?.caseMap?.profile;
+  if (hasExplicitValue(rawSnapshotProfile)) return normalizeProfile(rawSnapshotProfile);
+  const selectedProfile = byId('newProfile')?.value;
+  if (hasExplicitValue(selectedProfile)) return normalizeProfile(selectedProfile);
+  const demoProfile = doc?.documentElement?.dataset?.ashDemoProfile;
+  return hasExplicitValue(demoProfile) ? normalizeProfile(demoProfile) : null;
 }
 
 function currentWorkspace() {
@@ -280,12 +314,12 @@ function ensurePanel() {
 
 function decorate(panel, answer = null) {
   if (!panel) return false;
-  const profile = answer?.profile || currentProfile();
-  const workspace = answer?.workspace || currentWorkspace();
-  const route = answer?.route || currentRoute();
-  panel.querySelector('[data-a15-profile]').textContent = profile.replaceAll('_', ' ');
-  panel.querySelector('[data-a15-workspace]').textContent = workspace;
-  panel.querySelector('[data-a15-route]').textContent = route;
+  const profile = answer && hasOwn(answer, 'profile') ? answer.profile : currentProfile();
+  const workspace = answer && hasOwn(answer, 'workspace') ? answer.workspace : currentWorkspace();
+  const route = answer && hasOwn(answer, 'route') ? answer.route : currentRoute();
+  panel.querySelector('[data-a15-profile]').textContent = profile ? profile.replaceAll('_', ' ') : 'profile held';
+  panel.querySelector('[data-a15-workspace]').textContent = workspace || 'workspace held';
+  panel.querySelector('[data-a15-route]').textContent = route || 'route held';
   if (answer) panel.querySelector('[data-a15-world-answer]').textContent = answer.message;
   return true;
 }
