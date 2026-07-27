@@ -13,6 +13,7 @@ const eviction = read('app/dome-world/ash-cache-eviction-aia3.js');
 const cacheFlush = read('app/dome-world/ash-cache-flush.js');
 const recovery = read('app/safe-harbor/ash-keep-recovery.html');
 const shell = read('api/dome-world-shell.js');
+const deferral = read('app/dome-world/docs/ASH_KEEP_A15_A19_MASS_EVICTION_DEFERRAL_AMENDMENT_V0_1.md');
 const journeyAdapter = read('scripts/ash-keep-aia3-task-journey-v3.mjs');
 const journeySource = read('scripts/ash-keep-aia3-task-journey-v3.source.mjs');
 const a2a6BrowserAdapter = read('scripts/ash-a2-a5-browser-probe.mjs');
@@ -50,9 +51,13 @@ assert.match(css, /button\[data-flowcore-channel="inspection"\]\{grid-column:1\/
 const historicalAssetEpoch = '20260723-a2-a5-release-v1';
 const historicalCacheEpoch = 'td613.ash.cache-flush/2026-07-23-a2-a5-release-v1';
 const inheritedAssetEpoch = '20260724-a12-release-v1';
+const reviewAssetEpoch = '20260727-a15-review-release-v1';
 const currentRegistryEpoch = '20260726-a15-empirical-v1';
 const retainedMassEpoch = 'td613.ash.cache-flush/2026-07-24-a11-postclosure-v1';
-for (const [name, source] of [['shell',shell],['lifecycle',lifecycle],['workspace bridge',bridge],['cache eviction',eviction],['recovery bridge',recovery]]) assert.match(source, new RegExp(inheritedAssetEpoch.replaceAll('-', '\\-')), `${name} omitted inherited live asset epoch`);
+for (const [name, source] of [['shell',shell],['lifecycle',lifecycle]]) assert.match(source, new RegExp(reviewAssetEpoch.replaceAll('-', '\\-')), `${name} omitted A15 review asset epoch`);
+for (const [name, source] of [['workspace bridge',bridge],['cache eviction',eviction],['recovery bridge',recovery]]) assert.match(source, new RegExp(inheritedAssetEpoch.replaceAll('-', '\\-')), `${name} omitted inherited A12 component epoch`);
+assert.match(deferral, /ordinary monotonic asset-version advancement only/);
+assert.match(deferral, /reserved for \*\*A19 postclosure\*\*/);
 assert.match(bridge, new RegExp(currentRegistryEpoch.replaceAll('-', '\\-')), 'A15 registry asset epoch did not enter the bridge');
 assert.match(registry, new RegExp(currentRegistryEpoch.replaceAll('-', '\\-')), 'A15 registry omitted its ordinary asset epoch');
 for (const [name, source] of [['shell',shell],['cache eviction',eviction],['cache flush',cacheFlush],['recovery bridge',recovery]]) assert.match(source, new RegExp(retainedMassEpoch.replaceAll('/', '\\/').replaceAll('.', '\\.').replaceAll('-', '\\-')), `${name} omitted retained A11 mass epoch`);
@@ -99,4 +104,4 @@ assert.doesNotMatch(a6Source, /new MutationObserver|setInterval\(|navigator\.sen
 assert.doesNotMatch(a6Source, /ASH_AIA3_CACHE_EPOCH|ASH_AIA3_ASSET_EPOCH|cache-flush\/2026-07-24|20260724/);
 for (const invariant of ['authority_changed:false','source_bytes_moved:false','custody_changed:false','release_posture_changed:false','closure_changed:false']) assert.match(a6Source, new RegExp(invariant));
 
-console.log('Ash A2-A6 whole-instrument contracts: PASS under consolidated A15 validation');
+console.log('Ash A2-A6 whole-instrument contracts: PASS under A15 review asset advancement with A11 eviction retained');
