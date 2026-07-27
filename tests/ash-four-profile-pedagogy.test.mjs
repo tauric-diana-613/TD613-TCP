@@ -22,7 +22,7 @@ const compositionCompatibilitySource = fs.readFileSync(compositionCompatibilityP
 const workspaceBridgeSource = fs.readFileSync(workspaceBridgePath, 'utf8');
 const { ASH_DEMO_PEDAGOGY_VERSION, ASH_DEMO_PEDAGOGY_MANIFESTS } = await import(pathToFileURL(modulePath));
 const RELEASE_EPOCH = '20260726-a15-empirical-v1';
-const CONVERGENCE_EPOCH = '20260727-a15-convergence-reconcile-v1';
+const CONVERGENCE_EPOCH = '20260727-a15-convergence-present-state-v2';
 
 assert.equal(ASH_DEMO_PEDAGOGY_VERSION, 'td613.ash.demo-pedagogy/v0.2-event-driven-idle-stable');
 assert.deepEqual(Object.keys(ASH_DEMO_PEDAGOGY_MANIFESTS).sort(), ['fundraiser','investigation','political_campaign','research']);
@@ -77,7 +77,7 @@ assert.match(registrySource, /buildArchiveDemoFixture/);
 assert.match(registrySource, /ash-a15-empirical-profile-journeys\.js\?v=\$\{ASH_DEMO_ASSET_EPOCH\}/);
 assert.doesNotMatch(registrySource, /RESERVED_FOR_A14|A14_RESERVED/);
 
-assert.match(entrySource, /td613\.ash\.demo-entry-convergence\/v0\.8-reconcile-only-restart/);
+assert.match(entrySource, /td613\.ash\.demo-entry-convergence\/v0\.9-present-state-reconcile/);
 assert.match(entrySource, /const ENTRY_FALLBACK = Object\.freeze\(\{[^\n]*archive:'map'/);
 assert.match(entrySource, /const CONVERGENCE_FALLBACK_MS = 64/);
 assert.match(entrySource, /function scheduleConvergence\(caseId, profile, workspace, currentToken, phase, stableFrames\)/);
@@ -93,6 +93,11 @@ assert.doesNotMatch(entrySource, /body > \.workspace-rail/);
 assert.match(entrySource, /phase === 'STRUCTURAL'/);
 assert.match(entrySource, /phase === 'VISIBLE'/);
 assert.match(entrySource, /nextStable >= 2/);
+assert.match(entrySource, /release\(caseId, profile, workspace, nextStable, 'TEMPORAL_STABILITY'\)/);
+assert.match(entrySource, /basis = 'TEMPORAL_STABILITY'/);
+assert.match(entrySource, /basis:'PRESENT_STATE_VISIBLE'|release\(caseId, profile, workspace, 0, 'PRESENT_STATE_VISIBLE'\)/);
+assert.match(entrySource, /temporal_stability_claimed:basis === 'TEMPORAL_STABILITY'/);
+assert.match(entrySource, /stable_frames:stableFrames/);
 assert.match(entrySource, /delete doc\.documentElement\.dataset\.ashDemoEntryHydrating/);
 assert.match(entrySource, /td613:ash:demo-entry-ready/);
 assert.match(entrySource, /WORKSPACE_NOT_VISIBLE/);
@@ -101,8 +106,10 @@ assert.match(entrySource, /const explicitReconcile = event\?\.detail\?\.reconcil
 assert.match(entrySource, /state\.posture === 'READY'/);
 assert.match(entrySource, /\['OPENING','REVEALING'\]\.includes\(state\.posture\) && !explicitReconcile/);
 assert.match(entrySource, /function reconcile\(detail = \{\}\)/);
-assert.match(entrySource, /begin\(\{ detail:\{ \.\.\.detail, reconcile:true \} \}\)/);
-assert.match(entrySource, /Object\.freeze\(\{ version:ASH_DEMO_ENTRY_CONVERGENCE_VERSION, begin, reconcile/);
+assert.match(entrySource, /if \(structuralReady\(workspace\)\)/);
+assert.match(entrySource, /if \(visibleReady\(workspace\)\)/);
+assert.match(entrySource, /return begin\(\{ detail:\{ \.\.\.detail, reconcile:true \} \}\)/);
+assert.match(entrySource, /releaseReceipt:\(\) => host\.__td613AshDemoEntryReleaseReceipt \|\| null/);
 assert.match(entrySource, /dataset\.ashDemoEntryCase = caseId/);
 assert.doesNotMatch(entrySource, /new MutationObserver|setInterval\s*\(/);
 
@@ -136,4 +143,4 @@ assert.match(workspaceBridgeSource, new RegExp(`ash-demo-entry-convergence\\.js\
 assert.doesNotMatch(workspaceBridgeSource, /ash-demo-pedagogy-persistence/);
 assert.equal(fs.existsSync(path.join(root, 'app/dome-world/ash-demo-pedagogy-persistence.js')), false, 'The obstructive all-workspace ledger portal must remain removed.');
 
-console.log('ash-four-profile-pedagogy.test.mjs passed under A15 six-seat registry ownership and reconcile-only entry recovery');
+console.log('ash-four-profile-pedagogy.test.mjs passed under A15 six-seat ownership, present-state convergence, and delegated Play recovery');
