@@ -26,7 +26,8 @@ const closeRepair = read('app/dome-world/ash-case-close-repair.js');
 const emergency = read('app/dome-world/ash-emergency-stability-contract.js');
 const navigation = read('app/dome-world/ash-workspace-navigation.js');
 const rescue = read('app/dome-world/ash-ui-ux-rescue.js');
-const LIFECYCLE_EPOCH = '20260724-a12-release-v1';
+const deferral = read('app/dome-world/docs/ASH_KEEP_A15_A19_MASS_EVICTION_DEFERRAL_AMENDMENT_V0_1.md');
+const LIFECYCLE_EPOCH = '20260727-a15-review-release-v1';
 const REGISTRY_EPOCH = '20260726-a15-empirical-v1';
 const MASS_EPOCH = 'td613.ash.cache-flush/2026-07-24-a11-postclosure-v1';
 
@@ -72,9 +73,11 @@ assert.doesNotMatch(cache, /indexedDB\.deleteDatabase|localStorage\.clear|sessio
 assert.equal(ASH_LIFECYCLE_ASSET_EPOCH, LIFECYCLE_EPOCH);
 assert.equal(ASH_MASS_EVICTION_EPOCH, MASS_EPOCH);
 assert.equal(ASH_LIFECYCLE_MODULE, `/dome-world/ash-lifecycle.js?v=${LIFECYCLE_EPOCH}`);
-assert.match(lifecycle, /const ASH_RELEASE_ASSET_EPOCH = '20260724-a12-release-v1'/);
+assert.match(lifecycle, /const ASH_RELEASE_ASSET_EPOCH = '20260727-a15-review-release-v1'/);
 assert.ok(lifecycle.includes("await import(`./ash-ingress-layout-hydration.js?v=${ASH_RELEASE_ASSET_EPOCH}`)"));
 assert.ok(lifecycle.includes("await import(`./ash-cache-flush.js?v=${ASH_RELEASE_ASSET_EPOCH}`)"));
+assert.match(deferral, /ordinary monotonic asset-version advancement only/);
+assert.match(deferral, /new A15 graph-wide cache flush: false/);
 
 const renderedKeep = injectAshKeepLifecycle(keepHtml);
 let moduleCursor = -1;
@@ -131,4 +134,4 @@ assert.match(archive.defaults.route.digest, /^sha256:[0-9a-f]{64}$/);
 assert.equal(archive.assay.release_authority, false);
 assert.equal(archive.assay.transfer_authority, false);
 
-console.log('ash-live-ingress-demos-cache.test.mjs passed under A15 empirical registry epoch');
+console.log('ash-live-ingress-demos-cache.test.mjs passed under A15 review asset epoch with A11 eviction retained');
