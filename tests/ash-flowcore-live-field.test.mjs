@@ -41,11 +41,13 @@ for (const marker of [
 assert.doesNotMatch(restoration, /setInterval\s*\(/);
 
 for (const marker of [
-  'v0.9-phase-atomic-canonical-play',"INGRESS_HOST_ID = 'guidedLaunchPromise'","LEGACY_PROMISE_ID = 'guidedLaunchPromiseLegacy'",
+  'v0.10-stage-owner-reacquisition',"INGRESS_HOST_ID = 'guidedLaunchPromise'","LEGACY_PROMISE_ID = 'guidedLaunchPromiseLegacy'",
   "button.addEventListener('click', playFlowcoreField)",'[data-aia-play]','td613:ash:flowcore-field-phase',
   'function applyProxyPosture(node)','function normalizeStageFields()','ash-flowcore-field--proxy','ingress.replaceChildren(visibleField)',
   "setDataset(visibleField, 'flowcoreHost', 'aia')",'proxy_count','duplicate_visible_fields','#guidedLaunchPromise.ash-flowcore-ingress-host',
-  'function queueSync(reason)','function mutationTouchesPortal(record)'
+  'function queueSync(reason)','function mutationTouchesPortal(record)','function reacquireVisibleField(stage = stageHost())',
+  'function refreshFieldOwnerAndReacquire(stage = stageHost())','host.__td613AshFlowcoreField?.refresh?.()',
+  "'whole-instrument-refreshed'",'if (moved) normalizeStageFields()'
 ]) assert.ok(portal.includes(marker), `Flow-Core portal omitted ${marker}`);
 assert.doesNotMatch(portal, /setInterval\s*\(|requestAnimationFrame\s*\(/);
 
@@ -61,7 +63,7 @@ for (const marker of [
 assert.doesNotMatch(workspaceRemount, /setInterval\s*\(|requestAnimationFrame\s*\(|new MutationObserver/);
 assert.match(lifecycle, /ash-flowcore-workspace-remount\.js\?v=\$\{ASH_RELEASE_ASSET_EPOCH\}/);
 
-for (const marker of ['v0.3-observer-hotfix','EXPLICIT_LEGACY_PRESENTATION','20260722-flowcore-observer-hotfix-v3']) assert.ok(portalLoader.includes(marker));
+for (const marker of ['v0.4-stage-owner-reacquisition','EXPLICIT_LEGACY_PRESENTATION','20260727-flowcore-stage-owner-v4']) assert.ok(portalLoader.includes(marker));
 assert.doesNotMatch(portalLoader, /setInterval\s*\(|requestAnimationFrame\s*\(/);
 
 for (const marker of [
@@ -90,4 +92,4 @@ for (const module of ['ash-session-boundary','ash-ingress-copy-spacing','ash-flo
 }
 assert.doesNotMatch(bridge, /import '\.\/ash-flowcore-ingress-portal\.js/);
 
-console.log('ash-flowcore-live-field.test.mjs passed with A15 registry-owned readiness and whole-instrument canonical-field remount ownership');
+console.log('ash-flowcore-live-field.test.mjs passed with A15 registry-owned readiness and portal-internal canonical-field reacquisition');
