@@ -118,10 +118,31 @@ const testWorkspaceReplacement = `  await page.evaluate(() => {
 const rebuildTarget = `  await page.locator('#loadSeed').click();
   await page.waitForFunction(() => /"test_digest"/.test(document.getElementById('testReceipt')?.textContent || ''));`;
 const rebuildReplacement = `  await page.locator('#loadSeed').click();
+  const rebuildPostureHandle = await page.waitForFunction(() => {
+    const receiptReady = /"test_digest"/.test(document.getElementById('testReceipt')?.textContent || '');
+    if (receiptReady) return 'RECEIPT_ALREADY_OBSERVED';
+    const button = [...document.querySelectorAll('button')]
+      .find(candidate => /Confirm this exact gesture/i.test(candidate.textContent || ''));
+    if (!button) return false;
+    const style = getComputedStyle(button);
+    const rect = button.getBoundingClientRect();
+    return style.display !== 'none'
+      && style.visibility !== 'hidden'
+      && Number(style.opacity) > 0
+      && rect.width > 0
+      && rect.height > 0
+      ? 'CONFIRMATION_VISIBLE'
+      : false;
+  }, null, { timeout:45000 });
+  const rebuildPosture = await rebuildPostureHandle.jsonValue();
   const rebuildConfirmation = page.getByRole('button', { name:/Confirm this exact gesture/i });
-  await rebuildConfirmation.waitFor({ state:'visible', timeout:45000 });
-  await rebuildConfirmation.click();
-  await page.waitForFunction(() => /"test_digest"/.test(document.getElementById('testReceipt')?.textContent || ''), null, { timeout:45000 });`;
+  if (rebuildPosture === 'CONFIRMATION_VISIBLE') await rebuildConfirmation.click();
+  await page.waitForFunction(() => /"test_digest"/.test(document.getElementById('testReceipt')?.textContent || ''), null, { timeout:45000 });
+  report.observations.rebuild_transition = {
+    presentation_route: report.observations.boot_readiness?.presentation_route || 'UNKNOWN',
+    confirmation_required: rebuildPosture === 'CONFIRMATION_VISIBLE',
+    receipt_observed: true
+  };`;
 
 const authorityTarget = `  authority = await page.evaluate(() => window.TD613AshConvergence.currentAuthorityContext());
   const hushPermission = await page.evaluate(() => window.TD613AshConvergence.authorize('HUSH_CANDIDATE'));`;
