@@ -136,8 +136,24 @@ for (const token of [
   'declassification_authorized:false','transfer_executed:false'
 ]) assert(archiveSource.includes(token), `Harbor Memory provider omitted ${token}.`);
 
-assert.match(convergenceSource, /td613\.ash\.demo-entry-convergence\/v0\.6-archive-entry-fallback/);
+assert.match(convergenceSource, /td613\.ash\.demo-entry-convergence\/v0\.7-coalesced-entry-clock/);
 assert.match(convergenceSource, /const ENTRY_FALLBACK = Object\.freeze\(\{[^\n]*archive:'map'/);
+for (const token of [
+  'const CONVERGENCE_FALLBACK_MS = 64',
+  'let frameFallback = 0',
+  'function cancelConvergenceTick()',
+  'function scheduleConvergence(caseId, profile, workspace, currentToken, phase, stableFrames)',
+  'let admitted = false',
+  'frame = host.requestAnimationFrame(run)',
+  'frameFallback = host.setTimeout(run, CONVERGENCE_FALLBACK_MS)',
+  'cancelConvergenceTick()',
+  "scheduleConvergence(caseId, profile, workspace, currentToken, 'VISIBLE', 0)",
+  "scheduleConvergence(caseId, profile, workspace, currentToken, 'STRUCTURAL', 0)"
+]) assert(convergenceSource.includes(token), `Archive entry convergence omitted coalesced clock law ${token}.`);
+assert.match(convergenceSource, /const nextStable = ready \? stableFrames \+ 1 : 0/);
+assert.match(convergenceSource, /phase === 'STRUCTURAL' && nextStable >= 2/);
+assert.match(convergenceSource, /phase === 'VISIBLE' && nextStable >= 2/);
+assert.doesNotMatch(convergenceSource, /setInterval\s*\(/);
 assert(currentObserver.includes("replaceAll('td613.ash.demo-registry/v0.1-a13', 'td613.ash.demo-registry/v0.3-a15')"));
 assert(legacyObserver.includes('td613.ash.demo-registry/v0.1-a13'));
 assert.doesNotMatch(a12Observer, /td613\.ash\.demo-registry\/v0\.[12]-(?:a13|a14)/);
@@ -166,7 +182,7 @@ assert.equal(vercel.git?.deploymentEnabled, false);
 
 console.log(JSON.stringify({
   ok:true,
-  schema:'td613.ash.a14-harbor-memory-archive-contract/v0.7-a15-registry-current',
+  schema:'td613.ash.a14-harbor-memory-archive-contract/v0.8-coalesced-entry-clock',
   registry_version:ASH_DEMO_REGISTRY_VERSION,
   ordinary_asset_epoch:ASH_DEMO_ASSET_EPOCH,
   archive_fixture:fixture.demo_id,
@@ -181,6 +197,8 @@ console.log(JSON.stringify({
   a12_registry_observer_current:true,
   a14_authority_ceiling_normalized:true,
   archive_entry_fallback:'map',
+  coalesced_entry_clock:true,
+  convergence_fallback_ms:64,
   tracked_probe_sources_mutated:false,
   legacy_fixture_rewriter_invoked:false,
   mass_eviction_epoch:massEpoch,
