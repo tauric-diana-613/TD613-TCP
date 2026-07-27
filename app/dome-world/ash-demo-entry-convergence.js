@@ -1,4 +1,5 @@
-export const ASH_DEMO_ENTRY_CONVERGENCE_VERSION = 'td613.ash.demo-entry-convergence/v0.8-reconcile-only-restart';
+export const ASH_DEMO_ENTRY_CONVERGENCE_VERSION = 'td613.ash.demo-entry-convergence/v0.9-present-state-reconcile';
+// Historical A15 recovery baseline: td613.ash.demo-entry-convergence/v0.8-reconcile-only-restart.
 // Historical A14 baseline: td613.ash.demo-entry-convergence/v0.7-coalesced-entry-clock.
 
 const host = globalThis.window;
@@ -125,7 +126,7 @@ function scheduleConvergence(caseId, profile, workspace, currentToken, phase, st
   return true;
 }
 
-function release(caseId, profile, workspace, stableFrames) {
+function release(caseId, profile, workspace, stableFrames, basis = 'TEMPORAL_STABILITY') {
   cancelConvergenceTick();
   clearTimeout(timeout);
   delete doc.documentElement.dataset.ashDemoEntryHydrating;
@@ -134,7 +135,20 @@ function release(caseId, profile, workspace, stableFrames) {
   doc.documentElement.dataset.ashDemoEntryCase = caseId || '';
   publish(caseId, profile, workspace, 'READY', 'VISIBLE', stableFrames);
   renderStatus(profile, workspace, 'READY', `${workspace} ready · four-step route remains available`);
-  host.dispatchEvent(new CustomEvent('td613:ash:demo-entry-ready', { detail:{ case_id:caseId, profile, workspace, phase:'VISIBLE', stable_frames:stableFrames, version:ASH_DEMO_ENTRY_CONVERGENCE_VERSION } }));
+  const receipt = Object.freeze({
+    schema:'td613.ash.demo-entry-release/v0.2-present-state-basis',
+    case_id:caseId,
+    profile,
+    workspace,
+    basis,
+    stable_frames:stableFrames,
+    temporal_stability_claimed:basis === 'TEMPORAL_STABILITY',
+    authority_changed:false,
+    source_bytes_moved:false,
+    human_closure_required:true
+  });
+  host.__td613AshDemoEntryReleaseReceipt = receipt;
+  host.dispatchEvent(new CustomEvent('td613:ash:demo-entry-ready', { detail:{ case_id:caseId, profile, workspace, phase:'VISIBLE', stable_frames:stableFrames, basis, version:ASH_DEMO_ENTRY_CONVERGENCE_VERSION } }));
   host.setTimeout(() => byId('ashDemoEntryStatus')?.remove(), 1200);
 }
 
@@ -150,7 +164,7 @@ function converge(caseId, profile, workspace, currentToken, phase = 'STRUCTURAL'
     return;
   }
   if (phase === 'VISIBLE' && nextStable >= 2) {
-    release(caseId, profile, workspace, nextStable);
+    release(caseId, profile, workspace, nextStable, 'TEMPORAL_STABILITY');
     return;
   }
   const panel = byId(`workspace-${workspace}`);
@@ -193,6 +207,23 @@ function begin(event) {
 }
 
 function reconcile(detail = {}) {
+  const profile = detail.profile || doc.documentElement.dataset.ashDemoProfile || null;
+  const caseId = detail.case_id || currentCaseId({ detail });
+  if (!profile || !caseId) return false;
+  const workspace = intendedWorkspace(profile);
+  if (state.case_id === caseId && state.profile === profile && state.posture === 'READY') return false;
+  if (structuralReady(workspace)) {
+    ++token;
+    cancelConvergenceTick();
+    clearTimeout(timeout);
+    delete doc.documentElement.dataset.ashDemoEntryHydrating;
+    delete doc.documentElement.dataset.ashDemoEntryHold;
+    publish(caseId, profile, workspace, 'REVEALING', 'VISIBLE', 0);
+    if (visibleReady(workspace)) {
+      release(caseId, profile, workspace, 0, 'PRESENT_STATE_VISIBLE');
+      return true;
+    }
+  }
   return begin({ detail:{ ...detail, reconcile:true } });
 }
 
@@ -200,7 +231,7 @@ export function installAshDemoEntryConvergence() {
   if (!host || !doc?.body || host.__td613AshDemoEntryConvergence) return false;
   ensureStyles();
   host.addEventListener('td613:ash:profile-demo-hydrated', begin);
-  host.__td613AshDemoEntryConvergence = Object.freeze({ version:ASH_DEMO_ENTRY_CONVERGENCE_VERSION, begin, reconcile, current:() => state, ready:() => state.posture === 'READY' });
+  host.__td613AshDemoEntryConvergence = Object.freeze({ version:ASH_DEMO_ENTRY_CONVERGENCE_VERSION, begin, reconcile, current:() => state, ready:() => state.posture === 'READY', releaseReceipt:() => host.__td613AshDemoEntryReleaseReceipt || null });
   doc.documentElement.dataset.ashDemoEntryConvergence = ASH_DEMO_ENTRY_CONVERGENCE_VERSION;
   return true;
 }
