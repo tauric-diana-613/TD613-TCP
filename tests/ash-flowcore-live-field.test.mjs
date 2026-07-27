@@ -6,6 +6,8 @@ const field = read('app/dome-world/ash-flowcore-pedagogy-field.js');
 const css = read('app/dome-world/ash-flowcore-pedagogy-field.css');
 const portal = read('app/dome-world/ash-flowcore-ingress-portal.js');
 const portalLoader = read('app/dome-world/ash-flowcore-ingress-portal-loader.js');
+const workspaceRemount = read('app/dome-world/ash-flowcore-workspace-remount.js');
+const lifecycle = read('app/dome-world/ash-lifecycle.js');
 const restoration = read('app/dome-world/ash-post-ingress-motion-restoration.js');
 const boundary = read('app/dome-world/ash-session-boundary.js');
 const spacing = read('app/dome-world/ash-ingress-copy-spacing.js');
@@ -39,15 +41,30 @@ for (const marker of [
 assert.doesNotMatch(restoration, /setInterval\s*\(/);
 
 for (const marker of [
-  'v0.9-phase-atomic-canonical-play',"INGRESS_HOST_ID = 'guidedLaunchPromise'","LEGACY_PROMISE_ID = 'guidedLaunchPromiseLegacy'",
+  'v0.10-stage-owner-reacquisition',"INGRESS_HOST_ID = 'guidedLaunchPromise'","LEGACY_PROMISE_ID = 'guidedLaunchPromiseLegacy'",
   "button.addEventListener('click', playFlowcoreField)",'[data-aia-play]','td613:ash:flowcore-field-phase',
   'function applyProxyPosture(node)','function normalizeStageFields()','ash-flowcore-field--proxy','ingress.replaceChildren(visibleField)',
   "setDataset(visibleField, 'flowcoreHost', 'aia')",'proxy_count','duplicate_visible_fields','#guidedLaunchPromise.ash-flowcore-ingress-host',
-  'function queueSync(reason)','function mutationTouchesPortal(record)'
+  'function queueSync(reason)','function mutationTouchesPortal(record)','function reacquireVisibleField(stage = stageHost())',
+  'function refreshFieldOwnerAndReacquire(stage = stageHost())','host.__td613AshFlowcoreField?.refresh?.()',
+  "'whole-instrument-refreshed'",'if (moved) normalizeStageFields()'
 ]) assert.ok(portal.includes(marker), `Flow-Core portal omitted ${marker}`);
 assert.doesNotMatch(portal, /setInterval\s*\(|requestAnimationFrame\s*\(/);
 
-for (const marker of ['v0.3-observer-hotfix','EXPLICIT_LEGACY_PRESENTATION','20260722-flowcore-observer-hotfix-v3']) assert.ok(portalLoader.includes(marker));
+for (const marker of [
+  'td613.ash.flowcore-workspace-remount/v0.1-whole-instrument-owner',
+  "['whole-instrument-refreshed','flowcore-portal-loader-ready']",
+  'portal.refresh() === true',
+  'canonical_visible_field_count:visibleCanonicalFields().length',
+  'authority_changed:false',
+  'source_bytes_moved:false',
+  'human_closure_required:true'
+]) assert.ok(workspaceRemount.includes(marker), `Flow-Core workspace remount omitted ${marker}`);
+assert.doesNotMatch(workspaceRemount, /setInterval\s*\(|requestAnimationFrame\s*\(|new MutationObserver/);
+assert.match(lifecycle, /const ASH_RELEASE_ASSET_EPOCH = '20260727-a15-review-release-v1'/);
+assert.match(lifecycle, /ash-flowcore-workspace-remount\.js\?v=\$\{ASH_RELEASE_ASSET_EPOCH\}/);
+
+for (const marker of ['v0.4-stage-owner-reacquisition','EXPLICIT_LEGACY_PRESENTATION','20260727-flowcore-stage-owner-v4']) assert.ok(portalLoader.includes(marker));
 assert.doesNotMatch(portalLoader, /setInterval\s*\(|requestAnimationFrame\s*\(/);
 
 for (const marker of [
@@ -70,10 +87,10 @@ for (const marker of [
 ]) assert.ok(runner.includes(marker), `A15 Flow-Core runner omitted ${marker}`);
 assert.match(runner, /for \(const retired of \['td613\.ash\.demo-registry\/v0\.1-a13','td613\.ash\.demo-registry\/v0\.2-a14'\]\)/);
 
-const releaseEpoch = '20260724-a12-release-v1';
+const bridgeEpoch = '20260724-a12-release-v1';
 for (const module of ['ash-session-boundary','ash-ingress-copy-spacing','ash-flowcore-pedagogy-field','ash-flowcore-ingress-portal-loader','ash-post-ingress-motion-restoration','ash-reviewability-repair']) {
-  assert.match(bridge, new RegExp(`${module}\\.js\\?v=${releaseEpoch}`));
+  assert.match(bridge, new RegExp(`${module}\\.js\\?v=${bridgeEpoch}`));
 }
 assert.doesNotMatch(bridge, /import '\.\/ash-flowcore-ingress-portal\.js/);
 
-console.log('ash-flowcore-live-field.test.mjs passed with A15 registry-owned browser readiness');
+console.log('ash-flowcore-live-field.test.mjs passed with A15 review-release asset versioning and portal-internal canonical-field reacquisition');
