@@ -6,6 +6,8 @@ const field = read('app/dome-world/ash-flowcore-pedagogy-field.js');
 const css = read('app/dome-world/ash-flowcore-pedagogy-field.css');
 const portal = read('app/dome-world/ash-flowcore-ingress-portal.js');
 const portalLoader = read('app/dome-world/ash-flowcore-ingress-portal-loader.js');
+const workspaceRemount = read('app/dome-world/ash-flowcore-workspace-remount.js');
+const lifecycle = read('app/dome-world/ash-lifecycle.js');
 const restoration = read('app/dome-world/ash-post-ingress-motion-restoration.js');
 const boundary = read('app/dome-world/ash-session-boundary.js');
 const spacing = read('app/dome-world/ash-ingress-copy-spacing.js');
@@ -47,6 +49,18 @@ for (const marker of [
 ]) assert.ok(portal.includes(marker), `Flow-Core portal omitted ${marker}`);
 assert.doesNotMatch(portal, /setInterval\s*\(|requestAnimationFrame\s*\(/);
 
+for (const marker of [
+  'td613.ash.flowcore-workspace-remount/v0.1-whole-instrument-owner',
+  "['whole-instrument-refreshed','flowcore-portal-loader-ready']",
+  'portal.refresh() === true',
+  'canonical_visible_field_count:visibleCanonicalFields().length',
+  'authority_changed:false',
+  'source_bytes_moved:false',
+  'human_closure_required:true'
+]) assert.ok(workspaceRemount.includes(marker), `Flow-Core workspace remount omitted ${marker}`);
+assert.doesNotMatch(workspaceRemount, /setInterval\s*\(|requestAnimationFrame\s*\(|new MutationObserver/);
+assert.match(lifecycle, /ash-flowcore-workspace-remount\.js\?v=\$\{ASH_RELEASE_ASSET_EPOCH\}/);
+
 for (const marker of ['v0.3-observer-hotfix','EXPLICIT_LEGACY_PRESENTATION','20260722-flowcore-observer-hotfix-v3']) assert.ok(portalLoader.includes(marker));
 assert.doesNotMatch(portalLoader, /setInterval\s*\(|requestAnimationFrame\s*\(/);
 
@@ -76,4 +90,4 @@ for (const module of ['ash-session-boundary','ash-ingress-copy-spacing','ash-flo
 }
 assert.doesNotMatch(bridge, /import '\.\/ash-flowcore-ingress-portal\.js/);
 
-console.log('ash-flowcore-live-field.test.mjs passed with A15 registry-owned browser readiness');
+console.log('ash-flowcore-live-field.test.mjs passed with A15 registry-owned readiness and whole-instrument canonical-field remount ownership');

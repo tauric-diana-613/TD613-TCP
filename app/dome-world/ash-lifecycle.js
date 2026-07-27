@@ -59,4 +59,5 @@ if (legacyPresentation) {
   await import(`./ash-keep-aia.js?v=${ASH_RELEASE_ASSET_EPOCH}`);
   await import(`./ash-aia3-composition.js?v=${ASH_RELEASE_ASSET_EPOCH}`);
   await import(`./ash-keep-aia-workspace-bridge.js?v=${ASH_RELEASE_ASSET_EPOCH}`);
+  await import(`./ash-flowcore-workspace-remount.js?v=${ASH_RELEASE_ASSET_EPOCH}`);
 }
