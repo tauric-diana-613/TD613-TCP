@@ -1,4 +1,4 @@
-export const ASH_A8_DIRTY_DRAFT_RECOMPILE_GUARD_VERSION = 'td613.ash.a8-dirty-draft-recompile-guard/v0.2-dual-map-signal';
+export const ASH_A8_DIRTY_DRAFT_RECOMPILE_GUARD_VERSION = 'td613.ash.a8-dirty-draft-recompile-guard/v0.3-post-sync-restore-owner';
 
 const host = globalThis.window;
 const doc = globalThis.document;
@@ -8,6 +8,7 @@ const admittedDirtyEvents = new WeakSet();
 let dirtyDraftActive = false;
 let recoveredInFlightRecompiles = 0;
 let recoveredPremiumRefreshes = 0;
+let recoveredPostSyncRenders = 0;
 let recoverySerial = 0;
 let staleDetachedEventsHeld = 0;
 
@@ -40,7 +41,7 @@ function publish(posture, source = null, detail = {}) {
   const signals = mapWorkshopSignals();
   host?.dispatchEvent?.(new CustomEvent('td613:ash:a8-dirty-draft-guard', {
     detail:Object.freeze({
-      schema:'td613.ash.a8-dirty-draft-guard-receipt/v0.7-dual-map-signal',
+      schema:'td613.ash.a8-dirty-draft-guard-receipt/v0.8-post-sync-restore-owner',
       posture,
       source,
       dirty_draft_active:dirtyDraftActive,
@@ -51,6 +52,7 @@ function publish(posture, source = null, detail = {}) {
       custody_hold_active:custodyHoldIsActive(),
       recovered_in_flight_recompiles:recoveredInFlightRecompiles,
       recovered_premium_refreshes:recoveredPremiumRefreshes,
+      recovered_post_sync_renders:recoveredPostSyncRenders,
       recovery_serial:recoverySerial,
       stale_detached_events_held:staleDetachedEventsHeld,
       authority_changed:false,
@@ -117,6 +119,19 @@ function recoverAfterPremiumRefresh(source, detail = {}) {
   return recovered;
 }
 
+function recoverAfterStageSync(source, detail = {}) {
+  const recovered = restoreCurrentShadow('DIRTY_DRAFT_RECOVERED_AFTER_STAGE_SYNC', source, {
+    recovery_origin:'POST_STAGE_SYNC_RESTORE_ARBITRATION',
+    recovery_phase:'POST_STAGE_SYNC_PRE_GENERIC_DRAFT_RESTORE',
+    guard_reason:detail?.guard_reason || null,
+    active_stage_interaction:Boolean(detail?.active_stage_interaction),
+    generic_draft_restore_suppressed:detail?.generic_draft_restore_suppressed === true,
+    authoritative_restore_owner:'A8_MAP_RETURN_HANDSHAKE_SHADOW'
+  });
+  if (recovered) recoveredPostSyncRenders += 1;
+  return recovered;
+}
+
 function completeQueuedRecovery(serial, source) {
   if (serial !== recoverySerial || !dirtyDraftActive || custodyHoldIsActive() || !workshopIsConnected()) return false;
   const restoreOwner = host?.__td613AshA8MapReturnHandshake?.restore;
@@ -151,6 +166,7 @@ function clear(source) {
   dirtyDraftActive = false;
   recoveredInFlightRecompiles = 0;
   recoveredPremiumRefreshes = 0;
+  recoveredPostSyncRenders = 0;
   staleDetachedEventsHeld = 0;
   publish('CLEARED', source);
 }
@@ -178,6 +194,7 @@ export function installAshA8DirtyDraftRecompileGuard() {
     version:ASH_A8_DIRTY_DRAFT_RECOMPILE_GUARD_VERSION,
     shouldDefer,
     recoverAfterRefresh:recoverAfterPremiumRefresh,
+    recoverAfterSync:recoverAfterStageSync,
     recover:recoverAfterInFlightRecompile,
     clear,
     current:() => {
@@ -191,11 +208,13 @@ export function installAshA8DirtyDraftRecompileGuard() {
         custody_hold_active:custodyHoldIsActive(),
         recovered_in_flight_recompiles:recoveredInFlightRecompiles,
         recovered_premium_refreshes:recoveredPremiumRefreshes,
+        recovered_post_sync_renders:recoveredPostSyncRenders,
         recovery_serial:recoverySerial,
         stale_detached_events_held:staleDetachedEventsHeld,
         posture:doc?.documentElement?.dataset?.ashA8DirtyDraftGuard || null,
         admission_boundary:'WINDOW_CAPTURE_BEFORE_DOCUMENT_REFRESH',
         guard_basis:'CONNECTED_WORKSHOP_AND_EITHER_CANONICAL_MAP_SIGNAL',
+        post_sync_restore_owner:'A8_MAP_RETURN_HANDSHAKE_SHADOW',
         authority_changed:false,
         source_bytes_moved:false,
         human_closure_required:true
