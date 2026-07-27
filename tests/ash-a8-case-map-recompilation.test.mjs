@@ -47,11 +47,14 @@ assert.ok(focusBlock.includes('return true'));
 assert.doesNotMatch(focusBlock, /applyControlIntent|mergeControlIntentWithShadow|\.capture\?\./, 'Focus may activate deferral but may not rewrite the shared shadow.');
 
 for (const token of [
-  'async function stageA8Field(page, id, value)','await locator.selectOption(String(value))','await locator.fill(String(value))',
-  'async function waitForConcurrentA8Staging(page, fields)','await waitForConcurrentA8Staging(page, fields)',
-  'visible_field_gestures:true','concurrent_staging_verified:true','await button.focus()','await button.click()',
+  'async function stageA8Field(page, id, value)','await locator.selectOption(expected)','await locator.fill(expected)',
+  'const maxAttempts = 4','const maxPasses = 3','async function waitForConcurrentA8Staging(page, fields, timeout = 12_000)',
+  'await waitForConcurrentA8Staging(page, fields)','window.__td613A8LastFieldWitness','window.__td613A8LastGestureWitness',
+  'replacement_retry_observed:Object.values(fieldAttempts).some(attempts => attempts > 1)',
+  'visible_field_gestures:true','replaceable_control_retry_contract:true','concurrent_staging_verified:true','await button.focus()','await button.click()',
   '#premiumPrimaryDock [data-premium-workspace="map"]:visible','RESTORED_AFTER_CANONICAL_MAP_RETURN'
 ]) assert.ok(probe.includes(token), `A8 browser witness missing ${token}`);
+assert.doesNotMatch(probe, /authority_changed:true|source_bytes_moved:true|custody_changed:true|release_authority_widened:true/);
 
 for (const token of [
   'td613.ash.a7-a11-recompiler-core/v0.5-post-sync-guard-arbitration',
@@ -66,4 +69,4 @@ assert.match(html, /ash-a8-case-map-recompilation\.js/);
 assert.equal(html, mirror, 'Ash source mirror must remain byte-identical');
 assert.equal(vercel.git?.deploymentEnabled, false);
 
-console.log(JSON.stringify({ok:true,schema:'td613.ash.a8-case-map-contract/v0.25-static-plus-browser-ordering',multi_control_shadow_merge:true,focus_does_not_rewrite_shadow:true,prior_shadow_restored_before_current_intent:true,browser_ordering_required:true,cumulative_context_webkit_path:true,authority_changed:false,source_bytes_moved:false,human_closure_required:true,vercel_gate:'CLOSED'}, null, 2));
+console.log(JSON.stringify({ok:true,schema:'td613.ash.a8-case-map-contract/v0.26-replaceable-control-witness',multi_control_shadow_merge:true,focus_does_not_rewrite_shadow:true,prior_shadow_restored_before_current_intent:true,browser_ordering_required:true,replaceable_control_retry_is_witness_only:true,cumulative_context_webkit_path:true,authority_changed:false,source_bytes_moved:false,human_closure_required:true,vercel_gate:'CLOSED'}, null, 2));
