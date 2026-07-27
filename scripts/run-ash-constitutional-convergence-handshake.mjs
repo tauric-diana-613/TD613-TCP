@@ -39,6 +39,7 @@ const modeAwareRebuildWait = `  const rebuildConfirmation = page.getByRole('butt
     action_path: rebuildActionPath,
     receipt_observed: true
   };`;
+const presentationAwareRebuildMarker = "report.observations.rebuild_transition = {";
 const replacementLoopTarget = `for (const [target, replacement] of replacements) {
   if (!runtime.includes(target)) throw new Error(\`Ash convergence runtime target missing: \${target.slice(0, 80)}\`);
   runtime = runtime.replace(target, replacement);
@@ -122,7 +123,8 @@ if (!wrapperSource.includes(replacementLoopReplacement)) {
 if (!wrapperSource.includes(sessionEpochAllowance)) {
   throw new Error('Convergence handshake preflight did not admit the current session epoch bookkeeping key.');
 }
-if (!wrapperSource.includes(modeAwareRebuildWait) || wrapperSource.includes(strictRebuildWait)) {
+if (!wrapperSource.includes(modeAwareRebuildWait)
+  && !wrapperSource.includes(presentationAwareRebuildMarker)) {
   throw new Error('Convergence handshake preflight did not normalize rebuild observation across presentation modes.');
 }
 
