@@ -1,4 +1,4 @@
-export const ASH_DEMO_ENTRY_CONVERGENCE_VERSION = 'td613.ash.demo-entry-convergence/v0.7-coalesced-entry-clock';
+export const ASH_DEMO_ENTRY_CONVERGENCE_VERSION = 'td613.ash.demo-entry-convergence/v0.8-reconcile-only-restart';
 
 const host = globalThis.window;
 const doc = globalThis.document;
@@ -163,7 +163,10 @@ function begin(event) {
   const profile = event?.detail?.profile || doc.documentElement.dataset.ashDemoProfile || null;
   if (!profile) return false;
   const caseId = currentCaseId(event);
-  if (caseId && state.case_id === caseId && state.profile === profile && ['OPENING','REVEALING','READY'].includes(state.posture)) return false;
+  const sameCase = Boolean(caseId && state.case_id === caseId && state.profile === profile);
+  const explicitReconcile = event?.detail?.reconcile === true;
+  if (sameCase && state.posture === 'READY') return false;
+  if (sameCase && ['OPENING','REVEALING'].includes(state.posture) && !explicitReconcile) return false;
   const workspace = intendedWorkspace(profile);
   const currentToken = ++token;
   cancelConvergenceTick();
@@ -173,7 +176,7 @@ function begin(event) {
   delete doc.documentElement.dataset.ashDemoEntryHold;
   doc.documentElement.dataset.ashDemoEntryHydrating = 'true';
   publish(caseId, profile, workspace, 'OPENING', 'STRUCTURAL', 0);
-  renderStatus(profile, workspace, 'OPENING', `opening ${workspace} workspace…`);
+  renderStatus(profile, workspace, 'OPENING', explicitReconcile ? `reconciling ${workspace} workspace…` : `opening ${workspace} workspace…`);
   openWorkspace(workspace);
   scheduleConvergence(caseId, profile, workspace, currentToken, 'STRUCTURAL', 0);
   timeout = host.setTimeout(() => {
@@ -188,11 +191,15 @@ function begin(event) {
   return true;
 }
 
+function reconcile(detail = {}) {
+  return begin({ detail:{ ...detail, reconcile:true } });
+}
+
 export function installAshDemoEntryConvergence() {
   if (!host || !doc?.body || host.__td613AshDemoEntryConvergence) return false;
   ensureStyles();
   host.addEventListener('td613:ash:profile-demo-hydrated', begin);
-  host.__td613AshDemoEntryConvergence = Object.freeze({ version:ASH_DEMO_ENTRY_CONVERGENCE_VERSION, begin, current:() => state, ready:() => state.posture === 'READY' });
+  host.__td613AshDemoEntryConvergence = Object.freeze({ version:ASH_DEMO_ENTRY_CONVERGENCE_VERSION, begin, reconcile, current:() => state, ready:() => state.posture === 'READY' });
   doc.documentElement.dataset.ashDemoEntryConvergence = ASH_DEMO_ENTRY_CONVERGENCE_VERSION;
   return true;
 }
