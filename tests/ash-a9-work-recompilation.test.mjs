@@ -21,7 +21,7 @@ for (const workspace of ['capsule','draft','choir','routes','test','save']) asse
 for (const token of ['const ACTION_FAMILIES = Object.freeze','function readiness(snapshot, action)','function actionCard(snapshot, action)','function priorityItems(snapshot)','function completedItems(snapshot)','function heldItems(snapshot)','data-ash-a9-action','data-route-workspace','stage:\'A9\'','authority_changed:false','source_bytes_moved:false','human_closure_required:true']) assert.ok(source.includes(token), `A9 source missing ${token}`);
 for (const pattern of [/indexedDB\.(?:open|deleteDatabase)/,/localStorage\.(?:setItem|removeItem|clear)/,/sessionStorage\.(?:setItem|removeItem|clear)/,/fetch\s*\(/,/XMLHttpRequest/,/new\s+(?:Worker|SharedWorker)/,/\.click\(\)/,/approveRelease/,/askHush/,/keepDraft/,/recordRoute/,/makeSave/]) assert.doesNotMatch(source, pattern);
 
-assert.match(core, /td613\.ash\.a7-a11-recompiler-core\/v0\.4/);
+assert.match(core, /td613\.ash\.a7-a11-recompiler-core\/v0\.5-post-sync-guard-arbitration/);
 assert.match(core, new RegExp(`ash-a9-work-recompilation\\.js\\?v=${RELEASE_EPOCH}`));
 for (const token of ['__td613AshA9ModulePromise','td613:ash:a9-load-held','td613:ash:ux-workspace-opened','__td613AshA9WorkspaceOwner','await loadA9Module()','UX_WORKSPACE_OPENED','ACTIVE_STAGE_INTERACTION','active_stage_primary_action_deferred:true','.ash-stage-primary-action']) assert.ok(core.includes(token), `A7-A11 stage owner omitted ${token}`);
 assert.doesNotMatch(core, /MutationObserver|ash_epoch/);
@@ -55,4 +55,4 @@ assert.match(workflow, /github\.event_name == 'workflow_dispatch' && inputs\.mod
 assert.match(workflow, /github\.event_name == 'pull_request' && github\.event\.action == 'ready_for_review'/);
 for (const marker of ['Work recompilation','human intention','Do now','Prepare','Waiting / held','Completed / receipted','Hush integration','human closure required: true']) assert.ok(receipt.includes(marker));
 assert.equal(vercel.git?.deploymentEnabled, false);
-console.log(JSON.stringify({ok:true,schema:'td613.ash.a9-work-contract/v0.2-real-a8-staging-witness',action_families:8,parallel_task_engine:false,a8_visible_field_gestures:true,a8_concurrent_staging_verified:true,raw_content_transport:false,authority_changed:false,source_bytes_moved:false,human_closure_required:true,vercel_gate:'CLOSED'}, null, 2));
+console.log(JSON.stringify({ok:true,schema:'td613.ash.a9-work-contract/v0.3-post-sync-guard-arbitration',action_families:8,parallel_task_engine:false,a8_visible_field_gestures:true,a8_concurrent_staging_verified:true,post_sync_restore_arbitration:true,raw_content_transport:false,authority_changed:false,source_bytes_moved:false,human_closure_required:true,vercel_gate:'CLOSED'}, null, 2));
