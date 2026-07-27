@@ -1,17 +1,20 @@
-export const ASH_A8_DIRTY_DRAFT_RECOMPILE_GUARD_VERSION = 'td613.ash.a8-dirty-draft-recompile-guard/v0.3-post-sync-restore-owner';
+export const ASH_A8_DIRTY_DRAFT_RECOMPILE_GUARD_VERSION = 'td613.ash.a8-dirty-draft-recompile-guard/v0.4-connected-edit-pair-continuity';
 
 const host = globalThis.window;
 const doc = globalThis.document;
 const FORM_SELECTOR = '#ashA8ObjectForm,#ashA8RelationForm';
 const COMMIT_SELECTOR = '#ashA8CommitObject,#ashA8CommitRelation';
 const admittedDirtyEvents = new WeakSet();
+const pendingConnectedIntents = new Map();
 let dirtyDraftActive = false;
 let recoveredInFlightRecompiles = 0;
 let recoveredPremiumRefreshes = 0;
 let recoveredPostSyncRenders = 0;
 let recoverySerial = 0;
+let connectedIntentSerial = 0;
 let staleDetachedEventsHeld = 0;
 let staleDetachedValuesTransplanted = 0;
+let connectedPairValuesRestored = 0;
 
 function mapWorkshopSignals() {
   const workspace = doc?.getElementById?.('workspace-map');
@@ -42,7 +45,7 @@ function publish(posture, source = null, detail = {}) {
   const signals = mapWorkshopSignals();
   host?.dispatchEvent?.(new CustomEvent('td613:ash:a8-dirty-draft-guard', {
     detail:Object.freeze({
-      schema:'td613.ash.a8-dirty-draft-guard-receipt/v0.9-detached-gesture-continuity',
+      schema:'td613.ash.a8-dirty-draft-guard-receipt/v0.10-connected-edit-pair-continuity',
       posture,
       source,
       dirty_draft_active:dirtyDraftActive,
@@ -55,8 +58,10 @@ function publish(posture, source = null, detail = {}) {
       recovered_premium_refreshes:recoveredPremiumRefreshes,
       recovered_post_sync_renders:recoveredPostSyncRenders,
       recovery_serial:recoverySerial,
+      pending_connected_intents:pendingConnectedIntents.size,
       stale_detached_events_held:staleDetachedEventsHeld,
       stale_detached_values_transplanted:staleDetachedValuesTransplanted,
+      connected_pair_values_restored:connectedPairValuesRestored,
       authority_changed:false,
       source_bytes_moved:false,
       custody_changed:false,
@@ -67,32 +72,75 @@ function publish(posture, source = null, detail = {}) {
   }));
 }
 
-function transplantDetachedEdit(target) {
+function snapshotControlIntent(target) {
   const id = String(target?.id || '');
-  if (!id || !target?.closest?.(FORM_SELECTOR)) return Object.freeze({ transplanted:false, control_id:id || null, reason:'UNIDENTIFIED_CONTROL' });
-  const live = doc?.getElementById?.(id);
-  if (!live?.isConnected || live === target) return Object.freeze({ transplanted:false, control_id:id, reason:'LIVE_REPLACEMENT_UNAVAILABLE' });
-  if (live.tagName !== target.tagName || String(live.type || '') !== String(target.type || '')) {
-    return Object.freeze({ transplanted:false, control_id:id, reason:'CONTROL_SHAPE_MISMATCH' });
+  if (!id || !target?.closest?.(FORM_SELECTOR)) return null;
+  return Object.freeze({
+    id,
+    tag:String(target.tagName || ''),
+    type:String(target.type || ''),
+    value:String(target.value ?? ''),
+    checked:'checked' in target ? Boolean(target.checked) : null,
+    serial:++connectedIntentSerial
+  });
+}
+
+function applyControlIntent(intent, { requireReplacement = false, sourceTarget = null } = {}) {
+  if (!intent?.id) return Object.freeze({ transplanted:false, control_id:null, reason:'UNIDENTIFIED_CONTROL' });
+  const live = doc?.getElementById?.(intent.id);
+  if (!live?.isConnected || (requireReplacement && live === sourceTarget)) {
+    return Object.freeze({ transplanted:false, control_id:intent.id, reason:'LIVE_REPLACEMENT_UNAVAILABLE' });
   }
-  const intendedValue = String(target.value ?? '');
-  if (live.tagName === 'SELECT' && ![...live.options].some(option => option.value === intendedValue)) {
-    return Object.freeze({ transplanted:false, control_id:id, reason:'INTENDED_OPTION_UNAVAILABLE' });
+  if (String(live.tagName || '') !== intent.tag || String(live.type || '') !== intent.type) {
+    return Object.freeze({ transplanted:false, control_id:intent.id, reason:'CONTROL_SHAPE_MISMATCH' });
   }
-  live.value = intendedValue;
-  if ('checked' in target && 'checked' in live) live.checked = Boolean(target.checked);
-  const valueMatches = String(live.value ?? '') === intendedValue;
-  const checkedMatches = !('checked' in target) || !('checked' in live) || Boolean(live.checked) === Boolean(target.checked);
-  if (!valueMatches || !checkedMatches) return Object.freeze({ transplanted:false, control_id:id, reason:'LIVE_REPLACEMENT_REJECTED_VALUE' });
+  if (live.tagName === 'SELECT' && ![...live.options].some(option => option.value === intent.value)) {
+    return Object.freeze({ transplanted:false, control_id:intent.id, reason:'INTENDED_OPTION_UNAVAILABLE' });
+  }
+  live.value = intent.value;
+  if (intent.checked !== null && 'checked' in live) live.checked = intent.checked;
+  const valueMatches = String(live.value ?? '') === intent.value;
+  const checkedMatches = intent.checked === null || !('checked' in live) || Boolean(live.checked) === intent.checked;
+  if (!valueMatches || !checkedMatches) {
+    return Object.freeze({ transplanted:false, control_id:intent.id, reason:'LIVE_REPLACEMENT_REJECTED_VALUE' });
+  }
   host?.__td613AshA8MapReturnHandshake?.capture?.();
   dirtyDraftActive = true;
-  staleDetachedValuesTransplanted += 1;
   return Object.freeze({
     transplanted:true,
-    control_id:id,
-    intended_value:intendedValue,
-    intended_checked:'checked' in target ? Boolean(target.checked) : null
+    control_id:intent.id,
+    intended_value:intent.value,
+    intended_checked:intent.checked
   });
+}
+
+function rememberConnectedInput(target) {
+  const intent = snapshotControlIntent(target);
+  if (!intent) return null;
+  pendingConnectedIntents.set(intent.id, intent);
+  queueMicrotask(() => {
+    if (pendingConnectedIntents.get(intent.id)?.serial === intent.serial) pendingConnectedIntents.delete(intent.id);
+  });
+  return intent;
+}
+
+function restoreConnectedChange(target) {
+  const id = String(target?.id || '');
+  const intent = pendingConnectedIntents.get(id);
+  if (!intent) return Object.freeze({ transplanted:false, control_id:id || null, reason:'NO_PENDING_INPUT_INTENT' });
+  pendingConnectedIntents.delete(id);
+  const continuity = applyControlIntent(intent, { sourceTarget:target });
+  if (continuity.transplanted) connectedPairValuesRestored += 1;
+  return continuity;
+}
+
+function transplantDetachedEdit(target) {
+  const intent = snapshotControlIntent(target);
+  if (!intent) return Object.freeze({ transplanted:false, control_id:String(target?.id || '') || null, reason:'UNIDENTIFIED_CONTROL' });
+  pendingConnectedIntents.delete(intent.id);
+  const continuity = applyControlIntent(intent, { requireReplacement:true, sourceTarget:target });
+  if (continuity.transplanted) staleDetachedValuesTransplanted += 1;
+  return continuity;
 }
 
 function beginDirtyDraft(event) {
@@ -113,10 +161,18 @@ function beginDirtyDraft(event) {
   }
   if (admittedDirtyEvents.has(event)) return true;
   admittedDirtyEvents.add(event);
+  const connectedContinuity = event.type === 'change'
+    ? restoreConnectedChange(target)
+    : Object.freeze({ transplanted:false, control_id:String(target.id || '') || null, reason:'NOT_CHANGE_EVENT' });
+  if (event.type === 'input') rememberConnectedInput(target);
   host?.__td613AshA8MapReturnHandshake?.capture?.();
   dirtyDraftActive = true;
-  publish('DIRTY_DRAFT_ACTIVE', event.type, {
-    admission_boundary:'WINDOW_CAPTURE_BEFORE_DOCUMENT_REFRESH'
+  publish(connectedContinuity.transplanted ? 'CONNECTED_EDIT_PAIR_VALUE_RESTORED' : 'DIRTY_DRAFT_ACTIVE', event.type, {
+    admission_boundary:'WINDOW_CAPTURE_BEFORE_DOCUMENT_REFRESH',
+    connected_edit_pair:connectedContinuity.transplanted,
+    authored_value_preserved:connectedContinuity.transplanted,
+    control_id:connectedContinuity.control_id,
+    transplant_reason:connectedContinuity.reason || null
   });
   return true;
 }
@@ -124,6 +180,7 @@ function beginDirtyDraft(event) {
 function admitCommit(event) {
   if (!event.target?.closest?.(COMMIT_SELECTOR)) return false;
   recoverySerial += 1;
+  pendingConnectedIntents.clear();
   dirtyDraftActive = false;
   publish('COMMIT_GESTURE_ADMITTED', 'VISIBLE_COMMIT_CAPTURE');
   return true;
@@ -197,12 +254,14 @@ function recoverAfterInFlightRecompile(event) {
 
 function clear(source) {
   recoverySerial += 1;
+  pendingConnectedIntents.clear();
   dirtyDraftActive = false;
   recoveredInFlightRecompiles = 0;
   recoveredPremiumRefreshes = 0;
   recoveredPostSyncRenders = 0;
   staleDetachedEventsHeld = 0;
   staleDetachedValuesTransplanted = 0;
+  connectedPairValuesRestored = 0;
   publish('CLEARED', source);
 }
 
@@ -245,13 +304,15 @@ export function installAshA8DirtyDraftRecompileGuard() {
         recovered_premium_refreshes:recoveredPremiumRefreshes,
         recovered_post_sync_renders:recoveredPostSyncRenders,
         recovery_serial:recoverySerial,
+        pending_connected_intents:pendingConnectedIntents.size,
         stale_detached_events_held:staleDetachedEventsHeld,
         stale_detached_values_transplanted:staleDetachedValuesTransplanted,
+        connected_pair_values_restored:connectedPairValuesRestored,
         posture:doc?.documentElement?.dataset?.ashA8DirtyDraftGuard || null,
         admission_boundary:'WINDOW_CAPTURE_BEFORE_DOCUMENT_REFRESH',
         guard_basis:'CONNECTED_WORKSHOP_AND_EITHER_CANONICAL_MAP_SIGNAL',
         post_sync_restore_owner:'A8_MAP_RETURN_HANDSHAKE_SHADOW',
-        stale_event_policy:'TRANSPLANT_AUTHORED_VALUE_THEN_QUARANTINE',
+        stale_event_policy:'PRESERVE_INPUT_INTENT_ACROSS_CONNECTED_OR_DETACHED_CHANGE_THEN_QUARANTINE_STALE',
         authority_changed:false,
         source_bytes_moved:false,
         human_closure_required:true
