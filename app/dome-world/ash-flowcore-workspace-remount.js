@@ -1,9 +1,10 @@
-export const ASH_FLOWCORE_WORKSPACE_REMOUNT_VERSION = 'td613.ash.flowcore-workspace-remount/v0.1-whole-instrument-owner';
+export const ASH_FLOWCORE_WORKSPACE_REMOUNT_VERSION = 'td613.ash.flowcore-workspace-remount/v0.2-delegated-motion-owner';
 
 const host = globalThis.window;
 const doc = globalThis.document;
 let queued = false;
 let currentReceipt = null;
+let currentPlayReceipt = null;
 
 function visibleCanonicalFields() {
   if (!doc) return [];
@@ -22,7 +23,7 @@ function visibleCanonicalFields() {
 
 function publish(reason, before, refreshed, after) {
   currentReceipt = Object.freeze({
-    schema:'td613.ash.flowcore-workspace-remount-receipt/v0.1',
+    schema:'td613.ash.flowcore-workspace-remount-receipt/v0.2',
     version:ASH_FLOWCORE_WORKSPACE_REMOUNT_VERSION,
     reason,
     workspace:doc?.documentElement?.dataset?.ashPremiumWorkspace || null,
@@ -30,6 +31,7 @@ function publish(reason, before, refreshed, after) {
     portal_refresh_invoked:refreshed,
     after,
     canonical_visible_field_count:visibleCanonicalFields().length,
+    delegated_play_motion_bound:Boolean(doc?.querySelector?.('[data-aia-play][data-aia-play-recovery="LIVE_AIA_REPLAY_DELEGATE"]')),
     authority_changed:false,
     source_bytes_moved:false,
     custody_changed:false,
@@ -43,6 +45,37 @@ function publish(reason, before, refreshed, after) {
   }
   host?.dispatchEvent?.(new CustomEvent('td613:ash:flowcore-workspace-remounted', { detail:currentReceipt }));
   return currentReceipt;
+}
+
+function delegateRecoveredPlayMotion(event) {
+  const control = event.target?.closest?.('[data-aia-play][data-aia-play-recovery="LIVE_AIA_REPLAY_DELEGATE"]');
+  if (!control) return false;
+  const play = host?.__td613AshUiUxRescue?.play;
+  const available = typeof play === 'function';
+  const started = available ? play() === true : false;
+  currentPlayReceipt = Object.freeze({
+    schema:'td613.ash.flowcore-recovered-play-motion/v0.1',
+    version:ASH_FLOWCORE_WORKSPACE_REMOUNT_VERSION,
+    control_owner:control.dataset.aiaPlayOwner || 'LIVE_AIA_REPLAY_DELEGATE',
+    tutorial_owner:'LIVE_AIA_REPLAY',
+    motion_owner:'ASH_UI_UX_RESCUE',
+    motion_api_available:available,
+    motion_started:started,
+    canonical_visible_field_count:visibleCanonicalFields().length,
+    authority_changed:false,
+    source_bytes_moved:false,
+    custody_changed:false,
+    transport_authorized:false,
+    release_authorized:false,
+    human_closure_required:true
+  });
+  if (doc?.documentElement) {
+    doc.documentElement.dataset.ashConsequenceMotionPosture = started
+      ? 'DELEGATED_TO_UI_UX_RESCUE_PLAY'
+      : 'HELD_UI_UX_RESCUE_PLAY_UNAVAILABLE';
+  }
+  host?.dispatchEvent?.(new CustomEvent('td613:ash:flowcore-recovered-play-motion', { detail:currentPlayReceipt }));
+  return started;
 }
 
 export function reconcileAshFlowcoreWorkspace(reason = 'EXPLICIT_RECONCILE') {
@@ -64,10 +97,12 @@ export function installAshFlowcoreWorkspaceRemount() {
   for (const type of ['whole-instrument-refreshed','flowcore-portal-loader-ready']) {
     host.addEventListener(`td613:ash:${type}`, () => reconcileAshFlowcoreWorkspace(`EVENT_${type.toUpperCase()}`));
   }
+  doc.addEventListener('click', delegateRecoveredPlayMotion);
   host.__td613AshFlowcoreWorkspaceRemount = Object.freeze({
     version:ASH_FLOWCORE_WORKSPACE_REMOUNT_VERSION,
     reconcile:reconcileAshFlowcoreWorkspace,
-    current:() => currentReceipt
+    current:() => currentReceipt,
+    currentPlay:() => currentPlayReceipt
   });
   reconcileAshFlowcoreWorkspace('INSTALL');
   return true;
