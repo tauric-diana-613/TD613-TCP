@@ -159,7 +159,9 @@ assert.doesNotMatch(convergenceSource, /setInterval\s*\(/);
 assert(currentObserver.includes("replaceAll('td613.ash.demo-registry/v0.1-a13', 'td613.ash.demo-registry/v0.3-a15')"));
 assert(legacyObserver.includes('td613.ash.demo-registry/v0.1-a13'));
 assert.match(a12ObserverWrapper, /ash-a12-browser-probe-stable-entry\.mjs/);
-assert.match(a12ObserverWrapper, /td613\.ash\.a12-present-state-convergence-rebind\/v0\.1/);
+assert.match(a12ObserverWrapper, /POST_CLICK_CASE_QUIET_MS = 220/);
+assert.match(a12ObserverWrapper, /waitForPostClickCaseSettlement\(page, attempt\)/);
+assert.match(a12ObserverWrapper, /td613\.ash\.a12-present-state-convergence-rebind\/v0\.2-post-click-settled/);
 assert.doesNotMatch(a12Observer, /td613\.ash\.demo-registry\/v0\.[12]-(?:a13|a14)/);
 assert.match(a12Observer, /td613\.ash\.demo-registry\/v0\.3-a15/);
 assert.match(a14Observer, /registry\?\.asset_epoch === '20260726-a15-empirical-v1'/);
@@ -186,7 +188,7 @@ assert.equal(vercel.git?.deploymentEnabled, false);
 
 console.log(JSON.stringify({
   ok:true,
-  schema:'td613.ash.a14-harbor-memory-archive-contract/v0.9-composed-a12-observer',
+  schema:'td613.ash.a14-harbor-memory-archive-contract/v1.0-composed-settled-a12-observer',
   registry_version:ASH_DEMO_REGISTRY_VERSION,
   ordinary_asset_epoch:ASH_DEMO_ASSET_EPOCH,
   archive_fixture:fixture.demo_id,
@@ -200,6 +202,7 @@ console.log(JSON.stringify({
   readiness_validator_read_only:true,
   a12_registry_observer_current:true,
   a12_observer_composed:true,
+  a12_post_click_case_settlement:true,
   a12_present_state_convergence_adapter:true,
   a14_authority_ceiling_normalized:true,
   archive_entry_fallback:'map',
