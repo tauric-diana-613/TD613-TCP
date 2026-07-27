@@ -31,12 +31,16 @@ assert.match(probe, /ashA9WorkRecompilation/);
 for (const marker of ['Do now','Prepare','Waiting / held','Completed / receipted','Human approval']) assert.ok(probe.includes(`'${marker}'`));
 for (const token of [
   'async function stageA8Field(page, id, value)',
-  "await locator.selectOption(String(value))",
-  "await locator.fill(String(value))",
-  'async function waitForConcurrentA8Staging(page, fields)',
+  'await locator.selectOption(expected)',
+  'await locator.fill(expected)',
+  'const maxAttempts = 4',
+  'const maxPasses = 3',
+  'async function waitForConcurrentA8Staging(page, fields, timeout = 12_000)',
   'async function commitA8Gesture(page, fields, buttonId)',
-  'for (const [id, value] of Object.entries(fields)) await stageA8Field(page, id, value)',
+  'for (const [id, value] of Object.entries(fields))',
+  'await stageA8Field(page, id, value)',
   'await waitForConcurrentA8Staging(page, fields)',
+  'replacement_retry_observed:Object.values(fieldAttempts).some(attempts => attempts > 1)',
   'concurrent_staging_verified:true',
   'await button.focus()',
   'await button.click()',
@@ -55,4 +59,4 @@ assert.match(workflow, /github\.event_name == 'workflow_dispatch' && inputs\.mod
 assert.match(workflow, /github\.event_name == 'pull_request' && github\.event\.action == 'ready_for_review'/);
 for (const marker of ['Work recompilation','human intention','Do now','Prepare','Waiting / held','Completed / receipted','Hush integration','human closure required: true']) assert.ok(receipt.includes(marker));
 assert.equal(vercel.git?.deploymentEnabled, false);
-console.log(JSON.stringify({ok:true,schema:'td613.ash.a9-work-contract/v0.3-post-sync-guard-arbitration',action_families:8,parallel_task_engine:false,a8_visible_field_gestures:true,a8_concurrent_staging_verified:true,post_sync_restore_arbitration:true,raw_content_transport:false,authority_changed:false,source_bytes_moved:false,human_closure_required:true,vercel_gate:'CLOSED'}, null, 2));
+console.log(JSON.stringify({ok:true,schema:'td613.ash.a9-work-contract/v0.4-replaceable-control-witness',action_families:8,parallel_task_engine:false,a8_visible_field_gestures:true,a8_replaceable_control_retry_is_witness_only:true,a8_concurrent_staging_verified:true,post_sync_restore_arbitration:true,raw_content_transport:false,authority_changed:false,source_bytes_moved:false,human_closure_required:true,vercel_gate:'CLOSED'}, null, 2));
