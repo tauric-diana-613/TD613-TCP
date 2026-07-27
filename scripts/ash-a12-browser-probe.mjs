@@ -75,53 +75,125 @@ source = replaceExactly(
   `async function inspectEntryPreflight(page, label) {`,
   `const ENTRY_FIELD_QUIET_MS = 220;
 
+async function canonicalFieldDiagnostic(page, label, error) {
+  return page.evaluate(({ label, error }) => {
+    const stage = document.querySelector('#ashAiaMembrane [data-aia-stage], .ash-aia__stage');
+    const describe = field => {
+      const style = field ? getComputedStyle(field) : null;
+      const rect = field?.getBoundingClientRect();
+      return {
+        connected:Boolean(field?.isConnected),
+        class_name:field?.className || null,
+        hidden:field?.hidden ?? null,
+        inert:field?.inert ?? null,
+        aria_hidden:field?.getAttribute?.('aria-hidden') || null,
+        display:style?.display || null,
+        visibility:style?.visibility || null,
+        opacity:style?.opacity || null,
+        width:rect?.width || 0,
+        height:rect?.height || 0,
+        parent_id:field?.parentElement?.id || null,
+        parent_class:field?.parentElement?.className || null,
+        flowcore_host:field?.dataset?.flowcoreHost || null,
+        phase:field?.dataset?.flowcorePhaseName || null,
+        id_count:field?.querySelectorAll?.('[id]')?.length || 0
+      };
+    };
+    return {
+      schema:'td613.ash.a12-canonical-field-diagnostic/v0.1',
+      label,
+      error,
+      workspace:document.documentElement.dataset.ashPremiumWorkspace || null,
+      session_open:document.documentElement.dataset.ashSessionOpen || null,
+      case_pointer:localStorage.getItem('td613.ash-keep.current-case'),
+      visible_host:document.documentElement.dataset.ashFlowcoreVisibleHost || null,
+      workspace_remount:document.documentElement.dataset.ashFlowcoreWorkspaceRemount || null,
+      workspace_remount_reason:document.documentElement.dataset.ashFlowcoreWorkspaceRemountReason || null,
+      stage:{
+        connected:Boolean(stage?.isConnected),
+        child_count:stage?.children?.length || 0,
+        field_count:stage?.querySelectorAll?.(':scope > .ash-flowcore-field')?.length || 0,
+        html_prefix:stage?.innerHTML?.slice?.(0, 280) || ''
+      },
+      fields:[...document.querySelectorAll('.ash-flowcore-field')].map(describe),
+      portal_loader:window.__td613AshFlowcoreIngressPortalLoader || null,
+      portal:window.__td613AshFlowcoreIngressPortal?.current?.() || null,
+      remount:window.__td613AshFlowcoreWorkspaceRemount?.current?.() || null,
+      field_owner:window.__td613AshFlowcoreField?.current?.() || null,
+      whole_instrument:window.__td613AshWholeInstrument?.current?.() || null,
+      a12_stability:window.__td613A12CanonicalFieldStability ? {
+        signature:window.__td613A12CanonicalFieldStability.signature,
+        since:window.__td613A12CanonicalFieldStability.since,
+        label:window.__td613A12CanonicalFieldStability.label
+      } : null,
+      authority_changed:false,
+      source_bytes_moved:false,
+      human_closure_required:true
+    };
+  }, { label, error });
+}
+
 async function waitForCanonicalField(page, label) {
   await page.evaluate(() => { window.__td613A12CanonicalFieldStability = null; });
-  const handle = await page.waitForFunction(({ label, quietMs }) => {
-    const candidates = [...document.querySelectorAll('.ash-flowcore-field:not(.ash-flowcore-field--proxy):not([hidden])')];
-    const visible = candidates.filter(field => {
-      if (!field?.isConnected) return false;
-      const style = getComputedStyle(field);
-      const rect = field.getBoundingClientRect();
-      return style.display !== 'none'
-        && style.visibility !== 'hidden'
-        && Number(style.opacity) > 0
-        && rect.width > 0
-        && rect.height > 0;
-    });
-    if (visible.length !== 1) {
-      window.__td613A12CanonicalFieldStability = null;
-      return false;
-    }
-    const field = visible[0];
-    const signature = [
+  let handle;
+  try {
+    handle = await page.waitForFunction(({ label, quietMs }) => {
+      const candidates = [...document.querySelectorAll('.ash-flowcore-field:not(.ash-flowcore-field--proxy):not([hidden])')];
+      const visible = candidates.filter(field => {
+        if (!field?.isConnected) return false;
+        const style = getComputedStyle(field);
+        const rect = field.getBoundingClientRect();
+        return style.display !== 'none'
+          && style.visibility !== 'hidden'
+          && Number(style.opacity) > 0
+          && rect.width > 0
+          && rect.height > 0;
+      });
+      if (visible.length !== 1) {
+        window.__td613A12CanonicalFieldStability = null;
+        return false;
+      }
+      const field = visible[0];
+      const signature = [
+        label,
+        document.documentElement.dataset.ashPremiumWorkspace || '',
+        field.dataset.flowcorePhaseName || '',
+        field.parentElement?.id || '',
+        candidates.length,
+        visible.length
+      ].join(':');
+      const now = performance.now();
+      const prior = window.__td613A12CanonicalFieldStability;
+      if (!prior || prior.signature !== signature || prior.field !== field) {
+        window.__td613A12CanonicalFieldStability = { signature, field, since:now, label };
+        return false;
+      }
+      if (now - prior.since < quietMs) return false;
+      return {
+        label,
+        candidate_count:candidates.length,
+        visible_count:visible.length,
+        workspace:document.documentElement.dataset.ashPremiumWorkspace || null,
+        phase:field.dataset.flowcorePhaseName || null,
+        parent_id:field.parentElement?.id || null,
+        width:field.getBoundingClientRect().width,
+        height:field.getBoundingClientRect().height,
+        quiet_window_ms:quietMs,
+        connected:true
+      };
+    }, { label, quietMs:ENTRY_FIELD_QUIET_MS }, { timeout:60_000, polling:25 });
+  } catch (error) {
+    const diagnostic = await canonicalFieldDiagnostic(page, label, String(error?.message || error)).catch(diagnosticError => ({
+      schema:'td613.ash.a12-canonical-field-diagnostic/v0.1',
       label,
-      document.documentElement.dataset.ashPremiumWorkspace || '',
-      field.dataset.flowcorePhaseName || '',
-      field.parentElement?.id || '',
-      candidates.length,
-      visible.length
-    ].join(':');
-    const now = performance.now();
-    const prior = window.__td613A12CanonicalFieldStability;
-    if (!prior || prior.signature !== signature || prior.field !== field) {
-      window.__td613A12CanonicalFieldStability = { signature, field, since:now, label };
-      return false;
-    }
-    if (now - prior.since < quietMs) return false;
-    return {
-      label,
-      candidate_count:candidates.length,
-      visible_count:visible.length,
-      workspace:document.documentElement.dataset.ashPremiumWorkspace || null,
-      phase:field.dataset.flowcorePhaseName || null,
-      parent_id:field.parentElement?.id || null,
-      width:field.getBoundingClientRect().width,
-      height:field.getBoundingClientRect().height,
-      quiet_window_ms:quietMs,
-      connected:true
-    };
-  }, { label, quietMs:ENTRY_FIELD_QUIET_MS }, { timeout:60_000, polling:25 });
+      error:String(error?.message || error),
+      diagnostic_error:String(diagnosticError?.message || diagnosticError),
+      authority_changed:false,
+      source_bytes_moved:false,
+      human_closure_required:true
+    }));
+    throw new Error('A12 canonical field failed to settle: ' + JSON.stringify(diagnostic));
+  }
   return handle.jsonValue();
 }
 
@@ -201,19 +273,23 @@ source = replaceExactly(
 );
 
 source = source
-  .replaceAll('td613.ash.a12-entry-preflight/v0.1-stable-case-command-surface', 'td613.ash.a12-entry-preflight/v0.3-present-state-canonical-field')
-  .replaceAll('td613.ash.a12-browser-witness/v1.0-a15-stable-entry', 'td613.ash.a12-browser-witness/v1.2-a15-present-state-canonical-field');
+  .replaceAll('td613.ash.a12-entry-preflight/v0.1-stable-case-command-surface', 'td613.ash.a12-entry-preflight/v0.4-present-state-canonical-field-diagnostic')
+  .replaceAll('td613.ash.a12-browser-witness/v1.0-a15-stable-entry', 'td613.ash.a12-browser-witness/v1.3-a15-present-state-canonical-field-diagnostic');
 
 if (!source.includes('entry_convergence_rebind')
   || !source.includes("convergence.begin({ detail:{ case_id:current.case_id, profile:'investigation' } })")
   || !source.includes('td613.ash.a12-present-state-convergence-rebind/v0.1')
   || !source.includes('ENTRY_FIELD_QUIET_MS = 220')
+  || !source.includes('canonicalFieldDiagnostic(page, label, error)')
+  || !source.includes('td613.ash.a12-canonical-field-diagnostic/v0.1')
+  || !source.includes('window.__td613AshFlowcoreIngressPortal?.current?.()')
+  || !source.includes('window.__td613AshFlowcoreWorkspaceRemount?.current?.()')
   || !source.includes('waitForCanonicalField(page, label)')
   || !source.includes("route:['choir','capsule']")
   || !source.includes("waitForCanonicalField(page, 'full-witness-capsule')")
-  || !source.includes('td613.ash.a12-entry-preflight/v0.3-present-state-canonical-field')
-  || !source.includes('td613.ash.a12-browser-witness/v1.2-a15-present-state-canonical-field')) {
-  throw new Error('A12 present-state canonical-field observer adapter failed to compile.');
+  || !source.includes('td613.ash.a12-entry-preflight/v0.4-present-state-canonical-field-diagnostic')
+  || !source.includes('td613.ash.a12-browser-witness/v1.3-a15-present-state-canonical-field-diagnostic')) {
+  throw new Error('A12 present-state canonical-field diagnostic observer adapter failed to compile.');
 }
 
 try {
