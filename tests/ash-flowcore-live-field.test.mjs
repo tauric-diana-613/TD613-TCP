@@ -52,10 +52,17 @@ for (const marker of [
 assert.doesNotMatch(portal, /setInterval\s*\(|requestAnimationFrame\s*\(/);
 
 for (const marker of [
-  'v0.1-whole-instrument-owner',
+  'v0.2-delegated-motion-owner',
   "['whole-instrument-refreshed','flowcore-portal-loader-ready']",
   'portal.refresh() === true',
   'canonical_visible_field_count:visibleCanonicalFields().length',
+  'function delegateRecoveredPlayMotion(event)',
+  '[data-aia-play][data-aia-play-recovery="LIVE_AIA_REPLAY_DELEGATE"]',
+  '__td613AshUiUxRescue?.play',
+  'DELEGATED_TO_UI_UX_RESCUE_PLAY',
+  'td613:ash:flowcore-recovered-play-motion',
+  "tutorial_owner:'LIVE_AIA_REPLAY'",
+  "motion_owner:'ASH_UI_UX_RESCUE'",
   'authority_changed:false',
   'source_bytes_moved:false',
   'human_closure_required:true'
@@ -108,4 +115,4 @@ for (const module of ['ash-session-boundary','ash-ingress-copy-spacing','ash-flo
 }
 assert.doesNotMatch(bridge, /import '\.\/ash-flowcore-ingress-portal\.js/);
 
-console.log('ash-flowcore-live-field.test.mjs passed with portal field reacquisition and delegated canonical Play restoration');
+console.log('ash-flowcore-live-field.test.mjs passed with portal field reacquisition and explicit delegated motion playback');
