@@ -1,6 +1,7 @@
 export const ASH_AIA3_CACHE_EPOCH = 'td613.ash.cache-flush/2026-07-27-a15-postclosure-v1';
 /* Historical A11 baseline: ASH_AIA3_CACHE_EPOCH = 'td613.ash.cache-flush/2026-07-24-a11-postclosure-v1' */
 export const ASH_AIA3_ASSET_EPOCH = '20260727-a15-postclosure-v1';
+/* Historical A12 delivery baseline: ASH_AIA3_ASSET_EPOCH = '20260724-a12-release-v1' */
 export const ASH_LEGACY_CACHE_EPOCH = 'td613.ash.cache-flush/2026-07-18-canonical-membrane-v7';
 const MARKER_KEY = 'td613.ash.cache-flush.aia3.epoch';
 const PREFLIGHT_MARKER_KEY = 'td613.ash.cache-preflight.epoch';
