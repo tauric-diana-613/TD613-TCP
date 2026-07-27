@@ -27,6 +27,7 @@ const keepJsSource = read('app/dome-world/ash-keep.js');
 const renderedKeepJs = bindAshDraftsToCaseMap(keepJsSource);
 const draftEngine = read('app/engine/ash-keep-drafts.js');
 const recovery = read('app/safe-harbor/ash-keep-recovery.html');
+const deferral = read('app/dome-world/docs/ASH_KEEP_A15_A19_MASS_EVICTION_DEFERRAL_AMENDMENT_V0_1.md');
 const vercel = JSON.parse(read('vercel.json'));
 
 assert.equal(ASH_THRESHOLD_ROUTE, '/dome-world/ash-threshold.html');
@@ -72,9 +73,11 @@ const versionedModules = [
   `/dome-world/ash-case-controls.js?v=${ASH_LIFECYCLE_ASSET_EPOCH}`
 ];
 assert.equal(ASH_KEEP_SHELL_VERSION, 'td613.ash-keep.shell/v0.6-first-paint');
-assert.equal(ASH_LIFECYCLE_ASSET_EPOCH, '20260724-a12-release-v1');
-assert.equal(ASH_LIFECYCLE_MODULE, '/dome-world/ash-lifecycle.js?v=20260724-a12-release-v1');
+assert.equal(ASH_LIFECYCLE_ASSET_EPOCH, '20260727-a15-review-release-v1');
+assert.equal(ASH_LIFECYCLE_MODULE, '/dome-world/ash-lifecycle.js?v=20260727-a15-review-release-v1');
 assert.equal(ASH_MASS_EVICTION_EPOCH, 'td613.ash.cache-flush/2026-07-24-a11-postclosure-v1');
+assert.match(deferral, /ordinary monotonic asset-version advancement only/);
+assert.match(deferral, /reserved for \*\*A19 postclosure\*\*/);
 assert.match(renderedKeep, /<title>TD613 Ash<\/title>/);
 assert.match(renderedKeep, /rel="canonical" href="\/dome-world\/ash-threshold\.html"/);
 assert.match(renderedKeep, /id="td613-ash-preparing-shell"/);
