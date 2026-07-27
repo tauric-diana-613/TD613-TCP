@@ -77,6 +77,7 @@ let busyProfile = null;
 let registryEntries = null;
 let registryApi = null;
 let empiricalApi = null;
+let empiricalLoadHeld = false;
 
 function ensureStatus() {
   let status = byId('demoProfileStatus');
@@ -142,14 +143,17 @@ function normalizeEntry(base, fixture, manifest, hydrate, build) {
 
 async function loadOwners() {
   if (ownersPromise) return ownersPromise;
+  const empiricalOwner = import(`./ash-a15-empirical-profile-journeys.js?v=${ASH_DEMO_ASSET_EPOCH}`)
+    .then(module => Object.freeze({ module, error:null }))
+    .catch(error => Object.freeze({ module:null, error }));
   ownersPromise = Promise.all([
     import(`./ash-apeq-paia-profile-demos.js?v=${ASH_DEMO_ASSET_EPOCH}`),
     import(`./ash-research-demo-hydration.js?v=${ASH_DEMO_ASSET_EPOCH}`),
     import(`./ash-legal-profile-demo.js?v=${ASH_DEMO_ASSET_EPOCH}`),
     import(`./ash-archive-profile-demo.js?v=${ASH_DEMO_ASSET_EPOCH}`),
     import(`./ash-demo-pedagogy-rehydration.js?v=${ASH_DEMO_ASSET_EPOCH}`),
-    import(`./ash-a15-empirical-profile-journeys.js?v=${ASH_DEMO_ASSET_EPOCH}`)
-  ]).then(([apeq, research, legal, archive, pedagogy, empirical]) => {
+    empiricalOwner
+  ]).then(([apeq, research, legal, archive, pedagogy, empiricalResult]) => {
     const manifests = pedagogy.ASH_DEMO_PEDAGOGY_MANIFESTS || {};
     const entries = {};
     for (const profile of ['investigation','political_campaign','fundraiser']) {
@@ -179,15 +183,25 @@ async function loadOwners() {
       () => archive.buildArchiveDemoFixture()
     );
     registryEntries = Object.freeze(entries);
-    empirical.installAshA15EmpiricalJourneys?.(registryEntries);
-    empiricalApi = host?.__td613AshA15EmpiricalJourneys || null;
+
+    const empirical = empiricalResult.module;
+    empiricalLoadHeld = Boolean(empiricalResult.error || !empirical);
+    if (empirical) {
+      empirical.installAshA15EmpiricalJourneys?.(registryEntries);
+      empiricalApi = host?.__td613AshA15EmpiricalJourneys || null;
+    } else {
+      empiricalApi = null;
+      host.dispatchEvent(new CustomEvent('td613:ash:a15-empirical-load-held', {
+        detail:Object.freeze({ status:'HELD_SUBORDINATE', registry_available:true, fixture_profiles:PROFILE_ORDER.length, authority_changed:false, human_closure_required:true })
+      }));
+    }
     if (registryApi) {
       host.__td613AshDemoRegistry = registryApi;
       host.__td613AshProfileDemos = registryApi;
       doc.documentElement.dataset.ashDemoCompatibilityOwner = ASH_DEMO_REGISTRY_VERSION;
     }
     doc.documentElement.dataset.ashDemoRegistryOwners = 'APEQ_PAIA,RESEARCH,LEGAL,ARCHIVE';
-    doc.documentElement.dataset.ashDemoRegistryEmpirical = EMPIRICAL_VERSION;
+    doc.documentElement.dataset.ashDemoRegistryEmpirical = empirical ? EMPIRICAL_VERSION : 'HELD_SUBORDINATE';
     host.dispatchEvent(new CustomEvent('td613:ash:demo-registry-ready', { detail:snapshot() }));
     scheduleReconcile();
     return registryEntries;
@@ -210,6 +224,7 @@ function snapshot() {
     }))),
     control_owner:'ASH_DEMO_REGISTRY',
     empirical_journey_version:EMPIRICAL_VERSION,
+    empirical_journey_status:empiricalLoadHeld ? 'HELD_SUBORDINATE' : empiricalApi ? 'READY' : 'LOADING',
     empirical_matrix_cells:120,
     raw_content_transport:false,
     automatic_ash_action:false,
