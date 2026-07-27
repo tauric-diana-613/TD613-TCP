@@ -99,6 +99,19 @@ assert.match(lifecycleLoader, /if \(legacyPresentation\)[\s\S]*dataset\.ashAiaLe
 assert.doesNotMatch(lifecycleLoader.match(/if \(legacyPresentation\)[\s\S]*?\} else \{/s)?.[0] || '', /ash-keep-aia\.js|ash-aia3-composition\.js|ash-keep-aia-workspace-bridge\.js/);
 for (const token of ['window.__td613AshKeep?.version','demo_click_deferred_until_ready: true','timeout: 60000']) assert.ok(convergenceRunner.includes(token));
 for (const token of [
+  "const CURRENT_REGISTRY_VERSION = 'td613.ash.demo-registry/v0.3-a15'",
+  "const RETIRED_REGISTRY_VERSION = 'td613.ash.demo-registry/v0.1-a13'",
+  "window.__td613AshDemoRegistry?.version === '${CURRENT_REGISTRY_VERSION}'",
+  "document.documentElement.dataset.ashDemoRegistry === '${CURRENT_REGISTRY_VERSION}'",
+  "button.dataset.ashDemoRegistryOwner === '${CURRENT_REGISTRY_VERSION}'",
+  'current_registry_version:',
+  'retired_registry_alias_added: false',
+  "if (!runtime.includes(CURRENT_REGISTRY_VERSION)) throw new Error('Current A15 registry identity omitted from convergence runtime.')",
+  "if (runtime.includes(RETIRED_REGISTRY_VERSION)) throw new Error('Retired A13 registry identity survived convergence compilation.')"
+]) assert.ok(convergenceRunner.includes(token), `Convergence observer omitted A15 registry identity law ${token}`);
+assert.equal((convergenceRunner.match(/td613\.ash\.demo-registry\/v0\.1-a13/g) || []).length, 1, 'Retired A13 registry identity may survive only as the rejection constant.');
+assert.equal((convergenceRunner.match(/td613\.ash\.demo-registry\/v0\.3-a15/g) || []).length, 1, 'A15 registry identity must have one canonical materializer constant.');
+for (const token of [
   'function currentLifecycleRank(current)',
   'const lifecycleRank = currentLifecycleRank(current)',
   'context?.lifecycle_rank !== lifecycleRank',
@@ -144,4 +157,4 @@ assert.match(stretch11, /active serverless functions = 11/);
 assert.match(stretch11, /transport capability = NAMED_SAME_ORIGIN_BROWSER_RECIPIENT_ONLY/);
 assert.equal(fs.existsSync('.github/workflows/ash-keep-production-closure.yml'), false);
 assert.equal(fs.existsSync('.github/workflows/ash-keep-aia3-production-observation.yml'), false);
-console.log('ash-lifecycle-production-contract.test.mjs passed under canonicalized legacy bypass, installation-versus-human-choice settlement, stale-artifact quarantine, production-guard readiness parity, exact transition-abort classification, guarded local custody, lifecycle-rank authority freshness, and URL-specific failure diagnostics');
+console.log('ash-lifecycle-production-contract.test.mjs passed under canonicalized legacy bypass, installation-versus-human-choice settlement, stale-artifact quarantine, production-guard readiness parity, exact transition-abort classification, guarded local custody, lifecycle-rank authority freshness, direct A15 convergence registry identity, and URL-specific failure diagnostics');
