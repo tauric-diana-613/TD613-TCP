@@ -47,7 +47,8 @@ import './ash-a6-rest-world-answer.js?v=20260724-a12-release-v1';
 // One launch-scoped observer plus one delegated boundary preserve explicit profile and saved-case choices across remounts and late option commits without polling.
 import './ash-profile-prompt-canonical.js?v=20260724-a12-release-v1';
 import './ash-composition-receipt-compatibility.js?v=20260724-a12-release-v1';
-import './ash-demo-entry-convergence.js?v=20260724-a12-release-v1';
+// Reconcile-only restart recovers a same-case OPENING/REVEALING clock without weakening ordinary duplicate suppression.
+import './ash-demo-entry-convergence.js?v=20260727-a15-convergence-reconcile-v1';
 import './ash-demo-pedagogy-routebar.js?v=20260724-a12-release-v1';
 import './ash-return-ready-bundle.js?v=20260724-a12-release-v1';
 import './ash-custodian-return.js?v=20260724-a12-release-v1';
