@@ -1,4 +1,4 @@
-export const ASH_A8_DIRTY_DRAFT_RECOMPILE_GUARD_VERSION = 'td613.ash.a8-dirty-draft-recompile-guard/v0.6-focus-scoped-detached-precedence';
+export const ASH_A8_DIRTY_DRAFT_RECOMPILE_GUARD_VERSION = 'td613.ash.a8-dirty-draft-recompile-guard/v0.7-multi-control-shadow-merge';
 
 const host = globalThis.window;
 const doc = globalThis.document;
@@ -17,6 +17,8 @@ let staleDetachedValuesTransplanted = 0;
 let connectedPairValuesRestored = 0;
 let pendingIntentDetachedRestores = 0;
 let focusScopedIntentsCleared = 0;
+let multiControlShadowMerges = 0;
+let focusOnlyAdmissions = 0;
 
 function mapWorkshopSignals() {
   const workspace = doc?.getElementById?.('workspace-map');
@@ -47,7 +49,7 @@ function publish(posture, source = null, detail = {}) {
   const signals = mapWorkshopSignals();
   host?.dispatchEvent?.(new CustomEvent('td613:ash:a8-dirty-draft-guard', {
     detail:Object.freeze({
-      schema:'td613.ash.a8-dirty-draft-guard-receipt/v0.12-focus-scoped-detached-precedence',
+      schema:'td613.ash.a8-dirty-draft-guard-receipt/v0.13-multi-control-shadow-merge',
       posture,
       source,
       dirty_draft_active:dirtyDraftActive,
@@ -66,6 +68,8 @@ function publish(posture, source = null, detail = {}) {
       connected_pair_values_restored:connectedPairValuesRestored,
       pending_intent_detached_restores:pendingIntentDetachedRestores,
       focus_scoped_intents_cleared:focusScopedIntentsCleared,
+      multi_control_shadow_merges:multiControlShadowMerges,
+      focus_only_admissions:focusOnlyAdmissions,
       authority_changed:false,
       source_bytes_moved:false,
       custody_changed:false,
@@ -119,6 +123,19 @@ function applyControlIntent(intent, { requireReplacement = false, sourceTarget =
   });
 }
 
+function mergeControlIntentWithShadow(intent, { requireReplacement = false, sourceTarget = null } = {}) {
+  if (!intent) return Object.freeze({ transplanted:false, control_id:null, reason:'UNIDENTIFIED_CONTROL', prior_shadow_restored:false });
+  const parity = host?.__td613AshA8MapReturnHandshake?.restore?.() || null;
+  const continuity = applyControlIntent(intent, { requireReplacement, sourceTarget });
+  if (continuity.transplanted) multiControlShadowMerges += 1;
+  return Object.freeze({
+    ...continuity,
+    prior_shadow_restored:parity?.complete === true,
+    prior_shadow_expected:parity?.expected ?? 0,
+    prior_shadow_matched:parity?.matched ?? 0
+  });
+}
+
 function clearPendingConnectedIntentsExcept(controlId = null) {
   let cleared = 0;
   for (const id of [...pendingConnectedIntents.keys()]) {
@@ -144,16 +161,28 @@ function rememberConnectedInput(target) {
   return intent;
 }
 
+function mergeConnectedInput(target) {
+  const intent = rememberConnectedInput(target);
+  if (!intent) return Object.freeze({ transplanted:false, control_id:String(target?.id || '') || null, reason:'UNIDENTIFIED_CONTROL' });
+  return mergeControlIntentWithShadow(intent, { sourceTarget:target });
+}
+
 function restoreConnectedChange(target) {
   const id = String(target?.id || '');
-  const intent = takePendingConnectedIntent(id);
-  if (!intent) return Object.freeze({ transplanted:false, control_id:id || null, reason:'NO_PENDING_INPUT_INTENT' });
-  if (intent.source_target === target || intent.source_target?.isConnected === true) {
-    return Object.freeze({ transplanted:false, control_id:id, reason:'ORIGINAL_CONTROL_STILL_AUTHORITATIVE' });
-  }
-  const continuity = applyControlIntent(intent, { requireReplacement:true, sourceTarget:intent.source_target });
+  const pendingIntent = takePendingConnectedIntent(id);
+  const intent = pendingIntent || snapshotControlIntent(target);
+  if (!intent) return Object.freeze({ transplanted:false, control_id:id || null, reason:'NO_CONNECTED_CHANGE_INTENT', intent_source:null });
+  const originalStillAuthoritative = intent.source_target === target && intent.source_target?.isConnected === true;
+  const continuity = mergeControlIntentWithShadow(intent, {
+    requireReplacement:!originalStillAuthoritative,
+    sourceTarget:intent.source_target
+  });
   if (continuity.transplanted) connectedPairValuesRestored += 1;
-  return continuity;
+  return Object.freeze({
+    ...continuity,
+    intent_source:pendingIntent ? 'FOCUS_SCOPED_CONNECTED_INPUT' : 'CONNECTED_CHANGE_SNAPSHOT',
+    original_control_authoritative:originalStillAuthoritative
+  });
 }
 
 function transplantDetachedEdit(target) {
@@ -161,7 +190,10 @@ function transplantDetachedEdit(target) {
   const pendingIntent = takePendingConnectedIntent(id);
   const intent = pendingIntent || snapshotControlIntent(target);
   if (!intent) return Object.freeze({ transplanted:false, control_id:id || null, reason:'UNIDENTIFIED_CONTROL', intent_source:null });
-  const continuity = applyControlIntent(intent, { requireReplacement:true, sourceTarget:pendingIntent?.source_target || target });
+  const continuity = mergeControlIntentWithShadow(intent, {
+    requireReplacement:true,
+    sourceTarget:pendingIntent?.source_target || target
+  });
   if (continuity.transplanted) {
     staleDetachedValuesTransplanted += 1;
     if (pendingIntent) {
@@ -186,6 +218,8 @@ function beginDirtyDraft(event) {
       admission_boundary:'WINDOW_CAPTURE_BEFORE_DOCUMENT_REFRESH',
       stale_detached_event:true,
       authored_value_preserved:continuity.transplanted,
+      multi_control_shadow_merged:continuity.transplanted,
+      prior_shadow_restored:continuity.prior_shadow_restored === true,
       intent_source:continuity.intent_source || null,
       control_id:continuity.control_id,
       transplant_reason:continuity.reason || null
@@ -195,22 +229,35 @@ function beginDirtyDraft(event) {
   if (admittedDirtyEvents.has(event)) return true;
   admittedDirtyEvents.add(event);
   const controlId = String(target.id || '') || null;
-  if (event.type === 'focusin') clearPendingConnectedIntentsExcept(controlId);
-  const connectedContinuity = event.type === 'change'
+  if (event.type === 'focusin') {
+    clearPendingConnectedIntentsExcept(controlId);
+    dirtyDraftActive = true;
+    focusOnlyAdmissions += 1;
+    publish('DIRTY_DRAFT_FOCUS_ADMITTED', event.type, {
+      admission_boundary:'WINDOW_CAPTURE_BEFORE_DOCUMENT_REFRESH',
+      focus_scoped_intent:true,
+      shadow_rewritten:false,
+      control_id:controlId
+    });
+    return true;
+  }
+  const continuity = event.type === 'change'
     ? restoreConnectedChange(target)
-    : Object.freeze({ transplanted:false, control_id:controlId, reason:'NOT_CHANGE_EVENT' });
-  if (event.type === 'input') rememberConnectedInput(target);
-  host?.__td613AshA8MapReturnHandshake?.capture?.();
+    : event.type === 'input'
+      ? mergeConnectedInput(target)
+      : Object.freeze({ transplanted:false, control_id:controlId, reason:'UNSUPPORTED_EDIT_EVENT' });
   dirtyDraftActive = true;
-  publish(connectedContinuity.transplanted ? 'CONNECTED_EDIT_PAIR_VALUE_RESTORED' : 'DIRTY_DRAFT_ACTIVE', event.type, {
+  publish(continuity.transplanted ? 'MULTI_CONTROL_SHADOW_MERGED' : 'DIRTY_DRAFT_RECOVERY_HELD', event.type, {
     admission_boundary:'WINDOW_CAPTURE_BEFORE_DOCUMENT_REFRESH',
-    connected_edit_pair:connectedContinuity.transplanted,
-    authored_value_preserved:connectedContinuity.transplanted,
-    focus_scoped_intent:true,
-    control_id:connectedContinuity.control_id,
-    transplant_reason:connectedContinuity.reason || null
+    connected_edit_pair:event.type === 'change' && continuity.transplanted,
+    authored_value_preserved:continuity.transplanted,
+    multi_control_shadow_merged:continuity.transplanted,
+    prior_shadow_restored:continuity.prior_shadow_restored === true,
+    intent_source:continuity.intent_source || (event.type === 'input' ? 'CONNECTED_INPUT' : null),
+    control_id:continuity.control_id,
+    transplant_reason:continuity.reason || null
   });
-  return true;
+  return continuity.transplanted;
 }
 
 function admitCommit(event) {
@@ -300,6 +347,8 @@ function clear(source) {
   connectedPairValuesRestored = 0;
   pendingIntentDetachedRestores = 0;
   focusScopedIntentsCleared = 0;
+  multiControlShadowMerges = 0;
+  focusOnlyAdmissions = 0;
   publish('CLEARED', source);
 }
 
@@ -348,11 +397,13 @@ export function installAshA8DirtyDraftRecompileGuard() {
         connected_pair_values_restored:connectedPairValuesRestored,
         pending_intent_detached_restores:pendingIntentDetachedRestores,
         focus_scoped_intents_cleared:focusScopedIntentsCleared,
+        multi_control_shadow_merges:multiControlShadowMerges,
+        focus_only_admissions:focusOnlyAdmissions,
         posture:doc?.documentElement?.dataset?.ashA8DirtyDraftGuard || null,
         admission_boundary:'WINDOW_CAPTURE_BEFORE_DOCUMENT_REFRESH',
         guard_basis:'CONNECTED_WORKSHOP_AND_EITHER_CANONICAL_MAP_SIGNAL',
         post_sync_restore_owner:'A8_MAP_RETURN_HANDSHAKE_SHADOW',
-        stale_event_policy:'PREFER_FOCUS_SCOPED_CONNECTED_INPUT_THEN_QUARANTINE_DETACHED_CHANGE',
+        stale_event_policy:'RESTORE_PRIOR_SHADOW_REAPPLY_CURRENT_INTENT_THEN_RECAPTURE',
         authority_changed:false,
         source_bytes_moved:false,
         human_closure_required:true
