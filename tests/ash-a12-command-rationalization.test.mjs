@@ -80,7 +80,7 @@ assert.doesNotMatch(workflow, /TD613_A12_ENTRY_PREFLIGHT='true'/);
 
 assert.match(bridge, /ash-a12-command-rationalization\.js\?v=20260724-a12-release-v1/);
 assert.match(bridge, /ash-profile-demo-hydration\.js\?v=20260726-a15-empirical-v1/);
-assert.match(shell, /ASH_LIFECYCLE_ASSET_EPOCH = '20260724-a12-release-v1'/);
+assert.match(shell, /ASH_LIFECYCLE_ASSET_EPOCH = '20260727-a15-review-release-v1'/);
 assert.match(shell, /ASH_MASS_EVICTION_EPOCH = 'td613\.ash\.cache-flush\/2026-07-24-a11-postclosure-v1'/);
 assert.doesNotMatch(shell, /2026-07-27-a15-postclosure-v1/);
 assert.doesNotMatch(shell, /a12.*cache-preflight/i);
