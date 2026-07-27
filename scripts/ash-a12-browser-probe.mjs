@@ -5,7 +5,10 @@ import { chromium, firefox, webkit } from 'playwright';
 const browserName = process.env.TD613_BROWSER || 'chromium';
 const baseUrl = process.env.TD613_BASE_URL || 'http://127.0.0.1:6130';
 const artifactDir = process.env.TD613_ARTIFACT_DIR || 'artifacts/ash-a12';
+const entryPreflightOnly = process.env.TD613_A12_ENTRY_PREFLIGHT === 'true';
 const browserType = { chromium, firefox, webkit }[browserName];
+const ENTRY_ATTEMPT_CEILING = 3;
+const ENTRY_QUIET_MS = 500;
 if (!browserType) throw new Error('Unsupported browser ' + browserName);
 await fs.mkdir(artifactDir, { recursive:true });
 const browser = await browserType.launch({ headless:true });
@@ -25,10 +28,191 @@ async function waitForRegistryOwner(page) {
   }, null, { timeout:120_000 });
 }
 
+async function waitForInstrument(page) {
+  await page.waitForFunction(() => Boolean(window.__td613AshKeep?.version)
+    && Boolean(window.__td613AshPremiumUI?.version)
+    && Boolean(window.__td613AshA12?.version)
+    && Boolean(window.__td613AshDemoRegistry?.version)
+    && Boolean(window.__td613AshDemoEntryConvergence?.version)
+    && document.title === 'TD613 Ash'
+    && location.pathname === '/dome-world/ash-threshold.html'
+    && !location.search, null, { timeout:120_000 });
+}
+
+async function entryDiagnostic(page, attempt, error = null) {
+  return page.evaluate(({ attempt, error }) => {
+    const current = window.__td613AshKeep?.current?.() || null;
+    const convergence = window.__td613AshDemoEntryConvergence?.current?.()
+      || window.__td613AshDemoEntryConvergenceState
+      || null;
+    const menu = document.getElementById('premiumMenuButton');
+    const sheet = document.getElementById('premiumCommandSheet');
+    const home = document.getElementById('workspace-home');
+    const menuStyle = menu ? getComputedStyle(menu) : null;
+    const menuRect = menu?.getBoundingClientRect();
+    return {
+      attempt,
+      error,
+      profile_value:document.getElementById('newProfile')?.value || null,
+      start_demo_state:document.getElementById('startDemo')?.dataset.ashMethodDemoState || null,
+      start_demo_disabled:document.getElementById('startDemo')?.disabled ?? null,
+      current_case:current?.case_id || null,
+      local_pointer:localStorage.getItem('td613.ash-keep.current-case'),
+      demo_profile:document.documentElement.dataset.ashDemoProfile || null,
+      registry_profile:document.documentElement.dataset.ashDemoRegistryProfile || null,
+      workspace:document.documentElement.dataset.ashPremiumWorkspace || null,
+      a12_audit:document.documentElement.dataset.ashA12CommandAudit || null,
+      entry_ready:document.documentElement.dataset.ashDemoEntryReady || null,
+      entry_case:document.documentElement.dataset.ashDemoEntryCase || null,
+      entry_posture:document.documentElement.dataset.ashDemoEntryPosture || null,
+      entry_phase:document.documentElement.dataset.ashDemoEntryPhase || null,
+      convergence,
+      menu_connected:Boolean(menu?.isConnected),
+      menu_visible:Boolean(menu?.isConnected
+        && menuStyle?.display !== 'none'
+        && menuStyle?.visibility !== 'hidden'
+        && Number(menuStyle?.opacity ?? 1) > 0
+        && menuRect?.width > 0
+        && menuRect?.height > 0),
+      sheet_connected:Boolean(sheet?.isConnected),
+      sheet_open:sheet?.open === true,
+      home_active:home?.classList.contains('active') || false,
+      case_closed:document.body.dataset.ashCaseClosed || null,
+      launch_hidden:document.getElementById('launch')?.classList.contains('hidden') || false,
+      stability:window.__td613A12EntryStability ? {
+        signature:window.__td613A12EntryStability.signature,
+        since:window.__td613A12EntryStability.since
+      } : null,
+      registry_status:document.getElementById('demoProfileStatus')?.textContent || ''
+    };
+  }, { attempt, error });
+}
+
+async function waitForStableInvestigationEntry(page, attempt) {
+  await page.evaluate(() => { window.__td613A12EntryStability = null; });
+  await page.waitForFunction(({ attempt, quietMs }) => {
+    const current = window.__td613AshKeep?.current?.() || null;
+    const pointer = localStorage.getItem('td613.ash-keep.current-case');
+    const convergence = window.__td613AshDemoEntryConvergence?.current?.()
+      || window.__td613AshDemoEntryConvergenceState
+      || null;
+    const menu = document.getElementById('premiumMenuButton');
+    const sheet = document.getElementById('premiumCommandSheet');
+    const home = document.getElementById('workspace-home');
+    const menuStyle = menu ? getComputedStyle(menu) : null;
+    const menuRect = menu?.getBoundingClientRect();
+    const ready = Boolean(current?.case_id)
+      && pointer === current.case_id
+      && convergence?.case_id === current.case_id
+      && convergence?.profile === 'investigation'
+      && convergence?.workspace === 'home'
+      && convergence?.posture === 'READY'
+      && convergence?.phase === 'VISIBLE'
+      && document.documentElement.dataset.ashDemoEntryReady === 'investigation:home'
+      && document.documentElement.dataset.ashDemoEntryCase === current.case_id
+      && document.documentElement.dataset.ashPremiumWorkspace === 'home'
+      && document.documentElement.dataset.ashA12CommandAudit === 'PASS'
+      && (document.documentElement.dataset.ashDemoProfile === 'investigation'
+        || document.documentElement.dataset.ashDemoRegistryProfile === 'investigation')
+      && home?.classList.contains('active') === true
+      && menu?.isConnected
+      && sheet?.isConnected
+      && menuStyle?.display !== 'none'
+      && menuStyle?.visibility !== 'hidden'
+      && Number(menuStyle?.opacity ?? 1) > 0
+      && menuRect?.width > 0
+      && menuRect?.height > 0
+      && document.body.dataset.ashCaseClosed !== 'true';
+    if (!ready) {
+      window.__td613A12EntryStability = null;
+      return false;
+    }
+    const signature = [
+      attempt,
+      current.case_id,
+      pointer,
+      convergence.case_id,
+      convergence.posture,
+      convergence.phase,
+      document.documentElement.dataset.ashPremiumWorkspace,
+      document.documentElement.dataset.ashA12CommandAudit
+    ].join(':');
+    const now = performance.now();
+    const prior = window.__td613A12EntryStability;
+    if (!prior
+      || prior.signature !== signature
+      || prior.menu !== menu
+      || prior.sheet !== sheet
+      || prior.home !== home) {
+      window.__td613A12EntryStability = { signature, menu, sheet, home, since:now };
+      return false;
+    }
+    return now - prior.since >= quietMs;
+  }, { attempt, quietMs:ENTRY_QUIET_MS }, { timeout:45_000, polling:25 });
+}
+
+async function activateInvestigationDemo(page) {
+  const profile = page.locator('#newProfile');
+  await profile.waitFor({ state:'attached', timeout:30_000 });
+  await profile.selectOption('investigation');
+  await page.evaluate(() => window.__td613AshDemoRegistry?.reconcile?.());
+  await page.waitForFunction(() => {
+    const select = document.getElementById('newProfile');
+    const button = document.getElementById('startDemo');
+    const registry = window.__td613AshDemoRegistry?.snapshot?.() || null;
+    return select?.value === 'investigation'
+      && registry?.control_owner === 'ASH_DEMO_REGISTRY'
+      && button?.isConnected
+      && button?.dataset.ashDemoRegistryOwner === 'td613.ash.demo-registry/v0.3-a15'
+      && button?.dataset.ashMethodDemoState === 'READY'
+      && button.disabled === false
+      && !button.matches(':disabled');
+  }, null, { timeout:60_000 });
+  const button = page.locator('#startDemo');
+  await button.waitFor({ state:'attached', timeout:15_000 });
+  await button.click({ timeout:15_000 });
+}
+
+async function enterInvestigation(page) {
+  let lastDiagnostic = null;
+  for (let attempt = 1; attempt <= ENTRY_ATTEMPT_CEILING; attempt += 1) {
+    try {
+      await page.goto(baseUrl + '/dome-world/ash-keep.html', { waitUntil:'domcontentloaded', timeout:90_000 });
+      await waitForInstrument(page);
+      await waitForRegistryOwner(page);
+      const existing = await page.evaluate(() => ({
+        case_id:window.__td613AshKeep?.current?.()?.case_id || null,
+        pointer:localStorage.getItem('td613.ash-keep.current-case'),
+        profile:document.documentElement.dataset.ashDemoProfile
+          || document.documentElement.dataset.ashDemoRegistryProfile
+          || null
+      }));
+      if (!existing.case_id || existing.pointer !== existing.case_id || existing.profile !== 'investigation') {
+        await activateInvestigationDemo(page);
+      }
+      await waitForStableInvestigationEntry(page, attempt);
+      return attempt;
+    } catch (error) {
+      lastDiagnostic = await entryDiagnostic(page, attempt, String(error?.message || error)).catch(() => ({
+        attempt,
+        error:String(error?.message || error),
+        diagnostic_unavailable:true
+      }));
+      if (attempt < ENTRY_ATTEMPT_CEILING) await page.waitForTimeout(100);
+    }
+  }
+  throw new Error(`A12 Investigation entry failed after ${ENTRY_ATTEMPT_CEILING} stable-case attempts: ${JSON.stringify(lastDiagnostic)}`);
+}
+
 async function ensureCommandSheetOpen(page) {
   const sheet = page.locator('#premiumCommandSheet');
+  await sheet.waitFor({ state:'attached', timeout:30_000 });
   const alreadyOpen = await sheet.evaluate(dialog => dialog.open === true).catch(() => false);
-  if (!alreadyOpen) await page.locator('#premiumMenuButton').click();
+  if (!alreadyOpen) {
+    const menu = page.locator('#premiumMenuButton');
+    await menu.waitFor({ state:'visible', timeout:30_000 });
+    await menu.click();
+  }
   await page.waitForSelector('#premiumCommandSheet[open]', { timeout:60_000 });
 }
 
@@ -60,62 +244,26 @@ async function settleWorkspace(page, workspace) {
   }, workspace, { timeout:120_000 });
 }
 
-async function activateInvestigationDemo(page) {
-  if (browserName !== 'webkit') {
-    await page.locator('#startDemo').click();
-    return;
+async function inspectEntryPreflight(page, label) {
+  const entryAttempt = await enterInvestigation(page);
+  await ensureCommandSheetOpen(page);
+  const entry = await entryDiagnostic(page, entryAttempt);
+  if (!entry.current_case
+    || entry.local_pointer !== entry.current_case
+    || entry.entry_posture !== 'READY'
+    || entry.entry_phase !== 'VISIBLE'
+    || !entry.menu_connected
+    || !entry.menu_visible
+    || !entry.sheet_connected
+    || !entry.sheet_open) {
+    throw new Error(`A12 entry preflight did not remain stable: ${JSON.stringify(entry)}`);
   }
-  await page.evaluate(() => {
-    const registry = window.__td613AshDemoRegistry;
-    const profile = document.getElementById('newProfile');
-    const button = document.getElementById('startDemo');
-    if (!registry?.version || !profile || !button) {
-      throw new Error('WebKit A12 registry-owned demo control was unavailable.');
-    }
-    profile.value = 'investigation';
-    profile.dispatchEvent(new Event('change', { bubbles:true }));
-    registry.reconcile();
-    const snapshot = registry.snapshot?.() || null;
-    const ready = profile.value === 'investigation'
-      && snapshot?.control_owner === 'ASH_DEMO_REGISTRY'
-      && document.documentElement.dataset.ashDemoControlOwner === 'ASH_DEMO_REGISTRY'
-      && button.dataset.ashDemoRegistryOwner === 'td613.ash.demo-registry/v0.3-a15'
-      && button.dataset.ashMethodDemoState === 'READY'
-      && button.disabled === false
-      && !button.matches(':disabled');
-    if (!ready) throw new Error('WebKit A12 registry-owned demo control was not atomically actionable.');
-    button.click();
-  });
-}
-
-async function enterInvestigation(page) {
-  await page.goto(baseUrl + '/dome-world/ash-keep.html', { waitUntil:'domcontentloaded', timeout:90_000 });
-  await page.waitForFunction(() => Boolean(window.__td613AshKeep?.version)
-    && Boolean(window.__td613AshPremiumUI?.version)
-    && Boolean(window.__td613AshA12?.version)
-    && Boolean(window.__td613AshDemoRegistry?.version)
-    && document.title === 'TD613 Ash'
-    && location.pathname === '/dome-world/ash-threshold.html'
-    && !location.search, null, { timeout:120_000 });
-  await page.locator('#newProfile').selectOption('investigation');
-  await page.evaluate(() => window.__td613AshDemoRegistry?.reconcile?.());
-  await page.waitForFunction(() => {
-    const button = document.getElementById('startDemo');
-    return document.getElementById('newProfile')?.value === 'investigation'
-      && window.__td613AshDemoRegistry?.snapshot?.().control_owner === 'ASH_DEMO_REGISTRY'
-      && document.documentElement.dataset.ashDemoControlOwner === 'ASH_DEMO_REGISTRY'
-      && button?.dataset.ashDemoRegistryOwner === 'td613.ash.demo-registry/v0.3-a15'
-      && button?.dataset.ashMethodDemoState === 'READY'
-      && button.disabled === false;
-  }, null, { timeout:120_000 });
-  await activateInvestigationDemo(page);
-  await page.waitForFunction(() => document.documentElement.dataset.ashPremiumWorkspace === 'home'
-    && document.documentElement.dataset.ashA12CommandAudit === 'PASS'
-    && window.__td613AshDemoRegistry?.snapshot?.().control_owner === 'ASH_DEMO_REGISTRY', null, { timeout:120_000 });
+  await page.screenshot({ path:path.join(artifactDir, browserName + '-' + label + '.png'), fullPage:true });
+  return { entry_attempt:entryAttempt, entry };
 }
 
 async function inspect(page, label) {
-  await enterInvestigation(page);
+  const entryAttempt = await enterInvestigation(page);
   await waitForRegistryOwner(page);
   await ensureCommandSheetOpen(page);
   const commandText = await page.locator('#premiumCommandGrid').innerText();
@@ -174,22 +322,58 @@ async function inspect(page, label) {
   if (afterSwitch.case_list_quiescent !== 'true') throw new Error('Case list did not reach quiescence: ' + JSON.stringify(afterSwitch));
 
   await page.screenshot({ path:path.join(artifactDir, browserName + '-' + label + '.png'), fullPage:true });
-  return { before_switch:beforeSwitch, after_switch:afterSwitch };
+  return { entry_attempt:entryAttempt, before_switch:beforeSwitch, after_switch:afterSwitch };
 }
 
 const receipts = [];
 try {
-  const desktop = await browser.newContext({ viewport:{ width:1280, height:900 } });
-  receipts.push({ mode:'desktop', ...(await inspect(await desktop.newPage(), 'desktop')) });
-  await desktop.close();
-  const mobileOptions = { viewport:{ width:390, height:844 }, reducedMotion:'reduce' };
-  if (browserName !== 'firefox') Object.assign(mobileOptions, { isMobile:true, hasTouch:true });
-  const mobile = await browser.newContext(mobileOptions);
-  receipts.push({ mode:'mobile-reduced-motion', ...(await inspect(await mobile.newPage(), 'mobile-reduced-motion')) });
-  await mobile.close();
-  await fs.writeFile(path.join(artifactDir, browserName + '-a12-receipt.json'), JSON.stringify({ schema:'td613.ash.a12-browser-witness/v0.9-a15-registry-current', browser:browserName, receipts, authority_changed:false, source_bytes_moved:false, case_data_preserved:true, profile_inferred:false, human_closure_required:true }, null, 2));
+  if (entryPreflightOnly) {
+    const desktop = await browser.newContext({ viewport:{ width:1280, height:900 } });
+    receipts.push({ mode:'desktop-entry-preflight', ...(await inspectEntryPreflight(await desktop.newPage(), 'entry-preflight')) });
+    await desktop.close();
+    await fs.writeFile(path.join(artifactDir, browserName + '-a12-entry-preflight.json'), JSON.stringify({
+      schema:'td613.ash.a12-entry-preflight/v0.1-stable-case-command-surface',
+      browser:browserName,
+      receipts,
+      attempt_ceiling:ENTRY_ATTEMPT_CEILING,
+      quiet_window_ms:ENTRY_QUIET_MS,
+      current_case_pointer_concordance_required:true,
+      convergence_ready_visible_required:true,
+      command_surface_connected_required:true,
+      authority_changed:false,
+      source_bytes_moved:false,
+      case_data_preserved:true,
+      profile_inferred:false,
+      human_closure_required:true
+    }, null, 2));
+  } else {
+    const desktop = await browser.newContext({ viewport:{ width:1280, height:900 } });
+    receipts.push({ mode:'desktop', ...(await inspect(await desktop.newPage(), 'desktop')) });
+    await desktop.close();
+    const mobileOptions = { viewport:{ width:390, height:844 }, reducedMotion:'reduce' };
+    if (browserName !== 'firefox') Object.assign(mobileOptions, { isMobile:true, hasTouch:true });
+    const mobile = await browser.newContext(mobileOptions);
+    receipts.push({ mode:'mobile-reduced-motion', ...(await inspect(await mobile.newPage(), 'mobile-reduced-motion')) });
+    await mobile.close();
+    await fs.writeFile(path.join(artifactDir, browserName + '-a12-receipt.json'), JSON.stringify({
+      schema:'td613.ash.a12-browser-witness/v1.0-a15-stable-entry',
+      browser:browserName,
+      receipts,
+      attempt_ceiling:ENTRY_ATTEMPT_CEILING,
+      quiet_window_ms:ENTRY_QUIET_MS,
+      stable_case_pointer_concordance:true,
+      convergence_ready_visible_required:true,
+      command_surface_connected_required:true,
+      authority_changed:false,
+      source_bytes_moved:false,
+      case_data_preserved:true,
+      profile_inferred:false,
+      human_closure_required:true
+    }, null, 2));
+  }
 } catch (error) {
-  await fs.writeFile(path.join(artifactDir, browserName + '-a12-failure.json'), JSON.stringify({ error:String(error?.stack || error) }, null, 2));
+  const suffix = entryPreflightOnly ? 'a12-entry-preflight-failure' : 'a12-failure';
+  await fs.writeFile(path.join(artifactDir, browserName + '-' + suffix + '.json'), JSON.stringify({ error:String(error?.stack || error) }, null, 2));
   throw error;
 } finally {
   await browser.close();

@@ -5,6 +5,7 @@ const moduleSource = fs.readFileSync('app/dome-world/ash-a12-command-rationaliza
 const browserProbe = fs.readFileSync('scripts/ash-a12-browser-probe.mjs', 'utf8');
 const bridge = fs.readFileSync('app/dome-world/ash-workspace-bridge.js', 'utf8');
 const shell = fs.readFileSync('api/dome-world-shell.js', 'utf8');
+const workflow = fs.readFileSync('.github/workflows/td613-ci.yml', 'utf8');
 const index = fs.readFileSync('app/dome-world/docs/FLOWCORE_PEDAGOGUE_PROGRAM_INDEX_V0_1.md', 'utf8');
 const amendment = fs.readFileSync('app/dome-world/docs/ASH_KEEP_A12_A15_OPERATOR_AMENDMENT_V0_1.md', 'utf8');
 const vercel = JSON.parse(fs.readFileSync('vercel.json', 'utf8'));
@@ -35,7 +36,30 @@ assert.doesNotMatch(moduleSource, /MutationObserver/);
 
 assert.match(browserProbe, /td613\.ash\.demo-registry\/v0\.3-a15/);
 assert.doesNotMatch(browserProbe, /td613\.ash\.demo-registry\/v0\.[12]-(?:a13|a14)/);
-assert.match(browserProbe, /td613\.ash\.a12-browser-witness\/v0\.9-a15-registry-current/);
+assert.match(browserProbe, /td613\.ash\.a12-browser-witness\/v1\.0-a15-stable-entry/);
+assert.match(browserProbe, /TD613_A12_ENTRY_PREFLIGHT/);
+assert.match(browserProbe, /ENTRY_ATTEMPT_CEILING = 3/);
+assert.match(browserProbe, /ENTRY_QUIET_MS = 500/);
+assert.match(browserProbe, /__td613A12EntryStability/);
+assert.match(browserProbe, /__td613AshDemoEntryConvergence\?\.current/);
+assert.match(browserProbe, /localStorage\.getItem\('td613\.ash-keep\.current-case'\)/);
+assert.match(browserProbe, /pointer === current\.case_id/);
+assert.match(browserProbe, /convergence\?\.case_id === current\.case_id/);
+assert.match(browserProbe, /convergence\?\.posture === 'READY'/);
+assert.match(browserProbe, /convergence\?\.phase === 'VISIBLE'/);
+assert.match(browserProbe, /menu\?\.isConnected/);
+assert.match(browserProbe, /sheet\?\.isConnected/);
+assert.match(browserProbe, /A12 Investigation entry failed after/);
+assert.match(browserProbe, /td613\.ash\.a12-entry-preflight\/v0\.1-stable-case-command-surface/);
+assert.doesNotMatch(browserProbe, /localStorage\.(?:removeItem|clear)/);
+assert.doesNotMatch(browserProbe, /indexedDB\.(?:open|deleteDatabase)/);
+assert.doesNotMatch(browserProbe, /page\.evaluate\([^)]*localStorage\.clear/s);
+
+assert.match(workflow, /Aggregate changed-risk A8 and A12 entry witnesses across every engine/);
+assert.match(workflow, /TD613_A12_ENTRY_PREFLIGHT='true'/);
+assert.match(workflow, /scope:\['A8','A12_ENTRY'\]/);
+assert.match(workflow, /fail_fast:false/);
+assert.match(workflow, /all_engines_observed:true/);
 
 assert.match(bridge, /ash-a12-command-rationalization\.js\?v=20260724-a12-release-v1/);
 assert.match(bridge, /ash-profile-demo-hydration\.js\?v=20260726-a15-empirical-v1/);
@@ -45,4 +69,4 @@ assert.doesNotMatch(shell, /a12.*cache-preflight/i);
 assert.match(index, /A12 · Command-menu rationalization and dead-control repair/);
 assert.match(amendment, /mass eviction.*A15 postclosure/is);
 assert.equal(vercel.git.deploymentEnabled, false);
-console.log('Ash A12 command rationalization contract passed under current A15 registry observation.');
+console.log('Ash A12 command rationalization contract passed under stable A15 registry entry observation.');

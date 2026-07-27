@@ -186,7 +186,7 @@ jobs:
           done
           cat artifacts/ash-server.log
           exit 1
-      - name: Aggregate changed-risk A8 witness across every engine
+      - name: Aggregate changed-risk A8 and A12 entry witnesses across every engine
         run: |
           set +e
           mkdir -p artifacts/ash-risk-preflight
@@ -195,10 +195,16 @@ jobs:
           for browser in chromium firefox webkit; do
             export TD613_BROWSER="$browser"
             export TD613_BASE_URL='http://127.0.0.1:6130'
-            TD613_ASH_STAGES='A8' TD613_ARTIFACT_DIR="artifacts/ash-risk-preflight/$browser" timeout --foreground --signal=INT --kill-after=15s 420s node scripts/ash-a7-a11-browser-probe.mjs
+            TD613_ASH_STAGES='A8' TD613_ARTIFACT_DIR="artifacts/ash-risk-preflight/$browser/a8" timeout --foreground --signal=INT --kill-after=15s 420s node scripts/ash-a7-a11-browser-probe.mjs
             status=$?
             if [ "$status" -ne 0 ]; then
               printf '%s\tA8\t%s\n' "$browser" "$status" >> artifacts/ash-risk-preflight/failures.tsv
+              failures=1
+            fi
+            TD613_A12_ENTRY_PREFLIGHT='true' TD613_ARTIFACT_DIR="artifacts/ash-risk-preflight/$browser/a12-entry" timeout --foreground --signal=INT --kill-after=15s 240s node scripts/ash-a12-browser-probe.mjs
+            status=$?
+            if [ "$status" -ne 0 ]; then
+              printf '%s\tA12_ENTRY\t%s\n' "$browser" "$status" >> artifacts/ash-risk-preflight/failures.tsv
               failures=1
             fi
           done
@@ -210,10 +216,10 @@ jobs:
             return { browser, seam, status:Number(status) };
           });
           fs.writeFileSync('artifacts/ash-risk-preflight/manifest.json', JSON.stringify({
-            schema:'td613.ash.changed-risk-preflight/v0.1',
-            scope:['A8'],
+            schema:'td613.ash.changed-risk-preflight/v0.2-a8-a12-entry',
+            scope:['A8','A12_ENTRY'],
             engines:['chromium','firefox','webkit'],
-            viewports:['desktop','mobile-reduced'],
+            viewports:{ A8:['desktop','mobile-reduced'], A12_ENTRY:['desktop'] },
             fail_fast:false,
             all_engines_observed:true,
             failures,
