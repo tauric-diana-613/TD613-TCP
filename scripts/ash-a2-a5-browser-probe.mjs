@@ -5,6 +5,8 @@ import { fileURLToPath, pathToFileURL } from 'node:url';
 const scriptsDir = path.dirname(fileURLToPath(import.meta.url));
 const legacyPath = path.join(scriptsDir, 'ash-a2-a5-browser-probe-a13.mjs');
 const tempPath = path.join(scriptsDir, `.ash-a2-a5-browser-probe-a15-${process.pid}.mjs`);
+// Historical adapter label: post-hydration reconcile-only exact-case convergence.
+// Historical failure label: A15 A2-A6 reconcile-only convergence owner unavailable.
 
 function replaceExactly(source, marker, replacement, label) {
   const count = source.split(marker).length - 1;
