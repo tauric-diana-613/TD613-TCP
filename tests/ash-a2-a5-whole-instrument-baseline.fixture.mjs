@@ -17,6 +17,7 @@ const journeyAdapter = read('scripts/ash-keep-aia3-task-journey-v3.mjs');
 const journeySource = read('scripts/ash-keep-aia3-task-journey-v3.source.mjs');
 const a2a6BrowserAdapter = read('scripts/ash-a2-a5-browser-probe.mjs');
 const historicalA2A6Browser = read('scripts/ash-a2-a5-browser-probe-a13.mjs');
+const convergence = read('app/dome-world/ash-demo-entry-convergence.js');
 const consolidatedWorkflow = read('.github/workflows/td613-ci.yml');
 const receipt = read('app/dome-world/docs/ASH_KEEP_A2_A5_IMPLEMENTATION_RECEIPT_V0_1.md');
 const programIndex = read('app/dome-world/docs/FLOWCORE_PEDAGOGUE_PROGRAM_INDEX_V0_1.md');
@@ -45,7 +46,7 @@ assert.match(moduleSource, /preventScroll:true/);
 assert.match(moduleSource, /event\.stopImmediatePropagation\(\)/);
 
 for (const token of ['ash-whole-instrument-play','ash-channel-legend','ash-route-surface','ash-command-attention','prefers-reduced-motion:reduce']) assert.match(css, new RegExp(token));
-assert.match(css, /button\[data-flowcore-channel="inspection"\]\{grid-column:1\/-1\}/);
+assert.match(css, /button\[data-flowcore-channel="inspection"\]\{grid-column:1\/ -1\}/.source.replace('1/ -1','1/-1'));
 
 const historicalAssetEpoch = '20260723-a2-a5-release-v1';
 const historicalCacheEpoch = 'td613.ash.cache-flush/2026-07-23-a2-a5-release-v1';
@@ -71,17 +72,20 @@ assert.match(consolidatedWorkflow, /node tests\/ash-a2-a5-whole-instrument\.test
 assert.match(consolidatedWorkflow, /scripts\/ash-a2-a5-browser-probe\.mjs/);
 assert.match(consolidatedWorkflow, /Run bounded closure and constitutional convergence once/);
 assert.doesNotMatch(consolidatedWorkflow, /workflow_run:/);
-assert.match(a2a6BrowserAdapter, /post-hydration exact-case convergence rebind/);
-assert.match(a2a6BrowserAdapter, /entry_exact_case_rebind/);
+assert.match(a2a6BrowserAdapter, /post-hydration reconcile-only exact-case convergence/);
+assert.match(a2a6BrowserAdapter, /entry_exact_case_reconcile/);
 assert.match(a2a6BrowserAdapter, /dataset\.ashPremiumReady === 'true'/);
-assert.match(a2a6BrowserAdapter, /convergence\.begin\(\{ detail:\{ case_id:caseId, profile:'political_campaign' \} \}\)/);
-assert.match(a2a6BrowserAdapter, /A15 A2-A6 exact-case convergence owner unavailable/);
+assert.match(a2a6BrowserAdapter, /convergence\.reconcile\(\{ case_id:caseId, profile:'political_campaign' \}\)/);
+assert.match(a2a6BrowserAdapter, /A15 A2-A6 reconcile-only convergence owner unavailable/);
 assert.match(a2a6BrowserAdapter, /td613\.ash\.a15-empirical-profile-journeys\/v0\.1/);
+assert.match(convergence, /td613\.ash\.demo-entry-convergence\/v0\.8-reconcile-only-restart/);
+assert.match(convergence, /function reconcile\(detail = \{\}\)/);
+assert.match(convergence, /\['OPENING','REVEALING'\]\.includes\(state\.posture\) && !explicitReconcile/);
 const historicalA2A6Blob = crypto.createHash('sha1')
   .update(`blob ${Buffer.byteLength(historicalA2A6Browser)}\0${historicalA2A6Browser}`)
   .digest('hex');
 assert.equal(historicalA2A6Blob, '7b7fa74c20b7db26c86598c7ed3284715942b937', 'Historical A13 A2-A6 browser observer changed bytes');
-assert.doesNotMatch(historicalA2A6Browser, /entry_exact_case_rebind|A14 A2-A6 exact-case|A15 A2-A6 exact-case/);
+assert.doesNotMatch(historicalA2A6Browser, /entry_exact_case_rebind|entry_exact_case_reconcile|A14 A2-A6 exact-case|A15 A2-A6 exact-case/);
 assert.match(receipt, /new serverless function = false/);
 assert.match(receipt, /active serverless functions = 11/);
 assert.match(receipt, /reserved function capacity = 1/);
@@ -99,4 +103,4 @@ assert.doesNotMatch(a6Source, /new MutationObserver|setInterval\(|navigator\.sen
 assert.doesNotMatch(a6Source, /ASH_AIA3_CACHE_EPOCH|ASH_AIA3_ASSET_EPOCH|cache-flush\/2026-07-24|20260724/);
 for (const invariant of ['authority_changed:false','source_bytes_moved:false','custody_changed:false','release_posture_changed:false','closure_changed:false']) assert.match(a6Source, new RegExp(invariant));
 
-console.log('Ash A2-A6 whole-instrument contracts: PASS under consolidated A15 validation');
+console.log('Ash A2-A6 whole-instrument contracts: PASS under consolidated A15 validation and reconcile-only entry recovery');
