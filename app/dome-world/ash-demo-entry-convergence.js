@@ -1,4 +1,5 @@
 export const ASH_DEMO_ENTRY_CONVERGENCE_VERSION = 'td613.ash.demo-entry-convergence/v0.8-reconcile-only-restart';
+// Historical A14 baseline: td613.ash.demo-entry-convergence/v0.7-coalesced-entry-clock.
 
 const host = globalThis.window;
 const doc = globalThis.document;
