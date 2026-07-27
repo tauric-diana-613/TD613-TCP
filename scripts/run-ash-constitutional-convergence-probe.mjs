@@ -5,6 +5,8 @@ import { pathToFileURL } from 'node:url';
 const artifactDir = path.resolve(process.env.TD613_ARTIFACT_DIR || 'artifacts/ash-constitutional-convergence');
 const sourceUrl = new URL('./ash-constitutional-convergence-probe.mjs', import.meta.url);
 const runtimePath = path.join(artifactDir, 'ash-constitutional-convergence-probe.runtime.mjs');
+const CURRENT_REGISTRY_VERSION = 'td613.ash.demo-registry/v0.3-a15';
+const RETIRED_REGISTRY_VERSION = 'td613.ash.demo-registry/v0.1-a13';
 
 const legacyUrlTarget = "const keepUrl = `${base}/dome-world/ash-keep.html`;";
 const legacyUrlReplacement = "const keepUrl = `${base}/dome-world/ash-keep.html?presentation=legacy`;";
@@ -17,10 +19,10 @@ const readinessReplacement = `  await page.goto(keepUrl, { waitUntil: 'domconten
   await page.waitForFunction(() => Boolean(window.__td613AshKeep?.version)
     && typeof window.TD613AshConvergence?.composition === 'function'
     && document.documentElement.dataset.ashConvergence?.includes('constitutional-convergence')
-    && window.__td613AshDemoRegistry?.version === 'td613.ash.demo-registry/v0.1-a13'
+    && window.__td613AshDemoRegistry?.version === '${CURRENT_REGISTRY_VERSION}'
     && window.__td613AshDemoRegistry?.snapshot?.().control_owner === 'ASH_DEMO_REGISTRY'
     && document.documentElement.dataset.ashDemoControlOwner === 'ASH_DEMO_REGISTRY'
-    && document.documentElement.dataset.ashDemoRegistry === 'td613.ash.demo-registry/v0.1-a13'
+    && document.documentElement.dataset.ashDemoRegistry === '${CURRENT_REGISTRY_VERSION}'
     && document.getElementById('newProfile')?.value === ''
     && document.getElementById('startDemo')?.dataset.ashMethodDemoState === 'HELD', null, { timeout: 60000 });
   report.observations.boot_readiness = {
@@ -31,6 +33,8 @@ const readinessReplacement = `  await page.goto(keepUrl, { waitUntil: 'domconten
     demo_entry_convergence_deferred_until_case_hydration: true,
     demo_click_deferred_until_ready: true,
     profile_selected_explicitly: true,
+    current_registry_version: '${CURRENT_REGISTRY_VERSION}',
+    retired_registry_alias_added: false,
     network_idle_not_required: true,
     presentation_route: 'legacy'
   };
@@ -39,7 +43,7 @@ const readinessReplacement = `  await page.goto(keepUrl, { waitUntil: 'domconten
     const select = document.getElementById('newProfile');
     const button = document.getElementById('startDemo');
     if (!registry?.version || !select || !button) {
-      throw new Error('A13 registry-owned convergence demo control unavailable.');
+      throw new Error('Current registry-owned convergence demo control unavailable.');
     }
     select.value = 'political_campaign';
     select.dispatchEvent(new Event('change', { bubbles:true }));
@@ -48,11 +52,11 @@ const readinessReplacement = `  await page.goto(keepUrl, { waitUntil: 'domconten
     const ready = select.value === 'political_campaign'
       && snapshot?.control_owner === 'ASH_DEMO_REGISTRY'
       && document.documentElement.dataset.ashDemoControlOwner === 'ASH_DEMO_REGISTRY'
-      && button.dataset.ashDemoRegistryOwner === 'td613.ash.demo-registry/v0.1-a13'
+      && button.dataset.ashDemoRegistryOwner === '${CURRENT_REGISTRY_VERSION}'
       && button.dataset.ashMethodDemoState === 'READY'
       && button.disabled === false
       && !button.matches(':disabled');
-    if (!ready) throw new Error('A13 registry-owned convergence demo control was not atomically actionable.');
+    if (!ready) throw new Error('Current registry-owned convergence demo control was not atomically actionable.');
     button.click();
   });
   report.observations.boot_readiness.profile_demo_registry_ready = true;
@@ -161,7 +165,7 @@ const secondCaseReplacement = `  await page.evaluate(() => {
     const select = document.getElementById('newProfile');
     const button = document.getElementById('startDemo');
     if (!registry?.version || !select || !button) {
-      throw new Error('A13 registry-owned second convergence demo control unavailable.');
+      throw new Error('Current registry-owned second convergence demo control unavailable.');
     }
     select.value = 'political_campaign';
     select.dispatchEvent(new Event('change', { bubbles:true }));
@@ -170,11 +174,11 @@ const secondCaseReplacement = `  await page.evaluate(() => {
     const ready = select.value === 'political_campaign'
       && snapshot?.control_owner === 'ASH_DEMO_REGISTRY'
       && document.documentElement.dataset.ashDemoControlOwner === 'ASH_DEMO_REGISTRY'
-      && button.dataset.ashDemoRegistryOwner === 'td613.ash.demo-registry/v0.1-a13'
+      && button.dataset.ashDemoRegistryOwner === '${CURRENT_REGISTRY_VERSION}'
       && button.dataset.ashMethodDemoState === 'READY'
       && button.disabled === false
       && !button.matches(':disabled');
-    if (!ready) throw new Error('A13 registry-owned second convergence demo control was not atomically actionable.');
+    if (!ready) throw new Error('Current registry-owned second convergence demo control was not atomically actionable.');
     button.click();
   });
   await page.waitForFunction(first => {
@@ -334,6 +338,8 @@ for (const [target, replacement] of replacements) {
   if (!runtime.includes(target)) throw new Error(`Ash convergence runtime target missing: ${target.slice(0, 80)}`);
   runtime = runtime.replace(target, replacement);
 }
+if (!runtime.includes(CURRENT_REGISTRY_VERSION)) throw new Error('Current A15 registry identity omitted from convergence runtime.');
+if (runtime.includes(RETIRED_REGISTRY_VERSION)) throw new Error('Retired A13 registry identity survived convergence compilation.');
 
 await fs.mkdir(artifactDir, { recursive:true });
 await fs.writeFile(runtimePath, runtime);
