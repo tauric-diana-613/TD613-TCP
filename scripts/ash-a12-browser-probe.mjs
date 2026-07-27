@@ -1,196 +1,300 @@
 import fs from 'node:fs/promises';
 import path from 'node:path';
-import { chromium, firefox, webkit } from 'playwright';
+import { fileURLToPath, pathToFileURL } from 'node:url';
 
-const browserName = process.env.TD613_BROWSER || 'chromium';
-const baseUrl = process.env.TD613_BASE_URL || 'http://127.0.0.1:6130';
-const artifactDir = process.env.TD613_ARTIFACT_DIR || 'artifacts/ash-a12';
-const browserType = { chromium, firefox, webkit }[browserName];
-if (!browserType) throw new Error('Unsupported browser ' + browserName);
-await fs.mkdir(artifactDir, { recursive:true });
-const browser = await browserType.launch({ headless:true });
+const scriptsDir = path.dirname(fileURLToPath(import.meta.url));
+const corePath = path.join(scriptsDir, 'ash-a12-browser-probe-stable-entry.mjs');
+const tempPath = path.join(scriptsDir, `.ash-a12-browser-probe-present-state-field-${process.pid}.mjs`);
 
-async function waitForRegistryOwner(page) {
-  await page.waitForFunction(() => {
-    const registry = window.__td613AshDemoRegistry?.snapshot?.() || null;
-    const open = window.__td613AshPremiumUI?.open
-      || window.__td613AshUiUxRescue?.open
-      || window.__td613OpenAshWorkspace
-      || window.__td613AshKeep?.openWorkspace;
-    return window.__td613AshDemoRegistry?.version === 'td613.ash.demo-registry/v0.3-a15'
-      && registry?.control_owner === 'ASH_DEMO_REGISTRY'
-      && document.documentElement.dataset.ashDemoControlOwner === 'ASH_DEMO_REGISTRY'
-      && document.documentElement.dataset.ashDemoRegistry === 'td613.ash.demo-registry/v0.3-a15'
-      && typeof open === 'function';
-  }, null, { timeout:120_000 });
+function replaceExactly(source, marker, replacement, label) {
+  const count = source.split(marker).length - 1;
+  if (count !== 1) throw new Error(`${label} expected exactly one marker; observed ${count}`);
+  return source.replace(marker, replacement);
 }
 
-async function ensureCommandSheetOpen(page) {
-  const sheet = page.locator('#premiumCommandSheet');
-  const alreadyOpen = await sheet.evaluate(dialog => dialog.open === true).catch(() => false);
-  if (!alreadyOpen) await page.locator('#premiumMenuButton').click();
-  await page.waitForSelector('#premiumCommandSheet[open]', { timeout:60_000 });
+let source = await fs.readFile(corePath, 'utf8');
+
+source = replaceExactly(
+  source,
+  `      if (!existing.case_id || existing.pointer !== existing.case_id || existing.profile !== 'investigation') {
+        await activateInvestigationDemo(page);
+      }
+      await waitForStableInvestigationEntry(page, attempt);
+      return attempt;`,
+  `      if (!existing.case_id || existing.pointer !== existing.case_id || existing.profile !== 'investigation') {
+        await activateInvestigationDemo(page);
+      }
+      const entry_convergence_rebind = await page.evaluate(() => {
+        const current = window.__td613AshKeep?.current?.() || null;
+        const pointer = localStorage.getItem('td613.ash-keep.current-case');
+        const convergence = window.__td613AshDemoEntryConvergence;
+        if (!current?.case_id || pointer !== current.case_id || typeof convergence?.begin !== 'function') {
+          throw new Error('A12 present-state convergence owner unavailable after case settlement.');
+        }
+        const before = convergence.current?.() || null;
+        const began = convergence.begin({ detail:{ case_id:current.case_id, profile:'investigation' } });
+        const after = convergence.current?.() || null;
+        const receipt = Object.freeze({
+          schema:'td613.ash.a12-present-state-convergence-rebind/v0.1',
+          case_id:current.case_id,
+          profile:'investigation',
+          pointer_concordant:pointer === current.case_id,
+          before,
+          begin_invoked:Boolean(began),
+          after,
+          authority_changed:false,
+          source_bytes_moved:false,
+          case_data_preserved:true,
+          profile_inferred:false,
+          human_closure_required:true
+        });
+        window.__td613A12EntryConvergenceRebind = receipt;
+        return receipt;
+      });
+      if (!entry_convergence_rebind.begin_invoked) throw new Error('A12 present-state convergence rebind was not admitted.');
+      await waitForStableInvestigationEntry(page, attempt);
+      return attempt;`,
+  'A12 present-state entry convergence rebind'
+);
+
+source = replaceExactly(
+  source,
+  `      registry_status:document.getElementById('demoProfileStatus')?.textContent || ''`,
+  `      registry_status:document.getElementById('demoProfileStatus')?.textContent || '',
+      entry_convergence_rebind:window.__td613A12EntryConvergenceRebind || null,
+      canonical_field_stability:window.__td613A12CanonicalFieldStability ? {
+        signature:window.__td613A12CanonicalFieldStability.signature,
+        since:window.__td613A12CanonicalFieldStability.since,
+        label:window.__td613A12CanonicalFieldStability.label
+      } : null`,
+  'A12 rebind and field diagnostic projection'
+);
+
+source = replaceExactly(
+  source,
+  `async function inspectEntryPreflight(page, label) {`,
+  `const ENTRY_FIELD_QUIET_MS = 220;
+
+async function canonicalFieldDiagnostic(page, label, error) {
+  return page.evaluate(({ label, error }) => {
+    const stage = document.querySelector('#ashAiaMembrane [data-aia-stage], .ash-aia__stage');
+    const describe = field => {
+      const style = field ? getComputedStyle(field) : null;
+      const rect = field?.getBoundingClientRect();
+      return {
+        connected:Boolean(field?.isConnected),
+        class_name:field?.className || null,
+        hidden:field?.hidden ?? null,
+        inert:field?.inert ?? null,
+        aria_hidden:field?.getAttribute?.('aria-hidden') || null,
+        display:style?.display || null,
+        visibility:style?.visibility || null,
+        opacity:style?.opacity || null,
+        width:rect?.width || 0,
+        height:rect?.height || 0,
+        parent_id:field?.parentElement?.id || null,
+        parent_class:field?.parentElement?.className || null,
+        flowcore_host:field?.dataset?.flowcoreHost || null,
+        phase:field?.dataset?.flowcorePhaseName || null,
+        id_count:field?.querySelectorAll?.('[id]')?.length || 0
+      };
+    };
+    return {
+      schema:'td613.ash.a12-canonical-field-diagnostic/v0.1',
+      label,
+      error,
+      workspace:document.documentElement.dataset.ashPremiumWorkspace || null,
+      session_open:document.documentElement.dataset.ashSessionOpen || null,
+      case_pointer:localStorage.getItem('td613.ash-keep.current-case'),
+      visible_host:document.documentElement.dataset.ashFlowcoreVisibleHost || null,
+      workspace_remount:document.documentElement.dataset.ashFlowcoreWorkspaceRemount || null,
+      workspace_remount_reason:document.documentElement.dataset.ashFlowcoreWorkspaceRemountReason || null,
+      stage:{
+        connected:Boolean(stage?.isConnected),
+        child_count:stage?.children?.length || 0,
+        field_count:stage?.querySelectorAll?.(':scope > .ash-flowcore-field')?.length || 0,
+        html_prefix:stage?.innerHTML?.slice?.(0, 280) || ''
+      },
+      fields:[...document.querySelectorAll('.ash-flowcore-field')].map(describe),
+      portal_loader:window.__td613AshFlowcoreIngressPortalLoader || null,
+      portal:window.__td613AshFlowcoreIngressPortal?.current?.() || null,
+      remount:window.__td613AshFlowcoreWorkspaceRemount?.current?.() || null,
+      field_owner:window.__td613AshFlowcoreField?.current?.() || null,
+      whole_instrument:window.__td613AshWholeInstrument?.current?.() || null,
+      a12_stability:window.__td613A12CanonicalFieldStability ? {
+        signature:window.__td613A12CanonicalFieldStability.signature,
+        since:window.__td613A12CanonicalFieldStability.since,
+        label:window.__td613A12CanonicalFieldStability.label
+      } : null,
+      authority_changed:false,
+      source_bytes_moved:false,
+      human_closure_required:true
+    };
+  }, { label, error });
 }
 
-async function settleWorkspace(page, workspace) {
-  await waitForRegistryOwner(page);
-  await page.evaluate(async name => {
-    const open = window.__td613AshPremiumUI?.open
-      || window.__td613AshUiUxRescue?.open
-      || window.__td613OpenAshWorkspace
-      || window.__td613AshKeep?.openWorkspace;
-    if (typeof open !== 'function') throw new Error('A15 governed workspace owner unavailable.');
-    await Promise.resolve(open(name));
-  }, workspace);
-  await page.waitForFunction(name => {
-    const registry = window.__td613AshDemoRegistry?.snapshot?.() || null;
-    const panel = document.getElementById(`workspace-${name}`);
-    const style = panel ? getComputedStyle(panel) : null;
-    const rect = panel?.getBoundingClientRect();
-    return registry?.control_owner === 'ASH_DEMO_REGISTRY'
-      && document.documentElement.dataset.ashDemoControlOwner === 'ASH_DEMO_REGISTRY'
-      && document.documentElement.dataset.ashPremiumWorkspace === name
-      && panel?.classList.contains('active')
-      && style?.display !== 'none'
-      && style?.visibility !== 'hidden'
-      && Number(style?.opacity) > 0
-      && style?.pointerEvents !== 'none'
-      && rect?.width > 0
-      && rect?.height > 0;
-  }, workspace, { timeout:120_000 });
-}
-
-async function activateInvestigationDemo(page) {
-  if (browserName !== 'webkit') {
-    await page.locator('#startDemo').click();
-    return;
+async function waitForCanonicalField(page, label) {
+  await page.evaluate(() => { window.__td613A12CanonicalFieldStability = null; });
+  let handle;
+  try {
+    handle = await page.waitForFunction(({ label, quietMs }) => {
+      const candidates = [...document.querySelectorAll('.ash-flowcore-field:not(.ash-flowcore-field--proxy):not([hidden])')];
+      const visible = candidates.filter(field => {
+        if (!field?.isConnected) return false;
+        const style = getComputedStyle(field);
+        const rect = field.getBoundingClientRect();
+        return style.display !== 'none'
+          && style.visibility !== 'hidden'
+          && Number(style.opacity) > 0
+          && rect.width > 0
+          && rect.height > 0;
+      });
+      if (visible.length !== 1) {
+        window.__td613A12CanonicalFieldStability = null;
+        return false;
+      }
+      const field = visible[0];
+      const signature = [
+        label,
+        document.documentElement.dataset.ashPremiumWorkspace || '',
+        field.dataset.flowcorePhaseName || '',
+        field.parentElement?.id || '',
+        candidates.length,
+        visible.length
+      ].join(':');
+      const now = performance.now();
+      const prior = window.__td613A12CanonicalFieldStability;
+      if (!prior || prior.signature !== signature || prior.field !== field) {
+        window.__td613A12CanonicalFieldStability = { signature, field, since:now, label };
+        return false;
+      }
+      if (now - prior.since < quietMs) return false;
+      return {
+        label,
+        candidate_count:candidates.length,
+        visible_count:visible.length,
+        workspace:document.documentElement.dataset.ashPremiumWorkspace || null,
+        phase:field.dataset.flowcorePhaseName || null,
+        parent_id:field.parentElement?.id || null,
+        width:field.getBoundingClientRect().width,
+        height:field.getBoundingClientRect().height,
+        quiet_window_ms:quietMs,
+        connected:true
+      };
+    }, { label, quietMs:ENTRY_FIELD_QUIET_MS }, { timeout:60_000, polling:25 });
+  } catch (error) {
+    const diagnostic = await canonicalFieldDiagnostic(page, label, String(error?.message || error)).catch(diagnosticError => ({
+      schema:'td613.ash.a12-canonical-field-diagnostic/v0.1',
+      label,
+      error:String(error?.message || error),
+      diagnostic_error:String(diagnosticError?.message || diagnosticError),
+      authority_changed:false,
+      source_bytes_moved:false,
+      human_closure_required:true
+    }));
+    throw new Error('A12 canonical field failed to settle: ' + JSON.stringify(diagnostic));
   }
-  await page.evaluate(() => {
-    const registry = window.__td613AshDemoRegistry;
-    const profile = document.getElementById('newProfile');
-    const button = document.getElementById('startDemo');
-    if (!registry?.version || !profile || !button) {
-      throw new Error('WebKit A12 registry-owned demo control was unavailable.');
-    }
-    profile.value = 'investigation';
-    profile.dispatchEvent(new Event('change', { bubbles:true }));
-    registry.reconcile();
-    const snapshot = registry.snapshot?.() || null;
-    const ready = profile.value === 'investigation'
-      && snapshot?.control_owner === 'ASH_DEMO_REGISTRY'
-      && document.documentElement.dataset.ashDemoControlOwner === 'ASH_DEMO_REGISTRY'
-      && button.dataset.ashDemoRegistryOwner === 'td613.ash.demo-registry/v0.3-a15'
-      && button.dataset.ashMethodDemoState === 'READY'
-      && button.disabled === false
-      && !button.matches(':disabled');
-    if (!ready) throw new Error('WebKit A12 registry-owned demo control was not atomically actionable.');
-    button.click();
-  });
+  return handle.jsonValue();
 }
 
-async function enterInvestigation(page) {
-  await page.goto(baseUrl + '/dome-world/ash-keep.html', { waitUntil:'domcontentloaded', timeout:90_000 });
-  await page.waitForFunction(() => Boolean(window.__td613AshKeep?.version)
-    && Boolean(window.__td613AshPremiumUI?.version)
-    && Boolean(window.__td613AshA12?.version)
-    && Boolean(window.__td613AshDemoRegistry?.version)
-    && document.title === 'TD613 Ash'
-    && location.pathname === '/dome-world/ash-threshold.html'
-    && !location.search, null, { timeout:120_000 });
-  await page.locator('#newProfile').selectOption('investigation');
-  await page.evaluate(() => window.__td613AshDemoRegistry?.reconcile?.());
-  await page.waitForFunction(() => {
-    const button = document.getElementById('startDemo');
-    return document.getElementById('newProfile')?.value === 'investigation'
-      && window.__td613AshDemoRegistry?.snapshot?.().control_owner === 'ASH_DEMO_REGISTRY'
-      && document.documentElement.dataset.ashDemoControlOwner === 'ASH_DEMO_REGISTRY'
-      && button?.dataset.ashDemoRegistryOwner === 'td613.ash.demo-registry/v0.3-a15'
-      && button?.dataset.ashMethodDemoState === 'READY'
-      && button.disabled === false;
-  }, null, { timeout:120_000 });
-  await activateInvestigationDemo(page);
-  await page.waitForFunction(() => document.documentElement.dataset.ashPremiumWorkspace === 'home'
-    && document.documentElement.dataset.ashA12CommandAudit === 'PASS'
-    && window.__td613AshDemoRegistry?.snapshot?.().control_owner === 'ASH_DEMO_REGISTRY', null, { timeout:120_000 });
-}
+async function inspectEntryPreflight(page, label) {`,
+  'A12 canonical field stability helper'
+);
 
-async function inspect(page, label) {
-  await enterInvestigation(page);
-  await waitForRegistryOwner(page);
+source = replaceExactly(
+  source,
+  `async function inspectEntryPreflight(page, label) {
+  const entryAttempt = await enterInvestigation(page);
   await ensureCommandSheetOpen(page);
-  const commandText = await page.locator('#premiumCommandGrid').innerText();
-  for (const phrase of ['Custody','Rooms','Routes','Rebuild Test','Draft & Hush','Save Points','Destination Handoff','Receipts','Cases & Profiles','Safe Harbor']) {
-    if (!commandText.includes(phrase)) throw new Error('A12 missing ' + phrase);
+  const entry = await entryDiagnostic(page, entryAttempt);
+  if (!entry.current_case
+    || entry.local_pointer !== entry.current_case
+    || entry.entry_posture !== 'READY'
+    || entry.entry_phase !== 'VISIBLE'
+    || !entry.menu_connected
+    || !entry.menu_visible
+    || !entry.sheet_connected
+    || !entry.sheet_open) {
+    throw new Error(\`A12 entry preflight did not remain stable: \${JSON.stringify(entry)}\`);
   }
-  const audit = await page.evaluate(() => window.__td613AshA12?.audit?.());
-  if (!audit?.ready || audit.inert_controls !== 0 || audit.empty_drawers !== 0) throw new Error('A12 command audit failed: ' + JSON.stringify(audit));
-
+  await page.screenshot({ path:path.join(artifactDir, browserName + '-' + label + '.png'), fullPage:true });
+  return { entry_attempt:entryAttempt, entry };
+}`,
+  `async function inspectEntryPreflight(page, label) {
+  const entryAttempt = await enterInvestigation(page);
+  await ensureCommandSheetOpen(page);
   await page.locator('[data-a12-command="test"]').click();
   await settleWorkspace(page, 'choir');
   await ensureCommandSheetOpen(page);
   await page.locator('[data-a12-command="save"]').click();
   await settleWorkspace(page, 'capsule');
-
-  const routeDelta = await page.locator('.ash-route-delta').innerText();
-  if (!routeDelta.includes('Changed in explanation') || !routeDelta.includes('Preserved exactly')) throw new Error('A12 route delta remained empty.');
-  const beforeSwitch = await page.evaluate(() => ({
-    width:document.documentElement.scrollWidth,
-    viewport:document.documentElement.clientWidth,
-    fields:document.querySelectorAll('.ash-flowcore-field:not(.ash-flowcore-field--proxy):not([hidden])').length,
-    url:location.pathname + location.search,
-    title:document.title,
-    audit:document.documentElement.dataset.ashA12CommandAudit,
-    registry_owner:window.__td613AshDemoRegistry?.snapshot?.().control_owner || null,
-    active_case:window.__td613AshKeep?.current?.()?.case_id || null
-  }));
-  if (beforeSwitch.width > beforeSwitch.viewport + 1) throw new Error('Horizontal overflow ' + beforeSwitch.width + '/' + beforeSwitch.viewport);
-  if (beforeSwitch.fields !== 1) throw new Error('Expected one canonical field, observed ' + beforeSwitch.fields);
-  if (beforeSwitch.url !== '/dome-world/ash-threshold.html' || beforeSwitch.title !== 'TD613 Ash') throw new Error('Canonical first paint drift: ' + JSON.stringify(beforeSwitch));
-  if (beforeSwitch.registry_owner !== 'ASH_DEMO_REGISTRY') throw new Error('A15 registry ownership drift: ' + JSON.stringify(beforeSwitch));
-  if (!beforeSwitch.active_case) throw new Error('A12 case-switcher witness began without an active case.');
-
-  await ensureCommandSheetOpen(page);
-  await page.locator('[data-a12-action="profile"]').click();
-  await page.waitForFunction(() => document.body.dataset.ashCaseClosed === 'true'
-    && !localStorage.getItem('td613.ash-keep.current-case')
-    && !document.getElementById('launch')?.classList.contains('hidden'), null, { timeout:120_000 });
-  await page.waitForFunction(() => document.activeElement?.id === 'newProfile'
-    && document.documentElement.dataset.ashA12ProfileSelector === 'FOCUSED', null, { timeout:120_000 });
-
-  const afterSwitch = await page.evaluate(() => ({
-    url:location.pathname + location.search,
-    title:document.title,
-    launch_hidden:document.getElementById('launch')?.classList.contains('hidden') ?? true,
-    case_closed:document.body.dataset.ashCaseClosed || null,
-    current_pointer:localStorage.getItem('td613.ash-keep.current-case'),
-    profile_selector:document.documentElement.dataset.ashA12ProfileSelector,
-    active_element:document.activeElement?.id || null,
-    close_fingerprint_posture:document.documentElement.dataset.ashCloseFingerprintPosture || null,
-    case_list_quiescent:document.documentElement.dataset.ashCloseCaseListQuiescent || null
-  }));
-  if (afterSwitch.url !== '/dome-world/ash-threshold.html' || afterSwitch.title !== 'TD613 Ash') throw new Error('Canonical selector return drift: ' + JSON.stringify(afterSwitch));
-  if (afterSwitch.launch_hidden || afterSwitch.case_closed !== 'true' || afterSwitch.current_pointer) throw new Error('Canonical case close boundary held: ' + JSON.stringify(afterSwitch));
-  if (afterSwitch.profile_selector !== 'FOCUSED' || afterSwitch.active_element !== 'newProfile') throw new Error('Profile selector focus drift: ' + JSON.stringify(afterSwitch));
-  if (afterSwitch.case_list_quiescent !== 'true') throw new Error('Case list did not reach quiescence: ' + JSON.stringify(afterSwitch));
-
+  const canonicalField = await waitForCanonicalField(page, 'entry-preflight-capsule');
+  const entry = await entryDiagnostic(page, entryAttempt);
+  if (!entry.current_case
+    || entry.local_pointer !== entry.current_case
+    || entry.entry_posture !== 'READY'
+    || entry.entry_phase !== 'VISIBLE'
+    || !entry.menu_connected
+    || !entry.menu_visible
+    || !entry.sheet_connected
+    || canonicalField.visible_count !== 1) {
+    throw new Error(\`A12 entry-field preflight did not remain stable: \${JSON.stringify({ entry, canonicalField })}\`);
+  }
   await page.screenshot({ path:path.join(artifactDir, browserName + '-' + label + '.png'), fullPage:true });
-  return { before_switch:beforeSwitch, after_switch:afterSwitch };
+  return {
+    entry_attempt:entryAttempt,
+    entry,
+    route:['choir','capsule'],
+    canonical_field:canonicalField
+  };
+}`,
+  'A12 entry-field preflight route'
+);
+
+source = replaceExactly(
+  source,
+  `  await page.locator('[data-a12-command="save"]').click();
+  await settleWorkspace(page, 'capsule');
+
+  const routeDelta =`,
+  `  await page.locator('[data-a12-command="save"]').click();
+  await settleWorkspace(page, 'capsule');
+  const canonicalField = await waitForCanonicalField(page, 'full-witness-capsule');
+
+  const routeDelta =`,
+  'A12 full-witness canonical field settlement'
+);
+
+source = replaceExactly(
+  source,
+  `  if (beforeSwitch.fields !== 1) throw new Error('Expected one canonical field, observed ' + beforeSwitch.fields);`,
+  `  if (canonicalField.visible_count !== 1 || beforeSwitch.fields !== 1) throw new Error('Expected one stable canonical field: ' + JSON.stringify({ canonicalField, beforeSwitch }));`,
+  'A12 canonical field assertion'
+);
+
+source = source
+  .replaceAll('td613.ash.a12-entry-preflight/v0.1-stable-case-command-surface', 'td613.ash.a12-entry-preflight/v0.4-present-state-canonical-field-diagnostic')
+  .replaceAll('td613.ash.a12-browser-witness/v1.0-a15-stable-entry', 'td613.ash.a12-browser-witness/v1.3-a15-present-state-canonical-field-diagnostic');
+
+if (!source.includes('entry_convergence_rebind')
+  || !source.includes("convergence.begin({ detail:{ case_id:current.case_id, profile:'investigation' } })")
+  || !source.includes('td613.ash.a12-present-state-convergence-rebind/v0.1')
+  || !source.includes('ENTRY_FIELD_QUIET_MS = 220')
+  || !source.includes('canonicalFieldDiagnostic(page, label, error)')
+  || !source.includes('td613.ash.a12-canonical-field-diagnostic/v0.1')
+  || !source.includes('window.__td613AshFlowcoreIngressPortal?.current?.()')
+  || !source.includes('window.__td613AshFlowcoreWorkspaceRemount?.current?.()')
+  || !source.includes('waitForCanonicalField(page, label)')
+  || !source.includes("route:['choir','capsule']")
+  || !source.includes("waitForCanonicalField(page, 'full-witness-capsule')")
+  || !source.includes('td613.ash.a12-entry-preflight/v0.4-present-state-canonical-field-diagnostic')
+  || !source.includes('td613.ash.a12-browser-witness/v1.3-a15-present-state-canonical-field-diagnostic')) {
+  throw new Error('A12 present-state canonical-field diagnostic observer adapter failed to compile.');
 }
 
-const receipts = [];
 try {
-  const desktop = await browser.newContext({ viewport:{ width:1280, height:900 } });
-  receipts.push({ mode:'desktop', ...(await inspect(await desktop.newPage(), 'desktop')) });
-  await desktop.close();
-  const mobileOptions = { viewport:{ width:390, height:844 }, reducedMotion:'reduce' };
-  if (browserName !== 'firefox') Object.assign(mobileOptions, { isMobile:true, hasTouch:true });
-  const mobile = await browser.newContext(mobileOptions);
-  receipts.push({ mode:'mobile-reduced-motion', ...(await inspect(await mobile.newPage(), 'mobile-reduced-motion')) });
-  await mobile.close();
-  await fs.writeFile(path.join(artifactDir, browserName + '-a12-receipt.json'), JSON.stringify({ schema:'td613.ash.a12-browser-witness/v0.9-a15-registry-current', browser:browserName, receipts, authority_changed:false, source_bytes_moved:false, case_data_preserved:true, profile_inferred:false, human_closure_required:true }, null, 2));
-} catch (error) {
-  await fs.writeFile(path.join(artifactDir, browserName + '-a12-failure.json'), JSON.stringify({ error:String(error?.stack || error) }, null, 2));
-  throw error;
+  await fs.writeFile(tempPath, source, 'utf8');
+  await import(`${pathToFileURL(tempPath).href}?a12_present_state_field=${Date.now()}`);
 } finally {
-  await browser.close();
+  await fs.rm(tempPath, { force:true });
 }
