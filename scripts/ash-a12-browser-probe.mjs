@@ -16,6 +16,57 @@ let source = await fs.readFile(corePath, 'utf8');
 
 source = replaceExactly(
   source,
+  `async function activateInvestigationDemo(page) {`,
+  `const POST_CLICK_CASE_QUIET_MS = 220;
+
+async function waitForPostClickCaseSettlement(page, attempt) {
+  await page.evaluate(() => { window.__td613A12PostClickCaseStability = null; });
+  const handle = await page.waitForFunction(({ attempt, quietMs }) => {
+    const current = window.__td613AshKeep?.current?.() || null;
+    const pointer = localStorage.getItem('td613.ash-keep.current-case');
+    const profile = document.documentElement.dataset.ashDemoProfile
+      || document.documentElement.dataset.ashDemoRegistryProfile
+      || null;
+    const ready = Boolean(current?.case_id)
+      && pointer === current.case_id
+      && profile === 'investigation'
+      && document.body.dataset.ashCaseClosed !== 'true';
+    if (!ready) {
+      window.__td613A12PostClickCaseStability = null;
+      return false;
+    }
+    const signature = [attempt, current.case_id, pointer, profile].join(':');
+    const now = performance.now();
+    const prior = window.__td613A12PostClickCaseStability;
+    if (!prior || prior.signature !== signature) {
+      window.__td613A12PostClickCaseStability = {
+        signature,
+        since:now,
+        case_id:current.case_id,
+        pointer,
+        profile
+      };
+      return false;
+    }
+    if (now - prior.since < quietMs) return false;
+    return {
+      attempt,
+      case_id:current.case_id,
+      pointer,
+      profile,
+      quiet_window_ms:quietMs,
+      concordant:true
+    };
+  }, { attempt, quietMs:POST_CLICK_CASE_QUIET_MS }, { timeout:45_000, polling:25 });
+  return handle.jsonValue();
+}
+
+async function activateInvestigationDemo(page) {`,
+  'A12 post-click case settlement helper'
+);
+
+source = replaceExactly(
+  source,
   `      if (!existing.case_id || existing.pointer !== existing.case_id || existing.profile !== 'investigation') {
         await activateInvestigationDemo(page);
       }
@@ -24,7 +75,8 @@ source = replaceExactly(
   `      if (!existing.case_id || existing.pointer !== existing.case_id || existing.profile !== 'investigation') {
         await activateInvestigationDemo(page);
       }
-      const entry_convergence_rebind = await page.evaluate(() => {
+      const post_click_case = await waitForPostClickCaseSettlement(page, attempt);
+      const entry_convergence_rebind = await page.evaluate(({ postClickCase }) => {
         const current = window.__td613AshKeep?.current?.() || null;
         const pointer = localStorage.getItem('td613.ash-keep.current-case');
         const convergence = window.__td613AshDemoEntryConvergence;
@@ -35,10 +87,11 @@ source = replaceExactly(
         const began = convergence.begin({ detail:{ case_id:current.case_id, profile:'investigation' } });
         const after = convergence.current?.() || null;
         const receipt = Object.freeze({
-          schema:'td613.ash.a12-present-state-convergence-rebind/v0.1',
+          schema:'td613.ash.a12-present-state-convergence-rebind/v0.2-post-click-settled',
           case_id:current.case_id,
           profile:'investigation',
           pointer_concordant:pointer === current.case_id,
+          post_click_case:postClickCase,
           before,
           begin_invoked:Boolean(began),
           after,
@@ -50,24 +103,31 @@ source = replaceExactly(
         });
         window.__td613A12EntryConvergenceRebind = receipt;
         return receipt;
-      });
+      }, { postClickCase:post_click_case });
       if (!entry_convergence_rebind.begin_invoked) throw new Error('A12 present-state convergence rebind was not admitted.');
       await waitForStableInvestigationEntry(page, attempt);
       return attempt;`,
-  'A12 present-state entry convergence rebind'
+  'A12 settled present-state entry convergence rebind'
 );
 
 source = replaceExactly(
   source,
   `      registry_status:document.getElementById('demoProfileStatus')?.textContent || ''`,
   `      registry_status:document.getElementById('demoProfileStatus')?.textContent || '',
+      post_click_case_settlement:window.__td613A12PostClickCaseStability ? {
+        signature:window.__td613A12PostClickCaseStability.signature,
+        since:window.__td613A12PostClickCaseStability.since,
+        case_id:window.__td613A12PostClickCaseStability.case_id,
+        pointer:window.__td613A12PostClickCaseStability.pointer,
+        profile:window.__td613A12PostClickCaseStability.profile
+      } : null,
       entry_convergence_rebind:window.__td613A12EntryConvergenceRebind || null,
       canonical_field_stability:window.__td613A12CanonicalFieldStability ? {
         signature:window.__td613A12CanonicalFieldStability.signature,
         since:window.__td613A12CanonicalFieldStability.since,
         label:window.__td613A12CanonicalFieldStability.label
       } : null`,
-  'A12 rebind and field diagnostic projection'
+  'A12 settled rebind and field diagnostic projection'
 );
 
 source = replaceExactly(
@@ -273,12 +333,14 @@ source = replaceExactly(
 );
 
 source = source
-  .replaceAll('td613.ash.a12-entry-preflight/v0.1-stable-case-command-surface', 'td613.ash.a12-entry-preflight/v0.4-present-state-canonical-field-diagnostic')
-  .replaceAll('td613.ash.a12-browser-witness/v1.0-a15-stable-entry', 'td613.ash.a12-browser-witness/v1.3-a15-present-state-canonical-field-diagnostic');
+  .replaceAll('td613.ash.a12-entry-preflight/v0.1-stable-case-command-surface', 'td613.ash.a12-entry-preflight/v0.5-post-click-settled-canonical-field')
+  .replaceAll('td613.ash.a12-browser-witness/v1.0-a15-stable-entry', 'td613.ash.a12-browser-witness/v1.4-a15-post-click-settled-canonical-field');
 
-if (!source.includes('entry_convergence_rebind')
+if (!source.includes('waitForPostClickCaseSettlement(page, attempt)')
+  || !source.includes('POST_CLICK_CASE_QUIET_MS = 220')
+  || !source.includes('td613.ash.a12-present-state-convergence-rebind/v0.2-post-click-settled')
+  || !source.includes('entry_convergence_rebind')
   || !source.includes("convergence.begin({ detail:{ case_id:current.case_id, profile:'investigation' } })")
-  || !source.includes('td613.ash.a12-present-state-convergence-rebind/v0.1')
   || !source.includes('ENTRY_FIELD_QUIET_MS = 220')
   || !source.includes('canonicalFieldDiagnostic(page, label, error)')
   || !source.includes('td613.ash.a12-canonical-field-diagnostic/v0.1')
@@ -287,14 +349,14 @@ if (!source.includes('entry_convergence_rebind')
   || !source.includes('waitForCanonicalField(page, label)')
   || !source.includes("route:['choir','capsule']")
   || !source.includes("waitForCanonicalField(page, 'full-witness-capsule')")
-  || !source.includes('td613.ash.a12-entry-preflight/v0.4-present-state-canonical-field-diagnostic')
-  || !source.includes('td613.ash.a12-browser-witness/v1.3-a15-present-state-canonical-field-diagnostic')) {
-  throw new Error('A12 present-state canonical-field diagnostic observer adapter failed to compile.');
+  || !source.includes('td613.ash.a12-entry-preflight/v0.5-post-click-settled-canonical-field')
+  || !source.includes('td613.ash.a12-browser-witness/v1.4-a15-post-click-settled-canonical-field')) {
+  throw new Error('A12 post-click settled canonical-field observer adapter failed to compile.');
 }
 
 try {
   await fs.writeFile(tempPath, source, 'utf8');
-  await import(`${pathToFileURL(tempPath).href}?a12_present_state_field=${Date.now()}`);
+  await import(`${pathToFileURL(tempPath).href}?a12_post_click_settled_field=${Date.now()}`);
 } finally {
   await fs.rm(tempPath, { force:true });
 }
