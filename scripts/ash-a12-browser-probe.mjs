@@ -17,10 +17,10 @@ async function waitForRegistryOwner(page) {
       || window.__td613AshUiUxRescue?.open
       || window.__td613OpenAshWorkspace
       || window.__td613AshKeep?.openWorkspace;
-    return window.__td613AshDemoRegistry?.version === 'td613.ash.demo-registry/v0.2-a14'
+    return window.__td613AshDemoRegistry?.version === 'td613.ash.demo-registry/v0.3-a15'
       && registry?.control_owner === 'ASH_DEMO_REGISTRY'
       && document.documentElement.dataset.ashDemoControlOwner === 'ASH_DEMO_REGISTRY'
-      && document.documentElement.dataset.ashDemoRegistry === 'td613.ash.demo-registry/v0.2-a14'
+      && document.documentElement.dataset.ashDemoRegistry === 'td613.ash.demo-registry/v0.3-a15'
       && typeof open === 'function';
   }, null, { timeout:120_000 });
 }
@@ -39,7 +39,7 @@ async function settleWorkspace(page, workspace) {
       || window.__td613AshUiUxRescue?.open
       || window.__td613OpenAshWorkspace
       || window.__td613AshKeep?.openWorkspace;
-    if (typeof open !== 'function') throw new Error('A14 governed workspace owner unavailable.');
+    if (typeof open !== 'function') throw new Error('A15 governed workspace owner unavailable.');
     await Promise.resolve(open(name));
   }, workspace);
   await page.waitForFunction(name => {
@@ -79,7 +79,7 @@ async function activateInvestigationDemo(page) {
     const ready = profile.value === 'investigation'
       && snapshot?.control_owner === 'ASH_DEMO_REGISTRY'
       && document.documentElement.dataset.ashDemoControlOwner === 'ASH_DEMO_REGISTRY'
-      && button.dataset.ashDemoRegistryOwner === 'td613.ash.demo-registry/v0.2-a14'
+      && button.dataset.ashDemoRegistryOwner === 'td613.ash.demo-registry/v0.3-a15'
       && button.dataset.ashMethodDemoState === 'READY'
       && button.disabled === false
       && !button.matches(':disabled');
@@ -104,7 +104,7 @@ async function enterInvestigation(page) {
     return document.getElementById('newProfile')?.value === 'investigation'
       && window.__td613AshDemoRegistry?.snapshot?.().control_owner === 'ASH_DEMO_REGISTRY'
       && document.documentElement.dataset.ashDemoControlOwner === 'ASH_DEMO_REGISTRY'
-      && button?.dataset.ashDemoRegistryOwner === 'td613.ash.demo-registry/v0.2-a14'
+      && button?.dataset.ashDemoRegistryOwner === 'td613.ash.demo-registry/v0.3-a15'
       && button?.dataset.ashMethodDemoState === 'READY'
       && button.disabled === false;
   }, null, { timeout:120_000 });
@@ -146,7 +146,7 @@ async function inspect(page, label) {
   if (beforeSwitch.width > beforeSwitch.viewport + 1) throw new Error('Horizontal overflow ' + beforeSwitch.width + '/' + beforeSwitch.viewport);
   if (beforeSwitch.fields !== 1) throw new Error('Expected one canonical field, observed ' + beforeSwitch.fields);
   if (beforeSwitch.url !== '/dome-world/ash-threshold.html' || beforeSwitch.title !== 'TD613 Ash') throw new Error('Canonical first paint drift: ' + JSON.stringify(beforeSwitch));
-  if (beforeSwitch.registry_owner !== 'ASH_DEMO_REGISTRY') throw new Error('A14 registry ownership drift: ' + JSON.stringify(beforeSwitch));
+  if (beforeSwitch.registry_owner !== 'ASH_DEMO_REGISTRY') throw new Error('A15 registry ownership drift: ' + JSON.stringify(beforeSwitch));
   if (!beforeSwitch.active_case) throw new Error('A12 case-switcher witness began without an active case.');
 
   await ensureCommandSheetOpen(page);
@@ -187,7 +187,7 @@ try {
   const mobile = await browser.newContext(mobileOptions);
   receipts.push({ mode:'mobile-reduced-motion', ...(await inspect(await mobile.newPage(), 'mobile-reduced-motion')) });
   await mobile.close();
-  await fs.writeFile(path.join(artifactDir, browserName + '-a12-receipt.json'), JSON.stringify({ schema:'td613.ash.a12-browser-witness/v0.8-a14-registry-current', browser:browserName, receipts, authority_changed:false, source_bytes_moved:false, case_data_preserved:true, profile_inferred:false, human_closure_required:true }, null, 2));
+  await fs.writeFile(path.join(artifactDir, browserName + '-a12-receipt.json'), JSON.stringify({ schema:'td613.ash.a12-browser-witness/v0.9-a15-registry-current', browser:browserName, receipts, authority_changed:false, source_bytes_moved:false, case_data_preserved:true, profile_inferred:false, human_closure_required:true }, null, 2));
 } catch (error) {
   await fs.writeFile(path.join(artifactDir, browserName + '-a12-failure.json'), JSON.stringify({ error:String(error?.stack || error) }, null, 2));
   throw error;

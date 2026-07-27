@@ -21,7 +21,7 @@ const premiumReadinessSource = fs.readFileSync(premiumReadinessPath, 'utf8');
 const compositionCompatibilitySource = fs.readFileSync(compositionCompatibilityPath, 'utf8');
 const workspaceBridgeSource = fs.readFileSync(workspaceBridgePath, 'utf8');
 const { ASH_DEMO_PEDAGOGY_VERSION, ASH_DEMO_PEDAGOGY_MANIFESTS } = await import(pathToFileURL(modulePath));
-const RELEASE_EPOCH = '20260725-a14-release-v1';
+const RELEASE_EPOCH = '20260726-a15-empirical-v1';
 
 assert.equal(ASH_DEMO_PEDAGOGY_VERSION, 'td613.ash.demo-pedagogy/v0.2-event-driven-idle-stable');
 assert.deepEqual(Object.keys(ASH_DEMO_PEDAGOGY_MANIFESTS).sort(), ['fundraiser','investigation','political_campaign','research']);
@@ -73,10 +73,15 @@ assert.match(registrySource, /ash-demo-pedagogy-rehydration\.js\?v=\$\{ASH_DEMO_
 assert.match(registrySource, /legalManifest/);
 assert.match(registrySource, /archiveManifest/);
 assert.match(registrySource, /buildArchiveDemoFixture/);
+assert.match(registrySource, /ash-a15-empirical-profile-journeys\.js\?v=\$\{ASH_DEMO_ASSET_EPOCH\}/);
 assert.doesNotMatch(registrySource, /RESERVED_FOR_A14|A14_RESERVED/);
 
-assert.match(entrySource, /td613\.ash\.demo-entry-convergence\/v0\.6-archive-entry-fallback/);
+assert.match(entrySource, /td613\.ash\.demo-entry-convergence\/v0\.7-coalesced-entry-clock/);
 assert.match(entrySource, /const ENTRY_FALLBACK = Object\.freeze\(\{[^\n]*archive:'map'/);
+assert.match(entrySource, /const CONVERGENCE_FALLBACK_MS = 64/);
+assert.match(entrySource, /function scheduleConvergence\(caseId, profile, workspace, currentToken, phase, stableFrames\)/);
+assert.match(entrySource, /frame = host\.requestAnimationFrame\(run\)/);
+assert.match(entrySource, /frameFallback = host\.setTimeout\(run, CONVERGENCE_FALLBACK_MS\)/);
 assert.match(entrySource, /data-ash-demo-entry-hydrating/);
 assert.match(entrySource, /function structuralReady/);
 assert.match(entrySource, /function visibleReady/);
@@ -93,7 +98,7 @@ assert.match(entrySource, /WORKSPACE_NOT_VISIBLE/);
 assert.match(entrySource, /currentCaseId/);
 assert.match(entrySource, /state\.case_id === caseId/);
 assert.match(entrySource, /dataset\.ashDemoEntryCase = caseId/);
-assert.doesNotMatch(entrySource, /new MutationObserver/);
+assert.doesNotMatch(entrySource, /new MutationObserver|setInterval\s*\(/);
 
 assert.match(routebarSource, /td613\.ash\.demo-pedagogy-routebar\/v0\.2-event-driven-persistent-route/);
 assert.match(routebarSource, /premiumContextBar/);
@@ -124,4 +129,4 @@ for (const module of ['ash-premium-ui','ash-premium-readiness-bridge','ash-ui-ux
 assert.doesNotMatch(workspaceBridgeSource, /ash-demo-pedagogy-persistence/);
 assert.equal(fs.existsSync(path.join(root, 'app/dome-world/ash-demo-pedagogy-persistence.js')), false, 'The obstructive all-workspace ledger portal must remain removed.');
 
-console.log('ash-four-profile-pedagogy.test.mjs passed under A14 six-seat registry ownership');
+console.log('ash-four-profile-pedagogy.test.mjs passed under A15 six-seat registry ownership and the coalesced entry clock');

@@ -17,8 +17,12 @@ import './ash-keep-mobile-composition.js?v=20260724-a12-release-v1';
 import './ash-mobile-constitutional-closure.js?v=20260724-a12-release-v1';
 import './ash-operation-coordinator.js?v=20260724-a12-release-v1';
 import './ash-case-feedback.js?v=20260724-a12-release-v1';
-// A14 retains one registry owner and promotes Archive through its bounded accession provider.
-import './ash-profile-demo-hydration.js?v=20260725-a14-release-v1';
+// A15 retains one registry owner and empirically differentiates all six promoted profiles without widening fixture authority.
+import './ash-profile-demo-hydration.js?v=20260726-a15-empirical-v1';
+// A8 waits for the canonical Map-open receipt before releasing a held form draft across mobile workspace transitions.
+import './ash-a8-map-return-handshake.js?v=20260726-a15-empirical-v1';
+// A8 dirty field gestures hold active workshop recompilation even when mobile WebKit drops focus between controls.
+import './ash-a8-dirty-draft-recompile-guard.js?v=20260726-a15-empirical-v1';
 import './ash-premium-ui.js?v=20260724-a12-release-v1';
 import './ash-premium-readiness-bridge.js?v=20260724-a12-release-v1';
 import './ash-guided-operator-ui.js?v=20260724-a12-release-v1';

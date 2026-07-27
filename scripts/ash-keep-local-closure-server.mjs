@@ -11,6 +11,7 @@ const repoRoot = path.resolve(here, '..');
 const port = Number(process.argv[2] || process.env.PORT || 6130);
 const MAX_POST_BODY_BYTES = 131_072;
 const ASH_CUSTODY_REGISTER_ROUTE = '/api/dome-world/ash-custody-register';
+const DOME_READINESS_ROUTE = '/api/dome-world/readiness';
 const PYTHON_EXECUTABLE = process.env.PYTHON || process.env.PYTHON3 || 'python3';
 const GUARDED_CUSTODY_DISPATCH = String.raw`
 import importlib.util
@@ -30,6 +31,22 @@ envelope = guard.validate_l1_boundary_flags(
     commitment.strict_json_loads(sys.stdin.buffer.read())
 )
 result = commitment.dispatch_post(envelope)
+sys.stdout.write(json.dumps(result, separators=(",", ":"), ensure_ascii=True))
+`;
+const GUARDED_DOME_READINESS = String.raw`
+import importlib.util
+import json
+import os
+import sys
+
+root = sys.argv[1]
+guard_path = os.path.join(root, "api", "dome-world-engine-guard.py")
+spec = importlib.util.spec_from_file_location("td613_local_closure_dome_guard", guard_path)
+if spec is None or spec.loader is None:
+    raise RuntimeError("unable to load guarded Dome-World readiness boundary")
+guard = importlib.util.module_from_spec(spec)
+spec.loader.exec_module(guard)
+result = guard.guarded_readiness_receipt("readiness")
 sys.stdout.write(json.dumps(result, separators=(",", ":"), ensure_ascii=True))
 `;
 
@@ -109,6 +126,32 @@ async function sendGuardedCustodyRegistration(req, res) {
   }
 }
 
+function sendGuardedDomeReadiness(res) {
+  try {
+    const result = spawnSync(PYTHON_EXECUTABLE, ['-c', GUARDED_DOME_READINESS, repoRoot], {
+      cwd: repoRoot,
+      encoding: 'utf8',
+      maxBuffer: 1_048_576
+    });
+    if (result.error) throw result.error;
+    if (result.status !== 0) {
+      throw new Error((result.stderr || `guarded Dome-World readiness subprocess exited ${result.status}`).trim());
+    }
+    const payload = JSON.parse(result.stdout || 'null');
+    if (!payload || typeof payload !== 'object') throw new Error('guarded Dome-World readiness boundary returned no JSON object');
+    return sendJson(res, 200, payload, {
+      'x-td613-dome-world-local-closure': 'production-guard-parity',
+      'x-td613-custody-route': 'isolated'
+    });
+  } catch (error) {
+    return sendJson(res, 500, {
+      ok:false,
+      error:'Dome-World guarded readiness failed',
+      detail:String(error?.message || error)
+    });
+  }
+}
+
 async function sendCanonicalKeep(req, res) {
   const source = await fs.readFile(path.join(repoRoot, 'app/dome-world/ash-keep.html'), 'utf8');
   const body = injectAshKeepLifecycle(source);
@@ -161,6 +204,9 @@ self.addEventListener('fetch', event => {
       lifecycle_asset_epoch: ASH_LIFECYCLE_ASSET_EPOCH,
       mass_eviction_epoch: ASH_MASS_EVICTION_EPOCH
     });
+  }
+  if (url.pathname === DOME_READINESS_ROUTE) {
+    return sendGuardedDomeReadiness(res);
   }
   if (url.pathname === '/api/dome-world-shell' && url.searchParams.get('surface') === 'cache-evict') {
     return sendJson(res, 200, {

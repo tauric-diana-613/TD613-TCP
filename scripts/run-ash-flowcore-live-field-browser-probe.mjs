@@ -54,10 +54,13 @@ const ingressReadinessEnd = String.raw`  });
 
   const ingressDesktop =`;
 const ingressReadinessReplacement = String.raw`  await page.waitForFunction(() => {
+    const registry = window.__td613AshDemoRegistry?.snapshot?.();
     const visible = document.querySelector('.ash-flowcore-field:not([hidden])');
     return window.__td613AshFlowcoreField?.current?.().artifact_required === false
       && window.__td613AshPostIngressMotionRestoration?.version
-      && window.__td613AshDemoRegistry?.version === 'td613.ash.demo-registry/v0.2-a14'
+      && window.__td613AshDemoRegistry?.version === 'td613.ash.demo-registry/v0.3-a15'
+      && registry?.empirical_matrix_cells === 120
+      && window.__td613AshA15EmpiricalJourneys?.version === 'td613.ash.a15-empirical-profile-journeys/v0.1'
       && document.documentElement.dataset.ashCompositionStable
       && document.getElementById('launch')
       && visible?.parentElement?.id === 'guidedLaunchPromise'
@@ -74,8 +77,9 @@ const ingressReadinessReplacement = String.raw`  await page.waitForFunction(() =
     const visible = document.querySelector('.ash-flowcore-field:not([hidden])');
     // Canonical ownership and visible Play settle first; portal and spacing are asserted directly below.
     return registry?.control_owner === 'ASH_DEMO_REGISTRY'
+      && registry?.empirical_matrix_cells === 120
       && document.documentElement.dataset.ashDemoControlOwner === 'ASH_DEMO_REGISTRY'
-      && document.documentElement.dataset.ashDemoRegistry === 'td613.ash.demo-registry/v0.2-a14'
+      && document.documentElement.dataset.ashDemoRegistry === 'td613.ash.demo-registry/v0.3-a15'
       && visible?.querySelectorAll('[data-aia-play]').length === 1
       && !visible.querySelector('[data-flowcore-ingress-play]');
   });
@@ -167,15 +171,17 @@ if (motionCount !== 1) throw new Error(`Flow-Core witness expected one post-even
 if (mobileParityCount !== 1) throw new Error(`Flow-Core witness expected one legacy mobile list-count seam; observed ${mobileParityCount}.`);
 
 let runtime = source.replace(listenerTarget, listenerReplacement);
-runtime = replaceBoundedExactlyOnce(runtime, ingressReadinessStart, ingressReadinessEnd, ingressReadinessReplacement, 'registry-owned DOM readiness with direct receipt assertions');
+runtime = replaceBoundedExactlyOnce(runtime, ingressReadinessStart, ingressReadinessEnd, ingressReadinessReplacement, 'A15 registry-owned DOM readiness with direct receipt assertions');
 runtime = runtime
   .replace(motionTarget, motionReplacement)
   .replace(mobileParityTarget, mobileParityReplacement)
-  .replace('v0.7-atomic-name-receipt', 'v0.15-a14-registry-owned-dom-readiness');
+  .replace('v0.7-atomic-name-receipt', 'v0.16-a15-registry-owned-dom-readiness');
 
 if (!runtime.includes('dom_phase:field?.dataset.flowcorePhaseName')) throw new Error('Flow-Core emitted DOM-phase receipt was not materialized.');
 if (!runtime.includes('Canonical ownership and visible Play settle first; portal and spacing are asserted directly below.')) throw new Error('Flow-Core registry-owned DOM readiness was not materialized.');
-if (!runtime.includes("window.__td613AshDemoRegistry?.version === 'td613.ash.demo-registry/v0.2-a14'")) throw new Error('Flow-Core A14 registry version gate was not materialized.');
+if (!runtime.includes("window.__td613AshDemoRegistry?.version === 'td613.ash.demo-registry/v0.3-a15'")) throw new Error('Flow-Core A15 registry version gate was not materialized.');
+if (!runtime.includes('registry?.empirical_matrix_cells === 120')) throw new Error('Flow-Core A15 empirical matrix gate was not materialized.');
+if (!runtime.includes("window.__td613AshA15EmpiricalJourneys?.version === 'td613.ash.a15-empirical-profile-journeys/v0.1'")) throw new Error('Flow-Core A15 empirical interpreter gate was not materialized.');
 if (!runtime.includes("registry?.control_owner === 'ASH_DEMO_REGISTRY'")) throw new Error('Flow-Core registry owner gate was not materialized.');
 if (!runtime.includes("document.documentElement.dataset.ashDemoControlOwner === 'ASH_DEMO_REGISTRY'")) throw new Error('Flow-Core DOM registry owner gate was not materialized.');
 if (!runtime.includes('window.__td613AshDemoRegistry?.reconcile?.()')) throw new Error('Flow-Core registry reconciliation was not materialized.');
@@ -186,7 +192,9 @@ if (!runtime.includes('motion:item.motion')) throw new Error('Flow-Core emitted 
 if (!runtime.includes('mobileStaticTruth.isVisible()')) throw new Error('Flow-Core mobile static-truth parity was not materialized.');
 if (runtime.includes('activeMotionHandle')) throw new Error('Flow-Core witness retained post-event NAME sampling.');
 if (runtime.includes('mobile.static_count === 5')) throw new Error('Flow-Core witness retained the legacy exact list-count proxy.');
-if (runtime.includes('td613.ash.demo-registry/v0.1-a13')) throw new Error('Flow-Core witness retained the retired A13 registry gate.');
+for (const retired of ['td613.ash.demo-registry/v0.1-a13','td613.ash.demo-registry/v0.2-a14']) {
+  if (runtime.includes(retired)) throw new Error(`Flow-Core witness retained retired registry gate ${retired}.`);
+}
 
 await fs.writeFile(runtimePath, runtime, 'utf8');
 await import(`${pathToFileURL(runtimePath).href}?runtime=${Date.now()}`);

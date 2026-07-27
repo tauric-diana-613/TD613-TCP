@@ -1,11 +1,13 @@
-export const ASH_DEMO_ENTRY_CONVERGENCE_VERSION = 'td613.ash.demo-entry-convergence/v0.6-archive-entry-fallback';
+export const ASH_DEMO_ENTRY_CONVERGENCE_VERSION = 'td613.ash.demo-entry-convergence/v0.7-coalesced-entry-clock';
 
 const host = globalThis.window;
 const doc = globalThis.document;
 const byId = id => doc?.getElementById(id);
 const ENTRY_FALLBACK = Object.freeze({ investigation:'home', political_campaign:'map', fundraiser:'work', research:'work', legal:'home', archive:'map' });
+const CONVERGENCE_FALLBACK_MS = 64;
 let token = 0;
 let frame = 0;
+let frameFallback = 0;
 let timeout = 0;
 let state = Object.freeze({ case_id:null, profile:null, workspace:null, posture:'IDLE', phase:'IDLE', stable_frames:0 });
 
@@ -101,7 +103,29 @@ function publish(caseId, profile, workspace, posture, phase, stableFrames) {
   return state;
 }
 
+function cancelConvergenceTick() {
+  if (frame) host.cancelAnimationFrame(frame);
+  clearTimeout(frameFallback);
+  frame = 0;
+  frameFallback = 0;
+}
+
+function scheduleConvergence(caseId, profile, workspace, currentToken, phase, stableFrames) {
+  let admitted = false;
+  const run = () => {
+    if (admitted || currentToken !== token) return false;
+    admitted = true;
+    cancelConvergenceTick();
+    converge(caseId, profile, workspace, currentToken, phase, stableFrames);
+    return true;
+  };
+  frame = host.requestAnimationFrame(run);
+  frameFallback = host.setTimeout(run, CONVERGENCE_FALLBACK_MS);
+  return true;
+}
+
 function release(caseId, profile, workspace, stableFrames) {
+  cancelConvergenceTick();
   clearTimeout(timeout);
   delete doc.documentElement.dataset.ashDemoEntryHydrating;
   delete doc.documentElement.dataset.ashDemoEntryHold;
@@ -121,7 +145,7 @@ function converge(caseId, profile, workspace, currentToken, phase = 'STRUCTURAL'
     delete doc.documentElement.dataset.ashDemoEntryHydrating;
     publish(caseId, profile, workspace, 'REVEALING', 'VISIBLE', 0);
     renderStatus(profile, workspace, 'REVEALING', `revealing ${workspace} workspace…`);
-    frame = host.requestAnimationFrame(() => converge(caseId, profile, workspace, currentToken, 'VISIBLE', 0));
+    scheduleConvergence(caseId, profile, workspace, currentToken, 'VISIBLE', 0);
     return;
   }
   if (phase === 'VISIBLE' && nextStable >= 2) {
@@ -132,7 +156,7 @@ function converge(caseId, profile, workspace, currentToken, phase = 'STRUCTURAL'
   const wrongWorkspace = doc.documentElement.dataset.ashPremiumWorkspace !== workspace || !panel?.classList.contains('active');
   if (wrongWorkspace) openWorkspace(workspace);
   publish(caseId, profile, workspace, phase === 'STRUCTURAL' ? 'OPENING' : 'REVEALING', phase, nextStable);
-  frame = host.requestAnimationFrame(() => converge(caseId, profile, workspace, currentToken, phase, nextStable));
+  scheduleConvergence(caseId, profile, workspace, currentToken, phase, nextStable);
 }
 
 function begin(event) {
@@ -142,7 +166,7 @@ function begin(event) {
   if (caseId && state.case_id === caseId && state.profile === profile && ['OPENING','REVEALING','READY'].includes(state.posture)) return false;
   const workspace = intendedWorkspace(profile);
   const currentToken = ++token;
-  if (frame) host.cancelAnimationFrame(frame);
+  cancelConvergenceTick();
   clearTimeout(timeout);
   delete doc.documentElement.dataset.ashDemoEntryReady;
   delete doc.documentElement.dataset.ashDemoEntryCase;
@@ -151,9 +175,10 @@ function begin(event) {
   publish(caseId, profile, workspace, 'OPENING', 'STRUCTURAL', 0);
   renderStatus(profile, workspace, 'OPENING', `opening ${workspace} workspace…`);
   openWorkspace(workspace);
-  frame = host.requestAnimationFrame(() => converge(caseId, profile, workspace, currentToken, 'STRUCTURAL', 0));
+  scheduleConvergence(caseId, profile, workspace, currentToken, 'STRUCTURAL', 0);
   timeout = host.setTimeout(() => {
     if (currentToken !== token || state.posture === 'READY') return;
+    cancelConvergenceTick();
     delete doc.documentElement.dataset.ashDemoEntryHydrating;
     publish(caseId, profile, workspace, 'HELD', state.phase, state.stable_frames);
     doc.documentElement.dataset.ashDemoEntryHold = `WORKSPACE_NOT_VISIBLE:${profile}:${workspace}:${state.phase}`;

@@ -4,6 +4,7 @@ import { injectAshKeepLifecycle } from '../api/dome-world-shell.js';
 
 const restoration = fs.readFileSync('app/dome-world/ash-post-ingress-motion-restoration.js', 'utf8');
 const profilePrompt = fs.readFileSync('app/dome-world/ash-profile-prompt-canonical.js', 'utf8');
+const profileWrapper = fs.readFileSync('app/dome-world/ash-profile-demo-hydration.js', 'utf8');
 const threshold = fs.readFileSync('app/dome-world/ash-threshold.html', 'utf8');
 const keep = fs.readFileSync('app/dome-world/ash-keep.html', 'utf8');
 const shell = fs.readFileSync('api/dome-world-shell.js', 'utf8');
@@ -22,9 +23,10 @@ assert.match(restoration, /position:relative!important/);
 assert.doesNotMatch(restoration, /setInterval\s*\(/);
 assert.doesNotMatch(restoration, /new MutationObserver/);
 
-assert.match(profilePrompt, /td613\.ash\.profile-prompt-canonical\/v1\.1-a13-registry-handoff/);
+assert.match(profilePrompt, /td613\.ash\.profile-prompt-canonical\/v1\.2-precanonical-choice-handoff/);
 assert.match(profilePrompt, /let explicitChoice = ''/);
 assert.match(profilePrompt, /let explicitCaseChoice = ''/);
+assert.match(profilePrompt, /let adoptedPreCanonicalRevision = 0/);
 assert.match(profilePrompt, /let controlObserver = null/);
 assert.match(profilePrompt, /let observedSelect = null/);
 assert.match(profilePrompt, /let observedStart = null/);
@@ -72,7 +74,36 @@ assert.match(profilePrompt, /ashCanonicalProfileControlObserver = 'BOUNDED_TO_LA
 assert.match(profilePrompt, /prompt\.textContent = 'Select a Profile\.\.\.'/);
 assert.match(profilePrompt, /if \(select\.value\) explicitChoice = select\.value/);
 assert.match(profilePrompt, /start\.disabled = !select\.value/);
-assert.match(profilePrompt, /applyCanonicalProfilePrompt\(\{ resetSelection:true, reason:'INITIAL_CANONICAL_NEUTRALITY' \}\);[\s\S]*?installBoundedControlObserver\(\)/);
+
+for (const token of [
+  'function adoptReceiptedPreCanonicalChoice(select)',
+  'host.__td613AshPreCanonicalProfileChoice',
+  "select.dataset.ashPreCanonicalProfileChoiceExplicit === 'true'",
+  'revision === datasetRevision',
+  'select.dataset.ashPreCanonicalProfileChoice === value',
+  'select.value === value',
+  "select.dataset.ashPreCanonicalProfileChoiceAdopted = 'true'",
+  "doc.documentElement.dataset.ashPreCanonicalProfileChoiceAdopted = `${value}:${revision}`",
+  'const adoptedPreCanonicalChoice = adoptReceiptedPreCanonicalChoice(initialSelect)',
+  'resetSelection:!adoptedPreCanonicalChoice',
+  "reason:adoptedPreCanonicalChoice ? 'PRECANONICAL_EXPLICIT_CHOICE_ADOPTED' : 'INITIAL_CANONICAL_NEUTRALITY'",
+  'adopted_precanonical_revision:adoptedPreCanonicalRevision',
+  'precanonical_receipt:host.__td613AshPreCanonicalProfileChoice'
+]) assert.ok(profilePrompt.includes(token), `Canonical profile prompt omitted ${token}`);
+assert.match(profilePrompt, /function adoptReceiptedPreCanonicalChoice\(select\)[\s\S]{0,1000}receipt\?\.explicit === true[\s\S]{0,700}select\.value === value/);
+assert.match(profilePrompt, /const adoptedPreCanonicalChoice = adoptReceiptedPreCanonicalChoice\(initialSelect\);[\s\S]{0,400}resetSelection:!adoptedPreCanonicalChoice/);
+assert.doesNotMatch(profilePrompt, /applyCanonicalProfilePrompt\(\{ resetSelection:true, reason:'INITIAL_CANONICAL_NEUTRALITY' \}\)/);
+
+for (const token of [
+  "doc.documentElement.dataset.ashPreCanonicalProfileChoiceBoundary = 'true'",
+  "doc.addEventListener('input', receiptPreCanonicalProfileChoice, true)",
+  "doc.addEventListener('change', receiptPreCanonicalProfileChoice, true)",
+  'td613.ash.pre-canonical-profile-choice/v0.1',
+  'ashPreCanonicalProfileChoiceRevision',
+  'host.__td613AshPreCanonicalProfileChoice'
+]) assert.ok(profileWrapper.includes(token), `Profile wrapper omitted ${token}`);
+assert.doesNotMatch(profileWrapper, /localStorage\.(?:setItem|removeItem|clear)|sessionStorage\.(?:setItem|removeItem|clear)|indexedDB|fetch\s*\(|sendBeacon/);
+
 assert.match(profilePrompt, /for \(const type of \['aia-ready','aia3-ready','composition-stable'\]\)/);
 assert.match(profilePrompt, /queueControlReconcile\(type\.toUpperCase\(\)\)/);
 assert.match(profilePrompt, /td613:ash:post-ingress-motion/);
@@ -112,4 +143,4 @@ for (const module of ['ash-post-ingress-motion-restoration', 'ash-profile-prompt
   assert.match(bridge, new RegExp(`${module}\\.js\\?v=${RELEASE_EPOCH}`));
 }
 
-console.log('ash-ingress-polish.test.mjs passed');
+console.log('ash-ingress-polish.test.mjs passed with receipted pre-canonical profile-choice handoff');

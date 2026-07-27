@@ -1,5 +1,10 @@
 import assert from 'node:assert/strict';
+import { spawnSync } from 'node:child_process';
 import fs from 'node:fs';
+
+const corePath = 'app/dome-world/ash-a7-a11-recompiler-core.js';
+const syntax = spawnSync(process.execPath, ['--check', corePath], { encoding:'utf8' });
+assert.equal(syntax.status, 0, `Shared A7–A11 recompiler syntax failed:\n${syntax.stderr || syntax.stdout}`);
 
 const core = fs.readFileSync(new URL('../app/dome-world/ash-a7-a11-recompiler-core.js', import.meta.url), 'utf8');
 const source = fs.readFileSync(new URL('../app/dome-world/ash-a7-home-recompilation.js', import.meta.url), 'utf8');
@@ -37,7 +42,7 @@ assert.match(html, /ash-a7-home-recompilation\.js/);
 assert.equal(vercel.git?.deploymentEnabled, false, 'A7 implementation branch must retain the closed Vercel gate');
 
 console.log(JSON.stringify({
-  ok:true,schema:'td613.ash.a7-home-contract/v0.1',shared_core_schema_family:true,primary_action_count_contract:1,
-  premium_render_delegation:true,route_ledger:true,continuity:true,authority_changed:false,source_bytes_moved:false,
-  human_closure_required:true,vercel_gate:'CLOSED'
+  ok:true,schema:'td613.ash.a7-home-contract/v0.2-shared-core-syntax',shared_core_schema_family:true,
+  shared_core_syntax_checked:true,primary_action_count_contract:1,premium_render_delegation:true,route_ledger:true,
+  continuity:true,authority_changed:false,source_bytes_moved:false,human_closure_required:true,vercel_gate:'CLOSED'
 }, null, 2));

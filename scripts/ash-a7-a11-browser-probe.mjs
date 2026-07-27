@@ -22,8 +22,7 @@ async function enterInvestigation(page) {
     && document.title === 'TD613 Ash'
     && location.pathname === '/dome-world/ash-threshold.html'
     && !location.search, null, { timeout:90_000 });
-  const profile = page.locator('#newProfile');
-  await profile.selectOption('investigation');
+  await page.locator('#newProfile').selectOption('investigation');
   await page.waitForFunction(() => !document.getElementById('startDemo')?.disabled, null, { timeout:60_000 });
   await page.locator('#startDemo').click();
   await page.waitForFunction(() => Boolean(window.__td613AshWholeInstrument?.version)
@@ -32,16 +31,31 @@ async function enterInvestigation(page) {
     && document.documentElement.dataset.ashPremiumWorkspace === 'home', null, { timeout:120_000 });
 }
 
-async function returnToMap(page) {
-  await page.locator('[data-premium-workspace="map"]').click();
-  await page.waitForSelector('#ashA8RelationWorkshop', { state:'visible', timeout:90_000 });
-  await page.waitForFunction(() => document.getElementById('workspace-map')?.classList.contains('active'), null, { timeout:30_000 });
+async function returnToMap(page, expectedFields = null) {
+  const control = page.locator('#premiumPrimaryDock [data-premium-workspace="map"]:visible').first();
+  if (!(await control.count())) throw new Error('A8 canonical Map dock control is unavailable.');
+  await control.click();
+  await page.waitForFunction(() => document.documentElement.dataset.ashPremiumWorkspace === 'map'
+    && document.getElementById('workspace-map')?.classList.contains('active') === true, null, { timeout:90_000 });
+  if (expectedFields) {
+    await page.waitForFunction(fields => {
+      const handshake = window.__td613AshA8MapReturnHandshake?.current?.();
+      return document.documentElement.dataset.ashA8MapReturnHandshake === 'RESTORED_AFTER_CANONICAL_MAP_RETURN'
+        && handshake?.held === false
+        && Object.entries(fields).every(([id, expected]) => {
+          const control = document.getElementById(id);
+          if (!control?.isConnected) return false;
+          if ('checked' in control && typeof expected === 'boolean') return Boolean(control.checked) === expected;
+          return String(control.value ?? '') === String(expected);
+        });
+    }, expectedFields, { timeout:120_000, polling:50 });
+  }
+  await page.waitForSelector('#ashA8RelationWorkshop', { state:'visible', timeout:120_000 });
 }
 
 async function waitForStableCaseMap(page) {
   await page.waitForFunction(() => {
-    const snapshot = window.__td613AshPremiumUI?.snapshot?.();
-    const caseMap = snapshot?.caseMap;
+    const caseMap = window.__td613AshPremiumUI?.snapshot?.()?.caseMap;
     if (!caseMap?.case_map_digest) return false;
     const signature = `${caseMap.case_map_digest}:${caseMap.nodes?.length || 0}:${caseMap.relationships?.length || 0}`;
     const now = performance.now();
@@ -54,36 +68,170 @@ async function waitForStableCaseMap(page) {
   }, null, { timeout:90_000, polling:100 });
 }
 
-async function commitA8Gesture(page, fields, buttonId) {
-  const result = await page.evaluate(({ fields, buttonId }) => {
-    const root = document.getElementById('ashA8RelationWorkshop');
-    if (!root?.isConnected) return { committed:false, reason:'A8 workshop is not connected.' };
-    const prepared = [];
-    for (const [id, value] of Object.entries(fields)) {
-      const control = document.getElementById(id);
-      if (!control?.isConnected) return { committed:false, reason:`A8 control ${id} is not connected.` };
-      if (control.tagName === 'SELECT' && ![...control.options].some(option => option.value === value)) {
-        return { committed:false, reason:`A8 control ${id} cannot select ${value}.` };
+async function stageA8Field(page, id, value) {
+  const expected = String(value);
+  const maxAttempts = 4;
+  let lastDiagnostic = null;
+
+  for (let attempt = 1; attempt <= maxAttempts; attempt += 1) {
+    await page.evaluate(() => { window.__td613A8FieldStability = null; });
+    const locator = page.locator(`#${id}`);
+    try {
+      await locator.waitFor({ state:'attached', timeout:15_000 });
+      await locator.focus();
+      const metadata = await locator.evaluate(control => ({
+        tag:control.tagName,
+        type:String(control.type || '').toLowerCase(),
+        options:control.tagName === 'SELECT' ? [...control.options].map(option => option.value) : []
+      }));
+      if (metadata.tag === 'SELECT') {
+        if (!metadata.options.includes(expected)) throw new Error(`A8 control ${id} cannot select ${value}.`);
+        await locator.selectOption(expected);
+      } else if (metadata.type === 'checkbox' || metadata.type === 'radio') {
+        if (Boolean(value)) await locator.check();
+        else await locator.uncheck();
+      } else {
+        await locator.fill(expected);
       }
-      prepared.push([id, control, value]);
+      await page.waitForFunction(({ id, value, attempt }) => {
+        const control = document.getElementById(id);
+        const workshop = document.getElementById('ashA8RelationWorkshop');
+        if (!control?.isConnected || !workshop?.isConnected) {
+          window.__td613A8FieldStability = null;
+          return false;
+        }
+        const matches = 'checked' in control && typeof value === 'boolean'
+          ? Boolean(control.checked) === value
+          : String(control.value ?? '') === String(value);
+        if (!matches) {
+          window.__td613A8FieldStability = null;
+          return false;
+        }
+        const signature = `${id}:${String(value)}:${attempt}`;
+        const now = performance.now();
+        const prior = window.__td613A8FieldStability;
+        if (!prior || prior.signature !== signature || prior.control !== control || prior.workshop !== workshop) {
+          window.__td613A8FieldStability = { signature, control, workshop, since:now };
+          return false;
+        }
+        return now - prior.since >= 220;
+      }, { id, value, attempt }, { timeout:6_000, polling:25 });
+      const result = { id, attempts:attempt, stable_ms:220, current_connected_control:true };
+      await page.evaluate(result => { window.__td613A8LastFieldWitness = result; }, result);
+      return result;
+    } catch (error) {
+      lastDiagnostic = await page.evaluate(({ id, value, attempt, error }) => {
+        const control = document.getElementById(id);
+        return {
+          id,
+          expected:String(value),
+          attempt,
+          error,
+          connected:Boolean(control?.isConnected),
+          current_value:control && 'checked' in control && typeof value === 'boolean'
+            ? String(Boolean(control.checked))
+            : String(control?.value ?? ''),
+          dirty_guard:window.__td613AshA8RecompileGuard?.current?.() || null,
+          map_return:window.__td613AshA8MapReturnHandshake?.current?.() || null,
+          dirty_guard_posture:document.documentElement.dataset.ashA8DirtyDraftGuard || null,
+          map_return_posture:document.documentElement.dataset.ashA8MapReturnHandshake || null
+        };
+      }, { id, value, attempt, error:String(error?.message || error) });
+      await page.evaluate(diagnostic => { window.__td613A8LastFieldWitness = diagnostic; }, lastDiagnostic);
+      await page.waitForFunction(id => document.getElementById(id)?.isConnected === true
+        && document.getElementById('ashA8RelationWorkshop')?.isConnected === true,
+      id, { timeout:15_000, polling:50 }).catch(() => {});
     }
-    for (const [, control, value] of prepared) control.value = value;
-    const captureTarget = prepared.at(-1)?.[1];
-    captureTarget?.dispatchEvent(new Event('input', { bubbles:true }));
-    captureTarget?.dispatchEvent(new Event('change', { bubbles:true }));
-    for (const [id, , value] of prepared) {
+  }
+
+  throw new Error(`A8 control ${id} failed stable visible staging after ${maxAttempts} attempts: ${JSON.stringify(lastDiagnostic)}`);
+}
+
+async function waitForConcurrentA8Staging(page, fields, timeout = 12_000) {
+  await page.evaluate(() => { window.__td613A8VisibleStaging = null; });
+  await page.waitForFunction(fields => {
+    const values = Object.entries(fields).map(([id, expected]) => {
       const control = document.getElementById(id);
-      if (!control?.isConnected) return { committed:false, reason:`A8 control ${id} did not survive draft capture.` };
-      control.value = value;
+      if (!control?.isConnected) return `${id}:MISSING`;
+      const actual = 'checked' in control && typeof expected === 'boolean' ? String(Boolean(control.checked)) : String(control.value ?? '');
+      return `${id}:${actual}`;
+    });
+    const expectedSignature = Object.entries(fields).map(([id, expected]) => `${id}:${String(expected)}`).join('|');
+    const actualSignature = values.join('|');
+    const now = performance.now();
+    const prior = window.__td613A8VisibleStaging;
+    if (actualSignature !== expectedSignature) {
+      window.__td613A8VisibleStaging = null;
+      return false;
     }
-    const button = document.getElementById(buttonId);
-    if (!button?.isConnected) return { committed:false, reason:`A8 action ${buttonId} is not connected.` };
-    button.focus({ preventScroll:true });
-    if (document.activeElement !== button) return { committed:false, reason:`A8 action ${buttonId} did not acquire gesture focus.` };
-    button.click();
-    return { committed:true, staged_fields:prepared.length, primary_action_focused:true };
-  }, { fields, buttonId });
-  if (!result.committed) throw new Error(result.reason);
+    if (!prior || prior.signature !== actualSignature) {
+      window.__td613A8VisibleStaging = { signature:actualSignature, since:now };
+      return false;
+    }
+    return now - prior.since >= 220;
+  }, fields, { timeout, polling:30 });
+}
+
+async function commitA8Gesture(page, fields, buttonId) {
+  const maxPasses = 3;
+  const passDiagnostics = [];
+
+  for (let pass = 1; pass <= maxPasses; pass += 1) {
+    const fieldAttempts = {};
+    for (const [id, value] of Object.entries(fields)) {
+      const stagedField = await stageA8Field(page, id, value);
+      fieldAttempts[id] = stagedField.attempts;
+    }
+    try {
+      await waitForConcurrentA8Staging(page, fields);
+    } catch (error) {
+      const diagnostic = await page.evaluate(({ fields, pass, error }) => ({
+        pass,
+        error,
+        values:Object.fromEntries(Object.entries(fields).map(([id, expected]) => {
+          const control = document.getElementById(id);
+          const actual = control && 'checked' in control && typeof expected === 'boolean'
+            ? Boolean(control.checked)
+            : control?.value;
+          return [id, actual ?? null];
+        })),
+        dirty_guard:window.__td613AshA8RecompileGuard?.current?.() || null,
+        map_return:window.__td613AshA8MapReturnHandshake?.current?.() || null
+      }), { fields, pass, error:String(error?.message || error) });
+      passDiagnostics.push(diagnostic);
+      await page.evaluate(diagnostic => { window.__td613A8LastGestureWitness = diagnostic; }, diagnostic);
+      if (pass < maxPasses) continue;
+      throw new Error(`A8 visible gesture failed concurrent staging after ${maxPasses} passes: ${JSON.stringify(passDiagnostics)}`);
+    }
+    const staged = await page.evaluate(fields => Object.fromEntries(Object.entries(fields).map(([id, expected]) => {
+      const control = document.getElementById(id);
+      const actual = control && 'checked' in control && typeof expected === 'boolean' ? Boolean(control.checked) : control?.value;
+      return [id, actual ?? null];
+    })), fields);
+    for (const [id, expected] of Object.entries(fields)) {
+      const actual = staged[id];
+      if (String(actual) !== String(expected)) throw new Error(`A8 control ${id} staging drifted before commit: expected ${expected}, observed ${actual}.`);
+    }
+    const button = page.locator(`#${buttonId}`);
+    if (!(await button.count())) throw new Error(`A8 action ${buttonId} is not connected.`);
+    await button.focus();
+    if (!(await button.evaluate(control => document.activeElement === control))) throw new Error(`A8 action ${buttonId} did not acquire gesture focus.`);
+    await button.click();
+    const witness = {
+      committed:true,
+      passes:pass,
+      staged_fields:Object.keys(fields).length,
+      field_attempts:fieldAttempts,
+      replacement_retry_observed:Object.values(fieldAttempts).some(attempts => attempts > 1),
+      visible_field_gestures:true,
+      concurrent_staging_verified:true,
+      primary_action_focused:true
+    };
+    await page.evaluate(witness => { window.__td613A8LastGestureWitness = witness; }, witness);
+    return witness;
+  }
+
+  throw new Error('A8 visible gesture exhausted without a commit.');
 }
 
 async function inspectA8(page) {
@@ -103,13 +251,14 @@ async function inspectA8(page) {
   }));
 
   const witnessName = `A8 Witness Object ${browserName}`;
-  await commitA8Gesture(page, {
+  const objectFields = {
     ashA8ObjectName:witnessName,
     ashA8ObjectKnown:'Synthetic browser witness object.',
     ashA8ObjectUncertain:'No human evidence inferred.',
     ashA8ObjectEvidence:'browser-local synthetic fixture',
     ashA8ObjectNotes:'A8 constitutionally held object witness.'
-  }, 'ashA8CommitObject');
+  };
+  await commitA8Gesture(page, objectFields, 'ashA8CommitObject');
   await page.waitForFunction(() => /Object held:.*CASE_BOUND required/i.test(document.getElementById('ashA8Status')?.textContent || ''), null, { timeout:30_000 });
   const afterObjectHold = await page.evaluate(() => ({
     digest:window.__td613AshPremiumUI?.snapshot?.()?.caseMap?.case_map_digest || null,
@@ -120,8 +269,7 @@ async function inspectA8(page) {
   if (afterObjectHold.digest !== before.digest || afterObjectHold.objects !== before.objects) throw new Error('A8 pre-CASE_BOUND object hold mutated the Case Map.');
   if (afterObjectHold.notes !== before.notes) throw new Error('A8 pre-CASE_BOUND object hold wrote notes without stored successor state.');
 
-  await returnToMap(page);
-  if (await page.locator('#ashA8ObjectName').inputValue() !== witnessName) throw new Error('A8 object draft did not survive the Custody hold and explicit Map return.');
+  await returnToMap(page, objectFields);
 
   const relationOptions = await page.evaluate(() => {
     const values = selector => [...document.querySelectorAll(`${selector} option`)].map(option => option.value).filter(Boolean);
@@ -132,14 +280,15 @@ async function inspectA8(page) {
   if (relationOptions.length < 2) throw new Error('A8 requires two distinct existing objects to test the constitutional relation hold.');
   const [fromValue, toValue] = relationOptions;
   if (fromValue === toValue) throw new Error('A8 witness selected the same object on both sides.');
-  await commitA8Gesture(page, {
+  const relationFields = {
     ashA8RelationFrom:fromValue,
     ashA8RelationTo:toValue,
     ashA8RelationType:'browser-witness-supports',
     ashA8RelationEvidence:'browser-local synthetic fixture',
     ashA8RelationUncertain:'Relation remains open to review.',
     ashA8RelationNotes:'A8 constitutionally held relation witness.'
-  }, 'ashA8CommitRelation');
+  };
+  await commitA8Gesture(page, relationFields, 'ashA8CommitRelation');
   await page.waitForFunction(() => /Relationship held:.*CASE_BOUND required/i.test(document.getElementById('ashA8Status')?.textContent || ''), null, { timeout:30_000 });
   const afterRelationHold = await page.evaluate(() => ({
     digest:window.__td613AshPremiumUI?.snapshot?.()?.caseMap?.case_map_digest || null,
@@ -150,8 +299,17 @@ async function inspectA8(page) {
   if (afterRelationHold.digest !== before.digest || afterRelationHold.relations !== before.relations) throw new Error('A8 pre-CASE_BOUND relationship hold mutated the Case Map.');
   if (afterRelationHold.notes !== before.notes) throw new Error('A8 pre-CASE_BOUND relationship hold wrote notes without stored successor state.');
 
-  await returnToMap(page);
-  if (await page.locator('#ashA8RelationType').inputValue() !== 'browser-witness-supports') throw new Error('A8 relation draft did not survive the Custody hold and explicit Map return.');
+  await returnToMap(page, relationFields);
+  const restoredRelation = await page.evaluate(() => ({
+    from:document.getElementById('ashA8RelationFrom')?.value || null,
+    to:document.getElementById('ashA8RelationTo')?.value || null,
+    type:document.getElementById('ashA8RelationType')?.value || null,
+    posture:document.documentElement.dataset.ashA8MapReturnHandshake || null,
+    handshake:window.__td613AshA8MapReturnHandshake?.current?.() || null
+  }));
+  if (restoredRelation.from !== fromValue || restoredRelation.to !== toValue || restoredRelation.type !== relationFields.ashA8RelationType) {
+    throw new Error(`A8 relation draft did not survive the Custody hold and explicit Map return: ${JSON.stringify(restoredRelation)}`);
+  }
 
   const inspect = page.locator('[data-ash-a8-inspect-relation]').first();
   if (!(await inspect.count())) throw new Error('A8 demo exposed no existing relationship for lawful inspection.');
@@ -215,6 +373,11 @@ async function preserveFailure(page, label, consoleErrors, error) {
     a9_flag:document.documentElement.dataset.ashA9Recompiled || null,
     a7_api:window.__td613AshA7Home?.version || null,
     a8_api:window.__td613AshA8CaseMap?.version || null,
+    a8_handshake:window.__td613AshA8MapReturnHandshake?.current?.() || null,
+    a8_handshake_posture:document.documentElement.dataset.ashA8MapReturnHandshake || null,
+    a8_dirty_guard:window.__td613AshA8RecompileGuard?.current?.() || null,
+    a8_last_field_witness:window.__td613A8LastFieldWitness || null,
+    a8_last_gesture_witness:window.__td613A8LastGestureWitness || null,
     a9_api:window.__td613AshA9Work?.version || null,
     a9_owner:window.__td613AshA9WorkspaceOwner?.version || null,
     premium_api:window.__td613AshPremiumUI?.version || null,
@@ -232,13 +395,14 @@ async function preserveFailure(page, label, consoleErrors, error) {
     a8_status:document.getElementById('ashA8Status')?.textContent || null,
     a8_relation_from:document.getElementById('ashA8RelationFrom')?.value || null,
     a8_relation_to:document.getElementById('ashA8RelationTo')?.value || null,
+    a8_relation_type:document.getElementById('ashA8RelationType')?.value || null,
     a9_root_present:Boolean(document.getElementById('ashA9WorkRecompilation')),
     a9_status:document.getElementById('ashA9Status')?.textContent || null,
     accessible_table_active:document.getElementById('accessibleTable')?.classList.contains('active') || false,
     primary_count:document.querySelectorAll('#ashA7CurrentPriority .ash-stage-primary-action').length
   }));
   await fs.writeFile(path.join(artifactDir, `${browserName}-${label}-failure.json`), JSON.stringify({
-    schema:'td613.ash.a7-a11-browser-failure/v0.1',
+    schema:'td613.ash.a7-a11-browser-failure/v0.3-replaceable-control-staging',
     browser:browserName,
     label,
     stages,
@@ -292,10 +456,15 @@ try {
   await runViewport('mobile-reduced', { width:390, height:844 }, 'reduce');
   const receipt = {
     ok:true,
-    schema:'td613.ash.a7-a11-browser-witness/v0.1',
+    schema:'td613.ash.a7-a11-browser-witness/v0.3-replaceable-control-staging',
     browser:browserName,
     stages,
     observations:receipts,
+    visible_a8_field_gestures:true,
+    replaceable_control_retry_contract:true,
+    concurrent_a8_staging_verified:true,
+    canonical_map_dock_return:true,
+    exact_map_return_receipt_required:true,
     authority_changed:false,
     source_bytes_moved:false,
     custody_changed:false,

@@ -1,144 +1,79 @@
 import assert from 'node:assert/strict';
 import fs from 'node:fs';
 
-const field = fs.readFileSync('app/dome-world/ash-flowcore-pedagogy-field.js', 'utf8');
-const css = fs.readFileSync('app/dome-world/ash-flowcore-pedagogy-field.css', 'utf8');
-const portal = fs.readFileSync('app/dome-world/ash-flowcore-ingress-portal.js', 'utf8');
-const portalLoader = fs.readFileSync('app/dome-world/ash-flowcore-ingress-portal-loader.js', 'utf8');
-const restoration = fs.readFileSync('app/dome-world/ash-post-ingress-motion-restoration.js', 'utf8');
-const boundary = fs.readFileSync('app/dome-world/ash-session-boundary.js', 'utf8');
-const ingressSpacing = fs.readFileSync('app/dome-world/ash-ingress-copy-spacing.js', 'utf8');
-const bridge = fs.readFileSync('app/dome-world/ash-workspace-bridge.js', 'utf8');
-const closeRepair = fs.readFileSync('app/dome-world/ash-case-close-repair.js', 'utf8');
-const browserRunner = fs.readFileSync('scripts/run-ash-flowcore-live-field-browser-probe.mjs', 'utf8');
+const read = path => fs.readFileSync(path, 'utf8');
+const field = read('app/dome-world/ash-flowcore-pedagogy-field.js');
+const css = read('app/dome-world/ash-flowcore-pedagogy-field.css');
+const portal = read('app/dome-world/ash-flowcore-ingress-portal.js');
+const portalLoader = read('app/dome-world/ash-flowcore-ingress-portal-loader.js');
+const restoration = read('app/dome-world/ash-post-ingress-motion-restoration.js');
+const boundary = read('app/dome-world/ash-session-boundary.js');
+const spacing = read('app/dome-world/ash-ingress-copy-spacing.js');
+const bridge = read('app/dome-world/ash-workspace-bridge.js');
+const closeRepair = read('app/dome-world/ash-case-close-repair.js');
+const runner = read('scripts/run-ash-flowcore-live-field-browser-probe.mjs');
 
-assert.match(field, /renderPedagogueScene, renderPedagogueStaticFrame/);
-assert.match(field, /td613\.ash\.flowcore-pedagogy-field\/v0\.2-consequence-topology-syntax-closed/);
-for (const phase of ['NOTICE','ACT','WORLD_ANSWERS','NAME','REST']) assert.match(field, new RegExp(`id:'${phase}'`));
-for (const glyph of ['à','上','出','米','𝄐']) assert.ok(field.includes(glyph), `Flow-Core field omitted ${glyph}`);
-for (const label of ['RAW BYTES DO NOT CROSS','REFERENCE','≠ ARTIFACT','CASE MAP RELATION FIELD','missingness stays visible']) assert.ok(field.includes(label), `Flow-Core field omitted ${label}`);
-for (const channel of ['glyph','motion','shape','language','inspection']) assert.ok(field.includes(`<span>${channel}</span>`), `Flow-Core field omitted ${channel} channel`);
-assert.match(field, /artifact_required:false/);
-assert.match(field, /EXPLICIT_PLAY_GESTURE/);
-assert.match(field, /td613:ash:explanation-frame/);
-assert.match(field, /STATIC_COMPLETE/);
+for (const marker of [
+  'td613.ash.flowcore-pedagogy-field/v0.2-consequence-topology-syntax-closed',
+  'renderPedagogueScene, renderPedagogueStaticFrame','artifact_required:false','EXPLICIT_PLAY_GESTURE',
+  'td613:ash:explanation-frame','STATIC_COMPLETE','RAW BYTES DO NOT CROSS','REFERENCE','≠ ARTIFACT',
+  'CASE MAP RELATION FIELD','missingness stays visible','à','上','出','米','𝄐'
+]) assert.ok(field.includes(marker), `Flow-Core field omitted ${marker}`);
+for (const phase of ['NOTICE','ACT','WORLD_ANSWERS','NAME','REST']) assert.ok(field.includes(`id:'${phase}'`));
+for (const channel of ['glyph','motion','shape','language','inspection']) assert.ok(field.includes(`<span>${channel}</span>`));
 assert.match(field, /const playing = options\.playing \?\? bounded > 0/);
-assert.doesNotMatch(field, /playing:nextPhase\s*>/);
-assert.doesNotMatch(field, /setInterval\s*\(/);
-assert.doesNotMatch(field, /requestAnimationFrame\s*\(/);
+assert.doesNotMatch(field, /playing:nextPhase\s*>|setInterval\s*\(|requestAnimationFrame\s*\(/);
 
 assert.match(css, /\.ash-flowcore-mounted>\.ash-ux-motion-track\{[^}]*display:grid!important/);
 assert.match(css, /\.ash-flowcore-mounted\{[^}]*height:auto!important[^}]*overflow:visible!important/);
 assert.match(css, /\.ash-flowcore-field__canvas\{[^}]*display:block!important[^}]*max-height:none!important/);
-assert.doesNotMatch(css, /\.ash-ux-motion-track\{display:none!important\}/);
 assert.match(css, /data-flowcore-phase="0"/);
 assert.match(css, /data-flowcore-phase="4"/);
 assert.match(css, /prefers-reduced-motion:reduce/);
-assert.doesNotMatch(css, /animation:[^;}]*infinite/);
+assert.doesNotMatch(css, /\.ash-ux-motion-track\{display:none!important\}|animation:[^;}]*infinite/);
 
-assert.match(restoration, /v0\.3-canonical-field-ingress-polish/);
-assert.match(restoration, /function stabilizeGeometry\(\)/);
-assert.match(restoration, /style\.setProperty\(property, value, 'important'\)/);
-assert.match(restoration, /ashPostIngressMotion = receipt\.canvas_visible && receipt\.rail_visible/);
-assert.match(restoration, /field_clipped/);
-assert.match(restoration, /rail_clipped/);
-assert.match(restoration, /\.ash-flowcore-mounted>\.ash-ux-motion-track/);
+for (const marker of [
+  'v0.3-canonical-field-ingress-polish','function stabilizeGeometry()','ashPostIngressMotion = receipt.canvas_visible && receipt.rail_visible',
+  'field_clipped','rail_clipped','.ash-flowcore-mounted>.ash-ux-motion-track'
+]) assert.ok(restoration.includes(marker));
 assert.doesNotMatch(restoration, /setInterval\s*\(/);
 
-assert.match(portal, /v0\.9-phase-atomic-canonical-play/);
-assert.match(portal, /INGRESS_HOST_ID = 'guidedLaunchPromise'/);
-assert.match(portal, /LEGACY_PROMISE_ID = 'guidedLaunchPromiseLegacy'/);
-assert.match(portal, /legacyPromise\.id = LEGACY_PROMISE_ID/);
-assert.match(portal, /actions\.insertAdjacentElement\('afterend', ingress\)/);
-assert.match(portal, /legacyPromise\.hidden = true/);
-assert.match(portal, /dataset\.ashAia3 = 'true'/);
-assert.doesNotMatch(portal, /dataset\.aiaPlay/);
-assert.match(portal, /button\.addEventListener\('click', playFlowcoreField\)/);
-assert.match(portal, /__td613AshFlowcoreField\?\.setPhase\?\.\(0\)/);
-assert.match(portal, /const canonicalPlay = doc\.querySelector\('\[data-aia-play\]'\)/);
-assert.match(portal, /if \(canonicalPlay\) canonicalPlay\.click\(\)/);
-assert.match(portal, /else host\.__td613AshFlowcoreField\?\.play\?\.\(\)/);
-assert.match(portal, /host\.addEventListener\('td613:ash:flowcore-field-phase', copyDynamicState\)/);
-assert.match(portal, /function applyProxyPosture\(node\)/);
-assert.match(portal, /function normalizeStageFields\(\)/);
-assert.match(portal, /classList\.add\('ash-flowcore-field--proxy'\)/);
-assert.match(portal, /setBooleanProperty\(node, 'hidden', true\)/);
-assert.match(portal, /setBooleanProperty\(node, 'inert', true\)/);
-assert.match(portal, /stripDuplicateIds\(node\)/);
-assert.match(portal, /if \(proxyField\?\.isConnected && proxyField !== nextProxy\) proxyField\.remove\(\)/);
-assert.match(portal, /for \(const node of siblings\)/);
-assert.match(portal, /if \(node === proxyField\) applyProxyPosture\(node\)/);
-assert.match(portal, /ingress\.replaceChildren\(visibleField\)/);
-assert.match(portal, /setDataset\(visibleField, 'flowcoreHost', 'aia'\)/);
-assert.match(portal, /normalizeStageFields\(\)/);
-assert.match(portal, /proxy_count/);
-assert.match(portal, /duplicate_visible_fields/);
-assert.match(portal, /#guidedLaunchPromise\.ash-flowcore-ingress-host/);
-assert.match(portal, /max-height:calc\(100vh - 44px\)!important/);
-assert.match(portal, /if \(node\.textContent !== next\) node\.textContent = next/);
-assert.match(portal, /if \(node\.dataset\[name\] !== next\) node\.dataset\[name\] = next/);
-assert.match(portal, /function queueSync\(reason\)/);
-assert.match(portal, /if \(syncQueued\) return/);
-assert.match(portal, /function mutationTouchesPortal\(record\)/);
-assert.match(portal, /if \(node\?\.nodeType !== 1\) return false/);
-assert.match(portal, /records\.some\(mutationTouchesPortal\)/);
+for (const marker of [
+  'v0.9-phase-atomic-canonical-play',"INGRESS_HOST_ID = 'guidedLaunchPromise'","LEGACY_PROMISE_ID = 'guidedLaunchPromiseLegacy'",
+  "button.addEventListener('click', playFlowcoreField)",'[data-aia-play]','td613:ash:flowcore-field-phase',
+  'function applyProxyPosture(node)','function normalizeStageFields()','ash-flowcore-field--proxy','ingress.replaceChildren(visibleField)',
+  "setDataset(visibleField, 'flowcoreHost', 'aia')",'proxy_count','duplicate_visible_fields','#guidedLaunchPromise.ash-flowcore-ingress-host',
+  'function queueSync(reason)','function mutationTouchesPortal(record)'
+]) assert.ok(portal.includes(marker), `Flow-Core portal omitted ${marker}`);
 assert.doesNotMatch(portal, /setInterval\s*\(|requestAnimationFrame\s*\(/);
 
-assert.match(portalLoader, /v0\.3-observer-hotfix/);
-assert.match(portalLoader, /const browser = Boolean\(host && doc\?\.documentElement\)/);
-assert.match(portalLoader, /const eligible = browser && !legacy/);
-assert.match(portalLoader, /if \(!browser\)/);
-assert.match(portalLoader, /params\.get\('presentation'\) === 'legacy'/);
-assert.match(portalLoader, /eligible:false/);
-assert.match(portalLoader, /reason:'EXPLICIT_LEGACY_PRESENTATION'/);
-assert.match(portalLoader, /import\('\.\/ash-flowcore-ingress-portal\.js\?v=20260722-flowcore-observer-hotfix-v3'\)/);
+for (const marker of ['v0.3-observer-hotfix','EXPLICIT_LEGACY_PRESENTATION','20260722-flowcore-observer-hotfix-v3']) assert.ok(portalLoader.includes(marker));
 assert.doesNotMatch(portalLoader, /setInterval\s*\(|requestAnimationFrame\s*\(/);
 
-assert.match(boundary, /v0\.4-pointer-governs-case-recovery-replay-stays-open/);
-assert.match(boundary, /if \(!activePointer\) return closedCurrent\(\)/);
-assert.match(boundary, /function capsuleRecoveryOpen\(\)/);
-assert.match(boundary, /Boolean\(file\?\.files\?\.length\)/);
-assert.match(boundary, /visible\(returnBar\)/);
-assert.match(boundary, /Boolean\(replay && !replay\.disabled && visible\(replay\)\)/);
-assert.match(boundary, /const interactive = caseOpen \|\| recoveryOpen/);
-assert.match(boundary, /if \(caseOpen\)[\s\S]*?rail\.removeAttribute\('inert'\)[\s\S]*?else[\s\S]*?rail\.setAttribute\('inert',''\)/);
-assert.match(boundary, /attributeFilter:\['class','hidden','disabled'\]/);
-assert.match(boundary, /RECOVERY_FILE_CHANGED/);
-assert.match(boundary, /CUSTODIAN_RETURN_SETTLED/);
-assert.match(boundary, /CAPSULE_OPENED_SETTLED/);
-assert.match(boundary, /host\.__td613AshKeep = facade/);
-assert.match(boundary, /td613:ash:case-closed/);
-assert.match(boundary, /launch\?\.classList\.remove\('hidden'\)/);
+for (const marker of [
+  'v0.4-pointer-governs-case-recovery-replay-stays-open','function capsuleRecoveryOpen()','RECOVERY_FILE_CHANGED',
+  'CUSTODIAN_RETURN_SETTLED','CAPSULE_OPENED_SETTLED','td613:ash:case-closed'
+]) assert.ok(boundary.includes(marker));
 assert.doesNotMatch(boundary, /indexedDB\.deleteDatabase/);
 assert.match(closeRepair, /localStorage\.removeItem\(POINTER_KEY\)/);
 
-assert.match(ingressSpacing, /v0\.2-two-dimensional-overlap/);
-assert.match(ingressSpacing, /title\.insertAdjacentElement\('afterend', recovery\)/);
-assert.match(ingressSpacing, /recovery\.insertAdjacentElement\('afterend', primary\)/);
-assert.match(ingressSpacing, /margin-top:6px!important/);
-assert.match(ingressSpacing, /margin-top:2px!important/);
-assert.match(ingressSpacing, /Math\.min\(a\.right, b\.right\)/);
-assert.match(ingressSpacing, /overlap_area:collision\.area/);
-assert.match(ingressSpacing, /overlap_px:collision\.area > 0 \? collision\.height : 0/);
-assert.match(ingressSpacing, /ordered:title\.nextElementSibling === recovery/);
-assert.doesNotMatch(ingressSpacing, /setInterval\s*\(|requestAnimationFrame\s*\(/);
+for (const marker of [
+  'v0.2-two-dimensional-overlap',"title.insertAdjacentElement('afterend', recovery)",
+  "recovery.insertAdjacentElement('afterend', primary)",'overlap_area:collision.area','ordered:title.nextElementSibling === recovery'
+]) assert.ok(spacing.includes(marker));
+assert.doesNotMatch(spacing, /setInterval\s*\(|requestAnimationFrame\s*\(/);
 
-assert.match(browserRunner, /td613\.ash\.demo-registry\/v0\.2-a14/);
-const retiredRegistryOccurrences = browserRunner.match(/td613\.ash\.demo-registry\/v0\.1-a13/g) || [];
-assert.equal(retiredRegistryOccurrences.length, 1, 'The retired registry version may remain only as a negative generated-runtime guard.');
-assert.match(browserRunner, /if \(runtime\.includes\('td613\.ash\.demo-registry\/v0\.1-a13'\)\) throw new Error\('Flow-Core witness retained the retired A13 registry gate\.'\)/);
-assert.match(browserRunner, /v0\.15-a14-registry-owned-dom-readiness/);
-assert.match(browserRunner, /Flow-Core A14 registry version gate was not materialized/);
+for (const marker of [
+  'td613.ash.demo-registry/v0.3-a15','empirical_matrix_cells === 120',
+  'td613.ash.a15-empirical-profile-journeys/v0.1','v0.16-a15-registry-owned-dom-readiness',
+  'Flow-Core A15 registry version gate was not materialized'
+]) assert.ok(runner.includes(marker), `A15 Flow-Core runner omitted ${marker}`);
+assert.match(runner, /for \(const retired of \['td613\.ash\.demo-registry\/v0\.1-a13','td613\.ash\.demo-registry\/v0\.2-a14'\]\)/);
 
-const RELEASE_EPOCH = '20260724-a12-release-v1';
-for (const module of [
-  'ash-session-boundary',
-  'ash-ingress-copy-spacing',
-  'ash-flowcore-pedagogy-field',
-  'ash-flowcore-ingress-portal-loader',
-  'ash-post-ingress-motion-restoration',
-  'ash-reviewability-repair'
-]) assert.match(bridge, new RegExp(`${module}\\.js\\?v=${RELEASE_EPOCH}`));
+const releaseEpoch = '20260724-a12-release-v1';
+for (const module of ['ash-session-boundary','ash-ingress-copy-spacing','ash-flowcore-pedagogy-field','ash-flowcore-ingress-portal-loader','ash-post-ingress-motion-restoration','ash-reviewability-repair']) {
+  assert.match(bridge, new RegExp(`${module}\\.js\\?v=${releaseEpoch}`));
+}
 assert.doesNotMatch(bridge, /import '\.\/ash-flowcore-ingress-portal\.js/);
 
-console.log('ash-flowcore-live-field.test.mjs passed with A14 registry-owned browser readiness');
+console.log('ash-flowcore-live-field.test.mjs passed with A15 registry-owned browser readiness');

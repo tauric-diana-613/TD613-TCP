@@ -31,11 +31,12 @@ const bridge=fs.readFileSync('app/dome-world/ash-workspace-bridge.js','utf8');
 const profileWrapper=fs.readFileSync('app/dome-world/ash-profile-demo-hydration.js','utf8');
 const registry=fs.readFileSync('app/dome-world/ash-demo-registry.js','utf8');
 const runtime=fs.readFileSync('app/dome-world/ash-apeq-paia-profile-demos.js','utf8');
-assert.match(bridge,/ash-profile-demo-hydration\.js\?v=20260725-a14-release-v1/);
+assert.match(bridge,/ash-profile-demo-hydration\.js\?v=20260726-a15-empirical-v1/);
 assert.doesNotMatch(bridge,/^import .*ash-investigation-demo-hydration\.js/m);
 assert.doesNotMatch(bridge,/^import .*ash-research-demo-hydration\.js/m);
-assert.match(profileWrapper,/ash-demo-registry\.js\?v=20260725-a14-release-v1/);
+assert.match(profileWrapper,/ash-demo-registry\.js\?v=20260726-a15-empirical-v1/);
 assert.match(registry,/ash-apeq-paia-profile-demos\.js\?v=\$\{ASH_DEMO_ASSET_EPOCH\}/);
+assert.match(registry,/ash-a15-empirical-profile-journeys\.js\?v=\$\{ASH_DEMO_ASSET_EPOCH\}/);
 assert.match(registry,/stopImmediatePropagation/);
 assert.match(registry,/control_owner:'ASH_DEMO_REGISTRY'/);
 assert.doesNotMatch(profileWrapper+registry+runtime,/fixtures\/ash-keep-demo-political-campaign|fixtures\/ash-keep-demo-fundraiser|ash-investigation-nodes-/);
@@ -89,4 +90,4 @@ for(const [profile,contract] of Object.entries(contracts)){
   const crossRoom=caseMap.relationships.filter(edge=>{const left=caseMap.nodes.find(node=>node.id===edge.from)?.room_id;const right=caseMap.nodes.find(node=>node.id===edge.to)?.room_id;return left&&right&&left!==right;});
   assert(crossRoom.length>=40,`${profile}: insufficient cross-Room pressure.`);
 }
-console.log('ash-profile-demos.test.mjs passed');
+console.log('ash-profile-demos.test.mjs passed under A15 registry epoch');

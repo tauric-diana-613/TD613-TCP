@@ -1,4 +1,4 @@
-export const ASH_A7_A11_RECOMPILER_CORE_VERSION = 'td613.ash.a7-a11-recompiler-core/v0.4';
+export const ASH_A7_A11_RECOMPILER_CORE_VERSION = 'td613.ash.a7-a11-recompiler-core/v0.5-post-sync-guard-arbitration';
 
 const host = globalThis.window;
 const doc = globalThis.document;
@@ -110,37 +110,147 @@ const EVENT_TYPES = Object.freeze([
   'whole-instrument-refreshed','a6-affordance-refreshed'
 ]);
 
+function activeStageInteraction(stage) {
+  return doc?.activeElement?.closest?.(
+    `[id^="ash${stage}"] .ash-stage-form, [id^="ash${stage}"] .ash-stage-primary-action`
+  ) || null;
+}
+
+function stageGuard(stage) {
+  return host?.[`__td613Ash${stage}RecompileGuard`] || null;
+}
+
+function stageGuardReason(stage, source) {
+  const guard = stageGuard(stage);
+  if (!guard?.shouldDefer) return null;
+  try {
+    const decision = guard.shouldDefer(source);
+    if (!decision) return null;
+    return typeof decision === 'string' ? decision : 'STAGE_RECOMPILE_GUARD';
+  } catch {
+    return 'STAGE_RECOMPILE_GUARD_ERROR';
+  }
+}
+
+function publishRecoveryHeld(stage, source, phase) {
+  host?.dispatchEvent?.(new CustomEvent(`td613:ash:${stage.toLowerCase()}-recompile-recovery-held`, {
+    detail:Object.freeze({
+      stage,
+      source,
+      phase,
+      authority_changed:false,
+      source_bytes_moved:false,
+      human_closure_required:true
+    })
+  }));
+}
+
+function recoverStageAfterPremiumRefresh(stage, source, detail = {}) {
+  const guard = stageGuard(stage);
+  if (!guard?.recoverAfterRefresh) return false;
+  try {
+    return guard.recoverAfterRefresh(source, detail) === true;
+  } catch {
+    publishRecoveryHeld(stage, source, 'POST_PREMIUM_REFRESH');
+    return false;
+  }
+}
+
+function recoverStageAfterSync(stage, source, detail = {}) {
+  const guard = stageGuard(stage);
+  if (!guard?.recoverAfterSync) return false;
+  try {
+    return guard.recoverAfterSync(source, detail) === true;
+  } catch {
+    publishRecoveryHeld(stage, source, 'POST_STAGE_SYNC_PRE_GENERIC_DRAFT_RESTORE');
+    return false;
+  }
+}
+
+function publishRecompileDeferred(stage, source, reason, detail = {}) {
+  host?.dispatchEvent?.(new CustomEvent(`td613:ash:${stage.toLowerCase()}-recompile-deferred`, {
+    detail:Object.freeze({
+      stage,
+      source,
+      reason,
+      authority_changed:false,
+      source_bytes_moved:false,
+      human_closure_required:true,
+      ...detail
+    })
+  }));
+}
+
 export function installAshStage({ stage, sync, navigationSelectors = '' }) {
   if (!host || !doc?.body || !stage || typeof sync !== 'function' || installedStages.has(stage)) return false;
   installedStages.add(stage);
   ensureA7A11Styles();
   let serial = 0;
   const run = async source => {
-    const activeStageInteraction = doc.activeElement?.closest?.(
-      `[id^="ash${stage}"] .ash-stage-form, [id^="ash${stage}"] .ash-stage-primary-action`
-    );
-    if (activeStageInteraction) {
-      host.dispatchEvent(new CustomEvent(`td613:ash:${stage.toLowerCase()}-recompile-deferred`, {
-        detail:Object.freeze({
-          stage,
-          source,
-          reason:'ACTIVE_STAGE_INTERACTION',
-          authority_changed:false,
-          source_bytes_moved:false,
-          human_closure_required:true
-        })
-      }));
+    const preSyncActiveInteraction = activeStageInteraction(stage);
+    const guardReason = stageGuardReason(stage, source);
+    if (preSyncActiveInteraction || guardReason) {
+      const preRefreshDetail = {
+        reason:preSyncActiveInteraction ? 'ACTIVE_STAGE_INTERACTION' : guardReason,
+        phase:'PRE_PREMIUM_REFRESH',
+        recovered_after_refresh:false
+      };
+      publishRecompileDeferred(stage, source, preRefreshDetail.reason, preRefreshDetail);
       return false;
     }
     const token = ++serial;
     const draft = captureStageDrafts();
     const snapshot = await currentPremiumSnapshot();
-    if (token !== serial) return false;
+    const staleToken = token !== serial;
+    const postRefreshGuardReason = stageGuardReason(stage, source);
+    const recoveredAfterRefresh = recoverStageAfterPremiumRefresh(stage, source, {
+      phase:'POST_PREMIUM_REFRESH_PRE_STAGE_SYNC',
+      stale_token:staleToken,
+      guard_reason:postRefreshGuardReason
+    });
+    if (postRefreshGuardReason || recoveredAfterRefresh) {
+      publishRecompileDeferred(stage, source, postRefreshGuardReason || 'STAGE_DRAFT_RECOVERED_AFTER_REFRESH', {
+        phase:'POST_PREMIUM_REFRESH',
+        recovered_after_refresh:recoveredAfterRefresh,
+        stale_token:staleToken
+      });
+      return false;
+    }
+    if (staleToken) return false;
     const result = await sync(snapshot, source);
-    const draftRestored = restoreStageDrafts(draft);
+    const postSyncActiveInteraction = activeStageInteraction(stage);
+    const postSyncGuardReason = stageGuardReason(stage, source);
+    const genericDraftRestoreSuppressed = Boolean(postSyncActiveInteraction || postSyncGuardReason);
+    const recoveredAfterSync = postSyncGuardReason
+      ? recoverStageAfterSync(stage, source, {
+          phase:'POST_STAGE_SYNC_PRE_GENERIC_DRAFT_RESTORE',
+          guard_reason:postSyncGuardReason,
+          active_stage_interaction:Boolean(postSyncActiveInteraction),
+          generic_draft_restore_suppressed:true
+        })
+      : false;
+    const draftRestored = genericDraftRestoreSuppressed ? recoveredAfterSync : restoreStageDrafts(draft);
+    const draftRestoreOwner = postSyncGuardReason
+      ? 'STAGE_GUARD'
+      : postSyncActiveInteraction
+        ? 'ACTIVE_STAGE_INTERACTION'
+        : 'GENERIC_STAGE_SNAPSHOT';
     doc.documentElement.dataset[`ash${stage}Recompiled`] = 'true';
     host.dispatchEvent(new CustomEvent(`td613:ash:${stage.toLowerCase()}-recompiled`, {
-      detail:{ stage, source, rendered:Boolean(result), draft_restored:draftRestored, authority_changed:false, source_bytes_moved:false, human_closure_required:true }
+      detail:{
+        stage,
+        source,
+        rendered:Boolean(result),
+        draft_restored:draftRestored,
+        draft_restore_owner:draftRestoreOwner,
+        generic_draft_restore_suppressed:genericDraftRestoreSuppressed,
+        post_sync_guard_reason:postSyncGuardReason,
+        post_sync_guard_recovered:recoveredAfterSync,
+        post_sync_active_interaction:Boolean(postSyncActiveInteraction),
+        authority_changed:false,
+        source_bytes_moved:false,
+        human_closure_required:true
+      }
     }));
     return result;
   };

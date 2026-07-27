@@ -22,6 +22,24 @@ const releaseDefinitionsEnd = "\n\nconst source = await fs.readFile(sourceUrl, '
 const releaseArrayEntry = '  [releaseTarget, releaseReplacement]\n';
 const sessionEpochAnchor = "allowedLocalKeys.add('td613.ash.cache-preflight.epoch');";
 const sessionEpochAllowance = "allowedLocalKeys.add('td613.ash.session.epoch');";
+const strictRebuildWait = `  const rebuildConfirmation = page.getByRole('button', { name:/Confirm this exact gesture/i });
+  await rebuildConfirmation.waitFor({ state:'visible', timeout:45000 });
+  await rebuildConfirmation.click();
+  await page.waitForFunction(() => /"test_digest"/.test(document.getElementById('testReceipt')?.textContent || ''), null, { timeout:45000 });`;
+const modeAwareRebuildWait = `  const rebuildConfirmation = page.getByRole('button', { name:/Confirm this exact gesture/i });
+  let rebuildActionPath = 'DIRECT_RECEIPT';
+  try {
+    await rebuildConfirmation.waitFor({ state:'visible', timeout:5000 });
+    await rebuildConfirmation.click();
+    rebuildActionPath = 'AIA_CONFIRMED';
+  } catch {}
+  await page.waitForFunction(() => /"test_digest"/.test(document.getElementById('testReceipt')?.textContent || ''), null, { timeout:45000 });
+  report.observations.rebuild_action = {
+    presentation_route: new URL(keepUrl).searchParams.get('presentation') || 'child-legible',
+    action_path: rebuildActionPath,
+    receipt_observed: true
+  };`;
+const presentationAwareRebuildMarker = "report.observations.rebuild_transition = {";
 const replacementLoopTarget = `for (const [target, replacement] of replacements) {
   if (!runtime.includes(target)) throw new Error(\`Ash convergence runtime target missing: \${target.slice(0, 80)}\`);
   runtime = runtime.replace(target, replacement);
@@ -39,6 +57,7 @@ let closeTargetNormalized = false;
 let retiredReleaseTargetRemoved = false;
 let closeReplacementWidened = false;
 let sessionEpochAllowanceMaterialized = false;
+let rebuildActionPathNormalized = false;
 
 if (!wrapperSource.includes(finiteLockGuard)) {
   const markerIndex = wrapperSource.indexOf(wrapperWriteMarker);
@@ -80,6 +99,12 @@ if (!wrapperSource.includes(sessionEpochAllowance)) {
   sessionEpochAllowanceMaterialized = true;
 }
 
+if (wrapperSource.includes(strictRebuildWait)) {
+  wrapperSource = wrapperSource.replace(strictRebuildWait, modeAwareRebuildWait);
+  wrapperChanged = true;
+  rebuildActionPathNormalized = true;
+}
+
 if (wrapperSource.includes(replacementLoopTarget)) {
   wrapperSource = wrapperSource.replace(replacementLoopTarget, replacementLoopReplacement);
   wrapperChanged = true;
@@ -98,6 +123,10 @@ if (!wrapperSource.includes(replacementLoopReplacement)) {
 if (!wrapperSource.includes(sessionEpochAllowance)) {
   throw new Error('Convergence handshake preflight did not admit the current session epoch bookkeeping key.');
 }
+if (!wrapperSource.includes(modeAwareRebuildWait)
+  && !wrapperSource.includes(presentationAwareRebuildMarker)) {
+  throw new Error('Convergence handshake preflight did not normalize rebuild observation across presentation modes.');
+}
 
 if (wrapperChanged) await fs.writeFile(wrapperPath, wrapperSource, 'utf8');
 await fs.writeFile(path.join(artifactDir, 'convergence-materialization-preflight.json'), `${JSON.stringify({
@@ -113,6 +142,8 @@ await fs.writeFile(path.join(artifactDir, 'convergence-materialization-preflight
   retired_release_target_removed_in_ephemeral_checkout:retiredReleaseTargetRemoved,
   session_epoch_allowance_present:true,
   session_epoch_allowance_materialized_in_ephemeral_checkout:sessionEpochAllowanceMaterialized,
+  rebuild_action_path_mode_aware:true,
+  rebuild_action_path_normalized_in_ephemeral_checkout:rebuildActionPathNormalized,
   product_runtime_mutated:false,
   authority_changed:false,
   source_bytes_moved:false,

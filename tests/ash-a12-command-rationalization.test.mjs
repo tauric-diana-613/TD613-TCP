@@ -33,15 +33,16 @@ assert.doesNotMatch(moduleSource, /indexedDB\.(?:open|deleteDatabase)/);
 assert.doesNotMatch(moduleSource, /setInterval\s*\(/);
 assert.doesNotMatch(moduleSource, /MutationObserver/);
 
-assert.match(browserProbe, /td613\.ash\.demo-registry\/v0\.2-a14/);
-assert.doesNotMatch(browserProbe, /td613\.ash\.demo-registry\/v0\.1-a13/);
-assert.match(browserProbe, /td613\.ash\.a12-browser-witness\/v0\.8-a14-registry-current/);
+assert.match(browserProbe, /td613\.ash\.demo-registry\/v0\.3-a15/);
+assert.doesNotMatch(browserProbe, /td613\.ash\.demo-registry\/v0\.[12]-(?:a13|a14)/);
+assert.match(browserProbe, /td613\.ash\.a12-browser-witness\/v0\.9-a15-registry-current/);
 
 assert.match(bridge, /ash-a12-command-rationalization\.js\?v=20260724-a12-release-v1/);
+assert.match(bridge, /ash-profile-demo-hydration\.js\?v=20260726-a15-empirical-v1/);
 assert.match(shell, /ASH_LIFECYCLE_ASSET_EPOCH = '20260724-a12-release-v1'/);
 assert.match(shell, /ASH_MASS_EVICTION_EPOCH = 'td613\.ash\.cache-flush\/2026-07-24-a11-postclosure-v1'/);
 assert.doesNotMatch(shell, /a12.*cache-preflight/i);
 assert.match(index, /A12 · Command-menu rationalization and dead-control repair/);
 assert.match(amendment, /mass eviction.*A15 postclosure/is);
 assert.equal(vercel.git.deploymentEnabled, false);
-console.log('Ash A12 command rationalization contract passed under current A14 registry observation.');
+console.log('Ash A12 command rationalization contract passed under current A15 registry observation.');
