@@ -1,4 +1,4 @@
-export const ASH_FLOWCORE_INGRESS_PORTAL_VERSION = 'td613.ash.flowcore-ingress-portal/v0.9-phase-atomic-canonical-play';
+export const ASH_FLOWCORE_INGRESS_PORTAL_VERSION = 'td613.ash.flowcore-ingress-portal/v0.10-stage-owner-reacquisition';
 
 const host = globalThis.window;
 const doc = globalThis.document;
@@ -255,15 +255,27 @@ function findStageField() {
   return [...stage.querySelectorAll(':scope > .ash-flowcore-field')].find(node => node !== visibleField) || null;
 }
 
+function reacquireVisibleField(stage = stageHost()) {
+  if (visibleField?.isConnected) return visibleField;
+  const candidate = stage?.querySelector(':scope > .ash-flowcore-field:not(.ash-flowcore-field--proxy)')
+    || doc.querySelector('.ash-flowcore-field:not(.ash-flowcore-field--proxy)');
+  if (candidate) visibleField = candidate;
+  return visibleField;
+}
+
+function refreshFieldOwnerAndReacquire(stage = stageHost()) {
+  let candidate = reacquireVisibleField(stage);
+  if (candidate) return candidate;
+  host.__td613AshFlowcoreField?.refresh?.();
+  candidate = reacquireVisibleField(stage);
+  return candidate;
+}
+
 function portalToIngress() {
   const ingress = ingressHost();
   const stage = stageHost();
   if (!ingress || !stage) return false;
-  if (!visibleField?.isConnected) {
-    visibleField = stage.querySelector(':scope > .ash-flowcore-field:not(.ash-flowcore-field--proxy)')
-      || doc.querySelector('.ash-flowcore-field:not(.ash-flowcore-field--proxy)');
-  }
-  if (!visibleField) return false;
+  if (!refreshFieldOwnerAndReacquire(stage)) return false;
   ensurePlayControl(visibleField);
   setBooleanProperty(visibleField, 'hidden', false);
   setBooleanProperty(visibleField, 'inert', false);
@@ -283,7 +295,7 @@ function portalToIngress() {
 
 function portalToStage() {
   const stage = stageHost();
-  if (!stage || !visibleField) return false;
+  if (!stage || !refreshFieldOwnerAndReacquire(stage)) return false;
   setBooleanProperty(visibleField, 'hidden', false);
   setBooleanProperty(visibleField, 'inert', false);
   setAttribute(visibleField, 'aria-hidden', null);
@@ -308,8 +320,8 @@ function sync(reason = 'OBSERVED') {
   try {
     const open = caseOpen();
     const moved = open ? portalToStage() : portalToIngress();
-    normalizeStageFields();
-    if (!open) {
+    if (moved) normalizeStageFields();
+    if (!open && moved) {
       const nextProxy = findStageField();
       if (nextProxy && nextProxy !== proxyField) observeProxy(nextProxy);
     }
@@ -362,7 +374,10 @@ export function installAshFlowcoreIngressPortal() {
   if (!host || !doc?.body || host.__td613AshFlowcoreIngressPortal) return false;
   ensurePortalStyles();
   installObserver();
-  for (const type of ['aia-ready','aia3-ready','composition-stable','case-opened','case-created','profile-demo-hydrated','case-closed','session-boundary-reconciled']) {
+  for (const type of [
+    'aia-ready','aia3-ready','composition-stable','case-opened','case-created',
+    'profile-demo-hydrated','case-closed','session-boundary-reconciled','whole-instrument-refreshed'
+  ]) {
     host.addEventListener(`td613:ash:${type}`, () => queueSync(type.toUpperCase()));
   }
   host.addEventListener('td613:ash:flowcore-field-phase', copyDynamicState);
