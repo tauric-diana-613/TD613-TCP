@@ -46,7 +46,7 @@ assert.match(moduleSource, /preventScroll:true/);
 assert.match(moduleSource, /event\.stopImmediatePropagation\(\)/);
 
 for (const token of ['ash-whole-instrument-play','ash-channel-legend','ash-route-surface','ash-command-attention','prefers-reduced-motion:reduce']) assert.match(css, new RegExp(token));
-assert.match(css, /button\[data-flowcore-channel="inspection"\]\{grid-column:1\/ -1\}/.source.replace('1/ -1','1/-1'));
+assert.match(css, /button\[data-flowcore-channel="inspection"\]\{grid-column:1\/-1\}/);
 
 const historicalAssetEpoch = '20260723-a2-a5-release-v1';
 const historicalCacheEpoch = 'td613.ash.cache-flush/2026-07-23-a2-a5-release-v1';
