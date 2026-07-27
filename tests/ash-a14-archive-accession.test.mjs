@@ -27,13 +27,16 @@ const empiricalSource = fs.readFileSync('app/dome-world/ash-a15-empirical-profil
 const convergenceSource = fs.readFileSync('app/dome-world/ash-demo-entry-convergence.js', 'utf8');
 const currentObserver = fs.readFileSync('scripts/ash-a2-a5-browser-probe.mjs', 'utf8');
 const legacyObserver = fs.readFileSync('scripts/ash-a2-a5-browser-probe-a13.mjs', 'utf8');
-const a12Observer = fs.readFileSync('scripts/ash-a12-browser-probe.mjs', 'utf8');
+const a12ObserverWrapper = fs.readFileSync('scripts/ash-a12-browser-probe.mjs', 'utf8');
+const a12ObserverCore = fs.readFileSync('scripts/ash-a12-browser-probe-stable-entry.mjs', 'utf8');
+const a12Observer = `${a12ObserverWrapper}\n${a12ObserverCore}`;
 const a14Observer = fs.readFileSync('scripts/ash-a14-archive-browser-probe.mjs', 'utf8');
 const a15Observer = fs.readFileSync('scripts/ash-a15-empirical-profile-journeys-browser-probe.mjs', 'utf8');
 const readinessPreparer = fs.readFileSync('scripts/prepare-ash-profile-closure-fixture-a13.mjs', 'utf8');
 const shellSource = fs.readFileSync('api/dome-world-shell.js', 'utf8');
 const evictionSource = fs.readFileSync('app/dome-world/ash-cache-eviction-aia3.js', 'utf8');
 const amendmentSource = fs.readFileSync('app/dome-world/docs/ASH_KEEP_A12_A15_OPERATOR_AMENDMENT_V0_1.md', 'utf8');
+const deferralSource = fs.readFileSync('app/dome-world/docs/ASH_KEEP_A15_A19_MASS_EVICTION_DEFERRAL_AMENDMENT_V0_1.md', 'utf8');
 const vercel = JSON.parse(fs.readFileSync('vercel.json', 'utf8'));
 
 assert.equal(ASH_ARCHIVE_DEMO_VERSION, 'td613.ash.archive-demo/v0.2-a14-harbor-memory');
@@ -156,6 +159,8 @@ assert.match(convergenceSource, /phase === 'VISIBLE' && nextStable >= 2/);
 assert.doesNotMatch(convergenceSource, /setInterval\s*\(/);
 assert(currentObserver.includes("replaceAll('td613.ash.demo-registry/v0.1-a13', 'td613.ash.demo-registry/v0.3-a15')"));
 assert(legacyObserver.includes('td613.ash.demo-registry/v0.1-a13'));
+assert.match(a12ObserverWrapper, /ash-a12-browser-probe-stable-entry\.mjs/);
+assert.match(a12ObserverWrapper, /td613\.ash\.a12-present-state-convergence-rebind\/v0\.1/);
 assert.doesNotMatch(a12Observer, /td613\.ash\.demo-registry\/v0\.[12]-(?:a13|a14)/);
 assert.match(a12Observer, /td613\.ash\.demo-registry\/v0\.3-a15/);
 assert.match(a14Observer, /registry\?\.asset_epoch === '20260726-a15-empirical-v1'/);
@@ -176,13 +181,15 @@ assert.doesNotMatch(archiveSource + registrySource + empiricalSource, /access_gr
 const massEpoch = 'td613.ash.cache-flush/2026-07-24-a11-postclosure-v1';
 assert(shellSource.includes(`ASH_MASS_EVICTION_EPOCH = '${massEpoch}'`));
 assert(evictionSource.includes(`ASH_AIA3_CACHE_EPOCH = '${massEpoch}'`));
-assert.match(amendmentSource, /For A12 through A14, ordinary monotonic asset-version advancement MAY admit/);
 assert.match(amendmentSource, /single graph-wide mass eviction[\s\S]*reserved for \*\*A15 postclosure\*\*/);
+assert.match(deferralSource, /requirement that the eviction become the final mutation before the A15 production release is superseded/);
+assert.match(deferralSource, /reserved for \*\*A19 postclosure\*\*/);
+assert.match(deferralSource, /new A15 graph-wide cache flush: false/);
 assert.equal(vercel.git?.deploymentEnabled, false);
 
 console.log(JSON.stringify({
   ok:true,
-  schema:'td613.ash.a14-harbor-memory-archive-contract/v0.8-coalesced-entry-clock',
+  schema:'td613.ash.a14-harbor-memory-archive-contract/v0.10-a15-review-release-deferral',
   registry_version:ASH_DEMO_REGISTRY_VERSION,
   ordinary_asset_epoch:ASH_DEMO_ASSET_EPOCH,
   archive_fixture:fixture.demo_id,
@@ -195,6 +202,8 @@ console.log(JSON.stringify({
   route_memory_verified:true,
   readiness_validator_read_only:true,
   a12_registry_observer_current:true,
+  a12_observer_composed:true,
+  a12_present_state_convergence_adapter:true,
   a14_authority_ceiling_normalized:true,
   archive_entry_fallback:'map',
   coalesced_entry_clock:true,
@@ -203,6 +212,7 @@ console.log(JSON.stringify({
   legacy_fixture_rewriter_invoked:false,
   mass_eviction_epoch:massEpoch,
   graph_wide_mass_eviction_executed:false,
+  mass_eviction_deferred_to:'A19_POSTCLOSURE',
   access_granted:false,
   release_authority:false,
   declassification_authority:false,
