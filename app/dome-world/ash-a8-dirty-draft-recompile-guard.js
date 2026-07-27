@@ -1,4 +1,4 @@
-export const ASH_A8_DIRTY_DRAFT_RECOMPILE_GUARD_VERSION = 'td613.ash.a8-dirty-draft-recompile-guard/v0.4-connected-edit-pair-continuity';
+export const ASH_A8_DIRTY_DRAFT_RECOMPILE_GUARD_VERSION = 'td613.ash.a8-dirty-draft-recompile-guard/v0.5-focus-scoped-edit-pair-continuity';
 
 const host = globalThis.window;
 const doc = globalThis.document;
@@ -15,6 +15,7 @@ let connectedIntentSerial = 0;
 let staleDetachedEventsHeld = 0;
 let staleDetachedValuesTransplanted = 0;
 let connectedPairValuesRestored = 0;
+let focusScopedIntentsCleared = 0;
 
 function mapWorkshopSignals() {
   const workspace = doc?.getElementById?.('workspace-map');
@@ -45,7 +46,7 @@ function publish(posture, source = null, detail = {}) {
   const signals = mapWorkshopSignals();
   host?.dispatchEvent?.(new CustomEvent('td613:ash:a8-dirty-draft-guard', {
     detail:Object.freeze({
-      schema:'td613.ash.a8-dirty-draft-guard-receipt/v0.10-connected-edit-pair-continuity',
+      schema:'td613.ash.a8-dirty-draft-guard-receipt/v0.11-focus-scoped-edit-pair-continuity',
       posture,
       source,
       dirty_draft_active:dirtyDraftActive,
@@ -62,6 +63,7 @@ function publish(posture, source = null, detail = {}) {
       stale_detached_events_held:staleDetachedEventsHeld,
       stale_detached_values_transplanted:staleDetachedValuesTransplanted,
       connected_pair_values_restored:connectedPairValuesRestored,
+      focus_scoped_intents_cleared:focusScopedIntentsCleared,
       authority_changed:false,
       source_bytes_moved:false,
       custody_changed:false,
@@ -81,6 +83,7 @@ function snapshotControlIntent(target) {
     type:String(target.type || ''),
     value:String(target.value ?? ''),
     checked:'checked' in target ? Boolean(target.checked) : null,
+    source_target:target,
     serial:++connectedIntentSerial
   });
 }
@@ -114,13 +117,22 @@ function applyControlIntent(intent, { requireReplacement = false, sourceTarget =
   });
 }
 
+function clearPendingConnectedIntentsExcept(controlId = null) {
+  let cleared = 0;
+  for (const id of [...pendingConnectedIntents.keys()]) {
+    if (controlId && id === controlId) continue;
+    pendingConnectedIntents.delete(id);
+    cleared += 1;
+  }
+  focusScopedIntentsCleared += cleared;
+  return cleared;
+}
+
 function rememberConnectedInput(target) {
   const intent = snapshotControlIntent(target);
   if (!intent) return null;
+  clearPendingConnectedIntentsExcept(intent.id);
   pendingConnectedIntents.set(intent.id, intent);
-  queueMicrotask(() => {
-    if (pendingConnectedIntents.get(intent.id)?.serial === intent.serial) pendingConnectedIntents.delete(intent.id);
-  });
   return intent;
 }
 
@@ -129,7 +141,10 @@ function restoreConnectedChange(target) {
   const intent = pendingConnectedIntents.get(id);
   if (!intent) return Object.freeze({ transplanted:false, control_id:id || null, reason:'NO_PENDING_INPUT_INTENT' });
   pendingConnectedIntents.delete(id);
-  const continuity = applyControlIntent(intent, { sourceTarget:target });
+  if (intent.source_target === target || intent.source_target?.isConnected === true) {
+    return Object.freeze({ transplanted:false, control_id:id, reason:'ORIGINAL_CONTROL_STILL_AUTHORITATIVE' });
+  }
+  const continuity = applyControlIntent(intent, { requireReplacement:true, sourceTarget:intent.source_target });
   if (continuity.transplanted) connectedPairValuesRestored += 1;
   return continuity;
 }
@@ -161,9 +176,11 @@ function beginDirtyDraft(event) {
   }
   if (admittedDirtyEvents.has(event)) return true;
   admittedDirtyEvents.add(event);
+  const controlId = String(target.id || '') || null;
+  if (event.type === 'focusin') clearPendingConnectedIntentsExcept(controlId);
   const connectedContinuity = event.type === 'change'
     ? restoreConnectedChange(target)
-    : Object.freeze({ transplanted:false, control_id:String(target.id || '') || null, reason:'NOT_CHANGE_EVENT' });
+    : Object.freeze({ transplanted:false, control_id:controlId, reason:'NOT_CHANGE_EVENT' });
   if (event.type === 'input') rememberConnectedInput(target);
   host?.__td613AshA8MapReturnHandshake?.capture?.();
   dirtyDraftActive = true;
@@ -171,6 +188,7 @@ function beginDirtyDraft(event) {
     admission_boundary:'WINDOW_CAPTURE_BEFORE_DOCUMENT_REFRESH',
     connected_edit_pair:connectedContinuity.transplanted,
     authored_value_preserved:connectedContinuity.transplanted,
+    focus_scoped_intent:true,
     control_id:connectedContinuity.control_id,
     transplant_reason:connectedContinuity.reason || null
   });
@@ -262,6 +280,7 @@ function clear(source) {
   staleDetachedEventsHeld = 0;
   staleDetachedValuesTransplanted = 0;
   connectedPairValuesRestored = 0;
+  focusScopedIntentsCleared = 0;
   publish('CLEARED', source);
 }
 
@@ -308,11 +327,12 @@ export function installAshA8DirtyDraftRecompileGuard() {
         stale_detached_events_held:staleDetachedEventsHeld,
         stale_detached_values_transplanted:staleDetachedValuesTransplanted,
         connected_pair_values_restored:connectedPairValuesRestored,
+        focus_scoped_intents_cleared:focusScopedIntentsCleared,
         posture:doc?.documentElement?.dataset?.ashA8DirtyDraftGuard || null,
         admission_boundary:'WINDOW_CAPTURE_BEFORE_DOCUMENT_REFRESH',
         guard_basis:'CONNECTED_WORKSHOP_AND_EITHER_CANONICAL_MAP_SIGNAL',
         post_sync_restore_owner:'A8_MAP_RETURN_HANDSHAKE_SHADOW',
-        stale_event_policy:'PRESERVE_INPUT_INTENT_ACROSS_CONNECTED_OR_DETACHED_CHANGE_THEN_QUARANTINE_STALE',
+        stale_event_policy:'PRESERVE_INPUT_INTENT_UNTIL_REPLACEMENT_CHANGE_OR_FOCUS_DEPARTURE_THEN_QUARANTINE_STALE',
         authority_changed:false,
         source_bytes_moved:false,
         human_closure_required:true
