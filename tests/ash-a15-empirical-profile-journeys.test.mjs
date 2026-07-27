@@ -70,17 +70,48 @@ assert.equal(experientialAlias.status, 'READY');
 
 const cyclic = { api_key:'secret' };
 cyclic.self = cyclic;
-for (const context of ['person@example.com','904-555-1212','+44 20 7946 0958','020 7946 0958','123-45-6789','api_key = abc123',{ api_key:'abc123' },{ password:'abc123' },cyclic,'-----BEGIN PRIVATE KEY-----']) {
-  assert.equal(containsSensitiveContext(context), true);
+const sensitiveContexts = [
+  'person@example.com',
+  '904-555-1212',
+  '+44 20 7946 0958',
+  '020 7946 0958',
+  '123-45-6789',
+  'api_key = abc123',
+  'Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.payload',
+  { api_key:'abc123' },
+  { password:'abc123' },
+  { Authorization:'Bearer tokenvalue123' },
+  new Map([['api_key','secret']]),
+  new URLSearchParams({ access_token:'secret' }),
+  new Set(['bounded placeholder','Bearer tokenvalue123']),
+  cyclic,
+  '-----BEGIN PRIVATE KEY-----',
+  '-----BEGIN ENCRYPTED PRIVATE KEY-----',
+  '-----BEGIN DSA PRIVATE KEY-----'
+];
+for (const context of sensitiveContexts) {
+  assert.equal(containsSensitiveContext(context), true, `Sensitive context escaped quarantine: ${Object.prototype.toString.call(context)}`);
   const held = compileAshA15WorldAnswer({ profile:'legal', workspace:'work', route:'audit', context });
   assert.equal(held.status, 'HELD_SENSITIVE_CONTEXT');
   assert.equal(held.context_imported, false);
   assert.equal(held.authority.consequential_action, false);
 }
+for (const context of [1722000000, 20260726, 1234567890123n, { timestamp:1722000000 }, { record_id:1234567890 }, { sample_count:10000000 }, '1722000000']) {
+  assert.equal(containsSensitiveContext(context), false, `Ordinary integer was misclassified as a phone: ${String(context)}`);
+  const ready = compileAshA15WorldAnswer({ profile:'research', workspace:'home', route:'audit', context });
+  assert.equal(ready.status, 'READY');
+}
+assert.equal(containsSensitiveContext({ phone:9045551212 }), true, 'Phone-key numeric values must remain quarantined.');
+
 const incomplete = compileAshA15WorldAnswer({ profile:'archive', workspace:'outside', route:'audit' });
 assert.equal(incomplete.status, 'HELD_INCOMPLETE_ROUTE');
 const explicitEmpty = compileAshA15WorldAnswer({ profile:'', workspace:'', route:'' });
 assert.equal(explicitEmpty.status, 'HELD_INCOMPLETE_ROUTE');
+for (const unsupportedProfile of ['organizing','unpublished','general']) {
+  const held = compileAshA15WorldAnswer({ profile:unsupportedProfile, workspace:'home', route:'audit' });
+  assert.equal(held.status, 'HELD_INCOMPLETE_ROUTE');
+  assert.equal(held.profile, null);
+}
 const unknownToken = 'source_packet_commit';
 const unknownAction = compileAshA15WorldAnswer({ profile:'archive', workspace:'map', route:'audit', action_id:unknownToken });
 assert.equal(unknownAction.status, 'HELD_UNKNOWN_ACTION');
@@ -97,8 +128,34 @@ assert.equal(snapshot.empirical_matrix_cells, 120);
 assert.equal(snapshot.raw_content_transport, false);
 assert.equal(snapshot.automatic_ash_action, false);
 assert.equal(snapshot.release_authority, false);
-for (const token of ["import(`./ash-a15-empirical-profile-journeys.js?v=${ASH_DEMO_ASSET_EPOCH}`)",'installAshA15EmpiricalJourneys','empirical_journey_version','empirical_matrix_cells','ash-a15-empirical-journey:${profile}']) assert.ok(registry.includes(token), `A15 registry omitted ${token}`);
-for (const token of ['ashA15EmpiricalJourney','ashA15OrientAction','ashA15WorldAnswer','td613:ash:a15-world-answer','HELD_SENSITIVE_CONTEXT','real_world_claim:false','ontology_exposed:false','context_imported:false','CREDENTIAL_KEY_PATTERN','PHONE_CANDIDATE_PATTERN','state.seen.has(value)','action_recognized',"hasOwn(overrides, 'profile')","hasOwn(overrides, 'workspace')","hasOwn(overrides, 'route')","hasOwn(overrides, 'action_id')","event.target?.closest?.('[data-aia-route]')",'installedEntries','bindEntries(entries)','entries:() => installedEntries','td613:ash:a15-empirical-entries-bound']) assert.ok(source.includes(token), `A15 source omitted ${token}`);
+for (const token of [
+  "const empiricalOwner = import(`./ash-a15-empirical-profile-journeys.js?v=${ASH_DEMO_ASSET_EPOCH}`)",
+  '.catch(error => Object.freeze({ module:null, error }))',
+  'empiricalResult.module',
+  'empiricalLoadHeld = Boolean(empiricalResult.error || !empirical)',
+  'HELD_SUBORDINATE',
+  'registry_available:true',
+  'installAshA15EmpiricalJourneys',
+  'empirical_journey_version',
+  'empirical_journey_status',
+  'empirical_matrix_cells',
+  'ash-a15-empirical-journey:${profile}'
+]) assert.ok(registry.includes(token), `A15 registry omitted isolated empirical owner token ${token}`);
+assert.match(registry, /const empiricalOwner = import\([\s\S]{0,360}\.catch\(error => Object\.freeze\(\{ module:null, error \}\)\)[\s\S]{0,560}Promise\.all\(\[[\s\S]{0,800}empiricalOwner/);
+assert.match(registry, /registryEntries = Object\.freeze\(entries\);[\s\S]{0,420}const empirical = empiricalResult\.module[\s\S]{0,700}HELD_SUBORDINATE[\s\S]{0,720}return registryEntries/);
+assert.doesNotMatch(registry, /Promise\.all\(\[[\s\S]{0,900}import\(`\.\/ash-a15-empirical-profile-journeys\.js[^\n]*\)[\s\S]{0,120}\]\)\.then/, 'A subordinate empirical import must not remain an uncaught fixture-owner dependency.');
+
+for (const token of [
+  'ashA15EmpiricalJourney','ashA15OrientAction','ashA15WorldAnswer','td613:ash:a15-world-answer','HELD_SENSITIVE_CONTEXT','real_world_claim:false','ontology_exposed:false','context_imported:false','CREDENTIAL_KEY_PATTERN','PHONE_KEY_PATTERN','PHONE_CANDIDATE_PATTERN','structuredEntries(value)','state.seen.has(value)','action_recognized',
+  "tag === '[object Map]'","tag === '[object Set]'","tag === '[object URLSearchParams]'",'prototype === Object.prototype || prototype === null','if (!entries) return { sensitive:true, opaque:true, text:\'\' }',
+  "premiumSnapshot?.profile ?? premiumSnapshot?.caseMap?.profile",'if (hasExplicitValue(rawSnapshotProfile)) return normalizeProfile(rawSnapshotProfile)','if (hasExplicitValue(selectedProfile)) return normalizeProfile(selectedProfile)','return hasExplicitValue(demoProfile) ? normalizeProfile(demoProfile) : null',
+  "hasOwn(overrides, 'profile')","hasOwn(overrides, 'workspace')","hasOwn(overrides, 'route')","hasOwn(overrides, 'action_id')","event.target?.closest?.('[data-aia-route]')",'installedEntries','bindEntries(entries)','entries:() => installedEntries','td613:ash:a15-empirical-entries-bound'
+]) assert.ok(source.includes(token), `A15 source omitted ${token}`);
+assert.match(source, /function currentProfile\(\)[\s\S]{0,320}premiumSnapshot[\s\S]{0,220}rawSnapshotProfile[\s\S]{0,220}return normalizeProfile\(rawSnapshotProfile\)[\s\S]{0,300}selectedProfile[\s\S]{0,300}demoProfile/);
+assert.doesNotMatch(source.match(/function currentProfile\(\)[\s\S]*?\n\}/)?.[0] || '', /\|\| 'investigation'|\|\| "investigation"/, 'Unsupported active profiles must hold instead of defaulting to Investigation.');
+assert.match(source, /function textContainsPhone\(text, \{ keyAware = false \} = \{\}\)[\s\S]{0,620}separators >= 2[\s\S]{0,240}\(keyAware \|\| formatted\)/);
+assert.match(source, /if \(type === 'number' \|\| type === 'bigint'\)[\s\S]{0,260}TEXT_SENSITIVE_PATTERNS[\s\S]{0,120}opaque:false/);
+assert.doesNotMatch(source.match(/if \(type === 'number' \|\| type === 'bigint'\)[\s\S]*?\n  \}/)?.[0] || '', /textContainsPhone/, 'Generic numeric values must not be treated as phones without a phone key.');
 for (const pattern of [/fetch\s*\(/,/sendBeacon/,/XMLHttpRequest/,/indexedDB\./,/localStorage\.(?:setItem|removeItem|clear)/,/sessionStorage\.(?:setItem|removeItem|clear)/,/caches\./,/serviceWorker/,/new\s+(?:Worker|SharedWorker)/]) assert.doesNotMatch(source, pattern);
 assert.doesNotMatch(source, /custody_changed:true|source_bytes_moved:true|raw_content_transport:true|consequential_action:true|release_authority:true|destination_authority:true/);
 
@@ -137,8 +194,8 @@ assert.match(browserProbe, /const selector = `#premiumPrimaryDock \[data-premium
 assert.match(browserProbe, /if \(navigation\.changed\) workspaceTransitions \+= 1/);
 assert.match(browserProbe, /captured_navigation_receipts !== result\.workspace_transitions/);
 assert.match(browserProbe, /window\.addEventListener\('td613:ash:navigation-receipt', handler\)/);
-assert.doesNotMatch(browserProbe, /const control = page\.locator\(`\[data-premium-workspace=/, 'A15 witness must not select an ambiguous non-dock workspace control.');
-assert.doesNotMatch(browserProbe, /empirical\.orient\(\{\s*profile,\s*workspace,\s*route/s, 'A15 matrix witness must use visible UI gestures, not direct answer-key overrides.');
+assert.doesNotMatch(browserProbe, /const control = page\.locator\(`\[data-premium-workspace=/);
+assert.doesNotMatch(browserProbe, /empirical\.orient\(\{\s*profile,\s*workspace,\s*route/s);
 assert.match(receipt, /120 deterministic cells/);
 assert.match(receipt, /graph-wide mass eviction executed: false/);
 assert.match(amendment, /single graph-wide mass eviction[\s\S]*A15 postclosure/);
@@ -149,7 +206,7 @@ assert.equal(vercel.git?.deploymentEnabled, false);
 
 console.log(JSON.stringify({
   ok:true,
-  schema:'td613.ash.a15-empirical-profile-journey-contract/v0.8-canonical-primary-dock',
+  schema:'td613.ash.a15-empirical-profile-journey-contract/v0.9-context-and-registry-hardening',
   registry_version:ASH_DEMO_REGISTRY_VERSION,
   asset_epoch:ASH_DEMO_ASSET_EPOCH,
   profiles:ASH_A15_PROFILES.length,
@@ -162,9 +219,13 @@ console.log(JSON.stringify({
   state_derived_transition_receipts:true,
   minimum_workspace_transitions_per_profile:4,
   route_landing_workspace:'work',
-  navigation_receipt_captured_at_click:true,
-  route_selected_before_target_workspace:true,
-  idempotent_active_workspace_gesture:true,
+  active_case_profile_precedence:true,
+  unsupported_profile_holds:true,
+  iterable_context_quarantine:true,
+  generic_integer_phone_false_positive:false,
+  all_private_key_pem_held:true,
+  bearer_authorization_held:true,
+  empirical_module_failure_isolated:true,
   sensitive_context_imported:false,
   ontology_leakage:false,
   false_real_world_claims:false,
