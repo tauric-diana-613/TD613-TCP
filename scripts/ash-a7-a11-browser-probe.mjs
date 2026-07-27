@@ -69,31 +69,86 @@ async function waitForStableCaseMap(page) {
 }
 
 async function stageA8Field(page, id, value) {
-  const locator = page.locator(`#${id}`);
-  if (!(await locator.count())) throw new Error(`A8 control ${id} is not connected.`);
-  const metadata = await locator.evaluate(control => ({
-    tag:control.tagName,
-    type:String(control.type || '').toLowerCase(),
-    options:control.tagName === 'SELECT' ? [...control.options].map(option => option.value) : []
-  }));
-  if (metadata.tag === 'SELECT') {
-    if (!metadata.options.includes(String(value))) throw new Error(`A8 control ${id} cannot select ${value}.`);
-    await locator.selectOption(String(value));
-  } else if (metadata.type === 'checkbox' || metadata.type === 'radio') {
-    if (Boolean(value)) await locator.check();
-    else await locator.uncheck();
-  } else {
-    await locator.fill(String(value));
+  const expected = String(value);
+  const maxAttempts = 4;
+  let lastDiagnostic = null;
+
+  for (let attempt = 1; attempt <= maxAttempts; attempt += 1) {
+    await page.evaluate(() => { window.__td613A8FieldStability = null; });
+    const locator = page.locator(`#${id}`);
+    try {
+      await locator.waitFor({ state:'attached', timeout:15_000 });
+      await locator.focus();
+      const metadata = await locator.evaluate(control => ({
+        tag:control.tagName,
+        type:String(control.type || '').toLowerCase(),
+        options:control.tagName === 'SELECT' ? [...control.options].map(option => option.value) : []
+      }));
+      if (metadata.tag === 'SELECT') {
+        if (!metadata.options.includes(expected)) throw new Error(`A8 control ${id} cannot select ${value}.`);
+        await locator.selectOption(expected);
+      } else if (metadata.type === 'checkbox' || metadata.type === 'radio') {
+        if (Boolean(value)) await locator.check();
+        else await locator.uncheck();
+      } else {
+        await locator.fill(expected);
+      }
+      await page.waitForFunction(({ id, value, attempt }) => {
+        const control = document.getElementById(id);
+        const workshop = document.getElementById('ashA8RelationWorkshop');
+        if (!control?.isConnected || !workshop?.isConnected) {
+          window.__td613A8FieldStability = null;
+          return false;
+        }
+        const matches = 'checked' in control && typeof value === 'boolean'
+          ? Boolean(control.checked) === value
+          : String(control.value ?? '') === String(value);
+        if (!matches) {
+          window.__td613A8FieldStability = null;
+          return false;
+        }
+        const signature = `${id}:${String(value)}:${attempt}`;
+        const now = performance.now();
+        const prior = window.__td613A8FieldStability;
+        if (!prior || prior.signature !== signature || prior.control !== control || prior.workshop !== workshop) {
+          window.__td613A8FieldStability = { signature, control, workshop, since:now };
+          return false;
+        }
+        return now - prior.since >= 220;
+      }, { id, value, attempt }, { timeout:6_000, polling:25 });
+      const result = { id, attempts:attempt, stable_ms:220, current_connected_control:true };
+      await page.evaluate(result => { window.__td613A8LastFieldWitness = result; }, result);
+      return result;
+    } catch (error) {
+      lastDiagnostic = await page.evaluate(({ id, value, attempt, error }) => {
+        const control = document.getElementById(id);
+        return {
+          id,
+          expected:String(value),
+          attempt,
+          error,
+          connected:Boolean(control?.isConnected),
+          current_value:control && 'checked' in control && typeof value === 'boolean'
+            ? String(Boolean(control.checked))
+            : String(control?.value ?? ''),
+          dirty_guard:window.__td613AshA8RecompileGuard?.current?.() || null,
+          map_return:window.__td613AshA8MapReturnHandshake?.current?.() || null,
+          dirty_guard_posture:document.documentElement.dataset.ashA8DirtyDraftGuard || null,
+          map_return_posture:document.documentElement.dataset.ashA8MapReturnHandshake || null
+        };
+      }, { id, value, attempt, error:String(error?.message || error) });
+      await page.evaluate(diagnostic => { window.__td613A8LastFieldWitness = diagnostic; }, lastDiagnostic);
+      await page.waitForFunction(id => document.getElementById(id)?.isConnected === true
+        && document.getElementById('ashA8RelationWorkshop')?.isConnected === true,
+      id, { timeout:15_000, polling:50 }).catch(() => {});
+    }
   }
-  await page.waitForFunction(({ id, value }) => {
-    const control = document.getElementById(id);
-    if (!control?.isConnected) return false;
-    if ('checked' in control && typeof value === 'boolean') return Boolean(control.checked) === value;
-    return String(control.value ?? '') === String(value);
-  }, { id, value }, { timeout:30_000, polling:25 });
+
+  throw new Error(`A8 control ${id} failed stable visible staging after ${maxAttempts} attempts: ${JSON.stringify(lastDiagnostic)}`);
 }
 
-async function waitForConcurrentA8Staging(page, fields) {
+async function waitForConcurrentA8Staging(page, fields, timeout = 12_000) {
+  await page.evaluate(() => { window.__td613A8VisibleStaging = null; });
   await page.waitForFunction(fields => {
     const values = Object.entries(fields).map(([id, expected]) => {
       const control = document.getElementById(id);
@@ -113,28 +168,70 @@ async function waitForConcurrentA8Staging(page, fields) {
       window.__td613A8VisibleStaging = { signature:actualSignature, since:now };
       return false;
     }
-    return now - prior.since >= 180;
-  }, fields, { timeout:60_000, polling:30 });
+    return now - prior.since >= 220;
+  }, fields, { timeout, polling:30 });
 }
 
 async function commitA8Gesture(page, fields, buttonId) {
-  for (const [id, value] of Object.entries(fields)) await stageA8Field(page, id, value);
-  await waitForConcurrentA8Staging(page, fields);
-  const staged = await page.evaluate(fields => Object.fromEntries(Object.entries(fields).map(([id, expected]) => {
-    const control = document.getElementById(id);
-    const actual = control && 'checked' in control && typeof expected === 'boolean' ? Boolean(control.checked) : control?.value;
-    return [id, actual ?? null];
-  })), fields);
-  for (const [id, expected] of Object.entries(fields)) {
-    const actual = staged[id];
-    if (String(actual) !== String(expected)) throw new Error(`A8 control ${id} staging drifted before commit: expected ${expected}, observed ${actual}.`);
+  const maxPasses = 3;
+  const passDiagnostics = [];
+
+  for (let pass = 1; pass <= maxPasses; pass += 1) {
+    const fieldAttempts = {};
+    for (const [id, value] of Object.entries(fields)) {
+      const stagedField = await stageA8Field(page, id, value);
+      fieldAttempts[id] = stagedField.attempts;
+    }
+    try {
+      await waitForConcurrentA8Staging(page, fields);
+    } catch (error) {
+      const diagnostic = await page.evaluate(({ fields, pass, error }) => ({
+        pass,
+        error,
+        values:Object.fromEntries(Object.entries(fields).map(([id, expected]) => {
+          const control = document.getElementById(id);
+          const actual = control && 'checked' in control && typeof expected === 'boolean'
+            ? Boolean(control.checked)
+            : control?.value;
+          return [id, actual ?? null];
+        })),
+        dirty_guard:window.__td613AshA8RecompileGuard?.current?.() || null,
+        map_return:window.__td613AshA8MapReturnHandshake?.current?.() || null
+      }), { fields, pass, error:String(error?.message || error) });
+      passDiagnostics.push(diagnostic);
+      await page.evaluate(diagnostic => { window.__td613A8LastGestureWitness = diagnostic; }, diagnostic);
+      if (pass < maxPasses) continue;
+      throw new Error(`A8 visible gesture failed concurrent staging after ${maxPasses} passes: ${JSON.stringify(passDiagnostics)}`);
+    }
+    const staged = await page.evaluate(fields => Object.fromEntries(Object.entries(fields).map(([id, expected]) => {
+      const control = document.getElementById(id);
+      const actual = control && 'checked' in control && typeof expected === 'boolean' ? Boolean(control.checked) : control?.value;
+      return [id, actual ?? null];
+    })), fields);
+    for (const [id, expected] of Object.entries(fields)) {
+      const actual = staged[id];
+      if (String(actual) !== String(expected)) throw new Error(`A8 control ${id} staging drifted before commit: expected ${expected}, observed ${actual}.`);
+    }
+    const button = page.locator(`#${buttonId}`);
+    if (!(await button.count())) throw new Error(`A8 action ${buttonId} is not connected.`);
+    await button.focus();
+    if (!(await button.evaluate(control => document.activeElement === control))) throw new Error(`A8 action ${buttonId} did not acquire gesture focus.`);
+    await button.click();
+    const witness = {
+      committed:true,
+      passes:pass,
+      staged_fields:Object.keys(fields).length,
+      field_attempts:fieldAttempts,
+      replacement_retry_observed:Object.values(fieldAttempts).some(attempts => attempts > 1),
+      visible_field_gestures:true,
+      concurrent_staging_verified:true,
+      primary_action_focused:true
+    };
+    await page.evaluate(witness => { window.__td613A8LastGestureWitness = witness; }, witness);
+    return witness;
   }
-  const button = page.locator(`#${buttonId}`);
-  if (!(await button.count())) throw new Error(`A8 action ${buttonId} is not connected.`);
-  await button.focus();
-  if (!(await button.evaluate(control => document.activeElement === control))) throw new Error(`A8 action ${buttonId} did not acquire gesture focus.`);
-  await button.click();
-  return { committed:true, staged_fields:Object.keys(fields).length, visible_field_gestures:true, concurrent_staging_verified:true, primary_action_focused:true };
+
+  throw new Error('A8 visible gesture exhausted without a commit.');
 }
 
 async function inspectA8(page) {
@@ -278,6 +375,9 @@ async function preserveFailure(page, label, consoleErrors, error) {
     a8_api:window.__td613AshA8CaseMap?.version || null,
     a8_handshake:window.__td613AshA8MapReturnHandshake?.current?.() || null,
     a8_handshake_posture:document.documentElement.dataset.ashA8MapReturnHandshake || null,
+    a8_dirty_guard:window.__td613AshA8RecompileGuard?.current?.() || null,
+    a8_last_field_witness:window.__td613A8LastFieldWitness || null,
+    a8_last_gesture_witness:window.__td613A8LastGestureWitness || null,
     a9_api:window.__td613AshA9Work?.version || null,
     a9_owner:window.__td613AshA9WorkspaceOwner?.version || null,
     premium_api:window.__td613AshPremiumUI?.version || null,
@@ -302,7 +402,7 @@ async function preserveFailure(page, label, consoleErrors, error) {
     primary_count:document.querySelectorAll('#ashA7CurrentPriority .ash-stage-primary-action').length
   }));
   await fs.writeFile(path.join(artifactDir, `${browserName}-${label}-failure.json`), JSON.stringify({
-    schema:'td613.ash.a7-a11-browser-failure/v0.2-visible-staging',
+    schema:'td613.ash.a7-a11-browser-failure/v0.3-replaceable-control-staging',
     browser:browserName,
     label,
     stages,
@@ -356,11 +456,12 @@ try {
   await runViewport('mobile-reduced', { width:390, height:844 }, 'reduce');
   const receipt = {
     ok:true,
-    schema:'td613.ash.a7-a11-browser-witness/v0.2-visible-staging',
+    schema:'td613.ash.a7-a11-browser-witness/v0.3-replaceable-control-staging',
     browser:browserName,
     stages,
     observations:receipts,
     visible_a8_field_gestures:true,
+    replaceable_control_retry_contract:true,
     concurrent_a8_staging_verified:true,
     canonical_map_dock_return:true,
     exact_map_return_receipt_required:true,
