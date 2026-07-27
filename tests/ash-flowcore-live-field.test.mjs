@@ -52,7 +52,7 @@ for (const marker of [
 assert.doesNotMatch(portal, /setInterval\s*\(|requestAnimationFrame\s*\(/);
 
 for (const marker of [
-  'td613.ash.flowcore-workspace-remount/v0.1-whole-instrument-owner',
+  'v0.1-whole-instrument-owner',
   "['whole-instrument-refreshed','flowcore-portal-loader-ready']",
   'portal.refresh() === true',
   'canonical_visible_field_count:visibleCanonicalFields().length',
@@ -65,6 +65,22 @@ assert.match(lifecycle, /ash-flowcore-workspace-remount\.js\?v=\$\{ASH_RELEASE_A
 
 for (const marker of ['v0.4-stage-owner-reacquisition','EXPLICIT_LEGACY_PRESENTATION','20260727-flowcore-stage-owner-v4']) assert.ok(portalLoader.includes(marker));
 assert.doesNotMatch(portalLoader, /setInterval\s*\(|requestAnimationFrame\s*\(/);
+
+for (const marker of [
+  'function replayCanonicalConsequence()',
+  'function ensureCanonicalPlayControl(canonical)',
+  "play.dataset.aiaPlay = 'true'",
+  "play.dataset.aiaPlayRecovery = 'LIVE_AIA_REPLAY_DELEGATE'",
+  'play.onclick = replayCanonicalConsequence',
+  "__td613AshLiveAIA?.replay",
+  "duplicate.remove()",
+  "canonical.querySelectorAll('[data-flowcore-ingress-play]').forEach(control => control.remove())",
+  "dataset.ashConsequencePlayOwner",
+  "dataset.ashConsequencePlayCount",
+  'DELEGATED_TO_LIVE_AIA_REPLAY',
+  '20260727-a15-convergence-present-state-v2'
+]) assert.ok(bridge.includes(marker), `Canonical Play recovery omitted ${marker}`);
+assert.doesNotMatch(bridge, /setInterval\s*\(|requestAnimationFrame\s*\(/);
 
 for (const marker of [
   'v0.4-pointer-governs-case-recovery-replay-stays-open','function capsuleRecoveryOpen()','RECOVERY_FILE_CHANGED',
@@ -92,4 +108,4 @@ for (const module of ['ash-session-boundary','ash-ingress-copy-spacing','ash-flo
 }
 assert.doesNotMatch(bridge, /import '\.\/ash-flowcore-ingress-portal\.js/);
 
-console.log('ash-flowcore-live-field.test.mjs passed with A15 registry-owned readiness and portal-internal canonical-field reacquisition');
+console.log('ash-flowcore-live-field.test.mjs passed with portal field reacquisition and delegated canonical Play restoration');
