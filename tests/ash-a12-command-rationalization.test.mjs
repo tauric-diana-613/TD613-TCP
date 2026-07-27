@@ -2,11 +2,15 @@ import assert from 'node:assert/strict';
 import fs from 'node:fs';
 
 const moduleSource = fs.readFileSync('app/dome-world/ash-a12-command-rationalization.js', 'utf8');
-const browserProbe = fs.readFileSync('scripts/ash-a12-browser-probe.mjs', 'utf8');
+const browserWrapper = fs.readFileSync('scripts/ash-a12-browser-probe.mjs', 'utf8');
+const browserCore = fs.readFileSync('scripts/ash-a12-browser-probe-stable-entry.mjs', 'utf8');
+const browserProbe = `${browserWrapper}\n${browserCore}`;
 const bridge = fs.readFileSync('app/dome-world/ash-workspace-bridge.js', 'utf8');
 const shell = fs.readFileSync('api/dome-world-shell.js', 'utf8');
+const workflow = fs.readFileSync('.github/workflows/td613-ci.yml', 'utf8');
 const index = fs.readFileSync('app/dome-world/docs/FLOWCORE_PEDAGOGUE_PROGRAM_INDEX_V0_1.md', 'utf8');
 const amendment = fs.readFileSync('app/dome-world/docs/ASH_KEEP_A12_A15_OPERATOR_AMENDMENT_V0_1.md', 'utf8');
+const deferral = fs.readFileSync('app/dome-world/docs/ASH_KEEP_A15_A19_MASS_EVICTION_DEFERRAL_AMENDMENT_V0_1.md', 'utf8');
 const vercel = JSON.parse(fs.readFileSync('vercel.json', 'utf8'));
 
 for (const phrase of ['Custody','Rooms','Routes','Rebuild Test','Draft & Hush','Save Points','Destination Handoff','Receipts','Cases & Profiles','Safe Harbor','What changed—and what did not']) {
@@ -33,16 +37,58 @@ assert.doesNotMatch(moduleSource, /indexedDB\.(?:open|deleteDatabase)/);
 assert.doesNotMatch(moduleSource, /setInterval\s*\(/);
 assert.doesNotMatch(moduleSource, /MutationObserver/);
 
+assert.match(browserWrapper, /ash-a12-browser-probe-stable-entry\.mjs/);
+assert.match(browserWrapper, /entry_convergence_rebind/);
+assert.match(browserWrapper, /td613\.ash\.a12-present-state-convergence-rebind\/v0\.1/);
+assert.match(browserWrapper, /convergence\.begin\(\{ detail:\{ case_id:current\.case_id, profile:'investigation' \} \}\)/);
+assert.match(browserWrapper, /pointer_concordant:pointer === current\.case_id/);
+assert.match(browserWrapper, /ENTRY_FIELD_QUIET_MS = 220/);
+assert.match(browserWrapper, /async function canonicalFieldDiagnostic\(page, label, error\)/);
+assert.match(browserWrapper, /td613\.ash\.a12-canonical-field-diagnostic\/v0\.1/);
+assert.match(browserWrapper, /window\.__td613AshFlowcoreIngressPortal\?\.current\?\.\(\)/);
+assert.match(browserWrapper, /window\.__td613AshFlowcoreWorkspaceRemount\?\.current\?\.\(\)/);
+assert.match(browserWrapper, /async function waitForCanonicalField\(page, label\)/);
+assert.match(browserWrapper, /ash-flowcore-field:not\(\.ash-flowcore-field--proxy\):not\(\[hidden\]\)/);
+assert.match(browserWrapper, /visible\.length !== 1/);
+assert.match(browserWrapper, /waitForCanonicalField\(page, 'entry-preflight-capsule'\)/);
+assert.match(browserWrapper, /route:\['choir','capsule'\]/);
+assert.match(browserWrapper, /waitForCanonicalField\(page, 'full-witness-capsule'\)/);
+assert.match(browserWrapper, /td613\.ash\.a12-entry-preflight\/v0\.4-present-state-canonical-field-diagnostic/);
+assert.match(browserWrapper, /td613\.ash\.a12-browser-witness\/v1\.3-a15-present-state-canonical-field-diagnostic/);
 assert.match(browserProbe, /td613\.ash\.demo-registry\/v0\.3-a15/);
 assert.doesNotMatch(browserProbe, /td613\.ash\.demo-registry\/v0\.[12]-(?:a13|a14)/);
-assert.match(browserProbe, /td613\.ash\.a12-browser-witness\/v0\.9-a15-registry-current/);
+assert.match(browserProbe, /TD613_A12_ENTRY_PREFLIGHT/);
+assert.match(browserProbe, /ENTRY_ATTEMPT_CEILING = 3/);
+assert.match(browserProbe, /ENTRY_QUIET_MS = 500/);
+assert.match(browserProbe, /__td613A12EntryStability/);
+assert.match(browserProbe, /__td613AshDemoEntryConvergence\?\.current/);
+assert.match(browserProbe, /localStorage\.getItem\('td613\.ash-keep\.current-case'\)/);
+assert.match(browserProbe, /pointer === current\.case_id/);
+assert.match(browserProbe, /convergence\?\.case_id === current\.case_id/);
+assert.match(browserProbe, /convergence\?\.posture === 'READY'/);
+assert.match(browserProbe, /convergence\?\.phase === 'VISIBLE'/);
+assert.match(browserProbe, /menu\?\.isConnected/);
+assert.match(browserProbe, /sheet\?\.isConnected/);
+assert.match(browserProbe, /A12 Investigation entry failed after/);
+assert.doesNotMatch(browserProbe, /localStorage\.(?:removeItem|clear)/);
+assert.doesNotMatch(browserProbe, /indexedDB\.(?:open|deleteDatabase)/);
+assert.doesNotMatch(browserProbe, /page\.evaluate\([^)]*localStorage\.clear/s);
+
+assert.match(workflow, /Aggregate changed-risk A8 witness across every engine/);
+assert.match(workflow, /TD613_ARTIFACT_DIR="artifacts\/ash-a12-\$browser" timeout --foreground --signal=INT --kill-after=15s 420s node scripts\/ash-a12-browser-probe\.mjs/);
+assert.doesNotMatch(workflow, /TD613_A12_ENTRY_PREFLIGHT='true'/);
 
 assert.match(bridge, /ash-a12-command-rationalization\.js\?v=20260724-a12-release-v1/);
 assert.match(bridge, /ash-profile-demo-hydration\.js\?v=20260726-a15-empirical-v1/);
 assert.match(shell, /ASH_LIFECYCLE_ASSET_EPOCH = '20260724-a12-release-v1'/);
 assert.match(shell, /ASH_MASS_EVICTION_EPOCH = 'td613\.ash\.cache-flush\/2026-07-24-a11-postclosure-v1'/);
+assert.doesNotMatch(shell, /2026-07-27-a15-postclosure-v1/);
 assert.doesNotMatch(shell, /a12.*cache-preflight/i);
 assert.match(index, /A12 · Command-menu rationalization and dead-control repair/);
-assert.match(amendment, /mass eviction.*A15 postclosure/is);
+assert.match(amendment, /single graph-wide mass eviction[\s\S]*reserved for \*\*A15 postclosure\*\*/);
+assert.match(deferral, /requirement that the eviction become the final mutation before the A15 production release is superseded/);
+assert.match(deferral, /reserved for \*\*A19 postclosure\*\*/);
+assert.match(deferral, /accepted mass-eviction epoch during A15 review release: `td613\.ash\.cache-flush\/2026-07-24-a11-postclosure-v1`/);
 assert.equal(vercel.git.deploymentEnabled, false);
-console.log('Ash A12 command rationalization contract passed under current A15 registry observation.');
+
+console.log('Ash A12 command rationalization contract passed under composed present-state diagnostics and A19 mass-eviction deferral.');
