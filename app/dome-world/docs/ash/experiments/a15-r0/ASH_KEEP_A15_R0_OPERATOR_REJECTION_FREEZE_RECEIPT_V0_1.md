@@ -2,11 +2,11 @@
 
 # Ash Keep A15-R0 Operator-Rejection Freeze Receipt v0.1
 
-**Namespace:** `U+10D613` — Tauric Diana 613  
-**Program:** `td613.ash.a15-r0.projection-selection/v0.1`  
-**Stage:** `R0.0 — Operator-rejection freeze`  
-**Base commit:** `90c2b2da6a925e24f4c4e270dbff2098e309ee9d`  
-**Date:** 2026-07-29  
+**Namespace:** `U+10D613` — Tauric Diana 613
+**Program:** `td613.ash.a15-r0.projection-selection/v0.1`
+**Stage:** `R0.0 — Operator-rejection freeze`
+**Base commit:** `90c2b2da6a925e24f4c4e270dbff2098e309ee9d`
+**Date:** 2026-07-29
 **Status:** IMPLEMENTED / DOCUMENTATION ONLY / HUMAN CLOSURE OPEN
 
 ## Determination preserved
