@@ -72,16 +72,24 @@ button.secondary {
 .skip-link {
   position: fixed;
   z-index: 10;
-  top: 0.5rem;
-  left: 0.5rem;
-  padding: 0.65rem 0.8rem;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  overflow: hidden;
+  clip-path: inset(50%);
+  white-space: nowrap;
   color: #000;
   background: #fff;
-  transform: translateY(-160%);
 }
 
 .skip-link:focus {
-  transform: translateY(0);
+  top: 0.5rem;
+  left: 0.5rem;
+  width: auto;
+  height: auto;
+  padding: 0.65rem 0.8rem;
+  overflow: visible;
+  clip-path: none;
 }
 
 .assay-header,

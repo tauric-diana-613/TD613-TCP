@@ -4,7 +4,7 @@ import { A15_R0_INTERACTION_OWNERS } from './interaction-owner-registry.js';
 import { createObservableEventRecorder } from './observable-event-recorder.js';
 import { validateGovernedTaskFixture } from './a15-r0-contracts.js';
 
-const FIXTURE_URL = '/dome-world/fixtures/a15-r0/governed-task-fixture-v01.json';
+const FIXTURE_URL = '../../fixtures/a15-r0/governed-task-fixture-v01.json';
 const ACTIVE_DESCRIPTOR_ID = 'A15_CONTROL';
 const TASK_ORDER = Object.freeze(['ARRIVE', 'BIND_REFERENCE', 'FORM_RELATION', 'COMPARE_ROUTE', 'PRESERVE', 'RETURN']);
 const ACTION_METHODS = Object.freeze({

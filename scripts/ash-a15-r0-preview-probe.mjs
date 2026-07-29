@@ -3,7 +3,8 @@ import path from 'node:path';
 import { chromium } from 'playwright';
 
 const base = String(process.env.TD613_BASE_URL || 'http://127.0.0.1:6130').replace(/\/+$/, '');
-const url = `${base}/dome-world/previews/a15-r0/`;
+const previewPath = process.env.TD613_A15_R0_PATH || '/app/dome-world/previews/a15-r0/index.html';
+const url = `${base}${previewPath.startsWith('/') ? previewPath : `/${previewPath}`}`;
 const artifactDir = process.env.TD613_ARTIFACT_DIR || 'artifacts/ash-a15-r0';
 await fs.mkdir(artifactDir, { recursive: true });
 
@@ -36,7 +37,27 @@ async function visibleText(page, text) {
   return page.getByText(text, { exact: true }).isVisible().catch(() => false);
 }
 
-const browser = await chromium.launch({ headless: true });
+async function installedChromiumExecutable() {
+  const candidates = process.platform === 'win32'
+    ? [
+        'C:\\Program Files\\Google\\Chrome\\Application\\chrome.exe',
+        'C:\\Program Files (x86)\\Google\\Chrome\\Application\\chrome.exe',
+        'C:\\Program Files\\Microsoft\\Edge\\Application\\msedge.exe',
+        'C:\\Program Files (x86)\\Microsoft\\Edge\\Application\\msedge.exe'
+      ]
+    : [];
+  for (const candidate of candidates) {
+    try {
+      await fs.access(candidate);
+      return candidate;
+    } catch {}
+  }
+  return null;
+}
+
+const executablePath = process.env.PLAYWRIGHT_CHROMIUM_EXECUTABLE_PATH || await installedChromiumExecutable();
+report.browser = executablePath ? 'installed-chromium' : 'playwright-managed-chromium';
+const browser = await chromium.launch({ headless: true, ...(executablePath ? { executablePath } : {}) });
 try {
   const page = await browser.newPage({
     viewport: { width: 1280, height: 820 },

@@ -62,7 +62,7 @@ assert.match(css, /@media \(max-width: 520px\)/);
 assert.match(css, /@media \(prefers-reduced-motion: reduce\)/);
 assert.match(css, /:focus-visible/);
 assert.match(css, /min-height: 48px/);
-assert.match(harness, /FIXTURE_URL = '\/dome-world\/fixtures\/a15-r0\/governed-task-fixture-v01\.json'/);
+assert.match(harness, /FIXTURE_URL = '\.\.\/\.\.\/fixtures\/a15-r0\/governed-task-fixture-v01\.json'/);
 assert.match(harness, /button\.addEventListener\('click'/);
 assert.doesNotMatch(harness, /stopImmediatePropagation|\.click\(\)|MutationObserver|indexedDB|localStorage|sessionStorage|caches\.|serviceWorker|sendBeacon|XMLHttpRequest/);
 assert.doesNotMatch(html, /href="[^"]*(?:minimal-ash|proto-loom)|button[^>]*(?:minimal|loom)/i);
