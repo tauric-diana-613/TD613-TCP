@@ -74,10 +74,10 @@ ash/
 
 - All 81 legacy documents moved by existing Git blob SHA.
 - Legacy document bytes were not rewritten during migration.
-- Exact old paths consumed by executable tests or scripts remain as temporary Git symlinks.
+- Exact old paths consumed by executable tests or scripts remain as 27 temporary Git symlinks.
 - Compatibility symlinks are not canonical document locations.
 - New references must use the organized paths.
-- `DOCS_MIGRATION_MAP_V0_1.json` records every old path, new path, preserved blob SHA, and compatibility posture.
+- `DOCS_MIGRATION_MAP_V0_1.json` records the original migration; `DOCS_MIGRATION_COMPATIBILITY_AMENDMENT_V0_1.json` records the one additional executable compatibility path discovered by the Draft static contract.
 
 ## Authority boundary
 
