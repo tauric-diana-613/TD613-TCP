@@ -36,7 +36,7 @@ export const A15_R0_AUTHORITY_FLAGS = Object.freeze({
 });
 
 const PLAIN_OBJECT = '[object Object]';
-const OPAQUE_ID = /^[a-z][a-z0-9_]{2,127}$/;
+const OPAQUE_ID = /^[a-z][a-z0-9_-]{2,127}$/;
 
 function assert(condition, message) {
   if (!condition) throw new Error(message);
@@ -46,6 +46,22 @@ function isPlainRecord(value) {
   if (Object.prototype.toString.call(value) !== PLAIN_OBJECT) return false;
   const prototype = Object.getPrototypeOf(value);
   return prototype === Object.prototype || prototype === null;
+}
+
+function assertJsonSafe(value, label = 'Value', seen = new WeakSet()) {
+  if (value === null || ['string', 'number', 'boolean'].includes(typeof value)) return;
+  if (Array.isArray(value)) {
+    if (seen.has(value)) throw new Error(`${label} may not contain cycles.`);
+    seen.add(value);
+    value.forEach((entry, index) => assertJsonSafe(entry, `${label}[${index}]`, seen));
+    seen.delete(value);
+    return;
+  }
+  assert(isPlainRecord(value), `${label} must contain only JSON-safe plain records.`);
+  if (seen.has(value)) throw new Error(`${label} may not contain cycles.`);
+  seen.add(value);
+  for (const [key, entry] of Object.entries(value)) assertJsonSafe(entry, `${label}.${key}`, seen);
+  seen.delete(value);
 }
 
 function assertPlainRecord(value, label) {
@@ -96,6 +112,7 @@ function assertAuthorityClosed(authority, label = 'Authority') {
 
 export function validateGovernedTaskFixture(value) {
   const fixture = assertPlainRecord(value, 'Governed task fixture');
+  assertJsonSafe(fixture, 'Governed task fixture');
   assert(fixture.schema === A15_R0_SCHEMAS.fixture, 'Unsupported governed task fixture schema.');
   assertOpaqueId(fixture.fixture_id, 'Fixture ID');
   assertOpaqueId(fixture.case_id, 'Case ID');
