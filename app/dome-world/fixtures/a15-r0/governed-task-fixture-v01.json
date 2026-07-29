@@ -1,0 +1,142 @@
+{
+  "schema": "td613.ash.a15-r0.governed-task-fixture/v0.1",
+  "fixture_id": "a15r0_fixture_synthetic_research_v01",
+  "namespace": {
+    "codepoint": "U+10D613",
+    "surrogate_pair": "\\uDBF5\\uDE13",
+    "meaning": "TD613 = Tauric Diana 613"
+  },
+  "source_status": "SIMULATED",
+  "sensor_id": "simulated-fixture",
+  "authority_class": "A2_DERIVATIONAL",
+  "case_id": "case_a15r0_synthetic",
+  "profile": "research",
+  "title": "Synthetic route comparison",
+  "created_at": "2026-07-29T12:00:00.000Z",
+  "local_source": {
+    "reference_id": "source_synthetic_note",
+    "label": "Synthetic field note S-01",
+    "posture": "DECLARED_REFERENCE_ONLY",
+    "raw_bytes_local": true,
+    "raw_bytes_transport_authorized": false,
+    "external_content": false
+  },
+  "question": {
+    "node_id": "question_route_effect",
+    "label": "Which bounded route changes what a reader can observe?"
+  },
+  "case_anchor": {
+    "node_id": "anchor_synthetic_case",
+    "label": "Synthetic research case"
+  },
+  "rooms": [
+    {
+      "id": "room_source",
+      "label": "Source",
+      "color": "#75d7cb",
+      "notes": "Synthetic reference posture only."
+    },
+    {
+      "id": "room_question",
+      "label": "Question",
+      "color": "#d8bc73",
+      "notes": "The bounded question under comparison."
+    },
+    {
+      "id": "room_routes",
+      "label": "Routes",
+      "color": "#b9a5db",
+      "notes": "Declared route observations, not external knowledge."
+    }
+  ],
+  "route_rules": [
+    {
+      "route_id": "route_a",
+      "allowed_room_ids": [
+        "room_source",
+        "room_question"
+      ],
+      "local_link_keys": [
+        "anchor_synthetic_case"
+      ],
+      "allowed_node_types": [
+        "source",
+        "claim"
+      ],
+      "time_posture": "FIXTURE_CLOCK"
+    },
+    {
+      "route_id": "route_b",
+      "allowed_room_ids": [
+        "room_source",
+        "room_routes"
+      ],
+      "local_link_keys": [
+        "question_route_effect"
+      ],
+      "allowed_node_types": [
+        "source",
+        "entity"
+      ],
+      "time_posture": "FIXTURE_CLOCK"
+    }
+  ],
+  "route_observations": {
+    "route_a": {
+      "label": "Question-facing route",
+      "proposed_references": [
+        "source_synthetic_note",
+        "question_route_effect"
+      ],
+      "missingness": [
+        "case anchor withheld",
+        "external response unavailable"
+      ]
+    },
+    "route_b": {
+      "label": "Anchor-facing route",
+      "proposed_references": [
+        "source_synthetic_note",
+        "anchor_synthetic_case"
+      ],
+      "missingness": [
+        "question withheld",
+        "external response unavailable"
+      ]
+    }
+  },
+  "allowed_action_sequence": [
+    "ARRIVE",
+    "BIND_REFERENCE",
+    "FORM_RELATION",
+    "COMPARE_ROUTE",
+    "PRESERVE",
+    "RETURN"
+  ],
+  "action_times": {
+    "ARRIVE": "2026-07-29T12:00:00.000Z",
+    "BIND_REFERENCE": "2026-07-29T12:01:00.000Z",
+    "FORM_RELATION": "2026-07-29T12:02:00.000Z",
+    "COMPARE_ROUTE": "2026-07-29T12:03:00.000Z",
+    "PRESERVE": "2026-07-29T12:04:00.000Z",
+    "RETURN": "2026-07-29T12:05:00.000Z",
+    "REST": "2026-07-29T12:06:00.000Z",
+    "RESET": "2026-07-29T12:07:00.000Z"
+  },
+  "claim_ceiling": [
+    "Synthetic preview observations only.",
+    "No intent, authorship, causation, complete reconstruction, external return, release, transport, or closure is established."
+  ],
+  "authority": {
+    "automatic_ash_action": false,
+    "automatic_relation_binding": false,
+    "automatic_comparison": false,
+    "automatic_save": false,
+    "automatic_handoff": false,
+    "automatic_export": false,
+    "automatic_release": false,
+    "automatic_closure": false,
+    "human_review_required": true,
+    "human_closure_required": true
+  }
+}
