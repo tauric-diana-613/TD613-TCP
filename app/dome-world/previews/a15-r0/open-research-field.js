@@ -1,4 +1,4 @@
-export const A15_R0_OPEN_FIELD_SCHEMA = 'td613.ash.a15-r0.open-research-field/v0.1';
+export const A15_R0_OPEN_FIELD_SCHEMA = 'td613.ash.a15-r0.open-research-field/v0.2';
 
 const round = value => Number(value.toFixed(6));
 
@@ -17,6 +17,31 @@ function combinations(values, size, start = 0, prefix = [], output = []) {
     prefix.pop();
   }
   return output;
+}
+
+export function matrixRank(matrix, tolerance = 1e-10) {
+  const rows = matrix.map(row => row.map(Number));
+  if (!rows.length || !rows[0]?.length) return 0;
+  const width = rows[0].length;
+  if (rows.some(row => row.length !== width)) throw new TypeError('Matrix rows must have equal width.');
+  let rank = 0;
+  for (let column = 0; column < width && rank < rows.length; column += 1) {
+    let pivot = rank;
+    for (let row = rank + 1; row < rows.length; row += 1) {
+      if (Math.abs(rows[row][column]) > Math.abs(rows[pivot][column])) pivot = row;
+    }
+    if (Math.abs(rows[pivot][column]) <= tolerance) continue;
+    [rows[rank], rows[pivot]] = [rows[pivot], rows[rank]];
+    const divisor = rows[rank][column];
+    for (let c = column; c < width; c += 1) rows[rank][c] /= divisor;
+    for (let row = 0; row < rows.length; row += 1) {
+      if (row === rank) continue;
+      const factor = rows[row][column];
+      for (let c = column; c < width; c += 1) rows[row][c] -= factor * rows[rank][c];
+    }
+    rank += 1;
+  }
+  return rank;
 }
 
 export function mutualInformationBits(samples) {
@@ -57,6 +82,8 @@ export const OBSERVABILITY_MODELS = Object.freeze([
   Object.freeze({
     model_id: 'ACTIVE_BOUNDARY',
     label: 'Active boundary',
+    policy_family: 'ACTIVE',
+    observer_model: 'CONTENT',
     claim: 'Synthetic contrastive defense emits strategy-specific observations.',
     samples: Object.freeze(repeatPairs([
       ['S_A', 'BLOCK_A'],
@@ -67,6 +94,8 @@ export const OBSERVABILITY_MODELS = Object.freeze([
   Object.freeze({
     model_id: 'MINIMAL_DISCLOSURE',
     label: 'Minimal disclosure',
+    policy_family: 'MINIMAL',
+    observer_model: 'CONTENT',
     claim: 'Two strategies collapse to one observable response while one remains distinguishable.',
     samples: Object.freeze(repeatPairs([
       ['S_A', 'NARROW_ACK'],
@@ -77,6 +106,8 @@ export const OBSERVABILITY_MODELS = Object.freeze([
   Object.freeze({
     model_id: 'NULL_CONTENT',
     label: 'Null content channel',
+    policy_family: 'NULL',
+    observer_model: 'CONTENT_ONLY',
     claim: 'The modeled content channel emits the same symbol for every strategy.',
     samples: Object.freeze(repeatPairs([
       ['S_A', 'NO_EMISSION'],
@@ -87,6 +118,8 @@ export const OBSERVABILITY_MODELS = Object.freeze([
   Object.freeze({
     model_id: 'NULL_WITH_SIDE_CHANNEL',
     label: 'Null content with side channel',
+    policy_family: 'NULL',
+    observer_model: 'CONTENT_PLUS_TIMING_CLASS',
     claim: 'Content remains silent while a modeled timing class restores strategy information.',
     samples: Object.freeze(repeatPairs([
       ['S_A', 'NO_EMISSION_FAST'],
@@ -100,19 +133,100 @@ export function runObservabilityAssay() {
   const models = OBSERVABILITY_MODELS.map(model => ({
     model_id: model.model_id,
     label: model.label,
+    policy_family: model.policy_family,
+    observer_model: model.observer_model,
     claim: model.claim,
     mutual_information_bits: mutualInformationBits(model.samples),
     source_status: 'SIMULATED',
     authority_class: 'A2_DERIVATIONAL'
   }));
+  const nullPolicy = models.filter(model => model.policy_family === 'NULL');
+  const nullLeakages = nullPolicy.map(model => model.mutual_information_bits);
   return Object.freeze({
-    schema: 'td613.ash.a15-r0.observability-assay/v0.1',
+    schema: 'td613.ash.a15-r0.observability-assay/v0.2',
     source_status: 'SIMULATED',
     sensor_id: 'deterministic-open-field-model',
     authority_class: 'A2_DERIVATIONAL',
     models,
-    finding: 'Zero-content emission minimizes leakage only inside the modeled content channel; modeled side channels can reverse that result.',
+    null_policy_best_case_information_bits: Math.min(...nullLeakages),
+    null_policy_worst_case_information_bits: Math.max(...nullLeakages),
+    null_policy_observer_model_gap_bits: round(Math.max(...nullLeakages) - Math.min(...nullLeakages)),
+    observer_family_bounded: true,
+    finding: 'Zero-content emission minimizes leakage only inside the modeled content channel; expanding the observer model to include a timing class reverses that result.',
     universal_zero_defense_claim_supported: false
+  });
+}
+
+export function runRankLeakageNonEquivalenceAssay() {
+  const scalarProjection = [[1, 2, 3]];
+  const fullRankProjection = [
+    [1, 0, 0],
+    [0, 1, 0],
+    [0, 0, 1]
+  ];
+  const scalarSamples = repeatPairs([
+    ['S_A', '0'],
+    ['S_B', '1'],
+    ['S_C', '2']
+  ]);
+  const independentVectorSamples = ['S_A', 'S_B', 'S_C'].flatMap(strategy =>
+    ['V0', 'V1', 'V2'].flatMap(observation =>
+      Array.from({ length: 3 }, () => ({ strategy, observation }))
+    )
+  );
+  const cases = [
+    {
+      case_id: 'RANK1_DISTINGUISHABLE_SCALAR',
+      structural_rank: matrixRank(scalarProjection),
+      mutual_information_bits: mutualInformationBits(scalarSamples),
+      channel_posture: 'deterministic scalar observation distinguishes all three strategies'
+    },
+    {
+      case_id: 'RANK3_OBSERVER_INDEPENDENT',
+      structural_rank: matrixRank(fullRankProjection),
+      mutual_information_bits: mutualInformationBits(independentVectorSamples),
+      channel_posture: 'three-dimensional structural projection followed by observer-independent synthetic channel'
+    }
+  ];
+  return Object.freeze({
+    schema: 'td613.ash.a15-r0.rank-leakage-non-equivalence/v0.1',
+    source_status: 'SIMULATED',
+    authority_class: 'A2_DERIVATIONAL',
+    cases,
+    rank_orders_leakage: false,
+    rank_is_secrecy_metric: false,
+    finding: 'Structural projection rank and observer mutual information are non-equivalent: one scalar can distinguish multiple states, while a higher-rank structure can yield zero information under an independent observer channel.'
+  });
+}
+
+export function runJoiningKeySynergyAssay() {
+  const rows = [
+    { strategy: 'S0', a: '0', b: '0' },
+    { strategy: 'S0', a: '1', b: '1' },
+    { strategy: 'S1', a: '0', b: '1' },
+    { strategy: 'S1', a: '1', b: '0' }
+  ].flatMap(row => Array.from({ length: 8 }, () => ({ ...row })));
+  const featureA = rows.map(row => ({ strategy: row.strategy, observation: row.a }));
+  const featureB = rows.map(row => ({ strategy: row.strategy, observation: row.b }));
+  const joint = rows.map(row => ({ strategy: row.strategy, observation: `${row.a}:${row.b}` }));
+  const informationA = mutualInformationBits(featureA);
+  const informationB = mutualInformationBits(featureB);
+  const informationJoint = mutualInformationBits(joint);
+  const synergyProxy = round(informationJoint - informationA - informationB);
+  return Object.freeze({
+    schema: 'td613.ash.a15-r0.joining-key-synergy-assay/v0.1',
+    source_status: 'SIMULATED',
+    authority_class: 'A2_DERIVATIONAL',
+    construction: 'balanced XOR fixture',
+    feature_a_information_bits: informationA,
+    feature_b_information_bits: informationB,
+    joint_information_bits: informationJoint,
+    joining_synergy_proxy_bits: synergyProxy,
+    positive_joining_synergy: synergyProxy > 0,
+    partial_information_decomposition_claim: false,
+    intrinsic_curvature_claim: false,
+    finding: 'Two individually uninformative synthetic features become fully informative when joined. Marginal safety therefore cannot stand in for joint reconstruction safety.',
+    caveat: 'The excess-information quantity is a bounded synthetic synergy proxy, not a complete partial-information decomposition and not an intrinsic geometric curvature measurement.'
   });
 }
 
@@ -201,13 +315,14 @@ export function runReconstructionAssay({ k = 4, epsilon = 0.2 } = {}) {
   const subsets = combinations(RECONSTRUCTION_FRAGMENTS, k);
   const successful = subsets.filter(subset => (1 - topologySimilarity(reconstructTopology(subset))) <= epsilon).length;
   const rho = subsets.length ? successful / subsets.length : 0;
-  const admissibilityScores = transforms
-    .filter(result => result.operator_id !== 'IDENTITY')
-    .map(result => result.topology_similarity);
+  const admissibilityResults = transforms.filter(result => result.operator_id !== 'IDENTITY');
+  const admissibilityScores = admissibilityResults.map(result => result.topology_similarity);
   const ari = admissibilityScores.reduce((sum, value) => sum + value, 0) / admissibilityScores.length;
+  const floor = Math.min(...admissibilityScores);
+  const worst = admissibilityResults.find(result => result.topology_similarity === floor);
 
   return Object.freeze({
-    schema: 'td613.ash.a15-r0.reconstruction-assay/v0.1',
+    schema: 'td613.ash.a15-r0.reconstruction-assay/v0.2',
     source_status: 'SIMULATED',
     sensor_id: 'deterministic-open-field-model',
     authority_class: 'A2_DERIVATIONAL',
@@ -217,8 +332,11 @@ export function runReconstructionAssay({ k = 4, epsilon = 0.2 } = {}) {
     successful_subsets: successful,
     reconstructive_redundancy_rho: round(rho),
     anisotropic_reconstruction_invariance: round(ari),
+    anisotropic_reconstruction_floor: round(floor),
+    worst_case_transform: worst.operator_id,
+    all_nonidentity_transforms_within_epsilon: admissibilityResults.every(result => result.within_epsilon),
     transforms,
-    caveat: 'These scores characterize this deterministic synthetic topology only; they do not establish robustness of an external archive.'
+    caveat: 'Mean ARI cannot erase a failing transform. These scores characterize this deterministic synthetic topology only; they do not establish robustness of an external archive.'
   });
 }
 
@@ -253,13 +371,18 @@ export function runOpenResearchField() {
     human_selection_required: true,
     observability: runObservabilityAssay(),
     directional_exposure: runDirectionalExposureAssay(),
+    rank_leakage_non_equivalence: runRankLeakageNonEquivalenceAssay(),
+    joining_key_synergy: runJoiningKeySynergyAssay(),
     reconstruction: runReconstructionAssay(),
     claim_ceiling: [
       'synthetic assay only',
       'no claim about hidden platform internals',
       'no universal zero-defense theorem',
       'no Shannon-capacity measurement',
+      'structural rank is not a secrecy metric',
+      'joining synergy proxy is not intrinsic curvature or full PID',
       'no claim that arbitrary fragments reconstruct a corpus',
+      'mean ARI cannot erase a failing transform',
       'no production cutover or deployment authority'
     ]
   });
