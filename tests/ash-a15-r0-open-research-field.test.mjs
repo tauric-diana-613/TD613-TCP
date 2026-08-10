@@ -21,7 +21,7 @@ import {
 const html = fs.readFileSync('app/dome-world/previews/a15-r0/index.html', 'utf8');
 const modelSource = fs.readFileSync('app/dome-world/previews/a15-r0/open-research-field.js', 'utf8');
 const uiSource = fs.readFileSync('app/dome-world/previews/a15-r0/open-research-field-ui.js', 'utf8');
-const schema = JSON.parse(fs.readFileSync('app/dome-world/schemas/a15-r0/open-research-field-v01.schema.json', 'utf8'));
+const schema = JSON.parse(fs.readFileSync('app/dome-world/schemas/a15-r0/open-research-field-v02.schema.json', 'utf8'));
 
 assert.equal(A15_R0_OPEN_FIELD_SCHEMA, 'td613.ash.a15-r0.open-research-field/v0.2');
 assert.equal(schema.$id, A15_R0_OPEN_FIELD_SCHEMA);
