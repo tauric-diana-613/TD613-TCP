@@ -23,17 +23,45 @@ function renderObservability(result) {
     host.append(metric(
       model.label,
       `${model.mutual_information_bits} bits`,
-      model.claim
+      `${model.observer_model} · ${model.claim}`
     ));
   }
+  byId('fieldObserverRobustness').replaceChildren(
+    metric('Null best case', `${result.null_policy_best_case_information_bits} bits`, 'Leakage under the content-only observer model.'),
+    metric('Null worst case', `${result.null_policy_worst_case_information_bits} bits`, 'Leakage across the declared null-policy observer family.'),
+    metric('Observer gap', `${result.null_policy_observer_model_gap_bits} bits`, 'Sensitivity to observer-model expansion; the family remains deliberately bounded.')
+  );
+}
+
+function renderRankLeakage(result) {
+  const host = byId('fieldRankLeakage');
+  host.replaceChildren();
+  for (const item of result.cases) {
+    host.append(metric(
+      item.case_id.replaceAll('_', ' '),
+      `rank ${item.structural_rank} · ${item.mutual_information_bits} bits`,
+      item.channel_posture
+    ));
+  }
+}
+
+function renderJoiningSynergy(result) {
+  byId('fieldJoiningSynergy').replaceChildren(
+    metric('I(S; A)', `${result.feature_a_information_bits} bits`, 'Marginal information carried by synthetic feature A.'),
+    metric('I(S; B)', `${result.feature_b_information_bits} bits`, 'Marginal information carried by synthetic feature B.'),
+    metric('I(S; A,B)', `${result.joint_information_bits} bits`, 'Information after the two synthetic features are joined.'),
+    metric('Synergy proxy', `${result.joining_synergy_proxy_bits} bits`, result.finding)
+  );
+  byId('fieldJoiningCaveat').textContent = result.caveat;
 }
 
 function renderReconstruction(result) {
   const host = byId('fieldReconstruction');
   host.replaceChildren(
     metric('ρ(k, ε)', result.reconstructive_redundancy_rho, `${result.successful_subsets}/${result.subset_count} sampled-size combinations reconstruct within ε=${result.epsilon}.`),
-    metric('ARI', result.anisotropic_reconstruction_invariance, 'Mean topology similarity after the declared non-identity admissibility transforms.'),
-    metric('k', result.k, 'Subset size used for the exhaustive finite-combination assay.')
+    metric('ARI mean', result.anisotropic_reconstruction_invariance, 'Mean topology similarity after the declared non-identity admissibility transforms.'),
+    metric('ARI floor', result.anisotropic_reconstruction_floor, `Worst declared transform: ${result.worst_case_transform}. Mean performance cannot erase this floor.`),
+    metric('All transforms pass', result.all_nonidentity_transforms_within_epsilon, 'A Golden Egg criterion cannot promote from the mean while any declared non-identity transform remains outside ε.')
   );
 }
 
@@ -70,6 +98,8 @@ function startOpenField() {
   const result = runOpenResearchField();
   renderObservability(result.observability);
   renderDirectionalExposure(result.directional_exposure);
+  renderRankLeakage(result.rank_leakage_non_equivalence);
+  renderJoiningSynergy(result.joining_key_synergy);
   renderReconstruction(result.reconstruction);
   renderTransformTable(result.reconstruction);
   byId('fieldRaw').textContent = pretty(result);
