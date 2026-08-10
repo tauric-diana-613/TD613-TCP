@@ -1,3 +1,4 @@
+import { runBoundedTransformationEnvelope } from './bounded-transformation-envelope.js';
 import { runOpenResearchField } from './open-research-field.js';
 
 const byId = id => document.getElementById(id);
@@ -94,15 +95,33 @@ function renderDirectionalExposure(result) {
   );
 }
 
+function renderEnvelope(result) {
+  byId('fieldEnvelopeStatus').textContent = result.status;
+  byId('fieldEnvelopeFinding').textContent = result.finding;
+  const host = byId('fieldEnvelopeGates');
+  host.replaceChildren();
+  for (const gate of result.metric_gates) {
+    host.append(metric(
+      gate.gate_id.replaceAll('_', ' '),
+      gate.pass ? 'PASS' : 'HELD',
+      `${gate.value} ${gate.comparator} ${gate.threshold} · ${gate.quantity}`
+    ));
+  }
+  host.append(metric('Evidence class', result.evidence_gate.pass ? 'PASS' : 'HELD', `${result.evidence_gate.observed_source_status} · requires ${result.evidence_gate.required_posture}`));
+  host.append(metric('Human closure', result.human_gate.pass ? 'PASS' : 'HELD', 'Promotion authority remains human-gated and is not exercised by this preview.'));
+}
+
 function startOpenField() {
   const result = runOpenResearchField();
+  const envelope = runBoundedTransformationEnvelope({ field: result });
   renderObservability(result.observability);
   renderDirectionalExposure(result.directional_exposure);
   renderRankLeakage(result.rank_leakage_non_equivalence);
   renderJoiningSynergy(result.joining_key_synergy);
   renderReconstruction(result.reconstruction);
   renderTransformTable(result.reconstruction);
-  byId('fieldRaw').textContent = pretty(result);
+  renderEnvelope(envelope);
+  byId('fieldRaw').textContent = pretty({ field: result, bounded_transformation_envelope: envelope });
   byId('fieldFinding').textContent = result.observability.finding;
   byId('fieldClaimCeiling').replaceChildren(...result.claim_ceiling.map(value => {
     const item = document.createElement('li');
@@ -110,9 +129,12 @@ function startOpenField() {
     return item;
   }));
   document.documentElement.dataset.a15R0OpenField = 'ready';
+  document.documentElement.dataset.a15R0Envelope = envelope.status.toLowerCase();
   window.dispatchEvent(new CustomEvent('td613:ash:a15-r0-open-field-ready', {
     detail: {
       schema: result.schema,
+      envelope_schema: envelope.schema,
+      envelope_status: envelope.status,
       source_status: result.source_status,
       production_mutated: false,
       external_transmission: false,
