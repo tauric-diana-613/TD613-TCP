@@ -111,6 +111,11 @@ jobs:
           node --check app/dome-world/ash-a15-empirical-profile-journeys.js
           node --check scripts/ash-a15-empirical-profile-journeys-browser-probe.mjs
           node tests/ash-a15-empirical-profile-journeys.test.mjs
+      - name: Validate Ash A15-R0 open research field
+        run: |
+          node --check app/dome-world/previews/a15-r0/open-research-field.js
+          node --check app/dome-world/previews/a15-r0/open-research-field-ui.js
+          node tests/ash-a15-r0-open-research-field.test.mjs
       - name: Validate Ash demo hydration surfaces
         run: |
           node tests/ash-research-ux-rehydration.test.mjs
