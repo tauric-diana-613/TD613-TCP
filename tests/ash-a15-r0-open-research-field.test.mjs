@@ -21,18 +21,26 @@ import {
   runReconstructionAssay,
   topologySimilarity
 } from '../app/dome-world/previews/a15-r0/open-research-field.js';
+import {
+  OPEN_RESEARCH_HYPOTHESIS_REGISTRY_SCHEMA,
+  buildOpenResearchHypothesisRegistry
+} from '../app/dome-world/previews/a15-r0/open-research-hypothesis-registry.js';
 
 const html = fs.readFileSync('app/dome-world/previews/a15-r0/index.html', 'utf8');
 const modelSource = fs.readFileSync('app/dome-world/previews/a15-r0/open-research-field.js', 'utf8');
 const envelopeSource = fs.readFileSync('app/dome-world/previews/a15-r0/bounded-transformation-envelope.js', 'utf8');
+const hypothesisSource = fs.readFileSync('app/dome-world/previews/a15-r0/open-research-hypothesis-registry.js', 'utf8');
 const uiSource = fs.readFileSync('app/dome-world/previews/a15-r0/open-research-field-ui.js', 'utf8');
 const schema = JSON.parse(fs.readFileSync('app/dome-world/schemas/a15-r0/open-research-field-v02.schema.json', 'utf8'));
 const envelopeSchema = JSON.parse(fs.readFileSync('app/dome-world/schemas/a15-r0/bounded-transformation-envelope-v01.schema.json', 'utf8'));
+const hypothesisSchema = JSON.parse(fs.readFileSync('app/dome-world/schemas/a15-r0/open-research-hypothesis-registry-v01.schema.json', 'utf8'));
 
 assert.equal(A15_R0_OPEN_FIELD_SCHEMA, 'td613.ash.a15-r0.open-research-field/v0.2');
 assert.equal(schema.$id, A15_R0_OPEN_FIELD_SCHEMA);
 assert.equal(BOUNDED_TRANSFORMATION_ENVELOPE_SCHEMA, 'td613.ash.a15-r0.bounded-transformation-envelope/v0.1');
 assert.equal(envelopeSchema.$id, BOUNDED_TRANSFORMATION_ENVELOPE_SCHEMA);
+assert.equal(OPEN_RESEARCH_HYPOTHESIS_REGISTRY_SCHEMA, 'td613.ash.a15-r0.open-research-hypothesis-registry/v0.1');
+assert.equal(hypothesisSchema.$id, OPEN_RESEARCH_HYPOTHESIS_REGISTRY_SCHEMA);
 assert.equal(OBSERVABILITY_MODELS.length, 4);
 assert.equal(Object.keys(ADMISSIBILITY_TRANSFORMS).length, 6);
 assert.equal(RECONSTRUCTION_FRAGMENTS.length, 9);
@@ -156,6 +164,32 @@ assert.equal(permissiveSyntheticEnvelope.status, 'HELD');
 assert.equal(permissiveSyntheticEnvelope.golden_egg_earned, false);
 assert.throws(() => runBoundedTransformationEnvelope({ field, joining_synergy_bits: -1 }), /finite non-negative/);
 
+const hypothesisRegistry = buildOpenResearchHypothesisRegistry({ field, envelope });
+const hypotheses = Object.fromEntries(hypothesisRegistry.hypotheses.map(item => [item.hypothesis_id, item]));
+assert.equal(hypothesisRegistry.schema, OPEN_RESEARCH_HYPOTHESIS_REGISTRY_SCHEMA);
+assert.equal(hypothesisRegistry.hypotheses.length, 8);
+assert.equal(hypothesisRegistry.closed_by_counterexample.length, 4);
+assert.equal(hypothesisRegistry.research_frontier.length, 3);
+assert.equal(hypothesisRegistry.sequence_authority, false);
+assert.equal(hypothesisRegistry.next_stage, null);
+assert.deepEqual(hypothesisRegistry.stage_unlocks, []);
+assert.equal(hypothesisRegistry.promotion_authority, false);
+assert.equal(hypothesisRegistry.human_closure_required, true);
+assert.ok(hypothesisRegistry.hypotheses.every(item => item.falsifier.length > 0));
+assert.equal(hypotheses.H_OBSERVER_INVARIANT_NULL.status, 'FALSIFIED_IN_SYNTHETIC_FIELD');
+assert.equal(hypotheses.H_RANK_ORDERS_LEAKAGE.status, 'FALSIFIED_IN_SYNTHETIC_FIELD');
+assert.equal(hypotheses.H_MARGINAL_SAFETY_IMPLIES_JOINT_SAFETY.status, 'FALSIFIED_IN_SYNTHETIC_FIELD');
+assert.equal(hypotheses.H_MEAN_ARI_SUFFICIENT.status, 'FALSIFIED_IN_SYNTHETIC_FIELD');
+assert.equal(hypotheses.H_BOUNDED_ENVELOPE_PREVENTS_SELF_PROMOTION.status, 'SUPPORTED_BY_SYNTHETIC_CONTRACT');
+assert.equal(hypotheses.H_JOINING_SYNERGY_GENERALIZES.status, 'OPEN_UNMEASURED');
+assert.equal(hypotheses.H_INFORMATION_CURVATURE_GEOMETRIC.status, 'OPEN_UNMEASURED');
+assert.equal(hypotheses.H_GOLDEN_EGG_BOUNDED_REGION.status, 'OPEN_RESEARCH_PROGRAM');
+assert.deepEqual(hypothesisRegistry.research_frontier, [
+  'H_JOINING_SYNERGY_GENERALIZES',
+  'H_INFORMATION_CURVATURE_GEOMETRIC',
+  'H_GOLDEN_EGG_BOUNDED_REGION'
+]);
+
 for (const marker of [
   'Open research field · noncanonical',
   'Competing hypotheses over one fixed substrate',
@@ -166,19 +200,23 @@ for (const marker of [
   'Admissibility-robust reconstructibility',
   'Bounded transformation envelope · criterion research only',
   'The Golden Egg candidate is allowed to fail',
+  'Hypothesis frontier · no stage unlocks',
+  'Research advances by falsifier, not nextness',
+  'next_stage = null',
+  'sequence_authority = false',
   'Falsification posture',
   'grants no production, deployment, or Golden Egg authority'
 ]) assert.ok(html.includes(marker), `Open field omitted visible marker: ${marker}`);
 
 assert.match(html, /open-research-field\.css/);
 assert.match(html, /open-research-field-ui\.js/);
-for (const source of [modelSource, envelopeSource, uiSource]) {
+for (const source of [modelSource, envelopeSource, hypothesisSource, uiSource]) {
   assert.doesNotMatch(source, /fetch\s*\(|XMLHttpRequest|sendBeacon|WebSocket|EventSource|indexedDB|localStorage|sessionStorage|serviceWorker|caches\./);
 }
 
 console.log(JSON.stringify({
   ok: true,
-  schema: 'td613.ash.a15-r0.open-research-field-test/v0.3',
+  schema: 'td613.ash.a15-r0.open-research-field-test/v0.4',
   observability_models: observability.models.length,
   null_content_bits: byId.NULL_CONTENT.mutual_information_bits,
   null_side_channel_bits: byId.NULL_WITH_SIDE_CHANNEL.mutual_information_bits,
@@ -194,6 +232,11 @@ console.log(JSON.stringify({
   envelope_metric_gates_pass: envelope.all_declared_metric_gates_pass,
   permissive_metrics_still_promote: permissiveSyntheticEnvelope.all_promotion_gates_pass,
   golden_egg_earned: envelope.golden_egg_earned,
+  hypotheses: hypothesisRegistry.hypotheses.length,
+  counterexample_closures: hypothesisRegistry.closed_by_counterexample.length,
+  frontier: hypothesisRegistry.research_frontier.length,
+  next_stage: hypothesisRegistry.next_stage,
+  sequence_authority: hypothesisRegistry.sequence_authority,
   production_mutated: false,
   external_transmission: false,
   human_selection_required: true
