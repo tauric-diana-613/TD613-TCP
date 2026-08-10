@@ -1,6 +1,10 @@
 import assert from 'node:assert/strict';
 import fs from 'node:fs';
 import {
+  BOUNDED_TRANSFORMATION_ENVELOPE_SCHEMA,
+  runBoundedTransformationEnvelope
+} from '../app/dome-world/previews/a15-r0/bounded-transformation-envelope.js';
+import {
   ADMISSIBILITY_TRANSFORMS,
   A15_R0_OPEN_FIELD_SCHEMA,
   CANONICAL_TOPOLOGY,
@@ -20,11 +24,15 @@ import {
 
 const html = fs.readFileSync('app/dome-world/previews/a15-r0/index.html', 'utf8');
 const modelSource = fs.readFileSync('app/dome-world/previews/a15-r0/open-research-field.js', 'utf8');
+const envelopeSource = fs.readFileSync('app/dome-world/previews/a15-r0/bounded-transformation-envelope.js', 'utf8');
 const uiSource = fs.readFileSync('app/dome-world/previews/a15-r0/open-research-field-ui.js', 'utf8');
 const schema = JSON.parse(fs.readFileSync('app/dome-world/schemas/a15-r0/open-research-field-v02.schema.json', 'utf8'));
+const envelopeSchema = JSON.parse(fs.readFileSync('app/dome-world/schemas/a15-r0/bounded-transformation-envelope-v01.schema.json', 'utf8'));
 
 assert.equal(A15_R0_OPEN_FIELD_SCHEMA, 'td613.ash.a15-r0.open-research-field/v0.2');
 assert.equal(schema.$id, A15_R0_OPEN_FIELD_SCHEMA);
+assert.equal(BOUNDED_TRANSFORMATION_ENVELOPE_SCHEMA, 'td613.ash.a15-r0.bounded-transformation-envelope/v0.1');
+assert.equal(envelopeSchema.$id, BOUNDED_TRANSFORMATION_ENVELOPE_SCHEMA);
 assert.equal(OBSERVABILITY_MODELS.length, 4);
 assert.equal(Object.keys(ADMISSIBILITY_TRANSFORMS).length, 6);
 assert.equal(RECONSTRUCTION_FRAGMENTS.length, 9);
@@ -114,6 +122,40 @@ assert.ok(field.claim_ceiling.includes('joining synergy proxy is not intrinsic c
 assert.ok(field.claim_ceiling.includes('no claim that arbitrary fragments reconstruct a corpus'));
 assert.ok(field.claim_ceiling.includes('mean ARI cannot erase a failing transform'));
 
+const envelope = runBoundedTransformationEnvelope({ field });
+const envelopeGates = Object.fromEntries(envelope.metric_gates.map(gate => [gate.gate_id, gate]));
+assert.equal(envelope.schema, BOUNDED_TRANSFORMATION_ENVELOPE_SCHEMA);
+assert.equal(envelopeGates.OBSERVER_FAMILY_LEAKAGE.value, 1.584963);
+assert.equal(envelopeGates.OBSERVER_FAMILY_LEAKAGE.threshold, 0.5);
+assert.equal(envelopeGates.OBSERVER_FAMILY_LEAKAGE.pass, false);
+assert.equal(envelopeGates.RECONSTRUCTION_FLOOR_DISTANCE.value, 0.357143);
+assert.equal(envelopeGates.RECONSTRUCTION_FLOOR_DISTANCE.threshold, 0.2);
+assert.equal(envelopeGates.RECONSTRUCTION_FLOOR_DISTANCE.pass, false);
+assert.equal(envelopeGates.JOINING_KEY_SYNERGY.value, 1);
+assert.equal(envelopeGates.JOINING_KEY_SYNERGY.threshold, 0.1);
+assert.equal(envelopeGates.JOINING_KEY_SYNERGY.pass, false);
+assert.equal(envelope.evidence_gate.pass, false);
+assert.equal(envelope.human_gate.pass, false);
+assert.equal(envelope.all_declared_metric_gates_pass, false);
+assert.equal(envelope.all_promotion_gates_pass, false);
+assert.equal(envelope.status, 'HELD');
+assert.equal(envelope.golden_egg_earned, false);
+assert.equal(envelope.promotion_authority, false);
+assert.equal(envelope.unknown_observers, 'UNMEASURED');
+assert.equal(envelope.unknown_transforms, 'UNMEASURED');
+
+const permissiveSyntheticEnvelope = runBoundedTransformationEnvelope({
+  field,
+  observer_family_leakage_bits: 2,
+  reconstruction_distance: 0.4,
+  joining_synergy_bits: 1
+});
+assert.equal(permissiveSyntheticEnvelope.all_declared_metric_gates_pass, true);
+assert.equal(permissiveSyntheticEnvelope.all_promotion_gates_pass, false);
+assert.equal(permissiveSyntheticEnvelope.status, 'HELD');
+assert.equal(permissiveSyntheticEnvelope.golden_egg_earned, false);
+assert.throws(() => runBoundedTransformationEnvelope({ field, joining_synergy_bits: -1 }), /finite non-negative/);
+
 for (const marker of [
   'Open research field · noncanonical',
   'Competing hypotheses over one fixed substrate',
@@ -122,18 +164,21 @@ for (const marker of [
   'Rank is not leakage',
   'Joining-key synergy',
   'Admissibility-robust reconstructibility',
+  'Bounded transformation envelope · criterion research only',
+  'The Golden Egg candidate is allowed to fail',
   'Falsification posture',
   'grants no production, deployment, or Golden Egg authority'
 ]) assert.ok(html.includes(marker), `Open field omitted visible marker: ${marker}`);
 
 assert.match(html, /open-research-field\.css/);
 assert.match(html, /open-research-field-ui\.js/);
-assert.doesNotMatch(modelSource, /fetch\s*\(|XMLHttpRequest|sendBeacon|WebSocket|EventSource|indexedDB|localStorage|sessionStorage|serviceWorker|caches\./);
-assert.doesNotMatch(uiSource, /fetch\s*\(|XMLHttpRequest|sendBeacon|WebSocket|EventSource|indexedDB|localStorage|sessionStorage|serviceWorker|caches\./);
+for (const source of [modelSource, envelopeSource, uiSource]) {
+  assert.doesNotMatch(source, /fetch\s*\(|XMLHttpRequest|sendBeacon|WebSocket|EventSource|indexedDB|localStorage|sessionStorage|serviceWorker|caches\./);
+}
 
 console.log(JSON.stringify({
   ok: true,
-  schema: 'td613.ash.a15-r0.open-research-field-test/v0.2',
+  schema: 'td613.ash.a15-r0.open-research-field-test/v0.3',
   observability_models: observability.models.length,
   null_content_bits: byId.NULL_CONTENT.mutual_information_bits,
   null_side_channel_bits: byId.NULL_WITH_SIDE_CHANNEL.mutual_information_bits,
@@ -145,6 +190,10 @@ console.log(JSON.stringify({
   ari_mean: reconstruction.anisotropic_reconstruction_invariance,
   ari_floor: reconstruction.anisotropic_reconstruction_floor,
   worst_transform: reconstruction.worst_case_transform,
+  envelope_status: envelope.status,
+  envelope_metric_gates_pass: envelope.all_declared_metric_gates_pass,
+  permissive_metrics_still_promote: permissiveSyntheticEnvelope.all_promotion_gates_pass,
+  golden_egg_earned: envelope.golden_egg_earned,
   production_mutated: false,
   external_transmission: false,
   human_selection_required: true
