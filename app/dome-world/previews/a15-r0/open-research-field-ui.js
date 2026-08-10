@@ -1,5 +1,6 @@
 import { runBoundedTransformationEnvelope } from './bounded-transformation-envelope.js';
 import { runOpenResearchField } from './open-research-field.js';
+import { buildOpenResearchHypothesisRegistry } from './open-research-hypothesis-registry.js';
 
 const byId = id => document.getElementById(id);
 const pretty = value => JSON.stringify(value, null, 2);
@@ -111,9 +112,47 @@ function renderEnvelope(result) {
   host.append(metric('Human closure', result.human_gate.pass ? 'PASS' : 'HELD', 'Promotion authority remains human-gated and is not exercised by this preview.'));
 }
 
+function renderHypothesisRegistry(result) {
+  const falsified = result.closed_by_counterexample.length;
+  const frontier = result.research_frontier.length;
+  byId('fieldHypothesisSummary').replaceChildren(
+    metric('Counterexample closures', falsified, 'Claims closed by explicit synthetic counterexample rather than stage completion.'),
+    metric('Open frontier', frontier, 'Hypotheses that remain open because the required evidence class or geometry is unmeasured.'),
+    metric('Next stage', result.next_stage ?? 'NONE', 'The registry has no sequence authority and unlocks no numbered successor.'),
+    metric('Sequence authority', result.sequence_authority, result.finding)
+  );
+
+  const registryHost = byId('fieldHypothesisRegistry');
+  registryHost.replaceChildren();
+  for (const hypothesis of result.hypotheses) {
+    const article = document.createElement('article');
+    article.className = 'field-metric hypothesis-card';
+    const heading = document.createElement('h3');
+    heading.textContent = hypothesis.hypothesis_id;
+    const status = document.createElement('output');
+    status.textContent = hypothesis.status;
+    const question = document.createElement('p');
+    question.textContent = hypothesis.question;
+    const falsifier = document.createElement('p');
+    falsifier.textContent = `Falsifier: ${hypothesis.falsifier}`;
+    const ceiling = document.createElement('p');
+    ceiling.textContent = `Claim ceiling: ${hypothesis.claim_ceiling}`;
+    article.append(heading, status, question, falsifier, ceiling);
+    registryHost.append(article);
+  }
+
+  const frontierHost = byId('fieldResearchFrontier');
+  frontierHost.replaceChildren(...result.research_frontier.map(hypothesisId => {
+    const item = document.createElement('li');
+    item.textContent = hypothesisId;
+    return item;
+  }));
+}
+
 function startOpenField() {
   const result = runOpenResearchField();
   const envelope = runBoundedTransformationEnvelope({ field: result });
+  const hypothesisRegistry = buildOpenResearchHypothesisRegistry({ field: result, envelope });
   renderObservability(result.observability);
   renderDirectionalExposure(result.directional_exposure);
   renderRankLeakage(result.rank_leakage_non_equivalence);
@@ -121,7 +160,12 @@ function startOpenField() {
   renderReconstruction(result.reconstruction);
   renderTransformTable(result.reconstruction);
   renderEnvelope(envelope);
-  byId('fieldRaw').textContent = pretty({ field: result, bounded_transformation_envelope: envelope });
+  renderHypothesisRegistry(hypothesisRegistry);
+  byId('fieldRaw').textContent = pretty({
+    field: result,
+    bounded_transformation_envelope: envelope,
+    hypothesis_registry: hypothesisRegistry
+  });
   byId('fieldFinding').textContent = result.observability.finding;
   byId('fieldClaimCeiling').replaceChildren(...result.claim_ceiling.map(value => {
     const item = document.createElement('li');
@@ -130,11 +174,14 @@ function startOpenField() {
   }));
   document.documentElement.dataset.a15R0OpenField = 'ready';
   document.documentElement.dataset.a15R0Envelope = envelope.status.toLowerCase();
+  document.documentElement.dataset.a15R0HypothesisFrontier = 'ready';
   window.dispatchEvent(new CustomEvent('td613:ash:a15-r0-open-field-ready', {
     detail: {
       schema: result.schema,
       envelope_schema: envelope.schema,
       envelope_status: envelope.status,
+      hypothesis_registry_schema: hypothesisRegistry.schema,
+      hypothesis_frontier_count: hypothesisRegistry.research_frontier.length,
       source_status: result.source_status,
       production_mutated: false,
       external_transmission: false,
