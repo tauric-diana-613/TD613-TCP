@@ -1,0 +1,111 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "td613.ash.a15-r0.open-research-field/v0.1",
+  "title": "A15-R0 Open Research Field",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema",
+    "namespace",
+    "source_status",
+    "sensor_id",
+    "authority_class",
+    "production_mutated",
+    "external_transmission",
+    "human_selection_required",
+    "observability",
+    "directional_exposure",
+    "reconstruction",
+    "claim_ceiling"
+  ],
+  "properties": {
+    "schema": { "const": "td613.ash.a15-r0.open-research-field/v0.1" },
+    "namespace": { "const": "U+10D613" },
+    "source_status": { "const": "SIMULATED" },
+    "sensor_id": { "const": "deterministic-open-field-model" },
+    "authority_class": { "const": "A2_DERIVATIONAL" },
+    "production_mutated": { "const": false },
+    "external_transmission": { "const": false },
+    "human_selection_required": { "const": true },
+    "observability": {
+      "type": "object",
+      "required": ["schema", "source_status", "sensor_id", "authority_class", "models", "finding", "universal_zero_defense_claim_supported"],
+      "properties": {
+        "schema": { "const": "td613.ash.a15-r0.observability-assay/v0.1" },
+        "source_status": { "const": "SIMULATED" },
+        "sensor_id": { "const": "deterministic-open-field-model" },
+        "authority_class": { "const": "A2_DERIVATIONAL" },
+        "models": {
+          "type": "array",
+          "minItems": 4,
+          "items": {
+            "type": "object",
+            "required": ["model_id", "label", "claim", "mutual_information_bits", "source_status", "authority_class"],
+            "properties": {
+              "model_id": { "type": "string", "minLength": 1 },
+              "label": { "type": "string", "minLength": 1 },
+              "claim": { "type": "string", "minLength": 1 },
+              "mutual_information_bits": { "type": "number", "minimum": 0 },
+              "source_status": { "const": "SIMULATED" },
+              "authority_class": { "const": "A2_DERIVATIONAL" }
+            }
+          }
+        },
+        "finding": { "type": "string", "minLength": 1 },
+        "universal_zero_defense_claim_supported": { "const": false }
+      }
+    },
+    "directional_exposure": {
+      "type": "object",
+      "required": ["schema", "source_status", "authority_class", "inbound_observable_dimensions", "outbound_disclosed_dimensions", "directional_exposure_ratio", "metric_kind", "shannon_channel_capacity_claim", "finding"],
+      "properties": {
+        "schema": { "const": "td613.ash.a15-r0.directional-exposure-assay/v0.1" },
+        "source_status": { "const": "SIMULATED" },
+        "authority_class": { "const": "A2_DERIVATIONAL" },
+        "inbound_observable_dimensions": { "type": "integer", "minimum": 0 },
+        "outbound_disclosed_dimensions": { "type": "integer", "minimum": 0 },
+        "directional_exposure_ratio": { "type": "number", "minimum": 0 },
+        "metric_kind": { "const": "declared-dimension-count proxy" },
+        "shannon_channel_capacity_claim": { "const": false },
+        "finding": { "type": "string", "minLength": 1 }
+      }
+    },
+    "reconstruction": {
+      "type": "object",
+      "required": ["schema", "source_status", "sensor_id", "authority_class", "k", "epsilon", "subset_count", "successful_subsets", "reconstructive_redundancy_rho", "anisotropic_reconstruction_invariance", "transforms", "caveat"],
+      "properties": {
+        "schema": { "const": "td613.ash.a15-r0.reconstruction-assay/v0.1" },
+        "source_status": { "const": "SIMULATED" },
+        "sensor_id": { "const": "deterministic-open-field-model" },
+        "authority_class": { "const": "A2_DERIVATIONAL" },
+        "k": { "type": "integer", "minimum": 1 },
+        "epsilon": { "type": "number", "minimum": 0, "maximum": 1 },
+        "subset_count": { "type": "integer", "minimum": 1 },
+        "successful_subsets": { "type": "integer", "minimum": 0 },
+        "reconstructive_redundancy_rho": { "type": "number", "minimum": 0, "maximum": 1 },
+        "anisotropic_reconstruction_invariance": { "type": "number", "minimum": 0, "maximum": 1 },
+        "transforms": {
+          "type": "array",
+          "minItems": 1,
+          "items": {
+            "type": "object",
+            "required": ["operator_id", "fragments_remaining", "topology_similarity", "topology_distance", "within_epsilon"],
+            "properties": {
+              "operator_id": { "type": "string", "minLength": 1 },
+              "fragments_remaining": { "type": "integer", "minimum": 0 },
+              "topology_similarity": { "type": "number", "minimum": 0, "maximum": 1 },
+              "topology_distance": { "type": "number", "minimum": 0, "maximum": 1 },
+              "within_epsilon": { "type": "boolean" }
+            }
+          }
+        },
+        "caveat": { "type": "string", "minLength": 1 }
+      }
+    },
+    "claim_ceiling": {
+      "type": "array",
+      "minItems": 1,
+      "items": { "type": "string", "minLength": 1 }
+    }
+  }
+}
