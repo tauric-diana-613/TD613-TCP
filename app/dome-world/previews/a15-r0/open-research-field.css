@@ -1,0 +1,114 @@
+.open-field {
+  min-width: 0;
+  padding: 1.25rem;
+  border: 1px solid var(--line);
+  border-radius: 6px;
+  background: rgba(8, 15, 13, 0.98);
+}
+
+.open-field-intro {
+  display: grid;
+  grid-template-columns: minmax(0, 1.2fr) minmax(280px, 0.8fr);
+  gap: 1rem;
+  margin-top: 1rem;
+}
+
+.open-field-note {
+  padding: 1rem;
+  border-left: 3px solid var(--rose);
+  background: #140d10;
+}
+
+.open-field-note p {
+  margin: 0;
+  color: var(--muted);
+  font-size: 0.84rem;
+}
+
+.open-field-note strong {
+  color: var(--ink);
+}
+
+.field-grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 0.75rem;
+  margin-top: 0.75rem;
+}
+
+.field-grid.four {
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+}
+
+.field-metric {
+  min-width: 0;
+  padding: 0.9rem;
+  border: 1px solid #21372f;
+  background: #07100d;
+}
+
+.field-metric h3 {
+  margin: 0;
+  color: var(--mint);
+  font-size: 0.64rem;
+}
+
+.field-metric output {
+  display: block;
+  margin-top: 0.45rem;
+  color: var(--gold);
+  font: 500 clamp(1.35rem, 3vw, 2.2rem)/1 var(--serif);
+  overflow-wrap: anywhere;
+}
+
+.field-metric p {
+  margin: 0.6rem 0 0;
+  color: var(--muted);
+  font-size: 0.76rem;
+}
+
+.field-subsection {
+  margin-top: 1.25rem;
+  padding-top: 1rem;
+  border-top: 1px solid var(--line);
+}
+
+.field-subsection > p {
+  max-width: 78ch;
+  margin: 0.4rem 0 0;
+  color: var(--muted);
+  font-size: 0.84rem;
+}
+
+.field-claim-ceiling {
+  display: grid;
+  gap: 0.4rem;
+  margin: 0.7rem 0 0;
+  padding-left: 1.2rem;
+  color: var(--muted);
+  font-size: 0.8rem;
+}
+
+#fieldFinding {
+  color: var(--ink);
+}
+
+@media (max-width: 900px) {
+  .field-grid.four {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+@media (max-width: 820px) {
+  .open-field-intro,
+  .field-grid,
+  .field-grid.four {
+    grid-template-columns: 1fr;
+  }
+}
+
+@media (max-width: 520px) {
+  .open-field {
+    padding: 0.9rem;
+  }
+}
