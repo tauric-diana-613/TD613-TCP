@@ -3,12 +3,16 @@ import { A15_R0_OPEN_FIELD_SCHEMA, runOpenResearchField } from './open-research-
 export const BOUNDED_TRANSFORMATION_ENVELOPE_SCHEMA = 'td613.ash.a15-r0.bounded-transformation-envelope/v0.1';
 
 const round = value => Number(value.toFixed(6));
-const measured = (value, threshold, comparator = '<=') => Object.freeze({
-  value: round(value),
-  threshold: round(threshold),
-  comparator,
-  pass: comparator === '<=' ? value <= threshold : value >= threshold
-});
+const measured = (value, threshold, comparator = '<=') => {
+  const recordedValue = round(value);
+  const recordedThreshold = round(threshold);
+  return Object.freeze({
+    value: recordedValue,
+    threshold: recordedThreshold,
+    comparator,
+    pass: comparator === '<=' ? recordedValue <= recordedThreshold : recordedValue >= recordedThreshold
+  });
+};
 
 export function runBoundedTransformationEnvelope(options = {}) {
   const field = options.field || runOpenResearchField();
