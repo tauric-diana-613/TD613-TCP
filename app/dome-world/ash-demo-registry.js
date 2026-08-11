@@ -39,6 +39,24 @@ const REQUIRED_REGISTRY_STATIC_MARKERS = Object.freeze([
   'installAshA15EmpiricalJourneys'
 ]);
 
+const REQUIRED_A15_EMPIRICAL_OWNER_MARKERS = Object.freeze([
+  'const empiricalOwner = import(`./ash-a15-empirical-profile-journeys.js?v=${ASH_DEMO_ASSET_EPOCH}`)',
+  '.catch(error => Object.freeze({ module:null, error }))',
+  'Promise.all([',
+  'empiricalOwner',
+  'registryEntries = Object.freeze(entries);',
+  'const empirical = empiricalResult.module',
+  'empiricalResult.module',
+  'empiricalLoadHeld = Boolean(empiricalResult.error || !empirical)',
+  'HELD_SUBORDINATE',
+  'registry_available:true',
+  'empirical_journey_version',
+  'empirical_journey_status',
+  'empirical_matrix_cells',
+  'ash-a15-empirical-journey:${profile}',
+  'return registryEntries'
+]);
+
 const coreSourceUrl = new URL('./ash-demo-registry-core.js', import.meta.url);
 
 async function assertPreservedRegistryCore() {
@@ -47,6 +65,9 @@ async function assertPreservedRegistryCore() {
   const source = await readFile(coreSourceUrl, 'utf8');
   for (const marker of REQUIRED_REGISTRY_STATIC_MARKERS) {
     if (!source.includes(marker)) throw new Error(`Ash demo registry historical owner law missing after reopen hardening: ${marker}`);
+  }
+  for (const marker of REQUIRED_A15_EMPIRICAL_OWNER_MARKERS) {
+    if (!source.includes(marker)) throw new Error(`Ash demo registry A15 empirical owner law missing after reopen hardening: ${marker}`);
   }
   return true;
 }
