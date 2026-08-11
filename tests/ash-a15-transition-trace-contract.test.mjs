@@ -14,9 +14,13 @@ assert.match(probe, /td613:ash:ux-workspace-opened/);
 assert.match(probe, /LATE_WORKSPACE_SIDE_EFFECT_WITHIN_BOUNDED_HORIZON/);
 assert.match(probe, /COUPLED_WORKSPACE_SIDE_EFFECT_WITHIN_BOUNDED_HORIZON/);
 
-const r0Index = workflow.indexOf('node scripts/ash-a15-r0-preview-probe.mjs');
-const traceIndex = workflow.indexOf('node scripts/ash-a15-transition-trace-browser-probe.mjs');
-const a15Index = workflow.indexOf('node scripts/ash-a15-empirical-profile-journeys-browser-probe.mjs');
+const browserMarker = '- name: Run the complete Ash witness through each installed engine';
+const browserStart = workflow.indexOf(browserMarker);
+assert.ok(browserStart >= 0, 'Consolidated browser chamber marker must remain present.');
+const browserChamber = workflow.slice(browserStart);
+const r0Index = browserChamber.indexOf('node scripts/ash-a15-r0-preview-probe.mjs');
+const traceIndex = browserChamber.indexOf('node scripts/ash-a15-transition-trace-browser-probe.mjs');
+const a15Index = browserChamber.indexOf('node scripts/ash-a15-empirical-profile-journeys-browser-probe.mjs');
 assert.ok(r0Index >= 0, 'A15-R0 browser witness must be present in consolidated CI.');
 assert.ok(traceIndex >= 0, 'A15 transition-trace witness must be present in consolidated CI.');
 assert.ok(a15Index >= 0, 'Inherited A15 browser witness must remain present in consolidated CI.');
