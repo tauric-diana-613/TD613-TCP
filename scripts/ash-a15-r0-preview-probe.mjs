@@ -107,7 +107,7 @@ try {
   check('fixture loaded', (await page.locator('#fixtureSummary').innerText()).includes('a15r0_fixture_synthetic_research_v01'));
   check('open field ready', await page.locator('#fieldObservability .field-metric').count() === 4);
   check('bounded envelope visibly held', (await page.locator('#fieldEnvelopeStatus').innerText()).includes('HELD'));
-  check('hypothesis frontier rendered', await page.locator('#fieldHypothesisRows tr').count() >= 8);
+  check('hypothesis frontier rendered', await page.locator('#fieldHypothesisRegistry .hypothesis-card').count() >= 8);
   check('P1 honest hold', (await page.locator('#projectionRegistry').innerText()).includes('Minimal Ash') && (await page.locator('#projectionRegistry').innerText()).includes('NOT IMPLEMENTED'));
   check('P2 honest hold', (await page.locator('#projectionRegistry').innerText()).includes('Proto-Loom') && (await page.locator('#projectionRegistry').innerText()).includes('NOT IMPLEMENTED'));
   check('owner rows', await page.locator('#ownerRegistry tr').count() === 7);
@@ -161,7 +161,7 @@ try {
   check('reduced-motion static truth', await visibleText(page, 'No external transmission') && await page.locator('#taskSequence').isVisible());
   check('required mobile action visible', await page.locator('#bind-reference').isVisible());
   check('required mobile touch target', (await page.locator('#bind-reference').boundingBox())?.height >= 44);
-  check('mobile open field visible', await page.locator('#fieldEnvelopeStatus').isVisible() && await page.locator('#fieldHypothesisRows').isVisible());
+  check('mobile open field visible', await page.locator('#fieldEnvelopeStatus').isVisible() && await page.locator('#fieldHypothesisRegistry').isVisible());
 
   const mobileShot = path.join(artifactDir, `a15-r0-${browserName}-mobile-reduced.png`);
   await page.screenshot({ path: mobileShot, fullPage: true });
