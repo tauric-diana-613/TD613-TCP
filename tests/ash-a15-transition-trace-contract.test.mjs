@@ -3,6 +3,7 @@ import fs from 'node:fs';
 
 const workflow = fs.readFileSync('.github/workflows/td613-ci.yml', 'utf8');
 const probe = fs.readFileSync('scripts/ash-a15-transition-trace-browser-probe.mjs', 'utf8');
+const inheritedProbe = fs.readFileSync('scripts/ash-a15-empirical-profile-journeys-browser-probe.mjs', 'utf8');
 
 assert.match(probe, /observation_window_is_quiescence_proof:false/);
 assert.match(probe, /universal_settlement_claim:false/);
@@ -20,6 +21,22 @@ assert.match(probe, /observed_pre_route_workspace/);
 assert.doesNotMatch(probe, /ensureHome\s*\(/, 'Transition calibration must not normalize workspace before measuring route effects.');
 assert.match(probe, /td613Diagnostic/);
 assert.match(probe, /trace_records/);
+
+assert.match(inheritedProbe, /td613:ash:demo-registry-hydrated/);
+assert.match(inheritedProbe, /__td613A15HydrationWitness/);
+assert.match(inheritedProbe, /profile_hydration_completion_boundary:HYDRATION_EVENT/);
+assert.match(inheritedProbe, /profile_hydration_receipt_required:true/);
+assert.match(inheritedProbe, /browser_process_isolation_per_profile:true/);
+assert.match(inheritedProbe, /incremental_profile_checkpoints:true/);
+assert.match(inheritedProbe, /A15_PROFILE_BEGIN/);
+assert.match(inheritedProbe, /A15_PROFILE_PASS/);
+assert.match(inheritedProbe, /const browser = await browserType\.launch\(\{ headless:true \}\);/);
+assert.match(inheritedProbe, /await browser\.close\(\)\.catch\(\(\) => \{\}\)/);
+assert.doesNotMatch(
+  inheritedProbe,
+  /return \(Boolean\(current\?\.case_id\) && document\.documentElement\.dataset\.ashDemoProfile === selected\)/,
+  'Canonical A15 must not infer profile hydration completion from case/profile visibility alone.'
+);
 
 const runtimeMarker = '- name: Start one bounded Ash and Dome-World runtime';
 const calibrationMarker = '- name: Calibrate A15-R0 and transition ordering across every engine';
@@ -56,12 +73,15 @@ assert.match(calibrationChamber, /independent_from_prior_ash_promotion_gates:tru
 assert.match(calibrationChamber, /promotion_authority:false/);
 
 console.log(JSON.stringify({
-  contract:'td613.ash.a15-transition-trace-contract/v0.5-hydration-sealed-baseline',
+  contract:'td613.ash.a15-transition-trace-contract/v0.6-canonical-hydration-and-resource-isolation',
   a15_r0_evidence_independent_of_inherited_a15:true,
   transition_trace_independent_of_inherited_a15:true,
   a15_r0_evidence_independent_of_prior_ash_promotion_gates:true,
   profile_hydration_boundary:'td613:ash:demo-registry-hydrated',
   profile_hydration_completion_required:true,
+  inherited_profile_hydration_receipt_required:true,
+  inherited_browser_process_isolation_per_profile:true,
+  inherited_incremental_profile_checkpoints:true,
   workspace_normalization_applied:false,
   failure_diagnostics_preserved:true,
   all_engines_observed_separate_from_all_seams_ok:true,
