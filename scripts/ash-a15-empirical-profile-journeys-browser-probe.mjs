@@ -44,7 +44,16 @@ const REQUIRED_A15_STATIC_MARKERS = Object.freeze([
   '__td613AshA15EmpiricalJourneys?.compile?.({',
   "context:{ email:'person@example.com' }",
   "result.sensitive_status !== 'HELD_SENSITIVE_CONTEXT'",
-  "sensitive_context_rejected:receipts.every(receipt => receipt.sensitive_status === 'HELD_SENSITIVE_CONTEXT')"
+  "sensitive_context_rejected:receipts.every(receipt => receipt.sensitive_status === 'HELD_SENSITIVE_CONTEXT')",
+  'td613:ash:demo-registry-hydrated',
+  '__td613A15HydrationWitness',
+  'capture.receipt?.automatic_ash_action === false',
+  'profile_hydration_completion_boundary:HYDRATION_EVENT',
+  'profile_hydration_receipt_required:true',
+  'A15_PROFILE_BEGIN',
+  'A15_PROFILE_PASS',
+  'const browser = await browserType.launch({ headless:true });',
+  'await browser.close().catch(() => {})'
 ]);
 
 function replaceExactly(source, marker, replacement, label) {
