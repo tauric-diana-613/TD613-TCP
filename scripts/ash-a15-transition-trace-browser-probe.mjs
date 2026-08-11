@@ -69,17 +69,16 @@ async function activateProfile(page, profile) {
   }, profile, { timeout:120_000 });
 }
 
-async function ensureHome(page) {
-  const current = await page.evaluate(() => document.documentElement.dataset.ashPremiumWorkspace || null);
-  if (current === 'home') return;
-  const control = page.locator('#premiumPrimaryDock [data-premium-workspace="home"]:visible').first();
-  if (!(await control.count())) throw new Error('A15 canonical Home control unavailable before transition trace.');
-  await control.click();
-  await page.waitForFunction(() => {
-    const section = document.getElementById('workspace-home');
-    return document.documentElement.dataset.ashPremiumWorkspace === 'home'
-      && section?.classList.contains('active') === true;
-  }, null, { timeout:60_000 });
+async function readRuntimeState(page) {
+  return page.evaluate(() => ({
+    route:String(window.__td613AshLiveAIA?.current?.()?.route || ''),
+    workspace:document.documentElement.dataset.ashPremiumWorkspace || null,
+    route_chip:document.querySelector('[data-a15-route]')?.textContent?.trim() || null,
+    workspace_chip:document.querySelector('[data-a15-workspace]')?.textContent?.trim() || null,
+    navigation_receipt:window.__td613AshWholeInstrument?.current?.()?.navigation_receipt || null,
+    profile:document.documentElement.dataset.ashDemoProfile || null,
+    lifecycle:String(window.__td613AshLiveAIA?.current?.()?.lifecycle_state || document.body?.dataset?.ashLifecycle || '')
+  }));
 }
 
 async function armTrace(page, context) {
@@ -157,7 +156,8 @@ function classify(records, expectedRoute) {
     ['ROUTE_VISIBLE', 'POST_ROUTE_HORIZON'].includes(record.kind)
     && [expectedRoute, expectedRoute.toUpperCase()].includes(String(record.route_chip || ''))
   ) || records.find(record => record.kind === 'ROUTE_VISIBLE');
-  const initialWorkspace = records.find(record => record.kind === 'BEFORE_ROUTE')?.workspace || null;
+  const beforeRoute = records.find(record => record.kind === 'BEFORE_ROUTE') || null;
+  const initialWorkspace = beforeRoute?.workspace || null;
   const workspaceMutations = records.filter(record =>
     record.kind === 'ROOT_ATTRIBUTE_MUTATION'
     && record.detail?.attribute === 'data-ash-premium-workspace'
@@ -178,9 +178,11 @@ function classify(records, expectedRoute) {
   return Object.freeze({
     classification,
     initial_workspace:initialWorkspace,
+    initial_route:beforeRoute?.route || null,
     route_visible_sequence:routeVisible?.sequence || null,
     first_workspace_mutation_sequence:firstWorkspaceMutation?.sequence || null,
     first_workspace_mutation:firstWorkspaceMutation?.detail || null,
+    workspace_changed_from_observed_baseline:Boolean(firstWorkspaceMutation),
     navigation_receipt_count:navigationReceipts.length,
     post_horizon_workspace:postHorizon?.workspace || null,
     post_horizon_route:postHorizon?.route || null,
@@ -193,12 +195,21 @@ function classify(records, expectedRoute) {
 async function inspectCell(browser, mode, options, profile, route, controlValue) {
   const context = await browser.newContext(options);
   const page = await context.newPage();
+  const diagnosticShot = path.join(artifactDir, `${browserName}-${mode}-${profile}-${route}-held.png`);
   try {
     await waitForInstrument(page);
     await activateProfile(page, profile);
-    await ensureHome(page);
-    await armTrace(page, { browser:browserName, mode, profile, route, control_value:controlValue });
-    await page.evaluate(() => window.__td613A15TransitionTrace.mark('BEFORE_ROUTE'));
+    const observedBaseline = await readRuntimeState(page);
+    await armTrace(page, {
+      browser:browserName,
+      mode,
+      profile,
+      route,
+      control_value:controlValue,
+      observed_pre_route_workspace:observedBaseline.workspace,
+      workspace_normalization_applied:false
+    });
+    await page.evaluate(state => window.__td613A15TransitionTrace.mark('BEFORE_ROUTE', state), observedBaseline);
 
     const control = page.locator(`#ashAiaMembrane [data-aia-route="${controlValue}"]:visible`).first();
     if (!(await control.count())) throw new Error(`A15 visible ${route} route control unavailable.`);
@@ -210,7 +221,7 @@ async function inspectCell(browser, mode, options, profile, route, controlValue)
     }, { route, controlValue }, { timeout:60_000 });
     await page.evaluate(() => window.__td613A15TransitionTrace.mark('ROUTE_VISIBLE'));
 
-    // This is a declared observation horizon, not a synchronization barrier or quiescence theorem.
+    // Declared observation horizon only. It is neither a synchronization barrier nor a quiescence theorem.
     await page.waitForTimeout(OBSERVATION_HORIZON_MS);
     await page.evaluate(() => window.__td613A15TransitionTrace.mark('POST_ROUTE_HORIZON'));
     const records = await page.evaluate(() => window.__td613A15TransitionTrace.stop());
@@ -221,9 +232,23 @@ async function inspectCell(browser, mode, options, profile, route, controlValue)
       route,
       control_value:controlValue,
       status:'OBSERVED',
+      observed_baseline:observedBaseline,
       classification:classify(records, route),
       records
     });
+  } catch (error) {
+    let traceRecords = [];
+    let runtimeState = null;
+    try { traceRecords = await page.evaluate(() => window.__td613A15TransitionTrace?.snapshot?.() || []); } catch {}
+    try { runtimeState = await readRuntimeState(page); } catch {}
+    try { await page.screenshot({ path:diagnosticShot, fullPage:true }); } catch {}
+    error.td613Diagnostic = {
+      runtime_state: runtimeState,
+      trace_records: traceRecords,
+      screenshot: diagnosticShot,
+      workspace_normalization_applied:false
+    };
+    throw error;
   } finally {
     await context.close();
   }
@@ -239,7 +264,14 @@ try {
         try {
           cells.push(await inspectCell(browser, mode, options, profile, route, controlValue));
         } catch (error) {
-          failures.push({ browser:browserName, mode, profile, route, error:String(error?.stack || error) });
+          failures.push({
+            browser:browserName,
+            mode,
+            profile,
+            route,
+            error:String(error?.stack || error),
+            diagnostic:error.td613Diagnostic || null
+          });
         }
       }
     }
@@ -253,8 +285,11 @@ const summary = Object.fromEntries([...new Set(cells.map(cell => cell.classifica
   .map(name => [name, cells.filter(cell => cell.classification.classification === name).length]));
 const lateCells = cells.filter(cell => cell.classification.classification.startsWith('LATE_WORKSPACE_SIDE_EFFECT'));
 const coupledCells = cells.filter(cell => cell.classification.classification.startsWith('COUPLED_WORKSPACE_SIDE_EFFECT'));
+const baselineSummary = Object.fromEntries([...new Set(cells.map(cell => cell.classification.initial_workspace || 'UNDECLARED'))]
+  .sort()
+  .map(workspace => [workspace, cells.filter(cell => (cell.classification.initial_workspace || 'UNDECLARED') === workspace).length]));
 const report = {
-  schema:'td613.ash.a15-transition-trace-browser-witness/v0.1',
+  schema:'td613.ash.a15-transition-trace-browser-witness/v0.2-observed-baseline',
   source_status:'OBSERVED',
   sensor_id:'playwright-browser-runtime',
   authority_class:'A1_OBSERVATIONAL',
@@ -266,6 +301,8 @@ const report = {
   cells,
   failures,
   summary,
+  observed_pre_route_workspace_summary:baselineSummary,
+  workspace_normalization_applied:false,
   late_workspace_side_effect_cells:lateCells.map(cell => ({ mode:cell.mode, profile:cell.profile, route:cell.route, classification:cell.classification })),
   coupled_workspace_side_effect_cells:coupledCells.map(cell => ({ mode:cell.mode, profile:cell.profile, route:cell.route, classification:cell.classification })),
   route_state_settled_equals_workspace_state_settled:false,
@@ -282,6 +319,7 @@ console.log(JSON.stringify({
   cells:cells.length,
   failures:failures.length,
   summary,
+  observed_pre_route_workspace_summary:baselineSummary,
   artifact:artifactPath
 }, null, 2));
 if (failures.length > 0) process.exitCode = 1;
