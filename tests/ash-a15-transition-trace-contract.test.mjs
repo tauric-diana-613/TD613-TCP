@@ -15,7 +15,7 @@ assert.match(probe, /LATE_WORKSPACE_SIDE_EFFECT_WITHIN_BOUNDED_HORIZON/);
 assert.match(probe, /COUPLED_WORKSPACE_SIDE_EFFECT_WITHIN_BOUNDED_HORIZON/);
 
 const calibrationMarker = '- name: Calibrate A15-R0 and transition ordering across every engine';
-const inheritedMarker = '- name: Run the inherited complete Ash witness through each installed engine';
+const inheritedMarker = '- name: Run the complete Ash witness through each installed engine';
 const calibrationStart = workflow.indexOf(calibrationMarker);
 const inheritedStart = workflow.indexOf(inheritedMarker);
 assert.ok(calibrationStart >= 0, 'Independent A15 calibration prepass must remain present.');
