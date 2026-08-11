@@ -5,6 +5,15 @@ import {
   runBoundedTransformationEnvelope
 } from '../app/dome-world/previews/a15-r0/bounded-transformation-envelope.js';
 import {
+  BOOLEAN_SYNERGY_CENSUS_SCHEMA,
+  evaluateBooleanFunction,
+  runBooleanSynergyCensus
+} from '../app/dome-world/previews/a15-r0/boolean-synergy-census.js';
+import {
+  INFORMATION_GEOMETRY_CALIBRATION_SCHEMA,
+  runInformationGeometryCalibration
+} from '../app/dome-world/previews/a15-r0/information-geometry-calibration.js';
+import {
   ADMISSIBILITY_TRANSFORMS,
   A15_R0_OPEN_FIELD_SCHEMA,
   CANONICAL_TOPOLOGY,
@@ -29,6 +38,8 @@ import {
 const html = fs.readFileSync('app/dome-world/previews/a15-r0/index.html', 'utf8');
 const modelSource = fs.readFileSync('app/dome-world/previews/a15-r0/open-research-field.js', 'utf8');
 const envelopeSource = fs.readFileSync('app/dome-world/previews/a15-r0/bounded-transformation-envelope.js', 'utf8');
+const booleanSource = fs.readFileSync('app/dome-world/previews/a15-r0/boolean-synergy-census.js', 'utf8');
+const geometrySource = fs.readFileSync('app/dome-world/previews/a15-r0/information-geometry-calibration.js', 'utf8');
 const hypothesisSource = fs.readFileSync('app/dome-world/previews/a15-r0/open-research-hypothesis-registry.js', 'utf8');
 const uiSource = fs.readFileSync('app/dome-world/previews/a15-r0/open-research-field-ui.js', 'utf8');
 const schema = JSON.parse(fs.readFileSync('app/dome-world/schemas/a15-r0/open-research-field-v02.schema.json', 'utf8'));
@@ -41,6 +52,9 @@ assert.equal(BOUNDED_TRANSFORMATION_ENVELOPE_SCHEMA, 'td613.ash.a15-r0.bounded-t
 assert.equal(envelopeSchema.$id, BOUNDED_TRANSFORMATION_ENVELOPE_SCHEMA);
 assert.equal(OPEN_RESEARCH_HYPOTHESIS_REGISTRY_SCHEMA, 'td613.ash.a15-r0.open-research-hypothesis-registry/v0.1');
 assert.equal(hypothesisSchema.$id, OPEN_RESEARCH_HYPOTHESIS_REGISTRY_SCHEMA);
+assert.equal(BOOLEAN_SYNERGY_CENSUS_SCHEMA, 'td613.ash.a15-r0.boolean-synergy-census/v0.1');
+assert.equal(INFORMATION_GEOMETRY_CALIBRATION_SCHEMA, 'td613.ash.a15-r0.information-geometry-calibration/v0.1');
+assert.ok(hypothesisSchema.required.includes('bounded_support'));
 assert.equal(OBSERVABILITY_MODELS.length, 4);
 assert.equal(Object.keys(ADMISSIBILITY_TRANSFORMS).length, 6);
 assert.equal(RECONSTRUCTION_FRAGMENTS.length, 9);
@@ -89,6 +103,36 @@ assert.equal(joining.positive_joining_synergy, true);
 assert.equal(joining.partial_information_decomposition_claim, false);
 assert.equal(joining.intrinsic_curvature_claim, false);
 assert.match(joining.caveat, /not a complete partial-information decomposition/i);
+
+const booleanCensus = runBooleanSynergyCensus();
+assert.equal(booleanCensus.function_count, 16);
+assert.equal(booleanCensus.complete_declared_family, true);
+assert.equal(booleanCensus.seed_parity_function_count, 2);
+assert.equal(booleanCensus.held_out_non_parity_function_count, 14);
+assert.equal(booleanCensus.pure_synergy_count, 2);
+assert.equal(booleanCensus.positive_excess_count, 10);
+assert.equal(booleanCensus.positive_held_out_non_parity_count, 8);
+assert.equal(booleanCensus.nonpositive_excess_count, 6);
+assert.equal(booleanCensus.maximum_held_out_non_parity_excess_bits, 0.188722);
+assert.deepEqual(booleanCensus.pure_synergy_function_ids.sort(), ['F06_XOR', 'F09_XNOR']);
+assert.equal(evaluateBooleanFunction(8).function_id, 'F08_AND');
+assert.equal(evaluateBooleanFunction(8).joining_synergy_proxy_bits, 0.188722);
+assert.throws(() => evaluateBooleanFunction(16), /0 through 15/);
+assert.equal(booleanCensus.generalization_beyond_declared_boolean_family, false);
+
+const geometry = runInformationGeometryCalibration();
+assert.equal(geometry.analytic_gaussian_curvature, 0.25);
+assert.equal(geometry.analytic_scalar_curvature, 0.5);
+assert.ok(geometry.calibration_points.every(point => point.square_root_embedding_norm_squared === 4));
+assert.equal(geometry.metric_covariance_check_pass, true);
+assert.ok(geometry.metric_determinant_covariance_error < 1e-12);
+assert.equal(geometry.joining_synergy_original_bits, 1);
+assert.equal(geometry.joining_synergy_bijective_relabel_bits, 1);
+assert.equal(geometry.joining_synergy_relabel_invariant_in_fixture, true);
+assert.equal(geometry.joining_synergy_has_declared_manifold_metric, false);
+assert.equal(geometry.joining_synergy_has_declared_connection, false);
+assert.equal(geometry.joining_synergy_intrinsic_curvature_claim_supported, false);
+assert.match(geometry.finding, /does not supply a manifold/i);
 
 const baseline = reconstructTopology(RECONSTRUCTION_FRAGMENTS);
 assert.equal(topologySimilarity(baseline), 1);
@@ -164,12 +208,13 @@ assert.equal(permissiveSyntheticEnvelope.status, 'HELD');
 assert.equal(permissiveSyntheticEnvelope.golden_egg_earned, false);
 assert.throws(() => runBoundedTransformationEnvelope({ field, joining_synergy_bits: -1 }), /finite non-negative/);
 
-const hypothesisRegistry = buildOpenResearchHypothesisRegistry({ field, envelope });
+const hypothesisRegistry = buildOpenResearchHypothesisRegistry({ field, envelope, booleanCensus, geometry });
 const hypotheses = Object.fromEntries(hypothesisRegistry.hypotheses.map(item => [item.hypothesis_id, item]));
 assert.equal(hypothesisRegistry.schema, OPEN_RESEARCH_HYPOTHESIS_REGISTRY_SCHEMA);
 assert.equal(hypothesisRegistry.hypotheses.length, 8);
 assert.equal(hypothesisRegistry.closed_by_counterexample.length, 4);
-assert.equal(hypothesisRegistry.research_frontier.length, 3);
+assert.equal(hypothesisRegistry.bounded_support.length, 2);
+assert.equal(hypothesisRegistry.research_frontier.length, 2);
 assert.equal(hypothesisRegistry.sequence_authority, false);
 assert.equal(hypothesisRegistry.next_stage, null);
 assert.deepEqual(hypothesisRegistry.stage_unlocks, []);
@@ -181,11 +226,17 @@ assert.equal(hypotheses.H_RANK_ORDERS_LEAKAGE.status, 'FALSIFIED_IN_SYNTHETIC_FI
 assert.equal(hypotheses.H_MARGINAL_SAFETY_IMPLIES_JOINT_SAFETY.status, 'FALSIFIED_IN_SYNTHETIC_FIELD');
 assert.equal(hypotheses.H_MEAN_ARI_SUFFICIENT.status, 'FALSIFIED_IN_SYNTHETIC_FIELD');
 assert.equal(hypotheses.H_BOUNDED_ENVELOPE_PREVENTS_SELF_PROMOTION.status, 'SUPPORTED_BY_SYNTHETIC_CONTRACT');
-assert.equal(hypotheses.H_JOINING_SYNERGY_GENERALIZES.status, 'OPEN_UNMEASURED');
-assert.equal(hypotheses.H_INFORMATION_CURVATURE_GEOMETRIC.status, 'OPEN_UNMEASURED');
+assert.equal(hypotheses.H_JOINING_SYNERGY_GENERALIZES.status, 'SUPPORTED_IN_BOUNDED_SYNTHETIC_FAMILY');
+assert.equal(hypotheses.H_JOINING_SYNERGY_GENERALIZES.evidence.positive_held_out_non_parity_count, 8);
+assert.equal(hypotheses.H_INFORMATION_CURVATURE_GEOMETRIC.status, 'OPEN_RESEARCH_PROGRAM');
+assert.equal(hypotheses.H_INFORMATION_CURVATURE_GEOMETRIC.evidence.fisher_rao_positive_control_scalar_curvature, 0.5);
+assert.equal(hypotheses.H_INFORMATION_CURVATURE_GEOMETRIC.evidence.intrinsic_curvature_claim_supported, false);
 assert.equal(hypotheses.H_GOLDEN_EGG_BOUNDED_REGION.status, 'OPEN_RESEARCH_PROGRAM');
+assert.deepEqual(hypothesisRegistry.bounded_support, [
+  'H_BOUNDED_ENVELOPE_PREVENTS_SELF_PROMOTION',
+  'H_JOINING_SYNERGY_GENERALIZES'
+]);
 assert.deepEqual(hypothesisRegistry.research_frontier, [
-  'H_JOINING_SYNERGY_GENERALIZES',
   'H_INFORMATION_CURVATURE_GEOMETRIC',
   'H_GOLDEN_EGG_BOUNDED_REGION'
 ]);
@@ -210,13 +261,13 @@ for (const marker of [
 
 assert.match(html, /open-research-field\.css/);
 assert.match(html, /open-research-field-ui\.js/);
-for (const source of [modelSource, envelopeSource, hypothesisSource, uiSource]) {
+for (const source of [modelSource, envelopeSource, booleanSource, geometrySource, hypothesisSource, uiSource]) {
   assert.doesNotMatch(source, /fetch\s*\(|XMLHttpRequest|sendBeacon|WebSocket|EventSource|indexedDB|localStorage|sessionStorage|serviceWorker|caches\./);
 }
 
 console.log(JSON.stringify({
   ok: true,
-  schema: 'td613.ash.a15-r0.open-research-field-test/v0.4',
+  schema: 'td613.ash.a15-r0.open-research-field-test/v0.5',
   observability_models: observability.models.length,
   null_content_bits: byId.NULL_CONTENT.mutual_information_bits,
   null_side_channel_bits: byId.NULL_WITH_SIDE_CHANNEL.mutual_information_bits,
@@ -224,6 +275,10 @@ console.log(JSON.stringify({
   rank1_information_bits: rankCases.RANK1_DISTINGUISHABLE_SCALAR.mutual_information_bits,
   rank3_information_bits: rankCases.RANK3_OBSERVER_INDEPENDENT.mutual_information_bits,
   joining_synergy_bits: joining.joining_synergy_proxy_bits,
+  boolean_functions_exhausted: booleanCensus.function_count,
+  positive_held_out_boolean_functions: booleanCensus.positive_held_out_non_parity_count,
+  fisher_rao_scalar_curvature_control: geometry.analytic_scalar_curvature,
+  synergy_intrinsic_curvature_promoted: geometry.joining_synergy_intrinsic_curvature_claim_supported,
   rho: reconstruction.reconstructive_redundancy_rho,
   ari_mean: reconstruction.anisotropic_reconstruction_invariance,
   ari_floor: reconstruction.anisotropic_reconstruction_floor,
@@ -234,6 +289,7 @@ console.log(JSON.stringify({
   golden_egg_earned: envelope.golden_egg_earned,
   hypotheses: hypothesisRegistry.hypotheses.length,
   counterexample_closures: hypothesisRegistry.closed_by_counterexample.length,
+  bounded_support: hypothesisRegistry.bounded_support.length,
   frontier: hypothesisRegistry.research_frontier.length,
   next_stage: hypothesisRegistry.next_stage,
   sequence_authority: hypothesisRegistry.sequence_authority,
