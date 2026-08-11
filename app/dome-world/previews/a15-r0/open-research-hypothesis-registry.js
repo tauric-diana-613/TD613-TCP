@@ -121,26 +121,6 @@ export function buildOpenResearchHypothesisRegistry(options = {}) {
       claim_ceiling: 'UNIFORM_DETERMINISTIC_TWO_INPUT_BOOLEAN_FAMILY_ONLY'
     }),
     freezeHypothesis({
-      hypothesis_id: 'H_MOBIUS_MAGNITUDE_TRACKS_JOINING_EXCESS',
-      question: 'Does the absolute second-order Boolean-lattice Möbius interaction coordinate the joining-excess levels in the complete declared Boolean family?',
-      falsifier: 'Two functions with the same absolute Möbius interaction occupy different joining-excess levels, or the levels fail to increase with interaction magnitude.',
-      evidence: {
-        operator: mobiusInteraction.operator,
-        operator_formula: mobiusInteraction.operator_formula,
-        magnitude_group_count: mobiusInteraction.magnitude_groups.length,
-        exact_synergy_level_by_absolute_mobius_magnitude: mobiusInteraction.exact_synergy_level_by_absolute_mobius_magnitude,
-        strictly_monotone_synergy_across_mobius_magnitude_levels: mobiusInteraction.strictly_monotone_synergy_across_mobius_magnitude_levels,
-        zero_mobius_magnitude_iff_zero_joining_excess: mobiusInteraction.zero_mobius_magnitude_iff_zero_joining_excess_in_declared_family,
-        xor_xnor_share_maximum_magnitude: mobiusInteraction.xor_xnor_share_maximum_magnitude,
-        geometric_curvature_claim: mobiusInteraction.intrinsic_geometric_curvature_claim
-      },
-      status: mobiusInteraction.exact_synergy_level_by_absolute_mobius_magnitude
-        && mobiusInteraction.strictly_monotone_synergy_across_mobius_magnitude_levels
-        ? 'SUPPORTED_IN_BOUNDED_SYNTHETIC_FAMILY'
-        : 'FALSIFIED_IN_SYNTHETIC_FIELD',
-      claim_ceiling: 'UNIFORM_DETERMINISTIC_TWO_INPUT_BOOLEAN_FAMILY_DISCRETE_INTERACTION_ONLY'
-    }),
-    freezeHypothesis({
       hypothesis_id: 'H_SYNERGY_EQUALS_AMBIENT_FISHER_CURVATURE',
       question: 'Can joining synergy be identified directly with ambient Fisher-Rao scalar curvature on the full joint categorical simplex?',
       falsifier: 'Two interior joint distributions share the same ambient Fisher-Rao scalar curvature while carrying different joining-synergy values.',
