@@ -58,9 +58,12 @@ assert.throws(() => validateGovernedTaskFixture(opaque));
 const schemaDir = 'app/dome-world/schemas/a15-r0';
 const schemas = fs.readdirSync(schemaDir).filter(name => name.endsWith('.json')).sort();
 assert.deepEqual(schemas, [
+  'bounded-transformation-envelope-v01.schema.json',
   'governed-task-fixture-v01.schema.json',
   'interaction-owner-record-v01.schema.json',
   'observable-event-v01.schema.json',
+  'open-research-field-v02.schema.json',
+  'open-research-hypothesis-registry-v01.schema.json',
   'operator-rejection-receipt-v01.schema.json',
   'projection-descriptor-v01.schema.json',
   'projection-run-receipt-v01.schema.json'
