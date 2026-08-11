@@ -57,7 +57,11 @@ export function runBoundedTransformationEnvelope(options = {}) {
     pass: false
   });
   const metricPass = metricGates.every(gate => gate.pass);
+  const failedMetricGates = metricGates.filter(gate => !gate.pass).map(gate => gate.gate_id);
   const promotionPass = metricPass && evidenceGate.pass && humanGate.pass;
+  const finding = metricPass
+    ? 'The current synthetic candidate passes every declared metric gate, but lacks empirical evidence class and human closure, and therefore remains HELD without Golden Egg authority.'
+    : `The current synthetic candidate fails ${failedMetricGates.length} of ${metricGates.length} declared metric gates (${failedMetricGates.join(', ')}), also lacks empirical evidence class and human closure, and therefore remains HELD without Golden Egg authority.`;
 
   return Object.freeze({
     schema: BOUNDED_TRANSFORMATION_ENVELOPE_SCHEMA,
@@ -69,6 +73,7 @@ export function runBoundedTransformationEnvelope(options = {}) {
     evidence_gate: evidenceGate,
     human_gate: humanGate,
     all_declared_metric_gates_pass: metricPass,
+    failed_metric_gate_ids: Object.freeze(failedMetricGates),
     all_promotion_gates_pass: promotionPass,
     status: promotionPass ? 'ELIGIBLE_FOR_HUMAN_REVIEW' : 'HELD',
     golden_egg_earned: false,
@@ -79,6 +84,6 @@ export function runBoundedTransformationEnvelope(options = {}) {
     unknown_observers: 'UNMEASURED',
     unknown_transforms: 'UNMEASURED',
     claim_ceiling: 'BOUNDED_SYNTHETIC_FEASIBILITY_ENVELOPE_ONLY',
-    finding: 'The current synthetic candidate fails every metric gate, also lacks empirical evidence class and human closure, and therefore remains HELD without Golden Egg authority.'
+    finding
   });
 }
