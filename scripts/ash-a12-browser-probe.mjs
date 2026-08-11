@@ -6,6 +6,33 @@ const scriptsDir = path.dirname(fileURLToPath(import.meta.url));
 const corePath = path.join(scriptsDir, 'ash-a12-browser-probe-v943-core.mjs');
 const tempPath = path.join(scriptsDir, `.ash-a12-browser-probe-closed-case-${process.pid}.mjs`);
 
+const REQUIRED_A12_STATIC_MARKERS = Object.freeze([
+  'ash-a12-browser-probe-stable-entry.mjs',
+  'POST_CLICK_CASE_QUIET_MS = 220',
+  'async function waitForPostClickCaseSettlement(page, attempt)',
+  'window.__td613A12PostClickCaseStability',
+  'pointer === current.case_id',
+  "profile === 'investigation'",
+  'post_click_case = await waitForPostClickCaseSettlement(page, attempt)',
+  'td613.ash.a12-present-state-convergence-rebind/v0.2-post-click-settled',
+  'post_click_case:postClickCase',
+  "convergence.begin({ detail:{ case_id:current.case_id, profile:'investigation' } })",
+  'pointer_concordant:pointer === current.case_id',
+  'ENTRY_FIELD_QUIET_MS = 220',
+  'async function canonicalFieldDiagnostic(page, label, error)',
+  'td613.ash.a12-canonical-field-diagnostic/v0.1',
+  'window.__td613AshFlowcoreIngressPortal?.current?.()',
+  'window.__td613AshFlowcoreWorkspaceRemount?.current?.()',
+  'async function waitForCanonicalField(page, label)',
+  'ash-flowcore-field:not(.ash-flowcore-field--proxy):not([hidden])',
+  'visible.length !== 1',
+  "waitForCanonicalField(page, 'entry-preflight-capsule')",
+  "route:['choir','capsule']",
+  "waitForCanonicalField(page, 'full-witness-capsule')",
+  'td613.ash.a12-entry-preflight/v0.5-post-click-settled-canonical-field',
+  'td613.ash.a12-browser-witness/v1.4-a15-post-click-settled-canonical-field'
+]);
+
 function replaceExactly(source, marker, replacement, label) {
   const count = source.split(marker).length - 1;
   if (count !== 1) throw new Error(`${label} expected exactly one marker; observed ${count}`);
@@ -49,6 +76,9 @@ source = replaceExactly(
   'A12 closed-case source transform injection'
 );
 
+for (const marker of REQUIRED_A12_STATIC_MARKERS) {
+  if (!source.includes(marker)) throw new Error(`A12 historical wrapper law missing after closed-case hardening: ${marker}`);
+}
 if (!source.includes('existing.case_closed === true') || !source.includes("case_closed:document.body.dataset.ashCaseClosed === 'true'")) {
   throw new Error('A12 closed-case reactivation hardening did not compile into the wrapper.');
 }
