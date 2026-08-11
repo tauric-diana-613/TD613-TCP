@@ -1,3 +1,5 @@
+import { deepFreeze } from './a15-r0-contracts.js';
+
 export const A15_R0_OPEN_FIELD_SCHEMA = 'td613.ash.a15-r0.open-research-field/v0.2';
 
 const round = value => Number(value.toFixed(6));
@@ -78,55 +80,55 @@ const repeatPairs = pairs => pairs.flatMap(([strategy, observation, count = 4]) 
   Array.from({ length: count }, () => ({ strategy, observation }))
 );
 
-export const OBSERVABILITY_MODELS = Object.freeze([
-  Object.freeze({
+export const OBSERVABILITY_MODELS = deepFreeze([
+  {
     model_id: 'ACTIVE_BOUNDARY',
     label: 'Active boundary',
     policy_family: 'ACTIVE',
     observer_model: 'CONTENT',
     claim: 'Synthetic contrastive defense emits strategy-specific observations.',
-    samples: Object.freeze(repeatPairs([
+    samples: repeatPairs([
       ['S_A', 'BLOCK_A'],
       ['S_B', 'BLOCK_B'],
       ['S_C', 'BLOCK_C']
-    ]))
-  }),
-  Object.freeze({
+    ])
+  },
+  {
     model_id: 'MINIMAL_DISCLOSURE',
     label: 'Minimal disclosure',
     policy_family: 'MINIMAL',
     observer_model: 'CONTENT',
     claim: 'Two strategies collapse to one observable response while one remains distinguishable.',
-    samples: Object.freeze(repeatPairs([
+    samples: repeatPairs([
       ['S_A', 'NARROW_ACK'],
       ['S_B', 'NARROW_ACK'],
       ['S_C', 'HELD']
-    ]))
-  }),
-  Object.freeze({
+    ])
+  },
+  {
     model_id: 'NULL_CONTENT',
     label: 'Null content channel',
     policy_family: 'NULL',
     observer_model: 'CONTENT_ONLY',
     claim: 'The modeled content channel emits the same symbol for every strategy.',
-    samples: Object.freeze(repeatPairs([
+    samples: repeatPairs([
       ['S_A', 'NO_EMISSION'],
       ['S_B', 'NO_EMISSION'],
       ['S_C', 'NO_EMISSION']
-    ]))
-  }),
-  Object.freeze({
+    ])
+  },
+  {
     model_id: 'NULL_WITH_SIDE_CHANNEL',
     label: 'Null content with side channel',
     policy_family: 'NULL',
     observer_model: 'CONTENT_PLUS_TIMING_CLASS',
     claim: 'Content remains silent while a modeled timing class restores strategy information.',
-    samples: Object.freeze(repeatPairs([
+    samples: repeatPairs([
       ['S_A', 'NO_EMISSION_FAST'],
       ['S_B', 'NO_EMISSION_MEDIUM'],
       ['S_C', 'NO_EMISSION_SLOW']
-    ]))
-  })
+    ])
+  }
 ]);
 
 export function runObservabilityAssay() {
@@ -142,7 +144,7 @@ export function runObservabilityAssay() {
   }));
   const nullPolicy = models.filter(model => model.policy_family === 'NULL');
   const nullLeakages = nullPolicy.map(model => model.mutual_information_bits);
-  return Object.freeze({
+  return deepFreeze({
     schema: 'td613.ash.a15-r0.observability-assay/v0.2',
     source_status: 'SIMULATED',
     sensor_id: 'deterministic-open-field-model',
@@ -188,7 +190,7 @@ export function runRankLeakageNonEquivalenceAssay() {
       channel_posture: 'three-dimensional structural projection followed by observer-independent synthetic channel'
     }
   ];
-  return Object.freeze({
+  return deepFreeze({
     schema: 'td613.ash.a15-r0.rank-leakage-non-equivalence/v0.1',
     source_status: 'SIMULATED',
     authority_class: 'A2_DERIVATIONAL',
@@ -213,7 +215,7 @@ export function runJoiningKeySynergyAssay() {
   const informationB = mutualInformationBits(featureB);
   const informationJoint = mutualInformationBits(joint);
   const synergyProxy = round(informationJoint - informationA - informationB);
-  return Object.freeze({
+  return deepFreeze({
     schema: 'td613.ash.a15-r0.joining-key-synergy-assay/v0.1',
     source_status: 'SIMULATED',
     authority_class: 'A2_DERIVATIONAL',
@@ -230,9 +232,9 @@ export function runJoiningKeySynergyAssay() {
   });
 }
 
-export const CANONICAL_TOPOLOGY = Object.freeze({
-  nodes: Object.freeze(['custody', 'reference', 'question', 'relation', 'route', 'receipt', 'return']),
-  edges: Object.freeze([
+export const CANONICAL_TOPOLOGY = deepFreeze({
+  nodes: ['custody', 'reference', 'question', 'relation', 'route', 'receipt', 'return'],
+  edges: [
     'custody>reference',
     'reference>question',
     'question>relation',
@@ -240,25 +242,25 @@ export const CANONICAL_TOPOLOGY = Object.freeze({
     'route>receipt',
     'receipt>return',
     'return>custody'
-  ])
+  ]
 });
 
-export const RECONSTRUCTION_FRAGMENTS = Object.freeze([
-  Object.freeze({ id: 'F01', nodes: ['custody', 'reference', 'question'], edges: ['custody>reference', 'reference>question'] }),
-  Object.freeze({ id: 'F02', nodes: ['reference', 'question', 'relation'], edges: ['reference>question', 'question>relation'] }),
-  Object.freeze({ id: 'F03', nodes: ['question', 'relation', 'route'], edges: ['question>relation', 'relation>route'] }),
-  Object.freeze({ id: 'F04', nodes: ['relation', 'route', 'receipt'], edges: ['relation>route', 'route>receipt'] }),
-  Object.freeze({ id: 'F05', nodes: ['route', 'receipt', 'return'], edges: ['route>receipt', 'receipt>return'] }),
-  Object.freeze({ id: 'F06', nodes: ['receipt', 'return', 'custody'], edges: ['receipt>return', 'return>custody'] }),
-  Object.freeze({ id: 'F07', nodes: ['return', 'custody', 'reference'], edges: ['return>custody', 'custody>reference'] }),
-  Object.freeze({ id: 'F08', nodes: ['custody', 'question', 'relation', 'route', 'return'], edges: ['question>relation', 'relation>route', 'return>custody'] }),
-  Object.freeze({ id: 'F09', nodes: ['reference', 'route', 'receipt', 'return'], edges: ['route>receipt', 'receipt>return'] })
+export const RECONSTRUCTION_FRAGMENTS = deepFreeze([
+  { id: 'F01', nodes: ['custody', 'reference', 'question'], edges: ['custody>reference', 'reference>question'] },
+  { id: 'F02', nodes: ['reference', 'question', 'relation'], edges: ['reference>question', 'question>relation'] },
+  { id: 'F03', nodes: ['question', 'relation', 'route'], edges: ['question>relation', 'relation>route'] },
+  { id: 'F04', nodes: ['relation', 'route', 'receipt'], edges: ['relation>route', 'route>receipt'] },
+  { id: 'F05', nodes: ['route', 'receipt', 'return'], edges: ['route>receipt', 'receipt>return'] },
+  { id: 'F06', nodes: ['receipt', 'return', 'custody'], edges: ['receipt>return', 'return>custody'] },
+  { id: 'F07', nodes: ['return', 'custody', 'reference'], edges: ['return>custody', 'custody>reference'] },
+  { id: 'F08', nodes: ['custody', 'question', 'relation', 'route', 'return'], edges: ['question>relation', 'relation>route', 'return>custody'] },
+  { id: 'F09', nodes: ['reference', 'route', 'receipt', 'return'], edges: ['route>receipt', 'receipt>return'] }
 ]);
 
 export function reconstructTopology(fragments) {
   const nodes = unique(fragments.flatMap(fragment => fragment.nodes || [])).sort();
   const edges = unique(fragments.flatMap(fragment => fragment.edges || [])).sort();
-  return Object.freeze({ nodes, edges });
+  return deepFreeze({ nodes, edges });
 }
 
 function setJaccard(left, right) {
@@ -281,7 +283,7 @@ function cloneFragment(fragment) {
   return { id: fragment.id, nodes: [...fragment.nodes], edges: [...fragment.edges] };
 }
 
-export const ADMISSIBILITY_TRANSFORMS = Object.freeze({
+export const ADMISSIBILITY_TRANSFORMS = deepFreeze({
   IDENTITY: fragments => fragments.map(cloneFragment),
   FRAGMENT_DROPOUT: fragments => fragments.filter((_, index) => ![1, 4, 7].includes(index)).map(cloneFragment),
   RELATION_DROPOUT: fragments => fragments.map((fragment, index) => ({
@@ -299,6 +301,13 @@ export const ADMISSIBILITY_TRANSFORMS = Object.freeze({
 });
 
 export function runReconstructionAssay({ k = 4, epsilon = 0.2 } = {}) {
+  if (!Number.isInteger(k) || k < 1 || k > RECONSTRUCTION_FRAGMENTS.length) {
+    throw new TypeError(`Reconstruction k must be an integer from 1 through ${RECONSTRUCTION_FRAGMENTS.length}.`);
+  }
+  if (!Number.isFinite(epsilon) || epsilon < 0 || epsilon > 1) {
+    throw new TypeError('Reconstruction epsilon must be a finite number from 0 through 1.');
+  }
+
   const transforms = Object.entries(ADMISSIBILITY_TRANSFORMS).map(([operator_id, transform]) => {
     const transformed = transform(RECONSTRUCTION_FRAGMENTS);
     const reconstructed = reconstructTopology(transformed);
@@ -321,7 +330,7 @@ export function runReconstructionAssay({ k = 4, epsilon = 0.2 } = {}) {
   const floor = Math.min(...admissibilityScores);
   const worst = admissibilityResults.find(result => result.topology_similarity === floor);
 
-  return Object.freeze({
+  return deepFreeze({
     schema: 'td613.ash.a15-r0.reconstruction-assay/v0.2',
     source_status: 'SIMULATED',
     sensor_id: 'deterministic-open-field-model',
@@ -341,12 +350,9 @@ export function runReconstructionAssay({ k = 4, epsilon = 0.2 } = {}) {
 }
 
 export function runDirectionalExposureAssay() {
-  const inbound = Object.freeze([
-    'query', 'route-state', 'source-posture', 'missingness', 'claim-ceiling', 'action-state',
-    'receipt-state', 'relation-state', 'comparison-state', 'continuity-state', 'return-state', 'authority-state'
-  ]);
-  const outbound = Object.freeze(['world-answer', 'bounded-receipt', 'visible-state', 'declared-missingness']);
-  return Object.freeze({
+  const inbound = ['query', 'route-state', 'source-posture', 'missingness', 'claim-ceiling', 'action-state', 'receipt-state', 'relation-state', 'comparison-state', 'continuity-state', 'return-state', 'authority-state'];
+  const outbound = ['world-answer', 'bounded-receipt', 'visible-state', 'declared-missingness'];
+  return deepFreeze({
     schema: 'td613.ash.a15-r0.directional-exposure-assay/v0.1',
     source_status: 'SIMULATED',
     authority_class: 'A2_DERIVATIONAL',
@@ -360,7 +366,7 @@ export function runDirectionalExposureAssay() {
 }
 
 export function runOpenResearchField() {
-  return Object.freeze({
+  return deepFreeze({
     schema: A15_R0_OPEN_FIELD_SCHEMA,
     namespace: 'U+10D613',
     source_status: 'SIMULATED',
