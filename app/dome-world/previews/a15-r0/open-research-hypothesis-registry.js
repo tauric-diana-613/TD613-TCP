@@ -1,4 +1,5 @@
 import { runBoundedTransformationEnvelope } from './bounded-transformation-envelope.js';
+import { runBooleanMobiusInteractionAssay } from './boolean-mobius-interaction.js';
 import { runBooleanSynergyCensus } from './boolean-synergy-census.js';
 import { runFisherSynergyNonEquivalence } from './fisher-synergy-non-equivalence.js';
 import { buildGoldenEggFeasibleRegion } from './golden-egg-feasible-region.js';
@@ -17,6 +18,7 @@ export function buildOpenResearchHypothesisRegistry(options = {}) {
   const field = options.field || runOpenResearchField();
   const envelope = options.envelope || runBoundedTransformationEnvelope({ field });
   const booleanCensus = options.booleanCensus || runBooleanSynergyCensus();
+  const mobiusInteraction = options.mobiusInteraction || runBooleanMobiusInteractionAssay({ booleanCensus });
   const geometry = options.geometry || runInformationGeometryCalibration();
   const fisherSynergy = options.fisherSynergy || runFisherSynergyNonEquivalence();
   const feasibleRegion = options.feasibleRegion || buildGoldenEggFeasibleRegion({ field, booleanCensus });
@@ -119,6 +121,26 @@ export function buildOpenResearchHypothesisRegistry(options = {}) {
       claim_ceiling: 'UNIFORM_DETERMINISTIC_TWO_INPUT_BOOLEAN_FAMILY_ONLY'
     }),
     freezeHypothesis({
+      hypothesis_id: 'H_MOBIUS_MAGNITUDE_TRACKS_JOINING_EXCESS',
+      question: 'Does the absolute second-order Boolean-lattice Möbius interaction coordinate the joining-excess levels in the complete declared Boolean family?',
+      falsifier: 'Two functions with the same absolute Möbius interaction occupy different joining-excess levels, or the levels fail to increase with interaction magnitude.',
+      evidence: {
+        operator: mobiusInteraction.operator,
+        operator_formula: mobiusInteraction.operator_formula,
+        magnitude_group_count: mobiusInteraction.magnitude_groups.length,
+        exact_synergy_level_by_absolute_mobius_magnitude: mobiusInteraction.exact_synergy_level_by_absolute_mobius_magnitude,
+        strictly_monotone_synergy_across_mobius_magnitude_levels: mobiusInteraction.strictly_monotone_synergy_across_mobius_magnitude_levels,
+        zero_mobius_magnitude_iff_zero_joining_excess: mobiusInteraction.zero_mobius_magnitude_iff_zero_joining_excess_in_declared_family,
+        xor_xnor_share_maximum_magnitude: mobiusInteraction.xor_xnor_share_maximum_magnitude,
+        geometric_curvature_claim: mobiusInteraction.intrinsic_geometric_curvature_claim
+      },
+      status: mobiusInteraction.exact_synergy_level_by_absolute_mobius_magnitude
+        && mobiusInteraction.strictly_monotone_synergy_across_mobius_magnitude_levels
+        ? 'SUPPORTED_IN_BOUNDED_SYNTHETIC_FAMILY'
+        : 'FALSIFIED_IN_SYNTHETIC_FIELD',
+      claim_ceiling: 'UNIFORM_DETERMINISTIC_TWO_INPUT_BOOLEAN_FAMILY_DISCRETE_INTERACTION_ONLY'
+    }),
+    freezeHypothesis({
       hypothesis_id: 'H_SYNERGY_EQUALS_AMBIENT_FISHER_CURVATURE',
       question: 'Can joining synergy be identified directly with ambient Fisher-Rao scalar curvature on the full joint categorical simplex?',
       falsifier: 'Two interior joint distributions share the same ambient Fisher-Rao scalar curvature while carrying different joining-synergy values.',
@@ -137,10 +159,15 @@ export function buildOpenResearchHypothesisRegistry(options = {}) {
     }),
     freezeHypothesis({
       hypothesis_id: 'H_INFORMATION_CURVATURE_GEOMETRIC',
-      question: 'Can relational residue be promoted from an information-synergy proxy into a defensible geometric curvature quantity?',
+      question: 'Can relational residue be promoted from a discrete Möbius interaction / information-synergy relation into a defensible geometric curvature quantity?',
       falsifier: 'No stable metric, connection, invariant, or geometry preserves the proposed curvature quantity across admissible reparameterizations.',
       evidence: {
-        current_quantity: 'JOINING_SYNERGY_PROXY_BITS',
+        current_information_quantity: 'JOINING_SYNERGY_PROXY_BITS',
+        current_discrete_interaction_coordinate: 'ABS_SECOND_ORDER_BOOLEAN_MOBIUS_INTERACTION',
+        mobius_operator_formula: mobiusInteraction.operator_formula,
+        mobius_synergy_level_correspondence_in_declared_family: mobiusInteraction.exact_synergy_level_by_absolute_mobius_magnitude,
+        mobius_algebraic_lineage: mobiusInteraction.algebraic_lineage,
+        discrete_hessian_interpretation_available: mobiusInteraction.discrete_hessian_interpretation_available,
         fisher_rao_positive_control_scalar_curvature: geometry.analytic_scalar_curvature,
         fisher_metric_covariance_check_pass: geometry.metric_covariance_check_pass,
         synergy_relabel_invariant_in_fixture: geometry.joining_synergy_relabel_invariant_in_fixture,
@@ -150,7 +177,7 @@ export function buildOpenResearchHypothesisRegistry(options = {}) {
         ambient_fisher_identification_falsified: fisherSynergy.synergy_equals_ambient_fisher_scalar_curvature === false
       },
       status: 'OPEN_RESEARCH_PROGRAM',
-      claim_ceiling: 'AMBIENT_FISHER_CURVATURE_REJECTED_OTHER_RELATIONAL_GEOMETRIES_UNMEASURED'
+      claim_ceiling: 'DISCRETE_MOBIUS_COORDINATE_SUPPORTED_AMBIENT_FISHER_CURVATURE_REJECTED_METRIC_CONNECTION_CURVATURE_UNMEASURED'
     }),
     freezeHypothesis({
       hypothesis_id: 'H_GOLDEN_EGG_BOUNDED_REGION',
