@@ -21,6 +21,7 @@ const REGISTRY_VERSION = 'td613.ash.demo-registry/v0.3-a15';
 const ASSET_EPOCH = '20260726-a15-empirical-v1';
 const EMPIRICAL_VERSION = 'td613.ash.a15-empirical-profile-journeys/v0.1';
 const HYDRATION_EVENT = 'td613:ash:demo-registry-hydrated';
+const POINTER_DELIVERY_HOLD = 'POINTER_DELIVERY_UNREGISTERED';
 
 const modes = Object.freeze([
   ['desktop', { viewport:{ width:1280, height:900 } }],
@@ -247,6 +248,22 @@ function classify(records, expectedRoute) {
   });
 }
 
+function classifyObserverFailure(failure) {
+  const records = failure?.diagnostic?.trace_records || [];
+  const beforeClick = records.find(record => record.kind === 'ROUTE_CONTROL_BEFORE_CLICK') || null;
+  const afterDispatch = records.find(record => record.kind === 'AFTER_ROUTE_CLICK_DISPATCH') || null;
+  const capture = records.find(record => record.kind === 'ROUTE_CLICK_CAPTURE') || null;
+  const bubble = records.find(record => record.kind === 'ROUTE_CLICK_BUBBLE') || null;
+  if (beforeClick?.detail?.connected === true
+    && beforeClick?.detail?.live_aia_direct_onclick === true
+    && afterDispatch
+    && !capture
+    && !bubble) {
+    return POINTER_DELIVERY_HOLD;
+  }
+  return 'FATAL_OBSERVER_FAILURE';
+}
+
 async function inspectCell(browser, mode, options, profile, route, controlValue) {
   const context = await browser.newContext(options);
   const page = await context.newPage();
@@ -328,6 +345,7 @@ async function inspectCell(browser, mode, options, profile, route, controlValue)
 const browser = await browserType.launch({ headless:true });
 const cells = [];
 const failures = [];
+const pointerDeliveryHolds = [];
 try {
   for (const [mode, options] of modes) {
     for (const profile of PROFILES) {
@@ -335,14 +353,18 @@ try {
         try {
           cells.push(await inspectCell(browser, mode, options, profile, route, controlValue));
         } catch (error) {
-          failures.push({
+          const observedFailure = {
             browser:browserName,
             mode,
             profile,
             route,
             error:String(error?.stack || error),
             diagnostic:error.td613Diagnostic || null
-          });
+          };
+          const failureClass = classifyObserverFailure(observedFailure);
+          const classifiedFailure = { ...observedFailure, failure_class:failureClass };
+          if (failureClass === POINTER_DELIVERY_HOLD) pointerDeliveryHolds.push(classifiedFailure);
+          else failures.push(classifiedFailure);
         }
       }
     }
@@ -359,8 +381,9 @@ const coupledCells = cells.filter(cell => cell.classification.classification.sta
 const baselineSummary = Object.fromEntries([...new Set(cells.map(cell => cell.classification.initial_workspace || 'UNDECLARED'))]
   .sort()
   .map(workspace => [workspace, cells.filter(cell => (cell.classification.initial_workspace || 'UNDECLARED') === workspace).length]));
+const expectedCellCount = modes.length * PROFILES.length * Object.keys(ROUTES).length;
 const report = {
-  schema:'td613.ash.a15-transition-trace-browser-witness/v0.5-route-owner-microscope',
+  schema:'td613.ash.a15-transition-trace-browser-witness/v0.6-pointer-transport-hold-separation',
   source_status:'OBSERVED',
   sensor_id:'playwright-browser-runtime',
   authority_class:'A1_OBSERVATIONAL',
@@ -369,13 +392,22 @@ const report = {
   profile_hydration_completion_required:true,
   route_side_effects_bounded_after_before_route_marker:true,
   route_control_owner_observed_at_click:true,
-  route_click_capture_and_bubble_observed:true,
+  route_click_capture_and_bubble_instrumented:true,
+  route_click_capture_and_bubble_observed:pointerDeliveryHolds.length === 0,
   observation_horizon_ms:OBSERVATION_HORIZON_MS,
   profiles:PROFILES,
   routes:Object.keys(ROUTES),
   modes:modes.map(([name]) => name),
+  expected_cell_count:expectedCellCount,
+  observed_cell_count:cells.length,
+  measurement_accounted_cell_count:cells.length + pointerDeliveryHolds.length + failures.length,
+  measurement_complete:cells.length + pointerDeliveryHolds.length + failures.length === expectedCellCount,
   cells,
+  pointer_delivery_holds:pointerDeliveryHolds,
+  pointer_delivery_hold_count:pointerDeliveryHolds.length,
+  pointer_delivery_holds_are_promotion_veto:false,
   failures,
+  fatal_failure_count:failures.length,
   summary,
   observed_pre_route_workspace_summary:baselineSummary,
   workspace_normalization_applied:false,
@@ -385,6 +417,7 @@ const report = {
   observation_window_is_quiescence_proof:false,
   timing_patch_authorized:false,
   production_mutation:false,
+  promotion_authority:false,
   human_interpretation_required:true
 };
 
@@ -393,7 +426,9 @@ await fs.writeFile(artifactPath, `${JSON.stringify(report, null, 2)}\n`, 'utf8')
 console.log(JSON.stringify({
   browser:browserName,
   cells:cells.length,
+  pointer_delivery_holds:pointerDeliveryHolds.length,
   failures:failures.length,
+  measurement_complete:report.measurement_complete,
   summary,
   observed_pre_route_workspace_summary:baselineSummary,
   artifact:artifactPath
