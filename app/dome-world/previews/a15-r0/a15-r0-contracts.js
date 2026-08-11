@@ -59,6 +59,18 @@ const GOVERNED_FIXTURE_REQUIRED = Object.freeze([
   'claim_ceiling',
   'authority'
 ]);
+const FIXTURE_AUTHORITY_KEYS = Object.freeze([
+  'automatic_ash_action',
+  'automatic_relation_binding',
+  'automatic_comparison',
+  'automatic_save',
+  'automatic_handoff',
+  'automatic_export',
+  'automatic_release',
+  'automatic_closure',
+  'human_review_required',
+  'human_closure_required'
+]);
 
 function assert(condition, message) {
   if (!condition) throw new Error(message);
@@ -120,8 +132,12 @@ function assertNoLiveExternalContent(value) {
   assert(!/\b(?:https?|wss?|ftp):\/\//i.test(serialized), 'A15-R0 fixtures may not contain live external content.');
 }
 
-function assertAuthorityClosed(authority, label = 'Authority') {
+function assertAuthorityClosed(authority, label = 'Authority', allowedKeys = null) {
   assertPlainRecord(authority, label);
+  if (allowedKeys) {
+    const allowed = new Set(allowedKeys);
+    for (const key of Object.keys(authority)) assert(allowed.has(key), `${label}.${key} is undeclared.`);
+  }
   for (const [key, expected] of Object.entries(A15_R0_AUTHORITY_FLAGS)) {
     if (Object.hasOwn(authority, key)) assert(authority[key] === expected, `${label}.${key} must remain ${expected}.`);
   }
@@ -181,6 +197,18 @@ export function validateGovernedTaskFixture(value) {
     assertString(room.id, `Fixture rooms[${index}].id`);
     assertString(room.label, `Fixture rooms[${index}].label`);
   });
+  const roomIds = fixture.rooms.map(room => room.id);
+  assert(new Set(roomIds).size === roomIds.length, 'Fixture Room IDs must be unique.');
+  for (const requiredRoom of ['room_source', 'room_question']) {
+    assert(roomIds.includes(requiredRoom), `Fixture must declare adapter-required Room ${requiredRoom}.`);
+  }
+
+  const fixtureNodes = new Map([
+    [fixture.local_source.reference_id, { node_id: fixture.local_source.reference_id, type: 'source', room_id: 'room_source' }],
+    [fixture.question.node_id, { node_id: fixture.question.node_id, type: 'claim', room_id: 'room_question' }],
+    [fixture.case_anchor.node_id, { node_id: fixture.case_anchor.node_id, type: 'entity', room_id: 'room_source' }]
+  ]);
+  assert(fixtureNodes.size === 3, 'Fixture source, question, and case-anchor node IDs must be unique.');
 
   assert(Array.isArray(fixture.route_rules) && fixture.route_rules.length === 2, 'The fixture requires exactly two declared route rules.');
   fixture.route_rules.forEach((rule, index) => {
@@ -190,7 +218,18 @@ export function validateGovernedTaskFixture(value) {
     assert(Array.isArray(rule.local_link_keys), `Fixture route_rules[${index}].local_link_keys must be an array.`);
     assert(Array.isArray(rule.allowed_node_types), `Fixture route_rules[${index}].allowed_node_types must be an array.`);
     assertString(rule.time_posture, `Fixture route_rules[${index}].time_posture`);
+    rule.allowed_room_ids.forEach((roomId, roomIndex) => {
+      assertString(roomId, `Fixture route_rules[${index}].allowed_room_ids[${roomIndex}]`);
+      assert(roomIds.includes(roomId), `Fixture route_rules[${index}] references undeclared Room ${roomId}.`);
+    });
+    rule.allowed_node_types.forEach((nodeType, typeIndex) => assertString(nodeType, `Fixture route_rules[${index}].allowed_node_types[${typeIndex}]`));
+    rule.local_link_keys.forEach((nodeId, linkIndex) => {
+      assertString(nodeId, `Fixture route_rules[${index}].local_link_keys[${linkIndex}]`);
+      assert(fixtureNodes.has(nodeId), `Fixture route_rules[${index}] local link ${nodeId} is undeclared.`);
+    });
   });
+  const ruleById = new Map(fixture.route_rules.map(rule => [rule.route_id, rule]));
+  assert(ruleById.size === 2 && ruleById.has('route_a') && ruleById.has('route_b'), 'Fixture route rules must uniquely declare route_a and route_b.');
 
   assertPlainRecord(fixture.route_observations, 'Fixture route_observations');
   for (const routeId of ['route_a', 'route_b']) {
@@ -198,6 +237,14 @@ export function validateGovernedTaskFixture(value) {
     assertString(observation.label, `Fixture route_observations.${routeId}.label`);
     assert(Array.isArray(observation.proposed_references), `Fixture route_observations.${routeId}.proposed_references must be an array.`);
     assert(Array.isArray(observation.missingness), `Fixture route_observations.${routeId}.missingness must be an array.`);
+    const rule = ruleById.get(routeId);
+    observation.proposed_references.forEach((referenceId, referenceIndex) => {
+      assertString(referenceId, `Fixture route_observations.${routeId}.proposed_references[${referenceIndex}]`);
+      const node = fixtureNodes.get(referenceId);
+      assert(node, `Fixture route_observations.${routeId} references undeclared node ${referenceId}.`);
+      assert(rule.allowed_room_ids.includes(node.room_id), `Fixture route_observations.${routeId} reference ${referenceId} violates declared Room rules.`);
+      assert(rule.allowed_node_types.includes(node.type), `Fixture route_observations.${routeId} reference ${referenceId} violates declared node-type rules.`);
+    });
   }
 
   assert(JSON.stringify(fixture.allowed_action_sequence) === JSON.stringify(A15_R0_ACTION_SEQUENCE), 'The governed action sequence changed.');
@@ -209,7 +256,8 @@ export function validateGovernedTaskFixture(value) {
 
   assert(Array.isArray(fixture.claim_ceiling) && fixture.claim_ceiling.length > 0, 'The fixture requires a visible claim ceiling.');
   fixture.claim_ceiling.forEach((entry, index) => assertString(entry, `Fixture claim_ceiling[${index}]`));
-  assertAuthorityClosed(fixture.authority, 'Fixture authority');
+  assertRequiredFields(fixture.authority, FIXTURE_AUTHORITY_KEYS, 'Fixture authority');
+  assertAuthorityClosed(fixture.authority, 'Fixture authority', FIXTURE_AUTHORITY_KEYS);
   assertTrue(fixture.authority.human_review_required, 'Fixture human review');
   assertTrue(fixture.authority.human_closure_required, 'Fixture human closure');
   assertNoLiveExternalContent(fixture);
