@@ -119,7 +119,10 @@ jobs:
           node --check scripts/ash-a15-transition-trace-browser-probe.mjs
           node tests/ash-a15-r0-fixture.test.mjs
           node tests/ash-a15-r0-kernel-adapter.test.mjs
+          node tests/ash-a15-r0-disposal.test.mjs
+          node tests/ash-a15-r0-interaction-ownership.test.mjs
           node tests/ash-a15-r0-open-research-field.test.mjs
+          node tests/ash-a15-r0-preview-contract.test.mjs
           node tests/ash-a15-r0-review-hardening.test.mjs
           node tests/ash-a15-transition-trace-contract.test.mjs
       - name: Validate Ash demo hydration surfaces
