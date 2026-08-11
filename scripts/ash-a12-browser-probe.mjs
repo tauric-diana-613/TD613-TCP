@@ -18,6 +18,12 @@ const REQUIRED_A12_STATIC_MARKERS = Object.freeze([
   'post_click_case:postClickCase',
   "convergence.begin({ detail:{ case_id:current.case_id, profile:'investigation' } })",
   'pointer_concordant:pointer === current.case_id',
+  'const already_converged = terminalReady(before);',
+  'rebind_required:!already_converged',
+  'already_converged,',
+  'after_converged,',
+  'rebind_admitted,',
+  'if (!entry_convergence_rebind.rebind_admitted)',
   'ENTRY_FIELD_QUIET_MS = 220',
   'async function canonicalFieldDiagnostic(page, label, error)',
   'td613.ash.a12-canonical-field-diagnostic/v0.1',
@@ -76,11 +82,56 @@ source = replaceExactly(
   'A12 closed-case source transform injection'
 );
 
+source = replaceExactly(
+  source,
+  `        const before = convergence.current?.() || null;
+        const began = convergence.begin({ detail:{ case_id:current.case_id, profile:'investigation' } });
+        const after = convergence.current?.() || null;`,
+  `        const terminalReady = state => Boolean(
+          state?.case_id === current.case_id
+          && state?.profile === 'investigation'
+          && state?.workspace === 'home'
+          && state?.posture === 'READY'
+          && state?.phase === 'VISIBLE'
+          && Number(state?.stable_frames || 0) >= 2
+        );
+        const before = convergence.current?.() || null;
+        const already_converged = terminalReady(before);
+        const began = already_converged
+          ? false
+          : convergence.begin({ detail:{ case_id:current.case_id, profile:'investigation' } });
+        const after = convergence.current?.() || null;
+        const after_converged = terminalReady(after);
+        const rebind_admitted = Boolean(began) || (already_converged && after_converged);`,
+  'A12 idempotent convergence admission'
+);
+source = replaceExactly(
+  source,
+  `          begin_invoked:Boolean(began),
+          after,`,
+  `          begin_invoked:Boolean(began),
+          rebind_required:!already_converged,
+          already_converged,
+          after_converged,
+          rebind_admitted,
+          after,`,
+  'A12 convergence satisfaction receipt'
+);
+source = replaceExactly(
+  source,
+  `      if (!entry_convergence_rebind.begin_invoked) throw new Error('A12 present-state convergence rebind was not admitted.');`,
+  `      if (!entry_convergence_rebind.rebind_admitted) throw new Error('A12 present-state convergence was neither already satisfied nor successfully rebound.');`,
+  'A12 idempotent convergence gate'
+);
+
 for (const marker of REQUIRED_A12_STATIC_MARKERS) {
-  if (!source.includes(marker)) throw new Error(`A12 historical wrapper law missing after closed-case hardening: ${marker}`);
+  if (!source.includes(marker)) throw new Error(`A12 historical wrapper law missing after closed-case/idempotence hardening: ${marker}`);
 }
 if (!source.includes('existing.case_closed === true') || !source.includes("case_closed:document.body.dataset.ashCaseClosed === 'true'")) {
   throw new Error('A12 closed-case reactivation hardening did not compile into the wrapper.');
+}
+if (source.includes('if (!entry_convergence_rebind.begin_invoked)')) {
+  throw new Error('A12 idempotence hardening left the obsolete begin-invoked-only gate in generated witness source.');
 }
 
 await fs.writeFile(tempPath, source, 'utf8');
