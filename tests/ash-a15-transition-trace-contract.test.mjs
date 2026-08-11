@@ -68,11 +68,12 @@ assert.match(inheritedRouteProbe, /await button\.focus\(\)/);
 assert.match(inheritedRouteProbe, /await page\.keyboard\.press\('Enter'\)/);
 assert.match(inheritedRouteProbe, /control === document\.activeElement/);
 assert.match(inheritedRouteProbe, /typeof control\.onclick === 'function'/);
-assert.doesNotMatch(
+assert.match(
   inheritedRouteProbe,
-  /__td613AshLiveAIA\.setRoute\(/,
-  'Inherited semantic route witness must preserve the native Live-AIA button owner instead of calling the route API directly.'
+  /if \(source\.includes\('__td613AshLiveAIA\.setRoute\('\)\) \{/,
+  'Inherited semantic route witness must actively reject private Live-AIA route API shortcuts.'
 );
+assert.match(inheritedRouteProbe, /route witness may not bypass the native route control owner/);
 
 const runtimeMarker = '- name: Start one bounded Ash and Dome-World runtime';
 const calibrationMarker = '- name: Calibrate A15-R0 and transition ordering across every engine';
@@ -109,7 +110,7 @@ assert.match(calibrationChamber, /independent_from_prior_ash_promotion_gates:tru
 assert.match(calibrationChamber, /promotion_authority:false/);
 
 console.log(JSON.stringify({
-  contract:'td613.ash.a15-transition-trace-contract/v0.9-pointer-transport-hold-separation',
+  contract:'td613.ash.a15-transition-trace-contract/v0.10-pointer-hold-guard-correction',
   a15_r0_evidence_independent_of_inherited_a15:true,
   transition_trace_independent_of_inherited_a15:true,
   a15_r0_evidence_independent_of_prior_ash_promotion_gates:true,
@@ -125,7 +126,7 @@ console.log(JSON.stringify({
   inherited_browser_process_isolation_per_profile:true,
   inherited_incremental_profile_checkpoints:true,
   inherited_semantic_route_witness_uses_native_keyboard_button_activation:true,
-  inherited_semantic_route_witness_private_api_bypass:false,
+  inherited_semantic_route_witness_private_api_bypass_guard:true,
   workspace_normalization_applied:false,
   failure_diagnostics_preserved:true,
   all_engines_observed_separate_from_all_seams_ok:true,
