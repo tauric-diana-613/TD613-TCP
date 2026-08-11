@@ -296,7 +296,7 @@ jobs:
             cat artifacts/ash-a15-calibration/failures.tsv
             exit 1
           fi
-      - name: Run the inherited complete Ash witness through each installed engine
+      - name: Run the complete Ash witness through each installed engine
         run: |
           set -euo pipefail
           for browser in chromium firefox webkit; do
