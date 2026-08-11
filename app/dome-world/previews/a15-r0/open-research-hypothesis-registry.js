@@ -1,5 +1,6 @@
 import { runBoundedTransformationEnvelope } from './bounded-transformation-envelope.js';
 import { runBooleanSynergyCensus } from './boolean-synergy-census.js';
+import { buildGoldenEggFeasibleRegion } from './golden-egg-feasible-region.js';
 import { runInformationGeometryCalibration } from './information-geometry-calibration.js';
 import { runOpenResearchField } from './open-research-field.js';
 
@@ -16,6 +17,7 @@ export function buildOpenResearchHypothesisRegistry(options = {}) {
   const envelope = options.envelope || runBoundedTransformationEnvelope({ field });
   const booleanCensus = options.booleanCensus || runBooleanSynergyCensus();
   const geometry = options.geometry || runInformationGeometryCalibration();
+  const feasibleRegion = options.feasibleRegion || buildGoldenEggFeasibleRegion({ field, booleanCensus });
   const rankCases = Object.fromEntries(field.rank_leakage_non_equivalence.cases.map(item => [item.case_id, item]));
   const rankOne = rankCases.RANK1_DISTINGUISHABLE_SCALAR;
   const rankThree = rankCases.RANK3_OBSERVER_INDEPENDENT;
@@ -135,14 +137,20 @@ export function buildOpenResearchHypothesisRegistry(options = {}) {
       question: 'Can Golden Egg be reformulated as a bounded feasible region over non-equivalent leakage, joining, and reconstruction surfaces rather than as a scalar or stage?',
       falsifier: 'The proposed feasible-region grammar collapses materially distinct failure modes, cannot preserve counterexamples, or acquires promotion semantics from synthetic metrics.',
       evidence: {
-        envelope_status: envelope.status,
-        golden_egg_earned: envelope.golden_egg_earned,
-        metric_gate_count: envelope.metric_gates.length,
-        independent_metric_gate_count: envelope.metric_gates.length,
-        empirical_candidate_count: 0
+        formal_candidate_count: feasibleRegion.formal_candidate_count,
+        feasible_candidate_count: feasibleRegion.feasible_candidate_count,
+        pareto_candidate_count: feasibleRegion.pareto_candidate_count,
+        region_nonempty: feasibleRegion.region_nonempty,
+        scalarized_score_defined: feasibleRegion.scalarized_score_defined,
+        factorization_assumption: feasibleRegion.factorization_assumption,
+        joint_realizability: feasibleRegion.joint_realizability,
+        empirical_candidate_count: feasibleRegion.empirical_candidate_count,
+        golden_egg_earned: feasibleRegion.golden_egg_earned
       },
-      status: 'OPEN_RESEARCH_PROGRAM',
-      claim_ceiling: 'CRITERION_RESEARCH_ONLY'
+      status: feasibleRegion.region_nonempty && feasibleRegion.scalarized_score_defined === false && feasibleRegion.golden_egg_earned === false
+        ? 'SUPPORTED_IN_BOUNDED_SYNTHETIC_FAMILY'
+        : 'OPEN_RESEARCH_PROGRAM',
+      claim_ceiling: 'FACTORIZED_SYNTHETIC_FEASIBLE_REGION_GRAMMAR_ONLY'
     })
   ]);
 
@@ -169,6 +177,6 @@ export function buildOpenResearchHypothesisRegistry(options = {}) {
     stage_unlocks: Object.freeze([]),
     promotion_authority: false,
     human_closure_required: true,
-    finding: 'The research program advances by surviving or failing explicit falsifiers, not by unlocking a numbered next stage. Bounded support remains separately typed from empirical generalization.'
+    finding: 'The research program advances by surviving or failing explicit falsifiers, not by unlocking a numbered next stage. Bounded support remains separately typed from empirical generalization and joint realizability.'
   });
 }
