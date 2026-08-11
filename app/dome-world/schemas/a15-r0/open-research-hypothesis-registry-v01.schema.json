@@ -10,6 +10,7 @@
     "authority_class",
     "hypotheses",
     "closed_by_counterexample",
+    "bounded_support",
     "research_frontier",
     "sequence_authority",
     "next_stage",
@@ -38,6 +39,7 @@
               "FALSIFIED_IN_SYNTHETIC_FIELD",
               "FALSIFIED_BY_IMPLEMENTATION",
               "SUPPORTED_BY_SYNTHETIC_CONTRACT",
+              "SUPPORTED_IN_BOUNDED_SYNTHETIC_FAMILY",
               "OPEN",
               "OPEN_UNMEASURED",
               "OPEN_RESEARCH_PROGRAM"
@@ -48,6 +50,10 @@
       }
     },
     "closed_by_counterexample": {
+      "type": "array",
+      "items": { "type": "string", "pattern": "^H_[A-Z0-9_]+$" }
+    },
+    "bounded_support": {
       "type": "array",
       "items": { "type": "string", "pattern": "^H_[A-Z0-9_]+$" }
     },
