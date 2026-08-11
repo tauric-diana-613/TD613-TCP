@@ -37,6 +37,28 @@ export const A15_R0_AUTHORITY_FLAGS = Object.freeze({
 
 const PLAIN_OBJECT = '[object Object]';
 const OPAQUE_ID = /^[a-z][a-z0-9_-]{2,127}$/;
+const GOVERNED_FIXTURE_REQUIRED = Object.freeze([
+  'schema',
+  'fixture_id',
+  'namespace',
+  'source_status',
+  'sensor_id',
+  'authority_class',
+  'case_id',
+  'profile',
+  'title',
+  'created_at',
+  'local_source',
+  'question',
+  'case_anchor',
+  'rooms',
+  'route_rules',
+  'route_observations',
+  'allowed_action_sequence',
+  'action_times',
+  'claim_ceiling',
+  'authority'
+]);
 
 function assert(condition, message) {
   if (!condition) throw new Error(message);
@@ -88,6 +110,11 @@ function assertTrue(value, label) {
   assert(value === true, `${label} must remain true.`);
 }
 
+function assertRequiredFields(value, fields, label) {
+  assertPlainRecord(value, label);
+  for (const field of fields) assert(Object.hasOwn(value, field), `${label}.${field} is required.`);
+}
+
 function assertNoLiveExternalContent(value) {
   const serialized = JSON.stringify(value);
   assert(!/\b(?:https?|wss?|ftp):\/\//i.test(serialized), 'A15-R0 fixtures may not contain live external content.');
@@ -113,22 +140,75 @@ function assertAuthorityClosed(authority, label = 'Authority') {
 export function validateGovernedTaskFixture(value) {
   const fixture = assertPlainRecord(value, 'Governed task fixture');
   assertJsonSafe(fixture, 'Governed task fixture');
+  assertRequiredFields(fixture, GOVERNED_FIXTURE_REQUIRED, 'Governed task fixture');
   assert(fixture.schema === A15_R0_SCHEMAS.fixture, 'Unsupported governed task fixture schema.');
   assertOpaqueId(fixture.fixture_id, 'Fixture ID');
   assertOpaqueId(fixture.case_id, 'Case ID');
   assert(fixture.source_status === 'SIMULATED', 'The A15-R0 fixture must remain SIMULATED.');
   assert(fixture.sensor_id === 'simulated-fixture', 'The fixture sensor must remain simulated-fixture.');
   assert(fixture.authority_class === 'A2_DERIVATIONAL', 'The fixture authority class must remain A2_DERIVATIONAL.');
-  assert(fixture.namespace?.codepoint === 'U+10D613', 'The TD613 codepoint changed.');
-  assert(fixture.namespace?.surrogate_pair === '\\uDBF5\\uDE13', 'The TD613 surrogate pair changed.');
-  assert(fixture.namespace?.meaning === 'TD613 = Tauric Diana 613', 'The TD613 namespace meaning changed.');
-  assert(fixture.local_source?.raw_bytes_local === true, 'Synthetic raw-byte posture must remain local.');
-  assertFalse(fixture.local_source?.raw_bytes_transport_authorized, 'Raw-byte transport authorization');
-  assertFalse(fixture.local_source?.external_content, 'External content posture');
+  assert(fixture.profile === 'research', 'The governed fixture profile must remain research.');
+  assertString(fixture.title, 'Fixture title');
+  assertString(fixture.created_at, 'Fixture created_at');
+  assert(Number.isFinite(Date.parse(fixture.created_at)), 'Fixture created_at must be an ISO-compatible date-time.');
+
+  assertRequiredFields(fixture.namespace, ['codepoint', 'surrogate_pair', 'meaning'], 'Fixture namespace');
+  assert(fixture.namespace.codepoint === 'U+10D613', 'The TD613 codepoint changed.');
+  assert(fixture.namespace.surrogate_pair === '\\uDBF5\\uDE13', 'The TD613 surrogate pair changed.');
+  assert(fixture.namespace.meaning === 'TD613 = Tauric Diana 613', 'The TD613 namespace meaning changed.');
+
+  assertRequiredFields(
+    fixture.local_source,
+    ['reference_id', 'label', 'posture', 'raw_bytes_local', 'raw_bytes_transport_authorized', 'external_content'],
+    'Fixture local_source'
+  );
+  assertString(fixture.local_source.reference_id, 'Fixture local_source.reference_id');
+  assertString(fixture.local_source.label, 'Fixture local_source.label');
+  assert(fixture.local_source.posture === 'DECLARED_REFERENCE_ONLY', 'Fixture local_source posture changed.');
+  assert(fixture.local_source.raw_bytes_local === true, 'Synthetic raw-byte posture must remain local.');
+  assertFalse(fixture.local_source.raw_bytes_transport_authorized, 'Raw-byte transport authorization');
+  assertFalse(fixture.local_source.external_content, 'External content posture');
+
+  for (const [label, record] of [['question', fixture.question], ['case_anchor', fixture.case_anchor]]) {
+    assertPlainRecord(record, `Fixture ${label}`);
+    assertString(record.node_id, `Fixture ${label}.node_id`);
+    assertString(record.label, `Fixture ${label}.label`);
+  }
+
   assert(Array.isArray(fixture.rooms) && fixture.rooms.length >= 2, 'The fixture requires declared Rooms.');
+  fixture.rooms.forEach((room, index) => {
+    assertPlainRecord(room, `Fixture rooms[${index}]`);
+    assertString(room.id, `Fixture rooms[${index}].id`);
+    assertString(room.label, `Fixture rooms[${index}].label`);
+  });
+
   assert(Array.isArray(fixture.route_rules) && fixture.route_rules.length === 2, 'The fixture requires exactly two declared route rules.');
+  fixture.route_rules.forEach((rule, index) => {
+    assertPlainRecord(rule, `Fixture route_rules[${index}]`);
+    assertString(rule.route_id, `Fixture route_rules[${index}].route_id`);
+    assert(Array.isArray(rule.allowed_room_ids), `Fixture route_rules[${index}].allowed_room_ids must be an array.`);
+    assert(Array.isArray(rule.local_link_keys), `Fixture route_rules[${index}].local_link_keys must be an array.`);
+    assert(Array.isArray(rule.allowed_node_types), `Fixture route_rules[${index}].allowed_node_types must be an array.`);
+    assertString(rule.time_posture, `Fixture route_rules[${index}].time_posture`);
+  });
+
+  assertPlainRecord(fixture.route_observations, 'Fixture route_observations');
+  for (const routeId of ['route_a', 'route_b']) {
+    const observation = assertPlainRecord(fixture.route_observations[routeId], `Fixture route_observations.${routeId}`);
+    assertString(observation.label, `Fixture route_observations.${routeId}.label`);
+    assert(Array.isArray(observation.proposed_references), `Fixture route_observations.${routeId}.proposed_references must be an array.`);
+    assert(Array.isArray(observation.missingness), `Fixture route_observations.${routeId}.missingness must be an array.`);
+  }
+
   assert(JSON.stringify(fixture.allowed_action_sequence) === JSON.stringify(A15_R0_ACTION_SEQUENCE), 'The governed action sequence changed.');
+  assertPlainRecord(fixture.action_times, 'Fixture action_times');
+  for (const actionId of [...A15_R0_ACTION_SEQUENCE, 'REST', 'RESET']) {
+    assertString(fixture.action_times[actionId], `Fixture action_times.${actionId}`);
+    assert(Number.isFinite(Date.parse(fixture.action_times[actionId])), `Fixture action_times.${actionId} must be an ISO-compatible date-time.`);
+  }
+
   assert(Array.isArray(fixture.claim_ceiling) && fixture.claim_ceiling.length > 0, 'The fixture requires a visible claim ceiling.');
+  fixture.claim_ceiling.forEach((entry, index) => assertString(entry, `Fixture claim_ceiling[${index}]`));
   assertAuthorityClosed(fixture.authority, 'Fixture authority');
   assertTrue(fixture.authority.human_review_required, 'Fixture human review');
   assertTrue(fixture.authority.human_closure_required, 'Fixture human closure');
@@ -209,6 +289,14 @@ export function validateOperatorRejectionReceipt(value) {
   return receipt;
 }
 
+export function deepFreeze(value, seen = new WeakSet()) {
+  if (value === null || (typeof value !== 'object' && typeof value !== 'function')) return value;
+  if (seen.has(value)) return value;
+  seen.add(value);
+  for (const key of Reflect.ownKeys(value)) deepFreeze(value[key], seen);
+  return Object.freeze(value);
+}
+
 export function immutableCopy(value) {
-  return Object.freeze(structuredClone(value));
+  return deepFreeze(structuredClone(value));
 }
