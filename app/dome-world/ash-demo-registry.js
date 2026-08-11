@@ -6,6 +6,7 @@ const host = globalThis.window;
 const doc = globalThis.document;
 
 const REQUIRED_REGISTRY_STATIC_MARKERS = Object.freeze([
+  '20260726-a15-empirical-v1',
   'pedagogy_manifest',
   'workspace_scenes',
   'aia_routes',
