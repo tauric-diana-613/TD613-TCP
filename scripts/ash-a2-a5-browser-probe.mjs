@@ -26,6 +26,13 @@ source = replaceExactly(
   'post-hydration present-state exact-case convergence'
 );
 
+source = replaceExactly(
+  source,
+  "    await button.click();\n    await page.waitForFunction(expected => document.querySelector('[data-ash-route-surface]')?.dataset.route === expected, route);",
+  "    await button.focus();\n    await page.waitForFunction(expected => {\n      const control = document.querySelector('[data-aia-route=\"' + expected + '\"]');\n      return control === document.activeElement\n        && control?.isConnected\n        && typeof control.onclick === 'function';\n    }, route);\n    await page.keyboard.press('Enter');\n    await page.waitForFunction(expected => document.querySelector('[data-ash-route-surface]')?.dataset.route === expected, route);",
+  'geometry-independent native route activation'
+);
+
 if (source.includes('td613.ash.demo-registry/v0.1-a13') || source.includes('td613.ash.demo-registry/v0.2-a14')) {
   throw new Error('A15 current-registry observer adapter left a retired registry token.');
 }
@@ -38,6 +45,15 @@ if (!source.includes('entry_exact_case_reconcile')
   || !source.includes('release_receipt:convergence.releaseReceipt?.() || null')
   || !source.includes('td613.ash.a15-empirical-profile-journeys/v0.1')) {
   throw new Error('A15 A2-A6 present-state convergence adapter failed to compile.');
+}
+if (!source.includes('await button.focus()')
+  || !source.includes("await page.keyboard.press('Enter')")
+  || !source.includes('control === document.activeElement')
+  || !source.includes("typeof control.onclick === 'function'")) {
+  throw new Error('A15 A2-A6 native route activation adapter failed to compile.');
+}
+if (source.includes('__td613AshLiveAIA.setRoute(')) {
+  throw new Error('A15 A2-A6 route witness may not bypass the native route control owner.');
 }
 
 try {
