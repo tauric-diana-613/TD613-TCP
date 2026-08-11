@@ -2,6 +2,12 @@ import * as core from './ash-kernel-adapter-core.js';
 
 export * from './ash-kernel-adapter-core.js';
 
+export const ASH_KERNEL_ADAPTER_OWNER_IMPORT_MARKERS = Object.freeze([
+  '../../../engine/ash-keep-core.js',
+  '../../../engine/ash-keep-continuity.js',
+  '../../ash/canonical-json.js'
+]);
+
 const PRIVATE_SURFACE = new Set(['state', 'sequence']);
 
 export async function createAshKernelAdapter(fixture, options = {}) {
