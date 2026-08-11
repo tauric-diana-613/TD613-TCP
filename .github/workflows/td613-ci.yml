@@ -116,6 +116,7 @@ jobs:
           node --check app/dome-world/previews/a15-r0/open-research-field.js
           node --check app/dome-world/previews/a15-r0/open-research-field-ui.js
           node --check scripts/ash-a15-r0-preview-probe.mjs
+          node tests/ash-a15-r0-fixture.test.mjs
           node tests/ash-a15-r0-open-research-field.test.mjs
       - name: Validate Ash demo hydration surfaces
         run: |
