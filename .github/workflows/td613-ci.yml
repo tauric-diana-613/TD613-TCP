@@ -116,8 +116,10 @@ jobs:
           node --check app/dome-world/previews/a15-r0/open-research-field.js
           node --check app/dome-world/previews/a15-r0/open-research-field-ui.js
           node --check scripts/ash-a15-r0-preview-probe.mjs
+          node --check scripts/ash-a15-transition-trace-browser-probe.mjs
           node tests/ash-a15-r0-fixture.test.mjs
           node tests/ash-a15-r0-open-research-field.test.mjs
+          node tests/ash-a15-transition-trace-contract.test.mjs
       - name: Validate Ash demo hydration surfaces
         run: |
           node tests/ash-research-ux-rehydration.test.mjs
@@ -256,8 +258,9 @@ jobs:
             TD613_ARTIFACT_DIR="artifacts/ash-a12-$browser" timeout --foreground --signal=INT --kill-after=15s 420s node scripts/ash-a12-browser-probe.mjs
             TD613_ARTIFACT_DIR="artifacts/ash-a13-$browser" timeout --foreground --signal=INT --kill-after=15s 480s node scripts/ash-a13-demo-registry-browser-probe.mjs
             TD613_ARTIFACT_DIR="artifacts/ash-a14-$browser" timeout --foreground --signal=INT --kill-after=15s 480s node scripts/ash-a14-archive-browser-probe.mjs
-            TD613_ARTIFACT_DIR="artifacts/ash-a15-$browser" timeout --foreground --signal=INT --kill-after=15s 900s node scripts/ash-a15-empirical-profile-journeys-browser-probe.mjs
             TD613_ARTIFACT_DIR="artifacts/ash-a15-r0-$browser" timeout --foreground --signal=INT --kill-after=15s 360s node scripts/ash-a15-r0-preview-probe.mjs
+            TD613_ARTIFACT_DIR="artifacts/ash-a15-transition-trace-$browser" timeout --foreground --signal=INT --kill-after=15s 420s node scripts/ash-a15-transition-trace-browser-probe.mjs
+            TD613_ARTIFACT_DIR="artifacts/ash-a15-$browser" timeout --foreground --signal=INT --kill-after=15s 900s node scripts/ash-a15-empirical-profile-journeys-browser-probe.mjs
             TD613_ARTIFACT_DIR="artifacts/ash-flowcore-$browser" timeout --foreground --signal=INT --kill-after=15s 480s node scripts/run-ash-flowcore-live-field-browser-probe.mjs
             TD613_ARTIFACT_DIR="artifacts/ash-ingress-$browser" timeout --foreground --signal=INT --kill-after=15s 360s node scripts/ash-ingress-polish-browser-probe.mjs
             TD613_ARTIFACT_DIR="artifacts/ash-reviewability-$browser" timeout --foreground --signal=INT --kill-after=15s 420s node scripts/ash-reviewability-browser-probe.mjs
