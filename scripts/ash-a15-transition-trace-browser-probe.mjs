@@ -20,6 +20,7 @@ const OBSERVATION_HORIZON_MS = 750;
 const REGISTRY_VERSION = 'td613.ash.demo-registry/v0.3-a15';
 const ASSET_EPOCH = '20260726-a15-empirical-v1';
 const EMPIRICAL_VERSION = 'td613.ash.a15-empirical-profile-journeys/v0.1';
+const HYDRATION_EVENT = 'td613:ash:demo-registry-hydrated';
 
 const modes = Object.freeze([
   ['desktop', { viewport:{ width:1280, height:900 } }],
@@ -50,6 +51,18 @@ async function waitForInstrument(page) {
 
 async function activateProfile(page, profile) {
   await page.evaluate(selected => {
+    window.__td613A15HydrationWitness?.cleanup?.();
+    const witness = { selected, observed:false, detail:null, cleanup:null };
+    const handler = event => {
+      if (event.detail?.profile !== selected) return;
+      witness.observed = true;
+      witness.detail = structuredClone(event.detail);
+      window.removeEventListener('td613:ash:demo-registry-hydrated', handler);
+    };
+    witness.cleanup = () => window.removeEventListener('td613:ash:demo-registry-hydrated', handler);
+    window.__td613A15HydrationWitness = witness;
+    window.addEventListener('td613:ash:demo-registry-hydrated', handler);
+
     const registry = window.__td613AshDemoRegistry;
     const select = document.getElementById('newProfile');
     const button = document.getElementById('startDemo');
@@ -63,10 +76,27 @@ async function activateProfile(page, profile) {
     }
     button.click();
   }, profile);
+
+  await page.waitForFunction(selected => {
+    const witness = window.__td613A15HydrationWitness;
+    return witness?.observed === true
+      && witness?.detail?.profile === selected
+      && witness?.detail?.status === 'HYDRATED';
+  }, profile, { timeout:120_000 });
+
+  const hydrationReceipt = await page.evaluate(() => {
+    const witness = window.__td613A15HydrationWitness;
+    const receipt = witness?.detail ? structuredClone(witness.detail) : null;
+    witness?.cleanup?.();
+    delete window.__td613A15HydrationWitness;
+    return receipt;
+  });
+
   await page.waitForFunction(selected => {
     const current = window.__td613AshKeep?.current?.() || null;
     return Boolean(current?.case_id) && document.documentElement.dataset.ashDemoProfile === selected;
   }, profile, { timeout:120_000 });
+  return hydrationReceipt;
 }
 
 async function readRuntimeState(page) {
@@ -198,7 +228,7 @@ async function inspectCell(browser, mode, options, profile, route, controlValue)
   const diagnosticShot = path.join(artifactDir, `${browserName}-${mode}-${profile}-${route}-held.png`);
   try {
     await waitForInstrument(page);
-    await activateProfile(page, profile);
+    const hydrationReceipt = await activateProfile(page, profile);
     const observedBaseline = await readRuntimeState(page);
     await armTrace(page, {
       browser:browserName,
@@ -206,6 +236,8 @@ async function inspectCell(browser, mode, options, profile, route, controlValue)
       profile,
       route,
       control_value:controlValue,
+      profile_hydration_boundary:HYDRATION_EVENT,
+      hydration_receipt:hydrationReceipt,
       observed_pre_route_workspace:observedBaseline.workspace,
       workspace_normalization_applied:false
     });
@@ -232,6 +264,7 @@ async function inspectCell(browser, mode, options, profile, route, controlValue)
       route,
       control_value:controlValue,
       status:'OBSERVED',
+      hydration_receipt:hydrationReceipt,
       observed_baseline:observedBaseline,
       classification:classify(records, route),
       records
@@ -246,6 +279,7 @@ async function inspectCell(browser, mode, options, profile, route, controlValue)
       runtime_state: runtimeState,
       trace_records: traceRecords,
       screenshot: diagnosticShot,
+      profile_hydration_boundary:HYDRATION_EVENT,
       workspace_normalization_applied:false
     };
     throw error;
@@ -289,11 +323,13 @@ const baselineSummary = Object.fromEntries([...new Set(cells.map(cell => cell.cl
   .sort()
   .map(workspace => [workspace, cells.filter(cell => (cell.classification.initial_workspace || 'UNDECLARED') === workspace).length]));
 const report = {
-  schema:'td613.ash.a15-transition-trace-browser-witness/v0.2-observed-baseline',
+  schema:'td613.ash.a15-transition-trace-browser-witness/v0.3-hydration-sealed-baseline',
   source_status:'OBSERVED',
   sensor_id:'playwright-browser-runtime',
   authority_class:'A1_OBSERVATIONAL',
   browser_engine:browserName,
+  profile_hydration_boundary:HYDRATION_EVENT,
+  profile_hydration_completion_required:true,
   observation_horizon_ms:OBSERVATION_HORIZON_MS,
   profiles:PROFILES,
   routes:Object.keys(ROUTES),
