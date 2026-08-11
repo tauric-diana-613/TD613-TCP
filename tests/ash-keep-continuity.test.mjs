@@ -150,7 +150,9 @@ assert.equal(opened.save_point.save_point_digest, savePoint.save_point_digest);
 assert.equal(opened.save_point.release_receipt_reference, release.receipt_id);
 await assert.rejects(decryptAshCapsule(capsule, 'incorrect passphrase', options), /nothing was imported/);
 const tamperedCapsule = structuredClone(capsule);
-tamperedCapsule.ciphertext = `${tamperedCapsule.ciphertext.slice(0, -2)}AA`;
+const replacement = tamperedCapsule.ciphertext[0] === 'A' ? 'B' : 'A';
+tamperedCapsule.ciphertext = `${replacement}${tamperedCapsule.ciphertext.slice(1)}`;
+assert.notEqual(tamperedCapsule.ciphertext, capsule.ciphertext, 'Tamper fixture must always change the encoded ciphertext.');
 await assert.rejects(decryptAshCapsule(tamperedCapsule, 'correct horse battery staple', options), /verification failed/);
 
 console.log('ash-keep-continuity.test.mjs passed');
