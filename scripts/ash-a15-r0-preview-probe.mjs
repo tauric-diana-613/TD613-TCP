@@ -13,7 +13,7 @@ if (!browserType) throw new TypeError(`Unsupported TD613_BROWSER: ${browserName}
 await fs.mkdir(artifactDir, { recursive: true });
 
 const report = {
-  schema: 'td613.ash.a15-r0.browser-preview-evidence/v0.2',
+  schema: 'td613.ash.a15-r0.browser-preview-evidence/v0.3-semantic-action-settlement',
   source_status: 'OBSERVED',
   sensor_id: 'playwright-browser-runtime',
   authority_class: 'A1_OBSERVATIONAL',
@@ -31,7 +31,8 @@ const report = {
   production_mutation: false,
   deployment_authorized: false,
   human_selection_required: true,
-  human_closure_required: true
+  human_closure_required: true,
+  arbitrary_sleep_used_for_action_settlement: false
 };
 
 function check(name, pass, detail = null) {
@@ -40,6 +41,41 @@ function check(name, pass, detail = null) {
 
 async function visibleText(page, text) {
   return page.getByText(text, { exact: true }).isVisible().catch(() => false);
+}
+
+async function parsedReceipt(page) {
+  return JSON.parse(await page.locator('#lastReceipt').innerText());
+}
+
+async function waitForReceiptAction(page, actionId, timeout = 60_000) {
+  await page.waitForFunction(expected => {
+    try {
+      const text = document.getElementById('lastReceipt')?.textContent || '';
+      const receipt = JSON.parse(text);
+      return receipt?.action_id === expected;
+    } catch {
+      return false;
+    }
+  }, actionId, { timeout });
+  return parsedReceipt(page);
+}
+
+async function waitForResetProjection(page, timeout = 60_000) {
+  await page.waitForFunction(() => {
+    try {
+      const receipt = JSON.parse(document.getElementById('lastReceipt')?.textContent || '');
+      const events = JSON.parse(document.getElementById('observableEvents')?.textContent || '[]');
+      return receipt?.action_id === 'RESET'
+        && receipt?.state_after?.task_state === 'ARRIVE'
+        && receipt?.authority?.raw_bytes_moved === false
+        && document.getElementById('taskState')?.textContent?.trim() === 'ARRIVE'
+        && Array.isArray(events)
+        && events.length === 1
+        && events[0]?.action_id === 'RESET';
+    } catch {
+      return false;
+    }
+  }, null, { timeout });
 }
 
 async function installedChromiumExecutable() {
@@ -125,7 +161,7 @@ try {
     check(`${controlId}:enabled`, await control.isEnabled());
     await control.click();
     await page.locator('#taskState').filter({ hasText: expectedState }).waitFor();
-    const receipt = JSON.parse(await page.locator('#lastReceipt').innerText());
+    const receipt = await waitForReceiptAction(page, expectedState);
     check(`${controlId}:receipt`, receipt.action_id === expectedState && receipt.status === 'OPEN', receipt.receipt_id);
     check(`${controlId}:authority`, Object.values(receipt.authority).every(value => value === false));
     check(`${controlId}:raw transport`, receipt.authority.raw_bytes_moved === false && receipt.authority.external_send === false);
@@ -133,16 +169,19 @@ try {
 
   const beforeRestState = await page.locator('#taskState').innerText();
   await page.locator('#rest-run').click();
-  const restReceipt = JSON.parse(await page.locator('#lastReceipt').innerText());
+  const restReceipt = await waitForReceiptAction(page, 'REST');
+  await page.locator('#worldAnswer').filter({ hasText: 'Active demand has stopped.' }).waitFor({ timeout: 60_000 });
   check('Rest receipt', restReceipt.action_id === 'REST');
   check('Rest holds task state', await page.locator('#taskState').innerText() === beforeRestState);
   check('Rest world answer', (await page.locator('#worldAnswer').innerText()).includes('Active demand has stopped.'));
 
   await page.locator('#reset-fixture').click();
-  const resetReceipt = JSON.parse(await page.locator('#lastReceipt').innerText());
+  await waitForResetProjection(page);
+  const resetReceipt = await parsedReceipt(page);
+  const resetEvents = JSON.parse(await page.locator('#observableEvents').innerText());
   check('Reset receipt', resetReceipt.action_id === 'RESET');
   check('Reset preview only', resetReceipt.state_after.task_state === 'ARRIVE' && resetReceipt.authority.raw_bytes_moved === false);
-  check('Observable reset event', JSON.parse(await page.locator('#observableEvents').innerText()).length === 1);
+  check('Observable reset event', resetEvents.length === 1 && resetEvents[0]?.action_id === 'RESET');
 
   const desktopShot = path.join(artifactDir, `a15-r0-${browserName}-desktop.png`);
   await page.screenshot({ path: desktopShot, fullPage: true });
