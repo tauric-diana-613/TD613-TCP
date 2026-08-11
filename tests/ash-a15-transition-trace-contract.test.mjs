@@ -11,6 +11,8 @@ assert.match(probe, /route_state_settled_equals_workspace_state_settled:false/);
 assert.match(probe, /ROOT_ATTRIBUTE_MUTATION/);
 assert.match(probe, /td613:ash:navigation-receipt/);
 assert.match(probe, /td613:ash:ux-workspace-opened/);
+assert.match(probe, /td613:ash:demo-registry-hydrated/);
+assert.match(probe, /profile_hydration_completion_required:true/);
 assert.match(probe, /LATE_WORKSPACE_SIDE_EFFECT_WITHIN_BOUNDED_HORIZON/);
 assert.match(probe, /COUPLED_WORKSPACE_SIDE_EFFECT_WITHIN_BOUNDED_HORIZON/);
 assert.match(probe, /workspace_normalization_applied:false/);
@@ -54,10 +56,12 @@ assert.match(calibrationChamber, /independent_from_prior_ash_promotion_gates:tru
 assert.match(calibrationChamber, /promotion_authority:false/);
 
 console.log(JSON.stringify({
-  contract:'td613.ash.a15-transition-trace-contract/v0.4-observed-baseline',
+  contract:'td613.ash.a15-transition-trace-contract/v0.5-hydration-sealed-baseline',
   a15_r0_evidence_independent_of_inherited_a15:true,
   transition_trace_independent_of_inherited_a15:true,
   a15_r0_evidence_independent_of_prior_ash_promotion_gates:true,
+  profile_hydration_boundary:'td613:ash:demo-registry-hydrated',
+  profile_hydration_completion_required:true,
   workspace_normalization_applied:false,
   failure_diagnostics_preserved:true,
   all_engines_observed_separate_from_all_seams_ok:true,
