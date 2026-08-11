@@ -8,7 +8,6 @@ const artifactDir = process.env.TD613_ARTIFACT_DIR || 'artifacts/ash-a15';
 const browserType = { chromium, firefox, webkit }[browserName];
 if (!browserType) throw new Error(`Unsupported browser ${browserName}`);
 await fs.mkdir(artifactDir, { recursive:true });
-const browser = await browserType.launch({ headless:true });
 
 const PROFILES = ['investigation','political_campaign','fundraiser','research','legal','archive'];
 const WORKSPACES = ['home','map','work','choir','capsule'];
@@ -17,6 +16,7 @@ const ROUTE_CONTROLS = Object.freeze({ experimental:'EXPERIENTIAL', custodial:'C
 const REGISTRY_VERSION = 'td613.ash.demo-registry/v0.3-a15';
 const ASSET_EPOCH = '20260726-a15-empirical-v1';
 const EMPIRICAL_VERSION = 'td613.ash.a15-empirical-profile-journeys/v0.1';
+const HYDRATION_EVENT = 'td613:ash:demo-registry-hydrated';
 const FORBIDDEN = ['td613.ash','case_map_digest','route_memory_digest','authority_context','lifecycle_rank','indexeddb','ash_demo_registry','source_packet_commit'];
 
 async function waitForInstrument(page) {
@@ -41,37 +41,107 @@ async function waitForInstrument(page) {
   }, { registry:REGISTRY_VERSION, epoch:ASSET_EPOCH, empirical:EMPIRICAL_VERSION }, { timeout:120_000 });
 }
 
-async function activateProfile(page, profile) {
-  await page.evaluate(selected => {
-    const registry = window.__td613AshDemoRegistry;
-    const select = document.getElementById('newProfile');
-    const button = document.getElementById('startDemo');
-    if (!registry || !select || !button) throw new Error('A15 registry-owned profile gesture unavailable.');
-    select.value = selected;
-    select.dispatchEvent(new Event('change', { bubbles:true }));
-    registry.reconcile();
-    const entry = registry.snapshot().profiles.find(item => item.profile === selected);
-    const ready = entry?.promoted
-      && button.dataset.ashDemoRegistryOwner === registry.version
-      && button.dataset.ashMethodDemoState === 'READY'
-      && button.disabled === false
-      && !button.matches(':disabled');
-    if (!ready) throw new Error(`A15 ${selected} profile gesture held before activation.`);
-    button.click();
-  }, profile);
-  await page.waitForFunction(selected => {
-    const current = window.__td613AshKeep?.current?.() || null;
-    const status = document.getElementById('demoProfileStatus')?.textContent || '';
-    return (Boolean(current?.case_id) && document.documentElement.dataset.ashDemoProfile === selected)
-      || /Demo registry held\./i.test(status);
-  }, profile, { timeout:120_000 });
-  const state = await page.evaluate(() => ({
+async function armHydrationReceiptCapture(page, profile) {
+  await page.evaluate(({ expected, eventName }) => {
+    window.__td613A15HydrationWitness?.cleanup?.();
+    const state = { expected, event_name:eventName, receipt:null, observed:false, cleanup:null };
+    const handler = event => {
+      if (event.detail?.profile !== expected) return;
+      state.receipt = structuredClone(event.detail);
+      state.observed = true;
+      window.removeEventListener(eventName, handler);
+    };
+    state.cleanup = () => window.removeEventListener(eventName, handler);
+    window.__td613A15HydrationWitness = state;
+    window.addEventListener(eventName, handler);
+  }, { expected:profile, eventName:HYDRATION_EVENT });
+}
+
+async function readHydrationReceiptCapture(page) {
+  return page.evaluate(() => {
+    const state = window.__td613A15HydrationWitness || null;
+    const result = state ? {
+      expected:state.expected,
+      event_name:state.event_name,
+      observed:state.observed,
+      receipt:state.receipt
+    } : null;
+    state?.cleanup?.();
+    delete window.__td613A15HydrationWitness;
+    return result;
+  });
+}
+
+async function hydrationRuntimeState(page) {
+  return page.evaluate(() => ({
     case_id:window.__td613AshKeep?.current?.()?.case_id || null,
     profile:document.documentElement.dataset.ashDemoProfile || null,
+    workspace:document.documentElement.dataset.ashPremiumWorkspace || null,
+    route:String(window.__td613AshLiveAIA?.current?.()?.route || ''),
     status:document.getElementById('demoProfileStatus')?.textContent || '',
     entries_bound:Object.keys(window.__td613AshA15EmpiricalJourneys?.entries?.() || {}).length
   }));
-  if (/Demo registry held\./i.test(state.status) || !state.case_id || state.profile !== profile || state.entries_bound !== 6) throw new Error(`A15 ${profile} hydration held: ${JSON.stringify(state)}`);
+}
+
+async function activateProfile(page, profile) {
+  await armHydrationReceiptCapture(page, profile);
+  let capture = null;
+  try {
+    await page.evaluate(selected => {
+      const registry = window.__td613AshDemoRegistry;
+      const select = document.getElementById('newProfile');
+      const button = document.getElementById('startDemo');
+      if (!registry || !select || !button) throw new Error('A15 registry-owned profile gesture unavailable.');
+      select.value = selected;
+      select.dispatchEvent(new Event('change', { bubbles:true }));
+      registry.reconcile();
+      const entry = registry.snapshot().profiles.find(item => item.profile === selected);
+      const ready = entry?.promoted
+        && button.dataset.ashDemoRegistryOwner === registry.version
+        && button.dataset.ashMethodDemoState === 'READY'
+        && button.disabled === false
+        && !button.matches(':disabled');
+      if (!ready) throw new Error(`A15 ${selected} profile gesture held before activation.`);
+      button.click();
+    }, profile);
+    await page.waitForFunction(selected => {
+      const witness = window.__td613A15HydrationWitness || null;
+      const status = document.getElementById('demoProfileStatus')?.textContent || '';
+      return (witness?.observed === true
+          && witness.receipt?.profile === selected
+          && witness.receipt?.status === 'HYDRATED')
+        || /Demo registry held\./i.test(status);
+    }, profile, { timeout:120_000 });
+    capture = await readHydrationReceiptCapture(page);
+    const state = await hydrationRuntimeState(page);
+    const hydrated = capture?.observed === true
+      && capture.receipt?.profile === profile
+      && capture.receipt?.status === 'HYDRATED';
+    if (/Demo registry held\./i.test(state.status)
+        || !hydrated
+        || !state.case_id
+        || state.profile !== profile
+        || state.entries_bound !== 6) {
+      throw new Error(`A15 ${profile} hydration held: ${JSON.stringify({ state, capture })}`);
+    }
+    return Object.freeze({
+      profile:capture.receipt.profile,
+      status:capture.receipt.status,
+      owner:capture.receipt.owner || null,
+      automatic_ash_action:Boolean(capture.receipt.automatic_ash_action),
+      event_name:HYDRATION_EVENT
+    });
+  } catch (error) {
+    if (!capture) capture = await readHydrationReceiptCapture(page).catch(() => null);
+    const state = await hydrationRuntimeState(page).catch(() => null);
+    error.td613HydrationDiagnostic = {
+      expected_profile:profile,
+      completion_event:HYDRATION_EVENT,
+      capture,
+      state
+    };
+    throw error;
+  }
 }
 
 async function armNavigationReceiptCapture(page, workspace) {
@@ -227,12 +297,16 @@ async function inspectCommands(page) {
 }
 
 async function inspectProfile(options, profile, mode) {
+  console.log(JSON.stringify({ event:'A15_PROFILE_BEGIN', browser:browserName, mode, profile }));
+  const browser = await browserType.launch({ headless:true });
   const context = await browser.newContext(options);
   const page = await context.newPage();
-  let witness = { browser:browserName, mode, profile, workspace:null, route:null };
+  let hydrationReceipt = null;
+  let witness = { browser:browserName, mode, profile, workspace:null, route:null, hydration_status:null };
   try {
     await waitForInstrument(page);
-    await activateProfile(page, profile);
+    hydrationReceipt = await activateProfile(page, profile);
+    witness = { ...witness, hydration_status:hydrationReceipt.status };
     const entry = await page.evaluate(async selected => {
       const item = (await window.__td613AshDemoRegistry.entries())[selected];
       return { manifest_profile:item?.pedagogy_manifest?.profile || null, manifest_claim_ceiling:item?.pedagogy_manifest?.claim_ceiling || null, deterministic_test_journey:item?.deterministic_test_journey || null };
@@ -244,7 +318,7 @@ async function inspectProfile(options, profile, mode) {
     let capturedNavigationReceipts = 0;
     for (const workspace of WORKSPACES) {
       for (const route of ROUTES) {
-        witness = { browser:browserName, mode, profile, workspace, route };
+        witness = { browser:browserName, mode, profile, workspace, route, hydration_status:hydrationReceipt.status };
         await selectRoute(page, route);
         const navigation = await openWorkspace(page, workspace, witness);
         if (navigation.changed) workspaceTransitions += 1;
@@ -267,7 +341,7 @@ async function inspectProfile(options, profile, mode) {
     const commands = await inspectCommands(page);
     const snapshot = await page.evaluate(() => window.__td613AshDemoRegistry.snapshot());
     const presentation = await page.evaluate(() => ({ route_nodes:document.querySelectorAll('#ashAiaMembrane [data-aia-route]').length, task_nodes:document.querySelectorAll('#ashAiaMembrane [data-aia-task]').length, panel_in_membrane:Boolean(document.getElementById('ashA15EmpiricalJourney')?.closest('#ashAiaMembrane')), release_disabled:document.getElementById('approveRelease')?.disabled ?? null, provider_approval_checked:document.getElementById('providerApproval')?.checked ?? null, handoff_is_link:document.querySelector('a[href="/dome-world/ash-destination-handoff.html"]')?.tagName === 'A', url:location.pathname + location.search, title:document.title, overflow:document.documentElement.scrollWidth - document.documentElement.clientWidth }));
-    const result = { profile, answers, workspace_transitions:workspaceTransitions, captured_navigation_receipts:capturedNavigationReceipts, unique_messages:new Set(answers.map(answer => answer.message)).size, sensitive_status:sensitive.status, manifest_profile:entry.manifest_profile, manifest_claim_ceiling:entry.manifest_claim_ceiling, registry_version:snapshot.version, registry_epoch:snapshot.asset_epoch, empirical_version:snapshot.empirical_journey_version, matrix_cells:snapshot.empirical_matrix_cells, commands, ...presentation };
+    const result = { profile, hydration_receipt:hydrationReceipt, answers, workspace_transitions:workspaceTransitions, captured_navigation_receipts:capturedNavigationReceipts, unique_messages:new Set(answers.map(answer => answer.message)).size, sensitive_status:sensitive.status, manifest_profile:entry.manifest_profile, manifest_claim_ceiling:entry.manifest_claim_ceiling, registry_version:snapshot.version, registry_epoch:snapshot.asset_epoch, empirical_version:snapshot.empirical_journey_version, matrix_cells:snapshot.empirical_matrix_cells, commands, ...presentation };
 
     if (result.answers.length !== 20 || result.unique_messages !== 20) throw new Error(`A15 ${profile} matrix collapsed: ${JSON.stringify(result)}`);
     if (result.workspace_transitions < 4 || result.captured_navigation_receipts !== result.workspace_transitions) throw new Error(`A15 ${profile} state-derived transition receipts drifted: ${JSON.stringify(result)}`);
@@ -275,13 +349,24 @@ async function inspectProfile(options, profile, mode) {
     if (result.release_disabled !== true || result.provider_approval_checked !== false || !result.handoff_is_link) throw new Error(`A15 ${profile} widened consequential authority: ${JSON.stringify(result)}`);
     if (result.url !== '/dome-world/ash-threshold.html' || result.title !== 'TD613 Ash' || result.overflow > 1) throw new Error(`A15 ${profile} presentation drift: ${JSON.stringify(result)}`);
     if (profile === 'archive') await page.screenshot({ path:path.join(artifactDir, `${browserName}-${mode}-archive.png`), fullPage:true });
+    console.log(JSON.stringify({ event:'A15_PROFILE_PASS', browser:browserName, mode, profile, hydration_status:hydrationReceipt.status, observations:answers.length }));
     return result;
   } catch (error) {
     const screenshot = path.join(artifactDir, `${browserName}-${mode}-${profile}-held.png`);
     try { await page.screenshot({ path:screenshot, fullPage:true }); } catch {}
+    error.td613Diagnostic = {
+      witness,
+      hydration_receipt:hydrationReceipt,
+      hydration_activation:error.td613HydrationDiagnostic || null,
+      screenshot,
+      browser_process_isolated_for_profile:true
+    };
     error.message = `A15 witness ${JSON.stringify(witness)}: ${error.message}`;
     throw error;
-  } finally { await context.close(); }
+  } finally {
+    await context.close().catch(() => {});
+    await browser.close().catch(() => {});
+  }
 }
 
 function forbiddenPublicLeak(answer) {
@@ -292,18 +377,41 @@ function forbiddenPublicLeak(answer) {
   return FORBIDDEN.some(token => text.includes(token));
 }
 
+async function writeCheckpoint(receipts, current) {
+  await fs.writeFile(path.join(artifactDir, `${browserName}-a15-empirical-checkpoint.json`), JSON.stringify({
+    schema:'td613.ash.a15-empirical-profile-journey-checkpoint/v0.1',
+    browser:browserName,
+    completed_profile_worlds:receipts.length,
+    current,
+    completed:receipts.map(receipt => ({ mode:receipt.mode, profile:receipt.profile, hydration_status:receipt.hydration_receipt?.status || null, observations:receipt.answers?.length || 0 })),
+    profile_hydration_completion_boundary:HYDRATION_EVENT,
+    profile_hydration_receipt_required:true,
+    browser_process_isolation_per_profile:true,
+    promotion_authority:false,
+    human_closure_required:true
+  }, null, 2));
+}
+
 const receipts = [];
+let currentWitness = null;
 try {
   const modes = [
     ['desktop', { viewport:{ width:1280, height:900 } }],
     ['mobile-reduced-motion', browserName === 'firefox' ? { viewport:{ width:390, height:844 }, reducedMotion:'reduce' } : { viewport:{ width:390, height:844 }, reducedMotion:'reduce', isMobile:true, hasTouch:true }]
   ];
-  for (const [mode, options] of modes) for (const profile of PROFILES) receipts.push({ mode, ...(await inspectProfile(options, profile, mode)) });
+  for (const [mode, options] of modes) {
+    for (const profile of PROFILES) {
+      currentWitness = { browser:browserName, mode, profile };
+      const receipt = { mode, ...(await inspectProfile(options, profile, mode)) };
+      receipts.push(receipt);
+      await writeCheckpoint(receipts, { ...currentWitness, status:'PASS' });
+    }
+  }
   const answerSignatures = new Map();
   for (const receipt of receipts.filter(item => item.mode === 'desktop')) receipt.answers.forEach(answer => { const key = `${answer.workspace}:${answer.route}`; const values = answerSignatures.get(key) || []; values.push(answer.message); answerSignatures.set(key, values); });
   for (const [key, values] of answerSignatures) if (new Set(values).size !== 6) throw new Error(`A15 cross-profile answer collapse at ${key}.`);
   await fs.writeFile(path.join(artifactDir, `${browserName}-a15-empirical-receipt.json`), JSON.stringify({
-    schema:'td613.ash.a15-empirical-profile-journey-browser-witness/v0.6-canonical-primary-dock',
+    schema:'td613.ash.a15-empirical-profile-journey-browser-witness/v0.7-hydration-receipted-profile-isolation',
     browser:browserName,
     modes:['desktop','mobile-reduced-motion'],
     profiles:PROFILES,
@@ -318,6 +426,10 @@ try {
     minimum_workspace_transitions_per_profile:4,
     route_landing_workspace:'work',
     real_profile_hydration:true,
+    profile_hydration_completion_boundary:HYDRATION_EVENT,
+    profile_hydration_receipt_required:true,
+    browser_process_isolation_per_profile:true,
+    incremental_profile_checkpoints:true,
     real_workspace_navigation:true,
     navigation_receipt_captured_at_click:true,
     idempotent_active_workspace_gesture:true,
@@ -337,6 +449,14 @@ try {
     human_closure_required:true
   }, null, 2));
 } catch (error) {
-  await fs.writeFile(path.join(artifactDir, `${browserName}-a15-empirical-failure.json`), JSON.stringify({ error:String(error?.stack || error) }, null, 2));
+  await fs.writeFile(path.join(artifactDir, `${browserName}-a15-empirical-failure.json`), JSON.stringify({
+    error:String(error?.stack || error),
+    diagnostic:error.td613Diagnostic || error.td613HydrationDiagnostic || null,
+    current_witness:currentWitness,
+    completed_profile_worlds:receipts.length,
+    profile_hydration_completion_boundary:HYDRATION_EVENT,
+    profile_hydration_receipt_required:true,
+    browser_process_isolation_per_profile:true
+  }, null, 2));
   throw error;
-} finally { await browser.close(); }
+}
