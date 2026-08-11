@@ -26,6 +26,7 @@ const REQUIRED_REGISTRY_STATIC_MARKERS = Object.freeze([
   '#startDemo',
   'stopImmediatePropagation()',
   "addEventListener('change',",
+  'stopImmediatePropagation()',
   'true)',
   'host.__td613AshProfileDemos = registryApi',
   'ashDemoCompatibilityOwner',
