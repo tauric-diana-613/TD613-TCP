@@ -10,6 +10,10 @@ import {
   runBooleanSynergyCensus
 } from '../app/dome-world/previews/a15-r0/boolean-synergy-census.js';
 import {
+  GOLDEN_EGG_FEASIBLE_REGION_SCHEMA,
+  buildGoldenEggFeasibleRegion
+} from '../app/dome-world/previews/a15-r0/golden-egg-feasible-region.js';
+import {
   INFORMATION_GEOMETRY_CALIBRATION_SCHEMA,
   runInformationGeometryCalibration
 } from '../app/dome-world/previews/a15-r0/information-geometry-calibration.js';
@@ -39,6 +43,7 @@ const html = fs.readFileSync('app/dome-world/previews/a15-r0/index.html', 'utf8'
 const modelSource = fs.readFileSync('app/dome-world/previews/a15-r0/open-research-field.js', 'utf8');
 const envelopeSource = fs.readFileSync('app/dome-world/previews/a15-r0/bounded-transformation-envelope.js', 'utf8');
 const booleanSource = fs.readFileSync('app/dome-world/previews/a15-r0/boolean-synergy-census.js', 'utf8');
+const goldenSource = fs.readFileSync('app/dome-world/previews/a15-r0/golden-egg-feasible-region.js', 'utf8');
 const geometrySource = fs.readFileSync('app/dome-world/previews/a15-r0/information-geometry-calibration.js', 'utf8');
 const hypothesisSource = fs.readFileSync('app/dome-world/previews/a15-r0/open-research-hypothesis-registry.js', 'utf8');
 const uiSource = fs.readFileSync('app/dome-world/previews/a15-r0/open-research-field-ui.js', 'utf8');
@@ -53,6 +58,7 @@ assert.equal(envelopeSchema.$id, BOUNDED_TRANSFORMATION_ENVELOPE_SCHEMA);
 assert.equal(OPEN_RESEARCH_HYPOTHESIS_REGISTRY_SCHEMA, 'td613.ash.a15-r0.open-research-hypothesis-registry/v0.1');
 assert.equal(hypothesisSchema.$id, OPEN_RESEARCH_HYPOTHESIS_REGISTRY_SCHEMA);
 assert.equal(BOOLEAN_SYNERGY_CENSUS_SCHEMA, 'td613.ash.a15-r0.boolean-synergy-census/v0.1');
+assert.equal(GOLDEN_EGG_FEASIBLE_REGION_SCHEMA, 'td613.ash.a15-r0.golden-egg-feasible-region/v0.1');
 assert.equal(INFORMATION_GEOMETRY_CALIBRATION_SCHEMA, 'td613.ash.a15-r0.information-geometry-calibration/v0.1');
 assert.ok(hypothesisSchema.required.includes('bounded_support'));
 assert.equal(OBSERVABILITY_MODELS.length, 4);
@@ -208,13 +214,27 @@ assert.equal(permissiveSyntheticEnvelope.status, 'HELD');
 assert.equal(permissiveSyntheticEnvelope.golden_egg_earned, false);
 assert.throws(() => runBoundedTransformationEnvelope({ field, joining_synergy_bits: -1 }), /finite non-negative/);
 
-const hypothesisRegistry = buildOpenResearchHypothesisRegistry({ field, envelope, booleanCensus, geometry });
+const feasibleRegion = buildGoldenEggFeasibleRegion({ field, booleanCensus });
+assert.equal(feasibleRegion.formal_candidate_count, 320);
+assert.equal(feasibleRegion.feasible_candidate_count, 24);
+assert.equal(feasibleRegion.pareto_candidate_count, 18);
+assert.equal(feasibleRegion.region_nonempty, true);
+assert.equal(feasibleRegion.scalarized_score_defined, false);
+assert.equal(feasibleRegion.factorization_assumption, true);
+assert.equal(feasibleRegion.joint_realizability, 'UNMEASURED');
+assert.equal(feasibleRegion.empirical_candidate_count, 0);
+assert.equal(feasibleRegion.golden_egg_earned, false);
+assert.equal(feasibleRegion.promotion_authority, false);
+assert.ok(feasibleRegion.feasible_candidate_ids.every(id => id.startsWith('NULL_CONTENT::')));
+assert.throws(() => buildGoldenEggFeasibleRegion({ field, booleanCensus, reconstruction_distance: -1 }), /finite non-negative/);
+
+const hypothesisRegistry = buildOpenResearchHypothesisRegistry({ field, envelope, booleanCensus, geometry, feasibleRegion });
 const hypotheses = Object.fromEntries(hypothesisRegistry.hypotheses.map(item => [item.hypothesis_id, item]));
 assert.equal(hypothesisRegistry.schema, OPEN_RESEARCH_HYPOTHESIS_REGISTRY_SCHEMA);
 assert.equal(hypothesisRegistry.hypotheses.length, 8);
 assert.equal(hypothesisRegistry.closed_by_counterexample.length, 4);
-assert.equal(hypothesisRegistry.bounded_support.length, 2);
-assert.equal(hypothesisRegistry.research_frontier.length, 2);
+assert.equal(hypothesisRegistry.bounded_support.length, 3);
+assert.equal(hypothesisRegistry.research_frontier.length, 1);
 assert.equal(hypothesisRegistry.sequence_authority, false);
 assert.equal(hypothesisRegistry.next_stage, null);
 assert.deepEqual(hypothesisRegistry.stage_unlocks, []);
@@ -231,15 +251,15 @@ assert.equal(hypotheses.H_JOINING_SYNERGY_GENERALIZES.evidence.positive_held_out
 assert.equal(hypotheses.H_INFORMATION_CURVATURE_GEOMETRIC.status, 'OPEN_RESEARCH_PROGRAM');
 assert.equal(hypotheses.H_INFORMATION_CURVATURE_GEOMETRIC.evidence.fisher_rao_positive_control_scalar_curvature, 0.5);
 assert.equal(hypotheses.H_INFORMATION_CURVATURE_GEOMETRIC.evidence.intrinsic_curvature_claim_supported, false);
-assert.equal(hypotheses.H_GOLDEN_EGG_BOUNDED_REGION.status, 'OPEN_RESEARCH_PROGRAM');
+assert.equal(hypotheses.H_GOLDEN_EGG_BOUNDED_REGION.status, 'SUPPORTED_IN_BOUNDED_SYNTHETIC_FAMILY');
+assert.equal(hypotheses.H_GOLDEN_EGG_BOUNDED_REGION.evidence.formal_candidate_count, 320);
+assert.equal(hypotheses.H_GOLDEN_EGG_BOUNDED_REGION.evidence.joint_realizability, 'UNMEASURED');
 assert.deepEqual(hypothesisRegistry.bounded_support, [
   'H_BOUNDED_ENVELOPE_PREVENTS_SELF_PROMOTION',
-  'H_JOINING_SYNERGY_GENERALIZES'
-]);
-assert.deepEqual(hypothesisRegistry.research_frontier, [
-  'H_INFORMATION_CURVATURE_GEOMETRIC',
+  'H_JOINING_SYNERGY_GENERALIZES',
   'H_GOLDEN_EGG_BOUNDED_REGION'
 ]);
+assert.deepEqual(hypothesisRegistry.research_frontier, ['H_INFORMATION_CURVATURE_GEOMETRIC']);
 
 for (const marker of [
   'Open research field · noncanonical',
@@ -261,13 +281,13 @@ for (const marker of [
 
 assert.match(html, /open-research-field\.css/);
 assert.match(html, /open-research-field-ui\.js/);
-for (const source of [modelSource, envelopeSource, booleanSource, geometrySource, hypothesisSource, uiSource]) {
+for (const source of [modelSource, envelopeSource, booleanSource, goldenSource, geometrySource, hypothesisSource, uiSource]) {
   assert.doesNotMatch(source, /fetch\s*\(|XMLHttpRequest|sendBeacon|WebSocket|EventSource|indexedDB|localStorage|sessionStorage|serviceWorker|caches\./);
 }
 
 console.log(JSON.stringify({
   ok: true,
-  schema: 'td613.ash.a15-r0.open-research-field-test/v0.5',
+  schema: 'td613.ash.a15-r0.open-research-field-test/v0.6',
   observability_models: observability.models.length,
   null_content_bits: byId.NULL_CONTENT.mutual_information_bits,
   null_side_channel_bits: byId.NULL_WITH_SIDE_CHANNEL.mutual_information_bits,
@@ -279,6 +299,10 @@ console.log(JSON.stringify({
   positive_held_out_boolean_functions: booleanCensus.positive_held_out_non_parity_count,
   fisher_rao_scalar_curvature_control: geometry.analytic_scalar_curvature,
   synergy_intrinsic_curvature_promoted: geometry.joining_synergy_intrinsic_curvature_claim_supported,
+  formal_golden_egg_candidates: feasibleRegion.formal_candidate_count,
+  feasible_formal_candidates: feasibleRegion.feasible_candidate_count,
+  pareto_formal_candidates: feasibleRegion.pareto_candidate_count,
+  joint_realizability: feasibleRegion.joint_realizability,
   rho: reconstruction.reconstructive_redundancy_rho,
   ari_mean: reconstruction.anisotropic_reconstruction_invariance,
   ari_floor: reconstruction.anisotropic_reconstruction_floor,
