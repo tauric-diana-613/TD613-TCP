@@ -98,9 +98,101 @@ function coreReference(owner, record, verified) {
   });
 }
 
+async function buildInitialState(fixture, options) {
+  const caseMap = await compileCaseMap({
+    caseId: fixture.case_id,
+    profile: fixture.profile,
+    title: fixture.title,
+    createdAt: fixture.created_at,
+    updatedAt: fixture.created_at,
+    rooms: fixture.rooms,
+    nodes: [
+      {
+        id: fixture.case_anchor.node_id,
+        type: 'entity',
+        label: fixture.case_anchor.label,
+        room_id: 'room_source',
+        sensitivity: 'SYNTHETIC',
+        source_status: 'SIMULATED',
+        confidence_posture: 'DECLARED',
+        disclosure_state: 'LOCAL',
+        chronology_index: 0
+      },
+      {
+        id: fixture.question.node_id,
+        type: 'claim',
+        label: fixture.question.label,
+        room_id: 'room_question',
+        sensitivity: 'SYNTHETIC',
+        source_status: 'SIMULATED',
+        confidence_posture: 'OPEN',
+        disclosure_state: 'LOCAL',
+        chronology_index: 1
+      }
+    ],
+    relationships: [],
+    privateChronology: ['Synthetic fixture arrived; no production record was read.'],
+    intendedActions: fixture.allowed_action_sequence.slice(1),
+    sourceStatus: 'SIMULATED',
+    evidenceBasis: ['deterministic synthetic A15-R0 fixture'],
+    observations: ['A synthetic case anchor and bounded question are present.'],
+    missingness: ['source reference not yet bound', 'route comparison not yet run'],
+    alternatives: ['reset the synthetic fixture'],
+    openQuestions: ['Which declared route changes the bounded observation?']
+  }, options);
+  if (!await verifyCaseMap(caseMap, options)) throw new Error('Existing Case Map owner failed verification.');
+
+  const roomRules = await compileRoomRules({
+    caseId: fixture.case_id,
+    createdAt: fixture.created_at,
+    rules: fixture.route_rules,
+    sourceStatus: 'SIMULATED',
+    evidenceBasis: ['deterministic synthetic route rules'],
+    observations: ['Two fixture-local routes are declared.'],
+    missingness: ['no external route observation'],
+    alternatives: ['keep the synthetic source local']
+  }, options);
+  if (!await verifyRoomRules(roomRules, options)) throw new Error('Existing Room Rules owner failed verification.');
+
+  const routeMemory = await compileRouteMemory({
+    caseId: fixture.case_id,
+    createdAt: fixture.created_at,
+    entries: [],
+    controlledTestRecovery: [],
+    operatorDeclaredAssumptions: ['Both route observations are simulated fixture declarations.'],
+    unknown: ['External route knowledge was not measured.'],
+    sourceStatus: 'SIMULATED',
+    evidenceBasis: ['deterministic synthetic A15-R0 fixture'],
+    observations: [],
+    missingness: ['no route comparison yet'],
+    alternatives: ['run the two declared fixture routes']
+  }, options);
+  if (!await verifyRouteMemory(routeMemory, options)) throw new Error('Existing Route Memory owner failed verification.');
+
+  return {
+    taskState: 'ARRIVE',
+    restActive: false,
+    caseMap,
+    roomRules,
+    routeMemory,
+    reader: null,
+    rebuildTest: null,
+    savePoint: null,
+    returnSummary: null,
+    lastReceipt: null
+  };
+}
+
 class AshKernelAdapter {
+  #fixture;
+
   constructor(fixture, options = {}) {
-    this.fixture = immutableCopy(validateGovernedTaskFixture(fixture));
+    this.#fixture = immutableCopy(validateGovernedTaskFixture(fixture));
+    Object.defineProperty(this, 'fixture', {
+      enumerable: true,
+      configurable: false,
+      get: () => this.#fixture
+    });
     this.cryptoImpl = options.cryptoImpl || globalThis.crypto;
     this.sequence = 0;
     this.disposed = false;
@@ -113,7 +205,7 @@ class AshKernelAdapter {
   }
 
   assertAvailable() {
-    if (this.disposed || !this.state) throw new Error('The A15-R0 preview adapter is disposed.');
+    if (this.disposed || !this.state || !this.#fixture) throw new Error('The A15-R0 preview adapter is disposed.');
   }
 
   enqueueMutation(operation) {
@@ -174,93 +266,6 @@ class AshKernelAdapter {
     };
   }
 
-  async initializeState() {
-    const fixture = this.fixture;
-    const caseMap = await compileCaseMap({
-      caseId: fixture.case_id,
-      profile: fixture.profile,
-      title: fixture.title,
-      createdAt: fixture.created_at,
-      updatedAt: fixture.created_at,
-      rooms: fixture.rooms,
-      nodes: [
-        {
-          id: fixture.case_anchor.node_id,
-          type: 'entity',
-          label: fixture.case_anchor.label,
-          room_id: 'room_source',
-          sensitivity: 'SYNTHETIC',
-          source_status: 'SIMULATED',
-          confidence_posture: 'DECLARED',
-          disclosure_state: 'LOCAL',
-          chronology_index: 0
-        },
-        {
-          id: fixture.question.node_id,
-          type: 'claim',
-          label: fixture.question.label,
-          room_id: 'room_question',
-          sensitivity: 'SYNTHETIC',
-          source_status: 'SIMULATED',
-          confidence_posture: 'OPEN',
-          disclosure_state: 'LOCAL',
-          chronology_index: 1
-        }
-      ],
-      relationships: [],
-      privateChronology: ['Synthetic fixture arrived; no production record was read.'],
-      intendedActions: fixture.allowed_action_sequence.slice(1),
-      sourceStatus: 'SIMULATED',
-      evidenceBasis: ['deterministic synthetic A15-R0 fixture'],
-      observations: ['A synthetic case anchor and bounded question are present.'],
-      missingness: ['source reference not yet bound', 'route comparison not yet run'],
-      alternatives: ['reset the synthetic fixture'],
-      openQuestions: ['Which declared route changes the bounded observation?']
-    }, this.options());
-    if (!await verifyCaseMap(caseMap, this.options())) throw new Error('Existing Case Map owner failed verification.');
-
-    const roomRules = await compileRoomRules({
-      caseId: fixture.case_id,
-      createdAt: fixture.created_at,
-      rules: fixture.route_rules,
-      sourceStatus: 'SIMULATED',
-      evidenceBasis: ['deterministic synthetic route rules'],
-      observations: ['Two fixture-local routes are declared.'],
-      missingness: ['no external route observation'],
-      alternatives: ['keep the synthetic source local']
-    }, this.options());
-    if (!await verifyRoomRules(roomRules, this.options())) throw new Error('Existing Room Rules owner failed verification.');
-
-    const routeMemory = await compileRouteMemory({
-      caseId: fixture.case_id,
-      createdAt: fixture.created_at,
-      entries: [],
-      controlledTestRecovery: [],
-      operatorDeclaredAssumptions: ['Both route observations are simulated fixture declarations.'],
-      unknown: ['External route knowledge was not measured.'],
-      sourceStatus: 'SIMULATED',
-      evidenceBasis: ['deterministic synthetic A15-R0 fixture'],
-      observations: [],
-      missingness: ['no route comparison yet'],
-      alternatives: ['run the two declared fixture routes']
-    }, this.options());
-    if (!await verifyRouteMemory(routeMemory, this.options())) throw new Error('Existing Route Memory owner failed verification.');
-
-    this.state = {
-      taskState: 'ARRIVE',
-      restActive: false,
-      caseMap,
-      roomRules,
-      routeMemory,
-      reader: null,
-      rebuildTest: null,
-      savePoint: null,
-      returnSummary: null,
-      lastReceipt: null
-    };
-    this.sequence = 0;
-  }
-
   async sealReceipt(actionId, {
     before,
     status = 'OPEN',
@@ -278,11 +283,11 @@ class AshKernelAdapter {
     const receipt = {
       schema: A15_R0_SCHEMAS.runReceipt,
       receipt_id: `a15r0_receipt_${String(nextSequence).padStart(3, '0')}_${actionId.toLowerCase()}`,
-      fixture_id: this.fixture.fixture_id,
-      case_id: this.fixture.case_id,
+      fixture_id: this.#fixture.fixture_id,
+      case_id: this.#fixture.case_id,
       action_id: actionId,
       status,
-      created_at: this.fixture.action_times[actionId] || this.fixture.created_at,
+      created_at: this.#fixture.action_times[actionId] || this.#fixture.created_at,
       state_before: before,
       state_after: this.stateSummary(),
       source_status: 'SIMULATED',
@@ -295,7 +300,7 @@ class AshKernelAdapter {
       missingness,
       alternatives,
       open_questions: openQuestions,
-      claim_ceiling: [...this.fixture.claim_ceiling],
+      claim_ceiling: [...this.#fixture.claim_ceiling],
       authority: { ...A15_R0_AUTHORITY_FLAGS },
       human_closure_required: true,
       receipt_digest: null
@@ -346,8 +351,8 @@ class AshKernelAdapter {
     return immutableCopy({
       schema: 'td613.ash.a15-r0.kernel-snapshot/v0.1',
       adapter: ASH_KERNEL_ADAPTER_VERSION,
-      fixture_id: this.fixture.fixture_id,
-      case_id: this.fixture.case_id,
+      fixture_id: this.#fixture.fixture_id,
+      case_id: this.#fixture.case_id,
       task_state: this.state.taskState,
       rest_active: this.state.restActive,
       case_map: this.state.caseMap,
@@ -366,7 +371,7 @@ class AshKernelAdapter {
 
   async bindReference() {
     return this.transition('BIND_REFERENCE', async () => {
-      const fixture = this.fixture;
+      const fixture = this.#fixture;
       const sourceNode = {
         id: fixture.local_source.reference_id,
         type: 'source',
@@ -413,7 +418,7 @@ class AshKernelAdapter {
 
   async formRelation() {
     return this.transition('FORM_RELATION', async () => {
-      const fixture = this.fixture;
+      const fixture = this.#fixture;
       const relation = {
         id: 'relation_source_informs_question',
         from: fixture.local_source.reference_id,
@@ -446,8 +451,8 @@ class AshKernelAdapter {
 
   async compareRoute() {
     return this.transition('COMPARE_ROUTE', async () => {
-      const routeA = this.fixture.route_observations.route_a;
-      const routeB = this.fixture.route_observations.route_b;
+      const routeA = this.#fixture.route_observations.route_a;
+      const routeB = this.#fixture.route_observations.route_b;
       const emptyRouteMemory = this.state.routeMemory;
       const observationA = runDeterministicReader({
         caseMap: this.state.caseMap,
@@ -461,8 +466,8 @@ class AshKernelAdapter {
       });
 
       const routeMemory = await compileRouteMemory({
-        caseId: this.fixture.case_id,
-        createdAt: this.fixture.action_times.COMPARE_ROUTE,
+        caseId: this.#fixture.case_id,
+        createdAt: this.#fixture.action_times.COMPARE_ROUTE,
         entries: [],
         controlledTestRecovery: [
           { route_id: 'route_a', label: routeA.label, recovered: observationA.after },
@@ -498,7 +503,7 @@ class AshKernelAdapter {
         caseMap: this.state.caseMap,
         routeMemory,
         reader,
-        createdAt: this.fixture.action_times.COMPARE_ROUTE,
+        createdAt: this.#fixture.action_times.COMPARE_ROUTE,
         trials: [
           { trial_id: 'trial_route_a', seed: 101, state: 'OBSERVED', before: observationA.before, after: observationA.after, observations: [routeA.label], missingness: routeA.missingness },
           { trial_id: 'trial_route_b', seed: 202, state: 'OBSERVED', benign_control: true, held_out: true, before: observationB.before, after: observationB.after, observations: [routeB.label], missingness: routeB.missingness }
@@ -547,8 +552,8 @@ class AshKernelAdapter {
     return this.transition('PRESERVE', async () => {
       const savePoint = await compileSavePoint({
         savePointId: 'save_a15r0_fixed_kernel',
-        caseId: this.fixture.case_id,
-        createdAt: this.fixture.action_times.PRESERVE,
+        caseId: this.#fixture.case_id,
+        createdAt: this.#fixture.action_times.PRESERVE,
         caseMapDigest: this.state.caseMap.case_map_digest,
         routeMemoryDigest: this.state.routeMemory.route_memory_digest,
         evidenceInventory: ['synthetic Case Map', 'synthetic Route Memory', 'synthetic Rebuild Test'],
@@ -658,7 +663,7 @@ class AshKernelAdapter {
       const checkpoint = this.mutationCheckpoint();
       const before = this.stateSummary();
       try {
-        await this.initializeState();
+        this.state = await buildInitialState(this.#fixture, this.options());
         return await this.sealReceipt('RESET', {
           before,
           observations: ['Only the in-memory synthetic preview run was reset.'],
@@ -677,10 +682,9 @@ class AshKernelAdapter {
     return this.enqueueMutation(async () => {
       if (this.disposed) throw new Error('The A15-R0 preview adapter is already disposed.');
       this.assertAvailable();
-      const fixtureId = this.fixture.fixture_id;
+      const fixtureId = this.#fixture.fixture_id;
       this.state = null;
-      this.sequence = 0;
-      this.fixture = null;
+      this.#fixture = null;
       this.disposed = true;
       return Object.freeze({
         schema: 'td613.ash.a15-r0.preview-disposal-receipt/v0.1',
@@ -701,6 +705,6 @@ class AshKernelAdapter {
 
 export async function createAshKernelAdapter(fixture, options = {}) {
   const adapter = new AshKernelAdapter(fixture, options);
-  await adapter.initializeState();
+  adapter.state = await buildInitialState(adapter.fixture, adapter.options());
   return adapter;
 }

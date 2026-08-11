@@ -9,6 +9,11 @@ function withoutDigest(value) {
   return output;
 }
 
+function requiredIdentifier(value, label) {
+  if (typeof value !== 'string' || value.length === 0) throw new TypeError(`${label} is required.`);
+  return value;
+}
+
 export function createObservableEventRecorder({
   runId = 'a15r0_run_fixed_kernel_v01',
   projectionId = 'FIXED_KERNEL_ASSAY',
@@ -16,13 +21,25 @@ export function createObservableEventRecorder({
 } = {}) {
   const records = [];
   let sequence = 0;
+  let generation = 0;
+  let operationTail = Promise.resolve();
 
   return Object.freeze({
     async record(input = {}) {
+      const actionId = requiredIdentifier(input.actionId, 'actionId');
+      const kernelReceiptId = requiredIdentifier(input.kernelReceiptId, 'kernelReceiptId');
+      const worldAnswerId = requiredIdentifier(input.worldAnswerId, 'worldAnswerId');
+      if (input.actionToConsequenceDistance !== undefined
+          && (!Number.isSafeInteger(input.actionToConsequenceDistance) || input.actionToConsequenceDistance < 0)) {
+        throw new TypeError('actionToConsequenceDistance must be a non-negative safe integer.');
+      }
+
+      const recordGeneration = generation;
       sequence += 1;
+      const recordSequence = sequence;
       const record = {
         schema: A15_R0_SCHEMAS.event,
-        event_id: `a15r0_event_${String(sequence).padStart(3, '0')}`,
+        event_id: `a15r0_event_${String(recordSequence).padStart(3, '0')}`,
         run_id: runId,
         projection_id: projectionId,
         task_state_before: String(input.taskStateBefore),
@@ -30,12 +47,12 @@ export function createObservableEventRecorder({
         control_visible: input.controlVisible === true,
         control_enabled: input.controlEnabled === true,
         gesture: String(input.gesture || 'click'),
-        action_id: String(input.actionId),
-        kernel_receipt_id: String(input.kernelReceiptId),
-        world_answer_id: String(input.worldAnswerId),
-        action_to_consequence_distance: Number.isSafeInteger(input.actionToConsequenceDistance)
-          ? input.actionToConsequenceDistance
-          : 1,
+        action_id: actionId,
+        kernel_receipt_id: kernelReceiptId,
+        world_answer_id: worldAnswerId,
+        action_to_consequence_distance: input.actionToConsequenceDistance === undefined
+          ? 1
+          : input.actionToConsequenceDistance,
         boundary_crossings: [...(input.boundaryCrossings || [])],
         unexplained_seams: [...(input.unexplainedSeams || [])],
         backtrack: input.backtrack === true,
@@ -48,10 +65,16 @@ export function createObservableEventRecorder({
         missingness: [...(input.missingness || [])],
         event_digest: null
       };
-      record.event_digest = await canonicalDigest(EVENT_DOMAIN, withoutDigest(record), { cryptoImpl });
-      validateObservableEvent(record);
-      records.push(Object.freeze(record));
-      return immutableCopy(record);
+
+      const operation = operationTail.then(async () => {
+        record.event_digest = await canonicalDigest(EVENT_DOMAIN, withoutDigest(record), { cryptoImpl });
+        validateObservableEvent(record);
+        const frozen = Object.freeze(record);
+        if (recordGeneration === generation) records.push(frozen);
+        return immutableCopy(record);
+      });
+      operationTail = operation.then(() => undefined, () => undefined);
+      return operation;
     },
 
     snapshot() {
@@ -59,6 +82,7 @@ export function createObservableEventRecorder({
     },
 
     reset() {
+      generation += 1;
       records.length = 0;
       sequence = 0;
       return true;

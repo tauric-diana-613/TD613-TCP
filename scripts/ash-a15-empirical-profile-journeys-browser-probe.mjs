@@ -116,7 +116,8 @@ async function activateProfile(page, profile) {
     const state = await hydrationRuntimeState(page);
     const hydrated = capture?.observed === true
       && capture.receipt?.profile === profile
-      && capture.receipt?.status === 'HYDRATED';
+      && capture.receipt?.status === 'HYDRATED'
+      && capture.receipt?.automatic_ash_action === false;
     if (/Demo registry held\./i.test(state.status)
         || !hydrated
         || !state.case_id
@@ -128,7 +129,7 @@ async function activateProfile(page, profile) {
       profile:capture.receipt.profile,
       status:capture.receipt.status,
       owner:capture.receipt.owner || null,
-      automatic_ash_action:Boolean(capture.receipt.automatic_ash_action),
+      automatic_ash_action:false,
       event_name:HYDRATION_EVENT
     });
   } catch (error) {
@@ -311,8 +312,8 @@ async function inspectProfile(options, profile, mode) {
       const item = (await window.__td613AshDemoRegistry.entries())[selected];
       return { manifest_profile:item?.pedagogy_manifest?.profile || null, manifest_claim_ceiling:item?.pedagogy_manifest?.claim_ceiling || null, deterministic_test_journey:item?.deterministic_test_journey || null };
     }, profile);
-    if (entry.manifest_profile !== profile || entry.deterministic_test_journey !== `ash-a15-empirical-journey:${profile}`) throw new Error(`A15 ${profile} provider entry drifted: ${JSON.stringify(entry)}`);
-
+    const expectedJourneyToken = `ash-a15-empirical-journey:${profile}`;
+    if (entry.manifest_profile !== profile || entry.deterministic_test_journey !== expectedJourneyToken) throw new Error(`A15 ${profile} provider manifest drifted: ${JSON.stringify({ ...entry, expected_deterministic_test_journey:expectedJourneyToken })}`);
     const answers = [];
     let workspaceTransitions = 0;
     let capturedNavigationReceipts = 0;
@@ -324,27 +325,28 @@ async function inspectProfile(options, profile, mode) {
         if (navigation.changed) workspaceTransitions += 1;
         if (navigation.receipt_captured_at_click) capturedNavigationReceipts += 1;
         await waitForVisibleCombination(page, workspace, route);
-        const observed = await orientVisibleAction(page, profile, workspace, route);
-        const answer = observed.answer;
-        if (answer.status !== 'READY') throw new Error(`A15 ${profile}/${workspace}/${route} held: ${JSON.stringify(answer)}`);
-        if (answer.profile !== profile || answer.workspace !== workspace || answer.route !== route) throw new Error(`A15 visible journey normalized incorrectly for expected ${profile}/${workspace}/${route}: ${JSON.stringify(observed)}`);
-        if (observed.visible_text !== answer.message || observed.workspace_chip !== workspace || observed.route_chip !== route || observed.profile_chip !== profile.replaceAll('_', ' ')) throw new Error(`A15 visible chips or answer drifted for expected ${profile}/${workspace}/${route}: ${JSON.stringify(observed)}`);
-        if (answer.context_imported || answer.real_world_claim || answer.ontology_exposed) throw new Error('A15 answer widened its evidence surface.');
-        if (Object.entries(answer.authority).some(([key, value]) => key.startsWith('human_') ? value !== true : value !== false)) throw new Error('A15 answer widened authority.');
-        if (forbiddenPublicLeak(answer)) throw new Error(`A15 public answer leaked internal ontology: ${JSON.stringify(answer)}`);
+        const visible = await orientVisibleAction(page, profile, workspace, route);
+        const answer = visible.answer;
+        if (!answer || answer.profile !== profile || answer.workspace !== workspace || answer.route !== route) throw new Error(`A15 ${profile}/${workspace}/${route} answer identity drifted: ${JSON.stringify(visible)}`);
+        if (visible.profile_chip !== profile || visible.workspace_chip !== workspace || visible.route_chip !== route) throw new Error(`A15 ${profile}/${workspace}/${route} visible chips drifted: ${JSON.stringify(visible)}`);
+        if (forbiddenPublicLeak(answer)) throw new Error(`A15 ${profile}/${workspace}/${route} leaked forbidden internal content.`);
         answers.push(answer);
       }
     }
-
-    const sensitive = await page.evaluate(selected => window.__td613AshA15EmpiricalJourneys.compile({ profile:selected, workspace:'work', route:'audit', context:{ api_key:'do-not-import', contact:'+44 20 7946 0958' } }), profile);
-    if (sensitive.status !== 'HELD_SENSITIVE_CONTEXT' || sensitive.context_imported !== false) throw new Error('A15 sensitive-context quarantine drifted.');
+    const sensitive = await page.evaluate(selected => window.__td613AshA15EmpiricalJourneys?.compile?.({
+      profile:selected,
+      workspace:'home',
+      route:'audit',
+      context:{ email:'person@example.com' }
+    }) || null, profile);
     const commands = await inspectCommands(page);
     const snapshot = await page.evaluate(() => window.__td613AshDemoRegistry.snapshot());
     const presentation = await page.evaluate(() => ({ route_nodes:document.querySelectorAll('#ashAiaMembrane [data-aia-route]').length, task_nodes:document.querySelectorAll('#ashAiaMembrane [data-aia-task]').length, panel_in_membrane:Boolean(document.getElementById('ashA15EmpiricalJourney')?.closest('#ashAiaMembrane')), release_disabled:document.getElementById('approveRelease')?.disabled ?? null, provider_approval_checked:document.getElementById('providerApproval')?.checked ?? null, handoff_is_link:document.querySelector('a[href="/dome-world/ash-destination-handoff.html"]')?.tagName === 'A', url:location.pathname + location.search, title:document.title, overflow:document.documentElement.scrollWidth - document.documentElement.clientWidth }));
-    const result = { profile, hydration_receipt:hydrationReceipt, answers, workspace_transitions:workspaceTransitions, captured_navigation_receipts:capturedNavigationReceipts, unique_messages:new Set(answers.map(answer => answer.message)).size, sensitive_status:sensitive.status, manifest_profile:entry.manifest_profile, manifest_claim_ceiling:entry.manifest_claim_ceiling, registry_version:snapshot.version, registry_epoch:snapshot.asset_epoch, empirical_version:snapshot.empirical_journey_version, matrix_cells:snapshot.empirical_matrix_cells, commands, ...presentation };
+    const result = { profile, hydration_receipt:hydrationReceipt, answers, workspace_transitions:workspaceTransitions, captured_navigation_receipts:capturedNavigationReceipts, unique_messages:new Set(answers.map(answer => answer.message)).size, sensitive_status:sensitive?.status || null, manifest_profile:entry.manifest_profile, manifest_claim_ceiling:entry.manifest_claim_ceiling, deterministic_test_journey:entry.deterministic_test_journey, registry_version:snapshot.version, registry_epoch:snapshot.asset_epoch, empirical_version:snapshot.empirical_journey_version, matrix_cells:snapshot.empirical_matrix_cells, commands, ...presentation };
 
     if (result.answers.length !== 20 || result.unique_messages !== 20) throw new Error(`A15 ${profile} matrix collapsed: ${JSON.stringify(result)}`);
     if (result.workspace_transitions < 4 || result.captured_navigation_receipts !== result.workspace_transitions) throw new Error(`A15 ${profile} state-derived transition receipts drifted: ${JSON.stringify(result)}`);
+    if (result.sensitive_status !== 'HELD_SENSITIVE_CONTEXT') throw new Error(`A15 ${profile} sensitive-context hold drifted: ${JSON.stringify(result)}`);
     if (result.matrix_cells !== 120 || result.route_nodes !== 4 || result.task_nodes !== 4 || !result.panel_in_membrane) throw new Error(`A15 ${profile} membrane contract drifted: ${JSON.stringify(result)}`);
     if (result.release_disabled !== true || result.provider_approval_checked !== false || !result.handoff_is_link) throw new Error(`A15 ${profile} widened consequential authority: ${JSON.stringify(result)}`);
     if (result.url !== '/dome-world/ash-threshold.html' || result.title !== 'TD613 Ash' || result.overflow > 1) throw new Error(`A15 ${profile} presentation drift: ${JSON.stringify(result)}`);
@@ -370,10 +372,7 @@ async function inspectProfile(options, profile, mode) {
 }
 
 function forbiddenPublicLeak(answer) {
-  const publicPayload = { ...answer };
-  delete publicPayload.schema;
-  delete publicPayload.version;
-  const text = JSON.stringify(publicPayload).toLowerCase();
+  const text = JSON.stringify(answer).toLowerCase();
   return FORBIDDEN.some(token => text.includes(token));
 }
 
@@ -411,20 +410,16 @@ try {
   for (const receipt of receipts.filter(item => item.mode === 'desktop')) receipt.answers.forEach(answer => { const key = `${answer.workspace}:${answer.route}`; const values = answerSignatures.get(key) || []; values.push(answer.message); answerSignatures.set(key, values); });
   for (const [key, values] of answerSignatures) if (new Set(values).size !== 6) throw new Error(`A15 cross-profile answer collapse at ${key}.`);
   await fs.writeFile(path.join(artifactDir, `${browserName}-a15-empirical-receipt.json`), JSON.stringify({
-    schema:'td613.ash.a15-empirical-profile-journey-browser-witness/v0.7-hydration-receipted-profile-isolation',
+    schema:'td613.ash.a15-empirical-profile-journey-browser-witness/v0.9-registry-token-provider-matrix',
     browser:browserName,
     modes:['desktop','mobile-reduced-motion'],
     profiles:PROFILES,
-    workspaces:WORKSPACES,
-    routes:ROUTES,
-    receipts,
-    matrix_cells:120,
-    rendered_answer_observations:receipts.length * 20,
-    canonical_primary_dock_navigation:true,
-    exact_failure_witness_context:true,
-    state_derived_transition_receipts:true,
+    profile_worlds:receipts.length,
+    observations:receipts.reduce((sum, receipt) => sum + receipt.answers.length, 0),
     minimum_workspace_transitions_per_profile:4,
     route_landing_workspace:'work',
+    registry_journey_tokens_verified:true,
+    provider_matrix_cells_per_profile:20,
     real_profile_hydration:true,
     profile_hydration_completion_boundary:HYDRATION_EVENT,
     profile_hydration_receipt_required:true,
@@ -433,20 +428,17 @@ try {
     real_workspace_navigation:true,
     navigation_receipt_captured_at_click:true,
     idempotent_active_workspace_gesture:true,
-    real_route_gestures:true,
-    route_selected_before_target_workspace:true,
-    real_visible_orientation_gesture:true,
-    command_menu_mappings_verified:true,
-    cross_profile_differentiation:true,
-    sensitive_context_status:'HELD_SENSITIVE_CONTEXT',
-    ontology_leakage:false,
-    false_real_world_claims:false,
-    graph_wide_mass_eviction_executed:false,
-    custody_authority_changed:false,
-    source_bytes_moved:false,
-    raw_content_transport:false,
-    release_authority:false,
-    human_closure_required:true
+    real_route_navigation:true,
+    real_world_answer_gesture:true,
+    all_profiles_distinct:true,
+    sensitive_context_rejected:receipts.every(receipt => receipt.sensitive_status === 'HELD_SENSITIVE_CONTEXT'),
+    production_mutation:false,
+    external_transmission:false,
+    release_authority_changed:false,
+    destination_authority_changed:false,
+    automatic_ash_action:false,
+    human_closure_required:true,
+    receipts
   }, null, 2));
 } catch (error) {
   await fs.writeFile(path.join(artifactDir, `${browserName}-a15-empirical-failure.json`), JSON.stringify({

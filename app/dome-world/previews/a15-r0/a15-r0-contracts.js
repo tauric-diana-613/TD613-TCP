@@ -37,6 +37,7 @@ export const A15_R0_AUTHORITY_FLAGS = Object.freeze({
 
 const PLAIN_OBJECT = '[object Object]';
 const OPAQUE_ID = /^[a-z][a-z0-9_-]{2,127}$/;
+const RFC3339_DATE_TIME = /^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}(?:\.\d+)?(?:Z|[+-]\d{2}:\d{2})$/;
 const GOVERNED_FIXTURE_REQUIRED = Object.freeze([
   'schema',
   'fixture_id',
@@ -71,6 +72,15 @@ const FIXTURE_AUTHORITY_KEYS = Object.freeze([
   'human_review_required',
   'human_closure_required'
 ]);
+const FIXTURE_NAMESPACE_KEYS = Object.freeze(['codepoint', 'surrogate_pair', 'meaning']);
+const FIXTURE_LOCAL_SOURCE_KEYS = Object.freeze([
+  'reference_id',
+  'label',
+  'posture',
+  'raw_bytes_local',
+  'raw_bytes_transport_authorized',
+  'external_content'
+]);
 
 function assert(condition, message) {
   if (!condition) throw new Error(message);
@@ -83,7 +93,11 @@ function isPlainRecord(value) {
 }
 
 function assertJsonSafe(value, label = 'Value', seen = new WeakSet()) {
-  if (value === null || ['string', 'number', 'boolean'].includes(typeof value)) return;
+  if (value === null || typeof value === 'string' || typeof value === 'boolean') return;
+  if (typeof value === 'number') {
+    assert(Number.isFinite(value), `${label} numbers must be finite.`);
+    return;
+  }
   if (Array.isArray(value)) {
     if (seen.has(value)) throw new Error(`${label} may not contain cycles.`);
     seen.add(value);
@@ -114,6 +128,18 @@ function assertOpaqueId(value, label) {
   return value;
 }
 
+function assertPattern(value, pattern, label) {
+  assertString(value, label);
+  assert(pattern.test(value), `${label} has an invalid namespace prefix.`);
+  return value;
+}
+
+function assertDateTime(value, label) {
+  assertString(value, label);
+  assert(RFC3339_DATE_TIME.test(value) && Number.isFinite(Date.parse(value)), `${label} must be an RFC 3339 date-time.`);
+  return value;
+}
+
 function assertFalse(value, label) {
   assert(value === false, `${label} must remain false.`);
 }
@@ -127,6 +153,11 @@ function assertRequiredFields(value, fields, label) {
   for (const field of fields) assert(Object.hasOwn(value, field), `${label}.${field} is required.`);
 }
 
+function assertOnlyKeys(value, allowedKeys, label) {
+  const allowed = new Set(allowedKeys);
+  for (const key of Object.keys(value)) assert(allowed.has(key), `${label}.${key} is undeclared.`);
+}
+
 function assertNoLiveExternalContent(value) {
   const serialized = JSON.stringify(value);
   assert(!/\b(?:https?|wss?|ftp):\/\//i.test(serialized), 'A15-R0 fixtures may not contain live external content.');
@@ -134,10 +165,7 @@ function assertNoLiveExternalContent(value) {
 
 function assertAuthorityClosed(authority, label = 'Authority', allowedKeys = null) {
   assertPlainRecord(authority, label);
-  if (allowedKeys) {
-    const allowed = new Set(allowedKeys);
-    for (const key of Object.keys(authority)) assert(allowed.has(key), `${label}.${key} is undeclared.`);
-  }
+  if (allowedKeys) assertOnlyKeys(authority, allowedKeys, label);
   for (const [key, expected] of Object.entries(A15_R0_AUTHORITY_FLAGS)) {
     if (Object.hasOwn(authority, key)) assert(authority[key] === expected, `${label}.${key} must remain ${expected}.`);
   }
@@ -157,27 +185,25 @@ export function validateGovernedTaskFixture(value) {
   const fixture = assertPlainRecord(value, 'Governed task fixture');
   assertJsonSafe(fixture, 'Governed task fixture');
   assertRequiredFields(fixture, GOVERNED_FIXTURE_REQUIRED, 'Governed task fixture');
+  assertOnlyKeys(fixture, GOVERNED_FIXTURE_REQUIRED, 'Governed task fixture');
   assert(fixture.schema === A15_R0_SCHEMAS.fixture, 'Unsupported governed task fixture schema.');
-  assertOpaqueId(fixture.fixture_id, 'Fixture ID');
-  assertOpaqueId(fixture.case_id, 'Case ID');
+  assertPattern(fixture.fixture_id, /^a15r0_fixture_/, 'Fixture ID');
+  assertPattern(fixture.case_id, /^case_/, 'Case ID');
   assert(fixture.source_status === 'SIMULATED', 'The A15-R0 fixture must remain SIMULATED.');
   assert(fixture.sensor_id === 'simulated-fixture', 'The fixture sensor must remain simulated-fixture.');
   assert(fixture.authority_class === 'A2_DERIVATIONAL', 'The fixture authority class must remain A2_DERIVATIONAL.');
   assert(fixture.profile === 'research', 'The governed fixture profile must remain research.');
   assertString(fixture.title, 'Fixture title');
-  assertString(fixture.created_at, 'Fixture created_at');
-  assert(Number.isFinite(Date.parse(fixture.created_at)), 'Fixture created_at must be an ISO-compatible date-time.');
+  assertDateTime(fixture.created_at, 'Fixture created_at');
 
-  assertRequiredFields(fixture.namespace, ['codepoint', 'surrogate_pair', 'meaning'], 'Fixture namespace');
+  assertRequiredFields(fixture.namespace, FIXTURE_NAMESPACE_KEYS, 'Fixture namespace');
+  assertOnlyKeys(fixture.namespace, FIXTURE_NAMESPACE_KEYS, 'Fixture namespace');
   assert(fixture.namespace.codepoint === 'U+10D613', 'The TD613 codepoint changed.');
   assert(fixture.namespace.surrogate_pair === '\\uDBF5\\uDE13', 'The TD613 surrogate pair changed.');
   assert(fixture.namespace.meaning === 'TD613 = Tauric Diana 613', 'The TD613 namespace meaning changed.');
 
-  assertRequiredFields(
-    fixture.local_source,
-    ['reference_id', 'label', 'posture', 'raw_bytes_local', 'raw_bytes_transport_authorized', 'external_content'],
-    'Fixture local_source'
-  );
+  assertRequiredFields(fixture.local_source, FIXTURE_LOCAL_SOURCE_KEYS, 'Fixture local_source');
+  assertOnlyKeys(fixture.local_source, FIXTURE_LOCAL_SOURCE_KEYS, 'Fixture local_source');
   assertString(fixture.local_source.reference_id, 'Fixture local_source.reference_id');
   assertString(fixture.local_source.label, 'Fixture local_source.label');
   assert(fixture.local_source.posture === 'DECLARED_REFERENCE_ONLY', 'Fixture local_source posture changed.');
@@ -250,8 +276,7 @@ export function validateGovernedTaskFixture(value) {
   assert(JSON.stringify(fixture.allowed_action_sequence) === JSON.stringify(A15_R0_ACTION_SEQUENCE), 'The governed action sequence changed.');
   assertPlainRecord(fixture.action_times, 'Fixture action_times');
   for (const actionId of [...A15_R0_ACTION_SEQUENCE, 'REST', 'RESET']) {
-    assertString(fixture.action_times[actionId], `Fixture action_times.${actionId}`);
-    assert(Number.isFinite(Date.parse(fixture.action_times[actionId])), `Fixture action_times.${actionId} must be an ISO-compatible date-time.`);
+    assertDateTime(fixture.action_times[actionId], `Fixture action_times.${actionId}`);
   }
 
   assert(Array.isArray(fixture.claim_ceiling) && fixture.claim_ceiling.length > 0, 'The fixture requires a visible claim ceiling.');
@@ -318,6 +343,7 @@ export function validateObservableEvent(value) {
   }
   assert(typeof event.control_visible === 'boolean', 'control_visible must be boolean.');
   assert(typeof event.control_enabled === 'boolean', 'control_enabled must be boolean.');
+  assert(Number.isSafeInteger(event.action_to_consequence_distance) && event.action_to_consequence_distance >= 0, 'action_to_consequence_distance must be a non-negative safe integer.');
   assert(event.source_status === 'OBSERVED', 'Interface events must remain OBSERVED.');
   assert(event.authority_class === 'A1_OBSERVATIONAL', 'Interface events must remain A1_OBSERVATIONAL.');
   assert(Array.isArray(event.missingness), 'Observable event missingness must be an array.');

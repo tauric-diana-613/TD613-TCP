@@ -7,7 +7,7 @@ const baseUrl = process.env.TD613_BASE_URL || 'http://127.0.0.1:6130';
 const artifactDir = process.env.TD613_ARTIFACT_DIR || 'artifacts/ash-a12';
 const entryPreflightOnly = process.env.TD613_A12_ENTRY_PREFLIGHT === 'true';
 const browserType = { chromium, firefox, webkit }[browserName];
-const ENTRY_ATTEMPT_CEILING = 3;
+const ENTRY_ATTEMPT_CEILING = entryPreflightOnly ? 1 : 3;
 const ENTRY_QUIET_MS = 500;
 if (!browserType) throw new Error('Unsupported browser ' + browserName);
 await fs.mkdir(artifactDir, { recursive:true });

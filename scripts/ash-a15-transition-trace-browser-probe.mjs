@@ -264,6 +264,12 @@ function classifyObserverFailure(failure) {
   return 'FATAL_OBSERVER_FAILURE';
 }
 
+function observedClickPhases(cell) {
+  const records = cell?.records || [];
+  return records.some(record => record.kind === 'ROUTE_CLICK_CAPTURE')
+    && records.some(record => record.kind === 'ROUTE_CLICK_BUBBLE');
+}
+
 async function inspectCell(browser, mode, options, profile, route, controlValue) {
   const context = await browser.newContext(options);
   const page = await context.newPage();
@@ -382,6 +388,7 @@ const baselineSummary = Object.fromEntries([...new Set(cells.map(cell => cell.cl
   .sort()
   .map(workspace => [workspace, cells.filter(cell => (cell.classification.initial_workspace || 'UNDECLARED') === workspace).length]));
 const expectedCellCount = modes.length * PROFILES.length * Object.keys(ROUTES).length;
+const routeClickCaptureAndBubbleObserved = cells.length > 0 && cells.every(observedClickPhases);
 const report = {
   schema:'td613.ash.a15-transition-trace-browser-witness/v0.6-pointer-transport-hold-separation',
   source_status:'OBSERVED',
@@ -393,7 +400,7 @@ const report = {
   route_side_effects_bounded_after_before_route_marker:true,
   route_control_owner_observed_at_click:true,
   route_click_capture_and_bubble_instrumented:true,
-  route_click_capture_and_bubble_observed:pointerDeliveryHolds.length === 0,
+  route_click_capture_and_bubble_observed:routeClickCaptureAndBubbleObserved,
   observation_horizon_ms:OBSERVATION_HORIZON_MS,
   profiles:PROFILES,
   routes:Object.keys(ROUTES),
@@ -429,6 +436,7 @@ console.log(JSON.stringify({
   pointer_delivery_holds:pointerDeliveryHolds.length,
   failures:failures.length,
   measurement_complete:report.measurement_complete,
+  route_click_capture_and_bubble_observed:routeClickCaptureAndBubbleObserved,
   summary,
   observed_pre_route_workspace_summary:baselineSummary,
   artifact:artifactPath

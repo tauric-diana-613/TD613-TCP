@@ -90,6 +90,15 @@ source = replaceExactly(
   'geometry-independent native route activation'
 );
 
+source = replaceExactly(
+  source,
+  `  if (!/Cases & profiles/i.test((await page.locator('[data-command-action="profile"]').textContent()) || '')) throw new Error('Cases & profiles label drifted.');`,
+  `  const profileAction = page.locator('[data-a12-action="profile"][data-command-action="profile"]');
+  if (await profileAction.count() !== 1) throw new Error('Canonical Cases & Profiles command ownership was ambiguous.');
+  if (!/Cases & profiles/i.test((await profileAction.textContent()) || '')) throw new Error('Cases & profiles label drifted.');`,
+  'A15 canonical A12 profile command ownership'
+);
+
 if (source.includes('td613.ash.demo-registry/v0.1-a13') || source.includes('td613.ash.demo-registry/v0.2-a14')) {
   throw new Error('A15 current-registry observer adapter left a retired registry token.');
 }
@@ -116,6 +125,10 @@ if (!source.includes('__td613A2A5SemanticRouteTrace')
   || !source.includes("'CLICK_BUBBLE'")
   || !source.includes('report.observations.semantic_route_activation[route] = activationAfterDispatch')) {
   throw new Error('A15 A2-A6 semantic keyboard activation diagnostic failed to compile.');
+}
+if (!source.includes("page.locator('[data-a12-action=\"profile\"][data-command-action=\"profile\"]')")
+  || source.includes("page.locator('[data-command-action=\"profile\"]').textContent()")) {
+  throw new Error('A15 A2-A6 profile command witness must use the canonical A12-owned control.');
 }
 if (source.includes('__td613AshLiveAIA.setRoute(')) {
   throw new Error('A15 A2-A6 route witness may not bypass the native route control owner.');
