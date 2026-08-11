@@ -33,6 +33,7 @@ const REQUIRED_REGISTRY_STATIC_MARKERS = Object.freeze([
   'import(`./ash-research-demo-hydration.js?v=${ASH_DEMO_ASSET_EPOCH}`)',
   'import(`./ash-legal-profile-demo.js?v=${ASH_DEMO_ASSET_EPOCH}`)',
   'import(`./ash-archive-profile-demo.js?v=${ASH_DEMO_ASSET_EPOCH}`)',
+  'import(`./ash-demo-pedagogy-rehydration.js?v=${ASH_DEMO_ASSET_EPOCH}`)',
   'import(`./ash-a15-empirical-profile-journeys.js?v=${ASH_DEMO_ASSET_EPOCH}`)',
   'installAshA15EmpiricalJourneys'
 ]);
