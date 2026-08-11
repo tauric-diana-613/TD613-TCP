@@ -26,6 +26,8 @@ export function createObservableEventRecorder({
 
   return Object.freeze({
     async record(input = {}) {
+      const taskStateBefore = requiredIdentifier(input.taskStateBefore, 'taskStateBefore');
+      const controlId = requiredIdentifier(input.controlId, 'controlId');
       const actionId = requiredIdentifier(input.actionId, 'actionId');
       const kernelReceiptId = requiredIdentifier(input.kernelReceiptId, 'kernelReceiptId');
       const worldAnswerId = requiredIdentifier(input.worldAnswerId, 'worldAnswerId');
@@ -42,17 +44,15 @@ export function createObservableEventRecorder({
         event_id: `a15r0_event_${String(recordSequence).padStart(3, '0')}`,
         run_id: runId,
         projection_id: projectionId,
-        task_state_before: String(input.taskStateBefore),
-        control_id: String(input.controlId),
+        task_state_before: taskStateBefore,
+        control_id: controlId,
         control_visible: input.controlVisible === true,
         control_enabled: input.controlEnabled === true,
         gesture: String(input.gesture || 'click'),
         action_id: actionId,
         kernel_receipt_id: kernelReceiptId,
         world_answer_id: worldAnswerId,
-        action_to_consequence_distance: input.actionToConsequenceDistance === undefined
-          ? 1
-          : input.actionToConsequenceDistance,
+        action_to_consequence_distance: input.actionToConsequenceDistance === undefined ? 1 : input.actionToConsequenceDistance,
         boundary_crossings: [...(input.boundaryCrossings || [])],
         unexplained_seams: [...(input.unexplainedSeams || [])],
         backtrack: input.backtrack === true,
@@ -76,11 +76,7 @@ export function createObservableEventRecorder({
       operationTail = operation.then(() => undefined, () => undefined);
       return operation;
     },
-
-    snapshot() {
-      return immutableCopy(records);
-    },
-
+    snapshot() { return immutableCopy(records); },
     reset() {
       generation += 1;
       records.length = 0;
