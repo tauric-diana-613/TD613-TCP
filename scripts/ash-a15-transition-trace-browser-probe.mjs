@@ -190,12 +190,13 @@ function classify(records, expectedRoute) {
   const initialWorkspace = beforeRoute?.workspace || null;
   const workspaceMutations = records.filter(record =>
     record.kind === 'ROOT_ATTRIBUTE_MUTATION'
+    && record.sequence > (beforeRoute?.sequence || 0)
     && record.detail?.attribute === 'data-ash-premium-workspace'
     && record.detail?.new_value !== record.detail?.old_value
   );
   const firstWorkspaceMutation = workspaceMutations[0] || null;
   const postHorizon = [...records].reverse().find(record => record.kind === 'POST_ROUTE_HORIZON') || null;
-  const navigationReceipts = records.filter(record => record.kind === 'td613:ash:navigation-receipt');
+  const navigationReceipts = records.filter(record => record.kind === 'td613:ash:navigation-receipt' && record.sequence > (beforeRoute?.sequence || 0));
 
   let classification = 'ROUTE_ONLY_WITHIN_BOUNDED_HORIZON';
   if (firstWorkspaceMutation) {
@@ -323,13 +324,14 @@ const baselineSummary = Object.fromEntries([...new Set(cells.map(cell => cell.cl
   .sort()
   .map(workspace => [workspace, cells.filter(cell => (cell.classification.initial_workspace || 'UNDECLARED') === workspace).length]));
 const report = {
-  schema:'td613.ash.a15-transition-trace-browser-witness/v0.3-hydration-sealed-baseline',
+  schema:'td613.ash.a15-transition-trace-browser-witness/v0.4-route-bounded-mutations',
   source_status:'OBSERVED',
   sensor_id:'playwright-browser-runtime',
   authority_class:'A1_OBSERVATIONAL',
   browser_engine:browserName,
   profile_hydration_boundary:HYDRATION_EVENT,
   profile_hydration_completion_required:true,
+  route_side_effects_bounded_after_before_route_marker:true,
   observation_horizon_ms:OBSERVATION_HORIZON_MS,
   profiles:PROFILES,
   routes:Object.keys(ROUTES),
