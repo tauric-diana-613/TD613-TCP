@@ -181,6 +181,19 @@ async function selectRoute(page, route) {
     const current = String(window.__td613AshLiveAIA?.current?.()?.route || '').toUpperCase();
     return (current === controlValue || current === route.toUpperCase()) && document.querySelector('[data-a15-route]')?.textContent?.trim() === route;
   }, { route, controlValue }, { timeout:60_000 });
+  await page.waitForFunction(() => {
+    const section = document.getElementById('workspace-work');
+    const style = section ? getComputedStyle(section) : null;
+    const rect = section?.getBoundingClientRect();
+    return document.documentElement.dataset.ashPremiumWorkspace === 'work'
+      && section?.classList.contains('active') === true
+      && style?.display !== 'none'
+      && style?.visibility !== 'hidden'
+      && Number(style?.opacity) > 0
+      && style?.pointerEvents !== 'none'
+      && rect?.width > 0
+      && rect?.height > 0;
+  }, { timeout:60_000 });
 }
 
 async function waitForVisibleCombination(page, workspace, route) {
