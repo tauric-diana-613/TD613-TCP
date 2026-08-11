@@ -1,18 +1,23 @@
 import fs from 'node:fs/promises';
 import path from 'node:path';
-import { chromium } from 'playwright';
+import { chromium, firefox, webkit } from 'playwright';
 
 const base = String(process.env.TD613_BASE_URL || 'http://127.0.0.1:6130').replace(/\/+$/, '');
 const previewPath = process.env.TD613_A15_R0_PATH || '/app/dome-world/previews/a15-r0/index.html';
 const url = `${base}${previewPath.startsWith('/') ? previewPath : `/${previewPath}`}`;
 const artifactDir = process.env.TD613_ARTIFACT_DIR || 'artifacts/ash-a15-r0';
+const browserName = String(process.env.TD613_BROWSER || 'chromium').toLowerCase();
+const browserTypes = { chromium, firefox, webkit };
+const browserType = browserTypes[browserName];
+if (!browserType) throw new TypeError(`Unsupported TD613_BROWSER: ${browserName}`);
 await fs.mkdir(artifactDir, { recursive: true });
 
 const report = {
-  schema: 'td613.ash.a15-r0.chromium-preview-evidence/v0.1',
+  schema: 'td613.ash.a15-r0.browser-preview-evidence/v0.2',
   source_status: 'OBSERVED',
-  sensor_id: 'browser-performance-api',
+  sensor_id: 'playwright-browser-runtime',
   authority_class: 'A1_OBSERVATIONAL',
+  browser_engine: browserName,
   url,
   started_at: new Date().toISOString(),
   status: 'OPEN',
@@ -55,9 +60,11 @@ async function installedChromiumExecutable() {
   return null;
 }
 
-const executablePath = process.env.PLAYWRIGHT_CHROMIUM_EXECUTABLE_PATH || await installedChromiumExecutable();
-report.browser = executablePath ? 'installed-chromium' : 'playwright-managed-chromium';
-const browser = await chromium.launch({ headless: true, ...(executablePath ? { executablePath } : {}) });
+const executablePath = browserName === 'chromium'
+  ? process.env.PLAYWRIGHT_CHROMIUM_EXECUTABLE_PATH || await installedChromiumExecutable()
+  : null;
+report.browser_runtime = executablePath ? 'installed-chromium' : `playwright-managed-${browserName}`;
+const browser = await browserType.launch({ headless: true, ...(executablePath ? { executablePath } : {}) });
 try {
   const page = await browser.newPage({
     viewport: { width: 1280, height: 820 },
@@ -86,6 +93,7 @@ try {
 
   await page.goto(url, { waitUntil: 'networkidle', timeout: 60_000 });
   await page.locator('html[data-a15-r0-ready="true"]').waitFor({ timeout: 30_000 });
+  await page.locator('html[data-a15-r0-open-field="ready"]').waitFor({ timeout: 30_000 });
 
   for (const truth of [
     'Preview',
@@ -97,6 +105,9 @@ try {
   ]) check(`truth:${truth}`, await visibleText(page, truth));
 
   check('fixture loaded', (await page.locator('#fixtureSummary').innerText()).includes('a15r0_fixture_synthetic_research_v01'));
+  check('open field ready', await page.locator('#fieldObservability .field-metric').count() === 4);
+  check('bounded envelope visibly held', (await page.locator('#fieldEnvelopeStatus').innerText()).includes('HELD'));
+  check('hypothesis frontier rendered', await page.locator('#fieldHypothesisRows tr').count() >= 8);
   check('P1 honest hold', (await page.locator('#projectionRegistry').innerText()).includes('Minimal Ash') && (await page.locator('#projectionRegistry').innerText()).includes('NOT IMPLEMENTED'));
   check('P2 honest hold', (await page.locator('#projectionRegistry').innerText()).includes('Proto-Loom') && (await page.locator('#projectionRegistry').innerText()).includes('NOT IMPLEMENTED'));
   check('owner rows', await page.locator('#ownerRegistry tr').count() === 7);
@@ -133,7 +144,7 @@ try {
   check('Reset preview only', resetReceipt.state_after.task_state === 'ARRIVE' && resetReceipt.authority.raw_bytes_moved === false);
   check('Observable reset event', JSON.parse(await page.locator('#observableEvents').innerText()).length === 1);
 
-  const desktopShot = path.join(artifactDir, 'a15-r0-desktop.png');
+  const desktopShot = path.join(artifactDir, `a15-r0-${browserName}-desktop.png`);
   await page.screenshot({ path: desktopShot, fullPage: true });
   report.screenshots.push(desktopShot);
 
@@ -141,6 +152,7 @@ try {
   await page.emulateMedia({ reducedMotion: 'reduce' });
   await page.reload({ waitUntil: 'networkidle' });
   await page.locator('html[data-a15-r0-ready="true"]').waitFor({ timeout: 30_000 });
+  await page.locator('html[data-a15-r0-open-field="ready"]').waitFor({ timeout: 30_000 });
   const bodyMetrics = await page.locator('body').evaluate(element => ({
     scroll_width: element.scrollWidth,
     client_width: element.clientWidth
@@ -149,8 +161,9 @@ try {
   check('reduced-motion static truth', await visibleText(page, 'No external transmission') && await page.locator('#taskSequence').isVisible());
   check('required mobile action visible', await page.locator('#bind-reference').isVisible());
   check('required mobile touch target', (await page.locator('#bind-reference').boundingBox())?.height >= 44);
+  check('mobile open field visible', await page.locator('#fieldEnvelopeStatus').isVisible() && await page.locator('#fieldHypothesisRows').isVisible());
 
-  const mobileShot = path.join(artifactDir, 'a15-r0-mobile-reduced.png');
+  const mobileShot = path.join(artifactDir, `a15-r0-${browserName}-mobile-reduced.png`);
   await page.screenshot({ path: mobileShot, fullPage: true });
   report.screenshots.push(mobileShot);
 
@@ -169,10 +182,11 @@ try {
 report.completed_at = new Date().toISOString();
 report.failed_checks = report.checks.filter(item => item.status === 'FAIL').map(item => item.name);
 report.status = report.failed_checks.length === 0 ? 'PASS' : 'HELD';
-const artifactPath = path.join(artifactDir, 'a15-r0-chromium-evidence.json');
+const artifactPath = path.join(artifactDir, `a15-r0-${browserName}-evidence.json`);
 await fs.writeFile(artifactPath, `${JSON.stringify(report, null, 2)}\n`, 'utf8');
 console.log(JSON.stringify({
   status: report.status,
+  browser: browserName,
   checks: report.checks.length,
   failed: report.failed_checks,
   artifact: artifactPath
