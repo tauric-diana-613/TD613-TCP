@@ -126,7 +126,7 @@ assert.equal(booleanCensus.positive_excess_count, 10);
 assert.equal(booleanCensus.positive_held_out_non_parity_count, 8);
 assert.equal(booleanCensus.nonpositive_excess_count, 6);
 assert.equal(booleanCensus.maximum_held_out_non_parity_excess_bits, 0.188722);
-assert.deepEqual(booleanCensus.pure_synergy_function_ids.sort(), ['F06_XOR', 'F09_XNOR']);
+assert.deepEqual([...booleanCensus.pure_synergy_function_ids].sort(), ['F06_XOR', 'F09_XNOR']);
 assert.equal(evaluateBooleanFunction(8).function_id, 'F08_AND');
 assert.equal(evaluateBooleanFunction(8).joining_synergy_proxy_bits, 0.188722);
 assert.throws(() => evaluateBooleanFunction(16), /0 through 15/);
