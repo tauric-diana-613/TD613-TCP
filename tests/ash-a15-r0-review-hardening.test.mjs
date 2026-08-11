@@ -29,6 +29,31 @@ await assert.rejects(
   'Observable events must identify the visible control before coercion.'
 );
 
+const mutableBoundary = { edge:'alpha' };
+const mutableSeam = { seam:'beta' };
+const mutableMissingness = { message:'original' };
+const pendingEvent = recorder.record({
+  actionId:'OBSERVE',
+  kernelReceiptId:'receipt_observe',
+  worldAnswerId:'world_observe',
+  taskStateBefore:'ARRIVE',
+  controlId:'control_observe',
+  boundaryCrossings:[mutableBoundary],
+  unexplainedSeams:[mutableSeam],
+  missingness:[mutableMissingness]
+});
+mutableBoundary.edge = 'mutated';
+mutableSeam.seam = 'mutated';
+mutableMissingness.message = 'mutated';
+await pendingEvent;
+const retainedEvent = recorder.snapshot().at(-1);
+assert.equal(retainedEvent.boundary_crossings[0].edge, 'alpha', 'Boundary-crossing inputs must be copied before asynchronous hashing.');
+assert.equal(retainedEvent.unexplained_seams[0].seam, 'beta', 'Unexplained-seam inputs must be copied before asynchronous hashing.');
+assert.equal(retainedEvent.missingness[0].message, 'original', 'Missingness inputs must be copied before asynchronous hashing.');
+assert.equal(Object.isFrozen(retainedEvent.boundary_crossings[0]), true, 'Retained nested event inputs must be recursively frozen.');
+assert.equal(Object.isFrozen(retainedEvent.unexplained_seams[0]), true, 'Retained nested event inputs must be recursively frozen.');
+assert.equal(Object.isFrozen(retainedEvent.missingness[0]), true, 'Retained nested event inputs must be recursively frozen.');
+
 const adapter = await createAshKernelAdapter(fixture);
 assert.equal('state' in adapter, false, 'Adapter state must not remain on the public governance surface.');
 assert.equal('sequence' in adapter, false, 'Adapter receipt sequence must not remain on the public governance surface.');
@@ -36,6 +61,13 @@ assert.equal(adapter.state, undefined, 'Adapter state reads must not expose muta
 assert.equal(adapter.sequence, undefined, 'Adapter sequence reads must not expose receipt identity state.');
 assert.throws(() => { adapter.state = { taskState:'RETURN' }; }, /private governance state/i);
 assert.throws(() => { adapter.sequence = 0; }, /private governance state/i);
+for (const internal of ['sealReceipt','restoreMutationCheckpoint','mutationCheckpoint','transition','hold','enqueueMutation','stateSummary','caseMapInput','options','assertAvailable']) {
+  assert.equal(adapter[internal], undefined, `${internal} must not be callable through the public adapter membrane.`);
+  assert.equal(internal in adapter, false, `${internal} must not be enumerable as public adapter capability.`);
+}
+assert.throws(() => { adapter.sealReceipt = () => null; }, /private governance state/i, 'Receipt sealing may not be installed onto the public adapter membrane.');
+assert.equal(typeof adapter.cryptoImpl, 'object', 'The declared digest-injection test seam remains readable.');
+adapter.cryptoImpl = adapter.cryptoImpl;
 assert.equal((await adapter.snapshot()).task_state, 'ARRIVE', 'Public membrane writes must not alter governed adapter state.');
 await adapter.dispose();
 

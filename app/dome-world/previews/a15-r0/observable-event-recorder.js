@@ -14,6 +14,10 @@ function requiredIdentifier(value, label) {
   return value;
 }
 
+function immutableArray(value = []) {
+  return immutableCopy([...(value || [])]);
+}
+
 export function createObservableEventRecorder({
   runId = 'a15r0_run_fixed_kernel_v01',
   projectionId = 'FIXED_KERNEL_ASSAY',
@@ -53,8 +57,8 @@ export function createObservableEventRecorder({
         kernel_receipt_id: kernelReceiptId,
         world_answer_id: worldAnswerId,
         action_to_consequence_distance: input.actionToConsequenceDistance === undefined ? 1 : input.actionToConsequenceDistance,
-        boundary_crossings: [...(input.boundaryCrossings || [])],
-        unexplained_seams: [...(input.unexplainedSeams || [])],
+        boundary_crossings: immutableArray(input.boundaryCrossings),
+        unexplained_seams: immutableArray(input.unexplainedSeams),
         backtrack: input.backtrack === true,
         help_requested: input.helpRequested === true,
         rest_available: input.restAvailable !== false,
@@ -62,15 +66,15 @@ export function createObservableEventRecorder({
         source_status: 'OBSERVED',
         sensor_id: 'browser-interface-observation',
         authority_class: 'A1_OBSERVATIONAL',
-        missingness: [...(input.missingness || [])],
+        missingness: immutableArray(input.missingness),
         event_digest: null
       };
       const operation = operationTail.then(async () => {
         record.event_digest = await canonicalDigest(EVENT_DOMAIN, withoutDigest(record), { cryptoImpl });
         validateObservableEvent(record);
-        const frozen = Object.freeze(record);
-        if (recordGeneration === generation) records.push(frozen);
-        return immutableCopy(record);
+        const sealed = immutableCopy(record);
+        if (recordGeneration === generation) records.push(sealed);
+        return immutableCopy(sealed);
       });
       operationTail = operation.then(() => undefined, () => undefined);
       return operation;
