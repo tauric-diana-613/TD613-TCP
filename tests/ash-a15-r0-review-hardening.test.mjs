@@ -2,6 +2,7 @@ import assert from 'node:assert/strict';
 import fs from 'node:fs';
 import { createAshKernelAdapter } from '../app/dome-world/previews/a15-r0/ash-kernel-adapter.js';
 import { validateGovernedTaskFixture } from '../app/dome-world/previews/a15-r0/a15-r0-contracts.js';
+import { runBooleanMobiusInteractionAssay } from '../app/dome-world/previews/a15-r0/boolean-mobius-interaction.js';
 import {
   OBSERVABILITY_MODELS,
   runObservabilityAssay,
@@ -83,13 +84,31 @@ assert.match(permissiveEnvelope.finding, /passes every declared metric gate/i);
 assert.doesNotMatch(permissiveEnvelope.finding, /fails every metric gate/i);
 assert.match(permissiveEnvelope.finding, /lacks empirical evidence class and human closure/i);
 
+const mobius = runBooleanMobiusInteractionAssay();
+assert.equal(mobius.function_count, 16);
+assert.deepEqual(
+  mobius.magnitude_groups.map(group => [group.absolute_mobius_interaction, group.joining_synergy_levels_bits]),
+  [[0, [0]], [1, [0.188722]], [2, [1]]]
+);
+assert.equal(mobius.exact_synergy_level_by_absolute_mobius_magnitude, true);
+assert.equal(mobius.strictly_monotone_synergy_across_mobius_magnitude_levels, true);
+assert.equal(mobius.zero_mobius_magnitude_iff_zero_joining_excess_in_declared_family, true);
+assert.equal(mobius.xor_xnor_share_maximum_magnitude, true);
+assert.equal(mobius.discrete_hessian_interpretation_available, true);
+assert.equal(mobius.riemannian_metric_declared, false);
+assert.equal(mobius.affine_connection_declared, false);
+assert.equal(mobius.curvature_tensor_declared, false);
+assert.equal(mobius.intrinsic_geometric_curvature_claim, false);
+
 console.log(JSON.stringify({
-  contract:'td613.ash.a15-r0.review-hardening/v0.1',
+  contract:'td613.ash.a15-r0.review-hardening/v0.2-mobius-coordinate',
   incomplete_fixture_rejected:true,
   assay_samples_deep_frozen:true,
   reconstruction_parameters_bounded:true,
   adapter_fixture_deep_frozen:true,
   transitions_serialized:true,
   disposed_adapter_terminal:true,
-  envelope_finding_state_derived:true
+  envelope_finding_state_derived:true,
+  mobius_synergy_level_correspondence:true,
+  geometric_curvature_claim:false
 }, null, 2));
