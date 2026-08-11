@@ -1,4 +1,6 @@
 import { runBoundedTransformationEnvelope } from './bounded-transformation-envelope.js';
+import { runBooleanSynergyCensus } from './boolean-synergy-census.js';
+import { runInformationGeometryCalibration } from './information-geometry-calibration.js';
 import { runOpenResearchField } from './open-research-field.js';
 
 export const OPEN_RESEARCH_HYPOTHESIS_REGISTRY_SCHEMA = 'td613.ash.a15-r0.open-research-hypothesis-registry/v0.1';
@@ -12,6 +14,8 @@ const freezeHypothesis = value => Object.freeze({
 export function buildOpenResearchHypothesisRegistry(options = {}) {
   const field = options.field || runOpenResearchField();
   const envelope = options.envelope || runBoundedTransformationEnvelope({ field });
+  const booleanCensus = options.booleanCensus || runBooleanSynergyCensus();
+  const geometry = options.geometry || runInformationGeometryCalibration();
   const rankCases = Object.fromEntries(field.rank_leakage_non_equivalence.cases.map(item => [item.case_id, item]));
   const rankOne = rankCases.RANK1_DISTINGUISHABLE_SCALAR;
   const rankThree = rankCases.RANK3_OBSERVER_INDEPENDENT;
@@ -94,15 +98,21 @@ export function buildOpenResearchHypothesisRegistry(options = {}) {
     }),
     freezeHypothesis({
       hypothesis_id: 'H_JOINING_SYNERGY_GENERALIZES',
-      question: 'Does positive joining synergy persist across non-XOR corpora, alternative observers, and held-out feature families?',
-      falsifier: 'Calibrated held-out corpora show no positive joint-information excess under the declared estimator and controls.',
+      question: 'Does positive joining synergy persist beyond the XOR/XNOR seed construction?',
+      falsifier: 'The complete declared held-out Boolean family contains no non-parity function with positive joint-information excess.',
       evidence: {
-        current_fixture: 'BALANCED_XOR',
-        current_synergy_proxy_bits: joining.joining_synergy_proxy_bits,
-        held_out_non_xor_corpora: 'UNMEASURED'
+        declared_function_family: booleanCensus.function_family,
+        complete_declared_family: booleanCensus.complete_declared_family,
+        seed_parity_function_count: booleanCensus.seed_parity_function_count,
+        held_out_non_parity_function_count: booleanCensus.held_out_non_parity_function_count,
+        positive_held_out_non_parity_count: booleanCensus.positive_held_out_non_parity_count,
+        maximum_held_out_non_parity_excess_bits: booleanCensus.maximum_held_out_non_parity_excess_bits,
+        pure_synergy_count: booleanCensus.pure_synergy_count
       },
-      status: 'OPEN_UNMEASURED',
-      claim_ceiling: 'NO_GENERALIZATION_FROM_XOR'
+      status: booleanCensus.complete_declared_family && booleanCensus.positive_held_out_non_parity_count > 0
+        ? 'SUPPORTED_IN_BOUNDED_SYNTHETIC_FAMILY'
+        : 'FALSIFIED_IN_SYNTHETIC_FIELD',
+      claim_ceiling: 'UNIFORM_DETERMINISTIC_TWO_INPUT_BOOLEAN_FAMILY_ONLY'
     }),
     freezeHypothesis({
       hypothesis_id: 'H_INFORMATION_CURVATURE_GEOMETRIC',
@@ -110,12 +120,15 @@ export function buildOpenResearchHypothesisRegistry(options = {}) {
       falsifier: 'No stable metric, connection, invariant, or geometry preserves the proposed curvature quantity across admissible reparameterizations.',
       evidence: {
         current_quantity: 'JOINING_SYNERGY_PROXY_BITS',
-        manifold_metric: 'UNSPECIFIED',
-        connection: 'UNSPECIFIED',
-        reparameterization_test: 'UNMEASURED'
+        fisher_rao_positive_control_scalar_curvature: geometry.analytic_scalar_curvature,
+        fisher_metric_covariance_check_pass: geometry.metric_covariance_check_pass,
+        synergy_relabel_invariant_in_fixture: geometry.joining_synergy_relabel_invariant_in_fixture,
+        synergy_manifold_metric_declared: geometry.joining_synergy_has_declared_manifold_metric,
+        synergy_connection_declared: geometry.joining_synergy_has_declared_connection,
+        intrinsic_curvature_claim_supported: geometry.joining_synergy_intrinsic_curvature_claim_supported
       },
-      status: 'OPEN_UNMEASURED',
-      claim_ceiling: 'SYNERGY_PROXY_IS_NOT_INTRINSIC_CURVATURE'
+      status: 'OPEN_RESEARCH_PROGRAM',
+      claim_ceiling: 'FISHER_RAO_CALIBRATION_DOES_NOT_PROMOTE_SYNERGY_PROXY_TO_CURVATURE'
     }),
     freezeHypothesis({
       hypothesis_id: 'H_GOLDEN_EGG_BOUNDED_REGION',
@@ -136,6 +149,9 @@ export function buildOpenResearchHypothesisRegistry(options = {}) {
   const closedByCounterexample = hypotheses
     .filter(item => item.status.startsWith('FALSIFIED'))
     .map(item => item.hypothesis_id);
+  const boundedSupport = hypotheses
+    .filter(item => item.status.startsWith('SUPPORTED'))
+    .map(item => item.hypothesis_id);
   const researchFrontier = hypotheses
     .filter(item => item.status.startsWith('OPEN'))
     .map(item => item.hypothesis_id);
@@ -146,12 +162,13 @@ export function buildOpenResearchHypothesisRegistry(options = {}) {
     authority_class: 'A2_DERIVATIONAL',
     hypotheses,
     closed_by_counterexample: Object.freeze(closedByCounterexample),
+    bounded_support: Object.freeze(boundedSupport),
     research_frontier: Object.freeze(researchFrontier),
     sequence_authority: false,
     next_stage: null,
     stage_unlocks: Object.freeze([]),
     promotion_authority: false,
     human_closure_required: true,
-    finding: 'The research program advances by surviving or failing explicit falsifiers, not by unlocking a numbered next stage.'
+    finding: 'The research program advances by surviving or failing explicit falsifiers, not by unlocking a numbered next stage. Bounded support remains separately typed from empirical generalization.'
   });
 }
