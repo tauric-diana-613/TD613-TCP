@@ -14,6 +14,8 @@ assert.match(probe, /td613:ash:navigation-receipt/);
 assert.match(probe, /td613:ash:ux-workspace-opened/);
 assert.match(probe, /td613:ash:demo-registry-hydrated/);
 assert.match(probe, /profile_hydration_completion_required:true/);
+assert.match(probe, /route_side_effects_bounded_after_before_route_marker:true/);
+assert.match(probe, /record\.sequence > \(beforeRoute\?\.sequence \|\| 0\)/);
 assert.match(probe, /LATE_WORKSPACE_SIDE_EFFECT_WITHIN_BOUNDED_HORIZON/);
 assert.match(probe, /COUPLED_WORKSPACE_SIDE_EFFECT_WITHIN_BOUNDED_HORIZON/);
 assert.match(probe, /workspace_normalization_applied:false/);
@@ -73,12 +75,13 @@ assert.match(calibrationChamber, /independent_from_prior_ash_promotion_gates:tru
 assert.match(calibrationChamber, /promotion_authority:false/);
 
 console.log(JSON.stringify({
-  contract:'td613.ash.a15-transition-trace-contract/v0.6-canonical-hydration-and-resource-isolation',
+  contract:'td613.ash.a15-transition-trace-contract/v0.7-route-causal-classification',
   a15_r0_evidence_independent_of_inherited_a15:true,
   transition_trace_independent_of_inherited_a15:true,
   a15_r0_evidence_independent_of_prior_ash_promotion_gates:true,
   profile_hydration_boundary:'td613:ash:demo-registry-hydrated',
   profile_hydration_completion_required:true,
+  route_side_effects_bounded_after_before_route_marker:true,
   inherited_profile_hydration_receipt_required:true,
   inherited_browser_process_isolation_per_profile:true,
   inherited_incremental_profile_checkpoints:true,
