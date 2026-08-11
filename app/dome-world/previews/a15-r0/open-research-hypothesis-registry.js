@@ -1,5 +1,6 @@
 import { runBoundedTransformationEnvelope } from './bounded-transformation-envelope.js';
 import { runBooleanSynergyCensus } from './boolean-synergy-census.js';
+import { runFisherSynergyNonEquivalence } from './fisher-synergy-non-equivalence.js';
 import { buildGoldenEggFeasibleRegion } from './golden-egg-feasible-region.js';
 import { runInformationGeometryCalibration } from './information-geometry-calibration.js';
 import { runOpenResearchField } from './open-research-field.js';
@@ -17,6 +18,7 @@ export function buildOpenResearchHypothesisRegistry(options = {}) {
   const envelope = options.envelope || runBoundedTransformationEnvelope({ field });
   const booleanCensus = options.booleanCensus || runBooleanSynergyCensus();
   const geometry = options.geometry || runInformationGeometryCalibration();
+  const fisherSynergy = options.fisherSynergy || runFisherSynergyNonEquivalence();
   const feasibleRegion = options.feasibleRegion || buildGoldenEggFeasibleRegion({ field, booleanCensus });
   const rankCases = Object.fromEntries(field.rank_leakage_non_equivalence.cases.map(item => [item.case_id, item]));
   const rankOne = rankCases.RANK1_DISTINGUISHABLE_SCALAR;
@@ -117,6 +119,23 @@ export function buildOpenResearchHypothesisRegistry(options = {}) {
       claim_ceiling: 'UNIFORM_DETERMINISTIC_TWO_INPUT_BOOLEAN_FAMILY_ONLY'
     }),
     freezeHypothesis({
+      hypothesis_id: 'H_SYNERGY_EQUALS_AMBIENT_FISHER_CURVATURE',
+      question: 'Can joining synergy be identified directly with ambient Fisher-Rao scalar curvature on the full joint categorical simplex?',
+      falsifier: 'Two interior joint distributions share the same ambient Fisher-Rao scalar curvature while carrying different joining-synergy values.',
+      evidence: {
+        ambient_scalar_curvature: fisherSynergy.ambient_fisher_rao_scalar_curvature,
+        noisy_xor_synergy_bits: fisherSynergy.noisy_xor.joining_synergy_proxy_bits,
+        noisy_and_synergy_bits: fisherSynergy.noisy_and.joining_synergy_proxy_bits,
+        synergy_difference_bits: fisherSynergy.joining_synergy_difference_bits,
+        same_ambient_scalar_curvature: fisherSynergy.same_ambient_scalar_curvature,
+        different_joining_synergy: fisherSynergy.different_joining_synergy
+      },
+      status: fisherSynergy.same_ambient_scalar_curvature && fisherSynergy.different_joining_synergy
+        ? 'FALSIFIED_IN_SYNTHETIC_FIELD'
+        : 'OPEN',
+      claim_ceiling: 'AMBIENT_FISHER_RAO_SCALAR_CURVATURE_NON_EQUIVALENCE_ONLY'
+    }),
+    freezeHypothesis({
       hypothesis_id: 'H_INFORMATION_CURVATURE_GEOMETRIC',
       question: 'Can relational residue be promoted from an information-synergy proxy into a defensible geometric curvature quantity?',
       falsifier: 'No stable metric, connection, invariant, or geometry preserves the proposed curvature quantity across admissible reparameterizations.',
@@ -127,10 +146,11 @@ export function buildOpenResearchHypothesisRegistry(options = {}) {
         synergy_relabel_invariant_in_fixture: geometry.joining_synergy_relabel_invariant_in_fixture,
         synergy_manifold_metric_declared: geometry.joining_synergy_has_declared_manifold_metric,
         synergy_connection_declared: geometry.joining_synergy_has_declared_connection,
-        intrinsic_curvature_claim_supported: geometry.joining_synergy_intrinsic_curvature_claim_supported
+        intrinsic_curvature_claim_supported: geometry.joining_synergy_intrinsic_curvature_claim_supported,
+        ambient_fisher_identification_falsified: fisherSynergy.synergy_equals_ambient_fisher_scalar_curvature === false
       },
       status: 'OPEN_RESEARCH_PROGRAM',
-      claim_ceiling: 'FISHER_RAO_CALIBRATION_DOES_NOT_PROMOTE_SYNERGY_PROXY_TO_CURVATURE'
+      claim_ceiling: 'AMBIENT_FISHER_CURVATURE_REJECTED_OTHER_RELATIONAL_GEOMETRIES_UNMEASURED'
     }),
     freezeHypothesis({
       hypothesis_id: 'H_GOLDEN_EGG_BOUNDED_REGION',
