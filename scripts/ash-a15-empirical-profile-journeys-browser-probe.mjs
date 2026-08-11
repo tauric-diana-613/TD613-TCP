@@ -6,6 +6,47 @@ const scriptsDir = path.dirname(fileURLToPath(import.meta.url));
 const corePath = path.join(scriptsDir, 'ash-a15-empirical-profile-journeys-browser-probe-core.mjs');
 const tempPath = path.join(scriptsDir, `.ash-a15-empirical-profile-journeys-hardened-${process.pid}.mjs`);
 
+const REQUIRED_A15_STATIC_MARKERS = Object.freeze([
+  '#premiumPrimaryDock [data-premium-workspace=',
+  '[data-aia-route=',
+  'ashA15OrientAction',
+  'real_profile_hydration:true',
+  'real_workspace_navigation:true',
+  'navigation_receipt_captured_at_click:true',
+  'idempotent_active_workspace_gesture:true',
+  'real_route_navigation:true',
+  'real_world_answer_gesture:true',
+  'HELD_SENSITIVE_CONTEXT',
+  '__td613A15NavigationWitness',
+  'td613:ash:navigation-receipt',
+  'workspaceDiagnostic',
+  'workspace_transitions',
+  'captured_navigation_receipts',
+  'minimum_workspace_transitions_per_profile:4',
+  "route_landing_workspace:'work'",
+  'browser_process_isolation_per_profile:true',
+  'incremental_profile_checkpoints:true',
+  'all_profiles_distinct:true',
+  '-held.png',
+  'await selectRoute(page, route);',
+  'await openWorkspace(page, workspace, witness);',
+  'await waitForVisibleCombination(page, workspace, route);',
+  'const selector = `#premiumPrimaryDock [data-premium-workspace=',
+  'if (navigation.changed) workspaceTransitions += 1',
+  'captured_navigation_receipts !== result.workspace_transitions',
+  "window.addEventListener('td613:ash:navigation-receipt', handler)",
+  'const expectedJourneyToken = `ash-a15-empirical-journey:${profile}`',
+  'entry.deterministic_test_journey !== expectedJourneyToken',
+  'provider_matrix_cells_per_profile:20',
+  'result.answers.length !== 20',
+  'matrix_cells:snapshot.empirical_matrix_cells',
+  'result.matrix_cells !== 120',
+  '__td613AshA15EmpiricalJourneys?.compile?.({',
+  "context:{ email:'person@example.com' }",
+  "result.sensitive_status !== 'HELD_SENSITIVE_CONTEXT'",
+  "sensitive_context_rejected:receipts.every(receipt => receipt.sensitive_status === 'HELD_SENSITIVE_CONTEXT')"
+]);
+
 function replaceExactly(source, marker, replacement, label) {
   const count = source.split(marker).length - 1;
   if (count !== 1) throw new Error(`${label} expected exactly one marker; observed ${count}`);
@@ -36,7 +77,6 @@ source = replaceExactly(
 async function inspectProfile(options, profile, mode) {`,
   'A15 closed world-answer authority helper'
 );
-
 source = replaceExactly(
   source,
   `        if (!answer || answer.profile !== profile || answer.workspace !== workspace || answer.route !== route) throw new Error(\`A15 \${profile}/\${workspace}/\${route} answer identity drifted: \${JSON.stringify(visible)}\`);
@@ -52,7 +92,6 @@ source = replaceExactly(
         answers.push(answer);`,
   'A15 visible answer and authority verification'
 );
-
 source = replaceExactly(
   source,
   `function forbiddenPublicLeak(answer) {
@@ -67,10 +106,11 @@ source = replaceExactly(
   'A15 public leak scan metadata exclusion'
 );
 
-if (!source.includes("profile.replaceAll('_', ' ')")
-    || !source.includes('visible.visible_text !== answer.message')
-    || !source.includes('assertClosedWorldAnswer(answer')
-    || !source.includes('const { schema, version, ...publicPayload }')) {
+for (const marker of REQUIRED_A15_STATIC_MARKERS) {
+  if (!source.includes(marker)) throw new Error(`A15 historical witness law missing after release hardening: ${marker}`);
+}
+if (!source.includes("profile.replaceAll('_', ' ')") || !source.includes('visible.visible_text !== answer.message')
+    || !source.includes('assertClosedWorldAnswer(answer') || !source.includes('const { schema, version, ...publicPayload }')) {
   throw new Error('A15 empirical witness hardening did not compile into the generated probe.');
 }
 
