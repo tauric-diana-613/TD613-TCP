@@ -73,7 +73,6 @@ export function runBoundedTransformationEnvelope(options = {}) {
     evidence_gate: evidenceGate,
     human_gate: humanGate,
     all_declared_metric_gates_pass: metricPass,
-    failed_metric_gate_ids: Object.freeze(failedMetricGates),
     all_promotion_gates_pass: promotionPass,
     status: promotionPass ? 'ELIGIBLE_FOR_HUMAN_REVIEW' : 'HELD',
     golden_egg_earned: false,
