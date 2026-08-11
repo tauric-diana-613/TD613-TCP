@@ -2,6 +2,8 @@ import * as core from './a15-r0-contracts-core.js';
 
 export * from './a15-r0-contracts-core.js';
 
+const SHA256_DIGEST = /^sha256:[0-9a-f]{64}$/;
+
 function strictRfc3339DateTime(value, label) {
   const match = /^(\d{4})-(\d{2})-(\d{2})T(\d{2}):(\d{2}):(\d{2})(?:\.(\d+))?(Z|[+-](\d{2}):(\d{2}))$/.exec(String(value || ''));
   if (!match) throw new Error(`${label} must be an RFC 3339 date-time.`);
@@ -22,6 +24,13 @@ function strictRfc3339DateTime(value, label) {
   return value;
 }
 
+function strictSha256Digest(value, label) {
+  if (typeof value !== 'string' || !SHA256_DIGEST.test(value)) {
+    throw new Error(`${label} must be a sha256 digest with exactly 64 lowercase hexadecimal digits.`);
+  }
+  return value;
+}
+
 export function validateGovernedTaskFixture(value) {
   const fixture = core.validateGovernedTaskFixture(value);
   strictRfc3339DateTime(fixture.created_at, 'Fixture created_at');
@@ -29,4 +38,16 @@ export function validateGovernedTaskFixture(value) {
     strictRfc3339DateTime(timestamp, `Fixture action_times.${action}`);
   }
   return fixture;
+}
+
+export function validateProjectionRunReceipt(value) {
+  const receipt = core.validateProjectionRunReceipt(value);
+  strictSha256Digest(receipt.receipt_digest, 'Projection run receipt receipt_digest');
+  return receipt;
+}
+
+export function validateObservableEvent(value) {
+  const event = core.validateObservableEvent(value);
+  strictSha256Digest(event.event_digest, 'Observable event event_digest');
+  return event;
 }
