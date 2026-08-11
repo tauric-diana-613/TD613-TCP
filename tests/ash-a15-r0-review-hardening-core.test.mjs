@@ -190,6 +190,20 @@ const recoveredReceipt = await receiptAtomicAdapter.bindReference();
 assert.equal(recoveredReceipt.status, 'OPEN');
 assert.match(recoveredReceipt.receipt_id, /_001_bind_reference$/);
 
+const malformedReceiptAdapter = await createAshKernelAdapter(fixture);
+const malformedReceiptBefore = await malformedReceiptAdapter.snapshot();
+malformedReceiptAdapter.cryptoImpl = {
+  subtle: {
+    digest: async (algorithm, material) => {
+      const text = new TextDecoder().decode(material);
+      if (text.startsWith('TD613:ASH:A15-R0:PROJECTION-RUN-RECEIPT:v1\n')) return new Uint8Array([1]).buffer;
+      return workingCrypto.subtle.digest(algorithm, material);
+    }
+  }
+};
+await assert.rejects(() => malformedReceiptAdapter.bindReference(), /receipt_digest.*64 lowercase hexadecimal digits/i);
+assert.deepEqual(await malformedReceiptAdapter.snapshot(), malformedReceiptBefore, 'Malformed projection digests may not commit a transition.');
+
 const recorder = createObservableEventRecorder();
 await assert.rejects(() => recorder.record({}), /actionId is required/i);
 await assert.rejects(() => recorder.record({ actionId:'ARRIVE' }), /kernelReceiptId is required/i);
@@ -201,6 +215,24 @@ await assert.rejects(() => recorder.record({
   actionToConsequenceDistance:-1
 }), /non-negative safe integer/i);
 
+const malformedEventRecorder = createObservableEventRecorder({
+  cryptoImpl:{ subtle:{ digest: async () => new Uint8Array([1]).buffer } }
+});
+await assert.rejects(() => malformedEventRecorder.record({
+  taskStateBefore:'ARRIVE',
+  controlId:'control_malformed',
+  actionId:'MALFORMED',
+  kernelReceiptId:'receipt_malformed',
+  worldAnswerId:'world_malformed'
+}), /event_digest.*64 lowercase hexadecimal digits/i);
+assert.deepEqual(malformedEventRecorder.snapshot(), [], 'Malformed event digests may not enter the retained observable record.');
+
+function syntheticSha256Buffer(marker) {
+  const bytes = new Uint8Array(32);
+  bytes[0] = marker;
+  return bytes.buffer;
+}
+
 let releaseFirstDigest;
 const firstDigestGate = new Promise(resolve => { releaseFirstDigest = resolve; });
 let releaseSecondDigest;
@@ -211,7 +243,7 @@ const orderedRecorder = createObservableEventRecorder({
     digestCall += 1;
     if (digestCall === 1) await firstDigestGate;
     else if (digestCall === 2) await secondDigestGate;
-    return new Uint8Array([digestCall]).buffer;
+    return syntheticSha256Buffer(digestCall);
   } } }
 });
 const orderedInput = n => ({
@@ -236,14 +268,18 @@ const resetDigestGate = new Promise(resolve => { releaseResetDigest = resolve; }
 const resetRaceRecorder = createObservableEventRecorder({
   cryptoImpl:{ subtle:{ digest: async () => {
     await resetDigestGate;
-    return new Uint8Array([9]).buffer;
+    return syntheticSha256Buffer(9);
   } } }
 });
 const stalePending = resetRaceRecorder.record(orderedInput(9));
 assert.equal(resetRaceRecorder.reset(), true);
 releaseResetDigest();
-await stalePending;
+const staleResult = await stalePending;
 assert.deepEqual(resetRaceRecorder.snapshot(), [], 'A record begun before reset may not resurrect after the reset generation advances.');
+const postResetResult = await resetRaceRecorder.record(orderedInput(10));
+assert.equal(staleResult.event_id, 'a15r0_event_001');
+assert.equal(postResetResult.event_id, 'a15r0_event_002', 'Reset may clear retained observations but may not reuse an issued event identity.');
+assert.deepEqual(resetRaceRecorder.snapshot().map(record => record.event_id), ['a15r0_event_002']);
 
 const disposedAdapter = await createAshKernelAdapter(fixture);
 const disposal = await disposedAdapter.dispose();
@@ -296,7 +332,7 @@ assert.equal(mobius.curvature_tensor_declared, false);
 assert.equal(mobius.intrinsic_geometric_curvature_claim, false);
 
 console.log(JSON.stringify({
-  contract:'td613.ash.a15-r0.review-hardening/v0.5-private-initializer-timeout-law',
+  contract:'td613.ash.a15-r0.review-hardening/v0.6-digest-identity-integrity',
   incomplete_fixture_rejected:true,
   schema_closed_records_enforced:true,
   fixture_and_case_prefixes_enforced:true,
@@ -317,10 +353,13 @@ console.log(JSON.stringify({
   transitions_serialized:true,
   reset_receipt_identity_monotonic:true,
   receipt_seal_atomic_with_state:true,
+  projection_receipt_digest_schema_enforced:true,
   recorder_required_ids_checked_before_coercion:true,
   recorder_distance_domain_checked:true,
+  recorder_event_digest_schema_enforced:true,
   recorder_commit_order_serialized:true,
   recorder_reset_generation_barrier:true,
+  recorder_event_identity_monotonic_across_reset:true,
   inherited_ash_probe_process_groups_killable:true,
   lifecycle_closure_foreground_law_preserved:true,
   disposed_adapter_terminal:true,
