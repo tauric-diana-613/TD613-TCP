@@ -68,6 +68,15 @@ assert.match(inheritedRouteProbe, /await button\.focus\(\)/);
 assert.match(inheritedRouteProbe, /await page\.keyboard\.press\('Enter'\)/);
 assert.match(inheritedRouteProbe, /control === document\.activeElement/);
 assert.match(inheritedRouteProbe, /typeof control\.onclick === 'function'/);
+assert.match(inheritedRouteProbe, /__td613A2A5SemanticRouteTrace/);
+assert.match(inheritedRouteProbe, /'KEYDOWN_CAPTURE'/);
+assert.match(inheritedRouteProbe, /'KEYDOWN_BUBBLE'/);
+assert.match(inheritedRouteProbe, /'KEYUP_CAPTURE'/);
+assert.match(inheritedRouteProbe, /'KEYUP_BUBBLE'/);
+assert.match(inheritedRouteProbe, /'CLICK_CAPTURE'/);
+assert.match(inheritedRouteProbe, /'CLICK_BUBBLE'/);
+assert.match(inheritedRouteProbe, /after_dispatch_route/);
+assert.match(inheritedRouteProbe, /report\.observations\.semantic_route_activation\[route\] = activationAfterDispatch/);
 assert.match(
   inheritedRouteProbe,
   /if \(source\.includes\('__td613AshLiveAIA\.setRoute\('\)\) \{/,
@@ -110,7 +119,7 @@ assert.match(calibrationChamber, /independent_from_prior_ash_promotion_gates:tru
 assert.match(calibrationChamber, /promotion_authority:false/);
 
 console.log(JSON.stringify({
-  contract:'td613.ash.a15-transition-trace-contract/v0.10-pointer-hold-guard-correction',
+  contract:'td613.ash.a15-transition-trace-contract/v0.11-semantic-keyboard-activation-diagnostic',
   a15_r0_evidence_independent_of_inherited_a15:true,
   transition_trace_independent_of_inherited_a15:true,
   a15_r0_evidence_independent_of_prior_ash_promotion_gates:true,
@@ -126,6 +135,8 @@ console.log(JSON.stringify({
   inherited_browser_process_isolation_per_profile:true,
   inherited_incremental_profile_checkpoints:true,
   inherited_semantic_route_witness_uses_native_keyboard_button_activation:true,
+  inherited_semantic_keyboard_keydown_keyup_and_click_diagnostic:true,
+  inherited_semantic_keyboard_diagnostic_persisted_before_route_wait:true,
   inherited_semantic_route_witness_private_api_bypass_guard:true,
   workspace_normalization_applied:false,
   failure_diagnostics_preserved:true,
