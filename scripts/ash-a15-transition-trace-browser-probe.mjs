@@ -107,7 +107,15 @@ async function readRuntimeState(page) {
     workspace_chip:document.querySelector('[data-a15-workspace]')?.textContent?.trim() || null,
     navigation_receipt:window.__td613AshWholeInstrument?.current?.()?.navigation_receipt || null,
     profile:document.documentElement.dataset.ashDemoProfile || null,
-    lifecycle:String(window.__td613AshLiveAIA?.current?.()?.lifecycle_state || document.body?.dataset?.ashLifecycle || '')
+    lifecycle:String(window.__td613AshLiveAIA?.current?.()?.lifecycle_state || document.body?.dataset?.ashLifecycle || ''),
+    route_controls:[...document.querySelectorAll('#ashAiaMembrane [data-aia-route]')].map((node, index) => ({
+      index,
+      route:node.dataset.aiaRoute || null,
+      text:node.textContent?.trim() || null,
+      connected:node.isConnected,
+      live_aia_direct_onclick:typeof node.onclick === 'function',
+      aria_pressed:node.getAttribute('aria-pressed')
+    }))
   }));
 }
 
@@ -132,17 +140,33 @@ async function armTrace(page, context) {
       }));
     };
     const listeners = [];
-    const listen = type => {
-      const handler = event => push(type, event.detail ? structuredClone(event.detail) : null);
-      window.addEventListener(type, handler);
-      listeners.push([type, handler]);
+    const listen = (target, type, kind = type, options = undefined) => {
+      const handler = event => push(kind, event.detail ? structuredClone(event.detail) : null);
+      target.addEventListener(type, handler, options);
+      listeners.push([target, type, handler, options]);
     };
     for (const type of [
       'td613:ash:navigation-receipt',
       'td613:ash:ux-workspace-opened',
       'td613:ash:whole-instrument-refreshed',
       'td613:ash:demo-pedagogy-routebar-ready'
-    ]) listen(type);
+    ]) listen(window, type);
+
+    const routeClick = phase => event => {
+      const control = event.target?.closest?.('#ashAiaMembrane [data-aia-route]');
+      if (!control) return;
+      push(`ROUTE_CLICK_${phase}`, {
+        requested_route:control.dataset.aiaRoute || null,
+        connected:control.isConnected,
+        live_aia_direct_onclick:typeof control.onclick === 'function',
+        aria_pressed:control.getAttribute('aria-pressed')
+      });
+    };
+    const captureHandler = routeClick('CAPTURE');
+    const bubbleHandler = routeClick('BUBBLE');
+    document.addEventListener('click', captureHandler, true);
+    document.addEventListener('click', bubbleHandler, false);
+    listeners.push([document, 'click', captureHandler, true], [document, 'click', bubbleHandler, false]);
 
     const observer = new MutationObserver(mutations => {
       for (const mutation of mutations) {
@@ -171,7 +195,7 @@ async function armTrace(page, context) {
       snapshot:() => structuredClone(records),
       stop:() => {
         observer.disconnect();
-        for (const [type, handler] of listeners) window.removeEventListener(type, handler);
+        for (const [target, type, handler, options] of listeners) target.removeEventListener(type, handler, options);
         push('TRACE_STOP');
         return structuredClone(records);
       }
@@ -246,7 +270,18 @@ async function inspectCell(browser, mode, options, profile, route, controlValue)
 
     const control = page.locator(`#ashAiaMembrane [data-aia-route="${controlValue}"]:visible`).first();
     if (!(await control.count())) throw new Error(`A15 visible ${route} route control unavailable.`);
+    const controlBeforeClick = await control.evaluate(node => ({
+      requested_route:node.dataset.aiaRoute || null,
+      connected:node.isConnected,
+      live_aia_direct_onclick:typeof node.onclick === 'function',
+      aria_pressed:node.getAttribute('aria-pressed')
+    }));
+    await page.evaluate(detail => window.__td613A15TransitionTrace.mark('ROUTE_CONTROL_BEFORE_CLICK', detail), controlBeforeClick);
+    if (!controlBeforeClick.connected || !controlBeforeClick.live_aia_direct_onclick) {
+      throw new Error(`A15 visible ${route} route control lacks the Live-AIA direct owner: ${JSON.stringify(controlBeforeClick)}`);
+    }
     await control.click();
+    await page.evaluate(() => window.__td613A15TransitionTrace.mark('AFTER_ROUTE_CLICK_DISPATCH'));
     await page.waitForFunction(({ route, controlValue }) => {
       const current = String(window.__td613AshLiveAIA?.current?.()?.route || '').toUpperCase();
       return (current === controlValue || current === route.toUpperCase())
@@ -267,6 +302,7 @@ async function inspectCell(browser, mode, options, profile, route, controlValue)
       status:'OBSERVED',
       hydration_receipt:hydrationReceipt,
       observed_baseline:observedBaseline,
+      route_control_before_click:controlBeforeClick,
       classification:classify(records, route),
       records
     });
@@ -324,7 +360,7 @@ const baselineSummary = Object.fromEntries([...new Set(cells.map(cell => cell.cl
   .sort()
   .map(workspace => [workspace, cells.filter(cell => (cell.classification.initial_workspace || 'UNDECLARED') === workspace).length]));
 const report = {
-  schema:'td613.ash.a15-transition-trace-browser-witness/v0.4-route-bounded-mutations',
+  schema:'td613.ash.a15-transition-trace-browser-witness/v0.5-route-owner-microscope',
   source_status:'OBSERVED',
   sensor_id:'playwright-browser-runtime',
   authority_class:'A1_OBSERVATIONAL',
@@ -332,6 +368,8 @@ const report = {
   profile_hydration_boundary:HYDRATION_EVENT,
   profile_hydration_completion_required:true,
   route_side_effects_bounded_after_before_route_marker:true,
+  route_control_owner_observed_at_click:true,
+  route_click_capture_and_bubble_observed:true,
   observation_horizon_ms:OBSERVATION_HORIZON_MS,
   profiles:PROFILES,
   routes:Object.keys(ROUTES),
