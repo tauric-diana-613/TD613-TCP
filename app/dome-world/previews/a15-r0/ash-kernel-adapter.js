@@ -105,6 +105,7 @@ class AshKernelAdapter {
     this.sequence = 0;
     this.disposed = false;
     this.state = null;
+    this.mutationTail = Promise.resolve();
   }
 
   options() {
@@ -113,6 +114,12 @@ class AshKernelAdapter {
 
   assertAvailable() {
     if (this.disposed || !this.state) throw new Error('The A15-R0 preview adapter is disposed.');
+  }
+
+  enqueueMutation(operation) {
+    const run = this.mutationTail.then(operation, operation);
+    this.mutationTail = run.then(() => undefined, () => undefined);
+    return run;
   }
 
   stateSummary(state = this.state) {
@@ -284,7 +291,7 @@ class AshKernelAdapter {
     if (returnSummary) receipt.return_summary = returnSummary;
     receipt.receipt_digest = await canonicalDigest(RECEIPT_DOMAIN, withoutDigest(receipt), this.options());
     validateProjectionRunReceipt(receipt);
-    this.state.lastReceipt = Object.freeze(receipt);
+    this.state.lastReceipt = immutableCopy(receipt);
     return immutableCopy(receipt);
   }
 
@@ -302,17 +309,20 @@ class AshKernelAdapter {
   }
 
   async transition(actionId, operation) {
-    this.assertAvailable();
-    const action = ACTIONS[actionId];
-    const before = this.stateSummary();
-    if (action.required && this.state.taskState !== action.required) return this.hold(actionId, action.required, before);
-    this.state.restActive = false;
-    const detail = await operation();
-    this.state.taskState = action.after;
-    return this.sealReceipt(actionId, { before, ...detail });
+    return this.enqueueMutation(async () => {
+      this.assertAvailable();
+      const action = ACTIONS[actionId];
+      const before = this.stateSummary();
+      if (action.required && this.state.taskState !== action.required) return this.hold(actionId, action.required, before);
+      this.state.restActive = false;
+      const detail = await operation();
+      this.state.taskState = action.after;
+      return this.sealReceipt(actionId, { before, ...detail });
+    });
   }
 
   async snapshot() {
+    await this.mutationTail;
     this.assertAvailable();
     return immutableCopy({
       schema: 'td613.ash.a15-r0.kernel-snapshot/v0.1',
@@ -602,57 +612,56 @@ class AshKernelAdapter {
   }
 
   async rest(reason = 'operator selected Rest') {
-    this.assertAvailable();
-    const before = this.stateSummary();
-    this.state.restActive = true;
-    return this.sealReceipt('REST', {
-      before,
-      observations: [String(reason), 'No new demand or state transition was introduced.'],
-      missingness: [...(this.state.lastReceipt?.missingness || [])],
-      alternatives: ['resume the current synthetic sequence', 'reset the synthetic fixture'],
-      openQuestions: ['Will the operator resume or reset?']
+    return this.enqueueMutation(async () => {
+      this.assertAvailable();
+      const before = this.stateSummary();
+      this.state.restActive = true;
+      return this.sealReceipt('REST', {
+        before,
+        observations: [String(reason), 'No new demand or state transition was introduced.'],
+        missingness: [...(this.state.lastReceipt?.missingness || [])],
+        alternatives: ['resume the current synthetic sequence', 'reset the synthetic fixture'],
+        openQuestions: ['Will the operator resume or reset?']
+      });
     });
   }
 
   async resetFixture() {
-    const before = this.state ? this.stateSummary() : {
-      task_state: 'UNINITIALIZED',
-      rest_active: false,
-      nodes: 0,
-      relationships: 0,
-      route_entries: 0,
-      controlled_route_observations: 0,
-      rebuild_state: 'NOT_RUN',
-      continuity_state: 'NOT_PREPARED',
-      return_state: 'NOT_RETURNED'
-    };
-    this.disposed = false;
-    await this.initializeState();
-    return this.sealReceipt('RESET', {
-      before,
-      observations: ['Only the in-memory synthetic preview run was reset.'],
-      missingness: ['no prior synthetic run remains in this adapter instance'],
-      alternatives: ['begin the governed sequence'],
-      openQuestions: ['Will the operator keep the synthetic reference?']
+    return this.enqueueMutation(async () => {
+      if (this.disposed) throw new Error('Disposed A15-R0 preview adapters are terminal; create a new adapter.');
+      this.assertAvailable();
+      const before = this.stateSummary();
+      await this.initializeState();
+      return this.sealReceipt('RESET', {
+        before,
+        observations: ['Only the in-memory synthetic preview run was reset.'],
+        missingness: ['no prior synthetic run remains in this adapter instance'],
+        alternatives: ['begin the governed sequence'],
+        openQuestions: ['Will the operator keep the synthetic reference?']
+      });
     });
   }
 
   async dispose() {
-    this.state = null;
-    this.sequence = 0;
-    this.disposed = true;
-    return Object.freeze({
-      schema: 'td613.ash.a15-r0.preview-disposal-receipt/v0.1',
-      fixture_id: this.fixture.fixture_id,
-      preview_memory_released: true,
-      case_migration_required: false,
-      indexeddb_mutated: false,
-      caches_mutated: false,
-      workers_mutated: false,
-      release_rollback_required: false,
-      deployment_required: false,
-      external_erasure_claimed: false,
-      human_closure_required: true
+    return this.enqueueMutation(async () => {
+      if (this.disposed) throw new Error('The A15-R0 preview adapter is already disposed.');
+      this.assertAvailable();
+      this.state = null;
+      this.sequence = 0;
+      this.disposed = true;
+      return Object.freeze({
+        schema: 'td613.ash.a15-r0.preview-disposal-receipt/v0.1',
+        fixture_id: this.fixture.fixture_id,
+        preview_memory_released: true,
+        case_migration_required: false,
+        indexeddb_mutated: false,
+        caches_mutated: false,
+        workers_mutated: false,
+        release_rollback_required: false,
+        deployment_required: false,
+        external_erasure_claimed: false,
+        human_closure_required: true
+      });
     });
   }
 }
