@@ -14,14 +14,23 @@ assert.match(probe, /td613:ash:ux-workspace-opened/);
 assert.match(probe, /LATE_WORKSPACE_SIDE_EFFECT_WITHIN_BOUNDED_HORIZON/);
 assert.match(probe, /COUPLED_WORKSPACE_SIDE_EFFECT_WITHIN_BOUNDED_HORIZON/);
 
+const runtimeMarker = '- name: Start one bounded Ash and Dome-World runtime';
 const calibrationMarker = '- name: Calibrate A15-R0 and transition ordering across every engine';
+const riskMarker = '- name: Aggregate changed-risk A8 and A12 entry witnesses across every engine';
+const lifecycleMarker = '- name: Run changed-risk lifecycle closure preflight';
 const inheritedMarker = '- name: Run the complete Ash witness through each installed engine';
+const runtimeStart = workflow.indexOf(runtimeMarker);
 const calibrationStart = workflow.indexOf(calibrationMarker);
+const riskStart = workflow.indexOf(riskMarker);
+const lifecycleStart = workflow.indexOf(lifecycleMarker);
 const inheritedStart = workflow.indexOf(inheritedMarker);
-assert.ok(calibrationStart >= 0, 'Independent A15 calibration prepass must remain present.');
+assert.ok(runtimeStart >= 0, 'Bounded runtime must remain present.');
+assert.ok(calibrationStart > runtimeStart, 'A15 calibration may depend on runtime readiness only.');
+assert.ok(riskStart > calibrationStart, 'A8/A12 promotion preflight must not erase A15-R0 measurement.');
+assert.ok(lifecycleStart > calibrationStart, 'Lifecycle promotion preflight must not erase A15-R0 measurement.');
 assert.ok(inheritedStart > calibrationStart, 'Inherited Ash witness must follow the independent calibration prepass.');
 
-const calibrationChamber = workflow.slice(calibrationStart, inheritedStart);
+const calibrationChamber = workflow.slice(calibrationStart, Math.min(riskStart, lifecycleStart, inheritedStart));
 const inheritedChamber = workflow.slice(inheritedStart);
 const r0Index = calibrationChamber.indexOf('node scripts/ash-a15-r0-preview-probe.mjs');
 const traceIndex = calibrationChamber.indexOf('node scripts/ash-a15-transition-trace-browser-probe.mjs');
@@ -34,14 +43,17 @@ assert.equal(inheritedChamber.includes('node scripts/ash-a15-r0-preview-probe.mj
 assert.equal(inheritedChamber.includes('node scripts/ash-a15-transition-trace-browser-probe.mjs'), false, 'Inherited witness must not own transition-trace evidence acquisition.');
 assert.match(calibrationChamber, /all_engines_observed:true/);
 assert.match(calibrationChamber, /independent_from_inherited_a15:true/);
+assert.match(calibrationChamber, /independent_from_prior_ash_promotion_gates:true/);
 assert.match(calibrationChamber, /promotion_authority:false/);
 
 console.log(JSON.stringify({
-  contract:'td613.ash.a15-transition-trace-contract/v0.2-witness-dag',
+  contract:'td613.ash.a15-transition-trace-contract/v0.3-measurement-before-gating',
   a15_r0_evidence_independent_of_inherited_a15:true,
   transition_trace_independent_of_inherited_a15:true,
+  a15_r0_evidence_independent_of_prior_ash_promotion_gates:true,
   inherited_a15_retains_promotion_veto:true,
   execution_order_is_not_epistemic_authority:true,
+  measurement_dependencies_are_runtime_dependencies_only:true,
   observation_window_is_quiescence_proof:false,
   timing_patch_authorized:false
 }, null, 2));
