@@ -10,6 +10,10 @@ import {
   runBooleanSynergyCensus
 } from '../app/dome-world/previews/a15-r0/boolean-synergy-census.js';
 import {
+  FISHER_SYNERGY_NON_EQUIVALENCE_SCHEMA,
+  runFisherSynergyNonEquivalence
+} from '../app/dome-world/previews/a15-r0/fisher-synergy-non-equivalence.js';
+import {
   GOLDEN_EGG_FEASIBLE_REGION_SCHEMA,
   buildGoldenEggFeasibleRegion
 } from '../app/dome-world/previews/a15-r0/golden-egg-feasible-region.js';
@@ -43,6 +47,7 @@ const html = fs.readFileSync('app/dome-world/previews/a15-r0/index.html', 'utf8'
 const modelSource = fs.readFileSync('app/dome-world/previews/a15-r0/open-research-field.js', 'utf8');
 const envelopeSource = fs.readFileSync('app/dome-world/previews/a15-r0/bounded-transformation-envelope.js', 'utf8');
 const booleanSource = fs.readFileSync('app/dome-world/previews/a15-r0/boolean-synergy-census.js', 'utf8');
+const fisherSource = fs.readFileSync('app/dome-world/previews/a15-r0/fisher-synergy-non-equivalence.js', 'utf8');
 const goldenSource = fs.readFileSync('app/dome-world/previews/a15-r0/golden-egg-feasible-region.js', 'utf8');
 const geometrySource = fs.readFileSync('app/dome-world/previews/a15-r0/information-geometry-calibration.js', 'utf8');
 const hypothesisSource = fs.readFileSync('app/dome-world/previews/a15-r0/open-research-hypothesis-registry.js', 'utf8');
@@ -58,6 +63,7 @@ assert.equal(envelopeSchema.$id, BOUNDED_TRANSFORMATION_ENVELOPE_SCHEMA);
 assert.equal(OPEN_RESEARCH_HYPOTHESIS_REGISTRY_SCHEMA, 'td613.ash.a15-r0.open-research-hypothesis-registry/v0.1');
 assert.equal(hypothesisSchema.$id, OPEN_RESEARCH_HYPOTHESIS_REGISTRY_SCHEMA);
 assert.equal(BOOLEAN_SYNERGY_CENSUS_SCHEMA, 'td613.ash.a15-r0.boolean-synergy-census/v0.1');
+assert.equal(FISHER_SYNERGY_NON_EQUIVALENCE_SCHEMA, 'td613.ash.a15-r0.fisher-synergy-non-equivalence/v0.1');
 assert.equal(GOLDEN_EGG_FEASIBLE_REGION_SCHEMA, 'td613.ash.a15-r0.golden-egg-feasible-region/v0.1');
 assert.equal(INFORMATION_GEOMETRY_CALIBRATION_SCHEMA, 'td613.ash.a15-r0.information-geometry-calibration/v0.1');
 assert.ok(hypothesisSchema.required.includes('bounded_support'));
@@ -139,6 +145,20 @@ assert.equal(geometry.joining_synergy_has_declared_manifold_metric, false);
 assert.equal(geometry.joining_synergy_has_declared_connection, false);
 assert.equal(geometry.joining_synergy_intrinsic_curvature_claim_supported, false);
 assert.match(geometry.finding, /does not supply a manifold/i);
+
+const fisherSynergy = runFisherSynergyNonEquivalence();
+assert.equal(fisherSynergy.categorical_joint_state_count, 8);
+assert.equal(fisherSynergy.simplex_dimension, 7);
+assert.equal(fisherSynergy.ambient_fisher_rao_scalar_curvature, 10.5);
+assert.equal(fisherSynergy.noisy_xor.minimum_joint_state_probability, 0.025);
+assert.equal(fisherSynergy.noisy_and.minimum_joint_state_probability, 0.025);
+assert.equal(fisherSynergy.noisy_xor.joining_synergy_proxy_bits, 0.531004);
+assert.equal(fisherSynergy.noisy_and.joining_synergy_proxy_bits, 0.118709);
+assert.equal(fisherSynergy.joining_synergy_difference_bits, 0.412295);
+assert.equal(fisherSynergy.same_ambient_scalar_curvature, true);
+assert.equal(fisherSynergy.different_joining_synergy, true);
+assert.equal(fisherSynergy.synergy_equals_ambient_fisher_scalar_curvature, false);
+assert.equal(fisherSynergy.submanifold_or_extrinsic_geometry_ruled_out, false);
 
 const baseline = reconstructTopology(RECONSTRUCTION_FRAGMENTS);
 assert.equal(topologySimilarity(baseline), 1);
@@ -228,11 +248,11 @@ assert.equal(feasibleRegion.promotion_authority, false);
 assert.ok(feasibleRegion.feasible_candidate_ids.every(id => id.startsWith('NULL_CONTENT::')));
 assert.throws(() => buildGoldenEggFeasibleRegion({ field, booleanCensus, reconstruction_distance: -1 }), /finite non-negative/);
 
-const hypothesisRegistry = buildOpenResearchHypothesisRegistry({ field, envelope, booleanCensus, geometry, feasibleRegion });
+const hypothesisRegistry = buildOpenResearchHypothesisRegistry({ field, envelope, booleanCensus, geometry, fisherSynergy, feasibleRegion });
 const hypotheses = Object.fromEntries(hypothesisRegistry.hypotheses.map(item => [item.hypothesis_id, item]));
 assert.equal(hypothesisRegistry.schema, OPEN_RESEARCH_HYPOTHESIS_REGISTRY_SCHEMA);
-assert.equal(hypothesisRegistry.hypotheses.length, 8);
-assert.equal(hypothesisRegistry.closed_by_counterexample.length, 4);
+assert.equal(hypothesisRegistry.hypotheses.length, 9);
+assert.equal(hypothesisRegistry.closed_by_counterexample.length, 5);
 assert.equal(hypothesisRegistry.bounded_support.length, 3);
 assert.equal(hypothesisRegistry.research_frontier.length, 1);
 assert.equal(hypothesisRegistry.sequence_authority, false);
@@ -245,12 +265,15 @@ assert.equal(hypotheses.H_OBSERVER_INVARIANT_NULL.status, 'FALSIFIED_IN_SYNTHETI
 assert.equal(hypotheses.H_RANK_ORDERS_LEAKAGE.status, 'FALSIFIED_IN_SYNTHETIC_FIELD');
 assert.equal(hypotheses.H_MARGINAL_SAFETY_IMPLIES_JOINT_SAFETY.status, 'FALSIFIED_IN_SYNTHETIC_FIELD');
 assert.equal(hypotheses.H_MEAN_ARI_SUFFICIENT.status, 'FALSIFIED_IN_SYNTHETIC_FIELD');
+assert.equal(hypotheses.H_SYNERGY_EQUALS_AMBIENT_FISHER_CURVATURE.status, 'FALSIFIED_IN_SYNTHETIC_FIELD');
+assert.equal(hypotheses.H_SYNERGY_EQUALS_AMBIENT_FISHER_CURVATURE.evidence.ambient_scalar_curvature, 10.5);
 assert.equal(hypotheses.H_BOUNDED_ENVELOPE_PREVENTS_SELF_PROMOTION.status, 'SUPPORTED_BY_SYNTHETIC_CONTRACT');
 assert.equal(hypotheses.H_JOINING_SYNERGY_GENERALIZES.status, 'SUPPORTED_IN_BOUNDED_SYNTHETIC_FAMILY');
 assert.equal(hypotheses.H_JOINING_SYNERGY_GENERALIZES.evidence.positive_held_out_non_parity_count, 8);
 assert.equal(hypotheses.H_INFORMATION_CURVATURE_GEOMETRIC.status, 'OPEN_RESEARCH_PROGRAM');
 assert.equal(hypotheses.H_INFORMATION_CURVATURE_GEOMETRIC.evidence.fisher_rao_positive_control_scalar_curvature, 0.5);
 assert.equal(hypotheses.H_INFORMATION_CURVATURE_GEOMETRIC.evidence.intrinsic_curvature_claim_supported, false);
+assert.equal(hypotheses.H_INFORMATION_CURVATURE_GEOMETRIC.evidence.ambient_fisher_identification_falsified, true);
 assert.equal(hypotheses.H_GOLDEN_EGG_BOUNDED_REGION.status, 'SUPPORTED_IN_BOUNDED_SYNTHETIC_FAMILY');
 assert.equal(hypotheses.H_GOLDEN_EGG_BOUNDED_REGION.evidence.formal_candidate_count, 320);
 assert.equal(hypotheses.H_GOLDEN_EGG_BOUNDED_REGION.evidence.joint_realizability, 'UNMEASURED');
@@ -281,13 +304,13 @@ for (const marker of [
 
 assert.match(html, /open-research-field\.css/);
 assert.match(html, /open-research-field-ui\.js/);
-for (const source of [modelSource, envelopeSource, booleanSource, goldenSource, geometrySource, hypothesisSource, uiSource]) {
+for (const source of [modelSource, envelopeSource, booleanSource, fisherSource, goldenSource, geometrySource, hypothesisSource, uiSource]) {
   assert.doesNotMatch(source, /fetch\s*\(|XMLHttpRequest|sendBeacon|WebSocket|EventSource|indexedDB|localStorage|sessionStorage|serviceWorker|caches\./);
 }
 
 console.log(JSON.stringify({
   ok: true,
-  schema: 'td613.ash.a15-r0.open-research-field-test/v0.6',
+  schema: 'td613.ash.a15-r0.open-research-field-test/v0.7',
   observability_models: observability.models.length,
   null_content_bits: byId.NULL_CONTENT.mutual_information_bits,
   null_side_channel_bits: byId.NULL_WITH_SIDE_CHANNEL.mutual_information_bits,
@@ -298,6 +321,9 @@ console.log(JSON.stringify({
   boolean_functions_exhausted: booleanCensus.function_count,
   positive_held_out_boolean_functions: booleanCensus.positive_held_out_non_parity_count,
   fisher_rao_scalar_curvature_control: geometry.analytic_scalar_curvature,
+  ambient_fisher_joint_scalar_curvature: fisherSynergy.ambient_fisher_rao_scalar_curvature,
+  noisy_xor_synergy_bits: fisherSynergy.noisy_xor.joining_synergy_proxy_bits,
+  noisy_and_synergy_bits: fisherSynergy.noisy_and.joining_synergy_proxy_bits,
   synergy_intrinsic_curvature_promoted: geometry.joining_synergy_intrinsic_curvature_claim_supported,
   formal_golden_egg_candidates: feasibleRegion.formal_candidate_count,
   feasible_formal_candidates: feasibleRegion.feasible_candidate_count,
