@@ -169,7 +169,8 @@ assert.match(a14Observer, /const normalizedDocket = result\.docket_text\.toLower
 assert.match(a14Observer, /const authoritySequence = \['claim ceiling','no ownership','authenticity','access grant','release','declassification','publication','transfer authority'\]/);
 assert.doesNotMatch(a14Observer, /'no access grant'/);
 assert.match(a14Observer, /v0\.6-a15-registry-current/);
-assert.match(a15Observer, /matrix_cells:120/);
+assert.match(a15Observer, /matrix_cells:snapshot\.empirical_matrix_cells/);
+assert.match(a15Observer, /result\.matrix_cells !== 120/);
 assert.match(a15Observer, /HELD_SENSITIVE_CONTEXT/);
 assert.match(readinessPreparer, /v0\.3-read-only-exact-head/);
 assert.match(readinessPreparer, /legacy_fixture_rewriter_invoked:false/);
@@ -188,12 +189,14 @@ assert.equal(vercel.git?.deploymentEnabled, false);
 
 console.log(JSON.stringify({
   ok:true,
-  schema:'td613.ash.a14-harbor-memory-archive-contract/v1.0-composed-settled-a12-observer',
+  schema:'td613.ash.a14-harbor-memory-archive-contract/v1.1-a15-matrix-provenance',
   registry_version:ASH_DEMO_REGISTRY_VERSION,
   ordinary_asset_epoch:ASH_DEMO_ASSET_EPOCH,
   archive_fixture:fixture.demo_id,
   promoted_profiles:6,
   empirical_matrix_cells:120,
+  a15_matrix_cells_registry_derived:true,
+  a15_matrix_cells_runtime_enforced:true,
   required_mixed_media_nodes:requiredNodes.length,
   required_lineage_and_hold_relations:requiredRelations.length,
   case_map_verified:true,

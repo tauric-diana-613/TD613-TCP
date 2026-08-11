@@ -209,13 +209,13 @@ jobs:
           for browser in chromium firefox webkit; do
             export TD613_BROWSER="$browser"
             export TD613_BASE_URL='http://127.0.0.1:6130'
-            TD613_ARTIFACT_DIR="artifacts/ash-a15-r0-$browser" timeout --foreground --signal=INT --kill-after=15s 360s node scripts/ash-a15-r0-preview-probe.mjs
+            TD613_ARTIFACT_DIR="artifacts/ash-a15-r0-$browser" timeout --signal=INT --kill-after=15s 360s node scripts/ash-a15-r0-preview-probe.mjs
             status=$?
             if [ "$status" -ne 0 ]; then
               printf '%s\tA15_R0_PREVIEW\t%s\n' "$browser" "$status" >> artifacts/ash-a15-calibration/failures.tsv
               failures=1
             fi
-            TD613_ARTIFACT_DIR="artifacts/ash-a15-transition-trace-$browser" timeout --foreground --signal=INT --kill-after=15s 420s node scripts/ash-a15-transition-trace-browser-probe.mjs
+            TD613_ARTIFACT_DIR="artifacts/ash-a15-transition-trace-$browser" timeout --signal=INT --kill-after=15s 420s node scripts/ash-a15-transition-trace-browser-probe.mjs
             status=$?
             if [ "$status" -ne 0 ]; then
               printf '%s\tA15_TRANSITION_TRACE\t%s\n' "$browser" "$status" >> artifacts/ash-a15-calibration/failures.tsv
@@ -306,16 +306,16 @@ jobs:
           for browser in chromium firefox webkit; do
             export TD613_BROWSER="$browser"
             export TD613_BASE_URL='http://127.0.0.1:6130'
-            TD613_ARTIFACT_DIR="artifacts/ash-a2-a5-$browser" timeout --foreground --signal=INT --kill-after=15s 540s node scripts/ash-a2-a5-browser-probe.mjs
-            TD613_ASH_STAGES='A7,A8,A9,A10,A11' TD613_ARTIFACT_DIR="artifacts/ash-a7-a11-$browser" timeout --foreground --signal=INT --kill-after=15s 540s node scripts/ash-a7-a11-browser-probe.mjs
-            TD613_ARTIFACT_DIR="artifacts/ash-a12-$browser" timeout --foreground --signal=INT --kill-after=15s 420s node scripts/ash-a12-browser-probe.mjs
-            TD613_ARTIFACT_DIR="artifacts/ash-a13-$browser" timeout --foreground --signal=INT --kill-after=15s 480s node scripts/ash-a13-demo-registry-browser-probe.mjs
-            TD613_ARTIFACT_DIR="artifacts/ash-a14-$browser" timeout --foreground --signal=INT --kill-after=15s 480s node scripts/ash-a14-archive-browser-probe.mjs
-            TD613_ARTIFACT_DIR="artifacts/ash-a15-$browser" timeout --foreground --signal=INT --kill-after=15s 900s node scripts/ash-a15-empirical-profile-journeys-browser-probe.mjs
-            TD613_ARTIFACT_DIR="artifacts/ash-flowcore-$browser" timeout --foreground --signal=INT --kill-after=15s 480s node scripts/run-ash-flowcore-live-field-browser-probe.mjs
-            TD613_ARTIFACT_DIR="artifacts/ash-ingress-$browser" timeout --foreground --signal=INT --kill-after=15s 360s node scripts/ash-ingress-polish-browser-probe.mjs
-            TD613_ARTIFACT_DIR="artifacts/ash-reviewability-$browser" timeout --foreground --signal=INT --kill-after=15s 420s node scripts/ash-reviewability-browser-probe.mjs
-            TD613_ARTIFACT_DIR="artifacts/ash-research-$browser" timeout --foreground --signal=INT --kill-after=15s 480s node scripts/ash-research-ux-browser-probe.mjs
+            TD613_ARTIFACT_DIR="artifacts/ash-a2-a5-$browser" timeout --signal=INT --kill-after=15s 540s node scripts/ash-a2-a5-browser-probe.mjs
+            TD613_ASH_STAGES='A7,A8,A9,A10,A11' TD613_ARTIFACT_DIR="artifacts/ash-a7-a11-$browser" timeout --signal=INT --kill-after=15s 540s node scripts/ash-a7-a11-browser-probe.mjs
+            TD613_ARTIFACT_DIR="artifacts/ash-a12-$browser" timeout --signal=INT --kill-after=15s 420s node scripts/ash-a12-browser-probe.mjs
+            TD613_ARTIFACT_DIR="artifacts/ash-a13-$browser" timeout --signal=INT --kill-after=15s 480s node scripts/ash-a13-demo-registry-browser-probe.mjs
+            TD613_ARTIFACT_DIR="artifacts/ash-a14-$browser" timeout --signal=INT --kill-after=15s 480s node scripts/ash-a14-archive-browser-probe.mjs
+            TD613_ARTIFACT_DIR="artifacts/ash-a15-$browser" timeout --signal=INT --kill-after=15s 900s node scripts/ash-a15-empirical-profile-journeys-browser-probe.mjs
+            TD613_ARTIFACT_DIR="artifacts/ash-flowcore-$browser" timeout --signal=INT --kill-after=15s 480s node scripts/run-ash-flowcore-live-field-browser-probe.mjs
+            TD613_ARTIFACT_DIR="artifacts/ash-ingress-$browser" timeout --signal=INT --kill-after=15s 360s node scripts/ash-ingress-polish-browser-probe.mjs
+            TD613_ARTIFACT_DIR="artifacts/ash-reviewability-$browser" timeout --signal=INT --kill-after=15s 420s node scripts/ash-reviewability-browser-probe.mjs
+            TD613_ARTIFACT_DIR="artifacts/ash-research-$browser" timeout --signal=INT --kill-after=15s 480s node scripts/ash-research-ux-browser-probe.mjs
           done
       - name: Run complete Flow-Core runtime evidence through the same browser installation
         env:

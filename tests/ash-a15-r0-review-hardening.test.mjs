@@ -2,6 +2,7 @@ import assert from 'node:assert/strict';
 import fs from 'node:fs';
 import { createAshKernelAdapter } from '../app/dome-world/previews/a15-r0/ash-kernel-adapter.js';
 import { validateGovernedTaskFixture } from '../app/dome-world/previews/a15-r0/a15-r0-contracts.js';
+import { createObservableEventRecorder } from '../app/dome-world/previews/a15-r0/observable-event-recorder.js';
 import { runBooleanMobiusInteractionAssay } from '../app/dome-world/previews/a15-r0/boolean-mobius-interaction.js';
 import {
   OBSERVABILITY_MODELS,
@@ -14,6 +15,21 @@ import {
 import { runBoundedTransformationEnvelope } from '../app/dome-world/previews/a15-r0/bounded-transformation-envelope.js';
 
 const fixture = JSON.parse(fs.readFileSync('app/dome-world/fixtures/a15-r0/governed-task-fixture-v01.json', 'utf8'));
+const consolidatedWorkflow = fs.readFileSync('.github/workflows/td613-ci.yml', 'utf8');
+const completeAshWitnessChamber = consolidatedWorkflow.match(
+  /- name: Run the complete Ash witness through each installed engine[\s\S]*?- name: Run complete Flow-Core runtime evidence through the same browser installation/
+)?.[0] || '';
+assert.ok(completeAshWitnessChamber, 'The complete inherited Ash browser chamber must remain discoverable.');
+assert.doesNotMatch(
+  completeAshWitnessChamber,
+  /timeout --foreground/,
+  'Canonical inherited Ash browser probes must remain in timeout-owned process groups so Playwright descendants are killable with the probe.'
+);
+assert.match(
+  consolidatedWorkflow,
+  /Run changed-risk lifecycle closure preflight[\s\S]*timeout --foreground --signal=INT --kill-after=15s 420s node scripts\/run-ash-keep-a1-production-probe\.mjs/,
+  'The lifecycle closure preflight keeps its constitutionally declared foreground timeout topology.'
+);
 
 for (const requiredField of ['action_times', 'route_observations']) {
   const incomplete = structuredClone(fixture);
@@ -24,6 +40,38 @@ for (const requiredField of ['action_times', 'route_observations']) {
     `Fixture validation must reject a missing ${requiredField} before adapter initialization.`
   );
 }
+
+const topLevelExtra = structuredClone(fixture);
+topLevelExtra.unregistered_surface = false;
+assert.throws(() => validateGovernedTaskFixture(topLevelExtra), /unregistered_surface is undeclared/i);
+
+const namespaceExtra = structuredClone(fixture);
+namespaceExtra.namespace.alias = 'flattened';
+assert.throws(() => validateGovernedTaskFixture(namespaceExtra), /namespace\.alias is undeclared/i);
+
+const localSourceExtra = structuredClone(fixture);
+localSourceExtra.local_source.remote_hint = false;
+assert.throws(() => validateGovernedTaskFixture(localSourceExtra), /local_source\.remote_hint is undeclared/i);
+
+const invalidFixturePrefix = structuredClone(fixture);
+invalidFixturePrefix.fixture_id = 'fixture_a15r0_wrong';
+assert.throws(() => validateGovernedTaskFixture(invalidFixturePrefix), /Fixture ID has an invalid namespace prefix/i);
+
+const invalidCasePrefix = structuredClone(fixture);
+invalidCasePrefix.case_id = 'a15r0_case_wrong';
+assert.throws(() => validateGovernedTaskFixture(invalidCasePrefix), /Case ID has an invalid namespace prefix/i);
+
+const invalidTimestamp = structuredClone(fixture);
+invalidTimestamp.created_at = '2026-08-11';
+assert.throws(() => validateGovernedTaskFixture(invalidTimestamp), /RFC 3339 date-time/i);
+
+const invalidActionTimestamp = structuredClone(fixture);
+invalidActionTimestamp.action_times.RESET = 'Aug 11 2026';
+assert.throws(() => validateGovernedTaskFixture(invalidActionTimestamp), /RFC 3339 date-time/i);
+
+const nonFiniteFixture = structuredClone(fixture);
+nonFiniteFixture.question.score = Number.POSITIVE_INFINITY;
+assert.throws(() => validateGovernedTaskFixture(nonFiniteFixture), /numbers must be finite/i);
 
 const missingAdapterRoom = structuredClone(fixture);
 missingAdapterRoom.rooms = missingAdapterRoom.rooms.filter(room => room.id !== 'room_source');
@@ -87,11 +135,18 @@ const immutableAdapter = await createAshKernelAdapter(fixture);
 assert.equal(Object.isFrozen(immutableAdapter.fixture), true);
 assert.equal(Object.isFrozen(immutableAdapter.fixture.route_observations), true);
 assert.equal(Object.isFrozen(immutableAdapter.fixture.route_observations.route_a.proposed_references), true);
+const originalFixtureReference = immutableAdapter.fixture;
 const originalReference = immutableAdapter.fixture.route_observations.route_a.proposed_references[0];
+assert.throws(() => {
+  immutableAdapter.fixture = null;
+}, TypeError);
+assert.equal(immutableAdapter.fixture, originalFixtureReference, 'The public fixture surface must be read-only.');
 assert.throws(() => {
   immutableAdapter.fixture.route_observations.route_a.proposed_references[0] = 'mutated_reference';
 }, TypeError);
 assert.equal(immutableAdapter.fixture.route_observations.route_a.proposed_references[0], originalReference);
+assert.equal(typeof immutableAdapter.initializeState, 'undefined', 'Legacy initialization must not be publicly callable.');
+assert.equal(typeof immutableAdapter.buildInitialState, 'undefined', 'Replacement state construction must not leak onto the adapter surface.');
 
 const serializedAdapter = await createAshKernelAdapter(fixture);
 const concurrent = await Promise.all([
@@ -103,6 +158,15 @@ const serializedSnapshot = await serializedAdapter.snapshot();
 assert.equal(serializedSnapshot.task_state, 'BIND_REFERENCE');
 assert.equal(serializedSnapshot.case_map.nodes.filter(node => node.id === fixture.local_source.reference_id).length, 1);
 assert.equal(serializedSnapshot.case_map.relationships.filter(relation => relation.id === 'relation_reference_attached').length, 1);
+
+const monotonicResetAdapter = await createAshKernelAdapter(fixture);
+const firstBind = await monotonicResetAdapter.bindReference();
+const firstReset = await monotonicResetAdapter.resetFixture();
+const secondReset = await monotonicResetAdapter.resetFixture();
+assert.match(firstBind.receipt_id, /_001_bind_reference$/);
+assert.match(firstReset.receipt_id, /_002_reset$/);
+assert.match(secondReset.receipt_id, /_003_reset$/);
+assert.notEqual(firstReset.receipt_id, secondReset.receipt_id, 'Reset receipts must never reuse sequence identity within one adapter lifetime.');
 
 const receiptAtomicAdapter = await createAshKernelAdapter(fixture);
 const beforeReceiptFailure = await receiptAtomicAdapter.snapshot();
@@ -125,6 +189,61 @@ receiptAtomicAdapter.cryptoImpl = workingCrypto;
 const recoveredReceipt = await receiptAtomicAdapter.bindReference();
 assert.equal(recoveredReceipt.status, 'OPEN');
 assert.match(recoveredReceipt.receipt_id, /_001_bind_reference$/);
+
+const recorder = createObservableEventRecorder();
+await assert.rejects(() => recorder.record({}), /actionId is required/i);
+await assert.rejects(() => recorder.record({ actionId:'ARRIVE' }), /kernelReceiptId is required/i);
+await assert.rejects(() => recorder.record({ actionId:'ARRIVE', kernelReceiptId:'receipt' }), /worldAnswerId is required/i);
+await assert.rejects(() => recorder.record({
+  actionId:'ARRIVE',
+  kernelReceiptId:'receipt',
+  worldAnswerId:'world',
+  actionToConsequenceDistance:-1
+}), /non-negative safe integer/i);
+
+let releaseFirstDigest;
+const firstDigestGate = new Promise(resolve => { releaseFirstDigest = resolve; });
+let releaseSecondDigest;
+const secondDigestGate = new Promise(resolve => { releaseSecondDigest = resolve; });
+let digestCall = 0;
+const orderedRecorder = createObservableEventRecorder({
+  cryptoImpl:{ subtle:{ digest: async () => {
+    digestCall += 1;
+    if (digestCall === 1) await firstDigestGate;
+    else if (digestCall === 2) await secondDigestGate;
+    return new Uint8Array([digestCall]).buffer;
+  } } }
+});
+const orderedInput = n => ({
+  taskStateBefore:'ARRIVE',
+  controlId:`control_${n}`,
+  actionId:`ACTION_${n}`,
+  kernelReceiptId:`receipt_${n}`,
+  worldAnswerId:`world_${n}`
+});
+const firstPending = orderedRecorder.record(orderedInput(1));
+const secondPending = orderedRecorder.record(orderedInput(2));
+releaseSecondDigest();
+await Promise.resolve();
+assert.equal(orderedRecorder.snapshot().length, 0, 'Later digest completion may not commit ahead of an earlier event ID.');
+releaseFirstDigest();
+const orderedResults = await Promise.all([firstPending, secondPending]);
+assert.deepEqual(orderedResults.map(record => record.event_id), ['a15r0_event_001', 'a15r0_event_002']);
+assert.deepEqual(orderedRecorder.snapshot().map(record => record.event_id), ['a15r0_event_001', 'a15r0_event_002']);
+
+let releaseResetDigest;
+const resetDigestGate = new Promise(resolve => { releaseResetDigest = resolve; });
+const resetRaceRecorder = createObservableEventRecorder({
+  cryptoImpl:{ subtle:{ digest: async () => {
+    await resetDigestGate;
+    return new Uint8Array([9]).buffer;
+  } } }
+});
+const stalePending = resetRaceRecorder.record(orderedInput(9));
+assert.equal(resetRaceRecorder.reset(), true);
+releaseResetDigest();
+await stalePending;
+assert.deepEqual(resetRaceRecorder.snapshot(), [], 'A record begun before reset may not resurrect after the reset generation advances.');
 
 const disposedAdapter = await createAshKernelAdapter(fixture);
 const disposal = await disposedAdapter.dispose();
@@ -177,8 +296,12 @@ assert.equal(mobius.curvature_tensor_declared, false);
 assert.equal(mobius.intrinsic_geometric_curvature_claim, false);
 
 console.log(JSON.stringify({
-  contract:'td613.ash.a15-r0.review-hardening/v0.3-review-round-two',
+  contract:'td613.ash.a15-r0.review-hardening/v0.5-private-initializer-timeout-law',
   incomplete_fixture_rejected:true,
+  schema_closed_records_enforced:true,
+  fixture_and_case_prefixes_enforced:true,
+  rfc3339_timestamps_enforced:true,
+  json_numbers_finite:true,
   adapter_required_rooms_enforced:true,
   route_rules_enforced_before_adapter_initialization:true,
   fixture_authority_keys_closed:true,
@@ -188,8 +311,18 @@ console.log(JSON.stringify({
   matrix_rank_numeric_domain_checked:true,
   reconstruction_parameters_bounded:true,
   adapter_fixture_deep_frozen:true,
+  adapter_fixture_property_read_only:true,
+  adapter_initialization_private:true,
+  adapter_replacement_initializer_absent:true,
   transitions_serialized:true,
+  reset_receipt_identity_monotonic:true,
   receipt_seal_atomic_with_state:true,
+  recorder_required_ids_checked_before_coercion:true,
+  recorder_distance_domain_checked:true,
+  recorder_commit_order_serialized:true,
+  recorder_reset_generation_barrier:true,
+  inherited_ash_probe_process_groups_killable:true,
+  lifecycle_closure_foreground_law_preserved:true,
   disposed_adapter_terminal:true,
   disposed_fixture_reference_released:true,
   envelope_finding_state_derived:true,

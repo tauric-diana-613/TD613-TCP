@@ -19,7 +19,13 @@ assert.match(probe, /route_side_effects_bounded_after_before_route_marker:true/)
 assert.match(probe, /record\.sequence > \(beforeRoute\?\.sequence \|\| 0\)/);
 assert.match(probe, /route_control_owner_observed_at_click:true/);
 assert.match(probe, /route_click_capture_and_bubble_instrumented:true/);
-assert.match(probe, /route_click_capture_and_bubble_observed:pointerDeliveryHolds\.length === 0/);
+assert.match(probe, /function observedClickPhases\(cell\)/);
+assert.match(probe, /records\.some\(record => record\.kind === 'ROUTE_CLICK_CAPTURE'\)/);
+assert.match(probe, /records\.some\(record => record\.kind === 'ROUTE_CLICK_BUBBLE'\)/);
+assert.match(probe, /routeClickCaptureAndBubbleObserved = cells\.length > 0 && cells\.every\(observedClickPhases\)/);
+assert.match(probe, /route_click_capture_and_bubble_observed:routeClickCaptureAndBubbleObserved/);
+assert.doesNotMatch(probe, /route_click_capture_and_bubble_observed:pointerDeliveryHolds\.length === 0/,
+  'Route click phase claims must be derived from trace records, not from the absence of pointer holds.');
 assert.match(probe, /live_aia_direct_onclick:typeof node\.onclick === 'function'/);
 assert.match(probe, /ROUTE_CONTROL_BEFORE_CLICK/);
 assert.match(probe, /ROUTE_CLICK_\$\{phase\}/);
@@ -50,6 +56,8 @@ assert.match(probe, /trace_records/);
 
 assert.match(inheritedProbe, /td613:ash:demo-registry-hydrated/);
 assert.match(inheritedProbe, /__td613A15HydrationWitness/);
+assert.match(inheritedProbe, /capture\.receipt\?\.automatic_ash_action === false/,
+  'Canonical A15 must reject hydration receipts that widen automatic Ash authority.');
 assert.match(inheritedProbe, /profile_hydration_completion_boundary:HYDRATION_EVENT/);
 assert.match(inheritedProbe, /profile_hydration_receipt_required:true/);
 assert.match(inheritedProbe, /browser_process_isolation_per_profile:true/);
@@ -89,19 +97,36 @@ const calibrationMarker = '- name: Calibrate A15-R0 and transition ordering acro
 const riskMarker = '- name: Aggregate changed-risk A8 and A12 entry witnesses across every engine';
 const lifecycleMarker = '- name: Run changed-risk lifecycle closure preflight';
 const inheritedMarker = '- name: Run the complete Ash witness through each installed engine';
+const flowcoreMarker = '- name: Run complete Flow-Core runtime evidence through the same browser installation';
 const runtimeStart = workflow.indexOf(runtimeMarker);
 const calibrationStart = workflow.indexOf(calibrationMarker);
 const riskStart = workflow.indexOf(riskMarker);
 const lifecycleStart = workflow.indexOf(lifecycleMarker);
 const inheritedStart = workflow.indexOf(inheritedMarker);
+const flowcoreStart = workflow.indexOf(flowcoreMarker);
 assert.ok(runtimeStart >= 0, 'Bounded runtime must remain present.');
 assert.ok(calibrationStart > runtimeStart, 'A15 calibration may depend on runtime readiness only.');
 assert.ok(riskStart > calibrationStart, 'A8/A12 promotion preflight must not erase A15-R0 measurement.');
 assert.ok(lifecycleStart > calibrationStart, 'Lifecycle promotion preflight must not erase A15-R0 measurement.');
 assert.ok(inheritedStart > calibrationStart, 'Inherited Ash witness must follow the independent calibration prepass.');
+assert.ok(flowcoreStart > inheritedStart, 'The inherited Ash browser chamber must have a bounded end marker.');
 
 const calibrationChamber = workflow.slice(calibrationStart, Math.min(riskStart, lifecycleStart, inheritedStart));
-const inheritedChamber = workflow.slice(inheritedStart);
+const inheritedChamber = workflow.slice(inheritedStart, flowcoreStart);
+const lifecycleChamber = workflow.slice(lifecycleStart, inheritedStart);
+assert.doesNotMatch(calibrationChamber, /timeout\s+--foreground\b/,
+  'A15-R0 calibration Playwright probes must keep browser descendants in the timeout process group.');
+assert.match(calibrationChamber, /timeout --signal=INT --kill-after=15s 360s node scripts\/ash-a15-r0-preview-probe\.mjs/,
+  'A15-R0 preview keeps its 360-second budget while using process-group timeout containment.');
+assert.match(calibrationChamber, /timeout --signal=INT --kill-after=15s 420s node scripts\/ash-a15-transition-trace-browser-probe\.mjs/,
+  'A15 transition trace keeps its 420-second budget while using process-group timeout containment.');
+assert.doesNotMatch(inheritedChamber, /timeout\s+--foreground\b/,
+  'Canonical inherited Ash Playwright probes must keep browser descendants in the timeout process group.');
+assert.match(inheritedChamber, /timeout --signal=INT --kill-after=15s 420s node scripts\/ash-a12-browser-probe\.mjs/,
+  'Canonical A12 retains its 420-second budget while using process-group timeout containment.');
+assert.match(lifecycleChamber, /timeout --foreground --signal=INT --kill-after=15s 420s node scripts\/run-ash-keep-a1-production-probe\.mjs/,
+  'Lifecycle closure preflight retains its constitutionally declared foreground timeout law.');
+
 const r0Index = calibrationChamber.indexOf('node scripts/ash-a15-r0-preview-probe.mjs');
 const traceIndex = calibrationChamber.indexOf('node scripts/ash-a15-transition-trace-browser-probe.mjs');
 const a15Index = inheritedChamber.indexOf('node scripts/ash-a15-empirical-profile-journeys-browser-probe.mjs');
@@ -119,15 +144,17 @@ assert.match(calibrationChamber, /independent_from_prior_ash_promotion_gates:tru
 assert.match(calibrationChamber, /promotion_authority:false/);
 
 console.log(JSON.stringify({
-  contract:'td613.ash.a15-transition-trace-contract/v0.11-semantic-keyboard-activation-diagnostic',
+  contract:'td613.ash.a15-transition-trace-contract/v0.13-scoped-process-group-containment',
   a15_r0_evidence_independent_of_inherited_a15:true,
   transition_trace_independent_of_inherited_a15:true,
   a15_r0_evidence_independent_of_prior_ash_promotion_gates:true,
   profile_hydration_boundary:'td613:ash:demo-registry-hydrated',
   profile_hydration_completion_required:true,
+  hydration_authority_must_remain_closed:true,
   route_side_effects_bounded_after_before_route_marker:true,
   route_control_owner_observed_at_click:true,
   route_click_capture_and_bubble_instrumented:true,
+  route_click_phase_claim_derived_from_trace_records:true,
   pointer_delivery_hold_classification_requires_owned_control_and_absent_dom_click:true,
   pointer_delivery_holds_are_promotion_veto:false,
   transition_probe_nonzero_reserved_for_fatal_observer_failures:true,
@@ -138,6 +165,10 @@ console.log(JSON.stringify({
   inherited_semantic_keyboard_keydown_keyup_and_click_diagnostic:true,
   inherited_semantic_keyboard_diagnostic_persisted_before_route_wait:true,
   inherited_semantic_route_witness_private_api_bypass_guard:true,
+  a15_calibration_timeout_process_group_containment:true,
+  inherited_ash_timeout_process_group_containment:true,
+  lifecycle_closure_foreground_law_preserved:true,
+  canonical_a12_timeout_budget_seconds:420,
   workspace_normalization_applied:false,
   failure_diagnostics_preserved:true,
   all_engines_observed_separate_from_all_seams_ok:true,
