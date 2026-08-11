@@ -83,7 +83,6 @@ export function createObservableEventRecorder({
     reset() {
       generation += 1;
       records.length = 0;
-      sequence = 0;
       return true;
     }
   });
