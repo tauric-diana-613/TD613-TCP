@@ -2,6 +2,9 @@ import * as core from './ash-demo-registry-core.js';
 
 export * from './ash-demo-registry-core.js';
 
+export const ASH_DEMO_REGISTRY_VERSION = 'td613.ash.demo-registry/v0.3-a15';
+export const ASH_DEMO_ASSET_EPOCH = '20260726-a15-empirical-v1';
+
 const host = globalThis.window;
 const doc = globalThis.document;
 
@@ -75,6 +78,10 @@ const REQUIRED_A15_EMPIRICAL_OWNER_MARKERS = Object.freeze([
 const coreSourceUrl = new URL('./ash-demo-registry-core.js', import.meta.url);
 
 async function assertPreservedRegistryCore() {
+  if (core.ASH_DEMO_REGISTRY_VERSION !== ASH_DEMO_REGISTRY_VERSION
+      || core.ASH_DEMO_ASSET_EPOCH !== ASH_DEMO_ASSET_EPOCH) {
+    throw new Error('Ash demo registry public provenance drifted from the preserved core.');
+  }
   if (typeof process === 'undefined' || !process.versions?.node) return true;
   const { readFile } = await import('node:fs/promises');
   const source = await readFile(coreSourceUrl, 'utf8');
