@@ -4,6 +4,7 @@ import fs from 'node:fs';
 const workflow = fs.readFileSync('.github/workflows/td613-ci.yml', 'utf8');
 const probe = fs.readFileSync('scripts/ash-a15-transition-trace-browser-probe.mjs', 'utf8');
 const inheritedProbe = fs.readFileSync('scripts/ash-a15-empirical-profile-journeys-browser-probe.mjs', 'utf8');
+const inheritedRouteProbe = fs.readFileSync('scripts/ash-a2-a5-browser-probe.mjs', 'utf8');
 
 assert.match(probe, /observation_window_is_quiescence_proof:false/);
 assert.match(probe, /universal_settlement_claim:false/);
@@ -17,7 +18,8 @@ assert.match(probe, /profile_hydration_completion_required:true/);
 assert.match(probe, /route_side_effects_bounded_after_before_route_marker:true/);
 assert.match(probe, /record\.sequence > \(beforeRoute\?\.sequence \|\| 0\)/);
 assert.match(probe, /route_control_owner_observed_at_click:true/);
-assert.match(probe, /route_click_capture_and_bubble_observed:true/);
+assert.match(probe, /route_click_capture_and_bubble_instrumented:true/);
+assert.match(probe, /route_click_capture_and_bubble_observed:pointerDeliveryHolds\.length === 0/);
 assert.match(probe, /live_aia_direct_onclick:typeof node\.onclick === 'function'/);
 assert.match(probe, /ROUTE_CONTROL_BEFORE_CLICK/);
 assert.match(probe, /ROUTE_CLICK_\$\{phase\}/);
@@ -25,6 +27,19 @@ assert.match(probe, /routeClick\('CAPTURE'\)/);
 assert.match(probe, /routeClick\('BUBBLE'\)/);
 assert.match(probe, /AFTER_ROUTE_CLICK_DISPATCH/);
 assert.match(probe, /lacks the Live-AIA direct owner/);
+assert.match(probe, /POINTER_DELIVERY_UNREGISTERED/);
+assert.match(probe, /classifyObserverFailure/);
+assert.match(probe, /beforeClick\?\.detail\?\.connected === true/);
+assert.match(probe, /beforeClick\?\.detail\?\.live_aia_direct_onclick === true/);
+assert.match(probe, /afterDispatch/);
+assert.match(probe, /!capture/);
+assert.match(probe, /!bubble/);
+assert.match(probe, /pointer_delivery_holds_are_promotion_veto:false/);
+assert.match(probe, /measurement_complete:cells\.length \+ pointerDeliveryHolds\.length \+ failures\.length === expectedCellCount/);
+assert.match(probe, /promotion_authority:false/);
+assert.match(probe, /if \(failures\.length > 0\) process\.exitCode = 1/);
+assert.doesNotMatch(probe, /if \(pointerDeliveryHolds\.length > 0\) process\.exitCode = 1/,
+  'Pointer-delivery observer holds must remain preserved evidence without becoming a promotion veto.');
 assert.match(probe, /LATE_WORKSPACE_SIDE_EFFECT_WITHIN_BOUNDED_HORIZON/);
 assert.match(probe, /COUPLED_WORKSPACE_SIDE_EFFECT_WITHIN_BOUNDED_HORIZON/);
 assert.match(probe, /workspace_normalization_applied:false/);
@@ -47,6 +62,16 @@ assert.doesNotMatch(
   inheritedProbe,
   /return \(Boolean\(current\?\.case_id\) && document\.documentElement\.dataset\.ashDemoProfile === selected\)/,
   'Canonical A15 must not infer profile hydration completion from case/profile visibility alone.'
+);
+
+assert.match(inheritedRouteProbe, /await button\.focus\(\)/);
+assert.match(inheritedRouteProbe, /await page\.keyboard\.press\('Enter'\)/);
+assert.match(inheritedRouteProbe, /control === document\.activeElement/);
+assert.match(inheritedRouteProbe, /typeof control\.onclick === 'function'/);
+assert.doesNotMatch(
+  inheritedRouteProbe,
+  /__td613AshLiveAIA\.setRoute\(/,
+  'Inherited semantic route witness must preserve the native Live-AIA button owner instead of calling the route API directly.'
 );
 
 const runtimeMarker = '- name: Start one bounded Ash and Dome-World runtime';
@@ -84,7 +109,7 @@ assert.match(calibrationChamber, /independent_from_prior_ash_promotion_gates:tru
 assert.match(calibrationChamber, /promotion_authority:false/);
 
 console.log(JSON.stringify({
-  contract:'td613.ash.a15-transition-trace-contract/v0.8-route-owner-microscope',
+  contract:'td613.ash.a15-transition-trace-contract/v0.9-pointer-transport-hold-separation',
   a15_r0_evidence_independent_of_inherited_a15:true,
   transition_trace_independent_of_inherited_a15:true,
   a15_r0_evidence_independent_of_prior_ash_promotion_gates:true,
@@ -92,10 +117,15 @@ console.log(JSON.stringify({
   profile_hydration_completion_required:true,
   route_side_effects_bounded_after_before_route_marker:true,
   route_control_owner_observed_at_click:true,
-  route_click_capture_and_bubble_observed:true,
+  route_click_capture_and_bubble_instrumented:true,
+  pointer_delivery_hold_classification_requires_owned_control_and_absent_dom_click:true,
+  pointer_delivery_holds_are_promotion_veto:false,
+  transition_probe_nonzero_reserved_for_fatal_observer_failures:true,
   inherited_profile_hydration_receipt_required:true,
   inherited_browser_process_isolation_per_profile:true,
   inherited_incremental_profile_checkpoints:true,
+  inherited_semantic_route_witness_uses_native_keyboard_button_activation:true,
+  inherited_semantic_route_witness_private_api_bypass:false,
   workspace_normalization_applied:false,
   failure_diagnostics_preserved:true,
   all_engines_observed_separate_from_all_seams_ok:true,
