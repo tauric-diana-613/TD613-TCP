@@ -26,8 +26,6 @@ export function createObservableEventRecorder({
 
   return Object.freeze({
     async record(input = {}) {
-      const taskStateBefore = requiredIdentifier(input.taskStateBefore, 'taskStateBefore');
-      const controlId = requiredIdentifier(input.controlId, 'controlId');
       const actionId = requiredIdentifier(input.actionId, 'actionId');
       const kernelReceiptId = requiredIdentifier(input.kernelReceiptId, 'kernelReceiptId');
       const worldAnswerId = requiredIdentifier(input.worldAnswerId, 'worldAnswerId');
@@ -35,6 +33,8 @@ export function createObservableEventRecorder({
           && (!Number.isSafeInteger(input.actionToConsequenceDistance) || input.actionToConsequenceDistance < 0)) {
         throw new TypeError('actionToConsequenceDistance must be a non-negative safe integer.');
       }
+      const taskStateBefore = requiredIdentifier(input.taskStateBefore, 'taskStateBefore');
+      const controlId = requiredIdentifier(input.controlId, 'controlId');
 
       const recordGeneration = generation;
       sequence += 1;
@@ -65,7 +65,6 @@ export function createObservableEventRecorder({
         missingness: [...(input.missingness || [])],
         event_digest: null
       };
-
       const operation = operationTail.then(async () => {
         record.event_digest = await canonicalDigest(EVENT_DOMAIN, withoutDigest(record), { cryptoImpl });
         validateObservableEvent(record);
