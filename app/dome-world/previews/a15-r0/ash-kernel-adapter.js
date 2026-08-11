@@ -122,6 +122,18 @@ class AshKernelAdapter {
     return run;
   }
 
+  mutationCheckpoint() {
+    return Object.freeze({
+      state: this.state ? { ...this.state } : null,
+      sequence: this.sequence
+    });
+  }
+
+  restoreMutationCheckpoint(checkpoint) {
+    this.state = checkpoint.state ? { ...checkpoint.state } : null;
+    this.sequence = checkpoint.sequence;
+  }
+
   stateSummary(state = this.state) {
     return {
       task_state: state.taskState,
@@ -262,10 +274,10 @@ class AshKernelAdapter {
     worldAnswerId = null
   } = {}) {
     const action = ACTIONS[actionId];
-    this.sequence += 1;
+    const nextSequence = this.sequence + 1;
     const receipt = {
       schema: A15_R0_SCHEMAS.runReceipt,
-      receipt_id: `a15r0_receipt_${String(this.sequence).padStart(3, '0')}_${actionId.toLowerCase()}`,
+      receipt_id: `a15r0_receipt_${String(nextSequence).padStart(3, '0')}_${actionId.toLowerCase()}`,
       fixture_id: this.fixture.fixture_id,
       case_id: this.fixture.case_id,
       action_id: actionId,
@@ -291,6 +303,7 @@ class AshKernelAdapter {
     if (returnSummary) receipt.return_summary = returnSummary;
     receipt.receipt_digest = await canonicalDigest(RECEIPT_DOMAIN, withoutDigest(receipt), this.options());
     validateProjectionRunReceipt(receipt);
+    this.sequence = nextSequence;
     this.state.lastReceipt = immutableCopy(receipt);
     return immutableCopy(receipt);
   }
@@ -314,10 +327,16 @@ class AshKernelAdapter {
       const action = ACTIONS[actionId];
       const before = this.stateSummary();
       if (action.required && this.state.taskState !== action.required) return this.hold(actionId, action.required, before);
-      this.state.restActive = false;
-      const detail = await operation();
-      this.state.taskState = action.after;
-      return this.sealReceipt(actionId, { before, ...detail });
+      const checkpoint = this.mutationCheckpoint();
+      try {
+        this.state.restActive = false;
+        const detail = await operation();
+        this.state.taskState = action.after;
+        return await this.sealReceipt(actionId, { before, ...detail });
+      } catch (error) {
+        this.restoreMutationCheckpoint(checkpoint);
+        throw error;
+      }
     });
   }
 
@@ -614,15 +633,21 @@ class AshKernelAdapter {
   async rest(reason = 'operator selected Rest') {
     return this.enqueueMutation(async () => {
       this.assertAvailable();
+      const checkpoint = this.mutationCheckpoint();
       const before = this.stateSummary();
-      this.state.restActive = true;
-      return this.sealReceipt('REST', {
-        before,
-        observations: [String(reason), 'No new demand or state transition was introduced.'],
-        missingness: [...(this.state.lastReceipt?.missingness || [])],
-        alternatives: ['resume the current synthetic sequence', 'reset the synthetic fixture'],
-        openQuestions: ['Will the operator resume or reset?']
-      });
+      try {
+        this.state.restActive = true;
+        return await this.sealReceipt('REST', {
+          before,
+          observations: [String(reason), 'No new demand or state transition was introduced.'],
+          missingness: [...(this.state.lastReceipt?.missingness || [])],
+          alternatives: ['resume the current synthetic sequence', 'reset the synthetic fixture'],
+          openQuestions: ['Will the operator resume or reset?']
+        });
+      } catch (error) {
+        this.restoreMutationCheckpoint(checkpoint);
+        throw error;
+      }
     });
   }
 
@@ -630,15 +655,21 @@ class AshKernelAdapter {
     return this.enqueueMutation(async () => {
       if (this.disposed) throw new Error('Disposed A15-R0 preview adapters are terminal; create a new adapter.');
       this.assertAvailable();
+      const checkpoint = this.mutationCheckpoint();
       const before = this.stateSummary();
-      await this.initializeState();
-      return this.sealReceipt('RESET', {
-        before,
-        observations: ['Only the in-memory synthetic preview run was reset.'],
-        missingness: ['no prior synthetic run remains in this adapter instance'],
-        alternatives: ['begin the governed sequence'],
-        openQuestions: ['Will the operator keep the synthetic reference?']
-      });
+      try {
+        await this.initializeState();
+        return await this.sealReceipt('RESET', {
+          before,
+          observations: ['Only the in-memory synthetic preview run was reset.'],
+          missingness: ['no prior synthetic run remains in this adapter instance'],
+          alternatives: ['begin the governed sequence'],
+          openQuestions: ['Will the operator keep the synthetic reference?']
+        });
+      } catch (error) {
+        this.restoreMutationCheckpoint(checkpoint);
+        throw error;
+      }
     });
   }
 
@@ -646,12 +677,14 @@ class AshKernelAdapter {
     return this.enqueueMutation(async () => {
       if (this.disposed) throw new Error('The A15-R0 preview adapter is already disposed.');
       this.assertAvailable();
+      const fixtureId = this.fixture.fixture_id;
       this.state = null;
       this.sequence = 0;
+      this.fixture = null;
       this.disposed = true;
       return Object.freeze({
         schema: 'td613.ash.a15-r0.preview-disposal-receipt/v0.1',
-        fixture_id: this.fixture.fixture_id,
+        fixture_id: fixtureId,
         preview_memory_released: true,
         case_migration_required: false,
         indexeddb_mutated: false,
