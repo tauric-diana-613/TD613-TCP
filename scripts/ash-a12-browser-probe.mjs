@@ -19,11 +19,19 @@ const REQUIRED_A12_STATIC_MARKERS = Object.freeze([
   "convergence.begin({ detail:{ case_id:current.case_id, profile:'investigation' } })",
   'pointer_concordant:pointer === current.case_id',
   'const already_converged = terminalReady(before);',
-  'rebind_required:!already_converged',
-  'already_converged,',
-  'after_converged,',
+  'const convergence_in_flight = inFlight(before);',
+  'rebind_required:!already_converged && !convergence_in_flight',
+  'convergence_in_flight,',
   'rebind_admitted,',
-  'if (!entry_convergence_rebind.rebind_admitted)',
+  'const terminal_convergence_handle = await page.waitForFunction',
+  "state?.posture === 'READY'",
+  "state?.phase === 'VISIBLE'",
+  'Number(state?.stable_frames || 0) >= 2',
+  "? 'ALREADY_READY'",
+  "? 'EXISTING_CYCLE_COMPLETED'",
+  "? 'REBIND_COMPLETED'",
+  "'CONCURRENT_CYCLE_COMPLETED'",
+  'entry_convergence_rebind.terminal_satisfied = true',
   'ENTRY_FIELD_QUIET_MS = 220',
   'async function canonicalFieldDiagnostic(page, label, error)',
   'td613.ash.a12-canonical-field-diagnostic/v0.1',
@@ -95,43 +103,73 @@ source = replaceExactly(
           && state?.phase === 'VISIBLE'
           && Number(state?.stable_frames || 0) >= 2
         );
+        const inFlight = state => Boolean(
+          state?.case_id === current.case_id
+          && state?.profile === 'investigation'
+          && state?.workspace === 'home'
+          && ['OPENING','REVEALING'].includes(state?.posture)
+        );
         const before = convergence.current?.() || null;
         const already_converged = terminalReady(before);
-        const began = already_converged
+        const convergence_in_flight = inFlight(before);
+        const began = already_converged || convergence_in_flight
           ? false
           : convergence.begin({ detail:{ case_id:current.case_id, profile:'investigation' } });
         const after = convergence.current?.() || null;
         const after_converged = terminalReady(after);
-        const rebind_admitted = Boolean(began) || (already_converged && after_converged);`,
-  'A12 idempotent convergence admission'
+        const rebind_admitted = Boolean(began);`,
+  'A12 bounded convergence admission'
 );
 source = replaceExactly(
   source,
   `          begin_invoked:Boolean(began),
           after,`,
   `          begin_invoked:Boolean(began),
-          rebind_required:!already_converged,
+          rebind_required:!already_converged && !convergence_in_flight,
           already_converged,
+          convergence_in_flight,
           after_converged,
           rebind_admitted,
           after,`,
-  'A12 convergence satisfaction receipt'
+  'A12 convergence admission receipt'
 );
 source = replaceExactly(
   source,
-  `      if (!entry_convergence_rebind.begin_invoked) throw new Error('A12 present-state convergence rebind was not admitted.');`,
-  `      if (!entry_convergence_rebind.rebind_admitted) throw new Error('A12 present-state convergence was neither already satisfied nor successfully rebound.');`,
-  'A12 idempotent convergence gate'
+  `      if (!entry_convergence_rebind.begin_invoked) throw new Error('A12 present-state convergence rebind was not admitted.');
+      await waitForStableInvestigationEntry(page, attempt);`,
+  `      const terminal_convergence_handle = await page.waitForFunction(({ caseId }) => {
+        const state = window.__td613AshDemoEntryConvergence?.current?.() || null;
+        return state?.case_id === caseId
+          && state?.profile === 'investigation'
+          && state?.workspace === 'home'
+          && state?.posture === 'READY'
+          && state?.phase === 'VISIBLE'
+          && Number(state?.stable_frames || 0) >= 2
+          ? state
+          : false;
+      }, { caseId:post_click_case.case_id }, { timeout:45_000, polling:25 });
+      const terminal_convergence = await terminal_convergence_handle.jsonValue();
+      entry_convergence_rebind.terminal_satisfied = true;
+      entry_convergence_rebind.terminal = terminal_convergence;
+      entry_convergence_rebind.satisfaction_basis = entry_convergence_rebind.already_converged
+        ? 'ALREADY_READY'
+        : entry_convergence_rebind.convergence_in_flight
+          ? 'EXISTING_CYCLE_COMPLETED'
+          : entry_convergence_rebind.rebind_admitted
+            ? 'REBIND_COMPLETED'
+            : 'CONCURRENT_CYCLE_COMPLETED';
+      await waitForStableInvestigationEntry(page, attempt);`,
+  'A12 bounded terminal convergence gate'
 );
 
 for (const marker of REQUIRED_A12_STATIC_MARKERS) {
-  if (!source.includes(marker)) throw new Error(`A12 historical wrapper law missing after closed-case/idempotence hardening: ${marker}`);
+  if (!source.includes(marker)) throw new Error(`A12 historical wrapper law missing after closed-case/in-flight hardening: ${marker}`);
 }
 if (!source.includes('existing.case_closed === true') || !source.includes("case_closed:document.body.dataset.ashCaseClosed === 'true'")) {
   throw new Error('A12 closed-case reactivation hardening did not compile into the wrapper.');
 }
-if (source.includes('if (!entry_convergence_rebind.begin_invoked)')) {
-  throw new Error('A12 idempotence hardening left the obsolete begin-invoked-only gate in generated witness source.');
+if (source.includes("throw new Error('A12 present-state convergence rebind was not admitted.')")) {
+  throw new Error('A12 in-flight convergence hardening left the obsolete immediate begin() failure gate in generated witness source.');
 }
 
 await fs.writeFile(tempPath, source, 'utf8');
