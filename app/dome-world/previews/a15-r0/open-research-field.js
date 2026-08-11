@@ -22,10 +22,18 @@ function combinations(values, size, start = 0, prefix = [], output = []) {
 }
 
 export function matrixRank(matrix, tolerance = 1e-10) {
-  const rows = matrix.map(row => row.map(Number));
-  if (!rows.length || !rows[0]?.length) return 0;
-  const width = rows[0].length;
-  if (rows.some(row => row.length !== width)) throw new TypeError('Matrix rows must have equal width.');
+  if (!Array.isArray(matrix)) throw new TypeError('Matrix must be an array of rows.');
+  if (!Number.isFinite(tolerance) || tolerance < 0) throw new TypeError('Matrix tolerance must be a finite non-negative number.');
+  if (matrix.length === 0) return 0;
+  if (matrix.some(row => !Array.isArray(row))) throw new TypeError('Matrix rows must be arrays.');
+  if (!matrix[0]?.length) return 0;
+  const width = matrix[0].length;
+  if (matrix.some(row => row.length !== width)) throw new TypeError('Matrix rows must have equal width.');
+  const rows = matrix.map((row, rowIndex) => row.map((value, columnIndex) => {
+    const numeric = Number(value);
+    if (!Number.isFinite(numeric)) throw new TypeError(`Matrix entry [${rowIndex},${columnIndex}] must be finite.`);
+    return numeric;
+  }));
   let rank = 0;
   for (let column = 0; column < width && rank < rows.length; column += 1) {
     let pivot = rank;
@@ -46,6 +54,15 @@ export function matrixRank(matrix, tolerance = 1e-10) {
   return rank;
 }
 
+function categoryValue(sample, key) {
+  if (!sample || sample[key] === null || sample[key] === undefined) {
+    throw new Error('Each sample requires strategy and observation.');
+  }
+  const value = String(sample[key]);
+  if (value.length === 0) throw new Error('Each sample requires strategy and observation.');
+  return value;
+}
+
 export function mutualInformationBits(samples) {
   if (!Array.isArray(samples) || samples.length === 0) throw new Error('mutualInformationBits requires samples.');
   const joint = new Map();
@@ -53,25 +70,27 @@ export function mutualInformationBits(samples) {
   const observations = new Map();
 
   for (const sample of samples) {
-    const strategy = String(sample.strategy || '');
-    const observation = String(sample.observation || '');
-    if (!strategy || !observation) throw new Error('Each sample requires strategy and observation.');
-    const key = `${strategy}\u0000${observation}`;
-    joint.set(key, (joint.get(key) || 0) + 1);
+    const strategy = categoryValue(sample, 'strategy');
+    const observation = categoryValue(sample, 'observation');
+    let row = joint.get(strategy);
+    if (!row) {
+      row = new Map();
+      joint.set(strategy, row);
+    }
+    row.set(observation, (row.get(observation) || 0) + 1);
     strategies.set(strategy, (strategies.get(strategy) || 0) + 1);
     observations.set(observation, (observations.get(observation) || 0) + 1);
   }
 
   const total = samples.length;
   let information = 0;
-  for (const [key, count] of joint) {
-    const split = key.indexOf('\u0000');
-    const strategy = key.slice(0, split);
-    const observation = key.slice(split + 1);
-    const pxy = count / total;
-    const px = strategies.get(strategy) / total;
-    const py = observations.get(observation) / total;
-    information += pxy * Math.log2(pxy / (px * py));
+  for (const [strategy, row] of joint) {
+    for (const [observation, count] of row) {
+      const pxy = count / total;
+      const px = strategies.get(strategy) / total;
+      const py = observations.get(observation) / total;
+      information += pxy * Math.log2(pxy / (px * py));
+    }
   }
   return round(information);
 }
