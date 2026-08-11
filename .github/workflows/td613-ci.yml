@@ -118,7 +118,9 @@ jobs:
           node --check scripts/ash-a15-r0-preview-probe.mjs
           node --check scripts/ash-a15-transition-trace-browser-probe.mjs
           node tests/ash-a15-r0-fixture.test.mjs
+          node tests/ash-a15-r0-kernel-adapter.test.mjs
           node tests/ash-a15-r0-open-research-field.test.mjs
+          node tests/ash-a15-r0-review-hardening.test.mjs
           node tests/ash-a15-transition-trace-contract.test.mjs
       - name: Validate Ash demo hydration surfaces
         run: |
@@ -247,7 +249,54 @@ jobs:
           TD613_BASE_URL: http://127.0.0.1:6130
           TD613_ARTIFACT_DIR: artifacts/ash-closure-preflight
         run: timeout --foreground --signal=INT --kill-after=15s 420s node scripts/run-ash-keep-a1-production-probe.mjs
-      - name: Run the complete Ash witness through each installed engine
+      - name: Calibrate A15-R0 and transition ordering across every engine
+        run: |
+          set +e
+          mkdir -p artifacts/ash-a15-calibration
+          : > artifacts/ash-a15-calibration/failures.tsv
+          failures=0
+          for browser in chromium firefox webkit; do
+            export TD613_BROWSER="$browser"
+            export TD613_BASE_URL='http://127.0.0.1:6130'
+            TD613_ARTIFACT_DIR="artifacts/ash-a15-r0-$browser" timeout --foreground --signal=INT --kill-after=15s 360s node scripts/ash-a15-r0-preview-probe.mjs
+            status=$?
+            if [ "$status" -ne 0 ]; then
+              printf '%s\tA15_R0_PREVIEW\t%s\n' "$browser" "$status" >> artifacts/ash-a15-calibration/failures.tsv
+              failures=1
+            fi
+            TD613_ARTIFACT_DIR="artifacts/ash-a15-transition-trace-$browser" timeout --foreground --signal=INT --kill-after=15s 420s node scripts/ash-a15-transition-trace-browser-probe.mjs
+            status=$?
+            if [ "$status" -ne 0 ]; then
+              printf '%s\tA15_TRANSITION_TRACE\t%s\n' "$browser" "$status" >> artifacts/ash-a15-calibration/failures.tsv
+              failures=1
+            fi
+          done
+          node <<'NODE'
+          const fs = require('node:fs');
+          const path = 'artifacts/ash-a15-calibration/failures.tsv';
+          const failures = fs.readFileSync(path, 'utf8').trim().split('\n').filter(Boolean).map(line => {
+            const [browser, seam, status] = line.split('\t');
+            return { browser, seam, status:Number(status) };
+          });
+          fs.writeFileSync('artifacts/ash-a15-calibration/manifest.json', JSON.stringify({
+            schema:'td613.ash.a15-calibration-prepass/v0.1',
+            scope:['A15_R0_PREVIEW','A15_TRANSITION_TRACE'],
+            engines:['chromium','firefox','webkit'],
+            all_engines_observed:true,
+            independent_from_inherited_a15:true,
+            fail_fast:false,
+            failures,
+            ok:failures.length === 0,
+            promotion_authority:false,
+            production_mutation:false,
+            human_interpretation_required:true
+          }, null, 2));
+          NODE
+          if [ "$failures" -ne 0 ]; then
+            cat artifacts/ash-a15-calibration/failures.tsv
+            exit 1
+          fi
+      - name: Run the inherited complete Ash witness through each installed engine
         run: |
           set -euo pipefail
           for browser in chromium firefox webkit; do
@@ -258,8 +307,6 @@ jobs:
             TD613_ARTIFACT_DIR="artifacts/ash-a12-$browser" timeout --foreground --signal=INT --kill-after=15s 420s node scripts/ash-a12-browser-probe.mjs
             TD613_ARTIFACT_DIR="artifacts/ash-a13-$browser" timeout --foreground --signal=INT --kill-after=15s 480s node scripts/ash-a13-demo-registry-browser-probe.mjs
             TD613_ARTIFACT_DIR="artifacts/ash-a14-$browser" timeout --foreground --signal=INT --kill-after=15s 480s node scripts/ash-a14-archive-browser-probe.mjs
-            TD613_ARTIFACT_DIR="artifacts/ash-a15-r0-$browser" timeout --foreground --signal=INT --kill-after=15s 360s node scripts/ash-a15-r0-preview-probe.mjs
-            TD613_ARTIFACT_DIR="artifacts/ash-a15-transition-trace-$browser" timeout --foreground --signal=INT --kill-after=15s 420s node scripts/ash-a15-transition-trace-browser-probe.mjs
             TD613_ARTIFACT_DIR="artifacts/ash-a15-$browser" timeout --foreground --signal=INT --kill-after=15s 900s node scripts/ash-a15-empirical-profile-journeys-browser-probe.mjs
             TD613_ARTIFACT_DIR="artifacts/ash-flowcore-$browser" timeout --foreground --signal=INT --kill-after=15s 480s node scripts/run-ash-flowcore-live-field-browser-probe.mjs
             TD613_ARTIFACT_DIR="artifacts/ash-ingress-$browser" timeout --foreground --signal=INT --kill-after=15s 360s node scripts/ash-ingress-polish-browser-probe.mjs
