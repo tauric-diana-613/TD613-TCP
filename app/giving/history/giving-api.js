@@ -1,3 +1,4 @@
+import './giving-ui-fixes.js';
 import { REQUEST_SCHEMA } from './giving-model.js';
 
 const MUTATIONS = new Set([
