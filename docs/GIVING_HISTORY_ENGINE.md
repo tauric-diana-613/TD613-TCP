@@ -11,6 +11,20 @@ Private operator research is available only at `/giving/history/`. The route is 
 5. Use Committee ledger for reviewed totals and CSV or encrypted JSON export.
 6. If Campaign Deputy writeback is ready, select an exact existing person or explicitly create a new contact, then link the reviewed committee list. `Withhold` records the decision without a CRM mutation.
 
+## Campaign Deputy handoff
+
+Campaign Deputy integration is deliberately a reviewed handoff, not an automatic bulk import. The Giving dossier remains the detailed historical evidence record; Campaign Deputy receives only the contact and committee relationship the operator has explicitly approved.
+
+1. **Load contact index:** Giving walks the paginated `/v1/peoples` endpoint and builds a minimal contact index under the dossier's selected custody policy. Because Campaign Deputy exposes pagination rather than server-side person search, local filtering only proposes candidates.
+2. **Review duplicates:** compare the public-source identity evidence with the candidate contacts. Giving never treats an email, name, or address similarity as authorization and never silently merges contacts.
+3. **Link an existing person:** select the exact Campaign Deputy `personId`, then choose a reviewed committee from the dossier. Giving finds or creates a normal `listType=list` list using the committee taxonomy, checks membership, and adds the person only if absent.
+4. **Create explicitly:** when no candidate is correct, choose a confirmed source record and make a separate create gesture. Select the fields to copy; public street address is off by default. Giving uses the documented synchronous `PUT /v1/people` no-match path, then adds the returned person to the committee list.
+5. **Withhold:** choose this when research should remain in Giving. It records the operator decision and performs no Campaign Deputy mutation.
+
+Every successful handoff stores an idempotent receipt containing the dossier, person, list, and committee identifiers. Repeating the same reviewed link reuses the list and does not intentionally duplicate membership. Upstream failures are receipts, not implied successes.
+
+Giving does **not** send historical public donations to `/v1/contribution`: that endpoint records contributions belonging to the current Campaign Deputy account, not outside giving history. It also avoids the asynchronous `POST /v1/people` match endpoint because the supplied API specification has no reliable request-status resolver. The synchronous explicit-create path plus human duplicate review is the safer contract.
+
 ## Coverage
 
 - OpenFEC Schedule A
