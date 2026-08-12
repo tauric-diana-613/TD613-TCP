@@ -51,17 +51,34 @@ function middleIdentity(name) {
     : '';
 }
 
+function middleCompatible(left, right) {
+  if (!left || !right) return true;
+  if (left === right) return true;
+  return left.length === 1 ? right.startsWith(left) : right.length === 1 ? left.startsWith(right) : false;
+}
+
+function reversedSourceMatch(sourceName, queryName) {
+  if (!sourceName?.tokens?.length || !queryName?.tokens?.length) return false;
+  if (sourceName.raw.includes(',') || queryName.tokens.length < 2 || sourceName.tokens.length < 2) return false;
+  if (sourceName.suffix !== queryName.suffix) return false;
+  if (sourceName.tokens[0] !== queryName.last || sourceName.tokens[1] !== queryName.first) return false;
+  const sourceMiddle = sourceName.tokens.length > 2 ? sourceName.tokens.slice(2).join(' ') : '';
+  return middleCompatible(sourceMiddle, middleIdentity(queryName));
+}
+
 export function exactNameMatch(left, right) {
   const a = normalizeName(left);
   const b = normalizeName(right);
   if (!a.first || !a.last || !b.first || !b.last) return false;
-  if (a.first !== b.first || a.last !== b.last || a.suffix !== b.suffix) return false;
-  const aMiddle = middleIdentity(a);
-  const bMiddle = middleIdentity(b);
-  // A middle name or initial omitted from either side is unspecified evidence,
-  // not a contradiction. If both sides supply middle evidence, it must agree.
-  if (aMiddle && bMiddle && aMiddle !== bMiddle) return false;
-  return true;
+
+  const direct = a.first === b.first && a.last === b.last && a.suffix === b.suffix;
+  if (direct) return middleCompatible(middleIdentity(a), middleIdentity(b));
+
+  // Some state and municipal custodians serialize people as LAST FIRST [MIDDLE]
+  // without a comma. Treat that source ordering as equivalent to FIRST [MIDDLE] LAST
+  // while preserving explicit middle/suffix conflicts.
+  if (reversedSourceMatch(a, b) || reversedSourceMatch(b, a)) return true;
+  return false;
 }
 
 function stableTargetToken(value) {

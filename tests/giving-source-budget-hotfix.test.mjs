@@ -44,7 +44,9 @@ const florida = await searchSourcePage({
 }, {
   fetchImpl: async (_url, options) => {
     floridaCalls += 1;
-    assert.match(options.body, /clname=Jane\+Doe/);
+    assert.match(options.body, /cfname=Jane/);
+    assert.match(options.body, /clname=Doe/);
+    assert.doesNotMatch(options.body, /clname=Jane\+Doe/, 'a person name must not be posted wholesale into Florida last/company');
     return mockResponse({ text: floridaTsv });
   }
 });

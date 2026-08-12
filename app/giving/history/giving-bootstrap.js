@@ -18,8 +18,17 @@ if (!document.getElementById('givingSearchControlsStylesheet')) {
   document.head.appendChild(link);
 }
 
+// Force revalidation of the shared matcher before the application module imports it.
+// This closes the stale child-module path that could leave Exact Match running an
+// older model after a Giving deployment.
+try {
+  await fetch(new URL('./giving-model.js', import.meta.url), { cache: 'reload', credentials: 'same-origin' });
+} catch (error) {
+  // The application import below remains authoritative; this is cache hygiene only.
+}
+
 await import('./giving-contribution-amount-filter.js?v=20260812-2');
-await import('./giving-app.js?v=20260812-6');
+await import('./giving-app.js?v=20260812-8');
 await import('./giving-search-controls.js?v=20260812-7');
 await import('./giving-campaign-tools-v2.js?v=20260812-1');
 await import('./giving-contributions-copy.js?v=20260812-1');
