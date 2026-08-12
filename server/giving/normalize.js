@@ -38,6 +38,13 @@ export function parseContributorName(rawValue) {
   return { kind: 'PERSON', display: raw, given, middle, family, suffix };
 }
 
+export function contributorDisplayName(parsedName, sourceRawName) {
+  const raw = cleanText(sourceRawName, 300);
+  if (parsedName?.kind !== 'PERSON' || !parsedName.family || !parsedName.given) return raw;
+  const givenSide = [parsedName.given, parsedName.middle, parsedName.suffix].filter(Boolean).join(' ');
+  return cleanText(`${parsedName.family}, ${givenSide}`, 300).toLocaleUpperCase('en-US');
+}
+
 function normalizedHeader(value) {
   return String(value || '').toLowerCase().replace(/[^a-z0-9]/g, '');
 }
@@ -117,8 +124,9 @@ function baseRecord({ source, queryDigest, retrievedAt, raw, nativeIds = {}, fie
   const rawCanonical = canonicalJson(raw);
   const localDigest = sha256({ source: source.id, query_digest: queryDigest, raw: rawCanonical });
   const amountCents = amountToCents(fields.amount);
-  const rawName = cleanText(fields.contributorName, 300);
-  const parsedName = parseContributorName(rawName);
+  const sourceRawName = cleanText(fields.contributorName, 300);
+  const parsedName = parseContributorName(sourceRawName);
+  const displayName = contributorDisplayName(parsedName, sourceRawName);
   const provisional = Boolean(fields.provisional || lineage.provisional || amountCents === null);
   return {
     schema: GIVING_RECORD_SCHEMA,
@@ -137,8 +145,9 @@ function baseRecord({ source, queryDigest, retrievedAt, raw, nativeIds = {}, fie
     election: cleanText(fields.election, 250),
     cycle: Number.isFinite(Number(fields.cycle)) ? Number(fields.cycle) : null,
     reporting_context: cleanText(fields.reportingContext, 500),
-    contributor_name_raw: rawName,
-    contributor_name_parsed: parsedName,
+    source_contributor_name_raw: sourceRawName,
+    contributor_name_raw: displayName,
+    contributor_name_parsed: { ...parsedName, display: displayName, source_display: sourceRawName },
     address: cleanText(fields.address, 500),
     city: cleanText(fields.city, 160),
     state: cleanText(fields.state, 80),
@@ -154,6 +163,10 @@ function baseRecord({ source, queryDigest, retrievedAt, raw, nativeIds = {}, fie
     identity_status: 'UNREVIEWED',
     lineage: {
       ...lineage,
+      source_contributor_name_raw: sourceRawName,
+      contributor_display_policy: parsedName.kind === 'PERSON'
+        ? 'LAST_COMMA_FIRST_MIDDLE_SUFFIX_UPPER'
+        : 'SOURCE_PRESERVED_NON_PERSON',
       analytical_total_status: provisional ? 'PROVISIONAL' : 'DETERMINISTIC_WITHIN_SOURCE_SEMANTICS'
     }
   };
