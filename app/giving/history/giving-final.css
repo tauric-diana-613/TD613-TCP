@@ -1,0 +1,166 @@
+/* TD613 Giving final layout authority — loaded last with a unique asset epoch. */
+
+/* The section rail is deliberately one compact, horizontal line at every width. */
+html body .ledger-column > .ledger-tabs {
+  position: sticky !important;
+  top: 68px !important;
+  z-index: 48 !important;
+  display: flex !important;
+  flex-flow: row nowrap !important;
+  grid-template-columns: none !important;
+  align-items: stretch !important;
+  width: 100% !important;
+  max-width: 100% !important;
+  height: 34px !important;
+  min-height: 34px !important;
+  margin: 0 !important;
+  overflow-x: auto !important;
+  overflow-y: hidden !important;
+  white-space: nowrap !important;
+  scrollbar-width: none !important;
+  overscroll-behavior-x: contain;
+  -webkit-overflow-scrolling: touch;
+  touch-action: pan-x;
+  background: rgba(2, 15, 11, .97) !important;
+}
+html body .ledger-column > .ledger-tabs::-webkit-scrollbar { display: none !important; }
+html body .ledger-column > .ledger-tabs > .tab {
+  position: relative !important;
+  display: inline-flex !important;
+  flex: 0 0 auto !important;
+  align-items: center !important;
+  width: auto !important;
+  min-width: max-content !important;
+  height: 34px !important;
+  min-height: 34px !important;
+  max-height: 34px !important;
+  padding: 0 11px !important;
+  overflow: hidden !important;
+  line-height: 1 !important;
+  white-space: nowrap !important;
+  text-align: left !important;
+  clip-path: none !important;
+}
+html body .ledger-column > .ledger-tabs > .tab::before { display: none !important; content: none !important; }
+html body .ledger-column > .ledger-tabs > .tab::after { bottom: 1px !important; }
+
+/* Dossier controls are intentionally small utility actions, not 42px form controls. */
+html body .dossier-control .dossier-actions {
+  display: flex !important;
+  flex-flow: row nowrap !important;
+  align-items: center !important;
+  gap: 6px !important;
+  width: 100% !important;
+  height: 24px !important;
+  min-height: 24px !important;
+  max-height: 24px !important;
+  margin: 0 0 12px !important;
+  padding: 0 !important;
+  overflow: visible !important;
+}
+html body .dossier-control .dossier-actions > button#newDossierButton,
+html body .dossier-control .dossier-actions > button#saveDossierButton {
+  display: inline-flex !important;
+  flex: 0 0 auto !important;
+  align-items: center !important;
+  justify-content: center !important;
+  width: auto !important;
+  height: 24px !important;
+  min-height: 24px !important;
+  max-height: 24px !important;
+  margin: 0 !important;
+  padding: 0 9px !important;
+  overflow: hidden !important;
+  font-size: 9px !important;
+  line-height: 1 !important;
+}
+
+/* Contact-target controls */
+.target-filter-field { min-width: 180px; }
+.target-filter-field select { min-height: 38px; }
+.campaign-target-panel {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(220px, .7fr);
+  gap: 12px;
+  align-items: end;
+  margin: 0 0 12px;
+  padding: 11px 12px;
+  border: 1px solid rgba(228, 198, 108, .22);
+  background: rgba(228, 198, 108, .035);
+}
+.campaign-target-copy { display: grid; gap: 3px; min-width: 0; }
+.campaign-target-copy strong { color: var(--bright); font-size: 11px; }
+.campaign-target-copy small { color: var(--muted); font-size: 9px; line-height: 1.4; }
+.campaign-target-panel .field { margin: 0; }
+.target-lineage { color: var(--gold); }
+.contact-queue-item-actions { display: flex; gap: 5px; align-items: center; }
+
+/* One Export control, two spreadsheet formats. */
+.export-menu {
+  position: relative;
+  z-index: 8;
+}
+.export-menu > summary {
+  list-style: none;
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  min-height: 38px;
+  user-select: none;
+}
+.export-menu > summary::-webkit-details-marker { display: none; }
+.export-menu > summary::after { content: '▾'; font-size: 9px; opacity: .75; }
+.export-menu[open] > summary::after { content: '▴'; }
+.export-menu-popover {
+  position: absolute;
+  top: calc(100% + 5px);
+  right: 0;
+  display: grid;
+  min-width: 158px;
+  padding: 5px;
+  border: 1px solid rgba(200, 235, 213, .2);
+  background: rgba(3, 18, 14, .99);
+  box-shadow: 0 15px 34px rgba(0, 0, 0, .38);
+}
+.export-menu-popover button {
+  width: 100%;
+  min-height: 32px;
+  padding: 7px 9px;
+  border: 0;
+  cursor: pointer;
+  color: var(--text);
+  background: transparent;
+  font: 700 9px/1.2 var(--mono);
+  text-align: left;
+}
+.export-menu-popover button:hover,
+.export-menu-popover button:focus-visible {
+  color: var(--bright);
+  background: rgba(118, 234, 212, .07);
+  outline: none;
+}
+
+@media (max-width: 760px) {
+  html body .ledger-column > .ledger-tabs {
+    top: 62px !important;
+    height: 32px !important;
+    min-height: 32px !important;
+  }
+  html body .ledger-column > .ledger-tabs > .tab {
+    height: 32px !important;
+    min-height: 32px !important;
+    max-height: 32px !important;
+    padding-inline: 9px !important;
+    font-size: 8px !important;
+  }
+  html body .dossier-control .dossier-actions,
+  html body .dossier-control .dossier-actions > button#newDossierButton,
+  html body .dossier-control .dossier-actions > button#saveDossierButton {
+    height: 22px !important;
+    min-height: 22px !important;
+    max-height: 22px !important;
+  }
+  .campaign-target-panel { grid-template-columns: 1fr; }
+  .target-filter-field { min-width: 0; width: 100%; }
+  .export-menu-popover { position: fixed; top: auto; right: 12px; bottom: 62px; left: 12px; min-width: 0; }
+}
