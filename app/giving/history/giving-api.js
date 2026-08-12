@@ -32,7 +32,7 @@ export class GivingApiClient {
   constructor({ endpoint = '/api/td613-ledger', fetchImpl = globalThis.fetch, timeoutMs = 18000 } = {}) {
     if (typeof fetchImpl !== 'function') throw new TypeError('A fetch implementation is required.');
     this.endpoint = endpoint;
-    this.fetchImpl = fetchImpl;
+    this.fetchImpl = fetchImpl.bind(globalThis);
     this.timeoutMs = timeoutMs;
     this.intentNonce = null;
   }
@@ -61,11 +61,9 @@ export class GivingApiClient {
         method: 'POST',
         credentials: 'same-origin',
         cache: 'no-store',
-        redirect: 'error',
         headers: {
           'Content-Type': 'application/json',
-          Accept: 'application/json',
-          'X-TD613-Giving-Request': REQUEST_SCHEMA
+          Accept: 'application/json'
         },
         body: JSON.stringify(envelope),
         signal: controller.signal
