@@ -84,14 +84,19 @@ export async function searchVoterFocusPage({ source, query, continuation, fetchI
   const offset = cursor?.offset || 0;
   const endpoint = new URL('https://www.voterfocus.com/CampaignFinance/cand_srch.php');
   endpoint.searchParams.set('c', source.code);
+
+  // Giving's primary search is a contributor search. Candidate/committee lookup
+  // has its own dedicated surface, so a donor query must not fan out through four
+  // sequential roles inside one serverless request. Try the person-shaped donor
+  // projection first and the entity/company donor projection only when needed.
   const projections = query.committee
-    ? ['CONTRIBUTOR_ENTITY', 'COMMITTEE']
+    ? ['COMMITTEE']
     : query.candidate
       ? ['CANDIDATE']
-      : ['CONTRIBUTOR_PERSON', 'CONTRIBUTOR_ENTITY', 'CANDIDATE', 'COMMITTEE'];
+      : ['CONTRIBUTOR_PERSON', 'CONTRIBUTOR_ENTITY'];
+
   let response = null;
-  const observedRows = [];
-  const seenRows = new Set();
+  let observedRows = [];
   for (const projection of projections) {
     response = await fetchWithBoundary(endpoint, {
       method: 'POST',
@@ -118,12 +123,10 @@ export async function searchVoterFocusPage({ source, query, continuation, fetchI
         observed_columns: width
       });
     }
-    for (const row of rowsToObjects(projectionRows)) {
-      const key = JSON.stringify(row);
-      if (!seenRows.has(key)) observedRows.push(row);
-      seenRows.add(key);
-    }
+    observedRows = rowsToObjects(projectionRows);
+    if (observedRows.length) break;
   }
+
   if (!observedRows.length) {
     return {
       records: [], continuation: null, source_status: 'READY', coverage: source.electronic_scope,
@@ -133,6 +136,7 @@ export async function searchVoterFocusPage({ source, query, continuation, fetchI
       })
     };
   }
+
   const pageRows = observedRows.slice(offset, offset + query.page_size);
   const nextOffset = offset + pageRows.length;
   const next = nextOffset < observedRows.length
