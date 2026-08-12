@@ -36,7 +36,7 @@ if (heading && !document.querySelector('#researchDossierHelp')) {
     .research-dossier-help-trigger:hover{opacity:1}
     .research-dossier-help-trigger:focus-visible{outline:1px solid var(--cyan);outline-offset:2px;opacity:1}
     .research-dossier-help-popup{position:absolute;left:18px;top:-5px;z-index:120;width:224px;max-width:min(224px,72vw);padding:7px 8px;border:1px solid rgba(118,234,212,.24);pointer-events:none;visibility:hidden;opacity:0;transform:translateY(2px);color:rgba(218,239,230,.82);background:rgba(1,10,8,.985);box-shadow:0 10px 30px rgba(0,0,0,.38);font:500 7px/1.42 var(--sans);letter-spacing:.005em;text-transform:none;transition:opacity 70ms linear,transform 70ms linear,visibility 0s linear 70ms}
-    .research-dossier-help:hover .research-dossier-help-popup,.research-dossier-help:focus-within .research-dossier-help-popup{visibility:visible;opacity:1;transform:translateY(0);transition-delay:0s}
+    .research-dossier-help:hover .research-dossier-help-popup,.research-dossier-help-trigger:focus-visible + .research-dossier-help-popup{visibility:visible;opacity:1;transform:translateY(0);transition-delay:0s}
     @media(max-width:760px){.research-dossier-help-popup{left:auto;right:-16px;top:19px;width:210px;font-size:7px}}
   `;
   document.head.append(style);
