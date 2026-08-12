@@ -8,8 +8,24 @@ import {
 } from '../util.js';
 import { queryDigest, sourceReceipt } from './shared.js';
 
+const ORGANIZATION_MARKERS = /\b(LLC|INC|CORP|CORPORATION|ASSOCIATION|PAC|COMMITTEE|UNION|FOUNDATION|PARTNERS|PARTNERSHIP|TRUST|COMPANY|CO\.?|BANK|CLUB)\b/i;
+
+function contributorParts(value) {
+  const raw = String(value || '').trim();
+  if (!raw) return { given: '', family: '' };
+  if (ORGANIZATION_MARKERS.test(raw)) return { given: '', family: raw };
+  if (raw.includes(',')) {
+    const [family, givenSide = ''] = raw.split(',', 2).map((part) => part.trim());
+    return { given: givenSide.split(/\s+/).filter(Boolean)[0] || '', family };
+  }
+  const tokens = raw.split(/\s+/).filter(Boolean);
+  if (tokens.length < 2) return { given: '', family: tokens[0] || '' };
+  return { given: tokens[0], family: tokens.at(-1) };
+}
+
 function floridaPayload(query) {
   const parameters = new URLSearchParams();
+  const contributor = contributorParts(query.name);
   parameters.set('election', query.election || (query.election_year ? `${query.election_year}1103-GEN` : 'All'));
   parameters.set('search_on', '4');
   parameters.set('CanFName', '');
@@ -23,12 +39,11 @@ function floridaPayload(query) {
   parameters.set('ComNameSrch', query.committee ? '1' : '2');
   parameters.set('committee', 'All');
   parameters.set('namesearch', '2');
-  parameters.set('cfname', query.first_name || '');
-  // The Florida contributor search accepts the contributor last/company field as
-  // the ordinary donor-name search surface. A single bounded POST previously
-  // served this path; fanning the same request across person/entity/committee
-  // projections multiplied latency until the browser killed the whole source.
-  parameters.set('clname', query.name || query.last_name || '');
+  parameters.set('cfname', query.first_name || contributor.given);
+  // Florida exposes contributor first name and last/company as separate form fields.
+  // Project person-shaped names into those fields; organization-shaped names remain
+  // intact in the last/company field.
+  parameters.set('clname', query.last_name || contributor.family || query.name || '');
   parameters.set('ccity', query.city || '');
   parameters.set('cstate', query.state || '');
   parameters.set('czipcode', query.zip || '');
@@ -82,4 +97,4 @@ export async function searchFloridaPage({ source, query, continuation, fetchImpl
   };
 }
 
-export const _floridaInternals = Object.freeze({ floridaPayload });
+export const _floridaInternals = Object.freeze({ floridaPayload, contributorParts });
