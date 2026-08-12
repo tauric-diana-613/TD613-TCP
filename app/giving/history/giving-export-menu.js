@@ -12,9 +12,9 @@ const csvButton = document.querySelector('#exportCsvButton');
 const encryptedButton = document.querySelector('#exportEncryptedButton');
 
 const exports = [
-  { source: csvButton, label: '.CSV', id: 'reviewExportCsvButton' },
-  { source: xlsxButton, label: '.XLSX', id: 'reviewExportXlsxButton' },
-  { source: encryptedButton, label: 'Encrypted JSON', id: 'reviewExportEncryptedButton' }
+  { source: csvButton, label: '.csv', id: 'reviewExportCsvButton' },
+  { source: xlsxButton, label: '.xlsx', id: 'reviewExportXlsxButton' },
+  { source: encryptedButton, label: 'encrypted json', id: 'reviewExportEncryptedButton' }
 ];
 
 if (exports.every(({ source }) => source)) {
@@ -24,6 +24,7 @@ if (exports.every(({ source }) => source)) {
   for (const { source, label } of exports) {
     source.textContent = label;
     source.className = 'export-action-button';
+    ledgerCluster.appendChild(source);
   }
 
   const reviewHead = document.querySelector('#view-review .section-head');
