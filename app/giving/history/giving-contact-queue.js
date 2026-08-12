@@ -8,16 +8,26 @@ let stopRequested = false;
 const $ = (selector) => document.querySelector(selector);
 const $$ = (selector) => [...document.querySelectorAll(selector)];
 const compact = (value) => String(value ?? '').normalize('NFKC').replace(/\s+/g, ' ').trim();
+const today = () => new Date().toISOString().slice(0, 10);
+const DEFAULT_DATE_FROM = '2020-01-01';
 
 function sourceIds() {
   return $$('#sourceRegistry input[type="checkbox"]:checked').map((input) => input.value);
 }
 
+function queueMessage(message = '', kind = 'info') {
+  const node = $('#contactQueueMessage');
+  if (!node) return;
+  node.textContent = message;
+  node.dataset.kind = kind;
+  node.hidden = !message;
+}
+
 function currentSnapshot(name) {
   const aliases = ($('#searchAliases')?.value || '').split(/\r?\n|;/).map(compact).filter(Boolean);
   const hints = compact($('#searchHints')?.value);
-  const dateFrom = $('#dateFrom')?.value || '';
-  const dateTo = $('#dateTo')?.value || '';
+  const dateFrom = $('#dateFrom')?.value || DEFAULT_DATE_FROM;
+  const dateTo = $('#dateTo')?.value || today();
   const exactMatch = Boolean($('#exactMatchToggle')?.checked);
   const target = searchTargetFromQuery({ name, aliases, hints, date_from: dateFrom, date_to: dateTo, exact_match: exactMatch });
   return {
@@ -71,10 +81,19 @@ function captureFormState() {
     name: $('#searchName')?.value || '',
     aliases: $('#searchAliases')?.value || '',
     hints: $('#searchHints')?.value || '',
-    dateFrom: $('#dateFrom')?.value || '',
-    dateTo: $('#dateTo')?.value || '',
+    dateFrom: $('#dateFrom')?.value || DEFAULT_DATE_FROM,
+    dateTo: $('#dateTo')?.value || today(),
     exactMatch: Boolean($('#exactMatchToggle')?.checked),
     sourceIds: sourceIds()
+  };
+}
+
+function resolvedItem(item, fallback) {
+  return {
+    ...item,
+    dateFrom: item.dateFrom || fallback.dateFrom || DEFAULT_DATE_FROM,
+    dateTo: item.dateTo || fallback.dateTo || today(),
+    sourceIds: item.sourceIds?.length ? item.sourceIds : fallback.sourceIds
   };
 }
 
@@ -82,8 +101,8 @@ function applyFormState(item) {
   $('#searchName').value = item.name || '';
   $('#searchAliases').value = Array.isArray(item.aliases) ? item.aliases.join('\n') : item.aliases || '';
   $('#searchHints').value = item.hints || '';
-  $('#dateFrom').value = item.dateFrom || '';
-  $('#dateTo').value = item.dateTo || '';
+  $('#dateFrom').value = item.dateFrom || DEFAULT_DATE_FROM;
+  $('#dateTo').value = item.dateTo || today();
   $('#exactMatchToggle').checked = Boolean(item.exactMatch);
   dispatchSourceChanges(item.sourceIds || []);
 }
@@ -131,11 +150,12 @@ function renderQueue() {
   const runButton = $('#runContactQueueButton');
   const clearButton = $('#clearContactQueueButton');
   const stopButton = $('#stopContactQueueButton');
-  if (!list || !count) return;
+  if (!list || !count || !runButton || !clearButton || !stopButton) return;
   count.textContent = `${queue.length} contact${queue.length === 1 ? '' : 's'}`;
   runButton.disabled = queueRunning || queue.length === 0;
   clearButton.disabled = queueRunning || queue.length === 0;
-  stopButton.disabled = !queueRunning;
+  stopButton.disabled = !queueRunning || stopRequested;
+  stopButton.textContent = queueRunning && stopRequested ? 'Stopping…' : 'Stop after current';
   list.replaceChildren();
   if (!queue.length) {
     const empty = document.createElement('span');
@@ -155,7 +175,8 @@ function renderQueue() {
     const name = document.createElement('strong');
     name.textContent = item.name;
     const meta = document.createElement('small');
-    meta.textContent = `${item.dateFrom || '—'} → ${item.dateTo || '—'} · ${item.sourceIds.length} source${item.sourceIds.length === 1 ? '' : 's'} · ${item.exactMatch ? 'exact' : 'broad'}${item.aliases.length ? ` · ${item.aliases.length} alias${item.aliases.length === 1 ? '' : 'es'}` : ''}`;
+    const selectedCount = item.sourceIds.length;
+    meta.textContent = `${item.dateFrom || DEFAULT_DATE_FROM} → ${item.dateTo || today()} · ${selectedCount ? `${selectedCount} source${selectedCount === 1 ? '' : 's'}` : 'use current sources at run'} · ${item.exactMatch ? 'exact' : 'broad'}${item.aliases.length ? ` · ${item.aliases.length} alias${item.aliases.length === 1 ? '' : 'es'}` : ''}`;
     copy.append(name, meta);
 
     const state = document.createElement('span');
@@ -179,6 +200,7 @@ function renderQueue() {
     remove.addEventListener('click', () => {
       const index = queue.findIndex((candidate) => candidate.id === item.id);
       if (index >= 0) queue.splice(index, 1);
+      queueMessage(`${item.name} removed from the queue.`);
       renderQueue();
     });
     actions.append(review, remove);
@@ -191,31 +213,26 @@ function renderQueue() {
 function addContacts() {
   const input = $('#contactQueueInput');
   const rawNames = (input?.value || '').split(/\r?\n|;/).map(compact).filter(Boolean);
-  const names = [...new Set(rawNames.map((name) => name))];
+  const names = [...new Set(rawNames)];
   if (!names.length) {
+    queueMessage('Enter a contact name first.', 'error');
     input?.focus();
     return;
   }
-  const ids = sourceIds();
-  if (!ids.length) {
-    $('#selectAllSources')?.focus();
-    return;
-  }
-  const dateFrom = $('#dateFrom')?.value || '';
-  const dateTo = $('#dateTo')?.value || '';
-  if (!dateFrom || !dateTo || dateFrom > dateTo) {
-    $('#dateFrom')?.focus();
-    return;
-  }
+
   const known = new Set(queue.map(snapshotKey));
+  let added = 0;
   for (const name of names) {
     const item = currentSnapshot(name);
     const key = snapshotKey(item);
     if (known.has(key)) continue;
     queue.push(item);
     known.add(key);
+    added += 1;
   }
   input.value = '';
+  if (added) queueMessage(`${added} contact${added === 1 ? '' : 's'} added. Search settings are captured now; if no sources are selected yet, current sources will be used when the queue runs.`);
+  else queueMessage('Those contacts are already queued with the same search settings.');
   renderQueue();
 }
 
@@ -226,16 +243,42 @@ async function runContacts() {
   if (!form || !runButton) return;
   const originalForm = captureFormState();
   const originalHold = holdIsActive();
+
+  if (!originalForm.sourceIds.length && queue.every((item) => !item.sourceIds.length)) {
+    queueMessage('Select at least one source before running the queue.', 'error');
+    $('#selectAllSources')?.focus();
+    return;
+  }
+  if (!originalForm.dateFrom || !originalForm.dateTo || originalForm.dateFrom > originalForm.dateTo) {
+    queueMessage('Choose a valid beginning and ending date before running the queue.', 'error');
+    $('#dateFrom')?.focus();
+    return;
+  }
+
   queueRunning = true;
   stopRequested = false;
+  queueMessage('Queue search running. Each name remains a separate review target.');
   renderQueue();
   try {
     for (let index = 0; index < queue.length; index += 1) {
       if (stopRequested) break;
       const item = queue[index];
+      const runnable = resolvedItem(item, originalForm);
+      if (!runnable.sourceIds.length) {
+        item.status = 'NEEDS SOURCES';
+        queueMessage(`${item.name} has no available source selection.`, 'error');
+        renderQueue();
+        break;
+      }
+      if (!runnable.dateFrom || !runnable.dateTo || runnable.dateFrom > runnable.dateTo) {
+        item.status = 'NEEDS DATES';
+        queueMessage(`${item.name} has an invalid date window.`, 'error');
+        renderQueue();
+        break;
+      }
       if (index > 0) setHold(true);
       else setHold(originalHold);
-      applyFormState(item);
+      applyFormState(runnable);
       item.status = 'RUNNING';
       renderQueue();
       const cycle = waitForSearchCycle(runButton);
@@ -244,9 +287,12 @@ async function runContacts() {
       item.status = settledQueueStatus();
       renderQueue();
     }
+    if (stopRequested) queueMessage('Queue stopped after the current contact.');
+    else queueMessage('Queue search finished. Use Review on any completed contact to jump to its partitioned Identity Review.');
   } catch (error) {
     const running = queue.find((item) => item.status === 'RUNNING');
     if (running) running.status = 'CLIENT HOLD';
+    queueMessage(error?.message || 'Queued contact search held.', 'error');
     console.warn('[TD613 Giving] queued contact search held', error);
   } finally {
     applyFormState(originalForm);
@@ -318,26 +364,42 @@ function installContactQueue() {
   panel.className = 'contact-queue-panel';
   panel.innerHTML = `
     <div class="contact-queue-heading">
-      <div><strong>Contact queue</strong><small>Each queued name becomes its own review target; confirmed records stay partitioned before Campaign Deputy handoff.</small></div>
+      <div><strong>Contact queue</strong><small>Add one name at a time or paste a list, one per line. Each contact remains a separate review target before Campaign Deputy handoff.</small></div>
       <span class="counter" id="contactQueueCount">0 contacts</span>
     </div>
     <label class="field contact-queue-input-field">
-      <span>Contact names <small>one per line; commas stay inside names</small></span>
+      <span>Contact name <small>one per line for a list; commas stay inside names</small></span>
       <textarea id="contactQueueInput" rows="3" maxlength="3000" placeholder="Jane Doe&#10;John Q. Public"></textarea>
     </label>
     <div class="button-row contact-queue-actions">
-      <button class="button" id="addContactQueueButton" type="button">Add contacts</button>
+      <button class="button" id="addContactQueueButton" type="button">Add contact</button>
       <button class="button primary" id="runContactQueueButton" type="button" disabled>Search queue</button>
       <button class="button" id="stopContactQueueButton" type="button" disabled>Stop after current</button>
-      <button class="text-button" id="clearContactQueueButton" type="button" disabled>Clear</button>
+      <button class="text-button" id="clearContactQueueButton" type="button" disabled>Clear queue</button>
     </div>
+    <p class="contact-queue-message" id="contactQueueMessage" role="status" hidden></p>
     <div class="contact-queue-list" id="contactQueueList" aria-live="polite"></div>
   `;
   sourcePicker.before(panel);
   $('#addContactQueueButton').addEventListener('click', addContacts);
   $('#runContactQueueButton').addEventListener('click', runContacts);
-  $('#stopContactQueueButton').addEventListener('click', () => { stopRequested = true; renderQueue(); });
-  $('#clearContactQueueButton').addEventListener('click', () => { queue.splice(0); renderQueue(); });
+  $('#stopContactQueueButton').addEventListener('click', () => {
+    stopRequested = true;
+    queueMessage('Stop requested. The active contact will finish first.');
+    renderQueue();
+  });
+  $('#clearContactQueueButton').addEventListener('click', () => {
+    if (queueRunning) return;
+    queue.splice(0);
+    queueMessage('Contact queue cleared.');
+    renderQueue();
+  });
+  document.addEventListener('td613:giving-clear-all', () => {
+    if (queueRunning) return;
+    queue.splice(0);
+    queueMessage('Contact queue cleared with the active search.');
+    renderQueue();
+  });
   renderQueue();
   installSourceErrorObserver();
 }
