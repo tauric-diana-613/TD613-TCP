@@ -37,6 +37,50 @@ assert.equal(fec.records[0].amount_cents, 12525);
 assert.equal(fec.records[0].lineage.transaction_id, 'txn-1');
 assert.ok(fec.continuation);
 
+let fecRetryCalls = 0;
+const fecRetried = await searchSourcePage({
+  source_instance_id: 'fec-schedule-a',
+  query: { name: 'Retry Donor', start_date: '2025-01-01', end_date: '2026-08-11', page_size: 20 }
+}, {
+  fetchImpl: async () => {
+    fecRetryCalls += 1;
+    if (fecRetryCalls === 1) return mockResponse({ status: 429, headers: { 'retry-after': '0', 'x-ratelimit-remaining': '0' }, json: {} });
+    return mockResponse({
+      headers: { 'x-ratelimit-remaining': '998' },
+      json: {
+        pagination: { page: 1, pages: 1 },
+        results: [{
+          sub_id: 'sub-retry', transaction_id: 'txn-retry', amendment_indicator: 'N',
+          committee_name: 'Committee Retry', contributor_name: 'DONOR, RETRY',
+          contribution_receipt_date: '2026-08-02', contribution_receipt_amount: 50
+        }]
+      }
+    });
+  }
+});
+assert.equal(fecRetryCalls, 2, 'OpenFEC receives one bounded retry after a transient 429');
+assert.equal(fecRetried.source_status, 'READY');
+assert.equal(fecRetried.records[0].amount_cents, 5000);
+
+const previousFecApiKey = process.env.FEC_API_KEY;
+delete process.env.FEC_API_KEY;
+let fecLimitedCalls = 0;
+const fecLimited = await searchSourcePage({
+  source_instance_id: 'fec-schedule-a',
+  query: { name: 'Limited Donor', page_size: 20 }
+}, {
+  fetchImpl: async () => {
+    fecLimitedCalls += 1;
+    return mockResponse({ status: 429, headers: { 'retry-after': '0', 'x-ratelimit-remaining': '0' }, json: {} });
+  }
+});
+assert.equal(fecLimitedCalls, 2);
+assert.equal(fecLimited.source_status, 'ERROR');
+assert.equal(fecLimited.error.code, 'source-rate-limited');
+assert.match(fecLimited.error.message, /DEMO_KEY fallback/);
+if (previousFecApiKey === undefined) delete process.env.FEC_API_KEY;
+else process.env.FEC_API_KEY = previousFecApiKey;
+
 const floridaTsv = 'Committee Name\tContributor Name\tContribution Date\tAmount\tAmendment\nNeighbors for Florida\tDOE, JANE\t08/01/2026\t20.00\tN';
 const florida = await searchSourcePage({
   source_instance_id: 'florida-state-contributions',
