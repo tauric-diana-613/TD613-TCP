@@ -20,7 +20,9 @@ assert.equal(parseMoneyToCents('-0.01'), -1);
 assert.equal(parseMoneyToCents(19.995), 2000);
 
 assert.equal(exactNameMatch('DOE, JANE', 'Jane Doe'), true, 'comma-order names normalize to the same exact identity string');
-assert.equal(exactNameMatch('Jane A. Doe', 'Jane Doe'), false, 'middle-name differences remain meaningful for Exact Match');
+assert.equal(exactNameMatch('DOE, JANE A', 'Jane Doe'), true, 'source middle initials remain admissible when the submitted name omits middle evidence');
+assert.equal(exactNameMatch('Jane A Doe', 'Jane Doe'), true, 'an omitted middle name is unspecified rather than contradictory');
+assert.equal(exactNameMatch('Jane A Doe', 'Jane B Doe'), false, 'conflicting explicit middle names remain a failed Exact Match');
 assert.equal(exactNameMatch('Jane Doe Jr', 'Jane Doe'), false, 'suffix differences remain meaningful for Exact Match');
 assert.equal(createDossier({ query: { name: 'Jane Doe', exact_match: true } }).query.exact_match, true);
 
