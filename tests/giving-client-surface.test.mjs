@@ -10,6 +10,7 @@ const css = fs.readFileSync(path.join(root, 'app/giving/history/giving.css'), 'u
 const polish = fs.readFileSync(path.join(root, 'app/giving/history/giving-polish.css'), 'utf8');
 const bootstrap = fs.readFileSync(path.join(root, 'app/giving/history/giving-bootstrap.js'), 'utf8');
 const contactQueue = fs.readFileSync(path.join(root, 'app/giving/history/giving-contact-queue.js'), 'utf8');
+const exportMenu = fs.readFileSync(path.join(root, 'app/giving/history/giving-export-menu.js'), 'utf8');
 const xlsx = fs.readFileSync(path.join(root, 'app/giving/history/giving-xlsx.js'), 'utf8');
 
 assert.match(html, /noindex,nofollow,noarchive,nosnippet/);
@@ -21,6 +22,7 @@ assert.match(html, /<script type="module" src="\.\/giving-bootstrap\.js\?v=20260
 assert.match(html, /href="\.\/giving-polish\.css\?v=20260812-3"/);
 assert.match(html, /href="\.\/giving\.css\?v=20260812-3"/);
 assert.match(bootstrap, /giving-contact-queue\.js\?v=20260812-3/);
+assert.match(bootstrap, /giving-export-menu\.js\?v=20260812-3/);
 assert.match(bootstrap, /giving-app\.js\?v=20260812-3/);
 assert.match(html, /id="sourceRegistry"/);
 assert.match(html, /id="recordList"/);
@@ -37,6 +39,7 @@ assert.match(html, /id="campaignTargetSelect"/);
 assert.match(html, /id="campaignTargetSummary"/);
 assert.match(html, /id="syncTargetButton"/);
 assert.match(html, /id="exportSpreadsheetButton"/);
+assert.match(html, /id="exportCsvButton"/);
 for (const key of ['contributor', 'committee', 'amount', 'status']) {
   assert.match(html, new RegExp(`data-review-sort="${key}"`));
 }
@@ -86,6 +89,13 @@ assert.match(contactQueue, /one per line; commas stay inside names/);
 assert.match(contactQueue, /if \(index > 0\) setHold\(true\)/, 'later queued contacts accumulate as partitioned targets');
 assert.match(contactQueue, /td613:giving-select-target/);
 assert.match(contactQueue, /fec-schedule-a/, 'OpenFEC client diagnostics are surfaced beside retryable source failures');
+
+assert.match(exportMenu, /details\.id = 'exportMenu'/);
+assert.match(exportMenu, /summary\.textContent = 'Export'/);
+assert.match(exportMenu, /Excel \(\.xlsx\)/);
+assert.match(exportMenu, /CSV \(\.csv\)/);
+assert.match(exportMenu, /menu\.append\(xlsxButton, csvButton\)/, 'the existing export controls are moved into one format menu without changing their IDs');
+assert.match(exportMenu, /details\.removeAttribute\('open'\)/);
 
 assert.match(xlsx, /Giving Records/);
 assert.match(xlsx, /Search Target/);
