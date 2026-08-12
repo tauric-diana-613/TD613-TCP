@@ -11,6 +11,7 @@ const RETRYABLE_FEC_STATUSES = new Set([429, 502, 503, 504]);
 const MAX_FEC_ATTEMPTS = 2;
 const MAX_RETRY_DELAY_MS = 1200;
 const FEC_UPSTREAM_TIMEOUT_MS = 20_000;
+const FEC_PAGE_SIZE_CAP = 50;
 
 function boundedRetryDelay(response) {
   const retryAfter = response.headers?.get?.('retry-after');
@@ -96,7 +97,7 @@ export async function searchFecPage({ source, query, continuation, fetchImpl }) 
   const configuredKey = String(process.env.FEC_API_KEY || '').trim();
   const apiKey = configuredKey || 'DEMO_KEY';
   const keyMode = configuredKey ? 'configured' : 'demo';
-  const perPage = Math.min(query.page_size, 100);
+  const perPage = Math.min(query.page_size, FEC_PAGE_SIZE_CAP);
   const url = new URL('https://api.open.fec.gov/v1/schedules/schedule_a/');
   url.searchParams.set('api_key', apiKey);
   url.searchParams.set('per_page', String(perPage));
@@ -114,12 +115,12 @@ export async function searchFecPage({ source, query, continuation, fetchImpl }) 
   if (query.min_amount_cents !== null) url.searchParams.set('min_amount', String(query.min_amount_cents / 100));
   if (query.max_amount_cents !== null) url.searchParams.set('max_amount', String(query.max_amount_cents / 100));
 
-  // Current OpenFEC Schedule A accepts multiple two-year transaction periods.
-  // Supplying the periods implied by the operator's date window preserves the
-  // requested coverage while giving the upstream database explicit partitions.
-  for (const period of transactionPeriods(query.start_date, query.end_date)) {
-    url.searchParams.append('two_year_transaction_period', String(period));
-  }
+  // A single two-year period is useful partition evidence. Repeating several
+  // periods on a broad donor/date query made OpenFEC materially heavier while
+  // min_date/max_date already preserve the requested coverage. Broad windows
+  // therefore rely on the date bounds alone.
+  const periods = transactionPeriods(query.start_date, query.end_date);
+  if (periods.length === 1) url.searchParams.set('two_year_transaction_period', String(periods[0]));
   appendSeekCursor(url, cursor);
 
   let response;
@@ -192,3 +193,5 @@ export async function searchFecPage({ source, query, continuation, fetchImpl }) 
     })
   };
 }
+
+export const _fecInternals = Object.freeze({ FEC_PAGE_SIZE_CAP, transactionPeriods });
