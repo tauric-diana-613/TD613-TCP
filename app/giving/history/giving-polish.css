@@ -261,6 +261,7 @@
     flex-direction: column;
     gap: 8px;
   }
+  .mobile-control-toggle { display: none; }
   .ledger-tabs {
     position: sticky;
     top: 62px;
@@ -283,6 +284,23 @@
     order: 2;
     width: 100%;
     padding-top: 0;
+  }
+  .control-rail,
+  .control-rail.mobile-open {
+    position: static;
+    z-index: auto;
+    inset: auto;
+    order: 3;
+    display: grid;
+    width: 100%;
+    max-width: 100%;
+    align-content: start;
+    gap: 8px;
+    padding: 0 0 16px;
+    overflow: visible;
+    background: transparent;
+    backdrop-filter: none;
+    animation: none;
   }
   .review-hold-button { width: 100%; min-height: 38px; }
   .review-sort-header { grid-template-columns: 1fr 1fr; gap: 5px 10px; padding: 0; }
