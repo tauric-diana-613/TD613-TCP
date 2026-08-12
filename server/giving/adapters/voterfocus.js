@@ -24,6 +24,75 @@ function candidateParts(value) {
   return { family: tokens.at(-1), given: tokens.slice(0, -1).join(' ') };
 }
 
+function normalizedHeader(value) {
+  return String(value || '').toLowerCase().replace(/[^a-z0-9]/g, '');
+}
+
+function rowValue(row, accepted) {
+  const entries = Object.entries(row || {});
+  for (const [key, value] of entries) {
+    if (!String(value || '').trim()) continue;
+    if (accepted.has(normalizedHeader(key))) return String(value).trim();
+  }
+  return '';
+}
+
+const FIRST_HEADERS = new Set([
+  'contributorfirstname', 'contributorvendorfirstname', 'contributorvendorfirst', 'firstname', 'first'
+]);
+const MIDDLE_HEADERS = new Set([
+  'contributormiddlename', 'contributorvendormiddlename', 'contributorvendormiddle', 'middlename', 'middle', 'mi'
+]);
+const LAST_HEADERS = new Set([
+  'contributorlastname', 'contributorvendorlastname', 'contributorlastnamecompanyname',
+  'contributorvendorlastnamecompanyname', 'lastname', 'lastnamecompanyname', 'lastnamecompany',
+  'lastcompanyname', 'lastnameorcompanyname', 'companylastname', 'companyname', 'organizationname'
+]);
+
+function exactMatchContributorProjection(row, record) {
+  const first = rowValue(row, FIRST_HEADERS);
+  const middle = rowValue(row, MIDDLE_HEADERS);
+  const last = rowValue(row, LAST_HEADERS);
+  if (first && last) return `${last}, ${[first, middle].filter(Boolean).join(' ')}`;
+
+  const current = String(
+    record?.source_contributor_name_raw ||
+    record?.contributor_name_raw ||
+    record?.contributor_name_parsed?.source_display ||
+    ''
+  ).trim();
+  if (!current || current.includes(',')) return current;
+
+  // VoterFocus's contributor search surface is explicitly keyed by
+  // “Last Name or Company Name.” Some county CSV renderers omit the comma and
+  // emit person names as LAST FIRST [MIDDLE]. Promote that serialization into
+  // a comma-delimited person projection before the browser's Exact Match gate.
+  if (record?.contributor_name_parsed?.kind === 'PERSON') {
+    const tokens = current.split(/\s+/).filter(Boolean);
+    if (tokens.length >= 2) return `${tokens[0]}, ${tokens.slice(1).join(' ')}`;
+  }
+  return current;
+}
+
+function admitVoterFocusName(record, row) {
+  const projected = exactMatchContributorProjection(row, record);
+  if (!projected || projected === record.contributor_name_raw) return record;
+  return {
+    ...record,
+    contributor_name_raw: projected,
+    contributor_name_display: projected,
+    contributor_name_parsed: {
+      ...(record.contributor_name_parsed || {}),
+      display: projected,
+      source_display: record.source_contributor_name_raw || record.contributor_name_parsed?.source_display || projected
+    },
+    lineage: {
+      ...(record.lineage || {}),
+      voterfocus_exact_match_projection: 'LAST_COMMA_FIRST_FROM_SPLIT_OR_LAST_FIRST_SOURCE_SERIALIZATION'
+    }
+  };
+}
+
 function voterFocusPayload(query, projection = 'CONTRIBUTOR_ENTITY') {
   if (!query.start_date || !query.end_date) {
     throw new GivingError('explicit-dates-required', 'VoterFocus historical searches require explicit start_date and end_date values', 400);
@@ -143,7 +212,10 @@ export async function searchVoterFocusPage({ source, query, continuation, fetchI
     ? encodeContinuation({ source_instance_id: source.id, offset: nextOffset })
     : null;
   const retrievedAt = new Date().toISOString();
-  const records = pageRows.map((row) => normalizeVoterFocusRow(row, { source, queryDigest: digest, retrievedAt }));
+  const records = pageRows.map((row) => admitVoterFocusName(
+    normalizeVoterFocusRow(row, { source, queryDigest: digest, retrievedAt }),
+    row
+  ));
   return {
     records,
     continuation: next,
@@ -157,4 +229,10 @@ export async function searchVoterFocusPage({ source, query, continuation, fetchI
   };
 }
 
-export const _voterFocusInternals = Object.freeze({ voterFocusPayload, extractCsv, candidateParts });
+export const _voterFocusInternals = Object.freeze({
+  voterFocusPayload,
+  extractCsv,
+  candidateParts,
+  exactMatchContributorProjection,
+  admitVoterFocusName
+});
