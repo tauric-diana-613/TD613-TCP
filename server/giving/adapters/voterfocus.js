@@ -49,7 +49,31 @@ const LAST_HEADERS = new Set([
   'lastcompanyname', 'lastnameorcompanyname', 'companylastname', 'companyname', 'organizationname'
 ]);
 
-function exactMatchContributorProjection(row, record) {
+function nameToken(value) {
+  return String(value || '')
+    .normalize('NFKC')
+    .toLocaleUpperCase('en-US')
+    .replace(/[^\p{L}\p{N}'-]/gu, '');
+}
+
+function queryPersonParts(query = {}) {
+  const raw = String(query.name || '').trim();
+  if (!raw) return { given: '', family: '' };
+  if (raw.includes(',')) {
+    const [familyPart, givenPart = ''] = raw.split(',', 2).map((part) => part.trim());
+    return {
+      family: nameToken(familyPart),
+      given: nameToken(givenPart.split(/\s+/).filter(Boolean)[0] || '')
+    };
+  }
+  const tokens = raw.split(/\s+/).filter(Boolean);
+  return {
+    given: nameToken(tokens[0] || ''),
+    family: nameToken(tokens.at(-1) || '')
+  };
+}
+
+function exactMatchContributorProjection(row, record, query = {}) {
   const first = rowValue(row, FIRST_HEADERS);
   const middle = rowValue(row, MIDDLE_HEADERS);
   const last = rowValue(row, LAST_HEADERS);
@@ -63,19 +87,38 @@ function exactMatchContributorProjection(row, record) {
   ).trim();
   if (!current || current.includes(',')) return current;
 
-  // VoterFocus's contributor search surface is explicitly keyed by
-  // “Last Name or Company Name.” Some county CSV renderers omit the comma and
-  // emit person names as LAST FIRST [MIDDLE]. Promote that serialization into
-  // a comma-delimited person projection before the browser's Exact Match gate.
-  if (record?.contributor_name_parsed?.kind === 'PERSON') {
-    const tokens = current.split(/\s+/).filter(Boolean);
-    if (tokens.length >= 2) return `${tokens[0]}, ${tokens.slice(1).join(' ')}`;
+  const tokens = current.split(/\s+/).filter(Boolean);
+  if (tokens.length < 2 || record?.contributor_name_parsed?.kind !== 'PERSON') return current;
+
+  const queryParts = queryPersonParts(query);
+  const firstToken = nameToken(tokens[0]);
+  const secondToken = nameToken(tokens[1]);
+  const lastToken = nameToken(tokens.at(-1));
+
+  // VoterFocus counties do not serialize person names uniformly. Some emit
+  // LAST FIRST [MIDDLE], while others emit FIRST [MIDDLE] LAST. The previous
+  // hotfix treated every comma-less value as LAST FIRST, which turns a valid
+  // "JOHN Q DOE" row into the invalid "JOHN, Q DOE" projection. Use the
+  // operator's search name only to choose between the two observed source
+  // orderings; preserve the source text when neither ordering is established.
+  if (queryParts.family && queryParts.given) {
+    if (firstToken === queryParts.family && secondToken === queryParts.given) {
+      return `${tokens[0]}, ${tokens.slice(1).join(' ')}`;
+    }
+    if (firstToken === queryParts.given && lastToken === queryParts.family) {
+      return `${tokens.at(-1)}, ${tokens.slice(0, -1).join(' ')}`;
+    }
+  }
+
+  const parsed = record.contributor_name_parsed || {};
+  if (parsed.given && parsed.family && firstToken === nameToken(parsed.given) && lastToken === nameToken(parsed.family)) {
+    return `${parsed.family}, ${[parsed.given, parsed.middle, parsed.suffix].filter(Boolean).join(' ')}`;
   }
   return current;
 }
 
-function admitVoterFocusName(record, row) {
-  const projected = exactMatchContributorProjection(row, record);
+function admitVoterFocusName(record, row, query = {}) {
+  const projected = exactMatchContributorProjection(row, record, query);
   if (!projected || projected === record.contributor_name_raw) return record;
   return {
     ...record,
@@ -88,7 +131,7 @@ function admitVoterFocusName(record, row) {
     },
     lineage: {
       ...(record.lineage || {}),
-      voterfocus_exact_match_projection: 'LAST_COMMA_FIRST_FROM_SPLIT_OR_LAST_FIRST_SOURCE_SERIALIZATION'
+      voterfocus_exact_match_projection: 'QUERY_DISAMBIGUATED_PERSON_ORDER'
     }
   };
 }
@@ -214,7 +257,8 @@ export async function searchVoterFocusPage({ source, query, continuation, fetchI
   const retrievedAt = new Date().toISOString();
   const records = pageRows.map((row) => admitVoterFocusName(
     normalizeVoterFocusRow(row, { source, queryDigest: digest, retrievedAt }),
-    row
+    row,
+    query
   ));
   return {
     records,
@@ -233,6 +277,7 @@ export const _voterFocusInternals = Object.freeze({
   voterFocusPayload,
   extractCsv,
   candidateParts,
+  queryPersonParts,
   exactMatchContributorProjection,
   admitVoterFocusName
 });

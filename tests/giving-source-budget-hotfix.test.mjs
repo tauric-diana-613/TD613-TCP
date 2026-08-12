@@ -78,26 +78,44 @@ assert.equal(voterFocusCalls, 1, 'VoterFocus must stop after the first donor pro
 assert.equal(voterFocus.records.length, 1);
 assert.equal(voterFocus.records[0].contributor_name_raw, 'DOE, JOHN');
 
-const row17NoComma = [
+const row17LastFirst = [
   'Jane for Tallahassee', 'Jane Candidate', 'Tallahassee City Commission', '2010 General', 'M7',
   'DOE JOHN Q', '1 Main St', 'Tallahassee', 'FL', '32301', 'Acme',
   'Engineer', '08/10/2010', 'CHE', '100.00', 'N', 'report-2'
 ];
-const voterFocusNoComma = await searchSourcePage({
+const voterFocusLastFirst = await searchSourcePage({
   source_instance_id: 'voterfocus-leon',
   query: { name: 'John Doe', start_date: '2020-01-01', end_date: '2026-08-12', page_size: 200 }
 }, {
-  fetchImpl: async () => mockResponse({ text: `${headers17.join(',')}\n${row17NoComma.join(',')}` })
+  fetchImpl: async () => mockResponse({ text: `${headers17.join(',')}\n${row17LastFirst.join(',')}` })
 });
-assert.equal(voterFocusNoComma.records.length, 1);
+assert.equal(voterFocusLastFirst.records.length, 1);
 assert.equal(
-  voterFocusNoComma.records[0].contributor_name_raw,
+  voterFocusLastFirst.records[0].contributor_name_raw,
   'DOE, JOHN Q',
   'VoterFocus LAST FIRST MIDDLE serialization must be projected into exact-match-safe comma order'
 );
 assert.equal(
-  voterFocusNoComma.records[0].lineage.voterfocus_exact_match_projection,
-  'LAST_COMMA_FIRST_FROM_SPLIT_OR_LAST_FIRST_SOURCE_SERIALIZATION'
+  voterFocusLastFirst.records[0].lineage.voterfocus_exact_match_projection,
+  'QUERY_DISAMBIGUATED_PERSON_ORDER'
+);
+
+const row17FirstLast = [
+  'Jane for Tallahassee', 'Jane Candidate', 'Tallahassee City Commission', '2010 General', 'M7',
+  'JOHN Q DOE', '1 Main St', 'Tallahassee', 'FL', '32301', 'Acme',
+  'Engineer', '08/10/2010', 'CHE', '100.00', 'N', 'report-3'
+];
+const voterFocusFirstLast = await searchSourcePage({
+  source_instance_id: 'voterfocus-leon',
+  query: { name: 'John Doe', start_date: '2020-01-01', end_date: '2026-08-12', page_size: 200 }
+}, {
+  fetchImpl: async () => mockResponse({ text: `${headers17.join(',')}\n${row17FirstLast.join(',')}` })
+});
+assert.equal(voterFocusFirstLast.records.length, 1);
+assert.equal(
+  voterFocusFirstLast.records[0].contributor_name_raw,
+  'DOE, JOHN Q',
+  'VoterFocus FIRST MIDDLE LAST serialization must not be reversed into JOHN, MIDDLE LAST'
 );
 
 let easyVoteCalls = 0;
@@ -105,18 +123,23 @@ const easyVote = await searchSourcePage({
   source_instance_id: 'easyvote-lakeland',
   query: { name: 'Jane Doe', start_date: '2020-01-01', end_date: '2026-08-12', page_size: 100 }
 }, {
-  fetchImpl: async (_url, options) => {
+  fetchImpl: async (url, options) => {
     easyVoteCalls += 1;
-    if (easyVoteCalls === 1) return mockResponse({ json: { UserId: 'u-1', CustomerId: 'c-1', ZumoToken: null } });
+    assert.equal(options.headers.Origin, 'https://cityoflakelandfl.easyvotecampaignfinance.com');
+    assert.equal(options.headers.Referer, 'https://cityoflakelandfl.easyvotecampaignfinance.com/');
+    if (easyVoteCalls === 1) {
+      assert.match(String(url), /getwebsiteuser\/cityoflakelandfl$/);
+      return mockResponse({ json: { UserId: 'u-1', CustomerId: 'c-1', ZumoToken: null } });
+    }
     assert.equal(options.headers['Easy-Vote-Authenticated-User'], 'UserId:u-1|CustomerId:c-1|ZumoToken:null');
     return mockResponse({ json: { data: [], hasNextPage: false } });
   }
 });
-assert.equal(easyVoteCalls, 2, 'legacy null-token EasyVote tenant remains bootstrap-plus-search');
+assert.equal(easyVoteCalls, 2, 'EasyVote tenant remains bootstrap-plus-search when the preferred public tenant succeeds');
 assert.equal(easyVote.source_status, 'READY');
 
 const easyVoteObservedUrls = [];
-const easyVoteTokenized = await searchSourcePage({
+const easyVoteFallback = await searchSourcePage({
   source_instance_id: 'easyvote-safety-harbor',
   query: { name: 'Jane Doe', start_date: '2020-01-01', end_date: '2026-08-12', page_size: 100 }
 }, {
@@ -124,15 +147,24 @@ const easyVoteTokenized = await searchSourcePage({
     const value = String(url);
     easyVoteObservedUrls.push(value);
     if (easyVoteObservedUrls.length === 1) {
-      assert.match(value, /getwebsiteuser\/safetyharborfl$/);
-      return mockResponse({ status: 404, json: {} });
+      assert.match(value, /getwebsiteuser\/cityofsafetyharborfl$/);
+      assert.equal(options.headers.Origin, 'https://cityofsafetyharborfl.easyvotecampaignfinance.com');
+      return mockResponse({ json: { data: { UserId: 'u-city', CustomerId: 'c-city', ZumoToken: null } } });
     }
     if (easyVoteObservedUrls.length === 2) {
-      assert.match(value, /getwebsiteuser\/cityofsafetyharborfl$/);
-      return mockResponse({ json: { data: { UserId: 'u-2', CustomerId: 'c-2', ZumoToken: 'zumo-token-2' } } });
+      assert.match(value, /advancedsearch\/contributions\/c-city/);
+      assert.equal(options.headers.Origin, 'https://cityofsafetyharborfl.easyvotecampaignfinance.com');
+      return mockResponse({ status: 403, json: {} });
     }
-    assert.match(value, /advancedsearch\/contributions\/c-2/);
-    assert.equal(options.headers['Easy-Vote-Authenticated-User'], 'UserId:u-2|CustomerId:c-2|ZumoToken:zumo-token-2');
+    if (easyVoteObservedUrls.length === 3) {
+      assert.match(value, /getwebsiteuser\/safetyharborfl$/);
+      assert.equal(options.headers.Origin, 'https://safetyharborfl.easyvotecampaignfinance.com');
+      return mockResponse({ json: { data: { UserId: 'u-old', CustomerId: 'c-old', ZumoToken: 'zumo-token-2' } } });
+    }
+    assert.match(value, /advancedsearch\/contributions\/c-old/);
+    assert.equal(options.headers.Origin, 'https://safetyharborfl.easyvotecampaignfinance.com');
+    assert.equal(options.headers.Referer, 'https://safetyharborfl.easyvotecampaignfinance.com/');
+    assert.equal(options.headers['Easy-Vote-Authenticated-User'], 'UserId:u-old|CustomerId:c-old|ZumoToken:zumo-token-2');
     assert.equal(options.headers['X-ZUMO-AUTH'], 'zumo-token-2');
     return mockResponse({
       json: {
@@ -142,9 +174,9 @@ const easyVoteTokenized = await searchSourcePage({
     });
   }
 });
-assert.equal(easyVoteObservedUrls.length, 3, 'EasyVote uses at most one tenant alias bootstrap before the contribution request');
-assert.equal(easyVoteTokenized.source_status, 'READY');
-assert.equal(easyVoteTokenized.records.length, 1);
-assert.equal(easyVoteTokenized.records[0].amount_cents, 2500);
+assert.equal(easyVoteObservedUrls.length, 4, 'EasyVote must retry the alternate tenant after contribution-search failure, not only bootstrap failure');
+assert.equal(easyVoteFallback.source_status, 'READY');
+assert.equal(easyVoteFallback.records.length, 1);
+assert.equal(easyVoteFallback.records[0].amount_cents, 2500);
 
 console.log('giving-source-budget-hotfix.test.mjs passed');
