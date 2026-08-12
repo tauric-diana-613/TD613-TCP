@@ -10,7 +10,7 @@ import {
 const RETRYABLE_FEC_STATUSES = new Set([429, 502, 503, 504]);
 const MAX_FEC_ATTEMPTS = 2;
 const MAX_RETRY_DELAY_MS = 1200;
-const FEC_UPSTREAM_TIMEOUT_MS = 24_000;
+const FEC_UPSTREAM_TIMEOUT_MS = 20_000;
 
 function boundedRetryDelay(response) {
   const retryAfter = response.headers?.get?.('retry-after');
