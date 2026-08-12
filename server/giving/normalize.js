@@ -12,8 +12,9 @@ const SUFFIXES = new Set(['JR', 'SR', 'II', 'III', 'IV', 'V']);
 const ORGANIZATION_MARKERS = /\b(LLC|INC|CORP|CORPORATION|ASSOCIATION|PAC|COMMITTEE|UNION|FOUNDATION|PARTNERS|PARTNERSHIP|TRUST|COMPANY|CO\.?|BANK|CLUB)\b/i;
 
 function contributorKindHint(value) {
-  const type = cleanText(value, 120).toUpperCase();
-  if (!type) return null;
+  const cleaned = cleanText(value, 120);
+  if (!cleaned) return null;
+  const type = cleaned.toUpperCase();
   if (/\b(IND|INDIVIDUAL|PERSON|PERSONAL|HUMAN)\b/.test(type)) return 'PERSON';
   if (/\b(ORG|ORGANIZATION|BUSINESS|CORP|CORPORATION|COMPANY|COMMITTEE|PAC|PARTY|ASSOCIATION|UNION|ENTITY|TRUST|FOUNDATION)\b/.test(type)) return 'ORGANIZATION';
   return null;
