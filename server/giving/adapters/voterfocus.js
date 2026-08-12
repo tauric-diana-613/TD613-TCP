@@ -24,7 +24,7 @@ function candidateParts(value) {
   return { family: tokens.at(-1), given: tokens.slice(0, -1).join(' ') };
 }
 
-function voterFocusPayload(query, projection = 'CONTRIBUTOR') {
+function voterFocusPayload(query, projection = 'CONTRIBUTOR_ENTITY') {
   if (!query.start_date || !query.end_date) {
     throw new GivingError('explicit-dates-required', 'VoterFocus historical searches require explicit start_date and end_date values', 400);
   }
@@ -33,7 +33,9 @@ function voterFocusPayload(query, projection = 'CONTRIBUTOR') {
   const params = new URLSearchParams();
   params.set('srch_tp', 'C');
   const person = candidateParts(query.candidate || query.name);
-  params.set('c_lastname', projection === 'CONTRIBUTOR' ? (query.name || query.last_name || '') : '');
+  params.set('c_lastname', projection === 'CONTRIBUTOR_PERSON'
+    ? (query.last_name || person.family)
+    : projection === 'CONTRIBUTOR_ENTITY' ? (query.name || query.last_name || query.committee || '') : '');
   params.set('cand_name', projection === 'COMMITTEE'
     ? (query.committee || query.name || '')
     : projection === 'CANDIDATE' ? (query.last_name || person.family) : '');
@@ -82,9 +84,14 @@ export async function searchVoterFocusPage({ source, query, continuation, fetchI
   const offset = cursor?.offset || 0;
   const endpoint = new URL('https://www.voterfocus.com/CampaignFinance/cand_srch.php');
   endpoint.searchParams.set('c', source.code);
-  const projections = query.committee ? ['COMMITTEE'] : query.candidate ? ['CANDIDATE'] : ['CONTRIBUTOR', 'CANDIDATE', 'COMMITTEE'];
+  const projections = query.committee
+    ? ['CONTRIBUTOR_ENTITY', 'COMMITTEE']
+    : query.candidate
+      ? ['CANDIDATE']
+      : ['CONTRIBUTOR_PERSON', 'CONTRIBUTOR_ENTITY', 'CANDIDATE', 'COMMITTEE'];
   let response = null;
-  let csv = '';
+  const observedRows = [];
+  const seenRows = new Set();
   for (const projection of projections) {
     response = await fetchWithBoundary(endpoint, {
       method: 'POST',
@@ -101,10 +108,23 @@ export async function searchVoterFocusPage({ source, query, continuation, fetchI
       })()
     }, { fetchImpl });
     if (!response.ok) throw new GivingError('voterfocus-upstream-error', `VoterFocus returned HTTP ${response.status}`, 502);
-    csv = extractCsv(await readBoundedText(response));
-    if (csv && rowsToObjects(splitDelimited(csv, ',')).length) break;
+    const csv = extractCsv(await readBoundedText(response));
+    if (!csv) continue;
+    const projectionRows = splitDelimited(csv, ',');
+    const width = projectionRows[0]?.length || 0;
+    if (width !== 17 || projectionRows.some((row) => row.length !== width)) {
+      throw new GivingError('voterfocus-schema-drift', `Expected the 17-column VoterFocus CSV schema; observed ${width}`, 502, {
+        expected_columns: 17,
+        observed_columns: width
+      });
+    }
+    for (const row of rowsToObjects(projectionRows)) {
+      const key = JSON.stringify(row);
+      if (!seenRows.has(key)) observedRows.push(row);
+      seenRows.add(key);
+    }
   }
-  if (!csv) {
+  if (!observedRows.length) {
     return {
       records: [], continuation: null, source_status: 'READY', coverage: source.electronic_scope,
       receipt: sourceReceipt({
@@ -113,18 +133,9 @@ export async function searchVoterFocusPage({ source, query, continuation, fetchI
       })
     };
   }
-  const rows = splitDelimited(csv, ',');
-  const width = rows[0]?.length || 0;
-  if (width !== 17 || rows.some((row) => row.length !== width)) {
-    throw new GivingError('voterfocus-schema-drift', `Expected the 17-column VoterFocus CSV schema; observed ${width}`, 502, {
-      expected_columns: 17,
-      observed_columns: width
-    });
-  }
-  const objects = rowsToObjects(rows);
-  const pageRows = objects.slice(offset, offset + query.page_size);
+  const pageRows = observedRows.slice(offset, offset + query.page_size);
   const nextOffset = offset + pageRows.length;
-  const next = nextOffset < objects.length
+  const next = nextOffset < observedRows.length
     ? encodeContinuation({ source_instance_id: source.id, offset: nextOffset })
     : null;
   const retrievedAt = new Date().toISOString();

@@ -8,7 +8,15 @@ import {
 } from '../util.js';
 import { queryDigest, sourceReceipt } from './shared.js';
 
-function floridaPayload(query) {
+function personParts(value) {
+  const tokens = String(value || '').trim().split(/\s+/).filter(Boolean);
+  if (tokens.length < 2) return { family: tokens[0] || '', given: '' };
+  return { family: tokens.at(-1), given: tokens.slice(0, -1).join(' ') };
+}
+
+function floridaPayload(query, projection = 'CONTRIBUTOR_ENTITY') {
+  const searchName = query.name || query.committee || '';
+  const person = personParts(searchName);
   const parameters = new URLSearchParams();
   parameters.set('election', query.election || (query.election_year ? `${query.election_year}1103-GEN` : 'All'));
   parameters.set('search_on', '4');
@@ -19,12 +27,14 @@ function floridaPayload(query) {
   parameters.set('cdistrict', '');
   parameters.set('cgroup', '');
   parameters.set('party', 'All');
-  parameters.set('ComName', '');
-  parameters.set('ComNameSrch', '2');
+  parameters.set('ComName', projection === 'COMMITTEE' ? (query.committee || query.name || '') : '');
+  parameters.set('ComNameSrch', '1');
   parameters.set('committee', 'All');
   parameters.set('namesearch', '2');
-  parameters.set('cfname', query.first_name || '');
-  parameters.set('clname', query.name || query.last_name || '');
+  parameters.set('cfname', projection === 'CONTRIBUTOR_PERSON' ? (query.first_name || person.given) : '');
+  parameters.set('clname', projection === 'CONTRIBUTOR_PERSON'
+    ? (query.last_name || person.family)
+    : projection === 'CONTRIBUTOR_ENTITY' ? searchName : '');
   parameters.set('ccity', query.city || '');
   parameters.set('cstate', query.state || '');
   parameters.set('czipcode', query.zip || '');
@@ -45,23 +55,34 @@ export async function searchFloridaPage({ source, query, continuation, fetchImpl
   if (continuation) throw new GivingError('invalid-continuation', 'Florida state queries are bounded by the requested record limit and do not expose an upstream cursor', 400);
   const startedAt = new Date().toISOString();
   const digest = queryDigest(source.id, query);
-  const response = await fetchWithBoundary('https://dos.elections.myflorida.com/cgi-bin/contrib.exe', {
-    method: 'POST',
-    headers: {
-      Accept: 'text/tab-separated-values,text/plain;q=0.9,*/*;q=0.1',
-      'Content-Type': 'application/x-www-form-urlencoded;charset=UTF-8',
-      Referer: 'https://dos.elections.myflorida.com/campaign-finance/contributions/',
-      'User-Agent': 'TD613-Giving/1.0 operator research'
-    },
-    body: floridaPayload(query).toString()
-  }, { fetchImpl });
-  if (!response.ok) throw new GivingError('florida-upstream-error', `Florida Division of Elections returned HTTP ${response.status}`, 502);
-  const text = await readBoundedText(response);
-  if (/<!doctype|<html/i.test(text)) {
-    throw new GivingError('florida-contract-drift', 'Florida returned HTML instead of the requested tab-delimited export', 502);
+  const projections = query.committee
+    ? ['CONTRIBUTOR_ENTITY', 'COMMITTEE']
+    : ['CONTRIBUTOR_PERSON', 'CONTRIBUTOR_ENTITY', 'COMMITTEE'];
+  let response = null;
+  const objects = [];
+  const seenRows = new Set();
+  for (const projection of projections) {
+    response = await fetchWithBoundary('https://dos.elections.myflorida.com/cgi-bin/contrib.exe', {
+      method: 'POST',
+      headers: {
+        Accept: 'text/tab-separated-values,text/plain;q=0.9,*/*;q=0.1',
+        'Content-Type': 'application/x-www-form-urlencoded;charset=UTF-8',
+        Referer: 'https://dos.elections.myflorida.com/campaign-finance/contributions/',
+        'User-Agent': 'TD613-Giving/1.0 operator research'
+      },
+      body: floridaPayload(query, projection).toString()
+    }, { fetchImpl });
+    if (!response.ok) throw new GivingError('florida-upstream-error', `Florida Division of Elections returned HTTP ${response.status}`, 502);
+    const text = await readBoundedText(response);
+    if (/<!doctype|<html/i.test(text)) {
+      throw new GivingError('florida-contract-drift', 'Florida returned HTML instead of the requested tab-delimited export', 502);
+    }
+    for (const row of rowsToObjects(splitDelimited(text, '\t'))) {
+      const key = JSON.stringify(row);
+      if (!seenRows.has(key)) objects.push(row);
+      seenRows.add(key);
+    }
   }
-  const rows = splitDelimited(text, '\t');
-  const objects = rowsToObjects(rows);
   const retrievedAt = new Date().toISOString();
   const records = objects.map((row) => normalizeFloridaRow(row, { source, queryDigest: digest, retrievedAt }));
   return {
@@ -78,3 +99,5 @@ export async function searchFloridaPage({ source, query, continuation, fetchImpl
     })
   };
 }
+
+export const _floridaInternals = Object.freeze({ floridaPayload, personParts });
