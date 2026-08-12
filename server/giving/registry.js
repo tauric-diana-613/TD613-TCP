@@ -1,5 +1,5 @@
 const VOTERFOCUS = [
-  ['voterfocus-hillsborough', 'Hillsborough County Supervisor of Elections', 'Hillsborough', 'hil'],
+  ['voterfocus-hillsborough', 'Hillsborough County Supervisor of Elections', 'Hillsborough', 'hillsborough'],
   ['voterfocus-hernando', 'Hernando County Supervisor of Elections', 'Hernando', 'hernando'],
   ['voterfocus-polk', 'Polk County Supervisor of Elections', 'Polk', 'polk'],
   ['voterfocus-citrus', 'Citrus County Supervisor of Elections', 'Citrus', 'citrus'],

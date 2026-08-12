@@ -140,26 +140,76 @@ export function requireIntentNonce(envelope, session) {
   }
 }
 
-async function rawBody(req) {
-  if (req.body !== undefined && req.body !== null) {
-    if (typeof req.body === 'string' || Buffer.isBuffer(req.body)) return String(req.body);
-    return JSON.stringify(req.body);
-  }
-  return await new Promise((resolve, reject) => {
-    const chunks = [];
-    let total = 0;
-    req.on('data', (chunk) => {
-      total += chunk.length;
-      if (total > MAX_REQUEST_BYTES) {
-        reject(new GivingError('request-too-large', 'Giving request exceeded the bounded request body', 413));
-        req.destroy?.();
-        return;
+function bodyChunk(value) {
+  if (Buffer.isBuffer(value)) return value;
+  if (ArrayBuffer.isView(value)) return Buffer.from(value.buffer, value.byteOffset, value.byteLength);
+  if (value instanceof ArrayBuffer) return Buffer.from(value);
+  return Buffer.from(String(value));
+}
+
+async function streamBody(stream, req) {
+  const chunks = [];
+  let total = 0;
+  const append = (value) => {
+    const chunk = bodyChunk(value);
+    total += chunk.byteLength;
+    if (total > MAX_REQUEST_BYTES) {
+      req.destroy?.();
+      throw new GivingError('request-too-large', 'Giving request exceeded the bounded request body', 413);
+    }
+    chunks.push(chunk);
+  };
+  try {
+    if (typeof stream?.getReader === 'function') {
+      const reader = stream.getReader();
+      try {
+        while (true) {
+          const { done, value } = await reader.read();
+          if (done) break;
+          append(value);
+        }
+      } finally {
+        reader.releaseLock?.();
       }
-      chunks.push(chunk);
-    });
-    req.on('end', () => resolve(Buffer.concat(chunks).toString('utf8')));
-    req.on('error', reject);
-  });
+    } else if (typeof stream?.[Symbol.asyncIterator] === 'function') {
+      for await (const value of stream) append(value);
+    } else if (typeof stream?.on === 'function') {
+      await new Promise((resolve, reject) => {
+        stream.on('data', (value) => {
+          try { append(value); } catch (error) { reject(error); }
+        });
+        stream.on('end', resolve);
+        stream.on('error', reject);
+      });
+    } else {
+      throw new GivingError('invalid-json', 'Expected a valid JSON object', 400);
+    }
+  } catch (error) {
+    if (error instanceof GivingError) throw error;
+    throw new GivingError('invalid-json', 'Expected a valid JSON object', 400);
+  }
+  return Buffer.concat(chunks).toString('utf8');
+}
+
+async function rawBody(req) {
+  const supplied = req.body;
+  if (supplied !== undefined && supplied !== null) {
+    if (typeof supplied === 'string') return supplied;
+    if (Buffer.isBuffer(supplied) || ArrayBuffer.isView(supplied) || supplied instanceof ArrayBuffer) {
+      return bodyChunk(supplied).toString('utf8');
+    }
+    if (typeof supplied?.getReader === 'function' || typeof supplied?.[Symbol.asyncIterator] === 'function' || typeof supplied?.on === 'function') {
+      return streamBody(supplied, req);
+    }
+    try {
+      const serialized = JSON.stringify(supplied);
+      if (typeof serialized !== 'string') throw new Error('body is not JSON-serializable');
+      return serialized;
+    } catch {
+      throw new GivingError('invalid-json', 'Expected a valid JSON object', 400);
+    }
+  }
+  return streamBody(req, req);
 }
 
 export async function parseEnvelope(req) {

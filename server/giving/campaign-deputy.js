@@ -5,7 +5,9 @@ import {
   sha256
 } from './util.js';
 
-const API_BASE = 'https://api.campaigndeputy.com/v1';
+const API_BASE = 'https://us.api.campaigndeputy.app/v1';
+const REQUIRED_SCOPES = Object.freeze(['people-read', 'people-write', 'list-read', 'list-write']);
+const PERSON_AVAILABILITY_DELAYS_MS = Object.freeze([0, 250, 500, 1_000, 2_000]);
 
 function apiKey() {
   const key = String(process.env.CAMPAIGN_DEPUTY_API_KEY || '').trim();
@@ -24,11 +26,19 @@ async function campaignDeputyFetch(path, options = {}, context = {}) {
     }
   }, { fetchImpl: context.fetchImpl, timeoutMs: 12_000 });
   if (!response.ok) {
+    let upstreamMessage = null;
+    try {
+      const errorBody = await response.json();
+      upstreamMessage = cleanText(errorBody?.message, 300);
+    } catch {
+      // Campaign Deputy error bodies are documented as JSON, but status remains authoritative.
+    }
     if (response.status === 401 || response.status === 403) {
       throw new GivingError('campaign-deputy-authorization-failed', 'Campaign Deputy did not authorize this server request', 502);
     }
     throw new GivingError(response.status === 409 ? 'campaign-deputy-conflict' : 'campaign-deputy-upstream-error', `Campaign Deputy returned HTTP ${response.status}`, 502, {
-      upstream_status: response.status
+      upstream_status: response.status,
+      ...(upstreamMessage ? { upstream_message: upstreamMessage } : {})
     });
   }
   if (response.status === 204) return {};
@@ -37,6 +47,14 @@ async function campaignDeputyFetch(path, options = {}, context = {}) {
   } catch {
     throw new GivingError('campaign-deputy-contract-drift', 'Campaign Deputy returned a non-JSON response', 502);
   }
+}
+
+function opaqueCursor(value, field) {
+  const text = String(value ?? '').trim();
+  if (!text || text.length > 2_048 || /[\u0000-\u001f\u007f]/.test(text)) {
+    throw new GivingError('invalid-campaign-deputy-field', `${field} must be a bounded Campaign Deputy cursor`, 400, { field });
+  }
+  return text;
 }
 
 function opaqueId(value, field) {
@@ -55,7 +73,7 @@ function committeeName(value) {
 
 export async function peoplePage(payload = {}, context = {}) {
   const params = new URLSearchParams();
-  if (payload.last_evaluated_key) params.set('lastEvaluatedKey', opaqueId(payload.last_evaluated_key, 'last_evaluated_key'));
+  if (payload.last_evaluated_key) params.set('lastEvaluatedKey', opaqueCursor(payload.last_evaluated_key, 'last_evaluated_key'));
   params.set('sortKey', 'lastUpdated');
   const body = await campaignDeputyFetch(`/peoples?${params}`, {}, context);
   if (!Array.isArray(body?.data)) throw new GivingError('campaign-deputy-contract-drift', 'Campaign Deputy people page did not match its documented container', 502);
@@ -120,19 +138,53 @@ async function membershipState(listId, personId, context) {
   throw new GivingError('campaign-deputy-pagination-ceiling', 'Campaign Deputy membership pagination exceeded the bounded traversal ceiling', 502);
 }
 
-async function ensureMembership({ personId, committee, listId }, context) {
-  const list = await findOrCreateList(committee, listId, context);
-  const alreadyMember = await membershipState(list.id, personId, context);
-  if (!alreadyMember) {
-    await campaignDeputyFetch(`/lists/${encodeURIComponent(list.id)}`, {
-      method: 'PUT',
-      body: JSON.stringify({ personId })
-    }, context);
-  }
-  return { list, already_member: alreadyMember, membership_written: !alreadyMember };
+function isPersonAvailabilityLag(error) {
+  const status = error?.details?.upstream_status;
+  const message = String(error?.details?.upstream_message || '');
+  return status === 404 || (status === 400 && /(unknown|not\s+found|not\s+available|processing).{0,80}person|person.{0,80}(unknown|not\s+found|not\s+available|processing)/i.test(message));
 }
 
-function syncReceipt({ personId, listId, committee, dossierId, action, alreadyMember }) {
+async function writeMembership(listId, personId, context, retryForAvailability) {
+  const delays = retryForAvailability ? PERSON_AVAILABILITY_DELAYS_MS : [0];
+  let lastError = null;
+  for (let index = 0; index < delays.length; index += 1) {
+    if (delays[index] > 0) {
+      const sleep = context.sleepImpl || ((delayMs) => new Promise((resolve) => setTimeout(resolve, delayMs)));
+      await sleep(delays[index]);
+    }
+    try {
+      await campaignDeputyFetch(`/lists/${encodeURIComponent(listId)}`, {
+        method: 'PUT',
+        body: JSON.stringify({ personId })
+      }, context);
+      return { attempts: index + 1, availability_retried: index > 0 };
+    } catch (error) {
+      lastError = error;
+      if (!retryForAvailability || !isPersonAvailabilityLag(error) || index === delays.length - 1) break;
+    }
+  }
+  if (retryForAvailability && isPersonAvailabilityLag(lastError)) {
+    throw new GivingError(
+      'campaign-deputy-person-availability-timeout',
+      'Campaign Deputy returned the new person ID but did not make it available to lists within the bounded retry window',
+      502,
+      { attempts: delays.length, upstream_status: lastError?.details?.upstream_status || null }
+    );
+  }
+  throw lastError;
+}
+
+async function ensureMembership({ personId, committee, listId, retryForAvailability = false }, context) {
+  const list = await findOrCreateList(committee, listId, context);
+  const alreadyMember = await membershipState(list.id, personId, context);
+  let write = { attempts: 0, availability_retried: false };
+  if (!alreadyMember) {
+    write = await writeMembership(list.id, personId, context, retryForAvailability);
+  }
+  return { list, already_member: alreadyMember, membership_written: !alreadyMember, membership_write: write };
+}
+
+function syncReceipt({ personId, listId, committee, dossierId, action, alreadyMember, membershipWrite }) {
   const idempotencyKey = sha256({ personId, listId, committee, dossierId });
   return {
     schema: 'td613.giving.campaign-deputy-sync-receipt/v1',
@@ -143,6 +195,8 @@ function syncReceipt({ personId, listId, committee, dossierId, action, alreadyMe
     dossierId,
     idempotency_key: idempotencyKey,
     already_member: Boolean(alreadyMember),
+    membership_write_attempts: membershipWrite?.attempts || 0,
+    person_availability_retried: Boolean(membershipWrite?.availability_retried),
     external_contribution_created: false,
     relationship_semantics: 'REVIEWED_COMMITTEE_LIST_MEMBERSHIP_NOT_CAMPAIGN_DEPUTY_CONTRIBUTION'
   };
@@ -157,7 +211,8 @@ export async function linkExisting(payload = {}, context = {}) {
   const sync = syncReceipt({
     personId, listId: membership.list.id, committee, dossierId,
     action: membership.already_member ? 'MEMBERSHIP_ALREADY_PRESENT' : 'EXISTING_CONTACT_LINKED',
-    alreadyMember: membership.already_member
+    alreadyMember: membership.already_member,
+    membershipWrite: membership.membership_write
   });
   return {
     person: { personId, path: 'EXISTING_CONTACT' },
@@ -216,10 +271,11 @@ export async function createConfirmed(payload = {}, context = {}) {
   }, context);
   const created = body?.data || body;
   const personId = opaqueId(created?.id, 'created_person_id');
-  const membership = await ensureMembership({ personId, committee, listId: payload.list_id }, context);
+  const membership = await ensureMembership({ personId, committee, listId: payload.list_id, retryForAvailability: true }, context);
   const sync = syncReceipt({
     personId, listId: membership.list.id, committee, dossierId,
-    action: 'NEW_CONTACT_CREATED_AND_LINKED', alreadyMember: membership.already_member
+    action: 'NEW_CONTACT_CREATED_AND_LINKED', alreadyMember: membership.already_member,
+    membershipWrite: membership.membership_write
   });
   return {
     person: { ...created, path: 'EXPLICIT_NEW_CONTACT', selected_fields: [...new Set(payload.selected_fields)] },
@@ -246,6 +302,10 @@ export function withhold(payload = {}) {
 export function campaignDeputyReadiness() {
   return {
     configured: Boolean(String(process.env.CAMPAIGN_DEPUTY_API_KEY || '').trim()),
+    api_origin: API_BASE,
+    credential_type: 'CAMPAIGN_DEPUTY_CUSTOM_API_KEY',
+    required_scopes: REQUIRED_SCOPES,
+    setup_surface: 'Settings > Integrations > Campaign Deputy API',
     people_index: 'PAGINATED_NO_SEARCH_FILTER',
     create_method: 'PUT /v1/people',
     asynchronous_match_endpoint_used: false,
@@ -253,4 +313,4 @@ export function campaignDeputyReadiness() {
   };
 }
 
-export const _campaignDeputyInternals = Object.freeze({ sanitizePhone, selectedPerson, syncReceipt });
+export const _campaignDeputyInternals = Object.freeze({ sanitizePhone, selectedPerson, syncReceipt, opaqueCursor, isPersonAvailabilityLag });
