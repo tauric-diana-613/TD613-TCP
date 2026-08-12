@@ -1,0 +1,128 @@
+.dossier-actions #newDossierButton,
+.dossier-actions #saveDossierButton {
+  min-height: 30px;
+  padding: 5px 10px;
+  line-height: 1.05;
+}
+
+.giving-exact-match {
+  position: relative;
+  z-index: 1;
+  display: flex;
+  align-items: center;
+  gap: 9px;
+  margin: -2px 0 12px;
+  padding: 8px 10px;
+  border: 1px solid rgba(200, 235, 213, .12);
+  background: rgba(1, 11, 8, .46);
+  cursor: pointer;
+}
+.giving-exact-match input {
+  flex: 0 0 auto;
+  width: auto;
+  min-height: 0;
+  margin: 0;
+  accent-color: var(--cyan);
+}
+.giving-exact-match span { display: grid; gap: 1px; min-width: 0; }
+.giving-exact-match strong {
+  color: var(--bright);
+  font-size: 10px;
+  letter-spacing: .045em;
+  text-transform: uppercase;
+}
+.giving-exact-match small { color: var(--dim); font-size: 9px; line-height: 1.35; }
+
+.review-hold-button {
+  align-self: end;
+  flex: 0 0 auto;
+  min-height: 42px;
+  padding-inline: 14px;
+  white-space: nowrap;
+}
+.review-hold-button[data-held="true"] {
+  border-color: rgba(228, 198, 108, .5);
+  color: #f0dda0;
+  background: rgba(228, 198, 108, .09);
+  box-shadow: inset 2px 0 var(--gold);
+}
+
+.review-sort-header {
+  display: grid;
+  grid-template-columns: minmax(150px, .82fr) minmax(210px, 1.25fr) minmax(115px, .5fr) auto;
+  gap: 12px;
+  align-items: center;
+  margin: 0 0 7px;
+  padding: 0 13px;
+}
+.review-sort-button {
+  min-width: 0;
+  padding: 6px 0;
+  border: 0;
+  border-bottom: 1px solid rgba(200, 235, 213, .12);
+  cursor: pointer;
+  color: var(--dim);
+  background: transparent;
+  font: 700 9px/1.2 var(--mono);
+  letter-spacing: .06em;
+  text-align: left;
+  text-transform: uppercase;
+}
+.review-sort-button[data-review-sort="amount"] { text-align: right; }
+.review-sort-button:hover,
+.review-sort-button[data-active="true"] {
+  color: var(--cyan);
+  border-bottom-color: rgba(118, 234, 212, .42);
+}
+.review-sort-button:focus-visible { outline: 2px solid var(--cyan); outline-offset: 3px; }
+
+@media (max-width: 1080px) {
+  .review-sort-header { grid-template-columns: 1fr 1fr; }
+  .review-sort-button[data-review-sort="amount"] { text-align: left; }
+}
+
+@media (max-width: 760px) {
+  .ledger-tabs {
+    display: flex;
+    width: 100%;
+    max-width: 100%;
+    overflow-x: auto;
+    overflow-y: hidden;
+    overscroll-behavior-x: contain;
+    scroll-snap-type: x proximity;
+    white-space: nowrap;
+    -webkit-overflow-scrolling: touch;
+  }
+  .ledger-tabs .tab {
+    flex: 0 0 auto;
+    width: auto;
+    min-width: max-content;
+    min-height: 38px;
+    padding: 8px 11px;
+    line-height: 1.15;
+    white-space: nowrap;
+    scroll-snap-align: start;
+  }
+  .ledger-tabs .tab::before { display: none; }
+  .review-hold-button {
+    width: 100%;
+    min-height: 38px;
+  }
+  .review-sort-header {
+    grid-template-columns: 1fr 1fr;
+    gap: 5px 10px;
+    padding: 0;
+  }
+  .review-sort-button { padding: 7px 4px; }
+  .dossier-actions #newDossierButton,
+  .dossier-actions #saveDossierButton {
+    min-height: 32px;
+  }
+}
+
+@media (max-width: 430px) {
+  .ledger-tabs .tab {
+    min-height: 36px;
+    padding: 7px 10px;
+  }
+}
