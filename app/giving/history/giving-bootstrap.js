@@ -13,4 +13,5 @@ await import('./giving-app.js?v=20260812-5');
 await import('./giving-search-controls.js?v=20260812-5');
 await import('./giving-contribution-amount-filter.js?v=20260812-1');
 await import('./giving-campaign-tools-v2.js?v=20260812-1');
+await import('./giving-contributions-copy.js?v=20260812-1');
 await import('./giving-dossier-help.js?v=20260812-8');
