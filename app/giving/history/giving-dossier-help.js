@@ -4,7 +4,7 @@ if (!document.getElementById(stylesheetId)) {
   const link = document.createElement('link');
   link.id = stylesheetId;
   link.rel = 'stylesheet';
-  link.href = new URL('./giving-dossier-help.css?v=20260812-1', import.meta.url).href;
+  link.href = new URL('./giving-dossier-help.css?v=20260812-2', import.meta.url).href;
   document.head.appendChild(link);
 }
 
