@@ -38,7 +38,7 @@ function installHoldControl() {
   button.textContent = 'Hold';
   button.setAttribute('aria-pressed', 'false');
   button.setAttribute('aria-label', 'Hold the current Identity Review across new searches');
-  button.title = 'Preserve the current Identity Review when another search runs.';
+  button.title = 'Keep this Identity Review in place and append results from later searches.';
   toolbar.append(button);
 
   button.addEventListener('click', () => {
