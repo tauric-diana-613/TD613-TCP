@@ -45,10 +45,23 @@ export function normalizeName(value) {
   };
 }
 
+function middleIdentity(name) {
+  return Array.isArray(name?.tokens) && name.tokens.length > 2
+    ? name.tokens.slice(1, -1).join(' ')
+    : '';
+}
+
 export function exactNameMatch(left, right) {
   const a = normalizeName(left);
   const b = normalizeName(right);
-  return Boolean(a.canonical && b.canonical && a.canonical === b.canonical && a.suffix === b.suffix);
+  if (!a.first || !a.last || !b.first || !b.last) return false;
+  if (a.first !== b.first || a.last !== b.last || a.suffix !== b.suffix) return false;
+  const aMiddle = middleIdentity(a);
+  const bMiddle = middleIdentity(b);
+  // A middle name or initial omitted from either side is unspecified evidence,
+  // not a contradiction. If both sides supply middle evidence, it must agree.
+  if (aMiddle && bMiddle && aMiddle !== bMiddle) return false;
+  return true;
 }
 
 function stableTargetToken(value) {
@@ -365,7 +378,7 @@ function csvCell(value) {
 export function dossierCsv(dossier) {
   const fields = [
     'digest', 'search_target_ids', 'search_target_names', 'identity_status', 'evidence_status', 'source_family', 'source_instance_id', 'custodian', 'jurisdiction',
-    'committee', 'candidate', 'office', 'cycle', 'election', 'reporting_context', 'contributor_name_raw', 'address', 'city', 'state',
+    'committee', 'candidate', 'office', 'cycle', 'election', 'reporting_context', 'source_contributor_name_raw', 'contributor_name_raw', 'address', 'city', 'state',
     'zip', 'employer', 'occupation', 'contribution_date', 'contribution_type', 'amendment_status', 'amount_cents',
     'source_locator', 'retrieved_at', 'query_digest', 'source_native_ids', 'lineage', 'raw_source_row'
   ];

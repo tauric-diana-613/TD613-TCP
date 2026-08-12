@@ -75,12 +75,23 @@ function installDatePresets() {
   }));
 }
 
+function scrollSearchToTop() {
+  const behavior = window.matchMedia?.('(prefers-reduced-motion: reduce)')?.matches ? 'auto' : 'smooth';
+  requestAnimationFrame(() => window.scrollTo({ top: 0, left: 0, behavior }));
+}
+
 function installPrimarySearchAction() {
   const run = $('#runSearchButton');
   if (!run) return;
   run.textContent = 'SEARCH';
   run.dataset.primarySearch = 'true';
   run.setAttribute('aria-label', 'Search selected sources');
+
+  const form = run.form || $('#searchForm');
+  if (form && form.dataset.primarySearchScrollBound !== 'true') {
+    form.dataset.primarySearchScrollBound = 'true';
+    form.addEventListener('submit', scrollSearchToTop);
+  }
 }
 
 function installClearSearch() {

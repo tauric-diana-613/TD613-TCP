@@ -11,10 +11,19 @@ import {
 const SUFFIXES = new Set(['JR', 'SR', 'II', 'III', 'IV', 'V']);
 const ORGANIZATION_MARKERS = /\b(LLC|INC|CORP|CORPORATION|ASSOCIATION|PAC|COMMITTEE|UNION|FOUNDATION|PARTNERS|PARTNERSHIP|TRUST|COMPANY|CO\.?|BANK|CLUB)\b/i;
 
-export function parseContributorName(rawValue) {
+function contributorKindHint(value) {
+  const type = cleanText(value, 120).toUpperCase();
+  if (!type) return null;
+  if (/\b(IND|INDIVIDUAL|PERSON|PERSONAL|HUMAN)\b/.test(type)) return 'PERSON';
+  if (/\b(ORG|ORGANIZATION|BUSINESS|CORP|CORPORATION|COMPANY|COMMITTEE|PAC|PARTY|ASSOCIATION|UNION|ENTITY|TRUST|FOUNDATION)\b/.test(type)) return 'ORGANIZATION';
+  return null;
+}
+
+export function parseContributorName(rawValue, kindValue = null) {
   const raw = cleanText(rawValue, 300);
+  const hint = contributorKindHint(kindValue);
   if (!raw) return { kind: 'UNKNOWN', display: null, given: null, middle: null, family: null, suffix: null };
-  if (ORGANIZATION_MARKERS.test(raw)) {
+  if (hint === 'ORGANIZATION' || (!hint && ORGANIZATION_MARKERS.test(raw))) {
     return { kind: 'ORGANIZATION', display: raw, organization: raw, given: null, middle: null, family: null, suffix: null };
   }
   let given = null;
@@ -38,6 +47,19 @@ export function parseContributorName(rawValue) {
   return { kind: 'PERSON', display: raw, given, middle, family, suffix };
 }
 
+function personDisplayAdmitted(parsedName, sourceRawName, kindValue = null) {
+  const raw = cleanText(sourceRawName, 300);
+  const hint = contributorKindHint(kindValue);
+  return Boolean(parsedName?.kind === 'PERSON' && parsedName.family && parsedName.given && (hint === 'PERSON' || raw.includes(',')));
+}
+
+export function contributorDisplayName(parsedName, sourceRawName, kindValue = null) {
+  const raw = cleanText(sourceRawName, 300);
+  if (!personDisplayAdmitted(parsedName, raw, kindValue)) return raw;
+  const givenSide = [parsedName.given, parsedName.middle, parsedName.suffix].filter(Boolean).join(' ');
+  return cleanText(`${parsedName.family}, ${givenSide}`, 300).toLocaleUpperCase('en-US');
+}
+
 function normalizedHeader(value) {
   return String(value || '').toLowerCase().replace(/[^a-z0-9]/g, '');
 }
@@ -47,19 +69,34 @@ function firstNonEmpty(row, aliases) {
   return cleanText(value, 300);
 }
 
-function voterFocusContributorName(row) {
-  // VoterFocus county exports can expose a generic “Contributor Name” column that
-  // contains only the given name while the family/company name lives in a
-  // separate column. Split name evidence therefore has precedence whenever a
-  // family/company field exists; the generic combined field remains the fallback
-  // for counties that genuinely export a full contributor name in one column.
-  const first = firstNonEmpty(row, [
+function voterFocusFirstName(row) {
+  return firstNonEmpty(row, [
     'Contributor First Name',
     'Contributor/Vendor First Name',
     'Contributor/Vendor First',
     'First Name',
     'First'
   ]);
+}
+
+function voterFocusContributorKind(row) {
+  const explicit = firstNonEmpty(row, [
+    'Contributor Type',
+    'Contributor/Vendor Type',
+    'Contributor Entity Type',
+    'Entity Type'
+  ]);
+  if (contributorKindHint(explicit)) return explicit;
+  return voterFocusFirstName(row) ? 'PERSON' : null;
+}
+
+function voterFocusContributorName(row) {
+  // VoterFocus county exports can expose a generic “Contributor Name” column that
+  // contains only the given name while the family/company name lives in a
+  // separate column. Split name evidence therefore has precedence whenever a
+  // family/company field exists; the generic combined field remains the fallback
+  // for counties that genuinely export a full contributor name in one column.
+  const first = voterFocusFirstName(row);
   const middle = firstNonEmpty(row, [
     'Contributor Middle Name',
     'Contributor/Vendor Middle Name',
@@ -117,8 +154,11 @@ function baseRecord({ source, queryDigest, retrievedAt, raw, nativeIds = {}, fie
   const rawCanonical = canonicalJson(raw);
   const localDigest = sha256({ source: source.id, query_digest: queryDigest, raw: rawCanonical });
   const amountCents = amountToCents(fields.amount);
-  const rawName = cleanText(fields.contributorName, 300);
-  const parsedName = parseContributorName(rawName);
+  const sourceRawName = cleanText(fields.contributorName, 300);
+  const kindHint = contributorKindHint(fields.contributorKind);
+  const parsedName = parseContributorName(sourceRawName, kindHint);
+  const displayName = contributorDisplayName(parsedName, sourceRawName, kindHint);
+  const normalizedPersonDisplay = personDisplayAdmitted(parsedName, sourceRawName, kindHint);
   const provisional = Boolean(fields.provisional || lineage.provisional || amountCents === null);
   return {
     schema: GIVING_RECORD_SCHEMA,
@@ -137,8 +177,10 @@ function baseRecord({ source, queryDigest, retrievedAt, raw, nativeIds = {}, fie
     election: cleanText(fields.election, 250),
     cycle: Number.isFinite(Number(fields.cycle)) ? Number(fields.cycle) : null,
     reporting_context: cleanText(fields.reportingContext, 500),
-    contributor_name_raw: rawName,
-    contributor_name_parsed: parsedName,
+    source_contributor_name_raw: sourceRawName,
+    contributor_name_raw: displayName,
+    contributor_name_display: displayName,
+    contributor_name_parsed: { ...parsedName, display: displayName, source_display: sourceRawName },
     address: cleanText(fields.address, 500),
     city: cleanText(fields.city, 160),
     state: cleanText(fields.state, 80),
@@ -154,6 +196,13 @@ function baseRecord({ source, queryDigest, retrievedAt, raw, nativeIds = {}, fie
     identity_status: 'UNREVIEWED',
     lineage: {
       ...lineage,
+      contributor_kind_hint: kindHint,
+      source_contributor_name_raw: sourceRawName,
+      contributor_display_policy: normalizedPersonDisplay
+        ? 'LAST_COMMA_FIRST_MIDDLE_SUFFIX_UPPER'
+        : parsedName.kind === 'ORGANIZATION'
+          ? 'SOURCE_PRESERVED_ORGANIZATION'
+          : 'SOURCE_PRESERVED_UNCERTAIN_PERSON_ORDER',
       analytical_total_status: provisional ? 'PROVISIONAL' : 'DETERMINISTIC_WITHIN_SOURCE_SEMANTICS'
     }
   };
@@ -179,6 +228,7 @@ export function normalizeFecRow(row, context) {
       cycle: row.two_year_transaction_period || row.cycle,
       reportingContext: row.line_number_label || row.form_type,
       contributorName: row.contributor_name,
+      contributorKind: row.entity_type,
       address: [row.contributor_street_1, row.contributor_street_2].filter(Boolean).join(', '),
       city: row.contributor_city,
       state: row.contributor_state,
@@ -221,6 +271,7 @@ export function normalizeFloridaRow(row, context) {
       cycle: pick(row, ['Election Year', 'Cycle']),
       reportingContext: pick(row, ['Report', 'Report Type', 'Period']),
       contributorName: pick(row, ['Contributor Name', 'Contributor', 'Name', 'Last Name']),
+      contributorKind: pick(row, ['Contributor Type', 'Contributor Entity Type', 'Entity Type']),
       address: pick(row, ['Address', 'Street Address', 'Address 1']),
       city: pick(row, ['City']),
       state: pick(row, ['State']),
@@ -259,6 +310,7 @@ export function normalizeVoterFocusRow(row, context) {
       cycle: pick(row, ['Election Year', 'Cycle']),
       reportingContext: pick(row, ['Report', 'Report Type']),
       contributorName: voterFocusContributorName(row),
+      contributorKind: voterFocusContributorKind(row),
       address: pick(row, ['Address', 'Street Address']),
       city: pick(row, ['City']),
       state: pick(row, ['State']),
@@ -299,6 +351,7 @@ export function normalizeEasyVoteRow(row, context) {
       cycle: pick(row, ['ElectionYear', 'Cycle']),
       reportingContext: pick(row, ['ReportName', 'ReportType']),
       contributorName: pick(row, ['ContributorName', 'Contributor', 'Name']),
+      contributorKind: pick(row, ['ContributorType', 'Contributor Type', 'ContributorEntityType', 'Contributor Entity Type', 'EntityType', 'Entity Type']),
       address: pick(row, ['ContributorAddress', 'Address', 'Address1']),
       city: pick(row, ['ContributorCity', 'City']),
       state: pick(row, ['ContributorState', 'State']),
