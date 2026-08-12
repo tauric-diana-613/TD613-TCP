@@ -38,6 +38,62 @@ export function parseContributorName(rawValue) {
   return { kind: 'PERSON', display: raw, given, middle, family, suffix };
 }
 
+function normalizedHeader(value) {
+  return String(value || '').toLowerCase().replace(/[^a-z0-9]/g, '');
+}
+
+function firstNonEmpty(row, aliases) {
+  const value = pick(row, aliases);
+  return cleanText(value, 300);
+}
+
+function voterFocusContributorName(row) {
+  const combined = firstNonEmpty(row, [
+    'Contributor/Vendor Name',
+    'Contributor Name',
+    'Contributor/Vendor',
+    'Contributor',
+    'Contributor Full Name',
+    'Vendor Name',
+    'Payor Name'
+  ]);
+  if (combined) return combined;
+
+  const first = firstNonEmpty(row, [
+    'Contributor First Name', 'Contributor/Vendor First Name', 'First Name', 'First'
+  ]);
+  const middle = firstNonEmpty(row, [
+    'Contributor Middle Name', 'Contributor/Vendor Middle Name', 'Middle Name', 'Middle', 'MI'
+  ]);
+  const lastOrCompany = firstNonEmpty(row, [
+    'Contributor Last Name',
+    'Contributor/Vendor Last Name',
+    'Last Name',
+    'Last Name/Company Name',
+    'Last Name/Company',
+    'Company Name',
+    'Organization Name'
+  ]);
+
+  if (lastOrCompany && (first || middle)) {
+    return `${lastOrCompany}, ${[first, middle].filter(Boolean).join(' ')}`;
+  }
+  if (lastOrCompany) return lastOrCompany;
+  if (first || middle) return [first, middle].filter(Boolean).join(' ');
+
+  for (const [key, value] of Object.entries(row || {})) {
+    const header = normalizedHeader(key);
+    if (!value || header.includes('candidate') || header.includes('committee')) continue;
+    const contributorish = header.includes('contributor') || header.includes('vendor') || header.includes('donor') || header.includes('payor');
+    const nameish = header.includes('name') || header === 'contributorvendor' || header === 'contributor';
+    if (contributorish && nameish) {
+      const inferred = cleanText(value, 300);
+      if (inferred) return inferred;
+    }
+  }
+  return null;
+}
+
 function baseRecord({ source, queryDigest, retrievedAt, raw, nativeIds = {}, fields = {}, lineage = {} }) {
   const rawCanonical = canonicalJson(raw);
   const localDigest = sha256({ source: source.id, query_digest: queryDigest, raw: rawCanonical });
@@ -183,7 +239,7 @@ export function normalizeVoterFocusRow(row, context) {
       election: pick(row, ['Election', 'Election/Committees', 'Reporting Group']),
       cycle: pick(row, ['Election Year', 'Cycle']),
       reportingContext: pick(row, ['Report', 'Report Type']),
-      contributorName: pick(row, ['Contributor/Vendor Name', 'Contributor Name', 'Name', 'Last Name/Company Name']),
+      contributorName: voterFocusContributorName(row),
       address: pick(row, ['Address', 'Street Address']),
       city: pick(row, ['City']),
       state: pick(row, ['State']),
@@ -199,6 +255,7 @@ export function normalizeVoterFocusRow(row, context) {
     lineage: {
       source_methodology: 'VOTERFOCUS_17_COLUMN_CSV_ROW',
       column_count: Object.keys(row).length,
+      contributor_name_derivation: voterFocusContributorName(row) ? 'VOTERFOCUS_HEADER_RESOLUTION' : 'MISSING_FROM_SOURCE_ROW',
       amendment_marker: cleanText(amendment, 80),
       provisional: !amendment,
       supersession_applied: false

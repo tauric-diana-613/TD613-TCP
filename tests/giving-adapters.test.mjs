@@ -1,5 +1,6 @@
 import assert from 'node:assert/strict';
 import { searchSourcePage } from '../server/giving/adapters/index.js';
+import { normalizeVoterFocusRow } from '../server/giving/normalize.js';
 import { linkExisting, createConfirmed, withhold } from '../server/giving/campaign-deputy.js';
 
 function mockResponse({ status = 200, json, text = '', headers = {} }) {
@@ -15,15 +16,25 @@ function mockResponse({ status = 200, json, text = '', headers = {} }) {
 
 const fec = await searchSourcePage({
   source_instance_id: 'fec-schedule-a',
-  query: { name: 'Jane Doe', start_date: '2025-01-01', end_date: '2026-08-11', page_size: 20 }
+  query: { name: 'Jane Doe', start_date: '2025-01-01', end_date: '2026-08-11', page_size: 1 }
 }, {
   fetchImpl: async (url) => {
-    assert.match(String(url), /schedules\/schedule_a/);
-    assert.match(String(url), /contributor_name=Jane\+Doe/);
+    const value = String(url);
+    assert.match(value, /schedules\/schedule_a/);
+    assert.match(value, /contributor_name=Jane\+Doe/);
+    assert.match(value, /two_year_transaction_period=2026/);
+    assert.match(value, /sort_hide_null=true/);
+    assert.match(value, /per_page=1/);
+    assert.doesNotMatch(value, /[?&]page=/, 'Schedule A uses seek continuation rather than stale page-number pagination');
     return mockResponse({
       headers: { 'x-ratelimit-remaining': '999' },
       json: {
-        pagination: { page: 1, pages: 2 },
+        pagination: {
+          last_indexes: {
+            last_index: 'sub-1',
+            last_contribution_receipt_date: '2026-08-01'
+          }
+        },
         results: [{
           sub_id: 'sub-1', transaction_id: 'txn-1', amendment_indicator: 'N',
           committee_name: 'Committee A', contributor_name: 'DOE, JANE',
@@ -37,6 +48,25 @@ assert.equal(fec.records[0].amount_cents, 12525);
 assert.equal(fec.records[0].lineage.transaction_id, 'txn-1');
 assert.ok(fec.continuation);
 
+const fecSeek = await searchSourcePage({
+  source_instance_id: 'fec-schedule-a',
+  query: { name: 'Jane Doe', start_date: '2025-01-01', end_date: '2026-08-11', page_size: 1 },
+  continuation: fec.continuation
+}, {
+  fetchImpl: async (url) => {
+    const value = String(url);
+    assert.match(value, /last_index=sub-1/);
+    assert.match(value, /last_contribution_receipt_date=2026-08-01/);
+    return mockResponse({
+      json: { pagination: { last_indexes: null }, results: [] }
+    });
+  }
+});
+assert.equal(fecSeek.records.length, 0);
+assert.equal(fecSeek.continuation, null);
+
+const previousConfiguredFecKey = process.env.FEC_API_KEY;
+process.env.FEC_API_KEY = 'test-fec-key';
 let fecRetryCalls = 0;
 const fecRetried = await searchSourcePage({
   source_instance_id: 'fec-schedule-a',
@@ -48,7 +78,7 @@ const fecRetried = await searchSourcePage({
     return mockResponse({
       headers: { 'x-ratelimit-remaining': '998' },
       json: {
-        pagination: { page: 1, pages: 1 },
+        pagination: { last_indexes: null },
         results: [{
           sub_id: 'sub-retry', transaction_id: 'txn-retry', amendment_indicator: 'N',
           committee_name: 'Committee Retry', contributor_name: 'DONOR, RETRY',
@@ -58,9 +88,11 @@ const fecRetried = await searchSourcePage({
     });
   }
 });
-assert.equal(fecRetryCalls, 2, 'OpenFEC receives one bounded retry after a transient 429');
+assert.equal(fecRetryCalls, 2, 'configured OpenFEC key receives one bounded retry after a transient 429');
 assert.equal(fecRetried.source_status, 'READY');
 assert.equal(fecRetried.records[0].amount_cents, 5000);
+if (previousConfiguredFecKey === undefined) delete process.env.FEC_API_KEY;
+else process.env.FEC_API_KEY = previousConfiguredFecKey;
 
 const previousFecApiKey = process.env.FEC_API_KEY;
 delete process.env.FEC_API_KEY;
@@ -74,12 +106,25 @@ const fecLimited = await searchSourcePage({
     return mockResponse({ status: 429, headers: { 'retry-after': '0', 'x-ratelimit-remaining': '0' }, json: {} });
   }
 });
-assert.equal(fecLimitedCalls, 2);
+assert.equal(fecLimitedCalls, 1, 'shared DEMO_KEY 429 is surfaced immediately instead of spending another shared-quota request');
 assert.equal(fecLimited.source_status, 'ERROR');
 assert.equal(fecLimited.error.code, 'source-rate-limited');
-assert.match(fecLimited.error.message, /DEMO_KEY fallback/);
+assert.match(fecLimited.error.message, /shared DEMO_KEY fallback/);
 if (previousFecApiKey === undefined) delete process.env.FEC_API_KEY;
 else process.env.FEC_API_KEY = previousFecApiKey;
+
+const fecValidation = await searchSourcePage({
+  source_instance_id: 'fec-schedule-a',
+  query: { name: 'Validation Donor', page_size: 20 }
+}, {
+  fetchImpl: async () => mockResponse({
+    status: 422,
+    text: JSON.stringify({ message: 'Example OpenFEC validation detail' })
+  })
+});
+assert.equal(fecValidation.source_status, 'ERROR');
+assert.equal(fecValidation.error.code, 'fec-upstream-error');
+assert.match(fecValidation.error.message, /Example OpenFEC validation detail/);
 
 const floridaTsv = 'Committee Name\tContributor Name\tContribution Date\tAmount\tAmendment\nNeighbors for Florida\tDOE, JANE\t08/01/2026\t20.00\tN';
 const florida = await searchSourcePage({
@@ -128,6 +173,45 @@ const voterFocus = await searchSourcePage({
 assert.equal(voterFocus.records.length, 1);
 assert.equal(voterFocus.records[0].contribution_date, '2010-08-10');
 assert.equal(voterFocus.records[0].lineage.column_count, 17);
+assert.equal(voterFocus.records[0].contributor_name_raw, 'DOE, JOHN');
+
+const hillsboroughStyle = normalizeVoterFocusRow({
+  'Candidate/Committee': 'Friends of Example',
+  'Candidate Name': 'Someone Else',
+  'Last Name/Company Name': 'MILLER',
+  'First Name': 'TAWANNA',
+  'Middle Name': 'C',
+  'Item Date': '08/01/2026',
+  Amount: '75.00',
+  Amendment: 'N',
+  'Report ID': 'hills-1'
+}, {
+  source: {
+    id: 'voterfocus-hillsborough', family: 'VOTERFOCUS', custodian: 'Hillsborough County Supervisor of Elections',
+    jurisdiction: 'Hillsborough', locator: 'https://www.voterfocus.com/CampaignFinance/cand_srch.php?c=hillsborough'
+  },
+  queryDigest: 'test-query',
+  retrievedAt: '2026-08-12T00:00:00.000Z'
+});
+assert.equal(hillsboroughStyle.contributor_name_raw, 'MILLER, TAWANNA C', 'split county name columns reconstruct the contributor rather than falling to Name unavailable');
+assert.equal(hillsboroughStyle.raw_source_row['Last Name/Company Name'], 'MILLER', 'raw county evidence remains untouched');
+assert.equal(hillsboroughStyle.lineage.contributor_name_derivation, 'VOTERFOCUS_HEADER_RESOLUTION');
+
+const vendorStyle = normalizeVoterFocusRow({
+  'Candidate/Committee': 'Committee Example',
+  'Contributor/Vendor': 'DOE, JORDAN',
+  'Item Date': '08/02/2026',
+  Amount: '10.00',
+  Amendment: 'N'
+}, {
+  source: {
+    id: 'voterfocus-duval', family: 'VOTERFOCUS', custodian: 'Duval County Supervisor of Elections',
+    jurisdiction: 'Duval', locator: 'https://www.voterfocus.com/CampaignFinance/cand_srch.php?c=duval'
+  },
+  queryDigest: 'test-query-2',
+  retrievedAt: '2026-08-12T00:00:00.000Z'
+});
+assert.equal(vendorStyle.contributor_name_raw, 'DOE, JORDAN');
 
 const easyCalls = [];
 const easyVote = await searchSourcePage({
