@@ -13,6 +13,7 @@ const bootstrap = fs.readFileSync(path.join(root, 'app/giving/history/giving-boo
 const contactQueue = fs.readFileSync(path.join(root, 'app/giving/history/giving-contact-queue.js'), 'utf8');
 const searchControls = fs.readFileSync(path.join(root, 'app/giving/history/giving-search-controls.js'), 'utf8');
 const campaignTools = fs.readFileSync(path.join(root, 'app/giving/history/giving-campaign-tools.js'), 'utf8');
+const dossierHelp = fs.readFileSync(path.join(root, 'app/giving/history/giving-dossier-help.js'), 'utf8');
 const campaignDirectory = fs.readFileSync(path.join(root, 'server/giving/campaign-directory.js'), 'utf8');
 const constants = fs.readFileSync(path.join(root, 'server/giving/constants.js'), 'utf8');
 const xlsx = fs.readFileSync(path.join(root, 'app/giving/history/giving-xlsx.js'), 'utf8');
@@ -30,6 +31,7 @@ assert.match(bootstrap, /giving-export-menu\.js\?v=20260812-5/);
 assert.match(bootstrap, /giving-app\.js\?v=20260812-5/);
 assert.match(bootstrap, /giving-search-controls\.js\?v=20260812-5/);
 assert.match(bootstrap, /giving-campaign-tools\.js\?v=20260812-5/);
+assert.match(bootstrap, /giving-dossier-help\.js\?v=20260812-5/);
 assert.match(html, /id="sourceRegistry"/);
 assert.match(html, /id="recordList"/);
 assert.match(html, /id="committeeLedger"/);
@@ -125,6 +127,15 @@ assert.match(campaignTools, /ambiguous exact Campaign Deputy name/);
 assert.match(campaignTools, /linkCommitteeForCurrentTarget/);
 assert.doesNotMatch(campaignTools, /create-confirmed|Create person/, 'bulk exact-contact gesture cannot silently create Campaign Deputy people');
 assert.match(campaignTools, /aggregate OpenSecrets results never become donor transactions/);
+
+assert.match(dossierHelp, /Research Dossier/);
+assert.match(dossierHelp, /🛈︎/);
+assert.match(dossierHelp, /font:500 7px\/1\.42/);
+assert.match(dossierHelp, /\.research-dossier-help:hover \.research-dossier-help-popup/);
+assert.match(dossierHelp, /\.research-dossier-help-trigger:focus-visible \+ \.research-dossier-help-popup/);
+assert.doesNotMatch(dossierHelp, /focus-within/, 'mouse focus cannot pin the hover explainer open after pointer exit');
+assert.match(dossierHelp, /Local keeps the dossier in this browser/);
+assert.match(dossierHelp, /conflicting hosted branches are preserved for human reconciliation/);
 
 assert.match(campaignDirectory, /method', 'getOrgs'/);
 assert.match(campaignDirectory, /method', 'orgSummary'/);
