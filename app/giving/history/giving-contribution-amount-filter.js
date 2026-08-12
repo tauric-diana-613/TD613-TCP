@@ -29,17 +29,18 @@ function applyAmountFilter() {
   if (!validateRange()) return;
   const min = parseBound($('#amountMin'));
   const max = parseBound($('#amountMax'));
+  const bounded = min !== null || max !== null;
   let visible = 0;
   const cards = $$('#recordList .record-card');
   for (const card of cards) {
     const amount = parseRenderedAmount(card);
-    const keep = amount !== null && (min === null || amount >= min) && (max === null || amount <= max);
+    const keep = !bounded || (amount !== null && (min === null || amount >= min) && (max === null || amount <= max));
     card.hidden = !keep;
     card.dataset.amountFiltered = keep ? 'false' : 'true';
     if (keep) visible += 1;
   }
   const count = $('#reviewCount');
-  if (count && cards.length && (min !== null || max !== null)) count.textContent = String(visible);
+  if (count && cards.length) count.textContent = String(visible);
 }
 
 function clearAmountFilter() {
