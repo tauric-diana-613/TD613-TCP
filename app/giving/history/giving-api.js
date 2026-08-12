@@ -9,6 +9,8 @@ const MUTATIONS = new Set([
   'campaign-deputy.withhold'
 ]);
 
+const FEC_SEARCH_MIN_TIMEOUT_MS = 23_000;
+
 export class GivingApiError extends Error {
   constructor(message, { code = 'GIVING_REQUEST_FAILED', status = 0, receipt = null, retryable = false } = {}) {
     super(message);
@@ -43,7 +45,11 @@ export class GivingApiClient {
       throw new GivingApiError('Refresh the signed operator session before this mutation.', { code: 'INTENT_NONCE_REQUIRED' });
     }
     const controller = new AbortController();
-    const timer = setTimeout(() => controller.abort(new DOMException('Request timed out.', 'TimeoutError')), options.timeoutMs || this.timeoutMs);
+    const requestedTimeout = options.timeoutMs || this.timeoutMs;
+    const timeoutMs = operation === 'search.page' && payload?.source_instance_id === 'fec-schedule-a'
+      ? Math.max(requestedTimeout, FEC_SEARCH_MIN_TIMEOUT_MS)
+      : requestedTimeout;
+    const timer = setTimeout(() => controller.abort(new DOMException('Request timed out.', 'TimeoutError')), timeoutMs);
     const relayAbort = () => controller.abort(options.signal?.reason || new DOMException('Request cancelled.', 'AbortError'));
     options.signal?.addEventListener('abort', relayAbort, { once: true });
     const envelope = {
