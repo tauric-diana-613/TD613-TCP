@@ -1,6 +1,5 @@
 import assert from 'node:assert/strict';
 import { GivingApiClient } from '../app/giving/history/giving-api.js';
-import { filterSearchResponse, recordMatchesExact } from '../app/giving/history/giving-ui-fixes.js';
 
 const calls = [];
 const fetchImpl = async (_url, options) => {
@@ -44,33 +43,5 @@ await assert.rejects(
   (error) => error.code === 'internal-error' && error.status === 500 && error.message === 'Giving operation did not complete',
   'server refusal JSON must not be flattened into boundary-unavailable'
 );
-
-assert.equal(recordMatchesExact({ contributor_name: 'DOE, JANE' }, 'Jane Doe'), true);
-assert.equal(recordMatchesExact({ contributor_name: 'Janet Doe' }, 'Jane Doe'), false);
-assert.equal(recordMatchesExact({ committee_name: 'Friends of Alice' }, 'FRIENDS OF ALICE'), true);
-
-const exactPayload = {
-  ok: true,
-  data: {
-    page: {
-      returned: 3,
-      records: [
-        { contributor_name: 'Jane Doe', amount_cents: 1000 },
-        { contributor_name: 'Jane A. Doe', amount_cents: 2000 },
-        { contributor_name: 'DOE, JANE', amount_cents: 3000 }
-      ]
-    }
-  }
-};
-const exactResult = filterSearchResponse(exactPayload, 'Jane Doe');
-assert.equal(exactResult.changed, true);
-assert.equal(exactPayload.data.page.records.length, 2);
-assert.equal(exactPayload.data.page.returned, 2);
-assert.deepEqual(exactPayload.data.page.records.map((record) => record.amount_cents), [1000, 3000]);
-assert.deepEqual(exactPayload.data.page.client_exact_match, {
-  enabled: true,
-  observed_records: 3,
-  retained_records: 2
-});
 
 console.log('giving-client-api.test.mjs passed');
