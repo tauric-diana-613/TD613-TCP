@@ -47,11 +47,15 @@ export function parseContributorName(rawValue, kindValue = null) {
   return { kind: 'PERSON', display: raw, given, middle, family, suffix };
 }
 
-export function contributorDisplayName(parsedName, sourceRawName, kindValue = null) {
+function personDisplayAdmitted(parsedName, sourceRawName, kindValue = null) {
   const raw = cleanText(sourceRawName, 300);
   const hint = contributorKindHint(kindValue);
-  const personAdmitted = parsedName?.kind === 'PERSON' && (hint === 'PERSON' || raw.includes(','));
-  if (!personAdmitted || !parsedName.family || !parsedName.given) return raw;
+  return Boolean(parsedName?.kind === 'PERSON' && parsedName.family && parsedName.given && (hint === 'PERSON' || raw.includes(',')));
+}
+
+export function contributorDisplayName(parsedName, sourceRawName, kindValue = null) {
+  const raw = cleanText(sourceRawName, 300);
+  if (!personDisplayAdmitted(parsedName, raw, kindValue)) return raw;
   const givenSide = [parsedName.given, parsedName.middle, parsedName.suffix].filter(Boolean).join(' ');
   return cleanText(`${parsedName.family}, ${givenSide}`, 300).toLocaleUpperCase('en-US');
 }
@@ -154,7 +158,7 @@ function baseRecord({ source, queryDigest, retrievedAt, raw, nativeIds = {}, fie
   const kindHint = contributorKindHint(fields.contributorKind);
   const parsedName = parseContributorName(sourceRawName, kindHint);
   const displayName = contributorDisplayName(parsedName, sourceRawName, kindHint);
-  const displayNormalized = Boolean(displayName && sourceRawName && displayName !== sourceRawName);
+  const normalizedPersonDisplay = personDisplayAdmitted(parsedName, sourceRawName, kindHint);
   const provisional = Boolean(fields.provisional || lineage.provisional || amountCents === null);
   return {
     schema: GIVING_RECORD_SCHEMA,
@@ -173,7 +177,8 @@ function baseRecord({ source, queryDigest, retrievedAt, raw, nativeIds = {}, fie
     election: cleanText(fields.election, 250),
     cycle: Number.isFinite(Number(fields.cycle)) ? Number(fields.cycle) : null,
     reporting_context: cleanText(fields.reportingContext, 500),
-    contributor_name_raw: sourceRawName,
+    source_contributor_name_raw: sourceRawName,
+    contributor_name_raw: displayName,
     contributor_name_display: displayName,
     contributor_name_parsed: { ...parsedName, display: displayName, source_display: sourceRawName },
     address: cleanText(fields.address, 500),
@@ -192,8 +197,8 @@ function baseRecord({ source, queryDigest, retrievedAt, raw, nativeIds = {}, fie
     lineage: {
       ...lineage,
       contributor_kind_hint: kindHint,
-      contributor_name_source_form: sourceRawName,
-      contributor_display_policy: displayNormalized
+      source_contributor_name_raw: sourceRawName,
+      contributor_display_policy: normalizedPersonDisplay
         ? 'LAST_COMMA_FIRST_MIDDLE_SUFFIX_UPPER'
         : parsedName.kind === 'ORGANIZATION'
           ? 'SOURCE_PRESERVED_ORGANIZATION'
