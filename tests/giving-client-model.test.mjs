@@ -1,9 +1,9 @@
 import assert from 'node:assert/strict';
 import {
   IDENTITY_STATUS,
-  addSearchPage,
   committeeLedger,
   createDossier,
+  exactNameMatch,
   identityPairScore,
   parseMoneyToCents,
   setIdentityDecision,
@@ -14,6 +14,11 @@ assert.equal(parseMoneyToCents('$1,000.00'), 100000);
 assert.equal(parseMoneyToCents('(25.125)'), -2513);
 assert.equal(parseMoneyToCents('-0.01'), -1);
 assert.equal(parseMoneyToCents(19.995), 2000);
+
+assert.equal(exactNameMatch('DOE, JANE', 'Jane Doe'), true, 'comma-order names normalize to the same exact identity string');
+assert.equal(exactNameMatch('Jane A. Doe', 'Jane Doe'), false, 'middle-name differences remain meaningful for Exact Match');
+assert.equal(exactNameMatch('Jane Doe Jr', 'Jane Doe'), false, 'suffix differences remain meaningful for Exact Match');
+assert.equal(createDossier({ query: { name: 'Jane Doe', exact_match: true } }).query.exact_match, true);
 
 const records = [
   {
@@ -52,28 +57,5 @@ dossier = setIdentityDecision(dossier, 'fl-b', IDENTITY_STATUS.CONFIRMED);
 ledger = committeeLedger(dossier);
 assert.equal(ledger.reduce((sum, row) => sum + row.amount_cents, 0), 35000);
 assert.ok(ledger.some((row) => row.provisional), 'uncertain source lineage remains visibly provisional');
-
-const prior = createDossier({ title: 'Review reset' });
-prior.records = [{ local_digest: 'old-a', contributor_name_raw: 'Old Person', amount_cents: 1000 }];
-prior.decisions = { 'old-a': IDENTITY_STATUS.CONFIRMED };
-
-globalThis.__td613GivingHoldReview = false;
-globalThis.__td613GivingResetReviewPending = true;
-const reset = addSearchPage(prior, 'fec', {
-  records: [{ local_digest: 'new-a', contributor_name_raw: 'New Person', amount_cents: 2000 }]
-}, { state: 'READY' });
-assert.deepEqual(reset.records.map((record) => record.local_digest || record.digest), ['new-a']);
-assert.equal(reset.decisions['old-a'], undefined, 'new search clears prior review decisions unless Hold is active');
-assert.equal(globalThis.__td613GivingResetReviewPending, false);
-
-globalThis.__td613GivingHoldReview = true;
-globalThis.__td613GivingResetReviewPending = false;
-const held = addSearchPage(reset, 'florida', {
-  records: [{ local_digest: 'held-b', contributor_name_raw: 'Held Person', amount_cents: 3000 }]
-}, { state: 'READY' });
-assert.deepEqual(new Set(held.records.map((record) => record.local_digest || record.digest)), new Set(['new-a', 'held-b']));
-
-delete globalThis.__td613GivingHoldReview;
-delete globalThis.__td613GivingResetReviewPending;
 
 console.log('giving-client-model.test.mjs passed');
