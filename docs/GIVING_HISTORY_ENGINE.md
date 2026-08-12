@@ -27,6 +27,8 @@ Giving does **not** send historical public donations to `/v1/contribution`: that
 
 The live API origin is `https://us.api.campaigndeputy.app/v1`. Create a **Campaign Deputy custom API key** at **Settings → Integrations → Campaign Deputy API** with exactly `people-read`, `people-write`, `list-read`, and `list-write`; an integration-vendor key such as Zapier must not be repurposed. If the custom-key control is disabled, an account administrator or Campaign Deputy must enable custom API access before writeback can become ready.
 
+Never commit that key to GitHub or place it in `.env.example`. In Vercel, open **tauric-diana-s-projects → td-613-tcp → Settings → Environment Variables**, add `CAMPAIGN_DEPUTY_API_KEY` as a **Sensitive**, **Production** variable, then intentionally redeploy the current `main` commit so the runtime receives it. The repository already contains the empty variable name in [`.env.example`](../.env.example) only as documentation; it must remain empty.
+
 ## Coverage
 
 - OpenFEC Schedule A

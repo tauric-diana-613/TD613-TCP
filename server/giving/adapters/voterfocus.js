@@ -18,7 +18,13 @@ function dateParts(date) {
   return { year, month: String(Number(month)), day: String(Number(day)) };
 }
 
-function voterFocusPayload(query) {
+function candidateParts(value) {
+  const tokens = String(value || '').trim().split(/\s+/).filter(Boolean);
+  if (tokens.length < 2) return { family: tokens[0] || '', given: '' };
+  return { family: tokens.at(-1), given: tokens.slice(0, -1).join(' ') };
+}
+
+function voterFocusPayload(query, projection = 'CONTRIBUTOR') {
   if (!query.start_date || !query.end_date) {
     throw new GivingError('explicit-dates-required', 'VoterFocus historical searches require explicit start_date and end_date values', 400);
   }
@@ -26,9 +32,12 @@ function voterFocusPayload(query) {
   const to = dateParts(query.end_date);
   const params = new URLSearchParams();
   params.set('srch_tp', 'C');
-  params.set('c_lastname', query.name || query.last_name || '');
-  params.set('cand_name', query.committee || query.candidate || '');
-  params.set('cand_fname', '');
+  const person = candidateParts(query.candidate || query.name);
+  params.set('c_lastname', projection === 'CONTRIBUTOR' ? (query.name || query.last_name || '') : '');
+  params.set('cand_name', projection === 'COMMITTEE'
+    ? (query.committee || query.name || '')
+    : projection === 'CANDIDATE' ? (query.last_name || person.family) : '');
+  params.set('cand_fname', projection === 'CANDIDATE' ? (query.first_name || person.given) : '');
   params.set('cand_id', '');
   params.set('b_month', from.month);
   params.set('b_day', from.day);
@@ -73,22 +82,28 @@ export async function searchVoterFocusPage({ source, query, continuation, fetchI
   const offset = cursor?.offset || 0;
   const endpoint = new URL('https://www.voterfocus.com/CampaignFinance/cand_srch.php');
   endpoint.searchParams.set('c', source.code);
-  const response = await fetchWithBoundary(endpoint, {
-    method: 'POST',
-    headers: {
-      Accept: 'text/csv,text/plain;q=0.9,text/html;q=0.5',
-      'Content-Type': 'application/x-www-form-urlencoded;charset=UTF-8',
-      Referer: source.locator,
-      'User-Agent': 'TD613-Giving/1.0 operator research'
-    },
-    body: (() => {
-      const parameters = voterFocusPayload(query);
-      parameters.set('c', source.code);
-      return parameters.toString();
-    })()
-  }, { fetchImpl });
-  if (!response.ok) throw new GivingError('voterfocus-upstream-error', `VoterFocus returned HTTP ${response.status}`, 502);
-  const csv = extractCsv(await readBoundedText(response));
+  const projections = query.committee ? ['COMMITTEE'] : query.candidate ? ['CANDIDATE'] : ['CONTRIBUTOR', 'CANDIDATE', 'COMMITTEE'];
+  let response = null;
+  let csv = '';
+  for (const projection of projections) {
+    response = await fetchWithBoundary(endpoint, {
+      method: 'POST',
+      headers: {
+        Accept: 'text/csv,text/plain;q=0.9,text/html;q=0.5',
+        'Content-Type': 'application/x-www-form-urlencoded;charset=UTF-8',
+        Referer: source.locator,
+        'User-Agent': 'TD613-Giving/1.0 operator research'
+      },
+      body: (() => {
+        const parameters = voterFocusPayload(query, projection);
+        parameters.set('c', source.code);
+        return parameters.toString();
+      })()
+    }, { fetchImpl });
+    if (!response.ok) throw new GivingError('voterfocus-upstream-error', `VoterFocus returned HTTP ${response.status}`, 502);
+    csv = extractCsv(await readBoundedText(response));
+    if (csv && rowsToObjects(splitDelimited(csv, ',')).length) break;
+  }
   if (!csv) {
     return {
       records: [], continuation: null, source_status: 'READY', coverage: source.electronic_scope,
@@ -127,4 +142,4 @@ export async function searchVoterFocusPage({ source, query, continuation, fetchI
   };
 }
 
-export const _voterFocusInternals = Object.freeze({ voterFocusPayload, extractCsv });
+export const _voterFocusInternals = Object.freeze({ voterFocusPayload, extractCsv, candidateParts });
