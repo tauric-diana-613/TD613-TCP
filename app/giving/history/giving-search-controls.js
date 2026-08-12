@@ -75,6 +75,14 @@ function installDatePresets() {
   }));
 }
 
+function installPrimarySearchAction() {
+  const run = $('#runSearchButton');
+  if (!run) return;
+  run.textContent = 'SEARCH';
+  run.dataset.primarySearch = 'true';
+  run.setAttribute('aria-label', 'Search selected sources');
+}
+
 function installClearSearch() {
   const run = $('#runSearchButton');
   const cancel = $('#cancelSearchButton');
@@ -131,48 +139,8 @@ function installNewDossierDefault() {
   button.addEventListener('click', () => queueMicrotask(ensureDefaultDate));
 }
 
-function installStyles() {
-  if ($('#givingSearchEnhancementStyle')) return;
-  const style = document.createElement('style');
-  style.id = 'givingSearchEnhancementStyle';
-  style.textContent = `
-    .giving-date-presets {
-      display: flex;
-      flex-wrap: wrap;
-      align-items: center;
-      gap: 6px;
-      margin: -2px 0 12px;
-      font: 700 9px/1.2 var(--mono);
-      color: var(--muted);
-    }
-    .giving-date-presets > span { margin-right: 2px; text-transform: uppercase; letter-spacing: .08em; }
-    .giving-date-presets button {
-      min-height: 26px;
-      padding: 4px 8px;
-      border: 1px solid rgba(200, 235, 213, .17);
-      background: rgba(4, 24, 18, .66);
-      color: var(--text);
-      font: inherit;
-      cursor: pointer;
-    }
-    .giving-date-presets button:hover,
-    .giving-date-presets button:focus-visible {
-      color: var(--bright);
-      border-color: rgba(118, 234, 212, .42);
-      outline: none;
-    }
-    .contact-queue-message {
-      margin: 7px 0 0;
-      color: var(--muted);
-      font: 600 9px/1.45 var(--mono);
-    }
-    .contact-queue-message[data-kind="error"] { color: var(--danger, #ffaaa2); }
-  `;
-  document.head.append(style);
-}
-
 installDatePresets();
+installPrimarySearchAction();
 installClearSearch();
 installNewDossierDefault();
-installStyles();
 watchSessionHydration();

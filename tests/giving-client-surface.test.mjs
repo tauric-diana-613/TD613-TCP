@@ -13,6 +13,7 @@ const bootstrap = fs.readFileSync(path.join(root, 'app/giving/history/giving-boo
 const leftRailOrder = fs.readFileSync(path.join(root, 'app/giving/history/giving-left-rail-order.js'), 'utf8');
 const contactQueue = fs.readFileSync(path.join(root, 'app/giving/history/giving-contact-queue.js'), 'utf8');
 const searchControls = fs.readFileSync(path.join(root, 'app/giving/history/giving-search-controls.js'), 'utf8');
+const searchControlsCss = fs.readFileSync(path.join(root, 'app/giving/history/giving-search-controls.css'), 'utf8');
 const campaignTools = fs.readFileSync(path.join(root, 'app/giving/history/giving-campaign-tools-v2.js'), 'utf8');
 const campaignToolsCss = fs.readFileSync(path.join(root, 'app/giving/history/giving-campaign-tools-v2.css'), 'utf8');
 const amountFilter = fs.readFileSync(path.join(root, 'app/giving/history/giving-contribution-amount-filter.js'), 'utf8');
@@ -35,7 +36,8 @@ assert.match(bootstrap, /giving-left-rail-order\.js\?v=20260812-1/);
 assert.match(bootstrap, /giving-contact-queue\.js\?v=20260812-5/);
 assert.match(bootstrap, /giving-export-menu\.js\?v=20260812-5/);
 assert.match(bootstrap, /giving-app\.js\?v=20260812-5/);
-assert.match(bootstrap, /giving-search-controls\.js\?v=20260812-5/);
+assert.match(bootstrap, /giving-search-controls\.js\?v=20260812-6/);
+assert.match(bootstrap, /giving-search-controls\.css\?v=20260812-1/);
 assert.match(bootstrap, /giving-contribution-amount-filter\.js\?v=20260812-2/);
 assert.match(bootstrap, /giving-campaign-tools-v2\.js\?v=20260812-1/);
 assert.match(bootstrap, /giving-campaign-tools-v2\.css\?v=20260812-1/);
@@ -143,6 +145,15 @@ assert.match(searchControls, /data-start-year="2022"/);
 assert.match(searchControls, /data-start-year="2024"/);
 assert.match(searchControls, /newDossierButton/);
 assert.match(searchControls, /td613:giving-clear-all/);
+assert.match(searchControls, /run\.textContent = 'SEARCH'/);
+assert.match(searchControls, /run\.dataset\.primarySearch = 'true'/);
+assert.match(searchControls, /aria-label', 'Search selected sources'/);
+assert.doesNotMatch(searchControls, /createElement\('style'\)/, 'search controls styling is CSP-safe and external');
+assert.match(searchControlsCss, /#runSearchButton\[data-primary-search="true"\]/);
+assert.match(searchControlsCss, /0 0 12px rgba\(118, 234, 212, \.16\)/, 'primary search halo remains restrained');
+assert.match(searchControlsCss, /@media \(max-width: 760px\)[\s\S]*\.ledger-column \{ min-height: 0; \}/);
+assert.match(searchControlsCss, /#view-search \{ min-height: 0; padding-bottom: 12px; \}/);
+assert.match(searchControlsCss, /source-progress-grid > \.empty-state \{[\s\S]*min-height: 92px/, 'mobile pre-search empty runway is compact rather than reordered');
 
 assert.match(amountFilter, /import \{ GivingApiClient \}/);
 assert.match(amountFilter, /__td613AmountFilterInstalled/);
@@ -203,6 +214,8 @@ assert.match(dossierHelp, /conflicting hosted branches are preserved for human r
 
 assert.match(campaignDirectory, /method', 'getOrgs'/);
 assert.match(campaignDirectory, /method', 'orgSummary'/);
+assert.match(campaignDirectory, /output', 'json'/);
+assert.match(campaignDirectory, /apikey', key/);
 assert.match(campaignDirectory, /AGGREGATE_ORGANIZATION_INTELLIGENCE_NOT_INDIVIDUAL_DONOR_TRANSACTIONS/);
 assert.match(campaignDirectory, /REVIEWED_FEC_COMMITTEE_IDENTITY_TO_CAMPAIGN_DEPUTY_LIST/);
 assert.match(campaignDirectory, /external_contribution_created: false/);
