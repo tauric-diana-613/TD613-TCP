@@ -5,7 +5,7 @@ import { filterSearchResponse, recordMatchesExact } from '../app/giving/history/
 const calls = [];
 const fetchImpl = async (_url, options) => {
   const envelope = JSON.parse(options.body);
-  calls.push(envelope);
+  calls.push({ envelope, options });
   const data = envelope.operation === 'session.create'
     ? { authenticated: true, intent_nonce: 'intent-offline-test' }
     : { accepted: true };
@@ -23,12 +23,13 @@ await client.createSession('not-a-real-secret');
 await client.call('campaign-deputy.withhold', { dossier_id: 'dossier-test' });
 
 assert.equal(calls.length, 2);
-assert.equal(calls[0].schema, 'td613.giving.request/v1');
-assert.equal(calls[0].operation, 'session.create');
-assert.equal(calls[0].intent.nonce, null);
-assert.equal(calls[1].operation, 'campaign-deputy.withhold');
-assert.equal(calls[1].intent.nonce, 'intent-offline-test');
-assert.match(calls[1].request_id, /^[A-Za-z0-9]/);
+assert.equal(calls[0].envelope.schema, 'td613.giving.request/v1');
+assert.equal(calls[0].envelope.operation, 'session.create');
+assert.equal(calls[0].envelope.intent.nonce, null);
+assert.equal(calls[0].options.redirect, 'error', 'secret-bearing requests must refuse redirects');
+assert.equal(calls[1].envelope.operation, 'campaign-deputy.withhold');
+assert.equal(calls[1].envelope.intent.nonce, 'intent-offline-test');
+assert.match(calls[1].envelope.request_id, /^[A-Za-z0-9]/);
 
 const internalFailureClient = new GivingApiClient({
   fetchImpl: async () => new Response(JSON.stringify({
