@@ -108,6 +108,10 @@
               <span>Identity hints <small>city, employer, ZIP — never a forced match</small></span>
               <input id="searchHints" name="hints" type="text" maxlength="300">
             </label>
+            <div class="split-fields contribution-amount-filter" aria-label="Contribution amount range">
+              <label class="field"><span>Min contribution</span><input id="amountMin" name="amount_min" type="number" step="0.01" inputmode="decimal" placeholder="$ minimum"></label>
+              <label class="field"><span>Max contribution</span><input id="amountMax" name="amount_max" type="number" step="0.01" inputmode="decimal" placeholder="$ maximum"></label>
+            </div>
             <div class="split-fields">
               <label class="field"><span>Beginning date</span><input id="dateFrom" name="date_from" type="date" required></label>
               <label class="field"><span>Ending date</span><input id="dateTo" name="date_to" type="date" required></label>
@@ -126,11 +130,29 @@
             </div>
           </form>
         </section>
+
+        <section class="panel campaign-directory-panel" id="campaignDirectoryPanel">
+          <div class="campaign-directory-heading">
+            <div><p class="eyebrow">CAMPAIGN / PC IDENTITY</p><h2>Candidate &amp; committee lookup</h2></div>
+            <span>OpenFEC + OpenSecrets</span>
+          </div>
+          <form id="campaignDirectoryForm" class="campaign-directory-form">
+            <label class="field"><span>Candidate, campaign, PAC or political committee</span><input id="campaignDirectoryQuery" type="search" autocomplete="off" placeholder="Search federal candidate or committee"></label>
+            <button class="button primary wide" id="campaignDirectorySearchButton" type="submit">Search</button>
+          </form>
+          <p class="fine-print">Load a reviewed federal candidate or committee into Contributions first. Campaign Deputy can then sync that loaded identity with one explicit gesture. OpenSecrets remains aggregate context only.</p>
+          <div class="campaign-directory-columns">
+            <section><h4>Candidates + principal committees</h4><div id="campaignDirectoryCandidates" class="campaign-directory-results"><span class="muted">Search to begin.</span></div></section>
+            <section><h4>Committees / campaigns / PCs</h4><div id="campaignDirectoryCommittees" class="campaign-directory-results"><span class="muted">Search to begin.</span></div></section>
+            <section><h4>OpenSecrets organizations</h4><div id="campaignDirectoryOpenSecrets" class="campaign-directory-results"><span class="muted">Search to begin.</span></div><div id="campaignDirectoryOpenSecretsSummary"></div></section>
+          </div>
+          <div id="campaignToolsStatus" class="campaign-tools-status" role="status">Ready for campaign / PC lookup.</div>
+        </section>
       </aside>
 
       <nav class="ledger-tabs" aria-label="Giving dossier sections">
         <button class="tab active" type="button" data-view="search" data-step="01">Source run</button>
-        <button class="tab" type="button" data-view="review" data-step="02">Identity review <span id="reviewCount">0</span></button>
+        <button class="tab" type="button" data-view="review" data-step="02">Contributions <span id="reviewCount">0</span></button>
         <button class="tab" type="button" data-view="ledger" data-step="03">Committee ledger <span id="ledgerCount">0</span></button>
         <button class="tab" type="button" data-view="vault" data-step="04">Vault</button>
         <button class="tab" type="button" data-view="campaign" data-step="05">Campaign Deputy</button>
@@ -158,7 +180,7 @@
           <div class="section-head">
             <div>
               <p class="eyebrow">HUMAN CLOSURE REQUIRED</p>
-              <h2>Identity adjudication</h2>
+              <h2>Contributions</h2>
             </div>
             <div class="legend" aria-label="Identity states">
               <span data-state="CANDIDATE">candidate</span><span data-state="CONFIRMED">confirmed</span><span data-state="EXCLUDED">excluded</span><span data-state="UNREVIEWED">unreviewed</span>
@@ -167,11 +189,16 @@
           <div class="review-toolbar">
             <label class="field compact"><span>Contact</span><select id="reviewTargetFilter"><option value="ALL">All contacts</option></select></label>
             <label class="field compact"><span>Show</span><select id="reviewFilter"><option value="ALL">All records</option><option value="CANDIDATE">Candidate</option><option value="UNREVIEWED">Unreviewed</option><option value="CONFIRMED">Confirmed</option><option value="EXCLUDED">Excluded</option></select></label>
-            <label class="field compact grow"><span>Filter records</span><input id="reviewSearch" type="search" placeholder="Name, committee, city, employer"></label>
+            <label class="field compact grow"><span>Filter contributions</span><input id="reviewSearch" type="search" placeholder="Name, committee, city, employer"></label>
             <button class="button review-hold-button" id="holdReviewButton" type="button" aria-pressed="false" data-held="false">Hold</button>
           </div>
+          <div class="loaded-campaign-context" id="loadedCampaignContext" data-loaded="false">
+            <span class="eyebrow">LOADED CAMPAIGN / COMMITTEE</span>
+            <strong>No candidate or committee loaded.</strong>
+            <small>Use Candidate &amp; committee lookup in the left rail to place a reviewed campaign identity here.</small>
+          </div>
           <div class="cluster-notice" id="clusterNotice">No candidate clusters have been proposed.</div>
-          <div class="review-sort-header" aria-label="Identity Review sort columns">
+          <div class="review-sort-header" aria-label="Contributions sort columns">
             <button class="review-sort-button" type="button" data-review-sort="contributor" data-label="Contributor" aria-pressed="false">Contributor</button>
             <button class="review-sort-button" type="button" data-review-sort="committee" data-label="Committee" aria-pressed="false">Committee</button>
             <button class="review-sort-button" type="button" data-review-sort="amount" data-label="Amount" aria-pressed="false">Amount</button>
@@ -248,7 +275,7 @@
             <label class="field compact"><span>Giving contact target</span><select id="campaignTargetSelect"><option value="">No reviewed contact target</option></select></label>
             <div class="campaign-target-summary" id="campaignTargetSummary">Search and review a contact before Campaign Deputy handoff.</div>
           </section>
-          <div class="campaign-grid">
+          <div class="campaign-grid campaign-donor-actions">
             <section class="inner-panel">
               <div class="inner-heading"><h3>1. Find an existing person</h3><button class="button" id="loadPeopleButton" type="button">Load people page</button></div>
               <label class="field"><span>Filter the loaded index</span><input id="peopleFilter" type="search" placeholder="Name, email, phone"></label>
@@ -275,8 +302,20 @@
               <button class="button primary wide" id="createContactButton" type="button" disabled>Create person + sync reviewed committees</button>
             </section>
           </div>
+          <section class="campaign-deputy-sync-tools">
+            <div>
+              <p class="eyebrow">LOADED CAMPAIGN HANDOFF</p>
+              <h3>3. Committee + multi-contact sync</h3>
+              <p id="campaignDeputyLoadedContext">Load a candidate or committee from the left rail first.</p>
+            </div>
+            <div class="button-row">
+              <button class="button primary" id="syncLoadedCommitteeButton" type="button" disabled>Sync loaded committee → Campaign Deputy</button>
+              <button class="button" id="bulkExactContactsButton" type="button">Sync all exact-match contacts</button>
+            </div>
+            <div id="campaignDeputyToolsStatus" class="campaign-tools-status" role="status">No loaded committee waiting for Campaign Deputy.</div>
+          </section>
           <section class="withhold-panel">
-            <div><strong>3. Withhold writeback</strong><p>Close the reviewed target without mutating Campaign Deputy.</p></div>
+            <div><strong>4. Withhold writeback</strong><p>Close the reviewed target without mutating Campaign Deputy.</p></div>
             <button class="button" id="withholdButton" type="button">Record WITHHOLD</button>
           </section>
           <div id="campaignReceipts" class="receipt-list"></div>
