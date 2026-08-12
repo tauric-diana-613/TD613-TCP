@@ -197,6 +197,30 @@ assert.equal(hillsboroughStyle.contributor_name_raw, 'MILLER, TAWANNA C', 'split
 assert.equal(hillsboroughStyle.raw_source_row['Last Name/Company Name'], 'MILLER', 'raw county evidence remains untouched');
 assert.equal(hillsboroughStyle.lineage.contributor_name_derivation, 'VOTERFOCUS_HEADER_RESOLUTION');
 
+const splitNameOverridesGivenOnlyGeneric = normalizeVoterFocusRow({
+  'Candidate/Committee': 'Friends of Example',
+  'Contributor Name': 'TAWANNA',
+  'Last Name/Company Name': 'MILLER',
+  'First Name': 'TAWANNA',
+  'Middle Name': 'C',
+  'Item Date': '08/03/2026',
+  Amount: '125.00',
+  Amendment: 'N',
+  'Report ID': 'county-first-only-1'
+}, {
+  source: {
+    id: 'voterfocus-duval', family: 'VOTERFOCUS', custodian: 'Duval County Supervisor of Elections',
+    jurisdiction: 'Duval', locator: 'https://www.voterfocus.com/CampaignFinance/cand_srch.php?c=duval'
+  },
+  queryDigest: 'test-query-first-only',
+  retrievedAt: '2026-08-12T00:00:00.000Z'
+});
+assert.equal(
+  splitNameOverridesGivenOnlyGeneric.contributor_name_raw,
+  'MILLER, TAWANNA C',
+  'VoterFocus split family/company evidence must outrank a generic Contributor Name field that contains only the given name'
+);
+
 const vendorStyle = normalizeVoterFocusRow({
   'Candidate/Committee': 'Committee Example',
   'Contributor/Vendor': 'DOE, JORDAN',
