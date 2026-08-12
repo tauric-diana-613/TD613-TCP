@@ -6,10 +6,12 @@ import { fileURLToPath } from 'node:url';
 const root = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..');
 const html = fs.readFileSync(path.join(root, 'app/giving/history/index.html'), 'utf8');
 const app = fs.readFileSync(path.join(root, 'app/giving/history/giving-app.js'), 'utf8');
+const apiClient = fs.readFileSync(path.join(root, 'app/giving/history/giving-api.js'), 'utf8');
 const css = fs.readFileSync(path.join(root, 'app/giving/history/giving.css'), 'utf8');
 const polish = fs.readFileSync(path.join(root, 'app/giving/history/giving-polish.css'), 'utf8');
 const bootstrap = fs.readFileSync(path.join(root, 'app/giving/history/giving-bootstrap.js'), 'utf8');
 const contactQueue = fs.readFileSync(path.join(root, 'app/giving/history/giving-contact-queue.js'), 'utf8');
+const searchControls = fs.readFileSync(path.join(root, 'app/giving/history/giving-search-controls.js'), 'utf8');
 const xlsx = fs.readFileSync(path.join(root, 'app/giving/history/giving-xlsx.js'), 'utf8');
 
 assert.match(html, /noindex,nofollow,noarchive,nosnippet/);
@@ -20,8 +22,9 @@ assert.match(html, /id="operatorShell" hidden/);
 assert.match(html, /<script type="module" src="\.\/giving-bootstrap\.js\?v=20260812-3"><\/script>/);
 assert.match(html, /href="\.\/giving-polish\.css\?v=20260812-3"/);
 assert.match(html, /href="\.\/giving\.css\?v=20260812-3"/);
-assert.match(bootstrap, /giving-contact-queue\.js\?v=20260812-3/);
-assert.match(bootstrap, /giving-app\.js\?v=20260812-3/);
+assert.match(bootstrap, /giving-contact-queue\.js\?v=20260812-4/);
+assert.match(bootstrap, /giving-app\.js\?v=20260812-4/);
+assert.match(bootstrap, /giving-search-controls\.js\?v=20260812-4/);
 assert.match(html, /id="sourceRegistry"/);
 assert.match(html, /id="recordList"/);
 assert.match(html, /id="committeeLedger"/);
@@ -64,6 +67,9 @@ assert.match(app, /td613:giving-select-target/);
 assert.match(app, /application\/vnd\.openxmlformats-officedocument\.spreadsheetml\.sheet/);
 assert.match(html, /Source failures and partial coverage/i);
 
+assert.match(apiClient, /FEC_SEARCH_MIN_TIMEOUT_MS = 23_000/);
+assert.match(apiClient, /source_instance_id === 'fec-schedule-a'/);
+
 assert.match(css, /@media \(max-width: 760px\)/);
 assert.match(css, /@media \(max-width: 430px\)/);
 assert.match(css, /prefers-reduced-motion/);
@@ -82,10 +88,24 @@ assert.match(polish, /\.target-lineage/);
 
 assert.match(contactQueue, /searchTargetFromQuery/);
 assert.match(contactQueue, /Contact queue/);
-assert.match(contactQueue, /one per line; commas stay inside names/);
+assert.match(contactQueue, />Add contact<\/button>/);
+assert.match(contactQueue, /one per line for a list; commas stay inside names/);
+assert.match(contactQueue, /use current sources at run/);
+assert.match(contactQueue, /queueMessage\('Enter a contact name first\.'/);
+assert.match(contactQueue, /Select at least one source before running the queue/);
 assert.match(contactQueue, /if \(index > 0\) setHold\(true\)/, 'later queued contacts accumulate as partitioned targets');
 assert.match(contactQueue, /td613:giving-select-target/);
+assert.match(contactQueue, /td613:giving-clear-all/);
 assert.match(contactQueue, /fec-schedule-a/, 'OpenFEC client diagnostics are surfaced beside retryable source failures');
+
+assert.match(searchControls, /DEFAULT_DATE_FROM = '2020-01-01'/);
+assert.match(searchControls, /id = 'clearSearchButton'/);
+assert.match(searchControls, /textContent = 'Clear search'/);
+assert.match(searchControls, /data-start-year="2020"/);
+assert.match(searchControls, /data-start-year="2022"/);
+assert.match(searchControls, /data-start-year="2024"/);
+assert.match(searchControls, /newDossierButton/);
+assert.match(searchControls, /td613:giving-clear-all/);
 
 assert.match(xlsx, /Giving Records/);
 assert.match(xlsx, /Search Target/);
