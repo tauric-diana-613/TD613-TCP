@@ -48,29 +48,37 @@ function firstNonEmpty(row, aliases) {
 }
 
 function voterFocusContributorName(row) {
-  const combined = firstNonEmpty(row, [
-    'Contributor/Vendor Name',
-    'Contributor Name',
-    'Contributor/Vendor',
-    'Contributor',
-    'Contributor Full Name',
-    'Vendor Name',
-    'Payor Name'
-  ]);
-  if (combined) return combined;
-
+  // VoterFocus county exports can expose a generic “Contributor Name” column that
+  // contains only the given name while the family/company name lives in a
+  // separate column. Split name evidence therefore has precedence whenever a
+  // family/company field exists; the generic combined field remains the fallback
+  // for counties that genuinely export a full contributor name in one column.
   const first = firstNonEmpty(row, [
-    'Contributor First Name', 'Contributor/Vendor First Name', 'First Name', 'First'
+    'Contributor First Name',
+    'Contributor/Vendor First Name',
+    'Contributor/Vendor First',
+    'First Name',
+    'First'
   ]);
   const middle = firstNonEmpty(row, [
-    'Contributor Middle Name', 'Contributor/Vendor Middle Name', 'Middle Name', 'Middle', 'MI'
+    'Contributor Middle Name',
+    'Contributor/Vendor Middle Name',
+    'Contributor/Vendor Middle',
+    'Middle Name',
+    'Middle',
+    'MI'
   ]);
   const lastOrCompany = firstNonEmpty(row, [
     'Contributor Last Name',
     'Contributor/Vendor Last Name',
+    'Contributor Last Name/Company Name',
+    'Contributor/Vendor Last Name/Company Name',
     'Last Name',
     'Last Name/Company Name',
     'Last Name/Company',
+    'Last/Company Name',
+    'Last Name or Company Name',
+    'Company/Last Name',
     'Company Name',
     'Organization Name'
   ]);
@@ -79,6 +87,17 @@ function voterFocusContributorName(row) {
     return `${lastOrCompany}, ${[first, middle].filter(Boolean).join(' ')}`;
   }
   if (lastOrCompany) return lastOrCompany;
+
+  const combined = firstNonEmpty(row, [
+    'Contributor/Vendor Name',
+    'Contributor Full Name',
+    'Contributor Name',
+    'Contributor/Vendor',
+    'Contributor',
+    'Vendor Name',
+    'Payor Name'
+  ]);
+  if (combined) return combined;
   if (first || middle) return [first, middle].filter(Boolean).join(' ');
 
   for (const [key, value] of Object.entries(row || {})) {
