@@ -31,7 +31,7 @@ assert.match(bootstrap, /giving-export-menu\.js\?v=20260812-5/);
 assert.match(bootstrap, /giving-app\.js\?v=20260812-5/);
 assert.match(bootstrap, /giving-search-controls\.js\?v=20260812-5/);
 assert.match(bootstrap, /giving-campaign-tools\.js\?v=20260812-5/);
-assert.match(bootstrap, /giving-dossier-help\.js\?v=20260812-5/);
+assert.match(bootstrap, /giving-dossier-help\.js\?v=20260812-6/);
 assert.match(html, /id="sourceRegistry"/);
 assert.match(html, /id="recordList"/);
 assert.match(html, /id="committeeLedger"/);
@@ -130,7 +130,15 @@ assert.match(campaignTools, /aggregate OpenSecrets results never become donor tr
 
 assert.match(dossierHelp, /Research Dossier/);
 assert.match(dossierHelp, /🛈︎/);
-assert.match(dossierHelp, /font:500 7px\/1\.42/);
+assert.match(dossierHelp, /headingParent\.insertBefore\(line, heading\)/);
+assert.match(dossierHelp, /line\.appendChild\(heading\)/);
+assert.match(dossierHelp, /line\.appendChild\(help\)/);
+assert.doesNotMatch(dossierHelp, /heading\.append/, 'the info control must never be nested inside the heading typography');
+assert.match(dossierHelp, /flex:0 0 13px/);
+assert.match(dossierHelp, /font-size:10px/);
+assert.match(dossierHelp, /position:absolute/);
+assert.match(dossierHelp, /font-size:7px/);
+assert.match(dossierHelp, /pointer-events:none/);
 assert.match(dossierHelp, /\.research-dossier-help:hover \.research-dossier-help-popup/);
 assert.match(dossierHelp, /\.research-dossier-help-trigger:focus-visible \+ \.research-dossier-help-popup/);
 assert.doesNotMatch(dossierHelp, /focus-within/, 'mouse focus cannot pin the hover explainer open after pointer exit');
