@@ -45,6 +45,12 @@ export function normalizeName(value) {
   };
 }
 
+export function exactNameMatch(left, right) {
+  const a = normalizeName(left);
+  const b = normalizeName(right);
+  return Boolean(a.canonical && b.canonical && a.canonical === b.canonical && a.suffix === b.suffix);
+}
+
 export function parseMoneyToCents(value) {
   if (typeof value === 'number') {
     if (!Number.isFinite(value)) throw new TypeError('Amount must be finite.');
@@ -84,7 +90,8 @@ export function createDossier({ title = '', query = {}, sourceIds = [], custody 
       aliases: Array.isArray(query.aliases) ? query.aliases.map(compactText).filter(Boolean) : [],
       hints: compactText(query.hints),
       date_from: compactText(query.date_from),
-      date_to: compactText(query.date_to)
+      date_to: compactText(query.date_to),
+      exact_match: Boolean(query.exact_match)
     },
     source_ids: [...new Set(sourceIds)],
     source_states: {},
@@ -192,12 +199,7 @@ export function suggestIdentityClusters(records, threshold = 0.42) {
 
 export function addSearchPage(dossier, sourceId, page, receipt = {}) {
   const incoming = Array.isArray(page?.records) ? page.records : [];
-  const resetReview = globalThis.__td613GivingResetReviewPending === true && globalThis.__td613GivingHoldReview !== true;
-  const baseRecords = resetReview ? [] : dossier.records;
-  const baseDecisions = resetReview ? {} : dossier.decisions;
-  if (resetReview) globalThis.__td613GivingResetReviewPending = false;
-
-  const byDigest = new Map(baseRecords.map((record) => [recordDigest(record), record]));
+  const byDigest = new Map(dossier.records.map((record) => [recordDigest(record), record]));
   for (const record of incoming) {
     const digest = recordDigest(record);
     if (!digest) continue;
@@ -206,7 +208,7 @@ export function addSearchPage(dossier, sourceId, page, receipt = {}) {
   const records = [...byDigest.values()];
   const clusters = suggestIdentityClusters(records);
   const candidateDigests = new Set(clusters.flatMap((cluster) => cluster.members));
-  const decisions = { ...baseDecisions };
+  const decisions = { ...dossier.decisions };
   for (const record of records) {
     const digest = recordDigest(record);
     if (!digest || [IDENTITY_STATUS.CONFIRMED, IDENTITY_STATUS.EXCLUDED].includes(decisions[digest])) continue;
