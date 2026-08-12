@@ -61,6 +61,7 @@ export class GivingApiClient {
         method: 'POST',
         credentials: 'same-origin',
         cache: 'no-store',
+        redirect: 'error',
         headers: {
           'Content-Type': 'application/json',
           Accept: 'application/json'

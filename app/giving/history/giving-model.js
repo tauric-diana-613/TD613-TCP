@@ -45,6 +45,12 @@ export function normalizeName(value) {
   };
 }
 
+export function exactNameMatch(left, right) {
+  const a = normalizeName(left);
+  const b = normalizeName(right);
+  return Boolean(a.canonical && b.canonical && a.canonical === b.canonical && a.suffix === b.suffix);
+}
+
 export function parseMoneyToCents(value) {
   if (typeof value === 'number') {
     if (!Number.isFinite(value)) throw new TypeError('Amount must be finite.');
@@ -84,7 +90,8 @@ export function createDossier({ title = '', query = {}, sourceIds = [], custody 
       aliases: Array.isArray(query.aliases) ? query.aliases.map(compactText).filter(Boolean) : [],
       hints: compactText(query.hints),
       date_from: compactText(query.date_from),
-      date_to: compactText(query.date_to)
+      date_to: compactText(query.date_to),
+      exact_match: Boolean(query.exact_match)
     },
     source_ids: [...new Set(sourceIds)],
     source_states: {},

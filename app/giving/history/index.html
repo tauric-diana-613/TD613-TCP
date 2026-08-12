@@ -8,6 +8,7 @@
   <meta name="theme-color" content="#03100d">
   <title>TD613 Giving History</title>
   <link rel="stylesheet" href="./giving.css">
+  <link rel="stylesheet" href="./giving-polish.css">
 </head>
 <body>
   <noscript><div class="fatal-note">This private research ledger requires JavaScript.</div></noscript>
@@ -70,7 +71,7 @@
               <option value="HYBRID">Hybrid — local + encrypted branch</option>
             </select>
           </label>
-          <div class="button-row">
+          <div class="button-row dossier-actions">
             <button class="button" id="newDossierButton" type="button">New</button>
             <button class="button primary" id="saveDossierButton" type="button">Save</button>
           </div>
@@ -94,6 +95,10 @@
             <label class="field">
               <span>Contributor name</span>
               <input id="searchName" name="name" type="text" maxlength="160" required autocomplete="off">
+            </label>
+            <label class="giving-exact-match" for="exactMatchToggle">
+              <input id="exactMatchToggle" type="checkbox">
+              <span><strong>Exact Match</strong><small>Keep only records whose normalized contributor name exactly matches the submitted name or alias.</small></span>
             </label>
             <label class="field">
               <span>Aliases <small>one per line</small></span>
@@ -162,8 +167,15 @@
           <div class="review-toolbar">
             <label class="field compact"><span>Show</span><select id="reviewFilter"><option value="ALL">All records</option><option value="CANDIDATE">Candidate</option><option value="UNREVIEWED">Unreviewed</option><option value="CONFIRMED">Confirmed</option><option value="EXCLUDED">Excluded</option></select></label>
             <label class="field compact grow"><span>Filter records</span><input id="reviewSearch" type="search" placeholder="Name, committee, city, employer"></label>
+            <button class="button review-hold-button" id="holdReviewButton" type="button" aria-pressed="false" data-held="false">Hold</button>
           </div>
           <div class="cluster-notice" id="clusterNotice">No candidate clusters have been proposed.</div>
+          <div class="review-sort-header" aria-label="Identity Review sort columns">
+            <button class="review-sort-button" type="button" data-review-sort="contributor" data-label="Contributor" aria-pressed="false">Contributor</button>
+            <button class="review-sort-button" type="button" data-review-sort="committee" data-label="Committee" aria-pressed="false">Committee</button>
+            <button class="review-sort-button" type="button" data-review-sort="amount" data-label="Amount" aria-pressed="false">Amount</button>
+            <button class="review-sort-button" type="button" data-review-sort="status" data-label="Status / action" aria-pressed="false">Status / action</button>
+          </div>
           <div class="record-list" id="recordList">
             <div class="empty-state"><strong>No records yet.</strong><span>Search results will arrive with their source lineage intact.</span></div>
           </div>

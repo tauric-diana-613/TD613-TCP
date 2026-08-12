@@ -3,6 +3,7 @@ import {
   IDENTITY_STATUS,
   committeeLedger,
   createDossier,
+  exactNameMatch,
   identityPairScore,
   parseMoneyToCents,
   setIdentityDecision,
@@ -13,6 +14,11 @@ assert.equal(parseMoneyToCents('$1,000.00'), 100000);
 assert.equal(parseMoneyToCents('(25.125)'), -2513);
 assert.equal(parseMoneyToCents('-0.01'), -1);
 assert.equal(parseMoneyToCents(19.995), 2000);
+
+assert.equal(exactNameMatch('DOE, JANE', 'Jane Doe'), true, 'comma-order names normalize to the same exact identity string');
+assert.equal(exactNameMatch('Jane A. Doe', 'Jane Doe'), false, 'middle-name differences remain meaningful for Exact Match');
+assert.equal(exactNameMatch('Jane Doe Jr', 'Jane Doe'), false, 'suffix differences remain meaningful for Exact Match');
+assert.equal(createDossier({ query: { name: 'Jane Doe', exact_match: true } }).query.exact_match, true);
 
 const records = [
   {

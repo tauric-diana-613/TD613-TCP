@@ -6,6 +6,7 @@ import {
   compactText,
   createDossier,
   dossierCsv,
+  exactNameMatch,
   formatCurrency,
   recordDigest,
   safeFilename,
@@ -32,7 +33,9 @@ const state = {
   peopleContinuation: null,
   selectedPersonId: null,
   vaultVersions: [],
-  saveTimer: null
+  saveTimer: null,
+  holdReview: false,
+  reviewSort: { key: null, direction: 'asc' }
 };
 
 function updateField(view) {
@@ -121,8 +124,25 @@ function queryFromForm() {
     aliases: $('#searchAliases').value.split(/\r?\n|;/).map(compactText).filter(Boolean),
     hints: compactText($('#searchHints').value),
     date_from: $('#dateFrom').value,
-    date_to: $('#dateTo').value
+    date_to: $('#dateTo').value,
+    exact_match: Boolean($('#exactMatchToggle')?.checked)
   };
+}
+
+function renderHoldState() {
+  const button = $('#holdReviewButton');
+  if (!button) return;
+  button.dataset.held = state.holdReview ? 'true' : 'false';
+  button.setAttribute('aria-pressed', String(state.holdReview));
+  button.title = state.holdReview
+    ? 'Held: later searches append to this Identity Review. Activate to release.'
+    : 'Keep this Identity Review in place and append results from later searches.';
+}
+
+function resetReviewControls() {
+  state.reviewSort = { key: null, direction: 'asc' };
+  if ($('#reviewFilter')) $('#reviewFilter').value = 'ALL';
+  if ($('#reviewSearch')) $('#reviewSearch').value = '';
 }
 
 function hydrateForm() {
@@ -134,8 +154,10 @@ function hydrateForm() {
   $('#searchHints').value = dossier.query?.hints || '';
   $('#dateFrom').value = dossier.query?.date_from || '2000-01-01';
   $('#dateTo').value = dossier.query?.date_to || new Date().toISOString().slice(0, 10);
+  if ($('#exactMatchToggle')) $('#exactMatchToggle').checked = Boolean(dossier.query?.exact_match);
   for (const input of $$('#sourceRegistry input[type="checkbox"]')) input.checked = dossier.source_ids?.includes(input.value) || false;
   updateSelectedSourceCount();
+  renderHoldState();
 }
 
 function updateDossierFromForm() {
@@ -185,6 +207,8 @@ function newDossier() {
   state.dirty = true;
   state.selectedPersonId = null;
   state.peopleContinuation = null;
+  state.holdReview = false;
+  resetReviewControls();
   hydrateForm();
   renderAll();
   toast('New local-first dossier opened.');
@@ -197,6 +221,8 @@ async function openLocalDossier() {
   if (!dossier) return toast('That dossier is no longer present.', 'error');
   state.dossier = dossier;
   state.dirty = false;
+  state.holdReview = false;
+  resetReviewControls();
   hydrateForm();
   renderAll();
   $('#saveState').textContent = 'saved local';
@@ -288,6 +314,14 @@ function sourceState(sourceId, patch = {}) {
   renderSourceProgress();
 }
 
+function recordName(record) {
+  return compactText(record.contributor_name_raw || record.contributor_name || record.raw_contributor_name || record.contributor_name_parsed?.display || 'Name unavailable');
+}
+
+function recordCommittee(record) {
+  return compactText(record.committee || record.committee_name || record.candidate || record.candidate_name || 'Committee not stated');
+}
+
 async function runSourceTask(task) {
   const { sourceId, continuation = null, pendingContinuations = [] } = task;
   const controller = new AbortController();
@@ -314,14 +348,33 @@ async function runSourceTask(task) {
         continuation: variant.token
       }, { mutation: false, signal: controller.signal, timeoutMs: 18000, purpose: `retrieve ${sourceId}` });
       const data = dataOf(result, 'page');
-      const page = data?.records ? data : data?.page || data || { records: [] };
+      const rawPage = data?.records ? data : data?.page || data || { records: [] };
+      const rawRecords = Array.isArray(rawPage.records) ? rawPage.records : [];
+      const records = state.dossier.query?.exact_match
+        ? rawRecords.filter((record) => exactNameMatch(recordName(record), variant.name))
+        : rawRecords;
+      const page = records === rawRecords ? rawPage : {
+        ...rawPage,
+        records,
+        client_exact_match: {
+          enabled: true,
+          observed_records: rawRecords.length,
+          retained_records: records.length,
+          query_name: variant.name
+        }
+      };
       const receipt = page.receipt || receiptOf(result) || { source_instance_id: sourceId, state: 'READY' };
       const previousCount = state.dossier.source_states[sourceId]?.count || 0;
       state.dossier = addSearchPage(state.dossier, sourceId, page, receipt);
       returned += page.records?.length || 0;
       lastCoverage = page.coverage || data?.coverage || receipt.coverage || lastCoverage;
       lastReceipt = receipt;
-      variantReceipts.push({ query_name: variant.name, state: compactText(receipt?.state || page.source_status || 'READY').toUpperCase(), receipt });
+      variantReceipts.push({
+        query_name: variant.name,
+        state: compactText(receipt?.state || page.source_status || 'READY').toUpperCase(),
+        receipt,
+        ...(page.client_exact_match ? { exact_match: page.client_exact_match } : {})
+      });
       const next = page.continuation || data?.continuation || null;
       if (next) continuations.push({ query_name: variant.name, token: next });
       state.dossier.source_states[sourceId].count = previousCount + (page.records?.length || 0);
@@ -380,6 +433,20 @@ async function runQueue() {
   renderAll();
 }
 
+function clearReviewForNewSearch() {
+  state.dossier = {
+    ...state.dossier,
+    records: [],
+    decisions: {},
+    clusters: [],
+    source_states: {}
+  };
+  resetReviewControls();
+  renderReview();
+  renderLedger();
+  renderCampaign();
+}
+
 async function startSearch(event) {
   event.preventDefault();
   const ids = selectedSourceIds();
@@ -388,6 +455,7 @@ async function startSearch(event) {
   if (!query.name) return toast('Enter a contributor name.', 'error');
   if (!query.date_from || !query.date_to || query.date_from > query.date_to) return toast('Use a valid beginning and ending date.', 'error');
   updateDossierFromForm();
+  if (!state.holdReview) clearReviewForNewSearch();
   state.dossier.version += 1;
   state.dossier.source_ids = ids;
   state.run.queue = ids.map((sourceId) => ({ sourceId, continuation: null }));
@@ -459,16 +527,53 @@ function renderSourceProgress() {
   updateField();
 }
 
-function recordName(record) {
-  return compactText(record.contributor_name_raw || record.contributor_name || record.raw_contributor_name || record.contributor_name_parsed?.display || 'Name unavailable');
-}
-
-function recordCommittee(record) {
-  return compactText(record.committee || record.committee_name || record.candidate || record.candidate_name || 'Committee not stated');
-}
-
 function clusterFor(digest) {
   return state.dossier.clusters?.find((cluster) => cluster.members.includes(digest));
+}
+
+function reviewSortValue(record, key) {
+  if (key === 'contributor') return recordName(record);
+  if (key === 'committee') return recordCommittee(record);
+  if (key === 'status') return state.dossier.decisions[recordDigest(record)] || IDENTITY_STATUS.UNREVIEWED;
+  if (key === 'amount') return Number.isSafeInteger(record.amount_cents) ? record.amount_cents : null;
+  return '';
+}
+
+function compareReviewRecords(left, right) {
+  const { key, direction } = state.reviewSort;
+  if (!key) return 0;
+  const a = reviewSortValue(left, key);
+  const b = reviewSortValue(right, key);
+  let result = 0;
+  if (key === 'amount') {
+    if (a === null && b === null) result = 0;
+    else if (a === null) return 1;
+    else if (b === null) return -1;
+    else result = a - b;
+  } else {
+    result = String(a).localeCompare(String(b), undefined, { sensitivity: 'base', numeric: true });
+  }
+  return direction === 'desc' ? -result : result;
+}
+
+function renderReviewSortControls() {
+  $$('[data-review-sort]').forEach((button) => {
+    const active = button.dataset.reviewSort === state.reviewSort.key;
+    const label = button.dataset.label || button.textContent.replace(/[↑↓]/g, '').trim();
+    button.dataset.label = label;
+    button.dataset.active = active ? 'true' : 'false';
+    button.setAttribute('aria-pressed', String(active));
+    button.textContent = `${label}${active ? (state.reviewSort.direction === 'asc' ? ' ↑' : ' ↓') : ''}`;
+  });
+}
+
+function setReviewSort(key) {
+  if (state.reviewSort.key === key) {
+    state.reviewSort.direction = state.reviewSort.direction === 'asc' ? 'desc' : 'asc';
+  } else {
+    state.reviewSort = { key, direction: 'asc' };
+  }
+  renderReview();
 }
 
 function renderReview() {
@@ -481,6 +586,9 @@ function renderReview() {
     return [recordName(record), recordCommittee(record), record.city, record.state, record.employer, record.occupation]
       .some((value) => compactText(value).toUpperCase().includes(phrase));
   });
+  if (state.reviewSort.key) records.sort(compareReviewRecords);
+  renderReviewSortControls();
+  renderHoldState();
   $('#reviewCount').textContent = String(state.dossier.records.length);
   const clusters = state.dossier.clusters || [];
   $('#clusterNotice').textContent = clusters.length
@@ -514,7 +622,7 @@ function renderReview() {
         ${comparison ? `<span class="record-reasons"> · suggested: ${escapeHtml(comparison.reasons.join(', ') || 'weak shared fields')}${comparison.cautions.length ? `; caution: ${escapeHtml(comparison.cautions.join(', '))}` : ''}</span>` : ''}
       </div>
     </article>`;
-  }).join('') + (records.length > visible.length ? `<div class="coverage-warning">Showing the first ${visible.length} of ${records.length} filtered records. Narrow the review filter to inspect the remainder.</div>` : '');
+  }).join('') + (records.length > visible.length ? `<div class="coverage-warning">Showing the first ${visible.length} of ${records.length} filtered records after sorting. Narrow the review filter to inspect the remainder.</div>` : '');
   $$('[data-decision]').forEach((button) => button.addEventListener('click', () => {
     try {
       state.dossier = setIdentityDecision(state.dossier, button.dataset.digest, button.dataset.decision);
@@ -660,6 +768,8 @@ async function openVaultVersion(versionId) {
     const dossier = await decryptDossier(envelope, passphrase);
     state.dossier = dossier;
     state.dirty = false;
+    state.holdReview = false;
+    resetReviewControls();
     hydrateForm();
     renderAll();
     addReceipt(receiptOf(result), 'vault');
@@ -957,6 +1067,8 @@ function bindEvents() {
     cancelSearch();
     try { await api.closeSession(); } catch (error) {}
     state.dossier = createDossier();
+    state.holdReview = false;
+    resetReviewControls();
     sessionClosed('Signed session closed. Local dossiers remain under browser custody.');
   });
   $('#readinessButton').addEventListener('click', readiness);
@@ -982,6 +1094,15 @@ function bindEvents() {
   $$('.tab').forEach((tab) => tab.addEventListener('click', () => switchView(tab.dataset.view)));
   $('#reviewFilter').addEventListener('change', renderReview);
   $('#reviewSearch').addEventListener('input', renderReview);
+  $('#holdReviewButton').addEventListener('click', () => {
+    state.holdReview = !state.holdReview;
+    renderHoldState();
+    toast(state.holdReview
+      ? 'Identity Review held. Later searches will append to this review.'
+      : 'Hold released. The next search will replace this Identity Review.');
+  });
+  $$('[data-review-sort]').forEach((button) => button.addEventListener('click', () => setReviewSort(button.dataset.reviewSort)));
+  $('#exactMatchToggle').addEventListener('change', () => markDirty());
   $('#exportCsvButton').addEventListener('click', () => {
     updateDossierFromForm();
     download(`${safeFilename(state.dossier.title)}.csv`, dossierCsv(state.dossier), 'text/csv;charset=utf-8');
