@@ -12,6 +12,10 @@ const polish = fs.readFileSync(path.join(root, 'app/giving/history/giving-polish
 const bootstrap = fs.readFileSync(path.join(root, 'app/giving/history/giving-bootstrap.js'), 'utf8');
 const contactQueue = fs.readFileSync(path.join(root, 'app/giving/history/giving-contact-queue.js'), 'utf8');
 const searchControls = fs.readFileSync(path.join(root, 'app/giving/history/giving-search-controls.js'), 'utf8');
+const campaignTools = fs.readFileSync(path.join(root, 'app/giving/history/giving-campaign-tools.js'), 'utf8');
+const dossierHelp = fs.readFileSync(path.join(root, 'app/giving/history/giving-dossier-help.js'), 'utf8');
+const campaignDirectory = fs.readFileSync(path.join(root, 'server/giving/campaign-directory.js'), 'utf8');
+const constants = fs.readFileSync(path.join(root, 'server/giving/constants.js'), 'utf8');
 const xlsx = fs.readFileSync(path.join(root, 'app/giving/history/giving-xlsx.js'), 'utf8');
 
 assert.match(html, /noindex,nofollow,noarchive,nosnippet/);
@@ -22,9 +26,12 @@ assert.match(html, /id="operatorShell" hidden/);
 assert.match(html, /<script type="module" src="\.\/giving-bootstrap\.js\?v=20260812-3"><\/script>/);
 assert.match(html, /href="\.\/giving-polish\.css\?v=20260812-3"/);
 assert.match(html, /href="\.\/giving\.css\?v=20260812-3"/);
-assert.match(bootstrap, /giving-contact-queue\.js\?v=20260812-4/);
-assert.match(bootstrap, /giving-app\.js\?v=20260812-4/);
-assert.match(bootstrap, /giving-search-controls\.js\?v=20260812-4/);
+assert.match(bootstrap, /giving-contact-queue\.js\?v=20260812-5/);
+assert.match(bootstrap, /giving-export-menu\.js\?v=20260812-5/);
+assert.match(bootstrap, /giving-app\.js\?v=20260812-5/);
+assert.match(bootstrap, /giving-search-controls\.js\?v=20260812-5/);
+assert.match(bootstrap, /giving-campaign-tools\.js\?v=20260812-5/);
+assert.match(bootstrap, /giving-dossier-help\.js\?v=20260812-5/);
 assert.match(html, /id="sourceRegistry"/);
 assert.match(html, /id="recordList"/);
 assert.match(html, /id="committeeLedger"/);
@@ -69,6 +76,7 @@ assert.match(html, /Source failures and partial coverage/i);
 
 assert.match(apiClient, /FEC_SEARCH_MIN_TIMEOUT_MS = 23_000/);
 assert.match(apiClient, /source_instance_id === 'fec-schedule-a'/);
+assert.match(apiClient, /campaign-deputy\.ensure-committee/);
 
 assert.match(css, /@media \(max-width: 760px\)/);
 assert.match(css, /@media \(max-width: 430px\)/);
@@ -106,6 +114,38 @@ assert.match(searchControls, /data-start-year="2022"/);
 assert.match(searchControls, /data-start-year="2024"/);
 assert.match(searchControls, /newDossierButton/);
 assert.match(searchControls, /td613:giving-clear-all/);
+
+assert.match(campaignTools, /Candidate & committee lookup/);
+assert.match(campaignTools, /OpenFEC \+ OpenSecrets/);
+assert.match(campaignTools, /Integrate committee → Campaign Deputy/);
+assert.match(campaignTools, /campaign-deputy\.ensure-committee/);
+assert.match(campaignTools, /id = 'bulkExactContactsButton'/);
+assert.match(campaignTools, /Sync all exact-match contacts/);
+assert.match(campaignTools, /matches\.length !== 1/, 'multi-contact sync holds missing and ambiguous Campaign Deputy identities');
+assert.match(campaignTools, /no exact Campaign Deputy person/);
+assert.match(campaignTools, /ambiguous exact Campaign Deputy name/);
+assert.match(campaignTools, /linkCommitteeForCurrentTarget/);
+assert.doesNotMatch(campaignTools, /create-confirmed|Create person/, 'bulk exact-contact gesture cannot silently create Campaign Deputy people');
+assert.match(campaignTools, /aggregate OpenSecrets results never become donor transactions/);
+
+assert.match(dossierHelp, /Research Dossier/);
+assert.match(dossierHelp, /🛈︎/);
+assert.match(dossierHelp, /font:500 7px\/1\.42/);
+assert.match(dossierHelp, /\.research-dossier-help:hover \.research-dossier-help-popup/);
+assert.match(dossierHelp, /\.research-dossier-help-trigger:focus-visible \+ \.research-dossier-help-popup/);
+assert.doesNotMatch(dossierHelp, /focus-within/, 'mouse focus cannot pin the hover explainer open after pointer exit');
+assert.match(dossierHelp, /Local keeps the dossier in this browser/);
+assert.match(dossierHelp, /conflicting hosted branches are preserved for human reconciliation/);
+
+assert.match(campaignDirectory, /method', 'getOrgs'/);
+assert.match(campaignDirectory, /method', 'orgSummary'/);
+assert.match(campaignDirectory, /AGGREGATE_ORGANIZATION_INTELLIGENCE_NOT_INDIVIDUAL_DONOR_TRANSACTIONS/);
+assert.match(campaignDirectory, /REVIEWED_FEC_COMMITTEE_IDENTITY_TO_CAMPAIGN_DEPUTY_LIST/);
+assert.match(campaignDirectory, /external_contribution_created: false/);
+assert.match(campaignDirectory, /fec_committee_id/);
+assert.match(constants, /OPENSECRETS_API_KEY/);
+assert.match(constants, /www\.opensecrets\.org/);
+assert.doesNotMatch(constants, /opensecrets[^\n]*source_instance/i, 'OpenSecrets enrichment is not registered as a donor-transaction source');
 
 assert.match(xlsx, /Giving Records/);
 assert.match(xlsx, /Search Target/);
