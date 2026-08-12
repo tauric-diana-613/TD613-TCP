@@ -15,6 +15,12 @@ import {
   peoplePage,
   withhold
 } from './campaign-deputy.js';
+import {
+  campaignDirectoryReadiness,
+  ensureCampaignDeputyCommittee,
+  openSecretsOrganizationSummary,
+  searchCampaignDirectory
+} from './campaign-directory.js';
 import { publicRegistry } from './registry.js';
 import {
   assertSameOrigin,
@@ -43,6 +49,7 @@ function setHeaders(res, headers = {}) {
 function custodyForOperation(operation) {
   if (operation.startsWith('vault.')) return 'HOSTED_CIPHERTEXT_ONLY';
   if (operation.startsWith('campaign-deputy.')) return 'CAMPAIGN_DEPUTY_REVIEWED_WRITE_BOUNDARY';
+  if (operation.startsWith('campaign-directory.')) return 'TRANSIENT_CAMPAIGN_DIRECTORY_RESEARCH';
   if (operation === 'search.page') return 'TRANSIENT_SERVER_RESPONSE_CLIENT_SELECTED_DOSSIER_CUSTODY';
   if (operation === 'registry.read') return 'PUBLIC_SOURCE_REGISTRY_NO_DONOR_DATA';
   return 'SIGNED_OPERATOR_SESSION';
@@ -112,9 +119,12 @@ async function dispatch(envelope, session, context) {
     case 'vault.read': return vaultRead(envelope.payload, session, context);
     case 'vault.write': return vaultWrite(envelope.payload, session, context);
     case 'vault.resolve-conflict': return vaultResolveConflict(envelope.payload, session, context);
+    case 'campaign-directory.search': return searchCampaignDirectory(envelope.payload, context);
+    case 'campaign-directory.opensecrets-summary': return openSecretsOrganizationSummary(envelope.payload, context);
     case 'campaign-deputy.people-page': return peoplePage(envelope.payload, context);
     case 'campaign-deputy.link-existing': return linkExisting(envelope.payload, context);
     case 'campaign-deputy.create-confirmed': return createConfirmed(envelope.payload, context);
+    case 'campaign-deputy.ensure-committee': return ensureCampaignDeputyCommittee(envelope.payload, context);
     case 'campaign-deputy.withhold': return withhold(envelope.payload);
     case 'readiness': {
       const registry = publicRegistry();
@@ -127,6 +137,7 @@ async function dispatch(envelope, session, context) {
           municipalities: registry.municipalities.unique_count,
           family_counts: registry.family_counts
         },
+        campaign_directory: campaignDirectoryReadiness(),
         campaign_deputy: campaignDeputyReadiness(),
         vault: vaultReadiness(),
         required_environment: GIVING_ENVIRONMENT,
