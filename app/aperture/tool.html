@@ -213,11 +213,77 @@ TD613 APERTURE v3.1-alpha SOURCE DECLARATION
   "evidenceRecord": {
     "fields": ["source_status", "evidence_basis", "observations", "missingness", "alternatives", "open_questions", "operator_notes", "closure"],
     "researchNotes": {"default":"OFF", "humanOperated":true, "modelContextInjection":false},
-    "legacyLimitingVocabularyCurrent": false
+    "legacyLimitingVocabularyCurrent": false,
+    "inputResponsiveness": {
+      "experiment": "paired Giving inversion",
+      "responsive": ["temporal_marginals", "declared_missingness"],
+      "demoBound": {
+        "state": "AT3/TOMOGRAPHY_READY",
+        "coverage": 1.0,
+        "referenceResponse": 0.636364,
+        "sharedLayerBurden": 0.2,
+        "phasonSusceptibility": 1.45,
+        "residuals": 0,
+        "heldOut": "PASS"
+      },
+      "law": "Invariance across the paired Giving runs is a demo-binding annotation, not an empirical finding."
+    }
   },
   "automaticAshAction": false,
   "cinderTransport": false,
   "operatorClosureRequired": true
+}
+</script>
+<script hidden id="td613AperturePatchBayContract" type="application/json">
+{
+  "schema": "td613.aperture.patch-bay/v1",
+  "version": "v3.1-alpha+patch-bay.1",
+  "instrumentSchema": "td613-aperture/v3.1-alpha",
+  "role": "machine-only qualified routing and side-effect classification surface",
+  "lineage": {
+    "instrument": "TD613 Aperture v3.1-alpha",
+    "baseIndex": "apertureToolUseIndex",
+    "baseIndexAlias": "apertureScanGrammarIndex",
+    "extensionIndexes": ["apertureV295ScanGrammarAddendum", "apertureV3ScanGrammarAddendum"],
+    "witness": "td613-aperture/v3.0-alpha/witness-lab",
+    "tomography": "td613.aperture.v31-admissibility-tomography-contract/v0.1"
+  },
+  "qualifiedAddressGrammar": ["family:<semantic-id>", "lane:<semantic-id>", "port:<semantic-id>"],
+  "expectedInventory": {"families":37, "lanes":25, "canonicalExamples":51, "witnessFixtures":5},
+  "portStates": ["PURE", "STATEFUL", "CONTRACT_ONLY", "DEMO_BOUND"],
+  "ports": [
+    {"address":"port:task-intent", "state":"PURE", "capability":"task-intent routing", "runtime":"TD613_TASK_INTENT.route", "requires":["task"]},
+    {"address":"port:witness", "state":"PURE", "capability":"bounded witness receipt", "runtime":"routeWitnessArtifact", "requires":["witness"]},
+    {"address":"port:anti-equivalence", "state":"PURE", "capability":"surface/invariant comparison", "runtime":"runAntiEquivalenceGate", "requires":["witness.surfaceMatch", "witness.governingInvariant"]},
+    {"address":"port:sigma-receipt", "state":"PURE", "capability":"Patch Bay receipt assembly", "runtime":"TD613_APERTURE_PATCH_BAY.internal.sigma", "requires":[]},
+    {"address":"port:phason", "state":"DEMO_BOUND", "capability":"projection/custody seam simulation", "runtime":"DOM-bound Phason runtime", "requires":["operator-controlled panel state"]},
+    {"address":"port:tomography", "state":"CONTRACT_ONLY", "capability":"tomography responsiveness declaration", "runtime":"APERTURE_V31_TOMOGRAPHY", "requires":["Dome-World experiment receipt"]},
+    {"address":"port:dromology", "state":"STATEFUL", "capability":"temporal field simulation", "runtime":"TD613_APERTURE_V295_DROMOLOGY", "requires":["live field state"]},
+    {"address":"port:rupture", "state":"STATEFUL", "capability":"rupture assist simulation", "runtime":"Rupture Assist DOM runtime", "requires":["live field state"]}
+  ],
+  "aliases": {
+    "task-intent":["intent", "task route"],
+    "witness":["witness lab", "artifact witness"],
+    "anti-equivalence":["anti equivalence", "governing invariant"],
+    "phason":["phason seam", "projection seam", "custody seam"],
+    "sigma-receipt":["sigma receipt", "receipt ledger"],
+    "tomography":["admissibility tomography", "paired inversion"]
+  },
+  "defaultEnsembles": {
+    "giving-history":["port:task-intent", "port:witness", "port:anti-equivalence", "family:phason", "port:sigma-receipt"]
+  },
+  "tomographyResponsiveness": {
+    "responsive":["temporal_marginals", "declared_missingness"],
+    "demoBound":{"state":"AT3/TOMOGRAPHY_READY", "coverage":1.0, "referenceResponse":0.636364, "sharedLayerBurden":0.2, "phasonSusceptibility":1.45, "residuals":0, "heldOut":"PASS"},
+    "law":"Expose responsive and invariant classes together; never promote demo-bound invariants as empirical findings."
+  },
+  "hardStops":[
+    "automatic play may invoke PURE ports only",
+    "same-name families and lanes remain qualified and distinct",
+    "DEMO_BOUND outputs remain declared rather than inferred",
+    "CONTRACT_ONLY ports do not simulate missing experiments",
+    "play is dry-run only"
+  ]
 }
 </script>
 <script id="apertureV295ScanGrammarAddendum" type="application/json">
@@ -18778,6 +18844,10 @@ Hard stops:
     let confidence = 0.30;
     let exactnessClass = 'open';
     const claimText = lc(payload.claim);
+    const selectedProofRisk = payload.selected.length > 0 && (
+      /\b(?:prove|proves|proved|proven|proof|definitive|forced)\b/.test(claimText) ||
+      /\beliminat(?:e|es|ed|ing)\s+(?:human\s+)?review\b/.test(claimText)
+    );
     const hasArtifact = has(payload.artifactName) || payload.materials.length > 0;
     if (!hasArtifact && !has(payload.claim)) warnings.push('awaiting witness artifact');
     if (!has(payload.claim)) warnings.push('no claim under witness; route remains OPEN');
@@ -18812,14 +18882,15 @@ Hard stops:
     const canonRisk = /(canon|canonical|universal|proves td613|blood oath|identity|same person|always)/.test(claimText + ' ' + lc(payload.statusBoundary));
     const exactRisk = /(exact|proven|proof|forced)/.test(claimText) && payload.approximate.length && !payload.exact.length;
     const equivalenceRisk = has(payload.surfaceMatch) && !has(payload.governingInvariant);
-    const launderingRisk = Math.min(1, (canonRisk?0.38:0) + (exactRisk?0.30:0) + (equivalenceRisk?0.22:0) + (payload.selected.length && /forced|proven|must/.test(claimText)?0.22:0));
+    const launderingRisk = Math.min(1, (canonRisk?0.38:0) + (exactRisk?0.30:0) + (equivalenceRisk?0.22:0) + (selectedProofRisk?0.60:0));
     if (canonRisk) warnings.push('canonization drift risk');
     if (exactRisk) warnings.push('exactness drift risk');
     if (equivalenceRisk) warnings.push('surface match lacks governing invariant');
+    if (selectedProofRisk) warnings.push('selected frame contains forced-proof language');
     let exportStatus = 'conditional';
-    if (!has(payload.claim) || grade === 'OPEN' || launderingRisk >= 0.55) exportStatus = 'withheld';
+    if (!has(payload.claim) || grade === 'OPEN' || launderingRisk >= 0.55 || selectedProofRisk) exportStatus = 'withheld';
     else if (grade === 'FORCED_UNDER_CONSTRAINT' && launderingRisk < 0.25) exportStatus = 'pass';
-    return { grade, confidence, exactnessClass, launderingRisk, warnings:[...new Set(warnings)], exportStatus };
+    return { grade, confidence, exactnessClass, launderingRisk, selectedProofRisk, warnings:[...new Set(warnings)], exportStatus };
   }
 
   function runAntiEquivalenceGate(payload){
@@ -18994,14 +19065,18 @@ Hard stops:
   function runWitnessLabSelfTest(){
     const cases = [
       { name:'approximate cannot export as exact', p:{ artifactName:'demo', artifactType:'html-tool', claim:'plot proves exact result', approximate:['plot'], exact:[], materials:['html'], checks:[], selected:[], construction:[], open:[], statusBoundary:'' }, expect:'withheld' },
-      { name:'selected cannot export as forced', p:{ artifactName:'demo', artifactType:'math-spec', claim:'selected axis is forced', selected:['chosen axis'], exact:[], approximate:[], materials:['spec'], checks:[], construction:[], open:[], statusBoundary:'' }, expect:'withheld' },
+      {
+        name:'selected remains conditional unless forced-proof language is present',
+        p:{ artifactName:'demo', artifactType:'math-spec', claim:'selected axis for this comparison', selected:['chosen axis'], exact:[], approximate:[], materials:['spec'], checks:[], construction:[], open:[], statusBoundary:'' },
+        inspect:r => r.exportStatus === 'conditional' && buildWitnessReceipt({ artifactName:'demo', artifactType:'math-spec', claim:'selected axis definitively proves the result and eliminates review', selected:['chosen axis'], exact:[], approximate:[], materials:['spec'], checks:[], construction:[], open:[], statusBoundary:'' }).exportStatus === 'withheld'
+      },
       { name:'surface match triggers anti-equivalence', p:{ artifactName:'demo', artifactType:'code-package', claim:'same output means same class', surfaceMatch:'same output', governingInvariant:'', exact:[], approximate:[], materials:['source'], checks:[], selected:[], construction:[], open:[], statusBoundary:'' }, expectAnti:'warning' },
       { name:'absence can be registered', p:{ artifactName:'demo', artifactType:'dataset', claim:'gap is preserved', absence:'empty interval gap', exact:[], approximate:[], materials:['data'], checks:[], selected:[], construction:[], open:[], statusBoundary:'' }, expectAbsence:'registered' },
       { name:'passing checks do not canonize artifact', p:{ artifactName:'demo', artifactType:'code-package', claim:'tests passed but not universal canon', exact:['test result'], materials:['source','tests','manifest'], checks:['passed'], selected:[], construction:[], open:['broader interpretation'], statusBoundary:'not canon' }, expect:'withheld' }
     ];
     const results = cases.map(c => {
       const r = buildWitnessReceipt(c.p);
-      return { name:c.name, ok: c.expect ? r.exportStatus === c.expect : c.expectAnti ? r.antiEquivalence.status === c.expectAnti : c.expectAbsence ? r.absence.status === c.expectAbsence : false };
+      return { name:c.name, ok: c.inspect ? c.inspect(r) : c.expect ? r.exportStatus === c.expect : c.expectAnti ? r.antiEquivalence.status === c.expectAnti : c.expectAbsence ? r.absence.status === c.expectAbsence : false };
     });
     return { total:results.length, passed:results.filter(r=>r.ok).length, results };
   }
@@ -25322,12 +25397,319 @@ Hard stops:
       automaticAshAction:false,
       researchNotes:Object.freeze({default:'OFF',humanOperated:true,modelContextInjection:false}),
       recordFields:Object.freeze(['source_status','evidence_basis','observations','missingness','alternatives','open_questions','operator_notes','closure']),
+      inputResponsiveness:Object.freeze({
+        experiment:'paired Giving inversion',
+        responsive:Object.freeze(['temporal_marginals','declared_missingness']),
+        demoBound:Object.freeze({state:'AT3/TOMOGRAPHY_READY',coverage:1.0,referenceResponse:0.636364,sharedLayerBurden:0.2,phasonSusceptibility:1.45,residuals:0,heldOut:'PASS'}),
+        law:'Invariance across the paired Giving runs is a demo-binding annotation, not an empirical finding.'
+      }),
       refresh:render
     });
   }
   if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',boot,{once:true});else boot();
   window.addEventListener('storage',event=>{if(event.key===POINTER_KEY)render();},{passive:true});
   window.addEventListener('pageshow',render,{passive:true});
+})();
+</script>
+
+<script id="td613AperturePatchBayRuntime">
+(function(){
+  'use strict';
+  if(window.TD613_APERTURE_PATCH_BAY)return;
+
+  function parse(id){
+    try{var node=document.getElementById(id);return node?JSON.parse(node.textContent||'{}'):{};}
+    catch(_){return {};}
+  }
+  function copy(value){return JSON.parse(JSON.stringify(value));}
+  function list(value){return Array.isArray(value)?value:[];}
+  function unique(values){return Array.from(new Set(values.filter(Boolean)));}
+  function slug(value){
+    return String(value||'').trim().toLowerCase()
+      .replace(/&/g,' and ').replace(/[^a-z0-9]+/g,'-').replace(/^-+|-+$/g,'');
+  }
+  var SPECIAL_SLUGS=Object.freeze({
+    phason_seam_scan:'phason',phason_seam:'phason',
+    witness_scan:'witness',witness_lab:'witness',
+    sigma_receipt_scan:'sigma-receipt',sigma_receipt_ledger:'sigma-receipt',
+    grade_gate_scan:'grade-gate',grade_gate:'grade-gate',
+    legal_synthesis_scan:'legal-synthesis',legal_synthesis:'legal-synthesis',
+    moire_scan:'moire',admissibility_scan:'admissibility'
+  });
+  function semanticSlug(id,kind){
+    if(SPECIAL_SLUGS[id])return SPECIAL_SLUGS[id];
+    var value=String(id||'');
+    if(kind==='family')value=value.replace(/_scan$/,'');
+    return slug(value);
+  }
+  function parseSources(){
+    return {
+      contract:parse('td613AperturePatchBayContract'),
+      base:parse('apertureToolUseIndex'),
+      baseAlias:parse('apertureScanGrammarIndex'),
+      v295:parse('apertureV295ScanGrammarAddendum'),
+      v3:parse('apertureV3ScanGrammarAddendum'),
+      tomography:parse('apertureV31AdmissibilityTomographyContract')
+    };
+  }
+  function buildInventory(){
+    var source=parseSources(),familyMap=new Map();
+    [
+      ['apertureToolUseIndex',list(source.base.scanFamilies)],
+      ['apertureScanGrammarIndex',list(source.baseAlias.scanFamilies)],
+      ['apertureV295ScanGrammarAddendum',list(source.v295.scanFamilies)],
+      ['apertureV3ScanGrammarAddendum',list(source.v3.scanFamilies)]
+    ].forEach(function(pair){
+      pair[1].forEach(function(item){
+        if(!item||!item.id)return;
+        var prior=familyMap.get(item.id);
+        if(prior){prior.lineageSources=unique(prior.lineageSources.concat(pair[0]));return;}
+        var entry=Object.assign({},item,{
+          kind:'family',
+          address:'family:'+semanticSlug(item.id,'family'),
+          lineageSources:[pair[0]]
+        });
+        familyMap.set(item.id,entry);
+      });
+    });
+    var laneMap=new Map();
+    list(source.base.lanes).forEach(function(item){
+      if(!item||!item.id)return;
+      laneMap.set(item.id,Object.assign({},item,{
+        kind:'lane',
+        address:'lane:'+semanticSlug(item.id,'lane'),
+        lineageSources:['apertureToolUseIndex','apertureScanGrammarIndex']
+      }));
+    });
+    var families=Array.from(familyMap.values());
+    var lanes=Array.from(laneMap.values());
+    var examples=[];
+    lanes.forEach(function(lane){
+      list(lane.examplePrompts).forEach(function(prompt,index){
+        examples.push({address:'example:'+lane.address.slice(5)+':'+String(index+1),lane:lane.address,prompt:String(prompt)});
+      });
+    });
+    var bySemantic=new Map();
+    families.concat(lanes).forEach(function(entry){
+      var key=entry.address.split(':')[1];
+      if(!bySemantic.has(key))bySemantic.set(key,[]);
+      bySemantic.get(key).push(entry.address);
+    });
+    var collisions=Array.from(bySemantic.entries()).filter(function(pair){
+      return pair[1].some(function(x){return x.indexOf('family:')===0;})&&pair[1].some(function(x){return x.indexOf('lane:')===0;});
+    }).map(function(pair){return {semanticId:pair[0],qualifiedAddresses:pair[1],law:'qualification is retained; no family/lane flattening'};});
+    return {source:source,families:families,lanes:lanes,examples:examples,collisions:collisions};
+  }
+  function addressAliases(entry){
+    var kind=entry.kind;
+    return unique([
+      entry.address,
+      kind+':'+semanticSlug(entry.id,kind),
+      kind+':'+slug(String(entry.id||'').replace(/_scan$/,'')),
+      kind+':'+slug(entry.label||'')
+    ]);
+  }
+  function describe(){
+    var inv=buildInventory(),contract=inv.source.contract;
+    var ports=list(contract.ports).map(function(port){
+      return Object.assign({},port,{availableToAutomaticPlay:port.state==='PURE'});
+    });
+    var classes={PURE:[],STATEFUL:[],CONTRACT_ONLY:[],DEMO_BOUND:[]};
+    ports.forEach(function(port){if(classes[port.state])classes[port.state].push(port.address);});
+    var generatedAliases={};
+    inv.families.concat(inv.lanes).forEach(function(entry){generatedAliases[entry.address]=addressAliases(entry);});
+    return copy({
+      schema:contract.schema||'td613.aperture.patch-bay/v1',
+      version:contract.version||'v3.1-alpha+patch-bay.1',
+      instrumentSchema:contract.instrumentSchema||'td613-aperture/v3.1-alpha',
+      lineage:contract.lineage||{},
+      versions:{instrument:'v3.1-alpha',patchBay:contract.version||'v3.1-alpha+patch-bay.1',witness:'v2.9.4',tomography:'v3.1-alpha'},
+      qualifiedAddressGrammar:contract.qualifiedAddressGrammar||[],
+      families:inv.families,
+      lanes:inv.lanes,
+      canonicalRoutingExamples:inv.examples,
+      availablePorts:ports,
+      capabilityClassifications:classes,
+      schemas:[
+        {id:'patch-bay',schema:contract.schema},
+        {id:'base-index',schema:inv.source.base.schema},
+        {id:'base-index-alias',schema:inv.source.baseAlias.schema},
+        {id:'v2.9.5-addendum',schema:inv.source.v295.schema},
+        {id:'v3-addendum',schema:inv.source.v3.schema},
+        {id:'tomography',schema:inv.source.tomography.schema}
+      ],
+      aliases:{declared:contract.aliases||{},qualified:generatedAliases},
+      collisions:inv.collisions,
+      defaultEnsembles:contract.defaultEnsembles||{},
+      tomographyResponsiveness:contract.tomographyResponsiveness||{},
+      hardStops:contract.hardStops||[]
+    });
+  }
+  function matchRequested(requested,inventory,ports){
+    var needle=String(requested||'').trim().toLowerCase();
+    if(!needle)return [];
+    var entries=inventory.families.concat(inventory.lanes);
+    var direct=entries.filter(function(entry){return addressAliases(entry).indexOf(needle)>=0;});
+    if(direct.length)return direct.map(function(entry){return {address:entry.address,kind:entry.kind,id:entry.id,label:entry.label,reason:'qualified address or alias match'};});
+    var port=ports.find(function(item){return item.address===needle;});
+    if(port)return [{address:port.address,kind:'port',id:port.address.slice(5),label:port.capability,reason:'qualified port match'}];
+    var term=slug(needle.replace(/^(?:family|lane|port):/,''));
+    var matches=entries.filter(function(entry){
+      var hay=[entry.id,entry.label,entry.useWhen,entry.output,entry.address].concat(list(entry.examplePrompts)).join(' ');
+      return semanticSlug(entry.id,entry.kind)===term||slug(hay).indexOf(term)>=0;
+    }).map(function(entry){return {address:entry.address,kind:entry.kind,id:entry.id,label:entry.label,reason:'unqualified semantic match; qualification preserved'};});
+    ports.forEach(function(item){
+      var hay=slug([item.address,item.capability,item.runtime].join(' '));
+      if(hay.indexOf(term)>=0)matches.push({address:item.address,kind:'port',id:item.address.slice(5),label:item.capability,reason:'unqualified port match'});
+    });
+    var seen=new Set();
+    return matches.filter(function(item){if(seen.has(item.address))return false;seen.add(item.address);return true;});
+  }
+  function resolve(args){
+    args=args||{};
+    var inv=buildInventory(),contract=inv.source.contract,ports=list(contract.ports);
+    var task=String(args.task||''),requested=Array.isArray(args.requested)?args.requested:(args.requested?[args.requested]:[]);
+    var matches=[],receipts=[];
+    if(requested.length){
+      requested.forEach(function(value){
+        var found=matchRequested(value,inv,ports);
+        receipts.push({requested:String(value),matches:found.map(function(item){return item.address;}),status:found.length?'RESOLVED':'UNRESOLVED'});
+        matches=matches.concat(found);
+      });
+    }else if(/\b(?:giving|donor|contribution|campaign finance|giving history)\b/i.test(task)){
+      matches=list((contract.defaultEnsembles||{})['giving-history']).map(function(address){
+        var found=matchRequested(address,inv,ports)[0];
+        return found||{address:address,kind:address.split(':')[0],id:address.split(':')[1],label:address,reason:'Giving default ensemble'};
+      });
+      receipts.push({requested:'task',matches:matches.map(function(item){return item.address;}),status:'GIVING_DEFAULT_ENSEMBLE'});
+    }else{
+      matches.push({address:'port:task-intent',kind:'port',id:'task-intent',label:'task-intent routing',reason:'all routing begins with declared task intent'});
+      var ranked=inv.families.concat(inv.lanes).map(function(entry){
+        var words=unique(slug(task).split('-').filter(function(x){return x.length>3;}));
+        var hay=slug([entry.id,entry.label,entry.useWhen,entry.output].concat(list(entry.examplePrompts)).join(' '));
+        var score=words.reduce(function(total,word){return total+(hay.indexOf(word)>=0?1:0);},0);
+        return {entry:entry,score:score};
+      }).filter(function(item){return item.score>0;}).sort(function(a,b){return b.score-a.score;}).slice(0,4);
+      if(!ranked.length){var fallback=inv.families.find(function(x){return x.id==='foundation_scan';});if(fallback)ranked=[{entry:fallback,score:0}];}
+      ranked.forEach(function(item){matches.push({address:item.entry.address,kind:item.entry.kind,id:item.entry.id,label:item.entry.label,reason:'task-language route score '+item.score});});
+      matches.push({address:'port:sigma-receipt',kind:'port',id:'sigma-receipt',label:'Patch Bay receipt assembly',reason:'close routing with a receipt'});
+      receipts.push({requested:'task',matches:matches.map(function(item){return item.address;}),status:'TASK_ROUTED'});
+    }
+    var seen=new Set();
+    matches=matches.filter(function(item){if(seen.has(item.address))return false;seen.add(item.address);return true;});
+    var selected=matches.map(function(item){return item.address;});
+    return copy({
+      schema:'td613.aperture.patch-bay-resolution/v1',
+      task:task,
+      requested:requested,
+      suggested:selected,
+      ensemble:matches,
+      collisions:inv.collisions.filter(function(collision){return collision.qualifiedAddresses.some(function(address){return selected.indexOf(address)>=0;});}),
+      receipts:receipts,
+      hardStops:(contract.hardStops||[]).slice()
+    });
+  }
+  function fnv1a(value){
+    var hash=2166136261,text=String(value||'');
+    for(var i=0;i<text.length;i+=1){hash^=text.charCodeAt(i);hash=Math.imul(hash,16777619);}
+    return ('00000000'+(hash>>>0).toString(16)).slice(-8);
+  }
+  function sigma(task,ensemble,receipts,withheld,missing){
+    var states={};
+    receipts.forEach(function(receipt){states[receipt.status]=(states[receipt.status]||0)+1;});
+    var body=JSON.stringify({task:task,ensemble:ensemble,statuses:receipts.map(function(x){return x.status;}),withheld:withheld,missing:missing});
+    return {
+      schema:'td613.aperture.patch-bay-sigma-receipt/v1',
+      receiptId:'sigma_'+fnv1a(body),
+      digestAlgorithm:'FNV-1a-32 routing checksum (non-cryptographic)',
+      stateCounts:states,
+      invokedPurePorts:receipts.filter(function(x){return x.status==='INVOKED';}).map(function(x){return x.address;}),
+      withheldPorts:withheld.slice(),
+      missingInputs:missing.slice(),
+      hardStopCount:receipts.filter(function(x){return x.status==='HARD_STOP';}).length
+    };
+  }
+  function play(args){
+    args=args||{};
+    var task=String(args.task||''),input=args.input&&typeof args.input==='object'?args.input:{};
+    var dryRun=args.dryRun!==false,resolution=resolve({task:task,requested:args.requested});
+    if(!dryRun){
+      return {schema:'td613.aperture.patch-bay-play/v1',task:task,dryRun:false,ensemble:resolution.suggested,receipts:[],withheldPorts:resolution.suggested.slice(),missingInputs:[],hardStops:['Patch Bay automatic play is dry-run only.'],sigmaReceipt:null};
+    }
+    var desc=describe(),portByAddress=new Map(desc.availablePorts.map(function(port){return [port.address,port];}));
+    var receipts=[],withheld=[],missing=[],hardStops=[];
+    resolution.suggested.forEach(function(address){
+      if(address==='port:task-intent'){
+        if(!task){missing.push('task');receipts.push({address:address,state:'PURE',status:'MISSING_INPUT',missing:['task']});return;}
+        if(!window.TD613_TASK_INTENT||typeof window.TD613_TASK_INTENT.route!=='function'){hardStops.push('task-intent PURE port unavailable');receipts.push({address:address,state:'PURE',status:'HARD_STOP'});return;}
+        try{receipts.push({address:address,state:'PURE',status:'INVOKED',output:window.TD613_TASK_INTENT.route(input.taskIntent||{})});}
+        catch(error){hardStops.push('task-intent invocation failed');receipts.push({address:address,state:'PURE',status:'ERROR',error:String(error&&error.message||error)});}
+        return;
+      }
+      if(address==='port:witness'){
+        if(!input.witness){missing.push('witness');receipts.push({address:address,state:'PURE',status:'MISSING_INPUT',missing:['witness']});return;}
+        if(typeof window.routeWitnessArtifact!=='function'){hardStops.push('witness PURE port unavailable');receipts.push({address:address,state:'PURE',status:'HARD_STOP'});return;}
+        try{receipts.push({address:address,state:'PURE',status:'INVOKED',output:window.routeWitnessArtifact(input.witness)});}
+        catch(error){hardStops.push('witness invocation failed');receipts.push({address:address,state:'PURE',status:'ERROR',error:String(error&&error.message||error)});}
+        return;
+      }
+      if(address==='port:anti-equivalence'){
+        var witness=input.witness||{};
+        if(!witness.surfaceMatch||!witness.governingInvariant){var absent=[];if(!witness.surfaceMatch)absent.push('witness.surfaceMatch');if(!witness.governingInvariant)absent.push('witness.governingInvariant');missing=missing.concat(absent);}
+        if(typeof window.runAntiEquivalenceGate!=='function'){hardStops.push('anti-equivalence PURE port unavailable');receipts.push({address:address,state:'PURE',status:'HARD_STOP'});return;}
+        try{receipts.push({address:address,state:'PURE',status:'INVOKED',output:window.runAntiEquivalenceGate(witness)});}
+        catch(error){hardStops.push('anti-equivalence invocation failed');receipts.push({address:address,state:'PURE',status:'ERROR',error:String(error&&error.message||error)});}
+        return;
+      }
+      if(address==='port:sigma-receipt'){
+        receipts.push({address:address,state:'PURE',status:'INVOKED',output:sigma(task,resolution.suggested,receipts,withheld,unique(missing))});
+        return;
+      }
+      var port=portByAddress.get(address);
+      var isPhason=address==='family:phason'||address==='lane:phason'||address==='port:phason';
+      var state=isPhason?'DEMO_BOUND':(port?port.state:'CONTRACT_ONLY');
+      withheld.push(address);
+      receipts.push({
+        address:address,
+        state:state,
+        status:'WITHHELD',
+        reason:isPhason?'Phason is declared but DOM/demo-bound and is never auto-played.':'Qualified route has no side-effect-free automatic executor.',
+        output:isPhason?{susceptibility:desc.tomographyResponsiveness.demoBound&&desc.tomographyResponsiveness.demoBound.phasonSusceptibility,classification:'demo-bound invariant; not an empirical finding'}:null
+      });
+    });
+    var finalSigma=sigma(task,resolution.suggested,receipts,withheld,unique(missing));
+    return copy({
+      schema:'td613.aperture.patch-bay-play/v1',
+      task:task,
+      dryRun:true,
+      ensemble:resolution.suggested,
+      receipts:receipts,
+      withheldPorts:unique(withheld),
+      missingInputs:unique(missing),
+      hardStops:unique(hardStops),
+      tomographyResponsiveness:desc.tomographyResponsiveness,
+      sigmaReceipt:finalSigma
+    });
+  }
+  function selfTest(){
+    var desc=describe(),expected={families:37,lanes:25,examples:51,witness:5};
+    var witness=typeof window.runWitnessLabSelfTest==='function'?window.runWitnessLabSelfTest():{passed:0,total:expected.witness,results:[]};
+    var qualified=resolve({requested:['phason']});
+    var giving=resolve({task:'Giving history contribution evidence'});
+    var played=play({task:'Giving history contribution evidence',input:{witness:{artifactName:'Giving source row',artifactType:'dataset',claim:'This row was observed in the named source',materials:['source row'],checks:['parsed'],selected:['operator-selected identity candidate'],surfaceMatch:'name and address resemble candidate',governingInvariant:'human-confirmed identity membership',open:['identity remains operator-reviewed'],statusBoundary:'source observation only'}},dryRun:true});
+    var checks={
+      families:{passed:desc.families.filter(function(x){return !!x.label;}).length,total:expected.families,actual:desc.families.length},
+      lanes:{passed:desc.lanes.filter(function(x){return /^lane:/.test(x.address);}).length,total:expected.lanes,actual:desc.lanes.length},
+      examples:{passed:desc.canonicalRoutingExamples.filter(function(x){return !!x.prompt&&/^example:/.test(x.address);}).length,total:expected.examples,actual:desc.canonicalRoutingExamples.length},
+      witness:{passed:Number(witness.passed||0),total:expected.witness,results:witness.results||[]},
+      qualification:{passed:Number(qualified.suggested.indexOf('family:phason')>=0)+Number(qualified.suggested.indexOf('lane:phason')>=0),total:2,addresses:qualified.suggested},
+      givingEnsemble:{passed:JSON.stringify(giving.suggested)===JSON.stringify(['port:task-intent','port:witness','port:anti-equivalence','family:phason','port:sigma-receipt'])?1:0,total:1,addresses:giving.suggested},
+      purePlay:{passed:played.receipts.some(function(x){return x.address==='port:witness'&&x.status==='INVOKED';})&&played.receipts.some(function(x){return x.address==='family:phason'&&x.status==='WITHHELD';})?1:0,total:1}
+    };
+    var status=Object.keys(checks).every(function(key){return checks[key].passed===checks[key].total;})?'pass':'fail';
+    return copy({schema:'td613.aperture.patch-bay-self-test/v1',status:status,checks:checks,counts:{families:checks.families.passed+'/'+checks.families.total,lanes:checks.lanes.passed+'/'+checks.lanes.total,examples:checks.examples.passed+'/'+checks.examples.total,witness:checks.witness.passed+'/'+checks.witness.total}});
+  }
+  window.TD613_APERTURE_PATCH_BAY=Object.freeze({describe:describe,resolve:resolve,play:play,selfTest:selfTest});
 })();
 </script>
 

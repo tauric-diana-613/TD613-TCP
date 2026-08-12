@@ -1,0 +1,32 @@
+import assert from 'node:assert/strict';
+import { GivingApiClient } from '../app/giving/history/giving-api.js';
+
+const calls = [];
+const fetchImpl = async (_url, options) => {
+  const envelope = JSON.parse(options.body);
+  calls.push(envelope);
+  const data = envelope.operation === 'session.create'
+    ? { authenticated: true, intent_nonce: 'intent-offline-test' }
+    : { accepted: true };
+  return new Response(JSON.stringify({ ok: true, data, receipt: { operation: envelope.operation }, error: null }), {
+    status: 200,
+    headers: { 'Content-Type': 'application/json' }
+  });
+};
+
+const unbound = new GivingApiClient({ fetchImpl });
+await assert.rejects(() => unbound.call('campaign-deputy.withhold', { dossier_id: 'dossier-test' }), /Refresh the signed operator session/);
+
+const client = new GivingApiClient({ fetchImpl });
+await client.createSession('not-a-real-secret');
+await client.call('campaign-deputy.withhold', { dossier_id: 'dossier-test' });
+
+assert.equal(calls.length, 2);
+assert.equal(calls[0].schema, 'td613.giving.request/v1');
+assert.equal(calls[0].operation, 'session.create');
+assert.equal(calls[0].intent.nonce, null);
+assert.equal(calls[1].operation, 'campaign-deputy.withhold');
+assert.equal(calls[1].intent.nonce, 'intent-offline-test');
+assert.match(calls[1].request_id, /^[A-Za-z0-9]/);
+
+console.log('giving-client-api.test.mjs passed');

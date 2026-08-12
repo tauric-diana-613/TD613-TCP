@@ -16,3 +16,4 @@ tmp-edge-profile-*/
 Crashpad/
 .vercel
 .env*
+.superdesign/tmp/

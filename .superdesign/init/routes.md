@@ -1,3 +1,126 @@
+# TD613 Routes
+
+## Routing architecture
+
+- Deployment: Vercel static assets plus eleven serverless API files.
+- Frontend routing: no client router. URLs are Vercel rewrites into standalone HTML documents.
+- Catch-all: /(.*) → /app/$1.
+- Giving is deliberately unlinked and resolves through exact /giving/history routes.
+- Dome-World and Flight use server-injected shells for production routes; source HTML remains present for local fixtures and tests.
+
+## Key routes
+
+| URL | Entry | Summary |
+|---|---|---|
+| / | app/index.html | Public TD613 gateway and chamber ingress. |
+| /giving/history/ | app/giving/history/index.html | Private signed-session contribution research ledger; intentionally absent from public navigation. |
+| /hush.html | app/hush.html | Current Hush product shell, persona gallery, readiness and evidence cockpit. |
+| /adversarial-bench.html | app/adversarial-bench.html | Main Hush transformation console. |
+| /hush-packet-dashboard.html | app/hush-packet-dashboard.html | Hush packet/evidence dashboard. |
+| /aperture/ | app/aperture/index.html | Aperture loader; resolves the instrument contract and tool. |
+| /homebase.html | app/homebase.html | TD613 Homebase overview and launch surface. |
+| /dome-world/ | api/dome-world-shell.js (production) | Server-injected Dome-World shell; source app/dome-world/index.html is a local fixture/source surface. |
+| /safe-harbor/td613-flight.html | api/flight-html.js (production) | Android-aware injected Safe Harbor Flight surface. |
+| /readout.html | app/readout.html | Operator readout/report surface. |
+
+## Static document inventory
+
+| Inferred URL | Source | Layout |
+|---|---|---|
+| /adversarial-bench.html | app/adversarial-bench.html | Standalone static document |
+| /aperture/ | app/aperture/index.html | Standalone static document |
+| /aperture/tool.html | app/aperture/tool.html | Standalone static document |
+| /clone.html | app/clone.html | Standalone static document |
+| /deck.html | app/deck.html | Standalone static document |
+| /dome-world/admissibility-tomography.html | app/dome-world/admissibility-tomography.html | Standalone static document |
+| /dome-world/ash-custody-pedagogue.html | app/dome-world/ash-custody-pedagogue.html | Standalone static document |
+| /dome-world/ash-custody-v07.html | app/dome-world/ash-custody-v07.html | Standalone static document |
+| /dome-world/ash-custody-v08.html | app/dome-world/ash-custody-v08.html | Standalone static document |
+| /dome-world/ash-custody.html | app/dome-world/ash-custody.html | Standalone static document; rewrite → /app/dome-world/ash-custody-v08.html |
+| /dome-world/ash-destination-handoff.html | app/dome-world/ash-destination-handoff.html | Standalone static document |
+| /dome-world/ash-destination-recipient.html | app/dome-world/ash-destination-recipient.html | Standalone static document |
+| /dome-world/ash-keep-entry.html | app/dome-world/ash-keep-entry.html | Standalone static document |
+| /dome-world/ash-keep-source.html | app/dome-world/ash-keep-source.html | Standalone static document |
+| /dome-world/ash-keep.html | app/dome-world/ash-keep.html | Standalone static document; rewrite → /api/dome-world-shell?surface=ash-keep-html |
+| /dome-world/ash-threshold.html | app/dome-world/ash-threshold.html | Standalone static document; rewrite → /api/dome-world-shell?surface=ash-keep-html |
+| /dome-world/domeblox/forward-battery/ | app/dome-world/domeblox/forward-battery/index.html | Standalone static document |
+| /dome-world/domeblox/ | app/dome-world/domeblox/index.html | Standalone static document |
+| /dome-world/fixtures/pedagogue/baselines/ash-custody-root-dom-fixture.html | app/dome-world/fixtures/pedagogue/baselines/ash-custody-root-dom-fixture.html | Standalone static document |
+| /dome-world/flow-core-context.html | app/dome-world/flow-core-context.html | Standalone static document; rewrite → /app/dome-world/flow-core-context.html |
+| /dome-world/flowcore-promotion-dashboard.html | app/dome-world/flowcore-promotion-dashboard.html | Standalone static document |
+| /dome-world/flowcore-validation-lab.html | app/dome-world/flowcore-validation-lab.html | Standalone static document |
+| /dome-world/ | app/dome-world/index.html | Standalone static document; rewrite → /api/dome-world-shell |
+| /dome-world/information-dome-pedagogue.html | app/dome-world/information-dome-pedagogue.html | Standalone static document |
+| /dome-world/marrowline.html | app/dome-world/marrowline.html | Standalone static document |
+| /dome-world/physical-flowcore.html | app/dome-world/physical-flowcore.html | Standalone static document |
+| /dome-world/reciprocal-bridge.html | app/dome-world/reciprocal-bridge.html | Standalone static document; rewrite → /app/dome-world/reciprocal-bridge.html |
+| /dome-world/relation-envelope.html | app/dome-world/relation-envelope.html | Standalone static document |
+| /dome-world/route-burden-observatory.html | app/dome-world/route-burden-observatory.html | Standalone static document |
+| /dome-world/station-propagation-observatory.html | app/dome-world/station-propagation-observatory.html | Standalone static document |
+| /giving/history/ | app/giving/history/index.html | Giving operator shell; rewrite → /app/giving/history/index.html |
+| /homebase.html | app/homebase.html | Standalone static document |
+| /hush-packet-dashboard.html | app/hush-packet-dashboard.html | Standalone static document |
+| /hush.html | app/hush.html | Hush product shell |
+| / | app/index.html | Public gateway shell |
+| /readout.html | app/readout.html | Standalone static document |
+| /safe-harbor/ash-keep-recovery.html | app/safe-harbor/ash-keep-recovery.html | Standalone static document |
+| /safe-harbor/ | app/safe-harbor/index.html | Standalone static document |
+| /safe-harbor/reference/TD613_offline_capsule.html | app/safe-harbor/reference/TD613_offline_capsule.html | Standalone static document |
+| /safe-harbor/reference/TD613_verify.html | app/safe-harbor/reference/TD613_verify.html | Standalone static document |
+| /safe-harbor/td613-flight.html | app/safe-harbor/td613-flight.html | Standalone static document; rewrite → /api/flight-html |
+| /trainer.html | app/trainer.html | Standalone static document |
+
+## Vercel rewrite map
+
+| Source | Destination |
+|---|---|
+| /api/dome-world/ash-custody-register | /api/ash-local-commitment-guard |
+| /api/dome-world/ash-custody-replay | /api/ash-local-commitment-guard |
+| /api/dome-world/ash-custody-migrate | /api/ash-local-commitment-guard |
+| /api/ash-local-commitment | /api/ash-local-commitment-guard |
+| /api/dome-world-engine | /api/dome-world-engine-guard |
+| /api/flowcore-context | /api/dome-world-engine-guard?operation=flowcore-context |
+| /api/dome-world/flowcore-context | /api/dome-world-engine-guard?operation=flowcore-context |
+| /api/aperture-bridge | /api/dome-world-engine-guard?operation=aperture-bridge-readiness |
+| /api/dome-world/aperture-bridge | /api/dome-world-engine-guard?operation=aperture-bridge-readiness |
+| /api/hush-generate | /api/hush-generate-quality |
+| /api/hush-generate-budgeted | /api/hush-generate-quality |
+| /api/dome-world/khonapolit | /api/khonapolit |
+| /api/dome-world/marrowline | /api/marrowline |
+| /api/dome-world/ping | /api/dome-world-engine-guard?operation=ping |
+| /api/dome-world/readiness | /api/dome-world-engine-guard?operation=readiness |
+| /api/dome-world/step2-readiness | /api/dome-world-engine-guard?operation=step2-readiness |
+| /api/dome-world/(.*) | /api/dome-world-engine-guard?operation=$1 |
+| /dome-world | /api/dome-world-shell |
+| /dome-world/ | /api/dome-world-shell |
+| /dome-world/index.html | /api/dome-world-shell |
+| /app/dome-world/index.html | /api/dome-world-shell |
+| /dome-world/ash-threshold.html | /api/dome-world-shell?surface=ash-keep-html |
+| /app/dome-world/ash-threshold.html | /api/dome-world-shell?surface=ash-keep-html |
+| /dome-world/ash-keep.html | /api/dome-world-shell?surface=ash-keep-html |
+| /app/dome-world/ash-keep.html | /api/dome-world-shell?surface=ash-keep-html |
+| /dome-world/ash-keep.js | /api/dome-world-shell?surface=ash-keep-js |
+| /app/dome-world/ash-keep.js | /api/dome-world-shell?surface=ash-keep-js |
+| /dome-world/ash-custody.html | /app/dome-world/ash-custody-v08.html |
+| /app/dome-world/ash-custody.html | /app/dome-world/ash-custody-v08.html |
+| /dome-world/flow-core-context.html | /app/dome-world/flow-core-context.html |
+| /dome-world/reciprocal-bridge.html | /app/dome-world/reciprocal-bridge.html |
+| /dome-world/(.*) | /app/dome-world/$1 |
+| /api/hush-generate-strict-pr124 | /api/hush-generate-strict |
+| /api/khonapolit-quality | /api/khonapolit |
+| /api/gemini-readiness | /api/khonapolit?operation=gemini-readiness |
+| /api/(.*) | /api/$1 |
+| /safe-harbor/td613-flight.html | /api/flight-html |
+| /app/safe-harbor/td613-flight.html | /api/flight-html |
+| /giving/history | /app/giving/history/index.html |
+| /giving/history/ | /app/giving/history/index.html |
+| /giving/history/(.*) | /app/giving/history/$1 |
+| /app/(.*) | /app/$1 |
+| /(.*) | /app/$1 |
+
+## Full routing/deployment configuration
+
+~~~json
 {
   "version": 2,
   "functions": {
@@ -1034,3 +1157,4 @@
     "deploymentEnabled": false
   }
 }
+~~~
