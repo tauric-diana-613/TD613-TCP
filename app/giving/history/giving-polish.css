@@ -33,6 +33,54 @@
 }
 .giving-exact-match small { color: var(--dim); font-size: 9px; line-height: 1.35; }
 
+.contact-queue-panel {
+  position: relative;
+  z-index: 1;
+  display: grid;
+  gap: 9px;
+  margin: 4px 0 12px;
+  padding: 11px;
+  border: 1px solid rgba(127, 215, 255, .16);
+  background: linear-gradient(145deg, rgba(127, 215, 255, .035), rgba(1, 11, 8, .54));
+  clip-path: var(--clip-small);
+}
+.contact-queue-heading {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 12px;
+}
+.contact-queue-heading > div { display: grid; gap: 2px; min-width: 0; }
+.contact-queue-heading strong { color: var(--bright); font-size: 11px; }
+.contact-queue-heading small { color: var(--dim); font-size: 9px; line-height: 1.35; }
+.contact-queue-input-field { margin-bottom: 0; }
+.contact-queue-actions { align-items: center; }
+.contact-queue-actions .text-button { margin-left: auto; }
+.contact-queue-list { display: grid; gap: 5px; }
+.contact-queue-empty { color: var(--dim); font-size: 9px; }
+.contact-queue-item {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto auto;
+  align-items: center;
+  gap: 8px;
+  padding: 8px;
+  border: 1px solid rgba(200, 235, 213, .09);
+  background: rgba(1, 11, 8, .48);
+}
+.contact-queue-copy { display: grid; gap: 2px; min-width: 0; }
+.contact-queue-copy strong { overflow: hidden; color: var(--text); font-size: 10px; text-overflow: ellipsis; white-space: nowrap; }
+.contact-queue-copy small { overflow: hidden; color: var(--dim); font-size: 8px; text-overflow: ellipsis; white-space: nowrap; }
+.contact-queue-state {
+  color: var(--cyan);
+  font: 700 8px/1 var(--mono);
+  letter-spacing: .04em;
+  white-space: nowrap;
+}
+.contact-queue-item[data-status="SOURCE HOLD"] .contact-queue-state,
+.contact-queue-item[data-status="CLIENT HOLD"] .contact-queue-state { color: var(--gold); }
+.contact-queue-item[data-status="RUNNING"] .contact-queue-state { color: var(--water); }
+.source-error-detail { color: #efadb8 !important; font-weight: 650; }
+
 .review-hold-button {
   align-self: end;
   flex: 0 0 auto;
@@ -76,34 +124,48 @@
 }
 .review-sort-button:focus-visible { outline: 2px solid var(--cyan); outline-offset: 3px; }
 
+/* Tablet and mobile use one bounded horizontal rail. This intentionally overrides
+   the six-column desktop grid before labels have room to wrap vertically. */
 @media (max-width: 1080px) {
+  .ledger-tabs {
+    display: flex !important;
+    flex-flow: row nowrap !important;
+    grid-template-columns: none !important;
+    width: 100%;
+    max-width: 100%;
+    height: 40px;
+    min-height: 40px;
+    overflow-x: auto !important;
+    overflow-y: hidden !important;
+    overscroll-behavior-x: contain;
+    scroll-snap-type: x proximity;
+    white-space: nowrap;
+    scrollbar-width: none;
+    -webkit-overflow-scrolling: touch;
+    touch-action: pan-x;
+  }
+  .ledger-tabs::-webkit-scrollbar { display: none; }
+  .ledger-tabs .tab {
+    display: inline-flex;
+    flex: 0 0 auto !important;
+    align-items: center;
+    width: auto !important;
+    min-width: max-content;
+    height: 40px;
+    min-height: 40px !important;
+    padding: 6px 11px !important;
+    line-height: 1.1;
+    white-space: nowrap;
+    scroll-snap-align: start;
+  }
+  .ledger-tabs .tab::before { display: none; }
+  .ledger-tabs .tab::after { bottom: 2px; }
   .review-sort-header { grid-template-columns: 1fr 1fr; }
   .review-sort-button[data-review-sort="amount"] { text-align: left; }
 }
 
 @media (max-width: 760px) {
-  .ledger-tabs {
-    display: flex;
-    width: 100%;
-    max-width: 100%;
-    overflow-x: auto;
-    overflow-y: hidden;
-    overscroll-behavior-x: contain;
-    scroll-snap-type: x proximity;
-    white-space: nowrap;
-    -webkit-overflow-scrolling: touch;
-  }
-  .ledger-tabs .tab {
-    flex: 0 0 auto;
-    width: auto;
-    min-width: max-content;
-    min-height: 38px;
-    padding: 8px 11px;
-    line-height: 1.15;
-    white-space: nowrap;
-    scroll-snap-align: start;
-  }
-  .ledger-tabs .tab::before { display: none; }
+  .ledger-tabs { top: 62px; }
   .review-hold-button {
     width: 100%;
     min-height: 38px;
@@ -118,11 +180,19 @@
   .dossier-actions #saveDossierButton {
     min-height: 32px;
   }
+  .contact-queue-item { grid-template-columns: minmax(0, 1fr) auto; }
+  .contact-queue-remove { grid-column: 1 / -1; justify-self: start; }
+  .contact-queue-actions .text-button { margin-left: 0; }
 }
 
 @media (max-width: 430px) {
+  .ledger-tabs {
+    height: 38px;
+    min-height: 38px;
+  }
   .ledger-tabs .tab {
-    min-height: 36px;
-    padding: 7px 10px;
+    height: 38px;
+    min-height: 38px !important;
+    padding: 6px 9px !important;
   }
 }
