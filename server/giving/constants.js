@@ -20,9 +20,12 @@ export const OPERATIONS = Object.freeze([
   'vault.read',
   'vault.write',
   'vault.resolve-conflict',
+  'campaign-directory.search',
+  'campaign-directory.opensecrets-summary',
   'campaign-deputy.people-page',
   'campaign-deputy.link-existing',
   'campaign-deputy.create-confirmed',
+  'campaign-deputy.ensure-committee',
   'campaign-deputy.withhold',
   'readiness'
 ]);
@@ -32,6 +35,7 @@ export const GIVING_ENVIRONMENT = Object.freeze({
   TD613_GIVING_SESSION_SECRET: 'required, 32+ characters; independent HMAC authority',
   CAMPAIGN_DEPUTY_API_KEY: 'optional until Campaign Deputy sync is used; custom key requires people-read, people-write, list-read, and list-write',
   FEC_API_KEY: 'optional; DEMO_KEY fallback is rate-limited',
+  OPENSECRETS_API_KEY: 'optional; enables OpenSecrets organization lookup and aggregate summary in Campaign / PC lookup',
   TD613_GIVING_NEON_DATABASE_URL: 'optional Neon Postgres connection string for HOSTED/HYBRID ciphertext custody'
 });
 
@@ -41,6 +45,7 @@ export const MUTATION_OPERATIONS = new Set([
   'vault.resolve-conflict',
   'campaign-deputy.link-existing',
   'campaign-deputy.create-confirmed',
+  'campaign-deputy.ensure-committee',
   'campaign-deputy.withhold'
 ]);
 
@@ -48,6 +53,7 @@ export const PUBLIC_OPERATIONS = new Set(['session.create']);
 
 export const ALLOWED_UPSTREAM_HOSTS = new Set([
   'api.open.fec.gov',
+  'www.opensecrets.org',
   'dos.elections.myflorida.com',
   'www.voterfocus.com',
   'ecf-api.easyvoteapp.com',
