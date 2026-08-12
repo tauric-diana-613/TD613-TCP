@@ -51,6 +51,47 @@ export function exactNameMatch(left, right) {
   return Boolean(a.canonical && b.canonical && a.canonical === b.canonical && a.suffix === b.suffix);
 }
 
+function stableTargetToken(value) {
+  let hash = 0x811c9dc5;
+  const text = compactText(value);
+  for (let index = 0; index < text.length; index += 1) {
+    hash ^= text.charCodeAt(index);
+    hash = Math.imul(hash, 0x01000193) >>> 0;
+  }
+  return hash.toString(36).padStart(7, '0');
+}
+
+export function searchTargetFromQuery(query = {}) {
+  const name = compactText(query.name);
+  const aliases = Array.isArray(query.aliases) ? query.aliases.map(compactText).filter(Boolean) : [];
+  const hints = compactText(query.hints);
+  const dateFrom = compactText(query.date_from);
+  const dateTo = compactText(query.date_to);
+  const canonical = normalizeName(name).canonical || name.toLocaleUpperCase('en-US');
+  const material = JSON.stringify({ canonical, aliases: aliases.map((item) => normalizeName(item).canonical || item.toLocaleUpperCase('en-US')), hints: hints.toLocaleUpperCase('en-US'), dateFrom, dateTo });
+  return {
+    id: `target-${stableTargetToken(material)}`,
+    name,
+    aliases,
+    hints,
+    date_from: dateFrom,
+    date_to: dateTo,
+    exact_match: Boolean(query.exact_match)
+  };
+}
+
+export function recordTargetIds(record) {
+  if (Array.isArray(record?.search_target_ids)) return [...new Set(record.search_target_ids.map(compactText).filter(Boolean))];
+  const single = compactText(record?.search_target_id);
+  return single ? [single] : [];
+}
+
+export function recordBelongsToTarget(record, targetId) {
+  const id = compactText(targetId);
+  if (!id) return true;
+  return recordTargetIds(record).includes(id);
+}
+
 export function parseMoneyToCents(value) {
   if (typeof value === 'number') {
     if (!Number.isFinite(value)) throw new TypeError('Amount must be finite.');
@@ -93,6 +134,8 @@ export function createDossier({ title = '', query = {}, sourceIds = [], custody 
       date_to: compactText(query.date_to),
       exact_match: Boolean(query.exact_match)
     },
+    search_targets: [],
+    active_target_id: null,
     source_ids: [...new Set(sourceIds)],
     source_states: {},
     records: [],
@@ -162,6 +205,13 @@ export function identityPairScore(left, right) {
   return { score: Math.max(0, Math.min(1, score)), reasons, cautions };
 }
 
+function shareSearchTarget(left, right) {
+  const a = recordTargetIds(left);
+  const b = recordTargetIds(right);
+  if (!a.length || !b.length) return true;
+  return a.some((id) => b.includes(id));
+}
+
 export function suggestIdentityClusters(records, threshold = 0.42) {
   const parent = records.map((_, index) => index);
   const evidence = [];
@@ -173,6 +223,7 @@ export function suggestIdentityClusters(records, threshold = 0.42) {
   };
   for (let left = 0; left < records.length; left += 1) {
     for (let right = left + 1; right < records.length; right += 1) {
+      if (!shareSearchTarget(records[left], records[right])) continue;
       const comparison = identityPairScore(records[left], records[right]);
       if (comparison.score >= threshold) {
         union(left, right);
@@ -197,15 +248,27 @@ export function suggestIdentityClusters(records, threshold = 0.42) {
     }));
 }
 
+function mergeTargetIds(existing, targetId) {
+  return [...new Set([...recordTargetIds(existing), compactText(targetId)].filter(Boolean))];
+}
+
 export function addSearchPage(dossier, sourceId, page, receipt = {}) {
   const incoming = Array.isArray(page?.records) ? page.records : [];
+  const target = searchTargetFromQuery(dossier.query || {});
   const byDigest = new Map(dossier.records.map((record) => [recordDigest(record), record]));
   for (const record of incoming) {
     const digest = recordDigest(record);
     if (!digest) continue;
-    byDigest.set(digest, { ...record, digest });
+    const existing = byDigest.get(digest) || {};
+    const targetIds = mergeTargetIds(existing, target.id);
+    const targetNames = [...new Set([...(Array.isArray(existing.search_target_names) ? existing.search_target_names : []), target.name].map(compactText).filter(Boolean))];
+    byDigest.set(digest, { ...existing, ...record, digest, search_target_ids: targetIds, search_target_names: targetNames });
   }
   const records = [...byDigest.values()];
+  const referencedTargetIds = new Set(records.flatMap(recordTargetIds));
+  referencedTargetIds.add(target.id);
+  const targetMap = new Map((dossier.search_targets || []).filter((item) => referencedTargetIds.has(item.id)).map((item) => [item.id, item]));
+  targetMap.set(target.id, { ...target, updated_at: new Date().toISOString() });
   const clusters = suggestIdentityClusters(records);
   const candidateDigests = new Set(clusters.flatMap((cluster) => cluster.members));
   const decisions = { ...dossier.decisions };
@@ -219,6 +282,8 @@ export function addSearchPage(dossier, sourceId, page, receipt = {}) {
     ...dossier,
     version: dossier.version + 1,
     updated_at: new Date().toISOString(),
+    search_targets: [...targetMap.values()],
+    active_target_id: target.id,
     records,
     decisions,
     clusters,
@@ -259,11 +324,12 @@ function recordCommittee(record) {
   return compactText(record.committee_name || record.candidate_name || record.committee || record.candidate || record.committee_candidate || 'Committee not stated');
 }
 
-export function committeeLedger(dossier) {
+export function committeeLedger(dossier, targetId = null) {
   const groups = new Map();
   for (const record of dossier.records) {
     const digest = recordDigest(record);
     if (dossier.decisions[digest] !== IDENTITY_STATUS.CONFIRMED) continue;
+    if (targetId && !recordBelongsToTarget(record, targetId)) continue;
     const committee = recordCommittee(record);
     const key = [committee, compactText(record.jurisdiction), compactText(record.office), compactText(record.cycle || record.election)].join('\u241f');
     const current = groups.get(key) || {
@@ -298,7 +364,7 @@ function csvCell(value) {
 
 export function dossierCsv(dossier) {
   const fields = [
-    'digest', 'identity_status', 'evidence_status', 'source_family', 'source_instance_id', 'custodian', 'jurisdiction',
+    'digest', 'search_target_ids', 'search_target_names', 'identity_status', 'evidence_status', 'source_family', 'source_instance_id', 'custodian', 'jurisdiction',
     'committee', 'candidate', 'office', 'cycle', 'election', 'reporting_context', 'contributor_name_raw', 'address', 'city', 'state',
     'zip', 'employer', 'occupation', 'contribution_date', 'contribution_type', 'amendment_status', 'amount_cents',
     'source_locator', 'retrieved_at', 'query_digest', 'source_native_ids', 'lineage', 'raw_source_row'

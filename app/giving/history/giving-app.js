@@ -8,14 +8,17 @@ import {
   dossierCsv,
   exactNameMatch,
   formatCurrency,
+  recordBelongsToTarget,
   recordDigest,
   safeFilename,
+  searchTargetFromQuery,
   setIdentityDecision
 } from './giving-model.js';
 import { GivingApiClient, GivingApiError } from './giving-api.js';
 import { openGivingStore } from './giving-store.js';
 import { decryptDossier, encryptDossier, fromHostedVaultRow, toHostedVaultPayload } from './giving-vault.js';
 import { createGivingField } from './giving-field.js';
+import { buildDossierXlsx } from './giving-xlsx.js';
 
 const MAX_SOURCE_CONCURRENCY = 3;
 const MAX_REVIEW_RENDER = 300;
@@ -35,7 +38,9 @@ const state = {
   vaultVersions: [],
   saveTimer: null,
   holdReview: false,
-  reviewSort: { key: null, direction: 'asc' }
+  reviewSort: { key: null, direction: 'asc' },
+  reviewTargetId: 'ALL',
+  campaignTargetId: null
 };
 
 function updateField(view) {
@@ -129,6 +134,59 @@ function queryFromForm() {
   };
 }
 
+function targets() {
+  return Array.isArray(state.dossier.search_targets) ? state.dossier.search_targets : [];
+}
+
+function targetById(targetId) {
+  return targets().find((target) => target.id === targetId) || null;
+}
+
+function targetRecordCount(targetId) {
+  return state.dossier.records.filter((record) => recordBelongsToTarget(record, targetId)).length;
+}
+
+function targetNameForRecord(record) {
+  const names = Array.isArray(record.search_target_names) ? record.search_target_names.map(compactText).filter(Boolean) : [];
+  return [...new Set(names)].join(' · ');
+}
+
+function renderTargetSelectors() {
+  const available = targets();
+  const ids = new Set(available.map((target) => target.id));
+  if (state.reviewTargetId !== 'ALL' && !ids.has(state.reviewTargetId)) state.reviewTargetId = 'ALL';
+  if (state.campaignTargetId && !ids.has(state.campaignTargetId)) state.campaignTargetId = null;
+  if (!state.campaignTargetId && available.length) {
+    state.campaignTargetId = ids.has(state.dossier.active_target_id) ? state.dossier.active_target_id : available[0].id;
+  }
+
+  const reviewSelect = $('#reviewTargetFilter');
+  if (reviewSelect) {
+    reviewSelect.innerHTML = '<option value="ALL">All contacts</option>' + available.map((target) =>
+      `<option value="${escapeHtml(target.id)}">${escapeHtml(target.name || target.id)} · ${targetRecordCount(target.id)} records</option>`
+    ).join('');
+    reviewSelect.value = state.reviewTargetId;
+  }
+
+  const campaignSelect = $('#campaignTargetSelect');
+  if (campaignSelect) {
+    campaignSelect.innerHTML = available.length
+      ? available.map((target) => `<option value="${escapeHtml(target.id)}">${escapeHtml(target.name || target.id)} · ${targetRecordCount(target.id)} records</option>`).join('')
+      : '<option value="">No reviewed contact target</option>';
+    if (state.campaignTargetId && ids.has(state.campaignTargetId)) campaignSelect.value = state.campaignTargetId;
+  }
+
+  const summary = $('#campaignTargetSummary');
+  if (summary) {
+    const target = targetById(state.campaignTargetId);
+    if (!target) summary.textContent = 'Search and review a contact before Campaign Deputy handoff.';
+    else {
+      const confirmed = state.dossier.records.filter((record) => recordBelongsToTarget(record, target.id) && state.dossier.decisions[recordDigest(record)] === IDENTITY_STATUS.CONFIRMED).length;
+      summary.textContent = `${target.name} · ${targetRecordCount(target.id)} retrieved · ${confirmed} confirmed`;
+    }
+  }
+}
+
 function renderHoldState() {
   const button = $('#holdReviewButton');
   if (!button) return;
@@ -141,8 +199,10 @@ function renderHoldState() {
 
 function resetReviewControls() {
   state.reviewSort = { key: null, direction: 'asc' };
+  state.reviewTargetId = 'ALL';
   if ($('#reviewFilter')) $('#reviewFilter').value = 'ALL';
   if ($('#reviewSearch')) $('#reviewSearch').value = '';
+  if ($('#reviewTargetFilter')) $('#reviewTargetFilter').value = 'ALL';
 }
 
 function hydrateForm() {
@@ -158,6 +218,7 @@ function hydrateForm() {
   for (const input of $$('#sourceRegistry input[type="checkbox"]')) input.checked = dossier.source_ids?.includes(input.value) || false;
   updateSelectedSourceCount();
   renderHoldState();
+  renderTargetSelectors();
 }
 
 function updateDossierFromForm() {
@@ -208,6 +269,7 @@ function newDossier() {
   state.selectedPersonId = null;
   state.peopleContinuation = null;
   state.holdReview = false;
+  state.campaignTargetId = null;
   resetReviewControls();
   hydrateForm();
   renderAll();
@@ -219,9 +281,11 @@ async function openLocalDossier() {
   if (!id || !state.store) return toast('Select a local dossier first.', 'error');
   const dossier = await state.store.readDossier(id);
   if (!dossier) return toast('That dossier is no longer present.', 'error');
-  state.dossier = dossier;
+  state.dossier = { search_targets: [], active_target_id: null, ...dossier };
   state.dirty = false;
   state.holdReview = false;
+  state.selectedPersonId = null;
+  state.campaignTargetId = null;
   resetReviewControls();
   hydrateForm();
   renderAll();
@@ -436,11 +500,15 @@ async function runQueue() {
 function clearReviewForNewSearch() {
   state.dossier = {
     ...state.dossier,
+    search_targets: [],
+    active_target_id: null,
     records: [],
     decisions: {},
     clusters: [],
     source_states: {}
   };
+  state.campaignTargetId = null;
+  state.selectedPersonId = null;
   resetReviewControls();
   renderReview();
   renderLedger();
@@ -456,11 +524,19 @@ async function startSearch(event) {
   if (!query.date_from || !query.date_to || query.date_from > query.date_to) return toast('Use a valid beginning and ending date.', 'error');
   updateDossierFromForm();
   if (!state.holdReview) clearReviewForNewSearch();
+  const target = searchTargetFromQuery(state.dossier.query);
+  const targetMap = new Map(targets().map((item) => [item.id, item]));
+  targetMap.set(target.id, { ...target, updated_at: new Date().toISOString() });
+  state.dossier.search_targets = [...targetMap.values()];
+  state.dossier.active_target_id = target.id;
+  if (!state.campaignTargetId) state.campaignTargetId = target.id;
+  state.reviewTargetId = state.holdReview && state.dossier.search_targets.length > 1 ? 'ALL' : target.id;
   state.dossier.version += 1;
   state.dossier.source_ids = ids;
   state.run.queue = ids.map((sourceId) => ({ sourceId, continuation: null }));
   for (const sourceId of ids) sourceState(sourceId, { status: 'QUEUED', count: 0, continuation: null, error: null });
   markDirty();
+  renderTargetSelectors();
   switchView('search');
   await runQueue();
 }
@@ -577,23 +653,27 @@ function setReviewSort(key) {
 }
 
 function renderReview() {
+  renderTargetSelectors();
   const statusFilter = $('#reviewFilter')?.value || 'ALL';
   const phrase = compactText($('#reviewSearch')?.value).toUpperCase();
+  const targetId = state.reviewTargetId === 'ALL' ? null : state.reviewTargetId;
   const records = state.dossier.records.filter((record) => {
+    if (targetId && !recordBelongsToTarget(record, targetId)) return false;
     const status = state.dossier.decisions[recordDigest(record)] || IDENTITY_STATUS.UNREVIEWED;
     if (statusFilter !== 'ALL' && status !== statusFilter) return false;
     if (!phrase) return true;
-    return [recordName(record), recordCommittee(record), record.city, record.state, record.employer, record.occupation]
+    return [recordName(record), recordCommittee(record), record.city, record.state, record.employer, record.occupation, targetNameForRecord(record)]
       .some((value) => compactText(value).toUpperCase().includes(phrase));
   });
   if (state.reviewSort.key) records.sort(compareReviewRecords);
   renderReviewSortControls();
   renderHoldState();
   $('#reviewCount').textContent = String(state.dossier.records.length);
-  const clusters = state.dossier.clusters || [];
+  const visibleDigests = new Set(records.map(recordDigest));
+  const clusters = (state.dossier.clusters || []).filter((cluster) => cluster.members.some((digest) => visibleDigests.has(digest)));
   $('#clusterNotice').textContent = clusters.length
-    ? `${clusters.length} candidate cluster${clusters.length === 1 ? '' : 's'} suggested. Similarity is an inspection aid, never an identity decision.`
-    : 'No candidate clusters have been proposed.';
+    ? `${clusters.length} candidate cluster${clusters.length === 1 ? '' : 's'} suggested in this contact view. Similarity is an inspection aid, never an identity decision.`
+    : 'No candidate clusters have been proposed in this contact view.';
   if (!records.length) {
     $('#recordList').innerHTML = '<div class="empty-state"><strong>No matching records.</strong><span>Search results will arrive with their source lineage intact.</span></div>';
     return;
@@ -605,6 +685,7 @@ function renderReview() {
     const cluster = clusterFor(digest);
     const comparison = cluster?.comparisons?.find((item) => item.left === digest || item.right === digest);
     const amount = Number.isSafeInteger(record.amount_cents) ? formatCurrency(record.amount_cents) : 'amount missing';
+    const targetLabel = targetNameForRecord(record);
     return `<article class="record-card" data-record="${escapeHtml(digest)}">
       <div class="record-main">
         <div class="record-person"><strong>${escapeHtml(recordName(record))}</strong><small>${escapeHtml([record.address, record.city, record.state, record.zip].filter(Boolean).join(' · '))}</small></div>
@@ -616,6 +697,7 @@ function renderReview() {
       </div>
       <div class="record-lineage">
         <span class="identity-state" data-state="${escapeHtml(status)}">${escapeHtml(status)}</span>
+        ${targetLabel ? ` · <span class="target-lineage">target ${escapeHtml(targetLabel)}</span>` : ''}
         · ${escapeHtml(record.source_family)} / ${escapeHtml(record.source_instance_id || record.source_instance)}
         · ${escapeHtml(record.evidence_status || 'OBSERVED')}
         · digest ${escapeHtml(digest.slice(0, 18))}…
@@ -644,9 +726,6 @@ function renderLedger() {
   $('#ledgerCount').textContent = String(groups.length);
   $('#confirmedTotal').textContent = formatCurrency(total);
   $('#confirmedRecordCount').textContent = `${recordCount} confirmed record${recordCount === 1 ? '' : 's'}`;
-  $('#committeeSelect').innerHTML = '<option value="">Select a confirmed committee</option>' + groups.map((group) =>
-    `<option value="${escapeHtml(group.committee)}">${escapeHtml(group.committee)} · ${escapeHtml(formatCurrency(group.amount_cents))}</option>`
-  ).join('');
   if (!groups.length) {
     $('#committeeLedger').innerHTML = '<div class="empty-state"><strong>No confirmed giving.</strong><span>Committee totals remain asleep until you confirm record identity.</span></div>';
     return;
@@ -657,7 +736,7 @@ function renderLedger() {
       <span class="money">${escapeHtml(formatCurrency(group.amount_cents))}</span>
       <small>${escapeHtml([group.jurisdiction, group.office, group.cycle].filter(Boolean).join(' · '))} · ${group.records.length} confirmed${group.provisional ? ' · ' : ''}${group.provisional ? '<span class="provisional">PROVISIONAL LINEAGE</span>' : ''}</small>
     </div>
-    <div class="committee-records">${group.records.map((record) => `${escapeHtml(record.contribution_date || 'date missing')} · ${escapeHtml(formatCurrency(record.amount_cents || 0))} · ${escapeHtml(record.source_family)}`).join('<br>')}</div>
+    <div class="committee-records">${group.records.map((record) => `${escapeHtml(record.contribution_date || 'date missing')} · ${escapeHtml(formatCurrency(record.amount_cents || 0))} · ${escapeHtml(record.source_family)}${targetNameForRecord(record) ? ` · ${escapeHtml(targetNameForRecord(record))}` : ''}`).join('<br>')}</div>
   </article>`).join('');
 }
 
@@ -766,9 +845,11 @@ async function openVaultVersion(versionId) {
     const data = dataOf(result);
     const envelope = fromHostedVaultRow(data?.envelope || data);
     const dossier = await decryptDossier(envelope, passphrase);
-    state.dossier = dossier;
+    state.dossier = { search_targets: [], active_target_id: null, ...dossier };
     state.dirty = false;
     state.holdReview = false;
+    state.selectedPersonId = null;
+    state.campaignTargetId = null;
     resetReviewControls();
     hydrateForm();
     renderAll();
@@ -852,18 +933,29 @@ function renderPeopleIndex() {
   updateCampaignButtons();
 }
 
-function confirmedRecords() {
-  return state.dossier.records.filter((record) => state.dossier.decisions[recordDigest(record)] === IDENTITY_STATUS.CONFIRMED);
+function confirmedRecords(targetId = null) {
+  return state.dossier.records.filter((record) =>
+    state.dossier.decisions[recordDigest(record)] === IDENTITY_STATUS.CONFIRMED &&
+    (!targetId || recordBelongsToTarget(record, targetId))
+  );
 }
 
 function renderCampaign() {
+  renderTargetSelectors();
   renderPeopleIndex();
-  const records = confirmedRecords();
-  const current = $('#createRecordSelect')?.value;
+  const targetId = state.campaignTargetId;
+  const records = targetId ? confirmedRecords(targetId) : [];
+  const groups = targetId ? committeeLedger(state.dossier, targetId) : [];
+  const currentRecord = $('#createRecordSelect')?.value;
+  const currentCommittee = $('#committeeSelect')?.value;
   $('#createRecordSelect').innerHTML = '<option value="">Select a confirmed record</option>' + records.map((record) =>
     `<option value="${escapeHtml(recordDigest(record))}">${escapeHtml(recordName(record))} · ${escapeHtml(recordCommittee(record))}</option>`
   ).join('');
-  if (records.some((record) => recordDigest(record) === current)) $('#createRecordSelect').value = current;
+  if (records.some((record) => recordDigest(record) === currentRecord)) $('#createRecordSelect').value = currentRecord;
+  $('#committeeSelect').innerHTML = '<option value="">Select a confirmed committee</option>' + groups.map((group) =>
+    `<option value="${escapeHtml(group.committee)}">${escapeHtml(group.committee)} · ${escapeHtml(formatCurrency(group.amount_cents))} · ${group.records.length} records</option>`
+  ).join('');
+  if (groups.some((group) => group.committee === currentCommittee)) $('#committeeSelect').value = currentCommittee;
   updateCampaignButtons();
   const receipts = state.dossier.campaign_deputy?.write_receipts || [];
   $('#campaignReceipts').innerHTML = receipts.map((receipt) => receiptMarkup(receipt)).join('');
@@ -871,33 +963,71 @@ function renderCampaign() {
 
 function updateCampaignButtons() {
   const committee = $('#committeeSelect')?.value;
-  $('#linkExistingButton').disabled = !state.selectedPersonId || !committee;
-  $('#createContactButton').disabled = !$('#createRecordSelect')?.value || !committee;
+  const targetId = state.campaignTargetId;
+  const groups = targetId ? committeeLedger(state.dossier, targetId) : [];
+  $('#linkExistingButton').disabled = !state.selectedPersonId || !committee || !targetId;
+  $('#syncTargetButton').disabled = !state.selectedPersonId || !targetId || groups.length === 0;
+  $('#createContactButton').disabled = !$('#createRecordSelect')?.value || !committee || !targetId;
 }
 
-function appendCampaignReceipt(receipt) {
+function appendCampaignReceipt(receipt, { render = true } = {}) {
   state.dossier.campaign_deputy.write_receipts = [...(state.dossier.campaign_deputy.write_receipts || []), receipt];
   addReceipt(receipt, 'campaign-deputy-write');
   markDirty();
-  renderCampaign();
+  if (render) renderCampaign();
+}
+
+async function linkPersonCommittee(personId, committee, targetId) {
+  const result = await api.call('campaign-deputy.link-existing', {
+    dossier_id: state.dossier.id,
+    person_id: personId,
+    committee,
+    confirmed: true
+  }, { mutation: true, purpose: `link exact Campaign Deputy person to ${targetId || 'reviewed target'} committee list` });
+  const receipt = receiptOf(result) || dataOf(result)?.receipt || {
+    at: new Date().toISOString(), event: 'CAMPAIGN_DEPUTY_LINKED', person_id: personId, committee, search_target_id: targetId
+  };
+  appendCampaignReceipt({ ...receipt, search_target_id: targetId }, { render: false });
+  return receipt;
+}
+
+async function syncTargetCommittees(personId, targetId, { skipCommittee = null } = {}) {
+  const groups = committeeLedger(state.dossier, targetId).filter((group) => group.committee !== skipCommittee);
+  let synced = 0;
+  for (const group of groups) {
+    try {
+      await linkPersonCommittee(personId, group.committee, targetId);
+      synced += 1;
+    } catch (error) {
+      return { synced, total: groups.length, error };
+    }
+  }
+  return { synced, total: groups.length, error: null };
 }
 
 async function linkExisting() {
   const committee = $('#committeeSelect').value;
-  if (!state.selectedPersonId || !committee) return;
+  const targetId = state.campaignTargetId;
+  if (!state.selectedPersonId || !committee || !targetId) return;
   try {
-    const result = await api.call('campaign-deputy.link-existing', {
-      dossier_id: state.dossier.id,
-      person_id: state.selectedPersonId,
-      committee,
-      confirmed: true
-    }, { mutation: true, purpose: 'link exact Campaign Deputy person to reviewed committee list' });
-    const receipt = receiptOf(result) || dataOf(result)?.receipt;
-    appendCampaignReceipt(receipt || { at: new Date().toISOString(), event: 'CAMPAIGN_DEPUTY_LINKED', person_id: state.selectedPersonId, committee });
-    toast('Exact Campaign Deputy person linked idempotently.');
+    await linkPersonCommittee(state.selectedPersonId, committee, targetId);
+    renderCampaign();
+    toast('Exact Campaign Deputy person linked idempotently to the selected reviewed committee.');
   } catch (error) {
     toast(humanError(error), 'error');
   }
+}
+
+async function syncSelectedTarget() {
+  const targetId = state.campaignTargetId;
+  const target = targetById(targetId);
+  const groups = targetId ? committeeLedger(state.dossier, targetId) : [];
+  if (!state.selectedPersonId || !target || !groups.length) return;
+  if (!window.confirm(`Sync all ${groups.length} reviewed committee relationship${groups.length === 1 ? '' : 's'} for ${target.name} to the exact selected Campaign Deputy person?`)) return;
+  const result = await syncTargetCommittees(state.selectedPersonId, targetId);
+  renderCampaign();
+  if (result.error) return toast(`${result.synced}/${result.total} committee relationships synced before Campaign Deputy held: ${humanError(result.error)}`, 'error');
+  toast(`${result.synced} reviewed committee relationship${result.synced === 1 ? '' : 's'} synced to the exact Campaign Deputy person.`);
 }
 
 function contactPayload(record, fields) {
@@ -940,12 +1070,15 @@ function campaignDeputySelectedFields(fields) {
 async function createContact() {
   const digest = $('#createRecordSelect').value;
   const committee = $('#committeeSelect').value;
+  const targetId = state.campaignTargetId;
+  const target = targetById(targetId);
   const record = state.dossier.records.find((item) => recordDigest(item) === digest);
-  if (!record || state.dossier.decisions[digest] !== IDENTITY_STATUS.CONFIRMED || !committee) return;
+  if (!record || state.dossier.decisions[digest] !== IDENTITY_STATUS.CONFIRMED || !committee || !targetId || !recordBelongsToTarget(record, targetId)) return;
   if (record.contributor_name_parsed?.kind === 'ORGANIZATION') return toast('This endpoint creates people, not organization contacts. Withhold or link an existing exact person instead.', 'error');
   const fields = $$('#createFieldChoices input:checked').map((input) => input.value);
   if (!fields.includes('name')) return toast('A name is required for explicit contact creation.', 'error');
-  if (!window.confirm('Create a new Campaign Deputy person after duplicate review, then add that exact returned person to the selected committee list?')) return;
+  const groups = committeeLedger(state.dossier, targetId);
+  if (!window.confirm(`Create a new Campaign Deputy person for ${target?.name || recordName(record)} after duplicate review, then sync this contact to ${groups.length} reviewed committee relationship${groups.length === 1 ? '' : 's'}?`)) return;
   try {
     const result = await api.call('campaign-deputy.create-confirmed', {
       dossier_id: state.dossier.id,
@@ -956,10 +1089,19 @@ async function createContact() {
       confirmed: true,
       duplicate_reviewed: true,
       create_new_confirmed: true
-    }, { mutation: true, purpose: 'explicitly create Campaign Deputy person and committee link' });
-    const receipt = receiptOf(result) || dataOf(result)?.receipt;
-    appendCampaignReceipt(receipt || { at: new Date().toISOString(), event: 'CAMPAIGN_DEPUTY_CREATED', record_digest: digest, committee });
-    toast('New Campaign Deputy person created and linked from the synchronous response.');
+    }, { mutation: true, purpose: 'explicitly create Campaign Deputy person and seed reviewed target committee link' });
+    const data = dataOf(result);
+    const receipt = receiptOf(result) || data?.receipt;
+    const createdPersonId = data?.person?.id || data?.person?.personId || data?.personId || null;
+    appendCampaignReceipt({ ...(receipt || { at: new Date().toISOString(), event: 'CAMPAIGN_DEPUTY_CREATED', record_digest: digest, committee }), search_target_id: targetId }, { render: false });
+    let additional = { synced: 0, total: 0, error: null };
+    if (createdPersonId) {
+      state.selectedPersonId = createdPersonId;
+      additional = await syncTargetCommittees(createdPersonId, targetId, { skipCommittee: committee });
+    }
+    renderCampaign();
+    if (additional.error) return toast(`New Campaign Deputy person created; ${1 + additional.synced}/${1 + additional.total} reviewed committee relationships synced before a hold: ${humanError(additional.error)}`, 'error');
+    toast(`New Campaign Deputy person created and synced across ${1 + additional.synced} reviewed committee relationship${1 + additional.synced === 1 ? '' : 's'}.`);
   } catch (error) {
     toast(humanError(error), 'error');
   }
@@ -971,7 +1113,7 @@ async function withholdWriteback() {
       dossier_id: state.dossier.id,
       reviewed_at: new Date().toISOString()
     }, { mutation: true, purpose: 'record explicit Campaign Deputy withhold' });
-    appendCampaignReceipt(receiptOf(result) || { schema: 'td613.giving.writeback-receipt/v1', at: new Date().toISOString(), action: 'WITHHOLD', dossier_id: state.dossier.id });
+    appendCampaignReceipt({ ...(receiptOf(result) || { schema: 'td613.giving.writeback-receipt/v1', at: new Date().toISOString(), action: 'WITHHOLD', dossier_id: state.dossier.id }), search_target_id: state.campaignTargetId });
     toast('WITHHOLD recorded; Campaign Deputy was not mutated.');
   } catch (error) {
     toast(humanError(error), 'error');
@@ -992,6 +1134,7 @@ function renderReceipts() {
 }
 
 function renderAll() {
+  renderTargetSelectors();
   renderSourceProgress();
   renderReview();
   renderLedger();
@@ -1068,6 +1211,8 @@ function bindEvents() {
     try { await api.closeSession(); } catch (error) {}
     state.dossier = createDossier();
     state.holdReview = false;
+    state.selectedPersonId = null;
+    state.campaignTargetId = null;
     resetReviewControls();
     sessionClosed('Signed session closed. Local dossiers remain under browser custody.');
   });
@@ -1094,11 +1239,15 @@ function bindEvents() {
   $$('.tab').forEach((tab) => tab.addEventListener('click', () => switchView(tab.dataset.view)));
   $('#reviewFilter').addEventListener('change', renderReview);
   $('#reviewSearch').addEventListener('input', renderReview);
+  $('#reviewTargetFilter').addEventListener('change', () => {
+    state.reviewTargetId = $('#reviewTargetFilter').value || 'ALL';
+    renderReview();
+  });
   $('#holdReviewButton').addEventListener('click', () => {
     state.holdReview = !state.holdReview;
     renderHoldState();
     toast(state.holdReview
-      ? 'Identity Review held. Later searches will append to this review.'
+      ? 'Identity Review held. Later searches append as separate contact targets.'
       : 'Hold released. The next search will replace this Identity Review.');
   });
   $$('[data-review-sort]').forEach((button) => button.addEventListener('click', () => setReviewSort(button.dataset.reviewSort)));
@@ -1107,17 +1256,31 @@ function bindEvents() {
     updateDossierFromForm();
     download(`${safeFilename(state.dossier.title)}.csv`, dossierCsv(state.dossier), 'text/csv;charset=utf-8');
     addReceipt({ schema: 'td613.giving.export-receipt/v1', at: new Date().toISOString(), kind: 'CSV', dossier_id: state.dossier.id, record_count: state.dossier.records.length }, 'export');
-    toast('CSV export prepared with identity state and source lineage.');
+    toast('CSV export prepared with contact targets, identity state, and source lineage.');
+  });
+  $('#exportSpreadsheetButton').addEventListener('click', () => {
+    updateDossierFromForm();
+    const workbook = buildDossierXlsx(state.dossier);
+    download(`${safeFilename(state.dossier.title)}.xlsx`, workbook, 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet');
+    addReceipt({ schema: 'td613.giving.export-receipt/v1', at: new Date().toISOString(), kind: 'XLSX', dossier_id: state.dossier.id, record_count: state.dossier.records.length }, 'export');
+    toast('Excel spreadsheet prepared with frozen headers, filters, contact targets, identity state, and source lineage.');
   });
   $('#exportEncryptedButton').addEventListener('click', exportEncrypted);
   $('#syncVaultButton').addEventListener('click', () => saveDossier({ forceVault: true }));
   $('#refreshVaultButton').addEventListener('click', listVaultVersions);
+  $('#campaignTargetSelect').addEventListener('change', () => {
+    const next = $('#campaignTargetSelect').value || null;
+    if (next !== state.campaignTargetId) state.selectedPersonId = null;
+    state.campaignTargetId = next;
+    renderCampaign();
+  });
   $('#loadPeopleButton').addEventListener('click', () => loadPeoplePage(true));
   $('#morePeopleButton').addEventListener('click', () => loadPeoplePage(false));
   $('#peopleFilter').addEventListener('input', renderPeopleIndex);
   $('#committeeSelect').addEventListener('change', updateCampaignButtons);
   $('#createRecordSelect').addEventListener('change', updateCampaignButtons);
   $('#linkExistingButton').addEventListener('click', linkExisting);
+  $('#syncTargetButton').addEventListener('click', syncSelectedTarget);
   $('#createContactButton').addEventListener('click', createContact);
   $('#withholdButton').addEventListener('click', withholdWriteback);
   $('#copyReceiptsButton').addEventListener('click', async () => {
@@ -1134,6 +1297,18 @@ function bindEvents() {
     markDirty({ localAutosave: state.dossier.custody !== CUSTODY_MODE.HOSTED });
     if (state.dossier.custody === CUSTODY_MODE.HOSTED) toast('Hosted mode will remove this dossier’s local plaintext after its encrypted branch is accepted.');
     updateField();
+  });
+  document.addEventListener('td613:giving-select-target', (event) => {
+    const targetId = compactText(event.detail?.targetId);
+    if (!targetId || !targetById(targetId)) return;
+    state.reviewTargetId = targetId;
+    if (state.campaignTargetId !== targetId) state.selectedPersonId = null;
+    state.campaignTargetId = targetId;
+    renderTargetSelectors();
+    renderReview();
+    renderCampaign();
+    switchView('review');
+    toast(`${targetById(targetId)?.name || 'Contact'} selected as the active review target.`);
   });
 }
 
