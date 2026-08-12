@@ -199,9 +199,19 @@ export function headerValue(req, name) {
 }
 
 export function safeJsonParse(text, code = 'invalid-json') {
+  if (text && typeof text === 'object' && !Buffer.isBuffer(text) && !ArrayBuffer.isView(text) && !(text instanceof ArrayBuffer)) {
+    return text;
+  }
   try {
-    return JSON.parse(text);
+    return JSON.parse(typeof text === 'string' ? text : bodyChunkForJson(text));
   } catch {
     throw new GivingError(code, 'Expected a valid JSON object', 400);
   }
+}
+
+function bodyChunkForJson(value) {
+  if (Buffer.isBuffer(value)) return value.toString('utf8');
+  if (ArrayBuffer.isView(value)) return Buffer.from(value.buffer, value.byteOffset, value.byteLength).toString('utf8');
+  if (value instanceof ArrayBuffer) return Buffer.from(value).toString('utf8');
+  return String(value ?? '');
 }

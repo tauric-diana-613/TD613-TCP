@@ -29,7 +29,7 @@ function responseNonce(body) {
 }
 
 export class GivingApiClient {
-  constructor({ endpoint = '/api/giving', fetchImpl = globalThis.fetch, timeoutMs = 18000 } = {}) {
+  constructor({ endpoint = '/api/td613-ledger', fetchImpl = globalThis.fetch, timeoutMs = 18000 } = {}) {
     if (typeof fetchImpl !== 'function') throw new TypeError('A fetch implementation is required.');
     this.endpoint = endpoint;
     this.fetchImpl = fetchImpl;

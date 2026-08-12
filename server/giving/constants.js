@@ -30,7 +30,7 @@ export const OPERATIONS = Object.freeze([
 export const GIVING_ENVIRONMENT = Object.freeze({
   TD613_GIVING_ACCESS_SECRET: 'required, 24+ characters; never reused as the signing secret',
   TD613_GIVING_SESSION_SECRET: 'required, 32+ characters; independent HMAC authority',
-  CAMPAIGN_DEPUTY_API_KEY: 'optional until Campaign Deputy sync is used',
+  CAMPAIGN_DEPUTY_API_KEY: 'optional until Campaign Deputy sync is used; custom key requires people-read, people-write, list-read, and list-write',
   FEC_API_KEY: 'optional; DEMO_KEY fallback is rate-limited',
   TD613_GIVING_NEON_DATABASE_URL: 'optional Neon Postgres connection string for HOSTED/HYBRID ciphertext custody'
 });
@@ -51,7 +51,7 @@ export const ALLOWED_UPSTREAM_HOSTS = new Set([
   'dos.elections.myflorida.com',
   'www.voterfocus.com',
   'ecf-api.easyvoteapp.com',
-  'api.campaigndeputy.com'
+  'us.api.campaigndeputy.app'
 ]);
 
 export const BASE_RESPONSE_HEADERS = Object.freeze({

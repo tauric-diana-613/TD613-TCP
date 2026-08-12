@@ -1,4 +1,5 @@
 import assert from 'node:assert/strict';
+import { Readable } from 'node:stream';
 import givingHandler from '../api/giving.js';
 
 process.env.TD613_GIVING_ACCESS_SECRET = 'operator-access-secret-that-is-long-enough';
@@ -46,6 +47,12 @@ assert.match(login.res.headers['set-cookie'], /^__Host-td613-giving=/);
 assert.equal(login.res.headers['x-robots-tag'], 'noindex, nofollow, noarchive, nosnippet');
 assert.equal(login.res.headers['cache-control'], 'no-store, max-age=0');
 assert.equal(login.body.receipt.donor_inputs_logged, false);
+
+const streamedLoginRequest = request('session.create', { access_secret: process.env.TD613_GIVING_ACCESS_SECRET });
+streamedLoginRequest.body = Readable.from([Buffer.from(JSON.stringify(streamedLoginRequest.body))]);
+const streamedLogin = await call(streamedLoginRequest);
+assert.equal(streamedLogin.res.statusCode, 200, 'production-style parsed body streams must not fall through JSON.stringify');
+assert.equal(streamedLogin.body.ok, true);
 
 const cookie = login.res.headers['set-cookie'].split(';', 1)[0];
 const nonce = login.body.data.intent_nonce;

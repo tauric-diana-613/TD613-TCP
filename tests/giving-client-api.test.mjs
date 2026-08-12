@@ -29,4 +29,18 @@ assert.equal(calls[1].operation, 'campaign-deputy.withhold');
 assert.equal(calls[1].intent.nonce, 'intent-offline-test');
 assert.match(calls[1].request_id, /^[A-Za-z0-9]/);
 
+const internalFailureClient = new GivingApiClient({
+  fetchImpl: async () => new Response(JSON.stringify({
+    ok: false,
+    data: null,
+    receipt: { refusal_code: 'internal-error' },
+    error: { code: 'internal-error', message: 'Giving operation did not complete' }
+  }), { status: 500, headers: { 'Content-Type': 'application/json' } })
+});
+await assert.rejects(
+  () => internalFailureClient.createSession('not-a-real-secret'),
+  (error) => error.code === 'internal-error' && error.status === 500 && error.message === 'Giving operation did not complete',
+  'server refusal JSON must not be flattened into boundary-unavailable'
+);
+
 console.log('giving-client-api.test.mjs passed');
