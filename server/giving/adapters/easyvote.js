@@ -8,7 +8,18 @@ import {
 } from './shared.js';
 
 function authenticationHeader(identity) {
-  return `UserId:${identity.UserId}|CustomerId:${identity.CustomerId}|ZumoToken:null`;
+  const token = identity.ZumoToken === null || identity.ZumoToken === undefined
+    ? 'null'
+    : String(identity.ZumoToken);
+  return `UserId:${identity.UserId}|CustomerId:${identity.CustomerId}|ZumoToken:${token}`;
+}
+
+function easyVotePortalCandidates(portal) {
+  const normalized = cleanText(portal, 160)?.toLowerCase() || '';
+  if (!normalized) return [];
+  const candidates = [normalized];
+  if (!normalized.startsWith('cityof')) candidates.push(`cityof${normalized}`);
+  return [...new Set(candidates)];
 }
 
 function easyVoteQuery(query, page) {
@@ -30,40 +41,77 @@ function easyVoteQuery(query, page) {
   return params;
 }
 
+async function bootstrapIdentity(source, fetchImpl) {
+  const candidates = easyVotePortalCandidates(source.portal);
+  if (!candidates.length) {
+    throw new GivingError('easyvote-bootstrap-drift', 'EasyVote source has no usable tenant identifier', 502);
+  }
+
+  let lastStatus = null;
+  let lastDrift = null;
+  for (const portal of candidates) {
+    const bootstrapUrl = `https://ecf-api.easyvoteapp.com/authentication/getwebsiteuser/${encodeURIComponent(portal)}`;
+    const bootstrap = await fetchWithBoundary(bootstrapUrl, {
+      headers: {
+        Accept: 'application/json',
+        'ZUMO-API-VERSION': '2.0.0',
+        'User-Agent': 'TD613-Giving/1.0 operator research'
+      }
+    }, { fetchImpl });
+    lastStatus = bootstrap.status;
+    if (!bootstrap.ok) continue;
+
+    const rawIdentity = await bootstrap.json();
+    const identity = rawIdentity?.data || rawIdentity;
+    const UserId = cleanText(identity?.UserId || identity?.userId, 100);
+    const CustomerId = cleanText(identity?.CustomerId || identity?.customerId, 100);
+    const rawToken = identity?.ZumoToken ?? identity?.zumoToken ?? null;
+    const ZumoToken = rawToken === null ? null : cleanText(rawToken, 4000);
+    if (!UserId || !CustomerId || (rawToken !== null && !ZumoToken)) {
+      lastDrift = {
+        portal,
+        has_user_id: Boolean(UserId),
+        has_customer_id: Boolean(CustomerId),
+        token_present: rawToken !== null
+      };
+      continue;
+    }
+    return { UserId, CustomerId, ZumoToken, portal, upstreamStatus: bootstrap.status };
+  }
+
+  if (lastDrift) {
+    throw new GivingError('easyvote-bootstrap-drift', 'EasyVote anonymous bootstrap returned an unusable website identity', 502, lastDrift);
+  }
+  throw new GivingError('easyvote-bootstrap-error', `EasyVote bootstrap returned HTTP ${lastStatus ?? 'unknown'} for every bounded tenant candidate`, 502, {
+    tenant_candidates: candidates
+  });
+}
+
 export async function searchEasyVotePage({ source, query, continuation, fetchImpl }) {
   const startedAt = new Date().toISOString();
   const digest = queryDigest(source.id, query);
   const cursor = decodeContinuation(continuation, source.id);
   const page = cursor?.page || 1;
-  const bootstrapUrl = `https://ecf-api.easyvoteapp.com/authentication/getwebsiteuser/${encodeURIComponent(source.portal)}`;
-  const bootstrap = await fetchWithBoundary(bootstrapUrl, {
-    headers: { Accept: 'application/json', 'ZUMO-API-VERSION': '2.0.0', 'User-Agent': 'TD613-Giving/1.0 operator research' }
-  }, { fetchImpl });
-  if (!bootstrap.ok) throw new GivingError('easyvote-bootstrap-error', `EasyVote bootstrap returned HTTP ${bootstrap.status}`, 502);
-  const rawIdentity = await bootstrap.json();
-  const identity = rawIdentity?.data || rawIdentity;
-  const UserId = cleanText(identity?.UserId || identity?.userId, 100);
-  const CustomerId = cleanText(identity?.CustomerId || identity?.customerId, 100);
-  const ZumoToken = identity?.ZumoToken ?? identity?.zumoToken ?? null;
-  if (!UserId || !CustomerId || ZumoToken !== null) {
-    throw new GivingError('easyvote-bootstrap-drift', 'EasyVote anonymous bootstrap no longer matches the null-token contract', 502, {
-      has_user_id: Boolean(UserId), has_customer_id: Boolean(CustomerId), token_is_null: ZumoToken === null
-    });
-  }
-  const endpoint = new URL(`https://ecf-api.easyvoteapp.com/advancedsearch/contributions/${encodeURIComponent(CustomerId)}`);
+  const identity = await bootstrapIdentity(source, fetchImpl);
+  const endpoint = new URL(`https://ecf-api.easyvoteapp.com/advancedsearch/contributions/${encodeURIComponent(identity.CustomerId)}`);
   endpoint.search = easyVoteQuery(query, page).toString();
-  const response = await fetchWithBoundary(endpoint, {
-    headers: {
-      Accept: 'application/json',
-      'Easy-Vote-Authenticated-User': authenticationHeader({ UserId, CustomerId }),
-      'ZUMO-API-VERSION': '2.0.0',
-      'User-Agent': 'TD613-Giving/1.0 operator research'
-    }
-  }, { fetchImpl });
-  if (!response.ok) throw new GivingError('easyvote-upstream-error', `EasyVote returned HTTP ${response.status}`, 502);
+  const headers = {
+    Accept: 'application/json',
+    'Easy-Vote-Authenticated-User': authenticationHeader(identity),
+    'ZUMO-API-VERSION': '2.0.0',
+    'User-Agent': 'TD613-Giving/1.0 operator research'
+  };
+  if (identity.ZumoToken) headers['X-ZUMO-AUTH'] = identity.ZumoToken;
+  const response = await fetchWithBoundary(endpoint, { headers }, { fetchImpl });
+  if (!response.ok) throw new GivingError('easyvote-upstream-error', `EasyVote returned HTTP ${response.status}`, 502, {
+    resolved_portal: identity.portal,
+    token_present: Boolean(identity.ZumoToken)
+  });
   const body = await response.json();
   const rows = Array.isArray(body) ? body : (body?.data || body?.Results || body?.results || body?.Items || body?.items);
-  if (!Array.isArray(rows)) throw new GivingError('easyvote-contract-drift', 'EasyVote contribution search response was not a JSON result collection', 502);
+  if (!Array.isArray(rows)) throw new GivingError('easyvote-contract-drift', 'EasyVote contribution search response was not a JSON result collection', 502, {
+    resolved_portal: identity.portal
+  });
   const totalPages = Number(body?.TotalPages || body?.totalPages || body?.metadata?.totalPages || page);
   const hasMore = Boolean(body?.HasNextPage ?? body?.hasNextPage ?? (page < totalPages));
   const next = hasMore ? encodeContinuation({ source_instance_id: source.id, page: page + 1 }) : null;
@@ -82,4 +130,9 @@ export async function searchEasyVotePage({ source, query, continuation, fetchImp
   };
 }
 
-export const _easyVoteInternals = Object.freeze({ authenticationHeader, easyVoteQuery });
+export const _easyVoteInternals = Object.freeze({
+  authenticationHeader,
+  easyVotePortalCandidates,
+  easyVoteQuery,
+  bootstrapIdentity
+});
