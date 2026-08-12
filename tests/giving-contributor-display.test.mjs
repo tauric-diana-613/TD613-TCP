@@ -1,4 +1,5 @@
 import assert from 'node:assert/strict';
+import { exactNameMatch } from '../app/giving/history/giving-model.js';
 import {
   normalizeEasyVoteRow,
   normalizeFecRow,
@@ -56,6 +57,7 @@ for (const record of [fec, florida, voterFocus, easyVote]) {
   assert.equal(record.contributor_name_raw, 'DOE, JANE A', 'all Giving source families admit one LAST, FIRST MIDDLE display form');
   assert.equal(record.contributor_name_parsed.display, 'DOE, JANE A');
   assert.equal(record.lineage.contributor_display_policy, 'LAST_COMMA_FIRST_MIDDLE_SUFFIX_UPPER');
+  assert.equal(exactNameMatch(record.contributor_name_raw, 'Jane Doe'), true, 'Exact Match retains source rows whose only extra name evidence is a middle name or initial');
 }
 
 assert.equal(fec.source_contributor_name_raw, 'DOE, JANE A');
