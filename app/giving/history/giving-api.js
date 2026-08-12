@@ -6,6 +6,7 @@ const MUTATIONS = new Set([
   'vault.resolve-conflict',
   'campaign-deputy.link-existing',
   'campaign-deputy.create-confirmed',
+  'campaign-deputy.ensure-committee',
   'campaign-deputy.withhold'
 ]);
 
