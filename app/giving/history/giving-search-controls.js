@@ -2,6 +2,7 @@ const $ = (selector) => document.querySelector(selector);
 const $$ = (selector) => [...document.querySelectorAll(selector)];
 const DEFAULT_DATE_FROM = '2020-01-01';
 const today = () => new Date().toISOString().slice(0, 10);
+let initialDefaultSettled = false;
 
 function emitInput(element) {
   element?.dispatchEvent(new Event('input', { bubbles: true }));
@@ -28,6 +29,29 @@ function ensureDefaultDate() {
     to.value = today();
     emitInput(to);
   }
+}
+
+function settleInitialDefaultAfterHydration(frame = 0) {
+  if (initialDefaultSettled) return;
+  if (document.documentElement.dataset.session !== 'open') return;
+  const registryReady = $('#sourceRegistry')?.children.length > 0;
+  if (registryReady || frame >= 45) {
+    ensureDefaultDate();
+    initialDefaultSettled = true;
+    return;
+  }
+  requestAnimationFrame(() => settleInitialDefaultAfterHydration(frame + 1));
+}
+
+function watchSessionHydration() {
+  const startIfOpen = () => {
+    if (document.documentElement.dataset.session === 'open' && !initialDefaultSettled) {
+      requestAnimationFrame(() => settleInitialDefaultAfterHydration());
+    }
+  };
+  const observer = new MutationObserver(startIfOpen);
+  observer.observe(document.documentElement, { attributes: true, attributeFilter: ['data-session'] });
+  startIfOpen();
 }
 
 function installDatePresets() {
@@ -147,8 +171,8 @@ function installStyles() {
   document.head.append(style);
 }
 
-ensureDefaultDate();
 installDatePresets();
 installClearSearch();
 installNewDossierDefault();
 installStyles();
+watchSessionHydration();
