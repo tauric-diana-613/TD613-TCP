@@ -192,7 +192,12 @@ export function suggestIdentityClusters(records, threshold = 0.42) {
 
 export function addSearchPage(dossier, sourceId, page, receipt = {}) {
   const incoming = Array.isArray(page?.records) ? page.records : [];
-  const byDigest = new Map(dossier.records.map((record) => [recordDigest(record), record]));
+  const resetReview = globalThis.__td613GivingResetReviewPending === true && globalThis.__td613GivingHoldReview !== true;
+  const baseRecords = resetReview ? [] : dossier.records;
+  const baseDecisions = resetReview ? {} : dossier.decisions;
+  if (resetReview) globalThis.__td613GivingResetReviewPending = false;
+
+  const byDigest = new Map(baseRecords.map((record) => [recordDigest(record), record]));
   for (const record of incoming) {
     const digest = recordDigest(record);
     if (!digest) continue;
@@ -201,7 +206,7 @@ export function addSearchPage(dossier, sourceId, page, receipt = {}) {
   const records = [...byDigest.values()];
   const clusters = suggestIdentityClusters(records);
   const candidateDigests = new Set(clusters.flatMap((cluster) => cluster.members));
-  const decisions = { ...dossier.decisions };
+  const decisions = { ...baseDecisions };
   for (const record of records) {
     const digest = recordDigest(record);
     if (!digest || [IDENTITY_STATUS.CONFIRMED, IDENTITY_STATUS.EXCLUDED].includes(decisions[digest])) continue;
