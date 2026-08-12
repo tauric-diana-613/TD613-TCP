@@ -1,5 +1,6 @@
 import assert from 'node:assert/strict';
 import { searchSourcePage } from '../server/giving/adapters/index.js';
+import { normalizeVoterFocusRow } from '../server/giving/normalize.js';
 import { linkExisting, createConfirmed, withhold } from '../server/giving/campaign-deputy.js';
 
 function mockResponse({ status = 200, json, text = '', headers = {} }) {
@@ -172,6 +173,45 @@ const voterFocus = await searchSourcePage({
 assert.equal(voterFocus.records.length, 1);
 assert.equal(voterFocus.records[0].contribution_date, '2010-08-10');
 assert.equal(voterFocus.records[0].lineage.column_count, 17);
+assert.equal(voterFocus.records[0].contributor_name_raw, 'DOE, JOHN');
+
+const hillsboroughStyle = normalizeVoterFocusRow({
+  'Candidate/Committee': 'Friends of Example',
+  'Candidate Name': 'Someone Else',
+  'Last Name/Company Name': 'MILLER',
+  'First Name': 'TAWANNA',
+  'Middle Name': 'C',
+  'Item Date': '08/01/2026',
+  Amount: '75.00',
+  Amendment: 'N',
+  'Report ID': 'hills-1'
+}, {
+  source: {
+    id: 'voterfocus-hillsborough', family: 'VOTERFOCUS', custodian: 'Hillsborough County Supervisor of Elections',
+    jurisdiction: 'Hillsborough', locator: 'https://www.voterfocus.com/CampaignFinance/cand_srch.php?c=hillsborough'
+  },
+  queryDigest: 'test-query',
+  retrievedAt: '2026-08-12T00:00:00.000Z'
+});
+assert.equal(hillsboroughStyle.contributor_name_raw, 'MILLER, TAWANNA C', 'split county name columns reconstruct the contributor rather than falling to Name unavailable');
+assert.equal(hillsboroughStyle.raw_source_row['Last Name/Company Name'], 'MILLER', 'raw county evidence remains untouched');
+assert.equal(hillsboroughStyle.lineage.contributor_name_derivation, 'VOTERFOCUS_HEADER_RESOLUTION');
+
+const vendorStyle = normalizeVoterFocusRow({
+  'Candidate/Committee': 'Committee Example',
+  'Contributor/Vendor': 'DOE, JORDAN',
+  'Item Date': '08/02/2026',
+  Amount: '10.00',
+  Amendment: 'N'
+}, {
+  source: {
+    id: 'voterfocus-duval', family: 'VOTERFOCUS', custodian: 'Duval County Supervisor of Elections',
+    jurisdiction: 'Duval', locator: 'https://www.voterfocus.com/CampaignFinance/cand_srch.php?c=duval'
+  },
+  queryDigest: 'test-query-2',
+  retrievedAt: '2026-08-12T00:00:00.000Z'
+});
+assert.equal(vendorStyle.contributor_name_raw, 'DOE, JORDAN');
 
 const easyCalls = [];
 const easyVote = await searchSourcePage({
