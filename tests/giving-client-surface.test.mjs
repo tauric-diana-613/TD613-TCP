@@ -15,6 +15,7 @@ const searchControls = fs.readFileSync(path.join(root, 'app/giving/history/givin
 const campaignTools = fs.readFileSync(path.join(root, 'app/giving/history/giving-campaign-tools-v2.js'), 'utf8');
 const campaignToolsCss = fs.readFileSync(path.join(root, 'app/giving/history/giving-campaign-tools-v2.css'), 'utf8');
 const amountFilter = fs.readFileSync(path.join(root, 'app/giving/history/giving-contribution-amount-filter.js'), 'utf8');
+const contributionsCopy = fs.readFileSync(path.join(root, 'app/giving/history/giving-contributions-copy.js'), 'utf8');
 const dossierHelp = fs.readFileSync(path.join(root, 'app/giving/history/giving-dossier-help.js'), 'utf8');
 const dossierHelpCss = fs.readFileSync(path.join(root, 'app/giving/history/giving-dossier-help.css'), 'utf8');
 const campaignDirectory = fs.readFileSync(path.join(root, 'server/giving/campaign-directory.js'), 'utf8');
@@ -33,10 +34,12 @@ assert.match(bootstrap, /giving-contact-queue\.js\?v=20260812-5/);
 assert.match(bootstrap, /giving-export-menu\.js\?v=20260812-5/);
 assert.match(bootstrap, /giving-app\.js\?v=20260812-5/);
 assert.match(bootstrap, /giving-search-controls\.js\?v=20260812-5/);
-assert.match(bootstrap, /giving-contribution-amount-filter\.js\?v=20260812-1/);
+assert.match(bootstrap, /giving-contribution-amount-filter\.js\?v=20260812-2/);
 assert.match(bootstrap, /giving-campaign-tools-v2\.js\?v=20260812-1/);
 assert.match(bootstrap, /giving-campaign-tools-v2\.css\?v=20260812-1/);
+assert.match(bootstrap, /giving-contributions-copy\.js\?v=20260812-1/);
 assert.match(bootstrap, /giving-dossier-help\.js\?v=20260812-8/);
+assert.ok(bootstrap.indexOf('giving-contribution-amount-filter.js') < bootstrap.indexOf('giving-app.js'), 'amount filter installs at the API boundary before the core client is constructed');
 assert.match(html, /id="sourceRegistry"/);
 assert.match(html, /id="recordList"/);
 assert.match(html, /id="committeeLedger"/);
@@ -135,12 +138,20 @@ assert.match(searchControls, /data-start-year="2024"/);
 assert.match(searchControls, /newDossierButton/);
 assert.match(searchControls, /td613:giving-clear-all/);
 
-assert.match(amountFilter, /parseRenderedAmount/);
-assert.match(amountFilter, /const bounded = min !== null \|\| max !== null/);
-assert.match(amountFilter, /const keep = !bounded \|\|/);
+assert.match(amountFilter, /import \{ GivingApiClient \}/);
+assert.match(amountFilter, /__td613AmountFilterInstalled/);
+assert.match(amountFilter, /operation === 'search\.page'/);
+assert.match(amountFilter, /client_amount_filter/);
+assert.match(amountFilter, /record\.amount_cents/);
+assert.match(amountFilter, /activeBounds = boundsFromForm\(\)/);
 assert.match(amountFilter, /Maximum contribution must be greater than or equal to minimum contribution/);
-assert.match(amountFilter, /MutationObserver\(applyAmountFilter\)/);
 assert.match(amountFilter, /td613:giving-clear-all/);
+assert.doesNotMatch(amountFilter, /MutationObserver/, 'amount filtering occurs before dossier admission rather than after the review render cap');
+
+assert.match(contributionsCopy, /Identity Review/);
+assert.match(contributionsCopy, /Contributions/);
+assert.match(contributionsCopy, /holdReviewButton/);
+assert.match(contributionsCopy, /toastStack/);
 
 assert.match(campaignTools, /Load committee → Contributions/);
 assert.match(campaignTools, /Load candidate → Contributions/);
