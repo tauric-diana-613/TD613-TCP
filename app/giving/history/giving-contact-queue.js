@@ -1,3 +1,5 @@
+import { searchTargetFromQuery } from './giving-model.js';
+
 const queue = [];
 const sourceErrors = new Map();
 let queueRunning = false;
@@ -6,21 +8,26 @@ let stopRequested = false;
 const $ = (selector) => document.querySelector(selector);
 const $$ = (selector) => [...document.querySelectorAll(selector)];
 const compact = (value) => String(value ?? '').normalize('NFKC').replace(/\s+/g, ' ').trim();
-const uid = () => globalThis.crypto?.randomUUID?.() || `contact-${Date.now()}-${Math.random().toString(16).slice(2)}`;
 
 function sourceIds() {
   return $$('#sourceRegistry input[type="checkbox"]:checked').map((input) => input.value);
 }
 
 function currentSnapshot(name) {
+  const aliases = ($('#searchAliases')?.value || '').split(/\r?\n|;/).map(compact).filter(Boolean);
+  const hints = compact($('#searchHints')?.value);
+  const dateFrom = $('#dateFrom')?.value || '';
+  const dateTo = $('#dateTo')?.value || '';
+  const exactMatch = Boolean($('#exactMatchToggle')?.checked);
+  const target = searchTargetFromQuery({ name, aliases, hints, date_from: dateFrom, date_to: dateTo, exact_match: exactMatch });
   return {
-    id: uid(),
+    id: target.id,
     name: compact(name),
-    aliases: ($('#searchAliases')?.value || '').split(/\r?\n|;/).map(compact).filter(Boolean),
-    hints: compact($('#searchHints')?.value),
-    dateFrom: $('#dateFrom')?.value || '',
-    dateTo: $('#dateTo')?.value || '',
-    exactMatch: Boolean($('#exactMatchToggle')?.checked),
+    aliases,
+    hints,
+    dateFrom,
+    dateTo,
+    exactMatch,
     sourceIds: sourceIds(),
     status: 'QUEUED'
   };
@@ -112,6 +119,12 @@ function settledQueueStatus() {
   return held ? 'SOURCE HOLD' : 'SEARCHED';
 }
 
+function selectTarget(item) {
+  document.dispatchEvent(new CustomEvent('td613:giving-select-target', {
+    detail: { targetId: item.id, targetName: item.name }
+  }));
+}
+
 function renderQueue() {
   const list = $('#contactQueueList');
   const count = $('#contactQueueCount');
@@ -135,6 +148,7 @@ function renderQueue() {
     const row = document.createElement('div');
     row.className = 'contact-queue-item';
     row.dataset.status = item.status;
+    row.dataset.targetId = item.id;
 
     const copy = document.createElement('div');
     copy.className = 'contact-queue-copy';
@@ -148,6 +162,15 @@ function renderQueue() {
     state.className = 'contact-queue-state';
     state.textContent = item.status;
 
+    const actions = document.createElement('div');
+    actions.className = 'contact-queue-item-actions';
+    const review = document.createElement('button');
+    review.type = 'button';
+    review.className = 'mini-button';
+    review.textContent = 'Review';
+    review.disabled = item.status === 'QUEUED' || item.status === 'RUNNING';
+    review.addEventListener('click', () => selectTarget(item));
+
     const remove = document.createElement('button');
     remove.type = 'button';
     remove.className = 'mini-button contact-queue-remove';
@@ -158,8 +181,9 @@ function renderQueue() {
       if (index >= 0) queue.splice(index, 1);
       renderQueue();
     });
+    actions.append(review, remove);
 
-    row.append(copy, state, remove);
+    row.append(copy, state, actions);
     list.append(row);
   }
 }
@@ -294,7 +318,7 @@ function installContactQueue() {
   panel.className = 'contact-queue-panel';
   panel.innerHTML = `
     <div class="contact-queue-heading">
-      <div><strong>Contact queue</strong><small>Snapshot several names with the current dates, aliases, hints, Exact Match setting, and selected sources.</small></div>
+      <div><strong>Contact queue</strong><small>Each queued name becomes its own review target; confirmed records stay partitioned before Campaign Deputy handoff.</small></div>
       <span class="counter" id="contactQueueCount">0 contacts</span>
     </div>
     <label class="field contact-queue-input-field">
