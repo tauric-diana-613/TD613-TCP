@@ -1,0 +1,104 @@
+.research-dossier-heading-line {
+  position: relative;
+  z-index: 3;
+  display: flex;
+  width: max-content;
+  max-width: 100%;
+  align-items: center;
+  gap: 4px;
+  overflow: visible;
+}
+
+.research-dossier-heading-line > h2 {
+  flex: 0 1 auto;
+  margin: 0;
+}
+
+.research-dossier-help {
+  position: relative;
+  display: inline-flex;
+  flex: 0 0 13px;
+  width: 13px;
+  height: 13px;
+  min-width: 13px;
+  min-height: 13px;
+  align-items: center;
+  justify-content: center;
+  overflow: visible;
+  vertical-align: middle;
+}
+
+.research-dossier-help-trigger {
+  display: inline-flex;
+  box-sizing: border-box;
+  width: 13px;
+  height: 13px;
+  min-width: 13px;
+  min-height: 13px;
+  align-items: center;
+  justify-content: center;
+  margin: 0;
+  padding: 0;
+  cursor: help;
+  color: var(--cyan);
+  background: transparent;
+  font-family: serif;
+  font-size: 10px;
+  font-style: normal;
+  font-weight: 600;
+  line-height: 1;
+  letter-spacing: 0;
+  text-decoration: none;
+  text-transform: none;
+  opacity: .72;
+  user-select: none;
+}
+
+.research-dossier-help-trigger:hover,
+.research-dossier-help-trigger:focus-visible {
+  opacity: 1;
+}
+
+.research-dossier-help-trigger:focus-visible {
+  outline: 1px solid var(--cyan);
+  outline-offset: 1px;
+}
+
+.research-dossier-help-popup[hidden] {
+  display: none !important;
+}
+
+.research-dossier-help-popup {
+  position: absolute;
+  right: -4px;
+  top: 17px;
+  z-index: 220;
+  display: block;
+  box-sizing: border-box;
+  width: 190px;
+  margin: 0;
+  padding: 7px 8px;
+  border: 1px solid rgba(118, 234, 212, .30);
+  border-radius: 2px;
+  pointer-events: none;
+  color: rgba(218, 239, 230, .88);
+  background: rgba(1, 10, 8, .99);
+  box-shadow: 0 12px 30px rgba(0, 0, 0, .48);
+  font-family: var(--sans);
+  font-size: 7px;
+  font-style: normal;
+  font-weight: 500;
+  line-height: 1.42;
+  letter-spacing: .005em;
+  text-align: left;
+  text-decoration: none;
+  text-transform: none;
+  white-space: normal;
+}
+
+@media (max-width: 430px) {
+  .research-dossier-help-popup {
+    right: -2px;
+    width: 176px;
+  }
+}
