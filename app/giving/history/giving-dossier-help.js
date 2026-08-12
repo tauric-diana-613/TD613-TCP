@@ -40,10 +40,29 @@ if (heading && !document.querySelector('#researchDossierHelp')) {
   popup.hidden = true;
   popup.textContent = 'A Research Dossier is the custody container for one Giving investigation. It keeps the query, source lineage, retrieved public records, identity decisions, committee totals, Campaign Deputy receipts, and storage history together without turning those pieces into one opaque database row. Local keeps the dossier in this browser. Hosted encrypts it in the browser before remote storage. Hybrid keeps the local working copy plus an encrypted hosted branch. The vault passphrase is separate from the operator login, and conflicting hosted branches are preserved for human reconciliation instead of being silently overwritten.';
 
+  let popupOpen = false;
+
+  const positionPopup = () => {
+    if (!popupOpen || popup.hidden) return;
+    const triggerRect = trigger.getBoundingClientRect();
+    const popupWidth = popup.offsetWidth || 190;
+    const popupHeight = popup.offsetHeight || 0;
+    const viewportWidth = window.innerWidth || document.documentElement.clientWidth;
+    const viewportHeight = window.innerHeight || document.documentElement.clientHeight;
+    const rightwardLeft = triggerRect.left - 2;
+    const left = Math.max(8, Math.min(rightwardLeft, viewportWidth - popupWidth - 8));
+    const preferredTop = triggerRect.bottom + 4;
+    const top = Math.max(8, Math.min(preferredTop, viewportHeight - popupHeight - 8));
+    popup.style.left = `${Math.round(left)}px`;
+    popup.style.top = `${Math.round(top)}px`;
+  };
+
   const setPopupOpen = (open) => {
+    popupOpen = open;
     popup.hidden = !open;
     popup.setAttribute('aria-hidden', open ? 'false' : 'true');
     trigger.setAttribute('aria-expanded', open ? 'true' : 'false');
+    if (open) positionPopup();
   };
 
   trigger.addEventListener('pointerenter', () => setPopupOpen(true));
@@ -56,7 +75,10 @@ if (heading && !document.querySelector('#researchDossierHelp')) {
       trigger.blur();
     }
   });
+  window.addEventListener('resize', positionPopup);
+  window.addEventListener('scroll', positionPopup, true);
 
-  help.append(trigger, popup);
+  help.append(trigger);
   line.appendChild(help);
+  document.body.appendChild(popup);
 }
