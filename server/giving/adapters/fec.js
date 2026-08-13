@@ -8,21 +8,23 @@ import {
 } from './shared.js';
 
 const RETRYABLE_FEC_STATUSES = new Set([429, 502, 503, 504]);
-const MAX_FEC_ATTEMPTS = 2;
+const RETRYABLE_FEC_ERRORS = new Set(['upstream-timeout', 'upstream-unavailable']);
+const MAX_FEC_ATTEMPTS = 3;
 const MAX_RETRY_DELAY_MS = 1200;
-const FEC_UPSTREAM_TIMEOUT_MS = 24_000;
-const FEC_GIVING_PAGE_BUDGET_MS = 27_000;
+const FEC_UPSTREAM_TIMEOUT_MS = 10_000;
+const FEC_GIVING_PAGE_BUDGET_MS = 26_000;
 const FEC_UPSTREAM_PAGE_SIZE = 100;
+const MIN_RETRY_WINDOW_MS = 2_500;
 
 function boundedRetryDelay(response) {
-  const retryAfter = response.headers?.get?.('retry-after');
+  const retryAfter = response?.headers?.get?.('retry-after');
   if (retryAfter !== null && retryAfter !== undefined) {
     const seconds = Number(retryAfter);
     if (Number.isFinite(seconds)) return Math.max(0, Math.min(MAX_RETRY_DELAY_MS, seconds * 1000));
     const date = Date.parse(retryAfter);
     if (Number.isFinite(date)) return Math.max(0, Math.min(MAX_RETRY_DELAY_MS, date - Date.now()));
   }
-  const reset = Number(response.headers?.get?.('x-ratelimit-reset'));
+  const reset = Number(response?.headers?.get?.('x-ratelimit-reset'));
   if (Number.isFinite(reset) && reset > 0) {
     const milliseconds = reset > 10_000_000_000 ? reset - Date.now() : (reset * 1000) - Date.now();
     return Math.max(0, Math.min(MAX_RETRY_DELAY_MS, milliseconds));
@@ -78,29 +80,46 @@ function fecUrl({ query, apiKey, perPage, lastIndexes }) {
   if (query.max_amount_cents !== null) url.searchParams.set('max_amount', String(query.max_amount_cents / 100));
 
   // Broad date windows already have exact min/max dates. Only add the explicit
-  // two-year partition when the search lives entirely inside one FEC period;
-  // repeating many period parameters made common-name queries materially heavier.
+  // two-year partition when the search lives entirely inside one FEC period.
   const periods = transactionPeriods(query.start_date, query.end_date);
   if (periods.length === 1) url.searchParams.set('two_year_transaction_period', String(periods[0]));
   appendSeekCursor(url, lastIndexes);
   return url;
 }
 
-async function fetchFecWithRetry(url, fetchImpl, keyMode, deadline) {
+function retryableThrownError(error) {
+  return RETRYABLE_FEC_ERRORS.has(error?.code);
+}
+
+async function fetchFecWithRetry(url, fetchImpl, deadline) {
   let response = null;
   let attempts = 0;
+  let lastError = null;
   for (attempts = 1; attempts <= MAX_FEC_ATTEMPTS; attempts += 1) {
     const remaining = deadline - Date.now();
-    if (remaining <= 1_500) {
-      throw new GivingError('upstream-timeout', 'OpenFEC retrieval exhausted its bounded page budget before another upstream request could begin', 504);
+    if (remaining <= MIN_RETRY_WINDOW_MS) {
+      throw lastError || new GivingError(
+        'upstream-timeout',
+        'OpenFEC retrieval exhausted its bounded request budget before another retry could begin',
+        504
+      );
     }
-    const timeoutMs = Math.min(FEC_UPSTREAM_TIMEOUT_MS, Math.max(1_000, remaining - 750));
-    response = await fetchWithBoundary(url, {
-      headers: { Accept: 'application/json', 'User-Agent': 'TD613-Giving/1.0 operator research' }
-    }, { fetchImpl, timeoutMs });
-    const demoRateLimited = response.status === 429 && keyMode === 'demo';
-    if (!RETRYABLE_FEC_STATUSES.has(response.status) || attempts === MAX_FEC_ATTEMPTS || demoRateLimited) break;
-    const delay = Math.min(boundedRetryDelay(response), Math.max(0, deadline - Date.now() - 1_500));
+    const timeoutMs = Math.min(FEC_UPSTREAM_TIMEOUT_MS, Math.max(1_500, remaining - 1_000));
+    try {
+      response = await fetchWithBoundary(url, {
+        headers: { Accept: 'application/json', 'User-Agent': 'TD613-Giving/1.0 operator research' }
+      }, { fetchImpl, timeoutMs });
+      lastError = null;
+    } catch (error) {
+      lastError = error;
+      if (!retryableThrownError(error) || attempts === MAX_FEC_ATTEMPTS) throw error;
+      const delay = Math.min(300 * attempts, Math.max(0, deadline - Date.now() - MIN_RETRY_WINDOW_MS));
+      if (delay > 0) await new Promise((resolve) => setTimeout(resolve, delay));
+      continue;
+    }
+
+    if (!RETRYABLE_FEC_STATUSES.has(response.status) || attempts === MAX_FEC_ATTEMPTS) break;
+    const delay = Math.min(boundedRetryDelay(response), Math.max(0, deadline - Date.now() - MIN_RETRY_WINDOW_MS));
     if (delay > 0) await new Promise((resolve) => setTimeout(resolve, delay));
   }
   return { response, attempts };
@@ -168,65 +187,40 @@ export async function searchFecPage({ source, query, continuation, fetchImpl }) 
   const configuredKey = String(process.env.FEC_API_KEY || '').trim();
   const apiKey = configuredKey || 'DEMO_KEY';
   const keyMode = configuredKey ? 'configured' : 'demo';
-  const targetPageSize = query.page_size;
+  const perPage = Math.min(FEC_UPSTREAM_PAGE_SIZE, query.page_size);
   const deadline = Date.now() + FEC_GIVING_PAGE_BUDGET_MS;
-  let lastIndexes = cursor?.last_indexes || null;
-  let continuationIndexes = lastIndexes;
-  let exhausted = false;
-  let finalResponse = null;
-  let finalRateLimit = null;
-  let totalAttempts = 0;
-  let upstreamCalls = 0;
-  const rows = [];
+  const lastIndexes = cursor?.last_indexes || null;
+  const url = fecUrl({ query, apiKey, perPage, lastIndexes });
 
-  while (rows.length < targetPageSize && !exhausted) {
-    // Once evidence has been collected, preserve it with a continuation rather
-    // than letting a late third/fourth provider page run the function into its wall.
-    if (rows.length && deadline - Date.now() < 2_500) break;
-    const perPage = Math.min(FEC_UPSTREAM_PAGE_SIZE, targetPageSize - rows.length);
-    const url = fecUrl({ query, apiKey, perPage, lastIndexes });
-    let response;
-    let attempts;
-    try {
-      ({ response, attempts } = await fetchFecWithRetry(url, fetchImpl, keyMode, deadline));
-    } catch (error) {
-      if (error?.code === 'upstream-timeout' && rows.length) break;
-      if (error?.code === 'upstream-timeout') {
-        throw new GivingError(
-          'upstream-timeout',
-          `OpenFEC Schedule A did not return its first provider page within the ${Math.round(FEC_GIVING_PAGE_BUDGET_MS / 1000)}-second Giving budget`,
-          504,
-          { api_key_mode: keyMode, page_size: targetPageSize }
-        );
-      }
-      throw error;
+  let response;
+  let attempts;
+  try {
+    ({ response, attempts } = await fetchFecWithRetry(url, fetchImpl, deadline));
+  } catch (error) {
+    if (error?.code === 'upstream-timeout') {
+      throw new GivingError(
+        'upstream-timeout',
+        `OpenFEC Schedule A did not settle within the ${Math.round(FEC_GIVING_PAGE_BUDGET_MS / 1000)}-second per-page Giving budget after bounded retries`,
+        504,
+        { api_key_mode: keyMode, page_size: perPage, attempts: MAX_FEC_ATTEMPTS }
+      );
     }
+    throw error;
+  }
 
-    upstreamCalls += 1;
-    totalAttempts += attempts;
-    finalResponse = response;
-    finalRateLimit = await assertFecResponse(response, { keyMode, attempts });
-    const body = await response.json();
-    if (!Array.isArray(body?.results) || !body?.pagination) {
-      throw new GivingError('fec-contract-drift', 'OpenFEC response did not match the Schedule A contract', 502);
-    }
-    rows.push(...body.results);
-    const nextIndexes = body.pagination.last_indexes && typeof body.pagination.last_indexes === 'object'
-      ? body.pagination.last_indexes
-      : null;
-    continuationIndexes = nextIndexes;
-    if (body.results.length < perPage || !nextIndexes?.last_index) {
-      exhausted = true;
-      continuationIndexes = null;
-      break;
-    }
-    lastIndexes = nextIndexes;
+  const rateLimit = await assertFecResponse(response, { keyMode, attempts });
+  const body = await response.json();
+  if (!Array.isArray(body?.results) || !body?.pagination) {
+    throw new GivingError('fec-contract-drift', 'OpenFEC response did not match the Schedule A contract', 502);
   }
 
   const retrievedAt = new Date().toISOString();
-  const records = rows.slice(0, targetPageSize).map((row) => normalizeFecRow(row, { source, queryDigest: digest, retrievedAt }));
-  const next = !exhausted && continuationIndexes?.last_index
-    ? encodeContinuation({ source_instance_id: source.id, sequence: sequence + 1, last_indexes: continuationIndexes })
+  const records = body.results.map((row) => normalizeFecRow(row, { source, queryDigest: digest, retrievedAt }));
+  const nextIndexes = body.pagination.last_indexes && typeof body.pagination.last_indexes === 'object'
+    ? body.pagination.last_indexes
+    : null;
+  const next = body.results.length >= perPage && nextIndexes?.last_index
+    ? encodeContinuation({ source_instance_id: source.id, sequence: sequence + 1, last_indexes: nextIndexes })
     : null;
 
   return {
@@ -239,14 +233,12 @@ export async function searchFecPage({ source, query, continuation, fetchImpl }) 
       digest,
       startedAt,
       state: 'READY',
-      upstreamStatus: finalResponse?.status || 200,
+      upstreamStatus: response.status,
       page: sequence,
       continuation: next,
       count: records.length,
       coverage: source.electronic_scope,
-      rateLimit: finalRateLimit
-        ? { ...finalRateLimit, provider_pages: upstreamCalls, provider_attempts: totalAttempts }
-        : { provider_pages: upstreamCalls, provider_attempts: totalAttempts }
+      rateLimit: { ...rateLimit, provider_pages: 1, provider_attempts: attempts }
     })
   };
 }
@@ -255,6 +247,7 @@ export const _fecInternals = Object.freeze({
   FEC_GIVING_PAGE_BUDGET_MS,
   FEC_UPSTREAM_PAGE_SIZE,
   FEC_UPSTREAM_TIMEOUT_MS,
+  MAX_FEC_ATTEMPTS,
   fecUrl,
   transactionPeriods
 });
