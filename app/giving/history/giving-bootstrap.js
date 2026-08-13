@@ -1,5 +1,4 @@
 import './giving-left-rail-order.js?v=20260812-1';
-import './giving-state-filter.js?v=20260813-1';
 import './giving-contact-queue.js?v=20260812-5';
 import './giving-export-menu.js?v=20260812-5';
 
@@ -27,7 +26,6 @@ if (!document.getElementById('givingStateFilterStylesheet')) {
   document.head.appendChild(link);
 }
 
-// Force revalidation of the shared matcher before the application module imports it.
 try {
   await fetch(new URL('./giving-model.js?v=20260813-1', import.meta.url), { cache: 'reload', credentials: 'same-origin' });
 } catch (error) {
@@ -35,6 +33,7 @@ try {
 }
 
 await import('./giving-contribution-amount-filter.js?v=20260812-2');
+await import('./giving-state-filter.js?v=20260813-2');
 await import('./giving-app.js?v=20260813-1');
 await import('./giving-search-controls.js?v=20260812-7');
 await import('./giving-campaign-tools-v2.js?v=20260812-1');
